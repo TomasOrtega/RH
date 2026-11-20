@@ -8,6 +8,21 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFreeDirichlet ArithmeticFunction
 
+/- English proof (translation)
+Establish `hX0 : 0 < X` using `by linarith`. Establish `hL0 : 0 < Real.log X` using `Real.log_pos (by linarith)`. Establish `h2 : 2 ≤ X ^ β`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (16 : ℝ) = 4 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]`.
+
+Use `_ ≤ √X := Real.sqrt_le_sqrt hX`. Use `_ = X ^ (1 / 2 : ℝ) := Real.sqrt_eq_rpow X`. Use `_ ≤ X ^ β := Real.rpow_le_rpow_of_exponent_le (by linarith) hβ`. Establish `hXβ : X ^ β ≤ X`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hli` using `liX_nonneg h2`. Break down `hη with h | h` into its components or cases. Establish `h1` using `liX_lower (by linarith : 4 ≤ X)`. Establish `h3 : X * η / (2 * Real.log X) ≤ X / (2 * Real.log X)` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h1` using `liX_sub_ge h2 hXβ`. Establish `hθ1 : θ ≤ 1` using `(abs_le.1 hθ).2`. Establish `h3 : liX X - liX (X ^ β) ≤ liX X - θ * liX (X ^ β)` using `by nlinarith`. Establish `hw : η ≤ (1 - β) * Real.log X` using `h.trans (mul_le_mul_of_nonneg_left hl (by linarith))`.
+
+Establish `he : X ^ β = X * Real.exp (-((1 - β) * Real.log X))`. Rewrite using `[Real.rpow_def_of_pos hX0]`. Use `nth_rw 2 [← Real.exp_log hX0]`. Rewrite using `[← Real.exp_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `he2 : Real.exp (-((1 - β) * Real.log X)) ≤ 1 - η / 2` using `(Real.exp_le_exp.2 (by linarith)).trans (exp_neg_le_one_sub_half hη0 hη1)`. Establish `h4 : X * η / 2 ≤ X - X ^ β`. Rewrite using `[he]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h5 : X * η / (2 * Real.log X) ≤ (X - X ^ β) / Real.log X`. Rewrite using `[show X * η / (2 * Real.log X) = (X * η / 2) / Real.log X by field_simp]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem main_lower {θ β η l X : ℝ} (hθ : |θ| ≤ 1) (hβ : 1 / 2 ≤ β) (hβ1 : β ≤ 1) (hX : 16 ≤ X)
     (hl : l ≤ Real.log X) (hη0 : 0 ≤ η) (hη1 : η ≤ 1) (hη : θ ≤ 0 ∨ η ≤ (1 - β) * l) :
     X * η / (2 * Real.log X) ≤ liX X - θ * liX (X ^ β) := by
@@ -50,6 +65,15 @@ theorem main_lower {θ β η l X : ℝ} (hθ : |θ| ≤ 1) (hβ : 1 / 2 ≤ β) 
       gcongr
     linarith
 
+/- English proof (translation)
+Establish `hu0 : 0 ≤ u` using `by linarith`. Establish `hm1 : min (c / 2) (c ^ 2 / 2) ≤ c / 2` using `min_le_left _ _`. Establish `hm2 : min (c / 2) (c ^ 2 / 2) ≤ c ^ 2 / 2` using `min_le_right _ _`. Establish `hm0 : 0 ≤ min (c / 2) (c ^ 2 / 2)` using `le_min (by positivity) (by positivity)`. Apply `add_le_add` to reduce the goal to its premises.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[neg_le_neg_iff]`. Apply `div_le_div_of_nonneg_right _ hl.le` to reduce the goal to its premises. Establish `h1` using `mul_le_mul_of_nonneg_right hm1 hL`. Use the polynomial consequences of the given equalities and inequalities.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[neg_le_neg_iff]`. Rewrite using `[show c * Real.sqrt u = Real.sqrt (c ^ 2 * u) by`. Rewrite using `[Real.sqrt_mul (sq_nonneg c), Real.sqrt_sq hc.le]]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises.
+
+Establish `h1` using `mul_le_mul_of_nonneg_right hm2 hL`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exp_sum_le_min_exponent {c l L u : ℝ} (hc : 0 < c) (hl : 0 < l) (hL : 0 ≤ L) (hu : L / 2 ≤ u) :
     Real.exp (-(c * u / l)) + Real.exp (-(c * Real.sqrt u)) ≤
       Real.exp (-(min (c / 2) (c ^ 2 / 2) * L / l)) + Real.exp (-Real.sqrt (min (c / 2) (c ^ 2 / 2) * L)) := by
@@ -71,6 +95,19 @@ theorem exp_sum_le_min_exponent {c l L u : ℝ} (hc : 0 < c) (hl : 0 < l) (hL : 
     have h1 := mul_le_mul_of_nonneg_right hm2 hL
     nlinarith
 
+/- English proof (translation)
+Establish `hL0 : 0 < L` using `by linarith`. Establish `hsq : Real.sqrt (c₃ * L) ≤ 2 * c₃ + L / 8`. Combine the equalities or inequalities in the displayed calculation. Establish `hexpL : L ^ 2 ≤ 64 * Real.exp (L / 4)`. Establish `h` using `Real.quadratic_le_exp_of_nonneg (x := L / 4) (by positivity)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hsplit : Real.exp (3 * L / 4) = Real.exp (L / 2) * Real.exp (L / 4)`. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Establish `key : 2816 * Real.exp (2 * c₃ - Real.sqrt (c₃ * L) + L - 2 * l) / L = 5632 * Real.exp (2 * c₃) / c₁ * Real.exp (-Real.sqrt (c₃ * L)) * (Real.exp L * (c₁ * Real.exp (-l)) / (2 * L) / Real.exp l)`.
+
+Establish `e : Real.exp (2 * c₃ - Real.sqrt (c₃ * L) + L - 2 * l) = Real.exp (2 * c₃) * Real.exp (-Real.sqrt (c₃ * L)) * Real.exp L * Real.exp (-l) / Real.exp l`. Rewrite using `[show 2 * c₃ - Real.sqrt (c₃ * L) + L - 2 * l = 2 * c₃ + -Real.sqrt (c₃ * L) + L + -l - l by ring, Real.exp_sub, Real.exp_add, Real.exp_add, Real.exp_add]`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[le_div_iff₀ hL0, hsplit]`. Establish `hp` using `Real.exp_pos (L / 2)`. Use the polynomial consequences of the given equalities and inequalities. Use `_ ≤ 2816 * Real.exp (2 * c₃ - Real.sqrt (c₃ * L) + L - 2 * l) / L := by`.
+
+Apply `div_le_div_of_nonneg_right _ hL0.le` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ (by norm_num)` to reduce the goal to its premises. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = 5632 * Real.exp (2 * c₃) / c₁ * Real.exp (-Real.sqrt (c₃ * L)) * (Real.exp L * (c₁ * Real.exp (-l)) / (2 * L) / Real.exp l) := key`.
+
+Use `_ ≤ 5632 * Real.exp (2 * c₃) / c₁ * Real.exp (-Real.sqrt (c₃ * L)) * (Real.exp L * η / (2 * L) / φ) := by gcongr`. Conclude with `div_nonneg (mul_nonneg (Real.exp_pos L).le (le_trans (mul_pos hc₁ (Real.exp_pos _)).le hη)) (by positivity)`.
+-/
 theorem small_terms {c₃ c₁ L l η φ : ℝ} (hc₃ : 0 ≤ c₃) (hc₁ : 0 < c₁) (hL : 16 * l ≤ L) (hL1 : 1 ≤ L)
     (hη : c₁ * Real.exp (-l) ≤ η) (hφ0 : 0 < φ) (hφ : φ ≤ Real.exp l) :
     44 * Real.exp (L / 2) * L ≤
@@ -111,6 +148,9 @@ theorem small_terms {c₃ c₁ L l η φ : ℝ} (hc₃ : 0 ≤ c₃) (hc₁ : 0 
         gcongr
         exact div_nonneg (mul_nonneg (Real.exp_pos L).le (le_trans (mul_pos hc₁ (Real.exp_pos _)).le hη)) (by positivity)
 
+/- English proof (translation)
+The claim follows from `|(piAP X M b : ℝ) - (liX X - θ * liX (X ^ β)) / (M.totient : ℝ)| ≤ (10 * A + 5632 * Real.exp (2 * min (c / 2) (c ^ 2 / 2)) / c₁) * (Real.exp (-(min (c / 2) (c ^ 2 / 2) * Real.log X / Real.log M)) + Real.exp (-Real.sqrt (min (c / 2) (c ^ 2 / 2) * Real.log X))) * ((liX X - θ * liX …`.
+-/
 theorem pi_core (M : ℕ) [NeZero M] (h8 : 8 ∣ M) (b : ℕ) (hb : b.Coprime M)
     (e : Option (DirichletCharacter ℂ M × ℝ)) {θ β η c A c₁ X : ℝ}
     (hθ : |θ| ≤ 1) (hβ : 1 / 2 ≤ β) (hβ1 : β ≤ 1)

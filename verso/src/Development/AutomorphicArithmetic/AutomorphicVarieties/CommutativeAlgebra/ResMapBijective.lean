@@ -24,6 +24,11 @@ section Res
 
 variable (O R : Type) [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
 
+/- English proof (translation)
+Use `⟨(ResidueField.map (algebraMap O R)).injective, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `residue_surjective y`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`. Use `⟨residue O a, ?_⟩` and prove the remaining obligations. Rewrite using `[ResidueField.map_residue]`.
+
+Conclude with `((Ideal.Quotient.eq).2 ha).symm`.
+-/
 theorem resMap_bijective : Function.Bijective (ResidueField.map (algebraMap O R)) := by
   refine ⟨(ResidueField.map (algebraMap O R)).injective, fun y => ?_⟩
   obtain ⟨x, rfl⟩ := residue_surjective y
@@ -39,12 +44,26 @@ def res : R →ₐ[O] ResidueField O :=
       rw [RingEquiv.symm_apply_eq]
       exact (ResidueField.map_residue _ _).symm }
 
+/- English proof (translation)
+Use `show (RingEquiv.ofBijective _ (resMap_bijective O R)).symm (residue R x) = 0 ↔ _`. Rewrite using `[map_eq_zero_iff _ (RingEquiv.injective _), residue_eq_zero_iff]`.
+-/
 theorem res_eq_zero_iff (x : R) : res O R x = 0 ↔ x ∈ maximalIdeal R := by
   show (RingEquiv.ofBijective _ (resMap_bijective O R)).symm (residue R x) = 0 ↔ _
   rw [map_eq_zero_iff _ (RingEquiv.injective _), residue_eq_zero_iff]
 
 variable {O R} in
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`. Establish `h1 : res O R x = algebraMap O _ a`. Use `(res_eq_zero_iff O R _).2 ha` as an intermediate fact. Rewrite `this` using `[map_sub, AlgHom.commutes, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hm : ∀ y ∈ maximalIdeal R, f y ∈ maximalIdeal R'` using `fun y hy => by`.
+
+Take `⟨b, hb⟩` from `IsCO.res_surj (O := O) (f y)`. Distinguish the cases in `hu : IsUnit b`. It suffices to derive a contradiction. Establish `h2 : IsUnit (y - algebraMap O R b)`. Assume the negation of the conclusion as `hn`.
+
+Establish `h3 : y - algebraMap O R b ∈ maximalIdeal R` using `hn`. Establish `h4 : algebraMap O R b ∈ maximalIdeal R` using `by simpa using Ideal.sub_mem _ hy h3`. Conclude with `h4 (hu.map _)`. Establish `h5` using `h2.map f`. Rewrite `h5` using `[map_sub, AlgHom.commutes]`.
+
+Conclude with `hb h5`. Establish `h6 : algebraMap O R' b ∈ maximalIdeal R'` using `fun h => hu (IsLocalHom.map_nonunit b h)`. Simplify using `using Ideal.add_mem _ hb h6`. Establish `h2` using `(res_eq_zero_iff O R' _).2 (hm _ ha)`. Rewrite `h2` using `[map_sub, map_sub, AlgHom.commutes, AlgHom.commutes, sub_eq_zero]`.
+
+Rewrite using `[h2, h1]`.
+-/
 theorem res_map {R' : Type} [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') (x : R) :
     res O R' (f x) = res O R x := by
   obtain ⟨a, ha⟩ := IsCO.res_surj (O := O) x
@@ -96,12 +115,21 @@ def wcomp (j : X) : MvPowerSeries σ O →ₗ[O] MvPowerSeries σ O where
     split_ifs <;> simp
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_wcomp (j : X) (f : MvPowerSeries σ O) (n : σ →₀ ℕ) :
     coeff n (wcomp O wt j f) = if Finsupp.weight wt n = j then coeff n f else 0 := rfl
 
+/- English proof (translation)
+Introduce `n hn` and use `by rw [coeff_wcomp, if_neg hn]`.
+-/
 theorem wcomp_mem (j : X) (f : MvPowerSeries σ O) : wcomp O wt j f ∈ wtPart O wt j :=
   fun n hn => by rw [coeff_wcomp, if_neg hn]
 
+/- English proof (translation)
+Introduce `n hn` and use `by classical rw [coeff_mul] refine Finset.sum_eq_zero fun p hp => ?_ by_cases h1 : Finsupp.weight wt p.1 = i · have h2 : Finsupp.weight wt p.2 ≠ j := fun h2 => hn (by rw [← Finset.HasAntidiagonal.mem_antidiagonal.1 hp, map_add, h1, h2]) rw [hg _ h2, mul_zero] · rw [hf _ h1, zero_ …`.
+-/
 theorem mul_mem_wtPart {i j : X} {f g : MvPowerSeries σ O} (hf : f ∈ wtPart O wt i) (hg : g ∈ wtPart O wt j) :
     f * g ∈ wtPart O wt (i + j) := fun n hn => by
   classical
@@ -113,12 +141,18 @@ theorem mul_mem_wtPart {i j : X} {f g : MvPowerSeries σ O} (hf : f ∈ wtPart O
     rw [hg _ h2, mul_zero]
   · rw [hf _ h1, zero_mul]
 
+/- English proof (translation)
+Introduce `n hn` and use `by classical rw [coeff_one, if_neg] rintro rfl exact hn (map_zero _)`.
+-/
 theorem one_mem_wtPart : (1 : MvPowerSeries σ O) ∈ wtPart O wt 0 := fun n hn => by
   classical
   rw [coeff_one, if_neg]
   rintro rfl
   exact hn (map_zero _)
 
+/- English proof (translation)
+Introduce `n hn` and use `by classical rw [coeff_X, if_neg] rintro rfl exact hn (by simp [Finsupp.weight_single])`.
+-/
 theorem X_mem_wtPart (i : σ) : (MvPowerSeries.X i : MvPowerSeries σ O) ∈ wtPart O wt (wt i) := fun n hn => by
   classical
   rw [coeff_X, if_neg]
@@ -176,6 +210,9 @@ instance : SetLike.GradedMonoid W.part where
     rintro i j _ _ ⟨f, hf, rfl⟩ ⟨g, hg, rfl⟩
     exact ⟨f * g, mul_mem_wtPart O W.wt hf hg, map_mul W.π f g⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, X_mem_wtPart O W.wt i, rfl⟩`.
+-/
 theorem z_mem (i : W.σ) : W.z i ∈ W.part (W.wt i) := ⟨_, X_mem_wtPart O W.wt i, rfl⟩
 
 def A : Subalgebra O R := gradedSub W.part
@@ -186,6 +223,9 @@ instance : SetLike.GradedMonoid W.gr where
   one_mem := (SetLike.GradedOne.one_mem : (1 : R) ∈ W.part 0)
   mul_mem _ _ _ _ ha hb := (SetLike.GradedMul.mul_mem ha hb : _ ∈ W.part _)
 
+/- English proof (translation)
+The claim follows from `le_iSup W.part j hx`.
+-/
 theorem part_le_A {j : X} {x : R} (hx : x ∈ W.part j) : x ∈ W.A := le_iSup W.part j hx
 
 def zA (i : W.σ) : W.A := ⟨W.z i, W.part_le_A (W.z_mem i)⟩
@@ -197,6 +237,11 @@ def origin (h : W.HasOrigin) : R →ₐ[O] O :=
     ({ (constantCoeff : MvPowerSeries W.σ O →+* O) with commutes' := fun a => by simp [MvPowerSeries.algebraMap_apply] } : MvPowerSeries W.σ O →ₐ[O] O)
     h).comp (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm.toAlgHom
 
+/- English proof (translation)
+Establish `: (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm (W.π f) = Ideal.Quotient.mk _ f`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [origin, AlgHom.comp_apply, AlgEquiv.coe_algHom]`. Use `erw [this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem origin_π (h : W.HasOrigin) (f : MvPowerSeries W.σ O) : W.origin h (W.π f) = constantCoeff f := by
   have : (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm (W.π f) = Ideal.Quotient.mk _ f := by
     rw [AlgEquiv.symm_apply_eq]; rfl
@@ -219,6 +264,9 @@ def act (t : Multiplicative X →* Kˣ) (ξ : A →ₐ[O] K) : A →ₐ[O] K :=
         SetLike.coe_gMul, map_mul, ofAdd_add, Units.val_mul, smul_eq_mul]
       ring)).comp (DirectSum.decomposeAlgEquiv 𝒜).toAlgHom
 
+/- English proof (translation)
+Establish `h : DirectSum.decompose 𝒜 f = DirectSum.of (fun j => 𝒜 j) j ⟨f, hf⟩` using `DirectSum.decompose_of_mem 𝒜 hf`. Simplify using `[act, h, DirectSum.toAlgebra]`. Use `erw [DirectSum.toSemiring_of]`. Both sides reduce to the same expression.
+-/
 theorem act_of_mem (t : Multiplicative X →* Kˣ) (ξ : A →ₐ[O] K) {j : X} {f : A} (hf : f ∈ 𝒜 j) :
     act 𝒜 t ξ f = t (Multiplicative.ofAdd j) * ξ f := by
   have h : DirectSum.decompose 𝒜 f = DirectSum.of (fun j => 𝒜 j) j ⟨f, hf⟩ := DirectSum.decompose_of_mem 𝒜 hf
@@ -291,6 +339,9 @@ def Lift.map (f : R →ₐ[O] R') (r : Lift O rbar R) : Lift O rbar R' where
     exact (r.cont a b N).comp (Ideal.quotientMap _ (f : R →+* R') hle)
   red g a b := (res_map f _).trans (r.red g a b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Lift.map_hom (f : R →ₐ[O] R') (r : Lift O rbar R) (g : Γ) (a b : ι) :
     (r.map f).hom g a b = f (r.hom g a b) := rfl
 

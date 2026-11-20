@@ -3,6 +3,33 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ _ N π hπ0 hπ a a₁ ha ha₁`. Use `set v : Valuation K (WithZero (Multiplicative ℤ)) := Valued.v with hv`. Set `S : Subring K` to `v.integer`. Establish `hpS : π ∈ S` using `(Valuation.mem_integer_iff _ _).2 hπ.le`. Set `p : S` to `⟨π, hpS⟩`.
+
+Set `B : Matrix (Fin N) (Fin N) S` to `fun i j => ⟨π⁻¹ * ((a : Matrix (Fin N) (Fin N) K) - 1) i j, (Valuation.mem_integer_iff _ _).2 (ha i j)⟩`. Set `B₁ : Matrix (Fin N) (Fin N) S` to `fun i j => ⟨π⁻¹ * ((a₁ : Matrix (Fin N) (Fin N) K) - 1) i j, (Valuation.mem_integer_iff _ _).2 (ha₁ i j)⟩`. Set `f : S →+* K` to `S.subtype`. Set `A' : Matrix (Fin N) (Fin N) S` to `1 + p • B`. Establish `hA : f.mapMatrix A' = (a : Matrix (Fin N) (Fin N) K)`.
+
+Use extensionality with `i j`. Establish `h1 : (((1 : Matrix (Fin N) (Fin N) S) i j : S) : K) = (1 : Matrix (Fin N) (Fin N) K) i j`. Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply]`. Express the relevant statement in the definitionally equal form `((A' i j : S) : K) = _`.
+
+Express the relevant statement in the definitionally equal form `(((1 + p • B) i j : S) : K) = _`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Subring.coe_add, smul_eq_mul, Subring.coe_mul, h1]`. Express the relevant statement in the definitionally equal form `_ + π * (π⁻¹ * ((a : Matrix (Fin N) (Fin N) K) - 1) i j) = _`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hπ0, one_mul, Matrix.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hB : (a₁ : Matrix (Fin N) (Fin N) K) - a = π • f.mapMatrix (B₁ - B)`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sub_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `_ = π * (((B₁ i j - B i j : S)) : K)`. Rewrite using `[AddSubgroupClass.coe_sub]`.
+
+Express the relevant statement in the definitionally equal form `_ = π * (π⁻¹ * ((a₁ : Matrix (Fin N) (Fin N) K) - 1) i j - π⁻¹ * ((a : Matrix (Fin N) (Fin N) K) - 1) i j)`. Rewrite using `[← mul_sub, ← mul_assoc, mul_inv_cancel₀ hπ0, one_mul, Matrix.sub_apply, Matrix.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Set `I : Ideal S` to `Ideal.span {p}`. Establish `hp : Ideal.Quotient.mk I p = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`.
+
+Establish `hdet1 : A'.det - 1 ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, RingHom.map_det]`. Establish `hm : (Ideal.Quotient.mk I).mapMatrix A' = 1`. Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply]`.
+
+Simplify using `only [A', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, hp, zero_mul, add_zero, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hm, det_one, sub_self]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hdet1`. Establish `hvd : v (f A'.det) = 1`.
+
+Establish `hlt : v (f (A'.det - 1)) < 1`. Rewrite using `[← hc, map_mul, map_mul]`. Establish `hc' : v (f c) ≤ 1` using `(Valuation.mem_integer_iff _ _).1 c.2`. Combine the equalities or inequalities in the displayed calculation. Establish `he : f A'.det = 1 + f (A'.det - 1)` using `by rw [map_sub, map_one]; ring`.
+
+Rewrite using `[he, Valuation.map_add_eq_of_lt_left v (by rwa [v.map_one]), v.map_one]`. Establish `hu : IsUnit A'.det` using `(Valuation.integer.integers v).isUnit_of_one' hvd`. Establish `hinv : (a : Matrix (Fin N) (Fin N) K) * f.mapMatrix A'⁻¹ = 1`. Rewrite using `[← hA, ← map_mul, Matrix.mul_nonsing_inv _ hu, map_one]`. Establish `hainv : ((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) = f.mapMatrix A'⁻¹`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv, mul_one]`. Use `_ = _ := by rw [← mul_assoc, Units.inv_mul, one_mul]`. Establish `key : ((a⁻¹ * a₁ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) - 1 = π • f.mapMatrix (A'⁻¹ * (B₁ - B))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Units.val_mul, Units.inv_mul]`. Use `_ = ((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) * ((a₁ : Matrix (Fin N) (Fin N) K) - a) := by rw [Matrix.mul_sub]`. Use `_ = ((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) * (π • f.mapMatrix (B₁ - B)) := by rw [hB]`. Use `_ = π • (((a⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) * f.mapMatrix (B₁ - B)) := by rw [Matrix.mul_smul]`. Use `_ = _ := by rw [map_mul, hainv]`.
+
+Introduce `i j`. Rewrite using `[key, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hπ0, one_mul, RingHom.mapMatrix_apply, Matrix.map_apply]`. Conclude with `(Valuation.mem_integer_iff _ _).1 ((A'⁻¹ * (B₁ - B)) i j).2`.
+-/
 theorem GL_inv_mul_congr_one : ∀ {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] {N : ℕ} (π : K), π ≠ 0 → Valued.v π < 1 →
   ∀ (a a₁ : GL (Fin N) K), (∀ i j, Valued.v (π⁻¹ * ((a : Matrix (Fin N) (Fin N) K) - 1) i j) ≤ 1) →
     (∀ i j, Valued.v (π⁻¹ * ((a₁ : Matrix (Fin N) (Fin N) K) - 1) i j) ≤ 1) →

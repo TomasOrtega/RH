@@ -14,6 +14,11 @@ noncomputable section
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Break down `eq_or_ne y 0 with rfl | hy0` into its components or cases. Rewrite using `[map_zero]`. Conclude with `zero_le`. Establish `hle : FractionalIdeal.spanSingleton (𝓞 K)⁰ y ≤ J` using `FractionalIdeal.spanSingleton_le_iff_mem.mpr hy`. Establish `hc` using `FractionalIdeal.count_mono K v ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr hy0) hle`.
+
+Rewrite `hc` using `[count_spanSingleton v hy0]`. Establish `hv0 : v.valuation K y ≠ 0` using `by rwa [Ne, map_eq_zero]`. Rewrite using `[← exp_log hv0, exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem valuation_le_of_mem_fractionalIdeal (v : HeightOneSpectrum (𝓞 K))
     {J : FractionalIdeal (𝓞 K)⁰ K} {y : K} (hy : y ∈ J) :
     v.valuation K y ≤ exp (-FractionalIdeal.count K v J) := by
@@ -28,6 +33,13 @@ theorem valuation_le_of_mem_fractionalIdeal (v : HeightOneSpectrum (𝓞 K))
   rw [← exp_log hv0, exp_le_exp]
   omega
 
+/- English proof (translation)
+Use `⟨fun hk v ↦ valuation_le_of_mem_fractionalIdeal v hk, fun hk ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv (I : FractionalIdeal (𝓞 K)⁰ K), FractionalIdeal.mem_inv_iff (inv_ne_zero I.ne_zero)]`. Introduce `y hy`. Establish `hint : ∀ v : HeightOneSpectrum (𝓞 K), v.valuation K (k * y) ≤ 1`. Introduce `v`.
+
+Establish `h2` using `valuation_le_of_mem_fractionalIdeal v hy`. Rewrite `h2` using `[FractionalIdeal.count_inv]`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨r, hr⟩` from `mem_integers_of_valuation_le_one (R := 𝓞 K) K (k * y) hint`.
+
+Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨r, hr⟩`.
+-/
 theorem mem_fractionalIdeal_iff_forall_valuation_le (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (k : K) :
     k ∈ (I : FractionalIdeal (𝓞 K)⁰ K) ↔ ∀ v : HeightOneSpectrum (𝓞 K),
       v.valuation K k ≤ exp (-FractionalIdeal.count K v (I : FractionalIdeal (𝓞 K)⁰ K)) := by
@@ -48,6 +60,9 @@ theorem mem_fractionalIdeal_iff_forall_valuation_le (I : (FractionalIdeal (𝓞 
   obtain ⟨r, hr⟩ := mem_integers_of_valuation_le_one (R := 𝓞 K) K (k * y) hint
   exact (FractionalIdeal.mem_one_iff _).mpr ⟨r, hr⟩
 
+/- English proof (translation)
+Rewrite using `[mem_idealFiniteAdeles, mem_fractionalIdeal_iff_forall_valuation_le]`. Use `forall_congr' fun v ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v (k : v.adicCompletion K) ≤ _ ↔ _`. Rewrite using `[valuedAdicCompletion_eq_valuation']`.
+-/
 theorem algebraMap_mem_idealFiniteAdeles_iff (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (k : K) :
     algebraMap K 𝔸ᶠ[K] k ∈ idealFiniteAdeles I ↔ k ∈ (I : FractionalIdeal (𝓞 K)⁰ K) := by
   rw [mem_idealFiniteAdeles, mem_fractionalIdeal_iff_forall_valuation_le]
@@ -55,6 +70,13 @@ theorem algebraMap_mem_idealFiniteAdeles_iff (I : (FractionalIdeal (𝓞 K)⁰ K
   change Valued.v (k : v.adicCompletion K) ≤ _ ↔ _
   rw [valuedAdicCompletion_eq_valuation']
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨d, hdI, hd0⟩ : ∃ d ∈ (I : FractionalIdeal (𝓞 K)⁰ K), d ≠ 0 := by`. Establish `hne : ((I : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) ≠ ⊥`. Rewrite using `[Ne, FractionalIdeal.coeToSubmodule_eq_bot]`. Conclude with `I.ne_zero`. Conclude with `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+
+Take `⟨k, hk⟩` from `exists_sub_mem_integralFiniteAdeles (R := 𝓞 K) (algebraMap K 𝔸ᶠ[K] d⁻¹ * b)`. Use `⟨d * k, fun v ↦ ?_⟩` and prove the remaining obligations. Establish `hb : b - algebraMap K 𝔸ᶠ[K] (d * k) = algebraMap K 𝔸ᶠ[K] d * (algebraMap K 𝔸ᶠ[K] d⁻¹ * b - algebraMap K 𝔸ᶠ[K] k)`. Rewrite using `[mul_sub, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hd0, map_one, one_mul, map_mul]`. Establish `hdv` using `(mem_fractionalIdeal_iff_forall_valuation_le I d).mp hdI v`.
+
+Establish `hkv : Valued.v ((algebraMap K 𝔸ᶠ[K] d⁻¹ * b - algebraMap K 𝔸ᶠ[K] k) v) ≤ 1` using `hk v`. Rewrite using `[hb]`. Express the relevant statement in the definitionally equal form `Valued.v ((d : v.adicCompletion K) * _) ≤ _`. Rewrite using `[Valuation.map_mul, valuedAdicCompletion_eq_valuation']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_sub_mem_idealFiniteAdeles (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (b : 𝔸ᶠ[K]) :
     ∃ ξ : K, b - algebraMap K 𝔸ᶠ[K] ξ ∈ idealFiniteAdeles I := by
   obtain ⟨d, hdI, hd0⟩ : ∃ d ∈ (I : FractionalIdeal (𝓞 K)⁰ K), d ≠ 0 := by
@@ -76,6 +98,11 @@ theorem exists_sub_mem_idealFiniteAdeles (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
       ≤ exp (-FractionalIdeal.count K v (I : FractionalIdeal (𝓞 K)⁰ K)) * 1 := mul_le_mul' hdv hkv
     _ = _ := mul_one _
 
+/- English proof (translation)
+Establish `h` using `adelicChar_mul_eq (algebraMap K 𝔸[K] ξ) (algebraMap K 𝔸[K] η)`. Rewrite `h` using `[← map_mul, adelicChar_algebraMap]`. Simplify using `only [adeleRing_algebraMap_fst, adeleRing_algebraMap_snd, homeomorphMixedSpace_algebraMap] at h`. Use `set t := mixedTraceForm K (mixedEmbedding K ξ) (mixedEmbedding K η)`. Establish `he : (𝐞 t : ℂ) * 𝐞 (-t) = 1`.
+
+Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one, Circle.coe_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he, one_mul]`. Use `_ = 𝐞 t := by rw [mul_assoc, ← h, Circle.coe_one, mul_one]`.
+-/
 theorem finiteAdelicChar_algebraMap_mul (ξ η : K) :
     (finiteAdelicChar K (algebraMap K 𝔸ᶠ[K] ξ * algebraMap K 𝔸ᶠ[K] η) : ℂ) =
       𝐞 (mixedTraceForm K (mixedEmbedding K ξ) (mixedEmbedding K η)) := by
@@ -96,11 +123,27 @@ def idealLatticeEquiv (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ((J : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) ≃ idealLattice K J :=
   (LinearEquiv.ofInjective _ (fun _ _ h ↦ Subtype.ext (mixedEmbedding_injective K h))).toEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_idealLatticeEquiv (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
     (y : ((J : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)) :
     ((idealLatticeEquiv J y : idealLattice K J) : mixedSpace K) = mixedEmbedding K (y : K) :=
   rfl
 
+/- English proof (translation)
+Use `set e := idealLatticeEquiv J`. Set `h : idealLattice K J → K` to `fun α ↦ c + ((e.symm α : _) : K)`. Establish `hinj : Function.Injective h` using `fun α β hαβ ↦ e.symm.injective (Subtype.ext (add_left_cancel hαβ))`. Establish `hsupp : ∀ ξ ∉ Set.range h, f ξ = 0`. Introduce `ξ hξ`.
+
+Rewrite using `[hf, if_neg]`. Introduce `hm`. Use `hξ ⟨e ⟨ξ - c, hm⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [h, Equiv.symm_apply_apply]`. Normalize the expressions using the abelian group laws.
+
+Establish `hfh : ∀ α, f (h α) = g (α + mixedEmbedding K c)`. Introduce `α`. Establish `hm : h α - c ∈ (J : FractionalIdeal (𝓞 K)⁰ K)`. Simplify using `only [h, add_sub_cancel_left]`. Conclude with `(e.symm α).2`.
+
+Rewrite using `[hf, if_pos hm]`. Use `congr 1`. Establish `he` using `coe_idealLatticeEquiv J (e.symm α)`. Rewrite `he` using `[Equiv.apply_symm_apply]`. Simplify using `only [h, map_add]`.
+
+Rewrite using `[← he, add_comm]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hinj.summable_iff (f := fun ξ ↦ ‖f ξ‖) (fun ξ hξ ↦ by simp [hsupp ξ hξ])]`. Simplify using `only [Function.comp_def, hfh]`. Rewrite using `[← hinj.tsum_eq (fun ξ hξ ↦ by_contra fun hn ↦ hξ (hsupp ξ hn))]`.
+
+Simplify using `only [hfh]`.
+-/
 theorem summable_norm_iff_and_tsum_eq_of_coset (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (c : K)
     (g : mixedSpace K → ℂ) (f : K → ℂ)
     (hf : ∀ ξ, f ξ = if ξ - c ∈ (J : FractionalIdeal (𝓞 K)⁰ K) then g (mixedEmbedding K ξ) else 0) :
@@ -135,12 +178,18 @@ theorem summable_norm_iff_and_tsum_eq_of_coset (J : (FractionalIdeal (𝓞 K)⁰
   · rw [← hinj.tsum_eq (fun ξ hξ ↦ by_contra fun hn ↦ hξ (hsupp ξ hn))]
     simp only [hfh]
 
+/- English proof (translation)
+Simplify using `only [schwartzBruhatTensor, adeleRing_algebraMap_fst, adeleRing_algebraMap_snd, homeomorphMixedSpace_algebraMap]`.
+-/
 theorem schwartzBruhatTensor_algebraMap (φ : 𝓢(mixedSpace K, ℂ)) (g : 𝔸ᶠ[K] → ℂ) (ξ : K) :
     schwartzBruhatTensor φ g (algebraMap K 𝔸[K] ξ) =
       φ (mixedEmbedding K ξ) * g (algebraMap K 𝔸ᶠ[K] ξ) := by
   simp only [schwartzBruhatTensor, adeleRing_algebraMap_fst, adeleRing_algebraMap_snd,
     homeomorphMixedSpace_algebraMap]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_mem_idealFiniteAdeles_iff, map_sub]`. Establish `: algebraMap K 𝔸ᶠ[K] ξ - algebraMap K 𝔸ᶠ[K] ξ₀ = (algebraMap K 𝔸ᶠ[K] ξ - b) + (b - algebraMap K 𝔸ᶠ[K] ξ₀)` using `by abel`. Rewrite using `[this, AddSubgroup.add_mem_cancel_right _ hξ₀]`.
+-/
 theorem algebraMap_sub_mem_idealFiniteAdeles_iff {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {b : 𝔸ᶠ[K]}
     {ξ₀ : K} (hξ₀ : b - algebraMap K 𝔸ᶠ[K] ξ₀ ∈ idealFiniteAdeles I) (ξ : K) :
     algebraMap K 𝔸ᶠ[K] ξ - b ∈ idealFiniteAdeles I ↔ ξ - ξ₀ ∈ (I : FractionalIdeal (𝓞 K)⁰ K) := by
@@ -149,6 +198,19 @@ theorem algebraMap_sub_mem_idealFiniteAdeles_iff {I : (FractionalIdeal (𝓞 K)�
       (algebraMap K 𝔸ᶠ[K] ξ - b) + (b - algebraMap K 𝔸ᶠ[K] ξ₀) := by abel
   rw [this, AddSubgroup.add_mem_cancel_right _ hξ₀]
 
+/- English proof (translation)
+Take `⟨ξ₀, hξ₀⟩` from `exists_sub_mem_idealFiniteAdeles I b`. Use `set a := mixedEmbedding K ξ₀`. Use `set μ : ℂ := ((finiteAdeleMeasure K (idealFiniteAdeles I)).toReal : ℂ)`. Establish `hL` using `summable_norm_iff_and_tsum_eq_of_coset I ξ₀ φ (fun ξ ↦ schwartzBruhatTensor φ (cosetIndicator I b) (algebraMap K 𝔸[K] ξ)) fun ξ ↦ by`. Rewrite using `[schwartzBruhatTensor_algebraMap, cosetIndicator_apply]`.
+
+Distinguish the cases in `hξ : ξ - ξ₀ ∈ (I : FractionalIdeal (𝓞 K)⁰ K)`. Rewrite using `[if_pos ((algebraMap_sub_mem_idealFiniteAdeles_iff hξ₀ ξ).mpr hξ), if_pos hξ, mul_one]`. Rewrite using `[if_neg (fun h ↦ hξ ((algebraMap_sub_mem_idealFiniteAdeles_iff hξ₀ ξ).mp h)), if_neg hξ, mul_zero]`. Establish `hR` using `summable_norm_iff_and_tsum_eq_of_coset (traceDualIdeal K I) 0 (fun x ↦ μ * (mixedFourier K φ x * 𝐞 (mixedTraceForm K x a))) (fun η ↦ adelicFourier K (schwartzBruhatTensor φ (cosetIndicator I b)) (algebraMap K 𝔸[K] η)) fun η ↦ by`. Rewrite using `[adelicFourier_schwartzBruhatTensor, schwartzBruhatTensor_algebraMap, finiteFourier_cosetIndicator, mixedFourierSchwartz_apply, sub_zero]`.
+
+Distinguish the cases in `hη : η ∈ (traceDualIdeal K I : FractionalIdeal (𝓞 K)⁰ K)`. Establish `hη' : algebraMap K 𝔸ᶠ[K] η ∈ idealFiniteAdeles (traceDualIdeal K I)` using `(algebraMap_mem_idealFiniteAdeles_iff _ η).mpr hη`. Rewrite using `[if_pos hη, Set.indicator_of_mem (SetLike.mem_coe.mpr hη'), Pi.one_apply, mul_one]`. Establish `hb : b * algebraMap K 𝔸ᶠ[K] η = algebraMap K 𝔸ᶠ[K] ξ₀ * algebraMap K 𝔸ᶠ[K] η + (b - algebraMap K 𝔸ᶠ[K] ξ₀) * algebraMap K 𝔸ᶠ[K] η` using `by ring`. Rewrite using `[hb, AddChar.map_add_eq_mul, (forall_finiteAdelicChar_mul_eq_one_iff I _).mpr hη' _ hξ₀, mul_one, finiteAdelicChar_algebraMap_mul, mixedTraceForm_comm K a]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hη' : algebraMap K 𝔸ᶠ[K] η ∉ idealFiniteAdeles (traceDualIdeal K I)` using `fun h ↦ hη ((algebraMap_mem_idealFiniteAdeles_iff _ η).mp h)`. Rewrite using `[if_neg hη, Set.indicator_of_notMem (by simpa using hη'), mul_zero, mul_zero, mul_zero]`. Simplify using `only [map_zero, add_zero] at hR`. Use `⟨hL.1.mpr (idealLattice_summable_norm K I φ a), hR.1.mpr ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify `(traceDualIdeal_summable_norm K I φ a).mul_left ‖μ‖` using `only [norm_mul]`. Rewrite using `[hL.2, hR.2, idealLattice_poisson_summation, tsum_mul_left, Complex.real_smul]`. Use `congr 1`. Simplify using `only [μ, finiteAdeleMeasure_idealFiniteAdeles_toReal, mul_inv]`. Use `push_cast`.
+
+Rewrite using `[Int.norm_eq_abs]`.
+-/
 theorem poisson_schwartzBruhatTensor_cosetIndicator (φ : 𝓢(mixedSpace K, ℂ))
     (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (b : 𝔸ᶠ[K]) :
     Summable (fun ξ : K ↦ ‖schwartzBruhatTensor φ (cosetIndicator I b) (algebraMap K 𝔸[K] ξ)‖) ∧
@@ -197,6 +259,9 @@ theorem poisson_schwartzBruhatTensor_cosetIndicator (φ : 𝓢(mixedSpace K, ℂ
     push_cast
     rw [Int.norm_eq_abs]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schwartzBruhatTensor, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ by ring`.
+-/
 theorem schwartzBruhatTensor_sum (φ : 𝓢(mixedSpace K, ℂ)) {ι : Type*} (s : Finset ι)
     (c : ι → ℂ) (g : ι → 𝔸ᶠ[K] → ℂ) :
     schwartzBruhatTensor φ (∑ i ∈ s, c i • g i) = ∑ i ∈ s, c i • schwartzBruhatTensor φ (g i) := by
@@ -204,6 +269,9 @@ theorem schwartzBruhatTensor_sum (φ : 𝓢(mixedSpace K, ℂ)) {ι : Type*} (s 
   simp only [schwartzBruhatTensor, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ ↦ by ring
 
+/- English proof (translation)
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, g, hg, rfl⟩`. Take `⟨I, s, hs⟩` from `exists_eq_sum_cosetIndicator hg`. Rewrite using `[hs, schwartzBruhatTensor_sum]`. Conclude with `Submodule.sum_mem _ fun b _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨φ, I, b, rfl⟩)`.
+-/
 theorem schwartzBruhat_le_span_cosetIndicator :
     schwartzBruhat K ≤ Submodule.span ℂ {F | ∃ (φ : 𝓢(mixedSpace K, ℂ))
       (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (b : 𝔸ᶠ[K]), F = schwartzBruhatTensor φ (cosetIndicator I b)} := by
@@ -213,6 +281,15 @@ theorem schwartzBruhat_le_span_cosetIndicator :
   rw [hs, schwartzBruhatTensor_sum]
   exact Submodule.sum_mem _ fun b _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨φ, I, b, rfl⟩)
 
+/- English proof (translation)
+Establish `hsub : Submodule.span ℂ {F | ∃ (φ : 𝓢(mixedSpace K, ℂ)) (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (b : 𝔸ᶠ[K]), F = schwartzBruhatTensor φ (cosetIndicator I b)} ≤ schwartzBruhat K`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, I, b, rfl⟩`. Conclude with `schwartzBruhatTensor_mem φ (cosetIndicator_mem_finiteSchwartzBruhat I b)`. Proceed by induction on `hF using Submodule.span_induction with`.
+
+Consider the case `mem G hG`. Take `⟨φ, I, b, rfl⟩` from `hG`. Conclude with `poisson_schwartzBruhatTensor_cosetIndicator φ I b`. Consider the case `zero => simp [adelicFourier_zero]`. Consider the case `add G H hG hH ihG ihH`.
+
+Rewrite using `[adelicFourier_add (integrable_of_mem_schwartzBruhat (hsub hG)) (integrable_of_mem_schwartzBruhat (hsub hH))]`. Use `⟨(ihG.1.add ihH.1).of_nonneg_of_le (fun _ ↦ norm_nonneg _) fun ξ ↦ norm_add_le _ _, (ihG.2.1.add ihH.2.1).of_nonneg_of_le (fun _ ↦ norm_nonneg _) fun ξ ↦ norm_add_le _ _, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Rewrite using `[ihG.1.of_norm.tsum_add ihH.1.of_norm, ihG.2.1.of_norm.tsum_add ihH.2.1.of_norm, ihG.2.2, ihH.2.2]`. Consider the case `smul c G hG ih`.
+
+Rewrite using `[adelicFourier_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `⟨ih.1.mul_left _, ih.2.1.mul_left _, by rw [tsum_mul_left, tsum_mul_left, ih.2.2]⟩`.
+-/
 theorem poisson_of_mem_span {F : 𝔸[K] → ℂ} (hF : F ∈ Submodule.span ℂ {F | ∃ (φ : 𝓢(mixedSpace K, ℂ))
       (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (b : 𝔸ᶠ[K]), F = schwartzBruhatTensor φ (cosetIndicator I b)}) :
     Summable (fun ξ : K ↦ ‖F (algebraMap K 𝔸[K] ξ)‖) ∧
@@ -242,10 +319,16 @@ theorem poisson_of_mem_span {F : 𝔸[K] → ℂ} (hF : F ∈ Submodule.span ℂ
     simp only [Pi.smul_apply, smul_eq_mul, norm_mul]
     exact ⟨ih.1.mul_left _, ih.2.1.mul_left _, by rw [tsum_mul_left, tsum_mul_left, ih.2.2]⟩
 
+/- English proof (translation)
+The claim follows from `(poisson_of_mem_span (schwartzBruhat_le_span_cosetIndicator hF)).1`.
+-/
 theorem summable_norm_algebraMap_of_mem_schwartzBruhat {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K) :
     Summable fun ξ : K ↦ ‖F (algebraMap K 𝔸[K] ξ)‖ :=
   (poisson_of_mem_span (schwartzBruhat_le_span_cosetIndicator hF)).1
 
+/- English proof (translation)
+The claim follows from `(poisson_of_mem_span (schwartzBruhat_le_span_cosetIndicator hF)).2.2`.
+-/
 theorem tsum_algebraMap_eq_tsum_adelicFourier {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K) :
     ∑' ξ : K, F (algebraMap K 𝔸[K] ξ) = ∑' ξ : K, adelicFourier K F (algebraMap K 𝔸[K] ξ) :=
   (poisson_of_mem_span (schwartzBruhat_le_span_cosetIndicator hF)).2.2
@@ -259,10 +342,22 @@ def mixedMulLeft (u : (mixedSpace K)ˣ) : mixedSpace K ≃L[ℝ] mixedSpace K :=
       left_inv := fun x ↦ Units.inv_mul_cancel_left u x
       right_inv := fun x ↦ Units.mul_inv_cancel_left u x }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mixedMulLeft_apply (u : (mixedSpace K)ˣ) (x : mixedSpace K) :
     mixedMulLeft u x = (u : mixedSpace K) * x :=
   rfl
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Use `set u : (mixedSpace K)ˣ := Units.map (InfiniteAdeleRing.ringEquiv_mixedSpace K).toRingHom.toMonoidHom (IdeleGroup.toInfinite K a)`. Use `set c : (𝔸ᶠ[K])ˣ := IdeleGroup.toFinite K a`.
+
+Establish `hg' : (fun y ↦ g ((c : 𝔸ᶠ[K]) * y)) ∈ finiteSchwartzBruhat K` using `⟨hg.1.comp_continuous (continuous_const_mul _), hg.2.comp_homeomorph (Homeomorph.smul c)⟩`. Use `schwartzBruhatTensor_mem (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (mixedMulLeft u) φ) hg' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [schwartzBruhatTensor, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, mixedMulLeft_apply]`. Establish `h1 : (a • x).1 = ((IdeleGroup.toInfinite K a : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K) * x.1` using `rfl`.
+
+Establish `h2 : (a • x).2 = (c : 𝔸ᶠ[K]) * x.2` using `rfl`. Establish `h3 : (u : mixedSpace K) = homeomorphMixedSpace K ((IdeleGroup.toInfinite K a : (InfiniteAdeleRing K)ˣ) : InfiniteAdeleRing K)` using `rfl`. Rewrite using `[h1, h2, homeomorphMixedSpace_mul, h3]`. Consider the case `zero => exact zero_mem _`. Consider the case `add G H _ _ hG hH => exact add_mem hG hH`.
+
+Consider the case `smul r G _ hG => exact Submodule.smul_mem _ r hG`.
+-/
 theorem comp_smul_mem_schwartzBruhat (a : IdeleGroup K) {F : 𝔸[K] → ℂ}
     (hF : F ∈ schwartzBruhat K) : (fun x ↦ F (a • x)) ∈ schwartzBruhat K := by
   induction hF using Submodule.span_induction with
@@ -288,16 +383,25 @@ theorem comp_smul_mem_schwartzBruhat (a : IdeleGroup K) {F : 𝔸[K] → ℂ}
   | add G H _ _ hG hH => exact add_mem hG hH
   | smul r G _ hG => exact Submodule.smul_mem _ r hG
 
+/- English proof (translation)
+The claim follows from `summable_norm_algebraMap_of_mem_schwartzBruhat (F := fun x ↦ F (a • x)) (comp_smul_mem_schwartzBruhat a hF)`.
+-/
 theorem summable_norm_smul_algebraMap (a : IdeleGroup K) {F : 𝔸[K] → ℂ}
     (hF : F ∈ schwartzBruhat K) : Summable fun ξ : K ↦ ‖F (a • algebraMap K 𝔸[K] ξ)‖ :=
   summable_norm_algebraMap_of_mem_schwartzBruhat (F := fun x ↦ F (a • x))
     (comp_smul_mem_schwartzBruhat a hF)
 
+/- English proof (translation)
+The claim follows from `summable_norm_smul_algebraMap a⁻¹ (adelicFourier_mem_schwartzBruhat hF)`.
+-/
 theorem summable_norm_adelicFourier_smul_algebraMap (a : IdeleGroup K) {F : 𝔸[K] → ℂ}
     (hF : F ∈ schwartzBruhat K) :
     Summable fun ξ : K ↦ ‖adelicFourier K F (a⁻¹ • algebraMap K 𝔸[K] ξ)‖ :=
   summable_norm_smul_algebraMap a⁻¹ (adelicFourier_mem_schwartzBruhat hF)
 
+/- English proof (translation)
+Rewrite using `[tsum_algebraMap_eq_tsum_adelicFourier (F := fun x ↦ F (a • x)) (comp_smul_mem_schwartzBruhat a hF), ← tsum_mul_left]`. Conclude with `tsum_congr fun ξ ↦ adelicFourier_comp_smul a F _`.
+-/
 theorem tsum_smul_algebraMap_eq (a : IdeleGroup K) {F : 𝔸[K] → ℂ} (hF : F ∈ schwartzBruhat K) :
     ∑' ξ : K, F (a • algebraMap K 𝔸[K] ξ) =
       ((IdeleGroup.ideleModule K a : ℝ)⁻¹ : ℂ) *

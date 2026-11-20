@@ -15,6 +15,13 @@ open scoped Matrix
 
 namespace GlobalTheory.HoweRealKer
 
+/- English proof (translation)
+Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hrs)`. Set `A' : Matrix (Fin n) (Fin n) ℂ` to `A.submatrix id e.symm`. Establish `hA' : A'ᵀ * M * A'.map star = (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1)).submatrix e.symm e.symm`. Rewrite using `[← hA]`.
+
+Use extensionality with `i j`. Simplify using `[A', Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, Matrix.map_apply]`. Establish `hD : (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1 : Matrix (Fin s) (Fin s) ℂ)).det ≠ 0`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_neg, Matrix.det_one, mul_one]`. Simplify using the standard rewrite rules.
+
+Introduce `hM`. Apply `hD` to reduce the goal to its premises. Rewrite using `[← Matrix.det_submatrix_equiv_self e.symm, ← hA', Matrix.det_mul, Matrix.det_mul, hM, mul_zero, zero_mul]`.
+-/
 theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
   let e : Fin r ⊕ Fin s ≃ Fin n := finSumFinEquiv.trans (finCongr hrs)
@@ -30,18 +37,29 @@ theorem det_ne_zero_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h 
   apply hD
   rw [← Matrix.det_submatrix_equiv_self e.symm, ← hA', Matrix.det_mul, Matrix.det_mul, hM, mul_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `hJ`. Apply `det_ne_zero_of_hasSig h` to reduce the goal to its premises. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, hJ, map_zero]`.
+-/
 theorem det_ne_zero_of_sig {E : Type} [Field E] {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (f : E →+* ℂ) {r s : ℕ} (h : HasSig (J.map f) r s) : J.det ≠ 0 := by
   intro hJ
   apply det_ne_zero_of_hasSig h
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, hJ, map_zero]
 
+/- English proof (translation)
+Introduce `hJ`. Apply `det_ne_zero_of_hasSig h` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, hJ, map_zero, mul_zero]`.
+-/
 theorem det_ne_zero_of_sigI {E : Type} [Field E] {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (f : E →+* ℂ) {r s : ℕ} (h : HasSig (Complex.I • J.map f) r s) : J.det ≠ 0 := by
   intro hJ
   apply det_ne_zero_of_hasSig h
   rw [Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, hJ, map_zero, mul_zero]
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h x, h' x]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[pow_add]`.
+
+Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring`.
+-/
 theorem resEtaPow_div {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {χ χ' : Chr F E} {n m : ℕ}
     (h : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ n)
@@ -54,10 +72,18 @@ theorem resEtaPow_div {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   · rw [pow_add]
     rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩`.
+-/
 theorem isHecke_div {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {χ χ' : Chr F E} (h : IsHecke F E χ) (h' : IsHecke F E χ') : IsHecke F E (χ / χ') :=
   ⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩
 
+/- English proof (translation)
+Introduce `r _ x`. Establish `h0 : tens (evI F) ((0 : SInf F κ) : (κ → mixedEmbedding.mixedSpace F) → ℂ) r = 0`. Use function extensionality and compare the values at `y`. Simplify using `[tens]`. Simplify using `only [h0, map_zero, Pi.zero_apply]`.
+
+Conclude with `hasDerivAt_const 0 0`.
+-/
 theorem actsD_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (T : ℝ → ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ) :
     ActsD (evI F) (fun t => T t) ((0 : SInf F κ) : (κ → mixedEmbedding.mixedSpace F) → ℂ) ((0 : SInf F κ) : _) := by
@@ -67,6 +93,9 @@ theorem actsD_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
   simp only [h0, map_zero, Pi.zero_apply]
   exact hasDerivAt_const 0 0
 
+/- English proof (translation)
+Introduce `r _`. Establish `h0 : tens (evI F) ((0 : SInf F κ) : (κ → mixedEmbedding.mixedSpace F) → ℂ) r = 0`. Use function extensionality and compare the values at `y`. Simplify using `[tens]`. Simplify using `only [h0, map_zero]`.
+-/
 theorem acts_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (T : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ) :
     Acts (evI F) T ((0 : SInf F κ) : (κ → mixedEmbedding.mixedSpace F) → ℂ) ((0 : SInf F κ) : _) := by
@@ -75,6 +104,39 @@ theorem acts_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     funext y; simp [tens]
   simp only [h0, map_zero]
 
+/- English proof (translation)
+Introduce `hHD F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hMt`. Take `⟨ht, hr, -⟩` from `hMt`. Establish `w0 : InfinitePlace F` using `Classical.arbitrary _`. Establish `hVdet : G.V.J.det ≠ 0` using `det_ne_zero_of_sig _ _ (ht.geo.hV.sig w0)`. Establish `hV'det : G.V'.J.det ≠ 0` using `det_ne_zero_of_sig _ _ (ht.geo.hV'.sig w0)`.
+
+Establish `hWdet : G.W.J.det ≠ 0` using `det_ne_zero_of_sigI _ _ (ht.geo.hW.sig w0)`. Establish `hresW : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range (Xc.β / Xc.α) (a + a')` using `resEtaPow_div ht.chars.resβ ht.chars.resα`. Establish `hresW' : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range (Xc.α / Xc.β) (a' + a)` using `resEtaPow_div ht.chars.resα ht.chars.resβ`. Rewrite `hresW'` using `[Nat.add_comm a' a]`. Establish `hHk` using `isHecke_div ht.chars.heckeβ ht.chars.heckeα`.
+
+Establish `hHk'` using `isHecke_div ht.chars.heckeα ht.chars.heckeβ`. Take `⟨hchain, hsum⟩` from `hHD F E σ ht.base.cm a (a + a') G.V G.W G.M Bs.ψ Xc.β (Xc.β / Xc.α) om ht.base.std ht.geo.hV.herm hVdet ht.geo.hW.skew hWdet ht.chars.resβ hresW ht.chars.heckeβ hHk ht.weil Bs.emb ht.geo.hV.cartan ht.geo.hW.cartan`. Establish `L` using `GlobalTheory.T.lieDerivative_polynomialFock_archimedeanUnitary F E σ ht.base.cm a (a + a') G.V G.W G.M Bs.ψ Xc.β (Xc.β / Xc.α) om ht.base.std ht.geo.hV.herm hVdet ht.geo.hW.skew hWdet ht.chars.resβ hresW ht.chars.heckeβ hHk ht.weil Bs.emb ht.geo.hV.cartan ht.geo.hW.cartan`. Establish `L'` using `GlobalTheory.T.lieDerivative_polynomialFock_archimedeanUnitary F E σ ht.base.cm a' (a + a') G.V' G.W G.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' ht.base.std ht.geo.hV'.herm hV'det ht.geo.hW.skew hWdet ht.chars.resα hresW' ht.chars.heckeα hHk' ht.weil' Bs.emb ht.geo.hV'.cartan ht.geo.hW.cart …`. Establish `C` using `GlobalTheory.T.compactUnitary_preserves_polynomialFock F E σ ht.base.cm a (a + a') G.V G.W G.M Bs.ψ Xc.β (Xc.β / Xc.α) om ht.base.std ht.geo.hV.herm hVdet ht.geo.hW.skew hWdet ht.chars.resβ hresW ht.chars.heckeβ hHk ht.weil Bs.emb ht.geo.hV.cartan ht.geo.hW.cartan`.
+
+Establish `C'` using `GlobalTheory.T.compactUnitary_preserves_polynomialFock F E σ ht.base.cm a' (a + a') G.V' G.W G.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' ht.base.std ht.geo.hV'.herm hV'det ht.geo.hW.skew hWdet ht.chars.resα hresW' ht.chars.heckeα hHk' ht.weil' Bs.emb ht.geo.hV'.cartan ht.geo.hW.cartan`. Use `⟨hchain, ?_⟩` and prove the remaining obligations. Introduce `N hN hNP`. Use `set P := G.M.Pol Bs.ψ Bs.emb with hPdef`. Set `K : Submodule ℂ (SInf F (Fin a × Fin (a + a')))` to `LinearMap.ker R.p ⊓ P`.
+
+Establish `hK : GlobalTheory.Published.ThetaSubInf G.M Bs.ψ Bs.emb om K`. Use `⟨inf_le_right, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ g hg g₁ hg₁`. Conclude with `⟨LinearMap.mem_ker.mpr (hr.quot.lie γ hγ g hg g₁ hg₁), hN.1 (hN.2.1 γ hγ g hg g₁ hg₁)⟩`. Introduce `k hk g hg g₁ hg₁`.
+
+Use `⟨?_, hN.1 (hN.2.2.1 k hk g hg g₁ hg₁)⟩` and prove the remaining obligations. Use `show R.p (g₁ - g) = 0`. Rewrite using `[map_sub, hr.quot.cpt k hk g hg g₁ hg₁, sub_self]`. Introduce `γ hγ g hg g₁ hg₁`. Use `⟨?_, (L γ hγ g hg.2).2 g₁ hg₁⟩` and prove the remaining obligations.
+
+Establish `e` using `hr.lie γ hγ g hg.2 0 (Submodule.zero_mem _) g₁ 0 hg₁ (actsD_zero _) (by rw [LinearMap.mem_ker.mp hg.1, map_zero])`. Use `show R.p g₁ = 0`. Rewrite using `[e, map_zero]`. Introduce `k hk g hg g₁ hg₁`. Use `⟨?_, (C k hk g hg.2).2 g₁ hg₁⟩` and prove the remaining obligations.
+
+Establish `e` using `hr.cpt k hk g hg.2 0 (Submodule.zero_mem _) g₁ 0 hg₁ (acts_zero _) (by rw [LinearMap.mem_ker.mp hg.1, map_zero])`. Use `show R.p g₁ = 0`. Rewrite using `[e, map_zero]`. Establish `hKP : K ≠ P`. Introduce `hKP`.
+
+Use `haveI := hr.nontriv`. Establish `hle : P ≤ LinearMap.ker R.p` using `hKP ▸ inf_le_left`. Establish `hbot : P.map R.p = ⊥`. Rewrite using `[eq_bot_iff, Submodule.map_le_iff_le_comap]`. Introduce `x hx`.
+
+Simplify `hle hx` using `[Submodule.mem_comap]`. Conclude with `bot_ne_top (hbot.symm.trans hr.quot.onto)`. Establish `hirr` using `hr.irred (N.map R.p) ?_ ?_`. Break down `hirr with hbot | htop` into its components or cases. Introduce `f hf`.
+
+Establish `: R.p f ∈ N.map R.p` using `Submodule.mem_map_of_mem hf`. Rewrite `this` using `[hbot]`. Conclude with `(Submodule.mem_bot ℂ).mp this`. It suffices to derive a contradiction. Apply `hsum N K hN hK hNP hKP` to reduce the goal to its premises.
+
+Use `le_antisymm (sup_le hN.1 inf_le_right) ?_` and prove the remaining obligations. Introduce `g hg`. Establish `hpg : R.p g ∈ N.map R.p` using `htop ▸ Submodule.mem_top`. Take `⟨n₀, hn₀, hpn⟩` from `hpg`. Establish `hk : g - n₀ ∈ K` using `⟨show R.p (g - n₀) = 0 by rw [map_sub, hpn, sub_self], P.sub_mem hg (hN.1 hn₀)⟩`.
+
+Use `Submodule.add_mem_sup hn₀ hk` as an intermediate fact. Simplify using `using this`. Introduce `γ hγ g hg g₁ hg₁ hpg`. Take `⟨n₀, hn₀, hpn⟩` from `hpg`. Establish `hg' : R.p g ∈ (G.M'.Pol Bs.ψ Bs.emb).map R.p'` using `hr.quot'.onto ▸ Submodule.mem_top`.
+
+Take `⟨g', hg'P, hpg'⟩` from `hg'`. Take `⟨g₁', hg₁'⟩` from `(L' γ hγ g' hg'P).1`. Take `⟨n₁, hn₁⟩` from `(L γ hγ n₀ (hN.1 hn₀)).1`. Establish `e1` using `hr.lie γ hγ g hg g' hg'P g₁ g₁' hg₁ hg₁' hpg'.symm`. Establish `e2` using `hr.lie γ hγ n₀ (hN.1 hn₀) g' hg'P n₁ g₁' hn₁ hg₁' (hpn.trans hpg'.symm)`.
+
+Conclude with `⟨n₁, hN.2.2.2.1 γ hγ n₀ hn₀ n₁ hn₁, e2.trans e1.symm⟩`. Introduce `k hk g hg g₁ hg₁ hpg`. Take `⟨n₀, hn₀, hpn⟩` from `hpg`. Establish `hg' : R.p g ∈ (G.M'.Pol Bs.ψ Bs.emb).map R.p'` using `hr.quot'.onto ▸ Submodule.mem_top`. Take `⟨g', hg'P, hpg'⟩` from `hg'`.
+
+Take `⟨g₁', hg₁'⟩` from `(C' k hk g' hg'P).1`. Take `⟨n₁, hn₁⟩` from `(C k hk n₀ (hN.1 hn₀)).1`. Establish `e1` using `hr.cpt k hk g hg g' hg'P g₁ g₁' hg₁ hg₁' hpg'.symm`. Establish `e2` using `hr.cpt k hk n₀ (hN.1 hn₀) g' hg'P n₁ g₁' hn₁ hg₁' (hpn.trans hpg'.symm)`. Conclude with `⟨n₁, hN.2.2.2.2 k hk n₀ hn₀ n₁ hn₁, e2.trans e1.symm⟩`.
+-/
 theorem main : GlobalTheory.Published.HoweDualityReal → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W)

@@ -5,6 +5,11 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `p _`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `hC : MvPolynomial.C a ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) ℂ 0` using `MvPolynomial.isHomogeneous_C _ a`.
+
+Conclude with `Subalgebra.algebraMap_mem _ (⟨_, hC⟩ : ↥(MvPolynomial.homogeneousSubmodule (Fin (N + 1)) ℂ 0))`. Consider the case `add p q hp hq => exact Subalgebra.add_mem _ (hp trivial) (hq trivial)`. Consider the case `mul_X p i hp`. Conclude with `Subalgebra.mul_mem _ (hp trivial) (Algebra.subset_adjoin ⟨i, rfl⟩)`.
+-/
 private theorem UpperTheory.Cb.adjoin_degree_zero_variables_eq_top (N : ℕ) :
     Algebra.adjoin (↥(MvPolynomial.homogeneousSubmodule (Fin (N + 1)) ℂ 0))
       (Set.range (MvPolynomial.X : Fin (N + 1) → MvPolynomial (Fin (N + 1)) ℂ)) = ⊤ := by
@@ -19,6 +24,11 @@ private theorem UpperTheory.Cb.adjoin_degree_zero_variables_eq_top (N : ℕ) :
   | mul_X p i hp =>
     exact Subalgebra.mul_mem _ (hp trivial) (Algebra.subset_adjoin ⟨i, rfl⟩)
 
+/- English proof (translation)
+Establish `hX : ∀ i : Fin (N + 1), (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) ℂ) ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) ℂ 1` using `fun i => MvPolynomial.isHomogeneous_X ℂ i`. Establish `hcov` using `Proj.iSup_basicOpen_eq_top' (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) ℂ) (MvPolynomial.X : Fin (N + 1) → MvPolynomial (Fin (N + 1)) ℂ) (fun i => ⟨1, hX i⟩) (UpperTheory.Cb.adjoin_degree_zero_variables_eq_top N)`. Use `⟨?_⟩` and prove the remaining obligations. Establish `huniv : (Set.univ : Set (PSpace ℂ N)) = ⋃ i, ((Proj.basicOpen (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) ℂ) (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) ℂ) : (PSpace ℂ N).Opens) : Set (PSpace ℂ N))`. Use `congrArg (fun U : (PSpace ℂ N).Opens => (U : Set (PSpace ℂ N))) hcov` as an intermediate fact.
+
+Simplify using `using this.symm`. Rewrite using `[huniv]`. Conclude with `isCompact_iUnion fun i => (Proj.isAffineOpen_basicOpen _ _ (hX i) Nat.one_pos).isCompact`.
+-/
 private theorem UpperTheory.Cb.compactSpace_projective_space (N : ℕ) : CompactSpace (PSpace ℂ N) := by
   have hX : ∀ i : Fin (N + 1), (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) ℂ) ∈
       MvPolynomial.homogeneousSubmodule (Fin (N + 1)) ℂ 1 :=
@@ -36,6 +46,9 @@ private theorem UpperTheory.Cb.compactSpace_projective_space (N : ℕ) : Compact
   exact isCompact_iUnion fun i =>
     (Proj.isAffineOpen_basicOpen _ _ (hX i) Nat.one_pos).isCompact
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `Z s ⟨N, i, hi, -⟩ haveI := UpperTheory.Cb.compactSpace_projective_space N`. Conclude with `QuasiCompact.compactSpace_of_compactSpace i`. Introduce `Y Z c hc hZ`. Conclude with `QuasiCompact.compactSpace_of_compactSpace c`.
+-/
 theorem UpperTheory.Cb.compactSpace_of_projective_and_of_finite :
     (∀ (Z : Scheme.{0}) (s : Z ⟶ Sp ℂ), IsProjOver s → CompactSpace Z) ∧ ∀ (Y Z : Scheme.{0}) (c : Y ⟶ Z), IsFinite c → CompactSpace Z → CompactSpace Y := by
   refine ⟨?_, ?_⟩

@@ -9,6 +9,9 @@ def InjectiveHolomorphicJacobianNeZero.Statement : Prop :=
     IsOpen U → DifferentiableOn ℂ f U → Set.InjOn f U →
       ∀ x ∈ U, LinearMap.det (fderiv ℂ f x : (Fin k → ℂ) →ₗ[ℂ] Fin k → ℂ) ≠ 0
 
+/- English proof (translation)
+The claim follows from `InjectiveHolomorphicOpen.hypotheses_inhabited`.
+-/
 theorem InjectiveHolomorphicJacobianNeZero.hypotheses_inhabited :
     IsOpen (Metric.ball (0 : Fin 2 → ℂ) 1) ∧
       DifferentiableOn ℂ (fun t : Fin 2 → ℂ => ![t 0, t 1 + t 0 ^ 2]) (Metric.ball 0 1) ∧

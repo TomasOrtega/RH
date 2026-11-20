@@ -21,6 +21,9 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 set_option autoImplicit false in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.unifBaseChange _root_.GlobalTheory.polBaseChange_holds _root_.GlobalTheory.globalFns_holds _root_.GlobalTheory.abelianSchemeLaws_all.1.secBaseChange _root_.GlobalTheory.twistBaseChange`.
+-/
 theorem _root_.GlobalTheory.UnifPullGuards.unifBaseChange_holds : _root_.ReciprocityTheory.ChartRestriction.G.Out.UnifBaseChangeSt :=
   _root_.GlobalTheory.unifBaseChange _root_.GlobalTheory.polBaseChange_holds
     _root_.GlobalTheory.globalFns_holds _root_.GlobalTheory.abelianSchemeLaws_all.1.secBaseChange

@@ -33,6 +33,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algeb
   {P : LocPrime l} {AI : LocAinf l P} {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
 
+/- English proof (translation)
+The claim follows from `hB.isPstAt T Bw _ (Units.continuous_val.comp (hG.cont.comp continuous_subtype_val)) (hG.above P AI ⟨T⟩ w A h O Bw hj).deRham`.
+-/
 theorem GlobalTheory.GalOfCusp.IsGalRepOf.isPstAt {χ : HChar (maximalRealSubfield E)} (hG : IsGalRepOf π χ ι r wt HT)
     (hB : GlobalTheory.Published.DeRhamPotSemistable) (T : LocTied l P AI) (h : IsPlaceOver A w)
     (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : Pst.Induces Bw) :
@@ -40,6 +43,9 @@ theorem GlobalTheory.GalOfCusp.IsGalRepOf.isPstAt {χ : HChar (maximalRealSubfie
   hB.isPstAt T Bw _ (Units.continuous_val.comp (hG.cont.comp continuous_subtype_val))
     (hG.above P AI ⟨T⟩ w A h O Bw hj).deRham
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hG.isPstAt hB T h Bw hj, H E Ω l ι a ha π hc hcoh r wt HT hG P AI ⟨T⟩ w A h O Bw hj⟩`.
+-/
 theorem GlobalTheory.Published.LocalGlobalAboveL.pst_and_wdAt (H : GlobalTheory.Published.LocalGlobalAboveL) (hB : GlobalTheory.Published.DeRhamPotSemistable)
     (ha : 2 ≤ a) (hc : π.IsCsd) (hcoh : GKCoh.IsCohomological π) (hG : IsGalRepOf π (quadChar E ^ a) ι r wt HT)
     (T : LocTied l P AI) (h : IsPlaceOver A w) (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : Pst.Induces Bw) :
@@ -49,15 +55,24 @@ theorem GlobalTheory.Published.LocalGlobalAboveL.pst_and_wdAt (H : GlobalTheory.
 
 end
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT hG P AI hT w _ A h O _ _ _ Bw hj σ hσ rc hrc` and use `H E Ω l ι a ha π hc (hC E a (by omega) π hr).2 r wt HT hG P AI hT w A h O Bw hj σ hσ rc hrc`.
+-/
 theorem GlobalTheory.Published.LocalGlobalAboveL.regAlg (H : GlobalTheory.Published.LocalGlobalAboveL) (hC : GlobalTheory.Published.RegularAlgebraicPurity) :
     GlobalTheory.GalOfCusp.LocalGlobalAboveL :=
   fun E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT hG P AI hT w _ A h O _ _ _ Bw hj σ hσ rc hrc =>
     H E Ω l ι a ha π hc (hC E a (by omega) π hr).2 r wt HT hG P AI hT w A h O Bw hj σ hσ rc hrc
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ ha _ hc hcoh _ _ _ hG _ _ ⟨T⟩ _ _ h _ _ _ _ Bw hj` and use `H.pst_and_wdAt hB ha hc hcoh hG T h Bw hj`.
+-/
 theorem GlobalTheory.Published.LocalGlobalAboveLPst.of_classicalTheorems (H : GlobalTheory.Published.LocalGlobalAboveL) (hB : GlobalTheory.Published.DeRhamPotSemistable) :
     GlobalTheory.Published.LocalGlobalAboveLPst :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ ha _ hc hcoh _ _ _ hG _ _ ⟨T⟩ _ _ h _ _ _ _ Bw hj => H.pst_and_wdAt hB ha hc hcoh hG T h Bw hj
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hc hcoh r wt HT hG P AI hT w A h O _ _ _ Bw hj` and use `(H E Ω l ι a ha π hc hcoh r wt HT hG P AI hT w A h O Bw hj).2`.
+-/
 theorem GlobalTheory.Published.LocalGlobalAboveLPst.localGlobalAboveL (H : GlobalTheory.Published.LocalGlobalAboveLPst) :
     GlobalTheory.Published.LocalGlobalAboveL :=
   fun E Ω _ _ _ _ _ _ l _ ι a ha π hc hcoh r wt HT hG P AI hT w A h O _ _ _ Bw hj =>

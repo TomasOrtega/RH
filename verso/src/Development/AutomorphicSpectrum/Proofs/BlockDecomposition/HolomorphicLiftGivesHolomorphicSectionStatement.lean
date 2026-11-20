@@ -13,6 +13,9 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 open GlobalTheory.CompanionTheory.MPDict GlobalTheory.CompanionTheory.MixZ
 open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MixZ.Holo.holo | exact GlobalTheory.CompanionTheory.MixZ.Holo.holo | (intros; apply GlobalTheory.CompanionTheory.MixZ.Holo.holo <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.holomorphic_lift_gives_holomorphic_section : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ)
     (O : Set (Fin D → ℂ)) (γ : (Fin D → ℂ) → (Σ k, Bk n k) → ℂ) (s : (Fin D → ℂ) → GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀),
     IsOpen O → DifferentiableOn ℂ γ O → (∀ v ∈ O, IsUnder (PtsOver.map i rfl _ (s v)) (γ v)) →

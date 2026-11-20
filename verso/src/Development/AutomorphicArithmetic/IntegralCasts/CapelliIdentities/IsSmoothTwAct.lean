@@ -30,6 +30,11 @@ noncomputable def UpperTheory.Reformulated.B.Gwa2.twKer :
         (ψ : ↥N →* kˣ) ↦
       V ⧸ UpperTheory.Reformulated.B.Gwa2.twKer ρ N ψ
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ N θ M _ s hs m`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`. Take `⟨h, hθ⟩` from `hs m n`. Use `Submodule.subset_span ⟨⟨_, h⟩, ρ (s m) v, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ρ (s m * (n : G) * (s m)⁻¹) (ρ (s m) v) = ρ (s m) (ρ (n : G) v)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right, map_mul, Module.End.mul_apply]`. Rewrite using `[hθ, map_sub, map_smul, ← key]`.
+-/
 theorem UpperTheory.Reformulated.B.Gwa2.aux4 :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] (ρ : Representation ℂ G V)
       (N : Subgroup G) (θ : ↥N →* ℂˣ) {M : Type} [inst_3 : Group M] (s : M →* G),
@@ -49,6 +54,9 @@ theorem UpperTheory.Reformulated.B.Gwa2.aux4 :
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right, map_mul, Module.End.mul_apply]
   rw [hθ, map_sub, map_smul, ← key]
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ N θ M _ s hs`. Conclude with `UpperTheory.Reformulated.B.Gwa2.aux4 ρ N θ s hs 1`.
+-/
 theorem UpperTheory.Reformulated.B.Gwa2.aux5 :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] (ρ : Representation ℂ G V)
       (N : Subgroup G) (θ : ↥N →* ℂˣ) {M : Type} [inst_3 : Group M] (s : M →* G),
@@ -61,6 +69,9 @@ theorem UpperTheory.Reformulated.B.Gwa2.aux5 :
   intro G V _ _ _ ρ N θ M _ s hs
   exact UpperTheory.Reformulated.B.Gwa2.aux4 ρ N θ s hs 1
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ N θ M _ s hs`. Use `LinearMap.ext fun x ↦ ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (ρ (s 1) v) = Submodule.Quotient.mk v`. Rewrite using `[map_one, map_one, Module.End.one_apply]`.
+-/
 theorem UpperTheory.Reformulated.B.Gwa2.aux6 :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] (ρ : Representation ℂ G V)
       (N : Subgroup G) (θ : ↥N →* ℂˣ) {M : Type} [inst_3 : Group M] (s : M →* G)
@@ -77,6 +88,9 @@ theorem UpperTheory.Reformulated.B.Gwa2.aux6 :
   change Submodule.Quotient.mk (ρ (s 1) v) = Submodule.Quotient.mk v
   rw [map_one, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ N θ M _ s hs a b`. Conclude with `UpperTheory.Reformulated.B.Gwa2.aux4 ρ N θ s hs (a * b)`.
+-/
 theorem UpperTheory.Reformulated.B.Gwa2.aux7 :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] (ρ : Representation ℂ G V)
       (N : Subgroup G) (θ : ↥N →* ℂˣ) {M : Type} [inst_3 : Group M] (s : M →* G),
@@ -90,6 +104,9 @@ theorem UpperTheory.Reformulated.B.Gwa2.aux7 :
   intro G V _ _ _ ρ N θ M _ s hs a b
   exact UpperTheory.Reformulated.B.Gwa2.aux4 ρ N θ s hs (a * b)
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ N θ M _ s hs a b`. Use `LinearMap.ext fun x ↦ ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (ρ (s (a * b)) v) = Submodule.Quotient.mk (ρ (s a) (ρ (s b) v))`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply]`.
+-/
 theorem UpperTheory.Reformulated.B.Gwa2.aux8 :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] (ρ : Representation ℂ G V)
       (N : Subgroup G) (θ : ↥N →* ℂˣ) {M : Type} [inst_3 : Group M] (s : M →* G)
@@ -138,6 +155,9 @@ noncomputable def UpperTheory.Reformulated.B.Gwa2.twAct :
         map_one' := UpperTheory.Reformulated.B.Gwa2.aux6 ρ N θ s hs, map_mul' := UpperTheory.Reformulated.B.Gwa2.aux8 ρ N θ s hs :
         M →* UpperTheory.Reformulated.B.Gwa2.TwJacquet ρ N θ →ₗ[ℂ] UpperTheory.Reformulated.B.Gwa2.TwJacquet ρ N θ }
 
+/- English proof (translation)
+Set `H : Subgroup M` to `{ carrier := {m : M | τ m x = x} one_mem' := by simp mul_mem' := fun {a b} (ha : τ a x = x) (hb : τ b x = x) ↦ show τ (a * b) x = x by`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `inv_mem' := fun {a} (ha : τ a x = x) ↦ show τ a⁻¹ x = x by conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Conclude with `H.isOpen_of_mem_nhds h`.
+-/
 private theorem UpperTheory.Reformulated.B.Gwa2.isOpen_fixer {M W : Type} [Group M] [AddCommGroup W] [_root_.Module ℂ W]
     [TopologicalSpace M] [IsTopologicalGroup M] (τ : Representation ℂ M W) (x : W)
     (h : {m : M | τ m x = x} ∈ nhds (1 : M)) : IsOpen {m : M | τ m x = x} := by
@@ -151,6 +171,11 @@ private theorem UpperTheory.Reformulated.B.Gwa2.isOpen_fixer {M W : Type} [Group
         rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }
   exact H.isOpen_of_mem_nhds h
 
+/- English proof (translation)
+Introduce `G M V _ _ _ _ _ _ _ ρ N θ s hs hc hρ x`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `UpperTheory.Reformulated.B.Gwa2.isOpen_fixer _ _ ?_` and prove the remaining obligations. Establish `hU : IsOpen {m : M | ρ (s m) v = v}` using `(hρ v).preimage hc`. Use `Filter.mem_of_superset (hU.mem_nhds (by simp)) fun m (hm : ρ (s m) v = v) ↦ ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (ρ (s m) v) = Submodule.Quotient.mk v`. Rewrite using `[hm]`.
+-/
 theorem UpperTheory.Reformulated.B.Gwa2.isSmooth_twAct :
     ∀ {G M V : Type} [inst : Group G] [inst_1 : Group M] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module ℂ V]
       [inst_4 : TopologicalSpace G] [inst_5 : TopologicalSpace M] [IsTopologicalGroup M] (ρ : Representation ℂ G V)

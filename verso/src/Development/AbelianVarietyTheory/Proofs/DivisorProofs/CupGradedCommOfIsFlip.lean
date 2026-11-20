@@ -18,16 +18,28 @@ def phi (a : Cochain ((chains R).obj E) I n) (b : Cochain ((chains R).obj E) J m
 
 variable (a : Cochain ((chains R).obj E) I n) (b : Cochain ((chains R).obj E) J m)
 
+/- English proof (translation)
+The claim follows from `Finsupp.linearCombination_single _ _ _`.
+-/
 theorem phi_single (w : ℤ) {N : ℕ} (x : Sx E N U) (z : Pr N) (t : ℤ) :
     phi μ a b w x (Finsupp.single z t) = t • sg (m * z.1) • pv μ a b w z.1 z.2.1 (x.along z.2.2.1) (x.along z.2.2.2) :=
   Finsupp.linearCombination_single _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem face_eq {p : ℕ} (x : Sx E (p + 1) U) (i : Fin (p + 2)) : x.face i = x.along (SimplexCategory.δ i) := rfl
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom ((E.map θ.op).naturality g.op) x`.
+-/
 theorem along_res {N p : ℕ} {V : Scheme.{0}} (g : V ⟶ U) (x : Sx E N U) (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk N) :
     (x.res g).along θ = (x.along θ).res g :=
   ConcreteCategory.congr_hom ((E.map θ.op).naturality g.op) x
 
+/- English proof (translation)
+Unfold `pv`. Use `split_ifs with h`. Rewrite using `[μ.nat, ev_res, ev_res]`. Conclude with `map_zero _`.
+-/
 theorem pv_res (w : ℤ) (p r : ℕ) {V : Scheme.{0}} (g : V ⟶ U) (y : Sx E p U) (z : Sx E r U) :
     Sec.res g (pv μ a b w p r y z) = pv μ a b w p r (y.res g) (z.res g) := by
   unfold pv
@@ -35,6 +47,11 @@ theorem pv_res (w : ℤ) (p r : ℕ) {V : Scheme.{0}} (g : V ⟶ U) (y : Sx E p 
   · rw [μ.nat, ev_res, ev_res]
   · exact map_zero _
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `map_zero _`. Consider the case `add f f' hf hf' => rw [map_add, map_add, ← hf, ← hf']`. Conclude with `map_add _ _ _`.
+
+Consider the case `single z t`. Rewrite using `[phi_single, phi_single, along_res, along_res, ← pv_res]`. Simplify using `only [Sec.res, map_zsmul]`.
+-/
 theorem phi_res (w : ℤ) {N : ℕ} {V : Scheme.{0}} (g : V ⟶ U) (x : Sx E N U) (c : Pr N →₀ ℤ) :
     Sec.res g (phi μ a b w x c) = phi μ a b w (x.res g) c := by
   induction c using Finsupp.induction_linear with
@@ -44,6 +61,9 @@ theorem phi_res (w : ℤ) {N : ℕ} {V : Scheme.{0}} (g : V ⟶ U) (x : Sx E N U
     rw [phi_single, phi_single, along_res, along_res, ← pv_res]
     simp only [Sec.res, map_zsmul]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add f f' hf hf' => rw [map_add, map_add, map_add, hf, hf']`. Consider the case `single z t`. Rewrite using `[Pr.push, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, phi_single, phi_single, along_along, along_along]`.
+-/
 theorem phi_along (w : ℤ) {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (x : Sx E M U) (c : Pr N →₀ ℤ) :
     phi μ a b w (x.along θ) c = phi μ a b w x (Pr.push θ c) := by
   induction c using Finsupp.induction_linear with
@@ -59,6 +79,13 @@ open GlobalTheory.EtC.CupSpec
 variable {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E : Spc} {U : Scheme.{0}} {n m : ℤ}
 variable (a : Cochain ((chains R).obj E) I n) (b : Cochain ((chains R).obj E) J m)
 
+/- English proof (translation)
+Consider the cases of `p with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `phi μ a b w x 0 = _`. Simplify using `[bdL]`. Consider the case `succ p`.
+
+Express the relevant statement in the definitionally equal form `phi μ a b w x (∑ i : Fin (p + 2), Finsupp.single ⟨p, r, SimplexCategory.δ i ≫ a', b'⟩ ((-1) ^ (i : ℕ))) = _`. Establish `e : sg (m * ((p + 1 : ℕ) : ℤ) + m) = sg (m * p)`. Rewrite using `[show m * ((p + 1 : ℕ) : ℤ) + m = m * p + (m + m) by push_cast; ring, sg_add, sg_add, sg_sq, mul_one]`. Rewrite using `[map_sum, bdL, e, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[phi_single, face_eq, along_along, smul_comm]`.
+-/
 theorem phi_d₁ (w : ℤ) {N : ℕ} (x : Sx E N U) (p r : ℕ) (a' : SimplexCategory.mk p ⟶ SimplexCategory.mk N)
     (b' : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     phi μ a b w x (Pr.d₁ ⟨p, r, a', b'⟩) = sg (m * p + m) • bdL (pv μ a b w) p r (x.along a') (x.along b') := by
@@ -74,6 +101,11 @@ theorem phi_d₁ (w : ℤ) {N : ℕ} (x : Sx E N U) (p r : ℕ) (a' : SimplexCat
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [phi_single, face_eq, along_along, smul_comm]
 
+/- English proof (translation)
+Consider the cases of `r with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `phi μ a b w x 0 = _`. Simplify using `[bdR]`. Consider the case `succ r`.
+
+Express the relevant statement in the definitionally equal form `phi μ a b w x (∑ j : Fin (r + 2), Finsupp.single ⟨p, r, a', SimplexCategory.δ j ≫ b'⟩ ((-1) ^ (j : ℕ))) = _`. Rewrite using `[map_sum, bdR, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[phi_single, face_eq, along_along, smul_comm]`.
+-/
 theorem phi_d₂ (w : ℤ) {N : ℕ} (x : Sx E N U) (p r : ℕ) (a' : SimplexCategory.mk p ⟶ SimplexCategory.mk N)
     (b' : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     phi μ a b w x (Pr.d₂ ⟨p, r, a', b'⟩) = sg (m * p) • bdR (pv μ a b w) p r (x.along a') (x.along b') := by
@@ -87,6 +119,9 @@ theorem phi_d₂ (w : ℤ) {N : ℕ} (x : Sx E N U) (p r : ℕ) (a' : SimplexCat
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [phi_single, face_eq, along_along, smul_comm]
 
+/- English proof (translation)
+Unfold `pv`. Use `split_ifs`. Rewrite using `[ev_zero, map_zero, LinearMap.zero_apply]`. Both sides reduce to the same expression.
+-/
 theorem pv_zero_left (w : ℤ) (p r : ℕ) (y : Sx E p U) (z : Sx E r U) :
     pv μ (0 : Cochain ((chains R).obj E) I n) b w p r y z = 0 := by
   unfold pv
@@ -94,6 +129,9 @@ theorem pv_zero_left (w : ℤ) (p r : ℕ) (y : Sx E p U) (z : Sx E r U) :
   · rw [ev_zero, map_zero, LinearMap.zero_apply]
   · rfl
 
+/- English proof (translation)
+Unfold `pv`. Use `split_ifs`. Rewrite using `[ev_zero, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem pv_zero_right (w : ℤ) (p r : ℕ) (y : Sx E p U) (z : Sx E r U) :
     pv μ a (0 : Cochain ((chains R).obj E) J m) w p r y z = 0 := by
   unfold pv
@@ -101,6 +139,15 @@ theorem pv_zero_right (w : ℤ) (p r : ℕ) (y : Sx E p U) (z : Sx E r U) :
   · rw [ev_zero, map_zero]
   · rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : (-(p : ℤ) + n) + (-(r : ℤ) + m) = w`. Rewrite using `[d_pv μ rfl rfl α.1 β.1 w w' hw p r y z h, Cocycle.δ_eq_zero, Cocycle.δ_eq_zero, pv_zero_left, pv_zero_right, zero_sub, zero_sub, smul_neg, ← sub_eq_add_neg]`. Establish `h0 : pv μ α.1 β.1 w p r y z = 0` using `dif_neg h`. Establish `hL : bdL (pv μ α.1 β.1 w') p r y z = 0`. Consider the cases of `p with`.
+
+Consider the case `zero => rfl`. Consider the case `succ p`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[pv, dif_neg (by push_cast at h ⊢; omega), smul_zero]`. Establish `hR : bdR (pv μ α.1 β.1 w') p r y z = 0`.
+
+Consider the cases of `r with`. Consider the case `zero => simp [bdR]`. Consider the case `succ r`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[pv, dif_neg (by push_cast at h ⊢; omega), smul_zero]`.
+
+Rewrite using `[h0, hL, hR]`. Simplify using the standard rewrite rules.
+-/
 theorem d_pv_cyc (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m) (w w' : ℤ) (hw : w + 1 = w')
     (p r : ℕ) (y : Sx E p U) (z : Sx E r U) :
     Sec.map (K.d w w') (pv μ α.1 β.1 w p r y z) =
@@ -124,6 +171,13 @@ theorem d_pv_cyc (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R)
     rw [h0, hL, hR]
     simp
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f f' hf hf' => rw [map_add, map_add, map_add, smul_add, ← hf, ← hf']`. Conclude with `map_add _ _ _`. Consider the case `single z t`.
+
+Take `⟨p, r, a', b'⟩` from `z`. Establish `e1 : Sec.map (K.d w w') (phi μ α.1 β.1 w x (Finsupp.single ⟨p, r, a', b'⟩ t)) = t • sg (m * p) • Sec.map (K.d w w') (pv μ α.1 β.1 w p r (x.along a') (x.along b'))`. Rewrite using `[phi_single]`. Simplify using `only [Sec.map, map_zsmul]`. Rewrite using `[e1, d_pv_cyc μ α β w w' hw, Pr.d, Finsupp.linearCombination_single, map_zsmul, map_add, map_zsmul, phi_d₁, phi_d₂]`.
+
+Simplify using `only`. Establish `hm2` using `sg_sq m`. Simplify using `only [sg_add, sg_neg, sg_one, sg_nat]`. Apply the tactic sequence `match_scalars <;> first | ring1 | linear_combination (t * sg (m * p) * sg n) * hm2 | linear_combination (-(t * sg (m * p) * sg n)) * hm2`.
+-/
 theorem phi_d (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m) (w w' : ℤ) (hw : w + 1 = w')
     {N : ℕ} (x : Sx E N U) (c : Pr N →₀ ℤ) :
     Sec.map (K.d w w') (phi μ α.1 β.1 w x c) = sg (n + m) • phi μ α.1 β.1 w' x (Pr.d N c) := by
@@ -147,11 +201,19 @@ namespace GlobalTheory.EtC.CupFlip
 open GlobalTheory.EtC.CupSpec
 variable {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E : Spc} {U : Scheme.{0}} {n m : ℤ}
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sg_eq_of_even (c d : ℤ) (h : Even (c - d)) : sg c = sg d := by
   obtain ⟨e, he⟩ := h
   calc sg c = sg (d + (e + e)) := by rw [show d + (e + e) = c by omega]
     _ = sg d := by rw [sg_add, sg_add, sg_sq, mul_one]
 
+/- English proof (translation)
+Rewrite using `[hc N w h U x, Pr.aw, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[phi_single, one_smul]`. Simplify using `only`. Rewrite using `[pv_eq μ a b w (p : ℕ) (N - p) _ _ _ _ rfl rfl (by omega), sg_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem phi_aw {k : ℤ} (hk : n + m = k) {a : Cochain ((chains R).obj E) I n} {b : Cochain ((chains R).obj E) J m}
     {c : Cochain ((chains R).obj E) K k} (hc : μ.IsAW hk a b c) (N : ℕ) (w : ℤ) (h : -(N : ℤ) + k = w) (x : Sx E N U) :
     phi μ a b w x (Pr.aw N) = ev c N w h U x := by
@@ -162,6 +224,13 @@ theorem phi_aw {k : ℤ} (hk : n + m = k) {a : Cochain ((chains R).obj E) I n} {
   rw [pv_eq μ a b w (p : ℕ) (N - p) _ _ _ _ rfl rfl (by omega), sg_smul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[hc N w h U x, Pr.wa, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[phi_single]`. Simplify using `only`. Rewrite using `[pv_eq μ a b w (N - p) (p : ℕ) _ _ _ _ rfl rfl (by have := p.isLt; omega), hf, sg_smul, sg_smul, smul_smul, smul_smul, smul_smul]`.
+
+Use `congr 1`. Rewrite using `[sg_nat, ← sg_add, ← sg_add, ← sg_add]`. Use `sg_eq_of_even _ _ ⟨m * ((N - p : ℕ) : ℤ) - n * m, ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Apply the tactic sequence `all_goals (have := p.isLt; omega)`.
+-/
 theorem phi_wa {ν : Pair J I K} (hf : μ.IsFlip ν) {k : ℤ} (h' : m + n = k) {a : Cochain ((chains R).obj E) I n}
     {b : Cochain ((chains R).obj E) J m} {c : Cochain ((chains R).obj E) K k} (hc : ν.IsAW h' b a c) (N : ℕ) (w : ℤ)
     (h : -(N : ℤ) + k = w) (x : Sx E N U) :
@@ -183,6 +252,9 @@ end GlobalTheory.EtC.CupFlip
 namespace GlobalTheory.EtC.CupFlip
 open GlobalTheory.EtC.CupSpec
 
+/- English proof (translation)
+The claim follows from `map_sub (evHom I n p s h U x) a b`.
+-/
 theorem ev_sub' {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (a b : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) : ev (a - b) p s h U x = ev a p s h U x - ev b p s h U x :=
   map_sub (evHom I n p s h U x) a b
@@ -191,6 +263,17 @@ end GlobalTheory.EtC.CupFlip
 
 open GlobalTheory.EtC.CupSpec GlobalTheory.EtC.CupFlip in
 
+/- English proof (translation)
+Introduce `R _ I J K μ ν hf E n m k h h' a b`. Take `⟨α, rfl⟩` from `a.mk_surjective`. Take `⟨β, rfl⟩` from `b.mk_surjective`. Take `⟨γ, hγ⟩` from `μ.aw_exists E h α β`. Take `⟨γ', hγ'⟩` from `ν.aw_exists E h' β α`.
+
+Rewrite using `[μ.cup_spec E h α β γ hγ, ν.cup_spec E h' β α γ' hγ']`. Take `⟨hh, -, hd0, hds⟩` from `GlobalTheory.T.exists_alexanderWhitneyDiagonal_swap_homotopy`. Take `⟨θ, hθ⟩` from `ev_exists (R := R) (E := E) (I := K) (n := k - 1) (fun N s _ U x => phi μ α.1 β.1 s x (hh N)) (fun N s _ V U g x => phi_res μ α.1 β.1 s g x (hh N))`. Establish `key : δ (k - 1) k θ = sg k • (γ.1 - sg (n * m) • γ'.1)`. Use `ev_ext _ _ fun N t ht U x => ?_` and prove the remaining obligations.
+
+Rewrite using `[ev_zsmul, ev_sub', ev_zsmul]`. Consider the cases of `N with`. Consider the case `zero`. Rewrite using `[ev_δ_zero (by omega) θ U (t - 1) t (by omega) ht x, hθ, phi_d μ α β (t - 1) t (by omega), hd0, map_sub, phi_aw μ h hγ 0 t ht x, phi_wa μ hf h' hγ' 0 t ht x, h]`. Consider the case `succ N`.
+
+Establish `hb : phi μ α.1 β.1 t x (Pr.bd (hh N)) = ∑ i : Fin (N + 2), (-1 : ℤ) ^ (i : ℕ) • ev θ N t (by omega) U (x.face i)`. Rewrite using `[Pr.bd, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, hθ, face_eq, phi_along]`. Rewrite using `[ev_δ_succ (by omega) θ U N (t - 1) t (by omega) ht x, hθ, phi_d μ α β (t - 1) t (by omega), ← hb, h, sg_smul, ← smul_add, ← map_add, hds, map_sub, phi_aw μ h hγ (N + 1) t ht x, phi_wa μ hf h' hγ' (N + 1) t ht x]`.
+
+Establish `hmk : ∀ (c : ℤ) (z : Cocycle ((chains R).obj E) K k), CohomologyClass.mk (c • z) = c • CohomologyClass.mk z` using `fun c z => map_zsmul (AddMonoidHom.mk' CohomologyClass.mk CohomologyClass.mk_add) c z`. Rewrite using `[Units.smul_def, show (((n * m).negOnePow : ℤˣ) : ℤ) = sg (n * m) from rfl, ← hmk, ← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff]`. Use `⟨k - 1, by omega, sg k • θ, ?_⟩` and prove the remaining obligations. Rewrite using `[δ_smul, key, smul_smul, sg_sq, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.EtC.Pair.cup_flip : ∀ (R : Type) [CommRing R] {I J K : Cx R} (μ : Pair I J K) (ν : Pair J I K), μ.IsFlip ν →
     ∀ (E : Spc) {n m k : ℤ} (h : n + m = k) (h' : m + n = k) a b,
       μ.cup E h a b = (n * m).negOnePow • ν.cup E h' b a := by

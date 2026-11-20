@@ -22,6 +22,11 @@ open GlobalTheory.UT GlobalTheory.TorusExt GlobalTheory.UT.ThetaConstVal
 
 attribute [local instance] gtGroup
 
+/- English proof (translation)
+Take `⟨hL, h₁, h₂, h₃, h₄⟩` from `GlobalTheory.lawsAndExpansions`. Introduce `V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ ρ hN th ϑ hE hP m hm p x t c hx hT q hq`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hc⟩`. Take `⟨w, hw⟩` from `(GlobalTheory.UT.SymFrame.main hL V _ hA D F (m ^ 2) hm.pow p).1`. Take `⟨κ, hκ⟩` from `exists_kap D.toPre hL.1.mulPull m`.
+
+Take `⟨w', hw', e⟩` from `exists_frm D.toPre m p.g.b (m • p.g).b (nsmul_b m p.g) w hw.1 κ hκ.1`. Establish `hg : GtPtF.IsNsmul m p.g (m • p.g)` using `(isNsmul_iff_eq _ _ _).2 rfl`. Establish `s` using `(GlobalTheory.UT.ThetaSum.theta_const_sum hL V _ hA D A G hG U F w₀ ρ hN th ϑ hE m hm p x t c hx hT w hw _ hg κ hκ w' hw' e).1`. Take `⟨-, -, a⟩` from `(GlobalTheory.UT.TxVal.main hL h₁ h₂ h₃ h₄ V hc ϖ hϖ D Q hQ F v hv).2 m hm.pos p w hw _ hg κ hκ w' hw' e`. Conclude with `le_of_sumV (AdicValSum.main V ϖ hϖ F v hv _ _ _ s).1 fun χ => (WithTop.coe_le_coe.2 (hq χ)).trans (a ϑ hP χ)`.
+-/
 theorem le_val_thetaConst : GlobalTheory.UT.AllUV fun {V} _ _ _ {ϖ} hϖ {D} Q {F} _ _ {v} hv {A} {G} _ _ U => ∀ w₀ ρ, GlobalTheory.UT.NormW U.toUnifPre w₀ ρ → ∀ (th : GlobalTheory.UT.SecA A F 1) (ϑ : Fam D.toPre F 1), U.ExpandsF F 1 w₀ th ϑ → NuGe D Q F v 1 ϑ 0 → ∀ (m : ℕ), Odd m → ∀ (p : QkPt D.toPre F (m ^ 2)) x t c, QkToAkU U.toUnifPre F (m ^ 2) p x → GlobalTheory.UT.ThC A ρ m th x t c → ∀ q : ℚ, (∀ χ, q ≤ (Q (m • χ + p.y) : ℚ) / (m ^ 2 : ℕ)) → (q : WithTop ℚ) ≤ v c := by
   obtain ⟨hL, h₁, h₂, h₃, h₄⟩ := GlobalTheory.lawsAndExpansions
   intro V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ ρ hN th ϑ hE hP m hm p x t c hx hT q hq

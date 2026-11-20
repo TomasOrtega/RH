@@ -10,6 +10,21 @@ namespace StrongApprox
 
 open Matrix ReciprocityTheory.ChartRestriction.G.SA
 
+/- English proof (translation)
+Introduce `E _ σ hσ h2 N J hJ hdet e he0 hee`. Establish `hw : ∃ j, ∑ i, e i * J i j ≠ 0`. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Establish `h0 : e ᵥ* J = 0`.
+
+Use extensionality with `j`. Simplify `h j` using `[vecMul, dotProduct]`. Apply `he0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Take `⟨j, hj⟩` from `hw`.
+
+Establish `hsingle : hf σ J e (Pi.single j 1) = ∑ i, e i * J i j`. Simplify using `only [hf]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+
+Introduce `k _ hk`. Simplify using `[hk]`. Simplify using the standard rewrite rules. Take `⟨a, hea⟩ : ∃ a : Fin N → E, hf σ J e a = 1` from `⟨σ (∑ i, e i * J i j)⁻¹ • Pi.single j 1, by`. Rewrite using `[hf_smul_right, hsingle, hσ, inv_mul_cancel₀ hj]⟩`.
+
+Establish `hae : hf σ J a e = 1`. Rewrite using `[← hf_symm hσ hJ, hea, map_one]`. Establish `haa : σ (hf σ J a a) = hf σ J a a` using `hf_symm hσ hJ a a`. Use `set t : E := -(hf σ J a a) / 2 with ht_def`. Establish `hσ2 : σ 2 = 2` using `map_ofNat σ 2`.
+
+Establish `ht : t + σ t = -(hf σ J a a)`. Rewrite using `[ht_def, map_div₀, map_neg, haa, hσ2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨a + t • e, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hf_add_left, hf_add_right, hf_add_right, hf_smul_left, hf_smul_left, hf_smul_right, hf_smul_right, hea, hae, hee]`. Take the linear combination `ht`. Rewrite using `[hf_add_right, hf_smul_right, hea, hee, mul_zero, add_zero]`.
+-/
 theorem HypPairExists.proof : HypPairExists.Statement := by
   intro E _ σ hσ h2 N J hJ hdet e he0 hee
 

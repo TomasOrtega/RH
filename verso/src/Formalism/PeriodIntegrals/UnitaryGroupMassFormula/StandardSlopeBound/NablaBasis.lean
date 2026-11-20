@@ -31,6 +31,9 @@ def NablaBasis : Prop :=
 
 def StdSlopeLowOf : Prop := NablaGramLow → GramDual → NablaBasis → PI.StdSlopeLow
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {N : ℕ} (ν : Fin N → ℕ) {r : ℕ} (e : Module.Basis (Fin r) ℤ (weyl ℤ N N le_rfl ν)) :
     PI.stdGram ν e = gramOf ν fun i => (e i : MvPolynomial (Fin N × Fin N) ℤ) := rfl
 

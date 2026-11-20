@@ -12,6 +12,11 @@ open IsLocalRing CategoryTheory GlobalTheory.SelFun Formalism.MainNotions.BlochK
 
 namespace GlobalTheory.KRep
 
+/- English proof (translation)
+Use `choose g hg using tot`. Set `f : X →ₗ[Λ] Y` to `{ toFun := g map_add' := fun x x' => fn _ _ _ (hg (x + x')) (add _ _ _ _ (hg x) (hg x')) map_smul' := fun c x => fn _ _ _ (hg (c • x)) (smul c _ _ (hg x)) }`. Establish `hbij : Function.Bijective f`. Use `⟨fun x x' h => inj x x' (g x) (hg x) ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `h' : g x = g x'` using `h`.
+
+Rewrite using `[h']`. Conclude with `hg x'`. Take `⟨x, hx⟩` from `sur y`. Conclude with `⟨x, fn _ _ _ (hg x) hx⟩`. Conclude with `⟨LinearEquiv.ofBijective f hbij, hg⟩`.
+-/
 theorem exists_equiv_of_rel {Λ X Y : Type} [CommRing Λ] [AddCommGroup X] [Module Λ X] [AddCommGroup Y] [Module Λ Y]
     (R : X → Y → Prop) (tot : ∀ x, ∃ y, R x y) (fn : ∀ x y y', R x y → R x y' → y = y')
     (inj : ∀ x x' y, R x y → R x' y → x = x') (sur : ∀ y, ∃ x, R x y)
@@ -44,9 +49,17 @@ def sol {Λ : Type} [CommRing Λ] {a : ℕ} (N : Submodule Λ (Fin a → Λ)) (B
       simp [Finset.smul_sum, smul_comm r]
     rw [this, hx c hc, smul_zero]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_sol {Λ : Type} [CommRing Λ] {a : ℕ} {N : Submodule Λ (Fin a → Λ)} {B : Type} [AddCommGroup B] [Module Λ B]
     {x : Fin a → B} : x ∈ sol N B ↔ ∀ c ∈ N, ∑ i, c i • x i = 0 := Iff.rfl
 
+/- English proof (translation)
+Establish `hc : c = ∑ i, c i • (Pi.single i (1 : Λ) : Fin a → Λ)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hc]`. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_smul]`.
+-/
 theorem lin_eq_sum {Λ : Type} [CommRing Λ] {a : ℕ} {B : Type} [AddCommGroup B] [Module Λ B]
     (u : (Fin a → Λ) →ₗ[Λ] B) (c : Fin a → Λ) : u c = ∑ i, c i • u (Pi.single i 1) := by
   have hc : c = ∑ i, c i • (Pi.single i (1 : Λ) : Fin a → Λ) := by
@@ -58,6 +71,9 @@ theorem lin_eq_sum {Λ : Type} [CommRing Λ] {a : ℕ} {B : Type} [AddCommGroup 
 
 variable {Λ : Type} [CommRing Λ] [IsLocalRing Λ]
 
+/- English proof (translation)
+Use `choose k hk using fun i => hB (x i)`. Consider the cases of `nonempty_fintype ι`. Use `⟨∑ i, k i, fun r hr i => hk i r (Ideal.pow_le_pow_right ?_ hr)⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_pow_kill {B : Type} [AddCommGroup B] [Module Λ B] (hB : Tors Λ B) {ι : Type} [Finite ι] (x : ι → B) :
     ∃ n : ℕ, ∀ r ∈ maximalIdeal Λ ^ (n + 1), ∀ i, r • x i = 0 := by
   choose k hk using fun i => hB (x i)
@@ -66,6 +82,21 @@ theorem exists_pow_kill {B : Type} [AddCommGroup B] [Module Λ B] (hB : Tors Λ 
   calc k i ≤ ∑ j, k j := Finset.single_le_sum (fun j _ => Nat.zero_le (k j)) (Finset.mem_univ i)
     _ ≤ ∑ j, k j + 1 := Nat.le_succ _
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `hS`. Take `⟨n, hn⟩` from `exists_pow_kill hB (fun t : T => (t : B))`. Establish `hn' : ∀ r ∈ maximalIdeal Λ ^ (n + 1), ∀ i : T, r • (i : B) = 0` using `hn`. Establish `hrange : Set.range (fun t : T => (t : B)) = (T : Set B)`. Use extensionality with `y`.
+
+Simplify using the standard rewrite rules. Establish `hmem : ∀ i : T, (i : B) ∈ S`. Introduce `i`. Rewrite using `[← hT]`. Conclude with `Submodule.subset_span i.2`.
+
+Establish `hspan : ∀ y ∈ S, ∃ c : T → Λ, ∑ i, c i • (i : B) = y`. Introduce `y hy`. Rewrite `hy` using `[← hT, ← hrange]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun Λ).mp hy`. Establish `hkill : ∀ r ∈ maximalIdeal Λ ^ (n + 1), ∀ y : S, r • y = 0`.
+
+Introduce `r hr y`. Take `⟨c, hc⟩` from `hspan y y.2`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, ← hc, Finset.smul_sum, Submodule.coe_zero]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [smul_comm, hn' r hr i, smul_zero]`.
+
+Establish `: Finite (Λ ⧸ maximalIdeal Λ)` using `‹Finite (ResidueField Λ)›`. Establish `: Finite (Λ ⧸ maximalIdeal Λ ^ (n + 1))` using `Ideal.finite_quotient_pow (IsNoetherian.noetherian (maximalIdeal Λ)) (n + 1)`. Use `⟨?_, n, hkill⟩` and prove the remaining obligations. Take `⟨s, hs⟩ : ∃ s : Λ ⧸ maximalIdeal Λ ^ (n + 1) → Λ, ∀ q, Ideal.Quotient.mk (maximalIdeal Λ ^ (n + 1)) (s q) = q` from `⟨Function.surjInv Ideal.Quotient.mk_surjective, Function.surjInv_eq Ideal.Quotient.mk_surjective⟩`. Use `Finite.of_surjective (fun q : T → Λ ⧸ maximalIdeal Λ ^ (n + 1) => (⟨∑ i, s (q i) • (i : B), S.sum_mem fun i _ => S.smul_mem _ (hmem i)⟩ : S)) ?_` and prove the remaining obligations.
+
+Introduce `y`. Take `⟨c, hc⟩` from `hspan y y.2`. Use `⟨fun i => Ideal.Quotient.mk (maximalIdeal Λ ^ (n + 1)) (c i), Subtype.ext ?_⟩` and prove the remaining obligations. Use `show ∑ i, s (Ideal.Quotient.mk (maximalIdeal Λ ^ (n + 1)) (c i)) • (i : B) = y`. Rewrite using `[← hc, ← sub_eq_zero, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul]`. Conclude with `hn' _ (Ideal.Quotient.eq.mp (hs _)) i`.
+-/
 theorem fg_finite [IsNoetherianRing Λ] [Finite (ResidueField Λ)] {B : Type} [AddCommGroup B] [Module Λ B] (hB : Tors Λ B)
     (S : Submodule Λ B) (hS : S.FG) : Finite S ∧ ∃ n : ℕ, ∀ r ∈ maximalIdeal Λ ^ (n + 1), ∀ y : S, r • y = 0 := by
   classical
@@ -107,6 +138,49 @@ theorem fg_finite [IsNoetherianRing Λ] [Finite (ResidueField Λ)] {B : Type} [A
   rw [← sub_smul]
   exact hn' _ (Ideal.Quotient.eq.mp (hs _)) i
 
+/- English proof (translation)
+Establish `hT : ∀ n k, ∃ T : M (n + k) ⟶ M n, (∀ c, T.hom (p (n + k) c) = p n c) ∧ (F.map T).hom (ξ (n + k)) = ξ n`. Introduce `n k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨𝟙 _, fun c => rfl, by rw [F.map_id]; rfl⟩`. Consider the case `succ k ih`.
+
+Take `⟨T, hT1, hT2⟩` from `ih`. Conclude with `⟨t (n + k) ≫ T, fun c => (congrArg T.hom (hpt (n + k) c)).trans (hT1 c), by rw [F.map_comp]; exact (congrArg (F.map T).hom (ht (n + k))).trans hT2⟩`. Establish `hup : ∀ (B : ModuleCat.{0} Λ) (x : Fin a → B) (y : F.obj B) (n m : ℕ), n ≤ m → (∃ φ : M n ⟶ B, (∀ c, φ.hom (p n c) = ∑ i, c i • x i) ∧ (F.map φ).hom (ξ n) = y) → ∃ φ : M m ⟶ B, (∀ c, φ.hom (p m c) = ∑ i, c i • x i) ∧ (F.map φ).hom (ξ m) = y`. Introduce and unpack `B x y n m hnm ⟨φ, h1, h2⟩`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hnm`.
+
+Take `⟨T, hT1, hT2⟩` from `hT n k`. Use `⟨T ≫ φ, fun c => (congrArg φ.hom (hT1 c)).trans (h1 c), ?_⟩` and prove the remaining obligations. Rewrite using `[F.map_comp]`. Conclude with `(congrArg (F.map φ).hom hT2).trans h2`. Establish `hext : ∀ (B : ModuleCat.{0} Λ) (n : ℕ) (φ ψ : M n ⟶ B), (∀ c, φ.hom (p n c) = ψ.hom (p n c)) → φ = ψ`.
+
+Introduce `B n φ ψ h`. Use extensionality with `m`. Take `⟨c, rfl⟩` from `hp n m`. Conclude with `h c`. Establish `hmin' : ∀ (B : ModuleCat.{0} Λ), Tors Λ B → ∀ (n : ℕ) (φ ψ : M n ⟶ B), (F.map φ).hom (ξ n) = (F.map ψ).hom (ξ n) → φ = ψ`.
+
+Introduce `B hB n φ ψ h`. Use `hmin n B hB (φ - ψ) (by rw [F.map_sub, ModuleCat.hom_sub, LinearMap.sub_apply, h, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.mp this`. Establish `hcoord : ∀ (B : ModuleCat.{0} Λ) (x : Fin a → B) (i : Fin a), ∑ j, (Pi.single i (1 : Λ) : Fin a → Λ) j • x j = x i`. Introduce `B x i`.
+
+Simplify using `[Pi.single_apply]`. Establish `key : ∀ (B : ModuleCat.{0} Λ) (hB : Tors Λ B), ∃ e : ↥(sol N B) ≃ₗ[Λ] F.obj B, ∀ x : sol N B, ∃ n, ∃ φ : M n ⟶ B, (∀ c, φ.hom (p n c) = ∑ i, c i • x.1 i) ∧ (F.map φ).hom (ξ n) = e x`. Introduce `B hB`. Use `exists_equiv_of_rel (fun (x : sol N B) (y : F.obj B) => ∃ n, ∃ φ : M n ⟶ B, (∀ c, φ.hom (p n c) = ∑ i, c i • x.1 i) ∧ (F.map φ).hom (ξ n) = y) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x`.
+
+Take `⟨n, hn⟩` from `exists_pow_kill hB x.1`. Take `⟨L, hL⟩ : ∃ L : (Fin a → Λ) →ₗ[Λ] B, ∀ c, L c = ∑ i, c i • x.1 i` from `⟨{ toFun := fun c => ∑ i, c i • x.1 i map_add' := fun c d => by simp [add_smul, Finset.sum_add_distrib] map_smul' := fun r c => by simp [Finset.smul_sum, mul_smul] }, fun _ => rfl⟩`. Establish `hker : LinearMap.ker (p n) ≤ LinearMap.ker L`. Introduce `c hc`. Take `⟨c1, hc1, c2, hc2, rfl⟩` from `Submodule.mem_sup.mp (hN' n hc)`.
+
+Establish `hsm : maximalIdeal Λ ^ (n + 1) • (⊤ : Submodule Λ (Fin a → Λ)) ≤ LinearMap.ker L`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr d _`. Rewrite using `[LinearMap.mem_ker, hL]`. Conclude with `Finset.sum_eq_zero fun i _ => by`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, mul_smul, hn r hr i, smul_zero]`. Establish `h2 : L c2 = 0` using `hsm hc2`. Rewrite using `[LinearMap.mem_ker, map_add, h2, add_zero, hL]`. Conclude with `(mem_sol.mp x.2) c1 hc1`. Use `⟨_, n, ModuleCat.ofHom ((LinearMap.ker (p n)).liftQ L hker ∘ₗ (LinearMap.quotKerEquivOfSurjective (p n) (hp n)).symm.toLinearMap), fun c => ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `hs : (LinearMap.quotKerEquivOfSurjective (p n) (hp n)).symm (p n c) = Submodule.Quotient.mk c`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Use `show (LinearMap.ker (p n)).liftQ L hker ((LinearMap.quotKerEquivOfSurjective (p n) (hp n)).symm (p n c)) = _`. Rewrite using `[hs, Submodule.liftQ_apply, hL]`. Introduce and unpack `x y y' ⟨n, φ, h1, h2⟩ ⟨n', φ', h1', h2'⟩`.
+
+Take `⟨ψ, g1, g2⟩` from `hup B x.1 y n (max n n') (le_max_left _ _) ⟨φ, h1, h2⟩`. Take `⟨ψ', g1', g2'⟩` from `hup B x.1 y' n' (max n n') (le_max_right _ _) ⟨φ', h1', h2'⟩`. Establish `: ψ = ψ'` using `hext B _ ψ ψ' fun c => (g1 c).trans (g1' c).symm`. Rewrite using `[← g2, ← g2', this]`. Introduce and unpack `x x' y ⟨n, φ, h1, h2⟩ ⟨n', φ', h1', h2'⟩`.
+
+Take `⟨ψ, g1, g2⟩` from `hup B x.1 y n (max n n') (le_max_left _ _) ⟨φ, h1, h2⟩`. Take `⟨ψ', g1', g2'⟩` from `hup B x'.1 y n' (max n n') (le_max_right _ _) ⟨φ', h1', h2'⟩`. Establish `: ψ = ψ'` using `hmin' B hB _ ψ ψ' (g2.trans g2'.symm)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[← hcoord B x.1 i, ← hcoord B x'.1 i, ← g1, ← g1', this]`. Introduce `y`. Take `⟨S, hS, hy⟩` from `hcol B hB y`. Take `⟨z, rfl⟩` from `hy`. Take `⟨hfin, n, hn⟩` from `fg_finite hB S hS`.
+
+Take `⟨φ, hφ⟩` from `huniv n (ModuleCat.of Λ S) hfin (fun r hr w => hn r hr w) z`. Establish `hx : (fun i => (φ ≫ ModuleCat.ofHom S.subtype).hom (p n (Pi.single i 1))) ∈ sol N B`. Rewrite using `[mem_sol]`. Introduce `c hc`. Establish `h1` using `lin_eq_sum ((φ ≫ ModuleCat.ofHom S.subtype).hom ∘ₗ p n) c`.
+
+Rewrite `h1` using `[LinearMap.comp_apply, LinearMap.mem_ker.mp (hN n hc), map_zero]`. Conclude with `h1.symm`. Use `⟨⟨_, hx⟩, n, φ ≫ ModuleCat.ofHom S.subtype, fun c => ?_, ?_⟩` and prove the remaining obligations. Conclude with `lin_eq_sum ((φ ≫ ModuleCat.ofHom S.subtype).hom ∘ₗ p n) c`. Rewrite using `[F.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply, hφ]`.
+
+Introduce and unpack `x x' y y' ⟨n, φ, h1, h2⟩ ⟨n', φ', h1', h2'⟩`. Take `⟨ψ, g1, g2⟩` from `hup B x.1 y n (max n n') (le_max_left _ _) ⟨φ, h1, h2⟩`. Take `⟨ψ', g1', g2'⟩` from `hup B x'.1 y' n' (max n n') (le_max_right _ _) ⟨φ', h1', h2'⟩`. Use `⟨max n n', ψ + ψ', fun c => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ModuleCat.hom_add, LinearMap.add_apply, g1, g1', ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => (smul_add _ _ _).symm`. Rewrite using `[F.map_add, ModuleCat.hom_add, LinearMap.add_apply, g2, g2']`. Introduce and unpack `r x y ⟨n, φ, h1, h2⟩`. Use `⟨n, r • φ, fun c => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ModuleCat.hom_smul, LinearMap.smul_apply, h1, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => smul_comm r (c i) (x.1 i)`. Rewrite using `[F.map_smul, ModuleCat.hom_smul, LinearMap.smul_apply, h2]`. Use `choose e he using key`. Use `⟨e, fun B B' hB hB' f x x' hx => ?_⟩` and prove the remaining obligations. Take `⟨n, φ, h1, h2⟩` from `he B hB x`.
+
+Take `⟨n', φ', h1', h2'⟩` from `he B' hB' x'`. Establish `w1 : ∀ c, (φ ≫ f).hom (p n c) = ∑ i, c i • x'.1 i`. Introduce `c`. Use `show f.hom (φ.hom (p n c)) = _`. Rewrite using `[h1, map_sum]`.
+
+Simplify using `only [map_smul, hx]`. Establish `w2 : (F.map (φ ≫ f)).hom (ξ n) = (F.map f).hom (e B hB x)`. Rewrite using `[F.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply, h2]`. Take `⟨ψ, g1, g2⟩` from `hup B' x'.1 ((F.map f).hom (e B hB x)) n (max n n') (le_max_left _ _) ⟨φ ≫ f, w1, w2⟩`. Take `⟨ψ', g1', g2'⟩` from `hup B' x'.1 (e B' hB' x') n' (max n n') (le_max_right _ _) ⟨φ', h1', h2'⟩`.
+
+Establish `: ψ = ψ'` using `hext B' _ ψ ψ' fun c => (g1 c).trans (g1' c).symm`. Rewrite using `[← g2', ← this, g2]`.
+-/
 theorem assemble [IsNoetherianRing Λ] [Finite (ResidueField Λ)] (F : ModuleCat.{0} Λ ⥤ ModuleCat.{0} Λ) [F.Additive]
     [F.Linear Λ]
     (hcol : ∀ B : ModuleCat.{0} Λ, Tors Λ B → ∀ y : F.obj B, ∃ B' : Submodule Λ B, B'.FG ∧
@@ -239,6 +313,37 @@ theorem assemble [IsNoetherianRing Λ] [Finite (ResidueField Λ)] (F : ModuleCat
   have : ψ = ψ' := hext B' _ ψ ψ' fun c => (g1 c).trans (g1' c).symm
   rw [← g2', ← this, g2]
 
+/- English proof (translation)
+Take `⟨B, f, hBt, hf, hext⟩` from `GlobalTheory.T.exists_torsion_module_extending_residue_maps Λ (Fin a → Λ) N`. Set `K : ModuleCat.{0} Λ` to `ModuleCat.of Λ (ResidueField Λ)`. Set `B'' : ModuleCat.{0} Λ` to `ModuleCat.of Λ (B ⧸ LinearMap.range f)`. Set `fK : K ⟶ B` to `ModuleCat.ofHom f`. Set `g : B ⟶ B''` to `ModuleCat.ofHom (LinearMap.range f).mkQ`.
+
+Establish `hB'' : Tors Λ B''`. Introduce `y`. Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ y`. Take `⟨n, hn⟩` from `hBt z`. Use `⟨n, fun r hr => ?_⟩` and prove the remaining obligations.
+
+Use `show r • Submodule.Quotient.mk (p := LinearMap.range f) z = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, hn r hr, Submodule.Quotient.mk_zero]`. Establish `hex : Function.Exact fK.hom g.hom` using `LinearMap.exact_map_mkQ_range f`. Take `⟨_, hfinQ, hcard⟩` from `hobs K B B'' hK hBt fK g hf hex (Submodule.mkQ_surjective _)`. Use `choose u hu using hext`.
+
+Establish `hsolB'' : ∀ φ : N →ₗ[Λ] ResidueField Λ, (fun i => g.hom (u φ (Pi.single i 1))) ∈ sol N B''`. Introduce `φ`. Rewrite using `[mem_sol]`. Introduce `c hc`. Use `show ∑ i, c i • g.hom (u φ (Pi.single i 1)) = 0`.
+
+Establish `h1` using `lin_eq_sum (g.hom ∘ₗ u φ) c`. Establish `h2` using `LinearMap.congr_fun (hu φ) ⟨c, hc⟩`. Establish `h3 : u φ c = f (φ ⟨c, hc⟩)` using `h2`. Establish `h4 : g.hom (f (φ ⟨c, hc⟩)) = 0` using `hex.apply_apply_eq_zero _`. Rewrite `h1` using `[LinearMap.comp_apply, h3, h4]`.
+
+Conclude with `h1.symm`. Set `Ψ : (N →ₗ[Λ] ResidueField Λ) → F.obj B'' ⧸ LinearMap.range (F.map g).hom` to `fun φ => Submodule.Quotient.mk (e B'' hB'' ⟨_, hsolB'' φ⟩)`. Establish `hΨ : Function.Injective Ψ`. Introduce `φ φ' h`. Establish `h'` using `(Submodule.Quotient.eq _).mp h`.
+
+Rewrite `h'` using `[← map_sub]`. Take `⟨w, hw⟩` from `h'`. Set `y` to `(e B hBt).symm w`. Establish `hy : ∀ c ∈ N, ∑ i, c i • y.1 i = 0` using `mem_sol.mp y.2`. Establish `hgy : (fun i => g.hom (y.1 i)) ∈ sol N B''`.
+
+Rewrite using `[mem_sol]`. Introduce `c hc`. Establish `: ∑ i, c i • g.hom (y.1 i) = g.hom (∑ i, c i • y.1 i)` using `by simp [map_sum, map_smul]`. Rewrite using `[this, hy c hc, map_zero]`. Establish `hnat` using `he B B'' hBt hB'' g y ⟨_, hgy⟩ (fun c => rfl)`.
+
+Establish `hEq : (⟨_, hgy⟩ : sol N B'') = ⟨_, hsolB'' φ⟩ - ⟨_, hsolB'' φ'⟩`. Apply `(e B'' hB'').injective` to reduce the goal to its premises. Rewrite using `[hnat, LinearEquiv.apply_symm_apply, hw]`. Establish `hz : ∀ i, ∃ z : ResidueField Λ, f z = u φ (Pi.single i 1) - u φ' (Pi.single i 1) - y.1 i`. Introduce `i`.
+
+Establish `hi : g.hom (y.1 i) = g.hom (u φ (Pi.single i 1)) - g.hom (u φ' (Pi.single i 1))` using `congrArg (fun s : sol N B'' => s.1 i) hEq`. Establish `h0 : g.hom (u φ (Pi.single i 1) - u φ' (Pi.single i 1) - y.1 i) = 0`. Rewrite using `[map_sub, map_sub, hi, sub_self]`. Conclude with `(hex _).mp h0`. Use `choose z hz using hz`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce and unpack `⟨c, hc⟩`. Apply `hf` to reduce the goal to its premises. Establish `e1 : ∀ ψ : N →ₗ[Λ] ResidueField Λ, f (ψ ⟨c, hc⟩) = ∑ i, c i • u ψ (Pi.single i 1)`. Introduce `ψ`.
+
+Rewrite using `[← lin_eq_sum]`. Conclude with `(LinearMap.congr_fun (hu ψ) ⟨c, hc⟩).symm`. Establish `e2 : ∑ i, c i • f (z i) = 0` using `Finset.sum_eq_zero fun i _ => by rw [← map_smul, hKm _ (hN c hc i), map_zero]`. Establish `e3 : ∀ i, u φ (Pi.single i 1) = f (z i) + u φ' (Pi.single i 1) + y.1 i` using `fun i => by`. Rewrite using `[hz i]`.
+
+Normalize the expressions using the abelian group laws. Use `show f (φ ⟨c, hc⟩) = f (φ' ⟨c, hc⟩)`. Rewrite using `[e1 φ, e1 φ']`. Simplify using `only [e3, smul_add, Finset.sum_add_distrib, e2, hy c hc, zero_add, add_zero]`. Establish `hle1 : Nat.card (N →ₗ[Λ] ResidueField Λ) ≤ Nat.card (F.obj B'' ⧸ LinearMap.range (F.map g).hom)`.
+
+Use `hfinQ` as an intermediate fact. Conclude with `Nat.card_le_card_of_injective Ψ hΨ`. Establish `hKt : Tors Λ K` using `fun y => ⟨1, fun r hr => by rw [pow_one] at hr; exact hKm r hr y⟩`. Establish `hle2 : Nat.card (F.obj K) ≤ Nat.card (ResidueField Λ) ^ a`. Rewrite using `[← Nat.card_congr (e K hKt).toEquiv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.card_fun, Nat.card_eq_fintype_card (α := Fin a), Fintype.card_fin]`. Conclude with `GlobalTheory.T.exists_generators_of_card_hom_residueField_le Λ N a (hle1.trans (hcard.trans hle2))`.
+-/
 theorem few_relations [IsNoetherianRing Λ] [Finite (ResidueField Λ)] (F : ModuleCat.{0} Λ ⥤ ModuleCat.{0} Λ)
     (hobs : ∀ (K B B'' : ModuleCat.{0} Λ), IsSimpleModule Λ K → Tors Λ B → ∀ (f : K ⟶ B) (g : B ⟶ B''),
       Function.Injective f.hom → Function.Exact f.hom g.hom → Function.Surjective g.hom →
@@ -329,14 +434,63 @@ theorem few_relations [IsNoetherianRing Λ] [Finite (ResidueField Λ)] (F : Modu
           rw [Nat.card_fun, Nat.card_eq_fintype_card (α := Fin a), Fintype.card_fin]
   exact GlobalTheory.T.exists_generators_of_card_hom_residueField_le Λ N a (hle1.trans (hcard.trans hle2))
 
+/- English proof (translation)
+Introduce `r hr y`. Rewrite using `[Algebra.smul_def, IsLocalRing.ResidueField.algebraMap_eq, (IsLocalRing.residue_eq_zero_iff r).mpr hr, zero_mul]`.
+-/
 theorem residue_kill : ∀ r ∈ maximalIdeal Λ, ∀ y : ResidueField Λ, r • y = 0 := by
   intro r hr y
   rw [Algebra.smul_def, IsLocalRing.ResidueField.algebraMap_eq,
     (IsLocalRing.residue_eq_zero_iff r).mpr hr, zero_mul]
 
+/- English proof (translation)
+The claim follows from `isSimpleModule_iff_isCoatom.mpr (IsLocalRing.maximalIdeal.isMaximal Λ).out`.
+-/
 theorem residue_simple : IsSimpleModule Λ (ResidueField Λ) :=
   isSimpleModule_iff_isCoatom.mpr (IsLocalRing.maximalIdeal.isMaximal Λ).out
 
+/- English proof (translation)
+Unfold `KernelRep`. Introduce `Λ _ _ _ _ _ F _ _ hlex hcol hobs`. Establish `hres` using `residue_kill (Λ := Λ)`. Establish `hsimple` using `residue_simple (Λ := Λ)`. Establish `htors : ∀ (B : ModuleCat.{0} Λ) (n : ℕ), (∀ x ∈ maximalIdeal Λ ^ n, ∀ y : B, x • y = 0) → Tors Λ B` using `fun B n h y => ⟨n, fun x hx => h x hx y⟩`.
+
+Establish `hFk : Finite (F.obj (ModuleCat.of Λ (ResidueField Λ)))`. Establish `hKt : Tors Λ (ModuleCat.of Λ (ResidueField Λ))` using `htors _ 1 (fun r hr y => by rw [pow_one] at hr; exact hres r hr y)`. Conclude with `(hobs (ModuleCat.of Λ (ResidueField Λ)) (ModuleCat.of Λ (ResidueField Λ)) (ModuleCat.of Λ PUnit.{1}) hsimple hKt (𝟙 _) 0 (fun _ _ h => h) (fun y => ⟨fun _ => ⟨y, rfl⟩, fun _ => rfl⟩) (fun _ => ⟨0, rfl⟩)).1`. Use `choose M0 ξ0 hfin hkill hmin0 huniv0 using GlobalTheory.T.leftExact_functor_representable_torsion_modules Λ F hlex hFk`. Establish `: ∀ n, Finite (M0 n)` using `hfin`.
+
+Establish `htr : ∀ n, ∃ t : M0 (n + 1 + 1) ⟶ M0 (n + 1), (F.map t).hom (ξ0 (n + 1 + 1)) = ξ0 (n + 1)` using `fun n => huniv0 (n + 1 + 1) (M0 (n + 1)) (hfin (n + 1)) (fun x hx y => hkill (n + 1) x (Ideal.pow_le_pow_right (Nat.le_succ _) hx) y) (ξ0 (n + 1))`. Use `choose t ht using htr`. Establish `hkerT : ∀ n, LinearMap.ker (t n).hom ≤ maximalIdeal Λ ^ (n + 1) • (⊤ : Submodule Λ (M0 (n + 1 + 1)))`. Introduce `n`. Set `Q : ModuleCat.{0} Λ` to `ModuleCat.of Λ (M0 (n + 1 + 1) ⧸ maximalIdeal Λ ^ (n + 1) • (⊤ : Submodule Λ (M0 (n + 1 + 1))))`.
+
+Set `q : M0 (n + 1 + 1) ⟶ Q` to `ModuleCat.ofHom (Submodule.mkQ _)`. Establish `hQkill : ∀ x ∈ maximalIdeal Λ ^ (n + 1), ∀ y : Q, x • y = 0`. Introduce `x hx y`. Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ y`. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `Submodule.smul_mem_smul hx Submodule.mem_top`. Establish `hQfin : Finite Q` using `Finite.of_surjective _ (Submodule.mkQ_surjective (maximalIdeal Λ ^ (n + 1) • (⊤ : Submodule Λ (M0 (n + 1 + 1)))))`. Take `⟨ψ, hψ⟩` from `huniv0 (n + 1) Q hQfin hQkill ((F.map q).hom (ξ0 (n + 1 + 1)))`. Establish `heq : t n ≫ ψ = q`. Use `hmin0 (n + 1 + 1) Q (htors Q _ hQkill) (t n ≫ ψ - q) (by` as an intermediate fact.
+
+Rewrite using `[F.map_sub, ModuleCat.hom_sub, LinearMap.sub_apply, F.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply, ht n, hψ, sub_self])`. Conclude with `sub_eq_zero.mp this`. Introduce `y hy`. Establish `h0 : (t n ≫ ψ).hom y = 0`. Rewrite using `[ModuleCat.hom_comp, LinearMap.comp_apply, LinearMap.mem_ker.mp hy, map_zero]`.
+
+Rewrite `h0` using `[heq]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mp h0`. Establish `hsurjT : ∀ n, Function.Surjective (t n).hom`. Introduce `n`. Set `C : ModuleCat.{0} Λ` to `ModuleCat.of Λ (M0 (n + 1) ⧸ LinearMap.range (t n).hom)`.
+
+Set `π : M0 (n + 1) ⟶ C` to `ModuleCat.ofHom (LinearMap.range (t n).hom).mkQ`. Establish `hCkill : ∀ x ∈ maximalIdeal Λ ^ (n + 1), ∀ y : C, x • y = 0`. Introduce `x hx y`. Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ y`. Rewrite using `[← map_smul, hkill (n + 1) x hx z, map_zero]`.
+
+Establish `htπ : t n ≫ π = 0`. Use extensionality with `z`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr ⟨z, rfl⟩`. Establish `hπ : π = 0` using `hmin0 (n + 1) C (htors C _ hCkill) π (by`. Rewrite using `[← ht n, ← LinearMap.comp_apply, ← ModuleCat.hom_comp, ← F.map_comp, htπ, F.map_zero]`.
+
+Use the proof step `rfl)`. Introduce `y`. Establish `h0 : π.hom y = 0` using `by rw [hπ]; rfl`. Conclude with `LinearMap.mem_range.mp ((Submodule.Quotient.mk_eq_zero _).mp h0)`. Take `⟨a, p, hp, hpt, hp0⟩` from `GlobalTheory.T.exists_compatible_generators_tower_local_ring Λ (fun n => M0 (n + 1)) (fun n => (t n).hom) hsurjT (fun n => (hkerT n).trans (Submodule.smul_mono_left (Ideal.pow_le_self (Nat.succ_ne_zero n))))`.
+
+Set `N : Submodule Λ (Fin a → Λ)` to `⨅ n, LinearMap.ker (p n)`. Establish `hN' : ∀ n, LinearMap.ker (p n) ≤ N ⊔ maximalIdeal Λ ^ (n + 1) • (⊤ : Submodule Λ (Fin a → Λ))`. Use `GlobalTheory.T.chain_le_iInf_sup_pow_smul_top_of_precomplete Λ (maximalIdeal Λ) a (fun n => LinearMap.ker (p n)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `n c hc show p n c = 0`. Rewrite using `[← hpt n, LinearMap.comp_apply, LinearMap.mem_ker.mp hc, map_zero]`.
+
+Introduce `n`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr c _`. Rewrite using `[LinearMap.mem_ker, map_smul]`. Conclude with `hkill (n + 1) r hr _`.
+
+Introduce `n c hc`. Establish `h1 : (t n).hom (p (n + 1) c) = 0`. Rewrite using `[← LinearMap.comp_apply, hpt n]`. Conclude with `hc`. Establish `h2` using `hkerT n (LinearMap.mem_ker.mpr h1)`.
+
+Establish `h3 : maximalIdeal Λ ^ (n + 1) • (⊤ : Submodule Λ (M0 (n + 1 + 1))) = (maximalIdeal Λ ^ (n + 1) • (⊤ : Submodule Λ (Fin a → Λ))).map (p (n + 1))`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearMap.range_eq_top.mpr (hp (n + 1))]`. Rewrite `h2` using `[h3]`. Take `⟨d, hd, hdc⟩` from `h2`. Use `Submodule.mem_sup.mpr ⟨c - d, ?_, d, hd, sub_add_cancel c d⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.mem_ker, map_sub, hdc, sub_self]`. Take `⟨e, he⟩` from `assemble (Λ := Λ) F hcol (fun n => M0 (n + 1)) (fun n => ξ0 (n + 1)) t ht (fun n => hmin0 (n + 1)) (fun n => huniv0 (n + 1)) p hp (fun n c => LinearMap.congr_fun (hpt n) c) N (fun n => iInf_le (fun n => LinearMap.ker (p n)) n) hN'`. Establish `hNm : ∀ c ∈ N, ∀ i, c i ∈ maximalIdeal Λ` using `fun c hc i => hp0 c (LinearMap.mem_ker.mp ((Submodule.mem_iInf _).mp hc 0)) i`. Take `⟨v, hv⟩` from `few_relations F hobs hsimple hres N hNm e he`. Establish `hker : ∀ (B : ModuleCat.{0} Λ), LinearMap.ker (matAct (M` using `B) (fun b i => (v b : Fin a → Λ) i)) = sol N B := by`.
+
+Introduce `B`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, mem_sol]`. Establish `hx : ∀ b, matAct (M` using `B) (fun b i => (v b : Fin a → Λ) i) x b = ∑ i, (v b : Fin a → Λ) i • x i := fun b => by simp [matAct]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h0 c hc`. Establish `hc' : (⟨c, hc⟩ : N) ∈ Submodule.span Λ (Set.range v)`. Rewrite using `[hv]`. Conclude with `Submodule.mem_top`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun Λ).mp hc'`.
+
+Establish `hd' : ∑ b, d b • (v b : Fin a → Λ) = c`. Use `congrArg Subtype.val hd` as an intermediate fact. Simplify `this` using `only [Submodule.coe_sum, Submodule.coe_smul]`. Establish `hb : ∀ b, ∑ i, (v b : Fin a → Λ) i • x i = 0` using `fun b => by`. Rewrite using `[← hx b, h0]`.
+
+Both sides reduce to the same expression. Rewrite using `[← hd']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_smul, mul_smul, Finset.smul_sum]`. Conclude with `Finset.sum_comm`.
+
+Use `_ = 0 := Finset.sum_eq_zero fun b _ => by rw [hb b, smul_zero]`. Introduce `h`. Use function extensionality and compare the values at `b`. Rewrite using `[hx b]`. Conclude with `h _ (v b).2`.
+
+Use `⟨a, fun b i => (v b : Fin a → Λ) i, fun b i => (mem_maximalIdeal _).mp (hNm _ (v b).2 i), fun B hB => (LinearEquiv.ofEq _ _ (hker B)).trans (e B hB), fun B B' hB hB' f x x' hx => ?_⟩` and prove the remaining obligations. Conclude with `he B B' hB hB' f (LinearEquiv.ofEq _ _ (hker B) x) (LinearEquiv.ofEq _ _ (hker B') x') hx`.
+-/
 theorem kernelRep : KernelRep := by
   unfold KernelRep
   intro Λ _ _ _ _ _ F _ _ hlex hcol hobs

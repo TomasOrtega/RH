@@ -43,11 +43,17 @@ open MonoidalCategory CartesianMonoidalCategory GlobalTheory.Frames GlobalTheory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem tvOf_congr {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {v v' : Sp (DualNumber S) ⟶ Xo.univ.t.G.left}
     (h : v = v') (hv : IsTanAt x v) (hv' : IsTanAt x v') :
     ReciprocityTheory.ChartRestriction.G.PullbackSections.tvOf hv = ReciprocityTheory.ChartRestriction.G.PullbackSections.tvOf hv' := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.tan_bc ψ ((GlobalTheory.KSExist.FrameLift.tan_iff hπ w).2 ht)`.
+-/
 theorem bc_tan {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (hx : x' = spMap ψ ≫ x) {A : Over (Sp S)} [GrpObj A] {π : A.left ⟶ Xo.univ.t.G.left}
     (hπ : IsGrpPullback A Xo.univ.t.G x π) (w : epsR S ⟶ A) (ht : IsTangent w) :
@@ -55,6 +61,9 @@ theorem bc_tan {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) {x : Sp S
   subst hx
   exact ReciprocityTheory.ChartRestriction.G.PullbackSections.tan_bc ψ ((GlobalTheory.KSExist.FrameLift.tan_iff hπ w).2 ht)
 
+/- English proof (translation)
+The claim follows from `(ReciprocityTheory.ChartRestriction.G.PullbackSections.combAt_iff _ hvt _ hw).1 (GlobalTheory.Frames.ChgBC.isCombAt_pull ψ hx (fun _ => rfl) rfl (GlobalTheory.LieBasisRing.isCombAt_of_isLieComb hπ v cf w h))`.
+-/
 theorem bc_comb {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (hx : x' = spMap ψ ≫ x) {A : Over (Sp S)} [GrpObj A] {π : A.left ⟶ Xo.univ.t.G.left}
     (hπ : IsGrpPullback A Xo.univ.t.G x π) {n : ℕ} (v : Fin n → (epsR S ⟶ A))
@@ -72,6 +81,39 @@ open MonoidalCategory CartesianMonoidalCategory GlobalTheory.Frames GlobalTheory
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ z f La hz p T iK M hval A hA`. Use `letI := (iK.comp (algebraMap c.F z.K)).toAlgebra`. Introduce `φ yT y' g a hφ hmap hchg hg hint`. Take `⟨-, hlet, -, hx, -, hu⟩` from `hz`. Take `⟨vV, hvV, hvw⟩` from `GlobalTheory.T.exists_lieBasis_local_model E H Dw l Xo c z p T iK M hval A hA`.
+
+Use `choose wK hwK hwV using hvw`. Establish `hxT : yT.x = spMap iK ≫ z.x` using `by rw [hmap.1, hφ, hx]`. Establish `hK` using `LieComb.lieComb_algebra z.K z.Φ.T.t.G _ z.Φ.v z.Φ.basis.1`. Establish `tv0 : ∀ w : epsR z.K ⟶ z.Φ.T.t.G, IsTangent w → IsTanAt yT.x (spMap (dualMap iK) ≫ w.left ≫ z.Φ.m.φ)` using `fun w ht => bc_tan iK hxT z.Φ.m.cart w ht`. Establish `hvt : ∀ k, IsTanAt yT.x (spMap (dualMap iK) ≫ (z.Φ.v k).left ≫ z.Φ.m.φ)` using `fun k => tv0 (z.Φ.v k) (z.Φ.basis.1 k)`.
+
+Establish `key : ∀ (cf : Fin z.Φ.T.g → z.K) (w : epsR z.K ⟶ z.Φ.T.t.G), IsLieComb cf z.Φ.v w → ∀ hw : IsTanAt yT.x (spMap (dualMap iK) ≫ w.left ≫ z.Φ.m.φ), ReciprocityTheory.ChartRestriction.G.PullbackSections.tvOf hw = ∑ k, iK (cf k) • ReciprocityTheory.ChartRestriction.G.PullbackSections. …` using `fun cf w h hw => bc_comb iK hxT z.Φ.m.cart z.Φ.v hvt cf w h hw`. Establish `hmt : ∀ k, IsTanAt yT.x (spMap (dualMap iK) ≫ (wK k).left ≫ z.Φ.m.φ)` using `fun k => tv0 (wK k) (hK.2.1 _ _ (hwK k))`. Take `⟨ub, hubt, -, -, hl⟩` from `hint`. Use `choose u' hu1 hu2 using hl`. Set `ubR : ∀ b i, epsR T.V ⟶ M.G.t.G` to `fun b i => Over.homMk (ub b i).left (Over.w (ub b i))`.
+
+Establish `hubR : ∀ b i, IsTangent (ubR b i)` using `fun b i => by`. Establish `h` using `hubt b i`. Unfold `IsTan at h`. Unfold `IsTangent`. Use `h.trans ?_` and prove the remaining obligations.
+
+Establish `e : (1 : ptOver T.V T.V ⟶ M.G.t.G) = toUnit _ ≫ η[M.G.t.G]` using `rfl`. Rewrite using `[e, Over.comp_left]`. Establish `e2 : (toUnit (ptOver T.V T.V)).left = 𝟙 (Sp T.V)`. Use `Over.w (toUnit (ptOver T.V T.V))` as an intermediate fact. Conclude with `((Category.comp_id _).symm.trans this).trans (Spec.map_id _)`.
+
+Rewrite using `[e2]`. Conclude with `Category.id_comp _`. Use `choose C' hC' using fun b i => (hvV.2 (ubR b i) (hubR b i)).exists`. Establish `hsq : ∀ k, (spMap (dualMap iK) ≫ (wK k).left) ≫ z.Φ.T.t.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ spMap iK` using `fun k => by`. Rewrite using `[Category.assoc, Over.w (wK k)]`.
+
+Conclude with `(spMap_comp₂ _ _).trans ((congrArg spMap (IntLie.dualMap_alg iK)).trans (spMap_comp₂ _ _).symm)`. Set `s' : Fin z.Φ.T.g → (Sp (DualNumber T.Fr) ⟶ M.t'.t.G.left)` to `fun k => M.n'.cart.1.lift _ _ (hsq k)`. Establish `hs1 : ∀ k, s' k ≫ M.n'.φ = spMap (dualMap iK) ≫ (wK k).left` using `fun k => M.n'.cart.1.lift_fst _ _ _`. Establish `hs2 : ∀ k, s' k ≫ M.t'.t.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr))` using `fun k => M.n'.cart.1.lift_snd _ _ _`. Set `vV' : Fin z.Φ.T.g → (epsOver T.V T.V ⟶ M.G.t.G)` to `fun k => Over.homMk (vV k).left (Over.w (vV k))`.
+
+Establish `hm2 : ∀ k, s' k ≫ M.m2.φ = spMap (dualMap (algebraMap T.V T.Fr)) ≫ (vV' k).left` using `fun k => by`. Apply `M.n.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`. Use `Eq.trans ?_ (hwV k).symm` and prove the remaining obligations. Conclude with `(congrArg (s' k ≫ ·) M.h2).trans (by rw [reassoc_of% (hs1 k)])`.
+
+Rewrite using `[Category.assoc, M.m2.cart.1.w, reassoc_of% (hs2 k), Category.assoc, Over.w (vV' k)]`. Conclude with `(spMap_comp₂ _ _).trans ((congrArg spMap (IntLie.dualMap_alg _).symm).trans (spMap_comp₂ _ _).symm)`. Establish `hm1 : ∀ k, s' k ≫ M.m1.φ = spMap (dualMap iK) ≫ (wK k).left ≫ z.Φ.m.φ` using `fun k => by`. Rewrite using `[M.h1, reassoc_of% (hs1 k)]`. Establish `hcomb : ∀ b i, IsComb vV' (C' b i) (ub b i)` using `fun b i => by`.
+
+Take `⟨u, hu, he⟩` from `hC' b i`. Use `⟨fun k => Over.homMk (u k).left (Over.w (u k)), fun k => hu k, ?_⟩` and prove the remaining obligations. Conclude with `he`. Establish `hy't : ∀ b i, IsTanAt yT.x (y'.u b i)` using `fun b i => by`. Rewrite using `[← hchg.1]`.
+
+Conclude with `y'.tan b i`. Establish `hgen : ∀ b i, IsCombAt yT.x (fun k => spMap (dualMap iK) ≫ (wK k).left ≫ z.Φ.m.φ) (fun k => algebraMap T.V T.Fr (C' b i k)) (y'.u b i)` using `fun b i => by`. Establish `h` using `comb_generic M.m1 M.m2 vV' s' hm2 (ub b i) (u' b i) (hu2 b i) (C' b i) (hcomb b i)`. Rewrite `h` using `[hu1 b i]`. Simplify using `only [hm1] at h`.
+
+Rewrite using `[hxT]`. Conclude with `h`. Use `⟨fun k => ReciprocityTheory.ChartRestriction.G.PullbackSections.tvOf (hvt k), fun k => ReciprocityTheory.ChartRestriction.G.PullbackSections.tvOf (hmt k), fun σ k => algebraMap T.V T.Fr (C' σ.1 σ.2 k), fun σ k => ⟨_, rfl⟩, ?_, fun k => key _ _ (hwK k) _, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, j⟩`. Take `⟨w, hw, hwu⟩` from `hu b j`.
+
+Take `⟨w₀, hw₀, hU⟩` from `hlet.2.2.1 (z.e ⟨b, j⟩)`. Choose the witnesses or unpack the hypotheses as in `rfl : w₀ = w := by`. Use `Over.OverMorphism.ext (z.m'.cart.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Unfold `LamF.LamLetters.IsLetter at hw hw₀`. Generalize the expression as in `z.letters.src (z.e ⟨b, j⟩) = s at hw hw₀`.
+
+Break down `s with q | q` into its components or cases. Conclude with `hw₀.trans hw.symm`. Conclude with `hw₀.trans hw.symm`. Establish `hyu : yT.u b j = spMap (dualMap iK) ≫ w₀.left ≫ z.Φ.m.φ`. Rewrite using `[hmap.2.1 b j, hφ, hwu]`.
+
+Use `show ReciprocityTheory.ChartRestriction.G.PullbackSections.tvOf (yT.tan b j) = _`. Rewrite using `[tvOf_congr hyu (yT.tan b j) (tv0 w₀ (hK.2.1 _ _ hU))]`. Conclude with `key _ _ hU _`. Introduce `b i`. Establish `h5` using `(ReciprocityTheory.ChartRestriction.G.PullbackSections.combAt_iff (yT.u b) (yT.tan b) (g b i) (hy't b i)).1 (hchg.2.1 b i)`.
+
+Establish `h4` using `(ReciprocityTheory.ChartRestriction.G.PullbackSections.combAt_iff _ hmt _ (hy't b i)).1 (hgen b i)`. Conclude with `h5.symm.trans h4`.
+-/
 theorem tangent_letter_model_relation : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La →
     ∀ (p : HeightOneSpectrum (𝓞 z.K)) (T : CDVR) (iK : z.K →+* T.Fr) (M : GlobalTheory.LamT.LocMod z T iK),

@@ -17,6 +17,15 @@ open GlobalTheory.UT GlobalTheory.Mum GlobalTheory.Mum.Two GlobalTheory.FieldBas
 namespace GlobalTheory.Mum.Two.Mix
 open GlobalTheory.UT.MixedConv
 
+/- English proof (translation)
+Introduce `R _ _ D₁ D₂ F _ _ b h g g' hg j j' w w' χ δ u hu f f' y y' hy hy' z J hJ`. Establish `h₁ : Good D₁.P.L z (rl J)` using `(isPart_inl D₁.P.L D₂.P.L).good hJ`. Establish `h₂ : Good D₂.P.L z (rr J)` using `(isPart_inr D₁.P.L D₂.P.L).good hJ`. Establish `c₂ : val (MixedConv.cubB D₁ (h χ) δ) g.b.left z (rl J) = th D₁ z (rl J) (cP D₁ _ (h χ)) (cP D₁ _ δ) g.b`. Use `(val_cub D₁.cub g.b h₁ _ _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[comp_cP, comp_cP, Category.comp_id]`. Establish `c₃` using `gt_mul (𝟙 (TF (R := R) F)) h₁ g (h χ) δ`. Establish `c₄` using `hy z (rr J) h₂`. Establish `c₅` using `hy' z (rl J) h₁`. Establish `c₆ : g.b.left ≫ b.left = g'.b.left` using `(congrArg (fun q => q.left) hg.1).symm`.
+
+Establish `c₉` using `hg.2 χ u hu z J hJ`. Rewrite `c₃` using `[Category.id_comp, Over.id_left]`. Rewrite `c₄` using `[c₉, CoefBasic.cst_eq]`. Rewrite `c₅` using `[CoefBasic.cst_eq]`. Rewrite using `[c₂, c₆, CoefBasic.cst_eq, map_mul, eq_comm, Units.val_mul, ← _root_.mul_assoc, Units.mul_inv_eq_iff_eq_mul]`.
+
+Establish `c₇` using `congrArg Units.val c₃`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val] at c₄ c₅ c₇ ⊢`. Establish `c₈` using `congrArg₂ (· * ·) c₄ c₅`. Take the linear combination `c₈ - sval f (Over.Hom.left g'.b) z (rr J) * sval f' g.b.left z (rl J) * (val u g.b.left z J).val * (val w (𝟙 _) z (rr J)).val * (val w' (𝟙 _) z (rl J)).val * c₇`.
+-/
 theorem val_mixed_eval : ∀ (R : Type) [CommRing R] [IsDomain R] (D₁ D₂ : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (b : D₁.P.A ⟶ D₂.P.A) (h : D₂.X →+ D₁.X) (g : GtPtF D₁ F) (g' : GtPtF D₂ F), Act D₁ D₂ b h g g' → ∀ (j j' : ℕ) (w : Frm D₂ F j g'.b) (w' : Frm D₁ F j' g.b) (χ : D₂.X) (δ : D₁.X) (u : LB.Gen (CmpLB D₁ D₂ b (h χ) χ)), Nrm u → ∀ (f : D₂.SecB j χ) (f' : D₁.SecB j' δ) (y y' : F), MixedConv.IsCoefB j g' w χ f y → MixedConv.IsCoefB j' g w' δ f' y' → ∀ (z : (TF (R := R) F).left) (J), Good (JN D₁ D₂) z J → sval f (g.b.left ≫ b.left) z (rr J) * sval f' g.b.left z (rl J) * (val u g.b.left z J * val (MixedConv.cubB D₁ (h χ) δ) g.b.left z (rl J)).val = cst F z (y * y') * (rigV D₂ (TF (R := R) F).hom z (rr J) ^ j * rigV D₁ (TF (R := R) F).hom z (rl J) ^ j' * (val (g.s (h χ + δ)) (𝟙 _) z (rl J) * (val w (𝟙 _) z (rr J) * val w' (𝟙 _) z (rl J)))⁻¹).val := by
   intro R _ _ D₁ D₂ F _ _ b h g g' hg j j' w w' χ δ u hu f f' y y' hy hy' z J hJ
   have h₁ : Good D₁.P.L z (rl J) := (isPart_inl D₁.P.L D₂.P.L).good hJ

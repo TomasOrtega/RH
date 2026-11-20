@@ -16,6 +16,11 @@ open Formalism.L2.DIV GlobalTheory.CoefModel
 
 namespace GlobalTheory.CoefMatch
 
+/- English proof (translation)
+Use `set B' := Module.Basis.mk (linearIndependent_mapVV φ lam) (span_mapVV φ lam).ge`. Establish `hy : mapVV φ lam y = ∑ k, φ ((bVV K lam).repr y k) • B' k` using `by conv_lhs => rw [← (bVV K lam).sum_repr y]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, Module.Basis.mk_apply]`.
+
+Rewrite using `[hy, Module.Basis.repr_sum_self]`.
+-/
 theorem vvmatch_repr {ι : Type} [Fintype ι] {n : ℕ} {K : Type} [Field K] (φ : K →+* ℂ) (lam : ι → DomWeight n) (y : VV K lam) (i : VVIdx lam) :
     (Module.Basis.mk (linearIndependent_mapVV φ lam) (span_mapVV φ lam).ge).repr (mapVV φ lam y) i = φ ((bVV K lam).repr y i) := by
   classical
@@ -27,6 +32,11 @@ theorem vvmatch_repr {ι : Type} [Fintype ι] {n : ℕ} {K : Type} [Field K] (φ
     rw [LinearMap.map_smulₛₗ, Module.Basis.mk_apply]
   rw [hy, Module.Basis.repr_sum_self]
 
+/- English proof (translation)
+Introduce `L _ _ _ n ι _ K _ φ emb lam W₀ W' _ _ _ _ ρ₀ ρ' T hT T' hT'`. Use `set B' := Module.Basis.mk (linearIndependent_mapVV φ lam) (span_mapVV φ lam).ge with hB'`. Use `⟨VVIdx lam, inferInstance, inferInstance, (bVV K lam).map T.symm, B'.map T'.symm, fun γ => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply]`.
+
+Simplify using `only [Module.Basis.map_apply, Module.Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_symm]`. Rewrite using `[hT', hT, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `hj : B' j = mapVV φ lam (bVV K lam j)` using `Module.Basis.mk_apply _ _ _`. Rewrite using `[hj, ← GlobalTheory.ConjTwist.mapVV_rhoVr, hB', vvmatch_repr]`.
+-/
 theorem wtMatch_of_coef : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {ι : Type} [Fintype ι] {K : Type} [Field K] (φ : K →+* ℂ) (emb : ι → L →+* K) (lam : ι → DomWeight n) {W₀ W' : Type} [AddCommGroup W₀] [Module K W₀] [AddCommGroup W'] [Module ℂ W'] (ρ₀ : Representation K (GQ L n) W₀) (ρ' : Representation ℂ (GQ L n) W') (T : W₀ ≃ₗ[K] VV K lam), (∀ γ x, T (ρ₀ γ x) = rhoVr emb lam (Formalism.L2.Col.mtwRat γ) (T x)) → ∀ (T' : W' ≃ₗ[ℂ] VV ℂ lam), (∀ γ x, T' (ρ' γ x) = rhoVr (fun t => φ.comp (emb t)) lam (Formalism.L2.Col.mtwRat γ) (T' x)) → GlobalTheory.LevCmp.WtMatch φ ρ₀ ρ' := by
   intro L _ _ _ n ι _ K _ φ emb lam W₀ W' _ _ _ _ ρ₀ ρ' T hT T' hT'
   classical

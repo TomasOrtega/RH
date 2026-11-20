@@ -6,6 +6,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.Mem.Vol
 
+/- English proof (translation)
+Introduce `n ε lam H _ _ σ h c hc`. Take `⟨h1, h2, hU, hirr, hsq, -⟩` from `h`. Take `⟨d, hd, hI⟩` from `GlobalTheory.schur_orthogonality_unitary n ε H σ hU hirr hsq`. Establish `hc' : (0 : ℝ) < (c : ℝ)` using `hc`. Use `⟨d / c, div_pos hd hc', fun v w v' w' => ⟨(hI v w v' w').1.smul_measure ENNReal.coe_ne_top, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[integral_smul_measure, (hI v w v' w').2, ENNReal.coe_toReal, Complex.real_smul, Complex.ofReal_div, div_div_eq_mul_div]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_isFdeg_smul_of_isDS : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsDS ε lam σ → ∀ c : NNReal, 0 < c → ∃ d : ℝ, IsFdeg ((c : ENNReal) • Formalism.REAL.muG ε) σ d := by
   intro n ε lam H _ _ σ h c hc
   obtain ⟨h1, h2, hU, hirr, hsq, -⟩ := h

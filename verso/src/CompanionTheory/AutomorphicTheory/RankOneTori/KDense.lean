@@ -40,10 +40,34 @@ def finAlg (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] 
 
 variable [T2Space Γ] [MeasurableSpace Γ] [BorelSpace Γ]
 
+/- English proof (translation)
+The claim follows from `(p.continuous.smul hF).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+-/
 theorem int_smul {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (μ : Measure Γ) [IsFiniteMeasure μ] (p : C(Γ, ℝ))
     {F : Γ → V} (hF : Continuous F) : Integrable (fun x => p x • F x) μ :=
   (p.continuous.smul hF).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
+/- English proof (translation)
+Use `set U : Set Γ := ⋂ i, {x | ‖F i 1 - F i x‖ < δ / 2} with hU`. Establish `hUo : IsOpen U` using `isOpen_iInter_of_finite fun i => isOpen_lt (continuous_const.sub (hF i)).norm continuous_const`. Establish `h1U : (1 : Γ) ∈ U` using `mem_iInter.2 fun i => by simpa using hδ`. Take `⟨φ₀, h0, h1, h01⟩` from `exists_continuous_zero_one_of_isClosed hUo.isClosed_compl (isClosed_singleton (x := (1 : Γ))) (disjoint_singleton_right.2 fun h => h h1U)`. Establish `hc : 0 < ∫ x, φ₀ x ∂μ` using `φ₀.continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (HasCompactSupport.of_compactSpace _) (fun x => (h01 x).1) (by rw [h1 rfl]; exact one_ne_zero)`.
+
+Use `set φ : C(Γ, ℝ) := (∫ x, φ₀ x ∂μ)⁻¹ • φ₀ with hφ`. Establish `hφ0 : ∀ x, 0 ≤ φ x` using `fun x => mul_nonneg (inv_nonneg.2 hc.le) (h01 x).1`. Establish `hφi : Integrable φ μ` using `φ.continuous.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hφ1 : ∫ x, φ x ∂μ = 1`. Simplify using `only [hφ, ContinuousMap.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[integral_const_mul, inv_mul_cancel₀ hc.ne']`. Establish `hM : ∀ i, ∃ M : ℝ, 0 ≤ M ∧ ∀ x, ‖F i x‖ ≤ M` using `fun i => ⟨‖(⟨F i, hF i⟩ : C(Γ, V))‖, norm_nonneg _, fun x => (⟨F i, hF i⟩ : C(Γ, V)).norm_coe_le_norm x⟩`. Use `choose M hM0 hM using hM`. Use `set Mt : ℝ := (∑ i, M i) * μ.real univ + 1 with hMt`. Establish `hMt0 : 0 < Mt`.
+
+Establish `: 0 ≤ ∑ i, M i` using `Finset.sum_nonneg fun i _ => hM0 i`. Check the signs of the components of the expression. Take `⟨p, hp⟩` from `ContinuousMap.exists_mem_subalgebra_near_continuousMap_of_separatesPoints A hA φ (δ / 2 / Mt) (by positivity)`. Use `⟨p, p.2, fun i => ?_⟩` and prove the remaining obligations. Establish `e1 : F i 1 - ∫ x, φ x • F i x ∂μ = ∫ x, φ x • (F i 1 - F i x) ∂μ`.
+
+Simplify using `only [smul_sub]`. Rewrite using `[integral_sub (int_smul μ φ continuous_const) (int_smul μ φ (hF i)), integral_smul_const, hφ1, one_smul]`. Establish `b1 : ‖F i 1 - ∫ x, φ x • F i x ∂μ‖ ≤ δ / 2`. Rewrite using `[e1]`. Use `(norm_integral_le_of_norm_le (hφi.mul_const (δ / 2)) (Eventually.of_forall fun x => ?_)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_smul, Real.norm_of_nonneg (hφ0 x)]`. Distinguish the cases in `hx : x ∈ U`. Conclude with `mul_le_mul_of_nonneg_left (mem_iInter.1 hx i).le (hφ0 x)`. Establish `: φ x = 0` using `by simp [hφ, h0 hx]`. Simplify using `[this]`.
+
+Rewrite using `[integral_mul_const, hφ1, one_mul]`. Establish `e2 : (∫ x, φ x • F i x ∂μ) - ∫ x, (p : C(Γ, ℝ)) x • F i x ∂μ = ∫ x, (φ x - (p : C(Γ, ℝ)) x) • F i x ∂μ`. Simplify using `only [sub_smul]`. Rewrite using `[integral_sub (int_smul μ φ (hF i)) (int_smul μ _ (hF i))]`. Establish `b2 : ‖(∫ x, φ x • F i x ∂μ) - ∫ x, (p : C(Γ, ℝ)) x • F i x ∂μ‖ ≤ ‖(p : C(Γ, ℝ)) - φ‖ * M i * μ.real univ`.
+
+Rewrite using `[e2]`. Use `norm_integral_le_of_norm_le_const (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_sub_rev]`. Conclude with `mul_le_mul (((p : C(Γ, ℝ)) - φ).norm_coe_le_norm x) (hM i x) (norm_nonneg _) (norm_nonneg _)`. Establish `b3 : M i * μ.real univ ≤ Mt`.
+
+Establish `: M i ≤ ∑ i, M i` using `Finset.single_le_sum (fun i _ => hM0 i) (Finset.mem_univ i)`. Use `mul_le_mul_of_nonneg_right this (measureReal_nonneg (μ := μ) (s := univ))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `b4 : ‖(p : C(Γ, ℝ)) - φ‖ * M i * μ.real univ < δ / 2`. Rewrite using `[mul_assoc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `norm_sub_le_norm_sub_add_norm_sub (F i 1) (∫ x, φ x • F i x ∂μ) (∫ x, (p : C(Γ, ℝ)) x • F i x ∂μ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem approx_id {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V] (μ : Measure Γ)
     [IsFiniteMeasure μ] [IsOpenPosMeasure μ] (A : Subalgebra ℝ C(Γ, ℝ)) (hA : A.SeparatesPoints) {ι : Type} [Fintype ι]
     {F : ι → Γ → V} (hF : ∀ i, Continuous (F i)) {δ : ℝ} (hδ : 0 < δ) :
@@ -114,6 +138,13 @@ def co (hK : IsMatGroup K) : (Mat n →L[ℝ] ℝ) →ₗ[ℝ] C(MG K hK, ℝ) w
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `hne : x.mat - y.mat ≠ 0` using `fun h => hxy (MG.ext (sub_eq_zero.1 h))`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, x.mat i j ≠ y.mat i j := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Conclude with `hxy (MG.ext (Matrix.ext h))`. Establish `hV : FinInv (LinearMap.range (co hK))`. Use `⟨Submodule.fg_range _, ?_⟩` and prove the remaining obligations. Introduce and unpack `a _ ⟨f, rfl⟩`. Conclude with `⟨f.comp (LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ a.mat)), rfl⟩`.
+
+Set `e : Mat n →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap { toFun := fun m => m i j, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Distinguish the cases in `hre : (x.mat i j).re = (y.mat i j).re`. Conclude with `⟨_, ⟨co hK (Complex.imCLM.comp e), ⟨_, hV, ⟨_, rfl⟩⟩, rfl⟩, fun h => hij (Complex.ext hre h)⟩`. Conclude with `⟨_, ⟨co hK (Complex.reCLM.comp e), ⟨_, hV, ⟨_, rfl⟩⟩, rfl⟩, hre⟩`.
+-/
 theorem finAlg_sep : (finAlg (MG K hK)).SeparatesPoints := by
   intro x y hxy
   have hne : x.mat - y.mat ≠ 0 := fun h => hxy (MG.ext (sub_eq_zero.1 h))
@@ -134,6 +165,9 @@ theorem finAlg_sep : (finAlg (MG K hK)).SeparatesPoints := by
 variable {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H] {G : Set (Mat n)}
   {σ : Mat n → (H →L[ℂ] H)} [CompactSpace (MG K hK)]
 
+/- English proof (translation)
+The claim follows from `| [], _ => rfl | X :: W, hXW => by have hW : LieW G W := fun Y hY => hXW Y (List.mem_cons_of_mem _ hY) have hX := hXW X List.mem_cons_self have hj : Continuous fun g : MG K hK => MG.mk hG g.mat (hKG g.mem) := MG.continuous_iff.2 MG.continuous_mat have c1 : Continuous fun g : MG K …`.
+-/
 theorem dsW_int (hG : IsMatGroup G) (hKG : K ⊆ G) (h : RepOn G σ) {v : H} (hv : IsSm G σ v) (μ : Measure (MG K hK))
     [IsFiniteMeasure μ] (p : C(MG K hK, ℝ)) : ∀ {W : List (Mat n)}, LieW G W →
     dsW σ W (∫ g, p g • σ g.mat v ∂μ) = ∫ g, p g • dsW σ W (σ g.mat v) ∂μ
@@ -163,6 +197,17 @@ theorem dsW_int (hG : IsMatGroup G) (hKG : K ⊆ G) (h : RepOn G σ) {v : H} (hv
     rw [this.deriv]
     simp [ex_zero, h.map_one]
 
+/- English proof (translation)
+Take `⟨V, ⟨⟨s, hs⟩, hinv⟩, hpV⟩` from `hp`. Establish `hj : Continuous fun g : MG K hK => MG.mk hG g.mat (hKG g.mem)` using `MG.continuous_iff.2 MG.continuous_mat`. Establish `c1 : Continuous fun g : MG K hK => σ g.mat v` using `(continuous_orbit (hG := hG) (W := []) h hv fun _ hX => absurd hX List.not_mem_nil).comp hj`. Set `T : C(MG K hK, ℝ) →ₗ[ℝ] H` to `{ toFun := fun q => ∫ g, q g • σ g.mat v ∂haar map_add' := fun q q' => by`. Simplify using `only [ContinuousMap.add_apply, add_smul]`.
+
+Conclude with `integral_add (int_smul _ q c1) (int_smul _ q' c1)`. Use the proof step `map_smul' := fun c q => by`. Simplify using `only [ContinuousMap.smul_apply, smul_assoc, RingHom.id_apply]`. Conclude with `integral_smul _ _ }`. Establish `hS : Submodule.span ℂ (V.map T : Set H) = Submodule.span ℂ (T '' s)`.
+
+Rewrite using `[← hs, Submodule.map_span, Submodule.span_span_of_tower]`. Use `⟨Submodule.span ℂ (V.map T : Set H), ?_, Submodule.subset_span ⟨p, hpV, rfl⟩, fun a ha x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hS]`. Conclude with `FiniteDimensional.span_of_finite ℂ (s.finite_toSet.image _)`. Use `Submodule.span_induction (fun y hy => ?_) (by simp) (fun y z _ _ hy hz => by rw [map_add]; exact add_mem hy hz) (fun c y _ hy => by rw [map_smul]; exact Submodule.smul_mem _ c hy) hx` and prove the remaining obligations.
+
+Take `⟨q, hq, rfl⟩` from `hy`. Use `set a' : MG K hK := MG.mk hK a ha with ha'`. Use `Submodule.subset_span ⟨tr a'⁻¹ q, hinv _ q hq, ?_⟩` and prove the remaining obligations. Use `show ∫ g, q (a'⁻¹ * g) • σ g.mat v ∂haar = σ a (∫ g, q g • σ g.mat v ∂haar)`. Rewrite using `[← (σ a).integral_comp_comm (int_smul _ q c1), ← integral_mul_left_eq_self (fun g : MG K hK => q (a'⁻¹ * g) • σ g.mat v) a']`.
+
+Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [inv_mul_cancel_left, ContinuousLinearMap.map_smul_of_tower]`. Use `congr 1`. Conclude with `h.apply_mul (hKG ha) (hKG g.mem) v`.
+-/
 theorem fin_of_finAlg (hG : IsMatGroup G) (hKG : K ⊆ G) (h : RepOn G σ) {v : H} (hv : IsSm G σ v)
     {p : C(MG K hK, ℝ)} (hp : p ∈ finAlg (MG K hK)) :
     ∃ S : Submodule ℂ H, FiniteDimensional ℂ S ∧ (∫ g, p g • σ g.mat v ∂haar) ∈ S ∧ ∀ a ∈ K, ∀ x ∈ S, σ a x ∈ S := by
@@ -198,6 +243,25 @@ theorem fin_of_finAlg (hG : IsMatGroup G) (hKG : K ⊆ G) (h : RepOn G σ) {v : 
 end Mat
 
 open PI.UpqRep in
+/- English proof (translation)
+Establish `hKS` using `CompanionTheory.D.gk.admitted.k_finite_smooth k r ε lam H σ hlam hσ`. Take `⟨P, ⟨⟨hP, hPJ⟩, -⟩, -, -, ⟨⟨h1, hm⟩, -, -⟩, -, -⟩` from `hσ`. Establish `hG : PI.IsMatGroup (UH (Hpk k r))` using `PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group k r`. Establish `h : RepOn (UH (Hpk k r)) σ` using `repOn_of_conj hP hPJ h1 hm`. Use `set K : Set (Mat (2 * r + k + 1)) := UH (Hpk k r) ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _) with hKd`.
+
+Establish `hUc : IsCompact (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set (Mat (2 * r + k + 1)))`. Establish `hcl : IsClosed (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set (Mat (2 * r + k + 1)))`. Establish `: (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set (Mat (2 * r + k + 1))) = {a | a * aᴴ = 1}`. Use extensionality with `a`. Conclude with `Matrix.mem_unitaryGroup_iff`.
+
+Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_id.matrix_mul continuous_id.matrix_conjTranspose) continuous_const`. Establish `hb : IsCompact (Set.pi univ fun _ : Fin (2 * r + k + 1) => Set.pi univ fun _ : Fin (2 * r + k + 1) => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Conclude with `hb.of_isClosed_subset hcl fun a ha i _ j _ => by`. Simplify using `using entry_norm_bound_of_unitary ha i j`.
+
+Establish `hK : IsMatGroup K`. Use `⟨hG.1.inter hUc.isClosed, ⟨hG.2.1, one_mem _⟩, fun a ha b hb => ⟨hG.2.2.1 a ha.1 b hb.1, mul_mem ha.2 hb.2⟩, fun a ha => ⟨⟨(hG.2.2.2 a ha.1).1, ?_⟩, (hG.2.2.2 a ha.1).2⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.inv_eq_right_inv (Matrix.mem_unitaryGroup_iff.1 ha.2)]`. Conclude with `Unitary.star_mem ha.2`. Establish `hKc : IsCompact K` using `hUc.inter_left hG.1`.
+
+Establish `: CompactSpace (MG K hK)` using `isCompact_iff_compactSpace.1 hKc`. Establish `: T2Space (MG K hK)` using `MG.isClosedEmbedding_mat.isEmbedding.t2Space`. Establish `hL : (0 : ℝ) < Ws.length + 1` using `by positivity`. Establish `hW : ∀ i : Fin Ws.length, LieW (UH (Hpk k r)) (Ws.get i)` using `fun i X hX t => ex_mem_of_lie (hWs _ (List.get_mem _ _) X hX) t`. Establish `hj : Continuous fun g : MG K hK => MG.mk hG g.mat g.mem.1` using `MG.continuous_iff.2 MG.continuous_mat`.
+
+Take `⟨p, hp, hb⟩` from `approx_id (haar : Measure (MG K hK)) _ finAlg_sep (F := fun (i : Fin Ws.length) (g : MG K hK) => dsW σ (Ws.get i) (σ g.mat v)) (fun i => (continuous_orbit (hG := hG) h hv (hW i)).comp hj) (div_pos he hL)`. Establish `hfin : IsKFinHpk (k` using `k) (r := r) σ (∫ g : MG K hK, p g • σ g.mat v ∂haar) := fin_of_finAlg hG inter_subset_left h hv hp`. Use `⟨_, hfin, ?_⟩` and prove the remaining obligations. Establish `hle` using `List.sum_le_card_nsmul (Ws.map fun w' => ‖dsigW (k := k) (r := r) σ w' (v - ∫ g : MG K hK, p g • σ g.mat v ∂haar)‖) (e / (Ws.length + 1)) (by`. Introduce `t ht`.
+
+Take `⟨W, hW', rfl⟩` from `List.mem_map.1 ht`. Take `⟨i, rfl⟩` from `List.get_of_mem hW'`. Rewrite using `[dsigW_eq', dsW_sub h hv (hKS _ hfin) (hW i), dsW_int hG inter_subset_left h hv _ p (hW i)]`. Use `(hb i).le` as an intermediate fact. Establish `e1 : σ (1 : MG K hK).mat v = v` using `by show σ 1 v = v`.
+
+Rewrite using `[h.map_one]`. Both sides reduce to the same expression. Simplify using `only [e1] at this`. Conclude with `this)`. Use `hle.trans_lt ?_` and prove the remaining obligations.
+
+Rewrite using `[List.length_map, nsmul_eq_mul, ← mul_div_assoc, div_lt_iff₀ hL]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem kDense (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ)
     (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : Mat (2 * r + k + 1) → (H →L[ℂ] H)) (hlam : Formalism.QuantumDeterminants.IsHCParam lam) (hσ : IsDSHpk k r ε lam σ) (v : H)

@@ -17,6 +17,21 @@ noncomputable section
 
 namespace GlobalTheory.FlagCls
 
+/- English proof (translation)
+Establish `hp0 : y (IsLocalRing.closedPoint K) ∈ π ⁻¹ᵁ V` using `hV (Set.mem_univ (IsLocalRing.closedPoint K))`. Take `⟨W₀, s, hWV₀, hp, hs⟩` from `exists_adapted Y _ r fl _ _ hp0`. Establish `hy₀ : ⊤ ≤ y ⁻¹ᵁ W₀` using `(Scheme.preimage_eq_top_of_closedPoint_mem y hp).ge`. Establish `h0` using `AdaptMat.flagMat_of_adapted B Y M r hM π fl V f hf K y W₀ hWV₀ hy₀ s hs`. Generalize the expression as in `(Matrix.of fun i => coordAt hM π hf y hWV₀ hy₀ (s i)) = S at h0`.
+
+Establish `key : ∀ i : Fin r, ∃ a b : Fin r → K, (∀ k, i < k → a k = 0) ∧ a i ≠ 0 ∧ (∀ k, i < k → b k = 0) ∧ Matrix.vecMul a S = Matrix.vecMul b d`. Introduce `i`. Take `⟨U, e, hU, hpU, hUV, he⟩` from `(fl.isVB_gr i).exists_affine hp0`. Take `⟨W, hWU, hpW, u, hu⟩` from `VBExt.exists_lifts (fl.π i) e hpU`. Establish `hy : ⊤ ≤ y ⁻¹ᵁ W` using `(Scheme.preimage_eq_top_of_closedPoint_mem y hpW).ge`.
+
+Set `ch : Chart (fl.gr i) 1` to `{ U := U, e := e, isFrame := he }`. Take `⟨b, hb, hb'⟩` from `h i ch W hWU (hWU.trans hUV) (u 0) (hu 0) hy`. Take `⟨a, ha, ha'⟩` from `h0.2 i.succ W (hWU.trans hUV) (u 0) hy`. Conclude with `⟨a, b, fun k hk => ha k hk, FlagMat.coeff_ne_zero B Y M r hM π fl V f hf K y S h0 i ch W hWU _ (u 0) (hu 0) hy a ha', hb, ha'.symm.trans hb'⟩`. Use `choose a b ha ha' hb hab using key`.
+
+Establish `e : Matrix.of a * S = Matrix.of b * d`. Use extensionality with `i k`. Conclude with `congrFun (hab i) k`. Establish `hA : IsUnit (Matrix.of a).det`. Rewrite using `[Matrix.det_of_lowerTriangular (Matrix.of a) fun i k hik => ha i k hik]`.
+
+Conclude with `(Finset.prod_ne_zero_iff.2 fun i _ => ha' i).isUnit`. Establish `h1` using `h0.mul hA ha`. Rewrite `h1` using `[e]`. Establish `hB : IsUnit (Matrix.of b).det`. Use `h1.1` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left this`. Use `(Matrix.of b).invertibleOfIsUnitDet hB` as an intermediate fact. Establish `hbt : (Matrix.of b).BlockTriangular OrderDual.toDual` using `fun i k hik => hb i k hik`. Establish `h2` using `h1.mul (Matrix.isUnit_nonsing_inv_det _ hB) fun i k hik => Matrix.blockTriangular_inv_of_blockTriangular hbt hik`.
+
+Rewrite `h2` using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB, Matrix.one_mul]`. Then use the resulting hypothesis.
+-/
 theorem flagMat_of_lifts {B Y : Scheme.{0}} {M : B.Modules} {r : ℕ} (hM : IsVB M r) (π : Y ⟶ B)
     (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) {V : B.Opens} {f : Fin r → Γ(M, V)} (hf : IsFrame f)
     {K : Type} [Field K] (y : Sp K ⟶ Y) (hV : ⊤ ≤ (y ≫ π) ⁻¹ᵁ V) (d : Matrix (Fin r) (Fin r) K)
@@ -60,6 +75,13 @@ theorem flagMat_of_lifts {B Y : Scheme.{0}} {M : B.Modules} {r : ℕ} (hM : IsVB
     fun i k hik => Matrix.blockTriangular_inv_of_blockTriangular hbt hik
   rwa [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB, Matrix.one_mul] at h2
 
+/- English proof (translation)
+Introduce `D O c Bs Bg jB πB Y X Gs _ _ π ρ j πG φ jG _ h1 _ σ M hM t ht F r hr V f hf hxV d hd`. Use `hM.isQuasicoherent` as an intermediate fact. Establish `hb` using `ht.1 V f hf Gs.functionField (genPt Gs ≫ jG) hxV (Spec.preimage ((genPt Gs ≫ jG) ≫ πB ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom)).hom (Spec.map_preimage _).symm`. Rewrite `hb` using `[Category.assoc _ jG (πB ≫ genι _)]`. Establish `hz : (genPt Gs ≫ jG) ≫ jB = ((genPt Gs ≫ j) ≫ ρ) ≫ π` using `by simp only [Category.assoc, h1]`.
+
+Use `flagMat_of_lifts _ ρ F _ _ (by rw [hz] at hxV; exact hxV) d fun i ch W hW hWV s hs hy => ?_` and prove the remaining obligations. Take `⟨w, cf, hw, hw', -, hcf⟩` from `hr i (fun _ => ch) V f hf W hW hWV s hs hy hxV`. Use `⟨cf, hcf, ?_⟩` and prove the remaining obligations. Establish `e1` using `tanLinG _ (fun k => (hb.1 k).1) _ d.transpose cf w hd hw'`. Rewrite `e1` using `[Matrix.mulVec_transpose]`.
+
+Conclude with `GlobalTheory.FlagSec.indep_of_isEigBasis hb _ _ _ hw e1`.
+-/
 theorem flagMat_of_isFrameSecX : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (Bs Bg : Scheme.{0}) (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen O.s.T.Z)
     (Y X Gs : Scheme.{0}) [IsIntegral X] [IsIntegral Gs] (π : Y ⟶ Bs) (ρ : X ⟶ Y) (j : Gs ⟶ X)
     (πG : Gs ⟶ (O.var c).X) (φ : (O.var c).Fn →+* Gs.functionField) (jG : Gs ⟶ Bg),

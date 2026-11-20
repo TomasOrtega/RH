@@ -44,12 +44,22 @@ abbrev Cr_k : Type := {c : (Fin L.n → AE F E) × AF F // c.1 ∈ L.ratV ∧ c.
 variable (L) in
 def Fix_k (x : d.G) : Prop :=
   ∀ k, inFrame d.b x k (Sum.inl L.i₀) = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) k (Sum.inl L.i₀)
+/- English proof (translation)
+Introduce `k`. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply, Finset.sum_eq_single (Sum.inl L.i₀)]`. Rewrite using `[hy, Matrix.one_apply_eq, mul_one]`. Conclude with `hx k`. Introduce `j _ hj`.
+
+Rewrite using `[hy j, Matrix.one_apply_ne hj, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem fix_mul_k {x y : d.G} (hx : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Fix_k L x) (hy : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Fix_k L y) : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Fix_k L (x * y) := by
   intro k
   rw [GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply, Finset.sum_eq_single (Sum.inl L.i₀)]
   · rw [hy, Matrix.one_apply_eq, mul_one]; exact hx k
   · intro j _ hj; rw [hy j, Matrix.one_apply_ne hj, mul_zero]
   · simp
+/- English proof (translation)
+Introduce `k`. Establish `h1` using `congrFun (congrFun (GlobalTheory.EisBL.DoubledParabolic.inFrame_inv_mul d.b x) k) (Sum.inl L.i₀)`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inl L.i₀)]`. Rewrite `h1` using `[hx, Matrix.one_apply_eq, mul_one]`. Conclude with `h1`.
+
+Introduce `j _ hj`. Rewrite using `[hx j, Matrix.one_apply_ne hj, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem fix_inv_k {x : d.G} (hx : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Fix_k L x) : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Fix_k L x⁻¹ := by
   intro k
   have h1 := congrFun (congrFun (GlobalTheory.EisBL.DoubledParabolic.inFrame_inv_mul d.b x) k) (Sum.inl L.i₀)
@@ -57,15 +67,26 @@ theorem fix_inv_k {x : d.G} (hx : _root_.PositivityTheory.SiegelWeilFormula.Act.
   · rw [hx, Matrix.one_apply_eq, mul_one] at h1; exact h1
   · intro j _ hj; rw [hx j, Matrix.one_apply_ne hj, mul_zero]
   · simp
+/- English proof (translation)
+Introduce `k`. Conclude with `(L.j_out g (Sum.inl L.i₀) (by simp) k).2`.
+-/
 theorem fix_j_k (g : G2 σ L.Y) : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Fix_k L (L.j g) := by
   intro k
   exact (L.j_out g (Sum.inl L.i₀) (by simp) k).2
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h1`. Use `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.inStabilizer_parabolic_mul L ((par2 σ d.Y).inv_mem hp) h1` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel, one_mul]`. Then use the resulting hypothesis. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.inStabilizer_parabolic_mul L hp`.
+-/
 theorem first_orbit_parabolic_left {p g : d.G} (hp : p ∈ par2 σ d.Y) : _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L (p * g) ↔ _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L g := by
   constructor
   · intro h1
     have := _root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.inStabilizer_parabolic_mul L ((par2 σ d.Y).inv_mem hp) h1
     rwa [← mul_assoc, inv_mul_cancel, one_mul] at this
   · exact _root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.inStabilizer_parabolic_mul L hp
+/- English proof (translation)
+Introduce `hS`. Take `⟨a₀, b₀, ha, hb, hW⟩` from `h.wf`. Establish `h1` using `hS L.i₀`. Rewrite `h1` using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply, Finset.sum_eq_single (Sum.inl L.i₀)]`. Rewrite `h1` using `[hg, Matrix.one_apply_eq, mul_one, hW]`.
+
+Simplify using `[Matrix.single_apply, Matrix.one_apply] at h1`. Conclude with `hb (kfour.inclR_injective (F := F) (by rw [h1, map_zero]))`. Introduce `j _ hj`. Rewrite using `[hg j, Matrix.one_apply_ne hj, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem not_first_orbit_weyl (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) {g : d.G} (hg : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Fix_k L g) : ¬ _root_.PositivityTheory.SiegelWeilFormula.Act.FirstOrbit L (w₁ * g) := by
   intro hS
   obtain ⟨a₀, b₀, ha, hb, hW⟩ := h.wf
@@ -76,15 +97,40 @@ theorem not_first_orbit_weyl (h : _root_.PositivityTheory.SiegelWeilFormula.Act.
     exact hb (kfour.inclR_injective (F := F) (by rw [h1, map_zero]))
   · intro j _ hj; rw [hg j, Matrix.one_apply_ne hj, mul_zero]
   · simp
+/- English proof (translation)
+Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.rep_mk_k γ`.
+-/
 theorem out_mk_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (γ : rat2 σ d.Y) :
     ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧ _root_.PositivityTheory.SiegelWeilFormula.Act.rep_k (Quotient.mk _ γ : _root_.PositivityTheory.SiegelWeilFormula.Act.Cs_k d) = p * γ.1 := by
   exact _root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.rep_mk_k γ
+/- English proof (translation)
+Rewrite using `[Quotient.eq, QuotientGroup.rightRel_apply, Subgroup.mem_subgroupOf]`. Simplify using the standard rewrite rules.
+-/
 theorem mk_eq_mk_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {γ γ' : rat2 σ d.Y} :
     (Quotient.mk _ γ : _root_.PositivityTheory.SiegelWeilFormula.Act.Cs_k d) = Quotient.mk _ γ' ↔ γ'.1 * γ.1⁻¹ ∈ par2 σ d.Y := by
   rw [Quotient.eq, QuotientGroup.rightRel_apply, Subgroup.mem_subgroupOf]
   simp
+/- English proof (translation)
+The claim follows from `(Quotient.out q).2`.
+-/
 theorem rep_mem_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (q : _root_.PositivityTheory.SiegelWeilFormula.Act.Cs_k d) : _root_.PositivityTheory.SiegelWeilFormula.Act.rep_k q ∈ rat2 σ d.Y := (Quotient.out q).2
+/- English proof (translation)
+The claim follows from `Quotient.out_eq q`.
+-/
 theorem mk_rep_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (q : _root_.PositivityTheory.SiegelWeilFormula.Act.Cs_k d) : (Quotient.mk _ ⟨_root_.PositivityTheory.SiegelWeilFormula.Act.rep_k q, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.rep_mem_k d q⟩ : _root_.PositivityTheory.SiegelWeilFormula.Act.Cs_k d) = q := Quotient.out_eq q
+/- English proof (translation)
+Take `⟨a₀, b₀, ha, hb, hW⟩` from `h.wf`. Apply `kunf.inFrame_injective d.b` to reduce the goal to its premises. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul]`. Use `set W := inFrame d.b w₁`. Use `set J := inFrame d.b (L.j g)`.
+
+Establish `hJ` using `_root_.PositivityTheory.SiegelWeilFormula.Act.C4.Bq.pad_j_k L g`. Set `P : Fin d.n ⊕ Fin d.n → Prop` to `fun l => l = Sum.inl L.i₀ ∨ l = Sum.inr L.i₀`. Establish `hWo : ∀ r c, ¬ (P r ∧ P c) → (W - 1) r c = 0`. Introduce `r c hrc`. Rewrite using `[Matrix.sub_apply, hW]`.
+
+Simplify using `only [P, not_and_or] at hrc`. Apply the tactic sequence `rcases hrc with hr | hr <;> push_neg at hr <;>`. Simplify using `[Matrix.single_apply, Matrix.one_apply, hr.1, hr.2, Ne.symm hr.1, Ne.symm hr.2]`. Establish `hJo : ∀ r c, (P r ∨ P c) → (J - 1) r c = 0`. Introduce `r c hrc`.
+
+Rewrite using `[Matrix.sub_apply, sub_eq_zero]`. Break down `hrc with (h | h) | (h | h)` into its components or cases. Conclude with `hJ r c (Or.inl h)`. Conclude with `hJ r c (Or.inr (Or.inl h))`. Conclude with `hJ r c (Or.inr (Or.inr (Or.inl h)))`.
+
+Conclude with `hJ r c (Or.inr (Or.inr (Or.inr h)))`. Establish `e1 : (W - 1) * (J - 1) = 0` using `mul_eq_zero_of_supp P (fun r l hl => hWo r l fun h => hl h.2) (fun l c hl => hJo l c (Or.inl hl))`. Establish `e2 : (J - 1) * (W - 1) = 0` using `mul_eq_zero_of_supp (fun l => ¬ P l) (fun r l hl => hJo r l (Or.inr (not_not.1 hl))) (fun l c hl => hWo l c fun h => hl h.1)`. Establish `eW : W = 1 + (W - 1)` using `by abel`. Establish `eJ : J = 1 + (J - 1)` using `by abel`.
+
+Rewrite using `[eW, eJ]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, e1, e2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem weyl_commutes_embedding (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) (g : G2 σ L.Y) : w₁ * L.j g = L.j g * w₁ := by
   obtain ⟨a₀, b₀, ha, hb, hW⟩ := h.wf
   apply kunf.inFrame_injective d.b
@@ -116,11 +162,23 @@ theorem weyl_commutes_embedding (h : _root_.PositivityTheory.SiegelWeilFormula.A
   rw [eW, eJ]
   simp only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, e1, e2]
   abel
+/- English proof (translation)
+Use `_root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_mul_k L (-u) u` as an intermediate fact. Simplify using `only [neg_add_cancel] at this`. Rewrite using `[show _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L (-u) * _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L u = _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L (-u) * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L u from rfl, this]`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k]`.
+-/
 theorem uA_neg_mul_k (u : Fin L.n → AE F E) : _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L (-u) * _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L u = 1 := by
   have := _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_mul_k L (-u) u
   simp only [neg_add_cancel] at this
   rw [show _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L (-u) * _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L u = _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L (-u) * _root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k L u from rfl, this]
   simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C1.Au_k]
+/- English proof (translation)
+Take `⟨A', hA'⟩` from `h.cf c`. Take `⟨ε, hε⟩` from `d.ok.frame.1`. Establish `hσ` using `_root_.PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good_k d.ok.good`. Establish `h2` using `kunf.frame_eq hε (cM c)`. Rewrite `h2` using `[hA']`.
+
+Simplify using `only [kunf.jw, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.transpose_zero, Matrix.zero_mul, Matrix.mul_zero, zero_add, add_zero, Matrix.mul_one, Matrix.map_zero _ (map_zero (cA σ))] at h2`. Establish `h1 : (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L c.1)ᵀ * A'.map (cA σ) = 1` using `(Matrix.fromBlocks_inj.1 h2).2.1`. Establish `h1' : A'.map (cA σ) * (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L c.1)ᵀ = 1` using `mul_eq_one_comm.1 h1`. Establish `hinv : (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L c.1)ᵀ * (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L (-c.1))ᵀ = 1` using `by rw [← Matrix.transpose_mul, _root_.PositivityTheory.SiegelWeilFormula.Act.C6.uA_neg_mul_k, Matrix.transpose_one]`. Establish `e : A'.map (cA σ) = (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L (-c.1))ᵀ`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e2 : A' = (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L (-c.1))ᵀ.map (cA σ)`. Rewrite using `[← e, Matrix.map_map]`. Use extensionality with `i j`. Simplify using `[cA_inv' hσ]`.
+
+Rewrite using `[hA', e2]`.
+-/
 theorem cM_frame_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) :
     inFrame d.b (cM c) = Matrix.fromBlocks (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L c.1) (_root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k L δ c.2) 0 ((_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k L (-c.1))ᵀ.map (cA σ)) := by
   obtain ⟨A', hA'⟩ := h.cf c
@@ -142,12 +200,24 @@ theorem cM_frame_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L
     ext i j
     simp [cA_inv' hσ]
   rw [hA', e2]
+/- English proof (translation)
+Introduce `k`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.cM_frame_k h]`. Break down `k with k | k` into its components or cases. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L]`. Simplify using the standard rewrite rules.
+-/
 theorem fix_cM'_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Fix_k L (cM c) := by
   intro k
   rw [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.cM_frame_k h]
   rcases k with k | k
   · simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.em_ne_k L]
   · simp
+/- English proof (translation)
+Take `⟨u₀, hu₀⟩` from `ComplexParameterFamilyContinuity.mem_ratVec.1 hu`. Take `⟨a₀, ha₀⟩` from `ha`. Use `kunf.rat_of_inFrame (b := d.b) (M := Matrix.fromBlocks (1 + ∑ j, Matrix.single L.i₀ (L.em j) (u₀ j)) (Matrix.single L.i₀ L.i₀ (a₀ • δ)) 0 ((1 + ∑ j, Matrix.single L.i₀ (L.em j) (-u₀ j))ᵀ.map σ)) ?_` and prove the remaining obligations. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.Act.C6.cM_frame_k h, ← hu₀, ← ha₀, Afc.incM_fromBlocks, kfour.incM_zero]`. Use `congr 1`.
+
+Use extensionality with `i k`. Simplify using `[incM, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, GlobalTheory.ThK.incV, Matrix.single_apply, Matrix.one_apply, Matrix.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Use extensionality with `i k`.
+
+Simplify using `only [incM, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k, Matrix.map_apply, Matrix.single_apply]`. Use `split_ifs`. Use `show (algebraMap F (AF F) a₀) • ((1 : AF F) ⊗ₜ[F] δ) = (1 : AF F) ⊗ₜ[F] (a₀ • δ)`. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, mul_one, ← Algebra.algebraMap_eq_smul_one]`. Simplify using the standard rewrite rules.
+
+Use extensionality with `i k`. Simplify using `[incM, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, GlobalTheory.ThK.incV, Matrix.single_apply, Matrix.one_apply, Matrix.sum_apply, GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR]`.
+-/
 theorem cM_rat'_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) {c : (Fin L.n → AE F E) × AF F} (hu : c.1 ∈ L.ratV)
     (ha : c.2 ∈ (algebraMap F (AF F)).range) : cM c ∈ rat2 σ d.Y := by
   obtain ⟨u₀, hu₀⟩ := ComplexParameterFamilyContinuity.mem_ratVec.1 hu
@@ -171,6 +241,9 @@ theorem cM_rat'_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L 
     simp [incM, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, GlobalTheory.ThK.incV, Matrix.single_apply, Matrix.one_apply, Matrix.sum_apply, GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR]
     refine Finset.sum_congr rfl fun j _ => ?_
     split_ifs <;> simp [GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR]
+/- English proof (translation)
+Use extensionality with `r r'`. Apply the tactic sequence `rcases r with k | k <;> rcases r' with k' | k' <;>`. Apply the tactic sequence `simp [_root_.PositivityTheory.SiegelWeilFormula.Act.C6.cM_frame_k h, _root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.uA_k, _root_.PositivityTheory.SiegelWeilFormula.Act.C5.aB_k, Matrix.one_apply, Matrix.single_apply, Matrix …`.
+-/
 theorem emS_cM_k (h : _root_.PositivityTheory.SiegelWeilFormula.Act.C6.Hyp_k L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) :
     (inFrame d.b (cM c)).submatrix (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L) (_root_.PositivityTheory.SiegelWeilFormula.Act.C4.emS_k L) = 1 := by
   ext r r'

@@ -93,6 +93,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {n : ℕ} {emb : ZMod n → (K₀ →ₐ[Qp] LL)}
     {Γ : GalData G Qp LL O} {t : ℕ} {Ut : ZMod n → Multiset ℤ}
 
+/- English proof (translation)
+Take `⟨F, hF, e, he⟩` from `h`. Take `⟨F', hF', e', he'⟩` from `h'`. Set `s : Fin (μ + μ') ≃ Fin μ ⊕ Fin μ'` to `finSumFinEquiv.symm`. Establish `key : ∀ (g : G) (x : T.V × T'.V) (j : Fin μ ⊕ Fin μ'), appendEquiv (R` using `LL) (fun T : LocLat G Qp LL O => T.V) F F' (e (T.ρ g x.1), e' (T'.ρ g x.2)) j = (Sum.elim F F' j).ρ g (appendEquiv (R := LL) (fun T : LocLat G Qp LL O => T.V) F F' (e x.1, e' x.2) j) := by`. Introduce `g x j`.
+
+Consider the cases of `j with`. Consider the case `inl a => exact he g x.1 a`. Consider the case `inr b => exact he' g x.2 b`. Use `⟨fun j => Sum.elim F F' (s j), fun j => ?_, ((e.prodCongr e').trans (appendEquiv (R := LL) (fun T : LocLat G Qp LL O => T.V) F F')).trans (LinearEquiv.piCongrLeft LL (fun j => (Sum.elim F F' j).V) s).symm, fun g x j => key g x (s j)⟩` and prove the remaining obligations. Use `beta_reduce`.
+
+Consider the cases of `s j with`. Consider the case `inl a => exact hF a`. Consider the case `inr b => exact hF' b`.
+-/
 theorem sumFull_prod [IsTopologicalRing LL] {μ μ' : ℕ} {T T' : LocLat G Qp LL O} (h : SumFull PD emb Γ t Ut μ T)
     (h' : SumFull PD emb Γ t Ut μ' T') : SumFull PD emb Γ t Ut (μ + μ') (prodLoc T T') := by
   obtain ⟨F, hF, e, he⟩ := h
@@ -116,6 +123,9 @@ theorem sumFull_prod [IsTopologicalRing LL] {μ μ' : ℕ} {T T' : LocLat G Qp L
 variable {M M' : Type} [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
     {π : Representation O G M} {π' : Representation O G M'}
 
+/- English proof (translation)
+Take `⟨hf, μ, T, hT, L₂, p, hle, hp, hg, hk⟩` from `h`. Take `⟨hf', μ', T', hT', L₂', p', hle', hp', hg', hk'⟩` from `h'`. Use `⟨inferInstance, μ + μ', prodLoc T T', sumFull_prod hT hT', prodLattice L₂ L₂', (p.prodMap p') ∘ₗ (prodEquiv T.L.T T'.L.T).toLinearMap, Submodule.prod_mono hle hle', (hp.prodMap hp').comp (prodEquiv T.L.T T'.L.T).surjective, fun g x => ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `Prod.ext (hg g (prodEquiv T.L.T T'.L.T x).1) (hg' g (prodEquiv T.L.T T'.L.T x).2)`. Conclude with `Prod.ext_iff.trans (and_congr (hk (prodEquiv T.L.T T'.L.T x).1) (hk' (prodEquiv T.L.T T'.L.T x).2))`.
+-/
 theorem admissible_prod [IsTopologicalRing LL] (h : Admissible PD emb Γ t Ut π) (h' : Admissible PD emb Γ t Ut π') :
     Admissible PD emb Γ t Ut (π.prod π') := by
   obtain ⟨hf, μ, T, hT, L₂, p, hle, hp, hg, hk⟩ := h
@@ -128,6 +138,11 @@ theorem admissible_prod [IsTopologicalRing LL] (h : Admissible PD emb Γ t Ut π
 
 variable [IsDomain O] [IsPrincipalIdealRing O]
 
+/- English proof (translation)
+Take `⟨hfin, μ, T, hT, L₂, p, hle, hp, hg, hk⟩` from `h`. Set `N : Submodule O T.V` to `(LinearMap.ker (f ∘ₗ p)).map T.L.T.subtype`. Establish `hN : ∀ x : T.L.T, (x : T.V) ∈ N ↔ f (p x) = 0` using `fun x => ⟨fun ⟨_, hy, e⟩ => (Subtype.ext e : _ = x) ▸ hy, fun h => ⟨x, h, rfl⟩⟩`. Establish `h₁ : N ≤ T.L.T` using `Submodule.map_subtype_le _ _`. Use `⟨Finite.of_surjective f hs, μ, T, hT, between T.L L₂ N h₁ (fun x hx => ?_) (fun g x hx => ?_), f ∘ₗ p, h₁, hs.comp hp, fun g x => ?_, fun x => (hN x).symm⟩` and prove the remaining obligations.
+
+Use `(hN ⟨x, hle hx⟩).mpr ?_` and prove the remaining obligations. Rewrite using `[(hk _).mpr hx, map_zero]`. Use `(hN (latRep T.L g ⟨x, h₁ hx⟩)).mpr ?_` and prove the remaining obligations. Rewrite using `[hg, hf, (hN ⟨x, h₁ hx⟩).mp hx, map_zero]`. Simplify using `only [LinearMap.comp_apply, hg, hf]`.
+-/
 theorem admissible_of_surjective (f : M →ₗ[O] M') (hf : ∀ σ x, f (π σ x) = π' σ (f x))
     (hs : Function.Surjective f) (h : Admissible PD emb Γ t Ut π) : Admissible PD emb Γ t Ut π' := by
   obtain ⟨hfin, μ, T, hT, L₂, p, hle, hp, hg, hk⟩ := h
@@ -143,6 +158,17 @@ theorem admissible_of_surjective (f : M →ₗ[O] M') (hf : ∀ σ x, f (π σ x
     rw [hg, hf, (hN ⟨x, h₁ hx⟩).mp hx, map_zero]
   · simp only [LinearMap.comp_apply, hg, hf]
 
+/- English proof (translation)
+Take `⟨hfin, μ, T, hT, L₂, p, hle, hp, hg, hk⟩` from `h`. Set `N : Submodule O T.V` to `((LinearMap.range f).comap p).map T.L.T.subtype`. Establish `hN : ∀ x : T.L.T, (x : T.V) ∈ N ↔ p x ∈ LinearMap.range f` using `fun x => ⟨fun ⟨_, hy, e⟩ => (Subtype.ext e : _ = x) ▸ hy, fun h => ⟨x, h, rfl⟩⟩`. Establish `h₁ : N ≤ T.L.T` using `Submodule.map_subtype_le _ _`. Establish `h₂ : L₂.T ≤ N` using `fun x hx => by`.
+
+Use `(hN ⟨x, hle hx⟩).mpr ?_` and prove the remaining obligations. Rewrite using `[(hk _).mpr hx]`. Conclude with `zero_mem _`. Establish `hs : ∀ g, ∀ x ∈ N, T.ρ g x ∈ N` using `fun g x hx => by`. Use `(hN (latRep T.L g ⟨x, h₁ hx⟩)).mpr ?_` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `(hN ⟨x, h₁ hx⟩).mp hx`. Conclude with `⟨π g y, by rw [hg, hf, hy]⟩`. Set `q : N →ₗ[O] M` to `(LinearEquiv.ofInjective f hi).symm.toLinearMap ∘ₗ (p ∘ₗ Submodule.inclusion h₁).codRestrict (LinearMap.range f) (fun x => (hN ⟨x, h₁ x.2⟩).mp x.2)`. Establish `hq : ∀ x : N, f (q x) = p ⟨x, h₁ x.2⟩` using `fun x => congrArg Subtype.val ((LinearEquiv.ofInjective f hi).apply_symm_apply ⟨_, (hN ⟨x, h₁ x.2⟩).mp x.2⟩)`. Use `⟨Finite.of_injective f hi, μ, withLat T (between T.L L₂ N h₁ h₂ hs), hT.withLat _, L₂, q, h₂, fun y => ?_, fun g x => hi ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `hp (f y)`. Conclude with `⟨⟨x.1, (hN x).mpr ⟨y, hx.symm⟩⟩, hi ((hq _).trans hx)⟩`. Conclude with `(hq _).trans ((hg g ⟨x.1, h₁ x.2⟩).trans ((congrArg (π' g) (hq x).symm).trans (hf g _).symm))`. Use `Iff.trans ?_ (hk ⟨x.1, h₁ x.2⟩)` and prove the remaining obligations. Rewrite using `[← hq x, ← map_zero f]`.
+
+Conclude with `hi.eq_iff.symm`.
+-/
 theorem admissible_of_injective (f : M →ₗ[O] M') (hf : ∀ σ x, f (π σ x) = π' σ (f x))
     (hi : Function.Injective f) (h : Admissible PD emb Γ t Ut π') : Admissible PD emb Γ t Ut π := by
   obtain ⟨hfin, μ, T, hT, L₂, p, hle, hp, hg, hk⟩ := h
@@ -173,6 +199,9 @@ theorem admissible_of_injective (f : M →ₗ[O] M') (hf : ∀ σ x, f (π σ x)
 
 end Per
 
+/- English proof (translation)
+Introduce `l _ P S M M' _ _ _ _ π π'`. Take `⟨⟨hD, hDV, -⟩, -, -, hT, -⟩` from `GlobalTheory.LocalIntegers.goodO_integers l S.LL`. Conclude with `⟨fun f hf => ⟨admissible_of_injective f hf, admissible_of_surjective f hf⟩, admissible_prod⟩`.
+-/
 theorem admissible_closed : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P), S.Closed := by
   intro l _ P S M M' _ _ _ _ π π'
   obtain ⟨⟨hD, hDV, -⟩, -, -, hT, -⟩ := GlobalTheory.LocalIntegers.goodO_integers l S.LL

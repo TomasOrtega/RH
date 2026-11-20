@@ -4,6 +4,9 @@ namespace GlobalTheory
 namespace DegreeOneUniformiser
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subtype.val_injective, fun x => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ v).mp x.2, fun x hx => ⟨⟨x, (HeightOneSpectrum.mem_adicCompletionIntegers _ _ v).mpr hx⟩, rfl⟩⟩`.
+-/
 private theorem adicCompletionIntegers_integers {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) :
     (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).Integers
@@ -13,6 +16,17 @@ private theorem adicCompletionIntegers_integers {F : Type} [Field F] [NumberFiel
 
 open IsDedekindDomain NumberField in
 
+/- English proof (translation)
+Establish `hI` using `adicCompletionIntegers_integers v`. Establish `hunit : ∀ x : v.adicCompletionIntegers F, IsUnit x ↔ Valued.v (x : v.adicCompletion F) = 1` using `fun x => hI.isUnit_iff_valuation_eq_one`. Establish `hle : ∀ x : v.adicCompletionIntegers F, Valued.v (x : v.adicCompletion F) ≤ 1` using `fun x => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ v).mp x.2`. Use `⟨fun hu => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Use `(hunit π).mp hu` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Conclude with `absurd this (by decide)`. Establish `hv : Valued.v (a : v.adicCompletion F) * Valued.v (b : v.adicCompletion F) = WithZero.exp (-1 : ℤ)`. Rewrite using `[← h, hab, Subring.coe_mul, map_mul]`. Establish `ha0 : Valued.v (a : v.adicCompletion F) ≠ 0` using `fun h0 => by`.
+
+Rewrite `hv` using `[h0, zero_mul]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `hb0 : Valued.v (b : v.adicCompletion F) ≠ 0` using `fun h0 => by`. Rewrite `hv` using `[h0, mul_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`.
+
+Take `⟨m, hm⟩ : ∃ m : ℤ, Valued.v (a : v.adicCompletion F) = WithZero.exp m` from `⟨_, (WithZero.exp_log ha0).symm⟩`. Take `⟨n, hn⟩ : ∃ n : ℤ, Valued.v (b : v.adicCompletion F) = WithZero.exp n` from `⟨_, (WithZero.exp_log hb0).symm⟩`. Establish `ha` using `hle a`. Establish `hb` using `hle b`. Rewrite `hv` using `[hm, hn, ← WithZero.exp_add, WithZero.exp_inj]`.
+
+Rewrite `ha` using `[hm, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite `hb` using `[hn, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite using `[hunit, hunit, hm, hn, ← WithZero.exp_zero, WithZero.exp_inj, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.DegreeOneUniformiser.irreducible_of_valued {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (π : v.adicCompletionIntegers F)
     (h : Valued.v (π : v.adicCompletion F) = WithZero.exp (-1 : ℤ)) : Irreducible π := by
@@ -46,6 +60,29 @@ theorem _root_.GlobalTheory.DegreeOneUniformiser.irreducible_of_valued {F : Type
 
 open IsDedekindDomain NumberField in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v P ψ hψ hint hP ϖ hϖP hϖP2`. Establish `hle : ∀ x : 𝓞 E, Valued.v (ψ (x : E)) ≤ 1` using `fun x => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ v).mp (hint x)`. Establish `hne : ∀ x : 𝓞 E, x ≠ 0 → Valued.v (ψ (x : E)) ≠ 0`. Introduce `x hx`. Rewrite using `[Valuation.ne_zero_iff, map_ne_zero_iff _ ψ.injective]`.
+
+Conclude with `hx` after adjusting the coercions. Establish `hone : ∀ x : 𝓞 E, x ∉ P.asIdeal → Valued.v (ψ (x : E)) = 1`. Introduce `x hx`. Establish `hx0 : x ≠ 0` using `fun h => hx (h ▸ P.asIdeal.zero_mem)`. Establish `h1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ v).mp (not_not.mp (mt (hP x hx0).mpr hx))`.
+
+Rewrite `h1` using `[map_inv₀, map_inv₀]`. Conclude with `le_antisymm (hle x) ((inv_le_one₀ (zero_lt_iff.mpr (hne x hx0))).mp h1)`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => hϖP2 (h ▸ Ideal.zero_mem _)`. Establish `hlt : Valued.v (ψ (ϖ : E)) < 1`. Establish `h1` using `(hP ϖ hϖ0).mp hϖP`.
+
+Rewrite `h1` using `[HeightOneSpectrum.mem_adicCompletionIntegers, not_le, map_inv₀, map_inv₀]`. Conclude with `(one_lt_inv₀ (zero_lt_iff.mpr (hne ϖ hϖ0))).mp h1`. Take `⟨u, hu⟩` from `v.intValuation_exists_uniformizer`. Set `f : 𝓞 E` to `⟨algebraMap F E (u : F), (RingOfIntegers.isIntegral_coe u).algebraMap⟩`. Establish `hf : Valued.v (ψ (f : E)) = WithZero.exp (-1 : ℤ)` using `by show Valued.v (ψ (algebraMap F E (u : F))) = _`.
+
+Rewrite using `[hψ, ← hu, ← HeightOneSpectrum.valuation_of_algebraMap (K := F)]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (u : F)`. Establish `hf0 : f ≠ 0` using `fun h => by`. Rewrite `hf` using `[h]`. Simplify using `only [ZeroMemClass.coe_zero, map_zero] at hf`.
+
+Conclude with `WithZero.exp_ne_zero hf.symm`. Establish `hfP : f ∈ P.asIdeal`. Rewrite using `[hP f hf0, HeightOneSpectrum.mem_adicCompletionIntegers, not_le, map_inv₀, map_inv₀, hf, ← WithZero.exp_neg, neg_neg, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hϖP : Ideal.span {ϖ} ≤ P.asIdeal)`.
+
+Establish `hJP : ¬ J ≤ P.asIdeal` using `fun hJP => hϖP2 (by`. Establish `hmem : ϖ ∈ Ideal.span {ϖ}` using `Ideal.mem_span_singleton_self ϖ`. Rewrite `hmem` using `[hJ]`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mono_right hJP hmem)`.
+
+Take `⟨t, htJ, htP⟩` from `Set.not_subset.mp hJP`. Establish `hft : f * t ∈ Ideal.span {ϖ}`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul hfP htJ`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.mp hft`.
+
+Establish `hval` using `congrArg (fun x : 𝓞 E => Valued.v (ψ (x : E))) hs`. Simplify using `only [MulMemClass.coe_mul, map_mul] at hval`. Rewrite `hval` using `[hone t htP, mul_one, hf]`. Establish `hge : WithZero.exp (-1 : ℤ) ≤ Valued.v (ψ (ϖ : E))`. Rewrite using `[← hval]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨m, hm⟩ : ∃ m : ℤ, Valued.v (ψ (ϖ : E)) = WithZero.exp m` from `⟨_, (WithZero.exp_log (hne ϖ hϖ0)).symm⟩`. Rewrite `hge` using `[hm, WithZero.exp_le_exp]`. Rewrite `hlt` using `[hm, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Establish `hm1 : m = -1` using `by omega`.
+
+Use `⟨⟨ψ (ϖ : E), hint ϖ⟩, _root_.GlobalTheory.DegreeOneUniformiser.irreducible_of_valued v _ ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← hm1]`. Conclude with `hm`.
+-/
 theorem _root_.GlobalTheory.DegreeOneUniformiser.exists_irreducible_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (P : HeightOneSpectrum (𝓞 E)) (ψ : E →+* v.adicCompletion F), (∀ a : F, ψ (algebraMap F E a) = algebraMap F (v.adicCompletion F) a) → (∀ x : 𝓞 E, ψ (x : E) ∈ v.adicCompletionIntegers F) → (∀ x : 𝓞 E, x ≠ 0 → (x ∈ P.asIdeal ↔ ψ ((x : E)⁻¹) ∉ v.adicCompletionIntegers F)) → ∀ ϖ : 𝓞 E, ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 → ∃ π : v.adicCompletionIntegers F, Irreducible π ∧ (π : v.adicCompletion F) = ψ (ϖ : E) := by
   intro F E _ _ _ _ _ v P ψ hψ hint hP ϖ hϖP hϖP2
   have hle : ∀ x : 𝓞 E, Valued.v (ψ (x : E)) ≤ 1 := fun x =>

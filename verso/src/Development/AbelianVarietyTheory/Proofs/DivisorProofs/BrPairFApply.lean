@@ -14,6 +14,9 @@ def brPairF (σ : ι → DomWeight n) (hN : N = n + 1) (Λ : ι → DomWeight N)
     VV K Λ →ₗ[K] (VV K fun τ => (σ τ).dual) →ₗ[K] K :=
   (pairBK σ).compl₁₂ (Formalism.L2.Col.Br.brStd hN Λ σ) (GlobalTheory.FunObj.funEquiv σ).symm.toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem brPairF_apply (σ : ι → DomWeight n) (hN : N = n + 1) (Λ : ι → DomWeight N) (u : VV K Λ)
     (v : VV K fun τ => (σ τ).dual) :
     brPairF σ hN Λ u v = pairBK σ (Formalism.L2.Col.Br.brStd hN Λ σ u) ((GlobalTheory.FunObj.funEquiv σ).symm v) := rfl

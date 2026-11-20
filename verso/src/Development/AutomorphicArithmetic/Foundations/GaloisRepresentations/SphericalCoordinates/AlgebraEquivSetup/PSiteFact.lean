@@ -10,6 +10,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 open GlobalTheory.LFun (KGL)
 
+/- English proof (translation)
+Establish `e : HeightOneSpectrum.under (𝓞 ℚ) (UpperTheory.Gal.CertificateRingHomMap.cj u) = HeightOneSpectrum.under (𝓞 ℚ) u` using `GlobalTheory.DefU.ClassFin.under_conjSrc (F := ℚ) (E := E) _ (fun x => by simp) u`. Establish `h2 : ((m : 𝓞 ℚ) ∈ (HeightOneSpectrum.under (𝓞 ℚ) (UpperTheory.Gal.CertificateRingHomMap.cj u)).asIdeal) ↔ ((m : 𝓞 ℚ) ∈ (HeightOneSpectrum.under (𝓞 ℚ) u).asIdeal)` using `by rw [e]`. Simplify `h2.2 (by simpa [HeightOneSpectrum.under, Ideal.under_def, Ideal.mem_comap] using h)` using `[HeightOneSpectrum.under, Ideal.under_def, Ideal.mem_comap]`.
+-/
 private lemma natCast_mem_cj {E : Type} [Field E] [NumberField E] [IsCMField E] (u : Plc E) (m : ℕ) (h : (m : 𝓞 E) ∈ u.asIdeal) :
     (m : 𝓞 E) ∈ (UpperTheory.Gal.CertificateRingHomMap.cj u).asIdeal := by
   have e : HeightOneSpectrum.under (𝓞 ℚ) (UpperTheory.Gal.CertificateRingHomMap.cj u) = HeightOneSpectrum.under (𝓞 ℚ) u :=
@@ -18,6 +21,9 @@ private lemma natCast_mem_cj {E : Type} [Field E] [NumberField E] [IsCMField E] 
       ((m : 𝓞 ℚ) ∈ (HeightOneSpectrum.under (𝓞 ℚ) u).asIdeal) := by rw [e]
   simpa [HeightOneSpectrum.under, Ideal.under_def, Ideal.mem_comap] using h2.2 (by simpa [HeightOneSpectrum.under, Ideal.under_def, Ideal.mem_comap] using h)
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨a, b, hab⟩ := Nat.isCoprime_iff_coprime.2 hm have h1 : ((a * (m : ℤ) + b * (q : ℤ) : ℤ) : 𝓞 E) = 1 := by rw [hab]; simp refine u.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_) rw [← h1] push_cast exact add_mem (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ hq)`.
+-/
 private lemma natCast_not_mem_of_coprime {E : Type} [Field E] [NumberField E] (u : Plc E) {q m : ℕ} (hm : m.Coprime q)
     (hq : (q : 𝓞 E) ∈ u.asIdeal) : (m : 𝓞 E) ∉ u.asIdeal := fun h => by
   obtain ⟨a, b, hab⟩ := Nat.isCoprime_iff_coprime.2 hm
@@ -27,6 +33,9 @@ private lemma natCast_not_mem_of_coprime {E : Type} [Field E] [NumberField E] (u
   push_cast
   exact add_mem (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ hq)
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `e : comp (UpperTheory.Gal.CertificateRingHomMap.cj w) g = 1` using `Units.ext (Subsingleton.elim _ _)`. Rewrite using `[e]`. Conclude with `one_mem _`. Conclude with `(hI E n g w hn).1 hs h`.
+-/
 private lemma comp_cj_mem {E : Type} [Field E] [NumberField E] [IsCMField E] (hI : UpperTheory.Gal.W2.Seed.IntConj) {n : ℕ} (g : GUf E n)
     (w : Plc E) (hs : sim g ∈ UpperTheory.Gal.CertificateRingHomMap.ZU) (h : comp w g ∈ KGL w n) :
     comp (UpperTheory.Gal.CertificateRingHomMap.cj w) g ∈ KGL (UpperTheory.Gal.CertificateRingHomMap.cj w) n := by
@@ -36,6 +45,9 @@ private lemma comp_cj_mem {E : Type} [Field E] [NumberField E] [IsCMField E] (hI
     exact one_mem _
   · exact (hI E n g w hn).1 hs h
 
+/- English proof (translation)
+Use `(inId_iff_le u 𝔟 y).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `h1 : u.intValuation s = 1` using `le_antisymm (u.intValuation_le_one s) (not_lt.1 fun h => hu ((u.intValuation_lt_one_iff_mem s).1 h))`. Rewrite using `[h1]`. Conclude with `hy`.
+-/
 private lemma inId_of_int {E : Type} [Field E] [NumberField E] (u : Plc E) {𝔟 : Ideal (𝓞 E)} {s : 𝓞 E} (hs : s ∈ 𝔟)
     (hu : s ∉ u.asIdeal) {y : u.adicCompletion E} (hy : y ∈ u.adicCompletionIntegers E) : InId u 𝔟 y := by
   refine (inId_iff_le u 𝔟 y).2 ⟨s, hs, ?_⟩
@@ -44,12 +56,21 @@ private lemma inId_of_int {E : Type} [Field E] [NumberField E] (u : Plc E) {𝔟
   rw [h1]
   exact hy
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span (by simp)`.
+-/
 private lemma q_in_uId {p : ℕ} [Fact p.Prime] (D : Datum p) (q : ℕ) (r : ℤ) : (q : 𝓞 D.F) ∈ uId D q r :=
   Ideal.subset_span (by simp)
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span (by simp)`.
+-/
 private lemma ω_in_uId {p : ℕ} [Fact p.Prime] (D : Datum p) (q : ℕ) (r : ℤ) : D.ω - (r : 𝓞 D.F) ∈ uId D q r :=
   Ideal.subset_span (by simp)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h1 : 𝔞 ≤ w.asIdeal` using `hc`. Rewrite `h` using `[sup_eq_right.2 h1]`. Conclude with `w.isPrime.ne_top h`.
+-/
 private lemma exists_not_mem_of_sup {E : Type} [Field E] [NumberField E] (w : Plc E) {𝔞 : Ideal (𝓞 E)} (h : 𝔞 ⊔ w.asIdeal = ⊤) :
     ∃ t ∈ 𝔞, t ∉ w.asIdeal := by
   by_contra hc
@@ -58,6 +79,27 @@ private lemma exists_not_mem_of_sup {E : Type} [Field E] [NumberField E] (w : Pl
   rw [sup_eq_right.2 h1] at h
   exact w.isPrime.ne_top h
 
+/- English proof (translation)
+Establish `hq : σ.q.Prime` using `σ.atp.prime`. Establish `hG : A.Good σ.q` using `σ.good`. Establish `hqw : (σ.q : 𝓞 E) ∈ w.asIdeal` using `σ.atp.le (q_in_uId S.D _ _)`. Establish `hrw : A.ω - (σ.r : 𝓞 E) ∈ w.asIdeal` using `σ.atp.le (ω_in_uId S.D _ _)`. Take `⟨-, hap, -, -, -, -⟩` from `hC E n w hw`.
+
+Establish `hqc : (σ.q : 𝓞 E) ∈ (UpperTheory.Gal.CertificateRingHomMap.cj w).asIdeal` using `natCast_mem_cj w _ hqw`. Take `⟨s1, -, -, -, -, -, s7⟩` from `hS E A x hx σ.q hq hG.1 w hqw`. Take `⟨-, hN, -, hsup, e, he⟩` from `σ.lv`. Establish `hω : (A.ω - (σ.r : 𝓞 E)) ^ e ∈ σ.𝔞` using `he (Ideal.pow_mem_pow (ω_in_uId S.D _ _) e)`. Establish `ht : ∃ t ∈ σ.𝔞, t ∉ w.asIdeal` using `exists_not_mem_of_sup w hsup`.
+
+Establish `ht' : (A.ω - (σ.r : 𝓞 E)) ^ e ∉ (UpperTheory.Gal.CertificateRingHomMap.cj w).asIdeal` using `fun h => s1 ((s7 σ.r hrw _).2 ⟨hqc, (UpperTheory.Gal.CertificateRingHomMap.cj w).isPrime.mem_of_pow_mem e h⟩)`. Establish `hs : ∀ (u : Plc E) (t : 𝓞 E), (σ.q : 𝓞 E) ∈ u.asIdeal → t ∈ σ.𝔞 → t ∉ u.asIdeal → ∃ s ∈ Ideal.span {((ordCompl[σ.q] N.1 : ℕ) : 𝓞 E)} * σ.𝔞, s ∉ u.asIdeal` using `fun u t h1 h2 h3 => ⟨_, Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) h2, fun h => (u.isPrime.mem_or_mem h).elim (natCast_not_mem_of_coprime u hN h1) h3⟩`. Establish `hb : Ideal.span {((ordCompl[σ.q] N.1 : ℕ) : 𝓞 E)} * σ.𝔞 ≠ ⊥`. Introduce `h`. Establish `h1 : ((N.1 : ℕ) : 𝓞 E) ∈ Ideal.span {((ordCompl[σ.q] N.1 : ℕ) : 𝓞 E)} * σ.𝔞` using `σ.mem`.
+
+Rewrite `h1` using `[h, Ideal.mem_bot]`. Establish `h2 : N.1 = 0` using `by exact_mod_cast h1`. Use `N.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hy' : comp w (UpperTheory.Gal.CertificateRingHomMap.loc hw y) ∈ KGL w n`.
+
+Rewrite using `[UpperTheory.Gal.CertificateRingHomMap.comp_loc]` and apply the resulting hypothesis. Establish `tri : ∀ u : Plc E, comp u (UpperTheory.Gal.CertificateRingHomMap.loc hw y) = 1 ∨ ((σ.q : 𝓞 E) ∈ u.asIdeal ∧ comp u (UpperTheory.Gal.CertificateRingHomMap.loc hw y) ∈ KGL u n ∧ ∃ s ∈ Ideal.span {((ordCompl[σ.q] N.1 : ℕ) : 𝓞 E)} * σ.𝔞, s ∉ u.asIdeal)`. Introduce `u`. Distinguish the cases in `h1 : u = w`. Rewrite using `[h1]`.
+
+Take `⟨t, h2, h3⟩` from `ht`. Conclude with `Or.inr ⟨hqw, hy', hs _ t hqw h2 h3⟩`. Distinguish the cases in `h2 : u = UpperTheory.Gal.CertificateRingHomMap.cj w`. Rewrite using `[h2]`. Conclude with `Or.inr ⟨hqc, comp_cj_mem hI _ _ (by simp [one_mem]) hy', hs _ _ hqc hω ht'⟩`.
+
+Conclude with `Or.inl (UpperTheory.Gal.CertificateRingHomMap.comp_loc_of_apart hw ((hap u).2 ⟨h1, h2⟩) y)`. Establish `hK : ∀ u : Plc E, (σ.q : 𝓞 E) ∈ u.asIdeal → comp u (UpperTheory.Gal.CertificateRingHomMap.loc hw y) ∈ KGL u n → F.a u * comp u (UpperTheory.Gal.CertificateRingHomMap.loc hw y) * (F.a u)⁻¹ ∈ KGL u n` using `fun u h1 h2 =>`. Establish `ha` using `F.a_int u σ.q hq hG h1`. Use `mul_mem (mul_mem ha h2) (inv_mem ha)`. Use `(σ.isLev _).2 ⟨(hD E A n p S F _).2.1.2 fun u _ => ?_, ((hD E A n p S F _).2.2.1 _ hb).2 fun u _ i k => ?_⟩` and prove the remaining obligations.
+
+Break down `tri u with h | ⟨h1, h2, -⟩` into its components or cases. Simplify using `[h, one_mem]`. Conclude with `hK u h1 h2`. Break down `tri u with h | ⟨h1, h2, s, h3, h4⟩` into its components or cases. Establish `h0 : F.cmp u (UpperTheory.Gal.CertificateRingHomMap.loc hw y) = 1` using `by simp [Frame.cmp, h]`.
+
+Rewrite using `[h0]`. Conclude with `⟨0, zero_mem _, by simp⟩`. Use `inId_of_int u h3 h4 ?_` and prove the remaining obligations. Establish `hc` using `(GlobalTheory.EulerTwRestr.mem_KGL_iff.1 (hK u h1 h2)).1 i k`. Establish `hc' : F.cmp u (UpperTheory.Gal.CertificateRingHomMap.loc hw y) i k ∈ u.adicCompletionIntegers E` using `hc`.
+
+Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `sub_mem hc' (one_mem _)`. Simplify using `using hc'`.
+-/
 private lemma loc_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime] {S : Setup A n p}
     (hD : Dict) (hS : Sides) (hI : UpperTheory.Gal.W2.Seed.IntConj) (hC : UpperTheory.Gal.CertificateRingHomMap.LocComm) (F : Frame S) {x : E} (hx : Gen A x)
     {N : Lv p} {w : Plc E} (σ : Site S N w) (hw : IsSplitAt w) {y : GLw n w} (hy : y ∈ KGL w n) :
@@ -118,6 +160,11 @@ private lemma loc_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Ar
       · exact sub_mem hc' (one_mem _)
       · simpa using hc'
 
+/- English proof (translation)
+Establish `h1` using `((σ.isLev _).1 hk).1`. Establish `h2` using `(hD E A n p S F g).2.1.1 h1 w hp`. Establish `ha` using `F.a_int w σ.q σ.atp.prime σ.good (σ.atp.le (q_in_uId S.D _ _))`. Establish `e : comp w g = (F.a w)⁻¹ * (F.a w * comp w g * (F.a w)⁻¹) * F.a w` using `by group`. Rewrite using `[e]`.
+
+Conclude with `mul_mem (mul_mem (inv_mem ha) h2) ha`.
+-/
 private lemma pr_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime] {S : Setup A n p}
     (hD : Dict) (F : Frame S) {N : Lv p} {w : Plc E} (σ : Site S N w) (hp : (p : 𝓞 E) ∉ w.asIdeal) {g : GUf E n}
     (hk : F.j g ∈ σ.K₀) : comp w g ∈ KGL w n := by
@@ -128,6 +175,11 @@ private lemma pr_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Ari
   rw [e]
   exact mul_mem (mul_mem (inv_mem ha) h2) ha
 
+/- English proof (translation)
+Introduce `hD hS hI hC E _ _ _ A n p _ S F x hx N w σ L hL`. Use `⟨fun y hy => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[hL.2 y]`. Conclude with `loc_mem hD hS hI hC F hx σ w.2.1 hy`. Take `⟨g, rfl⟩` from `F.surj k`.
+
+Rewrite using `[hL.1 g]`. Conclude with `pr_mem hD F σ w.2.2 hk`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pSiteFact :
     Dict → Sides → UpperTheory.Gal.W2.Seed.IntConj → UpperTheory.Gal.CertificateRingHomMap.LocComm → SiteFact := by
   intro hD hS hI hC E _ _ _ A n p _ S F x hx N w σ L hL

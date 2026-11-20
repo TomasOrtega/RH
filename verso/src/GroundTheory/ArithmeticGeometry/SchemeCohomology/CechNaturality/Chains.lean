@@ -15,6 +15,9 @@ abbrev Chain (ι : Type w) (n : ℕ) : Type w := (Fin (n + 1) → ι) →₀ ℤ
 noncomputable def chainMap {m n : ℕ} (θ : Fin (m + 1) → Fin (n + 1)) : Chain ι n →+ Chain ι m :=
   Finsupp.mapDomain.addMonoidHom fun i => i ∘ θ
 
+/- English proof (translation)
+The claim follows from `Finsupp.mapDomain_single`.
+-/
 lemma chainMap_single {m n : ℕ} (θ : Fin (m + 1) → Fin (n + 1)) (i : Fin (n + 1) → ι) (z : ℤ) :
     chainMap θ (Finsupp.single i z) = Finsupp.single (i ∘ θ) z :=
   Finsupp.mapDomain_single
@@ -31,6 +34,9 @@ noncomputable def chainSimplicial (ι : Type w) : SimplicialObject AddCommGrpCat
 noncomputable def bd (n : ℕ) : Chain ι (n + 1) →+ Chain ι n :=
   (AlgebraicTopology.AlternatingFaceMapComplex.objD (chainSimplicial ι) n).hom
 
+/- English proof (translation)
+Establish `h` using `hom_finset_sum_apply Finset.univ (fun k : Fin (n + 2) => ((-1 : ℤ) ^ (k : ℕ)) • (chainSimplicial ι).δ k) c`. Use `h.trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 lemma bd_apply (n : ℕ) (c : Chain ι (n + 1)) :
     bd n c = ∑ k : Fin (n + 2), ((-1 : ℤ) ^ (k : ℕ)) • chainMap k.succAbove c := by
   have h := hom_finset_sum_apply Finset.univ
@@ -38,21 +44,35 @@ lemma bd_apply (n : ℕ) (c : Chain ι (n + 1)) :
   refine h.trans (Finset.sum_congr rfl fun k _ => ?_)
   rfl
 
+/- English proof (translation)
+Rewrite using `[bd_apply]`. Simplify using `only [chainMap_single]`.
+-/
 lemma bd_single (n : ℕ) (i : Fin (n + 2) → ι) (z : ℤ) :
     bd n (Finsupp.single i z) =
       ∑ k : Fin (n + 2), ((-1 : ℤ) ^ (k : ℕ)) • Finsupp.single (i ∘ k.succAbove) z := by
   rw [bd_apply]
   simp only [chainMap_single]
 
+/- English proof (translation)
+Use `AlgebraicTopology.AlternatingFaceMapComplex.d_squared (chainSimplicial ι) n` as an intermediate fact. Conclude with `congrArg (fun f => f.hom c) this`.
+-/
 lemma bd_bd (n : ℕ) (c : Chain ι (n + 2)) : bd n (bd (n + 1) c) = 0 := by
   have := AlgebraicTopology.AlternatingFaceMapComplex.d_squared (chainSimplicial ι) n
   exact congrArg (fun f => f.hom c) this
 
 noncomputable def aug : Chain ι 0 →+ ℤ := Finsupp.liftAddHom fun _ => AddMonoidHom.id ℤ
 
+/- English proof (translation)
+The claim follows from `Finsupp.liftAddHom_apply_single _ _ _`.
+-/
 lemma aug_single (j : Fin 1 → ι) (z : ℤ) : aug (Finsupp.single j z) = z :=
   Finsupp.liftAddHom_apply_single _ _ _
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => rw [map_add, map_add, hf, hg, add_zero]`. Consider the case `single i z`. Rewrite using `[bd_single, Fin.sum_univ_two]`.
+
+Simplify using `[aug_single]`.
+-/
 lemma aug_bd (c : Chain ι 1) : aug (bd 0 c) = 0 := by
   induction c using Finsupp.induction_linear with
   | zero => simp
@@ -64,10 +84,16 @@ lemma aug_bd (c : Chain ι 1) : aug (bd 0 c) = 0 := by
 noncomputable def lin {m n : ℕ} (f : (Fin (m + 1) → ι) → Chain ι n) : Chain ι m →+ Chain ι n :=
   Finsupp.liftAddHom fun j => zmultiplesHom _ (f j)
 
+/- English proof (translation)
+Rewrite using `[lin, Finsupp.liftAddHom_apply_single, zmultiplesHom_apply]`.
+-/
 lemma lin_single {m n : ℕ} (f : (Fin (m + 1) → ι) → Chain ι n) (j : Fin (m + 1) → ι) (z : ℤ) :
     lin f (Finsupp.single j z) = z • f j := by
   rw [lin, Finsupp.liftAddHom_apply_single, zmultiplesHom_apply]
 
+/- English proof (translation)
+Rewrite using `[← Finsupp.sum_single c, Finsupp.sum, map_sum]`. Conclude with `Submodule.sum_mem _ fun j hj => h j ((Finsupp.mem_supported ℤ c).1 hc hj) _`.
+-/
 lemma map_mem_supported {m n : ℕ} (L : Chain ι m →+ Chain ι n) {S : Set (Fin (m + 1) → ι)}
     {T : Set (Fin (n + 1) → ι)}
     (h : ∀ j ∈ S, ∀ z : ℤ, L (Finsupp.single j z) ∈ Finsupp.supported ℤ ℤ T) {c : Chain ι m}
@@ -75,6 +101,9 @@ lemma map_mem_supported {m n : ℕ} (L : Chain ι m →+ Chain ι n) {S : Set (F
   rw [← Finsupp.sum_single c, Finsupp.sum, map_sum]
   exact Submodule.sum_mem _ fun j hj => h j ((Finsupp.mem_supported ℤ c).1 hc hj) _
 
+/- English proof (translation)
+Rewrite using `[← Finsupp.sum_single c, Finsupp.sum, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun j hj => h j ((Finsupp.mem_supported ℤ c).1 hc hj) _`.
+-/
 lemma eq_of_supported {m : ℕ} {M : Type*} [AddCommGroup M] (L L' : Chain ι m →+ M)
     {S : Set (Fin (m + 1) → ι)} (h : ∀ j ∈ S, ∀ z : ℤ, L (Finsupp.single j z) = L' (Finsupp.single j z))
     {c : Chain ι m} (hc : c ∈ Finsupp.supported ℤ ℤ S) : L c = L' c := by
@@ -83,13 +112,22 @@ lemma eq_of_supported {m : ℕ} {M : Type*} [AddCommGroup M] (L L' : Chain ι m 
 
 def rangeIn {n : ℕ} (S : Set ι) : Set (Fin (n + 1) → ι) := {j | Set.range j ⊆ S}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_rangeIn {n : ℕ} {S : Set ι} {j : Fin (n + 1) → ι} : j ∈ rangeIn S ↔ Set.range j ⊆ S :=
   Iff.rfl
 
+/- English proof (translation)
+The claim follows from `Finsupp.single_mem_supported ℤ z (mem_rangeIn.2 subset_rfl)`.
+-/
 lemma single_mem_rangeIn {n : ℕ} (i : Fin (n + 1) → ι) (z : ℤ) :
     Finsupp.single i z ∈ Finsupp.supported ℤ ℤ (rangeIn (Set.range i)) :=
   Finsupp.single_mem_supported ℤ z (mem_rangeIn.2 subset_rfl)
 
+/- English proof (translation)
+The claim follows from `map_mem_supported _ (fun j hj z => by rw [lin_single] exact Submodule.smul_mem _ z (Finsupp.supported_mono (fun k hk => mem_rangeIn.2 ((mem_rangeIn.1 hk).trans (mem_rangeIn.1 hj))) (hf j hj))) hc`.
+-/
 lemma lin_mem_rangeIn {m n : ℕ} (f : (Fin (m + 1) → ι) → Chain ι n) {S : Set ι}
     (hf : ∀ j : Fin (m + 1) → ι, Set.range j ⊆ S →
       f j ∈ Finsupp.supported ℤ ℤ (rangeIn (n := n) (Set.range j)))
@@ -100,6 +138,9 @@ lemma lin_mem_rangeIn {m n : ℕ} (f : (Fin (m + 1) → ι) → Chain ι n) {S :
     exact Submodule.smul_mem _ z (Finsupp.supported_mono
       (fun k hk => mem_rangeIn.2 ((mem_rangeIn.1 hk).trans (mem_rangeIn.1 hj))) (hf j hj))) hc
 
+/- English proof (translation)
+The claim follows from `map_mem_supported _ (fun j hj z => by rw [bd_single] exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Finsupp.single_mem_supported ℤ z (mem_rangeIn.2 ((Set.range_comp_subset_range _ _).trans (mem_rangeIn.1 hj))))) hc`.
+-/
 lemma bd_mem_rangeIn {n : ℕ} {S : Set ι} {c : Chain ι (n + 1)}
     (hc : c ∈ Finsupp.supported ℤ ℤ (rangeIn S)) :
     bd n c ∈ Finsupp.supported ℤ ℤ (rangeIn S) :=
@@ -112,10 +153,18 @@ lemma bd_mem_rangeIn {n : ℕ} {S : Set ι} {c : Chain ι (n + 1)}
 noncomputable def cone {n : ℕ} (s : ι) : Chain ι n →+ Chain ι (n + 1) :=
   Finsupp.mapDomain.addMonoidHom fun i => (Fin.cons s i : Fin (n + 2) → ι)
 
+/- English proof (translation)
+The claim follows from `Finsupp.mapDomain_single`.
+-/
 lemma cone_single {n : ℕ} (s : ι) (i : Fin (n + 1) → ι) (z : ℤ) :
     cone s (Finsupp.single i z) = Finsupp.single (Fin.cons s i : Fin (n + 2) → ι) z :=
   Finsupp.mapDomain_single
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Simplify using `only [map_add]`. Rewrite using `[add_add_add_comm, hf, hg]`.
+
+Consider the case `single i z`. Rewrite using `[cone_single, bd_single, Fin.sum_univ_succ, bd_single, map_sum]`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, cons_comp_succAbove_zero, cons_comp_succAbove_succ, Fin.val_succ, pow_succ, mul_neg_one, neg_smul, map_zsmul, cone_single]`. Rewrite using `[add_assoc, ← Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+-/
 lemma bd_cone_add_cone_bd (n : ℕ) (s : ι) (c : Chain ι (n + 1)) :
     bd (n + 1) (cone s c) + cone s (bd n c) = c := by
   induction c using Finsupp.induction_linear with
@@ -131,6 +180,9 @@ lemma bd_cone_add_cone_bd (n : ℕ) (s : ι) (c : Chain ι (n + 1)) :
     rw [add_assoc, ← Finset.sum_add_distrib]
     simp
 
+/- English proof (translation)
+The claim follows from `map_mem_supported _ (fun j hj z => by rw [cone_single] refine Finsupp.single_mem_supported ℤ z (mem_rangeIn.2 ?_) rintro x ⟨a, rfl⟩ cases a using Fin.cases with | zero => simpa using hs | succ a => simpa using (mem_rangeIn.1 hj) ⟨a, rfl⟩) hc`.
+-/
 lemma cone_mem_rangeIn {n : ℕ} {S : Set ι} {s : ι} (hs : s ∈ S) {c : Chain ι n}
     (hc : c ∈ Finsupp.supported ℤ ℤ (rangeIn S)) :
     cone s c ∈ Finsupp.supported ℤ ℤ (rangeIn S) :=
@@ -146,6 +198,11 @@ section Order
 
 variable [LinearOrder ι]
 
+/- English proof (translation)
+Use `Fin.strictMono_iff_lt_succ.2 fun k => ?_` and prove the remaining obligations. Consider the cases of `k using Fin.cases with`. Consider the case `zero => simpa using hs`. Consider the case `succ k`. Rewrite using `[← Fin.succ_castSucc, Fin.cons_succ, Fin.cons_succ]`.
+
+Conclude with `hj Fin.castSucc_lt_succ`.
+-/
 lemma strictMono_cons {n : ℕ} {s : ι} {j : Fin (n + 1) → ι} (hj : StrictMono j) (hs : s < j 0) :
     StrictMono (Fin.cons s j : Fin (n + 2) → ι) := by
   refine Fin.strictMono_iff_lt_succ.2 fun k => ?_
@@ -157,19 +214,31 @@ lemma strictMono_cons {n : ℕ} {s : ι} {j : Fin (n + 1) → ι} (hj : StrictMo
 
 def ordIn {n : ℕ} (S : Set ι) : Set (Fin (n + 1) → ι) := {j | StrictMono j ∧ Set.range j ⊆ S}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_ordIn {n : ℕ} {S : Set ι} {j : Fin (n + 1) → ι} :
     j ∈ ordIn S ↔ StrictMono j ∧ Set.range j ⊆ S :=
   Iff.rfl
 
 def ordFrom {n : ℕ} (s : ι) : Set (Fin (n + 1) → ι) := {j | StrictMono j ∧ s ≤ j 0}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_ordFrom {n : ℕ} {s : ι} {j : Fin (n + 1) → ι} : j ∈ ordFrom s ↔ StrictMono j ∧ s ≤ j 0 :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `a b hab` and use `by rw [Fin.fin_one_eq_zero a, Fin.fin_one_eq_zero b] at hab exact absurd hab (lt_irrefl _)`.
+-/
 lemma strictMono_of_fin_one (j : Fin 1 → ι) : StrictMono j := fun a b hab => by
   rw [Fin.fin_one_eq_zero a, Fin.fin_one_eq_zero b] at hab
   exact absurd hab (lt_irrefl _)
 
+/- English proof (translation)
+Introduce `_ h` and use `mem_rangeIn.2 (mem_ordIn.1 h).2`.
+-/
 lemma ordIn_subset_rangeIn {n : ℕ} (S : Set ι) : ordIn (n := n) S ⊆ rangeIn S :=
   fun _ h => mem_rangeIn.2 (mem_ordIn.1 h).2
 
@@ -177,16 +246,33 @@ noncomputable def ocone {n : ℕ} (s : ι) : Chain ι n →+ Chain ι (n + 1) :=
   Finsupp.liftAddHom fun i =>
     if s < i 0 then Finsupp.singleAddHom (Fin.cons s i : Fin (n + 2) → ι) else 0
 
+/- English proof (translation)
+Rewrite using `[ocone, Finsupp.liftAddHom_apply_single, if_pos h]`. Both sides reduce to the same expression.
+-/
 lemma ocone_single_of_lt {n : ℕ} {s : ι} {i : Fin (n + 1) → ι} (h : s < i 0) (z : ℤ) :
     ocone s (Finsupp.single i z) = Finsupp.single (Fin.cons s i : Fin (n + 2) → ι) z := by
   rw [ocone, Finsupp.liftAddHom_apply_single, if_pos h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ocone, Finsupp.liftAddHom_apply_single, if_neg h]`. Both sides reduce to the same expression.
+-/
 lemma ocone_single_of_not_lt {n : ℕ} {s : ι} {i : Fin (n + 1) → ι} (h : ¬ s < i 0) (z : ℤ) :
     ocone s (Finsupp.single i z) = 0 := by
   rw [ocone, Finsupp.liftAddHom_apply_single, if_neg h]
   rfl
 
+/- English proof (translation)
+Use `eq_of_supported (((bd (n + 1)).comp (ocone s)) + (ocone s).comp (bd n)) (AddMonoidHom.id _) (fun j hj z => ?_) hc` and prove the remaining obligations. Take `⟨hmono, hsj⟩` from `mem_ordFrom.1 hj`. Simplify using `only [AddMonoidHom.add_apply, AddMonoidHom.comp_apply, AddMonoidHom.id_apply]`. Establish `hface : ∀ k : Fin (n + 2), s ≤ (j ∘ k.succAbove) 0` using `fun k => hsj.trans (hmono.monotone (Fin.zero_le _))`. Distinguish the cases in `hlt : s < j 0`.
+
+Establish `h1 : ocone s (Finsupp.single j z) = cone s (Finsupp.single j z)`. Rewrite using `[ocone_single_of_lt hlt, cone_single]`. Establish `h2 : ocone s (bd n (Finsupp.single j z)) = cone s (bd n (Finsupp.single j z))`. Rewrite using `[bd_single, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, map_zsmul, ocone_single_of_lt (i := j ∘ k.succAbove) (show s < j (k.succAbove 0) from hlt.trans_le (hmono.monotone (Fin.zero_le _))), cone_single]`. Rewrite using `[h1, h2]`. Conclude with `bd_cone_add_cone_bd n s _`. Establish `hs : s = j 0` using `le_antisymm hsj (not_lt.1 hlt)`. Rewrite using `[ocone_single_of_not_lt hlt, map_zero, zero_add, bd_single, map_sum, Fin.sum_univ_succ]`.
+
+Establish `h0 : s < (j ∘ (0 : Fin (n + 2)).succAbove) 0`. Rewrite using `[hs]`. Conclude with `hmono (by simp)`. Rewrite using `[map_zsmul, ocone_single_of_lt h0]`. Establish `hrest : ∀ k : Fin (n + 1), ¬ s < (j ∘ k.succ.succAbove) 0` using `fun k => by`.
+
+Simplify using `[Function.comp_apply, hs]`. Simplify using `only [map_zsmul, ocone_single_of_not_lt (hrest _), smul_zero, Finset.sum_const_zero, add_zero, Fin.val_zero, pow_zero, one_smul]`. Use `congr 1`. Rewrite using `[hs]`. Conclude with `Fin.cons_self_tail j`.
+-/
 lemma bd_ocone_add_ocone_bd (n : ℕ) (s : ι) {c : Chain ι (n + 1)}
     (hc : c ∈ Finsupp.supported ℤ ℤ (ordFrom s)) :
     bd (n + 1) (ocone s c) + ocone s (bd n c) = c := by
@@ -221,6 +307,13 @@ lemma bd_ocone_add_ocone_bd (n : ℕ) (s : ι) {c : Chain ι (n + 1)}
     rw [hs]
     exact Fin.cons_self_tail j
 
+/- English proof (translation)
+Use `eq_of_supported ((bd 0).comp (ocone s)) (AddMonoidHom.id _ - (zmultiplesHom _ (Finsupp.single (fun _ => s) 1)).comp aug) (fun j hj z => ?_) hc` and prove the remaining obligations. Take `⟨-, hsj⟩` from `mem_ordFrom.1 hj`. Simplify using `only [AddMonoidHom.comp_apply, AddMonoidHom.sub_apply, AddMonoidHom.id_apply, zmultiplesHom_apply, aug_single, Finsupp.smul_single_one]`. Establish `hconst : (fun _ : Fin 1 => s) = Fin.cons s j ∘ (1 : Fin 2).succAbove`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[Fin.fin_one_eq_zero a]`. Both sides reduce to the same expression. Distinguish the cases in `hlt : s < j 0`. Rewrite using `[ocone_single_of_lt hlt, bd_single, Fin.sum_univ_two, cons_comp_succAbove_zero, ← hconst]`. Simplify using `[sub_eq_add_neg]`.
+
+Establish `hj : j = fun _ => s`. Use function extensionality and compare the values at `a`. Rewrite using `[Fin.fin_one_eq_zero a]`. Conclude with `(le_antisymm hsj (not_lt.1 hlt)).symm`. Rewrite using `[ocone_single_of_not_lt hlt, map_zero, hj, sub_self]`.
+-/
 lemma bd_ocone_zero (s : ι) {c : Chain ι 0} (hc : c ∈ Finsupp.supported ℤ ℤ (ordFrom s)) :
     bd 0 (ocone s c) = c - aug c • Finsupp.single (fun _ => s) 1 := by
   refine eq_of_supported ((bd 0).comp (ocone s))
@@ -244,17 +337,29 @@ lemma bd_ocone_zero (s : ι) {c : Chain ι 0} (hc : c ∈ Finsupp.supported ℤ 
 
 noncomputable def minIdx {n : ℕ} (i : Fin (n + 1) → ι) : ι := Finset.univ.inf' Finset.univ_nonempty i
 
+/- English proof (translation)
+The claim follows from `Finset.inf'_le _ (Finset.mem_univ a)`.
+-/
 lemma minIdx_le {n : ℕ} (i : Fin (n + 1) → ι) (a : Fin (n + 1)) : minIdx i ≤ i a :=
   Finset.inf'_le _ (Finset.mem_univ a)
 
+/- English proof (translation)
+Take `⟨a, -, ha⟩` from `Finset.exists_mem_eq_inf' Finset.univ_nonempty i`. Conclude with `⟨a, ha.symm⟩`.
+-/
 lemma minIdx_mem {n : ℕ} (i : Fin (n + 1) → ι) : minIdx i ∈ Set.range i := by
   obtain ⟨a, -, ha⟩ := Finset.exists_mem_eq_inf' Finset.univ_nonempty i
   exact ⟨a, ha.symm⟩
 
+/- English proof (translation)
+The claim follows from `le_antisymm (minIdx_le i 0) (Finset.le_inf' _ _ fun a _ => hi.monotone (Fin.zero_le a))`.
+-/
 lemma minIdx_of_strictMono {n : ℕ} {i : Fin (n + 1) → ι} (hi : StrictMono i) : minIdx i = i 0 :=
   le_antisymm (minIdx_le i 0)
     (Finset.le_inf' _ _ fun a _ => hi.monotone (Fin.zero_le a))
 
+/- English proof (translation)
+Introduce `j hjr` and use `by obtain ⟨hj, hr⟩ := mem_ordIn.1 hjr refine mem_ordFrom.2 ⟨hj, ?_⟩ obtain ⟨a, ha⟩ := hr ⟨0, rfl⟩ rw [← ha] exact minIdx_le i a`.
+-/
 lemma ordIn_subset_ordFrom {n m : ℕ} (i : Fin (m + 1) → ι) :
     ordIn (n := n) (Set.range i) ⊆ ordFrom (minIdx i) := fun j hjr => by
   obtain ⟨hj, hr⟩ := mem_ordIn.1 hjr
@@ -263,6 +368,9 @@ lemma ordIn_subset_ordFrom {n m : ℕ} (i : Fin (m + 1) → ι) :
   rw [← ha]
   exact minIdx_le i a
 
+/- English proof (translation)
+The claim follows from `map_mem_supported _ (fun j hj z => by obtain ⟨hj1, hj2⟩ := mem_ordIn.1 hj by_cases hlt : minIdx i < j 0 · rw [ocone_single_of_lt hlt] refine Finsupp.single_mem_supported ℤ z (mem_ordIn.2 ⟨strictMono_cons hj1 hlt, ?_⟩) rintro x ⟨a, rfl⟩ cases a using Fin.cases with | zero => simpa …`.
+-/
 lemma ocone_mem_ordIn {n m : ℕ} (i : Fin (m + 1) → ι) {c : Chain ι n}
     (hc : c ∈ Finsupp.supported ℤ ℤ (ordIn (Set.range i))) :
     ocone (minIdx i) c ∈ Finsupp.supported ℤ ℤ (ordIn (Set.range i)) :=
@@ -282,12 +390,18 @@ noncomputable def rho : (n : ℕ) → (Fin (n + 1) → ι) → Chain ι n
   | 0, i => Finsupp.single i 1
   | n + 1, i => ocone (minIdx i) (lin (rho n) (bd n (Finsupp.single i 1)))
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => rw [map_add, hf, hg]`. Consider the case `single i z => rw [lin_single, rho, Finsupp.smul_single_one]`.
+-/
 lemma lin_rho_zero (c : Chain ι 0) : lin (rho (ι := ι) 0) c = c := by
   induction c using Finsupp.induction_linear with
   | zero => simp
   | add f g hf hg => rw [map_add, hf, hg]
   | single i z => rw [lin_single, rho, Finsupp.smul_single_one]
 
+/- English proof (translation)
+The claim follows from `| 0, i => Finsupp.single_mem_supported ℤ _ (mem_ordIn.2 ⟨strictMono_of_fin_one _, subset_rfl⟩) | n + 1, i => by refine ocone_mem_ordIn i ?_ refine map_mem_supported _ (fun j hj z => ?_) (bd_mem_rangeIn (single_mem_rangeIn i 1)) rw [lin_single] exact Submodule.smul_mem _ z (Finsup …`.
+-/
 theorem rho_mem : ∀ (n : ℕ) (i : Fin (n + 1) → ι),
     rho n i ∈ Finsupp.supported ℤ ℤ (ordIn (Set.range i))
   | 0, i => Finsupp.single_mem_supported ℤ _ (mem_ordIn.2 ⟨strictMono_of_fin_one _, subset_rfl⟩)
@@ -299,6 +413,9 @@ theorem rho_mem : ∀ (n : ℕ) (i : Fin (n + 1) → ι),
       (fun k hk => mem_ordIn.2 ⟨(mem_ordIn.1 hk).1, (mem_ordIn.1 hk).2.trans (mem_rangeIn.1 hj)⟩)
       (rho_mem n j))
 
+/- English proof (translation)
+The claim follows from `| 0, i => by have hx : lin (rho (ι := ι) 0) (bd 0 (Finsupp.single i 1)) ∈ Finsupp.supported ℤ ℤ (ordFrom (minIdx i)) := by rw [lin_rho_zero] refine map_mem_supported _ (fun j hj z => ?_) (single_mem_rangeIn i 1) rw [bd_single] refine Submodule.sum_mem _ fun k _ => Submodule.smul_ …`.
+-/
 theorem bd_rho : ∀ (n : ℕ) (i : Fin (n + 2) → ι),
     bd n (rho (n + 1) i) = lin (rho n) (bd n (Finsupp.single i 1))
   | 0, i => by
@@ -337,6 +454,9 @@ theorem bd_rho : ∀ (n : ℕ) (i : Fin (n + 2) → ι),
     change bd (n + 1) (ocone (minIdx i) x) = x
     exact key
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => rfl | n + 1, i, hi => by have h1 : lin (rho n) (bd n (Finsupp.single i 1)) = bd n (Finsupp.single i 1) := by rw [bd_single, map_sum] refine Finset.sum_congr rfl fun k _ => ?_ rw [map_zsmul, lin_single, one_smul, rho_of_strictMono n _ (hi.comp (Fin.strictMono_succAbov …`.
+-/
 theorem rho_of_strictMono : ∀ (n : ℕ) (i : Fin (n + 1) → ι), StrictMono i →
     rho n i = Finsupp.single i 1
   | 0, _, _ => rfl
@@ -358,6 +478,9 @@ noncomputable def hmt : (n : ℕ) → (Fin (n + 1) → ι) → Chain ι (n + 1)
   | n + 1, i => cone (i 0)
       (Finsupp.single i 1 - rho (n + 1) i - lin (hmt n) (bd n (Finsupp.single i 1)))
 
+/- English proof (translation)
+The claim follows from `| 0, _ => Submodule.zero_mem _ | n + 1, i => by refine cone_mem_rangeIn (Set.mem_range_self 0) (Submodule.sub_mem _ (Submodule.sub_mem _ (single_mem_rangeIn i 1) (Finsupp.supported_mono (ordIn_subset_rangeIn _) (rho_mem _ i))) ?_) exact lin_mem_rangeIn _ (fun j _ => hmt_mem n j) …`.
+-/
 theorem hmt_mem : ∀ (n : ℕ) (i : Fin (n + 1) → ι),
     hmt n i ∈ Finsupp.supported ℤ ℤ (rangeIn (Set.range i))
   | 0, _ => Submodule.zero_mem _
@@ -366,12 +489,18 @@ theorem hmt_mem : ∀ (n : ℕ) (i : Fin (n + 1) → ι),
       (single_mem_rangeIn i 1) (Finsupp.supported_mono (ordIn_subset_rangeIn _) (rho_mem _ i))) ?_)
     exact lin_mem_rangeIn _ (fun j _ => hmt_mem n j) (bd_mem_rangeIn (single_mem_rangeIn i 1))
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => rw [map_add, hf, hg, add_zero]`. Consider the case `single i z => rw [lin_single, hmt, smul_zero]`.
+-/
 lemma lin_hmt_zero (c : Chain ι 0) : lin (hmt (ι := ι) 0) c = 0 := by
   induction c using Finsupp.induction_linear with
   | zero => simp
   | add f g hf hg => rw [map_add, hf, hg, add_zero]
   | single i z => rw [lin_single, hmt, smul_zero]
 
+/- English proof (translation)
+The claim follows from `| n, i => by set y := Finsupp.single i 1 - rho (n + 1) i - lin (hmt n) (bd n (Finsupp.single i 1)) with hydef have hby : bd n y = 0 := by rw [hydef, map_sub, map_sub, bd_rho] cases n with | zero => rw [lin_hmt_zero, lin_rho_zero, map_zero, sub_self, sub_zero] | succ n => have ih …`.
+-/
 theorem boundary_homotopy : ∀ (n : ℕ) (i : Fin (n + 2) → ι),
     bd (n + 1) (hmt (n + 1) i) + lin (hmt n) (bd n (Finsupp.single i 1)) =
       Finsupp.single i 1 - rho (n + 1) i

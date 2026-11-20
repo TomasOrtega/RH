@@ -14,6 +14,13 @@ variable {p : ℕ} {R : Type} [CommRing R] (G : PDivGroup p R)
 set_option autoImplicit false in
 open TensorProduct Coalgebra Bialgebra CategoryTheory WithConv in
 variable {p : ℕ} {R : Type} [CommRing R] (G : _root_.GlobalTheory.PDivGroup p R) in
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Use `⟨BialgHom.id R (G.A 1), fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `_root_.GlobalTheory.PDiv.mulBy_comp (BialgHom.id R (G.A 1)) 1`. Rewrite `h` using `[pow_one, toConv_ofConv]`.
+
+Rewrite using `[_root_.GlobalTheory.PDivGroup.resOne_zero]`. Simplify using `using congrArg (fun f : G.A 1 →ₐc[R] G.A 1 => f a) h`. Consider the case `succ n ih`. Take `⟨M, hM⟩` from `ih`. Use `⟨(G.mulP (n + 1)).comp M, fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_succ, ← _root_.GlobalTheory.PDiv.mulBy_mulBy, ← _root_.GlobalTheory.PDivGroup.mulP_res, ← _root_.GlobalTheory.PDiv.map_mulBy, hM, _root_.GlobalTheory.PDivGroup.resOne_succ, BialgHom.comp_apply]`.
+-/
 private theorem exists_mulBy_pow_eq_comp_resOne' {p : ℕ} {R : Type} [CommRing R]
     (G : _root_.GlobalTheory.PDivGroup p R) (n : ℕ) :
     ∃ M : G.A 1 →ₐc[R] G.A (n + 1),
@@ -36,6 +43,33 @@ set_option autoImplicit false in
 open TensorProduct Coalgebra Bialgebra CategoryTheory WithConv in
 variable {p : ℕ} {R : Type} [CommRing R] (G : _root_.GlobalTheory.PDivGroup p R) in
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `exists_mulBy_pow_eq_comp_resOne' G n`. Establish `key : ∀ χ φ : _root_.GlobalTheory.CartierDual R (G.A (n + 1)), (χ * _root_.GlobalTheory.CartierDual.map (_root_.GlobalTheory.PDiv.mulBy R (G.A (n + 1)) (p ^ n)) φ).ofConv a = χ.ofConv a * φ.ofConv 1`. Introduce `χ φ`. Establish `h1 : (_root_.GlobalTheory.CartierDual.map (_root_.GlobalTheory.PDiv.mulBy R (G.A (n + 1)) (p ^ n)) φ).ofConv = (φ.ofConv ∘ₗ (M : G.A 1 →ₗ[R] G.A (n + 1))) ∘ₗ (G.resOne n : G.A (n + 1) →ₗ[R] G.A 1)`. Use extensionality with `x`.
+
+Simplify using `[_root_.GlobalTheory.CartierDual.map_apply, hM]`. Rewrite using `[_root_.GlobalTheory.CartierDual.mul_apply, _root_.GlobalTheory.CartierDual.pair_tmul, h1]`. Establish `h2 : ∀ t, TensorProduct.map χ.ofConv ((φ.ofConv ∘ₗ (M : G.A 1 →ₗ[R] G.A (n + 1))) ∘ₗ (G.resOne n : G.A (n + 1) →ₗ[R] G.A 1)) t = TensorProduct.map χ.ofConv (φ.ofConv ∘ₗ (M : G.A 1 →ₗ[R] G.A (n + 1))) (LinearMap.lTensor _ (G.resOne n : G.A (n + 1) →ₗ[R] G.A 1) t)`. Introduce `t`. Rewrite using `[LinearMap.lTensor, ← LinearMap.comp_apply, ← TensorProduct.map_comp, LinearMap.comp_id]`.
+
+Rewrite using `[h2, ← _root_.GlobalTheory.PDivGroup.transl_apply, ha]`. Simplify using the standard rewrite rules. Set `K : Ideal (_root_.GlobalTheory.CartierDual R (G.A (n + 1)))` to `{ carrier := {ψ | ∀ χ : _root_.GlobalTheory.CartierDual R (G.A (n + 1)), (χ * ψ).ofConv a = 0} add_mem' := by`. Introduce `x y hx hy χ`. Simplify using `only [Set.mem_setOf_eq] at hx hy ⊢`.
+
+Rewrite using `[mul_add, ofConv_add, LinearMap.add_apply, hx, hy, add_zero]`. Use the proof step `zero_mem' := by`. Introduce `χ`. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`.
+
+Introduce `c x hx χ`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul] at hx ⊢`. Rewrite using `[← mul_assoc]`. Conclude with `hx _ }`. Establish `hK : _root_.GlobalTheory.PDiv.torsionIdeal R (_root_.GlobalTheory.CartierDual R (G.A (n + 1))) (p ^ n) ≤ RingHom.ker (Ideal.Quotient.mkₐ R K)`.
+
+Rewrite using `[_root_.GlobalTheory.PDiv.torsionIdeal_le_ker_iff, ← toConv_ofConv (toConv (Ideal.Quotient.mkₐ R K) ^ p ^ n), ← _root_.GlobalTheory.PDiv.comp_mulBy_pts]`. Apply `WithConv.ext` to reduce the goal to its premises. Rewrite using `[ofConv_toConv]`. Use extensionality with `φ`. Use `show Ideal.Quotient.mkₐ R K (_root_.GlobalTheory.PDiv.mulBy R _ (p ^ n) φ) = algebraMap R _ (CoalgebraStruct.counit φ)`.
+
+Rewrite using `[← _root_.GlobalTheory.PDiv.dual_mulBy, ← (Ideal.Quotient.mkₐ R K).commutes, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq]`. Introduce `χ`. Rewrite using `[mul_sub, ofConv_sub, LinearMap.sub_apply, key, Algebra.algebraMap_eq_smul_one, mul_smul_one, ofConv_smul, LinearMap.smul_apply, _root_.GlobalTheory.CartierDual.counit_apply, smul_eq_mul, mul_comm, sub_self]`. Establish `hker : ∀ ψ, _root_.GlobalTheory.CartierDual.map (G.mulP n) ψ = 0 → ψ.ofConv a = 0`. Introduce `ψ hψ`.
+
+Establish `h3 : ψ ∈ RingHom.ker (Ideal.Quotient.mkₐ R K)`. Apply `hK` to reduce the goal to its premises. Rewrite using `[← _root_.GlobalTheory.PDivGroup.ker_dual_mulP]`. Conclude with `hψ`. Rewrite `h3` using `[RingHom.mem_ker, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Simplify using `using h3 1`. Use `set πL : _root_.GlobalTheory.CartierDual R (G.A (n + 1)) →ₗ[R] _root_.GlobalTheory.CartierDual R (G.A n) := (_root_.GlobalTheory.CartierDual.map (G.mulP n) : _root_.GlobalTheory.CartierDual R (G.A (n + 1)) →ₗ[R] _root_.GlobalTheory.CartierDual R (G.A n)) with hπL`. Establish `hs : Function.Surjective πL` using `_root_.GlobalTheory.PDivGroup.dual_mulP_surjective G n`. Use `set evL : _root_.GlobalTheory.CartierDual R (G.A (n + 1)) →ₗ[R] R := (_root_.GlobalTheory.CartierDual.cartierDualToBidual R (G.A (n + 1)) a).ofConv with hevL`. Establish `hle : LinearMap.ker πL ≤ LinearMap.ker evL`.
+
+Introduce `ψ hψ`. Conclude with `hker ψ hψ`. Set `L : _root_.GlobalTheory.CartierDual R (G.A n) →ₗ[R] R` to `((LinearMap.ker πL).liftQ evL hle).comp (πL.quotKerEquivOfSurjective hs).symm.toLinearMap`. Establish `hL : ∀ ψ, L (πL ψ) = ψ.ofConv a`. Introduce `ψ`.
+
+Establish `h4 : (πL.quotKerEquivOfSurjective hs).symm (πL ψ) = Submodule.Quotient.mk ψ`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Simplify using `only [L, LinearMap.comp_apply, LinearEquiv.coe_coe, h4, Submodule.liftQ_apply]`. Both sides reduce to the same expression. Take `⟨e, he⟩` from `(_root_.GlobalTheory.CartierDual.toBidual_bijective (R := R) (M := G.A n)).2 (toConv L)`.
+
+Use `⟨e, (_root_.GlobalTheory.CartierDual.toBidual_bijective (R := R) (M := G.A (n + 1))).1 ?_⟩` and prove the remaining obligations. Apply `WithConv.ext` to reduce the goal to its premises. Use extensionality with `ψ`. Use `show ψ.ofConv (G.mulP n e) = ψ.ofConv a`. Rewrite using `[← _root_.GlobalTheory.CartierDual.map_apply]`.
+
+Establish `h5` using `congrArg (fun x => x.ofConv (_root_.GlobalTheory.CartierDual.map (G.mulP n) ψ)) he`. Simplify using `only [ofConv_toConv] at h5`. Rewrite using `[← hL ψ]`. Conclude with `h5`.
+-/
 theorem _root_.GlobalTheory.PDivGroup.exists_mulP_eq_of_transl_eq {p : ℕ} {R : Type} [CommRing R] (G : _root_.GlobalTheory.PDivGroup p R)
     (n : ℕ) (a : G.A (n + 1))
     (ha : G.transl n a = a ⊗ₜ[R] 1) :

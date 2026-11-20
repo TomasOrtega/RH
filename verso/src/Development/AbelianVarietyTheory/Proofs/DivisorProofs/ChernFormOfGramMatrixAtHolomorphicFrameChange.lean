@@ -8,6 +8,19 @@ open scoped ContDiff ComplexOrder
 
 namespace GlobalTheory.CxForm
 
+/- English proof (translation)
+Introduce `n r _ _ H K A v hK hKu hg hAu hH j`. Establish `hconj : ∀ (M P Q : Matrix r r (MvPolynomial (Fin n × Fin n) ℂ)), Q * P = 1 → (Q * M * P).charpolyRev = M.charpolyRev`. Introduce `M P Q hQP`. Establish `hQP' : Q.map Polynomial.C * P.map Polynomial.C = 1`. Rewrite using `[← Matrix.map_mul, hQP, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `e : (1 : Matrix r r (Polynomial (MvPolynomial (Fin n × Fin n) ℂ))) - (Polynomial.X : Polynomial (MvPolynomial (Fin n × Fin n) ℂ)) • (Q * M * P).map Polynomial.C = Q.map Polynomial.C * (1 - (Polynomial.X : Polynomial (MvPolynomial (Fin n × Fin n) ℂ)) • M.map Polynomial.C) * P.map …`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hQP', Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[Matrix.charpolyRev, Matrix.charpolyRev, e, Matrix.det_mul, Matrix.det_mul, mul_right_comm, ← Matrix.det_mul, hQP', Matrix.det_one, one_mul]`. Establish `hsum : ∀ G : V n → Matrix r r ℂ, curvPoly G v = ∑ a, ∑ b, (MvPolynomial.X (a, b) : MvPolynomial (Fin n × Fin n) ℂ) • (curv G v (coordVec a) (coordVec b)).map MvPolynomial.C`. Introduce `G`.
+
+Use extensionality with `i j`. Simplify using `[curvPoly, Matrix.sum_apply, mul_comm]`. Establish `hA : MContDiffAt 2 A v` using `fun a b => (hg a b).contDiffAt.restrict_scalars ℝ`. Establish `hA0 : ∀ᶠ x in 𝓝 v, ∀ η, mdbar A x η = 0`. Establish `hev : ∀ᶠ x in 𝓝 v, ∀ a b, AnalyticAt ℂ (fun w => A w a b) x` using `eventually_all.2 fun a => eventually_all.2 fun b => (hg a b).eventually_analyticAt`.
+
+Use `filter_upwards [hev] with x hx η`. Use extensionality with `a b`. Rewrite using `[mdbar_apply, GlobalTheory.dbar_eq_zero (hx a b).differentiableAt]`. Both sides reduce to the same expression. Establish `hGe : H =ᶠ[𝓝 v] fun u => (A u)ᵀ * K u * (A u)ᴴᵀ` using `hH`.
+
+Establish `hcurv : ∀ ξ η, curv H v ξ η = (A v)⁻¹ * curv K v ξ η * A v` using `fun ξ η => by rw [curv_congr hGe, curv_changeFrame hK hKu hA hAu hA0]`. Establish `key : curvPoly H v = ((A v)⁻¹).map MvPolynomial.C * curvPoly K v * (A v).map MvPolynomial.C`. Rewrite using `[hsum, hsum]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.map_mul, hcurv]`. Establish `key2 : chernPoly H v j = chernPoly K v j`.
+
+Rewrite using `[chernPoly, chernPoly, key, show ∀ (Q M P : Matrix r r (MvPolynomial (Fin n × Fin n) ℂ)), -(Q * M * P) = Q * (-M) * P from fun Q M P => by rw [Matrix.mul_neg, Matrix.neg_mul], hconj]`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hAu, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[chernAt, chernAt, key2]`.
+-/
 theorem chernAt_changeFrame : ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (H K A : V n → Matrix r r ℂ) (v : V n), MContDiffAt 2 K v → IsUnit (K v).det → (∀ i j, AnalyticAt ℂ (fun w => A w i j) v) → IsUnit (A v).det → (H =ᶠ[𝓝 v] fun w => chg (A w) (K w)) → ∀ j, chernAt H v j = chernAt K v j := by
   intro n r _ _ H K A v hK hKu hg hAu hH j
   have hconj : ∀ (M P Q : Matrix r r (MvPolynomial (Fin n × Fin n) ℂ)), Q * P = 1 →

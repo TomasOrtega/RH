@@ -11,6 +11,13 @@ namespace QmCapCommW
 section Linfty
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Establish `hd : ∀ s : ℝ, HasDerivAt (fun u : ℝ => NormedSpace.exp ((u : ℂ) • X) * E) (NormedSpace.exp ((s : ℂ) • X) * X * E) s`. Introduce `s`. Establish `h` using `hasDerivAt_exp_smul_const' (𝕂 := ℂ) X (s : ℂ)`. Establish `h2` using `h.scomp (x := s) Complex.ofRealCLM.hasDerivAt`. Establish `h3 : HasDerivAt (fun u : ℝ => NormedSpace.exp ((u : ℂ) • X)) (NormedSpace.exp ((s : ℂ) • X) * X) s`.
+
+Establish `hcomm : X * NormedSpace.exp ((s : ℂ) • X) = NormedSpace.exp ((s : ℂ) • X) * X` using `(((Commute.refl X).smul_right (s : ℂ)).exp_right).eq`. Conclude with `h2.congr_deriv (by simp only [Complex.ofRealCLM_apply, Complex.ofReal_one, one_smul]; exact hcomm)`. Conclude with `h3.mul_const E`. Establish `hc` using `is_const_of_deriv_eq_zero (f := fun u : ℝ => NormedSpace.exp ((u : ℂ) • X) * E) (fun s => (hd s).differentiableAt) (fun s => by rw [(hd s).deriv, Matrix.mul_assoc, hXE, Matrix.mul_zero])`. Use `hc t 0` as an intermediate fact.
+
+Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, Matrix.one_mul] at this`. Conclude with `this`.
+-/
 lemma exp_mul_fix {n : ℕ} (X E : Matrix (Fin n) (Fin n) ℂ) (hXE : X * E = 0) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) * E = E := by
   have hd : ∀ s : ℝ, HasDerivAt (fun u : ℝ => NormedSpace.exp ((u : ℂ) • X) * E)
@@ -30,6 +37,9 @@ lemma exp_mul_fix {n : ℕ} (X E : Matrix (Fin n) (Fin n) ℂ) (hXE : X * E = 0)
   simp only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, Matrix.one_mul] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `NormedSpace.exp_continuous.comp (Complex.continuous_ofReal.smul continuous_const)`.
+-/
 lemma exp_curve_cont {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
     Continuous (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) := NormedSpace.exp_continuous.comp (Complex.continuous_ofReal.smul continuous_const)
 
@@ -37,6 +47,11 @@ end Linfty
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Set `E : Matrix (Fin n) (Fin n) ℂ` to `Matrix.of fun j _ => v j`. Establish `hXE : X * E = 0`. Use extensionality with `j l`. Use `congrFun hXv j` as an intermediate fact. Simplify `this` using `[E, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+
+Establish `h` using `exp_mul_fix X E hXE t`. Use function extensionality and compare the values at `j`. Use `congrFun (congrFun h j) j` as an intermediate fact. Simplify `this` using `[E, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+-/
 lemma exp_mulVec_fix {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) (hXv : X *ᵥ v = 0) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) *ᵥ v = v := by
   let E : Matrix (Fin n) (Fin n) ℂ := Matrix.of fun j _ => v j
@@ -49,6 +64,13 @@ lemma exp_mulVec_fix {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → �
   have := congrFun (congrFun h j) j
   simpa [E, Matrix.mul_apply, Matrix.mulVec, dotProduct] using this
 
+/- English proof (translation)
+Establish `hU : IsUnit H` using `IsUnit.of_mul_eq_one _ hH`. Establish `hinv : H⁻¹ = H` using `Matrix.inv_eq_left_inv hH`. Establish `h1 : Yᴴ * H = -(H * Y)` using `eq_neg_of_add_eq_zero_left hY`. Establish `hYh : Yᴴ = H * (-Y) * H⁻¹`. Rewrite using `[hinv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hexp : (NormedSpace.exp Y)ᴴ = H * NormedSpace.exp (-Y) * H`. Rewrite using `[← Matrix.exp_conjTranspose, hYh, Matrix.exp_conj _ _ hU, hinv]`. Establish `hc : NormedSpace.exp (-Y) * NormedSpace.exp Y = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl Y)), neg_add_cancel, NormedSpace.exp_zero]`.
+
+Use `show (NormedSpace.exp Y)ᴴ * H * NormedSpace.exp Y = H`. Rewrite using `[hexp, Matrix.mul_assoc (H * NormedSpace.exp (-Y)) H H, hH, Matrix.mul_one, Matrix.mul_assoc, hc, Matrix.mul_one]`.
+-/
 lemma exp_mem_UH {n : ℕ} (H Y : Matrix (Fin n) (Fin n) ℂ) (hH : H * H = 1) (hY : Yᴴ * H + H * Y = 0) :
     NormedSpace.exp Y ∈ UH H := by
   have hU : IsUnit H := IsUnit.of_mul_eq_one _ hH
@@ -67,6 +89,11 @@ lemma exp_mem_UH {n : ℕ} (H Y : Matrix (Fin n) (Fin n) ℂ) (hH : H * H = 1) (
   rw [hexp, Matrix.mul_assoc (H * NormedSpace.exp (-Y)) H H, hH, Matrix.mul_one, Matrix.mul_assoc, hc,
     Matrix.mul_one]
 
+/- English proof (translation)
+Simplify using `only [Glev, UH, Set.mem_setOf_eq] at hg hh ⊢`. Take `⟨hg1, hg2⟩` from `hg`. Take `⟨hh1, hh2⟩` from `hh`. Use `⟨?_, fun a ha => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hg1, hh1]`. Rewrite using `[← Matrix.mulVec_mulVec, (hh2 a ha).1, (hg2 a ha).1]`. Rewrite using `[← Matrix.mulVec_mulVec, (hh2 a ha).2, (hg2 a ha).2]`.
+-/
 lemma glev_mul {k r : ℕ} {i : Fin (r + 1)} {g h : Mx k r} (hg : g ∈ Glev k r i) (hh : h ∈ Glev k r i) :
     g * h ∈ Glev k r i := by
   simp only [Glev, UH, Set.mem_setOf_eq] at hg hh ⊢
@@ -80,6 +107,11 @@ lemma glev_mul {k r : ℕ} {i : Fin (r + 1)} {g h : Mx k r} (hg : g ∈ Glev k r
   · rw [← Matrix.mulVec_mulVec, (hh2 a ha).1, (hg2 a ha).1]
   · rw [← Matrix.mulVec_mulVec, (hh2 a ha).2, (hg2 a ha).2]
 
+/- English proof (translation)
+Take `⟨hL, hF⟩` from `hX`. Establish `hH : Hpk k r * Hpk k r = 1` using `(hpkFacts k r).2.1`. Use `⟨exp_mem_UH _ _ hH ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hL, smul_zero]`. Take `⟨h1, h2⟩` from `hF a ha`.
+
+Conclude with `⟨exp_mulVec_fix X _ h1 t, exp_mulVec_fix X _ h2 t⟩`.
+-/
 lemma exp_mem_glev {k r : ℕ} {i : Fin (r + 1)} {X : Mx k r} (hX : inLieLev k r i X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ Glev k r i := by
   obtain ⟨hL, hF⟩ := hX
@@ -90,8 +122,16 @@ lemma exp_mem_glev {k r : ℕ} {i : Fin (r + 1)} {X : Mx k r} (hX : inLieLev k r
   · obtain ⟨h1, h2⟩ := hF a ha
     exact ⟨exp_mulVec_fix X _ h1 t, exp_mulVec_fix X _ h2 t⟩
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (hpkFacts k r).2.1`.
+-/
 lemma hpk_inv (k r : ℕ) : (Hpk k r)⁻¹ = Hpk k r := Matrix.inv_eq_left_inv (hpkFacts k r).2.1
 
+/- English proof (translation)
+Establish `e1 : (Z - H * Zᴴ * H)ᴴ = Zᴴ - H * Z * H`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hh, Matrix.mul_assoc H Z H]`. Rewrite using `[e1, Matrix.sub_mul, Matrix.mul_sub]`. Establish `e2 : H * Z * H * H = H * Z` using `by rw [Matrix.mul_assoc (H * Z) H H, hHH, Matrix.mul_one]`. Establish `e3 : H * (H * Zᴴ * H) = Zᴴ * H`.
+
+Rewrite using `[← Matrix.mul_assoc H (H * Zᴴ) H, ← Matrix.mul_assoc H H Zᴴ, hHH, Matrix.one_mul]`. Rewrite using `[e2, e3]`. Normalize the expressions using the abelian group laws.
+-/
 lemma skew_minus {n : ℕ} (H Z : Matrix (Fin n) (Fin n) ℂ) (hh : Hᴴ = H) (hHH : H * H = 1) :
     (Z - H * Zᴴ * H)ᴴ * H + H * (Z - H * Zᴴ * H) = 0 := by
   have e1 : (Z - H * Zᴴ * H)ᴴ = Zᴴ - H * Z * H := by
@@ -104,6 +144,11 @@ lemma skew_minus {n : ℕ} (H Z : Matrix (Fin n) (Fin n) ℂ) (hh : Hᴴ = H) (h
   rw [e2, e3]
   abel
 
+/- English proof (translation)
+Establish `e1 : (Z + H * Zᴴ * H)ᴴ = Zᴴ + H * Z * H`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hh, Matrix.mul_assoc H Z H]`. Rewrite using `[e1, Matrix.add_mul, Matrix.mul_add]`. Establish `e2 : H * Z * H * H = H * Z` using `by rw [Matrix.mul_assoc (H * Z) H H, hHH, Matrix.mul_one]`. Establish `e3 : H * (H * Zᴴ * H) = Zᴴ * H`.
+
+Rewrite using `[← Matrix.mul_assoc H (H * Zᴴ) H, ← Matrix.mul_assoc H H Zᴴ, hHH, Matrix.one_mul]`. Rewrite using `[e2, e3]`. Normalize the expressions using the abelian group laws.
+-/
 lemma skew_plus {n : ℕ} (H Z : Matrix (Fin n) (Fin n) ℂ) (hh : Hᴴ = H) (hHH : H * H = 1) :
     H * (Z + H * Zᴴ * H) - (Z + H * Zᴴ * H)ᴴ * H = 0 := by
   have e1 : (Z + H * Zᴴ * H)ᴴ = Zᴴ + H * Z * H := by
@@ -116,6 +161,11 @@ lemma skew_plus {n : ℕ} (H Z : Matrix (Fin n) (Fin n) ℂ) (hh : Hᴴ = H) (hH
   rw [e2, e3]
   abel
 
+/- English proof (translation)
+Establish `hinv : H⁻¹ = H` using `Matrix.inv_eq_left_inv hHH`. Unfold `hpart1`. Rewrite using `[hinv, Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul]`. Establish `hs : star (1 / 2 : ℂ) = 1 / 2`. Establish `h1` using `Complex.conj_ofReal (1 / 2 : ℝ)`.
+
+Move the coercions through the operations in `at h1`. Conclude with `h1`. Rewrite using `[hs, ← smul_add, skew_minus H Z hh hHH, smul_zero]`.
+-/
 lemma hpart1_skew {n : ℕ} (H Z : Matrix (Fin n) (Fin n) ℂ) (hh : Hᴴ = H) (hHH : H * H = 1) :
     (hpart1 H Z)ᴴ * H + H * hpart1 H Z = 0 := by
   have hinv : H⁻¹ = H := Matrix.inv_eq_left_inv hHH
@@ -127,6 +177,11 @@ lemma hpart1_skew {n : ℕ} (H Z : Matrix (Fin n) (Fin n) ℂ) (hh : Hᴴ = H) (
     exact h1
   rw [hs, ← smul_add, skew_minus H Z hh hHH, smul_zero]
 
+/- English proof (translation)
+Establish `hinv : H⁻¹ = H` using `Matrix.inv_eq_left_inv hHH`. Unfold `hpart2`. Rewrite using `[hinv, Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul]`. Establish `hs : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I))`. Simplify using `only [Complex.star_def, map_div₀, map_one, map_mul, Complex.conj_I, map_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, neg_smul, neg_add_eq_sub, ← smul_sub, skew_plus H Z hh hHH, smul_zero]`.
+-/
 lemma hpart2_skew {n : ℕ} (H Z : Matrix (Fin n) (Fin n) ℂ) (hh : Hᴴ = H) (hHH : H * H = 1) :
     (hpart2 H Z)ᴴ * H + H * hpart2 H Z = 0 := by
   have hinv : H⁻¹ = H := Matrix.inv_eq_left_inv hHH
@@ -137,6 +192,9 @@ lemma hpart2_skew {n : ℕ} (H Z : Matrix (Fin n) (Fin n) ℂ) (hh : Hᴴ = H) (
     ring
   rw [hs, neg_smul, neg_add_eq_sub, ← smul_sub, skew_plus H Z hh hHH, smul_zero]
 
+/- English proof (translation)
+Establish `hp` using `p.isLt`. Establish `hi` using `i.isLt`. Unfold `mdim at hp`. Apply the tactic sequence `constructor <;> simp only [Hpk, posL, eI, esI, Fin.ext_iff, Fin.val_mk] <;> split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 lemma hpk_zero {k r : ℕ} (i : Fin (r + 1)) (p : Fin (mdim k r i)) (a : Fin r) (ha : a.val < i.val) :
     Hpk k r (posL k r i p) (eI k r a) = 0 ∧ Hpk k r (posL k r i p) (esI k r a) = 0 := by
   have hp := p.isLt
@@ -145,15 +203,24 @@ lemma hpk_zero {k r : ℕ} (i : Fin (r + 1)) (p : Fin (mdim k r i)) (a : Fin r) 
   constructor <;> simp only [Hpk, posL, eI, esI, Fin.ext_iff, Fin.val_mk] <;> split_ifs <;>
     first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply, h]`.
+-/
 lemma col_zero {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) (c : Fin n) (h : ∀ j, Y j c = 0) : Y *ᵥ bvec c = 0 := by
   funext j
   simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply, h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.single_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 lemma single_ct {n : ℕ} (a b : Fin n) : (Matrix.single a b (1 : ℂ))ᴴ = Matrix.single b a 1 := by
   ext i j
   rw [Matrix.conjTranspose_apply, Matrix.single_apply, Matrix.single_apply]
   split_ifs <;> simp_all
 
+/- English proof (translation)
+Rewrite using `[single_ct]`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, hac, Ne.symm hcb]`.
+-/
 lemma hpart_col {k r : ℕ} {i : Fin (r + 1)} (a b : Fin (mdim k r i)) (c : Fin (2 * r + k + 1))
     (hcb : c ≠ posL k r i b) (hac : Hpk k r (posL k r i a) c = 0) (s : ℂ) (j : Fin (2 * r + k + 1)) :
     (Matrix.single (posL k r i a) (posL k r i b) (1 : ℂ) + s • ((Hpk k r)⁻¹ *
@@ -161,6 +228,11 @@ lemma hpart_col {k r : ℕ} {i : Fin (r + 1)} (a b : Fin (mdim k r i)) (c : Fin 
   rw [single_ct]
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and, hac, Ne.symm hcb]
 
+/- English proof (translation)
+Use `⟨hpart1_skew _ _ (hpkFacts k r).1 (hpkFacts k r).2.1, fun a' ha' => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `all_goals`. Use `col_zero _ _ fun j => ?_` and prove the remaining obligations. Unfold `hpart1`. Rewrite using `[Matrix.smul_apply, sub_eq_add_neg, ← neg_one_smul ℂ ((Hpk k r)⁻¹ * _ * _)]`.
+
+Rewrite using `[hpart_col a b _ (by simp only [posL, eI, ne_eq, Fin.ext_iff]; omega) (hpk_zero i a a' ha').1, smul_zero]`. Rewrite using `[hpart_col a b _ (by simp only [posL, esI, ne_eq, Fin.ext_iff]; have := b.isLt; unfold mdim at this; omega) (hpk_zero i a a' ha').2, smul_zero]`.
+-/
 lemma hpart1_lie {k r : ℕ} (i : Fin (r + 1)) (a b : Fin (mdim k r i)) :
     inLieLev k r i (hpart1 (Hpk k r) (Matrix.single (posL k r i a) (posL k r i b) 1)) := by
   refine ⟨hpart1_skew _ _ (hpkFacts k r).1 (hpkFacts k r).2.1, fun a' ha' => ⟨?_, ?_⟩⟩
@@ -172,6 +244,11 @@ lemma hpart1_lie {k r : ℕ} (i : Fin (r + 1)) (a b : Fin (mdim k r i)) :
   · rw [hpart_col a b _ (by simp only [posL, esI, ne_eq, Fin.ext_iff]; have := b.isLt; unfold mdim at this; omega)
       (hpk_zero i a a' ha').2, smul_zero]
 
+/- English proof (translation)
+Use `⟨hpart2_skew _ _ (hpkFacts k r).1 (hpkFacts k r).2.1, fun a' ha' => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `all_goals`. Use `col_zero _ _ fun j => ?_` and prove the remaining obligations. Unfold `hpart2`. Rewrite using `[Matrix.smul_apply, ← one_smul ℂ ((Hpk k r)⁻¹ * _ * _)]`.
+
+Rewrite using `[hpart_col a b _ (by simp only [posL, eI, ne_eq, Fin.ext_iff]; omega) (hpk_zero i a a' ha').1, smul_zero]`. Rewrite using `[hpart_col a b _ (by simp only [posL, esI, ne_eq, Fin.ext_iff]; have := b.isLt; unfold mdim at this; omega) (hpk_zero i a a' ha').2, smul_zero]`.
+-/
 lemma hpart2_lie {k r : ℕ} (i : Fin (r + 1)) (a b : Fin (mdim k r i)) :
     inLieLev k r i (hpart2 (Hpk k r) (Matrix.single (posL k r i a) (posL k r i b) 1)) := by
   refine ⟨hpart2_skew _ _ (hpkFacts k r).1 (hpkFacts k r).2.1, fun a' ha' => ⟨?_, ?_⟩⟩
@@ -183,6 +260,11 @@ lemma hpart2_lie {k r : ℕ} (i : Fin (r + 1)) (a b : Fin (mdim k r i)) :
   · rw [hpart_col a b _ (by simp only [posL, esI, ne_eq, Fin.ext_iff]; have := b.isLt; unfold mdim at this; omega)
       (hpk_zero i a a' ha').2, smul_zero]
 
+/- English proof (translation)
+Unfold `RdV`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Establish `hcont : Continuous (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X))` using `continuous_const.mul (exp_curve_cont X)`. Establish `hmem : ∀ᶠ t : ℝ in 𝓝 (0 : ℝ), g * NormedSpace.exp ((t : ℂ) • X) ∈ D`. Apply `hcont.continuousAt.preimage_mem_nhds` to reduce the goal to its premises.
+
+Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, Matrix.mul_one]`. Conclude with `hD.mem_nhds hg.2`. Use `filter_upwards [hmem] with t ht`. Conclude with `h _ ⟨glev_mul hg.1 (exp_mem_glev hX t), ht⟩`.
+-/
 lemma rdV_congr {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {k r : ℕ} {i : Fin (r + 1)}
     {D : Set (Mx k r)} (hD : IsOpen D) {f f' : Mx k r → E} (h : ∀ g ∈ Glev k r i ∩ D, f g = f' g)
     {X : Mx k r} (hX : inLieLev k r i X) {g : Mx k r} (hg : g ∈ Glev k r i ∩ D) :
@@ -198,6 +280,9 @@ lemma rdV_congr {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {k r : ℕ
   filter_upwards [hmem] with t ht
   exact h _ ⟨glev_mul hg.1 (exp_mem_glev hX t), ht⟩
 
+/- English proof (translation)
+Introduce `E _ _ k r i D a b f f' hD h g hg`. Use `show EabH (Hpk k r) _ _ f g = EabH (Hpk k r) _ _ f' g`. Unfold `EabH`. Rewrite using `[rdV_congr hD h (hpart1_lie i a b) hg, rdV_congr hD h (hpart2_lie i a b) hg]`.
+-/
 theorem capelli_operator_congruence : CapCongr := by
   intro E _ _ k r i D a b f f' hD h g hg
   show EabH (Hpk k r) _ _ f g = EabH (Hpk k r) _ _ f' g

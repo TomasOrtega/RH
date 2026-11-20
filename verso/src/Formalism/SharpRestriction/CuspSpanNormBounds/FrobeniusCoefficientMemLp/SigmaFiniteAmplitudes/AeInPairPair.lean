@@ -11,6 +11,11 @@ open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `haveI := L.hμW.1.1`. Use `haveI := L.hμW'.1.1`. Establish `hW` using `ae_mem_sk L.hμW.1`. Establish `hW'` using `ae_mem_sk L.hμW'.1`. Establish `hN : ∀ᵐ x ∂L.μN, of x ∈ Nset k r` using `ae_mem_haarLieN _`.
+
+Establish `h1 : ∀ᵐ p ∂(L.μW.prod L.μN), of p.1 ∈ UWset k r L.z ∧ of p.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hW).and (Measure.quasiMeasurePreserving_snd.ae hN)`. Establish `h2 : ∀ᵐ p ∂(L.μW'.prod L.μN), of p.1 ∈ UWset k r L.z' ∧ of p.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hW').and (Measure.quasiMeasurePreserving_snd.ae hN)`. Establish `h` using `(Measure.quasiMeasurePreserving_fst.ae h1).and (Measure.quasiMeasurePreserving_snd.ae h2)`. Use `filter_upwards [h] with p hp`. Conclude with `⟨hp.1.1, hp.1.2, hp.2.1, hp.2.2⟩`.
+-/
 theorem ae_inPair_pair (L : LocBessel k r) : ∀ᵐ p ∂(pairMeas L), InPair L p := by
   haveI := L.hμW.1.1
   haveI := L.hμW'.1.1
@@ -25,6 +30,21 @@ theorem ae_inPair_pair (L : LocBessel k r) : ∀ᵐ p ∂(pairMeas L), InPair L 
   filter_upwards [h] with p hp
   exact ⟨hp.1.1, hp.1.2, hp.2.1, hp.2.2⟩
 
+/- English proof (translation)
+Establish `hc : IsClosed {p : PairSp k r | InPair L p}`. Establish `hU : IsClosed {x : Mt k r | of x ∈ UWset k r L.z}` using `Formalism.FourierDecayAlt.P.B6.isClosed_UWset k r L.z`. Establish `hU' : IsClosed {x : Mt k r | of x ∈ UWset k r L.z'}` using `Formalism.FourierDecayAlt.P.B6.isClosed_UWset k r L.z'`. Establish `hN : IsClosed {x : Mt k r | of x ∈ Nset k r}` using `Formalism.FourierDecayAlt.P.B6.isClosed_Nset k r`. Conclude with `(hU.preimage (continuous_fst.comp continuous_fst)).inter ((hN.preimage (continuous_snd.comp continuous_fst)).inter ((hU'.preimage (continuous_fst.comp continuous_snd)).inter (hN.preimage (continuous_snd.comp continuous_snd))))`.
+
+Establish `hB : MeasurableSet {p : PairSp k r | ¬ InPair L p}` using `hc.measurableSet.compl`. Establish `hpair : pairMeas L {p | ¬ InPair L p} = 0` using `ae_iff.mp (ae_inPair_pair L)`. Establish `hq` using `hOQ _ (measurable_one.indicator hB)`. Rewrite `hq` using `[lintegral_indicator_one hB, hpair]`. Establish `hR : ∀ᵐ a ∂μR, of a ∈ RStab k r γ` using `ae_mem_sk hμR`.
+
+Establish `hμR0 : μR Set.univ ≠ 0` using `Measure.measure_univ_ne_zero.mpr hμR.2.1`. Establish `key : ∀ x ∈ {p : PairSp k r | ¬ InPair L p}, μR Set.univ ≤ ∫⁻ a, {p : PairSp k r | ¬ InPair L p}.indicator 1 (stabAct γ (of a) x) ∂μR`. Introduce `x hx`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono_ae` to reduce the goal to its premises.
+
+Use `filter_upwards [hR] with a ha`. Establish `hm : stabAct γ (of a) x ∈ {p : PairSp k r | ¬ InPair L p}` using `fun h => hx (inPair_of_stab L ha h)`. Simplify using `[Set.indicator_of_mem hm]`. Establish `h2 : ∫⁻ x, {p : PairSp k r | ¬ InPair L p}.indicator (fun _ => μR Set.univ) x ∂ν = 0`. Apply `le_antisymm ?_ zero_le` to reduce the goal to its premises.
+
+Rewrite using `[hq]`. Apply `lintegral_mono` to reduce the goal to its premises. Introduce `x`. Distinguish the cases in `hx : x ∈ {p : PairSp k r | ¬ InPair L p}`. Rewrite using `[Set.indicator_of_mem hx]`.
+
+Conclude with `key x hx`. Simplify using `only [Set.indicator, hx, if_false]`. Conclude with `zero_le`. Rewrite `h2` using `[lintegral_indicator_const hB]`. Rewrite using `[ae_iff]`.
+
+Conclude with `(mul_eq_zero.mp h2).resolve_left hμR0`.
+-/
 theorem ae_inPair_nu (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     {μR : Measure (Mt k r)} {ν : Measure (PairSp k r)} (hμR : IsHaarOn (RStab k r γ) μR)
     (hOQ : IsOrbQuot L γ μR ν) : ∀ᵐ p ∂ν, InPair L p := by
@@ -67,6 +87,23 @@ theorem ae_inPair_nu (L : LocBessel k r) {γ : Matrix (Fin (2 * r + k + 1)) (Fin
   rw [ae_iff]
   exact (mul_eq_zero.mp h2).resolve_left hμR0
 
+/- English proof (translation)
+Establish `hUH : IsClosed {x : Mt k r | of x ∈ UH (Hpk k r)}` using `Formalism.MainNotions.LowestKTypeMultiplicity.isClosed_UH k r`. Establish `hB : MeasurableSet {x : Mt k r | of x ∉ UH (Hpk k r)}` using `hUH.measurableSet.compl`. Establish `hG : μG {x : Mt k r | of x ∉ UH (Hpk k r)} = 0` using `ae_iff.mp (ae_mem_sk hμG)`. Establish `hq` using `hQ _ (measurable_one.indicator hB)`. Rewrite `hq` using `[lintegral_indicator_one hB, hG]`.
+
+Establish `hFc : Continuous (fun x : Mt k r => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `((continuous_const.matrix_mul (continuous_id : Continuous fun x : Mt k r => x)).matrix_mul continuous_const).matrix_elem i j`. Establish `hS : ∀ᵐ s ∂(μR.map (fun x : Mt k r => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)), of s ∈ UH (Hpk k r)`. Rewrite using `[ae_map_iff hFc.measurable.aemeasurable hUH.measurableSet]`.
+
+Use `filter_upwards [ae_mem_sk hμR] with a ha`. Conclude with `ha.2.1`. Establish `hμ0 : (μR.map (fun x : Mt k r => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)) Set.univ ≠ 0`. Rewrite using `[Measure.map_apply hFc.measurable MeasurableSet.univ, Set.preimage_univ]`. Conclude with `Measure.measure_univ_ne_zero.mpr hμR.2.1`.
+
+Establish `mulUH : ∀ s x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, s ∈ UH (Hpk k r) → s * x ∈ UH (Hpk k r) → x ∈ UH (Hpk k r)`. Introduce `s x hs hsx`. Simplify using `only [UH, Set.mem_setOf_eq] at hs hsx ⊢`. Rewrite `hsx` using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `key : ∀ x ∈ {x : Mt k r | of x ∉ UH (Hpk k r)}, (μR.map (fun x : Mt k r => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)) Set.univ ≤ ∫⁻ s, {x : Mt k r | of x ∉ UH (Hpk k r)}.indicator 1 (fun i j => (of s * of x) i j) ∂(μR.map (fun x : Mt k r => fun i j => (γ⁻¹ * Matrix.of x * γ) i j))`. Introduce `x hx`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hS] with s hs`.
+
+Establish `hm : (fun i j => (of s * of x) i j : Mt k r) ∈ {x : Mt k r | of x ∉ UH (Hpk k r)}` using `fun h => hx (mulUH _ _ hs h)`. Simplify using `[Set.indicator_of_mem hm]`. Establish `h2 : ∫⁻ x, {x : Mt k r | of x ∉ UH (Hpk k r)}.indicator (fun _ => (μR.map (fun x : Mt k r => fun i j => (γ⁻¹ * Matrix.of x * γ) i j)) Set.univ) x ∂νR = 0`. Apply `le_antisymm ?_ zero_le` to reduce the goal to its premises. Rewrite using `[hq]`.
+
+Apply `lintegral_mono` to reduce the goal to its premises. Introduce `x`. Distinguish the cases in `hx : x ∈ {x : Mt k r | of x ∉ UH (Hpk k r)}`. Rewrite using `[Set.indicator_of_mem hx]`. Conclude with `key x hx`.
+
+Simplify using `only [Set.indicator, hx, if_false]`. Conclude with `zero_le`. Rewrite `h2` using `[lintegral_indicator_const hB]`. Rewrite using `[ae_iff]`. Conclude with `(mul_eq_zero.mp h2).resolve_left hμ0`.
+-/
 theorem ae_uh_nuR {μG : Measure (Mt k r)} {γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     {μR νR : Measure (Mt k r)} (hγ : γ ∈ UH (Hpk k r)) (hμG : IsHaarOn (UH (Hpk k r)) μG)
     (hμR : IsHaarOn (RStab k r γ) μR)

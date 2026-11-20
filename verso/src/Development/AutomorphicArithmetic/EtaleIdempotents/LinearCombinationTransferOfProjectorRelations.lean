@@ -6,6 +6,17 @@ set_option backward.isDefEq.respectTransparency false
 
 open CategoryTheory Limits AlgebraicGeometry GroundTheory.PAdicHodge CrystallineSemistableComparison TensorProduct UpperTheory.Gal.crystallineComparison UpperTheory.Ru.crystallineComparison
 
+/- English proof (translation)
+Introduce `A _ H H' _ _ _ _ J ι _ _ I _ G P Ev Wc β γ L R σ ρ cc Z h1 h2 h3`. Establish `hi : ∀ i, ∑ k, (L * ρ i * cc i k) • (β • G (Wc i k)) = (γ * R) • ∑ a, P i a (Z i)`. Introduce `i`. Establish `e1 : ∀ a, ∑ k, (L * ρ i * cc i k) • P i a (Ev k) = R • P i a (Z i)`. Introduce `a`.
+
+Use `congrArg (P i a) (h2 i)` as an intermediate fact. Simplify using `only [map_smul, map_sum, Finset.smul_sum, smul_smul] at this`. Simplify `this` using `only [mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [Finset.smul_sum, smul_comm γ]`. Use `_ = (γ * R) • ∑ a, P i a (Z i) := by`. Rewrite using `[Finset.sum_congr rfl fun a _ => e1 a, mul_smul, ← Finset.smul_sum]`. Establish `h3' : ∑ i, (σ i : A) • ∑ a, P i a (Z i) = 0`. Rewrite `h3` using `[Fintype.sum_sigma]`.
+
+Simplify `h3` using `only [Finset.smul_sum, Int.cast_smul_eq_zsmul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [map_sum, map_smul, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (γ * R) • ∑ i, (σ i : A) • ∑ a, P i a (Z i) := by`. Simplify using `only [hi, Finset.smul_sum (s := Finset.univ) (r := γ * R), smul_comm (γ * R)]`. Use `_ = 0 := by rw [h3', smul_zero]`.
+-/
 theorem UpperTheory.linear_combination_transfer_of_projector_relations :
     ∀ {A : Type} [CommRing A] {H H' : Type 1} [AddCommGroup H] [Module A H] [AddCommGroup H'] [Module A H']
         {J ι : Type} [Fintype J] [Fintype ι] {I : J → Type} [∀ i, Fintype (I i)] (G : H →ₗ[A] H') (P : ∀ i, I i → (H →ₗ[A] H'))

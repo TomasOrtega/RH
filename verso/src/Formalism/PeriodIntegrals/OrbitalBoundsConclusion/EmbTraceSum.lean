@@ -2,6 +2,13 @@ import Mathlib
 import Formalism.PeriodIntegrals.EmbTraceSum
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.EmbeddingTraceSum.Imports
 
+/- English proof (translation)
+Introduce `E _ _ K φ₀ S _ emb hinj hext hcard y`. Set `_ : Algebra K ℂ` to `(φ₀.comp (algebraMap K E)).toAlgebra`. Establish `hcomm : ∀ (s : S) (a : K), emb s (algebraMap K E a) = algebraMap K ℂ a` using `fun s a => hext s a`. Set `f : S → (E →ₐ[K] ℂ)` to `fun s => { emb s with commutes' := hcomm s }`. Establish `hf : Function.Injective f`.
+
+Introduce `s t hst`. Apply `hinj` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `AlgHom.congr_fun hst x`. Establish `: FiniteDimensional K E` using `FiniteDimensional.right ℚ K E`.
+
+Establish `hcard' : Fintype.card S = Fintype.card (E →ₐ[K] ℂ)`. Rewrite using `[hcard, AlgHom.card]`. Establish `hbij : Function.Bijective f` using `(Fintype.bijective_iff_injective_and_card f).2 ⟨hf, hcard'⟩`. Establish `htr` using `trace_eq_sum_embeddings (K := K) (L := E) (E := ℂ) (x := y)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sumEqTrace_holds : PI.EmbTraceSum := by
   intro E _ _ K φ₀ S _ emb hinj hext hcard y
   let _ : Algebra K ℂ := (φ₀.comp (algebraMap K E)).toAlgebra

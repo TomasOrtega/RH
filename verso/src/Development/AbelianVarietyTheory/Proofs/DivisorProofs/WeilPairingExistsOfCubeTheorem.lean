@@ -28,14 +28,26 @@ variable [Algebra R A] [Algebra R B] {D E : Type} [CommRing D] [Algebra R D] [Co
 def ev (x : A →ₐ[R] D) (z : B →ₐ[R] D) : A ⊗[R] B →ₐ[R] D :=
   Algebra.TensorProduct.lift x z fun _ _ => Commute.all _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ev_tmul (x : A →ₐ[R] D) (z : B →ₐ[R] D) (a : A) (b : B) : ev x z (a ⊗ₜ b) = x a * z b := rfl
 
+/- English proof (translation)
+The claim follows from `AlgHom.ext fun a => by simp`.
+-/
 theorem ev_comp_left (x : A →ₐ[R] D) (z : B →ₐ[R] D) : (ev x z).comp Algebra.TensorProduct.includeLeft = x :=
   AlgHom.ext fun a => by simp
 
+/- English proof (translation)
+The claim follows from `AlgHom.ext fun a => by simp`.
+-/
 theorem ev_comp_right (x : A →ₐ[R] D) (z : B →ₐ[R] D) : (ev x z).comp Algebra.TensorProduct.includeRight = z :=
   AlgHom.ext fun a => by simp
 
+/- English proof (translation)
+Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, LinearMap.add_apply, hs, ht]`. Consider the case `tmul a b => simp`.
+-/
 theorem tensorToHom_ev (f : A →ₐ[R] D) (g : B →ₐ[R] E) (u : A ⊗[R] B) (φ : CartierDual R E) :
     tensorToHom R D E (ev (Algebra.TensorProduct.includeLeft.comp f) (Algebra.TensorProduct.includeRight.comp g) u) φ =
       f (tensorToHom R A B u (transpose g.toLinearMap φ)) := by
@@ -44,6 +56,11 @@ theorem tensorToHom_ev (f : A →ₐ[R] D) (g : B →ₐ[R] E) (u : A ⊗[R] B) 
   | add s t hs ht => simp only [map_add, LinearMap.add_apply, hs, ht]
   | tmul a b => simp
 
+/- English proof (translation)
+Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, LinearMap.add_apply, add_mul, hs, ht]`. Consider the case `tmul a b`. Proceed by induction on `v with`.
+
+Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, LinearMap.add_apply, mul_add, hs, ht]`. Consider the case `tmul a' b' => simp [mul_smul, smul_comm (φ.ofConv b)]`.
+-/
 theorem tensorToHom_mul_right (u v : A ⊗[R] B) (φ ψ : CartierDual R B) :
     tensorToHom R A (B ⊗[R] B)
       (ev Algebra.TensorProduct.includeLeft
@@ -60,6 +77,13 @@ theorem tensorToHom_mul_right (u v : A ⊗[R] B) (φ ψ : CartierDual R B) :
     | add s t hs ht => simp only [map_add, LinearMap.add_apply, mul_add, hs, ht]
     | tmul a' b' => simp [mul_smul, smul_comm (φ.ofConv b)]
 
+/- English proof (translation)
+Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, LinearMap.add_apply, add_mul, hs, ht, TensorProduct.map_add_left]`. Consider the case `tmul a b`. Proceed by induction on `v with`.
+
+Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, LinearMap.add_apply, mul_add, hs, ht, TensorProduct.map_add_right]`. Consider the case `tmul a' b'`. Establish `key : ∀ t : CartierDual R B ⊗[R] CartierDual R B, TensorProduct.map (tensorToHom R A B (a ⊗ₜ b)) (tensorToHom R A B (a' ⊗ₜ b')) t = pair R B B t (b ⊗ₜ b') • (a ⊗ₜ a')` using `fun t => by`. Proceed by induction on `t with`.
+
+Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, LinearMap.add_apply, add_smul, hs, ht]`. Consider the case `tmul f g => simp [← smul_tmul', smul_smul, mul_comm]`. Rewrite using `[key, pair_comul_tmul]`. Simplify using the standard rewrite rules.
+-/
 theorem tensorToHom_mul_left [Module.Finite R B] [Module.Projective R B] (u v : A ⊗[R] B) (φ : CartierDual R B) :
     tensorToHom R (A ⊗[R] A) B
       (ev (Algebra.TensorProduct.includeLeft.comp Algebra.TensorProduct.includeLeft)
@@ -99,6 +123,9 @@ structure IsBimul (u : A ⊗[R] B) : Prop where
   mul_right : ∀ (D : Type) [CommRing D] [Algebra R D] (x : A →ₐ[R] D) (z z' : WithConv (B →ₐ[R] D)),
     ev x (z * z').ofConv u = ev x z.ofConv u * ev x z'.ofConv u
 
+/- English proof (translation)
+The claim follows from `AlgHom.ext fun a => by rw [AlgHom.convMul_apply] refine DFunLike.congr_fun (g := j) ?_ _ ext <;> simp`.
+-/
 theorem conv_incl {D : Type} [CommRing D] [Algebra R D] (j : A ⊗[R] A →ₐ[R] D) :
     (toConv (j.comp Algebra.TensorProduct.includeLeft) * toConv (j.comp Algebra.TensorProduct.includeRight)).ofConv =
       j.comp (Bialgebra.comulAlgHom R A) := AlgHom.ext fun a => by
@@ -152,6 +179,9 @@ def IsBimul.hom : CartierDual R B →ₐc[R] A where
     refine Eq.trans ?_ (tensorToHom_ev (AlgHom.id R A) (Bialgebra.comulAlgHom R B) u _).symm
     exact congrArg (tensorToHom R A B u) (ext_apply fun a => mul_apply φ ψ a)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun n => (h n).hom, fun n => BialgHom.ext fun χ => (tensorToHom_ev (G.res n : G.A (n + 1) →ₐ[R] G.A n) (AlgHom.id R _) (u (n + 1)) χ).symm.trans ((congrArg (tensorToHom R _ _ · χ) (hl n (G.A n ⊗[R] H.A (n + 1)) Algebra.TensorProduct.includeLeft Algebra.TensorProduct.includeRigh …`.
+-/
 theorem exists_hom {p : ℕ} (G H : PDivGroup p R) (u : ∀ n, G.A n ⊗[R] H.A n) (h : ∀ n, IsBimul (u n))
     (hl : ∀ (n : ℕ) (D : Type) [CommRing D] [Algebra R D] (x : G.A n →ₐ[R] D) (z : H.A (n + 1) →ₐ[R] D),
       ev (x.comp (G.res n : G.A (n + 1) →ₐ[R] G.A n)) z (u (n + 1)) =
@@ -169,6 +199,11 @@ section Geo
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Use `hA.comm` as an intermediate fact. Take `⟨t, ht⟩` from `hC S A hA L hL _ (x3 A 0) (x3 A 1) (x3 A 2)`. Take `⟨t', ht', -⟩` from `exists_gen hL (φ' := thφ A (x3 A)) (ε' := thε) (fun U _ h => by`. Establish `e` using `prod_cub (x3 A 0) (x3 A 1) (x3 A 2) h`. Apply the tactic sequence `have i : lift (x3 A 0) (lift (x3 A 1) (x3 A 2)) = 𝟙 _ := by ext <;> simp [x3]`.
+
+Rewrite `e` using `[i]`. Simplify using `only [Over.id_left, Category.id_comp] at e`. Rewrite using `[e, Fin.prod_univ_eight]`. Simplify using `only [Matrix.cons_val, zpow_one, zpow_neg]) t ht`. Conclude with `⟨t', ht'⟩`.
+-/
 theorem triv_theta (hC : GlobalTheory.Published.CubeTheorem) {A : Over S} [GrpObj A] (hA : IsAbelianScheme A) {L : LB A.left}
     (hL : L.IsLB) : ∃ t : LB.Gen (Theta A L), t.IsGen := by
   have := hA.comm
@@ -182,6 +217,9 @@ theorem triv_theta (hC : GlobalTheory.Published.CubeTheorem) {A : Over S} [GrpOb
     simp only [Matrix.cons_val, zpow_one, zpow_neg]) t ht
   exact ⟨t', ht'⟩
 
+/- English proof (translation)
+Establish `a` using `(UU.cubWeil_iff_weilIs globalFns_holds hA h.2.1 h.1 _).1 h.symm`. Establish `b` using `(UU.cubWeil_iff_weilIs globalFns_holds hA h'.2.1 h'.1 _).1 h'.symm`. Rewrite `a` using `[Nat.cast_mul]`. Conclude with `inv_injective (PairingLevels.weilIs_value_eq globalFns_holds hA L.isLB c.isGen a b)`.
+-/
 theorem cubWeil_level {A : Over S} [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A) {L : RigLB A}
     {c : CubicalStr A L} {k l : ℕ} {T : Over S} {x z : T ⟶ A} {ζ ζ' : Γ(T.left, ⊤)ˣ}
     (h : UU.CubWeil c (k * l) x z ζ) (h' : UU.CubWeil c k x (z ^ l) ζ') : ζ = ζ' := by
@@ -192,6 +230,23 @@ theorem cubWeil_level {A : Over S} [GrpObj A] [IsCommMonObj A] (hA : IsAbelianSc
 
 variable {p : ℕ} {R : Type} [CommRing R] {A B : Over (Sp R)} [GrpObj A] [GrpObj B]
 
+/- English proof (translation)
+Apply the tactic sequence `let X : ∀ (n : ℕ) (D : Type) [CommRing D] [Algebra R D], WithConv (𝒜.A n →ₐ[R] D) →* (SpAlg R D ⟶ A ⊗ B) := fun n D _ _ => MonoidHom.mk' (fun x => CartesianMonoidalCategory.lift (spOver x.ofConv ≫ t.y n) 1) fun x x' => by ext1 <;> simp [MonObj.mul_comp, t.mul]`. Apply the tactic sequence `let Z : ∀ (n : ℕ) (D : Type) [CommRing D] [Algebra R D], WithConv (ℬ.A n →ₐ[R] D) →* (SpAlg R D ⟶ A ⊗ B) := fun n D _ _ => MonoidHom.mk' (fun z => CartesianMonoidalCategory.lift 1 (spOver z.ofConv ≫ s.y n)) fun x x' => by ext1 <;> simp [MonObj.mul_comp, s.mul]`. Establish `ex : ∀ n, ∃ U : (𝒜.A n ⊗[R] ℬ.A n)ˣ, UU.CubWeil c (p ^ n) (X n _ (toConv Algebra.TensorProduct.includeLeft)) (Z n _ (toConv Algebra.TensorProduct.includeRight)) (unitOn U)` using `fun n => by`. Take `⟨ζ, hζ, -⟩` from `UU.existsUnique_cubWeil c (N := p ^ n) (x := X n (𝒜.A n ⊗[R] ℬ.A n) (toConv Algebra.TensorProduct.includeLeft)) (y := Z n _ (toConv Algebra.TensorProduct.includeRight)) (by rw [← map_pow, 𝒜.pts_pow_self, map_one]) (by rw [← map_pow, ℬ.pts_pow_self, map_one])`. Take `⟨U, rfl⟩` from `EpsWeil.unitOn_bijective.2 ζ`.
+
+Conclude with `⟨U, hζ⟩`. Use `choose U hU using ex`. Establish `at' : ∀ (n : ℕ) (D : Type) [CommRing D] [Algebra R D] (x : WithConv (𝒜.A n →ₐ[R] D)) (z : WithConv (ℬ.A n →ₐ[R] D)), UU.CubWeil c (p ^ n) (X n D x) (Z n D z) (unitOn (Units.map (ev x.ofConv z.ofConv).toRingHom.toMonoidHom (U n)))` using `fun n D _ _ x z => by`. Establish `h` using `(hU n).comp (spOver (ev x.ofConv z.ofConv))`. Establish `e₁ : spOver (ev x.ofConv z.ofConv) ≫ X n _ (toConv Algebra.TensorProduct.includeLeft) = X n D x`.
+
+Simplify using `only [X, MonoidHom.mk'_apply, comp_lift, MonObj.comp_one, ← Category.assoc, spOver_comp, ev_comp_left]`. Establish `e₂ : spOver (ev x.ofConv z.ofConv) ≫ Z n _ (toConv Algebra.TensorProduct.includeRight) = Z n D z`. Simplify using `only [Z, MonoidHom.mk'_apply, comp_lift, MonObj.comp_one, ← Category.assoc, spOver_comp, ev_comp_right]`. Rewrite `h` using `[e₁, e₂]`. Conclude with `EpsWeil.map_unitOn (ev x.ofConv z.ofConv).toRingHom (U n) ▸ h`.
+
+Establish `um : ∀ {D : Type} [CommRing D] {a : Dˣ} (b d : Dˣ), unitOn a = unitOn b * unitOn d → a.val = b.val * d.val`. Introduce `D _ a b d h`. Establish `e : unitOn (b * d) = unitOn b * unitOn d` using `Units.ext (_root_.map_mul (Scheme.ΓSpecIso (CommRingCat.of D)).inv.hom b.val d.val)`. Conclude with `congrArg Units.val ((EpsWeil.unitOn_bijective (D := D)).1 (h.trans e.symm))`. Take `⟨w, hw⟩` from `exists_hom 𝒜 ℬ (fun n => (U n).val) (fun n => ⟨(U n).isUnit, fun D _ _ x x' z => by`.
+
+Use `(at' n D x (toConv z)).mul_left (at' n D x' (toConv z))` as an intermediate fact. Rewrite `this` using `[← map_mul]`. Conclude with `um _ _ ((at' n D (x * x') (toConv z)).unique this),`. Use `fun D _ _ x z z' => by`. Use `((at' n D (toConv x) z).symm.mul_left (at' n D (toConv x) z').symm).symm` as an intermediate fact.
+
+Rewrite `this` using `[← map_mul, ← mul_inv, inv_inv]`. Conclude with `um _ _ ((at' n D (toConv x) (z * z')).unique this)⟩)`. Use `fun n D _ _ x z => by`. Establish `a` using `at' (n + 1) D (toConv (x.comp (𝒜.res n : 𝒜.A (n + 1) →ₐ[R] 𝒜.A n))) (toConv z)`. Establish `b` using `at' n D (toConv x) (toConv (z.comp (ℬ.mulP n : ℬ.A n →ₐ[R] ℬ.A (n + 1))))`.
+
+Establish `e₁ : X (n + 1) D (toConv (x.comp (𝒜.res n : 𝒜.A (n + 1) →ₐ[R] 𝒜.A n))) = X n D (toConv x)`. Simplify using `only [X, MonoidHom.mk'_apply, ← spOver_comp, Category.assoc, t.res]`. Apply the tactic sequence `have e₂ : Z n D (toConv (z.comp (ℬ.mulP n : ℬ.A n →ₐ[R] ℬ.A (n + 1)))) = Z (n + 1) D (toConv z) ^ p := by ext1 <;> simp only [Z, MonoidHom.mk'_apply, ← spOver_comp, Category.assoc, s.mulP_y, MonObj.pow_comp, lift_fst, lift_snd, one_pow, MonObj.comp_pow]`. Rewrite `a` using `[e₁, pow_succ]`. Rewrite `b` using `[e₂]`.
+
+Conclude with `congrArg Units.val (EpsWeil.unitOn_bijective.1 (cubWeil_level hAB a b))`. Conclude with `⟨w, fun n => ⟨U n, (UU.cubWeil_iff_weilIs globalFns_holds hAB (hU n).1 (hU n).2.1 _).1 (hU n), fun χ => (hw n χ).trans (tensorToHom_apply _ _)⟩⟩`.
+-/
 theorem exists_of_cubical [IsCommMonObj (A ⊗ B)] (hAB : IsAbelianScheme (A ⊗ B)) {M : RigLB (A ⊗ B)}
     (c : CubicalStr (A ⊗ B) M) {𝒜 ℬ : PDivGroup p R} (t : 𝒜.TorsionTower A) (s : ℬ.TorsionTower B) :
     ∃ w : 𝒜 ⟶ ℬ.dual, IsWeilHom t s M.L w := by
@@ -249,6 +304,13 @@ theorem exists_of_cubical [IsCommMonObj (A ⊗ B)] (hAB : IsAbelianScheme (A ⊗
   exact ⟨w, fun n => ⟨U n, (UU.cubWeil_iff_weilIs globalFns_holds hAB (hU n).1 (hU n).2.1 _).1 (hU n),
     fun χ => (hw n χ).trans (tensorToHom_apply _ _)⟩⟩
 
+/- English proof (translation)
+Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB`. Use `hAB.comm` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : AbLaw.Triv (P.pull (eSec (A ⊗ B))) := by`. Establish `e` using `(AbDual.triv_ev_iff hP.isLB _ _).2 (AbDual.evc_one_right hP.isLB hP.zero (1 : 𝟙_ (Over (Sp R)) ⟶ A))`. Establish `e' : CartesianMonoidalCategory.lift (1 : 𝟙_ (Over (Sp R)) ⟶ A) (1 : 𝟙_ (Over (Sp R)) ⟶ B) = η[A ⊗ B]`.
+
+Apply the tactic sequence `ext <;> simp [Hom.one_def]`. Rewrite `e` using `[AbDual.ev, e']`. Conclude with `e`. Take `⟨τ, hτ⟩` from `triv_theta hC hAB hP.isLB`. Take `⟨τ', hτ', hn⟩` from `AbLaw.Cube.exists_normalised hP.isLB τ hτ`.
+
+Conclude with `exists_of_cubical hAB (AbLaw.Cube.cubicalOfNormalised globalFns_holds hAB ⟨P, r, hP.isLB, hr⟩ τ' hτ' hn) t s`.
+-/
 theorem exists_of_isDual (hC : GlobalTheory.Published.CubeTheorem) (hA : IsAbelianScheme A) (hB : IsAbelianScheme B)
     {P : LB (A ⊗ B).left} (hP : IsDual A B P) {𝒜 ℬ : PDivGroup p R} (t : 𝒜.TorsionTower A)
     (s : ℬ.TorsionTower B) : ∃ w : 𝒜 ⟶ ℬ.dual, IsWeilHom t s P w := by
@@ -268,6 +330,9 @@ theorem exists_of_isDual (hC : GlobalTheory.Published.CubeTheorem) (hA : IsAbeli
 
 end Geo
 
+/- English proof (translation)
+Introduce `hC _ _ _ _ _ _ hA _ hP _ t` and use `exists_of_isDual hC hA hA hP t t`.
+-/
 theorem exists_isWeilHom : GlobalTheory.Published.CubeTheorem → ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (A : Over (Sp K))
     [GrpObj A], IsAbelianScheme A → ∀ (P : LB (A ⊗ A).left), IsDual A A P →
     ∀ (𝒜 : PDivGroup p K) (t : 𝒜.TorsionTower A), ∃ w : 𝒜 ⟶ 𝒜.dual, IsWeilHom t t P w :=

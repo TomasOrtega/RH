@@ -12,11 +12,17 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.JacquetShalikaRigi
 
 namespace PositivityTheory.Rg.Rs
 
+/- English proof (translation)
+Conclude with `ascAll_of_rest (slice_of dict_holds finTr_holds) pr_holds indMap_holds (stringStep_of PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity PositivityTheory.AdelicQuotientData.jacquetShalika.2 infInd2_holds infAsc_holds satInd2_holds satAsc_holds satHerm_holds gap_holds)`.
+-/
 theorem ascAll_holds : AscAll := by
   exact ascAll_of_rest (slice_of dict_holds finTr_holds) pr_holds indMap_holds
     (stringStep_of PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity PositivityTheory.AdelicQuotientData.jacquetShalika.2 infInd2_holds infAsc_holds
       satInd2_holds satAsc_holds satHerm_holds gap_holds)
 
+/- English proof (translation)
+Conclude with `⟨ascAll_holds, C3.clause3Asc_holds h locDual_holds⟩`.
+-/
 theorem ascSeed_of_locSub (h : LocSub) : AscSeed := by
   exact ⟨ascAll_holds, C3.clause3Asc_holds h locDual_holds⟩
 

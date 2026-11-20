@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.N
 
 open NumberField GlobalTheory.CuspRep UpperTheory.V.Sd UpperTheory.V.Af UpperTheory.V.Af.Nf
 
+/- English proof (translation)
+Introduce `M hM`. Use `⟨Subgroup.isOpen_mono (H₁ := KLev ℚ 2 M) (fun g hg => ?_) (isOpen_KLev hM), fun u hu x hx => ?_⟩` and prove the remaining obligations. Take `⟨ha, hb, hc⟩` from `mem_KLev.1 hg`. Use `(memK M g).2 ⟨ha, hb, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hc 1 0`.
+
+Simplify using `using hc 1 1`. Use `(memK M _).2 ⟨?_, ?_, ⟨0, zero_mem _, ?_⟩, ⟨0, zero_mem _, ?_⟩⟩` and prove the remaining obligations. Use `Fin.forall_fin_two.2 ⟨Fin.forall_fin_two.2 ⟨hu.1, hx⟩, Fin.forall_fin_two.2 ⟨zero_mem _, one_mem _⟩⟩` and prove the remaining obligations. Use `Fin.forall_fin_two.2 ⟨Fin.forall_fin_two.2 ⟨hu.2, neg_mem (mul_mem hu.2 hx)⟩, Fin.forall_fin_two.2 ⟨zero_mem _, one_mem _⟩⟩` and prove the remaining obligations. Conclude with `(mul_zero _).symm`.
+
+Conclude with `(sub_self (1 : Af ℚ)).trans (mul_zero _).symm`.
+-/
 theorem UpperTheory.V.Af.Nf.kOpen :
     UpperTheory.V.Af.Nf.KOpen := by
   intro M hM

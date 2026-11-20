@@ -5,12 +5,28 @@ namespace GlobalTheory.LocalLatticeIntegral
 
 open NumberField
 
+/- English proof (translation)
+Establish `h : IsAlgebraic ℤ e` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic e)`. Take `⟨M, hM, hi⟩` from `h.exists_integral_multiple`. Conclude with `⟨M, hM, ⟨M • e, hi⟩, by simp [zsmul_eq_mul]⟩`.
+-/
 theorem exists_int_mul_integral {E : Type} [Field E] [NumberField E] (e : E) :
     ∃ M : ℤ, M ≠ 0 ∧ ∃ r : 𝓞 E, (r : E) = (M : E) * e := by
   have h : IsAlgebraic ℤ e := (IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic e)
   obtain ⟨M, hM, hi⟩ := h.exists_integral_multiple
   exact ⟨M, hM, ⟨M • e, hi⟩, by simp [zsmul_eq_mul]⟩
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span E (L : Set (Fin n → E))`. Rewrite using `[hL.span_eq_top]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`.
+
+Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨N, hN, h1⟩` from `hx`. Take `⟨M, hM, h2⟩` from `hy`. Use `⟨N * M, mul_ne_zero hN hM, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.toAddSubgroup.zsmul_mem h1 M`. Rewrite using `[mul_smul]`.
+
+Conclude with `L.toAddSubgroup.zsmul_mem h2 N`. Consider the case `smul e x _ hx`. Take `⟨N, hN, h1⟩` from `hx`. Take `⟨M, hM, r, hr⟩` from `exists_int_mul_integral e`. Use `⟨M * N, mul_ne_zero hM hN, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `L.smul_mem r h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Establish `: (r • N • x) j = (r : E) * ((N : E) * x j)`. Simplify using `[Algebra.smul_def, zsmul_eq_mul]`.
+
+Rewrite using `[this, hr]`. Simplify using `only [Pi.smul_apply, zsmul_eq_mul, smul_eq_mul, Int.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_int_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
     [hL : Submodule.IsLattice E L] (x : Fin n → E) : ∃ N : ℤ, N ≠ 0 ∧ N • x ∈ L := by
   have hx : x ∈ Submodule.span E (L : Set (Fin n → E)) := by
@@ -39,6 +55,15 @@ theorem exists_int_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (L : 
     simp only [Pi.smul_apply, zsmul_eq_mul, smul_eq_mul, Int.cast_mul]
     ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n L _ v`. Use `choose N hN hmem using fun i : Fin n => exists_int_smul_mem L (Pi.single i (1 : E))`. Establish `hP : (∏ i, N i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hN i`. Use `haveI : CharZero (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) := charZero_of_injective_algebraMap (algebraMap F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v)).injective`. Use `⟨((∏ i, N i : ℤ) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v), Int.cast_ne_zero.2 hP, fun i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨k, hk⟩ : N i ∣ ∏ j, N j` from `Finset.dvd_prod_of_mem N (Finset.mem_univ i)`. Establish `h1 : (∏ j, N j) • (Pi.single i (1 : E) : Fin n → E) ∈ L`. Rewrite using `[hk, mul_comm, mul_smul]`. Conclude with `L.toAddSubgroup.zsmul_mem (hmem i) k`. Generalize the expression as in `(∏ j, N j) = P at h1`.
+
+Use `AddSubgroup.subset_closure ⟨1, one_mem _, _, h1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.smul_apply, Pi.single_eq_same, TensorProduct.tmul_smul, TensorProduct.smul_tmul', zsmul_eq_mul, mul_one]`.
+
+Rewrite using `[Pi.single_eq_of_ne hj, Pi.smul_apply, Pi.single_eq_of_ne hj, smul_zero, TensorProduct.tmul_zero]`.
+-/
 theorem exists_single_mem_latLoc : ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [NumberField E] [inst_4 : Algebra F E] {n : ℕ} (L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)) [Submodule.IsLattice E L] (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)), ∃ (c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v), c ≠ (0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) ∧ ∀ (i : Fin n), Pi.single i (c ⊗ₜ[F] (1 : E)) ∈ GlobalTheory.AdelicU.latLoc F L v := by
   intro F E _ _ _ _ _ n L _ v
   choose N hN hmem using fun i : Fin n => exists_int_smul_mem L (Pi.single i (1 : E))

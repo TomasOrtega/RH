@@ -12,19 +12,31 @@ namespace GlobalTheory.LevelCharExp
 
 open Formalism.BasicNotions.TH Formalism.IndefR.Lev
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hd`. Rewrite using `[pow_mul, h, one_pow]`.
+-/
 theorem pow_of_dvd {G : Type} [Monoid G] {x : G} {n M : ℕ} (h : x ^ n = 1) (hd : n ∣ M) : x ^ M = 1 := by
   obtain ⟨k, rfl⟩ := hd
   rw [pow_mul, h, one_pow]
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_eq_one h`.
+-/
 theorem prod_pow_eq_one {ι G : Type} [CommMonoid G] (s : Finset ι) (f : ι → G) (M : ℕ) (h : ∀ i ∈ s, f i ^ M = 1) :
     (∏ i ∈ s, f i) ^ M = 1 := by
   rw [← Finset.prod_pow]
   exact Finset.prod_eq_one h
 
+/- English proof (translation)
+Rewrite using `[← map_pow, pow_card_eq_one', map_one]`.
+-/
 theorem residue_char_pow {E : Type} [Field E] [NumberField E] (PP : Formalism.L2.DIV.Pl E) {LL : Type} [Monoid LL]
     (χ : (Formalism.L2.DIV.kP PP)ˣ →* LL) (u : (Formalism.L2.DIV.kP PP)ˣ) : χ u ^ Nat.card (Formalism.L2.DIV.kP PP)ˣ = 1 := by
   rw [← map_pow, pow_card_eq_one', map_one]
 
+/- English proof (translation)
+Establish `: Finite (Formalism.L2.DIV.kP PP)` using `Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot`. Conclude with `Nat.card_pos`.
+-/
 theorem card_units_pos {E : Type} [Field E] [NumberField E] (PP : Formalism.L2.DIV.Pl E) : 0 < Nat.card (Formalism.L2.DIV.kP PP)ˣ := by
   have : Finite (Formalism.L2.DIV.kP PP) := Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot
   exact Nat.card_pos
@@ -34,10 +46,18 @@ open Classical in
 def expOf {D : D7} {n : ℕ} (L : Formalism.L2.DIV.LevDat D.host.E ℂ n) : ℕ :=
   ∏ PP ∈ L.Pg ∪ L.Q, Nat.card (Formalism.L2.DIV.kP PP)ˣ
 
+/- English proof (translation)
+The claim follows from `Finset.prod_pos fun PP _ => card_units_pos PP`.
+-/
 theorem expOf_pos {D : D7} {n : ℕ} (L : Formalism.L2.DIV.LevDat D.host.E ℂ n) : 0 < expOf L :=
   Finset.prod_pos fun PP _ => card_units_pos PP
 
 open Classical in
+/- English proof (translation)
+Establish `h1 : Formalism.L2.DIV.ext1 (flag1L L).P.H (flag1L L).P.chi (Formalism.L2.DIV.rTup β (flag1L L) x) = 1` using `Formalism.IndefR.Lev.subgroupCharExtension_one_apply _ _`. Unfold `Formalism.L2.DIV.levFn`. Rewrite using `[h1, one_mul, mul_pow]`. Establish `hd : ∀ PP ∈ L.Pg ∪ L.Q, Nat.card (Formalism.L2.DIV.kP PP)ˣ ∣ expOf L` using `fun PP hP => Finset.dvd_prod_of_mem (fun PP => Nat.card (Formalism.L2.DIV.kP PP)ˣ) hP`. Rewrite using `[prod_pow_eq_one _ _ _ ?_, prod_pow_eq_one _ _ _ ?_, one_mul]`.
+
+Introduce `PP hP`. Conclude with `pow_of_dvd (residue_char_pow PP _ _) (hd PP (Finset.mem_union_right _ hP))`. Introduce `PP hP`. Use `prod_pow_eq_one _ _ _ fun c _ => ?_` and prove the remaining obligations. Conclude with `pow_of_dvd (residue_char_pow PP _ _) (hd PP (Finset.mem_union_left _ hP))`.
+-/
 theorem levFn_flag1_pow {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D))
     (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (x : GL (Fin V.rank) (Lev.EAf D)) :
     Formalism.L2.DIV.levFn β (flag1L L) x ^ expOf L = 1 := by
@@ -54,6 +74,9 @@ theorem levFn_flag1_pow {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D))
     refine prod_pow_eq_one _ _ _ fun c _ => ?_
     exact pow_of_dvd (residue_char_pow PP _ _) (hd PP (Finset.mem_union_left _ hP))
 
+/- English proof (translation)
+Introduce `D V β L k`. Conclude with `levFn_flag1_pow V β L _`.
+-/
 theorem levEnv_chi_pow : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (k : (levEnv V β L).J), (levEnv V β L).χ k ^ expOf L = 1 := by
   intro D V β L k
@@ -65,6 +88,9 @@ end
 
 namespace GlobalTheory.LevelCharExp
 
+/- English proof (translation)
+Unfold `InRange AtPts`. Use `Formalism.MainNotions.Pk.Closed.of_class fun Fm _ _ => EvPt.of_forall fun x hx i p _ _ j P W _ _ w _ _ _ => ?_` and prove the remaining obligations. Use `⟨expOf (p.R.datVt j (p.R.mu w)), expOf_pos _, fun κ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val]`. Conclude with `congrArg Units.val (levEnv_chi_pow _ _ _ κ)`.
+-/
 theorem chiAt_inRange : InRange fun _ _ _ _ p j P _ w => SmallAt p j P w → ChiAt p j w := by
   unfold InRange AtPts
   refine Formalism.MainNotions.Pk.Closed.of_class fun Fm _ _ => EvPt.of_forall fun x hx i p _ _ j P W _ _ w _ _ _ => ?_

@@ -10,6 +10,13 @@ namespace Formalism.G0
 
 namespace ManyOrbitsP
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hpq : 0 ≤ p + q` using `add_nonneg hp hq`. Establish `h1` using `mul_le_mul_of_nonneg_left ih hpq`.
+
+Establish `h2 : 0 ≤ ((k : ℝ) + 1) * q ^ 2 * p ^ k` using `by positivity`. Establish `e : (p + q) * (p ^ (k + 1) + ((k : ℝ) + 1) * q * p ^ k) - (p ^ (k + 1 + 1) + (((k : ℝ) + 1) + 1) * q * p ^ (k + 1)) = ((k : ℝ) + 1) * q ^ 2 * p ^ k`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (p + q) * (p + q) ^ (k + 1) = (p + q) ^ (k + 1 + 1)` using `by ring`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem add_pow_ge (p q : ℝ) (hp : 0 ≤ p) (hq : 0 ≤ q) (k : ℕ) :
     p ^ (k + 1) + ((k : ℝ) + 1) * q * p ^ k ≤ (p + q) ^ (k + 1) := by
   induction k with
@@ -25,6 +32,19 @@ theorem add_pow_ge (p q : ℝ) (hp : 0 ≤ p) (hq : 0 ≤ q) (k : ℕ) :
     push_cast
     linarith
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on generalizing n with`. Consider the case `empty`. Consider the cases of `n with`. Consider the case `zero => simp [Multiset.esymm]`. Consider the case `succ n`.
+
+Rewrite using `[Multiset.esymm, Multiset.powersetCard_eq_empty _ (by simp)]`. Simplify using the standard rewrite rules. Consider the case `cons a t ih`. Establish `ha : 0 ≤ a` using `hs a (Multiset.mem_cons_self a t)`. Establish `ht : ∀ x ∈ t, 0 ≤ x` using `fun x hx => hs x (Multiset.mem_cons_of_mem hx)`.
+
+Establish `hS : 0 ≤ t.sum` using `Multiset.sum_nonneg ht`. Consider the cases of `n with`. Consider the case `zero => simp [Multiset.esymm]`. Consider the case `succ n`. Establish `e : (a ::ₘ t).esymm (n + 1) = t.esymm (n + 1) + a * t.esymm n`.
+
+Simplify using `[Multiset.esymm, Multiset.powersetCard_cons, Multiset.sum_map_mul_left]`. Establish `h1` using `ih ht (n + 1)`. Establish `h2` using `ih ht n`. Establish `h3` using `add_pow_ge t.sum a hS ha n`. Establish `h4` using `mul_le_mul_of_nonneg_left h2 (by positivity : (0 : ℝ) ≤ ((n : ℝ) + 1) * a)`.
+
+Rewrite using `[e, Multiset.sum_cons, add_comm a t.sum]`. Rewrite `h1`, the goal using `[Nat.factorial_succ]`. Move the coercions through the operations in `at h1 ⊢`. Establish `e5 : ((n : ℝ) + 1) * (n.factorial : ℝ) * (t.esymm (n + 1) + a * t.esymm n) = ((n : ℝ) + 1) * (n.factorial : ℝ) * t.esymm (n + 1) + ((n : ℝ) + 1) * a * ((n.factorial : ℝ) * t.esymm n)`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the linear relations using `[h1, h3, h4, e5]`.
+-/
 theorem fact_esymm_le (s : Multiset ℝ) (hs : ∀ x ∈ s, 0 ≤ x) (n : ℕ) :
     (n.factorial : ℝ) * s.esymm n ≤ s.sum ^ n := by
   induction s using Multiset.induction_on generalizing n with
@@ -55,6 +75,13 @@ theorem fact_esymm_le (s : Multiset ℝ) (hs : ∀ x ∈ s, 0 ≤ x) (n : ℕ) :
         ring
       linarith [h1, h3, h4, e5]
 
+/- English proof (translation)
+Unfold `esymmR`. Establish `hnn : ∀ x ∈ Finset.univ.val.map κ, 0 ≤ x`. Introduce `x hx`. Take `⟨v, _, rfl⟩` from `Multiset.mem_map.mp hx`. Conclude with `hκ v`.
+
+Establish `hE` using `fact_esymm_le (Finset.univ.val.map κ) hnn k`. Rewrite `hE` using `[Finset.esymm_map_val]`. Establish `hsum : (Finset.univ.val.map κ).sum = ∑ v, κ v` using `rfl`. Rewrite `hE` using `[hsum]`. Establish `hk : (0 : ℝ) < k.factorial` using `by positivity`.
+
+Establish `hmk : 0 ≤ m ^ k` using `pow_nonneg hm k`. Rewrite using `[le_div_iff₀ hk, mul_pow]`. Establish `h2` using `mul_le_mul_of_nonneg_left hE hmk`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem esymmR_le {V : ℕ} (κ : Fin V → ℝ) (hκ : ∀ v, 0 ≤ κ v) (m : ℝ) (hm : 0 ≤ m) (k : ℕ) :
     m ^ k * esymmR κ k ≤ (m * ∑ v, κ v) ^ k / k.factorial := by
   unfold esymmR
@@ -78,6 +105,9 @@ section Mod
 
 variable {R X : Type} [CommRing R] [AddCommGroup X] [Module R X]
 
+/- English proof (translation)
+Take `⟨C, hCM, hcard, hC⟩` from `h`. Use `⟨C, hCM, hcard.trans hg, fun x hx => ?_⟩` and prove the remaining obligations. Use `Submodule.smul_mem _ (π ^ (E' - E)) (hC x hx)` as an intermediate fact. Rewrite `this` using `[smul_smul, ← pow_add, Nat.sub_add_cancel hE]`. Then use the resulting hypothesis.
+-/
 theorem allBut_mono {π : R} {M P : Submodule R X} {g g' E E' : ℕ} (h : AllButLE π M P g E)
     (hg : g ≤ g') (hE : E ≤ E') : AllButLE π M P g' E' := by
   obtain ⟨C, hCM, hcard, hC⟩ := h
@@ -85,6 +115,19 @@ theorem allBut_mono {π : R} {M P : Submodule R X} {g g' E E' : ℕ} (h : AllBut
   have := Submodule.smul_mem _ (π ^ (E' - E)) (hC x hx)
   rwa [smul_smul, ← pow_add, Nat.sub_add_cancel hE] at this
 
+/- English proof (translation)
+Take `⟨C, hCM, hcard, hC⟩` from `h`. Use `⟨C.subtype (· ∈ M), fun _ _ => Submodule.mem_top, ?_, fun x _ => ?_⟩` and prove the remaining obligations. Conclude with `(Finset.card_subtype _ _).le.trans ((Finset.card_filter_le _ _).trans hcard)`. Take `⟨p, hp, c, hc, hpc⟩` from `Submodule.mem_sup.mp (hC x x.2)`. Establish `hspanle : Submodule.span R (↑C : Set X) ≤ M` using `Submodule.span_le.mpr hCM`.
+
+Establish `hcM : c ∈ M` using `hspanle hc`. Establish `hpM : p ∈ M`. Establish `e : p = π ^ E • (x : X) - c` using `by rw [← hpc]; abel`. Rewrite using `[e]`. Conclude with `M.sub_mem (M.smul_mem _ x.2) hcM`.
+
+Use `Submodule.mem_sup.mpr ⟨⟨p, hpM⟩, hp, ⟨c, hcM⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hmap : Submodule.map M.subtype (Submodule.span R (↑(C.subtype (· ∈ M)) : Set M)) = Submodule.span R (↑C : Set X)`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Simplify using `using hz`. Introduce `hy`. Conclude with `⟨⟨y, hCM hy⟩, by simpa using hy, rfl⟩`.
+
+Rewrite `hc` using `[← hmap]`. Take `⟨y, hy, hyc⟩` from `Submodule.mem_map.mp hc`. Establish `hy' : y = ⟨c, hcM⟩` using `Subtype.ext hyc`. Rewrite using `[← hy']` and apply the resulting hypothesis. Use `ext`.
+
+Simplify using `[hpc]`.
+-/
 theorem allBut_comap (π : R) (M P : Submodule R X) (g E : ℕ) (h : AllButLE π M P g E) :
     AllButLE π (⊤ : Submodule R M) (P.comap M.subtype) g E := by
   classical
@@ -115,6 +158,9 @@ theorem allBut_comap (π : R) (M P : Submodule R X) (g E : ℕ) (h : AllButLE π
     · ext
       simp [hpc]
 
+/- English proof (translation)
+Establish `h` using `Submodule.map_smul'' I (⊤ : Submodule R M) M.subtype`. Rewrite `h` using `[Submodule.map_subtype_top]`. Rewrite using `[← h, Submodule.comap_map_eq_of_injective M.injective_subtype]`.
+-/
 theorem comap_smul_self (I : Ideal R) (M : Submodule R X) :
     (I • M).comap M.subtype = I • (⊤ : Submodule R M) := by
   have h := Submodule.map_smul'' I (⊤ : Submodule R M) M.subtype
@@ -123,6 +169,11 @@ theorem comap_smul_self (I : Ideal R) (M : Submodule R X) :
 
 end Mod
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, pow_succ]`. Establish `hsn : 0 ≤ s ^ n` using `pow_nonneg hs0 n`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hs hsn]`.
+-/
 theorem geom_le (s : ℝ) (hs0 : 0 ≤ s) (hs : s ≤ 1 / 2) (n : ℕ) :
     ∑ i ∈ Finset.range n, s ^ i ≤ 2 - 2 * s ^ n := by
   induction n with
@@ -132,6 +183,19 @@ theorem geom_le (s : ℝ) (hs0 : 0 ≤ s) (hs : s ≤ 1 / 2) (n : ℕ) :
     have hsn : 0 ≤ s ^ n := pow_nonneg hs0 n
     nlinarith [mul_le_mul_of_nonneg_left hs hsn]
 
+/- English proof (translation)
+Use `set gβ : ℕ → ℕ := fun β => ⌊(2 * (d : ℝ) * (s ^ (β + 1) / (β + 1).factorial))⌋₊ with hgβ`. Establish `hA : ∀ β ≤ β₀, AllButLE π (⊤ : Submodule R M) (N.comap M.subtype) (gβ β) (τ + β * S)`. Introduce `β hβ`. Take `⟨C, hCM, hCcard, hC⟩` from `h1 β hβ`. Conclude with `allBut_comap π M N _ _ ⟨C, hCM, Nat.le_floor hCcard, hC⟩`.
+
+Establish `hB : AllButLE π (⊤ : Submodule R M) (N.comap M.subtype) 0 (τ + V * S)` using `allBut_comap π M N 0 (τ + V * S) (allBut_mono h2 le_rfl (by omega))`. Establish `hL` using `lengthBoundOfLayers (O := R) (M := M) π hπ (N.comap M.subtype) τ S (V * S) β₀ gβ hA hB`. Establish `hq : Submodule.comap M.subtype (N ⊓ (Ideal.span {π ^ τ}) • M) = N.comap M.subtype ⊓ (Ideal.span {π ^ τ}) • (⊤ : Submodule R M)`. Rewrite using `[Submodule.comap_inf, comap_smul_self]`. Rewrite `hL` using `[hd]`.
+
+Rewrite using `[hq]`. Establish `hne : Module.length R (↥M ⧸ (N.comap M.subtype ⊓ (Ideal.span {π ^ τ}) • (⊤ : Submodule R M))) ≠ ⊤` using `ne_top_of_le_ne_top (ENat.coe_ne_top _) hL`. Use `⟨_, (ENat.coe_toNat hne).symm, ?_⟩` and prove the remaining obligations. Establish `hnat : (Module.length R (↥M ⧸ (N.comap M.subtype ⊓ (Ideal.span {π ^ τ}) • (⊤ : Submodule R M)))).toNat ≤ d * τ + S * ∑ β ∈ Finset.range β₀, gβ β + V * S * gβ β₀`. Rewrite using `[← ENat.coe_le_coe, ENat.coe_toNat hne]`.
+
+Conclude with `hL`. Establish `hg_le : ∀ β, (gβ β : ℝ) ≤ 2 * (d : ℝ) * (s ^ (β + 1) / (β + 1).factorial)` using `fun β => Nat.floor_le (by positivity)`. Establish `hterm : ∀ β, 2 * (d : ℝ) * (s ^ (β + 1) / (β + 1).factorial) ≤ 2 * d * s * s ^ β`. Introduce `β`. Establish `hf : (1 : ℝ) ≤ (β + 1).factorial`.
+
+Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.factorial_ne_zero _)` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : (∑ β ∈ Finset.range β₀, (gβ β : ℝ)) ≤ 4 * d * s`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises.
+
+Combine the linear relations using `[geom_le s hs0 hs β₀, pow_nonneg hs0 β₀]`. Use `_ = 4 * d * s := by ring`. Establish `hcast : ((Module.length R (↥M ⧸ (N.comap M.subtype ⊓ (Ideal.span {π ^ τ}) • (⊤ : Submodule R M)))).toNat : ℝ) ≤ (d : ℝ) * τ + S * ∑ β ∈ Finset.range β₀, (gβ β : ℝ) + V * S * (gβ β₀ : ℝ)`. Conclude with `hnat` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lengthPart {R X : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [AddCommGroup X] [Module R X] (π : R) (hπ : Irreducible π) (M N : Submodule R X)
     [Module.Free R M] [Module.Finite R M] (d : ℕ) (hd : Module.finrank R M = d)
@@ -193,6 +257,23 @@ theorem lengthPart {R X : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRi
 
 end ManyOrbitsP
 
+/- English proof (translation)
+Introduce `R X _ _ _ _ _ V π hπ L y m β₀ c₀ S d a b c Sv κ G _ _ hd hm hcomm hb1 hb2 hb3 hb4 hb5 hb6 hG hκ habc hSv hs`. Establish `hprod : ∀ B : Finset (Fin V), 0 ≤ 2 * (∏ v ∈ B, κ v) * (d : ℝ)` using `fun B => mul_nonneg (mul_nonneg zero_le_two (Finset.prod_nonneg fun v _ => hκ v)) (Nat.cast_nonneg d)`. Establish `ws : ∀ β ≤ β₀ + 1, AllButLE π (L fun _ => Slot.base) (prodIdealMap π y m Sv (L fun _ => Slot.base)) (∑ B ∈ (Finset.univ : Finset (Fin V)).powersetCard (β + 1), m ^ (β + 1) * ⌊2 * (∏ v ∈ B, κ v) * (d : ℝ)⌋₊) (∑ v, (a v + b v + (m - 1) * c v + m * c₀) + β * S) ∧ AllButLE π (L fun _ …`. Introduce `β hβ`. Conclude with `hW V π L y m β c₀ S a b c Sv (fun B => ⌊2 * (∏ v ∈ B, κ v) * (d : ℝ)⌋₊) G hm hcomm hb1 hb2 hb3 hb4 hb5 hb6 (fun B hB => ⟨(hG B (by omega)).1, Nat.le_floor (hG B (by omega)).2.1, (hG B (by omega)).2.2⟩) hSv`.
+
+Establish `hexp : ∑ v, (a v + b v + (m - 1) * c v + m * c₀) ≤ ∑ v, m * (c v + c₀)`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `v _`. Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Use `habc v` as an intermediate fact.
+
+Simplify using `only [Nat.add_sub_cancel]`. Use the polynomial consequences of the given equalities and inequalities. Establish `cl1 : ∀ β ≤ β₀ + 1, ∃ C : Finset X, (↑C : Set X) ⊆ (L fun _ => Slot.base) ∧ (C.card : ℝ) ≤ 2 * (m : ℝ) ^ (β + 1) * esymmR κ (β + 1) * d ∧ ∀ x ∈ (L fun _ => Slot.base), π ^ (∑ v, m * (c v + c₀) + β * S) • x ∈ prodIdealMap π y m Sv (L fun _ => Slot.base) ⊔ Submodule.span R (↑C : Se …`. Introduce `β hβ`. Take `⟨C, hCM, hcard, hx⟩` from `ManyOrbitsP.allBut_mono (ws β hβ).1 le_rfl (Nat.add_le_add_right hexp _)`.
+
+Use `⟨C, hCM, ?_, hx⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `B _`.
+
+Conclude with `mul_le_mul_of_nonneg_left (Nat.floor_le (hprod B)) (by positivity)`. Use `_ = 2 * (m : ℝ) ^ (β + 1) * esymmR κ (β + 1) * d := by`. Unfold `esymmR`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `B _`. Expand and normalize the polynomial expressions, which then agree. Establish `hs0 : 0 ≤ (m : ℝ) * ∑ v, κ v` using `mul_nonneg (Nat.cast_nonneg m) (Finset.sum_nonneg fun v _ => hκ v)`. Establish `hVS : ∑ v, Sv v ≤ V * S`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨cl1, (ws 0 (by omega)).2, ?_⟩` and prove the remaining obligations. Use `ManyOrbitsP.lengthPart π hπ (L fun _ => Slot.base) (prodIdealMap π y m Sv (L fun _ => Slot.base)) d hd (∑ v, m * (c v + c₀)) S V β₀ ((m : ℝ) * ∑ v, κ v) hs0 hs ?_ (ManyOrbitsP.allBut_mono (ws 0 (by omega)).2 le_rfl hVS)` and prove the remaining obligations. Introduce `β hβ`. Take `⟨C, hCM, hcard, hx⟩` from `cl1 β (by omega)`. Use `⟨C, hCM, ?_, hx⟩` and prove the remaining obligations.
+
+Establish `hmac` using `ManyOrbitsP.esymmR_le κ hκ (m : ℝ) (Nat.cast_nonneg m) (β + 1)`. Establish `hd0 : (0 : ℝ) ≤ 2 * d` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem manyOrbits_of (hW : WalkSharp) : ManyOrbits := by
   intro R X _ _ _ _ _ V π hπ L y m β₀ c₀ S d a b c Sv κ G _ _ hd hm hcomm hb1 hb2 hb3 hb4 hb5
     hb6 hG hκ habc hSv hs
@@ -259,6 +340,9 @@ theorem manyOrbits_of (hW : WalkSharp) : ManyOrbits := by
     _ ≤ 2 * d * (((m : ℝ) * ∑ v, κ v) ^ (β + 1) / (β + 1).factorial) :=
         mul_le_mul_of_nonneg_left hmac hd0
 
+/- English proof (translation)
+The claim follows from `manyOrbits_of walkSharp_true`.
+-/
 theorem many_orbits : ManyOrbits := manyOrbits_of walkSharp_true
 
 end Formalism.G0

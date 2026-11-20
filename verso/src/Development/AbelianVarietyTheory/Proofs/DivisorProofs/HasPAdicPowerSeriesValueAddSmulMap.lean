@@ -3,6 +3,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory.QLog.ValLin
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_map]`. Use `show R (MvPolynomial.eval₂ (RingHom.id Q) x P) = _`. Rewrite using `[MvPolynomial.hom_eval₂, RingHom.comp_id]`.
+-/
 lemma eval_map_hom {σ Q Q' : Type} [CommRing Q] [CommRing Q'] (R : Q →+* Q') (x : σ → Q)
     (P : MvPolynomial σ Q) :
     R (MvPolynomial.eval x P) = MvPolynomial.eval (fun i => R (x i)) (MvPolynomial.map R P) := by
@@ -10,6 +13,21 @@ lemma eval_map_hom {σ Q Q' : Type} [CommRing Q] [CommRing Q'] (R : Q →+* Q') 
   show R (MvPolynomial.eval₂ (RingHom.id Q) x P) = _
   rw [MvPolynomial.hom_eval₂, RingHom.comp_id]
 
+/- English proof (translation)
+Introduce `p _ B O Q _ _ _ _ θ hF σ _ _ z f g q r hf`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hg m`. Take `⟨N₁, h₁⟩` from `hf m`. Take `⟨N₂, h₂⟩` from `hg m`.
+
+Use `⟨max N₁ N₂, fun N' hN => ?_⟩` and prove the remaining obligations. Take `⟨b₁, hb₁⟩` from `h₁ N' (le_trans (le_max_left _ _) hN)`. Take `⟨b₂, hb₂⟩` from `h₂ N' (le_trans (le_max_right _ _) hN)`. Use `⟨b₁ + b₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, mul_add, map_add, ← hb₁, ← hb₂]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `c m`. Take `⟨k, b₀, hk⟩` from `hF.denom c`. Take `⟨N, h⟩` from `hf (m + k)`. Use `⟨N, fun N' hN => ?_⟩` and prove the remaining obligations.
+
+Take `⟨b, hb⟩` from `h N' hN`. Use `⟨b₀ * b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, MvPolynomial.smul_eval]`. Establish `e : c * q - c * MvPolynomial.eval (fun i => algebraMap B Q (z i)) (trunc' Q (Finsupp.equivFunOnFinite.symm fun _ => N') f) = c * algebraMap B Q (p ^ (m + k) * b)` using `by rw [← hb]; ring`. Rewrite using `[e]`.
+
+Simplify using `only [map_mul, map_pow, map_natCast] at hk ⊢`. Rewrite using `[← hk]`. Expand and normalize the polynomial expressions, which then agree. Introduce `B' Q' _ _ _ ρ R hR m`. Take `⟨N, h⟩` from `hf m`.
+
+Use `⟨N, fun N' hN => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h N' hN`. Use `⟨ρ b, ?_⟩` and prove the remaining obligations. Rewrite using `[trunc'_map]`. Use `congrArg R hb` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, eval_map_hom, hR]`. Simplify using `only [hR] at this`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem hasVal_add_smul_map : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (σ : Type) [Fintype σ] [DecidableEq σ] (z : σ → B) (f g : MvPowerSeries σ Q) (q r : Q), HasVal p z f q → (HasVal p z g r → HasVal p z (f + g) (q + r)) ∧ (∀ c : Q, HasVal p z (c • f) (c * q)) ∧ ∀ (B' Q' : Type) [CommRing B'] [CommRing Q'] [Algebra B' Q'] (ρ : B →+* B') (R : Q →+* Q'), (∀ b, R (algebraMap B Q b) = algebraMap B' Q' (ρ b)) → HasVal p (fun i => ρ (z i)) (map R f) (R q) := by
   intro p _ B O Q _ _ _ _ θ hF σ _ _ z f g q r hf
   refine ⟨?_, ?_, ?_⟩

@@ -8,6 +8,23 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PMon
 
+/- English proof (translation)
+Introduce `l _ r hr`. Take `⟨E, ω, -, -, -, hω, hli, hspan, hdet⟩` from `UnrDeg.fixed_field_deg l r hr`. Use `⟨ω, Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet, fun m k => rfl, hω, ?_⟩` and prove the remaining obligations. Introduce `X _ x hx hcont`. Use `set v : Fin r → Om l := fun k => ((ω k : ↥(MaximalUnramifiedExtension l)) : Om l) with hv`.
+
+Establish `hliv : LinearIndependent ℚ_[l] v`. Use `hli.map' (MaximalUnramifiedExtension l).val.toLinearMap (LinearMap.ker_eq_bot.2 (fun a b h => Subtype.ext h))` as an intermediate fact. Conclude with `this`. Use `set ψ : (Fin r → ℚ_[l]) →ₗ[ℚ_[l]] Om l := Fintype.linearCombination ℚ_[l] v with hψ`. Establish `hinj : Function.Injective ψ`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `g hg`. Rewrite `hg` using `[hψ, Fintype.linearCombination_apply]`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hliv g hg i`.
+
+Set `e` to `LinearEquiv.ofInjective ψ hinj`. Use `haveI : FiniteDimensional ℚ_[l] ↥(LinearMap.range ψ) := LinearEquiv.finiteDimensional e`. Establish `hmem : ∀ t, ((x t : ↥(MaximalUnramifiedExtension l)) : Om l) ∈ LinearMap.range ψ`. Introduce `t`. Take `⟨a, ha⟩` from `hspan (x t) (hx t)`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, Fintype.linearCombination_apply, ha]`. Simplify using `[hv]`. Use `⟨fun t => e.symm ⟨((x t : ↥(MaximalUnramifiedExtension l)) : Om l), hmem t⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.continuous_of_finiteDimensional (e.symm : ↥(LinearMap.range ψ) →ₗ[ℚ_[l]] (Fin r → ℚ_[l]))).comp (hcont.subtype_mk _)`.
+
+Introduce `t m`. Establish `key : ψ (e.symm ⟨((x t : ↥(MaximalUnramifiedExtension l)) : Om l), hmem t⟩) = ((x t : ↥(MaximalUnramifiedExtension l)) : Om l)`. Establish `h1` using `congrArg Subtype.val (e.apply_symm_apply ⟨((x t : ↥(MaximalUnramifiedExtension l)) : Om l), hmem t⟩)`. Rewrite `h1` using `[LinearEquiv.ofInjective_apply]`. Conclude with `h1`.
+
+Use `set a := e.symm ⟨((x t : ↥(MaximalUnramifiedExtension l)) : Om l), hmem t⟩`. Establish `hxt : x t = ∑ k, a k • ω k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← key, hψ, Fintype.linearCombination_apply]`. Simplify using `[hv]`.
+
+Rewrite using `[hxt, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, fr_q, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem coef_unr_continuous : ∀ (l : ℕ) [Fact l.Prime] (r : ℕ), 0 < r → ∃ (ω : Fin r → ↥(MaximalUnramifiedExtension l)) (W : GL (Fin r) ↥(MaximalUnramifiedExtension l)),
     (∀ m k : Fin r, (W : Matrix (Fin r) (Fin r) ↥(MaximalUnramifiedExtension l)) m k = fr l m (ω k)) ∧ (∀ k, fr l r (ω k) = ω k) ∧
     ∀ (X : Type) [TopologicalSpace X] (x : X → ↥(MaximalUnramifiedExtension l)), (∀ t, fr l r (x t) = x t) →

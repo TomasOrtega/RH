@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.OrthHeisPhase
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Use `h (Pi.single m 1)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Conclude with `this`.
+-/
 theorem transpose_mulVec_eq_zero {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {d d₁ : ℕ}
     (J : Matrix (Fin d) (Fin d) E) (ι : Matrix (Fin d) (Fin d₁) E) (x : Fin d → E)
     (h : ∀ u, form σ J (ι *ᵥ u) x = 0) : ιᵀ *ᵥ (J *ᵥ fun k => σ (x k)) = 0 := by
@@ -20,6 +23,17 @@ theorem transpose_mulVec_eq_zero {F E : Type} [Field F] [Field E] [Algebra F E] 
   rw [Matrix.mulVec_single_one] at this
   exact this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W d₁ W₁ H' i₀ i₁ hA y z`. Use `set v : Fin d → AE F E := incM F W.J *ᵥ fun k => cA σ (incV F H'.x k) with hv`. Establish `h0 : (incM F H'.ι)ᵀ *ᵥ v = 0`. Establish `e` using `transpose_mulVec_eq_zero σ W.J H'.ι H'.x (fun u => (hA.orth u).1)`. Use function extensionality and compare the values at `m`.
+
+Use `congrArg (inclR (F := F) (AF F)) (congrFun e m)` as an intermediate fact. Establish `hc : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Simplify `this` using `[hv, incM, incV, Matrix.mulVec, dotProduct, map_sum, map_mul, hc]`. Establish `h1 : (incM F H'.ι * z)ᵀ *ᵥ v = 0`. Rewrite using `[Matrix.transpose_mul, ← Matrix.mulVec_mulVec, h0, Matrix.mulVec_zero]`.
+
+Use `set b := incM F H'.ι * z with hb`. Establish `step : ∀ i j, (∑ k, ∑ l, b i j * incM F W.J i k * dbl (incM F X.J) j l * cA σ (Matrix.vecMulVec (incV F H'.x) y k l)) = b i j * v i * ∑ l, dbl (incM F X.J) j l * cA σ (y l)`. Introduce `i j`. Simplify using `only [hv, Matrix.mulVec, dotProduct]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`.
+
+Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMulVec_apply, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hTens]`.
+
+Rewrite using `[Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => step i j, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `congrFun h1 j` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Pi.zero_apply] at this`. Rewrite using `[← Finset.sum_mul, this, zero_mul]`.
+-/
 theorem hTens_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B W W₁ i₀ i₁ →
     ∀ (y : Fin n ⊕ Fin n → AE F E) (z : Matrix (Fin d₁) (Fin n ⊕ Fin n) (AE F E)),
@@ -51,6 +65,11 @@ theorem hTens_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   simp only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Pi.zero_apply] at this
   rw [← Finset.sum_mul, this, zero_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W d₁ W₁ H' i₀ i₁ hA dd ψ y z φ`. Establish `hz` using `hTens_eq_zero F E σ B n d X W d₁ W₁ H' i₀ i₁ hA y z`. Establish `hba : symp (cA σ) (-1) (incM F W.J) (dbl (incM F X.J)) (incM F H'.ι * z) (Matrix.vecMulVec (incV F H'.x) y) = 0`. Simplify using `[symp, hz]`. Establish `hab : symp (cA σ) (-1) (incM F W.J) (dbl (incM F X.J)) (Matrix.vecMulVec (incV F H'.x) y) (incM F H'.ι * z) = 0`.
+
+Establish `e1` using `dd.form (Matrix.vecMulVec (incV F H'.x) y) (incM F H'.ι * z)`. Establish `e2` using `dd.form (incM F H'.ι * z) (Matrix.vecMulVec (incV F H'.x) y)`. Rewrite `e2` using `[hba]`. Take the linear combination `e1 + e2`. Rewrite using `[GlobalTheory.InertRhoLaw.darboux_rho_rho, hab, mul_zero, AddChar.map_zero_eq_one, one_smul]`.
+-/
 theorem rho_vecMulVec_add_orth : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B W W₁ i₀ i₁ →
     ∀ (dd : Darboux (symp (cA σ) (-1) (incM F W.J) (dbl (incM F X.J))) ((Fin n × Fin d) ⊕ (Fin n × Fin d)))

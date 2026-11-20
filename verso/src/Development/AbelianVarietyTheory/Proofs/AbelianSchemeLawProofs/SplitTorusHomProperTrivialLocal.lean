@@ -13,6 +13,9 @@ namespace GlobalTheory
 
 namespace TorusLocal
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `splitTorus_baseChange S S' p X`. Establish `h1 : e.hom ≫ (Over.pullback p).map f = 1` using `h _ inferInstance`. Establish `h2 : (Over.pullback p).map (1 : splitTorus S X ⟶ B) = 1` using `Functor.map_one _`. Rewrite using `[← cancel_epi e.hom, h1, ← Hom.one_def, h2, MonObj.comp_one]`.
+-/
 theorem pullback_map_eq_one {S S' : Scheme.{0}} (p : S' ⟶ S) (X : Type) [AddCommGroup X]
     (B : Over S) [GrpObj B] (f : splitTorus S X ⟶ B) (hf : IsMonHom f)
     (h : ∀ g : splitTorus S' X ⟶ (Over.pullback p).obj B, IsMonHom g →
@@ -23,6 +26,9 @@ theorem pullback_map_eq_one {S S' : Scheme.{0}} (p : S' ⟶ S) (X : Type) [AddCo
   have h2 : (Over.pullback p).map (1 : splitTorus S X ⟶ B) = 1 := Functor.map_one _
   rw [← cancel_epi e.hom, h1, ← Hom.one_def, h2, MonObj.comp_one]
 
+/- English proof (translation)
+Use `splitTorus_hom_eq_one_of_nilpotent A _ hA X B f hf (pullback_map_eq_one _ X B f hf ?_)` and prove the remaining obligations. Introduce `g hg`. Set `: Field (A ⧸ IsLocalRing.maximalIdeal A)` to `Ideal.Quotient.field _`. Establish `: IsProper ((Over.pullback (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (IsLocalRing.maximalIdeal A))))).obj B).hom` using `inferInstanceAs (IsProper (pullback.snd _ _))`. Conclude with `splitTorus_hom_proper_trivial_field (A ⧸ IsLocalRing.maximalIdeal A) X _ g hg`.
+-/
 theorem eq_one_of_isNilpotent_maximalIdeal (A : Type) [CommRing A] [IsLocalRing A]
     (hA : IsNilpotent (IsLocalRing.maximalIdeal A)) (X : Type) [AddCommGroup X]
     [Module.Free ℤ X] [Module.Finite ℤ X] (B : Over (Spec (CommRingCat.of A))) [GrpObj B]
@@ -36,6 +42,11 @@ theorem eq_one_of_isNilpotent_maximalIdeal (A : Type) [CommRing A] [IsLocalRing 
     inferInstanceAs (IsProper (pullback.snd _ _))
   exact splitTorus_hom_proper_trivial_field (A ⧸ IsLocalRing.maximalIdeal A) X _ g hg
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis A C`. Use `b.ext_elem fun i => ?_` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply, ← Ideal.mem_bot, ← Ideal.iInf_pow_eq_bot_of_isLocalRing (IsLocalRing.maximalIdeal A) (IsLocalRing.maximalIdeal.isMaximal A).ne_top, Ideal.mem_iInf]`. Introduce `n`. Use `TorusNil.map_mem_map _ (b.coord i) (hx n)` as an intermediate fact.
+
+Rewrite `this` using `[Algebra.algebraMap_self, Ideal.map_id]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ n) this`.
+-/
 theorem eq_zero_of_forall_mem_map_pow {A C : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     [CommRing C] [Algebra A C] [Module.Free A C] (x : C)
     (hx : ∀ n : ℕ, x ∈ (IsLocalRing.maximalIdeal A ^ (n + 1)).map (algebraMap A C)) : x = 0 := by
@@ -50,6 +61,15 @@ theorem eq_zero_of_forall_mem_map_pow {A C : Type} [CommRing A] [IsLocalRing A] 
 
 open TorusNil in
 
+/- English proof (translation)
+Establish `: IsAffine (sp A C).left` using `inferInstanceAs (IsAffine (Spec (CommRingCat.of C)))`. Establish `hinj : Function.Injective (equalizer.ι a b).left.appTop`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hb` using `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of C)).hom`.
+
+Apply `hb.1` to reduce the goal to its premises. Use `Eq.trans (hI _ fun i => ?_) (map_zero _).symm` and prove the remaining obligations. Establish `h1 : (spm (Ideal.Quotient.mkₐ A (I i))).left.appTop x = 0`. Rewrite using `[← equalizer.lift_ι _ (h i), Over.comp_left, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, hx, map_zero]`. Establish `h2` using `ConcreteCategory.congr_hom (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (Ideal.Quotient.mk (I i)))) x`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Use `h2.symm.trans ?_` and prove the remaining obligations. Use `(congrArg (Scheme.ΓSpecIso (CommRingCat.of (C ⧸ I i))).hom h1).trans (map_zero _)` and prove the remaining obligations. Use `IsClosedImmersion.isIso_of_injective_of_isAffine hinj` as an intermediate fact. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[← cancel_epi (equalizer.ι a b).left, ← Over.comp_left, equalizer.condition, Over.comp_left]`.
+-/
 theorem pt_ext_of_quotients {A C : Type} [CommRing A] [CommRing C] [Algebra A C] {N : Type}
     (I : N → Ideal C) (hI : ∀ x, (∀ i, x ∈ I i) → x = 0)
     {B : Over (Spec (CommRingCat.of A))} [IsSeparated B.hom] {a b : sp A C ⟶ B}
@@ -78,6 +98,17 @@ end TorusLocal
 
 open TorusNil TorusLocal in
 
+/- English proof (translation)
+Establish `hn : ∀ n : ℕ, (Over.pullback (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (IsLocalRing.maximalIdeal A ^ (n + 1)))))).map f = (Over.pullback (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (IsLocalRing.maximalIdeal A ^ (n + 1)))))).map (toUnit _ ≫ η[B])`. Introduce `n`. Use `set J := IsLocalRing.maximalIdeal A ^ (n + 1) with hJ`. Use `pullback_map_eq_one _ X B f hf fun g hg => ?_` and prove the remaining obligations. Establish `hJt : J ≠ ⊤` using `fun h => (IsLocalRing.maximalIdeal.isMaximal A).ne_top (top_le_iff.1 (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero n)))`.
+
+Establish `: Nontrivial (A ⧸ J)` using `Ideal.Quotient.nontrivial_iff.2 hJt`. Establish `: IsLocalRing (A ⧸ J)` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective`. Establish `: IsProper ((Over.pullback (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)))).obj B).hom` using `inferInstanceAs (IsProper (pullback.snd _ _))`. Use `eq_one_of_isNilpotent_maximalIdeal (A ⧸ J) ⟨n + 1, ?_⟩ X _ g hg` and prove the remaining obligations. Rewrite using `[← IsLocalRing.map_maximalIdeal_of_surjective (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective, ← Ideal.map_pow, ← hJ, Ideal.map_quotient_self]`.
+
+Both sides reduce to the same expression. Use `set t := torusPt A X (AddMonoidAlgebra.of A X) with ht`. Establish `h1 : t ≫ f = t ≫ toUnit _ ≫ η[B]`. Use `pt_ext_of_quotients (fun n : ℕ => (IsLocalRing.maximalIdeal A ^ (n + 1)).map (algebraMap A (AddMonoidAlgebra A X))) eq_zero_of_forall_mem_map_pow fun n => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc _ t]`.
+
+Conclude with `comp_eq_of_pullback_map_eq (hn n) _ (Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift _ (algebraMap A (AddMonoidAlgebra A X ⧸ (IsLocalRing.maximalIdeal A ^ (n + 1)).map (algebraMap A (AddMonoidAlgebra A X)))) (fun a ha => by`. Rewrite using `[← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ ha))))`. Use the proof step `(by rw [← Spec.map_comp]; rfl)`. Use `isIso_torusPt_of A X` as an intermediate fact.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_epi t.left, ← Over.comp_left, h1, ← Over.comp_left]`.
+-/
 theorem splitTorus_hom_proper_trivial_local (A : Type) [CommRing A] [IsLocalRing A]
     [IsNoetherianRing A] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (B : Over (Spec (CommRingCat.of A))) [GrpObj B] [IsProper B.hom]

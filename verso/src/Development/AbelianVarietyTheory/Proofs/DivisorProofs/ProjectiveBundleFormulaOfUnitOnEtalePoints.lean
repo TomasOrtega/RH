@@ -14,6 +14,9 @@ def pbfMap (q : ℕ) {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) (n i : ℤ)
 def PBF (q : ℕ) {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) : Prop :=
   ∀ n i : ℤ, Function.Bijective (pbfMap q V n i)
 
+/- English proof (translation)
+Introduce `q _ _ _ V hq n i` and use `h q V hq n i`.
+-/
 theorem projectiveBundleFormula_of_unitOnEtalePoints (h : ∀ (q : ℕ) [NeZero q] {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)), Inv q E → PBF q V) : D1 :=
   fun q _ _ _ V hq n i => h q V hq n i
 

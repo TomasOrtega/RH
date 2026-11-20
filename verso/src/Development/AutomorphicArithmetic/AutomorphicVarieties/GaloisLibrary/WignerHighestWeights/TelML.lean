@@ -3,6 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualInfinitesima
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.AlgRepEndIrreducible
 open scoped TensorProduct
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨MultilinearMap.constOfIsEmpty ℂ _ 1, fun _ => rfl⟩`. Consider the case `succ n ih`. Take `⟨R, hR⟩` from `ih (Fin.tail b)`. Set `g : X →ₗ[ℂ] MultilinearMap ℂ (fun _ : Fin n => X) (Module.End ℂ M)` to `{ toFun := fun x0 => (LinearMap.mulRight ℂ (b 0 x0)).compMultilinearMap R map_add' := fun u v => MultilinearMap.ext fun y => by simp [mul_add] map_smul' := fun c u => MultilinearMap.ext fun y => by simp }`.
+
+Use `⟨LinearMap.uncurryLeft (R := ℂ) (M := fun _ : Fin (n + 1) => X) g, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[rp_succ, ← hR]`. Both sides reduce to the same expression.
+-/
 private theorem rpML {X M : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup M] [Module ℂ M] (n : ℕ)
     (b : Fin n → X →ₗ[ℂ] Module.End ℂ M) :
     ∃ R : MultilinearMap ℂ (fun _ : Fin n => X) (Module.End ℂ M), ∀ x, R x = rp n b x := by
@@ -18,6 +23,15 @@ private theorem rpML {X M : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup 
     rw [rp_succ, ← hR]
     rfl
 
+/- English proof (translation)
+Introduce `X M _ _ _ _ n a b`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, fun _ _ => rfl⟩`. Consider the case `succ n ih`. Take `⟨T, hT⟩` from `ih (Fin.tail a) (Fin.tail b)`.
+
+Take `⟨R, hR⟩` from `rpML n (Fin.tail b)`. Set `g : (X →ₗ[ℂ] M) → X →ₗ[ℂ] MultilinearMap ℂ (fun _ : Fin n => X) M` to `fun f => { toFun := fun x0 => (a 0 x0).compMultilinearMap (T f) + (LinearMap.applyₗ (f x0) : Module.End ℂ M →ₗ[ℂ] M).compMultilinearMap R map_add' := fun u v => MultilinearMap.ext fun y => by simp; abel map_smul' := fun c u => MultilinearMap.ext fun y => by simp }`. Establish `hg : ∀ (f : X →ₗ[ℂ] M) (x : Fin (n + 1) → X), LinearMap.uncurryLeft (R` using `ℂ) (M := fun _ : Fin (n + 1) => X) (g f) x = a 0 (x 0) (T f (Fin.tail x)) + R (Fin.tail x) (f (x 0)) := by`. Introduce `f x`. Both sides reduce to the same expression.
+
+Use `⟨{ toFun := fun f => LinearMap.uncurryLeft (R := ℂ) (M := fun _ : Fin (n + 1) => X) (g f) map_add' := fun u v => MultilinearMap.ext fun y => ?_ map_smul' := fun c u => MultilinearMap.ext fun y => ?_ }, fun f x => ?_⟩` and prove the remaining obligations. Simplify using `only [MultilinearMap.add_apply, hg, map_add, LinearMap.add_apply]`. Normalize the expressions using the abelian group laws. Simplify using `only [MultilinearMap.smul_apply, hg, map_smul, LinearMap.smul_apply, RingHom.id_apply, smul_add]`. Rewrite using `[tel_succ, ← hT, ← hR]`.
+
+Conclude with `hg f x`.
+-/
 theorem UpperTheory.V.AlgRepEndIrreducible.telML :
     ∀ (X M : Type) [AddCommGroup X] [Module ℂ X] [AddCommGroup M] [Module ℂ M] (n : ℕ) (a b : Fin n → X →ₗ[ℂ] Module.End ℂ M),
       ∃ T : (X →ₗ[ℂ] M) →ₗ[ℂ] MultilinearMap ℂ (fun _ : Fin n => X) M, ∀ f x, T f x = tel n a b f x := by

@@ -14,6 +14,11 @@ open GlobalTheory.JSW.Cut
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Establish `h` using `hp.2 j`. Simplify using `only [GlobalTheory.JSW.KirFin.lr]`. Use `show ((pLoc E w).comp (pFin E)) ((p : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) j) = _`. Rewrite using `[h]`.
+
+Apply the tactic sequence `split_ifs with hj <;> simp [hj, Matrix.one_apply, eq_comm]`.
+-/
 theorem lr_loc_of_mem_mirS {S : Finset (HeightOneSpectrum (𝓞 E))} {p : GA E (m + 1)} (hp : p ∈ GlobalTheory.JSW.mirS E S m)
     (w : HeightOneSpectrum (𝓞 E)) :
     GlobalTheory.JSW.KirFin.lr (GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) p) = GlobalTheory.JSW.KirFin.lr 1 := by
@@ -24,6 +29,23 @@ theorem lr_loc_of_mem_mirS {S : Finset (HeightOneSpectrum (𝓞 E))} {p : GA E (
   rw [h]
   split_ifs with hj <;> simp [hj, Matrix.one_apply, eq_comm]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `_ _`. Use `⟨Finsupp.single 1 1, fun h hh => ?_, fun W _ _ y _ => ?_⟩` and prove the remaining obligations. Establish `h1 : h = 1` using `Finset.mem_singleton.1 (Finsupp.support_single_subset hh)`.
+
+Substitute `h1` using the available equality. Conclude with `⟨fun v _ => map_one _, map_one _⟩`. Simplify using the standard rewrite rules. Consider the case `insert w S hw ih`. Introduce `hK hC`.
+
+Take `⟨T₁, hT₁s, hT₁⟩` from `ih (fun v hv => hK v (Finset.mem_insert_of_mem hv)) (fun v hv => hC v (Finset.mem_insert_of_mem hv))`. Take `⟨T₂, hT₂s, hT₂⟩` from `GlobalTheory.T.localCutOperator_transfer_adelicWhittaker E m w (ψ w) (hψ w) K (U w) (hK w (Finset.mem_insert_self _ _)) (cell (z w) (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E)))) {p | GlobalTheory.JSW.KirFin.lr p = GlobalTheory.JSW.KirFin.lr 1} (hC w (Finset.mem_insert_self …`. Use `⟨comp T₁ T₂, fun k hk => ?_, fun W hN hKW y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `mem_support_comp hk`. Take `⟨g, rfl⟩` from `hT₂s b hb`.
+
+Establish `hb'` using `(GlobalTheory.JSW.WhitModel.loc_mem_supS (insert w S) w g).2 (Or.inl (Finset.mem_insert_self _ _))`. Use `⟨fun v hv => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, (hT₁s a ha).1 v (fun h => hv (Finset.mem_insert_of_mem h)), hb' v hv, one_mul]`. Rewrite using `[map_mul, (hT₁s a ha).2, pInf_finGL, one_mul]`. Establish `hyh : ∀ h ∈ T₁.support, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) (y * h) = GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) y` using `fun h hh => by`.
+
+Rewrite using `[map_mul, (hT₁s h hh).1 w hw, mul_one]`. Establish `hyS` using `hT₁ W hN hKW y (fun v hv => hy v (Finset.mem_insert_of_mem hv))`. Establish `hyw` using `hy w (Finset.mem_insert_self _ _)`. Rewrite using `[act_comp]`. Distinguish the cases in `hyc : GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) y ∈ cell (z w) (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E)))`.
+
+Rewrite using `[act_congr T₁ (f' := W) fun k hk => ?_, hyS]`. Simplify using `only [Set.indicator, Set.mem_setOf_eq, Finset.forall_mem_insert, hyc, true_and]`. Rewrite using `[hT₂ W hN hKW (y * k) (by rw [hyh k hk]; exact hyw), Set.indicator_of_mem]`. Rewrite using `[Set.mem_setOf_eq, hyh k hk]`. Conclude with `hyc`.
+
+Rewrite using `[act_congr T₁ (f' := 0) fun k hk => ?_]`. Simplify using `only [Set.indicator, Set.mem_setOf_eq, Finset.forall_mem_insert, hyc, false_and, if_false]`. Unfold `GlobalTheory.JSW.Cut.act`. Simplify using the standard rewrite rules. Rewrite using `[hT₂ W hN hKW (y * k) (by rw [hyh k hk]; exact hyw), Set.indicator_of_notMem]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.mem_setOf_eq, hyh k hk]`. Conclude with `hyc`.
+-/
 theorem exists_cut_prod (ψ : ∀ w : HeightOneSpectrum (𝓞 E), AddChar (w.adicCompletion E) ℂ)
     (hψ : ∀ w x, ψ w x = GlobalTheory.JSW.psiLoc w x) (K : Subgroup (GL (Fin (m + 1)) (Af E)))
     (U : ∀ w : HeightOneSpectrum (𝓞 E), Subgroup (GL (Fin (m + 1)) (w.adicCompletion E)))
@@ -82,6 +104,9 @@ theorem exists_cut_prod (ψ : ∀ w : HeightOneSpectrum (𝓞 E), AddChar (w.adi
 
 end GlobalTheory.JSW.CutProd
 
+/- English proof (translation)
+Introduce `E _ _ _ m S ψ hψ K U z hK hC`. Take `⟨T, hTs, hT⟩` from `GlobalTheory.JSW.CutProd.exists_cut_prod ψ hψ K U z S hK hC`. Conclude with `⟨T, hTs, fun W hN hKW p hp => hT W hN hKW p fun w _ => GlobalTheory.JSW.CutProd.lr_loc_of_mem_mirS hp w⟩`.
+-/
 theorem _root_.GlobalTheory.JSW.CutProd.cut_prod_mirS : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (ψ : ∀ w : HeightOneSpectrum (𝓞 E), AddChar (w.adicCompletion E) ℂ), (∀ w x, ψ w x = GlobalTheory.JSW.psiLoc w x) → ∀ (K : Subgroup (GL (Fin (m + 1)) (Af E))) (U : ∀ w : HeightOneSpectrum (𝓞 E), Subgroup (GL (Fin (m + 1)) (w.adicCompletion E))) (z : ∀ w : HeightOneSpectrum (𝓞 E), GL (Fin (m + 1)) (w.adicCompletion E)), (∀ w ∈ S, ∀ u ∈ U w, locGL E (m + 1) w u ∈ K) → (∀ w ∈ S, GlobalTheory.JSW.Cut.Cuts (ψ w) (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E))) (GlobalTheory.JSW.Cut.cell (z w) (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E)))) {p | GlobalTheory.JSW.KirFin.lr p = GlobalTheory.JSW.KirFin.lr 1}) → ∃ T : GA E (m + 1) →₀ ℂ, (∀ h ∈ T.support, h ∈ GlobalTheory.JSW.supS E (m + 1) S ∧ GeneralLinearGroup.map (pInf E) h = 1) ∧ ∀ W : GA E (m + 1) → ℂ, (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, W (u * g) = GlobalTheory.JSW.psiN u * W g) → (∀ u ∈ K, ∀ g, W (g * finGL E (m + 1) u) = W g) → ∀ p ∈ GlobalTheory.JSW.mirS E S m, GlobalTheory.JSW.Cut.act T W p = {x : GA E (m + 1) | ∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) x ∈ GlobalTheory.JSW.Cut.cell (z w) (U w : Set (GL (Fin (m + 1)) (w.adicCompletion E)))}.indicator W p := by
   intro E _ _ _ m S ψ hψ K U z hK hC
   obtain ⟨T, hTs, hT⟩ := GlobalTheory.JSW.CutProd.exists_cut_prod ψ hψ K U z S hK hC

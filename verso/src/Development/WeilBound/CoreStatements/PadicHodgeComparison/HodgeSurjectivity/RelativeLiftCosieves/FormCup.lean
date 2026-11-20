@@ -13,6 +13,9 @@ namespace CrystallineSemistableComparison.Onto.FormCupProduct
 
 open CrystallineSemistableComparison.Onto Pb HT
 
+/- English proof (translation)
+The claim follows from `| 0, f, _ => by rw [Fin.prod_univ_zero, T.pdPow_zero]; trivial | n + 1, f, hf => by rw [Fin.prod_univ_succ, Pb.pdPow_eq] have := dividedPowerFiltration_mul T.δ 1 n (T.J_le_pdPow_one (hf 0)) (prod_mem_pdPow T n _ fun k => hf k.succ) rwa [Nat.add_comm] at this`.
+-/
 theorem prod_mem_pdPow {b : Base} {L : b.Fun} (T : Thick L) : ∀ (n : ℕ) (f : Fin n → T.B), (∀ k, f k ∈ T.J) →
     ∏ k, f k ∈ T.pdPow n
   | 0, f, _ => by rw [Fin.prod_univ_zero, T.pdPow_zero]; trivial
@@ -23,6 +26,9 @@ theorem prod_mem_pdPow {b : Base} {L : b.Fun} (T : Thick L) : ∀ (n : ℕ) (f :
 
 variable {K : Type} [Field K] {Z : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {V : Z.Opens}
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq, Λ.hv T' g]`. Establish `e : Ideal.Quotient.mk T'.obj.J (f.hom.φ (Λ.v T g)) = Ideal.quotientMap T'.obj.J f.hom.φ f.hom.hle (Ideal.Quotient.mk T.obj.J (Λ.v T g))` using `rfl`. Rewrite using `[e, Λ.hv T g]`. Conclude with `(GlobalTheory.CompanionTheory.GrForm.ev_nat f.hom T.property T'.property g).symm`.
+-/
 theorem lift_sub_mem (Λ : Lifts q V) {T T' : (inU q V).FullSubcategory} (f : T ⟶ T') (g : Sec q V) :
     f.hom.φ (Λ.v T g) - Λ.v T' g ∈ T'.obj.J := by
   rw [← Ideal.Quotient.eq, Λ.hv T' g]
@@ -31,11 +37,17 @@ theorem lift_sub_mem (Λ : Lifts q V) {T T' : (inU q V).FullSubcategory} (f : T 
   rw [e, Λ.hv T g]
   exact (GlobalTheory.CompanionTheory.GrForm.ev_nat f.hom T.property T'.property g).symm
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq, map_mul, Λ.hv, Λ.hv, Λ.hv]`. Conclude with `(map_mul _ g h).symm`.
+-/
 theorem lift_mul_mem (Λ : Lifts q V) (T : (inU q V).FullSubcategory) (g h : Sec q V) :
     Λ.v T g * Λ.v T h - Λ.v T (g * h) ∈ T.obj.J := by
   rw [← Ideal.Quotient.eq, map_mul, Λ.hv, Λ.hv, Λ.hv]
   exact (map_mul _ g h).symm
 
+/- English proof (translation)
+Rewrite using `[show (homOfLE (hij.trans hjk) : i ⟶ k) = homOfLE hij ≫ homOfLE hjk from rfl, s.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem comp_φ {n : ℕ} (s : ComposableArrows (inU q V).FullSubcategory n) {i j k : Fin (n + 1)} (hij : i ≤ j)
     (hjk : j ≤ k) (y : (s.obj i).obj.B) :
     (s.map (homOfLE hjk)).hom.φ ((s.map (homOfLE hij)).hom.φ y) = (s.map (homOfLE (hij.trans hjk))).hom.φ y := by
@@ -46,30 +58,50 @@ def lv (Λ : Lifts q V) {n : ℕ} (s : ComposableArrows (inU q V).FullSubcategor
     (s.obj (Fin.last n)).obj.B :=
   (s.map (homOfLE (Fin.le_last i))).hom.φ (Λ.v _ x)
 
+/- English proof (translation)
+The claim follows from `lift_sub_mem Λ _ x`.
+-/
 theorem lv_sub_mem (Λ : Lifts q V) {n : ℕ} (s : ComposableArrows (inU q V).FullSubcategory n) (i : Fin (n + 1))
     (x : Sec q V) : lv Λ s i x - Λ.v _ x ∈ (s.obj (Fin.last n)).obj.J :=
   lift_sub_mem Λ _ x
 
+/- English proof (translation)
+Use `sub_mem (lv_sub_mem Λ s i x) (lv_sub_mem Λ s j x)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem lv_diff_mem (Λ : Lifts q V) {n : ℕ} (s : ComposableArrows (inU q V).FullSubcategory n) (i j : Fin (n + 1))
     (x : Sec q V) : lv Λ s i x - lv Λ s j x ∈ (s.obj (Fin.last n)).obj.J := by
   have := sub_mem (lv_sub_mem Λ s i x) (lv_sub_mem Λ s j x)
   rwa [sub_sub_sub_cancel_right] at this
 
+/- English proof (translation)
+Unfold `lv`. Rewrite using `[show (homOfLE (Fin.le_last (Fin.last n)) : Fin.last n ⟶ Fin.last n) = 𝟙 _ from rfl, s.map_id]`. Both sides reduce to the same expression.
+-/
 theorem lv_last (Λ : Lifts q V) {n : ℕ} (s : ComposableArrows (inU q V).FullSubcategory n) (x : Sec q V) :
     lv Λ s (Fin.last n) x = Λ.v _ x := by
   unfold lv
   rw [show (homOfLE (Fin.le_last (Fin.last n)) : Fin.last n ⟶ Fin.last n) = 𝟙 _ from rfl, s.map_id]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem form_eq (Λ : Lifts q V) {n : ℕ} (s : ComposableArrows (inU q V).FullSubcategory n) (x₀ : Sec q V)
     (x : Fin n → Sec q V) :
     Λ.form x₀ x s = Λ.v _ x₀ * ∏ k : Fin n, (lv Λ s k.succ (x k) - lv Λ s k.castSucc (x k)) := rfl
 
+/- English proof (translation)
+Rewrite using `[form_eq]`. Conclude with `Ideal.mul_mem_left _ _ (prod_mem_pdPow _ n _ fun k => lv_diff_mem Λ s _ _ _)`.
+-/
 theorem form_mem (Λ : Lifts q V) {n : ℕ} (s : ComposableArrows (inU q V).FullSubcategory n) (x₀ : Sec q V)
     (x : Fin n → Sec q V) : Λ.form x₀ x s ∈ (s.obj (Fin.last n)).obj.pdPow n := by
   rw [form_eq]
   exact Ideal.mul_mem_left _ _ (prod_mem_pdPow _ n _ fun k => lv_diff_mem Λ s _ _ _)
 
+/- English proof (translation)
+Rewrite using `[Lifts.form, map_mul, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub]`. Use `congr 1`.
+
+Conclude with `comp_φ s (he (Fin.le_last k.succ)) (Fin.le_last _) _`. Conclude with `comp_φ s (he (Fin.le_last k.castSucc)) (Fin.le_last _) _`.
+-/
 theorem form_map (Λ : Lifts q V) {m n : ℕ} (s : ComposableArrows (inU q V).FullSubcategory n)
     (e : Fin (m + 1) → Fin (n + 1)) (he : Monotone e) (x₀ : Sec q V) (x : Fin m → Sec q V) :
     (s.map (homOfLE (Fin.le_last (e (Fin.last m))))).hom.φ (Λ.form x₀ x (he.functor ⋙ s)) =
@@ -82,6 +114,15 @@ theorem form_map (Λ : Lifts q V) {m n : ℕ} (s : ComposableArrows (inU q V).Fu
   · exact comp_φ s (he (Fin.le_last k.succ)) (Fin.le_last _) _
   · exact comp_φ s (he (Fin.le_last k.castSucc)) (Fin.le_last _) _
 
+/- English proof (translation)
+Rewrite using `[form_map Λ s _ (CH.front_mono rfl), form_map Λ s _ (CH.back_mono rfl), form_eq Λ s, Fin.prod_univ_add]`. Establish `e1 : ∀ k : Fin a, (Fin.castAdd a' k).succ = CH.front (rfl : a + a' = a + a') k.succ` using `fun k => Fin.ext (by simp [CH.front])`. Establish `e2 : ∀ k : Fin a, (Fin.castAdd a' k).castSucc = CH.front (rfl : a + a' = a + a') k.castSucc` using `fun k => Fin.ext (by simp [CH.front])`. Establish `e3 : ∀ k : Fin a', (Fin.natAdd a k).succ = CH.back (rfl : a + a' = a + a') k.succ` using `fun k => Fin.ext (by simp [CH.back]; omega)`. Establish `e4 : ∀ k : Fin a', (Fin.natAdd a k).castSucc = CH.back (rfl : a + a' = a + a') k.castSucc` using `fun k => Fin.ext (by simp [CH.back])`.
+
+Establish `e5 : CH.back (rfl : a + a' = a + a') (Fin.last a') = Fin.last (a + a')` using `Fin.ext (by simp [CH.back])`. Simplify using `only [Fin.append_left, Fin.append_right, e1, e2, e3, e4, e5, lv_last]`. Establish `hF` using `prod_mem_pdPow (s.obj (Fin.last (a + a'))).obj a (fun k => lv Λ s (CH.front rfl k.succ) (g k) - lv Λ s (CH.front rfl k.castSucc) (g k)) fun k => lv_diff_mem Λ s _ _ _`. Establish `hB` using `prod_mem_pdPow (s.obj (Fin.last (a + a'))).obj a' (fun k => lv Λ s (CH.back rfl k.succ) (h k) - lv Λ s (CH.back rfl k.castSucc) (h k)) fun k => lv_diff_mem Λ s _ _ _`. Establish `hl : lv Λ s (CH.front rfl (Fin.last a)) g₀ * Λ.v _ h₀ - Λ.v _ (g₀ * h₀) ∈ (s.obj (Fin.last (a + a'))).obj.J`.
+
+Use `add_mem (Ideal.mul_mem_right (Λ.v _ h₀) _ (lv_sub_mem Λ s (CH.front rfl (Fin.last a)) g₀)) (lift_mul_mem Λ _ g₀ h₀)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `dividedPowerFiltration_mul (s.obj (Fin.last (a + a'))).obj.δ 1 (a + a') ((s.obj (Fin.last (a + a'))).obj.J_le_pdPow_one hl) (dividedPowerFiltration_mul (s.obj (Fin.last (a + a'))).obj.δ a a' hF hB)` as an intermediate fact. Rewrite `this` using `[show 1 + (a + a') = a + a' + 1 by omega]`.
+
+Rewrite using `[Pb.pdPow_eq]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem key (Λ : Lifts q V) {a a' : ℕ} (g₀ h₀ : Sec q V) (g : Fin a → Sec q V) (h : Fin a' → Sec q V)
     (s : ComposableArrows (inU q V).FullSubcategory (a + a')) :
     (s.map (homOfLE (Fin.le_last (CH.front (rfl : a + a' = a + a') (Fin.last a))))).hom.φ
@@ -127,6 +168,9 @@ open CrystallineSemistableComparison.Onto Pb HT
 
 variable {K : Type} [Field K] {Z : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {V : Z.Opens}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (Ideal.quotientMap ((thFil (smFun Z q) ((a : ℤ) + 1)).S (s.obj (Fin.last n)).obj) (s.map (homOfLE (Fin.le_last (e (Fin.last a))))).hom.φ (fun z hz => (thFil (smFun Z q) ((a : ℤ) + 1)).map_mem (s.map (homOfLE (Fin.le_last (e (Fin.last a))))).hom hz)) (hf (he.functor ⋙ s))`.
+-/
 theorem term_eq (Λ : Lifts q V) {a n : ℕ}
     (f : CH.Cn (Pb.sq ((thFil (smFun Z q) (a : ℤ)).res (inU q V).ι) ((thFil (smFun Z q) ((a : ℤ) + 1)).res (inU q V).ι)) a) (x₀ : Sec q V) (x : Fin a → Sec q V)
     (hf : ∀ s, (show sqM ((thFil (smFun Z q) (a : ℤ)).res (inU q V).ι)
@@ -148,6 +192,13 @@ namespace CrystallineSemistableComparison.Onto
 
 open Pb HT FormCupProduct
 
+/- English proof (translation)
+Introduce `K _ Z q V a a' g₀ h₀ g h x y hx hy Hx Hy`. Set `P : CH.Pairing ((inU q V).ι ⋙ G q a) ((inU q V).ι ⋙ G q a') ((inU q V).ι ⋙ G q (a + a'))` to `⟨fun T => (grOk (smFun Z q) (rfl : a + a' = a + a')).pair.μ T.obj, fun φ => (grOk (smFun Z q) rfl).pair.nat φ.hom⟩`. Take `⟨hz, ez⟩` from `CrystallineSemistableComparison.P.cup_cls P rfl x y hx hy`. Use `⟨hz, fun Λ => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, ef, hfs⟩` from `Hx Λ`.
+
+Take `⟨f', hf', ef', hfs'⟩` from `Hy Λ`. Take `⟨hz', ez'⟩` from `CrystallineSemistableComparison.P.cup_cls P rfl f f' hf hf'`. Use `⟨P.cupC rfl f f', hz', ez.symm.trans ((congrArg₂ (P.cup rfl) ef ef').trans ez'), fun s => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((grOk (smFun Z q) (rfl : a + a' = a + a')).mul (CH.term _ s f (CH.front rfl) (CH.front_mono rfl)) (CH.term _ s f' (CH.back rfl) (CH.back_mono rfl))).1 = _`. Rewrite using `[term_eq Λ f g₀ g hfs s _ (CH.front_mono rfl), term_eq Λ f' h₀ h hfs' s _ (CH.back_mono rfl), MulOk.mul_mk]`.
+
+Conclude with `Ideal.Quotient.eq.2 (key Λ g₀ h₀ g h s)`.
+-/
 theorem formCup_pf : FormCup := by
   intro K _ Z q V a a' g₀ h₀ g h x y hx hy Hx Hy
   let P : CH.Pairing ((inU q V).ι ⋙ G q a) ((inU q V).ι ⋙ G q a') ((inU q V).ι ⋙ G q (a + a')) :=

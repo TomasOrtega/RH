@@ -38,18 +38,27 @@ open GlobalTheory.StdUnn.Model GlobalTheory.StdUnn.LeftInvSect
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blk4, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl`.
+-/
 theorem blk4_map_alt {n : ℕ} (f : D.host.E →+* AE D) (a b c d : Matrix (Fin n) (Fin n) D.host.E) :
     (blk4 a b c d).map f = blk4 (a.map f) (b.map f) (c.map f) (d.map f) := by
   ext i j
   simp only [blk4, Matrix.map_apply, Matrix.submatrix_apply]
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [adj, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[← b.2 i j]`. Both sides reduce to the same expression.
+-/
 theorem adj_map_herm {n : ℕ} (b : HermQ D n) : adj (b.1.map (incA D) : Mx D n n) = b.1.map (incA D) := by
   ext i j
   simp only [adj, Matrix.transpose_apply, Matrix.map_apply]
   rw [← b.2 i j]
   rfl
 
+/- English proof (translation)
+Rewrite using `[map_mul, Module.End.mul_apply, hω.weyl w hw]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `z : StdUnn.inner V (0 : Mx D V.rank n) y = 0` using `by rw [StdUnn.inner, adj_zero, Matrix.zero_mul]`. Simplify using `only [z, Matrix.trace_zero, map_zero, AddChar.map_zero_eq_one, mul_one]`. Rewrite using `[hω.unip u b hu, mul_comm]`.
+-/
 theorem cell_value {n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D} {V : HSp D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} (hω : IsWeilSch ψ χ θ V μ ω)
     {w u : G D n} (hw : mat w = blk4 0 1 (-1) 0) {b : Mx D n n} (hu : mat u = blk4 1 b 0 1) (Φ : schwartzA θ V.rank n) :
@@ -60,11 +69,21 @@ theorem cell_value {n : ℕ} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →
   simp only [z, Matrix.trace_zero, map_zero, AddChar.map_zero_eq_one, mul_one]
   rw [hω.unip u b hu, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[mat_mul, hw, hu, submatrix_fromBlocks_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem mat_cell {n : ℕ} {w u : G D n} (hw : mat w = blk4 0 1 (-1) 0) {b : Mx D n n} (hu : mat u = blk4 1 b 0 1) :
     mat (w * u) = blk4 0 1 (-1) (-b) := by
   rw [mat_mul, hw, hu, submatrix_fromBlocks_mul]
   simp
 
+/- English proof (translation)
+Rewrite using `[ChartRat.mem_GF_iff, mat_cell hw hu]`. Use `⟨blk4 0 1 (-1) (-b.1), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(blk4 0 1 (-1) (-b.1)).map (incA D) = _`. Rewrite using `[blk4_map_alt]`. Establish `e0 : (0 : Matrix (Fin n) (Fin n) D.host.E).map (incA D) = 0` using `map_zero (incA D).mapMatrix`.
+
+Establish `e1 : (1 : Matrix (Fin n) (Fin n) D.host.E).map (incA D) = 1` using `map_one (incA D).mapMatrix`. Establish `e2 : (-1 : Matrix (Fin n) (Fin n) D.host.E).map (incA D) = -1`. Use `map_neg (incA D).mapMatrix (1 : Matrix (Fin n) (Fin n) D.host.E)` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Establish `e3 : (-b.1).map (incA D) = -(b.1.map (incA D))` using `map_neg (incA D).mapMatrix b.1`.
+
+Rewrite using `[e0, e1, e2, e3]`.
+-/
 theorem cell_mem_GF {n : ℕ} {w u : G D n} (hw : mat w = blk4 0 1 (-1) 0) (b : HermQ D n)
     (hu : mat u = blk4 1 (b.1.map (incA D)) 0 1) : w * u ∈ GF D n := by
   rw [ChartRat.mem_GF_iff, mat_cell hw hu]
@@ -79,6 +98,11 @@ theorem cell_mem_GF {n : ℕ} {w u : G D n} (hw : mat w = blk4 0 1 (-1) 0) (b : 
   have e3 : (-b.1).map (incA D) = -(b.1.map (incA D)) := map_neg (incA D).mapMatrix b.1
   rw [e0, e1, e2, e3]
 
+/- English proof (translation)
+Take `⟨β, d, hp⟩` from `siegelParabolicUnn_matrix_blockUpperTriangular h`. Establish `e : mat ((w * u') * (w * u)⁻¹) * mat (w * u) = mat (w * u')`. Rewrite using `[← mat_mul, inv_mul_cancel_right]`. Rewrite `e` using `[hp, mat_cell hw hu, mat_cell hw hu', submatrix_fromBlocks_mul]`. Take `⟨-, -, h3, h4⟩` from `blockMatrixTwoByTwoFin_injective e`.
+
+Simplify using `only [mul_zero, mul_neg, mul_one, zero_mul, add_zero, zero_add, neg_inj] at h3 h4`. Rewrite `h4` using `[h3]`. Simplify using `using h4`.
+-/
 theorem cell_inj {n : ℕ} {w u u' : G D n} (hw : mat w = blk4 0 1 (-1) 0) {b b' : Mx D n n} (hu : mat u = blk4 1 b 0 1)
     (hu' : mat u' = blk4 1 b' 0 1) (h : (w * u') * (w * u)⁻¹ ∈ P D n) : b = b' := by
   obtain ⟨β, d, hp⟩ := siegelParabolicUnn_matrix_blockUpperTriangular h

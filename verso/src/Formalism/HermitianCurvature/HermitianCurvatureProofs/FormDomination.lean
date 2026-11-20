@@ -7,6 +7,11 @@ open Finset Formalism.FourierDecayAlt.TB Formalism.FourierDecayAlt.TB.Data
 
 open scoped ComplexOrder
 
+/- English proof (translation)
+Establish `H` using `(Matrix.PosSemidef.hadamard hk hg).dotProduct_mulVec_nonneg (fun _ => (1 : ℂ))`. Establish `e : star (fun _ : Y => (1 : ℂ)) ⬝ᵥ ((Matrix.hadamard (Matrix.of fun x y : Y => k x y) (Matrix.of fun x y : Y => g x y)).mulVec (fun _ => (1 : ℂ))) = ∑ a ∈ Y, ∑ b ∈ Y, k a b * g a b`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.hadamard_apply, Matrix.of_apply, Pi.star_apply, star_one, one_mul, mul_one]`. Rewrite using `[← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_coe_sort Y]`. Rewrite `H` using `[e]`. Conclude with `(Complex.le_def.1 H).1`.
+-/
 theorem form_nonneg {α : Type} (Y : Finset α) (k g : α → α → ℂ) (hk : PSDOn Y k)
     (hg : PSDOn Y g) : 0 ≤ (∑ a ∈ Y, ∑ b ∈ Y, k a b * g a b).re := by
   have H := (Matrix.PosSemidef.hadamard hk hg).dotProduct_mulVec_nonneg (fun _ => (1 : ℂ))
@@ -21,6 +26,11 @@ theorem form_nonneg {α : Type} (Y : Finset α) (k g : α → α → ℂ) (hk : 
   rw [e] at H
   exact (Complex.le_def.1 H).1
 
+/- English proof (translation)
+Establish `H` using `form_nonneg Y _ g h hg`. Establish `e : ∑ a ∈ Y, ∑ b ∈ Y, ((c : ℂ) * k a b - ∑ t ∈ R, Th t a b) * g a b = (c : ℂ) * ∑ a ∈ Y, ∑ b ∈ Y, k a b * g a b - ∑ t ∈ R, ∑ a ∈ Y, ∑ b ∈ Y, Th t a b * g a b`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Use `congr 1`. Use `conv_rhs => rw [Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Rewrite `H` using `[e, Complex.sub_re, Complex.re_ofReal_mul]`. Rewrite using `[← Complex.re_sum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem form_dom {α ι : Type} (Y : Finset α) (R : Finset ι) (c : ℝ) (k g : α → α → ℂ)
     (Th : ι → α → α → ℂ)
     (h : PSDOn Y (fun a b => (c : ℂ) * k a b - ∑ t ∈ R, Th t a b)) (hg : PSDOn Y g) :
@@ -39,22 +49,34 @@ theorem form_dom {α ι : Type} (Y : Finset α) (R : Finset ι) (c : ℝ) (k g :
   rw [← Complex.re_sum]
   linarith
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prob_le {α : Type} (S : Finset α) (θ g : α → ℝ) (hθ : IsProb S θ) (M : ℝ)
     (hg : ∀ a ∈ S, g a ≤ M) : ∑ a ∈ S, θ a * g a ≤ M := by
   calc ∑ a ∈ S, θ a * g a ≤ ∑ a ∈ S, θ a * M :=
         Finset.sum_le_sum fun a ha => mul_le_mul_of_nonneg_left (hg a ha) (hθ.1 a)
     _ = M := by rw [← Finset.sum_mul, hθ.2.2, one_mul]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun a ha => mul_nonneg (hθ.1 a) (hg a ha)`.
+-/
 theorem prob_nonneg {α : Type} (S : Finset α) (θ g : α → ℝ) (hθ : IsProb S θ)
     (hg : ∀ a ∈ S, 0 ≤ g a) : 0 ≤ ∑ a ∈ S, θ a * g a :=
   Finset.sum_nonneg fun a ha => mul_nonneg (hθ.1 a) (hg a ha)
 
 variable {E W : Type} [Field E] (D : Data E W)
 
+/- English proof (translation)
+The claim follows from `div_nonneg (form_nonneg Y κ _ hκ (hG ε hε k w Y)) (hW w).le`.
+-/
 theorem baseGram_nonneg (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 < ε) (k : ℕ) (w : W)
     (Y : Finset (Pt E)) (κ : Pt E → Pt E → ℂ) (hκ : PSDOn Y κ) : 0 ≤ D.N0 ε k w Y κ :=
   div_nonneg (form_nonneg Y κ _ hκ (hG ε hε k w Y)) (hW w).le
 
+/- English proof (translation)
+Unfold `Data.N0`. Rewrite using `[← Finset.sum_div, ← mul_div_assoc]`. Conclude with `div_le_div_of_nonneg_right (form_dom Y R c κ _ Th h (hG ε hε k w Y)) (hW w).le`.
+-/
 theorem sum_baseGram_le (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 < ε) (k : ℕ) (w : W)
     (Y : Finset (Pt E)) (R : Finset E) (c : ℝ) (κ : Pt E → Pt E → ℂ)
     (Th : E → Pt E → Pt E → ℂ)
@@ -64,6 +86,9 @@ theorem sum_baseGram_le (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 <
   rw [← Finset.sum_div, ← mul_div_assoc]
   exact div_le_div_of_nonneg_right (form_dom Y R c κ _ Th h (hG ε hε k w Y)) (hW w).le
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum]`. Use `prob_le S θ _ hθ _ fun w' hw' => ?_` and prove the remaining obligations. Conclude with `(sum_baseGram_le D hG hW hε k w' Y R c κ Th h).trans (mul_le_mul_of_nonneg_left (hM w' hw') hc)`.
+-/
 theorem mean_dom (hG : D.GramPSD) (hW : D.WordsPos) {ε : ℝ} (hε : 0 < ε) (k : ℕ)
     (S : Finset W) (θ : W → ℝ) (hθ : IsProb S θ)
     (Y : Finset (Pt E)) (R : Finset E) (c : ℝ) (hc : 0 ≤ c) (κ : Pt E → Pt E → ℂ)
@@ -84,6 +109,13 @@ open Finset Formalism.FourierDecayAlt.TB Formalism.FourierDecayAlt.TB.Data Forma
 
 open Classical
 
+/- English proof (translation)
+Introduce `E W _ D C₄ hG hK hW hA hB hC hv T ε hε i s hs hsi hi w hw hcnt hvol R hR M hM`. Take `⟨θ, hθ, hest⟩` from `hB ε hε i s hs hsi hi w hw hcnt hvol`. Take `⟨⟨he0, he1⟩, -, -, hdom⟩` from `hA i s (by omega) hsi hi`. Establish `hY : ∀ h ∈ T.X (i - s), level h = i - s` using `fun h hh => ((T.isTower _ _).1 hh).1`. Establish `hc : 0 ≤ C₄ ^ (D.f * s) * (∏ s' ∈ Ico 1 s, D.vol (i - s + 1) s')` using `mul_nonneg (pow_nonneg (by linarith) _) (Finset.prod_nonneg fun s' _ => hv _ _)`.
+
+Establish `hd` using `hdom R hR (T.X (i - s)) hY`. Establish `hd' : PSDOn (T.X (i - s)) (fun a b => (((1 + D.e i : ℝ)) : ℂ) * D.Kr (i - s) a b - ∑ t ∈ R, D.Th i s t a b)` using `by push_cast; exact hd`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun t₀ _ => ?_` and prove the remaining obligations. Use `hest (T.X (i - s)) hY _ (hK.2 i s t₀ _) t₀ _ fun t ht => ?_` and prove the remaining obligations.
+
+Rewrite `ht` using `[Finset.mem_filter]`. Conclude with `⟨fun h0 => T.zero_not_mem _ _ (h0 ▸ ht.1), ht.2⟩`. Use `_ = C₄ ^ (D.f * s) * (∏ s' ∈ Ico 1 s, D.vol (i - s + 1) s') * ∑ t₀ ∈ R, ∑ w' ∈ D.Wb (D.cnt w + (s + 1) * D.K), θ w' * D.N0 ε (i - s) w' (T.X (i - s)) (D.Th i s t₀) := by`. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ C₄ ^ (D.f * s) * (∏ s' ∈ Ico 1 s, D.vol (i - s + 1) s') * ((1 + D.e i) * M) := mul_le_mul_of_nonneg_left (mean_dom D hG hW hε (i - s) _ θ hθ _ R (1 + D.e i) (by linarith) _ _ hd' M hM) hc`.
+-/
 theorem longBlockStep : Formalism.FourierDecayAlt.TB.MultiStep := by
   intro E W _ D C₄ hG hK hW hA hB hC hv T ε hε i s hs hsi hi w hw hcnt hvol R hR M hM
   obtain ⟨θ, hθ, hest⟩ := hB ε hε i s hs hsi hi w hw hcnt hvol
@@ -112,6 +144,27 @@ theorem longBlockStep : Formalism.FourierDecayAlt.TB.MultiStep := by
         mul_le_mul_of_nonneg_left
           (mean_dom D hG hW hε (i - s) _ θ hθ _ R (1 + D.e i) (by linarith) _ _ hd' M hM) hc
 
+/- English proof (translation)
+Introduce `E W _ D ep hG hK hW hA hWv hP hL T ε hε i hi1 hi w hw hcnt R hR M hM`. Take `⟨θ, hθ, hest⟩` from `hWv ε hε i hi1 hi w hw hcnt`. Take `⟨⟨he0, he1⟩, -, -, hdom⟩` from `hA i 1 le_rfl hi1 hi`. Establish `hii : i - 1 + 1 = i` using `Nat.sub_add_cancel hi1`. Rewrite `hdom` using `[hii]`.
+
+Establish `hY : ∀ h ∈ T.X (i - 1), level h = i - 1` using `fun h hh => ((T.isTower _ _).1 hh).1`. Establish `hep : 0 ≤ ep` using `by simpa using hL.1 i hi1 hi ∅ (by simp)`. Establish `hd` using `hdom R hR (T.X (i - 1)) hY`. Establish `hd' : PSDOn (T.X (i - 1)) (fun a b => (((1 + D.e i : ℝ)) : ℂ) * D.Kr (i - 1) a b - ∑ t ∈ R, D.Th i 1 t a b)` using `by push_cast; exact hd`. Establish `h1e : 0 ≤ 1 + D.e i` using `by linarith`.
+
+Use `set g : Finset (Fin D.f) → E → ℝ := fun A t₀ => ∑ w' ∈ D.Wb (D.cnt w + D.K), θ A w' * D.N0 ε (i - 1) w' (T.X (i - 1)) (D.Th i 1 t₀) with hg`. Establish `hg0 : ∀ A t₀, 0 ≤ g A t₀` using `fun A t₀ => prob_nonneg _ _ _ (hθ A) fun w' _ => baseGram_nonneg D hG hW hε _ _ _ _ (hK.2 i 1 t₀ _)`. Establish `hstep : ∀ t₀ ∈ R, ∑ t ∈ (T.Sg i 1).filter (fun t => t - t₀ ∈ D.La i 1), (D.Nst ε i 1 w (T.X (i - 1)) (D.Th i 1 t₀) t t).re ≤ D.N0 ε (i - 1) w (T.X (i - 1)) (D.Th i 1 t₀) + ep * ∑ A, g A t₀`. Introduce `t₀ _`. Establish `hpsd` using `hK.2 i 1 t₀ (T.X (i - 1))`.
+
+Take `⟨h0, hl⟩` from `hest (T.X (i - 1)) hY _ hpsd`. Establish `hbound : ∀ L : Finset E, (∀ l ∈ L, l ∈ D.Lad i ∧ l ≠ 0) → ∑ l ∈ L, ‖D.Nhat ε i w (T.X (i - 1)) (D.Th i 1 t₀) l‖ ≤ ep * ∑ A, g A t₀`. Introduce `L hLm`. Establish `hG0 : 0 ≤ ∑ A, g A t₀` using `Finset.sum_nonneg fun A _ => hg0 A t₀`. Establish `h1 : ∀ l ∈ L, ‖D.Nhat ε i w (T.X (i - 1)) (D.Th i 1 t₀) l‖ ≤ max (D.maj (D.szD i) l) 0 * ∑ A, g A t₀`.
+
+Introduce `l hl'`. Take `⟨A, hA'⟩` from `hl l (hLm l hl').1 (hLm l hl').2`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ∑ l ∈ L, max (D.maj (D.szD i) l) 0 ≤ ep`. Establish `h3` using `hL.1 i hi1 hi (L.filter fun l => 0 ≤ D.maj (D.szD i) l) (fun l hl' => hLm l (Finset.mem_filter.1 hl').1)`.
+
+Rewrite `h3` using `[Finset.sum_filter]`. Use `le_trans (le_of_eq (Finset.sum_congr rfl fun l _ => ?_)) h3` and prove the remaining obligations. Use `split_ifs with hh`. Conclude with `max_eq_left hh`. Conclude with `max_eq_right (not_le.1 hh).le`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hp` using `hP ε hε i hi1 hi w (T.X (i - 1)) hY _ hpsd t₀ _ hbound ((T.Sg i 1).filter (fun t => t - t₀ ∈ D.La i 1)) (fun t ht => by`. Rewrite `ht` using `[Finset.mem_filter]`. Conclude with `⟨fun h0 => T.zero_not_mem _ _ (h0 ▸ ht.1), ht.2⟩)`. Rewrite `hp` using `[h0, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (baseGram_nonneg D hG hW hε _ _ _ _ hpsd)]`.
+
+Conclude with `hp`. Establish `hsumG : ∑ t₀ ∈ R, ∑ A, g A t₀ ≤ 2 ^ D.f * ((1 + D.e i) * M)`. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_finset, Fintype.card_fin, nsmul_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.mul_sum]`. Use `_ ≤ (1 + D.e i) * D.N0 ε (i - 1) w (T.X (i - 1)) (D.Kr (i - 1)) + ep * (2 ^ D.f * ((1 + D.e i) * M)) := add_le_add (sum_baseGram_le D hG hW hε (i - 1) w _ R (1 + D.e i) _ _ hd') (mul_le_mul_of_nonneg_left hsumG hep)`.
+
+Use `_ = (1 + D.e i) * (D.N0 ε (i - 1) w (T.X (i - 1)) (D.Kr (i - 1)) + 2 ^ D.f * ep * M) := by`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem singleBlockStep : Formalism.FourierDecayAlt.TB.OneStep := by
   intro E W _ D ep hG hK hW hA hWv hP hL T ε hε i hi1 hi w hw hcnt R hR M hM
   obtain ⟨θ, hθ, hest⟩ := hWv ε hε i hi1 hi w hw hcnt

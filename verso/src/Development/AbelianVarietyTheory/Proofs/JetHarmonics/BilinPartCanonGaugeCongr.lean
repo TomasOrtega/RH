@@ -13,6 +13,13 @@ open ReciprocityTheory.ChartRestriction.G.TB (dAct bilinPart)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ d O _ _ k _ _ _ B h hc`. Use `⟨fun i j => ?_, fun a i j => ?_, fun a i j => ?_, ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA.dAct_one k B, ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA.dAct_add k B, ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA.dAct_mul k B⟩` and prove the remaining obligations. Establish `e` using `congrArg (coeff (Finsupp.single ((0 : Fin 2), i) 1 + Finsupp.single ((1 : Fin 2), j) 1)) hc.sy`. Rewrite `e` using `[ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.coeff_expS_two _ (ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.coeff_swap_sub_low h hc.ax0 hc.ax1) _ (ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.degree_xz i j), map_sub, ReciprocityTheory.ChartRestriction. …`. Conclude with `⟨_, e⟩`.
+
+Take `⟨r, hr⟩` from `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.M_int B h hc a j i`. Use `⟨-r, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, hr]`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, Matrix.transpose_apply, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.gaugeBilinearTerm_eq_neg_double_sum, bilinPart, neg_mul, Finset.sum_neg_distrib, mul_comm (dAct k B _ _ _)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `⟨coeff (Finsupp.single ((0 : Fin 1), j) 1) (B.A.act a i), by`. Unfold `dAct FB.actK`. Rewrite using `[coeff_map]⟩`.
+-/
 theorem bilinPart_canonGauge_congr : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d), B.IsCanonGauge k h → (∀ i j, ((bilinPart k h)ᵀ - bilinPart k h) i j ∈ (algebraMap R k).range) ∧ (∀ a : O, (∀ i j, ((dAct k B a)ᵀ * bilinPart k h - bilinPart k h * dAct k B (star a)) i j ∈ (algebraMap R k).range)) ∧ (∀ a : O, (∀ i j, (dAct k B a) i j ∈ (algebraMap R k).range)) ∧ dAct k B 1 = 1 ∧ (∀ a b : O, dAct k B (a + b) = dAct k B a + dAct k B b) ∧ ∀ a b : O, dAct k B (a * b) = dAct k B a * dAct k B b := by
   intro R _ d O _ _ k _ _ _ B h hc
   refine ⟨fun i j => ?_, fun a i j => ?_, fun a i j => ?_, ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA.dAct_one k B,

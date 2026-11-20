@@ -13,5 +13,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.SS
 open GlobalTheory.SS.ArcInf
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SS.ArcInf.exists_isChart | exact GlobalTheory.SS.ArcInf.exists_isChart | (intros; apply GlobalTheory.SS.ArcInf.exists_isChart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_affineUnitChart_smoothGroupScheme : ∀ (k : Type) [Field k] (G : Over (Sp k)) [GrpObj G], SmConn G → ∃ (A : Type) (_ : CommRing A) (_ : Algebra k A) (j : algOver k A ⟶ G) (ε : A →ₐ[k] k) (r : ℕ) (f : Fin r → A), IsChart G j ε f := by
   first | exact @GlobalTheory.SS.ArcInf.exists_isChart | exact GlobalTheory.SS.ArcInf.exists_isChart | (intros; apply GlobalTheory.SS.ArcInf.exists_isChart <;> assumption)

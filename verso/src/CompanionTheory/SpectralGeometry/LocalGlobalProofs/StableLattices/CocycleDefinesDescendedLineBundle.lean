@@ -12,12 +12,20 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.LbCocycle
 
+/- English proof (translation)
+Rewrite using `[gm_val (p ≫ f) y V hy, gm_val f (p y) V hy, Scheme.Hom.comp_app]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply p (f ⁻¹ᵁ V) y hy _).symm`.
+-/
 theorem gm_comp_val {W' W X : Scheme.{0}} (p : W' ⟶ W) (y : W') (f : W ⟶ X) (V : X.Opens)
     (hy : f (p y) ∈ V) (x : Γ(X, V)ˣ) :
     (gm (p ≫ f) y V x).val = (p.stalkMap y).hom (gm f (p y) V x).val := by
   rw [gm_val (p ≫ f) y V hy, gm_val f (p y) V hy, Scheme.Hom.comp_app]
   exact (Scheme.Hom.germ_stalkMap_apply p (f ⁻¹ᵁ V) y hy _).symm
 
+/- English proof (translation)
+Establish `hm : (g ≫ V.ι) w ∈ V` using `(g w).2`. Establish `hl : ⊤ ≤ (g ≫ V.ι) ⁻¹ᵁ V` using `fun x _ => (g x).2`. Establish `e` using `congrArg (fun ψ => ψ.hom τ.val) (GlobalTheory.FunDescent.res_comp_appTop V g (g ≫ V.ι) rfl hl)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Rewrite using `[gm_val _ w V hm, e, Scheme.Hom.appLE]`.
+
+Conclude with `(TopCat.Presheaf.germ_res_apply W'.presheaf (homOfLE hl) w trivial _).symm`.
+-/
 theorem gm_top_val {W' X : Scheme.{0}} (V : X.Opens) (g : W' ⟶ V.toScheme) (w : W') (τ : Γ(X, V)ˣ) :
     (gm (g ≫ V.ι) w V τ).val =
       (W'.presheaf.germ ⊤ w trivial).hom (g.appTop.hom ((GlobalTheory.FunDescent.res V).hom τ.val)) := by
@@ -28,10 +36,32 @@ theorem gm_top_val {W' X : Scheme.{0}} (V : X.Opens) (g : W' ⟶ V.toScheme) (w 
   rw [gm_val _ w V hm, e, Scheme.Hom.appLE]
   exact (TopCat.Presheaf.germ_res_apply W'.presheaf (homOfLE hl) w trivial _).symm
 
+/- English proof (translation)
+The claim follows from `gm_val k w ⊤ trivial u`.
+-/
 theorem gm_global_val {W' X : Scheme.{0}} (k : W' ⟶ X) (w : W') (u : Γ(X, ⊤)ˣ) :
     (gm k w ⊤ u).val = (W'.presheaf.germ ⊤ w trivial).hom (k.appTop.hom u.val) :=
   gm_val k w ⊤ trivial u
 
+/- English proof (translation)
+Take `⟨U, hy, t, ht, F⟩` from `H Z Q h hf hl hs u hu hc y`. Use `⟨U, hy, ?_⟩` and prove the remaining obligations. Take `⟨τ₀, hτ₀⟩` from `(GlobalTheory.FunDescent.res_bijective (h ⁻¹ᵁ U)).2 t`. Take `⟨σ₀, hσ₀⟩` from `(GlobalTheory.FunDescent.res_bijective (h ⁻¹ᵁ U)).2 (ht.unit⁻¹).val`. Establish `e₁ : τ₀ * σ₀ = 1` using `(GlobalTheory.FunDescent.res_bijective (h ⁻¹ᵁ U)).1 (by`.
+
+Rewrite using `[map_mul, map_one, hτ₀, hσ₀]`. Conclude with `ht.unit.mul_inv)`. Set `τ : Γ(Z, h ⁻¹ᵁ U)ˣ` to `⟨τ₀, σ₀, e₁, (mul_comm _ _).trans e₁⟩`. Use `⟨τ, fun W a b hab w hw => ?_⟩` and prove the remaining obligations. Set `O : W.Opens` to `a ⁻¹ᵁ (h ⁻¹ᵁ U)`.
+
+Establish `hO : ∀ x : O.toScheme, h (b (O.ι x)) ∈ U` using `fun x => by`. Establish `: h (a (O.ι x)) ∈ U` using `x.2`. Establish `e : h (a (O.ι x)) = h (b (O.ι x))` using `congrArg (fun m : W ⟶ Q => m (O.ι x)) hab`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `lft : ∀ c : W ⟶ Z, (∀ x : O.toScheme, h (c (O.ι x)) ∈ U) → ∃ c' : O.toScheme ⟶ (h ⁻¹ᵁ U).toScheme, c' ≫ (h ⁻¹ᵁ U).ι = O.ι ≫ c` using `fun c hc' => ⟨IsOpenImmersion.lift _ (O.ι ≫ c) (by`.
+
+Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hc' q), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨a', ha'⟩` from `lft a fun x => x.2`. Take `⟨b', hb'⟩` from `lft b hO`.
+
+Establish `hab' : (a' ≫ (h ⁻¹ᵁ U).ι) ≫ h = (b' ≫ (h ⁻¹ᵁ U).ι) ≫ h`. Rewrite using `[ha', hb', Category.assoc, Category.assoc, hab]`. Establish `hk : pullback.lift (a' ≫ (h ⁻¹ᵁ U).ι) (b' ≫ (h ⁻¹ᵁ U).ι) hab' = O.ι ≫ pullback.lift a b hab`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, Category.assoc, pullback.lift_fst, ha']`.
+
+Rewrite using `[pullback.lift_snd, Category.assoc, pullback.lift_snd, hb']`. Establish `E` using `F O.toScheme a' b' hab'`. Rewrite `E` using `[hk]`. Take `⟨w', rfl⟩ : ∃ w' : O.toScheme, O.ι w' = w` from `⟨⟨w, hw⟩, rfl⟩`. Establish `hτ : (GlobalTheory.FunDescent.res (h ⁻¹ᵁ U)).hom τ.val = t` using `hτ₀`.
+
+Establish `inj : Function.Injective (O.ι.stalkMap w').hom` using `(ConcreteCategory.bijective_of_isIso (O.ι.stalkMap w')).1`. Establish `A : (O.ι.stalkMap w').hom (gm a (O.ι w') (h ⁻¹ᵁ U) τ).val = (O.toScheme.presheaf.germ ⊤ w' trivial).hom (a'.appTop.hom t)`. Rewrite using `[← gm_comp_val O.ι w' a _ hw τ, ← ha', gm_top_val, hτ]`. Establish `B : (O.ι.stalkMap w').hom (gm b (O.ι w') (h ⁻¹ᵁ U) τ).val = (O.toScheme.presheaf.germ ⊤ w' trivial).hom (b'.appTop.hom t)`. Rewrite using `[← gm_comp_val O.ι w' b _ (hO w') τ, ← hb', gm_top_val, hτ]`.
+
+Establish `C : (O.ι.stalkMap w').hom (gm (pullback.lift a b hab) (O.ι w') ⊤ hu.unit).val = (O.toScheme.presheaf.germ ⊤ w' trivial).hom ((O.ι ≫ pullback.lift a b hab).appTop.hom u)`. Rewrite using `[← gm_comp_val O.ι w' (pullback.lift a b hab) ⊤ trivial hu.unit, gm_global_val]`. Both sides reduce to the same expression. Apply `Units.ext` to reduce the goal to its premises. Apply `inj` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, map_mul, A, B, C, E, map_mul]`.
+-/
 theorem exists_local_unit (H : H90) {Z Q : Scheme.{0}} (h : Z ⟶ Q) (hf : Flat h)
     (hl : LocallyOfFinitePresentation h) (hs : Surjective h) (u : Γ(pullback h h, ⊤)) (hu : IsUnit u)
     (hc : ∀ (W : Scheme.{0}) (a b c : W ⟶ Z) (hab : a ≫ h = b ≫ h) (hbc : b ≫ h = c ≫ h),
@@ -90,6 +120,29 @@ theorem exists_local_unit (H : H90) {Z Q : Scheme.{0}} (h : Z ⟶ Q) (hf : Flat 
 
 def lbOf {Q : Scheme.{0}} (U : Q → Q.Opens) (g : ∀ y y', Γ(Q, U y ⊓ U y')ˣ) : LB Q := ⟨Q, U, g⟩
 
+/- English proof (translation)
+Introduce `H Z Q h hf hl hs u hu hc`. Use `choose U hU τ hτ using fun y => exists_local_unit H h hf hl hs u hu hc y`. Establish `D` using `fun V => GlobalTheory.T.flat_descent_of_units h hf hl hs V`. Establish `l₁ : ∀ y y' : Q, h ⁻¹ᵁ (U y ⊓ U y') ≤ h ⁻¹ᵁ U y` using `fun _ _ _ hx => hx.1`. Establish `l₂ : ∀ y y' : Q, h ⁻¹ᵁ (U y ⊓ U y') ≤ h ⁻¹ᵁ U y'` using `fun _ _ _ hx => hx.2`.
+
+Establish `ex : ∀ y y' : Q, ∃ s : Γ(Q, U y ⊓ U y')ˣ, pullU h _ s = res (l₁ y y') (τ y) * (res (l₂ y y') (τ y'))⁻¹` using `fun y y' => (D _).2 _ fun W b c e w hw => by`. Establish `e' : h (b w) = h (c w)` using `congrArg (fun m : W ⟶ Q => m w) e`. Establish `hc₁ : c w ∈ h ⁻¹ᵁ U y` using `show h (c w) ∈ U y from e' ▸ hw.1`. Establish `hc₂ : c w ∈ h ⁻¹ᵁ U y'` using `show h (c w) ∈ U y' from e' ▸ hw.2`. Establish `hw' : c w ∈ h ⁻¹ᵁ (U y ⊓ U y')` using `⟨hc₁, hc₂⟩`.
+
+Rewrite using `[map_mul, map_mul, map_inv, map_inv, gm_res b w _ hw, gm_res b w _ hw, gm_res c w _ hw', gm_res c w _ hw', hτ y W b c e w hw.1, hτ y' W b c e w hw.2, mul_inv, _root_.mul_mul_mul_comm, mul_inv_cancel, _root_.one_mul]`. Use `choose g hg using ex`. Establish `ext : ∀ (V : Q.Opens) (a b : Γ(Q, V)ˣ), (∀ z : Z, h z ∈ V → gm h z V a = gm h z V b) → a = b` using `fun V a b e => (D V).1 (unit_ext fun z hz => by`. Establish `k : ∀ c : Γ(Q, V)ˣ, gm (𝟙 Z) z (h ⁻¹ᵁ V) (pullU h V c) = gm h z V c` using `fun c => (gm_pull (𝟙 Z) h z V hz c).trans (by rw [Category.id_comp])`. Rewrite using `[k, k]`.
+
+Conclude with `e z hz)`. Establish `K : ∀ (W : Scheme.{0}) (f : W ⟶ Z) (w : W) (y y' : Q) (_ : h (f w) ∈ U y ⊓ U y'), gm (f ≫ h) w _ (g y y') = gm f w _ (τ y) * (gm f w _ (τ y'))⁻¹` using `fun W f w y y' hm => by`. Establish `hm' : f w ∈ h ⁻¹ᵁ (U y ⊓ U y')` using `hm`. Rewrite using `[← gm_pull f h w _ hm, hg, map_mul, map_inv, gm_res f w _ hm', gm_res f w _ hm']`. Establish `K₁ : ∀ (z : Z) (y y' : Q) (_ : h z ∈ U y ⊓ U y'), gm h z _ (g y y') = gm (𝟙 Z) z _ (τ y) * (gm (𝟙 Z) z _ (τ y'))⁻¹` using `fun z y y' hm => by`.
+
+Use `K Z (𝟙 Z) z y y' hm` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `isLB : (lbOf U g).IsLB` using `{ cover := eq_top_iff.2 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hU y⟩ g_self := fun y => ext _ _ _ fun z hz => by`. Establish `hm : h z ∈ U y ⊓ U y` using `⟨hz, hz⟩`. Use `(gm_res h z _ hz _).trans ?_` and prove the remaining obligations.
+
+Use `(K₁ z y y hm).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, mul_inv_cancel]`. Use `cocycle := fun i j k => ext _ _ _ fun z hz => by`. Establish `h₁ : h z ∈ U i ⊓ U j` using `hz.1`. Establish `h₂ : h z ∈ U j ⊓ U k` using `⟨hz.1.2, hz.2⟩`.
+
+Establish `h₃ : h z ∈ U i ⊓ U k` using `⟨hz.1.1, hz.2⟩`. Use `(map_mul _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) ((gm_res h z _ hz _).trans (K₁ z i j h₁)) ((gm_res h z _ hz _).trans (K₁ z j k h₂))).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((gm_res h z _ hz _).trans (K₁ z i k h₃)).symm` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, inv_mul_cancel_left] }`.
+
+Establish `hle : ∀ J : PUnit → Q, ((lbOf U g).pull h).U J ≤ h ⁻¹ᵁ U (J PUnit.unit)` using `fun J x hx => mem_pull.1 hx`. Set `T : LB.Gen ((lbOf U g).pull h)` to `⟨fun J => res (hle J) (τ (J PUnit.unit))⟩`. Establish `hT : ∀ (W : Scheme.{0}) (f : W ⟶ Z) (w : W) (J : PUnit → Q), f w ∈ ((lbOf U g).pull h).U J → gm f w _ (T.s J) = gm f w _ (τ (J PUnit.unit))` using `fun W f w J hm => gm_res f w (hle J) hm _`. Use `⟨lbOf U g, isLB, T, ?_, ?_⟩` and prove the remaining obligations. Introduce `J J'`.
+
+Apply `unit_ext` to reduce the goal to its premises. Introduce `z hz`. Establish `hm : h z ∈ U (J PUnit.unit) ⊓ U (J' PUnit.unit)` using `⟨hle J hz.1, hle J' hz.2⟩`. Use `(gm_res _ z _ hz _).trans ((hT Z (𝟙 Z) z J hz.1).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (map_mul _ _ _).symm` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (congrArg₂ (· * ·) rfl (gm_res _ z _ hz _).symm)` and prove the remaining obligations. Rewrite using `[hT Z (𝟙 Z) z J' hz.2]`. Use `gm_pull_g (lbOf U g) h (𝟙 Z) z J J' hz.1 hz.2` as an intermediate fact. Use `Eq.trans ?_ (congrArg₂ (· * ·) (this.trans (K Z (𝟙 Z) z _ _ hm)).symm rfl)` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_right]`.
+
+Introduce `W a b hab w i hi`. Establish `e' : h (a w) = h (b w)` using `congrArg (fun m : W ⟶ Q => m w) hab`. Establish `hb : h (b w) ∈ (lbOf U g).U i` using `e' ▸ hi`. Rewrite using `[hT W a w _ (mem_pull.2 hi), hT W b w _ (mem_pull.2 hb)]`. Conclude with `hτ i W a b hab w hi`.
+-/
 theorem exists_lb : H90 → ∀ {Z Q : Scheme.{0}} (h : Z ⟶ Q), Flat h → LocallyOfFinitePresentation h → Surjective h →
     ∀ (u : Γ(pullback h h, ⊤)) (hu : IsUnit u),
     (∀ (W : Scheme.{0}) (a b c : W ⟶ Z) (hab : a ≫ h = b ≫ h) (hbc : b ≫ h = c ≫ h),

@@ -16,6 +16,9 @@ namespace GlobalTheory.FiniteOrderConst
 
 open GlobalTheory.IndefiniteRowSideFullHecke.DeltaDatumCombinedCoefficient
 
+/- English proof (translation)
+Introduce `U f`. Establish `hs : {b ∈ B | ⊤ ≤ y' b ⁻¹ᵁ U} = {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U}` using `Set.ext fun b => and_congr_right fun hb => by rw [e b hb]`. Rewrite using `[hs]`. Conclude with `⟨(h U f).1, (h U f).2.congr fun b hb => by rw [e b hb.1]⟩`.
+-/
 theorem isHolTo_of_eqOn {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}} {B : Set V}
     {y y' : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y) (e : ∀ b ∈ B, y' b = y b) : IsHolTo B y' := by
   intro U f
@@ -24,11 +27,19 @@ theorem isHolTo_of_eqOn {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X
   rw [hs]
   exact ⟨(h U f).1, (h U f).2.congr fun b hb => by rw [e b hb.1]⟩
 
+/- English proof (translation)
+Rewrite using `[valAt', dif_pos (show (⊤ : (Sp ℂ).Opens) ≤ y ⁻¹ᵁ ⊤ from le_rfl), valAt, fnAt]`. Establish `: y.appLE ⊤ ⊤ le_rfl = y.appTop` using `Scheme.Hom.appLE_eq_app y`. Conclude with `congrArg (fun q => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (q.hom f)) this`.
+-/
 theorem valAt'_top {X : Scheme.{0}} (y : Sp ℂ ⟶ X) (f : Γ(X, ⊤)) : valAt' y ⊤ f = fnAt y f := by
   rw [valAt', dif_pos (show (⊤ : (Sp ℂ).Opens) ≤ y ⁻¹ᵁ ⊤ from le_rfl), valAt, fnAt]
   have : y.appLE ⊤ ⊤ le_rfl = y.appTop := Scheme.Hom.appLE_eq_app y
   exact congrArg (fun q => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (q.hom f)) this
 
+/- English proof (translation)
+Establish `hc : ContinuousOn (fun b => fnAt (a b) f) B`. Use `(h ⊤ f).2.continuousOn` as an intermediate fact. Simplify using `only [valAt'_top] at this`. Conclude with `this.mono fun b hb => ⟨hb, le_rfl⟩`. Establish `hfin : {z : ℂ | z ^ N = 1}.Finite` using `(Polynomial.nthRoots N (1 : ℂ)).toFinset.finite_toSet.subset fun z hz => by`.
+
+Simplify `hz` using `[Polynomial.mem_nthRoots hN]`. Conclude with `hB.constant_of_mapsTo hfin.isDiscrete hc hp hb hb'`.
+-/
 theorem fnAt_eq_of_pow {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}} {B : Set V}
     {a : V → (Sp ℂ ⟶ X)} (hB : IsPreconnected B) (h : IsHolTo B a) (f : Γ(X, ⊤)) {N : ℕ} (hN : 0 < N)
     (hp : ∀ b ∈ B, fnAt (a b) f ^ N = 1) {b b' : V} (hb : b ∈ B) (hb' : b' ∈ B) : fnAt (a b) f = fnAt (a b') f := by
@@ -41,6 +52,15 @@ theorem fnAt_eq_of_pow {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X 
       simpa [Polynomial.mem_nthRoots hN] using hz
   exact hB.constant_of_mapsTo hfin.isDiscrete hc hp hb hb'
 
+/- English proof (translation)
+Introduce and unpack `E _ _ _ H Dw l Xo c σ f hf hfree ⟨N, hN, hp⟩ g ty F hty i P P' y y' hP hP' hy hy'`. Set `_ : Algebra c.F ℂ` to `σ.toAlgebra`. Take `⟨f₀, hf₀⟩` from `GlobalTheory.FrameFreeRule.exists_fn E H Dw l Xo c f hf hfree`. Take `⟨m, B, Q, -, hB, hconv, h0, hQ0, hQ, hall⟩` from `GlobalTheory.PeriodChart.period_chart E H (F.Di i) g ty (by rw [(F.sig i).1, (F.sig i).2]; exact hty) P hP`. Take `⟨b, ⟨hb, h, hh⟩, -⟩` from `hall P' hP'`.
+
+Establish `hbP : F.u i (Q b) = F.u i P'` using `(F.fibre i (Q b) P' (hQ.1 b hb) hP').2 ⟨LinearEquiv.refl _ _, h, fun _ _ => rfl, fun a _ => ⟨0, by simp⟩, fun a => ⟨0, by simp⟩, hh⟩`. Establish `hex : ∀ t, ∃ z : FrPt Xo c ℂ, t ∈ B → z.x = F.u i (Q t)` using `fun t => by`. Distinguish the cases in `ht : t ∈ B`. Take `⟨z, hz⟩` from `GlobalTheory.NonIntegralFrameExample.exists_framed (c := c) (S := ℂ) (F.u i (Q t)) (F.over_σ i _ (hQ.1 t ht))`. Conclude with `⟨z, fun _ => hz⟩`.
+
+Conclude with `⟨y, fun h => absurd h ht⟩`. Use `choose z hz using hex`. Establish `hhol : IsHolTo B fun t => basePt (z t)` using `GlobalTheory.HolFibre.isHolTo_of_isPullback (IsPullback.of_hasPullback _ _) (isHolTo_of_eqOn (F.hol i m B Q hB hQ).1 fun t ht => (pullback.lift_fst _ _ _).trans (hz t ht)) (isHolTo_of_eqOn (GlobalTheory.HolFibre.isHolTo_const hB (spMap σ)) fun t _ => pullback.lift_snd _ _ _)`. Establish `key` using `fnAt_eq_of_pow hconv.isPreconnected hhol f₀ hN (fun t _ => by rw [← hf₀ ℂ (z t)]; exact hp (z t)) h0 hb`. Rewrite `key` using `[← hf₀ ℂ, ← hf₀ ℂ]`.
+
+Conclude with `(hfree ℂ (z 0) y (hy.trans (by rw [hz 0 h0, hQ0]))).trans (key.trans (hfree ℂ y' (z b) ((hz b hb).trans (hbP.trans hy'.symm))))`.
+-/
 theorem const_on_period_space : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (f : Rul Xo c), f ∈ sec Xo c 0 0 → (∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra c.F K] (y y' : FrPt Xo c K), y'.x = y.x → evR Xo c f y' = evR Xo c f y) → (∃ N : ℕ, 0 < N ∧ ∀ y : FrPt Xo c (CAt σ), evR Xo c f y ^ N = 1) → ∀ (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty), IsTypeFn H Dw.p Dw.q ty → ∀ (i : Fin F.n) (P P' : (F.Di i).La →+ (Fin g → ℂ)) (y y' : FrPt Xo c (CAt σ)), IsPeriod (F.Di i) ty P → IsPeriod (F.Di i) ty P' → y.x = F.u i P → y'.x = F.u i P' → evR Xo c f y = evR Xo c f y' := by
   classical
   rintro E _ _ _ H Dw l Xo c σ f hf hfree ⟨N, hN, hp⟩ g ty F hty i P P' y y' hP hP' hy hy'

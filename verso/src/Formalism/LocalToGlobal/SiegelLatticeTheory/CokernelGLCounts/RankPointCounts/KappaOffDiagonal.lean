@@ -56,11 +56,19 @@ section Asm
 
 variable {D : D7} {X : HidaSetting D}
 
+/- English proof (translation)
+Conclude with `h.1.2.1.2.2.2.2.2.2.2.1 u u' huu`.
+-/
 theorem words_differ {large₂ : SizeData₂ D} {C' Cl Cg cb Cw cT CT C0 : ℝ}
     (h : Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cw cT CT C0) {u u' : D.what₂.Word} (huu : u ≠ u') :
     ∀ τ, uS D u τ ≠ uS D u' τ := by
   exact h.1.2.1.2.2.2.2.2.2.2.1 u u' huu
 
+/- English proof (translation)
+Establish `hb : ∀ ρ ρ', blk cs cs' FdN FdN' t ρ ρ' = 0`. Introduce `ρ ρ'`. Simplify using `[blk, h]`. Use extensionality with `φ : 1`. Simplify using `[aTerm, aTermL, hb]`.
+
+Apply the tactic sequence `try rfl`.
+-/
 theorem aTerm_eq_zero_of_OOt {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} {what₂ rows' : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
     (cs : ColSys X u what₂) (cs' : ColSys X u' rows') (FdN FdN' : Set X.B.I.Ginf)
@@ -72,6 +80,9 @@ theorem aTerm_eq_zero_of_OOt {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (
   simp [aTerm, aTermL, hb]
   try rfl
 
+/- English proof (translation)
+Unfold `FundOf`. Use `split_ifs with h0`. Conclude with `h0.choose_spec`. Conclude with `absurd (hF t) h0`.
+-/
 theorem fundOf_spec {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} {what₂ rows' : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
     (hF : FundExists X u u' F0 F0' what₂ rows') (t : GTerm X u u' F0 F0' what₂ rows') :
@@ -81,6 +92,9 @@ theorem fundOf_spec {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u :
   · exact h0.choose_spec
   · exact absurd (hF t) h0
 
+/- English proof (translation)
+Take `⟨hrel, hG0⟩` from `hRR D X Y u u' t hr hG`. Establish `hfs` using `fundOf_spec hF t`. Establish `hcov` using `hCov D X u u' t.lam t.lam' t.rep hrel (FundOf t) hfs (hI t)`. Conclude with `hSch D X u u' t.lam t.lam' t.rep hw hrel hG0 (OOt t) hcov`.
+-/
 theorem OOt_eq_zero (hRR : RelRepC) (hCov : CovRepC) (hSch : SchurNFC) (Y : Full X) {u u' : D.what₂.Word}
     (hw : ∀ τ, uS D u τ ≠ uS D u' τ)
     (hF : FundExists X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
@@ -92,6 +106,13 @@ theorem OOt_eq_zero (hRR : RelRepC) (hCov : CovRepC) (hSch : SchurNFC) (Y : Full
   have hcov := hCov D X u u' t.lam t.lam' t.rep hrel (FundOf t) hfs (hI t)
   exact hSch D X u u' t.lam t.lam' t.rep hw hrel hG0 (OOt t) hcov
 
+/- English proof (translation)
+Introduce `t ht`. Establish `hG : t.G = 0`. Assume the negation of the conclusion as `hne`. Establish `h1 : Gt t = 0` using `ht.1`. Simplify using `[Gt, hne] at h1`.
+
+Establish `ha : aTerm (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0`. Distinguish the cases in `hr : t.relevant`. Conclude with `aTerm_eq_zero_of_OOt _ _ _ _ t (OOt_eq_zero hRR hCov hSch Y hw hF hI t hr hG)`. Conclude with `hV D X Y u u' hF hI t hr`. Use `show Formalism.L2.SG.PackageTie.hsEmb (aTerm (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t) = 0`.
+
+Rewrite using `[ha, map_zero]`.
+-/
 theorem kppTermZero_of_cut (hRR : RelRepC) (hCov : CovRepC) (hSch : SchurNFC) (hV : LemmaVC)
     (Y : Full X) {u u' : D.what₂.Word} (hw : ∀ τ, uS D u τ ≠ uS D u' τ)
     (hF : FundExists X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'))
@@ -109,6 +130,11 @@ theorem kppTermZero_of_cut (hRR : RelRepC) (hCov : CovRepC) (hSch : SchurNFC) (h
   show Formalism.L2.SG.PackageTie.hsEmb (aTerm (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t) = 0
   rw [ha, map_zero]
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, ?_⟩` and prove the remaining obligations. Introduce `C' Cl _ _ D large₂ X Y u u' hH hT huu`. Establish `hWu` using `hT.2.2.2.2.1`. Establish `hFu` using `hFold D X Y u hT.1 hWu`.
+
+Establish `hFu'` using `hFold D X Y u' hT.1 hWu`. Conclude with `kppTermZero_of_cut hRR hCov hSch hV Y (words_differ hH huu) (hFE D X Y u u') (hOI D X Y u u' hFu hFu' (hFE D X Y u u'))`.
+-/
 theorem kppOffC_of_cut (hFold : FoldOKC) (hFE : FundExistsC) (hOI : OOIntAllC) (hV : LemmaVC)
     (hRR : RelRepC) (hCov : CovRepC) (hSch : SchurNFC) : Formalism.L2.SG.RowsConc.KppOffC := by
   intro Cg cb Cw cT CT C0

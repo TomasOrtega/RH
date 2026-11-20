@@ -101,9 +101,17 @@ def HermLattice.standard (K : Type*) [Field K] [NumberField K] (n : ℕ) : HermL
   posDef := fun _ => Matrix.PosDef.one
   conj := fun _ => by simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by norm_num, one_pos, rfl⟩`.
+-/
 example : 1 ≤ 2 ∧ (0 : ℝ) < 1 ∧ (HermLattice.standard ℚ 2).metric = fun _ => 1 :=
   ⟨by norm_num, one_pos, rfl⟩
 
+/- English proof (translation)
+Introduce `a d deg`. Use `⟨fun _ => one_ne_zero, fun _ _ => one_pos, fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Introduce `x`. Use `fin_cases x`. Conclude with `min_le_left _ _`.
+
+Conclude with `min_le_right _ _`.
+-/
 example :
     let a : Fin 2 → FractionalIdeal (𝓞 ℚ)⁰ ℚ := fun _ => 1
     let d : (ℚ →+* ℂ) → Fin 2 → ℝ := fun _ _ => 1

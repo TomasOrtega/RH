@@ -10,6 +10,15 @@ open PositivityTheory.Rg.Cz
 
 variable {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Take `⟨i, j, hij, hne⟩` from `Function.not_injective_iff.mp hJ`. Establish `h2 : J ∘ ⇑(Equiv.swap i j) = J`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp]`. Break down `eq_or_ne k i with rfl | hki` into its components or cases.
+
+Simplify using `[hij]`. Break down `eq_or_ne k j with rfl | hkj` into its components or cases. Simplify using `[hij]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne hki hkj]`. Establish `h1` using `congrFun (hf (Equiv.swap i j)) J`.
+
+Establish `h3 : pm (Equiv.swap i j) f J = f J` using `by show f (J ∘ ⇑(Equiv.swap i j)) = f J`. Rewrite using `[h2]`. Rewrite `h1` using `[h3, Pi.smul_apply, Equiv.Perm.sign_swap hne]`. Establish `h4 : (2 : ℂ) • f J = 0`. Rewrite using `[two_smul]`.
+
+Use `nth_rewrite 1 [h1]`. Simplify using the standard rewrite rules. Break down `smul_eq_zero.mp h4 with h | h` into its components or cases. Evaluate the numerical expressions using `at h`. Conclude with `h`.
+-/
 theorem antisymmetric_eq_zero_of_not_injective (f : TV n M (Fin n))
     (hf : ∀ σ : Equiv.Perm (Fin n), pm σ f = ((Equiv.Perm.sign σ : ℤ) : ℂ) • f) (J : Fin n → Fin n)
     (hJ : ¬ Function.Injective J) : f J = 0 := by
@@ -35,6 +44,11 @@ theorem antisymmetric_eq_zero_of_not_injective (f : TV n M (Fin n))
   · norm_num at h
   · exact h
 
+/- English proof (translation)
+Distinguish the cases in `hJ : Function.Injective J`. Establish `hb : Function.Bijective J` using `Finite.injective_iff_bijective.mp hJ`. Use `⟨((Equiv.Perm.sign (Equiv.ofBijective J hb) : ℤ) : ℂ), ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (hf (Equiv.ofBijective J hb)) id`. Establish `h3 : pm (Equiv.ofBijective J hb) f id = f J` using `rfl`.
+
+Rewrite `h1` using `[h3, Pi.smul_apply]`. Conclude with `h1`. Conclude with `⟨0, by rw [antisymmetric_eq_zero_of_not_injective f hf J hJ, zero_smul]⟩`.
+-/
 theorem anti_span (f : TV n M (Fin n))
     (hf : ∀ σ : Equiv.Perm (Fin n), pm σ f = ((Equiv.Perm.sign σ : ℤ) : ℂ) • f) (J : Fin n → Fin n) :
     ∃ c : ℂ, f J = c • f id := by
@@ -47,6 +61,17 @@ theorem anti_span (f : TV n M (Fin n))
     exact h1
   · exact ⟨0, by rw [antisymmetric_eq_zero_of_not_injective f hf J hJ, zero_smul]⟩
 
+/- English proof (translation)
+Use `set A := κ τ γ with hA`. Establish `hsum : actT (fun _ : Fin n => τ) κ ρ γ f id = ∑ J : Fin n → Fin n, (∏ p, A p (J p)) • ρ γ (f J)`. Simplify using `only [actT, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply, id, hA]`. Establish `hperm : ∀ σ : Equiv.Perm (Fin n), f ⇑σ = ((Equiv.Perm.sign σ : ℤ) : ℂ) • f id`. Introduce `σ`.
+
+Establish `h1` using `congrFun (hf σ) id`. Rewrite `h1` using `[Pi.smul_apply]`. Conclude with `h1`. Establish `hsub : ∑ J ∈ Finset.univ.image (fun σ : Equiv.Perm (Fin n) => (⇑σ : Fin n → Fin n)), (∏ p, A p (J p)) • ρ γ (f J) = ∑ J : Fin n → Fin n, (∏ p, A p (J p)) • ρ γ (f J)`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises.
+
+Introduce `J _ hJ`. Establish `hni : ¬ Function.Injective J`. Introduce `hinj`. Apply `hJ` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`.
+
+Conclude with `⟨Equiv.ofBijective J (Finite.injective_iff_bijective.mp hinj), Finset.mem_univ _, rfl⟩`. Rewrite using `[antisymmetric_eq_zero_of_not_injective f hf J hni, map_zero, smul_zero]`. Rewrite using `[hsum, ← hsub, Finset.sum_image (fun σ _ τ' _ h => Equiv.coe_fn_injective h)]`. Repeatedly rewrite using `[hperm, map_smul, smul_smul]`. Rewrite using `[← Finset.sum_smul, ← Matrix.det_transpose, Matrix.det_apply']`.
+
+Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `σ _`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem actT_anti_id {ι Γ : Type} (τ : ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ) (ρ : Γ → Module.End ℂ M) (γ : Γ)
     (f : TV n M (Fin n)) (hf : ∀ σ : Equiv.Perm (Fin n), pm σ f = ((Equiv.Perm.sign σ : ℤ) : ℂ) • f) :
     actT (fun _ : Fin n => τ) κ ρ γ f id = (κ τ γ).det • ρ γ (f id) := by

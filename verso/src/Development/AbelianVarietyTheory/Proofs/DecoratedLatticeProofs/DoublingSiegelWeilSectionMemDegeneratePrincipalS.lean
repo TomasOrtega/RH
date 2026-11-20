@@ -42,12 +42,20 @@ def swLin : intSub A B omh ν 𝓕 →ₗ[ℂ] (GA D (dblSp A) → ℂ) where
     simp only [swSec, evZero, Submodule.coe_smul, map_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
     exact integral_const_mul c _
 
+/- English proof (translation)
+Establish `: ((g * k, 1) : GA D (dblSp A) × GA D B) = (g, 1) * (k, 1)` using `by simp`. Simplify using `only [swSec]`. Rewrite using `[this, map_mul, Module.End.mul_apply]`.
+-/
 theorem swSec_mul (φ : WO (dblSp A) B → ℂ) (g k : GA D (dblSp A)) :
     swSec A B omh ν 𝓕 φ (g * k) = swSec A B omh ν 𝓕 (omh (k, 1) φ) g := by
   have : ((g * k, 1) : GA D (dblSp A) × GA D B) = (g, 1) * (k, 1) := by simp
   simp only [swSec]
   rw [this, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Introduce `hW D ψ A B χB omh hω ν 𝓕 hν φ hφ a hK`. Establish `hint : ∀ f, IsThetaFunO ψ (dblSp A) B f → f ∈ intSub A B omh ν 𝓕` using `fun f hf g => (GlobalTheory.T.siegelWeilSection_integrable_and_continuous D ψ A B χB omh hω ν 𝓕 hν _ (hω.om_pres (g, 1) f hf)).1`. Use `(mem_degPS A a).2 ⟨GlobalTheory.T.siegelWeilSection_degeneratePrincipalSeries_law hW D ψ A B χB omh hω ν 𝓕 hν φ hφ, (GlobalTheory.T.siegelWeilSection_integrable_and_continuous D ψ A B χB omh hω ν 𝓕 hν φ hφ).2, ?_⟩` and prove the remaining obligations. Set `S` to `Submodule.span ℂ {f : WO (dblSp A) B → ℂ | ∃ k ∈ Khat A a, f = omh (k, 1) φ}`. Use `haveI : FiniteDimensional ℂ S := hK`.
+
+Establish `hS : S ≤ intSub A B omh ν 𝓕` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `hint _ (hω.om_pres _ _ hφ))`. Use `isKFinite_iff.2 ⟨LinearMap.range ((swLin A B omh ν 𝓕).comp (Submodule.inclusion hS)), inferInstance, fun k hk => ⟨⟨omh (k, 1) φ, Submodule.subset_span ⟨k, hk, rfl⟩⟩, funext fun g => ?_⟩⟩` and prove the remaining obligations. Conclude with `(swSec_mul A B omh ν 𝓕 φ g k).symm`.
+-/
 theorem swSec_mem_degPS : GlobalTheory.Published.WeilRepresentationUnitaryPair → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) B), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓕 → ∀ φ, IsThetaFunO ψ (dblSp A) B φ → ∀ a : GL (Fin A.rank) (AE D), IsKFinVec omh (Khat A a) φ → swSec A B omh ν 𝓕 φ ∈ degPS A a χB⁻¹ (sZero A B) := by
   intro hW D ψ A B χB omh hω ν 𝓕 hν φ hφ a hK
   have hint : ∀ f, IsThetaFunO ψ (dblSp A) B f → f ∈ intSub A B omh ν 𝓕 := fun f hf g =>

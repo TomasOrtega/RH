@@ -22,6 +22,11 @@ def Rel (T : V →ₗ[ℂ] V') (A : Pr V) (A' : Pr V') : Prop :=
 
 variable {T : V →ₗ[ℂ] V'}
 
+/- English proof (translation)
+Unfold `Rel`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Conclude with `⟨LinearMap.congr_fun h.1 v, LinearMap.congr_fun h.2 v⟩`. Introduce `h`.
+
+Conclude with `⟨LinearMap.ext fun v => (h v).1, LinearMap.ext fun v => (h v).2⟩`.
+-/
 private theorem rel_iff_forall_apply {A : Pr V} {A' : Pr V'} :
     Rel T A A' ↔ ∀ v, A'.1 (T v) = T (A.1 v) ∧ A'.2.unop (T v) = T (A.2.unop v) := by
   unfold Rel
@@ -31,12 +36,20 @@ private theorem rel_iff_forall_apply {A : Pr V} {A' : Pr V'} :
   · intro h
     exact ⟨LinearMap.ext fun v => (h v).1, LinearMap.ext fun v => (h v).2⟩
 
+/- English proof (translation)
+Rewrite using `[rel_iff_forall_apply]`. Introduce `v`. Conclude with `⟨h1 v, h2 v⟩`.
+-/
 theorem rel_mk {X : Module.End ℂ V} {Xs : Module.End ℂ V} {X' Xs' : Module.End ℂ V'}
     (h1 : ∀ v, X' (T v) = T (X v)) (h2 : ∀ v, Xs' (T v) = T (Xs v)) : Rel T (mkP X Xs) (mkP X' Xs') := by
   rw [rel_iff_forall_apply]
   intro v
   exact ⟨h1 v, h2 v⟩
 
+/- English proof (translation)
+Rewrite `*` using `[rel_iff_forall_apply]`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Use `show A'.1 (T v) + B'.1 (T v) = T (A.1 v + B.1 v)`. Rewrite using `[map_add, (hA v).1, (hB v).1]`.
+
+Use `show A'.2.unop (T v) + B'.2.unop (T v) = T (A.2.unop v + B.2.unop v)`. Rewrite using `[map_add, (hA v).2, (hB v).2]`.
+-/
 theorem rel_add {A B : Pr V} {A' B' : Pr V'} (hA : Rel T A A') (hB : Rel T B B') : Rel T (A + B) (A' + B') := by
   rw [rel_iff_forall_apply] at *
   intro v
@@ -46,6 +59,11 @@ theorem rel_add {A B : Pr V} {A' B' : Pr V'} (hA : Rel T A A') (hB : Rel T B B')
   · show A'.2.unop (T v) + B'.2.unop (T v) = T (A.2.unop v + B.2.unop v)
     rw [map_add, (hA v).2, (hB v).2]
 
+/- English proof (translation)
+Rewrite `*` using `[rel_iff_forall_apply]`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Use `show -A'.1 (T v) = T (-A.1 v)`. Rewrite using `[map_neg, (hA v).1]`.
+
+Use `show -A'.2.unop (T v) = T (-A.2.unop v)`. Rewrite using `[map_neg, (hA v).2]`.
+-/
 theorem rel_neg {A : Pr V} {A' : Pr V'} (hA : Rel T A A') : Rel T (-A) (-A') := by
   rw [rel_iff_forall_apply] at *
   intro v
@@ -55,11 +73,19 @@ theorem rel_neg {A : Pr V} {A' : Pr V'} (hA : Rel T A A') : Rel T (-A) (-A') := 
   · show -A'.2.unop (T v) = T (-A.2.unop v)
     rw [map_neg, (hA v).2]
 
+/- English proof (translation)
+Rewrite using `[rel_iff_forall_apply]`. Introduce `v`. Conclude with `⟨(map_zero T).symm, (map_zero T).symm⟩`.
+-/
 theorem rel_zero : Rel T (0 : Pr V) (0 : Pr V') := by
   rw [rel_iff_forall_apply]
   intro v
   exact ⟨(map_zero T).symm, (map_zero T).symm⟩
 
+/- English proof (translation)
+Rewrite `*` using `[rel_iff_forall_apply]`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Use `show A'.1 (B'.1 (T v)) = T (A.1 (B.1 v))`. Rewrite using `[(hB v).1, (hA _).1]`.
+
+Use `show B'.2.unop (A'.2.unop (T v)) = T (B.2.unop (A.2.unop v))`. Rewrite using `[(hA v).2, (hB _).2]`.
+-/
 theorem rel_mul {A B : Pr V} {A' B' : Pr V'} (hA : Rel T A A') (hB : Rel T B B') : Rel T (A * B) (A' * B') := by
   rw [rel_iff_forall_apply] at *
   intro v
@@ -69,6 +95,11 @@ theorem rel_mul {A B : Pr V} {A' B' : Pr V'} (hA : Rel T A A') (hB : Rel T B B')
   · show B'.2.unop (A'.2.unop (T v)) = T (B.2.unop (A.2.unop v))
     rw [(hA v).2, (hB _).2]
 
+/- English proof (translation)
+Rewrite using `[rel_iff_forall_apply]`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Use `show (algebraMap ℂ (Module.End ℂ V') s) (T v) = T ((algebraMap ℂ (Module.End ℂ V) s) v)`. Simplify using `[Module.algebraMap_end_apply]`.
+
+Use `show (algebraMap ℂ (Module.End ℂ V') (conj s)) (T v) = T ((algebraMap ℂ (Module.End ℂ V) (conj s)) v)`. Simplify using `[Module.algebraMap_end_apply]`.
+-/
 theorem rel_algebraMap (s : ℂ) : Rel T (algebraMap ℂ (Pr V) s) (algebraMap ℂ (Pr V') s) := by
   rw [rel_iff_forall_apply]
   intro v
@@ -78,20 +109,32 @@ theorem rel_algebraMap (s : ℂ) : Rel T (algebraMap ℂ (Pr V) s) (algebraMap �
   · show (algebraMap ℂ (Module.End ℂ V') (conj s)) (T v) = T ((algebraMap ℂ (Module.End ℂ V) (conj s)) v)
     simp [Module.algebraMap_end_apply]
 
+/- English proof (translation)
+Rewrite using `[rel_iff_forall_apply]`. Introduce `v`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem rel_one : Rel T (1 : Pr V) (1 : Pr V') := by
   rw [rel_iff_forall_apply]
   intro v
   exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Conclude with `rel_mul (rel_algebraMap s) hA`.
+-/
 theorem rel_smul (s : ℂ) {A : Pr V} {A' : Pr V'} (hA : Rel T A A') : Rel T (s • A) (s • A') := by
   rw [Algebra.smul_def, Algebra.smul_def]
   exact rel_mul (rel_algebraMap s) hA
 
+/- English proof (translation)
+Rewrite `*` using `[rel_iff_forall_apply]`. Introduce `v`. Conclude with `⟨(hA v).2, (hA v).1⟩`.
+-/
 theorem rel_star {A : Pr V} {A' : Pr V'} (hA : Rel T A A') : Rel T (star A) (star A') := by
   rw [rel_iff_forall_apply] at *
   intro v
   exact ⟨(hA v).2, (hA v).1⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (rel_zero : Rel T (0 : Pr V) (0 : Pr V'))`. Consider the case `@insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `rel_add (h a (Finset.mem_insert_self a s)) (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+-/
 theorem rel_sum {ι : Type*} (s : Finset ι) {A : ι → Pr V} {A' : ι → Pr V'} (h : ∀ i ∈ s, Rel T (A i) (A' i)) :
     Rel T (∑ i ∈ s, A i) (∑ i ∈ s, A' i) := by
   classical
@@ -104,17 +147,26 @@ theorem rel_sum {ι : Type*} (s : Finset ι) {A : ι → Pr V} {A' : ι → Pr V
 def MRel (T : V →ₗ[ℂ] V') (M : Matrix (Fin 2) (Fin 2) (Pr V)) (M' : Matrix (Fin 2) (Fin 2) (Pr V')) : Prop :=
   ∀ a b, Rel T (M a b) (M' a b)
 
+/- English proof (translation)
+Introduce `a b`. Simplify using `only [Matrix.mul_apply]`. Conclude with `rel_sum _ (fun c _ => rel_mul (hM a c) (hN c b))`.
+-/
 theorem mrel_mul {M N : Matrix (Fin 2) (Fin 2) (Pr V)} {M' N' : Matrix (Fin 2) (Fin 2) (Pr V')}
     (hM : MRel T M M') (hN : MRel T N N') : MRel T (M * N) (M' * N') := by
   intro a b
   simp only [Matrix.mul_apply]
   exact rel_sum _ (fun c _ => rel_mul (hM a c) (hN c b))
 
+/- English proof (translation)
+Introduce `a b`. Conclude with `rel_star (hM b a)`.
+-/
 theorem mrel_conjTranspose {M : Matrix (Fin 2) (Fin 2) (Pr V)} {M' : Matrix (Fin 2) (Fin 2) (Pr V')}
     (hM : MRel T M M') : MRel T Mᴴ M'ᴴ := by
   intro a b
   exact rel_star (hM b a)
 
+/- English proof (translation)
+Introduce `a b`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Conclude with `rel_one`. Conclude with `rel_zero`.
+-/
 theorem mrel_one : MRel T (1 : Matrix (Fin 2) (Fin 2) (Pr V)) 1 := by
   intro a b
   rw [Matrix.one_apply, Matrix.one_apply]
@@ -122,11 +174,19 @@ theorem mrel_one : MRel T (1 : Matrix (Fin 2) (Fin 2) (Pr V)) 1 := by
   · exact rel_one
   · exact rel_zero
 
+/- English proof (translation)
+Introduce `a b`. Conclude with `rel_smul s (hM a b)`.
+-/
 theorem mrel_smul (s : ℂ) {M : Matrix (Fin 2) (Fin 2) (Pr V)} {M' : Matrix (Fin 2) (Fin 2) (Pr V')}
     (hM : MRel T M M') : MRel T (s • M) (s • M') := by
   intro a b
   exact rel_smul s (hM a b)
 
+/- English proof (translation)
+Introduce `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `rel_add (rel_algebraMap Y) hp`. Conclude with `rel_neg hc`. Conclude with `hci`.
+
+Conclude with `rel_zero`.
+-/
 theorem mrel_Tm (Y : ℂ) {p c ci : Pr V} {p' c' ci' : Pr V'} (hp : Rel T p p') (hc : Rel T c c') (hci : Rel T ci ci') :
     MRel T (Formalism.YangianSpanCharacter.T.Tm Y p c ci) (Formalism.YangianSpanCharacter.T.Tm Y p' c' ci') := by
   intro a b
@@ -143,6 +203,11 @@ section ops
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq] [NormedSpace ℂ Wq]
   {z z' : Fin (2 * ρ + k + 1) → ℂ} {π : Mx k (1 + ρ) → (Wp →L[ℂ] Wp)} {π' : Mx k (1 + ρ) → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`. Distinguish the cases in `hx : (c, g) ∈ DomR k ρ z z'`. Establish `hx'` using `(domR_iota ht z z' c g).2 hx`. Rewrite using `[Xs.t_apply Y a b _ (c, g) hx, trL_apply]`.
+
+Use `show _ = (X.t Y a b Φ).1 (consC t c) (ιLev k 1 ρ g)`. Rewrite using `[X.t_apply Y a b Φ _ hx']`. Conclude with `(tL_iota (E := Wq →L[ℂ] Wp) hz hz' Y a b ((Φ : Fn k (1 + ρ) (Wq →L[ℂ] Wp)) (consC t c)) hx.2.1).symm`. Rewrite using `[(Xs.t Y a b (trL ht z z' π π' Φ)).2.1 (c, g) hx, trL_apply]`. Conclude with `((X.t Y a b Φ).2.1 _ (fun h => hx ((domR_iota ht z z' c g).1 h))).symm`.
+-/
 theorem t_tr {t : ℂ} (ht : t ≠ 0) (hz : inWb k ρ z) (hz' : inWb k ρ z')
     (X : ActualOps k (1 + ρ) (liftVec k 1 ρ z) (liftVec k 1 ρ z') π π')
     (Xs : ActualOps k ρ z z' (fun y => π (ιLev k 1 ρ y)) (fun y => π' (ιLev k 1 ρ y))) (Y : ℂ) (a b : Fin 2)
@@ -159,6 +224,9 @@ theorem t_tr {t : ℂ} (ht : t ≠ 0) (hz : inWb k ρ z) (hz' : inWb k ρ z')
   · rw [(Xs.t Y a b (trL ht z z' π π' Φ)).2.1 (c, g) hx, trL_apply]
     exact ((X.t Y a b Φ).2.1 _ (fun h => hx ((domR_iota ht z z' c g).1 h))).symm
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Xs.op_apply, trL_apply, trL_apply, X.op_apply]`. Use function extensionality and compare the values at `c g`. Conclude with `opL_consC ht (fun c' => (Φ : Fn k (1 + ρ) (Wq →L[ℂ] Wp)) c' (ιLev k 1 ρ g)) c (fun h => diff_rad Φ.2 _ h) l i`.
+-/
 theorem op_tr {t : ℂ} (ht : t ≠ 0)
     (X : ActualOps k (1 + ρ) (liftVec k 1 ρ z) (liftVec k 1 ρ z') π π')
     (Xs : ActualOps k ρ z z' (fun y => π (ιLev k 1 ρ y)) (fun y => π' (ιLev k 1 ρ y))) (l : Fin ρ) (i : Fin 6)
@@ -178,6 +246,13 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   {z z' : Fin (2 * ρ + k + 1) → ℂ} {π : Mx k (1 + ρ) → (Wp →L[ℂ] Wp)} {π' : Mx k (1 + ρ) → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Establish `hop` using `fun (i : Fin 6) Φ => op_tr ht X Xs l i Φ`. Use `mrel_Tm Y ?_ ?_ ?_` and prove the remaining obligations. Use `show Rel _ (L.p (shS l)) (Ls.p l)`. Rewrite using `[hL.1, hLs.1]`. Conclude with `rel_mk (fun v => hop 0 v) (fun v => by simp only [LinearMap.neg_apply, hop 3, map_neg])`.
+
+Use `show Rel _ (L.c (shS l)) (Ls.c l)`. Rewrite using `[hL.2.2.1, hLs.2.2.1]`. Conclude with `rel_mk (fun v => hop 1 v) (fun v => hop 4 v)`. Use `show Rel _ (L.ci (shS l)) (Ls.ci l)`. Rewrite using `[hL.2.2.2.1, hLs.2.2.2.1]`.
+
+Conclude with `rel_mk (fun v => hop 2 v) (fun v => hop 5 v)`.
+-/
 theorem site_rel {t : ℂ} (ht : t ≠ 0)
     {X : ActualOps k (1 + ρ) (liftVec k 1 ρ z) (liftVec k 1 ρ z') π π'}
     {Xs : ActualOps k ρ z z' (fun y => π (ιLev k 1 ρ y)) (fun y => π' (ιLev k 1 ρ y))}
@@ -197,6 +272,15 @@ theorem site_rel {t : ℂ} (ht : t ≠ 0)
     rw [hL.2.2.2.1, hLs.2.2.2.1]
     exact rel_mk (fun v => hop 2 v) (fun v => hop 5 v)
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `n hn`. Establish `e1 : P5.tprod L Y (n + 1) = 1` using `by rw [P5.tprod, dif_neg (by omega)]`.
+
+Establish `e2 : P5.tprod Ls Y n = 1` using `by rw [P5.tprod, dif_neg (by omega)]`. Rewrite using `[e1, e2]`. Conclude with `mrel_one`. Consider the case `succ m ih`. Introduce `n hn`.
+
+Establish `e1 : P5.tprod L Y (n + 1) = P5.tprod L Y (n + 1 + 1) * Wd.Ts (P5.site L ⟨n + 1, by omega⟩) Y`. Rewrite using `[P5.tprod, dif_pos (by omega)]`. Establish `e2 : P5.tprod Ls Y n = P5.tprod Ls Y (n + 1) * Wd.Ts (P5.site Ls ⟨n, by omega⟩) Y`. Rewrite using `[P5.tprod, dif_pos (by omega)]`. Rewrite using `[e1, e2]`.
+
+Use `mrel_mul (ih (n + 1) (by omega)) ?_` and prove the remaining obligations. Establish `e : (⟨n + 1, by omega⟩ : Fin (1 + ρ)) = shS ⟨n, by omega⟩` using `rfl`. Rewrite using `[e]`. Conclude with `site_rel ht hL hLs _ Y`.
+-/
 theorem tprod_rel {t : ℂ} (ht : t ≠ 0)
     {X : ActualOps k (1 + ρ) (liftVec k 1 ρ z) (liftVec k 1 ρ z') π π'}
     {Xs : ActualOps k ρ z z' (fun y => π (ιLev k 1 ρ y)) (fun y => π' (ιLev k 1 ρ y))}
@@ -224,6 +308,11 @@ theorem tprod_rel {t : ℂ} (ht : t ≠ 0)
     rw [e]
     exact site_rel ht hL hLs _ Y
 
+/- English proof (translation)
+Establish `hQ : MRel (trL ht z z' π π') (st.QQ Y) (sts.QQ Y)`. Rewrite using `[hst, hsts]`. Use `mrel_smul s fun a b => rel_mk (fun v => t_tr ht hz hz' X Xs Y a b v) (fun v => t_tr ht hz hz' X Xs _ b a v)` and prove the remaining obligations. Unfold `P5.QQi`. Establish `h1 : ((1 : Fin (1 + ρ + 1)) : ℕ) = 0 + 1`.
+
+Rewrite using `[Fin.val_one', Nat.mod_eq_of_lt (by omega)]`. Establish `h0 : ((0 : Fin (ρ + 1)) : ℕ) = 0` using `rfl`. Rewrite using `[h1, h0]`. Conclude with `mrel_mul (mrel_mul (mrel_conjTranspose (tprod_rel ht hL hLs _ _ 0 rfl)) hQ) (tprod_rel ht hL hLs _ _ 0 rfl)`.
+-/
 theorem qqi_rel {t : ℂ} (ht : t ≠ 0) (hz : inWb k ρ z) (hz' : inWb k ρ z')
     {X : ActualOps k (1 + ρ) (liftVec k 1 ρ z) (liftVec k 1 ρ z') π π'}
     {Xs : ActualOps k ρ z z' (fun y => π (ιLev k 1 ρ y)) (fun y => π' (ιLev k 1 ρ y))}

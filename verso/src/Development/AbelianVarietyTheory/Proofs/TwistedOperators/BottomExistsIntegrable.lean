@@ -22,6 +22,27 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {
 
 open GlobalTheory.Grid (neg neg_gram sigOK_sgn isCartanInv_sgn)
 
+/- English proof (translation)
+Set `V : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace Formalism.BasicNotions.Examples₂.star_isIntegral n`. Establish `hg : V.gram = 1` using `Matrix.ext fun i j => by`. Use `(Formalism.BasicNotions.Examples₂.stdSpace_gram_apply (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n (fun _ => false) n 0 i j).trans ?_` and prove the remaining obligations. Conclude with `(Matrix.one_apply (i := i) (j := j)).symm`. Set `Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)` to `Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 D.host.E) D.host.E)`.
+
+Establish `hmem : ∀ y, y ∈ Λ ↔ ∀ i, IsIntegral ℤ (y i)` using `fun y => by`. Simplify using `only [Λ, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`. Conclude with `forall_congr' fun i => ⟨fun ⟨b, hb⟩ => hb ▸ b.isIntegral_coe, fun h => ⟨⟨y i, h⟩, rfl⟩⟩`. Establish `hsingle : ∀ i, (Pi.single i 1 : Fin V.rank → D.host.E) ∈ Λ` using `fun i => (hmem _).2 fun k => by`. Distinguish the cases in `h : k = i`.
+
+Substitute `h` using the available equality. Simplify using `using isIntegral_one`. Simplify `isIntegral_zero` using `[h]`. Establish `hsd : IsSelfDualC V Λ`. Use `⟨⟨Submodule.fg_pi fun _ => ?_, ?_⟩, fun y => ⟨fun hy x hx => ?_, fun h => (hmem y).2 fun i => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span (Set.finite_singleton _)`. Rewrite using `[eq_top_iff, ← (Pi.basisFun D.host.E (Fin V.rank)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Rewrite using `[Pi.basisFun_apply]`. Conclude with `hsingle i`. Establish `hs : IsIntegral ℤ (∑ a, ∑ b, star (x a) * V.gram a b * y b)`. Rewrite using `[hg]`. Use `IsIntegral.sum _ fun a _ => IsIntegral.sum _ fun b _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `using (Formalism.BasicNotions.Examples₂.star_isIntegral _ ((hmem x).1 hx a)).mul ((hmem y).1 hy a)`. Simplify `isIntegral_zero` using `[Matrix.one_apply, hab]`. Conclude with `⟨⟨_, hs⟩, rfl⟩`.
+
+Take `⟨b, hb⟩` from `h _ (hsingle i)`. Establish `e : ∑ a, ∑ c, star ((Pi.single i 1 : Fin V.rank → D.host.E) a) * V.gram a c * y c = y i`. Rewrite using `[hg, Finset.sum_eq_single i]`. Simplify using `[Matrix.one_apply]`. Introduce `a _ ha`.
+
+Simplify using `[ha]`. Simplify using the standard rewrite rules. Rewrite `hb` using `[e]`. Conclude with `hb ▸ b.isIntegral_coe`. Take `⟨r, hr, hri⟩` from `GlobalTheory.T.self_dual_lattice_has_rigidification D V Λ (Formalism.BasicNotions.Examples₂.posSpace_sigOK _ n) hsd`.
+
+Establish `hgt : ∀ τ, gramAt D V τ = 1` using `fun τ => by rw [gramAt, hg]; simp`. Use `⟨V, ⟨Λ, r.β, fun _ => 1, fun _ => 1⟩, rfl, Formalism.BasicNotions.Examples₂.posSpace_sigOK _ n, ⟨hg, fun y => (hmem y).trans (forall_congr' fun i => ⟨fun h => ⟨⟨y i, h⟩, rfl⟩, fun ⟨b, hb⟩ => hb ▸ b.isIntegral_coe⟩), fun _ => ⟨rfl, rfl⟩⟩, hsd, hr ▸ hri.2.1, fun τ => ⟨?_, V.rank, ? …` and prove the remaining obligations. Rewrite using `[hgt]`. Conclude with `⟨by simp, by simp, by simpa using Matrix.PosDef.one⟩`. Rewrite using `[hgt]`.
+
+Apply the tactic sequence `refine ⟨fun _ => 1, fun a => Or.inl ⟨rfl, a.2⟩, ?_, ?_⟩ <;> simp`.
+-/
 theorem exists_stdRig (n : ℕ) : ∃ (V : HSp D) (r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V), V.rank = n ∧ V.SigOK ∧ r.IsStd ∧ r.Is := by
   let V : HSp D := Formalism.BasicNotions.Examples₂.posSpace Formalism.BasicNotions.Examples₂.star_isIntegral n
   have hg : V.gram = 1 := Matrix.ext fun i j => by
@@ -71,6 +92,13 @@ theorem exists_stdRig (n : ℕ) : ∃ (V : HSp D) (r : GlobalTheory.IndefiniteRo
   · rw [hgt]
     refine ⟨fun _ => 1, fun a => Or.inl ⟨rfl, a.2⟩, ?_, ?_⟩ <;> simp
 
+/- English proof (translation)
+Establish `hmul : ∀ {χ η : (AE D)ˣ →* Circle}, IsHeckeChar D χ → IsHeckeChar D η → IsHeckeChar D (χ * η)` using `fun h1 h2 => ⟨h1.1.mul h2.1, fun x => by rw [MonoidHom.mul_apply, h1.2, h2.2, mul_one]⟩`. Establish `heta : IsHeckeChar D L.eta` using `hL.eta.1`. Establish `hpow : ∀ n, IsHeckeChar D (L.eta ^ n)` using `fun n => ⟨heta.1.pow n, fun x => by rw [MonoidHom.pow_apply, heta.2, one_pow]⟩`. Establish `hi` using `i.2`. Establish `hchiE` using `G.ch.chi_eq (D.R.m - i) (by omega) (by omega)`.
+
+Establish `rpow : ∀ n, ResEta D (L.eta ^ n) n` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨(GlobalTheory.HeckeCharacterRestriction.resEta_eta hL).1, fun η _ a => by simp⟩`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `resEta_mul ih (GlobalTheory.HeckeCharacterRestriction.resEta_eta hL)`.
+
+Establish `rchi : ResEta D (G.ch.chi (D.R.m - i)) 0` using `⟨(GlobalTheory.HeckeCharacterRestriction.resEta_eta hL).1, fun η _ a => by`. Rewrite using `[pow_zero]; exact GlobalTheory.GridWeil.triv_base hchiE (G.ch.triv _ (by omega) (by omega)) a⟩`. Take `⟨h1, h2, h3⟩` from `SqNum.ranks_exact D i j`. Apply the tactic sequence `refine ⟨hmul (GlobalTheory.HeckeCharacterRestriction.isHecke_mu hL t j) (hpow _), hmul hchiE.1 (hpow _), resEta_parity (resEta_mul (GlobalTheory.HeckeCharacterRestriction.resEta_mu hL t j) (rpow _)) ?_, resEta_parity (resEta_mul rchi (rpow _)) ?_⟩ <;> omega`.
+-/
 theorem bottom_chars {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (i j : Fin D.R.m) (t : T) :
     IsHeckeChar D (L.mu t (j + 1) * L.eta ^ (rankV D i j % 2)) ∧
       IsHeckeChar D (G.ch.chi (D.R.m - i) * L.eta ^ (rankV D i j % 2)) ∧
@@ -94,6 +122,9 @@ theorem bottom_chars {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (i j : Fi
     resEta_parity (resEta_mul (GlobalTheory.HeckeCharacterRestriction.resEta_mu hL t j) (rpow _)) ?_,
     resEta_parity (resEta_mul rchi (rpow _)) ?_⟩ <;> omega
 
+/- English proof (translation)
+Use `⟨h.1, fun y => (h.2 y).trans (forall₂_congr fun x _ => ⟨fun ⟨c, hc⟩ => ⟨-c, ?_⟩, fun ⟨c, hc⟩ => ⟨-c, ?_⟩⟩)⟩` and prove the remaining obligations. Simplify using `[neg_gram, hc]`. Simplify using `[neg_gram] at hc ⊢`. Conclude with `neg_eq_iff_eq_neg.2 hc`.
+-/
 theorem isSelfDualC_neg' {A : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)} (h : IsSelfDualC A Λ) :
     IsSelfDualC (neg A) Λ := by
   refine ⟨h.1, fun y => (h.2 y).trans (forall₂_congr fun x _ => ⟨fun ⟨c, hc⟩ => ⟨-c, ?_⟩, fun ⟨c, hc⟩ => ⟨-c, ?_⟩⟩)⟩
@@ -101,6 +132,17 @@ theorem isSelfDualC_neg' {A : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin A.rank
   · simp [neg_gram] at hc ⊢
     exact neg_eq_iff_eq_neg.2 hc
 
+/- English proof (translation)
+Take `⟨A, rA, hA1, hA2, hA3, hA4⟩` from `exists_stdRig (D := D) (SqNum.botBig D i j)`. Take `⟨A', rA', hB1, hB2, hB3, hB4⟩` from `exists_stdRig (D := D) (SqNum.botSmall D i j)`. Take `⟨WW, rW, hW1, hW2, hW3, hW4⟩` from `exists_stdRig (D := D) (SqNum.botBig D i j + SqNum.botSmall D i j)`. Establish `hψ` using `W.ψ_std`. Establish `hθ` using `W.θ_is`.
+
+Establish `hη` using `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Establish `hc` using `fun t => bottom_chars hL G i j t`. Establish `hd : ∀ {χ η : (AE D)ˣ →* Circle}, IsHeckeChar D χ → IsHeckeChar D η → IsHeckeChar D (χ / η)` using `fun h1 h2 => ⟨h1.1.div' h2.1, fun x => by rw [MonoidHom.div_apply, h1.2, h2.2, div_one]⟩`. Use `choose ω hω using fun t => GlobalTheory.ConstRatio.exists_isWeil hψ hη true A WW (hc t).2.1 (hd (hc t).2.1 (hc t).1) (hA1 ▸ (hc t).2.2.2) (by rw [hW1, div_eq_mul_inv]; exact resEta_mul (hc t).2.2.2 (resEta_inv (hc t).2.2.1))`. Use `choose ω' hω' using fun t => GlobalTheory.ConstRatio.exists_isWeil hψ hη false A' WW (hc t).1 (hd (hc t).1 (hc t).2.1) (hB1 ▸ (hc t).2.2.1) (by rw [hW1, div_eq_mul_inv, Nat.add_comm (SqNum.botBig D i j)]; exact resEta_mul (hc t).2.2.1 (resEta_inv (hc t).2.2.2))`.
+
+Establish `s1 : (neg A).SigOK` using `sigOK_sgn true hA2`. Take `⟨vac, hv⟩` from `GlobalTheory.VacuumO.vacExists D W.ψ W.θ hψ hθ (neg A) WW (fun τ => -rA.s τ) rW.s s1 hW2 (fun τ => isCartanInv_sgn true _ τ (hA4.2.2 τ).1) (fun τ => (hW4.2.2 τ).1) rA.Λ rW.Λ (isSelfDualC_neg' hA4.1) hW4.1`. Take `⟨vac', hv'⟩` from `GlobalTheory.VacuumO.vacExists D W.ψ W.θ hψ hθ A' WW rA'.s rW.s hB2 hW2 (fun τ => (hB4.2.2 τ).1) (fun τ => (hW4.2.2 τ).1) rA'.Λ rW.Λ hB4.1 hW4.1`. Use `choose e he using GlobalTheory.FunObj.LocTensor.exists_idemSum_locPl hL G`. Use `choose c hc' using fun t w => GlobalTheory.ConstRatio.exists_expAt (SqNum.nuH G t i j) w`.
+
+Establish `hI : ∀ t, (∏ w ∈ locPl G t, w.asIdeal ^ c t w) ≠ ⊥` using `fun t => Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot`. Use `choose f hf _ using fun t => GlobalTheory.T.first_standard_pair_member_has_theta_function D W.ψ W.θ A WW rA rW _ _ _ _ _ hA4 hW4 (hd (hc t).1 (hc t).2.1) (he t) (hI t) hv`. Use `choose f' hf' _ using fun t => GlobalTheory.T.exists_thetaFunction_standardPairSecond D W.ψ W.θ A' WW rA' rW _ _ _ _ A.rank _ hB4 hW4 (hd (hc t).1 (hc t).2.1) (he t) (hI t) hv'`. Take `⟨m, fd, hm⟩` from `GlobalTheory.ConstRatio.exists_meas A`. Take `⟨m', fd', hm'⟩` from `GlobalTheory.ConstRatio.exists_meas A'`.
+
+Conclude with `⟨A, A', WW, ⟨rA, rA', rW, ω, ω', vac, vac', e, c, f, f', m, fd, m', fd'⟩, hA1, hB1, hA3, hB3, hW3, ⟨by rw [hA1, hB1, hW1], hA4, hB4, hW4, hω, hω', hv, hv', he, fun t w _ => hc' t w, hf, hf', hm, hm'⟩⟩`.
+-/
 theorem exists_bottomTri {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (W : G.Weil) (i j : Fin D.R.m) :
     ∃ (A A' WW : HSp D) (X : Tri T A A' WW), IsBottomTri W i j X := by
   obtain ⟨A, rA, hA1, hA2, hA3, hA4⟩ := exists_stdRig (D := D) (SqNum.botBig D i j)
@@ -133,6 +175,11 @@ theorem exists_bottomTri {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc) (W : 
   exact ⟨A, A', WW, ⟨rA, rA', rW, ω, ω', vac, vac', e, c, f, f', m, fd, m', fd'⟩, hA1, hB1, hA3, hB3, hW3,
     ⟨by rw [hA1, hB1, hW1], hA4, hB4, hW4, hω, hω', hv, hv', he, fun t w _ => hc' t w, hf, hf', hm, hm'⟩⟩
 
+/- English proof (translation)
+Establish `h` using `hX.is`. Establish `hA` using `GlobalTheory.ConstRatio.posDef_of_std hX.std`. Establish `hA'` using `GlobalTheory.ConstRatio.posDef_of_std hX.std'`. Use `⟨fun P g => ?_, fun P g => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.thetaIntegral_definiteSource_converges_continuous_invariant D W.ψ true A WW _ _ (X.ω t) X.m X.fd _ (h.weil t) hA h.meas.1 h.meas.2 (GlobalTheory.Chain.InnerSteps.theta_pureTensorO (S := GlobalTheory.Grid.neg A) h.isVac.1 h.isVac.2.inf (fun τ => -X.rA.s τ) X.rA.B X …`.
+
+Conclude with `(GlobalTheory.T.thetaIntegral_definiteSource_converges_continuous_invariant D W.ψ false A' WW _ _ (X.ω' t) X.m' X.fd' _ (h.weil' t) hA' h.meas'.1 h.meas'.2 (GlobalTheory.Chain.InnerSteps.theta_pureTensorO h.isVac'.1 h.isVac'.2.inf X.rA'.s X.rA'.B X.rW.s X.rW.B (GlobalTheory.Const …`.
+-/
 theorem IsBottomTri.integrable {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW} (hX : IsBottomTri W i j X) (t : T) :
     (∀ P g, IntegrableOn (X.ker W.ψ W.θ t P g) X.fd X.m) ∧ ∀ P g, IntegrableOn (X.ker' W.ψ W.θ t P g) X.fd' X.m' := by
   have h := hX.is

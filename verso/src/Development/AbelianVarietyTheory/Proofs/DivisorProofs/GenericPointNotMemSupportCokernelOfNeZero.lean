@@ -11,6 +11,19 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 
 namespace GlobalTheory.VB
 
+/- English proof (translation)
+Introduce `X _ E L φ hL h0`. Establish `hex : ∃ (V : X.Opens) (s : Γ(E, V)), φ.app V s ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h0` to reduce the goal to its premises.
+
+Use extensionality with `V s`. Conclude with `(hc V s).trans rfl`. Take `⟨V, s, hs⟩` from `hex`. Establish `hV : genericPoint X ∈ V`. Assume the negation of the conclusion as `hη`.
+
+Use `hs (QCoh.section_eq_zero_of_germ _ fun x hx => ?_)` and prove the remaining obligations. Conclude with `absurd (VB.genericPoint_mem hx) hη`. Establish `hg : L.presheaf.germ V _ hV (φ.app V s) ≠ 0` using `fun h => hs (hL.isTorsionFree V hV _ h)`. Establish `hr : Module.finrank X.functionField (genStalk L) = 1` using `hL.genRank_eq`. Establish `hsurj : Function.Surjective (QCoh.stalkLinear φ (genericPoint X))`.
+
+Introduce `w`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' _ hg).1 hr w`. Use `⟨c • E.presheaf.germ V _ hV s, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, QCoh.stalkLinear_germ]`. Conclude with `hc`.
+
+Establish `hexact` using `(QCoh.exact_iff_stalkLinear _).1 (ShortComplex.exact_cokernel φ) (genericPoint X)`. Use `QCoh.notMem_support_iff.2 ⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `key : ∀ y, y = (0 : ((Limits.cokernel φ).presheaf.stalk (genericPoint X) :))`. Introduce `y`. Take `⟨t, rfl⟩` from `QCoh.stalkLinear_surjective (Limits.cokernel.π φ) (genericPoint X) y`.
+
+Take `⟨u, rfl⟩` from `hsurj t`. Conclude with `(hexact _).2 ⟨u, rfl⟩`. Rewrite using `[key a, key b]`.
+-/
 theorem genericPoint_notMem_support_cokernel_of_ne_zero :
     ∀ (X : Scheme.{0}) [IsIntegral X] (E L : X.Modules) (φ : E ⟶ L), IsVB L 1 → φ ≠ 0 → genericPoint X ∉ GlobalTheory.QCoh.support (Limits.cokernel φ) := by
   intro X _ E L φ hL h0

@@ -9,15 +9,27 @@ open scoped Classical
 
 private noncomputable def infPart {F : Type} [Field F] [NumberField F] (b : A F) : A F := ⟨b.1, 0⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cm {F : Type} [Field F] [NumberField F] (a b : G1 F) :
     ((a * b : G1 F) : Matrix (Fin 2) (Fin 2) (A F)) = a.1 * b.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem nU_coe {F : Type} [Field F] [NumberField F] (b : A F) :
     ((nU b : G1 F) : Matrix (Fin 2) (Fin 2) (A F)) = !![1, b; 0, 1] := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem wW_coe (F : Type) [Field F] [NumberField F] :
     ((wW F : G1 F) : Matrix (Fin 2) (Fin 2) (A F)) = !![0, 1; -1, 0] := rfl
 
+/- English proof (translation)
+Use `Matrix.SpecialLinearGroup.ext _ _ fun i j => Prod.ext ((h2 _ i j).trans ?_) ((h1 _ i j).trans ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nU, infPart]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nU, infPart]`.
+-/
 private theorem pi_nU {F : Type} [Field F] [NumberField F] (pi : G1 F →* G1 F)
     (h1 : ∀ g, FinOne (pi g)) (h2 : ∀ g i j, (pi g i j).1 = (g i j).1) (b : A F) :
     pi (nU b) = nU (infPart b) := by
@@ -25,16 +37,27 @@ private theorem pi_nU {F : Type} [Field F] [NumberField F] (pi : G1 F →* G1 F)
   · fin_cases i <;> fin_cases j <;> simp [nU, infPart]
   · fin_cases i <;> fin_cases j <;> simp [nU, infPart]
 
+/- English proof (translation)
+Use `inv_eq_of_mul_eq_one_right (Matrix.SpecialLinearGroup.ext _ _ fun i j => ?_)` and prove the remaining obligations. Simplify using `only [cm, nU_coe, Matrix.mul_fin_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 private theorem nU_inv' {F : Type} [Field F] [NumberField F] (b : A F) : (nU b)⁻¹ = nU (-b) := by
   refine inv_eq_of_mul_eq_one_right (Matrix.SpecialLinearGroup.ext _ _ fun i j => ?_)
   simp only [cm, nU_coe, Matrix.mul_fin_two]
   fin_cases i <;> fin_cases j <;> simp
 
+/- English proof (translation)
+Use `inv_eq_of_mul_eq_one_right (Matrix.SpecialLinearGroup.ext _ _ fun i j => ?_)` and prove the remaining obligations. Simplify using `only [cm, wW_coe, Matrix.mul_fin_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 private theorem wW_inv' (F : Type) [Field F] [NumberField F] : (wW F)⁻¹ = wW F * wW F * wW F := by
   refine inv_eq_of_mul_eq_one_right (Matrix.SpecialLinearGroup.ext _ _ fun i j => ?_)
   simp only [cm, wW_coe, Matrix.mul_fin_two]
   fin_cases i <;> fin_cases j <;> simp
 
+/- English proof (translation)
+Simplify using `only [cm, nU_coe, wW_coe, Matrix.mul_fin_two]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[he]`. Take the linear combination `(-1 : A F) * he`. Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem prod_entries {F : Type} [Field F] [NumberField F] (e : A F) (he : e * e = e) :
     ((nU e * (wW F * nU e * (wW F * wW F * wW F)) * nU e : G1 F) : Matrix (Fin 2) (Fin 2) (A F)) =
       !![1 - e, e; -e, 1 - e] := by
@@ -45,6 +68,15 @@ private theorem prod_entries {F : Type} [Field F] [NumberField F] (e : A F) (he 
   · rw [he]; linear_combination (-1 : A F) * he
   · rw [he]; ring
 
+/- English proof (translation)
+Establish `he : infPart (1 : A F) * infPart 1 = infPart 1` using `Prod.ext (by change ((1 : A F) * 1).1 = (1 : A F).1; rw [mul_one]) (by change (0 : FiniteAdeleRing (𝓞 F) F) * 0 = 0; exact mul_zero _)`. Establish `a1 : (1 - infPart 1 : A F).1 = 0`. Express the relevant statement in the definitionally equal form `(1 : A F).1 - (1 : A F).1 = 0`. Conclude with `sub_self _`. Establish `a2 : (1 - infPart 1 : A F).2 = (1 : A F).2`.
+
+Express the relevant statement in the definitionally equal form `(1 : A F).2 - 0 = _`. Conclude with `sub_zero _`. Establish `a3 : (-infPart 1 : A F).1 = (-1 : A F).1` using `rfl`. Establish `a4 : (-infPart 1 : A F).2 = 0`. Express the relevant statement in the definitionally equal form `-(0 : FiniteAdeleRing (𝓞 F) F) = 0`.
+
+Conclude with `neg_zero`. Establish `a5 : (infPart 1 : A F).1 = (1 : A F).1` using `rfl`. Establish `a6 : (infPart 1 : A F).2 = 0` using `rfl`. Rewrite using `[wW_inv']`. Use `Matrix.SpecialLinearGroup.ext _ _ fun i j => ?_` and prove the remaining obligations.
+
+Rewrite using `[prod_entries _ he]`. Use `Prod.ext ((h2 _ i j).trans ?_) ((h1 _ i j).trans ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [wW, a1, a3, a5]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [a2, a4, a6]`.
+-/
 private theorem pi_wW {F : Type} [Field F] [NumberField F] (pi : G1 F →* G1 F)
     (h1 : ∀ g, FinOne (pi g)) (h2 : ∀ g i j, (pi g i j).1 = (g i j).1) :
     pi (wW F) = nU (infPart 1) * (wW F * nU (infPart 1) * (wW F)⁻¹) * nU (infPart 1) := by
@@ -81,11 +113,27 @@ private def keep {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
     rw [map_mul]
     exact ha _ (hb _ h)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_keep {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E} (W : Weil D)
     (Λ : OpenAddSubgroup (FiniteAdeleRing (𝓞 F) F)) (g : G1 F) :
     g ∈ keep W Λ ↔ ∀ φ ∈ Fix D.δ Λ, W.Om g φ ∈ Fix D.δ Λ := Iff.rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W g hg Λ φ hφ`. Take `⟨pi, pf, -, hp⟩` from `proj F`. Establish `h1 : ∀ g, FinOne (pi g)` using `fun g => (hp g).1`. Establish `h2 : ∀ g i j, (pi g i j).1 = (g i j).1` using `fun g => (hp g).2.2.2.1`. Establish `hw : wW F ∈ keep W Λ` using `(mem_keep W Λ _).2 fun φ h => (fixGen F E D W Λ φ h).1`.
+
+Establish `hn : ∀ b : A F, b.2 = 0 → nU b ∈ keep W Λ` using `fun b hb => (mem_keep W Λ _).2 fun φ h => (fixGen F E D W Λ φ h).2 b hb`. Establish `hwi : (wW F)⁻¹ ∈ keep W Λ`. Rewrite using `[wW_inv']`. Conclude with `mul_mem (mul_mem hw hw) hw`. Establish `hpn : ∀ b, pi (nU b) ∈ keep W Λ` using `fun b => by`.
+
+Rewrite using `[pi_nU pi h1 h2]`. Conclude with `hn _ rfl`. Establish `hpw : pi (wW F) ∈ keep W Λ`. Rewrite using `[pi_wW pi h1 h2]`. Conclude with `mul_mem (mul_mem (hn _ rfl) (mul_mem (mul_mem hw (hn _ rfl)) hwi)) (hn _ rfl)`.
+
+Establish `hpwi : pi (wW F)⁻¹ ∈ keep W Λ`. Rewrite using `[wW_inv', map_mul, map_mul]`. Conclude with `mul_mem (mul_mem hpw hpw) hpw`. Set `T : Subgroup (G1 F)` to `{ carrier := {y | pi y ∈ keep W Λ ∧ pi y⁻¹ ∈ keep W Λ} one_mem' := ⟨by rw [map_one]; exact one_mem _, by rw [inv_one, map_one]; exact one_mem _⟩ mul_mem' := fun {a b} ha hb => ⟨by rw [map_mul]; exact mul_mem ha.1 hb.1, by rw [_root_.mul_inv_rev, map_mul]; exact mul_mem hb.2 ha.2⟩ …`. Establish `hT : Subgroup.closure (Set.range (nU (F` using `F)) ∪ {wW F}) ≤ T := by`.
+
+Use `(Subgroup.closure_le T).2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨b, rfl⟩ | rfl)`. Conclude with `⟨hpn b, by rw [nU_inv']; exact hpn _⟩`. Conclude with `⟨hpw, hpwi⟩`. Establish `hgT : g ∈ T` using `hT (by rw [(gen F).1]; exact Subgroup.mem_top g)`.
+
+Establish `hpg : pi g = g` using `Matrix.SpecialLinearGroup.ext _ _ fun i j => Prod.ext (h2 g i j) ((h1 g i j).trans (hg i j).symm)`. Establish `hk : g ∈ keep W Λ`. Use `hgT.1` as an intermediate fact. Rewrite `this` using `[hpg]`. Then use the resulting hypothesis. Conclude with `(mem_keep W Λ g).1 hk φ hφ`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.omFix :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (g : G1 F), FinOne g → ∀ Λ, ∀ φ ∈ Fix D.δ Λ, W.Om g φ ∈ Fix D.δ Λ := by
   intro F E _ _ _ _ _ _ _ D W g hg Λ φ hφ

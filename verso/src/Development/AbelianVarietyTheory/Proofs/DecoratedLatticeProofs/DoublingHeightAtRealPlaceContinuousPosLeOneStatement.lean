@@ -10,5 +10,8 @@ open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.
 open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Corev.RealHeight.hgtW_cont_pos_le_one | exact GlobalTheory.Corev.RealHeight.hgtW_cont_pos_le_one | (intros; apply GlobalTheory.Corev.RealHeight.hgtW_cont_pos_le_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.doublingHeightAtRealPlace_continuous_pos_le_one : ∀ (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)), GlobalTheory.Doubling.IsMaj V a → ∀ w, Continuous (GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW V a w) ∧ ∀ g, 0 < GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW V a w g ∧ GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW V a w g ≤ 1 := by
   first | exact @GlobalTheory.Corev.RealHeight.hgtW_cont_pos_le_one | exact GlobalTheory.Corev.RealHeight.hgtW_cont_pos_le_one | (intros; apply GlobalTheory.Corev.RealHeight.hgtW_cont_pos_le_one <;> assumption)

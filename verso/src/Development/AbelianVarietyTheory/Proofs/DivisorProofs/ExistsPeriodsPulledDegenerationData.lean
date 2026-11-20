@@ -23,12 +23,20 @@ variable {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {θ : 
   {J₁ : ((TK V).left ⟶ D₁.P.A.left) → D₁.P.L.ι} (hJ : Good D₀.P.L z J) (hJ₁ : Good D₁.P.L z J₁)
 include hJ hJ₁
 
+/- English proof (translation)
+Establish `e` using `PsiEvenPull.psi_pull hD x (𝟙 _) z hJ hJ₁`. Simplify using `only [Category.id_comp] at e`. Conclude with `e`.
+-/
 theorem psiW_val (x : D₁.X) : val (hD.psiW.psi (hD.xe x)) hD.g z J =
     (om hD.w z J J₁ (D₁.xK x))⁻¹ * val (D₁.psi x) (𝟙 _) z J₁ := by
   have e := PsiEvenPull.psi_pull hD x (𝟙 _) z hJ hJ₁
   simp only [Category.id_comp] at e
   exact e
 
+/- English proof (translation)
+Establish `pm` using `(maps_iff hD.w _ (fun _ => eSec D₀.P.A) _ D₁.rig D₀.rig (specOf θ) _ (rigPull_le (proj hD) (specOf θ) hD.he D₀.P.L) (fun _ => rfl)).1 hD.w_rig`. Establish `e` using `pmaps_om (fun _ => hD.he) pm (jK V) z hJ hJ₁`. Rewrite `e` using `[Fintype.prod_unique, zpow_one]`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (val_pull hJ₁ _ _ _).symm))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+
+Conclude with `(congrArg (fun q => val D₀.rig q z J) hD.g_comm).trans e`.
+-/
 theorem rigW_val : val (D₀.rigW hD.W) hD.g z J =
     om hD.w z J J₁ (1 : TK V ⟶ D₁.P.A).left * val D₁.rigK (𝟙 _) z J₁ := by
   have pm := (maps_iff hD.w _ (fun _ => eSec D₀.P.A) _ D₁.rig D₀.rig (specOf θ) _
@@ -41,6 +49,13 @@ theorem rigW_val : val (D₀.rigW hD.W) hD.g z J =
 
 omit hJ hJ₁ in
 
+/- English proof (translation)
+Introduce `R V _ _ _ _ θ D₀ D₁ hD`. Use `⟨sqOf (pull_grp hD), lamIso (pull_grp hD) hD.w, isSquare_sqOf _, isGen_lamIso _ _ hD.w_gen, fun a b z J J₁ hJ hJ₁ => ?_⟩` and prove the remaining obligations. Establish `g` using `gw_lam (pull_grp hD) hD.w (lift (toUnit (TK V) ≫ D₁.c a) (toUnit (TK V) ≫ D₁.c b)).left z hJ hJ₁`. Establish `p` using `prod_lam (DVR.cP D₁ (TK V) a) (DVR.cP D₁ (TK V) b) (om hD.w z J J₁)`. Rewrite `p` using `[← DVR.cPoint_add]`.
+
+Establish `l : lamVal (lamIso (pull_grp hD) hD.w) (lift (toUnit (TK V) ≫ D₁.c a) (toUnit (TK V) ≫ D₁.c b)).left z J J₁ = om hD.w z J J₁ (D₁.xK (a + b)) * (om hD.w z J J₁ (D₁.xK a))⁻¹ * (om hD.w z J J₁ (D₁.xK b))⁻¹ * om hD.w z J J₁ (1 : TK V ⟶ D₁.P.A).left`. Use `Eq.trans ?_ (g.trans p)` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[l, TauPull.val_tauW _ _ hJ, TauPull.val_tau _ hJ₁, ← map_add, psiW_val hD hJ hJ₁, psiW_val hD hJ hJ₁, psiW_val hD hJ hJ₁, rigW_val hD hJ hJ₁]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tau_pull : ∀ (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (θ : R →+* V) (D₀ : DegPre R) (D₁ : DegPre V) (hD : IsPullDeg θ D₀ D₁), ∃ (β₂ : (G2 D₁.P.A).left ⟶ (G2 D₀.P.A).left) (w₀ : LB.Iso (abelian₂ D₁.P.A D₁.P.L) ((abelian₂ D₀.P.A D₀.P.L).pull β₂)), IsSquare (GlobalTheory.PsiEvenPull.proj hD) β₂ ∧ w₀.IsGen ∧ ∀ a b z J J₁, Good D₀.P.L z J → Good D₁.P.L z J₁ → val (D₁.tau a b) (𝟙 _) z J₁ = lamVal w₀ (lift (toUnit (TK V) ≫ D₁.c a) (toUnit (TK V) ≫ D₁.c b)).left z J J₁ * val (hD.psiW.tau (hD.xe a) (hD.xe b)) hD.g z J := by
   intro R V _ _ _ _ θ D₀ D₁ hD
   refine ⟨sqOf (pull_grp hD), lamIso (pull_grp hD) hD.w, isSquare_sqOf _, isGen_lamIso _ _ hD.w_gen,

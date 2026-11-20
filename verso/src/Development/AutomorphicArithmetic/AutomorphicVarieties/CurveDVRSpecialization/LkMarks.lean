@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 
 open NumberField IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Aut UpperTheory.V.Pr UpperTheory.V
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ O _ _ η Ψ σ g₁ B M L _ _ _ Φ k _ C₀ ok _ hσ hΨ`. Take `⟨hc, ec⟩` from `k.c`. Take `⟨hg, eg⟩` from `k.g0`. Use `⟨hσ, ?_, hΨ, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `k.del ⟨σ, hc⟩`.
+
+Rewrite `h` using `[ec, ok.del_c]`. Conclude with `h.symm`. Establish `h` using `k.del ⟨g₁, hg⟩`. Rewrite `h` using `[eg]`. Conclude with `h.symm.trans Φ.g0.2`.
+
+Establish `h` using `k.psi ⟨g₁, hg⟩`. Rewrite `h` using `[eg]`. Establish `h2` using `ok.baseSubgroup_spec`. Rewrite `h2` using `[h]`. Rewrite using `[← residue_ne_zero_iff_isUnit, map_sub, map_pow, map_one, sub_ne_zero]`.
+
+Introduce `h3`. Apply `h2` to reduce the goal to its premises. Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `h3`.
+-/
 theorem UpperTheory.V.Pr.marks_of_link :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {η : G ℚ Ω →* ℤˣ} {Ψ : G ℚ Ω →* Oˣ} {σ g₁ : G ℚ Ω} {B : ValuationSubring Ω} {M : ℕ}
       {L : Type} [Field L] [NumberField L] [Algebra L Ω] {Φ : Fr.Frame l (ResidueField O)} (k : GalLink η Ψ σ g₁ B M L Φ) [CharP (ResidueField O) l] {C₀ : ℕ}, Φ.Ok C₀ → l ∣ M → σ * σ = 1 →

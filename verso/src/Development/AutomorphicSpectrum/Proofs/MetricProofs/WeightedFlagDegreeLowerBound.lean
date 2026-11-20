@@ -8,6 +8,11 @@ open scoped BigOperators ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ar.LowerAny
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Fin.sum_univ_castSucc]`. Establish `h` using `ih (fun i => f i.castSucc)`.
+
+Simplify using `only [Fin.succ_castSucc, Fin.castSucc_zero] at h ⊢`. Rewrite using `[h, Fin.succ_last]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_sub_succ (n : ℕ) (f : Fin (n + 1) → ℝ) :
     ∑ i : Fin n, (f i.castSucc - f i.succ) = f 0 - f (Fin.last n) := by
   induction n with
@@ -19,12 +24,18 @@ theorem sum_sub_succ (n : ℕ) (f : Fin (n + 1) → ℝ) :
     rw [h, Fin.succ_last]
     simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul, ← Finset.sum_neg_distrib]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (hd i) (ha i)]`.
+-/
 theorem sum_weight_lower {n : ℕ} (a d : Fin n → ℝ) (M : ℝ) (ha : ∀ i, 0 ≤ a i) (hd : ∀ i, d i ≤ M) :
     -((∑ i, a i) * M) ≤ ∑ i, a i * (-d i) := by
   rw [Finset.sum_mul, ← Finset.sum_neg_distrib]
   refine Finset.sum_le_sum fun i _ => ?_
   nlinarith [mul_le_mul_of_nonneg_left (hd i) (ha i)]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.T.normalized_degree_le_rank_mul_slope K E μ hE (A.F i)`. Rewrite `h` using `[A.rank i]`. Establish `hi : ((i : ℕ) : ℝ) ≤ N` using `le_trans (by exact_mod_cast Nat.lt_succ_iff.mp i.isLt) hN`. Conclude with `h.trans (mul_le_mul_of_nonneg_right hi hμ)`.
+-/
 theorem step_le {K : Type} [Field K] [NumberField K] {E : HermitianBundle.{0} K} {r : ℕ} (A : SatFlag E r)
     (μ : ℝ) (N : ℝ) (hμ : 0 ≤ μ) (hE : E.slopeMax ≤ (μ : EReal)) (hN : (r : ℝ) ≤ N) (i : Fin (r + 1)) :
     E.normDegree (A.F i) ≤ N * μ := by
@@ -33,6 +44,19 @@ theorem step_le {K : Type} [Field K] [NumberField K] {E : HermitianBundle.{0} K}
   have hi : ((i : ℕ) : ℝ) ≤ N := le_trans (by exact_mod_cast Nat.lt_succ_iff.mp i.isLt) hN
   exact h.trans (mul_le_mul_of_nonneg_right hi hμ)
 
+/- English proof (translation)
+Establish `hj : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Use `set N : ℝ := (j : ℝ) + 1 + ((k : ℝ) + 1) with hNdef`. Establish `hNW : (((j + 1 : ℕ)) : ℝ) ≤ N` using `by push_cast; linarith`. Establish `hNS : (((k + 1 : ℕ)) : ℝ) ≤ N` using `by push_cast; linarith`.
+
+Establish `hN0 : 0 ≤ N` using `by linarith`. Establish `hM : 0 ≤ N * μ` using `mul_nonneg hN0 hμ`. Establish `hg : ∑ i : Fin j, (lam τ (Fin.castAdd (k + 1) i.castSucc) - lam τ (Fin.castAdd (k + 1) i.succ)) = lam τ (Fin.castAdd (k + 1) 0) - lam τ (Fin.castAdd (k + 1) (Fin.last j))` using `sum_sub_succ j (fun i => lam τ (Fin.castAdd (k + 1) i))`. Establish `hh : ∑ i : Fin k, (lam τ (Fin.natAdd (j + 1) i.castSucc) - lam τ (Fin.natAdd (j + 1) i.succ)) = lam τ (Fin.natAdd (j + 1) 0) - lam τ (Fin.natAdd (j + 1) (Fin.last k))` using `sum_sub_succ k (fun i => lam τ (Fin.natAdd (j + 1) i))`. Establish `h1` using `sum_weight_lower (fun i : Fin j => lam τ (Fin.castAdd (k + 1) i.castSucc) - lam τ (Fin.castAdd (k + 1) i.succ)) (fun i : Fin j => E.normDegree ((A.W τ).F i.succ.castSucc)) (N * μ) (fun i => sub_nonneg.mpr (hanti (by rw [Fin.le_def]; simp))) (fun i => step_le (A.W τ) μ N hμ hE hNW …`.
+
+Establish `h3` using `sum_weight_lower (fun i : Fin k => lam τ (Fin.natAdd (j + 1) i.castSucc) - lam τ (Fin.natAdd (j + 1) i.succ)) (fun i : Fin k => E.normDegree ((A.S τ).F i.rev.succ.castSucc)) (N * μ) (fun i => sub_nonneg.mpr (hanti (by rw [Fin.le_def]; simp))) (fun i => step_le (A.S τ) μ N hμ hE h …`. Rewrite `h1` using `[hg]`. Rewrite `h3` using `[hh]`. Establish `hb : 0 ≤ lam τ (Fin.castAdd (k + 1) (Fin.last j)) - lam τ (Fin.natAdd (j + 1) 0)` using `sub_nonneg.mpr (hanti (by rw [Fin.le_def]; simp))`. Establish `htop : E.normDegree (A.W τ).top ≤ N * μ` using `step_le (A.W τ) μ N hμ hE hNW (Fin.last _)`.
+
+Establish `h2 : -((lam τ (Fin.castAdd (k + 1) (Fin.last j)) - lam τ (Fin.natAdd (j + 1) 0)) * (N * μ)) ≤ (lam τ (Fin.castAdd (k + 1) (Fin.last j)) - lam τ (Fin.natAdd (j + 1) 0)) * (-E.normDegree (A.W τ).top)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left htop hb]`. Establish `hΛ0 : 0 ≤ Λ` using `(abs_nonneg _).trans (hΛ (Fin.natAdd (j + 1) 0))`. Establish `h4 : lam τ (Fin.natAdd (j + 1) 0) * A.flatDeg τ ≤ Λ * C`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hfirst : lam τ (Fin.castAdd (k + 1) 0) ≤ Λ` using `(le_abs_self _).trans (hΛ _)`. Establish `hlast : -Λ ≤ lam τ (Fin.natAdd (j + 1) (Fin.last k))` using `(abs_le.mp (hΛ _)).1`. Establish `h5 : (lam τ (Fin.castAdd (k + 1) 0) - lam τ (Fin.natAdd (j + 1) (Fin.last k))) * (N * μ) ≤ (2 * Λ) * (N * μ)` using `mul_le_mul_of_nonneg_right (by linarith) hM`. Establish `h6 : 2 * Λ * N * μ = (2 * Λ) * (N * μ)` using `by ring`. Rewrite using `[h6]`.
+
+Use polynomial arithmetic with `[h1, h2, h3, h4, h5]`.
+-/
 theorem term_lower {K : Type} [Field K] [NumberField K] (E : HermitianBundle.{0} K) (Ψ : Type) [Fintype Ψ]
     (j k : ℕ) (A : FlagPair E Ψ (j + 1) (k + 1)) (lam : Ψ → Fin (j + 1 + (k + 1)) → ℝ) (Λ μ C : ℝ)
     (τ : Ψ) (hanti : Antitone (lam τ)) (hΛ : ∀ i, |lam τ i| ≤ Λ) (hμ : 0 ≤ μ)
@@ -91,6 +115,9 @@ theorem term_lower {K : Type} [Field K] [NumberField K] (E : HermitianBundle.{0}
   rw [h6]
   nlinarith [h1, h2, h3, h4, h5]
 
+/- English proof (translation)
+Introduce `K _ _ E Ψ _ j k A lam Λ μ C hanti hΛ hμ hE hC`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Decomp.lamDeg_eq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_neg]`. Use `_ ≤ _ := Finset.sum_le_sum fun τ _ => term_lower E Ψ j k A lam Λ μ C τ (hanti τ) (hΛ τ) hμ hE (hC τ)`.
+-/
 theorem lamDeg_lower : ∀ (K : Type) [Field K] [NumberField K] (E : HermitianBundle.{0} K) (Ψ : Type) [Fintype Ψ] (j k : ℕ) (A : FlagPair E Ψ (j + 1) (k + 1)) (lam : Ψ → Fin (j + 1 + (k + 1)) → ℝ) (Λ μ C : ℝ), (∀ τ, Antitone (lam τ)) → (∀ τ i, |lam τ i| ≤ Λ) → 0 ≤ μ → E.slopeMax ≤ (μ : EReal) → (∀ τ, |A.flatDeg τ| ≤ C) → -(Fintype.card Ψ * (2 * Λ * (j + 1 + (k + 1)) * μ + Λ * C)) ≤ A.lamDeg lam := by
   intro K _ _ E Ψ _ j k A lam Λ μ C hanti hΛ hμ hE hC
   rw [GlobalTheory.CompanionTheory.Ar.Decomp.lamDeg_eq]

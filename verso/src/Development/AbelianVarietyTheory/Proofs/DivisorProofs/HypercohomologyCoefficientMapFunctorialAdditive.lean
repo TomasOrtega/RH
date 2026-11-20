@@ -10,6 +10,9 @@ namespace GlobalTheory.EtC.PostFun
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem post_eq_cpush (K : Cx R) {F G : Shv R} (φ : F ⟶ G) (n : ℤ) :
     HK.post R K φ n = cpush K (resMap R φ) n := rfl
 
@@ -37,6 +40,9 @@ def resMapAddHomotopy {F G : Shv R} (φ ψ : F ⟶ G) :
   rw [HomologicalComplex.extendMap_add] at H2
   exact H2
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk _ = CohomologyClass.mk _ + CohomologyClass.mk _`. Rewrite using `[← CohomologyClass.mk_add]`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp, Cochain.ofHom_add, Cochain.comp_add]`.
+-/
 theorem cpush_add (K : Cx R) {I J : Cx R} (f g : I ⟶ J) (n : ℤ) (x : CohomologyClass K I n) :
     cpush K (f + g) n x = cpush K f n x + cpush K g n x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -45,14 +51,23 @@ theorem cpush_add (K : Cx R) {I J : Cx R} (f g : I ⟶ J) (n : ℤ) (x : Cohomol
   refine congrArg CohomologyClass.mk (Cocycle.ext ?_)
   simp [zcomp, Cochain.ofHom_add, Cochain.comp_add]
 
+/- English proof (translation)
+Rewrite using `[post_eq_cpush, InjResCmp.cpush_homotopy K (resMapIdHomotopy F), InjResCmp.cpush_id]`.
+-/
 theorem post_id (K : Cx R) (F : Shv R) (n : ℤ) (x : HK R K F n) : HK.post R K (𝟙 F) n x = x := by
   rw [post_eq_cpush, InjResCmp.cpush_homotopy K (resMapIdHomotopy F), InjResCmp.cpush_id]
 
+/- English proof (translation)
+Rewrite using `[post_eq_cpush, InjResCmp.cpush_homotopy K (resMapCompHomotopy φ ψ), InjResCmp.cpush_comp]`. Both sides reduce to the same expression.
+-/
 theorem post_comp (K : Cx R) {F G M : Shv R} (φ : F ⟶ G) (ψ : G ⟶ M) (n : ℤ) (x : HK R K F n) :
     HK.post R K (φ ≫ ψ) n x = HK.post R K ψ n (HK.post R K φ n x) := by
   rw [post_eq_cpush, InjResCmp.cpush_homotopy K (resMapCompHomotopy φ ψ), InjResCmp.cpush_comp]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[post_eq_cpush, InjResCmp.cpush_homotopy K (resMapAddHomotopy φ ψ), cpush_add]`. Both sides reduce to the same expression.
+-/
 theorem post_add (K : Cx R) {F G : Shv R} (φ ψ : F ⟶ G) (n : ℤ) :
     HK.post R K (φ + ψ) n = HK.post R K φ n + HK.post R K ψ n := by
   ext x
@@ -62,15 +77,24 @@ theorem post_add (K : Cx R) {F G : Shv R} (φ ψ : F ⟶ G) (n : ℤ) :
 def postHom (K : Cx R) (F G : Shv R) (n : ℤ) : (F ⟶ G) →+ (HK R K F n →+ HK R K G n) :=
   AddMonoidHom.mk' (fun φ => HK.post R K φ n) (fun φ ψ => post_add K φ ψ n)
 
+/- English proof (translation)
+Establish `h` using `map_zsmul (postHom K F G n) c φ`. Conclude with `DFunLike.congr_fun h x`.
+-/
 theorem post_zsmul (K : Cx R) {F G : Shv R} (φ : F ⟶ G) (c : ℤ) (n : ℤ) (x : HK R K F n) :
     HK.post R K (c • φ) n x = c • HK.post R K φ n x := by
   have h := map_zsmul (postHom K F G n) c φ
   exact DFunLike.congr_fun h x
 
+/- English proof (translation)
+The claim follows from `ZcFun.cpull_cpush f (resMap R φ) n x`.
+-/
 theorem pull_post {K L : Cx R} (f : L ⟶ K) {F G : Shv R} (φ : F ⟶ G) (n : ℤ) (x : HK R K F n) :
     HK.pull R f G n (HK.post R K φ n x) = HK.post R L φ n (HK.pull R f F n x) :=
   ZcFun.cpull_cpush f (resMap R φ) n x
 
+/- English proof (translation)
+Introduce `R _ K n`. Conclude with `⟨fun F x => post_id K F n x, fun φ ψ x => post_comp K φ ψ n x, fun φ ψ => post_add K φ ψ n, fun φ c x => post_zsmul K φ c n x, fun f _ _ φ x => pull_post f φ n x⟩`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] (K : Cx R) (n : ℤ), (∀ (F : Shv R) x, HK.post R K (𝟙 F) n x = x) ∧ (∀ {F G M : Shv R} (φ : F ⟶ G) (ψ : G ⟶ M) x, HK.post R K (φ ≫ ψ) n x = HK.post R K ψ n (HK.post R K φ n x)) ∧ (∀ {F G : Shv R} (φ ψ : F ⟶ G), HK.post R K (φ + ψ) n = HK.post R K φ n + HK.post R K ψ n) ∧ (∀ {F G : Shv R} (φ : F ⟶ G) (c : ℤ) x, HK.post R K (c • φ) n x = c • HK.post R K φ n x) ∧ ∀ {L : Cx R} (f : L ⟶ K) {F G : Shv R} (φ : F ⟶ G) x, HK.pull R f G n (HK.post R K φ n x) = HK.post R L φ n (HK.pull R f F n x) := by
   intro R _ K n
   exact ⟨fun F x => post_id K F n x, fun φ ψ x => post_comp K φ ψ n x, fun φ ψ => post_add K φ ψ n,

@@ -24,17 +24,28 @@ private def ZM {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : 
 
 private def Sm {l : ℕ} [Fact l.Prime] (n : ℕ) (x : Fin 2 → Qbar l) : Prop := ∀ i, ‖x i‖ ≤ ‖((l : ℕ) : Qbar l) ^ n‖
 
+/- English proof (translation)
+Unfold `Sm at *`. Introduce `i`. Rewrite using `[Pi.add_apply]`. Conclude with `(PadicAlgCl.isNonarchimedean l (x i) (y i)).trans (max_le (hx i) (hy i))`.
+-/
 private theorem Sm.add {l : ℕ} [Fact l.Prime] {n : ℕ} {x y : Fin 2 → Qbar l} (hx : Sm n x) (hy : Sm n y) : Sm n (x + y) := by
   unfold Sm at *
   intro i
   rw [Pi.add_apply]
   exact (PadicAlgCl.isNonarchimedean l (x i) (y i)).trans (max_le (hx i) (hy i))
 
+/- English proof (translation)
+Introduce `i` and use `by rw [Pi.smul_apply, smul_eq_mul, norm_mul] exact (mul_le_of_le_one_left (norm_nonneg _) hk).trans (hx i)`.
+-/
 private theorem Sm.smul {l : ℕ} [Fact l.Prime] {n : ℕ} {x : Fin 2 → Qbar l} {k : Qbar l} (hk : ‖k‖ ≤ 1) (hx : Sm n x) :
     Sm n (k • x) := fun i => by
   rw [Pi.smul_apply, smul_eq_mul, norm_mul]
   exact (mul_le_of_le_one_left (norm_nonneg _) hk).trans (hx i)
 
+/- English proof (translation)
+Unfold `Sm at *`. Introduce `i`. Rewrite using `[Pi.sub_apply, sub_eq_add_neg]`. Use `(PadicAlgCl.isNonarchimedean l _ _).trans (max_le (hx i) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`.
+
+Conclude with `hy i`.
+-/
 private theorem Sm.sub {l : ℕ} [Fact l.Prime] {n : ℕ} {x y : Fin 2 → Qbar l} (hx : Sm n x) (hy : Sm n y) : Sm n (x - y) := by
   unfold Sm at *
   intro i
@@ -43,12 +54,28 @@ private theorem Sm.sub {l : ℕ} [Fact l.Prime] {n : ℕ} {x y : Fin 2 → Qbar 
   rw [norm_neg]
   exact hy i
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro i`. Simplify using the standard rewrite rules. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha]`. Conclude with `(h a).add ih`.
+-/
 private theorem Sm.sum {l : ℕ} [Fact l.Prime] {n : ℕ} {T : Type} (S : Finset T) (x : T → Fin 2 → Qbar l) (h : ∀ t, Sm n (x t)) :
     Sm n (∑ t ∈ S, x t) := by
   induction S using Finset.induction_on with
   | empty => intro i; simp
   | insert a S ha ih => rw [Finset.sum_insert ha]; exact (h a).add ih
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ_[l] c.O).FG)`. Establish `hB : ∀ x : c.O, ‖(x : PadicAlgCl l)‖ ≤ ∑ g ∈ s, ‖(g : PadicAlgCl l)‖`. Introduce `x`. Establish `hx : x ∈ Submodule.span ℤ_[l] (s : Set c.O)`. Rewrite using `[hs]`.
+
+Conclude with `Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Conclude with `Finset.single_le_sum (f := fun g : c.O => ‖(g : PadicAlgCl l)‖) (fun _ _ => norm_nonneg _) hg`. Consider the case `zero`.
+
+Simplify using `only [ZeroMemClass.coe_zero, norm_zero]`. Conclude with `Finset.sum_nonneg (fun _ _ => norm_nonneg _)`. Consider the case `add x y _ _ hx hy`. Rewrite using `[AddMemClass.coe_add]`. Conclude with `(PadicAlgCl.isNonarchimedean l _ _).trans (max_le hx hy)`.
+
+Consider the case `smul r x _ hx`. Rewrite using `[SetLike.val_smul, Algebra.smul_def, norm_mul]`. Establish `hr : ‖algebraMap ℤ_[l] (PadicAlgCl l) r‖ ≤ 1`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `(PadicAlgCl.norm_extends l _).trans_le (PadicInt.norm_le_one r)`.
+
+Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hr).trans hx`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (∑ g ∈ s, ‖(g : PadicAlgCl l)‖) hlt`. Establish `hle : ‖a ^ n‖ ≤ ∑ g ∈ s, ‖(g : PadicAlgCl l)‖` using `hB ⟨a ^ n, c.O.pow_mem ha n⟩`.
+
+Rewrite `hle` using `[norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem nle {l : ℕ} [Fact l.Prime] (c : Coef l) {a : Qbar l} (ha : a ∈ c.O) : ‖a‖ ≤ 1 := by
   classical
   obtain ⟨s, hs⟩ := (Module.Finite.fg_top : (⊤ : Submodule ℤ_[l] c.O).FG)
@@ -83,6 +110,45 @@ private theorem nle {l : ℕ} [Fact l.Prime] (c : Coef l) {a : Qbar l} (ha : a �
 end UpperTheory.V.Z.Kato.Nb.SquareNormRepresentation
 
 open UpperTheory.V.Z.Kato.Nb.SquareNormRepresentation in
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ ι e gN A W ε X pr N _ x c d gm ψ cf hAdm he hmat`. Take `⟨cp, hcp⟩` from `UpperTheory.Kd.K4.pur ε X l N (2 * e - 1)`. Use `⟨cp + cL X l N (2 * e - 1), ?_⟩` and prove the remaining obligations. Introduce `p _ hp hcop a δ ha hδ hab c₀ c₁ r n Y Y' z z' hR hR' hC`. Take `⟨β, b1, hβ, hb1, hY⟩` from `hR`.
+
+Take `⟨β', b2, hβ', hb2, hY'⟩` from `hR'`. Take `⟨B0, hB0, hC⟩` from `hC`. Use `choose L hL using fun y => (hB0 y).2.2`. Take `⟨_, _, _, _, hpr_add, hpr_smul, hprO, hprG, _⟩` from `hAdm`. Take `⟨hEqv, hAS, hSm, hSum, _, hAct, hGal, _⟩` from `UpperTheory.V.Z.Kato.Nb.sApi Ω ε X l n`.
+
+Establish `hStab` using `UpperTheory.V.Z.Kato.Nb.sBStab Ω ε X l N (2 * e - 1) (NeZero.pos N)`. Use `set w := 2 * e - 1 with hw`. Use `set cl := cL X l N w with hcl`. Use `set i := inv1 (l ^ r) p with hi`. Set `P : X.Fn l →+ (Fin 2 → Qbar l)` to `AddMonoidHom.mk' pr hpr_add`.
+
+Establish `hPs : ∀ u v, pr (u - v) = pr u - pr v` using `fun u v => map_sub P u v`. Establish `hPsum : ∀ {T : Type} (S : Finset T) (f : T → X.Fn l), pr (∑ t ∈ S, f t) = ∑ t ∈ S, pr (f t)` using `fun S f => map_sum P f S`. Establish `hPn : ∀ (k : ℕ) (v : X.Fn l), pr ((k : ℤ_[l]) • v) = (k : Qbar l) • pr v`. Introduce `k v`. Rewrite using `[hpr_smul]`.
+
+Simplify using the standard rewrite rules. Establish `hPl : ∀ (j : ℕ) (v : X.Fn l), pr ((l : ℤ_[l]) ^ j • v) = (l : Qbar l) ^ j • pr v`. Introduce `j v`. Rewrite using `[← Nat.cast_pow, hPn, Nat.cast_pow]`. Establish `hPp : ∀ (j : ℕ) (v : X.Fn l), pr ((p : ℤ_[l]) ^ j • v) = (p : Qbar l) ^ j • pr v`.
+
+Introduce `j v`. Rewrite using `[← Nat.cast_pow, hPn, Nat.cast_pow]`. Establish `hnO : ∀ k : ℕ, (k : Qbar l) ∈ cf.O` using `fun k => natCast_mem cf.O k`. Establish `hTB : ∀ v ∈ X.B N l w, X.heckeT N l p v ∈ X.B N l w` using `fun v hv => (hStab v hv).2.2 p hp hcop`. Establish `hDB : ∀ v ∈ X.B N l w, X.diam N l p v ∈ X.B N l w`.
+
+Introduce `v hv`. Conclude with `(hStab v hv).2.1 _ (GlobalTheory.KZ.Betti.isDiam_sgD (NeZero.ne N) (Fact.out : l.Prime).ne_zero (Nat.Coprime.coprime_mul_left_right hcop)).1`. Establish `hTc : ∀ u v, CgF X l n u v → CgF X l n (X.heckeT N l p u) (X.heckeT N l p v)`. Introduce `u v h`. Simplify using `only [GlobalTheory.KZ.Tower.heckeT, LinearMap.add_apply, LinearMap.sum_apply]`.
+
+Conclude with `(hAS _ _ _ _ (hSum _ _ _ _ fun j _ => hAct _ _ _ h) (hAct _ _ _ h)).1`. Establish `hDc : ∀ u v, CgF X l n u v → CgF X l n (X.diam N l p u) (X.diam N l p v)`. Introduce `u v h`. Conclude with `hAct _ _ _ h`. Establish `hCS : ∀ {u v : Fin 2 → Qbar l}, Cv n u v → Sm n (u - v)` using `fun h j => h j`.
+
+Establish `hSC : ∀ {u v : Fin 2 → Qbar l}, Sm n (u - v) → Cv n u v` using `fun h j => h j`. Set `b : (ZMod (l ^ r))ˣ → Fin 2 → Qbar l` to `fun y => ((l : Qbar l) ^ (cp + cl) * p) • ∑ t, b2 (t, y) - (l : Qbar l) ^ (cp + cl + c₁) • ((p : Qbar l) • b1 y - a • b1 (y * i) + ((p : Qbar l) ^ w * δ) • b1 (y * i ^ 2)) + (l : Qbar l) ^ (cp + (c₀ + c₁)) • pr (L y)`. Use `⟨b, ?_, ?_⟩` and prove the remaining obligations. Introduce `y j`. Simplify using `only [b, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_apply]`.
+
+Use `add_mem (sub_mem (mul_mem (mul_mem (pow_mem (hnO l) _) (hnO p)) (sum_mem fun t _ => hb2 _ _)) (mul_mem (pow_mem (hnO l) _) (add_mem (sub_mem (mul_mem (hnO p) (hb1 _ _)) (mul_mem ha (hb1 _ _))) (mul_mem (mul_mem (pow_mem (hnO p) _) hδ) (hb1 _ _))))) (mul_mem (pow_mem (hnO l) _) (h …` and prove the remaining obligations. Introduce `s y`. Establish `hb : ∀ y', β s y' ∈ X.B N l w` using `fun y' => (hβ s y').1`. Establish `hβc : ∀ y', CgF X l n (β s y') ((l : ℤ_[l]) ^ c₀ • z s y')` using `fun y' => (hβ s y').2`. Establish `hβ'c : ∀ t, CgF X l n (β' s (t, y)) ((l : ℤ_[l]) ^ (c₀ + c₁) • z' s (t, y))` using `fun t => (hβ' s (t, y)).2`.
+
+Establish `hLc : ∀ y', CgF X l n (L y') ((l : ℤ_[l]) ^ cl • B0 y')` using `fun y' => (hL y').2`. Establish `hadd : ∀ {u v u' v' : X.Fn l}, CgF X l n u v → CgF X l n u' v' → CgF X l n (u + u') (v + v')` using `fun h h' => (hAS _ _ _ _ h h').1`. Establish `hsub : ∀ {u v u' v' : X.Fn l}, CgF X l n u v → CgF X l n u' v' → CgF X l n (u - u') (v - v')` using `fun h h' => (hAS _ _ _ _ h h').2`. Establish `hEB : (l : ℤ_[l]) ^ cl • ((p : ℤ_[l]) • ∑ t, β' s (t, y) - (l : ℤ_[l]) ^ c₁ • ((p : ℤ_[l]) • β s y - X.heckeT N l p (β s (y * i)) + (p : ℤ_[l]) ^ w • X.diam N l p (β s (y * i ^ 2)))) - (l : ℤ_[l]) ^ (c₀ + c₁) • (X.galB l s (L (y * (cycMod ℚ Ω l r s)⁻¹)) - L y) ∈ X.B N l w`. Use `sub_mem (Submodule.smul_mem _ _ (sub_mem (Submodule.smul_mem _ _ (sum_mem fun t _ => (hβ' s (t, y)).1)) (Submodule.smul_mem _ _ (add_mem (sub_mem (Submodule.smul_mem _ _ (hb y)) (hTB _ (hb _))) (Submodule.smul_mem _ _ (hDB _ (hb _))))))) (Submodule.smul_mem _ _ (sub_mem ((hStab _ …` and prove the remaining obligations.
+
+Establish `hE1 : CgF X l n ((l : ℤ_[l]) ^ cl • ((p : ℤ_[l]) • ∑ t, β' s (t, y) - (l : ℤ_[l]) ^ c₁ • ((p : ℤ_[l]) • β s y - X.heckeT N l p (β s (y * i)) + (p : ℤ_[l]) ^ w • X.diam N l p (β s (y * i ^ 2)))) - (l : ℤ_[l]) ^ (c₀ + c₁) • (X.galB l s (L (y * (cycMod ℚ Ω l r s)⁻¹)) - L y)) ((l : ℤ …` using `hsub (hSm _ _ _ (hsub (hSm _ _ _ (hSum _ _ _ _ fun t _ => hβ'c t)) (hSm _ _ _ (hadd (hsub (hSm _ _ _ (hβc y)) (hTc _ _ (hβc _))) (hSm _ _ _ (hDc _ _ (hβc _))))))) (hSm _ _ _ (hsub (hGal _ _ _ (hLc _)) (hLc y)))`. Establish `hCsy` using `hC s y`. Use `beta_reduce at hCsy`. Establish `hzero : ∀ {u v : X.Fn l}, CgF X l n u v → CgF X l n (u - v) 0`. Introduce `u v h`.
+
+Establish `h'` using `hsub h (hEqv.refl v)`. Rewrite `h'` using `[sub_self]`. Then use the resulting hypothesis. Establish `h1` using `hzero hCsy`. Establish `h2` using `hSm ((l : ℤ_[l]) ^ (cl + (c₀ + c₁))) _ _ h1`. Rewrite `h2` using `[smul_zero]`.
+
+Establish `hEz : CgF X l n ((l : ℤ_[l]) ^ cl • ((p : ℤ_[l]) • ∑ t, β' s (t, y) - (l : ℤ_[l]) ^ c₁ • ((p : ℤ_[l]) • β s y - X.heckeT N l p (β s (y * i)) + (p : ℤ_[l]) ^ w • X.diam N l p (β s (y * i ^ 2)))) - (l : ℤ_[l]) ^ (c₀ + c₁) • (X.galB l s (L (y * (cycMod ℚ Ω l r s)⁻¹)) - L y)) 0`. Use `hEqv.trans hE1 ?_` and prove the remaining obligations. Use `h2 using 2` and compare the differences between its conclusion and the goal. Simplify using `only [map_smul, ← Finset.smul_sum]`. Use `module`.
+
+Take `⟨E', hE'B, hEE'⟩` from `hcp n _ hEB hEz`. Establish `hsmall : Sm n (pr ((l : ℤ_[l]) ^ cp • ((l : ℤ_[l]) ^ cl • ((p : ℤ_[l]) • ∑ t, β' s (t, y) - (l : ℤ_[l]) ^ c₁ • ((p : ℤ_[l]) • β s y - X.heckeT N l p (β s (y * i)) + (p : ℤ_[l]) ^ w • X.diam N l p (β s (y * i ^ 2)))) - (l : ℤ_[l]) ^ (c₀ + c₁) • (X.galB l s (L (y * (cycMod ℚ Ω l r …`. Rewrite using `[hEE', hPl]`. Introduce `j`. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul]`.
+
+Conclude with `mul_le_of_le_one_right (norm_nonneg _) (nle cf (hprO _ hE'B j))`. Establish `hprE : pr ((l : ℤ_[l]) ^ cp • ((l : ℤ_[l]) ^ cl • ((p : ℤ_[l]) • ∑ t, β' s (t, y) - (l : ℤ_[l]) ^ c₁ • ((p : ℤ_[l]) • β s y - X.heckeT N l p (β s (y * i)) + (p : ℤ_[l]) ^ w • X.diam N l p (β s (y * i ^ 2)))) - (l : ℤ_[l]) ^ (c₀ + c₁) • (X.galB l s (L (y * (cycMod ℚ Ω l r s)⁻¹)) - …`. Simplify using `only [hPl, hPs, hpr_add, hPsum, hPn, hPp]`. Rewrite using `[(hab _ (hb _)).1, (hab _ (hb _)).2, hprG s _ (hL _).1]`. Establish `hk : ∀ {k : Qbar l}, k ∈ cf.O → ‖k‖ ≤ 1` using `fun hk => nle cf hk`.
+
+Establish `hbig : Sm n (((l : Qbar l) ^ (cp + cl) * p) • ∑ t, (Y' s (t, y) - (pr (β' s (t, y)) + (rhoK W e ψ s *ᵥ b2 ((t, y) * kT l r p s) - b2 (t, y)))) - (l : Qbar l) ^ (cp + cl + c₁) • ((p : Qbar l) • (Y s (y) - (pr (β s (y)) + (rhoK W e ψ s *ᵥ b1 ((y) * (cycMod ℚ Ω l r s)⁻¹) - b1 (y)))) …` using `Sm.add (Sm.sub (Sm.smul (hk (mul_mem (pow_mem (hnO l) _) (hnO p))) (Sm.sum _ _ fun t => hCS (hY' s (t, y)))) (Sm.smul (hk (pow_mem (hnO l) _)) (Sm.add (Sm.sub (Sm.smul (hk (hnO p)) (hCS (hY s y))) (Sm.smul (hk ha) (hCS (hY s _)))) (Sm.smul (hk (mul_mem (pow_mem (hnO p) _) hδ)) (h …`. Apply `hSC` to reduce the goal to its premises. Use `hbig using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hprE]`. Simplify using `only [b]`.
+
+Establish `hre : ∑ t, rhoK W e ψ s *ᵥ b2 ((t, y) * kT l r p s) = rhoK W e ψ s *ᵥ ∑ t, b2 (t, y * (cycMod ℚ Ω l r s)⁻¹)`. Rewrite using `[← Matrix.mulVecLin_apply, map_sum]`. Conclude with `Fintype.sum_equiv (Equiv.mulRight (cycM p s)⁻¹) _ _ (fun t => rfl)`. Rewrite using `[show y * i * (cycMod ℚ Ω l r s)⁻¹ = y * (cycMod ℚ Ω l r s)⁻¹ * i from mul_right_comm _ _ _, show y * i ^ 2 * (cycMod ℚ Ω l r s)⁻¹ = y * (cycMod ℚ Ω l r s)⁻¹ * i ^ 2 from mul_right_comm _ _ _]`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_add_distrib, hre, Matrix.mulVec_add, Matrix.mulVec_sub, Matrix.mulVec_smul]`.
+
+Use `module`.
+-/
 theorem UpperTheory.V.Z.Kato.Nb.sN2rho :
     UpperTheory.V.Z.Kato.Nb.SN2rho := by
   intro l _ Ω _ _ _ ι e gN A W ε X pr N _ x c d gm ψ cf hAdm he hmat

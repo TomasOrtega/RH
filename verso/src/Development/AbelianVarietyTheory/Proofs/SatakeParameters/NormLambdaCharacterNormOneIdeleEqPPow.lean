@@ -16,6 +16,33 @@ namespace GlobalTheory.TwV.Xc
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S _hD hSpl hPos j hj hFill x hx`. Establish `hsc : ∀ y, sigD D y = D.host.conj y` using `fun y => bridge_star_holds D.R D.host y`. Establish `hσ : ∀ a, sigD D (sigD D a) = a` using `fun a => by rw [hsc a]; exact Formalism.L2.PairingIndexBounds.F.sigD_conj D a`. Take `⟨m, z, k, hm, hz, hkU, hkI, hxm⟩` from `exists_pow_normOne_idele_eq_principal_mul_integralUnit _ _ (sigD D) hσ x hx`. Establish `hz' : (z : D.host.E) * D.host.conj (z : D.host.E) = 1` using `by rw [← hsc]; exact hz`.
+
+Establish `hzU` using `GlobalTheory.TwV.MuLawPf.rationalIdele_mem_normOne_of_norm_eq_one z hz'`. Establish `hmul` using `S.law.mu_mul j hj`. Establish `hpow : ∀ n : ℕ, S.muT (j + 1) (x ^ n) = S.muT (j + 1) x ^ n`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => rw [pow_zero, pow_zero, hmul.1]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, hmul.2 _ (pow_mem hx n) _ hx, ih]`. Establish `hsplit : S.muT (j + 1) x ^ m = S.muT (j + 1) (ratId D.host.F D.host.E z) * S.muT (j + 1) k`. Rewrite using `[← hpow, hxm, hmul.2 _ hzU _ hkU]`. Take `⟨e, he, hrat⟩` from `S.law.mu_rat j hj`.
+
+Take `⟨y, hy⟩` from `GlobalTheory.TwV.MuLawPf.exists_unitaryOne_det_eq_normOneIdele hkU`. Take `⟨n, hn, hroot⟩` from `GlobalTheory.TieFinOrd.mt_finite_order J.A J.dtU J.a J.pins J.tie j hj y (by rw [hy]; exact hkI)`. Establish `hkroot : S.muT (j + 1) k ^ n = 1`. Rewrite using `[← hy, S.law.mu_read j hj y, ← Units.val_pow_eq_pow_val, hroot, Units.val_one]`. Establish `ha` using `S.law.mu_alg j hj x hx`.
+
+Establish `hb` using `S.law.mu_alg j hj _ hzU`. Establish `hc` using `S.law.mu_alg j hj k hkU`. Establish `hlamC : ∀ (a : ℂ) (h : a ∈ TaylorLogMetric.Qbar), TaylorLogMetric.lamC S.lam a = S.lam ⟨a, h⟩` using `fun a h => by`. Unfold `TaylorLogMetric.lamC`. Rewrite using `[dif_pos h]`.
+
+Establish `eQ : (⟨S.muT (j + 1) x, ha⟩ : TaylorLogMetric.Qbar) ^ m = ⟨_, hb⟩ * ⟨_, hc⟩` using `Subtype.ext (by push_cast; exact hsplit)`. Establish `eQk : (⟨S.muT (j + 1) k, hc⟩ : TaylorLogMetric.Qbar) ^ n = 1` using `Subtype.ext (by push_cast; exact hkroot)`. Establish `hnormk : ‖S.lam ⟨_, hc⟩‖ = 1`. Establish `h1` using `congrArg (fun q => ‖S.lam q‖) eQk`. Simplify using `only [map_pow, norm_pow, map_one, norm_one] at h1`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h1`. Establish `hnorm_m : ‖TaylorLogMetric.lamC S.lam (S.muT (j + 1) x)‖ ^ m = ‖TaylorLogMetric.lamC S.lam (S.muT (j + 1) (ratId D.host.F D.host.E z))‖`. Establish `h1` using `congrArg (fun q => ‖S.lam q‖) eQ`. Simplify using `only [map_pow, norm_pow, map_mul, norm_mul, hnormk, mul_one] at h1`. Rewrite using `[hlamC _ ha, hlamC _ hb]`.
+
+Conclude with `h1`. Establish `hratN` using `GlobalTheory.TwU.RatNorm.norm_lamC_type_normOne D _ (sysS H X std) S.E.toCEmb (hT.gat_pos u w hg) S.lam (J.rho std) hPos e (z : D.host.E) hz'`. Rewrite `hratN` using `[← hrat z hz']`. Establish `hvm : ∀ v : (sysS H X std).Pl, (sysS H X std).vm v (j + 1) = ∑ s : Fin ((sysS H X std).G.P.n' v), (if IsOddPos s then -1 else 1) * e (hT.gat_pos u w hg ⟨v, s⟩)`. Introduce `v`.
+
+Use `vm_shift_cancels _ (sysS H X std) v (j + 1) (fun s => e (hT.gat_pos u w hg ⟨v, s⟩)) (((j * ((sysS H X std).t + 1) / 2 : ℕ) : ℤ) + (((((sysS H X std).Pj (j + 1)).m + 1) / 2 : ℕ) : ℤ)) (fun s => ?_)` and prove the remaining obligations. Rewrite using `[hFill e he v s, sub_sub]`. Establish `hord : ∀ v : (sysS H X std).Pl, (m : ℤ) * ordA (A0 J) v x = ordP ((sysS H X std).G.P.W v) (D.what₂.places.resChar w) (J.rho std v (z : D.host.E))`. Introduce `v`. Take `⟨hadd, hint, hratO, -⟩` from `OrdA.ordA_props _ _ _ _ _ (A0 J) J.one.int hSpl.1 v`.
+
+Establish `hp : ∀ n : ℕ, ordA (A0 J) v (x ^ n) = n * ordA (A0 J) v x`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Establish `h1` using `hadd 1 1`.
+
+Rewrite `h1` using `[mul_one]`. Rewrite using `[pow_zero, Nat.cast_zero, zero_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ n ih => rw [pow_succ, hadd, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hp, hxm, hadd, hratO, hint k hkI, add_zero]`. Rewrite using `[← pow_left_inj₀ (norm_nonneg _) (zpow_nonneg (norm_nonneg _) _) hm.ne', hnorm_m, hratN, ← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hvm v, ← hord v]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lambdaCharacter_norm_eq_p_pow_of_pos : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => S.Pos → ∀ j (hj : j < D.R.m), FillAt (hT := hT) (H := H) (X := X) std j hj → ∀ x ∈ U1 (sigD D), ‖TaylorLogMetric.lamC S.lam (S.muT (j + 1) x)‖ = ‖((D.what₂.places.resChar w : ℕ) : ℂ_[D.what₂.places.resChar w])‖ ^ (∑ v : (sysS H X std).Pl, (sysS H X std).vm v (j + 1) * ordA (A0 J) v x)) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S _hD hSpl hPos j hj hFill x hx
   have hsc : ∀ y, sigD D y = D.host.conj y := fun y => bridge_star_holds D.R D.host y

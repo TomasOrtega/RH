@@ -22,6 +22,17 @@ namespace GlobalTheory.HL.QuadricShare
 
 open GlobalTheory.HL.GaussSummand
 
+/- English proof (translation)
+Establish `hex : ∀ w ∈ R, ∃ w', w' ∈ R ∧ ∃ y ∈ UU, (w + u₀) - w' = p • y` using `fun w hw => (hR _ (UU.add_mem (hRU w hw) (hRU u₀ hu₀))).exists`. Use `choose! σ hσR hσ using hex`. Establish `hinj : Set.InjOn σ R`. Introduce `w hw w' hw' h`. Take `⟨y, hy, e⟩` from `hσ w hw`.
+
+Take `⟨y', hy', e'⟩` from `hσ w' hw'`. Use `(hR w (hRU w hw)).unique ⟨hw, 0, UU.zero_mem, by simp⟩ ⟨hw', y - y', UU.sub_mem hy hy', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, ← e, ← e', h]`. Normalize the expressions using the abelian group laws. Establish `himg : R.image σ = R`.
+
+Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `x hx`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hσR w hw`. Rewrite using `[Finset.card_image_of_injOn hinj]`.
+
+Establish `h1 : ∑ u ∈ R, χ u = ∑ u ∈ R, χ u * χ u₀` using `by conv_lhs => rw [← himg, Finset.sum_image hinj]`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `hσ w hw`. Establish `: w + u₀ = σ w + p • y` using `by rw [← e]; abel`. Rewrite using `[← AddChar.map_add_eq_mul, this, AddChar.map_add_eq_mul, hχ y hy, mul_one]`.
+
+Rewrite `h1` using `[← Finset.sum_mul]`. Establish `h2 : (∑ u ∈ R, χ u) * (1 - χ u₀) = 0` using `by rw [mul_sub, mul_one, ← h1, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_right (sub_ne_zero.2 hne.symm)`.
+-/
 theorem sum_char_eq_zero {E V : Type} [CommRing E] [AddCommGroup V] [Module E V] {O : Subring E}
     (UU : Submodule O V) (p : E) (R : Finset V) (hRU : ∀ u ∈ R, u ∈ UU)
     (hR : ∀ u ∈ UU, ∃! w, w ∈ R ∧ ∃ y ∈ UU, u - w = p • y) (χ : AddChar V ℂ)
@@ -56,6 +67,15 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E)
   {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hint, -, -, -⟩` from `GlobalTheory.UnramOrder.order_facts L ϖ hϖ`. Establish `hinj` using `GlobalTheory.UnramOrder.algebraMap_inj L`. Use `choose nrm hnrm using fun u : Fin n → E => (L.cj_fix _).1 (cj_hf L Hm hH.1 u u)`. Establish `hQ : ∀ u ∈ UU, nrm u ∈ 𝒪[F]` using `fun u hu => (hint _).1 (by rw [hnrm]; exact hUU u hu u hu)`. Use `⟨nrm, fun u => if h : nrm u ∈ 𝒪[F] then ⟨nrm u, h⟩ else 0, hnrm, fun u hu => ?_, fun a u hu => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [dif_pos (hQ u hu)]`. Simplify using `only [dif_pos (hQ u hu)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (fun x : 𝒪[F] => (x : F)) hc` as an intermediate fact. Simplify using `only [Subring.coe_mul, SubmonoidClass.coe_pow] at this`. Rewrite using `[← hnrm, this]`. Introduce and unpack `⟨c, hc⟩`. Rewrite `hc` using `[← hnrm]`.
+
+Conclude with `⟨c, Subtype.ext (by simpa using hinj hc)⟩`.
+-/
 theorem exists_norm (hH : IsHermND L Hm) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ)
     (UU : Submodule L.O (Fin n → E)) (hUU : ∀ x ∈ UU, ∀ y ∈ UU, hf L Hm x y ∈ L.O) :
     ∃ (nrm : (Fin n → E) → F) (Q : (Fin n → E) → 𝒪[F]), (∀ u, algebraMap F E (nrm u) = hf L Hm u u) ∧
@@ -79,6 +99,13 @@ theorem exists_norm (hH : IsHermND L Hm) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ)
       rw [← hnrm] at hc
       exact ⟨c, Subtype.ext (by simpa using hinj hc)⟩
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, hq, -⟩` from `GlobalTheory.UnramOrder.order_facts L ϖ hϖ`. Take `⟨ψ, hψ1, hψ, -⟩` from `GlobalTheory.TraceChar.exists_trace_char L`. Take `⟨nrm, Q, hnrm, hQ, hdvd⟩` from `exists_norm L Hm hH ϖ hϖ UU hUU`. Establish `hfil : R.filter Z = R.filter (fun u => ϖ ^ a ∣ Q u)` using `Finset.filter_congr fun u hu => by rw [hZ, hdvd a u (hRU u hu)]`. Establish `h` using `GlobalTheory.HL.CharCond.expand_by_conductor ϖ hϖ ψ hψ R Q χ a (fun i => (R.card : ℝ) * (resQ ϖ : ℝ) ^ (-(i * ρ : ℤ))) (fun i hi hia t u₀ ht => by`.
+
+Rewrite using `[Finset.sum_congr rfl fun u hu => by rw [hQ u (hRU u hu)]]`. Conclude with `norm_gauss_sum_le L Hm hH ϖ hϖ ψ hψ1 hψ UU hUU ρ e he hee i N hi (hia.trans haN) t u₀ ht χ hχ1 hχ R nrm hnrm hRU hR)`. Rewrite using `[hfil]`. Use `h.trans ?_` and prove the remaining obligations. Establish `h2` using `(GlobalTheory.two_geometric_sums_index_bound (resQ ϖ) ρ a hq hρ).1`.
+
+Use `le_trans (le_of_eq ?_) (mul_le_mul_of_nonneg_right h2 (Nat.cast_nonneg _))` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem char_share (hH : IsHermND L Hm) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ)
     (UU : Submodule L.O (Fin n → E)) (hUU : ∀ x ∈ UU, ∀ y ∈ UU, hf L Hm x y ∈ L.O)
     (ρ : ℕ) (hρ : 4 ≤ ρ) (e : Fin ρ → Fin n → E) (he : ∀ a, e a ∈ UU)
@@ -108,6 +135,19 @@ theorem char_share (hH : IsHermND L Hm) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ)
   rw [Finset.sum_mul]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, hq, -⟩` from `GlobalTheory.UnramOrder.order_facts L ϖ hϖ`. Take `⟨ψ, hψ1, hψ, -⟩` from `GlobalTheory.TraceChar.exists_trace_char L`. Take `⟨nrm, Q, hnrm, hQ, hdvd⟩` from `exists_norm L Hm hH ϖ hϖ UU hUU`. Take `⟨hc, hg⟩` from `GlobalTheory.T.hermitian_local_character_sum L Hm hH ϖ hϖ ψ hψ1 hψ UU hUU ρ e he hee π j N hπ hπj hπN R nrm hnrm hRU hR`. Use `set R' := R.filter fun u => ∀ a, ∃ c ∈ L.O, hf L Hm u (e a) = π * c with hR'`.
+
+Establish `hfil : (R.filter fun u => Z u ∧ ∀ a, ∃ c ∈ L.O, hf L Hm u (e a) = π * c) = R'.filter (fun u => ϖ ^ a ∣ Q u)`. Rewrite using `[hR', Finset.filter_filter]`. Conclude with `Finset.filter_congr fun u hu => by rw [hZ, hdvd a u (hRU u hu), and_comm]`. Establish `h` using `GlobalTheory.HL.CharCond.expand_by_conductor ϖ hϖ ψ hψ R' Q (fun _ => 1) a (fun i => (R.card : ℝ) * (resQ ϖ : ℝ) ^ (-(j * ρ : ℤ)) * (resQ ϖ : ℝ) ^ (-(((i - j : ℕ) : ℤ) * ρ))) (fun i hi hia t u₀ ht => by`. Rewrite using `[Finset.sum_congr rfl fun u hu => by`.
+
+Rewrite using `[hQ u (hRU u (Finset.mem_filter.1 hu).1), mul_one]]`. Conclude with `hg i (hia.trans haN) t u₀ ht)`. Rewrite using `[hfil]`. Simplify using `only [Finset.sum_const, nsmul_eq_mul, mul_one] at h`. Establish `h1 : ((R'.filter (fun u => ϖ ^ a ∣ Q u)).card : ℝ) * (resQ ϖ : ℝ) ^ a - R'.card ≤ ‖((R'.filter (fun u => ϖ ^ a ∣ Q u)).card : ℂ) * (resQ ϖ : ℂ) ^ a - R'.card‖`.
+
+Use `(le_abs_self _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← Real.norm_eq_abs, ← Complex.norm_real]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h2` using `(GlobalTheory.two_geometric_sums_index_bound (resQ ϖ) ρ a hq hρ).2 j`.
+
+Establish `hq0 : (0 : ℝ) < resQ ϖ` using `by exact_mod_cast (by omega : 0 < resQ ϖ)`. Establish `h3` using `mul_le_mul_of_nonneg_left h2 (by positivity : (0 : ℝ) ≤ (R.card : ℝ) * (resQ ϖ : ℝ) ^ (-(j * ρ : ℤ)))`. Rewrite `h3` using `[mul_add, mul_one, Finset.mul_sum]`. Establish `h4 : ∑ i ∈ Finset.Icc 1 a, ((resQ ϖ : ℝ) ^ i - (resQ ϖ : ℝ) ^ (i - 1)) * ((R.card : ℝ) * (resQ ϖ : ℝ) ^ (-(j * ρ : ℤ)) * (resQ ϖ : ℝ) ^ (-(((i - j : ℕ) : ℤ) * ρ))) = ∑ i ∈ Finset.Icc 1 a, (R.card : ℝ) * (resQ ϖ : ℝ) ^ (-(j * ρ : ℤ)) * (((resQ ϖ : ℝ) ^ i - (resQ ϖ : ℝ) ^ (i - 1)) …` using `Finset.sum_congr rfl fun i _ => by ring`. Establish `h5 : 8 / 7 * (resQ ϖ : ℝ) ^ ((j : ℤ) - j * ρ) * R.card = (R.card : ℝ) * (resQ ϖ : ℝ) ^ (-(j * ρ : ℤ)) * (8 / 7 * (resQ ϖ : ℝ) ^ j)`.
+
+Rewrite using `[sub_eq_add_neg, zpow_add₀ hq0.ne', zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5]`. Rewrite `h` using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem prime_share (hH : IsHermND L Hm) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ)
     (UU : Submodule L.O (Fin n → E)) (hUU : ∀ x ∈ UU, ∀ y ∈ UU, hf L Hm x y ∈ L.O)
     (ρ : ℕ) (hρ : 4 ≤ ρ) (e : Fin ρ → Fin n → E) (he : ∀ a, e a ∈ UU)
@@ -160,6 +200,29 @@ theorem prime_share (hH : IsHermND L Hm) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ)
   rw [h4] at h
   linarith
 
+/- English proof (translation)
+Take `⟨-, hcj, -, -, hint, -, hq, -⟩` from `GlobalTheory.UnramOrder.order_facts L ϖ hϖ`. Establish `hq1 : (1 : ℝ) ≤ resQ ϖ` using `by exact_mod_cast (by omega : 1 ≤ resQ ϖ)`. Establish `hp : algebraMap F E ϖ ∈ L.O` using `(hint _).2 ϖ.2`. Establish `hps` using `prime_share L Hm hH ϖ hϖ UU hUU ρ hρ e (fun a => hW (he a)) hee a N (by omega) R hRU hR Z hZ`. Establish `hI : ∀ u ∈ R, (¬ ∃ y ∈ W, hf L Hm u y = 1) → ∃ I : Ideal L.O, I ≠ ⊤ ∧ ∀ a, ∃ x ∈ I, (x : E) = hf L Hm u (e a)`.
+
+Introduce `u hu hne`. Set `I : Ideal L.O` to `{ carrier := {x | ∃ y ∈ W, hf L Hm u y = x} zero_mem' := ⟨0, W.zero_mem, by simp [hf]⟩ add_mem' := by`. Introduce and unpack `x x' ⟨y, hy, e⟩ ⟨y', hy', e'⟩`. Conclude with `⟨y + y', W.add_mem hy hy', by rw [hf_add_right, e, e']; rfl⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `c x ⟨y, hy, e⟩`. Use `⟨L.cj c • y, CongFin.smul_mem_of W (hcj c c.2).1 hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hf_smul_right, L.cj_cj, e]`. Use `rfl }`. Use `⟨I, fun h => hne ((Ideal.eq_top_iff_one I).1 h), fun a => ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨⟨_, hUU u (hRU u hu) _ (hW (he a))⟩, ⟨e a, he a, rfl⟩, rfl⟩`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Establish `hM : algebraMap F E ((ϖ : F) ^ M) ∈ L.O` using `by rw [map_pow]; exact L.O.pow_mem hp M`. Establish `hqa : (0 : ℝ) ≤ (resQ ϖ : ℝ) ^ a` using `by positivity`. Establish `hR0 : (0 : ℝ) ≤ R.card` using `Nat.cast_nonneg _`.
+
+Break down `GlobalTheory.UnramOrder.proper_ideals L ϖ hϖ with h | ⟨π, hπ, hππ, h⟩` into its components or cases. Establish `h1` using `hps (algebraMap F E ϖ) 2 hp (by rw [AlgEquiv.commutes, ← map_mul, sq]) ⟨_, hM, by rw [← map_mul, pow_succ']⟩`. Establish `hsub : (R.filter fun u => Z u ∧ ¬ ∃ y ∈ W, hf L Hm u y = 1) ⊆ R.filter fun u => Z u ∧ ∀ a, ∃ c ∈ L.O, hf L Hm u (e a) = algebraMap F E ϖ * c`. Introduce `u hu`. Take `⟨hu, hz, hne⟩` from `Finset.mem_filter.1 hu`.
+
+Take `⟨I, hI, hIe⟩` from `hI u hu hne`. Use `Finset.mem_filter.2 ⟨hu, hz, fun a => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `hIe a`. Conclude with `e ▸ h I hI x hx`. Establish `h2 : ((R.filter fun u => Z u ∧ ¬ ∃ y ∈ W, hf L Hm u y = 1).card : ℝ) ≤ _` using `Nat.cast_le.2 (Finset.card_le_card hsub)`.
+
+Establish `h3 : (resQ ϖ : ℝ) ^ (((2 : ℕ) : ℤ) - (2 : ℕ) * ρ) ≤ (resQ ϖ : ℝ) ^ (1 - (ρ : ℤ))` using `zpow_le_zpow_right₀ hq1 (by push_cast; omega)`. Establish `h4 : (0 : ℝ) ≤ (resQ ϖ : ℝ) ^ (1 - (ρ : ℤ))` using `by positivity`. Use `(mul_le_mul_of_nonneg_right h2 hqa).trans (h1.trans ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right ((mul_le_mul_of_nonneg_left h3 (by norm_num)).trans (by linarith only [h4])) hR0`. Establish `h1` using `hps π 1 hπ (by rw [hππ, pow_one]) ⟨L.cj π * algebraMap F E ((ϖ : F) ^ M), L.O.mul_mem (hcj π hπ).1 hM, by`.
+
+Rewrite using `[← mul_assoc, hππ, ← map_mul, pow_succ']⟩`. Establish `h1'` using `hps (L.cj π) 1 (hcj π hπ).1 (by rw [L.cj_cj, mul_comm, hππ, pow_one]) ⟨π * algebraMap F E ((ϖ : F) ^ M), L.O.mul_mem hπ hM, by`. Rewrite using `[← mul_assoc, mul_comm _ π, hππ, ← map_mul, pow_succ']⟩`. Establish `hsub : (R.filter fun u => Z u ∧ ¬ ∃ y ∈ W, hf L Hm u y = 1) ⊆ (R.filter fun u => Z u ∧ ∀ a, ∃ c ∈ L.O, hf L Hm u (e a) = π * c) ∪ (R.filter fun u => Z u ∧ ∀ a, ∃ c ∈ L.O, hf L Hm u (e a) = L.cj π * c)`. Introduce `u hu`.
+
+Take `⟨hu, hz, hne⟩` from `Finset.mem_filter.1 hu`. Take `⟨I, hI, hIe⟩` from `hI u hu hne`. Break down `h I hI with h | h` into its components or cases. Use `Finset.mem_union_left _ (Finset.mem_filter.2 ⟨hu, hz, fun a => ?_⟩)` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `hIe a`.
+
+Conclude with `e ▸ h x hx`. Use `Finset.mem_union_right _ (Finset.mem_filter.2 ⟨hu, hz, fun a => ?_⟩)` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `hIe a`. Conclude with `e ▸ h x hx`. Establish `h2 : ((R.filter fun u => Z u ∧ ¬ ∃ y ∈ W, hf L Hm u y = 1).card : ℝ) ≤ _` using `Nat.cast_le.2 ((Finset.card_le_card hsub).trans (Finset.card_union_le _ _))`.
+
+Rewrite `h2` using `[Nat.cast_add]`. Establish `h3` using `mul_le_mul_of_nonneg_right h2 hqa`. Simplify using `only [Nat.cast_one, one_mul] at h1 h1'`. Rewrite `h3` using `[add_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem leak_share (hH : IsHermND L Hm) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ)
     (UU : Submodule L.O (Fin n → E)) (hUU : ∀ x ∈ UU, ∀ y ∈ UU, hf L Hm x y ∈ L.O)
     (ρ : ℕ) (hρ : 4 ≤ ρ) (e : Fin ρ → Fin n → E) (W : Submodule L.O (Fin n → E)) (hW : W ≤ UU)
@@ -241,6 +304,19 @@ theorem leak_share (hH : IsHermND L Hm) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ)
     rw [add_mul] at h3
     linarith
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hint, -, -, -⟩` from `GlobalTheory.UnramOrder.order_facts L ϖ hϖ`. Establish `hp : algebraMap F E ϖ ∈ L.O` using `(hint _).2 ϖ.2`. Take `⟨M, hM⟩` from `CongFin.exists_pow_smul_mem hp (CongFin.exists_pow_mul_mem L ϖ hϖ) (Submodule.span L.O {y}) Λ (Submodule.fg_span_singleton y) hΛ.1.2`. Establish `hMy` using `hM y (Submodule.mem_span_singleton_self y)`. Simplify using `only [map_pow] at hR hy ⊢`.
+
+Establish `hcp : L.cj (algebraMap F E ϖ ^ N) = algebraMap F E ϖ ^ N`. Rewrite using `[map_pow, AlgEquiv.commutes]`. Use `set p := algebraMap F E ϖ with hpdef`. Establish `key : ∀ m : ℕ, (∀ u ∈ UU, p ^ m * (p ^ N * hf L Hm y u) ∈ L.O) → ∀ u ∈ UU, p ^ N * hf L Hm y u ∈ L.O`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => intro h u hu`. Simplify using `using h u hu`. Consider the case `succ m ih`. Introduce `h`.
+
+Use `ih fun u hu => ?_` and prove the remaining obligations. Take `⟨w, ⟨hw, z, hz, e⟩, -⟩` from `hR u hu`. Establish `e' : u = w + p ^ N • z` using `by rw [← e]; abel`. Take `⟨K, rfl⟩ : ∃ K, N = K + 1` from `⟨N - 1, by omega⟩`. Rewrite using `[e', hf_add_right, hf_smul_right, hcp]`.
+
+Use `L.O.add_mem (L.O.mul_mem (L.O.pow_mem hp m) (hy w hw)) (L.O.mul_mem (L.O.pow_mem hp K) (h z hz))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `key M fun u hu => ?_` and prove the remaining obligations. Establish `h1` using `(hΛ.2 u).2 (hUΛ hu) _ hMy`.
+
+Rewrite `h1` using `[hf_smul_left]`. Rewrite using `[mul_left_comm]`. Conclude with `L.O.mul_mem (L.O.pow_mem hp N) h1`.
+-/
 theorem integral_of_reps (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) (Λ : Submodule L.O (Fin n → E))
     (hΛ : IsSD L Hm Λ) (UU : Submodule L.O (Fin n → E)) (hUΛ : UU ≤ Λ) (N : ℕ) (hN : 1 ≤ N)
     (R : Finset (Fin n → E))
@@ -279,9 +355,45 @@ theorem integral_of_reps (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) (Λ : Submodule L
   exact L.O.mul_mem (L.O.pow_mem hp N) h1
 
 omit [IsNonarchimedeanLocalField F] [CharZero F] in
+/- English proof (translation)
+Introduce `_ hx y hy` and use `hx y (h hy)`.
+-/
 theorem perp_anti {A B : Submodule E (Fin n → E)} (h : A ≤ B) : perp L Hm B ≤ perp L Hm A :=
   fun _ hx y hy => hx y (h hy)
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S hk J d Λ hT N R Z haN hZ hRU hR`. Take `⟨-, hcj, -, -, hint, -, hq, -⟩` from `GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr`. Establish `hSD` using `(GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT).1`. Establish `hli` using `(GlobalTheory.FrameBasic.main L r k S).1`. Take `⟨a, ha⟩` from `Int.eq_ofNat_of_zero_le (GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ hT).1`.
+
+Rewrite `haN`, `hZ`, the goal using `[ha]`. Simplify using `only [zpow_natCast] at hZ ⊢`. Establish `haN' : a + 1 ≤ N` using `by omega`. Take `⟨e, he, hee⟩` from `GlobalTheory.HL.OrthCompl.exists_orthonormal_perp L S.Hm S.herm Λ hSD _ _ (hli.comp finSumFinEquiv.symm finSumFinEquiv.symm.injective)`. Establish `hsp : ∀ j, S.spanTo S.f j ⊔ S.spanTo S.f' j ≤ Submodule.span E (Set.range (Sum.elim S.f S.f' ∘ finSumFinEquiv.symm))`.
+
+Introduce `j`. Rewrite using `[finSumFinEquiv.symm.surjective.range_comp]`. Use `sup_le (Submodule.span_mono ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, -, rfl⟩`. Conclude with `⟨Sum.inl i, rfl⟩`.
+
+Introduce and unpack `_ ⟨i, -, rfl⟩`. Conclude with `⟨Sum.inr i, rfl⟩`. Set `ρ` to `k + 2 * r + 1 - 2 * (r + 1 + (r + 1))`. Establish `hρdef : ρ = k + 2 * r + 1 - 2 * (r + 1 + (r + 1))` using `rfl`. Establish `hρ : 4 ≤ ρ` using `by omega`.
+
+Establish `hρ' : (k : ℤ) - 2 * r - 3 = ρ` using `by omega`. Rewrite using `[hρ']`. Set `UU : Submodule L.O S.V` to `Λ ⊓ (perp L S.Hm (S.spanTo S.f J ⊔ S.spanTo S.f' J)).restrictScalars L.O`. Set `W : Submodule L.O S.V` to `Λ ⊓ S.W0.restrictScalars L.O`. Establish `hJ : S.spanTo S.f J ⊔ S.spanTo S.f' J ≤ S.ME` using `sup_le_sup (Submodule.span_mono (Set.image_mono fun i _ => i.2)) (Submodule.span_mono (Set.image_mono fun i _ => i.2))`.
+
+Establish `hW : W ≤ UU` using `fun x hx => ⟨hx.1, perp_anti L S.Hm hJ hx.2⟩`. Establish `heW : ∀ i, e i ∈ W` using `fun i => ⟨(he i).1, perp_anti L S.Hm (hsp (r + 1)) (he i).2⟩`. Establish `hUU : ∀ x ∈ UU, ∀ y ∈ UU, hf L S.Hm x y ∈ L.O` using `fun x hx y hy => (hSD.2 y).2 hy.1 x hx.1`. Establish `hRU' : ∀ u ∈ R, u ∈ UU` using `hRU`. Establish `hu : IsUnit (algebraMap F E ((S.ϖ : F) ^ N))` using `((IsUnit.mk0 (S.ϖ : F) (fun h => S.ϖ_irr.ne_zero (Subtype.ext h))).pow N).map _`.
+
+Establish `hR' : ∀ u ∈ UU, ∃! w, w ∈ R ∧ ∃ y ∈ UU, u - w = algebraMap F E ((S.ϖ : F) ^ N) • y`. Introduce `u hu'`. Use `(existsUnique_congr fun w => and_congr_right fun hw => ?_).1 (hR u hu'.1 hu'.2)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`.
+
+Use `⟨y, ⟨hy, ?_⟩, e⟩` and prove the remaining obligations. Establish `h1 : algebraMap F E ((S.ϖ : F) ^ N) • y ∈ perp L S.Hm (S.spanTo S.f J ⊔ S.spanTo S.f' J)` using `e ▸ Submodule.sub_mem _ hu'.2 (hRU w hw).2`. Conclude with `(Submodule.smul_mem_iff_of_isUnit _ hu).1 h1`. Introduce and unpack `⟨y, hy, e⟩`. Conclude with `⟨y, hy.1, e⟩`.
+
+Establish `hcs` using `char_share L S.Hm S.herm S.ϖ S.ϖ_irr UU hUU ρ hρ e (fun i => hW (heW i)) hee a N (by omega) R hRU' hR' Z hZ`. Establish `hqa : (0 : ℝ) < (S.q : ℝ) ^ a`. Establish `: (0 : ℝ) < S.q` using `by exact_mod_cast (by omega : 0 < resQ S.ϖ)`. Check the signs of the components of the expression. Use `⟨?_, ?_, fun y hy ⟨u₀, hu₀, hne⟩ => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hcs 1 (by simp) (by simp)`. Simplify using `only [AddChar.one_apply, Finset.sum_const, nsmul_eq_mul, mul_one] at h`. Establish `h1 : ‖((R.filter Z).card : ℂ) * (resQ S.ϖ : ℂ) ^ a - R.card‖ = |((R.filter Z).card : ℝ) * (S.q : ℝ) ^ a - R.card|`. Rewrite using `[← Real.norm_eq_abs, ← Complex.norm_real]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite `h` using `[h1]`. Rewrite using `[← mul_div_assoc, le_div_iff₀ hqa, ← abs_of_pos hqa, ← abs_mul, abs_of_pos hqa, sub_mul, div_mul_cancel₀ _ hqa.ne']`. Conclude with `h`. Establish `h` using `leak_share L S.Hm S.herm S.ϖ S.ϖ_irr UU hUU ρ hρ e W hW heW hee a N haN' R hRU' hR' Z hZ`.
+
+Rewrite using `[← mul_div_assoc, le_div_iff₀ hqa]`. Use `le_trans (mul_le_mul_of_nonneg_right (Nat.cast_le.2 (Finset.card_le_card ?_)) hqa.le) h` and prove the remaining obligations. Introduce `u hu'`. Simplify using `only [Finset.mem_filter] at hu' ⊢`. Use `⟨hu'.1, hu'.2.1, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨y, ⟨h1, h2⟩, h3⟩`. Conclude with `hu'.2.2 ⟨y, h1, h2, h3⟩`. Take `⟨ψ, hψ1, -, hψ⟩` from `GlobalTheory.TraceChar.exists_trace_char L`. Set `φ : S.V →+ E` to `AddMonoidHom.mk' (fun u => hf L S.Hm y u) (hf_add_right L S.Hm y)`. Set `χ : AddChar S.V ℂ` to `L.psi0.compAddMonoidHom φ`.
+
+Establish `hχ1 : ∀ u, ‖χ u‖ = 1` using `fun u => by`. Take `⟨c, hc⟩` from `(L.cj_fix (φ u + L.cj (φ u))).1 (by rw [map_add, L.cj_cj, add_comm])`. Express the relevant statement in the definitionally equal form `‖L.psi0 (φ u)‖ = 1`. Rewrite using `[hψ _ c hc.symm, hψ1]`. Establish `hint'` using `integral_of_reps L S.Hm S.ϖ S.ϖ_irr Λ hSD UU inf_le_left N (by omega) R hR' y hy`.
+
+Establish `hχ : ∀ u ∈ UU, χ (algebraMap F E ((S.ϖ : F) ^ N) • u) = 1` using `fun u hu' => by`. Express the relevant statement in the definitionally equal form `L.psi0 (hf L S.Hm y _) = 1`. Rewrite using `[hf_smul_right, AlgEquiv.commutes]`. Simplify using `using (L.additive_character_dual_ring _).2 (hint' u hu') 1 L.O.one_mem`. Establish `h` using `hcs χ hχ1 hχ`.
+
+Rewrite `h` using `[sum_char_eq_zero UU _ R hRU' hR' χ hχ u₀ hu₀ hne, sub_zero, norm_mul, norm_pow, Complex.norm_natCast]`. Rewrite using `[← mul_div_assoc, le_div_iff₀ hqa]`. Conclude with `h`.
+-/
 theorem shares : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 4 * r + 7 ≤ k → ∀ (J : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → ∀ (N : ℕ) (R : Finset S.V) (Z : S.V → Prop), S.a + 1 ≤ N → (∀ u, Z u ↔ ∃ c : 𝒪[F], S.h u u = algebraMap F E ((S.ϖ : F) ^ S.a * c)) → (∀ u ∈ R, u ∈ Λ ∧ u ∈ perp L S.Hm (S.spanTo S.f J ⊔ S.spanTo S.f' J)) → (∀ u ∈ Λ, u ∈ perp L S.Hm (S.spanTo S.f J ⊔ S.spanTo S.f' J) → ∃! w, w ∈ R ∧ ∃ y ∈ Λ, u - w = algebraMap F E ((S.ϖ : F) ^ N) • y) → |((R.filter Z).card : ℝ) - R.card / (S.q : ℝ) ^ S.a| ≤ 8 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) * (R.card / (S.q : ℝ) ^ S.a) ∧ (((R.filter fun u => Z u ∧ ¬ ∃ y ∈ Λ, y ∈ S.W0 ∧ S.h u y = 1).card : ℝ) ≤ 16 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) * (R.card / (S.q : ℝ) ^ S.a)) ∧ ∀ y : S.V, (∀ u ∈ R, algebraMap F E ((S.ϖ : F) ^ N) * S.h y u ∈ L.O) → (∃ u ∈ R, L.psi0 (S.h y u) ≠ 1) → ‖∑ u ∈ R.filter Z, L.psi0 (S.h y u)‖ ≤ 8 / 7 * (S.q : ℝ) ^ (1 - ((k : ℤ) - 2 * r - 3)) * (R.card / (S.q : ℝ) ^ S.a) := by
   intro F _ _ _ _ _ E _ _ _ L r k S hk J d Λ hT N R Z haN hZ hRU hR
   obtain ⟨-, hcj, -, -, hint, -, hq, -⟩ := GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr

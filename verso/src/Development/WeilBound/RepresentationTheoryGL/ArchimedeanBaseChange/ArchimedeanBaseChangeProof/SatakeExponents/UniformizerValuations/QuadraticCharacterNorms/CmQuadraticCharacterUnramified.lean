@@ -16,6 +16,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace PositivityTheory.Rg.BcB.F.Fok
 
+/- English proof (translation)
+Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `hu : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) (w.under (𝓞 (maximalRealSubfield E))) := by`. Distinguish the cases in `hs : Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) (w.under (𝓞 (maximalRealSubfield E)))`. Conclude with `GlobalTheory.LFun.isUnram_of_isSplit h2 hs`. Use `GlobalTheory.LFun.isUnram_iff.2 fun u hu => ?_` and prove the remaining obligations.
+
+Take `rfl` from `GlobalTheory.LFun.eq_of_not_isSplit hs hu rfl`. Use `u.isPrime` as an intermediate fact. Conclude with `Algebra.isUnramifiedAt_iff_of_isDedekindDomain.1 hw`. Introduce `x hx`. Establish `hn` using `GlobalTheory.LFun.mem_normGroup_of_isUnram h2 hu hx`.
+
+Express the relevant statement in the definitionally equal form `Units.map _ (GlobalTheory.IdeleNormChar.normSign E (Neutral.B1.localIdele _ _ x)) = 1`. Rewrite using `[GlobalTheory.LFun.normSign_localIdele, GlobalTheory.QuadSymbol.eta_eq_one_iff.2 hn, map_one]`.
+-/
 theorem quadChar_unrAt (E : Type) [Field E] [NumberField E] [IsCMField E]
     (w : HeightOneSpectrum (𝓞 E)) (hw : Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal) :
     (GlobalTheory.GalOfCusp.quadChar E).UnrAt (w.under (𝓞 (maximalRealSubfield E))) := by
@@ -32,6 +39,13 @@ theorem quadChar_unrAt (E : Type) [Field E] [NumberField E] [IsCMField E]
   change Units.map _ (GlobalTheory.IdeleNormChar.normSign E (Neutral.B1.localIdele _ _ x)) = 1
   rw [GlobalTheory.LFun.normSign_localIdele, GlobalTheory.QuadSymbol.eta_eq_one_iff.2 hn, map_one]
 
+/- English proof (translation)
+Introduce `E _ _ _ hU b hb`. Establish `hs : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 (maximalRealSubfield E)) = v` using `fun v => by`. Use `v.isPrime` as an intermediate fact. Take `⟨⟨P, hP, hP'⟩⟩` from `(inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 E)))`. Conclude with `⟨⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩, HeightOneSpectrum.ext hP'.over.symm⟩`.
+
+Use `GlobalTheory.Mem.LocTriv.eq_one_of_local (maximalRealSubfield E) (GlobalTheory.GalOfCusp.quadChar E).1 (GlobalTheory.GalOfCusp.quadChar E).2.1 (GlobalTheory.Mem.Chr.finPartI (maximalRealSubfield E) b) (GlobalTheory.Mem.Chr.finPartI_mem_unitIdl.2 hb) (fun w => by rw [GlobalTheory. …` and prove the remaining obligations. Introduce `v x hx`. Rewrite `hx` using `[GlobalTheory.Mem.Chr.finPartI_snd]`. Establish `hxu : Valued.v (x : v.adicCompletion (maximalRealSubfield E)) = 1` using `by rw [hx]; exact hb v`. Take `⟨w, rfl⟩` from `hs v`.
+
+Conclude with `quadChar_unrAt E w (hU w) x hxu`.
+-/
 theorem cm_quadratic_character_unramified : type_of% GlobalTheory.T.quadratic_character_trivial_unit_ideles := by
   intro E _ _ _ hU b hb
   have hs : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), ∃ w : HeightOneSpectrum (𝓞 E),

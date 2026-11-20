@@ -1,5 +1,32 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.WdDefs
 
+/- English proof (translation)
+Introduce `k W Γ _ _ _ n N ρ c μ hcomm hT hN`. Take `⟨b, hb⟩` from `hT`. Use `set B := LinearMap.toMatrix b b N with hBdef`. Establish `hAlow : ∀ σ (i j : Fin n), j < i → LinearMap.toMatrix b b (ρ σ) i j = 0` using `fun σ => (hb (some σ)).1`. Establish `hAdiag : ∀ σ (i : Fin n), LinearMap.toMatrix b b (ρ σ) i i = μ σ i` using `fun σ => (hb (some σ)).2`.
+
+Establish `hB0 : B ≠ 0`. Introduce `h`. Apply `hN` to reduce the goal to its premises. Apply `(LinearMap.toMatrix b b).injective` to reduce the goal to its premises. Rewrite using `[← hBdef, h, map_zero]`.
+
+Establish `hex : ∃ i j, B i j ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hB0 (Matrix.ext h)`. Establish `hJ : (Finset.univ.filter fun j => ∃ i, B i j ≠ 0).Nonempty`.
+
+Take `⟨i, j, h⟩` from `hex`. Conclude with `⟨j, by simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact ⟨i, h⟩⟩`. Use `set j := (Finset.univ.filter fun j => ∃ i, B i j ≠ 0).min' hJ with hjdef`. Establish `hjmem` using `Finset.min'_mem _ hJ`. Rewrite `hjmem` using `[← hjdef]`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hjmem`. Establish `hjmin : ∀ i l, l < j → B i l = 0`. Introduce `i l hl`. Assume the negation of the conclusion as `h`. Establish `: j ≤ l` using `Finset.min'_le _ l (by simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact ⟨i, h⟩)`.
+
+Conclude with `absurd hl (not_lt.mpr this)`. Establish `hI : (Finset.univ.filter fun i => B i j ≠ 0).Nonempty`. Take `⟨i, h⟩` from `hjmem`. Conclude with `⟨i, by simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact h⟩`. Use `set i := (Finset.univ.filter fun i => B i j ≠ 0).max' hI with hidef`.
+
+Establish `himem` using `Finset.max'_mem _ hI`. Rewrite `himem` using `[← hidef]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at himem`. Establish `himax : ∀ l, i < l → B l j = 0`. Introduce `l hl`.
+
+Assume the negation of the conclusion as `h`. Establish `: l ≤ i` using `Finset.le_max' _ l (by simp only [Finset.mem_filter, Finset.mem_univ, true_and]; exact h)`. Conclude with `absurd hl (not_lt.mpr this)`. Use `⟨i, j, fun σ => ?_⟩` and prove the remaining obligations. Use `set A := LinearMap.toMatrix b b (ρ σ) with hAdef`.
+
+Establish `hmat : A * B = c σ • (B * A)`. Rewrite using `[hAdef, hBdef, ← LinearMap.toMatrix_mul, ← LinearMap.toMatrix_mul, ← map_smul, hcomm]`. Establish `h1 : (A * B) i j = μ σ i * B i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i, hAdef, hAdiag]`. Introduce `l _ hl`.
+
+Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Rewrite using `[hAdef, hAlow σ i l h, zero_mul]`. Rewrite using `[himax l h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+
+Establish `h2 : (B * A) i j = B i j * μ σ j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j, hAdef, hAdiag]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Rewrite using `[hjmin i l h, zero_mul]`.
+
+Rewrite using `[hAdef, hAlow σ l j h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Establish `h3` using `congrFun (congrFun hmat i) j`. Rewrite `h3` using `[Matrix.smul_apply, h1, h2, smul_eq_mul]`.
+
+Establish `: (μ σ i - c σ * μ σ j) * B i j = 0` using `by rw [sub_mul, h3]; ring`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `sub_eq_zero.mp h`. Conclude with `absurd h himem`.
+-/
 theorem UpperTheory.weilDeligne_monodromy_upperTriangular :
     UpperTheory.V.Af.Wd.TriMono := by
   intro k W Γ _ _ _ n N ρ c μ hcomm hT hN

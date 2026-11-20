@@ -19,6 +19,13 @@ private def UpperTheory.HasUnitPureTensorPairing {D : D7} {W : HSp D} {S : D.wha
     {P : Type} [AddCommGroup P] [Module ℂ P] (io : LowT M →ₗ[ℂ] c.W →ₗ[ℂ] P) (Δ : P) (v : M.Vec) : Prop :=
   ∃ (u : ∀ ρ, lowT M ρ) (w : c.W), (∀ ρ, (u ρ : M.sm ρ) = v ρ) ∧ ‖w‖ = 1 ∧ io (PiTensorProduct.tprod ℂ u) w = Δ
 
+/- English proof (translation)
+Take `⟨X, σ, lam, ε, fr, _, _, _, _⟩` from `M`. Take `⟨X', σ'', lam', ε', fr', _, _, _, _⟩` from `M'`. Take `⟨m1, m2, m3, m4, m5, m6, m7⟩` from `hMM`. Simplify using `only at m1 m2 m3 m4 m5 m6 m7`. Consider the cases of `m1`.
+
+Consider the cases of `m2`. Consider the cases of `m3`. Consider the cases of `m4`. Consider the cases of `m5`. Consider the cases of `m6`.
+
+Consider the cases of `m7`. Establish `hv' : v' = v` using `eq_of_heq hv`. Substitute `hv'` using the available equality. Conclude with `id`.
+-/
 private theorem UpperTheory.isExtVec_of_same_model {D : D7} {W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSModel W S) (M' : DSModel W S')
     (hMM : GeoTies.ModelSame M M') (v : M.Vec) (v' : M'.Vec) (hv : HEq v' v) : IsExtVec M v → IsExtVec M' v' := by
   obtain ⟨X, σ, lam, ε, fr, _, _, _, _⟩ := M
@@ -36,6 +43,17 @@ private theorem UpperTheory.isExtVec_of_same_model {D : D7} {W : HSp D} {S S' : 
   subst hv'
   exact id
 
+/- English proof (translation)
+Take `⟨X, σ, lam, ε, fr, _, _, _, _⟩` from `M`. Take `⟨X', σ'', lam', ε', fr', _, _, _, _⟩` from `M'`. Take `⟨m1, m2, m3, m4, m5, m6, m7⟩` from `hMM`. Simplify using `only at m1 m2 m3 m4 m5 m6 m7`. Consider the cases of `m1`.
+
+Consider the cases of `m2`. Consider the cases of `m3`. Consider the cases of `m4`. Consider the cases of `m5`. Consider the cases of `m6`.
+
+Consider the cases of `m7`. Take `⟨Y, ρ⟩` from `c`. Take `⟨Y', ρ'⟩` from `c'`. Simplify using `only at h1 h2 h3`. Consider the cases of `h1`.
+
+Consider the cases of `h2`. Consider the cases of `h3`. Establish `hv' : v' = v` using `eq_of_heq hv`. Substitute `hv'` using the available equality. Establish `hio' : io' = io` using `eq_of_heq hio`.
+
+Substitute `hio'` using the available equality. Conclude with `id`.
+-/
 private theorem UpperTheory.hasUnitPureTensorPairing_imp_of_heq {D : D7} {W : HSp D} {S S' : D.what₂.Tau → SPar} (M : DSModel W S) (M' : DSModel W S')
     (hMM : GeoTies.ModelSame M M') (v : M.Vec) (v' : M'.Vec) (hv : HEq v' v) {V : HSp D} (c c' : CoefA V)
     (h1 : HEq c'.W c.W) (h2 : HEq c'.nW c.nW) (h3 : HEq c'.iW c.iW)
@@ -68,6 +86,23 @@ private theorem UpperTheory.hasUnitPureTensorPairing_imp_of_heq {D : D7} {W : HS
 
 end
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hc _ Xg tr R' hRS _ ι hι v₀' hv i' σ'`. Use `letI := alg'`. Use `letI := z.alg`. Establish `hm : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m` using `(by with_unfolding_all exact ((congrArg (fun P : Pre => P.R.m) hPre) :))`. Set `i : Fin (w.st Z).toD7.R.m` to `⟨i'.1, hm ▸ i'.2⟩`.
+
+Establish `hi : (i : ℕ) = i'` using `rfl`. Establish `hb` using `z.geo.fw.hv₀ i (σ'.comp ι)`. Establish `hall` using `hRS.2.2.2.2.2.2.2.2.2.2.2.2.1 i i' hi`. Establish `hcl` using `(hall.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 ι hι).1 σ'`. Establish `hMM : GeoTies.ModelSame (z.R.MW i (σ'.comp ι)) (R'.MW i' σ')` using `⟨hcl.1.1, hcl.1.2.1, hcl.1.2.2.1, hcl.1.2.2.2.1, hcl.1.2.2.2.2.1, hcl.1.2.2.2.2.2.1, hcl.1.2.2.2.2.2.2.1⟩`.
+
+Establish `c1` using `hall.1`. Establish `c2` using `hall.2.2.1`. Establish `c3` using `hall.2.2.2.1`. Establish `hio` using `hall.2.2.2.2.2.1`. Establish `hv1` using `hv i i' hi σ'`.
+
+Establish `hs' : sg0 (w'.st Z').toD7 (famR (w'.st Z') w'.I hX' (usedOf w'.I T' Wt') Xg tr).A = (w'.st Z').toD7.what₂.embLL` using `sgAt_mk _ R'.toRealDat.hv0`. Establish `hs : sg0 (w.st Z).toD7 (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A = (w.st Z).toD7.what₂.embLL` using `sgAt_mk _ z.R.toRealDat.hv0`. Use `clear hcl hall hRS hv hc halg`. Generalize the expression as in `v₀' i' σ' = v' at hv1 ⊢`. Generalize the expression as in `z.geo.v₀ i (σ'.comp ι) = v at hv1 hb`.
+
+Establish `hσ : σ' = sg0 (w'.st Z').toD7 (famR (w'.st Z') w'.I hX' (usedOf w'.I T' Wt') Xg tr).A → σ'.comp ι = sg0 (w.st Z).toD7 (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A` using `fun h => by`. Rewrite using `[h, hs', hs]`. Conclude with `RingHom.ext hι`. Generalize the expression as in `σ'.comp ι = s at hMM v hv1 hb hσ`. Break down `B' with ⟨P'⟩` into its components or cases.
+
+Express the relevant statement in the definitionally equal form `P' = B.toPre at hPre`. Substitute `hPre` using the available equality. Set `S₀ : (w'.st Z').toD7.what₂.Tau → SPar` to `(by with_unfolding_all exact ((parAt (Wc (w.st Z).toD7 i) s) :))`. Set `M₀ : DSModel (Wc (w'.st Z').toD7 i') S₀` to `@DSModel.mk _ _ _ ((by with_unfolding_all exact ((z.R.MW i s).H :))) ((by with_unfolding_all exact ((z.R.MW i s).nacg :))) ((by with_unfolding_all exact ((z.R.MW i s).ips :))) ((by with_unfolding_all exact ((z.R.MW i s).σ :))) ((by with_unfolding_all exact ((z.R.MW i s).lam :))) …`. Set `u₀ : M₀.Vec` to `(by with_unfolding_all exact (v :))`.
+
+Use `⟨UpperTheory.isExtVec_of_same_model M₀ (R'.MW i' σ') ((by with_unfolding_all exact (hMM :))) u₀ v' ((by with_unfolding_all exact (hv1 :))) ((by with_unfolding_all exact (hb.1 :))), fun h => ?_⟩` and prove the remaining obligations. Establish `h0` using `hσ h`. Establish `hb2` using `hb.2 h0`. Substitute `h` using the available equality. Substitute `h0` using the available equality.
+
+Set `c₀ : CoefA (Vc (w'.st Z').toD7 i')` to `@CoefA.mk _ _ (z.R.cV i).W (z.R.cV i).nW (z.R.cV i).iW (z.R.cV i).fW ((by with_unfolding_all exact ((z.R.cV i).ρ :)))`. Set `io₀ : LowT M₀ →ₗ[ℂ] c₀.W →ₗ[ℂ] PolF (w'.st Z').toD7 (Wc (w'.st Z').toD7 i').rank (Vc (w'.st Z').toD7 i').rank` to `(by with_unfolding_all exact ((z.R.ioP i) :))`. Conclude with `(by with_unfolding_all exact ((UpperTheory.hasUnitPureTensorPairing_imp_of_heq M₀ (R'.MW i' _) ((hMM)) u₀ v' ((hv1)) c₀ (R'.cV i') ((c1)) ((c2)) ((c3)) io₀ (R'.ioP i') ((hio)) (RealDat.Delta i') ((hb2))) : _))`.
+-/
 theorem UpperTheory.extVecPairing_indep_of_base_same_pre :
     ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
         B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)

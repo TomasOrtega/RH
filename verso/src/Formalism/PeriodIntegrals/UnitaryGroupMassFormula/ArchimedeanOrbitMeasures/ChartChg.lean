@@ -6,6 +6,11 @@ namespace PI.AprimeInfW
 
 open MeasureTheory Topology
 
+/- English proof (translation)
+Establish `hd : ∀ x ∈ A, HasFDerivWithinAt ψ (ψ' x) A x` using `fun x hx => (hψ x (hAU hx)).mono hAU`. Establish `hinjA : Set.InjOn ψ A` using `hinj.mono hAU`. Establish `hmeas : MeasurableSet (ψ '' A)` using `measurable_image_of_fderivWithin hA hd hinjA`. Rewrite using `[Set.image_comp, hχ _ ((Set.image_mono hAU).trans hψV) hmeas, lintegral_image_eq_lintegral_abs_det_fderiv_mul μ hA hd hinjA]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations.
+
+Rewrite using `[ENNReal.ofReal_mul (abs_nonneg _)]`.
+-/
 theorem chart_change {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] {Y : Type} [MeasurableSpace Y]
     (m : Measure Y) (χ : E → Y) (V : Set E) (f : E → ℝ)
@@ -21,6 +26,9 @@ theorem chart_change {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [Fini
   refine lintegral_congr fun p => ?_
   rw [ENNReal.ofReal_mul (abs_nonneg _)]
 
+/- English proof (translation)
+The claim follows from `(continuous_abs.continuousAt.comp hd).mul (hf.comp hψ)`.
+-/
 theorem chart_change_cont {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (f : E → ℝ) (ψ : E → E) (ψ' : E → E →L[ℝ] E) (x₀ : E) (hψ : ContinuousAt ψ x₀)
     (hf : ContinuousAt f (ψ x₀)) (hd : ContinuousAt (fun p => (ψ' p).det) x₀) :

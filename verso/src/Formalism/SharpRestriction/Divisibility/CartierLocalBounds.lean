@@ -97,6 +97,9 @@ def LPDual : Prop :=
         y = ∑ a, Ds a * (gam l - sg a)}
       (lpF l d Ds)
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases g <;> fin_cases g' <;> simp_all`.
+-/
 theorem fin_two_eq_one_sub (g g' : Fin 2) (h : g' ≠ g) : g' = 1 - g := by
   fin_cases g <;> fin_cases g' <;> simp_all
 
@@ -577,10 +580,16 @@ def ClosedAbsoluteShare (𝒞 : Formalism.MainNotions.FamClass) : Prop :=
       (LF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Loc (Fm.D x i) (Fm.X x i) (YF x hx i)),
       ShareFamilyAtConstant Fm YF LF C)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(hA.1 s y).1, (hA.1 s y).2, hA.2.1 s y, hA.2.2.1 s y, hA.2.2.2.2.1 s y, hA.2.2.2.2.2.1 s y⟩`.
+-/
 theorem local_admissible_of_admissible {D : Formalism.BasicNotions.D7} {X : DivX D} {Y : ModuliIntegralCharts.Prov D} {Lc : Loc D X Y} (hA : admitted D X Y Lc)
     (s : D.jet.Sit) (y : Lc.Pt s) : (Lc.loc s y).AdmLoc :=
   ⟨(hA.1 s y).1, (hA.1 s y).2, hA.2.1 s y, hA.2.2.1 s y, hA.2.2.2.2.1 s y, hA.2.2.2.2.2.1 s y⟩
 
+/- English proof (translation)
+Introduce `hA`. Take `⟨x0, -, hx1, -, ⟨i0⟩⟩` from `Fm.toFamCore.exists_pt 0`. Establish `hA0` using `hA _ hx1 i0`. Take `⟨hP, C, hC⟩` from `h hA0.2.2.2.1 hA0.2.2.2.2.2.2`. Conclude with `⟨fun x hx i s y => (hC _ _ _ (local_admissible_of_admissible (hA x hx i) s y)).1, hP, fun x hx i s y => (hC _ _ _ (local_admissible_of_admissible (hA x hx i) s y)).2.1, fun x hx i s y => (hC _ _ _ (local_admissible_of_admissible (hA x hx i) s y)).2.2.1, C, fun x hx i s y => (hC _ …`.
+-/
 theorem family_statement_of_all_local (h : RealisationStatementAll) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
     (YF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ModuliIntegralCharts.Prov (Fm.D x i))
     (LF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), Loc (Fm.D x i) (Fm.X x i) (YF x hx i)) (CH : ℝ) :
@@ -594,6 +603,9 @@ theorem family_statement_of_all_local (h : RealisationStatementAll) {eps : ℝ} 
     fun x hx i s y => (hC _ _ _ (local_admissible_of_admissible (hA x hx i) s y)).2.2.1, C,
     fun x hx i s y => (hC _ _ _ (local_admissible_of_admissible (hA x hx i) s y)).2.2.2⟩
 
+/- English proof (translation)
+Take `⟨hP, C, hC⟩` from `h h4 h7`. Use `⟨C, 1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ YF LF hA => ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨fun x hx i s y => (hC _ _ _ (local_admissible_of_admissible (hA x hx i) s y)).1, hP, fun x hx i s y => (hC _ _ _ (local_admissible_of_admissible (hA x hx i) s y)).2.1, fun x hx i s y => (hC _ _ _ (local_admissible_of_admissible (hA x hx i) s y)).2.2.1, fun x hx i s y => (hC _ _ …`.
+-/
 theorem closed_statement_of_all_local (h : RealisationStatementAll) (h4 : CayleyId) (h7 : LPDual) (𝒞 : Formalism.MainNotions.FamClass) :
     ClosedAbsoluteShare 𝒞 := by
   obtain ⟨hP, C, hC⟩ := h h4 h7

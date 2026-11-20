@@ -20,8 +20,16 @@ variable {L : Type} [Field L] [NumberField L]
 def adDeg (r : HeightOneSpectrum (𝓞 L) → ℝ) (N : (L →+* ℂ) → ℝ) : ℝ :=
   (∑ᶠ 𝔭, r 𝔭 * Real.log (Ideal.absNorm 𝔭.asIdeal) - (1 / 2) * ∑ σ, Real.log (N σ)) / Module.finrank ℚ L
 
+/- English proof (translation)
+Simplify using `[adDeg]`.
+-/
 example : adDeg (L := L) 0 1 = 0 := by simp [adDeg]
 
+/- English proof (translation)
+Establish `h : (Module.finrank ℚ L : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`. Establish `h4 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Simplify using `only [adDeg, Pi.zero_apply, zero_mul, finsum_zero, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul, h4]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 example : adDeg (L := L) 0 (fun _ => 4) = -Real.log 2 := by
   have h : (Module.finrank ℚ L : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr Module.finrank_pos.ne'
   have h4 : Real.log 4 = 2 * Real.log 2 := by
@@ -138,8 +146,14 @@ def DegreeTheorem : Prop :=
     ∀ [NeZero H.d] (χ : DirichletCharacter ℂ H.d), IsKroneckerChar χ →
       LinesExist H ∧ LieDegAt H (CM.logOm E χ).re ∧ FlatDegAt H (CM.logOm E χ).re ∧ BoundAt H (CM.logOm E χ).re
 
+/- English proof (translation)
+Simplify using `[cOne]`.
+-/
 example (H : Host E) (p : ℕ) (x : ℝ) : cOne H p 0 x = -(p / 2 * x) := by simp [cOne]
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, h⟩` from `h`. Rewrite `h` using `[Matrix.det_isEmpty]`. Conclude with `h` after adjusting the coercions.
+-/
 example {L : Type} [Field L] [NumberField L] (A : Over (Sp L)) [GrpObj A] (𝓛 : LB A.left)
     (v : Fin 0 → (epsR L ⟶ A)) (σ : L →+* ℂ) (N : ℝ) (h : IsArchSq A 𝓛 v σ N) : N = 1 := by
   obtain ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, h⟩ := h

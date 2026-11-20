@@ -20,6 +20,19 @@ section Transport
 
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Unfold `DualAt at h ⊢`. Take `⟨L', hc, ho, hs, hK⟩` from `h`. Use `⟨L'.comap e.toAddMonoidHom, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ((L'.comap e.toAddMonoidHom : AddSubgroup V) : Set V) = e.symm '' (L' : Set V')`. Use extensionality with `x`.
+
+Simplify using `only [AddSubgroup.coe_comap, Set.mem_preimage, Set.mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨e x, hx, e.symm_apply_apply x⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Simplify using `using hy`. Rewrite using `[h1]`. Conclude with `hc.image hes`. Conclude with `ho.preimage he`. Introduce `s hs' x hx`.
+
+Take `⟨x'', hx'', hB''⟩` from `hs s hs' (e x) hx`. Use `⟨e.symm x'', ?_, fun y => ?_⟩` and prove the remaining obligations. Use `show e.toAddMonoidHom (e.symm x'') ∈ L'`. Simplify using `using hx''`. Rewrite using `[hB, hB, e.apply_symm_apply, hB'']`.
+
+Introduce `c`. Take `⟨K', hK'c, hK'⟩` from `hK c`. Use `⟨e.symm '' K', hK'c.image hes, fun y hy => ?_⟩` and prove the remaining obligations. Use `⟨e y, hK' ?_, e.symm_apply_apply y⟩` and prove the remaining obligations. Introduce `x'' hx''`.
+
+Establish `h1` using `hy (e.symm x'') (by show e.toAddMonoidHom (e.symm x'') ∈ L'; simpa using hx'')`. Rewrite `h1` using `[hB, e.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem dualAt_of_equiv {V V' : Type} [AddCommGroup V] [TopologicalSpace V] [AddCommGroup V']
     [TopologicalSpace V'] (e : V ≃+ V') (he : Continuous e) (hes : Continuous e.symm)
     (B : V → V → Fv F v) (B' : V' → V' → Fv F v) (hB : ∀ x y, B x y = B' (e x) (e y))
@@ -73,19 +86,33 @@ def reTup (ι : Type) [Fintype ι] :
     simp
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reTup_apply (ι : Type) [Fintype ι] (x : ι → Fv F v ⊗[F] E) (p : Fin (Fintype.card ι))
     (k : Fin 1) : reTup v ι x p k = x ((Fintype.equivFin ι).symm p) := rfl
 
+/- English proof (translation)
+Use `continuous_pi fun p => continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [reTup_apply]`. Conclude with `continuous_apply _`.
+-/
 theorem continuous_reTup (ι : Type) [Fintype ι] : Continuous (reTup (E := E) v ι) := by
   refine continuous_pi fun p => continuous_pi fun k => ?_
   simp only [reTup_apply]
   exact continuous_apply _
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `show Continuous fun X : Fin (Fintype.card ι) → Fin 1 → Fv F v ⊗[F] E => X (Fintype.equivFin ι i) 0`. Conclude with `(continuous_apply 0).comp (continuous_apply _)`.
+-/
 theorem continuous_reTup_symm (ι : Type) [Fintype ι] : Continuous (reTup (E := E) v ι).symm := by
   refine continuous_pi fun i => ?_
   show Continuous fun X : Fin (Fintype.card ι) → Fin 1 → Fv F v ⊗[F] E => X (Fintype.equivFin ι i) 0
   exact (continuous_apply 0).comp (continuous_apply _)
 
+/- English proof (translation)
+Use `first`. Consider the case `simp [sigR]`. Consider the case `(induction z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, Algebra.TensorProduct.map_tmul]`.
+
+Consider the case `add x y hx hy => rw [map_add, hx, hy])`.
+-/
 theorem sigR_id (z : Fv F v ⊗[F] E) : sigR (Fv F v) (AlgHom.id F E) z = z := by
   first
   | simp [sigR]
@@ -94,9 +121,17 @@ theorem sigR_id (z : Fv F v ⊗[F] E) : sigR (Fv F v) (AlgHom.id F E) z = z := b
       | tmul a b => simp [sigR, Algebra.TensorProduct.map_tmul]
       | add x y hx hy => rw [map_add, hx, hy])
 
+/- English proof (translation)
+Simplify using `[JR]`.
+-/
 theorem JR_one : JR (F := F) (Fv F v) (1 : Matrix (Fin 1) (Fin 1) E) = 1 := by
   simp [JR]
 
+/- English proof (translation)
+Unfold `BR trP`. Establish `h1 : ∀ u w : Fin 1 → Fv F v ⊗[F] E, hR (Fv F v) (AlgHom.id F E) 1 u w = u 0 * w 0`. Introduce `u w`. Simplify using `[hR, Formalism.UG.hform, sigR_id, JR_one, Fin.sum_univ_one]`. Simplify using `only [h1, reTup_apply]`.
+
+Conclude with `(Equiv.sum_comp (Fintype.equivFin ι).symm (fun i => Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (x i * y i))).symm`.
+-/
 theorem localTracePairing_eq_realBilinearForm (ι : Type) [Fintype ι] (x y : ι → Fv F v ⊗[F] E) :
     trP v ι x y = BR (Fv F v) (AlgHom.id F E) (1 : Matrix (Fin 1) (Fin 1) E)
       (reTup v ι x) (reTup v ι y) := by
@@ -108,19 +143,33 @@ theorem localTracePairing_eq_realBilinearForm (ι : Type) [Fintype ι] (x y : ι
   exact (Equiv.sum_comp (Fintype.equivFin ι).symm
     (fun i => Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (x i * y i))).symm
 
+/- English proof (translation)
+Simplify using `[trP, add_mul, map_add, Finset.sum_add_distrib]`.
+-/
 theorem localTracePairing_add_left (ι : Type) [Fintype ι] (x x' y : ι → Fv F v ⊗[F] E) :
     trP v ι (x + x') y = trP v ι x y + trP v ι x' y := by
   simp [trP, add_mul, map_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[trP, smul_mul_assoc, map_smul, Finset.mul_sum]`.
+-/
 theorem localTracePairing_smul_left (ι : Type) [Fintype ι] (c : Fv F v) (x y : ι → Fv F v ⊗[F] E) :
     trP v ι (c • x) y = c * trP v ι x y := by
   simp [trP, smul_mul_assoc, map_smul, Finset.mul_sum]
 
+/- English proof (translation)
+Unfold `trP`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [mul_comm]`.
+-/
 theorem localTracePairing_comm (ι : Type) [Fintype ι] (x y : ι → Fv F v ⊗[F] E) :
     trP v ι x y = trP v ι y x := by
   unfold trP
   exact Finset.sum_congr rfl fun i _ => by rw [mul_comm]
 
+/- English proof (translation)
+Establish `htr : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E))` using `by first`. Consider the case `exact IsModuleTopology.continuous_of_linearMap _`. Consider the case `exact LinearMap.continuous_of_finiteDimensional _`. Unfold `trP`. Use `continuous_finset_sum _ fun i _ => htr.comp ?_` and prove the remaining obligations.
+
+Conclude with `((continuous_apply i).comp continuous_fst).mul ((continuous_apply i).comp continuous_snd)`.
+-/
 theorem continuous_localTracePairing (ι : Type) [Fintype ι] :
     Continuous (fun p : (ι → Fv F v ⊗[F] E) × (ι → Fv F v ⊗[F] E) => trP v ι p.1 p.2) := by
   have htr : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E)) := by
@@ -131,12 +180,18 @@ theorem continuous_localTracePairing (ι : Type) [Fintype ι] :
   refine continuous_finset_sum _ fun i _ => htr.comp ?_
   exact ((continuous_apply i).comp continuous_fst).mul ((continuous_apply i).comp continuous_snd)
 
+/- English proof (translation)
+The claim follows from `dualAt_of_equiv v (reTup v ι) (continuous_reTup v ι) (continuous_reTup_symm v ι) _ _ (localTracePairing_eq_realBilinearForm v ι) (dualAt_alt v (Module.finBasis F E) (AlgHom.id F E) (1 : Matrix (Fin 1) (Fin 1) E) (nondeg_BR v (AlgHom.id F E) (fun _ => rfl) (1 : Matrix (Fin 1) (Fin …`.
+-/
 theorem dualAt_trP (ι : Type) [Fintype ι] : DualAt v (trP (E := E) v ι) :=
   dualAt_of_equiv v (reTup v ι) (continuous_reTup v ι) (continuous_reTup_symm v ι) _ _
     (localTracePairing_eq_realBilinearForm v ι)
     (dualAt_alt v (Module.finBasis F E) (AlgHom.id F E) (1 : Matrix (Fin 1) (Fin 1) E)
       (nondeg_BR v (AlgHom.id F E) (fun _ => rfl) (1 : Matrix (Fin 1) (Fin 1) E) (by simp)))
 
+/- English proof (translation)
+The claim follows from `exists_selfDual_measure v (trP v ι) ψ0 hψc hψa hψn hnt (localTracePairing_add_left v ι) (localTracePairing_smul_left v ι) (localTracePairing_comm v ι) (continuous_localTracePairing v ι) (dualAt_trP v ι)`.
+-/
 theorem sd_trP (ψ0 : Fv F v → ℂ) (hψc : Continuous ψ0) (hψa : ∀ r s, ψ0 (r + s) = ψ0 r * ψ0 s)
     (hψn : ∀ r, ‖ψ0 r‖ = 1) (hnt : ∃ y, ψ0 y ≠ 1) (ι : Type) [Fintype ι] :
     ∃ μ : Measure (ι → Fv F v ⊗[F] E), SelfDual μ (fun x y => ψ0 (trP v ι x y)) :=
@@ -145,6 +200,9 @@ theorem sd_trP (ψ0 : Fv F v → ℂ) (hψc : Continuous ψ0) (hψa : ∀ r s, �
 
 end Third
 
+/- English proof (translation)
+Introduce `hS`. Take `⟨hCM, hJ, hψ, hstd⟩` from `hS`. Take `⟨h1, h2⟩` from `h0 σ J ψ v a ⟨hCM, hJ, hψ, hstd⟩`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Conclude with `sd_trP v (psiV F ψ v) (continuous_psiV ψ hψ.1 v) (psiV_add ψ v) (fun r => hψ.2.1 _) (additive_character_nontrivial ψ v hψ hstd hCM.1) ι`.
+-/
 theorem sdExists_of_sdEx (h0 : PI.OmFibreUniq.W.SdEx) {F E : Type} [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (a : ℕ) (ι : Type) [Fintype ι] :

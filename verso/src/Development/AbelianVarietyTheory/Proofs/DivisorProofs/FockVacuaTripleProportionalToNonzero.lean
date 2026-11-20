@@ -21,15 +21,36 @@ noncomputable section
 
 namespace GlobalTheory.GaussLine
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf, compInf, inclR, infEmb_tmul]`.
+-/
 theorem incM_map_piInf' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n m : Type}
     (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) :
     (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F J).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf τ) = J.map τ.1 := by
   ext i j
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf, compInf, inclR, infEmb_tmul]
 
+/- English proof (translation)
+Simplify using `[Jm, Formalism.UG.Jpq, Matrix.fromBlocks_transpose]`.
+-/
 theorem Jm_transpose'' (p q : ℕ) : (Jm p q)ᵀ = Jm p q := by
   simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_transpose]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ a a' B Γ X om om' h f₀ hf₀ hG₀ g hg`. Take `⟨hb, hgeo, -, -, -⟩` from `h`. Use `choose A hA hAθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists _ _ _ _ _ (hgeo.hV.sig w) (hgeo.hV.cartan w)`. Use `choose C hC hCθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists _ _ _ _ _ (hgeo.hW.sig w) (hgeo.hW.cartan w)`. Establish `hA1 : ∀ w, GlobalTheory.RealLift.IsFrame ((1 : ℂ) • (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Γ.V.J).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (B.emb w))) (A w)` using `fun w => by`.
+
+Rewrite using `[incM_map_piInf', one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, GlobalTheory.RealLift.IsFrame (Complex.I • (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Γ.W.J).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf']`. Conclude with `hC w`.
+
+Establish `fr : GlobalTheory.RealLift.Framed B.emb (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Γ.V.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Γ.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ Γ.M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hz0 : ∀ (u : Matrix (Fin a) (Fin (a + a')) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) (t : ℝ), Γ.M.co.rho B.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd F t • u) 0 = 0`. Introduce `u t`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`. Establish `toD : ∀ u (f f₁ : SInf F (Fin a × Fin (a + a'))), GlobalTheory.RealLift.SD (fun t => Γ.M.co.rho B.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd F t • u)) f f₁ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ActsD (GlobalTheory.IndefiniteRowSideFull …` using `fun u f f₁ h => (GlobalTheory.T.archActionReadings_compatible F (Fin a × Fin (a + a')) f f₁ f₁).1 _ (hz0 u) h`. Establish `tw : ∀ w (c : Matrix (Ix (a - Γ.p) Γ.p) (Ix (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q)) ℂ) (e : ℂ), A w * (e • (Jm (a - Γ.p) Γ.p * c * Jm (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q))) * (C w)ᵀ = e • (Γ.V.θ w * (A w * c * (C w)ᵀ) * (Γ.W.θ w)ᵀ)`. Introduce `w c e`. Establish `h2 : (C w)ᵀ * (Γ.W.θ w)ᵀ = Jm (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q) * (C w)ᵀ`.
+
+Rewrite using `[← Matrix.transpose_mul, hCθ w, Matrix.transpose_mul, Jm_transpose'']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [← hAθ w, ← h2]; simp only [Matrix.mul_assoc]`. Establish `line : ∀ f, Γ.M.IsGauss B.ψ B.emb f → ∃ z : ℂ, f = z • Φ (PiTensorProduct.tprod ℂ fun _ => 1)`.
+
+Introduce and unpack `f ⟨ε, hε⟩`. Conclude with `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ Γ.M.co 1 Complex.I A C Φ hb.cm hb.std fr hΦ f ε (fun u u' hu hu' c hc hc' f1 f1' hf hf' => hε u u' hu hu' (fun w => by rw [hc' w, …`. Take `⟨z, hz⟩` from `line f₀ hG₀`. Take `⟨z', hz'⟩` from `line g hg`. Establish `hz0' : z ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hf₀ (by rw [hz, zero_smul])`. Conclude with `⟨z' / z, by rw [hz', hz, smul_smul, div_mul_cancel₀ _ hz0']⟩`.
+-/
 theorem gauss_eq_smul : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (B : Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : Chars F E) (om : Rep σ Γ.V Γ.W) (om' : Rep σ Γ.V' Γ.W),
     IsTriple B Γ X om om' → ∀ f₀, f₀ ≠ 0 → Γ.M.IsGauss B.ψ B.emb f₀ → ∀ g, Γ.M.IsGauss B.ψ B.emb g → ∃ c : ℂ, g = c • f₀ := by

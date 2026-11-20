@@ -10,17 +10,29 @@ def pcoc {R : Type} [CommRing R] {E E' : Spc} (f : E ⟶ E') {I : Cx R} {n : ℤ
     Cocycle ((chains R).obj E) I n :=
   zcomp (Cocycle.ofHom ((chains R).map f)) α (zero_add n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpull_mk {R : Type} [CommRing R] {E E' : Spc} (f : E ⟶ E') (I : Cx R) {n : ℤ} (α : Cocycle ((chains R).obj E') I n) :
     cpull ((chains R).map f) I n (CohomologyClass.mk α) = CohomologyClass.mk (pcoc f α) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pull_mk {R : Type} [CommRing R] {E E' : Spc} (f : E ⟶ E') (F : Shv R) {n : ℤ}
     (α : Cocycle ((chains R).obj E') (res R F) n) : pull R f F n (CohomologyClass.mk α) = CohomologyClass.mk (pcoc f α) := rfl
 
+/- English proof (translation)
+Simplify using `only [Sx.sub, Sx.map]`. Rewrite using `[← FunctorToTypes.comp, ← FunctorToTypes.comp, NatTrans.naturality]`.
+-/
 theorem sub_map {E E' : Spc} (f : E ⟶ E') {N : ℕ} {U : Scheme.{0}} (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     (Sx.map f x).sub j l h = Sx.map f (x.sub j l h) := by
   simp only [Sx.sub, Sx.map]
   rw [← FunctorToTypes.comp, ← FunctorToTypes.comp, NatTrans.naturality]
 
+/- English proof (translation)
+Introduce `U ⟨x⟩` and use `h U ⟨Sx.map f x⟩`.
+-/
 theorem inv_pull {q : ℕ} {E E' : Spc} (f : E ⟶ E') (h : Inv q E') : Inv q E :=
   fun U ⟨x⟩ => h U ⟨Sx.map f x⟩
 
@@ -68,6 +80,9 @@ def LeafKumEx : Prop := ∀ (q : ℕ) [NeZero q] {X : Scheme.{0}} (u : (Γ(X, �
 def LeafKumUniq : Prop := ∀ (q : ℕ) [NeZero q] {X : Scheme.{0}} (u : (Γ(X, ⊤))ˣ), IsUnit (q : Γ(X, ⊤)) → ∀ γ δ,
   KumProp q u γ → KumProp q u δ → CohomologyClass.mk γ = CohomologyClass.mk δ
 
+/- English proof (translation)
+Use `ext`. Express the relevant statement in the definitionally equal form `(x ≫ f).appTop.hom (u : Γ(X, ⊤)) = x.appTop.hom (f.appTop.hom u)`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem units_map_comp {Y X U : Scheme.{0}} (x : U ⟶ Y) (f : Y ⟶ X) (u : (Γ(X, ⊤))ˣ) :
     Units.map (x ≫ f).appTop.hom.toMonoidHom u = Units.map x.appTop.hom.toMonoidHom (Units.map f.appTop.hom.toMonoidHom u) := by
   ext
@@ -79,10 +94,16 @@ section Glue
 variable (hE : LeafEvPull)
 include hE
 
+/- English proof (translation)
+The claim follows from `hE R f α.1 p s h U x`.
+-/
 theorem ev_pcoc {R : Type} [CommRing R] {E E' : Spc} (f : E ⟶ E') {I : Cx R} {n : ℤ} (α : Cocycle ((chains R).obj E') I n)
     (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     ev (pcoc f α).1 p s h U x = ev α.1 p s h U (Sx.map f x) := hE R f α.1 p s h U x
 
+/- English proof (translation)
+Introduce `N w hw U x`. Use `(hE R f γ.1 N w hw U x).trans ((h N w hw U (Sx.map f x)).trans (Finset.sum_congr rfl fun p _ => ?_))` and prove the remaining obligations. Rewrite using `[sub_map, sub_map, ev_pcoc hE, ev_pcoc hE]`.
+-/
 theorem isAW_pull {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E E' : Spc} (f : E ⟶ E') {n m k : ℤ}
     (hk : n + m = k) {α : Cocycle ((chains R).obj E') I n} {β : Cocycle ((chains R).obj E') J m}
     {γ : Cocycle ((chains R).obj E') K k} (h : μ.IsAW hk α.1 β.1 γ.1) :
@@ -91,6 +112,11 @@ theorem isAW_pull {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E E'
   refine (hE R f γ.1 N w hw U x).trans ((h N w hw U (Sx.map f x)).trans (Finset.sum_congr rfl fun p _ => ?_))
   rw [sub_map, sub_map, ev_pcoc hE, ev_pcoc hE]
 
+/- English proof (translation)
+Take `⟨α, rfl⟩` from `a.mk_surjective`. Take `⟨β, rfl⟩` from `b.mk_surjective`. Take `⟨γ, hγ⟩` from `hA R μ E' hk α β`. Establish `e1 : μ.cup E' hk (CohomologyClass.mk α) (CohomologyClass.mk β) = CohomologyClass.mk γ` using `pick_spec (hS R μ E' hk) α β γ hγ`. Establish `e2 : μ.cup E hk (CohomologyClass.mk (pcoc f α)) (CohomologyClass.mk (pcoc f β)) = CohomologyClass.mk (pcoc f γ)` using `pick_spec (hS R μ E hk) _ _ _ (isAW_pull hE μ f hk hγ)`.
+
+Rewrite using `[e1, cpull_mk, cpull_mk, cpull_mk, e2]`.
+-/
 theorem cup_nat (hA : LeafCupAW) (hS : LeafCupSpec) {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E E' : Spc}
     (f : E ⟶ E') {n m k : ℤ} (hk : n + m = k) (a : CohomologyClass ((chains R).obj E') I n)
     (b : CohomologyClass ((chains R).obj E') J m) :
@@ -105,6 +131,9 @@ theorem cup_nat (hA : LeafCupAW) (hS : LeafCupSpec) {R : Type} [CommRing R] {I J
     pick_spec (hS R μ E hk) _ _ _ (isAW_pull hE μ f hk hγ)
   rw [e1, cpull_mk, cpull_mk, cpull_mk, e2]
 
+/- English proof (translation)
+Take `⟨α0, hα0⟩` from `hX q E h`. Take `⟨β, hβ, hβp⟩ : ∃ β : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 0)) 0, CohomologyClass.mk β = one q E ∧ OneProp q E β` from `pick_spec (P := fun c => ∃ β : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 0)) 0, CohomologyClass.mk β = c ∧ OneProp q E β) ⟨_, α0, rfl, hα0⟩`. Rewrite using `[← hβ]`. Conclude with `hU q E h β α hβp hα`.
+-/
 theorem one_eq (hX : LeafOneEx) (hU : LeafOneUniq) {q : ℕ} [NeZero q] {E : Spc} (h : Inv q E)
     (α : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 0)) 0) (hα : OneProp q E α) : one q E = CohomologyClass.mk α := by
   obtain ⟨α0, hα0⟩ := hX q E h
@@ -114,6 +143,9 @@ theorem one_eq (hX : LeafOneEx) (hU : LeafOneUniq) {q : ℕ} [NeZero q] {E : Spc
   rw [← hβ]
   exact hU q E h β α hβp hα
 
+/- English proof (translation)
+Take `⟨α0, hα0⟩` from `hX q L h`. Take `⟨β, hβ, hβp⟩ : ∃ β : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 1)) 2, CohomologyClass.mk β = c1 q L ∧ IsChernClassCocycle q L β` from `pick_spec (P := fun c => ∃ β : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 1)) 2, CohomologyClass.mk β = c ∧ IsChernClassCocycle q L β) ⟨_, α0, rfl, hα0⟩`. Rewrite using `[← hβ]`. Conclude with `hU q L h β γ hβp hγ`.
+-/
 theorem c1_eq (hX : ChernClassExists) (hU : ChernClassUnique) {q : ℕ} [NeZero q] {E : Spc} (L : E ⟶ ofCat (glCat 1)) (h : Inv q E)
     (γ : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 1)) 2) (hγ : IsChernClassCocycle q L γ) : c1 q L = CohomologyClass.mk γ := by
   obtain ⟨α0, hα0⟩ := hX q L h
@@ -123,6 +155,9 @@ theorem c1_eq (hX : ChernClassExists) (hU : ChernClassUnique) {q : ℕ} [NeZero 
   rw [← hβ]
   exact hU q L h β γ hβp hγ
 
+/- English proof (translation)
+Take `⟨α0, hα0⟩` from `hX q u h`. Take `⟨β, hβ, hβp⟩ : ∃ β : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 1)) 1, CohomologyClass.mk β = kum q u ∧ KumProp q u β` from `pick_spec (P := fun c => ∃ β : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 1)) 1, CohomologyClass.mk β = c ∧ KumProp q u β) ⟨_, α0, rfl, hα0⟩`. Rewrite using `[← hβ]`. Conclude with `hU q u h β γ hβp hγ`.
+-/
 theorem kum_eq (hX : LeafKumEx) (hU : LeafKumUniq) {q : ℕ} [NeZero q] {X : Scheme.{0}} (u : (Γ(X, ⊤))ˣ) (h : IsUnit (q : Γ(X, ⊤)))
     (γ : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res _ (tw q 1)) 1) (hγ : KumProp q u γ) : kum q u = CohomologyClass.mk γ := by
   obtain ⟨α0, hα0⟩ := hX q u h
@@ -135,6 +170,19 @@ theorem kum_eq (hX : LeafKumEx) (hU : LeafKumUniq) {q : ℕ} [NeZero q] {X : Sch
 
 end Glue
 
+/- English proof (translation)
+Introduce `q _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `E E' f n m i j a b`. Conclude with `cup_nat h1 h2 h3 (twPair q i j) f rfl a b`. Introduce `E E' f h'`.
+
+Take `⟨α, hα⟩` from `h4 q E' h'`. Rewrite using `[one_eq h1 h4 h5 h' α hα, pull_mk, one_eq h1 h4 h5 (inv_pull f h') (pcoc f α)]`. Introduce `U x ζ`. Conclude with `(ev_pcoc h1 f α 0 0 _ U x).trans (hα U _ ζ)`. Introduce `E E' f L h'`.
+
+Take `⟨γ, hγ⟩` from `h6 q L h'`. Rewrite using `[c1_eq h1 h6 h7 L h' γ hγ, pull_mk, c1_eq h1 h6 h7 (f ≫ L) (inv_pull f h') (pcoc f γ)]`. Use `⟨fun U x => ?_, fun U x v hv => ?_, fun U x v w hv hw => ?_⟩` and prove the remaining obligations. Conclude with `(ev_pcoc h1 f γ 0 2 _ U x).trans (hγ.1 U _)`. Conclude with `(ev_pcoc h1 f γ 1 1 _ U x).trans (hγ.2.1 U _ v hv)`.
+
+Use `(ev_pcoc h1 f γ 2 0 _ U x).trans (hγ.2.2 U _ v w ?_ ?_)` and prove the remaining obligations. Rewrite using `[sub_map]`. Conclude with `hv`. Rewrite using `[sub_map]`. Conclude with `hw`.
+
+Introduce `Y X f u hq`. Establish `hq' : IsUnit (q : Γ(Y, ⊤))` using `by simpa using hq.map f.appTop.hom`. Take `⟨γ, hγ⟩` from `h8 q u hq`. Rewrite using `[kum_eq h1 h8 h9 u hq γ hγ, pull_mk, kum_eq h1 h8 h9 _ hq' (pcoc (sch.map f) γ)]`. Use `⟨fun U x => ?_, fun U x v hv => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(ev_pcoc h1 (sch.map f) γ 1 0 _ U x).trans (hγ.1 U (x ≫ f))`. Conclude with `(ev_pcoc h1 (sch.map f) γ 0 1 _ U x).trans (hγ.2 U (x ≫ f) v (hv.trans (units_map_comp x f u).symm))`.
+-/
 theorem goal_of (h1 : LeafEvPull) (h2 : LeafCupAW) (h3 : LeafCupSpec) (h4 : LeafOneEx) (h5 : LeafOneUniq) (h6 : ChernClassExists)
     (h7 : ChernClassUnique) (h8 : LeafKumEx) (h9 : LeafKumUniq) : LateralTheory.E.D2.LeafA6nat := by
   intro q _

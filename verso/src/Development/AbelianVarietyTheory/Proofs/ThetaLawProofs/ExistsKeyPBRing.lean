@@ -16,6 +16,17 @@ open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Establish `h` using `isGrpPullback_pullback x.P.A (spMap f)`. Set `φ : ((Over.pullback (spMap f)).obj x.P.A).left ⟶ x.P.A.left` to `pullback.fst x.P.A.hom (spMap f)`. Express the relevant statement in the definitionally equal form `IsGrpPullback _ _ _ φ at h`. Establish `hL'` using `pull_isLB x.P.isLB φ`. Establish `hw` using `(isGen_iff _).1 (idIso_isGen hL')`.
+
+Set `P' : Out.PolAV (Sp R')` to `{ A := (Over.pullback (spMap f)).obj x.P.A isAb := Out.TLinPf.isAb_pullback (spMap f) x.P.A x.P.isAb g := x.P.g smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 x.P.smoothDim L := x.P.L.pull φ isLB := hL' rigid := PolBaseChange.rigidified_pull …`. Establish `he : eSec P'.A ≫ φ = spMap f ≫ eSec x.P.A` using `PolBaseChange.eSec_comm h`. Establish `hr : (rigPullOf φ (spMap f) he x.P.L x.rig).IsGen` using `Out.LBxP.isGen_pullAlong x.P.L φ (spMap f) (fun _ : PUnit => eSec x.P.A) (fun _ => 1) (fun _ => eSec P'.A) (fun _ => he) x.rig x.rig_gen`. Take `⟨th', hth'⟩` from `sec_pull_down hw x.P.isLB hL' x.th`. Establish `c₁ : IsCommMonObj x.P.A` using `x.P.isAb.comm`.
+
+Establish `c₂ : IsCommMonObj P'.A` using `P'.isAb.comm`. Take `⟨v', hb', hv'⟩` from `exists_isLieBasis_baseChange R R' f x.P.A P'.A φ h x.P.isAb.smooth x.P.g x.v x.basis`. Use `⟨⟨P', x.g_pos, _, hr, th', fun s => ?_, v', hb'⟩, φ, he, idIso _, rfl, Chart.dualMapR f, h, idIso_isGen hL', fun p => hr p.1 p.2, appLE_eq_of_stalk _ x.th th' (hth' _ (𝟙 _)), fun a => ?_, ?_, hv'⟩` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `x.th_ne (spMap f s)`. Take `⟨y, rfl, hy⟩` from `Scheme.exists_preimage_of_isPullback h.1 z s hz`.
+
+Take `⟨k, hk, u⟩` from `(mem_nonzeroLocus _ _).1 hz'`. Use `⟨y, hy, (mem_nonzeroLocus _ _).2 ⟨fun _ => k, mem_pull.2 hk, ?_⟩⟩` and prove the remaining obligations. Establish `u₁ : IsUnit (gs φ y _ (x.th.f k))` using `by rw [gs_stalkMap φ y _ hk]; exact u.map _`. Establish `e` using `hth' _ (𝟙 _) y k (fun _ => k) hk (mem_pull.2 hk)`. Rewrite `e` using `[Category.id_comp]`.
+
+Conclude with `isUnit_of_mul_isUnit_right (e ▸ u₁)`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+-/
 theorem exists_keyPB_ring {R R' : Type} [CommRing R] [CommRing R'] (x : KeyIn R) (f : R →+* R') :
     ∃ x' : KeyIn R', KeyPB x' x f := by
   have h := isGrpPullback_pullback x.P.A (spMap f)
@@ -56,6 +67,9 @@ theorem exists_keyPB_ring {R R' : Type} [CommRing R] [CommRing R'] (x : KeyIn R)
   · ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
   · ext <;> simp [Chart.dualMapR]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ x f` and use `exists_keyPB_ring x f`.
+-/
 theorem keyIn_baseChange : Out.PolBaseChangeSt → ∀ (R R' : Type) [CommRing R] [CommRing R'] (x : KeyIn R) (f : R →+* R'),
     ∃ x' : KeyIn R', KeyPB x' x f :=
   fun _ _ _ _ _ x f => exists_keyPB_ring x f

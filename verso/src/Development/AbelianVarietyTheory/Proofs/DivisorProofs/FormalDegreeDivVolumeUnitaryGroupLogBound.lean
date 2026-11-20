@@ -9,6 +9,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues GlobalTheory.Ade
 
 namespace GlobalTheory.LowRow
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.ChartRestriction.DS.volU`. Establish `hrpos : (0 : ℝ) < (r : ℝ) ^ r` using `by positivity`. Rewrite using `[show (((r : ℝ) ^ r)⁻¹) ^ r = ∏ _i ∈ Finset.range r, ((r : ℝ) ^ r)⁻¹ by`. Rewrite using `[Finset.prod_const, Finset.card_range]]`. Apply `Finset.prod_le_prod` to reduce the goal to its premises.
+
+Introduce `i _`. Check the signs of the components of the expression. Introduce `i hi`. Establish `hi' : i < r` using `Finset.mem_range.mp hi`. Establish `hfac : (i.factorial : ℝ) ≤ (r : ℝ) ^ r`.
+
+Establish `h1 : i.factorial ≤ r.factorial` using `Nat.factorial_le hi'.le`. Establish `h2 : r.factorial ≤ r ^ r` using `Nat.factorial_le_pow r`. Conclude with `h1.trans h2` after adjusting the coercions. Establish `hfpos : (0 : ℝ) < (i.factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos i`. Establish `hpi : (1 : ℝ) ≤ 2 * Real.pi ^ (i + 1)`.
+
+Establish `: (1 : ℝ) ≤ Real.pi ^ (i + 1)` using `one_le_pow₀ (by linarith [Real.pi_gt_three])`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem volU_ge_inv_pow_of_formalDeg (r : ℕ) (hr : 1 ≤ r) :
     (((r : ℝ) ^ r)⁻¹) ^ r ≤ ReciprocityTheory.ChartRestriction.DS.volU r := by
   unfold ReciprocityTheory.ChartRestriction.DS.volU
@@ -31,6 +40,33 @@ theorem volU_ge_inv_pow_of_formalDeg (r : ℕ) (hr : 1 ≤ r) :
       _ = 1 / (i.factorial : ℝ) := by rw [one_div]
       _ ≤ 2 * Real.pi ^ (i + 1) / (i.factorial : ℝ) := by gcongr
 
+/- English proof (translation)
+Introduce `r n d lam hr hn hd hlam hbd`. Use `set P : ℝ := ∏ a : Fin r, ∏ b ∈ Finset.univ.filter (fun b : Fin r => a < b), |lam a - lam b| with hPdef`. Use `set D : ℝ := ∏ a : Fin r, ∏ b ∈ Finset.univ.filter (fun b : Fin r => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)) with hDdef`. Use `set V : ℝ := ReciprocityTheory.ChartRestriction.DS.volU r with hVdef`. Use `set M : ℝ := d + n + 3 with hMdef`.
+
+Establish `hrR : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hnR : (3 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hM1 : (1 : ℝ) ≤ M` using `by rw [hMdef]; linarith`. Establish `hVlow` using `volU_ge_inv_pow_of_formalDeg r hr`. Establish `hVpos : 0 < V` using `lt_of_lt_of_le (by positivity) hVlow`.
+
+Establish `hPpos : 0 < P`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `b hb`.
+
+Establish `hab : a < b` using `(Finset.mem_filter.mp hb).2`. Conclude with `abs_pos.mpr (sub_ne_zero.mpr (hlam hab).ne')`. Establish `hD1 : 1 ≤ D`. Establish `: (∏ _a : Fin r, ∏ _b ∈ Finset.univ.filter (fun b : Fin r => _a < b), (1 : ℝ)) ≤ D`. Apply `Finset.prod_le_prod` to reduce the goal to its premises.
+
+Introduce `a _`. Check the signs of the components of the expression. Introduce `a _`. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `b _`.
+
+Check the signs of the components of the expression. Introduce `b hb`. Establish `hab : a < b` using `(Finset.mem_filter.mp hb).2`. Establish `: (a : ℕ) + 1 ≤ (b : ℕ)` using `hab`. Establish `: ((a : ℕ) : ℝ) + 1 ≤ ((b : ℕ) : ℝ)` using `by exact_mod_cast this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `using this`. Establish `hDpos : 0 < D` using `lt_of_lt_of_le one_pos hD1`. Establish `hPle : P ≤ M ^ (r * r)`. Establish `: P ≤ ∏ _a : Fin r, M ^ r`.
+
+Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `a _`. Conclude with `Finset.prod_nonneg (fun b _ => abs_nonneg _)`. Introduce `a _`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `pow_le_pow_right₀ hM1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hVinv : V⁻¹ ≤ (r : ℝ) ^ (r * r)`. Establish `h` using `inv_anti₀ (by positivity) hVlow`.
+
+Rewrite `h` using `[inv_pow, inv_inv, ← pow_mul]`. Conclude with `h`. Establish `hQpos : 0 < P / D / V` using `by positivity`. Establish `hQle : P / D / V ≤ (M * r) ^ (r * r)`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `div_le_self hPpos.le hD1`. Use `_ = P * V⁻¹ := div_eq_mul_inv _ _`. Use `_ ≤ M ^ (r * r) * (r : ℝ) ^ (r * r) := by`. Apply `mul_le_mul hPle hVinv (by positivity) (by positivity)` to reduce the goal to its premises. Use `_ = (M * r) ^ (r * r) := (mul_pow _ _ _).symm`.
+
+Use `⟨hVpos, div_pos hPpos hDpos, ?_⟩` and prove the remaining obligations. Establish `hsq : (1 : ℝ) ≤ Real.sqrt 2`. Rewrite using `[show (1:ℝ) = Real.sqrt 1 by simp]; exact Real.sqrt_le_sqrt (by norm_num)`. Establish `hMn : M ≤ n * (d + 2)`. Rewrite using `[hMdef]; nlinarith [mul_nonneg (by linarith : (0:ℝ) ≤ n - 1) hd]`.
+
+Establish `hr2 : (r : ℝ) ≤ 2 * Real.sqrt 2 * (r : ℝ) ^ 2` using `by nlinarith`. Establish `hX : M * r ≤ 2 * Real.sqrt 2 * (r : ℝ) ^ 2 * n * (d + 2)`. Combine the equalities or inequalities in the displayed calculation. Establish `hMr : 0 < M * r` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem formalDeg_div_volU_log_bound : ∀ (r n : ℕ) (d : ℝ) (lam : Fin r → ℝ), 1 ≤ r → 3 ≤ n → 0 ≤ d → StrictAnti lam → (∀ a b, |lam a - lam b| ≤ d + n + 3) → 0 < ReciprocityTheory.ChartRestriction.DS.volU r ∧ 0 < (∏ a : Fin r, ∏ b ∈ Finset.univ.filter (fun b : Fin r => a < b), |lam a - lam b|) / (∏ a : Fin r, ∏ b ∈ Finset.univ.filter (fun b : Fin r => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))) ∧ Real.log ((∏ a : Fin r, ∏ b ∈ Finset.univ.filter (fun b : Fin r => a < b), |lam a - lam b|) / (∏ a : Fin r, ∏ b ∈ Finset.univ.filter (fun b : Fin r => a < b), (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))) / ReciprocityTheory.ChartRestriction.DS.volU r) ≤ 2 + (r : ℝ) ^ 2 * Real.log (2 * Real.sqrt 2 * (r : ℝ) ^ 2 * n * (d + 2)) := by
   intro r n d lam hr hn hd hlam hbd
   set P : ℝ := ∏ a : Fin r, ∏ b ∈ Finset.univ.filter (fun b : Fin r => a < b), |lam a - lam b| with hPdef

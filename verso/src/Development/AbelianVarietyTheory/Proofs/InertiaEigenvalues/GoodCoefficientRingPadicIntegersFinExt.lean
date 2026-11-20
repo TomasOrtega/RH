@@ -9,6 +9,9 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.LocalIntegers
 
+/- English proof (translation)
+Introduce `l _ LL` and use `(good_integers l LL).1`.
+-/
 theorem goodO_integers : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l), GoodO (Qp := ℚ_[l]) ↥LL.1 ↥(OL LL) :=
   fun l _ LL => (good_integers l LL).1
 

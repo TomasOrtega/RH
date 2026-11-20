@@ -10,6 +10,19 @@ namespace ModelDimension.GSph
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hmass : γ Set.univ = ν Set.univ * μ Set.univ`. Establish `h1 : γ Set.univ = (γ.map φ) Set.univ`. Rewrite using `[Measure.map_apply hφ MeasurableSet.univ, Set.preimage_univ]`. Rewrite using `[h1, hmap, Measure.map_apply hT MeasurableSet.univ, Set.preimage_univ, ← Set.univ_prod_univ, Measure.prod_prod]`. Establish `hνfin : ν Set.univ ≠ ⊤`.
+
+Establish `h2 : ν Set.univ * μ Set.univ ≠ ⊤` using `by rw [← hmass]; exact measure_ne_top γ _`. Conclude with `(ENNReal.lt_top_of_mul_ne_top_left h2 hμ).ne`. Use `haveI : IsFiniteMeasure ν := ⟨lt_top_iff_ne_top.2 hνfin⟩`. Establish `hF' : AEStronglyMeasurable F ((ν.prod μ).map T)` using `hmap ▸ hF`. Establish `hFT : AEStronglyMeasurable (fun p => F (T p)) (ν.prod μ)` using `hF'.comp_measurable hT`.
+
+Establish `hintT : Integrable (fun p => F (T p)) (ν.prod μ)`. Rewrite using `[integrable_prod_iff hFT]`. Prove the components needed by the constructor for the conclusion. Use `filter_upwards [hinv] with s hs`. Simplify using `only [hs]`.
+
+Conclude with `hint`. Use `(integrable_const (∫ u, ‖F u‖ ∂μ)).congr ?_ filter_upwards [hinv] with s hs` and prove the remaining obligations. Simplify using `only [hs]`. Establish `hintMap : Integrable F ((ν.prod μ).map T)` using `(integrable_map_measure hF' hT.aemeasurable).2 hintT`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `(integrable_map_measure hF hφ.aemeasurable).1 ?_` and prove the remaining obligations. Rewrite using `[hmap]`. Conclude with `hintMap`. Rewrite using `[← integral_map hφ.aemeasurable hF, hmap, integral_map hT.aemeasurable hF', integral_prod _ hintT]`. Establish `h3 : (fun s => ∫ u, F (T (s, u)) ∂μ) =ᵐ[ν] fun _ => ∫ u, F u ∂μ` using `by filter_upwards [hinv] with s hs`.
+
+Simplify using `only [hs]`. Rewrite using `[integral_congr_ae h3, integral_const, smul_eq_mul, average_eq, smul_eq_mul, hmass, ENNReal.toReal_mul]`. Establish `h4 : (μ Set.univ).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨hμ, measure_ne_top μ _⟩`. Simplify using `only [measureReal_def]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem transfer {Ω S X : Type*} [MeasurableSpace Ω] [MeasurableSpace S] [MeasurableSpace X]
     (γ : Measure Ω) [IsFiniteMeasure γ] (ν : Measure S) (μ : Measure X) [IsFiniteMeasure μ]
     (hμ : μ Set.univ ≠ 0) {φ : Ω → X} (hφ : Measurable φ) {T : S × X → X} (hT : Measurable T)
@@ -59,9 +72,17 @@ def sc (c : Fin e → ℝ) : (Fin e × Fin n → ℂ) →ₗ[ℂ] (Fin e × Fin 
   map_add' u v := by funext ij; simp [mul_add]
   map_smul' a u := by funext ij; simp [mul_left_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sc_apply (c : Fin e → ℝ) (u : Fin e × Fin n → ℂ) (ij : Fin e × Fin n) :
     sc c u ij = (c ij.1 : ℂ) * u ij := rfl
 
+/- English proof (translation)
+Introduce `v`. Use `⟨fun ij => v ij / (c ij.1 : ℂ), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `ij`. Establish `hne : (c ij.1 : ℂ) ≠ 0` using `by exact_mod_cast (hc ij.1).ne'`. Simplify using `only [sc_apply]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem sc_surjective {c : Fin e → ℝ} (hc : ∀ i, 0 < c i) :
     Function.Surjective (sc (n := n) c) := by
   intro v
@@ -73,12 +94,23 @@ theorem sc_surjective {c : Fin e → ℝ} (hc : ∀ i, 0 < c i) :
 
 def rowN (h : HermNorm n) (u : Fin e × Fin n → ℂ) (i : Fin e) : ℝ := h.norm fun j => u (i, j)
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem rowN_nonneg (h : HermNorm n) (u : Fin e × Fin n → ℂ) (i : Fin e) : 0 ≤ rowN h u i :=
   Real.sqrt_nonneg _
 
+/- English proof (translation)
+The claim follows from `continuous_hermNorm_group h i`.
+-/
 theorem continuous_rowN (h : HermNorm n) (i : Fin e) :
     Continuous fun u : Fin e × Fin n → ℂ => rowN h u i := continuous_hermNorm_group h i
 
+/- English proof (translation)
+Unfold `rowN HermNorm.norm`. Establish `h1 : (fun j => sc c u (i, j)) = (c i : ℂ) • fun j => u (i, j)`. Use function extensionality and compare the values at `j`. Simplify using `[sc_apply]`. Rewrite using `[h1, Matrix.mulVec_smul]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, ← Finset.mul_sum]`. Rewrite using `[Real.sqrt_mul (by positivity), Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sqrt_sq (hc i).le]`.
+-/
 theorem rowN_sc (h : HermNorm n) {c : Fin e → ℝ} (hc : ∀ i, 0 < c i) (u : Fin e × Fin n → ℂ)
     (i : Fin e) : rowN h (sc c u) i = c i * rowN h u i := by
   unfold rowN HermNorm.norm
@@ -89,6 +121,11 @@ theorem rowN_sc (h : HermNorm n) {c : Fin e → ℝ} (hc : ∀ i, 0 < c i) (u : 
   rw [Real.sqrt_mul (by positivity), Complex.norm_real, Real.norm_eq_abs, sq_abs,
     Real.sqrt_sq (hc i).le]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ij`. Establish `h1 : (h.norm fun j => sc c u (ij.1, j)) = c ij.1 * h.norm fun j => u (ij.1, j)` using `rowN_sc h hc u ij.1`. Simplify using `only [nrmGroups]`. Rewrite using `[h1, sc_apply]`. Establish `hne : (c ij.1 : ℂ) ≠ 0` using `by exact_mod_cast (hc ij.1).ne'`.
+
+Use `push_cast`. Rewrite using `[mul_inv, mul_assoc, ← mul_assoc _ (c ij.1 : ℂ), mul_comm _ (c ij.1 : ℂ), ← mul_assoc, ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`.
+-/
 theorem nrm_sc (h : HermNorm n) {c : Fin e → ℝ} (hc : ∀ i, 0 < c i) (u : Fin e × Fin n → ℂ) :
     nrmGroups h e (sc c u) = nrmGroups h e u := by
   funext ij
@@ -101,9 +138,19 @@ theorem nrm_sc (h : HermNorm n) {c : Fin e → ℝ} (hc : ∀ i, 0 < c i) (u : F
   rw [mul_inv, mul_assoc, ← mul_assoc _ (c ij.1 : ℂ), mul_comm _ (c ij.1 : ℂ), ← mul_assoc,
     ← mul_assoc, inv_mul_cancel₀ hne, one_mul]
 
+/- English proof (translation)
+The claim follows from `(LinearMap.continuous_of_finiteDimensional _).measurable`.
+-/
 theorem measurable_sc (c : Fin e → ℝ) : Measurable (sc (n := n) c) :=
   (LinearMap.continuous_of_finiteDimensional _).measurable
 
+/- English proof (translation)
+Use `set f : (Fin e × Fin n → ℂ) →ₗ[ℝ] (Fin e × Fin n → ℂ) := (sc (n := n) c).restrictScalars ℝ with hf`. Establish `hinj : Function.Injective f`. Introduce `u v huv`. Use function extensionality and compare the values at `ij`. Establish `h1` using `congrFun huv ij`.
+
+Simplify using `only [hf, LinearMap.coe_restrictScalars, sc_apply] at h1`. Establish `hc' : (c ij.1 : ℂ) ≠ 0` using `by exact_mod_cast (hc ij.1).ne'`. Conclude with `mul_left_cancel₀ hc' h1`. Establish `hsurj : Function.Surjective f` using `sc_surjective hc`. Establish `hdet : LinearMap.det f ≠ 0` using `((LinearMap.isUnit_iff_isUnit_det f).1 ((Module.End.isUnit_iff f).2 ⟨hinj, hsurj⟩)).ne_zero`.
+
+Use `⟨ENNReal.ofReal |(LinearMap.det f)⁻¹|, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ENNReal.ofReal_pos.2 (abs_pos.2 (inv_ne_zero hdet))`. Conclude with `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Fin e × Fin n → ℂ)) hdet`.
+-/
 theorem map_sc {c : Fin e → ℝ} (hc : ∀ i, 0 < c i) :
     ∃ d : ℝ≥0∞, 0 < d ∧ (volume : Measure (Fin e × Fin n → ℂ)).map (sc c) = d • volume := by
   classical
@@ -122,6 +169,21 @@ theorem map_sc {c : Fin e → ℝ} (hc : ∀ i, 0 < c i) :
   · exact ENNReal.ofReal_pos.2 (abs_pos.2 (inv_ne_zero hdet))
   · exact Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Fin e × Fin n → ℂ)) hdet
 
+/- English proof (translation)
+Establish `hcov : ∀ u : Fin e × Fin n → ℂ, ∃ m : ℕ, sc (n` using `n) (fun _ => (1 : ℝ) / (m + 1)) u ∈ ballProd h e := by`. Introduce `u`. Take `⟨m, hm⟩` from `exists_nat_gt (∑ i, rowN h u i)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify using `only [ballProd, Set.mem_setOf_eq]`.
+
+Introduce `i`. Establish `h1` using `rowN_sc h (c := fun _ => (1 : ℝ) / (m + 1)) (fun _ => by positivity) u i`. Express the relevant statement in the definitionally equal form `rowN h (sc (fun _ => (1 : ℝ) / (m + 1)) u) i < 1`. Rewrite using `[h1]`. Establish `hle : rowN h u i ≤ ∑ i, rowN h u i` using `Finset.single_le_sum (fun j _ => rowN_nonneg h u j) (Finset.mem_univ i)`.
+
+Establish `hpos : (0 : ℝ) < m + 1` using `by positivity`. Rewrite using `[div_mul_eq_mul_div, one_mul, div_lt_one hpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF : ∀ m : ℕ, AEStronglyMeasurable (fun u => G (nrmGroups h e u)) (volume.restrict (sc (n` using `n) (fun _ => (1 : ℝ) / (m + 1)) ⁻¹' ballProd h e)) := by`. Introduce `m`.
+
+Establish `hc : ∀ i : Fin e, (0 : ℝ) < (fun _ => (1 : ℝ) / (m + 1)) i` using `fun _ => by positivity`. Take `⟨d, hd, hmap⟩` from `map_sc (n := n) hc`. Establish `hq : Measure.QuasiMeasurePreserving (sc (n` using `n) (fun _ => (1 : ℝ) / (m + 1))) (volume.restrict (sc (n := n) (fun _ => (1 : ℝ) / (m + 1)) ⁻¹' ballProd h e)) (volume.restrict (ballProd h e)) := by`. Use `⟨measurable_sc _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Measure.restrict_map (measurable_sc _) (isOpen_ballProd h e).measurableSet, hmap, Measure.restrict_smul]`.
+
+Conclude with `Measure.smul_absolutelyContinuous`. Establish `h2` using `hG.comp_quasiMeasurePreserving hq`. Establish `heq : (fun u => G (nrmGroups h e u)) = (fun u => G (nrmGroups h e u)) ∘ sc (n` using `n) (fun _ => (1 : ℝ) / (m + 1)) := by`. Use function extensionality and compare the values at `u`. Simplify using `only [Function.comp, nrm_sc h hc u]`.
+
+Rewrite using `[heq]`. Conclude with `h2`. Establish `hU : (⋃ m : ℕ, sc (n` using `n) (fun _ => (1 : ℝ) / (m + 1)) ⁻¹' ballProd h e) = Set.univ := by`. Use extensionality with `u`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, Set.mem_univ, iff_true]`.
+
+Conclude with `hcov u`. Rewrite using `[← Measure.restrict_univ (μ := volume), ← hU]`. Conclude with `aestronglyMeasurable_iUnion_iff.2 hF`.
+-/
 theorem aesm (h : HermNorm n) (G : (Fin e × Fin n → ℂ) → ℝ)
     (hG : AEStronglyMeasurable (fun u => G (nrmGroups h e u)) (volume.restrict (ballProd h e))) :
     AEStronglyMeasurable (fun u => G (nrmGroups h e u)) volume := by
@@ -169,6 +231,9 @@ theorem aesm (h : HermNorm n) (G : (Fin e × Fin n → ℂ) → ℝ)
 def ex1 : Measure ℝ :=
   (volume.restrict (Set.Ioi 0)).withDensity fun s => ENNReal.ofReal (Real.exp (-s))
 
+/- English proof (translation)
+Rewrite using `[ex1, withDensity_apply _ measurableSet_Ioi, Measure.restrict_restrict measurableSet_Ioi, Set.Ioi_inter_Ioi, sup_eq_left.2 ht, ← ofReal_integral_eq_lintegral_ofReal (integrableOn_exp_neg_Ioi t) (ae_of_all _ fun x => (Real.exp_pos _).le), integral_exp_neg_Ioi]`.
+-/
 theorem exponential_measure_Ioi {t : ℝ} (ht : 0 ≤ t) : ex1 (Set.Ioi t) = ENNReal.ofReal (Real.exp (-t)) := by
   rw [ex1, withDensity_apply _ measurableSet_Ioi, Measure.restrict_restrict measurableSet_Ioi,
     Set.Ioi_inter_Ioi, sup_eq_left.2 ht,
@@ -179,6 +244,9 @@ instance exponential_measure_finite : IsFiniteMeasure ex1 := ⟨by
   rw [ex1, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ]
   exact (integrableOn_exp_neg_Ioi 0).lintegral_lt_top⟩
 
+/- English proof (translation)
+The claim follows from `(withDensity_absolutelyContinuous _ _).ae_le (ae_restrict_mem measurableSet_Ioi)`.
+-/
 theorem exponential_measure_pos_ae : ∀ᵐ s ∂ex1, 0 < s :=
   (withDensity_absolutelyContinuous _ _).ae_le (ae_restrict_mem measurableSet_Ioi)
 
@@ -188,6 +256,9 @@ instance isFiniteMeasure_piExponential : IsFiniteMeasure (exP e) := by
   unfold exP
   infer_instance
 
+/- English proof (translation)
+Unfold `exP`. Rewrite using `[ae_all_iff]`. Introduce `i`. Conclude with `(Measure.tendsto_eval_ae_ae (i := i)).eventually exponential_measure_pos_ae`.
+-/
 theorem ae_pos_piExponential : ∀ᵐ s ∂(exP e), ∀ i, 0 < s i := by
   unfold exP
   rw [ae_all_iff]
@@ -197,6 +268,9 @@ theorem ae_pos_piExponential : ∀ᵐ s ∂(exP e), ∀ i, 0 < s i := by
 def rowGauss (h : HermNorm n) (u : Fin e × Fin n → ℂ) : ℝ≥0∞ :=
   ENNReal.ofReal (Real.exp (-∑ i, rowN h u i ^ 2))
 
+/- English proof (translation)
+Unfold `rowGauss`. Use `ENNReal.measurable_ofReal.comp (Real.measurable_exp.comp ?_)` and prove the remaining obligations. Use `Measurable.neg (Finset.measurable_sum _ fun i _ => ?_)` and prove the remaining obligations. Conclude with `((continuous_rowN h i).measurable).pow_const 2`.
+-/
 theorem measurable_rowGauss (h : HermNorm n) : Measurable (rowGauss (e := e) h) := by
   unfold rowGauss
   refine ENNReal.measurable_ofReal.comp (Real.measurable_exp.comp ?_)
@@ -206,6 +280,9 @@ theorem measurable_rowGauss (h : HermNorm n) : Measurable (rowGauss (e := e) h) 
 def under (h : HermNorm n) (e : ℕ) : Set ((Fin e → ℝ) × (Fin e × Fin n → ℂ)) :=
   {p | ∀ i, rowN h p.2 i ^ 2 < p.1 i}
 
+/- English proof (translation)
+Establish `e1 : under h e = ⋂ i, {p | rowN h p.2 i ^ 2 < p.1 i}`. Use extensionality with `p`. Simplify using `[under]`. Rewrite using `[e1]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_lt (((continuous_rowN h i).comp continuous_snd).pow 2) ((continuous_apply i).comp continuous_fst)`.
+-/
 theorem isOpen_under (h : HermNorm n) : IsOpen (under h e) := by
   have e1 : under h e = ⋂ i, {p | rowN h p.2 i ^ 2 < p.1 i} := by
     ext p
@@ -215,6 +292,11 @@ theorem isOpen_under (h : HermNorm n) : IsOpen (under h e) := by
     isOpen_lt (((continuous_rowN h i).comp continuous_snd).pow 2)
       ((continuous_apply i).comp continuous_fst)
 
+/- English proof (translation)
+Establish `hpre : (fun s => (s, u)) ⁻¹' under h e = Set.univ.pi fun i => Set.Ioi (rowN h u i ^ 2)`. Use extensionality with `s`. Simplify using `[under]`. Rewrite using `[hpre, exP, Measure.pi_pi]`. Repeatedly rewrite using `[exponential_measure_Ioi (sq_nonneg _)]`.
+
+Rewrite using `[rowGauss, ← ENNReal.ofReal_prod_of_nonneg (fun i _ => (Real.exp_pos _).le), ← Real.exp_sum, Finset.sum_neg_distrib]`.
+-/
 theorem piExponential_preimage_under (h : HermNorm n) (u : Fin e × Fin n → ℂ) :
     exP e ((fun s => (s, u)) ⁻¹' under h e) = rowGauss h u := by
   have hpre : (fun s => (s, u)) ⁻¹' under h e = Set.univ.pi fun i => Set.Ioi (rowN h u i ^ 2) := by
@@ -227,6 +309,11 @@ theorem piExponential_preimage_under (h : HermNorm n) (u : Fin e × Fin n → �
 def scT (p : (Fin e → ℝ) × (Fin e × Fin n → ℂ)) : Fin e × Fin n → ℂ :=
   sc (fun i => √(p.1 i)) p.2
 
+/- English proof (translation)
+Unfold `scT`. Use `measurable_pi_lambda _ fun ij => ?_` and prove the remaining obligations. Simplify using `only [sc_apply]`. Use `Measurable.mul ?_ ?_` and prove the remaining obligations. Conclude with `Complex.continuous_ofReal.measurable.comp (Real.continuous_sqrt.measurable.comp ((measurable_pi_apply ij.1).comp measurable_fst))`.
+
+Conclude with `(measurable_pi_apply ij).comp measurable_snd`.
+-/
 theorem measurable_scT : Measurable (scT (n := n) (e := e)) := by
   unfold scT
   refine measurable_pi_lambda _ fun ij => ?_
@@ -239,9 +326,29 @@ theorem measurable_scT : Measurable (scT (n := n) (e := e)) := by
 def wt (h : HermNorm n) (s : Fin e → ℝ) : ℝ≥0∞ :=
   volume (Prod.mk s ⁻¹' under h e) / volume (ballProd h e)
 
+/- English proof (translation)
+The claim follows from `(measurable_measure_prodMk_left (isOpen_under h).measurableSet).div_const _`.
+-/
 theorem measurable_wt (h : HermNorm n) : Measurable (wt (e := e) h) :=
   (measurable_measure_prodMk_left (isOpen_under h).measurableSet).div_const _
 
+/- English proof (translation)
+Use `set c : Fin e → ℝ := fun i => √(s i) with hcd`. Establish `hc : ∀ i, 0 < c i` using `fun i => Real.sqrt_pos.2 (hs i)`. Use `set c' : Fin e → ℝ := fun i => (c i)⁻¹ with hcd'`. Establish `hc' : ∀ i, 0 < c' i` using `fun i => inv_pos.2 (hc i)`. Establish `hcomp : ∀ u, sc (n` using `n) c (sc c' u) = u := by`.
+
+Introduce `u`. Use function extensionality and compare the values at `ij`. Simplify using `only [sc_apply, hcd', ← mul_assoc, Complex.ofReal_inv]`. Rewrite using `[mul_inv_cancel₀ (by exact_mod_cast (hc ij.1).ne'), one_mul]`. Establish `hslice : Prod.mk s ⁻¹' under h e = sc (n` using `n) c' ⁻¹' ballProd h e := by`.
+
+Use extensionality with `u`. Use `show (∀ i, rowN h u i ^ 2 < s i) ↔ ∀ i, rowN h (sc c' u) i < 1`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[rowN_sc h hc' u i, ← Real.lt_sqrt (rowN_nonneg h u i)]`. Use `show rowN h u i < c i ↔ (c i)⁻¹ * rowN h u i < 1`.
+
+Rewrite using `[inv_mul_lt_iff₀ (hc i), mul_one]`. Establish `hpre : Prod.mk s ⁻¹' (under h e ∩ Prod.snd ⁻¹' A) = sc (n` using `n) c' ⁻¹' (ballProd h e ∩ sc c ⁻¹' A) := by`. Rewrite using `[Set.preimage_inter, hslice, Set.preimage_inter]`. Use `congr 1`. Use extensionality with `u`.
+
+Simplify using `[hcomp]`. Establish `hmeasA : MeasurableSet (sc (n` using `n) c ⁻¹' A) := measurable_sc c hA`. Establish `hball : MeasurableSet (ballProd h e)` using `(isOpen_ballProd h e).measurableSet`. Take `⟨d, -, hd⟩` from `map_sc (n := n) hc'`. Establish `hvol : ∀ X, MeasurableSet X → volume (sc (n` using `n) c' ⁻¹' X) = d * volume X := by`.
+
+Introduce `X hX`. Establish `h1` using `congrArg (fun μ : Measure (Fin e × Fin n → ℂ) => μ X) hd`. Simplify using `only [Measure.smul_apply, smul_eq_mul] at h1`. Rewrite `h1` using `[Measure.map_apply (measurable_sc c') hX]`. Conclude with `h1`.
+
+Establish `hwt : wt h s = d`. Rewrite using `[wt, hslice, hvol _ hball]`. Conclude with `ENNReal.mul_div_cancel_right (volume_ballProd_pos h e).ne' (volume_ballProd_lt_top h e).ne`. Rewrite using `[hwt, hpre, hvol _ (hball.inter hmeasA)]`. Express the relevant statement in the definitionally equal form `d * (volume.restrict (ballProd h e)) (sc (n := n) c ⁻¹' A) = _`.
+
+Rewrite using `[Measure.restrict_apply hmeasA, Set.inter_comm]`.
+-/
 theorem wt_mul (h : HermNorm n) {s : Fin e → ℝ} (hs : ∀ i, 0 < s i) {A : Set (Fin e × Fin n → ℂ)}
     (hA : MeasurableSet A) :
     wt h s * (volume.restrict (ballProd h e)) (Prod.mk s ⁻¹' (scT ⁻¹' A)) =
@@ -285,6 +392,15 @@ theorem wt_mul (h : HermNorm n) {s : Fin e → ℝ} (hs : ∀ i, 0 < s i) {A : S
   change d * (volume.restrict (ballProd h e)) (sc (n := n) c ⁻¹' A) = _
   rw [Measure.restrict_apply hmeasA, Set.inter_comm]
 
+/- English proof (translation)
+Use extensionality with `A hA`. Establish `hm : MeasurableSet (under h e ∩ Prod.snd ⁻¹' A)` using `(isOpen_under h).measurableSet.inter (measurable_snd hA)`. Rewrite using `[Measure.map_apply measurable_scT hA, Measure.prod_apply (measurable_scT hA), lintegral_withDensity_eq_lintegral_mul _ (measurable_wt h) (measurable_measure_prodMk_left (measurable_scT hA))]`. Establish `h1 : ∫⁻ s, wt h s * (volume.restrict (ballProd h e)) (Prod.mk s ⁻¹' (scT ⁻¹' A)) ∂(exP e) = ∫⁻ s, volume (Prod.mk s ⁻¹' (under h e ∩ Prod.snd ⁻¹' A)) ∂(exP e)`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae_pos_piExponential (e := e)] with s hs`. Conclude with `wt_mul h hs hA`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[h1, ← Measure.prod_apply hm, Measure.prod_apply_symm hm, withDensity_apply _ hA, ← lintegral_indicator hA]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hu : u ∈ A`. Rewrite using `[Set.indicator_of_mem hu, ← piExponential_preimage_under]`. Use `congr 1`. Use extensionality with `s`. Simplify using `[hu]`.
+
+Rewrite using `[Set.indicator_of_notMem hu]`. Establish `e1 : (fun s => (s, u)) ⁻¹' (under h e ∩ Prod.snd ⁻¹' A) = ∅`. Use extensionality with `s`. Simplify using `[hu]`. Rewrite using `[e1, measure_empty]`.
+-/
 theorem layer (h : HermNorm n) :
     (volume : Measure (Fin e × Fin n → ℂ)).withDensity (rowGauss h) =
       (((exP e).withDensity (wt h)).prod (volume.restrict (ballProd h e))).map scT := by
@@ -324,6 +440,9 @@ def splitL (h : HermNorm n) (e : ℕ) :
     refine Prod.ext rfl (funext fun ij => ?_)
     simp [coefRows, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Introduce and unpack `⟨x, w⟩`. Use `⟨Fin.cons x fun i => h.mat *ᵥ fun j => w (i, j), ?_⟩` and prove the remaining obligations. Simplify using `only [splitL, LinearMap.coe_mk, AddHom.coe_mk, Fin.cons_zero, Prod.mk.injEq, true_and]`. Use function extensionality and compare the values at `ij`. Simplify using `only [coefRows, Fin.cons_succ, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h.isUnit_det, Matrix.one_mulVec]`.
+-/
 theorem splitL_surjective (h : HermNorm n) : Function.Surjective (splitL h e) := by
   rintro ⟨x, w⟩
   refine ⟨Fin.cons x fun i => h.mat *ᵥ fun j => w (i, j), ?_⟩
@@ -332,12 +451,23 @@ theorem splitL_surjective (h : HermNorm n) : Function.Surjective (splitL h e) :=
   simp only [coefRows, Fin.cons_succ, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ h.isUnit_det,
     Matrix.one_mulVec]
 
+/- English proof (translation)
+The claim follows from `(LinearMap.continuous_of_finiteDimensional _).measurable`.
+-/
 theorem measurable_splitL (h : HermNorm n) : Measurable (splitL h e) :=
   (LinearMap.continuous_of_finiteDimensional _).measurable
 
+/- English proof (translation)
+The claim follows from `measurable_snd.comp (measurable_splitL h)`.
+-/
 theorem measurable_coefRows (h : HermNorm n) :
     Measurable (coefRows (e := e) h) := measurable_snd.comp (measurable_splitL h)
 
+/- English proof (translation)
+Unfold `rowN HermNorm.norm`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun _ _ => by positivity)]`. Establish `h1 : (h.mat *ᵥ fun j => coefRows h π (i, j)) = π i.succ`. Establish `h2 : (fun j => coefRows h π (i, j)) = h.mat⁻¹ *ᵥ π i.succ` using `by funext j; rfl`. Rewrite using `[h2, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ h.isUnit_det, Matrix.one_mulVec]`.
+
+Rewrite using `[h1]`.
+-/
 theorem rowN_coefRows (h : HermNorm n) (π : Fin (e + 1) → Fin n → ℂ) (i : Fin e) :
     rowN h (coefRows h π) i ^ 2 = ∑ j, ‖π i.succ j‖ ^ 2 := by
   unfold rowN HermNorm.norm
@@ -347,6 +477,25 @@ theorem rowN_coefRows (h : HermNorm n) (π : Fin (e + 1) → Fin n → ℂ) (i :
     rw [h2, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ h.isUnit_det, Matrix.one_mulVec]
   rw [h1]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (splitL h e)`. Introduce `π ρ hπρ`. Establish `h0 : π 0 = ρ 0` using `congrArg Prod.fst hπρ`. Establish `h1 : coefRows h π = coefRows h ρ` using `congrArg Prod.snd hπρ`. Use function extensionality and compare the values at `i`.
+
+Proceed by induction on `i using Fin.cases with`. Consider the case `zero => exact h0`. Consider the case `succ i'`. Establish `hrow : h.mat⁻¹ *ᵥ π i'.succ = h.mat⁻¹ *ᵥ ρ i'.succ`. Use function extensionality and compare the values at `j`.
+
+Conclude with `congrFun h1 (i', j)`. Establish `h2` using `congrArg (fun v => h.mat *ᵥ v) hrow`. Simplify `h2` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ h.isUnit_det]`. Set `Ψl : (Fin (e + 1) → Fin n → ℂ) ≃ₗ[ℝ] (Fin n → ℂ) × (Fin e × Fin n → ℂ)` to `LinearEquiv.ofBijective ((splitL h e).restrictScalars ℝ) ⟨hinj, splitL_surjective h⟩`. Set `Ψ` to `Ψl.toContinuousLinearEquiv`.
+
+Establish `hΨ : ∀ π, Ψ π = (π 0, coefRows h π)` using `fun π => rfl`. Use `haveI : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure := inferInstance`. Use `haveI : (volume : Measure (Fin e × Fin n → ℂ)).IsAddHaarMeasure := inferInstance`. Use `haveI : (volume : Measure ((Fin n → ℂ) × (Fin e × Fin n → ℂ))).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `haveI : (volume : Measure (Fin (e + 1) → Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`.
+
+Use `haveI : (Measure.map Ψ (volume : Measure (Fin (e + 1) → Fin n → ℂ))).IsAddHaarMeasure := Ψ.isAddHaarMeasure_map volume`. Establish `hc` using `Measure.isAddLeftInvariant_eq_smul (Measure.map Ψ (volume : Measure (Fin (e + 1) → Fin n → ℂ))) (volume : Measure ((Fin n → ℂ) × (Fin e × Fin n → ℂ)))`. Use `set c := (Measure.map Ψ (volume : Measure (Fin (e + 1) → Fin n → ℂ))).addHaarScalarFactor (volume : Measure ((Fin n → ℂ) × (Fin e × Fin n → ℂ)))`. Establish `hg0 : Measurable fun x : Fin n → ℂ => ENNReal.ofReal (Real.exp (-∑ j, ‖x j‖ ^ 2))` using `by fun_prop`. Use `⟨(c : ℝ≥0∞) * ∫⁻ x : Fin n → ℂ, ENNReal.ofReal (Real.exp (-∑ j, ‖x j‖ ^ 2)), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `A hA`. Establish `hmA : MeasurableSet (coefRows h ⁻¹' A)` using `measurable_coefRows h hA`. Rewrite using `[Measure.map_apply (measurable_coefRows h) hA, Measure.smul_apply, withDensity_apply _ hA, smul_eq_mul, gaussM, withDensity_apply _ hmA, ← lintegral_indicator hmA]`. Establish `key : ∀ π, (coefRows h ⁻¹' A).indicator matGauss π = (fun p : (Fin n → ℂ) × (Fin e × Fin n → ℂ) => ENNReal.ofReal (Real.exp (-∑ j, ‖p.1 j‖ ^ 2)) * A.indicator (rowGauss h) p.2) (Ψ π)`. Introduce `π`.
+
+Rewrite using `[hΨ]`. Simplify using `only [Set.indicator, Set.mem_preimage]`. Use `split_ifs with hπ`. Simplify using `only [matGauss, rowGauss, rowN_coefRows, Fin.sum_univ_succ]`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Repeatedly rewrite using `[key]`. Establish `hF : Measurable fun p : (Fin n → ℂ) × (Fin e × Fin n → ℂ) => ENNReal.ofReal (Real.exp (-∑ j, ‖p.1 j‖ ^ 2)) * A.indicator (rowGauss h) p.2` using `(hg0.comp measurable_fst).mul (((measurable_rowGauss h).indicator hA).comp measurable_snd)`.
+
+Establish `hprod` using `lintegral_prod_mul (μ := (volume : Measure (Fin n → ℂ))) (ν := (volume : Measure (Fin e × Fin n → ℂ))) hg0.aemeasurable ((measurable_rowGauss h).indicator hA).aemeasurable`. Rewrite `hprod` using `[← Measure.volume_eq_prod]`. Rewrite using `[← lintegral_map hF Ψ.continuous.measurable, hc, lintegral_smul_measure, hprod, lintegral_indicator hA]`. Rewrite using `[ENNReal.smul_def, smul_eq_mul, mul_assoc]`.
+-/
 theorem map_coefRows (h : HermNorm n) : ∃ a : ℝ≥0∞,
     (gaussM (e + 1) n).map (coefRows h) =
       a • (volume : Measure (Fin e × Fin n → ℂ)).withDensity (rowGauss h) := by
@@ -412,6 +561,13 @@ theorem map_coefRows (h : HermNorm n) : ∃ a : ℝ≥0∞,
     lintegral_indicator hA]
   rw [ENNReal.smul_def, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasure (gaussM (e + 1) n) := ⟨hfin⟩`. Use `haveI : IsFiniteMeasure (volume.restrict (ballProd h e)) := ⟨by rw [Measure.restrict_apply_univ]; exact volume_ballProd_lt_top h e⟩`. Take `⟨a, ha⟩` from `map_coefRows (e := e) h`. Establish `hmap : (gaussM (e + 1) n).map (coefRows h) = ((a • (exP e).withDensity (wt h)).prod (volume.restrict (ballProd h e))).map scT`. Rewrite using `[ha, layer h, Measure.prod_smul_left, Measure.map_smul]`.
+
+Establish `hac : a • (exP e).withDensity (wt h) ≪ exP e` using `Measure.smul_absolutelyContinuous.trans (withDensity_absolutelyContinuous _ _)`. Use `transfer (gaussM (e + 1) n) (a • (exP e).withDensity (wt h)) (volume.restrict (ballProd h e)) ?_ (measurable_coefRows h) measurable_scT hmap (F := fun u => G (nrmGroups h e u)) ?_ ?_ hG` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `(volume_ballProd_pos h e).ne'`. Rewrite using `[ha]`.
+
+Conclude with `(aesm h G hG.aestronglyMeasurable).mono_ac (Measure.smul_absolutelyContinuous.trans (withDensity_absolutelyContinuous _ _))`. Use `filter_upwards [hac.ae_le ae_pos_piExponential] with s hs u`. Simplify using `only [scT]`. Rewrite using `[nrm_sc h (fun i => Real.sqrt_pos.2 (hs i)) u]`.
+-/
 theorem main (h : HermNorm n) (G : (Fin e × Fin n → ℂ) → ℝ)
     (hfin : gaussM (e + 1) n Set.univ < ⊤)
     (hG : IntegrableOn (fun u => G (nrmGroups h e u)) (ballProd h e)) :

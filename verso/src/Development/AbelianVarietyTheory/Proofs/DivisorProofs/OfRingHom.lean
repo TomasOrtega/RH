@@ -16,9 +16,19 @@ namespace GlobalTheory.BdDim
 
 def TrLe (K : Type) [Field K] (n : ℕ) : Prop := Algebra.trdeg (⊥ : Subfield K) K ≤ n
 
+/- English proof (translation)
+The claim follows from `le_trans h (by exact_mod_cast hnm)`.
+-/
 theorem TrLe.mono {K : Type} [Field K] {n m : ℕ} (h : TrLe K n) (hnm : n ≤ m) : TrLe K m :=
   le_trans h (by exact_mod_cast hnm)
 
+/- English proof (translation)
+Establish `hb : ∀ x : (⊥ : Subfield K), f x ∈ (⊥ : Subfield L)` using `fun x => (show (⊥ : Subfield K) ≤ (⊥ : Subfield L).comap f from bot_le) x.2`. Set `e : (⊥ : Subfield K) →+* (⊥ : Subfield L)` to `(f.comp (Subfield.subtype _)).codRestrict _ hb`. Establish `he : Function.Surjective e` using `fun y => by`. Establish `: (⊥ : Subfield L) ≤ (⊥ : Subfield K).map f` using `bot_le`. Take `⟨x, hx, hxy⟩` from `this y.2`.
+
+Conclude with `⟨⟨x, hx⟩, Subtype.ext hxy⟩`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis (⊥ : Subfield K) K`. Use `le_trans ?_ h` and prove the remaining obligations. Rewrite using `[← hs.cardinalMk_eq_trdeg]`. Use `hs.1.ringHom_of_comp_eq e f he f.injective (RingHom.ext fun _ => rfl)` as an intermediate fact.
+
+Conclude with `this.cardinalMk_le_trdeg`.
+-/
 theorem TrLe.of_ringHom {K L : Type} [Field K] [Field L] (f : K →+* L) {n : ℕ} (h : TrLe L n) : TrLe K n := by
   have hb : ∀ x : (⊥ : Subfield K), f x ∈ (⊥ : Subfield L) := fun x =>
     (show (⊥ : Subfield K) ≤ (⊥ : Subfield L).comap f from bot_le) x.2
@@ -33,6 +43,9 @@ theorem TrLe.of_ringHom {K L : Type} [Field K] [Field L] (f : K →+* L) {n : �
   have := hs.1.ringHom_of_comp_eq e f he f.injective (RingHom.ext fun _ => rfl)
   exact this.cardinalMk_le_trdeg
 
+/- English proof (translation)
+Establish `: Algebra.IsAlgebraic (⊥ : Subfield ℚ) ℚ` using `⟨fun x => isAlgebraic_algebraMap (⟨x, by simpa using SubfieldClass.ratCast_mem (⊥ : Subfield ℚ) x⟩ : (⊥ : Subfield ℚ))⟩`. Simplify using `[TrLe, trdeg_eq_zero]`.
+-/
 example : TrLe ℚ 0 := by
   have : Algebra.IsAlgebraic (⊥ : Subfield ℚ) ℚ := ⟨fun x => isAlgebraic_algebraMap (⟨x, by simpa using SubfieldClass.ratCast_mem (⊥ : Subfield ℚ) x⟩ : (⊥ : Subfield ℚ))⟩
   simp [TrLe, trdeg_eq_zero]
@@ -49,9 +62,15 @@ def IsAbPart {k : Type} [Field k] (G : Over X) [GrpObj G] (x : Sp k ⟶ X) (B : 
   ∃ (A : Over (Sp k)) (_ : GrpObj A) (φ : A.left ⟶ G.left) (t : TorusExtension A) (β : t.B.left ⟶ B.left),
     IsGrpPullback A G x φ ∧ @IsGrpPullback _ _ t.B t.grpB B _ y β
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, _, _, isGrpPullback_pullback G x, isGrpPullback_pullback G x⟩`.
+-/
 theorem SameFibre.refl (G : Over X) [GrpObj G] (x : T ⟶ X) : SameFibre G x G x :=
   ⟨_, _, _, _, isGrpPullback_pullback G x, isGrpPullback_pullback G x⟩
 
+/- English proof (translation)
+Take `⟨A, _, φ, t, β, h₁, h₂⟩` from `h`. Take `⟨C, _, ψ, ψ', h₃, h₄⟩` from `h'`. Use `letI := t.grpB`. Take `⟨e, he, -⟩` from `grpPullback_iso h₂ h₃`. Conclude with `⟨A, _, φ, t, _, h₁, ((isGrpPullback_of_iso e).comp h₄).congr (Category.id_comp _) rfl⟩`.
+-/
 theorem IsAbPart.trans {k : Type} [Field k] {G : Over X} [GrpObj G] {x : Sp k ⟶ X} {B : Over Y} [GrpObj B] {y : Sp k ⟶ Y}
     {B' : Over Z} [GrpObj B'] {z : Sp k ⟶ Z} (h : IsAbPart G x B y) (h' : SameFibre B y B' z) : IsAbPart G x B' z := by
   obtain ⟨A, _, φ, t, β, h₁, h₂⟩ := h
@@ -60,6 +79,9 @@ theorem IsAbPart.trans {k : Type} [Field k] {G : Over X} [GrpObj G] {x : Sp k �
   obtain ⟨e, he, -⟩ := grpPullback_iso h₂ h₃
   exact ⟨A, _, φ, t, _, h₁, ((isGrpPullback_of_iso e).comp h₄).congr (Category.id_comp _) rfl⟩
 
+/- English proof (translation)
+Take `⟨A, _, φ, t, β, h₁, h₂⟩` from `h`. Conclude with `⟨A, _, _, t, β, h₁.comp h', h₂⟩`.
+-/
 theorem IsAbPart.comp {k : Type} [Field k] {G : Over X} [GrpObj G] {x : Sp k ⟶ X} {B : Over Y} [GrpObj B] {y : Sp k ⟶ Y}
     {G' : Over Z} [GrpObj G'] {f : X ⟶ Z} {φ : G.left ⟶ G'.left} (h : IsAbPart G x B y) (h' : IsGrpPullback G G' f φ) :
     IsAbPart G' (x ≫ f) B y := by

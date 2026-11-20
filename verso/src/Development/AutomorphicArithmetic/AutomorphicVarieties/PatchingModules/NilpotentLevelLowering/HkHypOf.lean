@@ -17,6 +17,9 @@ open UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Hi UpperTheory.V.AlgebraToo
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `: Finite (MulAction.orbit K (x : H ⧸ K'))` using `h`. Use `Fintype.ofFinite (MulAction.orbit K (x : H ⧸ K'))` as an intermediate fact. Rewrite using `[dc, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`.
+-/
 private theorem dc_apply {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (K K' : Subgroup H) (x : H) (h : FinOrb K K' x) (m : M) :
     dc ρ K K' x m = ∑ᶠ q : MulAction.orbit K (x : H ⧸ K'), ρ (q : H ⧸ K').out m := by
@@ -24,6 +27,11 @@ private theorem dc_apply {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] 
   have := Fintype.ofFinite (MulAction.orbit K (x : H ⧸ K'))
   rw [dc, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, LinearMap.sum_apply]
 
+/- English proof (translation)
+Establish `e : I.subgroupOf K = MulAction.stabilizer K ((1 : H) : H ⧸ I)`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_subgroupOf, MulAction.mem_stabilizer_iff]`. Express the relevant statement in the definitionally equal form `_ ↔ (g : H) ∈ MulAction.stabilizer H ((1 : H) : H ⧸ I)`. Rewrite using `[MulAction.stabilizer_quotient]`.
+
+Rewrite using `[Subgroup.relIndex, e, MulAction.index_stabilizer]`. Conclude with `Set.ncard_ne_zero_of_mem (MulAction.mem_orbit_self _) h`.
+-/
 private theorem relIndex_ne {H : Type} [Group H] (K I : Subgroup H) (h : FinOrb K I 1) : I.relIndex K ≠ 0 := by
   have e : I.subgroupOf K = MulAction.stabilizer K ((1 : H) : H ⧸ I) := by
     ext g
@@ -33,6 +41,11 @@ private theorem relIndex_ne {H : Type} [Group H] (K I : Subgroup H) (h : FinOrb 
   rw [Subgroup.relIndex, e, MulAction.index_stabilizer]
   exact Set.ncard_ne_zero_of_mem (MulAction.mem_orbit_self _) h
 
+/- English proof (translation)
+Use `⟨fun z hz => ?_, fun ι _ a c hd => ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, ← map_mul]`. Use `congr 1`. Rewrite using `[Hk.Bern.one, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun w _ => (hkBern O n _ _ b).2 z hz w`.
+
+Simplify using `only [AlgHom.comp_apply, ← map_mul, ← map_sum]`. Rewrite using `[hkSum O n _ _ b hF ι a c hd]`. Simplify using `only [AlgHom.comp_apply]`. Rewrite using `[← map_mul, ← map_mul, hkSandwich O n _ _ b hF y, map_mul]`.
+-/
 private theorem bern_ev {O H E : Type} [CommRing O] [IsDomain O] [Ring H] [Algebra O H] [Ring E] [Algebra O E] {n : ℕ} {q : O}
     (b : Hk.Bern n q H) (hF : b.Faithful) (ev : H →ₐ[O] E) :
     (∀ z : MvPolynomial (Fin n) O, z.IsSymmetric → ev b.one * ev.comp b.th z = ev.comp b.th z * ev b.one) ∧
@@ -49,6 +62,9 @@ private theorem bern_ev {O H E : Type} [CommRing O] [IsDomain O] [Ring H] [Algeb
   · simp only [AlgHom.comp_apply]
     rw [← map_mul, ← map_mul, hkSandwich O n _ _ b hF y, map_mul]
 
+/- English proof (translation)
+Rewrite using `[← hy, ← hz, ← map_mul, h, map_smul]`.
+-/
 private theorem ev_rel {O H E : Type} [CommRing O] [Ring H] [Algebra O H] [Ring E] [Algebra O E] (ev : H →ₐ[O] E)
     {a y z : H} {c : O} {y' z' : E} (h : a * y = c • z) (hy : ev y = y') (hz : ev z = z') : ev a * y' = c • z' := by
   rw [← hy, ← hz, ← map_mul, h, map_smul]
@@ -57,15 +73,28 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[(memIwC k n ⊤).2.1]`. Conclude with `(bruhatKO k n).2`.
+-/
 private theorem bruh : ∀ g ∈ KO k (Fin n), ∃! w : Equiv.Perm (Fin n),
     ∃ a ∈ iwC k n ⊤, ∃ b ∈ iwC k n ⊤, g = a * pm k n w * b := by
   rw [(memIwC k n ⊤).2.1]
   exact (bruhatKO k n).2
 
+/- English proof (translation)
+Rewrite using `[(memIwC k n ⊤).2.1]`. Conclude with `iwahori_le_KO k (Fin n)`.
+-/
 private theorem iw_le : iwC k n ⊤ ≤ KO k (Fin n) := by
   rw [(memIwC k n ⊤).2.1]
   exact iwahori_le_KO k (Fin n)
 
+/- English proof (translation)
+Establish `hx1 : valuation k (x : k) ≤ 1`. Take `⟨p, -, hp⟩` from `hx`. Rewrite using `[← hp]`. Conclude with `p.2`. Introduce `j l hjl`.
+
+Establish `hjl' : (j : ℕ) ≤ (l : ℕ)` using `hjl`. Simplify using `only [fund]`. Distinguish the cases in `h1 : (l : ℕ) < m`. Establish `h2 : (j : ℕ) < m` using `lt_of_le_of_lt hjl' h1`. Simplify using `[h1, h2]`.
+
+Distinguish the cases in `h2 : (j : ℕ) < m`. Simplify `hx1` using `[h1, h2]`. Simplify using `[h1, h2]`.
+-/
 private theorem dom_fund {x : kˣ} (hx : IsUnif x) (m : ℕ) : Dom (fun j : Fin n => x ^ fund n m j) := by
   have hx1 : valuation k (x : k) ≤ 1 := by
     obtain ⟨p, -, hp⟩ := hx
@@ -81,6 +110,13 @@ private theorem dom_fund {x : kˣ} (hx : IsUnif x) (m : ℕ) : Dom (fun j : Fin 
     · simpa [h1, h2] using hx1
     · simp [h1, h2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [fund, Pi.mul_apply]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hne : (j : ℕ) ≠ (i : ℕ)` using `fun h => hj (Fin.ext h)`. Rewrite using `[Pi.mulSingle_eq_of_ne hj, one_mul]`. Distinguish the cases in `h : (j : ℕ) < (i : ℕ)`. Establish `h' : (j : ℕ) < (i : ℕ) + 1` using `by omega`. Simplify using `[h, h']`.
+
+Establish `h' : ¬ (j : ℕ) < (i : ℕ) + 1` using `by omega`. Simplify using `[h, h']`.
+-/
 private theorem fund_split {T : Type} [CommGroup T] (x : T) (i : Fin n) : (fun j : Fin n => x ^ fund n ((i : ℕ) + 1) j)
     = Pi.mulSingle i x * (fun j : Fin n => x ^ fund n (i : ℕ) j) := by
   funext j
@@ -96,6 +132,11 @@ private theorem fund_split {T : Type} [CommGroup T] (x : T) (i : Fin n) : (fun j
     · have h' : ¬ (j : ℕ) < (i : ℕ) + 1 := by omega
       simp [h, h']
 
+/- English proof (translation)
+Take `⟨hf, -, h3⟩` from `hkTrace A _ M ρ _ _ iw_le _ (pm k n) (heckePairIwC k n ⊤).1 (bruhatKO k n).1 bruh`. Establish `ha` using `(hkApply A _ M ρ _ _ 1 hf).1`. Use `⟨fun m hm => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha ⟨m, hm⟩]`. Conclude with `Subtype.property _`.
+
+Establish `h` using `congrArg Subtype.val (h3 ⟨m, hm⟩)`. Rewrite `h` using `[trc, ha, Submodule.coe_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `h`.
+-/
 private theorem dc_K {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (GL (Fin n) k) M) :
     (∀ m ∈ fixd ρ (iwC k n ⊤), dc ρ (KO k (Fin n)) (iwC k n ⊤) 1 m ∈ fixd ρ (KO k (Fin n))) ∧
     ∀ m ∈ fixd ρ (KO k (Fin n)),
@@ -109,6 +150,11 @@ private theorem dc_K {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (ρ
     rw [trc, ha, Submodule.coe_smul, Nat.cast_smul_eq_nsmul] at h
     exact h
 
+/- English proof (translation)
+Take `⟨b, hT, hX⟩` from `bernHk k n O x hx hq`. Establish `hF` using `bernFaith k n O x hx hq b hT hX`. Take `⟨ev, hev⟩` from `hkEv O _ M ρ _ (heckePairIwC k n ⊤).1`. Take `⟨hf, h2, -⟩` from `hkTrace O _ M ρ _ _ iw_le _ (pm k n) (heckePairIwC k n ⊤).1 (bruhatKO k n).1 bruh`. Take `⟨g1, g2, g3⟩` from `bern_ev b hF ev`.
+
+Use `⟨ev.comp b.th, ev b.one, fun v => ?_, fun i => ?_, g1, g2, g3⟩` and prove the remaining obligations. Establish `h : ev b.one = ∑ w, hk ρ (iwC k n ⊤) (pm k n w)` using `(map_sum ev b.T Finset.univ).trans (Finset.sum_congr rfl fun w _ => (congrArg ev (hT w)).trans (hev _))`. Rewrite using `[h, h2]`. Conclude with `(hkApply O _ M ρ _ _ 1 hf).1 v`. Conclude with `ev_rel ev (hX i) (hev _) (hev _)`.
+-/
 private theorem locO (O M : Type) [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M]
     (ρ : Representation O (GL (Fin n) k) M) {x : kˣ} (hx : IsUnif x) (hq : IsUnit (resCard k : O)) :
     ∃ (th : MvPolynomial (Fin n) O →ₐ[O] Module.End O (fixd ρ (iwC k n ⊤))) (E : Module.End O (fixd ρ (iwC k n ⊤))),
@@ -131,6 +177,27 @@ private theorem locO (O M : Type) [CommRing O] [IsDomain O] [AddCommGroup M] [Mo
     exact (hkApply O _ M ρ _ _ 1 hf).1 v
   · exact ev_rel ev (hX i) (hev _) (hev _)
 
+/- English proof (translation)
+Use `letI : Module O M := Module.compHom M (algebraMap O A)`. Establish `hs : ∀ (o : O) (m : M), o • m = algebraMap O A o • m` using `fun _ _ => rfl`. Set `ρO : Representation O (GL (Fin n) k) M` to `{ toFun := fun g => { toFun := ρ g, map_add' := map_add _, map_smul' := fun o m => map_smul (ρ g) (algebraMap O A o) m } map_one' := LinearMap.ext fun m => LinearMap.congr_fun (map_one ρ) m map_mul' := fun g h => LinearMap.ext fun m => LinearMap.congr_fun (map_mul ρ g h) m }`. Establish `hdc : ∀ K K' g, FinOrb K K' g → ∀ m, dc ρO K K' g m = dc ρ K K' g m` using `fun K K' g h m => by`. Rewrite using `[dc_apply _ _ _ _ h, dc_apply _ _ _ _ h]`.
+
+Both sides reduce to the same expression. Take `⟨th, E, hE, hX, hsym, hsum, hsw⟩` from `locO O M ρO hx hq`. Establish `hP` using `heckePairIwC k n ⊤`. Set `j : V →+ fixd ρO (iwC k n ⊤)` to `⟨⟨fun v => ⟨ι v, hI v⟩, Subtype.ext (map_zero ι)⟩, fun a b => Subtype.ext (map_add ι a b)⟩`. Establish `hj : ∀ v, (j v : M) = ι v` using `fun _ => rfl`.
+
+Establish `jinj : Function.Injective j` using `fun a b h => hι (congrArg Subtype.val h)`. Establish `je : ∀ v, j (e v) = E (j v)` using `fun v => Subtype.ext (by rw [hE, hj, hj, he, hdc _ _ _ (hP.2.2 ⊤).2])`. Establish `jΘ : ∀ m v, j ((Θ fun a => x ^ fund n m a).val v) = hk ρO (iwC k n ⊤) (pw x (fund n m)) (j v)` using `fun m v => Subtype.ext (by`. Rewrite using `[hj, hΘ _ (dom_fund hx m), ← hdc _ _ _ (hP.1 _)]`. Conclude with `((hkApply O _ M ρO _ _ _ (hP.1 _)).1 (j v)).symm)`.
+
+Establish `jX : ∀ i v, j (φ (MvPolynomial.X i) v) = th (MvPolynomial.X i) (j v)`. Introduce `i v`. Take `⟨u, rfl⟩` from `((Module.End.isUnit_iff _).1 (Θ fun a => x ^ fund n i a).isUnit).2 v`. Establish `h` using `LinearMap.congr_fun (hX i) (j u)`. Rewrite `h` using `[Module.End.mul_apply, ← jΘ, LinearMap.smul_apply, ← jΘ, fund_split, map_mul, Units.val_mul, Module.End.mul_apply]`.
+
+Rewrite using `[h, hφ]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hj, LinearMap.smul_apply, map_smul, Submodule.coe_smul, hs, map_pow, map_natCast, hj]`. Establish `jφ : ∀ z v, j (φ z v) = th z (j v)`. Introduce `z`.
+
+Proceed by induction on `z using MvPolynomial.induction_on with`. Consider the case `C o`. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hC, hj, map_smul, ← MvPolynomial.algebraMap_eq, th.commutes, Module.algebraMap_end_apply, Submodule.coe_smul, hs, hj]`.
+
+Consider the case `add p q hp hq => intro v`. Simplify using `only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `mul_X p i hp => intro v`. Simplify using `only [map_mul, Module.End.mul_apply, hp, jX]`. Use `⟨fun z hz => LinearMap.ext fun v => jinj ?_, fun J _ a b hd => LinearMap.ext fun v => jinj ?_, fun y v hv => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Module.End.mul_apply, je, jφ]`. Conclude with `LinearMap.congr_fun (hsym z hz) _`. Rewrite using `[jφ, ← hsum J a b hd]`. Simplify using `only [LinearMap.sum_apply, map_sum, Module.End.mul_apply, je, jφ]`. Establish `h1 : e v = ((iwC k n ⊤).relIndex (KO k (Fin n))) • v` using `hι (by rw [he, map_nsmul, (dc_K ρ).2 _ hv])`.
+
+Establish `h2 : e (φ y (e v)) = φ (Hk.dd (Hk.NN n (resCard k : O) * y)) (e v)` using `jinj (by`. Simplify using `only [je, jφ]`. Conclude with `LinearMap.congr_fun (hsw y) _)`. Rewrite `h2` using `[h1, map_nsmul, map_nsmul, map_nsmul, ← sub_eq_zero, ← nsmul_sub]`. Apply `hι` to reduce the goal to its premises.
+
+Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `tf _ _ (relIndex_ne _ _ (hP.2.2 ⊤).2) ?_` and prove the remaining obligations. Rewrite using `[← map_nsmul, h2, map_zero]`.
+-/
 private theorem locA (O A M V : Type) [CommRing O] [IsDomain O] [CommRing A] [Algebra O A] [AddCommGroup M] [Module A M]
     [AddCommGroup V] [Module A V] (ρ : Representation A (GL (Fin n) k) M) {x : kˣ} (hx : IsUnif x)
     (hq : IsUnit (resCard k : O)) (tf : ∀ (c : ℕ) (m : M), c ≠ 0 → c • m = 0 → m = 0)
@@ -198,11 +265,19 @@ private theorem locA (O A M V : Type) [CommRing O] [IsDomain O] [CommRing A] [Al
 
 end Loc
 
+/- English proof (translation)
+The claim follows from `finsum_induction (fun e => Commute φ e) (Commute.zero_right φ) (fun _ _ h1 h2 => h1.add_right h2) fun _ => h _`.
+-/
 private theorem comm_dc {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (K K' : Subgroup H) (x : H) (φ : Module.End A M) (h : ∀ g, Commute φ (ρ g)) :
     Commute φ (dc ρ K K' x) :=
   finsum_induction (fun e => Commute φ e) (Commute.zero_right φ) (fun _ _ h1 h2 => h1.add_right h2) fun _ => h _
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `nil => simp at h`. Consider the case `cons a s ih`. Rewrite using `[List.prod_cons, Module.End.mul_apply]`. Break down `List.mem_cons.1 h with rfl | h'` into its components or cases.
+
+Conclude with `hf _`. Conclude with `hs a List.mem_cons_self _ (ih (fun b hb => hs b (List.mem_cons_of_mem _ hb)) h')`.
+-/
 private theorem lprod_mem {A V : Type} [CommRing A] [AddCommGroup V] [Module A V] (W : Submodule A V) (f : Module.End A V)
     (hf : ∀ v, f v ∈ W) (s : List (Module.End A V)) (hs : ∀ a ∈ s, ∀ v ∈ W, a v ∈ W) (h : f ∈ s) (v : V) : s.prod v ∈ W := by
   induction s with
@@ -213,12 +288,20 @@ private theorem lprod_mem {A V : Type} [CommRing A] [AddCommGroup V] [Module A V
     · exact hf _
     · exact hs a List.mem_cons_self _ (ih (fun b hb => hs b (List.mem_cons_of_mem _ hb)) h')
 
+/- English proof (translation)
+Establish `: u = w * v⁻¹` using `by rw [h, mul_inv_cancel_right]`. Rewrite using `[this, Units.val_mul]`. Conclude with `hw.mul_right hv.units_inv_right`.
+-/
 private theorem comm_unit {R : Type} [Monoid R] {e : R} {u v w : Rˣ} (h : w = u * v) (hw : Commute e w) (hv : Commute e v) :
     Commute e u := by
   have : u = w * v⁻¹ := by rw [h, mul_inv_cancel_right]
   rw [this, Units.val_mul]
   exact hw.mul_right hv.units_inv_right
 
+/- English proof (translation)
+Introduce `g hg`. Establish `h1' : e v = r • v` using `Subtype.ext h1`. Establish `h2` using `eK (f v) g hg`. Establish `h3 : e (f v) = r • f v`. Rewrite using `[← map_nsmul, ← h1']`.
+
+Conclude with `LinearMap.congr_fun hf.eq v`. Rewrite `h2` using `[h3, Submodule.coe_smul_of_tower, map_nsmul, ← sub_eq_zero, ← nsmul_sub]`. Conclude with `sub_eq_zero.1 (tf r _ hr h2)`.
+-/
 private theorem stab {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Module A M] (ρ : Representation A G M)
     (K : Subgroup G) (tf : ∀ (k : ℕ) (m : M), k ≠ 0 → k • m = 0 → m = 0) (U : Submodule A M) (e f : Module.End A U) (r : ℕ)
     (hr : r ≠ 0) (eK : ∀ v, (e v : M) ∈ fixd ρ K) (hf : Commute e f) (v : U) (h1 : (e v : M) = r • (v : M)) :
@@ -232,6 +315,9 @@ private theorem stab {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Mod
   rw [h3, Submodule.coe_smul_of_tower, map_nsmul, ← sub_eq_zero, ← nsmul_sub] at h2
   exact sub_eq_zero.1 (tf r _ hr h2)
 
+/- English proof (translation)
+Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, he, hf, hf, he]`. Conclude with `LinearMap.congr_fun h.eq _`.
+-/
 private theorem comm_res {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {U : Submodule A M}
     {e f : Module.End A U} {e' f' : Module.End A M} (he : ∀ v, (e v : M) = e' v) (hf : ∀ v, (f v : M) = f' v)
     (h : Commute e' f') : Commute e f := by
@@ -239,12 +325,18 @@ private theorem comm_res {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
   rw [Module.End.mul_apply, Module.End.mul_apply, he, hf, hf, he]
   exact LinearMap.congr_fun h.eq _
 
+/- English proof (translation)
+Establish `: emb O A (q` using `q) (n := n) j (MvPolynomial.C o) = algebraMap A _ (algebraMap O A o) := by simp [emb]`. Conclude with `(congrArg (fun p => act p v) this).trans (LinearMap.congr_fun (act.commutes _) v)`.
+-/
 private theorem emb_C {O A V : Type} [CommRing O] [CommRing A] [Algebra O A] [AddCommGroup V] [Module A V] {q n : ℕ}
     (act : PU A q n →ₐ[A] Module.End A V) (j : Fin q) (o : O) (v : V) :
     (act.toRingHom.comp (emb O A j)) (MvPolynomial.C o) v = algebraMap O A o • v := by
   have : emb O A (q := q) (n := n) j (MvPolynomial.C o) = algebraMap A _ (algebraMap O A o) := by simp [emb]
   exact (congrArg (fun p => act p v) this).trans (LinearMap.congr_fun (act.commutes _) v)
 
+/- English proof (translation)
+Establish `: emb O A (q` using `q) (n := n) j (MvPolynomial.X i) = MvPolynomial.X (j, i) := by simp [emb]`. Conclude with `congrArg act this`.
+-/
 private theorem emb_X {O A V : Type} [CommRing O] [CommRing A] [Algebra O A] [AddCommGroup V] [Module A V] {q n : ℕ}
     (act : PU A q n →ₐ[A] Module.End A V) (j : Fin q) (i : Fin n) :
     (act.toRingHom.comp (emb O A j)) (MvPolynomial.X i) = act (MvPolynomial.X (j, i)) := by
@@ -256,19 +348,33 @@ section
 variable {L : Type} [Field L] [NumberField L] {n q : ℕ} {w : Fin q → Plc L} {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
   (ρ : Representation A (GV n w) M)
 
+/- English proof (translation)
+The claim follows from `(Pi.mulSingle_commute (f := fun j => GLw n (w j)) h g g').map ρ`.
+-/
 private theorem comm_at {j j' : Fin q} (h : j ≠ j') (g : GLw n (w j)) (g' : GLw n (w j')) :
     Commute (ρ (atJ n w j g)) (ρ (atJ n w j' g')) :=
   (Pi.mulSingle_commute (f := fun j => GLw n (w j)) h g g').map ρ
 
+/- English proof (translation)
+The claim follows from `comm_dc _ _ _ _ _ fun a' => (comm_dc _ _ _ _ _ fun a => comm_at ρ (Ne.symm h) a' a).symm`.
+-/
 private theorem comm_dd {j j' : Fin q} (h : j ≠ j') (K K' : Subgroup (GLw n (w j))) (g : GLw n (w j))
     (I I' : Subgroup (GLw n (w j'))) (g' : GLw n (w j')) :
     Commute (dc (ρ.comp (atJ n w j)) K K' g) (dc (ρ.comp (atJ n w j')) I I' g') :=
   comm_dc _ _ _ _ _ fun a' => (comm_dc _ _ _ _ _ fun a => comm_at ρ (Ne.symm h) a' a).symm
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Gr29.mem_pi <;> assumption`.
+-/
 private theorem mem_pi (H : ∀ j, Subgroup (GLw n (w j))) (m : M) :
     m ∈ fixd ρ (Subgroup.pi Set.univ H) ↔ ∀ j, m ∈ fixd (ρ.comp (atJ n w j)) (H j) :=
   by apply _root_.UpperTheory.Reformulated.B.Gr29.mem_pi <;> assumption
 
+/- English proof (translation)
+Introduce `m hm`. Rewrite `hm`, the goal using `[UC, mem_pi]`. Introduce `j'`. Distinguish the cases in `e : j' = j`. Substitute `e` using the available equality.
+
+Conclude with `fixd_anti _ iw_le ((dc_K _).1 m (hm _))`. Introduce `u hu`. Establish `h1` using `LinearMap.congr_fun (comm_dc (ρ.comp (atJ n w j)) (KO _ (Fin n)) (iwC _ n ⊤) 1 _ fun g' => comm_at ρ e u g').eq m`. Rewrite `h1` using `[Module.End.mul_apply, Module.End.mul_apply, show ρ (atJ n w j' u) m = m from hm j' u hu]`. Conclude with `h1`.
+-/
 private theorem pres (j : Fin q) : ∀ m ∈ fixd ρ (UC n w fun _ => ⊤),
     dc (ρ.comp (atJ n w j)) (KO _ (Fin n)) (iwC _ n ⊤) 1 m ∈ fixd ρ (UC n w fun _ => ⊤) := by
   intro m hm
@@ -283,6 +389,9 @@ private theorem pres (j : Fin q) : ∀ m ∈ fixd ρ (UC n w fun _ => ⊤),
     rw [Module.End.mul_apply, Module.End.mul_apply, show ρ (atJ n w j' u) m = m from hm j' u hu] at h1
     exact h1
 
+/- English proof (translation)
+The claim follows from `(mem_pi ρ _ _).1 v.2 j`.
+-/
 private theorem memI (j : Fin q) (v : fixd ρ (UC n w fun _ => ⊤)) : (v : M) ∈ fixd (ρ.comp (atJ n w j)) (iwC _ n ⊤) :=
   (mem_pi ρ _ _).1 v.2 j
 
@@ -291,14 +400,23 @@ variable {ρ} {e : Fin q → Module.End A (fixd ρ (UC n w fun _ => ⊤))}
 
 include he
 
+/- English proof (translation)
+Rewrite using `[he]`. Conclude with `(dc_K _).1 _ (memI ρ j v)`.
+-/
 private theorem e_K (j : Fin q) (v : fixd ρ (UC n w fun _ => ⊤)) : (e j v : M) ∈ fixd (ρ.comp (atJ n w j)) (KO _ (Fin n)) := by
   rw [he]; exact (dc_K _).1 _ (memI ρ j v)
 
+/- English proof (translation)
+Distinguish the cases in `h : j = j'`. Substitute `h` using the available equality. Conclude with `Commute.refl _`. Conclude with `comm_res (he j) (he j') (comm_dd ρ h _ _ _ _ _ _)`.
+-/
 private theorem e_e (j j' : Fin q) : Commute (e j) (e j') := by
   by_cases h : j = j'
   · subst h; exact Commute.refl _
   · exact comm_res (he j) (he j') (comm_dd ρ h _ _ _ _ _ _)
 
+/- English proof (translation)
+Introduce `v hv` and use `stab _ _ tf _ (e j) f _ (relIndex_ne _ _ ((heckePairIwC _ n ⊤).2.2 ⊤).2) (e_K he j) hf v ((he j v).trans ((dc_K _).2 _ hv))`.
+-/
 private theorem fixed_vectors_stable_under_hecke_action (tf : ∀ (k : ℕ) (m : M), k ≠ 0 → k • m = 0 → m = 0) (j : Fin q)
     (f : Module.End A (fixd ρ (UC n w fun _ => ⊤))) (hf : Commute (e j) f) :
     ∀ v ∈ (fixd (ρ.comp (atJ n w j)) (KO _ (Fin n))).comap (fixd ρ (UC n w fun _ => ⊤)).subtype,
@@ -306,6 +424,9 @@ private theorem fixed_vectors_stable_under_hecke_action (tf : ∀ (k : ℕ) (m :
   stab _ _ tf _ (e j) f _ (relIndex_ne _ _ ((heckePairIwC _ n ⊤).2.2 ⊤).2) (e_K he j) hf v
     ((he j v).trans ((dc_K _).2 _ hv))
 
+/- English proof (translation)
+Establish `eΘ : ∀ t, Dom t → Commute (e j) (T.Θw j' t).val` using `fun t ht => comm_res (he j) (T.hw.1 j' t ht) (comm_dd ρ h _ _ _ _ _ _)`. Rewrite using `[T.actw_u]`. Conclude with `Commute.smul_right (comm_unit ((congrArg (T.Θw j') (fund_split (x j') i)).trans (map_mul _ _ _)) (eΘ _ (dom_fund (hx j') _)) (eΘ _ (dom_fund (hx j') _))) _`.
+-/
 private theorem e_X {l : ℕ} {x δ : ∀ j, ((w j).adicCompletion L)ˣ} (T : ThData l ρ x δ) (hx : ∀ j, IsUnif (x j))
     (j j' : Fin q) (i : Fin n) (h : j ≠ j') : Commute (e j) (T.actw (MvPolynomial.X (j', i))) := by
   have eΘ : ∀ t, Dom t → Commute (e j) (T.Θw j' t).val := fun t ht =>
@@ -314,6 +435,9 @@ private theorem e_X {l : ℕ} {x δ : ∀ j, ((w j).adicCompletion L)ˣ} (T : Th
   exact Commute.smul_right (comm_unit ((congrArg (T.Θw j') (fund_split (x j') i)).trans (map_mul _ _ _))
     (eΘ _ (dom_fund (hx j') _)) (eΘ _ (dom_fund (hx j') _))) _
 
+/- English proof (translation)
+Use `(mem_pi ρ _ _).2 fun j => ?_` and prove the remaining obligations. Use `lprod_mem ((fixd (ρ.comp (atJ n w j)) (KO _ (Fin n))).comap (fixd ρ (UC n w fun _ => ⊤)).subtype) (e j) (e_K he j) _ (fun a ha => ?_) (List.mem_ofFn.2 ⟨j, rfl⟩) v` and prove the remaining obligations. Take `⟨j', rfl⟩` from `List.mem_ofFn.1 ha`. Conclude with `fixed_vectors_stable_under_hecke_action he tf j _ (e_e he j j')`.
+-/
 private theorem e_prod (tf : ∀ (k : ℕ) (m : M), k ≠ 0 → k • m = 0 → m = 0) (v : fixd ρ (UC n w fun _ => ⊤)) :
     ((List.ofFn e).prod v : M) ∈ fixd ρ (UK n w) := by
   refine (mem_pi ρ _ _).2 fun j => ?_
@@ -324,6 +448,9 @@ private theorem e_prod (tf : ∀ (k : ℕ) (m : M), k ≠ 0 → k • m = 0 → 
 
 end
 
+/- English proof (translation)
+Introduce `L _ _ n q w l O A M _ _ _ _ _ _ ρ x δ T hx hq tf`. Take `⟨e, he⟩ : ∃ e : Fin q → Module.End A (fixd ρ (UC n w fun _ => ⊤)), ∀ j v, (e j v : M) = dc (ρ.comp (atJ n w j)) (KO _ (Fin n)) (iwC _ n ⊤) 1 v` from `⟨fun j => LinearMap.restrict _ (pres ρ j), fun _ _ => rfl⟩`. Establish `hloc` using `fun j => locA O A M (fixd ρ (UC n w fun _ => ⊤)) (ρ.comp (atJ n w j)) (hx j) (hq j) tf (fixd ρ (UC n w fun _ => ⊤)).subtype Subtype.val_injective (memI ρ j) (T.Θw j) (T.hw.1 j) (e j) (he j) (T.actw.toRingHom.comp (emb O A j)) (emb_C _ j) (fun i => (emb_X _ j i).trans (T.actw_u j …`. Conclude with `⟨e, ⟨e_e he, e_X he T hx, fun j => (hloc j).1, fun j => (hloc j).2.1, fun j j' i h => fixed_vectors_stable_under_hecke_action he tf j _ (e_X he T hx j j' i h), fun j j' _ => fixed_vectors_stable_under_hecke_action he tf j _ (e_e he j j'), fun j => (hloc j).2.2⟩, e_prod he tf⟩`.
+-/
 theorem UpperTheory.V.Pa.Lev.hkHypOf :
     ∀ (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fin q → Plc L) (l : ℕ) (O A M : Type) [CommRing O] [IsDomain O] [CommRing A] [Algebra O A] [AddCommGroup M] [Module A M] (ρ : Representation A (GV n w) M) (x δ : ∀ j, ((w j).adicCompletion L)ˣ) (T : ThData l ρ x δ), (∀ j, IsUnif (x j)) → (∀ j, IsUnit (qj w j : O)) → (∀ (k : ℕ) (m : M), k ≠ 0 → k • m = 0 → m = 0) → ∃ e : Fin q → Module.End A (fixd ρ (UC n w fun _ => ⊤)), HkHyp O (qj w) T.actw e (fun j => (fixd (ρ.comp (atJ n w j)) (KO _ (Fin n))).comap (fixd ρ (UC n w fun _ => ⊤)).subtype) ∧ ∀ v, ((List.ofFn e).prod v : M) ∈ fixd ρ (UK n w) := by
   intro L _ _ n q w l O A M _ _ _ _ _ _ ρ x δ T hx hq tf

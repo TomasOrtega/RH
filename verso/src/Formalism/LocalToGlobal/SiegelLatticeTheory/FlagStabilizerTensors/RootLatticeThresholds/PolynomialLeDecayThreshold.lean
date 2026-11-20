@@ -6,6 +6,11 @@ noncomputable section
 
 namespace Formalism.L2.SG.Pf.CarrierT
 
+/- English proof (translation)
+Use `lift r to NNReal using hr`. Use `lift k to NNReal using hk`. Use `lift i to NNReal using hi0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← sub_nonneg]`.
+
+Put the polynomial expressions in normal form. Check the signs of the components of the expression.
+-/
 theorem polynomial_le_decay_threshold (r k i : ℝ) (hr : 0 ≤ r) (hk : 0 ≤ k) (hi0 : 0 ≤ i) (hi : i ≤ r) :
     9 * (i + 1) * (127 * (r + 1) ^ 3 * (20 * (r + 1) * (2 * r + k + 1) ^ 2 + (2 * r + k + 1) ^ 3) + 1) +
       20 * (r + 1) * (1 + 3 * (r + 1)) * i +
@@ -32,6 +37,15 @@ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {Wp Wq :
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)]
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
 
+/- English proof (translation)
+Introduce `v i hi`. Establish `hi' : (i : ℝ) ≤ S.G.r` using `by exact_mod_cast hi`. Establish `hpoly` using `polynomial_le_decay_threshold (S.G.r : ℝ) (S.G.k : ℝ) (i : ℝ) (Nat.cast_nonneg _) (Nat.cast_nonneg _) (Nat.cast_nonneg _) hi'`. Establish `hN : (S.Ntop : ℝ) = 20 * ((S.G.r : ℝ) + 1)`. Simplify using `only [Formalism.FourierDecayAlt.C.HidaSetting.Ntop, Formalism.FourierDecayAlt.C.Kst]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hn7 : (0 : ℝ) ≤ (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 7` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Formalism.FourierDecayAlt.P5.Auser, Formalism.FourierDecayAlt.P5.mmUser, Formalism.FourierDecayAlt.P5.nV, hN]`.
+
+Use `push_cast`. Rewrite using `[hN]`. Use `_ ≤ 25000 * (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 7 := hpoly`. Use `_ ≤ decayThreshold Cc S.G.k S.G.r := by`. Unfold `decayThreshold`.
+
+Use polynomial arithmetic with `[abs_nonneg Cc]`.
+-/
 theorem sliceBudget_decayThreshold (S : Formalism.FourierDecayAlt.C.HidaSetting E Wp Wq) (Cc : ℝ) :
     Formalism.FourierDecayAlt.JCT.SliceBudget S (decayThreshold Cc S.G.k S.G.r) := by
   intro v i hi
@@ -56,6 +70,17 @@ theorem sliceBudget_decayThreshold (S : Formalism.FourierDecayAlt.C.HidaSetting 
         unfold decayThreshold
         nlinarith [abs_nonneg Cc]
 
+/- English proof (translation)
+Establish `hN : (S.Ntop : ℝ) = 20 * ((S.G.r : ℝ) + 1)`. Simplify using `only [Formalism.FourierDecayAlt.C.HidaSetting.Ntop, Formalism.FourierDecayAlt.C.Kst]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hN]`.
+
+Unfold `decayThreshold`. Establish `hs : (1 : ℝ) ≤ (S.G.r : ℝ) + 1` using `by linarith [(Nat.cast_nonneg S.G.r : (0 : ℝ) ≤ S.G.r)]`. Establish `hsn : (S.G.r : ℝ) + 1 ≤ 2 * (S.G.r : ℝ) + S.G.k + 1`. Combine the linear relations using `[(Nat.cast_nonneg S.G.r : (0 : ℝ) ≤ S.G.r), (Nat.cast_nonneg S.G.k : (0 : ℝ) ≤ S.G.k)]`. Take `⟨s, hs_def⟩ : ∃ s : ℝ, s = (S.G.r : ℝ) + 1` from `⟨_, rfl⟩`.
+
+Take `⟨n, hn_def⟩ : ∃ n : ℝ, n = 2 * (S.G.r : ℝ) + S.G.k + 1` from `⟨_, rfl⟩`. Rewrite using `[← hs_def, ← hn_def]`. Rewrite `hs`, `hsn` using `[← hs_def]`. Rewrite `hsn` using `[← hn_def]`. Establish `hs0 : 0 ≤ s` using `by linarith`.
+
+Establish `hn0 : 0 ≤ n` using `by linarith`. Establish `hX0 : 0 ≤ s ^ 4 * (20 * s * n ^ 2 + n ^ 3)` using `mul_nonneg (pow_nonneg hs0 4) (add_nonneg (mul_nonneg (mul_nonneg (by norm_num) hs0) (sq_nonneg n)) (pow_nonneg hn0 3))`. Establish `hX : s ^ 4 * (20 * s * n ^ 2 + n ^ 3) ≤ 21 * n ^ 7`. Establish `h4 : s ^ 4 ≤ n ^ 4` using `pow_le_pow_left₀ hs0 hsn 4`. Establish `h1 : 20 * s * n ^ 2 + n ^ 3 ≤ 21 * n ^ 3` using `by nlinarith [sq_nonneg n]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul h4 h1 (add_nonneg (mul_nonneg (mul_nonneg (by norm_num) hs0) (sq_nonneg n)) (pow_nonneg hn0 3)) (pow_nonneg hn0 4)` to reduce the goal to its premises. Use `_ = 21 * n ^ 7 := by ring`. Establish `hn7 : 0 ≤ n ^ 7` using `pow_nonneg hn0 7`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem poly_le_decayThreshold (S : Formalism.FourierDecayAlt.C.HidaSetting E Wp Wq) (Cc : ℝ) :
     Cc * ((S.G.r : ℝ) + 1) ^ 4 *
       ((S.Ntop : ℝ) * (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 2 + (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 3) ≤ decayThreshold Cc S.G.k S.G.r := by

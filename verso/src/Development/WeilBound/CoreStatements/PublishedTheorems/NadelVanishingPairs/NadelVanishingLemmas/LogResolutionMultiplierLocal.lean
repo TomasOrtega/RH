@@ -24,6 +24,29 @@ noncomputable section
 
 namespace GlobalTheory.Discrepancy
 
+/- English proof (translation)
+Set `ψ : E.ring →+* E'.ring` to `((functionFieldMap s).comp E.ring.subtype).codRestrict E'.ring (fun x => (hE x).1 x.2)`. Establish `hψv : ∀ x : E.ring, (ψ x : Y.functionField) = functionFieldMap s x` using `fun x => rfl`. Establish `hψc : ψ.comp E.const = E'.const`. Use extensionality with `c`. Use `congrArg (fun f => f c) (EtaleKlt.functionFieldMap_comp_constFn p s)` as an intermediate fact.
+
+Simplify `this` using `[hψv, DivOver.const]`. Establish `hψb : Function.Bijective ψ`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `hb.1` to reduce the goal to its premises. Use `congrArg Subtype.val hxy` as an intermediate fact. Simplify `this` using `[hψv]`. Introduce `y`. Take `⟨f, hf⟩` from `hb.2 y.1`.
+
+Establish `hfm : f ∈ E.ring` using `(hE f).2 (hf ▸ y.2)`. Conclude with `⟨⟨f, hfm⟩, Subtype.ext (by rw [hψv]; exact hf)⟩`. Set `F` to `TopForm.formMap n ψ hψc`. Establish `hFb : Function.Bijective F` using `TopForm.bijective_formMap_of_bijective n ψ hψc hψb`. Establish `hτ : ((functionFieldMap s).comp E.ring.subtype).comp E.const = Cartier.constFn (s ≫ p)`.
+
+Rewrite using `[← EtaleKlt.functionFieldMap_comp_constFn p s]`. Both sides reduce to the same expression. Establish `hrat : ∀ ω : Forms E.const n, E'.toRat n (F ω) = EtaleKlt.ratPull p s n (E.toRat n ω)`. Introduce `ω`. Conclude with `(TopForm.formMap_formMap ψ E'.ring.subtype ((functionFieldMap s).comp E.ring.subtype)`.
+
+Use `rfl hψc rfl hτ ω).trans`. Use the proof step `(TopForm.formMap_formMap E.ring.subtype (functionFieldMap s) ((functionFieldMap s).comp E.ring.subtype) rfl rfl (EtaleKlt.functionFieldMap_comp_constFn p s) hτ ω).symm`. Establish `hfree : ∀ ω : Forms E.const n, TopForm.IsFreeGen E.ring ω ↔ TopForm.IsFreeGen E'.ring (F ω)`. Introduce `ω`. Establish `hcomp : (fun b : E'.ring => b • F ω) ∘ ψ = F ∘ (fun a : E.ring => a • ω)`.
+
+Use function extensionality and compare the values at `x`. Conclude with `(LinearMap.map_smulₛₗ F x ω).symm`. Unfold `TopForm.IsFreeGen`. Rewrite using `[← Function.Bijective.of_comp_iff _ hψb, hcomp, Function.Bijective.of_comp_iff' hFb]`. Establish `hord` using `DivOver.Over.ord_fnPull_of_bijective k X Y p s hb E' E hE`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ω, hω, f, rfl, rfl⟩`. Use `⟨F ω, (hfree ω).1 hω, fnPull s f, ?_, hord f⟩` and prove the remaining obligations. Rewrite using `[hrat, LinearMap.map_smulₛₗ]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨ω', hω', f', hη, hf'⟩`. Take `⟨ω, rfl⟩` from `hFb.2 ω'`. Take `⟨c, hc⟩` from `hb.2 (f' : Y.functionField)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hc` using `[map_zero]`. Conclude with `f'.ne_zero hc.symm`. Establish `hff : fnPull s (Units.mk0 c hc0) = f'` using `Units.ext (by simpa using hc)`. Use `⟨ω, (hfree ω).2 hω', Units.mk0 c hc0, ?_, ?_⟩` and prove the remaining obligations. Apply `(EtaleKlt.ratPull_bijective_of_birational k X Y p s hb n).1` to reduce the goal to its premises.
+
+Rewrite using `[hη, LinearMap.map_smulₛₗ, hrat, ← hff]`. Both sides reduce to the same expression. Rewrite using `[← hord, hff, hf']`.
+-/
 private theorem isFormOrd_iff_isFormOrd_ratPull {k : Type} [Field k] {X Y : Scheme.{0}} [IsIntegral X]
     [IsIntegral Y] {p : X ⟶ Sp k} (s : Y ⟶ X) [IsDominant s]
     (hb : Function.Bijective (functionFieldMap s))
@@ -89,6 +112,13 @@ private theorem isFormOrd_iff_isFormOrd_ratPull {k : Type} [Field k] {X Y : Sche
       rfl
     · rw [← hord, hff, hf']
 
+/- English proof (translation)
+Establish `hη' : EtaleKlt.ratPull p s n η ≠ 0`. Introduce `h0`. Apply `hη` to reduce the goal to its premises. Apply `(EtaleKlt.ratPull_bijective_of_birational k X Y p s hb n).1` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`.
+
+Establish `key : E'.formOrd (EtaleKlt.ratPull p s n η) = E.formOrd η`. Unfold `DivOver.formOrd`. Distinguish the cases in `h : ∃ a, E.IsFormOrd η a`. Establish `h' : ∃ a, E'.IsFormOrd (EtaleKlt.ratPull p s n η) a` using `⟨h.choose, (isFormOrd_iff_isFormOrd_ratPull s hb hE η _).1 h.choose_spec⟩`. Rewrite using `[dif_pos h', dif_pos h]`.
+
+Conclude with `DivOver.IsFormOrd.unique hη' h'.choose_spec ((isFormOrd_iff_isFormOrd_ratPull s hb hE η _).1 h.choose_spec)`. Establish `h' : ¬ ∃ a, E'.IsFormOrd (EtaleKlt.ratPull p s n η) a` using `fun ⟨a, ha⟩ => h ⟨a, (isFormOrd_iff_isFormOrd_ratPull s hb hE η a).2 ha⟩`. Rewrite using `[dif_neg h', dif_neg h]`. Unfold `discrep`. Rewrite using `[key, DivOver.Over.ord_fnPull_of_bijective k X Y p s hb E' E hE g]`.
+-/
 theorem discrep_ratPull_fnPull {k : Type} [Field k] {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y]
     {p : X ⟶ Sp k} (s : Y ⟶ X) [IsDominant s] (hb : Function.Bijective (functionFieldMap s))
     {E' : DivOver (s ≫ p)} {E : DivOver p} (hE : DivOver.Over s E' E) {n : ℕ} {η : RatForms p n}
@@ -113,6 +143,11 @@ theorem discrep_ratPull_fnPull {k : Type} [Field k] {X Y : Scheme.{0}} [IsIntegr
   unfold discrep
   rw [key, DivOver.Over.ord_fnPull_of_bijective k X Y p s hb E' E hE g]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨η', m', g', hη', hm', h', hE⟩ E hx`. Rewrite using `[discrep_eq hn hη hη' hm hm' h h' hx]`. Conclude with `hE E hx`. Introduce `hE`.
+
+Conclude with `⟨η, m, g, hη, hm, h, hE⟩`.
+-/
 theorem IsLogEqn.lcAt_iff {k : Type} [Field k] [PerfectField k] {X : Scheme.{0}} [IsIntegral X]
     [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] {p : X ⟶ Sp k} [LocallyOfFiniteType p] {n : ℕ}
     {Δ : X → ℚ} {η : RatForms p n} {x : X} {m : ℕ} {g : X.functionFieldˣ}
@@ -125,6 +160,9 @@ theorem IsLogEqn.lcAt_iff {k : Type} [Field k] [PerfectField k] {X : Scheme.{0}}
   · intro hE
     exact ⟨η, m, g, hη, hm, h, hE⟩
 
+/- English proof (translation)
+Establish `: toFunctionField p a = Cartier.constFn p a`. Simplify using `[toFunctionField, Cartier.constFn, Cartier.fnOf, DVR.FlatBC.algX, Scheme.Hom.appLE, Scheme.Hom.appTop]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `E.const_mem a`.
+-/
 private theorem toFunctionField_mem_divOver_ring {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X]
     (p : X ⟶ Sp k) (E : DivOver p) (a : k) : toFunctionField p a ∈ E.ring := by
   have : toFunctionField p a = Cartier.constFn p a := by
@@ -134,11 +172,23 @@ private theorem toFunctionField_mem_divOver_ring {k : Type} [Field k] {X : Schem
   rw [this]
   exact E.const_mem a
 
+/- English proof (translation)
+Introduce and unpack `f ⟨a, rfl⟩`. Conclude with `h.1 a`.
+-/
 private theorem divOver_through_of_dominatesStalk {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X]
     {p : X ⟶ Sp k} (E : DivOver p) {w : X} (h : DominatesStalk E.ring w) : E.Through w := by
   rintro f ⟨a, rfl⟩
   exact h.1 a
 
+/- English proof (translation)
+Establish `hmem : ∀ a, algebraMap (X.presheaf.stalk (s w)) X.functionField a ∈ E.ring`. Introduce `a`. Rewrite using `[hE, functionFieldMap_algebraMap]`. Conclude with `h.1 _`. Use `⟨hmem, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Establish `hloc : (Scheme.Hom.stalkMap s w).hom a ∈ IsLocalRing.maximalIdeal _`. Rewrite `ha`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => ha (isUnit_of_map_unit _ _ hu)`. Establish `h2` using `h.2 _ hloc`. Rewrite `h2` using `[← functionFieldMap_algebraMap]`.
+
+Rewrite `h2`, the goal using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `h2 with h0 | hinv` into its components or cases. Use `left`. Conclude with `(map_eq_zero_iff _ (functionFieldMap s).injective).1 h0`. Use `right`.
+
+Introduce `hf`. Apply `hinv` to reduce the goal to its premises. Rewrite using `[← map_inv₀]`. Conclude with `(hE _).1 hf`.
+-/
 private theorem dominatesStalk_image_of_divOver_over {k : Type} [Field k] {X Y : Scheme.{0}} [IsIntegral X]
     [IsIntegral Y] {p : X ⟶ Sp k} (s : Y ⟶ X) [IsDominant s] {E' : DivOver (s ≫ p)} {E : DivOver p}
     (hE : DivOver.Over s E' E) {w : Y} (h : DominatesStalk E'.ring w) :
@@ -163,6 +213,19 @@ private theorem dominatesStalk_image_of_divOver_over {k : Type} [Field k] {X Y :
     rw [← map_inv₀]
     exact (hE _).1 hf
 
+/- English proof (translation)
+Take `⟨l, hl1, hl2⟩` from `dominatesStalk_iff_exists_hom.1 hc`. Set `φ : X.presheaf.stalk x →+* E.ring` to `(algebraMap (X.presheaf.stalk x) X.functionField).codRestrict E.ring (fun a => hx _ ⟨a, rfl⟩)`. Set `l' : Spec (CommRingCat.of E.ring) ⟶ X` to `Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk x`. Establish `hl' : specAlgebraMap E.ring X.functionField ≫ l' = genericFieldPoint X`. Rewrite using `[← specAlgebraMap_fromSpecStalk x, ← Category.assoc]`.
+
+Use `congr 1`. Simplify using `only [specAlgebraMap, ← Spec.map_comp]`. Use `congr 1`. Establish `hp : l ≫ p = l' ≫ p`. Take `⟨fa, hfa⟩` from `Spec.map_surjective (l ≫ p)`.
+
+Take `⟨fb, hfb⟩` from `Spec.map_surjective (l' ≫ p)`. Establish `h : specAlgebraMap E.ring X.functionField ≫ Spec.map fa = specAlgebraMap E.ring X.functionField ≫ Spec.map fb`. Rewrite using `[hfa, hfb, ← Category.assoc, ← Category.assoc, hl1, hl']`. Rewrite `h` using `[specAlgebraMap, ← Spec.map_comp, ← Spec.map_comp, Spec.map_inj]`. Rewrite using `[← hfa, ← hfb]`.
+
+Use `congr 1`. Use extensionality with `a`. Use `congrArg (fun ψ => ψ.hom a) h` as an intermediate fact. Simplify using `using this`. Establish `hsq : CommSq (genericFieldPoint X) (Spec.map (CommRingCat.ofHom (algebraMap E.ring X.functionField))) p (l' ≫ p)` using `⟨by rw [← hl', Category.assoc]⟩`.
+
+Set `S : ValuativeCommSq p` to `⟨E.ring, X.functionField, genericFieldPoint X, l' ≫ p, hsq⟩`. Establish `hsub` using `IsSeparated.valuativeCriterion p S`. Set `L1 : S.commSq.LiftStruct` to `⟨l, hl1, hp⟩`. Set `L2 : S.commSq.LiftStruct` to `⟨l', hl', rfl⟩`. Establish `heq : l = l'` using `congrArg CommSq.LiftStruct.l (Subsingleton.elim L1 L2)`.
+
+Rewrite using `[← hl2, heq]`. Establish `hr : l' (IsLocalRing.closedPoint E.ring) ∈ Set.range (X.fromSpecStalk x)` using `⟨Spec.map (CommRingCat.ofHom φ) (IsLocalRing.closedPoint E.ring), rfl⟩`. Rewrite `hr` using `[Scheme.range_fromSpecStalk]`. Conclude with `hr`.
+-/
 private theorem specializes_of_through_dominatesStalk {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X]
     (p : X ⟶ Sp k) [IsSeparated p] (E : DivOver p) {x c : X} (hx : E.Through x)
     (hc : DominatesStalk E.ring c) : c ⤳ x := by
@@ -201,12 +264,20 @@ private theorem specializes_of_through_dominatesStalk {k : Type} [Field k] {X : 
   rw [Scheme.range_fromSpecStalk] at hr
   exact hr
 
+/- English proof (translation)
+Take `⟨N, i, hi, rfl⟩` from `hq`. Conclude with `⟨_, dominatesStalk_centre (i ≫ PSpace.str k N) E.ring (toFunctionField_mem_divOver_ring _ E)⟩`.
+-/
 private theorem exists_dominatesStalk_of_isProjOver {k : Type} [Field k] {Y : Scheme.{0}} [IsIntegral Y]
     (q : Y ⟶ Sp k) (hq : IsProjOver q) (E : DivOver q) : ∃ w, DominatesStalk E.ring w := by
   obtain ⟨N, i, hi, rfl⟩ := hq
   exact ⟨_, dominatesStalk_centre (i ≫ PSpace.str k N) E.ring
     (toFunctionField_mem_divOver_ring _ E)⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(isFreeGen_formOf hg hω).2 η`. Establish `ha' : a • formOf U hg ω = η` using `ha`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `hη` to reduce the goal to its premises.
+
+Rewrite using `[← ha', zero_smul]`. Conclude with `⟨Units.mk0 a ha0, ha'.symm⟩`.
+-/
 private theorem exists_unit_eq_smul_formOf_of_isFrame {k : Type} [Field k] {Y : Scheme.{0}} [IsIntegral Y]
     {q : Y ⟶ Sp k} {n : ℕ} {U : Y.Opens} (hg : genericPoint Y ∈ U) {ω : FormsOn q n U}
     (hω : IsFrame ω) (η : RatForms q n) (hη : η ≠ 0) :
@@ -219,6 +290,17 @@ private theorem exists_unit_eq_smul_formOf_of_isFrame {k : Type} [Field k] {Y : 
     rw [← ha', zero_smul]
   exact ⟨Units.mk0 a ha0, ha'.symm⟩
 
+/- English proof (translation)
+Establish `hgen : genericPoint Y ∈ U` using `((genericPoint_spec Y).mem_open_set_iff U.isOpen).2 ⟨w, trivial, hw⟩`. Take `⟨h, hh⟩` from `exists_unit_eq_smul_formOf_of_isFrame hgen hω η hη`. Establish `hKe : K.IsEqn w h` using `hK U ω hω w hw h hh`. Establish `hD : (P - m • K).IsEqn w (g / h ^ m)` using `hg.sub (hKe.nsmul m)`. Establish `hf0 : formOf U hgen ω ≠ 0`.
+
+Introduce `h0`. Apply `hη` to reduce the goal to its premises. Rewrite using `[hh, h0, smul_zero]`. Establish `hF : E.formOrd η = E.ord h + E.formOrd (formOf U hgen ω)`. Rewrite using `[hh]`.
+
+Conclude with `E.formOrd_smul hdim hf0 h`. Rewrite `hF` using `[DivOver.formOrd_formOf_eq_zero hw hE hω, add_zero]`. Rewrite using `[hD.mult_eq, ← hE.ord_eq]`. Unfold `discrep`. Establish `ho : E.ord (g / h ^ m) = E.ord g - m * E.ord h`.
+
+Rewrite using `[div_eq_mul_inv, E.ord_mul, E.ord_inv, E.ord_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hF, ho]`. Establish `hm' : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem discrep_eq_neg_mult_div {k : Type} [Field k] [PerfectField k]
     {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y] {q : Y ⟶ Sp k} [LocallyOfFiniteType q]
     {n : ℕ} (hdim : topologicalKrullDim Y = n) {E : DivOver q} {w : Y} (hE : E.IsAt w)
@@ -249,6 +331,39 @@ private theorem discrep_eq_neg_mult_div {k : Type} [Field k] [PerfectField k]
   field_simp
   ring
 
+/- English proof (translation)
+Take `⟨U, hy, z, J, w, u, hc⟩` from `exists_isSncChart k Y q n B hB w0`. Establish `hgen : genericPoint Y ∈ U` using `((genericPoint_spec Y).mem_open_set_iff U.isOpen).2 ⟨w0, trivial, hy⟩`. Take `⟨h, hh⟩` from `exists_unit_eq_smul_formOf_of_isFrame hgen hc.frame η hη`. Establish `hKe : K.IsEqn w0 h` using `hK U _ hc.frame w0 hy h hh`. Establish `hD1 : (P - m • K).IsEqn w0 (g / h ^ m)` using `hg.sub (hKe.nsmul m)`.
+
+Establish `hD2` using `IsSncChart.isEqn_monomial k Y q n B w0 U hy z J w u hc (P - m • K) hsupp`. Establish `hunit` using `(hD2.iff_unitAt).1 hD1`. Establish `hord0 : E.ord ((g / h ^ m) / ∏ j ∈ J, u j ^ (P - m • K).mult (w j)) = 0` using `DivOver.ord_eq_zero_of_unitAt hE _ (by rwa [Units.val_div_eq_div_val])`. Establish `hordg : E.ord g = m * E.ord h + ∑ j ∈ J, (P - m • K).mult (w j) * E.ord (u j)`. Rewrite `hord0` using `[div_eq_mul_inv, E.ord_mul, E.ord_inv, div_eq_mul_inv, E.ord_mul, E.ord_inv, E.ord_pow, E.ord_prod_zpow]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf0 : formOf U hgen (dOn q z) ≠ 0`. Introduce `h0`. Apply `hη` to reduce the goal to its premises. Rewrite using `[hh, h0, smul_zero]`.
+
+Establish `hF : E.formOrd η = E.ord h + E.formOrd (formOf U hgen (dOn q z))`. Rewrite using `[hh]`. Conclude with `E.formOrd_smul hdim hf0 h`. Establish `hFn : 0 ≤ E.formOrd (formOf U hgen (dOn q z))` using `DivOver.formOrd_formOf_nonneg hdim hy hE _ hf0`. Establish `hFs : ∑ j ∈ J, E.ord (u j) - 1 ≤ E.formOrd (formOf U hgen (dOn q z))`.
+
+Use `DivOver.sum_ord_sub_one_le_formOrd_dOn hdim E hy hE z hf0 (J := J) (fun j => j.1) Subtype.val_injective (fun j => u j.1) (fun j => hc.val j.1 j.2)` as an intermediate fact. Rewrite `this` using `[Finset.sum_coe_sort J (fun j => E.ord (u j))]`. Then use the resulting hypothesis. Establish `ho : ∀ j ∈ J, 0 ≤ E.ord (u j)`. Introduce `j hj`. Rewrite using `[DivOver.ord_nonneg_iff, hc.val j hj]`.
+
+Conclude with `hE _ (regAt_fnOf hy _ _)`. Use `set F := E.formOrd (formOf U hgen (dOn q z))`. Use `set d := fun j => (P - m • K).mult (w j)`. Establish `hm' : (0 : ℚ) < m` using `by exact_mod_cast hm`. Establish `hdisc : discrep E η m g = (((m : ℤ) * F - ∑ j ∈ J, d j * E.ord (u j) : ℤ) : ℚ) / m`.
+
+Unfold `discrep`. Rewrite using `[hF, hordg]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hC : ∑ j ∈ J, ((m : ℤ) - d j) * E.ord (u j) = (m : ℤ) * ∑ j ∈ J, E.ord (u j) - ∑ j ∈ J, d j * E.ord (u j)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hmF : (m : ℤ) * (∑ j ∈ J, E.ord (u j) - 1) ≤ (m : ℤ) * F` using `mul_le_mul_of_nonneg_left hFs (by positivity)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H`. Establish `hd : ∀ j ∈ J, d j + 1 ≤ m` using `fun j hj => H (w j) (hc.spec j hj)`. Establish `key : -(m : ℤ) < (m : ℤ) * F - ∑ j ∈ J, d j * E.ord (u j)`. Distinguish the cases in `hz : ∀ j ∈ J, E.ord (u j) = 0`.
+
+Establish `h0 : ∑ j ∈ J, d j * E.ord (u j) = 0` using `Finset.sum_eq_zero fun j hj => by rw [hz j hj, mul_zero]`. Rewrite using `[h0]`. Establish `: (0 : ℤ) ≤ (m : ℤ) * F` using `mul_nonneg (by positivity) hFn`. Establish `: (0 : ℤ) < m` using `by exact_mod_cast hm`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `push_neg at hz`. Take `⟨j0, hj0, hne⟩` from `hz`. Establish `hpos : ∀ j ∈ J, 0 ≤ ((m : ℤ) - d j) * E.ord (u j)` using `fun j hj => mul_nonneg (by linarith [hd j hj]) (ho j hj)`. Establish `h1 : 1 ≤ ((m : ℤ) - d j0) * E.ord (u j0)`. Establish `: 1 ≤ E.ord (u j0)`.
+
+Use `ho j0 hj0` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `: 1 ≤ (m : ℤ) - d j0` using `by linarith [hd j0 hj0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hS : 1 ≤ ∑ j ∈ J, ((m : ℤ) - d j) * E.ord (u j)` using `h1.trans (Finset.single_le_sum hpos hj0)`.
+
+Rewrite `hS` using `[hC]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hdisc, lt_div_iff₀ hm']`. Establish `: ((-(m : ℤ) : ℤ) : ℚ) < (((m : ℤ) * F - ∑ j ∈ J, d j * E.ord (u j) : ℤ) : ℚ)`. Conclude with `key` after adjusting the coercions.
+
+Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `H`. Establish `hd : ∀ j ∈ J, d j ≤ m` using `fun j hj => H (w j) (hc.spec j hj)`. Establish `key : -(m : ℤ) ≤ (m : ℤ) * F - ∑ j ∈ J, d j * E.ord (u j)`.
+
+Establish `hpos : ∀ j ∈ J, 0 ≤ ((m : ℤ) - d j) * E.ord (u j)` using `fun j hj => mul_nonneg (by linarith [hd j hj]) (ho j hj)`. Establish `hS : 0 ≤ ∑ j ∈ J, ((m : ℤ) - d j) * E.ord (u j)` using `Finset.sum_nonneg hpos`. Rewrite `hS` using `[hC]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hdisc, le_div_iff₀ hm']`.
+
+Establish `: ((-(m : ℤ) : ℤ) : ℚ) ≤ (((m : ℤ) * F - ∑ j ∈ J, d j * E.ord (u j) : ℤ) : ℚ)`. Conclude with `key` after adjusting the coercions. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem neg_one_lt_discrep_of_mult_lt_and_le {k : Type} [Field k] [CharZero k] {Y : Scheme.{0}}
     [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q]
     [LocallyOfFiniteType q] (hdim : topologicalKrullDim Y = n) (B : Closeds Y)
@@ -349,6 +464,39 @@ private theorem neg_one_lt_discrep_of_mult_lt_and_le {k : Type} [Field k] [CharZ
     push_cast at this ⊢
     linarith
 
+/- English proof (translation)
+Introduce `k _ _ X _ _ _ p n hproj hn Δ η m G Y _ _ s _ K B hlm hres x`. Take `⟨N, i, hi, hpi⟩` from `hproj`. Use `haveI : IsSeparated p := hpi ▸ inferInstance`. Use `haveI : LocallyOfFiniteType p := hpi ▸ inferInstance`. Use `haveI := hres.smooth`.
+
+Use `haveI : Smooth (s ≫ p) := SmoothOfRelativeDimension.smooth n _`. Use `haveI : LocallyOfFiniteType (s ≫ p) := inferInstance`. Use `haveI : IsNormalScheme Y := ModifSections.isNormalScheme_of_smooth (s ≫ p)`. Establish `hdimY : topologicalKrullDim Y = n` using `HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth (s ≫ p) n hres.smooth`. Establish `hη' : EtaleKlt.ratPull p s n η ≠ 0`.
+
+Introduce `h0`. Apply `hlm.ne_zero` to reduce the goal to its premises. Apply `(EtaleKlt.ratPull_bijective_of_birational k X Y p s hres.bir n).1` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`. Take `⟨g, hg⟩` from `G.exists_isEqn x`.
+
+Establish `hL` using `hlm.eqn x g hg`. Establish `hm' : (0 : ℚ) < m` using `by exact_mod_cast hlm.pos`. Establish `hlow : ∀ E : DivOver p, E.Through x → ∃ w0 : Y, s w0 ⤳ x ∧ ∃ (E' : DivOver (s ≫ p)) (g0 : Y.functionFieldˣ), E'.Through w0 ∧ (pullCart s G).IsEqn w0 g0 ∧ discrep E η m g = discrep E' (EtaleKlt.ratPull p s n η) m g0`. Introduce `E hEx`. Take `⟨E', hE'⟩` from `DivOver.exists_over k X Y p s hres.bir E`.
+
+Take `⟨w0, hw0⟩` from `exists_dominatesStalk_of_isProjOver (s ≫ p) hres.proj E'`. Establish `hsw` using `specializes_of_through_dominatesStalk p E hEx (dominatesStalk_image_of_divOver_over s hE' hw0)`. Take `⟨g0, hg0⟩` from `G.exists_isEqn (s w0)`. Establish `hL0` using `hlm.eqn _ g0 hg0`. Establish `hLx : IsLogEqn p Δ η (s w0) m g` using `fun z hz => hL z (hz.trans hsw)`.
+
+Establish `hEs : E.Through (s w0)` using `DivOver.Over.through_image k X Y p s E' E hE' w0 (divOver_through_of_dominatesStalk E' hw0)`. Use `⟨w0, hsw, E', fnPull s g0, divOver_through_of_dominatesStalk E' hw0, (GlobalTheory.Cartier.exists_pullback_cartierDiv X Y s G).choose_spec.2 w0 g0 hg0, ?_⟩` and prove the remaining obligations. Rewrite using `[discrep_eq hn hlm.ne_zero hlm.ne_zero hlm.pos hlm.pos hLx hL0 hEs, discrep_ratPull_fnPull s hres.bir hE' hlm.ne_zero m g0]`. Establish `hup : ∀ w : Y, s w ⤳ x → (pullCart s G - m • K).mult w ≠ 0 → ∃ E : DivOver p, E.Through x ∧ discrep E η m g = -((pullCart s G - m • K).mult w : ℚ) / m`. Introduce `w hw hne`.
+
+Establish `hcoh` using `CartierDiv.coheight_eq_one_of_mult_ne_zero hne`. Take `⟨E', hE'⟩` from `DivOver.exists_isAt_of_coheight_eq_one (p := s ≫ p) hcoh`. Take `⟨E, hEo⟩` from `DivOver.exists_over_of_bijective k X Y p s hres.bir E'`. Establish `hEs : E.Through (s w)` using `DivOver.Over.through_image k X Y p s E' E hEo w (hE'.through (specializes_refl w))`. Take `⟨g1, hg1⟩` from `G.exists_isEqn (s w)`.
+
+Establish `hL1` using `hlm.eqn _ g1 hg1`. Establish `hLx : IsLogEqn p Δ η (s w) m g` using `fun z hz => hL z (hz.trans hw)`. Take `⟨U, hy, z, J, w', u, hc⟩` from `exists_isSncChart k Y (s ≫ p) n B hres.snc w`. Use `⟨E, hEs.of_specializes hw, ?_⟩` and prove the remaining obligations. Rewrite using `[discrep_eq hn hlm.ne_zero hlm.ne_zero hlm.pos hlm.pos hLx hL1 hEs, ← discrep_ratPull_fnPull s hres.bir hEo hlm.ne_zero m g1]`.
+
+Conclude with `discrep_eq_neg_mult_div hdimY hE' hy hc.frame hη' hres.div hlm.pos ((GlobalTheory.Cartier.exists_pullback_cartierDiv X Y s G).choose_spec.2 w g1 hg1)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[IsLogEqn.kltAt_iff hn hlm.ne_zero hlm.pos hL]`. Prove the components needed by the constructor for the conclusion. Introduce `H w hw`.
+
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hne : (pullCart s G - m • K).mult w ≠ 0`. Establish `: (0 : ℤ) < m` using `by exact_mod_cast hlm.pos`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨E, hEx, hd⟩` from `hup w hw hne`. Establish `h1` using `H E hEx`. Rewrite `h1` using `[hd]`. Establish `hM : (m : ℚ) ≤ ((pullCart s G - m • K).mult w : ℚ)` using `by exact_mod_cast hlt`. Rewrite `h1` using `[neg_div, neg_lt_neg_iff, div_lt_one hm']`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `H E hEx`. Take `⟨w0, hsw, E', g0, hE't, hg0, hd⟩` from `hlow E hEx`. Rewrite using `[hd]`. Conclude with `(neg_one_lt_discrep_of_mult_lt_and_le (s ≫ p) n hdimY B hres.snc hE't hη' hres.div hlm.pos hres.supp hg0).1 (fun w hw => H w ((hw.map s.continuous).trans hsw))`.
+
+Rewrite using `[IsLogEqn.lcAt_iff hn hlm.ne_zero hlm.pos hL]`. Prove the components needed by the constructor for the conclusion. Introduce `H w hw`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+
+Establish `hne : (pullCart s G - m • K).mult w ≠ 0`. Establish `: (0 : ℤ) < m` using `by exact_mod_cast hlm.pos`. Use linear arithmetic over natural numbers and integers. Take `⟨E, hEx, hd⟩` from `hup w hw hne`. Establish `h1` using `H E hEx`.
+
+Rewrite `h1` using `[hd]`. Establish `hM : (m : ℚ) < ((pullCart s G - m • K).mult w : ℚ)` using `by exact_mod_cast hlt`. Rewrite `h1` using `[neg_div, neg_le_neg_iff, div_le_one hm']`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `H E hEx`.
+
+Take `⟨w0, hsw, E', g0, hE't, hg0, hd⟩` from `hlow E hEx`. Rewrite using `[hd]`. Conclude with `(neg_one_lt_discrep_of_mult_lt_and_le (s ≫ p) n hdimY B hres.snc hE't hη' hres.div hlm.pos hres.supp hg0).2 (fun w hw => H w ((hw.map s.continuous).trans hsw))`.
+-/
 theorem kltAt_lcAt_iff_of_isLogRes : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Δ : X → ℚ) (η : RatForms p n) (m : ℕ) (G : CartierDiv X) (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (s : Y ⟶ X) [IsDominant s] (K : CartierDiv Y) (B : Closeds Y), IsLogMult p n Δ η m G → IsLogRes p n η m G s K B → ∀ x : X, (KltAt p n Δ x ↔ ∀ w : Y, s w ⤳ x → (pullCart s G - m • K).mult w < m) ∧ (LcAt p n Δ x ↔ ∀ w : Y, s w ⤳ x → (pullCart s G - m • K).mult w ≤ m) := by
   intro k _ _ X _ _ _ p n hproj hn Δ η m G Y _ _ s _ K B hlm hres x
   obtain ⟨N, i, hi, hpi⟩ := hproj

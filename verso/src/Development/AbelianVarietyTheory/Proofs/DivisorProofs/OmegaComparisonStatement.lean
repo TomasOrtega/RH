@@ -26,6 +26,13 @@ noncomputable section
 
 namespace GlobalTheory.OmCmpProof
 
+/- English proof (translation)
+Take `⟨n₁, c₁, h₁⟩` from `GlobalTheory.RootHtBound.dom hE W.V (O.met.ab c) W.amp W.k W.k_pos W.amp_spec (hO.ample_ab c) L`. Take `⟨n₂, c₂, h₂⟩` from `GlobalTheory.RootHtBound.dom hE W.V (O.met.ab c) W.amp W.k W.k_pos W.amp_spec (hO.ample_ab c) L.dual`. Use `set K : ℝ := (W.k : ℝ) * (((O.met.ab c).n : ℕ) : ℝ) with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `⟨((max n₁ n₂ : ℕ) : ℝ) * K + |c₁| + |c₂|, fun b hb => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, hw, hwb⟩` from `GlobalTheory.RootHtBound.exists_closed_over W.V hb`. Establish `ha` using `(GlobalTheory.Mean4O.CoverHt.main hE _ _ _ W.V _ _ _ w hw W.amp_spec).2`. Establish `hr` using `GlobalTheory.Mean4O.CoverHt.main hE _ _ _ W.V _ _ _ w hw hR`. Establish `hd` using `(GlobalTheory.T.point_height_dual_and_linear_comb hE _ W.V.X W.V.p _ W.V.ar (W.V.j w) hr.1).1 _ _ hr.2`. Establish `e₁` using `h₁ w hw _ _ ha hr.2`.
+
+Establish `e₂` using `h₂ w hw _ _ ha hd`. Rewrite `e₁`, `e₂` using `[hwb]`. Rewrite `e₁`, `e₂` using `[hA]`. Simplify using `only [Nat.cast_one, one_mul] at e₁ e₂`. Conclude with `GlobalTheory.RootHtBound.abs_le_of_two n₁ n₂ c₁ c₂ K _ _ hK0 e₁ e₂`.
+-/
 theorem ht_le_of_induces (hE : GlobalTheory.Published.ArExists) {D : D7} (O : Setup D) (hO : O.Core) (c : O.s.Comp)
     (W : O.LatModel ∅ c) (A : Adl (cxSt D.what₂.LL) (O.var c)) (L : GlobalTheory.HermLB W.V.p) (hA : ((A.n : ℕ) : ℝ) = 1)
     (hR : W.V.Induces A L 1) :
@@ -46,6 +53,9 @@ theorem ht_le_of_induces (hE : GlobalTheory.Published.ArExists) {D : D7} (O : Se
   simp only [Nat.cast_one, one_mul] at e₁ e₂
   exact GlobalTheory.RootHtBound.abs_le_of_two n₁ n₂ c₁ c₂ K _ _ hK0 e₁ e₂
 
+/- English proof (translation)
+The claim follows from `|(O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1)).ht b| ≤ C * (|(O.met.ab c).ht b| + 1) := by have hs : (letterOf O.S.Dw (Sum.inr (k : ℕ))).isSome := by rw [letterOf_whole O.S k]; rfl exact ht_le_of_induces hE O hO c W _ _ (by simp [Setup.adl0, adlOf]) (W.line_sp …`.
+-/
 theorem line_ht_le (hE : GlobalTheory.Published.ArExists) {D : D7} (O : Setup D) (hO : O.Core) (c : O.s.Comp) (W : O.LatModel ∅ c)
     (k : Fin (D.R.f * O.N)) : ∃ C : ℝ, ∀ b : (O.var c).X, IsClosed ({b} : Set (O.var c).X) →
       |(O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1)).ht b| ≤ C * (|(O.met.ab c).ht b| + 1) := by
@@ -57,6 +67,11 @@ end GlobalTheory.OmCmpProof
 
 namespace GlobalTheory.OmCmpProof
 
+/- English proof (translation)
+Use `⟨1, fun _ => -1, one_pos, fun i => by simp [Setup.adl0, adlOf], by rw [one_smul]; exact GlobalTheory.T.divisor_det_omega_sym_sum D O c, fun σ z => ⟨hO.referenceMetric_posAt c σ _ z, ?_⟩, fun v e y => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.cartier_ratio_local_norm D O hO c σ z`. Simplify using `only [Nat.cast_one, one_mul, pow_one, mul_zero, sub_zero, Int.cast_neg, Int.cast_one, neg_one_mul, Finset.sum_neg_distrib]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h` using `GlobalTheory.T.cartier_log_height_formula D O c v e y`. Simplify using `only [Nat.cast_one, one_mul, pow_one, Int.cast_neg, Int.cast_one, neg_one_mul, Finset.sum_neg_distrib]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isComb_det {D : D7} (O : Setup D) (hO : O.Core) (c : O.s.Comp) : IsComb (O.adl0 c (detOmSym D.host.E (D.R.f * O.N)))
     (fun k : Fin (D.R.f * O.N) => (O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1))) (fun _ => -1) (fun _ _ => 0) := by
   refine ⟨1, fun _ => -1, one_pos, fun i => by simp [Setup.adl0, adlOf], by rw [one_smul]; exact GlobalTheory.T.divisor_det_omega_sym_sum D O c,
@@ -69,6 +84,11 @@ theorem isComb_det {D : D7} (O : Setup D) (hO : O.Core) (c : O.s.Comp) : IsComb 
     simp only [Nat.cast_one, one_mul, pow_one, Int.cast_neg, Int.cast_one, neg_one_mul, Finset.sum_neg_distrib]
     rw [h]; ring
 
+/- English proof (translation)
+Introduce `D O hO c W b hb`. Establish `hs : ∀ k : Fin (D.R.f * O.N), (letterOf O.S.Dw (Sum.inr (k : ℕ))).isSome` using `fun k => by`. Rewrite using `[letterOf_whole O.S k]`. Both sides reduce to the same expression. Establish `e` using `GlobalTheory.T.height_decomposition_closed_point _ _ _ _ _ _ _ _ (isComb_det O hO c) (fun k y => GlobalTheory.T.adelic_metric_finitely_many_places _ _ _ _ _ _ _ one_ne_zero (W.line_spec ∅ subset_rfl _ (hs k)) y) b hb`.
+
+Rewrite using `[e]`. Simplify using `[finsum_zero]`.
+-/
 theorem ht_det : ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp), O.LatModel ∅ c → ∀ b : (O.var c).X, IsClosed ({b} : Set (O.var c).X) → (O.adl0 c (detOmSym D.host.E (D.R.f * O.N))).ht b = -∑ k : Fin (D.R.f * O.N), (O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1)).ht b := by
   intro D O hO c W b hb
   have hs : ∀ k : Fin (D.R.f * O.N), (letterOf O.S.Dw (Sum.inr (k : ℕ))).isSome := fun k => by
@@ -82,6 +102,13 @@ end GlobalTheory.OmCmpProof
 
 namespace GlobalTheory.OmCmpProof
 
+/- English proof (translation)
+Introduce `hP _ D O hO _ A T H h`. Establish `hE : GlobalTheory.Published.ArExists` using `hP.p4.arExists`. Use `choose C hC using fun (c : O.s.Comp) (k : Fin (D.R.f * O.N)) => line_ht_le hE O hO c (h.mdl ∅ c) k`. Use `⟨∑ c, ∑ k, |C c k|, fun y => ?_⟩` and prove the remaining obligations. Establish `hb` using `HtTieRead.isClosed_basePt O y`.
+
+Use `show |(O.adl0 (compPt O.s y) (detOmSym D.host.E (D.R.f * O.N))).ht (basePt O.Φ y)| ≤ _`. Rewrite using `[h.ht.hA y, GlobalTheory.OmCmpProof.ht_det D O hO _ (h.mdl ∅ _) _ hb, abs_neg]`. Use `set X := |(O.met.ab (compPt O.s y)).ht (basePt O.Φ y)| + 1 with hX`. Establish `hX0 : 0 ≤ X` using `by positivity`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations.
+
+Establish `h1 : ∀ k : Fin (D.R.f * O.N), |(O.adl0 (compPt O.s y) (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1)).ht (basePt O.Φ y)| ≤ |C (compPt O.s y) k| * X` using `fun k => (hC _ k _ hb).trans (mul_le_mul_of_nonneg_right (le_abs_self _) hX0)`. Use `(Finset.sum_le_sum fun k _ => h1 k).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`. Use `mul_le_mul_of_nonneg_right ?_ hX0` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun c => ∑ k, |C c k|) (fun c _ => Finset.sum_nonneg fun k _ => abs_nonneg _) (Finset.mem_univ (compPt O.s y))`.
+-/
 theorem om_cmp : Hypotheses2 → HypothesesH → OmCmp := by
   intro hP _ D O hO _ A T H h
   have hE : GlobalTheory.Published.ArExists := hP.p4.arExists

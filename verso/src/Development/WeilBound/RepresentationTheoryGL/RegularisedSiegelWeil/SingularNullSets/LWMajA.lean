@@ -13,9 +13,15 @@ variable {Z : Type} [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensiona
 def sc (j : ℕ) : Z →L[ℝ] Z := ((2 : ℝ) ^ j)⁻¹ • ContinuousLinearMap.id ℝ Z
 
 omit [FiniteDimensional ℝ Z] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sc_apply (j : ℕ) (z : Z) : sc j z = ((2 : ℝ) ^ j)⁻¹ • z := rfl
 
 omit [FiniteDimensional ℝ Z] in
+/- English proof (translation)
+Use `(norm_smul_le _ _).trans ?_` and prove the remaining obligations. Establish `h1 : ‖((2 : ℝ) ^ j)⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, norm_pow, Real.norm_two]`. Conclude with `inv_le_one_of_one_le₀ (one_le_pow₀ one_le_two)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_sc_le (j : ℕ) : ‖(sc j : Z →L[ℝ] Z)‖ ≤ 1 := by
   refine (norm_smul_le _ _).trans ?_
   have h1 : ‖((2 : ℝ) ^ j)⁻¹‖ ≤ 1 := by
@@ -25,17 +31,29 @@ theorem norm_sc_le (j : ℕ) : ‖(sc j : Z →L[ℝ] Z)‖ ≤ 1 := by
         mul_le_mul h1 ContinuousLinearMap.norm_id_le (norm_nonneg _) zero_le_one
     _ = 1 := one_mul 1
 
+/- English proof (translation)
+Rewrite using `[sc_apply, norm_smul, norm_inv, norm_pow, Real.norm_two, div_eq_inv_mul]`.
+-/
 theorem norm_sc (j : ℕ) (z : Z) : ‖sc j z‖ = ‖z‖ / 2 ^ j := by
   rw [sc_apply, norm_smul, norm_inv, norm_pow, Real.norm_two, div_eq_inv_mul]
 
 def dy (ρ : ContDiffBump (0 : Z)) (j : ℕ) : Z → ℝ := fun z => ρ (sc j z)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dy_eq (ρ : ContDiffBump (0 : Z)) (j : ℕ) : dy ρ j = ρ ∘ (sc j) := rfl
 
+/- English proof (translation)
+Rewrite using `[dy_eq]`. Conclude with `ρ.contDiff.comp (sc j).contDiff`.
+-/
 theorem contDiff_dy (ρ : ContDiffBump (0 : Z)) (j : ℕ) {n : ℕ∞} : ContDiff ℝ n (dy ρ j) := by
   rw [dy_eq]
   exact ρ.contDiff.comp (sc j).contDiff
 
+/- English proof (translation)
+Rewrite using `[dy_eq, ContinuousLinearMap.iteratedFDeriv_comp_right (sc j) (ρ.contDiff (n := (k : ℕ∞))) z le_rfl]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Establish `hp : ∏ _i : Fin k, ‖(sc j : Z →L[ℝ] Z)‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun _ _ => norm_sc_le j)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_iteratedFDeriv_dy_le (ρ : ContDiffBump (0 : Z)) (j k : ℕ) (z : Z) :
     ‖iteratedFDeriv ℝ k (dy ρ j) z‖ ≤ ‖iteratedFDeriv ℝ k ρ (sc j z)‖ := by
   rw [dy_eq, ContinuousLinearMap.iteratedFDeriv_comp_right (sc j) (ρ.contDiff (n := (k : ℕ∞))) z le_rfl]
@@ -46,12 +64,18 @@ theorem norm_iteratedFDeriv_dy_le (ρ : ContDiffBump (0 : Z)) (j k : ℕ) (z : Z
       ≤ ‖iteratedFDeriv ℝ k ρ (sc j z)‖ * 1 := mul_le_mul_of_nonneg_left hp (norm_nonneg _)
     _ = _ := mul_one _
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `(ρ.contDiff (n := (k : ℕ∞)).continuous_iteratedFDeriv le_rfl).bounded_above_of_compact_support (ρ.hasCompactSupport.iteratedFDeriv k)`. Conclude with `⟨M, (norm_nonneg _).trans (hM 0), hM⟩`.
+-/
 theorem exists_bound_iteratedFDeriv (ρ : ContDiffBump (0 : Z)) (k : ℕ) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ x, ‖iteratedFDeriv ℝ k ρ x‖ ≤ M := by
   obtain ⟨M, hM⟩ := (ρ.contDiff (n := (k : ℕ∞)).continuous_iteratedFDeriv le_rfl).bounded_above_of_compact_support
     (ρ.hasCompactSupport.iteratedFDeriv k)
   exact ⟨M, (norm_nonneg _).trans (hM 0), hM⟩
 
+/- English proof (translation)
+Establish `hx' : x ∉ tsupport ρ`. Rewrite using `[ρ.tsupport_eq, mem_closedBall, dist_zero_right]`. Conclude with `not_le.2 hx`. Conclude with `Function.notMem_support.1 fun h => hx' (support_iteratedFDeriv_subset k h)`.
+-/
 theorem iteratedFDeriv_eq_zero_of_far (ρ : ContDiffBump (0 : Z)) (k : ℕ) {x : Z} (hx : ρ.rOut < ‖x‖) :
     iteratedFDeriv ℝ k ρ x = 0 := by
   have hx' : x ∉ tsupport ρ := by
@@ -72,6 +96,13 @@ def cf (S : Set (Z → ℂ)) (j : ℕ) : ℝ := sSup (env S j)
 
 variable {S : Set (Z → ℂ)} {B : ℕ → ℝ}
 
+/- English proof (translation)
+Introduce `r hr`. Break down `hr with rfl | ⟨u, hu, z, hz, rfl⟩` into its components or cases. Rewrite using `[zero_mul]`. Check the signs of the components of the expression. Establish `h1 : ((2 : ℝ) ^ j) ^ N ≤ 2 ^ N * (1 + ‖z‖) ^ N`.
+
+Rewrite using `[← mul_pow]`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Break down `hz with rfl | hz` into its components or cases. Rewrite using `[pow_zero]`. Use polynomial arithmetic with `[norm_nonneg z]`.
+
+Use polynomial arithmetic with `[norm_nonneg z]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mem_env_le (hB : ∀ N, ∀ u ∈ S, ∀ z, (1 + ‖z‖) ^ N * ‖u z‖ ≤ B N) (N j : ℕ) :
     ∀ r ∈ env S j, r * ((2 : ℝ) ^ j) ^ N ≤ 2 ^ N * max (B N) 0 := by
   intro r hr
@@ -89,18 +120,30 @@ theorem mem_env_le (hB : ∀ N, ∀ u ∈ S, ∀ z, (1 + ‖z‖) ^ N * ‖u z�
       _ ≤ 2 ^ N * max (B N) 0 :=
           mul_le_mul_of_nonneg_left ((hB N u hu z).trans (le_max_left _ _)) (by positivity)
 
+/- English proof (translation)
+Use `⟨max (B 0) 0, fun r hr => ?_⟩` and prove the remaining obligations. Use `mem_env_le hB 0 j r hr` as an intermediate fact. Simplify using `using this`.
+-/
 theorem bdd_env (hB : ∀ N, ∀ u ∈ S, ∀ z, (1 + ‖z‖) ^ N * ‖u z‖ ≤ B N) (j : ℕ) : BddAbove (env S j) := by
   refine ⟨max (B 0) 0, fun r hr => ?_⟩
   have := mem_env_le hB 0 j r hr
   simpa using this
 
+/- English proof (translation)
+The claim follows from `le_csSup (bdd_env hB j) (Set.mem_insert 0 _)`.
+-/
 theorem cf_nonneg (hB : ∀ N, ∀ u ∈ S, ∀ z, (1 + ‖z‖) ^ N * ‖u z‖ ≤ B N) (j : ℕ) : 0 ≤ cf S j :=
   le_csSup (bdd_env hB j) (Set.mem_insert 0 _)
 
+/- English proof (translation)
+The claim follows from `le_csSup (bdd_env hB j) (Set.mem_insert_of_mem _ ⟨u, hu, z, hz, rfl⟩)`.
+-/
 theorem le_cf (hB : ∀ N, ∀ u ∈ S, ∀ z, (1 + ‖z‖) ^ N * ‖u z‖ ≤ B N) {j : ℕ} {u : Z → ℂ} (hu : u ∈ S) {z : Z}
     (hz : j = 0 ∨ (2 : ℝ) ^ j ≤ 2 * ‖z‖) : ‖u z‖ ≤ cf S j :=
   le_csSup (bdd_env hB j) (Set.mem_insert_of_mem _ ⟨u, hu, z, hz, rfl⟩)
 
+/- English proof (translation)
+Establish `hp : (0 : ℝ) < ((2 : ℝ) ^ j) ^ N` using `by positivity`. Rewrite using `[← le_div_iff₀ hp]`. Use `csSup_le (Set.insert_nonempty 0 _) fun r hr => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hp]`. Conclude with `mem_env_le hB N j r hr`.
+-/
 theorem cf_mul_le (hB : ∀ N, ∀ u ∈ S, ∀ z, (1 + ‖z‖) ^ N * ‖u z‖ ≤ B N) (N j : ℕ) :
     cf S j * ((2 : ℝ) ^ j) ^ N ≤ 2 ^ N * max (B N) 0 := by
   have hp : (0 : ℝ) < ((2 : ℝ) ^ j) ^ N := by positivity
@@ -109,6 +152,11 @@ theorem cf_mul_le (hB : ∀ N, ∀ u ∈ S, ∀ z, (1 + ‖z‖) ^ N * ‖u z‖
   rw [le_div_iff₀ hp]
   exact mem_env_le hB N j r hr
 
+/- English proof (translation)
+Use `Summable.of_nonneg_of_le (fun j => mul_nonneg (mul_nonneg (cf_nonneg hB j) (by positivity)) hc) (fun j => ?_) ((summable_geometric_two.mul_left (2 ^ (m + 1) * max (B (m + 1)) 0)).mul_right c)` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ hc` to reduce the goal to its premises. Establish `h` using `cf_mul_le hB (m + 1) j`. Establish `hp : (0 : ℝ) < 2 ^ j` using `by positivity`. Rewrite `h` using `[pow_succ, ← mul_assoc]`.
+
+Rewrite using `[one_div_pow, ← div_eq_mul_one_div, le_div_iff₀ hp]`. Conclude with `h`.
+-/
 theorem summable_cf_mul (hB : ∀ N, ∀ u ∈ S, ∀ z, (1 + ‖z‖) ^ N * ‖u z‖ ≤ B N) (m : ℕ) (c : ℝ) (hc : 0 ≤ c) :
     Summable fun j => cf S j * ((2 : ℝ) ^ j) ^ m * c := by
   refine Summable.of_nonneg_of_le (fun j => mul_nonneg (mul_nonneg (cf_nonneg hB j) (by positivity)) hc)
@@ -122,6 +170,39 @@ theorem summable_cf_mul (hB : ∀ N, ∀ u ∈ S, ∀ z, (1 + ‖z‖) ^ N * ‖
 
 end Coef
 
+/- English proof (translation)
+Use `choose B hB using hS`. Set `ρ : ContDiffBump (0 : Z)` to `⟨1, 2, zero_lt_one, one_lt_two⟩`. Use `choose M hM0 hM using exists_bound_iteratedFDeriv ρ`. Set `f : ℕ → Z → ℝ` to `fun j => cf S j • dy ρ j`. Establish `hf : ∀ j, ContDiff ℝ (⊤ : ℕ∞) (f j)` using `fun j => by`.
+
+Express the relevant statement in the definitionally equal form `ContDiff ℝ _ (fun y => cf S j • dy ρ j y)`. Conclude with `(contDiff_dy ρ j).const_smul _`. Establish `hDf : ∀ (k j : ℕ) (x : Z), ‖iteratedFDeriv ℝ k (f j) x‖ = cf S j * ‖iteratedFDeriv ℝ k (dy ρ j) x‖`. Introduce `k j x`. Rewrite using `[iteratedFDeriv_const_smul_apply ((contDiff_dy ρ j (n := (k : ℕ∞))).contDiffAt), norm_smul, Real.norm_of_nonneg (cf_nonneg hB j)]`.
+
+Establish `hv : ∀ k : ℕ, ((k : ℕ∞) ≤ ⊤) → Summable fun j => cf S j * ((2 : ℝ) ^ j) ^ 0 * M k` using `fun k _ => summable_cf_mul hB 0 (M k) (hM0 k)`. Establish `h'f : ∀ (k j : ℕ) (x : Z), ((k : ℕ∞) ≤ ⊤) → ‖iteratedFDeriv ℝ k (f j) x‖ ≤ cf S j * ((2 : ℝ) ^ j) ^ 0 * M k`. Introduce `k j x _`. Rewrite using `[hDf, pow_zero, mul_one]`. Conclude with `mul_le_mul_of_nonneg_left ((norm_iteratedFDeriv_dy_le ρ j k x).trans (hM k _)) (cf_nonneg hB j)`.
+
+Set `Fr : Z → ℝ` to `fun x => ∑' j, f j x`. Establish `hFr : ContDiff ℝ (⊤ : ℕ∞) Fr` using `contDiff_tsum hf hv h'f`. Establish `hw : ∀ (m k j : ℕ) (x : Z), ‖x‖ ^ m * ‖iteratedFDeriv ℝ k (f j) x‖ ≤ cf S j * ((2 : ℝ) ^ j) ^ m * (2 ^ m * M k)`. Introduce `m k j x`. Rewrite using `[hDf]`.
+
+Distinguish the cases in `hx : ‖x‖ ≤ 2 ^ j * 2`. Establish `h1 : ‖x‖ ^ m ≤ ((2 : ℝ) ^ j) ^ m * 2 ^ m`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hx m`. Establish `h2 : ‖iteratedFDeriv ℝ k (dy ρ j) x‖ ≤ M k` using `(norm_iteratedFDeriv_dy_le ρ j k x).trans (hM k _)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hfar : ρ.rOut < ‖sc j x‖`. Rewrite using `[norm_sc]`. Use `show (2 : ℝ) < ‖x‖ / 2 ^ j`. Rewrite using `[lt_div_iff₀ (by positivity)]`.
+
+Combine the linear relations using `[not_le.1 hx]`. Establish `h0 : ‖iteratedFDeriv ℝ k (dy ρ j) x‖ = 0`. Use `le_antisymm ((norm_iteratedFDeriv_dy_le ρ j k x).trans ?_) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_eq_zero_of_far ρ k hfar, norm_zero]`. Rewrite using `[h0, mul_zero, mul_zero]`.
+
+Conclude with `mul_nonneg (mul_nonneg (cf_nonneg hB j) (by positivity)) (mul_nonneg (by positivity) (hM0 k))`. Establish `hdecay : ∀ m k : ℕ, ∃ C : ℝ, ∀ x, ‖x‖ ^ m * ‖iteratedFDeriv ℝ k Fr x‖ ≤ C`. Introduce `m k`. Use `⟨∑' j, cf S j * ((2 : ℝ) ^ j) ^ m * (2 ^ m * M k), fun x => ?_⟩` and prove the remaining obligations. Establish `hs : Summable fun j => ‖iteratedFDeriv ℝ k (f j) x‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun j => h'f k j x le_top) (hv k le_top)`.
+
+Rewrite using `[iteratedFDeriv_tsum_apply hf hv h'f le_top]`. Combine the equalities or inequalities in the displayed calculation. Set `F : SchwartzMap Z ℂ` to `{ toFun := fun x => ((Fr x : ℝ) : ℂ) smooth' := Complex.ofRealCLM.contDiff.comp hFr decay' := by`. Introduce `m k`. Take `⟨C, hC⟩` from `hdecay m k`.
+
+Use `⟨C, fun x => ?_⟩` and prove the remaining obligations. Establish `e : (fun x => ((Fr x : ℝ) : ℂ)) = (Complex.ofRealLI : ℝ →ₗᵢ[ℝ] ℂ) ∘ Fr` using `rfl`. Rewrite using `[e, LinearIsometry.norm_iteratedFDeriv_comp_left _ (hFr.contDiffAt (x := x)) (by exact_mod_cast (le_top : (k : ℕ∞) ≤ ⊤))]`. Conclude with `hC x }`. Use `⟨F, fun u hu z => ?_⟩` and prove the remaining obligations.
+
+Establish `hF : ‖F z‖ = |Fr z|` using `by show ‖((Fr z : ℝ) : ℂ)‖ = _`. Conclude with `Complex.norm_real _`. Rewrite using `[hF]`. Take `⟨n0, hn0⟩` from `pow_unbounded_of_one_lt ‖z‖ (one_lt_two : (1 : ℝ) < 2)`. Establish `hex : ∃ j : ℕ, ‖z‖ ≤ 2 ^ j` using `⟨n0, hn0.le⟩`.
+
+Set `j` to `Nat.find hex`. Establish `hj : ‖z‖ ≤ 2 ^ j` using `Nat.find_spec hex`. Establish `hcond : j = 0 ∨ (2 : ℝ) ^ j ≤ 2 * ‖z‖`. Break down `Nat.eq_zero_or_eq_succ_pred j with h | h` into its components or cases. Conclude with `Or.inl h`.
+
+Use `right`. Establish `hmin` using `Nat.find_min hex (show j.pred < j by omega)`. Rewrite using `[h, pow_succ]`. Combine the linear relations using `[not_le.1 hmin]`. Establish `hone : dy ρ j z = 1`.
+
+Apply `ρ.one_of_mem_closedBall` to reduce the goal to its premises. Rewrite using `[mem_closedBall, dist_zero_right, norm_sc]`. Use `show ‖z‖ / 2 ^ j ≤ 1`. Rewrite using `[div_le_one (by positivity)]`. Conclude with `hj`.
+
+Establish `hnn : ∀ i, 0 ≤ f i z` using `fun i => mul_nonneg (cf_nonneg hB i) (ρ.nonneg)`. Establish `hsum : Summable fun i => f i z`. Use `Summable.of_nonneg_of_le hnn (fun i => ?_) (summable_cf_mul hB 0 1 zero_le_one)` and prove the remaining obligations. Use `show cf S i * dy ρ i z ≤ cf S i * ((2 : ℝ) ^ i) ^ 0 * 1`. Rewrite using `[pow_zero, mul_one, mul_one]`.
+
+Conclude with `mul_le_of_le_one_right (cf_nonneg hB i) ρ.le_one`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem schDom {Z : Type} [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] (S : Set (Z → ℂ))
     (hS : ∀ N : ℕ, ∃ B : ℝ, ∀ u ∈ S, ∀ z, (1 + ‖z‖) ^ N * ‖u z‖ ≤ B) :
     ∃ F : SchwartzMap Z ℂ, ∀ u ∈ S, ∀ z, ‖u z‖ ≤ ‖F z‖ := by

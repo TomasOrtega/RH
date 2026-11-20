@@ -14,6 +14,17 @@ namespace GlobalTheory.NormOneHilbert90Units
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hz : (z : D.host.E) * star (z : D.host.E) = 1` using `z.2.2`. Establish `key : ∀ a : D.host.E, (z : D.host.E) * star (a + (z : D.host.E) * star a) = a + (z : D.host.E) * star a`. Introduce `a`. Rewrite using `[star_add, star_mul, star_star]`. Take the linear combination `a * hz`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : D.host.E, star x ≠ x := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `NumberField.IsCMField.complexConj_ne_one D.host.E` to reduce the goal to its premises. Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Formalism.BasicNotions.Examples₂.cmStar_apply]`. Conclude with `h x`. Distinguish the cases in `h1 : (1 : D.host.E) + (z : D.host.E) * star (1 : D.host.E) = 0`. Use `⟨x + (z : D.host.E) * star x, ?_, ?_⟩` and prove the remaining obligations. Introduce `h2`.
+
+Establish `hz1 : (z : D.host.E) = -1` using `by rw [star_one] at h1; linear_combination h1`. Rewrite `h2` using `[hz1]`. Conclude with `hx (by linear_combination -h2)`. Rewrite using `[← Formalism.BasicNotions.Examples₂.star_eq_conj]`. Conclude with `key x`.
+
+Conclude with `⟨_, h1, by rw [← Formalism.BasicNotions.Examples₂.star_eq_conj]; exact key 1⟩`.
+-/
 theorem exists_ne_zero_mul_conj_eq_of_unitary (D : D7) (z : unitary D.host.E) :
     ∃ w : D.host.E, w ≠ 0 ∧ (z : D.host.E) * D.host.conj w = w := by
   have hz : (z : D.host.E) * star (z : D.host.E) = 1 := z.2.2

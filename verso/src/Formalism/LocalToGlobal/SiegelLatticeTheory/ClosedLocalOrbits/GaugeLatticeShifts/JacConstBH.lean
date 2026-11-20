@@ -11,6 +11,15 @@ namespace Formalism.L2.SG.Pf.BH
 
 open Formalism.QuantumDeterminants Formalism.L2.SG.Pf
 
+/- English proof (translation)
+Introduce `k r μ μb hμ hμb φ hφ`. Take `⟨C, hC, hF⟩` from `hI k r μ μb hμ hμb`. Establish `hlim1 : Tendsto (fun ρ : ℝ => (μ (gBall k r ρ)).toReal / gVol k r ρ) (𝓝[>] 0) (𝓝 1)` using `hμ.2`. Establish `hlim2` using `(hR k r μb hμb).const_mul (C : ℝ)`. Establish `heq : ∀ᶠ ρ in 𝓝[>] (0:ℝ), (μ (gBall k r ρ)).toReal / gVol k r ρ = (C : ℝ) * ((rhs k r μb ((wBall k r ρ).indicator 1)).toReal / gVol k r ρ)` using `by filter_upwards [self_mem_nhdsWithin] with ρ hρ`.
+
+Take `⟨hm, he⟩` from `hS k r μ hμ.1 ρ hρ`. Establish `h1 : ∫⁻ x, (wBall k r ρ).indicator 1 x ∂μ = μ (wBall k r ρ)` using `lintegral_indicator_one hm`. Establish `h2` using `hF _ (measurable_one.indicator hm)`. Rewrite `h2` using `[h1, he]`. Rewrite using `[h2, ENNReal.toReal_mul, ENNReal.coe_toReal, mul_div_assoc]`.
+
+Establish `hu` using `tendsto_nhds_unique (hlim1.congr' heq) hlim2`. Establish `h2r : (0:ℝ) < 2 ^ r` using `by positivity`. Establish `hCr : (C : ℝ) = 2 ^ r`. Clear denominators, using `at hu` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hCe : (C : ℝ≥0∞) = ENNReal.ofReal (2 ^ r)`. Rewrite using `[← hCr, ENNReal.ofReal_coe_nnreal]`. Rewrite using `[hF φ hφ, hCe]`. Both sides reduce to the same expression.
+-/
 theorem bruhatHaar_of (hI : IterGauge) (hS : GaugeShift) (hR : RhsLim) : BruhatHaar := by
   intro k r μ μb hμ hμb φ hφ
   obtain ⟨C, hC, hF⟩ := hI k r μ μb hμ hμb
@@ -34,6 +43,9 @@ theorem bruhatHaar_of (hI : IterGauge) (hS : GaugeShift) (hR : RhsLim) : BruhatH
   rw [hF φ hφ, hCe]
   rfl
 
+/- English proof (translation)
+The claim follows from `bruhatHaar_of hI hS (rhsLim_of hW hV)`.
+-/
 theorem bruhatHaar_of_iterGauge (hI : IterGauge) (hS : GaugeShift) (hW : Sandwich) (hV : VolLim) : BruhatHaar :=
   bruhatHaar_of hI hS (rhsLim_of hW hV)
 

@@ -8,6 +8,13 @@ open ValuativeRel Formalism.MainNotions.S.Loc Formalism.L2.SG.LsDatumA Formalism
 
 namespace Formalism.L2.SG.LocalCountModules.ThetaMbe0GWork
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ γ`. Take `⟨P, Q, hP, hPQ, hPl, hQl⟩` from `liftPQ Z₁ Z₂ γ`. Take `⟨P₂, Q₂, hP₂, hPQ₂, hP₂l, hQ₂l⟩` from `liftPQ Z₂ Z₁ (isoMbeSymm γ)`. Take `⟨K, -, hKl, hK⟩` from `liftPQ_inv Z₁ Z₂ γ P P₂ hP (fun v => hP₂ v) hPl hP₂l`. Take `⟨K', -, hK'l, hK'⟩` from `liftPQ_inv Z₂ Z₁ (isoMbeSymm γ) P₂ P hP₂ (fun v => hP v) hP₂l hPl`.
+
+Take `⟨γ', hγ', hm⟩` from `lift_partner (sigR hs) Z₁.Z Z₂.Z Zσ₁.Z Zσ₂.Z _ (lift_zsig hs h₁) (lift_zsig hs h₂) (lift_cancel Z₁) (lift_cancel Z₂) P Q P₂ Q₂ K K' hPQ hPQ₂ hK hK' hPl hP₂l hQl hQ₂l hKl hK'l`. Use `⟨P, Q, lstar (sigR hs) Q₂, γ', hP, hγ', hPQ, hPl, hQl, fun w => ?_⟩` and prove the remaining obligations. Take `⟨m, hm0, hmw⟩` from `hm w`. Use `⟨m, hm0, fun i => ?_⟩` and prove the remaining obligations. Establish `hi` using `congrArg (fun x => ((x i : M.R) : E)) hmw`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, lstar, Matrix.transpose_apply, Matrix.map_apply, Pi.add_apply] at hi ⊢`. Move the coercions through the operations in `at hi ⊢`. Conclude with `hi`.
+-/
 theorem stepLiftG : StepLiftG := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ γ
   obtain ⟨P, Q, hP, hPQ, hPl, hQl⟩ := liftPQ Z₁ Z₂ γ

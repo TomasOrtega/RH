@@ -22,10 +22,16 @@ def GenRatios (ev : V →ₗ[K] Ω) : Prop := ev ≠ 0 ∧ ratioField ev = ⊤
 def ValBound (ev : V →ₗ[K] Ω) (τ : ℕ) (t : Ω) : Prop :=
   ∀ ν : Valuation Ω ℝ≥0, (∀ a : K, a ≠ 0 → ν (algebraMap K Ω a) = 1) → ∃ v, ν t ≤ ν (ev v) ^ τ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => one_ne_zero (LinearMap.congr_fun h 1), eq_top_iff.2 fun a _ => IntermediateField.subset_adjoin _ _ ⟨a, 1, by simp⟩⟩`.
+-/
 example : GenRatios (LinearMap.id : K →ₗ[K] K) :=
   ⟨fun h => one_ne_zero (LinearMap.congr_fun h 1), eq_top_iff.2 fun a _ =>
     IntermediateField.subset_adjoin _ _ ⟨a, 1, by simp⟩⟩
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨v, by simp⟩`.
+-/
 example (ev : V →ₗ[K] Ω) (v : V) : ValBound ev 1 (ev v) := fun _ _ => ⟨v, by simp⟩
 
 end Generic

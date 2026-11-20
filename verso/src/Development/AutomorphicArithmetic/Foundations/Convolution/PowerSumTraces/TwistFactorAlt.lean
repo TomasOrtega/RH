@@ -8,6 +8,17 @@ import Development.AutomorphicArithmetic.TwistedTraces.SummandLeClosureSpanLocal
 open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.C.Sf
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ V Z r w _ _ τ s I R hV hw hτ hZV hZ0 hZi hadm hRZ hRs hI`. Establish `hfix : ∀ U : ∀ i, Subgroup (Gw n (w i)), (Z ⊓ ⨅ i, fixU (locU μ (w i)) (U i)) = Z ⊓ ⨅ i, fixL μ (w i) (U i)` using `fun U => by`. Simplify using `only [fixU_locU]`. Establish `hinv : ∀ i, (locU μ (w i)).IsInvariant Z` using `fun i g v hv => hZi i g v hv`. Establish `hcomm : ∀ i j, i ≠ j → ∀ (g : Gw n (w i)) (h : Gw n (w j)) v, locU μ (w i) g (locU μ (w j) h v) = locU μ (w j) h (locU μ (w i) g v)`.
+
+Introduce `i j hij g h v`. Establish `hc` using `(UpperTheory.ConvolutionTheory.Tf.locEmb K n (w i)).2.2.2.1 (w j) (fun e => hij (hw e.symm)) g h`. Establish `e : ∀ (a : Gw n (w i)) (b : Gw n (w j)), (locU μ (w i) a) ((locU μ (w j) b) v) = rightRegularRep (rationalGLOne K n) μ (MultiplicityOne.finProj K n (AdelicGLn.localEmbedding (w i) a * AdelicGLn.localEmbedding (w j) b)) v`. Introduce `a b`. Rewrite using `[map_mul, UnitaryRep.map_mul_apply]`.
+
+Both sides reduce to the same expression. Establish `e' : (locU μ (w j) h) ((locU μ (w i) g) v) = rightRegularRep (rationalGLOne K n) μ (MultiplicityOne.finProj K n (AdelicGLn.localEmbedding (w j) h * AdelicGLn.localEmbedding (w i) g)) v`. Rewrite using `[map_mul, UnitaryRep.map_mul_apply]`. Both sides reduce to the same expression. Conclude with `(e g h).trans ((congrArg (fun u => rightRegularRep (rationalGLOne K n) μ (MultiplicityOne.finProj K n u) v) hc).trans e'.symm)`.
+
+Take `⟨c, hc⟩` from `UpperTheory.isotypic_multiplicity_tensor_product r (fun i => Gw n (w i)) (LL μ) (fun i => (τ i).V) (fun i => locU μ (w i)) (fun i => (τ i).ρ) V Z (fun i => (τ i).smooth) (fun i => (τ i).irred) hcomm hZ0 hZV hinv (fun i => UpperTheory.summand_le_closure_span_local_type_images K n …`. Use `⟨c, ?_⟩` and prove the remaining obligations. Introduce `U m φ T t hU hm _ hφ hT ht`. Use `choose A hA hAt using ht`. Establish `hf` using `fun i => by haveI := hm i`.
+
+Conclude with `UpperTheory.integralOperator_fixed_invariant_of_left_invariant_kernel (Gw n (w i)) (LL μ) (τ i).V (locU μ (w i)) (τ i).ρ (m i) (φ i) (T i) (A i) (U i) (fun u v => hT i u v) (hA i) (hφ i)`. Establish `hfin` using `hc U T A t hU (fun i v => (hf i).1 v) (fun i v hv => (hf i).2.2.1 Z hZ0 (hinv i) v hv) (fun i j hij h v => (hf i).2.2.2.1 (locU μ (w j) h) (fun g v => hcomm i j hij g h v) (fun g v => by rw [UnitaryRep.adjoint_map]; exact hcomm i j hij g h⁻¹ v) v) (fun i f hf' x => (hf i).2.2.2.2 …`. Rewrite `hfin` using `[hfix]`. Conclude with `hfin`.
+-/
 theorem UpperTheory.ConvolutionTheory.C.twistFactor :
     UpperTheory.ConvolutionTheory.C.TwistFactor := by
   intro K _ _ n μ _ V Z r w _ _ τ s I R hV hw hτ hZV hZ0 hZi hadm hRZ hRs hI

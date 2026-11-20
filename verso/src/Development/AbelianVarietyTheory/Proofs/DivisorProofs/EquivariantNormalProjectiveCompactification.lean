@@ -26,6 +26,11 @@ open GlobalTheory.OrbitSep
 noncomputable section
 namespace GlobalTheory.EqModel
 
+/- English proof (translation)
+Set `n` to `Nat.card κ`. Set `e : κ ≃ Fin n` to `Finite.equivFin κ`. Set `I₁ : (∏ᶜ fun _ : κ => A) ≅ ∏ᶜ fun _ : Fin n => A` to `(Pi.reindex e.symm (fun _ : κ => A)).symm`. Set `I₂ : (∏ᶜ fun _ : Fin n => A) ≅ ReciprocityTheory.ChartRestriction.G.Out.powObj A n` to `(limit.isLimit _).conePointUniqueUpToIso (ReciprocityTheory.ChartRestriction.G.Out.powIsLimit A n)`. Establish `: IsIso (I₁ ≪≫ I₂).hom.left` using `((Over.forget _).mapIso (I₁ ≪≫ I₂)).isIso_hom`.
+
+Establish `hp` using `Models.FamInh.isProjOver_powObj A h n`. Establish `e'` using `ProjSpace.isProjOver_comp_of_isClosedImmersion (I₁ ≪≫ I₂).hom.left hp`. Rewrite `e'` using `[Over.w]`. Then use the resulting hypothesis.
+-/
 theorem isProjOver_pi_const {R : Type} [CommRing R] (κ : Type) [Finite κ] (A : Over (Sp R))
     (h : IsProjOver A.hom) : IsProjOver (∏ᶜ fun _ : κ => A).hom := by
   let n := Nat.card κ
@@ -38,6 +43,11 @@ theorem isProjOver_pi_const {R : Type} [CommRing R] (κ : Type) [Finite κ] (A :
   have e' := ProjSpace.isProjOver_comp_of_isClosedImmersion (I₁ ≪≫ I₂).hom.left hp
   rwa [Over.w] at e'
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_5 h_7 h_8 h_9; revert V P X c p h_5 j h_7 h_8 h_9 h; exact @_root_.GlobalTheory.NormalizationOpenImmersion.main)`. Consider the case `exact @_root_.GlobalTheory.NormalizationOpenImmersion.main`. Consider the case `exact _root_.GlobalTheory.NormalizationOpenImmersion.main`. Consider the case `(apply _root_.GlobalTheory.NormalizationOpenImmersion.main <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.NormalizationOpenImmersion.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.NormalizationOpenImmersion.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NormalizationOpenImmersion.main ..)`.
+-/
 theorem isOpenImmersion_toNormalization {V P X : Scheme.{0}} (c : V ⟶ P) (p : P ⟶ X) [IsSeparated p]
     (j : V ⟶ X) [IsOpenImmersion j] [QuasiCompact c] [QuasiSeparated c] (h : c ≫ p = j) :
     IsOpenImmersion c.toNormalization := by
@@ -50,11 +60,19 @@ theorem isOpenImmersion_toNormalization {V P X : Scheme.{0}} (c : V ⟶ P) (p : 
   | (intros; apply @_root_.GlobalTheory.NormalizationOpenImmersion.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.NormalizationOpenImmersion.main ..)
 
+/- English proof (translation)
+Take `⟨N, i, _, e⟩` from `h`. Conclude with `⟨N, i, inferInstance, inferInstance, e⟩`.
+-/
 theorem isQProjOver_of_isProjOver' {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R}
     (h : IsProjOver f) : IsQProjOver f := by
   obtain ⟨N, i, _, e⟩ := h
   exact ⟨N, i, inferInstance, inferInstance, e⟩
 
+/- English proof (translation)
+Use `OrbitsInAffineOpens.of_isQProjOver (isQProjOver_of_isProjOver' hs) ρ` as an intermediate fact. Take `⟨W, q, hq⟩` from `QuotientGluing.exists_isAffineQuotient ρ`. Establish `hqs` using `hq.comp_desc s hρ`. Establish `: IsProper s` using `((isProjOver_iff_isProper_and_exists_isAmpleLB s).1 hs).1`. Establish `: IsProper (q ≫ hq.desc s hρ)` using `by rw [hqs]; infer_instance`.
+
+Establish `: LocallyOfFiniteType (q ≫ hq.desc s hρ)` using `by rw [hqs]; infer_instance`. Establish `: IsProper (hq.desc s hρ)` using `hq.isProper _`. Take `⟨L, hL⟩` from `GaloisQuotient.exists_isAmpleLB_of_isAffineQuotient hq (isQProjOver_of_isProjOver' hs)`. Conclude with `⟨W, q, hq.desc s hρ, hq, hqs, hL.isProjOver _, hq.isFinite (hq.desc s hρ), hq.surjective⟩`.
+-/
 theorem exists_projective_quotient {F : Type} [Field F] {X : Scheme.{0}} (s : X ⟶ Sp F) {Γ : Type}
     [Group Γ] [Finite Γ] (ρ : Γ →* Aut X) (hs : IsProjOver s) (hρ : ∀ g, (ρ g).hom ≫ s = s) :
     ∃ (W : Scheme.{0}) (q : X ⟶ W) (sW : W ⟶ Sp F), IsAffineQuotient ρ q ∧ q ≫ sW = s ∧
@@ -70,6 +88,33 @@ theorem exists_projective_quotient {F : Type} [Field F] {X : Scheme.{0}} (s : X 
     (isQProjOver_of_isProjOver' hs)
   exact ⟨W, q, hq.desc s hρ, hq, hqs, hL.isProjOver _, hq.isFinite (hq.desc s hρ), hq.surjective⟩
 
+/- English proof (translation)
+Introduce `F _ _ X V _ sX j _ Γ _ _ ρ hX hne hN hρ`. Set `A : Over (Sp F)` to `Over.mk sX`. Set `P : Over (Sp F)` to `∏ᶜ fun _ : Γ => A`. Set `B : Over (Sp F)` to `Over.mk (j ≫ sX)`. Set `c : B ⟶ P` to `Pi.lift fun γ => Over.homMk ((ρ γ).hom ≫ j) (by simpa [A, B] using hρ γ)`.
+
+Establish `hcπ (γ : Γ) : c.left ≫ (Pi.π (fun _ : Γ => A) γ).left = (ρ γ).hom ≫ j`. Rewrite using `[← Over.comp_left, Pi.lift_π]`. Both sides reduce to the same expression. Set `σ₀ (g : Γ) : P ⟶ P` to `Pi.lift fun γ => Pi.π (fun _ : Γ => A) (γ * g)`. Establish `hσπ (g γ : Γ) : σ₀ g ≫ Pi.π (fun _ : Γ => A) γ = Pi.π (fun _ : Γ => A) (γ * g)` using `Pi.lift_π _ _`.
+
+Establish `hσ (g h : Γ) : σ₀ g ≫ σ₀ h = σ₀ (h * g)` using `Pi.hom_ext _ _ fun γ => by rw [Category.assoc, hσπ, hσπ, hσπ, mul_assoc]`. Establish `hσ1 : σ₀ 1 = 𝟙 P` using `Pi.hom_ext _ _ fun γ => by rw [hσπ, mul_one, Category.id_comp]`. Set `σI (g : Γ) : P.left ≅ P.left` to `{ hom := (σ₀ g).left, inv := (σ₀ g⁻¹).left, hom_inv_id := by rw [← Over.comp_left, hσ, inv_mul_cancel, hσ1]; rfl, inv_hom_id := by rw [← Over.comp_left, hσ, mul_inv_cancel, hσ1]; rfl }`. Set `σ : Γ →* Aut P.left` to `MonoidHom.mk' σI fun g h => Iso.ext (by`. Express the relevant statement in the definitionally equal form `(σ₀ (g * h)).left = (σ₀ h).left ≫ (σ₀ g).left`.
+
+Rewrite using `[← Over.comp_left, hσ])`. Establish `hσP (g : Γ) : (σ g).hom ≫ P.hom = P.hom` using `Over.w (σ₀ g)`. Establish `hρmul (g γ : Γ) : (ρ (γ * g)).hom = (ρ g).hom ≫ (ρ γ).hom` using `by rw [map_mul]; rfl`. Establish `H (g : Γ) : (ρ g).hom ≫ c.left = c.left ≫ (σ g).hom`. Establish `e : (Over.homMk (ρ g).hom (by simpa [B] using hρ g) : B ⟶ B) ≫ c = c ≫ σ₀ g` using `Pi.hom_ext _ _ fun γ => by`.
+
+Rewrite using `[Category.assoc, Category.assoc, hσπ]`. Use `ext1`. Simplify using `only [Over.comp_left, hcπ, Over.homMk_left, hρmul, Category.assoc]`. Conclude with `congrArg CommaMorphism.left e`. Establish `: IsProper sX` using `((isProjOver_iff_isProper_and_exists_isAmpleLB sX).1 hX).1`.
+
+Establish `hP : IsProjOver P.hom` using `isProjOver_pi_const Γ A hX`. Establish `: IsProper P.hom` using `((isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hP).1`. Establish `hcP : c.left ≫ P.hom = j ≫ sX` using `Over.w c`. Establish `hc1 : c.left ≫ (Pi.π (fun _ : Γ => A) 1).left = j` using `by rw [hcπ, map_one]; rfl`. Establish `: IsSeparated (c.left ≫ P.hom)` using `by rw [hcP]; infer_instance`.
+
+Establish `: QuasiSeparated c.left` using `.of_comp c.left P.hom`. Establish `: IsSeparated (Pi.π (fun _ : Γ => A) 1).left`. Establish `: IsSeparated ((Pi.π (fun _ : Γ => A) 1).left ≫ sX)` using `Over.w (Pi.π (fun _ : Γ => A) 1) ▸ inferInstance`. Conclude with `.of_comp _ sX`. Establish `: IsIntegral V` using `isIntegral_of_isOpenImmersion j`.
+
+Establish `: IsIntegral B.left` using `‹IsIntegral V›`. Establish `: GlobalTheory.IsNormalScheme B.left` using `hN`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian sX`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace sX`. Establish `: IsNoetherian X` using `{}`.
+
+Establish `: IsLocallyNoetherian V` using `LocallyOfFiniteType.isLocallyNoetherian (j ≫ sX)`. Establish `: CompactSpace V` using `⟨by`. Rewrite using `[j.isOpenEmbedding.isInducing.isCompact_iff, Set.image_univ]`. Conclude with `NoetherianSpace.isCompact _⟩`. Establish `: IsNoetherian V` using `{}`.
+
+Establish `: QuasiCompact (c.left ≫ (Pi.π (fun _ : Γ => A) 1).left)`. Rewrite using `[hc1]`. Conclude with `quasiCompact_of_noetherianSpace_source j`. Establish `: QuasiCompact c.left` using `.of_comp c.left (Pi.π (fun _ : Γ => A) 1).left`. Establish `: LocallyOfFiniteType (c.left ≫ P.hom)` using `by rw [hcP]; infer_instance`.
+
+Establish `: LocallyOfFiniteType c.left` using `locallyOfFiniteType_of_comp c.left P.hom`. Establish `hfin : IsFinite c.left.fromNormalization` using `isFinite_fromNormalization_of_locallyOfFiniteType c.left P.hom fun x _ => charZero_of_injective_ringHom ((Scheme.ΓSpecIso (.of F)).inv ≫ (j ≫ sX).appTop ≫ V.Γevaluation x).hom.injective`. Set `φ : c.left.normalization ⟶ X` to `c.left.fromNormalization ≫ (Pi.π (fun _ : Γ => A) 1).left`. Establish `hφ : φ ≫ sX = c.left.fromNormalization ≫ P.hom`. Simplify using `only [φ, Category.assoc]`.
+
+Use `congr 1`. Conclude with `Over.w (Pi.π (fun _ : Γ => A) 1)`. Establish `hproj : IsProjOver (φ ≫ sX)` using `hφ ▸ isProjOver_comp_of_isFinite _ hP`. Establish `hnorm : GlobalTheory.IsNormalScheme c.left.normalization` using `IsNormalScheme.normalization_of_isIntegral c.left`. Set `ρ'` to `normalizationAction c.left ρ σ H`.
+
+Establish `hρ' (g : Γ) : (ρ' g).hom ≫ φ ≫ sX = φ ≫ sX`. Rewrite using `[hφ, normalizationAction_fromNormalization_assoc, hσP]`. Take `⟨W, q, sW, hq, hqs, hW, hqf, hqs'⟩` from `exists_projective_quotient (φ ≫ sX) ρ' hproj hρ'`. Use `⟨c.left.normalization, W, φ, c.left.toNormalization, ρ', q, sW, inferInstance, hnorm, hproj, isOpenImmersion_toNormalization c.left (Pi.π (fun _ : Γ => A) 1).left j hc1, ?_, fun g => (toNormalization_normalizationAction c.left ρ σ H g).symm, hq, hqs, hW, hq.isIntegral, hqf, hqs'⟩` and prove the remaining obligations. Simplify using `only [φ, Scheme.Hom.toNormalization_fromNormalization_assoc, hc1]`.
+-/
 theorem exists_equivariant_model : ∀ (F : Type) [Field F] [NumberField F] (X V : Scheme.{0}) [IsIntegral X] (sX : X ⟶ Sp F) (j : V ⟶ X) [IsOpenImmersion j] (Γ : Type) [Group Γ] [Finite Γ] (ρ : Γ →* Aut V), IsProjOver sX → Nonempty V → GlobalTheory.IsNormalScheme V → (∀ γ, (ρ γ).hom ≫ j ≫ sX = j ≫ sX) → ∃ (X' W : Scheme.{0}) (φ : X' ⟶ X) (ℓ : V ⟶ X') (ρ' : Γ →* Aut X') (q : X' ⟶ W) (sW : W ⟶ Sp F) (_ : IsIntegral X'), GlobalTheory.IsNormalScheme X' ∧ IsProjOver (φ ≫ sX) ∧ IsOpenImmersion ℓ ∧ ℓ ≫ φ = j ∧ (∀ γ, (ρ γ).hom ≫ ℓ = ℓ ≫ (ρ' γ).hom) ∧ IsAffineQuotient ρ' q ∧ q ≫ sW = φ ≫ sX ∧ IsProjOver sW ∧ IsIntegral W ∧ IsFinite q ∧ Surjective q := by
   intro F _ _ X V _ sX j _ Γ _ _ ρ hX hne hN hρ
   classical

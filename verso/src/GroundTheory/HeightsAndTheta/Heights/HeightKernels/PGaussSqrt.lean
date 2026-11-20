@@ -8,6 +8,9 @@ open Matrix
 
 namespace PGaussSqrt
 
+/- English proof (translation)
+Use `conv_lhs => rw [hH.spectral_theorem, Unitary.conjStarAlgAut_apply]`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_eq_transpose_of_trivial]`. Both sides reduce to the same expression.
+-/
 theorem eq_eigenvectors_mul_diagonal {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} (hH : Y.IsHermitian) :
     Y = (hH.eigenvectorUnitary : Matrix (Fin g) (Fin g) ℝ) * diagonal hH.eigenvalues *
       (hH.eigenvectorUnitary : Matrix (Fin g) (Fin g) ℝ)ᵀ := by
@@ -17,6 +20,13 @@ theorem eq_eigenvectors_mul_diagonal {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} 
 
 end PGaussSqrt
 
+/- English proof (translation)
+Introduce `g Y hY`. Use `set hH := hY.isHermitian`. Use `set U : Matrix (Fin g) (Fin g) ℝ := (hH.eigenvectorUnitary : Matrix (Fin g) (Fin g) ℝ) with hUdef`. Use `⟨diagonal (fun i => √(hH.eigenvalues i)) * Uᵀ, ?_⟩` and prove the remaining obligations. Establish `hnn : ∀ i, 0 ≤ hH.eigenvalues i` using `fun i => (hY.eigenvalues_pos i).le`.
+
+Rewrite using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.diagonal_transpose]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsq : (fun i => √(hH.eigenvalues i) * √(hH.eigenvalues i)) = hH.eigenvalues`. Use function extensionality and compare the values at `fun i => Real.mul_self_sqrt (hnn i)`. Rewrite using `[diagonal_mul_diagonal, hsq]`.
+
+Use `_ = Y := (PGaussSqrt.eq_eigenvectors_mul_diagonal hH).symm`.
+-/
 theorem GaussSqrt.proof : GaussSqrt.Statement := by
   intro g Y hY
   classical

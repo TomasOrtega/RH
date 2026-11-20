@@ -20,6 +20,11 @@ namespace CutOffBoundaryBound
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+Take `⟨U, hU, hxU, hd, -⟩` from `hs`. Use `analyticAt_pi_iff.2 fun j => ?_` and prove the remaining obligations. Establish `hdj : DifferentiableOn ℂ (fun y => s y j) U` using `fun y hy => (differentiableAt_pi.1 ((hd y hy).differentiableAt (hU.mem_nhds hy)) j).differentiableWithinAt`. Use `IndefiniteRowSideFullHecke.ComplexSets.analyticOnNhd_of_continuousOn_of_separately hU hdj.continuousOn (fun z hz i => ?_) _ hxU` and prove the remaining obligations. Establish `hu : Function.update z i (z i) = z` using `Function.update_eq_self i z`.
+
+Establish `hdz : DifferentiableAt ℂ (fun y => s y j) (Function.update z i (z i))`. Rewrite using `[hu]`. Conclude with `hdj.differentiableAt (hU.mem_nhds hz)`. Conclude with `hdz.comp (z i) (hasFDerivAt_update z (z i)).differentiableAt`.
+-/
 theorem analyticAt_of_isSheetAt {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {x : Fin n → ℂ} {s : (Fin d → ℂ) → Fin n → ℂ} (hs : IsSheetAt J A x s) : AnalyticAt ℂ s (A *ᵥ x) := by
   obtain ⟨U, hU, hxU, hd, -⟩ := hs
@@ -33,6 +38,9 @@ theorem analyticAt_of_isSheetAt {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matr
     rw [hu]; exact hdj.differentiableAt (hU.mem_nhds hz)
   exact hdz.comp (z i) (hasFDerivAt_update z (z i)).differentiableAt
 
+/- English proof (translation)
+Establish `h0 : hessC f y = ((0 : ℝ) : ℂ) • hessC (fun _ => (0 : ℝ)) y`. Rewrite using `[ReciprocityTheory.AnForm.M.hessCGerm f _ y h]`. Use extensionality with `i j`. Simplify using `[hessC]`. Rewrite using `[maDens_cons_of_hessC_eq_smul f (fun _ => 0) ψ y 0 h0, zero_mul]`.
+-/
 theorem maDens_cons_eq_zero {D : ℕ} (f : (Fin (D + 1) → ℂ) → ℝ) (ψ : Fin D → (Fin (D + 1) → ℂ) → ℝ)
     (y : Fin (D + 1) → ℂ) (h : f =ᶠ[𝓝 y] fun _ => 0) : maDens (Fin.cons f ψ) y = 0 := by
   have h0 : hessC f y = ((0 : ℝ) : ℂ) • hessC (fun _ => (0 : ℝ)) y := by
@@ -41,6 +49,9 @@ theorem maDens_cons_eq_zero {D : ℕ} (f : (Fin (D + 1) → ℂ) → ℝ) (ψ : 
     simp [hessC]
   rw [maDens_cons_of_hessC_eq_smul f (fun _ => 0) ψ y 0 h0, zero_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Unfold `chartDens sheetSum`. Use `finsum_congr fun x => finsum_congr fun hx => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[h x hx.1]`.
+-/
 theorem chartDens_congr_weight {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {f f' : (Fin n → ℂ) → ℝ} (φ : Fin d → (Fin n → ℂ) → ℝ) (h : ∀ x ∈ zeroSet J, f x = f' x) :
     chartDens J A f φ = chartDens J A f' φ := by
@@ -50,6 +61,9 @@ theorem chartDens_congr_weight {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matri
   dsimp only
   rw [h x hx.1]
 
+/- English proof (translation)
+The claim follows from `|sheetSum J A T₁ y - sheetSum J A T₂ y| ≤ a * sheetSum J A P y + b * (sheetSum J A Q₁ y - sheetSum J A Q₂ y) + c * (sheetSum J A R₁ y - sheetSum J A R₂ y) := by classical unfold sheetSum simp only [finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum, ← Finset.sum_sub_distrib …`.
+-/
 theorem abs_sheetSum_sub_le {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {y : Fin d → ℂ} (hfin : (fibre J A y).Finite)
     (T₁ T₂ P Q₁ Q₂ R₁ R₂ : (Fin n → ℂ) → ((Fin d → ℂ) → Fin n → ℂ) → ℝ) (a b c : ℝ)
@@ -67,6 +81,9 @@ theorem abs_sheetSum_sub_le {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (
   · exact h x hx _ hs.choose_spec
   · simp
 
+/- English proof (translation)
+Rewrite using `[chartDens_congr_weight (f' := (zeroSet J).piecewise f 0) ψ (fun x hx => by simp [Set.piecewise, hx])]`. Conclude with `(SheetSumMeasurable.proof n d J A _ ψ hJ hdim hA (hf.measurable_piecewise continuousOn_const (SheetSumMeasurable.isClosed_zeroSet J).measurableSet) hψ).1`.
+-/
 theorem measurable_chartDens {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (hJ : J.IsPrime) (hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = d) (hA : IsFiniteProjection J A)
     {f : (Fin n → ℂ) → ℝ} (hf : ContinuousOn f (zeroSet J)) {ψ : Fin d → (Fin n → ℂ) → ℝ}
@@ -77,6 +94,9 @@ theorem measurable_chartDens {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix 
   exact (SheetSumMeasurable.proof n d J A _ ψ hJ hdim hA
     (hf.measurable_piecewise continuousOn_const (SheetSumMeasurable.isClosed_zeroSet J).measurableSet) hψ).1
 
+/- English proof (translation)
+The claim follows from `(hM n d J A f ψ hJ hdim hA hf hψ hc).mono' (measurable_chartDens hJ hdim hA hf hψ).aestronglyMeasurable (Eventually.of_forall fun y => by simpa [Real.norm_eq_abs] using abs_chartDens_le J A f ψ y)`.
+-/
 theorem integrable_chartDens (hM : ChartMassCompact.Statement) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} (hJ : J.IsPrime) (hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = d)
     (hA : IsFiniteProjection J A) {f : (Fin n → ℂ) → ℝ} (hf : ContinuousOn f (zeroSet J))
@@ -85,6 +105,19 @@ theorem integrable_chartDens (hM : ChartMassCompact.Statement) {J : Ideal (MvPol
   (hM n d J A f ψ hJ hdim hA hf hψ hc).mono' (measurable_chartDens hJ hdim hA hf hψ).aestronglyMeasurable
     (Eventually.of_forall fun y => by simpa [Real.norm_eq_abs] using abs_chartDens_le J A f ψ y)
 
+/- English proof (translation)
+Use `set b : (Fin n → ℂ) → ℝ := fun x => max (min 1 (R + 1 - ‖x‖)) 0 with hbdef`. Establish `hbc : Continuous b` using `(continuous_const.min (continuous_const.sub continuous_norm)).max continuous_const`. Establish `hbs : HasCompactSupport b`. Use `HasCompactSupport.intro (isCompact_closedBall (0 : Fin n → ℂ) (R + 1)) fun x hx => ?_` and prove the remaining obligations. Establish `hx' : R + 1 - ‖x‖ ≤ 0`.
+
+Simplify using `only [Metric.mem_closedBall, dist_zero_right, not_le] at hx`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[hbdef, min_eq_right (hx'.trans zero_le_one), max_eq_right hx']`. Establish `hb1 : ∀ x ∈ Metric.closedBall (0 : Fin n → ℂ) R, b x = 1`. Introduce `x hx`.
+
+Establish `hx' : 1 ≤ R + 1 - ‖x‖`. Simplify using `only [Metric.mem_closedBall, dist_zero_right] at hx`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[hbdef, min_eq_left hx']`. Establish `hmeas : Measurable ((Metric.closedBall (0 : Fin n → ℂ) R).indicator w)` using `hw.measurable.indicator Metric.isClosed_closedBall.measurableSet`.
+
+Establish `hI` using `hM n d J A (fun x => b x * w x) ψ hJ hdim hA (hbc.mul hw).continuousOn hψ (Or.inl (show HasCompactSupport (b * w) from hbs.mul_right))`. Establish `hm` using `SheetSumMeasurable.proof n d J A _ ψ hJ hdim hA hmeas hψ`. Establish `hIA : Integrable (chartAbsDens J A ((Metric.closedBall 0 R).indicator w) ψ)`. Use `hI.mono' hm.2.aestronglyMeasurable (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (chartAbsDens_nonneg J A _ ψ y)]`.
+
+Establish `hfin` using `(FibreBound.proof n d J A hJ hdim hA y).2.1`. Use `sheetSum_le_mul hfin 1 (fun x s => |(Metric.closedBall 0 R).indicator w x * maDens (fun k => ψ k ∘ s) y|) (fun x s => |b x * w x * maDens (fun k => ψ k ∘ s) y|) (fun x _ s _ => by` as an intermediate fact. Distinguish the cases in `hx : x ∈ Metric.closedBall (0 : Fin n → ℂ) R`. Rewrite using `[Set.indicator_of_mem hx, hb1 x hx, one_mul, one_mul]`. Rewrite using `[Set.indicator_of_notMem hx, zero_mul, abs_zero] positivity)`.
+
+Simplify `this` using `[chartAbsDens]`. Conclude with `⟨hIA, hIA.mono' hm.1.aestronglyMeasurable (Eventually.of_forall fun y => by simpa [Real.norm_eq_abs] using abs_chartDens_le J A _ ψ y)⟩`.
+-/
 theorem integrable_ball (hM : ChartMassCompact.Statement) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} (hJ : J.IsPrime) (hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = d)
     (hA : IsFiniteProjection J A) (R : ℝ) {w : (Fin n → ℂ) → ℝ} (hw : Continuous w)
@@ -125,6 +158,9 @@ theorem integrable_ball (hM : ChartMassCompact.Statement) {J : Ideal (MvPolynomi
   exact ⟨hIA, hIA.mono' hm.1.aestronglyMeasurable
     (Eventually.of_forall fun y => by simpa [Real.norm_eq_abs] using abs_chartDens_le J A _ ψ y)⟩
 
+/- English proof (translation)
+Establish `h : 0 ≤ (t * u - v) ^ 2 / t` using `by positivity`. Establish `e : (t * u - v) ^ 2 / t = t * u ^ 2 - 2 * u * v + v ^ 2 / t`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem two_mul_le_add_div {t : ℝ} (ht : 0 < t) (u v : ℝ) : 2 * u * v ≤ t * u ^ 2 + v ^ 2 / t := by
   have h : 0 ≤ (t * u - v) ^ 2 / t := by positivity
   have e : (t * u - v) ^ 2 / t = t * u ^ 2 - 2 * u * v + v ^ 2 / t := by
@@ -132,6 +168,9 @@ theorem two_mul_le_add_div {t : ℝ} (ht : 0 < t) (u v : ℝ) : 2 * u * v ≤ t 
     ring
   linarith
 
+/- English proof (translation)
+The claim follows from `|G * (χ * mF + F * mχ + g₁ + g₂) - χ * G * mF| ≤ M * |1 * mχ| + C * t * (1 * Eχ) + C / t * (G ^ 2 * EF) := by have key := two_mul_le_add_div ht (√Eχ) (|G| * √EF) rw [Real.sq_sqrt hEχ, mul_pow, sq_abs, Real.sq_sqrt hEF] at key have hcomm : C * √EF * √Eχ = C * √Eχ * √EF := by ring …`.
+-/
 theorem term_bound {G F χ mF mχ g₁ g₂ Eχ EF M C t : ℝ} (ht : 0 < t) (hC : 0 ≤ C) (hM : |G * F| ≤ M)
     (hEχ : 0 ≤ Eχ) (hEF : 0 ≤ EF) (h₁ : |g₁| ≤ C * √Eχ * √EF) (h₂ : |g₂| ≤ C * √EF * √Eχ) :
     |G * (χ * mF + F * mχ + g₁ + g₂) - χ * G * mF| ≤
@@ -153,6 +192,19 @@ theorem term_bound {G F χ mF mχ g₁ g₂ Eχ EF M C t : ℝ} (ht : 0 < t) (hC
     _ ≤ M * |mχ| + C * (t * Eχ + G ^ 2 * EF / t) := by gcongr
     _ = M * |1 * mχ| + C * t * (1 * Eχ) + C / t * (G ^ 2 * EF) := by rw [one_mul, one_mul]; ring
 
+/- English proof (translation)
+Establish `hΦ1 : 0 < max Φ 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Establish `hv : 0 < √(max Φ 1)` using `Real.sqrt_pos.2 hΦ1`. Establish `hΦ2 : max Φ 1 = √(max Φ 1) ^ 2` using `(Real.sq_sqrt hΦ1.le).symm`. Break down `le_or_gt E 0 with hE | hE` into its components or cases. Rewrite using `[Real.sqrt_eq_zero'.2 hE, add_zero]`.
+
+Establish `hX : X ≤ M * aI`. Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Establish `ht : 0 < (C * max Φ 1 + 1) / ε` using `by positivity`. Establish `h0` using `h _ ht`. Establish `h1 : C * ((C * max Φ 1 + 1) / ε) * E ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by positivity) hE`.
+
+Establish `h2 : C / ((C * max Φ 1 + 1) / ε) * Φ ≤ C / ((C * max Φ 1 + 1) / ε) * max Φ 1` using `mul_le_mul_of_nonneg_left (le_max_left _ _) (by positivity)`. Establish `h3 : C / ((C * max Φ 1 + 1) / ε) * max Φ 1 ≤ ε`. Rewrite using `[div_div_eq_mul_div, div_mul_eq_mul_div, div_le_iff₀ (by positivity)]`. Use polynomial arithmetic with `[mul_nonneg hC hΦ1.le]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `hX.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) ha)`. Establish `hu : 0 < √E` using `Real.sqrt_pos.2 hE`. Establish `hE2 : E = √E ^ 2` using `(Real.sq_sqrt hE.le).symm`. Establish `h0` using `h (√(max Φ 1) / √E) (by positivity)`. Establish `h1 : C * (√(max Φ 1) / √E) * E = C * √E * √(max Φ 1)`.
+
+Rewrite using `[hE2, Real.sqrt_sq hu.le]`. Clear the denominators using the available nonvanishing facts. Establish `h2 : C / (√(max Φ 1) / √E) * Φ ≤ C * √E * √(max Φ 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hΦ2, Real.sqrt_sq hv.le]`.
+
+Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem final_bound {X M C aI E Φ : ℝ} (hC : 0 ≤ C) (ha : 0 ≤ aI)
     (h : ∀ t > 0, X ≤ M * aI + C * t * E + C / t * Φ) :
     X ≤ max M (2 * C * √(max Φ 1)) * (aI + √E) := by
@@ -196,6 +248,53 @@ end CutOffBoundaryBound
 
 open CutOffBoundaryBound in
 
+/- English proof (translation)
+Introduce `n d J A F G φ hJ hdim hA hF hG hφ hc`. Take `⟨UF, hUFo, hZF, hFs⟩` from `hF`. Take `⟨UG, hUGo, hZG, hGs⟩` from `hG`. Use `choose Uφ hUφo hZφ hφs using hφ`. Establish `hUo : IsOpen (UF ∩ UG ∩ ⋂ i, Uφ i)` using `(hUFo.inter hUGo).inter (isOpen_iInter_of_finite hUφo)`.
+
+Use `set U := UF ∩ UG ∩ ⋂ i, Uφ i with hUdef`. Establish `hZU : zeroSet J ⊆ U` using `Set.subset_inter (Set.subset_inter hZF hZG) (Set.subset_iInter hZφ)`. Establish `hFU : ContDiffOn ℝ ∞ F U` using `hFs.mono fun x hx => hx.1.1`. Establish `hGU : ContDiffOn ℝ ∞ G U` using `hGs.mono fun x hx => hx.1.2`. Establish `hφU : ∀ i, ContDiffOn ℝ ∞ (φ i) U` using `fun i => (hφs i).mono fun x hx => Set.mem_iInter.1 hx.2 i`.
+
+Establish `hFc : ContinuousOn F (zeroSet J)` using `hFU.continuousOn.mono hZU`. Establish `hGc : ContinuousOn G (zeroSet J)` using `hGU.continuousOn.mono hZU`. Establish `hle2 : (2 : WithTop ℕ∞) ≤ ∞` using `WithTop.coe_le_coe.mpr le_top`. Establish `hZc` using `SheetSumMeasurable.isClosed_zeroSet J`. Take `⟨R, hR⟩` from `hc.isCompact.isBounded.subset_closedBall (0 : Fin n → ℂ)`.
+
+Establish `hK : IsCompact (zeroSet J ∩ Metric.closedBall (0 : Fin n → ℂ) R)` using `(isCompact_closedBall 0 R).inter_left hZc`. Take `⟨C₁, hC₁0, hC₁⟩` from `hS n d φ U _ hUo hK (fun x hx => hZU hx.1) (fun i => (hφU i).of_le hle2)`. Take `⟨M₀, hM₀⟩` from `(hc.isCompact.inter_left hZc).exists_bound_of_continuousOn (f := fun x => G x * F x) ((hGc.mul hFc).mono Set.inter_subset_left)`. Establish `hMb : ∀ x ∈ zeroSet J, |G x * F x| ≤ max M₀ 0`. Introduce `x hx`.
+
+Distinguish the cases in `hxF : x ∈ tsupport F`. Conclude with `(by simpa [Real.norm_eq_abs] using hM₀ x ⟨hx, hxF⟩ : |G x * F x| ≤ M₀).trans (le_max_left _ _)`. Rewrite using `[image_eq_zero_of_notMem_tsupport hxF, mul_zero, abs_zero]`. Conclude with `le_max_right _ _`. Establish `hcons : ∀ (f : (Fin n → ℂ) → ℝ) (ψ : Fin d → (Fin n → ℂ) → ℝ), SmoothNear (zeroSet J) f → (∀ i, SmoothNear (zeroSet J) (ψ i)) → ∀ i, SmoothNear (zeroSet J) (vecCons f ψ i)`.
+
+Introduce `f ψ hf hψ i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hf`. Simplify using `using hψ i`. Establish `hω : ∀ i : Fin d, SmoothNear (zeroSet J) ((fun _ => euclPot) i : (Fin n → ℂ) → ℝ)` using `fun _ => smoothNear_of_contDiff (contDiff_euclPot n)`.
+
+Establish `hφn : ∀ i, SmoothNear (zeroSet J) (φ i)` using `fun i => ⟨U, hUo, hZU, hφU i⟩`. Establish `hFn : SmoothNear (zeroSet J) F` using `⟨U, hUo, hZU, hFU⟩`. Establish `hF2n : SmoothNear (zeroSet J) (fun x => F x ^ 2 / 2)` using `⟨U, hUo, hZU, (hFU.pow 2).div_const 2⟩`. Establish `hF2c : HasCompactSupport (fun x => F x ^ 2 / 2)` using `hc.mono fun x hx h0 => hx (by simp [h0])`. Establish `hf₁` using `integrable_chartDens hM hJ hdim hA (f := fun x => G x ^ 2) (hGc.pow 2) (hcons _ _ hF2n hω) (Or.inr ⟨0, by rw [Matrix.cons_val_zero]; exact hF2c⟩)`.
+
+Establish `hf₂` using `integrable_chartDens hM hJ hdim hA (f := fun x => G x ^ 2 * F x) ((hGc.pow 2).mul hFc) (hcons _ _ hFn hω) (Or.inr ⟨0, by rw [Matrix.cons_val_zero]; exact hc⟩)`. Use `set Φ := ∫ y, (chartDens J A (fun x => G x ^ 2) (vecCons (fun x => F x ^ 2 / 2) fun _ => euclPot) y - chartDens J A (fun x => G x ^ 2 * F x) (vecCons F fun _ => euclPot) y) with hΦ`. Use `⟨R, max (max M₀ 0) (2 * C₁ * √(max Φ 1)), fun χ hχ => ?_⟩` and prove the remaining obligations. Establish `hχc : Continuous χ` using `hχ.continuous`. Establish `hχn : SmoothNear (zeroSet J) χ` using `smoothNear_of_contDiff hχ`.
+
+Establish `hχFn : SmoothNear (zeroSet J) (fun x => χ x * F x)` using `⟨U, hUo, hZU, hχ.contDiffOn.mul hFU⟩`. Establish `hχ2n : SmoothNear (zeroSet J) (fun x => χ x ^ 2 / 2)` using `smoothNear_of_contDiff ((hχ.pow 2).div_const 2)`. Establish `hD₁` using `integrable_chartDens hM hJ hdim hA hGc (hcons _ _ hχFn hφn) (Or.inr ⟨0, by rw [Matrix.cons_val_zero]; exact (hc.mul_left : HasCompactSupport (χ * F))⟩)`. Establish `hD₂` using `integrable_chartDens hM hJ hdim hA (f := fun x => χ x * G x) (hχc.continuousOn.mul hGc) (hcons _ _ hFn hφn) (Or.inr ⟨0, by rw [Matrix.cons_val_zero]; exact hc⟩)`. Establish `ha` using `(integrable_ball hM hJ hdim hA R (w := fun _ => (1 : ℝ)) continuous_const (hcons _ _ hχn hφn)).1`.
+
+Establish `he₁` using `(integrable_ball hM hJ hdim hA R (w := fun _ => (1 : ℝ)) continuous_const (hcons _ _ hχ2n hω)).2`. Establish `he₂` using `(integrable_ball hM hJ hdim hA R hχc (hcons _ _ hχn hω)).2`. Establish `key : ∀ t > 0, ∀ y, |chartDens J A G (vecCons (fun x => χ x * F x) φ) y - chartDens J A (fun x => χ x * G x) (vecCons F φ) y| ≤ max M₀ 0 * chartAbsDens J A ((Metric.closedBall 0 R).indicator fun _ => 1) (vecCons χ φ) y + C₁ * t * (chartDens J A ((Metric.closedBall 0 R).indicator …`. Introduce `t ht y`. Establish `hfin` using `(FibreBound.proof n (d + 1) J A hJ hdim hA y).2.1`.
+
+Unfold `chartDens chartAbsDens`. Use `abs_sheetSum_sub_le hfin _ _ _ _ _ _ _ _ _ _ fun x hx s hs => ?_` and prove the remaining obligations. Take `⟨hxZ, hAx⟩` from `hx`. Establish `hsx : s y = x`. Take `⟨_, _, _, _, h, -⟩` from `hs`.
+
+Rewrite using `[← hAx]`. Conclude with `h`. Establish `han : AnalyticAt ℂ s y`. Rewrite using `[← hAx]`. Conclude with `analyticAt_of_isSheetAt hs`.
+
+Establish `hsc : ContDiffAt ℝ 2 s y` using `han.restrictScalars.contDiffAt`. Establish `hxU : s y ∈ U` using `hsx ▸ hZU hxZ`. Establish `c2 : ∀ g : (Fin n → ℂ) → ℝ, ContDiffOn ℝ ∞ g U → ContDiffAt ℝ 2 (g ∘ s) y` using `fun g hg => ((hg.contDiffAt (hUo.mem_nhds hxU)).of_le hle2).comp y hsc`. Establish `hχs` using `c2 χ hχ.contDiffOn`. Establish `hFs'` using `c2 F hFU`.
+
+Simplify using `only [vecCons_comp]`. Establish `e₂ : maDens (Fin.cons ((fun x => χ x ^ 2 / 2) ∘ s) fun _ => euclPot ∘ s) y = (χ ∘ s) y * maDens (Fin.cons (χ ∘ s) fun _ => euclPot ∘ s) y + gradDens (fun _ => euclPot ∘ s) (χ ∘ s) (χ ∘ s) y` using `(hL d (fun _ => euclPot ∘ s) (χ ∘ s) (χ ∘ s) y hχs hχs).2`. Establish `e₃ : maDens (Fin.cons ((fun x => F x ^ 2 / 2) ∘ s) fun _ => euclPot ∘ s) y = (F ∘ s) y * maDens (Fin.cons (F ∘ s) fun _ => euclPot ∘ s) y + gradDens (fun _ => euclPot ∘ s) (F ∘ s) (F ∘ s) y` using `(hL d (fun _ => euclPot ∘ s) (F ∘ s) (F ∘ s) y hFs' hFs').2`. Rewrite using `[e₂, e₃]`. Simplify using `only [Function.comp_apply, hsx]`.
+
+Establish `hEχ` using `hN n d s y (χ ∘ s) han`. Establish `hEF` using `hN n d s y (F ∘ s) han`. Establish `hQ : ∀ m E : ℝ, (Metric.closedBall (0 : Fin n → ℂ) R).indicator (fun _ => (1 : ℝ)) x * (χ x * m + E) - (Metric.closedBall (0 : Fin n → ℂ) R).indicator χ x * m = (Metric.closedBall (0 : Fin n → ℂ) R).indicator (fun _ => (1 : ℝ)) x * E`. Introduce `m E`. Distinguish the cases in `hB : x ∈ Metric.closedBall (0 : Fin n → ℂ) R`.
+
+Rewrite using `[Set.indicator_of_mem hB, Set.indicator_of_mem hB]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem hB, Set.indicator_of_notMem hB]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hQ, show ∀ m E : ℝ, G x ^ 2 * (F x * m + E) - G x ^ 2 * F x * m = G x ^ 2 * E from fun m E => by ring]`.
+
+Distinguish the cases in `hxF : x ∈ tsupport F`. Establish `hxB : x ∈ Metric.closedBall (0 : Fin n → ℂ) R` using `hR hxF`. Establish `hKs : s y ∈ zeroSet J ∩ Metric.closedBall (0 : Fin n → ℂ) R` using `hsx ▸ ⟨hxZ, hxB⟩`. Establish `e₁ : maDens (Fin.cons ((fun x => χ x * F x) ∘ s) fun i => φ i ∘ s) y = (χ ∘ s) y * maDens (Fin.cons (F ∘ s) fun i => φ i ∘ s) y + (F ∘ s) y * maDens (Fin.cons (χ ∘ s) fun i => φ i ∘ s) y + gradDens (fun i => φ i ∘ s) (χ ∘ s) (F ∘ s) y + gradDens (fun i => φ i ∘ s) (F ∘ s) (χ ∘ s) …` using `(hL d (fun i => φ i ∘ s) (χ ∘ s) (F ∘ s) y hχs hFs').1`. Rewrite using `[e₁]`.
+
+Simplify using `only [Function.comp_apply, hsx]`. Rewrite using `[Set.indicator_of_mem hxB]`. Conclude with `term_bound ht hC₁0 (hMb x hxZ) hEχ hEF (hC₁ s y _ _ han hKs) (hC₁ s y _ _ han hKs)`. Establish `hev : ∀ᶠ z in 𝓝 y, s z ∉ tsupport F` using `han.continuousAt.preimage_mem_nhds ((isClosed_tsupport F).isOpen_compl.mem_nhds (hsx ▸ hxF))`. Establish `hF0 : (F ∘ s) =ᶠ[𝓝 y] fun _ => 0` using `hev.mono fun z hz => image_eq_zero_of_notMem_tsupport (f := F) hz`.
+
+Establish `hχF0 : ((fun x => χ x * F x) ∘ s) =ᶠ[𝓝 y] fun _ => 0` using `hev.mono fun z hz => by simp [image_eq_zero_of_notMem_tsupport hz]`. Rewrite using `[maDens_cons_eq_zero _ _ y hχF0, maDens_cons_eq_zero _ _ y hF0, mul_zero, mul_zero, sub_zero, abs_zero]`. Establish `hi : 0 ≤ (Metric.closedBall (0 : Fin n → ℂ) R).indicator (fun _ => (1 : ℝ)) x` using `Set.indicator_nonneg (fun _ _ => zero_le_one) x`. Conclude with `add_nonneg (add_nonneg (mul_nonneg (le_max_right _ _) (abs_nonneg _)) (mul_nonneg (mul_nonneg hC₁0 ht.le) (mul_nonneg hi hEχ))) (mul_nonneg (div_nonneg hC₁0 ht.le) (mul_nonneg (sq_nonneg _) hEF))`. Use `final_bound hC₁0 (integral_nonneg fun y => chartAbsDens_nonneg J A _ _ y) fun t ht => ?_` and prove the remaining obligations.
+
+Use `set D₁ := chartDens J A G (vecCons (fun x => χ x * F x) φ) with hD₁def`. Use `set D₂ := chartDens J A (fun x => χ x * G x) (vecCons F φ) with hD₂def`. Use `set a := chartAbsDens J A ((Metric.closedBall 0 R).indicator fun _ => 1) (vecCons χ φ) with hadef`. Use `set e₁ := chartDens J A ((Metric.closedBall 0 R).indicator fun _ => 1) (vecCons (fun x => χ x ^ 2 / 2) fun _ => euclPot) with he₁def`. Use `set e₂ := chartDens J A ((Metric.closedBall 0 R).indicator χ) (vecCons χ fun _ => euclPot) with he₂def`.
+
+Use `set f₁ := chartDens J A (fun x => G x ^ 2) (vecCons (fun x => F x ^ 2 / 2) fun _ => euclPot) with hf₁def`. Use `set f₂ := chartDens J A (fun x => G x ^ 2 * F x) (vecCons F fun _ => euclPot) with hf₂def`. Establish `h1 : chartInt J A G (vecCons (fun x => χ x * F x) φ) - chartInt J A (fun x => χ x * G x) (vecCons F φ) = ∫ y, (D₁ y - D₂ y)` using `(integral_sub hD₁ hD₂).symm`. Establish `h2 : energyInt J A (Metric.closedBall 0 R) χ = ∫ y, (e₁ y - e₂ y)` using `(integral_sub he₁ he₂).symm`. Establish `h3 : ∫ y, (max M₀ 0 * a y + C₁ * t * (e₁ y - e₂ y) + C₁ / t * (f₁ y - f₂ y)) = max M₀ 0 * (∫ y, a y) + C₁ * t * (∫ y, (e₁ y - e₂ y)) + C₁ / t * Φ`.
+
+Rewrite using `[integral_add, integral_add, integral_const_mul, integral_const_mul, integral_const_mul]`. Apply the tactic sequence `all_goals first`. Consider the case `exact ha.const_mul _`. Consider the case `exact (he₁.sub he₂).const_mul _`. Consider the case `exact (hf₁.sub hf₂).const_mul _`.
+
+Consider the case `exact (ha.const_mul _).add ((he₁.sub he₂).const_mul _)`. Rewrite using `[h1, h2, ← h3]`. Use `le_trans ?_ (integral_mono (hD₁.sub hD₂).abs (((ha.const_mul _).add ((he₁.sub he₂).const_mul _)).add ((hf₁.sub hf₂).const_mul _)) fun y => key t ht y)` and prove the remaining obligations. Conclude with `(by simpa only [Real.norm_eq_abs] using norm_integral_le_integral_norm fun y => D₁ y - D₂ y : |∫ y, (D₁ y - D₂ y)| ≤ ∫ y, |D₁ y - D₂ y|)`.
+-/
 theorem CutOffBoundaryBound.proof (hM : ChartMassCompact.Statement) (hL : MaDensLeibniz.Statement)
     (hN : EnergyDensNonneg.Statement) (hS : GradDensSheetBound.Statement) :
     CutOffBoundaryBound.Statement := by

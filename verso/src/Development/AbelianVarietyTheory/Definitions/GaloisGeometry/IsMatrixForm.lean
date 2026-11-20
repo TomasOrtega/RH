@@ -46,12 +46,18 @@ def pull (n : ℕ) {X Y : Scheme.{0}} (f : X ⟶ Y) : H R n Y →ₗ[R] H R n X 
   map_add' x y := Abelian.Ext.comp_add _ _ _ _
   map_smul' r x := Abelian.Ext.comp_smul _ _ _ (ULift.up r : ULift.{1} R)
 
+/- English proof (translation)
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(Abelian.Ext.mk₀ ((freeOn R).map (𝟙 X))).comp (x : HS R (coef R) n X) (zero_add n) = x`. Rewrite using `[CategoryTheory.Functor.map_id]`. Conclude with `Abelian.Ext.mk₀_id_comp _`.
+-/
 theorem pull_id (n : ℕ) (X : Scheme.{0}) : pull R n (𝟙 X) = LinearMap.id := by
   ext x
   change (Abelian.Ext.mk₀ ((freeOn R).map (𝟙 X))).comp (x : HS R (coef R) n X) (zero_add n) = x
   rw [CategoryTheory.Functor.map_id]
   exact Abelian.Ext.mk₀_id_comp _
 
+/- English proof (translation)
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(Abelian.Ext.mk₀ ((freeOn R).map (f ≫ g))).comp (x : HS R (coef R) n Z) (zero_add n) = (Abelian.Ext.mk₀ ((freeOn R).map f)).comp ((Abelian.Ext.mk₀ ((freeOn R).map g)).comp (x : HS R (coef R) n Z) (zero_add n)) (zero_add n)`. Rewrite using `[Functor.map_comp]`. Conclude with `(Abelian.Ext.mk₀_comp_mk₀_assoc _ _ _).symm`.
+-/
 theorem pull_comp (n : ℕ) {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) :
     pull R n (f ≫ g) = (pull R n f).comp (pull R n g) := by
   ext x
@@ -73,8 +79,14 @@ def galMap (σ : Ω ≃ₐ[k] Ω) : geom Ω p ⟶ geom Ω p :=
     ext x
     simp)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 @[reassoc] theorem galMap_fst (σ : Ω ≃ₐ[k] Ω) : galMap Ω p σ ≫ pullback.fst _ _ = pullback.fst _ _ := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 @[reassoc] theorem galMap_snd (σ : Ω ≃ₐ[k] Ω) :
     galMap Ω p σ ≫ pullback.snd _ _ = pullback.snd _ _ ≫ Spec.map (CommRingCat.ofHom (σ : Ω →+* Ω)) := pullback.lift_snd _ _ _
 

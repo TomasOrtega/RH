@@ -27,6 +27,9 @@ structure GoodSub (G K : Set (Mat n)) (σ : Mat n → (H →L[ℂ] H)) (T : Subm
   sm : ∀ v ∈ T, IsSm G σ v
   stab : ∀ k ∈ K, ∀ v ∈ T, σ k v ∈ T
 
+/- English proof (translation)
+Take `⟨U, F, hU, h1, hF, hfF⟩` from `hv 1 h.one_mem`. Use `⟨fderiv ℝ F 1, fun X hX => ?_⟩` and prove the remaining obligations. Establish `h0 : HasDerivAt (ex X) X 0` using `by simpa [ex_zero] using hasDerivAt_ex X 0`. Conclude with `(hasDerivAt_local hX (ex_zero X) h0 hU h1 hF hfF).deriv`.
+-/
 theorem IsSm.exists_clm (h : RepOn G σ) {v : H} (hv : IsSm G σ v) :
     ∃ D : Mat n →L[ℝ] H, ∀ X, (∀ t, ex X t ∈ G) → ds σ X v = D X := by
   obtain ⟨U, F, hU, h1, hF, hfF⟩ := hv 1 h.one_mem
@@ -34,6 +37,9 @@ theorem IsSm.exists_clm (h : RepOn G σ) {v : H} (hv : IsSm G σ v) :
   have h0 : HasDerivAt (ex X) X 0 := by simpa [ex_zero] using hasDerivAt_ex X 0
   exact (hasDerivAt_local hX (ex_zero X) h0 hU h1 hF hfF).deriv
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ds_smul h hX (IsSm.zero (G := G) (σ := σ)) 0`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, ds_add h hX ((hb i).smul _) ((smSub G σ).sum_mem fun j _ => (hb j).smul _), ds_smul h hX (hb i), ih]`.
+-/
 theorem ds_sum (h : RepOn G σ) {X : Mat n} (hX : ∀ t, ex X t ∈ G) {ι : Type*} (s : Finset ι)
     (c : ι → ℂ) {b : ι → H} (hb : ∀ i, IsSm G σ (b i)) :
     ds σ X (∑ i ∈ s, c i • b i) = ∑ i ∈ s, c i • ds σ X (b i) := by
@@ -44,12 +50,20 @@ theorem ds_sum (h : RepOn G σ) {X : Mat n} (hX : ∀ t, ex X t ∈ G) {ι : Typ
     rw [Finset.sum_insert hi, Finset.sum_insert hi, ds_add h hX ((hb i).smul _)
       ((smSub G σ).sum_mem fun j _ => (hb j).smul _), ds_smul h hX (hb i), ih]
 
+/- English proof (translation)
+Establish `hu : IsUnit k` using `IsUnit.of_mul_eq_one _ (hG.2.2.2 k hk).2`. Unfold `ex`. Rewrite using `[← Matrix.exp_conj _ _ hu, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem ex_conj (hG : IsMatGroup G) {k : Mat n} (hk : k ∈ G) (X : Mat n) (t : ℝ) :
     ex (k * X * k⁻¹) t = k * ex X t * k⁻¹ := by
   have hu : IsUnit k := IsUnit.of_mul_eq_one _ (hG.2.2.2 k hk).2
   unfold ex
   rw [← Matrix.exp_conj _ _ hu, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Establish `hm : ∀ t, ex (k * X * k⁻¹) t ∈ G` using `fun t => by`. Rewrite using `[ex_conj hG hk]`. Conclude with `h.mul_mem _ (h.mul_mem _ hk _ (hX t)) _ (hG.2.2.2 k hk).1`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[apply_ds h hX hk (hv.differentiableAt h hX)]`.
+
+Unfold `ds`. Use `congr 1`. Use `ext1 t`. Rewrite using `[← h.apply_mul (hm t) hk, ex_conj hG hk, Matrix.mul_assoc (k * ex X t), mul_eq_one_comm.1 (hG.2.2.2 k hk).2, Matrix.mul_one]`.
+-/
 theorem apply_ds_conj (hG : IsMatGroup G) (h : RepOn G σ) {k X : Mat n} (hk : k ∈ G)
     (hX : ∀ t, ex X t ∈ G) {v : H} (hv : IsSm G σ v) :
     (∀ t, ex (k * X * k⁻¹) t ∈ G) ∧ σ k (ds σ X v) = ds σ (k * X * k⁻¹) (σ k v) := by
@@ -64,6 +78,25 @@ theorem apply_ds_conj (hG : IsMatGroup G) (h : RepOn G σ) {k X : Mat n} (hk : k
   rw [← h.apply_mul (hm t) hk, ex_conj hG hk, Matrix.mul_assoc (k * ex X t),
     mul_eq_one_comm.1 (hG.2.2.2 k hk).2, Matrix.mul_one]
 
+/- English proof (translation)
+Use `haveI := hT.fin`. Set `b` to `stdOrthonormalBasis ℂ T`. Establish `hb : ∀ i, IsSm G σ (b i : H)` using `fun i => hT.sm _ (b i).2`. Use `choose D hD using fun i => (hb i).exists_clm h`. Establish `hexp : ∀ X, (∀ t, ex X t ∈ G) → ∀ v : T, ds σ X (v : H) = ∑ i, ⟪b i, v⟫_ℂ • D i X` using `fun X hX v => by`.
+
+Establish `e : (v : H) = ∑ i, ⟪b i, v⟫_ℂ • (b i : H)` using `by conv_lhs => rw [← b.sum_repr' v]`. Simplify using the standard rewrite rules. Rewrite using `[e, ds_sum h hX _ _ hb]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hD i X hX]`. Establish `hDb : ∀ i, ∃ c : ℝ, 0 ≤ c ∧ ∀ X : Mat n, ‖X‖ ≤ 1 → ‖D i X‖ ≤ c` using `fun i => by`.
+
+Take `⟨c, hc⟩` from `(isCompact_closedBall (0 : Mat n) 1).exists_bound_of_continuousOn (D i).continuous.continuousOn`. Conclude with `⟨max c 0, le_max_right _ _, fun X hX => (hc X (mem_closedBall_zero_iff.2 hX)).trans (le_max_left _ _)⟩`. Use `choose cD hcD0 hcD using hDb`. Set `A : Set H` to `{y | ∃ X, (∀ t, ex X t ∈ G) ∧ ∃ v ∈ T, y = ds σ X v}`. Set `e` to `Module.finBasis ℝ (Mat n)`.
+
+Set `B : Submodule ℂ H` to `Submodule.span ℂ (range fun p : _ × _ => D p.1 (e p.2))`. Use `haveI : FiniteDimensional ℂ B := FiniteDimensional.span_of_finite ℂ (finite_range _)`. Establish `hAB : Submodule.span ℂ A ≤ B` using `Submodule.span_le.2 <| by`. Introduce and unpack `_ ⟨X, hX, v, hv, rfl⟩`. Rewrite using `[show ds σ X v = _ from hexp X hX ⟨v, hv⟩]`.
+
+Use `B.sum_mem fun i _ => B.smul_mem _ ?_` and prove the remaining obligations. Rewrite using `[← e.sum_repr X, map_sum]`. Use `B.sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `B.smul_of_tower_mem _ (Submodule.subset_span ⟨(i, j), rfl⟩)`.
+
+Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ A) := Submodule.finiteDimensional_of_le hAB`. Use `⟨T ⊔ Submodule.span ℂ A, ∑ i, cD i, ⟨inferInstance, ?_, fun k hk => ?_⟩, le_sup_left, Finset.sum_nonneg fun i _ => hcD0 i, fun X hX hX1 v hv => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T ⊔ Submodule.span ℂ A ≤ smSub G σ`. Use `sup_le hT.sm (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨X, hX, v, hv, rfl⟩`.
+
+Conclude with `(hT.sm v hv).dsW h (W := [X]) fun Y hY => by rwa [List.mem_singleton.1 hY]`. Express the relevant statement in the definitionally equal form `T ⊔ Submodule.span ℂ A ≤ (T ⊔ Submodule.span ℂ A).comap (σ k : H →ₗ[ℂ] H)`. Use `sup_le (fun v hv => Submodule.mem_sup_left (hT.stab k hk v hv)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨X, hX, v, hv, rfl⟩`. Take `⟨h1, h2⟩` from `apply_ds_conj hG h (hK hk) hX (hT.sm v hv)`.
+
+Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨_, h1, _, hT.stab k hk v hv, h2⟩)`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨X, hX, v, hv, rfl⟩)`. Rewrite using `[show ds σ X v = _ from hexp X hX ⟨v, hv⟩, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, mul_comm]`.
+
+Use `mul_le_mul (hcD i X hX1) ?_ (norm_nonneg _) (hcD0 i)` and prove the remaining obligations. Use `norm_inner_le_norm (𝕜 := ℂ) (b i) (⟨v, hv⟩ : T)` as an intermediate fact. Rewrite `this` using `[b.orthonormal.1 i, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem GoodSub.step (hG : IsMatGroup G) (h : RepOn G σ) (hK : K ⊆ G) {T : Submodule ℂ H}
     (hT : GoodSub G K σ T) : ∃ (T' : Submodule ℂ H) (C : ℝ), GoodSub G K σ T' ∧ T ≤ T' ∧ 0 ≤ C ∧
       ∀ X, (∀ t, ex X t ∈ G) → ‖X‖ ≤ 1 → ∀ v ∈ T, ds σ X v ∈ T' ∧ ‖ds σ X v‖ ≤ C * ‖v‖ := by
@@ -117,6 +150,15 @@ theorem GoodSub.step (hG : IsMatGroup G) (h : RepOn G σ) (hK : K ⊆ G) {T : Su
     have := norm_inner_le_norm (𝕜 := ℂ) (b i) (⟨v, hv⟩ : T)
     rwa [b.orthonormal.1 i, one_mul] at this
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Use `⟨T, ‖w‖, hT, norm_nonneg _, fun W _ _ hW => ?_⟩` and prove the remaining obligations. Rewrite using `[List.length_eq_zero_iff.1 (Nat.le_zero.1 hW)]`. Conclude with `⟨hw, le_rfl⟩`.
+
+Consider the case `succ m ih`. Take `⟨T₁, C₁, h₁, hC₁, hW₁⟩` from `ih`. Take `⟨T₂, C₂, h₂, hle, hC₂, hW₂⟩` from `h₁.step hG h hK`. Use `⟨T₂, C₁ + C₂ * C₁, h₂, by positivity, fun W hL hn hW => ?_⟩` and prove the remaining obligations. Consider the cases of `W with`.
+
+Consider the case `nil`. Take `⟨a, b⟩` from `hW₁ [] hL hn (Nat.zero_le _)`. Conclude with `⟨hle a, b.trans (le_add_of_nonneg_right (by positivity))⟩`. Consider the case `cons X W`. Take `⟨a, b⟩` from `hW₁ W (fun Y hY => hL Y (List.mem_cons_of_mem _ hY)) (fun Y hY => hn Y (List.mem_cons_of_mem _ hY)) (by simpa using hW)`.
+
+Take `⟨c, d⟩` from `hW₂ X (hL X List.mem_cons_self) (hn X List.mem_cons_self) _ a`. Use `⟨c, d.trans ?_⟩` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_left b hC₂).trans (le_add_of_nonneg_left hC₁)`.
+-/
 theorem GoodSub.words (hG : IsMatGroup G) (h : RepOn G σ) (hK : K ⊆ G) {T : Submodule ℂ H}
     (hT : GoodSub G K σ T) {w : H} (hw : w ∈ T) (m : ℕ) :
     ∃ (T' : Submodule ℂ H) (C : ℝ), GoodSub G K σ T' ∧ 0 ≤ C ∧ ∀ W : List (Mat n), LieW G W →
@@ -141,6 +183,17 @@ theorem GoodSub.words (hG : IsMatGroup G) (h : RepOn G σ) (hK : K ⊆ G) {T : S
       refine ⟨c, d.trans ?_⟩
       exact (mul_le_mul_of_nonneg_left b hC₂).trans (le_add_of_nonneg_left hC₁)
 
+/- English proof (translation)
+Set `e` to `stdOrthonormalBasis ℂ T`. Use `choose C hC using fun i j => hb _ (e i).2 _ (e j).2`. Establish `hx : ∀ v : T, (v : H) = ∑ i, ⟪e i, v⟫_ℂ • (e i : H)` using `fun v => by conv_lhs => rw [← e.sum_repr' v]`. Simplify using the standard rewrite rules. Establish `hn : ∀ i (v : T), ‖⟪e i, v⟫_ℂ‖ ≤ ‖(v : H)‖` using `fun i v => by`.
+
+Use `norm_inner_le_norm (𝕜 := ℂ) (e i) v` as an intermediate fact. Rewrite `this` using `[e.orthonormal.1 i, one_mul]`. Then use the resulting hypothesis. Use `⟨∑ i, ∑ j, |C i j|, by positivity, fun a ha b hb g hg => ?_⟩` and prove the remaining obligations. Establish `e1 : ⟪a, σ g b⟫_ℂ = ∑ i, ∑ j, (starRingEnd ℂ) ⟪e i, (⟨a, ha⟩ : T)⟫_ℂ * (⟪e j, (⟨b, hb⟩ : T)⟫_ℂ * ⟪(e i : H), σ g (e j)⟫_ℂ)` using `by conv_lhs => rw [show a = _ from hx ⟨a, ha⟩, show b = _ from hx ⟨b, hb⟩]`. Simplify using `only [sum_inner, inner_smul_left, map_sum, map_smul, inner_sum, inner_smul_right, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[e1, Finset.sum_mul, Finset.sum_mul, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.sum_mul, Finset.sum_mul]`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, RCLike.norm_conj]`. Establish `h1` using `hn i ⟨a, ha⟩`. Establish `h2` using `hn j ⟨b, hb⟩`. Establish `h3` using `(hC i j g hg).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (hρ g hg))`.
+
+Establish `h4` using `hρ g hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coef_bound_uniform {T : Submodule ℂ H} [FiniteDimensional ℂ T] {ρ : Mat n → ℝ}
     (hρ : ∀ g ∈ G, 0 ≤ ρ g)
     (hb : ∀ a ∈ T, ∀ b ∈ T, ∃ C : ℝ, ∀ g ∈ G, ‖⟪a, σ g b⟫_ℂ‖ ≤ C * ρ g) :

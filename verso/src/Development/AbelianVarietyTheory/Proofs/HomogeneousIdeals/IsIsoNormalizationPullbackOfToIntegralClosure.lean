@@ -6,6 +6,13 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace Opp
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `a : Over.mk (m ≫ g) ⟶ Over.mk g` to `Over.homMk m`. Set `b : Over.mk (m ≫ g) ⟶ Over.mk g` to `Over.homMk m' h₂.symm`. Establish `: IsSeparated (Over.mk g).hom` using `‹_›`. Set `c : Over.mk (j ≫ m ≫ g) ⟶ Over.mk (m ≫ g)` to `Over.homMk j`. Establish `hc : c ≫ a = c ≫ b` using `by ext1; exact h₁`.
+
+Establish `hk : (equalizer.ι a b).left.ker = ⊥`. Establish `e : (equalizer.lift c hc).left ≫ (equalizer.ι a b).left = j`. Rewrite using `[← Over.comp_left, equalizer.lift_ι]`. Both sides reduce to the same expression. Use `(equalizer.lift c hc).left.le_ker_comp (equalizer.ι a b).left` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `le_bot_iff.mp (this.trans j.ker_eq_bot.le)`. Establish `: IsIso (equalizer.ι a b).left` using `IsClosedImmersion.isIso_iff_ker_eq_bot.mpr hk`. Rewrite using `[← cancel_epi (equalizer.ι a b).left]`. Conclude with `congr($(equalizer.condition a b).left)`.
+-/
 theorem hom_ext_of_isSchemeTheoreticallyDominant {W X T Z : Scheme.{u}} (j : W ⟶ X)
     [IsSchemeTheoreticallyDominant j] {m m' : X ⟶ T} (g : T ⟶ Z) [IsSeparated g]
     (h₁ : j ≫ m = j ≫ m') (h₂ : m ≫ g = m' ≫ g) : m = m' := by
@@ -24,6 +31,9 @@ theorem hom_ext_of_isSchemeTheoreticallyDominant {W X T Z : Scheme.{u}} (j : W �
   rw [← cancel_epi (equalizer.ι a b).left]
   exact congr($(equalizer.condition a b).left)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨le_bot_iff.mp ((f.le_ker_comp g).trans (f ≫ g).ker_eq_bot.le)⟩`.
+-/
 theorem isSchemeTheoreticallyDominant_of_comp {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z)
     [IsSchemeTheoreticallyDominant (f ≫ g)] : IsSchemeTheoreticallyDominant g :=
   ⟨le_bot_iff.mp ((f.le_ker_comp g).trans (f ≫ g).ker_eq_bot.le)⟩
@@ -36,6 +46,9 @@ section Lift
 
 variable {X Y T Z : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f] [QuasiSeparated f]
 
+/- English proof (translation)
+The claim follows from `hom_ext_of_isSchemeTheoreticallyDominant f.toNormalization g h₁ h₂`.
+-/
 theorem normalization_hom_ext {m m' : f.normalization ⟶ T} (g : T ⟶ Z) [IsSeparated g]
     (h₁ : f.toNormalization ≫ m = f.toNormalization ≫ m') (h₂ : m ≫ g = m' ≫ g) : m = m' :=
   hom_ext_of_isSchemeTheoreticallyDominant f.toNormalization g h₁ h₂
@@ -48,21 +61,33 @@ noncomputable def normalizationLift (a : X ⟶ T) (g : T ⟶ Z) [IsIntegralHom g
 variable (a : X ⟶ T) (g : T ⟶ Z) [IsIntegralHom g] (b : Y ⟶ Z) (H : a ≫ g = f ≫ b)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Simplify using `[normalizationLift, pullback.lift_fst]`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem toNormalization_normalizationLift :
     f.toNormalization ≫ normalizationLift f a g b H = a := by
   simp [normalizationLift, pullback.lift_fst]
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Simplify using `[normalizationLift, pullback.condition]`.
+-/
 theorem normalizationLift_comp :
     normalizationLift f a g b H ≫ g = f.fromNormalization ≫ b := by
   simp [normalizationLift, pullback.condition]
 
+/- English proof (translation)
+The claim follows from `normalization_hom_ext f g (by simp [h₁]) (by simp [h₂])`.
+-/
 theorem eq_normalizationLift {m : f.normalization ⟶ T} (h₁ : f.toNormalization ≫ m = a)
     (h₂ : m ≫ g = f.fromNormalization ≫ b) : m = normalizationLift f a g b H :=
   normalization_hom_ext f g (by simp [h₁]) (by simp [h₂])
 
 include H in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨normalizationLift f a g b H, ⟨by simp, by simp⟩, fun _ h ↦ eq_normalizationLift f a g b H h.1 h.2⟩`.
+-/
 theorem existsUnique_normalizationLift :
     ∃! m : f.normalization ⟶ T, f.toNormalization ≫ m = a ∧ m ≫ g = f.fromNormalization ≫ b :=
   ⟨normalizationLift f a g b H, ⟨by simp, by simp⟩,
@@ -89,15 +114,24 @@ noncomputable def normalizationMap (a : X₁ ⟶ X₂) (b : Y₁ ⟶ Y₂) (H : 
 variable (a : X₁ ⟶ X₂) (b : Y₁ ⟶ Y₂) (H : a ≫ f₂ = f₁ ≫ b)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Simplify using `[normalizationMap]`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem toNormalization_normalizationMap :
     f₁.toNormalization ≫ normalizationMap f₁ f₂ a b H = a ≫ f₂.toNormalization := by
   simp [normalizationMap]
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Simplify using `[normalizationMap]`.
+-/
 theorem normalizationMap_fromNormalization :
     normalizationMap f₁ f₂ a b H ≫ f₂.fromNormalization = f₁.fromNormalization ≫ b := by
   simp [normalizationMap]
 
+/- English proof (translation)
+The claim follows from `eq_normalizationLift f₁ _ _ _ _ h₁ h₂ @[simp]`.
+-/
 theorem eq_normalizationMap {m : f₁.normalization ⟶ f₂.normalization}
     (h₁ : f₁.toNormalization ≫ m = a ≫ f₂.toNormalization)
     (h₂ : m ≫ f₂.fromNormalization = f₁.fromNormalization ≫ b) :
@@ -105,11 +139,17 @@ theorem eq_normalizationMap {m : f₁.normalization ⟶ f₂.normalization}
   eq_normalizationLift f₁ _ _ _ _ h₁ h₂
 
 @[simp]
+/- English proof (translation)
+The claim follows from `(eq_normalizationMap f₁ f₁ _ _ _ (by simp) (by simp)).symm @[reassoc]`.
+-/
 theorem normalizationMap_id :
     normalizationMap f₁ f₁ (𝟙 _) (𝟙 _) (by simp) = 𝟙 _ :=
   (eq_normalizationMap f₁ f₁ _ _ _ (by simp) (by simp)).symm
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `eq_normalizationMap f₁ f₃ _ _ _ (by simp) (by simp)`.
+-/
 theorem normalizationMap_comp (a' : X₂ ⟶ X₃) (b' : Y₂ ⟶ Y₃) (H' : a' ≫ f₃ = f₂ ≫ b') :
     normalizationMap f₁ f₂ a b H ≫ normalizationMap f₂ f₃ a' b' H' =
       normalizationMap f₁ f₃ (a ≫ a') (b ≫ b') (by simp [H', reassoc_of% H]) :=
@@ -138,6 +178,9 @@ noncomputable def normalizationMapIso (a : X₁ ≅ X₂) (b : Y₁ ≅ Y₂)
   asIso (normalizationMap f₁ f₂ a.hom b.hom H)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem normalizationMapIso_hom (a : X₁ ≅ X₂) (b : Y₁ ≅ Y₂) (H : a.hom ≫ f₂ = f₁ ≫ b.hom) :
     (normalizationMapIso f₁ f₂ a b H).hom = normalizationMap f₁ f₂ a.hom b.hom H := rfl
 
@@ -153,26 +196,41 @@ noncomputable def normalizationTransIso : f₁.normalization ≅ f.normalization
   asIso (normalizationMap f₁ f (𝟙 X) f₂ (by simp [H]))
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Simplify using `[normalizationTransIso]`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem toNormalization_normalizationTransIso_hom :
     f₁.toNormalization ≫ (normalizationTransIso f₁ f₂ f H).hom = f.toNormalization := by
   simp [normalizationTransIso]
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Simplify using `[normalizationTransIso]`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem normalizationTransIso_hom_fromNormalization :
     (normalizationTransIso f₁ f₂ f H).hom ≫ f.fromNormalization = f₁.fromNormalization ≫ f₂ := by
   simp [normalizationTransIso]
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Simplify using `[Iso.comp_inv_eq]`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem toNormalization_normalizationTransIso_inv :
     f.toNormalization ≫ (normalizationTransIso f₁ f₂ f H).inv = f₁.toNormalization := by
   simp [Iso.comp_inv_eq]
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `normalization_hom_ext f f₂ (by simp) (by simp [Iso.inv_comp_eq])`.
+-/
 theorem normalizationTransIso_inv_fromNormalization :
     (normalizationTransIso f₁ f₂ f H).inv ≫ f₁.fromNormalization =
       f.normalizationDesc f₁ f₂ H :=
   normalization_hom_ext f f₂ (by simp) (by simp [Iso.inv_comp_eq])
 
+/- English proof (translation)
+Rewrite using `[← normalizationTransIso_inv_fromNormalization, isIso_comp_left_iff]`.
+-/
 theorem isIso_normalizationDesc_iff :
     IsIso (f.normalizationDesc f₁ f₂ H) ↔ IsIso f₁.fromNormalization := by
   rw [← normalizationTransIso_inv_fromNormalization, isIso_comp_left_iff]
@@ -191,6 +249,25 @@ set_option backward.defeqAttrib.useBackward true in
 set_option backward.isDefEq.respectTransparency false in
 open TensorProduct in
 
+/- English proof (translation)
+Apply `IsZariskiLocalAtTarget.of_forall_exists_morphismRestrict (P := .isomorphisms _) fun x ↦ ?_` to reduce the goal to its premises. Take `⟨U, hU, V, hV, hVU, hxV, hB⟩` from `hg (pullback.snd f.fromNormalization g x)`. Set `W` to `pullback.snd (Scheme.Hom.fromNormalization f) g ⁻¹ᵁ V`. Use `⟨W, hxV, (isIso_morphismRestrict_iff_isIso_app _ (U := W) (hV.preimage _)).mpr ?_⟩` and prove the remaining obligations. Use `isIso_pushoutSection_of_isQuasiSeparated_of_flat_right (.of_hasPullback f.fromNormalization g) hVU le_rfl (UY := W) (by simp_rw [W, ← Scheme.Hom.comp_preimage, pullback.condition, Scheme.Hom.comp_preimage, ← Scheme.Hom.preimage_inf, inf_eq_right.mpr hVU]) hU hV (hU.preimage f.fro …` as an intermediate fact.
+
+Rewrite using `[← @isIso_comp_left_iff _ _ _ _ _ _ _ this, ← isIso_comp_left_iff (pushout.congrHom f.fromNormalization.app_eq_appLE rfl).hom]`. Use `algebraize [(f.app U).hom, (g.appLE U V hVU).hom, ((pullback.snd f g).app V).hom]`. Use `isIso_pushoutSection_of_isQuasiSeparated_of_flat_right (.of_hasPullback f g) hVU le_rfl (UY := pullback.snd f g ⁻¹ᵁ V) (by simp_rw [← Scheme.Hom.comp_preimage, pullback.condition, Scheme.Hom.comp_preimage, ← Scheme.Hom.preimage_inf, inf_eq_right.mpr hVU]) hU hV (f.isCompact_preim …` as an intermediate fact. Set `e₀` to `(CommRingCat.isPushout_tensorProduct ..).flip.isoPushout ≪≫ (pushout.congrHom f.app_eq_appLE rfl ≪≫ @asIso _ _ _ _ _ this :)`. Set `e : Γ(Y, V) ⊗[Γ(S, U)] Γ(X, f ⁻¹ᵁ U) ≃ₐ[Γ(Y, V)] Γ(pullback f g, pullback.snd f g ⁻¹ᵁ V)` to `{ toRingEquiv := e₀.commRingCatIsoToRingEquiv, commutes' r := by`.
+
+Express the relevant statement in the definitionally equal form `(CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom ≫ e₀.hom) r = (pullback.snd f g).app V r`. Use `congr 2`. Simplify using `[e₀, pushout.inr_desc_assoc, Scheme.Hom.app_eq_appLE] }`. Set `ψ : Γ(Y, V) ⊗[Γ(S, U)] integralClosure Γ(S, U) Γ(X, f ⁻¹ᵁ U) →ₐ[Γ(Y, V)] integralClosure Γ(Y, V) Γ(pullback f g, pullback.snd f g ⁻¹ᵁ V)` to `e.mapIntegralClosure.toAlgHom.comp (TensorProduct.toIntegralClosure _ _ _)`. Establish `hψ : Function.Bijective ψ` using `e.mapIntegralClosure.bijective.comp (hB _)`.
+
+Set `φ : pushout (f.fromNormalization.app U) (g.appLE U V hVU) ⟶ Γ((pullback.snd f g).normalization, f.normalizationPullback g ⁻¹ᵁ W)` to `pushout.map _ _ (CommRingCat.ofHom (algebraMap Γ(S, U) (integralClosure Γ(S, U) Γ(X, f ⁻¹ᵁ U)))) (g.appLE U V hVU) (f.normalizationObjIso hU).hom (𝟙 _) (𝟙 _) (by simp [Scheme.Hom.fromNormalization_app _ hU]) (by simp) ≫ (CommRingCat.isPushout_tensorProduct ..).flip.isoPushout.inv …`. Use `convert! show IsIso φ by dsimp only [φ]; infer_instance using 1`. Use `ext1`. Simplify using `[φ]`. Simplify using `only [Scheme.Hom.app_eq_appLE, colimit.ι_desc_assoc, span_left, PushoutCocone.mk_pt, PushoutCocone.mk_ι_app, Category.id_comp, Scheme.Hom.appLE_comp_appLE, eqToHom_op, Category.assoc, IsPushout.inl_isoPushout_inv_assoc]`.
+
+Repeatedly rewrite using `[← Category.assoc, ← IsIso.comp_inv_eq]`. Simplify using `only [← Functor.map_inv, inv_eqToHom, Scheme.Hom.appLE_map, IsIso.Iso.inv_inv, Category.assoc]`. Establish `: Mono (CommRingCat.ofHom (integralClosure Γ(Y, V) Γ(pullback f g, pullback.snd f g ⁻¹ᵁ V)).val.toRingHom)` using `ConcreteCategory.mono_of_injective _ Subtype.val_injective`. Rewrite using `[← cancel_mono (CommRingCat.ofHom (Subalgebra.val _).toRingHom)]`. Simplify using `only [Category.assoc, Scheme.Hom.normalizationObjIso_hom_val, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.toNormalization_normalizationPullback_fst, ← CommRingCat.ofHom_comp]`.
+
+Establish `H : pullback.snd f g ⁻¹ᵁ V ≤ pullback.fst f g ⁻¹ᵁ f ⁻¹ᵁ U`. Rewrite using `[← Scheme.Hom.comp_preimage, pullback.condition, Scheme.Hom.comp_preimage]`. Conclude with `Scheme.Hom.preimage_mono _ hVU`. Use `trans (f.normalizationObjIso hU).hom ≫ CommRingCat.ofHom (integralClosure Γ(S, U) Γ(X, f ⁻¹ᵁ U)).val.toRingHom ≫ (pullback.fst f g).appLE _ _ H`. Rewrite using `[reassoc_of% Scheme.Hom.normalizationObjIso_hom_val, Scheme.Hom.appLE_comp_appLE]`.
+
+Use `congr 1`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(pullback.fst f g).appLE _ _ H x = _`. Use `trans (CommRingCat.ofHom Algebra.TensorProduct.includeRight.toRingHom ≫ e₀.hom) x`. Use `congr 2`.
+
+Simplify using `[e₀, pushout.inl_desc_assoc]`. Simplify using `[ψ, toIntegralClosure, e]`. Both sides reduce to the same expression. Simplify using `[φ]`. Simplify using `only [Scheme.Hom.app_eq_appLE, colimit.ι_desc_assoc, span_right, PushoutCocone.mk_pt, PushoutCocone.mk_ι_app, Category.id_comp, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.normalizationPullback_snd, eqToHom_op, IsPushout.inr_isoPushout_inv_assoc]`.
+
+Repeatedly rewrite using `[← Category.assoc, ← IsIso.comp_inv_eq]`. Simplify using `only [← Functor.map_inv, inv_eqToHom, Scheme.Hom.appLE_map, ← Scheme.Hom.app_eq_appLE, Scheme.Hom.fromNormalization_app _ hV, IsIso.Iso.inv_inv, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Conclude with `congr(CommRingCat.ofHom $(ψ.comp_algebraMap.symm))`.
+-/
 theorem isIso_normalizationPullback_of_toIntegralClosure {X S Y : Scheme.{u}} (f : X ⟶ S)
     (g : Y ⟶ S) [QuasiCompact f] [QuasiSeparated f] [Flat g]
     (hg : ∀ y : Y, ∃ (U : S.Opens) (_ : IsAffineOpen U) (V : Y.Opens) (_ : IsAffineOpen V)
@@ -287,6 +364,11 @@ instance (priority := 900) PreservesNormalization.of_smooth {Y S : Scheme.{u}} (
     [Smooth g] : PreservesNormalization g :=
   ⟨fun _ _ _ ↦ inferInstance⟩
 
+/- English proof (translation)
+Establish `: Flat g`. Use `HasRingHomProperty.iff_exists_appLE (P := @Flat) (RingHom.Flat.stableUnderComposition.stableUnderCompositionWithLocalizationAway RingHom.Flat.holdsForLocalizationAway).left |>.mpr fun y ↦ ?_` and prove the remaining obligations. Take `⟨U, hU, V, hV, hVU, M, hy, h⟩` from `hg y`. Set `` to `(g.appLE U V hVU).hom.toAlgebra`. Conclude with `⟨⟨U, hU⟩, ⟨V, hV⟩, hy, hVU, IsLocalization.flat _ M⟩`.
+
+Use `⟨fun f _ _ ↦ isIso_normalizationPullback_of_toIntegralClosure f g fun y ↦ ?_⟩` and prove the remaining obligations. Take `⟨U, hU, V, hV, hVU, M, hy, h⟩` from `hg y`. Set `` to `(g.appLE U V hVU).hom.toAlgebra`. Conclude with `⟨U, hU, V, hV, hVU, hy, fun B _ _ ↦ TensorProduct.toIntegralClosure_bijective_of_isLocalization M⟩`.
+-/
 theorem PreservesNormalization.of_isLocalization {Y S : Scheme.{u}} (g : Y ⟶ S)
     (hg : ∀ y : Y, ∃ (U : S.Opens) (_ : IsAffineOpen U) (V : Y.Opens) (_ : IsAffineOpen V)
       (hVU : V ≤ g ⁻¹ᵁ U) (M : Submonoid Γ(S, U)), y ∈ V ∧
@@ -306,6 +388,13 @@ theorem PreservesNormalization.of_isLocalization {Y S : Scheme.{u}} (g : Y ⟶ S
   exact ⟨U, hU, V, hV, hVU, hy, fun B _ _ ↦
     TensorProduct.toIntegralClosure_bijective_of_isLocalization M⟩
 
+/- English proof (translation)
+Establish `: IsAffineHom g` using `MorphismProperty.of_isPullback (P := @IsAffineHom) h.flip inferInstance`. Use `.of_isLocalization g fun y ↦ ?_` and prove the remaining obligations. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (g y)) isOpen_univ`. Establish `hp` using `(isIso_pushoutSection_iff h (US := ⊤) (UT := ⊤) (UX := U) (UY := g ⁻¹ᵁ U) le_top le_top (by simp)).mp (isIso_pushoutSection_of_isAffineOpen h _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hU)`. Establish `hp' : IsPushout ((Scheme.ΓSpecIso (.of R)).inv ≫ s.appLE ⊤ U le_top) (CommRingCat.ofHom (algebraMap R R')) (g.appLE U (g ⁻¹ᵁ U) le_rfl) ((Scheme.ΓSpecIso (.of R')).inv ≫ t.appLE ⊤ (g ⁻¹ᵁ U) le_top)`.
+
+Use `hp.of_iso (Scheme.ΓSpecIso _) (.refl _) (Scheme.ΓSpecIso _) (.refl _) (by simp) ?_ (by simp) (by simp)` and prove the remaining obligations. Conclude with `Scheme.ΓSpecIso_naturality _`. Use `algebraize [((Scheme.ΓSpecIso (.of R)).inv ≫ s.appLE ⊤ U le_top).hom, (g.appLE U (g ⁻¹ᵁ U) le_rfl).hom, ((Scheme.ΓSpecIso (.of R')).inv ≫ t.appLE ⊤ (g ⁻¹ᵁ U) le_top).hom, (((Scheme.ΓSpecIso (.of R)).inv ≫ s.appLE ⊤ U le_top) ≫ g.appLE U (g ⁻¹ᵁ U) le_rfl).hom]`. Establish `: IsScalarTower R Γ(S, U) Γ(Y, g ⁻¹ᵁ U)` using `.of_algebraMap_eq' rfl`. Establish `: IsScalarTower R R' Γ(Y, g ⁻¹ᵁ U)` using `.of_algebraMap_eq' congr($(hp'.w).hom)`.
+
+Establish `: Algebra.IsPushout R Γ(S, U) R' Γ(Y, g ⁻¹ᵁ U)` using `CommRingCat.isPushout_iff_isPushout.mp hp'`. Conclude with `⟨U, hU, g ⁻¹ᵁ U, hU.preimage g, le_rfl, Algebra.algebraMapSubmonoid Γ(S, U) M, hxU, (Algebra.isLocalization_iff_isPushout M R').mpr this⟩`.
+-/
 theorem PreservesNormalization.of_isPullback_localization {R R' : Type u} [CommRing R]
     [CommRing R'] [Algebra R R'] (M : Submonoid R) [IsLocalization M R'] {Y S : Scheme.{u}}
     {g : Y ⟶ S} {t : Y ⟶ Spec (.of R')} {s : S ⟶ Spec (.of R)}
@@ -341,11 +430,17 @@ variable {X X' Y Y' : Scheme.{u}} {f : X ⟶ Y} {f' : X' ⟶ Y'} {a : X' ⟶ X} 
   [QuasiCompact f] [QuasiSeparated f] [QuasiCompact f'] [QuasiSeparated f']
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `eq_normalizationMap _ _ _ _ _ (by simp) (by simp [pullback.condition])`.
+-/
 theorem normalizationPullback_fst (f : X ⟶ Y) (b : Y' ⟶ Y) [QuasiCompact f] [QuasiSeparated f] :
     f.normalizationPullback b ≫ pullback.fst _ _ =
       normalizationMap (pullback.snd f b) f (pullback.fst f b) b pullback.condition :=
   eq_normalizationMap _ _ _ _ _ (by simp) (by simp [pullback.condition])
 
+/- English proof (translation)
+Set `e` to `normalizationMap f' (pullback.snd f b) h.isoPullback.hom (𝟙 _) (by simp)`. Use `IsPullback.of_iso_pullback ⟨by simp⟩ (asIso (e ≫ f.normalizationPullback b)) ?_ ?_` and prove the remaining obligations. Simplify using `[e, normalizationPullback_fst, normalizationMap_comp]`. Simplify using `[e]`.
+-/
 theorem isPullback_normalizationMap (h : IsPullback a f' f b) [PreservesNormalization b] :
     IsPullback (normalizationMap f' f a b h.w) f'.fromNormalization f.fromNormalization b := by
   let e := normalizationMap f' (pullback.snd f b) h.isoPullback.hom (𝟙 _) (by simp)
@@ -353,10 +448,16 @@ theorem isPullback_normalizationMap (h : IsPullback a f' f b) [PreservesNormaliz
   · simp [e, normalizationPullback_fst, normalizationMap_comp]
   · simp [e]
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_bot (by simpa using h) (by simp) (isPullback_normalizationMap h)`.
+-/
 theorem isPullback_toNormalization (h : IsPullback a f' f b) [PreservesNormalization b] :
     IsPullback a f'.toNormalization f.toNormalization (normalizationMap f' f a b h.w) :=
   IsPullback.of_bot (by simpa using h) (by simp) (isPullback_normalizationMap h)
 
+/- English proof (translation)
+Use `⟨fun f _ _ ↦ ?_⟩` and prove the remaining obligations. Establish `: f.normalizationPullback b = (hb f).isoPullback.hom`. Apply the tactic sequence `apply pullback.hom_ext <;> simp [normalizationPullback_fst]`. Rewrite using `[this]`. Use `infer_instance`.
+-/
 theorem PreservesNormalization.of_isPullback (b : Y' ⟶ Y)
     (hb : ∀ {X : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f] [QuasiSeparated f],
       IsPullback (normalizationMap (pullback.snd f b) f (pullback.fst f b) b pullback.condition)
@@ -382,6 +483,9 @@ instance PreservesNormalization.comp {Y'' : Scheme.{u}} (b' : Y'' ⟶ Y') (b : Y
   rw [normalizationMap_comp] at this
   simpa only [hc] using this
 
+/- English proof (translation)
+Use `⟨(isPullback_normalizationMap h).isoIsPullback _ _ h', ?_, by simp, by simp⟩` and prove the remaining obligations. Apply the tactic sequence `apply h'.hom_ext <;> simp [hc, hd]`.
+-/
 theorem exists_iso_normalization_of_isPullback (h : IsPullback a f' f b) [PreservesNormalization b]
     {N' : Scheme.{u}} {c : N' ⟶ f.normalization} {d : N' ⟶ Y'}
     (h' : IsPullback c d f.fromNormalization b) {e : X' ⟶ N'}
@@ -391,12 +495,18 @@ theorem exists_iso_normalization_of_isPullback (h : IsPullback a f' f b) [Preser
   refine ⟨(isPullback_normalizationMap h).isoIsPullback _ _ h', ?_, by simp, by simp⟩
   apply h'.hom_ext <;> simp [hc, hd]
 
+/- English proof (translation)
+The claim follows from `(isPullback_normalizationMap h).of_iso (asIso f'.toNormalization).symm (.refl _) (.refl _) (.refl _) (by simp) (by simp) (by simp) (by simp)`.
+-/
 theorem isPullback_toNormalization_of_isIntegralHom (h : IsPullback a f' f b)
     [PreservesNormalization b] [IsIntegralHom f'] :
     IsPullback (a ≫ f.toNormalization) f' f.fromNormalization b :=
   (isPullback_normalizationMap h).of_iso (asIso f'.toNormalization).symm (.refl _) (.refl _)
     (.refl _) (by simp) (by simp) (by simp) (by simp)
 
+/- English proof (translation)
+Take `⟨i, rfl, -⟩` from `exists_iso_normalization_of_isPullback h h' hc hd`. Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem isOpenImmersion_of_isPullback_normalization (h : IsPullback a f' f b)
     [PreservesNormalization b] [LocallyQuasiFinite f'] [LocallyOfFiniteType f'] [IsSeparated f']
     {N' : Scheme.{u}} {c : N' ⟶ f.normalization} {d : N' ⟶ Y'}
@@ -414,6 +524,9 @@ variable {X Y V : Scheme.{u}} (f' : X ⟶ V) (b : V ⟶ Y) [Mono b] (f : X ⟶ Y
 
 include H in
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_horiz_isIso_mono ⟨by simp [H]⟩`.
+-/
 theorem isPullback_id_of_mono : IsPullback (𝟙 X) f' f b :=
   IsPullback.of_horiz_isIso_mono ⟨by simp [H]⟩
 
@@ -421,12 +534,18 @@ variable [QuasiCompact f] [QuasiSeparated f] [PreservesNormalization b]
 
 include H in
 
+/- English proof (translation)
+Simplify using `using isPullback_toNormalization_of_isIntegralHom (isPullback_id_of_mono f' b f H)`.
+-/
 theorem isPullback_toNormalization_of_mono [IsIntegralHom f'] :
     IsPullback f.toNormalization f' f.fromNormalization b := by
   simpa using isPullback_toNormalization_of_isIntegralHom (isPullback_id_of_mono f' b f H)
 
 include H in
 
+/- English proof (translation)
+The claim follows from `isOpenImmersion_of_isPullback_normalization (isPullback_id_of_mono f' b f H) (.of_hasPullback _ _) (by simp [pullback.lift_fst]) (pullback.lift_snd ..)`.
+-/
 theorem isOpenImmersion_lift_toNormalization_of_mono [QuasiCompact f'] [LocallyQuasiFinite f']
     [LocallyOfFiniteType f'] [IsSeparated f'] :
     IsOpenImmersion (pullback.lift f.toNormalization f' (by simp [H]) :
@@ -440,6 +559,9 @@ theorem isOpenImmersion_lift_toNormalization_of_mono [QuasiCompact f'] [LocallyQ
 
 include H in
 
+/- English proof (translation)
+The claim follows from `isPullback_normalizationMap (isPullback_id_of_mono f' b f H)`.
+-/
 theorem isPullback_normalizationMap_of_mono [QuasiCompact f'] [QuasiSeparated f'] :
     IsPullback (normalizationMap f' f (𝟙 X) b (by simp [H])) f'.fromNormalization
       f.fromNormalization b :=
@@ -447,6 +569,9 @@ theorem isPullback_normalizationMap_of_mono [QuasiCompact f'] [QuasiSeparated f'
 
 end Mono
 
+/- English proof (translation)
+The claim follows from `(isPullback_normalizationMap_of_mono (f₁ ≫ c) b f (by simp [H])).of_iso (normalizationTransIso f₁ c (f₁ ≫ c) rfl).symm (.refl _) (.refl _) (.refl _) (by simp [Iso.eq_inv_comp, normalizationTransIso, normalizationMap_comp]) (by simp [Iso.eq_inv_comp]) (by simp) (by simp)`.
+-/
 theorem isPullback_normalizationMap_of_isIntegralHom_of_mono {X T V Y : Scheme.{u}} (f₁ : X ⟶ T)
     (c : T ⟶ V) [IsIntegralHom c] (b : V ⟶ Y) [Mono b] [PreservesNormalization b] (f : X ⟶ Y)
     (H : f = f₁ ≫ c ≫ b) [QuasiCompact f] [QuasiSeparated f] [QuasiCompact f₁]
@@ -466,6 +591,9 @@ variable {R R' : Type u} [CommRing R] [CommRing R'] [Algebra R R'] (M : Submonoi
 
 include M in
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.of_isPullback (P := @IsPreimmersion) hb.flip (.of_isLocalization M)`.
+-/
 theorem isPreimmersion_of_isPullback_localization
     (hb : IsPullback b t s (Spec.map (CommRingCat.ofHom (algebraMap R R')))) :
     IsPreimmersion b :=
@@ -473,6 +601,9 @@ theorem isPreimmersion_of_isPullback_localization
 
 include M in
 
+/- English proof (translation)
+The claim follows from `have := PreservesNormalization.of_isPullback_localization M hb isPullback_normalizationMap h`.
+-/
 theorem isPullback_normalizationMap_of_isLocalization
     (hb : IsPullback b t s (Spec.map (CommRingCat.ofHom (algebraMap R R'))))
     {X X' : Scheme.{u}} {f : X ⟶ Y} {f' : X' ⟶ Y'} {a : X' ⟶ X} [QuasiCompact f]
@@ -483,6 +614,9 @@ theorem isPullback_normalizationMap_of_isLocalization
 
 include M in
 
+/- English proof (translation)
+The claim follows from `have := PreservesNormalization.of_isPullback_localization M hb have := isPreimmersion_of_isPullback_localization M hb isPullback_toNormalization_of_mono f' (i ≫ b) f H`.
+-/
 theorem isPullback_toNormalization_of_isLocalization
     (hb : IsPullback b t s (Spec.map (CommRingCat.ofHom (algebraMap R R'))))
     {X V : Scheme.{u}} (f' : X ⟶ V) [IsIntegralHom f'] (i : V ⟶ Y') [IsOpenImmersion i]
@@ -494,6 +628,9 @@ theorem isPullback_toNormalization_of_isLocalization
 
 include M in
 
+/- English proof (translation)
+The claim follows from `have := PreservesNormalization.of_isPullback_localization M hb have := isPreimmersion_of_isPullback_localization M hb isOpenImmersion_lift_toNormalization_of_mono f' b f H`.
+-/
 theorem isOpenImmersion_lift_toNormalization_of_isLocalization
     (hb : IsPullback b t s (Spec.map (CommRingCat.ofHom (algebraMap R R'))))
     {X : Scheme.{u}} (f' : X ⟶ Y') [QuasiCompact f'] [LocallyQuasiFinite f']
@@ -511,11 +648,24 @@ theorem isOpenImmersion_lift_toNormalization_of_isLocalization
 
 end Localization
 
+/- English proof (translation)
+The claim follows from `.of_isPullback_localization (nonZeroDivisors ℤ) (IsPullback.of_id_snd)`.
+-/
 example : PreservesNormalization (Spec.map (CommRingCat.ofHom (algebraMap ℤ ℚ))) :=
   .of_isPullback_localization (nonZeroDivisors ℤ) (IsPullback.of_id_snd)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example {Y S : Scheme.{u}} (g : Y ⟶ S) [Etale g] : PreservesNormalization g := inferInstance
 
+/- English proof (translation)
+Set `W` to `f.fromNormalization ⁻¹ᵁ V`. Establish `h' : IsPullback W.ι (f.fromNormalization ∣_ V) f.fromNormalization V.ι` using `(isPullback_morphismRestrict _ _).flip`. Establish `h : IsPullback (f.toNormalization ⁻¹ᵁ W).ι (f.toNormalization ∣_ W ≫ f.fromNormalization ∣_ V) f V.ι`. Simplify using `using (isPullback_morphismRestrict f.toNormalization W).flip.paste_vert h'`. Establish `key : ∀ f₀ : X ⟶ Y, f₀ = f → IsIntegralHom (f₀ ∣_ V)`.
+
+Introduce and unpack `_ rfl`. Use `infer_instance`. Establish `: IsIntegralHom (f.toNormalization ∣_ W ≫ f.fromNormalization ∣_ V)`. Use `key _ f.toNormalization_fromNormalization` as an intermediate fact. Rewrite `this` using `[morphismRestrict_comp]`. Then use the resulting hypothesis.
+
+Take `⟨i, hi, -⟩` from `exists_iso_normalization_of_isPullback h h' (e := f.toNormalization ∣_ W) (by simp) rfl`. Rewrite using `[← hi]`. Use `infer_instance`.
+-/
 theorem isIso_toNormalization_morphismRestrict {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f]
     [QuasiSeparated f] (V : Y.Opens) [IsIntegralHom (f ∣_ V)] :
     IsIso (f.toNormalization ∣_ (f.fromNormalization ⁻¹ᵁ V)) := by
@@ -537,6 +687,19 @@ theorem isIso_toNormalization_morphismRestrict {X Y : Scheme.{u}} (f : X ⟶ Y) 
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Set `K` to `FractionRing R`. Set `ι : Spec (.of K) ⟶ Spec (.of R)` to `Spec.map (CommRingCat.ofHom (algebraMap R K))`. Establish `: IsDominant ι` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R K)).le.trans bot_le)⟩`. Establish `: IsSchemeTheoreticallyDominant ι` using `.of_isDominant _`. Set `j'` to `pullback.fst (j ≫ p) ι ≫ j`.
+
+Set `c` to `pullback.snd (j ≫ p) ι`. Establish `hc : j' ≫ p = c ≫ ι` using `by simpa [j'] using pullback.condition`. Use `HasRingHomProperty.iff_exists_appLE (P := @Flat) (RingHom.Flat.stableUnderComposition.stableUnderCompositionWithLocalizationAway RingHom.Flat.holdsForLocalizationAway).left |>.mpr fun y ↦ ?_` and prove the remaining obligations. Take `⟨_, ⟨(W : N.Opens), hW, rfl⟩, hy, -⟩` from `N.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Use `⟨⟨⊤, isAffineOpen_top _⟩, ⟨W, hW⟩, hy, le_top, ?_⟩` and prove the remaining obligations.
+
+Set `φ` to `(Scheme.ΓSpecIso (.of R)).inv ≫ p.appLE ⊤ W le_top`. It suffices to establish `φ.hom.Flat by`. Rewrite `this` using `[CommRingCat.hom_comp, RingHom.Flat.respectsIso.cancel_left_isIso]`. Then use the resulting hypothesis. Set `` to `φ.hom.toAlgebra`. Use `hR _ (eq_bot_iff.mpr fun x ⟨⟨r, hr⟩, hx⟩ ↦ ?_)` and prove the remaining obligations.
+
+Establish `hφ : φ ≫ j'.app W = CommRingCat.ofHom (algebraMap R K) ≫ (Scheme.ΓSpecIso (.of K)).inv ≫ c.appLE ⊤ _ le_top`. Establish `h1 : p.appLE ⊤ W le_top ≫ j'.app W = (c ≫ ι).appLE ⊤ _ le_top`. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`. Simplify using `only [hc]`. Rewrite using `[Scheme.ΓSpecIso_inv_naturality_assoc, Category.assoc, h1, Scheme.Hom.comp_appLE]`.
+
+Both sides reduce to the same expression. Establish `hu : IsUnit (j'.app W (φ r))`. Rewrite using `[← CommRingCat.comp_apply, hφ, CommRingCat.comp_apply]`. Conclude with `(IsLocalization.map_units K ⟨r, hr⟩).map _`. Apply `j'.app_injective W` to reduce the goal to its premises.
+
+Establish `hx' : φ r * x = 0` using `hx`. Rewrite using `[map_zero, ← hu.mul_right_eq_zero, ← map_mul, hx', map_zero]`.
+-/
 theorem flat_of_isSchemeTheoreticallyDominant {R : Type u} [CommRing R] [IsDomain R]
     (hR : ∀ (A : Type u) [CommRing A] [Algebra R A], Submodule.torsion R A = ⊥ → Module.Flat R A)
     {X N : Scheme.{u}} (j : X ⟶ N) [QuasiCompact j] [IsSchemeTheoreticallyDominant j]
@@ -579,34 +742,52 @@ section Flat
 variable {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f] [QuasiSeparated f]
   {R : Type u} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `flat_of_isSchemeTheoreticallyDominant (fun _ _ _ h ↦ IsDedekindDomain.flat_iff_torsion_eq_bot.mpr h) f.toNormalization p`.
+-/
 theorem flat_normalization [IsDedekindDomain R] (p : f.normalization ⟶ Spec (.of R))
     [Flat (f.toNormalization ≫ p)] : Flat p :=
   flat_of_isSchemeTheoreticallyDominant
     (fun _ _ _ h ↦ IsDedekindDomain.flat_iff_torsion_eq_bot.mpr h) f.toNormalization p
 
+/- English proof (translation)
+The claim follows from `flat_of_isSchemeTheoreticallyDominant (fun _ _ _ h ↦ Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.mpr h) f.toNormalization p`.
+-/
 theorem flat_normalization_of_isBezout [IsDomain R] [IsBezout R]
     (p : f.normalization ⟶ Spec (.of R)) [Flat (f.toNormalization ≫ p)] : Flat p :=
   flat_of_isSchemeTheoreticallyDominant
     (fun _ _ _ h ↦ Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.mpr h) f.toNormalization p
 
+/- English proof (translation)
+The claim follows from `have : Flat (Spec.map (CommRingCat.ofHom (algebraMap R K))) := Flat.SpecMap_iff.mpr (RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat K (nonZeroDivisors R))) inferInstance`.
+-/
 theorem flat_of_fractionRing [IsDomain R] (K : Type u) [Field K] [Algebra R K] [IsFractionRing R K]
     (c : X ⟶ Spec (.of K)) : Flat (c ≫ Spec.map (CommRingCat.ofHom (algebraMap R K))) :=
   have : Flat (Spec.map (CommRingCat.ofHom (algebraMap R K))) :=
     Flat.SpecMap_iff.mpr (RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat K (nonZeroDivisors R)))
   inferInstance
 
+/- English proof (translation)
+The claim follows from `have : Flat (f.toNormalization ≫ p) := hc ▸ flat_of_fractionRing K c flat_normalization f p`.
+-/
 theorem flat_normalization_of_fractionRing [IsDedekindDomain R] (K : Type u) [Field K] [Algebra R K]
     [IsFractionRing R K] (p : f.normalization ⟶ Spec (.of R)) (c : X ⟶ Spec (.of K))
     (hc : f.toNormalization ≫ p = c ≫ Spec.map (CommRingCat.ofHom (algebraMap R K))) : Flat p :=
   have : Flat (f.toNormalization ≫ p) := hc ▸ flat_of_fractionRing K c
   flat_normalization f p
 
+/- English proof (translation)
+The claim follows from `flat_normalization_of_fractionRing f K _ c (by simpa using hc)`.
+-/
 theorem flat_fromNormalization_comp [IsDedekindDomain R] (K : Type u) [Field K] [Algebra R K]
     [IsFractionRing R K] (s : Y ⟶ Spec (.of R)) (c : X ⟶ Spec (.of K))
     (hc : f ≫ s = c ≫ Spec.map (CommRingCat.ofHom (algebraMap R K))) :
     Flat (f.fromNormalization ≫ s) :=
   flat_normalization_of_fractionRing f K _ c (by simpa using hc)
 
+/- English proof (translation)
+Establish `: IsIntegralHom (Spec.map (CommRingCat.ofHom (algebraMap R₀ R)))` using `IsIntegralHom.SpecMap_iff.mpr (algebraMap_isIntegral_iff.mpr inferInstance)`. Use `⟨⟨normalizationLift f (c ≫ Spec.map (CommRingCat.ofHom (algebraMap R K))) (Spec.map (CommRingCat.ofHom (algebraMap R₀ R))) s (by simpa using hc.symm), by simp, fun p hp ↦ ?_⟩, fun p hp ↦ ⟨flat_normalization_of_fractionRing f K p c hp, ?_⟩⟩` and prove the remaining obligations. Conclude with `normalization_hom_ext f (terminal.from _) (by simp [hp]) (terminal.hom_ext _ _)`. Conclude with `normalization_hom_ext f (terminal.from _) (by simp [reassoc_of% hp, hc]) (terminal.hom_ext _ _)`.
+-/
 theorem existsUnique_normalization_to_spec [IsDedekindDomain R] (K : Type u) [Field K]
     [Algebra R K] [IsFractionRing R K] {R₀ : Type u} [CommRing R₀] [Algebra R₀ R]
     [Algebra.IsIntegral R₀ R] (s : Y ⟶ Spec (.of R₀)) (c : X ⟶ Spec (.of K))
@@ -630,17 +811,28 @@ end Flat
 
 section Sections
 
+/- English proof (translation)
+The claim follows from `congr($(q.naturality (homOfLE h).op) t)`.
+-/
 theorem app_presheaf_map_apply {X Y : Scheme.{u}} (q : X ⟶ Y) {V W : Y.Opens} (h : V ≤ W)
     (t : Γ(Y, W)) : q.app V (Y.presheaf.map (homOfLE h).op t) =
       X.presheaf.map (homOfLE (q.preimage_mono h)).op (q.app W t) :=
   congr($(q.naturality (homOfLE h).op) t)
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem presheaf_map_map_apply {X : Scheme.{u}} {U V W : X.Opens} (h : U ≤ V) (h' : V ≤ W)
     (t : Γ(X, W)) : X.presheaf.map (homOfLE h).op (X.presheaf.map (homOfLE h').op t) =
       X.presheaf.map (homOfLE (h.trans h')).op t := by
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Use `choose V hV hyV t ht using fun y : W ↦ h y.1 y.2`. Take `⟨a, ha, -⟩` from `Y.sheaf.existsUnique_gluing' V W (fun y ↦ homOfLE (hV y)) (fun y hy ↦ Opens.mem_iSup.mpr ⟨⟨y, hy⟩, hyV _⟩) t (fun y y' ↦ by`. Apply `q.app_injective (V y ⊓ V y')` to reduce the goal to its premises. Use `(app_presheaf_map_apply q inf_le_left _).trans (.trans ?_ (app_presheaf_map_apply q inf_le_right _).symm)` and prove the remaining obligations. Rewrite using `[ht, ht, presheaf_map_map_apply, presheaf_map_map_apply])`.
+
+Use `⟨a, X.sheaf.eq_of_locally_eq' (fun y ↦ q ⁻¹ᵁ V y) (q ⁻¹ᵁ W) (fun y ↦ homOfLE (q.preimage_mono (hV y))) (fun x hx ↦ Opens.mem_iSup.mpr ⟨⟨q x, hx⟩, hyV _⟩) _ _ fun y ↦ ?_⟩` and prove the remaining obligations. Use `(app_presheaf_map_apply q (hV y) a).symm.trans (.trans ?_ (ht y))` and prove the remaining obligations. Conclude with `congrArg _ (ha y)`.
+-/
 theorem mem_range_app_of_locally {X Y : Scheme.{u}} (q : X ⟶ Y) [QuasiCompact q]
     [IsSchemeTheoreticallyDominant q] (W : Y.Opens) (s : Γ(X, q ⁻¹ᵁ W))
     (h : ∀ y ∈ W, ∃ (V : Y.Opens) (hV : V ≤ W), y ∈ V ∧
@@ -659,6 +851,9 @@ theorem mem_range_app_of_locally {X Y : Scheme.{u}} (q : X ⟶ Y) [QuasiCompact 
   refine (app_presheaf_map_apply q (hV y) a).symm.trans (.trans ?_ (ht y))
   exact congrArg _ (ha y)
 
+/- English proof (translation)
+The claim follows from `mem_range_app_of_locally q W s fun y hy ↦ by obtain ⟨_, ⟨V, hV, rfl⟩, hyV, hVW⟩ := Y.isBasis_affineOpens.exists_subset_of_mem_open hy W.isOpen exact ⟨V, hVW, hyV, h V hV hVW⟩`.
+-/
 theorem mem_range_app_of_forall_isAffineOpen {X Y : Scheme.{u}} (q : X ⟶ Y) [QuasiCompact q]
     [IsSchemeTheoreticallyDominant q] (W : Y.Opens) (s : Γ(X, q ⁻¹ᵁ W))
     (h : ∀ (V : Y.Opens) (_ : IsAffineOpen V) (hV : V ≤ W),
@@ -669,6 +864,13 @@ theorem mem_range_app_of_forall_isAffineOpen {X Y : Scheme.{u}} (q : X ⟶ Y) [Q
       Y.isBasis_affineOpens.exists_subset_of_mem_open hy W.isOpen
     exact ⟨V, hVW, hyV, h V hV hVW⟩
 
+/- English proof (translation)
+Establish `key (W : T.Opens) (hW : IsAffineOpen W) : IsIso (j.fromNormalization.app W) ↔ Function.Injective (j.app W) ∧ ∀ t : Γ(X, j ⁻¹ᵁ W), (j.app W).hom.IsIntegralElem t → t ∈ Set.range (j.app W)`. Set `` to `(j.app W).hom.toAlgebra`. Rewrite using `[j.fromNormalization_app hW, isIso_comp_right_iff, ConcreteCategory.isIso_iff_bijective]`. Use `and_congr ⟨fun h ↦ Subtype.val_injective.comp h, fun h ↦ .of_comp (f := Subtype.val) h⟩ ⟨fun h t ht ↦ ?_, fun h t ↦ ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `h ⟨t, ht⟩`.
+
+Conclude with `⟨a, congrArg Subtype.val ha⟩`. Take `⟨a, ha⟩` from `h t.1 t.2`. Conclude with `⟨a, Subtype.ext ha⟩`. Use `⟨fun _ W hW ↦ (key W hW).mp inferInstance, fun h ↦ ?_⟩` and prove the remaining obligations. Use `(IsZariskiLocalAtTarget.iff_of_iSup_eq_top (P := .isomorphisms _) _ (iSup_affineOpens_eq_top T)).mpr fun W ↦ ?_` and prove the remaining obligations.
+
+Conclude with `(isIso_morphismRestrict_iff_isIso_app _ W.2).mpr ((key W W.2).mpr (h W W.2))`.
+-/
 theorem isIso_fromNormalization_iff {X T : Scheme.{u}} (j : X ⟶ T) [QuasiCompact j]
     [QuasiSeparated j] : IsIso j.fromNormalization ↔ ∀ W : T.Opens, IsAffineOpen W →
       Function.Injective (j.app W) ∧
@@ -689,6 +891,11 @@ theorem isIso_fromNormalization_iff {X T : Scheme.{u}} (j : X ⟶ T) [QuasiCompa
     (iSup_affineOpens_eq_top T)).mpr fun W ↦ ?_
   exact (isIso_morphismRestrict_iff_isIso_app _ W.2).mpr ((key W W.2).mpr (h W W.2))
 
+/- English proof (translation)
+Use `mem_range_app_of_forall_isAffineOpen _ W t fun V hV hVW ↦ ?_` and prove the remaining obligations. Use `(((isIso_fromNormalization_iff f.toNormalization).mp inferInstance) V hV).2 _ ?_` and prove the remaining obligations. Take `⟨p, hp, e⟩` from `ht`. Use `⟨p.map (f.normalization.presheaf.map (homOfLE hVW).op).hom, hp.map _, ?_⟩` and prove the remaining obligations. Use `congrArg (X.presheaf.map (homOfLE (f.toNormalization.preimage_mono hVW)).op).hom e` as an intermediate fact.
+
+Rewrite `this` using `[map_zero, Polynomial.hom_eval₂]`. Rewrite using `[Polynomial.eval₂_map, ← this]`. Use `congr 1`. Use extensionality with `a`. Conclude with `app_presheaf_map_apply f.toNormalization hVW a`.
+-/
 theorem mem_range_toNormalization_app {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f]
     [QuasiSeparated f] (W : f.normalization.Opens) (t : Γ(X, f.toNormalization ⁻¹ᵁ W))
     (ht : (f.toNormalization.app W).hom.IsIntegralElem t) :
@@ -727,20 +934,32 @@ section
 
 variable (ρ : G →* Aut X) (σ : G →* Aut Y) (H : ∀ g, (ρ g).hom ≫ f = f ≫ (σ g).hom)
 
+/- English proof (translation)
+The claim follows from `rfl @[reassoc (attr := simp)]`.
+-/
 theorem normalizationAction_hom (g : G) :
     (normalizationAction f ρ σ H g).hom = normalizationMap f f (ρ g).hom (σ g).hom (H g) := rfl
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Simplify using `[normalizationAction_hom]`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem toNormalization_normalizationAction (g : G) :
     f.toNormalization ≫ (normalizationAction f ρ σ H g).hom = (ρ g).hom ≫ f.toNormalization := by
   simp [normalizationAction_hom]
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Simplify using `[normalizationAction_hom]`.
+-/
 theorem normalizationAction_fromNormalization (g : G) :
     (normalizationAction f ρ σ H g).hom ≫ f.fromNormalization =
       f.fromNormalization ≫ (σ g).hom := by
   simp [normalizationAction_hom]
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun g ↦ Iso.ext (eq_normalizationMap f f _ _ (H g) (h₁ g) (h₂ g))`.
+-/
 theorem eq_normalizationAction (τ : G →* Aut f.normalization)
     (h₁ : ∀ g, f.toNormalization ≫ (τ g).hom = (ρ g).hom ≫ f.toNormalization)
     (h₂ : ∀ g, (τ g).hom ≫ f.fromNormalization = f.fromNormalization ≫ (σ g).hom) :
@@ -756,11 +975,17 @@ noncomputable def normalizationActionOver (ρ : G →* Aut X) (H : ∀ g, (ρ g)
 variable (ρ : G →* Aut X) (H : ∀ g, (ρ g).hom ≫ f = f)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `toNormalization_normalizationAction .. @[reassoc (attr := simp)]`.
+-/
 theorem toNormalization_normalizationActionOver (g : G) :
     f.toNormalization ≫ (normalizationActionOver f ρ H g).hom = (ρ g).hom ≫ f.toNormalization :=
   toNormalization_normalizationAction ..
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `(normalizationAction_fromNormalization ..).trans (Category.comp_id _)`.
+-/
 theorem normalizationActionOver_fromNormalization (g : G) :
     (normalizationActionOver f ρ H g).hom ≫ f.fromNormalization = f.fromNormalization :=
   (normalizationAction_fromNormalization ..).trans (Category.comp_id _)
@@ -774,16 +999,25 @@ variable {G : Type v} [Group G] {X X' Y : Scheme.{u}}
 def IsInvariantSection (ρ : G →* Aut X) (U : X.Opens) (s : Γ(X, U)) : Prop :=
   ∀ g, ∃ h : U ≤ (ρ g).hom ⁻¹ᵁ U, (ρ g).hom.appLE U U h s = s
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.comp_preimage, hπ]`.
+-/
 theorem preimage_le_of_invariant (ρ : G →* Aut X) (π : X ⟶ X') (hπ : ∀ g, (ρ g).hom ≫ π = π)
     (W : X'.Opens) (g : G) : π ⁻¹ᵁ W ≤ (ρ g).hom ⁻¹ᵁ π ⁻¹ᵁ W := by
   rw [← Scheme.Hom.comp_preimage, hπ]
 
+/- English proof (translation)
+The claim follows from `fun g ↦ ⟨preimage_le_of_invariant ρ π hπ W g, by rw [← CommRingCat.comp_apply] simp only [Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, hπ]⟩`.
+-/
 theorem isInvariantSection_app (ρ : G →* Aut X) (π : X ⟶ X') (hπ : ∀ g, (ρ g).hom ≫ π = π)
     (W : X'.Opens) (t : Γ(X', W)) : IsInvariantSection ρ _ (π.app W t) := fun g ↦
   ⟨preimage_le_of_invariant ρ π hπ W g, by
     rw [← CommRingCat.comp_apply]
     simp only [Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, hπ]⟩
 
+/- English proof (translation)
+Introduce `g ↦ by obtain ⟨h, hg⟩ := hs g refine ⟨hU g, ?_⟩ conv_rhs` and use `rw [← hg] simp only [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE, hj]`.
+-/
 theorem IsInvariantSection.appLE {ρ : G →* Aut X} {τ : G →* Aut X'} (j : X ⟶ X')
     (hj : ∀ g, (ρ g).hom ≫ j = j ≫ (τ g).hom) {W : X'.Opens} {s : Γ(X', W)}
     (hs : IsInvariantSection τ W s) {U : X.Opens} (hU : ∀ g, U ≤ (ρ g).hom ⁻¹ᵁ U)
@@ -793,11 +1027,17 @@ theorem IsInvariantSection.appLE {ρ : G →* Aut X} {τ : G →* Aut X'} (j : X
   conv_rhs => rw [← hg]
   simp only [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE, hj]
 
+/- English proof (translation)
+The claim follows from `hs.appLE (𝟙 X) (by simp) hU e`.
+-/
 theorem IsInvariantSection.res {ρ : G →* Aut X} {W : X.Opens} {s : Γ(X, W)}
     (hs : IsInvariantSection ρ W s) {U : X.Opens} (hU : ∀ g, U ≤ (ρ g).hom ⁻¹ᵁ U) (e : U ≤ W) :
     IsInvariantSection ρ U (X.presheaf.map (homOfLE e).op s) :=
   hs.appLE (𝟙 X) (by simp) hU e
 
+/- English proof (translation)
+The claim follows from `mem_range_app_of_forall_isAffineOpen π W s fun V hV hVW ↦ hinv V hV _ (hs.res (preimage_le_of_invariant ρ π hπ V) (π.preimage_mono hVW))`.
+-/
 theorem IsInvariantSection.mem_range_app {ρ : G →* Aut X} (π : X ⟶ X') [QuasiCompact π]
     [IsSchemeTheoreticallyDominant π] (hπ : ∀ g, (ρ g).hom ≫ π = π)
     (hinv : ∀ W : X'.Opens, IsAffineOpen W → ∀ s : Γ(X, π ⁻¹ᵁ W),
@@ -807,6 +1047,21 @@ theorem IsInvariantSection.mem_range_app {ρ : G →* Aut X} (π : X ⟶ X') [Qu
   mem_range_app_of_forall_isAffineOpen π W s fun V hV hVW ↦
     hinv V hV _ (hs.res (preimage_le_of_invariant ρ π hπ V) (π.preimage_mono hVW))
 
+/- English proof (translation)
+Establish `hle : π ⁻¹ᵁ X'.basicOpen r ≤ π ⁻¹ᵁ W` using `π.preimage_mono (X'.basicOpen_le r)`. Establish `hst` using `preimage_le_of_invariant ρ π hπ`. Set `` to `(X.presheaf.map (homOfLE hle).op).hom.toAlgebra`. Establish `: IsLocalization.Away (π.app W r) Γ(X, π ⁻¹ᵁ X'.basicOpen r)`. Establish `key : ∀ (U : X.Opens) (e : U = X.basicOpen (π.app W r)) (h : U ≤ π ⁻¹ᵁ W),`.
+
+Use `letI := (X.presheaf.map (homOfLE h).op).hom.toAlgebra`. Use the proof step `IsLocalization.Away (π.app W r) Γ(X, U) := by`. Introduce and unpack `_ rfl h`. Conclude with `isLocalization_basicOpen_of_qcqs (π.isCompact_preimage hW.isCompact) (π.isQuasiSeparated_preimage hW.isQuasiSeparated) _`. Conclude with `key _ (π.preimage_basicOpen r) hle`.
+
+Establish `hres (g : G) (b : Γ(X, π ⁻¹ᵁ W)) : algebraMap _ Γ(X, π ⁻¹ᵁ X'.basicOpen r) ((ρ g).hom.appLE _ _ (hst W g) b) = (ρ g).hom.appLE _ _ (hst _ g) (algebraMap _ Γ(X, π ⁻¹ᵁ X'.basicOpen r) b)`. Simplify using `only [RingHom.algebraMap_toAlgebra, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`. Establish `hr (g : G) : (ρ g).hom.appLE _ _ (hst W g) (π.app W r) = π.app W r` using `(isInvariantSection_app ρ π hπ W r g).2`. Take `⟨n, b, hb⟩` from `IsLocalization.Away.surj (π.app W r) s`. Establish `hm (g : G) : ∃ m : ℕ, π.app W r ^ m * (ρ g).hom.appLE _ _ (hst W g) b = π.app W r ^ m * b`.
+
+Use `IsLocalization.Away.exists_of_eq (S := Γ(X, π ⁻¹ᵁ X'.basicOpen r)) _ ?_` and prove the remaining obligations. Rewrite using `[hres, ← hb, map_mul, map_pow, ← hres, hr, (hs g).2]`. Use `choose m hm using hm`. Take `⟨M, hM⟩` from `(Set.finite_range m).bddAbove`. Take `⟨a, ha⟩` from `hinv (π.app W r ^ M * b) fun g ↦ ⟨hst W g, by`.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le' (hM ⟨g, rfl⟩)`. Rewrite using `[map_mul, map_pow, hr, pow_add, mul_assoc, hm, mul_assoc]⟩`. Take `⟨w, hw⟩ : IsUnit (X'.presheaf.map (homOfLE (X'.basicOpen_le r)).op r)` from `X'.toRingedSpace.isUnit_res_basicOpen r`. Establish `hw' : π.app _ w = algebraMap _ Γ(X, π ⁻¹ᵁ X'.basicOpen r) (π.app W r)`. Rewrite using `[hw]`.
+
+Conclude with `app_presheaf_map_apply π _ r`. Use `⟨X'.presheaf.map (homOfLE (X'.basicOpen_le r)).op a * ↑(w⁻¹ ^ (M + n)), ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (π.app (X'.basicOpen r) ↑(w ^ (M + n)))` using `(Units.isUnit (w ^ (M + n))).map (π.app (X'.basicOpen r)).hom`. Apply `hu.mul_right_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, mul_assoc, ← Units.val_mul, inv_pow, inv_mul_cancel, Units.val_one, mul_one, app_presheaf_map_apply, ha, Units.val_pow_eq_pow_val, map_pow, hw']`.
+
+Express the relevant statement in the definitionally equal form `algebraMap _ Γ(X, π ⁻¹ᵁ X'.basicOpen r) _ = _`. Rewrite using `[map_mul, map_pow, ← hb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsInvariantSection.mem_range_app_basicOpen [Finite G] {ρ : G →* Aut X} (π : X ⟶ X')
     [QuasiCompact π] [QuasiSeparated π] (hπ : ∀ g, (ρ g).hom ≫ π = π) {W : X'.Opens}
     (hW : IsAffineOpen W)
@@ -855,6 +1110,9 @@ theorem IsInvariantSection.mem_range_app_basicOpen [Finite G] {ρ : G →* Aut X
   rw [map_mul, map_pow, ← hb]
   ring
 
+/- English proof (translation)
+The claim follows from `mem_range_app_of_locally π W s fun y hy ↦ by obtain ⟨V, hV, hyV, h⟩ := hinv y obtain ⟨r, hr, hyr⟩ := hV.exists_basicOpen_le ⟨y, hy⟩ hyV exact ⟨_, hr, hyr, IsInvariantSection.mem_range_app_basicOpen π hπ hV h r (hs.res (preimage_le_of_invariant ρ π hπ _) (π.preimage_mono hr))⟩ @[r …`.
+-/
 theorem IsInvariantSection.mem_range_app_of_cover [Finite G] {ρ : G →* Aut X} (π : X ⟶ X')
     [QuasiCompact π] [QuasiSeparated π] [IsSchemeTheoreticallyDominant π]
     (hπ : ∀ g, (ρ g).hom ≫ π = π)
@@ -887,6 +1145,21 @@ noncomputable def sectionsAction (ρ : G →* Aut X) (U : X.Opens)
   smul_one g := map_one _
   smul_mul g := map_mul _
 
+/- English proof (translation)
+Use `⟨fun hxy ↦ ?_, ?_⟩` and prove the remaining obligations. Use `swap`. Introduce and unpack `⟨g, rfl⟩`. Rewrite using `[← Scheme.Hom.comp_apply, hπ]`. Take `⟨_, ⟨(W : X'.Opens), hW, rfl⟩, hx, -⟩` from `X'.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (π x)) isOpen_univ`.
+
+Establish `hy : π y ∈ W` using `hxy ▸ hx`. Establish `hW : IsAffineOpen W` using `hW`. Establish `hU : IsAffineOpen (π ⁻¹ᵁ W)` using `hW.preimage π`. Establish `hst` using `preimage_le_of_invariant ρ π hπ W`. Set `` to `sectionsAction ρ _ hst`.
+
+Set `` to `(π.app W).hom.toAlgebra`. Establish `hfix (g : G) (a : Γ(X', W)) : g • algebraMap Γ(X', W) Γ(X, π ⁻¹ᵁ W) a = algebraMap _ _ a` using `(isInvariantSection_app ρ π hπ W a g⁻¹).2`. Establish `: SMulCommClass G Γ(X', W) Γ(X, π ⁻¹ᵁ W)` using `⟨fun g a s ↦ by`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, smul_mul', hfix]⟩`. Establish `: Algebra.IsInvariant Γ(X', W) Γ(X, π ⁻¹ᵁ W) G` using `⟨fun s hs ↦ hinv W hW s fun g ↦ ⟨hst g, by simpa only [inv_inv] using (show (ρ g⁻¹⁻¹).hom.appLE _ _ (hst _) s = s from hs g⁻¹)⟩⟩`.
+
+Set `P : Spec Γ(X, π ⁻¹ᵁ W)` to `hU.primeIdealOf ⟨x, hx⟩`. Set `Q : Spec Γ(X, π ⁻¹ᵁ W)` to `hU.primeIdealOf ⟨y, hy⟩`. Establish `hP : hU.fromSpec P = x` using `hU.fromSpec_primeIdealOf ⟨x, hx⟩`. Establish `hQ : hU.fromSpec Q = y` using `hU.fromSpec_primeIdealOf ⟨y, hy⟩`. Establish `hPQ : Spec.map (π.app W) P = Spec.map (π.app W) Q`.
+
+Apply `hW.fromSpec.isOpenEmbedding.injective` to reduce the goal to its premises. Simplify using `only [← Scheme.Hom.comp_apply, Scheme.Hom.app_eq_appLE, IsAffineOpen.SpecMap_appLE_fromSpec π hW hU]`. Simplify using `only [Scheme.Hom.comp_apply, hP, hQ, hxy]`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq Γ(X', W) Γ(X, π ⁻¹ᵁ W) G P.asIdeal Q.asIdeal congr($(hPQ).asIdeal)`. Use `⟨g, ?_⟩` and prove the remaining obligations.
+
+Establish `: Spec.map ((ρ g).hom.appLE _ _ (hst g)) P = Q`. Use `PrimeSpectrum.ext (Ideal.ext fun s ↦ ?_)` and prove the remaining obligations. Rewrite using `[hg, Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Express the relevant statement in the definitionally equal form `_ ↔ (ρ g⁻¹⁻¹).hom.appLE _ _ (hst _) s ∈ P.asIdeal`. Simplify using `only [inv_inv]`.
+
+Both sides reduce to the same expression. Rewrite using `[← hP, ← hQ, ← this, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, IsAffineOpen.SpecMap_appLE_fromSpec _ hU hU]`.
+-/
 theorem apply_eq_iff_exists_aut_of_invariant [Finite G] (ρ : G →* Aut X) (π : X ⟶ X')
     [IsAffineHom π] (hπ : ∀ g, (ρ g).hom ≫ π = π)
     (hinv : ∀ W : X'.Opens, IsAffineOpen W → ∀ s : Γ(X, π ⁻¹ᵁ W),
@@ -939,6 +1212,9 @@ variable (f : X ⟶ Y) (f' : X' ⟶ Y) [QuasiCompact f] [QuasiSeparated f] [Quas
 include hπ in
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `normalization_hom_ext f f'.fromNormalization (by simp [reassoc_of% hπ]) (by simp)`.
+-/
 theorem normalizationActionOver_normalizationMap (g : G) :
     (normalizationActionOver f ρ hρ g).hom ≫ normalizationMap f f' π (𝟙 Y) hf =
       normalizationMap f f' π (𝟙 Y) hf :=
@@ -946,6 +1222,17 @@ theorem normalizationActionOver_normalizationMap (g : G) :
 
 include hπ in
 
+/- English proof (translation)
+Use `IsInvariantSection.mem_range_app _ (normalizationActionOver_normalizationMap f f' π hf ρ hπ hρ) (fun W hW s hs ↦ ?_) hs` and prove the remaining obligations. Establish `hq` using `toNormalization_normalizationMap f f' π (𝟙 Y) hf`. Establish `: IsIntegralHom (normalizationMap f f' π (𝟙 Y) hf)` using `inferInstance`. Generalize the expression as in `normalizationMap f f' π (𝟙 Y) hf = q at *`. Establish `e : π ⁻¹ᵁ f'.toNormalization ⁻¹ᵁ W = f.toNormalization ⁻¹ᵁ q ⁻¹ᵁ W`.
+
+Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, hq]`. Set `φ` to `f.toNormalization.appLE (q ⁻¹ᵁ W) (π ⁻¹ᵁ f'.toNormalization ⁻¹ᵁ W) e.le`. Establish `hφ : Function.Injective φ`. Establish `: ∀ (U : X.Opens) (e : U = f.toNormalization ⁻¹ᵁ q ⁻¹ᵁ W), Function.Injective (f.toNormalization.appLE (q ⁻¹ᵁ W) U e.le)`. Introduce and unpack `_ rfl`.
+
+Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `f.toNormalization.app_injective _`. Conclude with `this _ e`. Establish `hc : q.app W ≫ φ = f'.toNormalization.app W ≫ π.app _`. Simplify using `only [φ, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, hq]`.
+
+Take `⟨t, ht⟩` from `IsInvariantSection.mem_range_app π hπ hinv (hs.appLE (ρ := ρ) f.toNormalization (by simp) (preimage_le_of_invariant ρ π hπ _) e.le)`. Take `⟨a, rfl⟩` from `mem_range_toNormalization_app f' W t (by`. Take `⟨p, hp, h⟩` from `q.isIntegral_app W hW s`. Use `⟨p, hp, π.app_injective _ ?_⟩` and prove the remaining obligations. Use `congrArg φ.hom h` as an intermediate fact.
+
+Rewrite `this` using `[map_zero, Polynomial.hom_eval₂, ← CommRingCat.hom_comp, hc]`. Rewrite using `[map_zero, Polynomial.hom_eval₂, ht]`. Conclude with `this)`. Conclude with `⟨a, hφ (congr($hc a).trans ht)⟩`.
+-/
 theorem mem_range_normalizationMap_app [QuasiCompact π] [IsSchemeTheoreticallyDominant π]
     (hinv : ∀ W : X'.Opens, IsAffineOpen W → ∀ s : Γ(X, π ⁻¹ᵁ W),
       IsInvariantSection ρ _ s → s ∈ Set.range (π.app W))
@@ -1001,11 +1288,17 @@ noncomputable def specAction : G →* Aut (Spec (.of B)) :=
     ext b
     simp [mul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem specAction_hom (g : G) : (specAction G B g).hom =
     Spec.map (CommRingCat.ofHom (MulSemiringAction.toRingHom G B g⁻¹)) := rfl
 
 variable [Algebra A B]
 
+/- English proof (translation)
+Rewrite using `[specAction_hom, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+-/
 theorem specAction_comp [SMulCommClass G A B] (g : G) :
     (specAction G B g).hom ≫ Spec.map (CommRingCat.ofHom (algebraMap A B)) =
       Spec.map (CommRingCat.ofHom (algebraMap A B)) := by
@@ -1014,6 +1307,9 @@ theorem specAction_comp [SMulCommClass G A B] (g : G) :
   ext a
   simp
 
+/- English proof (translation)
+Use `⟨Scheme.IdealSheafData.ext_of_isAffine ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.ker_apply, Scheme.IdealSheafData.ideal_bot, Pi.bot_apply, ← RingHom.injective_iff_ker_eq_bot]`. Use `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap A B))` as an intermediate fact. Use `.of_comp (f := (Scheme.ΓSpecIso (.of B)).hom) fun x y h ↦ ?_` and prove the remaining obligations. Conclude with `(Scheme.ΓSpecIso (.of A)).commRingCatIsoToRingEquiv.injective (FaithfulSMul.algebraMap_injective A B (congr($this x).symm.trans (h.trans congr($this y))))`.
+-/
 theorem isSchemeTheoreticallyDominant_spec_algebraMap [FaithfulSMul A B] :
     IsSchemeTheoreticallyDominant (Spec.map (CommRingCat.ofHom (algebraMap A B))) := by
   refine ⟨Scheme.IdealSheafData.ext_of_isAffine ?_⟩
@@ -1025,6 +1321,13 @@ theorem isSchemeTheoreticallyDominant_spec_algebraMap [FaithfulSMul A B] :
     (FaithfulSMul.algebraMap_injective A B
       (congr($this x).symm.trans (h.trans congr($this y))))
 
+/- English proof (translation)
+Use `isSchemeTheoreticallyDominant_spec_algebraMap A B` as an intermediate fact. Use `IsInvariantSection.mem_range_app_of_cover _ (specAction_comp G A B) (fun y ↦ ⟨⊤, isAffineOpen_top _, trivial, fun s hs ↦ ?_⟩) hs` and prove the remaining obligations. Take `⟨a, ha⟩` from `Algebra.IsInvariant.isInvariant (A := A) (G := G) ((Scheme.ΓSpecIso (.of B)).hom s) fun g ↦ by`. Establish `e` using `congr($(Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (MulSemiringAction.toRingHom G B g⁻¹⁻¹))) s)`. Establish `e'` using `congrArg (Scheme.ΓSpecIso (.of B)).hom (hs g⁻¹).2`.
+
+Simplify `(show g⁻¹⁻¹ • (Scheme.ΓSpecIso (.of B)).hom s = _ from e.symm.trans e')` using `only [inv_inv]`. Use `⟨(Scheme.ΓSpecIso (.of A)).inv a, ?_⟩` and prove the remaining obligations. Use `congr($(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap A B))) a).symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (.of B)).inv (algebraMap A B a) = s`. Rewrite using `[ha]`.
+
+Conclude with `congr($((Scheme.ΓSpecIso (.of B)).hom_inv_id) s)`.
+-/
 theorem mem_range_spec_app_of_isInvariant [Finite G] [SMulCommClass G A B] [FaithfulSMul A B]
     [Algebra.IsInvariant A B G] (W : (Spec (.of A)).Opens)
     (s : Γ(Spec (.of B), Spec.map (CommRingCat.ofHom (algebraMap A B)) ⁻¹ᵁ W))
@@ -1048,6 +1351,11 @@ theorem mem_range_spec_app_of_isInvariant [Finite G] [SMulCommClass G A B] [Fait
 
 end Spec
 
+/- English proof (translation)
+Establish `: QuasiCompact (π ≫ f')` using `by rw [hf]; infer_instance`. Establish `: QuasiSeparated (π ≫ f')` using `by rw [hf]; infer_instance`. Establish `: QuasiCompact π` using `.of_comp π f'`. Establish `: QuasiSeparated π` using `.of_comp π f'`. Establish `h₁` using `normalizationActionOver_normalizationMap f f' π hf ρ hπ hρ`.
+
+Establish `h₂` using `mem_range_normalizationMap_app f f' π hf ρ hπ hρ fun W _ s hs ↦ hs.mem_range_app_of_cover π hπ hinv`. Use `⟨h₁, inferInstance, inferInstance, apply_eq_iff_exists_aut_of_invariant _ _ h₁ fun W _ ↦ h₂ W, fun W ↦ ⟨Scheme.Hom.app_injective _ W, Set.ext fun s ↦ ⟨?_, h₂ W s⟩⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨t, rfl⟩`. Conclude with `isInvariantSection_app _ _ h₁ W t`.
+-/
 theorem normalization_quotient {G : Type v} [Group G] [Finite G] {X X' Y : Scheme.{u}}
     (f : X ⟶ Y) (f' : X' ⟶ Y) [QuasiCompact f] [QuasiSeparated f] [QuasiCompact f']
     [QuasiSeparated f'] (π : X ⟶ X') (hf : π ≫ f' = f ≫ 𝟙 Y) (ρ : G →* Aut X)
@@ -1074,6 +1382,9 @@ theorem normalization_quotient {G : Type v} [Group G] [Finite G] {X X' Y : Schem
   rintro ⟨t, rfl⟩
   exact isInvariantSection_app _ _ h₁ W t
 
+/- English proof (translation)
+The claim follows from `have := isSchemeTheoreticallyDominant_spec_algebraMap A B normalization_quotient _ _ _ _ _ (specAction_comp G A B) _ fun _ ↦ ⟨⊤, isAffineOpen_top _, trivial, mem_range_spec_app_of_isInvariant G A B ⊤⟩`.
+-/
 theorem normalization_quotient_spec (G : Type v) [Group G] [Finite G] (R A B : Type u) [CommRing R]
     [CommRing A] [CommRing B] [Algebra R A] [Algebra A B] [Algebra R B] [IsScalarTower R A B]
     [MulSemiringAction G B] [SMulCommClass G A B] [SMulCommClass G R B] [FaithfulSMul A B]
@@ -1091,9 +1402,21 @@ theorem normalization_quotient_spec (G : Type v) [Group G] [Finite G] (R A B : T
   normalization_quotient _ _ _ _ _ (specAction_comp G A B) _
     fun _ ↦ ⟨⊤, isAffineOpen_top _, trivial, mem_range_spec_app_of_isInvariant G A B ⊤⟩
 
+/- English proof (translation)
+The claim follows from `normalization_quotient_spec Gal(L/K) ℤ K L`.
+-/
 example (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] :=
   normalization_quotient_spec Gal(L/K) ℤ K L
 
+/- English proof (translation)
+Use `⟨fun f₁ f₂ _ _ _ H ↦ ⟨normalizationTransIso f₁ f₂ f H, by simp, by simp⟩, fun V _ ↦ isIso_toNormalization_morphismRestrict f V, fun R K _ _ _ _ _ s c hc ↦ flat_fromNormalization_comp f K s c hc, fun f' _ _ a H ↦ ⟨normalizationMap f f' a (𝟙 Y) (by simp [H]), ⟨by simp, by simp⟩, fu …` and prove the remaining obligations. Establish `huniq (τ : G →* Aut f.normalization) (hτ : ∀ g, f.toNormalization ≫ (τ g).hom = (ρ g).hom ≫ f.toNormalization ∧ (τ g).hom ≫ f.fromNormalization = f.fromNormalization) : τ = normalizationActionOver f ρ hρ` using `eq_normalizationAction f ρ 1 _ τ (fun g ↦ (hτ g).1) fun g ↦ (hτ g).2.trans (Category.comp_id _).symm`. Use `⟨⟨normalizationActionOver f ρ hρ, fun g ↦ ⟨by simp, by simp⟩, huniq⟩, fun τ hτ X' f' _ _ π hπ hW q hq₁ hq₂ ↦ ?_⟩` and prove the remaining obligations. Establish `hf : π ≫ f' = f ≫ 𝟙 Y`. Rewrite using `[← f'.toNormalization_fromNormalization, ← reassoc_of% hq₁, hq₂]`.
+
+Simplify using the standard rewrite rules. Take `rfl` from `huniq τ hτ`. Take `rfl` from `eq_normalizationMap f f' π (𝟙 Y) hf hq₁ (by simp [hq₂])`. Establish `: QuasiCompact (π ≫ f')` using `by rw [hf]; infer_instance`. Establish `: QuasiCompact π` using `.of_comp π f'`.
+
+Establish `: IsSchemeTheoreticallyDominant π` using `⟨Scheme.IdealSheafData.ext (funext fun W ↦ by`. Rewrite using `[Scheme.Hom.ker_apply, Scheme.IdealSheafData.ideal_bot, Pi.bot_apply, ← RingHom.injective_iff_ker_eq_bot]`. Conclude with `(hW W).1)⟩`. Use `normalization_quotient f f' π hf ρ hπ hρ fun y ↦ ?_` and prove the remaining obligations. Take `⟨_, ⟨W, hW', rfl⟩, hy, -⟩` from `X'.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`.
+
+Conclude with `⟨W, hW', hy, fun s hs ↦ (hW W).2.ge hs⟩`.
+-/
 theorem normalization_trans_baseChange {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f]
     [QuasiSeparated f] :
     (∀ {T : Scheme.{u}} (f₁ : X ⟶ T) (f₂ : T ⟶ Y) [IsIntegralHom f₂] [QuasiCompact f₁]

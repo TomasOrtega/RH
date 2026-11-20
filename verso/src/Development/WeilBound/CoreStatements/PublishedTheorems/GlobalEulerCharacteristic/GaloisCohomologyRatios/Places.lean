@@ -9,6 +9,9 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (𝓞 K.1))} {ℓ : ℕ} [Fact ℓ.Prime]
   (hL : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S) [Normal K.1 L.1]
 
+/- English proof (translation)
+Introduce `τ _ hw` and use `galSmul_mem_placesOver (S := S) τ hw`.
+-/
 theorem placesOver_stable : ∀ (τ : L.1 ≃ₐ[K.1] L.1), ∀ w ∈ (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))),
     τ • w ∈ (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) :=
   fun τ _ hw => galSmul_mem_placesOver (S := S) τ hw

@@ -11,6 +11,29 @@ noncomputable section
 
 namespace GlobalTheory.ThK.DecW
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d d₁ W W₁ H' r' s' i₀ i₁ hW hH w hw`. Establish `key : ∀ v : Fin d → E, ∃ (s t : E) (u : Fin d₁ → E), v = s • H'.x + H'.ι *ᵥ u + t • H'.y`. Introduce `v`. Set `f : (E × (Fin d₁ → E) × E) →ₗ[E] (Fin d → E)` to `(LinearMap.fst E E ((Fin d₁ → E) × E)).smulRight H'.x + (Matrix.mulVecLin H'.ι).comp ((LinearMap.fst E (Fin d₁ → E) E).comp (LinearMap.snd E E ((Fin d₁ → E) × E))) + ((LinearMap.snd E (Fin d₁ → E) E).comp (LinearMap.snd E E ((Fin d₁ → E) × E))).smulRight H'.y`. Establish `hf : ∀ s u t, f (s, u, t) = s • H'.x + H'.ι *ᵥ u + t • H'.y` using `fun s u t => by`.
+
+Simplify using `[f, LinearMap.smulRight_apply]`. Establish `hle : Submodule.span E (W.L : Set (Fin d → E)) ≤ LinearMap.range f`. Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Take `⟨s, t, u, -, -, -, rfl⟩` from `hH.split z hz`.
+
+Conclude with `⟨(s, u, t), hf s u t⟩`. Use `haveI := hW.lat`. Establish `hv : v ∈ Submodule.span E (W.L : Set (Fin d → E))`. Rewrite using `[Submodule.IsLattice.span_eq_top (A := E) (M := W.L)]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨⟨s, u, t⟩, h⟩` from `hle hv`. Conclude with `⟨s, t, u, by rw [← h, hf]⟩`. Use `choose s t u hsu using fun j : Fin d => key (Pi.single j 1)`. Establish `hI : (1 : Matrix (Fin d) (Fin d) E) = Matrix.vecMulVec s H'.x + Matrix.of u * H'.ιᵀ + Matrix.vecMulVec t H'.y`. Use extensionality with `j l`.
+
+Use `congrFun (hsu j) l` as an intermediate fact. Simplify using `only [Pi.single_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct] at this`. Simplify using `only [Matrix.one_apply, Matrix.add_apply, Matrix.vecMulVec_apply, Matrix.mul_apply, Matrix.of_apply, Matrix.transpose_apply]`. Establish `e : (if j = l then (1:E) else 0) = if l = j then 1 else 0`. Apply the tactic sequence `by_cases h : j = l <;> simp [h, eq_comm]`.
+
+Rewrite using `[e, this]`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `h0 : ∀ c : AF F, evI F c = 0 → ∀ i j, c • w i j = 0` using `fun c hc i j => by`. Simplify using `using congrFun (congrFun (hw c hc) i) j`.
+
+Establish `hAt : ∀ v : Fin d → AE F E, At (evI F) (w *ᵥ v)`. Introduce `v c hc`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Matrix.mulVec, dotProduct, Finset.smul_sum, ← smul_mul_assoc, h0 c hc, zero_mul, Finset.sum_const_zero, Pi.zero_apply]`. Use `⟨w *ᵥ incV F s, w *ᵥ incV F t, w * incM F (Matrix.of u), hAt _, hAt _, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `c hc`. Use extensionality with `i k`. Simplify using `only [Matrix.smul_apply, Matrix.mul_apply, Finset.smul_sum, ← smul_mul_assoc, h0 c hc, zero_mul, Finset.sum_const_zero, Matrix.zero_apply]`. Establish `hI'` using `congrArg (incM F) hI`. Establish `e1 : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Establish `e1n : incM F (1 : Matrix (Fin n) (Fin n) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `e2 : incM F (Matrix.vecMulVec s H'.x + Matrix.of u * H'.ιᵀ + Matrix.vecMulVec t H'.y) = Matrix.vecMulVec (incV F s) (incV F H'.x) + incM F (Matrix.of u) * (incM F H'.ι)ᵀ + Matrix.vecMulVec (incV F t) (incV F H'.y)`. Use extensionality with `i j`. Simplify using `[incM, incV, Matrix.vecMulVec_apply, Matrix.mul_apply, map_sum, map_add, map_mul]`. Rewrite `hI'` using `[e1, e2]`.
+
+Rewrite using `[e1n, Matrix.one_mul]`. Use `conv_lhs => rw [← Matrix.mul_one w, hI']`. Establish `hv : ∀ a b : Fin d → AE F E, w * Matrix.vecMulVec a b = Matrix.vecMulVec (w *ᵥ a) b`. Introduce `a b`. Use extensionality with `i l`.
+
+Simplify using `[Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, mul_assoc]`. Rewrite using `[Matrix.mul_add, Matrix.mul_add, hv, hv, Matrix.mul_assoc]`.
+-/
 theorem decompose : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     {n d d₁ : ℕ} (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (r' s' i₀ i₁ : ℕ),
     W.IsSkew σ B r' s' → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ w : Matrix (Fin n) (Fin d) (AE F E), At (evI F) w →

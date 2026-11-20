@@ -10,11 +10,20 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.LogIntegrableOnO
 import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.AssemblyBase
 set_option maxSynthPendingDepth 1
 
+/- English proof (translation)
+The claim follows from `@GroundTheory.Heights₂.Heights.IsolatedPointsCountPrime.proof GroundTheory.Heights₂.Heights.IsolatedFibreOpenPoly.full GroundTheory.Heights₂.Heights.AutoClose.DominantFibreBound GroundTheory.Heights₂.Heights.ImageDimLe.proof`.
+-/
 theorem GroundTheory.Heights₂.Heights.AutoClose.IsolatedPointsCountPrime : GroundTheory.Heights₂.Heights.IsolatedPointsCountPrime.Statement :=
   @GroundTheory.Heights₂.Heights.IsolatedPointsCountPrime.proof GroundTheory.Heights₂.Heights.IsolatedFibreOpenPoly.full GroundTheory.Heights₂.Heights.AutoClose.DominantFibreBound GroundTheory.Heights₂.Heights.ImageDimLe.proof
 
+/- English proof (translation)
+The claim follows from `@GroundTheory.Heights₂.Heights.SameOrdersLiftCentre.proof GroundTheory.Heights₂.Heights.AutoClose.branchOffHypersurface_holds`.
+-/
 theorem GroundTheory.Heights₂.Heights.AutoClose.SameOrdersLiftCentre : GroundTheory.Heights₂.Heights.SameOrdersLiftCentre.Statement :=
   @GroundTheory.Heights₂.Heights.SameOrdersLiftCentre.proof GroundTheory.Heights₂.Heights.AutoClose.branchOffHypersurface_holds
 
+/- English proof (translation)
+The claim follows from `@GroundTheory.Heights₂.Heights.ConeSliceSheetParam.proof GroundTheory.Heights₂.Heights.AutoClose.DiscriminantSheetCover`.
+-/
 theorem GroundTheory.Heights₂.Heights.AutoClose.ConeSliceSheetParam : GroundTheory.Heights₂.Heights.ConeSliceSheetParam.Statement :=
   @GroundTheory.Heights₂.Heights.ConeSliceSheetParam.proof GroundTheory.Heights₂.Heights.AutoClose.DiscriminantSheetCover

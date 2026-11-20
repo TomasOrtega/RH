@@ -13,6 +13,9 @@ def KVal {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) : ℝ :=
   Formalism.MainNotions.S.AutInst.gaugeU X.B.I * Formalism.MainNotions.S.UnitaryVolumeMass.volU D.R.k ^ Fintype.card (NumberField.InfinitePlace X.B.I.F) *
     Tw u' ^ (-((D.R.k * Fintype.card (NumberField.InfinitePlace X.B.I.F) : ℕ) : ℤ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem aVal_eq {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) :
     aVal X u' = KVal X u' / (X.muH u' Set.univ).toReal := rfl
 
@@ -63,6 +66,11 @@ def HtotInf : Prop :=
     Formalism.L2.SG.TypedSets.HypX X hb FdN FdN' u u' →
     (X.measW u').μHinf Set.univ = X.muH u' Set.univ ∧ 0 < X.muH u' Set.univ ∧ X.muH u' Set.univ < ⊤
 
+/- English proof (translation)
+Introduce `D X hb FdN FdN' u u' ψ hX hM hS hG hT`. Take `⟨e1, e2, e3⟩` from `hH X hb FdN FdN' u u' hX`. Establish `ex` using `hE X hb FdN FdN' u u' ψ hX hM hS`. Use `⟨ex.1, fun μ hμ => ⟨(ex.2 μ hμ).1, fun ν hν => ⟨(ex.2 μ hμ).2 ν hν, fun fib hfib f hf s hs => ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[hW X hb FdN FdN' u u' hX f hf s hs, hP X hb FdN FdN' u u' ψ hX hM hS hG hT μ ν fib hμ hν hfib, lintegral_smul_measure, e1, aVal_eq]`.
+
+Establish `ht : 0 < (X.muH u' Set.univ).toReal` using `ENNReal.toReal_pos e2.ne' e3.ne`. Rewrite using `[ENNReal.ofReal_div_of_pos ht, ENNReal.ofReal_toReal e3.ne, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ainfValue_of (hE : ExInf) (hP : PushInf) (hW : WeilInf) (hH : HtotInf) : AinfValue := by
   intro D X hb FdN FdN' u u' ψ hX hM hS hG hT
   obtain ⟨e1, e2, e3⟩ := hH X hb FdN FdN' u u' hX

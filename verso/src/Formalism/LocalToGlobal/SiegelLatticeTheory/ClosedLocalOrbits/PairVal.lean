@@ -26,6 +26,11 @@ def AutFin : Prop := ∀ Λ ∈ what₂, (autLz D F0 Λ).Finite
 
 def massRow (Λ : Submodule (𝓞 D.host.E) (VS D).V) : ℝ := wRow D F0 Λ / Cnt.massRows D F0 what₂
 
+/- English proof (translation)
+Unfold `autLz`. Rewrite using `[Set.mem_setOf_eq]`. Use `⟨1, ?_, ?_, fun x hx => rfl⟩` and prove the remaining obligations. Use `first`. Consider the case `exact Subgroup.one_mem _`.
+
+Consider the case `exact one_mem _`. Consider the case `(unfold stabF; simp)`. Use `first`. Consider the case `simp [Formalism.HermitianLatticesTheory.gmap]`. Consider the case `rfl`.
+-/
 theorem one_mem_autLz (Λ : Submodule (𝓞 D.host.E) (VS D).V) : (id : WbQ D F0 → WbQ D F0) ∈ autLz D F0 Λ := by
   unfold autLz
   rw [Set.mem_setOf_eq]
@@ -38,16 +43,25 @@ theorem one_mem_autLz (Λ : Submodule (𝓞 D.host.E) (VS D).V) : (id : WbQ D F0
       | simp [Formalism.HermitianLatticesTheory.gmap]
       | rfl
 
+/- English proof (translation)
+Unfold `wRow`. Establish `hne : (autLz D F0 Λ).Nonempty` using `⟨_, one_mem_autLz D F0 Λ⟩`. Establish `hc : 0 < Nat.card (autLz D F0 Λ)` using `Nat.card_pos_iff.mpr ⟨hne.to_subtype, h.to_subtype⟩`. Conclude with `inv_pos.mpr (Nat.cast_pos.mpr hc)`.
+-/
 theorem wRow_pos {Λ : Submodule (𝓞 D.host.E) (VS D).V} (h : (autLz D F0 Λ).Finite) : 0 < wRow D F0 Λ := by
   unfold wRow
   have hne : (autLz D F0 Λ).Nonempty := ⟨_, one_mem_autLz D F0 Λ⟩
   have hc : 0 < Nat.card (autLz D F0 Λ) := Nat.card_pos_iff.mpr ⟨hne.to_subtype, h.to_subtype⟩
   exact inv_pos.mpr (Nat.cast_pos.mpr hc)
 
+/- English proof (translation)
+Unfold `Cnt.massRows`. Conclude with `Finset.sum_pos (fun Λ hΛ => wRow_pos D F0 (hA Λ hΛ)) hne`.
+-/
 theorem massRows_pos (hA : AutFin D F0 what₂) (hne : what₂.Nonempty) : 0 < Cnt.massRows D F0 what₂ := by
   unfold Cnt.massRows
   exact Finset.sum_pos (fun Λ hΛ => wRow_pos D F0 (hA Λ hΛ)) hne
 
+/- English proof (translation)
+Establish `hpos` using `massRows_pos D F0 what₂ hA hne`. Establish `hm : ∑ Λ ∈ what₂, wRow D F0 Λ = Cnt.massRows D F0 what₂` using `rfl`. Unfold `massRow`. Rewrite using `[← Finset.sum_div, hm, div_self hpos.ne']`.
+-/
 theorem sum_massRow (hA : AutFin D F0 what₂) (hne : what₂.Nonempty) : ∑ Λ ∈ what₂, massRow D F0 what₂ Λ = 1 := by
   have hpos := massRows_pos D F0 what₂ hA hne
   have hm : ∑ Λ ∈ what₂, wRow D F0 Λ = Cnt.massRows D F0 what₂ := rfl
@@ -63,8 +77,14 @@ variable {D : D7} {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : �
 
 def massTerm (t : Term D u u' F0 what₂) : ℝ := massRow D F0 what₂ t.lam
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem term_mass_eq_weight_ratio (t : Term D u u' F0 what₂) : massTerm t = wRow D F0 t.lam / Cnt.massRows D F0 what₂ := rfl
 
+/- English proof (translation)
+The claim follows from `div_pos (wRow_pos D F0 (hA _ t.mem)) (massRows_pos D F0 what₂ hA ⟨_, t.mem⟩)`.
+-/
 theorem massTerm_pos (hA : AutFin D F0 what₂) (t : Term D u u' F0 what₂) : 0 < massTerm t :=
   div_pos (wRow_pos D F0 (hA _ t.mem)) (massRows_pos D F0 what₂ hA ⟨_, t.mem⟩)
 
@@ -86,6 +106,9 @@ def sgLo {N : ℕ} (L : Matrix (Fin N) (Fin N) E) : E :=
 def phasePair {N : ℕ} (g : ℕ) (L U : Matrix (Fin N) (Fin N) E) : ℂ :=
   (psiInf g (sgLo L))⁻¹ * (psiInf g (sgUp U))⁻¹
 
+/- English proof (translation)
+Unfold `psiInf`. Use `first`. Consider the case `(rw [Complex.norm_exp]; simp)`. Consider the case `(rw [Complex.abs_exp]; simp)`. Consider the case `simp [Complex.norm_exp]`.
+-/
 theorem norm_psiInf (g : ℕ) (x : E) : ‖psiInf g x‖ = 1 := by
   unfold psiInf
   first
@@ -93,6 +116,9 @@ theorem norm_psiInf (g : ℕ) (x : E) : ‖psiInf g x‖ = 1 := by
     | (rw [Complex.abs_exp]; simp)
     | simp [Complex.norm_exp]
 
+/- English proof (translation)
+Unfold `phasePair`. Rewrite using `[norm_mul, norm_inv, norm_inv, norm_psiInf, norm_psiInf]`. Evaluate the numerical expressions.
+-/
 theorem norm_phasePair {N : ℕ} (g : ℕ) (L U : Matrix (Fin N) (Fin N) E) : ‖phasePair g L U‖ = 1 := by
   unfold phasePair
   rw [norm_mul, norm_inv, norm_inv, norm_psiInf, norm_psiInf]
@@ -117,6 +143,9 @@ def phaseAt (t : Term D u u' F0 what₂) (w : Point D.host.E (D.R.rS + 1)) : ℂ
     phasePair (gS D) h.choose.2.1 h.choose.2.2
   else 0
 
+/- English proof (translation)
+Unfold `phaseAt`. Use `split_ifs`. Rewrite using `[norm_phasePair]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_phaseAt_le (t : Term D u u' F0 what₂) (w : Point D.host.E (D.R.rS + 1)) : ‖phaseAt t w‖ ≤ 1 := by
   unfold phaseAt
   split_ifs
@@ -228,6 +257,9 @@ variable {D : D7} {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : �
 def junkPoint (D : D7) (u u' : D.what₂.Word) : Point D.host.E (D.R.rS + 1) :=
   (Formalism.MainNotions.S.Inh.zero_of_gram_point_exists D u u').choose
 
+/- English proof (translation)
+Conclude with `(Formalism.MainNotions.S.Inh.zero_of_gram_point_exists D u u').choose_spec`.
+-/
 theorem Gpt_junkPoint_eq_zero (D : D7) (u u' : D.what₂.Word) :
     Formalism.MainNotions.S.LocalSplitGroups.Gpt (D.mem u).A.T (D.mem u').A.T (junkPoint D u u') = 0 := by
   exact (Formalism.MainNotions.S.Inh.zero_of_gram_point_exists D u u').choose_spec
@@ -235,11 +267,21 @@ theorem Gpt_junkPoint_eq_zero (D : D7) (u u' : D.what₂.Word) :
 def ptOf (t : Term D u u' F0 what₂) : Point D.host.E (D.R.rS + 1) :=
   if h : ∃ w, t.atPt w ∧ t.relevant then h.choose else junkPoint D u u'
 
+/- English proof (translation)
+Unfold `ptOf`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec.1`.
+-/
 theorem ptOf_spec (t : Term D u u' F0 what₂) (h : ∃ w, t.atPt w ∧ t.relevant) : t.atPt (ptOf t) := by
   unfold ptOf
   rw [dif_pos h]
   exact h.choose_spec.1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hG, hr⟩`. Take `⟨w, hw⟩` from `hA t hG hr`. Conclude with `hB t _ (ptOf_spec t ⟨w, hw, hr⟩)`. Introduce `hne`.
+
+Distinguish the cases in `h : ∃ w, t.atPt w ∧ t.relevant`. Conclude with `⟨hC t _ (ptOf_spec t h), h.choose_spec.2⟩`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Unfold `ptOf`.
+
+Rewrite using `[dif_neg h]`. Conclude with `Gpt_junkPoint_eq_zero D u u'`.
+-/
 theorem ptOf_GPoint_iff (hA : ∀ t : Term D u u' F0 what₂, t.G ≠ 0 → t.relevant → ∃ w, t.atPt w)
     (hB : ∀ (t : Term D u u' F0 what₂) w, t.atPt w → Formalism.MainNotions.S.LocalSplitGroups.Gpt (D.mem u).A.T (D.mem u').A.T w ≠ 0)
     (hC : ∀ (t : Term D u u' F0 what₂) w, t.atPt w → t.G ≠ 0) (t : Term D u u' F0 what₂) :
@@ -260,6 +302,9 @@ theorem ptOf_GPoint_iff (hA : ∀ t : Term D u u' F0 what₂, t.G ≠ 0 → t.re
 def cTerm (vR : Term D u u' F0 what₂ → ℝ) (t : Term D u u' F0 what₂) : ℂ :=
   if h : ∃ w, t.atPt w then cAt vR t h.choose else 0
 
+/- English proof (translation)
+Establish `h : ∃ w, t.atPt w` using `⟨w, hw⟩`. Unfold `cTerm`. Rewrite using `[dif_pos h, hU _ h.choose_spec]`.
+-/
 theorem cTerm_of_atPt (vR : Term D u u' F0 what₂ → ℝ) (t : Term D u u' F0 what₂) {w : Point D.host.E (D.R.rS + 1)}
     (hw : t.atPt w) (hU : ∀ w', t.atPt w' → w' = w) : cTerm vR t = cAt vR t w := by
   have h : ∃ w, t.atPt w := ⟨w, hw⟩
@@ -303,12 +348,18 @@ def cdScaleOf (n : ℕ) (ε : Fin n → Bool) : NNReal :=
 
 def CdScaleExists : Prop := ∀ n (ε : Fin n → Bool), ∃ c : NNReal, 0 < c ∧ CdTieAt D n ε c
 
+/- English proof (translation)
+Unfold `cdScaleOf`. Rewrite using `[dif_pos (h n ε)]`. Conclude with `(h n ε).choose_spec`.
+-/
 theorem cdScaleOf_tie (h : CdScaleExists D) (n : ℕ) (ε : Fin n → Bool) :
     0 < cdScaleOf D n ε ∧ CdTieAt D n ε (cdScaleOf D n ε) := by
   unfold cdScaleOf
   rw [dif_pos (h n ε)]
   exact (h n ε).choose_spec
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.cdScaleTie at h`. Introduce `n ε`. Conclude with `⟨D.s.cdScale n ε, D.s.cdScale_pos n ε, fun P Q e h1 h2 A hA => h n ε P Q e h1 h2 A hA⟩`.
+-/
 theorem cdScaleExists_of_tie (h : Formalism.BasicNotions.cdScaleTie D) : CdScaleExists D := by
   unfold Formalism.BasicNotions.cdScaleTie at h
   intro n ε
@@ -339,12 +390,18 @@ def KgsOf (vR : Term D u u' F0 what₂ → ℝ) (Q : PairSys D u u' F0 what₂) 
 
 variable (Q : PairSys D u u' F0 what₂)
 
+/- English proof (translation)
+Unfold `massTerm`. Rewrite using `[Q.row p]`.
+-/
 theorem massTerm_pair (p : Q.P) : massTerm (Q.fst p) = massTerm (Q.snd p) := by
   unfold massTerm
   rw [Q.row p]
 
 def KgsFinite : Prop := ∀ w w' : Point D.host.E (D.R.rS + 1), (gsAt Q w w').Finite
 
+/- English proof (translation)
+Unfold `KgsOf`. Rewrite using `[← Finset.tsum_subtype', Set.Finite.coe_toFinset]`.
+-/
 theorem Kgs_fin (vR : Term D u u' F0 what₂ → ℝ) (hF : KgsFinite Q) (w w' : Point D.host.E (D.R.rS + 1)) :
     KgsOf vR Q w w' = ∑ p ∈ (hF w w').toFinset,
       (massTerm (Q.fst p) : ℂ) * cAt vR (Q.fst p) w * star (cAt vR (Q.snd p) w') := by

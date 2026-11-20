@@ -10,6 +10,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Finit
 
 namespace UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+The claim follows from `liesAbs_of (lPts_holds lGrp_holds) (lCount_holds lSigPt_holds lSigFin_holds) lIdx_holds sigmaFEt_holds`.
+-/
 theorem liesAbs_holds : LiesAbs :=
   liesAbs_of (lPts_holds lGrp_holds) (lCount_holds lSigPt_holds lSigFin_holds) lIdx_holds sigmaFEt_holds
 

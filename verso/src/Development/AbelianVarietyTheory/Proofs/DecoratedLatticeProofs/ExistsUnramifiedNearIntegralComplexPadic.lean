@@ -15,10 +15,16 @@ local notation "PC" => (Polynomial.C)
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), PadicAlgCl.norm_extends]`. Conclude with `z.norm_le_one`.
+-/
 theorem norm_algebraMap_padicInt (z : ℤ_[l]) : ‖algebraMap ℤ_[l] (PadicAlgCl l) z‖ ≤ 1 := by
   rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), PadicAlgCl.norm_extends]
   exact z.norm_le_one
 
+/- English proof (translation)
+Rewrite using `[aeval_eq_sum_range]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Algebra.smul_def, norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (norm_algebraMap_padicInt _) (pow_nonneg (norm_nonneg _) _) (pow_le_one₀ (norm_nonneg _) hx)`.
+-/
 theorem norm_aeval_le (x : PadicAlgCl l) (hx : ‖x‖ ≤ 1) (g : ℤ_[l][X]) : ‖aeval x g‖ ≤ 1 := by
   rw [aeval_eq_sum_range]
   apply IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one
@@ -26,6 +32,15 @@ theorem norm_aeval_le (x : PadicAlgCl l) (hx : ‖x‖ ≤ 1) (g : ℤ_[l][X]) :
   rw [Algebra.smul_def, norm_mul, norm_pow]
   exact mul_le_one₀ (norm_algebraMap_padicInt _) (pow_nonneg (norm_nonneg _) _) (pow_le_one₀ (norm_nonneg _) hx)
 
+/- English proof (translation)
+Establish `hd : ∀ n, (PC (l : ℤ_[l])) ∣ PC (g.coeff n)`. Introduce `n`. Establish `h0 : PadicInt.toZMod (g.coeff n) = 0`. Use `congrArg (fun f => Polynomial.coeff f n) hg` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`.
+
+Establish `hm : g.coeff n ∈ IsLocalRing.maximalIdeal ℤ_[l]`. Rewrite using `[← PadicInt.ker_toZMod]`. Conclude with `h0`. Rewrite `hm` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Conclude with `map_dvd PC hm`.
+
+Take `⟨h, rfl⟩ : (PC (l : ℤ_[l])) ∣ g` from `(Polynomial.C_dvd_iff_dvd_coeff _ _).2 (fun n => by simpa using (Polynomial.C_dvd_iff_dvd_coeff _ _).1 (hd n) 0)`. Rewrite using `[map_mul, aeval_C, norm_mul]`. Establish `hl : ‖algebraMap ℤ_[l] (PadicAlgCl l) (l : ℤ_[l])‖ < 1`. Rewrite using `[map_natCast, ← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)) l, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_aeval_lt (x : PadicAlgCl l) (hx : ‖x‖ ≤ 1) (g : ℤ_[l][X])
     (hg : g.map (PadicInt.toZMod (p := l)) = 0) : ‖aeval x g‖ < 1 := by
   have hd : ∀ n, (PC (l : ℤ_[l])) ∣ PC (g.coeff n) := by
@@ -47,6 +62,11 @@ theorem norm_aeval_lt (x : PadicAlgCl l) (hx : ‖x‖ ≤ 1) (g : ℤ_[l][X])
         mul_le_mul_of_nonneg_left (norm_aeval_le x hx h) (norm_nonneg _)
     _ < 1 := by rw [mul_one]; exact hl
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Rewrite `hx` using `[← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralValue_le_one_iff (minpoly.monic hi)]`. Establish `hl : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Conclude with `fun n => ⟨⟨_, hx n⟩, rfl⟩`.
+
+Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl (minpoly.monic hi)`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]`.
+-/
 theorem exists_monic (x : PadicAlgCl l) (hx : ‖x‖ ≤ 1) : ∃ q : ℤ_[l][X], q.Monic ∧ aeval x q = 0 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
   rw [← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralValue_le_one_iff (minpoly.monic hi)] at hx
@@ -57,6 +77,21 @@ theorem exists_monic (x : PadicAlgCl l) (hx : ‖x‖ ≤ 1) : ∃ q : ℤ_[l][X
   refine ⟨q, hqm, ?_⟩
   rw [← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]
 
+/- English proof (translation)
+Take `⟨q, hqm, hq⟩` from `exists_monic x hx.le`. Establish `hq1 : q ≠ 1` using `by rintro rfl; simp at hq`. Use `set d := q.natDegree`. Set `r : ℕ → ℤ_[l][X]` to `fun k => (PX ^ k) %ₘ q`. Establish `hr : ∀ k, aeval x (r k) = x ^ k`.
+
+Introduce `k`. Establish `h` using `congrArg (aeval x) (modByMonic_add_div (PX ^ k : ℤ_[l][X]) q)`. Simplify `h` using `[hq]`. Establish `hdeg : ∀ k, (r k).natDegree < d` using `fun k => natDegree_modByMonic_lt _ hqm hq1`. Set `F : ℕ → (Fin d → ZMod l)` to `fun k i => PadicInt.toZMod ((r k).coeff i)`.
+
+Take `⟨i, j, hij, hF⟩` from `Finite.exists_ne_map_eq_of_infinite F`. Establish `key : ∀ a b : ℕ, F a = F b → a < b → ∃ m : ℕ, 0 < m ∧ ‖x ^ m - 1‖ < 1`. Introduce `a b hab hlt`. Establish `hsm : ‖x ^ b - x ^ a‖ < 1`. Rewrite using `[← hr b, ← hr a, ← map_sub]`.
+
+Apply `norm_aeval_lt x hx.le` to reduce the goal to its premises. Use extensionality with `n`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_sub, map_sub, Polynomial.coeff_zero]`. Distinguish the cases in `hn : n < d`. Use `congrFun hab ⟨n, hn⟩` as an intermediate fact.
+
+Rewrite using `[sub_eq_zero]`. Conclude with `this.symm`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (lt_of_lt_of_le (hdeg b) (not_lt.1 hn)), coeff_eq_zero_of_natDegree_lt (lt_of_lt_of_le (hdeg a) (not_lt.1 hn))]`. Simplify using the standard rewrite rules. Use `⟨b - a, Nat.sub_pos_of_lt hlt, ?_⟩` and prove the remaining obligations.
+
+Establish `e : x ^ b - x ^ a = x ^ a * (x ^ (b - a) - 1)`. Rewrite using `[mul_sub, ← pow_add, Nat.add_sub_cancel' hlt.le, mul_one]`. Rewrite `hsm` using `[e, norm_mul, norm_pow, hx, one_pow, one_mul]`. Conclude with `hsm`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases.
+
+Conclude with `key i j hF h`. Conclude with `key j i hF.symm h`.
+-/
 theorem exists_pow_near_one (x : PadicAlgCl l) (hx : ‖x‖ = 1) :
     ∃ m : ℕ, 0 < m ∧ ‖x ^ m - 1‖ < 1 := by
   obtain ⟨q, hqm, hq⟩ := exists_monic x hx.le
@@ -93,6 +128,13 @@ theorem exists_pow_near_one (x : PadicAlgCl l) (hx : ‖x‖ = 1) :
   · exact key i j hF h
   · exact key j i hF.symm h
 
+/- English proof (translation)
+Establish `hp` using `(Fact.out : l.Prime)`. Establish `hpoly : (((PX - 1) ^ l - (PX ^ l - 1) : ℤ_[l][X])).map (PadicInt.toZMod (p` using `l)) = 0 := by`. Rewrite using `[Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_sub, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_one, sub_pow_char, one_pow, sub_self]`. Establish `h1` using `norm_aeval_lt z hz _ hpoly`. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one] at h1`.
+
+Establish `h2 : ‖(z - 1) ^ l‖ < 1`. Establish `e : (z - 1) ^ l = ((z - 1) ^ l - (z ^ l - 1)) + (z ^ l - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt h1 h)`. Rewrite `h2` using `[norm_pow]`.
+
+Conclude with `(pow_lt_one_iff_of_nonneg (norm_nonneg _) hp.ne_zero).1 h2`.
+-/
 theorem frob_inj (z : PadicAlgCl l) (hz : ‖z‖ ≤ 1) (h : ‖z ^ l - 1‖ < 1) : ‖z - 1‖ < 1 := by
   have hp := (Fact.out : l.Prime)
   have hpoly : (((PX - 1) ^ l - (PX ^ l - 1) : ℤ_[l][X])).map (PadicInt.toZMod (p := l)) = 0 := by
@@ -107,6 +149,11 @@ theorem frob_inj (z : PadicAlgCl l) (hz : ‖z‖ ≤ 1) (h : ‖z ^ l - 1‖ < 
   rw [norm_pow] at h2
   exact (pow_lt_one_iff_of_nonneg (norm_nonneg _) hp.ne_zero).1 h2
 
+/- English proof (translation)
+Proceed by induction on `a with`. Consider the case `zero => intro z _ h`. Simplify using `using h`. Consider the case `succ a ih`. Introduce `z hz h`.
+
+Apply `frob_inj z hz` to reduce the goal to its premises. Apply `ih (z ^ l) (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hz)` to reduce the goal to its premises. Rewrite using `[← pow_mul, ← pow_succ']`. Conclude with `h`.
+-/
 theorem frob_pow (a : ℕ) : ∀ z : PadicAlgCl l, ‖z‖ ≤ 1 → ‖z ^ (l ^ a) - 1‖ < 1 → ‖z - 1‖ < 1 := by
   induction a with
   | zero => intro z _ h; simpa using h
@@ -117,6 +164,11 @@ theorem frob_pow (a : ℕ) : ∀ z : PadicAlgCl l, ‖z‖ ≤ 1 → ‖z ^ (l ^
     rw [← pow_mul, ← pow_succ']
     exact h
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.prod_cons, norm_mul]`. Establish `h1` using `h a (Multiset.mem_cons_self a s)`.
+
+Establish `h2` using `ih fun b hb => h b (Multiset.mem_cons_of_mem hb)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem one_le_norm_prod (s : Multiset ℂ_[l]) (h : ∀ a ∈ s, 1 ≤ ‖a‖) : 1 ≤ ‖s.prod‖ := by
   induction s using Multiset.induction_on with
   | empty => simp
@@ -126,6 +178,17 @@ theorem one_le_norm_prod (s : Multiset ℂ_[l]) (h : ∀ a ∈ s, 1 ≤ ‖a‖)
     have h2 := ih fun b hb => h b (Multiset.mem_cons_of_mem hb)
     nlinarith
 
+/- English proof (translation)
+Use `set P : ℂ_[l][X] := PX ^ m - PC 1`. Establish `hPm : P.Monic` using `monic_X_pow_sub_C 1 hm.ne'`. Establish `hcard : Multiset.card P.roots = P.natDegree` using `IsAlgClosed.card_roots_eq_natDegree`. Establish `hprod` using `prod_multiset_X_sub_C_of_monic_of_roots_card_eq hPm hcard`. Establish `hev` using `congrArg (eval x) hprod`.
+
+Rewrite `hev` using `[eval_multiset_prod, Multiset.map_map]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hall : ∀ a ∈ P.roots, 1 ≤ ‖x - a‖`. Introduce `a ha`.
+
+Apply `hne a _` to reduce the goal to its premises. Use `(mem_roots hPm.ne_zero).1 ha` as an intermediate fact. Simplify `this` using `[P, sub_eq_zero]`. Use `one_le_norm_prod (P.roots.map fun a => x - a) (by` as an intermediate fact. Introduce `b hb`.
+
+Take `⟨a, ha, rfl⟩` from `Multiset.mem_map.1 hb`. Conclude with `hall a ha)`. Establish `e : (Multiset.map (eval x ∘ fun a => PX - PC a) P.roots).prod = (P.roots.map fun a => x - a).prod`. Use `congr 1`. Conclude with `Multiset.map_congr rfl (fun a _ => by simp)`.
+
+Rewrite `hev` using `[e]`. Rewrite `this` using `[hev]`. Simplify using `[P] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_root_near (x : ℂ_[l]) (m : ℕ) (hm : 0 < m) (h : ‖x ^ m - 1‖ < 1) :
     ∃ ζ : ℂ_[l], ζ ^ m = 1 ∧ ‖x - ζ‖ < 1 := by
   set P : ℂ_[l][X] := PX ^ m - PC 1
@@ -153,6 +216,21 @@ theorem exists_root_near (x : ℂ_[l]) (m : ℕ) (hm : 0 < m) (h : ‖x ^ m - 1�
   simp [P] at this
   linarith
 
+/- English proof (translation)
+Introduce `l _ x hx`. Take `⟨x', hx'⟩` from `(UniformSpace.Completion.denseRange_coe (α := PadicAlgCl l)).exists_dist_lt x one_pos`. Rewrite `hx'` using `[dist_eq_norm]`. Use `set X0 : ℂ_[l] := (x' : ℂ_[l]) with hX0`. Establish `hn' : ‖X0‖ ≤ 1`.
+
+Establish `e : X0 = (X0 - x) + x` using `by ring`. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (by rw [norm_sub_rev]; exact hx'.le) hx)`. Distinguish the cases in `h0 : ‖X0‖ < 1`. Use `⟨0, zero_mem _, by simp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[sub_zero]`. Establish `e : x = (x - X0) + X0` using `by ring`. Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt hx' h0)`. Establish `h1 : ‖x'‖ = 1` using `by rw [← PadicComplex.norm_extends]; exact le_antisymm hn' (not_lt.1 h0)`.
+
+Take `⟨m0, hm0, hsm⟩` from `exists_pow_near_one x' h1`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hm0.ne' l (Fact.out : l.Prime).ne_one`. Establish `hz : ‖x' ^ m - 1‖ < 1` using `frob_pow a (x' ^ m) (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) h1.le) (by rw [← pow_mul, mul_comm]; exact hsm)`. Establish `hmpos : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hm0)`. Establish `hz' : ‖X0 ^ m - 1‖ < 1`.
+
+Establish `e : X0 ^ m - 1 = ((x' ^ m - 1 : PadicAlgCl l) : ℂ_[l])` using `by simp [hX0, PadicComplex.coe_eq]`. Rewrite using `[e, PadicComplex.norm_extends]`. Conclude with `hz`. Take `⟨ζ, hζ, hd⟩` from `exists_root_near X0 m hmpos hz'`. Use `⟨ζ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `MaximalUnramifiedExtension`. Conclude with `Subfield.le_topologicalClosure _ (Subfield.subset_closure ⟨m, hmpos, hm, hζ⟩)`. Establish `: ‖ζ‖ ^ m = 1` using `by rw [← norm_pow, hζ, norm_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (norm_nonneg ζ) hmpos.ne').1 this).le`. Establish `e : x - ζ = (x - X0) + (X0 - ζ)` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt hx' hd)`.
+-/
 theorem exists_near_kur : ∀ (l : ℕ) [Fact l.Prime] (x : ℂ_[l]), ‖x‖ ≤ 1 →
     ∃ y ∈ MaximalUnramifiedExtension l, ‖y‖ ≤ 1 ∧ ‖x - y‖ < 1 := by
   intro l _ x hx

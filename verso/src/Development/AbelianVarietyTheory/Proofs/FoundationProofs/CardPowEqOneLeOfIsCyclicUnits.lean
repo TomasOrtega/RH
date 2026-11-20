@@ -3,6 +3,9 @@ import Formalism.CyclotomicNorms.StatementI
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `_` to `Fintype.ofFinite α`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `IsCyclic.card_pow_eq_one_le (α := α) hn` and compare the differences between its conclusion and the goal.
+-/
 private lemma card_pow_eq_one_le_of_isCyclic {α : Type*} [Group α] [Finite α] [IsCyclic α] {n : ℕ}
     (hn : 0 < n) : Nat.card {a : α // a ^ n = 1} ≤ n := by
   classical
@@ -10,6 +13,13 @@ private lemma card_pow_eq_one_le_of_isCyclic {α : Type*} [Group α] [Finite α]
   rw [Nat.card_eq_fintype_card, Fintype.card_subtype]
   convert IsCyclic.card_pow_eq_one_le (α := α) hn
 
+/- English proof (translation)
+Use `set K : Subgroup G := (powMonoidHom d : G →* G).ker with hKdef`. Establish `hK : Nat.card {x : G // x ^ d = 1} = Nat.card K` using `Nat.card_congr (Equiv.subtypeEquivRight (fun x => by simp [hKdef]))`. Establish `hsplit` using `(H.subgroupOf K).card_mul_index`. Establish `hidx : (H.subgroupOf K).index ≤ H.index` using `Nat.le_of_dvd (Nat.pos_of_ne_zero (Subgroup.index_ne_zero_of_finite)) (Subgroup.relIndex_dvd_index_of_normal (H := H) (K := K))`. Establish `hsmall : Nat.card (H.subgroupOf K) ≤ d`.
+
+Use `le_trans (Nat.card_le_card_of_injective (fun x : H.subgroupOf K => (⟨⟨(x.1 : G), Subgroup.mem_subgroupOf.mp x.2⟩, ?_⟩ : {h : H // h ^ d = 1})) ?_) (card_pow_eq_one_le_of_isCyclic hd)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hx : (x.1 : G) ^ d = 1` using `x.1.2`. Simplify using `using hx`. Introduce `x y hxy`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg (fun z : {h : H // h ^ d = 1} => ((z.1 : H) : G)) hxy`. Rewrite using `[hK, ← hsplit]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_pow_eq_one_le_index_mul {G : Type*} [CommGroup G] [Finite G] (H : Subgroup G)
     [IsCyclic H] {d : ℕ} (hd : 0 < d) : Nat.card {x : G // x ^ d = 1} ≤ H.index * d := by
   classical
@@ -36,6 +46,9 @@ theorem card_pow_eq_one_le_index_mul {G : Type*} [CommGroup G] [Finite G] (H : S
         Nat.mul_le_mul hsmall hidx
     _ = H.index * d := Nat.mul_comm _ _
 
+/- English proof (translation)
+Use `Nat.card_le_card_of_injective (fun x => ⟨Units.ofPowEqOne x.1 d x.2 hd.ne', Units.pow_ofPowEqOne _ _⟩) ?_` and prove the remaining obligations. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun z : {u : Mˣ // u ^ d = 1} => ((z.1 : Mˣ) : M)) hxy` as an intermediate fact. Simplify using `using this`.
+-/
 theorem card_pow_eq_one_le_units {M : Type*} [Monoid M] [Finite M] {d : ℕ} (hd : 0 < d) :
     Nat.card {x : M // x ^ d = 1} ≤ Nat.card {x : Mˣ // x ^ d = 1} := by
   refine Nat.card_le_card_of_injective
@@ -45,10 +58,22 @@ theorem card_pow_eq_one_le_units {M : Type*} [Monoid M] [Finite M] {d : ℕ} (hd
   have := congrArg (fun z : {u : Mˣ // u ^ d = 1} => ((z.1 : Mˣ) : M)) hxy
   simpa using this
 
+/- English proof (translation)
+The claim follows from `(card_pow_eq_one_le_units hd).trans (card_pow_eq_one_le_of_isCyclic hd)`.
+-/
 theorem card_pow_eq_one_le_of_isCyclic_units (n : ℕ) [NeZero n] [IsCyclic (ZMod n)ˣ] {d : ℕ}
     (hd : 0 < d) : Nat.card {x : ZMod n // x ^ d = 1} ≤ d :=
   (card_pow_eq_one_le_units hd).trans (card_pow_eq_one_le_of_isCyclic hd)
 
+/- English proof (translation)
+Establish `: NeZero (2 ^ w)` using `⟨by positivity⟩`. Take `_ | _ | n` from `w`. Use linear arithmetic over natural numbers and integers. Establish `: IsCyclic (ZMod (2 ^ 1))ˣ` using `(ZMod.isCyclic_units_two_pow_iff 1).mpr (by norm_num)`. Conclude with `(card_pow_eq_one_le_of_isCyclic_units _ hd).trans (by omega)`.
+
+Set `u : (ZMod (2 ^ (n + 2)))ˣ` to `ZMod.unitOfCoprime 5 (Nat.Coprime.pow_right _ (by norm_num))`. Establish `hu : orderOf u = 2 ^ n`. Rewrite using `[← orderOf_units, ZMod.coe_unitOfCoprime, Nat.cast_ofNat, ZMod.orderOf_five]`. Establish `hG : Nat.card (ZMod (2 ^ (n + 2)))ˣ = 2 ^ n * 2`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow Nat.prime_two (by omega)]`.
+
+Simplify using `[pow_succ]`. Establish `hidx : (Subgroup.zpowers u).index = 2`. Establish `h` using `(Subgroup.zpowers u).card_mul_index`. Rewrite `h` using `[Nat.card_zpowers, hu, hG]`. Conclude with `Nat.eq_of_mul_eq_mul_left (by positivity) h`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_pow_eq_one_two_pow_le (w : ℕ) (hw : 1 ≤ w) {d : ℕ} (hd : 0 < d) :
     Nat.card {x : ZMod (2 ^ w) // x ^ d = 1} ≤ 2 * d := by
   have : NeZero (2 ^ w) := ⟨by positivity⟩
@@ -75,6 +100,11 @@ theorem card_pow_eq_one_two_pow_le (w : ℕ) (hw : 1 ≤ w) {d : ℕ} (hd : 0 < 
       _ ≤ (Subgroup.zpowers u).index * d := card_pow_eq_one_le_index_mul _ hd
       _ = 2 * d := by rw [hidx]
 
+/- English proof (translation)
+Introduce `ℓ w d hℓ hw hd`. Establish `: NeZero (ℓ ^ w)` using `⟨pow_ne_zero _ hℓ.ne_zero⟩`. Distinguish the cases in `h2 : ℓ = 2`. Substitute `h2` using the available equality. Conclude with `⟨fun h => absurd rfl h, card_pow_eq_one_two_pow_le w hw hd⟩`.
+
+Use `ZMod.isCyclic_units_of_prime_pow ℓ hℓ h2 w` as an intermediate fact. Establish `h` using `card_pow_eq_one_le_of_isCyclic_units (ℓ ^ w) (d := d) hd`. Conclude with `⟨fun _ => h.trans (Nat.le_mul_of_pos_right _ (pow_pos hℓ.pos _)), h.trans (by omega)⟩`.
+-/
 theorem rootsOfUnityCount : Formalism.CyclotomicNorms.RootsOfUnityCount := by
   intro ℓ w d hℓ hw hd
   have : NeZero (ℓ ^ w) := ⟨pow_ne_zero _ hℓ.ne_zero⟩

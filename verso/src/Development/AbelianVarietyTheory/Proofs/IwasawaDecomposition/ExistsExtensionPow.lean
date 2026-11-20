@@ -11,6 +11,11 @@ namespace GlobalTheory.DenseCompl
 
 open scoped WithZeroTopology in
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.CompletionHomContinuous.exists_completion_hom`. Consider the case `exact _root_.GlobalTheory.CompletionHomContinuous.exists_completion_hom`. Consider the case `(apply _root_.GlobalTheory.CompletionHomContinuous.exists_completion_hom <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CompletionHomContinuous.exists_completion_hom <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.CompletionHomContinuous.exists_completion_hom <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CompletionHomContinuous.exists_completion_hom ..)`.
+-/
 theorem exists_extension_pow (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L)) (e : ℕ) (he : 0 < e)
     (hv : ∀ x : K, v'.valuation L (algebraMap K L x) = v.valuation K x ^ e) :

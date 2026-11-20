@@ -32,30 +32,54 @@ instance : FiniteDimensional ℝ (VT (X := X) z ξ) :=
 def VT.val {z : Frame X.Ψ r} {ξ : Fin r → E} (u : VT (X := X) z ξ) : X.Ψ → Fin r → ℂ :=
   (u : ↥(Usub (X := X) z ξ)).1
 
+/- English proof (translation)
+Conclude with `(u : ↥(Usub (X := X) z ξ)).2`.
+-/
 theorem VT.val_mem {z : Frame X.Ψ r} {ξ : Fin r → E} (u : VT (X := X) z ξ) : u.val ∈ X.Uz z ξ := by
   exact (u : ↥(Usub (X := X) z ξ)).2
 
 def VT.mk {z : Frame X.Ψ r} {ξ : Fin r → E} (u : X.Ψ → Fin r → ℂ) (hu : u ∈ X.Uz z ξ) :
     VT (X := X) z ξ := (⟨u, hu⟩ : ↥(Usub (X := X) z ξ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem VT.val_mk {z : Frame X.Ψ r} {ξ : Fin r → E} (u : X.Ψ → Fin r → ℂ)
     (hu : u ∈ X.Uz z ξ) : (VT.mk u hu).val = u := rfl
 
+/- English proof (translation)
+Conclude with `Subtype.ext h`.
+-/
 theorem VT.ext {z : Frame X.Ψ r} {ξ : Fin r → E} {u v : VT (X := X) z ξ} (h : u.val = v.val) :
     u = v := by
   exact Subtype.ext h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem VT.val_add {z : Frame X.Ψ r} {ξ : Fin r → E} (u v : VT (X := X) z ξ) :
     (u + v).val = u.val + v.val := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem VT.val_smul {z : Frame X.Ψ r} {ξ : Fin r → E} (c : ℝ) (u : VT (X := X) z ξ) :
     (c • u).val = c • u.val := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem VT.val_zero {z : Frame X.Ψ r} {ξ : Fin r → E} : (0 : VT (X := X) z ξ).val = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem VT.val_neg {z : Frame X.Ψ r} {ξ : Fin r → E} (u : VT (X := X) z ξ) :
     (-u).val = -u.val := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem VT.val_sub {z : Frame X.Ψ r} {ξ : Fin r → E} (u v : VT (X := X) z ξ) :
     (u - v).val = u.val - v.val := rfl
 
@@ -93,16 +117,30 @@ noncomputable instance : NormedAddCommGroup (VT (X := X) z ξ) :=
 noncomputable instance : InnerProductSpace ℝ (VT (X := X) z ξ) :=
   InnerProductSpace.ofCore (core z ξ).toCore
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inner_eq (u v : VT (X := X) z ξ) : inner ℝ u v = MajorantOperators.gI z u.val v.val := rfl
 
+/- English proof (translation)
+Rewrite using `[← real_inner_self_eq_norm_sq, inner_eq, MajorantOperators.gI_self hz.out]`.
+-/
 theorem norm_sq_eq (u : VT (X := X) z ξ) : ‖u‖ ^ 2 = ∑ τ, X.maj z τ (u.val τ) := by
   rw [← real_inner_self_eq_norm_sq, inner_eq, MajorantOperators.gI_self hz.out]
 
+/- English proof (translation)
+Rewrite using `[norm_sq_eq]`. Conclude with `Finset.single_le_sum (fun σ _ => MajorantOperators.maj_nonneg hz.out σ _) (Finset.mem_univ τ)`.
+-/
 theorem maj_le_norm_sq (u : VT (X := X) z ξ) (τ : X.Ψ) : X.maj z τ (u.val τ) ≤ ‖u‖ ^ 2 := by
   rw [norm_sq_eq]
   exact Finset.single_le_sum (fun σ _ => MajorantOperators.maj_nonneg hz.out σ _) (Finset.mem_univ τ)
 
 omit hz in
+/- English proof (translation)
+Establish `hHf : ∀ (σ : X.Ψ) (a b w : Fin r → ℂ), X.Hf z σ (a + b) w = X.Hf z σ a w + X.Hf z σ b w`. Introduce `σ a b w`. Rewrite using `[Data.Hf, Data.Hf, Data.Hf, Data.ppos_add, ← hermC_add_left]`. Use `congr 1`. Rewrite using `[smul_add]`.
+
+Normalize the expressions using the abelian group laws. Use function extensionality and compare the values at `τ`. Simplify using `only [Data.ucomp, Data.aproj, Data.lineV, Pi.add_apply, Pi.sub_apply, hHf, add_div, add_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ucomp_add (u v : X.Ψ → Fin r → ℂ) :
     X.ucomp z ξ (u + v) = X.ucomp z ξ u + X.ucomp z ξ v := by
   have hHf : ∀ (σ : X.Ψ) (a b w : Fin r → ℂ),
@@ -117,6 +155,11 @@ theorem ucomp_add (u v : X.Ψ → Fin r → ℂ) :
   abel
 
 omit hz in
+/- English proof (translation)
+Establish `hHf : ∀ (σ : X.Ψ) (c : ℂ) (v w : Fin r → ℂ), X.Hf z σ (c • v) w = c * X.Hf z σ v w`. Introduce `σ c v w`. Establish `hp : X.ppos z σ (c • v) = c • X.ppos z σ v`. Simplify using `only [Data.ppos, hermC_smul_left, Finset.smul_sum, smul_smul, mul_assoc, ← Finset.mul_sum]`. Rewrite using `[Data.Hf, Data.Hf, hp, ← hermC_smul_left]`.
+
+Use `congr 1`. Rewrite using `[smul_sub, smul_smul, smul_smul, mul_comm]`. Use function extensionality and compare the values at `τ`. Simplify using `only [Data.ucomp, Data.aproj, Data.lineV, Pi.sub_apply, Pi.smul_apply, ← Complex.coe_smul, hHf]`. Rewrite using `[smul_sub, mul_div_assoc, mul_smul]`.
+-/
 theorem ucomp_smul (a : ℝ) (u : X.Ψ → Fin r → ℂ) : X.ucomp z ξ (a • u) = a • X.ucomp z ξ u := by
   have hHf : ∀ (σ : X.Ψ) (c : ℂ) (v w : Fin r → ℂ), X.Hf z σ (c • v) w = c * X.Hf z σ v w := by
     intro σ c v w
@@ -130,11 +173,17 @@ theorem ucomp_smul (a : ℝ) (u : X.Ψ → Fin r → ℂ) : X.ucomp z ξ (a • 
     hHf]
   rw [smul_sub, mul_div_assoc, mul_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ a`. Simplify using `[Data.embV, Data.emb]`.
+-/
 theorem embV_add (u v : Fin r → E) : X.embV (u + v) = X.embV u + X.embV v := by
   funext τ a
   simp [Data.embV, Data.emb]
 
 omit hz in
+/- English proof (translation)
+Establish `hk : herm X.Gm μ ξ = 0` using `AddMonoidHom.mem_ker.mp (AddSubgroup.mem_inf.mp hμ).2`. Use `show ∀ τ : X.Ψ, hermC τ.1 X.Gm (X.embV μ τ) (Data.emb τ.1 ξ) = 0`. Introduce `τ`. Simplify using `only [Data.embV]`. Rewrite using `[hermC_emb, hk, map_zero]`.
+-/
 theorem embV_mem_Iperp {μ : Fin r → E} (hμ : μ ∈ X.Λp ξ) : X.embV μ ∈ X.Iperp ξ := by
   have hk : herm X.Gm μ ξ = 0 := AddMonoidHom.mem_ker.mp (AddSubgroup.mem_inf.mp hμ).2
   show ∀ τ : X.Ψ, hermC τ.1 X.Gm (X.embV μ τ) (Data.emb τ.1 ξ) = 0
@@ -149,16 +198,25 @@ noncomputable def phi (hξ : X.IsIso ξ) : X.Λp ξ →+ VT (X := X) z ξ :=
       simp only [VT.val_mk, VT.val_add, AddSubgroup.coe_add]
       rw [embV_add, ucomp_add]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_val (hξ : X.IsIso ξ) (μ : X.Λp ξ) : (phi z ξ hξ μ).val = X.ucomp z ξ (X.embV μ) := by
   rfl
 
 noncomputable def Lat (hξ : X.IsIso ξ) : Submodule ℤ (VT (X := X) z ξ) :=
   (phi z ξ hξ).range.toIntSubmodule
 
+/- English proof (translation)
+Use `show a ∈ (phi z ξ hξ).range ↔ _`. Conclude with `AddMonoidHom.mem_range`.
+-/
 theorem mem_Lat (hξ : X.IsIso ξ) {a : VT (X := X) z ξ} : a ∈ Lat z ξ hξ ↔ ∃ μ, phi z ξ hξ μ = a := by
   show a ∈ (phi z ξ hξ).range ↔ _
   exact AddMonoidHom.mem_range
 
+/- English proof (translation)
+Establish `hp : X.ppos y σ (c • v) = c • X.ppos y σ v`. Simplify using `only [Data.ppos, hermC_smul_left, Finset.smul_sum, smul_smul, mul_assoc, ← Finset.mul_sum]`. Rewrite using `[Data.Hf, Data.Hf, hp, ← hermC_smul_left]`. Use `congr 1`. Rewrite using `[smul_sub, smul_smul, smul_smul, mul_comm]`.
+-/
 private lemma Hf_smul_left_frame (y : Frame X.Ψ r) (σ : X.Ψ) (c : ℂ) (v w : Fin r → ℂ) :
     X.Hf y σ (c • v) w = c * X.Hf y σ v w := by
   have hp : X.ppos y σ (c • v) = c • X.ppos y σ v := by
@@ -167,6 +225,13 @@ private lemma Hf_smul_left_frame (y : Frame X.Ψ r) (σ : X.Ψ) (c : ℂ) (v w :
   congr 1
   rw [smul_sub, smul_smul, smul_smul, mul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `hξ0 : Data.emb τ.1 ξ ≠ 0`. Introduce `h`. Apply `hξ.2.2` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+
+Use `congrFun h a` as an intermediate fact. Simplify `this` using `[Data.emb]`. Establish `hpos : X.Hf z τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) ≠ 0`. Rewrite using `[X.Hf_self hz.out]`. Conclude with `(X.maj_pos hz.out τ hξ0).ne'` after adjusting the coercions.
+
+Establish `hw : X.embV (e • ξ) τ = τ.1 e • Data.emb τ.1 ξ`. Use function extensionality and compare the values at `a`. Simplify using `[Data.embV, Data.emb]`. Simplify using `only [Data.ucomp, Data.aproj, Data.lineV, Pi.sub_apply, Pi.zero_apply, hw, Hf_smul_left_frame, mul_div_assoc, div_self hpos, mul_one, sub_self]`.
+-/
 theorem ucomp_line (hξ : X.IsIso ξ) (e : E) : X.ucomp z ξ (X.embV (e • ξ)) = 0 := by
   funext τ
   have hξ0 : Data.emb τ.1 ξ ≠ 0 := by
@@ -184,6 +249,13 @@ theorem ucomp_line (hξ : X.IsIso ξ) (e : E) : X.ucomp z ξ (X.embV (e • ξ))
   simp only [Data.ucomp, Data.aproj, Data.lineV, Pi.sub_apply, Pi.zero_apply, hw, Hf_smul_left_frame,
     mul_div_assoc, div_self hpos, mul_one, sub_self]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `v _`. Set `S : VT (X` to `X) z ξ →ₗ[ℝ] (X.Ψ → Fin r → ℂ) := { toFun := fun a => a.val map_add' := fun a b => VT.val_add a b map_smul' := fun c a => VT.val_smul c a }`. Establish `hS : Function.Injective S` using `fun a b h => VT.ext h`. Establish `h1` using `LatticeSpanMembership.Uz_le_span hD3 hξ v.val_mem`.
+
+Establish `h2 : Submodule.span ℝ (Set.range fun μ : X.Λp ξ => X.ucomp z ξ (X.embV μ)) ≤ Submodule.map S (Submodule.span ℝ (Lat z ξ hξ : Set (VT (X` using `X) z ξ))) := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨μ, rfl⟩`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ((mem_Lat z ξ hξ).mpr ⟨μ, rfl⟩))`. Take `⟨w, hw, hwv⟩` from `h2 h1`.
+
+Rewrite `hw` using `[hS hwv]`. Then use the resulting hypothesis.
+-/
 theorem span_Lat (hD3 : IntegerApproximationCount (E := E)) (hξ : X.IsIso ξ) :
     Submodule.span ℝ (Lat z ξ hξ : Set (VT (X := X) z ξ)) = ⊤ := by
   rw [eq_top_iff]

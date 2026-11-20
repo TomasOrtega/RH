@@ -34,6 +34,9 @@ def charQZ (χ : ContinuousMonoidHom G (Multiplicative (ZMod n))) : Additive G �
     (continuous_of_discreteTopology (f := fun z : Multiplicative (ZMod n) ↦ zmodToQZ n z.toAdd)).comp
       (χ.continuous.comp continuous_toMul)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem charQZ_apply (χ : ContinuousMonoidHom G (Multiplicative (ZMod n))) (g : G) :
     charQZ χ (Additive.ofMul g) = zmodToQZ n (Multiplicative.toAdd (χ g)) :=
   rfl
@@ -42,6 +45,13 @@ end QZ
 
 variable {K : Type u} [Field K] [NumberField K] {Ω : Type u} [Field Ω] [Algebra K Ω] [IsGalois K Ω]
 
+/- English proof (translation)
+Take `⟨L, _, _, hyL⟩` from `exists_finite_abelian_mem hy`. Use `NumberField.of_module_finite K L` as an intermediate fact. Set `j : L →ₐ[K] AlgebraicClosure (v.adicCompletion K)` to `ι.comp L.val`. Establish `e` using `artinMap_finiteEmbedding_apply L v (placeOfAlgHom j) (completionEmbeddingOfAlgHom j) b ⟨y, hyL⟩`. Establish `hmem : ι y ∈ maximalAbelianExtension (v.adicCompletion K) (AlgebraicClosure (v.adicCompletion K))`.
+
+Use `apply_mem_maximalAbelianExtension (completionEmbeddingOfAlgHom j) (algebraMap L ((placeOfAlgHom j).1.adicCompletion L) ⟨y, hyL⟩)` as an intermediate fact. Rewrite `this` using `[completionEmbeddingOfAlgHom_algebraMap]`. Then use the resulting hypothesis. Establish `e2 : (localArtinMap (v.adicCompletion K) (AlgebraicClosure (v.adicCompletion K)) b ⟨ι y, hmem⟩ : AlgebraicClosure (v.adicCompletion K)) = completionEmbeddingOfAlgHom j (algebraMap L ((placeOfAlgHom j).1.adicCompletion L) (restrictAb L (le_maximalAbelianExtension L) (artinMap K Ω …`. Rewrite using `[e]`. Conclude with `congrArg (fun z ↦ (localArtinMap (v.adicCompletion K) (AlgebraicClosure (v.adicCompletion K)) b z : AlgebraicClosure (v.adicCompletion K))) (Subtype.ext (completionEmbeddingOfAlgHom_algebraMap j ⟨y, hyL⟩).symm)`.
+
+Establish `key : ι (decompHom (v.adicCompletion K) ι g y) = ι (artinMap K Ω (IdeleClassGroup.mk K (finiteEmbedding v b)) ⟨y, hy⟩ : Ω)`. Rewrite using `[decompHom_apply, hg _ hmem, e2, completionEmbeddingOfAlgHom_algebraMap]`. Express the relevant statement in the definitionally equal form `ι ((restrictAb L (le_maximalAbelianExtension L) (artinMap K Ω (IdeleClassGroup.mk K (finiteEmbedding v b))) ⟨y, hyL⟩ : L) : Ω) = _`. Rewrite using `[restrictAb_apply]`. Conclude with `ι.injective key`.
+-/
 theorem decompHom_apply_of_localArtinMap (v : HeightOneSpectrum (𝓞 K))
     (ι : Ω →ₐ[K] AlgebraicClosure (v.adicCompletion K)) (b : (v.adicCompletion K)ˣ)
     {g : Gal(AlgebraicClosure (v.adicCompletion K)/v.adicCompletion K)}
@@ -78,6 +88,9 @@ theorem decompHom_apply_of_localArtinMap (v : HeightOneSpectrum (𝓞 K))
     rw [restrictAb_apply]
   exact ι.injective key
 
+/- English proof (translation)
+The claim follows from `AlgEquiv.liftNormal_commutes (localArtinMap (v.adicCompletion K) (AlgebraicClosure (v.adicCompletion K)) b) (AlgebraicClosure (v.adicCompletion K)) ⟨y, hy⟩`.
+-/
 theorem liftNormal_localArtinMap_apply (v : HeightOneSpectrum (𝓞 K)) (b : (v.adicCompletion K)ˣ)
     (y : AlgebraicClosure (v.adicCompletion K))
     (hy : y ∈ maximalAbelianExtension (v.adicCompletion K) (AlgebraicClosure (v.adicCompletion K))) :
@@ -90,6 +103,9 @@ theorem liftNormal_localArtinMap_apply (v : HeightOneSpectrum (𝓞 K)) (b : (v.
 
 variable {S : Set (HeightOneSpectrum (𝓞 K))} {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[charToSIdelePos_mk_eq χ _ (decompHom (v.adicCompletion K) ι g) (decompHom_apply_of_localArtinMap v ι b hg), decompHomS_eq]`. Both sides reduce to the same expression.
+-/
 theorem charToSIdelePos_finiteEmbedding
     (χ : ContinuousMonoidHom (galUnramifiedOutside K Ω S) (Multiplicative (ZMod n)))
     (v : HeightOneSpectrum (𝓞 K)) (ι : Ω →ₐ[K] AlgebraicClosure (v.adicCompletion K))
@@ -104,6 +120,9 @@ theorem charToSIdelePos_finiteEmbedding
     (decompHom_apply_of_localArtinMap v ι b hg), decompHomS_eq]
   rfl
 
+/- English proof (translation)
+Rewrite using `[charEquiv_mk_eq hS h χ _ (decompHom (v.adicCompletion K) ι g) (decompHom_apply_of_localArtinMap v ι b hg), decompHomS_eq]`. Both sides reduce to the same expression.
+-/
 theorem charEquiv_finiteEmbedding [IsAlgClosure K Ω] (hS : S.Finite) [NeZero n]
     (h : Odd n ∨ IsTotallyComplex K)
     (χ : ContinuousMonoidHom (galUnramifiedOutside K Ω S) (Multiplicative (ZMod n)))
@@ -124,6 +143,9 @@ section Cup
 variable {K : Type} [Field K] [NumberField K] {Ω : Type} [Field Ω] [Algebra K Ω] [IsGalois K Ω]
   {S : Set (HeightOneSpectrum (𝓞 K))} {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[brauerInvZOfIsSepClosure_galCupClass _ a _ (liftNormal_localArtinMap_apply v a), contCharComp_apply, charEquiv_finiteEmbedding hS h χ v ι a (liftNormal_localArtinMap_apply v a)]`. Both sides reduce to the same expression.
+-/
 theorem brauerInvZ_galCupClass_decompHomS [IsAlgClosure K Ω] (hS : S.Finite) [NeZero n]
     (h : Odd n ∨ IsTotallyComplex K)
     (χ : ContinuousMonoidHom (galUnramifiedOutside K Ω S) (Multiplicative (ZMod n)))
@@ -138,6 +160,9 @@ theorem brauerInvZ_galCupClass_decompHomS [IsAlgClosure K Ω] (hS : S.Finite) [N
     contCharComp_apply, charEquiv_finiteEmbedding hS h χ v ι a (liftNormal_localArtinMap_apply v a)]
   rfl
 
+/- English proof (translation)
+The claim follows from `brauerInvZ_galCupClass_decompHomS hS h χ w ι a`.
+-/
 theorem placeInv_galCupClass_decompHomS {K : FiniteSubfield} {S : Set (HeightOneSpectrum (𝓞 K.1))}
     (hS : S.Finite) [NeZero n] (h : Odd n ∨ IsTotallyComplex K.1)
     (χ : ContinuousMonoidHom (galUnramifiedOutside K.1 ℚ̄ S) (Multiplicative (ZMod n)))
@@ -154,6 +179,9 @@ end Cup
 
 section Frobenius
 
+/- English proof (translation)
+Establish `e` using `unramifiedDegree_of_mk_eq_localReciprocityLimit (mk_eq_localReciprocityLimit_of_forall (liftNormal_localArtinMap_apply v (localUniformizer v)))`. Establish `ho : GroundTheory.LocalField.ord ((localUniformizer v : (v.adicCompletion K)ˣ) : v.adicCompletion K) = 1` using `ord_eq_one_of_valued_eq_exp v (valued_localUniformizer v)`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[ho, Int.cast_one]`.
+-/
 theorem unramifiedDegree_liftNormal_localArtinMap_localUniformizer {K : Type} [Field K] [NumberField K]
     (v : HeightOneSpectrum (𝓞 K)) :
     unramifiedDegree (v.adicCompletion K) (AlgebraicClosure (v.adicCompletion K))
@@ -169,6 +197,9 @@ theorem unramifiedDegree_liftNormal_localArtinMap_localUniformizer {K : Type} [F
 
 variable {K : FiniteSubfield} {S : Set (HeightOneSpectrum (𝓞 K.1))} {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[sPresentation_apply, map_one, one_mul, toAdd_ofAdd, divisorIdele_single, zpow_one]`.
+-/
 theorem sPresentation_single [Finite S] (v : HeightOneSpectrum (𝓞 K.1)) (hv : v ∉ S) :
     sPresentation S (1, Multiplicative.ofAdd (Finsupp.single ⟨v, hv⟩ 1)) =
       SIdeleClassGroup.mk S (finiteEmbedding v (localUniformizer v)) := by
@@ -176,6 +207,11 @@ theorem sPresentation_single [Finite S] (v : HeightOneSpectrum (𝓞 K.1)) (hv :
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `_`. Establish `h1 : unramifiedDegree (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) (σ⁻¹ * g) = 1`. Rewrite using `[map_mul, map_inv, hσ, hdeg, inv_mul_cancel]`. Establish `h2` using `decompHomS_eq_one_of_unramifiedDegree_eq_one S ι hv _ h1`. Rewrite `h2` using `[map_mul, map_inv, inv_mul_eq_one]`.
+
+Rewrite using `[sPresentation_single, charEquiv_finiteEmbedding hS h χ v ι (localUniformizer v) hg, h2]`.
+-/
 theorem charEquiv_sPresentation_single_of (hS : S.Finite) [NeZero n] (h : Odd n ∨ IsTotallyComplex K.1)
     (χ : ContinuousMonoidHom (galUnramifiedOutside K.1 ℚ̄ S) (Multiplicative (ZMod n)))
     (v : HeightOneSpectrum (𝓞 K.1)) (hv : v ∉ S) (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1))
@@ -198,6 +234,9 @@ theorem charEquiv_sPresentation_single_of (hS : S.Finite) [NeZero n] (h : Odd n 
   rw [map_mul, map_inv, inv_mul_eq_one] at h2
   rw [sPresentation_single, charEquiv_finiteEmbedding hS h χ v ι (localUniformizer v) hg, h2]
 
+/- English proof (translation)
+The claim follows from `charEquiv_sPresentation_single_of hS h χ v hv ι σ _ hσ (liftNormal_localArtinMap_apply v _) (unramifiedDegree_liftNormal_localArtinMap_localUniformizer v)`.
+-/
 theorem charEquiv_sPresentation_single (hS : S.Finite) [NeZero n] (h : Odd n ∨ IsTotallyComplex K.1)
     (χ : ContinuousMonoidHom (galUnramifiedOutside K.1 ℚ̄ S) (Multiplicative (ZMod n)))
     (v : HeightOneSpectrum (𝓞 K.1)) (hv : v ∉ S) (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1))

@@ -5,6 +5,11 @@ import Development.AbelianVarietyTheory.Statements.PlaceShiftStatements.Auxiliar
 
 namespace GlobalTheory.PrimeMembershipExistence
 
+/- English proof (translation)
+Establish `hP` using `w.isPrime`. Establish `hn0 : Ideal.absNorm w.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `w.ne_bot`. Establish `hmem` using `Ideal.absNorm_mem w.asIdeal`.
+
+Rewrite `hmem` using `[← Nat.prod_factorization_pow_eq_self hn0, Finsupp.prod, Nat.cast_prod]`. Take `⟨p, hp, hpm⟩` from `hP.prod_mem_iff.1 hmem`. Rewrite `hp` using `[Nat.support_factorization]`. Rewrite `hpm` using `[Nat.cast_pow]`. Conclude with `⟨p, Nat.prime_of_mem_primeFactors hp, hP.mem_of_pow_mem _ hpm⟩`.
+-/
 theorem exists_prime_mem {K : Type} [Field K] [NumberField K] (w : Formalism.PairingDivisionLocalBalance.Pl K) :
     ∃ p : ℕ, Nat.Prime p ∧
       (p : NumberField.RingOfIntegers K) ∈ IsDedekindDomain.HeightOneSpectrum.asIdeal w := by

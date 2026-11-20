@@ -143,12 +143,21 @@ def toVSys (N₁ : ℕ) (hl : Φ.abelian₂) (hf : Φ.Four N₁) : VSys bar q W 
   lam := hl
   four := hf
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pre_toVSys (N₁ : ℕ) (hl : Φ.abelian₂) (hf : Φ.Four N₁) : (Φ.toVSys N₁ hl hf).pre = Φ := rfl
 
 end VPre
 
+/- English proof (translation)
+The claim follows from `Φ.lam`.
+-/
 theorem VSys.pre_lam {N₁ : ℕ} (Φ : VSys bar q W N₁ A) : Φ.pre.abelian₂ := Φ.lam
 
+/- English proof (translation)
+The claim follows from `Φ.four`.
+-/
 theorem VSys.pre_four {N₁ : ℕ} (Φ : VSys bar q W N₁ A) : Φ.pre.Four N₁ := Φ.four
 end
 
@@ -166,6 +175,9 @@ def IsThetaTerms₀ (D : DegPre V₁) (N₁ : ℕ) {X C : Type} [AddCommGroup X]
       val (w c) (𝟙 _) z J ^ (N₁ ^ 2) * val κ (g c).b.left z J = 1) ∧
     (∀ mu c, IsCoef 1 (g c) (w c) (e mu) (th.s (e mu)) (algebraMap V₁ (FractionRing V₁) (T mu c)))
 
+/- English proof (translation)
+Take `⟨th, g, b, w, h₁, h₂, h₃, h₄, h₅, -⟩` from `h`. Conclude with `⟨th, g, b, w, h₁, h₂, h₃, h₄, h₅⟩`.
+-/
 theorem IsThetaTerms.zero {D : DegPre V₁} {N₁ : ℕ} {X C : Type} [AddCommGroup X] {e : X ≃+ D.X} {T : X → C → V₁}
     (h : IsThetaTerms D N₁ e T) : IsThetaTerms₀ D N₁ e T := by
   obtain ⟨th, g, b, w, h₁, h₂, h₃, h₄, h₅, -⟩ := h
@@ -193,6 +205,9 @@ def IsChartMemberP [IsLocalRing V] (N₁ : ℕ) (Q : Data V) (ξ : Sp V ⟶ Z) {
     ∃ (D : DegPre (Φ.V y)) (e₈ : (Fin 8 → Q.X) ≃+ D.X), SharpRef W Q ρ D e₈ ∧
       IsThetaTerms₀ D N₁ e₈ fun mu c => Φ.term y (fun a => e.symm (mu a)) c
 
+/- English proof (translation)
+Introduce `T ev h₁ _ h₂` and use `h T ev h₁ h₂`.
+-/
 theorem HasTraits.reg {N₁ : ℕ} {Ψ : VSys (id : ℤ → ℤ) g W N₁ (X₁.M.Z.presheaf.stalk z₁)} (h : HasTraits X₁ z₁ Ψ) :
     HasTraitsR X₁ z₁ Ψ.pre := fun T ev h₁ _ h₂ => h T ev h₁ h₂
 

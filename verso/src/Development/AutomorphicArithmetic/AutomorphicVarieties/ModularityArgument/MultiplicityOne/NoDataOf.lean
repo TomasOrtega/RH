@@ -16,6 +16,11 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.BcB Positiv
 
 namespace UpperTheory.V.Z.Mult
 
+/- English proof (translation)
+Introduce `E _ _ _ hunr n hn1 hn4 π hreg hd D₁ h1 h2 h3 h4`. Take `⟨D, r, t, s, hno⟩` from `preOf (partNorm absInf) csdSat Asm.places E n hn1 π hd D₁ h1 h2 h3 h4`. Take `⟨D₀, hone, hr⟩` from `onePre E n hn1 π hreg (csdDisc E n hn1 π hd)`. Establish `hs` using `oneSat E n hn1 π D₀ hone`. Establish `ht : D₀.ThetaStable` using `(csdSat E n hn1 π hd).mono fun w ⟨B, a, b⟩ => ⟨B, (hs w B).1 a, fun u hu => (hs u _).1 (b u hu)⟩`.
+
+Take `⟨e, he⟩` from `Rig.locRigid_holds E n D D₀ r hr (galStep_le hW E hunr n hn4 D D₀ r hr t ht (s.mono fun w hw hx => (hw hx).imp fun B hB => ⟨hB.1, (hs w B).1 hB.2⟩))`. Conclude with `absurd (onlyOne cuspOrTwo notTwo oneSat E n hn1 π D D₀ e r hone he) hno`.
+-/
 theorem noData_of (hW : GalWeak 4) : NoData := by
   intro E _ _ _ hunr n hn1 hn4 π hreg hd D₁ h1 h2 h3 h4
   obtain ⟨D, r, t, s, hno⟩ := preOf (partNorm absInf) csdSat Asm.places E n hn1 π hd D₁ h1 h2 h3 h4
@@ -26,6 +31,9 @@ theorem noData_of (hW : GalWeak 4) : NoData := by
     (s.mono fun w hw hx => (hw hx).imp fun B hB => ⟨hB.1, (hs w B).1 hB.2⟩))
   exact absurd (onlyOne cuspOrTwo notTwo oneSat E n hn1 π D D₀ e r hone he) hno
 
+/- English proof (translation)
+The claim follows from `have hA := rCountAt hC evalD cpUniq Asm.places rMult (rIdent (noData_of hW) hA geomTr UpperTheory.ConvolutionTheory.G2.g2s UpperTheory.ConvolutionTheory.G2.matchUnit UpperTheory.ConvolutionTheory.G2.matchSplit (endoS (enlarge Th.stUnit hecke_eigenvalues_unitary_one_factor unitary …`.
+-/
 theorem mult_of (hW : GalWeak 4) (hC : CompOf) (hS : StableBlockSA) : Mult :=
   have hA := rCountAt hC evalD cpUniq Asm.places
   rMult (rIdent (noData_of hW) hA geomTr UpperTheory.ConvolutionTheory.G2.g2s UpperTheory.ConvolutionTheory.G2.matchUnit UpperTheory.ConvolutionTheory.G2.matchSplit

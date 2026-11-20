@@ -12,6 +12,19 @@ open scoped TensorProduct NumberField
 
 namespace GlobalTheory.BadCount.RankRead
 
+/- English proof (translation)
+Use `haveI := Module.Finite.of_basis b`. Use `letI : Algebra L M := σ.toAlgebra`. Use `letI : Module L X := Module.compHom X σ`. Use `haveI : IsScalarTower L M X := ⟨fun x y z => mul_smul (σ x) y z⟩`. Set `U` to `Submodule.span M (Set.range Φ)`.
+
+Set `f : W →ₗ[L] U` to `{ toFun := fun w => ⟨Φ w, Submodule.subset_span ⟨w, rfl⟩⟩ map_add' := fun x y => Subtype.ext (map_add Φ x y) map_smul' := fun x y => Subtype.ext (map_smulₛₗ Φ x y) }`. Establish `hU : U = Submodule.span M (Set.range fun k => Φ (b k))`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono (by rintro _ ⟨k, rfl⟩; exact ⟨_, rfl⟩))` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Use `haveI := Fintype.ofFinite κ`.
+
+Rewrite using `[← b.sum_repr w, map_sum]`. Conclude with `Submodule.sum_mem _ fun k _ => by`. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Set `c : Basis κ M U` to `(Basis.span hb).map (LinearEquiv.ofEq _ _ hU.symm)`.
+
+Establish `hc : ∀ k, c k = f (b k)` using `fun k => Subtype.ext (by simp [c, f])`. Establish `hf : IsBaseChange M f`. Use `IsBaseChange.of_equiv ((Algebra.TensorProduct.basis M b).equiv c (Equiv.refl _)) fun m => ?_` and prove the remaining obligations. Establish `: ((((Algebra.TensorProduct.basis M b).equiv c (Equiv.refl _)).toLinearMap.restrictScalars L) ∘ₗ TensorProduct.mk L M W 1) = f` using `b.ext fun k => by`. Rewrite using `[← hc]`.
+
+Simplify using `[← Algebra.TensorProduct.basis_apply]`. Conclude with `LinearMap.congr_fun this m`. Establish `hm : ∀ i, ∀ x ∈ U, a' i x ∈ U` using `fun i => Submodule.span_le (p := U.comap (a' i)) |>.2 (by`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, (h i w).symm⟩)`.
+
+Rewrite using `[← GlobalTheory.finrank_iInf_ker_of_isBaseChange L M W U ι f a (fun i => (a' i).restrict (hm i)) hf (fun i w => Subtype.ext (h i w)), ← Submodule.finrank_map_subtype_eq U]`. Use `congrArg (fun N : Submodule M X => finrank M N) (Submodule.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [Submodule.mem_map, Submodule.mem_iInf, LinearMap.mem_ker, Submodule.mem_inf]`. Conclude with `⟨by rintro ⟨y, hy, rfl⟩; exact ⟨fun i => congrArg Subtype.val (hy i), y.2⟩, fun ⟨h1, h2⟩ => ⟨⟨x, h2⟩, fun i => Subtype.ext (h1 i), rfl⟩⟩`.
+-/
 theorem finrank_iInf_ker_semilinear {L M W X ι κ : Type} [Field L] [Field M] [AddCommGroup W] [Module L W] [AddCommGroup X]
     [Module M X] [Finite ι] [Finite κ] {σ : L →+* M} (Φ : W →ₛₗ[σ] X) (b : Basis κ L W) (hb : LinearIndependent M fun k => Φ (b k))
     (a : ι → W →ₗ[L] W) (a' : ι → X →ₗ[M] X) (h : ∀ i w, a' i (Φ w) = Φ (a i w)) :
@@ -59,10 +72,44 @@ def twistExt {F M V Γ : Type} [Field F] [Field M] [Algebra F M] [AddCommGroup V
   map_mul' γ δ := by
     rw [map_mul, map_mul, LinearMap.baseChange_mul, Units.val_mul, smul_mul_smul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistExt_tmul {F M V Γ : Type} [Field F] [Field M] [Algebra F M] [AddCommGroup V] [Module F V] [Group Γ]
     (τ : Representation F Γ V) (χ : Γ →* Mˣ) (γ : Γ) (m : M) (v : V) :
     twistExt τ χ γ (m ⊗ₜ[F] v) = ((χ γ : Mˣ) : M) • (m ⊗ₜ[F] τ γ v) := rfl
 
+/- English proof (translation)
+Use `set R := twistExt τ ((Units.map (σ : L →* M)).comp (chi.comp θ))⁻¹ with hR`. Set `bW : Basis (Fin n) L W` to `Basis.mk b₂ b₃.ge`. Set `Φ : W →ₛₗ[σ] M ⊗[F] V` to `{ toFun := fun w => ∑ k, σ (bW.repr w k) • ((1 : M) ⊗ₜ[F] π (b k)) map_add' := fun x y => by simp [add_smul, Finset.sum_add_distrib] map_smul' := fun x y => by simp [Finset.smul_sum, mul_smul] }`. Establish `hΦb : ∀ k, Φ (bW k) = (1 : M) ⊗ₜ[F] π (b k)` using `fun k => by show ∑ l, σ (bW.repr (bW k) l) • _ = _`. Rewrite using `[Finset.sum_eq_single k (fun l _ hl => by simp [Finsupp.single_eq_of_ne hl]) (by simp)]`.
+
+Simplify using the standard rewrite rules. Establish `hΦ : ∀ f, Φ (ε f) = (1 : M) ⊗ₜ[F] π f` using `fun f => by`. Establish `hf : f ∈ Submodule.span K (Set.range b)` using `b₁ ▸ Submodule.mem_top`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨k, rfl⟩ := h`.
+
+Rewrite using `[← hΦb, Basis.mk_apply]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy, map_add, TensorProduct.tmul_add]`. Consider the case `smul t x _ hx`. Rewrite using `[map_smul, ← algebraMap_smul L, map_smulₛₗ, hx, map_smulₛₗ, hσ, algebraMap_smul, TensorProduct.tmul_smul]`.
+
+Establish `hind : LinearIndependent M fun k => Φ (bW k)`. Simplify using `only [hΦb]`. Conclude with `Module.Flat.linearIndependent_one_tmul b₄`. Establish `hRΦ : ∀ γ w, R γ (Φ w) = Φ ((((chi (θ γ))⁻¹ : Lˣ) : L) • ρ (θ γ) w)` using `fun γ w => by`. Rewrite using `[← bW.sum_repr w]`.
+
+Simplify using `only [map_sum, map_smulₛₗ, Finset.smul_sum, RingHom.id_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Take `⟨f', h1, h2⟩` from `hρ γ (b k)`. Rewrite using `[hΦb, Basis.mk_apply, h1, hΦ, hR, twistExt_tmul, h2, smul_comm]`. Simplify using the standard rewrite rules.
+
+Establish `hE : eig R Q lamb ≤ Submodule.span M (Set.range Φ)` using `fun x hx => by`. Establish `h0` using `GlobalTheory.GaloisDescent.span_image_iInf (TensorProduct.isBaseChange F V M) fun γ : θ.ker => LinearMap.ker (τ γ - LinearMap.id)`. Establish `h1 : x ∈ Submodule.span M (TensorProduct.mk F M V 1 '' (⨅ γ : θ.ker, LinearMap.ker (τ γ - LinearMap.id) : Submodule F V))`. Rewrite using `[h0, Submodule.mem_iInf]`. Introduce `γ`.
+
+Establish `hγ : θ γ = 1` using `γ.2`. Establish `hq : (γ : Γ) ∈ Q` using `(hQ _).2 (hγ ▸ P.one_mem)`. Rewrite using `[GlobalTheory.GaloisDescent.span_image_ker (TensorProduct.isBaseChange F V M) (TensorProduct.isBaseChange F V M) _ ((τ γ).baseChange M - LinearMap.id) (fun v => by simp [TensorProduct.tmul_sub])]`. Use `(mem_eig R Q lamb x).1 hx ⟨γ, hq⟩` as an intermediate fact. Rewrite `this` using `[hlam, show (⟨θ γ, (hQ _).1 hq⟩ : P) = 1 from Subtype.ext hγ]`.
+
+Simplify `this` using `[hR, twistExt, hγ, sub_eq_zero]`. Use `Submodule.span_le.2 ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hv'` using `hinv v fun γ hγ => sub_eq_zero.1 ((Submodule.mem_iInf _).1 hv ⟨γ, hγ⟩)`. Use `clear hv`.
+
+Proceed by induction on `hv' using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨f, rfl⟩ := h`. Conclude with `Submodule.subset_span ⟨_, hΦ f⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul t x _ hx => rw [map_smul, ← algebraMap_smul M]`. Conclude with `Submodule.smul_mem _ _ hx`. Set `a : Q → W →ₗ[L] W` to `fun γ => (((chi (θ γ))⁻¹ : Lˣ) : L) • ρ (θ γ) - ((lam ⟨θ γ, (hQ _).1 γ.2⟩ : Lˣ) : L) • LinearMap.id`. Set `a' : Q → M ⊗[F] V →ₗ[M] M ⊗[F] V` to `fun γ => R γ - ((lamb γ : Mˣ) : M) • LinearMap.id`.
+
+Establish `ha : ∀ γ w, a' γ (Φ w) = Φ (a γ w)` using `fun γ w => by`. Simplify using `only [a, a', LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hRΦ, map_sub, map_smulₛₗ, hlam]`. Establish `hSa : S = ⨅ γ, LinearMap.ker (a γ)`. Use extensionality with `w`. Establish `key : ∀ (g : G) (x : Lˣ), (((chi g)⁻¹ : Lˣ) : L) • ρ g w - (x : L) • w = 0 ↔ ρ g w = ((chi g * x : Lˣ) : L) • w` using `fun g x => by rw [sub_eq_zero, ← Units.smul_def, inv_smul_eq_iff, Units.smul_def, smul_smul, Units.val_mul]`.
+
+Rewrite using `[hS, Submodule.mem_iInf]`. Use `⟨fun h γ => (key _ _).2 (h ⟨θ γ, (hQ _).1 γ.2⟩), fun h p => ?_⟩` and prove the remaining obligations. Use `(key _ _).1 (h ⟨s (c p), (hQ _).2 (by rw [hs]; exact p.2)⟩)` as an intermediate fact. Simplify `this` using `only [hs]`. Establish `hEa : eig R Q lamb = ⨅ γ, LinearMap.ker (a' γ)` using `rfl`.
+
+Use `⟨by rw [hSa, finrank_iInf_ker_semilinear Φ bW hind a a' ha, ← hEa, inf_eq_left.2 hE], ?_⟩` and prove the remaining obligations. Establish `h2` using `finrank_iInf_ker_semilinear Φ bW hind (fun o : Option Q => o.elim (∑ g, (eC g * ((chi g)⁻¹ : Lˣ)) • ρ g) a) (fun o => o.elim (Representation.asAlgebraHom (R.comp s : Representation M G' (M ⊗[F] V)) e) a') (by`. Introduce and unpack `(_ | γ) w`. Use `haveI := Fintype.ofEquiv G c.toEquiv`. Simplify using `only [Option.elim]`.
+
+Rewrite using `[Representation.asAlgebraHom_def, MonoidAlgebra.lift_apply, Finsupp.sum_fintype _ _ (fun _ => by simp), LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Use `(Fintype.sum_equiv c.toEquiv _ _ fun g => ?_).symm` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, mul_smul, map_smulₛₗ, he]`. Conclude with `congrArg _ (by rw [MonoidHom.comp_apply, hRΦ]; simp only [MulEquiv.toEquiv_eq_coe, EquivLike.coe_coe, hs])`. Conclude with `ha γ w)`.
+
+Rewrite `h2` using `[iInf_option, iInf_option]`. Simplify using `only [Option.elim] at h2`. Rewrite using `[hSa, inf_comm]`. Use `h2.trans (congrArg (fun N : Submodule M (M ⊗[F] V) => finrank M N) ?_)` and prove the remaining obligations. Rewrite using `[← hEa, inf_assoc, inf_eq_left.2 hE, inf_comm]`.
+-/
 theorem finrank_eq {K L F M C W V G G' Γ : Type} [Field K] [Field L] [Field F] [Field M] [Algebra K L] [Algebra F M]
     [AddCommGroup C] [Module K C] [AddCommGroup W] [Module L W] [Module K W] [IsScalarTower K L W] [AddCommGroup V] [Module F V]
     [Group G] [Fintype G] [Group G'] [Group Γ] [Finite Γ] {j : K →+* F} (σ : L →+* M)
@@ -163,6 +210,11 @@ theorem finrank_eq {K L F M C W V G G' Γ : Type} [Field K] [Field L] [Field F] 
   refine h2.trans (congrArg (fun N : Submodule M (M ⊗[F] V) => finrank M N) ?_)
   rw [← hEa, inf_assoc, inf_eq_left.2 hE, inf_comm]
 
+/- English proof (translation)
+Take `⟨n, b, h1, -, -, -, h5⟩` from `hK`. Establish `h : S ≤ Submodule.span LL (Submodule.span (𝓞 LL) (A.MK : Set WL) : Set WL)`. Use `le_top.trans (h5.ge.trans (Submodule.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.span_mono Submodule.subset_span (Submodule.span_le_restrictScalars Ks LL _ (hM.2 ▸ h1 k))`.
+
+Rewrite using `[Formalism.HN.rkK, GlobalTheory.span_inf_restrictScalars_eq LL h]`.
+-/
 theorem rkK_inf {LL Ks WL G : Type} [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL] [AddCommGroup WL]
     [Module LL WL] [Module Ks WL] [IsScalarTower Ks LL WL] [Module (𝓞 LL) WL] [IsScalarTower (𝓞 LL) LL WL] [Module (𝓞 Ks) WL]
     [IsScalarTower (𝓞 Ks) Ks WL] {W : (LL →+* ℂ) → Type} [∀ σ, NormedAddCommGroup (W σ)] [∀ σ, InnerProductSpace ℂ (W σ)] [Group G]

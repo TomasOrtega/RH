@@ -16,6 +16,15 @@ namespace GlobalTheory.Mum
 
 open GlobalTheory.ArcPull ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Introduce `R _ _ _ hR E _ _ _ H Dm D _ o hP R' _ _ _ φ hφ D' ⟨hD⟩`. Use `letI := H.starRing`. Establish `hG : GlobalFnsSt` using `GlobalTheory.firstFiveLaws.1.globalFns`. Use `letI inst : Module (𝓞 E) D'.toPre.X := hD.xe.module (𝓞 E)`. Establish `hx : ∀ (a : 𝓞 E) y, hD.xe (a • y) = a • hD.xe y` using `fun a y => hD.xe.apply_symm_apply _`.
+
+Take `⟨o', ho⟩` from `ArcPull.exists_oAct hD hG hφ o hx`. Take `⟨hpq, hp1, hw, hF⟩` from `hP`. Use `⟨inst, o', hpq, hp1, ArcPull.traceFormTwistIso_of_pullback hD hφ hx ho hw, fun F _ _ _ => ?_⟩` and prove the remaining obligations. Use `letI : Algebra (FractionRing R) F := ((algebraMap (FractionRing R') F).comp (ArcPull.fracMap hφ)).toAlgebra`. Establish `hc : ArcPull.Compat φ F` using `fun x => congrArg (algebraMap (FractionRing R') F) (ArcPull.fracMap_algebraMap hφ x)`.
+
+Take `⟨hL, hT⟩` from `hF F`. Use `⟨fun τ => ?_, fun ζ hζ hζ' => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, hn'⟩` from `hL τ`. Use `⟨n, (LiePull.lieMult_pull _ _ _ _ _ _ _ (ofRingAct o.onB.toRingAct) _ (pull_grp hD) ho F _ τ n).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← spMap_comp, show ((algebraMap (FractionRing R') F).comp (algebraMap R' _)).comp φ = (algebraMap (FractionRing R) F).comp (algebraMap R _) from RingHom.ext fun r => (hc r).symm]`.
+
+Conclude with `hn`. Rewrite using `[(({ hD.xe with map_smul' := hx } : D'.toPre.X ≃ₗ[𝓞 E] D.toPre.X)).finrank_eq]`. Conclude with `hn'`. Take `⟨I, hI⟩` from `hT ζ hζ hζ'`. Conclude with `⟨ArcPull.pullTate hG hD hx ho D.tau_bimult D'.tau_bimult hc I, hI⟩`.
+-/
 theorem pelOK_of_isPullDeg : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dm : Datum H) (D : DegData R (maximalIdeal R)) [Module (𝓞 E) D.toPre.X] (o : letI := H.starRing; D.toPre.OAct (𝓞 E)), PelOK Dm D.toPre o → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (φ : R →+* R'), Function.Injective φ → ∀ D' : DegData R' (maximalIdeal R'), Nonempty (IsPullDeg φ D.toPre D'.toPre) → ∃ (_ : Module (𝓞 E) D'.toPre.X) (o' : letI := H.starRing; D'.toPre.OAct (𝓞 E)), PelOK Dm D'.toPre o' := by
   intro R _ _ _ hR E _ _ _ H Dm D _ o hP R' _ _ _ φ hφ D' ⟨hD⟩
   letI := H.starRing

@@ -4,14 +4,37 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC.HCElements
 
+/- English proof (translation)
+The claim follows from `((chainsN R).obj E).isZero_extend_X ComplexShape.embeddingDownNat n (fun i hi => by change -(i : ℤ) = n at hi; omega)`.
+-/
 theorem chains_X_isZero (R : Type) [CommRing R] (E : Spc) (n : ℤ) (hn : 0 < n) : IsZero (((chains R).obj E).X n) :=
   ((chainsN R).obj E).isZero_extend_X ComplexShape.embeddingDownNat n (fun i hi => by
     change -(i : ℤ) = n at hi; omega)
 
+/- English proof (translation)
+The claim follows from `(injectiveResolution F).cocomplex.isZero_extend_X ComplexShape.embeddingUpNat n (fun i hi => by change (i : ℤ) = n at hi; omega)`.
+-/
 theorem res_X_isZero (R : Type) [CommRing R] (F : Shv R) (n : ℤ) (hn : n < 0) : IsZero ((res R F).X n) :=
   (injectiveResolution F).cocomplex.isZero_extend_X ComplexShape.embeddingUpNat n (fun i hi => by
     change (i : ℤ) = n at hi; omega)
 
+/- English proof (translation)
+Introduce `R _ F`. Establish `zero_iff : ∀ (E : Spc) (n : ℤ) (c : Cocycle ((chains R).obj E) (res R F) n), CohomologyClass.mk c = 0 ↔ ∃ y : ((HC R F).obj (op E)).X (n - 1), (show ((HC R F).obj (op E)).X n from c.1) = ((HC R F).obj (op E)).d (n - 1) n y`. Introduce `E n c`. Rewrite using `[CohomologyClass.mk_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨m, hm, β, hβ⟩`. Take `rfl : m = n - 1` from `by omega`. Conclude with `⟨β, hβ.symm⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨n - 1, by omega, y, hy.symm⟩`.
+
+Use `⟨?_, fun E n z hz => CohomologyClass.mk (Cocycle.mk z (n + 1) rfl hz), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `E n hn`. Use `@AddCommGrpCat.isZero_of_subsingleton _ ⟨fun a b => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Cochain ((chains R).obj E.unop) (res R F) n at a b`. Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hp : 0 < p`. Conclude with `(chains_X_isZero R E.unop p hp).eq_of_src _ _`. Conclude with `(res_X_isZero R F q (by omega)).eq_of_tgt _ _`. Introduce `E n x`. Take `⟨c, rfl⟩` from `x.mk_surjective`.
+
+Conclude with `⟨c.1, c.2, rfl⟩`. Introduce `E n z hz z' hz'`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z - z' = _ at hy`. Rewrite using `[← hy]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨y, hy⟩`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z - z' = _`. Rewrite using `[hy]`. Normalize the expressions using the abelian group laws. Introduce `E n z hz`.
+
+Conclude with `zero_iff E n _`. Introduce `E E' f n z hz`. Use `⟨(zcomp (Cocycle.ofHom ((chains R).map f)) (Cocycle.mk z (n + 1) rfl hz) (zero_add n)).2, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (R : Type) [CommRing R] (F : Shv R), (∀ (E : Spcᵒᵖ) (n : ℤ), n < 0 → IsZero (((HC R F).obj E).X n)) ∧ ∃ cl : ∀ (E : Spc) (n : ℤ) (z : ((HC R F).obj (op E)).X n), ((HC R F).obj (op E)).d n (n + 1) z = 0 → H R E F n, (∀ E n x, ∃ z hz, cl E n z hz = x) ∧ (∀ E n z hz z' hz', cl E n z hz = cl E n z' hz' ↔ ∃ y : ((HC R F).obj (op E)).X (n - 1), z = z' + ((HC R F).obj (op E)).d (n - 1) n y) ∧ (∀ E n z hz, cl E n z hz = 0 ↔ ∃ y : ((HC R F).obj (op E)).X (n - 1), z = ((HC R F).obj (op E)).d (n - 1) n y) ∧ ∀ (E E' : Spc) (f : E ⟶ E') n z hz, ∃ h, pull R f F n (cl E' n z hz) = cl E n (((HC R F).map f.op).f n z) h := by
   intro R _ F
   have zero_iff : ∀ (E : Spc) (n : ℤ) (c : Cocycle ((chains R).obj E) (res R F) n),

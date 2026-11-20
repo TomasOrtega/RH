@@ -16,6 +16,9 @@ section Free
 
 open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.L2.Pj.QAt GlobalTheory.ArcQ
 
+/- English proof (translation)
+Substitute `hσ` using the available equality. Conclude with `GlobalTheory.T.sum_cmArcFunctional_vanishes_low_fourierJacobi GlobalTheory.ArcCM.known_holds E H Dw l Xo c K₁ d ι r U a' n n' La c₁ hg hU hd hD (GlobalTheory.TransvPrinc.transvIn_of_hasPrinc E H Dw l Xo c _ r U a' n hP hχ) m a F f hF hB hf he μ`.
+-/
 theorem kill_comb_over (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁]
     [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (ι : K₁ →+* ℂ) (σ : c.F →+* ℂ) (hσ : ι.comp (algebraMap c.F K₁) = σ)
@@ -37,6 +40,9 @@ end Free
 
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.L2.Pj.QAt Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.BasicNotions GlobalTheory.ArcCM GlobalTheory.Shares
 
+/- English proof (translation)
+Introduce `D T h j hj ka CR Tt cc K₁ _ _ _ d hd σ₁ hσ m a F f hf he`. Conclude with `kill_comb_over _ _ _ _ (T.Q.Xo j) T.Q.c K₁ d σ₁ T.σ₀ hσ D.R.r (Formalism.L2.PjFree.Unf.ofPj (T.U j T.σ₀)) (wtA ka) ka.n _ _ _ T.good_σ₀ (h.unf j hj _ T.good_σ₀) hd (dom_wtA ka) (GlobalTheory.RunIn.gamAt_of_lawsM D T.toCore h.toLawsCore.toLawsM j hj _ T.good_σ₀) (h.chiTriv j hj _ …`.
+-/
 theorem kill_comb_rec : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ), InR D j → ∀ (ka : WeightFamilies.Wt D j) (CR Tt cc : ℝ) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra T.Q.c.F K₁] (d : GlobalTheory.ArcQ.ArcDatum (T.Q.Xo j) T.Q.c K₁), FamQ T.toCore j ka CR Tt cc K₁ d → ∀ σ₁ : K₁ →+* ℂ, σ₁.comp (algebraMap T.Q.c.F K₁) = T.σ₀ → ∀ (m : ℕ) (a : Fin m → ℂ) (F : Fin m → (recB h.toLawsCore).Cusp j ka) (f : ∀ k : (T.U j T.σ₀).Comp, Frame ((T.U j T.σ₀).X k).Ψ D.R.r → ℂ), (∀ k, f k ∈ ((T.U j T.σ₀).X k).SSgt (laR T j ka k) (WeightFamilies.c1 D CR Tt cc j)) → (∀ k, ∀ x ∈ ((T.U j T.σ₀).X k).dom, f k x = ∑ i, a i * rdR h j (F i) k x) → ∑ i, a i * σ₁ (cfOf d.yF d.μ d.jj (F i).1) = 0 := by
   intro D T h j hj ka CR Tt cc K₁ _ _ _ d hd σ₁ hσ m a F f hf he
   exact kill_comb_over _ _ _ _ (T.Q.Xo j) T.Q.c K₁ d σ₁ T.σ₀ hσ D.R.r (Formalism.L2.PjFree.Unf.ofPj (T.U j T.σ₀))

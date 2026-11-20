@@ -14,6 +14,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TrueGeo GlobalTheory.Mean4O 
 
 namespace GlobalTheory.DetHT.RegLoc
 
+/- English proof (translation)
+Establish `h₂ : hU.fromSpec (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen c ↔ c ∉ (hU.primeIdealOf ⟨x, hx⟩).asIdeal`. Express the relevant statement in the definitionally equal form `hU.primeIdealOf ⟨x, hx⟩ ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen c ↔ _`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression. Rewrite `h₂` using `[hU.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+-/
 theorem mem_basicOpen_iff {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) (c : Γ(X, U)) :
     x ∈ X.basicOpen c ↔ c ∉ (hU.primeIdealOf ⟨x, hx⟩).asIdeal := by
   have h₂ : hU.fromSpec (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen c ↔ c ∉ (hU.primeIdealOf ⟨x, hx⟩).asIdeal := by
@@ -22,6 +25,13 @@ theorem mem_basicOpen_iff {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {
     rfl
   rwa [hU.fromSpec_primeIdealOf] at h₂
 
+/- English proof (translation)
+Establish `hfs : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `by rw [hU.fromSpec_preimage_self]`. Establish `e1 : (Spec.map (CommRingCat.ofHom κ) ≫ hU.fromSpec).appLE U ⊤ h = hU.fromSpec.appLE U ⊤ hfs ≫ (Spec.map (CommRingCat.ofHom κ)).appTop`. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Establish `e2 : hU.fromSpec.appLE U ⊤ hfs = (Scheme.ΓSpecIso Γ(X, U)).inv`.
+
+Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Conclude with `(Spec Γ(X, U)).presheaf.map_id _`. Establish `e3 : (Scheme.ΓSpecIso Γ(X, U)).inv ≫ (Spec.map (CommRingCat.ofHom κ)).appTop = CommRingCat.ofHom κ ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).inv` using `(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom κ)).symm`. Rewrite using `[e1, e2, e3]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem eval_fromSpec {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {R : Type} [CommRing R]
     (κ : Γ(X, U) →+* R) (h : ⊤ ≤ (Spec.map (CommRingCat.ofHom κ) ≫ hU.fromSpec) ⁻¹ᵁ U) (s : Γ(X, U)) :
     (((Spec.map (CommRingCat.ofHom κ) ≫ hU.fromSpec).appLE U ⊤ h) ≫
@@ -41,6 +51,17 @@ theorem eval_fromSpec {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {R : 
   rw [e1, e2, e3]
   simp
 
+/- English proof (translation)
+Introduce `heq`. Use `letI := invertibleOfNonzero (inv_ne_zero hg)`. Take `⟨p, hp, hpx⟩` from `Algebra.exists_aeval_invOf_eq_zero_of_idealMap_adjoin_sup_span_eq_top g⁻¹ 𝔪 h𝔪 heq`. Rewrite `hpx` using `[invOf_eq_inv, inv_inv]`. Establish `hlc : p.leadingCoeff ∉ (hU.primeIdealOf ⟨x, hx⟩).asIdeal` using `fun h => h𝔪 ((Ideal.eq_top_iff_one _).2 (by simpa using sub_mem (hP h) hp))`.
+
+Establish `hu : IsUnit (X.presheaf.germ U x hx p.leadingCoeff)` using `(X.mem_basicOpen _ _ hx).1 ((mem_basicOpen_iff hU hx _).2 hlc)`. Establish `hgm : ∀ a : Γ(X, U), algebraMap (X.presheaf.stalk x) X.functionField (X.presheaf.germ U x hx a) = algebraMap Γ(X, U) X.functionField a` using `fun a => algebraMap_germ hx a`. Set `q` to `p.map (X.presheaf.germ U x hx).hom`. Establish `hq : Polynomial.aeval g q = 0`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`.
+
+Use `hpx using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Polynomial.aeval_def]`. Use `congr 1`. Use extensionality with `a`. Conclude with `hgm a`.
+
+Establish `hlq : q.leadingCoeff = X.presheaf.germ U x hx p.leadingCoeff` using `Polynomial.leadingCoeff_map_of_leadingCoeff_ne_zero _ hu.ne_zero`. Establish `hint : IsIntegral (X.presheaf.stalk x) g`. Use `⟨Polynomial.C (hu.unit⁻¹ : (X.presheaf.stalk x)ˣ).1 * q, Polynomial.monic_C_mul_of_mul_leadingCoeff_eq_one (by rw [hlq]; simp), ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, map_mul, hq, mul_zero]`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := X.presheaf.stalk x) (K := X.functionField)).1 hint`.
+
+Conclude with `hreg ⟨y, hy⟩`.
+-/
 theorem ideal_ne_top {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} [Nonempty U] (hU : IsAffineOpen U) {x : X}
     (hx : x ∈ U) (hN : IsIntegrallyClosed (X.presheaf.stalk x)) {𝔪 : Ideal Γ(X, U)} (h𝔪 : 𝔪 ≠ ⊤)
     (hP : (hU.primeIdealOf ⟨x, hx⟩).asIdeal ≤ 𝔪) {g : X.functionField} (hg : g ≠ 0) (hreg : ¬ RegAt x g) :
@@ -73,6 +94,9 @@ theorem ideal_ne_top {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} [Nonempty U] 
   obtain ⟨y, hy⟩ := (IsIntegrallyClosed.isIntegral_iff (R := X.presheaf.stalk x) (K := X.functionField)).1 hint
   exact hreg ⟨y, hy⟩
 
+/- English proof (translation)
+Establish `ht : ⊤ ≤ (Spec.map (CommRingCat.ofHom κ) ≫ hU.fromSpec) ⁻¹ᵁ U` using `fun x _ => (Set.ext_iff.1 hU.range_fromSpec _).1 ⟨_, rfl⟩`. Establish `hb : below (Spec.map (CommRingCat.ofHom κ) ≫ hU.fromSpec) ∈ U` using `ht trivial`. Use `⟨⟨_, algebraMap_germ hb s⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← eval_fromSpec hU κ ht s, ← OfModel.valAt_fnOf _ hb ht]`. Both sides reduce to the same expression.
+-/
 theorem valAt_chart {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} [Nonempty U] (hU : IsAffineOpen U) {K : Type} [Field K]
     (κ : Γ(X, U) →+* K) (s : Γ(X, U)) :
     RegAt (below (Spec.map (CommRingCat.ofHom κ) ≫ hU.fromSpec)) (algebraMap Γ(X, U) X.functionField s) ∧
@@ -84,6 +108,13 @@ theorem valAt_chart {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} [Nonempty U] (
   rw [← eval_fromSpec hU κ ht s, ← OfModel.valAt_fnOf _ hb ht]
   rfl
 
+/- English proof (translation)
+Use `set y : Sp K ⟶ X := Spec.map (CommRingCat.ofHom κ) ≫ hU.fromSpec with hy`. Take `⟨⟨b', hb'⟩, hvb⟩` from `valAt_chart hU κ b`. Take `⟨⟨a', ha'⟩, hva⟩` from `valAt_chart hU κ a`. Rewrite `hvb`, `hva` using `[← hy]`. Establish `hb1 : (Scheme.stalkClosedPointTo y).hom b' = κ b` using `by rw [← hvb, ← hb', Base.valAt_stalk]`.
+
+Establish `ha1 : (Scheme.stalkClosedPointTo y).hom a' = κ a` using `by rw [← hva, ← ha', Base.valAt_stalk]`. Establish `hu : IsUnit b'` using `(isUnit_map_iff (Scheme.stalkClosedPointTo y).hom b').1 (by rw [hb1]; exact hb.isUnit)`. Take `⟨c, hc⟩` from `hu.exists_right_inv`. Establish `hg' : g = algebraMap _ X.functionField (a' * c)`. Rewrite using `[map_mul, ha', ← hg, ← hb', mul_assoc, ← map_mul, hc, map_one, mul_one]`.
+
+Rewrite using `[hg', Base.valAt_stalk, ← hb1, ← ha1, ← map_mul, mul_assoc, mul_comm c, hc, mul_one]`.
+-/
 theorem valAt_div {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} [Nonempty U] (hU : IsAffineOpen U) {K : Type} [Field K]
     (κ : Γ(X, U) →+* K) (a b : Γ(X, U)) (hb : κ b ≠ 0) {g : X.functionField}
     (hg : g * algebraMap Γ(X, U) X.functionField b = algebraMap Γ(X, U) X.functionField a) :
@@ -100,6 +131,11 @@ theorem valAt_div {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} [Nonempty U] (hU
     rw [map_mul, ha', ← hg, ← hb', mul_assoc, ← map_mul, hc, map_one, mul_one]
   rw [hg', Base.valAt_stalk, ← hb1, ← ha1, ← map_mul, mul_assoc, mul_comm c, hc, mul_one]
 
+/- English proof (translation)
+Establish `hle : v.asIdeal ≤ v'.asIdeal` using `fun a ha => by`. Take `⟨c, hc, hu⟩` from `h a ha`. Establish `h1 : e.w c < 1` using `not_le.1 fun h' => hu (RegCrit.isUnit_of_one_le e c h')`. Rewrite `h1` using `[hc, e.w_alg]`. Rewrite using `[← FinitePlace.norm_lt_one_iff_mem F v' a, FinitePlace.norm_embedding]`.
+
+Conclude with `h1`. Conclude with `HeightOneSpectrum.ext (v.isMaximal.eq_of_le v'.isPrime.ne_top hle).symm`.
+-/
 theorem place_eq {F : Type} [Field F] [NumberField F] {v v' : HeightOneSpectrum (𝓞 F)} (e : Ext v')
     (h : ∀ a ∈ v.asIdeal, ∃ c : e.O, (c : AlgebraicClosure F) = algebraMap F _ (algebraMap (𝓞 F) F a) ∧ ¬ IsUnit c) :
     v' = v := by
@@ -111,6 +147,15 @@ theorem place_eq {F : Type} [Field F] [NumberField F] {v v' : HeightOneSpectrum 
     exact h1
   exact HeightOneSpectrum.ext (v.isMaximal.eq_of_le v'.isPrime.ne_top hle).symm
 
+/- English proof (translation)
+Set `B` to `Algebra.adjoin A {t}`. Establish `hB : Function.Injective (algebraMap A B)` using `fun a b h => hinj (congrArg Subtype.val h)`. Set `_ : Algebra (𝓞 F) B` to `((algebraMap A B).comp (algebraMap (𝓞 F) A)).toAlgebra`. Establish `: IsScalarTower (𝓞 F) A B` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `h1 : Algebra.FiniteType A B` using `Algebra.FiniteType.adjoin_of_finite (Set.finite_singleton t)`.
+
+Establish `: Algebra.FiniteType (𝓞 F) B` using `Algebra.FiniteType.trans (S := A) inferInstance h1`. Establish `: CharZero B` using `charZero_of_injective_algebraMap hB`. Take `⟨𝔫, h𝔫, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨v, e, φ, h₁, h₂, h₃⟩` from `GlobalTheory.T.exists_ext_place_of_ne_zero_maximal F B 𝔫 h𝔫 (algebraMap A B c) fun h => hc (hB (by rw [h, map_zero]))`. Establish `hn : ∀ s ∈ 𝔫, ¬ IsUnit (φ s)` using `fun s hs => by`.
+
+Rewrite `hs` using `[← h₂]`. Conclude with `hs`. Use `⟨v, e, φ.comp (algebraMap A B), φ ⟨t, Algebra.subset_adjoin rfl⟩, h₁, fun m hm => hn _ (hle (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hm))), h₃, hn _ (hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))), fun a b hab => ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← map_mul]`.
+
+Conclude with `congrArg φ (Subtype.ext hab)`.
+-/
 theorem exists_hom (F : Type) [Field F] [NumberField F] (A K : Type) [CommRing A] [Field K] [Algebra A K]
     (hinj : Function.Injective (algebraMap A K)) [Algebra (𝓞 F) A] [Algebra.FiniteType (𝓞 F) A] [CharZero A]
     (𝔪 : Ideal A) (t : K)
@@ -141,6 +186,37 @@ theorem exists_hom (F : Type) [Field F] [NumberField F] (A K : Type) [CommRing A
 
 open GlobalTheory.TrueGeo.HorizPt in
 
+/- English proof (translation)
+Introduce `F _ _ Y V U₀ W hW v g hf x hx hxv`. Assume the negation of the conclusion as `hreg`. Establish `hg0 : g ≠ 0` using `fun h => hreg (h ▸ regAt_zero x)`. Use `V.ar.flat` as an intermediate fact. Establish `: IsProper V.p`.
+
+Take `⟨n, c, hc, h⟩` from `V.ar.isProjOver`. Use `isProper_str (𝓞 F) n` as an intermediate fact. Rewrite using `[← h]`. Use `infer_instance`. Take `⟨U, hU, hxU, hUW⟩` from `exists_isAffineOpen_mem_and_subset hx`.
+
+Establish `hle : U ≤ U₀` using `hUW`. Establish `: Nonempty U` using `⟨⟨x, hxU⟩⟩`. Establish `: CharZero Γ(V.X, U)` using `charZero (V.p ≫ spMap (Int.castRingHom (𝓞 F))) hU`. Set `_ : Algebra (𝓞 F) Γ(V.X, U)` to `(GlobalTheory.TrueGeo.HorizPt.strHom V.p U).hom.toAlgebra`. Establish `: Algebra.FiniteType (𝓞 F) Γ(V.X, U)` using `RingHom.FiniteType.comp (V.p.finiteType_appLE (isAffineOpen_top _) hU le_top) (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of (𝓞 F))).inv).2)`.
+
+Use `functionField_isFractionRing_of_isAffineOpen V.X U hU` as an intermediate fact. Take `⟨w, hw⟩` from `hW`. Take `⟨h, hhW, hh⟩` from `hU.exists_basicOpen_le ⟨_, gen_mem hw⟩ (gen_mem hxU)`. Establish `hh0 : h ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hh` using `[Scheme.basicOpen_zero]`. Conclude with `hh`. Take `⟨𝔪, h𝔪, hle'⟩` from `Ideal.exists_le_maximal _ (hU.primeIdealOf ⟨x, hxU⟩).isPrime.ne_top`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := Γ(V.X, U)) g`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+
+Establish `hinj` using `IsFractionRing.injective Γ(V.X, U) V.X.functionField`. Establish `hb1 : algebraMap Γ(V.X, U) V.X.functionField b ≠ 0` using `fun h => hb0 (hinj (by rw [h, map_zero]))`. Establish `hgb : g * algebraMap Γ(V.X, U) V.X.functionField b = algebraMap Γ(V.X, U) V.X.functionField a`. Rewrite using `[← hab, div_mul_cancel₀ _ hb1]`. Take `⟨v', e, φ, τ, h₁, h₂, h₃, h₄, h₅⟩` from `exists_hom F Γ(V.X, U) V.X.functionField hinj 𝔪 g⁻¹ (ideal_ne_top hU hxU (V.normal x).2 h𝔪.ne_top hle' hg0 hreg) (b * h) (mul_ne_zero hb0 hh0)`.
+
+Take `rfl : v' = v` from `place_eq e fun c hc => by`. Use `⟨_, h₁ c, h₂ _ (hle' ?_)⟩` and prove the remaining obligations. Establish `hx' : hU.fromSpec (hU.primeIdealOf ⟨x, hxU⟩) = x` using `hU.fromSpec_primeIdealOf ⟨x, hxU⟩`. Establish `hc' : c ∈ ((hU.fromSpec ≫ V.p) (hU.primeIdealOf ⟨x, hxU⟩)).asIdeal`. Express the relevant statement in the definitionally equal form `c ∈ (V.p (hU.fromSpec (hU.primeIdealOf ⟨x, hxU⟩))).asIdeal`.
+
+Rewrite using `[hx', hxv]`. Conclude with `hc`. Rewrite `hc'` using `[fromSpec_str]`. Conclude with `hc'`. Establish `hτ : τ * φ a = φ b` using `h₅ a b (by rw [← hgb, ← mul_assoc, inv_mul_cancel₀ hg0, one_mul])`.
+
+Rewrite `h₃` using `[map_mul]`. Set `κ : Γ(V.X, U) →+* AlgebraicClosure F` to `e.O.subtype.comp φ`. Establish `hκ : ∀ s, φ s ≠ 0 → κ s ≠ 0` using `fun s hs h => hs (Subtype.ext h)`. Set `yt : Sp e.O ⟶ V.X` to `Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec`. Establish `hyt : spMap e.O.subtype ≫ yt = Spec.map (CommRingCat.ofHom κ) ≫ hU.fromSpec`.
+
+Simplify using `only [yt]`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hw : (spMap e.O.subtype ≫ yt) ≫ V.p = spMap (algebraMap F (AlgebraicClosure F)) ≫ spMap (algebraMap (𝓞 F) F)`. Simplify using `only [yt, Category.assoc]`.
+
+Rewrite using `[fromSpec_str, ← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Conclude with `h₁ a`. Establish `hy` using `V.pb.lift_fst _ _ hw`.
+
+Establish `hval` using `hf e (V.pb.lift _ _ hw) yt (V.pb.lift_snd _ _ hw) hy.symm (fun x _ => hle ((Set.ext_iff.1 hU.range_fromSpec _).1 ⟨_, rfl⟩)) (by`. Rewrite using `[hy, hyt]`. Use `hhW ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PrimeSpectrum.comap κ (IsLocalRing.closedPoint (AlgebraicClosure F)) ∈ hU.fromSpec ⁻¹ᵁ V.X.basicOpen h`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`.
+
+Introduce `h'`. Establish `h'' : κ h ∈ IsLocalRing.maximalIdeal (AlgebraicClosure F)` using `h'`. Rewrite `h''` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Conclude with `hκ h (right_ne_zero_of_mul h₃) h'')`. Rewrite `hval` using `[hy, hyt]`.
+
+Establish `hκb` using `hκ b (left_ne_zero_of_mul h₃)`. Establish `hdiv` using `valAt_div hU κ a b hκb hgb`. Establish `hτ' : (τ : AlgebraicClosure F) * κ a = κ b` using `congrArg Subtype.val hτ`. Rewrite `hτ'` using `[← hdiv, ← mul_assoc]`. Establish `hone` using `congrArg e.w (mul_right_cancel₀ hκb (hτ'.trans (one_mul _).symm))`.
+
+Rewrite `hone` using `[map_mul, map_one]`. Conclude with `h₄ (RegCrit.isUnit_of_one_le e τ (hone.ge.trans (mul_le_of_le_one_right (e.w.nonneg _) hval)))`.
+-/
 theorem main : RegLocSt := by
   intro F _ _ Y V U₀ W hW v g hf x hx hxv
   by_contra hreg

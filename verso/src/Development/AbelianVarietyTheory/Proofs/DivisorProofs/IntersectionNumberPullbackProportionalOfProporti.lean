@@ -24,6 +24,37 @@ noncomputable section
 
 namespace GlobalTheory.NumPull
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom p`. Use `letI := algebraΓOfHom (f ≫ p)`. Introduce `hC`. Establish `: IsIntegral (Scheme.IdealSheafData.vanishingIdeal C).subscheme` using `isIntegral_red hC.isIrreducible`. Use `letI : Algebra k Γ((Scheme.IdealSheafData.vanishingIdeal C).subscheme, ⊤) := algebraΓOfHom (redι C ≫ f ≫ p)`.
+
+Set `g` to `redι C ≫ f`. Establish `hsM : strHom k M = f ≫ p` using `strHom_eq (fun _ => rfl)`. Establish `hsW : strHom k W = p` using `strHom_eq (fun _ => rfl)`. Establish `hsZ : strHom k (Scheme.IdealSheafData.vanishingIdeal C).subscheme = g ≫ p` using `(strHom_eq (f := redι C ≫ f ≫ p) (fun _ => rfl)).trans (Category.assoc _ _ _).symm`. Establish `hpZ : IsProper (strHom k (Scheme.IdealSheafData.vanishingIdeal C).subscheme)`.
+
+Use `hC.isProper` as an intermediate fact. Rewrite `this` using `[hsM]`. Rewrite using `[hsZ, Category.assoc]`. Conclude with `this`. Establish `: IsProper (g ≫ p)` using `hsZ ▸ hpZ`.
+
+Establish `: IsProper g` using `.of_comp g p`. Establish `hd : topologicalKrullDim (Scheme.IdealSheafData.vanishingIdeal C).subscheme = 1` using `(topologicalKrullDim_red C).trans hC.dim_eq`. Establish `: CompactSpace (Scheme.IdealSheafData.vanishingIdeal C).subscheme` using `QuasiCompact.compactSpace_of_compactSpace (strHom k _)`. Use `isNoetherian_of_locallyOfFiniteType_field (strHom k (Scheme.IdealSheafData.vanishingIdeal C).subscheme)` as an intermediate fact. Establish `hdeg : ∀ L : LB W, L.IsLB → interNumRed k C ![L.pull f] = topSelfIntersection k (L.pull g) 1`.
+
+Introduce `L hL`. Establish `hL'` using `pull_isLB hL f`. Use `(interNumOn_eq_interNum_pull (appTop_algebraΓOfHom (redι C) (f ≫ p) rfl) (isLB_vecOne hL')).trans ?_` and prove the remaining obligations. Use `interNum_congr_cls k _ (fun i => by fin_cases i; exact pull_isLB hL' _) (fun _ => pull_isLB hL g) fun i => ?_` and prove the remaining obligations. Use `fin_cases i`.
+
+Use `(cls_pull hL' _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (cls_pull hL g _).symm` and prove the remaining obligations. Rewrite using `[cls_pull hL f]`. Conclude with `(pull_comp (redι C) f _).symm`. Distinguish the cases in `hc : ∀ z, g z = g (genericPoint _)`.
+
+Use `left`. Introduce `L hL`. Rewrite using `[hdeg L hL]`. Conclude with `ArInt.topSelf_pull_eq_zero_of_const k hL g _ hc`. Use `push_neg at hc`.
+
+Take `⟨x₀, hx₀⟩` from `hc`. Use `right`. Set `φ` to `g.toImage`. Establish `e : φ ≫ g.imageι = g` using `g.toImage_imageι`. Establish `: IsProper (φ ≫ g.imageι)` using `by rw [e]; infer_instance`.
+
+Establish `: IsProper φ` using `.of_comp φ g.imageι`. Establish `hne : φ x₀ ≠ φ (genericPoint _)` using `fun h => hx₀ (by`. Rewrite using `[← e, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, h])`. Establish `: LocallyQuasiFinite φ` using `ProperCurve.locallyQuasiFinite_of_ne hd φ hne`. Establish `: IsFinite φ` using `IsFinite.of_isProper_of_locallyQuasiFinite φ`.
+
+Establish `hdense : DenseRange φ` using `g.toImage.denseRange`. Establish `hsurj : Function.Surjective φ`. Rewrite using `[← Set.range_eq_univ, ← φ.isClosedMap.isClosed_range.closure_eq]`. Conclude with `hdense.closure_range`. Establish `hgen : φ (genericPoint _) = genericPoint g.image`.
+
+Establish `h₁` using `(genericPoint_spec (Scheme.IdealSheafData.vanishingIdeal C).subscheme).image φ.continuous`. Rewrite `h₁` using `[Set.image_univ, hdense.closure_range]`. Conclude with `h₁.eq (genericPoint_spec _)`. Establish `hdZ : topologicalKrullDim g.image = 1` using `le_antisymm ((PosBaseChange.dim_le_of_isClosedMap φ.isClosedMap hsurj).trans hd.le) (ArInt.one_le_dim (genericPoint_specializes (φ x₀)) fun h => hne (h.symm.trans hgen.symm))`. Use `letI : Algebra k Γ(g.image, ⊤) := algebraΓOfHom (g.imageι ≫ p)`.
+
+Establish `hf : ∀ r : k, φ.appTop (algebraMap k Γ(g.image, ⊤) r) = algebraMap k Γ((Scheme.IdealSheafData.vanishingIdeal C).subscheme, ⊤) r` using `appTop_algebraΓOfHom φ (g.imageι ≫ p) (by rw [reassoc_of% e]; exact Category.assoc _ _ _)`. Establish `hsI : strHom k g.image = g.imageι ≫ p` using `strHom_eq (fun _ => rfl)`. Establish `: IsProper (strHom k g.image)` using `by rw [hsI]; infer_instance`. Establish `hproj : IsProjOver (strHom k g.image)` using `ProperCurve.isProjOver_of_isProper _ hdZ`. Establish `: IsProper (g.imageι ≫ strHom k W)` using `by rw [hsW]; infer_instance`.
+
+Use `⟨⟨Set.range g.imageι, g.imageι.isClosedEmbedding.isClosed_range⟩, isCompleteCurve_range g.imageι hdZ, φ.residueDegree (genericPoint _), fun L hL => ?_⟩` and prove the remaining obligations. Establish `hN` using `pull_isLB hL g.imageι`. Establish `h₁` using `ProjFin.interNumOn_eq_residueDegree_mul k g.image _ φ hproj hdZ hgen (L.pull g.imageι) hN`. Establish `h₂` using `interNumOn_eq_interNum_pull (k := k) (L := ![L.pull g.imageι]) hf (isLB_vecOne hN)`. Establish `h₃ : topSelfIntersection k (L.pull g) 1 = interNum k (structureModule _) fun i => (![L.pull g.imageι] i).pull φ`.
+
+Use `interNum_congr_cls _ _ (fun _ => pull_isLB hL g) (fun i => by fin_cases i; exact pull_isLB hN φ) fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Use `(cls_pull hL g _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (cls_pull hN φ _).symm` and prove the remaining obligations. Conclude with `(congrArg (fun f => pull f (cls L hL)) e.symm).trans (pull_comp φ g.imageι _)`.
+
+Establish `h₄ : interNumRed k ⟨Set.range g.imageι, g.imageι.isClosedEmbedding.isClosed_range⟩ ![L] = interNum k (structureModule g.image) ![L.pull g.imageι]` using `(InterModel.interNumRed_eq_interNumOn k g.imageι _ rfl _).trans ((interNumOn_eq_interNum_pull (appTop_algebraΓOfHom g.imageι p rfl) (isLB_vecOne hL)).trans (congrArg _ (funext fun j => by fin_cases j; rfl)))`. Rewrite using `[hdeg L hL, h₃, ← h₂, h₁, h₄]`.
+-/
 theorem interNumRed_pull_curve {k : Type} [Field k] {M W : Scheme.{0}} (p : W ⟶ Sp k)
     (f : M ⟶ W) [IsProper p] (C : Closeds M) :
     letI := algebraΓOfHom p
@@ -130,6 +161,11 @@ end GlobalTheory.NumPull
 
 namespace GlobalTheory.NumPull
 
+/- English proof (translation)
+Introduce `M W _ _ p f hp _`. Use `letI := algebraΓOfHom p`. Use `letI := algebraΓOfHom (f ≫ p)`. Introduce `L L' hL hL' a b H C hC`. Establish `: IsProper p` using `((isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hp).1`.
+
+Break down `interNumRed_pull_curve p f C hC with h | ⟨C', hC', d, hd⟩` into its components or cases. Rewrite using `[h L hL, h L' hL', mul_zero, mul_zero]`. Rewrite using `[hd L hL, hd L' hL']`. Take the linear combination `(d : ℤ) * H C' hC'`.
+-/
 theorem interNumRed_pull_proportional : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] (p : W ⟶ Sp ℂ) (f : M ⟶ W), IsProjOver p → IsProjOver (f ≫ p) → letI := algebraΓOfHom p; letI := algebraΓOfHom (f ≫ p); ∀ (L L' : LB W), L.IsLB → L'.IsLB → ∀ (a b : ℕ), (∀ C : Closeds W, IsCompleteCurve ℂ C → (a : ℤ) * interNumRed ℂ C ![L] = b * interNumRed ℂ C ![L']) → ∀ C : Closeds M, IsCompleteCurve ℂ C → (a : ℤ) * interNumRed ℂ C ![L.pull f] = b * interNumRed ℂ C ![L'.pull f] := by
   intro M W _ _ p f hp _
   letI := algebraΓOfHom p

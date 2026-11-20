@@ -7,6 +7,13 @@ open UpperTheory.Gal.W2.Seed UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Pl 
 open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E _ _ _ n w σ`. Set `σ' : SmIrr (GLw n w)` to `{ V := σ.V ρ := σ.ρ.comp (invT n (w.adicCompletion E)) smooth := PositivityTheory.LocalParametersCuspidal.DepthZeroGlueing.WhittakerInverseTranspose.isSmooth_comp_invT σ.smooth irred := PositivityTheory.LocalParametersCuspidal.DepthZeroGlueing.WhittakerInverseTranspose.isIrreduci …`. Use `⟨σ', LinearEquiv.refl ℂ _, fun g g' v h => ?_, fun hc => ?_⟩` and prove the remaining obligations. Establish `hg : g' = invT n (w.adicCompletion E) g` using `Units.ext h`. Substitute `hg` using the available equality.
+
+Use `show σ.ρ (invT n _ (invT n _ g)) v = σ.ρ g v`. Rewrite using `[UpperTheory.Gal.CertificateRingHomMap.invT_invT']`. Establish `h2` using `PositivityTheory.LocalParametersCuspidal.DepthZeroGlueing.WhittakerInverseTranspose.isCuspidal_comp_invT (ρ := σ'.ρ) hc`. Establish `h3 : σ'.ρ.comp (invT n (w.adicCompletion E)) = σ.ρ` using `MonoidHom.ext fun g => by show σ.ρ (invT n _ (invT n _ g)) = σ.ρ g`. Rewrite using `[UpperTheory.Gal.CertificateRingHomMap.invT_invT']`.
+
+Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Gal.W2.Seed.pCuspTh :
     CuspTh := by
   intro E _ _ _ n w σ

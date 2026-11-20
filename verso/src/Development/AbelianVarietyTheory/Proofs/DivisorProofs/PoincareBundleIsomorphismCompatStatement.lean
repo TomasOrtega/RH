@@ -15,6 +15,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KerShift.ker_shift | exact GlobalTheory.KerShift.ker_shift | (intros; apply GlobalTheory.KerShift.ker_shift <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.poincare_bundle_isomorphism_compat : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (S : Scheme.{0}) (A : Over S) [GrpObj A]
     (rm : OAct (𝓞 F) A) (P : 𝔠.elt → LB (A ⊗ A).left), (∀ c, (P c).IsLB) →
     (∀ c, LBIso (P c) ((P c).pull (lift (snd A A) (fst A A)).left)) →

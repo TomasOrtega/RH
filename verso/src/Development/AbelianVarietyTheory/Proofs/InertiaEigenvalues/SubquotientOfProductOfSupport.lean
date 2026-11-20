@@ -10,6 +10,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LocGL.SupportPerm
 
+/- English proof (translation)
+Introduce `hZ _ k _ _ _ _ _ n t τ x hd hs`. Take `⟨Z, Ψ, -, hΨ, -⟩` from `hZ k`. Establish `h1` using `SupportRing.pos_pc_sub hΨ hs τ.smooth τ.irr`. Take `⟨hp, ep⟩` from `SupportRing.prodIrr_cls hΨ x hd`. Use `SupportRing.isSubquotient_of_clsGL_ne hp τ.smooth τ.irr ?_` and prove the remaining obligations.
+
+Establish `h2` using `h1 (IrrGL.of τ.ρ τ.smooth τ.irr)`. Rewrite `h2` using `[SupportRing.pc_map, ← ep]`. Establish `e1 : ∀ (A : GrothGL k) (y : IrrGL k), Ψ.symm (Ψ A - SupportRing.bas Ψ y) y = A y - 1`. Introduce `A y`. Rewrite using `[SupportRing.bas, ← map_sub, Ψ.symm_apply_apply, Finsupp.sub_apply, Finsupp.single_eq_same]`.
+
+Rewrite `h2` using `[e1]`. Introduce `h3`. Rewrite `h2` using `[h3]`. Conclude with `absurd h2 (by norm_num)`.
+-/
 theorem isSubquotient_prodIrr_of_hasSupport : ZelevinskyPolynomialRing → BernsteinZelevinskyFiniteness →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
       (n t : ℕ) (τ : IrrRep (GL (Fin n) k)) (x : Fin t → IrrGL k) (hd : ∑ i, (x i).1 = n),

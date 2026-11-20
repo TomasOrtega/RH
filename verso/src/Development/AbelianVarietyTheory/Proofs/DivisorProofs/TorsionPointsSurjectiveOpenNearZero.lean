@@ -15,6 +15,13 @@ open GlobalTheory.OpenOmega
 
 namespace GlobalTheory.OpenOmega
 
+/- English proof (translation)
+Introduce `x`. Use `⟨PrimeSpectrum.comap (algebraMap R (TrivSqZeroExt R M)) x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PrimeSpectrum.comap _ (PrimeSpectrum.comap _ x) = x`. Establish `hx` using `PrimeSpectrum.isPrime x`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `algebraMap R (TrivSqZeroExt R M) a.fst ∈ PrimeSpectrum.asIdeal x ↔ _`. Establish `h : (TrivSqZeroExt.inr a.snd : TrivSqZeroExt R M) ∈ PrimeSpectrum.asIdeal x` using `(hx.mem_or_mem (x := TrivSqZeroExt.inr a.snd) (y := TrivSqZeroExt.inr a.snd) (by rw [TrivSqZeroExt.inr_mul_inr]; exact zero_mem _)).elim id id`. Rewrite using `[TrivSqZeroExt.algebraMap_eq_inl]`. Use `conv_rhs => rw [← TrivSqZeroExt.inl_fst_add_inr_snd_eq a]`.
+
+Conclude with `(Ideal.add_mem_iff_left _ h).symm`.
+-/
 theorem spMap_fst_surjective (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] [Module Rᵐᵒᵖ M]
     [IsCentralScalar R M] : Function.Surjective (spMap (TrivSqZeroExt.fstHom R R M).toRingHom) := by
   intro x
@@ -31,6 +38,11 @@ theorem spMap_fst_surjective (R M : Type) [CommRing R] [AddCommGroup M] [Module 
   conv_rhs => rw [← TrivSqZeroExt.inl_fst_add_inr_snd_eq a]
   exact (Ideal.add_mem_iff_left _ h).symm
 
+/- English proof (translation)
+Establish `hu : (toUnit (Over.mk (spMap (algebraMap R R)))).left = 𝟙 (Sp R)`. Rewrite using `[Over.toUnit_left]`. Conclude with `Spec.map_id _`. Express the relevant statement in the definitionally equal form `(toUnit (Over.mk (spMap (algebraMap R R)))).left ≫ η[G].left = _`. Use `erw [hu]`.
+
+Conclude with `Category.id_comp _`.
+-/
 theorem one_left {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] :
     (1 : SpAlg R R ⟶ G).left = η[G].left := by
   have hu : (toUnit (Over.mk (spMap (algebraMap R R)))).left = 𝟙 (Sp R) := by
@@ -39,6 +51,19 @@ theorem one_left {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] :
   erw [hu]
   exact Category.id_comp _
 
+/- English proof (translation)
+Introduce `M _ _ _ _ φ hφ`. Take `⟨U, V, hU, hb⟩` from `h n`. Establish `h1 : θ.pt n R ⟨1, one_pow _⟩ = Bialgebra.counitAlgHom R (GG.A n)`. Establish `h1` using `θ.pt_one n R (Fact.out : p.Prime).ne_zero`. Use extensionality with `a`.
+
+Establish `h2` using `congrArg (fun f : WithConv (GG.A n →ₐ[R] R) => f.ofConv a) h1`. Simplify using `using h2`. Establish `hU1 : (⟨1, one_pow _⟩ : Tors G (p ^ n) R) ∈ {z : Tors G (p ^ n) R | Set.range z.1.left ⊆ U}`. Express the relevant statement in the definitionally equal form `Set.range (1 : SpAlg R R ⟶ G).left ⊆ U`. Rewrite using `[one_left]`.
+
+Conclude with `hU`. Establish `hV1` using `(hb R).mapsTo hU1`. Rewrite `hV1` using `[h1, ← hφ]`. Establish `hVφ : Set.range (spMap (φ : GG.A n →+* TrivSqZeroExt R M)) ⊆ V`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Take `⟨y, rfl⟩` from `spMap_fst_surjective R M x`. Conclude with `hV1 ⟨y, rfl⟩`. Take `⟨z, hzU, hz⟩` from `(hb (TrivSqZeroExt R M)).surjOn hVφ`. Use `⟨z, ?_, hz⟩` and prove the remaining obligations. Set `z' : Tors G (p ^ n) R` to `⟨spOver (TrivSqZeroExt.fstHom R R M) ≫ z.1, by`.
+
+Rewrite using `[← MonObj.comp_pow, z.2, MonObj.comp_one]⟩`. Establish `hz'U : z' ∈ {z : Tors G (p ^ n) R | Set.range z.1.left ⊆ U}`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hzU ⟨(spOver (TrivSqZeroExt.fstHom R R M)).left x, rfl⟩`. Establish `e : z' = ⟨1, one_pow _⟩` using `(hb R).injOn hz'U hU1 (by`.
+
+Rewrite using `[θ.nat n _ R (TrivSqZeroExt.fstHom R R M) z z' rfl, hz, hφ, h1])`. Establish `e2` using `congrArg (fun w : Tors G (p ^ n) R => w.1.left) e`. Use `ext1`. Conclude with `e2.trans (one_left G)`.
+-/
 theorem ptSurj_of_isOpenNearZero (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G]
     (GG : PDivGroup p R) (θ : TorsionMap G GG) (h : θ.IsOpenNearZero) (n : ℕ) : PtSurj θ n := by
   intro M _ _ _ _ φ hφ

@@ -25,9 +25,17 @@ def rr_N (Γ : Subgroup G) (D : Set G) : Set G :=
 
 variable {μ : Measure G} {Γ : Subgroup G} {D : Set G}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_rr_N_iff {y : G} :
     y ∈ rr_N Γ D ↔ ∃ γ₁ ∈ Γ, ∃ γ₂ ∈ Γ, γ₁ ≠ γ₂ ∧ γ₁ * y ∈ D ∧ γ₂ * y ∈ D := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [mem_rr_N_iff, Set.mem_iUnion, Set.mem_inter_iff, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, hab, h1, h2⟩`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, fun e => hab (congrArg Subtype.val e), h1, h2⟩`.
+
+Introduce and unpack `⟨a, b, hab, h1, h2⟩`. Conclude with `⟨a, a.2, b, b.2, fun e => hab (Subtype.ext e), h1, h2⟩`.
+-/
 private theorem rr_N_eq_iUnion_preimage_inter :
     rr_N Γ D = ⋃ a : Γ, ⋃ b : Γ, ⋃ (_ : a ≠ b),
       ((fun y => (a : G) * y) ⁻¹' D ∩ (fun y => (b : G) * y) ⁻¹' D) := by
@@ -39,6 +47,13 @@ private theorem rr_N_eq_iUnion_preimage_inter :
   · rintro ⟨a, b, hab, h1, h2⟩
     exact ⟨a, a.2, b, b.2, fun e => hab (Subtype.ext e), h1, h2⟩
 
+/- English proof (translation)
+Rewrite using `[rr_N_eq_iUnion_preimage_inter]`. Use `measure_iUnion_null fun a => measure_iUnion_null fun b => measure_iUnion_null fun hab => ?_` and prove the remaining obligations. Establish `hne : (a : G) * (b : G)⁻¹ ≠ 1` using `fun e => hab (Subtype.ext (mul_inv_eq_one.mp e))`. Establish `hmem : (a : G) * (b : G)⁻¹ ∈ (Γ : Set G)` using `Γ.mul_mem a.2 (Γ.inv_mem b.2)`. Establish `hsub : (fun y => (a : G) * y) ⁻¹' D ∩ (fun y => (b : G) * y) ⁻¹' D ⊆ (fun y => (a : G) * y) ⁻¹' ((fun z => (a : G) * (b : G)⁻¹ * z) '' D ∩ D)`.
+
+Introduce and unpack `y ⟨h1, h2⟩`. Use `⟨⟨(b : G) * y, h2, ?_⟩, h1⟩` and prove the remaining obligations. Simplify using `only [mul_assoc, inv_mul_cancel_left]`. Use `measure_mono_null hsub ?_` and prove the remaining obligations. Rewrite using `[measure_preimage_mul]`.
+
+Conclude with `h.disj _ hmem hne`.
+-/
 theorem rr_N_null [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) : μ (rr_N Γ D) = 0 := by
   rw [rr_N_eq_iUnion_preimage_inter]
   refine measure_iUnion_null fun a => measure_iUnion_null fun b => measure_iUnion_null fun hab => ?_
@@ -53,6 +68,9 @@ theorem rr_N_null [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) : �
   rw [measure_preimage_mul]
   exact h.disj _ hmem hne
 
+/- English proof (translation)
+Establish `hex : ∃ γ ∈ (Γ : Set G), γ * y ∈ D` using `h.cov y`. Use `⟨hex.choose, hex.choose_spec.1, ?_, hex.choose_spec.2⟩` and prove the remaining obligations. Unfold `rr_rep`. Rewrite using `[dif_pos hex]`.
+-/
 theorem rr_rep_spec (h : rr_FD μ Γ D) (y : G) :
     ∃ γ ∈ Γ, rr_rep (Γ : Set G) D y = γ * y ∧ γ * y ∈ D := by
   have hex : ∃ γ ∈ (Γ : Set G), γ * y ∈ D := h.cov y
@@ -60,6 +78,9 @@ theorem rr_rep_spec (h : rr_FD μ Γ D) (y : G) :
   unfold rr_rep
   rw [dif_pos hex]
 
+/- English proof (translation)
+Take `⟨γ₀, hγ₀, he, hD₀⟩` from `rr_rep_spec h y`. Rewrite using `[he]`. Assume the negation of the conclusion as `hne`. Conclude with `hy (mem_rr_N_iff.mpr ⟨γ₀, hγ₀, γ, hγ, fun e => hne (by rw [e]), hD₀, hD⟩)`.
+-/
 theorem rr_rep_eq (h : rr_FD μ Γ D) {y : G} (hy : y ∉ rr_N Γ D) {γ : G} (hγ : γ ∈ Γ) (hD : γ * y ∈ D) :
     rr_rep (Γ : Set G) D y = γ * y := by
   obtain ⟨γ₀, hγ₀, he, hD₀⟩ := rr_rep_spec h y
@@ -67,6 +88,9 @@ theorem rr_rep_eq (h : rr_FD μ Γ D) {y : G} (hy : y ∉ rr_N Γ D) {γ : G} (h
   by_contra hne
   exact hy (mem_rr_N_iff.mpr ⟨γ₀, hγ₀, γ, hγ, fun e => hne (by rw [e]), hD₀, hD⟩)
 
+/- English proof (translation)
+Introduce `hcy`. Take `⟨g1, hg1, g2, hg2, hne, h1, h2⟩` from `mem_rr_N_iff.mp hcy`. Use `hy (mem_rr_N_iff.mpr ⟨g1 * c, Γ.mul_mem hg1 hc, g2 * c, Γ.mul_mem hg2 hc, fun e => hne (mul_right_cancel e), ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[mul_assoc]` and apply the resulting hypothesis. Rewrite using `[mul_assoc]` and apply the resulting hypothesis.
+-/
 theorem rr_N_smul {y c : G} (hc : c ∈ Γ) (hy : y ∉ rr_N Γ D) : c * y ∉ rr_N Γ D := by
   intro hcy
   obtain ⟨g1, hg1, g2, hg2, hne, h1, h2⟩ := mem_rr_N_iff.mp hcy
@@ -75,6 +99,9 @@ theorem rr_N_smul {y c : G} (hc : c ∈ Γ) (hy : y ∉ rr_N Γ D) : c * y ∉ r
   · rwa [mul_assoc]
   · rwa [mul_assoc]
 
+/- English proof (translation)
+Take `⟨γ, hγ, he, hD⟩` from `rr_rep_spec h y`. Establish `hD' : γ * c⁻¹ * (c * y) ∈ D`. Rewrite using `[mul_assoc, inv_mul_cancel_left]` and apply the resulting hypothesis. Rewrite using `[rr_rep_eq h (rr_N_smul hc hy) (Γ.mul_mem hγ (Γ.inv_mem hc)) hD', he, mul_assoc, inv_mul_cancel_left]`.
+-/
 theorem rr_rep_smul (h : rr_FD μ Γ D) {y c : G} (hc : c ∈ Γ) (hy : y ∉ rr_N Γ D) :
     rr_rep (Γ : Set G) D (c * y) = rr_rep (Γ : Set G) D y := by
   obtain ⟨γ, hγ, he, hD⟩ := rr_rep_spec h y
@@ -83,6 +110,11 @@ theorem rr_rep_smul (h : rr_FD μ Γ D) {y c : G} (hc : c ∈ Γ) (hy : y ∉ rr
   rw [rr_rep_eq h (rr_N_smul hc hy) (Γ.mul_mem hγ (Γ.inv_mem hc)) hD', he,
     mul_assoc, inv_mul_cancel_left]
 
+/- English proof (translation)
+Use `haveI : Nonempty Γ := ⟨1⟩`. Take `⟨e, he⟩` from `exists_surjective_nat Γ`. Establish `hex : ∀ y : G, ∃ n : ℕ, ((e n : Γ) : G) * y ∈ D`. Introduce `y`. Take `⟨γ, hγ, hD⟩` from `h.cov y`.
+
+Take `⟨n, hn⟩` from `he ⟨γ, hγ⟩`. Conclude with `⟨n, by rw [hn]; exact hD⟩`. Use `⟨fun y => ((e (Nat.find (hex y)) : Γ) : G) * y, ?_, fun y => ⟨_, (e (Nat.find (hex y))).2, rfl, Nat.find_spec (hex y)⟩⟩` and prove the remaining obligations. Conclude with `Measurable.find (f := fun n y => ((e n : Γ) : G) * y) (p := fun n y => ((e n : Γ) : G) * y ∈ D) (fun n => measurable_const_mul _) (fun n => measurable_const_mul _ h.meas) hex`.
+-/
 theorem rr_exists_meas_rep [Countable Γ] (h : rr_FD μ Γ D) :
     ∃ r : G → G, Measurable r ∧ ∀ y, ∃ γ ∈ Γ, r y = γ * y ∧ γ * y ∈ D := by
   classical
@@ -98,6 +130,9 @@ theorem rr_exists_meas_rep [Countable Γ] (h : rr_FD μ Γ D) :
   exact Measurable.find (f := fun n y => ((e n : Γ) : G) * y) (p := fun n y => ((e n : Γ) : G) * y ∈ D)
     (fun n => measurable_const_mul _) (fun n => measurable_const_mul _ h.meas) hex
 
+/- English proof (translation)
+The claim follows from `(measurable_mul_const g) h.meas cov := fun y => by obtain ⟨γ, hγ, hD⟩ := h.cov (y * g) exact ⟨γ, hγ, by simpa [mul_assoc] using hD⟩ disj := fun γ hγ h1 => by have : (fun y => γ * y) '' ((fun x => x * g) ⁻¹' D) ∩ (fun x => x * g) ⁻¹' D ⊆ (fun x => x * g) ⁻¹' ((fun y => γ * y) '' D …`.
+-/
 theorem rr_FD_right [μ.IsMulRightInvariant] (h : rr_FD μ Γ D) (g : G) : rr_FD μ Γ ((fun x => x * g) ⁻¹' D) where
   meas := (measurable_mul_const g) h.meas
   cov := fun y => by
@@ -112,12 +147,18 @@ theorem rr_FD_right [μ.IsMulRightInvariant] (h : rr_FD μ Γ D) (g : G) : rr_FD
     rw [measure_preimage_mul_right]
     exact h.disj γ hγ h1
 
+/- English proof (translation)
+Rewrite using `[rr_N_eq_iUnion_preimage_inter]`. Conclude with `MeasurableSet.iUnion fun a => MeasurableSet.iUnion fun b => MeasurableSet.iUnion fun _ => (measurable_const_mul (a : G) hD).inter (measurable_const_mul (b : G) hD)`.
+-/
 private theorem measurableSet_rr_N [Countable Γ] (hD : MeasurableSet D) :
     MeasurableSet (rr_N Γ D) := by
   rw [rr_N_eq_iUnion_preimage_inter]
   exact MeasurableSet.iUnion fun a => MeasurableSet.iUnion fun b => MeasurableSet.iUnion fun _ =>
     (measurable_const_mul (a : G) hD).inter (measurable_const_mul (b : G) hD)
 
+/- English proof (translation)
+Use `IsFundamentalDomain.mk'' h.meas.nullMeasurableSet (ae_of_all _ fun y => ?_) (fun g hg => ?_) (fun g => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, hD⟩` from `h.cov y`. Conclude with `⟨⟨γ, hγ⟩, hD⟩`. Conclude with `h.disj g g.2 (fun e => hg (Subtype.ext e))`. Conclude with `(measurePreserving_mul_left μ (g : G)).quasiMeasurePreserving`.
+-/
 theorem rr_isFD [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) : IsFundamentalDomain Γ D μ := by
   refine IsFundamentalDomain.mk'' h.meas.nullMeasurableSet
     (ae_of_all _ fun y => ?_) (fun g hg => ?_) (fun g => ?_)
@@ -133,6 +174,11 @@ section Abs2
 variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
 variable {μ : Measure G} {Γ : Subgroup G} {D : Set G}
 
+/- English proof (translation)
+Establish `hM : μ ((fun x => x * g) ⁻¹' rr_N Γ D) = 0`. Rewrite using `[measure_preimage_mul_right]`. Conclude with `rr_N_null h`. Rewrite using `[ae_iff]`. Use `measure_mono_null (fun x hx => ?_) hM` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hxM`. Take `⟨γ, hγ, hrx, hD⟩` from `hr (x * g)`. Conclude with `hx (by rw [hrx]; exact rr_rep_eq (y := x * g) h hxM hγ hD)`.
+-/
 theorem rr_rep_ae_eq [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D) {r : G → G}
     (hr : ∀ y, ∃ γ ∈ Γ, r y = γ * y ∧ γ * y ∈ D) (g : G) :
     ∀ᵐ x ∂μ, rr_rep (Γ : Set G) D (x * g) = r (x * g) := by
@@ -144,17 +190,44 @@ theorem rr_rep_ae_eq [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable
   obtain ⟨γ, hγ, hrx, hD⟩ := hr (x * g)
   exact hx (by rw [hrx]; exact rr_rep_eq (y := x * g) h hxM hγ hD)
 
+/- English proof (translation)
+Take `⟨γ, hγ, hry, hD⟩` from `hr y`. Rewrite using `[hry, rr_rep_eq h hy hγ hD]`.
+-/
 private theorem eq_rr_rep_of_not_mem_rr_N (h : rr_FD μ Γ D) {r : G → G}
     (hr : ∀ y, ∃ γ ∈ Γ, r y = γ * y ∧ γ * y ∈ D) {y : G} (hy : y ∉ rr_N Γ D) :
     r y = rr_rep (Γ : Set G) D y := by
   obtain ⟨γ, hγ, hry, hD⟩ := hr y
   rw [hry, rr_rep_eq h hy hγ hD]
 
+/- English proof (translation)
+Establish `e` using `rr_rep_eq h hy Γ.one_mem (by rwa [one_mul])`. Rewrite `e` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 private theorem rr_rep_eq_self_of_mem_of_not_mem_rr_N (h : rr_FD μ Γ D) {y : G}
     (hy : y ∉ rr_N Γ D) (hD : y ∈ D) : rr_rep (Γ : Set G) D y = y := by
   have e := rr_rep_eq h hy Γ.one_mem (by rwa [one_mul])
   rwa [one_mul] at e
 
+/- English proof (translation)
+Take `⟨r₀, hr₀, hr₀rep⟩` from `rr_exists_meas_rep h`. Use `haveI : MeasurableConstSMul Γ G := ⟨fun c => measurable_const_mul (c : G)⟩`. Use `haveI : SMulInvariantMeasure Γ G μ := ⟨fun c s _ => measure_preimage_mul μ (c : G) s⟩`. Establish `hMmeas : MeasurableSet (rr_N Γ D)` using `measurableSet_rr_N h.meas`. Establish `hN0 : μ ((fun x => x * g) ⁻¹' rr_N Γ D) = 0`.
+
+Rewrite using `[measure_preimage_mul_right]`. Conclude with `rr_N_null h`. Establish `hN : ∀ᵐ x ∂μ, x * g ∉ rr_N Γ D`. Use `ae_iff.mpr (measure_mono_null (fun x hx => ?_) hN0)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_not] at hx`.
+
+Conclude with `hx`. Establish `hSmeas : MeasurableSet ((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A))` using `measurable_mul_const g (hMmeas.compl.inter (hr₀ hA))`. Establish `hinv : ∀ c : Γ, (fun x => c • x) ⁻¹' ((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A)) = ((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A))`. Introduce `c`. Use extensionality with `x`.
+
+Use `show (c : G) * x * g ∉ rr_N Γ D ∧ r₀ ((c : G) * x * g) ∈ A ↔ x * g ∉ rr_N Γ D ∧ r₀ (x * g) ∈ A`. Rewrite using `[mul_assoc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `hy : x * g ∉ rr_N Γ D`.
+
+Establish `e` using `rr_N_smul (Γ.inv_mem c.2) h1`. Rewrite `e` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis. Use `⟨hy, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[eq_rr_rep_of_not_mem_rr_N h hr₀rep h1, rr_rep_smul h c.2 hy, ← eq_rr_rep_of_not_mem_rr_N h hr₀rep hy]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`.
+
+Establish `hy` using `rr_N_smul c.2 h1`. Use `⟨hy, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_rr_rep_of_not_mem_rr_N h hr₀rep hy, rr_rep_smul h c.2 h1, ← eq_rr_rep_of_not_mem_rr_N h hr₀rep h1]` and apply the resulting hypothesis. Establish `hfd : IsFundamentalDomain Γ D μ` using `(rr_isFD h)`. Establish `hfd' : IsFundamentalDomain Γ ((fun x => x * g) ⁻¹' D) μ` using `(rr_isFD ((rr_FD_right h) g))`.
+
+Establish `key` using `hfd.measure_set_eq hfd' (A := ((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A))) hSmeas hinv`. Establish `e1 : μ ((fun x => r (x * g)) ⁻¹' A ∩ D) = μ (((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A)) ∩ D)`. Use `measure_congr (hN.mono fun x hx => propext ?_)` and prove the remaining obligations. Establish `e : r (x * g) = r₀ (x * g)`. Rewrite using `[eq_rr_rep_of_not_mem_rr_N h hr hx, eq_rr_rep_of_not_mem_rr_N h hr₀rep hx]`.
+
+Use `show r (x * g) ∈ A ∧ x ∈ D ↔ (x * g ∉ rr_N Γ D ∧ r₀ (x * g) ∈ A) ∧ x ∈ D`. Rewrite using `[e]`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨⟨hx, h1⟩, h2⟩, fun ⟨⟨_, h1⟩, h2⟩ => ⟨h1, h2⟩⟩`. Establish `e2 : μ (((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A)) ∩ (fun x => x * g) ⁻¹' D) = μ ((fun x => x * g) ⁻¹' (A ∩ D))`. Use `measure_congr (hN.mono fun x hx => propext ?_)` and prove the remaining obligations.
+
+Use `show (x * g ∉ rr_N Γ D ∧ r₀ (x * g) ∈ A) ∧ x * g ∈ D ↔ x * g ∈ A ∧ x * g ∈ D`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h1⟩, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite `h1` using `[eq_rr_rep_of_not_mem_rr_N h hr₀rep hx, rr_rep_eq_self_of_mem_of_not_mem_rr_N h hx h2]`. Then use the resulting hypothesis.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨hx, ?_⟩, h2⟩` and prove the remaining obligations. Rewrite using `[eq_rr_rep_of_not_mem_rr_N h hr₀rep hx, rr_rep_eq_self_of_mem_of_not_mem_rr_N h hx h2]` and apply the resulting hypothesis. Rewrite using `[e1, key, e2, measure_preimage_mul_right]`.
+-/
 theorem rr_meas_pre [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D) {r : G → G}
     (hr : ∀ y, ∃ γ ∈ Γ, r y = γ * y ∧ γ * y ∈ D) (g : G) {A : Set G} (hA : MeasurableSet A) :
     μ ((fun x => r (x * g)) ⁻¹' A ∩ D) = μ (A ∩ D) := by
@@ -211,6 +284,9 @@ theorem rr_meas_pre [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable 
       rwa [eq_rr_rep_of_not_mem_rr_N h hr₀rep hx, rr_rep_eq_self_of_mem_of_not_mem_rr_N h hx h2]
   rw [e1, key, e2, measure_preimage_mul_right]
 
+/- English proof (translation)
+Take `⟨r₀, hr₀, hr₀rep⟩` from `rr_exists_meas_rep h`. Establish `hae : AEMeasurable (fun x => rr_rep (Γ : Set G) D (x * g)) (μ.restrict D)` using `⟨fun x => r₀ (x * g), hr₀.comp (measurable_mul_const g), ae_restrict_of_ae (rr_rep_ae_eq h hr₀rep g)⟩`. Use `⟨hae, Measure.ext fun A hA => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply_of_aemeasurable hae hA, Measure.restrict_apply' h.meas, Measure.restrict_apply' h.meas]`. Conclude with `rr_meas_pre h (rr_rep_spec h) g hA`.
+-/
 theorem rr_map [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D) (g : G) :
     AEMeasurable (fun x => rr_rep (Γ : Set G) D (x * g)) (μ.restrict D) ∧
       Measure.map (fun x => rr_rep (Γ : Set G) D (x * g)) (μ.restrict D) = μ.restrict D := by
@@ -223,6 +299,11 @@ theorem rr_map [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (
     Measure.restrict_apply' h.meas]
   exact rr_meas_pre h (rr_rep_spec h) g hA
 
+/- English proof (translation)
+Establish `hM : μ ((fun x => x * (g * k)) ⁻¹' rr_N Γ D) = 0`. Rewrite using `[measure_preimage_mul_right]`. Conclude with `rr_N_null h`. Rewrite using `[ae_iff]`. Use `measure_mono_null (fun x hx => ?_) hM` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hxM`. Take `⟨γ, hγ, he, -⟩` from `rr_rep_spec h (x * g)`. Use `hx ?_` and prove the remaining obligations. Rewrite using `[he, show γ * (x * g) * k = γ * (x * (g * k)) by simp only [mul_assoc]]`. Conclude with `rr_rep_smul (y := x * (g * k)) h hγ hxM`.
+-/
 theorem rr_rep_comp [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D) (g k : G) :
     ∀ᵐ x ∂μ, rr_rep (Γ : Set G) D (rr_rep (Γ : Set G) D (x * g) * k) = rr_rep (Γ : Set G) D (x * (g * k)) := by
   have hM : μ ((fun x => x * (g * k)) ⁻¹' rr_N Γ D) = 0 := by
@@ -235,6 +316,11 @@ theorem rr_rep_comp [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable 
   rw [he, show γ * (x * g) * k = γ * (x * (g * k)) by simp only [mul_assoc]]
   exact rr_rep_smul (y := x * (g * k)) h hγ hxM
 
+/- English proof (translation)
+Rewrite using `[ae_restrict_iff' h.meas, ae_iff]`. Use `measure_mono_null (fun x hx => ?_) (rr_N_null h)` and prove the remaining obligations. Assume the negation of the conclusion as `hxM`. Simplify using `only [Set.mem_setOf_eq, _root_.not_imp] at hx`. Take `⟨hxD, hne⟩` from `hx`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[mul_one]`. Establish `e` using `rr_rep_eq h hxM Γ.one_mem (by rwa [one_mul])`. Rewrite `e` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem rr_rep_self [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) :
     ∀ᵐ x ∂μ.restrict D, rr_rep (Γ : Set G) D (x * 1) = x := by
   rw [ae_restrict_iff' h.meas, ae_iff]
@@ -254,6 +340,11 @@ def rr_IsReg (μ : Measure G) (Γ : Subgroup G) (D : Set G)
 
 variable {R : G → (Lp ℂ 2 (μ.restrict D) →L[ℂ] Lp ℂ 2 (μ.restrict D))}
 
+/- English proof (translation)
+Take `⟨hae, hmap⟩` from `rr_map h g`. Establish `hF : AEStronglyMeasurable (F : G → ℂ) (Measure.map (fun x => rr_rep (Γ : Set G) D (x * g)) (μ.restrict D))`. Rewrite using `[hmap]`. Conclude with `Lp.aestronglyMeasurable F`. Establish `key` using `eLpNorm_map_measure (p := 2) hF hae`.
+
+Rewrite `key` using `[hmap]`. Rewrite using `[Lp.norm_def, Lp.norm_def, eLpNorm_congr_ae (hR g F)]`. Conclude with `congrArg ENNReal.toReal key.symm`.
+-/
 theorem rr_norm [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D)
     (hR : rr_IsReg μ Γ D R) (g : G) (F : Lp ℂ 2 (μ.restrict D)) : ‖R g F‖ = ‖F‖ := by
   obtain ⟨hae, hmap⟩ := rr_map h g
@@ -265,6 +356,11 @@ theorem rr_norm [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] 
   rw [Lp.norm_def, Lp.norm_def, eLpNorm_congr_ae (hR g F)]
   exact congrArg ENNReal.toReal key.symm
 
+/- English proof (translation)
+Use extensionality with `F : 1`. Use `Lp.ext ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply]`. Take `⟨hae, hmap⟩` from `rr_map h g`. Establish `h3 : (fun x => ((R k F : Lp ℂ 2 (μ.restrict D)) : G → ℂ) (rr_rep (Γ : Set G) D (x * g))) =ᵐ[μ.restrict D] fun x => (F : G → ℂ) (rr_rep (Γ : Set G) D (rr_rep (Γ : Set G) D (x * g) * k))` using `ae_eq_comp (f := fun x => rr_rep (Γ : Set G) D (x * g)) (g := ((R k F : Lp ℂ 2 (μ.restrict D)) : G → ℂ)) (g' := fun y => (F : G → ℂ) (rr_rep (Γ : Set G) D (y * k))) hae (by rw [hmap]; exact hR k F)`.
+
+Use `filter_upwards [hR (g * k) F, hR g (R k F), h3, ae_restrict_of_ae (s := D) (rr_rep_comp h g k)] with x e1 e2 e3 e4`. Simplify using `only [e1, e2, e3, e4]`.
+-/
 theorem rr_mul [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D)
     (hR : rr_IsReg μ Γ D R) (g k : G) : R (g * k) = R g ∘L R k := by
   ext F : 1
@@ -281,6 +377,9 @@ theorem rr_mul [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (
     ae_restrict_of_ae (s := D) (rr_rep_comp h g k)] with x e1 e2 e3 e4
   simp only [e1, e2, e3, e4]
 
+/- English proof (translation)
+Use extensionality with `F : 1`. Use `Lp.ext ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.one_apply]`. Use `filter_upwards [hR 1 F, rr_rep_self h] with x e1 e2`. Simplify using `only [e1, e2]`.
+-/
 theorem rr_one [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) (hR : rr_IsReg μ Γ D R) : R 1 = 1 := by
   ext F : 1
   refine Lp.ext ?_
@@ -288,6 +387,11 @@ theorem rr_one [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) (hR : 
   filter_upwards [hR 1 F, rr_rep_self h] with x e1 e2
   simp only [e1, e2]
 
+/- English proof (translation)
+Take `⟨r₀, hr₀, hr₀rep⟩` from `rr_exists_meas_rep h`. Establish `hΦ : StronglyMeasurable (fun p : G × G => ⟪(x : G → ℂ) p.2, (y : G → ℂ) (r₀ (p.2 * p.1))⟫_ℂ)` using `((Lp.stronglyMeasurable x).comp_measurable measurable_snd).inner ((Lp.stronglyMeasurable y).comp_measurable (hr₀.comp (measurable_snd.mul measurable_fst)))`. Establish `hEq : (fun g => ⟪x, R g y⟫_ℂ) = fun g => ∫ z, ⟪(x : G → ℂ) z, (y : G → ℂ) (r₀ (z * g))⟫_ℂ ∂(μ.restrict D)`. Use function extensionality and compare the values at `g`. Rewrite using `[L2.inner_def]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hR g y, ae_restrict_of_ae (s := D) (rr_rep_ae_eq h hr₀rep g)] with z e1 e2`. Simplify using `only [e1, e2]`. Rewrite using `[hEq]`. Conclude with `hΦ.integral_prod_right'`.
+-/
 theorem rr_weak_meas [MeasurableMul₂ G] [SFinite μ] [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ]
     (h : rr_FD μ Γ D) (hR : rr_IsReg μ Γ D R) (x y : Lp ℂ 2 (μ.restrict D)) :
     StronglyMeasurable fun g => ⟪x, R g y⟫_ℂ := by

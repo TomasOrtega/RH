@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.DetLineIntZero
 
+/- English proof (translation)
+Establish `h` using `(isLittleO_log_rpow_rpow_atTop (n : ℝ) (show (0 : ℝ) < 1 / 2 by norm_num)).tendsto_div_nhds_zero`. Use `h.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop (0 : ℝ)] with R hR`. Rewrite using `[Real.rpow_natCast, Real.sqrt_eq_rpow]`.
+-/
 theorem tendsto_log_pow_div_sqrt (n : ℕ) :
     Tendsto (fun R : ℝ => Real.log R ^ n / Real.sqrt R) atTop (𝓝 0) := by
   have h := (isLittleO_log_rpow_rpow_atTop (n : ℝ) (show (0 : ℝ) < 1 / 2 by norm_num)).tendsto_div_nhds_zero
@@ -22,6 +25,9 @@ theorem tendsto_log_pow_div_sqrt (n : ℕ) :
   filter_upwards [eventually_gt_atTop (0 : ℝ)] with R hR
   rw [Real.rpow_natCast, Real.sqrt_eq_rpow]
 
+/- English proof (translation)
+Establish `hs : M.Smooth (f - g)` using `fun σ => Cauchy.smooth_sub (hf σ) (hg σ)`. Rewrite using `[← K.num_ar f hf v, ← K.num_ar g hg v, ← K.num_ar (f - g) hs v]`. Establish `e : K.ar f = K.ar (f - g) + K.ar g` using `by rw [map_sub]; abel`. Rewrite using `[e, MultilinearMap.cons_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem int_sub {e : ℕ} {M : Man e} (K : Calc M) (v : Fin e → K.V) (f g : M.Fun) (hf : M.Smooth f)
     (hg : M.Smooth g) :
     M.int (fun i => K.c1 (v i)) f - M.int (fun i => K.c1 (v i)) g = M.int (fun i => K.c1 (v i)) (f - g) := by
@@ -35,6 +41,35 @@ end GlobalTheory.DetLineIntZero
 
 namespace GlobalTheory.DetLineIntZero
 
+/- English proof (translation)
+Introduce `hP hH D O hC hf A T H h B hB τ c u hu g hg hgph`. Establish `hSR` using `GlobalTheory.T.fibre_size_and_range_bound hP hH D O hC hf A T H h`. Establish `hQP` using `GlobalTheory.T.quasi_polynomial_bound_in_direction hP hH D O hC hf A T H h`. Establish `hF : (T.F c).FamR O.Y.j` using `GlobalTheory.Mean4O.InterpFam.famR_of_inR D O.Y T c (fun σ => ((hQP c) σ).1) (hSR c).1 (hSR c).2`. Use `set eτ : Wt O.Y := fun σ' _ => if σ' = τ then (-1 : ℝ) else 0 with heτ`.
+
+Establish `hdom : DomL O.Y.j eτ` using `fun _ _ _ _ _ => le_rfl`. Take `⟨K, hK⟩` from `hF (max ‖u‖ ‖eτ‖)`. Establish `hKu` using `fun R (hR : Real.exp 2 ≤ R) σ => hK u hu (le_max_left _ _) 0 ⟨le_rfl, zero_le_one⟩ R hR σ`. Establish `hKe` using `fun R (hR : Real.exp 2 ≤ R) σ => hK eτ hdom (le_max_right _ _) 0 ⟨le_rfl, zero_le_one⟩ R hR σ`. Establish `hK0 : 0 ≤ K`.
+
+Take `⟨-, ⟨-, _, _, h1, -⟩, -⟩` from `hKu _ le_rfl 0`. Conclude with `(abs_nonneg _).trans (h1 0).2`. Use `choose Mg hMg using fun σ => (isCompact_univ (X := (T.M c).X σ)).exists_bound_of_continuousOn (GlobalTheory.Mean4O.Cauchy.continuous_of_smooth (hg σ)).continuousOn`. Use `choose C hC using fun σ => GlobalTheory.T.mixed_integral_tail_bound_exists _ _ ((T.M c).A σ) ((T.M c).Z σ) ((T.M c).r σ) ((T.M c).Om σ) ((T.M c).bd σ) K`. Use `set e := Formalism.MainNotions.WeightThresholdDefs.dimY O.Y`.
+
+Set `Kt : Fin ((T.M c).n + 1) → ℝ` to `fun σ => K + |Mg σ|`. Establish `hKt0 : ∀ σ, 0 ≤ Kt σ` using `fun σ => add_nonneg hK0 (abs_nonneg _)`. Set `q : ℝ → ℝ` to `fun R => Real.log R ^ (e + 1) / Real.sqrt R`. Set `G : ℝ` to `(T.M c).κ * ∑ σ, (3 * K) ^ e * (4 * Kt σ * |C σ|)`. Establish `hc : ∀ R, Real.exp 2 ≤ R → ∀ σ, Comb ((T.M c).A σ) ((T.M c).Z σ) ((T.M c).r σ) ((T.M c).Om σ) K ((T.K B c).c1 (T.L B c u + (T.K B c).ar ((T.F c).phR R u)) σ)` using `fun R hR σ => by`.
+
+Establish `e0 : T.L B c u + (0 : ℝ) • T.a B c + (T.K B c).ar ((T.F c).phR R u) = T.L B c u + (T.K B c).ar ((T.F c).phR R u)` using `by rw [zero_smul, add_zero]`. Establish `l` using `GlobalTheory.Mean4O.Cauchy.first_chern_form_levi_sum (T.K B c) (T.L B c u) (T.a B c) 0 ((T.F c).phR R u) (fun σ => (hKu R hR σ).1) σ (T.th_pot c u σ) (T.a_pot c σ) (T.c1_L B c u σ) (T.firstChern_leviEq_constant B c σ)`. Rewrite `l` using `[e0]`. Conclude with `GlobalTheory.Mean4O.Cauchy.comb_of_leviEq ((T.K B c).firstChern_isPotential _ σ) l (hKu R hR σ).2.1`. Establish `bound : ∀ R, Real.exp 2 ≤ R → |(T.M c).int (fun _ => (T.K B c).c1 (T.L B c u + (T.K B c).ar ((T.F c).phR R u))) ((T.F c).phR R eτ) - (T.M c).int (fun _ => (T.K B c).c1 (T.L B c u + (T.K B c).ar ((T.F c).phR R u))) g| ≤ G * q R`.
+
+Introduce `R hR`. Establish `h0 : 0 < R` using `lt_of_lt_of_le (Real.exp_pos _) hR`. Establish `hsq : Real.exp 1 ≤ Real.sqrt R`. Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`.
+
+Simplify using `using hR`. Establish `hsm : (T.M c).Smooth ((T.F c).phR R eτ)` using `fun σ => (hKe R hR σ).1`. Rewrite using `[int_sub (T.K B c) (fun _ => T.L B c u + (T.K B c).ar ((T.F c).phR R u)) _ g hsm hg, Man.int, abs_mul, abs_of_pos (T.M c).κ_pos]`. Establish `key : ∀ σ, |mInt ((T.M c).A σ) (fun _ => (T.K B c).c1 (T.L B c u + (T.K B c).ar ((T.F c).phR R u)) σ) (((T.F c).phR R eτ - g) σ)| ≤ (3 * K) ^ e * (4 * Kt σ * |C σ|) * q R`. Introduce `σ`.
+
+Establish `hb` using `GlobalTheory.Mean4O.CombInt.abs_mInt_comb_le _ _ _ _ _ _ ((T.M c).bd σ) K (C σ) hK0 (hC σ) (fun _ => (T.K B c).c1 (T.L B c u + (T.K B c).ar ((T.F c).phR R u)) σ) (((T.F c).phR R eτ - g) σ) (2 * Kt σ / R) (2 * Kt σ) (Real.sqrt R) (fun _ => hc R hR σ) (GlobalTheory.Mean4O.Cauchy.co …`. Establish `a1` using `((hKe R hR σ).2.2 x hx).2 hr`. Establish `a2 : K / R ≤ 2 * Kt σ / R`. Apply `div_le_div_of_nonneg_right _ h0.le` to reduce the goal to its premises. Use `abs_nonneg (Mg σ)` as an intermediate fact.
+
+Simplify using `only [Kt]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Pi.sub_apply, Pi.sub_apply, hgph σ x hx]`. Conclude with `a1.trans a2)`. Use the proof step `(fun x hx _ => by`.
+
+Establish `a1` using `((hKe R hR σ).2.2 x hx).1`. Establish `a2` using `hMg σ x (Set.mem_univ _)`. Establish `hr1 : Real.exp 1 ≤ (T.M c).r σ x` using `((T.M c).bd σ).2.2.2.2.2.1 x hx`. Establish `hl : 1 ≤ Real.log ((T.M c).r σ x)`. Rewrite using `[Real.le_log_iff_exp_le (lt_of_lt_of_le (Real.exp_pos _) hr1)]`.
+
+Conclude with `hr1`. Rewrite `a2` using `[Real.norm_eq_abs]`. Establish `a3 : |Mg σ| * 1 ≤ |Mg σ| * Real.log ((T.M c).r σ x)` using `mul_le_mul_of_nonneg_left hl (abs_nonneg _)`. Establish `a4 : Mg σ ≤ |Mg σ|` using `le_abs_self _`. Establish `a5 : K * Real.log ((T.M c).r σ x) ≥ 0` using `mul_nonneg hK0 (by linarith)`.
+
+Rewrite using `[Pi.sub_apply, Pi.sub_apply]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Kt]`. Use polynomial arithmetic with `[abs_nonneg (Mg σ)])`. Use `hb.trans ?_` and prove the remaining obligations.
+
+Conclude with `(mul_le_mul_of_nonneg_left (GlobalTheory.Mean4O.Cauchy.rate_le (C := C σ) e (hKt0 σ) hR) (pow_nonneg (show 0 ≤ 3 * K by linarith) e)).trans_eq (by simp only [q]; ring)`. Combine the equalities or inequalities in the displayed calculation. Establish `hlim : Tendsto (fun R => G * q R) atTop (𝓝 0)`. Simplify using `using (tendsto_log_pow_div_sqrt (e + 1)).const_mul G`. Use `squeeze_zero_norm' ?_ hlim` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_ge_atTop (Real.exp 2)] with R hR`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `bound R hR`.
+-/
 theorem tendsto_int_sub : Hypotheses2 → HypothesesH → OnObj fun D O _ T _ _ => ∀ B : ℝ, 2 ≤ B → ∀ (τ : D.what₂.Tau) c (u : Wt O.Y),
     DomL O.Y.j u → ∀ g : (T.M c).Fun, (T.M c).Smooth g →
       (∀ σ x, x ∉ (T.M c).Z σ → g σ x = (T.F c).ph (fun σ' _ => if σ' = τ then (-1 : ℝ) else 0) σ x) →

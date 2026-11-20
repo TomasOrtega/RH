@@ -15,6 +15,11 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.ZM.SiegelLargeLevel
 
+/- English proof (translation)
+Rewrite using `[IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ, ← mem_algebraicClosure_iff]`. Establish `hle : ZP p M ≤ (algebraicClosure ℚ ℂ).toSubalgebra.toSubring`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y (rfl | ⟨n, -, rfl⟩)`. Establish `h1 : zeta M ^ M = 1` using `(Complex.isPrimitiveRoot_exp M hM).pow_eq_one`.
+
+Conclude with `mem_algebraicClosure_iff.2 (IsAlgebraic.of_pow (Nat.pos_of_ne_zero hM) (h1 ▸ isAlgebraic_one))`. Conclude with `(algebraicClosure ℚ ℂ).inv_mem (natCast_mem _ n)`. Conclude with `hle hx`.
+-/
 theorem isAlgebraic_of_mem_ZP {p M : ℕ} (hM : M ≠ 0) {x : ℂ} (hx : x ∈ ZP p M) : IsAlgebraic ℤ x := by
   rw [IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ, ← mem_algebraicClosure_iff]
   have hle : ZP p M ≤ (algebraicClosure ℚ ℂ).toSubalgebra.toSubring := by
@@ -26,6 +31,17 @@ theorem isAlgebraic_of_mem_ZP {p M : ℕ} (hM : M ≠ 0) {x : ℂ} (hx : x ∈ Z
     · exact (algebraicClosure ℚ ℂ).inv_mem (natCast_mem _ n)
   exact hle hx
 
+/- English proof (translation)
+Introduce `L L2 hθ hU h n hh hn hodd`. Take `⟨j₀, hj₀⟩` from `GlobalTheory.T.nonempty_siegelFamily_over_arithmetic_base L L2 hθ hU h n hh hn hodd`. Use `⟨max j₀ 1, fun j hj p hp hnp => ?_⟩` and prove the remaining obligations. Establish `hj1 : 1 ≤ j` using `le_trans (le_max_right _ _) hj`. Take `⟨o, _, b, em, i, hem, hζ, hi, hconst⟩` from `GlobalTheory.ZM.CycBase.exists_base n (j * 2) p ((n ^ j) ^ 2) hn hp hnp (by omega) (pow_mul n j 2).symm`.
+
+Take `⟨F⟩` from `hj₀ j (le_trans (le_max_left _ _) hj) o b em hem`. Establish `h3 : 3 ≤ n`. Use `hn.two_le` as an intermediate fact. Break down `hodd with ⟨m, rfl⟩` into its components or cases. Use linear arithmetic over natural numbers and integers.
+
+Establish `hk : 3 ≤ (n ^ j) ^ 2`. Rewrite using `[← pow_mul]`. Conclude with `h3.trans (Nat.le_self_pow (by omega) n)`. Establish `hinj : Function.Injective i` using `fun x y hxy => hem.2.2 (by rw [← hi, ← hi, hxy])`. Establish `halg : Algebra.IsAlgebraic ℤ o` using `⟨fun x => by`.
+
+Establish `hx : IsAlgebraic ℤ (em.toIntAlgHom x)`. Express the relevant statement in the definitionally equal form `IsAlgebraic ℤ (em x)`. Rewrite using `[← hi]`. Conclude with `isAlgebraic_of_mem_ZP (by omega) (i x).2`. Conclude with `(isAlgebraic_algHom_iff em.toIntAlgHom hem.2.2).1 hx⟩`.
+
+Conclude with `GlobalTheory.T.exists_siegelFamily_localised_cyclotomic_integers L L2 h _ p o _ i (hodd.pow.pow) hk hp hinj hζ hconst halg F`.
+-/
 theorem exists_siegelFamily_sRep : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ (h n : ℕ), 1 ≤ h → n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ p : ℕ, p.Prime → n ≠ p → ∃ Ag : SiegelFamily h p ((n ^ j) ^ 2), SRep Ag := by
   intro L L2 hθ hU h n hh hn hodd
   obtain ⟨j₀, hj₀⟩ := GlobalTheory.T.nonempty_siegelFamily_over_arithmetic_base L L2 hθ hU h n hh hn hodd

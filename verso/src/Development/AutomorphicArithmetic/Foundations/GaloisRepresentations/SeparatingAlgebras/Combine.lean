@@ -8,6 +8,17 @@ namespace UpperTheory.Gal.Gen
 
 variable {k : Type} [NormedField k] [IsUltrametricDist k] {J : Type}
 
+/- English proof (translation)
+Introduce `ε hε`. Establish `hq : 0 < ‖aeval η Q‖` using `norm_pos_iff.2 hQ`. Take `⟨s, c, hs, hc⟩` from `h (ε * ‖aeval η Q‖) (mul_pos hε hq)`. Use `⟨s.filter (fun x => aeval x Q ≠ 0), fun x => c x * aeval x Q / aeval η Q, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq] at hx`. Conclude with `⟨hs hx.1, hx.2⟩`. Introduce `P`. Establish `e1 : ∑ x ∈ s.filter (fun x => aeval x Q ≠ 0), c x * aeval x Q / aeval η Q * aeval x P = (∑ x ∈ s, c x * aeval x (P * Q)) / aeval η Q`. Rewrite using `[Finset.sum_filter_of_ne, Finset.sum_div]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x _ hx hQx`. Apply `hx` to reduce the goal to its premises.
+
+Simplify using `[hQx]`. Rewrite using `[e1]`. Establish `e2 : aeval η P - (∑ x ∈ s, c x * aeval x (P * Q)) / aeval η Q = (aeval η (P * Q) - ∑ x ∈ s, c x * aeval x (P * Q)) / aeval η Q`. Rewrite using `[map_mul, sub_div, mul_div_assoc, div_self hQ, mul_one]`. Rewrite using `[e2, norm_div, div_le_iff₀ hq]`.
+
+Conclude with `hc (P * Q)`.
+-/
 private theorem polyApprox_cut {η : J → k} {T : Set (J → k)} {Q : MvPolynomial J ℤ} (hQ : aeval η Q ≠ 0)
     (h : PolyApprox η T) : PolyApprox η {x | x ∈ T ∧ aeval x Q ≠ 0} := by
   classical
@@ -35,6 +46,25 @@ private theorem polyApprox_cut {η : J → k} {T : Set (J → k)} {Q : MvPolynom
     rw [e2, norm_div, div_le_iff₀ hq]
     exact hc (P * Q)
 
+/- English proof (translation)
+Introduce `ε hε`. Take `⟨s, c, hs, hc⟩` from `h (ε / 2) (by positivity)`. Establish `hM0 : 0 ≤ ∑ η ∈ s, ‖c η‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hε2 : 0 < ε / (2 * (∑ η ∈ s, ‖c η‖ + 1))` using `by positivity`. Establish `hT : ∀ η ∈ S, ∃ (t : Finset (J → k)) (d : (J → k) → k), (↑t : Set (J → k)) ⊆ T ∧ ∀ P : MvPolynomial J ℤ, ‖aeval η P - ∑ ζ ∈ t, d ζ * aeval ζ P‖ ≤ ε / (2 * (∑ η ∈ s, ‖c η‖ + 1))` using `fun η hη => hS η hη _ hε2`.
+
+Use `choose! t d ht hd using hT`. Use `⟨s.biUnion t, fun ζ => ∑ η ∈ s, c η * (if ζ ∈ t η then d η ζ else 0), ?_, ?_⟩` and prove the remaining obligations. Introduce `ζ hζ`. Simplify using `only [Finset.coe_biUnion, Set.mem_iUnion, Finset.mem_coe, exists_prop] at hζ`. Take `⟨η, hη, hζ⟩` from `hζ`.
+
+Conclude with `ht η (hs hη) hζ`. Introduce `P`. Establish `hsum : ∑ ζ ∈ s.biUnion t, (∑ η ∈ s, c η * (if ζ ∈ t η then d η ζ else 0)) * aeval ζ P = ∑ η ∈ s, c η * ∑ ζ ∈ t η, d η ζ * aeval ζ P`. Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun η hη => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `symm`. Apply `Finset.sum_subset_zero_on_sdiff (Finset.subset_biUnion_of_mem t hη)` to reduce the goal to its premises. Introduce `ζ hζ`.
+
+Rewrite using `[if_neg (Finset.mem_sdiff.1 hζ).2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `ζ hζ`. Rewrite using `[if_pos hζ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsum]`. Establish `split : aeval θ P - ∑ η ∈ s, c η * ∑ ζ ∈ t η, d η ζ * aeval ζ P = (aeval θ P - ∑ η ∈ s, c η * aeval η P) + ∑ η ∈ s, c η * (aeval η P - ∑ ζ ∈ t η, d η ζ * aeval ζ P)`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[split]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `hc P`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun η hη => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hd η (hs hη) P) (norm_nonneg _)`.
+
+Use `_ ≤ ε := by`. Rewrite using `[← Finset.sum_mul]`. Generalize the expression as in `∑ η ∈ s, ‖c η‖ = M at hM0 ⊢`. Establish `h1 : M / (M + 1) ≤ 1` using `(div_le_one (by linarith)).2 (by linarith)`. Establish `h2 : M * (ε / (2 * (M + 1))) = ε / 2 * (M / (M + 1))`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h3 : ε / 2 * (M / (M + 1)) ≤ ε / 2` using `mul_le_of_le_one_right (by positivity) h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem polyApprox_trans {θ : J → k} {S T : Set (J → k)} (h : PolyApprox θ S)
     (hS : ∀ η ∈ S, PolyApprox η T) : PolyApprox θ T := by
   classical
@@ -91,6 +121,9 @@ private theorem polyApprox_trans {θ : J → k} {S T : Set (J → k)} (h : PolyA
           have h3 : ε / 2 * (M / (M + 1)) ≤ ε / 2 := mul_le_of_le_one_right (by positivity) h1
           linarith
 
+/- English proof (translation)
+Introduce `k _ _ J θ S T Q hθ h`. Conclude with `polyApprox_trans hθ fun η hη => polyApprox_cut (h η hη).1 (h η hη).2`.
+-/
 theorem combine_pf : Combine := by
   intro k _ _ J θ S T Q hθ h
   exact polyApprox_trans hθ fun η hη => polyApprox_cut (h η hη).1 (h η hη).2

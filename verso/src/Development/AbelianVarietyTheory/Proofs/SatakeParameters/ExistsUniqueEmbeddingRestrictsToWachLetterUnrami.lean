@@ -8,6 +8,17 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 
 namespace GlobalTheory.HTW.Rec
 
+/- English proof (translation)
+Introduce `l _ P K LL W hK a`. Establish `hle : K.1 ≤ K0 K` using `le_inf le_rfl hK`. Establish `hsurj : Function.Surjective (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1)`. Introduce `x`. Conclude with `⟨⟨x.1, hle x.2⟩, Subtype.ext rfl⟩`.
+
+Set `e : ↥(K0 K) ≃ₐ[ℚ_[l]] ↥K.1` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1) ⟨(IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1).toRingHom.injective, hsurj⟩`. Use `⟨(W.emb a).comp e.symm.toAlgHom, ?_, ?_⟩` and prove the remaining obligations. Use `show ((W.emb a).comp e.symm.toAlgHom).comp (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1) = W.emb a`. Use extensionality with `x`. Establish `: e.symm ((IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1) x) = x` using `e.symm_apply_apply x`.
+
+Simplify using `only [AlgHom.comp_apply]`. Conclude with `congrArg (fun z => ((W.emb a z : ↥LL.1) : Om l)) this`. Introduce `τ hτ`. Establish `hτ' : τ.comp (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1) = W.emb a` using `hτ`. Use extensionality with `x`.
+
+Take `⟨y, rfl⟩` from `hsurj x`. Establish `h1 : e.symm ((IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1) y) = y` using `e.symm_apply_apply y`. Establish `h2` using `congrArg (fun f => f y) hτ'`. Simplify using `only [AlgHom.comp_apply] at h2 ⊢`. Rewrite using `[h2]`.
+
+Conclude with `congrArg (fun z => ((W.emb a z : ↥LL.1) : Om l)) h1.symm`.
+-/
 theorem existsUnique_over : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) (W : Wach P K LL),
     K.1 ≤ MaximalUnramifiedExtension l → ∀ a, ∃! τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, Over W τ a := by
   intro l _ P K LL W hK a

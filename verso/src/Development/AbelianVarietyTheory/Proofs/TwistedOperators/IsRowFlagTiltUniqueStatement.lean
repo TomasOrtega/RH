@@ -12,6 +12,9 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TiltUnique.tilt_unique | exact GlobalTheory.TiltUnique.tilt_unique | (intros; apply GlobalTheory.TiltUnique.tilt_unique <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isRowFlagTilt_unique : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {j : ℕ} (hj : j < D.R.m)
     (δ δ' : GA D (G.V (.grid D.R.m j))), IsTilt G j δ → IsTilt G j δ' → δ = δ' := by
   first | exact @GlobalTheory.TiltUnique.tilt_unique | exact GlobalTheory.TiltUnique.tilt_unique | (intros; apply GlobalTheory.TiltUnique.tilt_unique <;> assumption)

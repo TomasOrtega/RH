@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.VDblEig
 
+/- English proof (translation)
+Establish `cl : Continuous fun x : κ ⊕ κ' → k => x ∘ Sum.inl` using `continuous_pi fun i => continuous_apply _`. Establish `cr : Continuous fun x : κ ⊕ κ' → k => x ∘ Sum.inr` using `continuous_pi fun i => continuous_apply _`. Use `⟨(h₁.1.comp_continuous cl).mul (h₂.1.comp_continuous cr), ?_⟩` and prove the remaining obligations. Set `e` to `(Homeomorph.sumArrowHomeomorphProdArrow (X := k) (ι := κ) (ι' := κ'))`. Use `HasCompactSupport.intro ((h₁.2.prod h₂.2).image e.symm.continuous) fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hx' : e x ∉ tsupport φ₁ ×ˢ tsupport φ₂` using `fun h => hx ⟨e x, h, e.symm_apply_apply x⟩`. Rewrite `hx'` using `[Homeomorph.sumArrowHomeomorphProdArrow_apply, Set.mem_prod, not_and_or]`. Simplify using `only [boxFun]`. Break down `hx' with h | h` into its components or cases. Rewrite using `[image_eq_zero_of_notMem_tsupport h, zero_mul]`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport h, mul_zero]`.
+-/
 theorem boxFun_mem_SB' {k : Type} [CommRing k] [TopologicalSpace k] [T2Space k] {κ κ' : Type}
     {φ₁ : (κ → k) → ℂ} {φ₂ : (κ' → k) → ℂ} (h₁ : φ₁ ∈ SB (κ → k)) (h₂ : φ₂ ∈ SB (κ' → k)) :
     boxFun φ₁ φ₂ ∈ SB (κ ⊕ κ' → k) := by
@@ -30,10 +37,36 @@ theorem boxFun_mem_SB' {k : Type} [CommRing k] [TopologicalSpace k] [T2Space k] 
   · rw [image_eq_zero_of_notMem_tsupport h, zero_mul]
   · rw [image_eq_zero_of_notMem_tsupport h, mul_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.comp _, h.2.comp_left (star_zero _)⟩`.
+-/
 theorem star_mem_SB' {Y : Type} [TopologicalSpace Y] {φ : Y → ℂ} (h : φ ∈ SB Y) :
     (fun y => star (φ y)) ∈ SB Y :=
   ⟨h.1.comp _, h.2.comp_left (star_zero _)⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w hw hv d' hd' dd omd hdc hsp r hr g hg`. Take `⟨hvSB, -, θ, hθ, hvac⟩` from `hT.geo.hM.vac v`. Use `set φ := G.M.vac v with hφ`. Use `set vD := boxFun φ (fun x => star (φ x)) with hvD`. Use `set RD := boxFun r (fun x => star (r x)) with hRD`.
+
+Establish `hvDSB : vD ∈ SB _` using `boxFun_mem_SB' hvSB (star_mem_SB' hvSB)`. Establish `hS : boxFun (tens (evFin F v) φ r) (fun x => star (tens (evFin F v) φ r x)) = tens (evFin F v) vD RD`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, boxFun, hvD, hRD, Function.comp_def, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hRest : Rest (evFin F v) vD RD`. Use `⟨fun x z hz => ?_, ?_⟩` and prove the remaining obligations. Establish `hz1 : At (evFin F v) (z ∘ Sum.inl)` using `fun u hu => by`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (hz u hu) (Sum.inl i)`.
+
+Establish `hz2 : At (evFin F v) (z ∘ Sum.inr)` using `fun u hu => by`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (hz u hu) (Sum.inr i)`. Use `show r ((x + z) ∘ Sum.inl) * star (r ((x + z) ∘ Sum.inr)) = r (x ∘ Sum.inl) * star (r (x ∘ Sum.inr))`. Rewrite using `[show (x + z) ∘ Sum.inl = x ∘ Sum.inl + z ∘ Sum.inl from rfl, show (x + z) ∘ Sum.inr = x ∘ Sum.inr + z ∘ Sum.inr from rfl, hr.1 _ _ hz1, hr.1 _ _ hz2]`.
+
+Rewrite using `[← hS]`. Conclude with `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ _ hr.2 _ (GlobalTheory.ConjSch.star_mem_schA _ _ hr.2)`. Establish `hU` using `hsp.2.1`. Choose the witnesses or unpack the hypotheses as in `⟨φ₁, hφ₁, hA⟩ : ∃ φ₁ ∈ SB _, Acts (evFin F v) (omd g) vD φ₁ := by`. Use `GlobalTheory.DblActs.acts_of_comm v B.ψ hT.base.std (omd g) (fun Φ hΦ => hU.pres g Φ hΦ) (fun μ hμ Φ hΦ => hU.unit μ hμ g Φ hΦ) ?_ vD hvDSB` and prove the remaining obligations.
+
+Introduce `u hu x y Φ hΦ`. Use `set z := dd.e.symm (x, y) with hz`. Establish `he : dd.e (u • z) = (u • x, u • y)`. Rewrite using `[LinearEquiv.map_smul, hz, LinearEquiv.apply_symm_apply, Prod.smul_mk]`. Establish `h2` using `hg.1 u hu`.
+
+Establish `e2 : actB (cA σ) g (u • z) = u • z`. Simplify using `only [actB]`. Use `set P := GlobalTheory.DblVac.matD g with hP`. Use `set c : AE F E := algebraMap (AF F) (AE F E) u with hc`. Establish `hs1 : u • z = c • z` using `(algebraMap_smul (AE F E) u z).symm`.
+
+Establish `hs2 : u • (P - 1) = c • (P - 1)` using `(algebraMap_smul (AE F E) u (P - 1)).symm`. Establish `h2' : c • (P - 1) = 0` using `hs2 ▸ h2`. Establish `: (c • z) * Pᵀ - c • z = z * (c • (P - 1))ᵀ`. Rewrite using `[Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.mul_one, smul_sub]`. Rewrite `this` using `[h2']`.
+
+Simplify using `only [Matrix.transpose_zero, Matrix.mul_zero, sub_eq_zero] at this`. Rewrite using `[hs1]`. Conclude with `this`. Establish `h3` using `hU.impl g (u • z) Φ hΦ`. Simplify using `only [Darboux.rho, he, e2] at h3`.
+
+Conclude with `h3`. Establish `hE0` using `GlobalTheory.T.doubledVacuum_heisenbergEigen_doubledLattice F E σ B a a' G X om om' hT v w hw hv d' hd' dd hdc θ hθ hvac`. Establish `hE1` using `GlobalTheory.T.doubledStabilizer_weilOperator_transports_latticeEigen F E σ B a a' G X om om' hT v w hw hv d' hd' dd hdc θ hθ hvac omd hsp g hg vD hvDSB φ₁ hφ₁ hE0 hA`. Take `⟨μ, hμ⟩` from `GlobalTheory.T.inertPlace_doubledEigenfunctions_line_vacuum F E σ B a a' G X om om' hT v w hw hv d' hd' dd hdc θ hθ hvac φ₁ hφ₁ hE1`. Use `⟨μ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hS, hA RD hRest, hμ]`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vdbl_eigen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →

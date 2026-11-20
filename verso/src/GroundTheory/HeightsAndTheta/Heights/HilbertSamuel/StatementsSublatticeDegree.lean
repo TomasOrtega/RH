@@ -23,12 +23,18 @@ abbrev lat1 : Submodule ℤ (EuclideanSpace ℝ (Fin 1)) := Submodule.span ℤ (
 
 abbrev φ1 : lat1 →+ EuclideanSpace ℝ (Fin 1) := lat1.subtype.toAddMonoidHom
 
+/- English proof (translation)
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ φ1.range ↔ x ∈ lat1`. Rewrite using `[AddMonoidHom.mem_range]`. Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+-/
 theorem imageLattice_φ1 : imageLattice φ1 = lat1 := by
   ext x
   change x ∈ φ1.range ↔ x ∈ lat1
   rw [AddMonoidHom.mem_range]
   exact ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use the matching hypothesis.
+-/
 theorem isZLattice_of_eq {L L' : Submodule ℤ (EuclideanSpace ℝ (Fin 1))} (h : L = L') [DiscreteTopology L]
     [DiscreteTopology L'] [IsZLattice ℝ L'] : IsZLattice ℝ L := by
   subst h

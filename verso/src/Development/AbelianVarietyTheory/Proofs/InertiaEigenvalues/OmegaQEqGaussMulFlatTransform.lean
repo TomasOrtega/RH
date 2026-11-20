@@ -19,6 +19,11 @@ namespace GlobalTheory.FlatForm
 
 open GlobalTheory.FlatConj
 
+/- English proof (translation)
+Unfold `gaussGL`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, AddChar.inv_apply, AddChar.map_neg_eq_conj]`. Use `congr 1`.
+
+Use `set u := Matrix.GeneralLinearGroup.det x`. Establish `h1 : ((ξ u : ℂˣ) : ℂ) ^ Fintype.card kˣ = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one, map_one, Units.val_one]`. Establish `h2 : ‖((ξ u : ℂˣ) : ℂ)‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one h1 Fintype.card_ne_zero`. Rewrite using `[MonoidHom.inv_apply, inv_inv, Units.val_inv_eq_inv_val, map_inv₀, ← Complex.inv_eq_conj h2, inv_inv]`.
+-/
 theorem gaussGL_inv {k : Type} [Field k] [Fintype k] (ψ : AddChar k ℂ) (ξ : kˣ →* ℂˣ) (r : ℕ) :
     gaussGL ψ⁻¹ ξ⁻¹ r = (starRingEnd ℂ) (gaussGL ψ ξ r) := by
   unfold gaussGL
@@ -32,6 +37,9 @@ theorem gaussGL_inv {k : Type} [Field k] [Fintype k] (ψ : AddChar k ℂ) (ξ : 
   have h2 : ‖((ξ u : ℂˣ) : ℂ)‖ = 1 := Complex.norm_eq_one_of_pow_eq_one h1 Fintype.card_ne_zero
   rw [MonoidHom.inv_apply, inv_inv, Units.val_inv_eq_inv_val, map_inv₀, ← Complex.inv_eq_conj h2, inv_inv]
 
+/- English proof (translation)
+Take `⟨hnorm, -⟩` from `GlobalTheory.T.galois_matrix_gaussSum_eq_char_pow_mul k ψ ξ r hψ hξ (gaussGL ψ ξ r) rfl`. Rewrite using `[gaussGL_inv, Complex.mul_conj, Complex.normSq_eq_norm_sq, hnorm]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem gaussGL_mul_inv {k : Type} [Field k] [Fintype k] (ψ : AddChar k ℂ) (ξ : kˣ →* ℂˣ) (r : ℕ)
     (hψ : ψ.IsPrimitive) (hξ : ξ ≠ 1) :
     gaussGL ψ ξ r * gaussGL ψ⁻¹ ξ⁻¹ r = (Fintype.card k : ℂ) ^ (r ^ 2) := by
@@ -40,12 +48,36 @@ theorem gaussGL_mul_inv {k : Type} [Field k] [Fintype k] (ψ : AddChar k ℂ) (�
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `h` and use `by have := gaussGL_mul_inv ψ ξ r hψ hξ rw [h, zero_mul] at this exact pow_ne_zero _ (Nat.cast_ne_zero.mpr Fintype.card_ne_zero) this.symm`.
+-/
 theorem gaussGL_ne_zero {k : Type} [Field k] [Fintype k] (ψ : AddChar k ℂ) (ξ : kˣ →* ℂˣ) (r : ℕ)
     (hψ : ψ.IsPrimitive) (hξ : ξ ≠ 1) : gaussGL ψ ξ r ≠ 0 := fun h => by
   have := gaussGL_mul_inv ψ ξ r hψ hξ
   rw [h, zero_mul] at this
   exact pow_ne_zero _ (Nat.cast_ne_zero.mpr Fintype.card_ne_zero) this.symm
 
+/- English proof (translation)
+Establish `hψ' : (ψ⁻¹).IsPrimitive` using `addChar_inv_isPrimitive_of_isPrimitive ψ hψ`. Establish `hξ' : ξ⁻¹ ≠ 1` using `inv_ne_one.mpr hξ`. Take `⟨hsing, hinv⟩` from `GlobalTheory.matrixGaussSum_singular_and_invertible k ℂ ψ⁻¹ ξ⁻¹ r hψ' hξ'`. Establish `hmul` using `gaussGL_mul_inv ψ ξ r hψ hξ`. Establish `hne` using `gaussGL_ne_zero ψ ξ r hψ hξ`.
+
+Use `set G : ℂ := ∑ x : GL (Fin r) k, (((ξ⁻¹ (Matrix.GeneralLinearGroup.det x))⁻¹ : ℂˣ) : ℂ) * ψ⁻¹ (Matrix.trace (x : Matrix (Fin r) (Fin r) k)) with hG`. Use `set q : ℂ := (Fintype.card k : ℂ) with hq`. Establish `hC : q ^ ((r + t) * r) * (gaussGL ψ ξ r)⁻¹ = q ^ (r * t) * G`. Establish `hG' : gaussGL ψ⁻¹ ξ⁻¹ r = G` using `rfl`. Rewrite `hmul` using `[hG']`.
+
+Rewrite using `[show (r + t) * r = r * t + r ^ 2 by ring, pow_add, ← hmul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hC]`. Use `set u₁ := u.submatrix (Fin.castAdd t) id`. Use `set u₂ := u.submatrix (Fin.natAdd r) id`.
+
+Establish `hsplit : ∀ p : Matrix (Fin r) (Fin r) k × Matrix (Fin r) (Fin t) k, ((if h : IsUnit (-p.1).det then ((ξ h.unit : ℂˣ) : ℂ) else 0) * ψ (trace (p.1 * u₁))) * ψ (trace (p.2 * u₂)) = (if h : IsUnit (topL r (-(squareAndRectColumnsEquivWideMatrix p))).det then ((ξ h.unit : ℂˣ) : ℂ) els …`. Introduce `p`. Establish `e1 : (squareAndRectColumnsEquivWideMatrix p).submatrix id (Fin.castAdd t) = p.1` using `congrArg Prod.fst (squareAndRectColumnsEquivWideMatrix.symm_apply_apply p)`. Establish `e2 : (squareAndRectColumnsEquivWideMatrix p).submatrix id (Fin.natAdd r) = p.2` using `congrArg Prod.snd (squareAndRectColumnsEquivWideMatrix.symm_apply_apply p)`. Rewrite using `[mul_assoc, ← AddChar.map_add_eq_mul, trace_mul_split_castAdd_natAdd _ u, topLeftBlock_neg_eq_submatrix_castAdd, e1, e2]`.
+
+Rewrite using `[← Fintype.sum_equiv squareAndRectColumnsEquivWideMatrix _ _ hsplit, Fintype.sum_prod_type]`. Rewrite using `[show (∑ x : Matrix (Fin r) (Fin r) k, ∑ y : Matrix (Fin r) (Fin t) k, (if h : IsUnit (-(x, y).1).det then ((ξ h.unit : ℂˣ) : ℂ) else 0) * ψ (trace ((x, y).1 * u₁)) * ψ (trace ((x, y).2 * u₂))) = (∑ x : Matrix (Fin r) (Fin r) k, (if h : IsUnit (-x).det then ((ξ h.unit : ℂˣ) : ℂ) …`. Rewrite using `[Finset.sum_mul_sum]]`. Rewrite using `[sum_GL_character_neg_det_addChar_trace, sum_addChar_trace_rectMatrix_mul ψ hψ u₂]`. Distinguish the cases in `hu2 : u₂ = 0`.
+
+Use `swap`. Rewrite using `[if_neg hu2, mul_zero, dif_neg (fun h => hu2 ((lowZero_iff_submatrix_natAdd_eq_zero u).mp h.1)), mul_zero]`. Rewrite using `[if_pos hu2]`. Distinguish the cases in `hdet : IsUnit u₁.det`. Use `swap`.
+
+Establish `h0 : u₁.det = 0`. Assume the negation of the conclusion as `h`. Conclude with `hdet (isUnit_iff_ne_zero.mpr h)`. Rewrite using `[hsing u₁ h0, zero_mul, dif_neg, mul_zero]`. Introduce and unpack `⟨-, h⟩`.
+
+Rewrite `h` using `[topLeftBlock_eq_submatrix_castAdd]`. Conclude with `hdet h`. Establish `hh : LowZero r u ∧ IsUnit (topL r u).det` using `⟨(lowZero_iff_submatrix_natAdd_eq_zero u).mpr hu2, by rw [topLeftBlock_eq_submatrix_castAdd]; exact hdet⟩`. Rewrite using `[dif_pos hh]`. Use `set a : GL (Fin r) k := Matrix.GeneralLinearGroup.mkOfDetNeZero u₁ hdet.ne_zero`.
+
+Establish `ha` using `hinv a`. Simplify using `only [Matrix.one_mul] at ha`. Establish `hau : (a : Matrix (Fin r) (Fin r) k) = u₁` using `rfl`. Rewrite `ha` using `[hau]`. Rewrite using `[ha, ← hG]`.
+
+Establish `hunit : hh.2.unit = Matrix.GeneralLinearGroup.det a` using `Units.ext (by simp [hau, topLeftBlock_eq_submatrix_castAdd, u₁])`. Rewrite using `[hunit, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, _root_.zpow_neg_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fourier_flat (k : Type) [Field k] [Fintype k] (ψ : AddChar k ℂ) (ξ : kˣ →* ℂˣ) (r t : ℕ) (hψ : ψ.IsPrimitive)
     (hξ : ξ ≠ 1) (u : Matrix (Fin (r + t)) (Fin r) k) :
     (∑ y : Matrix (Fin r) (Fin (r + t)) k, (if h : IsUnit (topL r (-y)).det then ((ξ h.unit : ℂˣ) : ℂ) else 0) *
@@ -110,10 +142,28 @@ theorem fourier_flat (k : Type) [Field k] [Fintype k] (ψ : AddChar k ℂ) (ξ :
   rw [hunit, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, _root_.zpow_neg_one]
   ring
 
+/- English proof (translation)
+The claim follows from `@gaussGL_ne_zero (kP PP) (resField PP) (resFintype PP) ψ ξ r hψ hξ`.
+-/
 theorem gaussP_ne_zero {E : Type} [Field E] [NumberField E] (PP : Pl E) (ψ : AddChar (kP PP) ℂ) (ξ : (kP PP)ˣ →* ℂˣ) (r : ℕ)
     (hψ : ψ.IsPrimitive) (hξ : ξ ≠ 1) : gaussP PP ψ ξ r ≠ 0 :=
   @gaussGL_ne_zero (kP PP) (resField PP) (resFintype PP) ψ ξ r hψ hξ
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_le hrn`. Take `rfl : inst = fun PP => resFintype PP` from `Subsingleton.elim _ _`. Use `letI : ∀ PP : Pl D.host.E, Fintype (kP PP) := fun PP => resFintype PP`. Set `fl : ∀ PP : Pl D.host.E, Matrix (Fin r) (Fin (r + t)) (kP PP) → ℂ` to `fun PP y => if h : IsUnit (topL r y).det then ((ξ PP h.unit : ℂˣ) : ℂ) else 0`. Set `fq : ∀ PP : Pl D.host.E, Matrix (Fin (r + t)) (Fin r) (kP PP) → ℂ` to `fun PP u => if h : LowZero r u ∧ IsUnit (topL r u).det then ((ξ PP h.2.unit : ℂˣ) : ℂ) ^ (-1 : ℤ) else 0`.
+
+Set `C : Pl D.host.E → ℂ` to `fun PP => (Nat.card (kP PP) : ℂ) ^ ((r + t) * r) * (gaussP PP (ψP PP) (ξ PP) r)⁻¹`. Establish `hC0 : ∀ PP : ↥Q, C PP ≠ 0` using `fun PP => mul_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.mpr Nat.card_pos.ne')) (inv_ne_zero (gaussP_ne_zero _ _ _ _ (hQ _ PP.2).1 (hQ _ PP.2).2))`. Establish `hCe : ∀ (PP : ↥Q) (u : Matrix (Fin (r + t)) (Fin r) (kP PP.1)), (∑ y : Matrix (Fin r) (Fin (r + t)) (kP PP.1), fl PP.1 (-y) * ψP PP.1 (Matrix.trace (y * u))) = C PP * fq PP.1 u`. Introduce `PP u`. Use `@fourier_flat (kP PP.1) (resField PP.1) (resFintype PP.1) (ψP PP.1) (ξ PP.1) r t (hQ _ PP.2).1 (hQ _ PP.2).2 u` as an intermediate fact.
+
+Rewrite `this` using `[← Nat.card_eq_fintype_card]`. Conclude with `this`. Establish `hq : omegaQ Q r ξ (-1) ub = ∏ PP : ↥Q, fq PP.1 (ub PP.1)`. Rewrite using `[← Finset.attach_eq_univ]`. Unfold `omegaQ`.
+
+Use `GlobalTheory.FlatFourierQ.dite_prod' Q (fun PP => LowZero r (ub PP) ∧ IsUnit (topL r (ub PP)).det) (fun PP h => ((ξ PP h.2.unit : ℂˣ) : ℂ) ^ (-1 : ℤ))` and compare the differences between its conclusion and the goal. Establish `hf : ∀ y : (∀ PP : ↥Q, Matrix (Fin r) (Fin (r + t)) (kP PP.1)), omegaFlat Q r ξ (fun PP => if h : PP ∈ Q then -(y ⟨PP, h⟩) else 0) = ∏ PP : ↥Q, fl PP.1 (-(y PP))`. Introduce `y`. Establish `e0 : ∀ Y : ∀ PP : Pl D.host.E, Matrix (Fin r) (Fin (r + t)) (kP PP), omegaFlat Q r ξ Y = ∏ PP ∈ Q.attach, fl PP.1 (Y PP.1)`. Introduce `Y`.
+
+Unfold `omegaFlat`. Use `GlobalTheory.FlatFourierQ.dite_prod' Q (fun PP => IsUnit (topL r (Y PP)).det) (fun PP h => ((ξ PP h.unit : ℂˣ) : ℂ))` and compare the differences between its conclusion and the goal. Rewrite using `[e0, Finset.attach_eq_univ]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Simplify using `only [dif_pos PP.2, Subtype.coe_eta]`.
+
+Establish `hprod : (∏ PP ∈ Q, C PP) = ∏ PP : ↥Q, C PP` using `(Finset.prod_coe_sort Q C).symm`. Use `show _ = (∏ PP ∈ Q, C PP)⁻¹ * _`. Simplify using `only [hf, ← Finset.prod_mul_distrib]`. Establish `hs` using `Finset.prod_univ_sum (t := fun (PP : ↥Q) => (Finset.univ : Finset (Matrix (Fin r) (Fin (r + t)) (kP PP.1)))) (f := fun (PP : ↥Q) (y : Matrix (Fin r) (Fin (r + t)) (kP PP.1)) => fl PP.1 (-y) * ψP PP.1 (Matrix.trace (y * ub PP.1)))`. Rewrite `hs` using `[Fintype.piFinset_univ]`.
+
+Rewrite using `[← hs]`. Simplify using `only [hCe]`. Rewrite using `[hprod, Finset.prod_mul_distrib (f := fun PP : ↥Q => C PP) (g := fun PP : ↥Q => fq PP.1 (ub PP.1)), hq, ← mul_assoc, inv_mul_cancel₀ (Finset.prod_ne_zero_iff.2 fun PP _ => hC0 PP), one_mul]`.
+-/
 theorem omegaQ_eq_gauss_mul_flat_transform (D : D7) [inst : ∀ PP : Pl D.host.E, Fintype (kP PP)] (Q : Finset (Pl D.host.E))
     (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (ψP : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ) (r n : ℕ) (hrn : r ≤ n)
     (hQ : ∀ PP ∈ Q, (ψP PP).IsPrimitive ∧ ξ PP ≠ 1) (ub : ∀ PP : Pl D.host.E, Matrix (Fin n) (Fin r) (kP PP)) :

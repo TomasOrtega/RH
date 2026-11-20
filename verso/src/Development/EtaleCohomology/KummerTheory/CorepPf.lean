@@ -5,6 +5,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 
 namespace LateralTheory.KummerTheory.LHCut
 
+/- English proof (translation)
+Introduce `Λ _ S U`. Set `M : ModuleCat.{1} (ULift.{1} Λ)` to `ModuleCat.of (ULift.{1} Λ) (ULift.{1} Λ)`. Set `P : SlShv Λ S` to `Sheaf.freeYoneda (Scheme.etaleTopology.over S) U M`. Establish `key : ∀ (F : SlShv Λ S) (φ : P ⟶ F), Sheaf.freeYonedaHomEquiv φ = Sheaf.freeYonedaHomEquiv (𝟙 P) ≫ φ.hom.app (op U)`. Introduce `F φ`.
+
+Use `conv_lhs => rw [← Category.id_comp φ]`. Simplify using `only [Sheaf.freeYonedaHomEquiv]`. Both sides reduce to the same expression. Use `⟨P, (Sheaf.freeYonedaHomEquiv (𝟙 P)).hom 1, fun F => ?_⟩` and prove the remaining obligations. Establish `e : (fun φ : P ⟶ F => (φ.hom.app (op U)).hom ((Sheaf.freeYonedaHomEquiv (𝟙 P)).hom 1)) = (fun g : M ⟶ F.obj.obj (op U) => g.hom 1) ∘ Sheaf.freeYonedaHomEquiv`.
+
+Use function extensionality and compare the values at `φ`. Simplify using `only [Function.comp_apply, key F φ]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `Function.Bijective.comp ⟨fun g h hgh => ?_, fun n => ?_⟩ (Equiv.bijective _)` and prove the remaining obligations.
+
+Use `ModuleCat.hom_ext (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Establish `: x = x • (1 : ULift.{1} Λ)` using `(mul_one x).symm`. Rewrite using `[this, map_smul, map_smul]`. Conclude with `congrArg (x • ·) hgh`. Conclude with `⟨ModuleCat.ofHom (LinearMap.toSpanSingleton (ULift.{1} Λ) _ n), one_smul _ n⟩`.
+-/
 theorem corep_of : Corep := by
   intro Λ _ S U
   let M : ModuleCat.{1} (ULift.{1} Λ) := ModuleCat.of (ULift.{1} Λ) (ULift.{1} Λ)

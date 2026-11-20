@@ -7,6 +7,21 @@ open Formalism.UG (cT bc)
 
 namespace GlobalTheory.SphEis
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ H _ _ _ _ _ _ _ _ e Γ Λ _ hmem hfin π 𝓜 hπ h𝓜`. Set `E : G ≃ᵐ H` to `e.toHomeomorph.toMeasurableEquiv`. Establish `hE : ∀ x, E x = e x` using `fun _ => rfl`. Use `set μ : Measure G := π.map E.symm with hμdef`. Establish `hμ : μ.IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map π e.symm`.
+
+Establish `hqmp : MeasureTheory.Measure.QuasiMeasurePreserving E μ π`. Use `⟨E.measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hμdef, Measure.map_map E.measurable E.symm.measurable]`. Simplify using `only [MeasurableEquiv.self_comp_symm, Measure.map_id]`. Conclude with `Measure.AbsolutelyContinuous.rfl`.
+
+Set `φ : Λ → Γ` to `fun l => ⟨e.symm l, (hmem _).2 (by simpa using l.2)⟩`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `congrArg (fun x : Γ => e (x : G)) hab` as an intermediate fact. Simplify `this` using `[φ]`. Introduce `g`. Use `⟨⟨e g, (hmem g).1 g.2⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[φ]`. Establish `hsemi : ∀ l : Λ, Function.Semiconj E (φ l • ·) (l • ·)`. Introduce `l x`. Use `show e ((e.symm l : G) * x) = (l : H) * e x`. Simplify using `[map_mul]`.
+
+Establish `hF` using `h𝓜.preimage_of_equiv hqmp hφ hsemi`. Establish `hlt` using `hfin μ hμ _ hF`. Establish `: μ (E ⁻¹' 𝓜) = π 𝓜`. Rewrite using `[hμdef, MeasurableEquiv.map_apply]`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite `hlt` using `[this]`. Conclude with `hlt.ne`.
+-/
 theorem covolume_ne_top_of_continuousMulEquiv : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H] (e : G ≃ₜ* H) (Γ : Subgroup G) (Λ : Subgroup H) [Countable Γ], (∀ g, g ∈ Γ ↔ e g ∈ Λ) → (∀ μ : Measure G, μ.IsHaarMeasure → ∀ 𝓕, IsFundamentalDomain Γ 𝓕 μ → μ 𝓕 < ⊤) → ∀ (π : Measure H) (𝓜 : Set H), π.IsHaarMeasure → IsFundamentalDomain Λ 𝓜 π → π 𝓜 ≠ ⊤ := by
   intro G _ _ _ _ _ _ _ _ H _ _ _ _ _ _ _ _ e Γ Λ _ hmem hfin π 𝓜 hπ h𝓜
   let E : G ≃ᵐ H := e.toHomeomorph.toMeasurableEquiv

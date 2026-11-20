@@ -4,6 +4,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `F _ _ O _ bar g ρ a D P₀ hP ga H hH q`. Establish `hpow : ∀ (i : ℕ) (x : D.La), P₀ ((ga ^ i) x) = (H ^ i) *ᵥ P₀ x`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro x`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `x`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, hH, Matrix.mulVec_mulVec, pow_succ]`. Establish `hsum : ∀ x, P₀ (q.sum fun i b => a b • (ga ^ i) x) = (q.sum fun i b => ρ (a b) * H ^ i) *ᵥ P₀ x`.
+
+Introduce `x`. Simplify using `only [Polynomial.sum_def, map_sum, Matrix.sum_mulVec]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hP.1, hpow, Matrix.mulVec_mulVec]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hk`. Establish `hz : ∀ x, (q.sum fun i b => ρ (a b) * H ^ i) *ᵥ P₀ x = 0` using `fun x => by`. Rewrite using `[← hsum, hk x, map_zero]`. Establish `hlin : (Matrix.mulVecLin (q.sum fun i b => ρ (a b) * H ^ i)).restrictScalars ℝ = 0` using `GlobalTheory.PerCoordU.ext_per hP fun x => by simpa using hz x`. Establish `hv : ∀ v, (q.sum fun i b => ρ (a b) * H ^ i) *ᵥ v = 0` using `fun v => by`.
+
+Simplify using `using LinearMap.congr_fun hlin v`. Conclude with `Matrix.mulVec_injective (funext fun v => by rw [hv v, Matrix.zero_mulVec])`. Introduce `h x`. Apply `hP.2.1` to reduce the goal to its premises. Rewrite using `[hsum, h, map_zero, Matrix.zero_mulVec]`.
+-/
 theorem UpperTheory.Gal.W2.killsMat_of :
     UpperTheory.Gal.W2.KillsMat := by
   intro F _ _ O _ bar g ρ a D P₀ hP ga H hH q

@@ -5,6 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.WeylAlgebraQuantumDet.PolPre
 open Matrix UpperTheory.V.Weyl
 
+/- English proof (translation)
+Introduce `n ν hν H hH`. Take `⟨f, hf0, hdeg, hf⟩` from `topPol n ν hν H hH`. Take `⟨Ξ, e, he⟩` from `polPre n (n * H)`. Set `F : MvPolynomial.restrictTotalDegree (Fin n × Fin n) ℂ (n * H)` to `⟨f, (MvPolynomial.mem_restrictTotalDegree _ _ _).2 hdeg⟩`. Establish `hF : F ≠ 0` using `fun h => hf0 (congrArg Subtype.val h)`.
+
+Establish `hv : e F ≠ 0` using `fun h => hF (e.injective (h.trans e.map_zero.symm))`. Establish `htop : Ξ.IsTop ν (e F)`. Introduce `b hb`. Rewrite using `[he b F ((∏ k, b k k ^ ν k) • F) (hf b hb).symm, map_smul]`. Take `⟨Ξ', h0, hle, hw⟩` from `scalar n Ξ ν (e F) hv htop`.
+
+Use `⟨Ξ', h0, hle.trans ?_, hw⟩` and prove the remaining obligations. Establish `h1` using `e.finrank_eq`. Establish `h2` using `degRank n (n * H)`. Rewrite `h2` using `[h1]`. Simplify using `using h2`.
+-/
 theorem UpperTheory.V.Weyl.existsScalar :
     ∀ (n : ℕ) (ν : Fin n → ℕ), Antitone ν → ∀ H : ℕ, (∀ k, ν k ≤ H) →
       ∃ Ξ : Pre n, 0 < Ξ.d ∧ Ξ.d ≤ (n * H + 1) ^ (n * n) ∧ Ξ.HasWt fun k => (ν k : ℂ) := by

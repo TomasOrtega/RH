@@ -12,6 +12,15 @@ namespace GlobalTheory.CompanionTheory.Ar.GenFibre
 
 variable {Y P : Scheme.{0}} {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Establish `h0 : Spec.map (f.stalkMap y) ≫ P.fromSpecStalk (f y) = Y.fromSpecStalk y ≫ f` using `Scheme.SpecMap_stalkMap_fromSpecStalk f`. Establish `h1 : Spec.map (f.stalkMap y) ≫ t = Y.fromSpecStalk y`. Rewrite using `[← cancel_mono f, Category.assoc, ht, h0]`. Establish `hc : t (IsLocalRing.closedPoint (P.presheaf.stalk (f y))) = y`. Establish `e1 : Spec.map (f.stalkMap y) (IsLocalRing.closedPoint (Y.presheaf.stalk y)) = IsLocalRing.closedPoint (P.presheaf.stalk (f y))` using `Spec_closedPoint`.
+
+Establish `e2 : (Spec.map (f.stalkMap y) ≫ t) (IsLocalRing.closedPoint (Y.presheaf.stalk y)) = y`. Rewrite using `[h1]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Rewrite using `[← e1]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans e2`.
+
+Establish `hs : t (IsLocalRing.closedPoint (P.presheaf.stalk (f y))) ⤳ y` using `by rw [hc]`. Establish `h2 : Spec.map (Y.presheaf.stalkSpecializes hs ≫ Scheme.stalkClosedPointTo t) ≫ Y.fromSpecStalk y = t`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Generalize the expression as in `Y.presheaf.stalkSpecializes hs ≫ Scheme.stalkClosedPointTo t = τ at h2`. Use `⟨τ, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (P.fromSpecStalk (f y)), Spec.map_comp, Category.assoc, h0, ← Category.assoc, h2, ht, Spec.map_id, Category.id_comp]`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (Y.fromSpecStalk y), Spec.map_comp, Category.assoc, h2, h1, Spec.map_id, Category.id_comp]`.
+-/
 theorem isIso_stalkMap_of_lift (f : Y ⟶ P) [Mono f] (y : Y)
     (t : Spec (P.presheaf.stalk (f y)) ⟶ Y) (ht : t ≫ f = P.fromSpecStalk (f y)) :
     IsIso (f.stalkMap y) := by
@@ -39,6 +48,9 @@ theorem isIso_stalkMap_of_lift (f : Y ⟶ P) [Mono f] (y : Y)
   · apply Spec.map_injective
     rw [← cancel_mono (Y.fromSpecStalk y), Spec.map_comp, Category.assoc, h2, h1, Spec.map_id, Category.id_comp]
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `p`. Take `rfl : p = genPt ζ` from `e`. Establish `: P.presheaf.stalkSpecializes hp = 𝟙 _` using `TopCat.Presheaf.stalkSpecializes_refl _ _`. Simplify using `only [genMap, this]`. Conclude with `h.bij`.
+-/
 theorem genMap_bijective {ζ : Spec (CommRingCat.of Ω) ⟶ P} (h : IsCptGen ζ) (p : Cpt ζ) (e : p.1 = genPt ζ) :
     Function.Bijective (genMap ζ p) := by
   obtain ⟨p, hp⟩ := p
@@ -47,6 +59,17 @@ theorem genMap_bijective {ζ : Spec (CommRingCat.of Ω) ⟶ P} (h : IsCptGen ζ)
   simp only [genMap, this]
   exact h.bij
 
+/- English proof (translation)
+Establish `hd : Dominates ξ (ξ ≫ f) f (RingHom.id Ω)` using `by show ξ ≫ f = Spec.map (CommRingCat.ofHom (RingHom.id Ω)) ≫ ξ ≫ f`. Rewrite using `[show CommRingCat.ofHom (RingHom.id Ω) = 𝟙 _ from rfl, Spec.map_id, Category.id_comp]`. Establish `hb : ∀ q, Function.Bijective (f.stalkMap q).hom` using `fun q =>`. Use `hf q` as an intermediate fact. Use the proof step `ConcreteCategory.bijective_of_isIso (f.stalkMap q)`.
+
+Establish `hcl : ∀ (q : Cpt ξ), genPt (ξ ≫ f) ⤳ f q.1` using `fun q => RegAtDom.map_genPt hd ▸ q.2.map f.continuous`. Establish `hcomp : ∀ (q : Cpt ξ), genMap ξ q ∘ (f.stalkMap q.1).hom = genMap (ξ ≫ f) ⟨f q.1, hcl q⟩` using `fun q =>`. Use function extensionality and compare the values at `fun t => RegAtDom.genMap_stalkMap hd q.1 q.2 (hcl q) t`. Establish `hself : genMap ξ ⟨genPt ξ, specializes_rfl⟩ = (Scheme.stalkClosedPointTo ξ).hom`. Establish `: Y.presheaf.stalkSpecializes (specializes_rfl : genPt ξ ⤳ genPt ξ) = 𝟙 _` using `TopCat.Presheaf.stalkSpecializes_refl _ _`.
+
+Establish `e : Y.presheaf.stalkSpecializes (specializes_rfl : genPt ξ ⤳ genPt ξ) ≫ Scheme.stalkClosedPointTo ξ = Scheme.stalkClosedPointTo ξ`. Rewrite using `[this]`. Conclude with `Category.id_comp _`. Conclude with `congrArg (fun g => g.hom) e`. Use `⟨?_, fun q => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `hcomp ⟨genPt ξ, specializes_rfl⟩`. Establish `hB` using `genMap_bijective h ⟨f (genPt ξ), hcl ⟨genPt ξ, specializes_rfl⟩⟩ (RegAtDom.map_genPt hd)`. Rewrite `hB` using `[← e]`. Rewrite using `[← hself]`. Conclude with `⟨hB.1.of_comp_right (hb _).2, hB.2.of_comp⟩`.
+
+Establish `hi` using `h.inj ⟨f q.1, hcl q⟩`. Rewrite `hi` using `[← hcomp q]`. Conclude with `hi.of_comp_right (hb _).2`.
+-/
 theorem isCptGen_of_isIso_stalkMap (f : Y ⟶ P) (hf : ∀ y, IsIso (f.stalkMap y))
     (ξ : Spec (CommRingCat.of Ω) ⟶ Y) (h : IsCptGen (ξ ≫ f)) : IsCptGen ξ := by
   have hd : Dominates ξ (ξ ≫ f) f (RingHom.id Ω) := by
@@ -81,12 +104,24 @@ variable {F : Type} [Field F] [NumberField F]
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := ℤ)` to reduce the goal to its premises. Use extensionality with `n`. Simplify using `[Ideal.mem_comap, RingHom.mem_ker]`.
+-/
 theorem injective_of_charZero [CharZero Ω] (φ : 𝓞 F →+* Ω) : Function.Injective φ := by
   rw [RingHom.injective_iff_ker_eq_bot]
   apply Ideal.eq_bot_of_comap_eq_bot (R := ℤ)
   ext n
   simp [Ideal.mem_comap, RingHom.mem_ker]
 
+/- English proof (translation)
+Establish `hg : Spec.map (Spec.preimage g) = g` using `Spec.map_preimage g`. Generalize the expression as in `Spec.preimage g = c at hg`. Substitute `hg` using the available equality. Establish `hu : ∀ a : nonZeroDivisors (𝓞 F), IsUnit (c.hom a)`. Introduce `a`.
+
+Assume the negation of the conclusion as `hn`. Establish `h1 : (a : 𝓞 F) ∈ (Spec.map c (IsLocalRing.closedPoint R)).asIdeal` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Rewrite `h1` using `[hz]`. Establish `h2 : algebraMap (𝓞 F) F a ∈ PrimeSpectrum.asIdeal z` using `h1`. Establish `hp : (PrimeSpectrum.asIdeal z).IsPrime` using `PrimeSpectrum.isPrime _`.
+
+Rewrite `h2` using `[Ideal.eq_bot_of_prime (PrimeSpectrum.asIdeal z), Ideal.mem_bot]`. Establish `h3 : (a : 𝓞 F) = 0` using `IsFractionRing.injective (𝓞 F) F (h2.trans (map_zero _).symm)`. Conclude with `nonZeroDivisors.ne_zero a.2 h3`. Use `⟨Spec.map (CommRingCat.ofHom (IsLocalization.lift (M := nonZeroDivisors (𝓞 F)) (S := F) hu)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`.
+
+Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+-/
 theorem exists_lift_field {R : CommRingCat.{0}} [IsLocalRing R] (g : Spec R ⟶ Sp (𝓞 F)) (z : Sp F)
     (hz : g (IsLocalRing.closedPoint R) = spMap (algebraMap (𝓞 F) F) z) :
     ∃ v : Spec R ⟶ Sp F, v ≫ spMap (algebraMap (𝓞 F) F) = g := by
@@ -110,6 +145,11 @@ theorem exists_lift_field {R : CommRingCat.{0}} [IsLocalRing R] (g : Spec R ⟶ 
   ext a
   simp
 
+/- English proof (translation)
+Establish `: Epi (CommRingCat.ofHom (algebraMap (𝓞 F) F))` using `IsLocalization.epi (nonZeroDivisors (𝓞 F)) F`. Establish `: Mono (spMap (algebraMap (𝓞 F) F))` using `Scheme.Spec.map_mono (CommRingCat.ofHom _).op`. Establish `hz : (P.fromSpecStalk (pullback.fst s (spMap (algebraMap (𝓞 F) F)) y) ≫ s) (IsLocalRing.closedPoint _) = spMap (algebraMap (𝓞 F) F) (pullback.snd s (spMap (algebraMap (𝓞 F) F)) y)`. Use `(Scheme.Hom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.fromSpecStalk_closedPoint]`.
+
+Establish `e : (pullback.fst s (spMap (algebraMap (𝓞 F) F)) ≫ s) y = (pullback.snd s (spMap (algebraMap (𝓞 F) F)) ≫ spMap (algebraMap (𝓞 F) F)) y`. Rewrite using `[pullback.condition]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).symm.trans (e.trans (Scheme.Hom.comp_apply _ _ _))`. Take `⟨v, hv⟩` from `exists_lift_field _ _ hz`. Conclude with `isIso_stalkMap_of_lift _ y (pullback.lift _ v hv.symm) (pullback.lift_fst _ _ _)`.
+-/
 theorem isIso_stalkMap_fst (s : P ⟶ Sp (𝓞 F)) (y : ↑(pullback s (spMap (algebraMap (𝓞 F) F)))) :
     IsIso ((pullback.fst s (spMap (algebraMap (𝓞 F) F))).stalkMap y) := by
   have : Epi (CommRingCat.ofHom (algebraMap (𝓞 F) F)) := IsLocalization.epi (nonZeroDivisors (𝓞 F)) F
@@ -125,6 +165,13 @@ theorem isIso_stalkMap_fst (s : P ⟶ Sp (𝓞 F)) (y : ↑(pullback s (spMap (a
   obtain ⟨v, hv⟩ := exists_lift_field _ _ hz
   exact isIso_stalkMap_of_lift _ y (pullback.lift _ v hv.symm) (pullback.lift_fst _ _ _)
 
+/- English proof (translation)
+Introduce `F _ _ P s Ω _ _ ξ₀ h`. Establish `hφ : Spec.map (Spec.preimage (ξ₀ ≫ s)) = ξ₀ ≫ s` using `Spec.map_preimage _`. Generalize the expression as in `Spec.preimage (ξ₀ ≫ s) = φ at hφ`. Establish `hinj : Function.Injective φ.hom` using `injective_of_charZero φ.hom`. Establish `hb : (CommRingCat.ofHom (algebraMap (𝓞 F) F)) ≫ CommRingCat.ofHom (IsFractionRing.lift hinj) = φ`.
+
+Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `hw : ξ₀ ≫ s = spMap (IsFractionRing.lift hinj) ≫ spMap (algebraMap (𝓞 F) F)` using `hφ.symm.trans ((congrArg Spec.map hb.symm).trans (Spec.map_comp _ _))`. Use `⟨IsFractionRing.lift hinj, pullback.lift ξ₀ _ hw, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Apply `isCptGen_of_isIso_stalkMap (pullback.fst _ _) (isIso_stalkMap_fst s)` to reduce the goal to its premises.
+
+Rewrite using `[pullback.lift_fst]` and apply the resulting hypothesis.
+-/
 theorem exists_point : ∀ (F : Type) [Field F] [NumberField F] (P : Scheme.{0}) (s : P ⟶ Sp (𝓞 F)) (Ω : Type) [Field Ω] [CharZero Ω] (ξ₀ : Sp Ω ⟶ P), IsCptGen ξ₀ → ∃ (b : F →+* Ω) (ξF : Sp Ω ⟶ pullback s (spMap (algebraMap (𝓞 F) F))), ξF ≫ pullback.fst _ _ = ξ₀ ∧ ξF ≫ pullback.snd _ _ = spMap b ∧ IsCptGen ξF := by
   intro F _ _ P s Ω _ _ ξ₀ h
   have hφ : Spec.map (Spec.preimage (ξ₀ ≫ s)) = ξ₀ ≫ s := Spec.map_preimage _

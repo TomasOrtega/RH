@@ -25,16 +25,28 @@ def lastDiag (R : Type) [Zero R] [One R] (n j : ℕ) : Matrix (Fin n) (Fin n) R 
 def wMat (R : Type) [Ring R] (n j : ℕ) : Matrix (Fin (n + n)) (Fin (n + n)) R :=
   StdUnn.blk4 (1 - lastDiag R n j) (lastDiag R n j) (-lastDiag R n j) (1 - lastDiag R n j)
 
+/- English proof (translation)
+Simplify using `only [lastDiag, Matrix.diagonal_mul_diagonal]`. Apply the tactic sequence `congr 1; funext i; split_ifs <;> simp`.
+-/
 theorem lastDiag_mul_self (R : Type) [Ring R] (n j : ℕ) : lastDiag R n j * lastDiag R n j = lastDiag R n j := by
   simp only [lastDiag, Matrix.diagonal_mul_diagonal]
   congr 1; funext i; split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_sub, Matrix.mul_one, lastDiag_mul_self, sub_self]`.
+-/
 theorem lastDiag_mul_one_sub (R : Type) [Ring R] (n j : ℕ) : lastDiag R n j * (1 - lastDiag R n j) = 0 := by
   rw [Matrix.mul_sub, Matrix.mul_one, lastDiag_mul_self, sub_self]
 
+/- English proof (translation)
+Rewrite using `[Matrix.sub_mul, Matrix.one_mul, lastDiag_mul_self, sub_self]`.
+-/
 theorem one_sub_mul_lastDiag (R : Type) [Ring R] (n j : ℕ) : (1 - lastDiag R n j) * lastDiag R n j = 0 := by
   rw [Matrix.sub_mul, Matrix.one_mul, lastDiag_mul_self, sub_self]
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `only [adj, lastDiag, Matrix.transpose_apply, Matrix.map_apply, Matrix.diagonal_apply]`. Distinguish the cases in `h : k = i`. Apply the tactic sequence `subst h; split_ifs <;> simp`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem adj_lastDiag {j : ℕ} : adj (lastDiag (AE D) n j) = lastDiag (AE D) n j := by
   ext i k
   simp only [adj, lastDiag, Matrix.transpose_apply, Matrix.map_apply, Matrix.diagonal_apply]
@@ -42,6 +54,13 @@ theorem adj_lastDiag {j : ℕ} : adj (lastDiag (AE D) n j) = lastDiag (AE D) n j
   · subst h; split_ifs <;> simp
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Rewrite using `[StdUnn.Model.submatrix_fromBlocks_mul, StdUnn.Model.submatrix_fromBlocks_mul]`. Establish `h1 : (1 - L) * (1 - L) = 1 - L` using `by rw [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one, h, sub_self, sub_zero]`. Establish `h2 : L * (1 - L) = 0` using `by rw [Matrix.mul_sub, Matrix.mul_one, h, sub_self]`. Establish `h3 : (1 - L) * L = 0` using `by rw [Matrix.sub_mul, Matrix.one_mul, h, sub_self]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_neg, Matrix.neg_mul, neg_neg, add_zero, zero_add]`.
+
+Use `congr 1`. Simplify using `only [Matrix.add_mul, Matrix.neg_mul, Matrix.mul_neg, h2, h3, neg_zero, add_zero]`. Simplify using `only [Matrix.add_mul, Matrix.neg_mul, Matrix.mul_neg, neg_neg, h, h1, h2, h3]`. Normalize the expressions using the abelian group laws. Rewrite using `[h1, h]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[h2, h3]`. Simplify using the standard rewrite rules.
+-/
 theorem wMat_key {R : Type} [CommRing R] {n : ℕ} (L : Matrix (Fin n) (Fin n) R) (h : L * L = L) :
     StdUnn.blk4 (1 - L) (-L) L (1 - L) * StdUnn.blk4 0 1 (-1) 0 * StdUnn.blk4 (1 - L) L (-L) (1 - L) =
       StdUnn.blk4 0 1 (-1) 0 := by
@@ -57,6 +76,13 @@ theorem wMat_key {R : Type} [CommRing R] {n : ℕ} (L : Matrix (Fin n) (Fin n) R
   · rw [h1, h]; abel
   · rw [h2, h3]; simp
 
+/- English proof (translation)
+Establish `e1` using `lastDiag_mul_self (AE D) n j`. Establish `e2` using `lastDiag_mul_one_sub (AE D) n j`. Establish `e3` using `one_sub_mul_lastDiag (AE D) n j`. Establish `e4 : (1 - lastDiag (AE D) n j) * (1 - lastDiag (AE D) n j) = 1 - lastDiag (AE D) n j`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, e2, sub_zero]`.
+
+Use `StdUnn.Model.exists_mat _ (StdUnn.blk4 (1 - lastDiag (AE D) n j) (-lastDiag (AE D) n j) (lastDiag (AE D) n j) (1 - lastDiag (AE D) n j)) ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [wMat, StdUnn.Model.submatrix_fromBlocks_mul, e1, e2, e3, e4, Matrix.mul_neg, Matrix.neg_mul, neg_neg]`. Apply the tactic sequence `rw [← StdUnn.Model.block_matrix_one]; congr 1 <;> abel`. Simplify using `only [wMat, StdUnn.Model.submatrix_fromBlocks_mul, e1, e2, e3, e4, Matrix.mul_neg, Matrix.neg_mul, neg_neg]`. Apply the tactic sequence `rw [← StdUnn.Model.block_matrix_one]; congr 1 <;> abel`.
+
+Establish `ha : adj (wMat (AE D) n j) = StdUnn.blk4 (1 - lastDiag (AE D) n j) (-lastDiag (AE D) n j) (lastDiag (AE D) n j) (1 - lastDiag (AE D) n j)`. Rewrite using `[wMat, StdUnn.Model.adelicConjTranspose_blockMatrixTwoByTwoFin, adj_sub, adj_one, adj_neg, adj_lastDiag]`. Rewrite using `[ha]`. Conclude with `wMat_key _ e1`.
+-/
 theorem exists_wPart (j : ℕ) : ∃ g : StdUnn.G D n, StdUnn.mat g = wMat (AE D) n j := by
   have e1 := lastDiag_mul_self (AE D) n j
   have e2 := lastDiag_mul_one_sub (AE D) n j

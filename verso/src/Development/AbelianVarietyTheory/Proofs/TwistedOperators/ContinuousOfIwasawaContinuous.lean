@@ -6,6 +6,15 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.ParabCompact
 
+/- English proof (translation)
+Introduce `n a ε j W hW Y _ F hF`. Set `q : parab ε W × KG ε → UJ ε` to `fun x => (x.1 : UJ ε) * (x.2 : UJ ε)`. Establish `hqc : Continuous q` using `(continuous_subtype_val.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`. Establish `hsurj : Function.Surjective q`. Introduce `g`.
+
+Take `⟨k, hk, hp⟩` from `GlobalTheory.RealIwasawa.exists_stab_mul_compact hW g`. Establish `hk' : k ∈ KG ε` using `((KG_eq ε).symm ▸ hk :)`. Conclude with `⟨(⟨g * k⁻¹, hp⟩, ⟨k, hk'⟩), by simp [q]⟩`. Establish `hι : Topology.IsClosedEmbedding (Prod.map (Subtype.val : parab ε W → UJ ε) (id : KG ε → KG ε))` using `(isClosed_parab.isClosedEmbedding_subtypeVal).prodMap Topology.IsClosedEmbedding.id`. Set `e : UJ ε × KG ε ≃ₜ UJ ε × KG ε` to `{ toFun := fun x => (x.1 * (x.2 : UJ ε), x.2) invFun := fun x => (x.1 * (x.2 : UJ ε)⁻¹, x.2) left_inv := fun x => by simp right_inv := fun x => by simp continuous_toFun := by`.
+
+Conclude with `(continuous_fst.mul (continuous_subtype_val.comp continuous_snd)).prodMk continuous_snd`. Use `continuous_invFun := by`. Conclude with `(continuous_fst.mul (continuous_subtype_val.comp continuous_snd).inv).prodMk continuous_snd }`. Establish `hcl : IsClosedMap q`. Establish `: q = Prod.fst ∘ e ∘ Prod.map Subtype.val id` using `by funext x; rfl`.
+
+Rewrite using `[this]`. Conclude with `isClosedMap_fst_of_compactSpace.comp (e.isClosedMap.comp hι.isClosedMap)`. Establish `hQ : Topology.IsQuotientMap q` using `hcl.isQuotientMap hqc hsurj`. Conclude with `hQ.continuous_iff.2 hF`.
+-/
 theorem continuous_of_continuous_mul : ∀ (n a : ℕ) (ε : Fin n → Bool) (j : Fin a → ℕ) (W : Flag n a), IsIsoFlag ε j W →
     ∀ (Y : Type) [TopologicalSpace Y] (F : UJ ε → Y),
       Continuous (fun q : parab ε W × KG ε => F ((q.1 : UJ ε) * (q.2 : UJ ε))) → Continuous F := by

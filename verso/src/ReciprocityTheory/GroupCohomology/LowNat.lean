@@ -9,6 +9,25 @@ open ReciprocityTheory.Gal Cx
 
 universe u
 
+/- English proof (translation)
+Introduce `R _ G _ _ _ G' _ _ _ M M' P e₀ e₁ e₂ e₀' e₁' e₂' hL hL'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨⟨c, hc⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `hw : M'.coch.d 0 (P.hom.Z 0 ⟨c, hc⟩).1 = 0` using `(P.hom.Z 0 ⟨c, hc⟩).2`. Establish `hc' : M.coch.d 0 c = 0` using `hc`. Express the relevant statement in the definitionally equal form `(e₀' (M'.coch.cls 0 (P.hom.Z 0 ⟨c, hc⟩).1 hw) : M'.V) = P.u (e₀ (M.coch.cls 0 c hc'))`. Establish `h1` using `hL'.1 (P.hom.Z 0 ⟨c, hc⟩).1 hw`. Establish `h2` using `hL.1 c hc'`.
+
+Rewrite using `[h1, h2]`. Use `show P.u (c.1 fun i => P.φ (![] i)) = P.u (c.1 ![])`. Rewrite using `[show (fun i => P.φ (![] i)) = (![] : Fin 0 → G) from funext fun i => i.elim0]`. Introduce `x`. Take `⟨⟨c, hc⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Take `⟨hz, he⟩` from `hL.2.1 c hc`. Establish `hw : M'.coch.d 1 (P.hom.Z 1 ⟨c, hc⟩).1 = 0` using `(P.hom.Z 1 ⟨c, hc⟩).2`. Take `⟨hz', he'⟩` from `hL'.2.1 (P.hom.Z 1 ⟨c, hc⟩).1 hw`. Express the relevant statement in the definitionally equal form `e₁' (M'.coch.cls 1 (P.hom.Z 1 ⟨c, hc⟩).1 hw) = P.h1 (e₁ (M.coch.cls 1 c hc))`. Rewrite using `[he', he]`.
+
+Unfold `Pair.h1 pairH1DecompositionMap`. Rewrite using `[Submodule.mapQ_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Use `show P.u (c.1 fun i => P.φ (![g] i)) = P.u (c.1 ![P.φ g])`. Rewrite using `[show (fun i => P.φ (![g] i)) = ![P.φ g] from by funext i; fin_cases i; rfl]`. Introduce `x`. Take `⟨⟨c, hc⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨hz, he⟩` from `hL.2.2 c hc`.
+
+Establish `hw : M'.coch.d 2 (P.hom.Z 2 ⟨c, hc⟩).1 = 0` using `(P.hom.Z 2 ⟨c, hc⟩).2`. Take `⟨hz', he'⟩` from `hL'.2.2 (P.hom.Z 2 ⟨c, hc⟩).1 hw`. Express the relevant statement in the definitionally equal form `e₂' (M'.coch.cls 2 (P.hom.Z 2 ⟨c, hc⟩).1 hw) = P.h2 (e₂ (M.coch.cls 2 c hc))`. Rewrite using `[he', he]`. Unfold `Pair.h2 compatiblePairH2`.
+
+Rewrite using `[Submodule.mapQ_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show P.u (c.1 fun i => P.φ (![g.1, g.2] i)) = P.u (c.1 ![P.φ g.1, P.φ g.2])`.
+
+Rewrite using `[show (fun i => P.φ (![g.1, g.2] i)) = ![P.φ g.1, P.φ g.2] from by`. Apply the tactic sequence `funext i; fin_cases i <;> rfl]`.
+-/
 theorem lowNat_holds : LowNatStatement.{u} := by
   intro R _ G _ _ _ G' _ _ _ M M' P e₀ e₁ e₂ e₀' e₁' e₂' hL hL'
   refine ⟨?_, ?_, ?_⟩

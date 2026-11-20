@@ -9,6 +9,15 @@ open GlobalTheory.AboveL
 
 namespace GlobalTheory.AboveL
 
+/- English proof (translation)
+Use `set P := A.charpoly * B.charpoly with hP`. Establish `hPA : Polynomial.aeval A P = 0`. Rewrite using `[hP, map_mul, Matrix.aeval_self_charpoly, zero_mul]`. Establish `hPB : Polynomial.aeval B P = 0`. Rewrite using `[hP, map_mul, Matrix.aeval_self_charpoly, mul_zero]`.
+
+Establish `eA` using `congrArg (fun M => (S * M).trace) hPA`. Establish `eB` using `congrArg (fun M => (T * M).trace) hPB`. Simplify using `only [Polynomial.aeval_eq_sum_range, Finset.mul_sum, Matrix.trace_sum, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, mul_zero, Matrix.trace_zero] at eA eB`. Rewrite `eA`, `eB` using `[Finset.sum_range_succ']`. Establish `hs : ∑ i ∈ Finset.range P.natDegree, P.coeff (i + 1) * (S * A ^ (i + 1)).trace = ∑ i ∈ Finset.range P.natDegree, P.coeff (i + 1) * (T * B ^ (i + 1)).trace` using `Finset.sum_congr rfl fun i _ => by rw [h (i + 1) (by omega)]`.
+
+Rewrite `eA` using `[hs]`. Establish `e0 : P.coeff 0 * (S * A ^ 0).trace = P.coeff 0 * (T * B ^ 0).trace` using `by linear_combination eA - eB`. Simplify using `only [pow_zero, Matrix.mul_one] at e0`. Establish `hc : P.coeff 0 ≠ 0`. Rewrite using `[hP, Polynomial.mul_coeff_zero]`.
+
+Use `mul_ne_zero (fun h0 => hA.ne_zero ?_) (fun h0 => hB.ne_zero ?_)` and prove the remaining obligations. Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, h0, mul_zero]`. Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, h0, mul_zero]`. Conclude with `mul_left_cancel₀ hc e0`.
+-/
 theorem trace_eq_of_trace_mul_pow {n m : ℕ} (A S : Matrix (Fin n) (Fin n) ℂ) (B T : Matrix (Fin m) (Fin m) ℂ)
     (hA : IsUnit A.det) (hB : IsUnit B.det)
     (h : ∀ i : ℕ, 1 ≤ i → (S * A ^ i).trace = (T * B ^ i).trace) : S.trace = T.trace := by
@@ -39,16 +48,37 @@ end GlobalTheory.AboveL
 
 namespace GlobalTheory.AboveL
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_toMatrix f (Pi.basisFun ℂ (Fin n)), LinearMap.toMatrix_eq_toMatrix']`.
+-/
 theorem charpoly_eq_toMatrix' {n : ℕ} (f : Module.End ℂ (Fin n → ℂ)) :
     f.charpoly = (LinearMap.toMatrix' f).charpoly := by
   rw [← LinearMap.charpoly_toMatrix f (Pi.basisFun ℂ (Fin n)), LinearMap.toMatrix_eq_toMatrix']
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty (Fin n) with hn | hn` into its components or cases. Simplify using `[Matrix.trace]`. Rewrite using `[Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, e]`.
+-/
 theorem trace_eq_of_charpoly_eq {n : ℕ} {M M' : Matrix (Fin n) (Fin n) ℂ} (e : M.charpoly = M'.charpoly) :
     M.trace = M'.trace := by
   rcases isEmpty_or_nonempty (Fin n) with hn | hn
   · simp [Matrix.trace]
   · rw [Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, e]
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ A v h x y hxy σ`. Take `⟨n, a, rfl⟩` from `WD.exists_rep x`. Take `⟨m, b, rfl⟩` from `WD.exists_rep y`. Simplify using `only [WD.charPol_mk] at hxy ⊢`. Establish `hnm : n = m`.
+
+Establish `e` using `congrArg Polynomial.natDegree (hxy (frob h) (by rw [deg_frob]; exact one_ne_zero))`. Rewrite `e` using `[LinearMap.charpoly_natDegree, LinearMap.charpoly_natDegree, Module.finrank_fin_fun, Module.finrank_fin_fun]`. Then use the resulting hypothesis. Substitute `hnm` using the available equality. Distinguish the cases in `hσ : deg σ = 0`. Use `swap`.
+
+Conclude with `hxy σ hσ`. Establish `hMA : ∀ τ : Weil h, LinearMap.toMatrix' (a.ρ τ) = (a.toGL τ : Matrix (Fin n) (Fin n) ℂ)` using `fun τ => (WDRep.coe_toGL a τ).symm`. Establish `hMB : ∀ τ : Weil h, LinearMap.toMatrix' (b.ρ τ) = (b.toGL τ : Matrix (Fin n) (Fin n) ℂ)` using `fun τ => (WDRep.coe_toGL b τ).symm`. Establish `hne : ∀ τ : Weil h, deg τ ≠ 0 → (a.toGL τ : Matrix (Fin n) (Fin n) ℂ).trace = (b.toGL τ : Matrix (Fin n) (Fin n) ℂ).trace`. Introduce `τ hτ`.
+
+Use `trace_eq_of_charpoly_eq ?_` and prove the remaining obligations. Rewrite using `[← hMA, ← hMB, ← charpoly_eq_toMatrix', ← charpoly_eq_toMatrix']`. Conclude with `hxy τ hτ`. Establish `hall : ∀ τ : Weil h, (a.toGL τ : Matrix (Fin n) (Fin n) ℂ).trace = (b.toGL τ : Matrix (Fin n) (Fin n) ℂ).trace`. Introduce `τ`.
+
+Distinguish the cases in `hτ : deg τ = 0`. Use `swap`. Conclude with `hne τ hτ`. Use `trace_eq_of_trace_mul_pow (a.toGL (frob h) : Matrix (Fin n) (Fin n) ℂ) _ (b.toGL (frob h) : Matrix (Fin n) (Fin n) ℂ) _ ((Matrix.isUnit_iff_isUnit_det _).1 (a.toGL (frob h)).isUnit) ((Matrix.isUnit_iff_isUnit_det _).1 (b.toGL (frob h)).isUnit) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← Units.val_mul, ← map_pow, ← map_pow, ← map_mul, ← map_mul]`.
+
+Use `hne _ ?_` and prove the remaining obligations. Rewrite using `[deg_mul, deg_pow, hτ, deg_frob]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[charpoly_eq_toMatrix', charpoly_eq_toMatrix', hMA, hMB]`. Use `GlobalTheory.QuadKernelConj.charpoly_eq_of_trace_pow _ _ fun j => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ← map_pow, ← map_pow]`. Conclude with `hall _`.
+-/
 theorem charPol_eq_of_deg_ne_zero : ∀ (K Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (h : IsPlaceOver A v) (x y : WD h), (∀ σ : Weil h, deg σ ≠ 0 → x.charPol σ = y.charPol σ) → ∀ σ : Weil h, x.charPol σ = y.charPol σ := by
   intro K Ω _ _ _ _ _ A v h x y hxy σ
   obtain ⟨n, a, rfl⟩ := WD.exists_rep x

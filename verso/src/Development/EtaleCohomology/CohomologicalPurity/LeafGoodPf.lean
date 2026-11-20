@@ -5,10 +5,26 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 
 namespace LateralTheory.CohomologicalPurity.Bd
 
+/- English proof (translation)
+Simplify using `[pb, Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`.
+-/
 theorem pb_v {R : Type} [CommRing R] {A B I : Cx R} (f : A ⟶ B) {n : ℤ} (c : Cochain B I n) (p q : ℤ) (hpq : p + n = q) :
     (pb f c).v p q hpq = f.f p ≫ c.v p q hpq := by
   simp [pb, Cochain.zero_cochain_comp_v, Cochain.ofHom_v]
 
+/- English proof (translation)
+Introduce `R _ A B D i l r I hm hp hI`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `HomologicalComplex.hom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `using (hp p).w`.
+
+Introduce `n a`. Use `⟨Cochain.mk (fun p q hpq => Injective.factorThru (a.v p q hpq) (i.f p)), ?_⟩` and prove the remaining obligations. Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Rewrite using `[pb_v]`. Simplify using `[Cochain.mk_v]`.
+
+Introduce `n c c' h`. Use `⟨Cochain.mk (fun p q hpq => (hp p).desc (c.v p q hpq) (c'.v p q hpq) (by` and prove the remaining obligations. Use `congrArg (fun x => x.v p q hpq) h` as an intermediate fact. Simplify `this)), ?_, ?_⟩` using `only [pb_v]`. Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations.
+
+Rewrite using `[pb_v]`. Simplify using `[Cochain.mk_v]`. Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Rewrite using `[pb_v]`. Simplify using `[Cochain.mk_v]`.
+
+Introduce `n b b' h1 h2`. Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations. Apply `(hp p).hom_ext` to reduce the goal to its premises. Use `congrArg (fun x => x.v p q hpq) h1` as an intermediate fact. Simplify `this` using `only [pb_v]`.
+
+Use `congrArg (fun x => x.v p q hpq) h2` as an intermediate fact. Simplify `this` using `only [pb_v]`.
+-/
 theorem LeafGood_of : LeafGood := by
   intro R _ A B D i l r I hm hp hI
   refine ⟨?_, ?_, ?_, ?_⟩

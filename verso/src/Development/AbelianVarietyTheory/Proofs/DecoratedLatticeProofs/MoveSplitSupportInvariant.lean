@@ -26,6 +26,9 @@ namespace GlobalTheory.AdForm.SplitMove
 
 open Formalism.L2.Th1.H
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Simplify using `[inter, h0]`.
+-/
 theorem inter_ne_zero {V : Type} [AddCommGroup V] [Module ℂ V] {H : Sesq V} {α : V → ℂ} {A₁ A₂ : AddSubgroup V} {F : V → ℂ}
     (h : inter H α A₁ A₂ F ≠ 0) : relIdx A₁ A₂ ≠ 0 := by
   intro h0
@@ -33,11 +36,19 @@ theorem inter_ne_zero {V : Type} [AddCommGroup V] [Module ℂ V] {H : Sesq V} {�
   funext z
   simp [inter, h0]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[inter, opU]`.
+-/
 theorem inter_zero {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A₁ A₂ : AddSubgroup V) :
     inter H α A₁ A₂ 0 = 0 := by
   funext z
   simp [inter, opU]
 
+/- English proof (translation)
+Unfold `inter`. Establish `e : ∀ q : A₂ ⧸ A₁.addSubgroupOf A₂, α ((Quotient.out q : A₂) : V) * opU H ((Quotient.out q : A₂) : V) (fun w => c * F w) z = c * (α ((Quotient.out q : A₂) : V) * opU H ((Quotient.out q : A₂) : V) F z)` using `fun q => by`. Simplify using `only [opU]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`.
+
+Rewrite using `[← mul_finsum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inter_const_mul {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (A₁ A₂ : AddSubgroup V)
     (c : ℂ) (F : V → ℂ) (z : V) : inter H α A₁ A₂ (fun w => c * F w) z = c * inter H α A₁ A₂ F z := by
   unfold inter
@@ -48,6 +59,9 @@ theorem inter_const_mul {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) 
   rw [← mul_finsum]
   ring
 
+/- English proof (translation)
+Take `⟨x, -, rfl⟩` from `hz`. Use `⟨(LinearMap.toMatrix' x).reindex (finCongr hT).symm (finCongr hS).symm, ?_⟩` and prove the remaining obligations. Use `congr 1`. Substitute `hS hT` using the available equality. Simplify using `[toHom]`.
+-/
 theorem mem_LamC_toHom {D : D7} (S T : HSp D) {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ)
     (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E))
     (z : VCx D.what₂.Tau a b) (hz : z ∈ LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') :
@@ -66,6 +80,53 @@ open GlobalTheory.ThetaMove Formalism.L2.Th1.H
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `B X I l Z w u A ψ θ hA i hi c₀ g h hg hh hmv e he s s' hs hs'`. Introduce `N₁ N₁' hN₁ hN₁' x₁ y₁ hx₁ hy₁`. Establish `hi0 : i ≤ B.R.m` using `Nat.le_of_succ_le hi`. Take `⟨hstd, hAA, hemb, hroot⟩` from `GlobalTheory.T.standard_pair_along_chain I l Z w u A ψ θ hA i hi`. Establish `hSr` using `rankN (I.rec7 l Z) i hi0`.
+
+Establish `hTr` using `rankN (I.rec7 l Z) (i + 1) hi`. Take `⟨N, hN⟩` from `(GlobalTheory.T.adelicTranslate_standardLattice_isSelfDual _ _ _ hSr hstd.gS).1 g`. Take `⟨N', hN'⟩` from `(GlobalTheory.T.adelicTranslate_standardLattice_isSelfDual _ _ _ hTr hstd.gT).1 h`. Take `⟨x, hx⟩` from `hroot i hi0 g`. Take `⟨y, hy⟩` from `hroot (i + 1) hi h`.
+
+Establish `key` using `hmv N N' hN hN' x y hx hy`. Establish `hW` using `hA.om i hi`. Establish `hvac` using `hA.vac i hi`. Establish `hsG : s ∈ GfC _` using `GlobalTheory.WeilProduct.mem_GfC_of_suppAt he hs`. Establish `hs'G : s' ∈ GfC _` using `GlobalTheory.WeilProduct.mem_GfC_of_suppAt he hs'`.
+
+Establish `xv` using `fun g₀ (hg₀ : g₀ ∈ GfC _) h₀ (hh₀ : h₀ ∈ GfC _) M M' (hM : Moves _ hSr g₀ M) (hM' : Moves _ hTr h₀ M') => GlobalTheory.T.movedWeilVacuum_eq_vacuum_of_movedLattices (I.rec7 l Z) ψ θ _ _ _ _ hSr hTr I.A.δ I.A.sc hstd (A.chr (i + 1)) (A.om i) hW (A.vac i) hvac g₀ hg₀ h₀ hh₀ M M' hM …`. Establish `hX` using `GlobalTheory.Mem.FieldsLaws.fields_ok B`. Establish `hcc : Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal (I.rec7 l Z) ⊤` using `⟨top_ne_bot, by simp⟩`. Establish `hδ` using `((I.J.ok_iff B (I.cols l) Z.W Z.V Z.S Z.N Z.G).1 w.ok.amb_ok).1`. Establish `hχ` using `GlobalTheory.Mem.ChiIdeal.isChi_chiId (I.rec7 l Z) I.C.chiPsi I.C.isChi`.
+
+Establish `hE` using `(GlobalTheory.Core.Ht2.family_laws I w.ok hX l Z).1`. Establish `hfam` using `GlobalTheory.NatFamily.family (I.rec7 l Z) ⊤ I.J.δ (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G) I.chi hcc hδ hχ`. Establish `ha : Even (B.R.N i)` using `hSr ▸ hstd.rk.2.2.1`. Establish `hb : Even (B.R.N (i + 1))` using `hTr ▸ hstd.rk.2.2.2`. Establish `hMv : GlobalTheory.ThetaMove.Moves I.A (B.R.N i) (B.R.N (i + 1))` using `by show GlobalTheory.ThetaMove.Moves (I.J.amb B I.chi) _ _`.
+
+Rewrite using `[AmbIn.amb_eq_ambOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G]`. Conclude with `GlobalTheory.ThetaMove.SeamMoves.moves_ambOf B.fields _ (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G) ⊤ I.J.δ (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G) I.chi I.J.cD _ _ hX (seamOf_ok B (I.cols l) Z.W Z.V Z.S Z.N Z.G) hcc hχ hE hfam.2.1 (hfam.2.2 _ _) ha hb`. Establish `hemb' : B.fields.embC I.A.σ₀ = tauE (I.rec7 l Z)` using `funext hemb`. Establish `hlam : ∀ M M', lam I.A (a` using `B.R.N i) (b := B.R.N (i + 1)) M M' = LamC (tauE (I.rec7 l Z)) I.A.δ ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) M M' := by`. Introduce `M M'`.
+
+Use `show LamC (B.fields.embC I.A.σ₀) I.A.δ I.A.AA M M' = _`. Rewrite using `[hemb', hAA]`. Both sides reduce to the same expression. Establish `hvacT : ∀ M M', Formalism.L2.Col.IsSdLat M → Formalism.L2.Col.IsSdLat M' → vac I.A (a` using `B.R.N i) (b := B.R.N (i + 1)) M M' = I.J.V.thMoved (B.R.N i) (B.R.N (i + 1)) M M' := by`. Introduce `M M' hM hM'`.
+
+Use function extensionality and compare the values at `z`. Conclude with `inv_mul_cancel_left₀ (hMv.2.2.2.2.1 M M' hM hM').1 _`. Take `⟨hNsd, ΛS, hcS, hΛS⟩` from `(GlobalTheory.T.adelicTranslate_standardLattice_isSelfDual _ _ _ hSr hstd.gS).2 g N hN`. Take `⟨hN'sd, ΛT, hcT, hΛT⟩` from `(GlobalTheory.T.adelicTranslate_standardLattice_isSelfDual _ _ _ hTr hstd.gT).2 h N' hN'`. Take `⟨hN₁sd, ΛS₁, hcS₁, hΛS₁⟩` from `(GlobalTheory.T.adelicTranslate_standardLattice_isSelfDual _ _ _ hSr hstd.gS).2 (s * g) N₁ hN₁`.
+
+Take `⟨hN₁'sd, ΛT₁, hcT₁, hΛT₁⟩` from `(GlobalTheory.T.adelicTranslate_standardLattice_isSelfDual _ _ _ hTr hstd.gT).2 (s' * h) N₁' hN₁'`. Establish `v0` using `xv g hg h hh N N' hN hN'`. Establish `v1` using `xv (s * g) (mul_mem hsG hg) h hh N₁ N' hN₁ hN'`. Establish `v2` using `xv (s * g) (mul_mem hsG hg) (s' * h) (mul_mem hs'G hh) N₁ N₁' hN₁ hN₁'`. Establish `hc1 : A.om i (s, 1) (A.om i (g, h) (A.vac i)) = A.om i (s * g, h) (A.vac i)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `hc2 : A.om i (1, s') (A.om i (s * g, h) (A.vac i)) = A.om i (s * g, s' * h) (A.vac i)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `hth0 : I.J.V.thMoved (B.R.N i) (B.R.N (i + 1)) N N' ≠ 0`. Introduce `h0`.
+
+Apply `v0.2.2` to reduce the goal to its premises. Use `key.trans (funext fun z => ?_)` and prove the remaining obligations. Use `show _ = (0 : ℂ)`. Rewrite using `[h0, Pi.zero_apply, mul_zero]`. Establish `hv1 : I.J.V.thMoved (B.R.N i) (B.R.N (i + 1)) N₁ N' ≠ 0`.
+
+Introduce `h0`. Apply `hth0` to reduce the goal to its premises. Rewrite using `[← hvacT N N' hNsd hN'sd, hMv.2.2.2.2.2.2 N₁ N N' hN₁sd hNsd hN'sd, hvacT N₁ N' hN₁sd hN'sd, h0, inter_zero]`. Establish `hv2 : I.J.V.thMoved (B.R.N i) (B.R.N (i + 1)) N₁ N₁' ≠ 0`. Introduce `h0`.
+
+Apply `hv1` to reduce the goal to its premises. Rewrite using `[← hvacT N₁ N' hN₁sd hN'sd, hMv.2.2.2.2.2.1 N₁ N₁' N' hN₁sd hN₁'sd hN'sd, hvacT N₁ N₁' hN₁sd hN₁'sd, h0, inter_zero]`. Establish `hrel1 : relIdx (lam I.A (a` using `B.R.N i) (b := B.R.N (i + 1)) N N') (lam I.A N₁ N') ≠ 0 := by`. Apply `inter_ne_zero (H := HV I.A.sc) (α := alV I.A.d I.A.sc) (F := vac I.A (a := B.R.N i) (b := B.R.N (i + 1)) N N')` to reduce the goal to its premises. Rewrite using `[← hMv.2.2.2.2.2.2 N N₁ N' hNsd hN₁sd hN'sd, hvacT N₁ N' hN₁sd hN'sd]`.
+
+Conclude with `hv1`. Establish `hrel2 : relIdx (lam I.A (a` using `B.R.N i) (b := B.R.N (i + 1)) N₁ N') (lam I.A N₁ N₁') ≠ 0 := by`. Apply `inter_ne_zero (H := HV I.A.sc) (α := alV I.A.d I.A.sc) (F := vac I.A (a := B.R.N i) (b := B.R.N (i + 1)) N₁ N')` to reduce the goal to its premises. Rewrite using `[← hMv.2.2.2.2.2.1 N₁ N' N₁' hN₁sd hN'sd hN₁'sd, hvacT N₁ N₁' hN₁sd hN₁'sd]`. Conclude with `hv2`.
+
+Rewrite `hrel1` using `[hlam N N', hlam N₁ N']`. Rewrite `hrel2` using `[hlam N₁ N', hlam N₁ N₁']`. Establish `hfacts : ∀ (M : Submodule (𝓞 (I.rec7 l Z).host.E) (Fin (B.R.N i) → (I.rec7 l Z).host.E)) (M' : Submodule (𝓞 (I.rec7 l Z).host.E) (Fin (B.R.N (i + 1)) → (I.rec7 l Z).host.E)), Formalism.L2.Col.IsSdLat M → Formalism.L2.Col.IsSdLat M' → IsSelfDual (HV I.A.sc) (LamC (tauE (I.rec7 l Z …`. Introduce `M M' hM hM'`. Use `(hMv.2.2.2.2.1 M M' hM hM').2.2` as an intermediate fact.
+
+Rewrite using `[← hlam M M']`. Conclude with `this`. Use `haveI : Nonempty (I.rec7 l Z).what₂.Tau := Fintype.card_pos_iff.1 hX.f_pos`. Establish `hinj` using `GlobalTheory.ThetaMove.embH_injective (a := B.R.N i) (b := B.R.N (i + 1)) (tauE (I.rec7 l Z)) hstd.ne`. Establish `memL : ∀ (M : Submodule (𝓞 (I.rec7 l Z).host.E) (Fin (B.R.N i) → (I.rec7 l Z).host.E)) (M' : Submodule (𝓞 (I.rec7 l Z).host.E) (Fin (B.R.N (i + 1)) → (I.rec7 l Z).host.E)) x, embH (tauE (I.rec7 l Z)) I.A.δ x ∈ LamC (tauE (I.rec7 l Z)) I.A.δ ((I.rec7 l Z).host.AA0 : Submodule (𝓞 ( …`.
+
+Introduce `M M' x`. Conclude with `⟨fun ⟨y, hy, e⟩ => hinj e ▸ hy, fun hx => ⟨x, hx, rfl⟩⟩`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.AdTh.SplitClass.exists_detAt _ he.1 s`. Take `⟨y₀, hy₀⟩` from `GlobalTheory.AdTh.SplitClass.exists_detAt _ he.1 s'`. Establish `st1` using `GlobalTheory.T.splitPlacePair_moves_latticeVacuumReading (I.rec7 l Z) ψ θ _ _ _ _ hSr hTr I.A.δ I.A.sc hstd (A.chr (i + 1)) (A.om i) hW ΛS ΛS₁ ΛT ΛT hΛS hΛS₁ hΛT hΛT e he s 1 hs (GlobalTheory.LeviSplitChar.suppAt_one e _) x₀ 1 hx₀ (GlobalTheory.LeviSplitChar.isDetAt_one e _) (by …`.
+
+Establish `mv1 : inter (HV I.A.sc) (alV (I.rec7 l Z).host.d I.A.sc) (LamC (tauE (I.rec7 l Z)) I.A.δ ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) N N') (LamC (tauE (I.rec7 l Z)) I.A.δ ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).h …`. Establish `c7` using `hMv.2.2.2.2.2.2 N N₁ N' hNsd hN₁sd hN'sd`. Rewrite `c7` using `[hvacT N N' hNsd hN'sd, hvacT N₁ N' hN₁sd hN'sd, hlam N N', hlam N₁ N']`. Conclude with `c7.symm`. Establish `mv2 : inter (HV I.A.sc) (alV (I.rec7 l Z).host.d I.A.sc) (LamC (tauE (I.rec7 l Z)) I.A.δ ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z).host.E) N₁ N') (LamC (tauE (I.rec7 l Z)) I.A.δ ((I.rec7 l Z).host.AA0 : Submodule (𝓞 (I.rec7 l Z).host.E) (I.rec7 l Z). …`.
+
+Establish `c6` using `hMv.2.2.2.2.2.1 N₁ N' N₁' hN₁sd hN'sd hN₁'sd`. Rewrite `c6` using `[hvacT N₁ N' hN₁sd hN'sd, hvacT N₁ N₁' hN₁sd hN₁'sd, hlam N₁ N', hlam N₁ N₁']`. Conclude with `c6.symm`. Establish `e1 : xiN θ _ _ hSr hTr I.A.δ I.A.sc (A.om i (s * g, h) (A.vac i)) = fun z => ((A.chr (i + 1) x₀ : ℂ))⁻¹ * (c₀ * ((A.chr (i + 1) x : ℂ))⁻¹ * (A.chr (i + 1) y : ℂ)) * I.J.V.thMoved (B.R.N i) (B.R.N (i + 1)) N₁ N' z`. Rewrite using `[← hc1]`.
+
+Use `st1.trans (funext fun z => ?_)` and prove the remaining obligations. Rewrite using `[show xiN θ _ _ hSr hTr I.A.δ I.A.sc (A.om i (g, h) (A.vac i)) = _ from key]`. Use `erw [inter_const_mul]`. Use `erw [mv1]`. Simplify using `only [map_one, Circle.coe_one, mul_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `st2` using `GlobalTheory.T.splitPlacePair_moves_latticeVacuumReading (I.rec7 l Z) ψ θ _ _ _ _ hSr hTr I.A.δ I.A.sc hstd (A.chr (i + 1)) (A.om i) hW ΛS₁ ΛS₁ ΛT ΛT₁ hΛS₁ hΛS₁ hΛT hΛT₁ e he 1 s' (GlobalTheory.LeviSplitChar.suppAt_one e _) hs' 1 y₀ (GlobalTheory.LeviSplitChar.isDetAt_one e _) hy …`. Establish `rx` using `GlobalTheory.T.splitPlace_detRootChar_mul _ _ (A.chr (i + 1)) _ hstd.rk.2.2.1 hW.resS e he s g hs x₀ x x₁ hx₀ hx hx₁`. Establish `ry` using `GlobalTheory.T.splitPlace_detRootChar_mul _ _ (A.chr (i + 1)) _ hstd.rk.2.2.2 hW.resT e he s' h hs' y₀ y y₁ hy₀ hy hy₁`. Rewrite using `[← hc2]`.
+
+Use `st2.trans (funext fun z => ?_)` and prove the remaining obligations. Rewrite using `[e1]`. Use `erw [inter_const_mul]`. Use `erw [mv2]`. Rewrite using `[rx, ry]`.
+
+Simplify using `only [map_one, Circle.coe_one, inv_one, one_mul, Circle.coe_mul, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem moveAt_split : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z) (u : B.Word) (A : ColDat I l Z u (w.C.herm.base.Ch u)) ψ θ, A.Is (w.C.forms u) ψ θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m), ∀ c₀ g h, g ∈ GfC _ → h ∈ GfC _ → A.MoveAt θ i hi c₀ g h → ∀ e, IsSplitIdem (I.rec7 l Z) e → ∀ s s', SuppAt e _ s → SuppAt e _ s' → A.MoveAt θ i hi c₀ (s * g) (s' * h) := by
   intro B X I l Z w u A ψ θ hA i hi c₀ g h hg hh hmv e he s s' hs hs'
   intro N₁ N₁' hN₁ hN₁' x₁ y₁ hx₁ hy₁

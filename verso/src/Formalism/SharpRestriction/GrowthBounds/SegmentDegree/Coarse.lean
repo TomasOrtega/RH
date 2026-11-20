@@ -103,6 +103,13 @@ def RestCount (C₀ Crk : ℝ) : Prop :=
     [IsDiscreteValuationRing O], UniformizedDVR p O → X.Hyp p K → C₀ ≤ X.CLa → C₀ ≤ X.Ck →
     ((p : ℝ) ^ n') ^ (-((r * K : ℕ) : ℤ)) * X.bound K Crk ≤ (Module.finrank (FF O) (X.LamBar p K O) : ℝ)
 
+/- English proof (translation)
+Establish `hle : (restrictSupport Fd s : Submodule Fd (MvPolynomial σ Fd)) ≤ Submodule.span Fd ((fun m => (monomial m (1 : Fd) : MvPolynomial σ Fd)) '' s)`. Introduce `P hP`. Rewrite `hP` using `[MvPolynomial.mem_restrictSupport_iff]`. Rewrite using `[P.as_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations.
+
+Establish `: (monomial m (coeff m P) : MvPolynomial σ Fd) = coeff m P • monomial m (1 : Fd)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, hP (by exact_mod_cast hm), rfl⟩)`. Establish `: Module.Finite Fd (Submodule.span Fd ((fun m => (monomial m (1 : Fd) : MvPolynomial σ Fd)) '' s))` using `FiniteDimensional.span_of_finite Fd (hs.image _)`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem finite_restrictSupport (Fd : Type) [Field Fd] (σ : Type) (s : Set (σ →₀ ℕ)) (hs : s.Finite) :
     Module.Finite Fd (restrictSupport Fd s : Submodule Fd (MvPolynomial σ Fd)) := by
   have hle : (restrictSupport Fd s : Submodule Fd (MvPolynomial σ Fd)) ≤
@@ -119,12 +126,30 @@ theorem finite_restrictSupport (Fd : Type) [Field Fd] (σ : Type) (s : Set (σ �
     FiniteDimensional.span_of_finite Fd (hs.image _)
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Rewrite `hP`, the goal using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Conclude with `hP (by exact_mod_cast MvPolynomial.support_map_subset f P (by exact_mod_cast hm))`.
+-/
 theorem map_mem_restrictSupport {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {σ : Type} (s : Set (σ →₀ ℕ))
     {P : MvPolynomial σ R} (hP : P ∈ restrictSupport R s) : MvPolynomial.map f P ∈ restrictSupport S s := by
   rw [MvPolynomial.mem_restrictSupport_iff] at hP ⊢
   intro m hm
   exact hP (by exact_mod_cast MvPolynomial.support_map_subset f P (by exact_mod_cast hm))
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X O _ _ _ S hX hLa hk`. Use `le_trans (hc p n' r K X O S hX hLa hk) ?_` and prove the remaining obligations. Establish `hD` using `h1 p n' r K X O hX`. Establish `h45` using `h5 p n' r K X O S hX hLa hk`. Use `set res := MvPolynomial.map (σ := Fin n' × Fin (r + K)) (IsLocalRing.residue O) with hres`.
+
+Set `f : RRing (FF O) n' (r + K) →ₗ[FF O] RRing (FF O) n' (r + K)` to `LinearMap.mulLeft (FF O) (res (X.Dl p K O))`. Establish `hf : Function.Injective f`. Introduce `a b hab`. Conclude with `mul_left_cancel₀ hD hab`. Establish `hmap : (X.LamBar p K O).map f ≤ X.NNbar p K O`.
+
+Unfold `Dat.LamBar`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨u, hu, rfl⟩, rfl⟩`. Take `⟨g, hg, hgu⟩` from `h45 u hu`. Establish `: f (res u) = res g`.
+
+Rewrite using `[← hgu]`. Simplify using `[f, hres]`. Rewrite using `[this]`. Conclude with `Submodule.subset_span ⟨g, hg, rfl⟩`. Establish `hfin : Module.Finite (FF O) (X.NNbar p K O)`.
+
+Use `finite_restrictSupport (FF O) _ _ (degSet_finite n' (r + K) X.d)` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := restrictSupport (FF O) {m : Fin n' × Fin (r + K) →₀ ℕ | ∀ t, ∑ c : Fin (r + K), m (t, c) = X.d t}) ?_` and prove the remaining obligations. Unfold `Dat.NNbar`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+
+Take `⟨x, -, l, -, -, h⟩` from `hg`. Conclude with `map_mem_restrictSupport _ _ h`. Establish `h1' : Module.finrank (FF O) ((X.LamBar p K O).map f) = Module.finrank (FF O) (X.LamBar p K O)` using `(Submodule.equivMapOfInjective f hf (X.LamBar p K O)).finrank_eq.symm`. Establish `h2` using `Submodule.finrank_mono hmap`. Rewrite `h2` using `[h1']`.
+
+Conclude with `h2` after adjusting the coercions.
+-/
 theorem restRank_of (C₀ Crk : ℝ) (h1 : DiscriminantNonzeroModUniformiser) (h5 : GeneratorModuloUniformiser C₀) (hc : RestCount C₀ Crk) : RestRank C₀ Crk := by
   intro p n' r K _ _ _ X O _ _ _ S hX hLa hk
   refine le_trans (hc p n' r K X O S hX hLa hk) ?_

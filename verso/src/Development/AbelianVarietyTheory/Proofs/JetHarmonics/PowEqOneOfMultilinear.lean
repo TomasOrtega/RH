@@ -25,6 +25,15 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `choose m hm hU using hU`. Establish `hp : ∀ (n : ℕ) s, (W ^ n) (bx s) = bx (fun i => (U i ^ n) (s i))`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro s`.
+
+Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `s`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, hW]`. Simplify using `only [pow_succ', Module.End.mul_apply]`.
+
+Use `⟨∏ i, m i, Nat.one_le_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => by` and prove the remaining obligations. Use `hm i` as an intermediate fact. Use the proof step `omega), LinearMap.ext fun S => ?_⟩`. Use `LinearMap.eqOn_span' (s := {S' | ∃ s, S' = bx s}) ?_ (hspan S)` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`.
+
+Rewrite using `[hp]`. Establish `: ∀ i, U i ^ (∏ i, m i) = 1` using `fun i => by`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ i)`. Rewrite using `[hc, pow_mul, hU, one_pow]`. Simplify using `only [this, Module.End.one_apply]`.
+-/
 theorem pow_eq_one_of_multilinear {F M N : Type} [Field F] [AddCommGroup M] [Module F M]
     [AddCommGroup N] [Module F N] {j : ℕ} (bx : MultilinearMap F (fun _ : Fin j => M) N)
     (hspan : ∀ S : N, S ∈ Submodule.span F {S' | ∃ s, S' = bx s})
@@ -51,6 +60,13 @@ theorem pow_eq_one_of_multilinear {F M N : Type} [Field F] [AddCommGroup M] [Mod
     rw [hc, pow_mul, hU, one_pow]
   simp only [this, Module.End.one_apply]
 
+/- English proof (translation)
+Introduce `hL hL2 hL4 hT V _ _ _ _ j D D' pD F _ _ k hk p' p _ w w' hw hw' hc ζ h`. Establish `hG` using `hL.globalFns`. Take `⟨bx, hbx⟩` from `GlobalTheory.T.exists_boxFamily_multilinear_map hG V j D.toPre D'.toPre pD F k`. Establish `hspan` using `GlobalTheory.T.mem_span_boxFamily_powerDegData hL hL2 hL4 hT V j D D' pD F k hk`. Simplify using `only [hbx] at hspan`.
+
+Use `choose Φ hΦ using fun i => phiFun_of_globalFns hG V _ D F k hk (p i) (w i) (hw i)`. Take `⟨Φ', hΦ'⟩` from `phiFun_of_globalFns hG V _ D' F k hk p' w' hw'`. Use `(ThetaFinOrd.finOrd_iff p' w' _ Φ' hΦ').2 (pow_eq_one_of_multilinear bx hspan (fun i => ζ i • Φ i) _ (fun s => ?_) (fun i => (ThetaFinOrd.finOrd_iff (p i) (w i) _ (Φ i) (hΦ i)).1 (h i)))` and prove the remaining obligations. Establish `e` using `(hΦ' _ _).1 (hc s (fun i => Φ i (s i)) _ _ (fun i => (hΦ i _ _).2 rfl) ((hbx _ _).2 rfl) ((hbx _ _).2 rfl))`. Simplify using `only [LinearMap.smul_apply]`.
+
+Rewrite using `[← e, MultilinearMap.map_smul_univ]`.
+-/
 theorem finOrd_box : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] (j : ℕ) (D D' : DegData V (maximalIdeal V)) (pD : IsPowDeg D'.toPre D.toPre j) (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ), 1 ≤ k → ∀ (p' : QkPt D'.toPre F k) (p : Fin j → QkPt D.toPre F k), IsBoxQk pD F k p' p → ∀ (w : ∀ i, LB.Gen (LB.LinComb D.toPre.P.L (DegPre.lineφ D.toPre F (p i).g.b) (DegPre.lineε k))) (w' : LB.Gen (LB.LinComb D'.toPre.P.L (DegPre.lineφ D'.toPre F p'.g.b) (DegPre.lineε k))), (∀ i, (w i).IsGen) → w'.IsGen → (∀ (s s₁ : Fin j → Fam D.toPre F k) (S S₁ : Fam D'.toPre F k), (∀ i, PhiRel D.toPre F k (p i) (w i) (s i) (s₁ i)) → IsBoxFam pD F k S s → IsBoxFam pD F k S₁ s₁ → PhiRel D'.toPre F k p' w' S S₁) → ∀ ζ : Fin j → F, (∀ i, FinOrd D F k (p i) (w i) (ζ i)) → FinOrd D' F k p' w' (∏ i, ζ i) := by
   intro hL hL2 hL4 hT V _ _ _ _ j D D' pD F _ _ k hk p' p _ w w' hw hw' hc ζ h
   have hG := hL.globalFns

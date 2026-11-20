@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.MBLow.TanGauge
 
+/- English proof (translation)
+Introduce `X Y Y' L K₁ K₂ _ _ φ₁ ε₁ s₁ φ₂ ε₂ n s₂ h c H j₁ j₂ hc A _ y hy₁ hy₂`. Establish `hy₂' : ⊤ ≤ y ⁻¹ᵁ LB.wchart L (fun k => h ≫ φ₂ k) j₂` using `top_le_wchart L _ _ y fun k => by rw [← Category.assoc]; exact wchart_top_le L φ₂ j₂ (y ≫ h) hy₂ k`. Establish `hW : ⊤ ≤ y ⁻¹ᵁ (LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ₂ k) j₂)` using `fun q hq => ⟨hy₁ hq, hy₂' hq⟩`. Establish `a₂ : LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ₂ k) j₂ ≤ h ⁻¹ᵁ LB.wchart L φ₂ j₂` using `inf_le_right.trans (fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k)`. Establish `e` using `congrArg (valR y (LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ₂ k) j₂)) (H j₁ j₂ hc)`.
+
+Rewrite using `[← GlobalTheory.ZH.CrdCalc.valR_res y inf_le_left hW (s₁.f j₁)]`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.ZH.CrdCalc.valR_eq y _ hW, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← GlobalTheory.ZH.CrdCalc.valR_eq y _ hW, ← GlobalTheory.ZH.CrdCalc.valR_eq y _ hW]`.
+
+Use `congr 1`. Conclude with `GlobalTheory.ZH.CrdCalc.valR_res y le_top hW (c i)`. Conclude with `(GlobalTheory.ZH.CrdCalc.valR_res y a₂ hW _).trans (GlobalTheory.ZH.EvCrd.valR_comp y h (LB.wchart L φ₂ j₂) (fun q hq => hy₂ hq) _)`.
+-/
 theorem valR_secLin : ∀ {X Y Y' : Scheme.{0}} (L : LB X) {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
     (φ₁ : K₁ → (Y' ⟶ X)) (ε₁ : K₁ → ℤ) (s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)) (φ₂ : K₂ → (Y ⟶ X)) (ε₂ : K₂ → ℤ) {n : ℕ}
     (s₂ : Fin n → LB.Sec (LB.LinComb L φ₂ ε₂)) (h : Y' ⟶ Y) (c : Fin n → Γ(Y', ⊤)),

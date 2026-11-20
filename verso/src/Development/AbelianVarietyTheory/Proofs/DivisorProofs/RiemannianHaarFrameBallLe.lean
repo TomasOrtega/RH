@@ -19,6 +19,19 @@ noncomputable section
 
 namespace GlobalTheory.CovTop.VolUp.UpBall
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h (σ.symm τ)`. Rewrite `h1`, `h2` using `[Equiv.apply_symm_apply]`. Use `set P := permM (e (σ.symm τ))`. Use `set J := Formalism.UG.Jpq (p (σ.symm τ)) (q (σ.symm τ))`. Use `set N := Pᵀ * A (σ.symm τ)`.
+
+Establish `hN : N * mat x τ = 1` using `by rw [Matrix.mul_assoc, h2, transpose_mul_permM]`. Establish `hN' : mat x τ * N = 1` using `mul_eq_one_comm.1 hN`. Use `⟨Matrix.det_ne_zero_of_left_inverse hN, ?_⟩` and prove the remaining obligations. Establish `hA : A (σ.symm τ) = P * N`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hJ : J * J = 1`. Simplify using `[J, Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]`. Establish `hPc : Pᴴ = Pᵀ`. Use extensionality with `i j`. Simplify using `only [P, permM, Matrix.conjTranspose_apply, Matrix.transpose_apply, Matrix.of_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use `set D := Pᵀ * J * P`. Establish `hD : D * D = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hDdet : D.det ≠ 0` using `Matrix.det_ne_zero_of_left_inverse hD`.
+
+Establish `hNdet : N.det ≠ 0` using `Matrix.det_ne_zero_of_left_inverse hN'`. Establish `key : -(G.map τ.1)ᵀ = Nᴴ * D * N`. Rewrite using `[← h1, hA, Matrix.conjTranspose_mul, hPc]`. Simplify using `only [D, Matrix.mul_assoc]`. Establish `hdet : (-(G.map τ.1)ᵀ).det ≠ 0`.
+
+Rewrite using `[key, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Conclude with `mul_ne_zero (mul_ne_zero (star_ne_zero.2 hNdet) hDdet) hNdet`. Introduce `hG`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[Matrix.det_neg, Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det, hG, map_zero, mul_zero]`.
+-/
 theorem isIdent_det {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {κ : Type} {p q : κ → ℕ}
     {Ψ : Finset (E →+* ℂ)} {G : Matrix (Fin r) (Fin r) E} {x : Frame Ψ r} {σ : κ ≃ Ψ}
     {A : ∀ ρ, Matrix (Fin (p ρ) ⊕ Fin (q ρ)) (Fin r) ℂ} {e : ∀ ρ, Fin (p ρ) ⊕ Fin (q ρ) ≃ Fin r}
@@ -58,6 +71,21 @@ theorem isIdent_det {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use `set W := (realLie Ψ G).comap (fromFrame x)`. Set `Φ : W →ₗ[ℝ] realLie Ψ G` to `((fromFrame x).comp W.subtype).codRestrict (realLie Ψ G) (fun v => v.2)`. Establish `key2 : ∀ τ (A : Matrix (Fin r) (Fin r) ℂ), mat x τ * ((mat x τ)⁻¹ * A * mat x τ) * (mat x τ)⁻¹ = A` using `fun τ A => by`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ (hx τ).isUnit, Matrix.mul_nonsing_inv_cancel_left _ _ (hx τ).isUnit]`. Establish `hsurj : Function.Surjective Φ`.
+
+Introduce `X`. Set `Y : EuclideanSpace ℂ (Ψ × Fin r × Fin r)` to `WithLp.toLp 2 (fun p : Ψ × Fin r × Fin r => ((mat x p.1)⁻¹ * Matrix.of (X.1 p.1) * mat x p.1) p.2.1 p.2.2)`. Establish `hY : fromFrame x Y = X.1`. Use function extensionality and compare the values at `τ`. Establish `e : Matrix.of (fun a b => Y (τ, a, b)) = (mat x τ)⁻¹ * Matrix.of (X.1 τ) * mat x τ`.
+
+Use extensionality with `a b`. Simplify using `[Y]`. Express the relevant statement in the definitionally equal form `(mat x τ * Matrix.of _ * (mat x τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) = X.1 τ`. Rewrite using `[e, key2]`. Both sides reduce to the same expression.
+
+Conclude with `⟨⟨Y, show fromFrame x Y ∈ realLie Ψ G by rw [hY]; exact X.2⟩, Subtype.ext hY⟩`. Establish `key1 : ∀ τ (A : Matrix (Fin r) (Fin r) ℂ), (mat x τ)⁻¹ * (mat x τ * A * (mat x τ)⁻¹) * mat x τ = A` using `fun τ A => by`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_right _ _ (hx τ).isUnit, Matrix.nonsing_inv_mul_cancel_left _ _ (hx τ).isUnit]`. Establish `hinj : Function.Injective Φ`. Introduce `Y Z h`.
+
+Establish `h' : fromFrame x Y.1 = fromFrame x Z.1` using `congrArg Subtype.val h`. Establish `hτ : ∀ τ, Matrix.of (fun a b => Y.1 (τ, a, b)) = Matrix.of (fun a b => Z.1 (τ, a, b))`. Introduce `τ`. Establish `h1 : mat x τ * Matrix.of (fun a b => Y.1 (τ, a, b)) * (mat x τ)⁻¹ = mat x τ * Matrix.of (fun a b => Z.1 (τ, a, b)) * (mat x τ)⁻¹` using `congrFun h' τ`. Rewrite using `[← key1 τ (Matrix.of (fun a b => Y.1 (τ, a, b))), h1, key1]`.
+
+Use `Subtype.ext (PiLp.ext fun p => ?_)` and prove the remaining obligations. Take `⟨τ, a, b⟩` from `p`. Conclude with `congrFun (congrFun (hτ τ) a) b`. Set `φ : W ≃L[ℝ] realLie Ψ G` to `(LinearEquiv.ofBijective Φ ⟨hinj, hsurj⟩).toContinuousLinearEquiv`. Use `⟨(stdOrthonormalBasis ℝ W).toBasis.addHaar.map φ, φ.isAddHaarMeasure_map _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Measure.map_map measurable_subtype_coe φ.continuous.measurable]`. Both sides reduce to the same expression.
+-/
 theorem exists_lam (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r)
     (hx : ∀ τ, (mat x τ).det ≠ 0) :
     ∃ lam : Measure (realLie Ψ G), lam.IsAddHaarMeasure ∧ lam.map Subtype.val = riemLie Ψ G x := by
@@ -99,6 +127,29 @@ theorem exists_lam (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x
   rw [Measure.map_map measurable_subtype_coe φ.continuous.measurable]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ r κ p q Ψ G x σ A e hr hI`. Establish `hx : ∀ τ, (mat x τ).det ≠ 0` using `fun τ => (isIdent_det hI τ).1`. Distinguish the cases in `hd : Ψ.card * (r ^ 2 - 1) = 0`. Use `⟨1, one_pos, fun ε _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hd, pow_zero, ENNReal.ofReal_one]`.
+
+Conclude with `GlobalTheory.T.riemannianHaar_le_one_of_dim_zero E r Ψ G x hr hx hd _`. Establish `hΨ : 0 < Ψ.card` using `Nat.pos_of_ne_zero fun h => hd (by rw [h, zero_mul])`. Take `⟨τ₀, hτ₀⟩` from `Finset.card_pos.1 hΨ`. Establish `hG : G.det ≠ 0` using `(isIdent_det hI ⟨τ₀, hτ₀⟩).2`. Establish `hr2 : 3 ≤ r ^ 2 - 1`.
+
+Establish `: r ≠ 1` using `fun h => hd (by rw [h]; simp)`. Establish `: 2 ≤ r` using `by omega`. Establish `: 4 ≤ r ^ 2` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Establish `hd3 : 3 ≤ Ψ.card * (r ^ 2 - 1)` using `le_trans hr2 (Nat.le_mul_of_pos_left _ hΨ)`.
+
+Take `⟨lam, hlam, hmap⟩` from `exists_lam Ψ G x hx`. Take `⟨δ, hδ, hup⟩` from `GlobalTheory.T.tangentNormalizedHaar_le_two_mul_lieHaar E r Ψ G hG lam`. Take `⟨ε₀, hε₀, hcov⟩` from `GlobalTheory.T.frameBall_subset_expChart_image_frameBox E r Ψ G x hG hx δ hδ`. Use `⟨ε₀, hε₀, fun ε hε hεε => ?_⟩` and prove the remaining obligations. Use `set S : Set (Ψ → Fin r → Fin r → ℂ) := {X | ∀ τ a b, ‖((mat x τ)⁻¹ * Matrix.of (X τ) * mat x τ) a b‖ < 2 * ε} with hS`.
+
+Establish `hcont : ∀ τ a b, Continuous (fun X : Ψ → Fin r → Fin r → ℂ => ((mat x τ)⁻¹ * Matrix.of (X τ) * mat x τ) a b)`. Introduce `τ a b`. Conclude with `((continuous_const.matrix_mul (continuous_apply τ)).matrix_mul continuous_const).matrix_elem a b`. Establish `hSm : MeasurableSet S`. Simplify using `only [hS, Set.setOf_forall]`.
+
+Conclude with `MeasurableSet.iInter fun τ => MeasurableSet.iInter fun a => MeasurableSet.iInter fun b => measurableSet_lt (hcont τ a b).norm.measurable measurable_const`. Use `set s : Set (realLie Ψ G) := {X : realLie Ψ G | ‖X‖ < δ ∧ ∀ τ a b, ‖((mat x τ)⁻¹ * Matrix.of (X.1 τ) * mat x τ) a b‖ < 2 * ε} with hs`. Establish `hs' : s = Metric.ball 0 δ ∩ Subtype.val ⁻¹' S`. Use extensionality with `X`. Simplify using `[hs, hS, mem_ball_zero_iff]`.
+
+Establish `hsm : MeasurableSet s`. Rewrite using `[hs']`. Conclude with `measurableSet_ball.inter (measurable_subtype_coe hSm)`. Establish `hsb : s ⊆ Metric.ball 0 δ` using `by rw [hs']; exact Set.inter_subset_left`. Establish `h1 : riemHaar Ψ G x (frBall Ψ G x ε) ≤ 2 * lam s`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `riemHaar`. Rewrite using `[← hmap]`. Conclude with `measure_mono (hcov ε hε hεε)`. Use `_ ≤ 2 * lam s := hup s hsm hsb`.
+
+Establish `h2 : lam s ≤ riemLie Ψ G x S`. Rewrite using `[← hmap, Measure.map_apply measurable_subtype_coe hSm, hs']`. Conclude with `measure_mono Set.inter_subset_right`. Establish `h3` using `GlobalTheory.T.riemannianLieMeasure_frameBox_le E r κ p q Ψ G x σ A e hr hI (2 * ε) (by positivity)`. Establish `h4 : 2 * lam s ≤ 2 * ENNReal.ofReal ((3 * (2 * ε)) ^ (Ψ.card * (r ^ 2 - 1)))` using `by gcongr; exact h2.trans h3`.
+
+Use `h1.trans (h4.trans ?_)` and prove the remaining obligations. Rewrite using `[show (2 : ℝ≥0∞) = ENNReal.ofReal 2 by simp, ← ENNReal.ofReal_mul (by norm_num)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `set d := Ψ.card * (r ^ 2 - 1)`. Establish `e1 : (8 * ε) ^ d = (4 / 3 : ℝ) ^ d * (3 * (2 * ε)) ^ d` using `by rw [← mul_pow]; ring_nf`.
+
+Establish `e2 : (2 : ℝ) ≤ (4 / 3 : ℝ) ^ d`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1]`. Conclude with `mul_le_mul_of_nonneg_right e2 (by positivity)`.
+-/
 theorem riemHaar_frBall_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (κ : Type) (p q : κ → ℕ) (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r) (σ : κ ≃ Ψ) (A : ∀ ρ, Matrix (Fin (p ρ) ⊕ Fin (q ρ)) (Fin r) ℂ) (e : ∀ ρ, Fin (p ρ) ⊕ Fin (q ρ) ≃ Fin r), 1 ≤ r → IsIdent p q Ψ G x σ A e → ∃ ε₀ : ℝ, 0 < ε₀ ∧ ∀ ε : ℝ, 0 < ε → ε < ε₀ → riemHaar Ψ G x (frBall Ψ G x ε) ≤ ENNReal.ofReal ((8 * ε) ^ (Ψ.card * (r ^ 2 - 1))) := by
   intro E _ _ _ r κ p q Ψ G x σ A e hr hI
   have hx : ∀ τ, (mat x τ).det ≠ 0 := fun τ => (isIdent_det hI τ).1

@@ -13,9 +13,15 @@ noncomputable section
 
 namespace GlobalTheory.JacRel
 
+/- English proof (translation)
+Simplify using `[polyAt]`.
+-/
 theorem polyAt_nil {V : Type} [AddCommGroup V] [Module ℂ V] (A : Module.End ℂ V) : polyAt A [] = 1 := by
   simp [polyAt]
 
+/- English proof (translation)
+Simplify using `[polyAt]`.
+-/
 theorem polyAt_cons {V : Type} [AddCommGroup V] [Module ℂ V] (A : Module.End ℂ V) (c : ℂ) (L : List ℂ) :
     polyAt A (c :: L) = (A - c • LinearMap.id) * polyAt A L := by
   simp [polyAt]
@@ -26,6 +32,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {α : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
   {n : Type} [Fintype n] [DecidableEq n] {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `hd : ((deltaHalf k m s : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Proceed by induction on `L with`. Consider the case `nil => simp [polyAt_nil]`. Consider the case `cons c L ih`. Rewrite using `[polyAt_cons, Module.End.mul_apply, ih, List.map_cons, polyAt_cons, Module.End.mul_apply, map_smul]`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, jac_mk, List.length_cons, Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul, Units.val_inv_eq_inv_val]`. Rewrite using `[pow_succ, smul_sub, smul_sub]`. Simplify using `only [smul_smul]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem polyAt_jac_mk (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V) (s : Levi k m) (L : List ℂ) (v : V) :
     polyAt (jac e π s) L (Submodule.Quotient.mk v) =
       ((((deltaHalf k m s : ℂˣ) : ℂ)⁻¹) ^ L.length) •
@@ -42,6 +53,9 @@ theorem polyAt_jac_mk (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) 
     congr 2
     field_simp
 
+/- English proof (translation)
+Establish `h` using `hL (Submodule.Quotient.mk v)`. Rewrite `h` using `[polyAt_jac_mk, smul_eq_zero]`. Break down `h with h | h` into its components or cases. Conclude with `absurd h (pow_ne_zero _ (inv_ne_zero (Units.ne_zero _)))`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 h`.
+-/
 theorem mem_twKer_of_polyAt_jac (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V) (s : Levi k m) (L : List ℂ)
     (hL : ∀ w, polyAt (jac e π s) L w = 0) (v : V) :
     polyAt (π (leviEmb k e s)) (L.map fun c => c * (deltaHalf k m s : ℂ)) v ∈ twKer π (unipRad k e) 1 := by
@@ -67,9 +81,17 @@ def diagRep (π : Representation ℂ (GL (Fin N) k) V) (m : ℕ) : Representatio
   map_one' := by ext; simp
   map_mul' a b := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem diagRep_apply (π : Representation ℂ (GL (Fin N) k) V) (m : ℕ) (g : GL (Fin N) k) (u : Fin m → V) :
     diagRep π m g u = fun j => π g (u j) := rfl
 
+/- English proof (translation)
+Introduce `u`. Establish `: {g : GL (Fin N) k | diagRep π m g u = u} = ⋂ j, {g | π g (u j) = u j}`. Use extensionality with `g`. Simplify using `[funext_iff]`. Rewrite using `[this]`.
+
+Conclude with `isOpen_iInter_of_finite fun j => hπ (u j)`.
+-/
 theorem isSmooth_diagRep {π : Representation ℂ (GL (Fin N) k) V} (hπ : IsSmooth π) (m : ℕ) : IsSmooth (diagRep π m) := by
   intro u
   have : {g : GL (Fin N) k | diagRep π m g u = u} = ⋂ j, {g | π g (u j) = u j} := by
@@ -78,6 +100,21 @@ theorem isSmooth_diagRep {π : Representation ℂ (GL (Fin N) k) V} (hπ : IsSmo
   rw [this]
   exact isOpen_iInter_of_finite fun j => hπ (u j)
 
+/- English proof (translation)
+Use `set τ := diagRep π m`. Establish `hτ : IsSmooth τ` using `isSmooth_diagRep hπ m`. Set `σ'` to `GlobalTheory.PRep.sub τ A (fun g u hu => hA g u hu)`. Set `ι : σ'.IntertwiningMap τ` to `⟨A.subtype, fun _ => rfl⟩`. Establish `hinj` using `GlobalTheory.JacquetExact.jacMap_injective e hτ ι Subtype.val_injective`.
+
+Establish `hwτ : w ∈ twKer τ (unipRad k e) 1`. Rewrite using `[← Finset.univ_sum_single w]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Set `f : π.IntertwiningMap τ` to `⟨LinearMap.single ℂ (fun _ : Fin m => V) j, fun g => by`. Use extensionality with `v i`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[τ]`. Simplify using `[τ, Pi.single_apply, h]⟩`. Conclude with `GlobalTheory.JacquetExact.map_mem_twKer f (hw' j)`.
+
+Establish `h1 : (Submodule.Quotient.mk (⟨w, hw⟩ : A) : Jacquet σ' (unipRad k e)) = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 hwτ`. Establish `h2 : (⟨w, hw⟩ : A) ∈ twKer σ' (unipRad k e) 1` using `(Submodule.Quotient.mk_eq_zero _).1 h1`.
+
+Set `Λ' : A →ₗ[ℂ] ℂ` to `{ toFun := fun u => Λ u map_add' := fun u u' => by`. Use `hlin u u.2 u' u'.2 1 1` as an intermediate fact. Simplify using `using this`. Use the proof step `map_smul' := fun a u => by`. Use `hlin u u.2 u u.2 a 0` as an intermediate fact.
+
+Simplify using `using this }`. Establish `h3 : twKer σ' (unipRad k e) 1 ≤ LinearMap.ker Λ'`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, u, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`.
+
+Use `hN g g.2 u u.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `Λ (fun j => π g (u.1 j)) - Λ u = 0`. Rewrite using `[this, sub_self]`. Conclude with `h3 h2`.
+-/
 theorem eq_zero_of_mem_twKer {s : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin N)
     {π : Representation ℂ (GL (Fin N) k) V} (hπ : IsSmooth π) {m : ℕ} (A : Submodule ℂ (Fin m → V))
     (hA : ∀ g, ∀ u ∈ A, (fun j => π g (u j)) ∈ A) (Λ : (Fin m → V) → ℂ)
@@ -127,6 +164,13 @@ end GlobalTheory.JacRel
 
 namespace GlobalTheory.JacRel
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => intro z _`. Simplify using `[polyAt_nil]`. Consider the case `cons c L ih`. Introduce `z hz`.
+
+Establish `hz' : h * z * h = h * (h * z)` using `by rw [mul_assoc, hz]`. Rewrite using `[polyAt_cons, polyAt_cons, Module.End.mul_apply, Module.End.mul_apply]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, Pi.sub_apply, Pi.smul_apply, GlobalTheory.LeviBlockRealization.leftTr_apply]`. Rewrite using `[ih (h * z) hz', ih z hz]`. Express the relevant statement in the definitionally equal form `_ = (polyAt (rightReg ℂ (GAd σ J) ℂ h) L f) (z * h) - _`.
+
+Rewrite using `[hz]`.
+-/
 theorem polyAt_leftTr_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (h : GAd σ J) (L : List ℂ) (f : GAd σ J → ℂ) :
     ∀ z : GAd σ J, z * h = h * z →
@@ -143,6 +187,11 @@ theorem polyAt_leftTr_eq {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     change _ = (polyAt (rightReg ℂ (GAd σ J) ℂ h) L f) (z * h) - _
     rw [hz]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => intro z`. Simplify using `[polyAt_nil]`. Consider the case `cons c L ih`. Introduce `z`.
+
+Rewrite using `[polyAt_cons, Module.End.mul_apply, Module.End.mul_apply]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, Pi.sub_apply, Pi.smul_apply, GlobalTheory.LeviBlockRealization.leftTr_apply]`. Rewrite using `[← ih (h * z), ← ih z, mul_assoc]`.
+-/
 theorem polyAt_leftTr_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (h a : GAd σ J) (L : List ℂ) (f : GAd σ J → ℂ) :
     ∀ z : GAd σ J, polyAt (GlobalTheory.LeviBlockRealization.leftTr σ J h) L f (z * a) =
@@ -156,6 +205,51 @@ theorem polyAt_leftTr_mul {F E : Type} [Field F] [NumberField F] [Field E] [Numb
       GlobalTheory.LeviBlockRealization.leftTr_apply]
     rw [← ih (h * z), ← ih z, mul_assoc]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM n J hJ r Xf Yf hW hLL v t B S hS i hiS hi hfr ϖ x₀ e hx₀ hcent K hK φ hφ V _ _ π hπ m T x hT hφx φc hφc L hL`. Use `set s₀ := leviEmb (Fv F v) (blockIndex hi) (blockScalar₂ (Fv F v) n i ϖ) with hs₀`. Use `set δ : ℂ := ((deltaHalf (Fv F v) (fun j : Fin (i.val + 2) => Fin (blockSizes₂ n i j)) (blockScalar₂ (Fv F v) n i ϖ) : ℂˣ) : ℂ)`. Use `set L' := L.map fun c => c * δ with hL'`. Use `set h := emb σ J v x₀ with hh`.
+
+Establish `hKinf : K ≤ infPts σ J` using `hK.prop.1`. Establish `hloc : ∀ w : V, polyAt (π s₀) L' w ∈ twKer π (unipRad (Fv F v) (blockIndex hi)) 1` using `GlobalTheory.JacRel.mem_twKer_of_polyAt_jac (blockIndex hi) π _ L hL`. Establish `compAt : ∀ g y, splitEquiv hCM hJ t y = B * g * B⁻¹ → IsCompAt σ J t B g y` using `fun g y hy => by`. Unfold `IsCompAt`. Rewrite using `[← splitEquiv_val hCM hJ t y, hy]`.
+
+Establish `exY : ∀ g, ∃ y, IsCompAt σ J t B g y` using `fun g => ⟨(splitEquiv hCM hJ t).symm (B * g * B⁻¹), compAt _ _ (by simp)⟩`. Establish `exG : ∀ y, ∃ g, IsCompAt σ J t B g y` using `fun y => ⟨B⁻¹ * splitEquiv hCM hJ t y * B, compAt _ _ (by group)⟩`. Set `Tt : (Fin m → V) → GAd σ J → ℂ` to `fun u => ∑ j, T j (u j)`. Establish `Tt_lin : ∀ (a b : ℂ) u w, Tt (a • u + b • w) = a • Tt u + b • Tt w` using `fun a b u w => by`. Simplify using `only [Tt, Pi.add_apply, Pi.smul_apply, map_add, map_smul, Finset.sum_add_distrib, Finset.smul_sum]`.
+
+Establish `Tt_tr : ∀ g y, IsCompAt σ J t B g y → ∀ u, Tt (fun j => π g (u j)) = fun z => Tt u (z * emb σ J v y)` using `fun g y hy u => by`. Use function extensionality and compare the values at `z`. Simplify using `only [Tt, Finset.sum_apply, hT _ g y hy]`. Establish `Ttx : Tt x = φ` using `hφx.symm`. Set `Aut : (GAd σ J → ℂ) → Prop` to `fun f => GlobalTheory.StdPar.IsAutOn σ J Xf Yf ∅ K f`.
+
+Establish `a0 : Aut (fun _ => 0)` using `GlobalTheory.StdPar.isAutOn_const σ J Xf Yf ∅ K 0`. Establish `aLin : ∀ f f', Aut f → Aut f' → ∀ a b : ℂ, Aut (a • f + b • f')` using `fun f f' hf hf' a b => by`. Establish `e1 : ∀ (c : ℂ) (f : GAd σ J → ℂ), c • f = fun g => (fun _ => (0 : ℂ)) g - (-c) * f g` using `fun c f => by`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+
+Establish `h1 : Aut (a • f)`. Rewrite using `[e1 a f]`. Conclude with `GlobalTheory.StdPar.AutLin.isAutOn_sub_smul F E σ n J r Xf Yf ∅ K _ f (-a) a0 hf`. Establish `e2 : a • f + b • f' = fun g => (a • f) g - (-b) * f' g` using `by funext g; simp`. Rewrite using `[e2]`.
+
+Conclude with `GlobalTheory.StdPar.AutLin.isAutOn_sub_smul F E σ n J r Xf Yf ∅ K _ f' (-b) h1 hf'`. Set `U : Submodule ℂ (Fin m → V)` to `{ carrier := {u | Aut (Tt u)} add_mem' := fun {u w} hu hw => by`. Use `aLin _ _ hu hw 1 1` as an intermediate fact. Rewrite `this` using `[← Tt_lin, one_smul, one_smul]`. Then use the resulting hypothesis. Use the proof step `zero_mem' := by`.
+
+Express the relevant statement in the definitionally equal form `Aut (Tt 0)`. Establish `: Tt 0 = fun _ => 0` using `by funext z; simp [Tt]`. Rewrite using `[this]`. Conclude with `a0`. Use the proof step `smul_mem' := fun c u hu => by`.
+
+Use `aLin _ _ hu hu c 0` as an intermediate fact. Rewrite using `[← Tt_lin, zero_smul, add_zero] at this }` and apply the resulting hypothesis. Establish `memU : ∀ u, u ∈ U ↔ Aut (Tt u)` using `fun u => Iff.rfl`. Establish `U_tr : ∀ g, ∀ u ∈ U, (fun j => π g (u j)) ∈ U` using `fun g u hu => by`. Take `⟨y, hy⟩` from `exY g`.
+
+Rewrite using `[memU, Tt_tr g y hy]`. Conclude with `GlobalTheory.CuspCompLin.isAutOn_transl hKinf hu y`. Establish `exC : ∀ f, Aut f → ∃! fc, GlobalTheory.StdPar.IsCuspComp σ J Xf Yf S K f fc` using `fun f hf => (hLL F E σ hCM n J hJ r Xf Yf hW K hK ∅ f hf).1 S (Finset.empty_subset _)`. Set `Λ : (Fin m → V) → GAd σ J → ℂ` to `fun u => if hu : Aut (Tt u) then (exC _ hu).exists.choose else 0`. Establish `Λspec : ∀ u ∈ U, GlobalTheory.StdPar.IsCuspComp σ J Xf Yf S K (Tt u) (Λ u)` using `fun u hu => by`.
+
+Establish `e0 : Λ u = (exC _ hu).exists.choose` using `dif_pos hu`. Rewrite using `[e0]`. Conclude with `(exC _ hu).exists.choose_spec`. Establish `Λuniq : ∀ u ∈ U, ∀ fc, GlobalTheory.StdPar.IsCuspComp σ J Xf Yf S K (Tt u) fc → Λ u = fc` using `fun u hu fc hfc => (exC _ hu).unique (Λspec u hu) hfc`. Establish `Λlin : ∀ u ∈ U, ∀ w ∈ U, ∀ a b : ℂ, Λ (a • u + b • w) = a • Λ u + b • Λ w` using `fun u hu w hw a b => by`.
+
+Use `Λuniq _ (U.add_mem (U.smul_mem a hu) (U.smul_mem b hw)) _ ?_` and prove the remaining obligations. Rewrite using `[Tt_lin]`. Conclude with `(GlobalTheory.T.cuspidal_component_constant_term F E σ hCM n J hJ r Xf Yf hW K hK S (Tt u) (Tt w) (Λ u) (Λ w) (GlobalTheory.StdPar.isAutOn_empty.1 hu) (GlobalTheory.StdPar.isAutOn_empty.1 hw) (Λspec u hu) (Λspec w hw)).1 a b`. Establish `Λtr : ∀ g y, IsCompAt σ J t B g y → ∀ u ∈ U, Λ (fun j => π g (u j)) = fun z => Λ u (z * emb σ J v y)` using `fun g y hy u hu => by`. Use `Λuniq _ (U_tr g u hu) _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Tt_tr g y hy]`. Conclude with `GlobalTheory.CuspCompLin.isCuspComp_transl hKinf (Λspec u hu) y`. Establish `hpoly : ∀ (M : List ℂ), ∀ u ∈ U, (fun j => polyAt (π s₀) M (u j)) ∈ U ∧ Λ (fun j => polyAt (π s₀) M (u j)) = polyAt (rightReg ℂ (GAd σ J) ℂ h) M (Λ u)`. Introduce `M`. Proceed by induction on `M with`.
+
+Consider the case `nil`. Introduce `u hu`. Establish `e : (fun j => polyAt (π s₀) [] (u j)) = u` using `by funext j; simp [polyAt_nil]`. Rewrite using `[e, polyAt_nil]`. Conclude with `⟨hu, rfl⟩`.
+
+Consider the case `cons c M ih`. Introduce `u hu`. Take `⟨h1, h2⟩` from `ih u hu`. Use `set w := fun j => polyAt (π s₀) M (u j)`. Establish `ew : (fun j => polyAt (π s₀) (c :: M) (u j)) = (1 : ℂ) • (fun j => π s₀ (w j)) + (-c) • w`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[polyAt_cons, w, sub_eq_add_neg]`. Establish `hw1 : (fun j => π s₀ (w j)) ∈ U` using `U_tr s₀ w h1`. Use `⟨ew ▸ U.add_mem (U.smul_mem _ hw1) (U.smul_mem _ h1), ?_⟩` and prove the remaining obligations. Rewrite using `[ew, Λlin _ hw1 _ h1, Λtr s₀ x₀ hx₀ w h1, h2, polyAt_cons, Module.End.mul_apply]`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, one_mul, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, Pi.sub_apply]`. Express the relevant statement in the definitionally equal form `_ = polyAt (rightReg ℂ (GAd σ J) ℂ h) M (Λ u) (z * h) - c * _`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `g`.
+
+Use `set y := proj σ J v g`. Use `set z := g * (emb σ J v y)⁻¹`. Establish `hz : proj σ J v z = 1` using `by simp [z, y]`. Establish `hg : g = z * emb σ J v y` using `by simp [z]`. Take `⟨gy, hgy⟩` from `exG y`.
+
+Establish `hxU : x ∈ U` using `by rw [memU, Ttx]; exact GlobalTheory.StdPar.isAutOn_empty.2 hφ`. Establish `hΛx : Λ x = φc` using `Λuniq x hxU φc (Ttx ▸ hφc)`. Use `set u₀ : Fin m → V := fun j => π gy (x j)`. Establish `hu₀ : u₀ ∈ U` using `U_tr gy x hxU`. Establish `hΛu₀ : Λ u₀ = fun z' => φc (z' * emb σ J v y)` using `by rw [Λtr gy y hgy x hxU, hΛx]`.
+
+Establish `hzh : z * h = h * z` using `(commute_emb σ J x₀ hz).eq.symm`. Rewrite using `[Pi.zero_apply, hg, polyAt_leftTr_mul, ← hΛu₀, polyAt_leftTr_eq σ J h L' _ z hzh, ← (hpoly L' u₀ hu₀).2]`. Use `GlobalTheory.JacRel.eq_zero_of_mem_twKer (blockIndex hi) hπ U U_tr (fun u => Λ u z) ?_ ?_ (hpoly L' u₀ hu₀).1 (fun j => hloc _)` and prove the remaining obligations. Introduce `u hu w hw a b`. Rewrite using `[Λlin u hu w hw a b]`.
+
+Simplify using the standard rewrite rules. Introduce `g' hg' u hu`. Take `⟨xn, hxn, hxnN⟩` from `hfr g' hg'`. Rewrite using `[Λtr g' xn hxn u hu]`. Express the relevant statement in the definitionally equal form `Λ u (z * emb σ J v xn) = Λ u z`.
+
+Rewrite using `[← (commute_emb σ J xn hz).eq]`. Conclude with `(Λspec u hu).1.1.leftN _ hxnN z`.
+-/
 theorem polyAt_leftTr_cuspComp_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E), IsWittFrame σ J Xf Yf → GlobalTheory.Published.LanglandsLemmaUnitary →

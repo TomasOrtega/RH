@@ -17,10 +17,26 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k n : ℕ}
 
+/- English proof (translation)
+The claim follows from `isOpen_ne_fun (Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin z z' ⟨i, by omega⟩).continuous continuous_const`.
+-/
 theorem isOpen_dminNe (z z' : Fin (2 * n + k + 1) → ℂ) (i : ℕ) (hi : i ≤ n) :
     IsOpen {g : Q.Mx k n | Dmin k n z z' g ⟨i, by omega⟩ ≠ 0} :=
   isOpen_ne_fun (Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin z z' ⟨i, by omega⟩).continuous continuous_const
 
+/- English proof (translation)
+Use `set Dm : Set (Q.Mx k n) := {g | Dmin k n z z' g ⟨i, by omega⟩ ≠ 0} with hDm`. Establish `hDo : IsOpen Dm` using `isOpen_dminNe z z' i hi`. Establish `hH : Q.SmoothLev k n 0 Dm H`. Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hE⟩` from `hL g₀ hg₀.1.1 hg₀.2`.
+
+Conclude with `⟨U, F, hU, hgU, hF, fun g hg hgl => hE g hg hgl.1⟩`. Establish `hSm : ∀ (w : List C.Letter) (ew : Wd.Ix (Fin w.length)), Q.SmoothLev k n 0 Dm (D.uwG k n z z' H i hi w ew)`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro ew`.
+
+Conclude with `hH`. Consider the case `cons l w ih`. Introduce `ew`. Conclude with `Formalism.FourierDecayAlt.P.SingleEntryHermitianProducts.smooth_vLet z z' i hi l _ hDo (ih _) (fun g hg => hg)`. Establish `hSu : ∀ (w : List C.Letter) (ew : Wd.Ix (Fin w.length)), ∀ g ∈ B.GV k n, g ∉ Cs → D.uwG k n z z' H i hi w ew g = 0`.
+
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro ew`. Conclude with `hS`. Consider the case `cons l w ih`.
+
+Introduce `ew g hg hgC`. Conclude with `Formalism.FourierDecayAlt.P.PBG.vLet_zero_near z z' i hi l _ _ hCs.isOpen_compl (fun x hx hxG => ih _ x hxG hx) g hgC hg`. Introduce `w ew`. Use `⟨fun g hg hd => ?_, hSu w ew⟩` and prove the remaining obligations. Take `⟨U, F, hU, hgU, hF, hE⟩` from `hSm w ew g ⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hg, hd⟩`.
+
+Conclude with `⟨U, F, hU, hgU, hF, fun x hx hxG => hE x hx (Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hxG)⟩`.
+-/
 theorem uwG_locSupp {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (z z' : Fin (2 * n + k + 1) → ℂ) (i : ℕ)
     (hi : i ≤ n) {H : B.Mat k n → E} {Cs : Set (B.Mat k n)} (hCs : IsClosed Cs)
     (hL : ∀ g ∈ B.GV k n, Dmin k n z z' g ⟨i, by omega⟩ ≠ 0 → CapelliWordSumExpansion.Loc ⊤ H g)

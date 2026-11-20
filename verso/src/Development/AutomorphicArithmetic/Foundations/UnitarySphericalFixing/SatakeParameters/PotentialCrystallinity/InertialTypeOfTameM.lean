@@ -9,6 +9,9 @@ noncomputable section
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.LocLanglands GlobalTheory.SplitRead GlobalTheory.CuspRep in
+/- English proof (translation)
+The claim follows from `(GlobalTheory.SphSupport.toral_and_good_of_isSpherical UpperTheory.Zero.LLC.Pr.bz k (cls (⟨π.V, π.π, π.smooth, π.irr⟩ : IrrRep (GL (Fin n) k))) (fixed_ne_bot_of_equiv (IrrRep.nonempty_equiv_rep (⟨π.V, π.π, π.smooth, π.irr⟩ : IrrRep (GL (Fin n) k))).some.symm h)).2`.
+-/
 theorem UpperTheory.One.M.goodI_of_sph {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     (π : Irr k n) (h : IsSpherical π.π) : UpperTheory.One.M.GoodI π :=
   (GlobalTheory.SphSupport.toral_and_good_of_isSpherical UpperTheory.Zero.LLC.Pr.bz k (cls (⟨π.V, π.π, π.smooth, π.irr⟩ : IrrRep (GL (Fin n) k)))
@@ -19,6 +22,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.TameType
 
+/- English proof (translation)
+Introduce `R H what₂ N A T S i w hw hTS hL hT hmu P`. Take `⟨htame, hram, hv⟩` from `hT`. Take `⟨v, hv0, hv⟩` from `hv P`. Establish `L` using `hL i w hw`. Establish `hs` using `(S i w hw).mu_ok.1`.
+
+Take `⟨π₁, π₂, h1, h2, he⟩` from `hTS w _ _ _ _ v hs htame hram hv0 hv`. Set `c : Irr (w.adicCompletion H.E) 1` to `{ V := ℂ, π := detRep (Fin 1) (S i w hw).mu, smooth := (isSmooth_ofChar_iff _).2 hs.detChar, irr := isIrreducible_ofChar _ }`. Set `τ : Irr (w.adicCompletion H.E) R.t` to `{ V := π₂.V, π := GlobalTheory.SmGL.twist π₂.π (detChar (Fin R.t) (S i w hw).mu), smooth := isSmooth_twist π₂.smooth hs.detChar, irr := irreducible_twist π₂.irr _ }`. Establish `hc : Nonempty (c.π.Equiv (detRep (Fin 1) (S i w hw).mu))` using `⟨Representation.Equiv.refl _⟩`. Establish `e1` using `L.prod _ _ π₁ τ _ he`.
+
+Establish `e2` using `UpperTheory.One.M.Old.rlTwist L _ _ c π₂ τ (UpperTheory.One.M.goodI_of_sph π₂ h2) hc ⟨Representation.Equiv.refl _⟩`. Establish `u1` using `(L.sph _ π₁).2 h1`. Establish `u2` using `(L.sph _ π₂).2 h2`. Establish `eV` using `(S i w hw).locV P`. Establish `eM` using `(S i w hw).locMu c hc`.
+
+Rewrite `eV` using `[e1, e2]`. Use `⟨?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[T.mono0, eV, WeilDeligne.WD.monomial_sum_iff, WeilDeligne.WD.monomial_char_iff _ _ (L.dim 1 c)]`. Conclude with `⟨weilDeligneParameter_monodromy_zero_of_unramified u1, weilDeligneParameter_monodromy_zero_of_unramified u2⟩`. Establish `hz` using `hmu σ hσ`.
+
+Rewrite `hz` using `[T.inePol _ _ _ hσ, eM]`. Rewrite using `[T.inePol _ _ _ hσ, eV, WeilDeligne.WD.inePol_sum, inePol_of_unr u1 hσ, inePol_char_of_unr u2 (L.dim 1 c) hσ hz, L.dim, L.dim]`.
+-/
 theorem inertialType_of_tame_m : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N) (T : WDTie N A) (S : Reading T) (i : N.Loc) (w : PlE H) (hw : IsSplitPl H w), TameSplitAll H.E → Laws S → TypeTame S i w hw → (∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol (A.locG (A.muC i) w) σ = X - C (iotaO N A i (chi1 N i σ))) → ∀ P : A.AV i, A.mono0 (A.locV i P w) ∧ ∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol (A.locV i P w) σ = (X - 1) ^ R.r * (X - C (iotaO N A i (chi1 N i σ))) ^ R.t := by
   intro R H what₂ N A T S i w hw hTS hL hT hmu P
   obtain ⟨htame, hram, hv⟩ := hT
@@ -48,6 +62,9 @@ theorem inertialType_of_tame_m : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Da
     rw [T.inePol _ _ _ hσ, eV, WeilDeligne.WD.inePol_sum, inePol_of_unr u1 hσ,
       inePol_char_of_unr u2 (L.dim 1 c) hσ hz, L.dim, L.dim]
 
+/- English proof (translation)
+The claim follows from `@inertialType_of_tame_m`.
+-/
 example : type_of% @inertialType_of_tame := @inertialType_of_tame_m
 
 end GlobalTheory.TameType
@@ -60,6 +77,13 @@ namespace GlobalTheory.DepthZeroAssembly
 open GlobalTheory.WeilDeligne (WD)
 open GlobalTheory.SplitRead.BlockParam (twistIrr)
 
+/- English proof (translation)
+Introduce `hL D hS hR k v χ hχ u π ρ f ht hlab hser hsq hnr hx`. Take `⟨π₁, π₂, hsph, e, y, hy1, hy2⟩` from `hS k v χ hχ u π ρ f ht hlab hser hnr hx`. Take `⟨hm1, hl1⟩` from `hR k v π₁ ρ f hser hsq ⟨y, hy1, hy2⟩`. Establish `L : RecLaws (rcAt hL D (D.naut.plGw k v))` using `(GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 (D.naut.plGw k v))).recLaws`. Establish `e' : Nonempty (π.π.Equiv (GlobalTheory.SmGL.prod₂ π₁.π (twistIrr π₂ χ hχ).π))` using `e`.
+
+Establish `e1` using `L.prod D.R.r D.R.t π₁ (twistIrr π₂ χ hχ) π e'`. Establish `e2` using `UpperTheory.One.M.Old.rlTwist L D.R.t χ (Irr.ofDet 1 χ hχ) π₂ (twistIrr π₂ χ hχ) (UpperTheory.One.M.goodI_of_sph π₂ hsph) ⟨.refl _⟩ ⟨.refl _⟩`. Establish `hu` using `(L.sph _ π₂).2 hsph`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, WD.monomial_sum_iff, e2, WD.monomial_char_iff _ _ (L.dim _ _)]`.
+
+Conclude with `⟨hm1, WD.unr_mono0 _ hu⟩`. Unfold `labAt at hl1 hlab ⊢`. Rewrite using `[e1, WD.lab_lpSum, e2, lab_lpChar_of_unr _ _ _ _ hu (L.dim _ _) u hlab, hl1, L.dim]`.
+-/
 theorem locDZ_of_split_reg_m : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7), SplitLoc hL D → RegLoc hL D → LocDZ hL D := by
   intro hL D hS hR k v χ hχ u π ρ f ht hlab hser hsq hnr hx
   obtain ⟨π₁, π₂, hsph, e, y, hy1, hy2⟩ := hS k v χ hχ u π ρ f ht hlab hser hnr hx
@@ -76,6 +100,9 @@ theorem locDZ_of_split_reg_m : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL
   · unfold labAt at hl1 hlab ⊢
     rw [e1, WD.lab_lpSum, e2, lab_lpChar_of_unr _ _ _ _ hu (L.dim _ _) u hlab, hl1, L.dim]
 
+/- English proof (translation)
+The claim follows from `@locDZ_of_split_reg_m`.
+-/
 example : type_of% @locDZ_of_split_reg := @locDZ_of_split_reg_m
 
 end GlobalTheory.DepthZeroAssembly

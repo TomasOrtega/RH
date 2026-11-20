@@ -7,6 +7,13 @@ open scoped Real ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `g M M' hM hM' hle D hD`. Take `⟨_, _⟩` from `hM`. Take `⟨_, _⟩` from `hM'`. Establish `h0` using `ZLattice.covolume_pos M (volume : Measure (Fl g))`. Establish `h0'` using `ZLattice.covolume_pos M' (volume : Measure (Fl g))`.
+
+Use `⟨ZLattice.covolume M volume / ZLattice.covolume M' volume, (div_pos h0 h0').ne', ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ ψ hψ hper D' hD'`. Establish `hperM : ∀ l ∈ M, ∀ x, ψ (x + l) = ψ x` using `fun l hl x => hper l (hle hl) x`. Establish `e1` using `latticeMean_eq M volume hD hperM`. Establish `e2` using `latticeMean_eq M' volume hD' hper`.
+
+Establish `e3` using `latticeMean_eq_of_periodic M M' hψ hperM hper`. Rewrite `e3` using `[e1, e2]`. Use `congrArg (fun v : V => ZLattice.covolume M volume • v) e3` as an intermediate fact. Simplify using `only [smul_smul, mul_inv_cancel₀ h0.ne', one_smul] at this`. Rewrite using `[this, div_eq_mul_inv]`.
+-/
 theorem setIntegral_fundamentalDomain_sublattice :
     ∀ {g : ℕ} (M M' : Submodule ℤ (Fl g)), IsLat M → IsLat M' → M ≤ M' → ∀ (D : Set (Fl g)), IsAddFundamentalDomain M D volume → ∃ c : ℝ, c ≠ 0 ∧ ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V] (ψ : Fl g → V), Continuous ψ → (∀ l ∈ M', ∀ x, ψ (x + l) = ψ x) → ∀ D' : Set (Fl g), IsAddFundamentalDomain M' D' volume → ∫ x in D, ψ x = c • ∫ x in D', ψ x := by
   intro g M M' hM hM' hle D hD

@@ -25,6 +25,15 @@ private def latt {O K ι : Type} [CommRing O] [Field K] (τ : ι → (O →+* K)
     funext p
     simp [pt]
 
+/- English proof (translation)
+Introduce `hS hT hO O K ι _ _ _ _ τ hτ N hN k a Q hQ`. Establish `hspan : Submodule.span K ((latt τ N k : AddSubgroup (ι × Fin k → K)) : Set (ι × Fin k → K)) = ⊤` using `hT O K ι τ hτ N hN k`. Establish `hd` using `hS K (ι × Fin k) (latt τ N k) (pt τ a) hspan`. Establish `hd2` using `hO K (ι × Fin k) _ hd Q hQ`. Introduce `P hP`.
+
+Apply `hd2` to reduce the goal to its premises. Introduce and unpack `x ⟨hx, hxQ⟩`. Take `⟨β, hβ⟩ : ∃ β : Fin k → O, x - pt τ a = pt τ (fun s => N * β s)` from `hx`. Establish `hxe : x = pt τ (fun s => a s + N * β s)`. Rewrite using `[sub_eq_iff_eq_add.mp hβ]`.
+
+Use function extensionality and compare the values at `p`. Simplify using `[pt, add_comm]`. Use `hP x ⟨fun s => a s + N * β s, fun s => ?_, ?_, hxe⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[← hxe]`.
+
+Conclude with `hxQ`.
+-/
 theorem denseCoset_of : DenseSub → SpanTop → DenseOff → DenseCoset := by
   intro hS hT hO O K ι _ _ _ _ τ hτ N hN k a Q hQ
   have hspan : Submodule.span K ((latt τ N k : AddSubgroup (ι × Fin k → K)) : Set (ι × Fin k → K)) = ⊤ :=

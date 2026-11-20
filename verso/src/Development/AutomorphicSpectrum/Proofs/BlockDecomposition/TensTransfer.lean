@@ -17,6 +17,17 @@ universe w w' w₁ w₂ w₃ w₄ w₅ t₁ t₂ t₃ t₄ t₅
 
 section Alg
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h1 : u₃ x = 0` using `b₄.1 (by rw [c₃, hx, map_zero, map_zero])`. Take `⟨y, rfl⟩` from `(eA₃ x).1 h1`.
+
+Establish `h2 : v₂ (g₂ y) = 0` using `by rw [← c₂, hx]`. Take `⟨z, hz⟩` from `(eL₂ _).1 h2`. Take `⟨t, rfl⟩` from `s₁ z`. Establish `h3 : u₁ t = y` using `b₂.1 (by rw [c₁, hz])`. Conclude with `(eA₂ _).2 ⟨t, h3⟩`.
+
+Introduce `t`. Take `⟨p, hp⟩` from `b₄.2 (v₃ t)`. Establish `h1 : u₄ p = 0` using `i₅ (by`. Rewrite using `[c₄, hp, map_zero]`. Conclude with `(eL₄ _).2 ⟨t, rfl⟩)`.
+
+Take `⟨q, rfl⟩` from `(eA₄ p).1 h1`. Establish `h2 : v₃ (t - g₃ q) = 0` using `by rw [map_sub, ← c₃, hp, sub_self]`. Take `⟨y', hy'⟩` from `(eL₃ _).1 h2`. Take `⟨y, rfl⟩` from `b₂.2 y'`. Use `⟨q + u₂ y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, c₂, hy']`. Normalize the expressions using the abelian group laws.
+-/
 theorem five_add {A₁ : Type w₁} {A₂ : Type w₂} {A₃ : Type w₃} {A₄ : Type w₄} {A₅ : Type w₅}
     {L₁ : Type t₁} {L₂ : Type t₂} {L₃ : Type t₃} {L₄ : Type t₄} {L₅ : Type t₅}
     [AddCommGroup A₁] [AddCommGroup A₂] [AddCommGroup A₃] [AddCommGroup A₄] [AddCommGroup A₅]
@@ -56,6 +67,9 @@ theorem five_add {A₁ : Type w₁} {A₂ : Type w₂} {A₃ : Type w₃} {A₄ 
 variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι] {N : ι → Type}
   [∀ i, AddCommGroup (N i)] [∀ i, Module R (N i)]
 
+/- English proof (translation)
+Use `AddMonoidHom.functions_ext _ g h fun i t => ?_` and prove the remaining obligations. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul n x => exact H i n x`. Consider the case `add x y hx hy => rw [Pi.single_add, map_add, map_add, hx, hy]`.
+-/
 theorem tens_ext {M : ι → Type w} [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)] {P : Type w'} [AddCommGroup P]
     (g h : (∀ i, N i ⊗[R] M i) →+ P) (H : ∀ i n x, g (Pi.single i (n ⊗ₜ x)) = h (Pi.single i (n ⊗ₜ x))) : g = h := by
   refine AddMonoidHom.functions_ext _ g h fun i t => ?_
@@ -71,6 +85,9 @@ def piT {M : ι → Type w} {M' : ι → Type w'} [∀ i, AddCommGroup (M i)] [�
   map_zero' := by funext i; simp
   map_add' x y := by funext i; simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `[piT]`. Simplify using `[piT, Pi.single_eq_of_ne h]`.
+-/
 theorem piT_single {M : ι → Type w} {M' : ι → Type w'} [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)]
     [∀ i, AddCommGroup (M' i)] [∀ i, Module R (M' i)] (u : ∀ i, M i →ₗ[R] M' i) (i : ι) (n : N i) (x : M i) :
     piT (N := N) u (Pi.single i (n ⊗ₜ x)) = Pi.single i (n ⊗ₜ u i x) := by
@@ -80,6 +97,11 @@ theorem piT_single {M : ι → Type w} {M' : ι → Type w'} [∀ i, AddCommGrou
     simp [piT]
   · simp [piT, Pi.single_eq_of_ne h]
 
+/- English proof (translation)
+Introduce `t`. Prove the components needed by the constructor for the conclusion. Introduce `ht`. Establish `h1 : ∀ i, ∃ s, (u i).lTensor (N i) s = t i` using `fun i => (Module.Flat.lTensor_exact (N i) (h i) (t i)).1 (congrFun ht i)`. Use `choose s hs using h1`.
+
+Conclude with `⟨s, funext hs⟩`. Introduce and unpack `⟨s, rfl⟩`. Use function extensionality and compare the values at `i`. Conclude with `(Module.Flat.lTensor_exact (N i) (h i) _).2 ⟨s i, rfl⟩`.
+-/
 theorem piT_exact [∀ i, Module.Flat R (N i)] {M₁ : ι → Type w₁} {M₂ : ι → Type w₂} {M₃ : ι → Type w₃}
     [∀ i, AddCommGroup (M₁ i)] [∀ i, Module R (M₁ i)] [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)]
     [∀ i, AddCommGroup (M₃ i)] [∀ i, Module R (M₃ i)] (u : ∀ i, M₁ i →ₗ[R] M₂ i) (v : ∀ i, M₂ i →ₗ[R] M₃ i)
@@ -95,6 +117,11 @@ theorem piT_exact [∀ i, Module.Flat R (N i)] {M₁ : ι → Type w₁} {M₂ :
     funext i
     exact (Module.Flat.lTensor_exact (N i) (h i) _).2 ⟨s i, rfl⟩
 
+/- English proof (translation)
+Establish `h0 : ∀ i, Subsingleton (N i ⊗[R] M i)` using `fun i => by`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `: ∀ z : N i ⊗[R] M i, z = 0` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+
+Consider the case `tmul n x => rw [Subsingleton.elim x 0, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`. Rewrite using `[this x, this y]`. Use `⟨⟨⟨fun _ => 0, fun _ => 0, fun _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩, fun _ _ => by simp⟩, fun i n x => Subsingleton.elim _ _⟩` and prove the remaining obligations.
+-/
 theorem tens_zero {M : ι → Type w} [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)] {M' : Type w'} [AddCommGroup M']
     (hM : ∀ i, Subsingleton (M i)) (hM' : Subsingleton M') (f : ∀ i, N i → M i → M') :
     Tens R (N := N) (M := M) (M' := M') f := by
@@ -109,6 +136,15 @@ theorem tens_zero {M : ι → Type w} [∀ i, AddCommGroup (M i)] [∀ i, Module
   refine ⟨⟨⟨fun _ => 0, fun _ => 0, fun _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩, fun _ _ => by simp⟩,
     fun i n x => Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `hf`. Set `e : (∀ i, N i ⊗[R] L i) ≃+ (∀ i, N i ⊗[R] M i)` to `{ toFun := piT (N := N) fun i => ((u i).symm : L i →ₗ[R] M i) invFun := piT (N := N) fun i => ((u i) : M i →ₗ[R] L i) left_inv := fun t => by`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(((u i) : M i →ₗ[R] L i).lTensor (N i)) ((((u i).symm : L i →ₗ[R] M i).lTensor (N i)) (t i)) = t i`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp]`.
+
+Simplify using the standard rewrite rules. Use `right_inv := fun t => by`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(((u i).symm : L i →ₗ[R] M i).lTensor (N i)) ((((u i) : M i →ₗ[R] L i).lTensor (N i)) (t i)) = t i`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp]`.
+
+Simplify using the standard rewrite rules. Use the proof step `map_add' := map_add _ }`. Use `⟨(e.trans g).trans u', fun i n x => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(u i).surjective x`. Establish `: e (Pi.single i (n ⊗ₜ u i y)) = Pi.single i (n ⊗ₜ y)`.
+
+Express the relevant statement in the definitionally equal form `piT (N := N) (fun i => ((u i).symm : L i →ₗ[R] M i)) _ = _`. Rewrite using `[piT_single]`. Simplify using the standard rewrite rules. Simplify using `only [AddEquiv.trans_apply, this, hg, hc]`.
+-/
 theorem tens_transfer {M : ι → Type w₁} {L : ι → Type w₂} [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)]
     [∀ i, AddCommGroup (L i)] [∀ i, Module R (L i)] {M' : Type t₁} {L' : Type t₂} [AddCommGroup M'] [AddCommGroup L']
     (u : ∀ i, M i ≃ₗ[R] L i) (u' : M' ≃+ L') (f : ∀ i, N i → M i → M') (h : ∀ i, N i → L i → L')
@@ -137,6 +173,15 @@ theorem tens_transfer {M : ι → Type w₁} {L : ι → Type w₂} [∀ i, AddC
     simp
   simp only [AddEquiv.trans_apply, this, hg, hc]
 
+/- English proof (translation)
+Take `⟨g₁, hg₁⟩` from `h₁`. Take `⟨g₂, hg₂⟩` from `h₂`. Take `⟨g₄, hg₄⟩` from `h₄`. Take `⟨g₅, hg₅⟩` from `h₅`. Use `choose F hF using hadd`.
+
+Set `g₃ : (∀ i, N i ⊗[R] M₃ i) →+ L₃` to `∑ i, (F i).comp (Pi.evalAddMonoidHom _ i)`. Establish `hg₃ : ∀ i n x, g₃ (Pi.single i (n ⊗ₜ x)) = f₃ i n x`. Introduce `i n x`. Simplify using `only [g₃, AddMonoidHom.finset_sum_apply, AddMonoidHom.comp_apply, Pi.evalAddMonoidHom_apply]`. Rewrite using `[Finset.sum_eq_single i]`.
+
+Simplify using `[hF]`. Introduce `k _ hk`. Simplify using `[Pi.single_eq_of_ne hk]`. Simplify using the standard rewrite rules. Establish `b` using `five_add (piT (N := N) u₁) (piT (N := N) u₂) (piT (N := N) u₃) (piT (N := N) u₄) v₁ v₂ v₃ v₄ g₁.toAddMonoidHom g₂.toAddMonoidHom g₃ g₄.toAddMonoidHom g₅.toAddMonoidHom (fun x => DFunLike.congr_fun (tens_ext (g₂.toAddMonoidHom.comp (piT (N := N) u₁)) (v₁.comp g₁.toAddMonoidHom) fu …`.
+
+Conclude with `⟨AddEquiv.ofBijective g₃ b, hg₃⟩`.
+-/
 theorem tens_five [∀ i, Module.Flat R (N i)]
     {M₁ : ι → Type w₁} {M₂ : ι → Type w₂} {M₃ : ι → Type w₃} {M₄ : ι → Type w₄} {M₅ : ι → Type w₅}
     [∀ i, AddCommGroup (M₁ i)] [∀ i, Module R (M₁ i)] [∀ i, AddCommGroup (M₂ i)] [∀ i, Module R (M₂ i)]

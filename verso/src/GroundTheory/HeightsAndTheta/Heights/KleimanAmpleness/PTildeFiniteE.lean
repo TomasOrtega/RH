@@ -20,21 +20,33 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
 def chartVal {n : ℕ} (y : Cech.Cochain (locSys S N M.coneSubE) n) (I : Cech.Idx (support x) n) : E :=
   coeffE S x E c (locConeE M I.1.1 I.1.2.2 (y ⟨⟨I.1.1, I.1.2.1, Finset.subset_univ _⟩, I.2⟩))
 
+/- English proof (translation)
+Unfold `chartVal`. Rewrite using `[Pi.zero_apply, map_zero, map_zero]`.
+-/
 theorem chartVal_zero {n : ℕ} (I : Cech.Idx (support x) n) :
     chartVal M c (0 : Cech.Cochain (locSys S N M.coneSubE) n) I = 0 := by
   unfold chartVal
   rw [Pi.zero_apply, map_zero, map_zero]
 
+/- English proof (translation)
+Unfold `chartVal`. Rewrite using `[Pi.add_apply, map_add, map_add]`.
+-/
 theorem chartVal_add {n : ℕ} (y y' : Cech.Cochain (locSys S N M.coneSubE) n) (I : Cech.Idx (support x) n) :
     chartVal M c (y + y') I = chartVal M c y I + chartVal M c y' I := by
   unfold chartVal
   rw [Pi.add_apply, map_add, map_add]
 
+/- English proof (translation)
+Unfold `chartVal`. Rewrite using `[Pi.smul_apply, LinearMap.map_smul_of_tower, map_smul]`.
+-/
 theorem chartVal_smul {n : ℕ} (a : S) (y : Cech.Cochain (locSys S N M.coneSubE) n)
     (I : Cech.Idx (support x) n) : chartVal M c (a • y) I = a • chartVal M c y I := by
   unfold chartVal
   rw [Pi.smul_apply, LinearMap.map_smul_of_tower, map_smul]
 
+/- English proof (translation)
+Take `⟨v, hv, hyv⟩` from `locConeE_degLoc M c _ I.1.2.2 (hy ⟨⟨I.1.1, I.1.2.1, Finset.subset_univ _⟩, I.2⟩ (Set.mem_univ _))`. Unfold `chartVal`. Rewrite using `[hyv, coeffE_singleE_same]`. Conclude with `hv`.
+-/
 theorem chartVal_mem {n : ℕ} {y : Cech.Cochain (locSys S N M.coneSubE) n}
     (hy : y ∈ Cech.Cdeg (locSys S N M.coneSubE) (degLoc M.coneGradedE c) n) (I : Cech.Idx (support x) n) :
     chartVal M c y I ∈ (M.tildeSys c).sub I.1 := by
@@ -44,6 +56,9 @@ theorem chartVal_mem {n : ℕ} {y : Cech.Cochain (locSys S N M.coneSubE) n}
   rw [hyv, coeffE_singleE_same]
   exact hv
 
+/- English proof (translation)
+Use `(congrArg (coeffE S x E c) (locConeE_d M y ⟨⟨J.1.1, J.1.2.1, Finset.subset_univ _⟩, J.2⟩ J.1.2.2)).trans ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Both sides reduce to the same expression.
+-/
 theorem chartVal_d {n : ℕ} (y : Cech.Cochain (locSys S N M.coneSubE) n) (J : Cech.Idx (support x) (n + 1)) :
     chartVal M c (Cech.d (locSys S N M.coneSubE) locResS n y) J =
       ∑ j : J.1.1, Cech.sgn J.1.1 j • chartVal M c y (Cech.face J j) := by
@@ -59,6 +74,9 @@ def toTildeC {n : ℕ} (y : Cech.Cochain (locSys S N M.coneSubE) n)
     Cech.Cochain (fun I : Chart x => ↥((M.tildeSys c).sub I)) n :=
   fun I => ⟨chartVal M c y I, chartVal_mem M c hy I⟩
 
+/- English proof (translation)
+Rewrite using `[coe_d_sub, chartVal_d]`. Both sides reduce to the same expression.
+-/
 theorem coe_d_toTildeC {n : ℕ} (y : Cech.Cochain (locSys S N M.coneSubE) n)
     (hy : y ∈ Cech.Cdeg (locSys S N M.coneSubE) (degLoc M.coneGradedE c) n) (J : Cech.Idx (support x) (n + 1)) :
     ((Cech.d (fun I : Chart x => ↥((M.tildeSys c).sub I)) (M.tildeSys c).res n (toTildeC M c y hy) J : _) : E) =
@@ -102,6 +120,17 @@ def toTildeH (n : ℕ) : cohom M.coneGradedE n c →ₗ[S] (M.tildeSys c).H n :=
       change _ = chartVal M c (y : Cech.Cochain (locSys S N M.coneSubE) (k + 1)) J
       rw [← hzy])
 
+/- English proof (translation)
+Use function extensionality and compare the values at `K`. Express the relevant statement in the definitionally equal form `_ = 0`. Distinguish the cases in `hK : K.1.1 ⊆ support x`. Apply `locConeE_injective M K.1.1 hK` to reduce the goal to its premises. Rewrite using `[locConeE_d M (liftCochain M c t) K hK, map_zero]`.
+
+Establish `h0` using `coe_d_sub (M.tildeSys c) t ⟨⟨K.1.1, K.1.2.1, hK⟩, K.2⟩`. Rewrite `h0` using `[ht]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[liftCochain_of M c t _ ((Cech.face_subset K j).trans hK)]`.
+
+Use `congr 1`. Conclude with `locConeE_liftTilde M c _ _ _`. Use `_ = singleE S x E c (∑ j : K.1.1, Cech.sgn K.1.1 j • (t (Cech.face (⟨⟨K.1.1, K.1.2.1, hK⟩, K.2⟩ : Cech.Idx (support x) (n + 1)) j) : E)) := by`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul]`. Use `_ = 0 := by`. Rewrite using `[← h0]`. Conclude with `map_zero _`. Use `locModE_subsingleton (S := S) M (Finset.not_subset.mp hK).choose_spec.1 (by simpa [mem_support] using (Finset.not_subset.mp hK).choose_spec.2)` as an intermediate fact.
+
+Conclude with `Subsingleton.elim _ _`.
+-/
 theorem d_liftCochain_any {n : ℕ} (t : Cech.Cochain (fun I : Chart x => ↥((M.tildeSys c).sub I)) n)
     (ht : Cech.d (fun I : Chart x => ↥((M.tildeSys c).sub I)) (M.tildeSys c).res n t = 0) :
     Cech.d (locSys S N M.coneSubE) locResS n (liftCochain M c t) = 0 := by
@@ -132,6 +161,9 @@ theorem d_liftCochain_any {n : ℕ} (t : Cech.Cochain (fun I : Chart x => ↥((M
       (by simpa [mem_support] using (Finset.not_subset.mp hK).choose_spec.2)
     exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Establish `e1` using `liftCochain_of M c t ⟨⟨I.1.1, I.1.2.1, Finset.subset_univ _⟩, I.2⟩ I.1.2.2`. Establish `e2` using `locConeE_liftTilde M c ⟨I.1.1, I.1.2.1, Finset.subset_univ _⟩ I.1.2.2 (t I)`. Unfold `chartVal`. Rewrite using `[e1]`. Conclude with `(congrArg (coeffE S x E c) e2).trans (coeffE_singleE_same _ _)`.
+-/
 theorem chartVal_liftCochain {n : ℕ} (t : Cech.Cochain (fun I : Chart x => ↥((M.tildeSys c).sub I)) n)
     (I : Cech.Idx (support x) n) : chartVal M c (liftCochain M c t) I = (t I : E) := by
   have e1 := liftCochain_of M c t ⟨⟨I.1.1, I.1.2.1, Finset.subset_univ _⟩, I.2⟩ I.1.2.2
@@ -140,6 +172,11 @@ theorem chartVal_liftCochain {n : ℕ} (t : Cech.Cochain (fun I : Chart x => ↥
   rw [e1]
   exact (congrArg (coeffE S x E c) e2).trans (coeffE_singleE_same _ _)
 
+/- English proof (translation)
+Introduce `q`. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Use `⟨Submodule.Quotient.mk ⟨liftCochain M c t.1, d_liftCochain_any M c t.1 (LinearMap.mem_ker.mp t.2), liftCochain_mem M c t.1⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (toTildeCocy M c n _) = Submodule.Quotient.mk t`. Use `congr 1`.
+
+Conclude with `Subtype.ext (funext fun I => Subtype.ext (chartVal_liftCochain M c t.1 I))`.
+-/
 theorem toTildeH_surjective (n : ℕ) : Function.Surjective (toTildeH M c n) := by
   intro q
   obtain ⟨t, rfl⟩ := Submodule.Quotient.mk_surjective _ q
@@ -151,6 +188,9 @@ theorem toTildeH_surjective (n : ℕ) : Function.Surjective (toTildeH M c n) := 
 
 end ReadOnCharts
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x E _ _ _ _ M i c`. Establish `: Module.Finite S (cohom M.coneGradedE i c)` using `h S N M.coneSubE M.coneGradedE M.coneSubE_finite i c`. Conclude with `Module.Finite.of_surjective (toTildeH M c i) (toTildeH_surjective M c i)`.
+-/
 theorem TildeFiniteE.proof (h : SerreFinite.Statement.{u, v}) : TildeFiniteE.Statement.{u, v, w} := by
   intro S _ _ Ω _ _ N x E _ _ _ _ M i c
   have : Module.Finite S (cohom M.coneGradedE i c) :=

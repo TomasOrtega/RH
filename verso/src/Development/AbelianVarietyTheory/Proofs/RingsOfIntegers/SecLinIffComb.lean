@@ -31,6 +31,11 @@ section Generic
 
 variable {X Y Y₁ Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Simplify using `only [sval_of (s _) (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`. Establish `hm : r z ∈ LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ k) (fun k => J (r ≫ h ≫ φ k))` using `⟨hJ.mem φ₁ _, hJ.mem (fun k => h ≫ φ k) _⟩`. Establish `e` using `H (fun k => J (r ≫ φ₁ k)) (fun k => J (r ≫ h ≫ φ k)) (by`. Apply the tactic sequence `rintro (a | a) (b | b) e <;> exact congrArg (fun q => J (r ≫ q)) e)`. Establish `a₂ : LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ k) (fun k => J (r ≫ h ≫ φ k)) ≤ h ⁻¹ᵁ LB.wchart L φ (fun k => J (r ≫ h ≫ φ k))` using `inf_le_right.trans (fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k)`.
+
+Use `(gs_res _ z _ hm _).symm.trans ((congrArg (gs r z _) e).trans ?_)` and prove the remaining obligations. Use `((gs_eq _ z _ hm _).trans (by rw [map_sum, map_sum])).trans (Finset.sum_congr rfl fun i _ => (gs_eq _ z _ hm _).symm.trans ((gs_mul _ z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res _ z _ hm _) ((gs_res _ z a₂ hm _).trans (gs_pull _ h z _ (a₂ hm) _)))))` and prove the remaining obligations.
+-/
 theorem secLin_val {φ₁ : K' → (Y₁ ⟶ X)} {ε₁ : K' → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)} {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {n : ℕ} {s : Fin n → LB.Sec (LB.LinComb L φ ε)} {h : Y₁ ⟶ Y} {c : Fin n → Γ(Y₁, ⊤)}
     (H : GeneratorPullback.SecLin L φ₁ ε₁ s₁ φ ε s h c) (r : Z ⟶ Y₁) (z : Z) {J} (hJ : Good L z J) :
@@ -49,6 +54,11 @@ theorem secLin_val {φ₁ : K' → (Y₁ ⟶ X)} {ε₁ : K' → ℤ} {s₁ : LB
     (gs_eq _ z _ hm _).symm.trans ((gs_mul _ z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res _ z _ hm _)
       ((gs_res _ z a₂ hm _).trans (gs_pull _ h z _ (a₂ hm) _)))))
 
+/- English proof (translation)
+Rewrite using `[sval_of s (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`. Establish `hm : r z ∈ LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ k) (fun k => J (r ≫ h ≫ φ k))` using `⟨hJ.mem φ₁ _, hJ.mem (fun k => h ≫ φ k) _⟩`. Establish `e` using `H (fun k => J (r ≫ φ₁ k)) (fun k => J (r ≫ h ≫ φ k)) (by`. Apply the tactic sequence `rintro (a | a) (b | b) e <;> exact congrArg (fun q => J (r ≫ q)) e)`. Establish `a₂ : LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ k) (fun k => J (r ≫ h ≫ φ k)) ≤ h ⁻¹ᵁ LB.wchart L φ (fun k => J (r ≫ h ≫ φ k))` using `inf_le_right.trans (fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k)`.
+
+Conclude with `((gs_res _ z a₂ hm _).trans (gs_pull _ h z _ (a₂ hm) _)).symm.trans ((congrArg (gs r z _) e).trans ((gs_mul _ z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res _ z _ hm _) (gs_res _ z _ hm _))))`.
+-/
 theorem secScal_val {φ₁ : K' → (Y₁ ⟶ X)} {ε₁ : K' → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)} {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {s : LB.Sec (LB.LinComb L φ ε)} {h : Y₁ ⟶ Y} {c : Γ(Y₁, ⊤)}
     (H : GeneratorPullback.SecScal L φ₁ ε₁ s₁ φ ε s h c) (r : Z ⟶ Y₁) (z : Z) {J} (hJ : Good L z J) :
@@ -65,11 +75,17 @@ theorem secScal_val {φ₁ : K' → (Y₁ ⟶ X)} {ε₁ : K' → ℤ} {s₁ : L
   exact ((gs_res _ z a₂ hm _).trans (gs_pull _ h z _ (a₂ hm) _)).symm.trans ((congrArg (gs r z _) e).trans
     ((gs_mul _ z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res _ z _ hm _) (gs_res _ z _ hm _))))
 
+/- English proof (translation)
+The claim follows from `(gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) c))`.
+-/
 theorem sval_secScale {φ : K → (Y ⟶ X)} {ε : K → ℤ} (c : Γ(Y, ⊤)) (s : LB.Sec (LB.LinComb L φ ε))
     (r : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
     sval (SecOps.secScale c s) r z J = gs r z ⊤ c * sval s r z J :=
   (gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) c))
 
+/- English proof (translation)
+Rewrite using `[constVal, map_mul, gs_mul q z ⊤ trivial]`. Both sides reduce to the same expression.
+-/
 theorem constVal_mul {R : Type} [CommRing R] (q : Z ⟶ Spec (CommRingCat.of R)) (z : Z) (a b : R) :
     constVal q z (a * b) = constVal q z a * constVal q z b := by
   rw [constVal, map_mul, gs_mul q z ⊤ trivial]; rfl
@@ -83,6 +99,9 @@ variable {V : Type} [CommRing V] [IsDomain V]
 abbrev toF (V : Type) [CommRing V] [IsDomain V] (F : Type) [Field F] [Algebra (FractionRing V) F] : V →+* F :=
   (algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))
 
+/- English proof (translation)
+Introduce `h`. Apply `hr` to reduce the goal to its premises. Apply `IsFractionRing.injective V (FractionRing V)` to reduce the goal to its premises. Apply `(algebraMap (FractionRing V) F).injective` to reduce the goal to its premises. Simplify using `using h`.
+-/
 theorem toF_ne_zero (F : Type) [Field F] [Algebra (FractionRing V) F] {r : V} (hr : r ≠ 0) : toF V F r ≠ 0 := by
   intro h
   apply hr
@@ -90,6 +109,9 @@ theorem toF_ne_zero (F : Type) [Field F] [Algebra (FractionRing V) F] {r : V} (h
   apply (algebraMap (FractionRing V) F).injective
   simpa using h
 
+/- English proof (translation)
+Use `show Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) F)) ≫ Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V))) = _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem hom_TF (F : Type) [Field F] [Algebra (FractionRing V) F] :
     jFK (R := V) F ≫ jK V = Spec.map (CommRingCat.ofHom (toF V F)) := by
   show Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) F)) ≫
@@ -98,6 +120,9 @@ theorem hom_TF (F : Type) [Field F] [Algebra (FractionRing V) F] :
 
 variable (D : DegPre V) (F : Type) [Field F] [Algebra (FractionRing V) F]
 
+/- English proof (translation)
+Rewrite using `[← hom_TF]`. Conclude with `(Over.w (fst (TF (R := V) F) D.P.A)).symm`.
+-/
 theorem hom_BF : (DegPre.BF D F).hom =
     (fst (TF (R := V) F) D.P.A).left ≫ Spec.map (CommRingCat.ofHom (toF V F)) := by
   rw [← hom_TF]
@@ -109,12 +134,18 @@ abbrev IsBC {k : ℕ} (θ : Fam D F k) (g : ∀ α : D.X, D.SecB k α) : Prop :=
 
 variable {D F} {k : ℕ}
 
+/- English proof (translation)
+The claim follows from `(sval_secScale (gF D F ζ) (θ.s α) r z hJ).trans (congrArg (· * _) (gs_scal (fst (TF (R := V) F) D.P.A).left r z ζ))`.
+-/
 theorem sval_smul (ζ : F) (θ : Fam D F k) (α : D.X) {Z : Scheme.{0}} (r : Z ⟶ (DegPre.BF D F).left) (z : Z) {J}
     (hJ : Good D.P.L z J) :
     sval ((ζ • θ).s α) r z J = constVal (r ≫ (fst (TF (R := V) F) D.P.A).left) z ζ * sval (θ.s α) r z J :=
   (sval_secScale (gF D F ζ) (θ.s α) r z hJ).trans
     (congrArg (· * _) (gs_scal (fst (TF (R := V) F) D.P.A).left r z ζ))
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, zero_f]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_f, ih]`.
+-/
 theorem sum_f {n : ℕ} (S : Finset (Fin n)) (t : Fin n → Fam D F k) (α : D.X) (j) :
     ((∑ i ∈ S, t i).s α).f j = ∑ i ∈ S, ((t i).s α).f j := by
   classical
@@ -122,24 +153,38 @@ theorem sum_f {n : ℕ} (S : Finset (Fin n)) (t : Fin n → Fam D F k) (α : D.X
   | empty => rw [Finset.sum_empty, Finset.sum_empty, zero_f]
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_f, ih]
 
+/- English proof (translation)
+The claim follows from `SectionScalarValuation.sval_lin (fun i => gF D F (c i)) (fun i => (t i).s α) (fun j => sum_f _ _ α j) r z hJ`.
+-/
 theorem sval_comb {n : ℕ} (c : Fin n → F) (t : Fin n → Fam D F k) (α : D.X) {Z : Scheme.{0}}
     (r : Z ⟶ (DegPre.BF D F).left) (z : Z) {J} (hJ : Good D.P.L z J) :
     sval ((∑ i, c i • t i).s α) r z J =
       ∑ i, gs r z ⊤ (scal (fst (TF (R := V) F) D.P.A).left (c i)) * sval ((t i).s α) r z J :=
   SectionScalarValuation.sval_lin (fun i => gF D F (c i)) (fun i => (t i).s α) (fun j => sum_f _ _ α j) r z hJ
 
+/- English proof (translation)
+Introduce `α` and use `SectionScalarValuation.secScal_of_sval D.P.isLB fun y J hJ => by rw [sval_secScale _ _ _ _ hJ, sval_smul _ _ _ _ _ hJ, SectionScalarValuation.secScal_sval (h α) _ _ hJ, gs_scal, Category.assoc, Over.w, hom_BF, ← Category.assoc, constVal_specMap]`.
+-/
 theorem IsBC.smul {θ : Fam D F k} {g : ∀ α : D.X, D.SecB k α} (h : IsBC D F θ g) (t : V) :
     IsBC D F (toF V F t • θ) (fun α => SecOps.secScale (scal D.P.A.hom t) (g α)) := fun α =>
   SectionScalarValuation.secScal_of_sval D.P.isLB fun y J hJ => by
     rw [sval_secScale _ _ _ _ hJ, sval_smul _ _ _ _ _ hJ, SectionScalarValuation.secScal_sval (h α) _ _ hJ, gs_scal,
       Category.assoc, Over.w, hom_BF, ← Category.assoc, constVal_specMap]
 
+/- English proof (translation)
+Introduce `α` and use `SectionScalarValuation.secScal_of_sval D.P.isLB fun y J hJ => by rw [sval_smul _ _ _ _ _ hJ, secScal_val (h α) _ _ hJ, gs_scal, hom_BF, ← Category.assoc, constVal_specMap]`.
+-/
 theorem isBC_of_scal {θ : Fam D F k} {g : ∀ α : D.X, D.SecB k α} {t : V}
     (h : ∀ α, GeneratorPullback.SecScal D.P.L (DegPre.famφ D F α) (DegPre.famε k) (θ.s α) (D.famφB α) (DegPre.famε k) (g α)
       (DegPre.prB D F).left (scal (DegPre.BF D F).hom t)) : IsBC D F (toF V F t • θ) g := fun α =>
   SectionScalarValuation.secScal_of_sval D.P.isLB fun y J hJ => by
     rw [sval_smul _ _ _ _ _ hJ, secScal_val (h α) _ _ hJ, gs_scal, hom_BF, ← Category.assoc, constVal_specMap]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `fam_ext fun α => sec_ext_val D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[sval_comb _ _ _ _ _ hJ, secLin_val (H α) _ _ hJ]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [SectionScalarValuation.secScal_sval (h i α) _ _ hJ]`.
+
+Introduce and unpack `rfl α`. Use `(secLin_iff_val D.P.isLB _ _ _ _).2 fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[sval_comb _ _ _ _ _ hJ]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [SectionScalarValuation.secScal_sval (h i α) _ _ hJ]`.
+-/
 theorem secLin_iff_comb {n : ℕ} (c : Fin n → F) {θ : Fin n → Fam D F k} {f : Fin n → ∀ α : D.X, D.SecB k α}
     (h : ∀ i, IsBC D F (θ i) (f i)) (s : Fam D F k) :
     (∀ α : D.X, GeneratorPullback.SecLin D.P.L (DegPre.famφ D F α) (DegPre.famε k) (s.s α)
@@ -163,12 +208,26 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {D : DegData V (maximalIdeal V)} {A : PolAV (Spec (CommRingCat.of (FractionRing V)))}
   {G : Over (Spec (CommRingCat.of V))} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Use `⟨∅, fun α _ j => map_zero _, fun p j₁ jf jt _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.attach_empty, Finset.sum_empty]`. Use `erw [map_zero, map_zero, mul_zero]`.
+-/
 theorem expandsAt_zero (U : UnifPre (maximalIdeal V) D A G) (e k : ℕ) :
     U.ExpandsAt e k SecOps.secZero (fun _ => SecOps.secZero) := by
   refine ⟨∅, fun α _ j => map_zero _, fun p j₁ jf jt _ _ => ?_⟩
   rw [Finset.attach_empty, Finset.sum_empty]
   erw [map_zero, map_zero, mul_zero]
 
+/- English proof (translation)
+Establish `hLG` using `U.LG.isLB`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : U.SecK k, ∀ (Z : Scheme.{0}) (r : Z ⟶ pullback G.hom (jK V)) (z : Z) (J), Good U.LG.L z J → sval s r z J = sval σ (r ≫ gK) z J := by`. Take `⟨s, hs⟩` from `exists_sec hLG (φ' := fun _ : Fin 1 => (gK : pullback G.hom (jK V) ⟶ G.left)) (ε' := fun _ => (k : ℤ)) (fun W _ g => Finset.prod_congr rfl fun i _ => by rw [Category.comp_id]) (pullSec U.LG.L _ _ σ (gK : pullback G.hom (jK V) ⟶ G.left))`. Conclude with `⟨s, fun Z r z J hJ => (hs Z r z J hJ).trans (SectionScalarValuation.sval_pullSec _ _ _ _ r z hJ)⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨s', hs'⟩ : ∃ s' : U.SecK (k * N), ∀ (Z : Scheme.{0}) (r : Z ⟶ pullback G.hom (jK V)) (z : Z) (J), Good U.LG.L z J → sval s' r z J = sval s (r ≫ endK φ) z J * (val u r z J).val := by`. Take `⟨s', hs'⟩` from `exists_sec hLG (φ' := fun _ : Fin 1 => (gK : pullback G.hom (jK V) ⟶ G.left)) (ε' := fun _ => ((k * N : ℕ) : ℤ)) (fun W _ g => by`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Finset.univ_unique, Finset.prod_singleton, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg]`. Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one])`. Use the proof step `(pullMulSec s (endK φ) u hu)`.
+
+Conclude with `⟨s', fun Z r z J hJ => (hs' Z r z J hJ).trans (sval_pullMulSec _ _ _ hu r z hJ)⟩`. Take `⟨E, hE, -⟩` from `(U.expand k hk).1 s`. Take `⟨g, hg, hEg⟩` from `GlobalTheory.T.expansion_of_integral_section_is_integral V ϖ hϖ D A G U.toUnifPre k σ s (SectionScalarValuation.secScal_of_sval hLG fun y J hJ => (hs _ _ y J hJ).symm) E hE`. Take `rfl : f = g` from `GlobalTheory.T.integralExpansion_unique_of_uniformization hL.lemmaB V D A G U.toUnifPre k σ f g hf hg`. Take `⟨E', ⟨t, ht, σ', f', h₁, h₂, h₃⟩, hP⟩` from `hB s E hE s' ⟨u, hu, hc, (secRel_iff hLG _ _ _ _ _ _ _ _ _ _).2 fun y J hJ => hs' _ _ y J hJ⟩`.
+
+Establish `h₂' : IsBC D.toPre (FractionRing V) (toF V (FractionRing V) t • E') f'` using `isBC_of_scal h₂`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.integralDegenerationFamily_baseChange_extensionField hL.globalFns V _ D k E f hEg F`. Take `⟨θ', hθ'⟩` from `GlobalTheory.T.integralDegenerationFamily_baseChange_extensionField hL.globalFns V _ D (k * N) _ f' h₂' F`. Establish `hP'` using `GlobalTheory.T.pullAl_linear_combination hL.globalFns V D (FractionRing V) O oa a k N 1 one_pos (fun _ => toF V (FractionRing V) t) (fun _ => E) (fun _ => E') (fun _ => hP)`. Rewrite `hP'` using `[Fin.sum_univ_one, Fin.sum_univ_one]`.
+
+Use `⟨t, σ', f', θ, θ', ht, h₃, hθ, hθ', GlobalTheory.T.pullAl_extension_field_of_fraction V D F O oa a k N _ _ _ f' _ θ' (IsBC.smul hEg t) h₂' (IsBC.smul hθ t) hθ' hP', fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[secScal_val h₁ r z hJ, gs_scal, hs' _ r z J hJ, hs _ _ z J hJ]`.
+-/
 theorem term (hL : Laws) (U : Unif (maximalIdeal V) D A G) {O : Type} [Ring O] [StarRing O] [Module O D.toPre.X]
     (oa : D.toPre.OAct O) (a : O) (φ : G ⟶ G) (k N : ℕ) (hk : 1 ≤ k)
     (hB : ∀ (s : U.SecK k) (E : Fam D.toPre (FractionRing V) k), U.Expands k s E → ∀ s' : U.SecK (k * N),
@@ -226,6 +285,21 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {D : DegData V (maximalIdeal V)} {A : PolAV (Spec (CommRingCat.of (FractionRing V)))}
   {G : Over (Spec (CommRingCat.of V))} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Take `⟨n, c, σ, f, h₁, h₂, h₃⟩` from `hs`. Use `choose t τ f' θ θ' ht hτ hθ hθ' hP hv using fun i => term hL U oa a φ k N hk hB u hu hc F (σ i) (f i) (h₁ i)`. Establish `hs` using `(secLin_iff_comb c hθ s).1 h₃`. Set `c' : Fin n → F` to `fun i => c i * (toF V F (t i))⁻¹`. Establish `hc' : ∀ i, c' i * toF V F (t i) = c i` using `fun i => inv_mul_cancel_right₀ (toF_ne_zero F (ht i)) _`.
+
+Use `⟨∑ i, c' i • θ' i, ?_, n, c', τ, f', hτ, ?_, (secLin_iff_comb c' hθ' _).2 rfl⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Take `⟨t₀, -, -, θ₀, θ₀', -, -, -, -, hP₀, -⟩` from `term hL U oa a φ k N hk hB u hu hc F _ _ (fun e => expandsAt_zero U.toUnifPre e k)`. Use `GlobalTheory.T.pullAl_linear_combination hL.globalFns V D F O oa a k N 1 one_pos (fun _ => 0) _ _ (fun _ => hP₀)` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one, Fin.sum_univ_one, zero_smul, zero_smul]`.
+
+Rewrite using `[hs, Fin.sum_univ_zero, Fin.sum_univ_zero]`. Conclude with `this`. Use `GlobalTheory.T.pullAl_linear_combination hL.globalFns V D F O oa a k N n hn c' _ _ hP` as an intermediate fact. Simplify using `only [smul_smul, hc'] at this`. Rewrite using `[hs]`.
+
+Conclude with `this`. Use `(secLin_iff_val U.LG.isLB _ _ _ _).2 fun y J hJ => ?_` and prove the remaining obligations. Rewrite using `[hσ y J hJ, secLin_val h₂ _ y hJ, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e₁ : ((TFK (R` using `V) F) ◁ (Over.pullback (jK V)).map φ).left ≫ (fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G)).left = (fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G)).left := by`.
+
+Rewrite using `[← Over.comp_left, whiskerLeft_fst]`. Establish `e₂ : ((TFK (R` using `V) F) ◁ (Over.pullback (jK V)).map φ).left ≫ UnifPre.gFK (G := G) F = ((snd (TFK (R := V) F) ((Over.pullback (jK V)).obj G)).left ≫ endK φ) ≫ gK := by`. Rewrite using `[UnifPre.gFK, ← Category.assoc, ← Over.comp_left, whiskerLeft_snd, Over.comp_left, Category.assoc, Category.assoc]`. Both sides reduce to the same expression. Establish `e₃ : (snd (TFK (R` using `V) F) ((Over.pullback (jK V)).obj G)).left ≫ pullback.snd G.hom (jK V) ≫ jK V = (fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G)).left ≫ Spec.map (CommRingCat.ofHom (toF V F)) := by`.
+
+Rewrite using `[← hom_TF, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Conclude with `(Over.w (snd (TFK (R := V) F) ((Over.pullback (jK V)).obj G))).trans (Over.w (fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G))).symm`. Establish `e₄` using `hv i _ (snd (TFK (R := V) F) ((Over.pullback (jK V)).obj G)).left y J hJ`. Rewrite `e₄` using `[e₃, constVal_specMap]`.
+
+Rewrite using `[gs_scal, gs_scal, e₁, e₂, Category.id_comp, Category.id_comp]`. Use `Eq.trans ?_ (congrArg _ e₄.symm)` and prove the remaining obligations. Rewrite using `[← hc' i, constVal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem of_generic (hL : Laws) (U : Unif (maximalIdeal V) D A G) {O : Type} [Ring O] [StarRing O]
     [Module O D.toPre.X] (oa : D.toPre.OAct O) (a : O) (φ : G ⟶ G) (k N : ℕ) (hk : 1 ≤ k)
     (hB : ∀ (s : U.SecK k) (E : Fam D.toPre (FractionRing V) k), U.Expands k s E → ∀ s' : U.SecK (k * N),
@@ -284,6 +358,11 @@ theorem of_generic (hL : Laws) (U : Unif (maximalIdeal V) D A G) {O : Type} [Rin
 
 end Main
 
+/- English proof (translation)
+Introduce `hL V _ _ _ E _ _ _ H t P a N hN hN0 k hk u hu hc F _ _ σ' s hs σ'' hσ`. Use `letI := H.starRing`. Use `of_generic hL P.U P.oD a (t.act.act a) k N (by omega) ?_ u hu hc F σ' s hs σ'' hσ` and prove the remaining obligations. Break down `hk with rfl | hk` into its components or cases. Conclude with `GlobalTheory.T.expansion_pullback_sourceLevelOne hL V E H t P a N hN hN0`.
+
+Conclude with `GlobalTheory.T.expansion_commutes_pullback_cmEndo_four_le hL V E H t P a N hN hN0 k hk`.
+-/
 theorem main : Laws → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Geo.Tor.Host E) (t : Geo.Tor.SAB H (Spec (CommRingCat.of V))) (P : Geo.Tor.PELUnif (maximalIdeal V) t) (a : NumberField.RingOfIntegers E) (N : ℕ), (letI := H.starRing; a * star a = (N : NumberField.RingOfIntegers E)) → 0 < N → letI := H.starRing;  ∀ k : ℕ, (k = 1 ∨ 4 ≤ k) → ∀ (u : LB.Gen (LB.LinComb P.U.LG.L (K := Fin 2) ![gK, endK (t.act.act a) ≫ gK] ![((k * N : ℕ) : ℤ), -(k : ℤ)])), u.IsGen → LB.Gen.Corr P.U.LG.L _ _ _ _ (LB.pullGen P.U.LG.L _ _ u unitK) (LB.pullGen P.U.LG.L _ _ (GeneratorPullback.powGen P.U.LG.L _ _ P.U.LG.rig (k * (N - 1))) (jK V)) → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (σ' : P.U.SecGF F k) (s : Fam P.D.toPre F k), P.U.ExpandsG F k σ' s → ∀ σ'' : P.U.SecGF F (k * N), (∀ (y : (UnifPre.GF (G := t.G) F).left) (J), Geo.Tor.Good P.U.LG.L y J → Geo.Tor.sval σ'' (𝟙 _) y J = Geo.Tor.sval σ' ((TFK (R := V) F) ◁ (Over.pullback (jK V)).map (t.act.act a)).left y J * (Geo.Tor.val u (snd (TFK (R := V) F) ((Over.pullback (jK V)).obj t.G)).left y J).val) → ∃ s'' : Fam P.D.toPre F (k * N), PullAl P.D F P.oD a k N s s'' ∧ P.U.ExpandsG F (k * N) σ'' s'' := by
   intro hL V _ _ _ E _ _ _ H t P a N hN hN0 k hk u hu hc F _ _ σ' s hs σ'' hσ
   letI := H.starRing

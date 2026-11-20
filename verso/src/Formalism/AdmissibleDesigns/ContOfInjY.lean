@@ -12,6 +12,13 @@ namespace Formalism.MainNotions.N.K.TBa
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module Formalism.WeaklyAdmissibleFiltrations Formalism.NG Formalism.RepresentationBoundsCohomology.BR
 open Formalism.MainNotions Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N.K.TB Formalism.MainNotions.N.KHf
 
+/- English proof (translation)
+Introduce `I g`. Establish `ha : Submodule.IsPrincipal.generator I ∈ I` using `Submodule.IsPrincipal.generator_mem I`. Distinguish the cases in `h0 : Submodule.IsPrincipal.generator I = 0`. Use `⟨0, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `(Submodule.IsPrincipal.mem_iff_eq_smul_generator I).1 hx`.
+
+Establish `: (⟨s • Submodule.IsPrincipal.generator I, hx⟩ : I) = 0` using `Subtype.ext (by simp [h0])`. Rewrite using `[this, map_zero, LinearMap.zero_apply]`. Take `⟨q, hq⟩` from `hdiv _ h0 (g ⟨_, ha⟩)`. Use `⟨LinearMap.toSpanSingleton R Q q, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `(Submodule.IsPrincipal.mem_iff_eq_smul_generator I).1 hx`.
+
+Rewrite using `[LinearMap.toSpanSingleton_apply, smul_assoc, hq, ← map_smul]`. Both sides reduce to the same expression.
+-/
 theorem baer_of_div {R Q : Type} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R] [AddCommGroup Q] [Module R Q]
     (hdiv : ∀ a : R, a ≠ 0 → ∀ y : Q, ∃ q : Q, a • q = y) : Module.Baer R Q := by
   intro I g
@@ -47,6 +54,9 @@ def trY (v : V) : TrV e V := v
 
 variable {e eO}
 
+/- English proof (translation)
+Use `show (e.symm (algebraMap Ow LL c)) • v = eO.symm c • v`. Use `conv_lhs => rw [← RingEquiv.apply_symm_apply eO c]`. Rewrite using `[heO, RingEquiv.symm_apply_apply, algebraMap_smul]`.
+-/
 theorem smul_OwY (heO : ∀ a : O, algebraMap Ow LL (eO a) = e (algebraMap O (FractionRing O) a))
     (c : Ow) (v : V) : (c • trY e v : TrV e V) = trY e (eO.symm c • v) := by
   show (e.symm (algebraMap Ow LL c)) • v = eO.symm c • v
@@ -85,6 +95,9 @@ def latMapY : MOY eO M →ₗ[Ow] ↥(latTY e eO (M := M) heO) where
     show trY e (mkK (O := O) (eO.symm c • (show M from a))) = c • trY e (mkK (O := O) (show M from a))
     rw [smul_OwY heO, map_smul])
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b h => hinj (congrArg Subtype.val h : trY e (mkK (O := O) (show M from a)) = trY e (mkK (show M from b))), fun ⟨_, m, hm⟩ => ⟨m, Subtype.ext hm⟩⟩`.
+-/
 theorem latMapY_bij (hinj : Function.Injective (mkK (O := O) (M := M))) :
     Function.Bijective (latMapY (eO := eO) (M := M) heO) :=
   ⟨fun a b h => hinj (congrArg Subtype.val h : trY e (mkK (O := O) (show M from a)) = trY e (mkK (show M from b))),
@@ -95,18 +108,29 @@ def latEquivY (hinj : Function.Injective (mkK (O := O) (M := M))) : MOY eO M ≃
 
 def basMOY [Module.Free O M] : Basis (Module.Free.ChooseBasisIndex O M) O (MOY eO M) := Module.Free.chooseBasis O M
 
+/- English proof (translation)
+The claim follows from `Module.Free.of_basis ((basMOY (eO := eO)).mapCoeffs eO (fun c (x : MOY eO M) => by show eO.symm (eO c) • (show M from x) = c • (show M from x) rw [RingEquiv.symm_apply_apply]))`.
+-/
 theorem free_MOY [Module.Free O M] : Module.Free Ow (MOY eO M) :=
   Module.Free.of_basis ((basMOY (eO := eO)).mapCoeffs eO
     (fun c (x : MOY eO M) => by
       show eO.symm (eO c) • (show M from x) = c • (show M from x)
       rw [RingEquiv.symm_apply_apply]))
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_basis ((basMOY (eO := eO)).mapCoeffs eO (fun c (x : MOY eO M) => by show eO.symm (eO c) • (show M from x) = c • (show M from x) rw [RingEquiv.symm_apply_apply]))`.
+-/
 theorem finite_MOY [Module.Finite O M] [Module.Free O M] : Module.Finite Ow (MOY eO M) :=
   Module.Finite.of_basis ((basMOY (eO := eO)).mapCoeffs eO
     (fun c (x : MOY eO M) => by
       show eO.symm (eO c) • (show M from x) = c • (show M from x)
       rw [RingEquiv.symm_apply_apply]))
 
+/- English proof (translation)
+Proceed by induction on `v using LocalizedModule.induction_on with`. Consider the case `h m s`. Use `⟨(s : O), nonZeroDivisors.coe_ne_zero s, m, ?_⟩` and prove the remaining obligations. Rewrite using `[LocalizedModule.smul'_mk]`. Use `show LocalizedModule.mk m 1 = _`.
+
+Rewrite using `[LocalizedModule.mk_eq]`. Conclude with `⟨1, by simp [Submonoid.smul_def]⟩`.
+-/
 theorem mkK_spanY (v : MK (O := O) M) : ∃ c : O, c ≠ 0 ∧ ∃ m, mkK m = c • v := by
   induction v using LocalizedModule.induction_on with
   | h m s =>
@@ -116,6 +140,9 @@ theorem mkK_spanY (v : MK (O := O) M) : ∃ c : O, c ≠ 0 ∧ ∃ m, mkK m = c 
     rw [LocalizedModule.mk_eq]
     exact ⟨1, by simp [Submonoid.smul_def]⟩
 
+/- English proof (translation)
+Introduce `a b h`. Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := nonZeroDivisors O) (f := mkK (O := O) (M := M)) h`. Rewrite `hc` using `[Submonoid.smul_def, Submonoid.smul_def]`. Conclude with `smul_right_injective M (nonZeroDivisors.coe_ne_zero c) hc`.
+-/
 theorem mkK_injY [NoZeroSMulDivisors O M] : Function.Injective (mkK (O := O) (M := M)) := by
   intro a b h
   obtain ⟨c, hc⟩ := IsLocalizedModule.exists_of_eq (S := nonZeroDivisors O) (f := mkK (O := O) (M := M)) h
@@ -175,11 +202,17 @@ variable (e N) in
 def pY : TrV e (MK (O := O) (N × O)) →ₗ[LL] LL :=
   eLin e ∘ₗ trL e (liftK (V := FractionRing O) (Algebra.linearMap O (FractionRing O) ∘ₗ LinearMap.snd O N O))
 
+/- English proof (translation)
+Use `show e (liftK (V := FractionRing O) (Algebra.linearMap O (FractionRing O) ∘ₗ LinearMap.snd O N O) (mkK m)) = _`. Rewrite using `[liftK_mkK]`. Both sides reduce to the same expression.
+-/
 theorem pY_mk (m : N × O) : pY e N (trY e (mkK (O := O) m)) = e (algebraMap O (FractionRing O) m.2) := by
   show e (liftK (V := FractionRing O) (Algebra.linearMap O (FractionRing O) ∘ₗ LinearMap.snd O N O) (mkK m)) = _
   rw [liftK_mkK]
   rfl
 
+/- English proof (translation)
+Establish `h` using `liftK_equiv (Representation.trivial O Γ (FractionRing O)) ρM (Algebra.linearMap O (FractionRing O) ∘ₗ LinearMap.snd O N O) (fun g m => by show algebraMap O (FractionRing O) (ρM g m).2 = algebraMap O (FractionRing O) m.2`. Rewrite using `[h2]) (ι g) (show MK (O := O) (N × O) from v)`. Use `show e (liftK _ (locRep ρM (ι g) (show MK (O := O) (N × O) from v))) = e (liftK _ (show MK (O := O) (N × O) from v))`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem pY_inv (ρM : Representation O Γ (N × O)) (h2 : ∀ g m, (ρM g m).2 = m.2) (g : G)
     (v : TrV e (MK (O := O) (N × O))) : pY e N (repL e (locRep ρM) ι g v) = pY e N v := by
   have h := liftK_equiv (Representation.trivial O Γ (FractionRing O)) ρM
@@ -192,12 +225,18 @@ theorem pY_inv (ρM : Representation O Γ (N × O)) (h2 : ∀ g m, (ρM g m).2 =
   rfl
 
 include heO in
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `hv`. Rewrite using `[pY_mk, ← heO]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem pY_int (v : TrV e (MK (O := O) (N × O))) (hv : ∃ m : N × O, trY e (mkK (O := O) m) = v) :
     pY e N v ∈ Set.range (algebraMap Ow LL) := by
   obtain ⟨m, rfl⟩ := hv
   rw [pY_mk, ← heO]
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Rewrite `h` using `[pY_mk]`. Establish `h1 : algebraMap O (FractionRing O) m.2 = 0`. Rewrite `h` using `[map_eq_zero_iff e e.injective]`. Then use the resulting hypothesis. Conclude with `(IsFractionRing.injective O (FractionRing O)) (h1.trans (map_zero _).symm)`.
+-/
 theorem pY_zero (m : N × O) (h : pY e N (trY e (mkK (O := O) m)) = 0) : m.2 = 0 := by
   rw [pY_mk] at h
   have h1 : algebraMap O (FractionRing O) m.2 = 0 := by
@@ -206,6 +245,11 @@ theorem pY_zero (m : N × O) (h : pY e N (trY e (mkK (O := O) m)) = 0) : m.2 = 0
 
 include heO in
 
+/- English proof (translation)
+Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H v`. Establish `hc : algebraMap Ow LL (eO a) ≠ 0`. Rewrite using `[heO]`. Conclude with `(map_ne_zero e).2 (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero ha))`.
+
+Use `⟨Submodule.Quotient.mk ((algebraMap Ow LL (eO a))⁻¹ • v), ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, ← algebraMap_smul LL (eO a), smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+-/
 theorem div_quot {V : Type} [AddCommGroup V] [Module LL V] [Module Ow V] [IsScalarTower Ow LL V]
     (T : Submodule Ow V) (a : O) (ha : a ≠ 0) (y : V ⧸ T) : ∃ q : V ⧸ T, eO a • q = y := by
   induction y using Submodule.Quotient.induction_on with
@@ -216,6 +260,9 @@ theorem div_quot {V : Type} [AddCommGroup V] [Module LL V] [Module Ow V] [IsScal
     refine ⟨Submodule.Quotient.mk ((algebraMap Ow LL (eO a))⁻¹ • v), ?_⟩
     rw [← Submodule.Quotient.mk_smul, ← algebraMap_smul LL (eO a), smul_smul, mul_inv_cancel₀ hc, one_smul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun {c x} h => by by_cases hc : c = 0 · exact Or.inl hc · right have h1 : c • x.1 = 0 := congrArg Prod.fst h have h2 : c * x.2 = 0 := congrArg Prod.snd h exact Prod.ext ((smul_eq_zero.1 h1).resolve_left hc) ((mul_eq_zero.1 h2).resolve_left hc)⟩`.
+-/
 theorem nzsd_prod [NoZeroSMulDivisors O N] : NoZeroSMulDivisors O (N × O) :=
   ⟨fun {c x} h => by
     by_cases hc : c = 0
@@ -227,6 +274,13 @@ theorem nzsd_prod [NoZeroSMulDivisors O N] : NoZeroSMulDivisors O (N × O) :=
 
 include heO in
 
+/- English proof (translation)
+Use `letI : Module O Q := Module.compHom Q eO.toRingHom`. Establish `hB : Module.Baer O Q` using `baer_of_div fun a ha y => hdiv a ha y`. Set `f : N →ₗ[O] MK (O` to `O) (N × O) := mkK ∘ₗ LinearMap.inl O N O`. Use `haveI := nzsd_prod (O := O) (N := N)`. Establish `hf : Function.Injective f` using `mkK_injY.comp LinearMap.inl_injective`.
+
+Set `g : N →ₗ[O] Q` to `{ toFun := g₀, map_add' := g₀.map_add, map_smul' := fun a n => hg a n }`. Take `⟨h, hh⟩` from `hB.extension_property f hf g`. Use `⟨⟨⟨fun v => h (show MK (O := O) (N × O) from v), fun x y => h.map_add _ _⟩, fun c v => ?_⟩, fun n => LinearMap.congr_fun hh n⟩` and prove the remaining obligations. Establish `hs` using `smul_OwY (V := MK (O := O) (N × O)) heO c (show MK (O := O) (N × O) from v)`. Use `show h (show MK (O := O) (N × O) from (c • v)) = c • h (show MK (O := O) (N × O) from v)`.
+
+Establish `hs' : (show MK (O` using `O) (N × O) from (c • v)) = eO.symm c • (show MK (O := O) (N × O) from v) := hs`. Rewrite using `[hs', h.map_smul]`. Use `show eO (eO.symm c) • h _ = _`. Rewrite using `[RingEquiv.apply_symm_apply]`.
+-/
 theorem ext_of_baer [IsPrincipalIdealRing O] [NoZeroSMulDivisors O N] {Q : Type} [AddCommGroup Q] [Module Ow Q]
     (hdiv : ∀ a : O, a ≠ 0 → ∀ y : Q, ∃ q : Q, eO a • q = y) (g₀ : N →+ Q)
     (hg : ∀ (a : O) (n : N), g₀ (a • n) = eO a • g₀ n) :

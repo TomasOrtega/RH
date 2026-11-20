@@ -6,5 +6,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.In
 open NumberField MvPolynomial
 open Formalism.BasicNotions Formalism.DegreeFormula GlobalTheory.FlagPoly GlobalTheory.Mean4O GlobalTheory.ShFam GlobalTheory.ShFam.Pad
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RelabDR.antisymm_fibPt | exact GlobalTheory.RelabDR.antisymm_fibPt | (intros; apply GlobalTheory.RelabDR.antisymm_fibPt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.root_substitution_fibre_discriminant : ∀ (D : D7) (O : Setup D), GlobalTheory.GoodMetric.antisymm (aeval (GlobalTheory.RelabDR.rootSub O) (fibPt D.what₂.Tau O.N O.j)) = GlobalTheory.GoodMetric.rootDiscr O.S.Dw.mult := by
   first | exact @GlobalTheory.RelabDR.antisymm_fibPt | exact GlobalTheory.RelabDR.antisymm_fibPt | (intros; apply GlobalTheory.RelabDR.antisymm_fibPt <;> assumption)

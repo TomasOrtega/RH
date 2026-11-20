@@ -19,6 +19,17 @@ def invTranspose {K : Type} [Field K] (g : GL (Fin n) K) : GL (Fin n) K :=
     by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one],
     by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]⟩
 
+/- English proof (translation)
+Rewrite using `[colAct_apply]`. Use `DFunLike.congr_fun (?_ : (rename (thetaLetterEquiv Dw n)).comp (letAct Dw pl K (fun t => invTranspose (g ⟨pl t, (hpl.2 _).2 ⟨t, rfl⟩⟩))) = (colSubst (fun t => (((g t)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) (fun t => g t)).comp (rename (thetaLetterEquiv Dw n))) P` and prove the remaining obligations. Use `MvPolynomial.algHom_ext fun ⟨τ, i, b⟩ => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, rename_X, letAct, aeval_X]`. Break down `half_cases (Ψ := InPsi H) (ComplexEmbedding.involutive_conjugate E) (not_mem_hostType_iff H) τ with h | ⟨τ, h, rfl⟩` into its components or cases.
+
+Establish `h₁ : ∃ t, pl t = τ` using `(hpl.2 τ).1 h`. Rewrite using `[dif_pos h₁, thetaLetterEquiv_of_mem Dw h, colSubst_X_xVar, xForm_apply, map_sum]`. Establish `e : (⟨pl h₁.choose, (hpl.2 _).2 ⟨_, rfl⟩⟩ : {τ : E →+* ℂ // InPsi H τ}) = ⟨τ, h⟩` using `Subtype.ext h₁.choose_spec`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, rename_C, rename_X, thetaLetterEquiv_of_mem Dw h]`.
+
+Simplify using `only [e]`. Both sides reduce to the same expression. Establish `h₀ : ¬ ∃ t, pl t = ComplexEmbedding.conjugate τ` using `fun hh => by`. Establish `h₂ : InPsi H (ComplexEmbedding.conjugate τ)` using `(hpl.2 _).2 hh`. Conclude with `(not_mem_hostType_iff H τ).2 h₂ h`.
+
+Establish `h₁ : ∃ t, ComplexEmbedding.conjugate (pl t) = ComplexEmbedding.conjugate τ`. Take `⟨t, ht⟩` from `(hpl.2 τ).1 h`. Conclude with `⟨t, by rw [ht]⟩`. Rewrite using `[dif_neg h₀, dif_pos h₁, thetaLetterEquiv_conjugate Dw h, colSubst_X_yVar, yForm_apply, map_sum]`. Establish `e : (⟨pl h₁.choose, (hpl.2 _).2 ⟨_, rfl⟩⟩ : {τ : E →+* ℂ // InPsi H τ}) = ⟨τ, h⟩` using `Subtype.ext ((ComplexEmbedding.involutive_conjugate E).injective h₁.choose_spec)`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, rename_C, rename_X, thetaLetterEquiv_conjugate Dw h]`. Simplify using `only [e]`. Both sides reduce to the same expression.
+-/
 theorem rename_letAct_invTranspose_eq_colAct {Ix : Type} [Fintype Ix] {pl : Ix → (E →+* ℂ)} (hpl : IsEnum H pl) (K : Type) [Field K]
     (g : {τ : E →+* ℂ // InPsi H τ} → GL (Fin n) K) (P : MvPolynomial (LtN Dw n) K) :
     rename (thetaLetterEquiv Dw n) (letAct Dw pl K (fun t => invTranspose (g ⟨pl t, (hpl.2 _).2 ⟨t, rfl⟩⟩)) P) =
@@ -56,6 +67,11 @@ theorem rename_letAct_invTranspose_eq_colAct {Ix : Type} [Fintype Ix] {pl : Ix �
 
 variable {l : Level H} (c : Coeff l)
 
+/- English proof (translation)
+Rewrite using `[minorPolynomial, xMinor, AlgHom.map_det]`. Use `congr 1`. Use `ext1 s b`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, rename_X, baseCovec, xForm_single]`. Rewrite using `[thetaLetterEquiv_of_mem Dw h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rename_minorP_of_mem (hn : Dw.p + Dw.q ≤ n) {τ : E →+* ℂ} (h : InPsi H τ) (i : Fin Dw.p)
     (hi : i.val < Dw.mult τ) (hi' : i.val + 1 ≤ n) :
     rename (thetaLetterEquiv Dw n) (minorPolynomial (Dw := Dw) c τ i.val hi (Fin.castLE hi')) =
@@ -67,6 +83,11 @@ theorem rename_minorP_of_mem (hn : Dw.p + Dw.q ≤ n) {τ : E →+* ℂ} (h : In
   rw [thetaLetterEquiv_of_mem Dw h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[minorPolynomial, yMinor, AlgHom.map_det, ← Matrix.det_permute']`. Use `congr 1`. Use `ext1 s b`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, rename_X, baseVec, yForm_single, Matrix.submatrix_apply, id]`. Rewrite using `[thetaLetterEquiv_conjugate Dw h]`.
+
+Use `congrArg X (Prod.ext rfl (Prod.ext rfl (Fin.ext ?_)))` and prove the remaining obligations. Use `b.isLt` as an intermediate fact. Simplify using `only [Fin.val_cast, Fin.val_natAdd, Fin.val_rev, Fin.val_castLE, Fin.revPerm_apply]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rename_minorP_conjugate (hn : Dw.p + Dw.q ≤ n) {τ : E →+* ℂ} (h : InPsi H τ) (i : Fin Dw.q)
     (hi : i.val < Dw.mult (ComplexEmbedding.conjugate τ)) (hi' : n - (i.val + 1) + (i.val + 1) = n) :
     rename (thetaLetterEquiv Dw n) (minorPolynomial (Dw := Dw) c (ComplexEmbedding.conjugate τ) i.val hi
@@ -84,6 +105,17 @@ theorem rename_minorP_conjugate (hn : Dw.p + Dw.q ≤ n) {τ : E →+* ℂ} (h :
   simp only [Fin.val_cast, Fin.val_natAdd, Fin.val_rev, Fin.val_castLE, Fin.revPerm_apply]
   omega
 
+/- English proof (translation)
+Use `⟨∏ t : {τ : E →+* ℂ // InPsi H τ}, ∏ i : Fin Dw.q, Equiv.Perm.sign (Fin.revPerm (n := i.val + 1)) ^ diffOf (fun i : Fin Dw.q => a (ComplexEmbedding.conjugate t.1, i)) i, ?_⟩` and prove the remaining obligations. Rewrite using `[pG, ← Fintype.prod_sigma', ← (halfRowEquiv (Ψ := InPsi H) (ComplexEmbedding.involutive_conjugate E) (not_mem_hostType_iff H) (fun _ => mult_of_mem Dw) (fun _ => mult_conjEmb_of_mem Dw)).symm.prod_comp, Fintype.prod_prod_type, basePoly, minorProd, map_prod]`. Use `push_cast`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.prod_sum_type, map_mul, mul_left_comm, ← Finset.prod_mul_distrib, map_prod, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi' : i.val + 1 ≤ n` using `by have := i.isLt; omega`. Establish `hi : i.val < Dw.mult t.1` using `by rw [mult_of_mem Dw t.2]; exact i.isLt`.
+
+Express the relevant statement in the definitionally equal form `rename _ ((if h : i.val + 1 ≤ n then (if InPsi H t.1 then minorPolynomial c t.1 i.val hi (Fin.castLE h) else minorPolynomial c t.1 i.val hi (fun b => Fin.cast (by omega) (Fin.natAdd (n - (i.val + 1)) b))) else 0) ^ aStep Dw a t.1 i.val) = _`. Rewrite using `[dif_pos hi', if_pos t.2, map_pow, rename_minorP_of_mem Dw c hn t.2]`. Use `congr 1`. Rewrite using `[aStep, diffOf, mult_of_mem Dw t.2]`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi' : i.val + 1 ≤ n` using `by have := i.isLt; omega`. Establish `hi : i.val < Dw.mult (ComplexEmbedding.conjugate t.1)` using `i.isLt.trans_eq (mult_conjEmb_of_mem Dw t.2).symm`. Establish `h₀ : ¬ InPsi H (ComplexEmbedding.conjugate t.1)` using `fun h₂ => (not_mem_hostType_iff H t.1).2 h₂ t.2`. Express the relevant statement in the definitionally equal form `rename _ ((if h : i.val + 1 ≤ n then (if InPsi H (ComplexEmbedding.conjugate t.1) then minorPolynomial c (ComplexEmbedding.conjugate t.1) i.val hi (Fin.castLE h) else minorPolynomial c (ComplexEmbedding.conjugate t.1) i.val hi (fun b => Fin.cast (by omega) (Fin.natAdd (n - (i.val …`.
+
+Rewrite using `[dif_pos hi', if_neg h₀, map_pow, rename_minorP_conjugate Dw c hn t.2, ← mul_pow]`. Use `congr 1`. Establish `hq : Dw.mult (ComplexEmbedding.conjugate t.1) = Dw.q` using `mult_conjEmb_of_mem Dw t.2`. Rewrite using `[aStep, diffOf, hq]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem rename_pG [Fintype {τ : E →+* ℂ // InPsi H τ}] (hn : Dw.p + Dw.q ≤ n) (a : (E →+* ℂ) × ℕ → ℕ) :
     ∃ u : ℤˣ, rename (thetaLetterEquiv Dw n) (pG (Dw := Dw) c a n) =
       ((u : ℤ) : Poly c.F _ Dw.p Dw.q (Fin n)) *
@@ -127,6 +159,19 @@ theorem rename_pG [Fintype {τ : E →+* ℂ // InPsi H τ}] (hn : Dw.p + Dw.q �
     rw [aStep, diffOf, hq]
     split_ifs <;> rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw n Ix _ pl hpl hn l c a ha`. Take `⟨u, hu⟩` from `rename_pG Dw c hn a`. Use `set k := fun t : {τ : E →+* ℂ // InPsi H τ} => diffOf fun i : Fin Dw.p => a (t.1, i) with hk`. Use `set k' := fun t : {τ : E →+* ℂ // InPsi H τ} => diffOf fun i : Fin Dw.q => a (ComplexEmbedding.conjugate t.1, i) with hk'`. Establish `hx (t : {τ : E →+* ℂ // InPsi H τ}) : partOf (k t) = fun i : Fin Dw.p => a (t.1, i)` using `partOf_diffOf fun i j hij => ha t.1 hij`.
+
+Establish `hy (t : {τ : E →+* ℂ // InPsi H τ}) : partOf (k' t) = fun i : Fin Dw.q => a (ComplexEmbedding.conjugate t.1, i)` using `partOf_diffOf fun i j hij => ha _ hij`. Establish `hmem (P : MvPolynomial (LtN Dw n) c.F) : P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) ↔ rename (thetaLetterEquiv Dw n) P ∈ orbitSpan c.F hn k k'`. Rewrite using `[← (rowHighest_orbitSpan_main hn k k' c.F).2.1, mem_rowHighest_iff_rowAdd]`. Simplify using `only [hx, hy]`. Conclude with `mem_HHa_iff_rename (Ψ := InPsi H) (ComplexEmbedding.involutive_conjugate E) (not_mem_hostType_iff H) (fun _ => mult_of_mem Dw) (fun _ => mult_conjEmb_of_mem Dw) _ P`.
+
+Rewrite `hu` using `[← zsmul_eq_mul]`. Establish `hu' : basePoly c.F hn k k' = (u : ℤ) • rename (thetaLetterEquiv Dw n) (pG (Dw` using `Dw) c a n) := by`. Rewrite using `[hu, smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]`. Establish `hinj` using `(thetaLetterEquiv Dw n).injective`. Use `⟨⟨(hmem _).2 ?_, fun m => ?_⟩, fun h0 => ?_, fun P hP => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hu]`. Conclude with `zsmul_mem (basePoly_mem hn k k') _`. Rewrite using `[← coeff_rename_mapDomain _ hinj, hu, ← map_basePoly hn k k' (Int.castRingHom c.F), ← map_zsmul, coeff_map]`. Conclude with `intCast_mem _ _`. Rewrite `hu'` using `[h0, map_zero, smul_zero]`.
+
+Conclude with `basePoly_ne_zero hn k k' hu'`. Establish `key : orbitSpan c.F hn k k' ≤ (Submodule.span c.F (Set.range fun g : Ix → GL (Fin n) c.F => letAct Dw pl c.F g (pG (Dw` using `Dw) c a n))).map (rename (thetaLetterEquiv Dw n)).toLinearMap := by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Simplify using `only [hu', map_zsmul, ← rename_letAct_invTranspose_eq_colAct Dw hpl]`.
+
+Conclude with `zsmul_mem (Submodule.mem_map_of_mem (Submodule.subset_span (Set.mem_range_self _))) _`. Take `⟨Q, hQ, e⟩` from `key ((hmem P).1 hP)`. Rewrite using `[← rename_injective _ hinj e]` and apply the resulting hypothesis.
+-/
 theorem pG_mem_ne_zero_generates : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (n : ℕ) (Ix : Type) [Fintype Ix] (pl : Ix → (E →+* ℂ)), IsEnum H pl → Dw.p + Dw.q ≤ n → ∀ (l : Level H) (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ), (∀ τ, Antitone fun i => a (τ, i)) → pG (Dw := Dw) c a n ∈ harmA (Dw := Dw) c a n ∧ pG (Dw := Dw) c a n ≠ 0 ∧ ∀ P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)), P ∈ Submodule.span c.F (Set.range fun g : Ix → GL (Fin n) c.F => letAct Dw pl c.F g (pG (Dw := Dw) c a n)) := by
   intro E _ _ _ H Dw n Ix _ pl hpl hn l c a ha
   obtain ⟨u, hu⟩ := rename_pG Dw c hn a

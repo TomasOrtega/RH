@@ -3,11 +3,25 @@ open scoped Classical
 
 namespace GlobalTheory.MultinomialCount
 
+/- English proof (translation)
+Rewrite using `[List.ofFn_succ]`. Simplify using `[List.count_cons, Fin.cons_zero, Fin.cons_succ]`.
+-/
 theorem ofFn_cons_count {I : Type} {k : ℕ} (a : I) (t : Fin k → I) (i : I) :
     (List.ofFn (Fin.cons a t : Fin (k+1) → I)).count i = (List.ofFn t).count i + if a = i then 1 else 0 := by
   rw [List.ofFn_succ]
   simp [List.count_cons, Fin.cons_zero, Fin.cons_succ]
 
+/- English proof (translation)
+Simplify using `only [ofFn_cons_count]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `ha` using `h a`. Simplify using `only [if_true] at ha`.
+
+Use `⟨by omega, fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `only [Function.update_self]`. Use linear arithmetic over natural numbers and integers.
+
+Use `h i` as an intermediate fact. Rewrite `this` using `[if_neg (Ne.symm hi)]`. Simplify using `only [Function.update_apply, hi, if_false]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h1, h⟩ i`.
+
+Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Use `h i` as an intermediate fact. Simplify using `only [Function.update_self] at this`. Simplify using `only [if_true]`.
+
+Use linear arithmetic over natural numbers and integers. Use `h i` as an intermediate fact. Simplify using `only [Function.update_apply, hi, if_false] at this`. Rewrite using `[if_neg (Ne.symm hi)]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cons_iff {I : Type} {k : ℕ} (ν : I → ℕ) (a : I) (t : Fin k → I) :
     (∀ i, (List.ofFn (Fin.cons a t : Fin (k+1) → I)).count i = ν i) ↔
       (1 ≤ ν a ∧ ∀ i, (List.ofFn t).count i = Function.update ν a (ν a - 1) i) := by
@@ -29,6 +43,25 @@ theorem cons_iff {I : Type} {k : ℕ} (ν : I → ℕ) (a : I) (t : Fin k → I)
       simp only [Function.update_apply, hi, if_false] at this
       rw [if_neg (Ne.symm hi)]; omega
 
+/- English proof (translation)
+Introduce `I _ k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `ν hν`. Establish `h0 : ∀ i, ν i = 0` using `fun i => (Finset.sum_eq_zero_iff.mp hν) i (Finset.mem_univ _)`.
+
+Establish `: (Finset.univ.filter (fun s : Fin 0 → I => ∀ i, (List.ofFn s).count i = ν i)) = Finset.univ`. Use extensionality with `s`. Simplify using `[h0]`. Rewrite using `[this]`. Simplify using `[h0]`.
+
+Consider the case `succ k ih`. Introduce `ν hν`. Rewrite using `[Finset.card_filter, ← (Fin.consEquiv (fun _ : Fin (k+1) => I)).sum_comp, Fintype.sum_prod_type]`. Establish `key : ∀ a : I, (∑ t : Fin k → I, if (∀ i, (List.ofFn (Fin.consEquiv (fun _ : Fin (k+1) => I) (a, t))).count i = ν i) then 1 else 0) * ∏ i, (ν i).factorial = ν a * k.factorial`. Introduce `a`.
+
+Establish `hc : ∀ t : Fin k → I, (∀ i, (List.ofFn (Fin.consEquiv (fun _ : Fin (k+1) => I) (a, t))).count i = ν i) ↔ (1 ≤ ν a ∧ ∀ i, (List.ofFn t).count i = Function.update ν a (ν a - 1) i)` using `fun t => cons_iff ν a t`. Repeatedly rewrite using `[hc]`. Distinguish the cases in `ha : 1 ≤ ν a`. Simplify using `only [ha, true_and]`. Rewrite using `[← Finset.card_filter]`.
+
+Use `set μ := Function.update ν a (ν a - 1) with hμ`. Establish `hs1 : ∑ i, μ i = (ν a - 1) + ∑ i ∈ Finset.univ \ {a}, ν i`. Rewrite using `[hμ, Finset.sum_update_of_mem (Finset.mem_univ a)]`. Establish `hs2 : ∑ i, ν i = ν a + ∑ i ∈ Finset.univ \ {a}, ν i` using `Fintype.sum_eq_add_sum_compl a _`. Establish `hμs : ∑ i, μ i = k` using `by omega`.
+
+Establish `h1 : ∏ i, (μ i).factorial = (ν a - 1).factorial * ∏ i ∈ Finset.univ \ {a}, (ν i).factorial`. Rewrite using `[Fintype.prod_eq_mul_prod_compl a]`. Use `congr 1`. Simplify using `[hμ]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+
+Introduce `i hi`. Simplify using `only [Finset.mem_compl, Finset.mem_singleton] at hi`. Simplify using `[hμ, Function.update_apply, hi]`. Establish `h2 : ∏ i, (ν i).factorial = (ν a).factorial * ∏ i ∈ Finset.univ \ {a}, (ν i).factorial` using `Fintype.prod_eq_mul_prod_compl a _`. Establish `h3 : (ν a).factorial = ν a * (ν a - 1).factorial` using `(Nat.mul_factorial_pred (by omega)).symm`.
+
+Establish `hi` using `ih μ hμs`. Rewrite `hi` using `[h1]`. Rewrite using `[h2, h3, ← hi]`. Expand and normalize the polynomial expressions, which then agree. Establish `: ν a = 0` using `by omega`.
+
+Simplify using `[ha, this]`. Rewrite using `[Finset.sum_mul]`. Repeatedly rewrite using `[key]`. Rewrite using `[← Finset.sum_mul, hν, Nat.factorial_succ]`.
+-/
 theorem card_mul_prod_factorial : ∀ {I : Type} [Fintype I] (k : ℕ) (ν : I → ℕ), ∑ i, ν i = k →
     (Finset.univ.filter (fun s : Fin k → I => ∀ i, (List.ofFn s).count i = ν i)).card *
       ∏ i, (ν i).factorial = k.factorial := by

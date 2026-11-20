@@ -2,6 +2,23 @@ import Mathlib
 
 open MeasureTheory Set
 
+/- English proof (translation)
+Use `set f : ℝ → ℝ := fun x => ((1 + x) ^ r)⁻¹ * x ^ a with hf`. Establish `hmeas : Measurable f`. Rewrite using `[hf]`. Use `fun_prop`. Establish `h : IntegrableOn f (Ioi 0)`.
+
+Rewrite using `[← Ioc_union_Ioi_eq_Ioi (zero_le_one' ℝ)]`. Use `IntegrableOn.union ?_ ?_` and prove the remaining obligations. Establish `h1 : IntegrableOn (fun x : ℝ => x ^ a) (Ioc 0 1)`. Use `intervalIntegral.intervalIntegrable_rpow' (a := 0) (b := 1) ha` as an intermediate fact. Rewrite `this` using `[intervalIntegrable_iff_integrableOn_Ioc_of_le zero_le_one]`. Then use the resulting hypothesis.
+
+Use `Integrable.mono' h1 hmeas.aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_Ioc] with x hx`. Establish `hx0 : 0 < x` using `hx.1`. Establish `hp : 0 ≤ x ^ a` using `Real.rpow_nonneg hx0.le _`. Establish `hq : ((1 + x) ^ r)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith))`.
+
+Rewrite using `[Real.norm_of_nonneg (by rw [hf]; positivity)]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : IntegrableOn (fun x : ℝ => x ^ (a - r)) (Ioi 1)` using `integrableOn_Ioi_rpow_of_lt (by linarith) one_pos`. Use `Integrable.mono' h1 hmeas.aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_Ioi] with x hx`.
+
+Establish `hx1 : (1 : ℝ) < x` using `hx`. Establish `hx0 : 0 < x` using `lt_trans one_pos hx1`. Establish `hp : 0 ≤ x ^ a` using `Real.rpow_nonneg hx0.le _`. Establish `hq : ((1 + x) ^ r)⁻¹ ≤ (x ^ r)⁻¹` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[Real.norm_of_nonneg (by rw [hf]; positivity), Real.rpow_sub hx0, Real.rpow_natCast, div_eq_inv_mul]`. Conclude with `mul_le_mul_of_nonneg_right hq hp`. Establish `hG : Integrable ((Ioi (0 : ℝ)).indicator f)` using `(integrable_indicator_iff measurableSet_Ioi).2 h`. Establish `hsum` using `hG.add hG.comp_neg`. Use `hsum.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℝ))] with y hy`. Establish `hy0 : y ≠ 0` using `hy`. Break down `lt_or_gt_of_ne hy0 with h0 | h0` into its components or cases. Establish `h1 : y ∉ Ioi (0 : ℝ)` using `by simp [h0.le]`. Establish `h2 : -y ∈ Ioi (0 : ℝ)` using `by simpa using h0`.
+
+Simplify using `only [Pi.add_apply, indicator_of_notMem h1, indicator_of_mem h2, zero_add, abs_of_neg h0, hf]`. Establish `h1 : y ∈ Ioi (0 : ℝ)` using `h0`. Establish `h2 : -y ∉ Ioi (0 : ℝ)` using `by simp [h0.le]`. Simplify using `only [Pi.add_apply, indicator_of_mem h1, indicator_of_notMem h2, add_zero, abs_of_pos h0, hf]`.
+-/
 private lemma integrable_weight {a : ℝ} (ha : -1 < a) {r : ℕ} (hr : a + 1 < r) :
     Integrable fun y : ℝ => ((1 + |y|) ^ r)⁻¹ * |y| ^ a := by
   set f : ℝ → ℝ := fun x => ((1 + x) ^ r)⁻¹ * x ^ a with hf
@@ -50,6 +67,11 @@ private lemma integrable_weight {a : ℝ} (ha : -1 < a) {r : ℕ} (hr : a + 1 < 
     simp only [Pi.add_apply, indicator_of_mem h1, indicator_of_notMem h2, add_zero, abs_of_pos h0,
       hf]
 
+/- English proof (translation)
+Use `ContinuousOn.mul (by fun_prop) ?_` and prove the remaining obligations. Introduce `y hy`. Establish `hy0 : 0 < |y|` using `abs_pos.2 hy`. Establish `h1 : ((|y| : ℝ) : ℂ) ∈ Complex.slitPlane` using `Complex.ofReal_mem_slitPlane.2 hy0`. Establish `h2 : ContinuousAt (fun y : ℝ => ((|y| : ℝ) : ℂ)) y` using `by fun_prop`.
+
+Conclude with `(ContinuousAt.comp (f := fun y : ℝ => ((|y| : ℝ) : ℂ)) (g := fun w : ℂ => w ^ z) (continuousAt_cpow_const h1) h2).continuousWithinAt`.
+-/
 private lemma continuousOn_weight (k : ℕ) (z : ℂ) :
     ContinuousOn (fun y : ℝ => (y : ℂ) ^ k * ((|y| : ℝ) : ℂ) ^ z) ({0}ᶜ : Set ℝ) := by
   refine ContinuousOn.mul (by fun_prop) ?_
@@ -60,6 +82,21 @@ private lemma continuousOn_weight (k : ℕ) (z : ℂ) :
   exact (ContinuousAt.comp (f := fun y : ℝ => ((|y| : ℝ) : ℂ)) (g := fun w : ℂ => w ^ z)
     (continuousAt_cpow_const h1) h2).continuousWithinAt
 
+/- English proof (translation)
+Introduce `W c k s hW hc hc1 hdec hs`. Take `⟨a, hadef⟩ : ∃ a : ℝ, a = k + s.re - 2` from `⟨_, rfl⟩`. Establish `ha : -1 < a` using `by rw [hadef]; linarith`. Take `⟨r, hr⟩` from `exists_nat_gt (a + 1)`. Take `⟨B, hB⟩` from `hdec r`.
+
+Establish `hae : ∀ᵐ y : ℝ, y ∈ ({0}ᶜ : Set ℝ)` using `compl_mem_ae_iff.2 (measure_singleton (0 : ℝ))`. Establish `hint : Integrable fun y : ℝ => |B| * (((1 + |y|) ^ r)⁻¹ * |y| ^ a)` using `(integrable_weight ha hr).const_mul _`. Establish `hnorm : ∀ t, ∀ᵐ y : ℝ, ‖W y t * c y * (y : ℂ) ^ k * ((|y| : ℝ) : ℂ) ^ (s - 2)‖ ≤ |B| * (((1 + |y|) ^ r)⁻¹ * |y| ^ a)`. Introduce `t`. Use `filter_upwards [hae] with y hy`.
+
+Establish `hy0 : 0 < |y|` using `abs_pos.2 hy`. Establish `hw : ‖(y : ℂ) ^ k * ((|y| : ℝ) : ℂ) ^ (s - 2)‖ = |y| ^ a`. Rewrite using `[norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, Complex.norm_cpow_eq_rpow_re_of_pos hy0, hadef, ← Real.rpow_natCast, ← Real.rpow_add hy0]`. Use `congr 1`. Simplify using `only [Complex.sub_re, Complex.re_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hp : 0 ≤ |y| ^ a` using `Real.rpow_nonneg hy0.le _`. Establish `hinv : 0 ≤ ((1 + |y|) ^ r)⁻¹` using `by positivity`. Rewrite using `[mul_assoc, norm_mul, norm_mul, hc1, mul_one, hw]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hmeas : ∀ t, AEStronglyMeasurable (fun y : ℝ => W y t * c y * (y : ℂ) ^ k * ((|y| : ℝ) : ℂ) ^ (s - 2)) volume`. Introduce `t`. Establish `h1 : ContinuousOn (fun y : ℝ => W y t) ({0}ᶜ : Set ℝ)` using `ContinuousOn.comp (g := fun p : ℝ × ℝ => W p.1 p.2) (f := fun y : ℝ => (y, t)) hW (by fun_prop) (fun y hy => ⟨hy, trivial⟩)`. Establish `h2 : ContinuousOn (fun y : ℝ => W y t * c y * (y : ℂ) ^ k * ((|y| : ℝ) : ℂ) ^ (s - 2)) ({0}ᶜ : Set ℝ)`. Use `((h1.mul hc).mul (continuousOn_weight k (s - 2))).congr ?_` and prove the remaining obligations.
+
+Introduce `y _`. Simplify using `only [Pi.mul_apply, mul_assoc]`. Establish `h3` using `h2.aestronglyMeasurable (μ := volume) isOpen_compl_singleton.measurableSet`. Rewrite `h3` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis. Use `⟨fun t => Integrable.mono' hint (hmeas t) (hnorm t), ?_⟩` and prove the remaining obligations.
+
+Use `continuous_of_dominated hmeas hnorm hint ?_` and prove the remaining obligations. Use `filter_upwards [hae] with y hy`. Establish `h1 : Continuous fun t : ℝ => W y t` using `hW.comp_continuous (f := fun t : ℝ => (y, t)) (by fun_prop) (fun t => ⟨hy, trivial⟩)`. Conclude with `((h1.mul continuous_const).mul continuous_const).mul continuous_const`.
+-/
 theorem UpperTheory.integrable_and_continuous_mellinIntegral_of_rapidDecay :
     ∀ (W : ℝ → ℝ → ℂ) (c : ℝ → ℂ) (k : ℕ) (s : ℂ),
         ContinuousOn (fun p : ℝ × ℝ => W p.1 p.2) (({0}ᶜ : Set ℝ) ×ˢ Set.univ) →

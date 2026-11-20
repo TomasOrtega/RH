@@ -6,6 +6,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.KernelSeminorm
 
+/- English proof (translation)
+Introduce `D` and use `GlobalTheory.KernelSeminorm.thetaGrowth D`.
+-/
 theorem thetaGrowth_onObjects : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.ThetaKernelGrowth.ThetaGrowth D :=
   fun D => GlobalTheory.KernelSeminorm.thetaGrowth D
 

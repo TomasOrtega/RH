@@ -8,6 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PlugPt
 
+/- English proof (translation)
+Introduce `D O c b h hF hR htw`. Take `⟨hc, hpb, -, hL, hD⟩` from `GlobalTheory.T.pathCoreConditions_of_intrinsicConditions D O c b h hF`. Take `⟨hT, hRay⟩` from `h`. Conclude with `{ real := hR, core := hc, pb := hpb, types := hT.types, series := hT.series, level := hL, data := hD, psiVal := hT.psiVal, ray := hT.small.ray, roots := hT.small.roots, rayQ := hRay, twist := htw }`.
+-/
 theorem ties_of_tiesB : ∀ (D : D7) (O : GlobalTheory.EX.OB.Obj D) (c : ℝ) (b : BdPt D O c), TiesB D O c b →
     GlobalTheory.FinalJoin2.FieldSmall D O.L → b.Realised → GlobalTheory.EX.DQ.TwAllAt D O.ex.nch O.ex.xd → b.Ties := by
   intro D O c b h hF hR htw

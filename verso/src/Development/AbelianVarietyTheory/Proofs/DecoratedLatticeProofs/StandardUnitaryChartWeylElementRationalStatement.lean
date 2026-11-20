@@ -11,5 +11,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec sZero)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdUnn.chart_weyl | exact GlobalTheory.StdUnn.chart_weyl | (intros; apply GlobalTheory.StdUnn.chart_weyl <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.standardUnitaryChart_weylElement_rational : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∀ g : GA D (dblSp A), mat (κ g) = blk4 0 1 (-1) 0 → IsWeyl A g ∧ mt (dblSp A) g ⬝ (dblDec A).jX = -(incA D μ • (dblDec A).jY) ∧ mt (dblSp A) g ⬝ (dblDec A).jY = incA D μ⁻¹ • (dblDec A).jX := by
   first | exact @GlobalTheory.StdUnn.chart_weyl | exact GlobalTheory.StdUnn.chart_weyl | (intros; apply GlobalTheory.StdUnn.chart_weyl <;> assumption)

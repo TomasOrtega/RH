@@ -12,6 +12,9 @@ open NumberField ReciprocityTheory.Gal Formalism.ConjugateSelfDual IsDedekindDom
 
 namespace GlobalTheory.LFun.SatBridge
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LocalData.isLocalField w HasSatake π α → GlobalTheory.LFun.HasSatGL w π (Finset.univ.val.map α) := by intro E _ _ w n V _ _ π α letI := GlobalTheory.LocalData.complRel w haveI := GlobalTheory.LocalData.isLocalField w intro h exact GlobalTheory.LFun.SatCompare.hasSatG …`.
+-/
 theorem hasSatGL_of_hasSatake : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ)
     (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V)
     (α : Fin n → ℂˣ),

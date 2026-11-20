@@ -16,6 +16,13 @@ section Help
 
 variable {S : Type} [CommRing S] {d n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : MvPowerSeries.HasSubst a` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha s]; exact IsNilpotent.zero)`. Establish `h2 : MvPowerSeries.HasSubst (fun t => a (ρ t))` using `by first`.
+
+Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero (fun t => ha (ρ t))`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun t => ha (ρ t))`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun t => by rw [ha (ρ t)]; exact IsNilpotent.zero)`. Rewrite using `[← MvPowerSeries.coe_substAlgHom h1, ← MvPowerSeries.coe_substAlgHom h2]`. Use `erw [MvPowerSeries.substAlgHom_coe, MvPowerSeries.substAlgHom_coe, MvPolynomial.aeval_rename]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem subst_rename_lemma {σ τ υ R : Type} [CommRing R] [Finite σ] [Finite τ]
     (a : σ → MvPowerSeries υ R) (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (ρ : τ → σ)
     (q : MvPolynomial τ R) :
@@ -35,10 +42,18 @@ private theorem subst_rename_lemma {σ τ υ R : Type} [CommRing R] [Finite σ] 
   erw [MvPowerSeries.substAlgHom_coe, MvPowerSeries.substAlgHom_coe, MvPolynomial.aeval_rename]
   rfl
 
+/- English proof (translation)
+Simplify using `only [psIn, MvPolynomial.constantCoeff_rename, ExpGB.cc_psTrunc', hg]`.
+-/
 theorem cc_psIn (m : ℕ) (i : Fin n) (g : MvPowerSeries (Fin 1 × Fin d) S) (hg : MvPowerSeries.constantCoeff g = 0) :
     MvPolynomial.constantCoeff (psIn d m ![i] g) = 0 := by
   simp only [psIn, MvPolynomial.constantCoeff_rename, ExpGB.cc_psTrunc', hg]
 
+/- English proof (translation)
+Simplify using `only [psIn]`. Rewrite using `[subst_rename_lemma Q hQ, ExpGF.psJet_subst_trunc m _ (fun _ => hQ _) g]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem psJet_subst_psIn {ι' : Type} [Fintype ι'] [DecidableEq ι'] (m : ℕ) (i : Fin n)
     (Q : Fin n × Fin d → MvPowerSeries ι' S) (hQ : ∀ p, MvPowerSeries.constantCoeff (Q p) = 0)
     (g : MvPowerSeries (Fin 1 × Fin d) S) :
@@ -54,6 +69,41 @@ theorem psJet_subst_psIn {ι' : Type} [Fintype ι'] [DecidableEq ι'] (m : ℕ) 
 end Help
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ S _ _ _ y C φ hφ hx hact a' wL hrel m u0 u1 z J hJ`. Establish `hφ0 : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0` using `hφ.const`. Take `⟨u, hu, hc⟩` from `hrel m`. Set `P : Fin 2 → Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S` to `![φa c φ u0, φa c φ u1]`. Establish `hP : ∀ i j, MvPowerSeries.constantCoeff (P i j) = 0`.
+
+Rewrite using `[Fin.forall_fin_two]`. Conclude with `⟨fun j => const_φa c φ hφ0 u0 j, fun j => const_φa c φ hφ0 u1 j⟩`. Set `Q : Fin 2 × Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S` to `fun p => P p.1 p.2`. Establish `hQ : ∀ p, MvPowerSeries.constantCoeff (Q p) = 0` using `fun p => hP p.1 p.2`. Establish `hQs : MvPowerSeries.HasSubst Q` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hQ`.
+
+Establish `hQ0 : ∀ j, Q ((0 : Fin 2), j) = φa c φ u0 j` using `fun j => rfl`. Establish `hQ1 : ∀ j, Q ((1 : Fin 2), j) = φa c φ u1 j` using `fun j => rfl`. Establish `hpt : (ptm C P m).left ≫ (lift (jpt y C.d C.x m (0 : Fin 2)) (jpt y C.d C.x m (1 : Fin 2))).left = (xExp y C φ m).left ≫ (lift (Xo.univ.t.act.act u0) (Xo.univ.t.act.act u1)).left`. Establish `hPe : (fun k => φa c φ ((![u0, u1] : Fin 2 → 𝓞 E) k)) = P`. Use function extensionality and compare the values at `k`.
+
+Use `Fin.cases rfl (fun k' => ?_) k` and prove the remaining obligations. Rewrite using `[Fin.fin_one_eq_zero k']`. Both sides reduce to the same expression. Establish `e0` using `ptm_jpt C φ hφ0 hx m ![u0, u1] 0`. Establish `e1` using `ptm_jpt C φ hφ0 hx m ![u0, u1] 1`.
+
+Rewrite `e0`, `e1` using `[hPe]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, comp_lift, comp_lift, e0, e1]`. Both sides reduce to the same expression. Set `σa : Fin 2 × Fin C.d → MvPolynomial (Fin 2 × Fin C.d) S` to `fun p => (![fun j => psIn C.d m ![0] (C.B.A.act a' j), fun j => MvPolynomial.X ((1 : Fin 2), j)] : Fin 2 → Fin C.d → MvPolynomial (Fin 2 × Fin C.d) S) p.1 p.2`. Set `σb : Fin 2 × Fin C.d → MvPolynomial (Fin 2 × Fin C.d) S` to `fun p => (![fun j => MvPolynomial.X ((0 : Fin 2), j), fun j => psIn C.d m ![1] (C.B.A.act (H.bar a') j)] : Fin 2 → Fin C.d → MvPolynomial (Fin 2 × Fin C.d) S) p.1 p.2`.
+
+Establish `ea0 : ∀ j, σa ((0 : Fin 2), j) = psIn C.d m ![0] (C.B.A.act a' j)` using `fun j => rfl`. Establish `ea1 : ∀ j, σa ((1 : Fin 2), j) = MvPolynomial.X ((1 : Fin 2), j)` using `fun j => rfl`. Establish `eb0 : ∀ j, σb ((0 : Fin 2), j) = MvPolynomial.X ((0 : Fin 2), j)` using `fun j => rfl`. Establish `eb1 : ∀ j, σb ((1 : Fin 2), j) = psIn C.d m ![1] (C.B.A.act (H.bar a') j)` using `fun j => rfl`. Establish `hσa : ∀ k, MvPolynomial.constantCoeff (σa k) = 0`.
+
+Introduce and unpack `⟨i, j⟩`. Use `revert j`. Use `revert i`. Rewrite using `[Fin.forall_fin_two]`. Conclude with `⟨fun j => by rw [ea0]; exact cc_psIn m 0 _ (C.B.A.const a' j), fun j => by rw [ea1]; simp⟩`.
+
+Establish `hσb : ∀ k, MvPolynomial.constantCoeff (σb k) = 0`. Introduce and unpack `⟨i, j⟩`. Use `revert j`. Use `revert i`. Rewrite using `[Fin.forall_fin_two]`.
+
+Conclude with `⟨fun j => by rw [eb0]; simp, fun j => by rw [eb1]; exact cc_psIn m 1 _ (C.B.A.const (H.bar a') j)⟩`. Establish `hcc : ∀ (σ : Fin 2 × Fin C.d → MvPolynomial (Fin 2 × Fin C.d) S), (∀ k, MvPolynomial.constantCoeff (σ k) = 0) → ∀ i j, MvPowerSeries.constantCoeff (MvPowerSeries.subst Q ((σ (i, j) : MvPolynomial _ S) : MvPowerSeries (Fin 2 × Fin C.d) S)) = 0`. Introduce `σ hσ i j`. Use `const_substPS Q hQ _ ?_` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPolynomial.coeff_coe]`.
+
+Conclude with `hσ (i, j)`. Establish `hPa : ∀ i j, MvPowerSeries.constantCoeff ((![φa c φ (a' * u0), φa c φ u1] : Fin 2 → Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S) i j) = 0`. Rewrite using `[Fin.forall_fin_two]`. Conclude with `⟨fun j => const_φa c φ hφ0 _ j, fun j => const_φa c φ hφ0 _ j⟩`. Establish `hPb : ∀ i j, MvPowerSeries.constantCoeff ((![φa c φ u0, φa c φ (H.bar a' * u1)] : Fin 2 → Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S) i j) = 0`.
+
+Rewrite using `[Fin.forall_fin_two]`. Conclude with `⟨fun j => const_φa c φ hφ0 _ j, fun j => const_φa c φ hφ0 _ j⟩`. Establish `hma : (ptm C P m).left ≫ (homAt y.x (jetSubstP m σa)).left = (ptm C ![φa c φ (a' * u0), φa c φ u1] m).left`. Rewrite using `[← Over.comp_left, ptm_subst C P hP m σa hσa]`. Use `congrArg Over.Hom.left (ptm_congr C (hcc σa hσa) hPa m ?_)` and prove the remaining obligations.
+
+Rewrite using `[Fin.forall_fin_two]`. Use `⟨fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[ea0, psJet_subst_psIn m 0 Q hQ]`. Conclude with `congrArg (psJet m) (act_φa c hφ0 hact a' u0 j)`. Rewrite using `[ea1, MvPolynomial.coe_X, MvPowerSeries.subst_X hQs, hQ1]`.
+
+Both sides reduce to the same expression. Establish `hmb : (ptm C P m).left ≫ (homAt y.x (jetSubstP m σb)).left = (ptm C ![φa c φ u0, φa c φ (H.bar a' * u1)] m).left`. Rewrite using `[← Over.comp_left, ptm_subst C P hP m σb hσb]`. Use `congrArg Over.Hom.left (ptm_congr C (hcc σb hσb) hPb m ?_)` and prove the remaining obligations. Rewrite using `[Fin.forall_fin_two]`.
+
+Use `⟨fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[eb0, MvPolynomial.coe_X, MvPowerSeries.subst_X hQs, hQ0]`. Both sides reduce to the same expression. Rewrite using `[eb1, psJet_subst_psIn m 1 Q hQ]`. Conclude with `congrArg (psJet m) (act_φa c hφ0 hact (H.bar a') u1 j)`.
+
+Establish `va : val (pe y C.d C.x C.e m ![fun j => psIn C.d m ![0] (C.B.A.act a' j), fun j => MvPolynomial.X ((1 : Fin 2), j)]) (ptm C P m).left z J = val (C.e m) (ptm C ![φa c φ (a' * u0), φa c φ u1] m).left z J` using `(show _ = val (C.e m) ((ptm C P m).left ≫ (homAt y.x (jetSubstP m σa)).left) z J from val_pull hJ _ _ _).trans (congrArg (fun r => val (C.e m) r z J) hma)`. Establish `vb : val (pe y C.d C.x C.e m ![fun j => MvPolynomial.X ((0 : Fin 2), j), fun j => psIn C.d m ![1] (C.B.A.act (H.bar a') j)]) (ptm C P m).left z J = val (C.e m) (ptm C ![φa c φ u0, φa c φ (H.bar a' * u1)] m).left z J` using `(show _ = val (C.e m) ((ptm C P m).left ≫ (homAt y.x (jetSubstP m σb)).left) z J from val_pull hJ _ _ _).trans (congrArg (fun r => val (C.e m) r z J) hmb)`. Establish `vw : val (LB.pullGen Xo.univ.t.PP.L _ _ wL (lift (jpt y C.d C.x m (0 : Fin 2)) (jpt y C.d C.x m (1 : Fin 2))).left) (ptm C P m).left z J = val (LB.pullGen Xo.univ.t.PP.L _ _ wL (lift (Xo.univ.t.act.act u0) (Xo.univ.t.act.act u1)).left) (xExp y C φ m).left z J`. Rewrite using `[val_pull hJ, val_pull hJ, hpt]`. Establish `hg : gm (ptm C P m).left z ⊤ (unitΓ u) = gm (𝟙 _) z ⊤ (unitΓ (Units.map (jetSubstPS (m` using `m) Q).toMonoidHom u)) := ExpGI.gm_homAt _ z u`.
+
+Establish `h1` using `val_corr hJ hc (ptm C P m).left`. Rewrite `h1` using `[val_mul hJ, ExpGD.val_scale' _ _ _ _ _ z J hJ, va, vb, vw, hg]`. Use `⟨Units.map (jetSubstPS (m := m) Q).toMonoidHom u, ?_, ?_⟩` and prove the remaining obligations. Use `show jetSubstPS (m := m) Q (u : Jet S (Fin 2 × Fin C.d) m) = psJet m (atP P (C.B.ad a'))`. Rewrite using `[hu, jetSubstPS_psJet m Q hQ]`.
+
+Both sides reduce to the same expression. Rewrite using `[← _root_.mul_assoc, eq_mul_inv_iff_mul_eq]`. Conclude with `h1`.
+-/
 theorem adVal : AdValSt := by
   intro E _ _ _ H Dw l Xo c _ S _ _ _ y C φ hφ hx hact a' wL hrel m u0 u1 z J hJ
   have hφ0 : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0 := hφ.const

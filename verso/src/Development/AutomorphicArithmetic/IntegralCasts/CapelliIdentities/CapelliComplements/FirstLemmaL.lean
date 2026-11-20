@@ -2,6 +2,19 @@ import Mathlib
 
 namespace Bl.FirstLemmaL
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ φ hφ hid F hF M hM`. Establish `hT : MeasureTheory.MeasurePreserving (MeasurableEquiv.shearMulRight G) (μ.prod μ) (μ.prod μ)` using `MeasureTheory.measurePreserving_prod_mul μ μ`. Establish `hcomp : ((fun p : G × G => φ p.1 * φ (p.1⁻¹ * p.2) * F p.2) ∘ (MeasurableEquiv.shearMulRight G)) = fun p : G × G => φ p.1 * (φ p.2 * F (p.1 * p.2))`. Use function extensionality and compare the values at `p`. Simplify using `[MeasurableEquiv.shearMulRight, mul_assoc]`.
+
+Establish `hGi : MeasureTheory.Integrable (fun p : G × G => φ p.1 * (φ p.2 * F (p.1 * p.2))) (μ.prod μ)`. Establish `h1 : MeasureTheory.Integrable (fun p : G × G => φ p.1 * φ p.2) (μ.prod μ)` using `hφ.mul_prod hφ`. Establish `h2` using `h1.mul_bdd (c := M) (g := fun p : G × G => F (p.1 * p.2)) ((hF.comp continuous_mul).aestronglyMeasurable) (Filter.Eventually.of_forall fun p => hM _)`. Use `h2.congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+
+Establish `hHi : MeasureTheory.Integrable (fun p : G × G => φ p.1 * φ (p.1⁻¹ * p.2) * F p.2) (μ.prod μ)`. Rewrite using `[← hT.integrable_comp_emb (MeasurableEquiv.measurableEmbedding _), hcomp]`. Conclude with `hGi`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[MeasureTheory.integral_prod _ hGi]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only`. Conclude with `(MeasureTheory.integral_const_mul _ _).symm`. Use `_ = ∫ p, ((fun p : G × G => φ p.1 * φ (p.1⁻¹ * p.2) * F p.2) ∘ (MeasurableEquiv.shearMulRight G)) p ∂(μ.prod μ) := by`.
+
+Rewrite using `[hcomp]`. Use `_ = ∫ p, (fun p : G × G => φ p.1 * φ (p.1⁻¹ * p.2) * F p.2) p ∂(μ.prod μ) := hT.integral_comp' (fun p : G × G => φ p.1 * φ (p.1⁻¹ * p.2) * F p.2)`. Use `_ = ∫ w, ∫ y, φ y * φ (y⁻¹ * w) * F w ∂μ ∂μ := MeasureTheory.integral_prod_symm _ hHi`. Use `_ = ∫ w, φ w * F w ∂μ := by`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[MeasureTheory.integral_mul_const, hid]`.
+-/
 theorem goal1 :
   ∀ {G : Type} [inst : Group.{0} G] [inst_1 : TopologicalSpace.{0} G] [IsTopologicalGroup.{0} G]
   [LocallyCompactSpace.{0} G] [SecondCountableTopology.{0} G] [T2Space.{0} G] [inst_6 : MeasurableSpace.{0} G]

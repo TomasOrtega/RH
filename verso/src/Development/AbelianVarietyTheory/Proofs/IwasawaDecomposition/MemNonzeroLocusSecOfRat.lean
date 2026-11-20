@@ -33,6 +33,9 @@ def locFn (D : CartierDiv X) (U : X.Opens) (f : X.functionField) (i : (toLB D).�
 
 variable {D : CartierDiv X} {U : X.Opens} {f : X.functionField}
 
+/- English proof (translation)
+Establish `h2 : ∀ x ∈ U ⊓ (toLB D).U i, RegAt x (f * i.1.2)` using `fun x hx => (i.2.2 x hx.2).regularAt_iff.1 (hf x hx.1)`. Rewrite using `[locFn, dif_pos ⟨h, h2⟩]`. Conclude with `(exists_fnOf_eq h h2).choose_spec`.
+-/
 theorem fnOf_locFn (hf : ∀ x ∈ U, D.RegularAt x f) (i : (toLB D).ι) (h : genericPoint X ∈ U ⊓ (toLB D).U i) :
     fnOf _ h (locFn D U f i) = f * i.1.2 := by
   have h2 : ∀ x ∈ U ⊓ (toLB D).U i, RegAt x (f * i.1.2) := fun x hx =>
@@ -40,6 +43,9 @@ theorem fnOf_locFn (hf : ∀ x ∈ U, D.RegularAt x f) (i : (toLB D).ι) (h : ge
   rw [locFn, dif_pos ⟨h, h2⟩]
   exact (exists_fnOf_eq h h2).choose_spec
 
+/- English proof (translation)
+Introduce `i j` and use `fn_ext fun h => by rw [map_mul, fnOf_resG, fnOf_resG, fnOf_resG, fnOf_locFn hf, fnOf_locFn hf, fnOf_toLB_g] have := Units.ne_zero j.1.2 field_simp`.
+-/
 theorem locFn_mem (hf : ∀ x ∈ U, D.RegularAt x f) : locFn D U f ∈ secOn (toLB D) U := fun i j =>
   fn_ext fun h => by
     rw [map_mul, fnOf_resG, fnOf_resG, fnOf_resG, fnOf_locFn hf, fnOf_locFn hf, fnOf_toLB_g]
@@ -48,6 +54,9 @@ theorem locFn_mem (hf : ∀ x ∈ U, D.RegularAt x f) : locFn D U f ∈ secOn (t
 
 omit [IsIntegral X] in
 
+/- English proof (translation)
+Introduce `i j` and use `by simp`.
+-/
 theorem zero_mem_secOn (L : LB X) : (0 : ∀ i, Γ(X, U ⊓ L.U i)) ∈ secOn L U := fun i j => by
   simp
 
@@ -57,10 +66,18 @@ def secOfRat (D : CartierDiv X) (U : X.Opens) (f : X.functionField) : ((toLB D).
   if hf : ∀ x ∈ U, D.RegularAt x f then KeyNear.pullOn U.ι (fun y => y.2) (locFn D U f) (locFn_mem hf)
   else KeyNear.pullOn U.ι (fun y => y.2) 0 (zero_mem_secOn _)
 
+/- English proof (translation)
+Rewrite using `[secOfRat, dif_pos hf]`.
+-/
 theorem secOfRat_eq (hf : ∀ x ∈ U, D.RegularAt x f) :
     secOfRat D U f = KeyNear.pullOn U.ι (fun y => y.2) (locFn D U f) (locFn_mem hf) := by
   rw [secOfRat, dif_pos hf]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `exists_chart (isLB_toLB D) (U.ι y)`. Rewrite using `[secOfRat_eq hf]`. Establish `hx : U.ι y ∈ U ⊓ (toLB D).U i` using `⟨y.2, hi⟩`. Use `KeyNear.mem_nonzeroLocus_pullOn (i := i) U.ι _ _ _ ?_` and prove the remaining obligations. Rewrite using `[← unitAt_fnOf_iff hx (gen_mem hx), fnOf_locFn hf]`.
+
+Conclude with `(i.2.2 _ hi).generatesAt_iff.1 hy`.
+-/
 theorem mem_nonzeroLocus_secOfRat (hf : ∀ x ∈ U, D.RegularAt x f) (y : U.toScheme)
     (hy : D.GeneratesAt (U.ι y) f) : y ∈ nonzeroLocus (secOfRat D U f) := by
   obtain ⟨i, hi⟩ := exists_chart (isLB_toLB D) (U.ι y)

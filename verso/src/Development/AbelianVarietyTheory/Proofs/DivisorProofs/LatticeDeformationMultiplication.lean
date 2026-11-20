@@ -5,6 +5,51 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsAntilinearNor
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Ω _ _ g K ρ hreal hsep Λ hd hs hΛ V τ hV h0 hτ0 hτd hM`. Take `⟨ρr, hρ⟩ : ∃ ρr : K → Fin g → ℝ, ∀ a j, ((ρr a j : ℝ) : ℂ) = ρ a j` from `⟨fun a j ↦ (ρ a j).re, fun a j ↦ Complex.conj_eq_iff_re.mp (hreal a j)⟩`. Establish `hsepr : ∀ j k, j ≠ k → ∃ a, ρr a j ≠ ρr a k`. Introduce `j k hjk`. Take `⟨a, ha⟩` from `hsep j k hjk`.
+
+Conclude with `⟨a, fun h ↦ ha (by rw [← hρ, ← hρ, h])⟩`. Take `⟨n, b, c, hbc, hφ⟩` from `GlobalTheory.T.lattice_real_coordinate_basis g Λ hd hs`. Take `⟨T, hTapp⟩ : ∃ T : Ω → (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ), ∀ z v, T z v = ∑ i, c i v • τ z (b i)` from `⟨fun z ↦ ∑ i, (c i).smulRight (τ z (b i)), fun z v ↦ by simp⟩`. Establish `hTΛ : ∀ z (x : Λ), T z x = τ z x` using `fun z x ↦ by rw [hTapp]; exact hφ (τ z) x`. Establish `hT0 : ∀ v, T 0 v = v` using `fun v ↦ by rw [hTapp]; simp only [hτ0]; exact hbc v`.
+
+Establish `hTd : ∀ v, DifferentiableOn ℂ (fun z ↦ T z v) V`. Introduce `v`. Simplify using `only [hTapp]`. Use `DifferentiableOn.sum (u := Finset.univ) (A := fun i z ↦ c i v • τ z (b i)) (fun i _ ↦ (hτd (b i)).const_smul (c i v))` as an intermediate fact. Simplify `this` using `[Finset.sum_fn]`.
+
+Establish `hcomm : ∀ z a (M : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ x x' : Λ, (x' : Fin g → ℂ) = (fun j ↦ ρ a j * (x : Fin g → ℂ) j) → τ z x' = M (τ z x)) → ∀ v, T z (fun m ↦ (ρr a m : ℂ) * v m) = M (T z v)`. Introduce `z a M hMz`. Set `Dg : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)` to `{ toFun := fun v m ↦ ρ a m * v m map_add' := by intro v w; ext m; simp [mul_add] map_smul' := by intro r v; ext m; simp; ring }`. Establish `key` using `LinearMap.ext_on (f := (T z).comp Dg) (g := (M.restrictScalars ℝ).comp (T z)) hs (by`. Introduce `x hx`.
+
+Establish `hx' : (fun j ↦ ρ a j * x j) ∈ Λ` using `hΛ a x hx`. Establish `e` using `hMz ⟨x, hx⟩ ⟨_, hx'⟩ rfl`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_restrictScalars]`. Rewrite `e` using `[← hTΛ, ← hTΛ]`. Conclude with `e)`.
+
+Introduce `v`. Use `LinearMap.congr_fun key v` as an intermediate fact. Simplify `this` using `[Dg, hρ]`. Take `⟨α, hα⟩ : ∃ α : Ω → Fin g → ℂ, ∀ z j, α z j = (T z (Pi.single j 1) j - Complex.I * T z (Pi.single j Complex.I) j) / 2` from `⟨_, fun _ _ ↦ rfl⟩`. Take `⟨β, hβ⟩ : ∃ β : Ω → Fin g → ℂ, ∀ z j, β z j = (T z (Pi.single j 1) j + Complex.I * T z (Pi.single j Complex.I) j) / 2` from `⟨_, fun _ _ ↦ rfl⟩`.
+
+Establish `hTs : ∀ z j (y : ℂ), T z (Pi.single j y) j = α z j * y + β z j * starRingEnd ℂ y`. Introduce `z j y`. Establish `hy : (Pi.single j y : Fin g → ℂ) = y.re • (Pi.single j 1 : Fin g → ℂ) + y.im • (Pi.single j Complex.I : Fin g → ℂ)`. Use extensionality with `m`. Break down `eq_or_ne m j with rfl | h` into its components or cases.
+
+Simplify using `only [Pi.single_eq_same, Pi.add_apply, Pi.smul_apply, Complex.real_smul, mul_one]`. Conclude with `(Complex.re_add_im y).symm`. Simplify using `[h]`. Rewrite using `[hy, map_add, map_smul, map_smul, hα, hβ]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Complex.real_smul]`.
+
+Establish `hc : starRingEnd ℂ y = (y.re : ℂ) - (y.im : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Rewrite using `[hc]`. Establish `hy2 : y = (y.re : ℂ) + (y.im : ℂ) * Complex.I` using `(Complex.re_add_im y).symm`. Take the linear combination `(-(T z (Pi.single j 1) j - Complex.I * T z (Pi.single j Complex.I) j) / 2) * hy2 + ((y.im : ℂ) * T z (Pi.single j Complex.I) j) * Complex.I_sq`.
+
+Establish `hα0 : ∀ j, α 0 j = 1`. Introduce `j`. Rewrite using `[hα, hT0, hT0]`. Simplify using `[Complex.I_mul_I]`. Establish `hβ0 : ∀ j, β 0 j = 0`.
+
+Introduce `j`. Rewrite using `[hβ, hT0, hT0]`. Simplify using `[Complex.I_mul_I]`. Establish `hαd : ∀ j, DifferentiableOn ℂ (fun z ↦ α z j) V`. Introduce `j`.
+
+Simplify using `only [hα]`. Establish `h3 : DifferentiableOn ℂ (fun z ↦ T z (Pi.single j 1) j - Complex.I * T z (Pi.single j Complex.I) j) V` using `(differentiableOn_pi.1 (hTd _) j).sub ((differentiableOn_pi.1 (hTd _) j).const_mul Complex.I)`. Simplify `h3.mul_const (2 : ℂ)⁻¹` using `[div_eq_mul_inv]`. Establish `hβd : ∀ j, DifferentiableOn ℂ (fun z ↦ β z j) V`. Introduce `j`.
+
+Simplify using `only [hβ]`. Establish `h3 : DifferentiableOn ℂ (fun z ↦ T z (Pi.single j 1) j + Complex.I * T z (Pi.single j Complex.I) j) V` using `(differentiableOn_pi.1 (hTd _) j).add ((differentiableOn_pi.1 (hTd _) j).const_mul Complex.I)`. Simplify `h3.mul_const (2 : ℂ)⁻¹` using `[div_eq_mul_inv]`. Use `set V' : Set Ω := V ∩ ⋂ j, (V ∩ (fun z ↦ ‖α z j‖ - ‖β z j‖) ⁻¹' Set.Ioi 0) with hV'`. Establish `hV'o : IsOpen V'`.
+
+Use `hV.inter (isOpen_iInter_of_finite fun j ↦ ContinuousOn.isOpen_inter_preimage ?_ hV isOpen_Ioi)` and prove the remaining obligations. Conclude with `((hαd j).continuousOn.norm).sub (hβd j).continuousOn.norm`. Establish `hV'm : ∀ z ∈ V', z ∈ V ∧ ∀ j, ‖β z j‖ < ‖α z j‖`. Introduce `z hz`. Simplify using `only [hV', Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, Set.mem_Ioi, sub_pos] at hz`.
+
+Conclude with `⟨hz.1, fun j ↦ (hz.2 j).2⟩`. Establish `h0' : (0 : Ω) ∈ V'`. Simplify using `only [hV', Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, Set.mem_Ioi, sub_pos, hα0, hβ0]`. Simplify using `[h0]`. Establish `hαne : ∀ z ∈ V', ∀ j, α z j ≠ 0` using `fun z hz j ↦ norm_pos_iff.mp (lt_of_le_of_lt (norm_nonneg _) ((hV'm z hz).2 j))`.
+
+Take `⟨ζ, hζ⟩ : ∃ ζ : Ω → Fin g → ℂ, ∀ z j, ζ z j = β z j / α z j` from `⟨_, fun _ _ ↦ rfl⟩`. Establish `hζd : DifferentiableOn ℂ ζ V'`. Use `differentiableOn_pi.2 fun j ↦ ?_` and prove the remaining obligations. Simplify using `only [hζ]`. Establish `hsub : V' ⊆ V` using `fun z hz ↦ (hV'm z hz).1`.
+
+Simplify using `only [div_eq_mul_inv]`. Conclude with `((hβd j).mono hsub).mul (((hαd j).mono hsub).inv fun z hz ↦ hαne z hz j)`. Establish `hpt : ∀ z ∈ V', ∃ Dz : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), (∀ v, Dz (T z v) = fun j ↦ v j + β z j / α z j * starRingEnd ℂ (v j)) ∧ ∀ a (M : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ v, T z (fun m ↦ (ρr a m : ℂ) * v m) = M (T z v)) → ∀ w, Dz (M w) = fun j ↦ (ρr a j : ℂ) * Dz w j`. Introduce `z hz`. Establish `hMex : ∀ a, ∃ M : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ v, T z (fun m ↦ (ρr a m : ℂ) * v m) = M (T z v)` using `fun a ↦ by`.
+
+Take `⟨M, hMz⟩` from `hM z (hV'm z hz).1 a`. Conclude with `⟨M, hcomm z a M hMz⟩`. Take `⟨Dz, h1, h2⟩` from `GlobalTheory.T.exists_antilinear_normal_form g (T z) (GlobalTheory.T.exists_coordinate_projection_complex g K ρr hsepr (T z) hMex) (α z) (β z) (hV'm z hz).2 (hTs z)`. Conclude with `⟨Dz, h1, fun a M hMa w ↦ h2 (ρr a) M hMa w⟩`. Set `D : Ω → (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `fun z ↦ if hz : z ∈ V' then Classical.choose (hpt z hz) else LinearEquiv.refl ℂ _`.
+
+Use `⟨V', D, ζ, hV'o, h0', fun z hz ↦ (hV'm z hz).1, hζd, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[hζ, hβ0]`. Simplify using the standard rewrite rules. Introduce `z hz j`.
+
+Rewrite using `[hζ, norm_div, div_lt_one (norm_pos_iff.mpr (hαne z hz j))]`. Conclude with `(hV'm z hz).2 j`. Introduce `z hz x`. Use `(Classical.choose_spec (hpt z hz)).1 x` as an intermediate fact. Simplify using `only [D, dif_pos hz]`.
+
+Rewrite using `[← hTΛ, this]`. Use function extensionality and compare the values at `j`. Rewrite using `[hζ]`. Introduce `z hz a M hMz w`. Use `(Classical.choose_spec (hpt z hz)).2 a M (hcomm z a M hMz) w` as an intermediate fact.
+
+Simplify using `only [D, dif_pos hz]`. Rewrite using `[this]`. Simplify using `only [hρ]`.
+-/
 theorem diag_coords_of_holomorphic_lattice_family : ∀ (Ω : Type) [NormedAddCommGroup Ω] [NormedSpace ℂ Ω] (g : ℕ) (K : Type) (ρ : K → Fin g → ℂ),
     (∀ a j, starRingEnd ℂ (ρ a j) = ρ a j) → (∀ j k, j ≠ k → ∃ a, ρ a j ≠ ρ a k) →
     ∀ (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ →

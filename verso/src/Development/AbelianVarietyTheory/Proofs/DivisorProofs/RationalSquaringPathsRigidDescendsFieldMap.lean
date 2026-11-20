@@ -9,12 +9,28 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.QCoh GlobalThe
 open GlobalTheory.Twist (resM)
 open scoped CategoryTheory.Obj RatFunc
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.Nef.RatRigidField.spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
     (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]; rfl
 
 namespace GlobalTheory.Nef
 
+/- English proof (translation)
+Take `⟨β, hβ⟩` from `h`. Establish `hinjP : Function.Injective ((algebraMap (PowerSeries Ω) (LaurentSeries Ω)).comp (PowerSeries.map φ))` using `(IsFractionRing.injective (PowerSeries Ω) (LaurentSeries Ω)).comp (PowerSeries.map_injective φ φ.injective)`. Establish `hinjR : Function.Injective ((algebraMap (Polynomial Ω) (RatFunc Ω)).comp (Polynomial.mapRingHom φ))` using `(IsFractionRing.injective (Polynomial Ω) (RatFunc Ω)).comp (Polynomial.map_injective φ φ.injective)`. Choose the witnesses or unpack the hypotheses as in `⟨ψ, hψ⟩ : ∃ ψ : LaurentSeries F →+* LaurentSeries Ω, ψ.comp (algebraMap (PowerSeries F) (LaurentSeries F)) = (algebraMap (PowerSeries Ω) (LaurentSeries Ω)).comp (PowerSeries.map φ) := by`. Use `⟨IsFractionRing.lift hinjP, ?_⟩` and prove the remaining obligations.
+
+Use `ext1 x`. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]`. Choose the witnesses or unpack the hypotheses as in `⟨ρ, hρ0⟩ : ∃ ρ : RatFunc F →+* RatFunc Ω, ρ.comp (algebraMap (Polynomial F) (RatFunc F)) = (algebraMap (Polynomial Ω) (RatFunc Ω)).comp (Polynomial.mapRingHom φ) := by`. Use `⟨IsFractionRing.lift hinjR, RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]`.
+
+Establish `hpol : ((algebraMap (RatFunc Ω) (LaurentSeries Ω)).comp ρ).comp (algebraMap (Polynomial F) (RatFunc F)) = (ψ.comp (algebraMap (RatFunc F) (LaurentSeries F))).comp (algebraMap (Polynomial F) (RatFunc F))`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Establish `h1 : ρ (algebraMap (Polynomial F) (RatFunc F) p) = algebraMap (Polynomial Ω) (RatFunc Ω) (p.map φ)`. Use `congrArg (fun f => f p) hρ0` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2 : ψ (algebraMap (PowerSeries F) (LaurentSeries F) (p : PowerSeries F)) = algebraMap (PowerSeries Ω) (LaurentSeries Ω) (PowerSeries.map φ (p : PowerSeries F))` using `congrArg (fun f => f (p : PowerSeries F)) hψ`. Establish `h3 : PowerSeries.map φ (p : PowerSeries F) = ((p.map φ : Polynomial Ω) : PowerSeries Ω)`. Use extensionality with `n`. Simplify using `[Polynomial.coeff_map]`. Establish `hc : ∀ (K : Type) [Field K] (q : Polynomial K), algebraMap (RatFunc K) (LaurentSeries K) (algebraMap (Polynomial K) (RatFunc K) q) = algebraMap (PowerSeries K) (LaurentSeries K) (q : PowerSeries K)` using `fun K _ q => (RatFunc.coe_coe q).symm`.
+
+Simplify using `only [RingHom.comp_apply]`. Rewrite using `[h1, hc, hc, h2, h3]`. Establish `hρ : (algebraMap (RatFunc Ω) (LaurentSeries Ω)).comp ρ = ψ.comp (algebraMap (RatFunc F) (LaurentSeries F))` using `IsLocalization.ringHom_ext (M := nonZeroDivisors (Polynomial F)) (S := RatFunc F) hpol`. Use `⟨spMap ρ ≫ β, ?_⟩` and prove the remaining obligations. Establish `e1 : spMap (algebraMap (RatFunc Ω) (LaurentSeries Ω)) ≫ spMap ρ = spMap ψ ≫ spMap (algebraMap (RatFunc F) (LaurentSeries F))`.
+
+Rewrite using `[← RatRigidField.spMap_comp, ← RatRigidField.spMap_comp, hρ]`. Establish `e2 : spMap ψ ≫ spMap (algebraMap (PowerSeries F) (LaurentSeries F)) = spMap (algebraMap (PowerSeries Ω) (LaurentSeries Ω)) ≫ spMap (PowerSeries.map φ)`. Rewrite using `[← RatRigidField.spMap_comp, ← RatRigidField.spMap_comp, hψ]`. Rewrite using `[← Category.assoc, e1, Category.assoc, hβ, ← Category.assoc, e2, Category.assoc]`.
+-/
 theorem isRatPath_map {F Ω : Type} [Field F] [Field Ω] (φ : F →+* Ω) {Y : Scheme.{0}}
     (ξ : Sp (PowerSeries F) ⟶ Y) (h : IsRatPath ξ) : IsRatPath (spMap (PowerSeries.map φ) ≫ ξ) := by
   obtain ⟨β, hβ⟩ := h
@@ -71,6 +87,11 @@ end GlobalTheory.Nef
 
 namespace GlobalTheory.Nef
 
+/- English proof (translation)
+Introduce `ξ hξ hr`. Establish `hp` using `((GlobalTheory.T.formalSquaringPaths_baseChange_and_hom).1 S G F Ω φ 2 1 b ξ hξ).1`. Rewrite `hp` using `[PowerSeries.rescale_one, RingHom.id_comp, map_ofNat]`. Establish `e` using `h _ hp (isRatPath_map φ ξ hr)`. Establish `hC : (PowerSeries.map φ).comp (PowerSeries.C (R` using `F)) = (PowerSeries.C (R := Ω)).comp φ := by ext1 x; simp`.
+
+Establish `ht : spMap (PowerSeries.map φ) ≫ triv G b = triv G (spMap φ ≫ b)`. Simplify using `only [triv]`. Rewrite using `[← Category.assoc, ← RatRigidField.spMap_comp, hC, RatRigidField.spMap_comp]`. Simplify using `only [Category.assoc]`. Conclude with `(GlobalTheory.T.spec_injectiveRingMap_cancellation).1 _ _ (PowerSeries.map φ) (PowerSeries.map_injective φ φ.injective) _ _ _ (e.trans ht.symm)`.
+-/
 theorem ratRigid_of_field_map (S : Scheme.{0}) (G : Over S) [GrpObj G] (F Ω : Type) [Field F] [Field Ω]
     (φ : F →+* Ω) (b : Sp F ⟶ S) (h : RatRigid G (spMap φ ≫ b)) : RatRigid G b := by
   intro ξ hξ hr

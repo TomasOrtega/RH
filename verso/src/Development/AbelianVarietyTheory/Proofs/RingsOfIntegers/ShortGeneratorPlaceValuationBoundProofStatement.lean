@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.RingsOfIntegers.ShortGeneratorPla
 import Development.AbelianVarietyTheory.Statements.ShortVectorBound.ScaledLatticesInSupLattices
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.DIV.Cons Formalism.L2.Pj GlobalTheory.PtTie GlobalTheory.PlaceTop
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ShortBound.shortBound | exact GlobalTheory.ShortBound.shortBound | (intros; apply GlobalTheory.ShortBound.shortBound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.shortGeneratorPlaceValuationBound_proof : ShortBoundSt := by
   first | exact @GlobalTheory.ShortBound.shortBound | exact GlobalTheory.ShortBound.shortBound | (intros; apply GlobalTheory.ShortBound.shortBound <;> assumption)

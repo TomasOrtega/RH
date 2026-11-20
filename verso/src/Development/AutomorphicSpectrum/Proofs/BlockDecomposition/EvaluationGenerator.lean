@@ -17,8 +17,14 @@ variable {V : Type} [AddCommGroup V] [Module ℂ V]
 def adZ (Z : Module.End ℂ V) : Module.End ℂ (Module.End ℂ V) :=
   LinearMap.mulLeft ℂ Z - LinearMap.mulRight ℂ Z
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adZ_apply (Z T : Module.End ℂ V) : adZ Z T = Z * T - T * Z := rfl
 
+/- English proof (translation)
+Simplify using `only [adZ_apply]`. Use `noncomm_ring`.
+-/
 theorem adZ_mul (Z S T : Module.End ℂ V) : adZ Z (S * T) = adZ Z S * T + S * adZ Z T := by
   simp only [adZ_apply]; noncomm_ring
 
@@ -28,9 +34,15 @@ def JJ (N : Submodule ℂ V) : Submodule ℂ (Module.End ℂ V) where
   zero_mem' _ := N.zero_mem
   smul_mem' c _ h x := N.smul_mem c (h x)
 
+/- English proof (translation)
+Introduce `x` and use `h (S x)`.
+-/
 theorem JJ_mul (N : Submodule ℂ V) {T : Module.End ℂ V} (h : T ∈ JJ N) (S : Module.End ℂ V) :
     T * S ∈ JJ N := fun x => h (S x)
 
+/- English proof (translation)
+Introduce `T hT x`. Conclude with `N.sub_mem (hZ _ (hT x)) (hT _)`.
+-/
 theorem adZ_JJ {Z : Module.End ℂ V} {N : Submodule ℂ V} (hZ : ∀ y ∈ N, Z y ∈ N) :
     JJ N ≤ (JJ N).comap (adZ Z) := by
   intro T hT x
@@ -39,6 +51,13 @@ theorem adZ_JJ {Z : Module.End ℂ V} {N : Submodule ℂ V} (hZ : ∀ y ∈ N, Z
 def PP (Z : Module.End ℂ V) : Submodule ℂ (Module.End ℂ V) :=
   Submodule.span ℂ {T | ∃ k : ℕ, adZ Z T = ((k : ℂ) + 1) • T}
 
+/- English proof (translation)
+Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T h`. Take `⟨k, hk⟩` from `h`. Use `Submodule.subset_span ⟨k + m, ?_⟩` and prove the remaining obligations. Rewrite using `[adZ_mul, hk, hS, smul_mul_assoc, mul_smul_comm, ← add_smul]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`.
+
+Conclude with `(PP Z).add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_mul_assoc]`. Conclude with `(PP Z).smul_mem c hx`.
+-/
 theorem congruenceCondition_mul {Z T S : Module.End ℂ V} (hT : T ∈ PP Z) {m : ℕ} (hS : adZ Z S = (m : ℂ) • S) :
     T * S ∈ PP Z := by
   induction hT using Submodule.span_induction with
@@ -51,6 +70,17 @@ theorem congruenceCondition_mul {Z T S : Module.End ℂ V} (hT : T ∈ PP Z) {m 
   | add x y _ _ hx hy => rw [add_mul]; exact (PP Z).add_mem hx hy
   | smul c x _ hx => rw [smul_mul_assoc]; exact (PP Z).smul_mem c hx
 
+/- English proof (translation)
+Use `set D : Module.End ℂ (Module.End ℂ V ⧸ JJ N) := (JJ N).mapQ (JJ N) (adZ Z) (adZ_JJ hZ) with hD`. Establish `hd` using `iSupIndep_def.mp (Module.End.eigenspaces_iSupIndep D) 0`. Establish `h1 : (JJ N).mkQ t ∈ D.eigenspace 0`. Rewrite using `[Module.End.mem_eigenspace_iff, zero_smul, hD, Submodule.mkQ_apply, Submodule.mapQ_apply, ht]`. Both sides reduce to the same expression.
+
+Establish `h2 : (JJ N).mkQ p ∈ ⨆ j, ⨆ (_ : j ≠ (0 : ℂ)), D.eigenspace j` using `by clear h`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem T h`. Take `⟨k, hk⟩` from `h`. Use `Submodule.mem_iSup_of_mem ((k : ℂ) + 1) (Submodule.mem_iSup_of_mem (Nat.cast_add_one_ne_zero k) ?_)` and prove the remaining obligations.
+
+Rewrite using `[Module.End.mem_eigenspace_iff, hD, Submodule.mkQ_apply, Submodule.mapQ_apply, hk]`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`. Establish `h3 : (JJ N).mkQ t = (JJ N).mkQ p` using `(Submodule.Quotient.eq _).mpr h`. Rewrite `h2` using `[← h3]`. Use `(Submodule.disjoint_def.mp hd) _ h1 h2` as an intermediate fact.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero _).mp this`.
+-/
 theorem mem_JJ_of {Z : Module.End ℂ V} {N : Submodule ℂ V} (hZ : ∀ y ∈ N, Z y ∈ N)
     {t p : Module.End ℂ V} (ht : adZ Z t = 0) (hp : p ∈ PP Z) (h : t - p ∈ JJ N) : t ∈ JJ N := by
   set D : Module.End ℂ (Module.End ℂ V ⧸ JJ N) := (JJ N).mapQ (JJ N) (adZ Z) (adZ_JJ hZ) with hD
@@ -85,15 +115,24 @@ variable {V : Type} [AddCommGroup V] [Module ℂ V] {lev : Fin n → ℕ}
 def op (E1 E2 : Fin n → Fin n → Module.End ℂ V) (x : Bool × Fin n × Fin n) : Module.End ℂ V :=
   if x.1 then E1 x.2.1 x.2.2 else E2 x.2.1 x.2.2
 
+/- English proof (translation)
+Simplify using `[ev2, op]`.
+-/
 theorem evaluation_generator (E1 E2 : Fin n → Fin n → Module.End ℂ V) (x : Bool × Fin n × Fin n) :
     ev2 E1 E2 (FreeAlgebra.ι ℂ x) = op E1 E2 x := by
   simp [ev2, op]
 
+/- English proof (translation)
+Simplify using `[evB, op, h]`.
+-/
 theorem evB_ι_of_eq (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V)
     {x : Bool × Fin n × Fin n} (h : lev x.2.1 = lev x.2.2) :
     evB lev E1 E2 (FreeAlgebra.ι ℂ x) = op E1 E2 x := by
   simp [evB, op, h]
 
+/- English proof (translation)
+Simplify using `[evB, h]`.
+-/
 theorem evB_ι_of_ne (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V)
     {x : Bool × Fin n × Fin n} (h : lev x.2.1 ≠ lev x.2.2) :
     evB lev E1 E2 (FreeAlgebra.ι ℂ x) = 0 := by
@@ -102,9 +141,21 @@ theorem evB_ι_of_ne (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.E
 def NV (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) : Submodule ℂ V :=
   Submodule.span ℂ {y | ∃ (l : Lt n) (w : V), inUL lev l ∧ y = Tl E1 E2 l w}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨l, w, h, rfl⟩`.
+-/
 theorem mem_NV_Tl {l : Lt n} (h : inUL lev l) (w : V) : Tl E1 E2 l w ∈ NV lev E1 E2 :=
   Submodule.subset_span ⟨l, w, h, rfl⟩
 
+/- English proof (translation)
+Take `⟨s, a, b⟩` from `x`. Establish `hab : a < b` using `hm.reflect_lt h`. Establish `hK : (E1 a b + E2 a b) w ∈ NV lev E1 E2` using `mem_NV_Tl (E1 := E1) (E2 := E2) (l := (true, ⟨(a, b), hab⟩)) h w`. Establish `hP : (E1 a b - E2 a b) w ∈ NV lev E1 E2` using `mem_NV_Tl (E1 := E1) (E2 := E2) (l := (false, ⟨(a, b), hab⟩)) h w`. Establish `h1` using `(NV lev E1 E2).smul_mem (1 / 2 : ℂ) ((NV lev E1 E2).add_mem hK hP)`.
+
+Establish `h2` using `(NV lev E1 E2).smul_mem (1 / 2 : ℂ) ((NV lev E1 E2).sub_mem hK hP)`. Consider the cases of `s`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [op, LinearMap.add_apply, LinearMap.sub_apply]`. Simplify using `only [Bool.false_eq_true, if_false]`.
+
+Rewrite using `[show E1 a b w + E2 a b w - (E1 a b w - E2 a b w) = (2 : ℂ) • E2 a b w by`. Rewrite using `[two_smul]`. Use the proof step `abel, smul_smul]`. Evaluate the numerical expressions. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [op, LinearMap.add_apply, LinearMap.sub_apply, if_true]`. Rewrite using `[show E1 a b w + E2 a b w + (E1 a b w - E2 a b w) = (2 : ℂ) • E1 a b w by`. Rewrite using `[two_smul]`. Use the proof step `abel, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem mem_NV (hm : Monotone lev) (E1 E2 : Fin n → Fin n → Module.End ℂ V)
     {x : Bool × Fin n × Fin n} (h : lev x.2.1 < lev x.2.2) (w : V) :
     op E1 E2 x w ∈ NV lev E1 E2 := by
@@ -129,6 +180,17 @@ theorem mem_NV (hm : Monotone lev) (E1 E2 : Fin n → Fin n → Module.End ℂ V
       rw [two_smul]; abel, smul_smul]
     norm_num
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y h`. Take `⟨l, w, hl, rfl⟩` from `h`. Use `⟨Pi.single l w, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single l]`.
+
+Simplify using `[hl]`. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨w, rfl⟩` from `hx`. Take `⟨w', rfl⟩` from `hy`. Use `⟨w + w', ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `smul c x _ hx`. Take `⟨w, rfl⟩` from `hx`. Use `⟨c • w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sum_of_mem_NV {y : V} (hy : y ∈ NV lev E1 E2) :
     ∃ w : Lt n → V, y = ∑ l : Lt n, if inUL lev l then Tl E1 E2 l (w l) else 0 := by
   classical
@@ -159,6 +221,13 @@ theorem sum_of_mem_NV {y : V} (hy : y ∈ NV lev E1 E2) :
 def hh (lev : Fin n → ℕ) (E : Fin n → Fin n → Module.End ℂ V) : Module.End ℂ V :=
   ∑ c : Fin n, ((lev c : ℕ) : ℂ) • E c c
 
+/- English proof (translation)
+Establish `h : ∀ c : Fin n, ((lev c : ℕ) : ℂ) • E c c * E a b - E a b * ((lev c : ℕ) : ℂ) • E c c = (if c = a then ((lev a : ℕ) : ℂ) • E a b else 0) - (if c = b then ((lev b : ℕ) : ℂ) • E a b else 0)`. Introduce `c`. Rewrite using `[smul_mul_assoc, mul_smul_comm, ← smul_sub, hE c c a b, smul_sub]`. Use `congr 1`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Distinguish the cases in `h : b = c`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Rewrite using `[hh, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Simplify using `only [h, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_smul]`.
+-/
 theorem hh_comm (lev : Fin n → ℕ) {E : Fin n → Fin n → Module.End ℂ V} (hE : GlRel E) (a b : Fin n) :
     hh lev E * E a b - E a b * hh lev E = (((lev a : ℕ) : ℂ) - ((lev b : ℕ) : ℂ)) • E a b := by
   have h : ∀ c : Fin n, ((lev c : ℕ) : ℂ) • E c c * E a b - E a b * ((lev c : ℕ) : ℂ) • E c c =
@@ -179,10 +248,20 @@ theorem hh_comm (lev : Fin n → ℕ) {E : Fin n → Fin n → Module.End ℂ V}
 def ZZ (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) : Module.End ℂ V :=
   ∑ c : Fin n, ((lev c : ℕ) : ℂ) • (E1 c c + E2 c c)
 
+/- English proof (translation)
+Simplify using `only [ZZ, hh, smul_add, Finset.sum_add_distrib]`.
+-/
 theorem ZZ_eq (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) :
     ZZ lev E1 E2 = hh lev E1 + hh lev E2 := by
   simp only [ZZ, hh, smul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Take `⟨s, a, b⟩` from `x`. Rewrite using `[adZ_apply, ZZ_eq]`. Consider the cases of `s`. Establish `hc : Commute (hh lev E1) (E2 a b)` using `Commute.sum_left _ _ _ fun c _ => (h.2.2 c c a b).smul_left _`. Use `hh_comm lev h.2.1 a b` as an intermediate fact.
+
+Simplify using `only [op, Bool.false_eq_true, if_false]`. Rewrite using `[add_mul, mul_add, hc.eq, ← this]`. Normalize the expressions using the abelian group laws. Establish `hc : Commute (hh lev E2) (E1 a b)` using `Commute.sum_left _ _ _ fun c _ => (h.2.2 a b c c).symm.smul_left _`. Use `hh_comm lev h.1 a b` as an intermediate fact.
+
+Simplify using `only [op, if_true]`. Rewrite using `[add_mul, mul_add, hc.eq, ← this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ZZ_comm (h : PairRel E1 E2) (x : Bool × Fin n × Fin n) :
     adZ (ZZ lev E1 E2) (op E1 E2 x) =
       (((lev x.2.1 : ℕ) : ℂ) - ((lev x.2.2 : ℕ) : ℂ)) • op E1 E2 x := by
@@ -200,6 +279,11 @@ theorem ZZ_comm (h : PairRel E1 E2) (x : Bool × Fin n × Fin n) :
     simp only [op, if_true]
     rw [add_mul, mul_add, hc.eq, ← this]; abel
 
+/- English proof (translation)
+Take `⟨s, i⟩` from `l`. Establish `h1` using `ZZ_comm (lev := lev) h (true, i.1.1, i.1.2)`. Establish `h2` using `ZZ_comm (lev := lev) h (false, i.1.1, i.1.2)`. Simplify using `only [op, if_true, Bool.false_eq_true, if_false] at h1 h2`. Consider the cases of `s`.
+
+Simplify using `only [Tl, Ts, Bool.false_eq_true, if_false, map_sub, h1, h2, smul_sub]`. Simplify using `only [Tl, Ts, if_true, map_add, h1, h2, smul_add]`.
+-/
 theorem Tl_comm (h : PairRel E1 E2) (l : Lt n) :
     adZ (ZZ lev E1 E2) (Tl E1 E2 l) =
       (((lev l.2.1.1 : ℕ) : ℂ) - ((lev l.2.1.2 : ℕ) : ℂ)) • Tl E1 E2 l := by
@@ -211,6 +295,13 @@ theorem Tl_comm (h : PairRel E1 E2) (l : Lt n) :
   · simp only [Tl, Ts, Bool.false_eq_true, if_false, map_sub, h1, h2, smul_sub]
   · simp only [Tl, Ts, if_true, map_add, h1, h2, smul_add]
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l, w, hl, rfl⟩` from `hy`. Establish `h1` using `LinearMap.congr_fun (Tl_comm (lev := lev) h l) w`. Simplify using `only [adZ_apply, LinearMap.sub_apply, Module.End.mul_apply, LinearMap.smul_apply] at h1`.
+
+Rewrite using `[sub_eq_iff_eq_add.mp h1]`. Conclude with `(NV lev E1 E2).add_mem ((NV lev E1 E2).smul_mem _ (mem_NV_Tl hl _)) (mem_NV_Tl hl _)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `(NV lev E1 E2).add_mem hx hy`.
+
+Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `(NV lev E1 E2).smul_mem c hx`.
+-/
 theorem ZZ_NV (h : PairRel E1 E2) (y : V) (hy : y ∈ NV lev E1 E2) :
     ZZ lev E1 E2 y ∈ NV lev E1 E2 := by
   induction hy using Submodule.span_induction with
@@ -224,6 +315,11 @@ theorem ZZ_NV (h : PairRel E1 E2) (y : V) (hy : y ∈ NV lev E1 E2) :
   | add x y _ _ hx hy => rw [map_add]; exact (NV lev E1 E2).add_mem hx hy
   | smul c x _ hx => rw [map_smul]; exact (NV lev E1 E2).smul_mem c hx
 
+/- English proof (translation)
+Proceed by induction on `b using FreeAlgebra.induction with`. Consider the case `grade0 r => rw [AlgHom.commutes, adZ_apply, Algebra.commutes, sub_self]`. Consider the case `grade1 x`. Distinguish the cases in `hl : lev x.2.1 = lev x.2.2`. Rewrite using `[evB_ι_of_eq lev E1 E2 hl, ZZ_comm h, hl, sub_self, zero_smul]`.
+
+Rewrite using `[evB_ι_of_ne lev E1 E2 hl, map_zero]`. Consider the case `mul a b ha hb => rw [map_mul, adZ_mul, ha, hb]`. Simplify using the standard rewrite rules. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, add_zero]`.
+-/
 theorem adZ_evB (h : PairRel E1 E2) (b : FreeAlgebra ℂ (Bool × Fin n × Fin n)) :
     adZ (ZZ lev E1 E2) (evB lev E1 E2 b) = 0 := by
   induction b using FreeAlgebra.induction with
@@ -241,6 +337,15 @@ def brA (y p : Bool × Fin n × Fin n) : FreeAlgebra ℂ (Bool × Fin n × Fin n
 def brB (y p : Bool × Fin n × Fin n) : FreeAlgebra ℂ (Bool × Fin n × Fin n) :=
   if y.1 = p.1 ∧ p.2.2 = y.2.1 then FreeAlgebra.ι ℂ (y.1, p.2.1, y.2.2) else 0
 
+/- English proof (translation)
+Take `⟨s, a, b⟩` from `y`. Take `⟨t, c, d⟩` from `p`. Apply the tactic sequence `cases s <;> cases t`. Use `h.2.1 a b c d` as an intermediate fact. Establish `e : ∀ a b, op E1 E2 (false, a, b) = E2 a b` using `fun _ _ => by simp [op]`.
+
+Rewrite using `[e a b, e c d, this]`. Simplify using `only [brA, brB, true_and]`. Apply the tactic sequence `congr 1 <;> split_ifs <;> simp [evaluation_generator, op]`. Use `(h.2.2 c d a b).eq` as an intermediate fact. Simplify using `[brA, brB, op, this]`.
+
+Use `(h.2.2 a b c d).eq` as an intermediate fact. Simplify using `[brA, brB, op, this]`. Use `h.1 a b c d` as an intermediate fact. Establish `e : ∀ a b, op E1 E2 (true, a, b) = E1 a b` using `fun _ _ => by simp [op]`. Rewrite using `[e a b, e c d, this]`.
+
+Simplify using `only [brA, brB, true_and]`. Apply the tactic sequence `congr 1 <;> split_ifs <;> simp [evaluation_generator, op]`.
+-/
 theorem op_br (h : PairRel E1 E2) (y p : Bool × Fin n × Fin n) :
     op E1 E2 y * op E1 E2 p - op E1 E2 p * op E1 E2 y = ev2 E1 E2 (brA y p) - ev2 E1 E2 (brB y p) := by
   obtain ⟨s, a, b⟩ := y
@@ -270,9 +375,29 @@ inductive Low (lev : Fin n → ℕ) : FreeAlgebra ℂ (Bool × Fin n × Fin n) �
   | add (u v) : Low lev u → Low lev v → Low lev (u + v)
   | smul (c : ℂ) (u) : Low lev u → Low lev (c • u)
 
+/- English proof (translation)
+Simplify using `using Low.smul (0 : ℂ) (1 : FreeAlgebra ℂ (Bool × Fin n × Fin n)) Low.one`.
+-/
 theorem Low.zero (lev : Fin n → ℕ) : Low lev (0 : FreeAlgebra ℂ (Bool × Fin n × Fin n)) := by
   simpa using Low.smul (0 : ℂ) (1 : FreeAlgebra ℂ (Bool × Fin n × Fin n)) Low.one
 
+/- English proof (translation)
+Proceed by induction on `hu with`. Consider the case `one => exact ⟨1, fun V _ _ E1 E2 _ => by simp⟩`. Consider the case `mul u p _ hp ih`. Take `⟨b, hb⟩` from `ih`. Establish `key : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (E1 E2 : Fin n → Fin n → Module.End ℂ V), PairRel E1 E2 → adZ (ZZ lev E1 E2) (op E1 E2 p) = (((lev p.2.1 - lev p.2.2 : ℕ)) : ℂ) • op E1 E2 p`.
+
+Introduce `V _ _ E1 E2 hE`. Rewrite using `[ZZ_comm hE, Nat.cast_sub hp]`. Break down `eq_or_lt_of_le hp with h | h` into its components or cases. Use `⟨b * FreeAlgebra.ι ℂ p, fun V _ _ E1 E2 hE => ?_⟩` and prove the remaining obligations. Use `congruenceCondition_mul (hb V E1 E2 hE) (key V E1 E2 hE)` as an intermediate fact.
+
+Rewrite using `[map_mul, map_mul, evaluation_generator, evB_ι_of_eq lev E1 E2 h.symm, ← sub_mul]`. Conclude with `this`. Use `⟨0, fun V _ _ E1 E2 hE => ?_⟩` and prove the remaining obligations. Establish `h1` using `congruenceCondition_mul (hb V E1 E2 hE) (key V E1 E2 hE)`. Establish `h2 : evB lev E1 E2 b * op E1 E2 p ∈ PP (ZZ lev E1 E2)`.
+
+Use `Submodule.subset_span ⟨lev p.2.1 - lev p.2.2 - 1, ?_⟩` and prove the remaining obligations. Rewrite using `[adZ_mul, adZ_evB hE, key V E1 E2 hE, zero_mul, zero_add, mul_smul_comm]`. Use `congr 1`. Establish `: lev p.2.1 - lev p.2.2 = lev p.2.1 - lev p.2.2 - 1 + 1` using `by omega`. Conclude with `congrArg (Nat.cast : ℕ → ℂ) this` after adjusting the coercions.
+
+Establish `h3` using `(PP (ZZ lev E1 E2)).add_mem h1 h2`. Rewrite using `[map_mul, evaluation_generator, map_zero, sub_zero]`. Simplify `h3` using `[sub_mul]`. Consider the case `add u v _ _ hu hv`. Take `⟨b, hb⟩` from `hu`.
+
+Take `⟨b', hb'⟩` from `hv`. Use `⟨b + b', fun V _ _ E1 E2 hE => ?_⟩` and prove the remaining obligations. Use `(PP (ZZ lev E1 E2)).add_mem (hb V E1 E2 hE) (hb' V E1 E2 hE)` as an intermediate fact. Rewrite using `[map_add, map_add]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Consider the case `smul c u _ hu`. Take `⟨b, hb⟩` from `hu`. Use `⟨c • b, fun V _ _ E1 E2 hE => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, ← smul_sub]`.
+
+Conclude with `(PP (ZZ lev E1 E2)).smul_mem c (hb V E1 E2 hE)`.
+-/
 theorem Low.levi {lev : Fin n → ℕ} {u : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (hu : Low lev u) :
     ∃ b : FreeAlgebra ℂ (Bool × Fin n × Fin n), ∀ (V : Type) [AddCommGroup V] [Module ℂ V]
       (E1 E2 : Fin n → Fin n → Module.End ℂ V), PairRel E1 E2 →
@@ -322,6 +447,11 @@ def Red (lev : Fin n → ℕ) (a : FreeAlgebra ℂ (Bool × Fin n × Fin n)) : P
 
 variable {lev : Fin n → ℕ}
 
+/- English proof (translation)
+Take `⟨u, hu, h⟩` from `h`. Take `⟨u', hu', h'⟩` from `h'`. Use `⟨u + u', Low.add _ _ hu hu', fun V _ _ E1 E2 hE => ?_⟩` and prove the remaining obligations. Use `(JJ (NV lev E1 E2)).add_mem (h V E1 E2 hE) (h' V E1 E2 hE)` as an intermediate fact. Rewrite using `[map_add, map_add]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem Red.add {a a' : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (h : Red lev a) (h' : Red lev a') :
     Red lev (a + a') := by
   obtain ⟨u, hu, h⟩ := h
@@ -331,6 +461,9 @@ theorem Red.add {a a' : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (h : Red lev a
   rw [map_add, map_add]
   convert this using 1; abel
 
+/- English proof (translation)
+Take `⟨u, hu, h⟩` from `h`. Use `⟨c • u, Low.smul _ _ hu, fun V _ _ E1 E2 hE => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, ← smul_sub]`. Conclude with `(JJ (NV lev E1 E2)).smul_mem c (h V E1 E2 hE)`.
+-/
 theorem Red.smul (c : ℂ) {a : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (h : Red lev a) :
     Red lev (c • a) := by
   obtain ⟨u, hu, h⟩ := h
@@ -338,9 +471,15 @@ theorem Red.smul (c : ℂ) {a : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (h : R
   rw [map_smul, map_smul, ← smul_sub]
   exact (JJ (NV lev E1 E2)).smul_mem c (h V E1 E2 hE)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨u, hu, fun V _ _ E1 E2 _ => by simp [JJ]⟩`.
+-/
 theorem Red.of_low {u : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (hu : Low lev u) : Red lev u :=
   ⟨u, hu, fun V _ _ E1 E2 _ => by simp [JJ]⟩
 
+/- English proof (translation)
+Take `⟨u, hu, h⟩` from `h`. Conclude with `⟨u, hu, fun V _ _ E1 E2 hE => he V E1 E2 hE ▸ h V E1 E2 hE⟩`.
+-/
 theorem Red.congr {a a' : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (h : Red lev a)
     (he : ∀ (V : Type) [AddCommGroup V] [Module ℂ V]
       (E1 E2 : Fin n → Fin n → Module.End ℂ V), PairRel E1 E2 → ev2 E1 E2 a' = ev2 E1 E2 a) :
@@ -348,6 +487,9 @@ theorem Red.congr {a a' : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (h : Red lev
   obtain ⟨u, hu, h⟩ := h
   exact ⟨u, hu, fun V _ _ E1 E2 hE => he V E1 E2 hE ▸ h V E1 E2 hE⟩
 
+/- English proof (translation)
+Take `⟨u, hu, h⟩` from `h`. Use `⟨_, Low.mul u p hu hp, fun V _ _ E1 E2 hE => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← sub_mul]`. Conclude with `JJ_mul _ (h V E1 E2 hE) _`.
+-/
 theorem Red.mul_low {a : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (h : Red lev a)
     (p : Bool × Fin n × Fin n) (hp : lev p.2.2 ≤ lev p.2.1) : Red lev (a * FreeAlgebra.ι ℂ p) := by
   obtain ⟨u, hu, h⟩ := h
@@ -355,6 +497,21 @@ theorem Red.mul_low {a : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (h : Red lev 
   rw [map_mul, map_mul, ← sub_mul]
   exact JJ_mul _ (h V E1 E2 hE) _
 
+/- English proof (translation)
+Proceed by induction on `hu with`. Consider the case `one`. Introduce `p`. Break down `le_or_gt (lev p.2.2) (lev p.2.1) with h | h` into its components or cases. Conclude with `Red.of_low (Low.mul _ p Low.one h)`.
+
+Use `⟨0, Low.zero lev, fun V _ _ E1 E2 _ => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, map_zero, sub_zero, evaluation_generator]`. Conclude with `fun x => mem_NV hm E1 E2 h x`. Consider the case `mul u y _ hy ih`. Introduce `p`.
+
+Establish `h1 : Red lev (u * brA y p)`. Unfold `brA`. Use `split_ifs`. Conclude with `ih _`. Rewrite using `[mul_zero]`.
+
+Conclude with `Red.of_low (Low.zero lev)`. Establish `h2 : Red lev (u * brB y p)`. Unfold `brB`. Use `split_ifs`. Conclude with `ih _`.
+
+Rewrite using `[mul_zero]`. Conclude with `Red.of_low (Low.zero lev)`. Use `((((ih p).mul_low y hy).add h1).add (h2.smul (-1))).congr fun V _ _ E1 E2 hE => ?_` and prove the remaining obligations. Establish `h` using `sub_eq_iff_eq_add.mp (op_br hE y p)`. Simplify using `only [map_add, map_mul, evaluation_generator, map_smul, mul_assoc, h]`.
+
+Simplify using `only [mul_add, mul_sub, neg_smul, one_smul]`. Normalize the expressions using the abelian group laws. Consider the case `add u v _ _ hu hv => intro p`. Rewrite using `[add_mul]`. Conclude with `(hu p).add (hv p)`.
+
+Consider the case `smul c u _ hu => intro p`. Rewrite using `[smul_mul_assoc]`. Conclude with `(hu p).smul c`.
+-/
 theorem Low.red_mul (hm : Monotone lev) {u : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (hu : Low lev u) :
     ∀ p : Bool × Fin n × Fin n, Red lev (u * FreeAlgebra.ι ℂ p) := by
   induction hu with
@@ -385,6 +542,11 @@ theorem Low.red_mul (hm : Monotone lev) {u : FreeAlgebra ℂ (Bool × Fin n × F
   | add u v _ _ hu hv => intro p; rw [add_mul]; exact (hu p).add (hv p)
   | smul c u _ hu => intro p; rw [smul_mul_assoc]; exact (hu p).smul c
 
+/- English proof (translation)
+Take `⟨u, hu, h⟩` from `h`. Take `⟨u', hu', h'⟩` from `hu.red_mul hm p`. Use `⟨u', hu', fun V _ _ E1 E2 hE => ?_⟩` and prove the remaining obligations. Use `(JJ (NV lev E1 E2)).add_mem (JJ_mul _ (h V E1 E2 hE) (ev2 E1 E2 (FreeAlgebra.ι ℂ p))) (h' V E1 E2 hE)` as an intermediate fact. Rewrite `this`, the goal using `[map_mul]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[sub_mul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem Red.mul_ι (hm : Monotone lev) {a : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (h : Red lev a)
     (p : Bool × Fin n × Fin n) : Red lev (a * FreeAlgebra.ι ℂ p) := by
   obtain ⟨u, hu, h⟩ := h
@@ -396,6 +558,13 @@ theorem Red.mul_ι (hm : Monotone lev) {a : FreeAlgebra ℂ (Bool × Fin n × Fi
   convert this using 1
   rw [sub_mul]; abel
 
+/- English proof (translation)
+Establish `: ∀ z, Red lev z → Red lev (z * a)`. Proceed by induction on `a using FreeAlgebra.induction with`. Consider the case `grade0 r`. Introduce `z hz`. Rewrite using `[← Algebra.commutes, ← Algebra.smul_def]`.
+
+Conclude with `hz.smul r`. Consider the case `grade1 p => exact fun z hz => hz.mul_ι hm p`. Consider the case `mul a b ha hb => intro z hz`. Rewrite using `[← mul_assoc]`. Conclude with `hb _ (ha _ hz)`.
+
+Consider the case `add a b ha hb => intro z hz`. Rewrite using `[mul_add]`. Conclude with `(ha _ hz).add (hb _ hz)`. Simplify using `using this 1 (Red.of_low Low.one)`.
+-/
 theorem red_all (hm : Monotone lev) (a : FreeAlgebra ℂ (Bool × Fin n × Fin n)) : Red lev a := by
   have : ∀ z, Red lev z → Red lev (z * a) := by
     induction a using FreeAlgebra.induction with
@@ -408,6 +577,11 @@ theorem red_all (hm : Monotone lev) (a : FreeAlgebra ℂ (Bool × Fin n × Fin n
     | add a b ha hb => intro z hz; rw [mul_add]; exact (ha _ hz).add (hb _ hz)
   simpa using this 1 (Red.of_low Low.one)
 
+/- English proof (translation)
+Introduce `n lev a hm ha`. Take `⟨u, hu, h⟩` from `red_all hm a`. Take `⟨b, hb⟩` from `hu.levi`. Use `⟨b, fun V _ _ E1 E2 hE x => ?_⟩` and prove the remaining obligations. Establish `h0 : adZ (ZZ lev E1 E2) (ev2 E1 E2 a - evB lev E1 E2 b) = 0`.
+
+Rewrite using `[map_sub, adZ_evB hE, sub_zero, adZ_apply, sub_eq_zero]`. Conclude with `(Commute.sum_left _ _ _ fun c _ => (ha V E1 E2 hE c c).smul_left _).eq`. Establish `h1` using `mem_JJ_of (ZZ_NV hE) h0 (hb V E1 E2 hE) (by simpa using h V E1 E2 hE)`. Conclude with `sum_of_mem_NV (h1 x)`.
+-/
 theorem hcDec2 : HCDec2 := by
   intro n lev a hm ha
   obtain ⟨u, hu, h⟩ := red_all hm a

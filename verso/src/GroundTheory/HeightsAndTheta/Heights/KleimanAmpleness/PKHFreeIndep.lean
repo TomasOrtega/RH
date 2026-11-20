@@ -14,6 +14,11 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] {ι : K → Type} [∀ k
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Unfold `KH.cellMon at ht`. Proceed by induction on `ht using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨k, i, -, rfl⟩` from `hx`. Conclude with `⟨Finsupp.single ⟨k, i⟩ 1, rfl⟩`.
+
+Consider the case `one => exact ⟨0, by rw [monomial_zero', C_1]⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨e, rfl⟩` from `hx`. Take `⟨e', rfl⟩` from `hy`. Conclude with `⟨e + e', by rw [monomial_mul, mul_one]⟩`.
+-/
 theorem cellMon_monomial {I : ∀ k, Finset (ι k)} {t : MRingOver S ι} (ht : t ∈ KH.cellMon S I) :
     ∃ e, t = monomial e 1 := by
   unfold KH.cellMon at ht
@@ -29,6 +34,9 @@ theorem cellMon_monomial {I : ∀ k, Finset (ι k)} {t : MRingOver S ι} (ht : t
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use extensionality with `d`. Use `congrArg (coeff (e + d)) h` as an intermediate fact. Rewrite `this` using `[coeff_monomial_mul, one_mul, coeff_zero]`. Rewrite using `[this, coeff_zero]`.
+-/
 theorem eq_zero_of_monomial_mul (e : (Σ k, ι k) →₀ ℕ) {p : MRingOver S ι}
     (h : monomial e (1 : S) * p = 0) : p = 0 := by
   ext d
@@ -38,6 +46,11 @@ theorem eq_zero_of_monomial_mul (e : (Σ k, ι k) →₀ ℕ) {p : MRingOver S �
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Rewrite `h` using `[← LocalizedModule.zero_mk (1 : KH.cellMon S I), LocalizedModule.mk_eq]`. Take `⟨t, ht⟩` from `h`. Rewrite `ht` using `[one_smul, one_smul, smul_zero, Submonoid.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_bot]`. Take `⟨e, he⟩` from `cellMon_monomial t.2`. Rewrite `ht` using `[he]`.
+
+Conclude with `eq_zero_of_monomial_mul e ht`.
+-/
 theorem eq_zero_of_mk_eq_zero {I : ∀ k, Finset (ι k)} {p : MRingOver S ι}
     (h : LocalizedModule.mk (Ideal.Quotient.mk (⊥ : Ideal (MRingOver S ι)) p) (1 : KH.cellMon S I) = 0) :
     p = 0 := by
@@ -49,6 +62,11 @@ theorem eq_zero_of_mk_eq_zero {I : ∀ k, Finset (ι k)} {p : MRingOver S ι}
   rw [he] at ht
   exact eq_zero_of_monomial_mul e ht
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Establish `h1` using `DFunLike.congr_fun h p`. Establish `h2` using `Finsupp.le_def.1 hb p`. Establish `h3` using `Finsupp.le_def.1 hb' p`. Simplify using `only [posExp, negExp, Finsupp.coe_tsub, Finsupp.coe_add, Pi.sub_apply, Pi.add_apply, Finsupp.coe_equivFunOnFinite_symm] at h1 h2 h3`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem shift_injective (u : (Σ k, ι k) →₀ ℕ) {b b' : (Σ k, ι k) → ℤ} (hb : negExp b ≤ u)
     (hb' : negExp b' ≤ u) (h : posExp b + u - negExp b = posExp b' + u - negExp b') : b = b' := by
   funext p
@@ -59,6 +77,11 @@ theorem shift_injective (u : (Σ k, ι k) →₀ ℕ) {b b' : (Σ k, ι k) → �
     Finsupp.coe_equivFunOnFinite_symm] at h1 h2 h3
   omega
 
+/- English proof (translation)
+Rewrite using `[monoFrac, dif_pos hI, LocalizedModule.smul'_mk, LocalizedModule.smul'_mk, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, one_smul, one_smul, Submonoid.smul_def]`. Rewrite using `[← Ideal.Quotient.mk_eq_mk, ← Ideal.Quotient.mk_eq_mk, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul]`. Use `congr 1`.
+
+Simplify using `only [smul_eq_mul, smul_monomial, monomial_mul, mul_one, one_mul]`. Use `congr 1`. Rewrite using `[add_tsub_cancel_of_le (le_add_left hb), add_comm]`.
+-/
 theorem smul_smul_monoFrac (I : ∀ k, Finset (ι k)) (u : (Σ k, ι k) →₀ ℕ) (r : S) (b : (Σ k, ι k) → ℤ)
     (hI : ∀ k, negSet b k ⊆ I k) (hb : negExp b ≤ u) :
     (monomial u (1 : S) : MRingOver S ι) • (r • monoFrac S I b) =
@@ -74,6 +97,19 @@ theorem smul_smul_monoFrac (I : ∀ k, Finset (ι k)) (u : (Σ k, ι k) →₀ �
   congr 1
   rw [add_tsub_cancel_of_le (le_add_left hb), add_comm]
 
+/- English proof (translation)
+Use `set u : (Σ k, ι k) →₀ ℕ := ∑ b ∈ A.filter (fun b => ∀ k, negSet b k ⊆ I k), negExp b with hu`. Use `set c : ((Σ k, ι k) → ℤ) → ((Σ k, ι k) →₀ ℕ) := fun b => posExp b + u - negExp b with hc`. Establish `hle : ∀ b ∈ A, (∀ k, negSet b k ⊆ I k) → negExp b ≤ u` using `fun b hb hI => Finset.single_le_sum (f := negExp) (fun _ _ => zero_le) (Finset.mem_filter.2 ⟨hb, hI⟩)`. Establish `hterm : ∀ b ∈ A, (monomial u (1 : S) : MRingOver S ι) • (g b • monoFrac S I b) = LocalizedModule.mk (Ideal.Quotient.mk (⊥ : Ideal (MRingOver S ι)) (monomial (c b) (g b))) (1 : KH.cellMon S I)`. Introduce `b hb`.
+
+Distinguish the cases in `hI : ∀ k, negSet b k ⊆ I k`. Conclude with `smul_smul_monoFrac I u (g b) b hI (hle b hb hI)`. Rewrite using `[hg b hb hI, zero_smul, smul_zero, monomial_zero, map_zero, LocalizedModule.zero_mk]`. Establish `key : ∑ b ∈ A, monomial (c b) (g b) = 0`. Apply `eq_zero_of_mk_eq_zero (I := I)` to reduce the goal to its premises.
+
+Establish `e1 : LocalizedModule.mk (Ideal.Quotient.mk (⊥ : Ideal (MRingOver S ι)) (∑ b ∈ A, monomial (c b) (g b))) (1 : KH.cellMon S I) = ∑ b ∈ A, LocalizedModule.mk (Ideal.Quotient.mk (⊥ : Ideal (MRingOver S ι)) (monomial (c b) (g b))) (1 : KH.cellMon S I)`. Rewrite using `[map_sum]`. Conclude with `map_sum (LocalizedModule.mkLinearMap (KH.cellMon S I) _) _ _`. Rewrite using `[e1, ← Finset.sum_congr rfl hterm, ← Finset.smul_sum, h, smul_zero]`. Introduce `a ha`.
+
+Distinguish the cases in `hI : ∀ k, negSet a k ⊆ I k`. Establish `hk` using `congrArg (coeff (c a)) key`. Rewrite `hk` using `[coeff_sum, Finset.sum_eq_single a, coeff_monomial, if_pos rfl, coeff_zero]`. Conclude with `hk`. Introduce `b hb hba`.
+
+Distinguish the cases in `hbI : ∀ k, negSet b k ⊆ I k`. Rewrite using `[coeff_monomial, if_neg]`. Conclude with `fun hcb => hba (shift_injective u (hle b hb hbI) (hle a ha hI) hcb)`. Rewrite using `[hg b hb hbI, monomial_zero, coeff_zero]`. Conclude with `fun hna => absurd ha hna`.
+
+Conclude with `hg a ha hI`.
+-/
 theorem eq_zero_of_sum_smul_monoFrac (I : ∀ k, Finset (ι k)) (A : Finset ((Σ k, ι k) → ℤ))
     (g : ((Σ k, ι k) → ℤ) → S) (hg : ∀ b ∈ A, ¬ (∀ k, negSet b k ⊆ I k) → g b = 0)
     (h : ∑ b ∈ A, g b • monoFrac S I b = 0) : ∀ a ∈ A, g a = 0 := by
@@ -113,6 +149,13 @@ theorem eq_zero_of_sum_smul_monoFrac (I : ∀ k, Finset (ι k)) (A : Finset ((Σ
 
 end KHFreeIndep
 
+/- English proof (translation)
+Introduce `S _ K _ _ ι _ _ n A f h a ha`. Use function extensionality and compare the values at `J`. Set `g : ((Σ k, ι k) → ℤ) → S` to `fun b => if hb : ∀ k, negSet b k ⊆ J.1.1 k then f b ⟨J.1, hb⟩ else 0`. Establish `hsum : ∑ b ∈ A, g b • monoFrac S J.1.1 b = 0`. Establish `h0` using `congrFun h J.1`.
+
+Rewrite `h0` using `[Finset.sum_apply, Pi.zero_apply]`. Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [embed, LinearMap.pi_apply, g]`. Use `split_ifs with hb1`.
+
+Both sides reduce to the same expression. Simplify using `[monoFrac, hb1]`. Establish `hJ` using `KHFreeIndep.eq_zero_of_sum_smul_monoFrac J.1.1 A g (fun b _ hb => dif_neg hb) hsum a ha`. Rewrite `hJ` using `[show g a = f a J from dif_pos J.2]`. Simplify using `using hJ`.
+-/
 theorem KHFreeIndep.full : KHFreeIndep.Statement := by
   intro S _ K _ _ ι _ _ n A f h a ha
   classical

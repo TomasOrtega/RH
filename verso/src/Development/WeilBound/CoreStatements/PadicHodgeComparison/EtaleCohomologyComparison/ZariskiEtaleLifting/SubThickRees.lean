@@ -160,6 +160,11 @@ section Thick
 
 variable {b : Base} (L : b.Fun)
 
+/- English proof (translation)
+Use `(show T.pdPow r ≤ (T'.pdPow r).comap φ.φ from Ideal.span_le.2 ?_) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hr, rfl⟩`. Use `Ideal.subset_span ⟨l.map fun q => (q.1, φ.φ q.2), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Take `⟨q', hq', rfl⟩` from `List.mem_map.1 hq`.
+
+Conclude with `φ.hle (hl q' hq')`. Simplify `hr` using `[List.map_map, Function.comp_def]`. Rewrite using `[map_list_prod, List.map_map, List.map_map]`. Use `congr 1`. Conclude with `List.map_congr_left fun q hq => (φ.dp.2 q.2 (hl q hq)).symm`.
+-/
 theorem pdPow_map {T T' : Thick L} (φ : T ⟶ T') (r : ℕ) {x : T.B} (hx : x ∈ T.pdPow r) : φ.φ x ∈ T'.pdPow r := by
   refine (show T.pdPow r ≤ (T'.pdPow r).comap φ.φ from Ideal.span_le.2 ?_) hx
   rintro _ ⟨l, hl, hr, rfl⟩
@@ -172,6 +177,15 @@ theorem pdPow_map {T T' : Thick L} (φ : T ⟶ T') (r : ℕ) {x : T.B} (hx : x �
     congr 1
     exact List.map_congr_left fun q hq => (φ.dp.2 q.2 (hl q hq)).symm
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, hr, rfl⟩` from `hx`. Use `Ideal.subset_span ⟨(1, z) :: l, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`.
+
+Break down `List.mem_cons.1 hq with rfl | hq` into its components or cases. Use `exacts [hz, hl q hq]`. Simplify using `only [List.map_cons, List.sum_cons]`. Use linear arithmetic over natural numbers and integers. Simplify using `[T.δ.dpow_one hz]`.
+
+Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_eq_mul, mul_left_comm]`.
+
+Conclude with `Ideal.mul_mem_left _ _ hx`.
+-/
 theorem mul_pdPow (T : Thick L) (r : ℕ) {z x : T.B} (hz : z ∈ T.J) (hx : x ∈ T.pdPow r) : z * x ∈ T.pdPow (r + 1) := by
   induction hx using Submodule.span_induction with
   | mem x hx =>
@@ -210,6 +224,9 @@ def pdFlt (ρ : ℕ → ℕ) (hρ : Slow ρ) (μ : Λ) (hμ : c μ ∈ b.I) : Fl
   μ := μ
   mul r T x hx := T.pdPow_anti (hρ.2 r) (mul_pdPow L T _ (T.i_mem hμ) hx)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pdPow_eq_fil (T : Thick L) (r : ℕ) : T.pdPow r = GlobalTheory.PDA.fil T.δ r := rfl
 
 variable {L c} in
@@ -258,8 +275,14 @@ def subThick : Thick (V.fn.cr b ht κ) ⥤ Thick (F.cr b ht κ) where
 
 variable {Λ : Type} [CommRing Λ] (c : Λ →+* b.R)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem subThick_OM : subThick V b ht κ ⋙ OM _ c = OM _ c := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem subThick_rees (ρ : ℕ → ℕ) (hρ : Slow ρ) (μ : Λ) (hμ : c μ ∈ b.I) :
     subThick V b ht κ ⋙ (pdFlt _ c ρ hρ μ hμ).rees = (pdFlt _ c ρ hρ μ hμ).rees := rfl
 

@@ -18,21 +18,33 @@ namespace GlobalTheory.TorsionForm.Gauge.AdjConj
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Complex.re_add_im z]`. Rewrite using `[add_smul, mul_smul, Complex.coe_smul, Complex.coe_smul]`.
+-/
 theorem smul_decomp {V : Type} [AddCommGroup V] [Module ℂ V] (z : ℂ) (v : V) :
     z • v = z.re • v + z.im • (Complex.I • v) := by
   conv_lhs => rw [← Complex.re_add_im z]
   rw [add_smul, mul_smul, Complex.coe_smul, Complex.coe_smul]
 
+/- English proof (translation)
+Rewrite using `[smul_decomp z v, Pullback.dz_add_vector, Pullback.dz_real_smul, Pullback.dz_real_smul, Pullback.dz_smul_I, smul_decomp z (d10 f P v)]`.
+-/
 theorem d10_smul {m : ℕ} (f : Pt E g → Ext m) (P v : Pt E g) (z : ℂ) :
     d10 f P (z • v) = z • d10 f P v := by
   rw [smul_decomp z v, Pullback.dz_add_vector, Pullback.dz_real_smul, Pullback.dz_real_smul, Pullback.dz_smul_I,
     smul_decomp z (d10 f P v)]
 
+/- English proof (translation)
+Rewrite using `[smul_decomp z v, Pullback.dz_add_vector_scalar, Pullback.dz_real_smul_scalar, Pullback.dz_real_smul_scalar, Pullback.dz_smul_I_scalar, smul_decomp z (d10 f P v)]`.
+-/
 theorem d10_smul' (f : Pt E g → ℂ) (P v : Pt E g) (z : ℂ) :
     d10 f P (z • v) = z • d10 f P v := by
   rw [smul_decomp z v, Pullback.dz_add_vector_scalar, Pullback.dz_real_smul_scalar, Pullback.dz_real_smul_scalar, Pullback.dz_smul_I_scalar,
     smul_decomp z (d10 f P v)]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [d10]`. Consider the case `insert i S hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, Pullback.dz_add_vector, ih]`.
+-/
 theorem d10_finsum {m : ℕ} (f : Pt E g → Ext m) (P : Pt E g) (v : Fin g → Pt E g)
     (S : Finset (Fin g)) : d10 f P (∑ c ∈ S, v c) = ∑ c ∈ S, d10 f P (v c) := by
   classical
@@ -40,6 +52,9 @@ theorem d10_finsum {m : ℕ} (f : Pt E g → Ext m) (P : Pt E g) (v : Fin g → 
   | empty => simp [d10]
   | insert i S hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, Pullback.dz_add_vector, ih]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [d10]`. Consider the case `insert i S hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, Pullback.dz_add_vector_scalar, ih]`.
+-/
 theorem d10_finset_sum (f : Pt E g → ℂ) (P : Pt E g) (v : Fin g → Pt E g)
     (S : Finset (Fin g)) : d10 f P (∑ c ∈ S, v c) = ∑ c ∈ S, d10 f P (v c) := by
   classical
@@ -47,14 +62,23 @@ theorem d10_finset_sum (f : Pt E g → ℂ) (P : Pt E g) (v : Fin g → Pt E g)
   | empty => simp [d10]
   | insert i S hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, Pullback.dz_add_vector_scalar, ih]
 
+/- English proof (translation)
+Rewrite using `[d10_finsum]`. Simplify using `only [d10_smul]`.
+-/
 theorem d10_finset_sum' {m : ℕ} (f : Pt E g → Ext m) (P : Pt E g) (x : Fin g → ℂ) :
     d10 f P (∑ c, x c • vert E c) = ∑ c, x c • d10 f P (vert E c) := by
   rw [d10_finsum]; simp only [d10_smul]
 
+/- English proof (translation)
+Rewrite using `[d10_finset_sum]`. Simplify using `only [d10_smul']`.
+-/
 theorem d10_sum_smul_vert (f : Pt E g → ℂ) (P : Pt E g) (x : Fin g → ℂ) :
     d10 f P (∑ c, x c • vert E c) = ∑ c, x c • d10 f P (vert E c) := by
   rw [d10_finset_sum]; simp only [d10_smul']
 
+/- English proof (translation)
+Apply the tactic sequence `funext S; simp only [contr, Pi.smul_apply, smul_eq_mul]; split_ifs <;> ring`.
+-/
 theorem contr_smul {m : ℕ} (i : Fin m) (c : ℂ) (w : Ext m) : contr i (c • w) = c • contr i w := by
   funext S; simp only [contr, Pi.smul_apply, smul_eq_mul]; split_ifs <;> ring
 
@@ -63,10 +87,20 @@ def contrL {m : ℕ} (i : Fin m) : Ext m →ₗ[ℂ] Ext m where
   map_add' := Pullback.contr_add i
   map_smul' := contr_smul i
 
+/- English proof (translation)
+The claim follows from `map_sum (contrL i) x Finset.univ`.
+-/
 theorem contr_sum {m : ℕ} (i : Fin m) (x : Fin g → Ext m) :
     contr i (∑ c, x c) = ∑ c, contr i (x c) :=
   map_sum (contrL i) x Finset.univ
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `Finset.sum_comm`. Use `_ = ∑ e, ∑ a, ∑ c, ∑ d, F a c e d := Finset.sum_comm`.
+
+Use `_ = ∑ e, ∑ a, ∑ d, ∑ c, F a c e d := by`. Use `congr 1`. Use function extensionality and compare the values at `e`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Conclude with `Finset.sum_comm`. Use `_ = ∑ e, ∑ d, ∑ a, ∑ c, F a c e d := by`. Use `congr 1`. Use function extensionality and compare the values at `e`. Conclude with `Finset.sum_comm`.
+-/
 theorem sum_sum_sum_sum_comm {X : Type} [AddCommMonoid X] (F : Fin g → Fin g → Fin g → Fin g → X) :
     ∑ a, ∑ c, ∑ e, ∑ d, F a c e d = ∑ e, ∑ d, ∑ a, ∑ c, F a c e d := by
   calc ∑ a, ∑ c, ∑ e, ∑ d, F a c e d = ∑ a, ∑ e, ∑ c, ∑ d, F a c e d := by
@@ -77,6 +111,9 @@ theorem sum_sum_sum_sum_comm {X : Type} [AddCommMonoid X] (F : Fin g → Fin g �
     _ = ∑ e, ∑ d, ∑ a, ∑ c, F a c e d := by
         congr 1; funext e; exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `hc : fderiv ℝ (fun Q => f (R Q)) P = (fderiv ℝ f (R P)).comp (fderiv ℝ R P)` using `fderiv_comp P hf (hR.restrictScalars ℝ)`. Establish `hRr : fderiv ℝ R P = (fderiv ℂ R P).restrictScalars ℝ` using `hR.fderiv_restrictScalars ℝ`. Simplify using `only [d10, hc, ContinuousLinearMap.comp_apply, hRr, ContinuousLinearMap.coe_restrictScalars', map_smul]`.
+-/
 theorem d10_comp_continuousLinearMap {m : ℕ} (f : Pt E g → Ext m) (R : Pt E g → Pt E g) (P v : Pt E g)
     (hR : DifferentiableAt ℂ R P) (hf : DifferentiableAt ℝ f (R P)) :
     d10 (fun Q => f (R Q)) P v = d10 f (R P) (fderiv ℝ R P v) := by
@@ -86,6 +123,9 @@ theorem d10_comp_continuousLinearMap {m : ℕ} (f : Pt E g → Ext m) (R : Pt E 
   simp only [d10, hc, ContinuousLinearMap.comp_apply, hRr, ContinuousLinearMap.coe_restrictScalars',
     map_smul]
 
+/- English proof (translation)
+Establish `hc : fderiv ℝ (fun Q => f (R Q)) P = (fderiv ℝ f (R P)).comp (fderiv ℝ R P)` using `fderiv_comp P hf (hR.restrictScalars ℝ)`. Establish `hRr : fderiv ℝ R P = (fderiv ℂ R P).restrictScalars ℝ` using `hR.fderiv_restrictScalars ℝ`. Simplify using `only [d10, hc, ContinuousLinearMap.comp_apply, hRr, ContinuousLinearMap.coe_restrictScalars', map_smul]`.
+-/
 theorem d10_comp_of_differentiableAt (f : Pt E g → ℂ) (R : Pt E g → Pt E g) (P v : Pt E g)
     (hR : DifferentiableAt ℂ R P) (hf : DifferentiableAt ℝ f (R P)) :
     d10 (fun Q => f (R Q)) P v = d10 f (R P) (fderiv ℝ R P v) := by
@@ -95,6 +135,11 @@ theorem d10_comp_of_differentiableAt (f : Pt E g → ℂ) (R : Pt E g → Pt E g
   simp only [d10, hc, ContinuousLinearMap.comp_apply, hRr, ContinuousLinearMap.coe_restrictScalars',
     map_smul]
 
+/- English proof (translation)
+Set `L` to `ContinuousLinearMap.restrictScalarsL ℂ (Ext (n + n + g)) (Ext (n + n + g)) ℝ ℝ`. Establish `hc : HasFDerivAt (fun Q : Pt E g => L (frameAt n τ γ Q.1)) (L.comp ((fderiv ℝ (fun b => frameAt n τ γ b) P.1).comp (ContinuousLinearMap.fst ℝ E (Fin g → ℂ)))) P` using `L.hasFDerivAt.comp P (hA.hasFDerivAt.comp P (hasFDerivAt_fst))`. Establish `h2` using `hc.clm_apply hu.hasFDerivAt`. Establish `e : gauge n τ γ s = fun Q => (L (frameAt n τ γ Q.1)) (s (reframe τ γ Q))` using `rfl`. Rewrite using `[e, h2.fderiv]`.
+
+Simplify using `[L]`.
+-/
 theorem fderiv_gauge_vert (n : ℕ) (τ : E → Matrix (Fin g) (Fin g) ℂ) (γ : Sp g)
     (s : Pt E g → Ext (n + n + g)) (P : Pt E g)
     (hA : DifferentiableAt ℝ (fun b => frameAt n τ γ b) P.1)
@@ -114,6 +159,11 @@ end GlobalTheory.TorsionForm.Gauge.AdjConj
 
 namespace GlobalTheory.TorsionForm.Gauge.AdjConj
 
+/- English proof (translation)
+Establish `hinv : D⁻¹ * D = 1` using `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hD)`. Simplify using `only [GlobalTheory.T.frameMap_contraction n _ hD, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`. Apply the tactic sequence `have e' : ∀ a, star ((1 : Matrix (Fin g) (Fin g) ℂ) c a) = (1 : Matrix (Fin g) (Fin g) ℂ) c a := fun a => by rw [Matrix.one_apply]; split_ifs <;> simp`.
+
+Establish `e : ∀ a, ∑ d, star (D⁻¹ c d) * star (D d a) = if c = a then 1 else 0`. Introduce `a`. Rewrite using `[← Matrix.one_apply, ← e', ← hinv, Matrix.mul_apply, star_sum]`. Simplify using `only [star_mul']`. Simplify using `only [e, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem contr_frameMap {g : ℕ} (n : ℕ) (D : Matrix (Fin g) (Fin g) ℂ) (hD : IsUnit D) (c : Fin g)
     (w : Ext (n + n + g)) :
     contr (dzb n c) (frameMap n D w) = ∑ d, star (D⁻¹ c d) • frameMap n D (contr (dzb n d) w) := by
@@ -133,6 +183,27 @@ end GlobalTheory.TorsionForm.Gauge.AdjConj
 
 namespace GlobalTheory.TorsionForm.Gauge.AdjConj
 
+/- English proof (translation)
+Introduce `P hP`. Establish `hb : P.1 ∈ B` using `hP.1`. Establish `hcovOpen : IsOpen (cov B g)` using `hτ.1.prod isOpen_univ`. Establish `hRP : reframe τ γ P ∈ cov B g` using `⟨hb, trivial⟩`. Establish `hD : IsUnit (den γ (τ P.1))` using `GlobalTheory.T.period_map_moebius_denom_unit B τ γ hτ' P.1 hb`.
+
+Take `⟨hRc, hRv⟩` from `GlobalTheory.T.reframe_vertical_derivative B τ γ hτ hτ' P hP`. Establish `hA : DifferentiableAt ℝ (fun b => frameAt n τ γ b) P.1` using `((GlobalTheory.T.contDiffOn_frameAt_of_isPeriodMap n B τ γ hτ hτ').contDiffAt (hτ.1.mem_nhds hb)).differentiableAt (by simp)`. Establish `hsR : DifferentiableAt ℝ s (reframe τ γ P)` using `hs.differentiableAt (hcovOpen.mem_nhds hRP)`. Establish `hu : DifferentiableAt ℝ (fun Q => s (reframe τ γ Q)) P` using `hsR.comp P (hRc.restrictScalars ℝ)`. Establish `hhR : DifferentiableAt ℝ h (reframe τ γ P)` using `((hh.contDiffAt (hcovOpen.mem_nhds hRP)).differentiableAt (by simp))`.
+
+Establish `hlog : DifferentiableAt ℝ (fun Q => (Real.log (h Q) : ℂ)) (reframe τ γ P)` using `Complex.ofRealCLM.differentiableAt.comp _ (hhR.log (hpos _ hRP).ne')`. Establish `hd10g : ∀ a : Fin g, d10 (gauge n τ γ s) P (vert E a) = frameAt n τ γ P.1 (d10 (fun Q => s (reframe τ γ Q)) P (vert E a))`. Introduce `a`. Establish `e1 : Complex.I • vert E a = ((0 : E), Complex.I • (Pi.single a 1 : Fin g → ℂ))`. Simplify using `[vert]`.
+
+Simplify using `only [d10, e1]`. Rewrite using `[vert, fderiv_gauge_vert n τ γ s P hA hu, fderiv_gauge_vert n τ γ s P hA hu]`. Simplify using `only [map_smul, map_sub]`. Establish `key : ∀ a, pointDifference (fun Q => h (reframe τ γ Q)) (gauge n τ γ s) P (vert E a) = ∑ e, (den γ (τ P.1))⁻¹ a e • frameAt n τ γ P.1 (pointDifference h s (reframe τ γ P) (vert E e))`. Introduce `a`.
+
+Simplify using `only [pointDifference, hd10g]`. Rewrite using `[d10_comp_continuousLinearMap s (reframe τ γ) P _ hRc hsR, d10_comp_of_differentiableAt (fun Q => (Real.log (h Q) : ℂ)) (reframe τ γ) P _ hRc hlog, hRv, d10_finset_sum', d10_sum_smul_vert]`. Simplify using `only [pointDifference, map_sum, map_add, map_smul, Finset.sum_smul, smul_add, Finset.sum_add_distrib, smul_smul, gauge, smul_eq_mul]`. Establish `contrΦ : ∀ (c : Fin g) (w : Ext (n + n + g)), contr (dzb n c) (frameAt n τ γ P.1 w) = ∑ d, star ((den γ (τ P.1))⁻¹ c d) • frameAt n τ γ P.1 (contr (dzb n d) w)` using `fun c w => contr_frameMap n _ hD c w`. Establish `hr : ∀ (M : Matrix (Fin g) (Fin g) ℂ) (i j : Fin g), star (M.map (fun t => (t.im : ℂ)) i j) = M.map (fun t => (t.im : ℂ)) i j`.
+
+Introduce `M i j`. Simplify using `[Complex.conj_ofReal]`. Establish `hsym : (τ P.1).IsSymm` using `(hτ.2.2 P.1 hb).1`. Establish `hIm` using `GlobalTheory.T.moeb_imaginary_part_transform γ (τ P.1) hsym hD`. Establish `hY : ∀ e d, imPart (fun b => moeb γ (τ b)) P.1 e d = ∑ a, ∑ c, (den γ (τ P.1))⁻¹ a e * imPart τ P.1 a c * star ((den γ (τ P.1))⁻¹ c d)`.
+
+Introduce `e d`. Establish `e1 : imPart (fun b => moeb γ (τ b)) P.1 e d = star (((((den γ (τ P.1))⁻¹)ᴴ * imPart τ P.1) * (den γ (τ P.1))⁻¹) e d)`. Simplify using `only [imPart]`. Rewrite using `[← hIm, hr]`. Establish `hr' : ∀ i j, star (imPart τ P.1 i j) = imPart τ P.1 i j` using `hr (τ P.1)`.
+
+Rewrite using `[e1]`. Simplify using `only [Matrix.mul_apply, conjTranspose_apply, star_sum, star_mul', star_star, hr', Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hdbar : dbarAdj (fun b => moeb γ (τ b)) h s (reframe τ γ P) = -∑ e, ∑ d, (2 * imPart (fun b => moeb γ (τ b)) P.1 e d) • contr (dzb n d) (pointDifference h s (reframe τ γ P) (vert E e))` using `rfl`. Rewrite using `[hdbar]`.
+
+Simplify using `only [dbarAdj, key, contr_sum, contr_smul, contrΦ, hY, map_neg, map_sum, map_smul]`. Use `congr 1`. Simplify using `only [Finset.smul_sum, smul_smul, Finset.mul_sum, Finset.sum_smul]`. Rewrite using `[sum_sum_sum_sum_comm]`. Use `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dbarAdj_gauge {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {g n : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (γ : Sp g) (h : Pt E g → ℝ)
     (s : Pt E g → Ext (n + n + g)) (hτ : IsPeriodMap B τ)

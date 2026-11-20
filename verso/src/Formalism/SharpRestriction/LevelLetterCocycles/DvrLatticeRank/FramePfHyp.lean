@@ -8,6 +8,9 @@ namespace Formalism.MainNotions.N.Ln34
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Module Formalism.MainNotions.ElementDenominator Formalism.MainNotions.ElementDenominator.CongruenceModules
 
+/- English proof (translation)
+Establish `hS` using `PowerSeries.HasSubst.of_constantCoeff_zero' hp`. Use `conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const F]`. Rewrite using `[PowerSeries.subst_add hS, PowerSeries.subst_mul hS, PowerSeries.subst_X hS, PowerSeries.subst_C, map_add, map_mul, hp, zero_mul, zero_add]`. Conclude with `PowerSeries.constantCoeff_C _`.
+-/
 theorem framepf_hyp_cc_subst {O : Type} [CommRing O] (p F : PowerSeries O)
     (hp : PowerSeries.constantCoeff p = 0) :
     PowerSeries.constantCoeff (PowerSeries.subst p F) = PowerSeries.constantCoeff F := by
@@ -28,10 +31,22 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Take `⟨⟨r, b, hb, huniq, hdel⟩, -⟩` from `hm`. Conclude with `⟨⟨r, b, hb, huniq, fun x hx => hdel x hx⟩⟩`.
+-/
 theorem framepf_hyp_bas (π'₀ : LetA O n) (hm : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T π'₀) : Nonempty (FramepfBas W T) := by
   obtain ⟨⟨r, b, hb, huniq, hdel⟩, -⟩ := hm
   exact ⟨⟨r, b, hb, huniq, fun x hx => hdel x hx⟩⟩
 
+/- English proof (translation)
+Take `⟨f, t, hf, -, hEE, hπΔ, hγN⟩` from `exists_gam_pi_factor W T e s' hs π' E hR π'₀ w₀ hw₀ hm.2`. Take `⟨w, hw⟩` from `hR.2.2.1`. Establish `hfΔ` using `gradNPf_fΔ W s' w π' f hw hπΔ hf`. Take `⟨Fs, hFs, -⟩` from `hR.2.1 f hfΔ`. Establish `hπ0 : ∀ j, PowerSeries.constantCoeff (π' j) = 0`.
+
+Introduce `j`. Establish `: π' j = (w : LetA O n) j * PowerSeries.X ^ s'` using `by rw [hw]; rfl`. Rewrite using `[this, map_mul, map_pow, PowerSeries.constantCoeff_X, zero_pow (by omega), mul_zero]`. Establish `hS` using `PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 (c - 1))`. Establish `hγc : W.γ₀ W.gam (π' (c - 1)) = PowerSeries.subst (π' (c - 1)) (PowerSeries.X * Fs (c - 1))`.
+
+Establish `h : (W.γA W.gam π') (c - 1) = (π' * f) (c - 1)` using `congrFun hf (c - 1)`. Rewrite using `[PowerSeries.subst_mul hS, PowerSeries.subst_X hS, ← hFs (c - 1)]`. Conclude with `h`. Establish `hcc : PowerSeries.constantCoeff (Fs (c - 1)) = ((W.χΓ W.gam : Oˣ) : O) ^ s'`. Rewrite using `[← framepf_hyp_cc_subst (π' (c - 1)) (Fs (c - 1)) (hπ0 (c - 1)), ← hFs (c - 1)]`.
+
+Conclude with `gradNPf_cc_f W s' w π' f hw hf (c - 1)`. Conclude with `⟨hπ0, hπΔ, fun a ha => hR.2.1 a ha, fun δ _ => (W.γ₀_X δ).1, hEE, hγN, Fs (c - 1), hγc, hcc⟩`.
+-/
 theorem framepf_hyp_local (e s' : ℕ) (hs : 1 ≤ s') (π' : LetA O n) (E : ZMod n → Polynomial O)
     (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W e s' π' E) (π'₀ : LetA O n) (w₀ : (LetA O n)ˣ)
     (hw₀ : π'₀ = (w₀ : LetA O n) * letπ ^ s') (hm : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T π'₀) (c : ZMod n) :
@@ -64,6 +79,11 @@ end Local
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, h9W, -⟩` from `h1 l K 1 LL hG`. Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hp : ((D.loc l).PD K).p ≠ 2` using `by rw [hpl]; exact hl`. Establish `hs1 : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Take `⟨-, ⟨π'₀, E₀, hr₀, hm₀⟩, -⟩` from `h9W T hT hs1 hp`.
+
+Rewrite `hr₀` using `[hpl]`. Take `⟨w₀, hw₀⟩` from `hr₀.2.2.1`. Conclude with `⟨π'₀, w₀, hw₀, hm₀⟩`.
+-/
 theorem frame_uniformiser_unit_multiple (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h1 : adm1 D HW F Cm) (l : ℕ) [hpf : Fact l.Prime] (hl : l ≠ 2)
     (K LL : FinExt l) (hG : Good K 1 LL) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL))
@@ -80,6 +100,9 @@ theorem frame_uniformiser_unit_multiple (D : D7) (HW : HWOf D.loc) (F : FonOf D.
   obtain ⟨w₀, hw₀⟩ := hr₀.2.2.1
   exact ⟨π'₀, w₀, hw₀, hm₀⟩
 
+/- English proof (translation)
+Establish `hd : eK K ∣ l - 1` using `Formalism.MainNotions.N.Ln34.DvdPf.dvdCondition l hl K LL hG`. Establish `hl1 : 0 < l - 1` using `by have := hpf.out.two_le; omega`. Establish `he0 : 0 < eK K` using `Nat.pos_of_dvd_of_pos hd hl1`. Conclude with `(Nat.one_le_div_iff he0).mpr (Nat.le_of_dvd hl1 hd)`.
+-/
 theorem ramification_quotient_pos (l : ℕ) [hpf : Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL) :
     1 ≤ sK l K := by
   have hd : eK K ∣ l - 1 := Formalism.MainNotions.N.Ln34.DvdPf.dvdCondition l hl K LL hG
@@ -89,6 +112,23 @@ theorem ramification_quotient_pos (l : ℕ) [hpf : Fact l.Prime] (hl : l ≠ 2) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hs1 : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hι : Function.Injective (algebraMap ↥(OL LL) ↥LL.1)` using `Subtype.val_injective`. Establish `hRv : ∀ y : ↥LL.1, 0 ≤ (D.loc l).v LL y ↔ ∃ a : ↥(OL LL), algebraMap ↥(OL LL) ↥LL.1 a = y`. Introduce `y`. Rewrite using `[(D.loc l).v_O LL y]`.
+
+Conclude with `⟨fun h => ⟨⟨y, h⟩, rfl⟩, fun ⟨a, ha⟩ => ha ▸ a.2⟩`. Establish `hlv : (D.loc l).v LL (l : ↥LL.1) = 1` using `(D.loc l).v_l LL`. Establish `hlO : (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (l : ↥(OL LL))) = 1`. Rewrite using `[map_natCast]`. Conclude with `hlv`.
+
+Establish `hxv : (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 ((((HW l).W K 1 LL hG).χΓ ((HW l).W K 1 LL hG).gam : (↥(OL LL))ˣ) : ↥(OL LL)) - 1) = 1`. Use `((HW l).W K 1 LL hG).gam_gen` as an intermediate fact. Rewrite `this` using `[hs1, Nat.cast_one]`. Conclude with `this`. Take `⟨u, hu, hxu⟩` from `gradNPf_sub_one ((D.loc l).v LL) (algebraMap ↥(OL LL) ↥LL.1) hι hRv (l : ↥(OL LL)) _ hlO hxv`.
+
+Establish `hsl : ¬ l ∣ sK l K`. Apply `Nat.not_dvd_of_pos_of_lt hs` to reduce the goal to its premises. Establish `h2` using `hpf.out.two_le`. Conclude with `lt_of_le_of_lt (Nat.div_le_self _ _) (by omega)`. Establish `hprod` using `fun N => gradNPf_prod ((D.loc l).v LL) (algebraMap ↥(OL LL) ↥LL.1) hι hRv l hl hlv _ u hu hxu (sK l K) (by omega) hsl N`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `y hy h`. Take `⟨a, ha⟩` from `hprod y`. Rewrite `ha` using `[Finset.prod_eq_zero (i := y) (Finset.mem_Ico.2 ⟨hy, by omega⟩) (by rw [h, sub_self]), mul_zero]`. Establish `h2` using `congrArg (algebraMap ↥(OL LL) ↥LL.1) ha`.
+
+Rewrite `h2` using `[map_pow, map_natCast, map_zero]`. Establish `h3 : (l : ↥LL.1) = 0` using `(pow_eq_zero_iff (by omega)).mp h2`. Rewrite `hlv` using `[h3, AddValuation.map_zero]`. Conclude with `absurd hlv (by simp)`. Take `⟨a, ha⟩` from `hprod (MK l K h' - 1)`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hσ : sigA l (sK l K) h' = MK l K h' - 1 + padicValNat l (MK l K h' - 1).factorial` using `rfl`. Establish `hI : Finset.Ico 1 (MK l K h' - 1 + 1) = Finset.Ico 1 (MK l K h')`. Break down `Nat.eq_zero_or_pos (MK l K h') with h0 | h0` into its components or cases. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hσ, ← hI]`. Conclude with `ha`.
+-/
 theorem framepf_hyp_arith (D : D7) (HW : HWOf D.loc) (l : ℕ) [hpf : Fact l.Prime] (hl : l ≠ 2)
     (K LL : FinExt l) (hG : Good K 1 LL) (h' : ℕ) (hs : 1 ≤ sK l K) :
     (∀ y : ℕ, 1 ≤ y → (((((HW l).W K 1 LL hG).χΓ ((HW l).W K 1 LL hG).gam : (↥(OL LL))ˣ) : ↥(OL LL)) ^ sK l K) ^ y ≠ 1) ∧
@@ -138,6 +178,9 @@ theorem framepf_hyp_arith (D : D7) (HW : HWOf D.loc) (l : ℕ) [hpf : Fact l.Pri
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨π'₀, w₀, hw₀, hm₀⟩` from `frame_uniformiser_unit_multiple D HW F Cm h1 l hl K LL hG T hT`. Establish `hs` using `ramification_quotient_pos l hl K LL hG`. Take `⟨hπ0, hπΔ, hsub, hX0, hEE, hγN, Fs, hγc, hcc⟩` from `framepf_hyp_local _ T (eK K) (sK l K) hs π' E hR π'₀ w₀ hw₀ hm₀ c`. Take `⟨hne, hpr⟩` from `framepf_hyp_arith D HW l hl K LL hG h' hs`. Conclude with `⟨framepf_hyp_bas _ T π'₀ hm₀, hπ0, hπΔ, hsub, hX0, hEE, hγN, ((HW l).W K 1 LL hG).gamK_eq_one ((HW l).W_s K 1 LL hG) (by rw [(D.loc l).PD_p K]; exact hl), Fs, hγc, hcc, hne, hpr⟩`.
+-/
 theorem framepf_hyps (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h1 : adm1 D HW F Cm) (l : ℕ) [hpf : Fact l.Prime] (hl : l ≠ 2)
     (K LL : FinExt l) (hG : Good K 1 LL) (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K)))

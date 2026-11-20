@@ -25,6 +25,23 @@ def starEquiv (d : ℕ) : (Fin d → ℂ) ≃ₗ[ℝ] (Fin d → ℂ) where
   left_inv := star_star
   right_inv := star_star
 
+/- English proof (translation)
+Introduce `F _ _ Y σ σ' ι a a' E E' hj ha ha' hpot hE hE' hc ψ z t`. Establish `hσ : σ = (starRingEnd ℂ).comp σ'`. Establish `h1` using `(ι z).2`. Rewrite `h1` using `[hj z, Category.assoc, z.2, spMap, spMap, spMap, ← Spec.map_comp]`. Establish `h2` using `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`.
+
+Conclude with `h2.symm`. Take `⟨c', hz⟩` from `AlgChart.exists_mem_source (D := Y.dim) z`. Take `⟨-, hch⟩` from `GlobalTheory.ConjChart.continuous_and_exists_conj_chart F Y.X Y.str Y.dim σ σ' ι hσ hj`. Take `⟨c, hs, he⟩` from `hch c'`. Establish `e1 : ∀ w ∈ c'.e.source, c.e (ι w) = conjV Y.dim (c'.e w)` using `fun w hw => by`.
+
+Use extensionality with `i`. Rewrite using `[he w hw i, conjV_apply]`. Establish `e2 : ∀ v ∈ c'.e.target, ι (c'.e.symm v) = c.e.symm (conjV Y.dim v)` using `fun v hv => by`. Establish `hw : c'.e.symm v ∈ c'.e.source` using `c'.e.map_target hv`. Rewrite using `[← c.e.left_inv ((hs _).2 hw), e1 _ hw, c'.e.right_inv hv]`.
+
+Establish `hιz : ι z ∈ c.e.source` using `(hs z).2 hz`. Establish `hEE : ∀ ξ, ι (E' c' z ξ) = E c (ι z) (star ξ)` using `hc c c' (fun w hw _ i => by rw [he w hw i, Complex.conj_conj]) z hz hιz`. Establish `hddc : ∀ (φ : Pts Y σ → ℝ) (ξ : Fin Y.dim → ℂ), ddcForm (φ ∘ ι) c' z ξ = ddcForm φ c (ι z) (star ξ)`. Introduce `φ ξ`. Establish `h` using `leviV_comp_conjV Y.dim (fun v => φ (c.e.symm v)) (c'.e z) ξ`.
+
+Simplify using `only [ddcForm, AlgChart.levi]`. Use `congr 1`. Rewrite using `[e1 z hz]`. Use `Eq.trans (congrArg Complex.re (ReciprocityTheory.L2DbarEstimates.leviV_congr ?_ ξ)) (Eq.trans (congrArg Complex.re h) (Complex.conj_re _))` and prove the remaining obligations. Use `Filter.eventually_of_mem (c'.e.open_target.mem_nhds (c'.e.map_source hz)) fun v hv => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, e2 v hv]`. Establish `haa : ∀ ξ, a' c' z ξ = a c (ι z) (star ξ)`. Take `⟨W, φ, hW, hp⟩` from `ha.1 (ι z)`. Establish `hp'` using `hpot W φ hp`. Introduce `ξ`.
+
+Rewrite using `[hp'.2.2 c' z hz hW ξ, hp.2.2 c (ι z) hιz hW, hddc]`. Rewrite using `[rho_eq ha' hE' _ hz, rho_eq ha hE _ hιz, rhoIn, rhoIn, ← mean_comp (a c (ι z)) _ (starEquiv Y.dim)]`. Use `congr 1`. Conclude with `funext fun ξ => haa ξ`. Use function extensionality and compare the values at `ξ`.
+
+Simplify using `only [Function.comp_apply, hEE]`. Use `congr 2`. Conclude with `(starEquiv Y.dim).map_smul t ξ`.
+-/
 theorem rho_comp_conj : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (σ σ' : F →+* ℂ) (ι : Pts Y σ' → Pts Y σ) (a : ChartForm Y.str σ Y.dim) (a' : ChartForm Y.str σ' Y.dim) (E : ChartMap Y.str σ Y.dim) (E' : ChartMap Y.str σ' Y.dim), IsConjMap ι → IsKaehlerForm (Y.an σ) a → IsKaehlerForm (Y.an σ') a' → (∀ W φ, IsPotential (Y.an σ) a W φ → IsPotential (Y.an σ') a' (ι ⁻¹' W) (φ ∘ ι)) → IsExph a E → IsExph a' E' → ConjComm ι E E' → ∀ (ψ : Pts Y σ → ℝ) (z : Pts Y σ') (t : ℝ), rho a' E' (ψ ∘ ι) z t = rho a E ψ (ι z) t := by
   intro F _ _ Y σ σ' ι a a' E E' hj ha ha' hpot hE hE' hc ψ z t
   have hσ : σ = (starRingEnd ℂ).comp σ' := by

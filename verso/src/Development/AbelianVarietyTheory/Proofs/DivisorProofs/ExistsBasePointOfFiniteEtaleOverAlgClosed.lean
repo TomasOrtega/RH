@@ -15,9 +15,25 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.FinEtPoints
 
+/- English proof (translation)
+Conclude with `Flat.epi_of_flat_of_surjective _`.
+-/
 theorem epi_spMap_field (k L : Type) [Field k] [Field L] (f : k →+* L) : Epi (spMap f) := by
   exact Flat.epi_of_flat_of_surjective _
 
+/- English proof (translation)
+Introduce `hf he x hx`. Set `Ω` to `AlgebraicClosure K`. Set `i : K →+* Ω` to `algebraMap K Ω`. Set `j : k₀ →+* K` to `algebraMap k₀ K`. Set `t : Sp Ω ⟶ Sp k₀` to `spMap (i.comp j)`.
+
+Establish `ht : spMap i ≫ spMap j = t`. Simplify using `only [t, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hti : Epi t` using `epi_spMap_field _ _ _`. Establish `hii : Epi (spMap i)` using `epi_spMap_field _ _ _`. Take `⟨zΩ⟩ : Nonempty (Sp Ω)` from `inferInstance`.
+
+Take `⟨z₀⟩ : Nonempty (Sp k₀)` from `inferInstance`. Take `⟨hfin₁, hc₁⟩` from `GlobalTheory.FinEt.card_points_eq_finrank p t zΩ`. Take `⟨hfin₀, hc₀⟩` from `GlobalTheory.FinEt.card_points_eq_finrank p (𝟙 (Sp k₀)) z₀`. Set `F : {y : Sp k₀ ⟶ X // y ≫ p = 𝟙 _} → {y : Sp Ω ⟶ X // y ≫ p = t}` to `fun y ↦ ⟨t ≫ y.1, by rw [Category.assoc, y.2, Category.comp_id]⟩`. Establish `hFi : Function.Injective F`.
+
+Introduce `a b hab`. Conclude with `Subtype.ext ((cancel_epi t).mp congr(($hab).1))`. Establish `hcard : Nat.card {y : Sp Ω ⟶ X // y ≫ p = t} ≤ Nat.card {y : Sp k₀ ⟶ X // y ≫ p = 𝟙 _}`. Rewrite using `[hc₁, hc₀, Subsingleton.elim (t zΩ) ((𝟙 (Sp k₀) : Sp k₀ ⟶ Sp k₀) z₀)]`. Establish `hFb : Function.Bijective F` using `hFi.bijective_of_nat_card_le hcard`.
+
+Take `⟨⟨x₀, hx₀⟩, hF⟩` from `hFb.2 ⟨spMap i ≫ x, by rw [Category.assoc, hx, ht]⟩`. Use `⟨x₀, hx₀, ?_⟩` and prove the remaining obligations. Establish `h1 : spMap i ≫ (spMap j ≫ x₀) = spMap i ≫ x`. Rewrite using `[← Category.assoc, ht]`. Conclude with `congr(($hF).1)`.
+
+Conclude with `(cancel_epi (spMap i)).mp h1`.
+-/
 theorem exists_point_of_finite_etale (k₀ K : Type) [Field k₀] [IsAlgClosed k₀] [Field K]
     [Algebra k₀ K] (X : Scheme.{0}) (p : X ⟶ Sp k₀) : IsFinite p → Etale p →
     ∀ x : Sp K ⟶ X, x ≫ p = spMap (algebraMap k₀ K) →

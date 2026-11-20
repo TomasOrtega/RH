@@ -28,6 +28,13 @@ def cf (Φ Φ' : Mat k r → ℂ) : Mat k r → ℂ := mc X (V D X Φ) (V D X Φ
 
 def TG (Φ : Mat k r → ℂ) : Prop := ContDiff ℝ ninf Φ ∧ HasCompactSupport Φ
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Establish `hL : ContDiff ℝ ninf (fun x : Mat k r => -(Y * x))` using `((LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ Y)).contDiff).neg`. Establish `hmn : ninf + 1 ≤ ninf` using `by first`. Consider the case `simp [ninf]`. Consider the case `(unfold ninf; exact_mod_cast (le_top : (⊤ : ℕ∞) + 1 ≤ ⊤))`.
+
+Consider the case `exact le_rfl`. Use `⟨ContDiff.fderiv_apply (f := fun _ y => Φ y) (h1.comp contDiff_snd) contDiff_id hL hmn, ?_⟩` and prove the remaining obligations. Use `(h2.fderiv ℝ).mono ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx`, the goal using `[Function.mem_support]`.
+
+Introduce `h0`. Conclude with `hx (by show fderiv ℝ Φ x (-(Y * x)) = 0; rw [h0, ContinuousLinearMap.zero_apply])`.
+-/
 private theorem TG_DX_lemma {Φ : Mat k r → ℂ} (h : TG Φ) (Y : Mat k r) : TG (DX Y Φ) := by
   obtain ⟨h1, h2⟩ := h
   have hL : ContDiff ℝ ninf (fun x : Mat k r => -(Y * x)) :=
@@ -44,11 +51,19 @@ private theorem TG_DX_lemma {Φ : Mat k r → ℂ} (h : TG Φ) (Y : Mat k r) : T
   intro h0
   exact hx (by show fderiv ℝ Φ x (-(Y * x)) = 0; rw [h0, ContinuousLinearMap.zero_apply])
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons Y l ih => exact TG_DX_lemma ih Y`.
+-/
 theorem TG_Dw {Φ : Mat k r → ℂ} (h : TG Φ) (l : List (Mat k r)) : TG (Dw l Φ) := by
   induction l with
   | nil => exact h
   | cons Y l ih => exact TG_DX_lemma ih Y
 
+/- English proof (translation)
+Use `haveI : CompleteSpace 𝔸 := FiniteDimensional.complete ℂ 𝔸`. Establish `hA` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) A`. Establish `hB` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) B`. Establish `hpow : ∀ n : ℕ, H * A ^ n = B ^ n * H` using `fun n => (SemiconjBy.pow_right (show SemiconjBy H A B from h) n).eq`. Use `(hA.mul_left H).unique ?_` and prove the remaining obligations.
+
+Establish `hB'` using `hB.mul_right H`. Use `hB' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Rewrite using `[mul_smul_comm, smul_mul_assoc, hpow n]`.
+-/
 private theorem semiExp_lemma_7 {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℂ 𝔸] [FiniteDimensional ℂ 𝔸]
     {H A B : 𝔸} (h : H * A = B * H) : H * NormedSpace.exp A = NormedSpace.exp B * H := by
   haveI : CompleteSpace 𝔸 := FiniteDimensional.complete ℂ 𝔸
@@ -62,10 +77,18 @@ private theorem semiExp_lemma_7 {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra 
   funext n
   rw [mul_smul_comm, smul_mul_assoc, hpow n]
 
+/- English proof (translation)
+The claim follows from `@semiExp_lemma_7 (Mat k r) Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra _ H A B h`.
+-/
 private theorem semiExp_lemma_8 {H A B : Mat k r} (h : H * A = B * H) :
     H * NormedSpace.exp A = NormedSpace.exp B * H :=
   @semiExp_lemma_7 (Mat k r) Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra _ H A B h
 
+/- English proof (translation)
+Use `show (NormedSpace.exp ((s : ℂ) • Y))ᴴ * Hpk k r * NormedSpace.exp ((s : ℂ) • Y) = Hpk k r`. Establish `hHY : Hpk k r * Y = -(Yᴴ * Hpk k r)` using `eq_neg_of_add_eq_zero_right hY`. Establish `hs : Hpk k r * ((s : ℂ) • Y) = (-((s : ℂ) • Yᴴ)) * Hpk k r`. Rewrite using `[mul_smul_comm, hHY, neg_mul, smul_neg, smul_mul_assoc]`. Establish `hc : (NormedSpace.exp ((s : ℂ) • Y))ᴴ = NormedSpace.exp ((s : ℂ) • Yᴴ)`.
+
+Rewrite using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[hc, Matrix.mul_assoc, semiExp_lemma_8 hs, ← Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ ((Commute.refl ((s : ℂ) • Yᴴ)).neg_right), add_neg_cancel, NormedSpace.exp_zero, Matrix.one_mul]`.
+-/
 private theorem expGV_lemma_9 {Y : Mat k r} (hY : inLie k r Y) (s : ℝ) :
     NormedSpace.exp ((s : ℂ) • Y) ∈ GV k r := by
   show (NormedSpace.exp ((s : ℂ) • Y))ᴴ * Hpk k r * NormedSpace.exp ((s : ℂ) • Y) = Hpk k r
@@ -78,6 +101,23 @@ private theorem expGV_lemma_9 {Y : Mat k r} (hY : inLie k r Y) (s : ℝ) :
     ← Matrix.exp_add_of_commute _ _ ((Commute.refl ((s : ℂ) • Yᴴ)).neg_right), add_neg_cancel,
     NormedSpace.exp_zero, Matrix.one_mul]
 
+/- English proof (translation)
+Use `haveI := X.hC`. Establish `hrep` using `X.rep`. Establish `hc : (t • Y : Mat k r) = (t : ℂ) • Y`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Establish `hG : NormedSpace.exp (t • Y) ∈ GV k r`. Rewrite using `[hc]`. Conclude with `expGV_lemma_9 hY t`. Establish `hinv : NormedSpace.exp (t • -Y) * NormedSpace.exp (t • Y) = 1`. Rewrite using `[smul_neg, ← Matrix.exp_add_of_commute _ _ ((Commute.refl (t • Y)).neg_left), neg_add_cancel, NormedSpace.exp_zero]`.
+
+Establish `hinv' : NormedSpace.exp (t • Y) * NormedSpace.exp (t • -Y) = 1`. Rewrite using `[smul_neg, ← Matrix.exp_add_of_commute _ _ ((Commute.refl (t • Y)).neg_right), add_neg_cancel, NormedSpace.exp_zero]`. Establish `hct : ∀ a : Mat k r, Continuous (lmulM (k` using `k) (r := r) a) := fun a => by`. Unfold `lmulM`. Conclude with `continuous_const.matrix_mul continuous_id`.
+
+Set `L : X.Hs →ₗᵢ[ℂ] X.Hs` to `⟨(X.σ (NormedSpace.exp (t • Y))).toLinearMap, hrep.2.1 _ hG⟩`. Set `e : Mt k r ≃ᵐ Mt k r` to `{ toFun := lmulM (NormedSpace.exp (t • Y)) invFun := lmulM (NormedSpace.exp (t • -Y)) left_inv := fun x => by show NormedSpace.exp (t • -Y) * (NormedSpace.exp (t • Y) * Matrix.of x) = x`. Rewrite using `[← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Both sides reduce to the same expression. Use `right_inv := fun x => by show NormedSpace.exp (t • Y) * (NormedSpace.exp (t • -Y) * Matrix.of x) = x`.
+
+Rewrite using `[← Matrix.mul_assoc, hinv', Matrix.one_mul]`. Both sides reduce to the same expression. Use `measurable_toFun := (hct _).measurable`. Use `measurable_invFun := (hct _).measurable }`. Establish `hmap : Measure.map e D.μG = D.μG`.
+
+Rewrite using `[show (⇑e : Mt k r → Mt k r) = lmulM (NormedSpace.exp (t • Y)) from rfl]`. Conclude with `D.haarG.left _ hG`. Establish `hae : ∀ᵐ g ∂D.μG, (Matrix.of g : Mat k r) ∈ GV k r` using `ae_iff.mpr D.haarG.conc`. Use `show X.σ (NormedSpace.exp (t • Y)) (∫ g : Mt k r, Φ (Matrix.of g) • X.σ (Matrix.of g) X.w ∂D.μG) = ∫ g : Mt k r, Φ (NormedSpace.exp (t • -Y) * Matrix.of g) • X.σ (Matrix.of g) X.w ∂D.μG`. Establish `e1 : X.σ (NormedSpace.exp (t • Y)) (∫ g : Mt k r, Φ (Matrix.of g) • X.σ (Matrix.of g) X.w ∂D.μG) = ∫ g : Mt k r, X.σ (NormedSpace.exp (t • Y)) (Φ (Matrix.of g) • X.σ (Matrix.of g) X.w) ∂D.μG` using `(L.integral_comp_comm _).symm`.
+
+Rewrite using `[e1]`. Use `conv_rhs => rw [← hmap]`. Rewrite using `[integral_map_equiv]`. Use `integral_congr_ae (hae.mono fun g hg => ?_)` and prove the remaining obligations. Use `beta_reduce`.
+
+Use `show X.σ (NormedSpace.exp (t • Y)) (Φ (Matrix.of g) • X.σ (Matrix.of g) X.w) = Φ (NormedSpace.exp (t • -Y) * (NormedSpace.exp (t • Y) * Matrix.of g)) • X.σ (NormedSpace.exp (t • Y) * Matrix.of g) X.w`. Rewrite using `[← Matrix.mul_assoc, hinv, Matrix.one_mul, map_smul, hrep.1.2 _ hG _ hg, ContinuousLinearMap.comp_apply]`.
+-/
 theorem sig_exp {Φ : Mat k r → ℂ} (hΦ : TG Φ) {Y : Mat k r} (hY : inLie k r Y) (t : ℝ) :
     X.σ (NormedSpace.exp (t • Y)) (V D X Φ) = V D X (fun x => Φ (NormedSpace.exp (t • (-Y)) * x)) := by
   haveI := X.hC
@@ -130,6 +170,13 @@ theorem sig_exp {Φ : Mat k r → ℂ} (hΦ : TG Φ) {Y : Mat k r} (hY : inLie k
       X.σ (NormedSpace.exp (t • Y) * Matrix.of g) X.w
   rw [← Matrix.mul_assoc, hinv, Matrix.one_mul, map_smul, hrep.1.2 _ hG _ hg, ContinuousLinearMap.comp_apply]
 
+/- English proof (translation)
+Unfold `Formalism.REAL.RdV`. Establish `hfun : (fun t : ℝ => cf D X Φ Φ' (g * NormedSpace.exp ((t : ℂ) • Y))) = fun t : ℝ => ⟪V D X Φ', X.σ g (V D X (fun x => Φ (NormedSpace.exp (t • (-Y)) * x)))⟫_ℂ`. Use function extensionality and compare the values at `t`. Rewrite using `[cast_smul]`. Unfold `cf mc`.
+
+Rewrite using `[sig_mul hg (exp_mem hY t), sig_exp hΦ hY t]`. Rewrite using `[hfun]`. Establish `hd` using `V_hasDerivAt (D := D) (X := X) hΦ.1 hΦ.2 (-Y)`. Set `L : X.Hs →L[ℂ] ℂ` to `(innerSL ℂ (V D X Φ')).comp (X.σ g)`. Establish `h3 : HasDerivAt (fun t : ℝ => ⟪V D X Φ', X.σ g (V D X (fun x => Φ (NormedSpace.exp (t • (-Y)) * x)))⟫_ℂ) (L (V D X (fun x => fderiv ℝ Φ x ((-Y) * x)))) 0` using `(L.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`.
+
+Rewrite using `[h3.deriv]`. Simplify using `only [L, cf, mc, ContinuousLinearMap.comp_apply, innerSL_apply_apply, Matrix.neg_mul]`. Both sides reduce to the same expression.
+-/
 theorem RdV_cf {Φ Φ' : Mat k r → ℂ} (hΦ : TG Φ) {Y : Mat k r} (hY : inLie k r Y) {g : Mat k r}
     (hg : g ∈ GV k r) : Formalism.REAL.RdV Y (cf D X Φ Φ') g = cf D X (DX Y Φ) Φ' g := by
   unfold Formalism.REAL.RdV
@@ -149,6 +196,13 @@ theorem RdV_cf {Φ Φ' : Mat k r → ℂ} (hΦ : TG Φ) {Y : Mat k r} (hY : inLi
   simp only [L, cf, mc, ContinuousLinearMap.comp_apply, innerSL_apply_apply, Matrix.neg_mul]
   rfl
 
+/- English proof (translation)
+Unfold `LdV`. Establish `hfun : (fun t : ℝ => cf D X Φ Φ' (NormedSpace.exp (-((t : ℂ) • Y)) * g)) = fun t : ℝ => ⟪V D X (fun x => Φ' (NormedSpace.exp (t • (-Y)) * x)), X.σ g (V D X Φ)⟫_ℂ`. Use function extensionality and compare the values at `t`. Establish `he` using `exp_negY_mem hY t`. Rewrite using `[cast_smul, ← smul_neg]`.
+
+Unfold `cf mc`. Rewrite using `[sig_mul he hg, sig_adj he, exp_negY_inv, sig_exp hΦ' hY t]`. Rewrite using `[hfun]`. Establish `hd` using `V_hasDerivAt (D := D) (X := X) hΦ'.1 hΦ'.2 (-Y)`. Establish `h3` using `hd.inner ℂ (hasDerivAt_const (0 : ℝ) (X.σ g (V D X Φ)))`.
+
+Rewrite using `[h3.deriv]`. Simplify using `only [inner_zero_right, zero_add, cf, mc, Matrix.neg_mul]`. Both sides reduce to the same expression.
+-/
 theorem LdV_cf {Φ Φ' : Mat k r → ℂ} (hΦ' : TG Φ') {Y : Mat k r} (hY : inLie k r Y) {g : Mat k r}
     (hg : g ∈ GV k r) : LdV Y (cf D X Φ Φ') g = cf D X Φ (DX Y Φ') g := by
   unfold LdV
@@ -166,6 +220,11 @@ theorem LdV_cf {Φ Φ' : Mat k r → ℂ} (hΦ' : TG Φ') {Y : Mat k r} (hY : in
   simp only [inner_zero_right, zero_add, cf, mc, Matrix.neg_mul]
   rfl
 
+/- English proof (translation)
+Use `haveI : CompleteSpace 𝔸 := FiniteDimensional.complete ℂ 𝔸`. Establish `hA` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) A`. Establish `hB` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) B`. Use `(hA.mul_left H).unique ?_` and prove the remaining obligations. Use `hB.mul_right H using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `n`. Simplify using `only [mul_smul_comm, smul_mul_assoc, (SemiconjBy.pow_right (show SemiconjBy H A B from h) n).eq]`.
+-/
 private theorem hs_lemma_0 {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℂ 𝔸] [FiniteDimensional ℂ 𝔸]
     {H A B : 𝔸} (h : H * A = B * H) : H * NormedSpace.exp A = NormedSpace.exp B * H := by
   haveI : CompleteSpace 𝔸 := FiniteDimensional.complete ℂ 𝔸
@@ -176,11 +235,19 @@ private theorem hs_lemma_0 {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℂ �
   funext n
   simp only [mul_smul_comm, smul_mul_assoc, (SemiconjBy.pow_right (show SemiconjBy H A B from h) n).eq]
 
+/- English proof (translation)
+Conclude with `@hs_lemma_0 (Matrix n n ℂ) Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra _ H A B h`.
+-/
 private theorem H_exp_lemma {n : Type*} [Fintype n] [DecidableEq n] {H A B : Matrix n n ℂ}
     (h : H * A = B * H) :
     H * NormedSpace.exp A = NormedSpace.exp B * H := by
   exact @hs_lemma_0 (Matrix n n ℂ) Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra _ H A B h
 
+/- English proof (translation)
+Establish `hHY : H * Y = -(Yᴴ * H)` using `eq_neg_of_add_eq_zero_right hY`. Establish `hs : H * ((s : ℂ) • Y) = (-((s : ℂ) • Yᴴ)) * H`. Simplify using `only [mul_smul_comm, smul_mul_assoc, neg_mul, smul_neg, hHY]`. Establish `hc : (NormedSpace.exp ((s : ℂ) • Y))ᴴ = NormedSpace.exp ((s : ℂ) • Yᴴ)`. Rewrite using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, show star (s : ℂ) = (s : ℂ) from Complex.conj_ofReal s]`.
+
+Rewrite using `[hc, Matrix.mul_assoc, H_exp_lemma hs, ← Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ ((Commute.refl ((s : ℂ) • Yᴴ)).neg_right), add_neg_cancel, NormedSpace.exp_zero, Matrix.one_mul]`.
+-/
 private theorem exp_UH_lemma_2 {H Y : Mat k r} (hY : Yᴴ * H + H * Y = 0) (s : ℝ) :
     (NormedSpace.exp ((s : ℂ) • Y))ᴴ * H * NormedSpace.exp ((s : ℂ) • Y) = H := by
   have hHY : H * Y = -(Yᴴ * H) := eq_neg_of_add_eq_zero_right hY
@@ -193,6 +260,11 @@ private theorem exp_UH_lemma_2 {H Y : Mat k r} (hY : Yᴴ * H + H * Y = 0) (s : 
     ← Matrix.exp_add_of_commute _ _ ((Commute.refl ((s : ℂ) • Yᴴ)).neg_right), add_neg_cancel,
     NormedSpace.exp_zero, Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `GV inLie at *`. Unfold `UH at *`. Simplify using `only [Set.mem_setOf_eq] at hg ⊢`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hg]; exact exp_UH_lemma_2 hY s`.
+-/
 private theorem mem_lemma_3 {Y g : Mat k r} (hY : inLie k r Y) (hg : g ∈ GV k r) (s : ℝ) :
     g * NormedSpace.exp ((s : ℂ) • Y) ∈ GV k r := by
   unfold GV inLie at *
@@ -203,6 +275,9 @@ private theorem mem_lemma_3 {Y g : Mat k r} (hY : inLie k r Y) (hg : g ∈ GV k 
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [hg]; exact exp_UH_lemma_2 hY s
 
+/- English proof (translation)
+Unfold `Formalism.REAL.RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `hf _ (mem_lemma_3 hY hg t)`.
+-/
 theorem RdV_congr {f₁ f₂ : Mat k r → ℂ} (hf : ∀ x ∈ GV k r, f₁ x = f₂ x) {Y : Mat k r} (hY : inLie k r Y)
     {g : Mat k r} (hg : g ∈ GV k r) : Formalism.REAL.RdV Y f₁ g = Formalism.REAL.RdV Y f₂ g := by
   unfold Formalism.REAL.RdV
@@ -210,6 +285,11 @@ theorem RdV_congr {f₁ f₂ : Mat k r → ℂ} (hf : ∀ x ∈ GV k r, f₁ x =
   funext t
   exact hf _ (mem_lemma_3 hY hg t)
 
+/- English proof (translation)
+Establish `e : -((s : ℂ) • Y) = ((-s : ℝ) : ℂ) • Y` using `by push_cast; rw [neg_smul]`. Rewrite using `[e]`. Unfold `GV inLie at *`. Unfold `UH at *`. Simplify using `only [Set.mem_setOf_eq] at hg ⊢`.
+
+Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [exp_UH_lemma_2 hY (-s)]; exact hg`.
+-/
 private theorem memL_lemma_4 {Y g : Mat k r} (hY : inLie k r Y) (hg : g ∈ GV k r) (s : ℝ) :
     NormedSpace.exp (-((s : ℂ) • Y)) * g ∈ GV k r := by
   have e : -((s : ℂ) • Y) = ((-s : ℝ) : ℂ) • Y := by push_cast; rw [neg_smul]
@@ -223,6 +303,9 @@ private theorem memL_lemma_4 {Y g : Mat k r} (hY : inLie k r Y) (hg : g ∈ GV k
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [exp_UH_lemma_2 hY (-s)]; exact hg
 
+/- English proof (translation)
+Unfold `LdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `hf _ (memL_lemma_4 hY hg t)`.
+-/
 theorem LdV_congr {f₁ f₂ : Mat k r → ℂ} (hf : ∀ x ∈ GV k r, f₁ x = f₂ x) {Y : Mat k r} (hY : inLie k r Y)
     {g : Mat k r} (hg : g ∈ GV k r) : LdV Y f₁ g = LdV Y f₂ g := by
   unfold LdV
@@ -230,6 +313,9 @@ theorem LdV_congr {f₁ f₂ : Mat k r → ℂ} (hf : ∀ x ∈ GV k r, f₁ x =
   funext t
   exact hf _ (memL_lemma_4 hY hg t)
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _ => rfl | Y :: v, hv, g, hg => by have hY : inLie k r Y := hv Y (by simp) show Formalism.REAL.RdV Y (Rw v (cf D X Φ Φ')) g = cf D X (DX Y (Dw v Φ)) Φ' g rw [RdV_congr (f₂ := cf D X (Dw v Φ) Φ') (fun x hx => Rw_cf hΦ v (fun Z hZ => hv Z (List.mem_cons_of_mem _ hZ)) x …`.
+-/
 theorem Rw_cf {Φ Φ' : Mat k r → ℂ} (hΦ : TG Φ) :
     ∀ v : List (Mat k r), (∀ Y ∈ v, inLie k r Y) → ∀ g ∈ GV k r,
       Rw v (cf D X Φ Φ') g = cf D X (Dw v Φ) Φ' g
@@ -241,6 +327,9 @@ theorem Rw_cf {Φ Φ' : Mat k r → ℂ} (hΦ : TG Φ) :
       (fun x hx => Rw_cf hΦ v (fun Z hZ => hv Z (List.mem_cons_of_mem _ hZ)) x hx) hY hg]
     exact RdV_cf (TG_Dw hΦ v) hY hg
 
+/- English proof (translation)
+The claim follows from `| [], _, g, hg => Rw_cf hΦ v hv g hg | Y :: u, hu, g, hg => by have hY : inLie k r Y := hu Y (by simp) show LdV Y (dLR u v (cf D X Φ Φ')) g = cf D X (Dw v Φ) (DX Y (Dw u Φ')) g rw [LdV_congr (f₂ := cf D X (Dw v Φ) (Dw u Φ')) (fun x hx => dLR_cf hΦ hΦ' v hv u (fun Z hZ => hu Z (Li …`.
+-/
 theorem dLR_cf {Φ Φ' : Mat k r → ℂ} (hΦ : TG Φ) (hΦ' : TG Φ') (v : List (Mat k r))
     (hv : ∀ Y ∈ v, inLie k r Y) :
     ∀ u : List (Mat k r), (∀ Y ∈ u, inLie k r Y) → ∀ g ∈ GV k r,
@@ -259,6 +348,37 @@ section decay
 
 variable {D : RealPlaceData k r Wp Wq} {X : SigData k r}
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hT.exists_bound_of_continuousOn (gN_continuous (k := k) (r := r)).continuousOn`. Take `⟨B', hB'⟩` from `hT'.exists_bound_of_continuousOn (gN_continuous (k := k) (r := r)).continuousOn`. Establish `hB1 : (1 : ℝ) ≤ max B 1` using `le_max_right _ _`. Establish `hB1' : (1 : ℝ) ≤ max B' 1` using `le_max_right _ _`. Establish `hH : (1 : ℝ) ≤ gN (Hpk k r) ^ 2 + 1` using `by nlinarith [sq_nonneg (gN (Hpk k r))]`.
+
+Use `set c : ℝ := max B' 1 * ((gN (Hpk k r)) ^ 2 + 1) * max B 1 with hc`. Establish `hc1 : 1 ≤ c`. Use `mul_le_mul (mul_le_mul hB1' hH zero_le_one (by linarith)) hB1 zero_le_one (by positivity)` as an intermediate fact. Simplify `this` using `[hc]`. Use `set Cw' : ℝ := max X.Cw 0 with hCw'`.
+
+Establish `hTm : MeasurableSet T` using `hT.isClosed.measurableSet`. Establish `hTm' : MeasurableSet T'` using `hT'.isClosed.measurableSet`. Use `⟨Cw' * c ^ X.a * D.μG.real T * D.μG.real T', by positivity, ?_⟩` and prove the remaining obligations. Introduce `Ψ Ψ' hΨ hΨ' hsT hsT' M M' hM hM' g hg`. Establish `hsΨ : HasCompactSupport Ψ` using `IsCompact.of_isClosed_subset hT (isClosed_tsupport _) hsT`.
+
+Establish `hsΨ' : HasCompactSupport Ψ'` using `IsCompact.of_isClosed_subset hT' (isClosed_tsupport _) hsT'`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 0)`. Establish `hM0' : 0 ≤ M'` using `(norm_nonneg _).trans (hM' 0)`. Establish `hgpos : 0 < gN g` using `lt_of_lt_of_le one_pos (hGL k r g hg)`. Establish `hz : ∀ x y : Mt k r, (Matrix.of x : Mat k r) ∈ GV k r → x ∈ T → (Matrix.of y : Mat k r) ∈ GV k r → y ∈ T' → gN ((Matrix.of y)⁻¹ * g * Matrix.of x) ^ (-X.a) ≤ c ^ X.a * gN g ^ (-X.a)`.
+
+Introduce `x y hx hxT hy hyT`. Establish `hzG : (Matrix.of y)⁻¹ * g * Matrix.of x ∈ GV k r` using `gv_mul (gv_mul (gv_inv_mem hy) hg) hx`. Establish `hz1 : 1 ≤ gN ((Matrix.of y)⁻¹ * g * Matrix.of x)` using `hGL k r _ hzG`. Establish `hxB : gN (Matrix.of x) ≤ max B 1`. Establish `h1 : ‖gN (Matrix.of x : Mat k r)‖ ≤ B` using `hB x hxT`.
+
+Rewrite `h1` using `[Real.norm_of_nonneg (gN_nonneg _)]`. Conclude with `h1.trans (le_max_left _ _)`. Establish `hyB : gN (Matrix.of y) ≤ max B' 1`. Establish `h1 : ‖gN (Matrix.of y : Mat k r)‖ ≤ B'` using `hB' y hyT`. Rewrite `h1` using `[Real.norm_of_nonneg (gN_nonneg _)]`.
+
+Conclude with `h1.trans (le_max_left _ _)`. Establish `hxi : gN (Matrix.of x)⁻¹ ≤ (gN (Hpk k r) ^ 2 + 1) * max B 1` using `(gN_inv_le hx).trans (mul_le_mul (by linarith) hxB (gN_nonneg _) (by linarith))`. Establish `e : g = Matrix.of y * ((Matrix.of y)⁻¹ * g * Matrix.of x) * (Matrix.of x)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[gv_mul_inv hy, gv_mul_inv hx, Matrix.one_mul, Matrix.mul_one]`.
+
+Use `_ = _ := by simp only [Matrix.mul_assoc]`. Establish `hge : gN g ≤ c * gN ((Matrix.of y)⁻¹ * g * Matrix.of x)`. Combine the equalities or inequalities in the displayed calculation. Establish `hdiv : gN g / c ≤ gN ((Matrix.of y)⁻¹ * g * Matrix.of x)`. Rewrite using `[div_le_iff₀ (by linarith)]; linarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow hgpos.le (by linarith), Real.rpow_neg (by linarith : (0 : ℝ) ≤ c), div_inv_eq_mul, mul_comm]`. Use `set Q : ℝ := D.μG.real T * (M * (Cw' * (c ^ X.a * gN g ^ (-X.a)))) with hQ`. Establish `hinner : ∀ y : Mt k r, (Matrix.of y : Mat k r) ∈ GV k r → y ∈ T' → ‖⟪X.σ g (V D X Ψ), X.σ (Matrix.of y) X.w⟫_ℂ‖ ≤ Q`. Introduce `y hy hyT`.
+
+Establish `hyg : (Matrix.of y)⁻¹ * g ∈ GV k r` using `gv_mul (gv_inv_mem hy) hg`. Rewrite using `[sig_adj hy, ← sig_mul (gv_inv_mem hy) hg, V_apply hΨ hsΨ hyg, norm_inner_symm, ← integral_inner (V_intH hΨ hsΨ hyg) X.w, hQ, ← smul_eq_mul (D.μG.real T), ← integral_indicator_const _ hTm]`. Use `norm_integral_le_of_norm_le ((integrable_indicator_iff hTm).2 (integrableOn_const (D.haarG.finite_compact _ hT).ne enorm_ne_top)) ?_` and prove the remaining obligations. Use `filter_upwards [ae_mem_gv D.haarG.conc] with x hx`. Distinguish the cases in `hxT : x ∈ T`.
+
+Rewrite using `[Set.indicator_of_mem hxT, inner_smul_right, norm_mul]`. Use `mul_le_mul (hM _) ?_ (norm_nonneg _) hM0` and prove the remaining obligations. Use `(X.dec _ (gv_mul hyg hx)).trans ((mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg (gN_nonneg _) _)).trans (mul_le_mul_of_nonneg_left ?_ (le_max_right _ _)))` and prove the remaining obligations. Conclude with `hz x y hx hxT hy hyT`. Rewrite using `[Set.indicator_of_notMem hxT, show Ψ (Matrix.of x) = 0 from image_eq_zero_of_notMem_tsupport (fun h => hxT (hsT h)), zero_smul, inner_zero_right, norm_zero]`.
+
+Establish `hQ0 : 0 ≤ Q`. Rewrite using `[hQ]`. Conclude with `mul_nonneg measureReal_nonneg (mul_nonneg hM0 (mul_nonneg (le_max_right _ _) (mul_nonneg (Real.rpow_nonneg (by linarith) _) (Real.rpow_nonneg (gN_nonneg _) _))))`. Establish `hout : ‖cf D X Ψ Ψ' g‖ ≤ D.μG.real T' * (M' * Q)`. Unfold `cf mc`.
+
+Rewrite using `[norm_inner_symm]`. Use `show ‖⟪X.σ g (V D X Ψ), sigInt D X Ψ' X.w⟫_ℂ‖ ≤ _`. Unfold `sigInt`. Rewrite using `[← integral_inner (V_int hΨ' hsΨ') _, ← smul_eq_mul (D.μG.real T'), ← integral_indicator_const _ hTm']`. Use `norm_integral_le_of_norm_le ((integrable_indicator_iff hTm').2 (integrableOn_const (D.haarG.finite_compact _ hT').ne enorm_ne_top)) ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae_mem_gv D.haarG.conc] with y hy`. Distinguish the cases in `hyT : y ∈ T'`. Rewrite using `[Set.indicator_of_mem hyT, inner_smul_right, norm_mul]`. Conclude with `mul_le_mul (hM' _) (hinner y hy hyT) (norm_nonneg _) hM0'`. Rewrite using `[Set.indicator_of_notMem hyT, show Ψ' (Matrix.of y) = 0 from image_eq_zero_of_notMem_tsupport (fun h => hyT (hsT' h)), zero_smul, inner_zero_right, norm_zero]`.
+
+Use `hout.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hQ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cf_decay (hGL : GNLower) (ha : 0 ≤ X.a) {T T' : Set (Mt k r)} (hT : IsCompact T)
     (hT' : IsCompact T') :
     ∃ κ : ℝ, 0 ≤ κ ∧ ∀ Ψ Ψ' : Mat k r → ℂ, Continuous Ψ → Continuous Ψ' →
@@ -364,6 +484,37 @@ section ck
 
 variable {D : RealPlaceData k r Wp Wq} {X : SigData k r}
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Establish `hμK : ∀ S : Set (Mt k r), IsCompact S → D.μG S < ∞` using `D.haarG.finite_compact`. Take `⟨R, hR⟩` from `(hΦ'.2 : IsCompact (tsupport Φ')).exists_bound_of_continuousOn (gN_continuous (k := k) (r := r)).continuousOn`. Use `set R₀ : ℝ := max R 0`. Use `set c₀ : ℝ := gN g₀⁻¹`.
+
+Establish `hc₀ : 0 ≤ c₀` using `gN_nonneg _`. Use `set δ : ℝ := 1 / (2 * (c₀ + 1))`. Establish `hδ : 0 < δ` using `by positivity`. Establish `hcδ : c₀ * δ ≤ 1 / 2` using `by show c₀ * (1 / (2 * (c₀ + 1))) ≤ 1 / 2`. Rewrite using `[mul_one_div, div_le_div_iff₀ (by positivity) (by norm_num)]; nlinarith`.
+
+Use `set U : Set (Mt k r) := {g | gN (Matrix.of g - g₀) < δ}`. Establish `hU : IsOpen U` using `isOpen_lt ((gN_continuous (k := k) (r := r)).comp ((continuous_id : Continuous fun g : Mt k r => (Matrix.of g : Mat k r)).sub continuous_const)) continuous_const`. Establish `hg₀U : (g₀ : Mt k r) ∈ U` using `by show gN (g₀ - g₀) < δ; simp [gN, hδ]`. Use `set K : Set (Mt k r) := {y | gN (Matrix.of y : Mat k r) ≤ 2 * c₀ * R₀}`. Establish `hK : IsCompact K` using `Metric.isCompact_of_isClosed_isBounded (isClosed_le ((gN_continuous (k := k) (r := r)).comp (continuous_id : Continuous fun g : Mt k r => (Matrix.of g : Mat k r))) continuous_const) ((Metric.isBounded_iff_subset_closedBall 0).2 ⟨2 * c₀ * R₀, fun y hy => mem_closedBall_zero_iff.2 …`.
+
+Use `set Ψ₁ : Mt k r × Mt k r → ℂ := fun p => conj (Φ' (Matrix.of p.1 * Matrix.of p.2))`. Establish `hΨ₁m : ContDiff ℝ ninf (fun p : Mat k r × Mat k r => conj (Φ' (p.1 * p.2)))` using `Complex.conjCLE.toContinuousLinearMap.contDiff.comp (hΦ'.1.comp ((mulLL.contDiff.comp contDiff_fst).clm_apply contDiff_snd))`. Establish `hΨ₁ : ContDiff ℝ ninf Ψ₁` using `hΨ₁m`. Establish `hz : ∀ g ∈ U, ∀ y : Mt k r, (Matrix.of y : Mat k r) ∈ GV k r → y ∉ K → Ψ₁ (g, y) = 0`. Introduce `g hg y _ hyK`.
+
+Assume the negation of the conclusion as `hne`. Apply `hyK` to reduce the goal to its premises. Establish `h1 : Φ' (Matrix.of g * Matrix.of y) ≠ 0` using `fun h0 => hne (by simp [Ψ₁, h0])`. Establish `h2 : ‖gN (Matrix.of g * Matrix.of y)‖ ≤ R` using `hR _ (subset_tsupport _ h1)`. Rewrite `h2` using `[Real.norm_of_nonneg (gN_nonneg _)]`.
+
+Establish `hg' : gN (Matrix.of g - g₀) < δ` using `hg`. Establish `h3 : gN (g₀ * Matrix.of y) ≤ R₀ + δ * gN (Matrix.of y : Mat k r)`. Establish `e : g₀ * Matrix.of y = Matrix.of g * Matrix.of y + (-(Matrix.of g - g₀)) * Matrix.of y`. Rewrite using `[Matrix.neg_mul, Matrix.sub_mul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Use `(gN_add_le _ _).trans (add_le_add (h2.trans (le_max_left _ _)) ?_)` and prove the remaining obligations. Use `(gN_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[gN_neg]`. Conclude with `mul_le_mul_of_nonneg_right hg'.le (gN_nonneg _)`.
+
+Establish `h4 : gN (Matrix.of y : Mat k r) ≤ c₀ * gN (g₀ * Matrix.of y)`. Establish `e : (Matrix.of y : Mat k r) = g₀⁻¹ * (g₀ * Matrix.of y)`. Rewrite using `[← Matrix.mul_assoc, gv_inv_mul hg₀, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `show gN (Matrix.of y : Mat k r) ≤ 2 * c₀ * R₀`.
+
+Establish `hy0` using `gN_nonneg (Matrix.of y : Mat k r)`. Establish `hR₀ : 0 ≤ R₀` using `le_max_right _ _`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h3 hc₀]`. Use `set H₂ : Mt k r → ℂ := fun y => ⟪X.σ (Matrix.of y) X.w, V D X Φ⟫_ℂ`. Establish `hH₂m : AEStronglyMeasurable H₂ D.μG` using `aesm_of_contOn (f := fun z : Mat k r => ⟪X.σ z X.w, V D X Φ⟫_ℂ) D.haarG.conc ((X.rep.2.2 X.w).inner continuousOn_const)`.
+
+Establish `hH₂b : ∀ᵐ y ∂D.μG, ‖H₂ y‖ ≤ ‖V D X Φ‖` using `by filter_upwards [ae_mem_gv D.haarG.conc] with y hy`. Use `(norm_inner_le_norm _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[sig_norm hy, X.w_norm, one_mul]`. Establish `hre : ∀ᵐ y ∂D.μG, |(H₂ y).re| ≤ ‖V D X Φ‖` using `hH₂b.mono fun y hy => (Complex.abs_re_le_norm _).trans hy`. Establish `him : ∀ᵐ y ∂D.μG, |(H₂ y).im| ≤ ‖V D X Φ‖` using `hH₂b.mono fun y hy => (Complex.abs_im_le_norm _).trans hy`.
+
+Establish `hrem` using `Complex.continuous_re.comp_aestronglyMeasurable hH₂m`. Establish `himm` using `Complex.continuous_im.comp_aestronglyMeasurable hH₂m`. Use `⟨U, fun g => (∫ y, (H₂ y).re • Ψ₁ (g, y) ∂D.μG) + Complex.I * ∫ y, (H₂ y).im • Ψ₁ (g, y) ∂D.μG, hU, hg₀U, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `contDiffOn_infty.2 fun n => pint_contDiffOn hμK D.haarG.conc hrem hre hU hK n ℂ Ψ₁ hΨ₁ hz`. Establish `h2` using `contDiffOn_infty.2 fun n => pint_contDiffOn hμK D.haarG.conc himm him hU hK n ℂ Ψ₁ hΨ₁ hz`.
+
+Conclude with `h1.add (contDiffOn_const.mul h2)`. Introduce `g hgU hg`. Establish `hdu : IsUnit (g : Mat k r).det` using `Matrix.isUnit_det_of_right_inverse (gv_mul_inv hg)`. Establish `hcs : HasCompactSupport (fun x : Mat k r => Φ' (g * x))` using `hΦ'.2.comp_homeomorph (lmulH hg)`. Establish `hc' : Continuous (fun x : Mat k r => Φ' (g * x))` using `hΦ'.1.continuous.comp (mulL g).continuous`.
+
+Establish `i1 : Integrable (fun y => (H₂ y).re • Ψ₁ ((g : Mt k r), y)) D.μG` using `pint_integrable hμK D.haarG.conc hrem hre hK (hΨ₁.continuous.comp (continuous_const.prodMk continuous_id)) (hz g hgU)`. Establish `i2 : Integrable (fun y => (H₂ y).im • Ψ₁ ((g : Mt k r), y)) D.μG` using `pint_integrable hμK D.haarG.conc himm him hK (hΨ₁.continuous.comp (continuous_const.prodMk continuous_id)) (hz g hgU)`. Unfold `cf mc`. Rewrite using `[sig_adj hg, V_transl hΦ'.1.continuous hΦ'.2 (gv_inv_mem hg), Matrix.nonsing_inv_nonsing_inv _ hdu]`. Use `show ⟪V D X (fun x => Φ' (g * x)), V D X Φ⟫_ℂ = (∫ y, (H₂ y).re • Ψ₁ ((g : Mt k r), y) ∂D.μG) + Complex.I * ∫ y, (H₂ y).im • Ψ₁ ((g : Mt k r), y) ∂D.μG`.
+
+Rewrite using `[← integral_const_mul, ← integral_add i1 (i2.const_mul _)]`. Use `show ⟪sigInt D X _ X.w, V D X Φ⟫_ℂ = _`. Unfold `sigInt`. Rewrite using `[inner_integral_left (V_int hc' hcs)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [inner_smul_left, Ψ₁, H₂, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im ⟪X.σ (Matrix.of y) X.w, V D X Φ⟫_ℂ]`. Establish `e : (Matrix.of g : Mat k r) = g` using `rfl`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cf_CkOn {Φ Φ' : Mat k r → ℂ} (hΦ' : TG Φ') :
     CkOn (⊤ : ℕ∞) (GV k r) (cf D X Φ Φ') := by
   intro g₀ hg₀
@@ -463,6 +614,9 @@ theorem cf_CkOn {Φ Φ' : Mat k r → ℂ} (hΦ' : TG Φ') :
 
 end ck
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', hfe⟩` from `h g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hf'.of_le (WithTop.coe_le_coe.2 le_top), hfe⟩`.
+-/
 theorem ckOn_mono {f : Mat k r → ℂ} (h : CkOn (⊤ : ℕ∞) (GV k r) f) (m : ℕ) : CkOn (m : ℕ∞) (GV k r) f := by
   intro g₀ hg₀
   obtain ⟨U, f', hU, hgU, hf', hfe⟩ := h g₀ hg₀
@@ -476,6 +630,25 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Take `⟨⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hGL, -⟩, -⟩` from `h`. Introduce `k r Wp _ _ _ D X _ _ haM φ φ' hφ hφ' m`. Establish `ha : 0 ≤ X.a` using `le_trans (by unfold aM nR; positivity) haM`. Take `⟨Φ, hΦs, hΦc, hΦe⟩` from `ext_test hφ`. Take `⟨Φ', hΦs', hΦc', hΦe'⟩` from `ext_test hφ'`.
+
+Establish `hT : TG Φ` using `⟨hΦs, hΦc⟩`. Establish `hT' : TG Φ'` using `⟨hΦs', hΦc'⟩`. Establish `hvec : sigInt D X φ X.w = V D X Φ`. Unfold `V sigInt`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae_mem_gv D.haarG.conc] with x hx`. Rewrite using `[hΦe _ hx]`. Establish `hvec' : sigInt D X φ' X.w = V D X Φ'`. Unfold `V sigInt`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae_mem_gv D.haarG.conc] with x hx`. Rewrite using `[hΦe' _ hx]`. Rewrite using `[hvec, hvec']`. Use `show InCC (X.a - AG k r - 1) m (cf D X Φ Φ')`. Take `⟨κ, hκ, hdec⟩` from `cf_decay (D := D) (X := X) hGL ha (T := tsupport Φ) (T' := tsupport Φ') hΦc hΦc'`.
+
+Use `choose MΦ hMΦ0 hMΦ using fun j => Dw_bound hΦs hΦc j`. Use `choose MΦ' hMΦ0' hMΦ' using fun j => Dw_bound hΦs' hΦc' j`. Use `set S := ∑ j ∈ Finset.range (m + 1), MΦ j with hS`. Use `set S' := ∑ j ∈ Finset.range (m + 1), MΦ' j with hS'`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun j _ => hMΦ0 j`.
+
+Establish `hS0' : 0 ≤ S'` using `Finset.sum_nonneg fun j _ => hMΦ0' j`. Use `⟨κ * S * S', ckOn_mono (cf_CkOn hT') m, ?_⟩` and prove the remaining obligations. Introduce `u v hu hv hlen g hg`. Establish `hvL : ∀ Y ∈ v, inLie k r Y` using `fun Y hY => (hv Y hY).1`. Establish `huL : ∀ Y ∈ u, inLie k r Y` using `fun Y hY => (hu Y hY).1`.
+
+Rewrite using `[dLR_cf hT hT' v hvL u huL g hg]`. Establish `hbv : ∀ x, ‖Dw v Φ x‖ ≤ S` using `fun x => by`. Establish `h1` using `hMΦ v.length v.get (fun i a b => (hv _ (List.mem_iff_get.2 ⟨i, rfl⟩)).2 a b) x`. Rewrite `h1` using `[List.ofFn_get]`. Conclude with `h1.trans (Finset.single_le_sum (fun j _ => hMΦ0 j) (Finset.mem_range.2 (by omega)))`.
+
+Establish `hbu : ∀ x, ‖Dw u Φ' x‖ ≤ S'` using `fun x => by`. Establish `h1` using `hMΦ' u.length u.get (fun i a b => (hu _ (List.mem_iff_get.2 ⟨i, rfl⟩)).2 a b) x`. Rewrite `h1` using `[List.ofFn_get]`. Conclude with `h1.trans (Finset.single_le_sum (fun j _ => hMΦ0' j) (Finset.mem_range.2 (by omega)))`. Establish `hd` using `hdec (Dw v Φ) (Dw u Φ') (Dw_contDiff hΦs v).continuous (Dw_contDiff hΦs' u).continuous (Dw_tsupport Φ v) (Dw_tsupport Φ' u) S S' hbv hbu g hg`.
+
+Establish `hg1 : 1 ≤ gN g` using `hGL k r g hg`. Establish `hgp : 0 < gN g` using `by linarith`. Establish `hC : 0 ≤ κ * S * S'` using `by positivity`. Establish `hAG : 0 ≤ AG k r` using `by unfold AG; positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem stSmooth (h : UnitaryGroupStructuralFacts) : StSmooth := by
   obtain ⟨⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hGL, -⟩, -⟩ := h
   intro k r Wp _ _ _ D X _ _ haM φ φ' hφ hφ' m

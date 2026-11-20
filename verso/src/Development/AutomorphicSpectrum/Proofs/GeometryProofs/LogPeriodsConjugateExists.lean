@@ -12,6 +12,11 @@ open GroundTheory.Heights₂.Heights.Regular
 
 variable {n a g : ℕ} {Λ : Type} [AddCommGroup Λ]
 
+/- English proof (translation)
+Use `⟨fun j => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : Fin.castLE h j = Fin.castLE h i`. Simplify `(by simpa [hj] using hw.1 j)` using `[hj, Pi.single_apply]`. Simplify `hw.1 j` using `[Pi.single_apply, hj]`. Establish `hki : k ≠ Fin.castLE h i`.
+
+Introduce and unpack `rfl`. Simplify using `at hk`. Use linear arithmetic over natural numbers and integers. Simplify `hw.2 k hk` using `[Pi.single_apply, hki]`.
+-/
 theorem add_single_mem_logCover (h : a ≤ n) {w : Fin n → ℂ} (hw : w ∈ logCover h) (i : Fin a) :
     w + Pi.single (Fin.castLE h i) (2 * Real.pi * Complex.I) ∈ logCover h := by
   refine ⟨fun j => ?_, fun k hk => ?_⟩
@@ -24,6 +29,11 @@ theorem add_single_mem_logCover (h : a ≤ n) {w : Fin n → ℂ} (hw : w ∈ lo
       omega
     simpa [Pi.single_apply, hki] using hw.2 k hk
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = Fin.castLE h i`. Substitute `hk` using the available equality. Establish `hi : (Fin.castLE h i).val < a` using `i.2`. Simplify using `only [expCover, Pi.add_apply, Pi.single_eq_same, if_pos hi, Complex.exp_add, Complex.exp_two_pi_mul_I]`.
+
+Conclude with `mul_one _`. Simplify using `[expCover, Pi.single_apply, hk]`.
+-/
 theorem expCover_add_single (h : a ≤ n) (w : Fin n → ℂ) (i : Fin a) :
     expCover a (w + Pi.single (Fin.castLE h i) (2 * Real.pi * Complex.I)) = expCover a w := by
   funext k
@@ -35,6 +45,9 @@ theorem expCover_add_single (h : a ≤ n) (w : Fin n → ℂ) (i : Fin a) :
     exact mul_one _
   · simp [expCover, Pi.single_apply, hk]
 
+/- English proof (translation)
+Use `⟨fun k => if k.val < a then -1 else 0, fun i => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hi : (Fin.castLE h i).val < a` using `i.2`. Simplify using `only [if_pos hi]`. Simplify using the standard rewrite rules. Simplify using `[not_lt.2 hk]`.
+-/
 theorem exists_mem_logCover (h : a ≤ n) : ∃ w : Fin n → ℂ, w ∈ logCover h := by
   refine ⟨fun k => if k.val < a then -1 else 0, fun i => ?_, fun k hk => ?_⟩
   · have hi : (Fin.castLE h i).val < a := i.2
@@ -42,6 +55,9 @@ theorem exists_mem_logCover (h : a ≤ n) : ∃ w : Fin n → ℂ, w ∈ logCove
     simp
   · simp [not_lt.2 hk]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_mem_logCover L.a_le`. Establish `h1` using `L.im _ (add_single_mem_logCover L.a_le hw i) x y`. Rewrite `h1` using `[L.mono i w hw, L.mono i w hw, expCover_add_single, L.im w hw]`. Conclude with `h1` after adjusting the coercions.
+-/
 theorem monodromy_preserves_form (L : Flat.LogPeriods n a g Λ) (i : Fin a) (x y : Λ) :
     L.E (L.T i x) (L.T i y) = L.E x y := by
   obtain ⟨w, hw⟩ := exists_mem_logCover L.a_le
@@ -49,6 +65,13 @@ theorem monodromy_preserves_form (L : Flat.LogPeriods n a g Λ) (i : Fin a) (x y
   rw [L.mono i w hw, L.mono i w hw, expCover_add_single, L.im w hw] at h1
   exact_mod_cast h1
 
+/- English proof (translation)
+Use `haveI := L.fin`. Set `e : Λ ≃ₗ[ℤ] Module.Dual ℤ Λ` to `LinearEquiv.ofBijective L.E L.unimod`. Set `S : Λ →ₗ[ℤ] Λ` to `e.symm.toLinearMap ∘ₗ (L.T i).dualMap ∘ₗ e.toLinearMap`. Establish `hE : ∀ x y, L.E (S x) y = L.E x (L.T i y)`. Introduce `x y`.
+
+Establish `h1 : e (S x) = (L.T i).dualMap (e x)` using `by simp [S]`. Conclude with `congrArg (fun f : Module.Dual ℤ Λ => f y) h1`. Establish `hST : ∀ x, S (L.T i x) = x` using `fun x => L.unimod.1 (LinearMap.ext fun y => by rw [hE, monodromy_preserves_form])`. Establish `hSs : Function.Surjective S` using `fun x => ⟨_, hST x⟩`. Establish `hSi : Function.Injective S` using `OrzechProperty.injective_of_surjective_endomorphism S hSs`.
+
+Conclude with `⟨fun x y h => by rw [← hST x, ← hST y, h], fun y => ⟨S y, hSi (hST (S y))⟩⟩`.
+-/
 theorem T_bijective (L : Flat.LogPeriods n a g Λ) (i : Fin a) : Function.Bijective (L.T i) := by
   haveI := L.fin
   let e : Λ ≃ₗ[ℤ] Module.Dual ℤ Λ := LinearEquiv.ofBijective L.E L.unimod
@@ -63,6 +86,9 @@ theorem T_bijective (L : Flat.LogPeriods n a g Λ) (i : Fin a) : Function.Biject
   have hSi : Function.Injective S := OrzechProperty.injective_of_surjective_endomorphism S hSs
   exact ⟨fun x y h => by rw [← hST x, ← hST y, h], fun y => ⟨S y, hSi (hST (S y))⟩⟩
 
+/- English proof (translation)
+Introduce `n a g Λ _ L'`. Conclude with `⟨ConjPeriods.conj L' (T_bijective L'), fun _ _ => rfl, fun _ => rfl⟩`.
+-/
 theorem exists_conj_logPeriods : ∀ (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] (L' : Flat.LogPeriods n a g Λ),
     ∃ L : Flat.LogPeriods n a g Λ, (∀ w x, L.P w x = star (L'.P (star w) x)) ∧
       ∀ z, L.H z = (L'.H (star z)).map (starRingEnd ℂ) := by

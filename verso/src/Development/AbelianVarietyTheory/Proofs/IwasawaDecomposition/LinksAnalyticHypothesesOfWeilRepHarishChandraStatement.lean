@@ -9,5 +9,8 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LinksInputs.inputs_of_hypotheses | exact GlobalTheory.LinksInputs.inputs_of_hypotheses | (intros; apply GlobalTheory.LinksInputs.inputs_of_hypotheses <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.linksAnalyticHypotheses_of_weilRep_harishChandra : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, Inputs D := by
   first | exact @GlobalTheory.LinksInputs.inputs_of_hypotheses | exact GlobalTheory.LinksInputs.inputs_of_hypotheses | (intros; apply GlobalTheory.LinksInputs.inputs_of_hypotheses <;> assumption)

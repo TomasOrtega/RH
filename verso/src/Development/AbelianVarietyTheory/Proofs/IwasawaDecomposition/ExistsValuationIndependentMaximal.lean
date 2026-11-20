@@ -5,6 +5,15 @@ namespace GlobalTheory.GenPert
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `K _ J _`. Establish `hP : (RingHom.ker (MvPolynomial.constantCoeff : MvPolynomial J K →+* K)).IsPrime` using `RingHom.ker_isPrime _`. Take `⟨V, ιV, hιV, hmax, -⟩` from `GlobalTheory.LocM.Lift.exists_valuationSubring_centre (MvPolynomial J K) (RingHom.ker (MvPolynomial.constantCoeff : MvPolynomial J K →+* K))`. Use `⟨FractionRing (MvPolynomial J K), inferInstance, V, ιV.comp MvPolynomial.C, fun j => ιV (X j), fun j => hmax _ (by simp), ?_⟩` and prove the remaining obligations. Use `letI : Algebra K (FractionRing (MvPolynomial J K)) := (V.subtype.comp (ιV.comp C)).toAlgebra`.
+
+Set `f : MvPolynomial J K →ₐ[K] FractionRing (MvPolynomial J K)` to `{ algebraMap (MvPolynomial J K) (FractionRing (MvPolynomial J K)) with commutes' := fun r => by show algebraMap (MvPolynomial J K) (FractionRing (MvPolynomial J K)) (C r) = V.subtype (ιV (C r))`. Rewrite using `[← hιV]`. Use `rfl }`. Establish `hf : Function.Injective f` using `IsFractionRing.injective _ _`. Establish `h` using `(MvPolynomial.algebraicIndependent_X J K).map' hf`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Use `show (V.subtype.comp ιV) (X j) = _`. Rewrite using `[hιV]`. Both sides reduce to the same expression.
+
+Apply the tactic sequence `all_goals rfl`.
+-/
 theorem exists_valuationSubring_algebraicIndependent_maximalIdeal :
     ∀ (K : Type) [Field K] (J : Type) [Fintype J], ∃ (Ω : Type) (_ : Field Ω) (R : ValuationSubring Ω)
     (ι : K →+* R) (s : J → R), (∀ j, s j ∈ IsLocalRing.maximalIdeal R) ∧

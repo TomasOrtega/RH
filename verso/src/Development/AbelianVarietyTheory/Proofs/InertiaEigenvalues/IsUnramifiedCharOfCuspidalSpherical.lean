@@ -20,6 +20,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LocLanglands
 
+/- English proof (translation)
+Introduce `hG hBZ hZ k _ _ _ _ _ x hx hs`. Establish `hadm : IsAdmissible x.rep` using `(hBZ k).1 (Fin x.1) x.2.rep.V x.rep x.2.rep.smooth x.2.rep.irr`. Establish `hI : fixed x.rep (iwahori k (Fin x.1)) ≠ ⊥`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hs`. Use `(Submodule.ne_bot_iff _).2 ⟨v, fun h => ?_, hv0⟩` and prove the remaining obligations.
+
+Conclude with `hv ⟨h.1, iwahori_le_KO k _ h.2⟩`. Take `⟨α, hα⟩` from `GlobalTheory.SatakeExists.exists_isSubquotient_prinSeries hadm x.2.rep.irr hI`. Establish `hχ : ∀ i, IsSmoothChar (unrChar k (α i))` using `fun i => isSmoothChar_of_isUnram (isUnram_unrChar k (α i))`. Establish `h1` using `GlobalTheory.T.supercuspidalSupport_of_principalSeries_subquotient k x.1 (fun i => unrChar k (α i)) hχ x.2.rep hα`. Establish `h2 : HasSupport x.rep {x}` using `hasSupport_self hx`.
+
+Establish `he` using `GlobalTheory.T.supercuspidalSupport_unique_GL hG hBZ hZ k x _ _ h1 h2`. Establish `hmem : x ∈ (Finset.univ.val.map fun i => IrrGL.ofChar (unrChar k (α i)) (hχ i))`. Rewrite using `[he]`. Conclude with `Multiset.mem_singleton_self x`. Take `⟨i, -, hi⟩` from `Multiset.mem_map.1 hmem`.
+
+Conclude with `⟨unrChar k (α i), isUnram_unrChar k (α i), hi.symm⟩`.
+-/
 theorem isUnramChar_of_isCusp_of_isSpherical : GeometricLemma → BernsteinZelevinskyFiniteness → ZelevinskyPolynomialRing →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
       (x : IrrGL k), x.IsCusp → IsSpherical x.rep → x.IsUnramChar := by

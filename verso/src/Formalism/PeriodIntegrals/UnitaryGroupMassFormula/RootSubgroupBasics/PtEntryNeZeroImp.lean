@@ -10,6 +10,9 @@ def pv : List (ℂ × ℕ) → ℕ → ℕ
   | [], i => i
   | (_, s) :: bs, i => if i < s then s - 1 - i else s + pv bs (i - s)
 
+/- English proof (translation)
+The claim follows from `| [], i, j, h => by simp [ptEntry] at h | (t, s) :: bs, i, j, h => by unfold ptEntry at h unfold pv by_cases h1 : i < s ∧ j < s · rw [if_pos h1] at h by_cases h2 : i + j + 1 = s · rw [if_pos h1.1]; omega · rw [if_neg h2] at h; exact absurd rfl h · rw [if_neg h1] at h by_cases h3 …`.
+-/
 theorem ptEntry_ne_zero_imp : ∀ (bs : List (ℂ × ℕ)) (i j : ℕ), ptEntry bs i j ≠ 0 → j = pv bs i
   | [], i, j, h => by simp [ptEntry] at h
   | (t, s) :: bs, i, j, h => by
@@ -27,6 +30,9 @@ theorem ptEntry_ne_zero_imp : ∀ (bs : List (ℂ × ℕ)) (i j : ℕ), ptEntry 
         rw [if_neg (by omega)]; omega
       · rw [if_neg h3] at h; exact absurd rfl h
 
+/- English proof (translation)
+The claim follows from `| [], _, i, hi => by simp at hi | (t, s) :: bs, hb, i, hi => by have ht : t ≠ 0 := (hb (t, s) (by simp)).1 have hb' : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2 := fun b h => hb b (by simp [h]) simp only [List.map_cons, List.sum_cons] at hi ⊢ by_cases h1 : i < s · have e1 : pv ((t, s) :: bs) i …`.
+-/
 theorem pv_spec : ∀ (bs : List (ℂ × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) → ∀ i, i < (bs.map Prod.snd).sum →
     pv bs i < (bs.map Prod.snd).sum ∧ pv bs (pv bs i) = i ∧ ptEntry bs i (pv bs i) ≠ 0
   | [], _, i, hi => by simp at hi
@@ -49,6 +55,9 @@ theorem pv_spec : ∀ (bs : List (ℂ × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 �
       rw [e1]; unfold ptEntry
       rw [if_neg (by omega), if_pos ⟨by omega, by omega⟩, Nat.add_sub_cancel_left]; exact ih3
 
+/- English proof (translation)
+The claim follows from `| [], _, i, hi => by simp at hi | (t, s) :: bs, hb, i, hi => by have hb' : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2 := fun b h => hb b (by simp [h]) simp only [List.map_cons, List.sum_cons] at hi by_cases h1 : i + 1 < s · left have e1 : pv ((t, s) :: bs) i = s - 1 - i := by simp [pv, show i < …`.
+-/
 theorem pv_adj : ∀ (bs : List (ℂ × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) → ∀ i, i + 1 < (bs.map Prod.snd).sum →
     (pv bs (i + 1) + 1 = pv bs i ∧ ptEntry bs (pv bs (i + 1)) (i + 1) = ptEntry bs (pv bs i) i) ∨
       pv bs i < pv bs (i + 1)

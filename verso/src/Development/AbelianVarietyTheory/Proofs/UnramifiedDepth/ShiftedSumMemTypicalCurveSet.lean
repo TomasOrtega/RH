@@ -15,6 +15,9 @@ namespace GlobalTheory.RowLaw.ShiftSum
 
 variable {C : Type} [Field C]
 
+/- English proof (translation)
+Unfold `tyS`. Rewrite using `[PowerSeries.coeff_mk, PowerSeries.coeff_mk]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[h s (Nat.lt_succ_iff.1 (Finset.mem_range.1 hs))]`.
+-/
 theorem coeff_tyS_congr (l m : ℕ) {a b : ℕ → C} (h : ∀ s ≤ m, a s = b s) :
     PowerSeries.coeff m (tyS l a) = PowerSeries.coeff m (tyS l b) := by
   unfold tyS
@@ -22,6 +25,11 @@ theorem coeff_tyS_congr (l m : ℕ) {a b : ℕ → C} (h : ∀ s ≤ m, a s = b 
   refine Finset.sum_congr rfl fun s hs => ?_
   rw [h s (Nat.lt_succ_iff.1 (Finset.mem_range.1 hs))]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i n`. Simplify using `only [Vpow]`. Distinguish the cases in `h1 : i < 1`. Rewrite using `[if_pos h1, if_pos (by omega)]`. Rewrite using `[if_neg h1]`.
+
+Distinguish the cases in `h2 : i < s + 1`. Rewrite using `[if_pos h2, if_pos (by omega)]`. Rewrite using `[if_neg h2, if_neg (by omega)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vpow_succ {N : Type} (s : ℕ) (x : ℕ → N → C) : Vpow (s + 1) x = Vpow 1 (Vpow s x) := by
   funext i n
   simp only [Vpow]
@@ -34,6 +42,11 @@ theorem vpow_succ {N : Type} (s : ℕ) (x : ℕ → N → C) : Vpow (s + 1) x = 
       congr 1
       omega
 
+/- English proof (translation)
+Simplify using `only [sumV, Finset.sum_apply, Vpow]`. Use `symm`. Rewrite using `[← Finset.sum_subset (s₁ := Finset.range (i + 1)) (s₂ := Finset.range M) (Finset.range_subset_range.2 (by omega))]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[if_neg (by have := Finset.mem_range.1 hs; omega)]`.
+
+Introduce `s _ hs`. Rewrite using `[if_pos (by rw [Finset.mem_range] at hs; omega)]`.
+-/
 theorem partial_eq {N : Type} (y : ℕ → ℕ → N → C) (i M : ℕ) (hM : i < M) (n : N) :
     (∑ s ∈ Finset.range M, Vpow s (y s)) i n = sumV y i n := by
   simp only [sumV, Finset.sum_apply, Vpow]
@@ -47,6 +60,11 @@ theorem partial_eq {N : Type} (y : ℕ → ℕ → N → C) (i M : ℕ) (hM : i 
 
 variable {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero`. Establish `: Vpow 0 x = x`. Use function extensionality and compare the values at `i n`. Simplify using `[Vpow]`.
+
+Rewrite using `[this]` and apply the resulting hypothesis. Consider the case `succ s ih`. Rewrite using `[vpow_succ]`. Conclude with `X.V_mem V g _ ih`.
+-/
 theorem vpow_mem (X : RawChart C d I κ) (V : VF C) (g : Fin 2) (x : ℕ → I g ⊕ JJ I g → C)
     (hx : x ∈ X.TySet V g) (s : ℕ) : Vpow s x ∈ X.TySet V g := by
   induction s with
@@ -66,6 +84,9 @@ noncomputable def logOf (X : RawChart C d I κ) (V : VF C) (g : Fin 2) (x : ℕ 
         ∑ c : I g, if X.ty g c = X.ty (1 - g) q then
           X.sg1 (X.u g c) (X.u (1 - g) q) • tyS V.l (fun s => x s (Sum.inl c)) else 0)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, lam, hγ, hlam, h1, h2⟩`. Conclude with `⟨γ, lam, hγ, hlam, h1, fun q => sub_eq_iff_eq_add.2 (h2 q)⟩`. Introduce and unpack `⟨γ, lam, hγ, hlam, h1, h2⟩`. Conclude with `⟨γ, lam, hγ, hlam, h1, fun q => sub_eq_iff_eq_add.1 (h2 q)⟩`.
+-/
 theorem mem_tySet_iff (X : RawChart C d I κ) (V : VF C) (g : Fin 2) (x : ℕ → I g ⊕ JJ I g → C) :
     x ∈ X.TySet V g ↔ logOf X V g x ∈ Cv X V g := by
   constructor
@@ -74,6 +95,13 @@ theorem mem_tySet_iff (X : RawChart C d I κ) (V : VF C) (g : Fin 2) (x : ℕ �
   · rintro ⟨γ, lam, hγ, hlam, h1, h2⟩
     exact ⟨γ, lam, hγ, hlam, h1, fun q => sub_eq_iff_eq_add.1 (h2 q)⟩
 
+/- English proof (translation)
+Establish `key : ∀ n, PowerSeries.coeff m (tyS V.l (fun s => x s n)) = PowerSeries.coeff m (tyS V.l (fun s => x' s n))` using `fun n => coeff_tyS_congr V.l m fun s hs => h s hs n`. Prove the components needed by the constructor for the conclusion. Introduce `i`. Simplify using `only [logOf, map_sum, PowerSeries.coeff_smul, key]`. Introduce `q`.
+
+Simplify using `only [logOf, map_sub, map_sum, key]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs`. Simplify using `only [PowerSeries.coeff_smul, key]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coeff_logOf_congr (X : RawChart C d I κ) (V : VF C) (g : Fin 2) {x x' : ℕ → I g ⊕ JJ I g → C} (m : ℕ)
     (h : ∀ s ≤ m, ∀ n, x s n = x' s n) :
     (∀ i, PowerSeries.coeff m ((logOf X V g x).1 i) = PowerSeries.coeff m ((logOf X V g x').1 i)) ∧
@@ -91,6 +119,11 @@ theorem coeff_logOf_congr (X : RawChart C d I κ) (V : VF C) (g : Fin 2) {x x' :
     · simp only [PowerSeries.coeff_smul, key]
     · rfl
 
+/- English proof (translation)
+Introduce `C _ V d _ I _ κ _ X hX g y hy`. Establish `hlg0 : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0` using `fun i => by`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hX.lin i 0 (by simp), MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.constantCoeff_X]`. Establish `h0` using `X.zero_mem hlg0 (hX.axes 0) V g`. Establish `hA` using `GlobalTheory.T.addCurveStable_of_integralGaugedFormalGroupLaw C V d I κ X hX`.
+
+Establish `hP : ∀ M, ∑ s ∈ Finset.range M, Vpow s (y s) ∈ X.TySet V g` using `fun M => X.sum_mem V g h0 (X.add_mem V g hA hX.uint) _ _ fun s _ => vpow_mem X V g _ (hy s) s`. Rewrite using `[mem_tySet_iff]`. Use `GlobalTheory.T.gaugedCurveLogarithms_closed_under_tadicLimits C V d I κ X hX g (fun M => logOf X V g (∑ s ∈ Finset.range M, Vpow s (y s))) _ (fun M => (mem_tySet_iff X V g _).1 (hP M)) fun m => ⟨m + 1, fun M hM => ?_⟩` and prove the remaining obligations. Conclude with `coeff_logOf_congr X V g m fun s hs n => partial_eq y s M (by omega) n`.
+-/
 theorem sumV_mem_tySet : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (κ : Type) [Fintype κ] (X : RawChart C d I κ), RLaw X V → ∀ g (y : ℕ → ℕ → I g ⊕ JJ I g → C), (∀ s, y s ∈ X.TySet V g) → sumV y ∈ X.TySet V g := by
   intro C _ V d _ I _ κ _ X hX g y hy
   have hlg0 : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0 := fun i => by

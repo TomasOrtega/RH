@@ -18,20 +18,37 @@ def cutFn (ε t : ℝ) : ℝ := t - clampFn ε t
 
 def invFn (ε t : ℝ) : ℝ := t / max (t ^ 2) (ε ^ 2)
 
+/- English proof (translation)
+The claim follows from `continuous_const.max (continuous_id.min continuous_const)`.
+-/
 theorem continuous_clampFn (ε : ℝ) : Continuous (clampFn ε) :=
   continuous_const.max (continuous_id.min continuous_const)
 
+/- English proof (translation)
+The claim follows from `continuous_id.sub (continuous_clampFn ε)`.
+-/
 theorem continuous_cutFn (ε : ℝ) : Continuous (cutFn ε) :=
   continuous_id.sub (continuous_clampFn ε)
 
+/- English proof (translation)
+Establish `h : ∀ t : ℝ, max (t ^ 2) (ε ^ 2) ≠ 0` using `fun t => (lt_of_lt_of_le (by positivity : (0 : ℝ) < ε ^ 2) (le_max_right _ _)).ne'`. Conclude with `Continuous.div continuous_id ((continuous_pow 2).max continuous_const) h`.
+-/
 theorem continuous_invFn {ε : ℝ} (hε : 0 < ε) : Continuous (invFn ε) := by
   have h : ∀ t : ℝ, max (t ^ 2) (ε ^ 2) ≠ 0 := fun t =>
     (lt_of_lt_of_le (by positivity : (0 : ℝ) < ε ^ 2) (le_max_right _ _)).ne'
   exact Continuous.div continuous_id ((continuous_pow 2).max continuous_const) h
 
+/- English proof (translation)
+The claim follows from `abs_le.2 ⟨le_max_left _ _, max_le (by linarith) (min_le_right _ _)⟩`.
+-/
 theorem abs_clampFn_le {ε : ℝ} (hε : 0 ≤ ε) (t : ℝ) : |clampFn ε t| ≤ ε :=
   abs_le.2 ⟨le_max_left _ _, max_le (by linarith) (min_le_right _ _)⟩
 
+/- English proof (translation)
+Unfold `invFn cutFn clampFn`. Break down `le_or_gt t ε with h1 | h1` into its components or cases. Break down `le_or_gt (-ε) t with h2 | h2` into its components or cases. Rewrite using `[min_eq_left h1, max_eq_right h2, sub_self, mul_zero]`. Establish `ht : ε ^ 2 < t ^ 2` using `by nlinarith`.
+
+Establish `t0 : t ≠ 0` using `by linarith`. Rewrite using `[max_eq_left ht.le, ← mul_div_assoc, ← pow_two, div_self (pow_ne_zero 2 t0), one_mul]`. Establish `ht : ε ^ 2 < t ^ 2` using `by nlinarith`. Establish `t0 : t ≠ 0` using `by linarith`. Rewrite using `[max_eq_left ht.le, ← mul_div_assoc, ← pow_two, div_self (pow_ne_zero 2 t0), one_mul]`.
+-/
 theorem mul_invFn_mul_cutFn {ε : ℝ} (hε : 0 < ε) (t : ℝ) : t * invFn ε t * cutFn ε t = cutFn ε t := by
   unfold invFn cutFn clampFn
   rcases le_or_gt t ε with h1 | h1
@@ -49,6 +66,15 @@ section
 variable {G : Type} [Group G] [TopologicalSpace G] {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [CompleteSpace H] {ρ : G →* (H →L[ℂ] H)}
 
+/- English proof (translation)
+Take `⟨U, ⟨hU, hUW, hUE⟩, hmin⟩` from `exists_minimalFor_of_wellFoundedLT (fun U => IsSubrep ρ U ∧ U ≤ W ∧ U ⊓ E ≠ ⊥) (fun U => Module.finrank ℂ ↥(U ⊓ E)) ⟨W, hW, le_rfl, hWE⟩`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hUE`. Set `X` to `sInf {Y | IsSubrep ρ Y ∧ x ∈ Y}`. Establish `hX : IsSubrep ρ X` using `⟨by`. Rewrite using `[Submodule.coe_sInf]`.
+
+Conclude with `isClosed_biInter fun Y hY => hY.1.1,`. Use `fun g v hv => Submodule.mem_sInf.2 fun Y hY => hY.1.2 g v (Submodule.mem_sInf.1 hv Y hY)⟩`. Establish `hxX : x ∈ X` using `Submodule.mem_sInf.2 fun Y hY => hY.2`. Establish `hXU : X ≤ U` using `sInf_le ⟨hU, hx.1⟩`. Use `⟨X, hXU.trans hUW, hX, (Submodule.ne_bot_iff _).2 ⟨x, hxX, hx0⟩, fun Y hYX hY => ?_⟩` and prove the remaining obligations.
+
+Use `hY.completeSpace` as an intermediate fact. Distinguish the cases in `hy : Y.starProjection x = 0`. Establish `: X ≤ Yᗮ` using `sInf_le ⟨hY.orthogonal hρ, (Submodule.starProjection_apply_eq_zero_iff _).1 hy⟩`. Conclude with `.inl (le_bot_iff.1 ((le_inf le_rfl (hYX.trans this)).trans (Submodule.inf_orthogonal_eq_bot _).le))`. Establish `h1 : Y ⊓ E ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨_, ⟨Y.starProjection_apply_mem x, hS Y hY (hYX.trans (hXU.trans hUW)) x hx.2⟩, hy⟩`.
+
+Establish `h2 : Y ⊓ E ≤ U ⊓ E` using `inf_le_inf_right _ (hYX.trans hXU)`. Establish `: FiniteDimensional ℂ ↥(U ⊓ E)` using `Submodule.finiteDimensional_of_le inf_le_right`. Establish `h3` using `Submodule.eq_of_le_of_finrank_le h2 (hmin ⟨hY, hYX.trans (hXU.trans hUW), h1⟩ (Submodule.finrank_mono h2))`. Conclude with `.inr (le_antisymm hYX (sInf_le ⟨hY, (h3 ▸ hx : x ∈ Y ⊓ E).1⟩))`.
+-/
 theorem exists_irred_of_finiteDimensional (hρ : IsUnitaryRep ρ) {W E : Submodule ℂ H} (hW : IsSubrep ρ W)
     (hE : FiniteDimensional ℂ E)
     (hS : ∀ (Y : Submodule ℂ H) [Y.HasOrthogonalProjection], IsSubrep ρ Y → Y ≤ W →
@@ -77,6 +103,23 @@ theorem exists_irred_of_finiteDimensional (hρ : IsUnitaryRep ρ) {W E : Submodu
       (hmin ⟨hY, hYX.trans (hXU.trans hUW), h1⟩ (Submodule.finrank_mono h2))
     exact .inr (le_antisymm hYX (sInf_le ⟨hY, (h3 ▸ hx : x ∈ Y ⊓ E).1⟩))
 
+/- English proof (translation)
+Set `T` to `ContinuousLinearMap.adjoint A ∘L A`. Establish `hTc : IsCompactOperator T` using `hA.clm_comp (ContinuousLinearMap.adjoint A)`. Establish `hTs : (T : H →ₗ[ℂ] H).IsSymmetric` using `fun x y => by`. Simplify using `[T, ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.adjoint_inner_right]`. Establish `hTA : ∀ x, T x = 0 → A x = 0` using `fun x e => by`.
+
+Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ), ← ContinuousLinearMap.adjoint_inner_right, show ContinuousLinearMap.adjoint A (A x) = 0 from e, inner_zero_right]`. Establish `hT0 : T ≠ 0` using `fun e => hA0 (ContinuousLinearMap.ext fun x => hTA x (by rw [e]; rfl))`. Take `⟨c, hc1, hc0⟩ : ∃ c, Module.End.HasEigenvalue (T : Module.End ℂ H) c ∧ c ≠ 0` from `by by_contra! hn`. Conclude with `hT0 ((ContinuousLinearMap.eq_zero_of_forall_hasEigenvalue_eq_zero hTc hTs).1 hn)`. Establish `hTY : ∀ (Y : Submodule ℂ H) [Y.HasOrthogonalProjection], IsSubrep ρ Y → Y ≤ W → ∀ x, T (Y.starProjection x) = Y.starProjection (T x)`.
+
+Introduce `Y _ hY hYW x`. Establish `h1 : ∀ z, ContinuousLinearMap.adjoint A (Y.starProjection z) = Y.starProjection (ContinuousLinearMap.adjoint A z)` using `fun z => ext_inner_left ℂ fun y => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`. Use `_ = ⟪Y.starProjection (A y), z⟫_ℂ := (Submodule.inner_starProjection_left_eq_right _ _ _).symm`.
+
+Use `_ = ⟪A (Y.starProjection y), z⟫_ℂ := by rw [hAY Y hY hYW]`. Use `_ = ⟪Y.starProjection y, ContinuousLinearMap.adjoint A z⟫_ℂ := by`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`. Use `_ = ⟪y, Y.starProjection (ContinuousLinearMap.adjoint A z)⟫_ℂ := Submodule.inner_starProjection_left_eq_right _ _ _`. Use `show ContinuousLinearMap.adjoint A (A (Y.starProjection x)) = Y.starProjection (ContinuousLinearMap.adjoint A (A x))`.
+
+Rewrite using `[hAY Y hY hYW, h1]`. Take `⟨x, hx, hx0⟩` from `hc1.exists_hasEigenvector`. Establish `hTx : T x = c • x` using `Module.End.mem_eigenspace_iff.1 hx`. Use `exists_irred_of_finiteDimensional hρ hW (ContinuousLinearMap.finite_dimensional_eigenspace hTc c hc0) ?_ ?_` and prove the remaining obligations. Introduce `Y _ hY hYW y hy`.
+
+Establish `hy' : T y = c • y` using `Module.End.mem_eigenspace_iff.1 hy`. Use `Module.End.mem_eigenspace_iff.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T (Y.starProjection y) = c • Y.starProjection y`. Rewrite using `[hTY Y hY hYW, hy', map_smul]`. Use `(Submodule.ne_bot_iff _).2 ⟨W.starProjection x, ⟨W.starProjection_apply_mem x, ?_⟩, fun e => hx0 ?_⟩` and prove the remaining obligations.
+
+Use `Module.End.mem_eigenspace_iff.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T (W.starProjection x) = c • W.starProjection x`. Rewrite using `[hTY W hW le_rfl, hTx, map_smul]`. Establish `h1 : A x = 0` using `by rw [← hAW, e, map_zero]`. Establish `h2 : c • x = 0`.
+
+Rewrite using `[← hTx]`. Use `show ContinuousLinearMap.adjoint A (A x) = 0`. Rewrite using `[h1, map_zero]`. Conclude with `(smul_eq_zero.1 h2).resolve_left hc0`.
+-/
 theorem exists_irred_of_compact (hρ : IsUnitaryRep ρ) {W : Submodule ℂ H} (hW : IsSubrep ρ W)
     [W.HasOrthogonalProjection] (A : H →L[ℂ] H) (hA : IsCompactOperator A) (hA0 : A ≠ 0)
     (hAW : ∀ x, A (W.starProjection x) = A x)
@@ -131,6 +174,43 @@ theorem exists_irred_of_compact (hρ : IsUnitaryRep ρ) {W : Submodule ℂ H} (h
         rw [h1, map_zero]
       exact (smul_eq_zero.1 h2).resolve_left hc0
 
+/- English proof (translation)
+Establish `hQs : ∀ g, star Q * ρ g = ρ g * star Q` using `fun g => ContinuousLinearMap.ext fun x => ext_inner_left ℂ fun y => by`. Establish `e1` using `hρ.inner_apply_left g⁻¹ y (star Q x)`. Establish `e2` using `hρ.inner_apply_left g⁻¹ (Q y) x`. Rewrite `e1`, `e2` using `[inv_inv]`. Use `show ⟪y, star Q (ρ g x)⟫_ℂ = ⟪y, ρ g (star Q x)⟫_ℂ`.
+
+Rewrite `e1`, the goal using `[ContinuousLinearMap.star_eq_adjoint]`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right, ← e1, ← e2, ContinuousLinearMap.adjoint_inner_right]`. Conclude with `congrArg (fun z => ⟪z, x⟫_ℂ) (DFunLike.congr_fun (hQ g⁻¹) y).symm`. Use `set b := Q * star Q with hbdef`. Establish `hb : IsSelfAdjoint b` using `IsSelfAdjoint.mul_star_self Q`.
+
+Establish `hbρ : ∀ g, Commute b (ρ g)` using `fun g => by show Q * star Q * ρ g = ρ g * (Q * star Q)`. Rewrite using `[mul_assoc, hQs, ← mul_assoc, hQ, mul_assoc]`. Establish `hab : IsCompactOperator (a * b)`. Use `hc.comp_clm (star Q)` as an intermediate fact. Rewrite using `[hbdef, ← mul_assoc]`.
+
+Conclude with `this`. Establish `hsub : ∀ ε, cfc (cutFn ε) b = b - cfc (clampFn ε) b` using `fun ε => by`. Use `cfc_sub (fun t : ℝ => t) (clampFn ε) b continuous_id.continuousOn (continuous_clampFn ε).continuousOn` as an intermediate fact. Rewrite `this` using `[cfc_id' ℝ b hb]`. Conclude with `this`.
+
+Take `⟨ε, hε, hne⟩ : ∃ ε > 0, a * cfc (cutFn ε) b ≠ 0` from `by by_contra! hn`. Establish `key : ∀ ε > 0, ‖a * b‖ ≤ ‖a‖ * ε` using `fun ε hε => by`. Establish `e1 : a * b = a * cfc (clampFn ε) b`. Use `hn ε hε` as an intermediate fact. Rewrite `this` using `[hsub, mul_sub, sub_eq_zero]`.
+
+Conclude with `this`. Rewrite using `[e1]`. Use `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg a))` and prove the remaining obligations. Conclude with `norm_cfc_le hε.le fun t _ => by rw [Real.norm_eq_abs]; exact abs_clampFn_le hε.le t`. Establish `hab0 : a * b = 0`.
+
+Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖a * b‖` using `norm_pos_iff.2 hne`. Establish `hε : 0 < ‖a * b‖ / (2 * (‖a‖ + 1))` using `by positivity`. Establish `h1` using `key _ hε`. Establish `h2 : ‖a‖ * (‖a * b‖ / (2 * (‖a‖ + 1))) < ‖a * b‖`.
+
+Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]`. Use polynomial arithmetic with `[norm_nonneg a]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `h0 ((CStarRing.mul_star_self_eq_zero_iff _).1 ?_)` and prove the remaining obligations. Establish `e : a * Q * star (a * Q) = a * b * star a`.
+
+Rewrite using `[star_mul, hbdef]`. Simplify using `only [mul_assoc]`. Rewrite using `[e, hab0, zero_mul]`. Use `set Gε := cfc (cutFn ε) b with hGdef`. Use `set Hε := cfc (invFn ε) b with hHdef`.
+
+Establish `hGρ : ∀ g, Commute Gε (ρ g)` using `fun g => (hbρ g).cfc_real (cutFn ε)`. Establish `hbHG : Gε = b * Hε * Gε`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cfc_mul (fun t : ℝ => t) (invFn ε) b continuous_id.continuousOn (continuous_invFn hε).continuousOn]`. Use `_ = b * Hε * Gε := by rw [cfc_id' ℝ b hb]`.
+
+Set `W` to `(LinearMap.range (Gε : H →ₗ[ℂ] H)).topologicalClosure`. Establish `hW : IsSubrep ρ W` using `isSubrep_topologicalClosure fun g v hv => by`. Take `⟨w, rfl⟩` from `LinearMap.mem_range.1 hv`. Conclude with `LinearMap.mem_range.2 ⟨ρ g w, DFunLike.congr_fun (hGρ g).eq w⟩`. Use `hW.completeSpace` as an intermediate fact.
+
+Establish `hGW : ∀ v, Gε v ∈ W` using `fun v => Submodule.le_topologicalClosure _ (LinearMap.mem_range_self _ v)`. Establish `hle : W ≤ LinearMap.ker ((a - a * b * Hε : H →L[ℂ] H) : H →ₗ[ℂ] H)` using `Submodule.topologicalClosure_minimal _ (by`. Introduce and unpack `_ ⟨w, rfl⟩`. Use `LinearMap.mem_ker.2 ?_` and prove the remaining obligations. Establish `h1` using `DFunLike.congr_fun (congrArg (a * ·) hbHG) w`.
+
+Express the relevant statement in the definitionally equal form `a (Gε w) - a (b (Hε (Gε w))) = 0`. Rewrite using `[sub_eq_zero]`. Conclude with `h1) (ContinuousLinearMap.isClosed_ker _)`. Establish `hAW : ∀ w ∈ W, a w = (a * b * Hε) w` using `fun w hw => by`. Establish `h` using `LinearMap.mem_ker.1 (hle hw)`.
+
+Express the relevant statement in the definitionally equal form `a w - (a * b * Hε) w = 0 at h`. Conclude with `sub_eq_zero.1 h`. Use `set P := W.starProjection with hPdef`. Establish `eA : a * P = a * b * Hε * P` using `ContinuousLinearMap.ext fun x => hAW _ (W.starProjection_apply_mem x)`. Establish `hA : IsCompactOperator (a * P)`.
+
+Rewrite using `[eA]`. Conclude with `(hab.comp_clm Hε).comp_clm P`. Establish `hA0 : a * P ≠ 0`. Take `⟨v, hv⟩ : ∃ v, a (Gε v) ≠ 0` from `by by_contra! h`. Conclude with `hne (ContinuousLinearMap.ext h)`.
+
+Introduce `e`. Apply `hv` to reduce the goal to its premises. Establish `h1 : P (Gε v) = Gε v` using `Submodule.starProjection_eq_self_iff.2 (hGW v)`. Establish `h2` using `DFunLike.congr_fun e (Gε v)`. Express the relevant statement in the definitionally equal form `a (P (Gε v)) = 0 at h2`.
+
+Rewrite `h2` using `[h1]`. Then use the resulting hypothesis. Take `⟨X, -, hX⟩` from `exists_irred_of_compact hρ hW (a * P) hA hA0 (fun x => by show a (P (P x)) = a (P x)`. Rewrite using `[Submodule.starProjection_eq_self_iff.2 (W.starProjection_apply_mem x)])`. Use the proof step `(fun Y _ hY hYW x => by show a (P (Y.starProjection x)) = Y.starProjection (a (P x))`. Rewrite using `[Submodule.starProjection_eq_self_iff.2 (hYW (Y.starProjection_apply_mem x))]`.
+
+Establish `h1 : Y.starProjection * a = a * Y.starProjection` using `ha _ fun g => ContinuousLinearMap.ext fun v => hY.starProjection_apply hρ g v`. Establish `h2 : Y.starProjection (a (P x)) = a (Y.starProjection (P x))` using `DFunLike.congr_fun h1 (P x)`. Establish `h3 : Y.starProjection (P x) = Y.starProjection x` using `DFunLike.congr_fun (Submodule.starProjection_comp_starProjection_of_le hYW) x`. Rewrite using `[h2, h3])`. Conclude with `⟨X, hX⟩`.
+-/
 theorem exists_irreducible_subrepresentation_bis (hρ : IsUnitaryRep ρ) {a Q : H →L[ℂ] H}
     (ha : ∀ S : H →L[ℂ] H, (∀ g, S * ρ g = ρ g * S) → S * a = a * S) (hQ : ∀ g, Q * ρ g = ρ g * Q)
     (hc : IsCompactOperator (a * Q)) (h0 : a * Q ≠ 0) : ∃ W, IsIrredSubrep ρ W := by
@@ -242,6 +322,9 @@ theorem exists_irreducible_subrepresentation_bis (hρ : IsUnitaryRep ρ) {a Q : 
 
 end
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ hρ _ _ ha hQ hc h0` and use `exists_irreducible_subrepresentation_bis hρ ha hQ hc h0`.
+-/
 theorem irredSt : IrredSt := fun _ _ _ _ _ _ _ _ hρ _ _ ha hQ hc h0 => exists_irreducible_subrepresentation_bis hρ ha hQ hc h0
 
 end MainStatements.Flath2

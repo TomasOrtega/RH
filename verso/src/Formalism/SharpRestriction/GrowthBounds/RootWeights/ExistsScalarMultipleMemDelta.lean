@@ -14,6 +14,9 @@ section hw
 variable {n : ℕ} {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   {V : Type*} [AddCommGroup V] [Module (KK O) V] [Module O V] [IsScalarTower O (KK O) V]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨u', hu', rfl⟩ u hu`. Use `hK (u * u') (Submonoid.mul_mem _ hu hu')` as an intermediate fact. Simplify using `using this`.
+-/
 theorem delta_le_nabla {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V}
     (hK : v ∈ Nabla (O := O) E lam v) : Delta (O := O) E v ≤ NablaSub (O := O) E lam v := by
   refine Submodule.span_le.2 ?_
@@ -21,6 +24,9 @@ theorem delta_le_nabla {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V}
   have := hK (u * u') (Submonoid.mul_mem _ hu hu')
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← hI.2.2.2]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `x ⟨u, hu, rfl⟩`. Conclude with `⟨u, enveloping_le_integral_enveloping E hu, rfl⟩`.
+-/
 theorem integral_enveloping_span_top {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V} (hI : IsIrrHW E lam v) :
     Submodule.span (KK O) {x | ∃ u ∈ UZmon E, x = u v} = ⊤ := by
   rw [eq_top_iff, ← hI.2.2.2]
@@ -28,6 +34,15 @@ theorem integral_enveloping_span_top {E : GLOps n (KK O) V} {lam : Fin n → ℤ
   rintro x ⟨u, hu, rfl⟩
   exact ⟨u, enveloping_le_integral_enveloping E hu, rfl⟩
 
+/- English proof (translation)
+Use `lattice_fg_of_integral_functionals (O := O) (W := Module.End (KK O) V) _ {φ | ∃ u ∈ UZmon E, ∃ u' ∈ UZmon E, φ = (xi ∘ₗ u) ∘ₗ LinearMap.applyₗ (u' v)} ?_ ?_` and prove the remaining obligations. Introduce `f hf`. Establish `hz : ∀ u' ∈ UZmon E, f (u' v) = 0`. Introduce `u' hu'`. Use `enveloping_coordinate_separates hI hCR h1 fun u hu => ?_` and prove the remaining obligations.
+
+Use `hf _ ⟨u, hu, u', hu', rfl⟩` as an intermediate fact. Simplify using `using this`. Establish `hk : (⊤ : Submodule (KK O) V) ≤ LinearMap.ker f`. Rewrite using `[← integral_enveloping_span_top hI]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨u, hu, rfl⟩`. Conclude with `hz u hu`. Conclude with `LinearMap.ext fun x => hk Submodule.mem_top`. Introduce and unpack `φ ⟨u, hu, u', hu', rfl⟩ f hf`. Establish `ha : u' v ∈ Nabla (O` using `O) E lam v := delta_le_nabla hK (Submodule.subset_span ⟨u', hu', rfl⟩)`.
+
+Establish `hb : f (u' v) ∈ Nabla (O` using `O) E lam v := delta_le_nabla hK (hf _ ha)`. Take `⟨c, hc⟩` from `(mem_nabla_iff_coordinate_integral h1 h2 h3 _).1 hb u hu`. Conclude with `⟨c, by simpa using hc⟩`.
+-/
 theorem nabla_to_delta_maps_fg [NeZero n] [CharZero (KK O)] [FiniteDimensional (KK O) V] {E : GLOps n (KK O) V}
     {lam : Fin n → ℤ} {v : V} (hI : IsIrrHW E lam v)
     (hCR : ∀ W : Submodule (KK O) V, (∀ a b, ∀ x ∈ W, E a b x ∈ W) →
@@ -55,6 +70,11 @@ theorem nabla_to_delta_maps_fg [NeZero n] [CharZero (KK O)] [FiniteDimensional (
     obtain ⟨c, hc⟩ := (mem_nabla_iff_coordinate_integral h1 h2 h3 _).1 hb u hu
     exact ⟨c, by simpa using hc⟩
 
+/- English proof (translation)
+Use `lattice_fg_of_integral_functionals (O := O) (W := V) _ {φ | ∃ u ∈ UZmon E, φ = xi ∘ₗ u} ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Use `enveloping_coordinate_separates hI hCR h1 fun u hu => ?_` and prove the remaining obligations. Use `hx _ ⟨u, hu, rfl⟩` as an intermediate fact. Simplify using `using this`.
+
+Introduce and unpack `φ ⟨u, hu, rfl⟩ x hx`. Take `⟨c, hc⟩` from `(mem_nabla_iff_coordinate_integral h1 h2 h3 _).1 hx u hu`. Conclude with `⟨c, by simpa using hc⟩`.
+-/
 theorem nabla_finitely_generated [NeZero n] [CharZero (KK O)] [FiniteDimensional (KK O) V] {E : GLOps n (KK O) V}
     {lam : Fin n → ℤ} {v : V} (hI : IsIrrHW E lam v)
     (hCR : ∀ W : Submodule (KK O) V, (∀ a b, ∀ x ∈ W, E a b x ∈ W) →
@@ -71,10 +91,26 @@ theorem nabla_finitely_generated [NeZero n] [CharZero (KK O)] [FiniteDimensional
     obtain ⟨c, hc⟩ := (mem_nabla_iff_coordinate_integral h1 h2 h3 _).1 hx u hu
     exact ⟨c, by simpa using hc⟩
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.ClearingDenominators.goal1 .. | (apply Bl.ClearingDenominators.goal1 <;> assumption) | (intros; apply Bl.ClearingDenominators.goal1 <;> assumption) | (apply @Bl.ClearingDenominators.goal1 <;> assumption) | (intros; apply @Bl.ClearingDenominators.goal1 <;> assumpt …`.
+-/
 theorem exists_scalar_multiple_mem_delta {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V} (hI : IsIrrHW E lam v) (y : V) :
     ∃ o : O, o ≠ 0 ∧ o • y ∈ Delta (O := O) E v := by
   first | exact Bl.ClearingDenominators.goal1 .. | (apply Bl.ClearingDenominators.goal1 <;> assumption) | (intros; apply Bl.ClearingDenominators.goal1 <;> assumption) | (apply @Bl.ClearingDenominators.goal1 <;> assumption) | (intros; apply @Bl.ClearingDenominators.goal1 <;> assumption) | (apply @Bl.ClearingDenominators.goal1 <;> first | assumption | infer_instance)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `f _`. Take `⟨G, hG⟩` from `hfg`. Use `choose o ho ho' using exists_scalar_multiple_mem_delta (O := O) hI`. Use `set c : O := ∏ g ∈ G, o (f g) with hc`.
+
+Establish `hc0 : c ≠ 0` using `prod_ne_zero_iff.2 fun g _ => ho _`. Establish `hmem : c • f ∈ nablaToDeltaMaps (O` using `O) E lam v := by`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span O (G : Set V)` using `hG ▸ hx`. Use `clear hx`.
+
+Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem g hg`. Rewrite using `[LinearMap.smul_apply, hc, ← mul_prod_erase G _ hg, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (ho' _)`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul r y _ hy`. Rewrite using `[← algebraMap_smul (KK O) r y, map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+
+Establish `hc1 : algebraMap O (KK O) c ≠ 0`. Simplify using `using (IsFractionRing.injective O (KK O)).ne hc0`. Establish `: f = (algebraMap O (KK O) c)⁻¹ • (c • f)`. Rewrite using `[← algebraMap_smul (KK O) c f, smul_smul, inv_mul_cancel₀ hc1, one_smul]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+-/
 theorem nabla_to_delta_maps_span_top [NeZero n] [CharZero (KK O)] [FiniteDimensional (KK O) V] {E : GLOps n (KK O) V}
     {lam : Fin n → ℤ} {v : V} (hI : IsIrrHW E lam v)
     (hfg : (NablaSub (O := O) E lam v).FG) : MQ (K := KK O) (nablaToDeltaMaps (O := O) E lam v) = ⊤ := by
@@ -104,6 +140,9 @@ theorem nabla_to_delta_maps_span_top [NeZero n] [CharZero (KK O)] [FiniteDimensi
   rw [this]
   exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨c, hc⟩` from `(mem_nabla_iff_coordinate_integral h1 h2 h3 _).1 hx 1 (Submonoid.one_mem _)`. Rewrite `hc` using `[Module.End.one_apply]`. Rewrite using `[LinearMap.smulRight_apply, hc, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, Submonoid.one_mem _, rfl⟩)`.
+-/
 theorem coordinate_rank_one_mem_maps {E : GLOps n (KK O) V} {lam : Fin n → ℤ} {v : V} {xi : V →ₗ[KK O] KK O} (h1 : xi v = 1)
     (h2 : ∀ w ∈ otherWts E lam, xi w = 0) (h3 : ∀ x, x - xi x • v ∈ otherWts E lam) :
     xi.smulRight v ∈ nablaToDeltaMaps (O := O) E lam v := by

@@ -39,6 +39,9 @@ def lev0AtOf_compatible {D : D7} {X : Formalism.L2.Herm.Herm0 D} {T : ∀ u : D.
       ((T u).cls0).y (c.cmp u w h) :=
   K.tie u w h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+-/
 theorem lev0AtOf_lev {D : D7} {X : Formalism.L2.Herm.Herm0 D} {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {c : LatCmp D}
     (K : CmpTied D X T Gt c) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
@@ -46,6 +49,9 @@ theorem lev0AtOf_lev {D : D7} {X : Formalism.L2.Herm.Herm0 D} {T : ∀ u : D.wha
       (lev0AtOf K u w h).Uloc = (T u).cls0.lev.Uloc :=
   ⟨rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hJ.Lb_eq, hJ.Uloc_eq⟩`.
+-/
 theorem lev0AtOf_joint {D : D7} {X : Formalism.L2.Herm.Herm0 D} {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {c : LatCmp D}
     (K : CmpTied D X T Gt c) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (hJ : Joint0 X.lev0 u (T u)) :
@@ -53,6 +59,9 @@ theorem lev0AtOf_joint {D : D7} {X : Formalism.L2.Herm.Herm0 D} {T : ∀ u : D.w
       ∀ v, (lev0AtOf K u w h).Uloc v = ((X.lev0 u).Uloc v).map (reGL (rank_eq_first_level D.R) _).toMonoidHom :=
   ⟨hJ.Lb_eq, hJ.Uloc_eq⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gramN, Spaces.gram0, Matrix.reindex_apply]`.
+-/
 theorem gram_level_zero_eq_reindex (D : D7) :
     gramN D 0 (Nat.zero_le _) = D.sp.gram0.reindex (finCongr (rank_eq_first_level D.R)) (finCongr (rank_eq_first_level D.R)) := by
   ext i j

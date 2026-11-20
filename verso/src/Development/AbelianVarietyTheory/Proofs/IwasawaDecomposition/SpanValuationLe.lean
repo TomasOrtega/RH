@@ -4,6 +4,11 @@ namespace GlobalTheory.SpanValuationBound
 
 open IsDedekindDomain
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hS y hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`.
+
+Conclude with `le_trans (Valuation.map_add _ y z) (max_le hy hz)`. Consider the case `smul a y _ hy`. Rewrite using `[Algebra.smul_def, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem span_valuation_le {L : Type} [Field L] [NumberField L] {S : Set L}
     (w : HeightOneSpectrum (NumberField.RingOfIntegers L)) {γ : WithZero (Multiplicative ℤ)}
     (hS : ∀ x ∈ S, (HeightOneSpectrum.valuation L w : L → WithZero (Multiplicative ℤ)) x ≤ γ) :
@@ -21,6 +26,9 @@ theorem span_valuation_le {L : Type} [Field L] [NumberField L] {S : Set L}
         ≤ 1 * γ := mul_le_mul' (HeightOneSpectrum.valuation_le_one w a) hy
       _ = γ := one_mul γ
 
+/- English proof (translation)
+The claim follows from `@fun _ _ _ _ w _ h => span_valuation_le w h`.
+-/
 theorem main : ∀ {L : Type} [inst : Field L] [inst_1 : NumberField L] {S : Set L} (w : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers L)) {γ : WithZero (Multiplicative ℤ)}, (∀ x ∈ S, (IsDedekindDomain.HeightOneSpectrum.valuation L w : L → WithZero (Multiplicative ℤ)) x ≤ γ) → ∀ x ∈ Submodule.span (NumberField.RingOfIntegers L) S, (IsDedekindDomain.HeightOneSpectrum.valuation L w : L → WithZero (Multiplicative ℤ)) x ≤ γ :=
   @fun _ _ _ _ w _ h => span_valuation_le w h
 

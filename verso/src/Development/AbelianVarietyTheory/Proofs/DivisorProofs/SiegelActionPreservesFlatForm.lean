@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.UnivAction
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [tauU, symPart, Matrix.of_apply]`. Rewrite using `[h.apply i j]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tauU_symPart_of_isSymm {g : ℕ} {A : Matrix (Fin g) (Fin g) ℂ} (h : A.IsSymm) :
     tauU (symPart A) = A := by
   ext i j
@@ -20,6 +23,9 @@ theorem tauU_symPart_of_isSymm {g : ℕ} {A : Matrix (Fin g) (Fin g) ℂ} (h : A
   rw [h.apply i j]
   ring
 
+/- English proof (translation)
+Establish `hA : A.mat * J (Fin g) ℝ * A.matᵀ = J (Fin g) ℝ` using `SymplecticGroup.mem_iff.1 A.2`. Rewrite using `[riem_eq_J, riem_eq_J, ← Matrix.mulVec_transpose A.mat y, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hA]`.
+-/
 theorem riem_vecMul_sp {g : ℕ} (A : Sp g) (x y : Fl g) :
     riem (x ᵥ* A.mat) (y ᵥ* A.mat) = riem x y := by
   have hA : A.mat * J (Fin g) ℝ * A.matᵀ = J (Fin g) ℝ := SymplecticGroup.mem_iff.1 A.2
@@ -35,6 +41,27 @@ def symPartL (g : ℕ) : (Fin g → Fin g → ℂ) →L[ℂ] symMat g :=
         apply Subtype.ext; funext i j
         simp only [symPart, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring }
 
+/- English proof (translation)
+Introduce `g γ`. Establish `hU` using `(GlobalTheory.T.siegel_period_map_simply_connected g).1`. Establish `hO : IsOpen (cov (siegel g) g)` using `hU.1.prod isOpen_univ`. Establish `hb` using `fun δ : Sp g => GlobalTheory.T.period_map_symplectic_transform hU δ`. Establish `hgrp` using `GlobalTheory.T.siegel_action_is_mul_action g`.
+
+Establish `hsym : ∀ δ : Sp g, ∀ s ∈ siegel g, tauU (symPart (moeb δ (tauU s))) = moeb δ (tauU s)` using `fun δ s hs => tauU_symPart_of_isSymm ((hb δ).1.2.2 s hs).1`. Establish `hmaps : ∀ δ : Sp g, Set.MapsTo (actU δ) (cov (siegel g) g) (cov (siegel g) g)`. Introduce `δ P hP`. Use `⟨?_, Set.mem_univ _⟩` and prove the remaining obligations. Use `show IsSiegel (tauU (symPart (moeb δ (tauU P.1))))`.
+
+Rewrite using `[hsym δ P.1 hP.1]`. Conclude with `(hb δ).1.2.2 _ hP.1`. Establish `hinv : ∀ P ∈ cov (siegel g) g, actU γ⁻¹ (actU γ P) = P` using `fun P hP => by`. Rewrite using `[← hgrp.2 _ _ P hP, inv_mul_cancel, hgrp.1 P hP]`. Establish `hinv' : ∀ P ∈ cov (siegel g) g, actU γ (actU γ⁻¹ P) = P` using `fun P hP => by`.
+
+Rewrite using `[← hgrp.2 _ _ P hP, mul_inv_cancel, hgrp.1 P hP]`. Establish `hbij : Set.BijOn (actU γ) (cov (siegel g) g) (cov (siegel g) g)`. Use `⟨hmaps γ, fun P hP Q hQ h => ?_, fun P hP => ⟨actU γ⁻¹ P, hmaps γ⁻¹ hP, hinv' P hP⟩⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hdiff : DifferentiableOn ℂ (actU γ) (cov (siegel g) g)`.
+
+Establish `h1 : DifferentiableOn ℂ (fun P : Pt (symMat g) g => fun i j => moeb γ (tauU P.1) i j) (cov (siegel g) g)` using `differentiableOn_pi.2 fun i => differentiableOn_pi.2 fun j => ((hb γ).1.2.1 i j).comp differentiableOn_fst fun P hP => hP.1`. Establish `h2` using `((symPartL g).differentiable.comp_differentiableOn h1).prodMk (differentiable_snd.comp_differentiableOn (hb γ).2.2)`. Use `h2.congr fun P _ => ?_` and prove the remaining obligations. Both sides reduce to the same expression. Establish `hflat : ∀ P ∈ cov (siegel g) g, flat tauU (actU γ P) = flat tauU P ᵥ* (γ⁻¹).mat` using `fun P hP => by`.
+
+Rewrite using `[← (GlobalTheory.T.flat_coords_symplectic_pullback_form hU γ P hP).1]`. Use `show flatOf (tauU (symPart (moeb γ (tauU P.1)))) (P.2 ᵥ* (den γ (tauU P.1))⁻¹) = flatOf (moeb γ (tauU P.1)) (P.2 ᵥ* (den γ (tauU P.1))⁻¹)`. Rewrite using `[hsym γ P.1 hP.1]`. Establish `hfd : ∀ Q ∈ cov (siegel g) g, DifferentiableAt ℝ (flat tauU) Q` using `fun Q hQ => ((GlobalTheory.T.period_flat_map_real_analytic hU).1 Q hQ).differentiableAt`. Establish `hAd : ∀ P ∈ cov (siegel g) g, DifferentiableAt ℝ (actU γ) P` using `fun P hP => (hdiff.differentiableAt (hO.mem_nhds hP)).restrictScalars ℝ`.
+
+Set `L : Fl g →L[ℝ] Fl g` to `LinearMap.toContinuousLinearMap (Matrix.vecMulLinear (γ⁻¹).mat)`. Establish `hpull : ∀ P ∈ cov (siegel g) g, pull (actU γ) (om0 tauU) P = om0 tauU P`. Introduce `P hP`. Establish `hc : fderiv ℝ (flat tauU ∘ actU γ) P = (fderiv ℝ (flat tauU) (actU γ P)).comp (fderiv ℝ (actU γ) P)` using `fderiv_comp P (hfd _ (hmaps γ hP)) (hAd P hP)`. Establish `he : flat tauU ∘ actU γ =ᶠ[nhds P] ⇑L ∘ flat tauU` using `Filter.eventually_of_mem (hO.mem_nhds hP) fun Q hQ => by`.
+
+Simplify using `only [Function.comp_apply, L, LinearMap.coe_toContinuousLinearMap', Matrix.vecMulLinear_apply, hflat Q hQ]`. Establish `hL : fderiv ℝ (⇑L ∘ flat tauU) P = L.comp (fderiv ℝ (flat tauU) P)` using `(L.hasFDerivAt.comp P (hfd P hP).hasFDerivAt).fderiv`. Establish `key : ∀ w, fderiv ℝ (flat tauU) (actU γ P) (fderiv ℝ (actU γ) P w) = fderiv ℝ (flat tauU) P w ᵥ* (γ⁻¹).mat`. Introduce `w`. Use `congrArg (fun T : Pt (symMat g) g →L[ℝ] Fl g => T w) (hc.symm.trans (he.fderiv_eq.trans hL))` as an intermediate fact.
+
+Simplify `this` using `[L]`. Use extensionality with `v`. Simplify using `only [pull, om0, dflat, ContinuousAlternatingMap.compContinuousLinearMap_apply]`. Use `show riem _ _ = riem _ _`. Simplify using `only [Function.comp_apply, key]`.
+
+Conclude with `riem_vecMul_sp γ⁻¹ _ _`. Use `⟨hbij, hdiff, fun P hP => ⟨(hb γ).2.1 P.1 hP.1, hsym γ P.1 hP.1, hflat P hP, hpull P hP, fun h => ?_⟩⟩` and prove the remaining obligations. Simplify using `[actU, h]`.
+-/
 theorem univAct : ∀ g : ℕ, ∀ γ : Sp g, Set.BijOn (actU γ) (cov (siegel g) g) (cov (siegel g) g) ∧
     DifferentiableOn ℂ (actU γ) (cov (siegel g) g) ∧
     (∀ P ∈ cov (siegel g) g, IsUnit (den γ (tauU P.1)) ∧ tauU (actU γ P).1 = moeb γ (tauU P.1) ∧

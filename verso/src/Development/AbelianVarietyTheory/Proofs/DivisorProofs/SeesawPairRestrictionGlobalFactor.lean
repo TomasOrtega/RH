@@ -19,6 +19,11 @@ open scoped Classical
 abbrev ev0 {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ] : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ :=
   LinearMap.proj (R := ℂ) (φ := fun _ : (κ → AF F) => ℂ) 0
 
+/- English proof (translation)
+Introduce `g _`. Use `⟨g 0 • (BoundedContinuousFunction.evalCLM ℂ 0).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ), fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [ev0, LinearMap.proj_apply, pureA, ContinuousLinearMap.coe_smul', ContinuousLinearMap.coe_comp', Function.comp_apply, Pi.smul_apply, SchwartzMap.toBoundedContinuousFunctionCLM_apply, BoundedContinuousFunction.evalCLM_apply, smul_eq_mul]`. Establish `h1 : (fun i : κ => InfiniteAdeleRing.ringEquiv_mixedSpace F ((0 : κ → AdeleRing (𝓞 F) F) i).1) = 0`. Use function extensionality and compare the values at `i`.
+
+Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `h2 : (fun i : κ => ((0 : κ → AdeleRing (𝓞 F) F) i).2) = 0`. Use function extensionality and compare the values at `i`. Both sides reduce to the same expression. Rewrite using `[h1, h2, mul_comm]`.
+-/
 theorem adelicCoordinatesEvalZeroForm_mem_admissible {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ] : ev0 (F := F) κ ∈ (adeleClass F).adm κ := by
   intro g _
   refine ⟨g 0 • (BoundedContinuousFunction.evalCLM ℂ 0).comp
@@ -35,14 +40,23 @@ theorem adelicCoordinatesEvalZeroForm_mem_admissible {F : Type} [Field F] [Numbe
 variable {F : Type} [Field F] [NumberField F] {V V₁ : Type} [AddCommGroup V] [Module (AF F) V] [AddCommGroup V₁]
   [Module (AF F) V₁] {b : V → V → AF F} {b₁ : V₁ → V₁ → AF F} {κ κ₁ : Type} [Fintype κ] [Fintype κ₁]
 
+/- English proof (translation)
+Simplify using `[Darboux.rho, schr, hz]`.
+-/
 theorem rho_zero_first (D₁ : Darboux b₁ κ₁) (ψ : AddChar (AF F) ℂ) (z : V₁) (hz : (D₁.e z).1 = 0)
     (Ψ : (κ₁ → AF F) → ℂ) : D₁.rho ψ z Ψ 0 = Ψ 0 := by
   simp [Darboux.rho, schr, hz]
 
+/- English proof (translation)
+Simplify using `[Darboux.rho, schr]`.
+-/
 theorem rho_first (D₁ : Darboux b₁ κ₁) (ψ : AddChar (AF F) ℂ) (y : κ₁ → AF F) (Ψ : (κ₁ → AF F) → ℂ) :
     D₁.rho ψ (D₁.e.symm (y, 0)) Ψ 0 = Ψ y := by
   simp [Darboux.rho, schr]
 
+/- English proof (translation)
+Rewrite using `[hS _ Φ hΦ]`. Simplify using `only [ev0, LinearMap.proj_apply]`. Rewrite using `[rho_first]`.
+-/
 theorem apply_eq_evaluation_zero (D : Darboux b κ) (D₁ : Darboux b₁ κ₁) (ψ : AddChar (AF F) ℂ) (j : V₁ → V)
     (S : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ₁ → AF F) → ℂ))
     (hS : ∀ z, ∀ Φ ∈ schA F κ, S (D.rho ψ (j z) Φ) = D₁.rho ψ z (S Φ)) (Φ : (κ → AF F) → ℂ) (hΦ : Φ ∈ schA F κ)
@@ -51,6 +65,9 @@ theorem apply_eq_evaluation_zero (D : Darboux b κ) (D₁ : Darboux b₁ κ₁) 
   simp only [ev0, LinearMap.proj_apply]
   rw [rho_first]
 
+/- English proof (translation)
+Take `⟨y, z, hz, he⟩` from `hw`. Establish `h1 : D.rho ψ (j z) Φ ∈ schA F κ` using `GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ Φ hΦ`. Simplify using `only [LinearMap.comp_apply, ev0, LinearMap.proj_apply]`. Rewrite using `[he, hI y _ h1, hS z Φ hΦ, rho_zero_first D₁ ψ z hz]`.
+-/
 theorem evAt_zero_comp_eq_of_exp_phase_mul (D : Darboux b κ) (D₁ : Darboux b₁ κ₁) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (j : V₁ → V)
     (S : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ₁ → AF F) → ℂ))
     (hS : ∀ z, ∀ Φ ∈ schA F κ, S (D.rho ψ (j z) Φ) = D₁.rho ψ z (S Φ)) {Y : Type} (k : Y → V)
@@ -63,6 +80,11 @@ theorem evAt_zero_comp_eq_of_exp_phase_mul (D : Darboux b κ) (D₁ : Darboux b�
   simp only [LinearMap.comp_apply, ev0, LinearMap.proj_apply]
   rw [he, hI y _ h1, hS z Φ hΦ, rho_zero_first D₁ ψ z hz]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁`. Take `⟨L, hiso, hrk, hL⟩` from `GlobalTheory.T.pair_restricts_to_adapted_w F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁`. Use `⟨L, hiso, hrk, fun t w hw => ?_⟩` and prove the remaining obligations. Take `⟨y, z, hz, he⟩` from `hL t w hw`. Use `⟨y, z, hz, fun φ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.T.darboux_doubling_schrodinger_formula F E σ B n d X W d₁ W₁ H' i₀ i₁ hH dd B.ψ y z φ]`. Simplify using `only [Darboux.rho, he]`.
+-/
 theorem lag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),
@@ -92,6 +114,13 @@ theorem lag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField 
   rw [GlobalTheory.T.darboux_doubling_schrodinger_formula F E σ B n d X W d₁ W₁ H' i₀ i₁ hH dd B.ψ y z φ]
   simp only [Darboux.rho, he]
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hEm hEh hEi hEa hEnz T hTm hTh hTi hTa`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Take `⟨L, hiso, hrk, hL⟩` from `lag F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁`. Establish `hadmT` using `hTa _ (adelicCoordinatesEvalZeroForm_mem_admissible _)`. Establish `hadmE` using `hEa _ (adelicCoordinatesEvalZeroForm_mem_admissible _)`.
+
+Set `j : Matrix (Fin d₁) (Fin n ⊕ Fin n) (AE F E) → Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E)` to `fun z => incM F H'.ι * z`. Set `k : (Fin n ⊕ Fin n → AE F E) → Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E)` to `fun y => Matrix.vecMulVec (incV F H'.x) y`. Take `⟨Φ₀, hΦ₀, hne⟩` from `hEnz`. Take `⟨y₀, hy₀⟩` from `Function.ne_iff.1 hne`. Take `⟨c, hc⟩` from `GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness F B.ψ hψ _ L hiso hrk _ hadmT _ hadmE (fun t w hw Φ hΦ => evAt_zero_comp_eq_of_exp_phase_mul dd dd₁ B.ψ hψ j T hTh k hTi _ (hL t w hw) Φ hΦ) (fun t w hw Φ hΦ => evAt_zero_comp_eq_of_exp_phase_mul dd dd₁ B.ψ hψ j ed hEh k …`.
+
+Rewrite using `[LinearMap.comp_apply, ← apply_eq_evaluation_zero dd dd₁ B.ψ j ed hEh Φ₀ hΦ₀ y₀]`. Conclude with `hy₀⟩`. Use `⟨c, fun Φ hΦ => funext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[apply_eq_evaluation_zero dd dd₁ B.ψ j T hTh Φ hΦ y, Pi.smul_apply, apply_eq_evaluation_zero dd dd₁ B.ψ j ed hEh Φ hΦ y, smul_eq_mul]`. Conclude with `hc _ (GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ _ Φ hΦ)`.
+-/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),

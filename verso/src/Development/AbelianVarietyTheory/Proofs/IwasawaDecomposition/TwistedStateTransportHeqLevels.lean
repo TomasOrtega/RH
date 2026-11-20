@@ -18,6 +18,15 @@ namespace GlobalTheory.HeightCounting.Up
 
 open GlobalTheory.Mem.R3.Tr
 
+/- English proof (translation)
+Introduce `hL K B f T w P x l N`. Take `⟨m, hm, hc, hh⟩` from `GlobalTheory.T.exists_movedData_laterStagesWithNewTwist x N`. Take `⟨r, hp, hrep, hj, he⟩` from `GlobalTheory.T.exists_normalisedReading_transported_newTwist x N m hm hc hh`. Take `⟨l', h1, h2, h3, h4, h5, h6, h7⟩` from `GlobalTheory.T.read_package_twist_heq hL x l N m hm hc hh r hp hrep hj he`. Use `⟨stTw x N m hc hh r hp, l', rfl, ?_, h1, h2, h3, h4, h5, h6, h7, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show HEq m.z.R.toRealDat.toLevCh _`. Rewrite using `[hm]`. Conclude with `(by with_unfolding_all exact ((HEq.refl (datTw x N).R.toRealDat.toLevCh) :))`. Use `show HEq m.z.R _`. Rewrite using `[hm]`.
+
+Conclude with `(by with_unfolding_all exact ((HEq.refl (datTw x N).R) :))`. Use `show HEq m.z.cG _`. Rewrite using `[hm]`. Conclude with `(by with_unfolding_all exact ((HEq.refl (datTw x N).cG) :))`. Use `show HEq m.z.geo _`.
+
+Rewrite using `[hm]`. Conclude with `(by with_unfolding_all exact ((HEq.refl (datTw x N).geo) :))`.
+-/
 theorem restage_copy_real : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P) (l : LI hL x) (N : TwNew (Dof x)), ∃ (x' : St P) (l' : LI hL x'), x'.o = oTw x N ∧ HEq x'.m.z.R.toRealDat.toLevCh (GlobalTheory.Mem.R3.Tr.levCh (a := x.o.Z) (oTw x N).Z x.m.z.R.toRealDat.toLevCh) ∧ HEq l'.a.A.row (N.row l.a.A.row) ∧ HEq l'.Pq l.Pq ∧ HEq l'.rat.S (N.rat l.rat.S) ∧ HEq l'.rat.In.Sb l.rat.In.Sb ∧ HEq l'.rat.In.hL l.rat.In.hL ∧ HEq l'.rat.In.eig l.rat.In.eig ∧ HEq l'.rat.In.θ l.rat.In.θ ∧ HEq x'.m.z.R (GlobalTheory.Mem.R3.Tr.real3 (a := x.o.Z) (oTw x N).Z (iK := x.m.z.alg) x.m.z.R) ∧ HEq x'.m.z.cG x.m.z.cG ∧ HEq x'.m.z.geo (GlobalTheory.Mem.R3.Tr.geoHalf (a := x.o.Z) (oTw x N).Z (iK := x.m.z.alg) x.m.z.geo) := by
   intro hL K B f T w P x l N
   obtain ⟨m, hm, hc, hh⟩ := GlobalTheory.T.exists_movedData_laterStagesWithNewTwist x N

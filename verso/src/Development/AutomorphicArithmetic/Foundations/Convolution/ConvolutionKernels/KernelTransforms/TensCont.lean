@@ -12,6 +12,15 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Introduce `K _ _ n hn β e`. Establish `key : ∀ x : normOneGL K n, kbar β (infPart K n (x : AdelicGLn.AdelicGL K n)) * e (finPart K n (x : AdelicGLn.AdelicGL K n)) ≠ 0 → ∃ a ∈ tsupport β, ∃ h ∈ tsupport e, x = archP K n a * MultiplicityOne.finProj K n h`. Introduce `x hx`. Establish `hk` using `left_ne_zero_of_mul hx`. Establish `he` using `right_ne_zero_of_mul hx`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, β (infPart K n (x : AdelicGLn.AdelicGL K n) * zInf K n s) ≠ 0 := by`. Assume the negation of the conclusion as `h0`. Simplify using `only [not_exists, ne_eq, not_not] at h0`. Conclude with `hk (by simp [kbar, h0])`. Use `⟨_, subset_tsupport _ hs, _, subset_tsupport _ he, ?_⟩` and prove the remaining obligations.
+
+Establish `hf : ∀ h, MultiplicityOne.finProj K n h = retractOne (finEmb K n h)` using `fun h => rfl`. Rewrite using `[archimedeanProjection_mul_positiveScalar hn, hf, ← retract_infEmb, ← retractOne_mul, infEmb_infPart_mul_finEmb_finPart, retractOne_coe]`. Use `⟨?_, ?_, key⟩` and prove the remaining obligations. Conclude with `((continuous_kbar hn β.continuous β.hasCompactSupport).comp (continuous_infPart.comp continuous_subtype_val)).mul (e.continuous.comp (continuous_finPart.comp continuous_subtype_val))`. Establish `hC : IsCompact ((fun p : archGroup K n × AdelicGLn.FiniteAdelicGL K n => archP K n p.1 * MultiplicityOne.finProj K n p.2) '' (tsupport β ×ˢ tsupport e))` using `(β.hasCompactSupport.isCompact.prod e.hasCompactSupport.isCompact).image ((continuous_archP.comp continuous_fst).mul (MultiplicityOne.continuous_finProj.comp continuous_snd))`.
+
+Use `HasCompactSupport.intro hC fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨a, ha, h, hh, rfl⟩` from `key x hne`. Conclude with `hx ⟨(a, h), ⟨ha, hh⟩, rfl⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.tensCont :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (β : CompactlySupportedContinuousMap (archGroup K n) ℂ) (e : CompactlySupportedContinuousMap (AdelicGLn.FiniteAdelicGL K n) ℂ),
     (Continuous fun x : normOneGL K n => kbar β (infPart K n (x : AdelicGLn.AdelicGL K n)) * e (finPart K n (x : AdelicGLn.AdelicGL K n))) ∧

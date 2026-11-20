@@ -14,6 +14,37 @@ open scoped ENNReal NNReal
 
 namespace GlobalTheory.GaussFibre
 
+/- English proof (translation)
+Establish `hsl : Tendsto (fun t : ℝ => ENNReal.ofReal (slope F β (t * β))) (𝓝[≠] 1) (𝓝 (ENNReal.ofReal d))`. Use `(ENNReal.continuous_ofReal.tendsto d).comp ((hasDerivAt_iff_tendsto_slope.1 hF).comp ?_)` and prove the remaining obligations. Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `: Tendsto (fun t : ℝ => t * β) (𝓝 1) (𝓝 (1 * β))` using `(continuous_id.mul continuous_const).tendsto 1`. Rewrite `this` using `[one_mul]`.
+
+Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with t ht h`. Conclude with `ht (mul_right_cancel₀ hβ ((h : t * β = β).trans (one_mul β).symm))`. Establish `hmem : ∀ t y, y ∈ Set.uIoc β (t * β) → ∃ s ∈ Set.uIcc 1 t, s * β = y`. Introduce `t y hy`.
+
+Establish `h1` using `Set.uIoc_subset_uIcc hy`. Establish `h2` using `Set.image_mul_const_uIcc β 1 t`. Rewrite `h2` using `[one_mul]`. Rewrite `h1` using `[← h2]`. Conclude with `h1`.
+
+Establish `hI : ∀ t, 0 < t → t ≠ 1 → ∫⁻ y in Set.uIoc β (t * β), G y = ENNReal.ofReal (slope F β (t * β)) * volume (Set.uIoc β (t * β))`. Introduce `t ht ht1`. Establish `h0 : (0 : ℝ) ∉ Set.uIoc β (t * β)`. Introduce `h`. Take `⟨s, hs, hs0⟩` from `hmem t 0 h`.
+
+Establish `: 0 < s` using `lt_of_lt_of_le (lt_min one_pos ht) hs.1`. Conclude with `(mul_ne_zero this.ne' hβ) hs0`. Establish `hne : t * β - β ≠ 0`. Introduce `h`. Conclude with `ht1 (mul_right_cancel₀ hβ ((sub_eq_zero.1 h).trans (one_mul β).symm))`.
+
+Rewrite using `[Real.volume_uIoc, ← ENNReal.ofReal_mul' (abs_nonneg _), slope_def_field]`. Break down `le_total β (t * β) with h | h` into its components or cases. Rewrite `h0`, the goal using `[Set.uIoc_of_le h]`. Rewrite using `[hint _ _ h h0, abs_of_nonneg (sub_nonneg.2 h), div_mul_cancel₀ _ hne]`. Rewrite `h0`, the goal using `[Set.uIoc_of_ge h]`.
+
+Rewrite using `[hint _ _ h h0, abs_of_nonpos (sub_nonpos.2 h), mul_neg, div_mul_cancel₀ _ hne, neg_sub]`. Establish `hv0 : ∀ t, t ≠ 1 → volume (Set.uIoc β (t * β)) ≠ 0`. Introduce `t ht1`. Establish `hne : t * β - β ≠ 0`. Introduce `h`.
+
+Conclude with `ht1 (mul_right_cancel₀ hβ ((sub_eq_zero.1 h).trans (one_mul β).symm))`. Rewrite using `[Real.volume_uIoc]`. Conclude with `(ENNReal.ofReal_pos.2 (abs_pos.2 hne)).ne'`. Establish `hvt : ∀ t, volume (Set.uIoc β (t * β)) ≠ ⊤`. Introduce `t`.
+
+Rewrite using `[Real.volume_uIoc]`. Conclude with `ENNReal.ofReal_ne_top`. Establish `hev : ∀ p : ℝ → Prop, (∀ᶠ s in 𝓝 (1 : ℝ), p s) → ∀ᶠ t in 𝓝 (1 : ℝ), ∀ s ∈ Set.uIcc 1 t, p s`. Introduce `p hp`. Take `⟨δ, hδ, h⟩` from `Metric.eventually_nhds_iff.1 hp`.
+
+Use `Metric.eventually_nhds_iff.2 ⟨δ, hδ, fun t ht s hs => h ?_⟩` and prove the remaining obligations. Rewrite `ht`, the goal using `[Real.dist_eq]`. Conclude with `(Set.abs_sub_left_of_mem_uIcc hs).trans_lt ht`. Establish `hK : ∀ l : Filter ℝ, l ≤ 𝓝 1 → Tendsto (fun r : ℝ => ENNReal.ofReal r * G β) l (𝓝 (G β))`. Introduce `l hl`.
+
+Use `ENNReal.Tendsto.mul_const (b := G β) ((ENNReal.continuous_ofReal.tendsto 1).mono_left hl) (Or.inl (by simp))` as an intermediate fact. Simplify using `using this`. Apply `le_antisymm` to reduce the goal to its premises. Use `le_of_tendsto (hK (𝓝[<] 1) nhdsWithin_le_nhds) ?_ filter_upwards [self_mem_nhdsWithin] with r (hr : r < 1)` and prove the remaining obligations. Use `ge_of_tendsto (hsl.mono_left (nhdsLT_le_nhdsNE 1)) ?_` and prove the remaining obligations.
+
+Establish `h1 : ∀ᶠ s in 𝓝 (1 : ℝ), r < m s ∧ 0 < s` using `(hm.eventually (lt_mem_nhds (hr.trans_eq hm1.symm))).and (lt_mem_nhds one_pos)`. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (hev _ h1)] with t (ht : t < 1) hs`. Rewrite using `[← ENNReal.mul_le_mul_iff_left (hv0 t ht.ne) (hvt t), ← hI t (hs t Set.right_mem_uIcc).2 ht.ne, ← setLIntegral_const]`. Use `setLIntegral_mono' measurableSet_uIoc fun y hy => ?_` and prove the remaining obligations. Take `⟨s, hs', rfl⟩` from `hmem t y hy`.
+
+Use `le_trans ?_ (hlo s (hs s hs').2 (hs'.2.trans (max_le le_rfl ht.le)))` and prove the remaining obligations. Use `gcongr`. Conclude with `(hs s hs').1.le`. Use `ge_of_tendsto (hK (𝓝[>] 1) nhdsWithin_le_nhds) ?_ filter_upwards [self_mem_nhdsWithin] with r (hr : 1 < r)` and prove the remaining obligations. Use `le_of_tendsto (hsl.mono_left (nhdsGT_le_nhdsNE 1)) ?_` and prove the remaining obligations.
+
+Establish `h1 : ∀ᶠ s in 𝓝 (1 : ℝ), m s < r` using `hm.eventually (gt_mem_nhds (hm1.trans_lt hr))`. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (hev _ h1)] with t (ht : 1 < t) hs`. Rewrite using `[← ENNReal.mul_le_mul_iff_left (hv0 t ht.ne') (hvt t), ← hI t (one_pos.trans ht) ht.ne', ← setLIntegral_const]`. Use `setLIntegral_mono' measurableSet_uIoc fun y hy => ?_` and prove the remaining obligations. Take `⟨s, hs', rfl⟩` from `hmem t y hy`.
+
+Use `le_trans (hup s ((le_min le_rfl ht.le).trans hs'.1)) ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `(hs s hs').le`.
+-/
 theorem eq_ofReal_deriv (G : ℝ → ℝ≥0∞) (F m : ℝ → ℝ) (β d : ℝ) (hβ : β ≠ 0)
     (hF : HasDerivAt F d β) (hm : ContinuousAt m 1) (hm1 : m 1 = 1)
     (hint : ∀ a b : ℝ, a ≤ b → (0 : ℝ) ∉ Set.Ioc a b →
@@ -109,8 +140,16 @@ theorem eq_ofReal_deriv (G : ℝ → ℝ≥0∞) (F m : ℝ → ℝ) (β d : ℝ
 
 variable {P Q : ℕ}
 
+/- English proof (translation)
+The claim follows from `Real.exp_pos _`.
+-/
 theorem gaussSp_pos (y : Sp P Q) : 0 < gaussSp y := Real.exp_pos _
 
+/- English proof (translation)
+Establish `h1 : Integrable (fun z : ℂ => Real.exp (-‖z‖ ^ 2))`. Use `(GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := 1) (by simp) 0 0).norm` as an intermediate fact. Use `this.congr (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `[Complex.norm_exp, ← Complex.ofReal_pow]`. Establish `h2` using `Integrable.fintype_prod (ι := Fin P ⊕ Fin Q) (μ := fun _ => (volume : Measure ℂ)) (f := fun _ (z : ℂ) => Real.exp (-‖z‖ ^ 2)) (fun _ => h1)`.
+
+Use `h2.congr (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [gaussSp, ← Real.exp_sum, Finset.sum_neg_distrib]`.
+-/
 theorem integrable_gaussSp : Integrable (gaussSp : Sp P Q → ℝ) := by
   have h1 : Integrable (fun z : ℂ => Real.exp (-‖z‖ ^ 2)) := by
     have := (GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := 1) (by simp) 0 0).norm
@@ -121,10 +160,22 @@ theorem integrable_gaussSp : Integrable (gaussSp : Sp P Q → ℝ) := by
   refine h2.congr (Eventually.of_forall fun y => ?_)
   simp only [gaussSp, ← Real.exp_sum, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `only [gaussSp, Pi.smul_apply, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, Finset.mul_sum]`.
+-/
 theorem gaussSp_smul (c : ℝ) (y : Sp P Q) :
     gaussSp (c • y) = Real.exp (-(c ^ 2 * ∑ i, ‖y i‖ ^ 2)) := by
   simp only [gaussSp, Pi.smul_apply, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs, Finset.mul_sum]
 
+/- English proof (translation)
+Establish `hq : Measurable (qf : Sp P Q → ℝ)` using `GlobalTheory.RealPlaceCompare.continuous_qf.measurable`. Establish `hO : MeasurableSet {x : Sp P Q | x ≠ 0}` using `isOpen_ne.measurableSet`. Establish `hg : Measurable fun y : Sp P Q => ENNReal.ofReal (gaussSp y)` using `ENNReal.measurable_ofReal.comp continuous_gaussSp.measurable`. Establish `key` using `GlobalTheory.IsFibreFamily_lintegral_preimage hq isOpen_ne subset_rfl h (({x : Sp P Q | x ≠ 0}).indicator fun y => ENNReal.ofReal (gaussSp y)) (hg.indicator hO) (fun v hv => Set.indicator_of_notMem hv _) (Set.Ioc a b) measurableSet_Ioc`. Establish `hsub : qf ⁻¹' Set.Ioc a b ⊆ {x : Sp P Q | x ≠ 0}`.
+
+Introduce and unpack `x hx rfl`. Apply `h0` to reduce the goal to its premises. Simplify `hx` using `[qf]`. Rewrite `key` using `[Set.indicator_indicator, Set.inter_eq_left.2 hsub, lintegral_indicator (hq measurableSet_Ioc), Measure.restrict_restrict (hq measurableSet_Ioc), Set.inter_eq_left.2 hsub]`. Establish `e0 : ∀ t, ∫⁻ y, ({x : Sp P Q | x ≠ 0}).indicator (fun y => ENNReal.ofReal (gaussSp y)) y ∂(fib t) = ∫⁻ y, ENNReal.ofReal (gaussSp y) ∂(fib t)`.
+
+Introduce `t`. Establish `h1 : ∀ᵐ y ∂(fib t), y ∈ qf ⁻¹' {id t} ∩ {x : Sp P Q | x ≠ 0}` using `h.1 t`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [h1] with y hy using Set.indicator_of_mem hy.2 _`. Simplify using `only [e0] at key`.
+
+Establish `e1 : qf ⁻¹' Set.Ioc a b = {x : Sp P Q | qf x ≤ b} \ {x | qf x ≤ a}`. Use extensionality with `x`. Simplify using `[and_comm]`. Rewrite using `[← key, ← mul_sub, ← integral_diff (s := {x : Sp P Q | qf x ≤ b}) (t := {x : Sp P Q | qf x ≤ a}) (measurableSet_le hq measurable_const) integrable_gaussSp.integrableOn (fun x (hx : qf x ≤ a) => (hx.trans hab : qf x ≤ b)), ← e1, ENNReal.ofReal_mul (by positivity), ofReal_integral_ …`. Simplify using the standard rewrite rules.
+-/
 theorem shell {fib : ℝ → Measure (Sp P Q)} (h : IsDxDq fib) (a b : ℝ) (hab : a ≤ b)
     (h0 : (0 : ℝ) ∉ Set.Ioc a b) :
     ∫⁻ t in Set.Ioc a b, ∫⁻ y, ENNReal.ofReal (gaussSp y) ∂(fib t) =
@@ -162,6 +213,13 @@ theorem shell {fib : ℝ → Measure (Sp P Q)} (h : IsDxDq fib) (a b : ℝ) (hab
     dx, Measure.restrict_smul, lintegral_smul_measure, ENNReal.ofReal_pow (by norm_num)]
   simp
 
+/- English proof (translation)
+Introduce `P Q fib β d h hβ hF`. Establish `hg : Measurable fun y : Sp P Q => ENNReal.ofReal (gaussSp y)` using `ENNReal.measurable_ofReal.comp continuous_gaussSp.measurable`. Use `eq_ofReal_deriv (fun t => ∫⁻ y, ENNReal.ofReal (gaussSp y) ∂(fib t)) _ (fun t => t ^ (P + Q) / t) β _ hβ (hF.const_mul (2 ^ (P + Q) : ℝ)) ((continuousAt_id.pow _).div continuousAt_id one_ne_zero) (by simp) (fun a b hab h0 => shell h a b hab h0) (fun t ht => ?_) (fun t ht ht1 => ? …` and prove the remaining obligations. Establish `ht0 : 0 < t` using `one_pos.trans_le ht`. Rewrite using `[GlobalTheory.T.lintegral_hermitianNormFibre_dilation P Q fib β t h hβ ht0 _ hg]`.
+
+Use `gcongr with y`. Rewrite using `[gaussSp_smul, Real.sq_sqrt ht0.le, gaussSp]`. Establish `: 0 ≤ ∑ i, ‖y i‖ ^ 2` using `by positivity`. Conclude with `Real.exp_le_exp.2 (by nlinarith)`. Rewrite using `[GlobalTheory.T.lintegral_hermitianNormFibre_dilation P Q fib β t h hβ ht _ hg] gcongr with y`.
+
+Rewrite using `[gaussSp_smul, Real.sq_sqrt ht.le, gaussSp]`. Establish `: 0 ≤ ∑ i, ‖y i‖ ^ 2` using `by positivity`. Conclude with `Real.exp_le_exp.2 (by nlinarith)`.
+-/
 theorem gauss_fibre : ∀ (P Q : ℕ) (fib : ℝ → Measure (Sp P Q)) (β d : ℝ), IsDxDq fib → β ≠ 0 → HasDerivAt (fun t : ℝ => ∫ y in {y : Sp P Q | qf y ≤ t}, gaussSp y) d β → ∫⁻ y, ENNReal.ofReal (gaussSp y) ∂(fib β) = ENNReal.ofReal (2 ^ (P + Q) * d) := by
   intro P Q fib β d h hβ hF
   have hg : Measurable fun y : Sp P Q => ENNReal.ofReal (gaussSp y) :=

@@ -26,10 +26,20 @@ variable (M X₂ W₂) in
 
 def reM : Model σ (reS X X₂) (reS W W₂) := ⟨M.co, M.vac, M.μ, M.dom⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (by rintro _ ⟨f, φ, h1, h2, ⟨h3, ι, h4, h5⟩, rfl⟩ exact ⟨f, φ, h1, h2, ⟨h3, ι, ⟨h4.bij, h4.trans, h4.mult⟩, h5⟩, rfl⟩)`.
+-/
 theorem so_re : M.So B.ψ B.τ₁ ≤ (reM X₂ W₂ M).So B.ψ B.τ₁ := Submodule.span_mono (by
   rintro _ ⟨f, φ, h1, h2, ⟨h3, ι, h4, h5⟩, rfl⟩
   exact ⟨f, φ, h1, h2, ⟨h3, ι, ⟨h4.bij, h4.trans, h4.mult⟩, h5⟩, rfl⟩)
 
+/- English proof (translation)
+Take `⟨g, hg, -, hT⟩` from `hM F E σ B n d X W M χX χW om r s r' s' hp X₂ W₂ (reM X₂ W₂ M) rfl hp₂ h hh hθ`. Take `⟨T, h1, -⟩` from `hA F E σ B n d X W M χX χW om r s r' s' hp g hg h hh`. Use `⟨g⁻¹, fun Φ hΦ => (Submodule.span_le (p := (PolData B (reM X₂ W₂ M)).comap (om (g⁻¹, h⁻¹)))).2 ?_ hΦ⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, φ, h2, h3, rfl⟩`. Rewrite `hf` using `[← hT T h1]`.
+
+Take `⟨f₂, h4, rfl⟩` from `hf`. Take `⟨ψ, h5, h6⟩` from `pure_eq_pureA hp.good φ h2 h3`. Use `Submodule.subset_span ⟨f₂, h4, φ, h2, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[h6, h6]`. Express the relevant statement in the definitionally equal form `om _ (pureA F (T f₂) ψ) = _`.
+
+Rewrite using `[← h1.1 f₂ ψ h5, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, ← Prod.one_eq_mk, map_one, Module.End.one_apply]`.
+-/
 theorem move (hA : ArchOp) (hM : CartanMove) (hp : IsPair B M χX χW om r s r' s') (hp₂ : IsPair B (reM X₂ W₂ M) χX χW om r s r' s')
     {h : UA σ W.J} (hh : h ∈ UAt σ W (evI F))
     (hθ : ∀ w, (mat h).map (piInf (B.emb w)) * W₂.θ w = W.θ w * (mat h).map (piInf (B.emb w))) :
@@ -47,11 +57,19 @@ theorem move (hA : ArchOp) (hM : CartanMove) (hp : IsPair B M χX χW om r s r' 
   rw [← h1.1 f₂ ψ h5, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, ← Prod.one_eq_mk, map_one,
     Module.End.one_apply]
 
+/- English proof (translation)
+Rewrite using `[← I_trans, ← (hI F E σ B n d X W M χX χW om r s r' s' hp _ (hp.weil.isUSplitting.pres (1, h) _ hΦ)).2.1 g, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`.
+-/
 theorem I_both (hI : PositivityTheory.ThKEst.IInv) (hp : IsPair B M χX χW om r s r' s') {Φ : Fn F n d} (hΦ : Φ ∈ schA F _) (g : UA σ X.J)
     (h : UA σ W.J) : M.I om (om (g, h) Φ) = fun x => M.I om Φ (x * h) := by
   rw [← I_trans, ← (hI F E σ B n d X W M χX χW om r s r' s' hp _ (hp.weil.isUSplitting.pres (1, h) _ hΦ)).2.1 g,
     ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' t V V' W t₂`. Take `⟨h, hh, hθ⟩` from `hC F E σ B _ G.W W _ _ t.base t.geo.hW t₂.geo.hW`. Take `⟨g, hg⟩` from `move (X₂ := V) hA hM (pairV t) (pairV t₂) hh hθ`. Take `⟨g', hg'⟩` from `move (X₂ := V') hA hM (pairV' t) (pairV' t₂) hh hθ`. Use `⟨h⁻¹, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨Φ, hΦ, Φ', hΦ', rfl⟩`. Use `⟨_, hg Φ hΦ, _, ⟨hg' Φ' hΦ'.1, so_re (hS F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' t) _ _ hΦ'.2)⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = G.M.I om (om (g, h⁻¹) Φ) - G.M'.I om' (om' (g', h⁻¹) Φ')`. Rewrite using `[I_both hI (pairV t) (polData_le t.geo.hM hΦ), I_both hI (pairV' t) (polData_le t.geo.hM' hΦ'.1)]`. Both sides reduce to the same expression.
+-/
 theorem sigRe_of (hA : ArchOp) (hM : CartanMove) (hC : CartanConj) (hI : PositivityTheory.ThKEst.IInv) (hS : PositivityTheory.ThKCT.SoStab) : SigRe := by
   intro F E _ _ _ _ _ σ B a a' G X om om' t V V' W t₂
   obtain ⟨h, hh, hθ⟩ := hC F E σ B _ G.W W _ _ t.base t.geo.hW t₂.geo.hW

@@ -6,6 +6,9 @@ open Formalism.L2.SG.TypedSets
 
 namespace MassDataMassesW
 
+/- English proof (translation)
+The claim follows from `massDataMasses_of (massAll_of hH hK hC) (nVolAll_of hSA splitIso_holds h3 (elliptic_centralizer_quotient_compact hK) n4cov_holds)`.
+-/
 theorem massDataMasses_of_strongApprox (hH : HinfCompact) (hK : KCompactOpen) (hC : ClassFinite) (hSA : StrongApproxN)
     (h3 : UnipotentFundamentalDomain) :
     ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)

@@ -8,12 +8,22 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.map_map]`. Use `congr 1`.
+-/
 theorem SecCochReduce.map_map_int {K : Type} {ι : K → Type} (p : ℕ) (f : MRing ι) :
     MvPolynomial.map (Int.castRingHom (ZMod p)) (MvPolynomial.map (Int.castRingHom ℤ) f) =
       MvPolynomial.map (Int.castRingHom (ZMod p)) f := by
   rw [MvPolynomial.map_map]
   congr 1
 
+/- English proof (translation)
+Introduce `K _ _ ι _ _ Ω _ y p a s hs`. Use function extensionality and compare the values at `J`. Rewrite using `[FibreReduction.redCoch_apply]`. Distinguish the cases in `hz : ∃ k, y ⟨k, GenOnFibres.cellChart J k⟩ = 0`. Take `⟨k, h0⟩` from `hz`.
+
+Use `GenOnFibres.subsingleton_loc (S := ZMod p) (GenOnFibres.cellChart_mem J k) h0` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Use `push Not at hz`. Take `⟨e, F, hF, _, heq⟩` from `GenOnFibres.secCoch_spec (S := ℤ) hs J hz`. Establish `hrep : GenOnFibres.IsRep y (ZMod p) (KH.cellMon (ZMod p) J.1) (FibreReduction.redLoc y p J.1 (GenOnFibres.secCoch y ℤ s a J)) (GenOnFibres.cellChart J) s a`.
+
+Use `⟨e, F, hF, GenOnFibres.cmon_mem (ZMod p) (GenOnFibres.cellChart_mem J) e, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, FibreReduction.redLoc_mk, FibreReduction.redRing_mk, SecCochReduce.map_map_int]`. Use `congr 1`. Conclude with `Subtype.ext (SecCochReduce.map_map_int p _)`. Conclude with `hrep.unique (GenOnFibres.secCoch_spec hs J hz)`.
+-/
 theorem SecCochReduce.proof : SecCochReduce.Statement := by
   intro K _ _ ι _ _ Ω _ y p a s hs
   funext J

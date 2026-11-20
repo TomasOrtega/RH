@@ -18,6 +18,17 @@ variable {Γ : Type*} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [
   [SecondCountableTopology Γ] [MeasurableSpace Γ] [BorelSpace Γ] (μ : Measure Γ) [μ.IsHaarMeasure]
   {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨C, hC⟩ : ∃ C, ∀ i : tsupport w, ‖ρ i‖ ≤ C := by`. Use `banach_steinhaus (g := fun i : tsupport w => ρ i) fun u => ?_` and prove the remaining obligations. Take `⟨C, hC⟩` from `IsCompact.exists_bound_of_continuousOn (s := tsupport w) hc (hρ u).continuousOn`. Conclude with `⟨C, fun i => hC i i.2⟩`. Set `L : H →ₗ[ℂ] H` to `{ toFun := fun u => ∫ x, w x • ρ x u ∂μ map_add' := fun u v => by`.
+
+Simplify using `only [map_add, smul_add]`. Conclude with `integral_add (integrable_w μ ρ hρ hw hc u) (integrable_w μ ρ hρ hw hc v)`. Use the proof step `map_smul' := fun c u => by`. Simplify using `only [map_smul, RingHom.id_apply]`. Rewrite using `[← integral_smul]`.
+
+Simplify using `only [smul_comm c] }`. Establish `hwi : Integrable (fun x => ‖w x‖) μ` using `(hw.integrable_of_hasCompactSupport hc).norm`. Use `⟨L.mkContinuous ((∫ x, ‖w x‖ ∂μ) * C) fun u => ?_, fun u => rfl⟩` and prove the remaining obligations. Establish `hb : ‖∫ x, w x • ρ x u ∂μ‖ ≤ ∫ x, ‖w x‖ * (C * ‖u‖) ∂μ`. Use `norm_integral_le_of_norm_le (hwi.mul_const _) (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_smul]`. Distinguish the cases in `hx : w x = 0`. Simplify using `[hx]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Conclude with `((ρ x).le_opNorm u).trans (mul_le_mul_of_nonneg_right (hC ⟨x, subset_tsupport _ hx⟩) (norm_nonneg _))`.
+
+Rewrite `hb` using `[integral_mul_const]`. Rewrite using `[mul_assoc]`. Conclude with `hb`.
+-/
 theorem exists_avg_op (ρ : Γ → H →L[ℂ] H) (hρ : ∀ u, Continuous fun x => ρ x u) {w : Γ → ℝ}
     (hw : Continuous w) (hc : HasCompactSupport w) :
     ∃ T : H →L[ℂ] H, ∀ u, T u = ∫ x, w x • ρ x u ∂μ := by
@@ -58,6 +69,9 @@ variable {hG : IsLinRed G} {hcl : IsClosed G}
 
 def toM (x : GT hG hcl) : Matrix (Fin n) (Fin n) ℂ := x.1
 
+/- English proof (translation)
+The claim follows from `(Matrix.isUnit_iff_isUnit_det _).1 (hG.isUnit _ x.2)`.
+-/
 theorem det_unit (x : GT hG hcl) : IsUnit (toM x).det :=
   (Matrix.isUnit_iff_isUnit_det _).1 (hG.isUnit _ x.2)
 
@@ -72,8 +86,14 @@ instance : Group (GT hG hcl) :=
     (fun x => Subtype.ext (Matrix.one_mul x.1))
     (fun x => Subtype.ext (Matrix.nonsing_inv_mul x.1 (det_unit x)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toM_mul (x y : GT hG hcl) : toM (x * y) = toM x * toM y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toM_one : toM (1 : GT hG hcl) = 1 := rfl
 
 instance : TopologicalSpace (GT hG hcl) := inferInstanceAs (TopologicalSpace {g // g ∈ G})
@@ -85,6 +105,9 @@ instance : SecondCountableTopology (GT hG hcl) :=
     inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))
   inferInstanceAs (SecondCountableTopology {g // g ∈ G})
 
+/- English proof (translation)
+The claim follows from `hcl.isClosedEmbedding_subtypeVal`.
+-/
 theorem emb_toM : IsClosedEmbedding (toM : GT hG hcl → Matrix (Fin n) (Fin n) ℂ) :=
   hcl.isClosedEmbedding_subtypeVal
 
@@ -110,8 +133,16 @@ instance : MeasurableSpace (GT hG hcl) := borel _
 
 instance : BorelSpace (GT hG hcl) := ⟨rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨g, hg⟩, rfl⟩`.
+-/
 theorem exists_toM {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ G) : ∃ x : GT hG hcl, toM x = g := ⟨⟨g, hg⟩, rfl⟩
 
+/- English proof (translation)
+Use `⟨Metric.closedBall g₀ 1, Metric.closedBall_mem_nhds _ one_pos, _, emb_toM.isCompact_preimage (isCompact_mul_inv (isCompact_closedBall g₀ 1) hS hd), fun g hg x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `hB` using `hfS _ h`. Use `hx ⟨(g, toM x⁻¹ * g), ⟨hg, hB⟩, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (toM x⁻¹ * g).det` using `isUnit_iff_ne_zero.2 (hd _ hB)`.
+
+Establish `e : g = toM x * (toM x⁻¹ * g)`. Rewrite using `[← Matrix.mul_assoc, ← toM_mul, mul_inv_cancel, toM_one, Matrix.one_mul]`. Use `show g * (toM x⁻¹ * g)⁻¹ = toM x`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem supp_local {f : Matrix (Fin n) (Fin n) ℂ → ℝ} {S : Set (Matrix (Fin n) (Fin n) ℂ)}
     (hS : IsCompact S) (hd : ∀ B ∈ S, B.det ≠ 0) (hfS : ∀ y, f y ≠ 0 → y ∈ S) (g₀ : Matrix (Fin n) (Fin n) ℂ) :
     ∃ U ∈ 𝓝 g₀, ∃ C : Set (GT hG hcl), IsCompact C ∧ ∀ g ∈ U, ∀ x ∉ C, f (toM x⁻¹ * g) = 0 := by
@@ -127,6 +158,11 @@ theorem supp_local {f : Matrix (Fin n) (Fin n) ℂ → ℝ} {S : Set (Matrix (Fi
   calc g * (toM x⁻¹ * g)⁻¹ = toM x * (toM x⁻¹ * g) * (toM x⁻¹ * g)⁻¹ := by rw [← e]
     _ = toM x := by rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hq : Continuous fun x : GT hG hcl => (toM x⁻¹, v x)` using `(emb_toM.continuous.comp continuous_inv).prodMk hv`. Establish `key` using `contDiff_integral_comp μ _ (contDiff_Phi (H := H) hf) _ hq fun g₀ => by`. Take `⟨U, hU, C, hC, h⟩` from `supp_local (hG := hG) (hcl := hcl) hS hd hfS g₀`. Use `⟨U, hU, C, hC, fun g hg x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [h g hg x hx, zero_smul]`.
+
+Simplify `key` using `only`.
+-/
 theorem contDiff_avg {H : Type*} [NormedAddCommGroup H] [NormedSpace ℝ H] [CompleteSpace H]
     (μ : Measure (GT hG hcl)) [IsFiniteMeasureOnCompacts μ]
     (v : GT hG hcl → H) (hv : Continuous v) {f : Matrix (Fin n) (Fin n) ℂ → ℝ}
@@ -141,10 +177,32 @@ theorem contDiff_avg {H : Type*} [NormedAddCommGroup H] [NormedSpace ℝ H] [Com
     simp only [h g hg x hx, zero_smul]
   simpa only using key
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_right_inv (Matrix.mem_unitaryGroup_iff.1 hk)`.
+-/
 theorem toM_inv_of_unitary {k : GT hG hcl} (hk : toM k ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     toM k⁻¹ = (toM k)ᴴ :=
   Matrix.inv_eq_right_inv (Matrix.mem_unitaryGroup_iff.1 hk)
 
+/- English proof (translation)
+Introduce `v hv`. Set `μ : Measure (GT hG hcl)` to `Measure.haar`. Take `⟨h1, hm⟩` from `hrep`. Set `ρ : GT hG hcl → H →L[ℂ] H` to `fun x => π (toM x)`. Establish `hρ : ∀ u, Continuous fun x => ρ x u` using `fun u => (hc u).comp_continuous emb_toM.continuous fun x => x.2`.
+
+Establish `hmul : ∀ x y u, ρ (x * y) u = ρ x (ρ y u)` using `fun x y u => by show π (toM x * toM y) u = π (toM x) (π (toM y) u)`. Rewrite using `[hm (toM x) x.2 (toM y) y.2, ContinuousLinearMap.comp_apply]`. Establish `hρ1 : ∀ u, ρ 1 u = u` using `fun u => by simp only [ρ, toM_one, h1, ContinuousLinearMap.one_apply]`. Take `⟨V, hV, hclose⟩` from `exists_nhds_close ρ hρ hρ1 Y`. Establish `hVi : V⁻¹ ∈ 𝓝 (1 : GT hG hcl)` using `inv_mem_nhds_one _ hV`.
+
+Rewrite `hVi` using `[emb_toM.isInducing.nhds_eq_comap, mem_comap]`. Take `⟨W, hW, hWV⟩` from `hVi`. Establish `hD : {y : Matrix (Fin n) (Fin n) ℂ | y.det ≠ 0} ∈ 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ)` using `(isOpen_ne_fun continuous_id.matrix_det continuous_const).mem_nhds (by simp)`. Take `⟨f, S, hf, hf0, hf1, hS, hSW, hfS, hfk⟩` from `exists_bump (inter_mem hW hD)`. Set `w : GT hG hcl → ℝ` to `fun x => f (toM x⁻¹)`.
+
+Establish `hw : Continuous w` using `hf.continuous.comp (emb_toM.continuous.comp continuous_inv)`. Establish `hcw : HasCompactSupport w`. Use `HasCompactSupport.intro (emb_toM.isCompact_preimage hS).inv fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hx (hfS _ h)`.
+
+Establish `h0 : 0 ≤ w` using `fun x => hf0 _`. Establish `hw1 : w 1 ≠ 0` using `by simpa only [w, inv_one, toM_one] using hf1`. Take `⟨T, hT⟩` from `exists_avg_op μ ρ hρ hw hcw`. Establish `hTK : ∀ k ∈ maxCpt G, ∀ u, T (π k u) = π k (T u)`. Introduce `k hk u`.
+
+Take `⟨k', rfl⟩` from `exists_toM (hG := hG) (hcl := hcl) hk.1`. Rewrite using `[hT, hT]`. Use `T_comm μ ρ hρ hmul hw hcw h0 hw1 k' (fun x => ?_) u` and prove the remaining obligations. Simplify using `only [w, _root_.mul_inv_rev, inv_inv]`. Rewrite using `[← mul_assoc, toM_mul, toM_mul, toM_inv_of_unitary hk.2, hfk _ hk.2]`.
+
+Establish `hinj : ∀ y ∈ Y, T y = 0 → y = 0`. Introduce `y hy hTy`. Rewrite `hTy` using `[hT]`. Use `eq_zero_of_alt_alt μ ρ hρ hw hcw h0 hw1 y (fun x hx => hclose x ?_ y hy) hTy` and prove the remaining obligations. Establish `: x⁻¹ ∈ V⁻¹` using `hWV (hSW (hfS _ hx)).1`.
+
+Simplify using `using this`. Take `⟨u, rfl⟩` from `exists_preimage Y T (hY T hTK) hinj v hv`. Establish `hF` using `contDiff_avg μ (fun x => ρ x u) (hρ u) hf hS (fun B hB => (hSW hB).2) hfS`. Use `⟨fun z => ∫ x : GT hG hcl, f (toM x⁻¹ * Matrix.of z) • ρ x u ∂μ, hF, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨g', hg'⟩` from `exists_toM (hG := hG) (hcl := hcl) hz`.
+
+Use `show π (Matrix.of z) (T u) = ∫ x : GT hG hcl, f (toM x⁻¹ * Matrix.of z) • ρ x u ∂μ`. Rewrite using `[← hg']`. Use `show ρ g' (T u) = _`. Rewrite using `[hT, apply_alt μ ρ hρ hmul hw hcw]`. Simplify using `only [w, _root_.mul_inv_rev, inv_inv, toM_mul]`.
+-/
 theorem smooth_of_commutant_stable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G) (hcl : IsClosed G)
     (hrep : Formalism.QuantumDeterminants.IsCRepOn G π) (hc : ∀ v, ContinuousOn (fun g => π g v) G)

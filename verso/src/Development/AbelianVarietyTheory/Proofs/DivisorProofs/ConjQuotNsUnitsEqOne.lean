@@ -13,6 +13,11 @@ noncomputable section
 namespace GlobalTheory.ConsEta
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [HeightOneSpectrum.under_asIdeal, Ideal.mem_under]`. Establish `: algebraMap (𝓞 K) (𝓞 L) (algebraMap (𝓞 F) (𝓞 K) x) = algebraMap (𝓞 F) (𝓞 L) x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `hc (x : F)`.
+
+Rewrite using `[this]`.
+-/
 theorem under_under_of_compat {F K L : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Field L] [NumberField L]
     [Algebra F K] [Algebra F L] [alg : Algebra K L]
     (hc : ∀ x : F, algebraMap K L (algebraMap F K x) = algebraMap F L x) (w : HeightOneSpectrum (𝓞 L)) :
@@ -24,6 +29,9 @@ theorem under_under_of_compat {F K L : Type} [Field F] [NumberField F] [Field K]
     exact hc (x : F)
   rw [this]
 
+/- English proof (translation)
+Establish `hne : w.under (𝓞 K) ≠ v` using `fun h => hv (h ▸ under_under_of_compat hc w)`. Apply `Units.ext` to reduce the goal to its premises. Use `show finiteCompletionMap K L w ((Neutral.B1.localIdele K v a : AdeleRing (𝓞 K) K).2 (w.under (𝓞 K))) = 1`. Rewrite using `[(Neutral.B1.localIdele_isSupportedAt K v a).2 _ hne, map_one]`.
+-/
 theorem finEval_ideleMap_localIdele {F K L : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Field L]
     [NumberField L] [Algebra F K] [Algebra F L] [alg : Algebra K L]
     (hc : ∀ x : F, algebraMap K L (algebraMap F K x) = algebraMap F L x) (w : HeightOneSpectrum (𝓞 L))
@@ -34,6 +42,9 @@ theorem finEval_ideleMap_localIdele {F K L : Type} [Field F] [NumberField F] [Fi
   show finiteCompletionMap K L w ((Neutral.B1.localIdele K v a : AdeleRing (𝓞 K) K).2 (w.under (𝓞 K))) = 1
   rw [(Neutral.B1.localIdele_isSupportedAt K v a).2 _ hne, map_one]
 
+/- English proof (translation)
+Take `⟨u, hu, hu'⟩` from `hw`. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Conclude with `⟨u, hu, hu'⟩`. Conclude with `⟨w, Ne.symm hvw, h.symm⟩`.
+-/
 theorem isSplitAt_of_under_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {v w : HeightOneSpectrum (𝓞 E)}
     (hw : GlobalTheory.UnitaryBC.IsSplitAt w)
     (h : v.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))) :
@@ -43,6 +54,13 @@ theorem isSplitAt_of_under_eq {E : Type} [Field E] [NumberField E] [IsCMField E]
   · subst hvw; exact ⟨u, hu, hu'⟩
   · exact ⟨w, Ne.symm hvw, h.symm⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ w hw u hu`. Establish `key : GlobalTheory.MuExist.nsUnits E ≤ (conjQuot E w).ker`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨w', a, hw', -, rfl⟩`. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker]`.
+
+Establish `hne : w' ≠ w` using `fun h => hw' (h ▸ hw)`. Establish `hunder : w'.under (𝓞 (maximalRealSubfield E)) ≠ w.under (𝓞 (maximalRealSubfield E))` using `fun h => hw' (isSplitAt_of_under_eq hw h)`. Establish `h1 : Units.map (GlobalTheory.IdeleNormChar.finEval w) (Neutral.B1.localIdele E w' a) = 1` using `Units.ext ((Neutral.B1.localIdele_isSupportedAt E w' a).2 w hne.symm)`. Establish `h2 : Units.map (GlobalTheory.IdeleNormChar.finEval w) (ideleConj (maximalRealSubfield E) E (Neutral.B1.localIdele E w' a)) = 1` using `finEval_ideleMap_localIdele (F := maximalRealSubfield E) (alg := (conj (maximalRealSubfield E) E).toRingEquiv.toRingHom.toAlgebra) (fun x => (conj (maximalRealSubfield E) E).commutes x) w w' hunder a`. Simplify using `only [conjQuot, MonoidHom.comp_apply, MonoidHom.div_apply, MonoidHom.id_apply, _root_.map_div, h1, h2, div_one]`.
+
+Conclude with `key hu`.
+-/
 theorem conjQuot_nsUnits_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)),
     GlobalTheory.UnitaryBC.IsSplitAt w → ∀ u ∈ GlobalTheory.MuExist.nsUnits E, GlobalTheory.ConsEta.conjQuot E w u = 1 := by
   intro E _ _ _ w hw u hu

@@ -12,6 +12,15 @@ open GlobalTheory.KummerEisensteinGalois
 
 namespace GlobalTheory.KummerEisensteinGalois.LevelT
 
+/- English proof (translation)
+Distinguish the cases in `h : p ∣ r`. Take `⟨r', rfl⟩` from `h`. Rewrite using `[UpSplit.cmul_vp_vp p hp]`. Simplify using `[vp, Nat.mul_div_cancel_left _ hp]`. Rewrite using `[show vp p (cmul f g) r = 0 by simp [vp, h]]`.
+
+Unfold `cmul`. Use `symm`. Apply `sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`. Establish `hi' : i ≤ r` using `Nat.lt_succ_iff.mp (mem_range.mp hi)`.
+
+Distinguish the cases in `hpi : p ∣ i`. Establish `: ¬ p ∣ r - i`. Introduce `h2`. Apply `h` to reduce the goal to its premises. Use `Nat.dvd_add h2 hpi` as an intermediate fact.
+
+Rewrite `this` using `[Nat.sub_add_cancel hi']`. Then use the resulting hypothesis. Simplify using `[vp, this]`. Simplify using `[vp, hpi]`.
+-/
 theorem vp_cmul {K : Type} [Field K] [CharZero K] (p : ℕ) (hp : 0 < p) (f g : ℕ → K) (r : ℕ) :
     vp p (cmul f g) r = cmul (vp p f) (vp p g) r := by
   by_cases h : p ∣ r
@@ -33,6 +42,13 @@ theorem vp_cmul {K : Type} [Field K] [CharZero K] (p : ℕ) (hp : 0 < p) (f g : 
       simp [vp, this]
     · simp [vp, hpi]
 
+/- English proof (translation)
+Unfold `cmul`. Repeatedly rewrite using `[Finset.sum_comm (s := s₄) (t := range (r + 1))]`. Repeatedly rewrite using `[Finset.sum_comm (s := s₃) (t := range (r + 1))]`. Repeatedly rewrite using `[Finset.sum_comm (s := s₂) (t := range (r + 1))]`. Repeatedly rewrite using `[Finset.sum_comm (s := s₁) (t := range (r + 1))]`.
+
+Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+-/
 theorem cauchyProduct_fourfold_finsetSum {K : Type} [Field K] {α : Type} (s₁ s₂ s₃ s₄ : Finset α) (f g : α → α → ℕ → K) (r : ℕ) :
     ∑ a ∈ s₁, ∑ b ∈ s₂, ∑ c ∈ s₃, ∑ d ∈ s₄, cmul (f a b) (g c d) r =
       cmul (fun i => ∑ a ∈ s₁, ∑ b ∈ s₂, f a b i) (fun i => ∑ c ∈ s₃, ∑ d ∈ s₄, g c d i) r := by
@@ -47,11 +63,25 @@ theorem cauchyProduct_fourfold_finsetSum {K : Type} [Field K] {α : Type} (s₁ 
   rw [Finset.mul_sum]; refine sum_congr rfl fun c _ => ?_
   rw [Finset.mul_sum]
 
+/- English proof (translation)
+Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast, Nat.dvd_mod_iff (dvd_pow_self p (by omega))]`.
+-/
 theorem dvd_castHom_val_iff {p : ℕ} [Fact p.Prime] {n : ℕ} (hn : 1 ≤ n) (x : ZMod (p ^ (n + 1))) :
     p ∣ (ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) x).val ↔ p ∣ x.val := by
   rw [ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast,
     Nat.dvd_mod_iff (dvd_pow_self p (by omega))]
 
+/- English proof (translation)
+Use `set ρ := ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) with hρ`. Establish `hS : (univ.filter fun γ : GL (Fin 2) (ZMod (p ^ (n + 1))) => Matrix.GeneralLinearGroup.map ρ γ ∈ X) = (unitSet p (n + 1)).filter (fun γ => Matrix.GeneralLinearGroup.map ρ γ ∈ X)`. Use extensionality with `γ`. Simplify using `only [mem_filter, mem_univ, true_and, unitSet]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Take `⟨h1, h2⟩` from `hX _ h`. Establish `e1 : ((Matrix.GeneralLinearGroup.map ρ γ : GL (Fin 2) (ZMod (p ^ n))) : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 0 = ρ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))) 0 0)` using `rfl`. Establish `e2 : ((Matrix.GeneralLinearGroup.map ρ γ : GL (Fin 2) (ZMod (p ^ n))) : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 1 0 = ρ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1)))) 1 0)` using `rfl`. Rewrite `h1` using `[e1, hρ, dvd_castHom_val_iff hn]`.
+
+Rewrite `h2` using `[e2, hρ, dvd_castHom_val_iff hn]`. Conclude with `⟨⟨h1, h2⟩, h⟩`. Conclude with `fun h => h.2`. Establish `hX' : (unitSet p n).filter (fun γ => γ ∈ X) = X`. Use extensionality with `γ`.
+
+Simplify using `only [mem_filter, unitSet, mem_univ, true_and]`. Conclude with `⟨fun h => h.2, fun h => ⟨hX γ h, h⟩⟩`. Rewrite using `[hS, Finset.sum_filter]`. Establish `h1` using `GlobalTheory.T.sum_gl2FirstColumnUnitSet_succ_fibre p n K (fun g => if g ∈ X then G g else 0) Φ hn`. Simplify using `only [ite_mul, zero_mul] at h1`.
+
+Rewrite using `[h1, ← Finset.sum_filter, hX']`.
+-/
 theorem sum_preimage_fibre (p : ℕ) [Fact p.Prime] (n : ℕ) (hn : 1 ≤ n) (K : Type) [CommRing K]
     (X : Finset (GL (Fin 2) (ZMod (p ^ n))))
     (hX : ∀ γ ∈ X, ¬ p ∣ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 0).val ∧ ¬ p ∣ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 1 0).val)
@@ -87,6 +117,27 @@ end GlobalTheory.KummerEisensteinGalois.LevelT
 
 open GlobalTheory.KummerEisensteinGalois.LevelT in
 
+/- English proof (translation)
+Introduce `p _ N n m k K _ _ ψ c d w w' v v' ζ X hζ hN hpN hm hmn hk hc hd h1 h2 h3 h4 hX r`. Establish `hp0 : 0 < p` using `(Fact.out : p.Prime).pos`. Establish `hn : 1 ≤ n` using `le_trans hm hmn`. Establish `hdet : ∀ γ : GL (Fin 2) (ZMod (p ^ (n + 1))), ((((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1))))).det.val : ℕ) : ZMod (p ^ m)) = ((((Matrix.GeneralLinearGroup.map (ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n))) γ : GL (Fin 2) (ZMod (p ^ n))) : Matrix (Fin 2) (Fin …`. Introduce `γ`.
+
+Establish `hcast : ∀ {a : ℕ} [NeZero a] (y : ZMod a) (h : p ^ m ∣ a), ((y.val : ℕ) : ZMod (p ^ m)) = ZMod.castHom h (ZMod (p ^ m)) y`. Introduce `a _ y h`. Rewrite using `[ZMod.castHom_apply, ZMod.natCast_val]`. Establish `e : ((Matrix.GeneralLinearGroup.map (ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n))) γ : GL (Fin 2) (ZMod (p ^ n))) : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) = ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1))))).map (ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod …` using `rfl`. Rewrite using `[hcast _ (pow_dvd_pow p (by omega : m ≤ n + 1)), hcast _ (pow_dvd_pow p hmn), e, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.comp_apply]`.
+
+Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Establish `hRHS : vp p (pieceT N p n m k ψ c d w w' (ζ ^ p) X) r = -((p : K) ^ ((n : ℤ) * ((k : ℤ) - 4))) * ∑ γ ∈ X, ψ ((((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n)))).det.val : ℕ) : ZMod (p ^ m)) * vp p (cmul (smF c (k - 1) (N * p ^ n) (ζ ^ p) (rowT N p n γ 0 w).1 (rowT N p n γ 0 w).2) (smF …`. Unfold `vp pieceT`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[hRHS]`. Unfold `pieceT`. Establish `hsum` using `sum_preimage_fibre p n hn K X hX (fun γ => ψ ((((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n)))).det.val : ℕ) : ZMod (p ^ m))) (fun y₀₀ y₀₁ y₁₀ y₁₁ => cmul (smF c (k - 1) (N * p ^ (n + 1)) ζ ((N : ℤ) * (y₀₀.val : ℤ) + (p : ℤ) ^ (n + 1) * v.1) ((N : ℤ) * (y₀₁.val : ℤ) + (p : ℤ) ^ (n + …`. Establish `hL : ∑ γ ∈ (Finset.univ.filter fun γ => Matrix.GeneralLinearGroup.map (ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n))) γ ∈ X), ψ ((((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ (n + 1))))).det.val : ℕ) : ZMod (p ^ m)) * cmul (smF c (k - 1) (N * p ^ (n + 1)) ζ (rowT N p (n …`. Use `sum_congr rfl fun γ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hdet]`. Both sides reduce to the same expression. Rewrite using `[hL, hsum]`. Establish `hp' : (p : K) ≠ 0` using `by exact_mod_cast hp0.ne'`. Establish `hj : 1 ≤ k - 1` using `by omega`.
+
+Establish `hstep : ∀ γ ∈ X, (∑ y₀₀ ∈ (univ.filter (fun y : ZMod (p ^ (n + 1)) => ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n)) y = (γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 0)), ∑ y₀₁ ∈ (univ.filter (fun y : ZMod (p ^ (n + 1)) => ZMod.castHom (pow_dvd_pow p (Nat.le_succ n) …`. Introduce `γ hγ`. Establish `hu : ¬ p ∣ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 0).val ∧ ¬ p ∣ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 1 0).val`. Conclude with `hX γ hγ`. Rewrite using `[cauchyProduct_fourfold_finsetSum]`.
+
+Simplify using `only [GlobalTheory.T.smoothedEisensteinFx_sum_row_lifts_distribution p N n (k - 1) K ζ c ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 0) ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 1) v.1 v.2 w.1 w.2 hζ hN hpN hn hj hc hu.1 h1 h2, GlobalTheory.T.smoothedEisensteinFx_sum_row_ …`. Rewrite using `[vp_cmul p hp0]`. Unfold `cmul`. Rewrite using `[Finset.mul_sum]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [rowT]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun γ hγ => by rw [hstep γ hγ])]`. Establish `hsc : -((p : K) ^ (((n + 1 : ℕ) : ℤ) * ((k : ℤ) - 4))) * ((p : K) ^ ((2 : ℤ) - ((k - 1 : ℕ) : ℤ)) * (p : K) ^ ((2 : ℤ) - ((1 : ℕ) : ℤ))) = -((p : K) ^ ((n : ℤ) * ((k : ℤ) - 4)))`. Rewrite using `[← zpow_add₀ hp', neg_mul, ← zpow_add₀ hp']`.
+
+Use `congr 2`. Move the coercions through the operations in `[Nat.cast_sub (by omega : 1 ≤ k)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hsc, Finset.mul_sum, Finset.mul_sum]`. Use `sum_congr rfl fun γ _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.KummerEisensteinGalois.pieceT_unitSet_level_succ : ∀ (p : ℕ) [Fact p.Prime] (N n m k : ℕ) (K : Type) [Field K] [CharZero K] (ψ : DirichletCharacter K (p ^ m)) (c d : ℤ) (w w' v v' : ℤ × ℤ) (ζ : K) (X : Finset (GL (Fin 2) (ZMod (p ^ n)))), IsPrimitiveRoot ζ (N * p ^ (n + 1)) → 0 < N → ¬ p ∣ N → 1 ≤ m → m ≤ n → 3 ≤ k → ¬ (p : ℤ) ∣ c → ¬ (p : ℤ) ∣ d → (p : ℤ) * v.1 ≡ w.1 [ZMOD N] → (p : ℤ) * v.2 ≡ w.2 [ZMOD N] → (p : ℤ) * v'.1 ≡ w'.1 [ZMOD N] → (p : ℤ) * v'.2 ≡ w'.2 [ZMOD N] → (∀ γ ∈ X, ¬ p ∣ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 0 0).val ∧ ¬ p ∣ ((γ : Matrix (Fin 2) (Fin 2) (ZMod (p ^ n))) 1 0).val) → ∀ r : ℕ, pieceT N p (n + 1) m k ψ c d v v' ζ (Finset.univ.filter fun γ => Matrix.GeneralLinearGroup.map (ZMod.castHom (pow_dvd_pow p (Nat.le_succ n)) (ZMod (p ^ n))) γ ∈ X) r = vp p (pieceT N p n m k ψ c d w w' (ζ ^ p) X) r := by
   intro p _ N n m k K _ _ ψ c d w w' v v' ζ X hζ hN hpN hm hmn hk hc hd h1 h2 h3 h4 hX r
   have hp0 : 0 < p := (Fact.out : p.Prime).pos

@@ -11,14 +11,25 @@ namespace GlobalTheory.IndEq
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[pairPlace]`.
+-/
 theorem place_zero (b : Fin 2 → ℕ) (i : Fin (b 0)) :
     pairPlace b rfl ⟨0, i⟩ = finSumFinEquiv (Sum.inl i : Fin (b 0) ⊕ Fin (b 1)) := by
   ext; simp [pairPlace]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[pairPlace]`.
+-/
 theorem place_one (b : Fin 2 → ℕ) (i : Fin (b 1)) :
     pairPlace b rfl ⟨1, i⟩ = finSumFinEquiv (Sum.inr i : Fin (b 0) ⊕ Fin (b 1)) := by
   ext; simp [pairPlace]
 
+/- English proof (translation)
+Establish `e0 : modExp (fun j : Fin 2 => Fin (b j)) 0 = b 1`. Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_two]`. Establish `e1 : modExp (fun j : Fin 2 => Fin (b j)) 1 = -(b 0 : ℤ)`. Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_two]`. Rewrite using `[deltaHalf_apply, pairChar, MonoidHom.finsetProd_apply, Fin.prod_univ_two, Fin.prod_univ_two, e0, e1]`.
+
+Simplify using `only [Units.val_mul, val_absPow, MonoidHom.comp_apply, Pi.evalMonoidHom_apply, detChar_apply, apow, Int.cast_neg, Int.cast_natCast, gdet]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem char_val (b : Fin 2 → ℕ) (χ : Fin 2 → kˣ →* ℂˣ) (m : Levi k (fun j : Fin 2 => Fin (b j))) :
     (deltaHalf k _ m : ℂ) * (pairChar k b χ m : ℂ) =
       (χ 0 (gdet (m 0)) : ℂ) * χ 1 (gdet (m 1)) * apow (gdet (m 0)) ((b 1 : ℂ) / 2) *
@@ -38,9 +49,27 @@ def funOf (b : Fin 2 → ℕ) (χ : Fin 2 → kˣ →* ℂˣ) :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext (Subtype.ext h)`.
+-/
 theorem funOf_injective (b : Fin 2 → ℕ) (χ : Fin 2 → kˣ →* ℂˣ) : Function.Injective (funOf b χ) :=
   fun _ _ h => Subtype.ext (Subtype.ext h)
 
+/- English proof (translation)
+Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, rfl⟩`. Use `⟨fun g A D N hg h => ?_, ?_⟩` and prove the remaining obligations. Establish `hp : g ∈ parab k (pairPlace b rfl)`.
+
+Rewrite using `[mem_parab_iff]`. Introduce `x y i j hlt`. Apply the tactic sequence `fin_cases x <;> fin_cases y`. Conclude with `absurd hlt (by decide)`. Conclude with `absurd hlt (by decide)`.
+
+Conclude with `(congrArg₂ g.val (place_one b i) (place_zero b j)).trans (congrFun (congrFun hg (Sum.inr i)) (Sum.inl j))`. Conclude with `absurd hlt (by decide)`. Establish `hA : leviProj k (pairPlace b rfl) ⟨g, hp⟩ 0 = A`. Use extensionality with `i j`. Conclude with `(congrArg₂ g.val (place_zero b i) (place_zero b j)).trans (congrFun (congrFun hg (Sum.inl i)) (Sum.inl j))`.
+
+Establish `hD : leviProj k (pairPlace b rfl) ⟨g, hp⟩ 1 = D`. Use extensionality with `i j`. Conclude with `(congrArg₂ g.val (place_one b i) (place_one b j)).trans (congrFun (congrFun hg (Sum.inr i)) (Sum.inr j))`. Use `parInd_law _ _ F ⟨g, hp⟩ h` as an intermediate fact. Rewrite `this` using `[ofChar_apply, smul_eq_mul, ← mul_assoc, char_val, hA, hD]`.
+
+Conclude with `this`. Establish `ho` using `isSmooth_parInd (pairPlace b rfl) (ofChar (pairChar k b χ)) F`. Conclude with `Filter.mem_of_superset (IsOpen.mem_nhds ho (by simp)) fun u hu h => congrFun (congrArg (fun G => G.1.1) (show parInd _ _ u F = F from hu)) h`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨⟨f, fun p g => ?_⟩, mem_smoothPart_of_nhds (h2.mono fun u hu => Subtype.ext (funext hu))⟩, rfl⟩` and prove the remaining obligations.
+
+Use `show f (p * g) = (deltaHalf k _ (leviProj k _ p) : ℂ) • ofChar (pairChar k b χ) (leviProj k _ p) (f g)`. Rewrite using `[ofChar_apply, smul_eq_mul, ← mul_assoc, char_val]`. Use `h1 p _ _ (fun i j => p.1.val (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inr j))) ?_ g` and prove the remaining obligations. Use extensionality with `(i | i) (j | j)`. Conclude with `(congrArg₂ p.1.val (place_zero b i) (place_zero b j)).symm`.
+
+Both sides reduce to the same expression. Conclude with `(congrArg₂ p.1.val (place_one b i) (place_zero b j)).symm.trans (mem_parab_iff.1 p.2 1 0 i j (by decide))`. Conclude with `(congrArg₂ p.1.val (place_one b i) (place_one b j)).symm`.
+-/
 theorem range_funOf (b : Fin 2 → ℕ) (χ : Fin 2 → kˣ →* ℂˣ) :
     LinearMap.range (funOf b χ) = indSp (b 0) (b 1) (χ 0) (χ 1) := by
   ext f
@@ -82,6 +111,9 @@ theorem range_funOf (b : Fin 2 → ℕ) (χ : Fin 2 → kˣ →* ℂˣ) :
         (mem_parab_iff.1 p.2 1 0 i j (by decide))
     · exact (congrArg₂ p.1.val (place_one b i) (place_one b j)).symm
 
+/- English proof (translation)
+Set `e₀` to `(LinearEquiv.ofInjective (funOf (k := k) ![a, a'] ![α, β]) (funOf_injective _ _)).trans (LinearEquiv.ofEq _ _ (range_funOf (k := k) ![a, a'] ![α, β]))`. Use `⟨e₀.symm, fun f x => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val (e₀.apply_symm_apply f)`. Conclude with `congrFun h x`.
+-/
 theorem indSp_equiv_indAA (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a a' : ℕ) (α β : kˣ →* ℂˣ) :
     ∃ e : GlobalTheory.KSplit.indSp a a' α β ≃ₗ[ℂ] IndAA k a a' ![α, β],

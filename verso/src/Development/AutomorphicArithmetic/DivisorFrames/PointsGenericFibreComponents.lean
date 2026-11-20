@@ -8,6 +8,9 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Cartier Gl
 
 set_option backward.isDefEq.respectTransparency false
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨pullback.lift w _ (Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField k Y (w ≫ f)).symm, pullback.lift_fst _ _ _⟩`.
+-/
 private theorem lift_fiber {X Y : Scheme.{0}} (f : X ⟶ Y) (y : Y) (k : Type) [Field k]
     (w : Spec (.of k) ⟶ X) (h : (w ≫ f) (closedPoint k) = y) :
     ∃ w' : Spec (.of k) ⟶ f.fiber y, w' ≫ f.fiberι y = w := by
@@ -16,6 +19,17 @@ private theorem lift_fiber {X Y : Scheme.{0}} (f : X ⟶ Y) (y : Y) (k : Type) [
     (Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField k Y (w ≫ f)).symm,
     pullback.lift_fst _ _ _⟩
 
+/- English proof (translation)
+Introduce `O _ _ _ Z k _`. Use `⟨?_, fun w hw => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨C, a⟩ ⟨C', b⟩ h dsimp only at h`. Establish `hm (D : Z.Comp) (c : Sp k ⟶ (Z.comp D).toBase.genFibre) : (c ≫ (Z.comp D).toBase.genFibreι ≫ Z.compι D) (closedPoint k) ∈ D.opens` using `((c ≫ (Z.comp D).toBase.genFibreι) (closedPoint k)).2`. Take `rfl : C = C'` from `Subtype.ext (GlobalTheory.IsNormalScheme.eq_of_mem_irreducibleComponents C.2 C'.2 (hm C a) (h ▸ hm C' b))`.
+
+Use `haveI : Mono (Z.compι C) := inferInstanceAs (Mono C.opens.ι)`. Use `haveI : Mono (Z.comp C).toBase.genFibreι := inferInstanceAs (Mono ((Z.comp C).toBase.f.fiberι _))`. Rewrite using `[(cancel_mono _).1 h]`. Take `⟨C, hC⟩` from `Z.exists_comp (w (closedPoint k))`. Establish `hr : Set.range w ⊆ Set.range C.opens.ι`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Take `rfl : x = closedPoint k` from `Subsingleton.elim (α := PrimeSpectrum k) _ _`. Conclude with `⟨⟨_, hC⟩, rfl⟩`. Set `v : Sp k ⟶ (Z.comp C).X` to `IsOpenImmersion.lift C.opens.ι w hr`. Establish `hv : v ≫ Z.compι C = w` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Take `⟨w', hw'⟩` from `lift_fiber (Z.comp C).toBase.f (genericPoint _) k v (by`. Establish `e : v ≫ (Z.comp C).toBase.f = w ≫ Z.str`. Rewrite using `[← hv, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Use `Eq.trans ?_ (genericPoint_eq_bot_of_affine (.of O)).symm` and prove the remaining obligations. Conclude with `PrimeSpectrum.ext (GlobalTheory.ShFam.Pad.NModel.mem_gen_iff_eq_bot.1 hw))`. Conclude with `⟨C, w', by rw [← hv, ← hw', Category.assoc]; rfl⟩`.
+-/
 theorem UpperTheory.points_generic_fibre_components :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z : GlobalTheory.ShFam.Pad.NModel O) (k : Type) [Field k], Function.Injective (fun w : Σ C : Z.Comp, (Sp k ⟶ (Z.comp C).toBase.genFibre) => w.2 ≫ (Z.comp w.1).toBase.genFibreι ≫ Z.compι w.1) ∧ ∀ w : Sp k ⟶ Z.X, w (closedPoint k) ∈ Z.gen → ∃ (C : Z.Comp) (w' : Sp k ⟶ (Z.comp C).toBase.genFibre), w' ≫ (Z.comp C).toBase.genFibreι ≫ Z.compι C = w := by
   intro O _ _ _ Z k _

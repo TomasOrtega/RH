@@ -13,6 +13,23 @@ open MvPolynomial MeasureTheory ComplexSets Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n d J A A' f φ hJ hd hA hA' hf hφ`. Establish `key : ∀ x : Fin n → ℂ, ∃ W : Set (Fin n → ℂ), IsOpen W ∧ ((∃ s, IsSheetAt J A x s) → (∃ s', IsSheetAt J A' x s') → x ∈ W) ∧ ∀ E : Set (Fin n → ℂ), MeasurableSet E → E ⊆ W → ∫⁻ y, ENNReal.ofReal (chartPosDens J A (E.indicator f) φ y) = ∫⁻ y, ENNReal.ofReal (chartPosDens J A' (E.in …`. Introduce `x`. Distinguish the cases in `hx : (∃ s, IsSheetAt J A x s) ∧ ∃ s', IsSheetAt J A' x s'`. Take `⟨W, hW, hxW, hWE⟩` from `hL n d J A A' f φ x hf hφ hx.1 hx.2`.
+
+Conclude with `⟨W, hW, fun _ _ => hxW, hWE⟩`. Use `⟨∅, isOpen_empty, fun h1 h2 => absurd ⟨h1, h2⟩ hx, fun E _ hE => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.subset_empty_iff.1 hE, Set.indicator_empty]`. Simplify using `[chartPosDens, sheetSum]`. Use `choose W hWo hxW hWE using key`.
+
+Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable W hWo`. Take `⟨e, he⟩` from `(hTc.insert 0).exists_eq_range (Set.insert_nonempty 0 T)`. Use `set E : ℕ → Set (Fin n → ℂ) := fun k => zeroSet J ∩ disjointed (fun k => W (e k)) k with hE`. Establish `hEm : ∀ k, MeasurableSet (E k)` using `fun k => (SheetSumMeasurable.isClosed_zeroSet J).measurableSet.inter (MeasurableSet.disjointed (fun k => (hWo (e k)).measurableSet) k)`. Establish `hEW : ∀ k, E k ⊆ W (e k)` using `fun k x hx => disjointed_subset (fun k => W (e k)) k hx.2`.
+
+Establish `hEd : Pairwise (Function.onFun Disjoint E)` using `fun i j hij => ((disjoint_disjointed (fun k => W (e k))) hij).mono Set.inter_subset_right Set.inter_subset_right`. Establish `hcov : ∀ x ∈ zeroSet J, (∃ s, IsSheetAt J A x s) → (∃ s', IsSheetAt J A' x s') → ∃ k, x ∈ E k`. Introduce `x hxZ h1 h2`. Establish `: x ∈ ⋃ i ∈ T, W i` using `hTU ▸ Set.mem_iUnion.2 ⟨x, hxW x h1 h2⟩`. Take `⟨i, hiT, hxi⟩` from `Set.mem_iUnion₂.1 this`.
+
+Take `⟨m, rfl⟩ : i ∈ Set.range e` from `he ▸ Set.mem_insert_of_mem 0 hiT`. Establish `: x ∈ ⋃ k, disjointed (fun k => W (e k)) k`. Rewrite using `[iUnion_disjointed]`. Conclude with `Set.mem_iUnion.2 ⟨m, hxi⟩`. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 this`.
+
+Conclude with `⟨k, hxZ, hk⟩`. Establish `hae : ∀ B B' : Matrix (Fin d) (Fin n) ℂ, IsFiniteProjection J B → IsFiniteProjection J B' → (∀ x ∈ zeroSet J, (∃ s, IsSheetAt J B x s) → (∃ s', IsSheetAt J B' x s') → ∃ k, x ∈ E k) → ∀ᵐ y, ENNReal.ofReal (chartPosDens J B f φ y) = ∑' k, ENNReal.ofReal (chartPosDens J B ((E k).ind …`. Introduce `B B' hB hB' hc`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 (h n d J B B' hJ hd hB hB')] with y hy`. Use `hS n d J B f φ E y hB hEd fun x hx hs => hc x hx.1 hs ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hy ⟨x, ⟨hx.1, hs, hn⟩, hx.2⟩`. Establish `hint : ∀ B : Matrix (Fin d) (Fin n) ℂ, IsFiniteProjection J B → (∀ᵐ y, ENNReal.ofReal (chartPosDens J B f φ y) = ∑' k, ENNReal.ofReal (chartPosDens J B ((E k).indicator f) φ y)) → ∫⁻ y, ENNReal.ofReal (chartPosDens J B f φ y) = ∑' k, ∫⁻ y, ENNReal.ofReal (chartPosDens J B ((E k). …`. Introduce `B hB hB2`. Rewrite using `[lintegral_congr_ae hB2, lintegral_tsum fun k => (IntegralIndep.measurable_chartPosDens hB (hf.indicator (hEm k)) φ).ennreal_ofReal.aemeasurable]`.
+
+Rewrite using `[hint A hA (hae A A' hA hA' hcov), hint A' hA' (hae A' A hA' hA fun x hx h1 h2 => hcov x hx h2 h1)]`. Conclude with `tsum_congr fun k => hWE (e k) (E k) (hEm k) (hEW k)`.
+-/
 theorem PosPartIndep.proof (h : SheetOnlyNull.Statement) (hL : PosPartLocal.Statement)
     (hS : PosPartSplit.Statement) : PosPartIndep.Statement := by
   intro n d J A A' f φ hJ hd hA hA' hf hφ

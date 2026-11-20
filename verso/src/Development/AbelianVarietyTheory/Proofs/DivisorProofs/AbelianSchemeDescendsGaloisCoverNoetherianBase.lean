@@ -30,21 +30,36 @@ noncomputable def act (hc : IsGaloisCover Ga ρ π) (T : Over Y) (a : Ga) :
   pullback.lift (pullback.fst T.hom π) (pullback.snd T.hom π ≫ ρ a)
     (by rw [Category.assoc, hc.inv, pullback.condition])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem act_fst (hc : IsGaloisCover Ga ρ π) (T : Over Y) (a : Ga) :
     act hc T a ≫ pullback.fst T.hom π = pullback.fst T.hom π := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem act_snd (hc : IsGaloisCover Ga ρ π) (T : Over Y) (a : Ga) :
     act hc T a ≫ pullback.snd T.hom π = pullback.snd T.hom π ≫ ρ a := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.T.galoisCover_descent_and_cartesian_squares X Y π Ga ρ hc).2.2 _ _ (pullback.fst T.hom π) (act hc T) (pullback.snd T.hom π) T.hom (act_snd hc T) pullback.condition.symm).2 (IsPullback.of_hasPullback T.hom π).flip (act_fst hc T)`.
+-/
 theorem isGaloisCover_act (hc : IsGaloisCover Ga ρ π) (T : Over Y) :
     IsGaloisCover Ga (act hc T) (pullback.fst T.hom π) :=
   ((GlobalTheory.T.galoisCover_descent_and_cartesian_squares X Y π Ga ρ hc).2.2 _ _ (pullback.fst T.hom π) (act hc T) (pullback.snd T.hom π) T.hom
     (act_snd hc T) pullback.condition.symm).2 (IsPullback.of_hasPullback T.hom π).flip (act_fst hc T)
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.T.galoisCover_descent_and_cartesian_squares X Y π Ga ρ hc).1 Z (π ≫ g) fun a ↦ by rw [← Category.assoc, hc.inv]).unique h rfl`.
+-/
 theorem cover_ext (hc : IsGaloisCover Ga ρ π) {Z : Scheme.{0}} {f g : Y ⟶ Z} (h : π ≫ f = π ≫ g) :
     f = g :=
   ((GlobalTheory.T.galoisCover_descent_and_cartesian_squares X Y π Ga ρ hc).1 Z (π ≫ g) fun a ↦ by rw [← Category.assoc, hc.inv]).unique h rfl
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext (cover_ext (isGaloisCover_act hc T) ?_)` and prove the remaining obligations. Rewrite using `[← up_left H, ← up_left H, e]`.
+-/
 theorem up_injective (hc : IsGaloisCover Ga ρ π) (H : IsPullback φ G.hom G'.hom π) {T : Over Y}
     {x y : T ⟶ G'} (e : up H x = up H y) : x = y := by
   refine Over.OverMorphism.ext (cover_ext (isGaloisCover_act hc T) ?_)
@@ -55,12 +70,20 @@ noncomputable def equivariant [GrpObj G] (hc : IsGaloisCover Ga ρ π)
   ⨅ a : Ga, (preHom (Over.homMk (act hc T a) (act_snd hc T a))).eqLocus
     (pushHom (hν a) ((Over.pullback π).obj T))
 
+/- English proof (translation)
+Simplify using `only [equivariant, Subgroup.mem_iInf]`. Conclude with `⟨fun h a ↦ congrArg (fun z ↦ z.left) (h a), fun h a ↦ Over.OverMorphism.ext (h a)⟩`.
+-/
 theorem mem_equivariant [GrpObj G] (hc : IsGaloisCover Ga ρ π)
     (hν : ∀ a, IsGrpPullback G G (ρ a) (ν a)) {T : Over Y} {w : (Over.pullback π).obj T ⟶ G} :
     w ∈ equivariant hc hν T ↔ ∀ a, act hc T a ≫ w.left = w.left ≫ ν a := by
   simp only [equivariant, Subgroup.mem_iInf]
   exact ⟨fun h a ↦ congrArg (fun z ↦ z.left) (h a), fun h a ↦ Over.OverMorphism.ext (h a)⟩
 
+/- English proof (translation)
+Establish `hc'` using `isGaloisCover_act hc T`. Take `⟨z, hz, -⟩` from `(GlobalTheory.T.galoisCover_descent_and_cartesian_squares _ _ _ Ga _ hc').1 _ (w.left ≫ φ) fun a ↦ by`. Rewrite using `[← Category.assoc, (mem_equivariant hc hν).mp hw a, Category.assoc, hφ]`. Use `⟨Over.homMk z (cover_ext hc' ?_), QuotientDescent.hom_ext H ((up_left H _).trans hz)⟩` and prove the remaining obligations. Rewrite using `[reassoc_of% hz, H.w, pullback.condition]`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ π) (Over.w w))`.
+-/
 theorem exists_up [GrpObj G] (hc : IsGaloisCover Ga ρ π) (H : IsPullback φ G.hom G'.hom π)
     (hν : ∀ a, IsGrpPullback G G (ρ a) (ν a)) (hφ : ∀ a, ν a ≫ φ = φ) {T : Over Y}
     {w : (Over.pullback π).obj T ⟶ G} (hw : w ∈ equivariant hc hν T) : ∃ z : T ⟶ G', up H z = w := by
@@ -71,6 +94,9 @@ theorem exists_up [GrpObj G] (hc : IsGaloisCover Ga ρ π) (H : IsPullback φ G.
   rw [reassoc_of% hz, H.w, pullback.condition]
   exact (Category.assoc _ _ _).symm.trans (congrArg (· ≫ π) (Over.w w))
 
+/- English proof (translation)
+The claim follows from `(mem_equivariant hc hν).mpr fun a ↦ by have e : (up H z).left ≫ G.hom = pullback.snd T.hom π := Over.w _ have h₁ := act_fst hc T a refine H.hom_ext ?_ ?_ · rw [Category.assoc, Category.assoc, hφ, up_left, reassoc_of% h₁] · rw [Category.assoc, Category.assoc, (hν a).1.w, e, act_sn …`.
+-/
 theorem up_mem [GrpObj G] (hc : IsGaloisCover Ga ρ π) (H : IsPullback φ G.hom G'.hom π)
     (hν : ∀ a, IsGrpPullback G G (ρ a) (ν a)) (hφ : ∀ a, ν a ≫ φ = φ) {T : Over Y} (z : T ⟶ G') :
     up H z ∈ equivariant hc hν T := (mem_equivariant hc hν).mpr fun a ↦ by
@@ -80,6 +106,19 @@ theorem up_mem [GrpObj G] (hc : IsGaloisCover Ga ρ π) (H : IsPullback φ G.hom
   · rw [Category.assoc, Category.assoc, hφ, up_left, reassoc_of% h₁]
   · rw [Category.assoc, Category.assoc, (hν a).1.w, e, act_snd, reassoc_of% e]
 
+/- English proof (translation)
+Establish `inj {T : Over Y} {x y : T ⟶ G'} (e : up H x = up H y) : x = y` using `up_injective hc H e`. Establish `mem {T : Over Y} (z : T ⟶ G')` using `up_mem hc H hν hφ z`. Take `⟨m, hm⟩` from `exists_up hc H hν hφ (mul_mem (mem (fst G' G')) (mem (snd G' G')))`. Take `⟨e, he⟩` from `exists_up hc H hν hφ (T := 𝟙_ _) (one_mem _)`. Take `⟨i, hi⟩` from `exists_up hc H hν hφ (inv_mem (mem (𝟙 G')))`.
+
+Establish `hm' {T : Over Y} (u : T ⟶ G' ⊗ G') : up H (u ≫ m) = up H (u ≫ fst _ _) * up H (u ≫ snd _ _)`. Rewrite using `[up_comp, hm, MonObj.comp_mul, ← up_comp, ← up_comp]`. Establish `he' {T : Over Y} (u : T ⟶ 𝟙_ _) : up H (u ≫ e) = 1`. Rewrite using `[up_comp, he, MonObj.comp_one]`. Use `letI : GrpObj G' := { one := e mul := m one_mul := inj (by`.
+
+Rewrite using `[hm', whiskerRight_fst, he', _root_.one_mul, whiskerRight_snd, leftUnitor_hom])`. Use `mul_one := inj (by`. Rewrite using `[hm', whiskerLeft_snd, he', _root_.mul_one, whiskerLeft_fst, rightUnitor_hom])`. Use `mul_assoc := inj (by`. Rewrite using `[← Category.assoc, hm' (m ▷ G'), hm' (_ ≫ G' ◁ m), whiskerRight_fst, whiskerRight_snd, Category.assoc, Category.assoc, whiskerLeft_fst, whiskerLeft_snd, hm' (fst _ _), ← Category.assoc _ _ m, hm', Category.assoc, Category.assoc, associator_hom_fst, associator_hom_snd_fst, associa …`.
+
+Use `inv := i`. Use `left_inv := inj (by rw [hm', he', lift_fst, lift_snd, hi, inv_mul_cancel])`. Use `right_inv := inj (by rw [hm', he', lift_fst, lift_snd, hi, mul_inv_cancel]) }`. Establish `hmul {T : Over Y} (x y : T ⟶ G') : up H (x * y) = up H x * up H y`. Rewrite using `[Hom.mul_def]`.
+
+Conclude with `(hm' _).trans (by rw [lift_fst, lift_snd])`. Establish `hcomm : IsCommMonObj G'` using `⟨inj (by`. Use `(hm' _).trans (Eq.trans ?_ hm.symm)` and prove the remaining obligations. Rewrite using `[braiding_hom_fst, braiding_hom_snd, mul_comm])⟩`. Establish `sec {T : Over X} : ∃ s : T ⟶ (Over.pullback π).obj (Over.mk (T.hom ≫ π)), s.left ≫ pullback.fst _ π = 𝟙 T.left` using `⟨Over.homMk (pullback.lift (𝟙 T.left) T.hom (Category.id_comp _)) (pullback.lift_snd ..), pullback.lift_fst ..⟩`.
+
+Use `⟨inferInstance, hcomm, H, fun T x y x₀ y₀ hx hy ↦ ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `sec (T := T)`. Establish `k (z : Over.mk (T.hom ≫ π) ⟶ G') : (s ≫ up H z).left ≫ φ = z.left`. Rewrite using `[Over.comp_left, Category.assoc, up_left, reassoc_of% hs]`. Rewrite using `[← k, hmul, MonObj.comp_mul, QuotientDescent.hom_ext H ((k x₀).trans hx), QuotientDescent.hom_ext H ((k y₀).trans hy)]`.
+-/
 theorem exists_grpObj [GrpObj G] [IsCommMonObj G] (hc : IsGaloisCover Ga ρ π)
     (H : IsPullback φ G.hom G'.hom π) (hν : ∀ a, IsGrpPullback G G (ρ a) (ν a))
     (hφ : ∀ a, ν a ≫ φ = φ) : ∃ _ : GrpObj G', IsCommMonObj G' ∧ IsGrpPullback G G' π φ := by
@@ -129,6 +168,19 @@ end GaloisDescentNoetherian
 
 open GaloisDescentNoetherian
 
+/- English proof (translation)
+Introduce `K _ _ X Y π sY Ga _ ρ G _ ν hc hq hG hν h1 hmul`. Use `hc.finite` as an intermediate fact. Establish `hinv (a : Ga) : ν a ≫ G.hom ≫ π = G.hom ≫ π`. Rewrite using `[← Category.assoc, (hν a).1.w, Category.assoc, hc.inv]`. Take `⟨Z, φ, sZ, -, hφ, -⟩` from `GlobalTheory.T.exists_galoisCover_quotient_freeFiniteAction K G.left (G.hom ≫ π ≫ sY) Ga ν hq h1 hmul (fun a ↦ by rw [reassoc_of% (hinv a)]) (fun k _ _ y a hy ↦ by`.
+
+Use `(hc.fibre k (y ≫ G.hom) (y ≫ G.hom) rfl).unique ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← (hν a).1.w, reassoc_of% hy]`. Rewrite using `[hc.one, Category.comp_id])`. Take `⟨v, hv, -⟩` from `(GlobalTheory.T.galoisCover_descent_and_cartesian_squares _ _ φ Ga ν hφ).1 Y (G.hom ≫ π) hinv`. Establish `H : IsPullback φ G.hom (Over.mk v).hom π` using `(((GlobalTheory.T.galoisCover_descent_and_cartesian_squares X Y π Ga ρ hc).2.2 _ _ φ ν G.hom v (fun a ↦ (hν a).1.w) hv.symm).1 hφ).flip`.
+
+Use `hG.comm` as an intermediate fact. Take `⟨inst, hcomm, hp⟩` from `exists_grpObj (G' := Over.mk v) hc H hν hφ.inv`. Use `⟨Over.mk v, inst, φ, ?_, hp, hφ⟩` and prove the remaining obligations. Use `hc.fin` as an intermediate fact. Use `hc.etale` as an intermediate fact.
+
+Use `hc.onto` as an intermediate fact. Use `hφ.fin` as an intermediate fact. Use `hφ.onto` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.proper` as an intermediate fact.
+
+Use `hG.geomConnected` as an intermediate fact. Establish `hQ : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) π` using `⟨⟨‹_›, inferInstance⟩, inferInstance⟩`. Establish `hs : Smooth (Over.mk v).hom` using `MorphismProperty.of_isPullback_of_descendsAlong (P := @Smooth) H.flip hQ ‹_›`. Establish `hu : UniversallyClosed (Over.mk v).hom` using `MorphismProperty.of_isPullback_of_descendsAlong (P := @UniversallyClosed) H.flip hQ inferInstance`. Establish `hsep : IsSeparated (Over.mk v).hom`.
+
+Establish `: IsSeparated (φ ≫ (Over.mk v).hom)` using `by rw [H.w]; infer_instance`. Conclude with `SemiAbelianDescent.isSeparated_of_comp φ _`. Conclude with `⟨hcomm, hs, ⟨⟩, SemiAbelianDescent.geometricallyConnected_of_isPullback H⟩`.
+-/
 theorem abelianScheme_descends_galoisCover_noetherian :
     ∀ (K : Type) [CommRing K] [IsNoetherianRing K] (X Y : Scheme.{0}) (π : X ⟶ Y) (sY : Y ⟶ Sp K) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)) (G : Over X) [GrpObj G] (ν : Ga → (G.left ⟶ G.left)), IsGaloisCover Ga ρ π → IsQProjOver (G.hom ≫ π ≫ sY) → IsAbelianScheme G → (∀ a, IsGrpPullback G G (ρ a) (ν a)) → ν 1 = 𝟙 _ → (∀ a c, ν (a * c) = ν a ≫ ν c) → ∃ (G' : Over Y) (_ : GrpObj G') (φ : G.left ⟶ G'.left), IsAbelianScheme G' ∧ IsGrpPullback G G' π φ ∧ IsGaloisCover Ga ν φ := by
   intro K _ _ X Y π sY Ga _ ρ G _ ν hc hq hG hν h1 hmul

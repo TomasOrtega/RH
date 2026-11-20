@@ -13,11 +13,23 @@ namespace GlobalTheory.DetSqrtCover
 
 variable {p q : ℕ}
 
+/- English proof (translation)
+Rewrite using `[add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left s).smul_right t)`.
+-/
 theorem exp_add_smul (X : Mat p q) (s t : ℝ) :
     NormedSpace.exp ((s + t) • X) = NormedSpace.exp (s • X) * NormedSpace.exp (t • X) := by
   rw [add_smul]
   exact Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left s).smul_right t)
 
+/- English proof (translation)
+Use `set f : ℝ → ℂ := fun t => (NormedSpace.exp (t • X)).det with hf`. Establish `hd : ∀ t, HasDerivAt f (f t * X.trace) t`. Introduce `t`. Establish `h0 : HasDerivAt f X.trace (t - t)`. Rewrite using `[sub_self]`.
+
+Conclude with `GlobalTheory.RealPar.Cover.hasDerivAt_det_exp X`. Establish `h1` using `(h0.comp_sub_const t t).const_mul (f t)`. Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [hf]`. Rewrite using `[← Matrix.det_mul, ← exp_add_smul, add_sub_cancel]`.
+
+Establish `hg : ∀ t : ℝ, HasDerivAt (fun s : ℝ => f s * Complex.exp (-(s * X.trace))) 0 t`. Introduce `t`. Establish `h1 : HasDerivAt (fun s : ℝ => -((s : ℂ) * X.trace)) (-X.trace) t`. Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := t)).mul_const X.trace).fun_neg`. Conclude with `((hd t).fun_mul h1.cexp).congr_deriv (by ring)`.
+
+Establish `h2` using `is_const_of_deriv_eq_zero (fun t => (hg t).differentiableAt) (fun t => (hg t).deriv) 1 0`. Simplify using `only [hf, one_smul, zero_smul, NormedSpace.exp_zero, Matrix.det_one, Complex.ofReal_one, one_mul, Complex.ofReal_zero, zero_mul, neg_zero, Complex.exp_zero, Complex.exp_neg] at h2`. Conclude with `(mul_inv_eq_one₀ (Complex.exp_ne_zero _)).1 h2`.
+-/
 theorem det_exp (X : Mat p q) : (NormedSpace.exp X).det = Complex.exp X.trace := by
   set f : ℝ → ℂ := fun t => (NormedSpace.exp (t • X)).det with hf
   have hd : ∀ t, HasDerivAt f (f t * X.trace) t := by
@@ -38,22 +50,41 @@ theorem det_exp (X : Mat p q) : (NormedSpace.exp X).det = Complex.exp X.trace :=
     Complex.ofReal_zero, zero_mul, neg_zero, Complex.exp_zero, Complex.exp_neg] at h2
   exact (mul_inv_eq_one₀ (Complex.exp_ne_zero _)).1 h2
 
+/- English proof (translation)
+Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.refl X).neg_right, add_neg_cancel, NormedSpace.exp_zero]`.
+-/
 theorem exp_mul_exp_neg (X : Mat p q) : NormedSpace.exp X * NormedSpace.exp (-X) = 1 := by
   rw [← Matrix.exp_add_of_commute _ _ (Commute.refl X).neg_right, add_neg_cancel, NormedSpace.exp_zero]
 
+/- English proof (translation)
+Simplify using `using exp_mul_exp_neg (-X)`.
+-/
 theorem exp_neg_mul_exp (X : Mat p q) : NormedSpace.exp (-X) * NormedSpace.exp X = 1 := by
   simpa using exp_mul_exp_neg (-X)
 
 def expGL (X : Mat p q) : GL (Ix p q) ℂ :=
   ⟨NormedSpace.exp X, NormedSpace.exp (-X), exp_mul_exp_neg X, exp_neg_mul_exp X⟩
 
+/- English proof (translation)
+Use `open scoped Matrix.Norms.Operator in`. Conclude with `NormedSpace.exp_continuous`.
+-/
 theorem continuous_mexp : Continuous fun X : Mat p q => NormedSpace.exp X := by
   open scoped Matrix.Norms.Operator in
   exact NormedSpace.exp_continuous
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨continuous_mexp, continuous_mexp.comp continuous_neg⟩`.
+-/
 theorem continuous_expGL : Continuous (expGL : Mat p q → GL (Ix p q) ℂ) :=
   Units.continuous_iff.2 ⟨continuous_mexp, continuous_mexp.comp continuous_neg⟩
 
+/- English proof (translation)
+Establish `hJ : Jm p q * Jm p q = 1` using `GlobalTheory.RealPar.KStabLie.Jm_sq p q`. Set `U : (Mat p q)ˣ` to `⟨Jm p q, Jm p q, hJ, hJ⟩`. Establish `h1 : Xᴴ = U.val * (-X) * U⁻¹.val`. Express the relevant statement in the definitionally equal form `Xᴴ = Jm p q * (-X) * Jm p q`. Establish `h : Xᴴ * Jm p q = Jm p q * (-X)`.
+
+Rewrite using `[Matrix.mul_neg]`. Conclude with `eq_neg_of_add_eq_zero_left hX`. Rewrite using `[← h, Matrix.mul_assoc, hJ, Matrix.mul_one]`. Establish `h2 : (NormedSpace.exp X)ᴴ = Jm p q * NormedSpace.exp (-X) * Jm p q`. Rewrite using `[← Matrix.exp_conjTranspose, h1, Matrix.exp_units_conj]`.
+
+Both sides reduce to the same expression. Rewrite using `[GlobalTheory.RealPar.mem_Upq]`. Express the relevant statement in the definitionally equal form `(NormedSpace.exp X)ᴴ * Jm p q * NormedSpace.exp X = Jm p q`. Rewrite using `[h2, Matrix.mul_assoc _ (Jm p q) (Jm p q), hJ, Matrix.mul_one, Matrix.mul_assoc, exp_neg_mul_exp, Matrix.mul_one]`.
+-/
 theorem expGL_mem {X : Mat p q} (hX : X ∈ upq p q) : expGL X ∈ Formalism.UG.Upq p q := by
   have hJ : Jm p q * Jm p q = 1 := GlobalTheory.RealPar.KStabLie.Jm_sq p q
   let U : (Mat p q)ˣ := ⟨Jm p q, Jm p q, hJ, hJ⟩
@@ -71,10 +102,16 @@ theorem expGL_mem {X : Mat p q} (hX : X ∈ upq p q) : expGL X ∈ Formalism.UG.
 
 def expHalf (X : Mat p q) : ℂˣ := Units.mk0 (Complex.exp (X.trace / 2)) (Complex.exp_ne_zero _)
 
+/- English proof (translation)
+The claim follows from `Units.isEmbedding_val₀.continuous_iff.2 (Complex.continuous_exp.comp (continuous_id.matrix_trace.div_const 2))`.
+-/
 theorem continuous_expHalf : Continuous (expHalf : Mat p q → ℂˣ) :=
   Units.isEmbedding_val₀.continuous_iff.2
     (Complex.continuous_exp.comp (continuous_id.matrix_trace.div_const 2))
 
+/- English proof (translation)
+Rewrite using `[det_exp, expHalf, Units.val_mk0, sq, ← Complex.exp_add, add_halves]`.
+-/
 theorem expHalf_sq (X : Mat p q) : ((expHalf X : ℂˣ) : ℂ) ^ 2 = (NormedSpace.exp X).det := by
   rw [det_exp, expHalf, Units.val_mk0, sq, ← Complex.exp_add, add_halves]
 
@@ -87,6 +124,9 @@ def cover (p q : ℕ) : Subgroup (GL (Ix p q) ℂ × ℂˣ) where
     simp only [Prod.snd_inv, Prod.fst_inv, Units.val_inv_eq_inv_val, inv_pow, ha.2, Matrix.coe_units_inv,
       Matrix.det_nonsing_inv, Ring.inverse_eq_inv']⟩
 
+/- English proof (translation)
+Establish `c1 : Continuous fun z : GL (Ix p q) ℂ × ℂˣ => (z.1 : Mat p q)` using `Units.continuous_val.comp continuous_fst`. Establish `c2 : Continuous fun z : GL (Ix p q) ℂ × ℂˣ => (z.2 : ℂ)` using `Units.continuous_val.comp continuous_snd`. Conclude with `(isClosed_eq ((c1.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul c1) (continuous_const (y := Jm p q))).inter (isClosed_eq (c2.pow 2) c1.matrix_det)`.
+-/
 theorem isClosed_cover : IsClosed (cover p q : Set (GL (Ix p q) ℂ × ℂˣ)) := by
   have c1 : Continuous fun z : GL (Ix p q) ℂ × ℂˣ => (z.1 : Mat p q) := Units.continuous_val.comp continuous_fst
   have c2 : Continuous fun z : GL (Ix p q) ℂ × ℂˣ => (z.2 : ℂ) := Units.continuous_val.comp continuous_snd
@@ -110,6 +150,9 @@ open Classical in
 def expLift (X : Mat p q) : cover p q :=
   if h : X ∈ upq p q then ⟨(expGL X, expHalf X), expGL_mem h, expHalf_sq X⟩ else 1
 
+/- English proof (translation)
+Rewrite using `[expLift, dif_pos h]`.
+-/
 theorem expLift_val {X : Mat p q} (h : X ∈ upq p q) : (expLift X).1 = (expGL X, expHalf X) := by
   rw [expLift, dif_pos h]
 
@@ -146,9 +189,17 @@ def grpOf (p q : ℕ) (ν : Measure (cover p q)) [ν.IsHaarMeasure] : GrpData p 
 def covHom (T : GrpData p q) : T.G →* UpqT p q :=
   (T.cov.codRestrict (Formalism.UG.Upq p q) T.cov_mem : T.G →* Formalism.UG.Upq p q)
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk (continuous_fst.comp T.emb.continuous) _`.
+-/
 theorem continuous_covU (T : GrpData p q) : Continuous T.covU :=
   Continuous.subtype_mk (continuous_fst.comp T.emb.continuous) _
 
+/- English proof (translation)
+Introduce and unpack `⟨g, hg⟩`. Take `⟨w, hw⟩` from `IsAlgClosed.exists_pow_nat_eq ((g : Mat p q).det) two_pos`. Establish `h0 : w ≠ 0`. Introduce and unpack `rfl`. Conclude with `g.det_ne_zero (by rw [← hw]; simp)`.
+
+Take `⟨x, hx, -⟩` from `T.bij g hg (Units.mk0 w h0) hw`. Conclude with `⟨x, Subtype.ext hx.1⟩`.
+-/
 theorem surjective_covU (T : GrpData p q) : Function.Surjective T.covU := by
   rintro ⟨g, hg⟩
   obtain ⟨w, hw⟩ := IsAlgClosed.exists_pow_nat_eq ((g : Mat p q).det) two_pos
@@ -158,6 +209,13 @@ theorem surjective_covU (T : GrpData p q) : Function.Surjective T.covU := by
   obtain ⟨x, hx, -⟩ := T.bij g hg (Units.mk0 w h0) hw
   exact ⟨x, Subtype.ext hx.1⟩
 
+/- English proof (translation)
+Use `haveI : T2Space (UpqT p q) := inferInstanceAs (T2Space (Formalism.UG.Upq p q))`. Use `haveI : LocallyCompactSpace (UpqT p q) := (UpqUnimodular.modelEquiv p q).toHomeomorph.isClosedEmbedding.locallyCompactSpace`. Use `isProperMap_iff_isCompact_preimage.2 ⟨continuous_covU T, fun K hK => ?_⟩` and prove the remaining obligations. Establish `hS : IsCompact ((Units.val : ℂˣ → ℂ) ⁻¹' Metric.sphere 0 1)`. Use `(Units.isEmbedding_val₀.isInducing.isCompact_preimage_iff ?_).2 (isCompact_sphere 0 1)` and prove the remaining obligations.
+
+Introduce `z hz`. Establish `: z ≠ 0` using `by rintro rfl; simp at hz`. Conclude with `⟨Units.mk0 z this, rfl⟩`. Establish `hK' : IsCompact ((fun g : Formalism.UG.Upq p q => g.1) '' K)` using `hK.image continuous_subtype_val`. Use `((GlobalTheory.RealPar.SqInt.isClosedEmbedding_emb T).isCompact_preimage (hK'.prod hS)).of_isClosed_subset (hK.isClosed.preimage (continuous_covU T)) fun x hx => ⟨⟨T.covU x, hx, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using GlobalTheory.RealPar.Cover.norm_sq x`.
+-/
 theorem isProperMap_covU (T : GrpData p q) : IsProperMap T.covU := by
   haveI : T2Space (UpqT p q) := inferInstanceAs (T2Space (Formalism.UG.Upq p q))
   haveI : LocallyCompactSpace (UpqT p q) :=
@@ -173,6 +231,9 @@ theorem isProperMap_covU (T : GrpData p q) : IsProperMap T.covU := by
     (hK.isClosed.preimage (continuous_covU T)) fun x hx => ⟨⟨T.covU x, hx, rfl⟩, ?_⟩
   simpa using GlobalTheory.RealPar.Cover.norm_sq x
 
+/- English proof (translation)
+Use `haveI : IsTopologicalGroup (UpqT p q) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq p q))`. Use `haveI : BorelSpace (UpqT p q) := ⟨rfl⟩`. Use `haveI : T2Space (UpqT p q) := inferInstanceAs (T2Space (Formalism.UG.Upq p q))`. Use `haveI : LocallyCompactSpace (UpqT p q) := (UpqUnimodular.modelEquiv p q).toHomeomorph.isClosedEmbedding.locallyCompactSpace`. Conclude with `Measure.isHaarMeasure_map T.haar (covHom T) (continuous_covU T) (surjective_covU T) (isProperMap_iff_tendsto_cocompact.1 (isProperMap_covU T)).2`.
+-/
 theorem isHaarMeasure_map_covU (T : GrpData p q) : (T.haar.map T.covU).IsHaarMeasure := by
   haveI : IsTopologicalGroup (UpqT p q) := inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq p q))
   haveI : BorelSpace (UpqT p q) := ⟨rfl⟩
@@ -182,6 +243,13 @@ theorem isHaarMeasure_map_covU (T : GrpData p q) : (T.haar.map T.covU).IsHaarMea
   exact Measure.isHaarMeasure_map T.haar (covHom T) (continuous_covU T) (surjective_covU T)
     (isProperMap_iff_tendsto_cocompact.1 (isProperMap_covU T)).2
 
+/- English proof (translation)
+Introduce `p q μ hμ`. Use `haveI := isHaarMeasure_map_covU (grpOf p q Measure.haar)`. Take `⟨t, ht⟩` from `GlobalTheory.CompactDualUnique.exists_eq_smul μ ((grpOf p q Measure.haar).haar.map (grpOf p q Measure.haar).covU)`. Establish `h0 : t ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `ht` using `[zero_smul]`. Conclude with `isOpen_univ.measure_ne_zero μ Set.univ_nonempty (by rw [ht]; rfl)`. Use `haveI : (t • (Measure.haar : Measure (cover p q))).IsHaarMeasure := Measure.IsHaarMeasure.nnreal_smul _ h0`. Use `⟨grpOf p q (t • Measure.haar), ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`.
+
+Conclude with `Measure.map_smul _ _ _`.
+-/
 theorem exists_grpData_map_haar : ∀ (p q : ℕ) (μ : Measure (UpqT p q)), μ.IsHaarMeasure →
     ∃ T : GrpData p q, Measure.map T.covU T.haar = μ := by
   intro p q μ hμ

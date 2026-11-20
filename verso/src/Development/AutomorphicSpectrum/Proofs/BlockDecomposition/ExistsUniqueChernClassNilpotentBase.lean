@@ -13,6 +13,17 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 
 namespace GlobalTheory.CompanionTheory.CrystallineChernClass
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero (φ.mapH n)).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : φ.f n z.1 ∈ M.B n` using `(Submodule.Quotient.mk_eq_zero ((M.B n).submoduleOf (M.Z n)) (x := φ.mapZ n z)).1 hx`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `z.1 ∈ K.B n`. Consider the cases of `n with`. Consider the case `zero`. Establish `h2 : φ.f 0 z.1 = 0` using `h1`. Establish `h3 : z.1 = 0` using `(h 0).1 (h2.trans (map_zero _).symm)`.
+
+Rewrite using `[h3]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ n`. Take `⟨y, hy⟩` from `h1`. Take `⟨y', rfl⟩` from `(h n).2 y`.
+
+Use `⟨y', (h (n + 1)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← φ.comm, hy]`. Introduce `y`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨x, hx⟩` from `(h n).2 w.1`.
+
+Establish `h0 : K.d n x = 0` using `(h (n + 1)).1 (by`. Rewrite using `[← φ.comm, hx, map_zero]`. Conclude with `w.2)`. Conclude with `⟨Submodule.Quotient.mk ⟨x, h0⟩, congrArg _ (Subtype.ext hx)⟩`.
+-/
 theorem mapH_bijective {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {K : Cx.{1} R} {M : Cx.{1} R'}
     (φ : Cx.Hom K M σ) (h : ∀ n, Function.Bijective (φ.f n)) (n : ℕ) : Function.Bijective (φ.mapH n) := by
   refine ⟨?_, ?_⟩
@@ -49,6 +60,9 @@ def toO (Q : ObjectProperty (Thick L)) : CH.Mor (Q.ι ⋙ B.OM L c) (CH.modF (sP
   τ T := { toFun := fun x => x, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }
   nat _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `mapH_bijective _ (fun _ => Function.bijective_id) n`.
+-/
 theorem toO_bij (Q : ObjectProperty (Thick L)) (n : ℕ) : Function.Bijective ((toO c Q).pull n) :=
   mapH_bijective _ (fun _ => Function.bijective_id) n
 
@@ -57,11 +71,17 @@ def sub {P Q : ObjectProperty (Thick L)} (h : Q ≤ P) : CH.Mor (P.ι ⋙ B.OM L
   τ _ := LinearMap.id
   nat _ _ := rfl
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem sub_square {P Q : ObjectProperty (Thick L)} (h : Q ≤ P) (j : ℕ) (x : CH.H (P.ι ⋙ B.OM L c) j) :
     (toO c Q).pull j ((sub c h).pull j x) = (incl h).o.pull j ((toO c P).pull j x) := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rfl
 
+/- English proof (translation)
+Establish `e : (toO c Q).pull j ∘ (sub c h).pull j = (incl h).o.pull j ∘ (toO c P).pull j`. Use function extensionality and compare the values at `(sub_square c h j)`. Use `(Function.Bijective.of_comp_iff' (toO_bij c Q j) _).1 ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hb.comp (toO_bij c P j)`.
+-/
 theorem sub_bij {P Q : ObjectProperty (Thick L)} (h : Q ≤ P) (j : ℕ) (hb : Function.Bijective ((incl h).o.pull j)) :
     Function.Bijective ((sub c h).pull j) := by
   have e : (toO c Q).pull j ∘ (sub c h).pull j = (incl h).o.pull j ∘ (toO c P).pull j :=
@@ -70,16 +90,25 @@ theorem sub_bij {P Q : ObjectProperty (Thick L)} (h : Q ≤ P) (j : ℕ) (hb : F
   rw [e]
   exact hb.comp (toO_bij c P j)
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem sub_sub {P Q S : ObjectProperty (Thick L)} (h : Q ≤ P) (h' : S ≤ Q) (j : ℕ) (x : CH.H (P.ι ⋙ B.OM L c) j) :
     (sub c h').pull j ((sub c h).pull j x) = (sub c (h'.trans h)).pull j x := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rfl
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem res_sub {P Q : ObjectProperty (Thick L)} (h : Q ≤ P) (j : ℕ) (x : CH.H (B.OM L c) j) :
     (sub c h).pull j ((CH.Mor.restrict (B.OM L c) P.ι).pull j x) = (CH.Mor.restrict (B.OM L c) Q.ι).pull j x := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rfl
 
+/- English proof (translation)
+Use `mapH_bijective _ (fun n => ⟨fun f g e => ?_, fun g => ?_⟩) j` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Conclude with `congrFun e (P.lift t fun i => hP _)`. Conclude with `⟨fun t => g (P.lift t fun i => hP _), rfl⟩`.
+-/
 theorem res_all (P : ObjectProperty (Thick L)) (hP : ∀ T, P T) (j : ℕ) :
     Function.Bijective ((CH.Mor.restrict (B.OM L c) P.ι).pull j) := by
   refine mapH_bijective _ (fun n => ⟨fun f g e => ?_, fun g => ?_⟩) j
@@ -87,6 +116,11 @@ theorem res_all (P : ObjectProperty (Thick L)) (hP : ∀ T, P T) (j : ℕ) :
     exact congrFun e (P.lift t fun i => hP _)
   · exact ⟨fun t => g (P.lift t fun i => hP _), rfl⟩
 
+/- English proof (translation)
+Establish `s1` using `sub_bij c h1 j b1`. Establish `s2` using `sub_bij c h2 j b2`. Establish `s3 : Function.Bijective ((sub c h).pull j)`. Establish `e : (sub c h1).pull j ∘ (sub c h).pull j = (sub c h2).pull j` using `funext (sub_sub c h h1 j)`. Use `(Function.Bijective.of_comp_iff' s1 _).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `s2`. Establish `e : (sub c h).pull j ∘ (CH.Mor.restrict (B.OM L c) P.ι).pull j = (CH.Mor.restrict (B.OM L c) Q.ι).pull j` using `funext (res_sub c h j)`. Rewrite using `[← e]`. Conclude with `s3.comp (res_all c _ hP j)`.
+-/
 theorem bij_three {P Q S : ObjectProperty (Thick L)} (h : Q ≤ P) (h1 : S ≤ Q) (h2 : S ≤ P) (j : ℕ)
     (b1 : Function.Bijective ((incl h1).o.pull j)) (b2 : Function.Bijective ((incl h2).o.pull j)) (hP : ∀ T, P T) :
     Function.Bijective ((CH.Mor.restrict (B.OM L c) Q.ι).pull j) := by
@@ -120,6 +154,17 @@ def precomp {C C' : Type 1} [Category.{0} C] [Category.{0} C'] {g : C ⥤ Thick 
   w φ := Λ₀.w (h.map φ)
   hw φ hh := Λ₀.hw (h.map φ) hh
 
+/- English proof (translation)
+Take `⟨Λ₀⟩` from `GlobalTheory.CompanionTheory.CLiftEx.nonempty_cLift Q.ι D (fun T => (hQ _).1 T.property)`. Establish `hz₀` using `(GlobalTheory.T.crystalline_cocycle_closed Q.ι D c N (fun T k hk x _ => by`. Express the relevant statement in the definitionally equal form `((k.factorial : ℕ) : (T.obj).B) * _ = 0`. Rewrite using `[hN _ k hk, zero_mul])).1 Λ₀`. Take `⟨x, hx⟩` from `hbij.2 ((CH.cx _).cls _ hz₀)`.
+
+Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Introduce `C _ G Λ₁`. Establish `hG : ∀ T, Q (G.obj T)` using `fun T => (hQ _).2 ⟨Λ₁.p T, Λ₁.hp T⟩`. Establish `hcl` using `GlobalTheory.T.crystalline_cocycle_closed G D c N (fun T k hk x _ => by rw [hN _ k hk, zero_mul])`. Set `Λ' : B.CLift G D` to `precomp Λ₀ (Q.lift G hG)`.
+
+Use `⟨hcl.1 Λ₁, ?_⟩` and prove the remaining obligations. Rewrite using `[hcl.2 Λ₁ Λ' (hcl.1 Λ₁) (hcl.1 Λ')]`. Establish `e1 : (CH.Mor.restrict (B.OM ((B.schFn q).cr b ht κ) c) G).pull 2 x = (CH.Mor.restrict (Q.ι ⋙ B.OM ((B.schFn q).cr b ht κ) c) (Q.lift G hG)).pull 2 ((CH.Mor.restrict (B.OM ((B.schFn q).cr b ht κ) c) Q.ι).pull 2 x)`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, hx]`. Both sides reduce to the same expression. Introduce `y hy`. Apply `hbij.1` to reduce the goal to its premises. Take `⟨h1, h2⟩` from `hy _ Q.ι Λ₀`.
+
+Rewrite using `[hx, ← h2]`.
+-/
 theorem exu_core (D : E.LineData X) (Q : ObjectProperty (Thick ((B.schFn q).cr b ht κ)))
     (hQ : ∀ T, Q T ↔ ∃ a : Spec (CommRingCat.of (T.B ⧸ T.J)) ⟶ D.Y, a ≫ D.f = B.thPt T)
     {Λ : Type} [CommRing Λ] (c : Λ →+* b.R) (N : ℕ)
@@ -160,6 +205,11 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPower
 def Lifts (D : E.LineData X) : ObjectProperty (Thick (nlFun γ p X q κ)) :=
   fun T => ∃ a : Spec (CommRingCat.of (T.B ⧸ T.J)) ⟶ D.Y, a ≫ D.f = pt T
 
+/- English proof (translation)
+Introduce and unpack `T ⟨-, V, ⟨σ, hσ⟩, hV⟩`. Establish `hr : Set.range (pt T) ⊆ Set.range V.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hV (show x ∈ (⊤ : Scheme.Opens _) from trivial)`.
+
+Use `⟨IsOpenImmersion.lift V.ι (pt T) hr ≫ σ, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hσ, IsOpenImmersion.lift_fac]`.
+-/
 theorem st_le_lifts (D : E.LineData X) : St (γ := γ) (p := p) (q := q) (κ := κ) ⊤ (𝒱D D) ≤ Lifts D := by
   rintro T ⟨-, V, ⟨σ, hσ⟩, hV⟩
   have hr : Set.range (pt T) ⊆ Set.range V.ι := by
@@ -169,14 +219,25 @@ theorem st_le_lifts (D : E.LineData X) : St (γ := γ) (p := p) (q := q) (κ := 
   refine ⟨IsOpenImmersion.lift V.ι (pt T) hr ≫ σ, ?_⟩
   rw [Category.assoc, hσ, IsOpenImmersion.lift_fac]
 
+/- English proof (translation)
+Introduce `_ _` and use `trivial`.
+-/
 theorem inU_top (T : Thick (nlFun γ p X q κ)) : InU ⊤ T := fun _ _ => trivial
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `h`. Use `⟨Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ a, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ha]`. Conclude with `congrArg (fun y => y.1.2) φ.pt`.
+-/
 theorem lifts_map (D : E.LineData X) {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') (h : Lifts D T) : Lifts D T' := by
   obtain ⟨a, ha⟩ := h
   refine ⟨Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ a, ?_⟩
   rw [Category.assoc, ha]
   exact congrArg (fun y => y.1.2) φ.pt
 
+/- English proof (translation)
+Establish `hU : Used (⊤ : ObjectProperty (Thick (nlFun γ p X q κ)))` using `Or.inr ⟨hp, Or.inl rfl⟩`. Establish `h1 : St ⊤ (𝒱D D) ≤ Lifts (γ` using `γ) (p := p) (q := q) (κ := κ) D := st_le_lifts D`. Establish `h1' : Lifts (γ` using `γ) (p := p) (q := q) (κ := κ) D ≤ St ⊤ {sSup (𝒱D D)} := fun T _ =>`. Use the proof step `⟨trivial, _, rfl, by rw [hD]; exact inU_top T⟩`. Establish `b1` using `(GlobalTheory.T.cohomology_restriction_between_stable_families ⊤ hU (𝒱D D) (Lifts D) h1 h1' (fun T T' φ h _ => lifts_map D φ h) j).2.2`.
+
+Establish `h2 : St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ (𝒱D D) ≤ St ⊤ {⊤} := fun T _ => ⟨trivial, ⊤, rfl, inU_top T⟩`. Establish `b2` using `(GlobalTheory.T.cech_refinement_cohomology_bijective ⊤ hU (𝒱D D) {⊤} h2 (by rintro W rfl; rw [hD]) j).2.2`. Establish `h3 : Lifts (γ` using `γ) (p := p) (q := q) (κ := κ) D ≤ St ⊤ {⊤} := fun T _ => ⟨trivial, ⊤, rfl, inU_top T⟩`. Establish `hall : ∀ T, St (γ` using `γ) (p := p) (q := q) (κ := κ) ⊤ {⊤} T := fun T => ⟨trivial, ⊤, rfl, inU_top T⟩`. Conclude with `bij_three (b := nlBase R I γ p) (L := nlFun γ p X q κ) c h3 h1 h2 j b1 b2 hall`.
+-/
 theorem res_bij (hp : p ≠ 0) (D : E.LineData X) (hD : sSup (𝒱D D) = ⊤) {Λ : Type} [CommRing Λ] (c : Λ →+* R) (j : ℕ) :
     Function.Bijective ((CH.Mor.restrict (B.OM (nlFun γ p X q κ) c) (Lifts D).ι).pull j) := by
   have hU : Used (⊤ : ObjectProperty (Thick (nlFun γ p X q κ))) := Or.inr ⟨hp, Or.inl rfl⟩
@@ -192,6 +253,13 @@ theorem res_bij (hp : p ≠ 0) (D : E.LineData X) (hD : sSup (𝒱D D) = ⊤) {�
 
 end Main
 
+/- English proof (translation)
+Introduce `O R _ _ I γ p hp X q κ D hD Λ _ c N hN`. Establish `hf : ∀ (T : Thick ((B.schFn q).cr (nlBase R I γ p) rfl κ)) (k : ℕ), N ≤ k → (k.factorial : T.B) = 0` using `fun T k hk => by`. Take `⟨m, hm⟩` from `Nat.factorial_dvd_factorial hk`. Establish `h0 : (k.factorial : R) = 0` using `by rw [hm, Nat.cast_mul, hN, zero_mul]`. Use `congrArg T.i h0` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Establish `hb` using `res_bij (γ := γ) (q := q) (κ := κ) hp D hD c 2`. Set `Q : ObjectProperty (Thick ((B.schFn q).cr (nlBase R I γ p) rfl κ))` to `Lifts (γ := γ) (p := p) (q := q) (κ := κ) D`. Establish `hQ : ∀ T, Q T ↔ ∃ a : Spec (CommRingCat.of (T.B ⧸ T.J)) ⟶ D.Y, a ≫ D.f = B.thPt T` using `fun T => Iff.rfl`. Establish `hb' : Function.Bijective ((CH.Mor.restrict (B.OM ((B.schFn q).cr (nlBase R I γ p) rfl κ) c) Q.ι).pull 2)` using `hb`.
+
+Conclude with `exu_core (q := q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) D Q hQ c N hb' hf`.
+-/
 theorem existsUnique_crystalline_chern_class : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : DividedPowers I) (p : ℕ) (hp : p ≠ 0) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (κ : O →+* R ⧸ I) (D : E.LineData X) (hD : sSup (𝒱D D) = ⊤) {Λ : Type} [CommRing Λ]
     (c : Λ →+* R) (N : ℕ), (N.factorial : R) = 0 →

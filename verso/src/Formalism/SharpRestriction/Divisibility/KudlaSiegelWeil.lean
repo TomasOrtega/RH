@@ -56,6 +56,9 @@ variable {L : Type} [Field L]
 
 def thP (ζ : L) (m : ℕ) : L := ζ ^ (2 ^ m) + (ζ ^ (2 ^ m))⁻¹
 
+/- English proof (translation)
+Unfold `thP`. Establish `h : ζ ^ (2 ^ m) ≠ 0` using `pow_ne_zero _ hζ`. Rewrite using `[pow_succ 2 m, pow_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_two_pow_add_inv_succ (ζ : L) (hζ : ζ ≠ 0) (m : ℕ) : thP ζ (m + 1) = thP ζ m ^ 2 - 2 := by
   unfold thP
   have h : ζ ^ (2 ^ m) ≠ 0 := pow_ne_zero _ hζ
@@ -63,6 +66,9 @@ theorem pow_two_pow_add_inv_succ (ζ : L) (hζ : ζ ≠ 0) (m : ℕ) : thP ζ (m
   field_simp
   ring
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa [thP, F1] using IntermediateField.mem_adjoin_simple_self ℚ (ζ + ζ⁻¹)`. Consider the case `succ m ih`. Rewrite using `[pow_two_pow_add_inv_succ ζ hζ]`. Conclude with `sub_mem (pow_mem ih 2) (by exact_mod_cast (F1 ζ).natCast_mem 2)`.
+-/
 theorem pow_two_pow_add_inv_mem_adjoin [Algebra ℚ L] (ζ : L) (hζ : ζ ≠ 0) (m : ℕ) : thP ζ m ∈ F1 ζ := by
   induction m with
   | zero => simpa [thP, F1] using IntermediateField.mem_adjoin_simple_self ℚ (ζ + ζ⁻¹)
@@ -70,6 +76,19 @@ theorem pow_two_pow_add_inv_mem_adjoin [Algebra ℚ L] (ζ : L) (hζ : ζ ≠ 0)
     rw [pow_two_pow_add_inv_succ ζ hζ]
     exact sub_mem (pow_mem ih 2) (by exact_mod_cast (F1 ζ).natCast_mem 2)
 
+/- English proof (translation)
+Establish `hζ : ζ ≠ 0` using `h.ne_zero (by positivity)`. Establish `h1 : ζ ^ (2 ^ (e + 1)) = -1`. Establish `hsq : (ζ ^ (2 ^ (e + 1))) ^ 2 = 1`. Rewrite using `[← pow_mul, ← pow_succ]`. Conclude with `h.pow_eq_one`.
+
+Establish `hne : ζ ^ (2 ^ (e + 1)) ≠ 1`. Introduce `h0`. Use `h.dvd_of_pow_eq_one _ h0` as an intermediate fact. Establish `h2 : 2 ^ (e + 2) ≤ 2 ^ (e + 1)` using `Nat.le_of_dvd (by positivity) this`. Establish `h3 : 2 ^ (e + 1) < 2 ^ (e + 2)` using `Nat.pow_lt_pow_right (by norm_num) (by omega)`.
+
+Use linear arithmetic over natural numbers and integers. Break down `mul_self_eq_one_iff.mp ((sq _).symm.trans hsq) with h | h` into its components or cases. Conclude with `absurd h hne`. Conclude with `h`. Establish `h2 : thP ζ (e + 1) = -2`.
+
+Unfold `thP`. Rewrite using `[h1]`. Evaluate the numerical expressions. Establish `h3 : thP ζ e ^ 2 = 0`. Use `pow_two_pow_add_inv_succ ζ hζ e` as an intermediate fact.
+
+Rewrite `this` using `[h2]`. Take the linear combination `-this`. Establish `h4 : thP ζ e = 0` using `by simpa using h3`. Establish `h5` using `pow_two_pow_add_inv_succ ζ hζ (e - 1)`. Rewrite `h5` using `[Nat.sub_add_cancel he, h4]`.
+
+Take the linear combination `-h5`.
+-/
 theorem pow_two_pow_add_inv_sq_eq_two [CharZero L] (ζ : L) (e : ℕ) (he : 1 ≤ e) (h : IsPrimitiveRoot ζ (2 ^ (e + 2))) :
     thP ζ (e - 1) ^ 2 = 2 := by
   have hζ : ζ ≠ 0 := h.ne_zero (by positivity)
@@ -97,10 +116,26 @@ theorem pow_two_pow_add_inv_sq_eq_two [CharZero L] (ζ : L) (e : ℕ) (he : 1 �
 
 end
 
+/- English proof (translation)
+Use `(inferInstance : @IsCyclotomicExtension {m} ℚ (CyclotomicField m ℚ) _ _ (CyclotomicField.algebra m ℚ))` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`.
+-/
 private theorem cycRat (m : ℕ) : IsCyclotomicExtension {m} ℚ (CyclotomicField m ℚ) := by
   convert (inferInstance : @IsCyclotomicExtension {m} ℚ (CyclotomicField m ℚ) _ _ (CyclotomicField.algebra m ℚ))
   exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Establish `: NeZero H.condN` using `⟨by have := H.QS_pos; have := H.hyp.1.pos; have := H.hyp.2.1.pos; positivity⟩`. Use `cycRat H.condN` as an intermediate fact. Establish `hdvd : 2 ^ (φ.e + 2) ∣ H.condN` using `(H.tower_dvd.mul_right _).mul_right _`. Establish `hroot` using `IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq H.condN (CyclotomicField H.condN ℚ) τ (x := ζ) (orderOf_dvd_iff_pow_eq_one.1 ((orderOf_dvd_iff_pow_eq_one.2 hζ).trans hdvd))`. Establish `hz` using `IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq H.condN (CyclotomicField H.condN ℚ) τ (x := H.cycZeta) H.cycZeta_prim.pow_eq_one`.
+
+Use `set u := IsCyclotomicExtension.Rat.galEquivZMod H.condN (CyclotomicField H.condN ℚ) τ`. Establish `h1 : H.art u = 1`. Rewrite using `[← H.gal.symm.map_eq_one_iff]`. Conclude with `AlgEquiv.ext fun x => H.cycEmb.injective ((H.art_spec u τ hz x).trans (hτ x))`. Establish `hv : ((ZMod.unitsMap hdvd u : (ZMod (2 ^ (φ.e + 2)))ˣ) : ZMod (2 ^ (φ.e + 2))) = (((u : ZMod H.condN).val : ℕ) : ZMod (2 ^ (φ.e + 2)))`.
+
+Rewrite using `[ZMod.unitsMap_val, ZMod.cast_eq_val]`. Establish `h2` using `H.art_h u _ hv`. Rewrite `h2` using `[h1, Prod.snd_one, map_one]`. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.mp ((QuotientGroup.eq_one_iff _).mp h2.symm)`. Rewrite `hv` using `[← hk]`.
+
+Rewrite using `[hroot]`. Break down `Int.even_or_odd k with h3 | h3` into its components or cases. Use `left`. Rewrite `hv` using `[h3.neg_one_zpow, Units.val_one, ← Nat.cast_one, ZMod.natCast_eq_natCast_iff]`. Rewrite using `[← pow_eq_pow_of_modEq hv hζ, pow_one]`.
+
+Use `right`. Rewrite `hv` using `[h3.neg_one_zpow]`. Establish `h4 : (((u : ZMod H.condN).val + 1 : ℕ) : ZMod (2 ^ (φ.e + 2))) = 0`. Rewrite using `[Nat.cast_add, ← hv]`. Simplify using the standard rewrite rules.
+
+Take `⟨m, hm⟩` from `(ZMod.natCast_eq_zero_iff _ _).1 h4`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← pow_succ, hm, pow_mul, hζ, one_pow]`.
+-/
 private theorem fix_or_inv {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ)
     (τ : CyclotomicField H.condN ℚ ≃ₐ[ℚ] CyclotomicField H.condN ℚ) (hτ : ∀ x, τ (H.cycEmb x) = H.cycEmb x)
     (ζ : CyclotomicField H.condN ℚ) (hζ : ζ ^ 2 ^ (φ.e + 2) = 1) : τ ζ = ζ ∨ τ ζ = ζ⁻¹ := by
@@ -135,6 +170,17 @@ private theorem fix_or_inv {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw �
     apply eq_inv_of_mul_eq_one_left
     rw [← pow_succ, hm, pow_mul, hζ, one_pow]
 
+/- English proof (translation)
+Establish `hN : H.condN ≠ 0` using `by have := H.QS_pos; have := H.hyp.1.pos; have := H.hyp.2.1.pos; positivity`. Establish `: NeZero H.condN` using `⟨hN⟩`. Use `cycRat H.condN` as an intermediate fact. Establish `: IsGalois ℚ (CyclotomicField H.condN ℚ)` using `IsCyclotomicExtension.isGalois {H.condN} ℚ _`. Take `⟨k, hk⟩ : 2 ^ (φ.e + 2) ∣ H.condN` from `(H.tower_dvd.mul_right _).mul_right _`.
+
+Establish `hζ : IsPrimitiveRoot (H.cycZeta ^ k) (2 ^ (φ.e + 2))` using `H.cycZeta_prim.pow (Nat.pos_of_ne_zero hN) (hk.trans (mul_comm _ _))`. Establish `he : 1 ≤ φ.e` using `le_trans (by norm_num) H.two_le_e`. Establish `h2` using `pow_two_pow_add_inv_sq_eq_two _ _ he hζ`. Set `_ : Algebra H.E (CyclotomicField H.condN ℚ)` to `H.cycEmb.toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ H.E (CyclotomicField H.condN ℚ)` using `IsScalarTower.of_algebraMap_eq fun x => (H.cycEmb.commutes x).symm`.
+
+Establish `: IsGalois H.E (CyclotomicField H.condN ℚ)` using `IsGalois.tower_top_of_isGalois ℚ H.E _`. Establish `: FiniteDimensional H.E (CyclotomicField H.condN ℚ)` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Take `⟨s, hs⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed (F := H.E) (thP (H.cycZeta ^ k) (φ.e - 1))).2 (by`. Introduce `τ`. Establish `h3 : τ (H.cycZeta ^ k) = H.cycZeta ^ k ∨ τ (H.cycZeta ^ k) = (H.cycZeta ^ k)⁻¹` using `fix_or_inv H (τ.restrictScalars ℚ) (fun x => τ.commutes x) _ hζ.pow_eq_one`.
+
+Generalize the expression as in `H.cycZeta ^ k = z at h3 ⊢`. Rewrite using `[thP, map_add, map_inv₀, map_pow]`. Break down `h3 with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h, inv_pow, inv_inv, add_comm])`.
+
+Use `⟨s, (algebraMap H.E (CyclotomicField H.condN ℚ)).injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_ofNat, hs, h2]`.
+-/
 private theorem exists_sqrt_two_E {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ) : ∃ s : H.E, s ^ 2 = 2 := by
   have hN : H.condN ≠ 0 := by have := H.QS_pos; have := H.hyp.1.pos; have := H.hyp.2.1.pos; positivity
   have : NeZero H.condN := ⟨hN⟩
@@ -162,6 +208,15 @@ private theorem exists_sqrt_two_E {φ : Formalism.HC.Frame} (H : Formalism.HC.Ho
   refine ⟨s, (algebraMap H.E (CyclotomicField H.condN ℚ)).injective ?_⟩
   rw [map_pow, map_ofNat, hs, h2]
 
+/- English proof (translation)
+Take `⟨t, htE⟩` from `exists_sqrt_two_E D.host.toHostRaw`. Establish `hF : t ∈ D.host.F`. Rewrite using `[mem_maximalRealSubfield_iff]`. Introduce `ψ`. Establish `h1 : (ψ t) ^ 2 = ((Real.sqrt 2 : ℝ) : ℂ) ^ 2`.
+
+Rewrite using `[← map_pow, htE, map_ofNat, ← Complex.ofReal_pow, Real.sq_sqrt (by norm_num)]; rfl`. Apply the tactic sequence `rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h <;> rw [h] <;> simp`. Establish `htF : (⟨t, hF⟩ : FF D) ^ 2 = 2`. Apply `D.host.F.subtype.injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_ofNat]`.
+
+Conclude with `htE`. Establish `hint : IsIntegral ℤ (⟨t, hF⟩ : FF D)` using `⟨Polynomial.X ^ 2 - 2, by monicity!, by simp [htF]⟩`. Use `⟨IsIntegralClosure.mk' (𝓞 (FF D)) _ hint, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_ofNat, IsIntegralClosure.algebraMap_mk']`.
+
+Conclude with `htF`.
+-/
 theorem exists_sqrt_two (D : D7) : ∃ s : 𝓞 (FF D), s ^ 2 = 2 := by
   obtain ⟨t, htE⟩ := exists_sqrt_two_E D.host.toHostRaw
   have hF : t ∈ D.host.F := by
@@ -179,6 +234,19 @@ theorem exists_sqrt_two (D : D7) : ∃ s : 𝓞 (FF D), s ^ 2 = 2 := by
   apply RingOfIntegers.coe_injective
   rw [map_pow, map_ofNat, IsIntegralClosure.algebraMap_mk']; exact htF
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hle`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `by rw [Ne, Ideal.absNorm_eq_one_iff]; exact v.isPrime.ne_top`. Establish `hm` using `Ideal.absNorm_mem v.asIdeal`. Establish `h2' : Ideal.absNorm v.asIdeal ≠ 2`.
+
+Introduce `h; rw [h] at hm; exact h2 (by exact_mod_cast hm)`. Establish `h3 : Ideal.absNorm v.asIdeal = 3` using `by omega`. Rewrite `hm` using `[h3]`. Take `⟨s, hs⟩` from `exists_sqrt_two D`. Establish `hcard : Nat.card (𝓞 (FF D) ⧸ v.asIdeal) = 3`.
+
+Rewrite using `[← h3, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `: v.asIdeal.IsMaximal` using `v.isMaximal`. Set `_` to `Ideal.Quotient.field v.asIdeal`. Establish `: Finite (𝓞 (FF D) ⧸ v.asIdeal)` using `Nat.finite_of_card_ne_zero (by omega)`. Set `_` to `Fintype.ofFinite (𝓞 (FF D) ⧸ v.asIdeal)`.
+
+Establish `hx3` using `FiniteField.pow_card (Ideal.Quotient.mk v.asIdeal s)`. Rewrite `hx3` using `[← Nat.card_eq_fintype_card, hcard]`. Establish `hx2 : (Ideal.Quotient.mk v.asIdeal s) ^ 2 = 2`. Rewrite using `[← map_pow, hs, map_ofNat]`. Establish `h3K : (3 : 𝓞 (FF D) ⧸ v.asIdeal) = 0`.
+
+Use `Ideal.Quotient.eq_zero_iff_mem.mpr hm` as an intermediate fact. Rewrite `this` using `[Nat.cast_ofNat, map_ofNat]`. Conclude with `this`. Establish `hx0 : Ideal.Quotient.mk v.asIdeal s = 0`. Take the linear combination `hx3 - (Ideal.Quotient.mk v.asIdeal s) * hx2`.
+
+Establish `: (1 : 𝓞 (FF D) ⧸ v.asIdeal) = 0`. Take the linear combination `h3K + hx2 - (Ideal.Quotient.mk v.asIdeal s) * hx0`. Conclude with `one_ne_zero this`.
+-/
 theorem three_lt_absNorm (D : D7) (v : FinF D) (h2 : (2 : 𝓞 (FF D)) ∉ v.asIdeal) :
     3 < Ideal.absNorm v.asIdeal := by
   by_contra hle
@@ -210,32 +278,58 @@ theorem three_lt_absNorm (D : D7) (v : FinF D) (h2 : (2 : 𝓞 (FF D)) ∉ v.asI
     linear_combination h3K + hx2 - (Ideal.Quotient.mk v.asIdeal s) * hx0
   exact one_ne_zero this
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[D.host.conjE_apply, D.host.conjE_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   apply D.host.φ₀.injective
   rw [D.host.conjE_apply, D.host.conjE_apply]
   simp
 
+/- English proof (translation)
+Rewrite using `[D.host.galE_bE, D.host.galE_conjE]`. Simplify using `[Formalism.HC.Frame.cc, c0]`.
+-/
 theorem conj_b (D : D7) : D.host.conj (D.host.sqd) = -D.host.sqd := by
   rw [D.host.galE_bE, D.host.galE_conjE]
   simp [Formalism.HC.Frame.cc, c0]
 
+/- English proof (translation)
+The claim follows from `D.host.sqd_sq`.
+-/
 theorem b_sq (D : D7) : D.host.sqd ^ 2 = -(D.host.d : D.host.E) := D.host.sqd_sq
 
 def sgO (D : D7) : 𝓞 D.host.E →+* 𝓞 D.host.E := RingOfIntegers.mapRingHom D.host.conj
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sgO_coe (D : D7) (x : 𝓞 D.host.E) : ((sgO D x : 𝓞 D.host.E) : D.host.E) = D.host.conj (x : D.host.E) := rfl
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[sgO_coe, sgO_coe, conj_conj]`.
+-/
 theorem sgO_sgO (D : D7) (x : 𝓞 D.host.E) : sgO D (sgO D x) = x := by
   apply RingOfIntegers.ext; rw [sgO_coe, sgO_coe, conj_conj]
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[sgO_coe]`. Conclude with `(D.host.conjE_mem_hostF_iff (x : FF D).1).1 (x : FF D).2`.
+-/
 theorem sgO_F (D : D7) (x : 𝓞 (FF D)) :
     sgO D (algebraMap (𝓞 (FF D)) (𝓞 D.host.E) x) = algebraMap (𝓞 (FF D)) (𝓞 D.host.E) x := by
   apply RingOfIntegers.ext; rw [sgO_coe]
   exact (D.host.conjE_mem_hostF_iff (x : FF D).1).1 (x : FF D).2
 
+/- English proof (translation)
+The claim follows from `FaithfulSMul.algebraMap_injective _ _`.
+-/
 theorem algFE_inj (D : D7) : Function.Injective (algebraMap (𝓞 (FF D)) (𝓞 D.host.E)) :=
   FaithfulSMul.algebraMap_injective _ _
 
+/- English proof (translation)
+Take `⟨Q, -, hQp, hQ⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal (⊥ : Ideal (𝓞 D.host.E)) (by rw [Ideal.comap_bot_of_injective _ (algFE_inj D)]; exact bot_le)`. Establish `hQne : Q ≠ ⊥`. Introduce `h`. Rewrite `hQ` using `[h, Ideal.comap_bot_of_injective _ (algFE_inj D)]`. Conclude with `v.ne_bot hQ.symm`.
+
+Conclude with `⟨⟨Q, hQp, hQne⟩, hQ⟩`.
+-/
 theorem exists_over (D : D7) (v : FinF D) : ∃ w : FinE D, Over D w v := by
   obtain ⟨Q, -, hQp, hQ⟩ := Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal
     (⊥ : Ideal (𝓞 D.host.E)) (by rw [Ideal.comap_bot_of_injective _ (algFE_inj D)]; exact bot_le)
@@ -243,6 +337,15 @@ theorem exists_over (D : D7) (v : FinF D) : ∃ w : FinE D, Over D w v := by
     intro h; rw [h, Ideal.comap_bot_of_injective _ (algFE_inj D)] at hQ; exact v.ne_bot hQ.symm
   exact ⟨⟨Q, hQp, hQne⟩, hQ⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Apply `hv` to reduce the goal to its premises. Establish `hne' : w.asIdeal.comap (sgO D) ≠ ⊥`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`. Introduce `h`.
+
+Establish `h1 : sgO D x ∈ w.asIdeal.comap (sgO D)` using `by rw [Ideal.mem_comap, sgO_sgO]; exact hx`. Rewrite `h1` using `[h, Ideal.mem_bot]`. Apply `hx0` to reduce the goal to its premises. Rewrite using `[← sgO_sgO D x, h1, map_zero]`. Use `w.isPrime` as an intermediate fact.
+
+Use `⟨w, ⟨w.asIdeal.comap (sgO D), Ideal.comap_isPrime (sgO D) w.asIdeal, hne'⟩, ?_, hw, ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hne (congrArg HeightOneSpectrum.asIdeal h).symm`. Use `show (w.asIdeal.comap (sgO D)).comap (algebraMap (𝓞 (FF D)) (𝓞 D.host.E)) = v.asIdeal`. Rewrite using `[Ideal.comap_comap, show (sgO D).comp (algebraMap (𝓞 (FF D)) (𝓞 D.host.E)) = algebraMap _ _ from RingHom.ext (sgO_F D)]`.
+
+Conclude with `hw`.
+-/
 theorem fixed_of_not_split (D : D7) (v : FinF D) (hv : ¬ Split D v) (w : FinE D) (hw : Over D w v) :
     w.asIdeal.comap (sgO D) = w.asIdeal := by
   by_contra hne
@@ -262,6 +365,9 @@ theorem fixed_of_not_split (D : D7) (v : FinF D) (hv : ¬ Split D v) (w : FinE D
       RingHom.ext (sgO_F D)]
     exact hw
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.mpr h`. Establish `: ((a : R) * m + (b : R) * n) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → R) hab`. Rewrite using `[← this]`. Conclude with `P.add_mem (P.mul_mem_left _ hm) (P.mul_mem_left _ hn)`.
+-/
 theorem one_mem_of_coprime {R : Type*} [CommRing R] (P : Ideal R) {m n : ℕ} (h : Nat.Coprime m n)
     (hm : (m : R) ∈ P) (hn : (n : R) ∈ P) : (1 : R) ∈ P := by
   obtain ⟨a, b, hab⟩ := Nat.isCoprime_iff_coprime.mpr h
@@ -269,10 +375,22 @@ theorem one_mem_of_coprime {R : Type*} [CommRing R] (P : Ideal R) {m n : ℕ} (h
   rw [← this]
   exact P.add_mem (P.mul_mem_left _ hm) (P.mul_mem_left _ hn)
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_right_variant.goal1 .. | (apply Bl.general_b_fact_right_variant.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_variant.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_variant.goal1 <;> assumption) | (intros; apply @Bl.genera …`.
+-/
 theorem exists_prime_mem {R : Type*} [CommRing R] (P : Ideal R) [hP : P.IsPrime] (n : ℕ) :
     n ≠ 0 → (n : R) ∈ P → ∃ p : ℕ, p.Prime ∧ p ∣ n ∧ (p : R) ∈ P := by
   first | exact Bl.general_b_fact_right_variant.goal1 .. | (apply Bl.general_b_fact_right_variant.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_variant.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_variant.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_right_variant.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_variant.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_right_variant.goal1 R ‹_› P hP n ‹_› ‹_› | exact @Bl.general_b_fact_right_variant.goal1 R ‹_› P hP n ‹_› | exact @Bl.general_b_fact_right_variant.goal1 R ‹_› P hP n | exact @Bl.general_b_fact_right_variant.goal1 R ‹_› P hP | exact @Bl.general_b_fact_right_variant.goal1 R ‹_› P | exact @Bl.general_b_fact_right_variant.goal1 R ‹_› | exact @Bl.general_b_fact_right_variant.goal1 R
 
+/- English proof (translation)
+Introduce `hfix`. Use `w.isPrime` as an intermediate fact. Establish `hlo : w.asIdeal.LiesOver (Ideal.span {(p : ℤ)})`. Prove the components needed by the constructor for the conclusion. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hpp).irreducible`.
+
+Use `hmax.eq_of_le (Ideal.comap_ne_top _ w.isPrime.ne_top) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]`. Simplify using `using hpw`. Apply `D.host.der.decompConj p hpp hp w.asIdeal` to reduce the goal to its premises. Rewrite using `[MulAction.mem_stabilizer_iff]`.
+
+Use extensionality with `x`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `hx : ((D.host.conj)⁻¹ • x : 𝓞 D.host.E) = sgO D x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[sgO_coe]`.
+
+Use `show (D.host.conj).symm (x : D.host.E) = D.host.conj (x : D.host.E)`. Rewrite using `[AlgEquiv.symm_apply_eq, conj_conj]`. Rewrite using `[hx, ← Ideal.mem_comap, hfix]`.
+-/
 theorem not_fixed_condN (D : D7) (w : FinE D) (p : ℕ) (hpp : p.Prime) (hp : p ∣ D.host.condN)
     (hpw : (p : 𝓞 D.host.E) ∈ w.asIdeal) : w.asIdeal.comap (sgO D) ≠ w.asIdeal := by
   intro hfix
@@ -295,6 +413,9 @@ theorem not_fixed_condN (D : D7) (w : FinE D) (p : ℕ) (hpp : p.Prime) (hp : p 
     rw [AlgEquiv.symm_apply_eq, conj_conj]
   rw [hx, ← Ideal.mem_comap, hfix]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases hp with h | h | h <;> subst h`. Conclude with `not_fixed_condN D w 2 Nat.prime_two ((((dvd_pow_self 2 (by omega)).trans D.host.tower_dvd).mul_right _).mul_right _) hpw`. Conclude with `not_fixed_condN D w _ D.host.hyp.1 ((dvd_mul_left _ _).mul_right _) hpw`. Conclude with `not_fixed_condN D w _ D.host.hyp.2.1 (dvd_mul_left _ _) hpw`.
+-/
 theorem not_fixed_ram (D : D7) (w : FinE D) (p : ℕ) (hp : p = 2 ∨ p = D.host.q ∨ p = D.host.d)
     (hpw : (p : 𝓞 D.host.E) ∈ w.asIdeal) : w.asIdeal.comap (sgO D) ≠ w.asIdeal := by
   rcases hp with h | h | h <;> subst h
@@ -303,6 +424,11 @@ theorem not_fixed_ram (D : D7) (w : FinE D) (p : ℕ) (hp : p = 2 ∨ p = D.host
   · exact not_fixed_condN D w _ D.host.hyp.1 ((dvd_mul_left _ _).mul_right _) hpw
   · exact not_fixed_condN D w _ D.host.hyp.2.1 (dvd_mul_left _ _) hpw
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℤ (D.host.sqd)` using `⟨Polynomial.X ^ 2 + Polynomial.C (D.host.d : ℤ), by monicity!, by simp [b_sq D]⟩`. Establish `hβ : algebraMap (𝓞 D.host.E) D.host.E (IsIntegralClosure.mk' (𝓞 D.host.E) _ hint) = D.host.sqd` using `IsIntegralClosure.algebraMap_mk' _ _ _`. Use `⟨IsIntegralClosure.mk' (𝓞 D.host.E) _ hint, hβ, ?_, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_neg, map_natCast, hβ, b_sq]`.
+
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_neg, hβ, ← conj_b]`. Conclude with `(sgO_coe D _).trans (congrArg D.host.conj hβ)`.
+-/
 theorem exists_bO (D : D7) : ∃ β : 𝓞 D.host.E,
     algebraMap (𝓞 D.host.E) D.host.E β = D.host.sqd ∧
     β ^ 2 = -(D.host.d : 𝓞 D.host.E) ∧ sgO D β = -β := by
@@ -317,6 +443,29 @@ theorem exists_bO (D : D7) : ∃ β : 𝓞 D.host.E,
     rw [map_neg, hβ, ← conj_b]
     exact (sgO_coe D _).trans (congrArg D.host.conj hβ)
 
+/- English proof (translation)
+Introduce `hfix`. Establish `hone : (1 : 𝓞 D.host.E) ∉ w.asIdeal` using `fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Establish `: Fact p.Prime` using `⟨hpp⟩`. Rewrite `hj` using `[← jacobiSym.legendreSym.to_jacobiSym]`. Establish `h0 : ((-(D.host.d : ℤ) : ℤ) : ZMod p) ≠ 0`.
+
+Introduce `h`. Rewrite `hj` using `[(legendreSym.eq_zero_iff p _).2 h]`. Conclude with `zero_ne_one hj`. Take `⟨r, hr⟩` from `(legendreSym.eq_one_iff p h0).1 hj`. Take `⟨x, rfl⟩` from `ZMod.intCast_surjective r`.
+
+Establish `hdvd : (p : ℤ) ∣ x * x + D.host.d`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at hr ⊢`. Take the linear combination `-hr`. Take `⟨m, hm⟩` from `hdvd`.
+
+Take `⟨β, hβ, hβ2, hσβ⟩` from `exists_bO D`. Establish `hprod : ((x : 𝓞 D.host.E) + β) * ((x : 𝓞 D.host.E) - β) ∈ w.asIdeal`. Establish `: ((x : 𝓞 D.host.E) + β) * ((x : 𝓞 D.host.E) - β) = (p : 𝓞 D.host.E) * (m : 𝓞 D.host.E)`. Establish `h1 : ((x * x + D.host.d : ℤ) : 𝓞 D.host.E) = ((p * m : ℤ) : 𝓞 D.host.E)` using `congrArg _ hm`. Move the coercions through the operations in `at h1`.
+
+Take the linear combination `h1 - hβ2`. Rewrite using `[this]`. Conclude with `w.asIdeal.mul_mem_right _ hpw`. Establish `hswap : ∀ y, y ∈ w.asIdeal → sgO D y ∈ w.asIdeal`. Introduce `y hy`.
+
+Rewrite `hy` using `[← hfix]`. Conclude with `hy`. Establish `hσ1 : sgO D ((x : 𝓞 D.host.E) + β) = (x : 𝓞 D.host.E) - β`. Rewrite using `[map_add, map_intCast, hσβ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hσ2 : sgO D ((x : 𝓞 D.host.E) - β) = (x : 𝓞 D.host.E) + β`. Rewrite using `[map_sub, map_intCast, hσβ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hboth : (x : 𝓞 D.host.E) + β ∈ w.asIdeal ∧ (x : 𝓞 D.host.E) - β ∈ w.asIdeal`. Break down `w.isPrime.mem_or_mem hprod with h | h` into its components or cases.
+
+Conclude with `⟨h, hσ1 ▸ hswap _ h⟩`. Conclude with `⟨hσ2 ▸ hswap _ h, h⟩`. Establish `h2β : ((2 : ℕ) : 𝓞 D.host.E) * β ∈ w.asIdeal`. Establish `: ((2 : ℕ) : 𝓞 D.host.E) * β = ((x : 𝓞 D.host.E) + β) - ((x : 𝓞 D.host.E) - β)` using `by push_cast; ring`. Rewrite using `[this]`.
+
+Conclude with `w.asIdeal.sub_mem hboth.1 hboth.2`. Break down `w.isPrime.mem_or_mem h2β with h | h` into its components or cases. Conclude with `hone (one_mem_of_coprime _ ((Nat.coprime_primes hpp Nat.prime_two).2 hp2) hpw h)`. Establish `hd : (D.host.d : 𝓞 D.host.E) ∈ w.asIdeal`. Establish `: (D.host.d : 𝓞 D.host.E) = -(β * β)` using `by linear_combination hβ2`.
+
+Rewrite using `[this]`. Conclude with `w.asIdeal.neg_mem (w.asIdeal.mul_mem_left _ h)`. Use `hone (one_mem_of_coprime _ ((Nat.coprime_primes hpp D.host.hyp.2.1).2 ?_) hpw hd)` and prove the remaining obligations. Introduce `hpd`. Apply `h0` to reduce the goal to its premises.
+
+Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd, hpd]`. Conclude with `dvd_neg.2 dvd_rfl`.
+-/
 theorem not_fixed_splitK (D : D7) (w : FinE D) (p : ℕ) (hpp : p.Prime) (hp2 : p ≠ 2)
     (hj : jacobiSym (-(D.host.d : ℤ)) p = 1) (hpw : (p : 𝓞 D.host.E) ∈ w.asIdeal) :
     w.asIdeal.comap (sgO D) ≠ w.asIdeal := by
@@ -365,12 +514,18 @@ theorem not_fixed_splitK (D : D7) (w : FinE D) (p : ℕ) (hpp : p.Prime) (hp2 : 
     rw [ZMod.intCast_zmod_eq_zero_iff_dvd, hpd]
     exact dvd_neg.2 dvd_rfl
 
+/- English proof (translation)
+Introduce `h`. Rewrite `h` using `[← hw, Ideal.mem_comap, map_natCast]`. Conclude with `h`.
+-/
 theorem mem_of_over (D : D7) {w : FinE D} {v : FinF D} (hw : Over D w v) (n : ℕ) :
     (n : 𝓞 (FF D)) ∈ v.asIdeal → (n : 𝓞 D.host.E) ∈ w.asIdeal := by
   intro h
   rw [← hw, Ideal.mem_comap, map_natCast] at h
   exact h
 
+/- English proof (translation)
+Use `le_antisymm (w.valuation_le_one x) (not_lt.1 ?_)` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hx`.
+-/
 theorem val_eq_one (D : D7) (w : FinE D) (x : 𝓞 D.host.E) (hx : x ∉ w.asIdeal) :
     w.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E x) = 1 := by
   refine le_antisymm (w.valuation_le_one x) (not_lt.1 ?_)
@@ -380,6 +535,31 @@ end InertConditionsOfHost
 
 open InertConditionsOfHost Formalism.FrobeniusOrbits in
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨w0, hw0⟩` from `exists_over D v`. Establish `hfix0` using `fixed_of_not_split D v hv w0 hw0`. Establish `h2 : (2 : 𝓞 (FF D)) ∉ v.asIdeal`. Introduce `h`.
+
+Conclude with `not_fixed_ram D w0 2 (Or.inl rfl) (mem_of_over D hw0 2 (by exact_mod_cast h)) hfix0`. Use `⟨h2, three_lt_absNorm D v h2, ?_, ?_⟩` and prove the remaining obligations. Introduce `hle`. Establish `hdv : Ideal.absNorm v.asIdeal ∣ (discr (FF D)).natAbs`. Rewrite using `[← absNorm_differentIdeal (K := FF D) (𝒪 := 𝓞 (FF D))]`.
+
+Conclude with `Ideal.absNorm_dvd_absNorm_of_le hle`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot`. Use `v.isPrime` as an intermediate fact. Take `⟨p, hpp, hpd, hpv⟩` from `exists_prime_mem v.asIdeal _ h0 (Ideal.absNorm_mem v.asIdeal)`. Establish `hp3 : p ∣ D.host.condN`.
+
+Use `D.host.der.discr_primes.1 p hpp ?_` and prove the remaining obligations. Rewrite using `[D.host.der.discr_sq]`. Conclude with `(Int.natCast_dvd.2 (hpd.trans hdv)).trans (dvd_pow_self _ two_ne_zero)`. Conclude with `not_fixed_condN D w0 p hpp hp3 (mem_of_over D hw0 p hpv) hfix0`. Introduce `w hw`.
+
+Establish `hfix` using `fixed_of_not_split D v hv w hw`. Take `⟨β, hβ, hβ2, -⟩` from `exists_bO D`. Establish `hβw : β ∉ w.asIdeal`. Introduce `h`. Establish `hd : (D.host.d : 𝓞 D.host.E) ∈ w.asIdeal`.
+
+Establish `: (D.host.d : 𝓞 D.host.E) = -(β * β)` using `by linear_combination hβ2`. Rewrite using `[this]`. Conclude with `w.asIdeal.neg_mem (w.asIdeal.mul_mem_left _ h)`. Conclude with `not_fixed_ram D w _ (Or.inr (Or.inr rfl)) hd hfix`. Establish `hNw : ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal`.
+
+Introduce `h`. Establish `hN0 : Ideal.absNorm D.host.ccK ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `D.host.ccK_ne_bot`. Use `w.isPrime` as an intermediate fact.
+
+Take `⟨p, hpp, hpd, hpw⟩` from `exists_prime_mem w.asIdeal _ hN0 h`. Establish `hp2 : p ≠ 2`. Introduce `h2'`. Establish `hc` using `D.host.ccK_coprime 2 (by simp)`. Rewrite `hpd` using `[h2']`.
+
+Conclude with `absurd (Nat.Coprime.eq_one_of_dvd hc.symm hpd) (by norm_num)`. Choose the witnesses or unpack the hypotheses as in `⟨P, hP, hPle, hpP⟩ : ∃ P : Ideal (𝓞 D.host.K), P.IsPrime ∧ D.host.ccK ≤ P ∧ p ∣ Ideal.absNorm P := by`. Establish `hfac` using `Ideal.prod_normalizedFactors_eq_self D.host.ccK_ne_bot`. Rewrite `hpd` using `[← hfac, map_multiset_prod]`. Take `⟨n, hn, hpn⟩` from `(Nat.prime_iff.1 hpp).exists_mem_multiset_dvd hpd`.
+
+Take `⟨P, hPm, rfl⟩` from `Multiset.mem_map.1 hn`. Conclude with `⟨P, Ideal.isPrime_of_prime (UniqueFactorizationMonoid.prime_of_normalized_factor P hPm), Ideal.le_of_dvd (UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hPm), hpn⟩`. Take `⟨hNp, hj⟩` from `D.host.ccK_split P hP hPle`. Establish `hpe : p = Ideal.absNorm P` using `(Nat.prime_dvd_prime_iff_eq hpp hNp).1 hpP`. Rewrite `hj` using `[← hpe]`.
+
+Conclude with `not_fixed_splitK D w p hpp hp2 hj hpw hfix`. Establish `e1` using `val_eq_one D w β hβw`. Establish `e2` using `val_eq_one D w _ hNw`. Rewrite `e1` using `[hβ]`. Rewrite `e2` using `[map_natCast]`.
+
+Rewrite using `[Formalism.BasicNotions.Host.xi0, Formalism.BasicNotions.Host.sqrtMinusD, map_div₀, Valuation.map_neg, map_one, map_mul, e2, e1]`. Simplify using the standard rewrite rules.
+-/
 theorem inert_conditions_hold (D : D7) : InertPlaceConditions D := by
   intro v hv
   obtain ⟨w0, hw0⟩ := exists_over D v

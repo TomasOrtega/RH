@@ -44,9 +44,15 @@ def runPar : Multiset ℚ :=
 
 def fullPar : Multiset ℚ := sigPar P + runPar P a
 
+/- English proof (translation)
+Simplify using `[pW, Ranks.sigW]`.
+-/
 theorem pW_eq : pW a = (R.k : ℚ) + a.1 := by
   simp [pW, Ranks.sigW]
 
+/- English proof (translation)
+Establish `h : a.1 + 1 ≤ R.m` using `a.2`. Simplify using `only [qW, Ranks.sigW]`. Rewrite using `[Nat.cast_sub h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qW_eq : qW a = (R.m : ℚ) - a.1 - 1 := by
   have h : a.1 + 1 ≤ R.m := a.2
   simp only [qW, Ranks.sigW]
@@ -54,12 +60,22 @@ theorem qW_eq : qW a = (R.m : ℚ) - a.1 - 1 := by
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h : 1 ≤ R.k + R.m` using `by have := R.two_le_m; omega`. Simplify using `only [Ranks.nV, Ranks.r]`. Move the coercions through the operations in `[Nat.cast_sub h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nV_eq (R : Ranks) : (R.nV : ℚ) = (R.k : ℚ) + R.m - 1 + R.t := by
   have h : 1 ≤ R.k + R.m := by have := R.two_le_m; omega
   simp only [Ranks.nV, Ranks.r]
   push_cast [Nat.cast_sub h]
   ring
 
+/- English proof (translation)
+Simplify using `only [lamWt, fullPar, sigPar, runPar, Multiset.map_add, Multiset.map_map]`. Use `congr 1`. Use `congr 1`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [aPlus, dTw, rhoN, Function.comp]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `Multiset.map_congr rfl fun h _ => ?_` and prove the remaining obligations. Simplify using `only [aPlus, aMinus, dTw, rhoN, Function.comp, pW_eq, qW_eq, nV_eq]`. Apply the tactic sequence `split_ifs <;> ring`. Use `Multiset.map_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [dTw, rhoN, Function.comp, pW_eq, qW_eq, nV_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lamWt_eq : lamWt P a = (fullPar P a).map (· - 1 / 2) := by
   simp only [lamWt, fullPar, sigPar, runPar, Multiset.map_add, Multiset.map_map]
   congr 1

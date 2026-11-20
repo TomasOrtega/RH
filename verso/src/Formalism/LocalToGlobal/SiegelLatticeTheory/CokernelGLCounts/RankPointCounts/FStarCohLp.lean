@@ -14,6 +14,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (Zd : LocDat D)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hΛ.fg`. Use `(s.finite_toSet.biUnion fun v _ => CohIntPf.bcP_mem_cof Zd hΛ (g v)).subset ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Set.mem_iUnion, Set.mem_ofPred_eq, exists_prop]`. Assume the negation of the conclusion as `hall`.
+
+Use `push_neg at hall`. Apply `hp` to reduce the goal to its premises. Establish `hloc : ∀ v ∈ Λ, g v ∈ Formalism.HermitianLattices.Ext.L3.locF p.asIdeal Λ`. Introduce `v hv`. Rewrite `hv` using `[← hs]`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact (Formalism.L2.SG.Pf.LocalDenominators.baseChangeAt_mem_localLattice_iff Zd p hΛ _).1 (hall v hv)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul o x _ hx`. Rewrite using `[show g (o • x) = o • g x from (g : (VS D).V →ₗ[D.host.E] (VS D).V).map_smul_of_tower o x]`. Conclude with `Submodule.smul_mem _ _ hx`. Introduce `x hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`. Rewrite using `[betaP_bc]`. Conclude with `(Formalism.L2.SG.Pf.LocalDenominators.baseChangeAt_mem_localLattice_iff Zd p hΛ _).2 (hloc v hv)`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul o x _ hx`.
+
+Rewrite using `[Subring.smul_def, map_smul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem localLattice_preserves_cofinite (g : (VS D).V ≃ₗ[D.host.E] (VS D).V) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hΛ : Submodule.IsLattice D.host.E Λ) :
     {p : PlF D | ¬ ∀ x ∈ lattice₂ D Zd.M p Λ, betaP p g x ∈ lattice₂ D Zd.M p Λ}.Finite := by
@@ -46,6 +61,21 @@ theorem localLattice_preserves_cofinite (g : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     rw [Subring.smul_def, map_smul, ← Subring.smul_def]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hΛ.fg`. Use `(s.finite_toSet.biUnion fun v _ => CohIntPf.bcP_mem_cof Zd hΛ (g.symm v)).subset ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Set.mem_iUnion, Set.mem_ofPred_eq, exists_prop]`. Assume the negation of the conclusion as `hall`.
+
+Use `push_neg at hall`. Apply `hp` to reduce the goal to its premises. Establish `hloc : ∀ v ∈ Λ, g.symm v ∈ Formalism.HermitianLattices.Ext.L3.locF p.asIdeal Λ`. Introduce `v hv`. Rewrite `hv` using `[← hs]`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact (Formalism.L2.SG.Pf.LocalDenominators.baseChangeAt_mem_localLattice_iff Zd p hΛ _).1 (hall v hv)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul o x _ hx`. Rewrite using `[show g.symm (o • x) = o • g.symm x from (g.symm : (VS D).V →ₗ[D.host.E] (VS D).V).map_smul_of_tower o x]`. Conclude with `Submodule.smul_mem _ _ hx`. Introduce `x hx`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`. Rewrite using `[betaP_symm_bc]`. Conclude with `(Formalism.L2.SG.Pf.LocalDenominators.baseChangeAt_mem_localLattice_iff Zd p hΛ _).2 (hloc v hv)`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul o x _ hx`.
+
+Rewrite using `[Subring.smul_def, map_smul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem localLattice_preserves_cofinite_symm (g : (VS D).V ≃ₗ[D.host.E] (VS D).V) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hΛ : Submodule.IsLattice D.host.E Λ) :
     {p : PlF D | ¬ ∀ x ∈ lattice₂ D Zd.M p Λ, (betaP p g).symm x ∈ lattice₂ D Zd.M p Λ}.Finite := by
@@ -89,6 +119,13 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
 
+/- English proof (translation)
+Use extensionality with `w`. Simplify using `only [Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w0, ⟨x, hxL, rfl⟩, rfl⟩`. Use `⟨perpEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21 x, hL _ hxL, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(qEquiv_mk H e hiso _ _ h12 h21 x).symm`. Introduce and unpack `⟨y, hyL, rfl⟩`. Use `⟨H.mkW f₁ ((perpEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21).symm y), ⟨(perpEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21).symm y, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hy : (((perpEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21).symm y : ↥(H.perp (H.X f₁))) : V) = e.symm y`. Simplify using `[perpEquiv, LinearEquiv.ofSubmodules_symm_apply]`.
+
+Rewrite using `[hy]`. Conclude with `hL' _ hyL`. Use `show qEquiv H e hiso _ _ h12 h21 (Submodule.Quotient.mk ((perpEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21).symm y)) = Submodule.Quotient.mk y`. Rewrite using `[qEquiv_mk, LinearEquiv.apply_symm_apply]`.
+-/
 theorem lset_map {r : ℕ} (f₁ f₂ : Fin (r + 1) → V) (e : V ≃ₗ[E] V) (hiso : ∀ v w, H.h (e v) (e w) = H.h v w)
     (h12 : ∀ x ∈ H.X f₁, e x ∈ H.X f₂) (h21 : ∀ y ∈ H.X f₂, e.symm y ∈ H.X f₁) (abelian₂ : Submodule M.L.O V)
     (hL : ∀ x ∈ abelian₂, e x ∈ abelian₂) (hL' : ∀ x ∈ abelian₂, e.symm x ∈ abelian₂) :
@@ -118,6 +155,9 @@ section Concrete
 
 variable {D : D7} (Zd : LocDat D) (p : PlF D)
 
+/- English proof (translation)
+Introduce `x hx`. Use `betaP_mem_X (Z := Zd) (p := p) g f₁ f₂ (sF' Zd p) (isUnit_sF' Zd p) ?_ hx` and prove the remaining obligations. Introduce `a`. Rewrite using `[hg1]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
+-/
 theorem local_beta_mem_x (g : (VS D).V ≃ₗ[D.host.E] (VS D).V) (f₁ f₂ : Fin (D.R.rS + 1) → (VS D).V)
     (hg1 : ∀ b, g (f₁ b) = f₂ b) :
     ∀ x ∈ (locH Zd p).X (fun b => sF' Zd p b • baseChange₂ D p (f₁ b)),
@@ -128,6 +168,9 @@ theorem local_beta_mem_x (g : (VS D).V ≃ₗ[D.host.E] (VS D).V) (f₁ f₂ : F
   rw [hg1]
   exact Submodule.subset_span ⟨a, rfl⟩
 
+/- English proof (translation)
+Introduce `x hx`. Use `betaP_symm_mem_X (Z := Zd) (p := p) g f₁ f₂ (sF' Zd p) (isUnit_sF' Zd p) ?_ hx` and prove the remaining obligations. Introduce `a`. Rewrite using `[← hg1, LinearEquiv.symm_apply_apply]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
+-/
 theorem local_beta_symm_mem_x (g : (VS D).V ≃ₗ[D.host.E] (VS D).V) (f₁ f₂ : Fin (D.R.rS + 1) → (VS D).V)
     (hg1 : ∀ b, g (f₁ b) = f₂ b) :
     ∀ x ∈ (locH Zd p).X (fun b => sF' Zd p b • baseChange₂ D p (f₂ b)),
@@ -157,6 +200,39 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `set f := frame (lf D F0) with hf`. Use `set f₁ := starFrame γ with hf₁`. Use `set f₂ := frame F'₂ with hf₂`. Use `set H := locH Zd p with hH`. Use `set e := betaP p g with he`.
+
+Establish `hisoL : ∀ v w, H.h (e v) (e w) = H.h v w` using `betaP_iso Zd p g hiso`. Establish `hgs : ∀ b, g.symm (f₂ b) = f₁ b` using `fun b => by rw [← hg1 b, LinearEquiv.symm_apply_apply]`. Establish `h12 : ∀ x ∈ H.X (fun b => sF' Zd p b • baseChange₂ D p (f₁ b)), e x ∈ H.X (fun b => sF' Zd p b • baseChange₂ D p (f₂ b))` using `fun x hx => betaP_mem_X Zd p g f₁ f₂ (sF' Zd p) (isUnit_sF' Zd p) (fun a => by rw [hg1]; exact Submodule.subset_span ⟨a, rfl⟩) hx`. Establish `h21 : ∀ x ∈ H.X (fun b => sF' Zd p b • baseChange₂ D p (f₂ b)), e.symm x ∈ H.X (fun b => sF' Zd p b • baseChange₂ D p (f₁ b))` using `fun x hx => betaP_symm_mem_X Zd p g f₁ f₂ (sF' Zd p) (isUnit_sF' Zd p) (fun a => by rw [hgs]; exact Submodule.subset_span ⟨a, rfl⟩) hx`. Establish `hX0 : ∀ a ∈ H.X (fun a => sF Zd p a • baseChange₂ D p (f a)), ∀ b ∈ H.X (fun a => sF Zd p a • baseChange₂ D p (f a)), H.h a b = 0`.
+
+Apply `iso_span` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[h_bcP, brS, show (VS D).hT (f j.castSucc) (f i.castSucc) = 0 from FsLA.gram_fvec_zero F0 _ _ (Or.inl (Fin.castSucc_lt_last j).ne), map_zero, mul_zero]`. Establish `hX2 : ∀ a ∈ H.X (fun b => sF' Zd p b • baseChange₂ D p (f₂ b)), ∀ b ∈ H.X (fun b => sF' Zd p b • baseChange₂ D p (f₂ b)), H.h a b = 0`. Apply `iso_span` to reduce the goal to its premises.
+
+Introduce `i j`. Rewrite using `[h_bcP, brS, show (VS D).hT (f₂ j.castSucc) (f₂ i.castSucc) = 0 from FsLA.gram_fvec_zero F'₂.fl _ _ (Or.inl (Fin.castSucc_lt_last j).ne), map_zero, mul_zero]`. Establish `hW0 : ∀ w ∈ H.W0 (fun a => sF Zd p a • baseChange₂ D p (f a)) (fun b => sF' Zd p b • baseChange₂ D p (f₁ b)), ∃ w₂ ∈ H.W0 (fun a => sF Zd p a • baseChange₂ D p (f a)) (fun b => sF' Zd p b • baseChange₂ D p (f₂ b)), w - w₂ ∈ H.X (fun a => sF Zd p a • baseChange₂ D p (f a)) ∧ e w - …`. Introduce `w hw`. Rewrite `hw` using `[mem_orthogonal_frame_iff]`.
+
+Establish `hperp : ∀ k, H.h w (baseChange₂ D p (Sum.elim f f₁ k)) = 0`. Introduce and unpack `(a | b)`. Conclude with `h_zero_of_smul Zd p (isUnit_sF Zd p a) (hw.1 a)`. Conclude with `h_zero_of_smul Zd p (isUnit_sF' Zd p b) (hw.2 b)`. Establish `hew : e w = w` using `FsLoc.betaP_fix Zd p g _ y hform w hperp`.
+
+Use `⟨w, ?_, by rw [sub_self]; exact Submodule.zero_mem _, by rw [hew, sub_self]; exact Submodule.zero_mem _⟩` and prove the remaining obligations. Rewrite using `[mem_orthogonal_frame_iff]`. Use `⟨hw.1, fun b => ?_⟩` and prove the remaining obligations. Establish `hb : baseChange₂ D p (f₂ b) ∈ Submodule.span (D.s.atP p).Ep (Set.range fun k => baseChange₂ D p (Sum.elim f f₁ k))` using `baseChange_mem_span p _ (hU b)`. Establish `hwp : w ∈ H.perp (Submodule.span (D.s.atP p).Ep (Set.range fun k => baseChange₂ D p (Sum.elim f f₁ k)))`.
+
+Rewrite using `[mem_perp_span]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hperp k`. Use `show H.h w (sF' Zd p b • baseChange₂ D p (f₂ b)) = 0`. Rewrite using `[h_smul_right, hwp _ hb, mul_zero]`.
+
+Establish `hglob : GDl f f₂ (D.R.rS + 1) • Gom' f f₁ - GDl f f₁ (D.R.rS + 1) • Gom' f f₂ ∈ Submodule.span D.host.E (Set.range fun a : Fin D.R.rS => f a.castSucc)`. Rewrite using `[FsLoc.gdl_eq, FsLoc.gdl_eq, FsLoc.xspan_eq F0]`. Conclude with `hc.2`. Establish `homp : H.Dl (fun a => sF Zd p a • baseChange₂ D p (f a)) (fun b => sF' Zd p b • baseChange₂ D p (f₂ b)) (D.R.rS + 1) • H.om' (fun a => sF Zd p a • baseChange₂ D p (f a)) (fun b => sF' Zd p b • baseChange₂ D p (f₁ b)) - H.Dl (fun a => sF Zd p a • baseChange₂ D p (f a)) (fun b => s …`. Rewrite using `[om'_loc, om'_loc, dl_loc Zd p f f₂ (sF Zd p) (sF' Zd p) _ le_rfl, dl_loc Zd p f f₁ (sF Zd p) (sF' Zd p) _ le_rfl, FsLoc.omp_combine' p]`.
+
+Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Zd p f (sF Zd p) (isUnit_sF Zd p) hglob)`. Establish `hglob2 : star (GDl f f₂ (D.R.rS + 1)) • g (Gom f f₁) - star (GDl f f₁ (D.R.rS + 1)) • Gom f f₂ ∈ Submodule.span D.host.E (Set.range fun b : Fin D.R.rS => f₂ b.castSucc)`. Rewrite using `[FsLoc.gdl_eq, FsLoc.gdl_eq, FsLoc.xspan_eq F'₂.fl, FsLA.leadMinorE_full, FsLA.leadMinorE_full]`. Establish `hn` using `Submodule.neg_mem _ hom`. Rewrite `hn` using `[neg_sub]`.
+
+Establish `hZe : starZh f f₂ = Z` using `hZ`. Rewrite using `[hZe]`. Conclude with `hn`. Establish `hom' : (Zd.M p).L.cj (H.Dl (fun a => sF Zd p a • baseChange₂ D p (f a)) (fun b => sF' Zd p b • baseChange₂ D p (f₂ b)) (D.R.rS + 1)) • e (H.om (fun a => sF Zd p a • baseChange₂ D p (f a)) (fun b => sF' Zd p b • baseChange₂ D p (f₁ b))) - (Zd.M p).L.cj (H.Dl (fun a => sF Zd p a • …`. Rewrite using `[om_loc, om_loc, dl_loc Zd p f f₂ (sF Zd p) (sF' Zd p) _ le_rfl, dl_loc Zd p f f₁ (sF Zd p) (sF' Zd p) _ le_rfl, map_smul, betaP_bc, FsLoc.om_combine' Zd p]`.
+
+Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Zd p f₂ (sF' Zd p) (isUnit_sF' Zd p) hglob2)`. Establish `hrat : H.Dl (fun a => sF Zd p a • baseChange₂ D p (f a)) (fun b => sF' Zd p b • baseChange₂ D p (f₁ b)) D.R.rS * H.Dl (fun a => sF Zd p a • baseChange₂ D p (f a)) (fun b => sF' Zd p b • baseChange₂ D p (f₂ b)) (D.R.rS + 1) = H.Dl (fun a => sF Zd p a • baseChange₂ D p (f a)) (fun …`. Establish `hr` using `hc.1`. Rewrite `hr` using `[← FsLoc.gdl_eq, ← FsLoc.gdl_eq, ← FsLoc.gdl_eq, ← FsLoc.gdl_eq]`. Rewrite using `[dl_loc Zd p f f₁ (sF Zd p) (sF' Zd p) _ (Nat.le_succ _), dl_loc Zd p f f₂ (sF Zd p) (sF' Zd p) _ le_rfl, dl_loc Zd p f f₂ (sF Zd p) (sF' Zd p) _ (Nat.le_succ _), dl_loc Zd p f f₁ (sF Zd p) (sF' Zd p) _ le_rfl]`.
+
+Establish `h` using `congrArg (D.s.atP p).ιE hr`. Rewrite `h` using `[map_mul, map_mul]`. Take the linear combination `((∏ i : Fin D.R.rS, (Zd.M p).L.cj (sF Zd p (Fin.castLE (Nat.le_succ _) i))) * (∏ i : Fin D.R.rS, sF' Zd p (Fin.castLE (Nat.le_succ _) i)) * ((∏ i : Fin (D.R.rS + 1), (Zd.M p).L.cj (sF Zd p (Fin.castLE le_rfl i))) * (∏ i : Fin (D.R.rS + 1), sF' Zd p (Fin.castLE le_rfl i)))) * h`. Establish `hef : ∀ b, e (sF' Zd p b • baseChange₂ D p (f₁ b)) = sF' Zd p b • baseChange₂ D p (f₂ b)` using `fun b => by`. Rewrite using `[map_smul, he, betaP_bc, hg1]`.
+
+Establish `hz : e (sF' Zd p (Fin.last D.R.rS) • baseChange₂ D p (f₁ (Fin.last D.R.rS))) - sF' Zd p (Fin.last D.R.rS) • baseChange₂ D p (f₂ (Fin.last D.R.rS)) ∈ H.X (fun b => sF' Zd p b • baseChange₂ D p (f₂ b))`. Rewrite using `[hef, sub_self]`. Conclude with `Submodule.zero_mem _`. Take `⟨hI, hzS⟩` from `FsLoc.ident_generic H (tLoc Zd p γ).abelian₂ ⊥ (fun a => sF Zd p a • baseChange₂ D p (f a)) (fun b => sF' Zd p b • baseChange₂ D p (f₁ b)) (fun b => sF' Zd p b • baseChange₂ D p (f₂ b)) (tLoc Zd p γ).T (tLoc Zd p γ).T' e hisoL h12 h21 hX0 hX2 hW0 homp hom' hrat hz`. Establish `hG` using `hgen p`.
+
+Establish `hfr1` using `hG.1.2.1`. Establish `hfr2` using `hG.1.2.2.1`. Use `⟨hG, ⟨hfr1.2.1, hfr1.2.2.1⟩, ⟨fun a b hab => ?_, ?_⟩, hI, ?_, hzS⟩` and prove the remaining obligations. Use `show H.h (sF' Zd p a • baseChange₂ D p (f₂ a)) (sF' Zd p b • baseChange₂ D p (f₂ b)) = 0`. Rewrite using `[← hef, ← hef, hisoL]`.
+
+Conclude with `hfr2.2.1 a b hab`. Use `show H.h (sF' Zd p (Fin.last _) • baseChange₂ D p (f₂ (Fin.last _))) (sF' Zd p (Fin.last _) • baseChange₂ D p (f₂ (Fin.last _))) = _`. Rewrite using `[← hef, hisoL]`. Conclude with `hfr2.2.2.1`. Introduce `x x₂ hx hx₂`.
+
+Establish `: x = x₂` using `Subtype.ext (hx.trans hx₂.symm)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem starIdentG (γ : TermDef.Term D u u' F0 what₂) (Z : PairVal.MatR D) (hC : Ctx γ Z)
     (hgen : ∀ p, (locH Zd p).IsGeneric (tLoc Zd p γ)) (F'₂ : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E))
     (hZ : ZhatL (lf D F0) F'₂ = Z) (hc : starCompat γ F'₂) (hU : starInU γ F'₂)
@@ -281,6 +357,21 @@ variable (u u' F0 what₂)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `γ Z hC`. Take `⟨w, hγ, -⟩` from `id hC`. Take `⟨F'₂, hZ, hc, hU⟩` from `starFrameU_holds γ Z hC`. Take `⟨g, y, hiso, hg1, hform, hom⟩` from `starGlob γ Z hC F'₂ hZ hU`. Set `φ' : ∀ p, (locH Zd p).Wb (tLoc Zd p γ).f' ≃ₗ[(D.s.atP p).Ep] (locH Zd p).Wb (locF' Zd p F'₂)` to `fun p => FsLoc.starPhi Zd p g hiso (starFrame γ) (frame F'₂) hg1`.
+
+Establish `hφ' : ∀ p, LsDatumA.LocalCountHypotheses (locH Zd p) (tLoc Zd p γ) (tLoc Zd p γ).f (locF' Zd p F'₂) (LinearEquiv.refl _ _) (φ' p)` using `fun p => starIdentG Zd γ Z hC (starGenLoc_of_P Zd hP γ w hγ) F'₂ hZ hc hU g y hiso hg1 hform hom p`. Establish `hH : CohHyp Zd γ Z F'₂ φ'` using `⟨hC, hZ, hc, hφ'⟩`. Establish `hlat : Submodule.IsLattice D.host.E γ.lam` using `(hP.2.1.1 γ.lam γ.mem).1.1`. Establish `hLp : {p | ⇑(φ' p) '' (locH Zd p).Lset (lattice₂ D Zd.M p γ.lam) (tLoc Zd p γ).f' ≠ (locH Zd p).Lset (lattice₂ D Zd.M p γ.lam) (locF' Zd p F'₂)}.Finite`. Use `((FsLoc.localLattice_preserves_cofinite Zd g hlat).union (FsLoc.localLattice_preserves_cofinite_symm Zd g hlat)).subset ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hn`. Conclude with `hp (FsLoc.lset_map (locH Zd p) _ _ (betaP p g) (betaP_iso Zd p g hiso) _ _ _ hn.1 hn.2)`. Establish `hResp : {p | ¬ (locH Zd p).Respects (tLoc Zd p γ) (CohCut.t2 Zd p γ F'₂ (lattice₂ D Zd.M p γ.lam)) (LinearEquiv.refl _ _) (φ' p)}.Finite`.
+
+Use `(hLp.union (hIo hP γ Z F'₂ φ' hH)).subset ?_` and prove the remaining obligations. Introduce `p hp`. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not, ne_eq] at hn`. Take `⟨h3, h5⟩` from `hn`.
+
+Apply `hp` to reduce the goal to its premises. Use `⟨?_, ?_, h3, (hH.2.2.2 p).2.2.2.2.2, h5⟩` and prove the remaining obligations. Conclude with `Set.image_id _`. Introduce `x x₂ hx hx₂`. Rewrite using `[one_smul, one_smul]`.
+
+Use `show (locH Zd p).mkW _ x = (locH Zd p).mkW _ x₂`. Conclude with `congrArg _ (Subtype.ext (hx.trans hx₂.symm))`. Use `⟨F'₂, fun _ => LinearEquiv.refl _ _, φ', ⟨hZ, hφ', fun _ => rfl⟩, γ.lam, hlat, ?_⟩` and prove the remaining obligations. Use `(((hGen hP γ Z F'₂ φ' hH).union hResp).union (hGood hP γ Z F'₂ φ' hH)).subset ?_` and prove the remaining obligations. Introduce `p hp`.
+
+Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hn`. Take `⟨⟨hg, hr⟩, hN⟩` from `hn`. Conclude with `hp (locSet_eq_single Zd ⟨hg, hr⟩ hN)`.
+-/
 theorem starExists2_of_parts (hP : CtxP u u' F0 what₂) (hGen : CohGen Zd u u' F0 what₂)
     (hIo : CohIota Zd u u' F0 what₂) (hGood : CohGood Zd u u' F0 what₂) : StarExists2 Zd u u' F0 what₂ := by
   intro γ Z hC

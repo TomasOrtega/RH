@@ -31,6 +31,31 @@ open Limits MonoidalCategory CartesianMonoidalCategory MonObj
 
 namespace GlobalTheory.HodgeFibIso
 
+/- English proof (translation)
+Establish `w0 : χ ≫ Z.t.G.hom = (Q.A.hom ≫ p) ≫ Z.jQ ≫ pullback.fst _ _`. Rewrite using `[hcomp.1.w, Category.assoc]`. Set `χ₀ : Q.A.left ⟶ Z.oF.t.G.left` to `Z.m.cart.1.lift χ (Q.A.hom ≫ p) w0`. Establish `hχ₀2 : χ₀ ≫ Z.m.φ = χ` using `Z.m.cart.1.lift_fst _ _ w0`. Establish `hχ₀b : χ₀ ≫ Z.oF.t.G.hom = Q.A.hom ≫ p` using `Z.m.cart.1.lift_snd _ _ w0`.
+
+Establish `hχ₀ : IsGrpPullback Q.A Z.oF.t.G p χ₀` using `Z.m.cart.cancel (by rw [show χ₀ ≫ Z.m.cm.F = χ from hχ₀2]; exact hcomp) hχ₀b`. Set `m1` to `Z.m0.toSABMap`. Establish `hχ` using `hχ₀.comp m1.cart`. Establish `w1 : (χ₀ ≫ m1.φ) ≫ Xo.univ.t.G.hom = Q.A.hom ≫ x` using `by rw [hbase]; exact hχ.1.w`. Set `fl : Q.A.left ⟶ T.t.G.left` to `m.cart.1.lift (χ₀ ≫ m1.φ) Q.A.hom w1`.
+
+Establish `hfl : fl ≫ m.φ = χ₀ ≫ m1.φ` using `m.cart.1.lift_fst _ _ w1`. Establish `hflb : fl ≫ T.t.G.hom = Q.A.hom` using `m.cart.1.lift_snd _ _ w1`. Set `f : Q.A ⟶ T.pol.A` to `Over.homMk fl hflb`. Use `⟨f, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.DivisibleHom.isMonHom_of_mul_points f fun S x y => ?_` and prove the remaining obligations.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Establish `e1` using `hχ.2 S x y (pushPt hχ.1.w x) (pushPt hχ.1.w y) rfl rfl`. Establish `e2` using `m.cart.2 S (x ≫ f) (y ≫ f) (pushPt m.cart.1.w (x ≫ f)) (pushPt m.cart.1.w (y ≫ f)) rfl rfl`. Rewrite using `[Over.comp_left, Category.assoc]`.
+
+Express the relevant statement in the definitionally equal form `_ ≫ fl ≫ m.φ = _`. Rewrite using `[hfl, ← e1, ← e2]`. Use `mul_left_congr (by rw [hbase]) _ _ _ _ ?_ ?_` and prove the remaining obligations. Use `show x.left ≫ χ₀ ≫ m1.φ = (x.left ≫ fl) ≫ m.φ`. Rewrite using `[Category.assoc, hfl]`.
+
+Use `show y.left ≫ χ₀ ≫ m1.φ = (y.left ≫ fl) ≫ m.φ`. Rewrite using `[Category.assoc, hfl]`. Conclude with `(Over.w ((x * y) ≫ f)).trans (Over.w ((x ≫ f) * (y ≫ f))).symm`. Take `⟨wT, hwT, -⟩` from `m.lin`. Take `⟨w1', hw1', -⟩` from `m1.lin`.
+
+Take `⟨w2', hw2', -⟩` from `Z.m.lin`. Establish `hT : LBIso T.t.PP.L (Xo.univ.t.PP.L.pull m.φ)` using `⟨wT, hwT⟩`. Establish `h1 : LBIso Z.oF.t.PP.L (Xo.univ.t.PP.L.pull m1.φ)` using `⟨w1', hw1'⟩`. Establish `h2 : LBIso Z.oF.t.PP.L (Z.t.PP.L.pull Z.m.φ)` using `⟨w2', hw2'⟩`. Establish `hT2` using `GlobalTheory.CM.EllComp.lbIso_pull_comp hT.symm fl`.
+
+Rewrite `hT2` using `[hfl]`. Establish `h3` using `GlobalTheory.CM.EllComp.lbIso_pull_comp h1.symm χ₀`. Establish `h4` using `GlobalTheory.CM.EllComp.lbIso_pull_comp h2.symm χ₀`. Rewrite `h4` using `[hχ₀2]`. Establish `e345` using `LBIso.trans (pull_isLB Z.oF.t.PP.isLB χ₀) (pull_isLB Z.t.PP.isLB _) Q.isLB h4.symm hL`.
+
+Establish `e2345` using `LBIso.trans (pull_isLB Xo.univ.t.PP.isLB _) (pull_isLB Z.oF.t.PP.isLB χ₀) Q.isLB h3 e345`. Establish `main : LBIso (T.t.PP.L.pull fl) Q.L` using `LBIso.trans (pull_isLB T.t.PP.isLB fl) (pull_isLB Xo.univ.t.PP.isLB _) Q.isLB hT2.symm e2345`. Conclude with `GlobalTheory.lbIso_lbPow main 1`. Introduce `a w w' hwb hwm hw'`. Establish `key : a.left ≫ χ₀ = w`.
+
+Apply `Z.m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`. Conclude with `(congrArg (a.left ≫ ·) hχ₀2).trans hwm.symm`. Rewrite using `[Category.assoc, hχ₀b, hwb, ← Category.assoc, Over.w a]`. Both sides reduce to the same expression.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ hw'.symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(a.left ≫ fl) ≫ m.φ = _`. Rewrite using `[Category.assoc, hfl, ← Category.assoc, key]`.
+
+Conclude with `(Over.w (a ≫ f)).trans (Over.w w').symm`.
+-/
 theorem exists_hom {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (p : Sp ℂ ⟶ Xo.XF c) (x : Sp ℂ ⟶ Xo.X) (hbase : x = p ≫ pullback.fst _ _)
@@ -100,6 +125,9 @@ theorem exists_hom {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recip
       rw [Category.assoc, hfl, ← Category.assoc, key]
     · exact (Over.w (a ≫ f)).trans (Over.w w').symm
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `h`. Take `⟨b, hb, rfl⟩` from `h'`. Establish `hab : a = b` using `funext fun k => Over.OverMorphism.ext ((ha k).trans (hb k).symm)`. Rewrite using `[hab]`.
+-/
 theorem isCombAt_unique {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {n : ℕ}
     {v : Fin n → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} {C : Fin n → S}

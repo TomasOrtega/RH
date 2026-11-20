@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.LieGeometryGrowth.PullHkSmooth
 open UpperTheory.V.Lit.Geo.Cs
 
+/- English proof (translation)
+Introduce `V F _ _ _ _ _ _ q k c`. Take `⟨C, hC, h⟩` from `hkSz V F q k c`. Use `⟨C, hC, fun Y W w b hY hW hw p hp hc hb => ?_⟩` and prove the remaining obligations. Take `⟨ho, hs, -, -⟩` from `UpperTheory.V.Lit.Geo.hkSmooth V F Y hY W hW q w hw`. Use `haveI : CompleteSpace F := FiniteDimensional.complete ℝ F`.
+
+Use `intSz V (V [⋀^Fin q]→L[ℝ] F) k p _ (fun z : V × ℝ => UpperTheory.V.Lit.Geo.hk W z.2 w z.1) (C * b) ho (fun t ht => ⟨hp, hW.2 p hp t ht⟩) hs fun t ht => ?_` and prove the remaining obligations. Conclude with `h W t w p b (abs_le.2 ⟨by linarith [ht.1], ht.2⟩) (hW.1.contDiffAt (hY.mem_nhds hp)) hc (hw.contDiffAt (hY.mem_nhds (hW.2 p hp t ht))) (hb t ht)`.
+-/
 theorem UpperTheory.V.Lit.Geo.Cs.homSz :
     HomSz := by
   intro V F _ _ _ _ _ _ q k c

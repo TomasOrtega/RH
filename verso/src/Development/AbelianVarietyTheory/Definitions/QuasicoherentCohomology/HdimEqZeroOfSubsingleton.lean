@@ -35,6 +35,9 @@ def action (F : X.Modules) (U : X.Opens) (n : ℕ) :
   (SiteCoh.endAction ((toAbSheaf X).obj F) n U).comp
     ((functorEndRingHom (toAbSheaf X) F).comp (smulEnd F))
 
+/- English proof (translation)
+The claim follows from `SiteCoh.endAction_apply _ x`.
+-/
 lemma action_apply (F : X.Modules) (U : X.Opens) (n : ℕ) (r : Γ(X, ⊤))
     (x : Sheaf.H'.{u} ((toAbSheaf X).obj F) n U) :
     action F U n r x = SiteCoh.map ((toAbSheaf X).map (smulHom F r)) n U x :=
@@ -55,12 +58,18 @@ instance instModule (F : X.Modules) (U : X.Opens) (n : ℕ) : Module R (cohOn F 
   { WithAction.instModule (action F U n) R with
     smul := fun r x ↦ action F U n (algebraMap R Γ(X, ⊤) r) x }
 
+/- English proof (translation)
+Use `with_reducible_and_instances rfl`.
+-/
 example (F : X.Modules) (U : X.Opens) (n : ℕ) :
     instModule ℤ F U n = AddCommGroup.toIntModule (cohOn F U n) := by
   with_reducible_and_instances rfl
 
 variable {R} in
 
+/- English proof (translation)
+The claim follows from `(WithAction.toBase_smul (action F U n) r x).trans (action_apply F U n _ _)`.
+-/
 lemma toH'_smul {F : X.Modules} {U : X.Opens} {n : ℕ} (r : R) (x : cohOn F U n) :
     toH' F U n (r • x) =
       SiteCoh.map ((toAbSheaf X).map (smulHom F (algebraMap R Γ(X, ⊤) r))) n U (toH' F U n x) :=
@@ -88,27 +97,48 @@ def res (F : X.Modules) {U V : X.Opens} (h : V ≤ U) (n : ℕ) : cohOn F U n �
 
 variable {F G H : X.Modules} {U V W : X.Opens} {n : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma toH'_map (φ : F ⟶ G) (x : cohOn F U n) :
     toH' G U n (map R φ U n x) = SiteCoh.map ((toAbSheaf X).map φ) n U (toH' F U n x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma toH'_res (h : V ≤ U) (x : cohOn F U n) :
     toH' F V n (res R F h n x) =
       SiteCoh.res ((toAbSheaf X).obj F) n (homOfLE h) (toH' F U n x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma map_eq_map (S : Type t) [CommRing S] [Algebra S Γ(X, ⊤)] (φ : F ⟶ G) (x : cohOn F U n) :
     map R φ U n x = map S φ U n x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma res_eq_res (S : Type t) [CommRing S] [Algebra S Γ(X, ⊤)] (h : V ≤ U) (x : cohOn F U n) :
     res R F h n x = res S F h n x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma smul_eq_map (r : R) (x : cohOn F U n) :
     r • x = map R (smulHom F (algebraMap R Γ(X, ⊤) r)) U n x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma map_smulHom_apply (r : Γ(X, ⊤)) (x : cohOn F U n) :
     map R (smulHom F r) U n x = r • x := rfl
 
 variable (F U n) in
 
+/- English proof (translation)
+Use extensionality with `x`. Apply `(toH' F U n).injective` to reduce the goal to its premises. Rewrite using `[toH'_map, CategoryTheory.Functor.map_id, SiteCoh.map_id_apply, LinearMap.id_apply]`.
+-/
 @[simp] lemma map_id : map R (𝟙 F) U n = LinearMap.id := by
   ext x
   apply (toH' F U n).injective
@@ -116,6 +146,9 @@ variable (F U n) in
 
 variable (U n) in
 
+/- English proof (translation)
+Use extensionality with `x`. Apply `(toH' H U n).injective` to reduce the goal to its premises. Rewrite using `[LinearMap.comp_apply, toH'_map, toH'_map, toH'_map, Functor.map_comp, SiteCoh.map_comp_apply]`.
+-/
 lemma map_comp (φ : F ⟶ G) (ψ : G ⟶ H) :
     map R (φ ≫ ψ) U n = map R ψ U n ∘ₗ map R φ U n := by
   ext x
@@ -123,12 +156,18 @@ lemma map_comp (φ : F ⟶ G) (ψ : G ⟶ H) :
   rw [LinearMap.comp_apply, toH'_map, toH'_map, toH'_map, Functor.map_comp,
     SiteCoh.map_comp_apply]
 
+/- English proof (translation)
+Rewrite using `[map_comp]`. Both sides reduce to the same expression.
+-/
 lemma map_map (φ : F ⟶ G) (ψ : G ⟶ H) (x : cohOn F U n) :
     map R ψ U n (map R φ U n x) = map R (φ ≫ ψ) U n x := by
   rw [map_comp]; rfl
 
 variable (U n) in
 
+/- English proof (translation)
+Use extensionality with `x`. Apply `(toH' G U n).injective` to reduce the goal to its premises. Rewrite using `[LinearMap.add_apply, map_add, toH'_map, toH'_map, toH'_map, Functor.map_add, SiteCoh.map_add_apply]`.
+-/
 lemma map_add_hom (φ ψ : F ⟶ G) : map R (φ + ψ) U n = map R φ U n + map R ψ U n := by
   ext x
   apply (toH' G U n).injective
@@ -142,30 +181,48 @@ variable (F G U n) in
 
 variable (F G U n) in
 
+/- English proof (translation)
+The claim follows from `map_zero (mapAddHom R F G U n)`.
+-/
 @[simp] lemma map_zero_hom : map R (0 : F ⟶ G) U n = 0 := map_zero (mapAddHom R F G U n)
 
 variable (U n) in
 
+/- English proof (translation)
+The claim follows from `map_neg (mapAddHom R F G U n) φ`.
+-/
 lemma map_neg_hom (φ : F ⟶ G) : map R (-φ) U n = -map R φ U n := map_neg (mapAddHom R F G U n) φ
 
 variable (U n) in
 
+/- English proof (translation)
+The claim follows from `map_sub (mapAddHom R F G U n) φ ψ`.
+-/
 lemma map_sub_hom (φ ψ : F ⟶ G) : map R (φ - ψ) U n = map R φ U n - map R ψ U n :=
   map_sub (mapAddHom R F G U n) φ ψ
 
 variable (U n) in
 
+/- English proof (translation)
+The claim follows from `map_sum (mapAddHom R F G U n) φ s`.
+-/
 lemma map_sum_hom {ι : Type t} (s : Finset ι) (φ : ι → (F ⟶ G)) :
     map R (∑ i ∈ s, φ i) U n = ∑ i ∈ s, map R (φ i) U n :=
   map_sum (mapAddHom R F G U n) φ s
 
 variable (U n) in
 
+/- English proof (translation)
+Rewrite using `[smul_hom_def, map_comp]`. Both sides reduce to the same expression.
+-/
 lemma map_smul_hom (r : Γ(X, ⊤)) (φ : F ⟶ G) : map R (r • φ) U n = r • map R φ U n := by
   rw [smul_hom_def, map_comp]; rfl
 
 variable (F U n) in
 
+/- English proof (translation)
+Use extensionality with `x`. Apply `(toH' F U n).injective` to reduce the goal to its premises. Rewrite using `[toH'_res, show homOfLE (le_refl U) = 𝟙 U from rfl, SiteCoh.res_id_apply, LinearMap.id_apply]`.
+-/
 @[simp] lemma res_refl : res R F (le_refl U) n = LinearMap.id := by
   ext x
   apply (toH' F U n).injective
@@ -174,6 +231,9 @@ variable (F U n) in
 
 variable (F n) in
 
+/- English proof (translation)
+Use extensionality with `x`. Apply `(toH' F W n).injective` to reduce the goal to its premises. Rewrite using `[LinearMap.comp_apply, toH'_res, toH'_res, toH'_res, ← SiteCoh.res_comp_apply, homOfLE_comp]`.
+-/
 lemma res_comp_res (h : V ≤ U) (h' : W ≤ V) :
     res R F h' n ∘ₗ res R F h n = res R F (h'.trans h) n := by
   ext x
@@ -181,10 +241,16 @@ lemma res_comp_res (h : V ≤ U) (h' : W ≤ V) :
   rw [LinearMap.comp_apply, toH'_res, toH'_res, toH'_res, ← SiteCoh.res_comp_apply,
     homOfLE_comp]
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun (res_comp_res R F n h h') x`.
+-/
 @[simp] lemma res_res (h : V ≤ U) (h' : W ≤ V) (x : cohOn F U n) :
     res R F h' n (res R F h n x) = res R F (h'.trans h) n x :=
   LinearMap.congr_fun (res_comp_res R F n h h') x
 
+/- English proof (translation)
+Apply `(toH' G V n).injective` to reduce the goal to its premises. Rewrite using `[toH'_res, toH'_map, toH'_map, toH'_res, SiteCoh.res_map_apply]`.
+-/
 lemma res_map (φ : F ⟶ G) (h : V ≤ U) (x : cohOn F U n) :
     res R G h n (map R φ U n x) = map R φ V n (res R F h n x) := by
   apply (toH' G V n).injective
@@ -192,6 +258,9 @@ lemma res_map (φ : F ⟶ G) (h : V ≤ U) (x : cohOn F U n) :
 
 variable (n) in
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext (res_map R φ h)`.
+-/
 lemma res_comp_map (φ : F ⟶ G) (h : V ≤ U) :
     res R G h n ∘ₗ map R φ U n = map R φ V n ∘ₗ res R F h n :=
   LinearMap.ext (res_map R φ h)
@@ -204,6 +273,9 @@ variable (U n) in
 
 variable (U n) in
 
+/- English proof (translation)
+The claim follows from `(mapIso R U n (asIso φ)).bijective`.
+-/
 lemma map_bijective (φ : F ⟶ G) [IsIso φ] : Function.Bijective (map R φ U n) :=
   (mapIso R U n (asIso φ)).bijective
 
@@ -220,11 +292,17 @@ abbrev moduleOfRingHom {R : Type v} [CommRing R] (f : R →+* Γ(X, ⊤)) (F : X
   letI := f.toAlgebra
   instModule R F U n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma moduleOfRingHom_smul {R : Type v} [CommRing R] (f : R →+* Γ(X, ⊤)) {F : X.Modules}
     {U : X.Opens} {n : ℕ} (r : R) (x : cohOn F U n) :
     letI := moduleOfRingHom f F U n
     r • x = f r • x := rfl
 
+/- English proof (translation)
+The claim follows from `subsingleton_of_forall_eq 0 fun x ↦ by have h₁ : map ℤ (𝟙 F) U n x = x := by rw [map_id]; rfl rw [← h₁, h.eq_of_src (𝟙 F) 0, map_zero_hom]; rfl`.
+-/
 lemma subsingleton_of_isZero {F : X.Modules} (h : IsZero F) (U : X.Opens) (n : ℕ) :
     Subsingleton (cohOn F U n) :=
   subsingleton_of_forall_eq 0 fun x ↦ by
@@ -243,6 +321,9 @@ instance subsingleton_bot (F : X.Modules) (n : ℕ) : Subsingleton (cohOn F ⊥ 
       (TopCat.Sheaf.isTerminalOfEmpty (X := X.toPresheafedSpace.carrier) _).isZero
   SiteCoh.subsingleton_of_subsingleton_freeSheaf ((toAbSheaf X).obj F) n ⊥
 
+/- English proof (translation)
+The claim follows from `SiteCoh.subsingleton_of_injective ((toAbSheaf X).obj F) n U`.
+-/
 lemma subsingleton_of_injective (F : X.Modules) [Injective ((toAbSheaf X).obj F)] (U : X.Opens)
     (n : ℕ) : Subsingleton (cohOn F U (n + 1)) :=
   SiteCoh.subsingleton_of_injective ((toAbSheaf X).obj F) n U
@@ -271,6 +352,9 @@ variable (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)] {ι : Type t} (U : X.O
         LinearMap.proj_apply, LinearMap.id_apply, map_map]
       rw [← LinearMap.sum_apply, ← map_sum_hom, IsBilimit.total hc, map_id, LinearMap.id_apply])
 
+/- English proof (translation)
+Consider the cases of `nonempty_fintype ι`. Conclude with `(biconeEquiv R U n (biconeIsBilimitOfLimitConeOfIsLimit hc)).bijective`.
+-/
 lemma pi_map_bijective [Finite ι] {F : ι → X.Modules} {c : Fan F} (hc : IsLimit c) :
     Function.Bijective (LinearMap.pi fun i ↦ map R (c.proj i) U n) := by
   cases nonempty_fintype ι
@@ -280,12 +364,18 @@ def fanEquiv [Finite ι] {F : ι → X.Modules} {c : Fan F} (hc : IsLimit c) :
     cohOn c.pt U n ≃ₗ[R] ∀ i, cohOn (F i) U n :=
   LinearEquiv.ofBijective _ (pi_map_bijective R U n hc)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma fanEquiv_apply [Finite ι] {F : ι → X.Modules} {c : Fan F} (hc : IsLimit c)
     (x : cohOn c.pt U n) (i : ι) : fanEquiv R U n hc x i = map R (c.proj i) U n x := rfl
 
 def piEquiv [Finite ι] (F : ι → X.Modules) : cohOn (∏ᶜ F) U n ≃ₗ[R] ∀ i, cohOn (F i) U n :=
   fanEquiv R U n (productIsProduct F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma piEquiv_apply [Finite ι] (F : ι → X.Modules) (x : cohOn (∏ᶜ F) U n) (i : ι) :
     piEquiv R U n F x i = map R (Pi.π F i) U n x := rfl
 
@@ -295,6 +385,9 @@ def biproductEquiv [Finite ι] (F : ι → X.Modules) :
     cohOn (⨁ F) U n ≃ₗ[R] ∀ i, cohOn (F i) U n :=
   fanEquiv R U n (c := Fan.mk (⨁ F) (biproduct.π F)) (biproduct.isLimit F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma biproductEquiv_apply [Finite ι] (F : ι → X.Modules) (x : cohOn (⨁ F) U n) (i : ι) :
     biproductEquiv R U n F x i = map R (biproduct.π F i) U n x := rfl
 
@@ -319,6 +412,9 @@ namespace sectionsOn
 def action (F : X.Modules) (U : X.Opens) : Γ(X, ⊤) →+* AddMonoid.End Γ(F, U) :=
   (Module.toAddMonoidEnd Γ(X, U) Γ(F, U)).comp (restrictGlobal X U)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma action_apply (F : X.Modules) (U : X.Opens) (r : Γ(X, ⊤)) (x : Γ(F, U)) :
     action F U r x = restrictGlobal X U r • x := rfl
 
@@ -333,12 +429,18 @@ instance instModule (F : X.Modules) (U : X.Opens) : Module R (sectionsOn F U) :=
   { WithAction.instModule (action F U) R with
     smul := fun r x ↦ action F U (algebraMap R Γ(X, ⊤) r) x }
 
+/- English proof (translation)
+Use `with_reducible_and_instances rfl`.
+-/
 example (F : X.Modules) (U : X.Opens) :
     instModule ℤ F U = AddCommGroup.toIntModule (sectionsOn F U) := by
   with_reducible_and_instances rfl
 
 variable {R} in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma toΓ_smul {F : X.Modules} {U : X.Opens} (r : R) (x : sectionsOn F U) :
     toΓ F U (r • x) = restrictGlobal X U (algebraMap R Γ(X, ⊤) r) • toΓ F U x := rfl
 
@@ -360,26 +462,44 @@ def res (F : X.Modules) {U V : X.Opens} (h : V ≤ U) : sectionsOn F U →ₗ[R]
 
 variable {F G H : X.Modules} {U V W : X.Opens}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma toΓ_map (φ : F ⟶ G) (x : sectionsOn F U) :
     toΓ G U (map R φ U x) = φ.app U (toΓ F U x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma toΓ_res (h : V ≤ U) (x : sectionsOn F U) :
     toΓ F V (res R F h x) = F.presheaf.map (homOfLE h).op (toΓ F U x) := rfl
 
 variable (F U) in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma map_id : map R (𝟙 F) U = LinearMap.id := rfl
 
 variable (U) in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma map_comp (φ : F ⟶ G) (ψ : G ⟶ H) : map R (φ ≫ ψ) U = map R ψ U ∘ₗ map R φ U := rfl
 
 variable (U) in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma map_add_hom (φ ψ : F ⟶ G) : map R (φ + ψ) U = map R φ U + map R ψ U := rfl
 
 variable (F U) in
 
+/- English proof (translation)
+Use extensionality with `x`. Apply `(toΓ F U).injective` to reduce the goal to its premises. Rewrite using `[toΓ_res, show homOfLE (le_refl U) = 𝟙 U from rfl, op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 @[simp] lemma res_refl : res R F (le_refl U) = LinearMap.id := by
   ext x
   apply (toΓ F U).injective
@@ -388,6 +508,9 @@ variable (F U) in
 
 variable (F) in
 
+/- English proof (translation)
+Use extensionality with `x`. Apply `(toΓ F W).injective` to reduce the goal to its premises. Rewrite using `[LinearMap.comp_apply, toΓ_res, toΓ_res, toΓ_res, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 lemma res_comp_res (h : V ≤ U) (h' : W ≤ V) : res R F h' ∘ₗ res R F h = res R F (h'.trans h) := by
   ext x
   apply (toΓ F W).injective
@@ -395,6 +518,9 @@ lemma res_comp_res (h : V ≤ U) (h' : W ≤ V) : res R F h' ∘ₗ res R F h = 
     ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.congr_hom (φ.mapPresheaf.naturality (homOfLE h).op) x).symm`.
+-/
 lemma res_map (φ : F ⟶ G) (h : V ≤ U) (x : sectionsOn F U) :
     res R G h (map R φ U x) = map R φ V (res R F h x) :=
   (ConcreteCategory.congr_hom (φ.mapPresheaf.naturality (homOfLE h).op) x).symm
@@ -406,6 +532,9 @@ def equivOfSMul [Module R Γ(F, U)]
     sectionsOn F U ≃ₗ[R] Γ(F, U) :=
   { toΓ F U with map_smul' := fun r x ↦ (toΓ_smul r x).trans (h r _).symm }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma equivOfSMul_apply [Module R Γ(F, U)]
     (h : ∀ (r : R) (x : Γ(F, U)), r • x = restrictGlobal X U (algebraMap R Γ(X, ⊤) r) • x)
     (x : sectionsOn F U) : equivOfSMul R F U h x = toΓ F U x := rfl
@@ -435,14 +564,23 @@ def zeroEquiv (F : X.Modules) (U : X.Opens) : cohOn F U 0 ≃ₗ[R] sectionsOn F
 
 variable {F G : X.Modules} {U V : X.Opens}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma toΓ_zeroEquiv (x : cohOn F U 0) :
     sectionsOn.toΓ F U (zeroEquiv R F U x) =
       SiteCoh.zeroEquiv ((toAbSheaf X).obj F) U (toH' F U 0 x) := rfl
 
+/- English proof (translation)
+The claim follows from `SiteCoh.zeroEquiv_map ((toAbSheaf X).map φ) U (toH' F U 0 x)`.
+-/
 lemma zeroEquiv_map (φ : F ⟶ G) (x : cohOn F U 0) :
     zeroEquiv R G U (map R φ U 0 x) = sectionsOn.map R φ U (zeroEquiv R F U x) :=
   SiteCoh.zeroEquiv_map ((toAbSheaf X).map φ) U (toH' F U 0 x)
 
+/- English proof (translation)
+The claim follows from `SiteCoh.zeroEquiv_res ((toAbSheaf X).obj F) (homOfLE h) (toH' F U 0 x)`.
+-/
 lemma zeroEquiv_res (h : V ≤ U) (x : cohOn F U 0) :
     zeroEquiv R F V (res R F h 0 x) = sectionsOn.res R F h (zeroEquiv R F U x) :=
   SiteCoh.zeroEquiv_res ((toAbSheaf X).obj F) (homOfLE h) (toH' F U 0 x)
@@ -452,6 +590,9 @@ variable (F U) in
 def zeroAddEquiv : cohOn F U 0 ≃+ Γ(F, U) :=
   (zeroEquiv ℤ F U).toAddEquiv.trans (sectionsOn.toΓ F U)
 
+/- English proof (translation)
+The claim follows from `congrArg (sectionsOn.toΓ F U) ((zeroEquiv R F U).map_smul r x)`.
+-/
 lemma zeroAddEquiv_smul (r : R) (x : cohOn F U 0) :
     zeroAddEquiv F U (r • x) = restrictGlobal X U (algebraMap R Γ(X, ⊤) r) • zeroAddEquiv F U x :=
   congrArg (sectionsOn.toΓ F U) ((zeroEquiv R F U).map_smul r x)
@@ -478,6 +619,9 @@ namespace coh
 def zeroEquiv (F : X.Modules) : coh F 0 ≃ₗ[Γ(X, ⊤)] Γ(F, ⊤) :=
   (cohOn.zeroEquiv Γ(X, ⊤) F ⊤).trans (sectionsOn.topEquiv F)
 
+/- English proof (translation)
+The claim follows from `congrArg (sectionsOn.toΓ G ⊤) (cohOn.zeroEquiv_map Γ(X, ⊤) φ x)`.
+-/
 lemma zeroEquiv_map {F G : X.Modules} (φ : F ⟶ G) (x : coh F 0) :
     zeroEquiv G (cohOn.map Γ(X, ⊤) φ ⊤ 0 x) = φ.app ⊤ (zeroEquiv F x) :=
   congrArg (sectionsOn.toΓ G ⊤) (cohOn.zeroEquiv_map Γ(X, ⊤) φ x)
@@ -485,11 +629,17 @@ lemma zeroEquiv_map {F G : X.Modules} (φ : F ⟶ G) (x : coh F 0) :
 def toH (F : X.Modules) (n : ℕ) : coh F n ≃+ Sheaf.H.{u} ((toAbSheaf X).obj F) n :=
   (cohOn.toH' F ⊤ n).trans (SiteCoh.terminalEquiv ((toAbSheaf X).obj F) n isTerminalTop)
 
+/- English proof (translation)
+The claim follows from `SiteCoh.terminalEquiv_map ((toAbSheaf X).map φ) n isTerminalTop (cohOn.toH' F ⊤ n x)`.
+-/
 lemma toH_map (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)] {F G : X.Modules} (φ : F ⟶ G)
     (n : ℕ) (x : coh F n) :
     toH G n (cohOn.map R φ ⊤ n x) = Sheaf.H.map ((toAbSheaf X).map φ) n (toH F n x) :=
   SiteCoh.terminalEquiv_map ((toAbSheaf X).map φ) n isTerminalTop (cohOn.toH' F ⊤ n x)
 
+/- English proof (translation)
+The claim follows from `SiteCoh.equiv₀_terminalEquiv ((toAbSheaf X).obj F) isTerminalTop (cohOn.toH' F ⊤ 0 x)`.
+-/
 lemma equiv₀_toH (F : X.Modules) (x : coh F 0) :
     Sheaf.H.equiv₀ ((toAbSheaf X).obj F) isTerminalTop (toH F 0 x) = zeroEquiv F x :=
   SiteCoh.equiv₀_terminalEquiv ((toAbSheaf X).obj F) isTerminalTop (cohOn.toH' F ⊤ 0 x)
@@ -551,12 +701,18 @@ end Functors
 abbrev algebraΓOfHom {R : Type u} [CommRing R] (f : X ⟶ Spec (.of R)) : Algebra R Γ(X, ⊤) :=
   ((Scheme.ΓSpecIso (.of R)).inv ≫ f.appTop).hom.toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma algebraΓOfHom_algebraMap {R : Type u} [CommRing R] (f : X ⟶ Spec (.of R)) (r : R) :
     letI := algebraΓOfHom f
     algebraMap R Γ(X, ⊤) r = f.appTop ((Scheme.ΓSpecIso (.of R)).inv r) := rfl
 
 abbrev algebraΓSpec (A : CommRingCat.{u}) : Algebra A Γ(Spec A, ⊤) := inferInstance
 
+/- English proof (translation)
+The claim follows from `Algebra.algebra_ext _ _ fun r ↦ (restrictGlobal_top ((Scheme.ΓSpecIso (.of R)).inv r)).symm`.
+-/
 lemma algebraΓOfHom_id (R : Type u) [CommRing R] :
     algebraΓOfHom (𝟙 (Spec (.of R))) = algebraΓSpec (.of R) :=
   Algebra.algebra_ext _ _ fun r ↦ (restrictGlobal_top ((Scheme.ΓSpecIso (.of R)).inv r)).symm
@@ -569,6 +725,9 @@ namespace OverSpec
 
 scoped[GlobalTheory.OverSpec] attribute [instance 50] GlobalTheory.algebraΓOfOver
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (R : Type u) [CommRing R] [X.Over (Spec (.of R))] (F : X.Modules) (n : ℕ) :
     Module R (coh F n) := inferInstance
 
@@ -581,29 +740,53 @@ section hdim
 
 variable (k : Type v) [Field k] [Algebra k Γ(X, ⊤)] {F G : X.Modules} (n : ℕ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma hdim_def (F : X.Modules) : hdim k F n = Module.finrank k (coh F n) := rfl
 
+/- English proof (translation)
+The claim follows from `Module.finrank_eq_rank k _`.
+-/
 lemma hdim_eq_rank [Module.Finite k (coh F n)] :
     (hdim k F n : Cardinal) = Module.rank k (coh F n) :=
   Module.finrank_eq_rank k _
 
+/- English proof (translation)
+The claim follows from `Module.finrank_zero_iff`.
+-/
 lemma hdim_eq_zero_iff [Module.Finite k (coh F n)] : hdim k F n = 0 ↔ Subsingleton (coh F n) :=
   Module.finrank_zero_iff
 
+/- English proof (translation)
+The claim follows from `Module.finrank_zero_of_subsingleton`.
+-/
 lemma hdim_eq_zero_of_subsingleton [Subsingleton (coh F n)] : hdim k F n = 0 :=
   Module.finrank_zero_of_subsingleton
 
+/- English proof (translation)
+The claim follows from `(cohOn.mapIso k ⊤ n e).finrank_eq`.
+-/
 lemma hdim_congr (e : F ≅ G) : hdim k F n = hdim k G n :=
   (cohOn.mapIso k ⊤ n e).finrank_eq
 
+/- English proof (translation)
+The claim follows from `(cohOn.biprodEquiv k ⊤ n F G).finrank_eq.trans Module.finrank_prod`.
+-/
 lemma hdim_biprod [Module.Finite k (coh F n)] [Module.Finite k (coh G n)] :
     hdim k (F ⊞ G) n = hdim k F n + hdim k G n :=
   (cohOn.biprodEquiv k ⊤ n F G).finrank_eq.trans Module.finrank_prod
 
+/- English proof (translation)
+The claim follows from `(cohOn.piEquiv k ⊤ n F).finrank_eq.trans (Module.finrank_pi_fintype k)`.
+-/
 lemma hdim_pi {ι : Type t} [Fintype ι] (F : ι → X.Modules) [∀ i, Module.Finite k (coh (F i) n)] :
     hdim k (∏ᶜ F) n = ∑ i, hdim k (F i) n :=
   (cohOn.piEquiv k ⊤ n F).finrank_eq.trans (Module.finrank_pi_fintype k)
 
+/- English proof (translation)
+The claim follows from `(cohOn.zeroEquiv k F ⊤).finrank_eq`.
+-/
 lemma hdim_zero (F : X.Modules) : hdim k F 0 = Module.finrank k (sectionsOn F ⊤) :=
   (cohOn.zeroEquiv k F ⊤).finrank_eq
 
@@ -619,6 +802,9 @@ instance cohOn.finite_pi (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)] {ι : 
     Module.Finite R (cohOn (∏ᶜ F) U n) :=
   Module.Finite.equiv (cohOn.piEquiv R U n F).symm
 
+/- English proof (translation)
+The claim follows from `letI : Algebra k Γ(Spec (.of k), ⊤) := algebraΓSpec (.of k) ⟨Module.Finite.equiv (coh.zeroUnitSpecEquiv (.of k)).symm, (coh.zeroUnitSpecEquiv (.of k)).finrank_eq.trans (Module.finrank_self k)⟩`.
+-/
 example (k : Type u) [Field k] :
     letI : Algebra k Γ(Spec (.of k), ⊤) := algebraΓSpec (.of k)
     Module.Finite k (coh (structureModule (Spec (.of k))) 0) ∧
@@ -627,9 +813,15 @@ example (k : Type u) [Field k] :
   ⟨Module.Finite.equiv (coh.zeroUnitSpecEquiv (.of k)).symm,
     (coh.zeroUnitSpecEquiv (.of k)).finrank_eq.trans (Module.finrank_self k)⟩
 
+/- English proof (translation)
+The claim follows from `(coh.zeroUnitSpecEquiv (.of ℤ)).toEquiv.nontrivial`.
+-/
 example : Nontrivial (coh (structureModule (Spec (.of ℤ))) 0) :=
   (coh.zeroUnitSpecEquiv (.of ℤ)).toEquiv.nontrivial
 
+/- English proof (translation)
+Rewrite using `[cohOn.map_neg_hom, cohOn.map_id]`. Both sides reduce to the same expression.
+-/
 example (F : X.Modules) (U : X.Opens) (n : ℕ) (x : cohOn F U n) :
     cohOn.map ℤ (-𝟙 F) U n x = -x := by
   rw [cohOn.map_neg_hom, cohOn.map_id]; rfl

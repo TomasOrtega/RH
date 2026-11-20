@@ -12,6 +12,9 @@ namespace GlobalTheory.HilbFam
 open Set Filter Topology in
 open NumberField IsDedekindDomain in
 open scoped ContDiff nonZeroDivisors in
+/- English proof (translation)
+Introduce `z hz`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.partialD`. Conclude with `(hh.differentiableAt (hU.mem_nhds hz)).lineDeriv_eq_fderiv`.
+-/
 private lemma partialD_eqOn_fderiv_single {I : Type} [Fintype I] [DecidableEq I] {U : Set (I → ℂ)}
     {h : (I → ℂ) → ℂ} (hU : IsOpen U) (hh : DifferentiableOn ℂ h U) (i : I) :
     EqOn (_root_.GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.partialD i h) (fun z ↦ fderiv ℂ h z (Pi.single i 1)) U := by
@@ -22,6 +25,9 @@ private lemma partialD_eqOn_fderiv_single {I : Type} [Fintype I] [DecidableEq I]
 open Set Filter Topology in
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+The claim follows from `| [] => by intro z _ simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.iterD] | i :: l => by intro z hz have ih := iterD_eqOn_iteratedFDeriv_single hU hh l have hG : DifferentiableOn ℂ (fun z ↦ iteratedFDeriv ℂ l.length h z (fun k ↦ Pi.single (l.get k) 1)) …`.
+-/
 private lemma iterD_eqOn_iteratedFDeriv_single {I : Type} [Fintype I] [DecidableEq I]
     {U : Set (I → ℂ)} {h : (I → ℂ) → ℂ} (hU : IsOpen U) (hh : DifferentiableOn ℂ h U) :
     ∀ l : List I, EqOn (_root_.GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.iterD l h)
@@ -53,6 +59,13 @@ open Set Filter Topology in
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `I _ _ Ξ u r f g M hr hM hf hbound hsum`. Establish `hU : IsOpen (Metric.ball (0 : I → ℂ) r)` using `Metric.isOpen_ball`. Establish `h0 : (0 : I → ℂ) ∈ Metric.ball (0 : I → ℂ) r` using `Metric.mem_ball_self hr`. Establish `hloc : ∀ x ∈ Metric.ball (0 : I → ℂ) r, ∃ t ∈ 𝓝 x, ∃ v : Ξ → ℝ, Summable v ∧ ∀ ξ, ∀ z ∈ t, ‖f ξ z‖ ≤ v ξ` using `fun x hx ↦ ⟨_, hU.mem_nhds hx, M, hM, hbound⟩`. Establish `hg_eq : EqOn g (fun w ↦ ∑' ξ, f ξ w) (Metric.ball 0 r)` using `fun z hz ↦ (hsum z hz).tsum_eq.symm`.
+
+Establish `hg : DifferentiableOn ℂ g (Metric.ball 0 r)` using `(_root_.GlobalTheory.SCV.differentiableOn_tsum_of_locally_normal hU hf hloc).congr hg_eq`. Establish `hev : g =ᶠ[𝓝 0] fun w ↦ ∑' ξ, f ξ w` using `Filter.eventuallyEq_of_mem (hU.mem_nhds h0) hg_eq`. Establish `hS` using `_root_.GlobalTheory.SCV.hasSum_iteratedFDeriv_of_locally_normal hU hf hloc u.length h0`. Rewrite `hS` using `[← (hev.iteratedFDeriv ℂ u.length).eq_of_nhds]`. Rewrite using `[iterD_eqOn_iteratedFDeriv_single hU hg u h0]`.
+
+Simplify using `only [iterD_eqOn_iteratedFDeriv_single hU (hf _) u h0]`. Conclude with `ContinuousMultilinearMap.hasSum_eval hS _`.
+-/
 theorem _root_.GlobalTheory.HilbFam.hasSum_iterD_termwise : ∀ (I : Type) [Fintype I] [DecidableEq I] (Ξ : Type) (u : List I) (r : ℝ)
     (f : Ξ → (I → ℂ) → ℂ) (g : (I → ℂ) → ℂ) (M : Ξ → ℝ), 0 < r → Summable M →
     (∀ ξ, DifferentiableOn ℂ (f ξ) (Metric.ball 0 r)) →

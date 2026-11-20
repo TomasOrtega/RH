@@ -7,6 +7,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.HodgeCoh
 
+/- English proof (translation)
+Introduce `Z _ p`. Use `letI := algΓ p`. Introduce `inst hinst j V V' hV hV' hη hη' h y`. Substitute `hinst` using the available equality. Use `letI := ffAlg p`.
+
+Establish `key : (toOmEquiv p j hV').symm (sectionsOn.toΓ _ _ (sectionsOn.res ℂ (Omega p j) h y)) = formRes p h j ((toOmEquiv p j hV).symm (sectionsOn.toΓ _ _ y))`. Apply `(toOmEquiv p j hV').injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, toOmEquiv_apply, ← res_toOm, ← toOmEquiv_apply p j hV, LinearEquiv.apply_symm_apply, sectionsOn.toΓ_res]`. Express the relevant statement in the definitionally equal form `(semiHom_germSec p hη').mDR ((toOmEquiv p j hV').symm (sectionsOn.toΓ _ _ (sectionsOn.res ℂ (Omega p j) h y)) : DR ℂ (Sec p V')) = (semiHom_germSec p hη).mDR ((toOmEquiv p j hV).symm (sectionsOn.toΓ _ _ y) : DR ℂ (Sec p V))`. Rewrite using `[key]`.
+
+Conclude with `congrArg Subtype.val (SemiHom.mOm_mOm (SemiHom.of_algHom (Sec.res p h)) (semiHom_germSec p hη') (semiHom_germSec p hη) (fun b ↦ by`. Express the relevant statement in the definitionally equal form `(Z.presheaf.germ V' (genericPoint Z) hη').hom ((Z.presheaf.map (homOfLE h).op).hom b) = (Z.presheaf.germ V (genericPoint Z) hη).hom b`. Conclude with `congrArg (fun f ↦ f.hom (show Γ(Z, V) from b)) (TopCat.Presheaf.germ_res Z.presheaf (homOfLE h) (genericPoint Z) hη')) _)`.
+-/
 theorem formGermI_res : ∀ (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ),
     letI := algΓ p
     ∀ [inst : Algebra ℂ Z.functionField] (hinst : inst = ffAlg p) (j : ℕ) (V V' : Z.Opens)

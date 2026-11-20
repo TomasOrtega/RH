@@ -11,6 +11,15 @@ variable {g : ℕ} [Fact g.Prime] {N : ℕ}
 open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] {N : ℕ} in
+/- English proof (translation)
+Introduce `a b hab`. Establish `hone : (1 : _root_.GlobalTheory.GLq.Mt g N) a b = ((1 : _root_.GlobalTheory.GLq.Mt g N) * 1) a b` using `by rw [one_mul]`. Rewrite using `[hone, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hac : Φ a c`.
+
+Establish `hcb : ¬ Φ c b` using `fun hcb => hab (ht a c b hac hcb)`. Rewrite using `[h' c b hcb]`. Distinguish the cases in `e : c = b`. Substitute `e` using the available equality. Conclude with `absurd hac hab`.
+
+Rewrite using `[Matrix.one_apply_ne e, mul_zero, mul_zero]`. Rewrite using `[h a c hac]`. Distinguish the cases in `e : a = c`. Substitute `e` using the available equality. Rewrite using `[h' a b hab]`.
+
+Rewrite using `[Matrix.one_apply_ne e, zero_mul, zero_mul]`.
+-/
 theorem _root_.GlobalTheory.GLm.Pattern.inPat_mul {Φ : Fin N → Fin N → Prop}
     (ht : ∀ a b c, Φ a b → Φ b c → Φ a c) {M M' : _root_.GlobalTheory.GLq.Mt g N}
     (h : _root_.GlobalTheory.GLm.InPat Φ M) (h' : _root_.GlobalTheory.GLm.InPat Φ M') :
@@ -52,6 +61,17 @@ def patSub (g : ℕ) [Fact g.Prime] {N : ℕ} (Φ : Fin N → Fin N → Prop)
 open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] {N : ℕ} in
+/- English proof (translation)
+Set `r : Fin N → ℕ` to `fun i => (Finset.univ.filter fun j => Φ j i).card`. Establish `hr : ∀ i j, Φ i j → r i < r j`. Introduce `i j hij`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Rewrite using `[Finset.ssubset_iff_of_subset]`.
+
+Conclude with `⟨i, by simp [hij], by simp [hirr i]⟩`. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢`. Conclude with `htrans k i j hk hij`. Establish `hbt : Matrix.BlockTriangular M r`.
+
+Introduce `i j hji`. Establish `hne : i ≠ j` using `by rintro rfl; exact lt_irrefl _ hji`. Rewrite using `[h i j (fun hij => absurd (hr i j hij) (not_lt.mpr hji.le)), Matrix.one_apply_ne hne]`. Establish `hblock : ∀ k, Matrix.toSquareBlock M r k = 1`. Introduce `k`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toSquareBlock_def, Matrix.of_apply]`. Establish `hij : ¬ Φ i.1 j.1` using `fun hij => (hr _ _ hij).ne (i.2.trans j.2.symm)`. Rewrite using `[h _ _ hij]`. Distinguish the cases in `e : i = j`.
+
+Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne (fun h => e (Subtype.ext h))]`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, hbt.det]`. Simplify using `[hblock]`.
+-/
 private theorem isUnit_of_inPat_irrefl_trans {Φ : Fin N → Fin N → Prop} (hirr : ∀ a, ¬ Φ a a)
     (htrans : ∀ a b c, Φ a b → Φ b c → Φ a c) {M : _root_.GlobalTheory.GLq.Mt g N}
     (h : _root_.GlobalTheory.GLm.InPat Φ M) : IsUnit M := by
@@ -84,6 +104,23 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] {N : ℕ} in
 
+/- English proof (translation)
+Introduce `g _ N Φ hirr htrans`. Establish `hunit : ∀ M : _root_.GlobalTheory.GLq.Mt g N, _root_.GlobalTheory.GLm.InPat Φ M → IsUnit M` using `fun M hM => isUnit_of_inPat_irrefl_trans hirr htrans hM`. Use `⟨⟨_root_.GlobalTheory.GLm.Pattern.patSub g Φ htrans, fun x => Iff.rfl, ?_⟩, hunit, ?_⟩` and prove the remaining obligations. Establish `e1 : Nat.card (_root_.GlobalTheory.GLm.Pattern.patSub g Φ htrans) = Nat.card {M : _root_.GlobalTheory.GLq.Mt g N // _root_.GlobalTheory.GLm.InPat Φ M}`. Use `Nat.card_congr (Equiv.ofBijective (fun x => ⟨(x.1 : _root_.GlobalTheory.GLq.Mt g N), x.2⟩) ⟨?_, ?_⟩)` and prove the remaining obligations.
+
+Introduce `x y hxy`. Conclude with `Subtype.ext (Units.ext (congrArg Subtype.val hxy))`. Introduce `M`. Conclude with `⟨⟨(hunit M.1 M.2).unit, M.2⟩, rfl⟩`. Set `e2 : {M : _root_.GlobalTheory.GLq.Mt g N // _root_.GlobalTheory.GLm.InPat Φ M} ≃ ({p : Fin N × Fin N // Φ p.1 p.2} → ZMod g)` to `{ toFun := fun M p => M.1 p.1.1 p.1.2 invFun := fun f => ⟨fun a b => if h : Φ a b then f ⟨(a, b), h⟩ else (1 : _root_.GlobalTheory.GLq.Mt g N) a b, fun a b h => by simp [h]⟩ left_inv := fun M => by`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using `only`. Use `split_ifs with h`. Both sides reduce to the same expression.
+
+Conclude with `(M.2 a b h).symm`. Use `right_inv := fun f => by`. Use function extensionality and compare the values at `p`. Simplify using `[p.2] }`. Rewrite using `[e1, Nat.card_congr e2, Nat.card_fun, Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+
+Introduce `E hE hEirr M M' hM hM'`. Unfold `_root_.GlobalTheory.GLm.sumAt`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hac`. Rewrite using `[Matrix.mul_apply]`. Establish `hne : a ≠ c` using `by rintro rfl; exact hEirr a hac`. Rewrite using `[Fintype.sum_eq_add a c hne]`.
+
+Rewrite using `[hM a a (hirr a), hM' c c (hirr c), Matrix.one_apply_eq, Matrix.one_apply_eq, one_mul, mul_one, add_comm]`. Introduce and unpack `b ⟨hba, hbc⟩`. Distinguish the cases in `hab : Φ a b`. Rewrite using `[hM' b c (fun hbc' => hE a b c hab hbc' hac), Matrix.one_apply_ne hbc, mul_zero]`. Rewrite using `[hM a b hab, Matrix.one_apply_ne (Ne.symm hba), zero_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.GLm.Pattern.pattern_group : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ)
     (Φ : Fin N → Fin N → Prop), (∀ a, ¬ Φ a a) → (∀ a b c, Φ a b → Φ b c → Φ a c) →
     (∃ H : Subgroup (_root_.GlobalTheory.GLq.Gn g N),

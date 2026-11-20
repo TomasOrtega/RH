@@ -13,6 +13,21 @@ open GlobalTheory.HoweD
 
 namespace GlobalTheory.HoweD
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ om hCM hψ hFr hΦ hom`. Take `⟨ω₀, c₀, hH, hc, hact⟩` from `GlobalTheory.T.exists_genuineSplitting_adelicSchwartz_placeSignature F E σ α β κ P Q R S ψ τ JA JB d a b A C Φ hCM hψ hFr hΦ`. Take `⟨ν, hν, hmul, hνc, hν0⟩` from `GlobalTheory.T.archimedean_splittings_differ_by_character F E σ α β κ ψ JA JB d om ω₀ hψ hom hH hc`. Take `⟨k, hk⟩` from `GlobalTheory.T.deriv_continuous_character_real_unitary_one_parameter F E σ β R S τ JB b C hCM hFr.2.2 ν hmul hνc hν0`. Use `⟨fun w => c₀ w + k w, ?_⟩` and prove the remaining obligations.
+
+Introduce `γ hγ Y hY T g hg l hl`. Establish `hH1 : ∀ t : ℝ, At (evI F) (((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)) - 1)` using `fun t => hγ.2 _`. Establish `hpm : ∀ f : SInf F κ, pureA F f g ∈ schA F κ` using `fun f => Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `e1 : (fun t : ℝ => l (om (γ (Multiplicative.ofAdd t)) (pureA F (Φ T) g))) = fun t => ν (γ (Multiplicative.ofAdd t)) * l (ω₀ (γ (Multiplicative.ofAdd t)) (pureA F (Φ T) g))`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[hν _ (hH1 t) _ (hpm _), map_smul, smul_eq_mul]`. Use `show HasDerivAt (fun t : ℝ => l (om (γ (Multiplicative.ofAdd t)) (pureA F (Φ T) g))) _ 0`. Rewrite using `[e1]`. Establish `h3` using `(hk γ hγ Y hY).mul (hact γ hγ Y hY T g hg l hl)`. Establish `hγ0 : γ (Multiplicative.ofAdd (0 : ℝ)) = 1` using `by rw [ofAdd_zero, map_one]`.
+
+Establish `h1m : At (evI F) (((1 : UG (cA σ) JB).1 : Matrix β β (AE F E)) - 1)` using `fun u _ => by simp`. Establish `hν1 : ν 1 = 1`. Use `hmul 1 1 h1m h1m` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_eq_left₀ (hν0 1 h1m)).mp this.symm`.
+
+Use `beta_reduce at h3`. Rewrite `h3` using `[hγ0, hν1, map_one, Module.End.one_apply, one_mul]`. Use `h3.congr_deriv ?_` and prove the remaining obligations. Establish `e2 : sumPl (fun w => fockAct2 (P w) (Q w) (R w) (S w) (Y w) + (((fun w => c₀ w + k w) w) * (Y w).trace) • (1 : Module.End ℂ _)) = sumPl (fun w => fockAct2 (P w) (Q w) (R w) (S w) (Y w) + (c₀ w * (Y w).trace) • (1 : Module.End ℂ _)) + (∑ w, k w * (Y w).trace) • (1 : Module.End ℂ ( …`. Simplify using `only [add_mul, add_smul, ← add_assoc]`.
+
+Conclude with `GlobalTheory.LieScal.sumPl_add_smul (fun w => fockAct2 (P w) (Q w) (R w) (S w) (Y w) + (c₀ w * (Y w).trace) • (1 : Module.End ℂ _)) _`. Rewrite using `[e2, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, map_add, map_smul]`. Establish `key : ∀ (z : ℂ) (f f' : SInf F κ), pureA F ⇑(f' + z • f) g = z • pureA F ⇑f g + pureA F ⇑f' g`. Introduce `z f f'`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[pureA]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, map_add, map_smul, smul_eq_mul]`.
+-/
 theorem lieScalarD : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (P Q R S : InfinitePlace F → ℕ) (ψ : AddChar (AF F) ℂ)
     (τ : ∀ w : InfinitePlace F, EmbOver E w) (JA : Matrix α α (AE F E)) (JB : Matrix β β (AE F E))

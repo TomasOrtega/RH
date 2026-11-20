@@ -23,6 +23,9 @@ def IsLog (G : Germ.FGLaw S d) (ℓ : Germ.Pt S 1 d) : Prop :=
     Germ.comp1 ℓ (G.add (Germ.pt S (n := 2) d 0) (Germ.pt S (n := 2) d 1)) =
       Germ.comp1 ℓ (Germ.pt S (n := 2) d 0) + Germ.comp1 ℓ (Germ.pt S (n := 2) d 1)
 
+/- English proof (translation)
+The claim follows from `h S d G`.
+-/
 example [Algebra ℚ S] (h : TB.LogSt) (G : Germ.FGLaw S d) : ∃ ℓ, IsLog G ℓ := h S d G
 
 def bilLog (ℓ : Germ.Pt S 1 d) (c : Matrix (Fin d) (Fin d) S) {n : ℕ} (P Q : Germ.Pt S n d) : Germ.PS S n d :=
@@ -34,9 +37,15 @@ def IsSymBal {O : Type} (act : O → Germ.Pt S 1 d) (bar : O → O) (c : Matrix 
     dotProduct ((TB.dLin (act a)).mulVec u) (c.mulVec v) =
       dotProduct u (c.mulVec ((TB.dLin (act (bar a))).mulVec v))
 
+/- English proof (translation)
+Simplify using `[bilLog]`.
+-/
 example (ℓ : Germ.Pt S 1 d) {n : ℕ} (P Q : Germ.Pt S n d) : bilLog ℓ 0 P Q = 0 := by
   simp [bilLog]
 
+/- English proof (translation)
+Simplify using `[IsSymBal]`.
+-/
 example {O : Type} (act : O → Germ.Pt S 1 d) (bar : O → O) : IsSymBal act bar 0 := by
   simp [IsSymBal]
 
@@ -82,6 +91,9 @@ def withFrames (y : FrPt Xo c S) (C : ChartAt Xo c y) (e' : ∀ m, FrTy y C.d C.
   gauge := C.gauge
   rig0 := hr
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (y : FrPt Xo c S) (C : ChartAt Xo c y) : withFrames y C C.e C.frame C.rig0 = C := rfl
 
 def IsTwist (y : FrPt Xo c S) (C : ChartAt Xo c y) (ℓ : Germ.Pt S 1 C.d)

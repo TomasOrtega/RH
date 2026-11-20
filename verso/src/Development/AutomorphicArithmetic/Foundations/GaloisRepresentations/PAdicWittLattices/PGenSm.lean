@@ -12,6 +12,13 @@ open UpperTheory.Gal.Int.Geo (Lv IsTrans Integ KS Mem FEt KSEx KSNice)
 open scoped TensorProduct
 universe u
 
+/- English proof (translation)
+Introduce `p _ D R _ _ gb N X`. Use `haveI : CharZero R := charZero_of_injective_algebraMap (algebraMap ℚ R).injective`. Take `⟨M⟩` from `GlobalTheory.T.harrisTaylorIntegralModel_nonempty p D R (GenCmp.baseOf gb) N.1 N.2.1 N.2.2`. Take `⟨j, hoi, hci, hj, -⟩` from `GenCmp.genModel_eq_genericFibre p D R (GenCmp.baseOf gb) R (RingHom.id R) gb`. Use `rfl (fun _ => rfl) N.1 N.2.1 N.2.2 M X`.
+
+Use `haveI := hoi`. Use `haveI := hci`. Use `haveI : IsQProjOver M.s := M.qproj`. Use `haveI : SmoothOfRelativeDimension (D.a * (D.n - 1)) M.s := M.smooth`. Use `haveI : IsSeparated M.s := GlobalTheory.ZM.isSeparated_of_isQProjOver M.qproj`.
+
+Use `haveI : QuasiCompact M.s := quasiCompact_of_qProj M.qproj`. Use `haveI : Smooth M.s := SmoothOfRelativeDimension.smooth (D.a * (D.n - 1)) M.s`. Rewrite using `[← hj]`. Use `⟨inferInstance, inferInstance, inferInstance, fun hB => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ProjSpace.isProjOver_comp_of_isClosedImmersion j (GlobalTheory.ProjSpace.isProjOver_pullback_snd (RingHom.id R) (Model.isProjOver_of_compactB p D R (GenCmp.baseOf gb) N.1 N.2.1 N.2.2 hB M))`.
+-/
 theorem UpperTheory.Gal.G3.pGenSm : GenSm := by
   intro p _ D R _ _ gb N X
   haveI : CharZero R := charZero_of_injective_algebraMap (algebraMap ℚ R).injective

@@ -7,6 +7,19 @@ namespace GlobalTheory.ColNorms.StepRows
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds GlobalTheory.ColNorms
 open scoped ComplexOrder
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h.2.2 z`. Establish `he : (W.hc u (pl z)).e = (N.hc z).e` using `congrArg RowPar.e h1`. Establish `hq : N.eQ (i + 1) z = (N.hc z).e ⟨i, hi⟩`. Unfold `NumDatum.eQ`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`.
+
+Both sides reduce to the same expression. Rewrite using `[W.nuW_eq u hi, W.lamN_eq u hi.le, he]`. Unfold `NumDatum.nu NumDatum.srcPar`. Rewrite using `[hq]`. Distinguish the cases in `hl : l.1 < N.R.k`.
+
+Rewrite using `[dif_pos hl, dif_pos hl]`. Unfold `hcToWeightQ rhoVec wG Ranks.N`. Rewrite using `[h2, Nat.add_sub_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hb` using `N.R.blk_lt hi.le l hl`. Rewrite using `[dif_neg hl, dif_neg hl, dif_pos hb]`. Establish `hdm` using `Nat.div_add_mod (l.1 - N.R.k) (N.R.t + 1)`. Establish `hl2 : l.1 = N.R.k + ((N.R.t + 1) * ((l.1 - N.R.k) / (N.R.t + 1)) + (l.1 - N.R.k) % (N.R.t + 1))` using `by omega`. Establish `hl3 : ((l.1 : ℕ) : ℚ) = N.R.k + (((N.R.t : ℚ) + 1) * (((l.1 - N.R.k) / (N.R.t + 1) : ℕ) : ℚ) + (((l.1 - N.R.k) % (N.R.t + 1) : ℕ) : ℚ))` using `by exact_mod_cast hl2`.
+
+Rewrite using `[hl3]`. Generalize the expression as in `(N.hc z).e ⟨(l.1 - N.R.k) / (N.R.t + 1), hb⟩ = eb`. Generalize the expression as in `(l.1 - N.R.k) / (N.R.t + 1) = B`. Generalize the expression as in `(l.1 - N.R.k) % (N.R.t + 1) = r`. Unfold `wG Ranks.N`.
+
+Rewrite using `[Nat.add_sub_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nuW_eq_nu (N : NumDatum) {X : Fields} {Pr : Primes X} (W : Wts X Pr.Word N.R) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word)
     (δ : Code N) (h : WeightTie N W pl u δ) {i : ℕ} (hi : i < N.R.m) (z : RPl N.R) (l : Fin (N.R.N i)) :
     (((W.nuW u (i + 1) (pl z)).w l : ℤ) : ℚ) = N.nu δ (i + 1) z l := by
@@ -40,6 +53,9 @@ theorem nuW_eq_nu (N : NumDatum) {X : Fields} {Pr : Primes X} (W : Wts X Pr.Word
     push_cast
     ring
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.k_even`. Take `⟨c, hc⟩` from `R.t_odd`. Unfold `sExp sExp' Ranks.N`. Rewrite using `[Nat.add_sub_cancel, ha, hc]`. Conclude with `⟨⟨z - a - j * (c + 1), by push_cast; ring⟩, ⟨z - a - (j + 1) * (c + 1), by push_cast; ring⟩⟩`.
+-/
 theorem sExp_int (R : Ranks) (z : ℤ) (j : ℕ) :
     (∃ y : ℤ, sExp R (z : ℚ) (j + 1) = y) ∧ ∃ y : ℤ, sExp' R (z : ℚ) (j + 1) = y := by
   obtain ⟨a, ha⟩ := R.k_even
@@ -48,6 +64,19 @@ theorem sExp_int (R : Ranks) (z : ℤ) (j : ℕ) :
   rw [Nat.add_sub_cancel, ha, hc]
   exact ⟨⟨z - a - j * (c + 1), by push_cast; ring⟩, ⟨z - a - (j + 1) * (c + 1), by push_cast; ring⟩⟩
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `(W.hc u τ).e_int ⟨i, hi⟩`. Take `⟨⟨y, hy⟩, ⟨y', hy'⟩⟩` from `sExp_int R z i`. Use `⟨h0, ⟨y', fun l => ?_⟩, ⟨y, fun l => ?_⟩⟩` and prove the remaining obligations. Establish `h` using `W.nuW_eq_true u hi τ l`. Rewrite `h` using `[hz, hy']`.
+
+Conclude with `h` after adjusting the coercions. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.padZero`. Distinguish the cases in `hl : l.1 < R.N i`. Rewrite using `[dif_pos hl]`. Establish `h` using `W.nuW_eq_true u hi τ ⟨l.1, hl⟩`.
+
+Establish `h'` using `W.lamTrue_old u hi τ l hl`. Rewrite `h` using `[hz, hy']`. Rewrite `h'` using `[hz, hy, hy', ← h]`. Establish `h2 : (((W.lamTrue u (i + 1) τ).w l + y : ℤ) : ℚ) = (((W.nuW u (i + 1) τ).w ⟨l.1, hl⟩ : ℤ) : ℚ)`. Use `push_cast`.
+
+Rewrite using `[h']`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h2` after adjusting the coercions. Rewrite using `[dif_neg hl]`. Establish `h'` using `W.lamTrue_new u hi τ l hl`.
+
+Rewrite `h'` using `[hz, hy]`. Establish `h2 : (((W.lamTrue u (i + 1) τ).w l + y : ℤ) : ℚ) = 0`. Use `push_cast`. Rewrite using `[h']`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `h2` after adjusting the coercions.
+-/
 theorem stepWeights {X : Fields} {Word : Type} {R : Ranks} (W : Wts X Word R) (u : Word) {i : ℕ} (hi : i < R.m) (τ : X.Tau)
     (h0 : ∀ l : Fin (R.N i), 0 ≤ (W.nuW u (i + 1) τ).w l) :
     GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.StepWeights (W.lamTrue u i τ) (W.nuW u (i + 1) τ) (W.lamTrue u (i + 1) τ) := by
@@ -78,6 +107,11 @@ theorem stepWeights {X : Fields} {Word : Type} {R : Ranks} (W : Wts X Word R) (u
         ring
       exact_mod_cast h2
 
+/- English proof (translation)
+Introduce `D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ hyp i hi`. Take `⟨-, hW, -, -, -, -, -, -, hS⟩` from `hyp`. Use `⟨fun τ => stepWeights W u hi τ fun l => ?_, fun z l => nuW_eq_nu N W pl u δ hW hi z l⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `pl.surjective τ`. Establish `h1` using `nuW_eq_nu N W pl u δ hW hi z l`.
+
+Establish `h2` using `(hS.2.2.2.2.1 (i + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩) z l.1 l.2).1`. Rewrite `h2` using `[← h1]`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem weights_rows : ∀ (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), Hyp N s W Ch G sel mu cst I dl χ cD pl u δ → ∀ i, i < N.R.m → (∀ τ, GlobalTheory.IndefiniteRowSideFullHecke.PaddedLastEntry.StepWeights (W.lamTrue u i τ) (W.nuW u (i + 1) τ) (W.lamTrue u (i + 1) τ)) ∧ ∀ (z : RPl N.R) (l : Fin (N.R.N i)), (((W.nuW u (i + 1) (pl z)).w l : ℤ) : ℚ) = N.nu δ (i + 1) z l := by
   intro D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ hyp i hi
   obtain ⟨-, hW, -, -, -, -, -, -, hS⟩ := hyp

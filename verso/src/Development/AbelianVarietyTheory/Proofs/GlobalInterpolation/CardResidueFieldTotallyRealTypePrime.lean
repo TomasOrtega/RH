@@ -9,6 +9,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory.SplitResidueCard
 
+/- English proof (translation)
+Take `⟨hc, -⟩` from `Formalism.MainNotions.ModuliIntegralCharts.H1.GSplit.split_of_ncard hp h`. Use `set I : Ideal (𝓞 E) := Ideal.span {((p : ℕ) : 𝓞 E)} with hI`. Establish `hI0 : I ≠ ⊥`. Rewrite using `[hI, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions.
+
+Use `set M := UniqueFactorizationMonoid.normalizedFactors I with hM`. Establish `hN : Ideal.absNorm I = p ^ Module.finrank ℚ E`. Rewrite using `[hI, Ideal.absNorm_span_singleton]`. Establish `: ((p : ℕ) : 𝓞 E) = algebraMap ℤ (𝓞 E) (p : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, RingOfIntegers.rank]`.
+
+Simplify using the standard rewrite rules. Establish `hprod : M.prod = I` using `Ideal.prod_normalizedFactors_eq_self hI0`. Establish `hge : ∀ P ∈ M, p ≤ Ideal.absNorm P`. Introduce `P hP`. Take `⟨hPp, hIP⟩` from `(Ideal.mem_normalizedFactors_iff hI0).1 hP`.
+
+Establish `hd : Ideal.absNorm P ∣ p ^ Module.finrank ℚ E` using `hN ▸ Ideal.absNorm_dvd_absNorm_of_le hIP`. Take `⟨j, -, hj⟩` from `(Nat.dvd_prime_pow hp).1 hd`. Establish `h1 : Ideal.absNorm P ≠ 1` using `by rw [Ne, Ideal.absNorm_eq_one_iff]; exact hPp.ne_top`. Rewrite `h1`, the goal using `[hj]`. Conclude with `Nat.le_self_pow (by rintro rfl; simp at h1) p`.
+
+Establish `hwM : w ∈ M` using `(Ideal.mem_normalizedFactors_iff hI0).2 ⟨hwp, by rw [hI, Ideal.span_singleton_le_iff_mem]; exact hw⟩`. Use `le_antisymm ?_ (hge _ hwM)` and prove the remaining obligations. Take `⟨M', hM'⟩` from `Multiset.exists_cons_of_mem hwM`. Establish `h2 : p ^ M'.card ≤ (M'.map Ideal.absNorm).prod`. Use `Multiset.pow_card_le_prod (s := M'.map Ideal.absNorm) (a := p) (fun x hx => by` as an intermediate fact.
+
+Take `⟨P, hP, rfl⟩` from `Multiset.mem_map.1 hx`. Conclude with `hge P (hM' ▸ Multiset.mem_cons_of_mem hP))`. Simplify using `using this`. Establish `h3 : Ideal.absNorm w * (M'.map Ideal.absNorm).prod = p * p ^ M'.card`. Rewrite using `[← pow_succ', ← Multiset.card_cons w, ← hM', hc, ← hN, ← hprod, hM', Multiset.prod_cons, map_mul, map_multiset_prod]`.
+
+Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hpos : 0 < p ^ M'.card` using `pow_pos hp.pos _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem absNorm_eq_of_ncard {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime)
     (h : {v : HeightOneSpectrum (𝓞 E) | ((p : ℕ) : 𝓞 E) ∈ v.asIdeal}.ncard = Module.finrank ℚ E)
     {w : Ideal (𝓞 E)} (hwp : w.IsPrime) (hw : ((p : ℕ) : 𝓞 E) ∈ w) :
@@ -51,6 +66,13 @@ theorem absNorm_eq_of_ncard {E : Type} [Field E] [NumberField E] {p : ℕ} (hp :
   have hpos : 0 < p ^ M'.card := pow_pos hp.pos _
   nlinarith
 
+/- English proof (translation)
+Use `v.isPrime` as an intermediate fact. Use `v.isMaximal` as an intermediate fact. Take `⟨w, hwm, hwo⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`. Establish `hw : ((p : ℕ) : 𝓞 E) ∈ w`. Establish `h1 : ((p : ℕ) : 𝓞 F) ∈ w.under (𝓞 F)` using `by rw [← hwo.over]; exact hv`.
+
+Simplify using `using (show algebraMap (𝓞 F) (𝓞 E) (p : 𝓞 F) ∈ w from h1)`. Establish `hN : Nat.card (𝓞 E ⧸ w) = p`. Rewrite using `[← absNorm_eq_of_ncard hp h hwm.isPrime hw, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hd : Nat.card (𝓞 F ⧸ v.asIdeal) ∣ p`. Rewrite using `[← hN]`.
+
+Conclude with `AddSubgroup.card_dvd_of_injective (algebraMap (𝓞 F ⧸ v.asIdeal) (𝓞 E ⧸ w)).toAddMonoidHom (FaithfulSMul.algebraMap_injective (𝓞 F ⧸ v.asIdeal) (𝓞 E ⧸ w))`. Use `((Nat.dvd_prime hp).1 hd).resolve_left fun h1 => ?_` and prove the remaining obligations. Use `(Nat.card_eq_one_iff_unique.1 h1).1` as an intermediate fact. Conclude with `not_subsingleton (𝓞 F ⧸ v.asIdeal) this`.
+-/
 theorem card_quotient_of_ncard {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {p : ℕ} (hp : p.Prime)
     (h : {v : HeightOneSpectrum (𝓞 E) | ((p : ℕ) : 𝓞 E) ∈ v.asIdeal}.ncard = Module.finrank ℚ E)
@@ -72,6 +94,9 @@ theorem card_quotient_of_ncard {F E : Type} [Field F] [NumberField F] [Field E] 
   have := (Nat.card_eq_one_iff_unique.1 h1).1
   exact not_subsingleton (𝓞 F ⧸ v.asIdeal) this
 
+/- English proof (translation)
+Introduce `D i v hv`. Rewrite using `[← card_quotient_of_ncard (D.host.g_prime i) (D.nd.g_split i) v hv]`. Establish `h` using `Formalism.UG.P.tjcosets_card_residue v`. Rewrite using `[h]`. Simplify using `[qV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem card_kv : ∀ (D : D7) (i : Fin 2) (v : HeightOneSpectrum (𝓞 D.host.F)), (D.host.g i : 𝓞 D.host.F) ∈ v.asIdeal → Nat.card (kv D.host.F v) = D.host.g i := by
   intro D i v hv
   rw [← card_quotient_of_ncard (D.host.g_prime i) (D.nd.g_split i) v hv]

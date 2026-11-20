@@ -29,6 +29,9 @@ section General
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 variable {X : PJ D B P j} {E : PtExt X} {hM : IntAtExt X E} {ka wL wF : WeightFamilies.Wt D j}
 
+/- English proof (translation)
+Use `choose y hw hg0 het using hR`. Establish `hcur` using `inCurveSec G la y (fun ζ => (hw ζ).toSecPt) g0 hC hg0`. Use `⟨y, hw, hcur, ?_, ?_⟩` and prove the remaining obligations. Conclude with `inTieSec D B P j X E hM ka wL wF G la S y (fun ζ => (hw ζ).toSecPt) g0 (fun ζ => depthAtSec_of S hspan hmin hcur.1 hcur.2.1 y (fun ζ => (hw ζ).toSecPt) ζ) (fun hj ζ => het ζ hj) hg0 hcur.2.2`. Conclude with `inLiftSec G la S Gc Prw y (fun ζ => (hw ζ).toSecPt) g0 Tn (liftModelSt_of G la (locRing_of h1 h2) y hw g0 Tn hC hg0)`.
+-/
 theorem secQ_data_of_real (G : GlobalFamilyData (xplus X E hM) ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO)) (S : Scal B)
     (g0 : B.Cusp j wF) (hC : Nonempty (CurveModel G la g0)) (hspan : SpanW (xplus X E hM) G.w S)
     (hmin : GenericSectionMinimumIntegral G la) (h1 : ESecSt G la) (h2 : Formalism.L2.Pj.LocStructSt G la)
@@ -49,6 +52,13 @@ theorem secQ_data_of_real (G : GlobalFamilyData (xplus X E hM) ka wL wF) (la : H
 
 end General
 
+/- English proof (translation)
+Introduce `D T h j hj hG hT ka wL wF G S g0 hH hV hC hB hB' hn het Gc Prw Tn`. Establish `key : ∀ la, ∃ (y : PtsG G la → (extAll h j hj).Pt' la) (hw : ∀ ζ, FromW (E` using `extAll h j hj) (hM := intAtExt_extAll h j hj) ζ (y ζ)), (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) y (fun ζ => (hw ζ).toSecPt) g0).InCurve ∧ (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) y (fun ζ => (hw ζ).toSecPt) g0).InTie S ∧ (secQ (E := extAll h j h …`. Introduce `la`. Establish `hM` using `GlobalTheory.CurveRecord.curveInst D T h j hj hG hT hV hC hB' hG ka wL wF G la S g0 hH.1 hH.2.1 hH.2.2.1 hH.2.2.2`. Take `⟨C⟩` from `id hM`.
+
+Establish `hfd` using `finiteDimensional_of_model (E := extAll h j hj) (hM := intAtExt_extAll h j hj) C`. Establish `hred` using `isReduced_of_model (E := extAll h j hj) (hM := intAtExt_extAll h j hj) C`. Establish `hU : IsUnif (OsK (recPlus h j hj) la G.w) (unifO (recPlus h j hj) la G.N)` using `isUnif_of_ring hfd`. Establish `hD : ∀ ζ : PtsG G la, IsDVRAt ζ` using `isDVRAt_of_ring hfd hred`. Establish `hR` using `GlobalTheory.realPtNZ_of_curveHyp D T h j hj hG hT ka wL wF G S g0 la hH hV hC hB hn hU`.
+
+Use `secQ_data_of_real (E := extAll h j hj) (hM := intAtExt_extAll h j hj) G la S g0 hM hH.1 (GlobalTheory.Reg.section_ratios_integral D T h j hj hG hT ka wL wF G S g0 la hH hV hC hB hM) (GlobalTheory.eSec_of_curveHyp D T h j hj hG hT ka wL wF G S g0 la hH hV hC hB) (GlobalTheory.Reg. …` and prove the remaining obligations. Take `⟨y, hw, hnz⟩` from `fromW_ne_zero h j hj hG G la hU hR ζ`. Conclude with `⟨y, hw, hnz wF g0 (nzAt_of_nonZeroComp h j hj hG hT hV hC G hH.2.1 g0 hH.2.2.2), fun hlt => hnz _ G.et (nzAt_of_nonZeroComp h j hj hG hT hV hC G hH.2.1 G.et (het hlt))⟩`. Use `choose y hw h1 h2 h3 using key`. Conclude with `⟨y, hw, h1, h2, h3⟩`.
+-/
 theorem exists_real_primeData : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (hT : GenFromTest (T.Q.Xo j) T.Q.c hG) (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF) (S : Scal (recB h.toLawsCore)) (g0 : (recB h.toLawsCore).Cusp j wF), CurveHyp h j hj hG ka wL wF G S g0 → GenValInjSt h j hG → CompSplitSt h j hG → BIRSt h j hj hG G → (∀ (ka wL wF : WeightFamilies.Wt D j) (G : GlobalFamilyData (recPlus h j hj) ka wL wF), BigAt h j hj hG G → BIRSt h j hj hG G) → 0 < wL.n → (j < D.R.m → (recPlus h j hj).NonZeroComp _ G.et) → ∀ (Gc Prw : ℝ) (Tn : ℕ), ∃ (y : ∀ la, PtsG G la → (extAll h j hj).Pt' la) (hw : ∀ la ζ, FromW (E := extAll h j hj) (hM := intAtExt_extAll h j hj) ζ (y la ζ)), (∀ la, (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (y la) (fun ζ => (hw la ζ).toSecPt) g0).InCurve) ∧ (∀ la, (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (y la) (fun ζ => (hw la ζ).toSecPt) g0).InTie S) ∧ (∀ la, (secQ (E := extAll h j hj) (hM := intAtExt_extAll h j hj) (y la) (fun ζ => (hw la ζ).toSecPt) g0).InLiftC S Gc Prw Tn) := by
   intro D T h j hj hG hT ka wL wF G S g0 hH hV hC hB hB' hn het Gc Prw Tn
   have key : ∀ la, ∃ (y : PtsG G la → (extAll h j hj).Pt' la)

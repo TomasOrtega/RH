@@ -19,6 +19,15 @@ namespace PositivityTheory.UnitarySelfGeneration.FrameHeightScaling
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 
+/- English proof (translation)
+Substitute `hq` using the available equality. Introduce `x`. Take `⟨U, f, hne, hf⟩` from `M.onto x`. Establish `hgen : genericPoint M.Z ∈ U` using `((genericPoint_spec M.Z).mem_open_set_iff U.isOpen).mpr (by simpa using hne)`. Establish `hc : M.pt (IsLocalRing.closedPoint (CommRingCat.of Ω)) ∈ U`.
+
+Establish `hr : M.pt (IsLocalRing.closedPoint (CommRingCat.of Ω)) ∈ Set.range M.pt` using `⟨_, rfl⟩`. Rewrite `hr` using `[M.gen]`. Rewrite using `[hr]`. Conclude with `hgen`. Use `⟨(M.Z.residue _).hom (M.Z.presheaf.germ U _ hc f), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← CommRingCat.comp_apply, Scheme.residue_descResidueField, ← CommRingCat.comp_apply, Scheme.germ_stalkClosedPointTo, ← hf]`. Establish `htop : ⊤ ≤ M.pt ⁻¹ᵁ U` using `(Scheme.preimage_eq_top_of_closedPoint_mem M.pt hc).ge`. Unfold `valF`. Rewrite using `[dif_pos htop]`. Simplify using `only [Scheme.Hom.appLE, Iso.trans_hom, Functor.mapIso_hom, CommRingCat.comp_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem surj_desc (M : RatModel o Ω) (q : Sp Ω ⟶ M.Z) (hq : q = M.pt) :
     Function.Surjective (Scheme.descResidueField (Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) q)).hom := by
   subst hq
@@ -40,11 +49,19 @@ theorem surj_desc (M : RatModel o Ω) (q : Sp Ω ⟶ M.Z) (hq : q = M.pt) :
   simp only [Scheme.Hom.appLE, Iso.trans_hom, Functor.mapIso_hom, CommRingCat.comp_apply]
   rfl
 
+/- English proof (translation)
+Unfold `RatModel.IsHom at h`. Rewrite using `[h]`. Simplify using `[spMap]`.
+-/
 theorem pt_comp {Z M : RatModel o Ω} {π : M.Z ⟶ Z.Z} (h : Z.IsHom M (AlgHom.id o Ω) π) : M.pt ≫ π = Z.pt := by
   unfold RatModel.IsHom at h
   rw [h]
   simp [spMap]
 
+/- English proof (translation)
+Establish `hg : genericPoint M.Z ∈ Set.range M.pt` using `by rw [M.gen]; rfl`. Take `⟨p, hp⟩` from `hg`. Establish `h2 : Z.pt p ∈ Set.range Z.pt` using `⟨p, rfl⟩`. Rewrite `h2` using `[Z.gen]`. Rewrite using `[← hp, ← Scheme.Hom.comp_apply, pt_comp h]`.
+
+Conclude with `h2`.
+-/
 theorem map_generic {Z M : RatModel o Ω} {π : M.Z ⟶ Z.Z} (h : Z.IsHom M (AlgHom.id o Ω) π) :
     π (genericPoint M.Z) = genericPoint Z.Z := by
   have hg : genericPoint M.Z ∈ Set.range M.pt := by rw [M.gen]; rfl
@@ -54,6 +71,17 @@ theorem map_generic {Z M : RatModel o Ω} {π : M.Z ⟶ Z.Z} (h : Z.IsHom M (Alg
   rw [← hp, ← Scheme.Hom.comp_apply, pt_comp h]
   exact h2
 
+/- English proof (translation)
+Establish `hg : genericPoint M.Z ∈ Set.range M.pt` using `by rw [M.gen]; rfl`. Take `⟨p, hp⟩` from `hg`. Establish `hpc : p = IsLocalRing.closedPoint (CommRingCat.of Ω)` using `Subsingleton.elim _ _`. Substitute `hpc` using the available equality. Rewrite using `[← hp]`.
+
+Establish `hcomp : π.residueFieldMap (M.pt (IsLocalRing.closedPoint (CommRingCat.of Ω))) ≫ M.Z.descResidueField (Scheme.stalkClosedPointTo M.pt) = Z.Z.descResidueField (Scheme.stalkClosedPointTo (M.pt ≫ π))`. Use `(cancel_epi (Z.Z.residue _)).1 ?_` and prove the remaining obligations. Simplify using `only [Scheme.residue_residueFieldMap_assoc, Scheme.residue_descResidueField, Scheme.stalkClosedPointTo_comp]`. Conclude with `CommRingCat.hom_ext (RingHom.ext fun _ => rfl)`. Establish `hZ` using `surj_desc Z (M.pt ≫ π) (pt_comp h)`.
+
+Rewrite `hZ` using `[← hcomp]`. Establish `hsurj : Function.Surjective (π.residueFieldMap (M.pt (IsLocalRing.closedPoint (CommRingCat.of Ω)))).hom`. Introduce `y`. Take `⟨z, hz⟩` from `hZ ((M.Z.descResidueField (Scheme.stalkClosedPointTo M.pt)).hom y)`. Use `⟨z, (M.Z.descResidueField (Scheme.stalkClosedPointTo M.pt)).hom.injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hz]`. Both sides reduce to the same expression. Unfold `Scheme.Hom.residueDegree`. Use `letI := (π.residueFieldMap (M.pt (IsLocalRing.closedPoint (CommRingCat.of Ω)))).hom.toAlgebra`. Establish `hbij : Function.Bijective (algebraMap (Z.Z.residueField (π (M.pt (IsLocalRing.closedPoint (CommRingCat.of Ω))))) (M.Z.residueField (M.pt (IsLocalRing.closedPoint (CommRingCat.of Ω)))))` using `⟨RingHom.injective _, hsurj⟩`.
+
+Rewrite using `[← (AlgEquiv.ofBijective (Algebra.ofId _ _) hbij).toLinearEquiv.finrank_eq]`. Conclude with `Module.finrank_self _`.
+-/
 theorem residueDegree_eq_one {Z M : RatModel o Ω} {π : M.Z ⟶ Z.Z} (h : Z.IsHom M (AlgHom.id o Ω) π) :
     π.residueDegree (genericPoint M.Z) = 1 := by
   have hg : genericPoint M.Z ∈ Set.range M.pt := by rw [M.gen]; rfl
@@ -84,6 +112,13 @@ theorem residueDegree_eq_one {Z M : RatModel o Ω} {π : M.Z ⟶ Z.Z} (h : Z.IsH
   rw [← (AlgEquiv.ofBijective (Algebra.ofId _ _) hbij).toLinearEquiv.finrank_eq]
   exact Module.finrank_self _
 
+/- English proof (translation)
+Establish `hgen : genericPoint M.Z ∈ V` using `((genericPoint_spec M.Z).mem_open_set_iff V.isOpen).mpr (by simpa using hV)`. Establish `htop : ⊤ ≤ M.pt ⁻¹ᵁ V`. Introduce `w _`. Establish `hw : M.pt w ∈ Set.range M.pt` using `⟨w, rfl⟩`. Rewrite `hw` using `[M.gen]`.
+
+Use `show M.pt w ∈ V`. Rewrite using `[hw]`. Conclude with `hgen`. Unfold `valF`. Rewrite using `[dif_pos htop, dif_pos htop, dif_pos htop]`.
+
+Simplify using `only [map_mul]`.
+-/
 private theorem valF_pt_mul' (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty)
     (a b : Γ(M.Z, V)) : valF M.pt V (a * b) = valF M.pt V a * valF M.pt V b := by
   have hgen : genericPoint M.Z ∈ V :=
@@ -99,6 +134,13 @@ private theorem valF_pt_mul' (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set 
   rw [dif_pos htop, dif_pos htop, dif_pos htop]
   simp only [map_mul]
 
+/- English proof (translation)
+Establish `hgen : genericPoint M.Z ∈ V` using `((genericPoint_spec M.Z).mem_open_set_iff V.isOpen).mpr (by simpa using hV)`. Establish `htop : ⊤ ≤ M.pt ⁻¹ᵁ V`. Introduce `w _`. Establish `hw : M.pt w ∈ Set.range M.pt` using `⟨w, rfl⟩`. Rewrite `hw` using `[M.gen]`.
+
+Use `show M.pt w ∈ V`. Rewrite using `[hw]`. Conclude with `hgen`. Unfold `valF`. Rewrite using `[dif_pos htop]`.
+
+Simplify using `only [map_one]`.
+-/
 private theorem valF_pt_one' (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty) :
     valF M.pt V 1 = 1 := by
   have hgen : genericPoint M.Z ∈ V :=
@@ -114,6 +156,9 @@ private theorem valF_pt_one' (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set 
   rw [dif_pos htop]
   simp only [map_one]
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `(RatModel.mem_ringOn_iff_exists hV).1 (RatModel.mem_ringOn.2 h1)`. Take `⟨g, hg⟩` from `(RatModel.mem_ringOn_iff_exists hV).1 (RatModel.mem_ringOn.2 h2)`. Establish `hfg : f * g = 1` using `RatModel.valF_injective M hV (by`. Rewrite using `[valF_pt_mul' M hV, valF_pt_one' M hV, hf, hg, mul_inv_cancel₀ hx0])`. Conclude with `⟨⟨f, g, hfg, by rw [mul_comm]; exact hfg⟩, hf⟩`.
+-/
 private theorem exists_unit_valF_pt_eq_of_mem_O (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty)
     {x : Ω} (hx0 : x ≠ 0) (h1 : ∀ z ∈ V, x ∈ M.O z) (h2 : ∀ z ∈ V, x⁻¹ ∈ M.O z) :
     ∃ u : (Γ(M.Z, V))ˣ, valF M.pt V ↑u = x := by
@@ -123,17 +168,26 @@ private theorem exists_unit_valF_pt_eq_of_mem_O (M : RatModel o Ω) {V : M.Z.Ope
     rw [valF_pt_mul' M hV, valF_pt_one' M hV, hf, hg, mul_inv_cancel₀ hx0])
   exact ⟨⟨f, g, hfg, by rw [mul_comm]; exact hfg⟩, hf⟩
 
+/- English proof (translation)
+Establish `h` using `valF_pt_mul' M hV ↑v ↑v⁻¹`. Rewrite `h` using `[Units.mul_inv, valF_pt_one' M hV]`. Conclude with `eq_inv_of_mul_eq_one_right h.symm`.
+-/
 private theorem valF_pt_unit_inv (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty)
     (v : (Γ(M.Z, V))ˣ) : valF M.pt V ↑v⁻¹ = (valF M.pt V ↑v)⁻¹ := by
   have h := valF_pt_mul' M hV ↑v ↑v⁻¹
   rw [Units.mul_inv, valF_pt_one' M hV] at h
   exact eq_inv_of_mul_eq_one_right h.symm
 
+/- English proof (translation)
+The claim follows from `RatModel.valF_resG M h hV _`.
+-/
 private theorem valF_pt_res (M : RatModel o Ω) {U V : M.Z.Opens} (h : V ≤ U)
     (hV : (V : Set M.Z).Nonempty) (v : (Γ(M.Z, U))ˣ) :
     valF M.pt V ↑(Semi.res h v) = valF M.pt U ↑v :=
   RatModel.valF_resG M h hV _
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Apply `RatModel.valF_injective M hW` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, valF_pt_mul' M hW, valF_pt_mul' M hW, valF_pt_unit_inv M hW, valF_pt_res M hA hW, valF_pt_res M hB hW, valF_pt_res M hC hW, valF_pt_res M hD hW]`. Conclude with `h`.
+-/
 private theorem res_eq_mul_of_valF_eq (M : RatModel o Ω) {A B C D W : M.Z.Opens}
     (hW : (W : Set M.Z).Nonempty) (hA : W ≤ A) (hB : W ≤ B) (hC : W ≤ C) (hD : W ≤ D)
     (x : (Γ(M.Z, A))ˣ) (g₁ : (Γ(M.Z, B))ˣ) (g₂ : (Γ(M.Z, C))ˣ) (y : (Γ(M.Z, D))ˣ)
@@ -146,6 +200,21 @@ private theorem res_eq_mul_of_valF_eq (M : RatModel o Ω) {A B C D W : M.Z.Opens
     valF_pt_res M hC hW, valF_pt_res M hD hW]
   exact h
 
+/- English proof (translation)
+Establish `hex : ∀ a b, ∃ u : (Γ(M.Z, L'.B.U a ⊓ L.B.U b))ˣ, (((L'.B.U a ⊓ L.B.U b : M.Z.Opens)) : Set M.Z).Nonempty → valF M.pt (L'.B.U a ⊓ L.B.U b) (u : Γ(M.Z, L'.B.U a ⊓ L.B.U b)) = e b / e' a`. Introduce `a b`. Distinguish the cases in `hne : (((L'.B.U a ⊓ L.B.U b : M.Z.Opens)) : Set M.Z).Nonempty`. Establish `hx0 : e b / e' a ≠ 0` using `div_ne_zero (he.ne b) (he'.ne a)`. Take `⟨u, hu⟩` from `exists_unit_valF_pt_eq_of_mem_O M hne hx0 (h1 a b) (h2 a b)`.
+
+Conclude with `⟨u, fun _ => hu⟩`. Conclude with `⟨1, fun h => absurd h hne⟩`. Use `choose u hu using hex`. Use `⟨⟨fun p => u p.1 p.2⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩`.
+
+Distinguish the cases in `hW : (((L'.B.U a ⊓ L.B.U b) ⊓ (L'.B.U a' ⊓ L.B.U b') : M.Z.Opens) : Set M.Z).Nonempty`. Take `⟨z, hz⟩` from `id hW`. Establish `key : valF M.pt (L'.B.U a ⊓ L.B.U b) ↑(u a b) = valF M.pt (L'.B.U a ⊓ L'.B.U a') ↑(L'.B.g a a') * (valF M.pt (L.B.U b ⊓ L.B.U b') ↑(L.B.g b b'))⁻¹ * valF M.pt (L'.B.U a' ⊓ L.B.U b') ↑(u a' b')`. Rewrite using `[hu a b ⟨z, hz.1⟩, hu a' b' ⟨z, hz.2⟩, he'.g_eq a a' ⟨z, hz.1.1, hz.2.1⟩, he.g_eq b b' ⟨z, hz.1.2, hz.2.2⟩]`. Use `he.ne b` as an intermediate fact.
+
+Use `he.ne b'` as an intermediate fact. Use `he'.ne a` as an intermediate fact. Use `he'.ne a'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Conclude with `res_eq_mul_of_valF_eq M hW _ _ _ _ _ _ _ _ key`.
+
+Establish `hbot : ((L'.B.U a ⊓ L.B.U b) ⊓ (L'.B.U a' ⊓ L.B.U b') : M.Z.Opens) = ⊥`. Rewrite using `[← TopologicalSpace.Opens.coe_eq_empty]`. Conclude with `Set.not_nonempty_iff_eq_empty.mp hW`. Conclude with `Units.ext (@Subsingleton.elim _ (CommRingCat.subsingleton_of_isTerminal (M.Z.sheaf.isTerminalOfEqEmpty hbot)) _ _)`. Introduce `σ a b y hya hyb`.
+
+Rewrite using `[hφ σ a b y hya hyb]`. Establish `hr : Set.range y.1 ⊆ ((L'.B.U a ⊓ L.B.U b : M.Z.Opens) : Set M.Z)`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨hya (show w ∈ (⊤ : (Sp ℂ).Opens) from trivial), hyb (show w ∈ (⊤ : (Sp ℂ).Opens) from trivial)⟩`. Establish `hne : ((L'.B.U a ⊓ L.B.U b : M.Z.Opens) : Set M.Z).Nonempty` using `⟨_, hr ⟨IsLocalRing.closedPoint ℂ, rfl⟩⟩`.
+
+Establish `hev : ev M.s σ (L'.B.U a ⊓ L.B.U b) ↑(u a b) y = M.val y.1 (e b / e' a)` using `(RatModel.val_eq hr (hu a b hne)).symm`. Use `show _ = _ + Real.log (‖ev M.s σ (L'.B.U a ⊓ L.B.U b) ↑(u a b) y‖ ^ 2)`. Rewrite using `[hev]`.
+-/
 theorem isometric_of_genTriv (M : RatModel o Ω) (L L' : HermLB M.s) (e : L.B.ι → Ω) (e' : L'.B.ι → Ω)
     (he : M.GenTriv L.B e) (he' : M.GenTriv L'.B e')
     (h1 : ∀ a b, ∀ z ∈ L'.B.U a ⊓ L.B.U b, e b / e' a ∈ M.O z)
@@ -195,6 +264,29 @@ theorem isometric_of_genTriv (M : RatModel o Ω) (L L' : HermLB M.s) (e : L.B.ι
     show _ = _ + Real.log (‖ev M.s σ (L'.B.U a ⊓ L.B.U b) ↑(u a b) y‖ ^ 2)
     rw [hev]
 
+/- English proof (translation)
+Set `d : Fin m → Ω` to `fun i => if t i = 0 then 1 else t i`. Establish `hd : ∀ i, t i ≠ 0 → d i = t i` using `fun i hi => if_neg hi`. Establish `hdne : ∀ i, d i ≠ 0`. Introduce `i`. Distinguish the cases in `h : t i = 0`.
+
+Simplify using `[d, h]`. Rewrite using `[hd i h]`. Conclude with `h`. Establish `hopen : ∀ i, IsOpen {z : Z.Z | Z.Div t i z}`. Introduce `i`.
+
+Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `z hz`. Take `⟨hz1, hz2⟩` from `(show Z.Div t i z from hz)`. Use `choose V f hzV hf using fun j => RatModel.mem_O.mp (hz2 j)`. Use `⟨⋂ j, (V j : Set Z.Z), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `z' hz'`. Conclude with `(show Z.Div t i z' from ⟨hz1, fun j => RatModel.mem_O.mpr ⟨V j, f j, Set.mem_iInter.mp hz' j, hf j⟩⟩)`. Conclude with `isOpen_iInter_of_finite fun j => (V j).isOpen`. Conclude with `Set.mem_iInter.mpr hzV`. Set `U : Fin m → Z.Z.Opens` to `fun i => ⟨{z | Z.Div t i z}, hopen i⟩`.
+
+Establish `hmem : ∀ i z, z ∈ U i ↔ Z.Div t i z` using `fun _ _ => Iff.rfl`. Establish `hcov : ⨆ k, U k = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Take `⟨i, hi⟩` from `ht z`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, (hmem i z).2 hi⟩`. Establish `hrat : ∀ k k', ∀ z ∈ U k ⊓ U k', d k' / d k ∈ Z.O z`. Introduce `k k' z hz`. Take `⟨hk1, hk2⟩` from `(hmem k z).1 hz.1`. Take `⟨hk'1, _⟩` from `(hmem k' z).1 hz.2`.
+
+Rewrite using `[hd k hk1, hd k' hk'1]`. Conclude with `hk2 k'`. Take `⟨g, hLB, hGT⟩` from `RatModel.exists_isLB_genTriv_of_ratios o Ω Z (Fin m) U d hcov hdne hrat`. Establish `hsec : ∀ k, ∃ σ : LB.Sec (⟨Fin m, U, g⟩ : LB Z.Z), Z.HasVal d σ (t k)`. Introduce `k`.
+
+Apply `hGT.exists_sec_hasVal` to reduce the goal to its premises. Introduce `l z hz`. Take `⟨hl1, hl2⟩` from `(hmem l z).1 hz`. Rewrite using `[hd l hl1]`. Conclude with `hl2 k`.
+
+Use `choose s hs using hsec`. Establish `hloc : ∀ (l : Fin m), ∀ z ∈ U l, ∃ i, t i ≠ 0 ∧ d l / t i ∈ Z.O z`. Introduce `l z hz`. Take `⟨hl1, _⟩` from `(hmem l z).1 hz`. Use `⟨l, hl1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hd l hl1, div_self hl1]`. Conclude with `one_mem _`. Use `⟨⟨Fin m, U, g⟩, hLB, d, s, hGT, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `z _`.
+
+Take `⟨i, hi⟩` from `ht z`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, (RatModel.mem_nonzeroLocus_iff_div hLB hGT hs hloc i z).2 hi⟩`.
+-/
 theorem exists_bundle (Z : RatModel o Ω) {m : ℕ} (t : Fin m → Ω) (ht : Z.HasDiv t) :
     ∃ (H : LB Z.Z) (_ : H.IsLB) (e : H.ι → Ω) (s : Fin m → H.Sec), Z.GenTriv H e ∧ (∀ k, Z.HasVal e (s k) (t k)) ∧
       ⨆ k, nonzeroLocus (s k) = ⊤ := by
@@ -251,6 +343,13 @@ theorem exists_bundle (Z : RatModel o Ω) {m : ℕ} (t : Fin m → Ω) (ht : Z.H
   obtain ⟨i, hi⟩ := ht z
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨i, (RatModel.mem_nonzeroLocus_iff_div hLB hGT hs hloc i z).2 hi⟩
 
+/- English proof (translation)
+Establish `hgen : genericPoint M.Z ∈ V` using `((genericPoint_spec M.Z).mem_open_set_iff V.isOpen).mpr (by simpa using hV)`. Establish `htop : ⊤ ≤ M.pt ⁻¹ᵁ V`. Introduce `w _`. Establish `hw : M.pt w ∈ Set.range M.pt` using `⟨w, rfl⟩`. Rewrite `hw` using `[M.gen]`.
+
+Use `show M.pt w ∈ V`. Rewrite using `[hw]`. Conclude with `hgen`. Unfold `valF`. Rewrite using `[dif_pos htop, dif_pos htop, dif_pos htop]`.
+
+Simplify using `only [map_mul]`.
+-/
 private theorem valF_mul_var (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty)
     (a b : Γ(M.Z, V)) : valF M.pt V (a * b) = valF M.pt V a * valF M.pt V b := by
   have hgen : genericPoint M.Z ∈ V :=
@@ -266,6 +365,13 @@ private theorem valF_mul_var (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set 
   rw [dif_pos htop, dif_pos htop, dif_pos htop]
   simp only [map_mul]
 
+/- English proof (translation)
+Establish `hgen : genericPoint M.Z ∈ V` using `((genericPoint_spec M.Z).mem_open_set_iff V.isOpen).mpr (by simpa using hV)`. Establish `htop : ⊤ ≤ M.pt ⁻¹ᵁ V`. Introduce `w _`. Establish `hw : M.pt w ∈ Set.range M.pt` using `⟨w, rfl⟩`. Rewrite `hw` using `[M.gen]`.
+
+Use `show M.pt w ∈ V`. Rewrite using `[hw]`. Conclude with `hgen`. Unfold `valF`. Rewrite using `[dif_pos htop]`.
+
+Simplify using `only [map_one]`.
+-/
 private theorem valF_one_var (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set M.Z).Nonempty) :
     valF M.pt V 1 = 1 := by
   have hgen : genericPoint M.Z ∈ V :=
@@ -281,6 +387,21 @@ private theorem valF_one_var (M : RatModel o Ω) {V : M.Z.Opens} (hV : (V : Set 
   rw [dif_pos htop]
   simp only [map_one]
 
+/- English proof (translation)
+Establish `hzt : z ∈ (⊤ : M.Z.Opens)` using `trivial`. Rewrite `hzt` using `[← hs]`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hzt`. Unfold `nonzeroLocus at hk`. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hk`.
+
+Establish `hVl : M.Z.basicOpen ((s k).f l) ≤ H.U l` using `M.Z.basicOpen_le _`. Establish `hVne : ((M.Z.basicOpen ((s k).f l) : M.Z.Opens) : Set M.Z).Nonempty` using `⟨z, hl⟩`. Establish `hu : IsUnit (resG M.Z hVl ((s k).f l))` using `M.Z.toRingedSpace.isUnit_res_basicOpen _`. Take `⟨u, hu'⟩` from `hu`. Establish `hval : valF M.pt _ (resG M.Z hVl ((s k).f l)) = t k / e l`.
+
+Rewrite using `[RatModel.valF_resG M hVl hVne, hv k l ⟨z, hVl hl⟩]`. Establish `h1 : valF M.pt _ (↑u⁻¹ : Γ(M.Z, M.Z.basicOpen ((s k).f l))) * (t k / e l) = 1`. Rewrite using `[← hval, ← hu', ← valF_mul_var M hVne, Units.inv_mul, valF_one_var M hVne]`. Establish `htk : t k ≠ 0`. Introduce `h0`.
+
+Rewrite `h1` using `[h0, zero_div, mul_zero]`. Conclude with `zero_ne_one h1`. Establish `hinv : e l / t k ∈ M.O z`. Establish `he1` using `(eq_one_div_of_mul_eq_one_left h1).trans (one_div_div _ _)`. Rewrite using `[← he1]`.
+
+Conclude with `RatModel.valF_mem_O hl _`. Establish `hzli : z ∈ H.U l ⊓ H.U i` using `⟨hVl hl, hz⟩`. Establish `hil : e i / e l ∈ M.O z`. Rewrite using `[← he.g_eq l i ⟨z, hzli⟩]`. Conclude with `RatModel.valF_mem_O hzli _`.
+
+Use `⟨k, htk, ?_⟩` and prove the remaining obligations. Establish `hmul : e i / t k = e i / e l * (e l / t k)`. Use `he.ne l` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[hmul]`.
+
+Conclude with `mul_mem hil hinv`.
+-/
 theorem exists_unit {M : RatModel o Ω} {H : LB M.Z} {e : H.ι → Ω} (he : M.GenTriv H e) {m : ℕ}
     {s : Fin m → H.Sec} {t : Fin m → Ω} (hv : ∀ k, M.HasVal e (s k) (t k)) (hs : ⨆ k, nonzeroLocus (s k) = ⊤)
     (i : H.ι) (z : M.Z) (hz : z ∈ H.U i) : ∃ k, t k ≠ 0 ∧ e i / t k ∈ M.O z := by
@@ -316,10 +437,16 @@ theorem exists_unit {M : RatModel o Ω} {H : LB M.Z} {e : H.ι → Ω} (he : M.G
   rw [hmul]
   exact mul_mem hil hinv
 
+/- English proof (translation)
+Conclude with `RatModel.mem_O.mpr ⟨H.U i, s.f i, hz, hv i ⟨z, hz⟩⟩`.
+-/
 theorem mem_of_hasVal {M : RatModel o Ω} {H : LB M.Z} {e : H.ι → Ω} {s : H.Sec} {x : Ω} (hv : M.HasVal e s x)
     {i : H.ι} {z : M.Z} (hz : z ∈ H.U i) : x / e i ∈ M.O z := by
   exact RatModel.mem_O.mpr ⟨H.U i, s.f i, hz, hv i ⟨z, hz⟩⟩
 
+/- English proof (translation)
+Establish `hr : Set.range y.1 ⊆ (H.U i : Set M.Z)`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `hy (show w ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Establish `hne : ((H.U i : Set M.Z)).Nonempty` using `⟨_, hr ⟨IsLocalRing.closedPoint ℂ, rfl⟩⟩`. Conclude with `(RatModel.val_eq hr (hv i hne)).symm`.
+-/
 theorem valR_sec {M : RatModel o Ω} {H : LB M.Z} {e : H.ι → Ω} {s : H.Sec} {x : Ω} (hv : M.HasVal e s x)
     {σ : o →+* ℂ} {i : H.ι} {y : CxPts M.s σ} (hy : y ∈ ptsIn M.s σ (H.U i)) :
     valR y.1 (H.U i) (s.f i) = M.val y.1 (x / e i) := by
@@ -329,6 +456,11 @@ theorem valR_sec {M : RatModel o Ω} {H : LB M.Z} {e : H.ι → Ω} {s : H.Sec} 
   have hne : ((H.U i : Set M.Z)).Nonempty := ⟨_, hr ⟨IsLocalRing.closedPoint ℂ, rfl⟩⟩
   exact (RatModel.val_eq hr (hv i hne)).symm
 
+/- English proof (translation)
+Take `⟨k0, hk0, h0⟩` from `exists_unit he hv hs a z hz`. Take `⟨hk1, hk2⟩` from `hk`. Use `⟨?_, mem_of_hasVal (hv k) hz⟩` and prove the remaining obligations. Establish `hmul : e a / t k = e a / t k0 * (t k0 / t k)` using `by field_simp`. Rewrite using `[hmul]`.
+
+Conclude with `mul_mem h0 (hk2 k0)`.
+-/
 private theorem div_mem_O_of_div_of_genTriv (N : RatModel o Ω) {m : ℕ} {H : LB N.Z} {e : H.ι → Ω}
     (he : N.GenTriv H e) {s : Fin m → H.Sec} {t : Fin m → Ω} (hv : ∀ k, N.HasVal e (s k) (t k))
     (hs : ⨆ k, nonzeroLocus (s k) = ⊤) {a : H.ι} {z : N.Z} (hz : z ∈ H.U a) {k : Fin m}
@@ -340,6 +472,11 @@ private theorem div_mem_O_of_div_of_genTriv (N : RatModel o Ω) {m : ℕ} {H : L
   rw [hmul]
   exact mul_mem h0 (hk2 k0)
 
+/- English proof (translation)
+Establish `hsp : ∀ w, y w ⤳ y (IsLocalRing.closedPoint ℂ)`. Introduce `w`. Establish `hw` using `Subsingleton.elim w (IsLocalRing.closedPoint ℂ)`. Substitute `hw` using the available equality. Conclude with `specializes_rfl`.
+
+Introduce `h0`. Establish `h` using `RatModel.val_mul hsp hx hx'`. Rewrite `h` using `[mul_inv_cancel₀ hx0, RatModel.val_one, h0, zero_mul]`. Conclude with `one_ne_zero h`.
+-/
 private theorem val_ne_zero_of_unit_mem_O (N : RatModel o Ω) (y : Sp ℂ ⟶ N.Z) {x : Ω}
     (hx : x ∈ N.O (y (IsLocalRing.closedPoint ℂ))) (hx' : x⁻¹ ∈ N.O (y (IsLocalRing.closedPoint ℂ)))
     (hx0 : x ≠ 0) : N.val y x ≠ 0 := by
@@ -353,6 +490,51 @@ private theorem val_ne_zero_of_unit_mem_O (N : RatModel o Ω) (y : Sp ℂ ⟶ N.
   rw [mul_inv_cancel₀ hx0, RatModel.val_one, h0, zero_mul] at h
   exact one_ne_zero h
 
+/- English proof (translation)
+Establish `hloc' : ∀ (l : H'.ι), ∀ z ∈ H'.U l, ∃ i, t i ≠ 0 ∧ e' l / t i ∈ Z.O z` using `fun l z hz => exists_unit he' hv' hs' l z hz`. Establish `hunit : ∀ (a : H.ι) (b0 : H'.ι) (z : M.Z), z ∈ H.U a → π z ∈ H'.U b0 → e' b0 / e a ∈ M.O z ∧ e a / e' b0 ∈ M.O z`. Introduce `a b0 z hza hzb`. Establish `hzt : π z ∈ (⊤ : Z.Z.Opens)` using `trivial`. Rewrite `hzt` using `[← hs']`.
+
+Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hzt`. Establish `hkZ : Z.Div t k (π z)` using `(RatModel.mem_nonzeroLocus_iff_div hH' he' hv' hloc' k (π z)).1 hk`. Establish `hkM : M.Div t k z` using `hπ.div hkZ`. Take `⟨hZ1, hZ2⟩` from `div_mem_O_of_div_of_genTriv Z he' hv' hs' hzb hkZ`. Take `⟨hM1, hM2⟩` from `div_mem_O_of_div_of_genTriv M he hv hs hza hkM`.
+
+Establish `hZ1' : e' b0 / t k ∈ M.O z` using `hπ.map_mem_O hZ1`. Establish `hZ2' : t k / e' b0 ∈ M.O z` using `hπ.map_mem_O hZ2`. Establish `htk : t k ≠ 0` using `hkM.1`. Establish `hb0` using `he'.ne b0`. Establish `ha0` using `he.ne a`.
+
+Establish `h1 : e' b0 / e a = e' b0 / t k * (t k / e a)` using `by field_simp`. Establish `h2 : e a / e' b0 = e a / t k * (t k / e' b0)` using `by field_simp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `mul_mem hZ1' hM2`.
+
+Rewrite using `[h2]`. Conclude with `mul_mem hM1 hZ2'`. Use `isometric_of_genTriv M _ _ (fun k => e' (k PUnit.unit)) e (he'.pull hπ) he ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b z hz`. Conclude with `(hunit a (b PUnit.unit) z hz.1 (Set.mem_iInter.1 hz.2 PUnit.unit)).1`.
+
+Introduce `a b z hz`. Rewrite using `[inv_div]`. Conclude with `(hunit a (b PUnit.unit) z hz.1 (Set.mem_iInter.1 hz.2 PUnit.unit)).2`. Introduce `σ a b y hya hyb`. Simplify using `only [HermLB.shift, HermLB.pull, HermLB.fs, Weight.addFn, Weight.linComb, Weight.pull, Weight.fsBasis, Weight.fs, Weight.combVal, Finset.univ_unique, Finset.sum_singleton, Int.cast_one, one_mul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Establish `hya' : y ∈ ptsIn M.s σ (H.U a)` using `hya`. Establish `hmemb : ∀ w, π (y.1 w) ∈ H'.U (b default)` using `fun w => Set.mem_iInter.1 (hyb (show w ∈ (⊤ : (Sp ℂ).Opens) from trivial)) default`. Generalize the expression as in `hy' : Points.PtsOver.map π hπ.inducedModelMorphism_comp_structureMap (spMap σ) y = y'`. Establish `hy1 : y'.1 = y.1 ≫ π` using `by rw [← hy']; rfl`. Establish `hy'b : y' ∈ ptsIn Z.s σ (H'.U (b default))`.
+
+Introduce `w _`. Use `show y'.1 w ∈ H'.U (b default)`. Rewrite using `[hy1, Scheme.Hom.comp_apply]`. Conclude with `hmemb w`. Establish `hz0a : y.1 (IsLocalRing.closedPoint ℂ) ∈ H.U a` using `hya' (show IsLocalRing.closedPoint ℂ ∈ (⊤ : (Sp ℂ).Opens) from trivial)`.
+
+Establish `hz0b : π (y.1 (IsLocalRing.closedPoint ℂ)) ∈ H'.U (b default)` using `hmemb _`. Establish `hsp : ∀ w, y.1 w ⤳ y.1 (IsLocalRing.closedPoint ℂ)`. Introduce `w`. Establish `hw` using `Subsingleton.elim w (IsLocalRing.closedPoint ℂ)`. Substitute `hw` using the available equality.
+
+Conclude with `specializes_rfl`. Establish `hV : ∀ j, (secVal M.s σ) (s j) a y = M.val y.1 (t j / e a)` using `fun j => valR_sec (hv j) hya'`. Establish `hW : ∀ j, (secVal Z.s σ) (s' j) (b default) y' = M.val y.1 (t j / e' (b default))`. Introduce `j`. Establish `h1 : (secVal Z.s σ) (s' j) (b default) y' = Z.val y'.1 (t j / e' (b default))` using `valR_sec (hv' j) hy'b`.
+
+Rewrite using `[h1, hy1]`. Conclude with `hπ.val_comp y.1 (IsLocalRing.closedPoint ℂ) (mem_of_hasVal (hv' j) hz0b)`. Establish `hcu` using `hunit a (b default) _ hz0a hz0b`. Establish `hc0 : M.val y.1 (e' (b default) / e a) ≠ 0`. Apply `val_ne_zero_of_unit_mem_O M y.1 hcu.1 (by rw [inv_div]; exact hcu.2)` to reduce the goal to its premises.
+
+Conclude with `div_ne_zero (he'.ne _) (he.ne a)`. Establish `hfac : ∀ j, M.val y.1 (t j / e a) = M.val y.1 (t j / e' (b default)) * M.val y.1 (e' (b default) / e a)`. Introduce `j`. Establish `hmem : t j / e' (b default) ∈ M.O (y.1 (IsLocalRing.closedPoint ℂ))` using `hπ.map_mem_O (mem_of_hasVal (hv' j) hz0b)`. Rewrite using `[← RatModel.val_mul hsp hmem hcu.1]`.
+
+Use `congr 1`. Use `he'.ne (b default)` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hWne : ∃ k, M.val y.1 (t k / e' (b default)) ≠ 0`. Establish `hzt : π (y.1 (IsLocalRing.closedPoint ℂ)) ∈ (⊤ : Z.Z.Opens)` using `trivial`.
+
+Rewrite `hzt` using `[← hs']`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hzt`. Establish `hkZ : Z.Div t k (π (y.1 (IsLocalRing.closedPoint ℂ)))` using `(RatModel.mem_nonzeroLocus_iff_div hH' he' hv' hloc' k _).1 hk`. Take `⟨hZ1, hZ2⟩` from `div_mem_O_of_div_of_genTriv Z he' hv' hs' hz0b hkZ`. Use `⟨k, val_ne_zero_of_unit_mem_O M y.1 (hπ.map_mem_O hZ2) ?_ (div_ne_zero hkZ.1 (he'.ne _))⟩` and prove the remaining obligations.
+
+Rewrite using `[inv_div]`. Conclude with `hπ.map_mem_O hZ1`. Establish `hT : (∑ x, ‖∑ j, Mt σ j x * M.val y.1 (t j / e' (b default))‖ ^ 2) ≠ 0`. Introduce `h0`. Rewrite `h0` using `[Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => by positivity)]`.
+
+Apply `hdet σ` to reduce the goal to its premises. Rewrite using `[← Matrix.exists_vecMul_eq_zero_iff]`. Use `⟨fun j => M.val y.1 (t j / e' (b default)), ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hWne`. Introduce `h`.
+
+Conclude with `hk (congrFun h k)`. Use function extensionality and compare the values at `x`. Establish `hx` using `h0 x (Finset.mem_univ x)`. Establish `hx'` using `(pow_eq_zero_iff (n := 2) (by norm_num)).1 hx`. Rewrite `hx'` using `[norm_eq_zero]`.
+
+Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply]`. Rewrite using `[← hx']`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [hV, hW, hfac, hM σ, Matrix.smul_apply, smul_eq_mul]`. Establish `hL : ∀ x, ‖∑ j, Mt σ j x * (M.val y.1 (t j / e' (b default)) * M.val y.1 (e' (b default) / e a))‖ ^ 2 = ‖∑ j, Mt σ j x * M.val y.1 (t j / e' (b default))‖ ^ 2 * ‖M.val y.1 (e' (b default) / e a)‖ ^ 2`. Introduce `x`. Rewrite using `[← mul_pow, ← norm_mul, Finset.sum_mul]`. Use `congr 2`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∀ x, ‖∑ j, ((Real.exp r : ℝ) : ℂ) * Mt σ j x * M.val y.1 (t j / e' (b default))‖ ^ 2 = Real.exp r ^ 2 * ‖∑ j, Mt σ j x * M.val y.1 (t j / e' (b default))‖ ^ 2`. Introduce `x`.
+
+Rewrite using `[show Real.exp r ^ 2 = ‖((Real.exp r : ℝ) : ℂ)‖ ^ 2 by`. Rewrite using `[Complex.norm_of_nonneg (Real.exp_pos r).le], ← mul_pow, ← norm_mul, Finset.mul_sum]`. Use `congr 2`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hL, hR, ← Finset.sum_mul, ← Finset.mul_sum]`. Rewrite using `[Real.log_mul hT (pow_ne_zero 2 (norm_ne_zero_iff.2 hc0)), Real.log_mul (pow_ne_zero 2 (Real.exp_pos r).ne') hT, show Real.log (Real.exp r ^ 2) = 2 * r by rw [Real.log_pow, Real.log_exp]; push_cast; ring]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isometric_pull_fs {Z M : RatModel o Ω} {π : M.Z ⟶ Z.Z} (hπ : Z.IsHom M (AlgHom.id o Ω) π) {m : ℕ}
     {t : Fin m → Ω} {H' : LB Z.Z} (hH' : H'.IsLB) {e' : H'.ι → Ω} (he' : Z.GenTriv H' e') {s' : Fin m → H'.Sec}
     (hv' : ∀ k, Z.HasVal e' (s' k) (t k)) (hs' : ⨆ k, nonzeroLocus (s' k) = ⊤)

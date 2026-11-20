@@ -8,6 +8,45 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory.OTY
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ ι La _ A la i W D hW hWt hD hae`. Use `set e := A.chart i with he`. Establish `hS : MeasurableSet e.source` using `e.open_source.measurableSet`. Establish `hT : MeasurableSet e.target` using `e.open_target.measurableSet`. Use `set c : Y → V n := e.source.piecewise e (fun _ => 0) with hc`.
+
+Establish `hcm : Measurable c` using `ContinuousOn.measurable_piecewise e.continuousOn continuousOn_const hS`. Use `set P : V n → ℝ := e.target.piecewise (fun v => A.ph (A.kap + la) i (e.symm v)) (fun _ => 0) with hP`. Establish `hPm : Measurable P` using `ContinuousOn.measurable_piecewise (A.smooth_ph (A.kap + la) i).continuousOn continuousOn_const hT`. Use `set D' : V n → ℂ := hae.mk _ with hD'`. Establish `hD'm : Measurable D'` using `hae.measurable_mk`.
+
+Establish `hDD' : (D i ∘ e.symm) =ᵐ[volume.restrict W] D'` using `hae.ae_eq_mk`. Establish `hcs : ∀ y ∈ e.source, c y = e y` using `fun y hy => by simp [hc, hy]`. Establish `hPt : ∀ v ∈ e.target, P v = A.ph (A.kap + la) i (e.symm v)` using `fun v hv => by simp [hP, hv]`. Use `set S : Set Y := e.source ∩ c ⁻¹' W with hSdef`. Establish `hSm : MeasurableSet S` using `hS.inter (hcm hW)`.
+
+Establish `hSeq : e.source ∩ e ⁻¹' W = S`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩; exact ⟨h1, by simpa [hcs y h1] using h2⟩`. Introduce and unpack `⟨h1, h2⟩; exact ⟨h1, by simpa [hcs y h1] using h2⟩`.
+
+Use `set G : Y → ℝ≥0∞ := S.indicator (fun y => ENNReal.ofReal (‖D' (c y)‖ ^ 2 * Real.exp (-P (c y))))`. Establish `hGm : Measurable G`. Use `Measurable.indicator ?_ hSm` and prove the remaining obligations. Conclude with `ENNReal.measurable_ofReal.comp (((hD'm.comp hcm).norm.pow_const 2).mul ((hPm.comp hcm).neg.exp))`. Use `set T : Set (V n) := toMeasurable (volume.restrict W) {v | ¬ (D i ∘ e.symm) v = D' v}`.
+
+Establish `hTm : MeasurableSet T` using `measurableSet_toMeasurable _ _`. Establish `hT0 : volume.restrict W T = 0`. Rewrite using `[measure_toMeasurable]`. Conclude with `ae_iff.mp hDD'`. Use `set E : Set Y := e.source ∩ c ⁻¹' (T ∩ W)`.
+
+Establish `hEm : MeasurableSet E` using `hS.inter (hcm (hTm.inter hW))`. Establish `hE0 : A.mu E = 0`. Rewrite using `[A.mu_chart i E hEm Set.inter_subset_left]`. Apply `setLIntegral_measure_zero` to reduce the goal to its premises. Use `measure_mono_null ?_ (show volume (T ∩ W) = 0 by` and prove the remaining obligations.
+
+Rewrite using `[Measure.restrict_apply hTm] at hT0)` and apply the resulting hypothesis. Introduce and unpack `_ ⟨y, ⟨hy1, hy2⟩, rfl⟩`. Simplify `hy2` using `[hcs y hy1]`. Establish `hL : ∫⁻ y in e.source ∩ e ⁻¹' W, ENNReal.ofReal (A.nsq (A.kap + la) D y) ∂A.mu = ∫⁻ y in e.source, G y ∂A.mu`. Rewrite using `[hSeq]`.
+
+Establish `h1 : ∫⁻ y in S, ENNReal.ofReal (A.nsq (A.kap + la) D y) ∂A.mu = ∫⁻ y in e.source, S.indicator (fun y => ENNReal.ofReal (A.nsq (A.kap + la) D y)) y ∂A.mu`. Rewrite using `[lintegral_indicator hSm, Measure.restrict_restrict hSm, Set.inter_eq_left.mpr Set.inter_subset_left]`. Rewrite using `[h1]`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Establish `hnE : ∀ᵐ y ∂A.mu, y ∉ E` using `measure_eq_zero_iff_ae_notMem.mp hE0`.
+
+Use `filter_upwards [ae_restrict_of_ae hnE, ae_restrict_mem hS] with y hyE hys`. Distinguish the cases in `hyS : y ∈ S`. Simplify using `only [G, Set.indicator_of_mem hyS]`. Use `congr 1`. Establish `hyW : e y ∈ W` using `by simpa [hcs y hys] using hyS.2`.
+
+Establish `hyT : e y ∉ T` using `fun h => hyE ⟨hys, by simp [hcs y hys, h, hyW]⟩`. Establish `hDy : D i y = D' (c y)`. Rewrite using `[hcs y hys]`. Establish `: (D i ∘ e.symm) (e y) = D' (e y)`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hyT (subset_toMeasurable _ _ hne)`. Simplify `this` using `[e.left_inv hys]`. Establish `hPy : P (c y) = A.ph (A.kap + la) i y`. Rewrite using `[hcs y hys, hPt _ (e.map_source hys), e.left_inv hys]`. Rewrite using `[← hDy, hPy]`.
+
+Unfold `WeightedAtlas.nsq`. Establish `hp` using `A.mem_pick y`. Establish `hg` using `A.g_ne (A.kap + la) (A.pick y) i y hp hys`. Establish `hg2 : 0 < ‖A.g (A.kap + la) (A.pick y) i y‖ ^ 2` using `by positivity`. Establish `ht` using `A.ph_trans (A.kap + la) (A.pick y) i y hp hys`.
+
+Rewrite using `[hD y hys hyW, norm_mul, mul_pow]`. Establish `: A.ph (A.kap + la) (A.pick y) y = A.ph (A.kap + la) i y + Real.log (‖A.g (A.kap + la) (A.pick y) i y‖ ^ 2)` using `by linarith`. Rewrite using `[this, neg_add, Real.exp_add, Real.exp_neg (Real.log _), Real.exp_log hg2]`. Clear the denominators using the available nonvanishing facts. Simplify using `[G, Set.indicator_of_notMem hyS]`.
+
+Rewrite using `[hL, ap_lintegral_chart A i G hGm]`. Establish `h2 : ∫⁻ v in e.target, G (e.symm v) * ENNReal.ofReal (Real.exp (A.ph A.kap i (e.symm v))) = ∫⁻ v in e.target, W.indicator (fun v => ENNReal.ofReal (‖D' v‖ ^ 2 * Real.exp (-P v)) * ENNReal.ofReal (Real.exp (A.ph A.kap i (e.symm v)))) v`. Use `setLIntegral_congr_fun hT fun v hv => ?_` and prove the remaining obligations. Establish `hs` using `e.map_target hv`. Establish `hcv : c (e.symm v) = v` using `by rw [hcs _ hs, e.right_inv hv]`.
+
+Distinguish the cases in `hvW : v ∈ W`. Establish `: e.symm v ∈ S` using `⟨hs, by simpa [hcv] using hvW⟩`. Simplify using `only [G, Set.indicator_of_mem this, Set.indicator_of_mem hvW, hcv]`. Establish `: e.symm v ∉ S` using `fun h => hvW (by simpa [hcv] using h.2)`. Simplify using `[G, Set.indicator_of_notMem this, Set.indicator_of_notMem hvW]`.
+
+Rewrite using `[h2, lintegral_indicator hW, Measure.restrict_restrict hW, Set.inter_eq_left.mpr hWt]`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hDD', ae_restrict_mem hW] with v hv hvW`. Establish `hvt` using `hWt hvW`. Establish `hs` using `e.map_target hvt`.
+
+Simplify using `only [Function.comp_apply] at hv`. Rewrite using `[← hv, hPt v hvt, A.ph_add A.kap la i _ hs, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Rewrite using `[neg_add, Real.exp_add]`. Use `Real.exp_pos (A.ph A.kap i (e.symm v))` as an intermediate fact.
+
+Rewrite using `[Real.exp_neg (A.ph A.kap i _)]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem lintegral_nsq_chart_part : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (la : La) (i : ι) (W : Set (V n)) (D : ι → Y → ℂ), MeasurableSet W → W ⊆ (A.chart i).target → (∀ y ∈ (A.chart i).source, A.chart i y ∈ W → D (A.pick y) y = A.g (A.kap + la) (A.pick y) i y * D i y) → AEMeasurable (D i ∘ (A.chart i).symm) (volume.restrict W) → ∫⁻ y in (A.chart i).source ∩ A.chart i ⁻¹' W, ENNReal.ofReal (A.nsq (A.kap + la) D y) ∂A.mu = ∫⁻ v in W, ENNReal.ofReal (‖D i ((A.chart i).symm v)‖ ^ 2 * Real.exp (-A.ph la i ((A.chart i).symm v))) := by
   intro n Y _ _ _ _ _ ι La _ A la i W D hW hWt hD hae
   classical

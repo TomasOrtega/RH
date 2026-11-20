@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebraHeight.DPull
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
+/- English proof (translation)
+Introduce `n A E _ _ _ D`. Set `π : E →ₐ[A] D.CH.ringCon.Quotient` to `RingCon.mkₐ A D.CH.ringCon`. Establish `hmem : ∀ x, π x = 0 ↔ x ∈ D.CH` using `fun x => by`. Rewrite using `[← map_zero π]`. Conclude with `(RingCon.eq _)`.
+
+Establish `hsurj : Function.Surjective π` using `fun q => Quotient.exists_rep q`. Establish `hk : ∀ y, π y = 0 → y ∈ D.ker` using `fun y hy => UpperTheory.V.CA.d_ch_ker D ((hmem y).1 hy)`. Take `⟨D', hD', -⟩` from `UpperTheory.V.CA.d_factor D π hsurj hk`. Use `⟨_, _, _, π, D', hsurj, hD', ?_, hk⟩` and prove the remaining obligations. Use `eq_bot_iff.2 fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨x, hx, rfl⟩` from `((UpperTheory.V.CA.d_pull D' π).2.2.2 hsurj).2 y hy`. Rewrite `hx` using `[hD']`. Rewrite using `[TwoSidedIdeal.mem_bot, hmem]`. Conclude with `hx`.
+-/
 theorem UpperTheory.V.Th.Coc.chQuot :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E), ∃ (E' : Type) (_ : Ring E') (_ : Algebra A E') (π : E →ₐ[A] E') (D' : Det n A E'), Function.Surjective π ∧ D'.pull π = D ∧ D'.IsCH ∧ ∀ y, π y = 0 → y ∈ D.ker := by
   intro n A E _ _ _ D

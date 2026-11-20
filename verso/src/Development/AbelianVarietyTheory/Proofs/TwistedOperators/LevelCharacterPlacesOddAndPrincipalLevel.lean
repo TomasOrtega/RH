@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SpanPlaces
 
+/- English proof (translation)
+Take `⟨⟨W, hW, hWQ⟩⟩` from `(inferInstance : Nonempty ((L.C.P.pb 0).asIdeal.primesOver (𝓞 D.host.E)))`. Establish `hne : W ≠ ⊥`. Introduce and unpack `rfl`. Use `hWQ.over` as an intermediate fact. Rewrite `this` using `[Ideal.under_def, Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)]`.
+
+Conclude with `(L.C.P.pb 0).ne_bot this`. Conclude with `⟨⟨W, hW, hne⟩, (hL.Pg _).2 ⟨0, HeightOneSpectrum.ext hWQ.over.symm⟩⟩`.
+-/
 theorem pg_nonempty {D : D7} {T0 : Type} {L : LevCh D T0} {μ0 : T0} (hL : L.Is μ0) : L.Pg.Nonempty := by
   obtain ⟨⟨W, hW, hWQ⟩⟩ := (inferInstance : Nonempty ((L.C.P.pb 0).asIdeal.primesOver (𝓞 D.host.E)))
   have hne : W ≠ ⊥ := by
@@ -22,6 +27,13 @@ theorem pg_nonempty {D : D7} {T0 : Type} {L : LevCh D T0} {μ0 : T0} (hL : L.Is 
     exact (L.C.P.pb 0).ne_bot this
   exact ⟨⟨W, hW, hne⟩, (hL.Pg _).2 ⟨0, HeightOneSpectrum.ext hWQ.over.symm⟩⟩
 
+/- English proof (translation)
+Break down `h with hm | hm` into its components or cases. Take `⟨k, hk⟩` from `(hL.Pg PP).1 hm`. Establish `hgk` using `GlobalTheory.LevelPlaces.mem_of_div _ k PP hk`. Establish `hn` using `GlobalTheory.LevelPlaces.not_mem_of_prime PP.isPrime.ne_top Nat.prime_two (D.host.g_prime k) (Formalism.L2.Pj.g_ne_two D k) hgk`. Simplify using `using hn`.
+
+Introduce `h2`. Apply `(hL.Q_off t PP hm).1` to reduce the goal to its premises. Use `push_cast`. Establish `hQS : ((D.host.QS : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Take `⟨c, hc⟩` from `D.host.two_dvd_QS`.
+
+Rewrite using `[hc]`. Use `push_cast`. Conclude with `Ideal.mul_mem_right _ _ h2`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ hQS))`.
+-/
 theorem two_not_mem {D : D7} {T0 : Type} {L : LevCh D T0} {μ0 : T0} (hL : L.Is μ0) (t : T0) (PP : Formalism.L2.DIV.Pl D.host.E)
     (h : PP ∈ L.Pg ∨ PP ∈ L.Q t) : (2 : 𝓞 D.host.E) ∉ PP.asIdeal := by
   rcases h with hm | hm
@@ -40,6 +52,11 @@ theorem two_not_mem {D : D7} {T0 : Type} {L : LevCh D T0} {μ0 : T0} (hL : L.Is 
       exact Ideal.mul_mem_right _ _ h2
     exact Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ hQS))
 
+/- English proof (translation)
+Use `Subgroup.mem_inf.2 ⟨hk, ?_⟩` and prove the remaining obligations. Use `show Lev.finE (Wc D i) k ∈ Formalism.L2.DIV.lev D.sp.cm (Wc D i).gram (L.βW i) (L.datWp i L.triv)`. Use `GlobalTheory.LevSplit.mem_lev_of_red D.sp.cm (Wc D i).gram (L.βW i) (L.datWp i L.triv) _ (GlobalTheory.LevSplit.finE_mem_UA _ k) hS (fun PP hP => ?_)` and prove the remaining obligations. Break down `hP with hP | hP` into its components or cases. Conclude with `hr PP hP`.
+
+Conclude with `absurd hP (Finset.notMem_empty _)`.
+-/
 theorem mem_levG {D : D7} {T0 : Type} (L : LevCh D T0) (i : Fin D.R.m) (k : GA D (Wc D i))
     (hk : k ∈ GfC (Wc D i)) (hS : Lev.finE (Wc D i) k ∈ Formalism.L2.DIV.St (L.βW i))
     (hr : ∀ PP ∈ L.Pg, Formalism.L2.DIV.redFn (L.βW i) PP (Lev.finE (Wc D i) k) = 1) :
@@ -52,6 +69,9 @@ theorem mem_levG {D : D7} {T0 : Type} (L : LevCh D T0) (i : Fin D.R.m) (k : GA D
   · exact hr PP hP
   · exact absurd hP (Finset.notMem_empty _)
 
+/- English proof (translation)
+Introduce `D T0 L μ0 hL`. Use `⟨pg_nonempty hL, fun t PP h => two_not_mem hL t PP h, fun i k hk hS hr => ⟨mem_levG L i k hk hS hr, ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.HolRead.PrincLevelSub.levChi_triv L i k`.
+-/
 theorem places_level : ∀ (D : D7) (T0 : Type) (L : LevCh D T0) (μ0 : T0), L.Is μ0 → L.Pg.Nonempty ∧ (∀ t PP, PP ∈ L.Pg ∨ PP ∈ L.Q t → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) ∧ ∀ (i : Fin D.R.m) (k : GA D (Wc D i)), k ∈ GfC (Wc D i) → Lev.finE (Wc D i) k ∈ Formalism.L2.DIV.St (L.βW i) → (∀ PP ∈ L.Pg, Formalism.L2.DIV.redFn (L.βW i) PP (Lev.finE (Wc D i) k) = 1) → k ∈ Lev.levG (Wc D i) (L.βW i) (L.datWp i L.triv) ∧ Lev.levChi (Wc D i) (L.βW i) (L.datWp i L.triv) k = 1 := by
   intro D T0 L μ0 hL
   refine ⟨pg_nonempty hL, fun t PP h => two_not_mem hL t PP h, fun i k hk hS hr => ⟨mem_levG L i k hk hS hr, ?_⟩⟩

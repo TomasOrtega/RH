@@ -9,6 +9,47 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.BlockCapelli
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
 
+/- English proof (translation)
+Use `zspan_fd b hb` as an intermediate fact. Use `zspan_fd q hq` as an intermediate fact. Use `fd_tens2 (zspan b) (zspan q)` as an intermediate fact. Establish `ca` using `fun τ : E →+* ℂ => cap_coeff (E := E) r τ (-(s : ℂ) / 2)`. Use `choose fa ha1 haZ haeq using ca`.
+
+Establish `cb` using `fun τ : E →+* ℂ => cap_coeff (E := E) s τ ((r : ℂ) / 2)`. Use `choose fb hb1 hbZ hbeq using cb`. Set `AA : (E →+* ℂ) → ℕ → Module.End ℂ (GA E r × GA E s → ℂ)` to `fun τ j => tensOp (fa τ j) LinearMap.id`. Set `BB : (E →+* ℂ) → ℕ → Module.End ℂ (GA E r × GA E s → ℂ)` to `fun τ j => tensOp LinearMap.id (fb τ j)`. Set `v : GA E r × GA E s → ℂ` to `fun p => ∑ i, (b i).1 p.1 * (q i).1 p.2`.
+
+Establish `hAW : ∀ τ j, ∀ w ∈ tens2 (zspan b) (zspan q), AA τ j w ∈ tens2 (zspan b) (zspan q)`. Introduce `τ j w hw`. Take `⟨n, ψ₁, ψ₂, h₁, h₂, rfl⟩` from `tensor_pair_finite_sum hw`. Express the relevant statement in the definitionally equal form `tensOp (fa τ j) LinearMap.id _ ∈ _`. Rewrite using `[tensOp_sum]`.
+
+Conclude with `A.sum_mem (fun i => zspan_stable b (haZ τ j) _ (h₁ i)) (fun i => h₂ i)`. Establish `hBW : ∀ τ j, ∀ w ∈ tens2 (zspan b) (zspan q), BB τ j w ∈ tens2 (zspan b) (zspan q)`. Introduce `τ j w hw`. Take `⟨n, ψ₁, ψ₂, h₁, h₂, rfl⟩` from `tensor_pair_finite_sum hw`. Express the relevant statement in the definitionally equal form `tensOp LinearMap.id (fb τ j) _ ∈ _`.
+
+Rewrite using `[tensOp_sum]`. Conclude with `A.sum_mem (fun i => h₁ i) (fun i => zspan_stable q (hbZ τ j) _ (h₂ i))`. Establish `hAA : ∀ τ j τ' l, ∀ w ∈ tens2 (zspan b) (zspan q), AA τ j (AA τ' l w) = AA τ' l (AA τ j w)`. Introduce `τ j τ' l w hw`. Take `⟨n, ψ₁, ψ₂, -, -, rfl⟩` from `tensor_pair_finite_sum hw`.
+
+Express the relevant statement in the definitionally equal form `tensOp (fa τ j) LinearMap.id (tensOp (fa τ' l) LinearMap.id _) = tensOp (fa τ' l) LinearMap.id (tensOp (fa τ j) LinearMap.id _)`. Rewrite using `[tensOp_sum, tensOp_sum, tensOp_sum, tensOp_sum]`. Use function extensionality and compare the values at `p`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, (GlobalTheory.LeviGL.ZGood.zalg_commute (haZ τ j) (haZ τ' l)).eq, Module.End.mul_apply]`.
+
+Establish `hAB : ∀ τ j τ' l, ∀ w ∈ tens2 (zspan b) (zspan q), AA τ j (BB τ' l w) = BB τ' l (AA τ j w)`. Introduce `τ j τ' l w hw`. Take `⟨n, ψ₁, ψ₂, -, -, rfl⟩` from `tensor_pair_finite_sum hw`. Express the relevant statement in the definitionally equal form `tensOp (fa τ j) LinearMap.id (tensOp LinearMap.id (fb τ' l) _) = tensOp LinearMap.id (fb τ' l) (tensOp (fa τ j) LinearMap.id _)`. Rewrite using `[tensOp_sum, tensOp_sum, tensOp_sum, tensOp_sum]`.
+
+Both sides reduce to the same expression. Establish `hBB : ∀ τ j τ' l, ∀ w ∈ tens2 (zspan b) (zspan q), BB τ j (BB τ' l w) = BB τ' l (BB τ j w)`. Introduce `τ j τ' l w hw`. Take `⟨n, ψ₁, ψ₂, -, -, rfl⟩` from `tensor_pair_finite_sum hw`. Express the relevant statement in the definitionally equal form `tensOp LinearMap.id (fb τ j) (tensOp LinearMap.id (fb τ' l) _) = tensOp LinearMap.id (fb τ' l) (tensOp LinearMap.id (fb τ j) _)`.
+
+Rewrite using `[tensOp_sum, tensOp_sum, tensOp_sum, tensOp_sum]`. Use function extensionality and compare the values at `p`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply (fb τ j), (GlobalTheory.LeviGL.ZGood.zalg_commute (hbZ τ j) (hbZ τ' l)).eq, Module.End.mul_apply]`. Establish `hA1 : ∀ τ, ∀ w ∈ tens2 (zspan b) (zspan q), AA τ r w = w`.
+
+Introduce `τ w hw`. Take `⟨n, ψ₁, ψ₂, -, -, rfl⟩` from `tensor_pair_finite_sum hw`. Express the relevant statement in the definitionally equal form `tensOp (fa τ r) LinearMap.id _ = _`. Rewrite using `[tensOp_sum, ha1 τ]`. Both sides reduce to the same expression.
+
+Establish `hB1 : ∀ τ, ∀ w ∈ tens2 (zspan b) (zspan q), BB τ s w = w`. Introduce `τ w hw`. Take `⟨n, ψ₁, ψ₂, -, -, rfl⟩` from `tensor_pair_finite_sum hw`. Express the relevant statement in the definitionally equal form `tensOp LinearMap.id (fb τ s) _ = _`. Rewrite using `[tensOp_sum, hb1 τ]`.
+
+Both sides reduce to the same expression. Establish `hv : v ∈ tens2 (zspan b) (zspan q)` using `A.sum_mem (fun i => mem_zspan b i) (fun i => mem_zspan q i)`. Establish `hrel : ∀ τ (u : ℂ), (∑ j ∈ Finset.range (r + 1), u ^ j • AA τ j) ((∑ l ∈ Finset.range (s + 1), u ^ l • BB τ l) v) = ((mm τ).map (u + ·)).prod • v`. Introduce `τ u`. Express the relevant statement in the definitionally equal form `(∑ j ∈ Finset.range (r + 1), u ^ j • tensOp (fa τ j) LinearMap.id) ((∑ l ∈ Finset.range (s + 1), u ^ l • tensOp LinearMap.id (fb τ l)) v) = _`.
+
+Rewrite using `[tensR_apply, ← hbeq τ u, tensL_apply, ← haeq τ u]`. Use function extensionality and compare the values at `p`. Establish `e : u + -(s : ℂ) / 2 = u - (s : ℂ) / 2` using `by ring`. Rewrite using `[e, rel_expand G hu τ (fun u => ((mm τ).map (u + ·)).prod) (hcap τ) b q hG u p]`. Both sides reduce to the same expression.
+
+Take `⟨S, x, hxW, hsum, hprop⟩` from `BlockAlgebra.decomp r s AA BB mm (tens2 (zspan b) (zspan q)) hAW hBW hAA hAB hBB hA1 hB1 hmm v hv hrel`. Use `⟨S, x, fun p => ?_, fun σ hσ => ⟨fun τ => ⟨(hprop σ hσ τ).1, (hprop σ hσ τ).2.1⟩, fun m₂ => ?_, fun m₁ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hG]`. Express the relevant statement in the definitionally equal form `v p = _`. Rewrite using `[hsum, Finset.sum_apply]`.
+
+Take `⟨n, ψ₁, ψ₂, h₁, -, hx⟩` from `tensor_pair_finite_sum (hxW σ hσ)`. Use `⟨∑ i, (ψ₂ i).1 m₂ • ψ₁ i, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h₁ i), fun y => by rw [hx]; simp [Finset.sum_apply, mul_comm], fun τ w => ?_⟩` and prove the remaining obligations. Establish `key` using `((hprop σ hσ τ).2.2 (w + (s : ℂ) / 2)).1`. Express the relevant statement in the definitionally equal form `(∑ j ∈ Finset.range (r + 1), (w + (s : ℂ) / 2) ^ j • tensOp (fa τ j) LinearMap.id) (x σ) = _ at key`. Rewrite `key` using `[hx, tensL_apply, ← haeq τ]`.
+
+Establish `e : w + (s : ℂ) / 2 + -(s : ℂ) / 2 = w` using `by ring`. Rewrite `key` using `[e]`. Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Establish `k2` using `congrFun key (y, m₂)`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at k2`.
+
+Simplify using `only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.mul_sum]`. Simplify using `only [mul_comm ((ψ₂ _).1 m₂)] at k2 ⊢`. Rewrite using `[k2, Finset.mul_sum]`. Take `⟨n, ψ₁, ψ₂, -, h₂, hx⟩` from `tensor_pair_finite_sum (hxW σ hσ)`.
+
+Use `⟨∑ i, (ψ₁ i).1 m₁ • ψ₂ i, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h₂ i), fun y => by rw [hx]; simp [Finset.sum_apply], fun τ w => ?_⟩` and prove the remaining obligations. Establish `key` using `((hprop σ hσ τ).2.2 (w - (r : ℂ) / 2)).2`. Express the relevant statement in the definitionally equal form `(∑ j ∈ Finset.range (s + 1), (w - (r : ℂ) / 2) ^ j • tensOp LinearMap.id (fb τ j)) (x σ) = _ at key`. Rewrite `key` using `[hx, tensR_apply, ← hbeq τ]`. Establish `e : w - (r : ℂ) / 2 + (r : ℂ) / 2 = w` using `by ring`.
+
+Rewrite `key` using `[e]`. Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Establish `k2` using `congrFun key (m₁, y)`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at k2`. Simplify using `only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[k2, Finset.mul_sum]`.
+-/
 theorem decomp_G (G : Sm E (r + s))
     (hu : ∀ (x : BlockIx (r + s) r → Ad E) (g : GA E (r + s)), G.1 (unip x * g) = G.1 g)
     (mm : (E →+* ℂ) → Multiset ℂ) (hmm : ∀ τ, (mm τ).Nodup)

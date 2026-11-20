@@ -77,6 +77,11 @@ noncomputable def UpperTheory.Reformulated.B.CoboundaryOfGenerator.ContAction.{u
             rho (@Prod.fst G M p))
           (@Prod.snd G M p)
 
+/- English proof (translation)
+Introduce `R _ G _ _ M _ _ _ _ rho f f' hf hf'`. Take `⟨hc, hf⟩` from `hf`. Take `⟨hc', hf'⟩` from `hf'`. Use `⟨hc.add hc', fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, hf g h, hf' g h, map_add]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem UpperTheory.Reformulated.B.CoboundaryOfGenerator.aux2.{u_1, u_2, u_3} :
     ∀ {R : Type u_3} [inst : CommRing R] {G : Type u_1} [inst_1 : Group G] [inst_2 : TopologicalSpace G] {M : Type u_2}
       [inst_3 : AddCommGroup M]
@@ -372,6 +377,9 @@ theorem UpperTheory.Reformulated.B.CoboundaryOfGenerator.aux2.{u_1, u_2, u_3} :
   simp only [Pi.add_apply, hf g h, hf' g h, map_add]
   abel
 
+/- English proof (translation)
+Introduce `R _ G _ _ M _ _ _ rho`. Conclude with `⟨continuous_const, fun g h => by simp⟩`.
+-/
 theorem UpperTheory.Reformulated.B.CoboundaryOfGenerator.aux3.{u_1, u_2, u_3} :
     ∀ {R : Type u_3} [inst : CommRing R] {G : Type u_1} [inst_1 : Group G] [inst_2 : TopologicalSpace G] {M : Type u_2}
       [inst_3 : AddCommGroup M]
@@ -486,6 +494,9 @@ theorem UpperTheory.Reformulated.B.CoboundaryOfGenerator.aux3.{u_1, u_2, u_3} :
   intro R _ G _ _ M _ _ _ rho
   exact ⟨continuous_const, fun g h => by simp⟩
 
+/- English proof (translation)
+Introduce `R _ G _ _ M _ _ _ _ rho c f hf`. Take `⟨hc, hf⟩` from `hf`. Use `⟨hc.const_smul c, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, hf g h, map_smul, smul_add]`.
+-/
 theorem UpperTheory.Reformulated.B.CoboundaryOfGenerator.aux4.{u_1, u_2, u_3} :
     ∀ {R : Type u_3} [inst : CommRing R] {G : Type u_1} [inst_1 : Group G] [inst_2 : TopologicalSpace G] {M : Type u_2}
       [inst_3 : AddCommGroup M]
@@ -921,12 +932,18 @@ noncomputable def UpperTheory.Reformulated.B.CoboundaryOfGenerator.Z1.{u_1, u_2,
           (@UpperTheory.Reformulated.B.CoboundaryOfGenerator.aux3 R inst G inst_1 inst_2 M inst_3 inst_4 inst_5 rho))
         (@UpperTheory.Reformulated.B.CoboundaryOfGenerator.aux4 R inst G inst_1 inst_2 M inst_3 inst_4 inst_5 inst_7 rho)
 
+/- English proof (translation)
+Introduce `R M _ _ _`. Conclude with `⟨fun _ => continuous_of_discreteTopology⟩`.
+-/
 theorem UpperTheory.Reformulated.B.CoboundaryOfGenerator.aux6.{u_1, u_2} :
     ∀ {R : Type u_1} {M : Type u_2} [inst : SMul R M] [inst_1 : TopologicalSpace M] [@DiscreteTopology M inst_1],
       @ContinuousConstSMul R M inst_1 inst := by
   intro R M _ _ _
   exact ⟨fun _ => continuous_of_discreteTopology⟩
 
+/- English proof (translation)
+Introduce `R _`. Conclude with `⟨Function.surjective_id⟩`.
+-/
 theorem UpperTheory.Reformulated.B.CoboundaryOfGenerator.aux7.{u_1} :
     ∀ {R : Type u_1} [inst : CommRing R],
       @RingHomSurjective R R (@CommSemiring.toSemiring R (@CommRing.toCommSemiring R inst))
@@ -1064,6 +1081,25 @@ noncomputable def UpperTheory.Reformulated.B.CoboundaryOfGenerator.B1.{u_1, u_2,
         (@RingHom.id R (@Semiring.toNonAssocSemiring R (@CommSemiring.toSemiring R (@CommRing.toCommSemiring R inst))))
         (@UpperTheory.Reformulated.B.CoboundaryOfGenerator.aux7 R inst) (@UpperTheory.Reformulated.B.CoboundaryOfGenerator.d0 R inst G inst_1 M inst_2 inst_3 rho)
 
+/- English proof (translation)
+Introduce `l _ Γ _ _ _ _ χ R M _ _ _ _ _ ρ γ hχ hρ hker hgen hsurj z hz hz0`. Establish `hzc : Continuous z` using `hz.1`. Establish `hzm : ∀ g h : Γ, z (g * h) = z g + ρ g (z h)` using `hz.2`. Take `⟨m, hm⟩` from `hsurj (z γ)`. Establish `hm' : ρ γ m - m = z γ` using `hm`.
+
+Establish `hone : z 1 = 0` using `hz0 1 (map_one χ)`. Set `S : Subgroup Γ` to `{ carrier := {g | z g = ρ g m - m} one_mem' := by`. Express the relevant statement in the definitionally equal form `z 1 = ρ 1 m - m`. Simplify using `[hone]`. Use the proof step `mul_mem' := by`.
+
+Introduce `a b ha hb`. Establish `ha' : z a = ρ a m - m` using `ha`. Establish `hb' : z b = ρ b m - m` using `hb`. Express the relevant statement in the definitionally equal form `z (a * b) = ρ (a * b) m - m`. Rewrite using `[hzm, ha', hb', map_mul, map_sub, Module.End.mul_apply]`.
+
+Normalize the expressions using the abelian group laws. Use the proof step `inv_mem' := by`. Introduce `a ha`. Establish `ha' : z a = ρ a m - m` using `ha`. Express the relevant statement in the definitionally equal form `z a⁻¹ = ρ a⁻¹ m - m`.
+
+Establish `h1` using `hzm a⁻¹ a`. Establish `h2 : ρ a⁻¹ (ρ a m) = m`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `h1` using `[inv_mul_cancel, hone, ha', map_sub, h2]`. Rewrite using `[eq_neg_of_add_eq_zero_left h1.symm, neg_sub] }`.
+
+Establish `hρm : Continuous fun g : Γ => ρ g m` using `Continuous.comp (g := fun p : Γ × M => ρ p.1 p.2) (f := fun g : Γ => (g, m)) hρ (continuous_id.prodMk continuous_const)`. Establish `hSc : IsClosed (S : Set Γ)` using `isClosed_eq hzc (hρm.sub continuous_const)`. Establish `himg : IsClosed ((S.map χ : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ)`. Rewrite using `[Subgroup.coe_map]`. Conclude with `(hSc.isCompact.image hχ).isClosed`.
+
+Establish `hle : (Subgroup.zpowers (χ γ)).topologicalClosure ≤ S.map χ` using `Subgroup.topologicalClosure_minimal _ ((Subgroup.zpowers_le).2 ⟨γ, hm'.symm, rfl⟩) himg`. Establish `hall : ∀ g : Γ, g ∈ S`. Introduce `g`. Take `⟨s, hs, hsg⟩` from `hle (hgen g)`. Establish `hk : χ (s⁻¹ * g) = 1` using `by rw [map_mul, map_inv, hsg, inv_mul_cancel]`.
+
+Establish `hmem : s⁻¹ * g ∈ S`. Express the relevant statement in the definitionally equal form `z (s⁻¹ * g) = ρ (s⁻¹ * g) m - m`. Rewrite using `[hz0 _ hk, hker _ hk, sub_self]`. Simplify using `using S.mul_mem hs hmem`. Use `⟨m, funext fun g => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hall g).symm`.
+-/
 theorem UpperTheory.Reformulated.B.CoboundaryOfGenerator.cobOfGen :
     ∀ (l : Nat) [inst : Fact (Nat.Prime l)] (Γ : Type) [inst_1 : Group Γ] [inst_2 : TopologicalSpace Γ]
       [@IsTopologicalGroup Γ inst_2 inst_1] [@CompactSpace Γ inst_2]

@@ -18,6 +18,15 @@ namespace GlobalTheory.CuspFrom.PeriodTriple
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {D : Datum H}
   {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)}
 
+/- English proof (translation)
+Establish `hid : spMap (RingHom.id ℂ) = 𝟙 (Sp ℂ)` using `Spec.map_id _`. Establish `hy : y = spMap (RingHom.id ℂ) ≫ y` using `by rw [hid, Category.id_comp]`. Take `⟨p, hp⟩` from `LiePull.exists_pushEquiv m.cart (Over.mk (spMap (RingHom.id ℂ))) y hy`. Establish `hp' : ∀ z, (p.symm (e z)).left ≫ m.φ = (e z).left` using `fun z => by`. Rewrite using `[← hp, p.apply_symm_apply]`.
+
+Use `⟨fun z => p.symm (e z), hP, ?_, fun z w => ?_, p.symm.surjective.comp onto, fun z => ?_, fun a z => ?_, fun k a b c hk hc => ?_⟩` and prove the remaining obligations. Use `ThetaPoint.isHolTo_fibre m.cart.1 _ (fun z => (Over.w (p.symm (e z))).trans hid) ?_` and prove the remaining obligations. Establish `h : (fun z => (p.symm (e z)).left ≫ m.cm.F) = fun z => (e z).left` using `funext hp'`. Conclude with `h ▸ hol`. Use `beta_reduce`.
+
+Rewrite using `[add, map_mul]`. Conclude with `(map_eq_one_iff _ p.symm.injective).trans (ker z)`. Use `beta_reduce`. Rewrite using `[lin, p.symm_apply_eq]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[hp, Over.comp_left, Over.comp_left, Category.assoc, m.act, ← Category.assoc]`. Conclude with `congrArg (· ≫ _) (hp' z).symm`. Conclude with `(GlobalTheory.CM.ExCompare.weilIs_iff m _ _ hy k _ _ _ _ c (hp' _).symm (hp' _).symm).2 (weil k a b c hk hc)`.
+-/
 theorem exists_isExp_of_sabMap {S : Scheme.{0}} {t : SAB H S} {y : Sp ℂ ⟶ S} (B : GlobalTheory.CM.PAT H (Sp ℂ))
     (m : SABMap B.t t y) (e : (Fin g → ℂ) → (Over.mk y ⟶ t.G)) (hP : IsPeriod D ty P)
     (hol : IsHolTo Set.univ fun z => (e z).left) (add : ∀ z w, e (z + w) = e z * e w) (onto : Function.Surjective e)
@@ -46,6 +55,15 @@ theorem exists_isExp_of_sabMap {S : Scheme.{0}} {t : SAB H S} {y : Sp ℂ ⟶ S}
     exact congrArg (· ≫ _) (hp' z).symm
   · exact (GlobalTheory.CM.ExCompare.weilIs_iff m _ _ hy k _ _ _ _ c (hp' _).symm (hp' _).symm).2 (weil k a b c hk hc)
 
+/- English proof (translation)
+Take `⟨B, hB, -⟩` from `GlobalTheory.CM.exists_pat_of_obj E H D l _ _ _ _ (Models.RankZero.zeroObj hD l (spMap (algebraMap (KA l) ℂ)))`. Establish `hz : IsIso B.t.G.hom`. Rewrite using `[hB]`. Conclude with `Models.RankZero.isIso_zeroTriple _`. Use `Models.RankZero.subsingleton_La hD` as an intermediate fact.
+
+Establish `h0 : ∀ z : Fin g → ℂ, z = 0` using `fun z => by`. Establish `hz : z ∈ Submodule.span ℝ (Set.range P)` using `hP.2.2.2.1 ▸ Submodule.mem_top`. Use `(Submodule.span_le (p := ⊥)).2 ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[Subsingleton.elim a 0, map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Use `⟨B, fun _ => 1, hP, fun U f => ⟨?_, differentiableOn_const _⟩, fun _ _ => (_root_.mul_one _).symm, fun x => ⟨0, Models.RankZero.hom_unique hz _ _⟩, fun z => ⟨fun _ => ⟨0, by rw [map_zero, h0 z]⟩, fun _ => rfl⟩, fun _ _ => Models.RankZero.hom_unique hz _ _, fun k a b c hk hc => ?_ …` and prove the remaining obligations. Simplify using `only [Set.mem_univ, true_and]`. Conclude with `isOpen_const`. Establish `e : c = 1` using `Units.ext (by rw [hc, Subsingleton.elim b 0, map_zero]; simp)`.
+
+Rewrite using `[e, unitOn, map_one]`. Conclude with `Models.RankZero.weilIs_zero hz B.t.PP.isLB (Models.RankZero.triv_rig hz _) _ _ _`.
+-/
 theorem exists_isExp_of_rank_zero (l : Level H) (hD : D.p + D.q = 0) (hP : IsPeriod D ty P) :
     ∃ (B : GlobalTheory.CM.PAT H (Sp ℂ)) (ex : (Fin g → ℂ) → (Over.mk (spMap (RingHom.id ℂ)) ⟶ B.t.G)),
       GlobalTheory.CM.IsExp B (RingHom.id ℂ) D ty P ex := by
@@ -74,6 +92,13 @@ end GlobalTheory.CuspFrom.PeriodTriple
 
 namespace GlobalTheory.CuspFrom
 
+/- English proof (translation)
+Introduce `E _ _ _ H l₀ DB g ty PB hty hP`. Break down `Nat.eq_zero_or_pos (DB.p + DB.q) with h0 | hpq` into its components or cases. Conclude with `PeriodTriple.exists_isExp_of_rank_zero l₀ h0 hP`. Establish `kn` using `known_holds`. Take `⟨l, hA⟩ : ∃ l : Level H, l.A = 1` from `⟨{ l₀ with A := 1, A_pos := one_pos }, rfl⟩`.
+
+Take `⟨Xo⟩` from `kn.n1ab E H DB l hpq`. Establish `hζ : algebraMap (KA l) ℂ (baseKA l).ζ = Complex.exp (-(2 * Real.pi * Complex.I) * (((1 : ℤ) : ℂ)) / l.A)` using `by show zeta l.A = _`. Rewrite using `[hA, zeta]`. Simplify using `[Complex.exp_neg]`. Take `⟨y, e, -, -, ⟨add, onto, hol, -⟩, ker, lin, weil, -⟩` from `GlobalTheory.Moduli.exists_point_of_isPeriod kn.theta kn.laws E H DB l Xo (algebraMap (KA l) ℂ) g ty hpq rfl hty DB LinearMap.id PB ⟨rfl, rfl, fun _ => LinearMap.id, fun _ => 1, fun n m _ _ a => ⟨0, by simp⟩, fun n _ => ⟨fun a => Iff.rfl, fun a => ⟨a, 0, by simp⟩⟩, fun n _ a a' = …`.
+
+Take `⟨U, hU, -⟩` from `GlobalTheory.CM.exists_pat_of_obj E H DB l _ _ _ _ Xo.univ`. Take `⟨B, m, -⟩` from `GlobalTheory.CM.PAT.exists_pullback E H _ _ y U`. Conclude with `⟨B, PeriodTriple.exists_isExp_of_sabMap B (hU ▸ m) e hP hol add onto ker lin weil⟩`.
+-/
 theorem exists_pat_isExp_of_isPeriod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (DB : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (PB : DB.La →+ (Fin g → ℂ)), IsTypeFn H DB.p DB.q ty → IsPeriod DB ty PB → ∃ (B : GlobalTheory.CM.PAT H (Sp ℂ)) (ex : (Fin g → ℂ) → (Over.mk (spMap (RingHom.id ℂ)) ⟶ B.t.G)), GlobalTheory.CM.IsExp B (RingHom.id ℂ) DB ty PB ex := by
   intro E _ _ _ H l₀ DB g ty PB hty hP
   rcases Nat.eq_zero_or_pos (DB.p + DB.q) with h0 | hpq

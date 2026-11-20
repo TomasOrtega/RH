@@ -13,15 +13,26 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.Fake
 
 def sqLen (v : Fin 2 → ℤ) : ℕ := (v 0 * v 0 + v 1 * v 1).toNat
 
+/- English proof (translation)
+The claim follows from `Int.toNat_of_nonneg (by nlinarith [mul_self_nonneg (v 0), mul_self_nonneg (v 1)])`.
+-/
 theorem sqLen_cast (v : Fin 2 → ℤ) : (sqLen v : ℤ) = v 0 * v 0 + v 1 * v 1 :=
   Int.toNat_of_nonneg (by nlinarith [mul_self_nonneg (v 0), mul_self_nonneg (v 1)])
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Conclude with `h0`. Conclude with `h1`.
+-/
 theorem ext2 {v w : Fin 2 → ℤ} (h0 : v 0 = w 0) (h1 : v 1 = w 1) : v = w := by
   funext i
   fin_cases i
   · exact h0
   · exact h1
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `sqLen_cast v`. Rewrite `h2` using `[h]`. Move the coercions through the operations in `at h2`. Establish `hre : v 0 = 0` using `by nlinarith [mul_self_nonneg (v 0), mul_self_nonneg (v 1)]`.
+
+Establish `him : v 1 = 0` using `by nlinarith [mul_self_nonneg (v 0), mul_self_nonneg (v 1)]`. Conclude with `hv (ext2 hre him)`.
+-/
 theorem sqLen_ne_zero {v : Fin 2 → ℤ} (hv : v ≠ 0) : sqLen v ≠ 0 := by
   intro h
   have h2 := sqLen_cast v
@@ -36,8 +47,24 @@ def sympForm : (Fin 2 → ℤ) →ₗ[ℤ] (Fin 2 → ℤ) →ₗ[ℤ] ℤ :=
     (fun v v' w => by simp; ring) (fun n v w => by simp; ring)
     (fun v w w' => by simp; ring) (fun n v w => by simp; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sympForm_apply (v w : Fin 2 → ℤ) : sympForm v w = v 0 * w 1 - v 1 * w 0 := rfl
 
+/- English proof (translation)
+Use `haveI : NeZero (sqLen v) := ⟨sqLen_ne_zero hv⟩`. Set `f : I.toAddSubgroup →+ ZMod (sqLen v)` to `{ toFun := fun w => (((w : Fin 2 → ℤ) 0 * v 0 + (w : Fin 2 → ℤ) 1 * v 1 : ℤ) : ZMod (sqLen v)) map_zero' := by simp map_add' := fun a b => by`. Simplify using `only [AddSubgroup.coe_add, Pi.add_apply]`. Use `push_cast`. Use `ring }`.
+
+Establish `hker : f.ker ≤ (Submodule.span ℤ {v}).toAddSubgroup.addSubgroupOf I.toAddSubgroup`. Introduce `w hw`. Establish `h1 : ((sqLen v : ℕ) : ℤ) ∣ (w : Fin 2 → ℤ) 0 * v 0 + (w : Fin 2 → ℤ) 1 * v 1` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 hw`. Take `⟨k, hk⟩` from `h1`. Establish `h2` using `hI v hvI w w.2`.
+
+Rewrite `h2` using `[sympForm_apply]`. Establish `hN : ((sqLen v : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast sqLen_ne_zero hv`. Establish `hs` using `sqLen_cast v`. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Establish `e0 : k * v 0 = (w : Fin 2 → ℤ) 0`.
+
+Apply `mul_left_cancel₀ hN` to reduce the goal to its premises. Take the linear combination `(-v 0) * hk - (w : Fin 2 → ℤ) 0 * hs + v 1 * h2`. Establish `e1 : k * v 1 = (w : Fin 2 → ℤ) 1`. Apply `mul_left_cancel₀ hN` to reduce the goal to its premises. Take the linear combination `(-v 1) * hk - (w : Fin 2 → ℤ) 1 * hs - v 0 * h2`.
+
+Conclude with `Submodule.mem_span_singleton.2 ⟨k, ext2 (by simpa using e0) (by simpa using e1)⟩`. Establish `hdvd` using `AddSubgroup.index_dvd_of_le hker`. Establish `hcard : f.ker.index = Nat.card f.range` using `AddSubgroup.index_ker f`. Establish `hle : f.ker.index ≤ sqLen v`. Rewrite using `[hcard]`.
+
+Conclude with `(Nat.card_le_card_of_injective _ Subtype.val_injective).trans (by simp)`. Establish `hne : f.ker.index ≠ 0`. Rewrite using `[hcard]`. Conclude with `Nat.card_pos.ne'`. Conclude with `⟨fun h => hne (Nat.eq_zero_of_zero_dvd (h ▸ hdvd)), (Nat.le_of_dvd (Nat.pos_of_ne_zero hne) hdvd).trans hle⟩`.
+-/
 theorem relIndex_span_le {I : Submodule ℤ (Fin 2 → ℤ)} (hI : IsIsoSub sympForm I) {v : Fin 2 → ℤ}
     (hvI : v ∈ I) (hv : v ≠ 0) :
     (Submodule.span ℤ {v}).toAddSubgroup.relIndex I.toAddSubgroup ≠ 0 ∧
@@ -76,6 +103,15 @@ theorem relIndex_span_le {I : Submodule ℤ (Fin 2 → ℤ)} (hI : IsIsoSub symp
     exact Nat.card_pos.ne'
   exact ⟨fun h => hne (Nat.eq_zero_of_zero_dvd (h ▸ hdvd)), (Nat.le_of_dvd (Nat.pos_of_ne_zero hne) hdvd).trans hle⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Set `a : Fin ρ` to `⟨0, by omega⟩`. Set `b : Fin ρ` to `⟨1, h⟩`. Establish `hab : LinearIndependent ℤ ![v a, v b]`.
+
+Use `hli.comp ![a, b] (by` as an intermediate fact. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [a, b])`. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `funext i; fin_cases i <;> rfl`.
+
+Establish `h2` using `hI _ (hv a) _ (hv b)`. Rewrite `h2` using `[sympForm_apply]`. Establish `hs` using `sqLen_cast (v a)`. Use `(LinearIndependent.pair_iff.1 hab (-((v b) 0 * (v a) 0 + (v b) 1 * (v a) 1)) (sqLen (v a)) (ext2 (by` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+
+Take the linear combination `(v b) 0 * hs - (v a) 1 * h2) (by`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Take the linear combination `(v b) 1 * hs + (v a) 0 * h2))).2`. Conclude with `sqLen_ne_zero (hli.ne_zero a) (by exact_mod_cast this)`.
+-/
 theorem card_le_one {I : Submodule ℤ (Fin 2 → ℤ)} (hI : IsIsoSub sympForm I) {ρ : ℕ} {v : Fin ρ → Fin 2 → ℤ}
     (hv : ∀ a, v a ∈ I) (hli : LinearIndependent ℤ v) : ρ ≤ 1 := by
   by_contra h
@@ -101,25 +137,43 @@ theorem card_le_one {I : Submodule ℤ (Fin 2 → ℤ)} (hI : IsIsoSub sympForm 
 
 def cx (v : Fin 2 → ℤ) : ℂ := ⟨v 0, v 1⟩
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp [cx]`.
+-/
 theorem cx_add (v w : Fin 2 → ℤ) : cx (v + w) = cx v + cx w := by
   apply Complex.ext <;> simp [cx]
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp [cx]`.
+-/
 theorem cx_smul (a : ℤ) (v : Fin 2 → ℤ) : cx (a • v) = (a : ℂ) * cx v := by
   apply Complex.ext <;> simp [cx]
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp [cx]`.
+-/
 theorem cx_zero : cx 0 = 0 := by
   apply Complex.ext <;> simp [cx]
 
+/- English proof (translation)
+Rewrite using `[cx, Complex.normSq_mk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normSq_cx (v : Fin 2 → ℤ) : Complex.normSq (cx v) = (v 0 : ℝ) ^ 2 + (v 1 : ℝ) ^ 2 := by
   rw [cx, Complex.normSq_mk]
   ring
 
+/- English proof (translation)
+Establish `h0` using `congrArg Complex.re h`. Establish `h1` using `congrArg Complex.im h`. Simplify using `only [cx, Complex.zero_re, Complex.zero_im] at h0 h1`. Conclude with `ext2 (by exact_mod_cast h0) (by exact_mod_cast h1)`.
+-/
 theorem cx_injective {v : Fin 2 → ℤ} (h : cx v = 0) : v = 0 := by
   have h0 := congrArg Complex.re h
   have h1 := congrArg Complex.im h
   simp only [cx, Complex.zero_re, Complex.zero_im] at h0 h1
   exact ext2 (by exact_mod_cast h0) (by exact_mod_cast h1)
 
+/- English proof (translation)
+Rewrite using `[normSq_cx]`. Use `congrArg (Int.cast : ℤ → ℝ) (sqLen_cast v)` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sqLen_real (v : Fin 2 → ℤ) : (sqLen v : ℝ) = Complex.normSq (cx v) := by
   rw [normSq_cx]
   have := congrArg (Int.cast : ℤ → ℝ) (sqLen_cast v)
@@ -132,6 +186,9 @@ variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
   {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
   {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)]
 
+/- English proof (translation)
+Use `D.j_le` as an intermediate fact. Use `D.two_le_N` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem codim_pos (D : ComponentData II Ψ K J Ω E) : 1 ≤ D.N - D.j := by
   have := D.j_le; have := D.two_le_N; omega
 
@@ -185,6 +242,21 @@ def scaledCusp (D : ComponentData II Ψ K J Ω E) (l : ((Σ k, J k) → ℂ) →
     · funext v; simp only [hl z hz c hc]
     · funext τ v c'; simp only [hl z hz c hc]
 
+/- English proof (translation)
+Take `⟨v, hvI, hv⟩` from `(Submodule.ne_bot_iff I).1 hI0`. Establish `hex : ∃ ρ v, IsNzFamily I ρ v`. Use `⟨1, fun _ => v, le_rfl, fun _ => hvI, linearIndependent_unique_iff.2 hv, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_const]`. Conclude with `(relIndex_span_le hI hvI hv).1`.
+
+Establish `key : ∀ (ρ : ℕ) (u : Fin ρ → Fin 2 → ℤ), IsNzFamily I ρ u → ∃ c : ℝ, 1 ≤ c ∧ ∀ l hl z, (∏ τ, ((scaledCusp D l hl).gramLie z τ u).det.re) / ((Submodule.span ℤ (Set.range u)).toAddSubgroup.relIndex I.toAddSubgroup : ℝ) = Real.exp (l z) ^ (2 * Fintype.card Ψ) * c`. Introduce and unpack `ρ u ⟨h1, h2, h3, -⟩`. Take `rfl : ρ = 1` from `le_antisymm (card_le_one hI h2 h3) h1`. Establish `hu` using `h3.ne_zero 0`. Take `⟨hi0, hi⟩` from `relIndex_span_le hI (h2 0) hu`.
+
+Establish `hr : Set.range u = {u 0}` using `by rw [Set.range_unique]; rfl`. Rewrite using `[hr]`. Use `set m := (Submodule.span ℤ {u 0}).toAddSubgroup.relIndex I.toAddSubgroup`. Establish `hm : (0 : ℝ) < m` using `by exact_mod_cast Nat.pos_of_ne_zero hi0`. Establish `hN` using `sqLen_real (u 0)`.
+
+Use `⟨(((D.N - D.j : ℕ) : ℝ) * sqLen (u 0)) ^ Fintype.card Ψ / m, ?_, fun l hl z => ?_⟩` and prove the remaining obligations. Rewrite using `[one_le_div hm]`. Establish `a1 : (m : ℝ) ≤ sqLen (u 0)` using `by exact_mod_cast hi`. Establish `a2 : (1 : ℝ) ≤ ((D.N - D.j : ℕ) : ℝ)` using `by exact_mod_cast codim_pos D`. Establish `a3 : (1 : ℝ) ≤ m` using `by exact_mod_cast Nat.pos_of_ne_zero hi0`.
+
+Establish `a4 : (sqLen (u 0) : ℝ) ≤ ((D.N - D.j : ℕ) : ℝ) * sqLen (u 0)` using `by nlinarith`. Conclude with `a1.trans (a4.trans (le_self_pow₀ (by linarith) Fintype.card_ne_zero))`. Establish `hg : ∀ τ, ((scaledCusp D l hl).gramLie z τ u).det.re = Real.exp (l z) ^ 2 * (((D.N - D.j : ℕ) : ℝ) * sqLen (u 0))`. Introduce `τ`. Rewrite using `[Matrix.det_fin_one, hN]`.
+
+Simplify using `only [CuspData.gramLie, scaledCusp, Matrix.of_apply, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[← Complex.normSq_eq_conj_mul_self, Complex.normSq_mul, Complex.normSq_ofReal, ← Complex.ofReal_natCast, ← Complex.ofReal_mul, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hg, Finset.prod_const, Finset.card_univ, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨c, hc, h⟩` from `key _ _ hex.choose_spec.choose_spec`. Conclude with `⟨c, hc, fun l hl z => by rw [CuspData.Nz, dif_pos hex]; exact h l hl z⟩`.
+-/
 theorem scaledCusp_Nz [Nonempty Ψ] (D : ComponentData II Ψ K J Ω E) {I : Submodule ℤ (Fin 2 → ℤ)} (hI0 : I ≠ ⊥)
     (hI : IsIsoSub sympForm I) : ∃ c : ℝ, 1 ≤ c ∧ ∀ l hl z,
       (scaledCusp D l hl).Nz z I = Real.exp (l z) ^ (2 * Fintype.card Ψ) * c := by
@@ -228,6 +300,13 @@ theorem scaledCusp_Nz [Nonempty Ψ] (D : ComponentData II Ψ K J Ω E) {I : Subm
   obtain ⟨c, hc, h⟩ := key _ _ hex.choose_spec.choose_spec
   exact ⟨c, hc, fun l hl z => by rw [CuspData.Nz, dif_pos hex]; exact h l hl z⟩
 
+/- English proof (translation)
+Use `⟨LinearMap.ker (sympForm ![1, 0]), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(Submodule.ne_bot_iff _).2 ⟨![1, 0], ?_, ?_⟩` and prove the remaining obligations. Simplify using `[sympForm_apply]`. Introduce `h`. Simplify using `using congrFun h 0`.
+
+Introduce `v n hn h`. Rewrite `h` using `[LinearMap.mem_ker, map_zsmul, smul_eq_zero]`. Conclude with `h.resolve_left hn`. Introduce `v hv w hw`. Rewrite `hv`, `hw` using `[LinearMap.mem_ker, sympForm_apply]`.
+
+Simplify using `at hv hw`. Simplify using `[sympForm_apply, hv, hw]`.
+-/
 theorem exists_iso_line : ∃ I : Submodule ℤ (Fin 2 → ℤ), I ≠ ⊥ ∧ IsSaturated I ∧ IsIsoSub sympForm I := by
   refine ⟨LinearMap.ker (sympForm ![1, 0]), ?_, ?_, ?_⟩
   · refine (Submodule.ne_bot_iff _).2 ⟨![1, 0], ?_, ?_⟩
@@ -242,6 +321,23 @@ theorem exists_iso_line : ∃ I : Submodule ℤ (Fin 2 → ℤ), I ≠ ⊥ ∧ I
     simp at hv hw
     simp [sympForm_apply, hv, hw]
 
+/- English proof (translation)
+Establish `hf : (0 : ℝ) < 2 * Fintype.card Ψ`. Establish `: (0 : ℝ) < Fintype.card Ψ` using `by exact_mod_cast Fintype.card_pos`. Combine the linear equalities and inequalities to obtain the conclusion. Set `C0` to `scaledCusp D (fun _ => 0) (fun _ _ _ _ => rfl)`. Set `T : Set ℝ` to `{x | ∃ I : Submodule ℤ (Fin 2 → ℤ), I ≠ ⊥ ∧ IsSaturated I ∧ IsIsoSub sympForm I ∧ x = -Real.log (C0.Nz 0 I)}`.
+
+Establish `hTne : T.Nonempty`. Take `⟨I, h1, h2, h3⟩` from `exists_iso_line`. Conclude with `⟨_, I, h1, h2, h3, rfl⟩`. Establish `hTb : BddAbove T`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨I, h1, -, h3, rfl⟩`. Take `⟨c, hc, h⟩` from `scaledCusp_Nz D h1 h3`. Simplify using `only [C0, h, Real.exp_zero, one_pow, _root_.one_mul]`. Combine the linear relations using `[Real.log_nonneg hc]`. Set `l : ((Σ k, J k) → ℂ) → ℝ` to `fun z => (sSup T - U z) / (2 * Fintype.card Ψ)`.
+
+Establish `hl : ∀ z ∈ D.Xo, ∀ c : K → ℂ, (∀ k, c k ≠ 0) → l (torusSmul c z) = l z` using `fun z hz c hc => by simp only [l, hU z hz c hc]`. Establish `hlog : ∀ z (I : Submodule ℤ (Fin 2 → ℤ)), I ≠ ⊥ → IsIsoSub sympForm I → -Real.log ((scaledCusp D l hl).Nz z I) = (U z - sSup T) + -Real.log (C0.Nz 0 I)`. Introduce `z I h1 h3`. Take `⟨c, hc, h⟩` from `scaledCusp_Nz D h1 h3`. Simplify using `only [C0, h, Real.exp_zero, one_pow, _root_.one_mul]`.
+
+Rewrite using `[Real.log_mul (by positivity) (by linarith), Real.log_pow, Real.log_exp]`. Simplify using `only [l]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hset : ∀ z, {x | ∃ I : Submodule ℤ (Fin 2 → ℤ), I ≠ ⊥ ∧ IsSaturated I ∧ IsIsoSub (scaledCusp D l hl).form I ∧ x = -Real.log ((scaledCusp D l hl).Nz z I)} = (fun x => (U z - sSup T) + x) '' T`. Introduce `z`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨I, h1, h2, h3, rfl⟩`.
+
+Conclude with `⟨_, ⟨I, h1, h2, h3, rfl⟩, (hlog z I h1 h3).symm⟩`. Introduce and unpack `⟨_, ⟨I, h1, h2, h3, rfl⟩, rfl⟩`. Conclude with `⟨I, h1, h2, h3, (hlog z I h1 h3).symm⟩`. Use `⟨scaledCusp D l hl, funext fun z => ?_⟩` and prove the remaining obligations. Establish `h` using `(OrderIso.addLeft (U z - sSup T)).map_csSup' hTne hTb`.
+
+Establish `h' : sSup ((fun x => (U z - sSup T) + x) '' T) = U z`. Use `h.symm.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[CuspData.cuspWeight, hset, h', max_eq_right (hU0 z)]`.
+-/
 theorem exists_cusp_of_weight [Nonempty Ψ] (D : ComponentData II Ψ K J Ω E) (U : ((Σ k, J k) → ℂ) → ℝ)
     (hU0 : ∀ z, 0 ≤ U z) (hU : ∀ z ∈ D.Xo, ∀ c : K → ℂ, (∀ k, c k ≠ 0) → U (torusSmul c z) = U z) :
     ∃ Cd : CuspData D ℤ (Fin 2 → ℤ), Cd.cuspWeight = U := by
@@ -293,6 +389,9 @@ theorem exists_cusp_of_weight [Nonempty Ψ] (D : ComponentData II Ψ K J Ω E) (
 
 end Cusp
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ D _ U hU0 hU` and use `exists_cusp_of_weight D U hU0 hU`.
+-/
 theorem every_weight_is_cusp_weight : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) [Nonempty Ψ] (U : ((Σ k, J k) → ℂ) → ℝ), (∀ z, 0 ≤ U z) → (∀ z ∈ D.Xo, ∀ c : K → ℂ, (∀ k, c k ≠ 0) → U (torusSmul c z) = U z) → ∃ Cd : CuspData D ℤ (Fin 2 → ℤ), Cd.cuspWeight = U :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ D _ U hU0 hU => exists_cusp_of_weight D U hU0 hU
 

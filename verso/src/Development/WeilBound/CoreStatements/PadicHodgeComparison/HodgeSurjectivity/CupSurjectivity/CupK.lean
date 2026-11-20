@@ -15,6 +15,13 @@ open Pb HT
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Establish `hfin : ∀ a n, FiniteDimensional K (Hdg S.P.q a n)` using `fun a n => (P.fin S.P S.smP a n).1`. Rewrite using `[P.cup S.P S.smP (Model.pullT S.p₁ S.h₁ i X) (Model.pullT S.p₂ S.h₂ j Y) Z hZ (fun a => Module.finBasis K (Hdg S.P.q a i)) (fun a => Module.finBasis K (Hdg S.P.q a j)) A Θ]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Take `⟨bl, hbl'⟩ : ∃ bl : Hdg S.P.q p.1.1 i →ₗ[K] Hdg S.P.q p.1.2 j →ₗ[K] Hdg S.P.q A (i + j), ∀ x y, bl x y = cupH S.P.q (Finset.HasAntidiagonal.mem_antidiagonal.1 p.2) rfl x y` from `CrystallineSemistableComparison.P.cup_bilin (grOk (smFun _ S.P.q) (Finset.HasAntidiagonal.mem_antidiagonal.1 p.2)).pair (rfl : i + j = i + j)`. Establish `n₁ : ∀ F, P.h S.P p.1.1 i (S.P.toV i (Model.pullT S.p₁ S.h₁ i X)) F = P.h M p.1.1 i (M.toV i X) (F ∘ₗ S.pl₁ p.1.1 i)`.
+
+Introduce `F`. Rewrite using `[← pullV_toV S.p₁ S.h₁ i X, P.nat S.P M S.p₁ S.h₁ S.smP hM]`. Establish `n₂ : ∀ F, P.h S.P p.1.2 j (S.P.toV j (Model.pullT S.p₂ S.h₂ j Y)) F = P.h M p.1.2 j (M.toV j Y) (F ∘ₗ S.pl₂ p.1.2 j)`. Introduce `F`. Rewrite using `[← pullV_toV S.p₂ S.h₂ j Y, P.nat S.P M S.p₂ S.h₂ S.smP hM]`.
+
+Establish `key` using `gen2 (kC K) (P.h S.P p.1.1 i (S.P.toV i (Model.pullT S.p₁ S.h₁ i X))) (P.h M p.1.1 i (M.toV i X)) (P.h S.P p.1.2 j (S.P.toV j (Model.pullT S.p₂ S.h₂ j Y))) (P.h M p.1.2 j (M.toV j Y)) (fun k φ => P.lin' _ _ _ k _ φ) (fun k φ => P.lin' _ _ _ k _ φ) (fun k φ => P.lin' _ _ _ k _ φ) …`. Simplify using `only [LinearMap.compr₂_apply, hbl'] at key`. Conclude with `key`.
+-/
 theorem cupK (P : HTPre l K) {M : Model l K} (hM : M.Sm) {D : ℕ} (S : Sq M D) {i j : ℕ} (X : M.T i) (Y : M.T j)
     (Z : S.P.T (i + j)) (hZ : S.P.CupT (Model.pullT S.p₁ S.h₁ i X) (Model.pullT S.p₂ S.h₂ j Y) Z)
     {m m' : ℕ → ℕ} (b : ∀ a, Module.Basis (Fin (m a)) K (Hdg M.q a i)) (b' : ∀ a, Module.Basis (Fin (m' a)) K (Hdg M.q a j))

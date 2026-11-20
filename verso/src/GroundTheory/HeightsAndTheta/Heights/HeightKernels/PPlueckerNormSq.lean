@@ -10,6 +10,11 @@ noncomputable section
 
 namespace PlueckerNormSqAlt
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [mul_apply, conjTranspose_apply, onePipe, of_apply, Fin.sum_univ_add, Fin.append_left, Fin.append_right, Matrix.add_apply]`. Use `congr 1`. Simplify using `only [Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hab, Ne.symm hab]`.
+-/
 theorem onePipe_mul_conjTranspose {j m : ℕ} (Z : Matrix (Fin j) (Fin m) ℂ) :
     onePipe Z * (onePipe Z)ᴴ = 1 + Z * Zᴴ := by
   ext a b
@@ -22,6 +27,9 @@ theorem onePipe_mul_conjTranspose {j m : ℕ} (Z : Matrix (Fin j) (Fin m) ℂ) :
   · subst hab; simp
   · simp [hab, Ne.symm hab]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[rowsOf, colsOf, conjTranspose_apply]`.
+-/
 theorem rowsOf_conjTranspose {j N : ℕ} (A : Matrix (Fin j) (Fin N) ℂ)
     (I : {I : Finset (Fin N) // I.card = j}) : rowsOf Aᴴ I = (colsOf A I)ᴴ := by
   ext a b
@@ -31,6 +39,11 @@ end PlueckerNormSqAlt
 
 open PlueckerNormSqAlt in
 
+/- English proof (translation)
+Introduce `j m Z`. Rewrite using `[← onePipe_mul_conjTranspose, h ℂ j (j + m) (onePipe Z) (onePipe Z)ᴴ]`. Use `push_cast`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[rowsOf_conjTranspose, det_conjTranspose, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem PlueckerNormSq.proof (h : CauchyBinet.Statement) : PlueckerNormSq.Statement := by
   intro j m Z
   rw [← onePipe_mul_conjTranspose, h ℂ j (j + m) (onePipe Z) (onePipe Z)ᴴ]

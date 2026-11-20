@@ -12,6 +12,13 @@ section
 
 variable {R : Type} [CommRing R] {d m n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `e`. Establish `ha : HasSubst (fun q : Fin 1 × Fin d => (![(0 : Pt R n d)] q.1 q.2))` using `hasSubst_ev _ (by intro j i; simp)`. Rewrite using `[ev, coeff_subst ha, finsum_eq_single _ 0]`. Simplify using `[coeff_C, coeff_one]`. Introduce `d' hd'`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, d' s ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hd' (Finsupp.ext hcon)`. Establish `hz : (![(0 : Pt R n d)] s.1 s.2) ^ d' s = 0` using `by simp [zero_pow hs]`.
+
+Rewrite using `[Finsupp.prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hs) hz]`. Simplify using the standard rewrite rules.
+-/
 theorem ev_at_zero (f : PS R 1 d) : ev ![(0 : Pt R n d)] f = C (constantCoeff f) := by
   ext e
   have ha : HasSubst (fun q : Fin 1 × Fin d => (![(0 : Pt R n d)] q.1 q.2)) :=
@@ -27,18 +34,37 @@ theorem ev_at_zero (f : PS R 1 d) : ev ![(0 : Pt R n d)] f = C (constantCoeff f)
     rw [Finsupp.prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hs) hz]
     simp
 
+/- English proof (translation)
+Use `show pderiv R (s, j) (ev ![pt R d t] (φ c)) = 0`. Rewrite using `[d1 (Z_pt t)]`. Simplify using `[dpt, h]`.
+-/
 theorem dcomp_ne {s t : Fin n} (h : t ≠ s) (φ : Pt R 1 d) (j c : Fin d) :
     pderiv R (s, j) (comp1 φ (pt R d t) c) = 0 := by
   show pderiv R (s, j) (ev ![pt R d t] (φ c)) = 0
   rw [d1 (Z_pt t)]
   simp [dpt, h]
 
+/- English proof (translation)
+Use `show pderiv R (s, j) (ev ![pt R d s] (φ c)) = _`. Rewrite using `[d1 (Z_pt s)]`. Simplify using `[dpt]`.
+-/
 theorem dcomp_eq (s : Fin n) (φ : Pt R 1 d) (j c : Fin d) :
     pderiv R (s, j) (comp1 φ (pt R d s) c) = ev ![pt R d s] (pderiv R ((0 : Fin 1), j) (φ c)) := by
   show pderiv R (s, j) (ev ![pt R d s] (φ c)) = _
   rw [d1 (Z_pt s)]
   simp [dpt]
 
+/- English proof (translation)
+Set `M : Matrix (Fin d) (Fin d) (PS R n d)` to `fun c j => ev ![x, 0] (pderiv R ((1 : Fin 2), j) (G.F c))`. Establish `hb : ZZ ![x, (0 : Pt R n d)]` using `ZZ_cons hx (ZZ_cons Z_zero ZZ_nil)`. Establish `hb0 : ZZ (n` using `1) ![(0 : Pt R 1 d), pt R d 0] := ZZ_cons Z_zero (ZZ_cons (Z_pt 0) ZZ_nil)`. Establish `hcc : ∀ c j, constantCoeff (M c j) = if c = j then 1 else 0`. Introduce `c j`.
+
+Use `show constantCoeff (ev ![x, 0] (pderiv R ((1 : Fin 2), j) (G.F c))) = _`. Rewrite using `[ccev hb, cc_pderiv]`. Establish `hu : constantCoeff (pderiv R ((0 : Fin 1), j) (ev ![(0 : Pt R 1 d), pt R d 0] (G.F c))) = constantCoeff (pderiv R ((0 : Fin 1), j) (pt R d 0 c))`. Rewrite using `[G.unit c]`. Both sides reduce to the same expression.
+
+Rewrite `hu` using `[d2 Z_zero (Z_pt 0), dpt]`. Simplify using `[dpt, ccev hb0, cc_pderiv] at hu`. Rewrite using `[hu]`. Establish `hdet : IsUnit M.det`. Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, RingHom.map_det]`.
+
+Establish `h1 : (constantCoeff : PS R n d →+* R).mapMatrix M = 1`. Use extensionality with `c j`. Simplify using `[hcc, Matrix.one_apply]`. Rewrite using `[h1, Matrix.det_one]`. Conclude with `isUnit_one`.
+
+Establish `hv : Matrix.vecMul v M = 0`. Use function extensionality and compare the values at `j`. Conclude with `h j`. Establish `hv' : v = Matrix.vecMul (Matrix.vecMul v M) M⁻¹`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hdet, Matrix.vecMul_one]`.
+
+Rewrite using `[hv', hv, Matrix.zero_vecMul]`. Both sides reduce to the same expression.
+-/
 theorem jac_cancel (G : FGLaw R d) {x : Pt R n d} (hx : Z x) (v : Fin d → PS R n d)
     (h : ∀ j, ∑ c, v c * ev ![x, 0] (pderiv R ((1 : Fin 2), j) (G.F c)) = 0) (c : Fin d) : v c = 0 := by
   let M : Matrix (Fin d) (Fin d) (PS R n d) := fun c j => ev ![x, 0] (pderiv R ((1 : Fin 2), j) (G.F c))
@@ -70,6 +96,9 @@ theorem jac_cancel (G : FGLaw R d) {x : Pt R n d} (hx : Z x) (v : Fin d → PS R
   rw [hv', hv, Matrix.zero_vecMul]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp [evz hb]`. Consider the case `succ N ih`. Rewrite using `[Finset.prod_range_succ, dmul, eva hb, evm hb, evm hb, ih, h, zero_mul, mul_zero, add_zero]`.
+-/
 theorem ev_d_prod {b : Fin m → Pt R n d} (hb : ZZ b) (v : Fin m × Fin d) (f : ℕ → PS R m d)
     (h : ∀ k, ev b (pderiv R v (f k)) = 0) (N : ℕ) : ev b (pderiv R v (∏ k ∈ Finset.range N, f k)) = 0 := by
   induction N with
@@ -77,6 +106,9 @@ theorem ev_d_prod {b : Fin m → Pt R n d} (hb : ZZ b) (v : Fin m × Fin d) (f :
   | succ N ih =>
     rw [Finset.prod_range_succ, dmul, eva hb, evm hb, evm hb, ih, h, zero_mul, mul_zero, add_zero]
 
+/- English proof (translation)
+Rewrite using `[Derivation.leibniz_pow]`. Establish `hp : (p : R) = 0` using `CharP.cast_eq_zero R p`. Establish `h0 : (p : MvPowerSeries (Fin n × Fin d) R) = 0`. Rewrite using `[← map_natCast (algebraMap R (MvPowerSeries (Fin n × Fin d) R)), hp, map_zero]`. Rewrite using `[nsmul_eq_mul, h0, zero_mul]`.
+-/
 theorem d_pow_p (p : ℕ) [CharP R p] (v : Fin n × Fin d) (f : PS R n d) : pderiv R v (f ^ p) = 0 := by
   rw [Derivation.leibniz_pow]
   have hp : (p : R) = 0 := CharP.cast_eq_zero R p
@@ -86,6 +118,19 @@ theorem d_pow_p (p : ℕ) [CharP R p] (v : Fin n × Fin d) (f : PS R n d) : pder
 
 variable {O : Type} [CommRing O]
 
+/- English proof (translation)
+Establish `hb : ZZ (n` using `1) ![pt R d 0, (0 : Pt R 1 d)] := ZZ_cons (Z_pt 0) (ZZ_cons Z_zero ZZ_nil)`. Establish `hp0 : ∀ e k : Fin d, coeff (Finsupp.single ((0 : Fin 1), k) 1) (A.act (p : O) e) = 0`. Introduce `e k`. Establish `h1` using `congrFun (congrFun (lin_act_nat A p) e) k`. Simplify using `only [lin] at h1`.
+
+Rewrite using `[h1]`. Simplify using `[Matrix.one_apply, CharP.cast_eq_zero]`. Use `jac_cancel G (Z_pt (R := R) (d := d) (n := 1) 0) (fun c => pderiv R ((0 : Fin 1), c) (A.act (p : O) i)) (fun k => ?_) j` and prove the remaining obligations. Establish `L : ev ![pt R d 0, (0 : Pt R 1 d)] (pderiv R ((1 : Fin 2), k) (comp1 (A.act (p : O)) (G.add (pt R d 0) (pt R d 1)) i)) = ∑ c, pderiv R ((0 : Fin 1), c) (A.act (p : O) i) * ev ![pt R d 0, (0 : Pt R 1 d)] (pderiv R ((1 : Fin 2), k) (G.F c))` using `by show ev _ (pderiv R _ (ev ![G.add (pt R d 0) (pt R d 1)] (A.act (p : O) i))) = _`. Rewrite using `[d1 (Z_add G (Z_pt 0) (Z_pt 1)), evsum hb]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[evm hb, ev1 hb (Z_add G (Z_pt 0) (Z_pt 1)), ep_add G hb (Z_pt 0) (Z_pt 1), ep_pt hb, ep_pt hb]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, p_add_zero G (Z_pt 0)]`. Use `congr 1`. Conclude with `ev_pt_self _ (fun l => by fin_cases l; rfl) _`.
+
+Use `show ev _ (pderiv R _ (ev ![pt R d 0, pt R d 1] (G.F c))) = _`. Rewrite using `[eval_points_two]`. Establish `Rt : ev ![pt R d 0, (0 : Pt R 1 d)] (pderiv R ((1 : Fin 2), k) (G.add (comp1 (A.act (p : O)) (pt R d 0)) (comp1 (A.act (p : O)) (pt R d 1)) i)) = 0` using `by show ev _ (pderiv R _ (ev ![comp1 (A.act (p : O)) (pt R d 0), comp1 (A.act (p : O)) (pt R d 1)] (G.F i))) = 0`. Rewrite using `[d2 (Z_comp1 (Z_act A _) (Z_pt 0)) (Z_comp1 (Z_act A _) (Z_pt 1))]`. Simplify using `only [dcomp_ne (show (0 : Fin 2) ≠ 1 by decide), dcomp_eq, mul_zero, Finset.sum_const_zero, zero_add, evsum hb, evm hb]`.
+
+Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Rewrite using `[ev1 hb (Z_pt 1), ep_pt hb]`. Simplify using `only [Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_zero, ev_at_zero, cc_pderiv, hp0, map_zero, mul_zero]`. Establish `e` using `congrArg (fun F : Pt R 2 d => ev ![pt R d 0, (0 : Pt R 1 d)] (pderiv R ((1 : Fin 2), k) (F i))) (A.hom (p : O))`. Rewrite `e` using `[L, Rt]`.
+
+Conclude with `e`.
+-/
 theorem d_act_p (p : ℕ) [CharP R p] {G : FGLaw R d} (A : OAct O G) (i j : Fin d) :
     pderiv R ((0 : Fin 1), j) (A.act (p : O) i) = 0 := by
   have hb : ZZ (n := 1) ![pt R d 0, (0 : Pt R 1 d)] := ZZ_cons (Z_pt 0) (ZZ_cons Z_zero ZZ_nil)
@@ -129,6 +174,11 @@ theorem d_act_p (p : ℕ) [CharP R p] {G : FGLaw R d} (A : OAct O G) (i j : Fin 
 
 variable [StarRing O] (B : FB R d O)
 
+/- English proof (translation)
+Establish `hb : ZZ ![(0 : Pt R n d), z]` using `ZZ_cons Z_zero (ZZ_cons hz ZZ_nil)`. Establish `e0 : pderiv R ((0 : Fin 2), c) (ev ![pt R d 0, 0, pt R d 1] B.ph1) = 0`. Rewrite using `[B.cocycleLeft_zero_snd]`. Conclude with `Derivation.map_one_eq_zero _`. Rewrite `e0` using `[d3 (Z_pt 0) Z_zero (Z_pt 1)]`.
+
+Simplify using `[dpt] at e0`. Establish `e1` using `congrArg (ev ![(0 : Pt R n d), z]) e0`. Rewrite `e1` using `[ev3 hb (Z_pt 0) Z_zero (Z_pt 1), ep_pt hb, ep_zero hb, ep_pt hb, evz hb]`. Simplify using `using e1`.
+-/
 theorem deriv_first_first_form_zero {z : Pt R n d} (hz : Z z) (c : Fin d) : ev ![0, 0, z] (pderiv R ((0 : Fin 3), c) B.ph1) = 0 := by
   have hb : ZZ ![(0 : Pt R n d), z] := ZZ_cons Z_zero (ZZ_cons hz ZZ_nil)
   have e0 : pderiv R ((0 : Fin 2), c) (ev ![pt R d 0, 0, pt R d 1] B.ph1) = 0 := by
@@ -140,6 +190,11 @@ theorem deriv_first_first_form_zero {z : Pt R n d} (hz : Z z) (c : Fin d) : ev !
   rw [ev3 hb (Z_pt 0) Z_zero (Z_pt 1), ep_pt hb, ep_zero hb, ep_pt hb, evz hb] at e1
   simpa using e1
 
+/- English proof (translation)
+Establish `hb : ZZ ![(0 : Pt R n d), z]` using `ZZ_cons Z_zero (ZZ_cons hz ZZ_nil)`. Establish `e0 : pderiv R ((0 : Fin 2), c) (ev ![0, pt R d 0, pt R d 1] B.ph1) = 0`. Rewrite using `[B.cocycleLeft_zero_fst]`. Conclude with `Derivation.map_one_eq_zero _`. Rewrite `e0` using `[d3 Z_zero (Z_pt 0) (Z_pt 1)]`.
+
+Simplify using `[dpt] at e0`. Establish `e1` using `congrArg (ev ![(0 : Pt R n d), z]) e0`. Rewrite `e1` using `[ev3 hb Z_zero (Z_pt 0) (Z_pt 1), ep_zero hb, ep_pt hb, ep_pt hb, evz hb]`. Simplify using `using e1`.
+-/
 theorem deriv_second_first_form_zero {z : Pt R n d} (hz : Z z) (c : Fin d) : ev ![0, 0, z] (pderiv R ((1 : Fin 3), c) B.ph1) = 0 := by
   have hb : ZZ ![(0 : Pt R n d), z] := ZZ_cons Z_zero (ZZ_cons hz ZZ_nil)
   have e0 : pderiv R ((0 : Fin 2), c) (ev ![0, pt R d 0, pt R d 1] B.ph1) = 0 := by
@@ -151,6 +206,11 @@ theorem deriv_second_first_form_zero {z : Pt R n d} (hz : Z z) (c : Fin d) : ev 
   rw [ev3 hb Z_zero (Z_pt 0) (Z_pt 1), ep_zero hb, ep_pt hb, ep_pt hb, evz hb] at e1
   simpa using e1
 
+/- English proof (translation)
+Establish `hb : ZZ ![(0 : Pt R n d), z]` using `ZZ_cons Z_zero (ZZ_cons hz ZZ_nil)`. Unfold `pow1`. Use `ev_d_prod hb _ _ (fun l => ?_) N` and prove the remaining obligations. Rewrite using `[d3 (Z_comp1 (Z_act B.A _) (Z_pt 0)) (Z_pt 0) (Z_pt 1)]`. Simplify using `only [eva hb, evsum hb, evm hb, ev3 hb (Z_comp1 (Z_act B.A _) (Z_pt 0)) (Z_pt 0) (Z_pt 1), ep_comp1 _ hb (Z_pt 0), ep_pt hb, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, germComp1_zero_of_noConstantCoeff (Z_act _ _), deriv_first_first_form_zero B hz, deriv_second_ …`.
+
+Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Simplify using `[dpt, evz hb]`.
+-/
 private theorem ev_zero_pderiv_pow1_eq_zero {z : Pt R n d} (hz : Z z) (k : Fin d) (N : ℕ) :
     ev ![(0 : Pt R n d), z] (pderiv R ((0 : Fin 2), k) (pow1 B N)) = 0 := by
   have hb : ZZ ![(0 : Pt R n d), z] := ZZ_cons Z_zero (ZZ_cons hz ZZ_nil)
@@ -164,6 +224,19 @@ private theorem ev_zero_pderiv_pow1_eq_zero {z : Pt R n d} (hz : Z z) (k : Fin d
   refine Finset.sum_eq_zero fun e _ => ?_
   simp [dpt, evz hb]
 
+/- English proof (translation)
+Establish `hb : ZZ (n` using `2) ![pt R d 0, 0, pt R d 1] := ZZ_cons (Z_pt 0) (ZZ_cons Z_zero (ZZ_cons (Z_pt 1) ZZ_nil))`. Use `jac_cancel B.G (Z_pt (R := R) (d := d) (n := 2) 0) (fun c => pderiv R ((0 : Fin 2), c) (pow1 B p)) (fun k => ?_) j` and prove the remaining obligations. Establish `hadd : ∀ c, pderiv R ((1 : Fin 3), k) (B.G.add (pt R d 0) (pt R d 1) c) = ev ![pt R d 0, pt R d 1] (pderiv R ((1 : Fin 2), k) (B.G.F c))`. Introduce `c`. Use `show pderiv R _ (ev ![pt R d 0, pt R d 1] (B.G.F c)) = _`.
+
+Rewrite using `[d2 (Z_pt 0) (Z_pt 1)]`. Simplify using `[dpt]`. Establish `hz2 : ∀ c, pderiv R ((1 : Fin 3), k) (pt R d 2 c) = 0`. Introduce `c`. Simplify using `[dpt]`.
+
+Establish `L : ev ![pt R d 0, (0 : Pt R 2 d), pt R d 1] (pderiv R ((1 : Fin 3), k) (ev ![B.G.add (pt R d 0) (pt R d 1), pt R d 2] (pow1 B p) * B.ph1 ^ p)) = ∑ c, pderiv R ((0 : Fin 2), c) (pow1 B p) * ev ![pt R d 0, (0 : Pt R 2 d)] (pderiv R ((1 : Fin 2), k) (B.G.F c))`. Rewrite using `[dmul, d_pow_p, mul_zero, add_zero, evm hb, evpow hb, B.cocycleLeft_zero_snd, one_pow, mul_one, d2 (Z_add B.G (Z_pt 0) (Z_pt 1)) (Z_pt 2)]`. Simplify using `only [hz2, mul_zero, Finset.sum_const_zero, add_zero, evsum hb, evm hb, hadd, ev2 hb (Z_add B.G (Z_pt 0) (Z_pt 1)) (Z_pt 2), ev2 hb (Z_pt 0) (Z_pt 1), ep_add B.G hb (Z_pt 0) (Z_pt 1), ep_pt hb, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matr …`. Establish `hA : pderiv R ((1 : Fin 3), k) (ev ![pt R d 0, pt R d 2] (pow1 B p)) = 0`. Rewrite using `[d2 (Z_pt 0) (Z_pt 2)]`.
+
+Simplify using `[dpt]`. Establish `hBq : ev ![pt R d 0, (0 : Pt R 2 d), pt R d 1] (pderiv R ((1 : Fin 3), k) (ev ![pt R d 1, pt R d 2] (pow1 B p))) = 0`. Rewrite using `[d2 (Z_pt 1) (Z_pt 2)]`. Simplify using `only [dpt, Prod.mk.injEq, true_and, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `[dpt]`.
+
+Rewrite using `[ev2 hb (Z_pt 1) (Z_pt 2), ep_pt hb, ep_pt hb]`. Simplify using `using ev_zero_pderiv_pow1_eq_zero B (Z_pt (R := R) (d := d) (n := 2) 1) k p`. Establish `hC : pderiv R ((1 : Fin 3), k) (ev ![comp1 (B.A.act (p : O)) (pt R d 0), comp1 (B.A.act (p : O)) (pt R d 1), pt R d 2] B.ph1) = 0`. Rewrite using `[d3 (Z_comp1 (Z_act B.A _) (Z_pt 0)) (Z_comp1 (Z_act B.A _) (Z_pt 1)) (Z_pt 2)]`. Establish `hq : ZZ (n` using `3) ![pt R d 1] := ZZ_cons (Z_pt 1) ZZ_nil`.
+
+Simplify using `[dcomp_ne (show (0 : Fin 3) ≠ 1 by decide), dcomp_eq, d_act_p, evz hq, hz2]`. Establish `e` using `congrArg (fun f : PS R 3 d => ev ![pt R d 0, (0 : Pt R 2 d), pt R d 1] (pderiv R ((1 : Fin 3), k) f)) (first_power_add R d O B p)`. Rewrite `e` using `[L, dmul, dmul, hA, hC, zero_mul, zero_add, mul_zero, add_zero, evm hb, evm hb, hBq, mul_zero, zero_mul]`. Conclude with `e`.
+-/
 theorem deriv_first_power_char_p (p : ℕ) [CharP R p] (j : Fin d) : pderiv R ((0 : Fin 2), j) (pow1 B p) = 0 := by
   have hb : ZZ (n := 2) ![pt R d 0, 0, pt R d 1] :=
     ZZ_cons (Z_pt 0) (ZZ_cons Z_zero (ZZ_cons (Z_pt 1) ZZ_nil))
@@ -212,6 +285,13 @@ theorem deriv_first_power_char_p (p : ℕ) [CharP R p] (j : Fin d) : pderiv R ((
 
 end
 
+/- English proof (translation)
+Introduce `R _ p _ _ d O _ _ B`. Establish `key : ∀ c, ∃ g : PS R 1 d, B.A.act (p : O) c = ev ![ptPow R d p 0] g` using `fun c => (series_in_p R p d).1 _ (fun j => d_act_p p B.A c j)`. Use `choose V hV using key`. Establish `hq : ZZ (n` using `1) ![ptPow R d p 0] := ZZ_cons (Z_ptPow p 0) ZZ_nil`. Use `⟨V, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `c`. Rewrite using `[← ccev hq (V c), ← hV c]`. Conclude with `B.A.const _ c`. Use function extensionality and compare the values at `c`. Conclude with `hV c`.
+
+Use extensionality with `c i show coeff _ (V c) = coeff _ (B.A.act (p : O) c)`. Rewrite using `[hV c, coeff_ev_pow_one]`.
+-/
 theorem mulp_V : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [CharP R p] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O), ∃ V : Pt R 1 d, (∀ i, constantCoeff (V i) = 0) ∧ B.A.act (p : O) = comp1 V (ptPow R d p 0) ∧ lin V 1 = hw B p := by
   intro R _ p _ _ d O _ _ B
   have key : ∀ c, ∃ g : PS R 1 d, B.A.act (p : O) c = ev ![ptPow R d p 0] g := fun c =>
@@ -228,6 +308,17 @@ theorem mulp_V : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [CharP R p
     show coeff _ (V c) = coeff _ (B.A.act (p : O) c)
     rw [hV c, coeff_ev_pow_one]
 
+/- English proof (translation)
+Introduce `R _ p _ _ d O _ _ B`. Take `⟨g, hg⟩` from `(series_in_p R p d).2 (pow1 B p) (fun j => deriv_first_power_char_p B p j)`. Establish `hq : ZZ (n` using `1) ![ptPow R d p 0] := ZZ_cons (Z_ptPow p 0) ZZ_nil`. Use `⟨g, And.intro ?_ ?_, hg, ?_⟩` and prove the remaining obligations. Establish `hb : ZZ (n` using `1) ![(0 : Pt R 1 d), pt R d 0] := ZZ_cons Z_zero (ZZ_cons (Z_pt 0) ZZ_nil)`.
+
+Establish `e` using `congrArg (ev ![(0 : Pt R 1 d), pt R d 0]) hg`. Rewrite `e` using `[first_power_zero_left B (Z_pt 0), ev2 hb (Z_ptPow p 0) (Z_pt 1), ep_ptPow p hb, ep_pt hb]`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `k i`.
+
+Use `fin_cases k`. Simplify using `[(Fact.out : p.Prime).ne_zero]`. Both sides reduce to the same expression. Establish `hb : ZZ (n` using `1) ![pt R d 0, (0 : Pt R 1 d)] := ZZ_cons (Z_pt 0) (ZZ_cons Z_zero ZZ_nil)`. Establish `e` using `congrArg (ev ![pt R d 0, (0 : Pt R 1 d)]) hg`.
+
+Rewrite `e` using `[first_power_zero_right B (Z_pt 0), ev2 hb (Z_ptPow p 0) (Z_pt 1), ep_ptPow p hb, ep_pt hb]`. Apply `ev_pow_inj p` to reduce the goal to its premises. Rewrite using `[ev2 hq (Z_pt 0) Z_zero, ep_pt hq, ep_zero hq, ev_one, e]`. Use `congr 1`. Rewrite using `[← bil_ev_pow_two p g, ← hg]`.
+
+Both sides reduce to the same expression.
+-/
 theorem first_power_char_p : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [CharP R p] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O), ∃ g : PS R 2 d, AxOne g ∧ pow1 B p = ev (n := 2) ![ptPow R d p 0, pt R d 1] g ∧ bil g 1 1 = am B p := by
   intro R _ p _ _ d O _ _ B
   obtain ⟨g, hg⟩ := (series_in_p R p d).2 (pow1 B p) (fun j => deriv_first_power_char_p B p j)

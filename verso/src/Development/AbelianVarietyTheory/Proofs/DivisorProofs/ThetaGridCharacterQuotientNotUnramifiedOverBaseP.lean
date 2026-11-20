@@ -20,6 +20,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.ThetaGridRamifiedOverBasePlace
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL t i j w hv`. Rewrite using `[show alpha G t i j / beta G i j = G.nu t i (j + 1) from mul_div_mul_right_eq_div _ _ _, GlobalTheory.LFun.unrAt_iff_of_chrEq (GlobalTheory.FunObj.SqNum.chrEq_nu G t i j hL) w]`. Establish `hm : 1 ≤ D.R.m - (i : ℕ) ∧ D.R.m - (i : ℕ) ≤ D.R.m` using `⟨by omega, by omega⟩`. Establish `hchi : ¬ (G.ch.chiH (D.R.m - i)).UnrAt w` using `(G.ch.lev0 _ hm.1 hm.2 _ hv).2`. Establish `hmu : (L.C.mu0 j).UnrAt w` using `(L.C.isMu0 j).unr _ fun k hk => G.ch.basePlace_not_mem_chiGridBadPlaces (by`.
+
+Establish `h : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (w.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap _ (𝓞 D.host.E) _ ∈ w.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hk`. Rewrite `h` using `[hv]`. Use `(S1_mem_OmF D).2 ?_` and prove the remaining obligations.
+
+Use `fin_cases k`. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h))`. Establish `hxi : (L.xiH t).UnrAt w`. Assume the negation of the conclusion as `hc`.
+
+Break down `(hL.Q_ram t _).1 hc with h | ⟨PP', h, hc'⟩` into its components or cases. Conclude with `G.pl.levelPlace_ne_basePlace t _ h hv`. Conclude with `G.pl.levelPlace_ne_basePlace t PP' h ((GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc').trans hv)`. Introduce `hn`. Apply `hchi` to reduce the goal to its premises.
+
+Establish `e : G.ch.chiH (D.R.m - i) = L.C.mu0 j * L.xiH t / SqNum.nuH G t i j`. Rewrite using `[SqNum.nuH, div_div_cancel]`. Rewrite using `[e, div_eq_mul_inv]`. Conclude with `(hmu.mul hxi).mul hn.inv`.
+-/
 theorem thetaGridCharacterQuotient_not_unramified_over_basePlace : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = G.pl.v0 →
       ¬ GlobalTheory.LFun.UnrAt (F := D.host.F) (E := D.host.E) (alpha G t i j / beta G i j) w := by

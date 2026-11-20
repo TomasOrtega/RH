@@ -11,6 +11,9 @@ variable {α ι : Type*} [DecidableEq α] [DecidableEq ι]
 def intersection_update_fsHerm_neg_one (N : α → ℕ) (idx : α → ι) (s : Multiset α) (i : ι) : ℕ :=
   ((s.filter (fun a => idx a = i)).map N).prod
 
+/- English proof (translation)
+Unfold `intersection_update_fsHerm_neg_one`. Distinguish the cases in `h : idx a = i`. Simplify using `[h]`. Simplify using `[h]`.
+-/
 theorem position_cons (N : α → ℕ) (idx : α → ι) (a : α) (s : Multiset α) (i : ι) :
     intersection_update_fsHerm_neg_one N idx (a ::ₘ s) i = (if idx a = i then N a else 1) * intersection_update_fsHerm_neg_one N idx s i := by
   unfold intersection_update_fsHerm_neg_one
@@ -18,6 +21,11 @@ theorem position_cons (N : α → ℕ) (idx : α → ι) (a : α) (s : Multiset 
   · simp [h]
   · simp [h]
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp [intersection_update_fsHerm_neg_one]`. Consider the case `cons a s ih`. Repeatedly rewrite using `[position_cons]`. Rewrite using `[Finset.prod_mul_distrib, ih]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem prod_position [Fintype ι] (N : α → ℕ) (idx : α → ι) (s : Multiset α) :
     ∏ i, intersection_update_fsHerm_neg_one N idx s i = (s.map N).prod := by
   induction s using Multiset.induction_on with
@@ -27,6 +35,11 @@ theorem prod_position [Fintype ι] (N : α → ℕ) (idx : α → ι) (s : Multi
     rw [Finset.prod_mul_distrib, ih]
     simp
 
+/- English proof (translation)
+Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Establish `ha : a ≠ 0` using `h a (Multiset.mem_cons_self a s)`. Establish `hs : ∀ x ∈ s, x ≠ 0` using `fun x hx => h x (Multiset.mem_cons_of_mem hx)`.
+
+Establish `hs' : s.prod ≠ 0`. Introduce `h0`. Conclude with `hs 0 (Multiset.prod_eq_zero_iff.mp h0) rfl`. Rewrite using `[Multiset.prod_cons, Nat.factorization_mul ha hs', Multiset.map_cons, Multiset.sum_cons, Finsupp.add_apply, ih hs]`.
+-/
 theorem factorization_multiset_prod (m : Multiset ℕ) (h : ∀ x ∈ m, x ≠ 0) (p : ℕ) :
     m.prod.factorization p = (m.map (fun x => x.factorization p)).sum := by
   induction m using Multiset.induction_on with
@@ -40,6 +53,15 @@ theorem factorization_multiset_prod (m : Multiset ℕ) (h : ∀ x ∈ m, x ≠ 0
     rw [Multiset.prod_cons, Nat.factorization_mul ha hs', Multiset.map_cons, Multiset.sum_cons,
       Finsupp.add_apply, ih hs]
 
+/- English proof (translation)
+Establish `hp : (N a).minFac.Prime` using `Nat.minFac_prime (h1 a ha).ne'`. Unfold `intersection_update_fsHerm_neg_one`. Rewrite using `[factorization_multiset_prod, Multiset.map_map, Multiset.sum_map_eq_nsmul_single a, Multiset.count_filter_of_pos (p := fun b => idx b = idx a) rfl]`. Simplify using the standard rewrite rules. Introduce `b hba hb`.
+
+Rewrite `hb` using `[Multiset.mem_filter]`. Simplify using `only [Function.comp_apply]`. Apply `Nat.factorization_eq_zero_of_not_dvd` to reduce the goal to its premises. Introduce `hdvd`. Apply `hba` to reduce the goal to its premises.
+
+Use `h2 b (hs b hb.1) a ha hb.2 ?_` and prove the remaining obligations. Introduce `hcop`. Conclude with `Nat.not_coprime_of_dvd_of_dvd hp.one_lt hdvd (Nat.minFac_dvd _) hcop`. Introduce `x hx`. Rewrite `hx` using `[Multiset.mem_map]`.
+
+Take `⟨b, hb, rfl⟩` from `hx`. Rewrite `hb` using `[Multiset.mem_filter]`. Conclude with `(Nat.zero_lt_of_lt (h1 b (hs b hb.1))).ne'`.
+-/
 theorem factorization_position (N : α → ℕ) (idx : α → ι) (S : Set α) (h1 : ∀ a ∈ S, 1 < N a)
     (h2 : ∀ a ∈ S, ∀ b ∈ S, idx a = idx b → ¬ Nat.Coprime (N a) (N b) → a = b)
     {s : Multiset α} (hs : ∀ a ∈ s, a ∈ S) {a : α} (ha : a ∈ S) :
@@ -66,6 +88,11 @@ theorem factorization_position (N : α → ℕ) (idx : α → ι) (S : Set α) (
     rw [Multiset.mem_filter] at hb
     exact (Nat.zero_lt_of_lt (h1 b (hs b hb.1))).ne'
 
+/- English proof (translation)
+Use extensionality with `a`. Distinguish the cases in `ha : a ∈ S`. Establish `e1` using `factorization_position N idx S h1 h2 hs ha`. Establish `e2` using `factorization_position N idx S h1 h2 ht ha`. Rewrite `e1` using `[h, e2]`.
+
+Establish `hp : (N a).minFac.Prime` using `Nat.minFac_prime (h1 a ha).ne'`. Establish `hpos : 0 < (N a).factorization (N a).minFac` using `hp.factorization_pos_of_dvd (Nat.zero_lt_of_lt (h1 a ha)).ne' (Nat.minFac_dvd _)`. Conclude with `(Nat.eq_of_mul_eq_mul_right hpos e1).symm`. Rewrite using `[Multiset.count_eq_zero_of_notMem (fun h' => ha (hs a h')), Multiset.count_eq_zero_of_notMem (fun h' => ha (ht a h'))]`.
+-/
 theorem position_inj (N : α → ℕ) (idx : α → ι) (S : Set α) (h1 : ∀ a ∈ S, 1 < N a)
     (h2 : ∀ a ∈ S, ∀ b ∈ S, idx a = idx b → ¬ Nat.Coprime (N a) (N b) → a = b)
     {s t : Multiset α} (hs : ∀ a ∈ s, a ∈ S) (ht : ∀ a ∈ t, a ∈ S)
@@ -86,6 +113,11 @@ end Comb
 
 section Sums
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [tsum_fintype]`. Consider the case `succ m ih`. Rewrite using `[← (Fin.consEquiv (fun _ : Fin (m + 1) => ℕ)).tsum_eq, ENNReal.tsum_prod']`. Simplify using `only [Fin.consEquiv, Equiv.coe_fn_mk, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]`.
+
+Repeatedly rewrite using `[ENNReal.tsum_mul_left, ih, ENNReal.tsum_mul_right]`. Rewrite using `[pow_succ, mul_comm]`.
+-/
 theorem tsum_pi_prod (w : ℕ → ℝ≥0∞) (m : ℕ) :
     ∑' v : Fin m → ℕ, ∏ i, w (v i) = (∑' n, w n) ^ m := by
   induction m with
@@ -96,6 +128,9 @@ theorem tsum_pi_prod (w : ℕ → ℝ≥0∞) (m : ℕ) :
     simp_rw [ENNReal.tsum_mul_left, ih, ENNReal.tsum_mul_right]
     rw [pow_succ, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[← tsum_pi_prod]`. Repeatedly rewrite using `[hw]`. Conclude with `ENNReal.tsum_comp_le_tsum_of_injective hinj (fun v => ∏ i, w (v i))`.
+-/
 theorem tsum_le_pow {β : Type*} {m : ℕ} (n : β → Fin m → ℕ) (hinj : Function.Injective n)
     (w : ℕ → ℝ≥0∞) (W : β → ℝ≥0∞) (hw : ∀ b, W b = ∏ i, w (n b i)) :
     ∑' b, W b ≤ (∑' k, w k) ^ m := by

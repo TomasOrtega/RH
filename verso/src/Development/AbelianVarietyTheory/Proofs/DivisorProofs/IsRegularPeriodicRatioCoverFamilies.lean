@@ -9,6 +9,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CechPer
 
+/- English proof (translation)
+Establish `hu` using `(X.toRingedSpace.isUnit_res_basicOpen f).map (X.presheaf.map (homOfLE h).op).hom`. Establish `e : X.presheaf.map (homOfLE hVU).op = X.presheaf.map (homOfLE (X.basicOpen_le f)).op ≫ X.presheaf.map (homOfLE h).op`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `hu`.
+-/
 theorem isUnit_res_of_le_basicOpen {X : Scheme.{0}} {U V : X.Opens} (f : Γ(X, U)) (hVU : V ≤ U)
     (h : V ≤ X.basicOpen f) : IsUnit ((X.presheaf.map (homOfLE hVU).op).hom f) := by
   have hu := (X.toRingedSpace.isUnit_res_basicOpen f).map (X.presheaf.map (homOfLE h).op).hom
@@ -18,6 +23,31 @@ theorem isUnit_res_of_le_basicOpen {X : Scheme.{0}} {U V : X.Opens} (f : Γ(X, U
   rw [e]
   exact hu
 
+/- English proof (translation)
+Introduce `A _ g L u hA n W r hR N σ hhol hper htr`. Take `⟨-, -, -, -, hinf, hmono, -, -, hres, hev, -, -⟩` from `GlobalTheory.T.uniformisation_preimage_value_rules A g L u`. Take `⟨-, hcov, hbasic, hself, hcoc⟩` from `hR`. Establish `hv : ∀ (U V : A.left.Opens) (h : V ≤ U) (b : Γ(A.left, U)), ∀ z ∈ pre u.ex V, val u.ex V ((A.left.presheaf.map (homOfLE h).op).hom b) z = val u.ex U b z` using `fun U V h b z hz => hres U V h b z hz`. Establish `hmul : ∀ (U : A.left.Opens), ∀ z ∈ pre u.ex U, ∀ a b : Γ(A.left, U), val u.ex U (a * b) z = val u.ex U a z * val u.ex U b z`.
+
+Introduce `U z hz a b`. Take `⟨e, he⟩` from `hev U z hz`. Rewrite using `[he, he, he]`. Conclude with `map_mul e (a : Sec (str A) U) b`. Establish `hsub : ∀ (U : A.left.Opens), ∀ z ∈ pre u.ex U, ∀ a b : Γ(A.left, U), val u.ex U (a - b) z = val u.ex U a z - val u.ex U b z`.
+
+Introduce `U z hz a b`. Take `⟨e, he⟩` from `hev U z hz`. Rewrite using `[he, he, he]`. Conclude with `map_sub e (a : Sec (str A) U) b`. Establish `hpow : ∀ (U : A.left.Opens), ∀ z ∈ pre u.ex U, ∀ (a : Γ(A.left, U)) (m : ℕ), val u.ex U (a ^ m) z = val u.ex U a z ^ m`.
+
+Introduce `U z hz a m`. Take `⟨e, he⟩` from `hev U z hz`. Rewrite using `[he, he]`. Conclude with `map_pow e (a : Sec (str A) U) m`. Establish `hunit : ∀ k j, IsUnit ((A.left.presheaf.map (homOfLE (inf_le_left : W k ⊓ W j ≤ W k)).op).hom (r k j))` using `fun k j => isUnit_res_of_le_basicOpen _ _ (hbasic k j).ge`.
+
+Set `M : LB A.left` to `⟨Fin n, W, fun k j => (hunit k j).unit ^ N⟩`. Establish `hMg : ∀ k j, ((M.g k j : Γ(A.left, W k ⊓ W j))) = ((A.left.presheaf.map (homOfLE (inf_le_left : W k ⊓ W j ≤ W k)).op).hom (r k j)) ^ N`. Introduce `k j`. Express the relevant statement in the definitionally equal form `(((hunit k j).unit ^ N : Γ(A.left, W k ⊓ W j)ˣ) : Γ(A.left, W k ⊓ W j)) = _`. Rewrite using `[Units.val_pow_eq_pow_val, IsUnit.unit_spec]`.
+
+Establish `hval : ∀ k j (V : A.left.Opens) (h : V ≤ W k ⊓ W j), ∀ z ∈ pre u.ex V, val u.ex V ((res h (M.g k j) : Γ(A.left, V))) z = val u.ex (W k) (r k j) z ^ N`. Introduce `k j V h z hz`. Establish `hz' : z ∈ pre u.ex (W k ⊓ W j)` using `hmono _ _ h hz`. Establish `e1 : ((res h (M.g k j) : Γ(A.left, V))) = (A.left.presheaf.map (homOfLE h).op).hom (M.g k j : Γ(A.left, W k ⊓ W j))` using `rfl`. Rewrite using `[e1, hv _ _ h _ z hz, hMg, hpow _ z hz', hv _ _ _ _ z hz']`.
+
+Establish `hM : M.IsLB`. Use `⟨hcov, fun k => ?_, fun k j l => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(A.left.presheaf.map _).hom (M.g k k : Γ(A.left, W k ⊓ W k)) = 1`. Rewrite using `[hMg, hself k, map_one, one_pow, map_one]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul]`. Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `GlobalTheory.T.eq_zero_of_val_eq_zero_abelian A g L u hA` to reduce the goal to its premises. Introduce `z hz`.
+
+Establish `hk : z ∈ pre u.ex (W k)` using `hmono _ _ (inf_le_left.trans inf_le_left) hz`. Establish `hj : z ∈ pre u.ex (W j)` using `hmono _ _ (inf_le_left.trans inf_le_right) hz`. Rewrite using `[hsub _ z hz, hmul _ z hz, hval _ _ _ _ z hz, hval _ _ _ _ z hz, hval _ _ _ _ z hz, hcoc k j l z hk hj, mul_pow, sub_self]`. Establish `htrans : ∀ i j, ∀ z ∈ pre u.ex (M.U i ⊓ M.U j), σ i z = val u.ex _ (M.g i j).val z * σ j z`. Introduce `i j z hz`.
+
+Establish `hz' : z ∈ pre u.ex (W i ⊓ W j)` using `hz`. Rewrite `hz'` using `[hinf]`. Establish `e` using `hval i j (W i ⊓ W j) le_rfl z hz`. Establish `e2 : ((res (le_rfl : W i ⊓ W j ≤ W i ⊓ W j) (M.g i j) : Γ(A.left, W i ⊓ W j))) = (M.g i j).val`. Express the relevant statement in the definitionally equal form `(A.left.presheaf.map (homOfLE le_rfl).op).hom _ = _`.
+
+Establish `: (homOfLE (le_rfl : W i ⊓ W j ≤ W i ⊓ W j)).op = 𝟙 _` using `rfl`. Rewrite using `[this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Rewrite `e` using `[e2]`. Express the relevant statement in the definitionally equal form `σ i z = val u.ex (W i ⊓ W j) (M.g i j).val z * σ j z`.
+
+Rewrite using `[e]`. Conclude with `htr i j z hz'.1 hz'.2`. Conclude with `GlobalTheory.T.periodic_holomorphic_sections_regular_abelianVariety A g L u hA M hM σ hhol hper htrans`.
+-/
 theorem ratio_periodic_isReg : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ (n : ℕ) (W : Fin n → A.left.Opens) (r : ∀ k, Fin n → Γ(A.left, W k)), IsRatioCover u.ex W r → ∀ (N : ℕ) (σ : Fin n → (Fin g → ℂ) → ℂ), (∀ k, DifferentiableOn ℂ (σ k) (pre u.ex (W k))) → (∀ k (l : u.Λ), ∀ z ∈ pre u.ex (W k), σ k (z + l) = σ k z) → (∀ k j, ∀ z ∈ pre u.ex (W k), z ∈ pre u.ex (W j) → σ k z = val u.ex _ (r k j) z ^ N * σ j z) → ∀ k, IsReg u.ex (W k) (σ k) := by
   intro A _ g L u hA n W r hR N σ hhol hper htr
   obtain ⟨-, -, -, -, hinf, hmono, -, -, hres, hev, -, -⟩ := GlobalTheory.T.uniformisation_preimage_value_rules A g L u

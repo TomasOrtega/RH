@@ -7,6 +7,11 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h0 : homogeneousComponent 0 f ∈ P` using `hP.isHomog f hf 0`. Rewrite `h0` using `[homogeneousComponent_zero]`. Apply `hP.isPrime.ne_top` to reduce the goal to its premises. Use `Ideal.eq_top_of_isUnit_mem _ h0 ?_` and prove the remaining obligations.
+
+Establish `hc : coeff 0 f ≠ 0` using `by simpa [constantCoeff] using h`. Conclude with `hc.isUnit.map C`.
+-/
 theorem constantCoeff_eq_zero_of_isProjPrime {F : Type*} [Field F] {n : ℕ}
     {P : Ideal (MvPolynomial (Fin n) F)} (hP : IsProjPrime P) {f : MvPolynomial (Fin n) F}
     (hf : f ∈ P) : constantCoeff f = 0 := by
@@ -18,6 +23,13 @@ theorem constantCoeff_eq_zero_of_isProjPrime {F : Type*} [Field F] {n : ℕ}
   have hc : coeff 0 f ≠ 0 := by simpa [constantCoeff] using h
   exact hc.isUnit.map C
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos k with rfl | h` into its components or cases. It suffices to derive a contradiction. Use `hP.isPrime` as an intermediate fact. Establish `: Ring.KrullDimLE 0 (MvPolynomial (Fin n) F ⧸ P)`. Rewrite using `[ringKrullDimZero_iff_ringKrullDim_eq_zero]`.
+
+Simplify using `using hk`. Establish `hmax : P.IsMaximal` using `Ideal.Quotient.maximal_of_isField _ Ring.KrullDimLE.isField_of_isDomain`. Establish `hle : P ≤ RingHom.ker (constantCoeff : MvPolynomial (Fin n) F →+* F)` using `fun f hf => constantCoeff_eq_zero_of_isProjPrime hP hf`. Establish `heq` using `hmax.eq_of_le (RingHom.ker_ne_top _) hle`. Take `⟨j, hj⟩` from `hP.isRelevant`.
+
+Rewrite `hj` using `[heq]`. Conclude with `hj (by simp [RingHom.mem_ker])`. Conclude with `h`.
+-/
 theorem one_le_of_isProjPrime {F : Type*} [Field F] {n k : ℕ}
     {P : Ideal (MvPolynomial (Fin n) F)} (hP : IsProjPrime P)
     (hk : ringKrullDim (MvPolynomial (Fin n) F ⧸ P) = ((k : ℕ) : WithBot ℕ∞)) : 1 ≤ k := by
@@ -37,6 +49,21 @@ theorem one_le_of_isProjPrime {F : Type*} [Field F] {n k : ℕ}
     exact hj (by simp [RingHom.mem_ker])
   · exact h
 
+/- English proof (translation)
+Introduce `F _ n k P hP hdim`. Establish `hk : 1 ≤ k` using `one_le_of_isProjPrime hP hdim`. Take `⟨j, -⟩` from `hP.isRelevant`. Establish `hn : 0 < n` using `j.pos`. Establish `hQ : (incIdeal P k).IsPrime` using `h₂ F n k P hP.isPrime hP.isRelevant`.
+
+Establish `hdimQ` using `h₁ F n k (k - 1) P hP (by rw [Nat.sub_add_cancel hk]; exact hdim)`. Establish `hS : ringKrullDim (MvPolynomial (Fin k × Fin n) F) = ((k * n : ℕ) : WithBot ℕ∞)`. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin, zero_add]`. Establish `hsum` using `GroundTheory.Arith.Abelian.Jacobian.height_add_ringKrullDim_quotient F (incIdeal P k)`. Rewrite `hsum` using `[hdimQ, hS]`.
+
+Establish `hkn : k ≤ k * n` using `Nat.le_mul_of_pos_right k hn`. Take `⟨m, hm1, hm2⟩ : ∃ m, k * n - k + min k (k - 1) = m ∧ m + 1 = k * n` from `⟨_, rfl, by generalize k * n = N at hkn ⊢; omega⟩`. Rewrite `hsum` using `[hm1, ← hm2]`. Establish `hht : (incIdeal P k).height = 1`. Generalize the expression as in `(incIdeal P k).height = h at hsum`.
+
+Establish `h' : (h + m : ℕ∞) = ((m + 1 : ℕ) : ℕ∞)`. Establish `: ((h + m : ℕ∞) : WithBot ℕ∞) = (((m + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)`. Move the coercions through the operations in `at hsum ⊢`. Conclude with `hsum`. Conclude with `this` after adjusting the coercions.
+
+Proceed by induction on `h using ENat.recTopCoe with`. Consider the case `top => exact (ENat.natCast_ne_top (m + 1) h'.symm).elim`. Consider the case `coe a`. Normalize the coercions in `at h' ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hne : incIdeal P k ≠ ⊥` using `Ideal.ne_bot_of_height_eq_one hht`. Take `⟨g, hgmem, hgp⟩` from `Ideal.IsPrime.exists_mem_prime_of_ne_bot hQ hne`. Establish `hspan` using `Ideal.eq_span_singleton_of_height_eq_one hht hgmem hgp`. Use `⟨g, hgp.ne_zero, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, ← hspan]`.
+
+Simplify using `only [incIdeal, Submodule.mem_iInf, RingHom.mem_ker]`.
+-/
 theorem ChowFormExists.proof (h₁ : IncIdealDim.Statement) (h₂ : IncIdealPrime.Statement) :
     ChowFormExists.Statement := by
   intro F _ n k P hP hdim

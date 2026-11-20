@@ -14,6 +14,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ} {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U]
 
+/- English proof (translation)
+Establish `h : ∀ t : ℝ, (t : ℂ) • X = t • X` using `fun t => by ext; simp`. Simplify using `only [h]`. Use `open scoped Matrix.Norms.Operator in`. Establish `h2` using `((Matrix.entryLinearMap ℝ ℂ a b).toContinuousLinearMap.hasFDerivAt).comp_hasDerivAt 0 (hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0)`. Rewrite `h2` using `[zero_smul, NormedSpace.exp_zero, one_mul]`.
+
+Conclude with `h2`.
+-/
 theorem hasDerivAt_exp_entry (X : Mat n) (a b : Fin n) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) a b) (X a b) 0 := by
   have h : ∀ t : ℝ, (t : ℂ) • X = t • X := fun t => by ext; simp

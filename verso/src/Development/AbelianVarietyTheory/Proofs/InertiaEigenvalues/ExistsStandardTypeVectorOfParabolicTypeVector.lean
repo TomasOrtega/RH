@@ -9,6 +9,27 @@ noncomputable section
 namespace GlobalTheory.LevelType
 open Matrix
 
+/- English proof (translation)
+Introduce `p _ r α _ _ m _ _ e a θ U _ _ ρ v hm hv hpar`. Take `⟨k0⟩ : Nonempty (m a)` from `Fintype.card_pos_iff.1 (by omega)`. Set `σ` to `Tuple.sort (blk e)`. Set `i₀` to `e ⟨a, k0⟩`. Establish `hi₀ : blk e i₀ = a` using `blk_apply e a k0`.
+
+Establish `hmono` using `Tuple.monotone_sort (blk e)`. Establish `hlt : ∀ i, blk e i < a → σ.symm i < σ.symm i₀` using `fun i h => hmono.reflect_lt (by show blk e (σ (σ.symm i)) < blk e (σ (σ.symm i₀))`. Rewrite using `[Equiv.apply_symm_apply, Equiv.apply_symm_apply, hi₀]`. Conclude with `h)`. Establish `hgt : ∀ i, a < blk e i → σ.symm i₀ < σ.symm i` using `fun i h => hmono.reflect_lt (by show blk e (σ (σ.symm i₀)) < blk e (σ (σ.symm i))`.
+
+Rewrite using `[Equiv.apply_symm_apply, Equiv.apply_symm_apply, hi₀]`. Conclude with `h)`. Establish `hlo : ∀ i, (σ.symm i).val ≤ (σ.symm i₀).val → blk e i ≤ a` using `fun i h => by`. Assume the negation of the conclusion as `h'`. Conclude with `absurd h (not_le.2 (Fin.lt_def.1 (hgt i (not_le.1 h'))))`.
+
+Establish `hhi : ∀ j, (σ.symm i₀).val ≤ (σ.symm j).val → a ≤ blk e j` using `fun j h => by`. Assume the negation of the conclusion as `h'`. Conclude with `absurd h (not_le.2 (Fin.lt_def.1 (hlt j (not_le.1 h'))))`. Use `⟨(σ.symm i₀).val, ρ (GlobalTheory.Parabolic.permGL (ZMod p) σ.symm) v, (σ.symm i₀).isLt, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hv` to reduce the goal to its premises. Use `congrArg (ρ (GlobalTheory.Parabolic.permGL (ZMod p) σ.symm)⁻¹) h0` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, map_zero]`. Then use the resulting hypothesis. Introduce `x hx set y := (GlobalTheory.Parabolic.permGL (ZMod p) σ.symm)⁻¹ * x * GlobalTheory.Parabolic.permGL (ZMod p) σ.symm with hy`. Establish `hyij : ∀ i j, ¬ (blk e i ≤ a ∧ a ≤ blk e j) → y.val i j = if i = j then 1 else 0`.
+
+Introduce `i j hij`. Establish `hyv : y.val i j = x.val (σ.symm i) (σ.symm j)`. Rewrite using `[← GlobalTheory.Parabolic.conj_permGL_apply σ.symm y i j, hy]`. Use `congr 2`. Use `group`.
+
+Rewrite using `[hyv, hx _ _ (fun h => hij ⟨hlo i h.1, hhi j h.2⟩)]`. Simplify using the standard rewrite rules. Establish `hyP : y ∈ parab (ZMod p) e` using `mem_parab.2 fun i j hji => by`. Rewrite using `[hyij i j (fun h => absurd (h.1.trans h.2) (not_le.2 hji)), if_neg]`. Introduce and unpack `rfl`.
+
+Conclude with `lt_irrefl _ hji`. Establish `hlev : ∀ b, b ≠ a → leviProj (ZMod p) e ⟨y, hyP⟩ b = 1`. Introduce `b hb`. Use `Units.ext (Matrix.ext fun k l => ?_)` and prove the remaining obligations. Rewrite using `[leviProj_apply, Units.val_one]`.
+
+Rewrite using `[hyij _ _ (fun h => hb (le_antisymm (by simpa using h.1) (by simpa using h.2)))]`. Simplify using `[Matrix.one_apply]`. Establish `h1` using `hpar ⟨y, hyP⟩ hlev`. Express the relevant statement in the definitionally equal form `ρ y v = (θ (GeneralLinearGroup.det y) : ℂ) • v at h1`. Establish `hdet : GeneralLinearGroup.det y = GeneralLinearGroup.det x`.
+
+Rewrite using `[hy, map_mul, map_mul, map_inv, mul_comm, mul_inv_cancel_left]`. Establish `hxP : x * GlobalTheory.Parabolic.permGL (ZMod p) σ.symm = GlobalTheory.Parabolic.permGL (ZMod p) σ.symm * y` using `by rw [hy]; group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hxP, map_mul, Module.End.mul_apply, h1, hdet, map_smul]`.
+-/
 theorem exists_stdVec_of_parVec : ∀ (p : ℕ) [Fact p.Prime] (r : ℕ) (α : Type) [Fintype α] [LinearOrder α] (m : α → Type) [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] (e : (Σ a, m a) ≃ Fin r) (a : α) (θ : (ZMod p)ˣ →* ℂˣ) (U : Type) [AddCommGroup U] [Module ℂ U] (ρ : Representation ℂ (GL (Fin r) (ZMod p)) U) (v : U), Fintype.card (m a) = 1 → v ≠ 0 → ParVec ρ e a θ v → ∃ (c : ℕ) (v' : U), c < r ∧ v' ≠ 0 ∧ StdVec ρ c θ v' := by
   intro p _ r α _ _ m _ _ e a θ U _ _ ρ v hm hv hpar
   obtain ⟨k0⟩ : Nonempty (m a) := Fintype.card_pos_iff.1 (by omega)

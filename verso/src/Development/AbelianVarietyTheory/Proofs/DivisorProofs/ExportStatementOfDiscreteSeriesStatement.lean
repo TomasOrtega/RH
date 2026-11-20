@@ -9,5 +9,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.NonemptyAlgHomOfIsRayOfDvd
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BigOn.Exp.exportSt_of_hypotheses | exact GlobalTheory.BigOn.Exp.exportSt_of_hypotheses | (intros; apply GlobalTheory.BigOn.Exp.exportSt_of_hypotheses <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.export_statement_of_discrete_series : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.SerStd.SeriesRatS → ExportSt := by
   first | exact @GlobalTheory.BigOn.Exp.exportSt_of_hypotheses | exact GlobalTheory.BigOn.Exp.exportSt_of_hypotheses | (intros; apply GlobalTheory.BigOn.Exp.exportSt_of_hypotheses <;> assumption)

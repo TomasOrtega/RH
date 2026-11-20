@@ -15,6 +15,11 @@ private noncomputable def monoL (m : Fin k →₀ ℕ) : lat N m →ₗ[B] rees 
     show MvPolynomial.monomial m (c • f.1) = c • MvPolynomial.monomial m f.1
     rw [MvPolynomial.smul_monomial])
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `n`. Use `show _ = MvPolynomial.coeff n (MvPolynomial.monomial m _)`. Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs with h`.
+
+Rewrite using `[h]`. Conclude with `hp n fun h' => h (toDeg_injective h').symm`.
+-/
 private theorem eq_mono {m : Fin k →₀ ℕ} {p : rees N} (hp : p ∈ reesGr N (toDeg m)) :
     p = mono N m (MvPolynomial.coeff m p.1) (p.2 m) := by
   classical
@@ -26,6 +31,9 @@ private theorem eq_mono {m : Fin k →₀ ℕ} {p : rees N} (hp : p ∈ reesGr N
   · rw [h]
   · exact hp n fun h' => h (toDeg_injective h').symm
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `p hp`. Conclude with `⟨⟨_, p.2 m⟩, (eq_mono N hp).symm⟩`. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `mono_mem N m f.1 f.2`.
+-/
 private theorem gr_eq_range (m : Fin k →₀ ℕ) : reesGr N (toDeg m) = LinearMap.range (monoL N m) := by
   apply le_antisymm
   · intro p hp
@@ -33,6 +41,9 @@ private theorem gr_eq_range (m : Fin k →₀ ℕ) : reesGr N (toDeg m) = Linear
   · rintro _ ⟨f, rfl⟩
     exact mono_mem N m f.1 f.2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[e, toDeg]`. Simplify using `[e, toDeg, Pi.single_apply, h, Finsupp.single_apply, Ne.symm h]`.
+-/
 private theorem e_eq (i : Fin k) : e i = toDeg (Finsupp.single i 1) := by
   funext j
   by_cases h : j = i
@@ -40,6 +51,21 @@ private theorem e_eq (i : Fin k) : e i = toDeg (Finsupp.single i 1) := by
     simp [e, toDeg]
   · simp [e, toDeg, Pi.single_apply, h, Finsupp.single_apply, Ne.symm h]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `p hp`. Establish `hf : MvPolynomial.coeff (m + m') p.1 ∈ lat N m * lat N m'`. Rewrite using `[← lat_add]`. Conclude with `p.2 (m + m')`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hqv⟩ : ∃ q ∈ reesGr N (toDeg m) * reesGr N (toDeg m'), q.1 = MvPolynomial.monomial (m + m') (MvPolynomial.coeff (m + m') p.1) := by`. Use `Submodule.mul_induction_on hf ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Use `⟨mono N m a ha * mono N m' b hb, Submodule.mul_mem_mul (mono_mem N m a ha) (mono_mem N m' b hb), ?_⟩` and prove the remaining obligations. Use `show MvPolynomial.monomial m a * MvPolynomial.monomial m' b = _`.
+
+Rewrite using `[MvPolynomial.monomial_mul]`. Introduce and unpack `x y ⟨q₁, h₁, e₁⟩ ⟨q₂, h₂, e₂⟩`. Use `⟨q₁ + q₂, add_mem h₁ h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← e₁, ← e₂]`. Both sides reduce to the same expression.
+
+Establish `hpq : p = q`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hqv]`. Conclude with `congrArg Subtype.val (eq_mono N hp)`. Rewrite using `[hpq]`.
+
+Conclude with `hq`. Rewrite using `[Submodule.mul_le]`. Introduce `a ha b hb`. Establish `hab : MvPolynomial.coeff m a.1 * MvPolynomial.coeff m' b.1 ∈ lat N (m + m')`. Rewrite using `[lat_add]`.
+
+Conclude with `Submodule.mul_mem_mul (a.2 m) (b.2 m')`. Establish `h : a * b = mono N (m + m') _ hab`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show a.1 * b.1 = MvPolynomial.monomial (m + m') _`. Rewrite using `[← MvPolynomial.monomial_mul]`.
+
+Conclude with `congrArg₂ (· * ·) (congrArg Subtype.val (eq_mono N ha)) (congrArg Subtype.val (eq_mono N hb))`. Rewrite using `[h]`. Conclude with `mono_mem N (m + m') _ hab`.
+-/
 private theorem gr_add (m m' : Fin k →₀ ℕ) :
     reesGr N (toDeg (m + m')) = reesGr N (toDeg m) * reesGr N (toDeg m') := by
   apply le_antisymm
@@ -80,6 +106,25 @@ private theorem gr_add (m m' : Fin k →₀ ℕ) :
 
 end
 
+/- English proof (translation)
+Introduce `B A _ _ hB _ _ k N hN`. Establish `hdeg : ∀ d : Deg k, 0 ≤ d → ∃ m : Fin k →₀ ℕ, toDeg m = d`. Introduce `d hd`. Use `⟨Finsupp.equivFunOnFinite.symm (fun j => (d j).toNat), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Simplify using `[toDeg, Int.toNat_of_nonneg (hd j)]`. Use `⟨hB, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `d hd`. Use `(Submodule.eq_bot_iff _).2 fun p hp => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use extensionality with `m`. Establish `hnn : 0 ≤ toDeg m` using `fun j => by simp [toDeg]`. Establish `hm : toDeg m ≠ d` using `fun h => hd (h ▸ hnn)`. Simplify using `using hp m hm`. Establish `h0 : (0 : Deg k) = toDeg 0`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[toDeg]`. Rewrite using `[h0, gr_eq_range]`. Use extensionality with `p`. Simplify using `only [LinearMap.mem_range]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨f, hf⟩, rfl⟩`. Establish `hf'` using `hf`. Rewrite `hf'` using `[lat_zero, Submodule.mem_one]`. Take `⟨b, hb⟩` from `hf'`.
+
+Use `⟨b, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show algebraMap B (MvPolynomial (Fin k) A) b = MvPolynomial.monomial 0 f`. Rewrite using `[MvPolynomial.algebraMap_apply, MvPolynomial.C_apply, hb]`. Introduce and unpack `⟨b, rfl⟩`. Establish `hb : algebraMap B A b ∈ lat N 0`.
+
+Rewrite using `[lat_zero]`. Conclude with `Submodule.algebraMap_mem b`. Use `⟨⟨algebraMap B A b, hb⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show MvPolynomial.monomial 0 (algebraMap B A b) = algebraMap B (MvPolynomial (Fin k) A) b`. Rewrite using `[MvPolynomial.algebraMap_apply, MvPolynomial.C_apply]`.
+
+Introduce `i`. Rewrite using `[e_eq, gr_eq_range, LinearMap.range_eq_map]`. Use `Submodule.FG.map _ ((Submodule.fg_top _).2 ?_)` and prove the remaining obligations. Rewrite using `[lat_single]`. Conclude with `hN i`.
+
+Introduce `d i hd`. Take `⟨m, rfl⟩` from `hdeg d hd`. Rewrite using `[e_eq, ← toDeg_add, gr_add]`.
+-/
 theorem UpperTheory.V.Alg.M.std_holds :
     ∀ (B A : Type) [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [CommRing A] [Algebra B A] (k : ℕ)
       (N : Fin k → Submodule B A), (∀ i, (N i).FG) → Std (reesGr N) := by

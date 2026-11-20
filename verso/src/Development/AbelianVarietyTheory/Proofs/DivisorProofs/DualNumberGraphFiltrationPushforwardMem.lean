@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.HTRealise
 
+/- English proof (translation)
+Establish `K` using `(homMor (dp0 k) (𝟙 _) g).comp (constMor A₀)`. Establish `e1 : primPull (epsDP k) (GlobalTheory.DeRham.epsRed k) g ((constMor A₀).pull c) = K.pull c` using `GrpMor.pull_pull (constMor A₀) (homMor (epsDP k) (GlobalTheory.DeRham.epsRed k) g) K (fun _ ↦ rfl) (by simp) c`. Establish `e2 : (constMor A₀).pull (primPull (dp0 k) (𝟙 _) g c) = K.pull c` using `GrpMor.pull_pull (homMor (dp0 k) (𝟙 _) g) (constMor A₀) K (fun _ ↦ rfl) rfl c`. Rewrite using `[e1, e2]`.
+-/
 theorem push_constMor_pull {k : Type} [Field k] (A₀ : Over (Sp k)) [GrpObj A₀] (g : A₀ ⟶ A₀)
     [IsMonHom g] (c : primDR A₀) :
     primPull (epsDP k) (GlobalTheory.DeRham.epsRed k) g ((constMor A₀).pull c) =
@@ -21,6 +24,11 @@ theorem push_constMor_pull {k : Type} [Field k] (A₀ : Over (Sp k)) [GrpObj A�
     GrpMor.pull_pull (homMor (dp0 k) (𝟙 _) g) (constMor A₀) K (fun _ ↦ rfl) rfl c
   rw [e1, e2]
 
+/- English proof (translation)
+Introduce `k _ A₀ _ g _ f hf d hd`. Take `⟨x, hx, y, hy, e⟩` from `hd`. Use `⟨push (dp0 k) (𝟙 _) g x, push_mem_Fil g hx, push (dp0 k) (𝟙 _) g (f x) - f (push (dp0 k) (𝟙 _) g x) + push (dp0 k) (𝟙 _) g y, add_mem (by rw [← neg_sub]; exact neg_mem (hf x hx)) (push_mem_Fil g hy), fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[push_apply, push_constMor_pull, e]`. Simplify using `only [push_apply, LinearMap.add_apply, LinearMap.sub_apply]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem push_mem_graphFil : ∀ (k : Type) [Field k] (A₀ : Over (Sp k)) [GrpObj A₀] (g : A₀ ⟶ A₀) [IsMonHom g] (f : HdR A₀ →ₗ[k] HdR A₀), (∀ x ∈ Fil A₀, f (push (dp0 k) (𝟙 _) g x) - push (dp0 k) (𝟙 _) g (f x) ∈ Fil A₀) → ∀ d ∈ GlobalTheory.HTRealise.graphFil A₀ f, push (epsDP k) (GlobalTheory.DeRham.epsRed k) g d ∈ GlobalTheory.HTRealise.graphFil A₀ f := by
   intro k _ A₀ _ g _ f hf d hd
   obtain ⟨x, hx, y, hy, e⟩ := hd

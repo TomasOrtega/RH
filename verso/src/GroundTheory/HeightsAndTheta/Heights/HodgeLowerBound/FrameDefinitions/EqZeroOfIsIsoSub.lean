@@ -91,9 +91,15 @@ def gaussEquiv : GaussianInt ≃ₗ[ℤ] (Fin 2 → ℤ) where
 
 def gaussBasis : Module.Basis (Fin 2) ℤ GaussianInt := Module.Basis.ofEquivFun gaussEquiv
 
+/- English proof (translation)
+Simplify using `[gaussBasis, gaussEquiv, Module.Basis.coe_ofEquivFun]`.
+-/
 theorem gaussBasis_zero : gaussBasis 0 = ⟨1, 0⟩ := by
   simp [gaussBasis, gaussEquiv, Module.Basis.coe_ofEquivFun]
 
+/- English proof (translation)
+Simplify using `[gaussBasis, gaussEquiv, Module.Basis.coe_ofEquivFun]`.
+-/
 theorem gaussBasis_one : gaussBasis 1 = ⟨0, 1⟩ := by
   simp [gaussBasis, gaussEquiv, Module.Basis.coe_ofEquivFun]
 
@@ -102,12 +108,23 @@ def gaussForm : GaussianInt →ₗ[ℤ] GaussianInt →ₗ[ℤ] ℤ :=
     (fun v v' w => by simp; ring) (fun n v w => by simp [zsmul_eq_mul, Zsqrtd.re_mul, Zsqrtd.im_mul]; ring)
     (fun v w w' => by simp; ring) (fun n v w => by simp [zsmul_eq_mul, Zsqrtd.re_mul, Zsqrtd.im_mul]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gaussForm_apply (v w : GaussianInt) : gaussForm v w = v.re * w.im - v.im * w.re := rfl
 
+/- English proof (translation)
+Rewrite using `[toComplex_def₂, Complex.normSq_mk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normSq_toComplex (v : GaussianInt) : Complex.normSq (toComplex v) = (v.re : ℝ) ^ 2 + (v.im : ℝ) ^ 2 := by
   rw [toComplex_def₂, Complex.normSq_mk]
   ring
 
+/- English proof (translation)
+Establish `h` using `hI v hv (⟨0, 1⟩ • v) (I.smul_mem _ hv)`. Rewrite `h` using `[gaussForm_apply, smul_eq_mul]`. Simplify using `[Zsqrtd.re_mul, Zsqrtd.im_mul] at h`. Establish `h2 : v.re * v.re + v.im * v.im = 0` using `by linarith`. Establish `hre : v.re = 0` using `by nlinarith [mul_self_nonneg v.re, mul_self_nonneg v.im]`.
+
+Establish `him : v.im = 0` using `by nlinarith [mul_self_nonneg v.re, mul_self_nonneg v.im]`. Conclude with `Zsqrtd.ext hre him`.
+-/
 theorem eq_zero_of_isIsoSub {I : Submodule GaussianInt GaussianInt} (hI : IsIsoSub gaussForm I) {v : GaussianInt}
     (hv : v ∈ I) : v = 0 := by
   have h := hI v hv (⟨0, 1⟩ • v) (I.smul_mem _ hv)
@@ -151,6 +168,11 @@ def gaussCusp (II : IntersectionSystem)
     · exact absurd (eq_zero_of_isIsoSub hI (hv ⟨0, hρ⟩)) (hli.ne_zero ⟨0, hρ⟩)
   torus _ _ _ _ := ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Establish `: {x | ∃ I : Submodule GaussianInt GaussianInt, I ≠ ⊥ ∧ IsSaturated I ∧ IsIsoSub (gaussCusp II hII).form I ∧ x = -Real.log ((gaussCusp II hII).Nz z I)} = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_exists, not_and]`. Introduce `I hI _ hiso _`. Conclude with `hI ((Submodule.eq_bot_iff I).2 fun v hv => eq_zero_of_isIsoSub hiso hv)`.
+
+Rewrite using `[CuspData.cuspWeight, this, Real.sSup_empty, max_self]`.
+-/
 theorem cuspWeight_gauss (II : IntersectionSystem) (hII) (z : (Σ _ : Unit, Fin 2) → ℂ) :
     (gaussCusp II hII).cuspWeight z = 0 := by
   have : {x | ∃ I : Submodule GaussianInt GaussianInt, I ≠ ⊥ ∧ IsSaturated I ∧

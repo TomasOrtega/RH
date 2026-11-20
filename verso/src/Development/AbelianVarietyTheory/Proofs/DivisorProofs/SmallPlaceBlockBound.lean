@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FrameAut
 
+/- English proof (translation)
+Establish `h1 : (χ.val v) ^ n = 1`. Establish `h2` using `congrArg (fun ψ : Formalism.L2.Host.HChar E => ψ.val v) h`. Simplify `h2` using `[Formalism.L2.Host.HChar.val, Formalism.L2.Host.HChar.locK, Formalism.L2.Host.HChar.loc]`. Establish `h3 : ((χ.val v : ℂˣ) : ℂ) ^ n = 1` using `by rw [← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Conclude with `Complex.norm_eq_one_of_pow_eq_one h3 hn.ne'`.
+-/
 theorem norm_val_of_orderDvd {E : Type} [Field E] [NumberField E] (χ : Formalism.L2.Host.HChar E) {n : ℕ} (hn : 0 < n) (h : χ.OrderDvd n)
     (v : HeightOneSpectrum (𝓞 E)) : ‖((χ.val v : ℂˣ) : ℂ)‖ = 1 := by
   have h1 : (χ.val v) ^ n = 1 := by
@@ -18,6 +21,9 @@ theorem norm_val_of_orderDvd {E : Type} [Field E] [NumberField E] (χ : Formalis
   have h3 : ((χ.val v : ℂˣ) : ℂ) ^ n = 1 := by rw [← Units.val_pow_eq_pow_val, h1, Units.val_one]
   exact Complex.norm_eq_one_of_pow_eq_one h3 hn.ne'
 
+/- English proof (translation)
+Establish `h1 : ‖((χ.val v : ℂˣ) : ℂ)‖ = 1` using `h _`. Establish `hq : 0 < Ideal.absNorm v.asIdeal` using `Nat.pos_of_ne_zero fun e => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 e)`. Establish `hq' : (0 : ℝ) < (Ideal.absNorm v.asIdeal : ℕ)` using `by exact_mod_cast hq`. Rewrite using `[Formalism.L2.Host.HChar.valTw, norm_mul, h1, one_mul, Complex.norm_natCast_cpow_of_pos hq, Complex.neg_re, Complex.ofReal_re, ← Real.rpow_natCast, ← Real.rpow_mul hq'.le, ← Real.rpow_neg_one]`. Evaluate the numerical expressions.
+-/
 theorem norm_sq_valTw_half {E : Type} [Field E] [NumberField E] (χ : Formalism.L2.Host.HChar E) (h : χ.IsUnitary)
     (v : HeightOneSpectrum (𝓞 E)) : ‖χ.valTw (1 / 2) v‖ ^ 2 = ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)⁻¹ := by
   have h1 : ‖((χ.val v : ℂˣ) : ℂ)‖ = 1 := h _
@@ -27,6 +33,17 @@ theorem norm_sq_valTw_half {E : Type} [Field E] [NumberField E] (χ : Formalism.
     ← Real.rpow_natCast, ← Real.rpow_mul hq'.le, ← Real.rpow_neg_one]
   norm_num
 
+/- English proof (translation)
+Take `⟨hQ, -, -, h4⟩` from `GlobalTheory.GoodPrimes.good_primes R F hL`. Establish `hq` using `(h4 hF t P hP).2.2`. Take `⟨gramR, c0R, c0L, hT⟩` from `hF.tie`. Establish `hP0 : P ∈ A.ok A.μ0`. Take `⟨h1, h2, h3⟩` from `(hT.ok t P).1 hP`.
+
+Use `(hT.ok _ P).2 ?_` and prove the remaining obligations. Rewrite using `[hQ, Finset.coe_empty, Set.union_empty]`. Conclude with `⟨h1, fun h => h2 (Or.inl h), fun Q h => h3 Q (Or.inl h)⟩`. Establish `hmu : ‖D.what₂.embLL (A.muVal j t P : D.what₂.LL)‖ = 1`. Take `⟨n, hn, ho⟩` from `hL.xi_fin t`.
+
+Rewrite using `[hF.muVal j t P hP, Formalism.L2.Host.HChar.val_mul, Units.val_mul, norm_mul, norm_val_of_orderDvd _ hn ho, mul_one]`. Conclude with `(R.C.isMu0 j).unitary _`. Establish `heta : ‖D.what₂.embLL (A.etaVal P : D.what₂.LL)‖ ^ 2 = (A.q P : ℝ)⁻¹`. Rewrite using `[hF.etaVal P hP0, hq]`. Conclude with `norm_sq_valTw_half _ R.C.isEta.unitary _`.
+
+Establish `hq0 : (A.q P : ℝ) ≠ 0`. Rewrite using `[hq]`. Conclude with `fun e => (R.pl P).ne_bot (Ideal.absNorm_eq_zero_iff.1 e)` after adjusting the coercions. Take `⟨s, hs⟩ : Odd A.r` from `hT.ranks.2.1 ▸ Formalism.L2.NTheta.odd_r D.R`. Establish `hd : (A.r + 1) / 2 = s + 1` using `by omega`.
+
+Unfold `Formalism.L2.Col.firstValA`. Rewrite using `[hd, hs]`. Simplify using `only [map_mul, map_pow, map_natCast, norm_mul, norm_pow, Units.val_inv_eq_inv_val, map_inv₀, norm_inv, hmu, inv_one, one_mul, mul_pow, heta, Complex.norm_natCast]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_sq_firstValA {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (hL : R.toLevCh.Is A.μ0) (hF : R.IsFam)
     (j : Fin D.R.m) (t : T) (P : Pl0) (hP : P ∈ A.ok t) :
@@ -58,6 +75,11 @@ theorem norm_sq_firstValA {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Typ
   field_simp
   ring
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p _ _ j P W _ _ w _ _ _ ν hν Q`. Establish `h` using `norm_sq_firstValA p.R.toRealDat p.F.lv2 p.charW.base.lev p.charW.base.fam j (p.R.mu w) Q.1 Q.2`. Take `rfl : ν = fun Q => Formalism.L2.Col.firstValA (p.P.A3.A.muVal j (p.R.mu w)) p.P.A3.A.etaVal p.P.A3.A.q p.P.A3.A.r Q.1` from `List.mem_singleton.1 hν`. Establish `e : (blk p j (p.R.mu w)).n - (blk p j (p.R.mu w)).t = p.P.A3.A.r` using `Nat.add_sub_cancel ..`. Rewrite using `[e]`.
+
+Conclude with `h`.
+-/
 theorem norm_sq_blockValue : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), PtAt.Rows p → More p →
     ∀ (j : Fin D.R.m) (P : Par) (W : Wts D.what₂.Tau), Dict L j P W → NumOk P W →

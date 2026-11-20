@@ -24,12 +24,25 @@ variable {D : D7}
 def emb (D : D7) : AfE D →ₗ[D.host.F] AE D :=
   TensorProduct.map (GlobalTheory.AdelicLatMove.finIncl D) LinearMap.id
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_tmul (e : D.host.E) (α : Af D.host.F) :
     emb D (α ⊗ₜ[D.host.F] e) = (pairA D.host.F 0 α) ⊗ₜ[D.host.F] e := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finPart_tmul (x : AF D.host.F) (e : D.host.E) :
     Formalism.L2.Theta.finPart D (x ⊗ₜ[D.host.F] e) = (sndA D.host.F x) ⊗ₜ[D.host.F] e := rfl
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, add_mul, ha, hb]`. Consider the case `tmul y e`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, mul_add, ha, hb]`. Consider the case `tmul α f`. Rewrite using `[finPart_tmul, Algebra.TensorProduct.tmul_mul_tmul, emb_tmul, emb_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Use `congr 1`.
+
+Conclude with `Prod.ext (mul_zero y.1).symm rfl`.
+-/
 theorem emb_mul (a : AE D) (x : AfE D) : emb D (Formalism.L2.Theta.finPart D a * x) = a * emb D x := by
   induction a using TensorProduct.induction_on with
   | zero => simp
@@ -56,19 +69,39 @@ def outerHom (S T : HSp D) : (Fin S.rank → AfE D) →+ (Fin T.rank → AfE D) 
       simp only [outer, AddMonoidHom.mk'_apply, AddMonoidHom.add_apply, Matrix.of_apply, Matrix.add_apply,
         Pi.add_apply, map_add, mul_add])
 
+/- English proof (translation)
+Introduce `v` and use `by rw [map_mul]; exact mul_mem (hα v) (hβ v)`.
+-/
 theorem intAf_mul {α β : Af D.host.F} (hα : α ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F) (hβ : β ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F) :
     α * β ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F := fun v => by
   rw [map_mul]; exact mul_mem (hα v) (hβ v)
 
+/- English proof (translation)
+Introduce `v` and use `by rw [map_one]; exact one_mem _`.
+-/
 theorem intAf_one : (1 : Af D.host.F) ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F := fun v => by
   rw [map_one]; exact one_mem _
 
+/- English proof (translation)
+Use extensionality with `a k`. Simplify using `only [outer, Matrix.of_apply, Algebra.TensorProduct.tmul_mul_tmul, emb_tmul, vecMulVec_apply, mul_comm (t a)]`.
+-/
 theorem outer_pure (S T : HSp D) (s : Fin S.rank → D.host.E) (t : Fin T.rank → D.host.E) (α β : Af D.host.F) :
     outer S T (fun i => α ⊗ₜ[D.host.F] s i) (fun i => β ⊗ₜ[D.host.F] t i) =
       Matrix.of fun a k => (pairA D.host.F 0 (β * α)) ⊗ₜ[D.host.F] (vecMulVec s t k a) := by
   ext a k
   simp only [outer, Matrix.of_apply, Algebra.TensorProduct.tmul_mul_tmul, emb_tmul, vecMulVec_apply, mul_comm (t a)]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `outerHom S T v u ∈ _`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem s hs`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem t ht`.
+
+Take `⟨α, hα, x, hx, rfl⟩` from `hs`. Take `⟨β, hβ, y, hy, rfl⟩` from `ht`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Conclude with `⟨β * α, intAf_mul hβ hα, vecMulVec x y, AddSubgroup.subset_closure ⟨x, hx, y, hy, rfl⟩, outer_pure S T x y α β⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`. Conclude with `neg_mem hy`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`.
+
+Conclude with `neg_mem hy`.
+-/
 theorem outer_mem (S T : HSp D) (Λ : Lt D.host.E S.rank) (L : Lt D.host.E T.rank)
     (v : Fin S.rank → AfE D) (hv : v ∈ hatV Λ) (u : Fin T.rank → AfE D) (hu : u ∈ hatV L) :
     outer S T v u ∈ hatA S T (tens Λ L) := by
@@ -89,6 +122,17 @@ theorem outer_mem (S T : HSp D) (Λ : Lt D.host.E S.rank) (L : Lt D.host.E T.ran
   | add y z _ _ hy hz => rw [map_add]; exact add_mem hy hz
   | neg y _ hy => rw [map_neg]; exact neg_mem hy
 
+/- English proof (translation)
+Rewrite using `[hatA, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨α, hα, y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `_ ∈ K`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+
+Take `⟨s, hs, t, ht, rfl⟩` from `hy`. Establish `e` using `outer_pure S T s t 1 α`. Rewrite `e` using `[mul_one]`. Rewrite using `[← e]`. Conclude with `hK _ (AddSubgroup.subset_closure ⟨1, intAf_one, s, hs, rfl⟩) _ (AddSubgroup.subset_closure ⟨α, hα, t, ht, rfl⟩)`.
+
+Consider the case `zero`. Use `zero_mem K using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a k`. Simplify using the standard rewrite rules. Consider the case `add y z _ _ hy hz`.
+
+Use `add_mem hy hz using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a k`. Simplify using `[TensorProduct.tmul_add]`. Consider the case `neg y _ hy`. Use `neg_mem hy using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `a k`. Simplify using `[TensorProduct.tmul_neg]`.
+-/
 theorem hatA_le (S T : HSp D) (Λ : Lt D.host.E S.rank) (L : Lt D.host.E T.rank) (K : AddSubgroup (WO S T))
     (hK : ∀ v ∈ hatV Λ, ∀ u ∈ hatV L, outer S T v u ∈ K) : hatA S T (tens Λ L) ≤ K := by
   rw [hatA, AddSubgroup.closure_le]
@@ -115,6 +159,11 @@ theorem hatA_le (S T : HSp D) (Λ : Lt D.host.E S.rank) (L : Lt D.host.E T.rank)
     ext a k
     simp [TensorProduct.tmul_neg]
 
+/- English proof (translation)
+Establish `key` using `GlobalTheory.AdelicLatMove.gram_mul_inv S h`. Establish `h1 : S.gram.map (incA D) = 1` using `by rw [hS, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite `key` using `[h1, Matrix.one_mul, Matrix.mul_one]`. Use extensionality with `i j`. Simplify using `only [actO, key, outer, Matrix.mul_apply, Matrix.of_apply, Matrix.transpose_apply, Matrix.map_apply]`.
+
+Simplify using `only [← emb_mul, ← map_sum, mul_comm (emb D _)]`. Use `congr 1`. Simplify using `only [fmt, fmtC, Formalism.L2.Theta.cM, Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem actO_outer (S T : HSp D) (hS : S.gram = 1) (h : GA D S) (g : GA D T) (v : Fin S.rank → AfE D)
     (u : Fin T.rank → AfE D) :
     actO S T h g (outer S T v u) = outer S T (fmtC S h *ᵥ v) (fmt T g *ᵥ u) := by
@@ -132,6 +181,13 @@ theorem actO_outer (S T : HSp D) (hS : S.gram = 1) (h : GA D S) (g : GA D T) (v 
 def actHom (S T : HSp D) (h : GA D S) (g : GA D T) : WO S T →+ WO S T :=
   AddMonoidHom.mk' (actO S T h g) (fun x y => by simp only [actO, Matrix.mul_add, Matrix.add_mul])
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `hatA_le S T Λ' L' ((hatA S T (tens Λ L)).map (actHom S T h g)) (fun v hv w hw => by` as an intermediate fact. Take `⟨v₀, hv₀, rfl⟩` from `(h1 v).1 hv`. Take `⟨w₀, hw₀, rfl⟩` from `(h2 w).1 hw`.
+
+Conclude with `⟨_, outer_mem S T Λ L v₀ hv₀ w₀ hw₀, actO_outer S T hS h g v₀ w₀⟩) hu`. Take `⟨u₀, hu₀, e⟩` from `this`. Conclude with `⟨u₀, hu₀, e.symm⟩`. Introduce and unpack `⟨u₀, hu, rfl⟩`. Use `hatA_le S T Λ L ((hatA S T (tens Λ' L')).comap (actHom S T h g)) (fun v hv w hw => ?_) hu` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `actO S T h g _ ∈ hatA S T (tens Λ' L')`. Rewrite using `[actO_outer S T hS]`. Conclude with `outer_mem S T Λ' L' _ ((h1 _).2 ⟨v, hv, rfl⟩) _ ((h2 _).2 ⟨w, hw, rfl⟩)`.
+-/
 theorem mem_hatA_iff (S T : HSp D) (hS : S.gram = 1) (h : GA D S) (g : GA D T) (Λ Λ' : Lt D.host.E S.rank)
     (L L' : Lt D.host.E T.rank) (h1 : IsMov (fmtC S h) Λ Λ') (h2 : IsMov (fmt T g) L L') (u : WO S T) :
     u ∈ hatA S T (tens Λ' L') ↔ ∃ u₀ ∈ hatA S T (tens Λ L), u = actO S T h g u₀ := by
@@ -149,6 +205,11 @@ theorem mem_hatA_iff (S T : HSp D) (hS : S.gram = 1) (h : GA D S) (g : GA D T) (
     rw [actO_outer S T hS]
     exact outer_mem S T Λ' L' _ ((h1 _).2 ⟨v, hv, rfl⟩) _ ((h2 _).2 ⟨w, hw, rfl⟩)
 
+/- English proof (translation)
+Introduce `D S T C h g Λ Λ' L L' h1 h2`. Establish `hΛ` using `mem_hatA_iff S T C.m.gS h g Λ Λ' L L' h1 h2`. Use `⟨hΛ, fun om hW f hth hlat => ⟨fun u hu => ?_, fun e he u hu hh => ?_⟩⟩` and prove the remaining obligations. Take `⟨u₀, hu₀, rfl⟩` from `(hΛ u).1 hu`. Rewrite using `[← GlobalTheory.WeilVacMove.actO_two_nsmul, ← hW.om_heis h g _ f hth, hlat.1 u₀ hu₀]`.
+
+Take `⟨u₀, hu₀, rfl⟩` from `(hΛ u).1 hu`. Establish `h0 : IsHalf e u₀`. Use `GlobalTheory.WeilVacMove.isHalf_actO e h⁻¹ g⁻¹ hh` as an intermediate fact. Rewrite `this` using `[GlobalTheory.WeilVacMove.actO_inv_actO]`. Then use the resulting hypothesis. Rewrite using `[← hW.om_heis h g _ f hth, hlat.2 e he u₀ hu₀ h0]`.
+-/
 theorem hatA_move : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ (h : GA D S) (g : GA D T) (Λ Λ' : Lt D.host.E S.rank) (L L' : Lt D.host.E T.rank), IsMov (fmtC S h) Λ Λ' → IsMov (fmt T g) L L' → (∀ u, u ∈ hatA S T (tens Λ' L') ↔ ∃ u₀ ∈ hatA S T (tens Λ L), u = actO S T h g u₀) ∧ ∀ om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ), IsWeak C.ψ S T om → ∀ f, C.IsTh f → IsLatVac (heisO C.ψ S T) (hatA S T (tens Λ L)) f → IsLatVac (heisO C.ψ S T) (hatA S T (tens Λ' L')) (om (h, g) f) := by
   intro D S T C h g Λ Λ' L L' h1 h2
   have hΛ := mem_hatA_iff S T C.m.gS h g Λ Λ' L L' h1 h2

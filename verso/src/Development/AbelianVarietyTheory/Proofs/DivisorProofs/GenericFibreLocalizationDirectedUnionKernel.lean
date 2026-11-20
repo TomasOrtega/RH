@@ -4,6 +4,31 @@ open IsLocalRing Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `T _ _ ι _ _ 𝒜 hA hcov E _ _ Q _ Ek _ _ e h he hh heh hinj hsurj g hg f hf k x hx`. Use `set L := Localization.AtPrime (Q.comap (e k)) with hL`. Take `⟨⟨z, a'⟩, rfl⟩` from `IsLocalization.mk'_surjective (Algebra.algebraMapSubmonoid L (nonZeroDivisors (𝒜 k))) x`. Take `⟨⟨y, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Q.comap (e k)).primeCompl z`. Simplify using `only at hx ⊢`.
+
+Use `set G := GlobalTheory.LocAcyc.GenFib (𝒜 k) L`. Use `set X := IsLocalization.mk' G (IsLocalization.mk' L y s) a' with hX`. Use `set v : G := algebraMap L G (a' : L) * algebraMap L G (algebraMap (Ek k) L (s : Ek k)) with hv`. Establish `hvu : IsUnit v`. Use `(IsLocalization.map_units G a').mul ?_` and prove the remaining obligations.
+
+Conclude with `(IsLocalization.map_units L s).map _`. Establish `hXv : X * v = algebraMap L G (algebraMap (Ek k) L y)`. Rewrite using `[hv, ← mul_assoc, hX, IsLocalization.mk'_spec, ← map_mul, IsLocalization.mk'_spec]`. Establish `hgy : g k (algebraMap L G (algebraMap (Ek k) L y)) = 0`. Rewrite using `[← hXv, map_mul, hx, zero_mul]`.
+
+Rewrite `hgy` using `[hg]`. Take `⟨⟨m0, hm0⟩, hm0y⟩` from `(IsLocalization.map_eq_zero_iff (Algebra.algebraMapSubmonoid (Localization.AtPrime Q) (nonZeroDivisors T)) _ _).1 hgy`. Take `⟨t, ht, rfl⟩` from `Submonoid.mem_map.1 hm0`. Simplify using `only at hm0y`. Rewrite `hm0y` using `[IsScalarTower.algebraMap_apply T E (Localization.AtPrime Q), ← map_mul]`.
+
+Take `⟨⟨u, hu⟩, huy⟩` from `(IsLocalization.map_eq_zero_iff Q.primeCompl _ _).1 hm0y`. Simplify using `only at huy`. Take `⟨m, u', rfl⟩` from `hsurj u`. Take `⟨m', htm'⟩` from `hcov t`. Take `⟨l1, hkl1, hml1⟩` from `directed_of (· ≤ ·) k m`.
+
+Take `⟨l, hl1, hm'l⟩` from `directed_of (· ≤ ·) l1 m'`. Establish `hkl : k ≤ l` using `hkl1.trans hl1`. Establish `hml : m ≤ l` using `hml1.trans hl1`. Set `c : 𝒜 l` to `⟨t, hA hm'l htm'⟩`. Establish `hc0 : c ∈ nonZeroDivisors (𝒜 l)`.
+
+Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Introduce `h0`. Establish `: (t : T) = 0` using `congrArg Subtype.val h0`. Conclude with `nonZeroDivisors.ne_zero ht this`. Establish `hprod : h m l hml u' * (algebraMap (𝒜 l) (Ek l) c * h k l hkl y) = 0`.
+
+Apply `hinj l` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, heh, heh, he, map_zero]`. Simplify `huy` using `[mul_assoc]`. Establish `hu'' : h m l hml u' ∈ (Q.comap (e l)).primeCompl`. Express the relevant statement in the definitionally equal form `e l (h m l hml u') ∉ Q`.
+
+Rewrite using `[heh]`. Conclude with `hu`. Use `set Ll := Localization.AtPrime (Q.comap (e l))`. Establish `h1 : algebraMap (Ek l) Ll (algebraMap (𝒜 l) (Ek l) c * h k l hkl y) = 0`. Use `congrArg (algebraMap (Ek l) Ll) hprod` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_zero]`. Conclude with `((IsLocalization.map_units Ll ⟨_, hu''⟩).mul_right_eq_zero).1 this`. Establish `h2 : algebraMap Ll (GlobalTheory.LocAcyc.GenFib (𝒜 l) Ll) (algebraMap (Ek l) Ll (h k l hkl y)) = 0`. Establish `hcm : algebraMap (𝒜 l) Ll c ∈ Algebra.algebraMapSubmonoid Ll (nonZeroDivisors (𝒜 l))` using `Submonoid.mem_map.2 ⟨c, hc0, rfl⟩`. Use `congrArg (algebraMap Ll (GlobalTheory.LocAcyc.GenFib (𝒜 l) Ll)) h1` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_zero, ← IsScalarTower.algebraMap_apply, map_mul]`. Conclude with `((IsLocalization.map_units (GlobalTheory.LocAcyc.GenFib (𝒜 l) Ll) ⟨_, hcm⟩).mul_right_eq_zero).1 this`. Use `⟨l, hkl, ?_⟩` and prove the remaining obligations. Establish `hfy : f k l hkl (algebraMap L G (algebraMap (Ek k) L y)) = 0`. Rewrite using `[hf]`.
+
+Conclude with `h2`. Use `congrArg (f k l hkl) hXv` as an intermediate fact. Rewrite `this` using `[map_mul, hfy]`. Conclude with `((hvu.map (f k l hkl)).mul_left_eq_zero).1 this`.
+-/
 theorem genFib_colim_ker : ∀ (T : Type) [CommRing T] [IsDomain T] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)]
     (𝒜 : ι → Subring T) (hA : Monotone 𝒜), (∀ x : T, ∃ i, x ∈ 𝒜 i) →
     ∀ (E : Type) [CommRing E] [Algebra T E] (Q : Ideal E) [Q.IsPrime]

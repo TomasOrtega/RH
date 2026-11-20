@@ -24,6 +24,9 @@ open scoped CategoryTheory.Obj UpperHalfPlane TensorProduct in
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Use `haveI : IsFinite (f.left ≫ g.left) := by rwa [← Over.comp_left]`. Use `haveI : IsSeparated g.left := MorphismProperty.of_postcomp (W := @IsSeparated) (W' := ⊤) (f := g.left) (g := Z.hom) (hg := trivial) (hfg := by rw [Over.w g]; infer_instance)`. Conclude with `IsFinite.of_comp f.left g.left`.
+-/
 theorem _root_.GlobalTheory.TensorFinite.isFinite_of_comp {X Y Z : Over S} (f : X ⟶ Y) (g : Y ⟶ Z) [IsSeparated Y.hom]
     (h : IsFinite (f ≫ g).left) : IsFinite f.left := by
   haveI : IsFinite (f.left ≫ g.left) := by rwa [← Over.comp_left]
@@ -38,15 +41,24 @@ open scoped CategoryTheory.Obj UpperHalfPlane TensorProduct in
 attribute [local instance] Over.cartesianMonoidalCategory in
 variable {S : Scheme.{0}} in
 
+/- English proof (translation)
+Rewrite using `[Over.tensorHom_left]`. Conclude with `MorphismProperty.pullback_map (P := @IsFinite) hf hg (Over.w f).symm (Over.w g).symm`.
+-/
 theorem _root_.GlobalTheory.TensorFinite.isFinite_tensorHom {X Y X' Y' : Over S} (f : X ⟶ Y) (g : X' ⟶ Y') (hf : IsFinite f.left)
     (hg : IsFinite g.left) : IsFinite (f ⊗ₘ g).left := by
   rw [Over.tensorHom_left]
   exact MorphismProperty.pullback_map (P := @IsFinite) hf hg (Over.w f).symm (Over.w g).symm
 
+/- English proof (translation)
+Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.pow_comp, MonObj.comp_pow]`.
+-/
 theorem id_pow_tensor (G H : Over S) [GrpObj G] [GrpObj H] (n : ℕ) :
     (𝟙 (G ⊗ H)) ^ n = ((𝟙 G) ^ n ⊗ₘ (𝟙 H) ^ n) := by
   apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.pow_comp, MonObj.comp_pow]
 
+/- English proof (translation)
+The claim follows from `| 0 => by have e : (𝟙 (Out.powObj G 0)) ^ n = 𝟙 _ := toUnit_unique (X := Out.powObj G 0) _ _ rw [e, Over.id_left] infer_instance | m + 1 => by have e : (𝟙 (Out.powObj G (m + 1))) ^ n = ((𝟙 G) ^ n ⊗ₘ (𝟙 (Out.powObj G m)) ^ n) := id_pow_tensor G (Out.powObj G m) n rw [e] exact isFi …`.
+-/
 theorem isFinite_id_pow_powObj (G : Over S) [GrpObj G] (n : ℕ) (h : IsFinite ((𝟙 G) ^ n).left) :
     ∀ m : ℕ, IsFinite ((𝟙 (Out.powObj G m)) ^ n).left
   | 0 => by
@@ -59,6 +71,11 @@ theorem isFinite_id_pow_powObj (G : Over S) [GrpObj G] (n : ℕ) (h : IsFinite (
     rw [e]
     exact isFinite_tensorHom _ _ h (isFinite_id_pow_powObj G n h m)
 
+/- English proof (translation)
+Establish `hi : IsFinite ρ.i.left` using `isFinite_of_comp ρ.i ρ.r (by`. Rewrite using `[ρ.retract, Over.id_left]`. Use the proof step `infer_instance)`. Use `isFinite_of_comp _ ρ.i ?_` and prove the remaining obligations. Establish `e : ((𝟙 H) ^ n) ≫ ρ.i = ρ.i ≫ ((𝟙 K) ^ n)`.
+
+Simplify using `[MonObj.pow_comp, MonObj.comp_pow]`. Rewrite using `[e, Over.comp_left]`. Use `infer_instance`.
+-/
 theorem isFinite_id_pow_of_retract {H K : Over S} [GrpObj H] [GrpObj K] [IsSeparated H.hom]
     [IsSeparated K.hom] (ρ : Retract H K) [IsMonHom ρ.i] (n : ℕ)
     (h : IsFinite ((𝟙 K) ^ n).left) : IsFinite ((𝟙 H) ^ n).left := by
@@ -70,6 +87,9 @@ theorem isFinite_id_pow_of_retract {H K : Over S} [GrpObj H] [GrpObj K] [IsSepar
   rw [e, Over.comp_left]
   infer_instance
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, IsTensor.mapLeft_zero, pow_zero]`. Consider the case `succ n ih => rw [succ_nsmul, IsTensor.mapLeft_add, ih, IsTensor.mapLeft_id, pow_succ]`.
+-/
 theorem mapLeft_nsmul_id {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Module O M]
     {G H : Over S} [GrpObj G] [GrpObj H] [IsCommMonObj G] [IsCommMonObj H] {a : OAct O G}
     {b : OAct O H} (t : IsTensor H b G a M) (n : ℕ) :
@@ -78,6 +98,13 @@ theorem mapLeft_nsmul_id {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Mo
   | zero => rw [zero_smul, IsTensor.mapLeft_zero, pow_zero]
   | succ n ih => rw [succ_nsmul, IsTensor.mapLeft_add, ih, IsTensor.mapLeft_id, pow_succ]
 
+/- English proof (translation)
+Introduce `hL S _ P _ O _ M _ _ _ _ A _ _ a b t n k l r hn hr`. Use `P.isAb.proper` as an intermediate fact. Establish `: IsProper A.hom` using `t.isProper`. Establish `hpow : ∀ m, IsSeparated (Out.powObj P.A m).hom` using `powObj_property @IsSeparated inferInstance P.A inferInstance`. Establish `hP : IsFinite ((𝟙 P.A) ^ n).left` using `(hL.mulN S P n hn).1`.
+
+Take `⟨m, ρ, hi, -⟩` from `t.exists_retract`. Use `hpow m` as an intermediate fact. Use `hpow k` as an intermediate fact. Establish `hA : IsFinite ((𝟙 A) ^ n).left` using `isFinite_id_pow_of_retract ρ n (isFinite_id_pow_powObj P.A n hP m)`. Use `isFinite_of_comp _ ((IsTensor.pow (Out.powIsPowGrp P.A k) a).mapLeft t r) ?_` and prove the remaining obligations.
+
+Establish `e : r ∘ₗ l = n • LinearMap.id` using `LinearMap.ext hr`. Rewrite using `[← IsTensor.mapLeft_comp, e, mapLeft_nsmul_id]`. Conclude with `hA`.
+-/
 theorem isFinite_mapLeft : Out.Laws → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : Out.PolAV S) [IsCommMonObj P.A] (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M] [Module.Finite O M] [Module.Projective O M] (A : Over S) [GrpObj A] [IsCommMonObj A] (a : OAct O P.A) (b : OAct O A) (t : IsTensor A b P.A a M) (n k : ℕ) (l : M →ₗ[O] (Fin k → O)) (r : (Fin k → O) →ₗ[O] M), 0 < n → (∀ m, r (l m) = n • m) → IsFinite (t.mapLeft (IsTensor.pow (Out.powIsPowGrp P.A k) a) l).left := by
   intro hL S _ P _ O _ M _ _ _ _ A _ _ a b t n k l r hn hr
   have := P.isAb.proper

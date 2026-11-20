@@ -11,6 +11,77 @@ open MvPolynomial Module IsLocalRing
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n m J hJ hdim p hp htan`. Establish `H` using `exists_polyDiff_basis J p`. Rewrite `H` using `[htan]`. Take `⟨q, hqJ, hli, hspan⟩` from `H`. Establish `hqp : ∀ i, eval p (q i) = 0` using `fun i => hp _ (hqJ i)`.
+
+Establish `htq : polyTangent (Set.range q) p = polyTangent (J : Set (MvPolynomial (Fin n) ℂ)) p`. Use `polyTangent_eq_of_subset _ _ p (by rintro _ ⟨i, rfl⟩; exact hqJ i) fun f hf => ?_` and prove the remaining obligations. Use `hspan f hf` as an intermediate fact. Rewrite `this` using `[Set.range_comp]`. Then use the resulting hypothesis. Use `set M : Ideal (MvPolynomial (Fin n) ℂ) := RingHom.ker (eval p) with hMdef`.
+
+Establish `hevsurj : Function.Surjective (eval p : MvPolynomial (Fin n) ℂ →+* ℂ)` using `fun c => ⟨C c, by simp⟩`. Establish `hMmax : M.IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ hevsurj`. Establish `: J.IsPrime` using `hJ`. Set `ev : (MvPolynomial (Fin n) ℂ ⧸ J) →+* ℂ` to `Ideal.Quotient.lift J (eval p) (fun x hx => hp x hx)`. Use `set N : Ideal (MvPolynomial (Fin n) ℂ ⧸ J) := RingHom.ker ev with hNdef`.
+
+Establish `hevsurj' : Function.Surjective ev` using `fun c => ⟨Ideal.Quotient.mk J (C c), by simp [ev]⟩`. Establish `hNmax : N.IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ hevsurj'`. Establish `hNM : N.comap (Ideal.Quotient.mk J) = M`. Use extensionality with `x`. Simplify using `only [Ideal.mem_comap, hNdef, hMdef, RingHom.mem_ker, ev, Ideal.Quotient.lift_mk]`.
+
+Set `P` to `Localization.AtPrime M`. Set `S` to `Localization.AtPrime N`. Set `ψ : P →+* S` to `Localization.localRingHom M N (Ideal.Quotient.mk J) hNM.symm`. Set `_ : Algebra P S` to `ψ.toAlgebra`. Establish `halg : ∀ x, algebraMap P S x = ψ x` using `fun _ => rfl`.
+
+Establish `hψmk : ∀ x, ψ (algebraMap (MvPolynomial (Fin n) ℂ) P x) = algebraMap (MvPolynomial (Fin n) ℂ ⧸ J) S (Ideal.Quotient.mk J x)` using `fun x => Localization.localRingHom_to_map M N (Ideal.Quotient.mk J) hNM.symm x`. Establish `hsurj : Function.Surjective (algebraMap P S)`. Introduce `z`. Take `⟨a, t, rfl⟩` from `IsLocalization.exists_mk'_eq N.primeCompl z`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+
+Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (t : MvPolynomial (Fin n) ℂ ⧸ J)`. Establish `hyM : y ∈ M.primeCompl`. Introduce `hyM'`. Establish `hyN : y ∈ N.comap (Ideal.Quotient.mk J)` using `by rw [hNM]; exact hyM'`. Apply `t.2` to reduce the goal to its premises.
+
+Rewrite using `[← hy]`. Conclude with `hyN`. Use `⟨IsLocalization.mk' P x ⟨y, hyM⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[halg, Localization.localRingHom_mk']`. Use `congr 1`.
+
+Conclude with `Subtype.ext hy`. Establish `hdimS : ringKrullDim S = m`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height N S, NumbersDVR.MaximalIdealHeightFG.proof ℂ (MvPolynomial (Fin n) ℂ ⧸ J) N hNmax, hdim]`. Set `f : Fin (n - m) → P` to `fun i => algebraMap (MvPolynomial (Fin n) ℂ) P (q i)`. Establish `hf : ∀ i, f i ∈ RingHom.ker (algebraMap P S)`.
+
+Introduce `i`. Rewrite using `[RingHom.mem_ker, halg, hψmk, Ideal.Quotient.eq_zero_iff_mem.2 (hqJ i), map_zero]`. Establish `hmP : maximalIdeal P = M.map (algebraMap (MvPolynomial (Fin n) ℂ) P)` using `(Localization.AtPrime.map_eq_maximalIdeal (I := M)).symm`. Establish `hJcov : J ≤ Ideal.span (Set.range q) ⊔ M ^ 2` using `fun x hx => mem_span_sup_sq_of_polyDiff_mem p q hqp (hp x hx) (hspan x hx)`. Take `⟨Cc, hCc⟩` from `Submodule.exists_isCompl (Submodule.span ℂ (Set.range (polyDiff p ∘ q)))`.
+
+Establish `hfinD : finrank ℂ (Submodule.span ℂ (Set.range (polyDiff p ∘ q))) = n - m`. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin]`. Establish `hmn : m ≤ n`. Rewrite using `[← htan]`. Conclude with `(Submodule.finrank_le _).trans (Module.finrank_fin_fun ℂ).le`.
+
+Establish `hfinC : finrank ℂ Cc = m`. Use `Submodule.finrank_add_eq_of_isCompl hCc` as an intermediate fact. Rewrite `this` using `[hfinD, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Set `c` to `Module.finBasisOfFinrankEq ℂ Cc hfinC`.
+
+Set `y : Fin m → MvPolynomial (Fin n) ℂ` to `fun k => tanLinPoly p (c k)`. Establish `hMcov : M ≤ Ideal.span (Set.range (Sum.elim q y)) ⊔ M ^ 2`. Introduce `x hx`. Use `mem_span_sup_sq_of_polyDiff_mem p (Sum.elim q y) ?_ (RingHom.mem_ker.1 hx) ?_` and prove the remaining obligations. Introduce and unpack `(i | k)`.
+
+Conclude with `hqp i`. Conclude with `eval_tanLinPoly p _`. Establish `htop : Submodule.span ℂ (Set.range (polyDiff p ∘ Sum.elim q y)) = ⊤`. Rewrite using `[eq_top_iff, ← hCc.sup_eq_top]`. Apply `sup_le` to reduce the goal to its premises.
+
+Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨Sum.inl i, rfl⟩`. Introduce `v hv`. Establish `hCspan : Cc = Submodule.span ℂ (Set.range (Cc.subtype ∘ c))`.
+
+Rewrite using `[Set.range_comp, Submodule.span_image, c.span_eq, Submodule.map_subtype_top]`. Rewrite `hv` using `[hCspan]`. Use `Submodule.span_mono ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨Sum.inr k, by simp [y, polyDiff_tanLinPoly]⟩`.
+
+Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Set `φ : MvPolynomial (Fin n) ℂ →+* S` to `(algebraMap (MvPolynomial (Fin n) ℂ ⧸ J) S).comp (Ideal.Quotient.mk J)`. Establish `hmS : maximalIdeal S = M.map φ`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hNM, Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Use `_ = M.map φ := Ideal.map_map _ _`. Establish `hφq : ∀ i, φ (q i) = 0`. Introduce `i`. Simplify using `[φ, Ideal.Quotient.eq_zero_iff_mem.2 (hqJ i)]`.
+
+Establish `hS_le : maximalIdeal S ≤ Ideal.span (Set.range (φ ∘ y))`. Use `maximalIdeal_le_span_of_le_sup_sq (R := S) (Set.range (φ ∘ y)) ?_` and prove the remaining obligations. Rewrite using `[hmS]`. Establish `h1` using `Ideal.map_mono (f := φ) hMcov`. Rewrite `h1` using `[Ideal.map_sup, Ideal.map_span, Ideal.map_pow]`.
+
+Use `h1.trans (sup_le_sup ?_ ?_)` and prove the remaining obligations. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨i | k, rfl⟩, rfl⟩`. Simplify using `[hφq]`. Conclude with `Ideal.subset_span ⟨k, rfl⟩`.
+
+Conclude with `le_rfl`. Establish `hμ : (maximalIdeal S).spanFinrank ≤ m`. Establish `heq : maximalIdeal S = Ideal.span (Set.range (φ ∘ y))`. Use `le_antisymm hS_le (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, hmS]`. Conclude with `Ideal.mem_map_of_mem _ (RingHom.mem_ker.2 (eval_tanLinPoly p _))`. Rewrite using `[heq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Set.image_univ]`.
+
+Conclude with `Set.ncard_image_le Set.finite_univ`. Use `_ = m := by simp [Set.ncard_univ]`. Establish `hcov : RingHom.ker (algebraMap P S) ≤ Ideal.span (Set.range f) ⊔ maximalIdeal P ^ 2`. Introduce `z hz`. Take `⟨x, s, rfl⟩` from `IsLocalization.exists_mk'_eq M.primeCompl z`.
+
+Establish `hx0 : algebraMap P S (algebraMap (MvPolynomial (Fin n) ℂ) P x) = 0`. Rewrite using `[← IsLocalization.mk'_spec P x s, map_mul, RingHom.mem_ker.1 hz, zero_mul]`. Rewrite `hx0` using `[halg, hψmk]`. Take `⟨t, ht⟩` from `(IsLocalization.map_eq_zero_iff N.primeCompl S _).1 hx0`. Take `⟨w, hw⟩` from `Ideal.Quotient.mk_surjective (t : MvPolynomial (Fin n) ℂ ⧸ J)`.
+
+Establish `hwx : w * x ∈ J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul, hw, ht]`. Establish `hwJ : w ∉ J`. Introduce `hwJ`. Apply `t.2` to reduce the goal to its premises.
+
+Rewrite using `[← hw, Ideal.Quotient.eq_zero_iff_mem.2 hwJ]`. Conclude with `zero_mem _`. Establish `hxJ : x ∈ J` using `(hJ.mem_or_mem hwx).resolve_left hwJ`. Establish `hx' : algebraMap (MvPolynomial (Fin n) ℂ) P x ∈ Ideal.span (Set.range f) ⊔ maximalIdeal P ^ 2`. Establish `h1` using `Ideal.mem_map_of_mem (algebraMap (MvPolynomial (Fin n) ℂ) P) (hJcov hxJ)`.
+
+Rewrite `h1` using `[Ideal.map_sup, Ideal.map_span, Ideal.map_pow, ← hmP, ← Set.range_comp]`. Conclude with `h1`. Rewrite using `[IsLocalization.mk'_eq_mul_mk'_one]`. Conclude with `Ideal.mul_mem_right _ _ hx'`. Establish `hker` using `GroundTheory.Arith.Jacobian.ker_le_span_of_spanFinrank_le (P := P) (S := S) hsurj f hf hcov m hμ hdimS.ge`.
+
+Establish `hloc : ∀ x ∈ J, ∃ s ∈ M.primeCompl, s * x ∈ Ideal.span (Set.range q)`. Introduce `x hx`. Establish `hx1 : algebraMap (MvPolynomial (Fin n) ℂ) P x ∈ Ideal.span (Set.range f)`. Apply `hker` to reduce the goal to its premises. Rewrite using `[RingHom.mem_ker, halg, hψmk, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero]`.
+
+Establish `hspanf : Ideal.span (Set.range f) = (Ideal.span (Set.range q)).map (algebraMap (MvPolynomial (Fin n) ℂ) P)`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite `hx1` using `[hspanf]`. Take `⟨⟨⟨a, ha⟩, ⟨s, hs⟩⟩, e⟩` from `(IsLocalization.mem_map_algebraMap_iff M.primeCompl P).1 hx1`.
+
+Rewrite `e` using `[← map_mul, IsLocalization.eq_iff_exists M.primeCompl P]`. Take `⟨c', hc'⟩` from `e`. Use `⟨c' * s, M.primeCompl.mul_mem c'.2 hs, ?_⟩` and prove the remaining obligations. Establish `e2 : (c' : MvPolynomial (Fin n) ℂ) * s * x = c' * a`. Rewrite using `[← hc']`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `Ideal.mul_mem_left _ _ ha`. Use `choose! σ hσM hσ using hloc`. Take `⟨s, hs⟩` from `Ideal.fg_of_isNoetherianRing J`.
+
+Establish `hsJ : ∀ x ∈ s, x ∈ J` using `fun x hx => by`. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span hx`. Use `⟨q, ∏ x ∈ s, σ x, hqJ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`.
+
+Use `Finset.prod_ne_zero_iff.2 fun x hx h0 => ?_` and prove the remaining obligations. Conclude with `hσM x (hsJ x hx) (RingHom.mem_ker.2 h0)`. Rewrite using `[htq, htan]`. Introduce `r hr`. Establish `hle : J ≤ Submodule.comap (LinearMap.mulLeft (MvPolynomial (Fin n) ℂ) (∏ x ∈ s, σ x)) (Ideal.span (Set.range q))`.
+
+Rewrite using `[← hs]`. Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Establish `hxJ` using `hsJ x hx`. Use `show (∏ x ∈ s, σ x) * x ∈ Ideal.span (Set.range q)`. Rewrite using `[← Finset.mul_prod_erase s σ hx, show σ x * (∏ y ∈ s.erase x, σ y) * x = (∏ y ∈ s.erase x, σ y) * (σ x * x) by ring]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (hσ x hxJ)`. Conclude with `hle hr`.
+-/
 theorem PolyLocalGenerators.proof : PolyLocalGenerators.Statement := by
   intro n m J hJ hdim p hp htan
   classical

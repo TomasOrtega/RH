@@ -16,6 +16,9 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algeb
   {F : Frame l (ResidueField O)} {n : ℕ} {G : W.GFrame l} {r : W.Resid G O n} (K : TwLink F r)
   {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebra O A']
 
+/- English proof (translation)
+Rewrite using `[(CA.d_gmap (W.GDet.ofRep (K.tw ρ))).2.2.2]`. Use `congr 1`. Use extensionality with `g i j`. Simplify using `[TwLink.tw, TwLink.κA]`.
+-/
 private theorem tw_map (f : A →ₐ[O] A') (ρ : NRep F n A) :
     (W.GDet.ofRep (K.tw ρ)).map (f : A →+* A') = W.GDet.ofRep (K.tw (ρ.map (f : A →+* A'))) := by
   rw [(CA.d_gmap (W.GDet.ofRep (K.tw ρ))).2.2.2]
@@ -23,11 +26,17 @@ private theorem tw_map (f : A →ₐ[O] A') (ρ : NRep F n A) :
   ext g i j
   simp [TwLink.tw, TwLink.κA]
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `[TwLink.twψ, TwLink.κA]`.
+-/
 private theorem twψ_map (f : A →ₐ[O] A') (ρ : NRep F n A) (v : G.Vl) (i : Fin n) :
     W.pushCh (f : A →+* A') (K.twψ ρ v i) = K.twψ (ρ.map (f : A →+* A')) v i := by
   ext g
   simp [TwLink.twψ, TwLink.κA]
 
+/- English proof (translation)
+Use `⟨?_, fun v i => ?_⟩` and prove the remaining obligations. Rewrite using `[← tw_map, ← h.1, (CA.d_gmap B.u.D).2.1]`. Both sides reduce to the same expression. Rewrite using `[← twψ_map, ← h.2]`. Both sides reduce to the same expression.
+-/
 private theorem maps_comp (B : W.UniversalOrdinaryDeterminantRing r) (φ : B.B →ₐ[O] A) (f : A →ₐ[O] A') (ρ : NRep F n A)
     (h : B.u.Maps (φ : B.B →+* A) (W.GDet.ofRep (K.tw ρ)) (K.twψ ρ)) :
     B.u.Maps ((f.comp φ : B.B →ₐ[O] A') : B.B →+* A') (W.GDet.ofRep (K.tw (ρ.map (f : A →+* A'))))
@@ -38,6 +47,11 @@ private theorem maps_comp (B : W.UniversalOrdinaryDeterminantRing r) (φ : B.B �
   · rw [← twψ_map, ← h.2]
     rfl
 
+/- English proof (translation)
+Establish `hc : ((f.comp φ : B.B →ₐ[O] A') : B.B →+* A') = (f : A →+* A').comp (φ : B.B →+* A)` using `rfl`. Establish `hinj : Function.Injective (f : A →+* A')` using `hf`. Take `⟨h1, h2⟩` from `h`. Use `⟨?_, fun v i => ?_⟩` and prove the remaining obligations. Use `(UpperTheory.V.AlgebraTools.Det.injTest (X := Unit) (fun _ => A') (fun _ => (f : A →+* A')) (fun a ha => hinj (by rw [ha (), map_zero]))).1 _ _ (fun _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[(UpperTheory.V.CA.d_gmap B.u.D).2.1, ← hc, h1, tw_map]`. Use extensionality with `g`. Use `congrArg (fun χ => ((χ g : A'ˣ) : A')) (h2 v i)` as an intermediate fact. Simplify using `only [hc, ← twψ_map] at this`. Conclude with `hinj this`.
+-/
 private theorem maps_of_inj (B : W.UniversalOrdinaryDeterminantRing r) (φ : B.B →ₐ[O] A) (f : A →ₐ[O] A') (hf : Function.Injective f)
     (ρ : NRep F n A)
     (h : B.u.Maps ((f.comp φ : B.B →ₐ[O] A') : B.B →+* A') (W.GDet.ofRep (K.tw (ρ.map (f : A →+* A'))))
@@ -57,6 +71,17 @@ private theorem maps_of_inj (B : W.UniversalOrdinaryDeterminantRing r) (φ : B.B
 
 end
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ F n T Φ hΦ J hJ A _ _ _ ρ hρ K' _ j hj hirr`. Establish `hcl : CA.IsCL O A` using `{ noeth := PrincipalIdealRing.isNoetherianRing complete := inferInstance isLocalHom := inferInstance res_fin := Module.Finite.of_finite }`. Take `⟨ξ, hξ, -⟩` from `point_loc T.ok T.n23 T.S A hcl (ResidueField.map (algebraMap O A)) (fun _ => rfl) ρ hρ.cont hρ.bar`. Establish `hTI : T.S.u.TI (RingHom.ker (j.comp (ξ : T.S.A →+* A)))`. Use `(types T.ok T.n23 T.S K' (j.comp (ξ : T.S.A →+* A))).1.1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← NRep.map_map, hξ]`. Conclude with `hirr`. Establish `hle` using `hJ _ (RingHom.ker_isPrime _) hTI`. Use `⟨ξ.comp (T.S.inc.comp Φ), fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hle (Ideal.mem_map_of_mem _ hx)`.
+
+Conclude with `hj (Eq.trans h1 (map_zero j).symm)`. Establish `hu : T.S.u.map (T.S.A.val : T.S.A →+* T.S.R) = T.S.ρ`. Use `NRep.ext ?_ ?_` and prove the remaining obligations. Use extensionality with `g i j`. Both sides reduce to the same expression.
+
+Use function extensionality and compare the values at `v i`. Use extensionality with `g`. Both sides reduce to the same expression. Establish `hc : T.S.A.val.comp (T.S.inc.comp Φ) = T.S.B.val.comp Φ` using `AlgHom.ext fun _ => rfl`. Establish `h2` using `maps_comp T.K T.B (T.S.inc.comp Φ) ξ T.S.u (maps_of_inj T.K T.B (T.S.inc.comp Φ) T.S.A.val Subtype.val_injective T.S.u (by rw [hu, hc]; exact hΦ))`.
+
+Rewrite `h2` using `[hξ]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.V.Pr.goodPtOf :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [UpperTheory.V.Fr.IsCoef l O] [Algebra ℤ_[l] O] (F : UpperTheory.V.Fr.Frame l (IsLocalRing.ResidueField O)) (n : ℕ) (T : UpperTheory.V.Pr.Setup F n), T.GoodPtOf := by
   intro l _ O _ _ _ _ _ F n T Φ hΦ J hJ A _ _ _ ρ hρ K' _ j hj hirr

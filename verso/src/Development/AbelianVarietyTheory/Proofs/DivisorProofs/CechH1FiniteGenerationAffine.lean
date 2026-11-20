@@ -21,12 +21,34 @@ noncomputable section
 namespace GlobalTheory.CechFin
 open GlobalTheory.CatCoh GlobalTheory.CechDR
 
+/- English proof (translation)
+Introduce `i i' i''`. Simplify using `only [map_sub]`. Take the linear combination `hc i i' i'' - hc' i i' i''`.
+-/
 theorem isCoc_sub {Z : Scheme.{0}} {J : Type} (W : J → Z.Opens) {c c' : ∀ i i' : J, Γ(Z, W i ⊓ W i')}
     (hc : IsCoc W c) (hc' : IsCoc W c') : IsCoc W (fun i i' => c i i' - c' i i') := by
   intro i i' i''
   simp only [map_sub]
   linear_combination hc i i' i'' - hc' i i' i''
 
+/- English proof (translation)
+Establish `hW : ∀ i, IsAffineOpen (W i)` using `fun i => by simpa using hD {i} (Finset.singleton_nonempty i)`. Establish `hW2 : ∀ i i', IsAffineOpen (W i ⊓ W i')` using `fun i i' => by`. Establish `h` using `hD {i, i'} (Finset.insert_nonempty _ _)`. Rewrite `h` using `[Finset.iInf_insert, Finset.iInf_singleton]`. Then use the resulting hypothesis. Establish `hW3 : ∀ i i' i'', IsAffineOpen (W i ⊓ W i' ⊓ W i'')` using `fun i i' i'' => by`.
+
+Establish `h` using `hD {i, i', i''} (Finset.insert_nonempty _ _)`. Rewrite `h` using `[Finset.iInf_insert, Finset.iInf_insert, Finset.iInf_singleton, ← inf_assoc]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨S, hS⟩ : ∃ S : Finset J, ⨆ i ∈ S, W i = ⊤ := by`. Establish `hcov : (Set.univ : Set Z) ⊆ ⋃ i, (W i : Set Z)`. Introduce `x _`.
+
+Establish `hx : x ∈ ⨆ i, W i` using `hc ▸ trivial`. Rewrite `hx` using `[TopologicalSpace.Opens.mem_iSup]`. Conclude with `Set.mem_iUnion.2 hx`. Take `⟨S, hS⟩` from `isCompact_univ.elim_finite_subcover (fun i => (W i : Set Z)) (fun i => (W i).isOpen) hcov`. Use `⟨S, eq_top_iff.2 fun x _ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨i, hi, hx⟩` from `Set.mem_iUnion₂.1 (hS (Set.mem_univ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, TopologicalSpace.Opens.mem_iSup.2 ⟨hi, hx⟩⟩`. Establish `hsur : ∀ c, IsCoc W c → ∃ (f : Z1 (OAff s)) (h : ∀ i, Γ(Z, W i)), ∀ i i', c i i' = rho W s hW hW2 f.1 i i' + (resG Z inf_le_left (h i) - resG Z inf_le_right (h i'))`. Introduce `c hcoc`. Take `⟨f, h₀, hf⟩` from `GlobalTheory.T.cechCocycle_of_finite_affine_subcover R Z s J W hW hW2 hD S hS c hcoc`.
+
+Take `⟨h, hh⟩` from `GlobalTheory.T.cechCocycle_isCoboundary_of_isCoboundary_subcover Z J W (↑S) (fun i => by`. Rewrite using `[show (⨆ a ∈ (↑S : Set J), W a) = ⨆ a ∈ S, W a from by simp, hS]; exact le_top)`. Use the proof step `(fun i i' => c i i' - rho W s hW hW2 f.1 i i') (isCoc_sub W hcoc (rho_isCoc W s hW hW2 hW3 f)) h₀`. Use the proof step `(fun a ha b hb => by rw [hf a ha b hb]; ring)`. Conclude with `⟨f, h, fun i i' => by rw [← hh]; ring⟩`.
+
+Take `⟨n, v, hv⟩` from `Module.Finite.exists_fin (R := R) (M := HO1 s)`. Use `choose fk hfk using fun k => H1.mk_surjective (OAff s) (v k)`. Use `⟨n, fun k => rho W s hW hW2 (fk k).1, fun k => rho_isCoc W s hW hW2 hW3 (fk k), fun c hcoc => ?_⟩` and prove the remaining obligations. Take `⟨f, h, hfh⟩` from `hsur c hcoc`. Establish `hmem : H1.mk (OAff s) f ∈ Submodule.span R (Set.range v)` using `hv ▸ Submodule.mem_top`.
+
+Take `⟨r, hr⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hmem`. Establish `hcl : H1.mk (OAff s) f = H1.mk (OAff s) (∑ k, r k • fk k)`. Rewrite using `[map_sum, ← hr]`. Simplify using `only [map_smul, hfk]`. Take `⟨g, hg⟩` from `H1.mk_eq_mk.1 hcl`.
+
+Establish `e1 : f.1 = (∑ k, r k • (fk k).1) + d0 (OAff s) g`. Rewrite using `[hg, Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`. Normalize the expressions using the abelian group laws. Use `⟨r, fun i => h i + (-gv s g ⟨W i, hW i⟩), fun i i' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hfh, e1, rho_add, rho_sum, rho_d0, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cechFG_of_finite (R : Type) [CommRing R] (Z : Scheme.{0}) (s : Z ⟶ Sp R) [CompactSpace Z]
     (hfin : Module.Finite R (HO1 s)) (J : Type) (W : J → Z.Opens)
     (hD : ∀ I : Finset J, I.Nonempty → IsAffineOpen (⨅ i ∈ I, W i)) (hc : ⨆ i, W i = ⊤) :
@@ -79,6 +101,9 @@ theorem cechFG_of_finite (R : Type) [CommRing R] (Z : Scheme.{0}) (s : Z ⟶ Sp 
 end GlobalTheory.CechFin
 
 open GlobalTheory.CechFin in
+/- English proof (translation)
+Introduce `E _ _ _ H X t hP hA U J W hWaff hcov hWU`. Take `⟨hcomp, hD, htop⟩` from `GlobalTheory.T.properSemiAbelian_affineOpen_baseChange_compact_cover E H X t hP U J W hWaff hcov`. Establish `hfin` using `GlobalTheory.T.structure_h1_finite_affine_open E H X t hP U`. Conclude with `GlobalTheory.T.cech_finite_generation_of_affine_base_change t.G.left X t.G.hom U J W hWU (cechFG_of_finite Γ(X, U.1) (pullback t.G.hom U.2.fromSpec) (pullback.snd t.G.hom U.2.fromSpec) hfin J _ hD htop)`.
+-/
 theorem GlobalTheory.CechFin.cech_h1_finite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X), IsProper t.G.hom → Out.RelAmple t.G t.PP.L → ∀ (U : X.affineOpens) (J : Type) (W : J → t.G.left.Opens), (∀ i, IsAffineOpen (W i)) → ⨆ i, W i = t.G.hom ⁻¹ᵁ U.1 → ∀ (hWU : ∀ i, W i ≤ t.G.hom ⁻¹ᵁ U.1), ∃ (N : ℕ) (e : Fin N → ∀ i i' : J, Γ(t.G.left, W i ⊓ W i')), (∀ k i i' i'', resG t.G.left (inf_le_left : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i') (e k i i') + resG t.G.left (le_inf (inf_le_left.trans inf_le_right) inf_le_right : W i ⊓ W i' ⊓ W i'' ≤ W i' ⊓ W i'') (e k i' i'') = resG t.G.left (le_inf (inf_le_left.trans inf_le_left) inf_le_right : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i'') (e k i i'')) ∧ ∀ c : ∀ i i' : J, Γ(t.G.left, W i ⊓ W i'), (∀ i i' i'', resG t.G.left (inf_le_left : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i') (c i i') + resG t.G.left (le_inf (inf_le_left.trans inf_le_right) inf_le_right : W i ⊓ W i' ⊓ W i'' ≤ W i' ⊓ W i'') (c i' i'') = resG t.G.left (le_inf (inf_le_left.trans inf_le_left) inf_le_right : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i'') (c i i'')) → ∃ (r : Fin N → Γ(X, U.1)) (h : ∀ i : J, Γ(t.G.left, W i)), ∀ i i', c i i' = resG t.G.left inf_le_left (h i) - resG t.G.left inf_le_right (h i') + ∑ k, (t.G.hom.appLE U.1 (W i ⊓ W i') (inf_le_left.trans (hWU i))).hom (r k) * e k i i' := by
   intro E _ _ _ H X t hP hA U J W hWaff hcov hWU
   obtain ⟨hcomp, hD, htop⟩ := GlobalTheory.T.properSemiAbelian_affineOpen_baseChange_compact_cover E H X t hP U J W hWaff hcov

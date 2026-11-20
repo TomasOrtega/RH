@@ -7,6 +7,11 @@ open scoped Matrix
 
 namespace GlobalTheory.MajCols
 
+/- English proof (translation)
+Simplify using `only [hermC, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => by ring` and prove the remaining obligations.
+-/
 theorem hermC_comb_right {E : Type} [Field E] {r p : ℕ} (τ : E →+* ℂ)
     (G : Matrix (Fin r) (Fin r) E) (v : Fin r → ℂ) (k : Fin p → ℂ) (u : Fin p → Fin r → ℂ) :
     hermC τ G v (∑ c, k c • u c) = ∑ c, conj (k c) * hermC τ G v (u c) := by
@@ -18,6 +23,11 @@ theorem hermC_comb_right {E : Type} [Field E] {r p : ℕ} (τ : E →+* ℂ)
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hermC, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => by ring` and prove the remaining obligations.
+-/
 theorem hermC_comb_left {E : Type} [Field E] {r p : ℕ} (τ : E →+* ℂ)
     (G : Matrix (Fin r) (Fin r) E) (v : Fin r → ℂ) (k : Fin p → ℂ) (u : Fin p → Fin r → ℂ) :
     hermC τ G (∑ c, k c • u c) v = ∑ c, k c * hermC τ G (u c) v := by
@@ -29,6 +39,9 @@ theorem hermC_comb_left {E : Type} [Field E] {r p : ℕ} (τ : E →+* ℂ)
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => by ring
 
+/- English proof (translation)
+Establish `hB' : IsUnit B.det` using `isUnit_iff_ne_zero.mpr hB`. Establish `hD' : IsUnit D.det` using `isUnit_iff_ne_zero.mpr hD`. Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_inv_rev, Matrix.mul_inv_rev]`. Use `congr 2`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hD', Matrix.nonsing_inv_mul_cancel_right _ _ hB']`.
+-/
 theorem quad_change {p : ℕ} (A B D : Matrix (Fin p) (Fin p) ℂ) (hB : B.det ≠ 0) (hD : D.det ≠ 0)
     (w w' : Fin p → ℂ) :
     (w ᵥ* D) ⬝ᵥ ((B * A * D)⁻¹ *ᵥ (B *ᵥ w')) = w ⬝ᵥ (A⁻¹ *ᵥ w') := by
@@ -39,10 +52,26 @@ theorem quad_change {p : ℕ} (A B D : Matrix (Fin p) (Fin p) ℂ) (hB : B.det �
   congr 2
   rw [Matrix.mul_nonsing_inv_cancel_left _ _ hD', Matrix.nonsing_inv_mul_cancel_right _ _ hB']
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem sum_eq_dot {p : ℕ} (M : Matrix (Fin p) (Fin p) ℂ) (w w' : Fin p → ℂ) :
     ∑ a, ∑ b, w a * M a b * w' b = w ⬝ᵥ (M *ᵥ w') := by
   simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Introduce `E _ _ _ r X x' y τ C hC _ hcol v`. Use `set w : Fin X.p0 → ℂ := fun a => hermC τ.1 X.Gm v (col (mat y τ) (Fin.castLE X.p0_le a)) with hw`. Establish `hD : (C.map (starRingEnd ℂ)).det ≠ 0`. Use `(starRingEnd ℂ).map_det C` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`.
+
+Rewrite using `[← this]`. Conclude with `(map_ne_zero _).mpr hC`. Establish `hB : (Cᵀ).det ≠ 0` using `by rwa [Matrix.det_transpose]`. Establish `h1 : (fun a => hermC τ.1 X.Gm v (col (mat x' τ) (Fin.castLE X.p0_le a))) = w ᵥ* C.map (starRingEnd ℂ)`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[hcol, hermC_comb_right]`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.map_apply, hw]`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`. Establish `h2 : (fun a => conj (hermC τ.1 X.Gm v (col (mat x' τ) (Fin.castLE X.p0_le a)))) = Cᵀ *ᵥ fun a => conj (w a)`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[hcol, hermC_comb_right]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, hw, map_sum, map_mul, Complex.conj_conj]`. Establish `h3 : X.gramPos x' τ = Cᵀ * X.gramPos y τ * C.map (starRingEnd ℂ)`. Use extensionality with `a b`. Simplify using `only [Data.gramPos, gram, Matrix.submatrix_apply, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`.
+
+Rewrite using `[hcol a, hcol b, hermC_comb_right]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_comb_left, mul_comm]`. Establish `key : X.posPart x' τ v = X.posPart y τ v`. Unfold `Data.posPart`.
+
+Use `congr 1`. Rewrite using `[sum_eq_dot (X.gramPos x' τ)⁻¹ (fun a => hermC τ.1 X.Gm v (col (mat x' τ) (Fin.castLE X.p0_le a))) (fun a => conj (hermC τ.1 X.Gm v (col (mat x' τ) (Fin.castLE X.p0_le a)))), sum_eq_dot (X.gramPos y τ)⁻¹ w (fun a => conj (w a)), h1, h2, h3, quad_change _ _ _ hB hD]`. Unfold `Data.maj`. Rewrite using `[key]`.
+-/
 theorem maj_eq_of_cols :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (x' y : Frame X.Ψ r)
     (τ : X.Ψ) (C : Matrix (Fin X.p0) (Fin X.p0) ℂ), C.det ≠ 0 → (X.gramPos y τ).det ≠ 0 →

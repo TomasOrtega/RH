@@ -19,6 +19,13 @@ structure ServedEmb (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl)
   glob_loc : ∀ L : (D.gat u w h).P.Tup, (D.gat u w h).P.IsLatTup L → ∀ v,
     L v = Submodule.span ((D.gat u w h).P.W v) {y | ∃ x ∈ glob L, y = fun i => iw v (x i)}
 
+/- English proof (translation)
+Establish `hmem : ∀ x : K, e x ∈ algebraicClosure ℚ ℂ` using `fun x => by`. Rewrite using `[mem_algebraicClosure_iff]`. Establish `h1 : IsAlgebraic ℚ x` using `Algebra.IsAlgebraic.isAlgebraic x`. Conclude with `h1.algHom e.toRatAlgHom`. Set `j : K →+* algebraicClosure ℚ ℂ` to `e.codRestrict (algebraicClosure ℚ ℂ).toSubring hmem`.
+
+Use `letI : Algebra K (algebraicClosure ℚ ℂ) := j.toAlgebra`. Use `letI : Algebra K C := f.toAlgebra`. Establish `h0 : Algebra.IsAlgebraic ℚ (algebraicClosure ℚ ℂ)` using `algebraicClosure.isAlgebraic ℚ ℂ`. Establish `: Algebra.IsAlgebraic K (algebraicClosure ℚ ℂ)` using `Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Set `l : algebraicClosure ℚ ℂ →ₐ[K] C` to `IsAlgClosed.lift`.
+
+Use `⟨l.toRingHom, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(l.commutes x).symm`.
+-/
 theorem exists_lam {K : Type} [Field K] [NumberField K] (e : K →+* ℂ) {C : Type} [Field C] [IsAlgClosed C]
     (f : K →+* C) : ∃ lam : (algebraicClosure ℚ ℂ) →+* C,
       ∀ (x : K) (hx : e x ∈ algebraicClosure ℚ ℂ), f x = lam ⟨e x, hx⟩ := by
@@ -35,12 +42,18 @@ theorem exists_lam {K : Type} [Field K] [NumberField K] (e : K →+* ℂ) {C : T
   refine ⟨l.toRingHom, fun x hx => ?_⟩
   exact (l.commutes x).symm
 
+/- English proof (translation)
+Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `hf x`.
+-/
 theorem span_zero_image {R S M N : Type*} [Semiring R] [Semiring S] [AddCommMonoid M] [AddCommMonoid N] [Module S N]
     (f : M → N) (hf : ∀ x, f x = 0) (A : Set M) : Submodule.span S (f '' A) = ⊥ := by
   rw [Submodule.span_eq_bot]
   rintro _ ⟨x, -, rfl⟩
   exact hf x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i => A.b.ne_zero i (Subsingleton.elim _ _)⟩`.
+-/
 theorem hlat_index_isEmpty {K : Type} [Field K] [NumberField K] [StarRing K] (A : HLat K) [Subsingleton A.V] :
     IsEmpty A.ι := ⟨fun i => A.b.ne_zero i (Subsingleton.elim _ _)⟩
 
@@ -70,10 +83,16 @@ def latCmpZero : LatCmp D where
 
 variable {L : SizeData₂ D} (X : Inst D L) (Y : LatInst D) (K : Consts) [∀ u, Subsingleton (D.div.Nu u).V]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by rw [smul_zero]; exact A.zero_mem⟩`.
+-/
 theorem inLoc_zero {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module (𝓞 K) V]
     (w : HeightOneSpectrum (𝓞 K)) (A : Submodule (𝓞 K) V) : InLoc w A 0 :=
   ⟨1, fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by rw [smul_zero]; exact A.zero_mem⟩
 
+/- English proof (translation)
+Introduce `u w hg` and use `by rw [hV u w hg] have h1 : Submodule.span (D.gat u w hg).Kf ((latCmpZero D hM S).cmp u w hg '' ((D.fm u).ramSub : Set ((D.fm u).lat 0).V)) = ⊥ := span_zero_image (R := ℕ) _ (fun _ => rfl) _ rw [h1] rfl served := fun u w hg _ x => by rw [Subsingleton.elim x 0] exact ⟨fun _ => Sub …`.
+-/
 theorem latDefsZero (hV : ∀ u w hg, Y.Vram u w hg = ⊥) : LatDefs D L X Y K (latCmpZero D hM S) where
   vram := fun u w hg => by
     rw [hV u w hg]
@@ -117,6 +136,9 @@ def atTZ {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : Colum
     GamP := 2
     one_lt_gammaP := one_lt_two }
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `heq_of_eq (funext fun _ => funext fun y => isEmptyElim y)`.
+-/
 theorem heq_fun_of_chain_eq {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} {C C' : ColumnChain R ι hc}
     (h : C = C') (j : ℕ) [IsEmpty (C.Y j)] (a : C.cls j → C.Y j → ℂ) (b : C'.cls j → C'.Y j → ℂ) : HEq a b := by
   subst h

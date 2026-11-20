@@ -5,6 +5,9 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PairNumberPullbackSt
 
 namespace GlobalTheory.CompanionTheory.Ar.Num.FlagModelJoinRight
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.Xgn.A_s_joinright.of_pullback GlobalTheory.T.pair_number_pullback`.
+-/
 theorem main : GroundTheory.Heights₂.Heights.NumbersDVR.FlagModelJoinRightAlt.Statement :=
   PositivityTheory.Xgn.A_s_joinright.of_pullback GlobalTheory.T.pair_number_pullback
 

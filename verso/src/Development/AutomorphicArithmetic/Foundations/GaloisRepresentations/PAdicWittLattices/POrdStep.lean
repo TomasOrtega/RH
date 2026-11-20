@@ -4,6 +4,15 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV 
 open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Establish `hsub : Set.range y ⊆ Set.range (pullback.diagonal s)`. Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hq : q = IsLocalRing.closedPoint Ω` using `Subsingleton.elim _ _`.
+
+Rewrite using `[hq]`. Conclude with `⟨z, hz⟩`. Establish `hfac` using `IsOpenImmersion.lift_fac (pullback.diagonal s) y hsub`. Rewrite using `[← hfac, Category.assoc, Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd]`. Introduce `h`.
+
+Use `⟨(y ≫ pullback.fst s s) (IsLocalRing.closedPoint Ω), ?_⟩` and prove the remaining obligations. Establish `hy : (y ≫ pullback.fst s s) ≫ pullback.diagonal s = y`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.diagonal_fst, Category.comp_id]`. Rewrite using `[Category.assoc, pullback.diagonal_snd, Category.comp_id, h]`.
+
+Use `conv_rhs => rw [← hy]`. Both sides reduce to the same expression.
+-/
 private theorem mem_range_diagonal_iff {Y Z : Scheme.{0}} (s : Y ⟶ Z) [IsOpenImmersion (pullback.diagonal s)]
     (Ω : Type) [Field Ω] (y : UpperTheory.Gal.G3.sp Ω ⟶ pullback s s) :
     y (IsLocalRing.closedPoint Ω) ∈ Set.range (pullback.diagonal s) ↔
@@ -26,6 +35,15 @@ private theorem mem_range_diagonal_iff {Y Z : Scheme.{0}} (s : Y ⟶ Z) [IsOpenI
     conv_rhs => rw [← hy]
     rfl
 
+/- English proof (translation)
+Introduce `Z Y W s _ _ c d σ hσ`. Establish `hc : ∀ j, pullback.fst s c ≫ s = (pullback.snd s c ≫ σ j) ≫ s` using `fun j => by`. Rewrite using `[Category.assoc, hσ j, pullback.condition]`. Set `φ : Fin d → (pullback s c ⟶ pullback s s)` to `fun j => pullback.lift (pullback.fst s c) (pullback.snd s c ≫ σ j) (hc j)`. Establish `hopen : ∀ j, IsOpen ((φ j) ⁻¹' Set.range (pullback.diagonal s))` using `fun j => (pullback.diagonal s).isOpenEmbedding.isOpen_range.preimage (φ j).continuous`.
+
+Establish `hclosed : ∀ j, IsClosed ((φ j) ⁻¹' Set.range (pullback.diagonal s))` using `fun j => (pullback.diagonal s).isClosedEmbedding.isClosed_range.preimage (φ j).continuous`. Use `⟨⟨(⋃ j, (φ j) ⁻¹' Set.range (pullback.diagonal s))ᶜ, (isClosed_iUnion_of_finite hclosed).isOpen_compl⟩, (isOpen_iUnion hopen).isClosed_compl, ?_⟩` and prove the remaining obligations. Introduce `Ω _ x`. Establish `key : ∀ j, (x ≫ φ j) (IsLocalRing.closedPoint Ω) ∈ Set.range (pullback.diagonal s) ↔ x ≫ pullback.fst s c = x ≫ pullback.snd s c ≫ σ j`. Introduce `j`.
+
+Rewrite using `[mem_range_diagonal_iff s Ω (x ≫ φ j)]`. Simplify using `only [Category.assoc, φ, pullback.lift_fst, pullback.lift_snd]`. Use `show x (IsLocalRing.closedPoint Ω) ∈ (⋃ j, (φ j) ⁻¹' Set.range (pullback.diagonal s))ᶜ ↔ _`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_preimage, not_exists]`. Use `forall_congr' (fun j => ?_)` and prove the remaining obligations.
+
+Conclude with `(not_congr (key j)).trans ⟨fun h e => h e.symm, fun h e => h e.symm⟩`.
+-/
 theorem UpperTheory.Gal.G3.pOrdStep :
     OrdStep := by
   intro Z Y W s _ _ c d σ hσ

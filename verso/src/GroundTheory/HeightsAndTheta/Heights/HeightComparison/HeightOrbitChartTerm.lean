@@ -17,6 +17,9 @@ def OrbitChartTerm.Statement : Prop :=
               -Real.log (v (IntermediateField.inclusion (ratioField_le_coordField x)
                 (chartEval x c s)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨samplePoint_blockNonzero, isSectionOn_chartMonomial _ _ _ (fun _ ↦ by simp [samplePoint]) 1 (fun _ ↦ rfl), fun _ ↦ by simp [samplePoint]⟩`.
+-/
 example : BlockNonzero samplePoint ∧
     Geo.IsSectionOn (orbitIdeal samplePoint) (HermLine.standard _).toGeo
       (chartMonomial (fun _ ↦ 0) 1) ∧ ∀ k, samplePoint k ((fun _ ↦ 0) k) ≠ 0 :=

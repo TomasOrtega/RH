@@ -26,6 +26,19 @@ namespace GlobalTheory.DefFund
 
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
 
+/- English proof (translation)
+Use `GlobalTheory.countable_of_discrete_subgroup Γ` as an intermediate fact. Take `⟨D, hD, hu, -⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup Γ`. Take `⟨c, hc⟩` from `exists_injective_nat Γ`. Set `S : Set G` to `K ∩ ⋃ g : Γ, ((fun y => g • y) ⁻¹' D ∩ ⋂ h : Γ, ⋂ _ : c h < c g, ((fun y => (h⁻¹ * g) • y) ⁻¹' K)ᶜ)`. Establish `hS : ∀ y, y ∈ S ↔ y ∈ K ∧ ∃ g : Γ, g • y ∈ D ∧ ∀ h : Γ, c h < c g → (h⁻¹ * g) • y ∉ K` using `fun y => by`.
+
+Simplify using `only [S, Set.mem_inter_iff, Set.mem_iUnion, Set.mem_iInter, Set.mem_preimage, Set.mem_compl_iff]`. Establish `hSm : MeasurableSet S` using `hK.measurableSet.inter <| MeasurableSet.iUnion fun g => (measurable_const_smul g hD).inter <| MeasurableSet.iInter fun h => MeasurableSet.iInter fun _ => (measurable_const_smul _ hK.measurableSet).compl`. Use `⟨S, Set.inter_subset_left, hSm, IsFundamentalDomain.mk' hSm.nullMeasurableSet fun x => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, hdu⟩` from `hu x`. Establish `hex : ∃ n, ∃ g : Γ, c g = n ∧ (g⁻¹ * d) • x ∈ K`.
+
+Take `⟨γ, hγ, h⟩` from `hcov x`. Use `⟨_, d * (⟨γ, hγ⟩ : Γ)⁻¹, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, inv_inv, inv_mul_cancel_right]`. Conclude with `h`. Take `⟨g, hg, hgK⟩` from `Nat.find_spec hex`.
+
+Use `⟨g⁻¹ * d, (hS _).2 ⟨hgK, g, ?_, fun h hh hK' => ?_⟩, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, mul_inv_cancel_left]`. Conclude with `hd`. Use `Nat.find_min hex (hg ▸ hh) ⟨h, rfl, ?_⟩` and prove the remaining obligations. Rewrite `hK'` using `[smul_smul, mul_assoc, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+
+Take `⟨hkK, g', h1, h2⟩` from `(hS _).1 hk`. Rewrite `h1` using `[smul_smul]`. Establish `e : g' * k = d` using `hdu _ h1`. Establish `ek : k = g'⁻¹ * d` using `by rw [← e, inv_mul_cancel_left]`. Establish `hle : Nat.find hex ≤ c g'` using `Nat.find_min' hex ⟨g', rfl, ek ▸ hkK⟩`.
+
+Break down `hle.eq_or_lt with h | h` into its components or cases. Rewrite using `[ek, hc (hg.trans h)]`. Use `(h2 g (hg ▸ h) ?_).elim` and prove the remaining obligations. Rewrite using `[smul_smul, mul_assoc, e]`. Conclude with `hgK`.
+-/
 theorem exists_measurable_fundamentalDomain_subset [SecondCountableTopology G] (Γ : Subgroup G) [DiscreteTopology Γ]
     {K : Set G} (hK : IsClosed K) (hcov : ∀ x : G, ∃ γ ∈ Γ, γ * x ∈ K) (μ : Measure G) :
     ∃ S ⊆ K, MeasurableSet S ∧ IsFundamentalDomain Γ S μ := by
@@ -64,6 +77,11 @@ theorem exists_measurable_fundamentalDomain_subset [SecondCountableTopology G] (
 
 end GlobalTheory.DefFund
 
+/- English proof (translation)
+Introduce `D A hs hp m hm`. Establish `hc : GlobalTheory.Unf.CoCpt A` using `(GlobalTheory.Unf.CoCptOf.coCpt_of_isAniso_or_posDef D A).2 fun τ => by`. Establish `h1` using `hs (tauE D τ)`. Rewrite `h1` using `[hp (tauE D τ)]`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature h1`.
+
+Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A`. Take `⟨K, hK, hcov⟩` from `hc`. Take `⟨X, hXK, hXm, hX⟩` from `GlobalTheory.DefFund.exists_measurable_fundamentalDomain_subset (GQ A) hK.isClosed hcov m`. Conclude with `⟨⟨K, hK, hcov⟩, X, K, hXm, hX, hK, hXK⟩`.
+-/
 theorem GlobalTheory.DefFund.coCpt_and_fundamentalDomain_subset_compact :
     ∀ (D : D7) (A : HSp D), HSpace.SigOK A → HSpace.IsPosDef A → ∀ m : Measure (GA D A), m.IsHaarMeasure → GlobalTheory.Unf.CoCpt A ∧ ∃ (X K : Set (GA D A)), MeasurableSet X ∧ IsFundamentalDomain (GQ A) X m ∧ IsCompact K ∧ X ⊆ K := by
   intro D A hs hp m hm

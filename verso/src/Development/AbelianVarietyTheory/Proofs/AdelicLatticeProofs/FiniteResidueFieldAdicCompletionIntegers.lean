@@ -18,6 +18,11 @@ section Completion
 
 variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Use `NormIntegers.isAdicComplete_of_fg (C := v.adicCompletion K) ⟨?_, ?_, ?_⟩ (IsNoetherian.noetherian _) (maximalIdeal.isMaximal _).ne_top` and prove the remaining obligations. Conclude with `FaithfulSMul.algebraMap_injective _ _`. Introduce `x`. Establish `: ‖(x : v.adicCompletion K)‖ ≤ 1` using `Valued.toNormedField.norm_le_one_iff.2 x.2`. Conclude with `this` after adjusting the coercions.
+
+Introduce `x hx`. Establish `: ‖x‖ ≤ 1` using `by exact_mod_cast hx`. Conclude with `⟨⟨x, Valued.toNormedField.norm_le_one_iff.1 this⟩, rfl⟩`.
+-/
 theorem isAdicComplete_adicCompletionIntegers :
     IsAdicComplete (maximalIdeal (v.adicCompletionIntegers K)) (v.adicCompletionIntegers K) := by
   refine NormIntegers.isAdicComplete_of_fg (C := v.adicCompletion K) ⟨?_, ?_, ?_⟩
@@ -30,11 +35,23 @@ theorem isAdicComplete_adicCompletionIntegers :
     have : ‖x‖ ≤ 1 := by exact_mod_cast hx
     exact ⟨⟨x, Valued.toNormedField.norm_le_one_iff.1 this⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[adicCompletionIntegers.isUnit_iff_valued_eq_one, algebraMap_adicCompletionIntegers_apply, valuedAdicCompletion_eq_valuation', valuation_eq_one_iff_notMem]`.
+-/
 theorem isUnit_algebraMap_iff (s : 𝓞 K) :
     IsUnit (algebraMap (𝓞 K) (v.adicCompletionIntegers K) s) ↔ s ∉ v.asIdeal := by
   rw [adicCompletionIntegers.isUnit_iff_valued_eq_one, algebraMap_adicCompletionIntegers_apply,
     valuedAdicCompletion_eq_valuation', valuation_eq_one_iff_notMem]
 
+/- English proof (translation)
+Set `f : 𝓞 K →+* ResidueField (v.adicCompletionIntegers K)` to `(residue _).comp (algebraMap (𝓞 K) (v.adicCompletionIntegers K))`. Establish `hker : ∀ s ∈ v.asIdeal, f s = 0` using `fun s hs => by`. Express the relevant statement in the definitionally equal form `residue _ _ = 0`. Rewrite using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, isUnit_algebraMap_iff]`. Conclude with `fun h => h hs`.
+
+Use `haveI : Finite (𝓞 K ⧸ v.asIdeal) := v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot`. Use `Finite.of_surjective (Ideal.Quotient.lift v.asIdeal f hker) fun y => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `residue_surjective y`. Take `⟨s, hs⟩` from `Idele.exists_valued_sub_le v (a := (y : v.adicCompletion K)) y.2 1`. Use `⟨Ideal.Quotient.mk _ s, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.Quotient.lift_mk]`. Express the relevant statement in the definitionally equal form `residue _ _ = _`. Rewrite using `[eq_comm, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Introduce `h`. Establish `h' : Valued.v ((y : v.adicCompletion K) - algebraMap K (v.adicCompletion K) (algebraMap (𝓞 K) K s)) = 1` using `h`.
+
+Rewrite `hs` using `[h', ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finite_residueField_adicCompletionIntegers :
     Finite (ResidueField (v.adicCompletionIntegers K)) := by
   let f : 𝓞 K →+* ResidueField (v.adicCompletionIntegers K) :=
@@ -75,37 +92,66 @@ def locConj : LocAlg v →+* LocAlg v :=
   (Algebra.TensorProduct.map (AlgHom.id (v.adicCompletion (maximalRealSubfield E)) (v.adicCompletion (maximalRealSubfield E)))
     (IsCMField.complexConj E).toAlgHom : LocAlg v →ₐ[v.adicCompletion (maximalRealSubfield E)] LocAlg v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locEmb_apply (x : E) : locEmb v x = 1 ⊗ₜ x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locConj_tmul (a : v.adicCompletion (maximalRealSubfield E)) (x : E) : locConj v (a ⊗ₜ x) = a ⊗ₜ cc x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locConj_locEmb (x : E) : locConj v (locEmb v x) = locEmb v (cc x) := rfl
 
+/- English proof (translation)
+The claim follows from `AlgHom.commutes (Algebra.TensorProduct.map (AlgHom.id (v.adicCompletion (maximalRealSubfield E)) (v.adicCompletion (maximalRealSubfield E))) (IsCMField.complexConj E).toAlgHom) a`.
+-/
 theorem locConj_algebraMap (a : v.adicCompletion (maximalRealSubfield E)) :
     locConj v (algebraMap _ (LocAlg v) a) = algebraMap _ (LocAlg v) a :=
   AlgHom.commutes (Algebra.TensorProduct.map (AlgHom.id (v.adicCompletion (maximalRealSubfield E)) (v.adicCompletion (maximalRealSubfield E)))
     (IsCMField.complexConj E).toAlgHom) a
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [locConj_tmul, cc]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem locConj_locConj (z : LocAlg v) : locConj v (locConj v z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
   | tmul a x => simp [locConj_tmul, cc]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.algebraMap_apply' a).symm`.
+-/
 theorem locEmb_coe (a : (maximalRealSubfield E)) :
     locEmb v (a : E) = algebraMap (v.adicCompletion (maximalRealSubfield E)) (LocAlg v) (algebraMap (maximalRealSubfield E) _ a) := by
   rw [← IsScalarTower.algebraMap_apply]
   exact (Algebra.TensorProduct.algebraMap_apply' a).symm
 
+/- English proof (translation)
+The claim follows from `locEmb_coe v (s : (maximalRealSubfield E))`.
+-/
 theorem locEmb_algebraMap (s : 𝓞 (maximalRealSubfield E)) :
     locEmb v (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E) = algebraMap (v.adicCompletionIntegers (maximalRealSubfield E)) (LocAlg v)
       (algebraMap (𝓞 (maximalRealSubfield E)) _ s) :=
   locEmb_coe v (s : (maximalRealSubfield E))
 
+/- English proof (translation)
+The claim follows from `(algebraMap (v.adicCompletion (maximalRealSubfield E)) (LocAlg v)).injective`.
+-/
 theorem algebraMap_locAlg_injective :
     Function.Injective (algebraMap (v.adicCompletion (maximalRealSubfield E)) (LocAlg v)) :=
   (algebraMap (v.adicCompletion (maximalRealSubfield E)) (LocAlg v)).injective
 
+/- English proof (translation)
+Take `⟨b, hb0, hb1⟩` from `Published.exists_basis_one_imaginary h0 hθ`. Set `B` to `Algebra.TensorProduct.basis (v.adicCompletion (maximalRealSubfield E)) b`. Use `⟨B.repr z 0, B.repr z 1, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← B.sum_repr z, Fin.sum_univ_two]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.basis_apply, hb0, hb1, ← Algebra.TensorProduct.one_def, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_coord {θ : E} (h0 : θ ≠ 0) (hθ : cc θ = -θ) (z : LocAlg v) :
     ∃ p q : v.adicCompletion (maximalRealSubfield E),
       z = algebraMap _ (LocAlg v) p + algebraMap _ (LocAlg v) q * locEmb v θ := by
@@ -117,6 +163,11 @@ theorem exists_coord {θ : E} (h0 : θ ≠ 0) (hθ : cc θ = -θ) (z : LocAlg v)
     Algebra.TensorProduct.basis_apply, hb0, hb1, ← Algebra.TensorProduct.one_def, mul_one]
   rfl
 
+/- English proof (translation)
+Take `⟨θ, h0, hθ⟩` from `Published.exists_cc_eq_neg E`. Take `⟨p, q, rfl⟩` from `exists_coord v h0 hθ z`. Rewrite `hz` using `[map_add, map_mul, locConj_algebraMap, locConj_algebraMap, locConj_locEmb, hθ, map_neg]`. Establish `hu : IsUnit (locEmb v (2 * θ))` using `(IsUnit.mk0 _ (mul_ne_zero two_ne_zero h0)).map _`. Establish `: algebraMap _ (LocAlg v) q = 0`.
+
+Rewrite using `[← hu.mul_left_eq_zero, map_mul, map_ofNat]`. Take the linear combination `-hz`. Conclude with `⟨p, by rw [this, zero_mul, add_zero]⟩`.
+-/
 theorem exists_of_locConj_eq {z : LocAlg v} (hz : locConj v z = z) :
     ∃ a : v.adicCompletion (maximalRealSubfield E), algebraMap _ (LocAlg v) a = z := by
   obtain ⟨θ, h0, hθ⟩ := Published.exists_cc_eq_neg E
@@ -131,13 +182,24 @@ theorem exists_of_locConj_eq {z : LocAlg v} (hz : locConj v z = z) :
 def locOrder : Subalgebra (v.adicCompletionIntegers (maximalRealSubfield E)) (LocAlg v) :=
   Algebra.adjoin _ (Set.range fun a : 𝓞 E => locEmb v a)
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨a, rfl⟩`.
+-/
 theorem locEmb_mem_locOrder (a : 𝓞 E) : locEmb v a ∈ locOrder v :=
   Algebra.subset_adjoin ⟨a, rfl⟩
 
+/- English proof (translation)
+The claim follows from `locConj_algebraMap v (a : v.adicCompletion (maximalRealSubfield E))`.
+-/
 theorem locConj_algebraMap' (a : v.adicCompletionIntegers (maximalRealSubfield E)) :
     locConj v (algebraMap _ (LocAlg v) a) = algebraMap _ (LocAlg v) a :=
   locConj_algebraMap v (a : v.adicCompletion (maximalRealSubfield E))
 
+/- English proof (translation)
+Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `locEmb_mem_locOrder v (IsCMField.ringOfIntegersComplexConj E a)`. Consider the case `algebraMap a => rw [locConj_algebraMap']`.
+
+Conclude with `Subalgebra.algebraMap_mem _ a`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem locConj_mem {z : LocAlg v} (hz : z ∈ locOrder v) : locConj v z ∈ locOrder v := by
   induction hz using Algebra.adjoin_induction with
   | mem x hx =>
@@ -147,6 +209,9 @@ theorem locConj_mem {z : LocAlg v} (hz : z ∈ locOrder v) : locConj v z ∈ loc
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
+/- English proof (translation)
+Use `(show locOrder v ≤ integralClosure _ _ from Algebra.adjoin_le ?_) hz` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `a.isIntegral_coe.map_of_comp_eq (Int.castRingHom _) (locEmb v) (RingHom.ext_int _ _)`.
+-/
 theorem isIntegral_of_mem_locOrder {z : LocAlg v} (hz : z ∈ locOrder v) :
     IsIntegral (v.adicCompletionIntegers (maximalRealSubfield E)) z := by
   refine (show locOrder v ≤ integralClosure _ _ from Algebra.adjoin_le ?_) hz
@@ -156,8 +221,14 @@ theorem isIntegral_of_mem_locOrder {z : LocAlg v} (hz : z ∈ locOrder v) :
 def locOrderConj : locOrder v →+* locOrder v :=
   (locConj v).restrict (locOrder v).toSubring (locOrder v).toSubring fun _ => locConj_mem v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_locOrderConj (z : locOrder v) : (locOrderConj v z : LocAlg v) = locConj v z := rfl
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `exists_of_locConj_eq v hc`. Establish `hi : IsIntegral (v.adicCompletionIntegers (maximalRealSubfield E)) a` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom (v.adicCompletionIntegers (maximalRealSubfield E)) (v.adicCompletion (maximalRealSubfield E)) (LocAlg v)) (algebraMap_locAlg_injective v)).1 (isIntegral_of_mem_locOrder v hz)`. Take `⟨b, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Conclude with `⟨b, rfl⟩`.
+-/
 theorem exists_of_mem_locOrder_of_locConj_eq {z : LocAlg v} (hz : z ∈ locOrder v)
     (hc : locConj v z = z) :
     ∃ a : v.adicCompletionIntegers (maximalRealSubfield E), algebraMap _ (LocAlg v) a = z := by
@@ -169,6 +240,11 @@ theorem exists_of_mem_locOrder_of_locConj_eq {z : LocAlg v} (hz : z ∈ locOrder
   obtain ⟨b, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.1 hi
   exact ⟨b, rfl⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `key : (IsCMField.ringOfIntegersComplexConj E).toAlgHom = AlgHom.id (𝓞 (maximalRealSubfield E)) (𝓞 E)` using `Algebra.FormallyUnramified.ext_of_iInf w (Ideal.iInf_pow_eq_bot_of_isDomain w hw) fun x => by`. Rewrite using `[eq_comm, Ideal.Quotient.eq]`. Conclude with `h x`.
+
+Use `IsCMField.complexConj_ne_one E (AlgEquiv.ext fun x => ?_)` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`. Establish `e : ∀ a : 𝓞 E, IsCMField.complexConj E (algebraMap (𝓞 E) E a) = algebraMap (𝓞 E) E a` using `fun a => congrArg (algebraMap (𝓞 E) E) (DFunLike.congr_fun key a)`. Rewrite using `[map_div₀, e, e]`. Both sides reduce to the same expression.
+-/
 theorem exists_sub_conj_notMem [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] (w : Ideal (𝓞 E))
     (hw : w ≠ ⊤) : ∃ x : 𝓞 E, x - IsCMField.ringOfIntegersComplexConj E x ∉ w := by
   by_contra h
@@ -182,6 +258,15 @@ theorem exists_sub_conj_notMem [Algebra.Unramified (𝓞 (maximalRealSubfield E)
     fun a => congrArg (algebraMap (𝓞 E) E) (DFunLike.congr_fun key a)
   rw [map_div₀, e, e]; rfl
 
+/- English proof (translation)
+Take `⟨w, hw, hwv⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := 𝓞 E) v.asIdeal (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E))).1 (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `bot_le)`. Take `⟨x, hx⟩` from `exists_sub_conj_notMem w hw.ne_top`. Use `set δ := x - IsCMField.ringOfIntegersComplexConj E x with hδ`.
+
+Establish `hcδ : IsCMField.ringOfIntegersComplexConj E δ = -δ` using `by ext; simp [hδ]`. Take `⟨s, hs⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff E (δ * δ)).1 (by rw [map_mul, hcδ]; ring)`. Establish `hsv : s ∉ v.asIdeal` using `fun h => by`. Rewrite `h` using `[← hwv, Ideal.mem_comap, hs]`. Conclude with `hx ((hw.mem_or_mem h).elim id id)`.
+
+Use `⟨⟨_, locEmb_mem_locOrder v x⟩, isUnit_of_mul_isUnit_left (y := ⟨_, locEmb_mem_locOrder v δ⟩) ?_⟩` and prove the remaining obligations. Use `((isUnit_algebraMap_iff v s).2 hsv).map (algebraMap _ (locOrder v))` and compare the differences between its conclusion and the goal. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(locEmb v x - locEmb v (cc x)) * locEmb v δ = algebraMap _ (LocAlg v) _`. Rewrite using `[← locEmb_algebraMap, hs, ← map_sub, ← map_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_isUnit_sub_locOrderConj [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] :
     ∃ ω : locOrder v, IsUnit (ω - locOrderConj v ω) := by
   obtain ⟨w, hw, hwv⟩ := Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain
@@ -212,6 +297,9 @@ section SemiLocal
 
 variable (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
 
+/- English proof (translation)
+The claim follows from `algebraMapSubmonoid_le_nonZeroDivisors_of_faithfulSMul _ v.asIdeal.primeCompl_le_nonZeroDivisors`.
+-/
 theorem algebraMapSubmonoid_le :
     Algebra.algebraMapSubmonoid (𝓞 E) v.asIdeal.primeCompl ≤ (𝓞 E)⁰ :=
   algebraMapSubmonoid_le_nonZeroDivisors_of_faithfulSMul _ v.asIdeal.primeCompl_le_nonZeroDivisors
@@ -232,6 +320,9 @@ instance isPrincipalIdealRing_semiLoc : IsPrincipalIdealRing (semiLoc v) :=
     IsLocalization.isDedekindDomain (𝓞 E) (algebraMapSubmonoid_le v) _
   IsDedekindDomain.isPrincipalIdealRing_localization_over_prime (𝓞 E) v.asIdeal v.ne_bot
 
+/- English proof (translation)
+Rewrite using `[mem_span_localization_iff (semiLoc v) (Algebra.algebraMapSubmonoid (𝓞 E) v.asIdeal.primeCompl)]`. Conclude with `⟨fun ⟨_, ⟨s, hs, rfl⟩, h⟩ => ⟨s, hs, h⟩, fun ⟨s, hs, h⟩ => ⟨_, ⟨s, hs, rfl⟩, h⟩⟩`.
+-/
 theorem mem_span_semiLoc_iff {V : Type*} [AddCommGroup V] [Module E V] [Module (𝓞 E) V]
     [IsScalarTower (𝓞 E) E V] (N : Submodule (𝓞 E) V) (x : V) :
     x ∈ Submodule.span (semiLoc v) (N : Set V) ↔
@@ -240,6 +331,11 @@ theorem mem_span_semiLoc_iff {V : Type*} [AddCommGroup V] [Module E V] [Module (
     (Algebra.algebraMapSubmonoid (𝓞 E) v.asIdeal.primeCompl)]
   exact ⟨fun ⟨_, ⟨s, hs, rfl⟩, h⟩ => ⟨s, hs, h⟩, fun ⟨s, hs, h⟩ => ⟨_, ⟨s, hs, rfl⟩, h⟩⟩
 
+/- English proof (translation)
+Establish `h` using `mem_span_semiLoc_iff v (1 : Submodule (𝓞 E) E) z`. Simplify using `only [mem_one_ringOfIntegers_iff] at h`. Rewrite `h` using `[Submodule.one_eq_span, Submodule.span_span_of_tower, Submodule.mem_span_singleton]`. Use `Iff.trans ⟨fun hz => ⟨⟨z, hz⟩, mul_one z⟩, ?_⟩ h` and prove the remaining obligations. Introduce and unpack `⟨a, rfl⟩`.
+
+Establish `: a • (1 : E) = a` using `mul_one (a : E)`. Rewrite using `[this]`. Conclude with `a.2`.
+-/
 theorem mem_semiLoc_iff (z : E) :
     z ∈ semiLoc v ↔ ∃ s ∉ v.asIdeal, IsIntegral ℤ ((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E) * z) := by
   have h := mem_span_semiLoc_iff v (1 : Submodule (𝓞 E) E) z
@@ -250,10 +346,16 @@ theorem mem_semiLoc_iff (z : E) :
   have : a • (1 : E) = a := mul_one (a : E)
   rw [this]; exact a.2
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexConj_apply_eq_self E (s : (maximalRealSubfield E))`.
+-/
 theorem cc_algebraMap (s : 𝓞 (maximalRealSubfield E)) :
     cc (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E) = algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s :=
   IsCMField.complexConj_apply_eq_self E (s : (maximalRealSubfield E))
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[mem_semiLoc_iff]`. Take `⟨s, hs, h⟩` from `hz`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Use `isIntegral_cc h` as an intermediate fact. Rewrite `this` using `[HermitianTraceFormVanishing.cc_mul, cc_algebraMap]`. Then use the resulting hypothesis.
+-/
 theorem cc_mem_semiLoc {z : E} (hz : z ∈ semiLoc v) : cc z ∈ semiLoc v := by
   rw [mem_semiLoc_iff] at hz ⊢
   obtain ⟨s, hs, h⟩ := hz
@@ -261,6 +363,19 @@ theorem cc_mem_semiLoc {z : E} (hz : z ∈ semiLoc v) : cc z ∈ semiLoc v := by
   have := isIntegral_cc h
   rwa [HermitianTraceFormVanishing.cc_mul, cc_algebraMap] at this
 
+/- English proof (translation)
+Rewrite using `[mem_semiLoc_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `real : ∀ y : E, cc y = y → locEmb v y ∈ locOrder v → ∃ s ∉ v.asIdeal, IsIntegral ℤ ((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E) * y)`. Introduce `y hy hm`.
+
+Take `⟨a, ha⟩` from `exists_of_mem_locOrder_of_locConj_eq v hm (by rw [locConj_locEmb, hy])`. Set `y' : (maximalRealSubfield E)` to `⟨y, (IsCMField.complexConj_eq_self_iff E y).1 hy⟩`. Establish `h1 : algebraMap (maximalRealSubfield E) (v.adicCompletion (maximalRealSubfield E)) y' = a` using `algebraMap_locAlg_injective v ((locEmb_coe v y').symm.trans ha.symm)`. Take `⟨s, hs, h⟩` from `(mem_localRing_iff v y').1 ((algebraMap_mem_adicCompletionIntegers_iff v y').1 (h1 ▸ a.2))`. Conclude with `⟨s, hs, ((mem_one_ringOfIntegers_iff _).1 h).map_of_comp_eq (RingHom.id ℤ) (algebraMap (maximalRealSubfield E) E) (RingHom.ext_int _ _)⟩`.
+
+Establish `hc : locEmb v (cc z) ∈ locOrder v` using `locConj_mem v hz`. Establish `h1` using `(mem_semiLoc_iff v _).2 (real (z + cc z) (by simp [cc, add_comm]) (by rw [map_add]; exact add_mem hz hc))`. Establish `h2` using `(mem_semiLoc_iff v _).2 (real (z * cc z) (by simp [cc, mul_comm]) (by rw [map_mul]; exact mul_mem hz hc))`. Establish `hi : IsIntegral (semiLoc v) z`. Use `⟨Polynomial.X ^ 2 - Polynomial.C ⟨_, h1⟩ * Polynomial.X + Polynomial.C ⟨_, h2⟩, by monicity!, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Express the relevant statement in the definitionally equal form `z ^ 2 - (z + cc z) * z + z * cc z = 0`. Expand and normalize the polynomial expressions, which then agree. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Conclude with `(mem_semiLoc_iff v z).1 (hb ▸ b.2)`.
+
+Introduce and unpack `⟨s, hs, h⟩`. Take `⟨t, ht⟩` from `((isUnit_algebraMap_iff v s).2 hs).exists_left_inv`. Establish `h1 : locEmb v z = algebraMap _ (LocAlg v) t * locEmb v ((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E) * z)`. Rewrite using `[map_mul, locEmb_algebraMap, ← mul_assoc, ← map_mul, ht, map_one, one_mul]`. Rewrite using `[h1]`.
+
+Conclude with `mul_mem (Subalgebra.algebraMap_mem _ t) (locEmb_mem_locOrder v ⟨_, h⟩)`.
+-/
 theorem locEmb_mem_locOrder_iff (z : E) : locEmb v z ∈ locOrder v ↔ z ∈ semiLoc v := by
   rw [mem_semiLoc_iff]
   constructor
@@ -298,6 +413,11 @@ theorem locEmb_mem_locOrder_iff (z : E) : locEmb v z ∈ locOrder v ↔ z ∈ se
     rw [h1]
     exact mul_mem (Subalgebra.algebraMap_mem _ t) (locEmb_mem_locOrder v ⟨_, h⟩)
 
+/- English proof (translation)
+Use `haveI : Submodule.IsLattice E (Submodule.span (semiLoc v) (L : Set (Fin r → E))) := by`. Prove the components needed by the constructor for the conclusion. Take `⟨s, rfl⟩` from `hL.1`. Conclude with `⟨s, (Submodule.span_span_of_tower (𝓞 E) _ _).symm⟩`. Rewrite using `[Submodule.span_span_of_tower, hL.2]`.
+
+Take `⟨g, hg⟩` from `exists_eq_frameLattice (Submodule.span (semiLoc v) (L : Set (Fin r → E)))`. Use `⟨g, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_span_semiLoc_iff, hg, mem_frameLattice_iff_inv]`. Conclude with `forall_congr' fun i => Submodule.mem_one.trans ⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`.
+-/
 theorem exists_frame {L : Submodule (𝓞 E) (Fin r → E)} (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L) :
     ∃ g : GL (Fin r) E, ∀ x, (∃ s ∉ v.asIdeal, algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s • x ∈ L) ↔
       ∀ i, (((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ x) i ∈ semiLoc v := by
@@ -312,6 +432,17 @@ theorem exists_frame {L : Submodule (𝓞 E) (Fin r → E)} (hL : ReciprocityThe
   exact forall_congr' fun i =>
     Submodule.mem_one.trans ⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Establish `hfg : (Submodule.span (semiLoc v) ((𝔟 : Submodule (𝓞 E) E) : Set E)).FG`. Take `⟨s, hs⟩` from `FractionalIdeal.fg_of_isNoetherianRing le_rfl 𝔟`. Conclude with `⟨s, by rw [← hs, Submodule.span_span_of_tower]⟩`. Take `⟨b, hb⟩` from `(FractionalIdeal.isPrincipal (⟨_, FractionalIdeal.isFractional_of_fg hfg⟩ : FractionalIdeal (semiLoc v)⁰ E)).principal`. Establish `hb' : ∀ z, (∃ s ∉ v.asIdeal, (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E) * z ∈ 𝔟) ↔ ∃ a : semiLoc v, a • b = z` using `fun z => by`.
+
+Rewrite using `[← Submodule.mem_span_singleton, ← hb]`. Conclude with `(mem_span_semiLoc_iff v (𝔟 : Submodule (𝓞 E) E) z).symm`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Use `h𝔟 (FractionalIdeal.eq_zero_iff.2 fun z hz => ?_)` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `(hb' z).1 ⟨1, (Ideal.ne_top_iff_one _).1 v.isPrime.ne_top, by simpa using hz⟩`. Rewrite using `[← ha, smul_zero]`. Use `⟨b, hb0, fun z => (hb' z).trans ⟨?_, fun h => ⟨⟨_, h⟩, ?_⟩⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨a, rfl⟩`. Establish `: b⁻¹ * (a • b) = a`.
+
+Express the relevant statement in the definitionally equal form `b⁻¹ * ((a : E) * b) = a`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `a.2`. Express the relevant statement in the definitionally equal form `b⁻¹ * z * b = z`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_generator {𝔟 : FractionalIdeal (𝓞 E)⁰ E} (h𝔟 : 𝔟 ≠ 0) :
     ∃ b : E, b ≠ 0 ∧ ∀ z, (∃ s ∉ v.asIdeal, (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E) * z ∈ 𝔟) ↔
       b⁻¹ * z ∈ semiLoc v := by
@@ -344,11 +475,17 @@ section Gram
 
 variable (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
 
+/- English proof (translation)
+Simplify using `only [herm, Matrix.vecMul, dotProduct, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem herm_eq_dotProduct (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     herm G x y = x ᵥ* G ⬝ᵥ fun i => cc (y i) := by
   simp only [herm, Matrix.vecMul, dotProduct, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `: (fun i => cc ((P *ᵥ y) i)) = P.map cc *ᵥ fun i => cc (y i)`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (IsCMField.complexConj E : E →+* E) P y i`. Rewrite using `[herm_eq_dotProduct, herm_eq_dotProduct, this, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+-/
 theorem herm_mulVec (G P : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     herm G (P *ᵥ x) (P *ᵥ y) = herm (Pᵀ * G * P.map cc) x y := by
   have : (fun i => cc ((P *ᵥ y) i)) = P.map cc *ᵥ fun i => cc (y i) :=
@@ -356,11 +493,19 @@ theorem herm_mulVec (G P : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
   rw [herm_eq_dotProduct, herm_eq_dotProduct, this, Matrix.dotProduct_mulVec,
     ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, Matrix.mul_assoc]
 
+/- English proof (translation)
+The claim follows from `(Ideal.ne_top_iff_one _).1 v.isPrime.ne_top`.
+-/
 theorem one_notMem : (1 : 𝓞 (maximalRealSubfield E)) ∉ v.asIdeal := (Ideal.ne_top_iff_one _).1 v.isPrime.ne_top
 
 variable {G : Matrix (Fin r) (Fin r) E} {L : Submodule (𝓞 E) (Fin r → E)}
   {𝔟 : FractionalIdeal (𝓞 E)⁰ E} {g : GL (Fin r) E} {b : E}
 
+/- English proof (translation)
+Use `(hg _).2 fun i => ?_` and prove the remaining obligations. Establish `: (((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ (fun k => (g : Matrix (Fin r) (Fin r) E) k j)) i = (1 : Matrix (Fin r) (Fin r) E) i j`. Rewrite using `[← Units.inv_mul g]`. Both sides reduce to the same expression. Rewrite using `[this, Matrix.one_apply]`.
+
+Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+-/
 theorem exists_smul_col_mem
     (hg : ∀ x, (∃ s ∉ v.asIdeal, algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s • x ∈ L) ↔
       ∀ i, (((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ x) i ∈ semiLoc v) (j : Fin r) :
@@ -373,6 +518,11 @@ theorem exists_smul_col_mem
   split_ifs
   exacts [one_mem _, zero_mem _]
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `exists_smul_col_mem v hg i`. Take `⟨s', hs', h'⟩` from `exists_smul_col_mem v hg j`. Use `(hmod _).1 h _ h'` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul E, ← algebraMap_smul E (algebraMap _ (𝓞 E) s'), HermitianTraceFormVanishing.herm_smul_left, HermitianTraceFormVanishing.herm_smul_right, Published.herm_col]`. Use `(hb _).1 ⟨s * s', fun h => (v.isPrime.mem_or_mem h).elim hs hs', ?_⟩` and prove the remaining obligations.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `erw [cc_algebraMap]`. Simplify using `[mul_assoc]`.
+-/
 theorem gram_mem_semiLoc (hmod : ∀ x, x ∈ L ↔ ∀ y ∈ L, herm G x y ∈ 𝔟)
     (hg : ∀ x, (∃ s ∉ v.asIdeal, algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s • x ∈ L) ↔
       ∀ i, (((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ x) i ∈ semiLoc v)
@@ -390,6 +540,23 @@ theorem gram_mem_semiLoc (hmod : ∀ x, x ∈ L ↔ ∀ y ∈ L, herm G x y ∈ 
   erw [cc_algebraMap]
   simp [mul_assoc]
 
+/- English proof (translation)
+Use `set H := (g : Matrix (Fin r) (Fin r) E)ᵀ * G * (g : Matrix (Fin r) (Fin r) E).map cc with hH`. Establish `hHd : IsUnit H.det`. Use `g.det_ne_zero` as an intermediate fact. Rewrite using `[hH, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Published.det_map_cc]`. Conclude with `(mul_ne_zero (mul_ne_zero this hd) (Published.cc_ne_zero this)).isUnit`.
+
+Set `a : Fin r → E` to `b • (Pi.single i 1 ᵥ* H⁻¹)`. Set `x : Fin r → E` to `(g : Matrix (Fin r) (Fin r) E) *ᵥ a`. Establish `hx : ∀ y, herm G x y = b * cc ((((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ y) i)`. Introduce `y`. Establish `hy : y = (g : Matrix (Fin r) (Fin r) E) *ᵥ (((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ y)`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Use `conv_lhs => rw [hy, herm_mulVec, ← hH, HermitianTraceFormVanishing.herm_smul_left, herm_eq_dotProduct, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hHd, Matrix.vecMul_one, single_dotProduct, one_mul]`. Establish `hloc : ∀ y ∈ L, ∃ s ∈ v.asIdeal.primeCompl, (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E) * herm G x y ∈ 𝔟` using `fun y hy => by`. Use `(hb _).2 ?_` and prove the remaining obligations. Rewrite using `[hx, inv_mul_cancel_left₀ hb0]`.
+
+Conclude with `cc_mem_semiLoc v ((hg y).1 ⟨1, one_notMem v, by simpa using hy⟩ i)`. Establish `hmul : ∀ (c : 𝓞 E) {z : E}, z ∈ 𝔟 → (c : E) * z ∈ 𝔟` using `fun c z hz => (𝔟 : Submodule (𝓞 E) E).smul_mem c hz`. Take `⟨t, ht⟩` from `hL`. Take `⟨s, hs, h⟩` from `exists_mem_submonoid_forall t.finite_toSet v.asIdeal.primeCompl (fun y s => (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E) * herm G x y ∈ 𝔟) (fun y s s' h => by`. Use `hmul (algebraMap _ (𝓞 E) s') h` as an intermediate fact.
+
+Simplify `this)` using `[mul_assoc]`. Use the proof step `(fun y hy => hloc y (ht ▸ Submodule.subset_span hy))`. Establish `hsx : algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s • x ∈ L`. Use `(hmod _).2 fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul E, HermitianTraceFormVanishing.herm_smul_left]`.
+
+Rewrite `hy` using `[← ht]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact h y hy`. Consider the case `zero => simpa [herm, cc] using 𝔟.zero_mem`. Consider the case `add y z _ _ hy hz`.
+
+Rewrite using `[herm_add_right, mul_add]`. Conclude with `(𝔟 : Submodule (𝓞 E) E).add_mem hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[← algebraMap_smul E, HermitianTraceFormVanishing.herm_smul_right, mul_left_comm]`. Conclude with `hmul (IsCMField.ringOfIntegersComplexConj E c) hy`.
+
+Use `(hg x).1 ⟨s, hs, hsx⟩ j` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Simplify `this` using `[a]`.
+-/
 theorem gram_inv_mem_semiLoc (hd : G.det ≠ 0) (hL : L.FG)
     (hmod : ∀ x, x ∈ L ↔ ∀ y ∈ L, herm G x y ∈ 𝔟)
     (hg : ∀ x, (∃ s ∉ v.asIdeal, algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s • x ∈ L) ↔
@@ -457,6 +624,11 @@ def locLattice (L : Submodule (𝓞 E) (Fin r → E)) :
 
 variable {L : Submodule (𝓞 E) (Fin r → E)}
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `((isUnit_algebraMap_iff v s).2 hs).exists_left_inv`. Establish `h1 : (fun i => locEmb v (x i)) = t • fun i => locEmb v ((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s • x) i)`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `_ = t • locEmb v ((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E) * x i)`. Rewrite using `[map_mul, locEmb_algebraMap, Algebra.smul_def, ← mul_assoc, ← map_mul, ht, map_one, one_mul]`.
+
+Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ t (Submodule.subset_span ⟨_, hx, rfl⟩)`.
+-/
 theorem mem_locLattice_of_smul_mem {s : 𝓞 (maximalRealSubfield E)} (hs : s ∉ v.asIdeal) {x : Fin r → E}
     (hx : algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s • x ∈ L) : (fun i => locEmb v (x i)) ∈ locLattice v L := by
   obtain ⟨t, ht⟩ := ((isUnit_algebraMap_iff v s).2 hs).exists_left_inv
@@ -468,6 +640,15 @@ theorem mem_locLattice_of_smul_mem {s : 𝓞 (maximalRealSubfield E)} (hs : s �
   rw [h1]
   exact Submodule.smul_mem _ t (Submodule.subset_span ⟨_, hx, rfl⟩)
 
+/- English proof (translation)
+Proceed by induction on `hz using Algebra.adjoin_induction generalizing x with`. Consider the case `mem z hz`. Take `⟨a, rfl⟩` from `hz`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨a • y, L.smul_mem a hy, funext fun i => map_mul (locEmb v) _ _⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`. Consider the case `algebraMap a => rw [algebraMap_smul]`. Conclude with `Submodule.smul_mem _ a hx`. Consider the case `add y z _ _ hy hz => rw [add_smul]`.
+
+Conclude with `add_mem (hy hx) (hz hx)`. Consider the case `mul y z _ _ hy hz => rw [mul_smul]`. Conclude with `hy (hz hx)`.
+-/
 theorem smul_mem_locLattice {z : LocAlg v} (hz : z ∈ locOrder v) {x : Fin r → LocAlg v}
     (hx : x ∈ locLattice v L) : z • x ∈ locLattice v L := by
   induction hz using Algebra.adjoin_induction generalizing x with
@@ -484,6 +665,17 @@ theorem smul_mem_locLattice {z : LocAlg v} (hz : z ∈ locOrder v) {x : Fin r �
   | add y z _ _ hy hz => rw [add_smul]; exact add_mem (hy hx) (hz hx)
   | mul y z _ _ hy hz => rw [mul_smul]; exact hy (hz hx)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`.
+
+Use `(locEmb_mem_locOrder_iff v _).2 ((hg y).1 ⟨1, one_notMem v, by simpa using hy⟩ i)` as an intermediate fact. Rewrite `this` using `[RingHom.map_mulVec]`. Then use the resulting hypothesis. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Subalgebra.smul_mem _ hx c`. Introduce `hx`. Establish `h1 : x = (g : Matrix (Fin r) (Fin r) E).map (locEmb v) *ᵥ (((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map (locEmb v) *ᵥ x)`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`.
+
+Rewrite using `[h1, Matrix.mulVec_eq_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨s, hs, h⟩` from `exists_smul_col_mem v hg j`. Use `smul_mem_locLattice v (hx j) (mem_locLattice_of_smul_mem v hs h)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k`. Simplify using `[mul_comm]`.
+-/
 theorem mem_locLattice_iff_of_frame {g : GL (Fin r) E}
     (hg : ∀ x, (∃ s ∉ v.asIdeal, algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s • x ∈ L) ↔
       ∀ i, (((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ x) i ∈ semiLoc v)
@@ -513,6 +705,9 @@ theorem mem_locLattice_iff_of_frame {g : GL (Fin r) E}
     funext k
     simp [mul_comm]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_frame v hL`. Rewrite using `[mem_locLattice_iff_of_frame v hg, hg]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[← locEmb_mem_locOrder_iff, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem locEmb_mem_locLattice_iff (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L) (x : Fin r → E) :
     (fun i => locEmb v (x i)) ∈ locLattice v L ↔
       ∃ s ∉ v.asIdeal, algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s • x ∈ L := by
@@ -524,6 +719,9 @@ theorem locEmb_mem_locLattice_iff (hL : ReciprocityTheory.MultiplicativeHeights.
 
 end LocalLattice
 
+/- English proof (translation)
+Use `⟨fun hx v => Submodule.subset_span ⟨x, hx, rfl⟩, fun h => ?_⟩` and prove the remaining obligations. Use `(mem_iff_forall_mem_localize_ringOfIntegers L x).2 fun w => ?_` and prove the remaining obligations. Take `⟨s, hs, h⟩` from `(locEmb_mem_locLattice_iff (w.under (𝓞 (maximalRealSubfield E))) hL x).1 (h _)`. Conclude with `(mem_localize_iff w L x).2 ⟨_, hs, h⟩`.
+-/
 theorem mem_iff_forall_mem_locLattice {L : Submodule (𝓞 E) (Fin r → E)}
     (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L) (x : Fin r → E) :
     x ∈ L ↔ ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), (fun i => locEmb v (x i)) ∈ locLattice v L := by
@@ -532,6 +730,15 @@ theorem mem_iff_forall_mem_locLattice {L : Submodule (𝓞 E) (Fin r → E)}
   obtain ⟨s, hs, h⟩ := (locEmb_mem_locLattice_iff (w.under (𝓞 (maximalRealSubfield E))) hL x).1 (h _)
   exact (mem_localize_iff w L x).2 ⟨_, hs, h⟩
 
+/- English proof (translation)
+Establish `key : ∀ {L L' : Submodule (𝓞 E) (Fin r → E)}, ReciprocityTheory.MultiplicativeHeights.IsLattice L → ReciprocityTheory.MultiplicativeHeights.IsLattice L' → ∀ᶠ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)) in Filter.cofinite, locLattice v L ≤ locLattice v L'`. Introduce `L L' hL hL'`. Take `⟨d, hd, h⟩` from `exists_smul_le (O := 𝓞 E) hL.1 hL'.2`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Take `⟨n, hn⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff E (IsCMField.ringOfIntegersComplexConj E d * d)).1 (by ext; simp [mul_comm])`.
+
+Establish `hn0 : n ∈ (𝓞 (maximalRealSubfield E))⁰` using `mem_nonZeroDivisors_of_ne_zero fun h0 => by`. Rewrite `hn` using `[h0, map_zero, eq_comm, mul_eq_zero, map_eq_zero_iff _ (AlgEquiv.injective _)]`. Conclude with `hd0 (hn.elim id id)`. Use `filter_upwards [eventually_notMem hn0] with v hv`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `mem_locLattice_of_smul_mem v hv ?_` and prove the remaining obligations. Rewrite using `[hn, mul_smul]`. Conclude with `L'.smul_mem _ (h x hx)`. Use `Filter.eventually_cofinite.1 ?_` and prove the remaining obligations.
+
+Use `filter_upwards [key hL hL', key hL' hL] with v h₁ h₂ using le_antisymm h₁ h₂`.
+-/
 theorem finite_setOf_locLattice_ne {L L' : Submodule (𝓞 E) (Fin r → E)}
     (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L) (hL' : ReciprocityTheory.MultiplicativeHeights.IsLattice L') :
     {v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)) | locLattice v L ≠ locLattice v L'}.Finite := by
@@ -559,14 +766,29 @@ section NormalForm
 
 variable [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (locConj_locConj v z)`.
+-/
 theorem locOrderConj_locOrderConj (z : locOrder v) : locOrderConj v (locOrderConj v z) = z :=
   Subtype.ext (locConj_locConj v z)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_of_mem_locOrder_of_locConj_eq v z.2 (congrArg Subtype.val hz)`. Conclude with `⟨a, Subtype.ext ha⟩`.
+-/
 theorem mem_range_of_locOrderConj_eq (z : locOrder v) (hz : locOrderConj v z = z) :
     z ∈ (algebraMap (v.adicCompletionIntegers (maximalRealSubfield E)) (locOrder v)).range := by
   obtain ⟨a, ha⟩ := exists_of_mem_locOrder_of_locConj_eq v z.2 (congrArg Subtype.val hz)
   exact ⟨a, Subtype.ext ha⟩
 
+/- English proof (translation)
+Use `haveI := isAdicComplete_adicCompletionIntegers v`. Use `haveI := finite_residueField_adicCompletionIntegers v`. Set `φ : locOrder v →+* LocAlg v` to `(locOrder v).val`. Set `M' : Matrix (Fin r) (Fin r) (locOrder v)` to `Matrix.of fun i j => ⟨M i j, hM i j⟩`. Set `N' : Matrix (Fin r) (Fin r) (locOrder v)` to `Matrix.of fun i j => ⟨N i j, hN i j⟩`.
+
+Establish `h1 : M' * N' = 1`. Apply `Matrix.map_injective (f := φ) Subtype.val_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(M' * N').map φ = Matrix.map 1 φ`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `hMN`.
+
+Take `⟨P, hP, h⟩` from `UnramifiedHermitian.exists_eq_transpose_mul_map_of_henselian (R₀ := v.adicCompletionIntegers (maximalRealSubfield E)) (locOrderConj v) (locOrderConj_locOrderConj v) (fun a => Subtype.ext (locConj_algebraMap' v a)) (mem_range_of_locOrderConj_eq v) (exists_isUnit_sub_locOrderConj v …`. Take `⟨P, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det P).2 hP`. Use `⟨Matrix.GeneralLinearGroup.map φ P, fun i j => (P.1 i j).2, fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `((P⁻¹).1 i j).2`.
+
+Use `congrArg (fun X => Matrix.map X φ) h` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Conclude with `this`.
+-/
 theorem exists_eq_transpose_mul_map_locConj {M N : Matrix (Fin r) (Fin r) (LocAlg v)}
     (hM : ∀ i j, M i j ∈ locOrder v) (hN : ∀ i j, N i j ∈ locOrder v) (hMN : M * N = 1)
     (hh : ∀ i j, locConj v (M i j) = M j i) :
@@ -598,6 +820,19 @@ theorem exists_eq_transpose_mul_map_locConj {M N : Matrix (Fin r) (Fin r) (LocAl
     simp only [Matrix.map_mul] at this
     exact this
 
+/- English proof (translation)
+Establish `hu : b⁻¹ * cc b ∈ semiLoc v`. Take `⟨s, hs, h⟩` from `(hb b).2 (by rw [inv_mul_cancel₀ hb0]; exact one_mem _)`. Use `(hb _).1 ⟨s, hs, ?_⟩` and prove the remaining obligations. Use `hc _ h` as an intermediate fact. Rewrite `this` using `[HermitianTraceFormVanishing.cc_mul, cc_algebraMap]`. Then use the resulting hypothesis.
+
+Establish `hcb` using `Published.cc_ne_zero hb0`. Establish `hcu : cc (b⁻¹ * cc b) = (cc b)⁻¹ * b` using `by simp [cc]`. Set `u : locOrder v` to `⟨_, (locEmb_mem_locOrder_iff v _).2 hu⟩`. Establish `hu1 : u * locOrderConj v u = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `locEmb v _ * locEmb v (cc _) = 1`. Rewrite using `[← map_mul, hcu, ← map_one (locEmb v)]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Take `⟨a, ha⟩` from `QuadraticEtale.exists_isUnit_add_mul (R := v.adicCompletionIntegers (maximalRealSubfield E)) (locOrderConj v) (locOrderConj_locOrderConj v) (mem_range_of_locOrderConj_eq v) (exists_isUnit_sub_locOrderConj v) hu1`.
+
+Use `⟨ha.unit, ?_⟩` and prove the remaining obligations. Establish `e0 : ((ha.unit : locOrder v) : LocAlg v) = a + locEmb v (b⁻¹ * cc b) * locConj v a` using `rfl`. Establish `e1 : locEmb v (b⁻¹ * cc b) * locEmb v b = locEmb v (cc b)`. Rewrite using `[← map_mul]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Establish `e2 : locEmb v (cc (b⁻¹ * cc b)) * locEmb v (cc b) = locEmb v b`. Rewrite using `[← map_mul, hcu]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e0, map_mul, map_add, map_mul, locConj_locConj, locConj_locEmb, locConj_locEmb]`. Take the linear combination `(a : LocAlg v) * e2 - locConj v a * e1`.
+-/
 theorem exists_unit_locConj_mul_eq {𝔟 : FractionalIdeal (𝓞 E)⁰ E} (hc : ∀ z ∈ 𝔟, cc z ∈ 𝔟)
     {b : E} (hb0 : b ≠ 0)
     (hb : ∀ z, (∃ s ∉ v.asIdeal, (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s : E) * z ∈ 𝔟) ↔ b⁻¹ * z ∈ semiLoc v) :
@@ -630,12 +865,34 @@ theorem exists_unit_locConj_mul_eq {𝔟 : FractionalIdeal (𝓞 E)⁰ E} (hc : 
   linear_combination (a : LocAlg v) * e2 - locConj v a * e1
 
 omit [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] in
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec, dotProduct]`. Conclude with `Subalgebra.sum_mem _ fun j _ => mul_mem (hP i j) (hx j)`.
+-/
 theorem mulVec_mem_locOrder {P : Matrix (Fin r) (Fin r) (LocAlg v)}
     (hP : ∀ i j, P i j ∈ locOrder v) {x : Fin r → LocAlg v} (hx : ∀ i, x i ∈ locOrder v)
     (i : Fin r) : (P *ᵥ x) i ∈ locOrder v := by
   rw [Matrix.mulVec, dotProduct]
   exact Subalgebra.sum_mem _ fun j _ => mul_mem (hP i j) (hx j)
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_frame v hL`. Establish `h₁` using `gram_mem_semiLoc v hmod hg hb`. Establish `h₂` using `gram_inv_mem_semiLoc v hd hL.1 hmod hg hb0 hb`. Use `set H := (g : Matrix (Fin r) (Fin r) E)ᵀ * G * (g : Matrix (Fin r) (Fin r) E).map cc with hH`. Establish `hHd : IsUnit H.det`.
+
+Use `g.det_ne_zero` as an intermediate fact. Rewrite using `[hH, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Published.det_map_cc]`. Conclude with `(mul_ne_zero (mul_ne_zero this hd) (Published.cc_ne_zero this)).isUnit`. Establish `hHh : ∀ i j, cc (H i j) = H j i` using `fun i j => by`. Rewrite using `[hH, ← Published.herm_col, ← Published.herm_col, HermitianTraceFormVanishing.herm_conj G hG]`.
+
+Use `set t := ((ε : locOrder v) : LocAlg v) * locEmb v b with ht`. Use `set t' := (((ε⁻¹ : (locOrder v)ˣ) : locOrder v) : LocAlg v) * locEmb v b⁻¹ with ht'`. Establish `htt : t * t' = 1`. Establish `e : ((ε : locOrder v) : LocAlg v) * (((ε⁻¹ : (locOrder v)ˣ) : locOrder v) : LocAlg v) = 1` using `congrArg Subtype.val ε.mul_inv`. Rewrite using `[ht, ht', mul_mul_mul_comm, e, ← map_mul, mul_inv_cancel₀ hb0, map_one, one_mul]`.
+
+Establish `hct' : locConj v t' = t'`. Use `congrArg (locConj v) htt` as an intermediate fact. Rewrite `this` using `[map_mul, hε, map_one]`. Take the linear combination `t' * this - locConj v t' * htt`. Take `⟨P, hP, hP', hPP⟩` from `exists_eq_transpose_mul_map_locConj v (M := t' • H.map (locEmb v)) (N := t • H⁻¹.map (locEmb v)) (fun i j => by`.
+
+Use `mul_mem (ε⁻¹).1.2 ((locEmb_mem_locOrder_iff v _).2 (h₁ i j))` as an intermediate fact. Rewrite using `[map_mul, ← mul_assoc] at this)` and apply the resulting hypothesis. Use the proof step `(fun i j => by`. Use `mul_mem ε.1.2 ((locEmb_mem_locOrder_iff v _).2 (h₂ i j))` as an intermediate fact. Rewrite using `[map_mul, ← mul_assoc] at this)` and apply the resulting hypothesis.
+
+Use the proof step `(by`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_comm t', htt, one_smul, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hHd, Matrix.map_one _ (map_zero _) (map_one _)])`. Use the proof step `(fun i j => by`. Express the relevant statement in the definitionally equal form `locConj v (t' * locEmb v (H i j)) = t' * locEmb v (H j i)`. Rewrite using `[map_mul, hct', locConj_locEmb, hHh])`.
+
+Set `g' : GL (Fin r) (LocAlg v)` to `Matrix.GeneralLinearGroup.map (locEmb v) g`. Establish `hHg : (g' : Matrix (Fin r) (Fin r) (LocAlg v))ᵀ * G.map (locEmb v) * (g' : Matrix (Fin r) (Fin r) (LocAlg v)).map (locConj v) = (P : Matrix (Fin r) (Fin r) (LocAlg v))ᵀ * (t • 1) * (P : Matrix (Fin r) (Fin r) (LocAlg v)).map (locConj v)`. Rewrite using `[Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, ← hPP, smul_smul, htt, one_smul, hH, Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression. Use `⟨g' * P⁻¹, ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, UnramifiedHermitian.congr_mul, hHg, ← UnramifiedHermitian.congr_mul, Units.mul_inv]`. Simplify using the standard rewrite rules. Rewrite using `[mem_locLattice_iff_of_frame v hg, mul_inv_rev, inv_inv, Units.val_mul, ← Matrix.mulVec_mulVec]`. Use `⟨fun h => mulVec_mem_locOrder v hP h, fun h i => ?_⟩` and prove the remaining obligations. Use `mulVec_mem_locOrder v hP' h i` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem exists_orthogonal_frame {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, cc (G a b) = G b a)
     (hd : G.det ≠ 0) {L : Submodule (𝓞 E) (Fin r → E)} (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L)
     {𝔟 : FractionalIdeal (𝓞 E)⁰ E} (hmod : ∀ x, x ∈ L ↔ ∀ y ∈ L, herm G x y ∈ 𝔟)
@@ -714,10 +971,18 @@ def IsLocalIsometry (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
 
 variable {G G' : Matrix (Fin r) (Fin r) E} {L L' : Submodule (𝓞 E) (Fin r → E)}
 
+/- English proof (translation)
+Simplify using `[IsLocalIsometry, SetLike.ext_iff]`.
+-/
 theorem isLocalIsometry_one_iff (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) :
     IsLocalIsometry v G L G L' 1 ↔ locLattice v L' = locLattice v L := by
   simp [IsLocalIsometry, SetLike.ext_iff]
 
+/- English proof (translation)
+Establish `h1` using `congrArg Matrix.det h.1`. Rewrite `h1` using `[UnramifiedHermitian.det_congr, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.map_det]`. Take `⟨z, hz⟩` from `((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).exists_left_inv`. Establish `hz'` using `congrArg (locConj v) hz`. Rewrite `hz'` using `[map_mul, map_one]`.
+
+Establish `h2 : locEmb v G'.det * locEmb v G'.det⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hd', map_one]`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem IsLocalIsometry.det_div_eq_mul_locConj {v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))}
     {γ : GL (Fin r) (LocAlg v)} (h : IsLocalIsometry v G L G' L' γ) (hd' : G'.det ≠ 0) :
     ∃ z : LocAlg v, locEmb v (G.det / G'.det) = z * locConj v z := by
@@ -738,6 +1003,19 @@ theorem IsLocalIsometry.det_div_eq_mul_locConj {v : HeightOneSpectrum (𝓞 (max
     _ = z * locConj v z * (locEmb v G'.det * locEmb v G'.det⁻¹) := by rw [h1]; ring
     _ = z * locConj v z := by rw [h2, mul_one]
 
+/- English proof (translation)
+Establish `hm : G.det / G'.det ∈ maximalRealSubfield E`. Rewrite using `[← IsCMField.complexConj_eq_self_iff, map_div₀]`. Conclude with `congrArg₂ (· / ·) (Published.cc_det_of_herm hG) (Published.cc_det_of_herm hG')`. Take `⟨θ, h0, hθ⟩` from `Published.exists_cc_eq_neg E`. Take `⟨d, hdθ⟩` from `Published.exists_sq_real hθ`.
+
+Take `⟨p, q, hpq⟩` from `H' (maximalRealSubfield E) d ⟨_, hm⟩ (fun h => mul_ne_zero h0 h0 (by rw [← hdθ, h]; rfl)) (fun h => div_ne_zero hd hd' (congrArg Subtype.val h)) (fun σ => by`. Establish `h1` using `Published.Landherr.re_det_div_pos hd _ (hs (ComplexEmbedding.lift E (Complex.ofRealHom.comp σ)))`. Establish `h2 : ComplexEmbedding.lift E (Complex.ofRealHom.comp σ) (G.det / G'.det) = (σ ⟨_, hm⟩ : ℂ)` using `ComplexEmbedding.lift_algebraMap_apply E (Complex.ofRealHom.comp σ) ⟨_, hm⟩`. Rewrite `h1` using `[h2, Complex.ofReal_re]`. Conclude with `⟨Real.sqrt (σ ⟨_, hm⟩), 0, by rw [Real.sq_sqrt h1.le]; ring⟩)`.
+
+Use the proof step `(fun v => by`. Take `⟨z, hz⟩` from `hf v`. Take `⟨p, q, rfl⟩` from `exists_coord v h0 hθ z`. Use `⟨p, q, algebraMap_locAlg_injective v ?_⟩` and prove the remaining obligations. Rewrite using `[← locEmb_coe, map_sub, map_mul, ← locEmb_coe, hdθ, map_pow, map_pow, map_mul]`.
+
+Rewrite `hz` using `[map_add, map_mul, locConj_algebraMap, locConj_algebraMap, locConj_locEmb, hθ, map_neg]`. Conclude with `hz.trans (by ring))`. Use `H E r G G' hG hG' hd hd' hs ⟨(p : E) + q * θ, ?_⟩` and prove the remaining obligations. Establish `h1 : G.det / G'.det = (p : E) ^ 2 - (d : E) * (q : E) ^ 2`. Simplify using `using congrArg Subtype.val hpq`.
+
+Establish `h2 : cc ((p : E) + q * θ) = p - q * θ`. Express the relevant statement in the definitionally equal form `IsCMField.complexConj E _ = _`. Rewrite using `[map_add, map_mul, IsCMField.complexConj_apply_eq_self, IsCMField.complexConj_apply_eq_self, show IsCMField.complexConj E θ = -θ from hθ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, hdθ]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem congr_of_local_norm (H : Published.Landherr) (H' : Published.HasseNormSt)
     (hG : ∀ a b, cc (G a b) = G b a) (hG' : ∀ a b, cc (G' a b) = G' b a)
     (hd : G.det ≠ 0) (hd' : G'.det ≠ 0)
@@ -785,6 +1063,11 @@ section Modular
 
 variable [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] {𝔟 : FractionalIdeal (𝓞 E)⁰ E}
 
+/- English proof (translation)
+Take `⟨b, hb0, hb⟩` from `exists_generator v h𝔟`. Take `⟨ε, hε⟩` from `exists_unit_locConj_mul_eq v hc hb0 hb`. Take `⟨h, h₁, h₂⟩` from `exists_orthogonal_frame v hG hd hL hmod hb0 hb ε hε`. Take `⟨h', h₁', h₂'⟩` from `exists_orthogonal_frame v hG' hd' hL' hmod' hb0 hb ε hε`. Use `⟨h * h'⁻¹, ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, UnramifiedHermitian.congr_mul, h₁, ← h₁', ← UnramifiedHermitian.congr_mul, Units.mul_inv]`. Simplify using the standard rewrite rules. Rewrite using `[h₂, h₂', Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel_left]`.
+-/
 theorem exists_isLocalIsometry_of_modular (h𝔟 : 𝔟 ≠ 0) (hc : ∀ z ∈ 𝔟, cc z ∈ 𝔟)
     (hG : ∀ a b, cc (G a b) = G b a) (hG' : ∀ a b, cc (G' a b) = G' b a)
     (hd : G.det ≠ 0) (hd' : G'.det ≠ 0)
@@ -801,6 +1084,9 @@ theorem exists_isLocalIsometry_of_modular (h𝔟 : 𝔟 ≠ 0) (hc : ∀ z ∈ �
     simp
   · rw [h₂, h₂', Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel_left]
 
+/- English proof (translation)
+Use `choose γ hγ using exists_isLocalIsometry_of_modular h𝔟 hc hG hG hd hd hL hL' hmod hmod'`. Use `⟨fun v => if locLattice v L' = locLattice v L then 1 else γ v, fun v => ?_, (finite_setOf_locLattice_ne hL' hL).subset fun v hv h => hv (if_pos h)⟩` and prove the remaining obligations. Use `beta_reduce`. Use `split_ifs with h`. Use `exacts [(isLocalIsometry_one_iff v).2 h, hγ v]`.
+-/
 theorem one_genus_of_modular (h𝔟 : 𝔟 ≠ 0) (hc : ∀ z ∈ 𝔟, cc z ∈ 𝔟)
     (hG : ∀ a b, cc (G a b) = G b a) (hd : G.det ≠ 0)
     (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L) (hL' : ReciprocityTheory.MultiplicativeHeights.IsLattice L')
@@ -815,6 +1101,9 @@ theorem one_genus_of_modular (h𝔟 : 𝔟 ≠ 0) (hc : ∀ z ∈ 𝔟, cc z ∈
   split_ifs with h
   exacts [(isLocalIsometry_one_iff v).2 h, hγ v]
 
+/- English proof (translation)
+The claim follows from `congr_of_local_norm H H' hG hG' hd hd' hs fun v => by obtain ⟨γ, hγ⟩ := exists_isLocalIsometry_of_modular h𝔟 hc hG hG' hd hd' hL hL' hmod hmod' v exact hγ.det_div_eq_mul_locConj hd'`.
+-/
 theorem congr_of_modular (H : Published.Landherr) (H' : Published.HasseNormSt)
     (h𝔟 : 𝔟 ≠ 0) (hc : ∀ z ∈ 𝔟, cc z ∈ 𝔟)
     (hG : ∀ a b, cc (G a b) = G b a) (hG' : ∀ a b, cc (G' a b) = G' b a)
@@ -828,6 +1117,9 @@ theorem congr_of_modular (H : Published.Landherr) (H' : Published.HasseNormSt)
     obtain ⟨γ, hγ⟩ := exists_isLocalIsometry_of_modular h𝔟 hc hG hG' hd hd' hL hL' hmod hmod' v
     exact hγ.det_div_eq_mul_locConj hd'
 
+/- English proof (translation)
+Simplify `hsd) one_ne_zero (fun z => by simp only [mem_one_fractionalIdeal_iff, inv_one, one_mul, mem_semiLoc_iff]) 1 (by simp)` using `using exists_orthogonal_frame v hG hd hL (𝔟 := 1) (by simpa only [mem_one_fractionalIdeal_iff]`.
+-/
 theorem exists_orthonormal_frame (hG : ∀ a b, cc (G a b) = G b a) (hd : G.det ≠ 0)
     (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L) (hsd : ∀ x, x ∈ L ↔ ∀ y ∈ L, IsIntegral ℤ (herm G x y))
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) :
@@ -844,6 +1136,9 @@ theorem exists_orthonormal_frame (hG : ∀ a b, cc (G a b) = G b a) (hd : G.det 
 
 end Modular
 
+/- English proof (translation)
+Establish `h : FractionalIdeal.spanSingleton (𝓞 E)⁰ (-ξ) = FractionalIdeal.spanSingleton (𝓞 E)⁰ ξ` using `FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨-1, by simp⟩`. Rewrite using `[← mem_conjFrac, conjFrac_inv, map_mul, conjFrac_spanSingleton, conjFrac_different, hξ, h]` and apply the resulting hypothesis.
+-/
 theorem cc_mem_inv_mul_different {ξ : E} (hξ : cc ξ = -ξ) (z : E)
     (hz : z ∈ ((FractionalIdeal.spanSingleton (𝓞 E)⁰ ξ *
       (differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)))⁻¹ : FractionalIdeal (𝓞 E)⁰ E)) :
@@ -853,6 +1148,9 @@ theorem cc_mem_inv_mul_different {ξ : E} (hξ : cc ξ = -ξ) (z : E)
     FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨-1, by simp⟩
   rwa [← mem_conjFrac, conjFrac_inv, map_mul, conjFrac_spanSingleton, conjFrac_different, hξ, h]
 
+/- English proof (translation)
+Rewrite using `[← mem_smul_hermDual_iff (inv_ne_zero (mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 hξ0) coe_different_ne_zero)), ← traceFormDual_eq hξ0, (perfect_iff_traceFormDual_eq hξ0 hd hL).1 h]`.
+-/
 theorem modular_of_perfect {ξ : E} (hξ0 : ξ ≠ 0) (hd : G.det ≠ 0) (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L)
     (h : (∀ x ∈ L, ∀ y ∈ L, ∃ k : ℤ, EFf ξ G x y = k) ∧
       ∀ φ : L →+ ℤ, ∃ x ∈ L, ∀ y : L, (φ y : ℚ) = EFf ξ G x y) (x : Fin r → E) :
@@ -867,6 +1165,9 @@ variable (E r) in
 def signMatrix (p : ℕ) : Matrix (Fin r) (Fin r) E :=
   Matrix.diagonal fun a => if (a : ℕ) < p then 1 else -1
 
+/- English proof (translation)
+Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `only [signMatrix, Matrix.diagonal_apply_eq, cc]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `[signMatrix, cc, h, Ne.symm h]`.
+-/
 theorem signMatrix_herm (p : ℕ) (a b : Fin r) :
     cc (signMatrix E r p a b) = signMatrix E r p b a := by
   by_cases h : a = b
@@ -876,12 +1177,18 @@ theorem signMatrix_herm (p : ℕ) (a b : Fin r) :
   · simp [signMatrix, cc, h, Ne.symm h]
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[signMatrix, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem det_signMatrix_ne_zero (p : ℕ) : (signMatrix E r p).det ≠ 0 := by
   rw [signMatrix, Matrix.det_diagonal]
   refine Finset.prod_ne_zero_iff.2 fun a _ => ?_
   split_ifs <;> simp
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[Published.gram_eq, Matrix.transpose_one, Matrix.one_mul, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, signMatrix, Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [sgn]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem gram_signMatrix (τ : E →+* ℂ) (p : ℕ) :
     gram τ (signMatrix E r p) 1 = Matrix.diagonal fun a : Fin r => ((sgn p (a : ℕ) : ℝ) : ℂ) := by
   rw [Published.gram_eq, Matrix.transpose_one, Matrix.one_mul,
@@ -893,10 +1200,22 @@ theorem gram_signMatrix (τ : E →+* ℂ) (p : ℕ) :
   split_ifs <;> simp
 
 omit [IsCMField E] in
+/- English proof (translation)
+Simplify using `[mem_frameLattice_iff_inv, ← mem_one_ringOfIntegers_iff]`.
+-/
 theorem mem_frameLattice_one_iff (x : Fin r → E) :
     x ∈ frameLattice (𝓞 E) (1 : GL (Fin r) E) ↔ ∀ i, IsIntegral ℤ (x i) := by
   simp [mem_frameLattice_iff_inv, ← mem_one_ringOfIntegers_iff]
 
+/- English proof (translation)
+Simplify using `only [mem_frameLattice_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Use `IsIntegral.sum _ fun a _ => IsIntegral.sum _ fun b _ => ((hx a).mul ?_).mul (isIntegral_cc (hy b))` and prove the remaining obligations. Simplify using `only [signMatrix, Matrix.diagonal_apply]`.
+
+Use `split_ifs`. Use `exacts [isIntegral_one, isIntegral_one.neg, isIntegral_zero]`. Introduce `h i`. Use `h (Pi.single i 1) fun j => by` as an intermediate fact. Rewrite using `[Pi.single_apply]`.
+
+Use `split_ifs`. Use `exacts [isIntegral_one, isIntegral_zero]`. Rewrite `this` using `[HermitianTraceFormVanishing.herm_single_right, signMatrix, Matrix.vecMul_diagonal]`. Use `split_ifs at this`. Simplify using `using this`.
+
+Simplify using `using this.neg`.
+-/
 theorem selfDual_signMatrix (p : ℕ) (x : Fin r → E) :
     x ∈ frameLattice (𝓞 E) (1 : GL (Fin r) E) ↔
       ∀ y ∈ frameLattice (𝓞 E) (1 : GL (Fin r) E), IsIntegral ℤ (herm (signMatrix E r p) x y) := by
@@ -918,6 +1237,9 @@ theorem selfDual_signMatrix (p : ℕ) (x : Fin r → E) :
     · simpa using this
     · simpa using this.neg
 
+/- English proof (translation)
+The claim follows from `congr_of_modular (𝔟 := 1) H H' one_ne_zero (fun _ hz => mem_one_fractionalIdeal_iff.2 (isIntegral_cc (mem_one_fractionalIdeal_iff.1 hz))) (signMatrix_herm p) hG (det_signMatrix_ne_zero p) hd ((isLattice_iff _).2 (isLattice_frameLattice 1)) hL (by simpa only [mem_one_fractionalIde …`.
+-/
 theorem congr_signMatrix [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)]
     (H : Published.Landherr) (H' : Published.HasseNormSt)
     (hG : ∀ a b, cc (G a b) = G b a) (hd : G.det ≠ 0) (hL : ReciprocityTheory.MultiplicativeHeights.IsLattice L)
@@ -941,6 +1263,11 @@ namespace GlobalTheory
 
 open SelfDualGenus
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨𝔟, h𝔟, hc, hmod, hmod'⟩ : ∃ 𝔟 : FractionalIdeal (𝓞 E)⁰ E, 𝔟 ≠ 0 ∧ (∀ z ∈ 𝔟, cc z ∈ 𝔟) ∧ (∀ x, x ∈ L ↔ ∀ y ∈ L, herm G x y ∈ 𝔟) ∧ ∀ x, x ∈ L' ↔ ∀ y ∈ L', herm G' x y ∈ 𝔟 := by`. Break down `hdual with ⟨h, h'⟩ | ⟨ξ, hξ0, hξ, h, h'⟩` into its components or cases. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `only [mem_one_fractionalIdeal_iff]`. Conclude with `⟨fun _ => isIntegral_cc, h, h'⟩`.
+
+Conclude with `⟨_, inv_ne_zero (mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 hξ0) coe_different_ne_zero), cc_mem_inv_mul_different hξ, modular_of_perfect hξ0 hd hL h, modular_of_perfect hξ0 hd' hL' h'⟩`. Use `⟨exists_isLocalIsometry_of_modular h𝔟 hc hG hG' hd hd' hL hL' hmod hmod', ?_, fun H H' Ψ hΨ hs => congr_of_modular H H' h𝔟 hc hG hG' hd hd' hL hL' hmod hmod' (Published.Landherr.congr_of_signature Ψ hΨ hs)⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `one_genus_of_modular h𝔟 hc hG hd hL hL' hmod hmod'`.
+-/
 theorem selfDual_lattices_one_genus {E : Type} [Field E] [NumberField E] [IsCMField E]
     [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] {r : ℕ}
     {G G' : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, cc (G a b) = G b a)

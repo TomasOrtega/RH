@@ -15,18 +15,27 @@ section General
 
 variable {T Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f => f.hom x) (χ.mapPresheaf.naturality i.op)`. Simplify using `only [AddCommGrpCat.hom_comp, AddMonoidHom.coe_comp, Function.comp_apply] at h`. Conclude with `h`.
+-/
 lemma hom_app_res {M N : Y.Modules} (χ : M ⟶ N) {U V : Y.Opens} (i : V ⟶ U) (x : Γ(M, U)) :
     χ.app V (M.presheaf.map i.op x) = N.presheaf.map i.op (χ.app U x) := by
   have h := congrArg (fun f => f.hom x) (χ.mapPresheaf.naturality i.op)
   simp only [AddCommGrpCat.hom_comp, AddMonoidHom.coe_comp, Function.comp_apply] at h
   exact h
 
+/- English proof (translation)
+Establish `: i = eqToHom h` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Conclude with `(ConcreteCategory.bijective_of_isIso _).1`.
+-/
 lemma res_injective_of_eq (M : Y.Modules) {U V : Y.Opens} (h : U = V) (i : U ⟶ V) :
     Function.Injective (M.presheaf.map i.op) := by
   have : i = eqToHom h := Subsingleton.elim _ _
   subst this
   exact (ConcreteCategory.bijective_of_isIso _).1
 
+/- English proof (translation)
+Use `(Scheme.Modules.pullbackPushforwardAdjunction g).unit.naturality χ` as an intermediate fact. Establish `h` using `congrArg (fun ψ => (Scheme.Modules.Hom.app ψ V).hom m) this`. Simplify using `only [Functor.id_map, Functor.comp_map, Scheme.Modules.Hom.comp_app, AddCommGrpCat.hom_comp, AddMonoidHom.coe_comp, Function.comp_apply] at h`. Conclude with `h.symm`.
+-/
 lemma pullSectionOn_naturality (g : T ⟶ Y) {M N : Y.Modules} (χ : M ⟶ N) (V : Y.Opens)
     (m : Γ(M, V)) :
     ((Scheme.Modules.pullback g).map χ).app (g ⁻¹ᵁ V) (pullSectionOn g M V m) =
@@ -37,6 +46,9 @@ lemma pullSectionOn_naturality (g : T ⟶ Y) {M N : Y.Modules} (χ : M ⟶ N) (V
     AddCommGrpCat.hom_comp, AddMonoidHom.coe_comp, Function.comp_apply] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `hu` using `unit_conjugateEquiv ((Scheme.Modules.pullbackPushforwardAdjunction h).comp (Scheme.Modules.pullbackPushforwardAdjunction f)) (Scheme.Modules.pullbackPushforwardAdjunction (f ≫ h)) (Scheme.Modules.pullbackComp f h).inv M`. Rewrite `hu` using `[Scheme.Modules.conjugateEquiv_pullbackComp_inv]`. Establish `h'` using `congrArg (fun ψ => (Scheme.Modules.Hom.app ψ O).hom m) hu`. Simplify using `only [Adjunction.comp_unit_app, Scheme.Modules.Hom.comp_app, AddCommGrpCat.hom_comp, AddMonoidHom.coe_comp, Function.comp_apply, Scheme.Modules.pushforwardComp_hom_app_app] at h'`. Conclude with `h'.symm`.
+-/
 lemma pullSectionOn_comp_inv (f : T ⟶ Z) (h : Z ⟶ Y) (M : Y.Modules) (O : Y.Opens) (m : Γ(M, O)) :
     ((Scheme.Modules.pullbackComp f h).inv.app M).app ((f ≫ h) ⁻¹ᵁ O)
       (pullSectionOn (f ≫ h) M O m) =
@@ -50,6 +62,9 @@ lemma pullSectionOn_comp_inv (f : T ⟶ Z) (h : Z ⟶ Y) (M : Y.Modules) (O : Y.
     AddMonoidHom.coe_comp, Function.comp_apply, Scheme.Modules.pushforwardComp_hom_app_app] at h'
   exact h'.symm
 
+/- English proof (translation)
+Rewrite using `[← pullSectionOn_comp_inv, ← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, Iso.inv_hom_id_app]`. Both sides reduce to the same expression.
+-/
 lemma pullSectionOn_comp_hom (f : T ⟶ Z) (h : Z ⟶ Y) (M : Y.Modules) (O : Y.Opens) (m : Γ(M, O)) :
     ((Scheme.Modules.pullbackComp f h).hom.app M).app ((f ≫ h) ⁻¹ᵁ O)
       (pullSectionOn f _ (h ⁻¹ᵁ O) (pullSectionOn h M O m)) = pullSectionOn (f ≫ h) M O m := by
@@ -57,6 +72,9 @@ lemma pullSectionOn_comp_hom (f : T ⟶ Z) (h : Z ⟶ Y) (M : Y.Modules) (O : Y.
     Iso.inv_hom_id_app]
   rfl
 
+/- English proof (translation)
+Establish `h` using `Adjunction.unit_leftAdjointUniq_hom_app (Scheme.Modules.restrictAdjunction ι) (Scheme.Modules.pullbackPushforwardAdjunction ι) M`. Rewrite using `[pullSectionOn, ← h]`. Both sides reduce to the same expression.
+-/
 lemma pullSectionOn_openImmersion (ι : Z ⟶ Y) [IsOpenImmersion ι] (M : Y.Modules) (O : Y.Opens)
     (m : Γ(M, O)) :
     pullSectionOn ι M O m = ((Scheme.Modules.restrictFunctorIsoPullback ι).hom.app M).app (ι ⁻¹ᵁ O)
@@ -66,6 +84,13 @@ lemma pullSectionOn_openImmersion (ι : Z ⟶ Y) [IsOpenImmersion ι] (M : Y.Mod
   rw [pullSectionOn, ← h]
   rfl
 
+/- English proof (translation)
+Apply `((Scheme.Modules.pullbackPushforwardAdjunction g).homEquiv _ _).injective` to reduce the goal to its premises. Use extensionality with `V s`. Simplify using `only [Adjunction.homEquiv_unit, Scheme.Modules.Hom.comp_app, Scheme.Modules.pushforward_map_app]`. Express the relevant statement in the definitionally equal form `χ₁.app (g ⁻¹ᵁ V) (pullSectionOn g F V s) = χ₂.app (g ⁻¹ᵁ V) (pullSectionOn g F V s)`. Establish `hE : g ⁻¹ᵁ (V ⊓ R) = g ⁻¹ᵁ V` using `le_antisymm ((Opens.map g.base).monotone inf_le_left) (fun x hx => ⟨hx, by`.
+
+Establish `: x ∈ g ⁻¹ᵁ R` using `by rw [hR]; trivial`. Conclude with `this⟩)`. Apply `res_injective_of_eq _ hE (homOfLE hE.le)` to reduce the goal to its premises. Rewrite using `[← hom_app_res, ← hom_app_res]`. Rewrite using `[← pullSectionOn_res g F (inf_le_left : V ⊓ R ≤ V) (homOfLE hE.le) s]`.
+
+Conclude with `h _ inf_le_right _`.
+-/
 lemma hom_eq_of_pullSectionOn (g : T ⟶ Y) (R : Y.Opens) (hR : g ⁻¹ᵁ R = ⊤) {F G : Y.Modules}
     (χ₁ χ₂ : (Scheme.Modules.pullback g).obj F ⟶ (Scheme.Modules.pullback g).obj G)
     (h : ∀ V : Y.Opens, V ≤ R → ∀ s : Γ(F, V),
@@ -85,6 +110,9 @@ lemma hom_eq_of_pullSectionOn (g : T ⟶ Y) (R : Y.Opens) (hR : g ⁻¹ᵁ R = �
   rw [← pullSectionOn_res g F (inf_le_left : V ⊓ R ≤ V) (homOfLE hE.le) s]
   exact h _ inf_le_right _
 
+/- English proof (translation)
+Simplify using `[pullbackHomAlong, pullbackCompIso, Scheme.Modules.pullbackCongr]`.
+-/
 lemma pullbackHomAlong_rfl (ι : Z ⟶ Y) (g' : T ⟶ Z) {F G : Y.Modules}
     (ψ : (Scheme.Modules.pullback ι).obj F ⟶ (Scheme.Modules.pullback ι).obj G) :
     pullbackHomAlong (rfl : g' ≫ ι = g' ≫ ι) ψ = (Scheme.Modules.pullbackComp g' ι).inv.app F ≫
@@ -104,6 +132,9 @@ variable {T Y Z : Scheme.{0}} (ι : Z ⟶ Y) [IsOpenImmersion ι] (g' : T ⟶ Z)
       φ.app ((g' ≫ ι) ⁻¹ᵁ V) (pullSectionOn (g' ≫ ι) F V s))
 include hinj ht
 
+/- English proof (translation)
+Apply `hinj W (h.trans hV)` to reduce the goal to its premises. Rewrite using `[ht, pullSectionOn_res (g' ≫ ι) F h (homOfLE ((Opens.map (g' ≫ ι).base).monotone h)), pullSectionOn_res (g' ≫ ι) G h (homOfLE ((Opens.map (g' ≫ ι).base).monotone h)), ht, hom_app_res]`.
+-/
 lemma t_res {V W : Y.Opens} (hV : V ≤ ι.opensRange) (h : W ≤ V) (s : Γ(F, V)) :
     t W (h.trans hV) (F.presheaf.map (homOfLE h).op s) =
       G.presheaf.map (homOfLE h).op (t V hV s) := by
@@ -112,15 +143,24 @@ lemma t_res {V W : Y.Opens} (hV : V ≤ ι.opensRange) (h : W ≤ V) (s : Γ(F, 
     pullSectionOn_res (g' ≫ ι) G h (homOfLE ((Opens.map (g' ≫ ι).base).monotone h)), ht,
     hom_app_res]
 
+/- English proof (translation)
+Apply `hinj V hV` to reduce the goal to its premises. Rewrite using `[map_add, ht, ht, ht, map_add, map_add]`.
+-/
 lemma t_add {V : Y.Opens} (hV : V ≤ ι.opensRange) (a b : Γ(F, V)) :
     t V hV (a + b) = t V hV a + t V hV b := by
   apply hinj V hV
   rw [map_add, ht, ht, ht, map_add, map_add]
 
+/- English proof (translation)
+Apply `hinj V hV` to reduce the goal to its premises. Rewrite using `[ht, map_zero, map_zero, map_zero]`.
+-/
 lemma t_zero {V : Y.Opens} (hV : V ≤ ι.opensRange) : t V hV 0 = 0 := by
   apply hinj V hV
   rw [ht, map_zero, map_zero, map_zero]
 
+/- English proof (translation)
+Apply `hinj V hV` to reduce the goal to its premises. Rewrite using `[ht, pullSectionOn_smul, Scheme.Modules.Hom.app_smul, ← ht, pullSectionOn_smul]`.
+-/
 lemma t_smul {V : Y.Opens} (hV : V ≤ ι.opensRange) (r : Γ(Y, V)) (a : Γ(F, V)) :
     t V hV (r • a) = r • t V hV a := by
   apply hinj V hV
@@ -137,6 +177,9 @@ def restrictHom : F.restrict ι ⟶ G.restrict ι :=
         exact t_res ι g' φ hinj t ht (ι.image_le_opensRange _) (ι.image_mono (leOfHom i.unop)) s }
     (fun U r s => t_smul ι g' φ hinj t ht _ ((ι.appIso U.unop).inv r) s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma restrictHom_app (U : Z.Opens) (s : Γ(F, ι ''ᵁ U)) :
     (restrictHom ι g' φ hinj t ht).app U s = t (ι ''ᵁ U) (ι.image_le_opensRange _) s :=
   rfl
@@ -145,6 +188,9 @@ def descendPsi : (Scheme.Modules.pullback ι).obj F ⟶ (Scheme.Modules.pullback
   (Scheme.Modules.restrictFunctorIsoPullback ι).inv.app F ≫ restrictHom ι g' φ hinj t ht ≫
     (Scheme.Modules.restrictFunctorIsoPullback ι).hom.app G
 
+/- English proof (translation)
+Rewrite using `[pullSectionOn_openImmersion ι F, pullSectionOn_openImmersion ι G, descendPsi, ← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, Iso.hom_inv_id_app_assoc, Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply]`. Use `congr 1`. Conclude with `t_res ι g' φ hinj t ht hV (ι.image_preimage_le V) s`.
+-/
 lemma descendPsi_pull (V : Y.Opens) (hV : V ≤ ι.opensRange) (s : Γ(F, V)) :
     (descendPsi ι g' φ hinj t ht).app (ι ⁻¹ᵁ V) (pullSectionOn ι F V s) =
       pullSectionOn ι G V (t V hV s) := by
@@ -158,6 +204,13 @@ end Descend
 
 end DescendHom
 
+/- English proof (translation)
+Introduce `T Y Z ι _ g' g e F G φ hinj hex`. Substitute `e` using the available equality. Use `choose t ht using hex`. Use `⟨DescendHom.descendPsi ι g' φ hinj t ht, ?_⟩` and prove the remaining obligations. Establish `hR : (g' ≫ ι) ⁻¹ᵁ ι.opensRange = ⊤` using `top_le_iff.1 fun x _ => ⟨g'.base x, rfl⟩`.
+
+Use `DescendHom.hom_eq_of_pullSectionOn (g' ≫ ι) ι.opensRange hR _ _ fun V hV s => ?_` and prove the remaining obligations. Rewrite using `[DescendHom.pullbackHomAlong_rfl]`. Simplify using `only [Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply]`. Rewrite using `[DescendHom.pullSectionOn_comp_inv]`. Use `erw [DescendHom.pullSectionOn_naturality g' _ (ι ⁻¹ᵁ V), DescendHom.descendPsi_pull ι g' φ hinj t ht V hV s]`.
+
+Rewrite using `[DescendHom.pullSectionOn_comp_hom, ht]`.
+-/
 theorem DescendHom.proof : DescendHom.Statement := by
   intro T Y Z ι _ g' g e F G φ hinj hex
   subst e

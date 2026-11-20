@@ -13,6 +13,13 @@ open scoped Classical
 
 namespace GlobalTheory.ThK.EvZeroFinLoc
 
+/- English proof (translation)
+Take `⟨x₀, hx₀⟩` from `Function.ne_iff.mp h0`. Use function extensionality and compare the values at `ξ`. Use `set z : κ → AF F := fun k => GlobalTheory.LatVac.liftV v (ξ k - evFin F v (x₀ k)) with hz`. Establish `hzat : At (evFin F v) z`. Introduce `u hu`.
+
+Use function extensionality and compare the values at `k`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u hu`. Establish `hevx : (fun i => evFin F v ((x₀ + z) i)) = ξ`. Use function extensionality and compare the values at `i`. Simplify using `[hz, GlobalTheory.LatVac.evFin_liftV]`.
+
+Establish `hrx : r (x₀ + z) = r x₀` using `hr x₀ z hzat`. Use `congrFun e (x₀ + z)` as an intermediate fact. Simplify using `only [tens, hevx, hrx] at this`. Conclude with `mul_right_cancel₀ (by simpa using hx₀) this`.
+-/
 theorem eq_of_tens_eq_of_ne_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F)
     (r : (κ → AF F) → ℂ) (hr : ∀ x z, At (evFin F v) z → r (x + z) = r x) (h0 : r ≠ 0)
     (g h : (κ → Fv F v) → ℂ) (e : tens (evFin F v) g r = tens (evFin F v) h r) : g = h := by

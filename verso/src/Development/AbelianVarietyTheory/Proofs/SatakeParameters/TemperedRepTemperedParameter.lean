@@ -15,16 +15,42 @@ noncomputable section
 namespace GlobalTheory.LocLanglands
 namespace TemperedRec
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.tempered_direct_sum`.
+-/
 theorem tempered_lpSum : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (x y : WD h), x.tempered → y.tempered → (x.lpSum y).tempered := GlobalTheory.T.tempered_direct_sum
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.tempered_special_of_unit_eigen`.
+-/
 theorem tempered_lpChar_lpSp : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (x : WD h), x.mono0 → (∀ φ : Weil h, deg φ = 1 → ∀ α ∈ x.eig φ, ‖α‖ = 1) → ∀ l : ℕ, (x.lpChar (WD.lpSp h l)).tempered := GlobalTheory.T.tempered_special_of_unit_eigen
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.irreducible_wd_eigen_equal_norm`.
+-/
 theorem norm_eig_eq_of_isIrrWD : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (x : WD h), IsIrrWD x → ∀ φ : Weil h, deg φ = 1 → ∀ α ∈ x.eig φ, ∀ β ∈ x.eig φ, ‖α‖ = ‖β‖ := GlobalTheory.T.irreducible_wd_eigen_equal_norm
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.lp_character_eigen_product`.
+-/
 theorem prod_eig_lpChar_lpSp : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (x : WD h) (l : ℕ) (σ : Weil h), ((x.lpChar (WD.lpSp h l)).eig σ).prod = ((x.eig σ).prod) ^ l := GlobalTheory.T.lp_character_eigen_product
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.segment_sum_tempered`.
+-/
 theorem not_precedes_of_norm_eig : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion E) → WD h), IsRec h rc → ∀ Δ Δ' : Segment (w.adicCompletion E), (∀ φ : Weil h, deg φ = 1 → ∀ α ∈ ((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).eig φ, ‖α‖ = 1) → (∀ φ : Weil h, deg φ = 1 → ∀ α ∈ ((rc Δ'.first).lpTw (((Δ'.len : ℝ) - 1) / 2)).eig φ, ‖α‖ = 1) → ¬ Δ.Precedes Δ' := GlobalTheory.T.segment_sum_tempered
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h x ⟨n, a, hx, hirr⟩`. Substitute `hx` using the available equality. Rewrite using `[WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast (zero_lt_one.trans (one_lt_normV w)).ne'`. Set `S : Subrepresentation a.ρ` to `⟨LinearMap.ker a.N, fun σ v hv => by`.
+
+Establish `h1` using `a.comm_apply σ v`. Rewrite `h1` using `[LinearMap.mem_ker.1 hv, map_zero]`. Conclude with `LinearMap.mem_ker.2 ((smul_eq_zero.1 h1.symm).resolve_left (zpow_ne_zero _ hq))⟩`. Break down `hirr.eq_bot_or_eq_top S with hS | hS` into its components or cases. It suffices to derive a contradiction.
+
+Establish `hinj : Function.Injective a.N`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `congrArg Subrepresentation.toSubmodule hS`. Take `⟨m, hm⟩` from `a.nilpotent`. Establish `hinj' : Function.Injective (a.N ^ m)`.
+
+Rewrite using `[Module.End.coe_pow]`. Conclude with `hinj.iterate m`. Rewrite `hinj'` using `[hm]`. Use `Model.nontrivial_of_isIrreducible hirr` as an intermediate fact. Take `⟨v, hv⟩` from `exists_ne (0 : Fin n → ℂ)`.
+
+Conclude with `hv (hinj' (a₁ := v) (a₂ := 0) (by simp))`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `: v ∈ S.toSubmodule` using `by rw [hS]; trivial`. Conclude with `LinearMap.mem_ker.1 this`.
+-/
 theorem monodromy_zero_of_irreducible_weilDeligne : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (x : WD h), IsIrrWD x → x.mono0 := by
   intro E Ω _ _ _ _ _ A w h x ⟨n, a, hx, hirr⟩
   subst hx
@@ -50,10 +76,16 @@ theorem monodromy_zero_of_irreducible_weilDeligne : ∀ (E Ω : Type) [Field E] 
     have : v ∈ S.toSubmodule := by rw [hS]; trivial
     exact LinearMap.mem_ker.1 this
 
+/- English proof (translation)
+The claim follows from `(WD.tempered_mk _).mpr ((WD.tempered_diag_iff _).mpr fun i => i.elim0)`.
+-/
 theorem tempered_lpZero {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) : (WD.lpZero h).tempered :=
   (WD.tempered_mk _).mpr ((WD.tempered_diag_iff _).mpr fun i => i.elim0)
 
+/- English proof (translation)
+The claim follows from `| [], _ => tempered_lpZero h | y :: l, H => tempered_lpSum E Ω A w h y (sumList l) (H y (by simp)) (tempered_sumList l fun z hz => H z (by simp [hz]))`.
+-/
 theorem tempered_sumList {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} :
     ∀ l : List (WD h), (∀ y ∈ l, y.tempered) → (sumList l).tempered
@@ -61,6 +93,13 @@ theorem tempered_sumList {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Alg
   | y :: l, H => tempered_lpSum E Ω A w h y (sumList l) (H y (by simp))
       (tempered_sumList l fun z hz => H z (by simp [hz]))
 
+/- English proof (translation)
+Take `⟨B, -, hpos, hinv⟩` from `hu`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `h1` using `hinv (Matrix.GeneralLinearGroup.scalar (Fin n) z) v v`. Rewrite `h1` using `[hω]`. Simplify using `only [map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul] at h1`.
+
+Establish `hB : B v v ≠ 0` using `fun h0 => by have := hpos v hv; rw [h0] at this; simp at this`. Establish `h2 : ((ω z : ℂ) * starRingEnd ℂ (ω z : ℂ)) * B v v = 1 * B v v` using `by linear_combination h1`. Establish `h3` using `mul_right_cancel₀ hB h2`. Rewrite `h3` using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `h4 : ‖(ω z : ℂ)‖ ^ 2 = 1` using `by exact_mod_cast h3`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4`.
+-/
 theorem norm_centralChar_eq_one {k : Type} [CommRing k] {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     [Nontrivial V] {π : Representation ℂ (GL (Fin n) k) V} {ω : kˣ →* ℂˣ} (hu : IsUnitarisable π)
     (hω : HasCentralChar π ω) (z : kˣ) : ‖(ω z : ℂ)‖ = 1 := by
@@ -76,6 +115,11 @@ theorem norm_centralChar_eq_one {k : Type} [CommRing k] {n : ℕ} {V : Type} [Ad
   have h4 : ‖(ω z : ℂ)‖ ^ 2 = 1 := by exact_mod_cast h3
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4
 
+/- English proof (translation)
+Establish `hmap : s.map (fun β => ‖β‖) = Multiset.replicate (Multiset.card s) ‖α‖`. Rewrite using `[Multiset.eq_replicate]`. Use `⟨by simp, fun r hr => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ, rfl⟩` from `Multiset.mem_map.1 hr`. Conclude with `(hs α hα β hβ).symm`.
+
+Establish `h1 : ‖s.prod‖ = (s.map (fun β => ‖β‖)).prod` using `map_multiset_prod (normHom : ℂ →*₀ ℝ) s`. Rewrite `h1` using `[hmap, Multiset.prod_replicate, hp]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (Multiset.card_pos_iff_exists_mem.2 ⟨α, hα⟩).ne').1 h1.symm`.
+-/
 theorem norm_eq_one_of_norm_prod {s : Multiset ℂ} (hp : ‖s.prod‖ = 1) (hs : ∀ α ∈ s, ∀ β ∈ s, ‖α‖ = ‖β‖) {α : ℂ}
     (hα : α ∈ s) : ‖α‖ = 1 := by
   have hmap : s.map (fun β => ‖β‖) = Multiset.replicate (Multiset.card s) ‖α‖ := by
@@ -87,11 +131,25 @@ theorem norm_eq_one_of_norm_prod {s : Multiset ℂ} (hp : ‖s.prod‖ = 1) (hs 
   rw [hmap, Multiset.prod_replicate, hp] at h1
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) (Multiset.card_pos_iff_exists_mem.2 ⟨α, hα⟩).ne').1 h1.symm
 
+/- English proof (translation)
+Take `⟨f⟩` from `σ.nonempty_equiv_rep`. Conclude with `(isCosocle_self σ.irr).of_equiv f.symm e`.
+-/
 theorem isCosocle_rep_cl {G : Type} [Group G] [TopologicalSpace G] (σ : IrrRep G) {V : Type} [AddCommGroup V]
     [Module ℂ V] {π : Representation ℂ G V} (e : σ.ρ.Equiv π) : IsCosocle σ.cl.rep.ρ π := by
   obtain ⟨f⟩ := σ.nonempty_equiv_rep
   exact (isCosocle_self σ.irr).of_equiv f.symm e
 
+/- English proof (translation)
+Take `⟨a, ha, ε, -, H⟩` from `hrc`. Introduce `φ hφ`. Establish `hz : (rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2) = rc (Δ.first.nu ((((Δ.len : ℝ) - 1) / 2 : ℝ) : ℂ))` using `(H.nu_eq _ _).symm`. Establish `hirr : IsIrrWD ((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2))`. Rewrite using `[hz]`.
+
+Conclude with `(H.cusp _).1 (Δ.isCusp_first.nu _)`. Establish `hδ : rc δ = ((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)`. Establish `hL : IsL ((([Δ] : List (Segment (w.adicCompletion E))) : Multiset (Segment (w.adicCompletion E)))) δ.rep`. Simplify using `using hΔ.isL`. Rewrite using `[H.langlands [Δ] δ hL]`.
+
+Conclude with `WD.lpSum_zero _`. Take `⟨ω, -, hω⟩` from `exists_smooth_hasCentralChar δ.2.rep.smooth δ.2.rep.irr`. Establish `: Nontrivial δ.2.rep.V` using `Model.nontrivial_of_isIrreducible δ.2.rep.irr`. Establish `hc` using `H.central δ ω hω φ`. Rewrite `hc` using `[hδ, prod_eig_lpChar_lpSp]`.
+
+Establish `hn : ‖((((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).eig φ).prod)‖ ^ Δ.len = 1`. Rewrite using `[← norm_pow, hc]`. Conclude with `norm_centralChar_eq_one hu hω _`. Establish `hp1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) Δ.len_pos.ne').1 hn`. Introduce `α hα`.
+
+Conclude with `norm_eq_one_of_norm_prod hp1 (norm_eig_eq_of_isIrrWD E Ω A w h _ hirr φ hφ) hα`.
+-/
 theorem norm_eig_segParam {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     {rc : IrrGL (w.adicCompletion E) → WD h} (hrc : IsRec h rc) (δ : IrrGL (w.adicCompletion E))
@@ -122,6 +180,15 @@ end TemperedRec
 
 open TemperedRec in
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h rc hrc n σ hσ`. Establish `hrc'` using `hrc`. Take `⟨a, ha, ε, -, H⟩` from `hrc'`. Take `⟨m, δ, hd, hδ, ⟨e⟩⟩` from `hσ`. Use `choose Δ hΔ using fun i => (hδ i).1`.
+
+Establish `hunit` using `fun i => norm_eig_segParam hrc (δ i) (Δ i) (hΔ i) (hδ i).2`. Establish `hL : IsL (((List.ofFn Δ : List (Segment (w.adicCompletion E)))) : Multiset (Segment (w.adicCompletion E))) (cls σ).rep`. Use `⟨m, δ, hd, ⟨Δ, ⟨?_, fun i j _ hp => not_precedes_of_norm_eig E Ω A w h rc hrc (Δ i) (Δ j) (hunit i) (hunit j) hp⟩, hΔ⟩, ?_⟩` and prove the remaining obligations. Conclude with `Fin.univ_val_map Δ`. Conclude with `isCosocle_rep_cl σ e`.
+
+Rewrite using `[H.langlands _ _ hL]`. Use `tempered_sumList _ fun y hy => ?_` and prove the remaining obligations. Take `⟨Γ, hΓ, rfl⟩` from `List.mem_map.1 hy`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hΓ`. Establish `hz : (rc (Δ i).first).lpTw ((((Δ i).len : ℝ) - 1) / 2) = rc ((Δ i).first.nu (((((Δ i).len : ℝ) - 1) / 2 : ℝ) : ℂ))` using `(H.nu_eq _ _).symm`.
+
+Establish `hirr : IsIrrWD ((rc (Δ i).first).lpTw ((((Δ i).len : ℝ) - 1) / 2))`. Rewrite using `[hz]`. Conclude with `(H.cusp _).1 ((Δ i).isCusp_first.nu _)`. Conclude with `tempered_lpChar_lpSp E Ω A w h _ (monodromy_zero_of_irreducible_weilDeligne E Ω A w h _ hirr) (hunit i) _`.
+-/
 theorem tempered_of_isTemperedGL : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion E) → WD h), IsRec h rc → ∀ (n : ℕ) (σ : IrrRep (GL (Fin n) (w.adicCompletion E))), GlobalTheory.LocGL.IsTemperedGL σ.ρ → (rc (cls σ)).tempered := by
   intro E Ω _ _ _ _ _ A w h rc hrc n σ hσ
   have hrc' := hrc

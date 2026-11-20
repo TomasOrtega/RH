@@ -30,22 +30,70 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.CechPoset
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.orderedCechToCatCochainsZero_coboundary_comm`.
+-/
 theorem orderedCech_toCat_differential_zero_comm : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R) (c : CC F 0), d0 F (e0 F c) = e1 F (δ F 0 c) := GlobalTheory.T.orderedCechToCatCochainsZero_coboundary_comm
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.orderedCech_cochainsOne_coboundary_comm`.
+-/
 theorem orderedCech_toCat_differential_one_comm : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R) (c : CC F 1), d1 F (e1 F c) = e2 F (δ F 1 c) := GlobalTheory.T.orderedCech_cochainsOne_coboundary_comm
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.alternatingToOrderedCechDegreeTwo_mem_cocyclesTwo`.
+-/
 theorem orderedCech_degreeTwo_cocycle_mem : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R) (c : CC F 2), δ F 2 c = 0 → e2 F c ∈ Z2 F := GlobalTheory.T.alternatingToOrderedCechDegreeTwo_mem_cocyclesTwo
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.orderedCechDegreeZero_cocycles_correspond`.
+-/
 theorem ker0 : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R), (∀ c : CC F 0, δ F 0 c = 0 → e0 F c = 0 → c = 0) ∧ ∀ g : C0 F, d0 F g = 0 → ∃ c : CC F 0, δ F 0 c = 0 ∧ e0 F c = g := GlobalTheory.T.orderedCechDegreeZero_cocycles_correspond
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_cech_cocycle_cohomologous_posetOneCocycle`.
+-/
 theorem h1_surj : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R) (f : Z1 F), ∃ z : CC F 1, δ F 1 z = 0 ∧ ∃ g : C0 F, f.1 - e1 F z = d0 F g := GlobalTheory.T.exists_cech_cocycle_cohomologous_posetOneCocycle
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_cech_primitive_of_image_coboundary`.
+-/
 theorem h1_inj : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R) (z : CC F 1), δ F 1 z = 0 → ∀ g : C0 F, e1 F z = d0 F g → ∃ c : CC F 0, δ F 0 c = z := GlobalTheory.T.exists_cech_primitive_of_image_coboundary
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_cocycle_sub_e2_eq_d1`.
+-/
 theorem h2_surj : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R) (w : Z2 F), ∃ y : CC F 2, δ F 2 y = 0 ∧ ∃ f : C1 F, w.1 - e2 F y = d1 F f := GlobalTheory.T.exists_cocycle_sub_e2_eq_d1
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_cech_coboundary_of_degreeTwo_image_coboundary'`.
+-/
 theorem h2_inj : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R) (y : CC F 2), δ F 2 y = 0 → ∀ f : C1 F, e2 F y = d1 F f → ∃ c : CC F 1, δ F 1 c = y := GlobalTheory.T.exists_cech_coboundary_of_degreeTwo_image_coboundary'
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.res0_bijective_of_affine_intersections_of_iSup_eq_top`.
+-/
 theorem restrictCompatibleFamilyToIntersections_bijective_affine_cover : ∀ {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) {κ : Type} [LinearOrder κ] [Fintype κ] (D : κ → X.Opens) (hD : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i)), ⨆ i, D i = ⊤ → Function.Bijective (res0 s D hD) := GlobalTheory.T.res0_bijective_of_affine_intersections_of_iSup_eq_top
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.baseChangeTrivialBundleCech_differential_comm`.
+-/
 theorem Φ_δ : ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {φ : X' ⟶ X} (w : φ ≫ s = s' ≫ spMap (algebraMap R R')) {κ : Type} [LinearOrder κ] (D : κ → X.Opens) (hD' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, φ ⁻¹ᵁ D i)) (p : ℕ) (x : R' ⊗[R] (GlobalTheory.AbLaw.cechLB s (LB.triv X) D).X p), Φ w D hD' (p + 1) (dB (GlobalTheory.AbLaw.cechLB s (LB.triv X) D) R' p (p + 1) x) = δ _ p (Φ w D hD' p x) := GlobalTheory.T.baseChangeTrivialBundleCech_differential_comm
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.baseChangeTrivialBundleCech_bijective_of_affine`.
+-/
 theorem Φ_bijective : ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {φ : X' ⟶ X} (h : IsPullback φ s' s (spMap (algebraMap R R'))) {κ : Type} [LinearOrder κ] [Fintype κ] (D : κ → X.Opens) (hD' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, φ ⁻¹ᵁ D i)), (∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i)) → ∀ p : ℕ, Function.Bijective (Φ h.w D hD' p) := GlobalTheory.T.baseChangeTrivialBundleCech_bijective_of_affine
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.baseChangeTrivialBundleCech_one_tmul`.
+-/
 theorem Φ_one : ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {φ : X' ⟶ X} (w : φ ≫ s = s' ≫ spMap (algebraMap R R')) {κ : Type} [LinearOrder κ] (D : κ → X.Opens) (hD' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, φ ⁻¹ᵁ D i)), Φ w D hD' 0 ((1 : R') ⊗ₜ[R] one s D) = fun _ => 1 := GlobalTheory.T.baseChangeTrivialBundleCech_one_tmul
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.baseChangeTrivialBundleCech_pullback_comm`.
+-/
 theorem Φ_pull : ∀ {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] [Algebra R R'] [Algebra R R''] {X X' X'' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {s'' : X'' ⟶ Sp R''} {φ : X' ⟶ X} {φ' : X'' ⟶ X} (w' : φ ≫ s = s' ≫ spMap (algebraMap R R')) (w'' : φ' ≫ s = s'' ≫ spMap (algebraMap R R'')) (α : R' →ₐ[R] R'') (ψ : X'' ⟶ X') (wψ : ψ ≫ s' = s'' ≫ spMap (α : R' →+* R'')), ψ ≫ φ = φ' → ∀ {κ : Type} [LinearOrder κ] (D : κ → X.Opens) (hD' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, φ ⁻¹ᵁ D i)) (hD'' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, φ' ⁻¹ᵁ D i)) (hle : ∀ i, φ' ⁻¹ᵁ D i ≤ ψ ⁻¹ᵁ (φ ⁻¹ᵁ D i)) (p : ℕ) (z : R' ⊗[R] (GlobalTheory.AbLaw.cechLB s (LB.triv X) D).X p) (t : {s : Finset κ // s.card = p + 1}), Φ w'' D hD'' p (GlobalTheory.AbCoh.ext α _ z) t = (pullCoef wψ (fun i => φ ⁻¹ᵁ D i) hD' (fun i => φ' ⁻¹ᵁ D i) hD'' hle).α (ne t.1 (card_nonempty t)) (Φ w' D hD' p z t) := GlobalTheory.T.baseChangeTrivialBundleCech_pullback_comm
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cech_h1_pullback_refinement_compat`.
+-/
 theorem pullHO1_cov : ∀ {R' R'' : Type} [CommRing R'] [CommRing R''] {X' X'' : Scheme.{0}} {s' : X' ⟶ Sp R'} {s'' : X'' ⟶ Sp R''} {σ : R' →+* R''} {ψ : X'' ⟶ X'} (w : ψ ≫ s' = s'' ≫ spMap σ) {κ : Type} [LinearOrder κ] (D' : κ → X'.Opens) (hD' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D' i)) (D'' : κ → X''.Opens) (hD'' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D'' i)) (hle : ∀ i, D'' i ≤ ψ ⁻¹ᵁ D' i) (y : HO1 s'), (CoefMap.restrict (OAff s'') (cov_mono D'' hD'').functor.op).pull1 (pullHO1 w y) = (pullCoef w D' hD' D'' hD'' hle).pull1 ((CoefMap.restrict (OAff s') (cov_mono D' hD').functor.op).pull1 y) := GlobalTheory.T.cech_h1_pullback_refinement_compat
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cech_h2_pullback_refinement_compat`.
+-/
 theorem pullHO2_cov : ∀ {R' R'' : Type} [CommRing R'] [CommRing R''] {X' X'' : Scheme.{0}} {s' : X' ⟶ Sp R'} {s'' : X'' ⟶ Sp R''} {σ : R' →+* R''} {ψ : X'' ⟶ X'} (w : ψ ≫ s' = s'' ≫ spMap σ) {κ : Type} [LinearOrder κ] (D' : κ → X'.Opens) (hD' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D' i)) (D'' : κ → X''.Opens) (hD'' : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D'' i)) (hle : ∀ i, D'' i ≤ ψ ⁻¹ᵁ D' i) (y : HO2 s'), (CoefMap.restrict (OAff s'') (cov_mono D'' hD'').functor.op).pull2 (pullHO2 w y) = (pullCoef w D' hD' D'' hD'' hle).pull2 ((CoefMap.restrict (OAff s') (cov_mono D' hD').functor.op).pull2 y) := GlobalTheory.T.cech_h2_pullback_refinement_compat
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.orderedCechDifferential_zero_const_one`.
+-/
 theorem δ_one : ∀ {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R), δ F 0 (fun _ => 1) = 0 := GlobalTheory.T.orderedCechDifferential_zero_const_one
 
 end GlobalTheory.CechPoset
@@ -70,10 +118,16 @@ def kerEquiv {R : Type} [CommRing R] {M N M' N' : Type} [AddCommGroup M] [Module
 
 variable {κ : Type} [LinearOrder κ]
 
+/- English proof (translation)
+The claim follows from `Finset.iInf_union`.
+-/
 theorem cov_inf {X : Scheme.{0}} (D : κ → X.Opens) (hD : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i))
     (I J : NE κ) : (cov D hD (I ⊓ J)).1 = (cov D hD I).1 ⊓ (cov D hD J).1 :=
   Finset.iInf_union
 
+/- English proof (translation)
+Use `eq_top_iff.2 (hc.symm.le.trans (iSup_le fun i => ?_))` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (le_iSup (fun I => (cov D hD I).1) (OrderDual.toDual ⟨{i}, Finset.singleton_nonempty i⟩))` and prove the remaining obligations. Simplify using `[cov]`.
+-/
 theorem cov_sup {X : Scheme.{0}} (D : κ → X.Opens) (hD : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i))
     (hc : ⨆ i, D i = ⊤) : ⨆ I, (cov D hD I).1 = ⊤ := by
   refine eq_top_iff.2 (hc.symm.le.trans (iSup_le fun i => ?_))
@@ -83,6 +137,9 @@ theorem cov_sup {X : Scheme.{0}} (D : κ → X.Opens) (hD : ∀ I : Finset κ, I
 variable {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [Fintype κ] (D : κ → X.Opens)
 
 omit [Fintype κ] in
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.preimage_iSup, hc]`. Both sides reduce to the same expression.
+-/
 theorem preimage_sup {X' : Scheme.{0}} (φ : X' ⟶ X) (hc : ⨆ i, D i = ⊤) :
     ⨆ i, φ ⁻¹ᵁ D i = ⊤ := by
   rw [← Scheme.Hom.preimage_iSup, hc]; rfl
@@ -94,6 +151,9 @@ variable {R' : Type} [CommRing R'] [Algebra R R'] {X' : Scheme.{0}} {s' : X' ⟶
 
 omit [Fintype κ] in
 include h hD in
+/- English proof (translation)
+Introduce `_ hI` and use `GlobalTheory.AbLaw.isAffineOpen_biInf_preimage h (hD _ hI)`.
+-/
 theorem hDp : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, φ ⁻¹ᵁ D i) :=
   fun _ hI => GlobalTheory.AbLaw.isAffineOpen_biInf_preimage h (hD _ hI)
 
@@ -140,17 +200,34 @@ def θ2 : LinearMap.ker (dB (KK s D) R' 2 3) →ₗ[R'] HO2 s' :=
     ((e2 _ ∘ₗ (LinearMap.ker (δ _ 2)).subtype ∘ₗ (kerΦ s D hD h 2).toLinearMap).codRestrict (Z2 _) fun z =>
       orderedCech_degreeTwo_cocycle_mem _ _ (LinearMap.mem_ker.1 ((kerΦ s D hD h 2) z).2))
 
+/- English proof (translation)
+The claim follows from `(rst1 s D hD hc h).apply_symm_apply _`.
+-/
 theorem orderedCech_restrictionOne_comparison (z : LinearMap.ker (dB (KK s D) R' 1 2)) :
     rst1 s D hD hc h (θ1 s D hD hc h z) = H1.mk _ ⟨e1 _ (Φ h.w D (hDp s D hD h) 1 z.1), (by
       rw [commAlgFunctorCocyclesOne_eq_ker, LinearMap.mem_ker, orderedCech_toCat_differential_one_comm]
       exact (congrArg (e2 _) (LinearMap.mem_ker.1 ((kerΦ s D hD h 1) z).2)).trans (map_zero _))⟩ :=
   (rst1 s D hD hc h).apply_symm_apply _
 
+/- English proof (translation)
+The claim follows from `(rst2 s D hD hc h).apply_symm_apply _`.
+-/
 theorem orderedCech_restrictionTwo_comparison (z : LinearMap.ker (dB (KK s D) R' 2 3)) :
     rst2 s D hD hc h (θ2 s D hD hc h z) = H2.mk _ ⟨e2 _ (Φ h.w D (hDp s D hD h) 2 z.1),
       orderedCech_degreeTwo_cocycle_mem _ _ (LinearMap.mem_ker.1 ((kerΦ s D hD h 2) z).2)⟩ :=
   (rst2 s D hD hc h).apply_symm_apply _
 
+/- English proof (translation)
+Establish `hb` using `fun p => Φ_bijective h D (hDp s D hD h) hD p`. Use `⟨fun y => ?_, fun z => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `H1.mk_surjective _ (rst1 s D hD hc h y)`. Take `⟨w, hw, g, hg⟩` from `h1_surj _ f`. Use `⟨(kerΦ s D hD h 1).symm ⟨w, hw⟩, (rst1 s D hD hc h).injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[orderedCech_restrictionOne_comparison, ← hf, H1.mk_eq_mk]`. Use `⟨-g, ?_⟩` and prove the remaining obligations. Establish `e : Φ h.w D (hDp s D hD h) 1 ((kerΦ s D hD h 1).symm ⟨w, hw⟩).1 = w` using `congrArg Subtype.val ((kerΦ s D hD h 1).apply_symm_apply ⟨w, hw⟩)`. Simplify using `only [e, map_neg, ← hg]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[← (rst1 s D hD hc h).map_eq_zero_iff, orderedCech_restrictionOne_comparison, H1.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Take `⟨c, hc'⟩` from `h1_inj _ _ (LinearMap.mem_ker.1 ((kerΦ s D hD h 1) z).2) g hg.symm`. Take `⟨x, rfl⟩` from `(hb 0).2 c`.
+
+Use `⟨x, (hb 1).1 ?_⟩` and prove the remaining obligations. Rewrite using `[Φ_δ, hc']`. Both sides reduce to the same expression. Introduce and unpack `⟨x, hx⟩`. Use `⟨e0 _ (Φ h.w D (hDp s D hD h) 0 x), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[orderedCech_toCat_differential_zero_comm, ← Φ_δ, hx]`.
+-/
 theorem θ1_exact : Function.Surjective (θ1 s D hD hc h) ∧
     ∀ z, θ1 s D hD hc h z = 0 ↔ z.1 ∈ LinearMap.range (dB (KK s D) R' 0 1) := by
   have hb := fun p => Φ_bijective h D (hDp s D hD h) hD p
@@ -174,6 +251,17 @@ theorem θ1_exact : Function.Surjective (θ1 s D hD hc h) ∧
       refine ⟨e0 _ (Φ h.w D (hDp s D hD h) 0 x), ?_⟩
       rw [orderedCech_toCat_differential_zero_comm, ← Φ_δ, hx]
 
+/- English proof (translation)
+Establish `hb` using `fun p => Φ_bijective h D (hDp s D hD h) hD p`. Use `⟨fun y => ?_, fun z => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `H2.mk_surjective _ (rst2 s D hD hc h y)`. Take `⟨w, hw, g, hg⟩` from `h2_surj _ f`. Use `⟨(kerΦ s D hD h 2).symm ⟨w, hw⟩, (rst2 s D hD hc h).injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[orderedCech_restrictionTwo_comparison, ← hf, H2.mk_eq_mk]`. Use `⟨-g, ?_⟩` and prove the remaining obligations. Establish `e : Φ h.w D (hDp s D hD h) 2 ((kerΦ s D hD h 2).symm ⟨w, hw⟩).1 = w` using `congrArg Subtype.val ((kerΦ s D hD h 2).apply_symm_apply ⟨w, hw⟩)`. Simplify using `only [e, map_neg, ← hg]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[← (rst2 s D hD hc h).map_eq_zero_iff, orderedCech_restrictionTwo_comparison, H2.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Take `⟨c, hc'⟩` from `h2_inj _ _ (LinearMap.mem_ker.1 ((kerΦ s D hD h 2) z).2) g hg.symm`. Take `⟨x, rfl⟩` from `(hb 1).2 c`.
+
+Use `⟨x, (hb 2).1 ?_⟩` and prove the remaining obligations. Rewrite using `[Φ_δ, hc']`. Both sides reduce to the same expression. Introduce and unpack `⟨x, hx⟩`. Use `⟨e1 _ (Φ h.w D (hDp s D hD h) 1 x), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[orderedCech_toCat_differential_one_comm, ← Φ_δ, hx]`.
+-/
 theorem θ2_exact : Function.Surjective (θ2 s D hD hc h) ∧
     ∀ z, θ2 s D hD hc h z = 0 ↔ z.1 ∈ LinearMap.range (dB (KK s D) R' 1 2) := by
   have hb := fun p => Φ_bijective h D (hDp s D hD h) hD p
@@ -203,6 +291,9 @@ section Nat
 
 variable {κ : Type} [LinearOrder κ]
 
+/- English proof (translation)
+Simplify using `only [e1, LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> simp [hα]`.
+-/
 theorem orderedCechToCatCochainsOne_natural {R R'' : Type} [CommRing R] [CommRing R''] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R)
     (F'' : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R'') (α : ∀ T, F.obj T →+* F''.obj T)
     (hα : ∀ {T T' : (NE κ)ᵒᵖ} (f : T ⟶ T') (b : F.obj T), α T' (mp F f b) = mp F'' f (α T b))
@@ -211,6 +302,9 @@ theorem orderedCechToCatCochainsOne_natural {R R'' : Type} [CommRing R] [CommRin
   simp only [e1, LinearMap.pi_apply]
   split_ifs <;> simp [hα]
 
+/- English proof (translation)
+Simplify using `only [e2, LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> simp [hα]`.
+-/
 theorem alternatingToOrderedCechDegreeTwo_natural {R R'' : Type} [CommRing R] [CommRing R''] (F : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R)
     (F'' : (NE κ)ᵒᵖ ⥤ CommAlgCat.{0} R'') (α : ∀ T, F.obj T →+* F''.obj T)
     (hα : ∀ {T T' : (NE κ)ᵒᵖ} (f : T ⟶ T') (b : F.obj T), α T' (mp F f b) = mp F'' f (α T b))
@@ -228,9 +322,19 @@ variable {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [Fintype κ] 
   (w : ψ ≫ s' = s'' ≫ spMap (α : R' →+* R'')) (hcomp : ψ ≫ φ = φ')
 
 include hcomp in
+/- English proof (translation)
+Introduce `i` and use `by subst hcomp; exact le_rfl`.
+-/
 theorem hle : ∀ i, φ' ⁻¹ᵁ D i ≤ ψ ⁻¹ᵁ (φ ⁻¹ᵁ D i) := fun i => by subst hcomp; exact le_rfl
 
 include hcomp in
+/- English proof (translation)
+Apply `(rst1 s D hD hc h').injective` to reduce the goal to its premises. Rewrite using `[orderedCech_restrictionOne_comparison]`. Express the relevant statement in the definitionally equal form `_ = (CoefMap.restrict _ _).pull1 (pullHO1 w _)`. Rewrite using `[pullHO1_cov w _ (hDp s D hD h) _ (hDp s D hD h') (hle D ψ hcomp)]`. Rewrite using `[show (CoefMap.restrict (OAff s') (cov_mono _ (hDp s D hD h)).functor.op).pull1 (θ1 s D hD hc h z) = rst1 s D hD hc h (θ1 s D hD hc h z) from rfl, orderedCech_restrictionOne_comparison, CoefMap.pullCohomologyOne_class]`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a b f`. Use `show e1 _ (Φ h'.w D (hDp s D hD h') 1 z'.1) a b f = (pullCoef w _ (hDp s D hD h) _ (hDp s D hD h') (hle D ψ hcomp)).α b (e1 _ (Φ h.w D (hDp s D hD h) 1 z.1) a b f)`. Establish `e : Φ h'.w D (hDp s D hD h') 1 z'.1 = fun t => (pullCoef w _ (hDp s D hD h) _ (hDp s D hD h') (hle D ψ hcomp)).α _ (Φ h.w D (hDp s D hD h) 1 z.1 t)`.
+
+Rewrite using `[hz]`. Use function extensionality and compare the values at `t`. Conclude with `Φ_pull h.w h'.w α ψ w hcomp D _ _ (hle D ψ hcomp) 1 z.1 t`. Rewrite using `[e]`. Conclude with `orderedCechToCatCochainsOne_natural _ _ _ (fun f b => (pullCoef w _ (hDp s D hD h) _ (hDp s D hD h') (hle D ψ hcomp)).naturality f b) _ a b f`.
+-/
 theorem θ1_nat (z : LinearMap.ker (dB (KK s D) R' 1 2)) (z' : LinearMap.ker (dB (KK s D) R'' 1 2))
     (hz : z'.1 = GlobalTheory.AbCoh.ext α _ z.1) :
     θ1 s D hD hc h' z' = pullHO1 w (θ1 s D hD hc h z) := by
@@ -252,6 +356,13 @@ theorem θ1_nat (z : LinearMap.ker (dB (KK s D) R' 1 2)) (z' : LinearMap.ker (dB
   exact orderedCechToCatCochainsOne_natural _ _ _ (fun f b => (pullCoef w _ (hDp s D hD h) _ (hDp s D hD h') (hle D ψ hcomp)).naturality f b) _ a b f
 
 include hcomp in
+/- English proof (translation)
+Apply `(rst2 s D hD hc h').injective` to reduce the goal to its premises. Rewrite using `[orderedCech_restrictionTwo_comparison]`. Express the relevant statement in the definitionally equal form `_ = (CoefMap.restrict _ _).pull2 (pullHO2 w _)`. Rewrite using `[pullHO2_cov w _ (hDp s D hD h) _ (hDp s D hD h') (hle D ψ hcomp)]`. Rewrite using `[show (CoefMap.restrict (OAff s') (cov_mono _ (hDp s D hD h)).functor.op).pull2 (θ2 s D hD hc h z) = rst2 s D hD hc h (θ2 s D hD hc h z) from rfl, orderedCech_restrictionTwo_comparison, CoefMap.pullCohomologyTwo_class]`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a b d f g`. Use `show e2 _ (Φ h'.w D (hDp s D hD h') 2 z'.1) a b d f g = (pullCoef w _ (hDp s D hD h) _ (hDp s D hD h') (hle D ψ hcomp)).α d (e2 _ (Φ h.w D (hDp s D hD h) 2 z.1) a b d f g)`. Establish `e : Φ h'.w D (hDp s D hD h') 2 z'.1 = fun t => (pullCoef w _ (hDp s D hD h) _ (hDp s D hD h') (hle D ψ hcomp)).α _ (Φ h.w D (hDp s D hD h) 2 z.1 t)`.
+
+Rewrite using `[hz]`. Use function extensionality and compare the values at `t`. Conclude with `Φ_pull h.w h'.w α ψ w hcomp D _ _ (hle D ψ hcomp) 2 z.1 t`. Rewrite using `[e]`. Conclude with `alternatingToOrderedCechDegreeTwo_natural _ _ _ (fun f b => (pullCoef w _ (hDp s D hD h) _ (hDp s D hD h') (hle D ψ hcomp)).naturality f b) _ a b d f g`.
+-/
 theorem θ2_nat (z : LinearMap.ker (dB (KK s D) R' 2 3)) (z' : LinearMap.ker (dB (KK s D) R'' 2 3))
     (hz : z'.1 = GlobalTheory.AbCoh.ext α _ z.1) :
     θ2 s D hD hc h' z' = pullHO2 w (θ2 s D hD hc h z) := by
@@ -286,11 +397,21 @@ variable {κ : Type} [LinearOrder κ] {R : Type} [CommRing R] {X : Scheme.{0}} (
   (h : IsPullback φ s' s (spMap (algebraMap R R')))
 
 include hD h in
+/- English proof (translation)
+Rewrite using `[LinearMap.mem_ker]`. Apply `(Φ_bijective h D (hDp s D hD h) hD 1).1` to reduce the goal to its premises. Rewrite using `[Φ_δ, Φ_one, δ_one, map_zero]`.
+-/
 theorem one_mem : (1 : R') ⊗ₜ[R] one s D ∈ LinearMap.ker (dB (KK s D) R' 0 1) := by
   rw [LinearMap.mem_ker]
   apply (Φ_bijective h D (hDp s D hD h) hD 1).1
   rw [Φ_δ, Φ_one, δ_one, map_zero]
 
+/- English proof (translation)
+Establish `h1 : (fun _ => 1 : C0 (OAff s')) ∈ LinearMap.ker (d0 (OAff s'))`. Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `T T' f`. Simplify using `[amitsur_d0_apply]`. It suffices to establish `e : θ0 s D hD hc h ⟨_, one_mem s D hD h⟩ = ⟨_, h1⟩ from congrArg (fun g => g.1 T) e`.
+
+Unfold `θ0`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, LinearEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `I`. Use `show e0 _ (Φ h.w D (hDp s D hD h) 0 ((1 : R') ⊗ₜ[R] one s D)) I = 1`.
+
+Rewrite using `[Φ_one]`. Simplify using `only [e0, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, AlgHom.toLinearMap_apply, map_one]`.
+-/
 theorem θ0_one (T : AffOp X') : (θ0 s D hD hc h ⟨_, one_mem s D hD h⟩).1 T = 1 := by
   have h1 : (fun _ => 1 : C0 (OAff s')) ∈ LinearMap.ker (d0 (OAff s')) := by
     rw [LinearMap.mem_ker]; funext T T' f; simp [amitsur_d0_apply]
@@ -307,6 +428,11 @@ end Main
 
 end GlobalTheory.CechPoset
 
+/- English proof (translation)
+Introduce `R _ X s κ _ _ D hs hDa hc`. Use `haveI := hs`. Establish `hD : ∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i)` using `fun I hI => GlobalTheory.MumfordSupport.isAffineOpen_biInf_of_isSeparated s hDa I hI`. Conclude with `⟨{ θ0 := fun h => GlobalTheory.CechPoset.θ0 s D hD hc h one := GlobalTheory.CechPoset.one s D θ0_one := fun h => ⟨GlobalTheory.CechPoset.one_mem s D hD h, GlobalTheory.CechPoset.θ0_one s D hD hc h⟩ θ1 := fun h => GlobalTheory.CechPoset.θ1 s D hD hc h θ2 := fun h => GlobalTheory.C …`. Conclude with `:= fun h => ⟨(GlobalTheory.CechPoset.θ1_exact s D hD hc h).1, (GlobalTheory.CechPoset.θ1_exact s D hD hc h).2, (GlobalTheory.CechPoset.θ2_exact s D hD hc h).1, (GlobalTheory.CechPoset.θ2_exact s D hD hc h).2⟩`.
+
+Use `nat := fun {R'} _ _ {X'} {s'} {φ} h {R''} _ _ {X''} {s''} {φ'} h' α ψ w hcomp => ⟨fun z z' hz => GlobalTheory.CechPoset.θ1_nat s D hD hc h h' α ψ w hcomp z z' hz, fun z z' hz => GlobalTheory.CechPoset.θ2_nat s D hD hc h h' α ψ w hcomp z z' hz⟩ }⟩`.
+-/
 theorem GlobalTheory.CechPoset.model_cechLB : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (κ : Type)
     [LinearOrder κ] [Fintype κ] (D : κ → X.Opens), IsSeparated s → (∀ i, IsAffineOpen (D i)) →
     ⨆ i, D i = ⊤ → Nonempty (Model s (GlobalTheory.AbLaw.cechLB s (LB.triv X) D)) := by

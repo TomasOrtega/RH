@@ -14,28 +14,46 @@ section Cone
 
 variable {X : Type} [AddCommGroup X] {m m' : ℕ}
 
+/- English proof (translation)
+Take `⟨t, ht, rfl⟩` from `h`. Take `⟨t', ht', rfl⟩` from `h'`. Conclude with `⟨t + t', fun i => add_nonneg (ht i) (ht' i), by simp [add_smul, Finset.sum_add_distrib]⟩`.
+-/
 theorem rcone_add {γ : Fin m → LinearMap.BilinForm ℤ X} {B B' : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (h : B ∈ rcone γ)
     (h' : B' ∈ rcone γ) : B + B' ∈ rcone γ := by
   obtain ⟨t, ht, rfl⟩ := h
   obtain ⟨t', ht', rfl⟩ := h'
   exact ⟨t + t', fun i => add_nonneg (ht i) (ht' i), by simp [add_smul, Finset.sum_add_distrib]⟩
 
+/- English proof (translation)
+Take `⟨t, ht, rfl⟩` from `h`. Conclude with `⟨a • t, fun i => mul_nonneg ha (ht i), by simp [Finset.smul_sum, smul_smul]⟩`.
+-/
 theorem rcone_smul {γ : Fin m → LinearMap.BilinForm ℤ X} {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (h : B ∈ rcone γ) {a : ℝ}
     (ha : 0 ≤ a) : a • B ∈ rcone γ := by
   obtain ⟨t, ht, rfl⟩ := h
   exact ⟨a • t, fun i => mul_nonneg ha (ht i), by simp [Finset.smul_sum, smul_smul]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ => le_rfl, by simp⟩`.
+-/
 theorem rcone_zero (γ : Fin m → LinearMap.BilinForm ℤ X) : (0 : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) ∈ rcone γ :=
   ⟨0, fun _ => le_rfl, by simp⟩
 
+/- English proof (translation)
+Take `⟨c, hc, e⟩` from `inRCone_self γ j`. Conclude with `⟨c, hc, e⟩`.
+-/
 theorem rcone_gen (γ : Fin m → LinearMap.BilinForm ℤ X) (j : Fin m) : toReal (γ j) ∈ rcone γ := by
   obtain ⟨c, hc, e⟩ := inRCone_self γ j
   exact ⟨c, hc, e⟩
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction _ (· ∈ rcone γ) (fun _ _ => rcone_add) (rcone_zero γ) hf`.
+-/
 theorem rcone_sum {γ : Fin m → LinearMap.BilinForm ℤ X} {ι : Type} (S : Finset ι) (f : ι → X →ₗ[ℤ] X →ₗ[ℤ] ℝ)
     (hf : ∀ i ∈ S, f i ∈ rcone γ) : ∑ i ∈ S, f i ∈ rcone γ :=
   Finset.sum_induction _ (· ∈ rcone γ) (fun _ _ => rcone_add) (rcone_zero γ) hf
 
+/- English proof (translation)
+Take `⟨t, ht, rfl⟩` from `hB`. Use `rcone_sum _ _ fun i _ => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `h i`. Rewrite using `[hj]`. Conclude with `rcone_smul (rcone_gen γ' j) (ht i)`.
+-/
 theorem rcone_mono {γ : Fin m → LinearMap.BilinForm ℤ X} {γ' : Fin m' → LinearMap.BilinForm ℤ X}
     (h : ∀ i, ∃ j, γ i = γ' j) {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (hB : B ∈ rcone γ) : B ∈ rcone γ' := by
   obtain ⟨t, ht, rfl⟩ := hB
@@ -44,6 +62,11 @@ theorem rcone_mono {γ : Fin m → LinearMap.BilinForm ℤ X} {γ' : Fin m' → 
   rw [hj]
   exact rcone_smul (rcone_gen γ' j) (ht i)
 
+/- English proof (translation)
+Establish `h1 : ∑ i : Fin (m + 2), (Fin.cons (-1) (Fin.cons a c) : Fin (m + 2) → ℝ) i • toReal ((LinearMap.id : LinearMap.BilinForm ℤ X →ₗ[ℤ] LinearMap.BilinForm ℤ X) ((Fin.cons β (Fin.cons u γ) : Fin (m + 2) → LinearMap.BilinForm ℤ X) i)) = 0`. Simplify using `only [Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, LinearMap.id_apply, h]`. Simplify using `only [neg_smul, one_smul]`. Normalize the expressions using the abelian group laws. Establish `h2` using `sum_mul_eq_zero_of_sum_toReal (j := LinearMap.id) (fun _ _ h => h) ℓ h1`.
+
+Simplify using `only [Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ] at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lin_cons (u : LinearMap.BilinForm ℤ X) (γ : Fin m → LinearMap.BilinForm ℤ X)
     (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) (β : LinearMap.BilinForm ℤ X) (a : ℝ) (c : Fin m → ℝ)
     (h : toReal β = a • toReal u + ∑ i, c i • toReal (γ i)) : (ℓ β : ℝ) = a * ℓ u + ∑ i, c i * ℓ (γ i) := by
@@ -64,6 +87,19 @@ section Depth
 variable {O : Type} [CommRing O] {bar : O → O} {ψ w : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
   [Module.Finite O X] {m : ℕ}
 
+/- English proof (translation)
+Take `⟨t, ht, hβt⟩` from `hβ`. Rewrite `hβt` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at hβt`. Establish `hs0 : ∀ j, h (γ (s j)) = 0` using `fun j => (hF.2 (s j)).2 ⟨j, rfl⟩`. Establish `hhβ : (h β : ℝ) = t 0 * h v`.
+
+Rewrite using `[lin_cons v (fun j => γ (s j)) h β (t 0) (fun j => t j.succ) hβt]`. Simplify using `[hs0]`. Establish `hvR : (0 : ℝ) < h v` using `by exact_mod_cast hhv`. Establish `hface : ∑ j, t j.succ • toReal (γ (s j)) ∈ rcone γ` using `rcone_sum _ _ fun j _ => rcone_smul (rcone_gen γ (s j)) (ht j.succ)`. Establish `hvR' : toReal v ∈ rcone γ`.
+
+Take `⟨c, hc, e⟩` from `hvc`. Conclude with `⟨c, hc, e⟩`. Establish `hBγ : toReal β ∈ rcone γ`. Rewrite using `[hβt]`. Conclude with `rcone_add (rcone_smul hvR' (ht 0)) hface`.
+
+Establish `hlow : t 0 ≤ evalR (starDepth bar ψ w) (toReal β)` using `GlobalTheory.T.centreDepth_le_starDepth_of_cell O bar ψ w X m γ (toReal β) v (t 0) hγ hBγ hvb hvp hvw hvc hv0 huniq (ht 0) (by rw [hβt, add_sub_cancel_left]; exact hface)`. Establish `hup : evalR (starDepth bar ψ w) (toReal β) ≤ t 0`. Use `GlobalTheory.PolFan.evalR_starDepth_le O bar ψ w X m γ (toReal β) (t 0) hγ hBγ (ht 0) ?_` and prove the remaining obligations. Introduce `v' hb hp hw1 hc t' ht' hmem`. Take `rfl` from `huniq v' hb hp hw1 hc`.
+
+Take `⟨e, he, hee⟩` from `hmem`. Establish `h1` using `lin_cons v' γ h β t' e (by rw [← hee]; abel)`. Establish `h2 : 0 ≤ ∑ i, e i * (h (γ i) : ℝ)` using `Finset.sum_nonneg fun i _ => mul_nonneg (he i) (by exact_mod_cast hF.1 i)`. Rewrite `h1` using `[hhβ]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite `hlow`, `hup` using `[evalR_toReal]`. Rewrite using `[hhβ, le_antisymm hup hlow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem depth_eq_of_star {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCell bar ψ γ)
     {v : LinearMap.BilinForm ℤ X} (hvb : v ∈ balForms bar X) (hvp : ∀ y, 0 ≤ v y y) (hvw : w.evalZ v = 1)
     (hvc : InRCone γ v) (hv0 : v ≠ 0)
@@ -107,6 +143,11 @@ end Depth
 
 section Den
 
+/- English proof (translation)
+Use `choose D hD hA using h`. Use `haveI := Fintype.ofFinite ι`. Use `⟨∏ i, D i, Finset.prod_pos fun i _ => hD i, fun i x hx => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hA i x hx`. Use `⟨(∏ j ∈ Finset.univ.erase i, D j : ℕ) * n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ D (Finset.mem_univ i)]`. Use `push_cast`. Rewrite using `[← hn]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem common_den {ι : Type} [Finite ι] (A : ι → Set ℝ)
     (h : ∀ i, ∃ D : ℕ, 0 < D ∧ ∀ x ∈ A i, ∃ n : ℤ, (D : ℝ) * x = n) :
     ∃ D : ℕ, 0 < D ∧ ∀ i, ∀ x ∈ A i, ∃ n : ℤ, (D : ℝ) * x = n := by
@@ -124,6 +165,21 @@ theorem common_den {ι : Type} [Finite ι] (A : ι → Set ℝ)
 variable {O : Type} [CommRing O] {bar : O → O} {ψ w : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
   [Module.Finite O X]
 
+/- English proof (translation)
+Distinguish the cases in `hc : ∃ v ∈ balForms bar X, (∀ y, 0 ≤ v y y) ∧ w.evalZ v = 1 ∧ InRCone γ v`. Take `⟨v, hvb, hvp, hvw, hvc⟩` from `hc`. Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`. Conclude with `absurd (hw 0 hvb hvp hvw 0 0 (by simp)) (by norm_num)`.
+
+Establish `huniq : ∀ v' ∈ balForms bar X, (∀ y, 0 ≤ v' y y) → w.evalZ v' = 1 → InRCone γ v' → v' = v` using `fun v' hb hp hw1 hc' => hu v' hb hp v hvb hvp hw1 hvw hc' hvc`. Set `A : Set (Fin m) → Set ℝ` to `fun Z => {x | ∃ β : LinearMap.BilinForm ℤ X, x = (starDepth bar ψ w).evalZ β ∧ ∃ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), Set.range s = Z ∧ IsFaceCut γ s h ∧ 0 < h v ∧ toReal β ∈ rcone (Fin.cons v fun j => γ (s j))}`. Establish `hA : ∀ Z, ∃ D : ℕ, 0 < D ∧ ∀ x ∈ A Z, ∃ n : ℤ, (D : ℝ) * x = n`. Introduce `Z`. Distinguish the cases in `hne : ∃ x, x ∈ A Z`.
+
+Take `⟨-, β₀, -, m₀, s₀, h₀, hs₀, hF₀, hh₀, -⟩` from `hne`. Use `⟨(h₀ v).toNat, by omega, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨β, rfl, m', s, h, hs, hF, hh, hβ⟩`. Establish `hF' : IsFaceCut γ s h₀` using `⟨hF₀.1, fun j => by rw [hF₀.2 j, hs₀, hs]⟩`. Establish `key` using `depth_eq_of_star hγ hvb hvp hvw hvc hv0 huniq hF' hh₀ hβ`.
+
+Use `⟨h₀ β, ?_⟩` and prove the remaining obligations. Establish `e : (((h₀ v).toNat : ℤ) : ℝ) = (h₀ v : ℝ)` using `by rw [Int.toNat_of_nonneg hh₀.le]`. Rewrite using `[← key, ← e]`. Use `norm_cast`. Use `push_neg at hne`.
+
+Conclude with `⟨1, one_pos, fun x hx => (hne x hx).elim⟩`. Take `⟨D, hD, hall⟩` from `common_den A hA`. Use `⟨D, hD, fun β hβ => ?_⟩` and prove the remaining obligations. Take `⟨m', s, h, hF, hh, hβ'⟩` from `GlobalTheory.StarCover.star_cover X m γ v (toReal β) (fun i y z => (hγ.mem i).1 y z) hγ.nonneg hv0 hvc hβ`. Conclude with `hall (Set.range s) _ ⟨β, rfl, m', s, h, rfl, hF, hh, hβ'⟩`.
+
+Use `push_neg at hc`. Use `⟨1, one_pos, fun β hβ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Establish `hup` using `GlobalTheory.PolFan.evalR_starDepth_le O bar ψ w X m γ (toReal β) 0 hγ hβ le_rfl fun v hb hp hw1 hc' => absurd hc' (hc v hb hp hw1)`. Rewrite `hup` using `[evalR_toReal]`. Establish `h0 : 0 ≤ (starDepth bar ψ w).evalZ β` using `starDepth_eval_nonneg _`.
+
+Rewrite using `[le_antisymm hup h0]`. Simplify using the standard rewrite rules.
+-/
 theorem cell_den {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} (hγ : IsCell bar ψ γ)
     (hw : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → w.evalZ β = 1 →
       ∀ (k : ℕ) (β' : LinearMap.BilinForm ℤ X), (k : ℤ) • β' = β → k = 1)
@@ -177,6 +233,17 @@ section Module
 variable {O : Type} [CommRing O] {bar : O → O} {ψ w : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
   [Module.Finite O X]
 
+/- English proof (translation)
+Take `⟨S, hS, hcov⟩` from `hX.finite`. Use `haveI : Finite {T : Set (LinearMap.BilinForm ℤ X) | T ⊆ S} := hS.finite_subsets.to_subtype`. Set `A : {T : Set (LinearMap.BilinForm ℤ X) | T ⊆ S} → Set ℝ` to `fun T => {x | ∃ β : LinearMap.BilinForm ℤ X, x = (starDepth bar ψ w).evalZ β ∧ ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ ∧ Set.range γ = T.1 ∧ toReal β ∈ rcone γ}`. Establish `hA : ∀ T, ∃ D : ℕ, 0 < D ∧ ∀ x ∈ A T, ∃ n : ℤ, (D : ℝ) * x = n`. Introduce `T`.
+
+Distinguish the cases in `hne : ∃ x, x ∈ A T`. Take `⟨-, -, -, m₀, γ₀, hγ₀, hr₀, -⟩` from `hne`. Take `⟨D, hD, hden⟩` from `cell_den hγ₀ hw (hu m₀ γ₀ hγ₀)`. Use `⟨D, hD, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨β, rfl, m, γ, -, hr, hβ⟩`.
+
+Use `hden β (rcone_mono (fun i => ?_) hβ)` and prove the remaining obligations. Establish `: γ i ∈ Set.range γ₀` using `by rw [hr₀, ← hr]; exact ⟨i, rfl⟩`. Take `⟨j, hj⟩` from `this`. Conclude with `⟨j, hj.symm⟩`. Use `push_neg at hne`.
+
+Conclude with `⟨1, one_pos, fun x hx => (hne x hx).elim⟩`. Take `⟨D, hD, hall⟩` from `common_den A hA`. Use `⟨D, hD, fun β hβ => ?_⟩` and prove the remaining obligations. Take `⟨e, m, γ, c, hγ, hγS, hc, hsum⟩` from `hcov _ hβ`. Establish `hpull : toReal (pull e.toLinearMap β) = ∑ i, c i • toReal (γ i)`.
+
+Rewrite using `[← hsum]`. Conclude with `LinearMap.ext₂ fun a b => by simp`. Establish `hval : (starDepth bar ψ w).evalZ (pull e.toLinearMap β) = (starDepth bar ψ w).evalZ β` using `evalZ_pull _ e.surjective β`. Rewrite using `[← hval]`. Conclude with `hall ⟨Set.range γ, by rintro _ ⟨i, rfl⟩; exact hγS i⟩ _ ⟨pull e.toLinearMap β, rfl, m, γ, hγ, rfl, c, hc, hpull⟩`.
+-/
 theorem module_den (hX : IsPolyFanOn bar ψ X)
     (hw : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → w.evalZ β = 1 →
       ∀ (k : ℕ) (β' : LinearMap.BilinForm ℤ X), (k : ℤ) • β' = β → k = 1)
@@ -218,6 +285,13 @@ theorem module_den (hX : IsPolyFanOn bar ψ X)
 
 end Module
 
+/- English proof (translation)
+Introduce `E _ _ _ H q ψ w hψ hw`. Take `⟨n, R, hR, hcls⟩` from `GlobalTheory.exists_fin_reps_projective_finrank_le E q`. Establish `key : ∀ k : Fin n, ∃ D : ℕ, 0 < D ∧ ∀ x ∈ {x : ℝ | ∃ β ∈ balForms H.bar (R k), (∀ y, 0 ≤ β y y) ∧ haveI` using `(hR k).1; x = (starDepth H.bar ψ w).evalZ β}, ∃ z : ℤ, (D : ℝ) * x = z := fun k => by haveI := (hR k).1 haveI := (hR k).2.1`. Take `⟨-, h2, h3⟩` from `hw (R k) (hR k).2.2`. Take `⟨D, hD, hA⟩` from `module_den (hψ (R k) (hR k).2.2) h2 h3`.
+
+Use `⟨D, hD, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨β, hβ, hp, rfl⟩`. Conclude with `hA β (toReal_mem_psdCone_of_nonneg E H (R k) β hβ hp)`. Take `⟨D₀, hD₀, hall⟩` from `common_den _ key`. Use `⟨D₀, hD₀, fun X _ _ _ _ hX β hβ hp => ?_⟩` and prove the remaining obligations.
+
+Take `⟨k, ⟨f⟩⟩` from `hcls X hX`. Use `haveI := (hR k).1`. Establish `hval : (starDepth H.bar ψ w).evalZ (pull f.symm.toLinearMap β) = (starDepth H.bar ψ w).evalZ β` using `evalZ_pull _ f.symm.surjective β`. Rewrite using `[← hval]`. Conclude with `hall k _ ⟨_, pull_mem _ hβ, fun y => hp _, rfl⟩`.
+-/
 theorem starDepth_den : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ w : InvFun (𝓞 E)),
     IsPolyFan H.bar q ψ → IsCentreSet H.bar q ψ w → ∃ D₀ : ℕ, 0 < D₀ ∧ ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X]
       [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ β ∈ balForms H.bar X,
@@ -242,6 +316,9 @@ theorem starDepth_den : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
   rw [← hval]
   exact hall k _ ⟨_, pull_mem _ hβ, fun y => hp _, rfl⟩
 
+/- English proof (translation)
+The claim follows from `starDepth_zeroFun n B`.
+-/
 example (n : ℕ) (B : (Fin n → ℤ) → (Fin n → ℤ) → ℝ) : (starDepth id (InvFun.minVal ℤ) (zeroFun ℤ)).toFun n B = 0 :=
   starDepth_zeroFun n B
 

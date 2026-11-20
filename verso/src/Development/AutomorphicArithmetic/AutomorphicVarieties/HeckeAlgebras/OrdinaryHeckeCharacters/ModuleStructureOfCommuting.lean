@@ -16,11 +16,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 attribute [local instance 2000] UpperTheory.V.W.coefLocal
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, ← JEx.heckePol_coeff n q a j hj, ← mul_assoc, ← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 private theorem hecke_poly_coeff_formula {A : Type} [CommRing A] (n q : ℕ) (a : ℕ → A) (j : ℕ) (hj : j ≤ n) :
     (heckePol n q a).coeff (n - j) = (-1) ^ j * (q : A) ^ (j * (j - 1) / 2) * a j := by
   rw [mul_assoc, ← JEx.heckePol_coeff n q a j hj, ← mul_assoc, ← mul_pow]
   simp
 
+/- English proof (translation)
+Rewrite using `[Hi.heckePol, finset_sum_coeff]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul_X_pow, if_neg]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem hecke_poly_coeff_zero {A : Type} [CommRing A] (n q : ℕ) (a : ℕ → A) (i : ℕ) (hi : n < i) :
     (heckePol n q a).coeff i = 0 := by
   rw [Hi.heckePol, finset_sum_coeff]
@@ -28,6 +34,13 @@ private theorem hecke_poly_coeff_zero {A : Type} [CommRing A] (n q : ℕ) (a : �
   rw [coeff_C_mul_X_pow, if_neg]
   omega
 
+/- English proof (translation)
+Establish `e : algebraMap c.O (Qbar l) b = (b : PadicAlgCl l)` using `rfl`. Rewrite using `[e]`. Rewrite `hb` using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff]`. Break down `eq_or_ne b 0 with rfl | h0` into its components or cases. Simplify using the standard rewrite rules.
+
+Establish `h` using `UpperTheory.V.Base.normO l c.O b h0`. Establish `hl : ((l : ℝ)⁻¹) < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Establish `hv : (IsDiscreteValuationRing.addVal c.O b).toNat ≠ 0`. Rewrite using `[Ne, ENat.toNat_eq_zero, IsDiscreteValuationRing.addVal_eq_zero_iff, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `fun h => h.elim hb h0`.
+
+Establish `h1` using `pow_lt_one₀ (by positivity) hl hv`. Rewrite `h1` using `[← h]`. Assume the negation of the conclusion as `hn`. Conclude with `absurd h1 (not_lt.2 (one_le_pow₀ (not_lt.1 hn)))`.
+-/
 private theorem norm_lt_one_of_residue_zero {l : ℕ} [Fact l.Prime] (c : Coef l) (b : c.O) (hb : residue c.O b = 0) :
     ‖algebraMap c.O (Qbar l) b‖ < 1 := by
   have e : algebraMap c.O (Qbar l) b = (b : PadicAlgCl l) := rfl
@@ -45,6 +58,17 @@ private theorem norm_lt_one_of_residue_zero {l : ℕ} [Fact l.Prime] (c : Coef l
   by_contra hn
   exact absurd h1 (not_lt.2 (one_le_pow₀ (not_lt.1 hn)))
 
+/- English proof (translation)
+Establish `e : ∀ j ≤ n, ‖(heckePol n q a).coeff (n - j) - algebraMap c.O (Qbar l) ((heckePol n q b).coeff (n - j))‖ = ‖a j - algebraMap c.O (Qbar l) (b j)‖` using `fun j hj => by`. Rewrite using `[← coeff_map, JEx.heckePol_map, hecke_poly_coeff_formula _ _ _ _ hj, hecke_poly_coeff_formula _ _ _ _ hj, ← mul_sub]`. Simplify using `[hq]`. Rewrite using `[← JEx.heckePol_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h i b' hb`. Rewrite `hb` using `[coeff_map]`. Establish `h1 : ‖algebraMap c.O (Qbar l) ((heckePol n q b).coeff i) - algebraMap c.O (Qbar l) b'‖ < 1`. Rewrite using `[← map_sub]`. Conclude with `norm_lt_one_of_residue_zero c _ (by rw [map_sub, hb, sub_self])`.
+
+Establish `h2 : ‖(heckePol n q a).coeff i - algebraMap c.O (Qbar l) ((heckePol n q b).coeff i)‖ < 1`. Break down `le_or_gt i n with hi | hi` into its components or cases. Use `e (n - i) (Nat.sub_le _ _)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self hi]`. Rewrite using `[this]`.
+
+Conclude with `h _ (Nat.sub_le _ _)`. Rewrite using `[hecke_poly_coeff_zero _ _ _ _ hi, hecke_poly_coeff_zero _ _ _ _ hi]`. Simplify using the standard rewrite rules. Rewrite using `[← sub_add_sub_cancel _ (algebraMap c.O (Qbar l) ((heckePol n q b).coeff i))]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h2 h1)`.
+
+Introduce `h j hj`. Rewrite using `[← e j hj]`. Conclude with `h _ _ (coeff_map _ _).symm`.
+-/
 private theorem hecke_poly_coeff_congruence_iff {l : ℕ} [Fact l.Prime] (c : Coef l) (n q : ℕ) (hq : ‖(q : Qbar l)‖ = 1) (a : ℕ → Qbar l) (b : ℕ → c.O) :
     (∀ j ≤ n, ‖a j - algebraMap c.O (Qbar l) (b j)‖ < 1) ↔
       ∀ (i : ℕ) (b' : c.O), residue c.O b' = (heckePol n q fun j => residue c.O (b j)).coeff i →
@@ -74,6 +98,17 @@ private theorem hecke_poly_coeff_congruence_iff {l : ℕ} [Fact l.Prime] (c : Co
     rw [← e j hj]
     exact h _ _ (coeff_map _ _).symm
 
+/- English proof (translation)
+Establish `hq : ‖((normV w.1 : ℕ) : Qbar l)‖ = 1`. Establish `h0` using `(cycZ L Ω l σ).isUnit`. Rewrite `h0` using `[cycZ_of_isFrob (hH.Wp_away w.1 w.2) hB hσ, PadicInt.isUnit_iff]`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap', ← h0, PadicInt.norm_def, PadicInt.coe_natCast]`. Establish `e : (Y.r (H.prj σ⁻¹) : Matrix (Fin n) (Fin n) (Qbar l)).charpoly = heckePol n (normV w.1) fun j => ι.symm (Y.a w j)`.
+
+Use `Polynomial.map_injective ι.toRingHom ι.injective ?_` and prove the remaining obligations. Rewrite using `[Y.frob w B σ hB hσ, JEx.heckePol_map]`. Simplify using the standard rewrite rules. Establish `e2 : (fun j => if h : 0 < j ∧ j - 1 < n then residue c.O (a (.inl (w, ⟨j - 1, h.2⟩))) else 1) = fun j => residue c.O (if h : 0 < j ∧ j - 1 < n then a (.inl (w, ⟨j - 1, h.2⟩)) else 1)`. Use function extensionality and compare the values at `j`.
+
+Use `split_ifs`. Both sides reduce to the same expression. Conclude with `(map_one _).symm`. Rewrite using `[e, e2, ← hecke_poly_coeff_congruence_iff c n _ hq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h j hj`. Break down `j with _ | j` into its components or cases. Rewrite using `[Y.a_zero, dif_neg (by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[dif_pos ⟨Nat.succ_pos _, hj⟩]`.
+
+Conclude with `h ⟨j, hj⟩`. Introduce `h k`. Use `h (k + 1) k.2` as an intermediate fact. Rewrite `this` using `[dif_pos ⟨Nat.succ_pos _, k.2⟩]`. Conclude with `this`.
+-/
 private theorem hecke_part_frobenius {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime]
     {n : ℕ} {c : Coef l} (H : HSet L Ω l n c) (hH : H.Ax) (ι : Qbar l ≃+* ℂ) {lam : Wt L l n} {d : ℕ}
     {ξ : GV n H.Sl →* GL (Fin d) ℂ} (Y : H.Part ι lam ξ) (a : H.Op → c.O) (w : H.Wp) (B : ValuationSubring Ω) (σ : G L Ω)
@@ -109,6 +144,19 @@ private theorem hecke_part_frobenius {L Ω : Type} [Field L] [NumberField L] [Fi
     rw [dif_pos ⟨Nat.succ_pos _, k.2⟩] at this
     exact this
 
+/- English proof (translation)
+Introduce `_ L Ω _ _ _ _ _ l _ n c H hH A _ _ _ θ hθ hA ι P hP lam0 _ hd a K φ hφ hφ2 ι' j hj hD`. Take `⟨hC, hfi, hfr, -⟩` from `hiComm L Ω l n c H hH A θ hθ K`. Use `haveI : Fact (CommOn (H.X.Ord (H.τA A) θ (H.lev K)) (H.op A)) := ⟨hC⟩`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : A →ₐ[c.O] Qbar l, H.Good θ x lam0 := by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `one_ne_zero (hd 1 fun x hx => absurd ⟨x, hx⟩ h)`. Take `⟨d, ξ, c0, sp, hsp⟩` from `spec L Ω l n c H hH A θ hθ ι x lam0 hx.2.1`. Use `levelUR2LocSub l c A _ _ ι' _ (H.op A) j a x fun z hz h => ?_` and prove the remaining obligations. Take `⟨Y, hY⟩` from `levelUR2OrdPt L Ω l n c H hH A θ hθ ι P hP x lam0 d ξ c0 sp hsp hx.1 K z hz`. Establish `hall` using `levelUR2GalRes l c H.Gq n Y.r Y.cont φ hφ _ hD (by`.
+
+Introduce and unpack `_ ⟨w, hw, B, σ, hB, hσ, rfl⟩`. Rewrite using `[hφ2 w B σ hB hσ]`. Use `(hecke_part_frobenius H hH ι Y a w B σ hB hσ).1 fun k => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hw k`. Rewrite using `[hY, ι.symm_apply_apply, ← hi]`.
+
+Conclude with `h i)`. Introduce and unpack `(⟨w, k⟩ | y)`. Take `⟨B, hB⟩` from `exists_isPlaceOver Ω w.1`. Take `⟨σ, hσ⟩` from `exists_isFrob hB`. Use `(hecke_part_frobenius H hH ι Y a w B σ hB hσ).2 (by` as an intermediate fact.
+
+Rewrite using `[← hφ2 w B σ hB hσ]`. Conclude with `hall _) k`. Rewrite `this` using `[hY, ι.symm_apply_apply]`. Then use the resulting hypothesis. Take `⟨i, hi⟩` from `hj y`. Rewrite using `[← hi]`.
+
+Conclude with `h i`.
+-/
 theorem UpperTheory.V.Hi.levelUR2H3Abs :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →
     ∀ (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ), H.IsWt θ →

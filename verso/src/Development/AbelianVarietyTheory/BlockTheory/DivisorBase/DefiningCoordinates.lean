@@ -109,12 +109,23 @@ def Statement : Prop :=
       ClassInvariance φ s) ∧
     DualFormValue φ ∧ DualFormBase φ
 
+/- English proof (translation)
+Simplify using `[defTerm, term, defCoord]`.
+-/
 example (φ : I → E →+* ℂ) (k : ℕ) (σ : ℂ) (x : E) : defTerm φ k 0 σ x = term φ k (fun _ => 0) σ x := by
   simp [defTerm, term, defCoord]
 
+/- English proof (translation)
+Simplify using `[risingFactor, Finset.prod_range_succ]`. Evaluate the numerical expressions.
+-/
 example : risingFactor 2 (fun _ : Unit => 2) = 6 := by
   simp [risingFactor, Finset.prod_range_succ]; norm_num
 
+/- English proof (translation)
+Introduce `h`. Establish `h0 : φ i x ≠ 0` using `by simpa using hx`. Establish `h1 : φ i x = -(z i * starRingEnd ℂ (φ i x))` using `eq_neg_of_add_eq_zero_left h`. Establish `h2 : ‖φ i x‖ = ‖z i‖ * ‖φ i x‖` using `by conv_lhs => rw [h1]`. Simplify using the standard rewrite rules.
+
+Establish `h3 : 0 < ‖φ i x‖` using `norm_pos_iff.2 h0`. Establish `h4` using `hz i`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 example (φ : I → E →+* ℂ) (z : I → ℂ) (hz : z ∈ polydisc I) (x : E) (hx : x ≠ 0) (i : I) : defCoord φ z x i ≠ 0 := by
   intro h
   have h0 : φ i x ≠ 0 := by simpa using hx

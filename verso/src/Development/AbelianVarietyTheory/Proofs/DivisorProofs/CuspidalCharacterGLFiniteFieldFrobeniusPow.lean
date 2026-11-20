@@ -8,6 +8,15 @@ open scoped Classical
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `x`. Rewrite using `[GlobalTheory.T.primitiveFunctionCharpolyGL_harishChandra_recursion F S n (gal (t : F →+* F) n x), GlobalTheory.T.primitiveFunctionCharpolyGL_harishChandra_recursion F _ n x]`.
+
+Use `congr 1`. Simplify using `only [chG, gal]`. Use `congr 1`. Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+
+Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.harishChandraInductionGL_fieldAutomorphism F t a (n - a) n]`. Establish `ha' : a < n` using `Finset.mem_range.1 ha`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Conclude with `ih a ha' y`.
+-/
 theorem psiG_gal (F : Type) [Field F] [Finite F] (t : F ≃+* F) (S : F[X] → ℂ) :
     ∀ (n : ℕ) (x : GL (Fin n) F),
       psiG S n (gal (t : F →+* F) n x) = psiG (fun P => S (P.map (t : F →+* F))) n x := by
@@ -28,6 +37,11 @@ theorem psiG_gal (F : Type) [Field F] [Finite F] (t : F ≃+* F) (S : F[X] → �
       funext y
       exact ih a ha' y
 
+/- English proof (translation)
+Introduce `F _ _ θ t j ht m k x`. Simplify using `only [cusp]`. Rewrite using `[psiG_gal F t]`. Use `congr 2`. Use function extensionality and compare the values at `P`.
+
+Conclude with `GlobalTheory.T.rootSum_map_frobenius_pow_eq_rootSum_mul F θ (t : F →+* F) j (fun y => ht y) k P`.
+-/
 theorem cusp_gal : ∀ (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (t : F ≃+* F) (j : ℕ),
     (∀ x, t x = x ^ (ringChar F ^ j)) → ∀ (m k : ℕ) (x : GL (Fin m) F),
     cusp θ m k (gal (t : F →+* F) m x) = cusp θ m (k * ringChar F ^ j) x := by

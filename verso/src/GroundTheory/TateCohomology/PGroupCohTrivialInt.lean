@@ -13,6 +13,13 @@ section H1
 
 variable {k k' G : Type u} [CommRing k] [CommRing k'] [Group G]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Establish `h0 : H1π A ⟨y, LinearMap.mem_ker.mpr hy⟩ = 0` using `@Subsingleton.elim _ (ModuleCat.subsingleton_of_isZero h) _ _`. Conclude with `LinearMap.mem_range.mp ((H1π_eq_zero_iff _).mp h0)`. Introduce `h`.
+
+Establish `: Subsingleton (groupHomology A 1)`. It suffices to establish `hz : ∀ z : groupHomology A 1, z = 0 from ⟨fun x y => by rw [hz x, hz y]⟩`. Introduce `z`. Proceed by induction on `z using H1_induction_on with`. Consider the case `h z`.
+
+Apply `(H1π_eq_zero_iff z).mpr` to reduce the goal to its premises. Conclude with `LinearMap.mem_range.mpr (h z.1 (LinearMap.mem_ker.mp z.2))`. Conclude with `ModuleCat.isZero_of_subsingleton _`.
+-/
 theorem isZero_groupHomology_one_iff (A : Rep.{u} k G) :
     IsZero (groupHomology A 1) ↔ ∀ y : G →₀ A, d₁₀ A y = 0 → ∃ c : G × G →₀ A, d₂₁ A c = y := by
   constructor
@@ -32,6 +39,9 @@ theorem isZero_groupHomology_one_iff (A : Rep.{u} k G) :
 
 variable {A : Rep.{u} k G} {B : Rep.{u} k' G}
 
+/- English proof (translation)
+Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y₁ y₂ h₁ h₂ => simp only [Finsupp.mapRange_add (map_add e), map_add, h₁, h₂]`. Consider the case `single g a => rw [Finsupp.mapRange_single, d₁₀_single, d₁₀_single, map_sub, he]`.
+-/
 theorem d₁₀_mapRange_addEquiv (e : A.V ≃+ B.V) (he : ∀ g a, e (A.ρ g a) = B.ρ g (e a))
     (y : G →₀ A) : d₁₀ B (Finsupp.mapRange e (map_zero e) y) = e (d₁₀ A y) := by
   induction y using Finsupp.induction_linear with
@@ -39,6 +49,9 @@ theorem d₁₀_mapRange_addEquiv (e : A.V ≃+ B.V) (he : ∀ g a, e (A.ρ g a)
   | add y₁ y₂ h₁ h₂ => simp only [Finsupp.mapRange_add (map_add e), map_add, h₁, h₂]
   | single g a => rw [Finsupp.mapRange_single, d₁₀_single, d₁₀_single, map_sub, he]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add c₁ c₂ h₁ h₂ => simp only [Finsupp.mapRange_add (map_add e), map_add, h₁, h₂]`. Consider the case `single g a`. Rewrite using `[Finsupp.mapRange_single, d₂₁_single, d₂₁_single, Finsupp.mapRange_add (map_add e), Finsupp.mapRange_sub (map_sub e), Finsupp.mapRange_single, Finsupp.mapRange_single, Finsupp.mapRange_single, he]`.
+-/
 theorem d₂₁_mapRange_addEquiv (e : A.V ≃+ B.V) (he : ∀ g a, e (A.ρ g a) = B.ρ g (e a))
     (c : G × G →₀ A) :
     d₂₁ B (Finsupp.mapRange e (map_zero e) c) = Finsupp.mapRange e (map_zero e) (d₂₁ A c) := by
@@ -50,6 +63,11 @@ theorem d₂₁_mapRange_addEquiv (e : A.V ≃+ B.V) (he : ∀ g a, e (A.ρ g a)
       Finsupp.mapRange_sub (map_sub e), Finsupp.mapRange_single, Finsupp.mapRange_single,
       Finsupp.mapRange_single, he]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[isZero_groupHomology_one_iff]`. Introduce `y hy`. Establish `hyy : Finsupp.mapRange e (map_zero e) (Finsupp.mapRange e.symm (map_zero e.symm) y) = y`. Use extensionality with `g`. Simplify using the standard rewrite rules.
+
+Establish `hy' : d₁₀ A (Finsupp.mapRange e.symm (map_zero e.symm) y) = 0`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← d₁₀_mapRange_addEquiv e he, hyy, hy, map_zero]`. Take `⟨c, hc⟩` from `h _ hy'`. Conclude with `⟨Finsupp.mapRange e (map_zero e) c, by rw [d₂₁_mapRange_addEquiv e he, hc, hyy]⟩`.
+-/
 theorem isZero_groupHomology_one_of_addEquiv (e : A.V ≃+ B.V)
     (he : ∀ g a, e (A.ρ g a) = B.ρ g (e a)) (h : IsZero (groupHomology A 1)) :
     IsZero (groupHomology B 1) := by
@@ -69,15 +87,24 @@ section Torsion
 
 variable {k G : Type u} [CommRing k] [Group G]
 
+/- English proof (translation)
+Rewrite using `[Rep.nsmul_hom]`. Both sides reduce to the same expression.
+-/
 theorem nsmul_id_hom_apply (M : Rep.{u} k G) (n : ℕ) (x : M) : (n • 𝟙 M).hom x = n • x := by
   rw [Rep.nsmul_hom]; rfl
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `hf y`. Express the relevant statement in the definitionally equal form `n • f.hom.toLinearMap x = 0`. Rewrite using `[← map_nsmul, hA, map_zero]`.
+-/
 theorem nsmul_eq_zero_of_surjective {A B : Rep.{u} k G} (f : A ⟶ B)
     (hf : Function.Surjective f.hom) {n : ℕ} (hA : ∀ x : A, n • x = 0) (y : B) : n • y = 0 := by
   obtain ⟨x, rfl⟩ := hf y
   change n • f.hom.toLinearMap x = 0
   rw [← map_nsmul, hA, map_zero]
 
+/- English proof (translation)
+Apply `hf` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `f.hom.toLinearMap (n • x) = f.hom.toLinearMap 0`. Rewrite using `[map_nsmul, map_zero]`. Conclude with `hB _`.
+-/
 theorem nsmul_eq_zero_of_injective {A B : Rep.{u} k G} (f : A ⟶ B)
     (hf : Function.Injective f.hom) {n : ℕ} (hB : ∀ y : B, n • y = 0) (x : A) : n • x = 0 := by
   apply hf
@@ -85,15 +112,24 @@ theorem nsmul_eq_zero_of_injective {A B : Rep.{u} k G} (f : A ⟶ B)
   rw [map_nsmul, map_zero]
   exact hB _
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun g => hM (x.1 g))`.
+-/
 theorem nsmul_eq_zero_coind (M : Rep.{u} k G) {n : ℕ} (hM : ∀ x : M, n • x = 0)
     (x : coind (⊥ : Subgroup G).subtype (res (⊥ : Subgroup G).subtype M)) : n • x = 0 :=
   Subtype.ext (funext fun g => hM (x.1 g))
 
+/- English proof (translation)
+The claim follows from `nsmul_eq_zero_of_surjective (coindSES.obj M).g ((Rep.epi_iff_surjective _).1 (coindSES_shortExact M).epi_g) (nsmul_eq_zero_coind M hM)`.
+-/
 theorem nsmul_eq_zero_coindShift (M : Rep.{u} k G) {n : ℕ} (hM : ∀ x : M, n • x = 0) :
     ∀ y : coindShift M, n • y = 0 :=
   nsmul_eq_zero_of_surjective (coindSES.obj M).g
     ((Rep.epi_iff_surjective _).1 (coindSES_shortExact M).epi_g) (nsmul_eq_zero_coind M hM)
 
+/- English proof (translation)
+Set `e` to `indCoindIso (G := G) (res (⊥ : Subgroup G).subtype M)`. Establish `he : Function.Injective e.hom.hom` using `(Rep.mono_iff_injective e.hom).1 inferInstance`. Establish `h₂` using `nsmul_eq_zero_of_injective e.hom he (nsmul_eq_zero_coind M hM)`. Conclude with `nsmul_eq_zero_of_injective (indSES.obj M).f ((Rep.mono_iff_injective _).1 (indSES_shortExact M).mono_f) h₂`.
+-/
 theorem nsmul_eq_zero_indShift [Fintype G] (M : Rep.{u} k G) {n : ℕ} (hM : ∀ x : M, n • x = 0) :
     ∀ y : indShift M, n • y = 0 := by
   classical
@@ -118,6 +154,13 @@ noncomputable def zmodRep (M : Rep ℤ G) (hM : ∀ x : M, p • x = 0) : Rep (Z
 
 variable [Fintype G]
 
+/- English proof (translation)
+Establish `h1 : IsZero (groupHomology M 1)` using `h.of_iso (tateNegTwoIsoH1 M).symm`. Establish `h1' : IsZero (groupHomology (zmodRep p M hM) 1)` using `isZero_groupHomology_one_of_addEquiv (AddEquiv.refl M.V) (fun _ _ => rfl) h1`. Take `⟨ι, ⟨e⟩⟩` from `exists_iso_free_of_isZero_groupHomology_one hG _ h1'`. Use `free_asModule_of_iso_free e` as an intermediate fact. Take `⟨φ, hφ⟩` from `exists_sum_eq_of_basis (zmodRep p M hM) (Module.Free.chooseBasis _ _)`.
+
+Use `⟨tateAcyclic_of_sum_eq M (@LinearMap.mk ℤ ℤ _ _ (RingHom.id ℤ) M.V M.V _ _ M.hV2 M.hV2 ⟨φ, map_add φ⟩ ?_) hφ, cohTrivial_of_sum_eq M (@LinearMap.mk ℤ ℤ _ _ (RingHom.id ℤ) M.V M.V _ _ M.hV2 M.hV2 ⟨φ, map_add φ⟩ ?_) hφ⟩` and prove the remaining obligations. Use `all_goals`. Introduce `n x`. Establish `hmod : M.hV2 = AddCommGroup.toIntModule M.V` using `Subsingleton.elim _ _`. Rewrite using `[hmod]`.
+
+Conclude with `map_zsmul φ n x`.
+-/
 theorem tateAcyclic_cohTrivial_of_isZero_neg_two_of_nsmul_eq_zero {p : ℕ} [Fact p.Prime]
     (hG : IsPGroup p G) (M : Rep ℤ G) (hM : ∀ x : M, p • x = 0)
     (h : IsZero (tateCohomology M (-2))) : TateAcyclic M ∧ CohTrivial M := by
@@ -137,6 +180,9 @@ theorem tateAcyclic_cohTrivial_of_isZero_neg_two_of_nsmul_eq_zero {p : ℕ} [Fac
     rw [hmod]
     exact map_zsmul φ n x
 
+/- English proof (translation)
+The claim follows from `tateAcyclic_cohTrivial_of_isZero_of_shift (fun M => ∀ x : M, p • x = 0) (fun M hM => nsmul_eq_zero_coindShift M hM) (fun M hM => nsmul_eq_zero_indShift M hM) (fun M hM h => tateAcyclic_cohTrivial_of_isZero_neg_two_of_nsmul_eq_zero hG M hM h) q M hM hq`.
+-/
 theorem tateAcyclic_cohTrivial_of_isZero_of_nsmul_eq_zero {p : ℕ} [Fact p.Prime]
     (hG : IsPGroup p G) (M : Rep ℤ G) (hM : ∀ x : M, p • x = 0) (q : ℤ)
     (hq : IsZero (tateCohomology M q)) : TateAcyclic M ∧ CohTrivial M :=

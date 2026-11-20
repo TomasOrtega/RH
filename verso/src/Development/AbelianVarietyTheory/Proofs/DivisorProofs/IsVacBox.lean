@@ -16,6 +16,35 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} {κ₀ : Type} [Fintype κ₀]
   (ε : Fin n × Fin d ≃ κ₀ ⊕ Fin n₁ × Fin d₁)
 
+/- English proof (translation)
+Take `⟨hKo, hKc⟩` from `GlobalTheory.LatOpenCpt.main σ B X W r s r' s' hX hW Ma hrat v`. Use `set K := (latAtV X W v).map (GlobalTheory.LatVac.locCo Ma.co v) with hK`. Set `pr : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v) →+ (κ₀ → Fv F v)` to `{ toFun := fun w k => w.1 (ε.symm (.inl k)), map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hΛc : IsCompact (K.map pr : Set (κ₀ → Fv F v))` using `hKc.image (show Continuous fun (w : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)) k => w.1 (ε.symm (.inl k)) by fun_prop)`. Establish `hΛo : IsOpen (K.map pr : Set (κ₀ → Fv F v))`.
+
+Apply `AddSubgroup.isOpen_of_mem_nhds (g := 0)` to reduce the goal to its premises. Establish `hc : Continuous fun a : κ₀ → Fv F v => ((glue ε a 0, 0) : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v))` using `(continuous_glue ε continuous_id continuous_const).prodMk continuous_const`. Use `Filter.mem_of_superset ((hKo.preimage hc).mem_nhds ?_) fun a ha => ⟨_, ha, funext fun k => glue_inl ε a 0 k⟩` and prove the remaining obligations. Use `show (glue ε 0 0, 0) ∈ K`. Rewrite using `[glue_zero]`.
+
+Conclude with `K.zero_mem`. Establish `hmem : ∀ a, a ∈ K.map pr ↔ ∃ γ ∈ latAtV X W v, (fun k => evFin F v (p γ k)) = a` using `fun a => by`. Establish `: ∀ γ, pr (GlobalTheory.LatVac.locCo Ma.co v γ) = fun k => evFin F v (p γ k)` using `fun γ => funext fun k => by show evFin F v ((Ma.co.e γ).1 _) = _`. Simplify using `only [hco, glue_inl]`. Simplify using `only [hK, AddSubgroup.map_map, AddSubgroup.mem_map, AddMonoidHom.comp_apply, this]`.
+
+Establish `hΛe : Λ₀ = ((K.map pr : AddSubgroup (κ₀ → Fv F v)) : Set (κ₀ → Fv F v))`. Use extensionality with `a`. Rewrite using `[hΛ₀, SetLike.mem_coe, hmem]`. Substitute `hΛe` using the available equality. Use `set Λ := K.map pr`.
+
+Establish `h0 : ∀ b, box ε (Λ : Set _) φ (glue ε 0 b) = φ b` using `fun b => by`. Rewrite using `[box_glue, Set.indicator_of_mem Λ.zero_mem, Pi.one_apply, one_mul]`. Take `⟨hSB, hne, θ, hθ1, hA⟩` from `hφ`. Use `⟨box_mem_SB ε hΛo hΛc hSB, fun h => hne (funext fun b => by rw [← h0, h]; rfl), θ, hθ1, fun γ hγ R hR => ?_⟩` and prove the remaining obligations. Establish `hat : ∀ u, evFin F v u = 0 → u • p γ = 0 ∧ u • q γ = 0` using `fun u hu => by`.
+
+Establish `h1` using `congrArg Ma.co.e ((GlobalTheory.LatVac.latAtV_at_stable X W v).1 γ hγ u hu)`. Rewrite `h1` using `[map_smul, map_zero, hco]`. Conclude with `⟨funext fun k => by simpa using congrFun (congrArg Prod.fst h1) (ε.symm (.inl k)),`. Use function extensionality and compare the values at `fun k => by simpa using congrFun (congrArg Prod.snd h1) (ε.symm (.inl k))⟩`. Use function extensionality and compare the values at `x`.
+
+Take `⟨a, b, rfl⟩` from `exists_glue ε x`. Establish `hp : (fun k => evFin F v (p γ k)) ∈ Λ` using `(hmem _).2 ⟨γ, hγ, rfl⟩`. Simplify using `only [Darboux.rho, schr, tens, hco, glue_dot, glue_add, glue_map ε (evFin F v), Pi.smul_apply, box_glue]`. Distinguish the cases in `ha : (fun k => evFin F v (a k)) ∈ Λ`. Establish `ha' : (fun k => evFin F v ((a + p γ) k)) ∈ Λ`.
+
+Simplify using `only [Pi.add_apply, map_add]`. Conclude with `Λ.add_mem ha hp`. Establish `hR₁ : Rest (evFin F v) φ fun b => R (glue ε a b)`. Use `⟨fun x z hz => ?_, ?_⟩` and prove the remaining obligations. Use `hR.1 (glue ε a x) (glue ε 0 z) fun u hu => by rw [glue_smul, hz u hu, smul_zero, glue_zero]` as an intermediate fact.
+
+Rewrite `this` using `[glue_add, add_zero]`. Then use the resulting hypothesis. Use `slice_mem_schA ε a hR.2` as an intermediate fact. Simplify using `only [tens, glue_map ε (evFin F v), box_glue, Set.indicator_of_mem ha, Pi.one_apply, one_mul] at this`. Conclude with `this`. Establish `key` using `congrFun (hA (π γ) (hlat γ hγ) _ hR₁) b`.
+
+Simplify using `only [Darboux.rho, schr, tens, Pi.smul_apply] at key`. Establish `hs : ∀ c, R (glue ε (a + p γ) c) = R (glue ε a c)` using `fun c => by`. Use `hR.1 (glue ε a c) (glue ε (p γ) 0) fun u hu => by rw [glue_smul, (hat u hu).1, smul_zero, glue_zero]` as an intermediate fact. Rewrite `this` using `[glue_add, add_zero]`. Then use the resulting hypothesis. Establish `h1 : B.ψ (a ⬝ᵥ q γ) = 1`.
+
+Take `⟨γ', hγ', e⟩` from `(hmem _).1 ha`. Rewrite using `[← hpq γ hγ γ' hγ']`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congrFun (hat (a k - p γ' k) (by rw [map_sub, sub_eq_zero]; exact (congrFun e k).symm)).2 k` as an intermediate fact.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Take the linear combination `this`. Rewrite using `[Set.indicator_of_mem ha, Set.indicator_of_mem ha', hs, hθ θ hθ1 γ hγ, mul_add, add_add_add_comm, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul B.ψ (a ⬝ᵥ q γ), h1]`. Simplify using `only [Pi.one_apply, one_mul, smul_eq_mul] at key ⊢`. Rewrite using `[mul_assoc, key]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `ha' : (fun k => evFin F v ((a + p γ) k)) ∉ Λ` using `fun h => ha (by`. Use `Λ.sub_mem h hp` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+
+Use the proof step `simp)`. Rewrite using `[Set.indicator_of_notMem ha, Set.indicator_of_notMem ha']`. Simplify using the standard rewrite rules.
+-/
 theorem isVac_box {B : Base F E} {r s r' s' : ℕ} (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s')
     (Ma : Model σ X W) (M₁ : Model σ X₁ W₁)
     (hrat : ∀ x : Matrix (Fin n) (Fin d) E, ∃ y z : Fin n × Fin d → F,

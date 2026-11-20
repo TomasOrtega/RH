@@ -6,6 +6,25 @@ open Matrix
 
 variable {K : Type*} [Field K] (O : ValuationSubring K) {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `set C' : Matrix ι ι O := Matrix.of fun i j => (⟨C i j, hC i j⟩ : O) with hC'`. Use `set R' : Matrix ι ι O := Matrix.of fun i j => (⟨R i j, hR i j⟩ : O) with hR'`. Use `set N' : Matrix ι ι O := Matrix.of fun i j => (⟨N i j, hN i j⟩ : O) with hN'`. Establish `key : R' * C' = 1 + g • N'`. Apply `Matrix.map_injective (f := fun x : O => (x : K)) Subtype.val_injective` to reduce the goal to its premises.
+
+Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hRC i) j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul] at h ⊢`. Establish `hs : ((∑ k, R' i k * C' k j : O) : K) = ∑ k, R i k * C k j`. Rewrite using `[show ((∑ k, R' i k * C' k j : O) : K) = algebraMap O K (∑ k, R' i k * C' k j) from rfl, map_sum]`.
+
+Simplify using `only [map_mul]`. Both sides reduce to the same expression. Rewrite using `[hs, h]`. Express the relevant statement in the definitionally equal form `_ = algebraMap O K ((1 : Matrix ι ι O) i j + g * N' i j)`. Rewrite using `[map_add, map_mul]`.
+
+Establish `hN'' : algebraMap O K (N' i j) = N i j` using `rfl`. Establish `hg' : algebraMap O K g = (g : K)` using `rfl`. Rewrite using `[hN'', hg']`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hij]`. Establish `hres : IsLocalRing.residue O g = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hg`.
+
+Establish `hone : IsUnit (1 + g • N').det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Establish `: (IsLocalRing.residue O).mapMatrix (1 + g • N') = 1`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using `[hres]`. Simplify using `[hij, hres]`. Rewrite using `[this, Matrix.det_one]`. Conclude with `one_ne_zero`.
+
+Establish `hdet : IsUnit C'.det`. Rewrite `hone` using `[← key, Matrix.det_mul]`. Conclude with `(IsUnit.mul_iff.mp hone).2`. Use `⟨Matrix.nonsingInvUnit C' hdet, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_gl_of_left_inv (g : O) (hg : ¬ IsUnit g) (C R N : Matrix ι ι K)
     (hC : ∀ i j, C i j ∈ O) (hR : ∀ i j, R i j ∈ O) (hN : ∀ i j, N i j ∈ O)
     (hRC : R * C = 1 + (g : K) • N) :

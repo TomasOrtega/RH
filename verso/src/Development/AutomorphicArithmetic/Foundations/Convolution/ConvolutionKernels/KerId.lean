@@ -7,6 +7,19 @@ open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic
 open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core UpperTheory.ConvolutionTheory.K
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ f a g M hf x y`. Use `haveI := Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := n) μ`. Establish `ext : ∀ u w : RightCosetSpace (Gam K n) → ℂ, Continuous u → Continuous w → u =ᵐ[quotientMeasure (Gam K n) μ] w → ∀ z : G1 K n, u (mk _ z) = w (mk _ z)`. Introduce `u w hu hw h z`. Establish `h1` using `(quasiMeasurePreserving_mk (Gam K n) μ).ae_eq_comp h`.
+
+Conclude with `congrFun ((hu.comp (continuous_mk _)).ae_eq_iff_eq μ (hw.comp (continuous_mk _)) |>.1 h1) z`. Establish `s1 : ∀ φ : L2 μ, rconv (Gam K n) μ f φ x = rconv (Gam K n) μ a (M (Rop μ g φ)) x`. Introduce `φ`. Establish `e : Rop μ f φ = Rop μ a (M (Rop μ g φ))` using `by rw [hf]; rfl`. Use `ext _ _ (continuous_rconvQ _ μ f φ) (continuous_rconvQ _ μ a _) ?_ x` and prove the remaining obligations.
+
+Establish `a1` using `integrated_ae_eq_rconvQ (Gam K n) μ f φ`. Establish `a2` using `integrated_ae_eq_rconvQ (Gam K n) μ a (M (Rop μ g φ))`. Express the relevant statement in the definitionally equal form `(Rop μ f φ : _ → ℂ) =ᵐ[_] _ at a1`. Express the relevant statement in the definitionally equal form `(Rop μ a (M (Rop μ g φ)) : _ → ℂ) =ᵐ[_] _ at a2`. Rewrite `a1` using `[e]`.
+
+Conclude with `a1.symm.trans a2`. Establish `s2 : kv μ f x = Rop μ (ccStar g) (ContinuousLinearMap.adjoint M (kv μ a x))`. Use `ext_inner_right ℂ fun φ => ?_` and prove the remaining obligations. Rewrite using `[inner_kv, s1, ← ropAdj, ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.adjoint_inner_left, inner_kv]`. Establish `a3` using `integrated_ae_eq_rconvQ (Gam K n) μ (ccStar g) (ContinuousLinearMap.adjoint M (kv μ a x))`.
+
+Express the relevant statement in the definitionally equal form `(Rop μ (ccStar g) _ : _ → ℂ) =ᵐ[_] _ at a3`. Rewrite `a3` using `[← s2]`. Establish `s3` using `ext _ _ (Complex.continuous_conj.comp ((continuous_quotientKernel (Gam K n) f).comp (Continuous.prodMk_right (mk _ x)))) (continuous_rconvQ _ μ (ccStar g) _) ((kvAe K n μ f x).symm.trans a3) y`. Simplify using `only [Function.comp_apply, quotientKernel_mk, rconvQ_mk] at s3`. Rewrite `s3` using `[← inner_kv, ContinuousLinearMap.adjoint_inner_right]`.
+
+Rewrite using `[← inner_conj_symm, ← s3, starRingEnd_self_apply]`.
+-/
 theorem UpperTheory.ConvolutionTheory.K.kerId :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (f a g : CC K n) (M : L2 μ →L[ℂ] L2 μ),
       Rop μ f = Rop μ a ∘L M ∘L Rop μ g → ∀ x y : G1 K n,

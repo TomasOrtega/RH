@@ -9,6 +9,9 @@ open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.RealMult GlobalTheory.CMVal
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SurjHomFlat.finite_flat | exact GlobalTheory.SurjHomFlat.finite_flat | (intros; apply GlobalTheory.SurjHomFlat.finite_flat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isogeny_finite_flat : ∀ (A X : Over (Sp ℂ)) [GrpObj A] [GrpObj X] (g : ℕ), IsAbelianScheme A → IsAbelianScheme X →
     SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g X.hom →
     ∀ (ψ : A ⟶ X) [IsMonHom ψ] [Surjective ψ.left], IsFinite ψ.left ∧ Flat ψ.left := by

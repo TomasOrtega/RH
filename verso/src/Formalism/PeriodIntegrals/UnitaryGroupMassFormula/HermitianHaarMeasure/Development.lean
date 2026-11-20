@@ -85,11 +85,17 @@ def Glue : Prop :=
   HermAlg → EabTest → EabAdj → MulTest → TestInt → YbRel → XbRel → HmFacts → EabPres → EabGlLev → YLeibniz →
     HermHaar
 
+/- English proof (translation)
+Introduce `hRd hSM hCC hMV hMC hYL hGl hEP`. Conclude with `hG (hA hSM hCC hMV hMC) hT (hE hRd hEP hT hI) hM hI hY hX hH hEP hGl hYL`.
+-/
 theorem hermFromSteps_of (hA : HermAlgFrom) (hE : EabAdjFrom) (hT : EabTest) (hM : MulTest) (hI : TestInt)
     (hY : YbRel) (hX : XbRel) (hH : HmFacts) (hG : Glue) : HermFromSteps := by
   intro hRd hSM hCC hMV hMC hYL hGl hEP
   exact hG (hA hSM hCC hMV hMC) hT (hE hRd hEP hT hI) hM hI hY hX hH hEP hGl hYL
 
+/- English proof (translation)
+The claim follows from `hermFromSteps_of hA hE hT hM hI hY hX hH hG`.
+-/
 theorem qnHermHaar_of (hA : HermAlgFrom) (hE : EabAdjFrom) (hT : EabTest) (hM : MulTest) (hI : TestInt)
     (hY : YbRel) (hX : XbRel) (hH : HmFacts) (hG : Glue) :
     RdSkew → StarMinor → ContractionsCovariant → MoveVec → MoveCov → YLeibniz → EabGlLev → EabPres → HermHaar :=

@@ -14,10 +14,24 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (chartPullPull M j j rfl) (chartPullSame L _ (fun _ => a) _ j fun _ => e) h`.
+-/
 theorem lbIso_pull_gram {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {a : Y ⟶ X} (h : LBIso M (L.pull a)) (j : Z ⟶ Y)
     {a' : Z ⟶ X} (e : a' = j ≫ a) : LBIso (M.pull j) (L.pull a') :=
   LBIso.chartPull (chartPullPull M j j rfl) (chartPullSame L _ (fun _ => a) _ j fun _ => e) h
 
+/- English proof (translation)
+Introduce `E _ _ _ H S S' t t' f m x' x k v' v Γ hx hv`. Substitute `hx` using the available equality. Establish `hL : LBIso t'.PP.L (t.PP.L.pull m.φ)` using `m.lin.imp fun _ h => h.1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, ψ, w, u, Hm, χ, W, hp, hl, hu, hw, hΓ⟩`.
+
+Use `⟨Q, ψ ≫ m.φ, w, u, Hm, χ, W, hp.comp m.cart, ?_, hu, fun i => ⟨?_, (hw i).2⟩, hΓ⟩` and prove the remaining obligations. Conclude with `LBIso.trans (pull_isLB t.PP.isLB _) (pull_isLB t'.PP.isLB _) Q.isLB (lbIso_pull_gram hL ψ rfl).symm hl`. Rewrite using `[← Category.assoc, (hw i).1, hv]`. Introduce and unpack `⟨Q, ψ, w, u, Hm, χ, W, hp, hl, hu, hw, hΓ⟩`. Establish `sq : ψ ≫ t.G.hom = (Q.A.hom ≫ x') ≫ f`.
+
+Rewrite using `[Category.assoc]`. Conclude with `hp.1.w`. Set `ψ' : Q.A.left ⟶ t'.G.left` to `m.cart.1.lift ψ (Q.A.hom ≫ x') sq`. Establish `h1 : ψ' ≫ m.φ = ψ` using `m.cart.1.lift_fst _ _ sq`. Establish `h2 : ψ' ≫ t'.G.hom = Q.A.hom ≫ x'` using `m.cart.1.lift_snd _ _ sq`.
+
+Establish `hp' : IsGrpPullback Q.A t'.G x' ψ'` using `m.cart.cancel (hp.congr rfl h1.symm) h2`. Use `⟨Q, ψ', w, u, Hm, χ, W, hp', ?_, hu, fun i => ⟨?_, (hw i).2⟩, hΓ⟩` and prove the remaining obligations. Conclude with `LBIso.trans (pull_isLB t'.PP.isLB _) (pull_isLB t.PP.isLB _) Q.isLB (lbIso_pull_gram hL ψ' h1.symm) hl`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h1, (hw i).1, hv]`.
+
+Rewrite using `[Category.assoc, h2, ← Category.assoc, Over.w (w i), Over.w (v' i)]`. Both sides reduce to the same expression.
+-/
 theorem hodgeGram_iff_of_sabMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S S' : Scheme.{0}) (t : SAB H S) (t' : SAB H S') (f : S' ⟶ S) (m : SABMap t' t f) (x' : Sp ℂ ⟶ S') (x : Sp ℂ ⟶ S) (k : ℕ) (v' : Fin k → (epsAt x' ⟶ t'.G)) (v : Fin k → (epsAt x ⟶ t.G)) (Γ : Matrix (Fin k) (Fin k) ℂ), x = x' ≫ f → (∀ a, (v' a).left ≫ m.φ = (v a).left) → (IsHodgeGram t'.G t'.PP.L x' v' Γ ↔ IsHodgeGram t.G t.PP.L x v Γ) := by
   intro E _ _ _ H S S' t t' f m x' x k v' v Γ hx hv
   subst hx

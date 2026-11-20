@@ -11,6 +11,15 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 
 namespace GlobalTheory.FieldPair
 
+/- English proof (translation)
+Introduce `L K _ _ cL cK n T S hS ψ f w θ R hψ hc hf hw hθ hR hK`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `htr` using `(trBasis_uniformiser_cons cL cK n S ψ f w hψ hc hf hw).1`. Establish `hfree` using `(formOrd_api cL (n + 1) _ htr).1`. Conclude with `fun h0 => one_ne_zero (hfree.1 (a₁ := 1) (a₂ := 0) (by simp [h0]))`.
+
+Establish `hf0 : (0 : L) ≠ (f : L)` using `fun h => hf.ne_zero (Subtype.ext h.symm)`. Establish `hθ0 : θ 0 = 0`. Assume the negation of the conclusion as `h`. Conclude with `hθ 0 (Finsupp.mem_support_iff.2 h) (map_zero ψ)`. Establish `h1 : Finsupp.mapDomain (fun g : S.ring => (g : L)) θ ((0 : S.ring) : L) = θ 0` using `Finsupp.mapDomain_apply Subtype.val_injective θ 0`.
+
+Rewrite using `[Finsupp.add_apply, Finsupp.single_eq_of_ne hf0, add_zero]`. Conclude with `h1.trans hθ0`. Introduce `Q hQ t u E hTQ hspan hdim hSQ hEQ hSt hEu hP`. Take `⟨F, hF, hdisc⟩` from `GlobalTheory.AdjCodimTwo.disc_residue_eq cL cK n Q hQ t u S E ψ f w θ hspan hdim hSQ hEQ hSt hEu hψ hc hf hw hθ hP`. Rewrite using `[← hdisc]`.
+
+Apply `hK.lt_disc` to reduce the goal to its premises. Introduce `a ha`. Take `⟨x, hx⟩` from `hR a ha`. Conclude with `(hF a).2 ⟨⟨x, hS x x.2⟩, hTQ x.2, hx⟩`.
+-/
 theorem adjKlt_of_klt_restrict : ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) (cK : ℂ →+* K) (n : ℕ) (T : Subring L) (S : Place cL) (hS : S.Contains T) (ψ : S.ring →+* K) (f : S.ring) (w : Fin n → S.ring) (θ : S.ring →₀ ℚ) (R : Subring K), Function.Surjective ψ → (∀ a, ψ (S.const a) = cK a) → Irreducible f → TrBasis cK (fun i => ψ (w i)) → (∀ g ∈ θ.support, ψ g ≠ 0) → (∀ a ∈ R, ∃ t : T, ψ ⟨t, hS t t.2⟩ = a) → Klt cK n R (dForm cK (fun i => ψ (w i))) (Finsupp.mapDomain ψ θ) → AdjKlt cL (n + 1) T S (dForm cL (Fin.cons (f : L) (fun i => (w i : L)) : Fin (n + 1) → L)) (Finsupp.mapDomain (fun g : S.ring => (g : L)) θ + Finsupp.single (f : L) 1) := by
   intro L K _ _ cL cK n T S hS ψ f w θ R hψ hc hf hw hθ hR hK
   refine ⟨?_, ?_, ?_⟩

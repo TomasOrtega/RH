@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Lefsc
 open UpperTheory.Gal.LocalSmoothExtension
 open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen
 
+/- English proof (translation)
+Unfold `oneP`. Distinguish the cases in `h : g ∈ (Kp G : Set (Gr G 1))`. Simplify using `[Set.indicator_of_mem h]`. Simplify using `[Set.indicator_of_notMem h]`.
+-/
 private lemma map_oneP (σ : ℂ ≃+* ℂ) {p : ℕ} [Fact p.Prime] (G : HTGroup p) (g : Gr G 1) :
     σ (oneP G g) = oneP G g := by
   unfold oneP
@@ -10,6 +13,9 @@ private lemma map_oneP (σ : ℂ ≃+* ℂ) {p : ℕ} [Fact p.Prime] (G : HTGrou
   · simp [Set.indicator_of_mem h]
   · simp [Set.indicator_of_notMem h]
 
+/- English proof (translation)
+Unfold `GlobalTheory.LKCount.pointSum`. Use `Eq.trans ?_ (AddEquiv.map_finsum σ.toAddEquiv _).symm` and prove the remaining obligations. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `[map_mul, map_inv₀, map_natCast, hφ]`.
+-/
 private lemma pointSum_conj (σ : ℂ ≃+* ℂ) {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι₁ : Γ →* G₁)
     (ι₂ : Γ →* G₂) (θ : G₂ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (γ : G₁) (δ : G₂) (f : G₁ → ℂ)
     (φ : G₂ → ℂ) (hφ : ∀ x, σ (φ x) = φ x) :
@@ -20,6 +26,9 @@ private lemma pointSum_conj (σ : ℂ ≃+* ℂ) {Γ G₁ G₂ : Type} [Group Γ
   refine finsum_congr fun q => ?_
   simp [map_mul, map_inv₀, map_natCast, hφ]
 
+/- English proof (translation)
+Unfold `GlobalTheory.LKCount.orbC`. Use `Eq.trans ?_ (AddEquiv.map_finsum σ.toAddEquiv _).symm` and prove the remaining obligations. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `[map_mul, map_inv₀, map_ratCast]`.
+-/
 private lemma orbC_conj (σ : ℂ ≃+* ℂ) {H : Type} [Group H] (θ : H →* H) (K C : Subgroup H) (δ : H) (F : H → ℂ) :
     GlobalTheory.LKCount.orbC θ K C δ (fun g => σ (F g)) = σ (GlobalTheory.LKCount.orbC θ K C δ F) := by
   unfold GlobalTheory.LKCount.orbC
@@ -27,6 +36,13 @@ private lemma orbC_conj (σ : ℂ ≃+* ℂ) {H : Type} [Group H] (θ : H →* H
   refine finsum_congr fun q => ?_
   simp [map_mul, map_inv₀, map_ratCast]
 
+/- English proof (translation)
+Introduce `σ p _ G K f h`. Use `⟨fun g hg => h.reg g fun h0 => hg (by simp [h0]), fun P hm hi => ?_, fun B x t hx y hy => ?_⟩` and prove the remaining obligations. Establish `h0` using `h.pairs P hm hi`. Unfold `Pair.term at h0 ⊢`. Use `split_ifs at h0 ⊢ with hh`.
+
+Unfold `Pair.termAt at h0 ⊢`. Rewrite using `[pointSum_conj σ _ _ _ _ _ _ _ f _ (map_oneP σ G), h0, map_zero]`. Both sides reduce to the same expression. Establish `h0` using `h.forms B x t hx y hy`. Unfold `GlobalTheory.LKCount.orbK at h0 ⊢`.
+
+Establish `e : (fun h : G.GAf × Gr G 1 => σ (f h.1) * oneP G h.2) = fun h : G.GAf × Gr G 1 => σ (f h.1 * oneP G h.2)`. Use function extensionality and compare the values at `h`. Rewrite using `[map_mul, map_oneP]`. Rewrite using `[e, orbC_conj σ, h0, map_zero]`.
+-/
 theorem UpperTheory.Gal.LocalSmoothExtension.goodConj_of :
     GoodConj := by
   intro σ p _ G K f h

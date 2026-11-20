@@ -19,10 +19,22 @@ namespace GlobalTheory.RgGu
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[Segment.ms, Multiset.map_map, ← Δ.sum_term_fst]`. Both sides reduce to the same expression.
+-/
 theorem sum_map_fst_ms (Δ : Segment k) : (Δ.ms.map Sigma.fst).sum = Δ.deg := by
   rw [Segment.ms, Multiset.map_map, ← Δ.sum_term_fst]
   rfl
 
+/- English proof (translation)
+Introduce `N s hs hN`. Take `⟨h, Δ, hun, hbind⟩` from `GlobalTheory.T.unlinked_layers_hold k s hs`. Use `choose π hπ using fun i => GlobalTheory.T.exists_segment_representation hA (Δ i)`. Set `x : Fin h → IrrGL k` to `fun i => IrrGL.of (π i).ρ (π i).smooth (π i).irr`. Establish `hx : ∀ i, IsLSeg (Δ i) (x i).rep` using `fun i => (hπ i).of_equiv (IrrGL.equivOf _ _ _)`.
+
+Establish `hd : ∑ a, (x a).1 = N`. Rewrite using `[← hN, ← hbind, Multiset.map_bind, Multiset.sum_bind]`. Express the relevant statement in the definitionally equal form `∑ a, (Δ a).deg = _`. Rewrite using `[Finset.sum_eq_multiset_sum]`. Use `congr 1`.
+
+Conclude with `Multiset.map_congr rfl fun i _ => (sum_map_fst_ms (Δ i)).symm`. Establish `hirr : (prodIrr x hd).IsIrreducible` using `hL h N Δ x hd (fun i j => if e : i = j then e ▸ Segment.not_linked_self _ else hun i j e) hx`. Use `⟨h, Δ, x, hd, hun, hx, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr (t := fun i => (Δ i).ms) (fun i => (hx i).hasSupport) hirr (IsSubquotient.refl _)` as an intermediate fact. Rewrite `this` using `[show (∑ i, (Δ i).ms) = s from hbind]`. Then use the resulting hypothesis.
+
+Conclude with `(hP h N (fun a => (x a).1) hd (fun a => (x a).2.rep.V) (fun a => (x a).rep) (fun a => (x a).2.rep.smooth)).2 fun i => hG (Δ i) _ _ _ (hx i)`.
+-/
 theorem unlinkedRealize_of (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hL : GlobalTheory.BZSeg.LUnlinkedIrr k)
     (hG : GlobalTheory.BZSeg.LSegGeneric k) (hP : GlobalTheory.BZMir.Leib.GenericProdIff k) : UnlinkedRealize k := by
   intro N s hs hN
@@ -45,6 +57,9 @@ theorem unlinkedRealize_of (hA : GlobalTheory.Published.IrreducibleAdmissibleGL)
   · exact (hP h N (fun a => (x a).1) hd (fun a => (x a).2.rep.V) (fun a => (x a).rep)
       (fun a => (x a).2.rep.smooth)).2 fun i => hG (Δ i) _ _ _ (hx i)
 
+/- English proof (translation)
+The claim follows from `unlinkedRealize_of PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top (GlobalTheory.RgGu.Unl.lUnlinkedIrr_nu k hJ PositivityTheory.Geo.geometricLemmaFiltration hN) (GlobalTheory.T.segment_generic_of_jacquet_nu_pair k PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top hJ h …`.
+-/
 theorem unlinkedRealize (hJ : Zc.LSegJacquet k) (hN : GlobalTheory.BZSeg.NuPair k) : UnlinkedRealize k :=
   unlinkedRealize_of PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top
     (GlobalTheory.RgGu.Unl.lUnlinkedIrr_nu k hJ PositivityTheory.Geo.geometricLemmaFiltration hN)

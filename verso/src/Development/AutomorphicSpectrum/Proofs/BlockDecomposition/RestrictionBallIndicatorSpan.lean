@@ -13,10 +13,18 @@ namespace GlobalTheory.CompanionTheory.ThetaInt
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `(isOpen_polyBall n s).preimage continuous_ofAdd`.
+-/
 theorem isOpen_ball (n : ℕ) (s : kˣ) :
     IsOpen {a : Fin n → k | Multiplicative.ofAdd a ∈ polyBall (k := k) n s} :=
   (isOpen_polyBall n s).preimage continuous_ofAdd
 
+/- English proof (translation)
+Establish `e : {a : Fin n → k | Multiplicative.ofAdd a ∈ polyBall (k` using `k) n s} = Multiplicative.toAdd '' (polyBall (k := k) n s : Set (Multiplicative (Fin n → k))) := by`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨Multiplicative.ofAdd a, h, rfl⟩`.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Rewrite using `[e]`. Conclude with `(isCompact_polyBall n s).image continuous_toAdd`.
+-/
 theorem isCompact_ball (n : ℕ) (s : kˣ) :
     IsCompact {a : Fin n → k | Multiplicative.ofAdd a ∈ polyBall (k := k) n s} := by
   have e : {a : Fin n → k | Multiplicative.ofAdd a ∈ polyBall (k := k) n s} =
@@ -30,6 +38,11 @@ theorem isCompact_ball (n : ℕ) (s : kˣ) :
   rw [e]
   exact (isCompact_polyBall n s).image continuous_toAdd
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_` and prove the remaining obligations. Establish `h0 : (fun z : Fin n → k => -x + z) ⁻¹' {a : Fin n → k | Multiplicative.ofAdd a ∈ polyBall (k` using `k) n s} ∈ 𝓝 x := ((isOpen_ball n s).preimage (by fun_prop)).mem_nhds (by show Multiplicative.ofAdd (-x + x) ∈ polyBall (k := k) n s`. Rewrite using `[neg_add_cancel]`. Conclude with `one_mem _)`. Use `filter_upwards [h0] with z hz`.
+
+Establish `e : z = x + (-x + z)` using `by abel`. Rewrite using `[e]`. Conclude with `h x _ hz`.
+-/
 theorem isLocallyConstant_of_periodic {n : ℕ} {Y : Type} (g : (Fin n → k) → Y) (s : kˣ)
     (h : ∀ v a : Fin n → k, Multiplicative.ofAdd a ∈ polyBall (k := k) n s → g (v + a) = g v) :
     IsLocallyConstant g := by
@@ -45,6 +58,9 @@ theorem isLocallyConstant_of_periodic {n : ℕ} {Y : Type} (g : (Fin n → k) �
   rw [e]
   exact h x _ hz
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Use `HasCompactSupport.intro (isCompact_ball n S) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h1`. Conclude with `hx (h x h1)`.
+-/
 theorem hasCompactSupport_of_ball {n : ℕ} {E : Type} [AddCommGroup E] (g : (Fin n → k) → E) (S : kˣ)
     (h : ∀ v, g v ≠ 0 → Multiplicative.ofAdd v ∈ polyBall (k := k) n S) : HasCompactSupport g := by
   haveI := GlobalTheory.SplitWeil.t2Space k
@@ -58,6 +74,11 @@ def tw (ψ : AddChar k Circle) {N : ℕ} {E : Type} [AddCommGroup E] [Module ℂ
 
 variable {N : ℕ} {E : Type} [AddCommGroup E] [Module ℂ E]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_cball_addChar_eq_one ψ hψ`. Establish `h1 : IsLocallyConstant fun v : Fin (N + 1) → k => ((ψ (-(v (Fin.last N))) : Circle) : ℂ)`. Use `isLocallyConstant_of_periodic _ s fun v a ha => ?_` and prove the remaining obligations. Establish `h2 : ψ (a (Fin.last N)) = 1` using `hs _ (ha (Fin.last N))`. Rewrite using `[Pi.add_apply, neg_add, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv (a := a (Fin.last N)), h2, inv_one, mul_one]`.
+
+Conclude with `h1.comp₂ hg fun c x => c • x`.
+-/
 theorem isLocallyConstant_tw (ψ : AddChar k Circle) (hψ : Continuous ψ)
     {g : (Fin (N + 1) → k) → E} (hg : IsLocallyConstant g) : IsLocallyConstant (tw ψ g) := by
   obtain ⟨s, hs⟩ := exists_cball_addChar_eq_one ψ hψ
@@ -68,6 +89,9 @@ theorem isLocallyConstant_tw (ψ : AddChar k Circle) (hψ : Continuous ψ)
       inv_one, mul_one]
   exact h1.comp₂ hg fun c x => c • x
 
+/- English proof (translation)
+Use `hasCompactSupport_of_ball _ S fun v hv => h v fun h0 => hv ?_` and prove the remaining obligations. Simplify using `[tw, h0]`.
+-/
 theorem hasCompactSupport_tw (ψ : AddChar k Circle) {g : (Fin (N + 1) → k) → E} (S : kˣ)
     (h : ∀ v, g v ≠ 0 → Multiplicative.ofAdd v ∈ polyBall (k := k) (N + 1) S) :
     HasCompactSupport (tw ψ g) := by
@@ -79,6 +103,15 @@ section Int
 variable [MeasurableSpace k] [BorelSpace k] [SecondCountableTopology k] (ν : Measure k)
   [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Establish `hm : ∀ B : Matrix (Fin (N + 1)) (Fin (N + 1)) k, Measurable B.mulVec` using `fun B => (continuous_const.matrix_mulVec continuous_id).measurable`. Establish `key : ∀ B : Set (Fin (N + 1) → k), MeasurableSet B → (Measure.pi fun _ : Fin (N + 1) => ν) (((g⁻¹ : GL (Fin (N + 1)) k) : Matrix (Fin (N + 1)) (Fin (N + 1)) k).mulVec ⁻¹' B) = (distribHaarChar k (Matrix.GeneralLinearGroup.det g) : ENNReal) * (Measure.pi fun _ : Fin (N + 1) => ν) …`. Introduce `B hB`. Establish `h1` using `GlobalTheory.WeilM.smul_map_mulVec_pi ν g.val (Matrix.GeneralLinearGroup.det g) rfl`. Use `conv_lhs => rw [← h1]`.
+
+Rewrite using `[Measure.smul_apply, Measure.map_apply (hm _) ((hm _) hB), smul_eq_mul]`. Use `congr 2`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, mulVec_mulVec]`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]`.
+
+Unfold `smInt`. Rewrite using `[smul_finsum]`. Use `finsum_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[Set.preimage_comp, key (φ ⁻¹' {v}) (l.isOpen_fiber v).measurableSet, ENNReal.toReal_mul, smul_smul]`. Use `congr 1`.
+
+Simplify using `[nabs]`.
+-/
 theorem smInt_comp_inv_mulVec (g : GL (Fin (N + 1)) k) {φ : (Fin (N + 1) → k) → E}
     (l : IsLocallyConstant φ) :
     smInt (Measure.pi fun _ : Fin (N + 1) => ν) (φ ∘ ((g⁻¹ : GL (Fin (N + 1)) k) :
@@ -109,6 +142,33 @@ theorem smInt_comp_inv_mulVec (g : GL (Fin (N + 1)) k) {φ : (Fin (N + 1) → k)
 
 end Int
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ N X E _ _ _ _ r hper hsup tr htr lev A hlev`. Use `borelize k`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Take `⟨ν, hν⟩ : ∃ ν : Measure k, ν.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`.
+
+Set `μ : Measure (Fin (N + 1) → k)` to `Measure.pi fun _ => ν`. Use `haveI hμ : μ.IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `hl : ∀ f, IsLocallyConstant (tw ψ (r f))` using `fun f => by`. Take `⟨s, hs⟩` from `hper f`. Conclude with `isLocallyConstant_tw ψ hψ (isLocallyConstant_of_periodic _ s fun v a ha => hs v a ha)`.
+
+Establish `hc : ∀ f, HasCompactSupport (tw ψ (r f))` using `fun f => by`. Take `⟨S, hS⟩` from `hsup f`. Conclude with `hasCompactSupport_tw ψ S hS`. Set `T : X →ₗ[ℂ] E` to `{ toFun := fun f => smInt μ (tw ψ (r f)) map_add' := fun f g => by`. Establish `e : tw ψ (r (f + g)) = tw ψ (r f) + tw ψ (r g)`.
+
+Use function extensionality and compare the values at `v`. Simplify using `[tw, map_add, smul_add]`. Use `show smInt μ (tw ψ (r (f + g))) = smInt μ (tw ψ (r f)) + smInt μ (tw ψ (r g))`. Rewrite using `[e, smInt_add μ (hl f) (hc f) (hl g) (hc g)]`. Use the proof step `map_smul' := fun c f => by`.
+
+Establish `e : tw ψ (r (c • f)) = (c • LinearMap.id : E →ₗ[ℂ] E) ∘ tw ψ (r f)`. Use function extensionality and compare the values at `v`. Simplify using `only [tw, Function.comp, map_smul, Pi.smul_apply, LinearMap.smul_apply, LinearMap.id_apply]`. Use `show smInt μ (tw ψ (r (c • f))) = c • smInt μ (tw ψ (r f))`. Rewrite using `[e, smInt_linear μ _ (hl f) (hc f)]`.
+
+Use `rfl }`. Establish `hT : ∀ f, T f = smInt μ (tw ψ (r f))` using `fun _ => rfl`. Use `⟨T, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a f`. Set `L : E →ₗ[ℂ] E` to `((ψ (a (Fin.last N)) : Circle) : ℂ) • LinearMap.id`.
+
+Establish `e : tw ψ (r (tr a f)) = (L ∘ tw ψ (r f)) ∘ fun v => v + a`. Use function extensionality and compare the values at `v`. Simplify using `only [tw, Function.comp, htr, L, LinearMap.smul_apply, LinearMap.id_apply, smul_smul]`. Use `congr 1`. Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul]`.
+
+Use `congr 2`. Simplify using `only [Pi.add_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[hT, hT, e, smInt_comp_measurePreserving μ (measurePreserving_add_right μ a) ((hl f).comp _), smInt_linear μ L (hl f) (hc f)]`. Both sides reduce to the same expression.
+
+Introduce `m hm f`. Establish `e : tw ψ (r (lev m f)) = (A m ∘ tw ψ (r f)) ∘ ((m⁻¹ : GL (Fin (N + 1)) k) : Matrix (Fin (N + 1)) (Fin (N + 1)) k).mulVec`. Use function extensionality and compare the values at `v`. Simplify using `only [tw, Function.comp, hlev, map_smul]`. Rewrite using `[mulVec_last_of_mem k _ (inv_mem hm) v]`.
+
+Rewrite using `[hT, hT, e]`. Use `(smInt_comp_inv_mulVec ν m ((hl f).comp _)).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `smInt_linear μ (A m) (hl f) (hc f)`. Introduce `s hs`.
+
+Establish `hLo` using `isOpen_ball (k := k) (N + 1) s`. Establish `hLc` using `isCompact_ball (k := k) (N + 1) s`. Use `⟨(((μ {a | Multiplicative.ofAdd a ∈ polyBall (k := k) (N + 1) s}).toReal : ℝ) : ℂ), ?_, fun b e hb => ?_⟩` and prove the remaining obligations. Establish `h0` using `(hLo.measure_pos μ ⟨0, one_mem (polyBall (k := k) (N + 1) s)⟩).ne'`. Conclude with `Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨h0, hLc.measure_lt_top.ne⟩)`.
+
+Establish `e' : tw ψ (r b) = Set.indicator {a | Multiplicative.ofAdd a ∈ polyBall (k` using `k) (N + 1) s} fun _ => e := by`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : Multiplicative.ofAdd v ∈ polyBall (k := k) (N + 1) s`. Establish `h1 : ψ (v (Fin.last N)) = 1` using `hs v hv`. Simplify using `only [tw]`.
+
+Rewrite using `[hb v, if_pos hv, Set.indicator_of_mem (show v ∈ {a | Multiplicative.ofAdd a ∈ polyBall (k := k) (N + 1) s} from hv), AddChar.map_neg_eq_inv, h1]`. Simplify using the standard rewrite rules. Simplify using `only [tw]`. Rewrite using `[hb v, if_neg hv, Set.indicator_of_notMem (show v ∉ {a | Multiplicative.ofAdd a ∈ polyBall (k := k) (N + 1) s} from hv), smul_zero]`. Rewrite using `[hT, e', smInt_indicator]`.
+-/
 theorem exists_twisted_integral : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ∀ (N : ℕ) (X E : Type) [AddCommGroup X] [Module ℂ X] [AddCommGroup E] [Module ℂ E] (r : X →ₗ[ℂ] (Fin (N + 1) → k) → E), (∀ f, ∃ s : kˣ, ∀ (v a : Fin (N + 1) → k), Multiplicative.ofAdd a ∈ polyBall (k := k) (N + 1) s → r f (v + a) = r f v) → (∀ f, ∃ S : kˣ, ∀ v : Fin (N + 1) → k, r f v ≠ 0 → Multiplicative.ofAdd v ∈ polyBall (k := k) (N + 1) S) → ∀ (tr : (Fin (N + 1) → k) → X → X), (∀ a f v, r (tr a f) v = r f (v + a)) → ∀ (lev : GL (Fin (N + 1)) k → X → X) (A : GL (Fin (N + 1)) k → E →ₗ[ℂ] E), (∀ m f v, r (lev m f) v = A m (r f (((m⁻¹ : GL (Fin (N + 1)) k) : Matrix (Fin (N + 1)) (Fin (N + 1)) k).mulVec v))) → ∃ T : X →ₗ[ℂ] E, (∀ a f, T (tr a f) = ((ψ (a (Fin.last N)) : Circle) : ℂ) • T f) ∧ (∀ m : GL (Fin (N + 1)) k, m ∈ Mir k N → ∀ f, T (lev m f) = ((nabs k (Matrix.GeneralLinearGroup.det m) : ℝ) : ℂ) • A m (T f)) ∧ (∀ s : kˣ, (∀ a : Fin (N + 1) → k, Multiplicative.ofAdd a ∈ polyBall (k := k) (N + 1) s → ψ (a (Fin.last N)) = 1) → ∃ c : ℂ, c ≠ 0 ∧ ∀ (b : X) (e : E), (∀ v, r b v = @ite _ (Multiplicative.ofAdd v ∈ polyBall (k := k) (N + 1) s) (Classical.propDecidable _) e 0) → T b = c • e) := by
   intro k _ _ _ _ ψ hψ N X E _ _ _ _ r hper hsup tr htr lev A hlev
   borelize k

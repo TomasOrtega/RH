@@ -22,6 +22,9 @@ namespace GlobalTheory.AdForm.RatMove
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨γ', h1, h2⟩` from `hγ`. Establish `h3 : cT (D.sp.cm.sig : D.host.E →+* D.host.E) γ'.1 * V.gram * γ'.1 = V.gram` using `h1`. Rewrite `h3` using `[hV, Matrix.mul_one]`. Conclude with `⟨⟨γ'.1, Matrix.mem_unitaryGroup_iff'.2 h3⟩, congrArg Units.val h2.symm⟩`.
+-/
 theorem exists_unitary (V : HSp D) (hV : V.gram = 1) {γ : GA D V} (hγ : γ ∈ GQ V) :
     ∃ U : Matrix.unitaryGroup (Fin V.rank) D.host.E, Formalism.L2.Theta.mt V γ = U.1.map (incA D) := by
   obtain ⟨γ', h1, h2⟩ := hγ
@@ -31,6 +34,9 @@ theorem exists_unitary (V : HSp D) (hV : V.gram = 1) {γ : GA D V} (hγ : γ ∈
 
 def finG (V : HSp D) : GA D V →* GL (Fin V.rank) (EAf D) := (bc (toEAf D)).comp (matHom V)
 
+/- English proof (translation)
+Rewrite using `[Submodule.ext_iff]`. Use `forall_congr' fun x => iff_congr Iff.rfl ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.NormSum.AdLattice.mem_lat, ← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem moves_iff (V : HSp D) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) :
     Moves V rfl g N ↔ N = GlobalTheory.NormSum.AdLattice.lat (finG V g) := by
   rw [Submodule.ext_iff]
@@ -38,17 +44,30 @@ theorem moves_iff (V : HSp D) (g : GA D V) (N : Submodule (𝓞 D.host.E) (Fin V
   rw [GlobalTheory.NormSum.AdLattice.mem_lat, ← map_inv]
   rfl
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin V.rank) _ => Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (x.1 i j)) h`.
+-/
 theorem finG_congr (V : HSp D) {g g' : GA D V} (h : finHom V g = finHom V g') : finG V g = finG V g' := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   exact congrArg (fun x : GL (Fin V.rank) _ =>
     Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E (x.1 i j)) h
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add a b ha hb => simp only [RingHom.map_add, ha, hb]`. Consider the case `tmul y e => rfl`.
+-/
 theorem toEAf_cA (a : AE D) : toEAf D (cA D a) = Formalism.UG.sigR D.sp.cm.sig (Af D.host.F) (toEAf D a) := by
   induction a using TensorProduct.induction_on with
   | zero => simp only [RingHom.map_zero]
   | add a b ha hb => simp only [RingHom.map_add, ha, hb]
   | tmul y e => rfl
 
+/- English proof (translation)
+Establish `hL` using `GlobalTheory.NormSum.AdLattice.lat_isLattice (finG V g)`. Use `⟨hL.fg, hL.span_eq_top, GlobalTheory.NormSum.AdLattice.lat_selfDual D.sp.cm.sig _ ?_⟩` and prove the remaining obligations. Establish `h : ((Formalism.L2.Theta.mt V g).map (cA D))ᵀ * V.gram.map (incA D) * Formalism.L2.Theta.mt V g = V.gram.map (incA D)` using `g.2`. Rewrite `h` using `[hV, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Establish `h2` using `congrArg (fun M => M.map (toEAf D)) h`.
+
+Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero (toEAf D)) (map_one _)] at h2`. Express the relevant statement in the definitionally equal form `cT _ (finG V g).1 * (1 : Matrix _ _ D.host.E).map _ * (finG V g).1 = (1 : Matrix _ _ D.host.E).map _`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, ← h2]`. Use `congr 1`. Use extensionality with `i j`.
+
+Conclude with `(toEAf_cA _).symm`.
+-/
 theorem sd_lat (V : HSp D) (hV : V.gram = 1) (g : GA D V) :
     Formalism.MainNotions.StandardLatticesGL3.SD D (GlobalTheory.NormSum.AdLattice.lat (finG V g)) := by
   have hL := GlobalTheory.NormSum.AdLattice.lat_isLattice (finG V g)
@@ -63,6 +82,13 @@ theorem sd_lat (V : HSp D) (hV : V.gram = 1) (g : GA D V) :
   ext i j
   exact (toEAf_cA _).symm
 
+/- English proof (translation)
+Establish `key` using `GlobalTheory.NormSum.AdLattice.mem_lat_rat (finG V γ) (finG V g) U.1 (by`. Express the relevant statement in the definitionally equal form `(Formalism.L2.Theta.mt V γ).map (toEAf D) = _`. Rewrite using `[hU]`. Use the proof step `rfl)`. Rewrite using `[map_mul]`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `e : U.1 *ᵥ (star U.1 *ᵥ x) = x` using `by rw [Matrix.mulVec_mulVec, U.2.2, Matrix.one_mulVec]`. Conclude with `⟨_, (key _).2 (e.symm ▸ hx), e⟩`.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(key y).1 hy`.
+-/
 theorem lat_rat (V : HSp D) {γ : GA D V} (U : Matrix.unitaryGroup (Fin V.rank) D.host.E)
     (hU : Formalism.L2.Theta.mt V γ = U.1.map (incA D)) (g : GA D V) :
     GlobalTheory.NormSum.AdLattice.lat (finG V (γ * g)) = SDLat.smulLat U.1 (GlobalTheory.NormSum.AdLattice.lat (finG V g)) := by
@@ -78,6 +104,11 @@ theorem lat_rat (V : HSp D) {γ : GA D V} (U : Matrix.unitaryGroup (Fin V.rank) 
   · rintro ⟨y, hy, rfl⟩
     exact (key y).1 hy
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.FockCompare.exists_chart hθ`. Use `Classical.epsilon_spec (p := fun w : Mx D m n => w.map (finPart D) = 0 ∧ ∀ τ, compAt θ τ w = z τ) ⟨Matrix.of fun i j => σ fun τ => z τ i j, ?_, fun τ => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `hσ.fin _`. Use extensionality with `i j`.
+
+Conclude with `hσ.comp _ _`.
+-/
 theorem realPt_spec {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) :
     (realPt θ z).map (finPart D) = 0 ∧ ∀ τ, compAt θ τ (realPt θ z) = z τ := by
   obtain ⟨σ, hσ⟩ := GlobalTheory.FockCompare.exists_chart hθ
@@ -86,14 +117,25 @@ theorem realPt_spec {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (z : D.what�
   · ext i j; exact hσ.fin _
   · ext i j; exact hσ.comp _ _
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := (θ τ).comp (infPart D))`.
+-/
 theorem compAt_mul (θ : InfFam D) (τ : D.what₂.Tau) {m n k : ℕ} (x : Mx D m n) (y : Mx D n k) :
     compAt θ τ (HMul.hMul x y : Mx D m k) = compAt θ τ x * compAt θ τ y :=
   Matrix.map_mul (f := (θ τ).comp (infPart D))
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `(hθ τ).1 _`.
+-/
 theorem compAt_rat {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m n : ℕ} (U : Matrix (Fin m) (Fin n) D.host.E) :
     compAt θ τ (U.map (incA D)) = U.map (tauE D τ) := by
   ext i j; exact (hθ τ).1 _
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun M => M.map (tauE D τ)) U.2.2`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero (tauE D τ)) (map_one _)] at h`. Rewrite using `[← h]`. Use `congr 1`. Use extensionality with `i j`.
+
+Conclude with `(GlobalTheory.FockCompare.tauE_star τ _).symm`.
+-/
 theorem map_unitary (τ : D.what₂.Tau) {n : ℕ} (U : Matrix.unitaryGroup (Fin n) D.host.E) :
     U.1.map (tauE D τ) * (U.1.map (tauE D τ))ᴴ = 1 := by
   have h := congrArg (fun M => M.map (tauE D τ)) U.2.2
@@ -103,6 +145,9 @@ theorem map_unitary (τ : D.what₂.Tau) {n : ℕ} (U : Matrix.unitaryGroup (Fin
   ext i j
   exact (GlobalTheory.FockCompare.tauE_star τ _).symm
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `(GlobalTheory.Member.isDetRoot_laws D V).2.1 g x x' hx hx'`. Take `⟨⟨η, hη⟩, h2⟩` from `h`. Take `⟨m, rfl⟩` from `hn`. Rewrite using `[map_mul, h2 η hη a, pow_add, ← mul_pow, GlobalTheory.VolHeckeCompare.IsEta_mul_self hη, one_pow, mul_one]`.
+-/
 theorem root_eq {V : HSp D} {χ : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D χ n) (hn : Even n) {g : GA D V} {x x' : (AE D)ˣ}
     (hx : IsDetRoot V g x) (hx' : IsDetRoot V g x') : χ x' = χ x := by
   obtain ⟨a, rfl⟩ := (GlobalTheory.Member.isDetRoot_laws D V).2.1 g x x' hx hx'
@@ -110,11 +155,27 @@ theorem root_eq {V : HSp D} {χ : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D 
   obtain ⟨m, rfl⟩ := hn
   rw [map_mul, h2 η hη a, pow_add, ← mul_pow, GlobalTheory.VolHeckeCompare.IsEta_mul_self hη, one_pow, mul_one]
 
+/- English proof (translation)
+Unfold `gramAt`. Rewrite using `[hV]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem gramAt_one {V : HSp D} (hV : V.gram = 1) (τ : D.what₂.Tau) : gramAt D V τ = 1 := by
   unfold gramAt
   rw [hV]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Take `⟨hr, γ, hγ, hf⟩` from `hr`. Take `⟨U, hU⟩` from `exists_unitary V hV hγ`. Establish `hk : r⁻¹ * γ ∈ GinfC V`. Express the relevant statement in the definitionally equal form `finHom V _ = 1`. Rewrite using `[map_mul, map_inv, hf, inv_mul_cancel]`.
+
+Establish `e1 : γ * g = r * g * (r⁻¹ * γ)`. Use `(GlobalTheory.AutMult.commute_inf_fin ⟨_, hk⟩ ⟨_, hg⟩).eq` as an intermediate fact. Simplify using `only at this`. Rewrite using `[mul_assoc r g, ← this, ← mul_assoc, mul_inv_cancel_left]`. Establish `e2 : ∀ τ, compAt θ τ (Formalism.L2.Theta.mt V (r⁻¹ * γ)) = U.1.map (tauE D τ)` using `fun τ => by`.
+
+Establish `h1 : infHom V (r⁻¹ * γ) = infHom V γ`. Rewrite using `[map_mul, map_inv, show infHom V r = 1 from hr, inv_one, one_mul]`. Rewrite using `[← compAt_rat hθ, ← hU]`. Conclude with `congrArg (fun x : GL (Fin V.rank) _ => x.1.map (θ τ)) h1`. Use `⟨γ, hγ, _, hk, U, hU, e1, e2, ?_, fun μ n e h1 h2 h3 h4 x x₀ hx hx₀ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← lat_rat V U hU, finG_congr V (g := r * g) (g' := γ * g) (by rw [map_mul, map_mul, hf])]`. Take `⟨b, hb⟩` from `(GlobalTheory.Member.isDetRoot_laws D V).2.2.1 γ hγ`. Take `⟨y, hy, hv⟩` from `GlobalTheory.VacuumCharacter.exists_root hθ V (fun τ => by rw [gramAt_one hV]; simp) _ hk`. Establish `r1` using `GlobalTheory.Member.isDetRoot_mul V _ _ _ _ hb hx₀`. Establish `r2` using `GlobalTheory.Member.isDetRoot_mul V _ _ _ _ hx hy`.
+
+Rewrite `r2` using `[← e1]`. Establish `r3` using `root_eq h2 h3 r2 r1`. Rewrite `r3` using `[map_mul, map_mul, h1.2, one_mul]`. Rewrite using `[r3, Circle.coe_mul, hv μ e h4]`. Use `congr 1`.
+
+Conclude with `Finset.prod_congr rfl fun τ _ => by rw [e2, RingHom.map_det]; rfl`.
+-/
 theorem rat_data {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (hV : V.gram = 1) {r : GA D V} (hr : IsRatFin V r)
     {g : GA D V} (hg : g ∈ GfC V) :
     ∃ γ ∈ GQ V, ∃ k ∈ GinfC V, ∃ U : Matrix.unitaryGroup (Fin V.rank) D.host.E,
@@ -151,6 +212,25 @@ theorem rat_data {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (hV : V.gram = 
     congr 1
     exact Finset.prod_congr rfl fun τ _ => by rw [e2, RingHom.map_det]; rfl
 
+/- English proof (translation)
+Establish `hrat : ∀ w, om (γ, γ') f (actO S T γ γ' w) = f w` using `fun w => by`. Establish `h1` using `hom.om_aut γ hγ γ' hγ' _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hom.std hf w)`. Rewrite `h1` using `[hom.om_heis _ _ _ _ hf]`. Simplify `h1` using `[heisO, symplOH, symplO, hO]`. Establish `hi : Formalism.L2.Theta.mt S γ⁻¹ = (star U.1).map (incA D)`.
+
+Establish `: Formalism.L2.Theta.mt S γ⁻¹ = ((matHom S γ)⁻¹).1` using `congrArg Units.val (map_inv (matHom S) γ)`. Rewrite using `[this]`. Use `Units.inv_eq_of_mul_eq_one_left ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * Formalism.L2.Theta.mt S γ = 1`. Rewrite using `[hU, ← Matrix.map_mul, U.2.1, Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _)]`.
+
+Unfold `xiN`. Use `congr 1`. Use `congr 2`. Establish `key : ∀ {m n : ℕ} (y : Matrix (Fin m) (Fin n) ℂ), ∑ i, ∑ j, y i j * starRingEnd ℂ (y i j) = (y * yᴴ).trace` using `fun y => by simp [Matrix.trace, Matrix.mul_apply]`. Express the relevant statement in the definitionally equal form `(sc : ℂ) * ∑ τ, _ = (sc : ℂ) * ∑ τ, _`.
+
+Use `congrArg _ (Finset.sum_congr rfl fun τ _ => ?_)` and prove the remaining obligations. Use `(key (Matrix.of (z τ))).trans (Eq.trans ?_ (key _).symm)` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc, ← Matrix.mul_assoc (U.1.map _), map_unitary, Matrix.one_mul, ← Matrix.mul_assoc, Matrix.trace_mul_comm _ (U'.1.map _), ← Matrix.mul_assoc, ← Matrix.mul_assoc, map_unitary, M …`. Rewrite using `[← hrat]`. Use `congrArg (om (γ, γ') f) ?_` and prove the remaining obligations.
+
+Establish `s1` using `realPt_spec hθ fun τ => Matrix.of fun i j => -(δ⁻¹ * z τ (Fin.cast rfl i) (Fin.cast rfl j))`. Establish `s2` using `realPt_spec hθ fun τ => Matrix.of fun i j => -(δ⁻¹ * ((U'.1.map (tauE D τ))ᴴ * Matrix.of (z τ) * U.1.map (tauE D τ) : Matrix _ _ ℂ) (Fin.cast rfl i) (Fin.cast rfl j))`. Generalize the expression as in `realPt θ _ = w₁ at s1 ⊢`. Generalize the expression as in `realPt θ _ = w₂ at s2 ⊢`. Establish `t1 : (actO S T γ γ' w₂).map (finPart D) = 0`.
+
+Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, s2.1, Matrix.mul_zero, Matrix.zero_mul]`. Establish `t2 : ∀ τ, compAt θ τ (actO S T γ γ' w₂) = compAt θ τ w₁` using `fun τ => by`. Unfold `actO`. Rewrite using `[compAt_mul, compAt_mul, s1.2, s2.2, hi, hU', compAt_rat hθ, compAt_rat hθ]`.
+
+Establish `a1 : (star U.1).map (tauE D τ) = (U.1.map (tauE D τ))ᴴ`. Use extensionality with `i j`. Conclude with `GlobalTheory.FockCompare.tauE_star τ _`. Establish `a2 : ∀ y : Matrix (Fin T.rank) (Fin S.rank) ℂ, (Matrix.of fun i j => -(δ⁻¹ * y (Fin.cast rfl i) (Fin.cast rfl j))) = (-δ⁻¹) • y` using `fun y => by`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[a1, a2]`. Use `Eq.trans ?_ (a2 (Matrix.of (z τ))).symm` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, map_unitary, Matrix.one_mul, Matrix.mul_assoc, map_unitary, Matrix.mul_one]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.VacuumCharacter.adele_ext hθ ((congrFun (congrFun s1.1 i) j).trans (congrFun (congrFun t1 i) j).symm) fun τ => (congrFun (congrFun (t2 τ) i) j).symm`.
+-/
 theorem xiN_rat {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {S T : HSp D} {χ χ' : (AE D)ˣ →* Circle}
     {om : Om S T} (hom : IsWeilDatumO ψ S T χ χ' om) (δ : ℂ) (sc : ℝ) {γ : GA D S} (hγ : γ ∈ GQ S) {γ' : GA D T}
     (hγ' : γ' ∈ GQ T) (U : Matrix.unitaryGroup (Fin S.rank) D.host.E) (U' : Matrix.unitaryGroup (Fin T.rank) D.host.E)
@@ -208,6 +288,13 @@ theorem xiN_rat {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam
 
 open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.Mem.NatEqui in
 
+/- English proof (translation)
+Take `⟨κ, k1, k2, -⟩` from `GlobalTheory.TrueTheta.exists_kappa D`. Take `⟨χ, hχ, -⟩` from `GlobalTheory.TrueTheta.exists_chi D κ k1 k2`. Establish `h` using `congrFun ((eqP D cc δ B χ hc hδ hχ).1 n n' ⟨L, hL⟩ ⟨L', hL'⟩ hn hn' U U') z`. Establish `h0` using `chiFac_ne_zero hχ hL hL'`. Use `mul_left_cancel₀ h0 (Eq.trans h ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Formalism.L2.Ker.Base.chiFac χ n n' (SDLat.smulLat U.1 L) (SDLat.smulLat U'.1 L') * _ = _`. Rewrite using `[← mul_assoc]`. Use `congr 1`. Unfold `Formalism.L2.Ker.Base.chiFac`. Rewrite using `[chi_smulLat hχ hL, chi_smulLat hχ hL', mul_zpow, mul_zpow, ← Finset.prod_zpow, ← Finset.prod_zpow, Finset.prod_mul_distrib]`.
+
+Simplify using `only [_root_.inv_zpow', neg_neg]`. Express the relevant statement in the definitionally equal form `(∏ τ, tauE D τ U.1.det ^ _) * _ * ((∏ τ, tauE D τ U'.1.det ^ _) * _) = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thMoved_rat {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Formalism.L2.Ker.Base D cc δ) (hc : IsCurveIdeal D cc)
     (hδ : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) {n n' : ℕ} (hn : Even n) (hn' : Even n') {L L'} (hL : SD D L) (hL' : SD D L')
     (U : Matrix.unitaryGroup (Fin n) D.host.E) (U' : Matrix.unitaryGroup (Fin n') D.host.E) (z : VCx D.what₂.Tau n n') :
@@ -231,6 +318,23 @@ theorem thMoved_rat {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Formalism.L2.Ke
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Introduce `N N' hN hN' x y hx hy`. Take `⟨-, -, evS, evT⟩` from `hp.rk`. Take `⟨γ, hγ, k, hk, U, hU, e1, c1, l1, v1⟩` from `rat_data hp.inf S hp.gS hr hg`. Take `⟨γ', hγ', k', hk', U', hU', e2, c2, l2, v2⟩` from `rat_data hp.inf T hp.gT hr' hh`.
+
+Take `⟨x₀, hx₀⟩` from `(GlobalTheory.Member.isDetRoot_laws D S).1 g`. Take `⟨y₀, hy₀⟩` from `(GlobalTheory.Member.isDetRoot_laws D T).1 h`. Use `replace v1 := v1 μ _ e hom.hecS hom.resS evS he x x₀ hx hx₀`. Use `replace v2 := v2 μ _ e hom.hecS hom.resS evS he y y₀ hy hy₀`. Use `replace H := H _ _ ((moves_iff S g _).2 rfl) ((moves_iff T h _).2 rfl) x₀ y₀ hx₀ hy₀`.
+
+Rewrite using `[(moves_iff _ _ _).1 hN, (moves_iff _ _ _).1 hN', l1, l2]`. Establish `hcart : ∀ V : HSp D, V.gram = 1 → ∀ τ, IsCartanInv (gramAt D V τ) 1` using `fun V hV τ => by`. Rewrite using `[gramAt_one hV]`. Conclude with `⟨one_mul _, by simp, by rw [one_mul]; exact Matrix.PosDef.one⟩`. Establish `hvac` using `GlobalTheory.VacuumCharacter.vacuum_character D ψ θ S T μ μ om hom hp.inf hp.sigS hp.sigT (fun _ => 1) (hcart S hp.gS) (hcart T hp.gT) _ _ he he (fun τ => e τ + (S.rank / 2 : ℕ)) (fun τ => e τ - (S.rank / 2 : ℕ)) (fun τ => -((T.rank / 2 : ℕ) + e τ)) (fun τ => by obtain ⟨m, hm⟩ := …`.
+
+Take `⟨m, hm⟩` from `evT`. Rewrite using `[Matrix.trace_one, Fintype.card_fin, hm, show (m + m) / 2 = m by omega]; push_cast; ring)`. Use `f hf.1 hf.2 k hk k' hk' (fun τ => by rw [one_mul, mul_one])`. Establish `h2 : (1 / 2 : ℂ) • (1 + 1 : Matrix (Fin T.rank) (Fin T.rank) ℂ) = 1` using `by module`. Establish `hd : ∀ {n : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E) τ, (M.map (tauE D τ)).det = tauE D τ M.det` using `fun M τ => (RingHom.map_det _ _).symm`.
+
+Simplify using `only [h2, sub_self, smul_zero, one_mul, add_zero, zero_mul, zero_add, Matrix.det_one, _root_.one_zpow, mul_one, c1, c2, hd] at hvac`. Establish `hmul : om (γ, γ') (om (g, h) f) = om (r * g, r' * h) (om (k, k') f)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk, e1, e2]`. Rewrite `hmul` using `[hvac, map_smul]`. Use function extensionality and compare the values at `z`.
+
+Establish `key` using `xiN_rat hp.inf hom δ sc hγ hγ' U U' hU hU' (hom.om_pres (g, h) f hf.1) z`. Rewrite `key` using `[hmul, H]`. Use `beta_reduce at key`. Rewrite `key` using `[thMoved_rat B hc hδ evS evT (sd_lat S hp.gS g) (sd_lat T hp.gT h), v1, v2]`. Establish `hne : ∀ {n : ℕ} (U : Matrix.unitaryGroup (Fin n) D.host.E) τ, tauE D τ U.1.det ≠ 0` using `fun U τ => (_root_.map_ne_zero _).2 (Unitary.isUnit_coe (U := ⟨_, Matrix.det_of_mem_unitary U.2⟩)).ne_zero`.
+
+Establish `hs : ∀ (c : ℂ) F, xiN θ S T rfl rfl δ sc (c • F) z = c * xiN θ S T rfl rfl δ sc F z` using `fun c F => by`. Simplify using `only [xiN, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hs]`. Use `mul_left_cancel₀ (Finset.prod_ne_zero_iff.2 fun τ _ => mul_ne_zero (zpow_ne_zero _ (hne U' τ)) (zpow_ne_zero _ (hne U τ))) (key.trans ?_)` and prove the remaining obligations.
+
+Simplify using `only [neg_add, zpow_add₀ (hne _ _), Finset.prod_mul_distrib, mul_inv, ← Finset.prod_inv_distrib, ← _root_.zpow_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem move_rat {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {a b : ℕ} (hS : S.rank = a) (hT : T.rank = b)
     {δ : ℂ} {sc : ℝ} (hp : StdPair θ S T δ sc ψ) {μ : (AE D)ˣ →* Circle} {om : Om S T} (hom : IsWeilDatumO ψ S T μ μ om)
     (e : D.what₂.Tau → ℤ) (he : ∀ τ, HasInfExp D μ τ (e τ)) {f : WO S T → ℂ} (hf : IsHol θ S T ψ f)
@@ -287,9 +391,17 @@ theorem move_rat {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} 
   simp only [neg_add, zpow_add₀ (hne _ _), Finset.prod_mul_distrib, mul_inv, ← Finset.prod_inv_distrib, ← _root_.zpow_neg]
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨top_ne_bot, by rw [Ideal.absNorm_top]; exact Nat.coprime_one_left _⟩`.
+-/
 theorem curveIdeal_top (D : D7) : Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D ⊤ :=
   ⟨top_ne_bot, by rw [Ideal.absNorm_top]; exact Nat.coprime_one_left _⟩
 
+/- English proof (translation)
+Introduce `B X I l Z w u A ψ θ hA i hi c₀ g h hg hh H r r' hr hr'`. Establish `hp` using `(GlobalTheory.T.standard_pair_along_chain I l Z w u A ψ θ hA i hi).1`. Use `choose e he using fun τ => (B.hc τ).e_int ⟨i, hi⟩`. Establish `hexp` using `(GlobalTheory.HeckeInfExp.hasInfExp_iff_hasInfQ (I.rec7 l Z) _ _ _ (hA.chr ⟨i, hi⟩)).2 (I.C.isMu0 ⟨i, hi⟩).inf`. Establish `hv` using `(hA.vac i hi).2`.
+
+Conclude with `move_rat _ _ hp (hA.om i hi) (fun τ => -e τ) (fun τ => by`. Establish `e1 : ((-e τ : ℤ) : ℚ) = -(B.hc τ).e ⟨i, hi⟩` using `by rw [Int.cast_neg, ← he τ]`. Conclude with `e1 ▸ hexp τ) ⟨hv.theta, hv.fock⟩ (Th.VacIn.toRec (D := I.rec7 l Z) I.J.V)`. Use the proof step `(curveIdeal_top _) w.ok.amb_ok.delta c₀ hg hh H hr hr'`.
+-/
 theorem moveAt_rat : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (w : World I l Z) (u : B.Word) (A : ColDat I l Z u (w.C.herm.base.Ch u)) ψ θ, A.Is (w.C.forms u) ψ θ → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m), ∀ c₀ g h, g ∈ GfC _ → h ∈ GfC _ → A.MoveAt θ i hi c₀ g h → ∀ r r', IsRatFin _ r → IsRatFin _ r' → A.MoveAt θ i hi c₀ (r * g) (r' * h) := by
   intro B X I l Z w u A ψ θ hA i hi c₀ g h hg hh H r r' hr hr'
   have hp := (GlobalTheory.T.standard_pair_along_chain I l Z w u A ψ θ hA i hi).1

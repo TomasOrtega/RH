@@ -19,6 +19,11 @@ def lowPre (P : Pre) : Finset ℕ := by
   classical
   exact if h : ∃ X : Stages, X.B.toPre = P then lowAll h.choose.toD7 else ∅
 
+/- English proof (translation)
+Take `⟨B, C, W, V, S, N, Gj⟩` from `s`. Take `⟨B', C', W', V', S', N', Gj'⟩` from `s'`. Consider the cases of `B`. Consider the cases of `B'`. Simplify using `only at h`.
+
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem lowAll_congr {s s' : Stages} (h : s.B.toPre = s'.B.toPre) : lowAll s.toD7 = lowAll s'.toD7 := by
   obtain ⟨B, C, W, V, S, N, Gj⟩ := s
   obtain ⟨B', C', W', V', S', N', Gj'⟩ := s'
@@ -28,11 +33,19 @@ theorem lowAll_congr {s s' : Stages} (h : s.B.toPre = s'.B.toPre) : lowAll s.toD
   subst h
   rfl
 
+/- English proof (translation)
+Establish `h : ∃ X : Stages, X.B.toPre = s.B.toPre` using `⟨s, rfl⟩`. Simplify using `only [lowPre, dif_pos h]`. Conclude with `lowAll_congr h.choose_spec.symm`.
+-/
 theorem lowAll_eq_lowPre (s : Stages) : lowAll s.toD7 = lowPre s.B.toPre := by
   have h : ∃ X : Stages, X.B.toPre = s.B.toPre := ⟨s, rfl⟩
   simp only [lowPre, dif_pos h]
   exact lowAll_congr h.choose_spec.symm
 
+/- English proof (translation)
+Simplify using `only [lowAll, lowPr, Finset.mem_union, Finset.mem_insert, Finset.mem_singleton] at hp`. Break down `hp with ((rfl | rfl | hp | hp) | rfl | rfl | rfl | rfl)` into its components or cases. Conclude with `Nat.prime_two`. Conclude with `(Formalism.L2.Host.leastSplitAuxiliaryPrimeThetaChain_spec D).1`. Conclude with `Nat.prime_of_mem_primeFactors hp`.
+
+Conclude with `Nat.prime_of_mem_primeFactors hp`. Conclude with `D.host.g_prime 0`. Conclude with `D.host.g_prime 1`. Conclude with `D.host.pde_prime`. Conclude with `D.host.pde'_prime`.
+-/
 theorem prime_of_mem_lowAll (D : D7) {p : ℕ} (hp : p ∈ lowAll D) : p.Prime := by
   simp only [lowAll, lowPr, Finset.mem_union, Finset.mem_insert, Finset.mem_singleton] at hp
   rcases hp with ((rfl | rfl | hp | hp) | rfl | rfl | rfl | rfl)
@@ -45,6 +58,9 @@ theorem prime_of_mem_lowAll (D : D7) {p : ℕ} (hp : p ∈ lowAll D) : p.Prime :
   · exact D.host.pde_prime
   · exact D.host.pde'_prime
 
+/- English proof (translation)
+Assume the negation of the conclusion as `e`. Establish `h3 : ((Ideal.absNorm u.asIdeal : ℕ) : 𝓞 E) ∈ u.asIdeal` using `Ideal.absNorm_mem _`. Take `⟨a, b, hab⟩ : IsCoprime ((Ideal.absNorm u.asIdeal : ℕ) : 𝓞 E) ((p : ℕ) : 𝓞 E)` from `Nat.Coprime.cast ((Nat.coprime_primes hu hp).2 e)`. Conclude with `u.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h3) (Ideal.mul_mem_left _ _ (show ((p : ℕ) : 𝓞 E) ∈ u.asIdeal from h))))`.
+-/
 theorem eq_of_mem_placesOver {E : Type} [Field E] [NumberField E] (u : HeightOneSpectrum (𝓞 E)) {p : ℕ} (hp : p.Prime)
     (hu : (Ideal.absNorm u.asIdeal).Prime) (h : u ∈ placesOver E p) : Ideal.absNorm u.asIdeal = p := by
   by_contra e
@@ -54,6 +70,11 @@ theorem eq_of_mem_placesOver {E : Type} [Field E] [NumberField E] (u : HeightOne
   exact u.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (hab ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ h3) (Ideal.mul_mem_left _ _ (show ((p : ℕ) : 𝓞 E) ∈ u.asIdeal from h))))
 
+/- English proof (translation)
+Use `evG_all fun K => ?_` and prove the remaining obligations. Use `large₂.imp (p := fun B _ T => T.Avoids fun _ => lowPre B.toPre) ⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun B _ _ _ _ => lowPre B, fun _ _ _ _ _ => ∅, by simp, by simp, fun _ _ _ _ _ _ h => h⟩ ?_` and prove the remaining obligations. Introduce `B f T _ hA _ _ _ w _ P x v u hu p hp hup`. Establish `hl : lowAll (Dof x) = lowPre B.toPre` using `lowAll_eq_lowPre (w.st x.o.Z)`. Take `⟨-, h1, -, -⟩` from `(T.psi_tw v).2.2.2 u fun h => ((T.psi_is v).ram u).1 h hu`.
+
+Establish `e : Ideal.absNorm u.asIdeal = p` using `eq_of_mem_placesOver u (prime_of_mem_lowAll _ hp) h1 hup`. Conclude with `hA v u hu (by rw [e, ← hl]; exact hp)`.
+-/
 theorem conductors_avoid_lowAll :
     AllSt fun _ _ _ T _ _ x => ∀ v, ∀ u ∈ T.Q v, ∀ p ∈ lowAll (Dof x), u ∉ placesOver (Dof x).host.E p := by
   refine evG_all fun K => ?_

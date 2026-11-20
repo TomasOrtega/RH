@@ -17,6 +17,19 @@ open Classical ValuativeRel
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Apply the tactic sequence `have habs : ∀ i, |η ^ i| = 1 := fun i => by rcases hη with rfl | rfl <;> simp`. Establish `hxi : ∀ i ∈ Finset.Icc a b, x ^ i ≤ 1 / 2` using `fun i hi => by`. Establish `hi1 : 1 ≤ i` using `le_trans ha (Finset.mem_Icc.1 hi).1`. Combine the equalities or inequalities in the displayed calculation. Establish `hlow : ∀ i ∈ Finset.Icc a b, 1 - x ^ i ≤ 1 - η ^ i * x ^ i` using `fun i _ => by`.
+
+Establish `: η ^ i * x ^ i ≤ x ^ i`. Establish `h1` using `le_abs_self (η ^ i * x ^ i)`. Rewrite `h1` using `[abs_mul, habs, one_mul, abs_of_nonneg (pow_nonneg hx0 _)]`. Conclude with `h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hS : ∑ i ∈ Finset.Icc a b, x ^ i ≤ 3 / 2 * x ^ a`. Establish `hI : Finset.Icc a b = Finset.Ico a (b + 1)`. Use extensionality with `i`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hI]`. Use `(geom_sum_Ico_le_of_lt_one hx0 (by linarith)).trans ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by linarith)]`. Use polynomial arithmetic with `[pow_nonneg hx0 a]`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = ∏ i ∈ Finset.Icc a b, Real.exp (-(2 * x ^ i)) := by`. Rewrite using `[← Real.exp_sum]`. Use `congr 1`.
+
+Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `_ ≤ ∏ i ∈ Finset.Icc a b, (1 - η ^ i * x ^ i) := by`. Use `Finset.prod_le_prod (fun i _ => (Real.exp_pos _).le) fun i hi => ?_` and prove the remaining obligations. Conclude with `(LocModel.exp_neg_two_le (pow_nonneg hx0 _) (hxi i hi)).trans (hlow i hi)`.
+-/
 theorem prod_lower_third {x : ℝ} (hx0 : 0 ≤ x) (hx : x ≤ 1 / 3) {η : ℝ} (hη : η = 1 ∨ η = -1) (a b : ℕ)
     (ha : 1 ≤ a) : Real.exp (-(3 * x ^ a)) ≤ ∏ i ∈ Finset.Icc a b, (1 - η ^ i * x ^ i) := by
   have habs : ∀ i, |η ^ i| = 1 := fun i => by rcases hη with rfl | rfl <;> simp
@@ -49,18 +62,29 @@ section Alpha
 
 variable {K F : Type} [Field K] [Field F] [NumberField F] [Algebra F K]
 
+/- English proof (translation)
+Unfold `etaF`. Use `split_ifs`. Conclude with `Or.inr rfl`. Conclude with `Or.inl rfl`.
+-/
 theorem etaF_pm (𝔭 : Ideal (𝓞 F)) : etaF K F 𝔭 = 1 ∨ etaF K F 𝔭 = -1 := by
   unfold etaF
   split_ifs
   · exact Or.inr rfl
   · exact Or.inl rfl
 
+/- English proof (translation)
+Unfold `alphaStd`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast, inv_pow]`.
+-/
 theorem alphaStd_eq (𝔭 : Ideal (𝓞 F)) (n : ℕ) :
     alphaStd K 𝔭 n = ∏ i ∈ Finset.Icc 1 n, (1 - etaF K F 𝔭 ^ i * ((Ideal.absNorm 𝔭 : ℝ))⁻¹ ^ i) := by
   unfold alphaStd
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [zpow_neg, zpow_natCast, inv_pow]
 
+/- English proof (translation)
+Rewrite using `[alphaStd_eq, alphaStd_eq]`. Establish `hU : Finset.Icc 1 n = Finset.Icc 1 j ∪ Finset.Icc (j + 1) n`. Use extensionality with `i`. Simplify using `only [Finset.mem_Icc, Finset.mem_union]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hD : Disjoint (Finset.Icc 1 j) (Finset.Icc (j + 1) n)` using `Finset.disjoint_left.2 fun i h1 h2 => by`. Simplify using `only [Finset.mem_Icc] at h1 h2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hU, Finset.prod_union hD]`.
+-/
 theorem alphaStd_split (𝔭 : Ideal (𝓞 F)) {j n : ℕ} (h : j ≤ n) :
     alphaStd K 𝔭 n = alphaStd K 𝔭 j *
       ∏ i ∈ Finset.Icc (j + 1) n, (1 - etaF K F 𝔭 ^ i * ((Ideal.absNorm 𝔭 : ℝ))⁻¹ ^ i) := by
@@ -72,6 +96,15 @@ theorem alphaStd_split (𝔭 : Ideal (𝓞 F)) {j n : ℕ} (h : j ≤ n) :
       simp only [Finset.mem_Icc] at h1 h2; omega
   rw [hU, Finset.prod_union hD]
 
+/- English proof (translation)
+Use `set x : ℝ := ((Ideal.absNorm 𝔭 : ℝ))⁻¹ with hxdef`. Establish `hx0 : 0 ≤ x` using `inv_nonneg.2 (by linarith)`. Establish `hx : x ≤ 1 / 2` using `by rw [hxdef, one_div]; exact inv_anti₀ (by norm_num) hN`. Establish `hη` using `etaF_pm (K := K) 𝔭`. Establish `hj0 : 0 < alphaStd K 𝔭 j`.
+
+Rewrite using `[alphaStd_eq]`. Conclude with `lt_of_lt_of_le (Real.exp_pos _) (LocModel.prod_bounds hx0 hx hη 1 j le_rfl).1`. Establish `hsp` using `alphaStd_split (K := K) 𝔭 hjn`. Use `set P := ∏ i ∈ Finset.Icc (j + 1) n, (1 - etaF K F 𝔭 ^ i * x ^ i) with hP`. Establish `hq : alphaStd K 𝔭 n / alphaStd K 𝔭 j = P`.
+
+Rewrite using `[hsp, mul_div_cancel_left₀ _ hj0.ne']`. Rewrite using `[hq]`. Take `⟨hlo, hup⟩` from `LocModel.prod_bounds hx0 hx hη (j + 1) n (by omega)`. Establish `hxs : x ^ (j + 1) ≤ x ^ s` using `pow_le_pow_of_le_one hx0 (by linarith) hs`. Use `⟨lt_of_lt_of_le (Real.exp_pos _) hlo, hup.trans (Real.exp_le_exp.2 (by linarith)), fun h3 => ?_⟩` and prove the remaining obligations.
+
+Establish `hx3 : x ≤ 1 / 3` using `by rw [hxdef, one_div]; exact inv_anti₀ (by norm_num) h3`. Conclude with `(Real.exp_le_exp.2 (by linarith)).trans (prod_lower_third hx0 hx3 hη (j + 1) n (by omega))`.
+-/
 theorem ratio_bounds (𝔭 : Ideal (𝓞 F)) (hN : (2 : ℝ) ≤ (Ideal.absNorm 𝔭 : ℝ)) {j n s : ℕ} (hjn : j ≤ n)
     (hs : s ≤ j + 1) (_hs1 : 1 ≤ s) :
     0 < alphaStd K 𝔭 n / alphaStd K 𝔭 j ∧
@@ -98,6 +131,13 @@ theorem ratio_bounds (𝔭 : Ideal (𝓞 F)) (hN : (2 : ℝ) ≤ (Ideal.absNorm 
 
 end Alpha
 
+/- English proof (translation)
+Take `⟨hl, hc⟩` from `placesOver_holds D`. Establish `hfin : ∀ m : ℕ, {p : PlF D | Loc.resChar p = m}.Finite`. Introduce `m`. Assume the negation of the conclusion as `hinf`. Take `⟨t, ht, htc⟩` from `Set.Infinite.exists_subset_card_eq hinf (D.R.f + 1)`.
+
+Use `hc m t fun p hp => ht hp` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `((Set.finite_le_nat 2).biUnion fun m _ => hfin m).subset fun p hp => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hp`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, exists_prop]`.
+
+Use `⟨Loc.resChar p, ?_, rfl⟩` and prove the remaining obligations. Establish `h1` using `hl p`. Establish `h2 : ((Loc.resChar p : ℕ) : ℝ) < 3` using `lt_of_le_of_lt h1 hp`. Establish `h3 : Loc.resChar p < 3` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem qP_lt_three_finite (D : Formalism.BasicNotions.D7) : {p : PlF D | qP p < 3}.Finite := by
   obtain ⟨hl, hc⟩ := placesOver_holds D
   have hfin : ∀ m : ℕ, {p : PlF D | Loc.resChar p = m}.Finite := by
@@ -129,8 +169,34 @@ def DensAllAt (D : Formalism.BasicNotions.D7) : Prop :=
           Multipliable (densP L δ ϖ (Tn u) (Tn u') Z)) ∧
         (¬ Formalism.HermitianLatticesTheory.IsIntegralLat (VS D).hT (Cnt.MMof D F0 F') → ∃ p : PlF D, densP L δ ϖ (Tn u) (Tn u') Z p = 0)
 
+/- English proof (translation)
+The claim follows from `h5 D`.
+-/
 theorem densAllAt_of (h5 : Cnt.DensAll) (D : Formalism.BasicNotions.D7) : DensAllAt D := h5 D
 
+/- English proof (translation)
+Introduce `hk δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z hEx`. Take `⟨Λ, hΛ, F', hF'⟩` from `hEx`. Establish `hF'2` using `hF'`. Take `⟨⟨⟨-, hzt⟩, -, hG⟩, -, -, -, hZ⟩` from `hF'2`. Establish `hP : Formalism.MainNotions.S.LocalSplitGroups.TotPos (GZ (Tn u) (Tn u') Z)`.
+
+Establish `h1 : GZ (Tn u) (Tn u') Z = Gflag F0 F'.fl` using `by rw [← hZ]; rfl`. Rewrite using `[h1]`. Conclude with `PI.CntNotPosW.totPos_of_flags D F0 F'.fl hG`. Take `⟨-, hiff⟩` from `Cnt.mmChar_of Cnt.local_unimodular_holds D u u' hT F0 what₂ hR Z F' hzt hZ hP`. Establish `hGl` using `(hiff Λ).1 ⟨hR.1 Λ hΛ, hF'⟩`.
+
+Establish `hI : Formalism.HermitianLatticesTheory.IsIntegralLat (VS D).hT (Cnt.MMof D F0 F')`. Assume the negation of the conclusion as `hI`. Rewrite `hGl` using `[Asm.glueSet_eq_empty hI]`. Conclude with `hGl`. Take `⟨h5i, -⟩` from `h5 δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hzt hZ hP`.
+
+Take `⟨hd, -⟩` from `h5i hI`. Take `⟨-, -, hUr, -⟩` from `Cnt.perpendicular_definition_holds D u u' hT F0 what₂ hR Z F' hzt hZ hP`. Establish `hm : D.R.m = 2 * D.R.rS + 2`. Establish `h1 : D.R.rS = D.R.m / 2 - 1` using `rfl`. Take `⟨t, ht⟩` from `D.R.m_even`.
+
+Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hkm` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hα` using `alpBound_holds D hk u u'`.
+
+Establish `key : ∀ p : PlF D, 0 < densP L δ ϖ (Tn u) (Tn u') Z p ∧ densP L δ ϖ (Tn u) (Tn u') Z p ≤ Real.exp (2 * (qP p ^ (D.R.k - 2 * D.R.rS - 2))⁻¹) ∧ ((3 : ℝ) ≤ qP p → Real.exp (-(3 * (qP p ^ (D.R.k - 2 * D.R.rS - 2))⁻¹)) ≤ densP L δ ϖ (Tn u) (Tn u') Z p)`. Introduce `p`. Establish `hc : Cnt.cJ (VS D).hT (Cnt.UPair D F0 F') (Cnt.MMof D F0 F') p.asIdeal ≤ D.R.m` using `(Asm.cJ_le (F := D.host.F) _ _ _ _).trans hUr.le`. Establish `hqe : qP p = ((Ideal.absNorm p.asIdeal : ℕ) : ℝ)` using `LocModel.qPl_eq p`. Establish `hq2 : (2 : ℝ) ≤ ((Ideal.absNorm p.asIdeal : ℕ) : ℝ)` using `hqe ▸ LocModel.two_le_qPl p`.
+
+Establish `hinv : (qP p ^ (D.R.k - 2 * D.R.rS - 2))⁻¹ = ((Ideal.absNorm p.asIdeal : ℕ) : ℝ)⁻¹ ^ (D.R.k - 2 * D.R.rS - 2)`. Rewrite using `[hqe, inv_pow]`. Take `⟨h1, h2, h3⟩` from `ratio_bounds (K := D.host.E) p.asIdeal hq2 (j := D.R.k - 1 - Cnt.cJ (VS D).hT (Cnt.UPair D F0 F') (Cnt.MMof D F0 F') p.asIdeal) (n := D.R.r) (s := D.R.k - 2 * D.R.rS - 2) (by omega) (by omega) (by omega)`. Rewrite using `[hd p, hinv]`. Conclude with `⟨h1, h2, fun h => h3 (hqe ▸ h)⟩`.
+
+Use `⟨fun p => ?_, ?_⟩` and prove the remaining obligations. Take `⟨h0, hup, -⟩` from `key p`. Take `⟨hαl, -⟩` from `hα p`. Establish `hαpos : 0 < alpD u u' p` using `lt_of_lt_of_le (Real.exp_pos _) hαl`. Use `⟨h0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[div_le_iff₀ hαpos]`. Use `set y := (qP p ^ (D.R.k - 2 * D.R.rS - 2))⁻¹`. Combine the equalities or inequalities in the displayed calculation. Use `(qP_lt_three_finite D).subset fun p hp => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hp ⊢`.
+
+Assume the negation of the conclusion as `h3`. Use `push_neg at h3`. Take `⟨-, -, hlo⟩` from `key p`. Take `⟨hαl, hαu⟩` from `hα p`. Establish `hαpos : 0 < alpD u u' p` using `lt_of_lt_of_le (Real.exp_pos _) hαl`.
+
+Use `set y := (qP p ^ (D.R.k - 2 * D.R.rS - 2))⁻¹`. Use `absurd hp (not_lt.2 ?_)` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hαpos]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem densLocBound_at {D : Formalism.BasicNotions.D7} (h5 : DensAllAt D) : DensLocBound D := by
   intro hk δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z hEx
   obtain ⟨Λ, hΛ, F', hF'⟩ := hEx
@@ -201,6 +267,9 @@ theorem densLocBound_at {D : Formalism.BasicNotions.D7} (h5 : DensAllAt D) : Den
       _ = Real.exp (-(3 * y)) := by rw [← Real.exp_add]; ring_nf
       _ ≤ densP L δ ϖ (Tn u) (Tn u') Z p := hlo h3
 
+/- English proof (translation)
+The claim follows from `densLocBound_at (densAllAt_of h5 D)`.
+-/
 theorem densLocBound_of (h5 : Cnt.DensAll) (D : Formalism.BasicNotions.D7) : DensLocBound D :=
   densLocBound_at (densAllAt_of h5 D)
 

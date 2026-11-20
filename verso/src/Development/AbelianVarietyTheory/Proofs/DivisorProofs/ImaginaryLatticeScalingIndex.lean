@@ -19,6 +19,9 @@ def imSp (E : Type) [Field E] [NumberField E] [IsCMField E] : Submodule ℚ E wh
     simp only [Set.mem_setOf_eq, cc] at ha ⊢
     rw [map_rat_smul, ha, smul_neg]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_imSp {a : E} : a ∈ imSp E ↔ cc a = -a := Iff.rfl
 
 def dm (E : Type) [Field E] [NumberField E] [IsCMField E] : E →ₗ[ℚ] E where
@@ -26,6 +29,11 @@ def dm (E : Type) [Field E] [NumberField E] [IsCMField E] : E →ₗ[ℚ] E wher
   map_add' x y := by simp only [cc, map_add]; ring
   map_smul' q x := by simp only [cc, map_rat_smul, RingHom.id_apply, smul_sub]
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Express the relevant statement in the definitionally equal form `cc (x - cc x) = -(x - cc x)`. Rewrite using `[show cc (x - cc x) = cc x - cc (cc x) by simp [cc], cc_cc]; ring`.
+
+Introduce `hy`. Use `⟨(1 / 2 : ℚ) • y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 / 2 : ℚ) • y - cc ((1 / 2 : ℚ) • y) = y`. Rewrite using `[show cc ((1 / 2 : ℚ) • y) = (1 / 2 : ℚ) • cc y from map_rat_smul _ _ _, (mem_imSp).1 hy, smul_neg, sub_neg_eq_add, ← add_smul]`. Evaluate the numerical expressions.
+-/
 theorem range_dm : LinearMap.range (dm E) = imSp E := by
   ext y
   constructor
@@ -39,6 +47,9 @@ theorem range_dm : LinearMap.range (dm E) = imSp E := by
       smul_neg, sub_neg_eq_add, ← add_smul]
     norm_num
 
+/- English proof (translation)
+Rewrite using `[LinearMap.mem_ker, ← IsCMField.complexConj_eq_self_iff]`. Express the relevant statement in the definitionally equal form `x - cc x = 0 ↔ _`. Rewrite using `[sub_eq_zero, eq_comm]`. Both sides reduce to the same expression.
+-/
 theorem mem_ker_dm {x : E} : x ∈ LinearMap.ker (dm E) ↔ x ∈ maximalRealSubfield E := by
   rw [LinearMap.mem_ker, ← IsCMField.complexConj_eq_self_iff]
   change x - cc x = 0 ↔ _
@@ -53,6 +64,11 @@ def kerEquiv (E : Type) [Field E] [NumberField E] [IsCMField E] :
   left_inv x := rfl
   right_inv y := rfl
 
+/- English proof (translation)
+Establish `h` using `LinearMap.finrank_range_add_finrank_ker (dm E)`. Rewrite `h` using `[range_dm, (kerEquiv E).finrank_eq]`. Establish `h1` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Unfold `fdeg`.
+
+Rewrite `h`, the goal using `[← h1, h2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_imSp : Module.finrank ℚ (imSp E) = fdeg E := by
   have h := LinearMap.finrank_range_add_finrank_ker (dm E)
   rw [range_dm, (kerEquiv E).finrank_eq] at h
@@ -72,6 +88,19 @@ instance : Module.Finite ℤ (imLat E) := by
 
 instance : Module.Free ℤ (imLat E) := Module.free_of_finite_type_torsion_free'
 
+/- English proof (translation)
+Rewrite using `[← finrank_imSp]`. Set `b` to `Module.Free.chooseBasis ℤ (imLat E)`. Set `v : Module.Free.ChooseBasisIndex ℤ (imLat E) → E` to `fun i => (b i : E)`. Establish `hz : LinearIndependent ℤ v` using `b.linearIndependent.map' (imLat E).subtype.toIntLinearMap (LinearMap.ker_eq_bot.2 Subtype.val_injective)`. Establish `hq : LinearIndependent ℚ v` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 hz`.
+
+Establish `hspan : Submodule.span ℚ (Set.range v) = imSp E`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(b i).2.2`.
+
+Introduce `x hx`. Establish `halg : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨n, hn, hint⟩` from `halg.exists_integral_multiple`. Establish `hy : n • x ∈ imLat E`. Use `⟨hint, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hx` using `[mem_imSp]`. Simplify using `only [cc, map_zsmul] at hx ⊢`. Rewrite using `[hx, smul_neg]`. Establish `hsum` using `b.sum_repr ⟨n • x, hy⟩`. Establish `hmem : n • x ∈ Submodule.span ℚ (Set.range v)`.
+
+Rewrite using `[show n • x = ((⟨n • x, hy⟩ : imLat E) : E) from rfl, ← hsum, AddSubgroup.val_finset_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.coe_zsmul, ← Int.cast_smul_eq_zsmul ℚ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hx' : x = ((n : ℚ)⁻¹) • (n • x)`.
+
+Rewrite using `[← Int.cast_smul_eq_zsmul ℚ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hn), one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ hmem`. Rewrite using `[← hspan, finrank_span_eq_card hq, Module.finrank_eq_card_chooseBasisIndex]`.
+-/
 theorem finrank_imLat : Module.finrank ℤ (imLat E) = fdeg E := by
   rw [← finrank_imSp]
   let b := Module.Free.chooseBasis ℤ (imLat E)
@@ -110,6 +139,13 @@ end GlobalTheory.LieDisc.ImIndex
 
 open GlobalTheory.LieDisc.ImIndex in
 
+/- English proof (translation)
+Introduce `E _ _ _ r _ _`. Rewrite using `[AddSubgroup.relIndex, ← finrank_imLat, ← AddSubgroup.index_range_nsmul (imLat E) r]`. Use `congr 1`. Use extensionality with `⟨x, hx⟩`. Simplify using `only [AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_map, AddMonoidHom.coe_mulLeft, AddMonoidHom.mem_range, nsmulAddMonoidHom_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Conclude with `⟨⟨y, hy⟩, Subtype.ext (by simp [← hyx, nsmul_eq_mul])⟩`. Introduce and unpack `⟨⟨y, hy⟩, hyx⟩`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg Subtype.val hyx` as an intermediate fact. Simplify `this` using `[nsmul_eq_mul]`.
+-/
 theorem GlobalTheory.LieDisc.relIndex_mulLeft_imLat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ),
     Unr E → 1 ≤ r →
       (AddSubgroup.map (AddMonoidHom.mulLeft (r : E)) (imLat E)).relIndex (imLat E) = r ^ fdeg E := by

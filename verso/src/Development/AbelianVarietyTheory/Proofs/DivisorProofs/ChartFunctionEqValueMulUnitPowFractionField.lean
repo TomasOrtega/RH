@@ -15,6 +15,11 @@ open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.RigChart GlobalTheory
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FracPt
 
+/- English proof (translation)
+Establish `e1 : gs f (closedPoint K) U a = (Sp K).presheaf.germ ⊤ (closedPoint K) trivial ((f.appLE U ⊤ h).hom a)` using `by erw [gs_eq f _ U (h trivial)]`. Rewrite using `[← TopCat.Presheaf.germ_res_apply (Sp K).presheaf (homOfLE h) (closedPoint K) trivial]`. Both sides reduce to the same expression. Use `erw [e1]`. Rewrite using `[valR, dif_pos h]`.
+
+Rewrite using `[← ΓSpecIso_hom_stalkClosedPointIso_inv (CommRingCat.of K)]`. Simplify using `only [CommRingCat.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply]`.
+-/
 theorem stalkIso_gs {K : Type} [CommRing K] [IsLocalRing K] {X : Scheme.{0}} (f : Sp K ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ f ⁻¹ᵁ U) (a : Γ(X, U)) :
     (stalkClosedPointIso (CommRingCat.of K)).hom.hom (gs f (closedPoint K) U a) = valR f U a := by
@@ -32,6 +37,11 @@ end GlobalTheory.FracPt
 
 namespace GlobalTheory.FracPt
 
+/- English proof (translation)
+Establish `h : ⊤ ≤ spMap f ⁻¹ᵁ ⊤` using `le_rfl`. Rewrite using `[valR, dif_pos h]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Scheme.ΓSpecIso_naturality]`. Both sides reduce to the same expression.
+
+Use `_ = f ω := by`. Establish `e : (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom ω) = ω`. Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply]`. Rewrite using `[CommRingCat.hom_comp, RingHom.comp_apply, e, CommRingCat.hom_ofHom]`.
+-/
 theorem valR_spMap_const {Ω K : Type} [CommRing Ω] [CommRing K] (f : Ω →+* K) (ω : Ω) :
     valR (spMap f) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom ω) = f ω := by
   have h : ⊤ ≤ spMap f ⁻¹ᵁ ⊤ := le_rfl
@@ -44,6 +54,15 @@ theorem valR_spMap_const {Ω K : Type} [CommRing Ω] [CommRing K] (f : Ω →+* 
             rw [← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply]
           rw [CommRingCat.hom_comp, RingHom.comp_apply, e, CommRingCat.hom_ofHom]
 
+/- English proof (translation)
+Introduce `X L hL Ω _ _ x g j O hO hxO`. Set `ηF` to `spMap (algebraMap Ω (FractionRing Ω))`. Set `z : Sp (FractionRing Ω)` to `closedPoint (FractionRing Ω)`. Establish `hz : ((ηF ≫ x) ≫ 𝟙 X) z ∈ L.U j`. Rewrite using `[Category.comp_id]`.
+
+Conclude with `hO (hxO trivial)`. Take `⟨J, hJ, hJj⟩` from `exists_good L hL z (K := PUnit) (fun _ => (ηF ≫ x) ≫ 𝟙 X) (fun _ => j) (fun _ _ _ => rfl) (fun _ => hz)`. Set `φ` to `(stalkClosedPointIso (CommRingCat.of (FractionRing Ω))).hom.hom`. Use `⟨Units.map φ.toMonoidHom (val g ηF z J), fun k σ ω hv => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg φ (hv _ ηF z J hJ)`.
+
+Establish `hOW : O ≤ (LB.LinComb L (fun _ : Fin 1 => 𝟙 X) (fun _ => (k : ℤ))).U (fun _ => j)` using `fun y hy => Set.mem_iInter.2 fun _ => hO hy`. Rewrite `e` using `[sval_of σ (ηF ≫ x) z J (fun _ => j) (fun _ => hJj PUnit.unit)]`. Use `erw [← gs_res (ηF ≫ x) z hOW (hxO trivial) (σ.f fun _ => j)] at e`. Rewrite `e` using `[map_mul, Units.val_pow_eq_pow_val, map_pow]`. Establish `e1` using `stalkIso_gs (ηF ≫ x) O hxO ((X.presheaf.map (homOfLE hOW).op).hom (σ.f fun _ => j))`.
+
+Establish `e2` using `stalkIso_gs ηF ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom ω)`. Rewrite `e2` using `[valR_spMap_const]`. Use `erw [e1, e2] at e`. Rewrite using `[GlobalTheory.KS.rsT, dif_pos hOW]`. Conclude with `e`.
+-/
 theorem chart_eq_value_mul_pow : ∀ (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (Ω : Type) [CommRing Ω] [IsDomain Ω]
     (x : Sp Ω ⟶ X) (g : GlobalTheory.RayEv.Transport.Frame L (x ≫ 𝟙 X)) (j : L.ι) (O : X.Opens), O ≤ L.U j →
     ⊤ ≤ (spMap (algebraMap Ω (FractionRing Ω)) ≫ x) ⁻¹ᵁ O → ∃ e₀ : (FractionRing Ω)ˣ,

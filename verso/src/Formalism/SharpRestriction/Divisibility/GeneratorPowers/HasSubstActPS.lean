@@ -13,12 +13,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {S : Type} [CommRing S] (c : Coeff l) [Algebra c.F S]
 
+/- English proof (translation)
+Simplify using `[actPS]`.
+-/
 theorem const_actPS (a : 𝓞 E) (q : Fin 1 × Fin (dL Dw)) : constantCoeff (actPS (Dw := Dw) (S := S) c a q) = 0 := by
   simp [actPS]
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero (fun q => const_actPS c a q)`.
+-/
 theorem hasSubst_actPS (a : 𝓞 E) : HasSubst (actPS (Dw := Dw) (S := S) c a) :=
   hasSubst_of_constantCoeff_zero (fun q => const_actPS c a q)
 
+/- English proof (translation)
+Establish `hv` using `hasSubst_actPS (Dw := Dw) (S := S) c v`. Establish `e : actPS (Dw` using `Dw) (S := S) c u q = algebraMap c.F S (embK c ((ltIdx Dw).symm q.2).1 u) • MvPowerSeries.X q := rfl`. Rewrite using `[e, subst_smul hv, subst_X hv]`. Simplify using `only [actPS, smul_smul, map_mul]`.
+-/
 theorem actPS_comp (u v : 𝓞 E) (q : Fin 1 × Fin (dL Dw)) :
     subst (actPS (Dw := Dw) (S := S) c v) (actPS (Dw := Dw) (S := S) c u q) = actPS (Dw := Dw) (S := S) c (u * v) q := by
   have hv := hasSubst_actPS (Dw := Dw) (S := S) c v
@@ -27,6 +36,9 @@ theorem actPS_comp (u v : 𝓞 E) (q : Fin 1 × Fin (dL Dw)) :
   rw [e, subst_smul hv, subst_X hv]
   simp only [actPS, smul_smul, map_mul]
 
+/- English proof (translation)
+Simplify using `only [φa]`. Rewrite using `[subst_comp_subst_apply (hasSubst_actPS c u) (hasSubst_actPS c v)]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `actPS_comp c u v q`.
+-/
 theorem φa_mul {d : ℕ} (φ : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S) (u v : 𝓞 E) (j : Fin d) :
     subst (actPS (Dw := Dw) c v) (φa c φ u j) = φa c φ (u * v) j := by
   simp only [φa]
@@ -35,6 +47,9 @@ theorem φa_mul {d : ℕ} (φ : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S
   funext q
   exact actPS_comp c u v q
 
+/- English proof (translation)
+Establish `e : actPS (Dw` using `Dw) (S := S) c 1 = MvPowerSeries.X := by`. Use function extensionality and compare the values at `q`. Simplify using `[actPS]`. Use function extensionality and compare the values at `j`. Simplify using `only [φa, e, subst_self, id]`.
+-/
 theorem φa_one {d : ℕ} (φ : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S) : φa c φ 1 = φ := by
   have e : actPS (Dw := Dw) (S := S) c 1 = MvPowerSeries.X := by
     funext q
@@ -42,14 +57,31 @@ theorem φa_one {d : ℕ} (φ : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S
   funext j
   simp only [φa, e, subst_self, id]
 
+/- English proof (translation)
+Simplify using `only [actPS, map_add, add_smul]`.
+-/
 theorem actPS_add (u v : 𝓞 E) (q : Fin 1 × Fin (dL Dw)) :
     actPS (Dw := Dw) (S := S) c u q + actPS (Dw := Dw) (S := S) c v q = actPS (Dw := Dw) (S := S) c (u + v) q := by
   simp only [actPS, map_add, add_smul]
 
+/- English proof (translation)
+The claim follows from `ExpGF.const_substPS _ (fun q => const_actPS c u q) _ (hφ j)`.
+-/
 theorem const_φa {d : ℕ} (φ : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S) (hφ : ∀ j, constantCoeff (φ j) = 0)
     (u : 𝓞 E) (j : Fin d) : constantCoeff (φa c φ u j) = 0 :=
   ExpGF.const_substPS _ (fun q => const_actPS c u q) _ (hφ j)
 
+/- English proof (translation)
+Set `b : Fin 2 × Fin (dL Dw) → MvPowerSeries (Fin 1 × Fin (dL Dw)) S` to `fun p => actPS (Dw := Dw) (S := S) c (![u, v] p.1) ((0 : Fin 1), p.2)`. Establish `hb : HasSubst b` using `hasSubst_of_constantCoeff_zero (fun p => const_actPS c _ _)`. Establish `hX : ∀ i : Fin 2, HasSubst (fun q : Fin 1 × Fin (dL Dw) => (MvPowerSeries.X (i, q.2) : MvPowerSeries (Fin 2 × Fin (dL Dw)) S))` using `fun i => hasSubst_of_constantCoeff_zero (fun q => by simp)`. Establish `hA : HasSubst (fun p : Fin 2 × Fin d => atPt p.1 (φ p.2))` using `hasSubst_of_constantCoeff_zero (fun p => ExpGF.const_substPS _ (fun q => by simp) _ (hφ.const p.2))`. Establish `hS : HasSubst (fun q : Fin 1 × Fin (dL Dw) => (MvPowerSeries.X ((0 : Fin 2), q.2) + MvPowerSeries.X ((1 : Fin 2), q.2) : MvPowerSeries (Fin 2 × Fin (dL Dw)) S))` using `hasSubst_of_constantCoeff_zero (fun q => by simp)`.
+
+Establish `key` using `congrArg (MvPowerSeries.subst b) (hφ.hom j)`. Rewrite `key` using `[subst_comp_subst_apply hA hb, subst_comp_subst_apply hS hb]`. Establish `e1 : (fun p : Fin 2 × Fin d => MvPowerSeries.subst b (atPt p.1 (φ p.2))) = fun p => φa c φ (![u, v] p.1) p.2`. Use function extensionality and compare the values at `⟨i, k⟩`. Simplify using `only [atPt, φa]`.
+
+Rewrite using `[subst_comp_subst_apply (hX i) hb]`. Use `congr 1`. Use function extensionality and compare the values at `⟨q1, q2⟩`. Rewrite using `[subst_X hb]`. Establish `h1 : q1 = 0` using `Subsingleton.elim _ _`.
+
+Substitute `h1` using the available equality. Both sides reduce to the same expression. Establish `e2 : (fun q : Fin 1 × Fin (dL Dw) => MvPowerSeries.subst b (MvPowerSeries.X ((0 : Fin 2), q.2) + MvPowerSeries.X ((1 : Fin 2), q.2) : MvPowerSeries (Fin 2 × Fin (dL Dw)) S)) = actPS (Dw` using `Dw) (S := S) c (u + v) := by`. Use function extensionality and compare the values at `⟨q1, q2⟩`. Establish `h1 : q1 = 0` using `Subsingleton.elim _ _`.
+
+Substitute `h1` using the available equality. Rewrite using `[subst_add hb, subst_X hb, subst_X hb]`. Conclude with `actPS_add c u v _`. Rewrite `key` using `[e1, e2]`. Conclude with `key`.
+-/
 theorem law_φa {d : ℕ} {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {uvec : Lt1 Dw → Fin d → S}
     {φ : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S} (hφ : IsExpOf F uvec φ) (u v : 𝓞 E) (j : Fin d) :
     subst (fun p : Fin 2 × Fin d => φa c φ (![u, v] p.1) p.2) (F j) = φa c φ (u + v) j := by
@@ -89,6 +121,9 @@ theorem law_φa {d : ℕ} {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {uvec
   rw [e1, e2] at key
   exact key
 
+/- English proof (translation)
+Establish `hP : HasSubst (fun p : Fin 1 × Fin d => φ p.2)` using `hasSubst_of_constantCoeff_zero (fun p => hφ p.2)`. Establish `h` using `subst_comp_subst_apply hP (hasSubst_actPS (Dw := Dw) (S := S) c u) (act a j)`. Rewrite `h` using `[hact a j]`. Conclude with `h.symm.trans (φa_mul c φ a u j)`.
+-/
 theorem act_φa {d : ℕ} {act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S}
     {φ : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S} (hφ : ∀ j, constantCoeff (φ j) = 0)
     (hact : ∀ a j, subst (fun p : Fin 1 × Fin d => φ p.2) (act a j) = subst (actPS (Dw := Dw) c a) (φ j))

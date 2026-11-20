@@ -9,6 +9,11 @@ noncomputable section
 
 open MvPolynomial
 
+/- English proof (translation)
+Use extensionality with `z`. Simplify using `only [zeroSetEuc, Set.mem_ofPred_eq, Set.mem_inter_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun p hp => h p (Ideal.mem_sup_left hp), h q (Ideal.mem_sup_right (Ideal.mem_span_singleton_self q))⟩`.
+
+Introduce and unpack `⟨h1, h2⟩ p hp`. Establish `hle : J ⊔ Ideal.span {q} ≤ RingHom.ker (eval fun i => z i)` using `sup_le (fun p hp => RingHom.mem_ker.mpr (h1 p hp)) ((Ideal.span_singleton_le_iff_mem _).mpr (RingHom.mem_ker.mpr h2))`. Conclude with `RingHom.mem_ker.mp (hle hp)`.
+-/
 theorem FramePlaneGraph.zeroSetEuc_sup_span {n : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ))
     (q : MvPolynomial (Fin n) ℂ) :
     zeroSetEuc (J ⊔ Ideal.span {q}) = zeroSetEuc J ∩ {z | eval (fun i => z i) q = 0} := by
@@ -24,6 +29,11 @@ theorem FramePlaneGraph.zeroSetEuc_sup_span {n : ℕ} (J : Ideal (MvPolynomial (
         ((Ideal.span_singleton_le_iff_mem _).mpr (RingHom.mem_ker.mpr h2))
     exact RingHom.mem_ker.mp (hle hp)
 
+/- English proof (translation)
+Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact WithBot.bot_lt_coe _`. Consider the case `coe y`. Establish `h' : y + 1 ≤ (d : ℕ∞)` using `by exact_mod_cast h`. Establish `hy : y ≠ ⊤` using `ne_top_of_le_ne_top (ENat.natCast_ne_top d) (le_trans le_self_add h')`.
+
+Establish `: y < d` using `(ENat.add_one_le_iff hy).mp h'`. Conclude with `this` after adjusting the coercions.
+-/
 theorem FramePlaneGraph.lt_of_add_one_le_nat {x : WithBot ℕ∞} {d : ℕ} (h : x + 1 ≤ (d : WithBot ℕ∞)) :
     x < d := by
   induction x using WithBot.recBotCoe with
@@ -34,6 +44,11 @@ theorem FramePlaneGraph.lt_of_add_one_le_nat {x : WithBot ℕ∞} {d : ℕ} (h :
     have : y < d := (ENat.add_one_le_iff hy).mp h'
     exact_mod_cast this
 
+/- English proof (translation)
+Establish `hr : Ideal.Quotient.mk J q ∈ nonZeroDivisors (MvPolynomial (Fin n) ℂ ⧸ J)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Establish `hle : J ≤ J ⊔ Ideal.span {q}` using `le_sup_left`. Establish `h1` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hle) (Ideal.Quotient.factor_surjective hle) hr (by`. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self q))`.
+
+Conclude with `FramePlaneGraph.lt_of_add_one_le_nat (hd ▸ h1)`.
+-/
 theorem FramePlaneGraph.dim_sup_span_lt {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (hJ : J.IsPrime)
     (hd : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = d) {q : MvPolynomial (Fin n) ℂ} (hq : q ∉ J) :
     ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ (J ⊔ Ideal.span {q})) < d := by
@@ -46,6 +61,17 @@ theorem FramePlaneGraph.dim_sup_span_lt {n d : ℕ} {J : Ideal (MvPolynomial (Fi
       exact Ideal.mem_sup_right (Ideal.mem_span_singleton_self q))
   exact FramePlaneGraph.lt_of_add_one_le_nat (hd ▸ h1)
 
+/- English proof (translation)
+Introduce `n d J hJ hd b`. Take `⟨I₀, q, hcard, hq, hloc⟩` from `hG n d J hJ hd b`. Use `⟨I₀, J ⊔ Ideal.span {q}, hcard, FramePlaneGraph.dim_sup_span_lt hJ hd hq, ?_⟩` and prove the remaining obligations. Use `set W : Set (EuclideanSpace ℂ (Fin n)) := {z | eval (fun i => z i) q ≠ 0} with hWdef`. Establish `hS : zeroSetEuc J \ zeroSetEuc (J ⊔ Ideal.span {q}) = zeroSetEuc J ∩ W`.
+
+Rewrite using `[FramePlaneGraph.zeroSetEuc_sup_span]`. Use extensionality with `z`. Simplify using `only [Set.mem_sdiff, Set.mem_inter_iff, Set.mem_ofPred_eq, hWdef]`. The claim follows by propositional logic. Establish `hW : IsOpen W` using `isOpen_ne_fun ((MvPolynomial.continuous_eval q).comp (by fun_prop : Continuous fun z : EuclideanSpace ℂ (Fin n) => fun i => z i)) continuous_const`.
+
+Rewrite using `[hS]`. Introduce `z hz`. Take `⟨Ω, V, g, hΩ, hV, hzV, hg, hπ, hgraph⟩` from `hloc z hz.1 hz.2`. Use `⟨Ω ∩ g ⁻¹' W, V ∩ W, g, hg.continuousOn.isOpen_inter_preimage hΩ hW, hV.inter hW, ⟨hzV, hz.2⟩, hg.mono Set.inter_subset_left, fun w hw => hπ w hw.1, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hxJ, hxW⟩, hxV, -⟩`. Establish `hx : x ∈ g '' Ω` using `hgraph ▸ ⟨hxJ, hxV⟩`. Take `⟨w, hw, rfl⟩` from `hx`. Conclude with `⟨w, ⟨hw, hxW⟩, rfl⟩`.
+
+Introduce and unpack `⟨w, ⟨hw, hwW⟩, rfl⟩`. Establish `hx : g w ∈ zeroSetEuc J ∩ V` using `hgraph.symm ▸ ⟨w, hw, rfl⟩`. Conclude with `⟨⟨hx.1, hwW⟩, hx.2, hwW⟩`.
+-/
 theorem FramePlaneGraph.proof (hG : FrameGraphGeneric.Statement) : FramePlaneGraph.Statement := by
   intro n d J hJ hd b
   obtain ⟨I₀, q, hcard, hq, hloc⟩ := hG n d J hJ hd b

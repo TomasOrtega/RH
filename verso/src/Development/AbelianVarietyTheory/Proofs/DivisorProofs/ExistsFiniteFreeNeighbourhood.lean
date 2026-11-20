@@ -19,6 +19,13 @@ namespace GlobalTheory.IrrAn
 
 open CategoryTheory AlgebraicGeometry Limits
 
+/- English proof (translation)
+Take `⟨x, hx, hxT⟩` from `GlobalTheory.ZH.FrameNorm.exists_point_mem (K := ℂ) (C := ℂ) (pullback.snd p (spMap σ)) (RingHom.id ℂ) hT hne`. Establish `hx' : x ≫ pullback.snd p (spMap σ) = 𝟙 _` using `hx.trans (Spec.map_id _)`. Use `⟨⟨x ≫ pullback.fst p (spMap σ), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hx', Category.id_comp]`. Establish `he : pt p σ ⟨x ≫ pullback.fst p (spMap σ), by`.
+
+Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hx', Category.id_comp]⟩ = x := by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `pullback.lift_fst _ _ _`. Conclude with `(pullback.lift_snd _ _ _).trans hx'.symm`. Use `show pt p σ _ (IsLocalRing.closedPoint ℂ) ∈ T`.
+
+Rewrite using `[he]`. Conclude with `hxT _`.
+-/
 theorem ptsOf_nonempty (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     [LocallyOfFiniteType p] (σ : k →+* ℂ) (T : Set (Limits.pullback p (spMap σ) : Scheme.{0}))
     (hT : IsLocallyClosed T) (hne : T.Nonempty) : (GlobalTheory.IrrAn.ptsOf p σ T).Nonempty := by

@@ -5,6 +5,23 @@ open scoped TensorProduct NNReal ENNReal Pointwise
 
 namespace GlobalTheory.GaugeEx
 
+/- English proof (translation)
+Set `μ : Measure R` to `Measure.addHaar`. Take `⟨K, hKc, hK0⟩` from `exists_compact_mem_nhds (0 : R)`. Establish `h0 : μ K ≠ 0` using `(Measure.measure_pos_of_mem_nhds μ hK0).ne'`. Establish `ht : μ K ≠ ⊤` using `hKc.measure_lt_top.ne`. Establish `hup : ∀ c : ℝ≥0, 1 < c → ∃ V ∈ 𝓝 (1 : R), ∀ u : Rˣ, (u : R) ∈ V → distribHaarChar R u < c`.
+
+Introduce `c hc`. Establish `hlt : μ K < (c : ℝ≥0∞) * μ K`. Combine the equalities or inequalities in the displayed calculation. Take `⟨U, hKU, hUo, hU⟩` from `Set.exists_isOpen_lt_of_lt K _ hlt`. Take `⟨V, hV, hVS⟩` from `compact_open_separated_mul_left hKc hUo hKU`.
+
+Use `⟨V, hV, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1 : μ (u • K) ≤ μ U`. Use `measure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hVS ⟨u, hu, x, hx, rfl⟩`.
+
+Rewrite `h1` using `[← distribHaarChar_mul μ u K]`. Establish `h3` using `(ENNReal.mul_lt_mul_iff_left h0 ht).1 (h1.trans_lt hU)`. Conclude with `h3` after adjusting the coercions. Use `continuous_of_continuousAt_one (distribHaarChar R : Rˣ →* NNReal) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one, tendsto_order]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Distinguish the cases in `ha0 : a = 0`. Substitute `ha0` using the available equality. Conclude with `Eventually.of_forall fun u => distribHaarChar_pos`.
+
+Establish `hap : 0 < a` using `pos_iff_ne_zero.2 ha0`. Take `⟨V, hV, h⟩` from `hup a⁻¹ ((one_lt_inv₀ hap).2 ha)`. Establish `e2 : ∀ᶠ u : Rˣ in 𝓝 1, ((u⁻¹ : Rˣ) : R) ∈ V` using `Units.continuous_coe_inv.continuousAt.eventually (show V ∈ 𝓝 (((1 : Rˣ)⁻¹ : Rˣ) : R) by simpa using hV)`. Use `filter_upwards [e2] with u hu`. Use `h _ hu` as an intermediate fact.
+
+Rewrite `this` using `[map_inv]`. Conclude with `(inv_lt_inv₀ distribHaarChar_pos hap).1 this`. Introduce `c hc`. Take `⟨V, hV, h⟩` from `hup c hc`. Establish `e1 : ∀ᶠ u : Rˣ in 𝓝 1, (u : R) ∈ V` using `Units.continuous_val.continuousAt.eventually (show V ∈ 𝓝 ((1 : Rˣ) : R) by simpa using hV)`.
+
+Use `filter_upwards [e1] with u hu using h u hu`.
+-/
 theorem continuous_distribHaarChar_units (R : Type) [CommRing R]
     [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R]
     [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R] :
@@ -50,10 +67,24 @@ theorem continuous_distribHaarChar_units (R : Type) [CommRing R]
       Units.continuous_val.continuousAt.eventually (show V ∈ 𝓝 ((1 : Rˣ) : R) by simpa using hV)
     filter_upwards [e1] with u hu using h u hu
 
+/- English proof (translation)
+Simplify using `[modu]`.
+-/
 theorem modu_units (S : Type) [CommRing S] [TopologicalSpace S] [IsTopologicalRing S]
     [LocallyCompactSpace S] (u : Sˣ) : modu S (u : S) = distribHaarChar S u := by
   simp [modu]
 
+/- English proof (translation)
+Introduce `S _ _ _ _ _ _ _ _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[modu_units]`. Use `⟨distribHaarChar_pos, fun ν hν => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `s hs`. Establish `e : (fun z : S => (u : S) * z) ⁻¹' s = u⁻¹ • s`. Use extensionality with `z`. Rewrite using `[Set.mem_inv_smul_set_iff]`. Both sides reduce to the same expression.
+
+Rewrite using `[Measure.smul_apply, Measure.map_apply (measurable_const_mul _) hs, e, ENNReal.smul_def, smul_eq_mul, distribHaarChar_mul, smul_inv_smul]`. Introduce and unpack `_ _ ⟨u, rfl⟩ ⟨w, rfl⟩`. Rewrite using `[← Units.val_mul, modu_units, modu_units, modu_units, map_mul]`. Rewrite using `[← Units.val_one, modu_units, map_one]`. Introduce `hS`.
+
+Introduce and unpack `_ ⟨u, rfl⟩`. Establish `hoe : IsOpenEmbedding (Units.val : Sˣ → S)` using `IsOpenUnits.isOpenEmbedding_unitsVal`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Rewrite using `[← hoe.continuousAt_iff]`. Establish `: modu S ∘ Units.val = fun u : Sˣ => distribHaarChar S u` using `funext (modu_units S)`.
+
+Rewrite using `[this]`. Conclude with `(continuous_distribHaarChar_units S).continuousAt`.
+-/
 theorem modu_basic : ∀ (S : Type) [CommRing S] [TopologicalSpace S] [IsTopologicalRing S] [T2Space S] [LocallyCompactSpace S] [SecondCountableTopology S] [MeasurableSpace S] [BorelSpace S], (∀ u : S, IsUnit u → 0 < modu S u ∧ ∀ ν : Measure S, ν.IsAddHaarMeasure → ν = modu S u • ν.map (fun z => u * z)) ∧ (∀ u w : S, IsUnit u → IsUnit w → modu S (u * w) = modu S u * modu S w) ∧ modu S 1 = 1 ∧ (IsOpenUnits S → ContinuousOn (modu S) {u | IsUnit u}) := by
   intro S _ _ _ _ _ _ _ _
   refine ⟨?_, ?_, ?_, ?_⟩

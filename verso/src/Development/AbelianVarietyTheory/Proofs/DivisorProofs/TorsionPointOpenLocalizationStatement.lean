@@ -13,6 +13,9 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_finite_free_chart_away_of_atPrime | exact GlobalTheory.exists_finite_free_chart_away_of_atPrime | (intros; apply GlobalTheory.exists_finite_free_chart_away_of_atPrime <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_free_local_chart : ∀ (R : Type) [CommRing R] (q : PrimeSpectrum R) (T : Scheme.{0}) (π : T ⟶ Sp R)
     [LocallyOfFinitePresentation π] [QuasiCompact π] [QuasiSeparated π]
     (C' : Type) [CommRing C'] [Algebra (Localization.AtPrime q.asIdeal) C']

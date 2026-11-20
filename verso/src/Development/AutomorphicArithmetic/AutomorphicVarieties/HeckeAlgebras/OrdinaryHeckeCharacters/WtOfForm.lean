@@ -12,18 +12,33 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Establish `h1 : Matrix.GeneralLinearGroup.map (pFin L) x.1 = 1` using `h`. Establish `e : cLoc u x = Matrix.GeneralLinearGroup.map (pLoc L u) (Matrix.GeneralLinearGroup.map (pFin L) x.1)` using `Units.ext rfl`. Rewrite using `[e, h1, map_one]`.
+-/
 private theorem cLoc_inf {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {x : UA L n} (h : x ∈ infU L n)
     (u : Plc L) : cLoc u x = 1 := by
   have h1 : Matrix.GeneralLinearGroup.map (pFin L) x.1 = 1 := h
   have e : cLoc u x = Matrix.GeneralLinearGroup.map (pLoc L u) (Matrix.GeneralLinearGroup.map (pFin L) x.1) := Units.ext rfl
   rw [e, h1, map_one]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `h ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_eq_bot.2 fun x hx => by_contra fun h0 => hc ⟨x, hx, h0⟩, inf_bot_eq]`.
+-/
 private theorem exists_gen {M : Type} [AddCommGroup M] [Module ℂ M] (B : Submodule ℂ M) (T : Set M)
     (h : B ⊓ Submodule.span ℂ T ≠ ⊥) : ∃ x ∈ T, x ≠ 0 := by
   by_contra hc
   refine h ?_
   rw [Submodule.span_eq_bot.2 fun x hx => by_contra fun h0 => hc ⟨x, hx, h0⟩, inf_bot_eq]
 
+/- English proof (translation)
+Use `haveI : Finite V.frame.Vl := @Finite.of_fintype _ V.frame.finV`. Use `haveI : ∀ v : V.frame.Vl, Finite (W.Emb l (s.w v.1)) := fun v => GlobalTheory.HeckeGal.finite_contEmb _`. Set `Φ : Module.Dual ℂ (⨂[ℂ] e : Emb l (fun v : V.frame.Vl => s.w v.1), nablaSq ℂ n (lam e.res)) →ₗ[ℂ] (UA L n → ℂ)` to `{ toFun := fun ℓ => toForm ι e F ℓ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `UpperTheory.hasWeightAt_of_tensor_dual_intertwiner L n hn _ (fun y : Emb l (fun v : V.frame.Vl => s.w v.1) => ι.toRingHom.comp y.res) (UpperTheory.injective_infinitePlace_of_emb_at_split_places l L Ω s V ι) (fun y => lam y.res) σ Φ (fun h0 => hF (funext fun p => ?_)) hσ (fun ℓ x …` and prove the remaining obligations. Take `⟨k, hk⟩` from `h4 p`.
+
+Establish `h1 : infRep (V` using `V) ι lam (k : UA L n)⁻¹ (e (F p)) = 0 := (Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun ℓ => by`. Establish `h2` using `congrFun (LinearMap.congr_fun h0 ℓ) (k : UA L n)`. Rewrite using `[← hk]`. Simplify using `only [hJ]`. Conclude with `h2`.
+
+Establish `h2` using `congrArg (infRep (V := V) ι lam (k : UA L n)) h1`. Rewrite `h2` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply, map_zero]`. Conclude with `e.map_eq_zero_iff.1 h2`. Establish `h1 : J x = 1` using `(hJ x).trans (Prod.ext (Subtype.ext (funext fun u => cLoc_inf hx u.1)) (funext fun v => cLoc_inf hx _))`. Establish `h2` using `h3 F ℓ x`.
+
+Simplify using `only [h1, mul_one] at h2`. Conclude with `h2`.
+-/
 private theorem wt_of_form {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ} (hn : 1 ≤ n) (V : s.Lev) (ι : Qbar l ≃+* ℂ) {lam : Wt L l n} {d : ℕ}
     (e : (Fin d → ℂ) ≃ₗ[ℂ] ⨂[ℂ] e : Emb l (fun v : V.frame.Vl => s.w v.1), nablaSq ℂ n (lam e.res))
@@ -59,6 +74,9 @@ private theorem wt_of_form {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Num
     simp only [h1, mul_one] at h2
     exact h2
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q c ι m τ₀ lam d e ξ hξ σ _ hY y`. Take `⟨F, hF, hF0⟩` from `exists_gen _ _ hY`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hF0`. Take `⟨-, -, h3, h4, -⟩` from `UpperTheory.V.Hi.formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ _ fun _ => rfl`. Conclude with `wt_of_form hn V ι e _ (fun _ => rfl) h3 h4 σ (F i) hi (hF i) y`.
+-/
 theorem UpperTheory.V.Hi.partUR2Wt :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ (V : s.Lev) (Q : QData V) (c : Coef l) (ι : Qbar l ≃+* ℂ) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O)

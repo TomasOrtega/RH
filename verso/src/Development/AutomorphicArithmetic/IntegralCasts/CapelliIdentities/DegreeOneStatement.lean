@@ -3,6 +3,15 @@ import Mathlib
 namespace DegreeOneCoeffSubstitution
 open MvPowerSeries Finsupp
 
+/- English proof (translation)
+Establish `hd : d ≠ 0` using `by rintro rfl; simp at h`. Take `⟨s, hs⟩` from `Finsupp.support_nonempty_iff.mpr hd`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `hsum : d s + ∑ i ∈ d.support.erase s, d i = 1`. Rewrite using `[Finset.add_sum_erase _ _ hs, ← degree_apply, h]`.
+
+Establish `hs0 : d s ≠ 0` using `Finsupp.mem_support_iff.mp hs`. Establish `hds : d s = 1` using `by omega`. Establish `hrest : ∑ i ∈ d.support.erase s, d i = 0` using `by omega`. Rewrite `hrest` using `[Finset.sum_eq_zero_iff]`. Use extensionality with `i`.
+
+Distinguish the cases in `his : i = s`. Substitute `his` using the available equality. Simplify using `[hds]`. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm his)]`. Distinguish the cases in `hi : i ∈ d.support`.
+
+Conclude with `hrest i (Finset.mem_erase.mpr ⟨his, hi⟩)`. Conclude with `Finsupp.notMem_support_iff.mp hi`.
+-/
 private lemma deg_one {σ : Type} [DecidableEq σ] (d : σ →₀ ℕ) (h : d.degree = 1) :
     ∃ s, d = Finsupp.single s 1 := by
   have hd : d ≠ 0 := by rintro rfl; simp at h
@@ -25,6 +34,19 @@ private lemma deg_one {σ : Type} [DecidableEq σ] (d : σ →₀ ℕ) (h : d.de
 end DegreeOneCoeffSubstitution
 
 open MvPowerSeries Finsupp in
+/- English proof (translation)
+Introduce `S _ σ τ _ _ _ a ha f t`. Establish `hS : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Rewrite using `[coeff_subst hS]`. Establish `key : ∀ d : σ →₀ ℕ, d ∉ Finset.univ.image (fun s => Finsupp.single s 1) → coeff (Finsupp.single t 1) (d.prod fun s e => a s ^ e) = 0`. Introduce `d hd`.
+
+Distinguish the cases in `h0 : d = 0`. Substitute `h0` using the available equality. Simplify using `[coeff_one]`. Establish `h1 : d.degree ≠ 1`. Introduce `h`.
+
+Take `⟨s, rfl⟩` from `DegreeOneCoeffSubstitution.deg_one d h`. Conclude with `hd (by simp)`. Establish `h2 : 2 ≤ d.degree`. Establish `: d.degree ≠ 0` using `fun h => h0 ((degree_eq_zero_iff d).mp h)`. Use linear arithmetic over natural numbers and integers.
+
+Unfold `Finsupp.prod`. Apply `coeff_of_lt_order` to reduce the goal to its premises. Rewrite using `[Finsupp.degree_single]`. Use `lt_of_lt_of_le ?_ (le_order_prod _ _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.univ.image (fun s => Finsupp.single s 1)) ?_]`. Rewrite using `[Finset.sum_image (fun x _ y _ h => Finsupp.single_left_injective one_ne_zero h)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s _`. Simplify using `[Finsupp.prod_single_index, smul_eq_mul]`.
+
+Introduce `d hd`. Assume the negation of the conclusion as `h`. Apply `hd` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[key d (by simpa using h), smul_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.LinearTermOfSubstitution.main :
     ∀ {S : Type}
     [inst : CommRing S] {σ τ : Type} [inst_1 : Fintype σ] [DecidableEq σ] [DecidableEq τ] (a : σ → MvPowerSeries τ S),

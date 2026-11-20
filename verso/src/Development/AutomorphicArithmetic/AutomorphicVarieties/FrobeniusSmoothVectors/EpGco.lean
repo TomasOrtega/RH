@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Introduce `l _ k _ F O _ _ C' _ _ _ C _ _ p σ' B π D hD j u hu`. Establish `hu' : ∀ i, i ≠ j → ∀ y : RingHom.ker p, (y : C') ∈ evp σ' i → u y = 0` using `hu`. Establish `key : ∀ M : Matrix (Fin 3) (Fin 3) C', GrM σ' pq pq M → M.map (evK (RingHom.ker p) u) ∈ adp (ResidueField O) j`. Introduce `M hM`. Express the relevant statement in the definitionally equal form `∀ a b, pw a b ≠ j → M.map (evK (RingHom.ker p) u) a b = 0`.
+
+Introduce `a b hab`. Rewrite using `[Matrix.map_apply]`. Establish `hmem` using `hM a b`. Rewrite `hmem` using `[← pw_eq]`. Unfold `evK`.
+
+Use `split_ifs with hk`. Conclude with `hu' (pw a b) hab ⟨M a b, hk⟩ hmem`. Both sides reduce to the same expression. Take `⟨h1, hsub, hmul, hinv, hsgn⟩` from `ep_grm σ'`. Use `⟨fun x => ?_, fun v s => ?_⟩` and prove the remaining obligations.
+
+Use `key (D.om x) ?_` and prove the remaining obligations. Unfold `SetLift.om`. Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `hsub _ _ _ _ (hmul _ _ _ _ _ (hmul _ _ _ _ _ (hD.r x.1) (hsgn _ _ (hD.r x.2))) (hinv _ _ _ (hD.r (x.1 * x.2)))) (h1 pq)`. Establish `hX : GrM σ' pq pq ↑((D.g v)⁻¹ * D.t v s * D.g v)`.
+
+Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `hmul _ _ _ _ _ (hmul _ _ _ _ _ (hinv _ _ _ (hD.g v)) (hD.t v s)) (hD.g v)`. Use `key (D.a v s) ?_` and prove the remaining obligations. Unfold `SetLift.a`. Rewrite using `[Units.val_mul]`.
+
+Conclude with `hsub _ _ _ _ (hmul _ _ _ _ _ (hD.r _) (hinv _ _ _ hX)) (h1 pq)`.
+-/
 theorem UpperTheory.V.Fr.ep_gco :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} (O : Type) [CommRing O] [IsLocalRing O] (C' : Type) [CommRing C'] [Algebra O C'] [IsCO O C'] (C : Type) [CommRing C] [Algebra O C] (p : C' →ₐ[O] C) (σ' : C' →ₐ[O] C') (B : Box F 3 C) (π : F.V → Fin 3 → ZMod 2) (D : SetLift p B), D.Gr σ' π → ∀ j, ∀ u ∈ formp σ' (RingHom.ker p) j, (∀ x, (D.co u).1 x ∈ adp (ResidueField O) j) ∧ ∀ v s, (D.co u).2 v s ∈ adp (ResidueField O) j := by
   intro l _ k _ F O _ _ C' _ _ _ C _ _ p σ' B π D hD j u hu

@@ -20,6 +20,13 @@ namespace GlobalTheory.GradedScale
 open GlobalTheory.HermFrame
 open scoped ComplexOrder
 
+/- English proof (translation)
+Establish `h₁ : IsUnit G.toBlocks₁₁.det` using `hG`. Establish `e₁ : (c • G).toBlocks₁₁ = c • G.toBlocks₁₁` using `rfl`. Establish `e₂ : (c • G).toBlocks₁₂ = c • G.toBlocks₁₂` using `rfl`. Establish `e₃ : (c • G).toBlocks₂₁ = c • G.toBlocks₂₁` using `rfl`. Establish `e₄ : (c • G).toBlocks₂₂ = c • G.toBlocks₂₂` using `rfl`.
+
+Establish `e₅ : (c • G.toBlocks₁₁)⁻¹ = c⁻¹ • G.toBlocks₁₁⁻¹` using `Matrix.inv_eq_left_inv (by`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hc, one_smul, Matrix.nonsing_inv_mul _ h₁])`. Rewrite using `[quotGram, quotGram, e₁, e₂, e₃, e₄, e₅, smul_sub]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Use `congr 2`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem quotGram_smul {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] {c : ℂ} (hc : c ≠ 0)
     {G : Matrix (m ⊕ l) (m ⊕ l) ℂ} (hG : IsUnit (subGram G).det) :
     quotGram (c • G) = c • quotGram G := by
@@ -39,17 +46,26 @@ theorem quotGram_smul {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] {c : 
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `h.form_expMul u _ _ y`.
+-/
 theorem gram_expMul {E : X.Modules} {r : ℕ} (h : Met p σ E r) (u : CxPts p σ → ℝ) {U : X.Opens}
     {ι : Type} (t : ι → Γ(E, U)) (y : CxPts p σ) :
     (h.expMul u).gram t y = (Real.exp (u y) : ℂ) • h.gram t y := by
   ext a b
   exact h.form_expMul u _ _ y
 
+/- English proof (translation)
+The claim follows from `Met.ext (funext₂ fun _ y => gram_expMul h u _ y)`.
+-/
 theorem restrict_expMul {E F : X.Modules} {r s : ℕ} (h : Met p σ E r) (u : CxPts p σ → ℝ)
     {i : F ⟶ E} (hi : VB.IsSubbundle i) (hF : VB.IsVB F s) :
     (h.expMul u).restrict hi hF = (h.restrict hi hF).expMul u :=
   Met.ext (funext₂ fun _ y => gram_expMul h u _ y)
 
+/- English proof (translation)
+The claim follows from `Met.ext_of_exists fun y => by obtain ⟨a, hy⟩ := Met.exists_adapted hS h₁ h₃ y refine ⟨a.quot, hy, ?_⟩ rw [Met.quot_G _ hS h₁ h₃ a hy, gram_expMul, quotGram_smul (by exact_mod_cast (Real.exp_pos _).ne') (posDef_subGram (h.posDef_gram_frame hS a hy)).det_pos.ne'.isUnit, ← h.quot_G …`.
+-/
 theorem quot_expMul {S : ShortComplex X.Modules} {r s : ℕ} (h : Met p σ S.X₂ (r + s))
     (u : CxPts p σ → ℝ) (hS : S.ShortExact) (h₁ : VB.IsVB S.X₁ r) (h₃ : VB.IsVB S.X₃ s) :
     (h.expMul u).quot hS h₁ h₃ = (h.quot hS h₁ h₃).expMul u :=
@@ -60,6 +76,9 @@ theorem quot_expMul {S : ShortComplex X.Modules} {r s : ℕ} (h : Met p σ S.X�
       (posDef_subGram (h.posDef_gram_frame hS a hy)).det_pos.ne'.isUnit, ← h.quot_G hS h₁ h₃ a hy]
     rfl
 
+/- English proof (translation)
+The claim follows from `VMetric.ext (funext fun σ => (congrArg (fun m : Met p σ (VMetric.stepSeq fl i).X₂ (i + 1) => m.quot (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i)) (restrict_expMul (h.met σ) (fun _ => s) (fl.isSubbundle i.succ) (fl.isVB i.succ))).trans (quot_expMul _ _ _ _ …`.
+-/
 theorem grMet_scale {E : X.Modules} {r : ℕ} (h : VMetric p E r) (fl : Vert.Flag E r) (i : Fin r)
     (s : ℝ) : (h.scale s).grMet fl i = (h.grMet fl i).scale s :=
   VMetric.ext (funext fun σ =>
@@ -68,6 +87,11 @@ theorem grMet_scale {E : X.Modules} {r : ℕ} (h : VMetric p E r) (fl : Vert.Fla
       (restrict_expMul (h.met σ) (fun _ => s) (fl.isSubbundle i.succ) (fl.isVB i.succ))).trans
       (quot_expMul _ _ _ _ _))
 
+/- English proof (translation)
+Introduce `k _ X p E r h H fl i s`. Use `HermLB.isometric_of_eqOn fun σ c y hy => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-Real.log (((h.grMet fl i).met σ).G c y).det.re + 2 * (-s / 2) = -Real.log ((((h.scale s).grMet fl i).met σ).G c y).det.re`. Rewrite using `[grMet_scale]`. Express the relevant statement in the definitionally equal form `_ = -Real.log ((Real.exp s : ℂ) • ((h.grMet fl i).met σ).G c y).det.re`.
+
+Rewrite using `[det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul, Real.log_mul (by positivity) (det_re_pos (((h.grMet fl i).met σ).posDef c y hy)).ne', Real.log_pow, Real.log_exp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem grLB_scale_isometric : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {E : X.Modules} {r : ℕ} {h : VMetric p E r} (H : h.IsCInf) (fl : Vert.Flag E r) (i : Fin r) (s : ℝ), (VMetric.grLB fl i (H.scale s)).Isometric ((VMetric.grLB fl i H).shift (fun _ => -s / 2) fun _ => rfl) := by
   intro k _ X p E r h H fl i s
   refine HermLB.isometric_of_eqOn fun σ c y hy => ?_

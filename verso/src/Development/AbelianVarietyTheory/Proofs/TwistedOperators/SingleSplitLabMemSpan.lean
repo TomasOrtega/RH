@@ -24,6 +24,11 @@ namespace GlobalTheory.SpanPoly
 
 open Polynomial
 
+/- English proof (translation)
+Unfold `Formalism.L2.Col.heckePolyOf`. Rewrite using `[finset_sum_coeff, Finset.sum_eq_single i]`. Rewrite using `[coeff_C_mul_X_pow, if_pos rfl]`. Introduce `b _ hb`. Rewrite using `[coeff_C_mul_X_pow, if_neg (Ne.symm hb)]`.
+
+Introduce `h; exact absurd (Finset.mem_range.2 (by omega)) h`.
+-/
 theorem coeff_heckePolyOf_le (n q : ℕ) (a : ℕ → ℂ) {i : ℕ} (hi : i ≤ n) :
     (Formalism.L2.Col.heckePolyOf n q a).coeff i = (-1) ^ i * (q : ℂ) ^ (i * (i - 1) / 2) * a i := by
   unfold Formalism.L2.Col.heckePolyOf
@@ -33,6 +38,9 @@ theorem coeff_heckePolyOf_le (n q : ℕ) (a : ℕ → ℂ) {i : ℕ} (hi : i ≤
     rw [coeff_C_mul_X_pow, if_neg (Ne.symm hb)]
   · intro h; exact absurd (Finset.mem_range.2 (by omega)) h
 
+/- English proof (translation)
+Unfold `Formalism.L2.Col.heckePolyOf`. Use `Finset.sum_eq_zero fun k hk => ?_` and prove the remaining obligations. Rewrite using `[h k (by simpa [Nat.lt_succ_iff] using hk)]`. Simplify using the standard rewrite rules.
+-/
 theorem heckePolyOf_eq_zero (n q : ℕ) (a : ℕ → ℂ) (h : ∀ k ≤ n, a k = 0) :
     Formalism.L2.Col.heckePolyOf n q a = 0 := by
   unfold Formalism.L2.Col.heckePolyOf
@@ -40,6 +48,21 @@ theorem heckePolyOf_eq_zero (n q : ℕ) (a : ℕ → ℂ) (h : ∀ k ≤ n, a k 
   rw [h k (by simpa [Nat.lt_succ_iff] using hk)]
   simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hj`. Take `⟨f, hf, hmap⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hj inferInstance`. Use `set a : ℕ → ℂ := fun i => if hi : i < nY + 1 then f (Pi.single ⟨i, hi⟩ 1) else 0 with ha`. Establish `hfv : ∀ k : ℕ, f (fun i : Fin (nY + 1) => z k i) = ∑ i ∈ Finset.range (nY + 1), z k i * a i`. Introduce `k`.
+
+Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => z k i * a i)]`. Use `conv_lhs => rw [show (fun i : Fin (nY + 1) => z k i) = ∑ i : Fin (nY + 1), z k i • Pi.single i (1 : ℂ) by`. Use extensionality with `m`. Simplify using `[Finset.sum_apply, Pi.single_apply]]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi` using `Fin.is_le i`. Simplify using `[ha, hi]`. Establish `hzero : ∀ k ≤ nX, ∑ i ∈ Finset.range (nY + 1), z k i * a i = 0`. Introduce `k hk`.
+
+Rewrite using `[← hfv k]`. Establish `hm : f (fun i : Fin (nY + 1) => z k i) ∈ Submodule.map f (Submodule.span ℂ (Set.range fun k : Fin (nX + 1) => fun i : Fin (nY + 1) => z k i))` using `Submodule.mem_map_of_mem (Submodule.subset_span ⟨⟨k, by omega⟩, rfl⟩)`. Rewrite `hm` using `[hmap]`. Simplify using `using hm`. Establish `h0` using `h a`.
+
+Rewrite `h0` using `[heckePolyOf_eq_zero _ _ _ hzero]`. Establish `hcomp : (Formalism.L2.Col.heckePolyOf nY q a).comp (Polynomial.C c * Polynomial.X) = 0`. Break down `mul_eq_zero.1 h0.symm with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd h1 hB`.
+
+Establish `hco` using `congrArg (fun p => Polynomial.coeff p j) hcomp`. Simplify using `only [comp_C_mul_X_coeff, coeff_zero] at hco`. Rewrite `hco` using `[coeff_heckePolyOf_le _ _ _ (Nat.lt_succ_iff.1 j.isLt)]`. Establish `hqc : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Establish `haj : a j = 0`.
+
+Simplify `hco` using `[hc, hqc]`. Apply `hf` to reduce the goal to its premises. Establish `hjle` using `Fin.is_le j`. Simplify `haj` using `[ha, hjle]`.
+-/
 theorem single_mem_span (nX nY q : ℕ) (hq : q ≠ 0) (c : ℂ) (hc : c ≠ 0) (B : Polynomial ℂ) (hB : B ≠ 0)
     (z : ℕ → ℕ → ℂ)
     (h : ∀ a : ℕ → ℂ, Formalism.L2.Col.heckePolyOf nX q (fun k => ∑ j ∈ Finset.range (nY + 1), z k j * a j) =
@@ -85,6 +108,17 @@ end GlobalTheory.SpanPoly
 
 namespace GlobalTheory.SpanPoly
 
+/- English proof (translation)
+Introduce `nX nY q hq c hc B hB z h j hj`. Set `φ : (Fin (nY + 1) → ℂ) →ₗ[ℂ] (List ℤ →₀ ℂ)` to `∑ i : Fin (nY + 1), (Finsupp.lsingle (splitLab nY i)).comp (LinearMap.proj i)`. Establish `hφz : ∀ k, φ (fun i : Fin (nY + 1) => z k i) = GlobalTheory.Hk3.splitC nY (z k)`. Introduce `k`. Unfold `GlobalTheory.Hk3.splitC`.
+
+Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => Finsupp.single (splitLab nY i) (z k i))]`. Simplify using `[φ]`. Establish `hφe : φ (Pi.single (⟨j, Nat.lt_succ_of_le hj⟩ : Fin (nY + 1)) 1) = Finsupp.single (splitLab nY j) (1 : ℂ)`. Simplify using `only [φ, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, Finsupp.lsingle_apply]`. Rewrite using `[Finset.sum_eq_single (⟨j, Nat.lt_succ_of_le hj⟩ : Fin (nY + 1))]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`.
+
+Rewrite using `[← hφe]`. Establish `hm` using `Submodule.mem_map_of_mem (f := φ) (single_mem_span nX nY q hq c hc B hB z h ⟨j, Nat.lt_succ_of_le hj⟩)`. Rewrite `hm` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ hm` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`.
+
+Conclude with `⟨k, Set.mem_Iic.2 (Nat.lt_succ_iff.1 k.isLt), (hφz k).symm⟩`.
+-/
 theorem single_splitLab_mem_span : ∀ (nX nY q : ℕ), q ≠ 0 → ∀ (c : ℂ), c ≠ 0 → ∀ (B : Polynomial ℂ), B ≠ 0 → ∀ (z : ℕ → ℕ → ℂ), (∀ a : ℕ → ℂ, Formalism.L2.Col.heckePolyOf nX q (fun k => ∑ j ∈ Finset.range (nY + 1), z k j * a j) = (Formalism.L2.Col.heckePolyOf nY q a).comp (Polynomial.C c * Polynomial.X) * B) → ∀ j ≤ nY, Finsupp.single (splitLab nY j) (1 : ℂ) ∈ Submodule.span ℂ ((fun k => GlobalTheory.Hk3.splitC nY (z k)) '' Set.Iic nX) := by
   intro nX nY q hq c hc B hB z h j hj
   let φ : (Fin (nY + 1) → ℂ) →ₗ[ℂ] (List ℤ →₀ ℂ) :=

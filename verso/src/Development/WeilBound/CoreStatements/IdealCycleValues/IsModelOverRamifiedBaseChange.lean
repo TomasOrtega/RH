@@ -14,6 +14,9 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
   [IsDiscreteValuationRing O'] [Algebra O O'] {ϖ : O} {ϖ' : O'} {u : O'ˣ} {e : ℕ}
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsDiscreteValuationRing O'] in
+/- English proof (translation)
+Rewrite using `[map_C, h, C_mul, C_pow]`. Conclude with `W.mul_mem_left _ (W.pow_mem_of_mem hW e he)`.
+-/
 theorem mem_of_mem {σ : Type} (he : 0 < e) (h : algebraMap O O' ϖ = u * ϖ' ^ e)
     (W : Ideal (MvPolynomial σ O')) (hW : C ϖ' ∈ W) :
     MvPolynomial.map (algebraMap O O') (C ϖ) ∈ W := by
@@ -21,6 +24,11 @@ theorem mem_of_mem {σ : Type} (he : 0 < e) (h : algebraMap O O' ϖ = u * ϖ' ^ 
   exact W.mul_mem_left _ (W.pow_mem_of_mem hW e he)
 
 omit [IsDiscreteValuationRing O'] in
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap O O')`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`. Take `⟨n, v, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`.
+
+Rewrite `ha` using `[map_mul, map_pow, h]`. Conclude with `mul_ne_zero (v.isUnit.map (algebraMap O O')).ne_zero (pow_ne_zero n (mul_ne_zero u.ne_zero (pow_ne_zero e hϖ'.ne_zero))) ha`. Establish `: FaithfulSMul O O'` using `(faithfulSMul_iff_algebraMap_injective O O').2 hinj`. Use `infer_instance`.
+-/
 theorem flat_of (hϖ : Irreducible ϖ) (hϖ' : Irreducible ϖ') (h : algebraMap O O' ϖ = u * ϖ' ^ e) :
     Module.Flat O O' := by
   have hinj : Function.Injective (algebraMap O O') := by
@@ -34,6 +42,11 @@ theorem flat_of (hϖ : Irreducible ϖ) (hϖ' : Irreducible ϖ') (h : algebraMap 
   have : FaithfulSMul O O' := (faithfulSMul_iff_algebraMap_injective O O').2 hinj
   infer_instance
 
+/- English proof (translation)
+Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `h1 : a ∈ IsLocalRing.maximalIdeal O` using `h0`. Rewrite `h1` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `h1`.
+
+Rewrite `ha` using `[map_mul, h]`. Conclude with `hϖ'.not_isUnit ((isUnit_pow_iff he.ne').1 (isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_right ha)))`.
+-/
 theorem local_of (hϖ : Irreducible ϖ) (hϖ' : Irreducible ϖ') (he : 0 < e)
     (h : algebraMap O O' ϖ = u * ϖ' ^ e) : IsLocalHom (algebraMap O O') := by
   refine ⟨fun a ha => ?_⟩
@@ -45,6 +58,13 @@ theorem local_of (hϖ : Irreducible ϖ) (hϖ' : Irreducible ϖ') (he : 0 < e)
   exact hϖ'.not_isUnit ((isUnit_pow_iff he.ne').1
     (isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_right ha)))
 
+/- English proof (translation)
+Use `local_of hϖ hϖ' he h` as an intermediate fact. Establish `hmax : (Ideal.span {ϖ}).IsMaximal` using `hϖ.maximalIdeal_eq ▸ IsLocalRing.maximalIdeal.isMaximal O`. Establish `h1 : (C ϖ' ^ e : MRing ι O') ∈ J.map (MvPolynomial.map (algebraMap O O'))`. Establish `h2` using `Ideal.mul_mem_left _ (C (↑u⁻¹ : O')) (Ideal.mem_map_of_mem (MvPolynomial.map (algebraMap O O')) hm)`. Rewrite `h2` using `[map_C, h, ← C_mul, Units.inv_mul_cancel_left, C_pow]`. Then use the resulting hypothesis.
+
+Rewrite using `[NN_pow hϖ' hJ' hd' e h1 (fun k hk g hg => ram_colon ϖ hmax ϖ' hϖ'.ne_zero u e k h hk J hm g hg) bs, NN_vert hϖ' (SupSpanMultiHomog.proof O' K ι _ _ 0 hJ' (homog_C ϖ')) ((dim_mono le_sup_left).trans_lt hd') (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) bs, special_sup h …`. Use `congr 1`. Rewrite using `[← ((GroundTheory.Heights₂.Heights.FieldNumbers.IntNumBaseChange.intersectionNumber_baseChange.1 (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField O') K ι (specialIdeal J)).2 d bs)]`. Use `congr 1`. Unfold `specialIdeal`.
+
+Rewrite using `[Ideal.map_map, Ideal.map_map]`. Use `congr 1`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, map_map]`. Both sides reduce to the same expression.
+-/
 theorem bc_vert (hϖ : Irreducible ϖ) (hϖ' : Irreducible ϖ') (he : 0 < e)
     (h : algebraMap O O' ϖ = u * ϖ' ^ e) {d : ℕ} (bs : Fin d → K → ℤ) (J : Ideal (MRing ι O))
     (hJ : IsMultiHomogIdeal J) (hJ' : IsMultiHomogIdeal (J.map (MvPolynomial.map (algebraMap O O'))))
@@ -75,6 +95,15 @@ theorem bc_vert (hϖ : Irreducible ϖ) (hϖ' : Irreducible ϖ') (he : 0 < e)
   simp only [RingHom.comp_apply, map_map]
   rfl
 
+/- English proof (translation)
+Use `flat_of hϖ hϖ' h` as an intermediate fact. Proceed by induction on `J using IsNoetherian.induction with`. Consider the case `hgt J ih`. Introduce `hJ hJ' hd hd'`. Establish `hcol` using `map_colon (O' := O') J (C ϖ)`.
+
+Establish `hC : IsMultiHomog (MvPolynomial.map (algebraMap O O') (C ϖ : MRing ι O)) 0`. Rewrite using `[map_C]`. Conclude with `homog_C _`. Distinguish the cases in `hc : J.colon {C ϖ} = J`. Rewrite `hcol` using `[hc]`.
+
+Rewrite using `[NN_nzd hϖ hJ hd (C ϖ) (fun _ hW => hW) hc bs, NN_nzd hϖ' hJ' hd' _ (mem_of_mem he h) hcol bs, mul_zero]`. Establish `hsup : Ideal.map (MvPolynomial.map (algebraMap O O')) (J ⊔ Ideal.span {C ϖ}) = Ideal.map (MvPolynomial.map (algebraMap O O')) J ⊔ Ideal.span {MvPolynomial.map (algebraMap O O') (C ϖ : MRing ι O)}`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Establish `h1` using `ih (J.colon {C ϖ}) (lt_of_le_of_ne (le_colon J _) (Ne.symm hc)) (ColonMultiHomog.full O K ι J _ 0 hJ (homog_C ϖ)) (hcol ▸ ColonMultiHomog.full O' K ι _ _ 0 hJ' hC) ((dim_mono (le_colon J _)).trans_lt hd) ((dim_mono (Ideal.map_mono (le_colon J _))).trans_lt hd')`. Establish `h2` using `bc_vert hϖ hϖ' he h bs (J ⊔ Ideal.span {C ϖ}) (SupSpanMultiHomog.proof O K ι J _ 0 hJ (homog_C ϖ)) (hsup ▸ SupSpanMultiHomog.proof O' K ι _ _ 0 hJ' hC) ((dim_mono le_sup_left).trans_lt hd) ((dim_mono (Ideal.map_mono le_sup_left)).trans_lt hd') (Ideal.mem_sup_right (Ideal.mem_span …`.
+
+Rewrite using `[NN_add hϖ' hJ' hd' hC bs, NN_add hϖ hJ hd (homog_C ϖ) bs, hcol, ← hsup, h1, h2, mul_add]`.
+-/
 theorem bc_all (hϖ : Irreducible ϖ) (hϖ' : Irreducible ϖ') (he : 0 < e)
     (h : algebraMap O O' ϖ = u * ϖ' ^ e) {d : ℕ} (bs : Fin d → K → ℤ) (J : Ideal (MRing ι O)) :
     IsMultiHomogIdeal J → IsMultiHomogIdeal (J.map (MvPolynomial.map (algebraMap O O'))) →
@@ -110,6 +139,15 @@ theorem bc_all (hϖ : Irreducible ϖ) (hϖ' : Irreducible ϖ') (he : 0 < e)
         (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))
       rw [NN_add hϖ' hJ' hd' hC bs, NN_add hϖ hJ hd (homog_C ϖ) bs, hcol, ← hsup, h1, h2, mul_add]
 
+/- English proof (translation)
+Use `flat_of hϖ hϖ' h` as an intermediate fact. Establish `hf' : IsMultiHomog (MvPolynomial.map (algebraMap O O') f) a` using `fun m hm => hf (d := m) fun h0 => hm (by rw [coeff_map, h0, map_zero])`. Establish `hc : P.colon {f} = P`. Use `le_antisymm (fun y hy => ?_) (le_colon P f)` and prove the remaining obligations. Rewrite `hy` using `[Submodule.mem_colon_singleton, smul_eq_mul]`.
+
+Conclude with `(hP.multiProj.isPrime.mem_or_mem hy).resolve_right hfP`. Establish `hcol` using `map_colon (O' := O') P f`. Rewrite `hcol` using `[hc]`. Establish `hfP' : MvPolynomial.map (algebraMap O O') f ∉ P.map (MvPolynomial.map (algebraMap O O'))`. Introduce `h0`.
+
+Apply `hP'.multiProj.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[← hcol, Ideal.eq_top_iff_one, Submodule.mem_colon_singleton, one_smul]`. Conclude with `h0`. Establish `hsup : (P ⊔ Ideal.span {f}).map (MvPolynomial.map (algebraMap O O')) = P.map (MvPolynomial.map (algebraMap O O')) ⊔ Ideal.span {MvPolynomial.map (algebraMap O O') f}`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`.
+
+Establish `h1` using `bc_all hϖ hϖ' he h bs (P ⊔ Ideal.span {f}) (SupSpanMultiHomog.proof O K ι P f a hP.multiProj.multiHomog hf) (hsup ▸ SupSpanMultiHomog.proof O' K ι _ _ a hP'.multiProj.multiHomog hf') (withBotENat_lt_of_add_one_le (hP.dim ▸ dim_drop hP.multiProj.isPrime hfP)) (hsup ▸ withBotENat_l …`. Rewrite `h1` using `[hsup]`. Then use the resulting hypothesis.
+-/
 theorem bc_div (hϖ : Irreducible ϖ) (hϖ' : Irreducible ϖ') (he : 0 < e)
     (h : algebraMap O O' ϖ = u * ϖ' ^ e) {d : ℕ} (P : Ideal (MRing ι O)) (hP : IsModelOver P d)
     (hP' : IsModelOver (P.map (MvPolynomial.map (algebraMap O O'))) d) (a : K → ℕ) (f : MRing ι O)
@@ -147,6 +185,9 @@ open AlgebraicGeometry CategoryTheory NumberField MvPolynomial ReciprocityTheory
 open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame IsFlagPair SameGenericFibre IsModelOver divCycle)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg fnField)
 
+/- English proof (translation)
+Introduce `O O' _ _ _ _ _ _ _ ϖ ϖ' u e hϖ hϖ' he h K _ _ J _ P d hP hP' a f hf hfP l hl`. Substitute `hl` using the available equality. Conclude with `BaseChangeColon.BC.bc_div hϖ hϖ' he h P hP hP' a f hf hfP l.get`.
+-/
 theorem BaseChangeColon.isModelOver_ramified_base_change : ∀ (O O' : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing O'] [IsDomain O'] [IsDiscreteValuationRing O'] [Algebra O O'] (ϖ : O) (ϖ' : O') (u : O'ˣ) (e : ℕ), Irreducible ϖ → Irreducible ϖ' → 0 < e → algebraMap O O' ϖ = u * ϖ' ^ e → ∀ (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MvPolynomial (Σ k, J k) O)) (d : ℕ), IsModelOver P d → IsModelOver (P.map (MvPolynomial.map (algebraMap O O'))) d → ∀ (a : K → ℕ) (f : MvPolynomial (Σ k, J k) O), GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog f a → f ∉ P → ∀ l : List (K → ℤ), l.length = d → cycList (divCycle (P.map (MvPolynomial.map (algebraMap O O'))) (MvPolynomial.map (algebraMap O O') f)) l = e * cycList (divCycle P f) l := by
   intro O O' _ _ _ _ _ _ _ ϖ ϖ' u e hϖ hϖ' he h K _ _ J _ P d hP hP' a f hf hfP l hl
   subst hl

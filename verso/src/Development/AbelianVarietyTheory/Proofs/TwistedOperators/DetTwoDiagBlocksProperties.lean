@@ -13,6 +13,11 @@ def lowEquiv {n r : ℕ} (hr : r ≤ n) : Fin r ≃ {a : Fin n // a.val < r} whe
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, diag_block_det_val 1 h, Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, upper_block_val_submatrix hr h, Matrix.twoBlockTriangular_det (g : Matrix (Fin n) (Fin n) κ) (fun a : Fin n => a.val < r) (fun i hi j hj => h (by simp [blk2, …`. Use `congr 1`. Rewrite using `[← Matrix.det_submatrix_equiv_self (lowEquiv hr)]`. Both sides reduce to the same expression.
+
+Apply the tactic sequence `rw [← Matrix.det_submatrix_equiv_self (Equiv.subtypeEquivRight (show ∀ a : Fin n, blk2 r a = 1 ↔ ¬ a.val < r from fun a => by unfold blk2; split_ifs with h <;> simp [h]))]`. Both sides reduce to the same expression.
+-/
 theorem det_eq_mul {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (g : GL (Fin n) κ) (h : g ∈ blockTri (blk2 r)) :
     Matrix.GeneralLinearGroup.det g = Matrix.GeneralLinearGroup.det (upperLeftBlock hr g) * dBlk (blk2 r) 1 g := by
   apply Units.ext
@@ -26,6 +31,11 @@ theorem det_eq_mul {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (g : GL 
       (show ∀ a : Fin n, blk2 r a = 1 ↔ ¬ a.val < r from fun a => by unfold blk2; split_ifs with h <;> simp [h]))]
     rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Unfold `blkOf blk2`. Use `split_ifs with h`. Both sides reduce to the same expression. Use `a.2` as an intermediate fact.
+
+Rewrite using `[Nat.div_eq_of_lt (by omega)]`.
+-/
 theorem blockPartitionOf_eq_twoBlock (r t : ℕ) : (blkOf r t : Fin (r + t) → ℕ) = blk2 r := by
   funext a
   unfold blkOf blk2
@@ -34,12 +44,20 @@ theorem blockPartitionOf_eq_twoBlock (r t : ℕ) : (blkOf r t : Fin (r + t) → 
   · have := a.2
     rw [Nat.div_eq_of_lt (by omega)]
 
+/- English proof (translation)
+Establish `h : g ∈ blockTri (blk2 n)` using `fun i j hij => by simp [blk2] at hij`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[upper_block_val_submatrix hr h]`. Both sides reduce to the same expression.
+-/
 theorem firstDiagBlock_full_rank_eq_self {κ : Type} [CommRing κ] {n : ℕ} (hr : n ≤ n) (g : GL (Fin n) κ) : upperLeftBlock hr g = g := by
   have h : g ∈ blockTri (blk2 n) := fun i j hij => by simp [blk2] at hij
   apply Units.ext
   rw [upper_block_val_submatrix hr h]
   rfl
 
+/- English proof (translation)
+Introduce `κ _ n r t hr g`. Use `⟨det_eq_mul hr g, fun e _ => ?_, fun e => ?_⟩` and prove the remaining obligations. Substitute `e` using the available equality. Rewrite using `[blockPartitionOf_eq_twoBlock]`. Substitute `e` using the available equality.
+
+Rewrite using `[firstDiagBlock_full_rank_eq_self]`.
+-/
 theorem det_blocks : ∀ (κ : Type) [CommRing κ] (n r t : ℕ) (hr : r ≤ n) (g : GL (Fin n) κ), (g ∈ blockTri (blk2 r) → Matrix.GeneralLinearGroup.det g = Matrix.GeneralLinearGroup.det (upperLeftBlock hr g) * dBlk (blk2 r) 1 g) ∧ (n = r + t → g ∈ blockTri (blkOf r t) → dBlk (blkOf r t) 1 g = dBlk (blk2 r) 1 g) ∧ (n = r → Matrix.GeneralLinearGroup.det (upperLeftBlock hr g) = Matrix.GeneralLinearGroup.det g) := by
   intro κ _ n r t hr g
   refine ⟨det_eq_mul hr g, fun e _ => ?_, fun e => ?_⟩

@@ -7,6 +7,15 @@ open scoped ComplexOrder ENNReal
 
 namespace GlobalTheory.ProdFibre
 
+/- English proof (translation)
+Introduce `T A B C _ _ _ _ _ _ _ g π D φ hg hπ hgπ hD hφ`. Establish `h1 : MeasurePreserving (fun (a : T → A × B) (t : T) => g (a t)) volume volume` using `volume_preserving_pi (f := fun _ : T => g) (fun _ => hg)`. Establish `h2` using `(volume_measurePreserving_arrowProdEquivProdArrow A B T).symm`. Establish `h3` using `h1.comp h2`. Establish `hF : Measurable (fun c : T → C => φ (fun t => π (c t)) * ∏ t, D (c t))`.
+
+Use `Measurable.mul (hφ.comp ?_) ?_` and prove the remaining obligations. Conclude with `measurable_pi_lambda _ (fun t => hπ.comp (measurable_pi_apply t))`. Conclude with `Finset.measurable_prod _ (fun t _ => hD.comp (measurable_pi_apply t))`. Rewrite using `[← h3.lintegral_comp hF, Measure.volume_eq_prod]`. Use `(lintegral_prod _ (hF.comp h3.measurable).aemeasurable).trans ?_` and prove the remaining obligations.
+
+Use `lintegral_congr (fun a => ?_)` and prove the remaining obligations. Establish `hm : ∀ t, Measurable (fun b : B => D (g (a t, b)))` using `fun t => hD.comp (hg.measurable.comp measurable_prodMk_left)`. Establish `hin` using `GlobalTheory.SnMass.Push.lintegral_fintype_prod (X := fun _ : T => B) (μ := fun _ => (volume : Measure B)) (fun t b => D (g (a t, b))) hm`. Rewrite using `[← hin, ← volume_pi, ← lintegral_const_mul]`. Use `lintegral_congr (fun b => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `φ (fun t => π (g (a t, b t))) * ∏ t, D (g (a t, b t)) = _`. Simplify using `only [hgπ]`. Conclude with `Finset.measurable_prod _ (fun t _ => (hm t).comp (measurable_pi_apply t))`.
+-/
 theorem lintegral_pi_fibre : ∀ (T A B C : Type) [Fintype T] [MeasureSpace A] [MeasureSpace B] [MeasureSpace C] [SigmaFinite (volume : Measure A)] [SigmaFinite (volume : Measure B)] [SigmaFinite (volume : Measure C)] (g : A × B → C) (π : C → A) (D : C → ℝ≥0∞) (φ : (T → A) → ℝ≥0∞), MeasurePreserving g volume volume → Measurable π → (∀ w, π (g w) = w.1) → Measurable D → Measurable φ → ∫⁻ c : T → C, φ (fun t => π (c t)) * ∏ t, D (c t) = ∫⁻ a : T → A, φ a * ∏ t, ∫⁻ b, D (g (a t, b)) := by
   intro T A B C _ _ _ _ _ _ _ g π D φ hg hπ hgπ hD hφ
   have h1 : MeasurePreserving (fun (a : T → A × B) (t : T) => g (a t)) volume volume :=

@@ -13,6 +13,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exp_hpart1_mem i p q, exp_hpart2_mem i p q⟩`.
+-/
 lemma hpart_mem (i : Fin (r + 1)) (p q : Fin (mdim k r i)) :
     (∀ t : ℝ, NormedSpace.exp ((t : ℂ) •
       hpart1 (Hpk k r) (Matrix.single (posL k r i p) (posL k r i q) 1)) ∈ Glev k r i) ∧
@@ -20,6 +23,13 @@ lemma hpart_mem (i : Fin (r + 1)) (p q : Fin (mdim k r i)) :
       hpart2 (Hpk k r) (Matrix.single (posL k r i p) (posL k r i q) 1)) ∈ Glev k r i) :=
   ⟨exp_hpart1_mem i p q, exp_hpart2_mem i p q⟩
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hg₀U, hF, hfF⟩` from `hf g₀ hg₀`. Use `set X₁ := hpart1 (Hpk k r) (Matrix.single (posL k r i p) (posL k r i q) 1)`. Use `set X₂ := hpart2 (Hpk k r) (Matrix.single (posL k r i p) (posL k r i q) 1)`. Take `⟨h1, h2⟩` from `hpart_mem (k := k) i p q`.
+
+Use `⟨U, fun x => fderiv ℝ F x (x * X₁) + Complex.I • fderiv ℝ F x (x * X₂), hU, hg₀U, ?_, ?_⟩` and prove the remaining obligations. Establish `hd` using `hF.fderiv_of_isOpen (m := ∞) hU withTop_enat_infty_add_one_le_infty`. Establish `s1 : ContDiffOn ℝ ∞ (fun x : Mx k r => fderiv ℝ F x (x * X₁)) U` using `hd.clm_apply (mulRightRealCLM X₁).contDiff.contDiffOn`. Establish `s2 : ContDiffOn ℝ ∞ (fun x : Mx k r => fderiv ℝ F x (x * X₂)) U` using `hd.clm_apply (mulRightRealCLM X₂).contDiff.contDiffOn`. Conclude with `s1.add (s2.const_smul Complex.I)`.
+
+Introduce `x hx hxG show RdV X₁ f x + Complex.I • RdV X₂ f x = _`. Rewrite using `[rdV_ext i X₁ h1 f F U x hU hx hxG hF hfF, rdV_ext i X₂ h2 f F U x hU hx hxG hF hfF]`.
+-/
 theorem eab_smooth (i : Fin (r + 1)) (D : Set (Mx k r)) (p q : Fin (mdim k r i))
     (f : Mx k r → E) (hf : SmoothLev k r i D f) :
     SmoothLev k r i D (EH k r (posL k r i p) (posL k r i q) f) := by
@@ -39,6 +49,17 @@ theorem eab_smooth (i : Fin (r + 1)) (D : Set (Mx k r)) (p q : Fin (mdim k r i))
     show RdV X₁ f x + Complex.I • RdV X₂ f x = _
     rw [rdV_ext i X₁ h1 f F U x hU hx hxG hF hfF, rdV_ext i X₂ h2 f F U x hU hx hxG hF hfF]
 
+/- English proof (translation)
+Establish `hmul : ∀ a b : Mx k r, a ∈ Glev k r i → b ∈ Glev k r i → a * b ∈ Glev k r i`. Introduce and unpack `a b ⟨ha1, ha2⟩ ⟨hb1, hb2⟩`. Use `⟨?_, fun c hc => ?_⟩` and prove the remaining obligations. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Establish `h1 : aᴴ * Hpk k r * a = Hpk k r` using `ha1`.
+
+Establish `h2 : bᴴ * Hpk k r * b = Hpk k r` using `hb1`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨e1, e2⟩` from `ha2 c hc`. Take `⟨f1, f2⟩` from `hb2 c hc`.
+
+Conclude with `⟨by rw [← Matrix.mulVec_mulVec, f1, e1], by rw [← Matrix.mulVec_mulVec, f2, e2]⟩`. Take `⟨U1, F1, hU1, hgU1, hF1, hfF1⟩` from `hf g hg`. Establish `hd` using `hasDerivAt_ext i X hX f F1 U1 g hU1 hgU1 hg.1 hF1 hfF1`. Establish `hpath : ContinuousAt (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) 0` using `(hasDerivAt_ext i X hX (fun y : Mx k r => y) (fun y => y) Set.univ g isOpen_univ (Set.mem_univ _) hg.1 contDiffOn_id (fun _ _ _ => rfl)).continuousAt`. Establish `hev : ∀ᶠ t : ℝ in 𝓝 0, g * NormedSpace.exp ((t : ℂ) • X) ∈ D`.
+
+Apply `hpath.preimage_mem_nhds` to reduce the goal to its premises. Establish `e0 : g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g` using `by simp`. Rewrite using `[e0]`. Conclude with `hD.mem_nhds hg.2`. Establish `heq : (fun t : ℝ => f (n * g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] fun t => psi k r z cStd n • f (g * NormedSpace.exp ((t : ℂ) • X))` using `by filter_upwards [hev] with t ht`.
+
+Rewrite using `[mul_assoc]`. Conclude with `hL _ ⟨hmul _ _ hg.1 (hX t), ht⟩ n hn`. Establish `h2 : HasDerivAt (fun t : ℝ => f (n * g * NormedSpace.exp ((t : ℂ) • X))) (psi k r z cStd n • fderiv ℝ F1 g (g * X)) 0` using `(hd.const_smul _).congr_of_eventuallyEq heq`. Use `show deriv (fun t : ℝ => f (n * g * NormedSpace.exp ((t : ℂ) • X))) 0 = psi k r z cStd n • RdV X f g`. Rewrite using `[h2.deriv, rdV_ext i X hX f F1 U1 g hU1 hgU1 hg.1 hF1 hfF1]`.
+-/
 lemma rdV_left (i : Fin (r + 1)) (z : Fin (2 * r + k + 1) → ℂ) (D : Set (Mx k r))
     (hD : IsOpen D) (X : Mx k r) (hX : ∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ Glev k r i)
     (f : Mx k r → E) (hf : SmoothLev k r i D f) (hL : LeftEq k r z i D f)
@@ -76,6 +97,9 @@ lemma rdV_left (i : Fin (r + 1)) (z : Fin (2 * r + k + 1) → ℂ) (D : Set (Mx 
   show deriv (fun t : ℝ => f (n * g * NormedSpace.exp ((t : ℂ) • X))) 0 = psi k r z cStd n • RdV X f g
   rw [h2.deriv, rdV_ext i X hX f F1 U1 g hU1 hgU1 hg.1 hF1 hfF1]
 
+/- English proof (translation)
+Establish `hX1` using `(hpart_mem i p q).1`. Establish `hX2` using `(hpart_mem i p q).2`. Introduce `g hg n hn`. Simplify using `only [EH, EabH]`. Rewrite using `[rdV_left i z D hD _ hX1 f hf hL g hg n hn, rdV_left i z D hD _ hX2 f hf hL g hg n hn, smul_add, smul_comm Complex.I]`.
+-/
 theorem eab_left (i : Fin (r + 1)) (z : Fin (2 * r + k + 1) → ℂ) (D : Set (Mx k r))
     (hD : IsOpen D) (p q : Fin (mdim k r i)) (f : Mx k r → E) (hf : SmoothLev k r i D f)
     (hL : LeftEq k r z i D f) :
@@ -87,6 +111,17 @@ theorem eab_left (i : Fin (r + 1)) (z : Fin (2 * r + k + 1) → ℂ) (D : Set (M
   rw [rdV_left i z D hD _ hX1 f hf hL g hg n hn, rdV_left i z D hD _ hX2 f hf hL g hg n hn, smul_add,
     smul_comm Complex.I]
 
+/- English proof (translation)
+Establish `hX1` using `(hpart_mem i p q).1`. Establish `hX2` using `(hpart_mem i p q).2`. Take `⟨U1, F1, hU1, hgU1, hF1, hfF1⟩` from `hf g hg`. Take `⟨U2, F2, hU2, hgU2, hF2, hfF2⟩` from `hf₂ g hg`. Establish `hU : IsOpen (U1 ∩ U2)` using `hU1.inter hU2`.
+
+Establish `hgU : g ∈ U1 ∩ U2` using `⟨hgU1, hgU2⟩`. Establish `hF1' : ContDiffOn ℝ ∞ F1 (U1 ∩ U2)` using `hF1.mono Set.inter_subset_left`. Establish `hF2' : ContDiffOn ℝ ∞ F2 (U1 ∩ U2)` using `hF2.mono Set.inter_subset_right`. Establish `hFs : ContDiffOn ℝ ∞ (fun x => F1 x + s • F2 x) (U1 ∩ U2)` using `hF1'.add (hF2'.const_smul s)`. Establish `hfs : ∀ x ∈ U1 ∩ U2, x ∈ Glev k r i → f x + s • f₂ x = F1 x + s • F2 x` using `fun x hx hxG => by rw [hfF1 x hx.1 hxG, hfF2 x hx.2 hxG]`.
+
+Establish `hd1 : DifferentiableAt ℝ F1 g` using `(hF1.differentiableOn (by simp)).differentiableAt (hU1.mem_nhds hgU1)`. Establish `hd2 : DifferentiableAt ℝ F2 g` using `(hF2.differentiableOn (by simp)).differentiableAt (hU2.mem_nhds hgU2)`. Establish `key : ∀ X : Mx k r, (∀ t : ℝ, NormedSpace.exp ((t : ℂ) • X) ∈ Glev k r i) → RdV X (fun x => f x + s • f₂ x) g = RdV X f g + s • RdV X f₂ g`. Introduce `X hX`. Establish `hfd : fderiv ℝ (fun x => F1 x + s • F2 x) g = fderiv ℝ F1 g + s • fderiv ℝ F2 g` using `(hd1.hasFDerivAt.add (hd2.hasFDerivAt.const_smul s)).fderiv`.
+
+Rewrite using `[rdV_ext i X hX (fun x => f x + s • f₂ x) (fun x => F1 x + s • F2 x) (U1 ∩ U2) g hU hgU hg.1 hFs hfs, rdV_ext i X hX f F1 U1 g hU1 hgU1 hg.1 hF1 hfF1, rdV_ext i X hX f₂ F2 U2 g hU2 hgU2 hg.1 hF2 hfF2, hfd]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply]`. Simplify using `only [EH, EabH]`. Rewrite using `[key _ hX1, key _ hX2]`. Simplify using `only [smul_add]`.
+
+Rewrite using `[smul_comm Complex.I s]`. Normalize the expressions using the abelian group laws.
+-/
 theorem eab_lin (i : Fin (r + 1)) (D : Set (Mx k r)) (p q : Fin (mdim k r i))
     (f f₂ : Mx k r → E) (s : ℂ) (hf : SmoothLev k r i D f) (hf₂ : SmoothLev k r i D f₂)
     (g : Mx k r) (hg : g ∈ Glev k r i ∩ D) :
@@ -125,6 +160,9 @@ end Formalism.FourierDecayAlt.Q.EabLie
 
 namespace Formalism.FourierDecayAlt.Q
 
+/- English proof (translation)
+Introduce `E _ _ k r z i D a b f f₂ s hD hf hf₂`. Conclude with `⟨EabLie.eab_smooth i D a b f hf, fun _ hL => EabLie.eab_left i z D hD a b f hf hL, fun g hg => EabLie.eab_lin i D a b f f₂ s hf hf₂ g hg⟩`.
+-/
 theorem eabPres_main : EabPres := by
   intro E _ _ k r z i D a b f f₂ s hD hf hf₂
   exact ⟨EabLie.eab_smooth i D a b f hf, fun _ hL => EabLie.eab_left i z D hD a b f hf hL,

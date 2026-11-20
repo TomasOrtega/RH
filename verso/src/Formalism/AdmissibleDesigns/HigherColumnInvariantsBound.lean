@@ -14,12 +14,20 @@ section Arith
 
 def qU (e : ℕ) (x : ℕ∞) : ℚ := (x.toNat : ℚ) / e
 
+/- English proof (translation)
+Unfold `qU`. Establish `h1 : x.toNat ≤ y.toNat` using `ENat.toNat_le_toNat h hy`. Establish `h2 : (x.toNat : ℚ) ≤ y.toNat` using `by exact_mod_cast h1`. Use `gcongr`.
+-/
 theorem qU_mono {e : ℕ} {x y : ℕ∞} (h : x ≤ y) (hy : y ≠ ⊤) : qU e x ≤ qU e y := by
   unfold qU
   have h1 : x.toNat ≤ y.toNat := ENat.toNat_le_toNat h hy
   have h2 : (x.toNat : ℚ) ≤ y.toNat := by exact_mod_cast h1
   gcongr
 
+/- English proof (translation)
+Proceed by induction on `x using ENat.recTopCoe with`. Consider the case `top`. Rewrite using `[ENat.mul_top (by exact_mod_cast he)]`. Simplify using `only [qU, ENat.toNat_top, Nat.cast_zero, zero_div]`. Consider the case `coe n`.
+
+Establish `he0 : (e : ℚ) ≠ 0` using `by exact_mod_cast he`. Rewrite using `[← Nat.cast_mul]`. Simplify using `only [qU, ENat.toNat_natCast]`. Use `push_cast`. Apply the tactic sequence `first | (field_simp; ring) | field_simp`.
+-/
 theorem qU_eO_mul {e : ℕ} (he : e ≠ 0) (x : ℕ∞) : qU e ((e : ℕ∞) * x) = (x.toNat : ℚ) := by
   induction x using ENat.recTopCoe with
   | top =>
@@ -32,6 +40,29 @@ theorem qU_eO_mul {e : ℕ} (he : e ≠ 0) (x : ℕ∞) : qU e ((e : ℕ∞) * x
     push_cast
     first | (field_simp; ring) | field_simp
 
+/- English proof (translation)
+Substitute `heO` using the available equality. Take `⟨v, rfl⟩` from `ENat.ne_top_iff_exists.mp hv`. Take `⟨sn, rfl⟩` from `ENat.ne_top_iff_exists.mp hs`. Take `⟨h0n, rfl⟩` from `ENat.ne_top_iff_exists.mp hH0`. Establish `h1 : ∑ w ∈ what₂, rowLen w = ((∑ w ∈ what₂, (rowLen w).toNat : ℕ) : ℕ∞)`.
+
+Rewrite using `[Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun w hw => (ENat.natCast_toNat (hR w hw)).symm`. Establish `h2 : ∑ w ∈ cols, ((e : ℕ∞) * (e' w : ℕ∞) + (j w : ℕ∞) * ((e : ℕ∞) * (e' w : ℕ∞) + (v : ℕ∞)) + 2 * (v : ℕ∞) + h0d w) = ((∑ w ∈ cols, (e * e' w + j w * (e * e' w + v) + 2 * v + (h0d w).toNat) : ℕ) : ℕ∞)`. Rewrite using `[Nat.cast_sum]`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ENat.natCast_toNat (hH w hw)]`. Simplify using `only [ENat.toNat_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∑ k ∈ Finset.Ioo 0 t, Sha k = ((∑ k ∈ Finset.Ioo 0 t, (Sha k).toNat : ℕ) : ℕ∞)`.
+
+Rewrite using `[Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun k hk => (ENat.natCast_toNat (hSha k hk)).symm`. Establish `h4 : ∑ w ∈ qs, z w = ((∑ w ∈ qs, (z w).toNat : ℕ) : ℕ∞)`. Rewrite using `[Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun w hw => (ENat.natCast_toNat (hz w hw)).symm`.
+
+Establish `h5 : ∑ w ∈ what₂, ((deg w : ℕ∞) + 2) = ((∑ w ∈ what₂, (deg w + 2) : ℕ) : ℕ∞)` using `by push_cast; rfl`. Rewrite `hd` using `[h1, h2, h3, h4, h5]`. Normalize the coercions in `at hd`. Establish `hl : lhs ≠ ⊤` using `ne_top_of_le_ne_top (ENat.natCast_ne_top _) hd`. Take `⟨L, rfl⟩` from `ENat.ne_top_iff_exists.mp hl`.
+
+Establish `hL` using `(ENat.natCast_le_natCast).mp hd`. Establish `hq` using `(Nat.cast_le (α := ℚ)).mpr hL`. Establish `heq : (e : ℚ) ≠ 0` using `by exact_mod_cast he`. Establish `hs1 : ∑ w ∈ what₂, qU e (rowLen w) = ((∑ w ∈ what₂, (rowLen w).toNat : ℕ) : ℚ) / e`. Rewrite using `[Nat.cast_sum, Finset.sum_div]`.
+
+Both sides reduce to the same expression. Establish `hs2 : ∑ w ∈ cols, ((e' w : ℚ) + (j w : ℚ) * ((e' w : ℚ) + qU e (v : ℕ∞)) + 2 * qU e (v : ℕ∞) + qU e (h0d w)) = ((∑ w ∈ cols, (e * e' w + j w * (e * e' w + v) + 2 * v + (h0d w).toNat) : ℕ) : ℚ) / e`. Rewrite using `[Nat.cast_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [qU, ENat.toNat_natCast]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Establish `hs3 : ∑ k ∈ Finset.Ioo 0 t, qU e (Sha k) = ((∑ k ∈ Finset.Ioo 0 t, (Sha k).toNat : ℕ) : ℚ) / e`. Rewrite using `[Nat.cast_sum, Finset.sum_div]`.
+
+Both sides reduce to the same expression. Establish `hs4 : ∑ w ∈ qs, qU e (z w) = ((∑ w ∈ qs, (z w).toNat : ℕ) : ℚ) / e`. Rewrite using `[Nat.cast_sum, Finset.sum_div]`. Both sides reduce to the same expression. Establish `hs5 : ∑ w ∈ what₂, ((deg w : ℚ) + 2) * (cB : ℚ) = ((∑ w ∈ what₂, (deg w + 2) : ℕ) : ℚ) * cB`.
+
+Rewrite using `[Nat.cast_sum, Finset.sum_mul]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hs1, hs2, hs3, hs4, hs5]`. Simplify using `only [qU, ENat.toNat_natCast]`.
+
+Rewrite using `[div_le_iff₀ (by positivity)]`. Use `hq.trans (le_of_eq ?_)` and prove the remaining obligations. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+-/
 theorem inequality_of_finite_terms (e : ℕ) (he : e ≠ 0) (eO : ℕ∞) (heO : eO = e) (lhs : ℕ∞) (what₂ cols qs : Finset ℕ)
     (rowLen h0d z : ℕ → ℕ∞) (e' j deg : ℕ → ℕ) (vδ s H0 : ℕ∞) (Sha : ℕ → ℕ∞) (hE t cB Nn : ℕ)
     (hR : ∀ w ∈ what₂, rowLen w ≠ ⊤) (hH : ∀ w ∈ cols, h0d w ≠ ⊤) (hv : vδ ≠ ⊤) (hs : s ≠ ⊤)
@@ -173,6 +204,9 @@ def InjTie {H H' : Type} [AddCommGroup H] [Module O H] [AddCommGroup H'] [Module
     (S : Submodule O H) (S' : Submodule O H') : Prop :=
   ∃ f : ↥S →ₗ[O] ↥S', Function.Injective f
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `h`. Conclude with `Module.length_le_of_injective f hf`.
+-/
 theorem length_le_of_injTie {H H' : Type} [AddCommGroup H] [Module O H] [AddCommGroup H'] [Module O H']
     {S : Submodule O H} {S' : Submodule O H'} (h : InjTie S S') :
     Module.length O ↥S ≤ Module.length O ↥S' := by
@@ -195,6 +229,9 @@ def TieSel1 (M : Type) [AddCommGroup M] [Module A M] [Module (D.nd.O i) M] [SMul
     {Vo : Type} (Io : Vo → Subgroup G) : Prop :=
   InjTie (selRho M r χ colIdx Dw what₂ F Io) (Br.selPi D.loc D.nbr i ρ π)
 
+/- English proof (translation)
+The claim follows from `length_le_of_injTie h`.
+-/
 theorem selRho_le_sN (M : Type) [AddCommGroup M] [Module A M] [Module (D.nd.O i) M]
     [SMulCommClass A (D.nd.O i) M]
     (r : G →* A) (χ : G →* T'ˣ) {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -219,25 +256,43 @@ variable {D : D7} (i : D.nd.Loc) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r)
 
 open Formalism.MainNotions.N.Glob Formalism.BasicNotions.Loc
 
+/- English proof (translation)
+Take `⟨e, he0, he⟩` from `Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.exists_eO D.nd i`. Conclude with `⟨e, he0, by unfold eON; rw [Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, he]⟩`.
+-/
 theorem eON_eq : ∃ e : ℕ, e ≠ 0 ∧ eON i = e := by
   obtain ⟨e, he0, he⟩ := Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.exists_eO D.nd i
   exact ⟨e, he0, by unfold eON; rw [Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, he]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lenUnit_eq_qU (M : Type) [AddCommGroup M] [Module (D.nd.O i) M] :
     lenUnit (O := D.nd.O i) (D.nd.l i) M = qU (eON i).toNat (Module.length (D.nd.O i) M) := rfl
 
+/- English proof (translation)
+Unfold `plSet`. Conclude with `Finset.mem_union_left _ (Finset.mem_union_left _ h)`.
+-/
 theorem row_mem_plSet {v : HeightOneSpectrum (𝓞 D.host.E)} (h : v ∈ dc.row) : v ∈ plSet i dc := by
   unfold plSet
   exact Finset.mem_union_left _ (Finset.mem_union_left _ h)
 
+/- English proof (translation)
+Unfold `plSet`. Conclude with `Finset.mem_union_left _ (Finset.mem_union_right _ h)`.
+-/
 theorem col_mem_plSet {v : HeightOneSpectrum (𝓞 D.host.E)} (h : v ∈ dc.col) : v ∈ plSet i dc := by
   unfold plSet
   exact Finset.mem_union_left _ (Finset.mem_union_right _ h)
 
+/- English proof (translation)
+Unfold `plSet`. Conclude with `Finset.mem_union_right _ h`.
+-/
 theorem q_mem_plSet {v : HeightOneSpectrum (𝓞 D.host.E)} (h : v ∈ D.nd.Q i) : v ∈ plSet i dc := by
   unfold plSet
   exact Finset.mem_union_right _ h
 
+/- English proof (translation)
+Unfold `rowsN`. Conclude with `Finset.sum_image (by`. Introduce `x hx y hy hxy`. Conclude with `idx_inj i dc (row_mem_plSet i dc hx) (row_mem_plSet i dc hy) hxy)`.
+-/
 theorem sum_rowsN {β : Type} [AddCommMonoid β] (f : ℕ → β) :
     ∑ n ∈ rowsN i dc, f n = ∑ v ∈ dc.row, f (idx i dc v) := by
   unfold rowsN
@@ -245,6 +300,9 @@ theorem sum_rowsN {β : Type} [AddCommMonoid β] (f : ℕ → β) :
     intro x hx y hy hxy
     exact idx_inj i dc (row_mem_plSet i dc hx) (row_mem_plSet i dc hy) hxy)
 
+/- English proof (translation)
+Unfold `qsN`. Conclude with `Finset.sum_image (by`. Introduce `x hx y hy hxy`. Conclude with `idx_inj i dc (q_mem_plSet i dc hx) (q_mem_plSet i dc hy) hxy)`.
+-/
 theorem sum_qsN {β : Type} [AddCommMonoid β] (f : ℕ → β) :
     ∑ n ∈ qsN i dc, f n = ∑ v ∈ D.nd.Q i, f (idx i dc v) := by
   unfold qsN
@@ -252,6 +310,11 @@ theorem sum_qsN {β : Type} [AddCommMonoid β] (f : ℕ → β) :
     intro x hx y hy hxy
     exact idx_inj i dc (q_mem_plSet i dc hx) (q_mem_plSet i dc hy) hxy)
 
+/- English proof (translation)
+Unfold `colIdx`. Use extensionality with `n`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, rfl⟩`.
+
+Conclude with `⟨l.1, l.2, rfl⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨⟨v, hv⟩, rfl⟩`.
+-/
 private theorem image_colIdx_eq_image_idx : Finset.univ.image (colIdx i dc) = dc.col.image (idx i dc) := by
   unfold colIdx
   ext n
@@ -262,6 +325,9 @@ private theorem image_colIdx_eq_image_idx : Finset.univ.image (colIdx i dc) = dc
   · rintro ⟨v, hv, rfl⟩
     exact ⟨⟨v, hv⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[image_colIdx_eq_image_idx i dc]`. Conclude with `Finset.sum_image (by`. Introduce `x hx y hy hxy`. Conclude with `idx_inj i dc (col_mem_plSet i dc hx) (col_mem_plSet i dc hy) hxy)`.
+-/
 theorem sum_cols {β : Type} [AddCommMonoid β] (f : ℕ → β) :
     ∑ n ∈ Finset.univ.image (colIdx i dc), f n = ∑ v ∈ dc.col, f (idx i dc v) := by
   rw [image_colIdx_eq_image_idx i dc]
@@ -269,22 +335,34 @@ theorem sum_cols {β : Type} [AddCommMonoid β] (f : ℕ → β) :
     intro x hx y hy hxy
     exact idx_inj i dc (col_mem_plSet i dc hx) (col_mem_plSet i dc hy) hxy)
 
+/- English proof (translation)
+Rewrite using `[image_colIdx_eq_image_idx i dc]`. Conclude with `Finset.card_image_of_injOn (by`. Introduce `x hx y hy hxy`. Conclude with `idx_inj i dc (col_mem_plSet i dc hx) (col_mem_plSet i dc hy) hxy)`.
+-/
 theorem card_cols : (Finset.univ.image (colIdx i dc)).card = dc.col.card := by
   rw [image_colIdx_eq_image_idx i dc]
   exact Finset.card_image_of_injOn (by
     intro x hx y hy hxy
     exact idx_inj i dc (col_mem_plSet i dc hx) (col_mem_plSet i dc hy) hxy)
 
+/- English proof (translation)
+Unfold `colsN`. Conclude with `image_colIdx_eq_image_idx i dc`.
+-/
 theorem cols_eq : Finset.univ.image (colIdx i dc) = colsN i dc := by
   unfold colsN
   exact image_colIdx_eq_image_idx i dc
 
+/- English proof (translation)
+Unfold `colsN at hn`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hn`. Rewrite using `[plOf_idx i dc (col_mem_plSet i dc hv)]`. Conclude with `hv`.
+-/
 theorem plOf_mem_col {n : ℕ} (hn : n ∈ colsN i dc) : plOf i dc n ∈ dc.col := by
   unfold colsN at hn
   obtain ⟨v, hv, rfl⟩ := Finset.mem_image.1 hn
   rw [plOf_idx i dc (col_mem_plSet i dc hv)]
   exact hv
 
+/- English proof (translation)
+Use `h.trans ?_` and prove the remaining obligations. Unfold `invariantsLengthSup`. Establish `hm : (plOf i dc n, k) ∈ dc.col ×ˢ Finset.Ioo 0 D.R.t` using `Finset.mem_product.2 ⟨plOf_mem_col i dc hn, hk⟩`. Establish `h2` using `Finset.le_sup (f := fun p : HeightOneSpectrum (𝓞 D.host.E) × ℕ => invLen i p.1 p.2) hm`. Conclude with `h2`.
+-/
 theorem le_H0N {x : ℕ∞} {n : ℕ} (hn : n ∈ colsN i dc) {k : ℕ} (hk : k ∈ Finset.Ioo 0 D.R.t)
     (h : x ≤ invLen i (plOf i dc n) k) : x ≤ invariantsLengthSup i dc := by
   refine h.trans ?_
@@ -294,6 +372,11 @@ theorem le_H0N {x : ℕ∞} {n : ℕ} (hn : n ∈ colsN i dc) {k : ℕ} (hk : k 
   have h2 := Finset.le_sup (f := fun p : HeightOneSpectrum (𝓞 D.host.E) × ℕ => invLen i p.1 p.2) hm
   exact h2
 
+/- English proof (translation)
+Rewrite using `[← lt_top_iff_ne_top]`. Unfold `invariantsLengthSup`. Rewrite using `[Finset.sup_lt_iff (bot_lt_top : (⊥ : ℕ∞) < ⊤)]`. Introduce and unpack `⟨w, k⟩ hp`. Rewrite `hp` using `[Finset.mem_product]`.
+
+Conclude with `hF w hp.1 k hp.2`.
+-/
 theorem invariants_length_sup_ne_top (hF : FiniteCharacterInvariants i dc) : invariantsLengthSup i dc ≠ ⊤ := by
   rw [← lt_top_iff_ne_top]
   unfold invariantsLengthSup
@@ -302,6 +385,13 @@ theorem invariants_length_sup_ne_top (hF : FiniteCharacterInvariants i dc) : inv
   rw [Finset.mem_product] at hp
   exact hF w hp.1 k hp.2
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.N.h0`. Break down `(dc.col ×ˢ Finset.Ioo 0 D.R.t).eq_empty_or_nonempty with hs | hs` into its components or cases. Unfold `invariantsLengthSup`. Rewrite using `[hs]`. Simplify using `[qU]`.
+
+Take `⟨p, hp, hpeq⟩` from `Finset.exists_mem_eq_sup _ hs (fun p => invLen i p.1 p.2)`. Establish `hH : invariantsLengthSup i dc = invLen i p.1 p.2`. Unfold `invariantsLengthSup`. Conclude with `hpeq`. Rewrite using `[hH]`.
+
+Establish `hm : qU (eON i).toNat (invLen i p.1 p.2) ∈ Finset.image (fun p => lenUnit (D.nd.l i) ↥(Representation.invariants (MonoidHom.comp (KOtw D.nd i ↑p.2) (decS D.nd p.1)))) (dc.col ×ˢ Finset.Ioo 0 D.R.t)` using `Finset.mem_image.2 ⟨p, hp, rfl⟩`. Take `⟨m, hmax⟩` from `Finset.max_of_mem hm`. Rewrite using `[hmax, WithBot.unbotD_coe]`. Conclude with `Finset.le_max_of_eq hm hmax`.
+-/
 theorem qU_H0N_le : qU (eON i).toNat (invariantsLengthSup i dc) ≤ h0 D.nd i dc.col := by
   unfold Formalism.MainNotions.N.h0
   rcases (dc.col ×ˢ Finset.Ioo 0 D.R.t).eq_empty_or_nonempty with hs | hs
@@ -320,14 +410,26 @@ theorem qU_H0N_le : qU (eON i).toNat (invariantsLengthSup i dc) ≤ h0 D.nd i dc
     rw [hmax, WithBot.unbotD_coe]
     exact Finset.le_max_of_eq hm hmax
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vcc_eq_qU : D.nd.vcc i π =
     qU (eON i).toNat (Module.length (D.nd.O i) (D.nd.O i ⧸ ccAt (D.nd.T i) (D.nd.Z i) π)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sPi_eq_qU : Br.sPi D.loc D.nbr i ρ π = qU (eON i).toNat (sN i ρ π) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twist_invariants_unit_change (w : HeightOneSpectrum (𝓞 D.host.E)) :
     Br.h0W i w ρ π = qU (eON i).toNat (twistInvariantsLength i ρ π w) := rfl
 
+/- English proof (translation)
+Take `⟨e, he0, he⟩` from `eON_eq i`. Unfold `ShaN`. Rewrite using `[he, ENat.toNat_natCast, qU_eO_mul he0]`. Take `⟨hk0, hkt⟩` from `Finset.mem_Ioo.mp hk`. Rewrite using `[D.nd.sha_eq (D.nd.l i) k hk0 hkt _ (ENat.natCast_toNat hf.ne).symm]`.
+-/
 theorem qU_ShaN {k : ℕ} (hk : k ∈ Finset.Ioo 0 D.R.t)
     (hf : Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (k : ℤ) < ⊤) :
     qU (eON i).toNat (ShaN i k) = D.what₂.shaLen (D.nd.l i) k := by
@@ -337,16 +439,25 @@ theorem qU_ShaN {k : ℕ} (hk : k ∈ Finset.Ioo 0 D.R.t)
   obtain ⟨hk0, hkt⟩ := Finset.mem_Ioo.mp hk
   rw [D.nd.sha_eq (D.nd.l i) k hk0 hkt _ (ENat.natCast_toNat hf.ne).symm]
 
+/- English proof (translation)
+Rewrite using `[lenUnit_eq_qU, Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span]`.
+-/
 theorem lenUnit_zeta (v : HeightOneSpectrum (𝓞 D.host.E)) :
     lenUnit (O := D.nd.O i) (D.nd.l i) (D.nd.O i ⧸ Ideal.span {D.nd.zeta i v - 1}) =
       qU (eON i).toNat (IsDiscreteValuationRing.addVal (D.nd.O i) (D.nd.zeta i v - 1)) := by
   rw [lenUnit_eq_qU, Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span]
 
+/- English proof (translation)
+Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `sub_ne_zero.mpr (hz v hv)`.
+-/
 theorem zeta_ne_top (hz : ZetaNe i) {v : HeightOneSpectrum (𝓞 D.host.E)} (hv : v ∈ D.nd.Q i) :
     IsDiscreteValuationRing.addVal (D.nd.O i) (D.nd.zeta i v - 1) ≠ ⊤ := by
   rw [Ne, IsDiscreteValuationRing.addVal_eq_top_iff]
   exact sub_ne_zero.mpr (hz v hv)
 
+/- English proof (translation)
+The claim follows from `(Fintype.card_congr (Formalism.MainNotions.N.RepresentationBoundsCohomology.blockZeroEquiv D.R.r D.R.t).symm).trans (Fintype.card_fin _)`.
+-/
 theorem card_first_block : Fintype.card {a // RepresentationBoundsCohomology.blk D.R a = 0} = D.R.r :=
   (Fintype.card_congr (Formalism.MainNotions.N.RepresentationBoundsCohomology.blockZeroEquiv D.R.r D.R.t).symm).trans (Fintype.card_fin _)
 
@@ -359,6 +470,9 @@ variable {D : D7} (i : D.nd.Loc) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r)
 
 open Formalism.MainNotions.N.Glob Formalism.BasicNotions.Loc
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.NData.vdel`. Take `⟨e, he, hE⟩` from `eON_eq i`. Rewrite using `[hvδ, hE, ENat.toNat_natCast, qU_eO_mul he, ENat.toNat_natCast]`. Use `push_cast`. Apply the tactic sequence `first | rfl | simp [Finset.sum_add_distrib] | ring`.
+-/
 theorem qU_vdel {vδ : ℕ∞}
     (hvδ : vδ = eON i * ((∑ k ∈ Finset.Ioo 0 D.R.t, (D.nd.s0 i + padicValNat (D.nd.l i) k) : ℕ) : ℕ∞)) :
     qU (eON i).toNat vδ = D.nd.vdel i := by
@@ -368,6 +482,43 @@ theorem qU_vdel {vδ : ℕ∞}
   push_cast
   first | rfl | simp [Finset.sum_add_distrib] | ring
 
+/- English proof (translation)
+Take `⟨e, he0, he⟩` from `eON_eq i`. Establish `hEt : (eON i).toNat = e` using `by rw [he, ENat.toNat_natCast]`. Establish `hEpos : (0 : ℚ) < ((eON i).toNat : ℚ)` using `by rw [hEt]; exact_mod_cast Nat.pos_of_ne_zero he0`. Establish `hR : ∀ w ∈ rowsN i dc, rowLen w ≠ ⊤` using `fun w hw => (hT4 w hw).1`. Establish `hH : ∀ w ∈ Finset.univ.image (colIdx i dc), h0d w ≠ ⊤`.
+
+Introduce `n hn`. Rewrite `hn` using `[cols_eq]`. Conclude with `ne_top_of_le_ne_top (hF1 _ (plOf_mem_col i dc hn)).ne (hT3 n hn)`. Establish `hv : vδ ≠ ⊤` using `by rw [hvδ, he, ← Nat.cast_mul]; exact ENat.natCast_ne_top _`. Establish `hs' : sN i ρ π ≠ ⊤` using `(show sN i ρ π < ⊤ from hs).ne`.
+
+Establish `hSha : ∀ k ∈ Finset.Ioo 0 D.R.t, ShaN i k ≠ ⊤`. Introduce `k hk`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp (hsha k hk).ne`. Unfold `ShaN`. Rewrite using `[← hm, he, ← Nat.cast_mul]`.
+
+Conclude with `ENat.natCast_ne_top _`. Establish `hz' : ∀ n ∈ qsN i dc, IsDiscreteValuationRing.addVal (D.nd.O i) (zetaN i dc n - 1) ≠ ⊤`. Introduce `n hn`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.mp hn`. Unfold `zetaN`.
+
+Rewrite using `[plOf_idx i dc (q_mem_plSet i dc hv)]`. Conclude with `zeta_ne_top i hz hv`. Establish `key` using `inequality_of_finite_terms e he0 (eON i) he _ (rowsN i dc) (Finset.univ.image (colIdx i dc)) (qsN i dc) rowLen h0d (fun w => IsDiscreteValuationRing.addVal (D.nd.O i) (zetaN i dc w - 1)) (e'N i dc e') (jN i ρ π dc) (fun w => ReciprocityTheory.Gal.locDeg (plOf i dc w)) vδ (sN i ρ …`. Rewrite `key` using `[← hEt]`. Rewrite using `[vcc_eq_qU]`.
+
+Establish `hvd` using `qU_vdel i hvδ`. Establish `A0 : ∑ w ∈ dc.row ∪ dc.col, TruncatedSeriesCountingIdentities.lenW i ρ π dc lenRow e' w = ∑ w ∈ dc.row, lenRow w + ∑ w ∈ dc.col, TruncatedSeriesCountingIdentities.lenW i ρ π dc lenRow e' w`. Rewrite using `[Finset.sum_union dc.disj]`. Use `congr 1`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations.
+
+Unfold `TruncatedSeriesCountingIdentities.lenW`. Rewrite using `[dif_neg (Finset.disjoint_left.mp dc.disj hw)]`. Establish `A1 : ∑ n ∈ rowsN i dc, qU (eON i).toNat (rowLen n) ≤ ∑ w ∈ dc.row, lenRow w`. Rewrite using `[sum_rowsN]`. Use `Finset.sum_le_sum fun v hv => ?_` and prove the remaining obligations.
+
+Establish `hn : idx i dc v ∈ rowsN i dc` using `Finset.mem_image_of_mem _ hv`. Establish `h2` using `(hT4 _ hn).2`. Rewrite `h2` using `[plOf_idx i dc (row_mem_plSet i dc hv)]`. Unfold `qU`. Rewrite using `[div_le_iff₀ hEpos]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `A2 : ∑ w ∈ Finset.univ.image (colIdx i dc), ((e'N i dc e' w : ℚ) + (jN i ρ π dc w : ℚ) * ((e'N i dc e' w : ℚ) + qU (eON i).toNat vδ) + 2 * qU (eON i).toNat vδ + qU (eON i).toNat (h0d w)) ≤ ∑ w ∈ dc.col, TruncatedSeriesCountingIdentities.lenW i ρ π dc lenRow e' w`. Rewrite using `[sum_cols]`. Use `Finset.sum_le_sum fun v hv => ?_` and prove the remaining obligations. Establish `hpo` using `plOf_idx i dc (col_mem_plSet i dc hv)`.
+
+Establish `hw : v ∈ placesOver D.host.E (D.nd.l i)` using `(dc.cover v).1 (Or.inr hv)`. Establish `hjw : ∀ u (hu : u = v) (h : u ∈ placesOver D.host.E (D.nd.l i)), Br.jW D.loc D.nbr i u h ρ π = Br.jW D.loc D.nbr i v hw ρ π`. Introduce and unpack `u rfl h`. Both sides reduce to the same expression. Establish `hj : jN i ρ π dc (idx i dc v) = Br.jW D.loc D.nbr i v hw ρ π`.
+
+Unfold `jN`. Rewrite using `[dif_pos (by rw [hpo]; exact hw)]`. Conclude with `hjw _ hpo _`. Establish `he' : e'N i dc e' (idx i dc v) = e' v` using `by unfold e'N; rw [hpo]`. Establish `hn : idx i dc v ∈ colsN i dc` using `Finset.mem_image_of_mem _ hv`.
+
+Establish `hh : qU (eON i).toNat (h0d (idx i dc v)) ≤ Br.h0W i v ρ π`. Rewrite using `[twist_invariants_unit_change]`. Establish `h3` using `hT3 _ hn`. Rewrite `h3` using `[hpo]`. Conclude with `qU_mono h3 (hF1 v hv).ne`.
+
+Unfold `TruncatedSeriesCountingIdentities.lenW`. Rewrite using `[dif_pos hv]`. Unfold `Br.lenCol`. Rewrite using `[hj, he', hvd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `A3 : qU (eON i).toNat (sN i ρ π) = Br.sPi D.loc D.nbr i ρ π` using `(sPi_eq_qU i ρ π).symm`. Establish `A4 : ∑ k ∈ Finset.Ioo 0 D.R.t, qU (eON i).toNat (ShaN i k) = ∑ k ∈ Finset.Ioo 0 D.R.t, D.what₂.shaLen (D.nd.l i) k` using `Finset.sum_congr rfl fun k hk => qU_ShaN i hk (hsha k hk)`. Establish `A5 : ((padicValNat (D.nd.l i) (classNumber D.host.E) : ℕ) : ℚ) = (padicValNat (D.nd.l i) (Formalism.MainNotions.N.hE D.host) : ℚ)` using `rfl`. Establish `A6 : ∑ n ∈ rowsN i dc, ((ReciprocityTheory.Gal.locDeg (plOf i dc n) : ℚ) + 2) * (cB : ℚ) = ∑ w ∈ dc.row, ((Formalism.MainNotions.N.locDeg D.host.E w : ℚ) + 2) * (cB : ℚ)`. Rewrite using `[sum_rowsN]`.
+
+Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[plOf_idx i dc (row_mem_plSet i dc hv)]`. Both sides reduce to the same expression. Establish `A7 : 4 * ((Nn : ℚ) + D.R.t) * (((Finset.univ.image (colIdx i dc)).card : ℕ) + 1 : ℚ) * qU (eON i).toNat vδ = 4 * (D.R.nV : ℚ) * ((dc.col.card : ℚ) + 1) * D.nd.vdel i`. Rewrite using `[card_cols, hvd, hN]`.
+
+Unfold `Ranks.nV`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `A8 : (D.R.t : ℚ) * (((Finset.univ.image (colIdx i dc)).card : ℕ) : ℚ) * qU (eON i).toNat (invariantsLengthSup i dc) ≤ (D.R.t : ℚ) * (dc.col.card : ℚ) * h0 D.nd i dc.col`. Rewrite using `[card_cols]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (qU_H0N_le i dc) (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))`. Establish `A9 : ∑ n ∈ qsN i dc, qU (eON i).toNat (IsDiscreteValuationRing.addVal (D.nd.O i) (zetaN i dc n - 1)) = ∑ v ∈ D.nd.Q i, lenUnit (O` using `D.nd.O i) (D.nd.l i) (D.nd.O i ⧸ Ideal.span {D.nd.zeta i v - 1}) := by`. Rewrite using `[sum_qsN]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Unfold `zetaN`.
+
+Rewrite using `[plOf_idx i dc (q_mem_plSet i dc hv), lenUnit_zeta]`. Rewrite `key` using `[A3, A4, A5, A6, A7, A9]`. Rewrite using `[A0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem selmer_length_inequality (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ) (e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ)
     (cB : ℕ) (rowLen h0d : ℕ → ℕ∞) (vδ : ℕ∞) (Nn : ℕ)
     (hvδ : vδ = eON i * ((∑ k ∈ Finset.Ioo 0 D.R.t, (D.nd.s0 i + padicValNat (D.nd.l i) k) : ℕ) : ℕ∞))
@@ -526,6 +677,9 @@ def SelmerLengthInequality (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ) 
         (D.R.t : ℕ∞) * ∑ w ∈ qsN i dc, IsDiscreteValuationRing.addVal (D.nd.O i) (zetaN i dc w - 1) ∧
     TieRow i dc rowLen lenRow ∧ LeTwistInvariantsAtColumns i ρ π dc h0d
 
+/- English proof (translation)
+Unfold `TruncatedSeriesCountingIdentities.GlobalLatticeIndexTheorem`. Introduce `h0 h1 hZ hs hsha`. Take `⟨rowLen, h0d, vδ, Nn, hvδ, hN, hd, hT4, hT3⟩` from `hD h0 h1 hZ hs hsha`. Conclude with `selmer_length_inequality i ρ π dc lenRow e' cB rowLen h0d vδ Nn hvδ hN hd hT4 hT3 hF1 hF2 hz hs hsha`.
+-/
 theorem theorem_of_display_inequality (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ)
     (e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ)
     (hD : D.nd.l i ≠ D.host.g 0 → D.nd.l i ≠ D.host.g 1 → π ∈ D.nd.Z i → Br.sFin D.loc D.nbr i ρ π →
@@ -538,12 +692,18 @@ theorem theorem_of_display_inequality (lenRow : HeightOneSpectrum (𝓞 D.host.E
   obtain ⟨rowLen, h0d, vδ, Nn, hvδ, hN, hd, hT4, hT3⟩ := hD h0 h1 hZ hs hsha
   exact selmer_length_inequality i ρ π dc lenRow e' cB rowLen h0d vδ Nn hvδ hN hd hT4 hT3 hF1 hF2 hz hs hsha
 
+/- English proof (translation)
+Unfold `ZetaNe TruncatedSeriesCountingIdentities.TameGeneratorConditions at *`. Introduce `v hv`. Establish `h2` using `h v (Or.inr hv)`. The claim follows by propositional logic.
+-/
 theorem zeta_ne_one_of_g5_extra (h : TruncatedSeriesCountingIdentities.TameGeneratorConditions i) : ZetaNe i := by
   unfold ZetaNe TruncatedSeriesCountingIdentities.TameGeneratorConditions at *
   intro v hv
   have h2 := h v (Or.inr hv)
   tauto
 
+/- English proof (translation)
+The claim follows from `theorem_of_display_inequality i ρ π dc lenRow e' cB hD hF1 hF2 (zeta_ne_one_of_g5_extra i h5x)`.
+-/
 theorem theorem_of_display (lenRow : HeightOneSpectrum (𝓞 D.host.E) → ℚ)
     (e' : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ)
     (hD : D.nd.l i ≠ D.host.g 0 → D.nd.l i ≠ D.host.g 1 → π ∈ D.nd.Z i → Br.sFin D.loc D.nbr i ρ π →

@@ -6,6 +6,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ClearDen
 
+/- English proof (translation)
+Introduce `A _ g L u U hU r k ⟨f, hf⟩`. Establish `hloc` using `hU.isLocalization_basicOpen r`. Take `⟨⟨b₀, ⟨_, n, rfl⟩⟩, hb⟩` from `IsLocalization.surj (Submonoid.powers r) f`. Simplify using `only at hb`. Use `⟨n, fun N hN => ⟨r ^ (N - n) * b₀, fun z hz => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hzU : ⊤ ≤ (u.ex z).left ⁻¹ᵁ U` using `GlobalTheory.top_le_preimage_mono _ (A.left.basicOpen_le r) hz`. Establish `key : ∀ c : Γ(A.left, U), val u.ex (A.left.basicOpen r) (algebraMap Γ(A.left, U) Γ(A.left, A.left.basicOpen r) c) z = val u.ex U c z`. Introduce `c`. Conclude with `GlobalTheory.valAt'_map _ (homOfLE (A.left.basicOpen_le r)).op c hz`. Establish `e0` using `congrArg (fun y => val u.ex (A.left.basicOpen r) y z) hb`.
+
+Establish `e1 : val u.ex (A.left.basicOpen r) f z * val u.ex U r z ^ n = val u.ex U b₀ z`. Rewrite using `[← key b₀, ← e0]`. Unfold `val`. Rewrite using `[GlobalTheory.valAt'_mul]`. Use `congr 1`.
+
+Use `key (r ^ n)` as an intermediate fact. Unfold `val at this`. Rewrite using `[this, GlobalTheory.valAt'_pow _ hzU]`. Establish `e2 : val u.ex U (r ^ (N - n) * b₀) z = val u.ex U r z ^ (N - n) * val u.ex U b₀ z`. Unfold `val`.
+
+Rewrite using `[GlobalTheory.valAt'_mul, GlobalTheory.valAt'_pow _ hzU]`. Rewrite using `[e2, ← e1, hf z hz, ← Nat.sub_add_cancel hN, pow_add, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pow_mul_eq_val : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), ∀ (U : A.left.Opens), IsAffineOpen U → ∀ (r : Γ(A.left, U)) (k : (Fin g → ℂ) → ℂ), IsReg u.ex (A.left.basicOpen r) k → ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → ∃ b : Γ(A.left, U), ∀ z ∈ pre u.ex (A.left.basicOpen r), val u.ex U b z = val u.ex U r z ^ N * k z := by
   intro A _ g L u U hU r k ⟨f, hf⟩
   have hloc := hU.isLocalization_basicOpen r

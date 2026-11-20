@@ -42,6 +42,11 @@ def ConvU {n : ℕ} (w : Equiv.Perm (Fin n)) (α : Fin (n / 2) → ℂˣ) : Prop
 def absU {m : ℕ} (α : Fin m → ℂˣ) : Fin m → ℂˣ :=
   fun i => Units.mk0 ((‖(α i : ℂ)‖ : ℝ) : ℂ) (by simp)
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single (v j)]`. Rewrite using `[hx i (v j) (by simpa using hij), zero_mul]`. Introduce `b _ hb`. Rewrite using `[hy b j hb, mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem IsWeylRep.mul {R : Type} [CommRing R] {n : ℕ} {w v : Equiv.Perm (Fin n)} {x y : GL (Fin n) R}
     (hx : IsWeylRep w x) (hy : IsWeylRep v y) : IsWeylRep (w * v) (x * y) := by
   intro i j hij
@@ -50,6 +55,15 @@ theorem IsWeylRep.mul {R : Type} [CommRing R] {n : ℕ} {w v : Equiv.Perm (Fin n
   · intro b _ hb; rw [hy b j hb, mul_zero]
   · simp
 
+/- English proof (translation)
+Establish `key : ∀ i j, ((y⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i (v j) * (y : Matrix (Fin n) (Fin n) R) (v j) j = if i = j then 1 else 0`. Introduce `i j`. Establish `h` using `congrFun (congrFun (Units.inv_mul y) i) j`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single (v j)]`. Rewrite using `[h, Matrix.one_apply]`.
+
+Introduce `b _ hb`. Rewrite using `[hy b j hb, mul_zero]`. Simplify using the standard rewrite rules. Establish `hv : ∀ j, v (v⁻¹ j) = j` using `fun j => by simp`. Introduce `i j hij`.
+
+Establish `hu : IsUnit ((y : Matrix (Fin n) (Fin n) R) j (v⁻¹ j))`. Establish `h` using `key (v⁻¹ j) (v⁻¹ j)`. Rewrite `h` using `[hv, if_pos rfl]`. Conclude with `IsUnit.of_mul_eq_one_right _ h`. Establish `h` using `key i (v⁻¹ j)`.
+
+Rewrite `h` using `[hv, if_neg hij]`. Conclude with `hu.mul_left_eq_zero.1 h`.
+-/
 theorem IsWeylRep.inv {R : Type} [CommRing R] {n : ℕ} {v : Equiv.Perm (Fin n)} {y : GL (Fin n) R}
     (hy : IsWeylRep v y) : IsWeylRep v⁻¹ y⁻¹ := by
   have key : ∀ i j, ((y⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i (v j) *

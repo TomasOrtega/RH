@@ -8,17 +8,44 @@ open MeasureTheory
 
 namespace GlobalTheory.CompanionTheory.Shear
 
+/- English proof (translation)
+Establish `h1 : Integrable (fun t : ℝ => g (t - c))` using `hgi.comp_sub_right c`. Conclude with `h1.comp_mul_left' hα`.
+-/
 theorem slice_integrable (g : ℝ → ℝ) (hgi : Integrable g) {α : ℝ} (hα : α ≠ 0) (c : ℝ) :
     Integrable (fun y : ℝ => g (α * y - c)) := by
   have h1 : Integrable (fun t : ℝ => g (t - c)) := hgi.comp_sub_right c
   exact h1.comp_mul_left' hα
 
+/- English proof (translation)
+Establish `h1` using `Measure.integral_comp_mul_left (fun t : ℝ => g (t - c)) α`. Establish `h2 : ∫ t : ℝ, g (t - c) = ∫ x, g x` using `integral_sub_right_eq_self g c`. Rewrite using `[h1, h2, smul_eq_mul]`.
+-/
 theorem slice_integral (g : ℝ → ℝ) {α : ℝ} (c : ℝ) :
     ∫ y : ℝ, g (α * y - c) = |α⁻¹| * ∫ x, g x := by
   have h1 := Measure.integral_comp_mul_left (fun t : ℝ => g (t - c)) α
   have h2 : ∫ t : ℝ, g (t - c) = ∫ x, g x := integral_sub_right_eq_self g c
   rw [h1, h2, smul_eq_mul]
 
+/- English proof (translation)
+Use `set F : ℝ × ℝ → ℝ := fun p => g (α * p.2 - β * p.1) * (φ p.1 * φ p.2) with hF`. Establish `hFm : Measurable F`. Apply `Measurable.mul` to reduce the goal to its premises. Conclude with `hg.comp (by fun_prop)`. Conclude with `(hφ.comp measurable_fst).mul (hφ.comp measurable_snd)`.
+
+Establish `hF0 : ∀ p, 0 ≤ F p` using `fun p => mul_nonneg (hg0 _) (mul_nonneg (hφ0 _) (hφ0 _))`. Use `set C : ℝ := |α⁻¹| * ∫ x, g x with hC`. Establish `hdom : ∀ x y, F (x, y) ≤ φ x * g (α * y - β * x)`. Introduce `x y`. Establish `h1 : φ x * φ y ≤ φ x`.
+
+Use `mul_le_mul_of_nonneg_left (hφ1 y) (hφ0 x)` as an intermediate fact. Simplify using `using this`. Use `mul_le_mul_of_nonneg_left h1 (hg0 (α * y - β * x))` as an intermediate fact. Simplify `this` using `[hF, mul_comm]`. Establish `hslice : ∀ x, Integrable (fun y => F (x, y))`.
+
+Introduce `x`. Use `Integrable.mono' ((slice_integrable g hgi hα (β * x)).const_mul (φ x)) (hFm.comp measurable_prodMk_left).aestronglyMeasurable ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall (fun y => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (hF0 _)]`. Conclude with `hdom x y`.
+
+Establish `hbound : ∀ x, ∫ y, F (x, y) ≤ φ x * C`. Introduce `x`. Establish `h1 : ∫ y, F (x, y) ≤ ∫ y, φ x * g (α * y - β * x)` using `integral_mono (hslice x) ((slice_integrable g hgi hα (β * x)).const_mul (φ x)) (fun y => hdom x y)`. Rewrite `h1` using `[integral_const_mul, slice_integral]`. Conclude with `h1`.
+
+Establish `hnn : ∀ x, 0 ≤ ∫ y, F (x, y)` using `fun x => integral_nonneg (fun y => hF0 _)`. Establish `hmeas : AEStronglyMeasurable (fun x => ∫ y, F (x, y)) volume` using `(hFm.stronglyMeasurable.integral_prod_right (ν := volume)).aestronglyMeasurable`. Establish `hint : Integrable (fun x => ∫ y, F (x, y))`. Use `Integrable.mono' (hφi.mul_const C) hmeas ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall (fun x => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (hnn x)]`. Conclude with `hbound x`. Establish `hFi : Integrable F (volume.prod volume)`. Rewrite using `[integrable_prod_iff hFm.aestronglyMeasurable]`. Use `⟨Filter.Eventually.of_forall hslice, ?_⟩` and prove the remaining obligations.
+
+Establish `: (fun x => ∫ y, ‖F (x, y)‖) = fun x => ∫ y, F (x, y)`. Use function extensionality and compare the values at `x`. Use `integral_congr_ae (Filter.Eventually.of_forall (fun y => ?_))` and prove the remaining obligations. Simplify using `only [Real.norm_eq_abs, abs_of_nonneg (hF0 _)]`. Rewrite using `[this]`.
+
+Conclude with `hint`. Use `⟨hFi, ?_⟩` and prove the remaining obligations. Establish `hval : ∫ p : ℝ × ℝ, F p = ∫ x, ∫ y, F (x, y)` using `integral_prod F hFi`. Establish `hle : ∫ x, ∫ y, F (x, y) ≤ ∫ x, φ x * C` using `integral_mono hint (hφi.mul_const C) hbound`. Rewrite `hle` using `[integral_mul_const]`.
+
+Establish `hCe : (∫ x, φ x) * C = (∫ x, g x) * (∫ x, φ x) / |α|`. Rewrite using `[hC, abs_inv]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hval]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_sided (g φ : ℝ → ℝ) (hg : Measurable g) (hφ : Measurable φ)
     (hgi : Integrable g) (hφi : Integrable φ)
     (hg0 : ∀ x, 0 ≤ g x) (hφ0 : ∀ x, 0 ≤ φ x) (hφ1 : ∀ x, φ x ≤ 1)
@@ -84,6 +111,15 @@ theorem one_sided (g φ : ℝ → ℝ) (hg : Measurable g) (hφ : Measurable φ)
   rw [hval]
   linarith
 
+/- English proof (translation)
+Take `⟨hI, hA⟩` from `one_sided g φ hg hφ hgi hφi hg0 hφ0 hφ1 α β hα`. Take `⟨hI', hB'⟩` from `one_sided g φ hg hφ hgi hφi hg0 hφ0 hφ1 (-β) (-α) (neg_ne_zero.mpr hβ)`. Use `⟨hI, ?_⟩` and prove the remaining obligations. Establish `hsw : ∫ p : ℝ × ℝ, g (α * p.2 - β * p.1) * (φ p.1 * φ p.2) = ∫ p : ℝ × ℝ, g (-β * p.2 - -α * p.1) * (φ p.1 * φ p.2)`. Establish `h` using `integral_prod_swap (μ := (volume : Measure ℝ)) (ν := (volume : Measure ℝ)) (fun p : ℝ × ℝ => g (α * p.2 - β * p.1) * (φ p.1 * φ p.2))`.
+
+Rewrite using `[Measure.volume_eq_prod, ← h]`. Use `integral_congr_ae (Filter.Eventually.of_forall (fun p => ?_))` and prove the remaining obligations. Simplify using `only [Prod.fst_swap, Prod.snd_swap]`. Establish `: α * p.1 - β * p.2 = -β * p.2 - -α * p.1` using `by ring`. Rewrite using `[this, mul_comm (φ p.2)]`.
+
+Establish `hB : ∫ p : ℝ × ℝ, g (α * p.2 - β * p.1) * (φ p.1 * φ p.2) ≤ (∫ x, g x) * (∫ x, φ x) / |β|`. Rewrite using `[hsw]`. Simplify `hB'` using `[abs_neg]`. Break down `max_cases |α| |β| with ⟨h, _⟩ | ⟨h, _⟩` into its components or cases. Rewrite using `[h]`.
+
+Conclude with `hA`. Rewrite using `[h]`. Conclude with `hB`.
+-/
 theorem integral_shear_le (g φ : ℝ → ℝ) (hg : Measurable g) (hφ : Measurable φ)
     (hgi : Integrable g) (hφi : Integrable φ)
     (hg0 : ∀ x, 0 ≤ g x) (hφ0 : ∀ x, 0 ≤ φ x) (hφ1 : ∀ x, φ x ≤ 1)

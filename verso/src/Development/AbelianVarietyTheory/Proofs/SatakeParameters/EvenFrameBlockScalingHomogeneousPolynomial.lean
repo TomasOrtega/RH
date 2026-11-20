@@ -9,6 +9,23 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ModelPartitionSi
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Formalism.MainNotions Formalism.L2.Ker Formalism.L2.PairingIndexBounds.F Formalism.L2.KerInert Formalism.UG Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.L2.KerInert.SecondKernelProjection Formalism.L2.KerInert.QuadraticBaseChangeGL3 Formalism.L2.KerInert.SecondKernelDifference Formalism.L2.KerInert.SecondKernelHermitian GlobalTheory.TwV.DelA
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `p _ X D pos Kc _ _ _ fd c j La' d R hR`. Set `blk : Var (X.Pj (j + 1)) → Σ v : Fin (X.Pj (j + 1)).nV, Fin ((X.Pj (j + 1)).n' v)` to `fun y => ⟨y.1, y.2.1⟩`. Set `E : (Σ v : Fin (X.Pj (j + 1)).nV, Fin ((X.Pj (j + 1)).n' v)) → Kc` to `fun b => if IsOddPos b.2 then 1 else c`. Establish `hf : ∀ y, GlobalTheory.FrameB.frF X Kc j (GlobalTheory.FrameB.wV Kc fd c j La') y = MvPolynomial.C (E (blk y)) * GlobalTheory.FrameB.frF X Kc j (GlobalTheory.FrameB.mk Kc fd j La') y`. Introduce `y`.
+
+Unfold `GlobalTheory.FrameB.frF GlobalTheory.FrameB.wV`. Simplify using `only [E, blk]`. Use `split_ifs with h1 h2 h2`. Simplify using `only [MvPolynomial.C_1, one_mul]`. Conclude with `absurd h1 h2`.
+
+Conclude with `absurd h2 h1`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, MvPolynomial.C_mul, Finset.mul_sum, mul_assoc]`. Establish `hm : ∀ m ∈ R.support, (∏ y, E (blk y) ^ m y) = ∏ τ, if IsOddPos (pos.symm τ).2 then 1 else c ^ d τ`. Introduce `m hmR`. Rewrite using `[← Finset.prod_fiberwise Finset.univ blk, ← (posJ X D pos (j + 1)).prod_comp]`.
+
+Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hpb : pos.symm (posJ X D pos (j + 1) b) = b` using `pos.symm_apply_apply b`. Establish `h2 : ∏ y ∈ Finset.univ.filter (fun y => blk y = b), E (blk y) ^ m y = E b ^ (∑ y ∈ Finset.univ.filter (fun y => blk y = b), m y)`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[(Finset.mem_filter.1 hy).2]`. Rewrite using `[h2, hpb]`. Simplify using `only [E]`. Use `split_ifs with h1 h3 h3`. Conclude with `one_pow _`.
+
+Conclude with `absurd h1 h3`. Conclude with `absurd h3 h1`. Establish `hd` using `hR m hmR (posJ X D pos (j + 1) b) (by rw [hpb]; exact h1)`. Rewrite `hd` using `[Equiv.symm_apply_apply, ← Finset.sum_filter]`. Rewrite using `[← hd, ← Nat.cast_sum, zpow_natCast]`.
+
+Unfold `GlobalTheory.FrameB.tau0`. Use `conv_lhs => rw [R.as_sum]`. Use `conv_rhs => rw [R.as_sum]`. Simplify using `only [map_sum, Finset.smul_sum, MvPolynomial.aeval_monomial]`. Use `Finset.sum_congr rfl fun m hmR => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hm m hmR]`. Simplify using `only [hf]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, ← map_pow, ← map_prod, Algebra.smul_def, MvPolynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.FrameB.evenFrameBlock_scaling_homogeneous_polynomial : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (Kc : Type) [Field Kc] [Algebra (Formalism.MainNotions.FormalGroupSystem.K0 p) Kc] [Algebra X.G.Kf Kc] (fd : FData X D) (c : Kc) (j : ℕ) (La' : X.Lt (j + 1)) (d : D.what₂.Tau → ℤ) (R : XspC (X.Pj (j + 1)) Kc), (∀ m ∈ R.support, ∀ τ, ¬ IsOddPos (pos.symm τ).2 → (∑ x : Var (X.Pj (j + 1)), if (⟨x.1, x.2.1⟩ : Σ v : Fin (X.Pj (j + 1)).nV, Fin ((X.Pj (j + 1)).n' v)) = (posJ X D pos (j + 1)).symm τ then (m x : ℤ) else 0) = d τ) → GlobalTheory.FrameB.tau0 X Kc j (GlobalTheory.FrameB.wV Kc fd c j La') R = (∏ τ, if IsOddPos (pos.symm τ).2 then 1 else c ^ d τ) • GlobalTheory.FrameB.tau0 X Kc j (GlobalTheory.FrameB.mk Kc fd j La') R := by
   intro p _ X D pos Kc _ _ _ fd c j La' d R hR
   classical

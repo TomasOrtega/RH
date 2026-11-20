@@ -18,6 +18,11 @@ open Set
 section
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_mul]`. Establish `: (∑ j, A.fn (χ j)) = 1`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, HolAtlas.fn, Pi.one_apply]`. Rewrite using `[← map_sum, ← Complex.ofReal_sum, hχ, Complex.ofReal_one, map_one]`.
+
+Rewrite using `[this, one_mul]`.
+-/
 theorem eq_sum_fn_mul {N : ℕ} (χ : Fin N → M → ℝ) (hχ : ∀ y, ∑ j, χ j y = 1) (η : A.Fld) :
     η = ∑ j, A.fn (χ j) * η := by
   rw [← Finset.sum_mul]
@@ -27,6 +32,13 @@ theorem eq_sum_fn_mul {N : ℕ} (χ : Fin N → M → ℝ) (hχ : ∀ y, ∑ j, 
     rw [← map_sum, ← Complex.ofReal_sum, hχ, Complex.ofReal_one, map_one]
   rw [this, one_mul]
 
+/- English proof (translation)
+Establish `C` using `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A`. Establish `h0 : A.IsForm 0` using `by simpa using (C.2.1 0 1 1 C.1 C.1).2.2.1`. Establish `hd0 : A.dbar 0 = 0`. Use `(C.2.1 0 0 0 h0 h0).2.2.2.2.2.2.1` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+
+Conclude with `left_eq_add.mp this`. Establish `key : ∀ s : Finset (Fin N), A.IsForm (∑ j ∈ s, α j) ∧ A.dbar (∑ j ∈ s, α j) = ∑ j ∈ s, A.dbar (α j)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ⟨h0, hd0⟩`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Use `C.2.1 0 (α a) _ (hα a) ih.1` as an intermediate fact. Conclude with `⟨this.1, by rw [this.2.2.2.2.2.2.1, ih.2]⟩`. Conclude with `(key Finset.univ).2`.
+-/
 theorem dbar_sum {N : ℕ} (α : Fin N → A.Fld) (hα : ∀ j, A.IsForm (α j)) :
     A.dbar (∑ j, α j) = ∑ j, A.dbar (α j) := by
   have C := GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A
@@ -46,6 +58,11 @@ theorem dbar_sum {N : ℕ} (α : Fin N → A.Fld) (hα : ∀ j, A.IsForm (α j))
   exact (key Finset.univ).2
 end
 
+/- English proof (translation)
+Introduce `M _ _ _ _ _ _ n A η hη`. Establish `C` using `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A`. Take `⟨N, c, χ, hs, hsupp, hone⟩` from `GlobalTheory.T.exists_finite_smooth_partition_unity_holAtlas A`. Establish `hf : ∀ j, A.IsForm (A.fn (χ j) * η)` using `fun j => (C.2.1 0 _ _ (HolAtlas.isForm_fn A (hs j)) hη).2.1`. Establish `hdec` using `eq_sum_fn_mul A χ hone η`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[hdec, GlobalTheory.T.holAtlas_del_finset_sum A _ hf, GlobalTheory.T.holAtlas_integral_fin_sum_compact A _ (fun j => (C.2.1 0 _ _ (hf j) (hf j)).2.2.2.1)]`. Conclude with `Finset.sum_eq_zero fun j _ => GlobalTheory.T.integral_del_chartSupported_mul_form_eq_zero A η (χ j) (c j) hη (hs j) (hsupp j)`. Rewrite using `[hdec, dbar_sum A _ hf, GlobalTheory.T.holAtlas_integral_fin_sum_compact A _ (fun j => (C.2.1 0 _ _ (hf j) (hf j)).2.2.2.2.1)]`. Conclude with `Finset.sum_eq_zero fun j _ => GlobalTheory.T.integral_dbar_cutoff_mul_form_eq_zero_local_stokes A η (χ j) (c j) hη (hs j) (hsupp j)`.
+-/
 theorem stokes : ∀ (M : Type) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [CompactSpace M]
     [MeasurableSpace M] [BorelSpace M] (n : ℕ) (A : HolAtlas M n),
     ∀ η : A.Fld, A.IsForm η → A.integral (A.del η) = 0 ∧ A.integral (A.dbar η) = 0 := by

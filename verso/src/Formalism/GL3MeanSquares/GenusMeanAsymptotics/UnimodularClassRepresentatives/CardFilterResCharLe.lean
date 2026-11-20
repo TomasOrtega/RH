@@ -10,17 +10,31 @@ variable {K : Type} [Field K] [NumberField K]
 
 def resChar (P : Ideal (𝓞 K)) : ℕ := Ideal.absNorm (P.under ℤ)
 
+/- English proof (translation)
+The claim follows from `Int.ideal_span_absNorm_eq_self _`.
+-/
 theorem span_resChar (P : Ideal (𝓞 K)) : Ideal.span {(resChar P : ℤ)} = P.under ℤ := Int.ideal_span_absNorm_eq_self _
 
+/- English proof (translation)
+Introduce `h`. Establish `hPb : P = ⊥` using `Ideal.eq_bot_of_comap_eq_bot h`. Conclude with `Ring.ne_bot_of_isMaximal_of_not_isField hP (NumberField.RingOfIntegers.not_isField K) hPb`.
+-/
 theorem under_ne_bot {P : Ideal (𝓞 K)} (hP : P.IsMaximal) : P.under ℤ ≠ ⊥ := by
   intro h
   have hPb : P = ⊥ := Ideal.eq_bot_of_comap_eq_bot h
   exact Ring.ne_bot_of_isMaximal_of_not_isField hP (NumberField.RingOfIntegers.not_isField K) hPb
 
+/- English proof (translation)
+Use `haveI := hP`. Conclude with `Ideal.IsMaximal.under ℤ P`.
+-/
 theorem under_isMaximal {P : Ideal (𝓞 K)} (hP : P.IsMaximal) : (P.under ℤ).IsMaximal := by
   haveI := hP
   exact Ideal.IsMaximal.under ℤ P
 
+/- English proof (translation)
+Establish `h1` using `span_resChar P`. Establish `hmax` using `under_isMaximal hP`. Rewrite `hmax` using `[← h1]`. Establish `hne : ((resChar P : ℕ) : ℤ) ≠ 0`. Introduce `h0`.
+
+Apply `under_ne_bot hP` to reduce the goal to its premises. Rewrite using `[← h1, h0]`. Simplify using the standard rewrite rules. Establish `hpr` using `(Ideal.span_singleton_prime hne).mp hmax.isPrime`. Conclude with `Nat.prime_iff_prime_int.mpr hpr`.
+-/
 theorem resChar_prime {P : Ideal (𝓞 K)} (hP : P.IsMaximal) : (resChar P).Prime := by
 
   have h1 := span_resChar P
@@ -34,6 +48,11 @@ theorem resChar_prime {P : Ideal (𝓞 K)} (hP : P.IsMaximal) : (resChar P).Prim
   have hpr := (Ideal.span_singleton_prime hne).mp hmax.isPrime
   exact Nat.prime_iff_prime_int.mpr hpr
 
+/- English proof (translation)
+Establish `hp` using `resChar_prime hP`. Use `haveI : P.LiesOver (Ideal.span {((resChar P : ℕ) : ℤ)}) := ⟨span_resChar P⟩`. Establish `h1` using `Ideal.absNorm_eq_pow_inertiaDeg P (Nat.prime_iff_prime_int.mp hp)`. Rewrite `h1` using `[show (((resChar P : ℕ) : ℤ)).natAbs = resChar P by simp]`. Use `⟨_, ?_, h1⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.one_le_iff_ne_zero]`. Introduce `h0`. Rewrite `h1` using `[h0, pow_zero, Ideal.absNorm_eq_one_iff]`. Conclude with `hP.ne_top h1`.
+-/
 theorem exists_absNorm_eq_pow {P : Ideal (𝓞 K)} (hP : P.IsMaximal) :
     ∃ k : ℕ, 1 ≤ k ∧ Ideal.absNorm P = resChar P ^ k := by
 
@@ -47,6 +66,9 @@ theorem exists_absNorm_eq_pow {P : Ideal (𝓞 K)} (hP : P.IsMaximal) :
   rw [h0, pow_zero, Ideal.absNorm_eq_one_iff] at h1
   exact hP.ne_top h1
 
+/- English proof (translation)
+Take `⟨k, hk, hk2⟩` from `exists_absNorm_eq_pow hP`. Rewrite using `[hk2]`. Conclude with `Nat.le_self_pow (by omega) _`.
+-/
 theorem resChar_le_absNorm {P : Ideal (𝓞 K)} (hP : P.IsMaximal) :
     resChar P ≤ Ideal.absNorm P := by
 
@@ -54,6 +76,11 @@ theorem resChar_le_absNorm {P : Ideal (𝓞 K)} (hP : P.IsMaximal) :
   rw [hk2]
   exact Nat.le_self_pow (by omega) _
 
+/- English proof (translation)
+Take `⟨k, hk, hk2⟩` from `exists_absNorm_eq_pow hP`. Establish `hp` using `resChar_prime hP`. Establish `hdvd : resChar P ∣ q ^ 2`. Rewrite using `[← hq, hk2]`. Conclude with `dvd_pow_self _ (by omega)`.
+
+Establish `hq0 : q ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : resChar P ^ k = 0` using `by rw [← hk2, hq]; simp`. Conclude with `hp.ne_zero (pow_eq_zero_iff (by omega) |>.mp h0)`. Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero hq0) (hp.dvd_of_dvd_pow hdvd)`.
+-/
 theorem resChar_le_of_sq {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {q : ℕ}
     (hq : Ideal.absNorm P = q ^ 2) : resChar P ≤ q := by
 
@@ -69,6 +96,17 @@ theorem resChar_le_of_sq {P : Ideal (𝓞 K)} (hP : P.IsMaximal) {q : ℕ}
   exact Nat.le_of_dvd (Nat.pos_of_ne_zero hq0) (hp.dvd_of_dvd_pow hdvd)
 
 set_option linter.deprecated false in
+/- English proof (translation)
+Distinguish the cases in `hn : ∃ P ∈ s, resChar P.1 = n`. Take `⟨P0, -, hP0⟩` from `hn`. Establish `hJ : Ideal.span {((n : ℕ) : ℤ)} = P0.1.under ℤ`. Rewrite using `[← hP0]`. Conclude with `span_resChar P0.1`.
+
+Use `haveI : (Ideal.span {((n : ℕ) : ℤ)}).IsMaximal := by`. Rewrite using `[hJ]`. Conclude with `under_isMaximal P0.2`. Establish `hJne : Ideal.span {((n : ℕ) : ℤ)} ≠ ⊥`. Rewrite using `[hJ]`.
+
+Conclude with `under_ne_bot P0.2`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.card_le_card_of_injOn (fun P => P.1) (by` and prove the remaining obligations. Introduce `P hP`. Rewrite using `[Finset.mem_coe, IsDedekindDomain.mem_primesOverFinset_iff hJne]`.
+
+Take `⟨-, hPn⟩` from `Finset.mem_filter.mp hP`. Use `⟨P.2.isPrime, ⟨?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hPn]`. Conclude with `span_resChar P.1) (fun a _ b _ h => Subtype.ext h)`. Use `_ ≤ finrank ℚ K := Ideal.card_primesOverFinset_le_finrank (𝓞 K) ℚ K hJne`.
+
+Use `push_neg at hn`. Rewrite using `[Finset.filter_false_of_mem (fun P hP => hn P hP)]`. Simplify using the standard rewrite rules.
+-/
 theorem card_filter_resChar_le (s : Finset {P : Ideal (𝓞 K) // P.IsMaximal}) (n : ℕ) :
     (s.filter (fun P => resChar P.1 = n)).card ≤ finrank ℚ K := by
 
@@ -98,6 +136,13 @@ theorem card_filter_resChar_le (s : Finset {P : Ideal (𝓞 K) // P.IsMaximal}) 
     rw [Finset.filter_false_of_mem (fun P hP => hn P hP)]
     simp
 
+/- English proof (translation)
+Establish `hs : Summable (fun n : ℕ => ((n : ℝ) ^ 2)⁻¹)` using `Real.summable_nat_pow_inv.mpr (by norm_num)`. Use `summable_of_sum_le (c := (finrank ℚ K : ℝ) * ∑' n : ℕ, ((n : ℝ) ^ 2)⁻¹) (fun P => by positivity) (fun u => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun P hP => by rw [(Finset.mem_filter.mp hP).2]), Finset.sum_const, nsmul_eq_mul]`.
+
+Use `_ ≤ ∑ n ∈ u.image (fun P => resChar P.1), (finrank ℚ K : ℝ) * ((n : ℝ) ^ 2)⁻¹ := by`. Use `Finset.sum_le_sum (fun n _ => ?_)` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Conclude with `card_filter_resChar_le u n` after adjusting the coercions. Use `_ = (finrank ℚ K : ℝ) * ∑ n ∈ u.image (fun P => resChar P.1), ((n : ℝ) ^ 2)⁻¹ := by`.
+
+Rewrite using `[Finset.mul_sum]`. Use `_ ≤ (finrank ℚ K : ℝ) * ∑' n : ℕ, ((n : ℝ) ^ 2)⁻¹ := by`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Conclude with `hs.sum_le_tsum _ (fun n _ => by positivity)`.
+-/
 theorem summable_resChar_sq :
     Summable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => ((resChar P.1 : ℝ) ^ 2)⁻¹) := by
 

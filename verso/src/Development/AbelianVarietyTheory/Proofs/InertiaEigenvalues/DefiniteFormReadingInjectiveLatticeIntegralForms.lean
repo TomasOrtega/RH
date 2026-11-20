@@ -23,6 +23,17 @@ section Alg
 variable {R K E V A : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K] [Field E] [Algebra R E]
   [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V] [AddCommGroup A] [Module ℂ A]
 
+/- English proof (translation)
+Establish `key : ∀ f : V, ((1 : E) ⊗ₜ[R] f : E ⊗[R] V) ∈ Submodule.span E (Set.range fun i => ((1 : E) ⊗ₜ[R] v i : E ⊗[R] V))` using `fun f => by`. Establish `hf : f ∈ Submodule.span K (Set.range v)` using `hv ▸ Submodule.mem_top`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+
+Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [TensorProduct.tmul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [TensorProduct.tmul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul a x _ hx`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := R) a`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hqK : algebraMap R K q ≠ 0` using `by simpa using hq0`. Establish `hqE : algebraMap R E q ≠ 0` using `fun h => hq0 (hE (h.trans (map_zero _).symm))`.
+
+Rewrite using `[← Submodule.smul_mem_iff _ hqE, algebraMap_smul, ← TensorProduct.tmul_smul, ← algebraMap_smul K q, smul_smul, mul_div_cancel₀ _ hqK, algebraMap_smul, TensorProduct.tmul_smul, ← algebraMap_smul E p]`. Conclude with `Submodule.smul_mem _ _ hx`. Use `Submodule.eq_top_iff'.2 fun y => ?_` and prove the remaining obligations. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add x y hx hy => exact add_mem hx hy`. Consider the case `tmul a f`. Establish `: (a ⊗ₜ[R] f : E ⊗[R] V) = a • ((1 : E) ⊗ₜ[R] f)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (key f)`.
+-/
 theorem span_one_tmul (hE : Function.Injective (algebraMap R E)) {I : Type} (v : I → V)
     (hv : Submodule.span K (Set.range v) = ⊤) :
     Submodule.span E (Set.range fun i => ((1 : E) ⊗ₜ[R] v i : E ⊗[R] V)) = ⊤ := by
@@ -52,6 +63,11 @@ theorem span_one_tmul (hE : Function.Injective (algebraMap R E)) {I : Type} (v :
     rw [this]
     exact Submodule.smul_mem _ _ (key f)
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero φ).2 fun y hy => ?_` and prove the remaining obligations. Establish `hy' : y ∈ Submodule.span E (Set.range u)` using `hu ▸ Submodule.mem_top`. Take `⟨l, rfl⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hy'`. Rewrite `hy` using `[Finsupp.sum, map_sum]`. Simplify using `only [map_smulₛₗ] at hy`.
+
+Establish `h` using `linearIndependent_iff'.1 hi _ _ hy`. Use `Finset.sum_eq_zero fun i hi' => ?_` and prove the remaining obligations. Establish `: l i = 0` using `ε.injective ((h i hi').trans (map_zero _).symm)`. Simplify using `only [this, zero_smul]`.
+-/
 theorem injective_of_indep {W : Type} [AddCommGroup W] [Module E W] {ε : E →+* ℂ} (φ : W →ₛₗ[ε] A) {I : Type} (u : I → W)
     (hu : Submodule.span E (Set.range u) = ⊤) (hi : LinearIndependent ℂ fun i => φ (u i)) : Function.Injective φ := by
   refine (injective_iff_map_eq_zero φ).2 fun y hy => ?_
@@ -64,6 +80,11 @@ theorem injective_of_indep {W : Type} [AddCommGroup W] [Module E W] {ε : E →+
   have : l i = 0 := ε.injective ((h i hi').trans (map_zero _).symm)
   simp only [this, zero_smul]
 
+/- English proof (translation)
+Use `linearIndependent_iff'.2 fun t c h i hi => ?_` and prove the remaining obligations. Use `choose d hd using fun i => RingHom.mem_fieldRange.1 (c i).2`. Establish `h1 : g (∑ i ∈ t, d i • v i) = 0`. Rewrite using `[map_sum, ← h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smulₛₗ, hd]`. Both sides reduce to the same expression. Establish `h2` using `linearIndependent_iff'.1 hv _ _ (hg (h1.trans (map_zero _).symm)) i hi`. Conclude with `Subtype.ext ((hd i).symm.trans (by rw [h2, map_zero]; rfl))`.
+-/
 theorem indep_fieldRange {e : K →+* ℂ} (g : V →ₛₗ[e] A) (hg : Function.Injective g) {I : Type} {v : I → V}
     (hv : LinearIndependent K v) : LinearIndependent e.fieldRange fun i => g (v i) := by
   refine linearIndependent_iff'.2 fun t c h i hi => ?_
@@ -78,6 +99,27 @@ theorem indep_fieldRange {e : K →+* ℂ} (g : V →ₛₗ[e] A) (hg : Function
 
 end Alg
 
+/- English proof (translation)
+Introduce `D c w ρ hρ j rd T ε hε hok hr`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hspan, hli⟩` from `exists_linearIndependent (FractionRing (D.ntw.Ok (c.twI w) (c.k' w))) (D.nexp.MtLat (c.twI w) (j.1 + 1) (c.sd w) (c.k' w) (c.Q w) (chr c w) : Set (D.nexp.MtV (c.twI w) (j.1 + 1) (c.sd w) (c.k' w) (c.Q w) (chr c w)))`. Rewrite `hspan` using `[D.nexp.MtLat_span]`. Establish `hE : Function.Injective (algebraMap (D.ntw.Ok (c.twI w) (c.k' w)) (KE c w))` using `fun a b h => ρ.eOk_injective (c.twI w) (c.sd w) (c.k' w) (by rw [← hε.apply, ← hε.apply, h])`.
+
+Use `injective_of_indep (rdE T hε) _ (span_one_tmul (K := FractionRing (D.ntw.Ok (c.twI w) (c.k' w))) hE (Subtype.val : s → _) (by rw [Subtype.range_coe]; exact hspan)) ?_` and prove the remaining obligations. Establish `h1` using `indep_fieldRange _ (T.rdV_inj _ _ _ hok) hli`. Establish `h2` using `GlobalTheory.T.linearIndependent_complex_of_subfield_coeffLattice D _ _ _ (hρ.base (c.twI w) j (c.sd w)) _ _ _ _ (hρ.isCoefRing_k (c.twI w) (c.sd w) (c.k' w)) (ρ.ek (c.twI w) (c.sd w) (c.k' w)).fieldRange (by rintro _ ⟨x, rfl⟩; exact ⟨_, rfl⟩) _ _ (fun a h => ((Base.mem_mtLat _ _ …`. Simplify `h2` using `only [rdE_tmul, map_one, one_smul]`. Take `⟨hg, hadm, -⟩` from `GlobalTheory.TwistGood.tw_good D _ _ ρ hρ (c.twI w) j (c.sd w) _ _ _ hok`.
+
+Establish `hle : (ρ.eOk (c.twI w) (c.sd w) (c.k' w)).range ≤ ringOf ε`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨algebraMap _ _ x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hε.apply, IsScalarTower.algebraMap_apply (D.ntw.Ok (c.twI w) (c.k' w)) (c.Oe w) (KE c w)]`. Both sides reduce to the same expression.
+
+Establish `hbc` using `GlobalTheory.T.thetaSeriesIntegralForms_eq_span_dedekindCoefRing D _ _ _ (hρ.base (c.twI w) j (c.sd w)) _ hg hadm _ _ _ _ _ (ρ.eOk_injective (c.twI w) (c.sd w) (c.k' w)) (hρ.isCoefRing_k (c.twI w) (c.sd w) (c.k' w)) (levLam_mem_eOk hr T hok) _ hle`. Establish `hsm : ∀ (a : c.Oe w) (y : Tgt c w (j.1 + 1)), rdE T hε (a • y) = ε (algebraMap _ _ a) • rdE T hε y` using `fun a y => by`. Rewrite using `[← algebraMap_smul (KE c w) a y, map_smulₛₗ]`. Introduce `F`. Rewrite using `[hε.twVia_eq, hbc]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `(T.mtLat_iff _ _ _ hok x).1 hx`.
+
+Use `⟨_, Submodule.subset_span ⟨f, hf, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.mk_apply, rdE_tmul, map_one, one_smul]`. Consider the case `zero => exact ⟨0, zero_mem _, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x', hx, rfl⟩` from `hx`.
+
+Take `⟨y', hy, rfl⟩` from `hy`. Conclude with `⟨x' + y', add_mem hx hy, map_add _ _ _⟩`. Consider the case `smul a x _ hx`. Take `⟨x', hx, rfl⟩` from `hx`. Take `⟨_, a, rfl⟩` from `a`.
+
+Conclude with `⟨a • x', Submodule.smul_mem _ _ hx, hsm a x'⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`.
+
+Rewrite using `[TensorProduct.mk_apply, rdE_tmul, map_one, one_smul]`. Conclude with `Submodule.subset_span ((T.rdV_mem hok).1 hf)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[hsm]`. Conclude with `Submodule.smul_mem _ (⟨ε (algebraMap _ _ a), a, rfl⟩ : ringOf ε) hx`.
+-/
 theorem rdE_injective_lattice : ∀ (D : D7) (c : NChoice D) (w : D.what₂.places.Pl) (ρ : Setup D.ntw) (hρ : ρ.Good) (j : Fin D.R.m) (rd : Rd ρ D.nexp (c.twI w) j (c.sd w)) (T : CellTie hρ D.nexp rd) (ε : KE c w →+* ℂ) (hε : Extends ρ ε), TwOK (c.twI w) (c.k' w) (c.Q w) (chr c w) → (∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (embLL0 D).fieldRange) →
   Function.Injective (rdE T hε) ∧ ∀ F : Amb D j, F ∈ (ρ.B (c.twI w) j (c.sd w)).mtLat (embLL0 D) (labLL0 D) (ringOf ε) (twVia ρ ε) ↔ ∃ y ∈ latT c w (j.1 + 1), rdE T hε y = F := by
   intro D c w ρ hρ j rd T ε hε hok hr

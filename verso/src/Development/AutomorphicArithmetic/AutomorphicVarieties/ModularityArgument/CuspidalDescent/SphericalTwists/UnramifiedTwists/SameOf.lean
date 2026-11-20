@@ -13,6 +13,9 @@ open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Gu
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E _ _ _ a π`. Use `⟨fun w σ hσ B => (satLoc P E a w σ).2 _ π.finPart ((locCompC P E a π w).2 σ hσ) B, ?_⟩` and prove the remaining obligations. Conclude with `ExLib.eventually_sat (satLoc P) π.finPart π.isSmooth_finPart fun w =>`. Set `⟨⟨σ, hσ⟩, hi⟩` to `locCompC P E a π w`. Use the proof step `⟨σ, hi σ hσ⟩`.
+-/
 private theorem satLink_of (P : Hypotheses₂) : SatLink := by
   intro E _ _ _ a π
   refine ⟨fun w σ hσ B => (satLoc P E a w σ).2 _ π.finPart ((locCompC P E a π w).2 σ hσ) B, ?_⟩
@@ -20,6 +23,9 @@ private theorem satLink_of (P : Hypotheses₂) : SatLink := by
     let ⟨⟨σ, hσ⟩, hi⟩ := locCompC P E a π w
     ⟨σ, hi σ hσ⟩
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`.
+-/
 private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l.Prime] :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ((l : ℕ) : 𝓞 K) ∉ v.asIdeal := by
   have h0 : Ideal.span {((l : ℕ) : 𝓞 K)} ≠ 0 := by
@@ -27,6 +33,9 @@ private theorem ev_notMem {K : Type} [Field K] [NumberField K] (l : ℕ) [Fact l
     exact_mod_cast (Fact.out : l.Prime).ne_zero
   exact (Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)
 
+/- English proof (translation)
+Establish `h3` using `congrArg Polynomial.roots h`. Rewrite `h3` using `[roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`. Establish `hq : (0 : ℝ) < (normV w : ℕ)` using `Nat.cast_pos.2 (lt_trans one_pos (one_lt_normV w))`. Establish `h4` using `Multiset.map_injective (mul_right_injective₀ (Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos hq (((n : ℝ) - 1) / 2)).ne')) (a₁ := B.map Units.val) (a₂ := B'.map Units.val) (by simpa [algSat, Multiset.map_map] using h3)`. Conclude with `Multiset.map_injective Units.val_injective h4`.
+-/
 private theorem algSat_inj {L : Type} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) (n : ℕ) {B B' : Multiset ℂˣ}
     (h : ((algSat n (normV w) B).map fun b => X - C b).prod = ((algSat n (normV w) B').map fun b => X - C b).prod) :
     B = B' := by
@@ -38,6 +47,13 @@ private theorem algSat_inj {L : Type} [Field L] [NumberField L] (w : HeightOneSp
     (a₂ := B'.map Units.val) (by simpa [algSat, Multiset.map_map] using h3)
   exact Multiset.map_injective Units.val_injective h4
 
+/- English proof (translation)
+Establish `contCoeff : ∀ i : ℕ, Continuous fun M : Matrix (Fin n) (Fin n) (Qbar l) => M.charpoly.coeff i` using `fun i => by`. Establish `h : (fun M : Matrix (Fin n) (Fin n) (Qbar l) => M.charpoly.coeff i) = fun M => MvPolynomial.eval (fun ij : Fin n × Fin n => M ij.1 ij.2) ((Matrix.charpoly.univ (Qbar l) (Fin n)).coeff i)`. Use function extensionality and compare the values at `M`. Conclude with `(Matrix.charpoly.univ_coeff_eval₂Hom (Fin n) (RingHom.id _) (fun ij : Fin n × Fin n => M ij.1 ij.2) i).symm`. Rewrite using `[h]`.
+
+Conclude with `(MvPolynomial.continuous_eval _).comp (continuous_pi fun ij => (continuous_apply ij.2).comp (continuous_apply ij.1))`. Establish `hD` using `GlobalTheory.Published.ChebotarevDegreeOne.dense (F := L) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' (Filter.eventually_cofinite.1 hw)`. Use extensionality with `i`. Establish `h1 : Continuous fun g : G L Ω => (r g⁻¹ : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.coeff i` using `(contCoeff i).comp (Units.continuous_val.comp (hr.comp continuous_inv))`. Use `congrFun (Continuous.ext_on hD h1 (hf i) ?_) g` and prove the remaining obligations.
+
+Introduce and unpack `σ ⟨v, hv, hd, A, hA, hσ⟩`. Establish `h` using `not_not.1 hv (UpperTheory.isSplitAt_of_unramified_of_inertiaDeg_eq_one L v (hE v) hd) A hA σ hσ`. Simplify using `only [h]`.
+-/
 private theorem eq_of_split {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ}
     [Fact l.Prime] {n : ℕ} [IsCMField L]
     (hE : ∀ w : HeightOneSpectrum (𝓞 L), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield L)) w.asIdeal)
@@ -63,9 +79,15 @@ private theorem eq_of_split {L Ω : Type} [Field L] [NumberField L] [Field Ω] [
   have h := not_not.1 hv (UpperTheory.isSplitAt_of_unramified_of_inertiaDeg_eq_one L v (hE v) hd) A hA σ hσ
   simp only [h]
 
+/- English proof (translation)
+Simplify using `[spehInf]`.
+-/
 private theorem spehInf_one' (m : Multiset ℂ) : spehInf 1 m = m := by
   simp [spehInf]
 
+/- English proof (translation)
+Simplify using `[satTot, GlobalTheory.WeilDeligne.qPow_zero]`.
+-/
 private theorem satTot_one {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (S : Fin 1 → Multiset ℂˣ) :
     satTot w (fun _ => 1) S = S 0 := by
   simp [satTot, GlobalTheory.WeilDeligne.qPow_zero]

@@ -12,6 +12,13 @@ open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheo
 section
 variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, s, hs, e⟩`. Establish `h1 : P.valuation E (algebraMap (𝓞 E) E s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff).2 hs`.
+
+Establish `h2` using `congrArg (P.valuation E) e`. Rewrite `h2` using `[map_mul, h1, one_mul]`. Rewrite using `[h2]`. Conclude with `HeightOneSpectrum.valuation_le_one P r`. Introduce `h`.
+
+Take `⟨r, s, e⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer P a h`. Conclude with `⟨r, s.1, s.2, by rw [mul_comm]; exact e⟩`.
+-/
 theorem intAt_iff (a : E) : IntAt P a ↔ P.valuation E a ≤ 1 := by
   constructor
   · rintro ⟨r, s, hs, e⟩
@@ -26,6 +33,13 @@ theorem intAt_iff (a : E) : IntAt P a ↔ P.valuation E a ≤ 1 := by
     obtain ⟨r, s, e⟩ := HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer P a h
     exact ⟨r, s.1, s.2, by rw [mul_comm]; exact e⟩
 
+/- English proof (translation)
+Establish `hm : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∈ P.asIdeal` using `Ideal.absNorm_mem _`. Establish `e : ((Ideal.absNorm P.asIdeal : ℕ) : E) = algebraMap (𝓞 E) E ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E)` using `by simp`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap]`. Establish `h1` using `(HeightOneSpectrum.intValuation_le_pow_iff_mem P ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) 1).2 (by simpa using hm)`. Establish `h2` using `mt (HeightOneSpectrum.intValuation_le_pow_iff_mem P ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) 2).1 h`.
+
+Establish `h0 : P.intValuation ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ≠ 0` using `fun h0 => h2 (by rw [h0]; exact zero_le')`. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h1`, `h2` using `[WithZero.exp_le_exp]`. Use `congr 1`. Move the coercions through the operations in `at h1 h2`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem valuation_absNorm (h : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) :
     P.valuation E ((Ideal.absNorm P.asIdeal : ℕ) : E) = WithZero.exp (-1 : ℤ) := by
   have hm : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∈ P.asIdeal := Ideal.absNorm_mem _

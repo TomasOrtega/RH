@@ -9,6 +9,9 @@ noncomputable def UpperTheory.Reformulated.B.AdmissibleSchurLemma.IsSmooth :
         (ρ : Representation k G V) ↦
       ∀ (v : V), IsOpen {g : G | ((ρ : G → V →ₗ[k] V) g : V → V) v = v}
 
+/- English proof (translation)
+Introduce `k G V _ _ _ _ ρ H χ a b ha hb h`. Rewrite using `[map_add, ha h, hb h, smul_add]`.
+-/
 theorem UpperTheory.Reformulated.B.AdmissibleSchurLemma.aux2 :
     ∀ {k G V : Type} [inst : Field k] [inst_1 : Group G] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module k V]
       (ρ : Representation k G V) (H : Subgroup G) (χ : ↥H →* kˣ) {a b : V},
@@ -18,6 +21,9 @@ theorem UpperTheory.Reformulated.B.AdmissibleSchurLemma.aux2 :
   intro k G V _ _ _ _ ρ H χ a b ha hb h
   rw [map_add, ha h, hb h, smul_add]
 
+/- English proof (translation)
+Introduce `k G V _ _ _ _ ρ H χ h`. Rewrite using `[map_zero, smul_zero]`.
+-/
 theorem UpperTheory.Reformulated.B.AdmissibleSchurLemma.aux3 :
     ∀ {k G V : Type} [inst : Field k] [inst_1 : Group G] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module k V]
       (ρ : Representation k G V) (H : Subgroup G) (χ : ↥H →* kˣ) (h : ↥H),
@@ -25,6 +31,9 @@ theorem UpperTheory.Reformulated.B.AdmissibleSchurLemma.aux3 :
   intro k G V _ _ _ _ ρ H χ h
   rw [map_zero, smul_zero]
 
+/- English proof (translation)
+Introduce `k G V _ _ _ _ ρ H χ c v hv h`. Rewrite using `[map_smul, hv h, smul_comm]`.
+-/
 theorem UpperTheory.Reformulated.B.AdmissibleSchurLemma.aux4 :
     ∀ {k G V : Type} [inst : Field k] [inst_1 : Group G] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module k V]
       (ρ : Representation k G V) (H : Subgroup G) (χ : ↥H →* kˣ) (c : k) {v : V},
@@ -64,12 +73,34 @@ noncomputable def UpperTheory.Reformulated.B.AdmissibleSchurLemma.IsAdmissible :
       UpperTheory.Reformulated.B.AdmissibleSchurLemma.IsSmooth ρ ∧
         ∀ (K : Subgroup G), IsOpen (↑K : Set G) → IsCompact (↑K : Set G) → FiniteDimensional k ↥(UpperTheory.Reformulated.B.AdmissibleSchurLemma.fixed ρ K)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∀ h : H, ρ (h : G) v = (((1 : H →* kˣ) h : kˣ) : k) • v) ↔ _`. Simplify using the standard rewrite rules.
+-/
 private theorem UpperTheory.Reformulated.B.AdmissibleSchurLemma.mem_fixed_iff {k G V : Type} [Field k] [Group G] [AddCommGroup V]
     [_root_.Module k V] (ρ : Representation k G V) (H : Subgroup G) (v : V) :
     v ∈ UpperTheory.Reformulated.B.AdmissibleSchurLemma.fixed ρ H ↔ ∀ g ∈ H, ρ g v = v := by
   change (∀ h : H, ρ (h : G) v = (((1 : H →* kˣ) h : kˣ) : k) • v) ↔ _
   simp
 
+/- English proof (translation)
+Introduce `G _ _ _ K hKo hKc N _ _ π hirr hadm φ hφ`. Take `⟨hsm, hfd⟩` from `hadm`. Break down `subsingleton_or_nontrivial N with hN | hN` into its components or cases. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Take `⟨v, hv⟩` from `exists_ne (0 : N)`.
+
+Set `S : Subgroup G` to `{ carrier := {g | π g v = v} one_mem' := by simp mul_mem' := by`. Introduce `a b ha hb`. Establish `ha' : π a v = v` using `ha`. Establish `hb' : π b v = v` using `hb`. Express the relevant statement in the definitionally equal form `π (a * b) v = v`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, hb', ha']`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Establish `ha' : π a v = v` using `ha`. Express the relevant statement in the definitionally equal form `π a⁻¹ v = v`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hSo : IsOpen (S : Set G)` using `hsm v`. Establish `hSc : IsClosed (S : Set G)` using `S.isClosed_of_isOpen hSo`. Establish `hfin : FiniteDimensional ℂ (UpperTheory.Reformulated.B.AdmissibleSchurLemma.fixed π (K ⊓ S))` using `hfd (K ⊓ S) (hKo.inter hSo) (hKc.inter_right hSc)`. Establish `hvU : v ∈ UpperTheory.Reformulated.B.AdmissibleSchurLemma.fixed π (K ⊓ S)` using `(UpperTheory.Reformulated.B.AdmissibleSchurLemma.mem_fixed_iff π _ v).2 fun g hg => hg.2`.
+
+Establish `hnt : Nontrivial (UpperTheory.Reformulated.B.AdmissibleSchurLemma.fixed π (K ⊓ S))` using `⟨⟨⟨v, hvU⟩, 0, fun h => hv (congrArg Subtype.val h)⟩⟩`. Establish `hst : ∀ x ∈ UpperTheory.Reformulated.B.AdmissibleSchurLemma.fixed π (K ⊓ S), φ x ∈ UpperTheory.Reformulated.B.AdmissibleSchurLemma.fixed π (K ⊓ S)`. Introduce `x hx`. Rewrite `hx`, the goal using `[UpperTheory.Reformulated.B.AdmissibleSchurLemma.mem_fixed_iff]`. Introduce `g hg`.
+
+Rewrite using `[← hφ, hx g hg]`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (φ.restrict hst)`. Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`. Establish `hw0 : (w : N) ≠ 0` using `fun h => hw.2 (Subtype.ext h)`. Establish `hwc : φ w = c • (w : N)` using `congrArg Subtype.val hw.apply_eq_smul`.
+
+Set `E : Subrepresentation π` to `{ toSubmodule := Module.End.eigenspace φ c apply_mem_toSubmodule := by`. Introduce `g x hx`. Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[hφ, hx, map_smul] }`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Break down `hirr.eq_bot_or_eq_top E with hE | hE` into its components or cases. Establish `h1 : Module.End.eigenspace φ c = ⊥` using `congrArg Subrepresentation.toSubmodule hE`. Establish `h2 : (w : N) ∈ Module.End.eigenspace φ c` using `Module.End.mem_eigenspace_iff.2 hwc`. Rewrite `h2` using `[h1]`. Conclude with `absurd ((Submodule.mem_bot ℂ).1 h2) hw0`.
+
+Establish `h1 : Module.End.eigenspace φ c = ⊤` using `congrArg Subrepresentation.toSubmodule hE`. Use extensionality with `x`. Establish `h2 : x ∈ Module.End.eigenspace φ c` using `h1 ▸ Submodule.mem_top`. Simplify using `using Module.End.mem_eigenspace_iff.1 h2`.
+-/
 theorem UpperTheory.Reformulated.B.AdmissibleSchurLemma.schur_adm :
     ∀ (G : Type) [inst : Group G] [inst_1 : TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G),
       IsOpen (↑K : Set G) →

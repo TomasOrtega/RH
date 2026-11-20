@@ -37,6 +37,11 @@ def diagB {D' D : DegPre R} {n : ℕ} (p : IsPowDeg D' D n) (f : D.P.A ⟶ D.P.A
 def diagX {D' D : DegPre R} {n : ℕ} (p : IsPowDeg D' D n) (a : D.X → D.X) : D'.X → D'.X :=
   fun x => p.xe.symm (fun i => a (p.xe x i))
 
+/- English proof (translation)
+Establish `hfac : ∀ i, diagB p f ≫ p.pw.pr i = p.pw.pr i ≫ f` using `fun i => p.pw.lim.fac (Fan.mk D'.P.A (fun i => p.pw.pr i ≫ f)) ⟨i⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `p.pw.lim.hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i⟩`.
+
+Conclude with `(h i).trans (hfac i).symm`. Introduce and unpack `rfl`. Conclude with `hfac`.
+-/
 theorem diagOnB_iff {D' D : DegPre R} {n : ℕ} (p : IsPowDeg D' D n) (F : D'.P.A ⟶ D'.P.A)
     (f : D.P.A ⟶ D.P.A) : DiagOnB p F f ↔ F = diagB p f := by
   have hfac : ∀ i, diagB p f ≫ p.pw.pr i = p.pw.pr i ≫ f := fun i =>
@@ -49,6 +54,11 @@ theorem diagOnB_iff {D' D : DegPre R} {n : ℕ} (p : IsPowDeg D' D n) (F : D'.P.
   · rintro rfl
     exact hfac
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `x`. Apply `p.xe.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Simplify using `[diagX, h x i]`. Introduce and unpack `rfl x i`. Simplify using `[diagX]`.
+-/
 theorem diagOnX_iff {D' D : DegPre R} {n : ℕ} (p : IsPowDeg D' D n) (A : D'.X → D'.X)
     (a : D.X → D.X) : DiagOnX p A a ↔ A = diagX p a := by
   constructor
@@ -60,6 +70,9 @@ theorem diagOnX_iff {D' D : DegPre R} {n : ℕ} (p : IsPowDeg D' D n) (A : D'.X 
   · rintro rfl x i
     simp [diagX]
 
+/- English proof (translation)
+Introduce `x`. Apply `p.pw.lim.hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i⟩`. Express the relevant statement in the definitionally equal form `D'.c (A x) ≫ p.pw.pr i = (D'.c x ≫ F) ≫ p.pw.pr i`. Rewrite using `[p.c_pr, hA x i, h, Category.assoc, hF i, ← Category.assoc, p.c_pr]`.
+-/
 theorem CLinear.pow {D' D : DegPre R} {n : ℕ} (p : IsPowDeg D' D n) {F : D'.P.A ⟶ D'.P.A}
     {f : D.P.A ⟶ D.P.A} {A : D'.X → D'.X} {a : D.X → D.X} (hF : DiagOnB p F f)
     (hA : DiagOnX p A a) (h : CLinear D f a) : CLinear D' F A := by
@@ -86,6 +99,9 @@ def PowTauBalancedAct : Prop :=
     D'.toPre.TauBal (diagB p (act.onB.act a)) (diagB p (act.onB.act (star a)))
       (diagX p (fun y => a • y)) (diagX p (fun y => star a • y))
 
+/- English proof (translation)
+Introduce `R _ _ I D D' n p O _ _ _ act a`. Conclude with `h R D.toPre D'.toPre n p _ _ _ _ _ _ _ _ ((diagOnB_iff p _ _).2 rfl) ((diagOnB_iff p _ _).2 rfl) ((diagOnX_iff p _ _).2 rfl) ((diagOnX_iff p _ _).2 rfl) (act.c_lin a) (act.c_lin (star a)) (act.tau_bal a)`.
+-/
 theorem PowTauBalanced.act (h : PowTauBalanced) : PowTauBalancedAct := by
   intro R _ _ I D D' n p O _ _ _ act a
   exact h R D.toPre D'.toPre n p _ _ _ _ _ _ _ _
@@ -93,6 +109,9 @@ theorem PowTauBalanced.act (h : PowTauBalanced) : PowTauBalancedAct := by
     ((diagOnX_iff p _ _).2 rfl) ((diagOnX_iff p _ _).2 rfl)
     (act.c_lin a) (act.c_lin (star a)) (act.tau_bal a)
 
+/- English proof (translation)
+Introduce `_` and use `(Category.comp_id _).symm`.
+-/
 example {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) : CLinear D (𝟙 _) id :=
   fun _ => (Category.comp_id _).symm
 

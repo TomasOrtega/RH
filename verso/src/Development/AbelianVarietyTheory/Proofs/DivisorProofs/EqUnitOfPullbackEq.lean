@@ -8,6 +8,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.EndLoc
 
+/- English proof (translation)
+Introduce `S A B _ _ _ _ u v _ _ _ _ T t A' _ φ' hp he τ x hx`. Establish `hw : φ' ≫ A.hom = A'.hom ≫ t` using `hp.1.w`. Set `P : Over.mk (A'.hom ≫ t) ⟶ A` to `Over.homMk φ' (by simpa using hw)`. Establish `hPu : P ≫ u = P ≫ v` using `by ext1; simpa [P] using he`. Establish `h1 : P ≫ (u * v⁻¹) = 1`.
+
+Rewrite using `[comp_mul, GrpObj.comp_inv, hPu, mul_inv_cancel]`. Establish `h2 : φ' ≫ (u * v⁻¹).left = A'.hom ≫ t ≫ (η[B]).left`. Use `congrArg CommaMorphism.left h1` as an intermediate fact. Simplify `this` using `[P, Hom.one_def]`. Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback x τ hx`.
+
+Establish `hf : (hp.1.isoPullback.inv ≫ φ') z = x` using `by rw [hp.1.isoPullback_inv_fst]; exact hz1`. Establish `hs : (hp.1.isoPullback.inv ≫ A'.hom) z = τ` using `by rw [hp.1.isoPullback_inv_snd]; exact hz2`. Rewrite `hf`, `hs` using `[Scheme.Hom.comp_apply]`. Rewrite using `[← hf, ← Scheme.Hom.comp_apply, h2, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hs]`.
+-/
 theorem eq_unit_of_pullback_eq : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     (u v : A ⟶ B), IsAbelianScheme A → IsAbelianScheme B → IsMonHom u → IsMonHom v → ∀ (T : Scheme.{0}) (t : T ⟶ S)
     (A' : Over T) [GrpObj A'] (φ' : A'.left ⟶ A.left), IsGrpPullback A' A t φ' → φ' ≫ u.left = φ' ≫ v.left →

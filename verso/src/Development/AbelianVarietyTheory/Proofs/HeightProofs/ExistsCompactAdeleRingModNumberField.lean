@@ -8,6 +8,13 @@ namespace GlobalTheory.AdeleCocompact
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `⟨fun v => ∑ i, v (integralBasis F i), fun x => ?_⟩` and prove the remaining obligations. Use `⟨∑ i, ⌊(integralBasis F).repr x i⌋ • RingOfIntegers.basis F i, fun v => ?_⟩` and prove the remaining obligations. Establish `h : x - ((∑ i, ⌊(integralBasis F).repr x i⌋ • RingOfIntegers.basis F i : 𝓞 F) : F) = ∑ i, ((Int.fract ((integralBasis F).repr x i) : ℚ) : F) * integralBasis F i` using `by conv_lhs => enter [1]; rw [← (integralBasis F).sum_repr x]`. Express the relevant statement in the definitionally equal form `_ - algebraMap (𝓞 F) F _ = _`. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← integralBasis_apply, Int.fract, Rat.smul_def, zsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, ← InfinitePlace.norm_embedding_eq, map_sum]`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, InfinitePlace.norm_embedding_eq v (integralBasis F i), map_ratCast, Complex.norm_ratCast]`. Use `mul_le_of_le_one_left (apply_nonneg _ _) ?_` and prove the remaining obligations. Rewrite using `[abs_of_nonneg (by exact_mod_cast Int.fract_nonneg _)]`. Conclude with `(Int.fract_lt_one _).le` after adjusting the coercions.
+-/
 theorem exists_bound_sub_integer :
     ∃ C : InfinitePlace F → ℝ, ∀ x : F, ∃ y : 𝓞 F, ∀ v : InfinitePlace F, v (x - y) ≤ C v := by
   classical
@@ -31,12 +38,24 @@ theorem exists_bound_sub_integer :
   exact_mod_cast (Int.fract_lt_one _).le
 
 omit [NumberField F] in
+/- English proof (translation)
+Use `⟨fun x r => ?_⟩` and prove the remaining obligations. Establish `h` using `InfinitePlace.Completion.isometry_extensionEmbedding v`. Rewrite using `[← h.preimage_closedBall]`. Conclude with `h.isClosedEmbedding.isCompact_preimage (isCompact_closedBall _ _)`.
+-/
 theorem properSpace_completion (v : InfinitePlace F) : ProperSpace v.Completion := by
   refine ⟨fun x r => ?_⟩
   have h := InfinitePlace.Completion.isometry_extensionEmbedding v
   rw [← h.preimage_closedBall]
   exact h.isClosedEmbedding.isCompact_preimage (isCompact_closedBall _ _)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `exists_bound_sub_integer F`. Use `haveI := properSpace_completion F`. Use `⟨Set.pi Set.univ fun v : InfinitePlace F => Metric.closedBall (0 : v.Completion) (1 + C v), isCompact_univ_pi fun v => isCompact_closedBall _ _, fun a => ?_⟩` and prove the remaining obligations. Establish `hU : IsOpen (X` using `InfiniteAdeleRing F) (Set.pi Set.univ fun v : InfinitePlace F => Metric.ball (a v) 1) := isOpen_set_pi Set.finite_univ fun v _ => Metric.isOpen_ball`. Take `⟨x, hx⟩` from `(InfiniteAdeleRing.denseRange_algebraMap F).exists_mem_open hU ⟨a, fun v _ => Metric.mem_ball_self one_pos⟩`.
+
+Take `⟨y, hy⟩` from `hC x`. Use `⟨y, fun v _ => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖a v - algebraMap F (InfiniteAdeleRing F) x v‖ < 1`. Rewrite using `[← dist_eq_norm, dist_comm]`. Conclude with `hx v trivial`.
+
+Establish `h2 : ‖algebraMap F (InfiniteAdeleRing F) (x - y) v‖ ≤ C v`. Rewrite using `[InfiniteAdeleRing.algebraMap_apply, InfinitePlace.Completion.norm_coe]`. Conclude with `hy v`. Establish `h3 : (a - algebraMap F (InfiniteAdeleRing F) y) = (a - algebraMap F (InfiniteAdeleRing F) x) + algebraMap F (InfiniteAdeleRing F) (x - y)`. Rewrite using `[map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mem_closedBall_zero_iff, h3]`. Conclude with `(norm_add_le (a v - algebraMap F (InfiniteAdeleRing F) x v) _).trans (add_le_add h1.le h2)`.
+-/
 theorem exists_compact_infinite :
     ∃ K : Set (InfiniteAdeleRing F), IsCompact K ∧
       ∀ a : InfiniteAdeleRing F, ∃ y : 𝓞 F, a - algebraMap F (InfiniteAdeleRing F) y ∈ K := by
@@ -62,6 +81,9 @@ theorem exists_compact_infinite :
   rw [mem_closedBall_zero_iff, h3]
   exact (norm_add_le (a v - algebraMap F (InfiniteAdeleRing F) x v) _).trans (add_le_add h1.le h2)
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F`. Establish `h` using `isCompact_range (RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (𝓕 := Filter.cofinite)).continuous`. Rewrite `h` using `[RestrictedProduct.range_structureMap]`. Conclude with `h`.
+-/
 theorem isCompact_integral :
     IsCompact {a : FiniteAdeleRing (𝓞 F) F | ∀ v, a v ∈ v.adicCompletionIntegers F} := by
   haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F
@@ -72,6 +94,15 @@ theorem isCompact_integral :
   rw [RestrictedProduct.range_structureMap] at h
   exact h
 
+/- English proof (translation)
+Introduce `F _ _`. Take `⟨K, hK, hK'⟩` from `exists_compact_infinite F`. Use `⟨K ×ˢ {a : FiniteAdeleRing (𝓞 F) F | ∀ v, a v ∈ v.adicCompletionIntegers F}, hK.prod (isCompact_integral F), fun a => ?_⟩` and prove the remaining obligations. Take `⟨x, b, hb, hab⟩` from `GlobalTheory.AdLat.exists_eq_algebraMap_add_nsmul F 1 one_pos a.2`. Take `⟨y, hy⟩` from `hK' (a.1 - algebraMap F (InfiniteAdeleRing F) x)`.
+
+Use `⟨x + y, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a.1 - algebraMap F (InfiniteAdeleRing F) (x + y) ∈ K`. Rewrite using `[map_add, ← sub_sub]`. Conclude with `hy`. Express the relevant statement in the definitionally equal form `∀ v, (a.2 - algebraMap F (FiniteAdeleRing (𝓞 F) F) (x + y)) v ∈ v.adicCompletionIntegers F`.
+
+Establish `h : a.2 - algebraMap F (FiniteAdeleRing (𝓞 F) F) (x + y) = b - algebraMap F (FiniteAdeleRing (𝓞 F) F) y`. Rewrite using `[hab, map_add, one_smul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Introduce `v`.
+
+Conclude with `sub_mem (hb v) (HeightOneSpectrum.coe_mem_adicCompletionIntegers v y)`.
+-/
 theorem exists_compact_adele : ∀ (F : Type) [Field F] [NumberField F], ∃ K : Set (AdeleRing (𝓞 F) F), IsCompact K ∧ ∀ a : AdeleRing (𝓞 F) F, ∃ x : F, a - algebraMap F (AdeleRing (𝓞 F) F) x ∈ K := by
   intro F _ _
   obtain ⟨K, hK, hK'⟩ := exists_compact_infinite F

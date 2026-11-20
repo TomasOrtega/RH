@@ -8,6 +8,9 @@ universe u
 
 variable {R₀ : Type u} [CommRing R₀]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (AlgHom.ext h)`.
+-/
 lemma LHom.ext' {R S : LAlg R₀} {f g : LHom R S} (h : ∀ x, f.1 x = g.1 x) : f = g :=
   Subtype.ext (AlgHom.ext h)
 
@@ -19,6 +22,9 @@ namespace DualPair
 
 variable {R : LAlg R₀} (Dp : DualPair R)
 
+/- English proof (translation)
+Rewrite `ha`, `hb` using `[Dp.ker_eq, Ideal.mem_span_singleton']`. Take `⟨a', rfl⟩` from `ha`. Take `⟨b', rfl⟩` from `hb`. Take the linear combination `(a' * b') * Dp.η_sq`.
+-/
 lemma sq_ker {a b : (Dp.D : Type u)} (ha : a ∈ RingHom.ker Dp.π.1)
     (hb : b ∈ RingHom.ker Dp.π.1) : a * b = 0 := by
   rw [Dp.ker_eq, Ideal.mem_span_singleton'] at ha hb
@@ -26,18 +32,33 @@ lemma sq_ker {a b : (Dp.D : Type u)} (ha : a ∈ RingHom.ker Dp.π.1)
   obtain ⟨b', rfl⟩ := hb
   linear_combination (a' * b') * Dp.η_sq
 
+/- English proof (translation)
+Rewrite using `[RingHom.mem_ker, map_sub, Dp.sect, h, sub_self]`.
+-/
 lemma sub_σ_mem {d : (Dp.D : Type u)} {r : (R : Type u)} (h : Dp.π.1 d = r) :
     d - Dp.σ.1 r ∈ RingHom.ker Dp.π.1 := by
   rw [RingHom.mem_ker, map_sub, Dp.sect, h, sub_self]
 
+/- English proof (translation)
+The claim follows from `Dp.sub_σ_mem rfl`.
+-/
 lemma sub_mem (d : (Dp.D : Type u)) : d - Dp.σ.1 (Dp.π.1 d) ∈ RingHom.ker Dp.π.1 :=
   Dp.sub_σ_mem rfl
 
+/- English proof (translation)
+Rewrite using `[Dp.ker_eq]`. Conclude with `Ideal.subset_span (Set.mem_singleton _)`.
+-/
 lemma η_ker : Dp.η ∈ RingHom.ker Dp.π.1 := by
   rw [Dp.ker_eq]; exact Ideal.subset_span (Set.mem_singleton _)
 
+/- English proof (translation)
+The claim follows from `RingHom.mem_ker.mp Dp.η_ker`.
+-/
 lemma π_η : Dp.π.1 Dp.η = 0 := RingHom.mem_ker.mp Dp.η_ker
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Establish `hk : d * Dp.σ.1 (↑w⁻¹ : (R : Type u)) - 1 ∈ RingHom.ker Dp.π.1`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, Dp.sect, ← hw, Units.mul_inv, map_one, sub_self]`. Establish `hkk` using `Dp.sq_ker hk hk`. Conclude with `isUnit_iff_exists_inv.mpr ⟨Dp.σ.1 (↑w⁻¹ : (R : Type u)) * (2 - d * Dp.σ.1 (↑w⁻¹ : (R : Type u))), by linear_combination -hkk⟩`.
+-/
 lemma isUnit_of_π {d : (Dp.D : Type u)} (h : IsUnit (Dp.π.1 d)) : IsUnit d := by
   obtain ⟨w, hw⟩ := h
   have hk : d * Dp.σ.1 (↑w⁻¹ : (R : Type u)) - 1 ∈ RingHom.ker Dp.π.1 := by
@@ -47,6 +68,9 @@ lemma isUnit_of_π {d : (Dp.D : Type u)} (h : IsUnit (Dp.π.1 d)) : IsUnit d := 
     ⟨Dp.σ.1 (↑w⁻¹ : (R : Type u)) * (2 - d * Dp.σ.1 (↑w⁻¹ : (R : Type u))),
       by linear_combination -hkk⟩
 
+/- English proof (translation)
+The claim follows from `LHom.ext' Dp.sect`.
+-/
 lemma π_comp_σ : Dp.π.comp Dp.σ = LHom.id R := LHom.ext' Dp.sect
 
 def fμ (c : (R : Type u)) (d : (Dp.D : Type u)) : (Dp.D : Type u) :=
@@ -63,26 +87,47 @@ def μA (c : (R : Type u)) : (Dp.D : Type u) →ₐ[R₀] (Dp.D : Type u) where
   map_add' a b := by simp only [fμ, map_add]; ring
   commutes' r := by simp [fμ]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma μA_apply (c : (R : Type u)) (d : (Dp.D : Type u)) : Dp.μA c d = Dp.fμ c d := rfl
 
+/- English proof (translation)
+Simplify using `[μA_apply, fμ, Dp.sect]`.
+-/
 lemma π_μA (c : (R : Type u)) (d : (Dp.D : Type u)) : Dp.π.1 (Dp.μA c d) = Dp.π.1 d := by
   simp [μA_apply, fμ, Dp.sect]
 
+/- English proof (translation)
+Simplify using `[μA_apply, fμ, Dp.sect]`.
+-/
 lemma μA_σ (c r : (R : Type u)) : Dp.μA c (Dp.σ.1 r) = Dp.σ.1 r := by
   simp [μA_apply, fμ, Dp.sect]
 
+/- English proof (translation)
+Simplify using `[μA_apply, fμ, Dp.π_η]`.
+-/
 lemma μA_η (c : (R : Type u)) : Dp.μA c Dp.η = Dp.σ.1 c * Dp.η := by
   simp [μA_apply, fμ, Dp.π_η]
 
 def μL (c : (R : Type u)) : LHom Dp.D Dp.D :=
   mkLHom (Dp.μA c) fun a ha => Dp.isUnit_of_π (by simpa [Dp.π_μA] using ha.map Dp.π.1)
 
+/- English proof (translation)
+The claim follows from `LHom.ext' fun r => Dp.μA_σ c r`.
+-/
 lemma μL_comp_σ (c : (R : Type u)) : (Dp.μL c).comp Dp.σ = Dp.σ :=
   LHom.ext' fun r => Dp.μA_σ c r
 
+/- English proof (translation)
+The claim follows from `LHom.ext' fun d => Dp.π_μA c d`.
+-/
 lemma π_comp_μL (c : (R : Type u)) : Dp.π.comp (Dp.μL c) = Dp.π :=
   LHom.ext' fun d => Dp.π_μA c d
 
+/- English proof (translation)
+The claim follows from `LHom.ext' fun d => by show Dp.fμ 0 d = Dp.σ.1 (Dp.π.1 d); simp [fμ]`.
+-/
 lemma μL_zero : Dp.μL 0 = Dp.σ.comp Dp.π :=
   LHom.ext' fun d => by show Dp.fμ 0 d = Dp.σ.1 (Dp.π.1 d); simp [fμ]
 
@@ -90,8 +135,16 @@ def fpS : Subalgebra R₀ (Dp.D.carrier × Dp.D.carrier) :=
   AlgHom.equalizer (Dp.π.1.comp (AlgHom.fst R₀ (Dp.D : Type u) (Dp.D : Type u)))
     (Dp.π.1.comp (AlgHom.snd R₀ (Dp.D : Type u) (Dp.D : Type u)))
 
+/- English proof (translation)
+The claim follows from `q.2`.
+-/
 lemma fp_eq (q : Dp.fpS) : Dp.π.1 q.1.1 = Dp.π.1 q.1.2 := q.2
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Set `e : Dp.fpS` to `⟨(Dp.σ.1 (↑w⁻¹ : (R : Type u)), Dp.σ.1 (↑w⁻¹ : (R : Type u))), rfl⟩`. Establish `m1 : q.1.1 * Dp.σ.1 (↑w⁻¹ : (R : Type u)) - 1 ∈ RingHom.ker Dp.π.1`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, Dp.sect, ← hw, Units.mul_inv, map_one, sub_self]`. Establish `m2 : q.1.2 * Dp.σ.1 (↑w⁻¹ : (R : Type u)) - 1 ∈ RingHom.ker Dp.π.1`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, map_mul, Dp.sect, ← Dp.fp_eq, ← hw, Units.mul_inv, map_one, sub_self]`. Establish `hkk : (q * e - 1) * (q * e - 1) = 0` using `Subtype.ext (Prod.ext (Dp.sq_ker m1 m1) (Dp.sq_ker m2 m2))`. Conclude with `isUnit_iff_exists_inv.mpr ⟨e * (2 - q * e), by linear_combination -hkk⟩`.
+-/
 lemma fp_isUnit (q : Dp.fpS) (h : IsUnit (Dp.π.1 q.1.1)) : IsUnit q := by
   obtain ⟨w, hw⟩ := h
   let e : Dp.fpS := ⟨(Dp.σ.1 (↑w⁻¹ : (R : Type u)), Dp.σ.1 (↑w⁻¹ : (R : Type u))), rfl⟩
@@ -141,6 +194,9 @@ def sA : (Dp.F : Type u) →ₐ[R₀] (Dp.D : Type u) where
       Dp.σ.1 (Dp.π.1 (algebraMap R₀ (Dp.D : Type u) r)) = algebraMap R₀ (Dp.D : Type u) r
     simp
 
+/- English proof (translation)
+Use `show Dp.π.1 (q.1.1 + q.1.2 - Dp.σ.1 (Dp.π.1 q.1.1)) = _`. Rewrite using `[map_sub, map_add, Dp.sect, ← Dp.fp_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma π_sA (q : Dp.fpS) : Dp.π.1 (Dp.sA q) = Dp.π.1 q.1.1 := by
   show Dp.π.1 (q.1.1 + q.1.2 - Dp.σ.1 (Dp.π.1 q.1.1)) = _
   rw [map_sub, map_add, Dp.sect, ← Dp.fp_eq]; ring
@@ -163,22 +219,49 @@ def gL (c : (R : Type u)) : LHom Dp.D Dp.F :=
       fun d => Dp.π_μA c d)
     fun _ hd => hd.map Dp.p₂L.1
 
+/- English proof (translation)
+The claim follows from `LHom.ext' fun _ => rfl`.
+-/
 lemma p₁_comp_i₁ : Dp.p₁L.comp Dp.i₁L = LHom.id Dp.D := LHom.ext' fun _ => rfl
+/- English proof (translation)
+The claim follows from `LHom.ext' fun _ => rfl`.
+-/
 lemma p₂_comp_i₁ : Dp.p₂L.comp Dp.i₁L = Dp.σ.comp Dp.π := LHom.ext' fun _ => rfl
+/- English proof (translation)
+The claim follows from `LHom.ext' fun _ => rfl`.
+-/
 lemma p₁_comp_i₂ : Dp.p₁L.comp Dp.i₂L = Dp.σ.comp Dp.π := LHom.ext' fun _ => rfl
+/- English proof (translation)
+The claim follows from `LHom.ext' fun _ => rfl`.
+-/
 lemma p₂_comp_i₂ : Dp.p₂L.comp Dp.i₂L = LHom.id Dp.D := LHom.ext' fun _ => rfl
+/- English proof (translation)
+The claim follows from `LHom.ext' fun _ => rfl`.
+-/
 lemma p₁_comp_g (c : (R : Type u)) : Dp.p₁L.comp (Dp.gL c) = Dp.μL c := LHom.ext' fun _ => rfl
+/- English proof (translation)
+The claim follows from `LHom.ext' fun _ => rfl`.
+-/
 lemma p₂_comp_g (c : (R : Type u)) : Dp.p₂L.comp (Dp.gL c) = LHom.id Dp.D :=
   LHom.ext' fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `LHom.ext' fun d => by show d + Dp.σ.1 (Dp.π.1 d) - Dp.σ.1 (Dp.π.1 d) = d ring`.
+-/
 lemma s_comp_i₁ : Dp.sL.comp Dp.i₁L = LHom.id Dp.D := LHom.ext' fun d => by
   show d + Dp.σ.1 (Dp.π.1 d) - Dp.σ.1 (Dp.π.1 d) = d
   ring
 
+/- English proof (translation)
+The claim follows from `LHom.ext' fun d => by show Dp.σ.1 (Dp.π.1 d) + d - Dp.σ.1 (Dp.π.1 (Dp.σ.1 (Dp.π.1 d))) = d rw [Dp.sect]; ring`.
+-/
 lemma s_comp_i₂ : Dp.sL.comp Dp.i₂L = LHom.id Dp.D := LHom.ext' fun d => by
   show Dp.σ.1 (Dp.π.1 d) + d - Dp.σ.1 (Dp.π.1 (Dp.σ.1 (Dp.π.1 d))) = d
   rw [Dp.sect]; ring
 
+/- English proof (translation)
+The claim follows from `LHom.ext' fun r => by apply Subtype.ext apply Prod.ext · show Dp.σ.1 (Dp.π.1 (Dp.σ.1 r)) = Dp.σ.1 r rw [Dp.sect] · show Dp.σ.1 r = Dp.σ.1 (Dp.π.1 (Dp.σ.1 r)) rw [Dp.sect]`.
+-/
 lemma i₂_comp_σ : Dp.i₂L.comp Dp.σ = Dp.i₁L.comp Dp.σ := LHom.ext' fun r => by
   apply Subtype.ext
   apply Prod.ext
@@ -187,10 +270,16 @@ lemma i₂_comp_σ : Dp.i₂L.comp Dp.σ = Dp.i₁L.comp Dp.σ := LHom.ext' fun 
   · show Dp.σ.1 r = Dp.σ.1 (Dp.π.1 (Dp.σ.1 r))
     rw [Dp.sect]
 
+/- English proof (translation)
+Unfold `LHom.NilSurj`. Conclude with `⟨Dp.sqZero.1, 2, Dp.sqZero.2⟩`.
+-/
 lemma nilSurj : Dp.π.NilSurj := by
   unfold LHom.NilSurj
   exact ⟨Dp.sqZero.1, 2, Dp.sqZero.2⟩
 
+/- English proof (translation)
+Unfold `IsFibreSq`. Use `⟨AlgHom.ext fun q => Dp.fp_eq q, Dp.nilSurj, Dp.nilSurj, fun a b h => ⟨⟨(a, b), h⟩, ⟨rfl, rfl⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `c ⟨h1, h2⟩`. Conclude with `Subtype.ext (Prod.ext h1 h2)`.
+-/
 lemma isFibreSq : IsFibreSq Dp.p₁L Dp.p₂L Dp.π Dp.π := by
   unfold IsFibreSq
   refine ⟨AlgHom.ext fun q => Dp.fp_eq q, Dp.nilSurj, Dp.nilSurj, fun a b h =>

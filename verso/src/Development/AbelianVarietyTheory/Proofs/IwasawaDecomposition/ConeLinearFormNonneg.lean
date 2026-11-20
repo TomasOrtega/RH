@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.PolFan
 
+/- English proof (translation)
+Introduce `g φs X _ _ _ hφ hX m γ hγ`. Establish `hP : IsPolFanOn id φs X` using `hφ X hX`. Establish `hn : ∀ i, ∃ n : ℕ, φs.evalZ (γ i) = n` using `fun i => hP.exists_nat (hγ.mem i) (hγ.nonneg i)`. Use `choose n hn using hn`. Take `⟨ℓ, hℓ⟩` from `GlobalTheory.BalExt.exists_linearForm_ext id X m γ hγ.mem hγ.basis (fun i => (n i : ℤ))`.
+
+Use `⟨ℓ, fun be _ c hc hbe => ?_⟩` and prove the remaining obligations. Establish `key : (ℓ be : ℝ) = ∑ i, c i * (n i : ℝ)`. Establish `h0 : ∑ k : Fin m ⊕ Unit, (Sum.elim c (fun _ => (-1 : ℝ)) k) • toReal ((LinearMap.id : LinearMap.BilinForm ℤ X →ₗ[ℤ] _) (Sum.elim γ (fun _ => be) k)) = 0`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, LinearMap.id_apply, Finset.univ_unique, Finset.sum_singleton, neg_one_smul]`.
+
+Rewrite using `[← hbe, add_neg_cancel]`. Establish `h1` using `sum_mul_eq_zero_of_sum_toReal (j := LinearMap.id) (fun _ _ h => h) ℓ h0`. Rewrite `h1` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Finset.univ_unique, Finset.sum_singleton, hℓ] at h1`. Move the coercions through the operations in `at h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnn : (0 : ℝ) ≤ ℓ be` using `key ▸ Finset.sum_nonneg fun i _ => mul_nonneg (hc i) (Nat.cast_nonneg _)`. Use `⟨by exact_mod_cast hnn, ?_⟩` and prove the remaining obligations. Rewrite using `[key, ← evalR_toReal, hbe, (linearOn_iff φs γ).1 hγ.linear c hc]`. Simplify using `only [hn]`.
+-/
 theorem exists_intLinear_on_cone : ∀ (g : ℕ) (φs : InvFun ℤ) (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X], IsPolFan id g φs → Module.finrank ℤ X ≤ g → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCone id φs γ → ∃ ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ, ∀ be : LinearMap.BilinForm ℤ X, (∀ y z, be y z = be z y) → ∀ c : Fin m → ℝ, (∀ i, 0 ≤ c i) → toReal be = ∑ i, c i • toReal (γ i) → 0 ≤ ℓ be ∧ (ℓ be : ℝ) = φs.evalZ be := by
   intro g φs X _ _ _ hφ hX m γ hγ
   have hP : IsPolFanOn id φs X := hφ X hX

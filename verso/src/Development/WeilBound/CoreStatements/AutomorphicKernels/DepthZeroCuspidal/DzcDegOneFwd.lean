@@ -17,6 +17,9 @@ namespace PositivityTheory.LocalParametersCuspidal.DZC
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Take `⟨a, ha, ε, -, H⟩` from `hrc`. Take `⟨χ, hχ, rfl⟩` from `deg_one_ofChar x hx`. Rewrite using `[ofChar_fixed_iff, H.one, tame_lpOfChar_iff]`. Conclude with `fun h1 σ hσ => h1 _ (wild_to_unitsOne a ha σ hσ)`.
+-/
 theorem dzc_deg_one_fwd (rc : IrrGL (w.adicCompletion E) → WD h) (hrc : IsRecLit h rc)
     (x : IrrGL (w.adicCompletion E)) (hx : x.1 = 1) :
     fixed x.rep (KOne (w.adicCompletion E) (Fin x.1)) ≠ ⊥ → IsTameWD (rc x) := by

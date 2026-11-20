@@ -22,6 +22,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective F.f`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← T₂.L.span, Submodule.span_le]`. Introduce `y hy`. Take `⟨x, -, hx⟩` from `hon y hy`. Conclude with `LinearMap.mem_range.mpr ⟨x, hx⟩`.
+
+Set `ρ₀ : Representation LL G (LinearMap.ker F.f)` to `{ toFun := fun g => (T₁.ρ g).restrict (p := LinearMap.ker F.f) (q := LinearMap.ker F.f) (fun x hx => by`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[F.equiv, hx, map_zero])`. Use the proof step `map_one' := LinearMap.ext fun x => Subtype.ext (by simp [LinearMap.restrict_apply])`. Use the proof step `map_mul' := fun g h => LinearMap.ext fun x => Subtype.ext (by`.
+
+Simplify using `[LinearMap.restrict_apply, Module.End.mul_apply]) }`. Establish `hι : ∀ g x, (LinearMap.ker F.f).subtype (ρ₀ g x) = T₁.ρ g ((LinearMap.ker F.f).subtype x)` using `fun g x => rfl`. Establish `hcr` using `hC (LinearMap.ker F.f) ρ₀ T₁.V T₁.ρ T₂.V T₂.ρ (LinearMap.ker F.f).subtype F.f hι F.equiv (Submodule.injective_subtype _) hsurj (Submodule.range_subtype _).symm h1`. Establish `H` using `hE hK (LinearMap.ker F.f) ρ₀ T₁.V T₁.ρ T₂.V T₂.ρ (LinearMap.ker F.f).subtype F.f hι F.equiv (Submodule.injective_subtype _) hsurj (Submodule.range_subtype _).symm hcr.1 h1 h2`. Conclude with `⟨(H.2.2.2 a).1, H.2.2.1⟩`.
+-/
 theorem rk_fil_map (hK : Function.Bijective (algebraMap K₀ K)) (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL)
     (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ) (hon : F.Onto) (a : ℤ) :
@@ -52,6 +59,9 @@ theorem rk_fil_map (hK : Function.Bijective (algebraMap K₀ K)) (hE : Formalism
 
 variable [NeZero n] (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w b => simp [mulVB, add_mul, TensorProduct.tmul_add]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem mulVB_add {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V]
     [IsScalarTower Qp LL V] (c c' : K₀) (x : V ⊗[Qp] B) :
     mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) (c + c') x =
@@ -62,6 +72,11 @@ private theorem mulVB_add {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V
   | tmul w b => simp [mulVB, add_mul, TensorProduct.tmul_add]
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]; abel
 
+/- English proof (translation)
+Establish `hq : algebraMap K₀ B (q • c) = q • algebraMap K₀ B c`. Rewrite using `[Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply Qp K₀ B q, Algebra.smul_def]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w b`.
+
+Simplify using `only [mulVB, TensorProduct.AlgebraTensorModule.map_tmul, LinearMap.id_apply, LinearMap.mulLeft_apply, hq, smul_mul_assoc, TensorProduct.tmul_smul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]`.
+-/
 private theorem mulVB_smul {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V]
     [IsScalarTower Qp LL V] (q : Qp) (c : K₀) (x : V ⊗[Qp] B) :
     mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) (q • c) x =
@@ -75,6 +90,9 @@ private theorem mulVB_smul {V : Type} [AddCommGroup V] [Module LL V] [Module Qp 
       LinearMap.mulLeft_apply, hq, smul_mul_assoc, TensorProduct.tmul_smul]
   | add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w b => simp [mulVB, map_mul, mul_assoc]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+-/
 private theorem mulVB_mul {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V]
     [IsScalarTower Qp LL V] (d c : K₀) (x : V ⊗[Qp] B) :
     mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) d
@@ -85,6 +103,9 @@ private theorem mulVB_mul {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V
   | tmul w b => simp [mulVB, map_mul, mul_assoc]
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Set `φ : K₀ →ₗ[Qp] V ⊗[Qp] B` to `{ toFun := fun c => mulVB (K₀ := K₀) (B := B) (V := V) (LL := LL) c x map_add' := fun c c' => mulVB_add c c' x map_smul' := fun q c => mulVB_smul q c x }`. Conclude with `⟨TensorProduct.AlgebraTensorModule.lift (LinearMap.toSpanSingleton LL _ φ), fun l c => by simp [φ]⟩`.
+-/
 private theorem exists_linear_tensor_action_mulVB {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V]
     [IsScalarTower Qp LL V] (x : V ⊗[Qp] B) :
     ∃ A : LL ⊗[Qp] K₀ →ₗ[LL] V ⊗[Qp] B, ∀ (l : LL) (c : K₀),
@@ -96,6 +117,23 @@ private theorem exists_linear_tensor_action_mulVB {V : Type} [AddCommGroup V] [M
   exact ⟨TensorProduct.AlgebraTensorModule.lift (LinearMap.toSpanSingleton LL _ φ),
     fun l c => by simp [φ]⟩
 
+/- English proof (translation)
+Use `haveI := PD.finK₀`. Take `⟨L, hL⟩ : ∃ L : ZMod n → (LL ⊗[Qp] K₀ →ₐ[LL] LL), ∀ k (l : LL) (c : K₀), L k (l ⊗ₜ c) = l * W.emb k c` from `⟨fun k => Algebra.TensorProduct.lift (Algebra.ofId LL LL) (W.emb k) (fun _ _ => Commute.all _ _), fun k l c => by simp⟩`. Take `⟨Θ, hΘ⟩ : ∃ Θ : LL ⊗[Qp] K₀ →ₗ[LL] (ZMod n → LL), ∀ z k, Θ z k = L k z` from `⟨LinearMap.pi (fun k => (L k).toLinearMap), fun _ _ => rfl⟩`. Establish `hind : ∀ g : ZMod n → LL, (∀ c : K₀, ∑ k, W.emb k c * g k = 0) → ∀ k, g k = 0`. Introduce `g hg`.
+
+Establish `hli` using `(linearIndependent_monoidHom K₀ LL).comp (fun k => ((W.emb k : K₀ →+* LL) : K₀ →* LL)) (by`. Introduce `k k' h`. Apply `W.emb_bij.1` to reduce the goal to its premises. Use extensionality with `c`. Conclude with `DFunLike.congr_fun h c)`.
+
+Use `Fintype.linearIndependent_iff.1 hli g ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Simplify `hg c` using `[Finset.sum_apply, mul_comm]`. Establish `hsurj : Function.Surjective Θ`. Rewrite using `[← LinearMap.range_eq_top]`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Apply `hf0` to reduce the goal to its premises. Establish `hg` using `hind (fun k => f (fun j => if k = j then 1 else 0)) (by`. Introduce `c`.
+
+Establish `hmem : Θ (1 ⊗ₜ c) ∈ LinearMap.ker f` using `hle (LinearMap.mem_range_self _ _)`. Rewrite `hmem` using `[LinearMap.mem_ker, LinearMap.pi_apply_eq_sum_univ f]`. Simplify `hmem)` using `[hΘ, hL]`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f w]`.
+
+Simplify using `[hg]`. Establish `hrank : Module.finrank LL (LL ⊗[Qp] K₀) = Module.finrank LL (ZMod n → LL)`. Rewrite using `[Module.finrank_baseChange, Module.finrank_fintype_fun_eq_card, ZMod.card]`. Conclude with `W.n_eq.symm`. Establish `hinj : Function.Injective Θ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrank).2 hsurj`.
+
+Take `⟨e, he⟩` from `hsurj (fun k => if k = i then 1 else 0)`. Establish `hek : ∀ k, L k e = if k = i then 1 else 0` using `fun k => by rw [← hΘ, he]`. Use `⟨e, (L i).toLinearMap, fun l c => hL i l c, by simpa using hek i, fun d => hinj ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Rewrite using `[hΘ, hΘ, map_mul, map_smul, hL, hek, one_mul]`.
+
+Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 private theorem exists_emb_idempotent_projection (i : ZMod n) :
     ∃ (e : LL ⊗[Qp] K₀) (Li : LL ⊗[Qp] K₀ →ₗ[LL] LL),
       (∀ (l : LL) (c : K₀), Li (l ⊗ₜ c) = l * W.emb i c) ∧ Li e = 1 ∧
@@ -146,6 +184,31 @@ private theorem exists_emb_idempotent_projection (i : ZMod n) :
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Take `⟨hF, -⟩` from `rk_fil_map hK hE hC F h1 h2 hon a`. Take `⟨e, Li, hLi, hLe, he⟩` from `exists_emb_idempotent_projection W i`. Establish `hFD : ∀ (T : LocLat G Qp LL O) (b : ℤ), FilCris PD T.ρ b ≤ Dcris PD T.ρ`. Introduce `T b`. Unfold `FilCris`.
+
+Conclude with `inf_le_left`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨hzF, hzL⟩` from `Submodule.mem_inf.1 hz`. Rewrite `hzL` using `[rk_mem_DcrisL]`.
+
+Establish `hz2 : Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B` using `B) LL F.f z ∈ FilCris PD T₂.ρ a := by`. Rewrite using `[← hF]`. Conclude with `Submodule.mem_map_of_mem hzF`. Use `Submodule.mem_inf.2 ⟨hz2, ?_⟩` and prove the remaining obligations. Rewrite using `[rk_mem_DcrisL]`.
+
+Use `⟨hFD T₂ a hz2, fun d => ?_⟩` and prove the remaining obligations. Rewrite using `[← rk_mapVB_mulVB, hzL.2 d, map_smul]`. Introduce `y hy`. Take `⟨hyF, hyL⟩` from `Submodule.mem_inf.1 hy`. Rewrite `hyL` using `[rk_mem_DcrisL]`.
+
+Rewrite `hyF` using `[← hF]`. Take `⟨x, hx, rfl⟩` from `hyF`. Take `⟨A₁, hA₁⟩` from `exists_linear_tensor_action_mulVB (LL := LL) (K₀ := K₀) (B := B) x`. Take `⟨A₂, hA₂⟩` from `exists_linear_tensor_action_mulVB (LL := LL) (K₀ := K₀) (B := B) (Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := B) LL F.f x)`. Establish `hmap : ∀ z, Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B` using `B) LL F.f (A₁ z) = A₂ z := by`.
+
+Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l c => rw [hA₁, hA₂, map_smul, rk_mapVB_mulVB]`. Consider the case `add z z' hz hz' => rw [map_add, map_add, map_add, hz, hz']`.
+
+Establish `hA₂e : ∀ z, A₂ z = Li z • Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B` using `B) LL F.f x := by`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l c => rw [hA₂, hLi, hyL.2 c, smul_smul]`.
+
+Consider the case `add z z' hz hz' => rw [map_add, map_add, hz, hz', add_smul]`. Establish `hmulA : ∀ (d : K₀) z, mulVB (K₀` using `K₀) (B := B) (LL := LL) d (A₁ z) = A₁ ((1 ⊗ₜ d) * z) := by`. Introduce `d z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul l c`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, hA₁, hA₁, map_smul, mulVB_mul]`. Consider the case `add z z' hz hz' => rw [map_add, map_add, hz, hz', mul_add, map_add]`. Establish `hFA : ∀ z, A₁ z ∈ FilCris PD T₁.ρ a`. Introduce `z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l c => rw [hA₁]`. Conclude with `Submodule.smul_mem _ _ (rk_mulVB_FilCris (PD := PD) (ρ := T₁.ρ) c a hx)`. Consider the case `add z z' hz hz' => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hz hz'`. Use `⟨A₁ e, Submodule.mem_inf.2 ⟨hFA e, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[rk_mem_DcrisL]`. Use `⟨hFD T₁ a (hFA e), fun d => ?_⟩` and prove the remaining obligations. Rewrite using `[hmulA, he, map_smul]`.
+
+Rewrite using `[hmap, hA₂e, hLe, one_smul]`.
+-/
 theorem rk_fil_letter (hK : Function.Bijective (algebraMap K₀ K)) (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL)
     (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL) (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ)
@@ -206,6 +269,15 @@ theorem rk_fil_letter (hK : Function.Bijective (algebraMap K₀ K)) (hE : Formal
       rw [hmulA, he, map_smul]
     · rw [hmap, hA₂e, hLe, one_smul]
 
+/- English proof (translation)
+Establish `e : ∀ (T : LocLat G Qp LL O), IsCrys PD T.ρ → ∀ b : ℤ, FildR PD T.ρ τ b = (FilCris PD T.ρ b ⊓ DcrisL PD T.ρ (W.emb i)).map (ιV PD (LL` using `LL) (V := T.V)) := by`. Introduce `T hT b`. Rewrite using `[← hτ]`. Conclude with `((hQ hK T.V T.ρ hT).2 τ).2.2 b`. Establish `hnat : (ιV PD (LL` using `LL) (V := T₂.V)).comp (Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := B) LL F.f) = (Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B := BdR) LL F.f).comp (ιV PD (LL := LL) (V := T₁.V)) := by`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [Formalism.MainNotions.RamifiedCoefficientChains.mapVB, ιV]`.
+
+Consider the case `add x y hx hy`. Simplify using `only [LinearMap.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`. Establish `key : ∀ b : ℤ, FildR PD T₂.ρ τ b = (FildR PD T₁.ρ τ b).map (Formalism.MainNotions.RamifiedCoefficientChains.mapVB (B` using `BdR) LL F.f) := by`. Introduce `b`.
+
+Rewrite using `[e T₂ h2 b, ← rk_fil_letter W hK hE hC hQ F h1 h2 hon i b, ← Submodule.map_comp, hnat, Submodule.map_comp, ← e T₁ h1 b]`. Unfold `IsJumpV at hj ⊢`. Introduce `h`. Apply `hj` to reduce the goal to its premises. Rewrite using `[key (a + 1), key a, h]`.
+-/
 theorem rk_jump_of (hK : Function.Bijective (algebraMap K₀ K)) (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL)
     (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL) (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (h1 : IsCrys PD T₁.ρ) (h2 : IsCrys PD T₂.ρ)

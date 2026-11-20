@@ -11,6 +11,9 @@ namespace GlobalTheory.SmoothLowKStable
 
 open Formalism.MainNotions.S GlobalTheory.GardingVec
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons x l ih`. Rewrite using `[List.map_cons, List.prod_cons, List.prod_cons, Matrix.mul_assoc, ih]`. Simplify using `only [← Matrix.mul_assoc, hgh, Matrix.one_mul]`.
+-/
 theorem list_prod_conj {n : ℕ} {g h : Matrix (Fin n) (Fin n) ℂ} (hgh : g * h = 1)
     (l : List (Matrix (Fin n) (Fin n) ℂ)) : l.prod * g = g * (l.map fun x => h * x * g).prod := by
   induction l with
@@ -19,6 +22,29 @@ theorem list_prod_conj {n : ℕ} {g h : Matrix (Fin n) (Fin n) ℂ} (hgh : g * h
     rw [List.map_cons, List.prod_cons, List.prod_cons, Matrix.mul_assoc, ih]
     simp only [← Matrix.mul_assoc, hgh, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hG : IsUnit G`. Rewrite using `[← h]`. Conclude with `(((Matrix.isUnit_conjTranspose _).2 hP).mul (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).mul hP`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`.
+
+Establish `hPP' : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ hd`. Establish `hk' : kᴴ * Formalism.REAL.Jm ε * k = Formalism.REAL.Jm ε` using `hk`. Use `set g := P⁻¹ * k * P with hg`. Establish `hPg : P * g = k * P` using `by rw [hg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPP, Matrix.one_mul]`. Establish `hgG : gᴴ * G * g = G`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Pᴴ * (kᴴ * Formalism.REAL.Jm ε * k) * P := by rw [hPg]; simp only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = G := by rw [hk', h]`.
+
+Establish `hgu : IsUnit g`. Establish `: IsUnit (gᴴ * G * g).det` using `by rw [hgG]; exact (Matrix.isUnit_iff_isUnit_det G).1 hG`. Rewrite `this` using `[Matrix.det_mul]`. Conclude with `(Matrix.isUnit_iff_isUnit_det g).2 (isUnit_of_mul_isUnit_right this)`. Establish `hgd : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det g).1 hgu`.
+
+Establish `hgg : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hgd`. Establish `hGg : G * g⁻¹ = gᴴ * G` using `by conv_lhs => rw [← hgG]`. Rewrite using `[Matrix.mul_assoc, hgg, Matrix.mul_one]`. Establish `hGg' : (g⁻¹)ᴴ * G = G * g` using `by conv_lhs => rw [← hgG]`. Rewrite using `[Matrix.mul_assoc gᴴ, ← Matrix.mul_assoc, ← conjTranspose_mul, hgg, conjTranspose_one, Matrix.one_mul]`.
+
+Introduce `m Xs hX`. Establish `hY : ∀ i, (g⁻¹ * Xs i * g)ᴴ * G + G * (g⁻¹ * Xs i * g) = 0` using `fun i => by`. Establish `hXi : (Xs i)ᴴ * G + G * Xs i = 0` using `hX i`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = gᴴ * ((Xs i)ᴴ * G + G * Xs i) * g := by`. Rewrite using `[hGg, hGg']`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hXi]; simp`. Establish `hs` using `hv m (fun i => g⁻¹ * Xs i * g) hY`.
+
+Establish `hmem : ∀ (Ys : Fin m → Matrix (Fin n) (Fin n) ℂ), (∀ i, (Ys i)ᴴ * G + G * Ys i = 0) → ∀ t : Fin m → ℝ, P * (List.ofFn fun i => NormedSpace.exp (t i • Ys i)).prod * P⁻¹ ∈ UJset ε` using `fun Ys hYs t => by`. Use `conj_mem hP h (list_prod_mem _ fun g hg => ?_)` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hg`. Conclude with `exp_mem hG (hYs i) _`. Establish `key : ∀ t : Fin m → ℝ, σ (P * (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod * P⁻¹) (σ k v) = σ k (σ (P * (List.ofFn fun i => NormedSpace.exp (t i • (g⁻¹ * Xs i * g))).prod * P⁻¹) v)` using `fun t => by`.
+
+Establish `e1 : (List.ofFn fun i => NormedSpace.exp (t i • (g⁻¹ * Xs i * g))) = (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).map fun x => g⁻¹ * x * g`. Rewrite using `[List.map_ofFn]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, ← Matrix.exp_conj' _ _ hgu, Matrix.mul_smul, Matrix.smul_mul]`.
+
+Establish `e2` using `list_prod_conj hgg (List.ofFn fun i => NormedSpace.exp (t i • Xs i))`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply, ← hmul _ (hmem Xs hX t) _ hk, ← hmul _ hk _ (hmem _ hY t), e1]`. Use `congr 2`. Establish `e3 : P⁻¹ * k = g * P⁻¹` using `by rw [hg, Matrix.mul_assoc _ P, hPP, Matrix.mul_one]`. Rewrite using `[Matrix.mul_assoc _ P⁻¹, e3, ← Matrix.mul_assoc, Matrix.mul_assoc P, e2]`.
+
+Simplify using `only [← Matrix.mul_assoc, hPg]`. Use `((σ k).restrictScalars ℝ).contDiff.comp hs` as an intermediate fact. Use `(funext key : _ = _) ▸ this` and prove the remaining obligations.
+-/
 theorem smoothVec_apply {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hmul : ∀ g ∈ UJset ε, ∀ h ∈ UJset ε, σ (g * h) = σ g * σ h) {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P)
@@ -91,6 +117,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `k hk w hw`. Establish `hkU : k ∈ UJset (M.ε τ)` using `by show kᴴ * Formalism.REAL.Jm _ * k = Formalism.REAL.Jm _`. Establish `h1 : kᴴ * k = 1` using `(Matrix.mem_unitaryGroup_iff').1 hk.1`. Rewrite using `[Matrix.mul_assoc, ← hk.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: lowKSub (M.ε τ) (M.lam τ) (M.σ τ) ≤ (lowKSub (M.ε τ) (M.lam τ) (M.σ τ)).comap (M.σ τ k : _ →ₗ[ℂ] _)` using `sSup_le fun T hT v hv => (le_sSup hT : T ≤ _) (hT.2.1 k hk v hv)`. Conclude with `this hw.1`. Establish `: M.sm τ ≤ (M.sm τ).comap (M.σ τ k : _ →ₗ[ℂ] _)` using `Submodule.span_le.2 fun v hv => Submodule.subset_span (smoothVec_apply (M.ds τ).2.2.1.1.2 (M.fr_unit τ) (M.fr_gram τ) hkU hv)`. Conclude with `this hw.2`.
+-/
 theorem isKStableOn_lowKSub_inf_sm (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S)
     (τ : D.what₂.Tau) : IsKStableOn (M.ε τ) (M.σ τ) (lowKSub (M.ε τ) (M.lam τ) (M.σ τ) ⊓ M.sm τ) := by
   intro k hk w hw

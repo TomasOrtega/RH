@@ -6,6 +6,17 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory.QLog
 
+/- English proof (translation)
+Introduce `p _ B O Q _ _ _ _ θ hF σ _ _ z hz E hE τ _ _ u hu g`. Establish `ha : HasSubst (up Q u)` using `hasSubst_of_constantCoeff_zero fun j => by`. Simplify using `[up, hu j]`. Proceed by induction on `g using MvPolynomial.induction_on' with`. Consider the case `monomial α c`.
+
+Rewrite using `[MvPolynomial.coe_monomial, subst_monomial ha, MvPolynomial.eval_monomial]`. Establish `hprod : α.prod (fun s n => (up Q u s) ^ n) = map (algebraMap B Q) (α.prod fun s n => (u s) ^ n)`. Simplify using `[up, Finsupp.prod, map_prod, map_pow]`. Establish `hEp : E (α.prod fun s n => (u s) ^ n) = α.prod fun s n => (E (u s)) ^ n`. Simplify using `[Finsupp.prod, map_prod, map_pow]`.
+
+Establish `hv` using `GlobalTheory.T.hasPAdicPowerSeriesValue_map_of_continuousEvaluation p B O Q θ hF σ z hz E hE (α.prod fun s n => (u s) ^ n)`. Establish `hs` using `(GlobalTheory.T.hasPAdicPowerSeriesValue_add_smul_map p B O Q θ hF σ z _ 0 _ 0 hv).2.1 c`. Rewrite using `[hprod]`. Use `hs using 1` and compare the differences between its conclusion and the goal. Rewrite using `[MvPowerSeries.smul_eq_C_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[hEp]`. Simplify using `[Finsupp.prod, map_prod, map_pow]`. Consider the case `add f g hf hg`. Rewrite using `[MvPolynomial.coe_add, subst_add ha, map_add]`.
+
+Conclude with `(GlobalTheory.T.hasPAdicPowerSeriesValue_add_smul_map p B O Q θ hF σ z _ _ _ _ hf).1 hg`.
+-/
 theorem hasVal_subst_poly : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (σ : Type) [Fintype σ] [DecidableEq σ] (z : σ → B), (∀ i, ∃ N : ℕ, (p : B) ∣ z i ^ N) → ∀ E : MvPowerSeries σ B →ₐ[B] B, IsEval p z E → ∀ (τ : Type) [Fintype τ] [DecidableEq τ] (u : τ → MvPowerSeries σ B), (∀ j, constantCoeff (u j) = 0) → ∀ g : MvPolynomial τ Q, HasVal p z (subst (up Q u) (g : MvPowerSeries τ Q)) (MvPolynomial.eval (fun j => algebraMap B Q (E (u j))) g) := by
   intro p _ B O Q _ _ _ _ θ hF σ _ _ z hz E hE τ _ _ u hu g
   have ha : HasSubst (up Q u) := hasSubst_of_constantCoeff_zero fun j => by

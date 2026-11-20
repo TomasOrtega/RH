@@ -10,6 +10,15 @@ noncomputable section
 namespace GlobalTheory.Ex.Arch
 open GlobalTheory.CubeValues GlobalTheory.SymmetricSemicharacter GlobalTheory.EigenNorm GlobalTheory.FrameValue
 
+/- English proof (translation)
+Establish `a : ⊤ ≤ x ⁻¹ᵁ L.wchart (fun _ : PUnit => F) (fun _ => j)` using `(le_preimage_wchart x L _ _).2 fun _ => hj`. Establish `a' : ⊤ ≤ x ⁻¹ᵁ L.wchart (fun _ : PUnit => F) (fun _ => j')` using `(le_preimage_wchart x L _ _).2 fun _ => hj'`. Establish `b` using `(le_preimage_inf x _ _).2 ⟨a, hi⟩`. Establish `b'` using `(le_preimage_inf x _ _).2 ⟨a', hi⟩`. Establish `c` using `(le_preimage_inf x _ _).2 ⟨b, b'⟩`.
+
+Use `(val_sec x (genSec w hw) (fun _ => j, i) (fun _ => j', i) b b').trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Establish `e₁` using `val_linComb x valueRules L (fun _ : PUnit => F) (fun _ => 1) (fun _ => j) (fun _ => j') a a'`. Rewrite `e₁` using `[Fintype.prod_unique, zpow_one]`. Establish `e₂ : valAt' x (L'.U i ⊓ L'.U i) (L'.g i i).val = 1`. Take `⟨e, he⟩` from `(valueRules X' x).2.1 _ hi`.
+
+Rewrite using `[← val_res x valueRules (le_inf le_rfl le_rfl) hi, hL'.g_self i, he]`. Conclude with `map_one e`. Take `⟨e, he⟩` from `(valueRules X' x).2.1 _ c`. Use `(val_unit_mul x valueRules c _ _).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) ((val_res x valueRules _ c _).trans e₁) ((he _).trans ((map_units_inv e _).trans (congrArg (·⁻¹) ((he _).symm.trans ((val_res x valueRules _ c _).trans e₂)))))).trans ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules.
+-/
 theorem val_iso_chart {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} (hL' : L'.IsLB) {F : X' ⟶ X}
     {w : LB.Iso L' (L.pull F)} (hw : w.IsGen) (x : Sp ℂ ⟶ X') (j j' : L.ι) (i : L'.ι)
     (hj : ⊤ ≤ (x ≫ F) ⁻¹ᵁ L.U j) (hj' : ⊤ ≤ (x ≫ F) ⁻¹ᵁ L.U j') (hi : ⊤ ≤ x ⁻¹ᵁ L'.U i) :
@@ -33,6 +42,19 @@ theorem val_iso_chart {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} (hL' : L'.IsLB
     (congrArg (·⁻¹) ((he _).symm.trans ((val_res x valueRules _ c _).trans e₂)))))).trans ?_
   simp
 
+/- English proof (translation)
+Introduce `R _ _ _ D J g Λ Hm χ ex fr h s`. Take `⟨hJ, P', φ, w, u, hΛ, -, hw, -, -, -, -, hex, hfr⟩` from `h`. Use `⟨fun z => sF s (ex z).left J / fr z, fun z₀ => ?_, fun z => (div_mul_cancel₀ _ (fr z).ne_zero).symm⟩` and prove the remaining obligations. Take `⟨i, hi⟩ : ∃ i, ⊤ ≤ (u.ex z₀).left ⁻¹ᵁ P'.L.U i` from `⟨_, le_chartAt P'.isLB _⟩`. Take `⟨j, hj⟩ : ∃ j, ⊤ ≤ ((u.ex z₀).left ≫ φ) ⁻¹ᵁ D.P.L.U j` from `⟨_, hJ _⟩`.
+
+Establish `ch : ∀ (y : Sp ℂ ⟶ D.P.A.left) (k : D.P.L.ι), ⊤ ≤ y ⁻¹ᵁ D.P.L.U k → ⊤ ≤ y ⁻¹ᵁ D.P.L.wchart (fun _ : Fin 1 => 𝟙 D.P.A.left) (fun _ => k)` using `fun y k hk => (le_preimage_wchart y _ _ _).2 fun _ => by rwa [Category.comp_id]`. Establish `a : ⊤ ≤ (u.ex z₀).left ⁻¹ᵁ (D.P.L.wchart (fun _ : PUnit => φ) (fun _ => j) ⊓ P'.L.U i)` using `(le_preimage_inf _ _ _).2 ⟨(le_preimage_wchart _ _ _ _).2 fun _ => hj, hi⟩`. Take `⟨o₁, d₁⟩` from `u.hol (φ ⁻¹ᵁ D.P.L.wchart (fun _ : Fin 1 => 𝟙 D.P.A.left) (fun _ => j)) ((φ.app _).hom (s.f fun _ => j))`. Take `⟨o₂, d₂⟩` from `u.hol _ (w.s (fun _ => j, i)).val`. Establish `n₂` using `o₂.mem_nhds a`.
+
+Establish `d` using `(d₁.differentiableAt (o₁.mem_nhds (ch _ j hj))).fun_mul (((d₂.differentiableAt n₂).fun_mul ((u.fr_hol i).differentiableAt ((u.hol _ 0).1.mem_nhds hi))).fun_inv (mul_ne_zero (val_unit_ne_zero _ valueRules a _) (u.fr_ne i _ hi)))`. Use `d.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [n₂] with z hz`. Take `⟨h₁, h₂⟩` from `(le_preimage_inf _ _ _).1 hz`. Establish `h₃` using `(le_preimage_wchart _ _ _ _).1 h₁ PUnit.unit`.
+
+Establish `e₀ : sF s (ex z).left J = valAt' (ex z).left _ (s.f fun _ => J (ex z).left)`. Both sides reduce to the same expression. Establish `e₁` using `val_sec (ex z).left s (fun _ => J (ex z).left) (fun _ => j) (ch _ _ (hJ _)) (ch _ _ (hex z ▸ h₃))`. Establish `e₂` using `val_linComb (ex z).left valueRules D.P.L (fun _ : Fin 1 => 𝟙 D.P.A.left) (fun _ => ((1 : ℕ) : ℤ)) (fun _ => J (ex z).left) (fun _ => j) (ch _ _ (hJ _)) (ch _ _ (hex z ▸ h₃))`. Rewrite `e₂` using `[Fintype.prod_unique, Nat.cast_one, zpow_one, Category.comp_id]`.
+
+Establish `e₃` using `val_iso_chart P'.isLB hw (u.ex z).left (J (ex z).left) j i (hex z ▸ hJ _) h₃ h₂`. Establish `n` using `val_unit_ne_zero (ex z).left valueRules ((le_preimage_inf _ _ _).2 ⟨hJ _, hex z ▸ h₃⟩) (D.P.L.g (J (ex z).left) j)`. Establish `e₄` using `(valueRules _ (u.ex z).left).2.2.2.1 _ φ _ (s.f fun _ => j)`. Rewrite `e₃`, `e₄` using `[← hex z]`. Rewrite using `[e₀, e₁, hfr z i h₂, e₃, _root_.mul_assoc]`.
+
+Conclude with `(congrArg (fun q => q * _ / _) e₂).trans ((mul_div_mul_left _ _ n).trans ((div_eq_mul_inv _ _).trans (congrArg₂ (· * ·) e₄.symm rfl)))`.
+-/
 theorem fibSec : FibSecSt := by
   intro R _ _ _ D J g Λ Hm χ ex fr h s
   obtain ⟨hJ, P', φ, w, u, hΛ, -, hw, -, -, -, -, hex, hfr⟩ := h

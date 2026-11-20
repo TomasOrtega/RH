@@ -32,6 +32,9 @@ def IsScaleAt {j : Fin D.R.m} (B : Base (Vc D j) (Wc D j)) (u : ∀ τ, lowT (Rl
     harmFn (Wc D j).rank B.w B.F.BS (Rl.ioP j (PiTensorProduct.tprod ℂ u) (c0 F)) =
       c • coefFn D.what₂.embLL (FWT.lamV D j) (F : Formalism.L2.DIV.Pol D.what₂.LL D.what₂.Tau (Vc D j).rank)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isScale_iff (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) {j : Fin D.R.m}
     (B : Base (Vc D j) (Wc D j)) (c : ℂ) :
     IsScale Rl v₀ B c ↔ ∃ gramR c0R c0L, Bridge.FamTie Rl.B Rl.pl (Rl.Sb : Set (Formalism.L2.DIV.Pl D.host.E)) Rl.Q (labLL D)
@@ -41,6 +44,9 @@ theorem isScale_iff (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (
 
 variable {Rl}
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 (hinj _ (H.sub_mem hio (H.smul_mem c hP)) (by rw [map_sub, map_smul, h F, hPF, sub_self]))`.
+-/
 theorem IsScaleAt.ioP_eq {j : Fin D.R.m} {B : Base (Vc D j) (Wc D j)} {u : ∀ τ, lowT (Rl.MW j (sg0 D A3.A)) τ}
     {c0 : VsV D j D.what₂.LL →ₛₗ[D.what₂.embLL] (Rl.cV j).W} {c : ℂ} (h : IsScaleAt Rl B u c0 c)
     {H : Submodule ℂ (PolF D (Wc D j).rank (Vc D j).rank)}
@@ -52,12 +58,18 @@ theorem IsScaleAt.ioP_eq {j : Fin D.R.m} {B : Base (Vc D j) (Wc D j)} {u : ∀ �
     Rl.ioP j (PiTensorProduct.tprod ℂ u) (c0 F) = c • P :=
   sub_eq_zero.1 (hinj _ (H.sub_mem hio (H.smul_mem c hP)) (by rw [map_sub, map_smul, h F, hPF, sub_self]))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h0, c, hc, n, hn, by rw [mul_assoc, mul_pow, hζ, one_mul]⟩`.
+-/
 theorem isNorm_of_root {v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec} {j : Fin D.R.m}
     {B : Base (Vc D j) (Wc D j)} {c ζ : ℂ} (hc : IsScale Rl v₀ B c) {n : ℕ} (hn : n ≠ 0) (hζ : ζ ^ n = 1)
     (h0 : ζ * cj (twAt D.what₂.embLL A3.A.v0) (Rl.phs j) * c ≠ 0) :
     IsNorm Rl v₀ B (ζ * cj (twAt D.what₂.embLL A3.A.v0) (Rl.phs j) * c) :=
   ⟨h0, c, hc, n, hn, by rw [mul_assoc, mul_pow, hζ, one_mul]⟩
 
+/- English proof (translation)
+Establish `e : harmVec Rl.toRealDat j u w f = (ρ.B i j b).F.fock f (c • P)`. Rewrite using `[← hP, GlobalTheory.ExportSeries.Frame.fock, h.psi, h.inf, h.cartT, h.onbT, funext (h.onbS i j b)]`. Both sides reduce to the same expression. Rewrite using `[e, mul_smul, ← map_smul]`. Both sides reduce to the same expression.
+-/
 theorem RealPin.phase_mul_thetaKO {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {ρ : Setup D.ntw} (h : RealPin Rl cG ρ) (i : D.ntw.Tw)
     {j : Fin D.R.m} (b : Bool) {u : ∀ τ, lowT (Rl.MW j (sg0 D A3.A)) τ} {w : (Rl.cV j).W}
     {P : PolF D (Wc D j).rank (Vc D j).rank} {c : ℂ} (hP : Rl.ioP j (PiTensorProduct.tprod ℂ u) w = c • P) (ph : ℂ)
@@ -79,6 +91,11 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.L
 
 variable {T j hV} in
 
+/- English proof (translation)
+Take `⟨φ', h1, rfl⟩` from `h`. Take `⟨x, rfl⟩` from `ha`. Use `⟨C.σ₂ x • φ', GlobalTheory.CoverRead.Test.smul_mem_ratForms C _ _ x h1, ?_⟩` and prove the remaining obligations. Establish `key : ∀ {V W : HSp D} (e : V = W) (z : ℂ) (ψ : GA D V → ℂ), castDict e (z • ψ) = fun g => z * castDict e ψ g`. Introduce and unpack `V _ rfl z ψ`.
+
+Both sides reduce to the same expression. Conclude with `key hV _ _`.
+-/
 theorem isRat_mul {C : Cover T ((j : ℕ) + 1) σ} {κ : WeightFamilies.Wt D ((j : ℕ) + 1)} {φ : GA D (Wc D j) → ℂ} (h : IsRat T j hV C κ φ)
     {a : ℂ} (ha : a ∈ C.σ₂.fieldRange) : IsRat T j hV C κ fun g => a * φ g := by
   obtain ⟨φ', h1, rfl⟩ := h
@@ -91,6 +108,11 @@ theorem isRat_mul {C : Cover T ((j : ℕ) + 1) σ} {κ : WeightFamilies.Wt D ((j
 
 variable {T R j hV} in
 
+/- English proof (translation)
+Introduce `s hs f hf w hw`. Take `⟨h1, h2⟩` from `h s hs f hf w hw`. Use `⟨?_, fun δ δc hδ => ⟨fun dd hdd => ?_, fun om hom => ?_⟩⟩` and prove the remaining obligations. Simplify `isRat_mul h1 ha` using `only [mul_assoc]`. Simplify `isRat_mul ((h2 δ δc hδ).1 dd hdd) ha` using `only [mul_assoc, mul_left_comm a]`.
+
+Simplify `isRat_mul ((h2 δ δc hδ).2 om hom) ha` using `only [mul_assoc]`.
+-/
 theorem seriesRatOn_mul {C : Cover T ((j : ℕ) + 1) σ} {κ : WeightFamilies.Wt D ((j : ℕ) + 1)} {u : ∀ τ, lowT (R.MW j (sg0 D A)) τ}
     {c0 : VsV D j D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV j).W} {ph : ℂ} (h : SeriesRatOn T R j hV C κ u c0 ph)
     {a : ℂ} (ha : a ∈ C.σ₂.fieldRange) : SeriesRatOn T R j hV C κ u c0 (a * ph) := by
@@ -108,6 +130,9 @@ def IsRatPhase (κ : WeightFamilies.Wt D ((j : ℕ) + 1)) (u : ∀ τ, lowT (R.M
 
 variable {T R j hV}
 
+/- English proof (translation)
+Introduce `C hC hL` and use `seriesRatOn_mul (h C hC hL) (hL ha)`.
+-/
 theorem IsRatPhase.mul {κ : WeightFamilies.Wt D ((j : ℕ) + 1)} {u : ∀ τ, lowT (R.MW j (sg0 D A)) τ}
     {c0 : VsV D j D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV j).W} {ph : ℂ} (h : IsRatPhase T R j hV κ u c0 ph)
     {a : ℂ} (ha : a ∈ (embLL0 D).fieldRange) : IsRatPhase T R j hV κ u c0 (a * ph) :=
@@ -129,6 +154,9 @@ def IsRatScalar (ν : ℂ) : Prop :=
       ∃ c ph : ℂ, c ≠ 0 ∧ ‖ph‖ = 1 ∧ ν = ph * c ∧ IsScaleAt Rl B u (c0L j) c ∧
         IsRatPhase T Rl.toRealDat j hV (κ j) u (c0L j) ph
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isRatScalar_iff (ν : ℂ) : IsRatScalar T Rl κ v₀ hV B ν ↔
     ∃ gramR c0R c0L, Bridge.FamTie Rl.B Rl.pl (Rl.Sb : Set (Formalism.L2.DIV.Pl D.host.E)) Rl.Q (labLL D)
       (fun τ => Bridge.lamRdef (Ptw D) τ) (fun j τ => Bridge.lamLdef (Vc D j).rank ((j : ℕ) + 1) τ) gramR c0R c0L ∧
@@ -142,6 +170,9 @@ theorem isRatScalar_iff (ν : ℂ) : IsRatScalar T Rl κ v₀ hV B ν ↔
 
 variable {T Rl κ v₀ hV B}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gramR, c0R, c0L, h, u, hu, c, ph, hc, hph, rfl, hs, hr⟩`.
+-/
 theorem IsRatScalar.intro {gramR c0R c0L} (h : Bridge.FamTie Rl.B Rl.pl (Rl.Sb : Set (Formalism.L2.DIV.Pl D.host.E)) Rl.Q (labLL D)
       (fun τ => Bridge.lamRdef (Ptw D) τ) (fun j τ => Bridge.lamLdef (Vc D j).rank ((j : ℕ) + 1) τ) gramR c0R c0L) {u : ∀ τ, lowT (Rl.MW j (sg0 D A3.A)) τ}
     (hu : ∀ τ, (u τ : (Rl.MW j (sg0 D A3.A)).sm τ) = v₀ j _ τ) {c ph : ℂ} (hc : c ≠ 0) (hph : ‖ph‖ = 1)
@@ -149,30 +180,48 @@ theorem IsRatScalar.intro {gramR c0R c0L} (h : Bridge.FamTie Rl.B Rl.pl (Rl.Sb :
     IsRatScalar T Rl κ v₀ hV B (ph * c) :=
   ⟨gramR, c0R, c0L, h, u, hu, c, ph, hc, hph, rfl, hs, hr⟩
 
+/- English proof (translation)
+Take `⟨g, cR, cL, h0, u, hu, c, ph, h1, h2, h3, h4, -⟩` from `h`. Conclude with `⟨c, ph, h1, h2, h3, g, cR, cL, h0, u, hu, h4⟩`.
+-/
 theorem IsRatScalar.isScale {ν : ℂ} (h : IsRatScalar T Rl κ v₀ hV B ν) :
     ∃ c ph : ℂ, c ≠ 0 ∧ ‖ph‖ = 1 ∧ ν = ph * c ∧ IsScale Rl v₀ B c := by
   obtain ⟨g, cR, cL, h0, u, hu, c, ph, h1, h2, h3, h4, -⟩ := h
   exact ⟨c, ph, h1, h2, h3, g, cR, cL, h0, u, hu, h4⟩
 
+/- English proof (translation)
+Take `⟨c, ph, h1, h2, rfl, -⟩` from `h.isScale`. Conclude with `mul_ne_zero (fun e => by simp [e] at h2) h1`.
+-/
 theorem IsRatScalar.ne_zero {ν : ℂ} (h : IsRatScalar T Rl κ v₀ hV B ν) : ν ≠ 0 := by
   obtain ⟨c, ph, h1, h2, rfl, -⟩ := h.isScale
   exact mul_ne_zero (fun e => by simp [e] at h2) h1
 
+/- English proof (translation)
+Take `⟨g, cR, cL, h1, u, hu, c, ph, h2, h3, rfl, h4, h5⟩` from `h`. Conclude with `⟨g, cR, cL, h1, u, hu, c, a * ph, h2, by rw [norm_mul, h0, h3, one_mul], (mul_assoc _ _ _).symm, h4, h5.mul ha⟩`.
+-/
 theorem IsRatScalar.mul {ν : ℂ} (h : IsRatScalar T Rl κ v₀ hV B ν) {a : ℂ} (ha : a ∈ (embLL0 D).fieldRange) (h0 : ‖a‖ = 1) :
     IsRatScalar T Rl κ v₀ hV B (a * ν) := by
   obtain ⟨g, cR, cL, h1, u, hu, c, ph, h2, h3, rfl, h4, h5⟩ := h
   exact ⟨g, cR, cL, h1, u, hu, c, a * ph, h2, by rw [norm_mul, h0, h3, one_mul], (mul_assoc _ _ _).symm, h4, h5.mul ha⟩
 
+/- English proof (translation)
+The claim follows from `mul_comm a ν ▸ h.mul ha h0`.
+-/
 theorem IsRatScalar.mul_right {ν : ℂ} (h : IsRatScalar T Rl κ v₀ hV B ν) {a : ℂ} (ha : a ∈ (embLL0 D).fieldRange)
     (h0 : ‖a‖ = 1) : IsRatScalar T Rl κ v₀ hV B (ν * a) :=
   mul_comm a ν ▸ h.mul ha h0
 
+/- English proof (translation)
+Establish `hne : a ≠ 0` using `fun e => by simp [e] at h0`. Conclude with `⟨fun h => by simpa only [inv_mul_cancel_left₀ hne] using h.mul (inv_mem ha) (by rw [norm_inv, h0, inv_one]), fun h => h.mul ha h0⟩`.
+-/
 theorem isRatScalar_mul_iff {ν a : ℂ} (ha : a ∈ (embLL0 D).fieldRange) (h0 : ‖a‖ = 1) :
     IsRatScalar T Rl κ v₀ hV B (a * ν) ↔ IsRatScalar T Rl κ v₀ hV B ν := by
   have hne : a ≠ 0 := fun e => by simp [e] at h0
   exact ⟨fun h => by simpa only [inv_mul_cancel_left₀ hne] using h.mul (inv_mem ha) (by rw [norm_inv, h0, inv_one]),
     fun h => h.mul ha h0⟩
 
+/- English proof (translation)
+Take `⟨ph, h1, h2⟩` from `row D Γ Pl0 T0 A3.A T Rl.toRealDat F κ v₀ hT h0 hg hf hm ht hi j hV hp hstd gramR c0R c0L h u hu`. Conclude with `⟨ph, h1, fun C hC _ => h2 C hC⟩`.
+-/
 theorem exists_isRatPhase (row : SeriesRat) {F : Face D A3.A} (hT : LawsJ T) (h0 : Rl.toRealDat.toLevCh.Is A3.A.μ0)
     (hg : Rl.toRealDat.IsGrp F) (hf : Rl.toRealDat.IsFam) (hm : Rl.toRealDat.IsModels) (ht : Rl.toRealDat.IsThP)
     (hi : TieIn T Rl.toRealDat κ v₀) (hp : GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin T Rl.toRealDat j T.σ₀ hV) (hstd : VStd D j)
@@ -183,6 +232,9 @@ theorem exists_isRatPhase (row : SeriesRat) {F : Face D A3.A} (hT : LawsJ T) (h0
   obtain ⟨ph, h1, h2⟩ := row D Γ Pl0 T0 A3.A T Rl.toRealDat F κ v₀ hT h0 hg hf hm ht hi j hV hp hstd gramR c0R c0L h u hu
   exact ⟨ph, h1, fun C hC _ => h2 C hC⟩
 
+/- English proof (translation)
+Take `⟨g, cR, cL, h1, u, hu, h2⟩` from `hs`. Take `⟨ph, h3, h4⟩` from `exists_isRatPhase row hT h0 hg hf hm ht hi hp hstd h1 hu`. Conclude with `⟨ph, h3, IsRatScalar.intro h1 hu hc h3 h2 h4⟩`.
+-/
 theorem exists_isRatScalar (row : SeriesRat) {F : Face D A3.A} (hT : LawsJ T) (h0 : Rl.toRealDat.toLevCh.Is A3.A.μ0)
     (hg : Rl.toRealDat.IsGrp F) (hf : Rl.toRealDat.IsFam) (hm : Rl.toRealDat.IsModels) (ht : Rl.toRealDat.IsThP)
     (hi : TieIn T Rl.toRealDat κ v₀) (hp : GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin T Rl.toRealDat j T.σ₀ hV) (hstd : VStd D j)
@@ -192,11 +244,20 @@ theorem exists_isRatScalar (row : SeriesRat) {F : Face D A3.A} (hT : LawsJ T) (h
   obtain ⟨ph, h3, h4⟩ := exists_isRatPhase row hT h0 hg hf hm ht hi hp hstd h1 hu
   exact ⟨ph, h3, IsRatScalar.intro h1 hu hc h3 h2 h4⟩
 
+/- English proof (translation)
+Introduce `h` and use `h.ne_zero rfl`.
+-/
 example : ¬ IsRatScalar T Rl κ v₀ hV B 0 := fun h => h.ne_zero rfl
 
+/- English proof (translation)
+Simplify using `using h.mul (neg_mem (one_mem _)) (by simp)`.
+-/
 example {ν : ℂ} (h : IsRatScalar T Rl κ v₀ hV B ν) : IsRatScalar T Rl κ v₀ hV B (-ν) := by
   simpa using h.mul (neg_mem (one_mem _)) (by simp)
 
+/- English proof (translation)
+The claim follows from `h.mul ⟨x, rfl⟩ (Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hx, map_one]) hn)`.
+-/
 example {ν : ℂ} (h : IsRatScalar T Rl κ v₀ hV B ν) {x : ↥D.LL0} {n : ℕ} (hn : n ≠ 0) (hx : x ^ n = 1) :
     IsRatScalar T Rl κ v₀ hV B (embLL0 D x * ν) :=
   h.mul ⟨x, rfl⟩ (Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hx, map_one]) hn)

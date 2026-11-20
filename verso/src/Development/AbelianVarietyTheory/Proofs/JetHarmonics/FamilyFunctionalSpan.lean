@@ -12,6 +12,27 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.TauChoice
 
+/- English proof (translation)
+Introduce `hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J hNum hFam hL hR hnz hco hz`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Take `⟨-, hz1, hz2, -, -, ht1, ht2⟩` from `p.hP`. Take `⟨νq, νq', hS, hS'⟩` from `GlobalTheory.T.besselDatum_both_sides_are_sides P.k P.r Wp Wq p.T.base P.u P.u' ht1 ht2`.
+
+Establish `key : ∀ ν, ∃ t : Finset (Fin (2 * P.r + P.k + 1)) → ℂ, (∀ I, J ν = 0 ∨ J (ν + eZ I) = 0 → t I = 0) ∧ (n1 ν + (P.r + 1) * (P.r + 2) ≤ q0 → ∃ io pr ep, TensH (cmp (P.r + 1)) (cmp (P.r + 1) (Formalism.QuantumDeterminants.Hpk P.k P.r)) (R ν) (fun I : Sub (2 * P.r + P.k + 1) (P.r + 1) …`. Introduce `ν`. Distinguish the cases in `hν : n1 ν + (P.r + 1) * (P.r + 2) ≤ q0`. Use `swap`. Conclude with `⟨fun _ => 0, fun _ _ => rfl, fun h => absurd h hν⟩`.
+
+Establish `hν1 : n1 ν + (P.r + 1) ≤ q0` using `by nlinarith`. Establish `hν0 : n1 ν ≤ q0` using `by omega`. Take `⟨io, pr, ep, hT⟩` from `(GlobalTheory.T.pieri_tensor_decomposition hH P.k P.r lam P.u b bv ga h q0 R hNum hFam ν).1 (P.r + 1) hν1`. Establish `hI : ∀ I : Sub (2 * P.r + P.k + 1) (P.r + 1), n1 (ν + eZ I.1) ≤ q0`. Introduce `I`.
+
+Establish `h1 : n1 (ν + eZ I.1) ≤ n1 ν + I.1.card`. Unfold `n1 eZ`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`.
+
+Apply the tactic sequence `split_ifs <;> omega`. Use `_ = ∑ i, (ν i).natAbs + I.1.card := by`. Rewrite using `[Finset.sum_add_distrib]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[I.2]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hk : ∀ I : Sub (2 * P.r + P.k + 1) (P.r + 1), ∃ κ κ' : ℂ, J ν ≠ 0 → (∀ v ∈ (R ν).sm, l (ν + eZ I.1) (∑ c, pr I c (tm (R ν) (wedge (Formalism.QuantumDeterminants.fvec P.k P.r p.T.base.z)) v c)) = κ • l ν v) ∧ (∀ v ∈ (R ν).sm, l' (ν + eZ I.1) (∑ c, pr I c (tm (R ν) (wedge (Formalis …`. Introduce `I`. Distinguish the cases in `hJ : J ν = 0`. Conclude with `⟨0, 0, fun h => absurd hJ h⟩`.
+
+Establish `hn : n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)`. Assume the negation of the conclusion as `hc`. Conclude with `hJ (hz ν hc)`. Take `⟨κ, hκ⟩` from `(GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hH P.k P.r _ _ _ _ (P.r + 1) (R ν) (fun I : Sub (2 * P.r + P.k + 1) (P.r + 1) => R (ν + eZ I.1)) io pr ep _ _ _ Wp p.T.base.z p.T.base.π P.u p.T.base.μW p.T.base.μN p.T.base.μG νq (wedge (Formalism.QuantumDeterminants.fv …`. Take `⟨κ', hκ'⟩` from `(GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hH P.k P.r _ _ _ _ (P.r + 1) (R ν) (fun I : Sub (2 * P.r + P.k + 1) (P.r + 1) => R (ν + eZ I.1)) io pr ep _ _ _ Wq p.T.base.z' p.T.base.π' P.u' p.T.base.μW' p.T.base.μN p.T.base.μG νq' (wedge (Formalism.QuantumDeterminan …`.
+
+Conclude with `⟨κ, κ', fun _ => ⟨hκ, hκ'⟩⟩`. Use `choose κ κ' hκ using hk`. Use `⟨fun I => if hc : I.card = P.r + 1 ∧ J ν ≠ 0 ∧ J (ν + eZ I) ≠ 0 then (ep ⟨I, hc.1⟩ : ℂ) * κ' ⟨I, hc.1⟩ * star (κ ⟨I, hc.1⟩) * s ν / s (ν + eZ I) else 0, ?_, fun _ => ?_⟩` and prove the remaining obligations. Introduce `I hI0`. Use `dif_neg ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨-, h1, h2⟩`. Conclude with `hI0.elim h1 h2`. Use `⟨io, pr, ep, hT, fun I h1 h2 => ⟨κ I, κ' I, (hκ I h1).1, (hκ I h1).2, ?_⟩⟩` and prove the remaining obligations. Conclude with `dif_pos (⟨I.2, h1, h2⟩ : I.1.card = P.r + 1 ∧ J ν ≠ 0 ∧ J (ν + eZ I.1) ≠ 0)`. Use `choose tau h1 h2 using key`.
+
+Conclude with `⟨tau, ⟨hFam, hL, hR, hnz, hco, hz, h1, h2⟩⟩`.
+-/
 theorem exists_tau : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)), Num P.k P.r lam P.u b bv ga h q0 → IsFam lam q0 R → (haveI := FiniteDimensional.complete ℂ Wp; SideFam p.T.base.z p.T.base.π p.T.base.μW p.T.base.μN p.T.base.μG q0 R l dg) → (haveI := FiniteDimensional.complete ℂ Wq; SideFam p.T.base.z' p.T.base.π' p.T.base.μW' p.T.base.μN p.T.base.μG q0 R l' dg) → (NzOn (R 0) (l 0) ∧ NzOn (R 0) (l' 0)) → (∀ ν, n1 ν ≤ q0 → NzOn (R ν) (l ν) → NzOn (R ν) (l' ν) → IsCoef (R ν) (l ν) (l' ν) (J ν) (s ν) ∧ ‖s ν‖ = dg ν) → (∀ ν, ¬ (n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)) → J ν = 0) → ∃ tau, Sup p lam q0 R l l' dg s J tau := by
   intro hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J hNum hFam hL hR hnz hco hz
   classical

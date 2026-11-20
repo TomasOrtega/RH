@@ -24,6 +24,11 @@ section Gen
 variable {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
   {P : Subgroup G} {τ : Representation ℂ P W}
 
+/- English proof (translation)
+Establish `ho : IsOpen {g : G | ind P τ g f.1 = f.1}` using `f.2`. Establish `hlc : IsLocallyConstant f.1.1`. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ⟨(fun y => x⁻¹ * y) ⁻¹' {g | ind P τ g f.1 = f.1}, ho.preimage (by fun_prop), ?_, ?_⟩` and prove the remaining obligations. Use `show ind P τ (x⁻¹ * x) f.1 = f.1`. Simplify using the standard rewrite rules.
+
+Introduce `y hy`. Establish `h : f.1.1 (x * (x⁻¹ * y)) = f.1.1 x` using `congrFun (congrArg Subtype.val hy) x`. Rewrite `h` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Conclude with `(hlc.isClopen_fiber 0).compl`.
+-/
 theorem isClopen_supp (f : smoothPart (ind P τ)) : IsClopen {g | f.1.1 g ≠ 0} := by
   have ho : IsOpen {g : G | ind P τ g f.1 = f.1} := f.2
   have hlc : IsLocallyConstant f.1.1 := by
@@ -36,6 +41,11 @@ theorem isClopen_supp (f : smoothPart (ind P τ)) : IsClopen {g | f.1.1 g ≠ 0}
       rwa [mul_inv_cancel_left] at h
   exact (hlc.isClopen_fiber 0).compl
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : τ p (f.1.1 g) = 0` using `(f.1.2 p g).symm.trans h`. Apply `hg` to reduce the goal to its premises. Establish `h2` using `congrArg (τ p⁻¹) h1`. Rewrite `h2` using `[map_zero, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+
+Conclude with `h2`.
+-/
 theorem ne_zero_left (f : smoothPart (ind P τ)) (p : P) (g : G) (hg : f.1.1 g ≠ 0) : f.1.1 (p * g) ≠ 0 := by
   intro h
   have h1 : τ p (f.1.1 g) = 0 := (f.1.2 p g).symm.trans h
@@ -48,11 +58,41 @@ end Gen
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨p, hp, m, hm, rfl⟩` from `hg`. Conclude with `⟨p, hp, m * n, mul_mem hm hn, by simp only [mul_assoc]⟩`.
+-/
 theorem cell_mul {h N : ℕ} {d : Fin h → ℕ} {hd : ∑ a, d a = N} {w : Equiv.Perm (Fin N)} {g n : GL (Fin N) k}
     (hg : g ∈ cell k d hd w) (hn : n ∈ unipB k (Fin N)) : g * n ∈ cell k d hd w := by
   obtain ⟨p, hp, m, hm, rfl⟩ := hg
   exact ⟨p, hp, m * n, mul_mem hm hn, by simp only [mul_assoc]⟩
 
+/- English proof (translation)
+Take `⟨L, hLm, hLc, hLU, hLex⟩` from `GlobalTheory.CompanionTheory.UnipExhaust.exists_monotone_compact_exhaustion k N (unipB k (Fin N)) le_rfl GlobalTheory.LocLanglands.InvInt.isClosed_unipB`. Establish `hcellL : cell k d hd w = {g | ∃ p ∈ parab k (stdBlocks d hd), ∃ j, ∃ n ∈ L j, g = p * pm k w * n}`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, n, hn, rfl⟩`.
+
+Take `⟨j, hj⟩` from `hLex n hn`. Conclude with `⟨p, hp, j, n, hj, rfl⟩`. Introduce and unpack `⟨p, hp, j, n, hn, rfl⟩`. Conclude with `⟨p, hp, n, hLU j hn, rfl⟩`. Establish `: T2Space (GL (Fin N) k)`.
+
+Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Use `infer_instance`. Take `⟨j₀, hj₀⟩` from `GlobalTheory.CompanionTheory.BaireCoset.baire_double_coset (parab k (stdBlocks d hd)) (GlobalTheory.WhitHered.CellLoc.isClosed_parab (stdBlocks d hd)) (GlobalTheory.SplitWeil.KO k (Fin N) : Set (GL (Fin N) k)) GlobalTheory.SplitFlip.isCompact_KO (fun g => by`. Take `⟨p, c, hc, e⟩` from `GlobalTheory.SmGL.MultiIrr.exists_parab_mul (stdBlocks d hd) g`. Conclude with `⟨p, p.2, c, hc, e⟩)`.
+
+Use `L hLm hLc (pm k w) {g | f.1.1 g ≠ 0} (isClopen_supp f).isOpen`. Use the proof step `(fun p hp g hg => ne_zero_left f ⟨p, hp⟩ g hg) (by rw [← hcellL]; exact hcl)`. Take `⟨i, j, hij, hb⟩` from `(exists_adjacent_blk_lt_or_cell_eq_open k h N d hd w).resolve_right hbad`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, ψ t ≠ 1 := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hψ1 (by ext x; simp [hc x])`. Take `⟨u, hu, hwu, hrad⟩` from `GlobalTheory.CompanionTheory.Rodier.RootElt.exists_root_conj_mem_unipRad k ψ h N d hd w i j hij hb t`. Take `⟨j₁, hj₁⟩` from `hLex u hu`. Establish `hJ0 : L j₀ ≤ L (max j₀ j₁)` using `hLm (le_max_left _ _)`.
+
+Establish `hJ1 : L j₁ ≤ L (max j₀ j₁)` using `hLm (le_max_right _ _)`. Generalize the expression as in `max j₀ j₁ = J at hJ0 hJ1`. Set `θ : L J →* ℂˣ` to `(whitChar ψ N).comp (Subgroup.inclusion (hLU J))`. Establish `hθ : IsOpen (θ.ker : Set (L J))` using `(GlobalTheory.Whittaker.isSmoothChar_whitChar hψ).preimage (Continuous.subtype_mk continuous_subtype_val _ : Continuous (Subgroup.inclusion (hLU J)))`. Take `⟨f', h1, h2, h3⟩` from `GlobalTheory.CompanionTheory.TwAvgInd.exists_twisted_average_smInd (parab k (stdBlocks d hd)) _ (L J) (hLc J) θ hθ f`.
+
+Establish `hu' : u ∈ L J` using `hJ1 hj₁`. Establish `hfw : f'.1.1 (pm k w) = 0`. Establish `e1` using `h3 ⟨u, hu'⟩ (pm k w)`. Establish `hθu : θ ⟨u, hu'⟩ = Circle.toUnits (ψ t)` using `hwu`. Establish `hq : leviProj k (stdBlocks d hd) ⟨_, unipRad_le_parab k _ hrad⟩ = 1` using `(coe_mem_unipRad k (⟨_, unipRad_le_parab k _ hrad⟩ : parab k (stdBlocks d hd))).1 hrad`.
+
+Establish `e2` using `parInd_law (stdBlocks d hd) ρ f' ⟨_, unipRad_le_parab k _ hrad⟩ (pm k w)`. Rewrite `e2` using `[hq]`. Simplify using `only [map_one, Units.val_one, one_smul, Module.End.one_apply, inv_mul_cancel_right] at e2`. Rewrite `e1` using `[e2]`. Rewrite `e1` using `[hθu]`.
+
+Establish `hne : ((Circle.toUnits (ψ t) : ℂˣ) : ℂ) ≠ 1` using `fun e => ht (Circle.ext (by simpa using e))`. Establish `h0 : (((Circle.toUnits (ψ t) : ℂˣ) : ℂ) - 1) • f'.1.1 (pm k w) = 0`. Rewrite using `[sub_smul, one_smul, ← e1, sub_self]`. Conclude with `(smul_eq_zero.1 h0).resolve_left (sub_ne_zero.2 hne)`. Use `⟨f', ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `(Submodule.span_mono ?_) h1` and prove the remaining obligations. Introduce and unpack `_ ⟨n, v, rfl⟩`. Conclude with `⟨⟨n.1, hLU J n.2⟩, v, rfl⟩`. Introduce `g hg`. Take `⟨l, hl, hne⟩` from `h2 g hg`.
+
+Conclude with `⟨l, hLU J hl, hne⟩`. Introduce `g hg`. Assume the negation of the conclusion as `hne`. Take `⟨l, hl, hfl⟩` from `h2 g hne`. Establish `hgl` using `cell_mul hg (hLU J hl)`.
+
+Take `⟨p, hp, n, hn, e⟩` from `hj₀ (g * l) hfl (by rw [hcellL] at hgl; exact hgl)`. Establish `hl2 : n * l⁻¹ ∈ L J` using `mul_mem (hJ0 hn) (inv_mem hl)`. Establish `hg' : g = (⟨p, hp⟩ : parab k (stdBlocks d hd)) * (pm k w * (n * l⁻¹))` using `by show g = p * (pm k w * (n * l⁻¹))`. Rewrite using `[← mul_assoc, ← mul_assoc, ← e]`. Use `group`.
+
+Apply `hne` to reduce the goal to its premises. Establish `e3` using `h3 ⟨_, hl2⟩ (pm k w)`. Rewrite `e3` using `[hfw, smul_zero]`. Rewrite using `[hg', f'.1.2 ⟨p, hp⟩, e3, map_zero]`.
+-/
 theorem kill_cell (ψ : AddChar k Circle) (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) {h N : ℕ} (d : Fin h → ℕ)
     (hd : ∑ a, d a = N) {W : Type} [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ (Levi k fun a => Fin (d a)) W) (f : IndSp (stdBlocks d hd) ρ)
@@ -142,6 +182,29 @@ namespace GlobalTheory.CompanionTheory.Rodier
 
 open Bad in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ hψ1 h N d hd W _ _ ρ f`. Take `⟨hcov, ht, hconst, hclos, hmax⟩` from `GlobalTheory.CompanionTheory.Rodier.CellOrder.cells_main k h N d hd`. Set `bad : IndSp (stdBlocks d hd) ρ → Finset (Equiv.Perm (Fin N))` to `fun f => Finset.univ.filter fun w => cell k d hd w ≠ cell k d hd (wOpen d hd) ∧ ∃ g ∈ cell k d hd w, f.1.1 g ≠ 0`. Establish `mem_bad : ∀ f w, w ∈ bad f ↔ cell k d hd w ≠ cell k d hd (wOpen d hd) ∧ ∃ g ∈ cell k d hd w, f.1.1 g ≠ 0` using `fun f w => by`. Simplify using `[bad]`.
+
+It suffices to establish `H : ∀ n, ∀ f, (bad f).card = n → ∃ f₀ ∈ openFns d hd ρ, f - f₀ ∈ twKer (parInd (stdBlocks d hd) ρ) (unipB k (Fin N)) (whitChar ψ N) from H _ f rfl`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `f hn`.
+
+Break down `(bad f).eq_empty_or_nonempty with hE | hne` into its components or cases. Use `⟨f, ?_, by simp⟩` and prove the remaining obligations. Introduce `g hg`. Take `⟨w, hw⟩` from `hcov g`. Assume the negation of the conclusion as `hno`.
+
+Establish `hb : w ∈ bad f` using `(mem_bad f w).2 ⟨fun e => hno (e ▸ hw), g, hw, hg⟩`. Simplify using `[hE] at hb`. Take `⟨w, hw, hmin⟩` from `Finset.exists_min_image (bad f) (fun w => ht (pm k w)) hne`. Take `⟨hbad, hmet⟩` from `(mem_bad f w).1 hw`. Establish `hcl : IsClosed ({g | f.1.1 g ≠ 0} ∩ cell k d hd w)`.
+
+Use `isClosed_of_closure_subset fun x hx => ?_` and prove the remaining obligations. Establish `hxS : x ∈ {g | f.1.1 g ≠ 0}` using `(isClopen_supp f).isClosed.closure_subset_iff.2 Set.inter_subset_left hx`. Use `⟨hxS, ?_⟩` and prove the remaining obligations. Break down `hclos w (closure_mono Set.inter_subset_right hx) with hC | hlt` into its components or cases. Conclude with `hC`.
+
+It suffices to derive a contradiction. Establish `hlt' : ht x < ht (pm k w)` using `hlt`. Take `⟨w', hw'⟩` from `hcov x`. Distinguish the cases in `ho : cell k d hd w' = cell k d hd (wOpen d hd)`. Establish `h1 : ht x = ht (pm k (wOpen d hd))`.
+
+Rewrite using `[hconst w' x hw']`. Use `(hconst w' _ ?_).symm` and prove the remaining obligations. Rewrite using `[ho]`. Conclude with `⟨1, one_mem _, 1, one_mem _, by simp⟩`. Use `hmax w hbad` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `h1` using `hmin w' ((mem_bad f w').2 ⟨ho, x, hw', hxS⟩)`. Establish `h2` using `hconst w' x hw'`. Use linear arithmetic over natural numbers and integers. Take `⟨f', h1, h2, h3⟩` from `kill_cell ψ hψ hψ1 d hd ρ f w hbad hcl`.
+
+Establish `hsub : bad f' ⊂ bad f`. Use `(Finset.ssubset_iff_of_subset fun w' hw' => ?_).2 ⟨w, hw, fun hw' => ?_⟩` and prove the remaining obligations. Take `⟨hb, g, hg, hfg⟩` from `(mem_bad f' w').1 hw'`. Take `⟨n, hn, hfn⟩` from `h2 g hfg`. Conclude with `(mem_bad f w').2 ⟨hb, g * n, cell_mul hg hn, hfn⟩`.
+
+Take `⟨_, g, hg, hfg⟩` from `(mem_bad f' w).1 hw'`. Conclude with `hfg (h3 g hg)`. Establish `hlt : (bad f').card < n` using `hn ▸ Finset.card_lt_card hsub`. Take `⟨f₀, hf₀, h4⟩` from `ih _ hlt f' rfl`. Use `⟨f₀, hf₀, ?_⟩` and prove the remaining obligations.
+
+Use `add_mem h1 h4` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_open_congr : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) {W : Type}
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Levi k fun a => Fin (d a)) W) (f : IndSp (stdBlocks d hd) ρ),

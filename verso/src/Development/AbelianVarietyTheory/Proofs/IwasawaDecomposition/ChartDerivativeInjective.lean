@@ -30,6 +30,9 @@ def wv (v : Fin r → E) : Fin j ⊕ Fin (r - j) → ℂ :=
 def wm (c : Fin r → Fin r → E) : Matrix (Fin j ⊕ Fin (r - j)) (Fin r) ℂ :=
   Matrix.of fun m l => wv X hj ψ (c l) m
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wm_eq (c : Fin r → Fin r → E) : wm X hj ψ c =
     ((mat (x0F X) ψ)⁻¹ * Matrix.of fun m l => ψ.1 (c l m)).submatrix (idx hj).symm id := rfl
 
@@ -43,6 +46,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {r : �
 
 include hp in
 
+/- English proof (translation)
+Take `⟨Hm, hHm, hb⟩` from `GlobalTheory.T.period_transformation_unitary E H Dd g j ty ψ.1 ρ hρ hty Pm Q hPm hQ gam h e`. Take `⟨R, h1, h2, h3⟩` from `GlobalTheory.T.frame_moebius_row_relation E r X j hj hp x hx ψ`. Use `⟨Hm, R, hHm, h1, h2, fun c => ?_⟩` and prove the remaining obligations. Use extensionality with `a l`. Establish `e1 : Q (c l) = h (Pm (gam.symm (c l)))` using `by rw [← e, LinearEquiv.apply_symm_apply]`.
+
+Establish `e2 : ∀ b', Pm (gam.symm (c l)) (ρ b') = (R.mulVec (wv X hj ψ (φ (gam.symm (c l)) : Fin r → E))) b'` using `fun b' => by`. Rewrite using `[hval, h3 _ _ (hi b')]`. Both sides reduce to the same expression. Rewrite using `[Matrix.of_apply, e1, hb]`. Simplify using `only [e2]`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem period_rel (hρ : Function.Injective ρ) (hty : ∀ i, ty i = ψ.1 ↔ i ∈ Set.range ρ) {x : Frame X.Ψ r}
     (hx : x ∈ X.dom) (hi : ∀ a : Fin j, X.p0 + (a : ℕ) < r) (Pm Q : Dd.La →+ (Fin g → ℂ)) (hPm : IsPeriod Dd ty Pm)
     (hQ : IsPeriod Dd ty Q)
@@ -76,6 +86,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data 
 def wi (c : Fin r → Fin r → E) : Matrix (Fin r) (Fin j ⊕ Fin (r - j)) ℂ :=
   (((mat (x0F X) ψ)⁻¹ * Matrix.of fun m l => ψ.1 (c l m))⁻¹).submatrix id (idx hj).symm
 
+/- English proof (translation)
+Establish `hx : IsUnit (mat (x0F X) ψ)⁻¹.det` using `isUnit_nonsing_inv_det _ (det_x0F X ψ).isUnit`. Use `set U₀ := (mat (x0F X) ψ)⁻¹ * (Matrix.of fun m l => ψ.1 (c₀ l m) : Matrix (Fin r) (Fin r) ℂ) with hU₀`. Use `set U := (mat (x0F X) ψ)⁻¹ * (Matrix.of fun m l => ψ.1 (c l m) : Matrix (Fin r) (Fin r) ℂ) with hU`. Establish `d₀ : IsUnit U₀.det` using `by rw [hU₀, det_mul]; exact hx.mul h₀`. Establish `d : IsUnit U.det` using `by rw [hU, det_mul]; exact hx.mul h`.
+
+Establish `e : wm X hj ψ c * wi X hj ψ c₀ = (U * U₀⁻¹).submatrix (idx hj).symm (idx hj).symm`. Rewrite using `[wm_eq, wi, ← hU, ← hU₀]`. Conclude with `(submatrix_mul _ _ _ id _ Function.bijective_id).symm`. Rewrite using `[e]`. Use `⟨?_, fun hc => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.isUnit_iff_isUnit_det, det_submatrix_equiv_self, det_mul]`. Conclude with `d.mul (isUnit_nonsing_inv_det _ d₀)`. Establish `: U = U₀` using `by rw [hU, hU₀, hc]`. Rewrite using `[this, mul_nonsing_inv _ d₀, submatrix_one_equiv]`.
+-/
 theorem wm_mul_wi {c₀ c : Fin r → Fin r → E} (h₀ : IsUnit (Matrix.of fun m l => ψ.1 (c₀ l m) : Matrix (Fin r) (Fin r) ℂ).det)
     (h : IsUnit (Matrix.of fun m l => ψ.1 (c l m) : Matrix (Fin r) (Fin r) ℂ).det) :
     IsUnit (wm X hj ψ c * wi X hj ψ c₀) ∧ (c = c₀ → wm X hj ψ c * wi X hj ψ c₀ = 1) := by
@@ -100,6 +117,11 @@ section Main
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ) (L : CmList A) (k : s.Comp)
 
+/- English proof (translation)
+Set `sp : (D.what₂.Tau × Fin j × Fin (N - j) → ℂ) → CxPts (genStr s.T.Z) κ.σ₀` to `fun v => s.toCpt L k (unflat v)`. Establish `hI` using `fun f => GlobalTheory.T.evaluation_holomorphic_on_frames D A N j S κ s L k c.U f`. Establish `hT` using `(hI 0).1`. Take `⟨hc, -⟩` from `holo_of_affine c.affine hT (s := sp) (fun v hv => hv.2) (fun a => (hI a).2)`. Use `⟨_ ∩ sp ⁻¹' c.e.source, hc.isOpen_inter_preimage hT c.e.open_source, fun v hv => ⟨hv.1.1, hv.2⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `differentiableOn_euclidean.2 fun a => ((hI (c.x a)).2.mono Set.inter_subset_left).congr fun v hv => c.apply_eq _ hv.2 a`. Introduce `z hz hs`. Establish `e : unflat (flat z) = z` using `rfl`. Conclude with `⟨⟨by simpa [DomFlat, e] using hz, by simpa [sp, e] using c.source_subset hs⟩, by simpa [sp, e] using hs⟩`.
+-/
 theorem chart_reg (c : AlgChart (genStr s.T.Z) κ.σ₀ S.Dw.dim) :
     ∃ T : Set (D.what₂.Tau × Fin j × Fin (N - j) → ℂ), IsOpen T ∧
       (∀ v ∈ T, unflat v ∈ DomI D.what₂.Tau j (N - j) ∧ s.toCpt L k (unflat v) ∈ c.e.source) ∧
@@ -116,6 +138,53 @@ theorem chart_reg (c : AlgChart (genStr s.T.Z) κ.σ₀ S.Dw.dim) :
     have e : unflat (flat z) = z := rfl
     exact ⟨⟨by simpa [DomFlat, e] using hz, by simpa [sp, e] using c.source_subset hs⟩, by simpa [sp, e] using hs⟩
 
+/- English proof (translation)
+Introduce `D A N j S κ s L k c z hz hsrc`. Take `⟨-, hΨ, -, -, -, g, e, Fu, ik, φ, -, hPm⟩` from `s.isUnf`. Take `⟨T, hT, hTm, hTd, hT0⟩` from `chart_reg s L k c`. Establish `hv₀` using `hT0 z hz hsrc`. Take `⟨i, B, P, hB, hb₀, hBt, hBP, hBd, hBu⟩` from `GlobalTheory.T.uniformized_family_chart_index _ _ _ _ _ _ _ _ s.T.Z κ.σ₀ S.Dw.dim g _ Fu c ((s.U κ.σ₀).un k (s.frameOver L k z)) hsrc`.
+
+Set `Fn : (D.what₂.Tau × Fin j × Fin (N - j) → ℂ) → ReciprocityTheory.L2DbarEstimates.V S.Dw.dim` to `fun v => c.e (s.toCpt L k (unflat v))`. Establish `hT₂ : IsOpen (T ∩ Fn ⁻¹' B)` using `hTd.continuousOn.isOpen_inter_preimage hT hB`. Establish `hv₂ : flat z ∈ T ∩ Fn ⁻¹' B` using `⟨hv₀, hb₀⟩`. Establish `key : ∀ v ∈ T ∩ Fn ⁻¹' B, Fu.u i (P (Fn v)) = ((s.U κ.σ₀).un k (s.frameOver L k (unflat v))).x` using `fun v hv => hBu _ hv.2 _ (c.e.left_inv (hTm v hv.1).2)`. Take `⟨Pm₀, -, hper₀, hx₀, -⟩` from `hPm k (s.frameOver L k z)`.
+
+Take `rfl : i = ik k` from `Fu.disj i (ik k) (P (Fn (flat z))) Pm₀ (hBP _ hb₀) hper₀ ((key _ hv₂).trans hx₀)`. Rewrite using `[show (fun v => c.e (s.toCpt L k (unflat v))) = Fn from rfl]`. Use `(injective_iff_map_eq_zero _).2 fun w' hw' => ?_` and prove the remaining obligations. Establish `hj` using `s.j_le`. Establish `hp` using `s.p0_eq k`.
+
+Establish `hFd : HasFDerivAt Fn (fderiv ℂ Fn (flat z)) (flat z)` using `((hTd.differentiableAt (hT.mem_nhds hv₀))).hasFDerivAt`. It suffices to establish `hmain : ∀ t0 : D.what₂.Tau, unflat w' t0 = 0 by`. Use function extensionality and compare the values at `⟨t0, a, b⟩`. Conclude with `congrFun (congrFun (hmain t0) a) b`. Introduce `t0`.
+
+Set `X` to `s.fd k`. Set `ψ : X.Ψ` to `s.lab L k t0`. Establish `hψ : ψ.1 ((A.H.rt : D.host.E)) = A.H.rt0` using `(((hΨ k).2 ψ.1).1 ψ.2)`. Establish `hmult : S.Dw.mult ψ.1 = j` using `by rw [Datum.mult, if_pos hψ]; exact S.p_eq`. Set `ρ : Fin j → Fin g` to `fun a => e.symm ⟨ψ.1, Fin.cast hmult.symm a⟩`.
+
+Establish `hρ : Function.Injective ρ` using `fun a b h => by`. Use `e.symm.injective h` as an intermediate fact. Simplify `this` using `[Fin.ext_iff]`. Set `ty : Fin g → (D.host.E →+* ℂ)` to `fun j' => Formalism.L2.PjFree.relab κ.c κ.σ₀ (e j').1`. Establish `he : ∀ a, e (ρ a) = ⟨ψ.1, Fin.cast hmult.symm a⟩` using `fun a => e.apply_symm_apply _`.
+
+Establish `he1 : ∀ a, (e (ρ a)).1 = ψ.1` using `fun a => congrArg Sigma.fst (he a)`. Establish `he2 : ∀ a, ((e (ρ a)).2 : ℕ) = a` using `fun a => by`. Use `congrArg (fun x : (τ : D.host.E →+* ℂ) × Fin (S.Dw.mult τ) => (x.2 : ℕ)) (he a)` as an intermediate fact. Simplify using `using this`. Establish `hty : ∀ i', ty i' = ψ.1 ↔ i' ∈ Set.range ρ` using `fun i' => by`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : (e i').1 = ψ.1` using `h`. Break down `he' : e i' with ⟨τ', b⟩` into its components or cases. Rewrite `h'` using `[he']`.
+
+Simplify using `only at h'`. Substitute `h'` using the available equality. Use `⟨Fin.cast hmult b, ?_⟩` and prove the remaining obligations. Use `show e.symm _ = i'`. Rewrite using `[Equiv.symm_apply_eq, he']`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `⟨a, rfl⟩`. Conclude with `he1 a`. Establish `hi : ∀ a : Fin j, X.p0 + (a : ℕ) < N` using `fun a => by`. Use `a.2` as an intermediate fact.
+
+Establish `: X.p0 = N - j` using `hp`. Use linear arithmetic over natural numbers and integers. Establish `hval : ∀ (f : X.dom) (Pm : (Fu.Di (ik k)).La →+ (Fin g → ℂ)), (∀ a j', Pm a j' = perFr X f.1 (φ k a : Fin N → D.host.E) (Formalism.L2.PjFree.relab κ.c κ.σ₀ (e j').1) (e j').2) → ∀ b (a : Fin j), Pm b (ρ a) = ((mat f.1 ψ)⁻¹.mulVec (Data.emb ψ.1 (φ k b : Fin N → D.host.E))) ⟨X.p0 + …` using `fun f Pm h b a => by`. Rewrite using `[h, Lv.relab_σ₀, he2, he1, perFr, dif_pos ψ.2, dif_pos (hi a)]`. Set `Fl : ℂ → (D.what₂.Tau × Fin j × Fin (N - j) → ℂ)` to `fun t => flat z + t • w'`.
+
+Establish `hFl : Continuous Fl` using `by fun_prop`. Establish `hFl0 : Fl 0 = flat z` using `by simp [Fl]`. Take `⟨r, hr, hball⟩ : ∃ r > 0, Metric.ball (0 : ℂ) r ⊆ Fl ⁻¹' (T ∩ Fn ⁻¹' B)` from `Metric.isOpen_iff.1 (hT₂.preimage hFl) 0 (by rw [Set.mem_preimage, hFl0]; exact hv₂)`. Establish `hFlD : Differentiable ℂ Fl` using `by fun_prop`. Establish `hfr : ∀ t ∈ Metric.ball (0 : ℂ) r, ∃ (gam : (Fu.Di (ik k)).La ≃ₗ[𝓞 D.host.E] (Fu.Di (ik k)).La) (Hm : Matrix (Fin j) (Fin j) ℂ) (R : Matrix (Fin j) (Fin j ⊕ Fin (N - j)) ℂ), IsUnit Hm ∧ R * Matrix.fromRows (z t0 + t • unflat w' t0) (1 : Matrix (Fin (N - j)) (Fin (N - j)) ℂ) = 0 ∧ …` using `fun t ht => by`.
+
+Establish `hv` using `hball ht`. Take `⟨Pm, hv1, hper, hx, -⟩` from `hPm k (s.frameOver L k (unflat (Fl t)))`. Take `⟨gam, h, -, -, -, hg⟩` from `(Fu.fibre (ik k) Pm (P (Fn (Fl t))) hper (hBP _ hv.2)).1 (hx.symm.trans (key _ hv).symm)`. Take `⟨Hm, R, h1, h2, h3, h4⟩` from `period_rel X hj hp ψ (Fu.Di (ik k)) (φ k) ty ρ hρ hty (s.frameOver L k (unflat (Fl t))).2 hi Pm (P (Fn (Fl t))) hper (hBP _ hv.2) (hval _ _ hv1) gam h hg`. Use `⟨gam, Hm, R, h1, ?_, h3, h4⟩` and prove the remaining obligations.
+
+Establish `e1 : moeb (frameCo X hj (s.frameOver L k (unflat (Fl t))).1 ψ) 0 = z t0 + t • unflat w' t0` using `congrFun (s.zOf_frameOver L k (hTm _ hv.1).1) t0`. Rewrite `h2` using `[e1]`. Then use the resulting hypothesis. Take `⟨a, ha⟩` from `GlobalTheory.T.lattice_basis_determinant_unit D.host.E N (Fu.Di (ik k)).La X.Λ X.Λ_span (φ k)`. Establish `: Countable D.host.E` using `(Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Establish `: Countable (Fu.Di (ik k)).La` using `(φ k).injective.countable`.
+
+Set `c₀ : Fin N → Fin N → D.host.E` to `fun l => (φ k (a l) : Fin N → D.host.E)`. Set `Wi` to `wi X hj ψ c₀`. Establish `hunit : ∀ δ : (Fu.Di (ik k)).La ≃ₗ[𝓞 D.host.E] (Fu.Di (ik k)).La, IsUnit (wm X hj ψ (fun l => (φ k (δ (a l)) : Fin N → D.host.E)) * Wi)` using `fun δ => (wm_mul_wi X hj ψ (ha (LinearEquiv.refl _ _) ψ.1) (ha δ ψ.1)).1`. Establish `hone : wm X hj ψ c₀ * Wi = 1` using `(wm_mul_wi X hj ψ (ha (LinearEquiv.refl _ _) ψ.1) (ha (LinearEquiv.refl _ _) ψ.1)).2 rfl`. Set `ι` to `{bv : Fin N → (Fu.Di (ik k)).La // ∃ gam : (Fu.Di (ik k)).La ≃ₗ[𝓞 D.host.E] (Fu.Di (ik k)).La, bv = fun l => gam (a l)}`.
+
+Set `M : ι → ℂ → Matrix (Fin j) (Fin j ⊕ Fin (N - j)) ℂ` to `fun bv t => (Matrix.of fun a' l => P (Fn (Fl t)) (bv.1 l) (ρ a')) * Wi`. Establish `hdl : ∀ x, DifferentiableOn ℂ (fun t => P (Fn (Fl t)) x) (Metric.ball 0 r)` using `fun x => (hBd x).comp (hTd.comp hFlD.differentiableOn fun t ht => (hball ht).1) fun t ht => (hball ht).2`. Establish `hdz : ∀ x, HasDerivAt (fun t => P (Fn (Fl t)) x) 0 0` using `fun x => by`. Establish `h1 : HasDerivAt Fl w' 0`. Simplify `((hasDerivAt_id (0 : ℂ)).smul_const w').const_add (flat z)` using `[Fl]`.
+
+Establish `h2 : HasDerivAt (fun t => Fn (Fl t)) 0 0`. Use `HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℂ) hFd h1 hFl0.symm` as an intermediate fact. Rewrite `this` using `[hw']`. Then use the resulting hypothesis. Establish `h3` using `((hBd x).differentiableAt (hB.mem_nhds hb₀)).hasFDerivAt`. Establish `h4` using `HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℂ) h3 h2 (by simp only [hFl0]; rfl)`.
+
+Rewrite `h4` using `[map_zero]`. Conclude with `h4`. Use `GlobalTheory.T.matrix_family_critical_rows j (N - j) ι r hr (z t0) (unflat w' t0) M ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `bv a' b`. Simplify using `only [M, Matrix.mul_apply, Matrix.of_apply]`.
+
+Conclude with `DifferentiableOn.fun_sum fun l _ => ((differentiableOn_pi.1 (hdl _)) (ρ a')).mul_const _`. Introduce `bv a' b`. Establish `h` using `HasDerivAt.fun_sum (u := Finset.univ) fun l _ => ((hasDerivAt_pi.1 (hdz (bv.1 l))) (ρ a')).mul_const (Wi l b)`. Simplify `h.deriv` using `[M, Matrix.mul_apply]`. Introduce `t ht`.
+
+Take `⟨gam, Hm, R, -, h2, -, h4⟩` from `hfr t ht`. Use `⟨⟨fun l => gam (a l), gam, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (Matrix.of fun a' l => P (Fn (Fl t)) (gam (a l)) (ρ a')) * Wi * _ = 0`. Rewrite using `[h4]`. Simplify using `only [LinearEquiv.symm_apply_apply]`.
+
+Rewrite using `[Matrix.mul_assoc (Hm * R), hone, Matrix.mul_one, Matrix.mul_assoc, h2, Matrix.mul_zero]`. Introduce and unpack `⟨_, γ, rfl⟩`. Take `⟨gam, Hm, R, h1, -, ⟨Rr, hRr⟩, h4⟩` from `hfr 0 (Metric.mem_ball_self hr)`. Establish `hG` using `hunit (γ.trans gam.symm)`. Take `⟨G, hGd⟩ : ∃ G, G = wm X hj ψ (fun l => (φ k ((γ.trans gam.symm) (a l)) : Fin N → D.host.E)) * Wi` from `⟨_, rfl⟩`.
+
+Rewrite `hG` using `[← hGd]`. Establish `hGi : G * G⁻¹ = 1` using `mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hG)`. Establish `hHi : Hm * Hm⁻¹ = 1` using `mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 h1)`. Use `⟨G⁻¹ * Rr * Hm⁻¹, ?_⟩` and prove the remaining obligations. Use `show (Matrix.of fun a' l => P (Fn (Fl 0)) (γ (a l)) (ρ a')) * Wi * _ = 1`.
+
+Rewrite using `[h4, Matrix.mul_assoc (Hm * R)]`. Establish `e2 : wm X hj ψ (fun l => (φ k (gam.symm (γ (a l))) : Fin N → D.host.E)) * Wi = G` using `hGd.symm`. Rewrite using `[e2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem immersion : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (L : CmList A) (k : s.Comp)
     (c : AlgChart (genStr s.T.Z) κ.σ₀ S.Dw.dim), ∀ z ∈ DomI D.what₂.Tau j (N - j), s.toCpt L k z ∈ c.e.source →
     Function.Injective (fderiv ℂ (fun v => c.e (s.toCpt L k (unflat v))) (flat z)) := by

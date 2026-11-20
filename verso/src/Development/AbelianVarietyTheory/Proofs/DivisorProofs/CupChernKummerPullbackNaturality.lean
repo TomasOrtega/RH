@@ -9,6 +9,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `q _`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `E E' f n m i j a b`. Conclude with `GlobalTheory.T.cup_hypercohomologyPullback (ZMod q) (twPair q i j) f rfl a b`. Introduce `E E' f h`.
+
+Conclude with `(GlobalTheory.T.tateTwistUnitClass_rootClass_spec q).2.2.1 f h`. Introduce `E E' f L h`. Conclude with `(GlobalTheory.T.firstChernClassTateTwist_cocycle_unique_natural_additive q).2.1 f L h`. Introduce `Y X f u h`. Conclude with `(GlobalTheory.T.kummerClassOfUnit_cocycle_natural_additive q).2.1 f u h`.
+-/
 theorem a6nat_holds : GlobalTheory.EtC.DivisorNaturality := by
   intro q _
   refine ⟨?_, ?_, ?_, ?_⟩

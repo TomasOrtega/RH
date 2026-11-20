@@ -13,6 +13,9 @@ namespace RestrictedProduct
 variable {ι : Type*} {R : ι → Type*} [∀ i, Monoid (R i)] [∀ i, TopologicalSpace (R i)]
   {S : ι → Type*} [∀ i, SetLike (S i) (R i)] [∀ i, SubmonoidClass (S i) (R i)] {B : Π i, S i}
 
+/- English proof (translation)
+Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `_root_.RestrictedProduct.mapAlong_continuous (fun i ↦ (R i)ˣ) R id tendsto_id (A₁ := fun i ↦ ((Submonoid.ofClass (B i)).units : Set (R i)ˣ)) (A₂ := fun i ↦ (B i : Set (R i))) (fun i (u : (R i)ˣ) ↦ (u : R i)) (.of_forall fun _ _ hu ↦ hu.1) (fun _ ↦ Units.continuous_val)`. Conclude with `_root_.RestrictedProduct.mapAlong_continuous (fun i ↦ (R i)ˣ) R id tendsto_id (A₁ := fun i ↦ ((Submonoid.ofClass (B i)).units : Set (R i)ˣ)) (A₂ := fun i ↦ (B i : Set (R i))) (fun i (u : (R i)ˣ) ↦ ((u⁻¹ : (R i)ˣ) : R i)) (.of_forall fun _ _ hu ↦ hu.2) (fun _ ↦ Units.continuous_co …`.
+-/
 theorem continuous_unitsEquiv_symm :
     Continuous (_root_.RestrictedProduct.unitsEquiv R (B := B) (𝓕 := cofinite)).symm := by
   rw [Units.continuous_iff]
@@ -28,6 +31,17 @@ theorem continuous_unitsEquiv_symm :
       (fun i (u : (R i)ˣ) ↦ ((u⁻¹ : (R i)ˣ) : R i)) (.of_forall fun _ _ hu ↦ hu.2)
       (fun _ ↦ Units.continuous_coe_inv)
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun x ↦ ?_` and prove the remaining obligations. Use `set T : Set ι := {i | _root_.RestrictedProduct.unitsEquiv R x i ∈ (Submonoid.ofClass (B i)).units} with hTdef`. Establish `hT : cofinite ≤ 𝓟 T` using `le_principal_iff.2 (_root_.RestrictedProduct.unitsEquiv R x).2`. Set `U : Set (Πʳ i, [R i, B i])ˣ` to `{y | ∀ i ∈ T, (y : Πʳ i, [R i, B i]) i ∈ B i ∧ ((y⁻¹ : (Πʳ i, [R i, B i])ˣ) : Πʳ i, [R i, B i]) i ∈ B i}`. Establish `hUo : IsOpen U`.
+
+Establish `h1` using `_root_.RestrictedProduct.isOpen_forall_imp_mem hBopen (p := (· ∈ T))`. Establish `h2` using `(h1.preimage Units.continuous_val).inter (h1.preimage Units.continuous_coe_inv)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `only [U, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_preimage, ← forall_and]`.
+
+Conclude with `forall_congr' fun i ↦ ⟨fun h hi ↦ h hi, fun h hi ↦ h hi⟩`. Establish `hxU : x ∈ U` using `fun i hi ↦ hi`. Set `G : U → Πʳ i, [(R i)ˣ, (Submonoid.ofClass (B i)).units]_[𝓟 T]` to `fun y ↦ ⟨fun i ↦ _root_.RestrictedProduct.unitsEquiv R y.1 i, eventually_principal.2 fun i hi ↦ y.2 i hi⟩`. Establish `hG : Continuous G`. Rewrite using `[_root_.RestrictedProduct.continuous_rng_of_principal]`.
+
+Use `continuous_pi fun i ↦ ?_` and prove the remaining obligations. Conclude with `(Units.continuous_map (f := _root_.RestrictedProduct.evalMonoidHom R i) (_root_.RestrictedProduct.continuous_eval i)).comp continuous_subtype_val`. Establish `hFU : ContinuousOn (_root_.RestrictedProduct.unitsEquiv R (B` using `B) (𝓕 := cofinite)) U := by`. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Conclude with `(_root_.RestrictedProduct.continuous_inclusion hT).comp hG`.
+
+Conclude with `hFU.continuousAt (hUo.mem_nhds hxU)`.
+-/
 theorem continuous_unitsEquiv (hBopen : ∀ i, IsOpen (B i : Set (R i))) :
     Continuous (_root_.RestrictedProduct.unitsEquiv R (B := B) (𝓕 := cofinite)) := by
   refine continuous_iff_continuousAt.2 fun x ↦ ?_
@@ -65,6 +79,9 @@ def continuousUnitsEquiv (hBopen : ∀ i, IsOpen (B i : Set (R i))) :
   continuous_invFun := continuous_unitsEquiv_symm
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem continuousUnitsEquiv_apply (hBopen : ∀ i, IsOpen (B i : Set (R i)))
     (x : (Πʳ i, [R i, B i])ˣ) (i : ι) :
     ((continuousUnitsEquiv hBopen x i : (R i)ˣ) : R i) = (x : Πʳ i, [R i, B i]) i :=
@@ -76,6 +93,9 @@ namespace IdeleGroup
 
 variable (K : Type*) [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `Submonoid.isOpen_units (Valued.isOpen_valuationSubring (v.adicCompletion K))`.
+-/
 theorem isOpen_units_adicCompletionIntegers (v : HeightOneSpectrum (𝓞 K)) :
     IsOpen ((Submonoid.ofClass (v.adicCompletionIntegers K)).units :
       Set (v.adicCompletion K)ˣ) :=
@@ -89,6 +109,9 @@ def finiteUnitsEquiv :
     (fun v ↦ Valued.isOpen_valuationSubring (v.adicCompletion K))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finiteUnitsEquiv_apply (x : (FiniteAdeleRing (𝓞 K) K)ˣ) (v : HeightOneSpectrum (𝓞 K)) :
     ((finiteUnitsEquiv K x v : (v.adicCompletion K)ˣ) : v.adicCompletion K) =
       (x : FiniteAdeleRing (𝓞 K) K) v :=
@@ -105,11 +128,17 @@ def prodRestrictedEquiv :
         continuous_fst.prodMk ((finiteUnitsEquiv K).symm.continuous.comp continuous_snd) }
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem prodRestrictedEquiv_apply_fst (x : IdeleGroup K) :
     ((prodRestrictedEquiv K x).1 : InfiniteAdeleRing K) = (x : 𝔸[K]).1 :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prodRestrictedEquiv_apply_snd (x : IdeleGroup K) (v : HeightOneSpectrum (𝓞 K)) :
     (((prodRestrictedEquiv K x).2 v : (v.adicCompletion K)ˣ) : v.adicCompletion K) =
       (x : 𝔸[K]).2 v :=

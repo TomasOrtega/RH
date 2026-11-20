@@ -17,6 +17,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {n : ℕ}
 
+/- English proof (translation)
+Establish `hs : segre z = (∏ k, c k) • segre z'`. Rewrite using `[hz]`. Conclude with `segre_smul c z'`. Establish `hcomp : ∀ j, (∏ k, c k) * Ψ (segre z') j = (Fin.cons (1 : ℂ) y : Fin (n + 1) → ℂ) j`. Introduce `j`.
+
+Rewrite using `[← hΨ, hs, map_smul, Pi.smul_apply, smul_eq_mul]`. Establish `h0 : (∏ k, c k) * Ψ (segre z') 0 = 1` using `by simpa using hcomp 0`. Establish `hs0 : Ψ (segre z') 0 ≠ 0` using `right_ne_zero_of_mul_eq_one h0`. Use `⟨hs0, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Establish `hi : (∏ k, c k) * Ψ (segre z') i.succ = y i` using `by simpa using hcomp i.succ`. Rewrite using `[div_eq_iff hs0, ← hi]`. Take the linear combination `(-(Ψ (segre z') i.succ)) * h0`. Use `show (Ψ (segre z') 0)⁻¹ • segre z' = segre z`. Rewrite using `[hs, eq_inv_of_mul_eq_one_left h0]`.
+-/
 theorem sheet_of_torus (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) {z z' : (Σ k, J k) → ℂ}
     {y : Fin n → ℂ} (c : K → ℂ) (hz : z = GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul c z')
     (hΨ : Ψ (segre z) = Fin.cons 1 y) :
@@ -38,6 +45,17 @@ theorem sheet_of_torus (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1
   · show (Ψ (segre z') 0)⁻¹ • segre z' = segre z
     rw [hs, eq_inv_of_mul_eq_one_left h0]
 
+/- English proof (translation)
+Introduce `K _ J _ n A z₁ z₂ c y hz hy hca hc0 hrel`. Use `choose i0 hi0 using hy`. Establish `hcont : ∀ᶠ y' in 𝓝 y, ∀ k, z₁ y' ⟨k, i0 k⟩ ≠ 0` using `eventually_all.mpr fun k => (analyticAt_coord hz ⟨k, i0 k⟩).continuousAt.eventually_ne (hi0 k)`. Establish `hcne : ∀ᶠ y' in 𝓝 y, ∀ k, c k y' ≠ 0` using `eventually_all.mpr fun k => (hca k).continuousAt.eventually_ne (hc0 k)`. Use `set G : (Fin n → ℂ) → ℂ := fun y' => ∑ k, ((A.a k : ℝ) : ℂ) * Complex.log (c k y' / c k y) with hG`.
+
+Use `set C : ℝ := ∑ k, (A.a k : ℝ) * Real.log ‖c k y‖ with hC`. Establish `hGan : AnalyticAt ℂ G y`. Use `Finset.analyticAt_fun_sum _ fun k _ => analyticAt_const.mul ?_` and prove the remaining obligations. Use `((hca k).div analyticAt_const (hc0 k)).clog ?_` and prove the remaining obligations. Use `show c k y / c k y ∈ Complex.slitPlane`.
+
+Rewrite using `[div_self (hc0 k)]`. Conclude with `Complex.one_mem_slitPlane`. Use `⟨fun y' => G y' + (C : ℂ), hGan.add analyticAt_const, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hrel, hcont, hcne] with y' hr hγ0 hc`. Establish `hpos : 0 < A.h (z₁ y')` using `A.pos _ fun k => ⟨i0 k, hγ0 k⟩`.
+
+Establish `hsm : A.h (z₂ y') = (∏ k, ‖c k y'‖ ^ A.a k) * A.h (z₁ y')`. Rewrite using `[hr]`. Conclude with `A.smul _ _ hc`. Establish `hne : ∀ k, ‖c k y'‖ ^ A.a k ≠ 0` using `fun k => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))`. Establish `hterm : ∀ k, (((A.a k : ℝ) : ℂ) * Complex.log (c k y' / c k y)).re = (A.a k : ℝ) * Real.log ‖c k y'‖ - (A.a k : ℝ) * Real.log ‖c k y‖`.
+
+Introduce `k`. Rewrite using `[Complex.re_ofReal_mul, Complex.log_re, norm_div, Real.log_div (norm_ne_zero_iff.mpr (hc k)) (norm_ne_zero_iff.mpr (hc0 k)), mul_sub]`. Rewrite using `[hsm, Real.log_mul (Finset.prod_ne_zero_iff.mpr fun k _ => hne k) hpos.ne', Real.log_prod (fun k _ => hne k), Complex.add_re, Complex.ofReal_re]`. Simplify using `only [hG, hC, Complex.re_sum, Real.log_zpow, hterm, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem torus_log_re : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (n : ℕ) (A : HermLine J) (z₁ z₂ : (Fin n → ℂ) → (Σ k, J k) → ℂ) (c : K → (Fin n → ℂ) → ℂ) (y : Fin n → ℂ), AnalyticAt ℂ z₁ y → (∀ k, ∃ i, z₁ y ⟨k, i⟩ ≠ 0) → (∀ k, AnalyticAt ℂ (c k) y) → (∀ k, c k y ≠ 0) → (∀ᶠ y' in 𝓝 y, z₂ y' = GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul (fun k => c k y') (z₁ y')) → ∃ g : (Fin n → ℂ) → ℂ, AnalyticAt ℂ g y ∧ ∀ᶠ y' in 𝓝 y, Real.log (A.h (z₂ y')) = Real.log (A.h (z₁ y')) + (g y').re := by
   intro K _ J _ n A z₁ z₂ c y hz hy hca hc0 hrel
   classical
@@ -71,6 +89,13 @@ theorem torus_log_re : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Finty
   simp only [hG, hC, Complex.re_sum, Real.log_zpow, hterm, Finset.sum_sub_distrib]
   ring
 
+/- English proof (translation)
+Introduce `K _ J _ P n Ψ V γ hP hΨ hV hol hmem hinj`. Establish `hγ` using `analyticOnNhd_of_differentiableOn hV hol`. Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `u0 ⟨hu0, h00, -⟩`. Establish `hc0` using `(analyticAt_pi_iff.mp (analyticAt_psi_segre Ψ (hγ u0 hu0)) 0).continuousAt`.
+
+Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.mp (Filter.Eventually.and (hV.mem_nhds hu0 : ∀ᶠ u in 𝓝 u0, u ∈ V) (hc0.eventually_ne h00))`. Use `⟨Metric.ball u0 r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball u0 r).isPreconnected, fun u => LinearMap.det (fderiv ℂ (sheetProj Ψ γ) u : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)), fun u hu => analyticAt_det_fderiv (analyticAt_sheetProj Ψ (hγ u (hball u hu).1) (hball u hu).2), …` and prove the remaining obligations. Assume the negation of the conclusion as `hall push Not at hall`. Conclude with `sheet_not_flat hP hΨ hV hγ hmem hinj Metric.isOpen_ball (fun u hu => (hball u hu).1) ⟨u0, Metric.mem_ball_self hr⟩ (fun u hu => (hball u hu).2) hall`. Introduce and unpack `w ⟨⟨-, -, hd⟩, -⟩`.
+
+Conclude with `hd`.
+-/
 theorem ram_sheet_null : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J)) (n : ℕ) (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) (V : Set (Fin n → ℂ)) (γ : (Fin n → ℂ) → (Σ k, J k) → ℂ), IsArithVar P (n + 1) → IsGoodProj P Ψ → IsOpen V → DifferentiableOn ℂ γ V → (∀ t ∈ V, γ t ∈ mcPts P) → (∀ t ∈ V, ∀ t' ∈ V, γ t ∈ torusSat {γ t'} → t = t') → volume {t | t ∈ V ∧ Ψ (segre (γ t)) 0 ≠ 0 ∧ LinearMap.det (fderiv ℂ (sheetProj Ψ γ) t : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) = 0} = 0 := by
   intro K _ J _ P n Ψ V γ hP hΨ hV hol hmem hinj
   have hγ := analyticOnNhd_of_differentiableOn hV hol
@@ -90,6 +115,29 @@ theorem ram_sheet_null : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fin
   · rintro w ⟨⟨-, -, hd⟩, -⟩
     exact hd
 
+/- English proof (translation)
+Introduce `K _ J _ P n Ψ V γ hP hΨ hV hol hmem hinj`. Establish `hγ` using `analyticOnNhd_of_differentiableOn hV hol`. Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `u0 ⟨hu0, -⟩`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hV u0 hu0`.
+
+Use `⟨Metric.ball u0 r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball u0 r).isPreconnected, fun u => Ψ (segre (γ u)) 0, fun u hu => analyticAt_pi_iff.mp (analyticAt_psi_segre Ψ (hγ u (hball hu))) 0, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall push Not at hall`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i0, Ψ (segre (γ u0)) i0 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Conclude with `hΨ _ (hmem u0 hu0) (funext h)`. Establish `hi0ne : i0 ≠ 0`. Introduce and unpack `rfl`. Conclude with `hi0 (hall u0 (Metric.mem_ball_self hr))`. Use `set m : Fin n := i0.pred hi0ne`.
+
+Establish `hm : m.succ = i0` using `Fin.succ_pred i0 hi0ne`. Use `set Ψ' : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ) := (LinearMap.funLeft ℂ ℂ (Equiv.swap (0 : Fin (n + 1)) i0)).comp Ψ with hΨ'def`. Establish `hΨ'app : ∀ w i, Ψ' w i = Ψ w (Equiv.swap 0 i0 i)` using `fun w i => rfl`. Establish `hΨ' : IsGoodProj P Ψ'`. Introduce `z hz h`.
+
+Use `hΨ z hz (funext fun i => ?_)` and prove the remaining obligations. Use `congrFun h (Equiv.swap 0 i0 i)` as an intermediate fact. Rewrite `this` using `[hΨ'app, Equiv.swap_apply_self]`. Conclude with `this`. Establish `hg'c : ContinuousOn (fun u => Ψ' (segre (γ u)) 0) (Metric.ball u0 r)` using `fun u hu => (analyticAt_pi_iff.mp (analyticAt_psi_segre Ψ' (hγ u (hball hu))) 0).continuousAt.continuousWithinAt`.
+
+Use `set O := Metric.ball u0 r ∩ (fun u => Ψ' (segre (γ u)) 0) ⁻¹' {0}ᶜ with hOdef`. Establish `hO : IsOpen O` using `hg'c.isOpen_inter_preimage Metric.isOpen_ball isOpen_compl_singleton`. Establish `hu0O : u0 ∈ O`. Use `⟨Metric.mem_ball_self hr, ?_⟩` and prove the remaining obligations. Use `show Ψ' (segre (γ u0)) 0 ≠ 0`.
+
+Rewrite using `[hΨ'app, Equiv.swap_apply_left]`. Conclude with `hi0`. Establish `h0O : ∀ u ∈ O, Ψ' (segre (γ u)) 0 ≠ 0` using `fun u hu => hu.2`. Establish `hanO : AnalyticOnNhd ℂ (sheetProj Ψ' γ) O` using `fun u hu => analyticAt_sheetProj Ψ' (hγ u (hball hu.1)) (h0O u hu)`. Establish `hzero : ∀ u ∈ O, sheetProj Ψ' γ u m = 0`.
+
+Introduce `u hu`. Simplify using `only [sheetProj]`. Rewrite using `[hm, hΨ'app, Equiv.swap_apply_right, hall u hu.1, zero_div]`. Establish `hdetO : ∀ u ∈ O, LinearMap.det (fderiv ℂ (sheetProj Ψ' γ) u : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) = 0`. Introduce `u hu`.
+
+Establish `hcoord : (fun v => sheetProj Ψ' γ v m) =ᶠ[𝓝 u] fun _ => 0` using `by filter_upwards [hO.mem_nhds hu] with v hv`. Conclude with `hzero v hv`. Establish `hd : HasFDerivAt (fun v => sheetProj Ψ' γ v m) ((ContinuousLinearMap.proj m).comp (fderiv ℂ (sheetProj Ψ' γ) u)) u` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) m).hasFDerivAt.comp u (hanO u hu).differentiableAt.hasFDerivAt`. Establish `hd0 : HasFDerivAt (fun v => sheetProj Ψ' γ v m) (0 : (Fin n → ℂ) →L[ℂ] ℂ) u` using `(hasFDerivAt_const (0 : ℂ) u).congr_of_eventuallyEq hcoord`. Establish `hrow` using `hd.unique hd0`.
+
+Use `det_eq_zero_of_coord m fun v => ?_` and prove the remaining obligations. Use `congrArg (fun T : (Fin n → ℂ) →L[ℂ] ℂ => T v) hrow` as an intermediate fact. Simplify using `using this`. Conclude with `sheet_not_flat hP hΨ' hV hγ hmem hinj hO (fun u hu => hball hu.1) ⟨u0, hu0O⟩ h0O hdetO`. Introduce and unpack `w ⟨⟨-, hw0⟩, -⟩`.
+
+Conclude with `hw0`.
+-/
 theorem vanishing_sheet_measure_zero : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J)) (n : ℕ) (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) (V : Set (Fin n → ℂ)) (γ : (Fin n → ℂ) → (Σ k, J k) → ℂ), IsArithVar P (n + 1) → IsGoodProj P Ψ → IsOpen V → DifferentiableOn ℂ γ V → (∀ t ∈ V, γ t ∈ mcPts P) → (∀ t ∈ V, ∀ t' ∈ V, γ t ∈ torusSat {γ t'} → t = t') → volume {t | t ∈ V ∧ Ψ (segre (γ t)) 0 = 0} = 0 := by
   intro K _ J _ P n Ψ V γ hP hΨ hV hol hmem hinj
   classical
@@ -156,6 +204,23 @@ theorem vanishing_sheet_measure_zero : ∀ (K : Type) [Fintype K] (J : K → Typ
   · rintro w ⟨⟨-, hw0⟩, -⟩
     exact hw0
 
+/- English proof (translation)
+Introduce `K _ J _ P n nc Bd χ V B γ Ψ hP hΨ hcov hS hnull`. Establish `hγ : ∀ m, AnalyticOnNhd ℂ (γ m) (V m)` using `fun m => analyticOnNhd_of_differentiableOn (hS.isOpen m) (hS.hol m)`. Use `set N : Fin nc → Set (Fin n → ℂ) := fun a => {t ∈ Metric.ball (0 : Fin n → ℂ) 1 | (χ a).γ t ∉ torusSat (⋃ m, γ m '' B m)} with hN`. Use `set Z₁ : Fin nc → Set (Fin n → ℂ) := fun a => sheetProj Ψ (χ a).γ '' (N a ∩ {t | Ψ (segre ((χ a).γ t)) 0 ≠ 0}) with hZ₁`. Use `set Z₂ : ℕ → Set (Fin n → ℂ) := fun m => sheetProj Ψ (γ m) '' ((V m \ sheetReg Ψ (γ m) (V m)) ∩ {t | Ψ (segre (γ m t)) 0 ≠ 0}) with hZ₂`.
+
+Establish `h1 : ∀ a, volume (Z₁ a) = 0` using `fun a => by`. Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume (fun t ht => ?_) (measure_mono_null Set.inter_subset_left (hS.cover a))` and prove the remaining obligations. Conclude with `((analyticAt_sheetProj Ψ ((χ a).analytic t ht.1.1) ht.2).differentiableAt.restrictScalars ℝ).differentiableWithinAt`. Establish `h2 : ∀ m, volume (Z₂ m) = 0` using `fun m => by`. Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume (fun t ht => ?_) (measure_mono_null Set.inter_subset_left (hnull m))` and prove the remaining obligations.
+
+Conclude with `((analyticAt_sheetProj Ψ (hγ m t ht.1.1) ht.2).differentiableAt.restrictScalars ℝ).differentiableWithinAt`. Establish `hae : ∀ᵐ y : Fin n → ℂ, y ∉ (⋃ a, Z₁ a) ∪ ⋃ m, Z₂ m` using `measure_eq_zero_iff_ae_notMem.mp (measure_union_null (measure_iUnion_null h1) (measure_iUnion_null h2))`. Use `filter_upwards [hae] with y hy w hw`. Take `⟨z, hz, hzw, hΨw⟩` from `hw`. Take `⟨a, t, htn, _, rfl, c, hc, hzc⟩` from `hcov z hz`.
+
+Establish `hΨz : Ψ (segre z) = Fin.cons 1 y` using `by rw [hzw]; exact hΨw`. Take `⟨hc0, hcy, -⟩` from `sheet_of_torus Ψ c hzc hΨz`. Establish `hcy' : sheetProj Ψ (χ a).γ t = y` using `hcy`. Establish `htb : t ∈ Metric.ball (0 : Fin n → ℂ) 1`. Rewrite using `[mem_ball_zero_iff]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `htN : (χ a).γ t ∈ torusSat (⋃ m, γ m '' B m)`. Assume the negation of the conclusion as `hcon`. Conclude with `hy (Or.inl (Set.mem_iUnion.mpr ⟨a, t, ⟨⟨htb, hcon⟩, hc0⟩, hcy'⟩))`. Take `⟨w', hw', c', hc', hwc⟩` from `htN`.
+
+Take `⟨m, t', ht', rfl⟩` from `Set.mem_iUnion.mp hw'`. Establish `hzc' : z = GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul (fun k => c k * c' k) (γ m t')`. Rewrite using `[hzc, hwc]`. Use function extensionality and compare the values at `p`. Simplify using `[GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul, mul_assoc]`.
+
+Take `⟨hm0, hmy, hmw⟩` from `sheet_of_torus Ψ _ hzc' hΨz`. Establish `hmy' : sheetProj Ψ (γ m) t' = y` using `hmy`. Establish `htV` using `(hS.meas m).2 ht'`. Use `⟨m, t', ht', ?_, hmy', hmw.trans hzw⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`.
+
+Conclude with `hy (Or.inr (Set.mem_iUnion.mpr ⟨m, t', ⟨⟨htV, hcon⟩, hm0⟩, hmy'⟩))`.
+-/
 theorem fibre_sheet_cover : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J)) (n nc : ℕ) (Bd : Set ((Σ k, J k) → ℂ)) (χ : Fin nc → GroundTheory.Heights₂.Heights.LowerBoundFree.SncChart P n Bd) (V B : ℕ → Set (Fin n → ℂ)) (γ : ℕ → (Fin n → ℂ) → (Σ k, J k) → ℂ) (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)), IsArithVar P (n + 1) → IsGoodProj P Ψ → (∀ z ∈ mcPts P, ∃ a, ∃ t : Fin n → ℂ, ‖t‖ ≤ 1 / 2 ∧ z ∈ torusSat {(χ a).γ t}) → IsSheetCover χ V B γ → (∀ m, volume (V m \ sheetReg Ψ (γ m) (V m)) = 0) → ∀ᵐ y : Fin n → ℂ, ∀ w ∈ fibre P Ψ y, ∃ m, ∃ t ∈ B m, t ∈ sheetReg Ψ (γ m) (V m) ∧ sheetProj Ψ (γ m) t = y ∧ sheetNorm Ψ (γ m t) = w := by
   intro K _ J _ P n nc Bd χ V B γ Ψ hP hΨ hcov hS hnull
   classical
@@ -205,6 +270,37 @@ theorem fibre_sheet_cover : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, 
   by_contra hcon
   exact hy (Or.inr (Set.mem_iUnion.mpr ⟨m, t', ⟨⟨htV, hcon⟩, hm0⟩, hmy'⟩))
 
+/- English proof (translation)
+Introduce `K _ J _ P n Ψ V γ t hP hV hol hmem ht`. Establish `hγ` using `analyticOnNhd_of_differentiableOn hV hol`. Establish `hQa` using `analyticAt_sheetProj Ψ (hγ t ht.1) ht.2.1`. Establish `hd` using `ht.2.2`. Use `set Ce := (fderiv ℂ (sheetProj Ψ γ) t).toContinuousLinearEquivOfDetNeZero hd with hCedef`.
+
+Establish `hCe : (Ce : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) = fderiv ℂ (sheetProj Ψ γ) t` using `ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero _ hd`. Establish `hstrict : HasStrictFDerivAt (sheetProj Ψ γ) (Ce : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) t`. Rewrite using `[hCe]`. Conclude with `hQa.hasStrictFDerivAt`. Use `set F := hstrict.toOpenPartialHomeomorph (sheetProj Ψ γ) with hFdef`.
+
+Establish `hFc : (F : (Fin n → ℂ) → (Fin n → ℂ)) = sheetProj Ψ γ` using `hstrict.toOpenPartialHomeomorph_coe`. Establish `hus : t ∈ F.source` using `hstrict.mem_toOpenPartialHomeomorph_source`. Establish `hyF : F t = sheetProj Ψ γ t` using `by rw [hFc]`. Establish `hτa : AnalyticAt ℂ F.symm (sheetProj Ψ γ t)`. Use `F.analyticAt_symm' (i := Ce) hus (by rw [hFc]; exact hQa) (by rw [hFc, hCe])` as an intermediate fact.
+
+Rewrite `this` using `[hyF]`. Then use the resulting hypothesis. Establish `hτt : F.symm (sheetProj Ψ γ t) = t`. Rewrite using `[← hyF]`. Conclude with `F.left_inv hus`. Establish `hyt : sheetProj Ψ γ t ∈ F.target` using `hyF ▸ F.map_source hus`.
+
+Establish `hright : ∀ᶠ y' in 𝓝 (sheetProj Ψ γ t), sheetProj Ψ γ (F.symm y') = y'` using `by filter_upwards [F.open_target.mem_nhds hyt] with y' hy'`. Use `F.right_inv hy'` as an intermediate fact. Rewrite `this` using `[hFc]`. Then use the resulting hypothesis. Establish `hder : HasFDerivAt F.symm (Ce.symm : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) (sheetProj Ψ γ t)` using `F.hasFDerivAt_symm hyt (by rw [hτt, hFc]; exact hstrict.hasFDerivAt)`. Establish `hdet1 : LinearMap.det ((Ce.symm : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) * LinearMap.det (fderiv ℂ (sheetProj Ψ γ) t : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) = 1`.
+
+Rewrite using `[← hCe, ← LinearMap.det_comp]`. Establish `hid : ((Ce.symm : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) ∘ₗ ((Ce : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hid, LinearMap.det_id]`. Establish `hγτ : AnalyticAt ℂ (fun y' => γ (F.symm y')) (sheetProj Ψ γ t)` using `(hγ t ht.1 |>.comp_of_eq hτa hτt)`. Use `set ψ : (Fin n → ℂ) → ℂ := fun y' => Ψ (segre (γ (F.symm y'))) 0 with hψdef`. Establish `hψa : AnalyticAt ℂ ψ (sheetProj Ψ γ t)` using `analyticAt_pi_iff.mp (analyticAt_psi_segre Ψ hγτ) 0`. Establish `hψ0 : ψ (sheetProj Ψ γ t) ≠ 0`.
+
+Simplify using `only [hψdef, hτt]`. Conclude with `ht.2.1`. Take `⟨k0⟩` from `hP.1`. Use `set c : K → (Fin n → ℂ) → ℂ := fun k y' => if k = k0 then (ψ y')⁻¹ else 1 with hcdef`. Establish `hca : ∀ k, AnalyticAt ℂ (c k) (sheetProj Ψ γ t)` using `fun k => by`.
+
+Distinguish the cases in `hk : k = k0`. Simplify using `only [hcdef, hk, if_true]`. Conclude with `hψa.inv hψ0`. Simplify using `only [hcdef, hk, if_false]`. Conclude with `analyticAt_const`.
+
+Establish `hcne : ∀ k y', ψ y' ≠ 0 → c k y' ≠ 0` using `fun k y' h => by`. Distinguish the cases in `hk : k = k0`. Simplify using `[hcdef, hk, h]`. Simplify using `[hcdef, hk]`. Establish `hprod : ∀ y', ∏ k, c k y' = (ψ y')⁻¹` using `fun y' => by`.
+
+Simplify using `[hcdef, Finset.prod_ite_eq']`. Use `set σ : (Fin n → ℂ) → (Σ k, J k) → ℂ := fun y' => GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul (fun k => c k y') (γ (F.symm y')) with hσdef`. Establish `hσa : AnalyticAt ℂ σ (sheetProj Ψ γ t)` using `analyticAt_pi_iff.mpr fun p => (hca p.1).mul (analyticAt_coord hγτ p)`. Establish `hseg : ∀ y', segre (σ y') = (ψ y')⁻¹ • segre (γ (F.symm y'))` using `fun y' => by`. Rewrite using `[← hprod y']`.
+
+Conclude with `segre_smul (fun k => c k y') _`. Use `⟨F.symm, σ, c, hτa, hτt, ?_, hγτ, ⟨?_, ?_⟩, hca, fun k => hcne k _ hψ0, Filter.Eventually.of_forall fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[hder.fderiv]`. Unfold `jacN`. Rewrite using `[← mul_pow, ← norm_mul, hdet1]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hseg]`. Simplify using `only [hψdef, hτt]`. Both sides reduce to the same expression. Use `filter_upwards [hσa.eventually_analyticAt, hτa.continuousAt.eventually (by rw [hτt]; exact hV.mem_nhds ht.1), hψa.continuousAt.eventually_ne hψ0, hright] with y' h1 h2 h3 h4`.
+
+Use `⟨h1.differentiableAt, mcPts_smul hP.2.1.2.1 (fun k => c k y') (fun k => hcne k y' h3) (hmem _ h2), ?_⟩` and prove the remaining obligations. Rewrite using `[hseg, map_smul]`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, Fin.cons_zero]`.
+
+Conclude with `inv_mul_cancel₀ h3`. Use `congrFun h4 j` as an intermediate fact. Simplify using `only [sheetProj] at this`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Fin.cons_succ]`. Rewrite using `[← this, div_eq_inv_mul]`.
+-/
 theorem sheet_local : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J)) (n : ℕ) (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) (V : Set (Fin n → ℂ)) (γ : (Fin n → ℂ) → (Σ k, J k) → ℂ) (t : Fin n → ℂ), IsArithVar P (n + 1) → IsOpen V → DifferentiableOn ℂ γ V → (∀ t ∈ V, γ t ∈ mcPts P) → t ∈ sheetReg Ψ γ V → ∃ (τ : (Fin n → ℂ) → Fin n → ℂ) (σ : (Fin n → ℂ) → (Σ k, J k) → ℂ) (c : K → (Fin n → ℂ) → ℂ), AnalyticAt ℂ τ (sheetProj Ψ γ t) ∧ τ (sheetProj Ψ γ t) = t ∧ ‖LinearMap.det ((fderiv ℂ τ (sheetProj Ψ γ t) : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ))‖ ^ 2 * jacN (sheetProj Ψ γ) t = 1 ∧ AnalyticAt ℂ (fun y => γ (τ y)) (sheetProj Ψ γ t) ∧ IsSheet P Ψ (sheetProj Ψ γ t) (sheetNorm Ψ (γ t)) σ ∧ (∀ k, AnalyticAt ℂ (c k) (sheetProj Ψ γ t)) ∧ (∀ k, c k (sheetProj Ψ γ t) ≠ 0) ∧ ∀ᶠ y' in 𝓝 (sheetProj Ψ γ t), σ y' = GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul (fun k => c k y') (γ (τ y')) := by
   intro K _ J _ P n Ψ V γ t hP hV hol hmem ht
   classical
@@ -295,6 +391,11 @@ theorem sheet_local : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintyp
       simp only [Pi.smul_apply, smul_eq_mul, Fin.cons_succ]
       rw [← this, div_eq_inv_mul]
 
+/- English proof (translation)
+Introduce `K _ J _ P n Ψ V γ hP hΨ hV hol hmem hinj`. Use `measure_mono_null ?_ (measure_union_null (vanishing_sheet_measure_zero K J P n Ψ V γ hP hΨ hV hol hmem hinj) (ram_sheet_null K J P n Ψ V γ hP hΨ hV hol hmem hinj))` and prove the remaining obligations. Introduce and unpack `t ⟨htV, ht⟩`. Distinguish the cases in `h0 : Ψ (segre (γ t)) 0 = 0`. Conclude with `Or.inl ⟨htV, h0⟩`.
+
+Use `Or.inr ⟨htV, h0, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hd`. Conclude with `ht ⟨htV, h0, hd⟩`.
+-/
 theorem reg_null : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J)) (n : ℕ) (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) (V : Set (Fin n → ℂ)) (γ : (Fin n → ℂ) → (Σ k, J k) → ℂ), IsArithVar P (n + 1) → IsGoodProj P Ψ → IsOpen V → DifferentiableOn ℂ γ V → (∀ t ∈ V, γ t ∈ mcPts P) → (∀ t ∈ V, ∀ t' ∈ V, γ t ∈ torusSat {γ t'} → t = t') → volume (V \ sheetReg Ψ γ V) = 0 := by
   intro K _ J _ P n Ψ V γ hP hΨ hV hol hmem hinj
   refine measure_mono_null ?_ (measure_union_null (vanishing_sheet_measure_zero K J P n Ψ V γ hP hΨ hV hol hmem hinj)
@@ -306,6 +407,25 @@ theorem reg_null : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (
     by_contra hd
     exact ht ⟨htV, h0, hd⟩
 
+/- English proof (translation)
+Introduce `K _ J _ P n Ψ V γ A G t hP hV hol hmem ht hC hG hbad`. Take `⟨τ, σ, c, hτa, hτt, hdet, hγτ, hσS, hca, hc0, hσc⟩` from `sheet_local K J P n Ψ V γ t hP hV hol hmem ht`. Establish `hex : ∃ g, IsSheet P Ψ (sheetProj Ψ γ t) (sheetNorm Ψ (γ t)) g` using `⟨σ, hσS⟩`. Unfold `sheetDensity`. Rewrite using `[dif_pos hex]`.
+
+Take `⟨g, hgdef⟩ : ∃ g, g = hex.choose` from `⟨_, rfl⟩`. Establish `hg : IsSheet P Ψ (sheetProj Ψ γ t) (sheetNorm Ψ (γ t)) g` using `hgdef ▸ hex.choose_spec`. Rewrite using `[← hgdef]`. Establish `hseg : (fun y' => segre (σ y')) =ᶠ[𝓝 (sheetProj Ψ γ t)] fun y' => segre (g y')`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hbad ⟨_, σ, g, hσS, hg, hne⟩`. Establish `hga : AnalyticAt ℂ g (sheetProj Ψ γ t)` using `sheet_analyticAt osgood hg`. Establish `hσa : AnalyticAt ℂ σ (sheetProj Ψ γ t)` using `sheet_analyticAt osgood hσS`. Establish `hσ0` using `hσS.2.self_of_nhds.2.1.1`. Use `choose i0 hi0 using hσ0`.
+
+Establish `hcont : ∀ᶠ y' in 𝓝 (sheetProj Ψ γ t), ∀ k, σ y' ⟨k, i0 k⟩ ≠ 0` using `eventually_all.mpr fun k => (analyticAt_coord hσa ⟨k, i0 k⟩).continuousAt.eventually_ne (hi0 k)`. Establish `hrel : ∀ᶠ y' in 𝓝 (sheetProj Ψ γ t), g y' = GroundTheory.Heights₂.Heights.LowerBoundFree.torusSmul (fun k => g y' ⟨k, i0 k⟩ / σ y' ⟨k, i0 k⟩) (σ y')` using `by filter_upwards [hcont, hseg] with y' h1 h2`. Conclude with `(eq_bsmul_of_segre_eq i0 h1 h2).2`. Establish `hg0 : ∀ k, g (sheetProj Ψ γ t) ⟨k, i0 k⟩ ≠ 0` using `(eq_bsmul_of_segre_eq i0 hcont.self_of_nhds hseg.self_of_nhds).1`. Take `⟨G₁, hG₁a, hG₁⟩` from `torus_log_re K J n A σ g (fun k y' => g y' ⟨k, i0 k⟩ / σ y' ⟨k, i0 k⟩) _ hσa (fun k => ⟨i0 k, hi0 k⟩) (fun k => (analyticAt_coord hga _).div (analyticAt_coord hσa _) (hi0 k)) (fun k => div_ne_zero (hg0 k) (hi0 k)) hrel`.
+
+Establish `hz : ∀ k, ∃ i, γ (τ (sheetProj Ψ γ t)) ⟨k, i⟩ ≠ 0`. Rewrite using `[hτt]`. Conclude with `(hmem t ht.1).1`. Take `⟨G₂, hG₂a, hG₂⟩` from `torus_log_re K J n A (fun y => γ (τ y)) σ c _ hγτ hz hca hc0 hσc`. Establish `hCτ : ContDiffAt ℝ 2 (fun t' => Real.log (A.h (γ t'))) (τ (sheetProj Ψ γ t))`.
+
+Rewrite using `[hτt]`. Conclude with `hC`. Establish `hMA` using `maDensity_const_eq_normSq_jacobian_mul n (fun t' => Real.log (A.h (γ t'))) (fun y' => Real.log (A.h (g y'))) τ (fun y' => G₁ y' + G₂ y') (sheetProj Ψ γ t) hτa (hG₁a.add hG₂a) hCτ (by filter_upwards [hG₁, hG₂] with y' h1 h2`. Rewrite using `[h1, h2, Complex.add_re]`. Use the proof step `ring)`.
+
+Rewrite using `[hMA, hτt]`. Establish `hgt : g (sheetProj Ψ γ t) ∈ torusSat {γ t}`. Establish `h1 : segre (g (sheetProj Ψ γ t)) = (Ψ (segre (γ t)) 0)⁻¹ • segre (γ t)` using `hg.1`. Take `⟨a, ha, haz⟩` from `sameOrbit_of_segre (hmem t ht.1).1 _ (inv_ne_zero ht.2.1) h1`. Conclude with `⟨γ t, rfl, a, ha, haz⟩`.
+
+Rewrite using `[hG _ hgt]`. Establish `hJ : jacN (sheetProj Ψ γ) t ≠ 0` using `fun h0 => by`. Rewrite `hdet` using `[h0, mul_zero]`. Conclude with `zero_ne_one hdet`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `(G (γ t) * maDensity (fun (_ : Fin n) t' => Real.log (A.h (γ t'))) t) * hdet`.
+-/
 theorem sheet_term : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J)) (n : ℕ) (Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) (V : Set (Fin n → ℂ)) (γ : (Fin n → ℂ) → (Σ k, J k) → ℂ) (A : HermLine J) (G : ((Σ k, J k) → ℂ) → ℝ) (t : Fin n → ℂ), IsArithVar P (n + 1) → IsOpen V → DifferentiableOn ℂ γ V → (∀ t ∈ V, γ t ∈ mcPts P) → t ∈ sheetReg Ψ γ V → ContDiffAt ℝ 2 (fun t' => Real.log (A.h (γ t'))) t → (∀ w' ∈ torusSat {γ t}, G w' = G (γ t)) → sheetProj Ψ γ t ∉ badSet P Ψ → sheetDensity P Ψ (fun (_ : Fin n) z => Real.log (A.h z)) G (sheetProj Ψ γ t) (sheetNorm Ψ (γ t)) = G (γ t) * maDensity (fun (_ : Fin n) t' => Real.log (A.h (γ t'))) t / jacN (sheetProj Ψ γ) t := by
   intro K _ J _ P n Ψ V γ A G t hP hV hol hmem ht hC hG hbad
   classical
@@ -359,6 +479,17 @@ theorem sheet_term : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype
   field_simp
   linear_combination (G (γ t) * maDensity (fun (_ : Fin n) t' => Real.log (A.h (γ t'))) t) * hdet
 
+/- English proof (translation)
+Establish `hE : Pairwise (Function.onFun Disjoint fun m => Φ m '' T m)`. Introduce `m m' hne`. Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩ ⟨t', ht', h⟩`. Conclude with `hne (hinj m t ht m' t' ht' h.symm).1`.
+
+Establish `hU : ⋃ m, Φ m '' T m = F`. Use `Set.Subset.antisymm (Set.iUnion_subset ?_) fun w hw => ?_` and prove the remaining obligations. Introduce and unpack `m _ ⟨t, ht, rfl⟩`. Conclude with `hmap m t ht`. Take `⟨m, t, ht, rfl⟩` from `hsurj w hw`.
+
+Conclude with `Set.mem_iUnion.mpr ⟨m, t, ht, rfl⟩`. Establish `h` using `tsum_finsum_disjointed hE hU (G := F) (by simpa using hF) f`. Establish `hsub : ∀ m, Φ m '' T m ∩ F = Φ m '' T m` using `fun m => Set.inter_eq_left.mpr (by`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `hmap m t ht)`.
+
+Simplify using `only [hsub, Set.inter_self] at h`. Rewrite using `[← h]`. Use `tsum_congr fun m => ?_` and prove the remaining obligations. Rewrite using `[finsum_mem_image]`. Introduce `t ht t' ht' he`.
+
+Conclude with `(hinj m t ht m t' ht' he).2`.
+-/
 theorem sheets_tsum_eq {α β : Type*} (F : Set β) (T : ℕ → Set α) (Φ : ℕ → α → β) (f : β → ℝ) (hF : F.Finite)
     (hmap : ∀ m, ∀ t ∈ T m, Φ m t ∈ F)
     (hinj : ∀ m, ∀ t ∈ T m, ∀ m', ∀ t' ∈ T m', Φ m t = Φ m' t' → m = m' ∧ t = t')
@@ -386,6 +517,9 @@ theorem sheets_tsum_eq {α β : Type*} (F : Set β) (T : ℕ → Set α) (Φ : �
   intro t ht t' ht' he
   exact (hinj m t ht m t' ht' he).2
 
+/- English proof (translation)
+Simplify using `only [fibSum]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun u _ => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_div, abs_of_nonneg (show (0 : ℝ) ≤ jacN Q u from by unfold jacN; positivity)]`.
+-/
 theorem norm_fibSum_le {n : ℕ} {D : Set (Fin n → ℂ)} {Q : (Fin n → ℂ) → Fin n → ℂ} {h : (Fin n → ℂ) → ℝ}
     {y : Fin n → ℂ} (hfin : (D ∩ Q ⁻¹' {y}).Finite) :
     ‖fibSum D Q h y‖ ≤ fibSum D Q (fun u => |h u|) y := by
@@ -394,6 +528,11 @@ theorem norm_fibSum_le {n : ℕ} {D : Set (Fin n → ℂ)} {Q : (Fin n → ℂ) 
   refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun u _ => ?_)
   rw [Real.norm_eq_abs, abs_div, abs_of_nonneg (show (0 : ℝ) ≤ jacN Q u from by unfold jacN; positivity)]
 
+/- English proof (translation)
+Establish `hA` using `fun m => area_open (hO m) (hQ m) (hh m) (ae_of_all _ (hfin m))`. Establish `hA'` using `fun m => area_open (hO m) (hQ m) (h := fun u => |h m u|) (hh m).abs (ae_of_all _ (hfin m))`. Establish `hsn : Summable fun m => ∫ y, ‖fibSum (O m) (Q m) (h m) y‖`. Use `Summable.of_nonneg_of_le (fun m => integral_nonneg fun _ => norm_nonneg _) (fun m => ?_) hs` and prove the remaining obligations. Rewrite using `[(hA' m).2]`.
+
+Conclude with `integral_mono (hA m).1.norm (hA' m).1 fun y => norm_fibSum_le (hfin m y)`. Rewrite using `[← integral_tsum_of_summable_integral_norm (fun m => (hA m).1) hsn]`. Conclude with `tsum_congr fun m => ((hA m).2).symm`.
+-/
 theorem area_tsum {n : ℕ} (O : ℕ → Set (Fin n → ℂ)) (Q : ℕ → (Fin n → ℂ) → Fin n → ℂ)
     (h : ℕ → (Fin n → ℂ) → ℝ) (hO : ∀ m, IsOpen (O m))
     (hQ : ∀ m, ∀ u ∈ O m, AnalyticAt ℂ (Q m) u ∧
@@ -410,10 +549,18 @@ theorem area_tsum {n : ℕ} (O : ℕ → Set (Fin n → ℂ)) (Q : ℕ → (Fin 
   rw [← integral_tsum_of_summable_integral_norm (fun m => (hA m).1) hsn]
   exact tsum_congr fun m => ((hA m).2).symm
 
+/- English proof (translation)
+Rewrite using `[finsum_mem_def, finsum_mem_def, Set.indicator_indicator]`.
+-/
 theorem finsum_inter_indicator {α : Type*} (F E : Set α) (f : α → ℝ) :
     ∑ᶠ x ∈ F ∩ E, f x = ∑ᶠ x ∈ F, E.indicator f x := by
   rw [finsum_mem_def, finsum_mem_def, Set.indicator_indicator]
 
+/- English proof (translation)
+Establish `htV` using `(hS.meas m).2 ht`. Establish `htV'` using `(hS.meas m').2 ht'`. Establish `hT` using `sheetNorm_eq_torusSat Ψ (hS.mem m' t' htV').1.1 h0 h0' h`. Distinguish the cases in `hm : m = m'`. Substitute `hm` using the available equality.
+
+Conclude with `⟨rfl, hS.inj m t htV t' htV' hT⟩`. It suffices to derive a contradiction. Take `⟨_, rfl, c, hc, hw⟩` from `hT`. Conclude with `hS.disj m m' hm t ht ⟨γ m' t', ⟨t', ht', rfl⟩, c, hc, hw⟩`.
+-/
 theorem sheet_pair_eq {P : Ideal (MRing J)} {Bd : Set ((Σ k, J k) → ℂ)} {nc : ℕ}
     {χ : Fin nc → GroundTheory.Heights₂.Heights.LowerBoundFree.SncChart P n Bd} {V B : ℕ → Set (Fin n → ℂ)}
     {γ : ℕ → (Fin n → ℂ) → (Σ k, J k) → ℂ} (hS : IsSheetCover χ V B γ)
@@ -430,6 +577,35 @@ theorem sheet_pair_eq {P : Ideal (MRing J)} {Bd : Set ((Σ k, J k) → ℂ)} {nc
     obtain ⟨_, rfl, c, hc, hw⟩ := hT
     exact hS.disj m m' hm t ht ⟨γ m' t', ⟨t', ht', rfl⟩, c, hc, hw⟩
 
+/- English proof (translation)
+Introduce `K _ J _ P n nc Bd χ V B γ A G hP hcov hS hC hG hI hsum`. Establish `hex : ∃ Ψ : (((k : K) → J k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ), IsGoodProj P Ψ` using `goodProjExists K J P n hP`. Take `⟨Ψ, hΨdef⟩ : ∃ Ψ, Ψ = hex.choose` from `⟨_, rfl⟩`. Establish `hΨ : IsGoodProj P Ψ` using `hΨdef ▸ hex.choose_spec`. Establish `hval : ptsIntegral (e` using `n) P (fun _ z => Real.log (A.h z)) G = ptsIntegralAt P Ψ (fun _ z => Real.log (A.h z)) G := by`.
+
+Unfold `ptsIntegral`. Rewrite using `[dif_pos hex, ← hΨdef]`. Establish `hγ : ∀ m, AnalyticOnNhd ℂ (γ m) (V m)` using `fun m => analyticOnNhd_of_differentiableOn (hS.isOpen m) (hS.hol m)`. Establish `hmem : ∀ m, ∀ t ∈ V m, γ m t ∈ mcPts P` using `fun m t ht => (hS.mem m t ht).1`. Use `set F : ℕ → (Fin n → ℂ) → ℝ := fun m t => G (γ m t) * maDensity (fun (_ : Fin n) t' => Real.log (A.h (γ m t'))) t with hFdef`.
+
+Use `set O : ℕ → Set (Fin n → ℂ) := fun m => sheetReg Ψ (γ m) (V m) with hOdef`. Use `set Q : ℕ → (Fin n → ℂ) → Fin n → ℂ := fun m => sheetProj Ψ (γ m) with hQdef`. Use `set h : ℕ → (Fin n → ℂ) → ℝ := fun m => (B m).indicator (F m) with hhdef`. Establish `hOo : ∀ m, IsOpen (O m)` using `fun m => isOpen_sheetReg Ψ (hS.isOpen m) (hγ m)`. Establish `hQ : ∀ m, ∀ u ∈ O m, AnalyticAt ℂ (Q m) u ∧ LinearMap.det (fderiv ℂ (Q m) u : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) ≠ 0` using `fun m u hu => ⟨analyticAt_sheetProj Ψ (hγ m u hu.1) hu.2.1, hu.2.2⟩`.
+
+Establish `hnull : ∀ m, volume (V m \ O m) = 0` using `fun m => reg_null K J P n Ψ (V m) (γ m) hP hΨ (hS.isOpen m) (hS.hol m) (hmem m) (hS.inj m)`. Establish `hBm : ∀ m, MeasurableSet (B m)` using `fun m => (hS.meas m).1`. Establish `hint : ∀ m, IntegrableOn (h m) (O m)` using `fun m => ((hI m).integrable_indicator (hBm m)).integrableOn`. Establish `hset : ∀ m, (O m ∩ B m : Set (Fin n → ℂ)) =ᵐ[volume] B m` using `fun m => by`. Use `(ae_eq_set.mpr ⟨?_, ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[Set.diff_eq_empty.mpr Set.inter_subset_right]`. Conclude with `measure_empty`. Conclude with `measure_mono_null (show B m \ (O m ∩ B m) ⊆ V m \ O m from fun t ht => ⟨(hS.meas m).2 ht.1, fun hO => ht.2 ⟨hO, ht.1⟩⟩) (hnull m)`. Establish `hIB : ∀ m, ∫ u in O m, h m u = ∫ t in B m, F m t` using `fun m => by`. Rewrite using `[setIntegral_indicator (hBm m)]`.
+
+Conclude with `setIntegral_congr_set (hset m)`. Establish `hIBabs : ∀ m, ∫ u in O m, |h m u| = ∫ t in B m, |F m t|` using `fun m => by`. Establish `: (fun u => |h m u|) = (B m).indicator (fun t => |F m t|)`. Use function extensionality and compare the values at `u`. Apply the tactic sequence `by_cases hu : u ∈ B m <;> simp [hhdef, hu]`.
+
+Rewrite using `[this, setIntegral_indicator (hBm m)]`. Conclude with `setIntegral_congr_set (hset m)`. Establish `hfin : ∀ m y, (O m ∩ Q m ⁻¹' {y}).Finite` using `fun m y => (sheetProj_fibre_finite hP hΨ (hmem m) (hS.inj m) y).subset fun t ht => ⟨⟨ht.1.1, ht.1.2.1⟩, ht.2⟩`. Establish `hs : Summable fun m => ∫ u in O m, |h m u|`. Repeatedly rewrite using `[hIBabs]`.
+
+Conclude with `hsum`. Establish `key` using `area_tsum O Q h hOo hQ hint hfin hs`. Rewrite `key` using `[hIB]`. Rewrite using `[hval, ← key]`. Unfold `ptsIntegralAt`.
+
+Establish `hff` using `fibreFinite K J P n Ψ hP hΨ`. Establish `hbad : ∀ᵐ y : Fin n → ℂ, y ∉ badSet P Ψ` using `measure_eq_zero_iff_ae_notMem.mp (badSet_null osgood hff)`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [fibre_sheet_cover K J P n nc Bd χ V B γ Ψ hP hΨ hcov hS hnull, hbad] with y hy hyb`. Use `set f := sheetDensity P Ψ (fun (_ : Fin n) z => Real.log (A.h z)) G y with hfdef`.
+
+Establish `hT` using `sheets_tsum_eq (fibre P Ψ y) (fun m => (O m ∩ Q m ⁻¹' {y}) ∩ B m) (fun m t => sheetNorm Ψ (γ m t)) f (hff y) ?_ ?_ ?_`. Rewrite using `[← hT]`. Use `tsum_congr fun m => ?_` and prove the remaining obligations. Simplify using `only [fibSum]`. Rewrite using `[finsum_inter_indicator]`.
+
+Use `finsum_mem_congr rfl fun t ht => ?_` and prove the remaining obligations. Distinguish the cases in `htB : t ∈ B m`. Rewrite using `[Set.indicator_of_mem htB]`. Establish `hy' : Q m t = y` using `ht.2`. Use `sheet_term K J P n Ψ (V m) (γ m) A G t hP (hS.isOpen m) (hS.hol m) (hmem m) ht.1 ((hC m).contDiffAt ((hS.isOpen m).mem_nhds ht.1.1)) (hG _ (hS.mem m t ht.1.1)) (by rw [show sheetProj Ψ (γ m) t = y from hy']; exact hyb)` as an intermediate fact.
+
+Rewrite `this` using `[show sheetProj Ψ (γ m) t = y from hy']`. Rewrite using `[hfdef, this]`. Use `show _ = (B m).indicator (F m) t / _`. Rewrite using `[Set.indicator_of_mem htB]`. Simplify using `[hhdef, htB]`.
+
+Introduce and unpack `m t ⟨⟨htO, hty⟩, -⟩`. Use `sheetNorm_mem_fibre hP.1 hP.2.1.2.1 Ψ (γ m) (hmem m t htO.1) htO.2.1` as an intermediate fact. Rewrite `this` using `[show sheetProj Ψ (γ m) t = y from hty]`. Then use the resulting hypothesis. Introduce and unpack `m t ⟨⟨htO, -⟩, htB⟩ m' t' ⟨⟨htO', -⟩, htB'⟩ he`. Conclude with `sheet_pair_eq hS Ψ htB htB' htO.2.1 htO'.2.1 he`.
+
+Introduce `w hw`. Take `⟨m, t, htB, htO, hty, hw'⟩` from `hy w hw`. Conclude with `⟨m, t, ⟨⟨htO, hty⟩, htB⟩, hw'⟩`.
+-/
 theorem ptsIntegral_sheets : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (P : Ideal (MRing J)) (n nc : ℕ) (Bd : Set ((Σ k, J k) → ℂ)) (χ : Fin nc → GroundTheory.Heights₂.Heights.LowerBoundFree.SncChart P n Bd) (V B : ℕ → Set (Fin n → ℂ)) (γ : ℕ → (Fin n → ℂ) → (Σ k, J k) → ℂ) (A : HermLine J) (G : ((Σ k, J k) → ℂ) → ℝ), IsArithVar P (n + 1) → (∀ z ∈ mcPts P, ∃ a, ∃ t : Fin n → ℂ, ‖t‖ ≤ 1 / 2 ∧ z ∈ torusSat {(χ a).γ t}) → IsSheetCover χ V B γ → (∀ m, ContDiffOn ℝ 2 (fun t => Real.log (A.h (γ m t))) (V m)) → (∀ w ∈ mcPts P \ Bd, ∀ w' ∈ torusSat {w}, G w' = G w) → (∀ m, IntegrableOn (fun t => G (γ m t) * maDensity (fun (_ : Fin n) t' => Real.log (A.h (γ m t'))) t) (B m)) → Summable (fun m => ∫ t in B m, |G (γ m t) * maDensity (fun (_ : Fin n) t' => Real.log (A.h (γ m t'))) t|) → ptsIntegral (e := n) P (fun _ z => Real.log (A.h z)) G = ∑' m, ∫ t in B m, G (γ m t) * maDensity (fun (_ : Fin n) t' => Real.log (A.h (γ m t'))) t := by
   intro K _ J _ P n nc Bd χ V B γ A G hP hcov hS hC hG hI hsum
   classical

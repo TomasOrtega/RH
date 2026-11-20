@@ -12,6 +12,11 @@ open Classical
 
 namespace GlobalTheory.ReducedFibre
 
+/- English proof (translation)
+Introduce `h`. Rewrite `h` using `[hπ, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h`. Establish `h1 : π ^ k * (1 - π * c) = 0`. Take the linear combination `hc`.
+
+Establish `h2 : 1 - π * c = 0` using `(mul_left_mem_nonZeroDivisors_eq_zero_iff (pow_mem hreg k)).mp h1`. Establish `hmem : π ∈ maximalIdeal R` using `by rw [hπ]; exact Ideal.mem_span_singleton_self π`. Conclude with `(mem_maximalIdeal π).mp hmem (isUnit_iff_exists_inv.mpr ⟨c, by linear_combination -h2⟩)`.
+-/
 theorem pow_notMem_maximalIdeal_pow_succ {R : Type*} [CommRing R] [IsLocalRing R] {π : R}
     (hπ : maximalIdeal R = Ideal.span {π}) (hreg : π ∈ nonZeroDivisors R) (k : ℕ) :
     π ^ k ∉ maximalIdeal R ^ (k + 1) := by
@@ -24,6 +29,9 @@ theorem pow_notMem_maximalIdeal_pow_succ {R : Type*} [CommRing R] [IsLocalRing R
   have hmem : π ∈ maximalIdeal R := by rw [hπ]; exact Ideal.mem_span_singleton_self π
   exact (mem_maximalIdeal π).mp hmem (isUnit_iff_exists_inv.mpr ⟨c, by linear_combination -h2⟩)
 
+/- English proof (translation)
+The claim follows from `AdicCompletion.isLocalRing_of_fg fg ∃ _ : IsDomain (AdicCompletion (maximalIdeal R) R), IsDiscreteValuationRing (AdicCompletion (maximalIdeal R) R) ∧ Irreducible (algebraMap R (AdicCompletion (maximalIdeal R) R) π) := by haveI := AdicCompletion.isLocalRing_of_fg fg haveI := AdicC …`.
+-/
 theorem adicCompletion_dvr {R : Type*} [CommRing R] [IsLocalRing R] {π : R}
     (hπ : maximalIdeal R = Ideal.span {π}) (hreg : π ∈ nonZeroDivisors R)
     (fg : (maximalIdeal R).FG) :
@@ -47,6 +55,13 @@ end GlobalTheory.ReducedFibre
 
 namespace GlobalTheory.ReducedFibre
 
+/- English proof (translation)
+Use `haveI : Q.IsPrime := hQ.1.1`. Establish `hsub` using `IsLocalization.subsingleton_primeSpectrum_of_mem_minimalPrimes Q hQ (Localization.AtPrime Q)`. Establish `hmem : algebraMap A (Localization.AtPrime Q) x ∈ maximalIdeal _`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+
+Establish `hnil : IsNilpotent (algebraMap A (Localization.AtPrime Q) x)`. Rewrite using `[nilpotent_iff_mem_prime]`. Introduce `Q' hQ'`. Establish `h1 : (⟨Q', hQ'⟩ : PrimeSpectrum (Localization.AtPrime Q)) = ⟨maximalIdeal _, inferInstance⟩` using `Subsingleton.elim _ _`. Rewrite using `[show Q' = maximalIdeal _ from congrArg PrimeSpectrum.asIdeal h1]`.
+
+Conclude with `hmem`. Take `⟨s, hs⟩` from `(IsLocalization.map_eq_zero_iff Q.primeCompl _ x).mp hnil.eq_zero`. Conclude with `⟨s, s.2, hs⟩`.
+-/
 theorem exists_notMem_mul_eq_zero {A : Type*} [CommRing A] [IsReduced A]
     {Q : Ideal A} (hQ : Q ∈ minimalPrimes A) {x : A} (hx : x ∈ Q) :
     ∃ s : A, s ∉ Q ∧ s * x = 0 := by
@@ -65,6 +80,27 @@ theorem exists_notMem_mul_eq_zero {A : Type*} [CommRing A] [IsReduced A]
   obtain ⟨s, hs⟩ := (IsLocalization.map_eq_zero_iff Q.primeCompl _ x).mp hnil.eq_zero
   exact ⟨s, s.2, hs⟩
 
+/- English proof (translation)
+Introduce `V C _ _ _ _ _ _ hnt hred`. Use `set J : Ideal C := (maximalIdeal V).map (algebraMap V C) with hJ`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (C ⧸ J)`. Take `⟨Q, hQ, -⟩` from `Ideal.exists_minimalPrimes_le (bot_le : (⊥ : Ideal (C ⧸ J)) ≤ M)`. Use `haveI : Q.IsPrime := hQ.1.1`.
+
+Use `set P : Ideal C := Q.comap (Ideal.Quotient.mk J) with hP`. Use `haveI : P.IsPrime := Ideal.comap_isPrime _ _`. Set `R` to `Localization.AtPrime P`. Establish `hJP : J ≤ P` using `fun x hx => by`. Rewrite using `[hP, Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`.
+
+Conclude with `Q.zero_mem`. Establish `hmax : maximalIdeal R = (maximalIdeal V).map (algebraMap V R)`. Rewrite using `[IsScalarTower.algebraMap_eq V C R, ← Ideal.map_map, ← hJ, ← Localization.AtPrime.map_eq_maximalIdeal]`. Use `le_antisymm ?_ (Ideal.map_mono hJP)` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `a ha`. Take `⟨s', hs', hs'a⟩` from `exists_notMem_mul_eq_zero hQ (show Ideal.Quotient.mk J a ∈ Q from ha)`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective s'`. Establish `hsP : s ∈ P.primeCompl` using `hs'`. Establish `hsa : s * a ∈ J` using `Ideal.Quotient.eq_zero_iff_mem.mp (by rw [map_mul]; exact hs'a)`.
+
+Rewrite using `[Ideal.mem_comap]`. Establish `hu : IsUnit (algebraMap C R s)` using `IsLocalization.map_units R (⟨s, hsP⟩ : P.primeCompl)`. Use `Ideal.mem_map_of_mem (algebraMap C R) hsa` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).mp this`.
+
+Establish `hspan : ∀ ϖ : V, Irreducible ϖ → maximalIdeal R = Ideal.span {algebraMap V R ϖ}`. Introduce `ϖ hϖ`. Rewrite using `[hmax, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`. Establish `hreg : ∀ v : V, v ≠ 0 → algebraMap V R v ∈ nonZeroDivisors R`. Introduce `v hv`.
+
+Use `haveI : Module.Flat V R := Module.Flat.trans V C R`. Establish `h` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := R) (mem_nonZeroDivisors_of_ne_zero hv)`. Rewrite using `[mem_nonZeroDivisors_iff]`. Use `⟨fun x hx => h ?_, fun x hx => h ?_⟩` and prove the remaining obligations. Use `show v • x = v • (0 : R)`.
+
+Rewrite using `[smul_zero, Algebra.smul_def, hx]`. Use `show v • x = v • (0 : R)`. Rewrite using `[smul_zero, Algebra.smul_def, mul_comm, hx]`. Take `⟨ϖ₀, hϖ₀⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `fg : (maximalIdeal R).FG` using `⟨{algebraMap V R ϖ₀}, by rw [hspan ϖ₀ hϖ₀]; simp⟩`.
+
+Use `haveI := AdicCompletion.isLocalRing_of_fg fg`. Take `⟨hd, hdvr, -⟩` from `adicCompletion_dvr (hspan ϖ₀ hϖ₀) (hreg ϖ₀ hϖ₀.ne_zero) fg`. Use `⟨AdicCompletion (maximalIdeal R) R, inferInstance, hd, hdvr, (algebraMap R (AdicCompletion (maximalIdeal R) R)).comp (algebraMap C R), AdicCompletion.isAdicComplete_of_fg fg, fun ϖ hϖ => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hirr⟩` from `adicCompletion_dvr (hspan ϖ hϖ) (hreg ϖ hϖ.ne_zero) fg`. Rewrite using `[RingHom.comp_apply, ← IsScalarTower.algebraMap_apply]`.
+
+Conclude with `hirr`.
+-/
 theorem exists_cdvr_of_flat_of_isReduced :
     ∀ (V C : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CommRing C] [Algebra V C]
       [Module.Flat V C], Nontrivial (C ⧸ (maximalIdeal V).map (algebraMap V C)) →

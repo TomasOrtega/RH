@@ -18,6 +18,9 @@ variable {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} [Field E] 
   [AddCommGroup Ω'] [Module C Ω'] [Module O Ω'] [IsScalarTower O C Ω']
   {φ : A →+* O} {P : HTPoint C O c κ' N V Ω'} {ι : D.om →ₛₗ[φ] Ω'}
 
+/- English proof (translation)
+Use `sup_le (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `D.h_mem x`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `D.om.smul_mem _ hx`.
+-/
 theorem om'_le_om (D : HTChart A K c p R N Ω) : D.om' ≤ D.om := by
   refine sup_le (Submodule.span_le.2 ?_) ?_
   · rintro _ ⟨x, rfl⟩
@@ -25,10 +28,38 @@ theorem om'_le_om (D : HTChart A K c p R N Ω) : D.om' ≤ D.om := by
   · rintro _ ⟨x, hx, rfl⟩
     exact D.om.smul_mem _ hx
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup_right ⟨x, hx, rfl⟩`.
+-/
 theorem pow_smul_mem_om' (D : HTChart A K c p R N Ω) {x : Ω} (hx : x ∈ D.om) :
     (p : A) ^ R • x ∈ D.om' :=
   Submodule.mem_sup_right ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Establish `hn : ∀ y : Ω', (p ^ R) • y = (p : O) ^ R • y` using `fun y => by`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Establish `hι : ∀ x : D.om, ι ((p : A) ^ R • x) = (p : O) ^ R • ι x` using `fun x => by`. Rewrite using `[ι.map_smulₛₗ, map_pow, map_natCast]`. Establish `a1 : ∀ y ∈ P.om, (p : O) ^ R • y ∈ P.om'`.
+
+Introduce `y hy`. Take `⟨w, hw⟩` from `hκ`. Take `⟨x, hx, e⟩` from `P.κ_mem _ (P.om.smul_mem w hy)`. Conclude with `⟨x, hx, by rw [hw, mul_smul]; exact e⟩`. Establish `a2 : ∀ y ∈ P.om, (p : O) ^ R • y ∈ Submodule.span O (ι '' {x : D.om | (x : Ω) ∈ D.om'})`.
+
+Introduce `y hy`. Rewrite `hy` using `[← hred.span_eq]`. Establish `: Submodule.span O (Set.range ι) ≤ (Submodule.span O (ι '' {x : D.om | (x : Ω) ∈ D.om'})).comap ((p : O) ^ R • LinearMap.id)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨(p : A) ^ R • x, pow_smul_mem_om' D x.2, hι x⟩`. Conclude with `this hy`. Establish `ht : ∀ x, P.tate x ∈ P.T`. Introduce `x`. Use `P.T.sum_mem fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← (RingOfIntegers.basis E).sum_repr (x i), map_sum, LinearMap.sum_apply]`. Use `P.T.sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, LinearMap.smul_apply]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Rewrite using `[P.free.2.2]`.
+
+Conclude with `Submodule.subset_span ⟨(i, k), rfl⟩`. Apply `le_antisymm` to reduce the goal to its premises. Establish `h : D.om' ≤ (P.om'.comap ι).map D.om.subtype`. Use `sup_le (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Use `⟨⟨D.h x, D.h_mem x⟩, ?_, rfl⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `hred.ht_eq x`. Express the relevant statement in the definitionally equal form `ι _ ∈ P.om'`. Rewrite using `[e, hn]`. Conclude with `P.om'.add_mem ⟨_, ht x, rfl⟩ (a1 y hy)`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨(p : A) ^ R • ⟨x, hx⟩, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι _ ∈ P.om'`. Rewrite using `[hι]`. Use `a1 _ ?_` and prove the remaining obligations.
+
+Rewrite using `[← hred.span_eq]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨x', hx', e⟩` from `h hx`.
+
+Rewrite using `[← (Subtype.ext e : x' = x)]`. Conclude with `hx'`. Rewrite using `[HTPoint.om', Submodule.map_le_iff_le_comap] conv_lhs => rw [P.free.2.2]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨⟨i, k⟩, rfl⟩`.
+
+Establish `e0 : P.ρ (RingOfIntegers.basis E k) (P.t i) = P.tate (Pi.single i (RingOfIntegers.basis E k))`. Rewrite using `[HTPoint.tate, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[hj]`.
+
+Simplify using the standard rewrite rules. Take `⟨y, hy, e⟩` from `hred.ht_eq (Pi.single i (RingOfIntegers.basis E k))`. Express the relevant statement in the definitionally equal form `P.ht (P.ρ (RingOfIntegers.basis E k) (P.t i)) ∈ Submodule.span O _`. Rewrite using `[e0, eq_sub_of_add_eq e.symm, hn]`. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨_, Submodule.mem_sup_left (Submodule.subset_span ⟨_, rfl⟩), rfl⟩) (a2 y hy)`.
+-/
 theorem span_om' (hred : D.ReducesTo φ P ι) (hκ : κ' ∣ (p : O) ^ R) :
     Submodule.span O (ι '' {x : D.om | (x : Ω) ∈ D.om'}) = P.om' := by
   have hn : ∀ y : Ω', (p ^ R) • y = (p : O) ^ R • y := fun y => by
@@ -98,6 +129,11 @@ theorem span_om' (hred : D.ReducesTo φ P ι) (hκ : κ' ∣ (p : O) ^ R) :
       (Submodule.subset_span ⟨_, rfl⟩), rfl⟩) (a2 y hy)
 
 omit [NumberField E] in
+/- English proof (translation)
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) e`. Establish `hb0 : algebraMap (𝓞 E) E b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Take `⟨α, hα⟩` from `hσ a`. Take `⟨β, hβ⟩` from `hσ b`. Establish `h1 : a' * β = d * α` using `hAK (by`.
+
+Rewrite using `[map_mul, map_mul, h, hα, hβ, map_div₀, mul_assoc, div_mul_cancel₀ _ ((map_ne_zero σ).2 hb0)])`. Establish `h2` using `congrArg (fun t => algebraMap O C (φ t)) h1`. Simplify using `only [map_mul, hφ a α hα, hφ b β hβ] at h2`. Rewrite using `[map_div₀, ← mul_div_assoc, eq_div_iff ((map_ne_zero σ').2 hb0)]`. Conclude with `h2`.
+-/
 theorem transfer_mul [NumberField E] (hAK : Function.Injective (algebraMap A K)) {σ : E →+* K}
     {σ' : E →+* C} (hσ : ∀ a : 𝓞 E, σ (a : E) ∈ (algebraMap A K).range)
     (hφ : ∀ (a : 𝓞 E) (a' : A), algebraMap A K a' = σ (a : E) → algebraMap O C (φ a') = σ' (a : E))
@@ -116,6 +152,19 @@ theorem transfer_mul [NumberField E] (hAK : Function.Injective (algebraMap A K))
   rw [map_div₀, ← mul_div_assoc, eq_div_iff ((map_ne_zero σ').2 hb0)]
   exact h2
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Establish `key : ∀ y ∈ Submodule.span A {y : K | ∃ x ∈ differentIdeal ℤ (𝓞 E), y = σ (x : E)}, ∃ a', algebraMap A K a' = y ∧ algebraMap O C (φ a') ∈ Submodule.span O {y : C | ∃ x ∈ differentIdeal ℤ (𝓞 E), y = σ' (x : E)}`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y h`.
+
+Take `⟨x, hx, rfl⟩` from `h`. Take `⟨a', ha'⟩` from `hσ x`. Conclude with `⟨a', ha', Submodule.subset_span ⟨x, hx, hφ x a' ha'⟩⟩`. Consider the case `zero => exact ⟨0, map_zero _, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨a, ha, ha'⟩` from `hy`. Take `⟨b, hb, hb'⟩` from `hz`. Conclude with `⟨a + b, by rw [map_add, ha, hb], by`. Rewrite using `[map_add, map_add]`. Conclude with `Submodule.add_mem _ ha' hb'⟩`.
+
+Consider the case `smul r y _ hy`. Take `⟨a, ha, ha'⟩` from `hy`. Conclude with `⟨r * a, by rw [map_mul, ha, Algebra.smul_def], by`. Rewrite using `[map_mul, map_mul, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ ha'⟩`.
+
+Take `⟨a', ha, ha'⟩` from `key _ (hd.le (Submodule.mem_span_singleton_self _))`. Rewrite `ha'` using `[hAK ha]`. Conclude with `(Submodule.span_singleton_le_iff_mem _ _).2 ha'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 (hd.ge (Submodule.subset_span ⟨x, hx, rfl⟩))`. Use `Submodule.mem_span_singleton.2 ⟨φ a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ x (a * d) (by rw [map_mul, ← ha, Algebra.smul_def]), map_mul, map_mul, Algebra.smul_def]`.
+-/
 theorem generatesDiff_map (hAK : Function.Injective (algebraMap A K)) {σ : E →+* K}
     {σ' : E →+* C} (hσ : ∀ a : 𝓞 E, σ (a : E) ∈ (algebraMap A K).range)
     (hφ : ∀ (a : 𝓞 E) (a' : A), algebraMap A K a' = σ (a : E) → algebraMap O C (φ a') = σ' (a : E))
@@ -150,6 +199,9 @@ theorem generatesDiff_map (hAK : Function.Injective (algebraMap A K)) {σ : E �
     rw [← hφ x (a * d) (by rw [map_mul, ← ha, Algebra.smul_def]), map_mul, map_mul,
       Algebra.smul_def]
 
+/- English proof (translation)
+Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K (cc k), h, mul_smul, algebraMap_smul]`.
+-/
 theorem smul_eigProj_eq (ρ : 𝓞 E →+* Module.End K Ω) {σ : E →+* K} {d : A}
     {cc : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → A}
     (h : ∀ k, algebraMap A K (cc k) = algebraMap A K d * σ (dualInt E k)) (x : Ω) :
@@ -158,6 +210,11 @@ theorem smul_eigProj_eq (ρ : 𝓞 E →+* Module.End K Ω) {σ : E →+* K} {d 
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [← algebraMap_smul K (cc k), h, mul_smul, algebraMap_smul]
 
+/- English proof (translation)
+Rewrite using `[eigQuot, eigQuot, ← Submodule.map_comp, ← hs, Submodule.map_span]`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨_, ⟨x, hx, rfl⟩, e⟩, rfl⟩`.
+
+Conclude with `⟨_, ⟨⟨x, hX hx⟩, hx, rfl⟩, (h2 ⟨x, hX hx⟩ y e).symm⟩`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨⟨_, h1 x x.2⟩, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, h2 x _ rfl⟩`.
+-/
 theorem span_eigQuot {σ : E →+* K} {σ' : E →+* C} {d : A}
     (h1 : ∀ x ∈ D.om, d • eigProj D.ρΩ σ x ∈ D.om)
     (h2 : ∀ (x y : D.om), (y : Ω) = d • eigProj D.ρΩ σ x → ι y = φ d • eigProj P.ρΩ σ' (ι x))
@@ -176,6 +233,17 @@ theorem span_eigQuot {σ : E →+* K} {σ' : E →+* C} {d : A}
 
 end
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ hAK E _ _ c hc p R N _ Ω _ _ _ _ D C _ _ _ v O _ _ hv κ' V _ _ _ _ Ω' _ _ _ _ φ P ι hred σ σ' d hσ hφ hd hκ`. Take `⟨-, hcc, -⟩` from `different_generator_dualInt A K E σ d hAK hσ hd`. Use `choose cc hcc using hcc`. Establish `h1 : ∀ x ∈ D.om, d • eigProj D.ρΩ σ x ∈ D.om`. Introduce `x hx`.
+
+Rewrite using `[smul_eigProj_eq _ hcc]`. Conclude with `D.om.sum_mem fun k _ => D.om.smul_mem _ (D.om_stable _ x hx)`. Establish `h2 : ∀ (x y : D.om), (y : Ω) = d • eigProj D.ρΩ σ x → ι y = φ d • eigProj P.ρΩ σ' (ι x)`. Introduce `x y e`. Establish `hy : y = ∑ k, cc k • (⟨D.ρΩ (RingOfIntegers.basis E k) x, D.om_stable _ x x.2⟩ : D.om)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[e, smul_eigProj_eq _ hcc]`. Simplify using the standard rewrite rules. Rewrite using `[hy, map_sum, smul_eigProj_eq (cc := fun k => φ (cc k)) _ (fun k => transfer_mul hAK hσ hφ (hcc k))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ι.map_smulₛₗ, hred.lin]`. Use `⟨generatesDiff_map hAK hσ hφ hd, h1, h2, span_eigQuot h1 h2 (om'_le_om D) (span_om' hred hκ), span_eigQuot h1 h2 le_rfl ?_⟩` and prove the remaining obligations. Rewrite using `[← hred.span_eq]`. Use `congr 1`. Use extensionality with `w`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem red_proj : ∀ (A K : Type) [CommRing A] [Field K] [Algebra A K] [CharZero K] (hAK : Function.Injective (algebraMap A K)) (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (p R N : ℕ) [Fact p.Prime] (Ω : Type) [AddCommGroup Ω] [Module K Ω] [Module A Ω] [IsScalarTower A K Ω] (D : HTChart A K c p R N Ω) (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) (κ' : O) (V : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] (Ω' : Type) [AddCommGroup Ω'] [Module C Ω'] [Module O Ω'] [IsScalarTower O C Ω'] (φ : A →+* O) (P : HTPoint C O c κ' N V Ω') (ι : D.om →ₛₗ[φ] Ω') (hred : D.ReducesTo φ P ι) (σ : E →+* K) (σ' : E →+* C) (d : A), (∀ a : 𝓞 E, σ (a : E) ∈ (algebraMap A K).range) → (∀ (a : 𝓞 E) (a' : A), algebraMap A K a' = σ (a : E) → algebraMap O C (φ a') = σ' (a : E)) → GeneratesDiff σ d → κ' ∣ (p : O) ^ R → GeneratesDiff σ' (φ d) ∧ (∀ x ∈ D.om, d • eigProj D.ρΩ σ x ∈ D.om) ∧ (∀ (x y : D.om), (y : Ω) = d • eigProj D.ρΩ σ x → ι y = φ d • eigProj P.ρΩ σ' (ι x)) ∧ Submodule.span O (ι '' {y : D.om | ∃ z ∈ D.omHT σ, (y : Ω) = d • z}) = (P.omHT σ').map (φ d • LinearMap.id) ∧ Submodule.span O (ι '' {y : D.om | ∃ z ∈ eigQuot D.ρΩ σ D.om, (y : Ω) = d • z}) = (P.omRec σ').map (φ d • LinearMap.id) := by
   intro A K _ _ _ _ hAK E _ _ c hc p R N _ Ω _ _ _ _ D C _ _ _ v O _ _ hv κ' V _ _ _ _ Ω' _ _ _ _
     φ P ι hred σ σ' d hσ hφ hd hκ

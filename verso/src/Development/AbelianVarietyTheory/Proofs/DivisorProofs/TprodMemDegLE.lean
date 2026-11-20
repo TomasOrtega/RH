@@ -19,15 +19,24 @@ def chiPart [DecidableEq ι] (x : ι → ℚ) : Submodule ℂ (⨂[ℂ] _ : ι, 
 
 variable {ι P Q R S}
 
+/- English proof (translation)
+Simplify using `only [chiPart, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero, Subtype.forall]`.
+-/
 theorem mem_chiPart [DecidableEq ι] (x : ι → ℚ) (T : ⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S) :
     T ∈ chiPart ι P Q R S x ↔ ∀ w (X : Mat P Q), IsKC X →
       atPl (V := fun _ : ι => Formalism.BasicNotions.TH.Pol P Q R S) w (fockAct1 P Q R S X) T = ((x w : ℂ) * X.trace) • T := by
   simp only [chiPart, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
     Module.End.one_apply, sub_eq_zero, Subtype.forall]
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Submodule.span_mono fun _ ⟨f, hf, e⟩ => ⟨f, hf.trans h, e⟩`.
+-/
 theorem degLE_mono : Monotone (degLE ι P Q R S) := fun _ _ h =>
   Submodule.span_mono fun _ ⟨f, hf, e⟩ => ⟨f, hf.trans h, e⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨f, h, rfl⟩`.
+-/
 theorem tprod_mem_degLE (f : ι → Formalism.BasicNotions.TH.Pol P Q R S) {k : ℕ} (h : ∑ w, (f w).totalDegree ≤ k) :
     PiTensorProduct.tprod ℂ f ∈ degLE ι P Q R S k :=
   Submodule.subset_span ⟨f, h, rfl⟩

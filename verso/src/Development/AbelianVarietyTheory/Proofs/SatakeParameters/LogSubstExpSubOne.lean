@@ -28,8 +28,14 @@ def intS (A : Subring K) (κ : Type) : Subring (MvPowerSeries κ K) where
 
 variable {A : Subring K}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intS {F : MvPowerSeries κ K} : F ∈ intS A κ ↔ ∀ n, coeff n F ∈ A := Iff.rfl
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_C]`. Use `split_ifs`. Use `exacts [ha, A.zero_mem]`.
+-/
 theorem C_mem {a : K} (ha : a ∈ A) : (C a : MvPowerSeries κ K) ∈ intS A κ := by
   classical
   intro n
@@ -37,6 +43,9 @@ theorem C_mem {a : K} (ha : a ∈ A) : (C a : MvPowerSeries κ K) ∈ intS A κ 
   split_ifs
   exacts [ha, A.zero_mem]
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_X]`. Use `split_ifs`. Use `exacts [A.one_mem, A.zero_mem]`.
+-/
 theorem X_mem (k : κ) : (X k : MvPowerSeries κ K) ∈ intS A κ := by
   classical
   intro n
@@ -44,9 +53,17 @@ theorem X_mem (k : κ) : (X k : MvPowerSeries κ K) ∈ intS A κ := by
   split_ifs
   exacts [A.one_mem, A.zero_mem]
 
+/- English proof (translation)
+The claim follows from `finsum_induction (fun x => x ∈ A) A.zero_mem (fun _ _ => A.add_mem) h`.
+-/
 theorem finsum_mem' {ι : Type} {f : ι → K} (h : ∀ i, f i ∈ A) : ∑ᶠ i, f i ∈ A :=
   finsum_induction (fun x => x ∈ A) A.zero_mem (fun _ _ => A.add_mem) h
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_C_mul, map_sub, coeff_subst ha, coeff_subst hb, ← finsum_sub_distrib (coeff_subst_finite ha E n) (coeff_subst_finite hb E n), mul_finsum]`. Use `finsum_mem' fun d => ?_` and prove the remaining obligations. Use `h d n` as an intermediate fact. Rewrite `this` using `[coeff_C_mul, map_sub]`.
+
+Simplify `this` using `[mul_sub, mul_assoc]`.
+-/
 theorem subst_sub_mem {ι : Type} {a b : ι → MvPowerSeries κ K} (ha : HasSubst a) (hb : HasSubst b)
     (E : MvPowerSeries ι K) (c : K)
     (h : ∀ d : ι →₀ ℕ, C (c * coeff d E) * ((d.prod fun s e => a s ^ e) - d.prod fun s e => b s ^ e) ∈ intS A κ) :
@@ -59,6 +76,11 @@ theorem subst_sub_mem {ι : Type} {a b : ι → MvPowerSeries κ K} (ha : HasSub
   rw [coeff_C_mul, map_sub] at this
   simpa [mul_sub, mul_assoc] using this
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_C_mul, map_sub, PowerSeries.coeff_subst ha, PowerSeries.coeff_subst hb, ← finsum_sub_distrib (PowerSeries.coeff_subst_finite ha f n) (PowerSeries.coeff_subst_finite hb f n), mul_finsum]`. Use `finsum_mem' fun d => ?_` and prove the remaining obligations. Use `h d n` as an intermediate fact. Rewrite `this` using `[coeff_C_mul, map_sub]`.
+
+Simplify `this` using `[mul_sub, mul_assoc]`.
+-/
 theorem psubst_sub_mem {a b : MvPowerSeries κ K} (ha : PowerSeries.HasSubst a) (hb : PowerSeries.HasSubst b)
     (f : PowerSeries K) (c : K)
     (h : ∀ d : ℕ, C (c * PowerSeries.coeff d f) * (a ^ d - b ^ d) ∈ intS A κ) :
@@ -71,6 +93,9 @@ theorem psubst_sub_mem {a b : MvPowerSeries κ K} (ha : PowerSeries.HasSubst a) 
   rw [coeff_C_mul, map_sub] at this
   simpa [mul_sub, mul_assoc] using this
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_subst ha]`. Use `finsum_mem' fun d => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Use `A.mul_mem (hE d) (((intS A κ).prod_mem fun i _ => (intS A κ).pow_mem (hA i) _) n)` and prove the remaining obligations.
+-/
 theorem subst_mem {ι : Type} {a : ι → MvPowerSeries κ K} (ha : HasSubst a) (hA : ∀ i, a i ∈ intS A κ)
     {E : MvPowerSeries ι K} (hE : E ∈ intS A ι) : subst a E ∈ intS A κ := by
   intro n
@@ -79,6 +104,9 @@ theorem subst_mem {ι : Type} {a : ι → MvPowerSeries κ K} (ha : HasSubst a) 
   rw [smul_eq_mul]
   refine A.mul_mem (hE d) (((intS A κ).prod_mem fun i _ => (intS A κ).pow_mem (hA i) _) n)
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[PowerSeries.coeff_subst ha]`. Use `finsum_mem' fun d => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Conclude with `A.mul_mem (hf d) (((intS A κ).pow_mem hA _) n)`.
+-/
 theorem psubst_mem {a : MvPowerSeries κ K} (ha : PowerSeries.HasSubst a) (hA : a ∈ intS A κ)
     {f : PowerSeries K} (hf : ∀ n, PowerSeries.coeff n f ∈ A) : f.subst a ∈ intS A κ := by
   intro n
@@ -87,6 +115,11 @@ theorem psubst_mem {a : MvPowerSeries κ K} (ha : PowerSeries.HasSubst a) (hA : 
   rw [smul_eq_mul]
   exact A.mul_mem (hf d) (((intS A κ).pow_mem hA _) n)
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `hn`. Establish `hP : P ∈ S` using `h ▸ S.add_mem hQ (S.mul_mem (natCast_mem S p) hy)`. Establish `h1 : ((p : ℕ) : S) ∣ (⟨P, hP⟩ : S) - ⟨Q, hQ⟩` using `⟨⟨y, hy⟩, Subtype.ext (by simp [h])⟩`. Establish `h2` using `(dvd_sub_pow_of_dvd_sub h1 k).trans (sub_dvd_pow_sub_pow _ _ m)`. Take `⟨z, hz⟩` from `h2`.
+
+Use `⟨z, z.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hz` as an intermediate fact. Simplify `this` using `[pow_mul]`.
+-/
 theorem pow_congr {R : Type} [CommRing R] (S : Subring R) (p : ℕ) {P Q y : R} (hQ : Q ∈ S) (hy : y ∈ S)
     (h : P = Q + p * y) {k n : ℕ} (hn : p ^ k ∣ n) : ∃ z ∈ S, P ^ n - Q ^ n = (p : R) ^ (k + 1) * z := by
   obtain ⟨m, rfl⟩ := hn
@@ -105,18 +138,33 @@ section Frob
 
 variable {p : ℕ} {hp : p ≠ 0} {σ : K →+* K}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frob_apply (F : MvPowerSeries κ K) : frob p hp σ κ F = expand p hp (map σ F) := rfl
 
+/- English proof (translation)
+Rewrite using `[frob_apply, map_C, expand_C]`.
+-/
 theorem frob_C (a : K) : frob p hp σ κ (C a) = C (σ a) := by
   rw [frob_apply, map_C, expand_C]
 
+/- English proof (translation)
+Rewrite using `[frob_apply, map_X, expand_X]`.
+-/
 theorem frob_X (k : κ) : frob p hp σ κ (X k) = X k ^ p := by
   rw [frob_apply, map_X, expand_X]
 
+/- English proof (translation)
+Rewrite using `[frob_apply, constantCoeff_expand, constantCoeff_map, h, map_zero]`.
+-/
 theorem constantCoeff_frob {F : MvPowerSeries κ K} (h : constantCoeff F = 0) :
     constantCoeff (frob p hp σ κ F) = 0 := by
   rw [frob_apply, constantCoeff_expand, constantCoeff_map, h, map_zero]
 
+/- English proof (translation)
+Rewrite using `[frob_apply, map_subst (hasSubst_of_constantCoeff_zero ha), expand_subst]`. Both sides reduce to the same expression. Conclude with `hasSubst_of_constantCoeff_zero fun i => by rw [constantCoeff_map, ha, map_zero]`.
+-/
 theorem frob_subst {ι : Type} [Finite ι] {a : ι → MvPowerSeries κ K} (ha : ∀ i, constantCoeff (a i) = 0)
     (E : MvPowerSeries ι K) :
     frob p hp σ κ (subst a E) = subst (fun i => frob p hp σ κ (a i)) (map σ E) := by
@@ -124,10 +172,18 @@ theorem frob_subst {ι : Type} [Finite ι] {a : ι → MvPowerSeries κ K} (ha :
   · rfl
   · exact hasSubst_of_constantCoeff_zero fun i => by rw [constantCoeff_map, ha, map_zero]
 
+/- English proof (translation)
+The claim follows from `frob_subst (ι := Unit) (a := fun _ => a) (fun _ => ha) f`.
+-/
 theorem frob_psubst {a : MvPowerSeries κ K} (ha : constantCoeff a = 0) (f : PowerSeries K) :
     frob p hp σ κ (f.subst a) = (PowerSeries.map σ f).subst (frob p hp σ κ a) :=
   frob_subst (ι := Unit) (a := fun _ => a) (fun _ => ha) f
 
+/- English proof (translation)
+Distinguish the cases in `hd : ∀ i, p ∣ n i`. Take `⟨m, hm⟩ : ∃ m : κ →₀ ℕ, p • m = n` from `⟨n.mapRange (fun a => a / p) (by simp), by ext i; simp [Nat.mul_div_cancel' (hd i)]⟩`. Conclude with `Or.inr ⟨m, hm, by rw [← hm, frob_apply, coeff_expand_smul, coeff_map]⟩`. Use `push Not at hd`. Take `⟨i, hi⟩` from `hd`.
+
+Conclude with `Or.inl (by rw [frob_apply, coeff_expand_of_not_dvd p hp _ hi])`.
+-/
 theorem coeff_frob_cases (F : MvPowerSeries κ K) (n : κ →₀ ℕ) :
     coeff n (frob p hp σ κ F) = 0 ∨ ∃ m, p • m = n ∧ coeff n (frob p hp σ κ F) = σ (coeff m F) := by
   by_cases hd : ∀ i, p ∣ n i
@@ -138,6 +194,11 @@ theorem coeff_frob_cases (F : MvPowerSeries κ K) (n : κ →₀ ℕ) :
     obtain ⟨i, hi⟩ := hd
     exact Or.inl (by rw [frob_apply, coeff_expand_of_not_dvd p hp _ hi])
 
+/- English proof (translation)
+Introduce `n hn`. Break down `coeff_frob_cases (hp := hp) (σ := σ) F n with h0 | ⟨m, hm, h1⟩` into its components or cases. Conclude with `h0`. Rewrite using `[h1, h m, map_zero]`. Rewrite `hn` using `[← hm, map_nsmul, smul_eq_mul]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem hasOrd_frob (h2 : 2 ≤ p) {F : MvPowerSeries κ K} {N : ℕ} (hN : 1 ≤ N) (h : HasOrd N F) :
     HasOrd (N + 1) (frob p hp σ κ F) := by
   intro n hn
@@ -147,6 +208,21 @@ theorem hasOrd_frob (h2 : 2 ≤ p) {F : MvPowerSeries κ K} {N : ℕ} (hN : 1 �
     rw [← hm, map_nsmul, smul_eq_mul] at hn
     nlinarith
 
+/- English proof (translation)
+Establish `hσA : ∀ x ∈ A, σ x ∈ A` using `fun x hx => by`. Take `⟨y, hy, h⟩` from `hσ x hx`. Conclude with `h ▸ A.add_mem (A.pow_mem hx _) (A.mul_mem (natCast_mem A p) hy)`. Set `I : Ideal A` to `Ideal.span {(p : A)}`. Use `haveI : CharP (A ⧸ I) p := CharP.quotient A p (by simpa [mem_nonunits_iff] using hu)`.
+
+Use `haveI : ExpChar (A ⧸ I) p := ExpChar.prime Fact.out`. Set `s : A →+* A` to `σ.restrict A A hσA`. Set `P0 : MvPowerSeries κ A` to `fun n => ⟨coeff n P, hP n⟩`. Establish `hP0 : map A.subtype P0 = P` using `by ext n; rfl`. Establish `hs : (Ideal.Quotient.mk I).comp s = (frobenius (A ⧸ I) p).comp (Ideal.Quotient.mk I)`.
+
+Use extensionality with `x`. Take `⟨y, hy, h⟩` from `hσ x x.2`. Simplify using `only [RingHom.comp_apply, frobenius_def]`. Rewrite using `[← map_pow, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `⟨⟨y, hy⟩, Subtype.ext (by simp [s, h])⟩`.
+
+Establish `key : map (Ideal.Quotient.mk I) (expand p hp (map s P0) - P0 ^ p) = 0`. Rewrite using `[map_sub, map_pow, map_expand, ← map_frobenius_expand p hp, map_expand, sub_eq_zero]`. Use `congr 1`. Use extensionality with `n`. Simplify using `using RingHom.congr_fun hs (coeff n P0)`.
+
+Establish `hd : ∀ n, ∃ z : A, coeff n (expand p hp (map s P0) - P0 ^ p) = p * z` using `fun n => by`. Use `congrArg (coeff n) key` as an intermediate fact. Rewrite `this` using `[coeff_map, map_zero, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `this`. Use `choose z hz using hd`.
+
+Take `⟨Z, hZ⟩ : ∃ Z : MvPowerSeries κ K, ∀ n, coeff n Z = z n` from `⟨fun n => (z n : K), fun _ => rfl⟩`. Use `⟨Z, fun n => hZ n ▸ (z n).2, ?_⟩` and prove the remaining obligations. Establish `e : frob p hp σ κ P - P ^ p = map A.subtype (expand p hp (map s P0) - P0 ^ p)`. Rewrite using `[map_sub, map_pow, map_expand, hP0, frob_apply, ← hP0]`. Both sides reduce to the same expression.
+
+Rewrite using `[← sub_eq_iff_eq_add', e]`. Use extensionality with `n`. Rewrite using `[coeff_map, hz, ← map_natCast (C : K →+* MvPowerSeries κ K), coeff_C_mul, hZ]`. Simplify using the standard rewrite rules.
+-/
 theorem frob_congr [Fact p.Prime] (hu : ¬ IsUnit (p : A)) (hσ : ∀ x ∈ A, ∃ y ∈ A, σ x = x ^ p + p * y)
     {P : MvPowerSeries κ K} (hP : P ∈ intS A κ) :
     ∃ y ∈ intS A κ, frob p hp σ κ P = P ^ p + p * y := by
@@ -187,6 +263,13 @@ theorem frob_congr [Fact p.Prime] (hu : ¬ IsUnit (p : A)) (hσ : ∀ x ∈ A, �
 
 end Frob
 
+/- English proof (translation)
+Establish `haS` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Establish `hbS` using `PowerSeries.HasSubst.of_constantCoeff_zero hb`. Establish `hg : Good N 1 a b` using `⟨hasOrd_one_of_cc ha, hasOrd_one_of_cc hb, h⟩`. Introduce `n hn`. Rewrite using `[map_sub, map_sub, PowerSeries.coeff_subst haS, PowerSeries.coeff_subst hbS, ← finsum_sub_distrib (PowerSeries.coeff_subst_finite haS f n) (PowerSeries.coeff_subst_finite hbS f n), finsum_eq_single _ 1]`.
+
+Simplify using `[h1]`. Introduce `e he`. Rewrite using `[← smul_sub, ← map_sub]`. Break down `Nat.eq_zero_or_pos e with rfl | h0` into its components or cases. Simplify using the standard rewrite rules.
+
+Rewrite using `[(hg.pow e).2.2 n (by omega), smul_zero]`.
+-/
 theorem hasOrd_subst_sub {f : PowerSeries K} (h1 : PowerSeries.coeff 1 f = 1) {a b : MvPowerSeries κ K}
     (ha : constantCoeff a = 0) (hb : constantCoeff b = 0) {N : ℕ} (h : HasOrd (N + 1) (a - b)) :
     HasOrd (N + 2) (f.subst a - f.subst b - (a - b)) := by
@@ -204,6 +287,19 @@ theorem hasOrd_subst_sub {f : PowerSeries K} (h1 : PowerSeries.coeff 1 f = 1) {a
     · simp
     · rw [(hg.pow e).2.2 n (by omega), smul_zero]
 
+/- English proof (translation)
+Establish `main : ∀ N, ∀ n : κ →₀ ℕ, n.degree < N + 1 → coeff n t ∈ A`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro n hn`. Rewrite using `[hasOrd_one_of_cc ht n hn]`.
+
+Conclude with `A.zero_mem`. Consider the case `succ N ih`. Introduce `n hn`. Break down `(Nat.lt_succ_iff_lt_or_eq.1 hn) with hlt | heq` into its components or cases. Conclude with `ih n hlt`.
+
+Take `⟨P, hP⟩ : ∃ P : MvPowerSeries κ K, ∀ m, coeff m P = if m.degree < N + 1 then coeff m t else 0` from `⟨fun m => if m.degree < N + 1 then coeff m t else 0, fun _ => rfl⟩`. Establish `hPA : P ∈ intS A κ` using `fun m => by`. Rewrite using `[hP]`. Use `split_ifs with h`. Use `exacts [ih m h, A.zero_mem]`.
+
+Establish `hP0 : constantCoeff P = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, hP, coeff_zero_eq_constantCoeff_apply, ht, ite_self]`. Establish `ho : HasOrd (N + 1) (t - P)` using `fun m hm => by rw [map_sub, hP, if_pos hm, sub_self]`. Establish `h2` using `hasOrd_subst_sub h1 ht hP0 ho`. Establish `h3 : HasOrd (N + 1) (f.subst t - f.subst P)`.
+
+Use `(h2.mono (Nat.le_succ _)).add ho` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `h4` using `hlow _ (T.sub_mem hf (hT P hPA hP0)) N h3 n heq`. Establish `h5` using `h2 n hn`. Rewrite `h5` using `[map_sub, sub_eq_zero]`.
+
+Rewrite `h4` using `[h5, map_sub, hP, if_neg (by omega), sub_zero]`. Conclude with `h4`. Conclude with `fun n => main n.degree n (Nat.lt_succ_self _)`.
+-/
 theorem mem_of_subst_mem {f : PowerSeries K} (h1 : PowerSeries.coeff 1 f = 1)
     (T : AddSubgroup (MvPowerSeries κ K))
     (hT : ∀ P ∈ intS A κ, constantCoeff P = 0 → f.subst P ∈ T)
@@ -236,6 +332,19 @@ theorem mem_of_subst_mem {f : PowerSeries K} (h1 : PowerSeries.coeff 1 f = 1)
       exact h4
   exact fun n => main n.degree n (Nat.lt_succ_self _)
 
+/- English proof (translation)
+Establish `hpK : (p : K) ≠ 0` using `Nat.cast_ne_zero.2 hp`. Set `L : MvPowerSeries κ K →+ MvPowerSeries κ K` to `AddMonoidHom.id _ - (AddMonoidHom.mulLeft (C (p : K)⁻¹)).comp Ψ.toAddMonoidHom`. Establish `hL : ∀ F, L F = F - C (p : K)⁻¹ * Ψ F` using `fun _ => rfl`. Use `mem_of_subst_mem h1 ((intS A κ).toAddSubgroup.comap L) ?_ ?_ ht hf` and prove the remaining obligations. Introduce `P hP hP0`.
+
+Express the relevant statement in the definitionally equal form `L _ ∈ intS A κ`. Establish `hPS` using `PowerSeries.HasSubst.of_constantCoeff_zero hP0`. Establish `hXq : PowerSeries.HasSubst (PowerSeries.X ^ q : PowerSeries K)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hq])`. Establish `hPq : constantCoeff (P ^ q) = 0` using `by simp [hP0, hq]`. Establish `e1 : (f - (p : K)⁻¹ • f.subst (PowerSeries.X ^ q : PowerSeries K)).subst P = f.subst P - C (p : K)⁻¹ * f.subst (P ^ q)`.
+
+Rewrite using `[PowerSeries.subst_sub hPS, PowerSeries.subst_smul hPS, PowerSeries.subst_comp_subst_apply hXq hPS, PowerSeries.subst_pow hPS, PowerSeries.subst_X hPS, smul_eq_C_mul]`. Establish `m1` using `psubst_mem hPS hP hg`. Take `⟨y, hy, hyP⟩` from `hΨc P hP`. Establish `m2` using `psubst_sub_mem (A := A) (PowerSeries.HasSubst.of_constantCoeff_zero (hΨ0 P hP0)) (PowerSeries.HasSubst.of_constantCoeff_zero hPq) f (p : K)⁻¹ (fun d => by`. Take `⟨k, hk, hkA⟩` from `hden d`.
+
+Take `⟨z, hz, e⟩` from `pow_congr (intS A κ) p ((intS A κ).pow_mem hP q) hy hyP hk`. Establish `: C ((p : K)⁻¹ * PowerSeries.coeff d f) * ((p : MvPowerSeries κ K) ^ (k + 1) * z) = C ((p : K) ^ k * PowerSeries.coeff d f) * z`. Rewrite using `[← map_natCast (C : K →+* MvPowerSeries κ K), ← map_pow, ← mul_assoc, ← map_mul]`. Use `congr 2`. Rewrite using `[pow_succ]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e, this]`. Conclude with `(intS A κ).mul_mem (C_mem hkA) hz)`. Rewrite `m1` using `[e1]`. Rewrite using `[hL, hΨf P hP0]`.
+
+Use `(intS A κ).sub_mem m1 m2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Introduce `D hD N ho n hn`. Use `(show L D ∈ intS A κ from hD) n` as an intermediate fact. Rewrite `this` using `[hL, map_sub, coeff_C_mul, hΨo D N ho n (by omega), mul_zero, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem funEq_mem [CharZero K] {p q : ℕ} (hp : p ≠ 0) (hq : q ≠ 0) {f : PowerSeries K}
     (h1 : PowerSeries.coeff 1 f = 1)
     (hden : ∀ n, ∃ k, p ^ k ∣ n ∧ (p : K) ^ k * PowerSeries.coeff n f ∈ A)
@@ -284,10 +393,20 @@ theorem funEq_mem [CharZero K] {p q : ℕ} (hp : p ≠ 0) (hq : q ≠ 0) {f : Po
     have := (show L D ∈ intS A κ from hD) n
     rwa [hL, map_sub, coeff_C_mul, hΨo D N ho n (by omega), mul_zero, sub_zero] at this
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `PowerSeries.constantCoeff (PowerSeries.exp K - 1) = 0`. Simplify using the standard rewrite rules.
+-/
 theorem cc_exp_sub_one [CharZero K] : constantCoeff (PowerSeries.exp K - 1) = 0 := by
   change PowerSeries.constantCoeff (PowerSeries.exp K - 1) = 0
   simp
 
+/- English proof (translation)
+Establish `hs : PowerSeries.HasSubst (PowerSeries.exp K - 1)` using `PowerSeries.HasSubst.exp_sub_one`. Establish `e : (1 + PowerSeries.X) * PowerSeries.derivative K (PowerSeries.log K) = 1`. Rewrite using `[PowerSeries.deriv_log]`. Use extensionality with `n`. Consider the cases of `n with`.
+
+Consider the case `zero => simp [add_mul]`. Consider the case `succ n => simp [add_mul, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_one, pow_succ]`. Establish `e2` using `congrArg (PowerSeries.substAlgHom (R := K) hs) e`. Rewrite `e2` using `[map_mul, map_add, map_one, PowerSeries.substAlgHom_X, PowerSeries.coe_substAlgHom, add_sub_cancel]`. Use `PowerSeries.derivative.ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[PowerSeries.derivative_subst hs, map_sub, PowerSeries.derivative_exp, PowerSeries.derivative_one, PowerSeries.derivative_X, sub_zero, mul_comm]`. Conclude with `e2`. Rewrite using `[PowerSeries.constantCoeff_X]`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero cc_exp_sub_one _ PowerSeries.constantCoeff_log`.
+-/
 theorem log_subst_exp_sub_one [CharZero K] :
     (PowerSeries.log K).subst (PowerSeries.exp K - 1) = (PowerSeries.X : PowerSeries K) := by
   have hs : PowerSeries.HasSubst (PowerSeries.exp K - 1) := PowerSeries.HasSubst.exp_sub_one
@@ -306,6 +425,23 @@ theorem log_subst_exp_sub_one [CharZero K] :
   · rw [PowerSeries.constantCoeff_X]
     exact PowerSeries.constantCoeff_subst_eq_zero cc_exp_sub_one _ PowerSeries.constantCoeff_log
 
+/- English proof (translation)
+Establish `hp0` using `hp.out.ne_zero`. Establish `hpK : (p : K) ≠ 0` using `Nat.cast_ne_zero.2 hp0`. Establish `hS` using `PowerSeries.HasSubst.of_constantCoeff_zero h0`. Establish `hsg : ∀ n : ℕ, (-1 : K) ^ n ∈ A` using `fun n => A.pow_mem (A.neg_mem A.one_mem) n`. Establish `hc : ∀ n : ℕ, PowerSeries.coeff n (PowerSeries.log K) = (-1) ^ (n + 1) * (n : K)⁻¹` using `fun n => by`.
+
+Rewrite using `[PowerSeries.coeff_log]`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using `[div_eq_mul_inv]`. Establish `e : (PowerSeries.log K).subst ((PowerSeries.exp K - 1).subst H) = H`.
+
+Rewrite using `[← PowerSeries.subst_comp_subst_apply PowerSeries.HasSubst.exp_sub_one hS, log_subst_exp_sub_one, PowerSeries.subst_X hS]`. Establish `key : (PowerSeries.exp K - 1).subst H ∈ intS A κ`. Use `funEq_mem hp0 hp0 PowerSeries.coeff_one_log (fun n => ?_) (fun n => ?_) (frob p hp0 σ κ) (fun P => constantCoeff_frob) (fun P hP => by rw [frob_psubst hP, PowerSeries.map_log]) (fun P => frob_congr hu hσ) (fun D N => hasOrd_frob hp.out.two_le (by omega)) (PowerSeries.constantCoef …` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨0, by simp, by simp [hc]⟩`.
+
+Take `⟨k, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' p hp.out.ne_one`. Use `⟨k, dvd_mul_right _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use `A.mul_mem (hsg (p ^ k * m + 1)) (hinv m hm) using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[map_sub, PowerSeries.coeff_smul, PowerSeries.coeff_subst_X_pow hp0, hc] split_ifs with h`. Take `⟨m, rfl⟩` from `h`. Rewrite using `[Nat.mul_div_cancel_left _ hp.out.pos, hc]`. Break down `hp.out.eq_two_or_odd' with rfl | ho` into its components or cases.
+
+Break down `Nat.even_or_odd m with hm | hm` into its components or cases. Use `A.zero_mem` and compare the differences between its conclusion and the goal. Simplify using `[pow_succ, hm.neg_one_pow, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `A.neg_mem (hinv m (fun h => (Nat.not_even_iff_odd.2 hm) (even_iff_two_dvd.2 h)))` and compare the differences between its conclusion and the goal.
+
+Simplify using `[pow_succ, hm.neg_one_pow, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `A.zero_mem` and compare the differences between its conclusion and the goal. Simplify using `[pow_succ, ho.neg_one_pow, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `using A.mul_mem (hsg (n + 1)) (hinv n h)`. Rewrite `key` using `[PowerSeries.subst_sub hS, ← PowerSeries.coe_substAlgHom hS, map_one]`. Use `(intS A κ).add_mem key (intS A κ).one_mem` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, PowerSeries.coe_substAlgHom]`. Then use the resulting hypothesis.
+-/
 theorem exp_mem [CharZero K] {p : ℕ} [hp : Fact p.Prime] {σ : K →+* K} (hu : ¬ IsUnit (p : A))
     (hσ : ∀ x ∈ A, ∃ y ∈ A, σ x = x ^ p + p * y) (hinv : ∀ n : ℕ, ¬ p ∣ n → (n : K)⁻¹ ∈ A)
     {H : MvPowerSeries κ K} (h0 : constantCoeff H = 0)

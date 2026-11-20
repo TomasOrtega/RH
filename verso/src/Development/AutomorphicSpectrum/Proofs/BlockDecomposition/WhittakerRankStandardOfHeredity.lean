@@ -9,6 +9,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.BZSeg
 
+/- English proof (translation)
+Use `choose w hw using fun a => rank_le_one_iff.1 (hW a)`. Use `rank_le_one_iff.2 ⟨PiTensorProduct.tprod ℂ w, fun t => ?_⟩` and prove the remaining obligations. Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f => choose c hc using fun a => hw a (f a)`. Use `⟨r * ∏ a, c a, ?_⟩` and prove the remaining obligations.
+
+Establish `hf : f = fun a => c a • w a` using `funext fun a => (hc a).symm`. Rewrite using `[hf, (PiTensorProduct.tprod ℂ).map_smul_univ, smul_smul]`. Consider the case `add x y hx hy`. Take `⟨r, rfl⟩` from `hx`. Take `⟨s, rfl⟩` from `hy`.
+
+Conclude with `⟨r + s, add_smul _ _ _⟩`.
+-/
 theorem rank_piTensorProduct_le_one {ι : Type} [Fintype ι] (W : ι → Type) [∀ a, AddCommGroup (W a)]
     [∀ a, Module ℂ (W a)] (hW : ∀ a, Module.rank ℂ (W a) ≤ 1) : Module.rank ℂ (⨂[ℂ] a, W a) ≤ 1 := by
   classical
@@ -25,6 +32,9 @@ theorem rank_piTensorProduct_le_one {ι : Type} [Fintype ι] (W : ι → Type) [
     obtain ⟨s, rfl⟩ := hy
     exact ⟨r + s, add_smul _ _ _⟩
 
+/- English proof (translation)
+Take `⟨e⟩` from `hH ψ hc h1 h N d hd X π hs`. Conclude with `e.rank_eq.le.trans (rank_piTensorProduct_le_one _ hr)`.
+-/
 theorem whitRank_multiProd_le_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hH : GlobalTheory.BZMir.Leib.WhitHeredity k) (ψ : AddChar k Circle) (hc : Continuous ψ)
     (h1 : ψ ≠ 1) (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (X : Fin h → Type) [∀ a, AddCommGroup (X a)]
@@ -34,6 +44,9 @@ theorem whitRank_multiProd_le_one {k : Type} [Field k] [ValuativeRel k] [Topolog
   obtain ⟨e⟩ := hH ψ hc h1 h N d hd X π hs
   exact e.rank_eq.le.trans (rank_piTensorProduct_le_one _ hr)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hH hR ψ hc h1 h N x hd`. Conclude with `whitRank_multiProd_le_one hH ψ hc h1 h N (fun a => (x a).1) hd (fun a => (x a).2.rep.V) (fun a => (x a).rep) (fun a => (x a).2.rep.smooth) (fun a => hR ψ hc h1 (x a).1 (x a).2.rep.V (x a).rep (x a).2.rep.smooth (x a).2.rep.irr)`.
+-/
 theorem whitRankStd_of_heredity : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.BZMir.Leib.WhitHeredity k → GlobalTheory.BZSeg.WhitRankIrr k →
     GlobalTheory.BZSeg.WhitRankStd k := by

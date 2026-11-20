@@ -13,13 +13,26 @@ namespace GlobalTheory.NoPr.Model
 
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.FourierDecayAlt.ThreeDimData
 
+/- English proof (translation)
+Unfold `aOf`. Conclude with `div_le_div_of_nonneg_right hh (by positivity)`.
+-/
 theorem aOf_mono (r : ℕ) {h h' : ℝ} (hh : h ≤ h') : aOf r h ≤ aOf r h' := by
   unfold aOf
   exact div_le_div_of_nonneg_right hh (by positivity)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.1, H.2.1.trans hh, H.2.2.1.trans (aOf_mono r hh), H.2.2.2.trans (aOf_mono r hh)⟩`.
+-/
 theorem gapOK_mono {k r : ℕ} {h h' : ℝ} (hh : h ≤ h') (H : GapOK k r h) : GapOK k r h' :=
   ⟨H.1, H.2.1.trans hh, H.2.2.1.trans (aOf_mono r hh), H.2.2.2.trans (aOf_mono r hh)⟩
 
+/- English proof (translation)
+Use `set c : ℝ := 8 * Real.sqrt (2 * ((r : ℝ) + 1)) with hc`. Establish `hc0 : 0 < c` using `by positivity`. Use `set A : ℝ := 2 * Mexp r * (AS k r + AG k r) + AG k r + 3`. Use `set B : ℝ := 9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + 3 * AG k r + 3`. Use `⟨max (120 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3) (max (A * c) (B * c)), hk, le_max_left _ _, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show A ≤ _ / c`. Rewrite using `[le_div_iff₀ hc0]`. Conclude with `(le_max_left _ _).trans (le_max_right _ _)`. Use `show B ≤ _ / c`. Rewrite using `[le_div_iff₀ hc0]`.
+
+Conclude with `(le_max_right _ _).trans (le_max_right _ _)`.
+-/
 theorem exists_gapOK (k r : ℕ) (hk : 1 ≤ k) : ∃ h : ℝ, GapOK k r h := by
   set c : ℝ := 8 * Real.sqrt (2 * ((r : ℝ) + 1)) with hc
   have hc0 : 0 < c := by positivity
@@ -33,6 +46,17 @@ theorem exists_gapOK (k r : ℕ) (hk : 1 ≤ k) : ∃ h : ℝ, GapOK k r h := by
     rw [le_div_iff₀ hc0]
     exact (le_max_right _ _).trans (le_max_right _ _)
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `exists_gapOK k r hk`. Take `⟨N, hN⟩` from `exists_nat_ge h`. Use `⟨fun a => (((2 * r + k + 1 : ℕ) : ℝ) - 1) / 2 - ((N : ℝ) + 1) * ((a : ℕ) : ℝ), ⟨?_, ?_⟩, h, ?_, hh⟩` and prove the remaining obligations. Introduce `a b hab`. Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`.
+
+Establish `hN0 : (0 : ℝ) < (N : ℝ) + 1` using `by positivity`. Use `mul_lt_mul_of_pos_left this hN0` as an intermediate fact. Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a`.
+
+Use `⟨-(((N : ℤ) + 1) * ((a : ℕ) : ℤ)), ?_⟩` and prove the remaining obligations. Simplify using `only [Int.cast_neg, Int.cast_mul, Int.cast_add, Int.cast_natCast, Int.cast_one]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b hab`. Establish `hne : (a : ℕ) ≠ (b : ℕ)` using `fun e => hab (by rw [Fin.ext e])`.
+
+Establish `h1 : (1 : ℝ) ≤ |((b : ℕ) : ℝ) - ((a : ℕ) : ℝ)|`. Establish `: (1 : ℤ) ≤ |((b : ℕ) : ℤ) - ((a : ℕ) : ℤ)|` using `Int.one_le_abs (by omega)`. Conclude with `this` after adjusting the coercions. Establish `e : (((2 * r + k + 1 : ℕ) : ℝ) - 1) / 2 - ((N : ℝ) + 1) * ((a : ℕ) : ℝ) - ((((2 * r + k + 1 : ℕ) : ℝ) - 1) / 2 - ((N : ℝ) + 1) * ((b : ℕ) : ℝ)) = ((N : ℝ) + 1) * (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))` using `by ring`. Simplify using `only`.
+
+Rewrite using `[e, abs_mul, abs_of_pos (by positivity : (0 : ℝ) < (N : ℝ) + 1)]`. Establish `hN0 : (0 : ℝ) ≤ (N : ℝ)` using `Nat.cast_nonneg N`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_gp (k r : ℕ) (hk : 1 ≤ k) (ε : Fin (2 * r + k + 1) → Bool) :
     ∃ mu : Fin (2 * r + k + 1) → ℝ, IsHCParam mu ∧ Gp k r ε mu := by
   obtain ⟨h, hh⟩ := exists_gapOK k r hk
@@ -61,11 +85,17 @@ theorem exists_gp (k r : ℕ) (hk : 1 ≤ k) (ε : Fin (2 * r + k + 1) → Bool)
     have hN0 : (0 : ℝ) ≤ (N : ℝ) := Nat.cast_nonneg N
     nlinarith
 
+/- English proof (translation)
+Take `⟨h, h1, h2⟩` from `H`. Conclude with `⟨h2.1, fun a b hab => h2.2.1.trans (h1 a b hab)⟩`.
+-/
 theorem gp_gap {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} (H : Gp k r ε mu) :
     1 ≤ k ∧ ∀ a b, ε a ≠ ε b → 120 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 ≤ |mu a - mu b| := by
   obtain ⟨h, h1, h2⟩ := H
   exact ⟨h2.1, fun a b hab => h2.2.1.trans (h1 a b hab)⟩
 
+/- English proof (translation)
+Introduce `H`. Use `(gp_gap H).2 0 1 (by decide)` as an intermediate fact. Establish `h10 : (1 : Fin (2 * 0 + 1 + 1)) ≠ 0` using `by decide`. Simplify using `only [if_true, if_neg h10] at this`. Evaluate the numerical expressions using `at this`.
+-/
 theorem not_gp_small : ¬ Gp 1 0 (fun i => decide (i = 0)) (fun i => if i = 0 then 1 / 2 else -1 / 2) := by
   intro H
   have := (gp_gap H).2 0 1 (by decide)
@@ -73,16 +103,42 @@ theorem not_gp_small : ¬ Gp 1 0 (fun i => decide (i = 0)) (fun i => if i = 0 th
   simp only [if_true, if_neg h10] at this
   norm_num at this
 
+/- English proof (translation)
+Introduce `H` and use `absurd (gp_gap H).1 (by decide)`.
+-/
 theorem not_gp_zero (r : ℕ) (ε : Fin (2 * r + 0 + 1) → Bool) (mu : Fin (2 * r + 0 + 1) → ℝ) : ¬ Gp 0 r ε mu :=
   fun H => absurd (gp_gap H).1 (by decide)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, H.1.1, H.1.2.1⟩`.
+-/
 theorem gp_of_onePlace {k r : ℕ} {L : LocBessel k r} {h : ℝ} {μG : Measure (Mt k r)} {w0 : L.Hs} {l : L.Hs → L.Wp}
     {l' : L.Hs → L.Wq} (H : GlobalTheory.CellAmp.OnePlaceKF L h μG w0 l l') : Gp k r L.ε L.lam := ⟨h, H.1.1, H.1.2.1⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem ampKF0_iff_gapIn : AmpKF0 ↔ GlobalTheory.GapIn.AmpKF0 := Iff.rfl
 
 open Formalism.MainNotions.S.Pv.AmpDDPf in
 
+/- English proof (translation)
+Introduce `k r L h μG w0 l l' hOPKF γ μR νR ν hCD b hb hab' hpm v v' hv hv' ξ ξ'`. Establish `hSchH` using `Formalism.FourierDecayAlt.P.schur_hermitian`. Establish `hNI` using `Formalism.FourierDecayAlt.P.norm_inverse_bound`. Establish `hGG` using `Formalism.FourierDecayAlt.P.growth_group_bound`. Establish `hRS` using `Formalism.MainNotions.S.Pv.AmpDDPf.right_stabilizer_invariance`.
+
+Establish `hIn` using `GlobalTheory.DecInputs.decLow_and_decInf_and_kFinSmooth`. Take `⟨hOP, hK1, hK2⟩` from `hOPKF`. Take `⟨hgap, hOK, -, hw0, hμG, -, -⟩` from `hOP`. Take `⟨hγ, hGf, hmono, hrel, hμR, hOQ, hQ⟩` from `hCD`. Establish `hσ : PI.UpqRep.IsDSHpk k r L.ε L.lam L.σ` using `L.hσ`.
+
+Take `⟨d, hd, hSch⟩` from `hSchH k r L.ε L.lam L.Hs L.σ μG L.hlam hσ hμG`. Establish `hw0K : PI.UpqRep.IsKFinHpk (k` using `k) (r := r) L.σ w0 := Formalism.MainNotions.KFiniteLowUnitary.kFin_of_lowUnitH' hw0`. Establish `hw0s : w0 ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) L.σ := hIn.2.2 k r L.ε L.lam L.Hs L.σ L.hlam hσ w0 hw0K`. Take `⟨P, hP, hw⟩` from `hw0`. Establish `hnorm : ‖w0‖ = 1` using `hw.1`.
+
+Establish `hw0ne : w0 ≠ 0`. Introduce `h0`. Rewrite `hnorm` using `[h0, norm_zero]`. Conclude with `zero_ne_one hnorm`. Establish `hw1 : ⟪w0, w0⟫_ℂ = 1`.
+
+Rewrite using `[inner_self_eq_norm_sq_to_K, hnorm]`. Simplify using the standard rewrite rules. Establish `hfd : PI.BesselPeriodGGP.fdegH μG L.σ w0 = d` using `Formalism.FourierDecayAlt.P.S3dx6.fdeg_of_schur hw0ne hd (hSch w0 w0 w0 w0).2`. Take `⟨C1, Ws1, -, hC1⟩` from `hIn.2.1 k r L.ε L.lam h L.Hs L.σ L.hlam hσ hgap hOK v hv`. Take `⟨C2, Ws2, -, hC2⟩` from `hIn.2.1 k r L.ε L.lam h L.Hs L.σ L.hlam hσ hgap hOK v' hv'`.
+
+Establish `e1 : (1 : ℝ) - Formalism.FourierDecayAlt.ThreeDimData.aOf r h = -(Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1)` using `by ring`. Establish `hC1' : ∀ g ∈ UH (Hpk k r), ‖⟪v, L.σ g w0⟫_ℂ‖ ≤ (C1 * (Ws1.map fun W => ‖PI.UpqRep.dsigW (k` using `k) (r := r) L.σ W w0‖).sum) * Formalism.FourierDecayAlt.B.gN g ^ (-(Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1)) := fun g hg => by`. Rewrite using `[← e1]`. Conclude with `hC1 w0 hw0s g hg`. Establish `hC2' : ∀ g ∈ UH (Hpk k r), ‖⟪v', L.σ g w0⟫_ℂ‖ ≤ (C2 * (Ws2.map fun W => ‖PI.UpqRep.dsigW (k` using `k) (r := r) L.σ W w0‖).sum) * Formalism.FourierDecayAlt.B.gN g ^ (-(Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1)) := fun g hg => by`.
+
+Rewrite using `[← e1]`. Conclude with `hC2 w0 hw0s g hg`. Establish `hAG0 : 0 ≤ Formalism.FourierDecayAlt.ThreeDimData.AG k r` using `by unfold Formalism.FourierDecayAlt.ThreeDimData.AG; positivity`. Establish `hab : b ≤ Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1` using `by linarith`. Establish `hIG : Integrable (fun x : Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of x) ^ (b - (Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1))) μG`.
+
+Establish `h1` using `hGG k r μG (Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1 - b) hμG (by linarith)`. Simplify `h1` using `only [neg_sub]`. Establish `hinv : MeasurePreserving (Formalism.FourierDecayAlt.P.B7.invM (k` using `k) (r := r)) μR μR := ⟨Formalism.FourierDecayAlt.P.B7.measurable_invM, hRS k r L γ μR hOK.1 hγ hGf hrel hmono hμR⟩`. Rewrite using `[hfd]`. Conclude with `amp_core' L hμG hd hSch hNI hw1 l l' hγ hrel hμR hOQ hQ hinv hb hab hIG hpm (fun t ht => hK1 _ (Formalism.FourierDecayAlt.P.S3dx6.mem_DD L.σ w0 ht) v hv) (fun t ht => hK2 _ (Formalism.FourierDecayAlt.P.S3dx6.mem_DD L.σ w0 ht) v' hv') hC1' hC2' ξ ξ'`.
+-/
 theorem ampKF0_holds : AmpKF0 := by
   intro k r L h μG w0 l l' hOPKF γ μR νR ν hCD b hb hab' hpm v v' hv hv' ξ ξ'
   have hSchH := Formalism.FourierDecayAlt.P.schur_hermitian

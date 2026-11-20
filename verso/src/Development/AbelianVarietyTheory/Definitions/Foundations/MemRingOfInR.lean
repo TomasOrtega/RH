@@ -66,8 +66,14 @@ structure Frac (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) where
 
 attribute [instance] Frac.fld Frac.alg
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure h`.
+-/
 theorem mem_ring_of_inR {E : Subring ℂ} {f : ℍ → ℂ} (h : InR E f) : f ∈ ring E := Subring.subset_closure h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun r h => (h (by simp)).elim⟩`.
+-/
 theorem den_zero {Ω : Type} [Field Ω] : Den (0 : HahnSeries ℚ Ω) := ⟨1, one_pos, fun r h => (h (by simp)).elim⟩
 
 end GlobalTheory.FN

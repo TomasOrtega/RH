@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.SympChange
 
+/- English proof (translation)
+Simplify using `only [weylM, Matrix.fromBlocks_map, Matrix.fromBlocks_mulVec]`. Simplify using `[Matrix.map_neg, Matrix.neg_mulVec, dotProduct_comm b a', sub_eq_add_neg]`.
+-/
 theorem sumElim_weylM_map {F : Type} [Field F] {κ : Type} [Fintype κ] [DecidableEq κ] {R : Type} [CommRing R]
     [Algebra F R] (a b a' b' : κ → R) :
     Sum.elim a b ⬝ᵥ ((weylM : Matrix (κ ⊕ κ) (κ ⊕ κ) F).map (algebraMap F R)) *ᵥ Sum.elim a' b' =
@@ -19,6 +22,41 @@ theorem sumElim_weylM_map {F : Type} [Field F] {κ : Type} [Fintype κ] [Decidab
 set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d JX JW c₁ c₂ h₁ h₂`. Use `haveI : Nontrivial (AF F) := (AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Establish `hAinj : Function.Injective (algebraMap F (AF F))` using `AdeleRing.algebraMap_injective _ _`. Establish `honto : ∀ y z : Fin n × Fin d → F, ∃ x : Matrix (Fin n) (Fin d) E, c₁.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))`. Introduce `y z`.
+
+Set `I : Matrix (Fin n) (Fin d) E →ₗ[F] Matrix (Fin n) (Fin d) (AE F E)` to `(Algebra.TensorProduct.includeRight (R := F) (A := AF F) (B := E)).toLinearMap.mapMatrix`. Set `L : Matrix (Fin n) (Fin d) E →ₗ[F] (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `(c₁.e.toLinearMap.restrictScalars F).comp I`. Establish `hL : ∀ x, L x = c₁.e (incM F x)` using `fun x => rfl`. Set `r : (Fin n × Fin d → F) →ₗ[F] (Fin n × Fin d → AF F)` to `LinearMap.pi fun i => (Algebra.linearMap F (AF F)).comp (LinearMap.proj i)`. Set `R : ((Fin n × Fin d → F) × (Fin n × Fin d → F)) →ₗ[F] (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `LinearMap.prodMap r r`.
+
+Establish `hR : ∀ y z, R (y, z) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))` using `fun _ _ => rfl`. Establish `hrinj : Function.Injective r` using `fun a b h => funext fun i => hAinj (congrFun h i)`. Establish `hRinj : Function.Injective R` using `fun a b h => Prod.ext (hrinj (congrArg Prod.fst h)) (hrinj (congrArg Prod.snd h))`. Establish `hIinj : Function.Injective I` using `fun a b h => Matrix.ext fun i j => Algebra.TensorProduct.includeRight_injective hAinj (congrFun (congrFun h i) j)`. Establish `hLinj : Function.Injective L` using `c₁.e.injective.comp hIinj`.
+
+Establish `hle : LinearMap.range L ≤ LinearMap.range R`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨y', z', h⟩` from `h₁ x`. Conclude with `⟨(y', z'), by rw [hR, hL, h]⟩`. Establish `hdim : Fintype.card (Fin n) * Fintype.card (Fin d) * Module.finrank F E = Fintype.card (Fin n × Fin d) + Fintype.card (Fin n × Fin d)`.
+
+Establish `h1` using `c₁.e.finrank_eq`. Rewrite `h1` using `[Module.finrank_matrix, Module.finrank_baseChange, Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`. Conclude with `h1`. Establish `hfin : Module.finrank F (LinearMap.range L) = Module.finrank F (LinearMap.range R)`. Rewrite using `[LinearMap.finrank_range_of_inj hLinj, LinearMap.finrank_range_of_inj hRinj, Module.finrank_matrix, Module.finrank_prod, Module.finrank_fintype_fun_eq_card, hdim]`.
+
+Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hle hfin`. Take `⟨x, hx⟩ : (R (y, z)) ∈ LinearMap.range L` from `heq ▸ ⟨(y, z), rfl⟩`. Conclude with `⟨x, by rw [← hL, hx, hR]⟩`. Set `g : ((Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)) ≃ₗ[AF F] ((Fin n × Fin d → AF F) × (Fin n × Fin d → AF F))` to `c₁.e.symm.trans c₂.e`. Establish `hgrat : ∀ y z : Fin n × Fin d → F, ∃ y' z' : Fin n × Fin d → F, g (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i)) = (fun i => algebraMap F (AF F) (y' i), fun i => algebraMap F (AF F) (z' i))`.
+
+Introduce `y z`. Take `⟨x, hx⟩` from `honto y z`. Take `⟨y', z', h⟩` from `h₂ x`. Conclude with `⟨y', z', by rw [← hx]; simp only [g, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, h]⟩`. Set `S` to `LinearEquiv.sumArrowLequivProdArrow (Fin n × Fin d) (Fin n × Fin d) (AF F) (AF F)`.
+
+Set `φ : ((Fin n × Fin d) ⊕ (Fin n × Fin d) → AF F) →ₗ[AF F] ((Fin n × Fin d) ⊕ (Fin n × Fin d) → AF F)` to `(S.symm.toLinearMap.comp g.toLinearMap).comp S.toLinearMap`. Establish `hφ : ∀ s, φ s = S.symm (g (S s))` using `fun s => rfl`. Establish `hent : ∀ i j, ∃ c : F, LinearMap.toMatrix' φ i j = algebraMap F (AF F) c`. Introduce `i j`. Rewrite using `[LinearMap.toMatrix'_apply]`.
+
+Take `⟨y', z', h⟩` from `hgrat (fun k => (Pi.single j (1 : F) : _ → F) (Sum.inl k)) (fun k => (Pi.single j (1 : F) : _ → F) (Sum.inr k))`. Establish `hS : S (Pi.single j 1) = (fun k => algebraMap F (AF F) ((Pi.single j (1 : F) : _ → F) (Sum.inl k)), fun k => algebraMap F (AF F) ((Pi.single j (1 : F) : _ → F) (Sum.inr k)))`. Apply the tactic sequence `ext k <;> simp [S, Pi.single_apply, apply_ite]`. Use `⟨Sum.elim y' z' i, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hS, h]`.
+
+Apply the tactic sequence `cases i <;> simp [S]`. Take `⟨G, hG⟩ : ∃ G : Matrix ((Fin n × Fin d) ⊕ (Fin n × Fin d)) ((Fin n × Fin d) ⊕ (Fin n × Fin d)) F, ∀ i j, LinearMap.toMatrix' φ i j = algebraMap F (AF F) (G i j)` from `⟨Matrix.of fun i j => (hent i j).choose, fun i j => (hent i j).choose_spec⟩`. Establish `hGm : G.map (algebraMap F (AF F)) = LinearMap.toMatrix' φ` using `Matrix.ext fun i j => (hG i j).symm`. Establish `hact : ∀ u, g u = spAct G u`. Introduce `u`.
+
+Establish `h1 : spAct G u = S (LinearMap.toMatrix' φ *ᵥ S.symm u)`. Rewrite using `[← hGm]`. Both sides reduce to the same expression. Rewrite using `[h1, LinearMap.toMatrix'_mulVec, hφ, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `hstd : ∀ u u' : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F), S.symm u ⬝ᵥ (weylM.map (algebraMap F (AF F))) *ᵥ S.symm u' = u.1 ⬝ᵥ u'.2 - u'.1 ⬝ᵥ u.2`.
+
+Introduce `u u'`. Take `⟨a, b⟩` from `u`. Take `⟨a', b'⟩` from `u'`. Establish `hs : ∀ p q : Fin n × Fin d → AF F, S.symm (p, q) = Sum.elim p q` using `fun p q => funext fun k => by`. Apply the tactic sequence `cases k <;> simp [S]`.
+
+Rewrite using `[hs, hs]`. Conclude with `sumElim_weylM_map a b a' b'`. Establish `hkeep : ∀ u u' : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F), (g u).1 ⬝ᵥ (g u').2 - (g u').1 ⬝ᵥ (g u).2 = u.1 ⬝ᵥ u'.2 - u'.1 ⬝ᵥ u.2`. Introduce `u u'`. Establish `e2` using `c₂.form (c₁.e.symm u) (c₁.e.symm u')`.
+
+Establish `e1` using `c₁.form (c₁.e.symm u) (c₁.e.symm u')`. Simplify using `only [LinearEquiv.apply_symm_apply] at e1`. Simplify using `only [g, LinearEquiv.trans_apply]`. Rewrite using `[← e2, e1]`. Use `⟨G, ?_, fun w => ?_⟩` and prove the remaining obligations.
+
+Unfold `IsSymp`. Use `Matrix.map_injective hAinj ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hGm]`. Use extensionality with `i j`.
+
+Establish `key : ∀ s s' : (Fin n × Fin d) ⊕ (Fin n × Fin d) → AF F, s ⬝ᵥ ((LinearMap.toMatrix' φ)ᵀ * weylM.map (algebraMap F (AF F)) * LinearMap.toMatrix' φ) *ᵥ s' = s ⬝ᵥ (weylM.map (algebraMap F (AF F))) *ᵥ s'`. Introduce `s s'`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec, hφ, hφ, hstd, hkeep, ← hstd, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Use `key (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify `this` using `[single_dotProduct, Matrix.mulVec_single_one]`.
+
+Use `hact (c₁.e w)` as an intermediate fact. Simplify `this` using `[g]`.
+-/
 theorem darboux_change_rat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ)
     (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (c₁ c₂ : Darboux (symp (R := AF F) (cA σ) (-1) (incM F JX) (incM F JW)) (Fin n × Fin d)),

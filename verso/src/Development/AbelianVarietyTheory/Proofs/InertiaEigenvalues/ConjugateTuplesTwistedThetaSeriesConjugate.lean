@@ -15,6 +15,13 @@ open Classical
 set_option maxHeartbeats 4000000 in
 set_option maxRecDepth 100000 in
 
+/- English proof (translation)
+Introduce `hCI D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hn hC hT0 hFW hIo hQ i hP hPh c hc u hu τ hfix`. Take `⟨ζ0, hζ, H⟩` from `GlobalTheory.T.conjugate_thetaLifts_isConjugateCuspExpansion hCI D G Pl0 T0 A T R F κ v₀ O ph hn hC hT0 hFW hIo hQ i hP hPh c hc τ hfix`. Use `⟨ζ0, hζ, fun t t' ht => ?_⟩` and prove the remaining obligations. Take `⟨s, Hs⟩` from `H t t' ht`. Use `⟨s, fun h hh x x' hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, y', hy, he⟩` from `GlobalTheory.T.exists_conjugateForms_thetaLift_eq_thetaSeries D G Pl0 T0 A T R F κ v₀ hC hFW i Unit (fun _ => A.μ0) (O i) hP.2 c hc τ t t' hfix ht h hh x x' hx`. Establish `hv : (fun ρ => (u ρ : (R.MW i (sg0 D A)).sm ρ)) = v₀ i (sg0 D A)` using `funext hu`. Establish `e1 : (fun g => ph i * ser R i t (R.vP i t) u h (c x) g) = fun g => ph i * R.thF i t y (v₀ i (sg0 D A)) g`. Use function extensionality and compare the values at `g`. Rewrite using `[← (he u g).1, hv]`.
+
+Establish `e2 : (fun g => ph i * ser R i t' (R.vP i t') u h (c x') g) = fun g => ph i * R.thF i t' y' (v₀ i (sg0 D A)) g`. Use function extensionality and compare the values at `g`. Rewrite using `[← (he u g).2, hv]`. Rewrite using `[e1, e2]`. Conclude with `Hs y y' hy`.
+-/
 theorem GlobalTheory.ConjTwist.conjFun_ser : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ), 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → GlobalTheory.Hk3.Core R F → Finite T0 → Nonempty (FWTie T R κ v₀) → IoExt R → QGuard R → ∀ i : Fin D.R.m, OMPins T R κ v₀ O i → PhaseTie T R κ v₀ O ph i → ∀ (c : VsV D i ℂ →ₗ[ℂ] (R.cV i).W), ExtC R i (inC (O i).c') (O i).c0' c → ∀ u : (∀ ρ, lowT (R.MW i (sg0 D A)) ρ), (∀ ρ, (u ρ : (R.MW i (sg0 D A)).sm ρ) = v₀ i (sg0 D A) ρ) → ∀ τ : ℂ ≃+* ℂ, FixBase T R i τ → ∃ ζ0 : ℂ, IsRoot1 ζ0 ∧ ∀ t t' : T0, ConjTup R τ t t' → ∃ s : (AE D)ˣ, ∀ h ∈ GfC (Vc D i), ∀ x x' : VsV D i ℂ, ConjVec i τ x x' → ConjFun (O i) (κ i) τ (ζ0 * ((R.xi t' s : Circle) : ℂ)) (fun g => ph i * ser R i t (R.vP i t) u h (c x) g) (fun g => ph i * ser R i t' (R.vP i t') u h (c x') g) := by
   intro hCI D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hn hC hT0 hFW hIo hQ i hP hPh c hc u hu τ hfix
   obtain ⟨ζ0, hζ, H⟩ := GlobalTheory.T.conjugate_thetaLifts_isConjugateCuspExpansion hCI D G Pl0 T0 A T R F κ v₀ O ph hn hC hT0 hFW hIo hQ i hP hPh c hc τ hfix

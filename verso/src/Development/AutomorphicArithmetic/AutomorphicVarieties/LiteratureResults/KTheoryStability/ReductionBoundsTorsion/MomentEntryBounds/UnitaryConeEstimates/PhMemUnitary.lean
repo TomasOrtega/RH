@@ -17,14 +17,23 @@ abbrev ph {w : InfinitePlace L} (hw : w.IsComplex) :
     Matrix (Fin N) (Fin N) w.Completion →+* Matrix (Fin N) (Fin N) ℂ :=
   (Completion.ringEquivComplexOfIsComplex hw).toRingHom.mapMatrix
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ph_apply {w : InfinitePlace L} (hw : w.IsComplex) (A : Matrix (Fin N) (Fin N) w.Completion) (i j : Fin N) :
     ph hw A i j = Completion.ringEquivComplexOfIsComplex hw (A i j) := rfl
 
+/- English proof (translation)
+Rewrite using `[Completion.ringEquivComplexOfIsComplex_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem e_alg {w : InfinitePlace L} (hw : w.IsComplex) (l : L) :
     Completion.ringEquivComplexOfIsComplex hw (algebraMap L w.Completion l) = w.embedding l := by
   rw [Completion.ringEquivComplexOfIsComplex_apply]
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[ph_apply, Matrix.map_apply, ← e_alg hw]`. Both sides reduce to the same expression.
+-/
 theorem ph_diag {w : InfinitePlace L} (hw : w.IsComplex) (γ : GL (Fin N) L) :
     ph hw ((Reduction.infAt w (AdelicGLn.diagonal L N γ) : GL (Fin N) w.Completion) :
       Matrix (Fin N) (Fin N) w.Completion) = (γ : Matrix (Fin N) (Fin N) L).map w.embedding := by
@@ -32,6 +41,9 @@ theorem ph_diag {w : InfinitePlace L} (hw : w.IsComplex) (γ : GL (Fin N) L) :
   rw [ph_apply, Matrix.map_apply, ← e_alg hw]
   rfl
 
+/- English proof (translation)
+Use `show @Pi.mulSingle _ (fun j : InfinitePlace L => j.Completion) _ _ w _ w = _`. Unfold `Pi.mulSingle Function.update`. Use `split`. Both sides reduce to the same expression. Conclude with `absurd rfl ‹_›`.
+-/
 private theorem moduleSection_component_self_eq_posRealElem {w : InfinitePlace L} (ρ : ℝ) (hρ : 0 < ρ) :
     ((GroundTheory.Global.moduleSection w ⟨ρ, hρ⟩ : 𝔸[𝓞 L, L]ˣ) : 𝔸[𝓞 L, L]).1 w = GroundTheory.Global.posRealElem w ρ := by
   classical
@@ -41,6 +53,9 @@ private theorem moduleSection_component_self_eq_posRealElem {w : InfinitePlace L
   · rfl
   · exact absurd rfl ‹_›
 
+/- English proof (translation)
+Use `show @Pi.mulSingle _ (fun j : InfinitePlace L => j.Completion) _ _ v _ w = _`. Unfold `Pi.mulSingle Function.update`. Use `split`. Conclude with `absurd ‹w = v›.symm h`. Both sides reduce to the same expression.
+-/
 private theorem moduleSection_component_eq_one_of_ne {w v : InfinitePlace L} (h : v ≠ w) (ρ : ℝ) (hρ : 0 < ρ) :
     ((GroundTheory.Global.moduleSection v ⟨ρ, hρ⟩ : 𝔸[𝓞 L, L]ˣ) : 𝔸[𝓞 L, L]).1 w = 1 := by
   classical
@@ -50,6 +65,9 @@ private theorem moduleSection_component_eq_one_of_ne {w v : InfinitePlace L} (h 
   · exact absurd ‹w = v›.symm h
   · rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, ← ih]`. Both sides reduce to the same expression.
+-/
 private theorem finset_prod_units_component_eq_prod (w : InfinitePlace L) (s : Finset (InfinitePlace L))
     (f : InfinitePlace L → 𝔸[𝓞 L, L]ˣ) :
     ((∏ v ∈ s, f v : 𝔸[𝓞 L, L]ˣ) : 𝔸[𝓞 L, L]).1 w = ∏ v ∈ s, ((f v : 𝔸[𝓞 L, L]).1 w) := by
@@ -60,6 +78,11 @@ private theorem finset_prod_units_component_eq_prod (w : InfinitePlace L) (s : F
     rw [Finset.prod_insert ha, Finset.prod_insert ha, ← ih]
     rfl
 
+/- English proof (translation)
+Unfold `Reduction.posIdele`. Rewrite using `[finset_prod_units_component_eq_prod, Finset.prod_eq_single w]`. Conclude with `moduleSection_component_self_eq_posRealElem _ _`. Introduce `v _ hv`. Conclude with `moduleSection_component_eq_one_of_ne hv _ _`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem posIdele_infinite_component (w : InfinitePlace L) (ρ : ℝ) (hρ : 0 < ρ) :
     ((Reduction.posIdele (K := L) ρ hρ : 𝔸[𝓞 L, L]ˣ) : 𝔸[𝓞 L, L]).1 w =
       GroundTheory.Global.posRealElem w (ρ ^ w.mult) := by
@@ -70,6 +93,13 @@ private theorem posIdele_infinite_component (w : InfinitePlace L) (ρ : ℝ) (h�
     exact moduleSection_component_eq_one_of_ne hv _ _
   · simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[ph_apply]`. Establish `hent : ((Reduction.infAt w (Reduction.diagUnits N fun i => Reduction.posIdele (K` using `L) (r i) (hr i)) : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion) i j = ((diagonal fun k => ((Reduction.posIdele (K := L) (r k) (hr k) : 𝔸[𝓞 L, L]ˣ) : 𝔸[𝓞 L, L])) i j).1 w := rfl`. Rewrite using `[hent]`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Rewrite using `[diagonal_apply_eq, diagonal_apply_eq, posIdele_infinite_component, InfinitePlace.mult_isComplex ⟨w, hw⟩]`. Establish `hnr : ¬ w.IsReal` using `InfinitePlace.not_isReal_iff_isComplex.mpr hw`. Unfold `GroundTheory.Global.posRealElem`. Rewrite using `[dif_neg hnr, RingEquiv.apply_symm_apply, Real.sqrt_sq (hr i).le]`.
+
+Rewrite using `[diagonal_apply_ne _ h, diagonal_apply_ne _ h] show Completion.ringEquivComplexOfIsComplex hw 0 = 0`. Conclude with `map_zero _`.
+-/
 theorem ph_posIdele {w : InfinitePlace L} (hw : w.IsComplex) (r : Fin N → ℝ) (hr : ∀ i, 0 < r i) :
     ph hw ((Reduction.infAt w (Reduction.diagUnits N fun i => Reduction.posIdele (K := L) (r i) (hr i)) :
       GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion) =
@@ -91,6 +121,11 @@ theorem ph_posIdele {w : InfinitePlace L} (hw : w.IsComplex) (r : Fin N → ℝ)
     show Completion.ringEquivComplexOfIsComplex hw 0 = 0
     exact map_zero _
 
+/- English proof (translation)
+Rewrite using `[← Matrix.transpose_mem_unitaryGroup_iff, mem_unitaryGroup_iff']`. Apply `EquivLike.injective (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin N))` to reduce the goal to its premises. Establish `hn : ∀ x, ‖Matrix.toEuclideanCLM (𝕜` using `ℂ) (n := Fin N) Mᵀ x‖ = ‖x‖ := by`. Introduce `x`. Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq, Matrix.ofLp_toEuclideanCLM, Matrix.mulVec_transpose, h]`.
+
+Establish `ha` using `(ContinuousLinearMap.norm_map_iff_adjoint_comp_self _).mp hn`. Rewrite `ha` using `[← ContinuousLinearMap.star_eq_adjoint]`. Rewrite using `[map_mul, map_star, map_one]`. Conclude with `ha`.
+-/
 private theorem mem_unitaryGroup_of_vecMul_norm_sq_preserved (M : Matrix (Fin N) (Fin N) ℂ)
     (h : ∀ y : Fin N → ℂ, ∑ i, ‖(y ᵥ* M) i‖ ^ 2 = ∑ i, ‖y i‖ ^ 2) : M ∈ unitaryGroup (Fin N) ℂ := by
   rw [← Matrix.transpose_mem_unitaryGroup_iff, mem_unitaryGroup_iff']
@@ -103,6 +138,15 @@ private theorem mem_unitaryGroup_of_vecMul_norm_sq_preserved (M : Matrix (Fin N)
   rw [map_mul, map_star, map_one]
   exact ha
 
+/- English proof (translation)
+Apply `mem_unitaryGroup_of_vecMul_norm_sq_preserved` to reduce the goal to its premises. Introduce `y`. Set `e` to `Completion.ringEquivComplexOfIsComplex hw`. Establish `hnorm : ∀ x, ‖e x‖ = ‖x‖` using `fun x => by show ‖Completion.ringEquivComplexOfIsComplex hw x‖ = ‖x‖`. Rewrite using `[Completion.ringEquivComplexOfIsComplex_apply]`.
+
+Conclude with `(Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) x`. Set `y' : Fin N → w.Completion` to `fun i => e.symm (y i)`. Establish `hy : ∀ i, y i = e (y' i)` using `fun i => (e.apply_symm_apply (y i)).symm`. Establish `hk' : Reduction.euclidNorm (y' ᵥ* (k : Matrix (Fin N) (Fin N) w.Completion)) = Reduction.euclidNorm y'` using `hk y'`. Unfold `Reduction.euclidNorm at hk'`.
+
+Rewrite `hk'` using `[Real.sqrt_inj (by positivity) (by positivity)]`. Establish `hv : ∀ i, (y ᵥ* ph hw (k : Matrix (Fin N) (Fin N) w.Completion)) i = e ((y' ᵥ* (k : Matrix (Fin N) (Fin N) w.Completion)) i)`. Introduce `i`. Establish `h1` using `RingHom.map_vecMul e.toRingHom (k : Matrix (Fin N) (Fin N) w.Completion) y' i`. Establish `: y = (e.toRingHom : w.Completion → ℂ) ∘ y'` using `funext hy`.
+
+Rewrite using `[this]`. Conclude with `h1.symm`. Simplify using `only [hv, hnorm, hk']`. Simplify using `only [hy, hnorm]`.
+-/
 theorem ph_mem_unitary {w : InfinitePlace L} (hw : w.IsComplex) {k : GL (Fin N) w.Completion}
     (hk : k ∈ Reduction.archCompact w) :
     ph hw (k : Matrix (Fin N) (Fin N) w.Completion) ∈ unitaryGroup (Fin N) ℂ := by
@@ -128,16 +172,25 @@ theorem ph_mem_unitary {w : InfinitePlace L} (hw : w.IsComplex) {k : GL (Fin N) 
   simp only [hv, hnorm, hk']
   simp only [hy, hnorm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem infAt_apply_entry_eq_adele_component (w : InfinitePlace L) (g : AdelicGLn.AdelicGL L N) (i j : Fin N) :
     ((Reduction.infAt w g : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion) i j =
       ((g : Matrix (Fin N) (Fin N) 𝔸[𝓞 L, L]) i j).1 w := rfl
 
+/- English proof (translation)
+Unfold `Reduction.infAt`. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+-/
 private theorem infAt_inv' (w : InfinitePlace L) (g : AdelicGLn.AdelicGL L N) :
     Reduction.infAt w g⁻¹ = (Reduction.infAt w g)⁻¹ := by
   unfold Reduction.infAt
   rw [map_inv]
   rfl
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[infAt_apply_entry_eq_adele_component]`. Establish `h0 : (b : Matrix (Fin N) (Fin N) 𝔸[𝓞 L, L]) i j = 0` using `hB hij`. Rewrite using `[h0]`. Both sides reduce to the same expression.
+-/
 private theorem infAt_blockTriangular_of_mem_adelicBorel (w : InfinitePlace L) {b : AdelicGLn.AdelicGL L N}
     (hB : b ∈ Reduction.adelicBorel) :
     ((Reduction.infAt w b : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion).BlockTriangular id := by
@@ -147,6 +200,11 @@ private theorem infAt_blockTriangular_of_mem_adelicBorel (w : InfinitePlace L) {
   rw [h0]
   rfl
 
+/- English proof (translation)
+Use `congrFun (congrFun h i) i` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply_eq, Finset.sum_eq_single i]`. Conclude with `this`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hlt | hgt` into its components or cases.
+
+Rewrite using `[hA hlt, zero_mul]`. Rewrite using `[hC hgt, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 private theorem diag_mul_diag_eq_one_of_blockTriangular_mul_eq_one {K : Type*} [Field K] (A C : Matrix (Fin N) (Fin N) K)
     (hA : A.BlockTriangular id) (hC : C.BlockTriangular id) (h : A * C = 1) (i : Fin N) :
     A i i * C i i = 1 := by
@@ -159,11 +217,25 @@ private theorem diag_mul_diag_eq_one_of_blockTriangular_mul_eq_one {K : Type*} [
     · rw [hC hgt, mul_zero]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Completion.ringEquivComplexOfIsComplex_apply]`. Conclude with `(Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) x`.
+-/
 private theorem norm_ringEquivComplexOfIsComplex {w : InfinitePlace L} (hw : w.IsComplex) (x : w.Completion) :
     ‖Completion.ringEquivComplexOfIsComplex hw x‖ = ‖x‖ := by
   rw [Completion.ringEquivComplexOfIsComplex_apply]
   exact (Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) x
 
+/- English proof (translation)
+Establish `hU` using `infAt_blockTriangular_of_mem_adelicBorel w hB`. Establish `hC` using `infAt_blockTriangular_of_mem_adelicBorel w (inv_mem hB)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[ph_apply, hU hij, map_zero]`.
+
+Introduce `i j`. Rewrite using `[ph_apply, norm_ringEquivComplexOfIsComplex]`. Combine the linear relations using `[(hb i j).1]`. Introduce `i`. Rewrite using `[ph_apply, norm_ringEquivComplexOfIsComplex]`.
+
+Establish `hmul : ((Reduction.infAt w b : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion) * ((Reduction.infAt w b⁻¹ : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion) = 1`. Rewrite using `[infAt_inv']`. Conclude with `Units.mul_inv _`. Establish `hd` using `diag_mul_diag_eq_one_of_blockTriangular_mul_eq_one _ _ hU hC hmul i`. Establish `hn : ‖((Reduction.infAt w b : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion) i i‖ * ‖((Reduction.infAt w b⁻¹ : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion) i i‖ = 1`.
+
+Rewrite using `[← norm_mul, hd, norm_one]`. Establish `hpos : 0 < ‖((Reduction.infAt w b⁻¹ : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion) i i‖`. Assume the negation of the conclusion as `hle`. Rewrite `hle` using `[not_lt]`. Rewrite `hn` using `[le_antisymm hle (norm_nonneg _), mul_zero]`.
+
+Conclude with `zero_ne_one hn`. Rewrite using `[eq_inv_of_mul_eq_one_left hn]`. Conclude with `inv_anti₀ hpos (by linarith [(hb i i).2])`.
+-/
 theorem ph_borel {w : InfinitePlace L} (hw : w.IsComplex) {b : AdelicGLn.AdelicGL L N}
     (hB : b ∈ Reduction.adelicBorel) {M0 : ℝ}
     (hb : ∀ i j : Fin N,
@@ -206,6 +278,25 @@ namespace PositivityTheory.KB
 
 open MomentRationality MomentRationality.RedGL MomentRationality.Cz.Arch
 
+/- English proof (translation)
+Introduce `L _ _ hTC N hN`. Use `haveI := hTC`. Take `⟨ω, hωc, hωB, t, ht, hS⟩` from `Reduction.exists_siegelSet (K := L) N`. Take `⟨M0, hM0, hM⟩` from `exists_bound_omega hωc`. Set `C : Set (AdelicGLn.FiniteAdelicGL L N)` to `(fun p : AdelicGLn.AdelicGL L N × AdelicGLn.AdelicGL L N => (AdelicGLn.prodEquiv L N (p.1 * p.2)).2) '' (ω ×ˢ ((Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL L N)) : Set (AdelicGLn.AdelicGL L N)))`.
+
+Establish `hCc : IsCompact C` using `(hωc.prod Reduction.isCompact_maxCompact).image (continuous_snd.comp ((AdelicGLn.prodEquiv L N).continuous.comp continuous_mul))`. Take `⟨R, hR⟩` from `exists_finset_cosets hCc`. Use `⟨R.image (·⁻¹), M0 + 1, t, by linarith, ht, ?_⟩` and prove the remaining obligations. Introduce `x`. Set `e : ∀ w : InfinitePlace L, w.Completion ≃+* ℂ` to `fun w => Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)`.
+
+Set `xC : (w : InfinitePlace L) → GL (Fin N) w.Completion` to `fun w => Matrix.GeneralLinearGroup.map (e w).symm.toRingHom (x w)`. Set `gx : AdelicGLn.AdelicGL L N` to `(AdelicGLn.prodEquiv L N).symm ((AdelicGLn.infiniteEquiv L N).symm xC, 1)`. Establish `hgx : ∀ w, Reduction.infAt w gx = xC w`. Introduce `w`. Use extensionality with `a b`.
+
+Rewrite using `[Reduction.infAt_apply, ← AdelicGLn.prodEquiv_apply_fst, ← AdelicGLn.infiniteEquiv_apply]`. Simplify using `[gx]`. Establish `hgx2 : (AdelicGLn.prodEquiv L N gx).2 = 1` using `by simp [gx]`. Take `⟨γ, hγ⟩` from `hS gx`. Take `⟨b, hbω, a, ⟨r, hr, hrt, rfl⟩, k, hk, hbak⟩` from `hγ`.
+
+Establish `hfin : ((AdelicGLn.prodEquiv L N) ((AdelicGLn.diagonal L N) γ)).2 ∈ C`. Use `⟨(b, k), ⟨hbω, hk⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun G => (AdelicGLn.prodEquiv L N G).2) hbak`. Simplify using `only [map_mul, Prod.snd_mul, hgx2, mul_one, Reduction.prodEquiv_diagUnits_posIdele_snd] at h1`. Simplify using `using h1.symm`.
+
+Take `⟨g, hgR, δ, hδ⟩` from `hR γ hfin`. Use `⟨δ, g⁻¹, Finset.mem_image.mpr ⟨g, hgR, rfl⟩, r, hr, hrt, ?_⟩` and prove the remaining obligations. Introduce `w`. Establish `hw : w.IsComplex` using `IsTotallyComplex.isComplex w`. Take `⟨hU, hB1, hB2⟩` from `ph_borel hw (hωB hbω) (hM b hbω w)`.
+
+Use `⟨ph hw ((Reduction.infAt w b : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion), hU, hB1, hB2, ph hw ((Reduction.infAt w k : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion), ph_mem_unitary hw (hk.1 w), ?_⟩` and prove the remaining obligations. Establish `key` using `congrArg (fun G => ph hw ((Reduction.infAt w G : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion)) hbak`. Simplify using `only [Reduction.infAt_mul, Units.val_mul, map_mul, hgx] at key`. Rewrite `key` using `[ph_diag, ph_posIdele hw r hr]`. Establish `hx : ph hw ((xC w : GL (Fin N) w.Completion) : Matrix (Fin N) (Fin N) w.Completion) = ((x w : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)`.
+
+Use extensionality with `i j`. Rewrite using `[ph_apply]`. Simplify using `[xC, e]`. Rewrite `key` using `[hx]`. Establish `hinv : (toK L N δ : Matrix (Fin N) (Fin N) L) = ((g⁻¹ : GL (Fin N) L) : Matrix (Fin N) (Fin N) L) * (γ : Matrix (Fin N) (Fin N) L)`.
+
+Rewrite using `[hδ, Units.val_mul]`. Use `show ((emb L N δ w : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) * ((x w : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) = _`. Establish `hemb : ((emb L N δ w : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) = (toK L N δ : Matrix (Fin N) (Fin N) L).map w.embedding` using `rfl`. Rewrite using `[hemb, hinv, Matrix.map_mul, Matrix.mul_assoc, key]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem sRedGL2 : SRedGL := by
   intro L _ _ hTC N hN
   haveI := hTC

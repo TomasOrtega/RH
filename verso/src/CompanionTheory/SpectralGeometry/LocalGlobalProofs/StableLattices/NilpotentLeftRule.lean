@@ -19,16 +19,25 @@ def LeftAt (ε : Fin n → Bool) (X : GMod n) {ι : Type}
     c i (X.E a b u) g = ∑ p, ∑ q, (g * Matrix.single a b (1 : ℂ) * g⁻¹ : Matrix (Fin n) (Fin n) ℂ) p q *
       (l p q).sum fun i' r => r * c i' u g
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_mapDomain_index (by simp) (by intros; ring)`.
+-/
 theorem sum_mapDomain_mul {ι κ : Type} (f : κ → ι) (l : κ →₀ ℂ) (w : ι → ℂ) :
     ((l.mapDomain f).sum fun i r => r * w i) = l.sum fun q r => r * w (f q) :=
   Finsupp.sum_mapDomain_index (by simp) (by intros; ring)
 
+/- English proof (translation)
+Simplify using `only [Finsupp.sum, mul_sum]`. Rewrite using `[sum_comm]`. Conclude with `sum_congr rfl fun x _ => sum_congr rfl fun k _ => by ring`.
+-/
 theorem sum_weighted {ι κ : Type} [Fintype κ] (l : ι →₀ ℂ) (w : κ → ℂ) (f : κ → ι → ℂ) :
     ∑ k, w k * (l.sum fun x r => r * f k x) = l.sum fun x r => r * ∑ k, w k * f k x := by
   simp only [Finsupp.sum, mul_sum]
   rw [sum_comm]
   exact sum_congr rfl fun x _ => sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `h`. Use `⟨fun p q => (l p q).mapDomain f, fun a b u g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hk, hl a b u g hg]`. Simplify using `only [sum_mapDomain_mul, hf]`.
+-/
 theorem LeftAt.reindex {ε : Fin n → Bool} {X : GMod n} {ι κ : Type}
     {c : ι → X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)} {c' : κ → X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)}
     (f : κ → ι) (hf : ∀ q, c (f q) = c' q) {i : ι} {k : κ} (hk : c i = c' k) (h : LeftAt ε X c' k) :
@@ -38,6 +47,27 @@ theorem LeftAt.reindex {ε : Fin n → Bool} {X : GMod n} {ι κ : Type}
   rw [hk, hl a b u g hg]
   simp only [sum_mapDomain_mul, hf]
 
+/- English proof (translation)
+Take `⟨p, j⟩` from `q`. Take `⟨l, hl⟩` from `h p`. Use `⟨fun s t => (l s t).mapDomain (fun i' => (i', j)) + (if s = j then Finsupp.single (p, t) 1 else 0), fun a b (u : Fin n → X.V) g hg => ?_⟩` and prove the remaining obligations. Establish `hgi : g⁻¹ * g = 1` using `ReciprocityTheory.ChartRestriction.DS.Lap.Base.inv_mul_self_of_mem_indefiniteUnitary (ε := ε) hg`. Establish `hMg : (g * Matrix.single a b (1 : ℂ) * g⁻¹) * g = g * Matrix.single a b (1 : ℂ)`.
+
+Rewrite using `[Matrix.mul_assoc _ g⁻¹ g, hgi, Matrix.mul_one]`. Generalize the expression as in `hM : (g * Matrix.single a b (1 : ℂ) * g⁻¹ : Matrix (Fin n) (Fin n) ℂ) = M at hMg`. Establish `hT : ∀ (i : ι) (m : Fin n), tensCoef X (c i) m u g = ∑ k, g m k * c i (u k) g` using `fun _ _ => rfl`. Establish `e1 : ∀ s t, (((l s t).mapDomain (fun i' => (i', j)) + (if s = j then Finsupp.single (p, t) 1 else 0) : (ι × Fin n) →₀ ℂ).sum fun i' r => r * tensCoef X (c i'.1) i'.2 u g) = ((l s t).sum fun i' r => r * ∑ k, g j k * c i' (u k) g) + if s = j then ∑ k, g t k * c p (u k) g else 0`. Introduce `s t`.
+
+Rewrite using `[Finsupp.sum_add_index' (by simp) (by intros; ring), sum_mapDomain_mul]`. Simplify using `only [hT]`. Use `congr 1`. Use `split_ifs`. Rewrite using `[Finsupp.sum_single_index (by simp), one_mul]`.
+
+Simplify using the standard rewrite rules. Establish `eL : tensCoef X (c p) j ((tens X).E a b u) g = ∑ k, g j k * c p (X.E a b (u k)) g + g j a * c p (u b) g` using `by show ∑ k, g j k * c p (tensE X a b u k) g = _`. Simplify using `only [tensE_apply, map_add, Pi.add_apply, mul_add, sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single a]`.
+
+Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[hk]`. Simplify using the standard rewrite rules. Establish `eA : ∑ k, g j k * c p (X.E a b (u k)) g = ∑ s, ∑ t, M s t * ((l s t).sum fun i' r => r * ∑ k, g j k * c i' (u k) g)`.
+
+Simplify using `only [hl a b _ g hg, hM, ← sum_weighted]`. Simplify using `only [mul_sum]`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[sum_comm]`.
+
+Conclude with `sum_congr rfl fun t _ => sum_congr rfl fun k _ => by ring`. Establish `eB : g j a * c p (u b) g = ∑ s, ∑ t, M s t * (if s = j then ∑ k, g t k * c p (u k) g else 0)`. Rewrite using `[Finset.sum_eq_single j (fun s _ hs => by simp [hs]) (by simp)]`. Simplify using `only [if_true]`. Establish `: ∑ t, M j t * ∑ k, g t k * c p (u k) g = ∑ k, (M * g) j k * c p (u k) g`.
+
+Simplify using `only [mul_sum, Matrix.mul_apply, sum_mul]`. Rewrite using `[sum_comm]`. Conclude with `sum_congr rfl fun k _ => sum_congr rfl fun t _ => by ring`. Rewrite using `[this, hMg]`. Rewrite using `[Finset.sum_eq_single b]`.
+
+Simplify using `[Matrix.mul_apply, Matrix.single_apply]`. Introduce `k _ hk`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, Ne.symm hk]`. Simplify using the standard rewrite rules. Use `show tensCoef X (c p) j ((tens X).E a b u) g = ∑ s, ∑ t, M s t * (((l s t).mapDomain (fun i' => (i', j)) + (if s = j then Finsupp.single (p, t) 1 else 0) : (ι × Fin n) →₀ ℂ).sum fun i' r => r * tensCoef X (c i'.1) i'.2 u g)`.
+
+Simplify using `only [e1, mul_add, sum_add_distrib]`. Rewrite using `[eL, eA, eB]`.
+-/
 theorem left_tens {ε : Fin n → Bool} (X : GMod n) {ι : Type}
     (c : ι → X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)) (h : ∀ i, LeftAt ε X c i) (q : ι × Fin n) :
     LeftAt ε (tens X) (fun q : ι × Fin n => tensCoef X (c q.1) q.2) q := by
@@ -99,12 +129,20 @@ theorem left_tens {ε : Fin n → Bool} (X : GMod n) {ι : Type}
   simp only [e1, mul_add, sum_add_distrib]
   rw [eL, eA, eB]
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `left_tens X c h q`. Conclude with `⟨l, fun a b u g hg => hl a b u.1 g hg⟩`.
+-/
 theorem left_step {ε : Fin n → Bool} (X : GMod n) (z : ℂ) {ι : Type}
     (c : ι → X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)) (h : ∀ i, LeftAt ε X c i) (q : ι × Fin n) :
     LeftAt ε (step X z) (fun q : ι × Fin n => stepCoef X z (c q.1) q.2) q := by
   obtain ⟨l, hl⟩ := left_tens X c h q
   exact ⟨l, fun a b u g hg => hl a b u.1 g hg⟩
 
+/- English proof (translation)
+Proceed by induction on `ss with`. Consider the case `nil`. Introduce `X χ ι c hc i`. Conclude with `LeftAt.reindex (X := X) (c := fun p : ι × List (Fin n) => c p.1) (c' := c) (fun k => (k, [])) (fun _ => rfl) (k := i.1) rfl (hc i.1)`. Consider the case `cons s ss ih`.
+
+Introduce `X χ ι c hc i`. Establish `h2` using `ih (step X (χ s)) (χ + Pi.single s 1) (fun q : ι × Fin n => stepCoef X (χ s) (c q.1) q.2) (left_step X (χ s) c hc) ((i.1, i.2.headD s), i.2.tail)`. Use `show LeftAt ε (path (step X (χ s)) (χ + Pi.single s 1) ss) (fun p : ι × List (Fin n) => pathCoef (step X (χ s)) (stepCoef X (χ s) (c p.1) (p.2.headD s)) (χ + Pi.single s 1) ss p.2.tail) i`. Conclude with `LeftAt.reindex (fun q : (ι × Fin n) × List (Fin n) => (q.1.1, q.1.2 :: q.2)) (fun _ => rfl) rfl h2`.
+-/
 theorem left_path {ε : Fin n → Bool} (ss : List (Fin n)) : ∀ (X : GMod n) (χ : Fin n → ℂ) {ι : Type}
     (c : ι → X.V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)), (∀ i, LeftAt ε X c i) →
     ∀ i : ι × List (Fin n), LeftAt ε (path X χ ss) (fun p : ι × List (Fin n) => pathCoef X (c p.1) χ ss p.2) i := by
@@ -128,6 +166,15 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
 
+/- English proof (translation)
+Establish `h1` using `HasDerivAt.inner ℂ (hasDerivAt_const (0 : ℝ) ξ) hu`. Establish `h2` using `HasDerivAt.inner ℂ hξ (hasDerivAt_const (0 : ℝ) u)`. Simplify using `only [inner_zero_left, add_zero] at h1`. Simplify using `only [inner_zero_right, zero_add] at h2`. Establish `e : (fun t : ℝ => ⟪ξ, σ (NormedSpace.exp ((t : ℂ) • Y)) u⟫_ℂ) = fun t : ℝ => ⟪σ (NormedSpace.exp ((t : ℂ) • -Y)) ξ, u⟫_ℂ`.
+
+Use function extensionality and compare the values at `t`. Establish `hm` using `exp_smul_mem_UJset hY t`. Establish `hm'` using `exp_smul_mem_UJset (SmDerA.inG_neg hY) t`. Establish `hone : NormedSpace.exp ((t : ℂ) • Y) * NormedSpace.exp ((t : ℂ) • -Y) = 1`. Establish `hcomm : Commute ((t : ℂ) • Y) ((t : ℂ) • -Y)`.
+
+Rewrite using `[smul_neg]`. Conclude with `(Commute.refl _).neg_right`. Rewrite using `[← Matrix.exp_add_of_commute _ _ hcomm, smul_neg, add_neg_cancel, NormedSpace.exp_zero]`. Establish `hw : σ (NormedSpace.exp ((t : ℂ) • Y)) (σ (NormedSpace.exp ((t : ℂ) • -Y)) ξ) = ξ`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ hm _ hm', hone, hσ.1.1]`.
+
+Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[e]`. Conclude with `h1.unique h2`.
+-/
 theorem inner_deriv_skew (hσ : IsURepOn (UJset ε) σ) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inG ε Y) {ξ ξ' u u' : H}
     (hξ : HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • -Y)) ξ) ξ' 0)
     (hu : HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • Y)) u) u' 0) : ⟪ξ, u'⟫_ℂ = ⟪ξ', u⟫_ℂ := by
@@ -154,6 +201,11 @@ theorem inner_deriv_skew (hσ : IsURepOn (UJset ε) σ) {Y : Matrix (Fin n) (Fin
   rw [e] at h1
   exact h1.unique h2
 
+/- English proof (translation)
+Establish `h2` using `((σ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hm` using `exp_smul_mem_UJset (inG_conj_unitary hg hX) t`. Establish `hmX` using `exp_smul_mem_UJset hX t`. Establish `hc : NormedSpace.exp ((t : ℂ) • (g * X * g⁻¹)) = g * NormedSpace.exp ((t : ℂ) • X) * g⁻¹`.
+
+Rewrite using `[← Matrix.exp_conj g _ (isUnit_of_mem_indefiniteUnitary hg), Matrix.mul_smul, Matrix.smul_mul]`. Use `show σ (NormedSpace.exp ((t : ℂ) • (g * X * g⁻¹))) (σ g u) = σ g (σ (NormedSpace.exp ((t : ℂ) • X)) u)`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ hm g hg, hc, Matrix.mul_assoc _ g⁻¹ g, inv_mul_self_of_mem_indefiniteUnitary hg, Matrix.mul_one, hσ.1.2 g hg _ hmX]`. Both sides reduce to the same expression.
+-/
 theorem deriv_transport (hσ : IsURepOn (UJset ε) σ) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε)
     (hX : inG ε X) {u u' : H} (hd : HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) u) u' 0) :
     HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • (g * X * g⁻¹))) (σ g u)) (σ g u') 0 := by
@@ -168,6 +220,9 @@ theorem deriv_transport (hσ : IsURepOn (UJset ε) σ) {g X : Matrix (Fin n) (Fi
     inv_mul_self_of_mem_indefiniteUnitary hg, Matrix.mul_one, hσ.1.2 g hg _ hmX]
   rfl
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hY q) p`. Establish `hs : star (Y p q) = (starRingEnd ℂ) (Y p q)` using `rfl`. Simplify using `only [Jm, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply, hs] at h`. Apply the tactic sequence `cases hp : ε p <;> cases hq : ε q <;> simp [hp, hq] at h ⊢ <;> first | linear_combination h | linear_combination -h`.
+-/
 theorem conj_entry {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inG ε Y) (p q : Fin n) :
     (starRingEnd ℂ) (Y p q) = -((if ε p = ε q then 1 else -1) * Y q p) := by
   have h := congrFun (congrFun hY q) p
@@ -177,6 +232,11 @@ theorem conj_entry {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inG ε Y) (p q : Fin n
   cases hp : ε p <;> cases hq : ε q <;> simp [hp, hq] at h ⊢ <;>
     first | linear_combination h | linear_combination -h
 
+/- English proof (translation)
+Establish `hY` using `inG_conj_unitary hg hX`. Establish `h1` using `hK.real (-(g * X * g⁻¹)) (SmDerA.inG_neg hY) ξ`. Establish `h2` using `deriv_transport hσ hg hX (hK.real X hX u)`. Rewrite using `[inner_deriv_skew hσ hY h1 h2]`. Apply the tactic sequence `simp only [sum_inner, inner_smul_left, Matrix.neg_apply, map_neg, conj_entry hY]`.
+
+Rewrite using `[sum_comm]`. Use `sum_congr rfl fun p _ => sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `: (if ε q = ε p then (1 : ℂ) else -1) = if ε p = ε q then 1 else -1` using `by simp only [eq_comm]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem real_rule (hσ : IsURepOn (UJset ε) σ) (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (ξ u : D)
     {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (hX : inG ε X) :
     ⟪(ξ : H), σ g (∑ a, ∑ b, X a b • ((E a b u : D) : H))⟫_ℂ =
@@ -192,6 +252,15 @@ theorem real_rule (hσ : IsURepOn (UJset ε) σ) (hK : CompanionTheory.D.LK.IsKM
   rw [this]
   ring
 
+/- English proof (translation)
+Take `⟨X₁, X₂, h₁, h₂, hdec⟩ : ∃ X₁ X₂ : Matrix (Fin n) (Fin n) ℂ, inG ε X₁ ∧ inG ε X₂ ∧ Matrix.single a b (1 : ℂ) = X₁ + Complex.I • X₂` from `⟨_, _, SmDerA.inG_cpart1 ε _, SmDerA.inG_cpart2 ε _, SmDerA.cpart_decomp ε _⟩`. Establish `hz : ∀ c d, X₁ c d + Complex.I * X₂ c d = Matrix.single a b (1 : ℂ) c d`. Introduce `c d`. Rewrite using `[hdec]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`.
+
+Establish `hv : ((E a b u : D) : H) = (∑ c, ∑ d, X₁ c d • ((E c d u : D) : H)) + Complex.I • ∑ c, ∑ d, X₂ c d • ((E c d u : D) : H)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Matrix.single_apply, ite_smul, ite_and]`. Use `_ = ∑ c, ∑ d, (X₁ c d + Complex.I * X₂ c d) • ((E c d u : D) : H) := by simp only [hz]`. Use `_ = _ := by simp only [Finset.smul_sum, add_smul, Finset.sum_add_distrib, smul_smul]`.
+
+Establish `hM : g * Matrix.single a b (1 : ℂ) * g⁻¹ = g * X₁ * g⁻¹ + Complex.I • (g * X₂ * g⁻¹)`. Rewrite using `[hdec, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[hv, map_add, map_smul, inner_add_right, inner_smul_right, real_rule hσ hK ξ u hg h₁, real_rule hσ hK ξ u hg h₂, hM]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`.
+
+Conclude with `sum_congr rfl fun p _ => sum_congr rfl fun q _ => by ring`.
+-/
 theorem unit_rule (hσ : IsURepOn (UJset ε) σ) (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (ξ u : D)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (a b : Fin n) :
     ⟪(ξ : H), σ g ((E a b u : D) : H)⟫_ℂ =
@@ -218,6 +287,9 @@ theorem unit_rule (hσ : IsURepOn (UJset ε) σ) (hK : CompanionTheory.D.LK.IsKM
   congr 1
   exact sum_congr rfl fun p _ => sum_congr rfl fun q _ => by ring
 
+/- English proof (translation)
+Use `⟨fun p q => Finsupp.single (E q p ξ) (if ε p = ε q then 1 else -1), fun a b u g hg => ?_⟩` and prove the remaining obligations. Establish `h` using `unit_rule hσ hK ξ u hg a b`. Simplify using `only [Finsupp.sum_single_index, zero_mul]`. Conclude with `h`.
+-/
 theorem left_base (hσ : IsURepOn (UJset ε) σ) (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (ξ : D) :
     LeftAt ε ⟨D, E, hK.gl⟩ (fun ξ : D => baseCoef σ D (ξ : H)) ξ := by
   refine ⟨fun p q => Finsupp.single (E q p ξ) (if ε p = ε q then 1 else -1), fun a b u g hg => ?_⟩
@@ -227,6 +299,9 @@ theorem left_base (hσ : IsURepOn (UJset ε) σ) (hK : CompanionTheory.D.LK.IsKM
 
 end Base
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ D E hK χ ss hσ i`. Conclude with `left_path ss ⟨D, E, hK.gl⟩ χ (fun ξ : D => baseCoef σ D (ξ : H)) (fun ξ => left_base hσ hK ξ) i`.
+-/
 theorem leftRule : CompanionTheory.RgExh.Dec.N.LeftRule := by
   intro n ε H _ _ _ σ D E hK χ ss hσ i
   exact left_path ss ⟨D, E, hK.gl⟩ χ (fun ξ : D => baseCoef σ D (ξ : H)) (fun ξ => left_base hσ hK ξ) i

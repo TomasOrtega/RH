@@ -28,6 +28,11 @@ end rings
 
 section places
 
+/- English proof (translation)
+Establish `hp' : ((p : ℕ) : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.mpr hp`. Establish `hI : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp'`. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations.
+
+Introduce `v hv`. Use `show v.asIdeal ∣ Ideal.span {((p : ℕ) : 𝓞 E)}`. Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `hv`.
+-/
 theorem placesOver_finite' (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p ≠ 0) :
     (placesOver E p).Finite := by
   have hp' : ((p : ℕ) : 𝓞 E) ≠ 0 := Nat.cast_ne_zero.mpr hp
@@ -44,6 +49,9 @@ def pDC {R : Ranks} (H : Host R) (l : ℕ) : Finset (HeightOneSpectrum (𝓞 H.E
   (placesOver_finite' H.E (if l = H.pde then H.pde' else H.pde)
     (by split_ifs <;> first | exact H.pde'_prime.ne_zero | exact H.pde_prime.ne_zero)).toFinset
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Set.Finite.coe_toFinset _`. Consider the case `(simp [pDC]; done)`.
+-/
 theorem coe_pDC {R : Ranks} (H : Host R) (l : ℕ) :
     (pDC H l : Set (HeightOneSpectrum (𝓞 H.E))) = placesOver H.E (if l = H.pde then H.pde' else H.pde) := by
   first

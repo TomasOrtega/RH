@@ -10,6 +10,11 @@ open IsDedekindDomain
 
 namespace UpperTheory.ConvolutionTheory.K
 
+/- English proof (translation)
+Unfold `locHeight`. Use `continuous_const.max (NNReal.continuous_coe.comp ?_)` and prove the remaining obligations. Use `Continuous.finset_sup_apply fun p _ => ?_` and prove the remaining obligations. Use `Continuous.max ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_GL_apply p.1 p.2).nnnorm`.
+
+Conclude with `((continuous_GL_apply p.1 p.2).comp continuous_inv).nnnorm`.
+-/
 private theorem continuous_locHeight {E : Type*} [NormedField E] {n : ℕ} :
     Continuous (locHeight : GL (Fin n) E → ℝ) := by
   unfold locHeight
@@ -19,6 +24,9 @@ private theorem continuous_locHeight {E : Type*} [NormedField E] {n : ℕ} :
   · exact (continuous_GL_apply p.1 p.2).nnnorm
   · exact ((continuous_GL_apply p.1 p.2).comp continuous_inv).nnnorm
 
+/- English proof (translation)
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Establish `h` using `locHeight_mul_le_of_ultrametric x k`. Rewrite `h` using `[locHeight_eq_one_of_mem_integralGL hk, mul_one]`. Then use the resulting hypothesis. Establish `h` using `locHeight_mul_le_of_ultrametric (x * k) k⁻¹`. Rewrite `h` using `[locHeight_eq_one_of_mem_integralGL (inv_mem hk), mul_one, mul_inv_cancel_right]`. Then use the resulting hypothesis.
+-/
 private theorem locHeight_mul_integral {K : Type} [Field K] [NumberField K] {n : ℕ}
     {v : HeightOneSpectrum (𝓞 K)} (x k : GL (Fin n) (v.adicCompletion K))
     (hk : k ∈ GLnLocal.integralGL (v.adicCompletion K) n) : locHeight (x * k) = locHeight x := by
@@ -28,6 +36,9 @@ private theorem locHeight_mul_integral {K : Type} [Field K] [NumberField K] {n :
   · have h := locHeight_mul_le_of_ultrametric (x * k) k⁻¹
     rwa [locHeight_eq_one_of_mem_integralGL (inv_mem hk), mul_one, mul_inv_cancel_right] at h
 
+/- English proof (translation)
+Rewrite `hw` using `[AdelicGLn.mem_integralFiniteGL_iff_forall]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[finAt_mul]`. Conclude with `locHeight_mul_integral _ _ (hw v)`.
+-/
 private theorem finprod_mul_integral {K : Type} [Field K] [NumberField K] {n : ℕ}
     (g w : AdelicGLn.AdelicGL K n)
     (hw : (AdelicGLn.prodEquiv K n w).2 ∈ AdelicGLn.integralFiniteGL K n) :
@@ -38,6 +49,11 @@ private theorem finprod_mul_integral {K : Type} [Field K] [NumberField K] {n : �
   rw [finAt_mul]
   exact locHeight_mul_integral _ _ (hw v)
 
+/- English proof (translation)
+Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open _).2 fun x => ?_)` and prove the remaining obligations. Establish `hcF : Continuous fun g : AdelicGLn.AdelicGL K n => (AdelicGLn.prodEquiv K n g).2` using `continuous_snd.comp (AdelicGLn.prodEquiv K n).continuous`. Use `⟨(fun y => x⁻¹ * y) ⁻¹' ((fun g => (AdelicGLn.prodEquiv K n g).2) ⁻¹' (AdelicGLn.integralFiniteGL K n : Set (AdelicGLn.FiniteAdelicGL K n))), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((AdelicGLn.isOpen_integralFiniteGL K n).preimage hcF).preimage (continuous_const.mul continuous_id)`. Simplify using `only [Set.mem_preimage, inv_mul_cancel, map_one, Prod.snd_one, SetLike.mem_coe]`.
+
+Conclude with `one_mem _`. Introduce `y hy`. Use `finprod_mul_integral x (x⁻¹ * y) hy` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+-/
 private theorem continuous_finprod {K : Type} [Field K] [NumberField K] {n : ℕ} :
     Continuous fun g : AdelicGLn.AdelicGL K n =>
       ∏ᶠ v : HeightOneSpectrum (𝓞 K), locHeight (finAt v g) := by
@@ -54,12 +70,18 @@ private theorem continuous_finprod {K : Type} [Field K] [NumberField K] {n : ℕ
     have := finprod_mul_integral x (x⁻¹ * y) hy
     rwa [mul_inv_cancel_left] at this
 
+/- English proof (translation)
+Unfold `AutomorphicForm.height`. Use `Continuous.mul ?_ continuous_finprod` and prove the remaining obligations. Conclude with `continuous_finset_prod _ fun w _ => (continuous_locHeight.comp (continuous_infAt w)).pow _`.
+-/
 private theorem continuous_height {K : Type} [Field K] [NumberField K] {n : ℕ} :
     Continuous (AutomorphicForm.height : AdelicGLn.AdelicGL K n → ℝ) := by
   unfold AutomorphicForm.height
   refine Continuous.mul ?_ continuous_finprod
   exact continuous_finset_prod _ fun w _ => (continuous_locHeight.comp (continuous_infAt w)).pow _
 
+/- English proof (translation)
+Use `haveI : Countable (Gam K n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Unfold `qht`. Use `Measurable.iInf fun γ => Continuous.measurable ?_` and prove the remaining obligations. Conclude with `continuous_height.comp (continuous_subtype_val.comp (continuous_const.mul continuous_id))`.
+-/
 private theorem measurable_qht {K : Type} [Field K] [NumberField K] {n : ℕ} :
     Measurable (qht : G1 K n → ℝ) := by
   haveI : Countable (Gam K n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance
@@ -67,6 +89,9 @@ private theorem measurable_qht {K : Type} [Field K] [NumberField K] {n : ℕ} :
   refine Measurable.iInf fun γ => Continuous.measurable ?_
   exact continuous_height.comp (continuous_subtype_val.comp (continuous_const.mul continuous_id))
 
+/- English proof (translation)
+Unfold `qht`. Establish `h` using `(Equiv.mulRight (⟨γ, hγ⟩ : Gam K n)).iInf_comp (g := fun δ : Gam K n => AutomorphicForm.height (((δ : G1 K n) * x : G1 K n) : AdelicGLn.AdelicGL K n))`. Rewrite using `[← h]`. Use `congrArg _ (funext fun δ => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, Subgroup.coe_mul, mul_assoc]`.
+-/
 private theorem qht_mul_left {K : Type} [Field K] [NumberField K] {n : ℕ} (γ : G1 K n)
     (hγ : γ ∈ Gam K n) (x : G1 K n) : qht (γ * x) = qht x := by
   unfold qht
@@ -78,6 +103,13 @@ private theorem qht_mul_left {K : Type} [Field K] [NumberField K] {n : ℕ} (γ 
 
 end UpperTheory.ConvolutionTheory.K
 
+/- English proof (translation)
+Introduce `K _ _ n`. Use `⟨fun x => le_ciInf fun _ => one_le_height _, qht_mul_left, ?_⟩` and prove the remaining obligations. Rewrite using `[measurable_from_quotient]`. Establish `h : ((fun y : RightCosetSpace (Gam K n) => qht (Quotient.out y : G1 K n)) ∘ Quotient.mk'') = (qht : G1 K n → ℝ)`. Use function extensionality and compare the values at `x`.
+
+Take `⟨γ, hγ⟩` from `mk_eq_mk_iff.1 (Quotient.out_eq (mk (Gam K n) x))`. Express the relevant statement in the definitionally equal form `qht (Quotient.out (mk (Gam K n) x)) = qht x`. Rewrite using `[← hγ]`. Conclude with `qht_mul_left _ γ.2 x`. Rewrite using `[h]`.
+
+Conclude with `measurable_qht`.
+-/
 theorem UpperTheory.ConvolutionTheory.K.qhtBasic :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), (∀ x : G1 K n, 1 ≤ qht x) ∧ (∀ γ ∈ Gam K n, ∀ x : G1 K n, qht (γ * x) = qht x) ∧
       Measurable fun y : RightCosetSpace (Gam K n) => qht (Quotient.out y : G1 K n) := by

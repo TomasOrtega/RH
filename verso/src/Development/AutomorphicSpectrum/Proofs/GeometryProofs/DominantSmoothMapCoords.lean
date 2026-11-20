@@ -14,6 +14,11 @@ open GlobalTheory.CompanionTheory.Ar.ChartFin
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Rewrite using `[T.ring c hc a]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `exists_secVal hall T.gen.inj U h a fun q hq => ?_` and prove the remaining obligations. Take `⟨h', hi⟩` from `(hU q).1 hq`.
+
+Conclude with `H _ hi`. Introduce and unpack `⟨s, rfl⟩ p hp`. Establish `hq : p.1 ∈ U` using `(hU p.1).2 ⟨p.2, hp⟩`. Conclude with `⟨_, genMap_germ ξ h hq p.2 s⟩`.
+-/
 theorem mem_adjoin_iff {o : Type} [CommRing o] [Algebra o Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {κ : Type}
     {x : κ → Ω} (hall : ∀ q : X, genPt ξ ⤳ q) (T : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) {U : X.Opens}
     (hU : ∀ q : X, q ∈ U ↔ ∃ h : genPt ξ ⤳ q, InChart ξ x c ⟨q, h⟩) (h : genPt ξ ∈ U) (a : Ω) :
@@ -28,6 +33,9 @@ theorem mem_adjoin_iff {o : Type} [CommRing o] [Algebra o Ω] {ξ : Spec (CommRi
     have hq : p.1 ∈ U := (hU p.1).2 ⟨p.2, hp⟩
     exact ⟨_, genMap_germ ξ h hq p.2 s⟩
 
+/- English proof (translation)
+Establish `hm : ∀ s, secVal ξ U h s ∈ Algebra.adjoin o (Set.range fun j => x j / x c)` using `fun s => (mem_adjoin_iff hall T hc hU h _).2 ⟨s, rfl⟩`. Use `⟨RingEquiv.ofBijective ((secVal ξ U h).codRestrict _ hm) ⟨fun a b e => ?_, fun r => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `secVal_injective hall T.gen.inj U h (congrArg Subtype.val e)`. Take `⟨s, hs⟩` from `(mem_adjoin_iff hall T hc hU h r).1 r.2`. Conclude with `⟨s, Subtype.ext hs⟩`.
+-/
 theorem exists_secEquiv {o : Type} [CommRing o] [Algebra o Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {κ : Type}
     {x : κ → Ω} (hall : ∀ q : X, genPt ξ ⤳ q) (T : CoordTie o ξ x) {c : κ} (hc : x c ≠ 0) {U : X.Opens}
     (hU : ∀ q : X, q ∈ U ↔ ∃ h : genPt ξ ⤳ q, InChart ξ x c ⟨q, h⟩) (h : genPt ξ ∈ U) :
@@ -42,6 +50,13 @@ theorem exists_secEquiv {o : Type} [CommRing o] [Algebra o Ω] {ξ : Spec (CommR
 
 variable {X' : Scheme.{0}} {Ω' : Type} [Field Ω']
 
+/- English proof (translation)
+Take `⟨h, hreg, hunit⟩` from `RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' f i hd p'`. Take `⟨d, hd0, hdr⟩` from `T.cover ⟨f p'.1, h⟩`. Establish `ha0 : x c / x d ≠ 0` using `div_ne_zero hc hd0`. Establish `hinv : (i (x c / x d))⁻¹ ∈ regAt ξ' p'`. Rewrite using `[← map_inv₀, inv_div]`.
+
+Conclude with `(T'.ring c' hc' _).1 (hi d) p' hp'`. Establish `hu` using `hunit T'.gen _ (hdr c) ⟨(map_ne_zero i).2 ha0, hreg _ (hdr c), hinv⟩`. Use `⟨hc, fun j => ?_⟩` and prove the remaining obligations. Establish `e : x j / x c = x j / x d * (x c / x d)⁻¹`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e]`. Conclude with `mul_mem (hdr j) hu.2.2`.
+-/
 theorem inChart_map {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {f : X' ⟶ X}
     {i : Ω →+* Ω'} {κ κ' : Type} {x : κ → Ω} {x' : κ' → Ω'} (hall : ∀ q : X, genPt ξ ⤳ q)
     (T : CoordTie ℤ ξ x) (T' : CoordTie ℤ ξ' x') (hd : Dominates ξ' ξ f i) {c : κ} {c' : κ'} (hc : x c ≠ 0)
@@ -60,6 +75,17 @@ theorem inChart_map {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingC
   rw [e]
   exact mul_mem (hdr j) hu.2.2
 
+/- English proof (translation)
+Introduce `hall hall' T T' hd hsm c c' hc hc' hi`. Take `⟨U, hUa, hUm⟩` from `T.affine c hc`. Take `⟨U', hU'a, hU'm⟩` from `T'.affine c' hc'`. Establish `hg : genPt ξ ∈ U` using `(hUm _).2 ⟨specializes_rfl, inChart_genPt T.gen hc⟩`. Establish `hg' : genPt ξ' ∈ U'` using `(hU'm _).2 ⟨specializes_rfl, inChart_genPt T'.gen hc'⟩`.
+
+Establish `hle : U' ≤ f ⁻¹ᵁ U`. Introduce `q hq`. Take `⟨h, hin⟩` from `(hU'm q).1 hq`. Conclude with `(hUm (f q)).2 ⟨hall _, inChart_map hall T T' hd hc hc' hi ⟨q, h⟩ hin⟩`. Take `⟨E, hE⟩` from `exists_secEquiv hall T hc hUm hg`.
+
+Take `⟨E', hE'⟩` from `exists_secEquiv hall' T' hc' hU'm hg'`. Establish `hs : (f.appLE U U' hle).hom.Smooth` using `Smooth.smooth_appLE (f := f) hUa hU'a hle`. Establish `hval : ∀ s, secVal ξ' U' hg' ((f.appLE U U' hle).hom s) = i (secVal ξ U hg s)`. Introduce `s`. Establish `h2 : genPt ξ' ∈ f ⁻¹ᵁ U` using `hle hg'`.
+
+Rewrite using `[← secVal_app hd U hg h2 s, ← secVal_res ξ' (homOfLE hle) hg' h2 ((f.app U).hom s)]`. Both sides reduce to the same expression. Use `⟨(E'.toRingHom.comp (f.appLE U U' hle).hom).comp E.symm.toRingHom, fun a => ?_, ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `E.surjective a`. Simplify using `only [RingHom.comp_apply]`.
+
+Establish `: E.symm.toRingHom (E s) = s` using `E.symm_apply_apply s`. Rewrite using `[this]`. Conclude with `(hE' _).trans ((hval s).trans (congrArg i (hE s).symm))`. Establish `hr` using `RingHom.Smooth.propertyIsLocal.respectsIso`. Conclude with `hr.2 _ E.symm (hr.1 _ E' hs)`.
+-/
 theorem smooth_chartRing (X X' : Scheme.{0}) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω]
     (ξ : Spec (CommRingCat.of Ω₀) ⟶ X)
     (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' ⟶ X) (i : Ω₀ →+* Ω) (κ κ' : Type) (x : κ → Ω₀) (x' : κ' → Ω) :

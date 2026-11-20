@@ -20,6 +20,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Establish `hx' : x ∈ W.N T ∧ Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x` using `hx`. Establish `hD : (letE i : LetA O n) • x = x ∧ ∀ δ ∈ W.DelF, W.γD T δ x = x` using `hx'.2`. Establish `ha' : ∀ δ ∈ W.DelF, W.γA δ a = a` using `ha`. Use `show a • x ∈ W.N T ∧ Formalism.MainNotions.CrystallineLiftingInputs.DL W T i (a • x)`. Use `⟨(W.N T).smul_mem a hx'.1, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, mul_comm, ← smul_smul, hD.1]`. Introduce `δ hδ`. Establish `hγ : letγ (W.γ₀ δ) a = a` using `ha' δ hδ`. Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, hD.2 δ hδ, hγ]`.
+-/
 theorem ndl_smul (i : ZMod n) {a : LetA O n} (ha : a ∈ W.AΔ) {x : W.DD T} (hx : x ∈ NDl W T i) :
     a • x ∈ NDl W T i := by
   have hx' : x ∈ W.N T ∧ Formalism.MainNotions.CrystallineLiftingInputs.DL W T i x := hx
@@ -32,6 +37,11 @@ theorem ndl_smul (i : ZMod n) {a : LetA O n} (ha : a ∈ W.AΔ) {x : W.DD T} (hx
     have hγ : letγ (W.γ₀ δ) a = a := ha' δ hδ
     rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, hD.2 δ hδ, hγ]
 
+/- English proof (translation)
+Establish `hle : PhiPullΔ W T i ≤ (PhiPullΔ W T i).comap (a • (LinearMap.id : W.DD T →ₗ[O] W.DD T))`. Unfold `PhiPullΔ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨c, hc, z, hz, rfl⟩`. Use `Submodule.mem_comap.mpr ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, smul_smul]`. Conclude with `Submodule.subset_span ⟨a * c, mul_mem ha hc, z, hz, rfl⟩`. Conclude with `hle hx`.
+-/
 theorem phiPull_smul (i : ZMod n) {a : LetA O n} (ha : a ∈ W.AΔ) {x : W.DD T}
     (hx : x ∈ PhiPullΔ W T i) : a • x ∈ PhiPullΔ W T i := by
   have hle : PhiPullΔ W T i ≤
@@ -44,6 +54,9 @@ theorem phiPull_smul (i : ZMod n) {a : LetA O n} (ha : a ∈ W.AΔ) {x : W.DD T}
     exact Submodule.subset_span ⟨a * c, mul_mem ha hc, z, hz, rfl⟩
   exact hle hx
 
+/- English proof (translation)
+Use `show W.π₀ + ((PD.p : ℕ) : LetA O n) ∈ W.AΔ`. Conclude with `add_mem hπ (Subalgebra.natCast_mem _ _)`.
+-/
 theorem qp_mem (hπ : W.π₀ ∈ W.AΔ) : Formalism.MainNotions.LiftingTheory.qp W ∈ W.AΔ := by
   show W.π₀ + ((PD.p : ℕ) : LetA O n) ∈ W.AΔ
   exact add_mem hπ (Subalgebra.natCast_mem _ _)
@@ -57,9 +70,17 @@ def qN (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) : ↥(NDl W T i) →ₗ[O] ↥(NDl
   (Formalism.MainNotions.LiftingTheory.qp W • (NDl W T i).subtype).codRestrict (NDl W T i)
     (fun x => ndl_smul W T i (qp_mem W hπ) x.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem qN_apply (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) (x : ↥(NDl W T i)) :
     ((qN W T hπ i x : ↥(NDl W T i)) : W.DD T) = Formalism.MainNotions.LiftingTheory.qp W • (x : W.DD T) := rfl
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx' : (x : W.DD T) ∈ (PhiPullΔ W T i).map ((Formalism.MainNotions.LiftingTheory.qp W ^ h) • (LinearMap.id : W.DD T →ₗ[O] W.DD T))` using `hx`. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.mp hx'`. Use `show ((qN W T hπ i x : ↥(NDl W T i)) : W.DD T) ∈ (PhiPullΔ W T i).map ((Formalism.MainNotions.LiftingTheory.qp W ^ h) • (LinearMap.id : W.DD T →ₗ[O] W.DD T))`. Rewrite using `[qN_apply]`.
+
+Use `Submodule.mem_map.mpr ⟨Formalism.MainNotions.LiftingTheory.qp W • y, phiPull_smul W T i (qp_mem W hπ) hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← hyx]`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[smul_smul, smul_smul, mul_comm]`.
+-/
 theorem zh_stable (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) (h : ℕ) :
     Zh W T i h ≤ (Zh W T i h).comap (qN W T hπ i) := by
   intro x hx
@@ -79,6 +100,11 @@ abbrev RR (i : ZMod n) (h : ℕ) := ↥(NDl W T i) ⧸ Zh W T i h
 def qR (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) (h : ℕ) : Module.End O (RR W T i h) :=
   (Zh W T i h).mapQ (Zh W T i h) (qN W T hπ i) (zh_stable W T hπ i h)
 
+/- English proof (translation)
+Proceed by induction on `a with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Both sides reduce to the same expression. Consider the case `succ a ih`. Rewrite using `[pow_succ', pow_succ']`.
+
+Express the relevant statement in the definitionally equal form `qR W T hπ i h ((qR W T hπ i h ^ a) (Submodule.Quotient.mk x)) = Submodule.Quotient.mk (qN W T hπ i ((qN W T hπ i ^ a) x))`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+-/
 theorem qR_pow_mk (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) (h : ℕ) (a : ℕ) (x : ↥(NDl W T i)) :
     (qR W T hπ i h ^ a) (Submodule.Quotient.mk x) = Submodule.Quotient.mk ((qN W T hπ i ^ a) x) := by
   induction a with
@@ -90,6 +116,11 @@ theorem qR_pow_mk (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) (h : ℕ) (a : ℕ) (x 
     rw [ih]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `a with`. Consider the case `zero => rw [pow_zero, pow_zero, one_smul]`. Both sides reduce to the same expression. Consider the case `succ a ih`. Rewrite using `[pow_succ', pow_succ', ← smul_smul, ← ih]`.
+
+Express the relevant statement in the definitionally equal form `((qN W T hπ i ((qN W T hπ i ^ a) x) : ↥(NDl W T i)) : W.DD T) = _`. Conclude with `qN_apply W T hπ i _`.
+-/
 theorem qN_pow_apply (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) (a : ℕ) (x : ↥(NDl W T i)) :
     (((qN W T hπ i ^ a) x : ↥(NDl W T i)) : W.DD T) = Formalism.MainNotions.LiftingTheory.qp W ^ a • (x : W.DD T) := by
   induction a with
@@ -103,6 +134,11 @@ def RRp (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) (h : ℕ) {m' : ℕ} (g : Fin m' 
     Submodule O (RR W T i h) :=
   Submodule.span O {y | ∃ (a : ℕ) (j : Fin m'), y = (qR W T hπ i h ^ a) (Submodule.Quotient.mk (g j))}
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hle : RRp W T hπ i h g ≤ (RRp W T hπ i h g).comap (qR W T hπ i h)`. Unfold `RRp`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨a, j, rfl⟩`.
+
+Use `Submodule.mem_comap.mpr (Submodule.subset_span ⟨a + 1, j, ?_⟩)` and prove the remaining obligations. Rewrite using `[pow_succ']`. Both sides reduce to the same expression. Conclude with `hle hx`.
+-/
 theorem RRp_stable (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) (h : ℕ) {m' : ℕ} (g : Fin m' → ↥(NDl W T i)) :
     ∀ x ∈ RRp W T hπ i h g, qR W T hπ i h x ∈ RRp W T hπ i h g := by
   intro x hx
@@ -115,6 +151,9 @@ theorem RRp_stable (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) (h : ℕ) {m' : ℕ} (
     rfl
   exact hle hx
 
+/- English proof (translation)
+Take `⟨k, hk, hak⟩` from `ha`. Take `⟨m, hm, hbm⟩` from `hb`. Use `⟨k * m, Nat.mul_pos hk hm, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul, hak, one_pow, one_mul, mul_comm, pow_mul, hbm, one_pow]`.
+-/
 private lemma exists_pow_eq_one_mul {Γ : Type} [CommGroup Γ] {a b : Γ} (ha : ∃ k : ℕ, 0 < k ∧ a ^ k = 1)
     (hb : ∃ k : ℕ, 0 < k ∧ b ^ k = 1) : ∃ k : ℕ, 0 < k ∧ (a * b) ^ k = 1 := by
   obtain ⟨k, hk, hak⟩ := ha
@@ -122,11 +161,23 @@ private lemma exists_pow_eq_one_mul {Γ : Type} [CommGroup Γ] {a b : Γ} (ha : 
   refine ⟨k * m, Nat.mul_pos hk hm, ?_⟩
   rw [mul_pow, pow_mul, hak, one_pow, one_mul, mul_comm, pow_mul, hbm, one_pow]
 
+/- English proof (translation)
+Take `⟨k, hk, hak⟩` from `ha`. Conclude with `⟨k, hk, by rw [inv_pow, hak, inv_one]⟩`.
+-/
 private lemma exists_pow_eq_one_inv {Γ : Type} [CommGroup Γ] {a : Γ} (ha : ∃ k : ℕ, 0 < k ∧ a ^ k = 1) :
     ∃ k : ℕ, 0 < k ∧ a⁻¹ ^ k = 1 := by
   obtain ⟨k, hk, hak⟩ := ha
   exact ⟨k, hk, by rw [inv_pow, hak, inv_one]⟩
 
+/- English proof (translation)
+Use `show ∀ δ ∈ W.DelF, W.γA δ W.π₀ = W.π₀`. Introduce `δ hδ`. Establish `hδt` using `(W.DelF_def δ).1 hδ`. Use function extensionality and compare the values at `i`. Use `show W.γ₀ δ W.π₀₁ = W.π₀₁`.
+
+Simplify using `only [Formalism.BasicNotions.LocWach.π₀₁, map_add, map_sub, map_one, map_natCast, map_sum]`. Use `congr 1`. Use `Finset.sum_equiv (Equiv.mulLeft δ) ?_ ?_` and prove the remaining obligations. Introduce `g`. Simplify using `only [Equiv.coe_mulLeft]`.
+
+Rewrite using `[W.DelF_def g, W.DelF_def (δ * g)]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun hg => exists_pow_eq_one_mul hδt hg`. Introduce `hg`. Establish `h2` using `exists_pow_eq_one_mul (exists_pow_eq_one_inv hδt) hg`.
+
+Rewrite `h2` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis. Introduce `g _`. Simplify using `only [Equiv.coe_mulLeft, map_mul, AlgHom.mul_apply]`.
+-/
 theorem uniformizer_mem_delta_invariants : W.π₀ ∈ W.AΔ := by
   show ∀ δ ∈ W.DelF, W.γA δ W.π₀ = W.π₀
   intro δ hδ
@@ -171,6 +222,9 @@ def DRData (T : LocLat G Qp LL O) (hπ : W.π₀ ∈ W.AΔ) (i : ZMod n) (h m c 
       ((PD.p : ℕ) : O) ^ c • z ∈ RRp W T hπ i h g) ∧
     finrank O (RR W T i h ⧸ satL ((PD.p : ℕ) : O) (RRp W T hπ i h g)) ≤ ρ
 
+/- English proof (translation)
+Establish `hq : Formalism.MainNotions.LiftingTheory.qp W - ((PD.p : ℕ) : LetA O n) = W.π₀`. Simplify using `only [Formalism.MainNotions.LiftingTheory.qp, add_sub_cancel_right]`. Rewrite using `[← hq, geom_sum₂_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qp_pow_eq (a : ℕ) : Formalism.MainNotions.LiftingTheory.qp W ^ a = ((PD.p : ℕ) : LetA O n) ^ a +
     (∑ s ∈ Finset.range a, Formalism.MainNotions.LiftingTheory.qp W ^ s * ((PD.p : ℕ) : LetA O n) ^ (a - 1 - s)) * W.π₀ := by
   have hq : Formalism.MainNotions.LiftingTheory.qp W - ((PD.p : ℕ) : LetA O n) = W.π₀ := by
@@ -178,10 +232,44 @@ theorem qp_pow_eq (a : ℕ) : Formalism.MainNotions.LiftingTheory.qp W ^ a = ((P
   rw [← hq, geom_sum₂_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `sum_mem fun s _ => mul_mem (pow_mem (qp_mem W hπ) _) (pow_mem (Subalgebra.natCast_mem _ _) _)`.
+-/
 theorem geom_mem (hπ : W.π₀ ∈ W.AΔ) (a : ℕ) :
     (∑ s ∈ Finset.range a, Formalism.MainNotions.LiftingTheory.qp W ^ s * ((PD.p : ℕ) : LetA O n) ^ (a - 1 - s)) ∈ W.AΔ :=
   sum_mem fun s _ => mul_mem (pow_mem (qp_mem W hπ) _) (pow_mem (Subalgebra.natCast_mem _ _) _)
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hS i hi`. Take `⟨hdom, hdvr, hfrac⟩` from `hS.2.2.2.1`. Take `⟨m', hm', g, k, hfree, hfinite, hnil, ⟨e, he⟩, hsat, hρ⟩` from `hD d T₁ T₂ F b S η m hS i hi`. Establish `hl0 : ((PD.p : ℕ) : O) ≠ 0`. Introduce `h0`.
+
+Establish `h1 : ((PD.p : ℕ) : LL) = 0`. Rewrite using `[← map_natCast (algebraMap O LL), h0, map_zero]`. Establish `h2` using `W.v_l`. Rewrite `h2` using `[h1, AddValuation.map_zero]`. Simplify using `at h2`.
+
+Establish `hlm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr hpu`. Use `hfree` as an intermediate fact. Use `hfinite` as an intermediate fact. Establish `hcount` using `lemmaD_count (R := RR W T₂ i (b i + S)) _ hl0 hlm (qR W T₂ hπ i (b i + S)) hnil (RRp W T₂ hπ i (b i + S) g) (RRp_stable W T₂ hπ i (b i + S) g) m' k e he _ hsat _ hρ`. Establish `hlfin : Module.length O (O ⧸ Ideal.span {((PD.p : ℕ) : O)}) ≠ ⊤` using `Module.length_ne_top_iff.mpr (isFiniteLength_quotient_span_singleton O (mem_nonZeroDivisors_of_ne_zero hl0))`.
+
+Take `⟨kO, hkO'⟩ : ∃ kO : ℕ, Module.length O (O ⧸ Ideal.span {((PD.p : ℕ) : O)}) = (kO : ℕ∞)` from `⟨_, (ENat.natCast_toNat hlfin).symm⟩`. Set `s : Finset (W.DD T₂)` to `Finset.univ.image (fun j => ((g j : ↥(NDl W T₂ i)) : W.DD T₂))`. Use `⟨s, (Finset.card_image_le).trans (by simpa using hm'), ?_, (finrank LL T₂.V * S + 2 * ⌊cD PD.p (hpar n b S + η)⌋₊ * m') * kO, kO, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨j, _, rfl⟩` from `Finset.mem_image.mp hx`.
+
+Conclude with `(g j).2`. Set `Aset : Submodule O ↥(NDl W T₂ i)` to `((NDl W T₂ i).map (W.π₀ • (LinearMap.id : W.DD T₂ →ₗ[O] W.DD T₂)) ⊔ QhP W T₂ i (b i + S) ⊔ Submodule.span O (↑s : Set (W.DD T₂))).comap (NDl W T₂ i).subtype`. Express the relevant statement in the definitionally equal form `Module.length O (↥(NDl W T₂ i) ⧸ Aset) ≤ _`. Establish `hZ : Zh W T₂ i (b i + S) ≤ LinearMap.ker Aset.mkQ`. Rewrite using `[Submodule.ker_mkQ]`.
+
+Introduce `x hx`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right hx)`. Set `f1` to `(Zh W T₂ i (b i + S)).liftQ Aset.mkQ hZ`. Establish `hmem_pi : ∀ z : ↥(NDl W T₂ i), ((qN W T₂ hπ i z : ↥(NDl W T₂ i)) : W.DD T₂) - ((PD.p : ℕ) : O) • (z : W.DD T₂) = W.π₀ • (z : W.DD T₂)`. Introduce `z`.
+
+Rewrite using `[qN_apply, Formalism.MainNotions.LiftingTheory.qp, add_smul, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, add_sub_cancel_right]`. Establish `hle2 : RRp W T₂ hπ i (b i + S) g ⊔ LinearMap.range (qR W T₂ hπ i (b i + S) - ((PD.p : ℕ) : O) • (1 : Module.End O (RR W T₂ i (b i + S)))) ≤ LinearMap.ker f1`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[RRp, Submodule.span_le]`. Introduce and unpack `_ ⟨a, j, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, qR_pow_mk]`. Use `show Aset.mkQ _ = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, qN_pow_apply, qp_pow_eq, add_smul, mul_comm _ W.π₀, mul_smul]`. Use `Submodule.add_mem _ (Submodule.mem_sup_right ?_) (Submodule.mem_sup_left (Submodule.mem_sup_left ?_))` and prove the remaining obligations. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `nsmul_mem (Submodule.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem _ (Finset.mem_univ j)))) _`. Conclude with `Submodule.mem_map.mpr ⟨_, ndl_smul W T₂ i (geom_mem W hπ a) (g j).2, rfl⟩`. Introduce and unpack `_ ⟨w, rfl⟩`. Proceed by induction on `w using Submodule.Quotient.induction_on with | H z => ?_`. Rewrite using `[LinearMap.mem_ker]`.
+
+Establish `hz : (qR W T₂ hπ i (b i + S) - ((PD.p : ℕ) : O) • (1 : Module.End O (RR W T₂ i (b i + S)))) (Submodule.Quotient.mk z) = Submodule.Quotient.mk (qN W T₂ hπ i z - ((PD.p : ℕ) : O) • z)`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul]`. Both sides reduce to the same expression. Rewrite using `[hz]`. Use `show Aset.mkQ _ = 0`.
+
+Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, Submodule.coe_smul, hmem_pi]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left ⟨z, z.2, rfl⟩)`. Set `f2` to `(RRp W T₂ hπ i (b i + S) g ⊔ LinearMap.range (qR W T₂ hπ i (b i + S) - ((PD.p : ℕ) : O) • (1 : Module.End O (RR W T₂ i (b i + S))))).liftQ f1 hle2`. Establish `hsurj : Function.Surjective f2`. Introduce `y`.
+
+Proceed by induction on `y using Submodule.Quotient.induction_on with | H x => ?_`. Conclude with `⟨Submodule.Quotient.mk (Submodule.Quotient.mk x), rfl⟩`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hkO'`. Establish `hl11 : (11 : ℝ) ≤ (PD.p : ℝ)` using `by exact_mod_cast hS.2.1`.
+
+Establish `hcD : 0 ≤ cD PD.p (hpar n b S + η)`. Unfold `cD`. Establish `: (0 : ℝ) < (PD.p : ℝ) - 1` using `by linarith`. Check the signs of the components of the expression. Establish `hfl : (⌊cD PD.p (hpar n b S + η)⌋₊ : ℝ) ≤ cD PD.p (hpar n b S + η)` using `Nat.floor_le hcD`.
+
+Establish `hm : (m' : ℝ) ≤ m` using `by exact_mod_cast hm'`. Unfold `lenC`. Use `push_cast`. Apply `mul_le_mul_of_nonneg_right _ (Nat.cast_nonneg kO)` to reduce the goal to its premises. Establish `: (⌊cD PD.p (hpar n b S + η)⌋₊ : ℝ) * m' ≤ m * cD PD.p (hpar n b S + η)`.
+
+Rewrite using `[mul_comm (m : ℝ)]`. Conclude with `mul_le_mul hfl hm (Nat.cast_nonneg _) hcD`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lemmaDN_of [NeZero n] (hπ : W.π₀ ∈ W.AΔ) (hpu : ¬ IsUnit ((PD.p : ℕ) : O))
     (hD : ∀ (d : ℕ) (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L) (b : ZMod n → ℕ) (S η m : ℕ),
       SetCS W d T₁ T₂ F b S η m → ∀ i ∈ evens n d,

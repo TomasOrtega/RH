@@ -8,6 +8,17 @@ namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 
 section LinAlgQ
 
+/- English proof (translation)
+Establish `hv : v ∈ Submodule.span K (M : Set V)` using `by rw [hM]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_mem _, by rwa [one_smul]⟩`. Consider the case `zero => exact ⟨1, one_mem _, by rw [smul_zero]; exact M.zero_mem⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, mul_mem hs ht, ?_⟩` and prove the remaining obligations. Establish `h1 : (s * t) • x = t • (s • x)` using `by rw [mul_comm, mul_smul]`. Rewrite using `[smul_add, h1, mul_smul]`.
+
+Conclude with `M.add_mem (M.smul_mem _ hsx) (M.smul_mem _ hty)`. Consider the case `smul a x _ hx`. Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective R a`. Use `⟨d * s, mul_mem hd hs, ?_⟩` and prove the remaining obligations.
+
+Establish `hd0 : algebraMap R K d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr (nonZeroDivisors.ne_zero hd)`. Establish `h1 : (d * s) • ((algebraMap R K n / algebraMap R K d) • x) = n • (s • x)`. Rewrite using `[← algebraMap_smul K (d * s), ← algebraMap_smul K n, ← algebraMap_smul K s, smul_smul, smul_smul, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[h1]`. Conclude with `M.smul_mem _ hsx`.
+-/
 theorem exists_den {R K V : Type*} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V] (M : Submodule R V)
     (hM : Submodule.span K (M : Set V) = ⊤) (v : V) : ∃ s ∈ nonZeroDivisors R, s • v ∈ M := by
@@ -35,6 +46,19 @@ theorem exists_den {R K V : Type*} [CommRing R] [IsDomain R] [Field K] [Algebra 
     rw [h1]
     exact M.smul_mem _ hsx
 
+/- English proof (translation)
+Set `g : M →ₗ[R] (V ⧸ W)` to `(W.mkQ.restrictScalars R).comp M.subtype`. Establish `hker : LinearMap.ker g = (W.restrictScalars R).comap M.subtype`. Use extensionality with `x`. Simplify using `[g]`. Set `f : (M ⧸ (W.restrictScalars R).comap M.subtype) →ₗ[R] (V ⧸ W)` to `Submodule.liftQ _ g (le_of_eq hker.symm)`.
+
+Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ (le_of_eq hker)`. Establish `hloc : IsLocalizedModule (nonZeroDivisors R) f`. Use `⟨fun s => ?_, fun y => ?_, fun {x₁ x₂} h => ⟨1, by rw [hinj h]⟩⟩` and prove the remaining obligations.
+
+Establish `hs0 : algebraMap R K s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr (nonZeroDivisors.ne_zero s.2)`. Rewrite using `[Module.End.isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Simplify using `only [Module.algebraMap_end_apply] at hab`.
+
+Rewrite `hab` using `[← algebraMap_smul K (s : R) a, ← algebraMap_smul K (s : R) b]`. Conclude with `smul_right_injective _ hs0 hab`. Introduce `a`. Use `⟨(algebraMap R K s)⁻¹ • a, ?_⟩` and prove the remaining obligations. Simplify using `only [Module.algebraMap_end_apply]`.
+
+Rewrite using `[← algebraMap_smul K (s : R), smul_smul, mul_inv_cancel₀ hs0, one_smul]`. Take `⟨v, rfl⟩` from `W.mkQ_surjective y`. Take `⟨s, hs, hsv⟩` from `exists_den (K := K) M hM v`. Use `⟨(Submodule.Quotient.mk ⟨s • v, hsv⟩, ⟨s, hs⟩), ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+
+Rewrite using `[IsLocalization.finrank_eq K (nonZeroDivisors R) le_rfl, IsLocalizedModule.finrank_eq (nonZeroDivisors R) f le_rfl]`.
+-/
 theorem finrank_quot_eq {R K V : Type*} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V] (M : Submodule R V)
     (hM : Submodule.span K (M : Set V) = ⊤) (W : Submodule K V) :
@@ -68,6 +92,13 @@ theorem finrank_quot_eq {R K V : Type*} [CommRing R] [IsDomain R] [Field K] [Alg
       rfl
   rw [IsLocalization.finrank_eq K (nonZeroDivisors R) le_rfl, IsLocalizedModule.finrank_eq (nonZeroDivisors R) f le_rfl]
 
+/- English proof (translation)
+Take `⟨b, hb, hspan, hli⟩` from `exists_linearIndependent K (W.mkQ '' (Sh : Set V))`. Establish `htop : Submodule.span K b = ⊤`. Rewrite using `[hspan, Submodule.span_image, hS, Submodule.map_top, Submodule.range_mkQ]`. Establish `hfin : Finite b` using `((Sh.finite_toSet.image _).subset hb).to_subtype`. Use `Fintype.ofFinite b` as an intermediate fact.
+
+Set `bs : Basis b K (V ⧸ W)` to `Basis.mk hli (by rw [Subtype.range_coe, htop])`. Establish `hcard : Fintype.card b = finrank K (V ⧸ W)` using `(finrank_eq_card_basis bs).symm`. Set `eq : Fin (finrank K (V ⧸ W)) ≃ b` to `(Fintype.equivFinOfCardEq hcard).symm`. Establish `hpre : ∀ k, ∃ v ∈ (Sh : Set V), W.mkQ v = (eq k : V ⧸ W)` using `fun k => hb (eq k).2`. Use `choose e he1 he2 using hpre`.
+
+Use `⟨e, fun i => he1 i, ?_⟩` and prove the remaining obligations. Rewrite using `[sup_comm, ← Submodule.map_mkQ_eq_top, Submodule.map_span, ← Set.range_comp]`. Establish `: (⇑W.mkQ ∘ e) = (Subtype.val : b → V ⧸ W) ∘ eq` using `by funext k; exact he2 k`. Rewrite using `[this, Set.range_comp, eq.surjective.range_eq, Set.image_univ, Subtype.range_coe, htop]`.
+-/
 theorem exists_sub_basis {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     (Sh : Finset V) (hS : Submodule.span K (Sh : Set V) = ⊤) (W : Submodule K V) :
     ∃ e : Fin (finrank K (V ⧸ W)) → V, (∀ i, e i ∈ Sh) ∧ Submodule.span K (Set.range e) ⊔ W = ⊤ := by
@@ -91,11 +122,19 @@ end LinAlgQ
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
+/- English proof (translation)
+The claim follows from `finrank_quot_eq (B.Mlat j ka) hM (WeightFamilies.MggK B CR T c j ka)`.
+-/
 theorem rhoP_eq_finrank (B : WeightFamilies.Prov D) (CR T c : ℝ) (j : ℕ) (ka : WeightFamilies.Wt D j)
     (hM : Submodule.span B.KO (B.Mlat j ka : Set (B.Cusp j ka)) = ⊤) :
     WeightFamilies.rhoP B CR T c j ka = finrank B.KO (B.Cusp j ka ⧸ WeightFamilies.MggK B CR T c j ka) :=
   finrank_quot_eq (B.Mlat j ka) hM (WeightFamilies.MggK B CR T c j ka)
 
+/- English proof (translation)
+Take `⟨Sh, hSh, hspan, hshort⟩` from `hS4`. Establish `hMtop : Submodule.span B.KO (B.Mlat j ka : Set (B.Cusp j ka)) = ⊤` using `top_le_iff.mp (hspan ▸ Submodule.span_mono fun x hx => hM (hSh hx))`. Establish `hex` using `exists_sub_basis Sh hspan (WeightFamilies.MggK B CRm T c j ka)`. Rewrite `hex` using `[← rhoP_eq_finrank B CRm T c j ka hMtop]`. Take `⟨e, he, hsup⟩` from `hex`.
+
+Conclude with `⟨fun i => ⟨e i, hM (hSh (he i))⟩, rfl, fun i => hSh (he i), hsup, fun i => (hshort _ (he i)).trans hbe⟩`.
+-/
 theorem exists_global_family_quotient_bounded {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G0 : GlobalFamilyData X ka wL wF) (large₂ : SizeData₂ D) (S : Scal B)
     (CRm : ℝ) (T : ℕ) (c be Ch Ah : ℝ)
     (hS4 : ShortG X ka (X.Thc S.sK ka) be)
@@ -111,6 +150,9 @@ theorem exists_global_family_quotient_bounded {X : PJ D B P j} {ka wL wF : Weigh
   obtain ⟨e, he, hsup⟩ := hex
   exact ⟨fun i => ⟨e i, hM (hSh (he i))⟩, rfl, fun i => hSh (he i), hsup, fun i => (hshort _ (he i)).trans hbe⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, exists_global_family_quotient_bounded G0 large₂ S CRm T c (Gc * ka.size) Ch Ah hS4 hM (mul_le_mul_of_nonneg_right hG (by linarith [ka.one_le_size]))⟩`.
+-/
 theorem exists_global_family_quotient {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G0 : GlobalFamilyData X ka wL wF) (large₂ : SizeData₂ D) (S : Scal B)
     (CRm : ℝ) (T : ℕ) (c Gc Ch Ah : ℝ)
     (hS4 : ShortG X ka (X.Thc S.sK ka) (Gc * ka.size))
@@ -125,33 +167,63 @@ section Unchanged
 
 variable {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G0 : GlobalFamilyData X ka wL wF) (rq : ℕ) (th : Fin rq → B.Mlat j ka)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) =
     ⟨G0.N, G0.w, G0.del, G0.th', G0.rz, G0.alz, G0.th0, G0.zc, rq, th, G0.iet, G0.et, G0.mx⟩ := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tiedW_reQ (S : Scal B) (Gc Prw : ℝ) :
     ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF).TiedW S Gc Prw ↔ G0.TiedW S Gc Prw := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tiedTh_reQ (S : Scal B) (Gc : ℝ) :
     ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF).TiedTh S Gc ↔ G0.TiedTh S Gc := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tiedZ_reQ (S : Scal B) (T : ℕ) (Gc : ℝ) :
     ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF).TiedZ S T Gc ↔ G0.TiedZ S T Gc := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tiedEt_reQ (large₂ : SizeData₂ D) (Cf Af : ℝ) :
     ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF).TiedEt large₂ Cf Af ↔ G0.TiedEt large₂ Cf Af := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem inBasis_reQ (la : HeightOneSpectrum (𝓞 B.KO)) :
     InBasis ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) la ↔ InBasis G0 la := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem inContainZ_reQ (la : HeightOneSpectrum (𝓞 B.KO)) (S : Scal B) (T : ℕ) :
     InContainZ ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) la S T ↔ InContainZ G0 la S T := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem inContainM_reQ (la : HeightOneSpectrum (𝓞 B.KO)) (CRm : ℝ) (T : ℕ) (c : ℝ) :
     InContainM ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) la CRm T c ↔ InContainM G0 la CRm T c := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem combBound_reQ (S : Scal B) (c : ℝ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) :
     CombBound ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) S c nus ↔ CombBound G0 S c nus := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (la : HeightOneSpectrum (𝓞 B.KO)) :
     PtsG ({ G0 with rq := rq, th := th } : GlobalFamilyData X ka wL wF) la = PtsG G0 la := rfl
 
@@ -161,12 +233,24 @@ def LocalPointData.reQ {G0 : GlobalFamilyData X ka wL wF} {la : HeightOneSpectru
 
 variable {G0} {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G0 la)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem LocalPointData.inCurve_reQ : (Q.reQ rq th).InCurve ↔ Q.InCurve := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem LocalPointData.inTie_reQ (S : Scal B) : (Q.reQ rq th).InTie S ↔ Q.InTie S := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem LocalPointData.inLift_reQ (T : ℕ) : (Q.reQ rq th).InLift T ↔ Q.InLift T := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem heights_reQ (Qf : ∀ la, LocalPointData G0 la) (Gc PH Prw Pet : ℝ) :
     Heights (fun la => (Qf la).reQ rq th) Gc PH Prw Pet ↔ Heights Qf Gc PH Prw Pet := Iff.rfl
 

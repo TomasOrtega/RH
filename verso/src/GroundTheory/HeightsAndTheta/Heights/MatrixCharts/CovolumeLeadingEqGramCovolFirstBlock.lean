@@ -9,41 +9,71 @@ open Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Use extensionality with `z`. Simplify using `[GroundTheory.Heights₂.Heights.unitPolydisc, Metric.mem_ball, dist_zero_right, pi_norm_lt_iff one_pos]`.
+-/
 theorem unitPolydisc_eq_ball (n : ℕ) :
     GroundTheory.Heights₂.Heights.unitPolydisc n = Metric.ball (0 : Fin n → ℂ) 1 := by
   ext z
   simp [GroundTheory.Heights₂.Heights.unitPolydisc, Metric.mem_ball, dist_zero_right,
     pi_norm_lt_iff one_pos]
 
+/- English proof (translation)
+Simplify using `only [GroundTheory.Heights₂.Heights.cuspTime, GroundTheory.Heights₂.Heights.cuspCoord, lwP₂, one_div]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cuspTime_eq_logWeight {n a : ℕ} (h : a ≤ n) (z : Fin n → ℂ) (j : Fin a) :
     GroundTheory.Heights₂.Heights.cuspTime h z j = lwP₂ (z (Fin.castLE h j)) := by
   simp only [GroundTheory.Heights₂.Heights.cuspTime, GroundTheory.Heights₂.Heights.cuspCoord, lwP₂, one_div]
   ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem puncturedChart_eq_punctured {n a : ℕ} (h : a ≤ n) (U : Set (Fin n → ℂ)) :
     GroundTheory.Heights₂.Heights.puncturedChart h U = punctured h U := rfl
 
+/- English proof (translation)
+Simplify using `only [GroundTheory.Heights₂.Heights.chartImag, chartY, imPart, cuspTime_eq_logWeight]`.
+-/
 theorem chartImag_eq_chartY {n a g : ℕ} (h : a ≤ n)
     (τ0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Matrix (Fin g) (Fin g) ℝ)
     (z : Fin n → ℂ) : GroundTheory.Heights₂.Heights.chartImag h τ0 B z = chartY h τ0 B z := by
   simp only [GroundTheory.Heights₂.Heights.chartImag, chartY, imPart, cuspTime_eq_logWeight]
 
+/- English proof (translation)
+Simplify using `only [GroundTheory.Heights₂.Heights.chartRadius, GroundTheory.Heights₂.Heights.cuspCoord, chartR, one_div]`.
+-/
 theorem chartRadius_eq_chartR {n a : ℕ} (h : a ≤ n) (z : Fin n → ℂ) :
     GroundTheory.Heights₂.Heights.chartRadius h z = chartR h z := by
   simp only [GroundTheory.Heights₂.Heights.chartRadius, GroundTheory.Heights₂.Heights.cuspCoord, chartR, one_div]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hermPair_inv_eq_realIP {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (v w : Fin g → ℂ) :
     GroundTheory.Heights₂.Heights.hermPair Y⁻¹ v w = realIP Y v w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hermValue_eq_qf {ι : Type*} [Fintype ι] (A : Matrix ι ι ℝ) (w : ι → ℂ) :
     GroundTheory.Heights₂.Heights.hermValue A w = qf A w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem metricLength_eq_yNorm {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (w : Fin g → ℂ) :
     GroundTheory.Heights₂.Heights.metricLength Y w = yNorm Y w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem logDetGram_eq_gramLogDet {g k : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ)
     (F : Matrix (Fin g) (Fin k) ℂ) : GroundTheory.Heights₂.Heights.logDetGram Y F = gramLogDet Y F := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem splitCoord_eq_splitPt (n m : ℕ) : GroundTheory.Heights₂.Heights.splitCoord n m = splitPt := rfl
 
 namespace PeriodChartData
@@ -103,28 +133,64 @@ section ofBundled
 
 variable (D : GroundTheory.Heights₂.Heights.PeriodChartData)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofBundled_U : (ofBundled D).U = D.U := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem periodChartData_ofBundled_tau : (ofBundled D).tau0 = D.τ0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofBundled_B : (ofBundled D).B = D.B := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofBundled_c : (ofBundled D).c = D.c := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofBundled_V : (ofBundled D).V = D.V := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofBundled_f : (ofBundled D).f = D.f := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofBundled_K : (ofBundled D).K = D.K := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Ustar_ofBundled : (ofBundled D).Ustar = D.Ustar := rfl
 
+/- English proof (translation)
+The claim follows from `(chartImag_eq_chartY _ _ _ _).symm`.
+-/
 theorem Y_ofBundled (z : Fin D.n → ℂ) : (ofBundled D).Y z = D.Y z :=
   (chartImag_eq_chartY _ _ _ _).symm
 
+/- English proof (translation)
+The claim follows from `(chartRadius_eq_chartR _ _).symm`.
+-/
 theorem r_ofBundled (z : Fin D.n → ℂ) : (ofBundled D).r z = D.radius z :=
   (chartRadius_eq_chartR _ _).symm
 
+/- English proof (translation)
+Use `show gramLogDet ((ofBundled D).Y p.1) (D.f p) = GroundTheory.Heights₂.Heights.logDetGram (D.Y p.1) (D.f p)`. Rewrite using `[Y_ofBundled]`. Both sides reduce to the same expression.
+-/
 theorem u_ofBundled (p : (Fin D.n → ℂ) × (Fin D.m → ℂ)) : (ofBundled D).u p = D.u p := by
   show gramLogDet ((ofBundled D).Y p.1) (D.f p) =
     GroundTheory.Heights₂.Heights.logDetGram (D.Y p.1) (D.f p)
   rw [Y_ofBundled]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tau_ofBundled (ℓ : Fin D.a → ℂ) (z : Fin D.n → ℂ) :
     (ofBundled D).tau ℓ z = D.period z ℓ := rfl
 
@@ -134,36 +200,93 @@ section bundle
 
 variable {n a g m k : ℕ} (D : PeriodChartData n a g m k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem bundle_n : D.bundle.n = n := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem bundle_a : D.bundle.a = a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem bundle_g : D.bundle.g = g := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem bundle_m : D.bundle.m = m := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem bundle_rk : D.bundle.rk = k := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bundle_U : D.bundle.U = D.U := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bundle_τ0 : D.bundle.τ0 = D.tau0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bundle_B : D.bundle.B = D.B := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bundle_c : D.bundle.c = D.c := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bundle_V : D.bundle.V = D.V := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bundle_f : D.bundle.f = D.f := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bundle_K : D.bundle.K = D.K := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bundle_Ustar : D.bundle.Ustar = D.Ustar := rfl
 
+/- English proof (translation)
+The claim follows from `chartImag_eq_chartY _ _ _ _`.
+-/
 theorem bundle_Y (z : Fin n → ℂ) : D.bundle.Y z = D.Y z := chartImag_eq_chartY _ _ _ _
 
+/- English proof (translation)
+The claim follows from `chartRadius_eq_chartR _ _`.
+-/
 theorem bundle_radius (z : Fin n → ℂ) : D.bundle.radius z = D.r z := chartRadius_eq_chartR _ _
 
+/- English proof (translation)
+Use `show GroundTheory.Heights₂.Heights.logDetGram (D.bundle.Y p.1) (D.f p) = gramLogDet (D.Y p.1) (D.f p)`. Rewrite using `[bundle_Y]`. Both sides reduce to the same expression.
+-/
 theorem bundle_u (p : (Fin n → ℂ) × (Fin m → ℂ)) : D.bundle.u p = D.u p := by
   show GroundTheory.Heights₂.Heights.logDetGram (D.bundle.Y p.1) (D.f p) = gramLogDet (D.Y p.1) (D.f p)
   rw [bundle_Y]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bundle_period (z : Fin n → ℂ) (ℓ : Fin a → ℂ) : D.bundle.period z ℓ = D.tau ℓ z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofBundled_bundle : ofBundled D.bundle = D := rfl
 
 end bundle
 
+/- English proof (translation)
+Consider the cases of `D`. Both sides reduce to the same expression.
+-/
 theorem bundle_ofBundled (D : GroundTheory.Heights₂.Heights.PeriodChartData) : (ofBundled D).bundle = D := by
   cases D
   rfl
@@ -178,6 +301,9 @@ end PeriodChartData
 
 namespace ToricBlock
 
+/- English proof (translation)
+The claim follows from `T.r_le B_support := T.support sum_posDef := T.pos`.
+-/
 theorem ofBundled {D : GroundTheory.Heights₂.Heights.PeriodChartData} (T : GroundTheory.Heights₂.Heights.ToricBlock D) :
     ToricBlock (PeriodChartData.ofBundled D) T.r where
   r_le := T.r_le
@@ -191,6 +317,9 @@ def toBundled {D : GroundTheory.Heights₂.Heights.PeriodChartData} {r : ℕ}
   support := T.B_support
   pos := T.sum_posDef
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toBundled_r {D : GroundTheory.Heights₂.Heights.PeriodChartData} {r : ℕ}
     (T : ToricBlock (PeriodChartData.ofBundled D) r) : (toBundled T).r = r := rfl
 
@@ -201,6 +330,9 @@ def equiv (D : GroundTheory.Heights₂.Heights.PeriodChartData) :
   left_inv T := by cases T; rfl
   right_inv T := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨toBundled (D := E.bundle) h, rfl⟩, by rintro ⟨T, rfl⟩; exact ofBundled T⟩`.
+-/
 theorem iff_bundle {n a g m k : ℕ} (E : PeriodChartData n a g m k) (r : ℕ) :
     ToricBlock E r ↔ ∃ T : GroundTheory.Heights₂.Heights.ToricBlock E.bundle, T.r = r :=
   ⟨fun h => ⟨toBundled (D := E.bundle) h, rfl⟩, by rintro ⟨T, rfl⟩; exact ofBundled T⟩
@@ -237,13 +369,25 @@ def equiv (N g k : ℕ) : GroundTheory.Heights₂.Heights.SiegelFamily N g k ≃
   left_inv S := by cases S; rfl
   right_inv P := by cases P; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSiegelFamily_alt {N g k : ℕ} (S : GroundTheory.Heights₂.Heights.SiegelFamily N g k) :
     (ofSiegelFamily S).W = S.W := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSiegelFamily_tau {N g k : ℕ} (S : GroundTheory.Heights₂.Heights.SiegelFamily N g k) :
     (ofSiegelFamily S).tau = S.τ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofSiegelFamily_F {N g k : ℕ} (S : GroundTheory.Heights₂.Heights.SiegelFamily N g k) :
     (ofSiegelFamily S).F = S.f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gramLogDet_ofSiegelFamily {N g k : ℕ} (S : GroundTheory.Heights₂.Heights.SiegelFamily N g k)
     (x : Fin N → ℂ) :
     gramLogDet (imPart ((ofSiegelFamily S).tau x)) ((ofSiegelFamily S).F x) =
@@ -251,18 +395,30 @@ theorem gramLogDet_ofSiegelFamily {N g k : ℕ} (S : GroundTheory.Heights₂.Hei
 
 end PshData
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[GroundTheory.Heights₂.Heights.intVecC]`.
+-/
 theorem intVecC_zero {g : ℕ} : GroundTheory.Heights₂.Heights.intVecC (0 : Fin g → ℤ) = 0 := by
   ext k; simp [GroundTheory.Heights₂.Heights.intVecC]
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[GroundTheory.Heights₂.Heights.intVecC]`.
+-/
 theorem intVecC_add {g : ℕ} (a b : Fin g → ℤ) :
     GroundTheory.Heights₂.Heights.intVecC (a + b) =
       GroundTheory.Heights₂.Heights.intVecC a + GroundTheory.Heights₂.Heights.intVecC b := by
   ext k; simp [GroundTheory.Heights₂.Heights.intVecC]
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[GroundTheory.Heights₂.Heights.intVecC]`.
+-/
 theorem intVecC_smul {g : ℕ} (c : ℤ) (a : Fin g → ℤ) :
     GroundTheory.Heights₂.Heights.intVecC (c • a) = c • GroundTheory.Heights₂.Heights.intVecC a := by
   ext k; simp [GroundTheory.Heights₂.Heights.intVecC]
 
+/- English proof (translation)
+Use extensionality with `k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using `[GroundTheory.Heights₂.Heights.intVecC]`. Simplify using `[GroundTheory.Heights₂.Heights.intVecC, h]`.
+-/
 theorem intVecC_single {g : ℕ} (j : Fin g) :
     GroundTheory.Heights₂.Heights.intVecC (Pi.single j 1) = (Pi.single j (1 : ℂ) : Fin g → ℂ) := by
   ext k
@@ -270,11 +426,25 @@ theorem intVecC_single {g : ℕ} (j : Fin g) :
   · subst h; simp [GroundTheory.Heights₂.Heights.intVecC]
   · simp [GroundTheory.Heights₂.Heights.intVecC, h]
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[GroundTheory.Heights₂.Heights.intVecC, Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem intVecC_eq_sum {g : ℕ} (a : Fin g → ℤ) :
     GroundTheory.Heights₂.Heights.intVecC a = ∑ j, a j • (Pi.single j (1 : ℂ) : Fin g → ℂ) := by
   ext k
   simp [GroundTheory.Heights₂.Heights.intVecC, Finset.sum_apply, Pi.single_apply]
 
+/- English proof (translation)
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, n, rfl⟩`. Rewrite using `[SetLike.mem_coe, intVecC_eq_sum, intVecC_eq_sum, Matrix.mulVec_sum]`. Use `add_mem (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl ⟨j, rfl⟩))) (Submodule.sum_mem _ fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr ⟨j, rfl⟩))`. Introduce `hw`. Rewrite `hw` using `[SetLike.mem_coe, periodLattice]`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Break down `hx with ⟨j, rfl⟩ | ⟨j, rfl⟩` into its components or cases. Conclude with `⟨Pi.single j 1, 0, by rw [intVecC_single, intVecC_zero, mulVec_zero, add_zero]⟩`. Conclude with `⟨0, Pi.single j 1, by rw [intVecC_single, intVecC_zero, zero_add]⟩`. Consider the case `zero => exact ⟨0, 0, by rw [intVecC_zero, mulVec_zero, add_zero]⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨a, n, rfl⟩` from `hx`. Take `⟨a', n', rfl⟩` from `hy`. Conclude with `⟨a + a', n + n', by rw [intVecC_add, intVecC_add, mulVec_add]; abel⟩`. Consider the case `smul c x _ hx`.
+
+Take `⟨a, n, rfl⟩` from `hx`. Conclude with `⟨c • a, c • n, by rw [intVecC_smul, intVecC_smul, mulVec_smul, smul_add]⟩`.
+-/
 theorem periodLattice_eq {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) :
     GroundTheory.Heights₂.Heights.periodLattice τ = (periodLattice τ : Set (Fin g → ℂ)) := by
   ext w
@@ -301,6 +471,19 @@ theorem periodLattice_eq {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) :
       obtain ⟨a, n, rfl⟩ := hx
       exact ⟨c • a, c • n, by rw [intVecC_smul, intVecC_smul, mulVec_smul, smul_add]⟩
 
+/- English proof (translation)
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Rewrite using `[intVecC_eq_sum, SetLike.mem_coe]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hk : k.val < r`. Take `⟨j, rfl⟩ : ∃ j : Fin r, Fin.castLE hr j = k` from `⟨⟨k, hk⟩, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[ha k (not_lt.mp hk), zero_smul]`. Conclude with `zero_mem _`.
+
+Introduce `hw`. Rewrite `hw` using `[SetLike.mem_coe, firstBlock]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`.
+
+Use `⟨Pi.single (Fin.castLE hr j) 1, fun k hk => Pi.single_eq_of_ne ?_ _, (intVecC_single _).symm⟩` and prove the remaining obligations. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castLE] at this`. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `zero => exact ⟨0, fun _ _ => rfl, intVecC_zero.symm⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨a', ha', rfl⟩` from `hy`. Conclude with `⟨a + a', fun k hk => by simp [ha k hk, ha' k hk], (intVecC_add a a').symm⟩`.
+
+Consider the case `smul c x _ hx`. Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨c • a, fun k hk => by simp [ha k hk], (intVecC_smul c a).symm⟩`.
+-/
 theorem leadingLattice_eq_firstBlock {g r : ℕ} (hr : r ≤ g) :
     GroundTheory.Heights₂.Heights.leadingLattice g r = (firstBlock hr : Set (Fin g → ℂ)) := by
   ext w
@@ -340,9 +523,27 @@ def realIPForm {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) : LinearMap.BilinForm 
     (fun v w w' => by simp [realIP, mulVec_add, dotProduct_add])
     (fun c v w => by simp [realIP, mulVec_smul, dotProduct_smul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem realIPForm_apply {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (v w : Fin g → ℂ) :
     realIPForm Y v w = realIP Y v w := rfl
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `rfl : q = k := by`. Establish `h1` using `finrank_span_eq_card hb`. Rewrite `h1` using `[hspan, finrank_span_eq_card hv]`. Simplify using `using h1.symm`. Establish `hc : ∀ i, ∃ c : Fin q → ℤ, ∑ j, c j • v j = b i` using `fun i => (Submodule.mem_span_range_iff_exists_fun ℤ).mp (hspan ▸ Submodule.subset_span ⟨i, rfl⟩)`.
+
+Establish `hd : ∀ j, ∃ d : Fin q → ℤ, ∑ i, d i • b i = v j` using `fun j => (Submodule.mem_span_range_iff_exists_fun ℤ).mp (hspan.symm ▸ Submodule.subset_span ⟨j, rfl⟩)`. Use `choose c hc using hc`. Use `choose d hd using hd`. Establish `hdc : Matrix.of d * Matrix.of c = 1`. Use extensionality with `j l`.
+
+Use `Fintype.linearIndependent_iffₛ.mp hv (fun l => (Matrix.of d * Matrix.of c) j l) (fun l => (1 : Matrix (Fin q) (Fin q) ℤ) j l) ?_ l` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.smul_sum, hc]`.
+
+Use `_ = ∑ l, (1 : Matrix (Fin q) (Fin q) ℤ) j l • v l := by`. Rewrite using `[hd j]`. Simplify using `[Matrix.one_apply]`. Establish `hunit : IsUnit (Matrix.of c).det`. Use `congrArg Matrix.det hdc` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_mul, Matrix.det_one, mul_comm]`. Conclude with `IsUnit.of_mul_eq_one _ this`. Establish `hsq : (((Matrix.of c).det : ℤ) : ℝ) ^ 2 = 1`. Apply the tactic sequence `rcases Int.isUnit_iff.mp hunit with h | h <;> simp [h]`. Establish `hdet : ((Matrix.of c).map (Int.cast : ℤ → ℝ)).det = (((Matrix.of c).det : ℤ) : ℝ)` using `((Int.castRingHom ℝ).map_det _).symm`.
+
+Establish `hG : (Matrix.of fun i j => realIP Y (b i) (b j)) = (Matrix.of c).map (Int.cast : ℤ → ℝ) * (Matrix.of fun i j => realIP Y (v i) (v j)) * ((Matrix.of c).map (Int.cast : ℤ → ℝ))ᵀ`. Use extensionality with `i l`. Rewrite using `[Matrix.of_apply, ← hc i, ← hc l]`. Use `show realIPForm Y (∑ j, c i j • v j) (∑ j, c l j • v j) = _`. Simplify using `only [map_sum, LinearMap.sum_apply]`.
+
+Simplify using `only [map_zsmul, LinearMap.smul_apply]`. Simplify using `only [zsmul_eq_mul, realIPForm_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, Matrix.transpose_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Rewrite using `[hG, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hdet]`. Take the linear combination `(Matrix.of fun i j => realIP Y (v i) (v j)).det * hsq`.
+-/
 theorem gram_det_eq_of_span_eq {g q k : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ)
     (v : Fin k → Fin g → ℂ) (hv : LinearIndependent ℤ v) (b : Fin q → Fin g → ℂ)
     (hb : LinearIndependent ℤ b)
@@ -392,6 +593,11 @@ theorem gram_det_eq_of_span_eq {g q k : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ)
   rw [hG, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hdet]
   linear_combination (Matrix.of fun i j => realIP Y (v i) (v j)).det * hsq
 
+/- English proof (translation)
+Unfold `gramCovol`. Establish `hS : {x : ℝ | ∃ (q : ℕ) (b : Fin q → Fin g → ℂ), LinearIndependent ℤ b ∧ Submodule.span ℤ (Set.range b) = Submodule.span ℤ (Set.range v) ∧ x = Real.sqrt (Matrix.of (fun i j => realIP Y (b i) (b j))).det} = {GroundTheory.Heights₂.Heights.covolume Y v}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, b, hb, hs, rfl⟩`.
+
+Rewrite using `[Set.mem_singleton_iff, gram_det_eq_of_span_eq Y v hv b hb hs]`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨k, v, hv, rfl, rfl⟩`. Rewrite using `[hS, csInf_singleton]`.
+-/
 theorem covolume_eq_gramCovol {g k : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (v : Fin k → Fin g → ℂ)
     (hv : LinearIndependent ℤ v) :
     GroundTheory.Heights₂.Heights.covolume Y v = gramCovol Y (Submodule.span ℤ (Set.range v)) := by
@@ -409,6 +615,11 @@ theorem covolume_eq_gramCovol {g k : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (v : 
       exact ⟨k, v, hv, rfl, rfl⟩
   rw [hS, csInf_singleton]
 
+/- English proof (translation)
+Establish `h` using `(Pi.basisFun ℂ (Fin g)).linearIndependent.comp _ (Fin.castLE_injective hr)`. Establish `h' : LinearIndependent ℂ (fun j : Fin r => (Pi.single (Fin.castLE hr j) (1 : ℂ) : Fin g → ℂ))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using the standard rewrite rules.
+
+Conclude with `h'.restrict_scalars' ℤ`.
+-/
 theorem linearIndependent_leading {g r : ℕ} (hr : r ≤ g) :
     LinearIndependent ℤ (fun j : Fin r => (Pi.single (Fin.castLE hr j) (1 : ℂ) : Fin g → ℂ)) := by
   have h := (Pi.basisFun ℂ (Fin g)).linearIndependent.comp _ (Fin.castLE_injective hr)
@@ -419,6 +630,9 @@ theorem linearIndependent_leading {g r : ℕ} (hr : r ≤ g) :
     simp
   exact h'.restrict_scalars' ℤ
 
+/- English proof (translation)
+The claim follows from `covolume_eq_gramCovol Y _ (linearIndependent_leading hr)`.
+-/
 theorem covolume_leading_eq_gramCovol_firstBlock {g r : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ)
     (hr : r ≤ g) :
     GroundTheory.Heights₂.Heights.covolume Y (fun j : Fin r => Pi.single (Fin.castLE hr j) (1 : ℂ)) =

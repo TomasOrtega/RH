@@ -12,6 +12,13 @@ section Abstract
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Unfold `Function.Exact at h ⊢`. Introduce `b`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Establish `h1 : g' (eB b) = 0` using `by rw [hg, hb, map_zero, smul_zero]`.
+
+Take `⟨a', ha'⟩` from `(h (eB b)).1 h1`. Use `⟨(u : R) • eA.symm a', eB.injective ?_⟩` and prove the remaining obligations. Use `hf (eA.symm a')` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, ha']`. Rewrite using `[map_smul, map_smul, this, Units.smul_def]`.
+
+Introduce and unpack `⟨a, rfl⟩`. Establish `h2 : g' (f' (eA a)) = 0` using `(h _).2 ⟨_, rfl⟩`. Rewrite `h2` using `[hf, Units.smul_def, map_smul, hg, ← Units.smul_def, smul_eq_zero_iff_eq, smul_eq_zero_iff_eq, LinearEquiv.map_eq_zero_iff]`. Conclude with `h2`.
+-/
 theorem exact_of_transfer {A B C A' B' C' : Type} [AddCommGroup A] [Module R A] [AddCommGroup B]
     [Module R B] [AddCommGroup C] [Module R C] [AddCommGroup A'] [Module R A'] [AddCommGroup B']
     [Module R B'] [AddCommGroup C'] [Module R C'] (f : A →ₗ[R] B) (g : B →ₗ[R] C)
@@ -47,6 +54,15 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   (ρ : Representation (ZMod (l ^ r)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M)
   (hρ : ContAction ρ)
 
+/- English proof (translation)
+Take `⟨B0, B1, B2, B3, B4, B5, B6, B7, BetaSesquilinearity, g0, g1, g2, g3, g4, g5, g6, g7, e0, e1, e2, e3, e4, e5, e6, e7, e8, u, h0, h1, h3, h4, h6, h7, i0, x01, x12, x23, x34, x45, x56, x67, s7⟩` from `h`. Establish `k2 : ∀ a, g2 (e2 a) = (1 : (ZMod (l ^ r))ˣ) • e3 ((e3.symm.toLinearMap ∘ₗ g2 ∘ₗ e2.toLinearMap) a)`. Introduce `a`. Rewrite using `[one_smul]`. Conclude with `(e3.apply_symm_apply _).symm`.
+
+Establish `k5 : ∀ a, g5 (e5 a) = (1 : (ZMod (l ^ r))ˣ) • e6 ((e6.symm.toLinearMap ∘ₗ g5 ∘ₗ e5.toLinearMap) a)`. Introduce `a`. Rewrite using `[one_smul]`. Conclude with `(e6.apply_symm_apply _).symm`. Use `⟨e3.symm.toLinearMap ∘ₗ g2 ∘ₗ e2.toLinearMap, e6.symm.toLinearMap ∘ₗ g5 ∘ₗ e5.toLinearMap, ?_, exact_of_transfer _ _ _ _ e0 e1 e2 _ _ h0 h1 x01, exact_of_transfer _ _ _ _ e1 e2 e3 _ _ h1 k2 x12, exact_of_transfer _ _ _ _ e2 e3 e4 _ _ k2 h3 x23, exact_of_transfer _ _ _ _ e3 e4 e5 …` and prove the remaining obligations.
+
+Introduce `a b hab`. Apply `e0.injective` to reduce the goal to its premises. Apply `i0` to reduce the goal to its premises. Rewrite using `[h0, h0, hab]`. Introduce `y`.
+
+Take `⟨b, hb⟩` from `s7 (e8 y)`. Use `⟨((u 5 : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) • e7.symm b, e8.injective ?_⟩` and prove the remaining obligations. Use `h7 (e7.symm b)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply, hb]`. Rewrite using `[map_smul, map_smul, this, Units.smul_def]`.
+-/
 theorem nineTermExact_of_nineCmp
     (h : NineCmp (loc0 S Av ρ) (tr0 S Av μ j ρ) (loc1 S Av ρ) (tr1 S Av μ j ρ hρ)
       (loc2 S Av ρ) (tr2 S Av μ j ρ)) : NineTermExact S Av μ j ρ hρ := by

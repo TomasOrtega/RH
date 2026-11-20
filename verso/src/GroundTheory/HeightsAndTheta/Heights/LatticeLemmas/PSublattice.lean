@@ -8,6 +8,9 @@ open NumberField GroundTheory.Heights₂.Heights
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hG : (Matrix.gram ℂ fun i ↦ fibreVec (M.sub F).metric σ (s i)) = Matrix.gram ℂ fun i ↦ fibreVec M.metric σ (s i : M.carrier)`. Use extensionality with `i j`. Both sides reduce to the same expression. Simplify using `only [gramDet]`. Rewrite using `[hG]`.
+-/
 theorem gramDet_sub {K : Type*} [Field K] [NumberField K] (M : HermitianBundle K)
     (F : Submodule (𝓞 K) M.carrier) (σ : K →+* ℂ) {ι : Type*} [Fintype ι] [DecidableEq ι]
     (s : ι → F) :
@@ -19,6 +22,15 @@ theorem gramDet_sub {K : Type*} [Field K] [NumberField K] (M : HermitianBundle K
   simp only [gramDet]
   rw [hG]
 
+/- English proof (translation)
+Use `set S := Submodule.span (𝓞 K) (Set.range s)`. Use `set T := Submodule.span (𝓞 K) (Set.range fun i ↦ (s i : E))`. Establish `hspan : T = S.map F.subtype`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+
+Establish `hTF : T ≤ F`. Rewrite using `[hspan]`. Conclude with `Submodule.map_subtype_le F S`. Rewrite using `[← Submodule.card_quotient_mul_card_quotient F T hTF]`. Use `congr 1`.
+
+Establish `hk : LinearMap.ker (T.mkQ ∘ₗ F.subtype) = S`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ, hspan, Submodule.comap_map_eq_of_injective F.injective_subtype]`. Establish `hr : LinearMap.range (T.mkQ ∘ₗ F.subtype) = F.map T.mkQ`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Rewrite using `[← hk, ← hr]`.
+
+Conclude with `Nat.card_congr (LinearMap.quotKerEquivRange _).toEquiv.symm`.
+-/
 theorem card_quotient_span_sub {K : Type*} [Field K] [NumberField K] {E : Type*} [AddCommGroup E]
     [Module (𝓞 K) E] (F : Submodule (𝓞 K) E) {ι : Type*} (s : ι → F) :
     Nat.card (E ⧸ Submodule.span (𝓞 K) (Set.range fun i ↦ (s i : E))) =
@@ -39,6 +51,21 @@ theorem card_quotient_span_sub {K : Type*} [Field K] [NumberField K] {E : Type*}
   rw [← hk, ← hr]
   exact Nat.card_congr (LinearMap.quotKerEquivRange _).toEquiv.symm
 
+/- English proof (translation)
+Introduce `K _ _ M F hF`. Establish `: Module.Finite (𝓞 K) F` using `inferInstanceAs (Module.Finite (𝓞 K) (M.sub F).carrier)`. Take `⟨s, hs⟩` from `exists_linearIndependent_fin (K := K) (E := F)`. Establish `ht : LinearIndependent (𝓞 K) (fun i ↦ (s i : M.carrier))` using `hs.map' F.subtype (LinearMap.ker_eq_bot.mpr F.injective_subtype)`. Establish `hcardF : Fintype.card (Fin (Module.finrank (𝓞 K) F)) = Module.finrank (𝓞 K) F` using `Fintype.card_fin _`.
+
+Establish `hcardM : Fintype.card (Fin (Module.finrank (𝓞 K) F)) = Module.finrank (𝓞 K) M.carrier`. Rewrite using `[Fintype.card_fin, hF]`. Establish `hdM : M.arithDegree = degreeWith M.metric (fun i ↦ (s i : M.carrier))` using `arithDegree_eq _ ht hcardM`. Establish `hdF : (M.sub F).arithDegree = Real.log (Nat.card (F ⧸ Submodule.span (𝓞 K) (Set.range s))) - (1 / 2) * ∑ σ : K →+* ℂ, Real.log (gramDet M.metric σ (fun i ↦ (s i : M.carrier)))`. Establish `h1` using `arithDegree_eq (M.sub F).metric hs hcardF`.
+
+Rewrite using `[HermitianBundle.arithDegree, h1]`. Unfold `degreeWith`. Simplify using `only [gramDet_sub]`. Both sides reduce to the same expression. Establish `hfin` using `finite_quotient_span ht hcardM`.
+
+Establish `hpos : 0 < Nat.card (M.carrier ⧸ Submodule.span (𝓞 K) (Set.range fun i ↦ (s i : M.carrier)))` using `Nat.card_pos`. Establish `hc` using `card_quotient_span_sub F s`. Rewrite `hpos` using `[hc]`. Establish `ha : (0 : ℝ) < Nat.card (F ⧸ Submodule.span (𝓞 K) (Set.range s))`. Conclude with `Nat.pos_of_mul_pos_right hpos` after adjusting the coercions.
+
+Establish `hb : (0 : ℝ) < Nat.card (M.carrier ⧸ F)`. Conclude with `Nat.pos_of_mul_pos_left hpos` after adjusting the coercions. Establish `hsum : M.arithDegree = (M.sub F).arithDegree + Real.log (Nat.card (M.carrier ⧸ F))`. Rewrite using `[hdM, hdF, degreeWith, hc, Nat.cast_mul, Real.log_mul ha.ne' hb.ne']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hlog : 0 ≤ Real.log (Nat.card (M.carrier ⧸ F))` using `Real.log_natCast_nonneg _`. Establish `hdeg : M.deg = (M.sub F).deg + Real.log (Nat.card (M.carrier ⧸ F)) / Module.finrank ℚ K`. Simplify using `only [HermitianBundle.deg]`. Rewrite using `[hsum, add_div]`. Use `⟨hdeg, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hdeg]`. Conclude with `le_add_of_nonneg_right (div_nonneg hlog (Nat.cast_nonneg _))`.
+-/
 theorem Sublattice.proof : Sublattice.Statement := by
   intro K _ _ M F hF
   have : Module.Finite (𝓞 K) F := inferInstanceAs (Module.Finite (𝓞 K) (M.sub F).carrier)

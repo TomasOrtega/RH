@@ -14,15 +14,26 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.PRep Formalism.UG GlobalTheory.DefU
 open UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.CMConjNegOfSqEqNegPos.conj_alt_bis hd hx`.
+-/
 private theorem conj_alt_bis {E : Type} [Field E] [NumberField E] [IsCMField E] {d : ℕ} (hd : 0 < d) {x : E}
     (hx : x ^ 2 = -(d : E)) : IsCMField.complexConj E x = -x :=
   _root_.UpperTheory.Reformulated.B.CMConjNegOfSqEqNegPos.conj_alt_bis hd hx
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.AdjoinForm.adjoin_form hd hx y hy`.
+-/
 private theorem adjoin_form {E : Type} [Field E] [NumberField E] {d : ℕ} (hd : 0 < d) {x : E}
     (hx : x ^ 2 = -(d : E)) (y : E) (hy : y ∈ IntermediateField.adjoin ℚ {x}) :
     ∃ s t : ℚ, y = (s : E) + (t : E) * x :=
   _root_.UpperTheory.Reformulated.B.AdjoinForm.adjoin_form hd hx y hy
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨⟨a, ha, haI⟩, b, hb, hbJ⟩` from `hcon`. Establish `haJ : a ∈ J` using `(h a ha).resolve_left haI`. Establish `hbI : b ∈ I` using `(h b hb).resolve_right hbJ`.
+
+Break down `h (a + b) (hT a b ha hb) with h1 | h1` into its components or cases. Conclude with `haI ((Submodule.add_mem_iff_left I hbI).mp h1)`. Conclude with `hbJ ((Submodule.add_mem_iff_right J haJ).mp h1)`.
+-/
 private theorem two_cases {R : Type} [CommRing R] (T : R → Prop) (hT : ∀ a b, T a → T b → T (a + b))
     (I J : Ideal R) (h : ∀ y, T y → y ∈ I ∨ y ∈ J) : (∀ y, T y → y ∈ I) ∨ (∀ y, T y → y ∈ J) := by
   by_contra hcon
@@ -34,6 +45,15 @@ private theorem two_cases {R : Type} [CommRing R] (T : R → Prop) (hT : ∀ a b
   · exact haI ((Submodule.add_mem_iff_left I hbI).mp h1)
   · exact hbJ ((Submodule.add_mem_iff_right J haJ).mp h1)
 
+/- English proof (translation)
+Establish `A` using `two_cases (fun y => K y ∧ y ∈ W') (fun a b ha hb => ⟨hKa a b ha.1 hb.1, W'.add_mem ha.2 hb.2⟩) W (W.comap (c : R →+* R)) (fun y hy => by simpa [Ideal.mem_comap] using h2 y hy.1 hy.2)`. Establish `B` using `two_cases (fun y => K y ∧ y ∈ W) (fun a b ha hb => ⟨hKa a b ha.1 hb.1, W.add_mem ha.2 hb.2⟩) W' (W'.comap (c : R →+* R)) (fun y hy => by simpa [Ideal.mem_comap] using h1 y hy.1 hy.2)`. Simplify using `only [Ideal.mem_comap, RingHom.coe_coe] at A B`. Apply the tactic sequence `rcases A with A | A <;> rcases B with B | B`. Conclude with `Or.inl fun y hy => ⟨fun h => B y ⟨hy, h⟩, fun h => A y ⟨hy, h⟩⟩`.
+
+Use `Or.inl fun y hy => ⟨fun h => ?_, fun h => A y ⟨hy, h⟩⟩` and prove the remaining obligations. Establish `h3` using `A (c y) ⟨hKc y hy, B y ⟨hy, h⟩⟩`. Establish `h4` using `B (c y) ⟨hKc y hy, h3⟩`. Rewrite `h4` using `[hcc]`. Then use the resulting hypothesis. Use `Or.inr fun y hy => ⟨fun h => ?_, fun h => A y ⟨hy, h⟩⟩` and prove the remaining obligations.
+
+Establish `h3` using `B (c y) ⟨hKc y hy, h⟩`. Establish `h4` using `A (c y) ⟨hKc y hy, h3⟩`. Rewrite `h4` using `[hcc]`. Conclude with `B y ⟨hy, h4⟩`. Use `Or.inr fun y hy => ⟨fun h => ?_, fun h => A y ⟨hy, h⟩⟩` and prove the remaining obligations.
+
+Establish `h3` using `B (c y) ⟨hKc y hy, h⟩`. Rewrite `h3` using `[hcc]`. Then use the resulting hypothesis.
+-/
 private theorem core {R : Type} [CommRing R] (c : R ≃+* R) (hcc : ∀ y, c (c y) = y) (K : R → Prop)
     (hKa : ∀ a b, K a → K b → K (a + b)) (hKc : ∀ y, K y → K (c y)) (W W' : Ideal R)
     (h1 : ∀ y, K y → y ∈ W → y ∈ W' ∨ c y ∈ W') (h2 : ∀ y, K y → y ∈ W' → y ∈ W ∨ c y ∈ W) :
@@ -58,6 +78,13 @@ private theorem core {R : Type} [CommRing R] (c : R ≃+* R) (hcc : ∀ y, c (c 
     have h3 := B (c y) ⟨hKc y hy, h⟩
     rwa [hcc] at h3
 
+/- English proof (translation)
+Distinguish the cases in `hd : (l : ℤ) ∣ n`. Take `⟨k, rfl⟩` from `hd`. Use `push_cast`. Conclude with `u'.mul_mem_right _ hlu'`. Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl`.
+
+Take `⟨a, b, hab⟩ : IsCoprime (l : ℤ) n` from `(Prime.coprime_iff_not_dvd hp).mpr hd`. It suffices to derive a contradiction. Apply `hu` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: ((a * l + b * n : ℤ) : R) = 1` using `by rw [hab]; simp`.
+
+Rewrite using `[← this]`. Use `push_cast`. Conclude with `u.add_mem (u.mul_mem_left _ hlu) (u.mul_mem_left _ hn)`.
+-/
 private theorem int_mem {R : Type} [CommRing R] {l : ℕ} (hl : l.Prime) {u u' : Ideal R} (hu : u ≠ ⊤)
     (hlu : (l : R) ∈ u) (hlu' : (l : R) ∈ u') {n : ℤ} (hn : (n : R) ∈ u) : (n : R) ∈ u' := by
   by_cases hd : (l : ℤ) ∣ n
@@ -74,6 +101,15 @@ private theorem int_mem {R : Type} [CommRing R] {l : ℕ} (hl : l.Prime) {u u' :
     push_cast
     exact u.add_mem (u.mul_mem_left _ hlu) (u.mul_mem_left _ hn)
 
+/- English proof (translation)
+Take `⟨s, t, hst⟩` from `adjoin_form hd hx _ hy`. Establish `hc` using `conj_alt_bis hd hx`. Establish `hq : ((y * y' : 𝓞 E) : E) = algebraMap ℚ E (s ^ 2 + d * t ^ 2)`. Establish `h1 : (y' : E) = (s : E) - t * x`. Rewrite using `[hy', hst, map_add, map_mul, hc]`.
+
+Simplify using `[sub_eq_add_neg]`. Express the relevant statement in the definitionally equal form `(y : E) * (y' : E) = _`. Rewrite using `[h1, hst, eq_ratCast]`. Use `push_cast`. Take the linear combination `(-(t : E) ^ 2) * hx`.
+
+Establish `hI : IsIntegral ℤ (algebraMap ℚ E (s ^ 2 + d * t ^ 2))` using `hq ▸ RingOfIntegers.isIntegral_coe _`. Establish `hI' : IsIntegral ℤ (s ^ 2 + d * t ^ 2 : ℚ)` using `(isIntegral_algebraMap_iff (algebraMap ℚ E).injective).mp hI`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hI'`. Use `⟨n, RingOfIntegers.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hq, ← hn]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem norm_int {E : Type} [Field E] [NumberField E] [IsCMField E] {d : ℕ} (hd : 0 < d) {x : E}
     (hx : x ^ 2 = -(d : E)) (y y' : 𝓞 E) (hy : (y : E) ∈ IntermediateField.adjoin ℚ {x})
     (hy' : (y' : E) = IsCMField.complexConj E (y : E)) : ∃ n : ℤ, y * y' = (n : 𝓞 E) := by
@@ -94,6 +130,9 @@ private theorem norm_int {E : Type} [Field E] [NumberField E] [IsCMField E] {d :
   rw [hq, ← hn]
   simp
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `norm_int hd hx y y' hy hy'`. Establish `h1 : (n : 𝓞 E) ∈ u.asIdeal` using `hn ▸ u.asIdeal.mul_mem_right _ hm`. Establish `h2` using `int_mem hl u.isPrime.ne_top hu hu' h1`. Rewrite `h2` using `[← hn]`. Conclude with `u'.isPrime.mem_or_mem h2`.
+-/
 private theorem two_places {E : Type} [Field E] [NumberField E] [IsCMField E] {l d : ℕ} (hl : l.Prime) (hd : 0 < d) {x : E}
     (hx : x ^ 2 = -(d : E)) (u u' : HeightOneSpectrum (𝓞 E)) (hu : ((l : ℕ) : 𝓞 E) ∈ u.asIdeal)
     (hu' : ((l : ℕ) : 𝓞 E) ∈ u'.asIdeal) (y y' : 𝓞 E) (hy : (y : E) ∈ IntermediateField.adjoin ℚ {x})
@@ -104,6 +143,15 @@ private theorem two_places {E : Type} [Field E] [NumberField E] [IsCMField E] {l
   rw [← hn] at h2
   exact u'.isPrime.mem_or_mem h2
 
+/- English proof (translation)
+Introduce `hC E _ _ _ l d hl hd x hx w w' hw hw'`. Set `c : 𝓞 E ≃+* 𝓞 E` to `RingOfIntegers.mapRingEquiv (IsCMField.complexConj E).toRingEquiv`. Establish `hcE : ∀ y : 𝓞 E, ((c y : 𝓞 E) : E) = IsCMField.complexConj E (y : E)` using `fun y => rfl`. Establish `hcc : ∀ y, c (c y) = y` using `fun y => RingOfIntegers.ext (by`. Rewrite using `[hcE, hcE, IsCMField.complexConj_apply_apply])`.
+
+Establish `hKc : ∀ y : 𝓞 E, (y : E) ∈ IntermediateField.adjoin ℚ {x} → ((c y : 𝓞 E) : E) ∈ IntermediateField.adjoin ℚ {x}`. Introduce `y hy`. Take `⟨s, t, hst⟩` from `adjoin_form hd hx _ hy`. Establish `hxK : x ∈ IntermediateField.adjoin ℚ {x}` using `IntermediateField.mem_adjoin_simple_self ℚ x`. Establish `h1 : ((c y : 𝓞 E) : E) = (s : E) + ((-t : ℚ) : E) * x`.
+
+Rewrite using `[hcE, hst, map_add, map_mul, conj_alt_bis hd hx]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `add_mem (SubfieldClass.ratCast_mem _ s) (mul_mem (SubfieldClass.ratCast_mem _ _) hxK)`. Establish `key` using `core c hcc (fun y : 𝓞 E => (y : E) ∈ IntermediateField.adjoin ℚ {x}) (fun a b ha hb => by simpa using add_mem ha hb) hKc w.asIdeal w'.asIdeal (fun y hy hm => two_places hl hd hx w w' hw hw' y (c y) hy (hcE y) hm) (fun y hy hm => two_places hl hd hx w' w hw' hw y (c y) hy (hcE y) …`.
+
+Break down `key with h | h` into its components or cases. Conclude with `Or.inl fun y hy => h y hy`. Conclude with `Or.inr fun y hy => (hC E w y (c y) (hcE y)).trans (h y hy)`.
+-/
 theorem UpperTheory.Gal.Int.Div.sameOr_of :
     CplMem → SameOr := by
   intro hC E _ _ _ l d hl hd x hx w w' hw hw'

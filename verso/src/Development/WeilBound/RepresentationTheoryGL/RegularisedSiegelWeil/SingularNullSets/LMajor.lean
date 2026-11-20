@@ -22,6 +22,23 @@ open GlobalTheory.RegSch (ikS projS Lvl)
 namespace PositivityTheory.Rg.Rsw.L
 
 open LMajor in
+/- English proof (translation)
+Introduce `_ _ hB D θ hθ a b S e he Φ hΦ hG`. Take `⟨k, f, M, hM, hdom⟩` from `domBound θ hθ Φ hΦ`. Take `⟨-, K, hK, hmaj⟩` from `GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ a b Φ (GlobalTheory.T.isSchwartzBruhatAdelicMatrix_of_mem_adelicSchwartz D θ hθ a b Φ hΦ)`. Take `⟨C0, hC0⟩` from `hmaj 0`. Establish `hbox : ∀ x, Φ x ≠ 0 → GlobalTheory.Unf.InBox K x`.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hb`. Establish `h` using `hC0 x`. Rewrite `h` using `[GlobalTheory.Unf.maj, if_neg hb, mul_zero]`. Conclude with `hx (norm_le_zero_iff.mp h)`.
+
+Take `⟨F₀, hF₀, hcut⟩` from `schMajor f`. Take `⟨Φ₀, hΦ₀, hG₀, hpos, heq⟩` from `bumpMaj hB θ hθ he K hK F₀ hF₀`. Use `⟨Φ₀, hΦ₀, hG₀, hpos, fun ε hε => ?_⟩` and prove the remaining obligations. Establish `hMk : 0 < M * k + 1` using `by have := mul_nonneg hM (Nat.cast_nonneg (α := ℝ) k); linarith`. Take `⟨c, hct, hcc, hcb⟩` from `hcut (ε / (M * k + 1)) (div_pos hε hMk)`.
+
+Use `⟨fun x => c (cA θ x) * Φ x, GlobalTheory.T.temperate_multiplier_preserves_schwartz D θ a b c hct Φ hΦ, good_mul θ he hG c, cutSupp θ hθ K hK Φ hbox c hcc, fun x => ?_⟩` and prove the remaining obligations. Use `show ‖Φ x - c (cA θ x) * Φ x‖ ≤ ε * (Φ₀ x).re`. Rewrite using `[show Φ x - c (cA θ x) * Φ x = (1 - c (cA θ x)) * Φ x by ring, norm_mul]`. Distinguish the cases in `h0 : Φ x = 0`. Rewrite using `[h0, norm_zero, mul_zero]`.
+
+Conclude with `mul_nonneg hε.le (hpos x).1`. Establish `hx : IntOff S x`. Assume the negation of the conclusion as `hx`. Establish `h` using `hG x`. Rewrite `h` using `[if_neg hx]`.
+
+Conclude with `h0 h`. Rewrite using `[heq x hx (hbox x h0)]`. Establish `hF : 0 ≤ (F₀ (cA θ x)).re` using `(hF₀ _).1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `_ ≤ M * ∑ _i : Fin k, ε / (M * k + 1) * (F₀ (cA θ x)).re := by`. Conclude with `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => hcb i _) hM`. Use `_ = (M * k) / (M * k + 1) * (ε * (F₀ (cA θ x)).re) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 1 * (ε * (F₀ (cA θ x)).re) := by gcongr`. Rewrite using `[div_le_one hMk]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = ε * (F₀ (cA θ x)).re := one_mul _`.
+-/
 theorem major : IdemEx → GoodEv → BumpEx → Major := by
   intro _ _ hB D θ hθ a b S e he Φ hΦ hG
   obtain ⟨k, f, M, hM, hdom⟩ := domBound θ hθ Φ hΦ

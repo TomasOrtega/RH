@@ -14,6 +14,13 @@ def EachRowHasThetaLift {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : ND
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
+/- English proof (translation)
+Unfold `EachRowHasThetaLift thetaOf`. Use `forall_congr' fun i => forall_congr' fun σ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.ne_bot_iff]`. Use `imp_congr_right fun _ => exists_congr fun P => and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.ne_bot_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨f, hf, rfl⟩, h⟩`. Conclude with `⟨f, hf, h⟩`. Introduce and unpack `⟨f, hf, h⟩`. Conclude with `⟨_, ⟨f, hf, rfl⟩, h⟩`.
+
+Rewrite using `[Submodule.map_le_iff_le_comap]`. Both sides reduce to the same expression.
+-/
 theorem eachRowHasThetaLift_iff :
     EachRowHasThetaLift N A ↔
       ∀ (i : N.Loc) (σ : what₂.FT), (∃ f ∈ what₂.isot (N.j i) σ, f ≠ 0) → ∃ P : A.AV i,

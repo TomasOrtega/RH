@@ -12,6 +12,13 @@ open GlobalTheory.HSShort GlobalTheory.HSChoice MvPolynomial
 
 namespace GlobalTheory.HSShort
 
+/- English proof (translation)
+Introduce `K _ _ X s hs δ Co a ha`. Take `⟨hle, hker⟩` from `GlobalTheory.HSCore.filV_symV_ker K X s hs δ Co a ha`. Use `⟨Submodule.map_mono hle, fun x => ?_⟩` and prove the remaining obligations. Set `e` to `Submodule.equivMapOfInjective _ (incl_injective X X.T) (filV X s a)`. Set `y : filV X s a` to `e.symm x`.
+
+Establish `hxy : e y = x` using `e.apply_symm_apply x`. Establish `hx1 : x.1 = incl X X.T y.1` using `by rw [← hxy]; rfl`. Establish `: totSym Co a x = symV Co a y` using `rfl`. Rewrite using `[this, hker y, hx1]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `⟨y.1, h, rfl⟩`. Introduce and unpack `⟨z, hz, hzy⟩`. Rewrite using `[← incl_injective X X.T hzy]` and apply the resulting hypothesis.
+-/
 theorem totFil_totSym_ker : ∀ (K : Type) [Field K] [NumberField K] (X : Data K) (s : Fin X.D → Fin X.N → K) (hs : X.IsGood s) (δ : ℕ) (Co : Coord X.toGeo hs δ), ∀ a < X.T - X.D, totFil X s (a + 1) ≤ totFil X s a ∧ ∀ x : totFil X s a, totSym Co a x = 0 ↔ x.1 ∈ totFil X s (a + 1) := by
   intro K _ _ X s hs δ Co a ha
   obtain ⟨hle, hker⟩ := GlobalTheory.HSCore.filV_symV_ker K X s hs δ Co a ha

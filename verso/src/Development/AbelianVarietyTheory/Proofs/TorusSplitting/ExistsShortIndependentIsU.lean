@@ -16,14 +16,23 @@ variable {E : Type} [Field E] [NumberField E]
 
 variable {dim : (E →+* ℂ) → ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(IR I).add_mem hu.1 hv.1, fun a ha => by rw [inner_add_left, hu.2 a ha, hv.2 a ha, Hf_im_add_left]⟩`.
+-/
 theorem isU_add_shortIndep {I : Submodule ℤ (Vsp dim)} {x y u v : Vsp dim} (hu : IsU I x u)
     (hv : IsU I y v) : IsU I (x + y) (u + v) :=
   ⟨(IR I).add_mem hu.1 hv.1, fun a ha => by
     rw [inner_add_left, hu.2 a ha, hv.2 a ha, Hf_im_add_left]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(IR I).zero_mem, fun a _ => by rw [inner_zero_left, Hf_im_zero_left]⟩`.
+-/
 theorem isU_zero_shortIndep (I : Submodule ℤ (Vsp dim)) : IsU I 0 0 :=
   ⟨(IR I).zero_mem, fun a _ => by rw [inner_zero_left, Hf_im_zero_left]⟩
 
+/- English proof (translation)
+Rewrite using `[← Int.cast_smul_eq_zsmul ℝ k x, ← Int.cast_smul_eq_zsmul ℝ k u]`. Conclude with `⟨(IR I).smul_mem _ hu.1, fun a ha => by`. Rewrite using `[real_inner_smul_left, hu.2 a ha, Hf_im_smul_left]⟩`.
+-/
 theorem isU_zsmul_shortIndep {I : Submodule ℤ (Vsp dim)} {x u : Vsp dim} (k : ℤ) (hu : IsU I x u) :
     IsU I (k • x) (k • u) := by
   rw [← Int.cast_smul_eq_zsmul ℝ k x, ← Int.cast_smul_eq_zsmul ℝ k u]
@@ -32,6 +41,49 @@ theorem isU_zsmul_shortIndep {I : Submodule ℤ (Vsp dim)} {x u : Vsp dim} (k : 
 
 end lin
 
+/- English proof (translation)
+Introduce `htrans hpair E _ _ X I hle hsat hla`. Use `set K := IR I with hK`. Use `set N := Module.finrank ℝ K with hNdef`. Set `e : K ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin N)` to `(stdOrthonormalBasis ℝ K).repr`. Set `M : Submodule ℤ (EuclideanSpace ℝ (Fin N))` to `{ carrier := {z | ∃ y ∈ X.L, IsU I y ((e.symm z : K) : Vsp X.dim)} add_mem' := by`.
+
+Introduce and unpack `z z' ⟨y, hy, hu⟩ ⟨y', hy', hu'⟩`. Conclude with `⟨y + y', X.L.add_mem hy hy', by simpa using isU_add_shortIndep hu hu'⟩`. Use the proof step `zero_mem' := ⟨0, X.L.zero_mem, by simpa using isU_zero_shortIndep I⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `k z ⟨y, hy, hu⟩`.
+
+Conclude with `⟨k • y, X.L.smul_mem k hy, by simpa using isU_zsmul_shortIndep k hu⟩ }`. Establish `hmemM : ∀ y ∈ X.L, ∀ u, IsU I y u → ∃ z ∈ M, ((e.symm z : K) : Vsp X.dim) = u` using `fun y hy u hu => ⟨e ⟨u, hu.1⟩, ⟨y, hy, by simpa using hu⟩, by simp⟩`. Establish `hinner : ∀ z z' : EuclideanSpace ℝ (Fin N), ⟪z, z'⟫_ℝ = ⟪((e.symm z : K) : Vsp X.dim), ((e.symm z' : K) : Vsp X.dim)⟫_ℝ`. Introduce `z z'`. Rewrite using `[← Submodule.coe_inner, LinearIsometryEquiv.inner_map_map]`.
+
+Establish `hnormE : ∀ z, ‖((e.symm z : K) : Vsp X.dim)‖ = ‖z‖`. Introduce `z`. Rewrite using `[← e.symm.norm_map z]`. Both sides reduce to the same expression. Establish `hdual : ∀ z : EuclideanSpace ℝ (Fin N), (∀ y ∈ M, ∃ k : ℤ, inner ℝ z y = (k : ℝ)) → ((e.symm z : K) : Vsp X.dim) ∈ I`.
+
+Introduce `z hz`. Apply `hsat _ ?_ (e.symm z).2` to reduce the goal to its premises. Apply `(hpair E X _).2` to reduce the goal to its premises. Introduce `y hy`. Take `⟨u, hu⟩` from `exists_isU I y`.
+
+Take `⟨z', hz'M, hz'⟩` from `hmemM y hy u hu`. Take `⟨k, hk⟩` from `hz z' hz'M`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu.2 _ (e.symm z).2, ← hk, hinner, hz', real_inner_comm]`. Establish `hspan : Submodule.span ℝ (M : Set (EuclideanSpace ℝ (Fin N))) = ⊤`.
+
+Rewrite using `[← Submodule.orthogonal_eq_bot_iff, Submodule.eq_bot_iff]`. Introduce `z hz`. Establish `h0 : ∀ z' ∈ M, ⟪z', z⟫_ℝ = 0` using `fun z' hz' => (Submodule.mem_orthogonal _ _).1 hz z' (Submodule.subset_span hz')`. Establish `ha : ((e.symm z : K) : Vsp X.dim) = 0`. Apply `(hpair E X _).1` to reduce the goal to its premises.
+
+Introduce `y hy`. Take `⟨u, hu⟩` from `exists_isU I y`. Take `⟨z', hz'M, hz'⟩` from `hmemM y hy u hu`. Rewrite using `[← hu.2 _ (e.symm z).2, ← hz', ← hinner]`. Conclude with `h0 z' hz'M`.
+
+Establish `: e.symm z = 0` using `Subtype.ext ha`. Simplify using `using congrArg e this`. Take `⟨s, hsI, hsspan, hsli⟩` from `exists_linearIndependent ℝ (I : Set (Vsp X.dim))`. Establish `hsfin : s.Finite` using `hsli.setFinite`. Use `set A := ∑ a ∈ hsfin.toFinset, ‖a‖ + 1 with hA`.
+
+Establish `hApos : 0 < A`. Establish `: 0 ≤ ∑ a ∈ hsfin.toFinset, ‖a‖` using `Finset.sum_nonneg (fun _ _ => norm_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow : ∀ z ∈ M, z ≠ 0 → 1 / A ≤ ‖z‖`. Introduce `z hzM hz0`.
+
+Take `⟨y, hy, hu⟩` from `hzM`. Use `set u := ((e.symm z : K) : Vsp X.dim)`. Establish `hu0 : u ≠ 0`. Introduce `h0`. Apply `hz0` to reduce the goal to its premises.
+
+Establish `: e.symm z = 0` using `Subtype.ext h0`. Simplify using `using congrArg e this`. Choose the witnesses or unpack the hypotheses as in `⟨a, has, ha⟩ : ∃ a ∈ s, ⟪u, a⟫_ℝ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Establish `: ∀ w ∈ Submodule.span ℝ s, ⟪u, w⟫_ℝ = 0`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact hcon x hx`. Consider the case `zero => exact inner_zero_right _`.
+
+Consider the case `add x y _ _ hx hy => rw [inner_add_right, hx, hy, add_zero]`. Consider the case `smul r x _ hx => rw [real_inner_smul_right, hx, mul_zero]`. Establish `h1` using `this u (by rw [hsspan]; exact hu.1)`. Conclude with `hu0 (inner_self_eq_zero.1 h1)`. Establish `h1 : 1 ≤ |⟪u, a⟫_ℝ|`.
+
+Rewrite using `[hu.2 a (mem_IR (hsI has))]`. Rewrite `ha` using `[hu.2 a (mem_IR (hsI has))]`. Conclude with `one_le_abs_im X hy (hle (hsI has)) ha`. Establish `h2 : |⟪u, a⟫_ℝ| ≤ ‖u‖ * ‖a‖` using `abs_real_inner_le_norm _ _`. Establish `h3 : ‖a‖ ≤ A`.
+
+Use `Finset.single_le_sum (f := fun a => ‖a‖) (fun _ _ => norm_nonneg _) ((Set.Finite.mem_toFinset hsfin).2 has)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← hnormE z, div_le_iff₀ hApos]`. Use polynomial arithmetic with `[norm_nonneg u]`. Establish `hdisc : DiscreteTopology M`.
+
+Rewrite using `[discreteTopology_iff_isOpen_singleton_zero, Metric.isOpen_singleton_iff]`. Use `⟨1 / A, by positivity, fun z hz => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hz0`. Establish `h1` using `hlow z z.2 (fun h => hz0 (Subtype.ext h))`. Rewrite `hz` using `[dist_zero_right]`.
+
+Establish `: ‖(z : EuclideanSpace ℝ (Fin N))‖ = ‖z‖` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨v, hvM, hvli, hvt⟩` from `htrans N M hdisc hspan X.la1 hla (by`. Introduce `z hz hz0`. Establish `ha` using `hdual z hz`.
+
+Establish `hne : ((e.symm z : K) : Vsp X.dim) ≠ 0`. Introduce `h0`. Apply `hz0` to reduce the goal to its premises. Establish `: e.symm z = 0` using `Subtype.ext h0`. Simplify using `using congrArg e this`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `choose y hy hyU using hvM`. Use `⟨y, fun j => ((e.symm (v j) : K) : Vsp X.dim), fun j => ⟨hy j, hyU j⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hvli.map' e.symm.toLinearEquiv.toLinearMap (LinearEquiv.ker _)).map' K.subtype K.ker_subtype`. Introduce `j`.
+
+Rewrite using `[hnormE]`. Conclude with `hvt j`.
+-/
 theorem exists_short_independent_isU :
     (∀ (N : ℕ) (M : Submodule ℤ (EuclideanSpace ℝ (Fin N))), DiscreteTopology M → Submodule.span ℝ (M : Set (EuclideanSpace ℝ (Fin N))) = ⊤ → ∀ lam : ℝ, 0 < lam → (∀ z : EuclideanSpace ℝ (Fin N), (∀ y ∈ M, ∃ k : ℤ, inner ℝ z y = (k : ℝ)) → z ≠ 0 → lam ≤ ‖z‖) → ∃ v : Fin N → EuclideanSpace ℝ (Fin N), (∀ j, v j ∈ M) ∧ LinearIndependent ℝ v ∧ ∀ j, ‖v j‖ ≤ (N : ℝ) ^ 2 / lam) → (∀ (E : Type) [Field E] [NumberField E] (X : PT E) (a : Vsp X.dim), ((∀ y ∈ X.L, (Hf y a).im = 0) → a = 0) ∧ ((∀ y ∈ X.L, ∃ k : ℤ, (Hf y a).im = k) → a ∈ X.L)) → (∀ (E : Type) [Field E] [NumberField E] (X : PT E) (I : Submodule ℤ (Vsp X.dim)), I ≤ X.L → (∀ x ∈ X.L, x ∈ IR I → x ∈ I) → 0 < X.la1 → ∃ x u : Fin (Module.finrank ℝ (IR I)) → Vsp X.dim, (∀ j, x j ∈ X.L ∧ IsU I (x j) (u j)) ∧ LinearIndependent ℝ u ∧ ∀ j, ‖u j‖ ≤ (Module.finrank ℝ (IR I) : ℝ) ^ 2 / X.la1) := by
   intro htrans hpair E _ _ X I hle hsat hla

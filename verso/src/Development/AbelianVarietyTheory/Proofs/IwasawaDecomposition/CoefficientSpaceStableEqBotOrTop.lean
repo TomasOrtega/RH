@@ -21,14 +21,23 @@ def bSq (lam : DomWeight n) : Module.Basis (Formalism.GradedWeylDivisibility.ssI
   (Module.Basis.span (Formalism.GradedWeylDivisibility.sSBasis K n n lam.natW).choose_spec.1.1).map
     (LinearEquiv.ofEq _ _ (Formalism.GradedWeylDivisibility.sSBasis K n n lam.natW).choose_spec.1.2.1)
 
+/- English proof (translation)
+Simplify using `[bSq, Module.Basis.span_apply, ssB]`. Both sides reduce to the same expression.
+-/
 theorem bSq_coe (lam : DomWeight n) (k : Formalism.GradedWeylDivisibility.ssIdx n n lam.natW) :
     ((bSq (K := K) lam k : nablaSq K n lam) : MvPolynomial (Fin n × Fin n) K) = ssB K lam.natW k := by
   simp [bSq, Module.Basis.span_apply, ssB]
   rfl
 
+/- English proof (translation)
+The claim follows from `bSq_coe (K := K) lam k ▸ (bSq (K := K) lam k).2`.
+-/
 theorem ssB_mem (lam : DomWeight n) (k : Formalism.GradedWeylDivisibility.ssIdx n n lam.natW) : ssB K lam.natW k ∈ nablaSq K n lam :=
   bSq_coe (K := K) lam k ▸ (bSq (K := K) lam k).2
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val (LinearMap.congr_fun (GlobalTheory.Branching.sqRep K n lam).map_one ⟨f, hf⟩)`.
+-/
 theorem sqAct_one_of_mem (lam : DomWeight n) {f : MvPolynomial (Fin n × Fin n) K} (hf : f ∈ nablaSq K n lam) :
     sqAct K n lam 1 f = f :=
   congrArg Subtype.val (LinearMap.congr_fun (GlobalTheory.Branching.sqRep K n lam).map_one ⟨f, hf⟩)
@@ -39,6 +48,9 @@ def tenAt (f : ι → MvPolynomial (Fin n × Fin n) K) (τ₀ : ι) : MvPolynomi
   LinearMap.mulLeft K (∏ τ ∈ Finset.univ.erase τ₀, Formalism.GradedWeylDivisibility.blockEmb K τ (f τ)) ∘ₗ
     (Formalism.GradedWeylDivisibility.blockEmb K (k := n) (n := n) τ₀).toLinearMap
 
+/- English proof (translation)
+Simplify using `only [tenAt, ten, LinearMap.comp_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ τ₀), Function.update_self, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ hτ => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hτ)]`.
+-/
 theorem tenAt_apply (f : ι → MvPolynomial (Fin n × Fin n) K) (τ₀ : ι) (x : MvPolynomial (Fin n × Fin n) K) :
     tenAt f τ₀ x = ten (Function.update f τ₀ x) := by
   simp only [tenAt, ten, LinearMap.comp_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply]
@@ -47,6 +59,9 @@ theorem tenAt_apply (f : ι → MvPolynomial (Fin n × Fin n) K) (τ₀ : ι) (x
   refine Finset.prod_congr rfl fun τ hτ => ?_
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hτ)]
 
+/- English proof (translation)
+Rewrite using `[bVV_coe, bVVfun]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `(Function.apply_update (fun τ k => ssB K (lam τ).natW k) k τ₀ l τ).symm`.
+-/
 theorem ten_update_ssB (lam : ι → DomWeight n) (τ₀ : ι) (k : VVIdx lam) (l : Formalism.GradedWeylDivisibility.ssIdx n n (lam τ₀).natW) :
     ten (Function.update (fun τ => ssB K (lam τ).natW (k τ)) τ₀ (ssB K (lam τ₀).natW l)) =
       ((bVV K lam (Function.update k τ₀ l) : VV K lam) : Pol K ι n) := by
@@ -55,6 +70,15 @@ theorem ten_update_ssB (lam : ι → DomWeight n) (τ₀ : ι) (k : VVIdx lam) (
   funext τ
   exact (Function.apply_update (fun τ k => ssB K (lam τ).natW k) k τ₀ l τ).symm
 
+/- English proof (translation)
+Take `⟨s, c, hc⟩` from `hφ`. Use `⟨∑ g ∈ s, c g • rhoK lam (Function.update 1 τ₀ g), ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun g _ => by`.
+
+Rewrite using `[LinearMap.smul_apply]`. Conclude with `W.smul_mem _ (hW _ _ hw)`. Introduce `k`. Rewrite using `[hc, bSq_coe, ← tenAt_apply, map_sum, LinearMap.sum_apply, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, map_smul]`. Use `congr 1`. Rewrite using `[rhoK_coe, bVV_coe, bVVfun, actTen K ι n lam _ _, tenAt_apply]`. Use `congr 1`. Use function extensionality and compare the values at `τ`.
+
+Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, Function.update_of_ne h, Pi.one_apply, sqAct_one_of_mem _ (ssB_mem _ _)]`.
+-/
 theorem exists_op (lam : ι → DomWeight n) (τ₀ : ι) (φ : nablaSq K n (lam τ₀) →ₗ[K] nablaSq K n (lam τ₀))
     (hφ : ∃ (s : Finset (GL (Fin n) K)) (c : GL (Fin n) K → K), ∀ f : nablaSq K n (lam τ₀),
       (φ f : MvPolynomial (Fin n × Fin n) K) = ∑ g ∈ s, c g • sqAct K n (lam τ₀) g f)
@@ -85,6 +109,11 @@ theorem exists_op (lam : ι → DomWeight n) (τ₀ : ι) (φ : nablaSq K n (lam
 def elemOp (lam : DomWeight n) (a b : Formalism.GradedWeylDivisibility.ssIdx n n lam.natW) : nablaSq K n lam →ₗ[K] nablaSq K n lam :=
   ((bSq lam).coord a).smulRight (bSq lam b)
 
+/- English proof (translation)
+Take `⟨T, hTW, hT⟩` from `exists_op lam τ₀ (elemOp (lam τ₀) a b) (H τ₀ _) W hW`. Use `⟨T, hTW, fun k => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hT k]`. Establish `e : (elemOp (K` using `K) (lam τ₀) a b (bSq (lam τ₀) (k τ₀)) : MvPolynomial (Fin n × Fin n) K) = (if k τ₀ = a then (1 : K) else 0) • ssB K (lam τ₀).natW b := by`. Simplify using `only [elemOp, LinearMap.smulRight_apply, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply, Submodule.coe_smul, bSq_coe]`.
+
+Rewrite using `[e, ← tenAt_apply, map_smul, tenAt_apply, ten_update_ssB]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem exists_elem (lam : ι → DomWeight n)
     (H : ∀ τ, ∀ φ : nablaSq K n (lam τ) →ₗ[K] nablaSq K n (lam τ), ∃ (s : Finset (GL (Fin n) K)) (c : GL (Fin n) K → K),
       ∀ f : nablaSq K n (lam τ), (φ f : MvPolynomial (Fin n × Fin n) K) = ∑ g ∈ s, c g • sqAct K n (lam τ) g f)
@@ -104,6 +133,31 @@ theorem exists_elem (lam : ι → DomWeight n)
 
 end General
 
+/- English proof (translation)
+Introduce `K _ ι _ n lam H W hW`. Distinguish the cases in `hW0 : W = ⊥`. Conclude with `Or.inl hW0`. Use `right`. Take `⟨w, hw, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW0`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, (bVV K lam).repr w i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hw0 ((bVV K lam).ext_elem fun k => by simp [h k])`. Establish `hproj : ∀ S : Finset ι, (∑ k ∈ Finset.univ.filter (fun k : VVIdx lam => ∀ τ ∈ S, k τ = i τ), (bVV K lam).repr w k • bVV K lam k) ∈ W`.
+
+Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Establish `hf : Finset.univ.filter (fun k : VVIdx lam => ∀ τ ∈ (∅ : Finset ι), k τ = i τ) = Finset.univ`. Use extensionality with `k`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hf, (bVV K lam).sum_repr w]`. Conclude with `hw`. Introduce `a S ha ih`. Take `⟨T, hTW, hT⟩` from `exists_elem lam H W hW a (i a) (i a)`. Establish `h1` using `hTW _ ih`.
+
+Rewrite `h1` using `[map_sum]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_smul, hT]`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hk : k a = i a`. Establish `hu : Function.update k a (i a) = k` using `by rw [← hk, Function.update_eq_self]`. Simplify using `[hk, hu, Finset.forall_mem_insert]`. Simplify using `[hk, Finset.forall_mem_insert]`. Establish `hi' : bVV K lam i ∈ W`.
+
+Establish `h` using `hproj Finset.univ`. Establish `hf : Finset.univ.filter (fun k : VVIdx lam => ∀ τ ∈ (Finset.univ : Finset ι), k τ = i τ) = {i}`. Use extensionality with `k`. Simplify using `[funext_iff]`. Rewrite `h` using `[hf, Finset.sum_singleton]`.
+
+Use `W.smul_mem ((bVV K lam).repr w i)⁻¹ h` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hi, one_smul]`. Then use the resulting hypothesis. Establish `hall : ∀ j, bVV K lam j ∈ W`. Introduce `j`. Establish `key : ∀ S : Finset ι, bVV K lam (fun τ => if τ ∈ S then j τ else i τ) ∈ W`.
+
+Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using `using hi'`. Introduce `a S ha ih`. Take `⟨T, hTW, hT⟩` from `exists_elem lam H W hW a (i a) (j a)`.
+
+Establish `h1` using `hTW _ ih`. Rewrite `h1` using `[hT, if_pos (by simp [ha])]`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`. Distinguish the cases in `h : τ = a`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Function.update_of_ne h]`. Simplify using `using key Finset.univ`. Rewrite using `[eq_top_iff]`.
+
+Introduce `x _`. Rewrite using `[← (bVV K lam).sum_repr x]`. Conclude with `W.sum_mem fun k _ => W.smul_mem _ (hall k)`.
+-/
 theorem eq_bot_or_eq_top : ∀ (K : Type) [Field K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → DomWeight n),
     (∀ τ, ∀ φ : nablaSq K n (lam τ) →ₗ[K] nablaSq K n (lam τ), ∃ (s : Finset (GL (Fin n) K)) (c : GL (Fin n) K → K),
       ∀ f : nablaSq K n (lam τ), (φ f : MvPolynomial (Fin n × Fin n) K) = ∑ g ∈ s, c g • sqAct K n (lam τ) g f) →

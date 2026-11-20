@@ -23,6 +23,9 @@ structure LowData (C : Cover H θ O) : Type 1 where
   comm : ∀ g, t g ≫ C.p = s g ≫ C.p
   lies : ∀ g, C.Lies g (s g) (t g) (m g)
 
+/- English proof (translation)
+Use `choose T s t d m h1 h2 h3 using h`. Conclude with `⟨⟨T, s, t, d, m, h1, h2, h3⟩⟩`.
+-/
 theorem lowData_ex (C : Cover H θ O) (h : C.Good) : Nonempty (LowData C) := by
   choose T s t d m h1 h2 h3 using h
   exact ⟨⟨T, s, t, d, m, h1, h2, h3⟩⟩
@@ -110,6 +113,9 @@ def JumpCore : Prop :=
         ∃ J : Multiset ℤ, IsJumpsAt P Bw (ρ.comp (Dec (F := E) A).subtype) τ J ∧
           ∀ b : ℕ, HOcc (bcAlong H (ι.toRingHom.comp τ)) (fun g => ι (θ g)) b → (b : ℤ) ∈ J
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ ι H θ hN dd ρ hc hP w hw hG P AI hT A hA O _ _ _ Bw hj τ LL' τ' hτ`. Take `⟨ρ₀, hM, hGr⟩` from `id hP`. Take `⟨C, hO, -⟩` from `id hG`. Take `⟨J, h1, h2⟩` from `hJ E Ω l ι H θ hN dd ρ₀ ρ hM hGr w hG P AI hT A hA O Bw hj (hC E Ω l H θ hN dd ρ hc hP w hw C hO P AI hT A hA O Bw hj) τ LL' τ' hτ`. Conclude with `⟨J, h1, fun j ⟨b, hb, ho⟩ => hb ▸ h2 b ho⟩`.
+-/
 theorem jumpStep_of (hJ : JumpCore) (hC : CrysStep) : JumpStep := by
   intro E Ω _ _ _ _ _ l _ ι H θ hN dd ρ hc hP w hw hG P AI hT A hA O _ _ _ Bw hj τ LL' τ' hτ
   obtain ⟨ρ₀, hM, hGr⟩ := id hP

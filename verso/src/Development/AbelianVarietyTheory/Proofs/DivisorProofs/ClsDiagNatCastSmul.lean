@@ -26,6 +26,11 @@ noncomputable section
 
 namespace GlobalTheory.RealMultKernel
 
+/- English proof (translation)
+Establish `e : cls (X.P c') (X.isLB c') = cls (X.P (c + c')) (X.isLB _) - cls (X.P c) (X.isLB c)`. Rewrite using `[← cls_div (X.isLB _) (X.isLB _) (LB.isLB_div (X.isLB _) (X.isLB _))]`. Conclude with `(cls_eq_iff _ _).2 (X.add c c')`. Use `show CechPic.pull _ (cls (X.P (c + c')) (X.isLB _)) = CechPic.pull _ (cls (X.P c) (X.isLB c)) + CechPic.pull _ (cls (X.P c') (X.isLB c'))`. Rewrite using `[e, map_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem cls_diag_add {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S : Scheme.{0}} (X : Obj F 𝔠 S) (c c' : 𝔠.elt) :
     cls (X.diag (c + c')) (pull_isLB (X.isLB _) _) =
       cls (X.diag c) (pull_isLB (X.isLB _) _) + cls (X.diag c') (pull_isLB (X.isLB _) _) := by
@@ -36,6 +41,11 @@ theorem cls_diag_add {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S :
     CechPic.pull _ (cls (X.P c) (X.isLB c)) + CechPic.pull _ (cls (X.P c') (X.isLB c'))
   rw [e, map_sub]; abel
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `cls_diag_add X 0 0`. Simplify using `only [add_zero] at h`. Simplify using `only [Nat.cast_zero, zero_smul]`.
+
+Conclude with `left_eq_add.1 h`. Consider the case `succ n ih => rw [Nat.cast_succ, add_smul, one_smul, cls_diag_add, ih, succ_nsmul]`.
+-/
 theorem cls_diag_natCast_smul {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S : Scheme.{0}} (X : Obj F 𝔠 S)
     (c : 𝔠.elt) (n : ℕ) :
     cls (X.diag ((n : 𝓞 F) • c)) (pull_isLB (X.isLB _) _) = n • cls (X.diag c) (pull_isLB (X.isLB _) _) := by
@@ -47,6 +57,39 @@ theorem cls_diag_natCast_smul {F : Type} [Field F] [NumberField F] {𝔠 : FracI
     exact left_eq_add.1 h
   | succ n ih => rw [Nat.cast_succ, add_smul, one_smul, cls_diag_add, ih, succ_nsmul]
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔠 Ω _ _ X`. Establish `hB` using `X.ab`. Use `haveI := hB.smooth`. Use `haveI := hB.proper`. Use `haveI : GeometricallyIntegral X.A.hom := GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hB.smooth hB.geomConnected`.
+
+Use `haveI : IsIntegral X.A.left := GeometricallyIntegral.isIntegral_of_subsingleton X.A.hom`. Take `⟨c, hc⟩` from `fracId_exists_totPos F 𝔠`. Establish `hLc : (X.diag c).IsLB` using `pull_isLB (X.isLB c) _`. Take `⟨m, hm, n, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy Ω X.A (X.diag c) hLc).1 (X.pos c hc)`. Establish `hH : (pw (X.diag c) m).IsLB` using `isLB_pw hLc _`.
+
+Take `⟨hfin, -, c₀, C₀, -, hgrow⟩` from `GlobalTheory.VeryAmpleGrowth.finite_monotone_growth Ω X.A.left X.A.hom _ X.dim _ n s hH hs`. Use `⟨c₀ * C₀, fun b k hb hpos => ?_⟩` and prove the remaining obligations. Take `⟨hfinφ, hetφ, hker⟩` from `GlobalTheory.T.real_mult_isogeny_finite_etale X b hb`. Use `⟨hker, ?_⟩` and prove the remaining obligations. Establish `hcard` using `GlobalTheory.finrank_eq_card_kernel_points_of_etale Ω X.A hB (X.rm.act b)`.
+
+Establish `hk : 1 ≤ k`. Break down `Nat.eq_zero_or_pos k with rfl | h` into its components or cases. It suffices to derive a contradiction. Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h0` using `hpos (v.embedding_of_isReal (IsTotallyReal.isReal v))`.
+
+Simplify using `at h0`. Use polynomial arithmetic with `[sq_nonneg ((v.embedding_of_isReal (IsTotallyReal.isReal v)) (b : F))]`. Conclude with `h`. Use `set e : 𝓞 F := (k : 𝓞 F) ^ 2 - b ^ 2 with he`. Establish `hce : IsTotPos (((e • c : 𝔠.elt)) : F)`.
+
+Introduce `τ`. Establish `h1` using `hpos τ`. Establish `h2` using `hc τ`. Establish `h3 : (((e • c : 𝔠.elt)) : F) = ((k : F) ^ 2 - (b : F) ^ 2) * (c : F)`. Rewrite using `[Submodule.coe_smul, Algebra.smul_def, he]`.
+
+Apply the tactic sequence `first | simp | (push_cast; norm_cast) | (congr 1; simp)`. Rewrite using `[h3, map_mul]`. Conclude with `mul_pos h1 h2`. Establish `hDe : (X.diag (e • c)).IsLB` using `pull_isLB (X.isLB _) _`. Take `⟨m', hm', n', s', hs'⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy Ω X.A _ hDe).1 (X.pos _ hce)`.
+
+Take `⟨x₀⟩ : Nonempty X.A.left` from `inferInstance`. Take `⟨i₀, hi₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show x₀ ∈ ⨆ i, Out.nonzeroLocus (s' i) by rw [hs'.1]; trivial)`. Take `⟨n'', s'', hs''⟩` from `GlobalTheory.AbLaw.veryAmpleBy_pw Ω X.A.left X.A.hom _ n s hH hs m' hm'`. Establish `hsum : cls (X.diag ((b * b) • c)) (pull_isLB (X.isLB _) _) + cls (X.diag (e • c)) (pull_isLB (X.isLB _) _) = (k ^ 2 : ℕ) • cls (X.diag c) (pull_isLB (X.isLB _) _)`. Rewrite using `[← cls_diag_add, ← add_smul, ← cls_diag_natCast_smul]`.
+
+Use `congr 3`. Rewrite using `[he]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hφ : (X.rm.act b).left ≫ X.A.hom = X.A.hom` using `Over.w _`.
+
+Establish `key : ∀ t : ℕ, Module.Finite Ω (SecOnR ((X.rm.act b).left ≫ X.A.hom) ((pw (pw (pw (X.diag c) m) m') t).pull (X.rm.act b).left) ⊤) ∧ Module.finrank Ω (SecOnR ((X.rm.act b).left ≫ X.A.hom) ((pw (pw (pw (X.diag c) m) m') t).pull (X.rm.act b).left) ⊤) ≤ Module.finrank Ω (SecOnR X.A.h …`. Introduce `t`. Rewrite using `[hφ]`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_section_power_nonvanishing s' i₀ hi₀ (m * t)`. Establish `hLp : ((pw (pw (pw (X.diag c) m) m') t).pull (X.rm.act b).left).IsLB` using `pull_isLB (isLB_pw (isLB_pw hH _) _) _`.
+
+Establish `hD2 : (pw (pw (X.diag (e • c)) m') ((m * t : ℕ) : ℤ)).IsLB` using `isLB_pw (isLB_pw hDe _) _`. Establish `hT : (pw (pw (X.diag c) m) ((k ^ 2 * (m' * t) : ℕ) : ℤ)).IsLB` using `isLB_pw hH _`. Establish `hiso : LBIso (tens ((pw (pw (pw (X.diag c) m) m') t).pull (X.rm.act b).left) (pw (pw (X.diag (e • c)) m') ((m * t : ℕ) : ℤ))) (pw (pw (X.diag c) m) ((k ^ 2 * (m' * t) : ℕ) : ℤ))`. Rewrite using `[← cls_eq_iff (isLB_tens hLp hD2) hT, cls_tens hLp hD2, cls_pull (isLB_pw (isLB_pw hH _) _), GlobalTheory.AmpleStabFinite.cls_pw (isLB_pw hH _), GlobalTheory.AmpleStabFinite.cls_pw hH, GlobalTheory.AmpleStabFinite.cls_pw hLc, GlobalTheory.AmpleStabFinite.cls_pw (isLB_pw hDe _), G …`. Use `push_cast`.
+
+Use `module`. Take `⟨w, hw⟩` from `hiso`. Establish `eqv` using `SecOnR.linEquiv X.A.hom (SecOn.congr (isLB_tens hLp hD2) hT w hw ⊤)`. Use `haveI := hfin (k ^ 2 * (m' * t))`. Use `haveI : Module.Finite Ω (SecOnR X.A.hom (tens ((pw (pw (pw (X.diag c) m) m') t).pull (X.rm.act b).left) (pw (pw (X.diag (e • c)) m') ((m * t : ℕ) : ℤ))) ⊤) := Module.Finite.equiv eqv.symm`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.T.finrank_sections_mono_tensor_effective X.A.hom hLp hD2 σ hσ inferInstance`. Conclude with `⟨h1, h2.trans eqv.finrank_eq.le⟩`. Establish `hpw : ∀ t : ℕ, pw (pw (pw (X.diag c) m) m') (t : ℤ) = pw (pw (X.diag c) m) ((m' * t : ℕ) : ℤ)` using `fun t => by`. Rewrite using `[GlobalTheory.UU.TorsionCount.pw_pw, Nat.cast_mul]`. Take `⟨a, ha⟩` from `GlobalTheory.finrank_sec_pull_sandwich Ω X.A.left X.A.left X.A.hom (X.rm.act b).left (pw (pw (X.diag c) m) m') n'' s'' (isLB_pw hH _) hs'' _ hcard (fun t => by rw [hpw]; exact hfin _) (fun t => (key t).1)`.
+
+Use `GlobalTheory.T.le_of_eventual_polynomial_growth _ _ a (Module.finrank ℚ F) fun N => ⟨max N 1, le_max_left _ _, ?_⟩` and prove the remaining obligations. Use `set s₁ := max N 1 with hs₁`. Establish `hs1 : 1 ≤ s₁` using `le_max_right _ _`. Establish `g1` using `(hgrow (m' * s₁) (Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)))).1`. Establish `g2` using `(ha s₁).1`.
+
+Rewrite `g2` using `[hpw]`. Establish `g3` using `(key (s₁ + a)).2`. Establish `g4` using `(hgrow (k ^ 2 * (m' * (s₁ + a))) (Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by positivity) (Nat.mul_ne_zero (by omega) (by omega))))).2`. Establish `hm'f : 0 < m' ^ Module.finrank ℚ F` using `by positivity`. Use `Nat.le_of_mul_le_mul_right ?_ hm'f` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_ker_act_le : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (Ω : Type) [Field Ω] [IsAlgClosed Ω]
     (X : Obj F 𝔠 (Sp Ω)), ∃ C : ℕ, ∀ (b : 𝓞 F) (k : ℕ), ((Algebra.norm ℤ b : ℤ) : Ω) ≠ 0 →
       IsTotPos (((k : F)) ^ 2 - (b : F) ^ 2) →

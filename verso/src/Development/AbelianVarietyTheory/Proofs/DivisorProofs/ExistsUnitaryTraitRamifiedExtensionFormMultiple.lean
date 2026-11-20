@@ -10,10 +10,38 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan
 
 namespace GlobalTheory.UPoinc
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, inferInstance⟩`.
+-/
 theorem mumBase_of_cdvr (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [IsAdicComplete (maximalIdeal V) V] [CharZero V] : GlobalTheory.Mum.Base V :=
   ⟨⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, inferInstance⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T n hn`. Use `haveI : IsDiscreteValuationRing T.V := T.cdvr.1`. Use `haveI : IsAdicComplete (maximalIdeal T.V) T.V := T.cdvr.2.1`. Use `haveI : CharZero T.V := T.cdvr.2.2`. Set `T0 : Formalism.L2.Pj.CDVR` to `{ V := T.V }`.
+
+Take `⟨T₁, g₁, κ, e₁, ϖ₁, hg₁, hl₁, hϖ₁, hκ, hne₁, hass₁⟩` from `GlobalTheory.ArcExt.exists_ramified_ext T0 (Ω := AlgebraicClosure T0.Fr) ⊥ n hn T.ϖ T.irr`. Set `gK₁ : FractionRing T.V →+* FractionRing T₁.V` to `κ.comp (algebraMap T0.Fr (⊥ : IntermediateField T0.Fr (AlgebraicClosure T0.Fr)))`. Establish `hgK₁ : ∀ a, gK₁ (algebraMap T.V _ a) = algebraMap T₁.V _ (g₁ a)` using `hκ`. Use `haveI : IsAdicComplete (maximalIdeal T₁.V) T₁.V := T₁.cpl`. Establish `hB₁ : GlobalTheory.Mum.Base T₁.V` using `mumBase_of_cdvr T₁.V`.
+
+Take `⟨T₂, f, fK, hf, hfl, -, hfK, hy⟩` from `GlobalTheory.T.exists_unitaryTrait_through_moduliGenericPoint E H Dw l Xo c T₁.V hB₁ inferInstance (spMap gK₁ ≫ T.y)`. Use `haveI : IsDiscreteValuationRing T₂.V := T₂.cdvr.1`. Use `haveI : IsAdicComplete (maximalIdeal T₂.V) T₂.V := T₂.cdvr.2.1`. Use `haveI : CharZero T₂.V := T₂.cdvr.2.2`. Establish `hfϖ0 : f ϖ₁ ≠ 0` using `fun h => hϖ₁.ne_zero (hf (by rw [h, map_zero]))`.
+
+Take `⟨e₂, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hfϖ0 T₂.irr`. Establish `he₂ : 0 < e₂`. Break down `Nat.eq_zero_or_pos e₂ with h | h` into its components or cases. It suffices to derive a contradiction. Rewrite `hu` using `[h, pow_zero, mul_one]`.
+
+Conclude with `hϖ₁.not_isUnit ((isUnit_map_iff f ϖ₁).1 (hu ▸ u.isUnit))`. Conclude with `h`. Establish `he₁ : 0 < e₁`. Break down `Nat.eq_zero_or_pos e₁ with h | h` into its components or cases. It suffices to derive a contradiction.
+
+Rewrite `hass₁` using `[h, pow_zero]`. Conclude with `T.irr.not_isUnit ((isUnit_map_iff g₁ T.ϖ).1 (associated_one_iff_isUnit.1 hass₁))`. Conclude with `h`. Establish `hassf : Associated (f ϖ₁) (T₂.ϖ ^ e₂)` using `⟨u⁻¹, by rw [hu, mul_comm (u : T₂.V), mul_assoc, Units.mul_inv, mul_one]⟩`. Establish `hass : Associated ((f.comp g₁) T.ϖ) (T₂.ϖ ^ (e₁ * e₂))`.
+
+Establish `h1 : Associated (f (g₁ T.ϖ)) (f ϖ₁ ^ e₁)`. Rewrite using `[← map_pow]`. Conclude with `hass₁.map f`. Rewrite using `[mul_comm, pow_mul]`. Conclude with `h1.trans (hassf.pow_pow)`.
+
+Establish `hyc : spMap (fK.comp gK₁) ≫ T.y = spMap (RingHom.id (FractionRing T₂.V)) ≫ T₂.y`. Establish `hid : spMap (RingHom.id (FractionRing T₂.V)) = 𝟙 _` using `by show Spec.map (CommRingCat.ofHom (RingHom.id _)) = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Rewrite using `[hy, hid, Category.id_comp, ← Category.assoc]`. Use `congr 1`.
+
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hcomp : ∀ a, (fK.comp gK₁) (algebraMap T.V _ a) = algebraMap T₂.V _ ((f.comp g₁) a)` using `fun a => by`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hgK₁, hfK]`.
+
+Take `⟨e, he⟩` from `GlobalTheory.T.traitsOfModuliPoint_have_isomorphic_proportional_lattices E H Dw l Xo c T T₂ T₂.V (f.comp g₁) (RingHom.id T₂.V) (fK.comp gK₁) (RingHom.id _) (mumBase_of_cdvr T₂.V) inferInstance (hf.comp hg₁) Function.injective_id inferInstance inferInstance hcomp (fun _ => rfl) hy …`. Take `⟨k, hk⟩` from `hne₁`. Establish `hk0 : 0 < k`. Break down `Nat.eq_zero_or_pos k with h | h` into its components or cases. Rewrite `hk` using `[h, mul_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h`. Use `⟨T₂, f.comp g₁, fK.comp gK₁, e, k * e₂, hf.comp hg₁, inferInstance, hcomp, ?_, Nat.mul_pos hk0 he₂, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[hy, ← Category.assoc]`. Use `congr 1`.
+
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `h` using `he a b`. Rewrite `h` using `[Nat.cast_one, one_mul]`. Rewrite using `[← h, hk, mul_assoc]`.
+-/
 theorem uTrait_ramExt : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
     {Xo : Moduli Dw l} {c : Coeff l} (T : GlobalTheory.UPoinc.UTrait Xo c) (n : ℕ), 0 < n →
     ∃ (T₂ : GlobalTheory.UPoinc.UTrait Xo c) (g : T.V →+* T₂.V) (gK : FractionRing T.V →+* FractionRing T₂.V)

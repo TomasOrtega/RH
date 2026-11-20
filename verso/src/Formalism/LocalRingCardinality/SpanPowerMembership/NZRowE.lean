@@ -29,6 +29,11 @@ def padConj {d n : ℕ} (h : d ≤ n) : En d →ₗᵢ⋆[ℂ] En n where
 
 section Chain
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Simplify using `only [Formalism.ThetaLiftIndependence.chainOpM, ih]`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [Formalism.ThetaLiftIndependence.kerOpM, Pi.add_apply, map_add, smul_add, Finset.sum_add_distrib]`.
+-/
 theorem chainOpM_add {Rg : Type} [CommSemiring Rg] {ι : ℕ → Type} [∀ j, Fintype (ι j)]
     {M : ℕ → Type} [∀ j, AddCommMonoid (M j)] [∀ j, Module Rg (M j)]
     (w : ∀ j, ι j → Rg) (Km : ∀ j, ι j → ι (j + 1) → (M j →ₗ[Rg] M (j + 1))) (m : ℕ) (f g : ι 0 → M 0) :
@@ -40,6 +45,11 @@ theorem chainOpM_add {Rg : Type} [CommSemiring Rg] {ι : ℕ → Type} [∀ j, F
     funext j
     simp only [Formalism.ThetaLiftIndependence.kerOpM, Pi.add_apply, map_add, smul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Simplify using `only [Formalism.ThetaLiftIndependence.chainOpM, ih]`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [Formalism.ThetaLiftIndependence.kerOpM, Pi.smul_apply, map_smul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `smul_comm _ _ _`.
+-/
 theorem chainOpM_smul {Rg : Type} [CommSemiring Rg] {ι : ℕ → Type} [∀ j, Fintype (ι j)]
     {M : ℕ → Type} [∀ j, AddCommMonoid (M j)] [∀ j, Module Rg (M j)]
     (w : ∀ j, ι j → Rg) (Km : ∀ j, ι j → ι (j + 1) → (M j →ₗ[Rg] M (j + 1))) (m : ℕ) (c : Rg) (f : ι 0 → M 0) :
@@ -53,9 +63,15 @@ theorem chainOpM_smul {Rg : Type} [CommSemiring Rg] {ι : ℕ → Type} [∀ j, 
     refine Finset.sum_congr rfl fun i _ => ?_
     exact smul_comm _ _ _
 
+/- English proof (translation)
+The claim follows from `chainOpM_add C.wt C.Kmap R.m f g`.
+-/
 theorem col_add {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : ColumnChain R ι hc)
     (f g : C.cls 0 → C.Y 0 → ℂ) : C.col (f + g) = C.col f + C.col g := chainOpM_add C.wt C.Kmap R.m f g
 
+/- English proof (translation)
+The claim follows from `chainOpM_smul C.wt C.Kmap R.m c f`.
+-/
 theorem col_smul {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : ColumnChain R ι hc)
     (c : ℂ) (f : C.cls 0 → C.Y 0 → ℂ) : C.col (c • f) = c • C.col f := chainOpM_smul C.wt C.Kmap R.m c f
 
@@ -88,6 +104,9 @@ variable {W : Type} (hcW : W → Tau2 R → HCParam R) (K : W → ClsPkg) (d : �
 def perN (u : W) (μ : Bool) (φ : MuN ((K u).cls 0)) (F : En d) : ℂ :=
   (periodN (hcW u) (K u) (En d) (per u μ)).PtilCol (eE _ φ) F
 
+/- English proof (translation)
+Use `⟨fun x y => ?_, fun c x => ?_⟩` and prove the remaining obligations. Unfold `perN Formalism.BasicNotions.PeriodMap.PtilCol Formalism.BasicNotions.PeriodMap.Ptil`. Rewrite using `[map_add, col_add, map_add, map_add, map_add, LinearMap.add_apply]`. Unfold `perN Formalism.BasicNotions.PeriodMap.PtilCol Formalism.BasicNotions.PeriodMap.Ptil`. Rewrite using `[map_smul, col_smul, map_smul, map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+-/
 theorem perN_linL (u : W) (μ : Bool) (F : En d) : IsLinearMap ℂ (fun φ => perN hcW K d per u μ φ F) := by
   refine ⟨fun x y => ?_, fun c x => ?_⟩
   · unfold perN Formalism.BasicNotions.PeriodMap.PtilCol Formalism.BasicNotions.PeriodMap.Ptil
@@ -95,6 +114,9 @@ theorem perN_linL (u : W) (μ : Bool) (F : En d) : IsLinearMap ℂ (fun φ => pe
   · unfold perN Formalism.BasicNotions.PeriodMap.PtilCol Formalism.BasicNotions.PeriodMap.Ptil
     rw [map_smul, col_smul, map_smul, map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Use `⟨fun x y => ?_, fun c x => ?_⟩` and prove the remaining obligations. Unfold `perN Formalism.BasicNotions.PeriodMap.PtilCol Formalism.BasicNotions.PeriodMap.Ptil`. Rewrite using `[map_add]`. Unfold `perN Formalism.BasicNotions.PeriodMap.PtilCol Formalism.BasicNotions.PeriodMap.Ptil`. Rewrite using `[map_smul, smul_eq_mul]`.
+-/
 theorem perN_linR (u : W) (μ : Bool) (φ : MuN ((K u).cls 0)) : IsLinearMap ℂ (fun F => perN hcW K d per u μ φ F) := by
   refine ⟨fun x y => ?_, fun c x => ?_⟩
   · unfold perN Formalism.BasicNotions.PeriodMap.PtilCol Formalism.BasicNotions.PeriodMap.Ptil
@@ -115,6 +137,9 @@ abbrev rowsHN {W : Type} (hcW : W → Tau2 R → HCParam R) (K : W → ClsPkg) (
     (shaExample_nonneg H) (exampleClassGroupCard H) (exampleClassGroupCard_pos H) kb ks tw htw W (fun u => (K u).cls 0) d Dall d0 hd FT ft ft0
     (perN hcW K d per) (fun _ _ => 0) (fun _ _ => le_refl _)
 
+/- English proof (translation)
+Introduce `p _ e _ _` and use `shaExample_eq H p e hcard := rfl hg := hg`.
+-/
 theorem nHypN {W : Type} (hcW : W → Tau2 R → HCParam R) (K : W → ClsPkg) (Dst : ℝ)
     (kb : ∀ j, Tau2 R → Fin (R.sigW j).1 → ℤ) (ks : ∀ j, Tau2 R → Fin (R.sigW j).2 → ℤ)
     (tw : (@placesOf H.E _ _ H.cmStar).Pl → Bool)

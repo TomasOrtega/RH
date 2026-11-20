@@ -14,6 +14,9 @@ namespace IntegralIndep
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y`. Unfold `chartAbsDens chartDens chartPosDens sheetSum`. Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ hfin, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Apply the tactic sequence `refine ⟨Finset.sum_congr rfl fun x _ => ?_, Finset.sum_congr rfl fun x _ => ?_⟩ <;> split_ifs <;> simp only [Pi.neg_apply, neg_mul, max_zero_add_max_neg_zero_eq_abs_self, max_zero_sub_max_neg_zero_eq_self, add_zero, sub_zero]`.
+-/
 theorem chartDens_eq_posParts {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (hA : IsFiniteProjection J A) (f : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ)
     (y : Fin d → ℂ) :
@@ -27,6 +30,9 @@ theorem chartDens_eq_posParts {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix
     split_ifs <;> simp only [Pi.neg_apply, neg_mul, max_zero_add_max_neg_zero_eq_abs_self,
       max_zero_sub_max_neg_zero_eq_self, add_zero, sub_zero]
 
+/- English proof (translation)
+Unfold `chartPosDens sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y)]`. Apply the tactic sequence `exact Finset.sum_nonneg fun x _ => by split_ifs <;> simp`.
+-/
 theorem chartPosDens_nonneg (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     (hA : IsFiniteProjection J A) (f : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ)
     (y : Fin d → ℂ) : 0 ≤ chartPosDens J A f φ y := by
@@ -34,12 +40,26 @@ theorem chartPosDens_nonneg (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (
   rw [finsum_mem_eq_finite_toFinset_sum _ (IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y)]
   exact Finset.sum_nonneg fun x _ => by split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `SheetSumMeasurable.measurable_sheetSum hA (fun a b => max (a * b) 0) ((continuous_fst.mul continuous_snd).max continuous_const).measurable hf φ`.
+-/
 theorem measurable_chartPosDens {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (hA : IsFiniteProjection J A) {f : (Fin n → ℂ) → ℝ} (hf : Measurable f)
     (φ : Fin d → (Fin n → ℂ) → ℝ) : Measurable (chartPosDens J A f φ) :=
   SheetSumMeasurable.measurable_sheetSum hA (fun a b => max (a * b) 0)
     ((continuous_fst.mul continuous_snd).max continuous_const).measurable hf φ
 
+/- English proof (translation)
+Establish `h0` using `chartPosDens_nonneg J A hA f φ`. Establish `h1` using `chartPosDens_nonneg J A hA (-f) φ`. Establish `m0` using `measurable_chartPosDens hA hf φ`. Establish `m1` using `measurable_chartPosDens hA hf.neg φ`. Establish `habs : chartAbsDens J A f φ = fun y => chartPosDens J A f φ y + chartPosDens J A (-f) φ y`.
+
+Use function extensionality and compare the values at `fun y => (chartDens_eq_posParts hA f φ y).1`. Establish `hlin : ∫⁻ y, ENNReal.ofReal (chartAbsDens J A f φ y) = (∫⁻ y, ENNReal.ofReal (chartPosDens J A f φ y)) + ∫⁻ y, ENNReal.ofReal (chartPosDens J A (-f) φ y)`. Rewrite using `[habs, ← lintegral_add_left m0.ennreal_ofReal]`. Conclude with `lintegral_congr fun y => ENNReal.ofReal_add (h0 y) (h1 y)`. Establish `hint : Integrable (chartAbsDens J A f φ) ↔ ∫⁻ y, ENNReal.ofReal (chartAbsDens J A f φ y) < ⊤`.
+
+Rewrite using `[habs, Integrable, hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun y => add_nonneg (h0 y) (h1 y))]`. Conclude with `and_iff_right (m0.add m1).aestronglyMeasurable`. Use `⟨hint.trans (by rw [hlin]), fun hi => ?_⟩` and prove the remaining obligations. Establish `hi0 : Integrable (chartPosDens J A f φ)` using `hi.mono' m0.aestronglyMeasurable (Filter.Eventually.of_forall fun y => by`. Rewrite using `[Real.norm_of_nonneg (h0 y), habs]`.
+
+Combine the linear relations using `[h1 y])`. Establish `hi1 : Integrable (chartPosDens J A (-f) φ)` using `hi.mono' m1.aestronglyMeasurable (Filter.Eventually.of_forall fun y => by`. Rewrite using `[Real.norm_of_nonneg (h1 y), habs]`. Combine the linear relations using `[h0 y])`. Establish `hd : chartDens J A f φ = fun y => chartPosDens J A f φ y - chartPosDens J A (-f) φ y`.
+
+Use function extensionality and compare the values at `fun y => (chartDens_eq_posParts hA f φ y).2`. Rewrite using `[chartInt, hd, integral_sub hi0 hi1, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall h0) m0.aestronglyMeasurable, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall h1) m1.aestronglyMeasurable]`.
+-/
 theorem chartInt_eq_posParts {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (hA : IsFiniteProjection J A) {f : (Fin n → ℂ) → ℝ} (hf : Measurable f)
     (φ : Fin d → (Fin n → ℂ) → ℝ) :
@@ -80,6 +100,11 @@ theorem chartInt_eq_posParts {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix 
 
 end IntegralIndep
 
+/- English proof (translation)
+Introduce `n d J A A' f φ hP hd hA hA' hf hφ hi`. Establish `e0` using `h n d J A A' f φ hP hd hA hA' hf hφ`. Establish `e1` using `h n d J A A' (-f) φ hP hd hA hA' hf.neg hφ`. Take `⟨iA, cA⟩` from `IntegralIndep.chartInt_eq_posParts hA hf φ`. Take `⟨iA', cA'⟩` from `IntegralIndep.chartInt_eq_posParts hA' hf φ`.
+
+Establish `hi' : Integrable (chartAbsDens J A' f φ)` using `iA'.2 (by rw [← e0, ← e1]; exact iA.1 hi)`. Conclude with `⟨hi', by rw [cA hi, cA' hi', e0, e1]⟩`.
+-/
 theorem IntegralIndep.proof (h : PosPartIndep.Statement) : IntegralIndep.Statement := by
   intro n d J A A' f φ hP hd hA hA' hf hφ hi
   have e0 := h n d J A A' f φ hP hd hA hA' hf hφ

@@ -5,6 +5,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 
 open IsLocalRing Matrix UpperTheory.V.Hi
 
+/- English proof (translation)
+Introduce `Γ Ga Gp _ _ _ X O Ω _ _ _ _ W m Λ Λ' h F hF hc`. Establish `hu : ∀ i g k, X.unt m W F i g k ∈ Λ` using `(Frame.mem_lat X m W Λ F).mp hF`. Establish `hu0 : ∀ i g, X.unt m W F i g 0 ∈ Λ'` using `fun i g => by`. Rewrite using `[← Frame.ctrl_apply]`. Conclude with `hc g i`.
+
+Establish `hF' : ∀ i g, F i g = (W.ξ g.2 : Matrix (Fin (W.d + 1)) (Fin (W.d + 1)) Ω) *ᵥ X.unt m W F i g` using `fun i g => by`. Rewrite using `[Frame.unt_apply, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hM : ∀ (M : Matrix (Fin (W.d + 1)) (Fin (W.d + 1)) Ω), (∀ k l, M k l ∈ (algebraMap O Ω).range) → ∀ w : Fin (W.d + 1) → Ω, (∀ l, w l ∈ Λ') → ∀ k, (M *ᵥ w) k ∈ Λ'`. Introduce `M hMi w hw k`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hMi k l`. Rewrite using `[← hy, ← Algebra.smul_def]`. Conclude with `Λ'.smul_mem y (hw l)`. Establish `main : ∀ c : Ω, (∀ l j, c * (W.ξ X.I.z : Matrix (Fin (W.d + 1)) (Fin (W.d + 1)) Ω) l j ∈ (algebraMap O Ω).range) → (∀ l j, j ≠ 0 → ∃ x ∈ maximalIdeal O, c * (W.ξ X.I.z : Matrix (Fin (W.d + 1)) (Fin (W.d + 1)) Ω) l j = algebraMap O Ω x) → (c • ∑ᶠ (q : ↥X.I.N ⧸ (X.I.Nconj X.I.z).su …`.
+
+Introduce `c hP hN`. Use `finsum_induction (p := fun T : Module.End Ω (Fin m → X.Fn Ω (W.d + 1)) => (c • T) F ∈ X.Lat m W Λ') ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `S T hS hT`. Simplify `add_mem hS hT` using `[smul_add]`.
+
+Introduce `q`. Establish `hn : ((Quotient.out q : ↥X.I.N) : Gp) ∈ X.I.N` using `(Quotient.out q).2`. Generalize the expression as in `((Quotient.out q : ↥X.I.N) : Gp) = n at hn ⊢`. Rewrite using `[Frame.mem_lat]`. Introduce `i g k`.
+
+Establish `e : X.unt m W ((c • X.rpF Ω (W.d + 1) m (n * X.I.z)) F) i g = (W.ξ n : Matrix (Fin (W.d + 1)) (Fin (W.d + 1)) Ω) *ᵥ ((c • (W.ξ X.I.z : Matrix (Fin (W.d + 1)) (Fin (W.d + 1)) Ω)) *ᵥ X.unt m W F i (g * (1, n * X.I.z)))`. Establish `e1 : X.rpF Ω (W.d + 1) m (n * X.I.z) F i g = F i (g * (1, n * X.I.z))`. Simplify using `[Frame.rpF, Frame.rp, rtr]`. Rewrite using `[Frame.unt_apply, LinearMap.smul_apply, Pi.smul_apply, Pi.smul_apply, e1, hF' i (g * (1, n * X.I.z))]`. Simplify using `only [Prod.snd_mul, mul_one, map_mul, Units.val_mul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← mul_assoc]`.
+
+Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul, Matrix.mul_smul, Matrix.smul_mulVec]`. Rewrite using `[e]`. Use `hM _ (fun k l => W.int_N _ hn k l) _ (fun l => ?_) k` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Take `⟨y, hy⟩` from `hP l 0`. Rewrite using `[← hy, ← Algebra.smul_def]`. Conclude with `Λ'.smul_mem y (hu0 _ _)`.
+
+Take `⟨x, hx, hxe⟩` from `hN l j hj`. Rewrite using `[hxe, ← Algebra.smul_def]`. Conclude with `h x hx _ (hu _ _ _)`. Conclude with `main _ (fun l j => W.int_P _ X.I.z_mem l j) (fun l j hj => W.nilpotent_central_action l j hj)`.
+-/
 theorem UpperTheory.Up_operator_maps_lattice_of_control_values :
     ∀ (Γ Ga Gp : Type) [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) (O Ω : Type) [CommRing O] [IsLocalRing O] [Field Ω] [Algebra O Ω] (W : WtRep X.I O Ω) (m : ℕ) (Λ Λ' : Submodule O Ω), (∀ a ∈ maximalIdeal O, ∀ w ∈ Λ, a • w ∈ Λ') → ∀ F ∈ X.Lat m W Λ, (∀ g i, X.ctrl m W F g i ∈ Λ') → X.UF m W ⟨X.I.z, X.I.z_mem⟩ F ∈ X.Lat m W Λ' := by
   intro Γ Ga Gp _ _ _ X O Ω _ _ _ _ W m Λ Λ' h F hF hc

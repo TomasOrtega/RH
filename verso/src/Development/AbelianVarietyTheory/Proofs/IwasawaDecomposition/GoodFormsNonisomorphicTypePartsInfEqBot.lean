@@ -15,6 +15,17 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.Rw.TypesDisj
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG _ hI hP _ y Φ rep hR i π π' hne`. Establish `hB : R.toRealDat.BaseW F.lv2` using `hP.char.base`. Establish `h0` using `hB.models.νW i`. Establish `hO` using `(GlobalTheory.FinTypesRows.isotL_span_orth D (Wc D i) _ R.θ (R.MW i (sg0 D A3.A)) (y.PW i) y.hF (R.βW i) (R.datWp i (R.levL F.lv2 false (sg0 D A3.A))) (R.eWf i (sg0 D A3.A)) _ (R.fdW i) hI (D.sp.W_sig _) hB.models.inf (y.stdPsi.2 i) h0.1.1 h0.2 (GlobalTheory.Mem.R3.IsotIndep.gaL_ …`. Establish `hHP` using `GlobalTheory.HilbertLevels.herm_lev hI hB.models.inf (D.sp.W_sig _) (R.MW i (sg0 D A3.A)) (R.βW i) (R.datWp i (R.levL F.lv2 false (sg0 D A3.A))) h0.1.1 h0.2`.
+
+Establish `hni : ¬ (rep π).Iso (rep π')` using `fun h => hne (hR.inj π π' h)`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `w ⟨hw, hw'⟩`. Take `⟨a, ha, rfl⟩` from `Submodule.mem_map.1 hw`. Take `⟨b, hb, hab⟩` from `Submodule.mem_map.1 hw'`.
+
+Establish `hba : b = a` using `LinearEquiv.injective _ hab`. Substitute `hba` using the available equality. Establish `hz` using `hO _ _ hni b ha b hb`. Establish `hm : b ∈ Mult R.θ (R.MW i (sg0 D A3.A)) (levS _ (R.βW i) (R.datWp i (R.levL F.lv2 false (sg0 D A3.A)))) (levChi _ (R.βW i) (R.datWp i (R.levL F.lv2 false (sg0 D A3.A))))` using `Mult.goodPart_le _ _ _ _ _ ha.1`. Establish `hmT` using `Submodule.mem_map_of_mem (f := (PiTensorProduct.lift : MMap (R.MW i (sg0 D A3.A)) ≃ₗ[ℂ] _).toLinearMap) hm`.
+
+Assume the negation of the conclusion as `hne0`. Establish `hpos` using `hHP.pos ⟨_, hmT⟩ (fun h => hne0 ((Submodule.mem_bot ℂ).2 (congrArg Subtype.val h)))`. Simplify using `only at hpos`. Unfold `ipMT at hpos`. Establish `hs : ∀ z, PiTensorProduct.lift.symm (((PiTensorProduct.lift : MMap (R.MW i (sg0 D A3.A)) ≃ₗ[ℂ] _).toLinearMap) z) = z` using `fun z => LinearEquiv.symm_apply_apply _ z`.
+
+Rewrite `hpos` using `[hs, hz]`. Simplify using `at hpos`.
+-/
 theorem prtW_inf_eq_bot : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), (∀ o : D.what₂.O, ∃ k : Ks, algebraMap Ks D.what₂.LL k = D.what₂.OtoLL o) → Inputs D → Pins R F cG → Holds R F → ∀ (y : Hd R.toRealDat) (Φ : Type) (rep : Φ → Formalism.L2.NG.FinTyp D.host.E D.R.r), Reps y F.lv2 rep → ∀ (i : Fin D.R.m) (π π' : Φ), π ≠ π' → y.prtW F.lv2 i (rep π) ⊓ y.prtW F.lv2 i (rep π') = ⊥ := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG _ hI hP _ y Φ rep hR i π π' hne
   have hB : R.toRealDat.BaseW F.lv2 := hP.char.base

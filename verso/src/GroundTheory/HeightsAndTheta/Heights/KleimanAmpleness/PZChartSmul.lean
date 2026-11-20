@@ -10,6 +10,21 @@ noncomputable section
 
 universe u v w
 
+/- English proof (translation)
+Introduce `S _ Ω _ _ N x E _ _ _ _ G H r h hh J j hj I a ha z hz`. Establish `hmem : ∀ l, h l ∈ H.sub I` using `fun l => (Submodule.mem_iInf _).mp (hh l) I`. Use `Submodule.span_induction (p := fun z _ => a • z ∈ secsOnZChart G H h I J) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `e ⟨m, hm⟩`. Take `⟨n, hn⟩` from `Set.mem_iInter.mp ha I`.
+
+Rewrite `hn` using `[one_mul]`. Use `set u := ∏ l ∈ J.1.erase j, h l with hu`. Establish `hxu : xProd J = h j * u` using `(Finset.mul_prod_erase J.1 h hj).symm`. Establish `hk : J.1.card = (J.1.erase j).card + 1`. Rewrite using `[Finset.card_erase_of_mem hj]`.
+
+Use `Finset.card_pos.mpr ⟨j, hj⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hun : u ^ n ∈ (H.pow ((J.1.erase j).card * n)).sub I` using `AmpleTwistLocal.pow_mem_pow H I (VeryAmpleZTwist.prod_mem_pow H I hmem _) n`. Establish `hw : a * h j ^ n * u ^ n ∈ (H.pow (n + (J.1.erase j).card * n)).sub I` using `AmpleTwistLocal.mul_mem_pow H I hn _ hun`. Establish `h1` using `VeryAmpleZTwist.smul_mem_twist_pow G H I hw hm`.
+
+Use `Submodule.subset_span ⟨m + n, ?_⟩` and prove the remaining obligations. Establish `e1 : xProd J ^ (m + n) • a • e = (a * h j ^ n * u ^ n) • xProd J ^ m • e`. Rewrite using `[smul_smul, smul_smul, hxu]`. Put the polynomial expressions in normal form. Establish `e2 : J.1.card * (m + n) = J.1.card * m + (n + (J.1.erase j).card * n)`.
+
+Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Conclude with `h1`. Rewrite using `[smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Introduce `b c _ _ hb hc`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hb hc`. Introduce `s y _ hy`.
+
+Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ s hy`.
+-/
 theorem ZChartSmul.proof : ZChartSmul.Statement.{u, v, w} := by
   intro S _ Ω _ _ N x E _ _ _ _ G H r h hh J j hj I a ha z hz
   classical

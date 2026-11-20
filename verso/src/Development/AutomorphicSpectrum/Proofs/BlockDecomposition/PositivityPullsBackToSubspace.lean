@@ -11,11 +11,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilSiegel.NoFrame
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`.
+-/
 theorem gram_form_eq {m n : ℕ} (G : Matrix (Fin m) (Fin m) ℂ) (y : Matrix (Fin m) (Fin n) ℂ)
     (w : Fin n → ℂ) :
     star w ⬝ᵥ (y.conjTranspose * G * y).mulVec w = star (y.mulVec w) ⬝ᵥ G.mulVec (y.mulVec w) := by
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]
 
+/- English proof (translation)
+Establish `key : ∀ w ∈ S, w ≠ 0 → 0 < ε * (star (y.mulVec w) ⬝ᵥ G.mulVec (y.mulVec w)).re`. Introduce `w hw hw0`. Establish `hpos` using `h w hw hw0`. Rewrite `hpos` using `[gram_form_eq]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective ((Matrix.mulVecLin y).domRestrict S)`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Assume the negation of the conclusion as `hne`. Establish `hw0 : (w : Fin n → ℂ) ≠ 0` using `fun h0 => hne (Subtype.ext h0)`. Establish `h1` using `key w w.2 hw0`.
+
+Establish `h2 : y.mulVec (w : Fin n → ℂ) = 0` using `by simpa using hw`. Simplify using `[h2] at h1`. Use `⟨S.map (Matrix.mulVecLin y), ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv hv0`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.mp hv`.
+
+Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Conclude with `hv0 (map_zero _)`. Rewrite using `[Matrix.mulVecLin_apply]`. Conclude with `key w hw hw0`.
+
+Rewrite using `[← LinearMap.range_domRestrict, LinearMap.finrank_range_of_inj hinj]`.
+-/
 theorem exists_posOn_of_gram (m n : ℕ) (G : Matrix (Fin m) (Fin m) ℂ)
     (y : Matrix (Fin m) (Fin n) ℂ) (ε : ℝ) (S : Submodule ℂ (Fin n → ℂ))
     (h : PosOn ε (y.conjTranspose * G * y) S) :

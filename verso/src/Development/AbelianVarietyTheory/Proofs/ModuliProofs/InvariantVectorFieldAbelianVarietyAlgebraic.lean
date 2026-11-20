@@ -16,6 +16,13 @@ noncomputable section
 
 namespace GlobalTheory.KS
 
+/- English proof (translation)
+Introduce `x _`. Establish `hsurj : Function.Surjective (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom` using `fun c => ⟨TrivSqZeroExt.inl c, by simp⟩`. Establish `hker : ∀ p : PrimeSpectrum (DualNumber ℂ), (RingHom.ker (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom : Set (DualNumber ℂ)) ⊆ p.asIdeal`. Introduce `p a ha`. Establish `ha0 : a.fst = 0` using `ha`.
+
+Establish `hsq : a ^ 2 = 0`. Apply the tactic sequence `ext <;> simp [pow_two, ha0]`. Conclude with `p.isPrime.mem_of_pow_mem 2 (by rw [hsq]; exact p.asIdeal.zero_mem)`. Establish `hx : x ∈ Set.range (PrimeSpectrum.comap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)`. Rewrite using `[range_comap_of_surjective _ _ hsurj]`.
+
+Conclude with `hker x`. Take `⟨q, rfl⟩` from `hx`. Conclude with `h (show q ∈ (⊤ : (Sp ℂ).Opens) from trivial)`.
+-/
 theorem top_le_preimage_of_dualFst_comp {X : Scheme.{0}} (g : Sp (DualNumber ℂ) ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ g) ⁻¹ᵁ U) : ⊤ ≤ g ⁻¹ᵁ U := by
   intro x _
@@ -35,6 +42,11 @@ theorem top_le_preimage_of_dualFst_comp {X : Scheme.{0}} (g : Sp (DualNumber ℂ
   obtain ⟨q, rfl⟩ := hx
   exact h (show q ∈ (⊤ : (Sp ℂ).Opens) from trivial)
 
+/- English proof (translation)
+Unfold `valAt'`. Distinguish the cases in `h : ⊤ ≤ y ⁻¹ᵁ τ ⁻¹ᵁ O`. Establish `h' : ⊤ ≤ (y ≫ τ) ⁻¹ᵁ O` using `h`. Rewrite using `[dif_pos h, dif_pos h']`. Unfold `valAt`.
+
+Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Establish `h' : ¬ ⊤ ≤ (y ≫ τ) ⁻¹ᵁ O` using `h`. Rewrite using `[dif_neg h, dif_neg h']`.
+-/
 private theorem valAt'_app' {X Z : Scheme.{0}} (y : Sp ℂ ⟶ X) (τ : X ⟶ Z) (O : Z.Opens) (f : Γ(Z, O)) :
     valAt' y (τ ⁻¹ᵁ O) ((τ.app O).hom f) = valAt' (y ≫ τ) O f := by
   unfold valAt'
@@ -47,10 +59,16 @@ private theorem valAt'_app' {X Z : Scheme.{0}} (y : Sp ℂ ⟶ X) (τ : X ⟶ Z)
   · have h' : ¬ ⊤ ≤ (y ≫ τ) ⁻¹ᵁ O := h
     rw [dif_neg h, dif_neg h']
 
+/- English proof (translation)
+The claim follows from `MonObj.comp_mul f g h`.
+-/
 private theorem comp_mul_monObj {X Y M : Over (Sp ℂ)} [MonObj M] (f : X ⟶ Y) (g h : Y ⟶ M) :
     f ≫ (g * h) = (f ≫ g) * (f ≫ h) :=
   MonObj.comp_mul f g h
 
+/- English proof (translation)
+Use `Over.w t` as an intermediate fact. Conclude with `(Category.comp_id _).symm.trans this`.
+-/
 private theorem toUnit_left_eq_hom {T : Over (Sp ℂ)} (t : T ⟶ 𝟙_ (Over (Sp ℂ))) : t.left = T.hom := by
   have := Over.w t
   exact (Category.comp_id _).symm.trans this
@@ -61,6 +79,43 @@ def dualZero : 𝟙_ (Over (Sp ℂ)) ⟶ epsR ℂ :=
     rw [← Spec.map_comp, ← Spec.map_id]
     congr 1)
 
+/- English proof (translation)
+Unfold `HolUnif.IsDiff at hd`. Unfold `IsTangent at hv`. Establish `hse : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ spMap (algebraMap ℂ (DualNumber ℂ)) = 𝟙 _`. Conclude with `Over.w dualZero`. Set `ρ` to `pullback.fst A.hom (spMap (algebraMap ℂ (DualNumber ℂ)))`.
+
+Set `π` to `pullback.snd A.hom (spMap (algebraMap ℂ (DualNumber ℂ)))`. Set `B : Over (Sp ℂ)` to `Over.mk (π ≫ spMap (algebraMap ℂ (DualNumber ℂ)))`. Set `ρ' : B ⟶ A` to `Over.homMk ρ pullback.condition`. Set `v' : B ⟶ A` to `Over.homMk (π ≫ v.left) (by`. Rewrite using `[Category.assoc, Over.w v]`.
+
+Use the proof step `rfl)`. Set `Φ` to `(ρ' * v').left`. Set `j : A.left ⟶ pullback A.hom (spMap (algebraMap ℂ (DualNumber ℂ)))` to `pullback.lift (𝟙 _) (A.hom ≫ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) (by`. Rewrite using `[Category.assoc, hse, Category.comp_id, Category.id_comp])`. Set `j' : A ⟶ B` to `Over.homMk j (by`.
+
+Express the relevant statement in the definitionally equal form `j ≫ π ≫ _ = _`. Rewrite using `[pullback.lift_snd_assoc, Category.assoc, hse, Category.comp_id])`. Establish `hj1 : j' ≫ ρ' = 𝟙 A`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `pullback.lift_fst _ _ _`.
+
+Establish `hj2 : j' ≫ v' = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `j ≫ π ≫ v.left = (toUnit A ≫ η).left`. Rewrite using `[pullback.lift_snd_assoc, Category.assoc, hv, Over.comp_left, toUnit_left_eq_hom]`. Establish `hjΦ : j ≫ Φ = 𝟙 A.left`.
+
+Establish `h1 : j' ≫ (ρ' * v') = 𝟙 A` using `by rw [comp_mul_monObj, hj1, hj2, _root_.mul_one]`. Conclude with `congrArg (fun t => t.left) h1`. Establish `hΦp : Φ ≫ A.hom = π ≫ spMap (algebraMap ℂ (DualNumber ℂ))` using `Over.w (ρ' * v')`. Take `⟨d, hd1, hd2⟩` from `GlobalTheory.T.exists_localDerivation_of_dualNumber_thickening A.left _ A.hom π ρ j (IsPullback.of_hasPullback _ _) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _) ℂ (algebraMap ℂ (DualNumber ℂ)) A.left A.hom (𝟙 A.left) Φ hjΦ hΦp`. Use `⟨d, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hD : (fun r : ℂ => (algebraMap ℂ (DualNumber ℂ) r).snd) = fun _ => 0`. Use function extensionality and compare the values at `fun r => rfl`. Rewrite `hd1` using `[hD]`. Conclude with `hd1`. Introduce `O f z hz`.
+
+Set `τ : A ⟶ A` to `(toUnit A ≫ u.ex z) * 𝟙 A`. Establish `hτ : ∀ z', u.ex z' ≫ τ = u.ex (z + z')`. Introduce `z'`. Rewrite using `[u.ex_add, comp_mul_monObj, ← Category.assoc, comp_toUnit, toUnit_unit, Category.id_comp, Category.comp_id]`. Establish `hy : (u.ex z).left ≫ A.hom = 𝟙 _` using `Over.w (u.ex z)`.
+
+Set `yt : Sp (DualNumber ℂ) ⟶ pullback A.hom (spMap (algebraMap ℂ (DualNumber ℂ)))` to `pullback.lift (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ (u.ex z).left) (𝟙 _) (by`. Rewrite using `[Category.assoc, hy]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm)`. Set `yt' : epsR ℂ ⟶ B` to `Over.homMk yt (by`. Express the relevant statement in the definitionally equal form `yt ≫ π ≫ _ = _`.
+
+Rewrite using `[pullback.lift_snd_assoc, Category.id_comp]`. Use the proof step `rfl)`. Establish `hv1 : yt' ≫ ρ' = toUnit _ ≫ u.ex z`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `yt ≫ ρ = _`.
+
+Rewrite using `[pullback.lift_fst, Over.comp_left, toUnit_left_eq_hom]`. Both sides reduce to the same expression. Establish `hv2 : yt' ≫ v' = v`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `yt ≫ π ≫ v.left = v.left`.
+
+Rewrite using `[pullback.lift_snd_assoc, Category.id_comp]`. Establish `hVz : yt ≫ Φ = v.left ≫ τ.left`. Establish `h1 : yt' ≫ (ρ' * v') = v ≫ τ`. Rewrite using `[comp_mul_monObj, hv1, hv2, comp_mul_monObj, ← Category.assoc, comp_toUnit, Category.comp_id]`. Conclude with `congrArg (fun t => t.left) h1`.
+
+Establish `hfib : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left ≫ τ.left = (u.ex z).left`. Establish `h1 : dualZero ≫ v = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (toUnit (𝟙_ (Over (Sp ℂ))) ≫ η : 𝟙_ (Over (Sp ℂ)) ⟶ A).left`. Rewrite using `[hv, toUnit_unit, Category.id_comp]`.
+
+Establish `h2 : dualZero ≫ v ≫ τ = u.ex z`. Rewrite using `[← Category.assoc, h1, comp_mul_monObj, ← Category.assoc, comp_toUnit, toUnit_unit, Category.id_comp, Category.comp_id, _root_.mul_one]`. Conclude with `congrArg (fun t => t.left) h2`. Establish `h0 : ⊤ ≤ (yt ≫ Φ) ⁻¹ᵁ O`. Rewrite using `[hVz]`.
+
+Apply `top_le_preimage_of_dualFst_comp` to reduce the goal to its premises. Rewrite using `[hfib]`. Conclude with `hz`. Rewrite using `[← hd2 (u.ex z).left yt (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _) O h0 f]`. Establish `hmain : ∀ (G : Sp (DualNumber ℂ) ⟶ A.left) (hG : G = v.left ≫ τ.left) (hG0 : ⊤ ≤ G ⁻¹ᵁ O), TrivSqZeroExt.snd (show DualNumber ℂ from (Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom.hom ((G.appLE O ⊤ hG0).hom f)) = fderiv ℂ (fun z' => valAt' (u.ex z').left O f) z w`.
+
+Introduce and unpack `G rfl hG0`. Establish `key` using `hd (τ.left ⁻¹ᵁ O) hG0 ((τ.left.app O).hom f)`. Establish `hfun : (fun z' => valAt' (u.ex z').left (τ.left ⁻¹ᵁ O) ((τ.left.app O).hom f)) = fun z' => valAt' (u.ex (z + z')).left O f`. Use function extensionality and compare the values at `z'`. Rewrite using `[valAt'_app', ← Over.comp_left, hτ]`.
+
+Establish `hshift : fderiv ℂ (fun z' => valAt' (u.ex (z + z')).left O f) 0 = fderiv ℂ (fun z' => valAt' (u.ex z').left O f) z`. Simplify using `using fderiv_comp_add_left (𝕜 := ℂ) (f := fun y : Fin g → ℂ => valAt' (u.ex y).left O f) (x := (0 : Fin g → ℂ)) z`. Rewrite `key` using `[hfun, hshift]`. Rewrite using `[← key]`. Rewrite using `[Scheme.Hom.comp_appLE]`.
+
+Both sides reduce to the same expression. Conclude with `hmain _ hVz h0`.
+-/
 theorem exists_locDer_of_isDiff {g : ℕ} (A : Over (Sp ℂ)) [GrpObj A] {L : LB A.left} (u : HolUnif A L g)
     (w : Fin g → ℂ) (v : epsR ℂ ⟶ A) (hv : IsTangent v) (hd : u.IsDiff w v) :
     ∃ d, LocDer A.hom A.hom (𝟙 _) (fun _ => 0) ⊤ d ∧ ∀ O f z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ O →
@@ -171,6 +226,9 @@ theorem exists_locDer_of_isDiff {g : ℕ} (A : Over (Sp ℂ)) [GrpObj A] {L : LB
       rfl
     exact hmain _ hVz h0
 
+/- English proof (translation)
+Introduce `P₀ u Hm χ hU w`. Take `⟨v, ⟨hv, hd⟩, -⟩` from `hU.tan₂ w`. Conclude with `exists_locDer_of_isDiff P₀.A u w v hv hd`.
+-/
 theorem invariant_field_algebraic : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ w : (Fin P₀.g → ℂ), ∃ d, LocDer P₀.A.hom P₀.A.hom (𝟙 _) (fun _ => 0) ⊤ d ∧ ∀ O f z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ O → valAt' (u.ex z).left ((𝟙 P₀.A.left) ⁻¹ᵁ O) (d O f) = fderiv ℂ (fun z' => valAt' (u.ex z').left O f) z w := by
   intro P₀ u Hm χ hU w
   obtain ⟨v, ⟨hv, hd⟩, -⟩ := hU.tan₂ w

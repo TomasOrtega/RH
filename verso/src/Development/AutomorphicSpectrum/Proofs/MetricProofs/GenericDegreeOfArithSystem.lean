@@ -10,6 +10,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.generic_degree_of_projection_and_fibre_dim (GlobalTheory.T.coordinate_projection_of_arith_system h) fibreDim`.
+-/
 theorem genDeg_of_system (h : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement) :
     GenDegStatement :=
   GlobalTheory.T.generic_degree_of_projection_and_fibre_dim (GlobalTheory.T.coordinate_projection_of_arith_system h) fibreDim

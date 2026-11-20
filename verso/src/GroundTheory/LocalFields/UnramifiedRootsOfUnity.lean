@@ -14,6 +14,17 @@ section RootsOfUnity
 
 variable {L : Type*} [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
 
+/- English proof (translation)
+Take `⟨a₀, rfl⟩` from `IsLocalRing.residue_surjective a`. Establish `hm0 : m ≠ 0` using `by rintro rfl; simp at hm`. Establish `hmon : (X ^ m - C (1 : 𝒪[L])).Monic` using `monic_X_pow_sub_C 1 hm0`. Establish `hev : (X ^ m - C (1 : 𝒪[L])).eval a₀ ∈ 𝓂[L]`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff]`.
+
+Simplify using `[ha]`. Establish `hder : IsUnit (Ideal.Quotient.mk 𝓂[L] ((X ^ m - C (1 : 𝒪[L])).derivative.eval a₀))`. Establish `ha0 : IsLocalRing.residue 𝒪[L] a₀ ≠ 0`. Introduce and unpack `h`. Rewrite `ha` using `[h, zero_pow hm0]`.
+
+Conclude with `zero_ne_one ha`. Express the relevant statement in the definitionally equal form `IsUnit (IsLocalRing.residue 𝒪[L] _)`. Rewrite using `[isUnit_iff_ne_zero]`. Simplify using `only [derivative_sub, derivative_X_pow, derivative_C, sub_zero, eval_mul, eval_pow, eval_X, eval_natCast, map_mul, map_pow, map_natCast]`. Conclude with `mul_ne_zero hm (pow_ne_zero _ ha0)`.
+
+Set `` to `IsTopologicalAddGroup.rightUniformSpace L`. Use `isUniformAddGroup_of_addCommGroup (G := L)` as an intermediate fact. Take `⟨x, hx, hxa⟩` from `HenselianRing.is_henselian _ hmon a₀ hev hder`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Simplify `hx` using `[sub_eq_zero]`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hxa`.
+-/
 theorem exists_pow_eq_one_residue_eq {m : ℕ} (hm : (m : 𝓀[L]) ≠ 0) {a : 𝓀[L]} (ha : a ^ m = 1) :
     ∃ x : 𝒪[L], x ^ m = 1 ∧ IsLocalRing.residue 𝒪[L] x = a := by
   obtain ⟨a₀, rfl⟩ := IsLocalRing.residue_surjective a
@@ -40,6 +51,11 @@ theorem exists_pow_eq_one_residue_eq {m : ℕ} (hm : (m : 𝓀[L]) ≠ 0) {a : �
   · rw [← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]
     exact hxa
 
+/- English proof (translation)
+Establish `hm0 : m ≠ 0` using `by rintro rfl; simp at hm`. Establish `hxu : IsUnit x` using `(isUnit_pow_iff hm0).mp (hx ▸ isUnit_one)`. Use `IsLocalRing.eq_of_eval_eq_zero_of_not_isUnit_sub (f := X ^ m - C 1) (by simp [hx]) (by simp [hy]) ?_ ?_` and prove the remaining obligations. Rewrite using `[← mem_nonunits_iff, ← IsLocalRing.mem_maximalIdeal, ← IsLocalRing.residue_eq_zero_iff, map_sub, h, sub_self]`. Simplify using `only [derivative_sub, derivative_X_pow, derivative_C, sub_zero, eval_mul, eval_pow, eval_X]`.
+
+Use `IsUnit.mul ?_ (hxu.pow _)` and prove the remaining obligations. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`. Simplify using `using hm`.
+-/
 theorem eq_of_pow_eq_one_of_residue_eq {m : ℕ} (hm : (m : 𝓀[L]) ≠ 0) {x y : 𝒪[L]}
     (hx : x ^ m = 1) (hy : y ^ m = 1)
     (h : IsLocalRing.residue 𝒪[L] x = IsLocalRing.residue 𝒪[L] y) : x = y := by
@@ -57,6 +73,11 @@ theorem eq_of_pow_eq_one_of_residue_eq {m : ℕ} (hm : (m : 𝓀[L]) ≠ 0) {x y
 
 omit [TopologicalSpace L] [IsNonarchimedeanLocalField L] in
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff]`. Establish `h : valuation L x ^ m = 1` using `by rw [← map_pow, hx, map_one]`. Use `le_of_not_gt fun h1 ↦ ?_` and prove the remaining obligations. Use `one_lt_pow₀ h1 hm` as an intermediate fact. Rewrite `this` using `[h]`.
+
+Conclude with `this.false`.
+-/
 theorem mem_integer_of_pow_eq_one {m : ℕ} (hm : m ≠ 0) {x : L} (hx : x ^ m = 1) : x ∈ 𝒪[L] := by
   rw [Valuation.mem_integer_iff]
   have h : valuation L x ^ m = 1 := by rw [← map_pow, hx, map_one]
@@ -65,6 +86,11 @@ theorem mem_integer_of_pow_eq_one {m : ℕ} (hm : m ≠ 0) {x : L} (hx : x ^ m =
   rw [h] at this
   exact this.false
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := 𝓀[L]ˣ)`. Establish `hpg : IsPrimitiveRoot (g : 𝓀[L]) (Nat.card 𝓀[L] - 1)`. Rewrite using `[← Nat.card_units, ← orderOf_eq_card_of_forall_mem_zpowers hg, ← orderOf_units]`. Conclude with `IsPrimitiveRoot.orderOf _`. Take `⟨x, hx, hxg⟩` from `exists_pow_eq_one_residue_eq (natCast_card_residueField_sub_one_ne_zero L) hpg.pow_eq_one`.
+
+Use `⟨x, hx, fun l hl ↦ hpg.dvd_of_pow_eq_one l ?_⟩` and prove the remaining obligations. Rewrite using `[← hxg, ← map_pow, hl, map_one]`.
+-/
 theorem exists_isPrimitiveRoot_card_residueField_sub_one :
     ∃ ζ : 𝒪[L], IsPrimitiveRoot ζ (Nat.card 𝓀[L] - 1) := by
   obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := 𝓀[L]ˣ)
@@ -84,6 +110,11 @@ variable {K L : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
+/- English proof (translation)
+Establish `hx : IsIntegral 𝒪[K] (x : L)` using `(isIntegral_iff K L x).mpr x.2`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' K hx, (minpoly.monic hx).natDegree_map]`. Use `set g := minpoly 𝒪[K] (x : L)`. Establish `hg0 : aeval x g = 0`. Apply `Subtype.val_injective` to reduce the goal to its premises.
+
+Rewrite using `[ZeroMemClass.coe_zero, ← minpoly.aeval 𝒪[K] (x : L)]`. Conclude with `(aeval_algebraMap_apply L x g).symm`. Establish `hmon : (g.map (algebraMap 𝒪[K] 𝓀[K])).Monic` using `(minpoly.monic hx).map _`. Use `(natDegree_le_natDegree (minpoly.min 𝓀[K] _ hmon ?_)).trans ((minpoly.monic hx).natDegree_map _).le` and prove the remaining obligations. Rewrite using `[aeval_map_algebraMap, ← IsLocalRing.ResidueField.algebraMap_eq, aeval_algebraMap_apply, hg0, map_zero]`.
+-/
 theorem natDegree_minpoly_residue_le (x : 𝒪[L]) :
     (minpoly 𝓀[K] (IsLocalRing.residue 𝒪[L] x)).natDegree ≤ (minpoly K (x : L)).natDegree := by
   have hx : IsIntegral 𝒪[K] (x : L) := (isIntegral_iff K L x).mpr x.2

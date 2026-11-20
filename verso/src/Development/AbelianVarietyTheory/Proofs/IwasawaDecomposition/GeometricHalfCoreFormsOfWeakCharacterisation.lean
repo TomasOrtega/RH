@@ -16,6 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.R3.Rw
 
+/- English proof (translation)
+Establish `hC : PreChar R.toRealDat` using `⟨hch.base.lev, hch.base.grp.red_R, hch.base.grp.red_L, hch.base.grp.record, hch.base.fam, hch.base.models, RealDat.chain_of_weak hch.base.chain hEx, RealDat.thP_of_weak hch.base.thP hEx⟩`. Establish `hp : C.pb = R.toRealDat.C.P.pb` using `GlobalTheory.PinsFixHalf.pb_eq_of_pins C R.toRealDat geo.κ geo.v₀ geo.O hC.lev geo.fw.laws geo.pins`. Conclude with `(GlobalTheory.RealGeoIn.inGeo_and_lUnif_and_lIntegral hP _ _ _ _ _ C R.toRealDat _ geo hC hch.base.grp.chiW hp hn).1`.
+-/
 theorem geometricHalf_coreForms_of_weakCharacterisation (hP : GlobalTheory.Published.CuspRapidDecay) {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {C : CoreJ D} [Algebra C.Q.c.F D.what₂.LL] (R : RealDat3 D A3 C.Q.c.F)
     (F : Face3 D A3) (hch : R.WeakCharacterisation F) (hEx : R.toRealDat.ExAt) (hn : 8 * D.R.f * D.R.r + 4 ≤ D.R.nV) {ph : Fin D.R.m → ℂ}
@@ -27,12 +30,18 @@ theorem geometricHalf_coreForms_of_weakCharacterisation (hP : GlobalTheory.Publi
     GlobalTheory.PinsFixHalf.pb_eq_of_pins C R.toRealDat geo.κ geo.v₀ geo.O hC.lev geo.fw.laws geo.pins
   exact (GlobalTheory.RealGeoIn.inGeo_and_lUnif_and_lIntegral hP _ _ _ _ _ C R.toRealDat _ geo hC hch.base.grp.chiW hp hn).1
 
+/- English proof (translation)
+The claim follows from `Step.of_evG ((evG_of_ev GlobalTheory.Mem.StdSize.vstd_size_ev).imp fun _ _ _ _ _ H _ _ _ hO _ _ _ w _ Z => (H (w.st Z) hO).2)`.
+-/
 theorem stepW_rank_large (p : WP) :
     StepW p fun _ _ _ _ w => ∀ Z : w.Lt, 8 * (w.st Z).toD7.R.f * (w.st Z).toD7.R.r + 4 ≤ (w.st Z).toD7.R.nV :=
   Step.of_evG ((evG_of_ev GlobalTheory.Mem.StdSize.vstd_size_ev).imp fun _ _ _ _ _ H _ _ _ hO _ _ _ w _ Z => (H (w.st Z) hO).2)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `(stepW_rank_large p).trans (StepW.of_all fun _ _ _ _ _ _ _ H Z' _ _ _ _ _ _ R' _ hPin hEx _ geo => geometricHalf_coreForms_of_weakCharacterisation hP R' _ hPin.char hEx (H Z') geo)`.
+-/
 theorem inGeo_stepW (hP : GlobalTheory.Published.CuspRapidDecay) (p : WP) :
     StepW p fun _ B' _ _ w' => ∀ (Z' : w'.Lt) (hX' : B'.fields.Ok) (U : Set w'.I.ι) (core' : CoreJ (w'.st Z').toD7)
       (alg' : Algebra core'.Q.c.F (w'.st Z').toD7.what₂.LL), letI := alg'; ∀ (Xg : Finset (Gc B' w'.px → B'.LL)) (tr : TrI B' w'.px)

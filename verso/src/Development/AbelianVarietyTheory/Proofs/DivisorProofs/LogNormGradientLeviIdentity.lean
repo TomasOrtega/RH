@@ -9,6 +9,17 @@ noncomputable section
 
 namespace GlobalTheory.LeviGradCoord
 
+/- English proof (translation)
+Introduce `e h Φ N z w hh h0 hΦ hN`. Establish `hL : ContDiffAt ℝ 2 (fun y => Real.log ‖h y‖) z` using `(GlobalTheory.Mean4O.BdSec.contDiffAt_log_norm hh h0).of_le two_le_infty`. Establish `hL2 : ContDiffAt ℝ 2 (fun y => 2 * Real.log ‖h y‖) z` using `contDiffAt_const.mul hL`. Establish `hΦ2 : ContDiffAt ℝ 2 (fun y => (-2) * Φ y) z` using `contDiffAt_const.mul hΦ`. Establish `hFc : ContDiffAt ℝ 2 (fun y => 2 * Real.log ‖h y‖ + (-2) * Φ y) z` using `hL2.add hΦ2`.
+
+Establish `hne : ∀ᶠ y in 𝓝 z, h y ≠ 0` using `hh.continuousAt.eventually_ne h0`. Establish `hNF : N =ᶠ[𝓝 z] fun y => Real.exp (2 * Real.log ‖h y‖ + (-2) * Φ y)` using `by filter_upwards [hN, hne] with y hy hy0`. Establish `hp : (0 : ℝ) < ‖h y‖` using `norm_pos_iff.2 hy0`. Establish `h2 : Real.exp (2 * Real.log ‖h y‖) = ‖h y‖ ^ 2`. Rewrite using `[show (2 : ℝ) * Real.log ‖h y‖ = Real.log (‖h y‖ ^ 2) by rw [Real.log_pow]; norm_num, Real.exp_log (by positivity)]`.
+
+Rewrite using `[hy, Real.exp_add, h2]`. Establish `hNc : ContDiffAt ℝ 2 N z` using `(Real.contDiff_exp.contDiffAt.comp z hFc).congr_of_eventuallyEq hNF`. Establish `hpos : 0 < N z` using `by rw [hNF.eq_of_nhds]; exact Real.exp_pos _`. Establish `hlogF : (fun y => Real.log (N y)) =ᶠ[𝓝 z] fun y => 2 * Real.log ‖h y‖ + (-2) * Φ y` using `hNF.mono fun y hy => by simp only at hy ⊢; rw [hy, Real.log_exp]`. Establish `hlevi : levi (fun y => Real.log (N y)) z w = -2 * levi Φ z w`.
+
+Rewrite using `[ReciprocityTheory.AnForm.levi_congr hlogF w, GlobalTheory.LeviLogChain.levi_add_of hL2 hΦ2 w, GlobalTheory.LeviLogChain.levi_const_mul_of _ hL w, GlobalTheory.LeviLogChain.levi_const_mul_of _ hΦ w, GlobalTheory.Mean4O.BdSec.levi_log_norm hh h0 w]`. Expand and normalize the polynomial expressions, which then agree. Establish `hchain` using `GlobalTheory.LeviLogChain.levi_log hNc hpos w`. Rewrite `hchain` using `[hlevi]`. Establish `hD : HasFDerivAt (fun y => Real.exp 1 - Real.log (N y)) (-((N z)⁻¹ • fderiv ℝ N z)) z` using `((hNc.differentiableAt (by norm_num)).hasFDerivAt.log hpos.ne').const_sub (Real.exp 1)`.
+
+Rewrite using `[hD.fderiv]`. Simplify using `only [ContinuousLinearMap.neg_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Establish `hN0 : N z ≠ 0` using `hpos.ne'`. Clear denominators, using `at hchain ⊢` for the nonvanishing conditions. Take the linear combination `hchain`.
+-/
 theorem grad_sq_mul_eq_levi : ∀ {e : ℕ} (h : (Fin e → ℂ) → ℂ) (Φ N : (Fin e → ℂ) → ℝ) (z w : Fin e → ℂ),
     AnalyticAt ℂ h z → h z ≠ 0 → ContDiffAt ℝ 2 Φ z →
     N =ᶠ[nhds z] (fun y => ‖h y‖ ^ 2 * Real.exp (-2 * Φ y)) →

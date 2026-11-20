@@ -22,10 +22,16 @@ namespace GlobalTheory.MultTranslate
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
   {θ : D.what₂.Tau → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
 
+/- English proof (translation)
+Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Simplify `h r C hC μ 𝓕 hμ h𝓕 (g * x)` using `only [rTr, mul_assoc]`.
+-/
 theorem isCuspFun_rTr {φ : GA D V → ℂ} (h : IsCuspFun V φ) (x : GA D V) : IsCuspFun V (rTr V x φ) := by
   intro r C hC μ 𝓕 hμ h𝓕 g
   simpa only [rTr, mul_assoc] using h r C hC μ 𝓕 hμ h𝓕 (g * x)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FinTranslate.isAutFunSm_rTr θ V x hx _ (h.aut v) cusp v := isCuspFun_rTr (h.cusp v) x lev v k hk g := by change T v (g * k * x) = χ' k * T v (g * x) rw [(hJ k hk).2, ← h.lev v _ (hJ k hk).1] congr 1 group equiv τ g hg v w hw := by funext y change T (Function.update v …`.
+-/
 theorem isMultMap_rTr {J J' : Set (GA D V)} {χ χ' : GA D V → ℂ} {x : GA D V} (hx : x ∈ GfC V)
     (hJ : ∀ k ∈ J', x⁻¹ * k * x ∈ J ∧ χ' k = χ (x⁻¹ * k * x)) {T : MMap M} (h : IsMultMap θ M J χ T) :
     IsMultMap θ M J' χ' (postOn M (GlobalTheory.FinTranslate.rTrL V x) T) where
@@ -44,6 +50,9 @@ theorem isMultMap_rTr {J J' : Set (GA D V)} {χ χ' : GA D V → ℂ} {x : GA D 
     rfl
   cont τ v y := h.cont τ v (y * x)
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[mem_goodPart, GlobalTheory.MultMem.mem_mult_iff]`. Use `⟨isMultMap_rTr hx hJ h.1, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `L' (rTr V x (T v)) = rTr V x (T v)`. Rewrite using `[hL, h.2]`.
+-/
 theorem postOn_mem_goodPart {J J' : Set (GA D V)} {χ χ' : GA D V → ℂ} {x : GA D V} (hx : x ∈ GfC V)
     (hJ : ∀ k ∈ J', x⁻¹ * k * x ∈ J ∧ χ' k = χ (x⁻¹ * k * x)) {L L' : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)}
     (hL : ∀ f, L' (rTr V x f) = rTr V x (L f)) {T : MMap M} (h : T ∈ goodPart θ M J χ L) :

@@ -5,6 +5,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo.Cs
 open scoped Topology ContDiff
 
+/- English proof (translation)
+Introduce `Γ V S _ _ _ _ d G Φ hΦ R q y w hy hdy hsz hw`. Establish `hopen : ∀ s, IsOpen {p | p ∈ G.Y ∧ R < Φ s p}` using `fun s => (hΦ.1 s).continuousOn.isOpen_inter_preimage G.isOpen isOpen_Ioi`. Establish `hmem : ∀ j s, ContDiffOn ℝ ∞ ((y j : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s) G.Y` using `fun j s => ((y j).2 s).1`. Establish `hsm : ∀ s, ContDiffOn ℝ ∞ (fun x => ∑' j, (y j : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s x) {p | p ∈ G.Y ∧ R < Φ s p} ∧ ∀ p ∈ {p | p ∈ G.Y ∧ R < Φ s p}, HasSum (fun j => fderiv ℝ ((y j : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s) p) (fderiv ℝ (fun x => ∑' j, (y j : S → V → V [⋀^Fin …` using `fun s => sumSm V _ _ (hopen s) (fun j x => (y j : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s x) (fun j => (hmem j s).mono (fun p hp => hp.1)) (fun k p hp => hsz k s p hp.1 hp.2)`. Establish `hsumv : ∀ s, ∀ p ∈ G.Y, R < Φ s p → Summable (fun j => (y j : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s p)`.
+
+Introduce `s p hp hR`. Take `⟨N, hN, b, hb, hbd⟩` from `hsz 0 s p hp hR`. Use `Summable.of_norm_bounded hb (fun j => ?_)` and prove the remaining obligations. Establish `h0` using `hbd j p (mem_of_mem_nhds hN) 0 le_rfl`. Simplify using `using h0`.
+
+Take `⟨z, hzinv, hz⟩` from `geoCut Γ V S d G Φ hΦ R q (fun s p => -∑' j, (y j : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s p) (fun s => (hsm s).1.neg) (by`. Introduce `γ s p hp hR`. Establish `hp2 : (G.ρ γ⁻¹) p ∈ G.Y` using `G.maps _ p hp`. Establish `hR2 : R < Φ (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p)` using `by rw [hΦ.2.1 γ⁻¹ s p hp]; exact hR`. Simplify using `only [map_neg]`.
+
+Use `congr 1`. Rewrite using `[ContinuousLinearMap.map_tsum _ (hsumv _ _ hp2 hR2)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `congrFun (congrFun (congrArg Subtype.val (hy j γ)) s) p)`.
+
+Use `⟨z, hzinv, fun s p hp hR => ?_⟩` and prove the remaining obligations. Establish `hev : (z : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s =ᶠ[𝓝 p] (fun x => -∑' j, (y j : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s x)`. Establish `hc : ContinuousAt (Φ s) p` using `(hΦ.1 s).continuousOn.continuousAt (G.isOpen.mem_nhds hp)`. Use `filter_upwards [G.isOpen.mem_nhds hp, Filter.Tendsto.eventually hc (lt_mem_nhds hR)] with x hx hx'`. Conclude with `hz s x hx hx'.le`.
+
+Establish `hp' : p ∈ {p | p ∈ G.Y ∧ R < Φ s p}` using `⟨hp, by linarith⟩`. Establish `hD` using `((hsm s).2 p hp').mapL (ContinuousAlternatingMap.alternatizeUncurryFinCLM ℝ V (Fin d → ℂ))`. Establish `hterm : ∀ j, ContinuousAlternatingMap.alternatizeUncurryFinCLM ℝ V (Fin d → ℂ) (fderiv ℝ ((y j : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s) p) = (w (j + 1) : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s p - (w j : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s p`. Introduce `j`. Establish `h1` using `congrFun (congrFun (congrArg Subtype.val (hdy j)) s) p`.
+
+Rewrite using `[ContinuousAlternatingMap.alternatizeUncurryFinCLM_apply]`. Express the relevant statement in the definitionally equal form `_ = ((w (j + 1) - w j : G.Om (q + 1)) : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s p`. Rewrite using `[← h1]`. Use `show _ = G.Y.indicator (extDeriv ((y j : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s)) p`. Rewrite using `[Set.indicator_of_mem hp]`.
+
+Both sides reduce to the same expression. Establish `hL : ContinuousAlternatingMap.alternatizeUncurryFinCLM ℝ V (Fin d → ℂ) (fderiv ℝ (fun x => ∑' j, (y j : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s x) p) = -(w 0 : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s p`. Establish `ht` using `hD.tendsto_sum_nat`. Rewrite `ht` using `[hterm, Finset.sum_range_sub (fun j => (w j : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s p)]`. Establish `ht2` using `(hw s p hp (by linarith)).sub_const ((w 0 : S → V → V [⋀^Fin (q + 1)]→L[ℝ] (Fin d → ℂ)) s p)`.
+
+Rewrite `ht2` using `[zero_sub]`. Conclude with `tendsto_nhds_unique ht ht2`. Use `show G.Y.indicator (extDeriv ((z : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s)) p = _`. Rewrite using `[Set.indicator_of_mem hp, hev.extDeriv_eq]`. Use `show ContinuousAlternatingMap.alternatizeUncurryFin (fderiv ℝ (-(fun x => ∑' j, (y j : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) s x)) p) = _`.
+
+Rewrite using `[fderiv_neg, ← ContinuousAlternatingMap.alternatizeUncurryFinCLM_apply, map_neg, hL, neg_neg]`.
+-/
 theorem UpperTheory.V.Lit.Geo.Cs.geoSum :
     GeoSum := by
   intro Γ V S _ _ _ _ d G Φ hΦ R q y w hy hdy hsz hw

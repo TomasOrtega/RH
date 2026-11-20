@@ -15,6 +15,13 @@ namespace GlobalTheory.CompanionTheory.FewEq
 
 open GlobalTheory.SmallExtLift
 
+/- English proof (translation)
+Use `choose y hy using fun a => app_surj Ideal.Quotient.mk_surjective H (hV a) (rs Y (pull_le M π (j a) (hj a)) (t.s fun _ => j a).val)`. Use `choose z hz using fun a => app_surj Ideal.Quotient.mk_surjective H (hV a) (rs Y (pull_le M π (j a) (hj a)) (t.s fun _ => j a)⁻¹.val)`. Use `⟨y, z, fun a => ?_, fun a b => ?_⟩` and prove the remaining obligations. Establish `h` using `mem_of_app_eq_zero Ideal.Quotient.mk_surjective H (hV a) (y a * z a - 1) (by`. Rewrite using `[map_sub, map_mul, map_one, hy, hz, ← map_mul, Units.mul_inv, map_one, sub_self])`.
+
+Rewrite `h` using `[Ideal.mk_ker]`. Then use the resulting hypothesis. Establish `h` using `mem_of_app_eq_zero Ideal.Quotient.mk_surjective H (hVV a b) (rs X inf_le_left (y a) - tr M V j hj a b * rs X inf_le_right (y b)) (gr_ext fun w hw => by`. Establish `e : ∀ c (h : (𝟙 Y ≫ π) w ∈ V c), gr (𝟙 Y ≫ π) w (V c) h (y c) = gr (𝟙 Y) w _ (pull_le M π (j c) le_rfl (hj c h)) (t.s fun _ => j c).val` using `fun c h => (gr_app (𝟙 Y) π w (V c) h (y c)).symm.trans ((congrArg _ (hy c)).trans (gr_res (𝟙 Y) w _ h _))`. Use `(gr_app _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Simplify using `only [tr]`.
+
+Rewrite using `[map_zero, map_sub, map_mul, gr_res, gr_res, gr_res, e, e, sub_eq_zero]`. Conclude with `gr_gen ht (𝟙 Y) w (hj a hw.1) (hj b hw.2))`. Rewrite `h` using `[Ideal.mk_ker]`. Then use the resulting hypothesis.
+-/
 theorem exists_local_of_gen {R : Type} [CommRing R] {X Y : Scheme.{0}} (s : X ⟶ Sp R) (J : Ideal R)
     {π : Y ⟶ X} {f' : Y ⟶ Sp (R ⧸ J)}
     (H : IsPullback π f' s (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))))
@@ -44,6 +51,9 @@ theorem exists_local_of_gen {R : Type} [CommRing R] {X Y : Scheme.{0}} (s : X �
         exact gr_gen ht (𝟙 Y) w (hj a hw.1) (hj b hw.2))
     rwa [Ideal.mk_ker] at h
 
+/- English proof (translation)
+Introduce `R _ X s J M _ A V j hj hV hVV ⟨t, ht⟩`. Conclude with `exists_local_of_gen s J (IsPullback.of_hasPullback s (spMap (Ideal.Quotient.mk J))) M A V j hj hV hVV t ht`.
+-/
 theorem exists_local_of_triv : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (J : Ideal R) (M : LB X), M.IsLB →
     ∀ (A : Type) (V : A → X.Opens) (j : A → M.ι) (hj : ∀ a, V a ≤ M.U (j a)),
       (∀ a, IsAffineOpen (V a)) → (∀ a b, IsAffineOpen (V a ⊓ V b)) →

@@ -13,11 +13,19 @@ open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (secOver mIdealOve
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_range_succ', Finset.sum_eq_zero fun i _ => by rw [h (i + 1) (by omega)]; simp]`. Simplify using the standard rewrite rules.
+-/
 theorem altSum_eq_of_vanish (f : ℕ → ℕ) (B : ℕ) (h : ∀ i, 1 ≤ i → f i = 0) :
     ∑ i ∈ Finset.range (B + 1), (-1 : ℚ) ^ i * (f i : ℚ) = f 0 := by
   rw [Finset.sum_range_succ', Finset.sum_eq_zero fun i _ => by rw [h (i + 1) (by omega)]; simp]
   simp
 
+/- English proof (translation)
+Take `⟨φ, hinj, hrange, -⟩` from `hB F K ι Ω y n hy`. Set `e1 : ↥(cechZc ι (quotPart F (mIdealOver F y)) n 0) ≃ₗ[F] secOver F y n` to `(LinearEquiv.ofInjective φ hinj).trans (LinearEquiv.ofEq _ _ hrange)`. Establish `hbot : (cechBc ι (quotPart F (mIdealOver F y)) n 0).comap (cechZc ι (quotPart F (mIdealOver F y)) n 0).subtype = ⊥`. Rewrite using `[cechBc, Submodule.comap_bot, Submodule.ker_subtype]`. Set `e2 : cechHc ι (quotPart F (mIdealOver F y)) n 0 ≃ₗ[F] ↥(cechZc ι (quotPart F (mIdealOver F y)) n 0)` to `Submodule.quotEquivOfEqBot _ hbot`.
+
+Rewrite using `[← e1.finrank_eq, e2.finrank_eq]`.
+-/
 theorem finrank_sectionsOver_eq_H0 (hB : GlobalSectionsComparisonStatement) {F : Type} [Field F] {K : Type} [Fintype K] [LinearOrder K]
     {ι : K → Type} [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)] {Ω : Type} [Field Ω] [Algebra F Ω]
     (y : (Σ k, ι k) → Ω) (hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) (n : K → ℤ) :
@@ -32,6 +40,15 @@ theorem finrank_sectionsOver_eq_H0 (hB : GlobalSectionsComparisonStatement) {F :
     Submodule.quotEquivOfEqBot _ hbot
   rw [← e1.finrank_eq, e2.finrank_eq]
 
+/- English proof (translation)
+Introduce `F _ K _ dK ι _ Ω _ _ y k₀ hmod`. Set `lo : LinearOrder K` to `LinearOrder.lift' (Fintype.equivFin K) (Fintype.equivFin K).injective`. Set `_ : ∀ k, LinearOrder (ι k)` to `fun k => LinearOrder.lift' (Fintype.equivFin (ι k)) (Fintype.equivFin (ι k)).injective`. Take `rfl : dK = @LinearOrder.toDecidableEq K lo` from `Subsingleton.elim _ _`. Establish `hV : NumbersDVR.IsMultiHomogIdeal (mIdealOver F y)` using `isMultiHomogIdeal_mIdealOver y`.
+
+Take `⟨B, χ, -, -, hχ⟩` from `hE F K ι (mIdealOver F y) hV`. Establish `key : ∀ m : K → ℤ, (∀ i : ℕ, 1 ≤ i → Subsingleton (cechHc ι (quotPart F (mIdealOver F y)) m i)) → (Module.finrank F (secOver F y m) : ℚ) = eval (fun k => (m k : ℚ)) χ`. Introduce `m hm`. Rewrite using `[← hχ m, finrank_sectionsOver_eq_H0 hB y hmod.1 m]`. Use `(altSum_eq_of_vanish (fun i => Module.finrank F (cechHc ι (quotPart F (mIdealOver F y)) m i)) B fun i hi => ?_).symm` and prove the remaining obligations.
+
+Use `hm i hi` as an intermediate fact. Conclude with `Module.finrank_zero_of_subsingleton`. Use `⟨χ, ?_, fun β => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hM F K ι (mIdealOver F y) hV] with m hm`. Rewrite using `[← hm.2, ← key m hm.1, finrank_sectionsOver_eq_H0 hB y hmod.1 m]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Use `filter_upwards [hR F K ι Ω y k₀ hmod β] with c hc`. Conclude with `key _ hc`.
+-/
 theorem SectionsPoly.proof (hB : GlobalSectionsComparisonStatement) (hE : EulerPoly.Statement) (hM : MultiSerre.Statement)
     (hR : RayVanish.Statement) : SectionsPoly.Statement := by
   intro F _ K _ dK ι _ Ω _ _ y k₀ hmod

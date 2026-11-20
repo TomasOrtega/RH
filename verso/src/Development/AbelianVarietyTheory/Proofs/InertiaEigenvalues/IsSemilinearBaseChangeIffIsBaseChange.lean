@@ -9,6 +9,17 @@ namespace GlobalTheory.BSP
 
 open TensorProduct in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hu`. Use `IsBaseChange.of_lift_unique _ fun Q _ _ _ _ g => ?_` and prove the remaining obligations. Use `letI : AddCommGroup Q := Module.addCommMonoidToAddCommGroup B`. Set `v : M →ₛₗ[algebraMap A B] Q` to `{ toFun := g map_add' := g.map_add map_smul' := fun a x => by simp [algebraMap_smul] }`.
+
+Take `⟨w, hw, hw'⟩` from `hu Q v`. Use `⟨w, ?_, fun w₂ hw₂ => hw' w₂ fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[h, hw x, v]`. Rewrite using `[← h]`.
+
+Conclude with `LinearMap.congr_fun hw₂ x`. Introduce `hb Q _ _ v`. Use `letI : Module A Q := Module.compHom Q (algebraMap A B)`. Use `haveI : IsScalarTower A B Q := ⟨fun a b q => by show (a • b) • q = algebraMap A B a • b • q`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`.
+
+Set `g : M →ₗ[A] Q` to `{ toFun := v map_add' := v.map_add map_smul' := fun a x => by`. Rewrite using `[v.map_smulₛₗ]`. Use `rfl }`. Use `⟨hb.lift g, fun x => ?_, fun w hw => hb.algHom_ext _ _ fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← h, hb.lift_eq]`.
+
+Both sides reduce to the same expression. Rewrite using `[hb.lift_eq, h, hw]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.BSP.semiBC_iff_isBaseChange (A B : Type) [CommRing A] [CommRing B]
     [Algebra A B] (M : Type)
     [AddCommGroup M] [Module A M] (N : Type) [AddCommGroup N] [Module B N] [Module A N]

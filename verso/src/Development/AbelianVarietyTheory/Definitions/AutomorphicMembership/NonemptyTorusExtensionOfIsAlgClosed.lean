@@ -41,33 +41,60 @@ variable {G H K : Over S} [GrpObj G] [GrpObj H] [GrpObj K]
 
 instance isMonHom (l : Cochar G) : IsMonHom l.1 := l.2
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 @[ext] theorem ext {l m : Cochar G} (h : l.1 = m.1) : l = m := Subtype.ext h
 
 variable [IsCommMonObj G] [IsCommMonObj H] [IsCommMonObj K]
 
 instance : AddCommGroup (Cochar G) := inferInstanceAs (AddCommGroup (Additive (cocharSubgroup G)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_add (l m : Cochar G) : (l + m).1 = l.1 * m.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_zero : (0 : Cochar G).1 = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_neg (l : Cochar G) : (-l).1 = l.1⁻¹ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem val_zsmul (n : ℤ) (l : Cochar G) : (n • l).1 = l.1 ^ n := rfl
 
 def map (u : G ⟶ H) [IsMonHom u] : Cochar G →+ Cochar H :=
   AddMonoidHom.mk' (fun l => ⟨l.1 ≫ u, inferInstance⟩) fun l m => ext (MonObj.mul_comp l.1 m.1 u)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem map_val (u : G ⟶ H) [IsMonHom u] (l : Cochar G) : (map u l).1 = l.1 ≫ u := rfl
 
+/- English proof (translation)
+The claim follows from `ext (Category.comp_id _)`.
+-/
 theorem map_id (l : Cochar G) : map (𝟙 G) l = l := ext (Category.comp_id _)
 
+/- English proof (translation)
+The claim follows from `ext (Category.assoc _ _ _).symm`.
+-/
 theorem map_comp (u : G ⟶ H) (v : H ⟶ K) [IsMonHom u] [IsMonHom v] (l : Cochar G) :
     map (u ≫ v) l = map v (map u l) := ext (Category.assoc _ _ _).symm
 
 def actHom {O : Type} [CommRing O] (a : OAct O G) (c : O) : Cochar G →+ Cochar G :=
   haveI := a.hom c; map (a.act c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem actHom_val {O : Type} [CommRing O] (a : OAct O G) (c : O) (l : Cochar G) :
     (actHom a c l).1 = l.1 ≫ a.act c := rfl
 
@@ -95,13 +122,22 @@ def pullTorus (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G) : splitTo
   Over.homMk (h.1.lift (bcMap f X ≫ i.left) (splitTorus S' X).hom (by
     rw [Category.assoc, Over.w, SplitTorus.bcMap_hom])) (h.1.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `h.1.lift_fst _ _ _`.
+-/
 theorem pullTorus_left (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G) :
     (pullTorus h i).left ≫ φ = bcMap f X ≫ i.left := h.1.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (h.1.hom_ext e ((Over.w x).trans (Over.w y).symm))`.
+-/
 theorem hom_ext_of_pullback (h : IsGrpPullback G' G f φ) {T : Over S'} {x y : T ⟶ G'}
     (e : x.left ≫ φ = y.left ≫ φ) : x = y :=
   Over.OverMorphism.ext (h.1.hom_ext e ((Over.w x).trans (Over.w y).symm))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun e => e ▸ pullTorus_left h i, fun e => hom_ext_of_pullback h (e.trans (pullTorus_left h i).symm)⟩`.
+-/
 theorem eq_pullTorus_iff (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G)
     (i' : splitTorus S' X ⟶ G') : i' = pullTorus h i ↔ i'.left ≫ φ = bcMap f X ≫ i.left :=
   ⟨fun e => e ▸ pullTorus_left h i, fun e => hom_ext_of_pullback h (e.trans (pullTorus_left h i).symm)⟩
@@ -110,6 +146,9 @@ instance isMonHom_pullTorus (h : IsGrpPullback G' G f φ) (i : splitTorus S X �
     IsMonHom (pullTorus h i) :=
   Out.PullGtPf.isMonHom_of_grpPullback (SplitTorus.isGrpPullback_bcMap f X) h i _ (pullTorus_left h i)
 
+/- English proof (translation)
+Set `b : Over.mk ((splitTorus S' X).hom ≫ f) ⟶ splitTorus S X` to `Over.homMk (bcMap f X) (SplitTorus.bcMap_hom f X)`. Establish `k` using `h.2 _ (pullTorus h i) (pullTorus h j) (b ≫ i) (b ≫ j) (pullTorus_left h i).symm (pullTorus_left h j).symm`. Rewrite `k` using `[← MonObj.comp_mul]`. Conclude with `((eq_pullTorus_iff h _ _).2 k.symm).symm`.
+-/
 theorem pullTorus_mul (h : IsGrpPullback G' G f φ) (i j : splitTorus S X ⟶ G) :
     pullTorus h (i * j) = pullTorus h i * pullTorus h j := by
   let b : Over.mk ((splitTorus S' X).hom ≫ f) ⟶ splitTorus S X :=
@@ -119,11 +158,19 @@ theorem pullTorus_mul (h : IsGrpPullback G' G f φ) (i j : splitTorus S X ⟶ G)
   rw [← MonObj.comp_mul] at k
   exact ((eq_pullTorus_iff h _ _).2 k.symm).symm
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(SplitTorus.bcMap_torusFst _ _).trans (Category.id_comp _).symm`. Conclude with `(SplitTorus.bcMap_hom _ _).trans ((Category.comp_id _).trans (Category.id_comp _).symm)`.
+-/
 theorem bcMap_id : bcMap (𝟙 S) X = 𝟙 _ := by
   apply pullback.hom_ext
   · exact (SplitTorus.bcMap_torusFst _ _).trans (Category.id_comp _).symm
   · exact (SplitTorus.bcMap_hom _ _).trans ((Category.comp_id _).trans (Category.id_comp _).symm)
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `e : (bcMap g X ≫ bcMap f X) ≫ Rosenlicht.torusFst S X = Rosenlicht.torusFst S'' X`. Rewrite using `[Category.assoc, SplitTorus.bcMap_torusFst, SplitTorus.bcMap_torusFst]`. Conclude with `(SplitTorus.bcMap_torusFst _ _).trans e.symm`. Establish `e : (bcMap g X ≫ bcMap f X) ≫ (splitTorus S X).hom = (splitTorus S'' X).hom ≫ g ≫ f`.
+
+Rewrite using `[Category.assoc, SplitTorus.bcMap_hom, SplitTorus.bcMap_hom_assoc]`. Conclude with `(SplitTorus.bcMap_hom _ _).trans e.symm`.
+-/
 theorem bcMap_comp (g : S'' ⟶ S') (f : S' ⟶ S) : bcMap (g ≫ f) X = bcMap g X ≫ bcMap f X := by
   apply pullback.hom_ext
   · have e : (bcMap g X ≫ bcMap f X) ≫ Rosenlicht.torusFst S X = Rosenlicht.torusFst S'' X := by
@@ -133,6 +180,9 @@ theorem bcMap_comp (g : S'' ⟶ S') (f : S' ⟶ S) : bcMap (g ≫ f) X = bcMap g
       rw [Category.assoc, SplitTorus.bcMap_hom, SplitTorus.bcMap_hom_assoc]
     exact (SplitTorus.bcMap_hom _ _).trans e.symm
 
+/- English proof (translation)
+Substitute `ef eφ` using the available equality. Rewrite using `[eq_pullTorus_iff, ← Category.assoc, pullTorus_left, Category.assoc, pullTorus_left, bcMap_comp, Category.assoc]`.
+-/
 theorem pullTorus_pullTorus {g : S'' ⟶ S'} {φ' : G''.left ⟶ G'.left} {f'' : S'' ⟶ S}
     {φ'' : G''.left ⟶ G.left} (h' : IsGrpPullback G'' G' g φ') (h : IsGrpPullback G' G f φ)
     (h'' : IsGrpPullback G'' G f'' φ'') (ef : f'' = g ≫ f) (eφ : φ'' = φ' ≫ φ)
@@ -141,12 +191,18 @@ theorem pullTorus_pullTorus {g : S'' ⟶ S'} {φ' : G''.left ⟶ G'.left} {f'' :
   rw [eq_pullTorus_iff, ← Category.assoc, pullTorus_left, Category.assoc, pullTorus_left, bcMap_comp,
     Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[eq_comm, eq_pullTorus_iff, Over.comp_left, Over.comp_left, Category.assoc, pullTorus_left, ← Category.assoc, SplitTorus.torusMap_bcMap, Category.assoc]`.
+-/
 theorem pullTorus_torusMap_comp {Y : Type} [AddCommGroup Y] (h : IsGrpPullback G' G f φ)
     (i : splitTorus S X ⟶ G) (u : X →+ Y) :
     pullTorus h (torusMap S u ≫ i) = torusMap S' u ≫ pullTorus h i := by
   rw [eq_comm, eq_pullTorus_iff, Over.comp_left, Over.comp_left, Category.assoc, pullTorus_left,
     ← Category.assoc, SplitTorus.torusMap_bcMap, Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[eq_comm, eq_pullTorus_iff, Over.comp_left, Over.comp_left, Category.assoc, e, ← Category.assoc, pullTorus_left, Category.assoc]`.
+-/
 theorem pullTorus_comp {H : Over S} [GrpObj H] {H' : Over S'} [GrpObj H'] {ψ : H'.left ⟶ H.left}
     (h : IsGrpPullback G' G f φ) (k : IsGrpPullback H' H f ψ) (u : G ⟶ H) (u' : G' ⟶ H')
     (e : u'.left ≫ ψ = φ ≫ u.left) (i : splitTorus S X ⟶ G) :
@@ -154,6 +210,11 @@ theorem pullTorus_comp {H : Over S} [GrpObj H] {H' : Over S'} [GrpObj H'] {ψ : 
   rw [eq_comm, eq_pullTorus_iff, Over.comp_left, Over.comp_left, Category.assoc, e, ← Category.assoc,
     pullTorus_left, Category.assoc]
 
+/- English proof (translation)
+Take `⟨e, he, heφ⟩` from `grpPullback_iso h (isGrpPullback_pullback G f)`. Use `⟨e.hom ≫ (Over.pullback f).map q, inferInstance, ?_⟩` and prove the remaining obligations. Use `IsPullback.of_iso (hk.map (Over.pullback f)) (bcIso f X).symm e.symm (Functor.Monoidal.εIso (Over.pullback f)).symm (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Iso.symm_hom, Iso.symm_hom, Iso.comp_inv_eq]`. Use `hom_ext_of_pullback (isGrpPullback_pullback G f) ?_` and prove the remaining obligations.
+
+Rewrite using `[ExtUnique.pullback_map_left_fst, Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, heφ, pullTorus_left, SplitTorus.bcIso_inv_bcMap_assoc]`. Conclude with `toUnit_unique _ _`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem exists_isKernel_pullTorus (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G)
     {B : Over S} [GrpObj B] (q : G ⟶ B) [IsMonHom q] (hk : IsPullback i (toUnit _) q η[B]) :
     ∃ q' : G' ⟶ (Over.pullback f).obj B, IsMonHom q' ∧
@@ -177,42 +238,72 @@ namespace Cochar
 def pull (h : IsGrpPullback G' G f φ) : Cochar G →+ Cochar G' :=
   AddMonoidHom.mk' (fun l => ⟨pullTorus h l.1, inferInstance⟩) fun l m => ext (pullTorus_mul h l.1 m.1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pull_val (h : IsGrpPullback G' G f φ) (l : Cochar G) : (pull h l).1 = pullTorus h l.1 := rfl
 
+/- English proof (translation)
+The claim follows from `pullTorus_left h l.1`.
+-/
 theorem pull_left (h : IsGrpPullback G' G f φ) (l : Cochar G) :
     (pull h l).1.left ≫ φ = bcMap f (ULift ℤ) ≫ l.1.left := pullTorus_left h l.1
 
+/- English proof (translation)
+The claim follows from `Subtype.ext_iff.trans (eq_pullTorus_iff h l.1 l'.1)`.
+-/
 theorem eq_pull_iff (h : IsGrpPullback G' G f φ) (l : Cochar G) (l' : Cochar G') :
     l' = pull h l ↔ l'.1.left ≫ φ = bcMap f (ULift ℤ) ≫ l.1.left :=
   Subtype.ext_iff.trans (eq_pullTorus_iff h l.1 l'.1)
 
+/- English proof (translation)
+The claim follows from `((eq_pull_iff h l l).2 (by rw [bcMap_id, Category.id_comp, Category.comp_id])).symm`.
+-/
 theorem pull_id (h : IsGrpPullback G G (𝟙 S) (𝟙 G.left)) (l : Cochar G) : pull h l = l :=
   ((eq_pull_iff h l l).2 (by rw [bcMap_id, Category.id_comp, Category.comp_id])).symm
 
+/- English proof (translation)
+The claim follows from `ext (pullTorus_pullTorus h' h h'' ef eφ l.1)`.
+-/
 theorem pull_pull {g : S'' ⟶ S'} {φ' : G''.left ⟶ G'.left} {f'' : S'' ⟶ S}
     {φ'' : G''.left ⟶ G.left} (h' : IsGrpPullback G'' G' g φ') (h : IsGrpPullback G' G f φ)
     (h'' : IsGrpPullback G'' G f'' φ'') (ef : f'' = g ≫ f) (eφ : φ'' = φ' ≫ φ) (l : Cochar G) :
     pull h' (pull h l) = pull h'' l := ext (pullTorus_pullTorus h' h h'' ef eφ l.1)
 
+/- English proof (translation)
+The claim follows from `(pull_pull h' h _ rfl rfl l).symm`.
+-/
 theorem pull_comp {g : S'' ⟶ S'} {φ' : G''.left ⟶ G'.left} (h' : IsGrpPullback G'' G' g φ')
     (h : IsGrpPullback G' G f φ) (l : Cochar G) : pull (h'.comp h) l = pull h' (pull h l) :=
   (pull_pull h' h _ rfl rfl l).symm
 
+/- English proof (translation)
+The claim follows from `ext (pullTorus_comp h k u u' e l.1)`.
+-/
 theorem pull_map {H : Over S} [GrpObj H] [IsCommMonObj H] {H' : Over S'} [GrpObj H'] [IsCommMonObj H']
     {ψ : H'.left ⟶ H.left} (h : IsGrpPullback G' G f φ) (k : IsGrpPullback H' H f ψ) (u : G ⟶ H)
     (u' : G' ⟶ H') [IsMonHom u] [IsMonHom u'] (e : u'.left ≫ ψ = φ ≫ u.left) (l : Cochar G) :
     pull k (map u l) = map u' (pull h l) := ext (pullTorus_comp h k u u' e l.1)
 
+/- English proof (translation)
+The claim follows from `ext (pullTorus_comp h h _ _ (e c) l.1)`.
+-/
 theorem pull_actHom {O : Type} [CommRing O] (h : IsGrpPullback G' G f φ) (a : OAct O G) (a' : OAct O G')
     (e : ∀ c, (a'.act c).left ≫ φ = φ ≫ (a.act c).left) (c : O) (l : Cochar G) :
     pull h (actHom a c l) = actHom a' c (pull h l) := ext (pullTorus_comp h h _ _ (e c) l.1)
 
+/- English proof (translation)
+The claim follows from `((eq_pull_iff _ _ _).2 (by rw [bcMap_id, Category.id_comp, ← Over.comp_left, map_val, Category.assoc, e.inv_hom_id, Category.comp_id])).symm`.
+-/
 theorem pull_of_iso {H : Over S} [GrpObj H] [IsCommMonObj H] (e : H ≅ G) [IsMonHom e.hom] (l : Cochar G) :
     pull (isGrpPullback_of_iso e) l = map e.inv l :=
   ((eq_pull_iff _ _ _).2 (by
     rw [bcMap_id, Category.id_comp, ← Over.comp_left, map_val, Category.assoc, e.inv_hom_id,
       Category.comp_id])).symm
 
+/- English proof (translation)
+Introduce `l m e` and use `by have : Flat (splitTorusAff ZU (ULift.{0} ℤ)).hom := (ExtUnique.splitTorusAff_flat_and_isSeparated _ _).1 have : Flat (Gm S).hom := inferInstanceAs (Flat (pullback.snd _ _)) refine ext (ExtUnique.over_hom_ext_of_isPullback (SplitTorus.isPullback_bcMap f _) ?_) rw [← pull_left h …`.
+-/
 theorem pull_injective [QuasiCompact f] [IsSchemeTheoreticallyDominant f] [IsSeparated G.hom]
     (h : IsGrpPullback G' G f φ) : Function.Injective (pull h) := fun l m e => by
   have : Flat (splitTorusAff ZU (ULift.{0} ℤ)).hom :=
@@ -237,27 +328,45 @@ variable {G H : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj H] [IsCommMonObj H]
 
 def comap (u : G ⟶ H) [IsMonHom u] : Char H →+ Char G := AddMonoidHom.compHom' (Cochar.map u)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comap_apply (u : G ⟶ H) [IsMonHom u] (χ : Char H) (l : Cochar G) :
     comap u χ l = χ (Cochar.map u l) := rfl
 
 def pull (h : IsGrpPullback G' G f φ) : Char G' →+ Char G := AddMonoidHom.compHom' (Cochar.pull h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pull_apply (h : IsGrpPullback G' G f φ) (χ : Char G') (l : Cochar G) :
     pull h χ l = χ (Cochar.pull h l) := rfl
 
+/- English proof (translation)
+The claim follows from `AddMonoidHom.ext fun l => congrArg χ (Cochar.pull_id h l)`.
+-/
 theorem pull_id (h : IsGrpPullback G G (𝟙 S) (𝟙 G.left)) (χ : Char G) : pull h χ = χ :=
   AddMonoidHom.ext fun l => congrArg χ (Cochar.pull_id h l)
 
+/- English proof (translation)
+The claim follows from `AddMonoidHom.ext fun l => congrArg χ (Cochar.pull_pull h' h h'' ef eφ l)`.
+-/
 theorem pull_pull {g : S'' ⟶ S'} {φ' : G''.left ⟶ G'.left} {f'' : S'' ⟶ S}
     {φ'' : G''.left ⟶ G.left} (h' : IsGrpPullback G'' G' g φ') (h : IsGrpPullback G' G f φ)
     (h'' : IsGrpPullback G'' G f'' φ'') (ef : f'' = g ≫ f) (eφ : φ'' = φ' ≫ φ) (χ : Char G'') :
     pull h (pull h' χ) = pull h'' χ :=
   AddMonoidHom.ext fun l => congrArg χ (Cochar.pull_pull h' h h'' ef eφ l)
 
+/- English proof (translation)
+The claim follows from `(pull_pull h' h _ rfl rfl χ).symm`.
+-/
 theorem pull_comp {g : S'' ⟶ S'} {φ' : G''.left ⟶ G'.left} (h' : IsGrpPullback G'' G' g φ')
     (h : IsGrpPullback G' G f φ) (χ : Char G'') : pull (h'.comp h) χ = pull h (pull h' χ) :=
   (pull_pull h' h _ rfl rfl χ).symm
 
+/- English proof (translation)
+Set `e` to `AddEquiv.ofBijective _ hb`. Use `⟨fun χ χ' k => AddMonoidHom.ext fun l => ?_, fun χ => ⟨χ.comp e.symm.toAddMonoidHom, AddMonoidHom.ext fun l => congrArg χ (e.symm_apply_apply l)⟩⟩` and prove the remaining obligations. Take `⟨l, rfl⟩` from `hb.2 l`. Conclude with `DFunLike.congr_fun k l`.
+-/
 theorem pull_bijective {h : IsGrpPullback G' G f φ} (hb : Function.Bijective (Cochar.pull h)) :
     Function.Bijective (pull h) := by
   let e := AddEquiv.ofBijective _ hb
@@ -299,6 +408,9 @@ instance (t : SAB H S) : AddCommGroup (CocharOf t) := inferInstanceAs (AddCommGr
 
 instance (t : SAB H S) : Module (𝓞 E) (CocharOf t) := Cochar.module t.act
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem smul_val (a : 𝓞 E) (l : CocharOf t) : (a • l).1 = l.1 ≫ t.act.act a := rfl
 
 def pull (m : SABMap t' t f) : CocharOf t →ₗ[𝓞 E] CocharOf t' where
@@ -306,6 +418,9 @@ def pull (m : SABMap t' t f) : CocharOf t →ₗ[𝓞 E] CocharOf t' where
   map_add' := map_add (Cochar.pull m.cart)
   map_smul' a l := Cochar.pull_actHom m.cart t.act t'.act m.act a l
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pull_apply (m : SABMap t' t f) (l : CocharOf t) : pull m l = Cochar.pull m.cart l := rfl
 
 end CocharOf
@@ -324,15 +439,30 @@ instance (t : SAB H S) : AddMonoidHomClass (CharOf t) (CocharOf t) ℤ :=
 
 instance (t : SAB H S) : Module (𝓞 E) (CharOf t) := Char.module t.act (H.bar : 𝓞 E →+* 𝓞 E)
 
+/- English proof (translation)
+The claim follows from `DFunLike.ext _ _ h`.
+-/
 @[ext] theorem ext {χ χ' : CharOf t} (h : ∀ l, χ l = χ' l) : χ = χ' := DFunLike.ext _ _ h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem add_apply (χ χ' : CharOf t) (l : CocharOf t) : (χ + χ') l = χ l + χ' l := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zero_apply (l : CocharOf t) : (0 : CharOf t) l = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem smul_apply (a : 𝓞 E) (χ : CharOf t) (l : CocharOf t) :
     (a • χ) l = χ (H.bar a • l) := rfl
 
+/- English proof (translation)
+Use `letI := H.starRing`. Use `ext fun l => ?_` and prove the remaining obligations. Rewrite using `[smul_apply, show H.bar (H.bar a) = a from star_star a]`. Both sides reduce to the same expression.
+-/
 theorem comap_act (a : 𝓞 E) (χ : CharOf t) :
     (haveI := t.act.hom a; Char.comap (t.act.act a) χ : CharOf t) = H.bar a • χ := by
   letI := H.starRing
@@ -345,9 +475,15 @@ def pull (m : SABMap t' t f) : CharOf t' →ₗ[𝓞 E] CharOf t where
   map_add' := map_add (Char.pull m.cart)
   map_smul' a χ := ext fun l => congrArg χ ((CocharOf.pull m).map_smul (H.bar a) l).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pull_apply (m : SABMap t' t f) (χ : CharOf t') (l : CocharOf t) :
     pull m χ l = χ (CocharOf.pull m l) := rfl
 
+/- English proof (translation)
+The claim follows from `Char.pull_pull m'.cart m.cart m''.cart ef eφ χ`.
+-/
 theorem pull_pull {t'' : SAB H S''} {g : S'' ⟶ S'} {f'' : S'' ⟶ S} (m' : SABMap t'' t' g)
     (m : SABMap t' t f) (m'' : SABMap t'' t f'') (ef : f'' = g ≫ f) (eφ : m''.φ = m'.φ ≫ m.φ)
     (χ : CharOf t'') : pull m (pull m' χ) = pull m'' χ :=
@@ -367,14 +503,23 @@ def torusCochar (S : Scheme.{0}) (l : X →+ ℤ) : Gm S ⟶ splitTorus S X :=
 
 instance (l : X →+ ℤ) : IsMonHom (torusCochar S l) := SplitTorus.isMonHom_torusMap _
 
+/- English proof (translation)
+The claim follows from `SplitTorus.torusMap_appTop_chi _ x`.
+-/
 theorem torusCochar_appTop_chi (l : X →+ ℤ) (x : X) :
     (torusCochar S l).left.appTop.hom (Rosenlicht.chi X x) = Rosenlicht.chi (ULift.{0} ℤ) (ULift.up (l x)) :=
   SplitTorus.torusMap_appTop_chi _ x
 
+/- English proof (translation)
+Rewrite using `[torusCochar, torusCochar, ← SplitTorus.torusMap_comp, AddMonoidHom.comp_assoc]`.
+-/
 theorem torusCochar_comp (l : Y →+ ℤ) (u : X →+ Y) :
     torusCochar S (l.comp u) = torusCochar S l ≫ torusMap S u :=
   by rw [torusCochar, torusCochar, ← SplitTorus.torusMap_comp, AddMonoidHom.comp_assoc]
 
+/- English proof (translation)
+Rewrite using `[torusCochar, torusCochar, torusCochar, AddMonoidHom.comp_add, SplitTorus.torusMap_add]`.
+-/
 theorem torusCochar_add (l m : X →+ ℤ) :
     torusCochar S (l + m) = torusCochar S l * torusCochar S m := by
   rw [torusCochar, torusCochar, torusCochar, AddMonoidHom.comp_add, SplitTorus.torusMap_add]
@@ -383,41 +528,70 @@ def ofTorus (i : splitTorus S X ⟶ G) [IsMonHom i] : (X →+ ℤ) →+ Cochar G
   AddMonoidHom.mk' (fun l => ⟨torusCochar S l ≫ i, inferInstance⟩) fun l m => Cochar.ext
     ((congrArg (· ≫ i) (torusCochar_add l m)).trans (MonObj.mul_comp _ _ i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofTorus_val (i : splitTorus S X ⟶ G) [IsMonHom i] (l : X →+ ℤ) :
     (ofTorus i l).1 = torusCochar S l ≫ i := rfl
 
+/- English proof (translation)
+The claim follows from `Cochar.ext (pullTorus_torusMap_comp h i _)`.
+-/
 theorem pull_ofTorus (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G) [IsMonHom i] (l : X →+ ℤ) :
     Cochar.pull h (ofTorus i l) = ofTorus (pullTorus h i) l :=
   Cochar.ext (pullTorus_torusMap_comp h i _)
 
+/- English proof (translation)
+Take `rfl` from `(eq_pullTorus_iff h i i').2 e`. Conclude with `pull_ofTorus h i l`.
+-/
 theorem pull_ofTorus_of_left (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G) [IsMonHom i]
     (i' : splitTorus S' X ⟶ G') [IsMonHom i'] (e : i'.left ≫ φ = bcMap f X ≫ i.left) (l : X →+ ℤ) :
     Cochar.pull h (ofTorus i l) = ofTorus i' l := by
   obtain rfl := (eq_pullTorus_iff h i i').2 e
   exact pull_ofTorus h i l
 
+/- English proof (translation)
+The claim follows from `Cochar.ext (Category.assoc _ _ _)`.
+-/
 theorem map_ofTorus {H : Over S} [GrpObj H] [IsCommMonObj H] (u : G ⟶ H) [IsMonHom u]
     (i : splitTorus S X ⟶ G) [IsMonHom i] (l : X →+ ℤ) :
     Cochar.map u (ofTorus i l) = ofTorus (i ≫ u) l := Cochar.ext (Category.assoc _ _ _)
 
+/- English proof (translation)
+The claim follows from `Cochar.ext (by rw [ofTorus_val, ofTorus_val, torusCochar_comp, Category.assoc])`.
+-/
 theorem ofTorus_torusMap_comp (i : splitTorus S X ⟶ G) [IsMonHom i] (u : X →+ Y) (l : Y →+ ℤ) :
     ofTorus (torusMap S u ≫ i) l = ofTorus i (l.comp u) :=
   Cochar.ext (by rw [ofTorus_val, ofTorus_val, torusCochar_comp, Category.assoc])
 
+/- English proof (translation)
+Introduce `l m e` and use `by have k := SplitTorus.torusMap_injective ((cancel_mono i).1 (congrArg Subtype.val e)) exact AddMonoidHom.ext fun x => congrArg ULift.down (DFunLike.congr_fun k x)`.
+-/
 theorem ofTorus_injective [Nonempty S] (i : splitTorus S X ⟶ G) [IsMonHom i] [Mono i] :
     Function.Injective (ofTorus i) := fun l m e => by
   have k := SplitTorus.torusMap_injective ((cancel_mono i).1 (congrArg Subtype.val e))
   exact AddMonoidHom.ext fun x => congrArg ULift.down (DFunLike.congr_fun k x)
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `SplitTorus.exists_eq_torusMap u`. Conclude with `⟨(AddEquiv.ulift : ULift.{0} ℤ ≃+ ℤ).toAddMonoidHom.comp v, Cochar.ext e⟩`.
+-/
 theorem mem_range_ofTorus [ConnectedSpace S] (i : splitTorus S X ⟶ G) [IsMonHom i] (l : Cochar G)
     (u : Gm S ⟶ splitTorus S X) [IsMonHom u] (e : u ≫ i = l.1) : ∃ m, ofTorus i m = l := by
   obtain ⟨v, rfl⟩ := SplitTorus.exists_eq_torusMap u
   exact ⟨(AddEquiv.ulift : ULift.{0} ℤ ≃+ ℤ).toAddMonoidHom.comp v, Cochar.ext e⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ofTorus_injective _, fun l => mem_range_ofTorus _ l l.1 (Category.comp_id _)⟩`.
+-/
 theorem ofTorus_id_bijective [ConnectedSpace S] :
     Function.Bijective (ofTorus (𝟙 (splitTorus S X))) :=
   ⟨ofTorus_injective _, fun l => mem_range_ofTorus _ l l.1 (Category.comp_id _)⟩
 
+/- English proof (translation)
+Establish `: Mono i` using `⟨fun a b e => hk.hom_ext e (toUnit_unique _ _)⟩`. Use `⟨ofTorus_injective i, fun l => ?_⟩` and prove the remaining obligations. Set `u` to `hk.lift l.1 (toUnit _) (hB _ inferInstance)`. Establish `hu : u ≫ i = l.1` using `hk.lift_fst _ _ _`. Establish `: IsMonHom u` using `Serre.isMonHom_of_mul_comp u fun T x y => by`.
+
+Rewrite using `[← cancel_mono i, MonObj.mul_comp (x ≫ u), Category.assoc, Category.assoc, Category.assoc, hu, MonObj.mul_comp]`. Conclude with `mem_range_ofTorus i l u hu`.
+-/
 theorem ofTorus_bijective_of_isKernel [ConnectedSpace S] (i : splitTorus S X ⟶ G) [IsMonHom i]
     {B : Over S} [GrpObj B] (q : G ⟶ B) [IsMonHom q] (hk : IsPullback i (toUnit _) q η[B])
     (hB : ∀ u : Gm S ⟶ B, IsMonHom u → u = toUnit _ ≫ η[B]) : Function.Bijective (ofTorus i) := by
@@ -430,11 +604,17 @@ theorem ofTorus_bijective_of_isKernel [ConnectedSpace S] (i : splitTorus S X ⟶
       MonObj.mul_comp]
   exact mem_range_ofTorus i l u hu
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun l m => Cochar.ext ((splitTorus_hom_proper_trivial_local A _ B l.1 l.2).trans (splitTorus_hom_proper_trivial_local A _ B m.1 m.2).symm)⟩`.
+-/
 theorem subsingleton_cochar_of_isProper {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     (B : Over (Sp A)) [GrpObj B] [IsProper B.hom] : Subsingleton (Cochar B) :=
   ⟨fun l m => Cochar.ext ((splitTorus_hom_proper_trivial_local A _ B l.1 l.2).trans
     (splitTorus_hom_proper_trivial_local A _ B m.1 m.2).symm)⟩
 
+/- English proof (translation)
+The claim follows from `haveI : ConnectedSpace (Sp A) := SplitTorus.connectedSpace_of_isLocalRing A ofTorus_bijective_of_isKernel i q hk fun u hu => splitTorus_hom_proper_trivial_local A _ B u hu`.
+-/
 theorem ofTorus_bijective_of_isProper {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     {G : Over (Sp A)} [GrpObj G] [IsCommMonObj G] (i : splitTorus (Sp A) X ⟶ G) [IsMonHom i]
     {B : Over (Sp A)} [GrpObj B] [IsProper B.hom] (q : G ⟶ B) [IsMonHom q]
@@ -442,6 +622,9 @@ theorem ofTorus_bijective_of_isProper {A : Type} [CommRing A] [IsLocalRing A] [I
   haveI : ConnectedSpace (Sp A) := SplitTorus.connectedSpace_of_isLocalRing A
   ofTorus_bijective_of_isKernel i q hk fun u hu => splitTorus_hom_proper_trivial_local A _ B u hu
 
+/- English proof (translation)
+Take `⟨q', hq', hk'⟩` from `exists_isKernel_pullTorus h i q hk`. Establish `: IsProper ((Over.pullback p).obj B).hom` using `inferInstanceAs (IsProper (pullback.snd _ _))`. Conclude with `ofTorus_bijective_of_isProper _ q' hk'`.
+-/
 theorem ofTorus_pullTorus_bijective {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     {G₀ : Over (Sp A)} [GrpObj G₀] [IsCommMonObj G₀] {p : Sp A ⟶ S} {ψ : G₀.left ⟶ G.left}
     (h : IsGrpPullback G₀ G p ψ) (i : splitTorus S X ⟶ G) [IsMonHom i]
@@ -451,6 +634,9 @@ theorem ofTorus_pullTorus_bijective {A : Type} [CommRing A] [IsLocalRing A] [IsN
   have : IsProper ((Over.pullback p).obj B).hom := inferInstanceAs (IsProper (pullback.snd _ _))
   exact ofTorus_bijective_of_isProper _ q' hk'
 
+/- English proof (translation)
+Use `(Function.Bijective.of_comp_iff _ hi).1 ?_` and prove the remaining obligations. Rewrite using `[show Cochar.pull h ∘ ofTorus i = ofTorus (pullTorus h i) from funext (pull_ofTorus h i)]` and apply the resulting hypothesis.
+-/
 theorem pull_bijective_of_ofTorus (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G) [IsMonHom i]
     (hi : Function.Bijective (ofTorus i)) (hi' : Function.Bijective (ofTorus (pullTorus h i))) :
     Function.Bijective (Cochar.pull h) := by
@@ -461,12 +647,20 @@ section Ext
 
 variable {K : Type} [Field K] {G : Over (Sp K)} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+The claim follows from `T.i_hom; Function.Bijective (ofTorus T.i) := by letI := T.addCommGroup; letI := T.grpB have := T.i_hom; have := T.q_hom; have := T.isAbelian.proper exact ofTorus_bijective_of_isProper T.i T.q T.isKernel`.
+-/
 theorem ofTorus_bijective_of_torusExtension (T : TorusExtension G) :
     letI := T.addCommGroup; haveI := T.i_hom; Function.Bijective (ofTorus T.i) := by
   letI := T.addCommGroup; letI := T.grpB
   have := T.i_hom; have := T.q_hom; have := T.isAbelian.proper
   exact ofTorus_bijective_of_isProper T.i T.q T.isKernel
 
+/- English proof (translation)
+Take `⟨T⟩` from `hT`. Use `letI := T.addCommGroup`. Use `letI := T.grpB`. Use `T.i_hom` as an intermediate fact. Use `T.q_hom` as an intermediate fact.
+
+Use `T.isAbelian.proper` as an intermediate fact. Conclude with `pull_bijective_of_ofTorus h T.i (ofTorus_bijective_of_torusExtension T) (ofTorus_pullTorus_bijective h T.i T.q T.isKernel)`.
+-/
 theorem Cochar.pull_bijective_of_torusExtension (hT : Nonempty (TorusExtension G))
     {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     {G₀ : Over (Sp A)} [GrpObj G₀] [IsCommMonObj G₀] {p : Sp A ⟶ Sp K} {ψ : G₀.left ⟶ G.left}
@@ -477,6 +671,9 @@ theorem Cochar.pull_bijective_of_torusExtension (hT : Nonempty (TorusExtension G
   exact pull_bijective_of_ofTorus h T.i (ofTorus_bijective_of_torusExtension T)
     (ofTorus_pullTorus_bijective h T.i T.q T.isKernel)
 
+/- English proof (translation)
+The claim follows from `Char.pull_bijective (Cochar.pull_bijective_of_torusExtension hT h)`.
+-/
 theorem Char.pull_bijective_of_torusExtension (hT : Nonempty (TorusExtension G))
     {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     {G₀ : Over (Sp A)} [GrpObj G₀] [IsCommMonObj G₀] {p : Sp A ⟶ Sp K} {ψ : G₀.left ⟶ G.left}
@@ -485,6 +682,9 @@ theorem Char.pull_bijective_of_torusExtension (hT : Nonempty (TorusExtension G))
 
 end Ext
 
+/- English proof (translation)
+Take `⟨T⟩` from `h.fibres Ω (𝟙 _)`. Establish `: IsMonHom (Iso.refl G).hom` using `inferInstanceAs (IsMonHom (𝟙 G))`. Take `⟨e, he, -⟩` from `grpPullback_iso (isGrpPullback_pullback G (𝟙 _)) (isGrpPullback_of_iso (Iso.refl G))`. Conclude with `⟨torusExtOfIso e T⟩`.
+-/
 theorem nonempty_torusExtension_of_isAlgClosed {Ω : Type} [Field Ω] [IsAlgClosed Ω] {G : Over (Sp Ω)}
     [GrpObj G] (h : IsSemiAbelian G) : Nonempty (TorusExtension G) := by
   obtain ⟨T⟩ := h.fibres Ω (𝟙 _)
@@ -492,12 +692,18 @@ theorem nonempty_torusExtension_of_isAlgClosed {Ω : Type} [Field Ω] [IsAlgClos
   obtain ⟨e, he, -⟩ := grpPullback_iso (isGrpPullback_pullback G (𝟙 _)) (isGrpPullback_of_iso (Iso.refl G))
   exact ⟨torusExtOfIso e T⟩
 
+/- English proof (translation)
+The claim follows from `Char.pull_bijective_of_torusExtension (nonempty_torusExtension_of_isAlgClosed t.semi) m.cart`.
+-/
 theorem CharOf.pull_bijective_of_isAlgClosed {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : Host E} {Ω A : Type} [Field Ω] [IsAlgClosed Ω] [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     {t : SAB H (Sp Ω)} {t' : SAB H (Sp A)} {p : Sp A ⟶ Sp Ω} (m : SABMap t' t p) :
     Function.Bijective (CharOf.pull m) :=
   Char.pull_bijective_of_torusExtension (nonempty_torusExtension_of_isAlgClosed t.semi) m.cart
 
+/- English proof (translation)
+Establish `hb` using `Module.bijective_dual_eval ℤ X`. Use `⟨fun x y e => hb.1 (LinearMap.ext fun l => DFunLike.congr_fun e l.toAddMonoidHom), fun F => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hb.2 (F.comp (LinearMap.toAddMonoidHom' (R₁ := ℤ) (R₂ := ℤ))).toIntLinearMap`. Conclude with `⟨x, AddMonoidHom.ext fun l => LinearMap.congr_fun hx l.toIntLinearMap⟩`.
+-/
 theorem eval_bijective (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] :
     Function.Bijective (AddMonoidHom.eval : X →+ (X →+ ℤ) →+ ℤ) := by
   have hb := Module.bijective_dual_eval ℤ X
@@ -512,11 +718,17 @@ def charEquivOfTorus (i : splitTorus S X ⟶ G) [IsMonHom i] (hi : Function.Bije
   (AddEquiv.ofBijective _ (eval_bijective X)).trans
     (AddEquiv.addMonoidHomCongrLeft (AddEquiv.ofBijective _ hi))
 
+/- English proof (translation)
+The claim follows from `congrArg (fun m : X →+ ℤ => m x) ((AddEquiv.ofBijective _ hi).symm_apply_apply l)`.
+-/
 @[simp] theorem charEquivOfTorus_apply (i : splitTorus S X ⟶ G) [IsMonHom i]
     (hi : Function.Bijective (ofTorus i)) (x : X) (l : X →+ ℤ) :
     charEquivOfTorus i hi x (ofTorus i l) = l x :=
   congrArg (fun m : X →+ ℤ => m x) ((AddEquiv.ofBijective _ hi).symm_apply_apply l)
 
+/- English proof (translation)
+Use `⟨fun e l => e ▸ charEquivOfTorus_apply i hi x l, fun e => AddMonoidHom.ext fun l => ?_⟩` and prove the remaining obligations. Take `⟨l, rfl⟩` from `hi.2 l`. Rewrite using `[e, charEquivOfTorus_apply]`.
+-/
 theorem eq_charEquivOfTorus_iff (i : splitTorus S X ⟶ G) [IsMonHom i]
     (hi : Function.Bijective (ofTorus i)) (x : X) (χ : Char G) :
     χ = charEquivOfTorus i hi x ↔ ∀ l, χ (ofTorus i l) = l x := by
@@ -524,6 +736,9 @@ theorem eq_charEquivOfTorus_iff (i : splitTorus S X ⟶ G) [IsMonHom i]
   obtain ⟨l, rfl⟩ := hi.2 l
   rw [e, charEquivOfTorus_apply]
 
+/- English proof (translation)
+The claim follows from `(eq_charEquivOfTorus_iff i hi x _).2 fun l => by rw [Char.pull_apply, pull_ofTorus, charEquivOfTorus_apply]`.
+-/
 theorem pull_charEquivOfTorus (h : IsGrpPullback G' G f φ) (i : splitTorus S X ⟶ G) [IsMonHom i]
     (hi : Function.Bijective (ofTorus i)) (hi' : Function.Bijective (ofTorus (pullTorus h i))) (x : X) :
     Char.pull h (charEquivOfTorus _ hi' x) = charEquivOfTorus i hi x :=
@@ -550,6 +765,9 @@ section Coord
 variable {D : Out.DegPre R} {e : ℕ} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
   {G₀ : Over (Sp A)} [GrpObj G₀] {φ : G₀.left ⟶ G.left}
 
+/- English proof (translation)
+The claim follows from `g.i_hom; Function.Bijective (ofTorus g.i) := by have hJ : I ^ (e + 1) ≠ ⊤ := fun h => hI (top_le_iff.1 (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero e))) have : Nontrivial (R ⧸ I ^ (e + 1)) := Ideal.Quotient.nontrivial_iff.2 hJ have : IsLocalRing (R ⧸ I ^ (e + 1)) := .of_surjective' _ …`.
+-/
 theorem ofTorus_bijective_of_gtCoord [IsLocalRing R] [IsNoetherianRing R] (hI : I ≠ ⊤)
     (g : Out.GtCoord I D e G) : haveI := g.i_hom; Function.Bijective (ofTorus g.i) := by
   have hJ : I ^ (e + 1) ≠ ⊤ := fun h => hI (top_le_iff.1 (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero e)))
@@ -566,6 +784,9 @@ def thickPt (e : ℕ) (hρ : ∀ x ∈ I ^ (e + 1), ρ x = 0) : Sp A ⟶ Sp (R �
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Rewrite using `[thickPt, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem thickPt_thick (hρ : ∀ x ∈ I ^ (e + 1), ρ x = 0) :
     thickPt e hρ ≫ Out.thick R I e = spMap ρ := by
   rw [thickPt, ← Spec.map_comp]; rfl
@@ -578,11 +799,17 @@ def thickLift (hρ : ∀ x ∈ I ^ (e + 1), ρ x = 0) (h : IsGrpPullback G₀ G 
 
 omit [IsDomain R] [IsCommMonObj G] in
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem thickLift_fst (hρ : ∀ x ∈ I ^ (e + 1), ρ x = 0) (h : IsGrpPullback G₀ G (spMap ρ) φ) :
     thickLift hρ h ≫ pullback.fst G.hom (Out.thick R I e) = φ := pullback.lift_fst _ _ _
 
 omit [IsDomain R] [IsCommMonObj G] in
 
+/- English proof (translation)
+The claim follows from `(isGrpPullback_pullback G (Out.thick R I e)).cancel (h.congr (thickPt_thick hρ).symm (thickLift_fst hρ h).symm) (pullback.lift_snd _ _ _)`.
+-/
 theorem isGrpPullback_thickLift (hρ : ∀ x ∈ I ^ (e + 1), ρ x = 0) (h : IsGrpPullback G₀ G (spMap ρ) φ) :
     IsGrpPullback G₀ (Out.thickObj R I e G) (thickPt e hρ) (thickLift hρ h) :=
   (isGrpPullback_pullback G (Out.thick R I e)).cancel
@@ -596,6 +823,9 @@ instance (g : Out.GtCoord I D e G) (hρ : ∀ x ∈ I ^ (e + 1), ρ x = 0)
     (h : IsGrpPullback G₀ G (spMap ρ) φ) : IsMonHom (gtTorus g hρ h) :=
   haveI := g.i_hom; isMonHom_pullTorus _ _
 
+/- English proof (translation)
+Establish `k` using `pullTorus_left (isGrpPullback_thickLift hρ h) g.i`. Conclude with `(congrArg (_ ≫ ·) (thickLift_fst hρ h).symm).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) k).trans (Category.assoc _ _ _)))`.
+-/
 theorem gtTorus_left (g : Out.GtCoord I D e G) (hρ : ∀ x ∈ I ^ (e + 1), ρ x = 0)
     (h : IsGrpPullback G₀ G (spMap ρ) φ) :
     (gtTorus g hρ h).left ≫ φ =
@@ -604,6 +834,11 @@ theorem gtTorus_left (g : Out.GtCoord I D e G) (hρ : ∀ x ∈ I ^ (e + 1), ρ 
   exact (congrArg (_ ≫ ·) (thickLift_fst hρ h).symm).trans ((Category.assoc _ _ _).symm.trans
     ((congrArg (· ≫ _) k).trans (Category.assoc _ _ _)))
 
+/- English proof (translation)
+Substitute `eρ eφ` using the available equality. Establish `e₁ : thickPt e hρ' = spMap σ ≫ thickPt e hρ`. Rewrite using `[thickPt, thickPt, ← Spec.map_comp]`. Use `congr 2`. Conclude with `Ideal.Quotient.ringHom_ext rfl`.
+
+Use `pullTorus_pullTorus k _ _ e₁ (pullback.hom_ext ?_ ?_) g.i` and prove the remaining obligations. Conclude with `(thickLift_fst _ _).trans ((congrArg (ψ ≫ ·) (thickLift_fst hρ h).symm).trans (Category.assoc _ _ _).symm)`. Use `(isGrpPullback_thickLift hρ' h').1.w.trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (ψ ≫ ·) (isGrpPullback_thickLift hρ h).1.w.symm)` and prove the remaining obligations. Rewrite using `[e₁, ← Category.assoc, ← k.1.w, Category.assoc]`.
+-/
 theorem pullTorus_gtTorus {A' : Type} [CommRing A'] {σ : A →+* A'} {ρ' : R →+* A'} {G₁ : Over (Sp A')}
     [GrpObj G₁] {ψ : G₁.left ⟶ G₀.left} {φ' : G₁.left ⟶ G.left} (g : Out.GtCoord I D e G)
     (hρ : ∀ x ∈ I ^ (e + 1), ρ x = 0) (hρ' : ∀ x ∈ I ^ (e + 1), ρ' x = 0)
@@ -622,6 +857,9 @@ theorem pullTorus_gtTorus {A' : Type} [CommRing A'] {σ : A →+* A'} {ρ' : R �
     refine Eq.trans ?_ (congrArg (ψ ≫ ·) (isGrpPullback_thickLift hρ h).1.w.symm)
     rw [e₁, ← Category.assoc, ← k.1.w, Category.assoc]
 
+/- English proof (translation)
+Use `g.i_hom` as an intermediate fact. Use `g.q_hom` as an intermediate fact. Use `D.P.isAb.proper` as an intermediate fact. Establish `: IsProper (Out.thickObj R I e D.P.A).hom` using `inferInstanceAs (IsProper (pullback.snd _ _))`. Conclude with `ofTorus_pullTorus_bijective _ g.i g.q g.isKernel`.
+-/
 theorem ofTorus_gtTorus_bijective [IsLocalRing A] [IsNoetherianRing A] [IsCommMonObj G₀]
     (g : Out.GtCoord I D e G) (hρ : ∀ x ∈ I ^ (e + 1), ρ x = 0) (h : IsGrpPullback G₀ G (spMap ρ) φ) :
     Function.Bijective (ofTorus (gtTorus g hρ h)) := by
@@ -636,6 +874,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {t : SA
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Introduce `x hx` and use `hρ x (Ideal.pow_le_self (Nat.succ_ne_zero 0) hx)`.
+-/
 theorem map_pow_one_eq_zero (hρ : ∀ x ∈ I, ρ x = 0) : ∀ x ∈ I ^ (0 + 1), ρ x = 0 :=
   fun x hx => hρ x (Ideal.pow_le_self (Nat.succ_ne_zero 0) hx)
 
@@ -648,6 +889,15 @@ def torus (P : PELUnif I t) (hρ : ∀ x ∈ I, ρ x = 0) (m : SABMap t₀ t (sp
 instance (P : PELUnif I t) (hρ : ∀ x ∈ I, ρ x = 0) (m : SABMap t₀ t (spMap ρ)) :
     IsMonHom (torus P hρ m) := inferInstanceAs (IsMonHom (gtTorus _ _ _))
 
+/- English proof (translation)
+Use `letI := H.starRing`. Take `⟨τ, hτ, hi⟩` from `P.lin.i_lin 0 a`. Establish `e : τ = torusMap _ (DistribSMul.toAddMonoidHom P.D.toPre.X (H.bar a))` using `(SplitTorus.eq_torusMap_iff _ _).2 fun x => (SplitTorus.res_pullU_charUnit τ x _).symm.trans ((congrArg Units.val (hτ x)).trans (SplitTorus.charUnit_val _))`. Establish `k` using `isGrpPullback_thickLift (map_pow_one_eq_zero hρ) m.cart`. Establish `c : (t₀.act.act a).left ≫ thickLift (map_pow_one_eq_zero hρ) m.cart = thickLift (map_pow_one_eq_zero hρ) m.cart ≫ ((Over.pullback (Out.thick R I 0)).map (t.act.act a)).left`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (thickLift_fst _ _)).trans ((m.act a).trans ?_))` and prove the remaining obligations. Use `Eq.trans ?_ (Category.assoc _ _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (_ ≫ ·) (ExtUnique.pullback_map_left_fst _ _).symm)` and prove the remaining obligations. Conclude with `(congrArg (· ≫ _) (thickLift_fst _ _).symm).trans (Category.assoc _ _ _)`.
+
+Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) k.1.w).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (Category.assoc _ _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (_ ≫ ·) (Over.w ((Over.pullback (Out.thick R I 0)).map (t.act.act a))).symm)` and prove the remaining obligations. Use `Eq.trans ?_ k.1.w.symm` and prove the remaining obligations. Rewrite using `[← Category.assoc, Over.w]`.
+
+Conclude with `(pullTorus_comp k k _ _ c (P.U.gt 0).i).symm.trans ((congrArg (pullTorus k) (hi.trans (congrArg (· ≫ _) e))).trans (pullTorus_torusMap_comp k _ _))`.
+-/
 theorem torus_comp_act (P : PELUnif I t) (hρ : ∀ x ∈ I, ρ x = 0) (m : SABMap t₀ t (spMap ρ))
     (a : 𝓞 E) : torus P hρ m ≫ t₀.act.act a =
       torusMap (Sp A) (DistribSMul.toAddMonoidHom P.D.toPre.X (H.bar a)) ≫ torus P hρ m := by
@@ -677,6 +927,9 @@ theorem torus_comp_act (P : PELUnif I t) (hρ : ∀ x ∈ I, ρ x = 0) (m : SABM
 def cochar (P : PELUnif I t) (hρ : ∀ x ∈ I, ρ x = 0) (m : SABMap t₀ t (spMap ρ)) :
     (P.D.toPre.X →+ ℤ) →+ CocharOf t₀ := ofTorus (torus P hρ m)
 
+/- English proof (translation)
+The claim follows from `Cochar.ext (show (torusCochar _ l ≫ torus P hρ m) ≫ t₀.act.act a = torusCochar _ _ ≫ torus P hρ m by rw [Category.assoc, torus_comp_act, torusCochar_comp, Category.assoc])`.
+-/
 theorem smul_cochar (P : PELUnif I t) (hρ : ∀ x ∈ I, ρ x = 0) (m : SABMap t₀ t (spMap ρ))
     (a : 𝓞 E) (l : P.D.toPre.X →+ ℤ) : a • cochar P hρ m l =
       cochar P hρ m (l.comp (DistribSMul.toAddMonoidHom P.D.toPre.X (H.bar a))) :=
@@ -685,6 +938,9 @@ theorem smul_cochar (P : PELUnif I t) (hρ : ∀ x ∈ I, ρ x = 0) (m : SABMap 
 
 variable [IsLocalRing A] [IsNoetherianRing A]
 
+/- English proof (translation)
+The claim follows from `ofTorus_gtTorus_bijective _ _ _`.
+-/
 theorem cochar_bijective (P : PELUnif I t) (hρ : ∀ x ∈ I, ρ x = 0) (m : SABMap t₀ t (spMap ρ)) :
     Function.Bijective (cochar P hρ m) := ofTorus_gtTorus_bijective _ _ _
 
@@ -697,11 +953,17 @@ def charEquivOfKer (P : PELUnif I t) (hρ : ∀ x ∈ I, ρ x = 0) (m : SABMap t
         (smul_cochar P hρ m (H.bar a) l)).trans ((charEquivOfTorus_apply _ _ _ _).trans ?_)
       exact congrArg (fun c : 𝓞 E => l (c • x)) (star_star a)).symm }
 
+/- English proof (translation)
+The claim follows from `charEquivOfTorus_apply _ (cochar_bijective P hρ m) x l`.
+-/
 @[simp] theorem charEquivOfKer_apply (P : PELUnif I t) (hρ : ∀ x ∈ I, ρ x = 0)
     (m : SABMap t₀ t (spMap ρ)) (x : P.D.toPre.X) (l : P.D.toPre.X →+ ℤ) :
     charEquivOfKer P hρ m x (cochar P hρ m l) = l x :=
   charEquivOfTorus_apply _ (cochar_bijective P hρ m) x l
 
+/- English proof (translation)
+The claim follows from `(eq_charEquivOfTorus_iff _ (cochar_bijective P hρ m) _ _).2 fun l => by have e : CocharOf.pull n (cochar P hρ m l) = cochar P hρ' m' l := Cochar.ext ((pullTorus_torusMap_comp n.cart _ _).trans (congrArg (_ ≫ ·) (pullTorus_gtTorus _ _ _ m.cart m'.cart n.cart eρ eφ))) exact (congrA …`.
+-/
 theorem pull_charEquivOfKer {A' : Type} [CommRing A'] [IsLocalRing A'] [IsNoetherianRing A']
     {σ : A →+* A'} {ρ' : R →+* A'} {t₁ : SAB H (Sp A')} (P : PELUnif I t) (hρ : ∀ x ∈ I, ρ x = 0)
     (hρ' : ∀ x ∈ I, ρ' x = 0) (m : SABMap t₀ t (spMap ρ)) (m' : SABMap t₁ t (spMap ρ'))
@@ -717,6 +979,9 @@ end PELUnif
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Introduce `x hx` and use `by by_contra h exact hx (IsLocalHom.map_nonunit x (Ne.isUnit h))`.
+-/
 theorem map_eq_zero_of_isLocalHom [IsLocalRing R] {k : Type} [Field k] (ρ : R →+* k) [IsLocalHom ρ] :
     ∀ x ∈ IsLocalRing.maximalIdeal R, ρ x = 0 := fun x hx => by
   by_contra h
@@ -727,6 +992,9 @@ def PELUnif.charEquiv [IsLocalRing R] {k : Type} [Field k] {ρ : R →+* k} [IsL
     P.D.toPre.X ≃ₗ[𝓞 E] CharOf t₀ :=
   PELUnif.charEquivOfKer P (map_eq_zero_of_isLocalHom ρ) m
 
+/- English proof (translation)
+The claim follows from `PELUnif.charEquivOfKer_apply P _ m x l`.
+-/
 @[simp] theorem PELUnif.charEquiv_apply [IsLocalRing R] {k : Type} [Field k] {ρ : R →+* k} [IsLocalHom ρ]
     {t₀ : SAB H (Sp k)} (P : PELUnif (IsLocalRing.maximalIdeal R) t) (m : SABMap t₀ t (spMap ρ))
     (x : P.D.toPre.X) (l : P.D.toPre.X →+ ℤ) :
@@ -745,9 +1013,15 @@ def IsSpec (h₁ : IsGrpPullback G₁ G f₁ φ₁) (h₀ : IsGrpPullback G₀ G
     (l₀ : Cochar G₀) : Prop :=
   ∃ l : Cochar G, Cochar.pull h₁ l = l₁ ∧ Cochar.pull h₀ l = l₀
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨l, rfl, rfl⟩`.
+-/
 theorem isSpec_pull (h₁ : IsGrpPullback G₁ G f₁ φ₁) (h₀ : IsGrpPullback G₀ G f₀ φ₀) (l : Cochar G) :
     IsSpec h₁ h₀ (Cochar.pull h₁ l) (Cochar.pull h₀ l) := ⟨l, rfl, rfl⟩
 
+/- English proof (translation)
+Take `⟨l, rfl, rfl⟩` from `a`. Take `⟨m, rfl, rfl⟩` from `b`. Conclude with `⟨l + m, map_add _ _ _, map_add _ _ _⟩`.
+-/
 theorem IsSpec.add {h₁ : IsGrpPullback G₁ G f₁ φ₁} {h₀ : IsGrpPullback G₀ G f₀ φ₀} {l₁ m₁ : Cochar G₁}
     {l₀ m₀ : Cochar G₀} (a : IsSpec h₁ h₀ l₁ l₀) (b : IsSpec h₁ h₀ m₁ m₀) :
     IsSpec h₁ h₀ (l₁ + m₁) (l₀ + m₀) := by
@@ -755,6 +1029,9 @@ theorem IsSpec.add {h₁ : IsGrpPullback G₁ G f₁ φ₁} {h₀ : IsGrpPullbac
   obtain ⟨m, rfl, rfl⟩ := b
   exact ⟨l + m, map_add _ _ _, map_add _ _ _⟩
 
+/- English proof (translation)
+Take `⟨l, rfl, rfl⟩` from `a`. Take `⟨m, e, rfl⟩` from `b`. Rewrite using `[hi e]`.
+-/
 theorem IsSpec.unique {h₁ : IsGrpPullback G₁ G f₁ φ₁} {h₀ : IsGrpPullback G₀ G f₀ φ₀}
     (hi : Function.Injective (Cochar.pull h₁)) {l₁ : Cochar G₁} {l₀ m₀ : Cochar G₀}
     (a : IsSpec h₁ h₀ l₁ l₀) (b : IsSpec h₁ h₀ l₁ m₀) : l₀ = m₀ := by
@@ -773,24 +1050,42 @@ def res (h₁ : IsGrpPullback G₁ G f₁ φ₁) (h₀ : IsGrpPullback G₀ G f�
 variable (h₁ : IsGrpPullback G₁ G f₁ φ₁) (h₀ : IsGrpPullback G₀ G f₀ φ₀)
   (hb : Function.Bijective (Cochar.pull h₁))
 
+/- English proof (translation)
+The claim follows from `congrArg (Cochar.pull h₀) ((AddEquiv.ofBijective _ hb).symm_apply_apply l)`.
+-/
 @[simp] theorem sp_pull (l : Cochar G) : sp h₁ h₀ hb (Cochar.pull h₁ l) = Cochar.pull h₀ l :=
   congrArg (Cochar.pull h₀) ((AddEquiv.ofBijective _ hb).symm_apply_apply l)
 
+/- English proof (translation)
+Take `⟨l, rfl⟩` from `hb.2 l₁`. Rewrite using `[sp_pull]`. Conclude with `⟨fun a => (isSpec_pull h₁ h₀ l).unique hb.1 a, fun e => e ▸ isSpec_pull h₁ h₀ l⟩`.
+-/
 theorem isSpec_iff (l₁ : Cochar G₁) (l₀ : Cochar G₀) : IsSpec h₁ h₀ l₁ l₀ ↔ sp h₁ h₀ hb l₁ = l₀ := by
   obtain ⟨l, rfl⟩ := hb.2 l₁
   rw [sp_pull]
   exact ⟨fun a => (isSpec_pull h₁ h₀ l).unique hb.1 a, fun e => e ▸ isSpec_pull h₁ h₀ l⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem res_apply (χ : Char G₀) (l : Cochar G₁) : res h₁ h₀ hb χ l = χ (sp h₁ h₀ hb l) := rfl
 
+/- English proof (translation)
+The claim follows from `AddMonoidHom.ext fun l => congrArg χ (sp_pull h₁ h₀ hb l)`.
+-/
 theorem pull_res (χ : Char G₀) : Char.pull h₁ (res h₁ h₀ hb χ) = Char.pull h₀ χ :=
   AddMonoidHom.ext fun l => congrArg χ (sp_pull h₁ h₀ hb l)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun e => e ▸ pull_res h₁ h₀ hb χ, fun e => (Char.pull_bijective hb).1 (e.trans (pull_res h₁ h₀ hb χ).symm)⟩`.
+-/
 theorem eq_res_iff (χ : Char G₀) (χ₁ : Char G₁) :
     χ₁ = res h₁ h₀ hb χ ↔ Char.pull h₁ χ₁ = Char.pull h₀ χ :=
   ⟨fun e => e ▸ pull_res h₁ h₀ hb χ,
     fun e => (Char.pull_bijective hb).1 (e.trans (pull_res h₁ h₀ hb χ).symm)⟩
 
+/- English proof (translation)
+Take `⟨l, rfl⟩` from `hb.2 l`. Rewrite using `[sp_pull, Cochar.pull_pull k₁ h₁ (h₁'.comp k) e₁ c₁, Cochar.pull_pull k₀ h₀ (h₀'.comp k) e₀ c₀, Cochar.pull_comp h₁' k, Cochar.pull_comp h₀' k, sp_pull]`.
+-/
 theorem sp_pull_comm {V' S₁' S₀' : Scheme.{0}} {G' : Over V'} [GrpObj G'] [IsCommMonObj G']
     {G₁' : Over S₁'} [GrpObj G₁'] [IsCommMonObj G₁'] {G₀' : Over S₀'} [GrpObj G₀'] [IsCommMonObj G₀']
     {f₁' : S₁' ⟶ V'} {f₀' : S₀' ⟶ V'} {φ₁' : G₁'.left ⟶ G'.left} {φ₀' : G₀'.left ⟶ G'.left}
@@ -805,6 +1100,9 @@ theorem sp_pull_comm {V' S₁' S₀' : Scheme.{0}} {G' : Over V'} [GrpObj G'] [I
   rw [sp_pull, Cochar.pull_pull k₁ h₁ (h₁'.comp k) e₁ c₁, Cochar.pull_pull k₀ h₀ (h₀'.comp k) e₀ c₀,
     Cochar.pull_comp h₁' k, Cochar.pull_comp h₀' k, sp_pull]
 
+/- English proof (translation)
+The claim follows from `AddMonoidHom.ext fun l => congrArg χ (sp_pull_comm h₁ h₀ hb h₁' h₀' hb' k k₁ k₀ e₁ e₀ c₁ c₀ l)`.
+-/
 theorem pull_res_comm {V' S₁' S₀' : Scheme.{0}} {G' : Over V'} [GrpObj G'] [IsCommMonObj G']
     {G₁' : Over S₁'} [GrpObj G₁'] [IsCommMonObj G₁'] {G₀' : Over S₀'} [GrpObj G₀'] [IsCommMonObj G₀']
     {f₁' : S₁' ⟶ V'} {f₀' : S₀' ⟶ V'} {φ₁' : G₁'.left ⟶ G'.left} {φ₀' : G₀'.left ⟶ G'.left}
@@ -818,6 +1116,9 @@ theorem pull_res_comm {V' S₁' S₀' : Scheme.{0}} {G' : Over V'} [GrpObj G'] [
   AddMonoidHom.ext fun l =>
     congrArg χ (sp_pull_comm h₁ h₀ hb h₁' h₀' hb' k k₁ k₀ e₁ e₀ c₁ c₀ l)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hi, fun l => by obtain ⟨m, rfl⟩ := hj l exact ⟨ofTorus j m, pull_ofTorus h₁ j m⟩⟩`.
+-/
 theorem pull_bijective_of_torus {Y : Type} [AddCommGroup Y] (j : splitTorus V Y ⟶ G) [IsMonHom j]
     (hj : Function.Surjective (ofTorus (pullTorus h₁ j))) (hi : Function.Injective (Cochar.pull h₁)) :
     Function.Bijective (Cochar.pull h₁) :=
@@ -825,6 +1126,9 @@ theorem pull_bijective_of_torus {Y : Type} [AddCommGroup Y] (j : splitTorus V Y 
     obtain ⟨m, rfl⟩ := hj l
     exact ⟨ofTorus j m, pull_ofTorus h₁ j m⟩⟩
 
+/- English proof (translation)
+The claim follows from `(eq_charEquivOfTorus_iff _ hj _ _).2 fun l => by have k : ofTorus (pullTorus h₀ j) l = ofTorus i (l.comp r) := Cochar.ext (by rw [ofTorus_val, ofTorus_val, e, torusCochar_comp, Category.assoc]) rw [res_apply, ← pull_ofTorus, sp_pull, pull_ofTorus, k, charEquivOfTorus_apply] rfl`.
+-/
 theorem res_charEquivOfTorus {X Y : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y] (j : splitTorus V Y ⟶ G) [IsMonHom j]
     (hj : Function.Bijective (ofTorus (pullTorus h₁ j))) (i : splitTorus S₀ X ⟶ G₀) [IsMonHom i]
@@ -853,6 +1157,9 @@ def CocharOf.sp (m₁ : SABMap t₁ t f₁) (m₀ : SABMap t₀ t f₀) (hb : Fu
     exact (sp_pull m₁.cart m₀.cart hb _).trans (((CocharOf.pull m₀).map_smul a l).trans
       (congrArg (fun z : CocharOf t₀ => a • z) (sp_pull m₁.cart m₀.cart hb l).symm))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CocharOf.sp_apply (m₁ : SABMap t₁ t f₁) (m₀ : SABMap t₀ t f₀)
     (hb : Function.Bijective (CocharOf.pull m₁)) (l : CocharOf t₁) :
     CocharOf.sp m₁ m₀ hb l = TorusPart.sp m₁.cart m₀.cart hb l := rfl
@@ -863,10 +1170,16 @@ def CharOf.res (m₁ : SABMap t₁ t f₁) (m₀ : SABMap t₀ t f₀) (hb : Fun
   map_add' := map_add (TorusPart.res m₁.cart m₀.cart hb)
   map_smul' a χ := CharOf.ext fun l => congrArg χ ((CocharOf.sp m₁ m₀ hb).map_smul (H.bar a) l).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem CharOf.res_apply (m₁ : SABMap t₁ t f₁) (m₀ : SABMap t₀ t f₀)
     (hb : Function.Bijective (CocharOf.pull m₁)) (χ : CharOf t₀) (l : CocharOf t₁) :
     CharOf.res m₁ m₀ hb χ l = χ (CocharOf.sp m₁ m₀ hb l) := rfl
 
+/- English proof (translation)
+The claim follows from `TorusPart.pull_res m₁.cart m₀.cart hb χ`.
+-/
 theorem CharOf.pull_res (m₁ : SABMap t₁ t f₁) (m₀ : SABMap t₀ t f₀)
     (hb : Function.Bijective (CocharOf.pull m₁)) (χ : CharOf t₀) :
     CharOf.pull m₁ (CharOf.res m₁ m₀ hb χ) = CharOf.pull m₀ χ :=
@@ -874,6 +1187,9 @@ theorem CharOf.pull_res (m₁ : SABMap t₁ t f₁) (m₀ : SABMap t₀ t f₀)
 
 end SpecTriple
 
+/- English proof (translation)
+Establish `e : (⟨𝟙 (Gm S), inferInstance⟩ : Cochar (Gm S)) = ofTorus (𝟙 _) (AddEquiv.ulift : ULift.{0} ℤ ≃+ ℤ).toAddMonoidHom` using `Cochar.ext ((Category.comp_id _).trans SplitTorus.torusMap_id).symm`. Conclude with `(congrArg _ e).trans (charEquivOfTorus_apply _ _ _ _)`.
+-/
 theorem charEquivSplitTorus_id [ConnectedSpace S] (n : ℤ) :
     charEquivSplitTorus S (ULift.{0} ℤ) (ULift.up n) ⟨𝟙 (Gm S), inferInstance⟩ = n := by
   have e : (⟨𝟙 (Gm S), inferInstance⟩ : Cochar (Gm S)) =
@@ -881,9 +1197,17 @@ theorem charEquivSplitTorus_id [ConnectedSpace S] (n : ℤ) :
     Cochar.ext ((Category.comp_id _).trans SplitTorus.torusMap_id).symm
   exact (congrArg _ e).trans (charEquivOfTorus_apply _ _ _ _)
 
+/- English proof (translation)
+The claim follows from `(charEquivSplitTorus S (ULift.{0} ℤ)).injective.nontrivial`.
+-/
 example [ConnectedSpace S] : Nontrivial (Char (Gm S)) :=
   (charEquivSplitTorus S (ULift.{0} ℤ)).injective.nontrivial
 
+/- English proof (translation)
+Establish `k : ∀ {T : Scheme.{0}} (f : T ⟶ V) (l : X →+ ℤ), Cochar.pull (SplitTorus.isGrpPullback_bcMap f X) (ofTorus (𝟙 _) l) = ofTorus (𝟙 _) l` using `fun f l => pull_ofTorus_of_left _ _ _ (by simp) l`. Establish `hb : Function.Bijective (Cochar.pull (SplitTorus.isGrpPullback_bcMap f₁ X))`. Use `(Function.Bijective.of_comp_iff _ ofTorus_id_bijective).1 ?_` and prove the remaining obligations. Rewrite using `[show Cochar.pull (SplitTorus.isGrpPullback_bcMap f₁ X) ∘ ofTorus (𝟙 _) = ofTorus (𝟙 _) from`. Use function extensionality and compare the values at `(k f₁)]`.
+
+Conclude with `ofTorus_id_bijective`. Use `⟨hb, fun x => (eq_charEquivOfTorus_iff _ ofTorus_id_bijective _ _).2 fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[res_apply, ← k f₁, sp_pull, k]`. Conclude with `charEquivOfTorus_apply _ _ _ _`.
+-/
 theorem res_splitTorus {V S₁ S₀ : Scheme.{0}} [ConnectedSpace V] [ConnectedSpace S₁] [ConnectedSpace S₀]
     (f₁ : S₁ ⟶ V) (f₀ : S₀ ⟶ V) (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] :
     ∃ hb : Function.Bijective (Cochar.pull (SplitTorus.isGrpPullback_bcMap f₁ X)), ∀ x : X,
@@ -901,6 +1225,15 @@ theorem res_splitTorus {V S₁ S₀ : Scheme.{0}} [ConnectedSpace V] [ConnectedS
   rw [res_apply, ← k f₁, sp_pull, k]
   exact charEquivOfTorus_apply _ _ _ _
 
+/- English proof (translation)
+Take `⟨⟨E, _, _, _, H, t, P, -, hn⟩, -⟩` from `Inhab.exists_unif_nontrivial_torus`. Take `⟨_, _, _, _, _, m₁, -⟩` from `sabPull Out.proved_CubePullSt (Out.jK (PowerSeries ℂ)) t`. Take `⟨_, _, _, _, _, m₀, -⟩` from `sabPull Out.proved_CubePullSt (spMap (PowerSeries.constantCoeff (R := ℂ))) t`. Establish `hρ : ∀ x ∈ Ideal.span {(PowerSeries.X : PowerSeries ℂ)}, PowerSeries.constantCoeff x = 0` using `fun x hx => PowerSeries.X_dvd_iff.1 (Ideal.mem_span_singleton.1 hx)`. Establish `h₀` using `(PELUnif.charEquivOfKer P hρ m₀).injective.nontrivial`.
+
+Establish `hp : IsProper ((Over.pullback (Out.jK (PowerSeries ℂ))).obj t.G).hom`. Use `P.A.isAb.proper` as an intermediate fact. Use `isIso_inv_left P.U.gen.symm` as an intermediate fact. Rewrite using `[← Over.w P.U.gen.symm.inv]`. Use `infer_instance`.
+
+Establish `h₁` using `subsingleton_cochar_of_isProper ((Over.pullback (Out.jK (PowerSeries ℂ))).obj t.G)`. Establish `triv : ∀ {T : Scheme.{0}} (u : SAB H T), Subsingleton (CocharOf u) → Subsingleton (CharOf u)` using `fun u _ => ⟨fun χ χ' => CharOf.ext fun l => by rw [Subsingleton.elim l 0, map_zero, map_zero]⟩`. Use `⟨E, _, _, _, H, t, _, _, m₁, m₀, h₀, ?_, h₁, triv _ h₁, ?_, fun l => ⟨0, h₁.elim _ _⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `c`. Conclude with `not_subsingleton_iff_nontrivial.2 h₀ (triv _ (not_nontrivial_iff_subsingleton.1 c))`.
+
+Take `⟨_, _⟩` from `ExtUnique.spec_fractionRing (PowerSeries ℂ) (FractionRing (PowerSeries ℂ))`. Use `t.semi.separated` as an intermediate fact. Conclude with `Cochar.pull_injective m₁.cart`.
+-/
 theorem exists_rank_drop : ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E) (H : Host E)
     (t : SAB H (Sp (PowerSeries ℂ))) (t₁ : SAB H (Sp (FractionRing (PowerSeries ℂ)))) (t₀ : SAB H (Sp ℂ))
     (m₁ : SABMap t₁ t (spMap (algebraMap _ _))) (_ : SABMap t₀ t (spMap PowerSeries.constantCoeff)),

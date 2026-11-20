@@ -7,11 +7,25 @@ namespace GlobalTheory.TamOne
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_locAlg_tmul (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)))
     (a : v.adicCompletionIntegers (maximalRealSubfield E)) :
     algebraMap (v.adicCompletionIntegers (maximalRealSubfield E)) (GlobalTheory.SelfDualGenus.LocAlg v) a =
       (a : Fv (maximalRealSubfield E) v) ⊗ₜ[maximalRealSubfield E] (1 : E) := rfl
 
+/- English proof (translation)
+Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `z hz`. Establish `h : (intLoc (maximalRealSubfield E) E v).toAddSubgroup ≤ (GlobalTheory.SelfDualGenus.locOrder v).toSubring.toAddSubgroup`. Express the relevant statement in the definitionally equal form `AddSubgroup.closure _ ≤ _`. Rewrite using `[AddSubgroup.closure_le]`.
+
+Introduce and unpack `_ ⟨a, ha, x, rfl⟩`. Establish `e : (a ⊗ₜ[maximalRealSubfield E] (x : E) : GlobalTheory.SelfDualGenus.LocAlg v) = algebraMap (v.adicCompletionIntegers (maximalRealSubfield E)) (GlobalTheory.SelfDualGenus.LocAlg v) ⟨a, ha⟩ * GlobalTheory.SelfDualGenus.locEmb v x`. Rewrite using `[GlobalTheory.SelfDualGenus.locEmb_apply, algebraMap_locAlg_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Express the relevant statement in the definitionally equal form `_ ∈ GlobalTheory.SelfDualGenus.locOrder v`. Rewrite using `[e]`.
+
+Conclude with `mul_mem (Subalgebra.algebraMap_mem _ _) (GlobalTheory.SelfDualGenus.locEmb_mem_locOrder v x)`. Conclude with `h hz`. Introduce `z hz`. Express the relevant statement in the definitionally equal form `z ∈ GlobalTheory.SelfDualGenus.locOrder v at hz`. Proceed by induction on `hz using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `tmul_mem_intLoc (one_mem _) a`. Consider the case `algebraMap a`. Rewrite using `[algebraMap_locAlg_tmul]`.
+
+Conclude with `tmul_mem_intLoc (F := maximalRealSubfield E) (E := E) (v := v) a.2 (1 : 𝓞 E)`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`.
+-/
 theorem coe_intLoc_eq_locOrder (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) :
     ((intLoc (maximalRealSubfield E) E v : Subring _) :
         Set (Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E)) =
@@ -44,6 +58,19 @@ theorem coe_intLoc_eq_locOrder (v : HeightOneSpectrum (𝓞 (maximalRealSubfield
     | add x y _ _ hx hy => exact add_mem hx hy
     | mul x y _ _ hx hy => exact mul_mem hx hy
 
+/- English proof (translation)
+Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `z hz`. Establish `hz' : z ∈ AddSubgroup.closure {y : Fin r → Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E | ∃ a ∈ v.adicCompletionIntegers (maximalRealSubfield E), ∃ x ∈ Λ, y = fun i => a ⊗ₜ[maximalRealSubfield E] x i}` using `hz`. Use `(AddSubgroup.closure_le (K := (GlobalTheory.SelfDualGenus.locLattice v Λ).toAddSubgroup)).2 ?_ hz'` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, x, hx, rfl⟩`.
+
+Establish `e : (fun i => a ⊗ₜ[maximalRealSubfield E] x i : Fin r → GlobalTheory.SelfDualGenus.LocAlg v) = (⟨a, ha⟩ : v.adicCompletionIntegers (maximalRealSubfield E)) • (fun i => GlobalTheory.SelfDualGenus.locEmb v (x i))`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, algebraMap_locAlg_tmul, GlobalTheory.SelfDualGenus.locEmb_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, hx, rfl⟩)`.
+
+Introduce `z hz`. Express the relevant statement in the definitionally equal form `z ∈ GlobalTheory.SelfDualGenus.locLattice v Λ at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`.
+
+Conclude with `AddSubgroup.subset_closure ⟨1, one_mem _, x, hx, rfl⟩`. Consider the case `zero => exact zero_mem (latLoc (maximalRealSubfield E) Λ v)`. Consider the case `add x y _ _ hx hy => exact (latLoc (maximalRealSubfield E) Λ v).add_mem hx hy`. Consider the case `smul c x _ hx`. Use `(latLoc (maximalRealSubfield E) Λ v).smul_mem (⟨(c : Fv (maximalRealSubfield E) v) ⊗ₜ[maximalRealSubfield E] ((1 : 𝓞 E) : E), tmul_mem_intLoc c.2 1⟩ : intLoc (maximalRealSubfield E) E v) hx` as an intermediate fact.
+
+Establish `e : c • x = (⟨(c : Fv (maximalRealSubfield E) v) ⊗ₜ[maximalRealSubfield E] ((1 : 𝓞 E) : E), tmul_mem_intLoc c.2 1⟩ : intLoc (maximalRealSubfield E) E v) • x`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, algebraMap_locAlg_tmul]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `this`.
+-/
 theorem coe_latLoc_eq_locLattice (Λ : Submodule (𝓞 E) (Fin r → E))
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) :
     ((latLoc (maximalRealSubfield E) Λ v : Submodule _ _) :
@@ -88,6 +115,13 @@ end GlobalTheory.TamOne
 
 open GlobalTheory.TamOne in
 
+/- English proof (translation)
+Introduce `E _ _ _ r G Λ hU hSD v`. Use `haveI : Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E) := hU`. Take `⟨hG, hd, hfg, hspan, hsd⟩` from `hSD`. Take `⟨h, h1, h2⟩` from `GlobalTheory.SelfDualGenus.exists_orthonormal_frame hG hd ⟨hfg, hspan⟩ (fun x => (hsd x).symm) v`. Use `⟨h, ?_, fun z => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `congrArg Matrix.transpose h1`. Rewrite `e` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one, ← Matrix.mul_assoc, ← Matrix.transpose_map]`. Conclude with `e`. Establish `hz` using `h2 z`. Rewrite using `[← SetLike.mem_coe, coe_latLoc_eq_locLattice]`.
+
+Use `hz.trans (forall_congr' fun i => ?_)` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe (x := (_ : GlobalTheory.SelfDualGenus.LocAlg v)) (p := GlobalTheory.SelfDualGenus.locOrder v), ← coe_intLoc_eq_locOrder, SetLike.mem_coe]`.
+-/
 theorem GlobalTheory.TamOne.exists_orthonormal_frame_latLoc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)), Unr E → SelfDualLat G Λ → ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), ∃ h : GL (Fin r) (Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E), Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Fv (maximalRealSubfield E) v) (cj E)) (h : Matrix (Fin r) (Fin r) (Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E)) * JR (F := maximalRealSubfield E) (Fv (maximalRealSubfield E) v) Gᵀ * (h : Matrix (Fin r) (Fin r) (Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E)) = 1 ∧ ∀ z : Fin r → Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E, z ∈ latLoc (maximalRealSubfield E) Λ v ↔ ∀ i, (((h⁻¹ : GL (Fin r) (Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E)) : Matrix (Fin r) (Fin r) (Fv (maximalRealSubfield E) v ⊗[maximalRealSubfield E] E)) *ᵥ z) i ∈ intLoc (maximalRealSubfield E) E v := by
   intro E _ _ _ r G Λ hU hSD v
   haveI : Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E) := hU

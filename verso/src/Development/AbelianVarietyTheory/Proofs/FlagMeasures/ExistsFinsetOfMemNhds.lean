@@ -11,6 +11,13 @@ namespace GlobalTheory.ThetaVacuumAE
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hc` using `(RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (𝓕 := cofinite)).continuous`. Establish `h` using `hc.tendsto (fun w => ⟨0, zero_mem (w.adicCompletionIntegers F)⟩) hN`. Establish `h'` using `mem_map.1 h`. Rewrite `h'` using `[nhds_pi, mem_pi']`. Take `⟨I, t, ht, hI⟩` from `h'`.
+
+Use `⟨I, fun α hα h0 => ?_⟩` and prove the remaining obligations. Establish `hm : (fun w => (⟨evalV F w α, hα w⟩ : (w.adicCompletionIntegers F : Set (w.adicCompletion F)))) ∈ Set.pi (I : Set (HeightOneSpectrum (𝓞 F))) t`. Introduce `w hw`. Use `mem_of_mem_nhds (ht w)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
+
+Conclude with `h0 w hw`. Conclude with `hI hm`.
+-/
 theorem exists_finset_of_mem_nhds {F : Type} [Field F] [NumberField F] {N : Set (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)} (hN : N ∈ 𝓝 0) :
     ∃ S : Finset (HeightOneSpectrum (𝓞 F)), ∀ α ∈ intAf F, (∀ v ∈ S, evalV F v α = 0) → α ∈ N := by
   have hc := (RestrictedProduct.isEmbedding_structureMap
@@ -29,9 +36,15 @@ theorem exists_finset_of_mem_nhds {F : Type} [Field F] [NumberField F] {N : Set 
     exact h0 w hw
   exact hI hm
 
+/- English proof (translation)
+The claim follows from `Submodule.FG.restrictScalars h`.
+-/
 theorem fg_int {E : Type} [Field E] [NumberField E] {M : Submodule (𝓞 E) E} (h : M.FG) : (M.restrictScalars ℤ).FG :=
   Submodule.FG.restrictScalars h
 
+/- English proof (translation)
+Set `P : Submodule (𝓞 D.host.E) D.host.E` to `⨆ i, V.L0.map ((V.frame.coord i).restrictScalars (𝓞 D.host.E))`. Establish `hP : P.FG` using `Submodule.fg_iSup _ fun i => V.standardTuple_isLattice.fg.map _`. Establish `hx : ∀ x ∈ L0c D V, ∀ i, x i ∈ P` using `fun x hx i => Submodule.mem_iSup_of_mem i ⟨_, hx, by simp [Finsupp.single_apply]⟩`. Set `c : D.host.E →ₗ[ℤ] D.host.E` to `(starRingEnd D.host.E).toAddMonoidHom.toIntLinearMap`. Use `⟨P.restrictScalars ℤ ⊔ (P.restrictScalars ℤ).map c, (fg_int hP).sup ((fg_int hP).map c), fun x h i => ⟨Submodule.mem_sup_left (hx x h i), Submodule.mem_sup_right ⟨x i, hx x h i, rfl⟩⟩⟩` and prove the remaining obligations.
+-/
 theorem exists_fg_coord {D : D7} (V : HSp D) :
     ∃ M : Submodule ℤ D.host.E, M.FG ∧ ∀ x ∈ L0c D V, ∀ i, x i ∈ M ∧ star (x i) ∈ M := by
   let P : Submodule (𝓞 D.host.E) D.host.E := ⨆ i, V.L0.map ((V.frame.coord i).restrictScalars (𝓞 D.host.E))
@@ -42,6 +55,9 @@ theorem exists_fg_coord {D : D7} (V : HSp D) :
   refine ⟨P.restrictScalars ℤ ⊔ (P.restrictScalars ℤ).map c, (fg_int hP).sup ((fg_int hP).map c), fun x h i =>
     ⟨Submodule.mem_sup_left (hx x h i), Submodule.mem_sup_right ⟨x i, hx x h i, rfl⟩⟩⟩
 
+/- English proof (translation)
+Establish `hp : Continuous fun β : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F => pairA D.host.F 0 β` using `continuous_const.prodMk continuous_id`. Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `h` using `hp.smul (continuous_const (y := ((1 : AF D.host.F) ⊗ₜ[D.host.F] e : AE D)))`. Use `h.congr fun α => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply', TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+-/
 theorem continuous_tmul (D : D7) (e : D.host.E) :
     Continuous fun α : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F => (pairA D.host.F 0 α ⊗ₜ[D.host.F] e : AE D) := by
   have hp : Continuous fun β : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F => pairA D.host.F 0 β := continuous_const.prodMk continuous_id

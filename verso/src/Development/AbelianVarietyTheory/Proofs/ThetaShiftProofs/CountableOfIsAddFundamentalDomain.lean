@@ -27,22 +27,44 @@ def cubeCoeff {ι : Type*} [Fintype ι] (ω : ι → W) (f : W → ℂ) (χ : W 
   ∫ t in Set.pi Set.univ (fun _ : ι => Set.Icc (0 : ℝ) 1),
     f (∑ i, t i • ω i) * eNeg χ (∑ i, t i • ω i)
 
+/- English proof (translation)
+Simplify using `only [eNeg, map_add, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eNeg_add (χ : W →ₗ[ℝ] ℝ) (a b : W) : eNeg χ (a + b) = eNeg χ a * eNeg χ b := by
   simp only [eNeg, map_add, ← Complex.exp_add]; congr 1; push_cast; ring
 
+/- English proof (translation)
+Simplify using `only [eNeg, LinearMap.add_apply, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eNeg_add_left (χ ψ : W →ₗ[ℝ] ℝ) (a : W) : eNeg (χ + ψ) a = eNeg χ a * eNeg ψ a := by
   simp only [eNeg, LinearMap.add_apply, ← Complex.exp_add]; congr 1; push_cast; ring
 
+/- English proof (translation)
+Simplify using `[eNeg]`.
+-/
 theorem eNeg_zero_left (a : W) : eNeg (0 : W →ₗ[ℝ] ℝ) a = 1 := by simp [eNeg]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eNeg_comp (χ : W →ₗ[ℝ] ℝ) (j : W₁ →ₗ[ℝ] W) (s : W₁) :
     eNeg (χ ∘ₗ j) s = eNeg χ (j s) := rfl
 
+/- English proof (translation)
+Establish `: -(2 * Real.pi * I) * (χ a : ℂ) = ((-(2 * Real.pi * χ a) : ℝ) : ℂ) * I` using `by push_cast; ring`. Rewrite using `[eNeg, this, Complex.norm_exp_ofReal_mul_I]`.
+-/
 theorem norm_eNeg (χ : W →ₗ[ℝ] ℝ) (a : W) : ‖eNeg χ a‖ = 1 := by
   have : -(2 * Real.pi * I) * (χ a : ℂ) = ((-(2 * Real.pi * χ a) : ℝ) : ℂ) * I := by
     push_cast; ring
   rw [eNeg, this, Complex.norm_exp_ofReal_mul_I]
 
+/- English proof (translation)
+Rewrite using `[eNeg, Complex.exp_eq_one_iff]`. Establish `h : (2 * Real.pi * I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Use `⟨-n, ?_⟩` and prove the remaining obligations.
+
+Establish `: (χ a : ℂ) = ((-n : ℤ) : ℝ)`. Apply `mul_left_cancel₀ h` to reduce the goal to its premises. Use `push_cast`. Take the linear combination `-hn`. Conclude with `this` after adjusting the coercions.
+
+Introduce and unpack `⟨k, hk⟩`. Conclude with `⟨-k, by rw [hk]; push_cast; ring⟩`.
+-/
 theorem eNeg_eq_one_iff (χ : W →ₗ[ℝ] ℝ) (a : W) : eNeg χ a = 1 ↔ ∃ k : ℤ, χ a = k := by
   rw [eNeg, Complex.exp_eq_one_iff]
   have h : (2 * Real.pi * I : ℂ) ≠ 0 := Complex.two_pi_I_ne_zero
@@ -57,9 +79,19 @@ theorem eNeg_eq_one_iff (χ : W →ₗ[ℝ] ℝ) (a : W) : eNeg χ a = 1 ↔ ∃
   · rintro ⟨k, hk⟩
     exact ⟨-k, by rw [hk]; push_cast; ring⟩
 
+/- English proof (translation)
+Rewrite using `[← eNeg_add_left, neg_add_cancel, eNeg_zero_left]`.
+-/
 theorem eNeg_neg_mul (χ : W →ₗ[ℝ] ℝ) (a : W) : eNeg (-χ) a * eNeg χ a = 1 := by
   rw [← eNeg_add_left, neg_add_cancel, eNeg_zero_left]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, χ a ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h (LinearMap.ext hc)`. Use `⟨(2 * χ a)⁻¹ • a, fun h1 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `(eNeg_eq_one_iff _ _).1 h1`. Establish `h2 : (2 * k : ℝ) = 1`. Rewrite using `[← hk, map_smul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `h3 : (2 * k : ℤ) = 1` using `by exact_mod_cast h2`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_eNeg_ne_one {χ : W →ₗ[ℝ] ℝ} (h : χ ≠ 0) : ∃ a, eNeg χ a ≠ 1 := by
   obtain ⟨a, ha⟩ : ∃ a, χ a ≠ 0 := by
     by_contra hc
@@ -72,11 +104,19 @@ theorem exists_eNeg_ne_one {χ : W →ₗ[ℝ] ℝ} (h : χ ≠ 0) : ∃ a, eNeg
   have h3 : (2 * k : ℤ) = 1 := by exact_mod_cast h2
   omega
 
+/- English proof (translation)
+Rewrite using `[coeff, setAverage_eq, Complex.real_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem coeff_eq [MeasurableSpace W] (μ : Measure W) (D : Set W) (f : W → ℂ) (χ : W →ₗ[ℝ] ℝ) :
     coeff μ D f χ =
       ((μ.real D : ℂ))⁻¹ * ∫ b in D, f b * cexp (-(2 * Real.pi * I) * (χ b : ℂ)) ∂μ := by
   rw [coeff, setAverage_eq, Complex.real_smul]; push_cast; rfl
 
+/- English proof (translation)
+Introduce `l hl`. Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `hf i`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => intro z`. Rewrite using `[← add_assoc, hy, hx]`. Consider the case `smul c x _ hx => exact Function.Periodic.zsmul (f := f) (c := x) hx c`.
+-/
 theorem periodic_span {ι : Type*} (ω : ι → W) {f : W → ℂ} (hf : ∀ i x, f (x + ω i) = f x) :
     ∀ l ∈ Submodule.span ℤ (Set.range ω), ∀ x, f (x + l) = f x := by
   intro l hl
@@ -86,6 +126,13 @@ theorem periodic_span {ι : Type*} (ω : ι → W) {f : W → ℂ} (hf : ∀ i x
   | add x y _ _ hx hy => intro z; rw [← add_assoc, hy, hx]
   | smul c x _ hx => exact Function.Periodic.zsmul (f := f) (c := x) hx c
 
+/- English proof (translation)
+Use `⟨fun h i => h _ (Submodule.subset_span ⟨i, rfl⟩), fun h l hl => ?_⟩` and prove the remaining obligations. Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `h i`. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by simp [ha, hb]⟩`. Consider the case `smul c x _ hx`.
+
+Take `⟨a, ha⟩` from `hx`. Conclude with `⟨c * a, by simp [ha]⟩`.
+-/
 theorem integral_span_iff {ι : Type*} (ω : ι → W) (χ : W →ₗ[ℝ] ℝ) :
     (∀ l ∈ Submodule.span ℤ (Set.range ω), ∃ k : ℤ, χ l = k) ↔ ∀ i, ∃ k : ℤ, χ (ω i) = k := by
   refine ⟨fun h i => h _ (Submodule.subset_span ⟨i, rfl⟩), fun h l hl => ?_⟩
@@ -106,11 +153,19 @@ section Domain
 variable {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
   [MeasurableSpace W] [BorelSpace W] {μ : Measure W} [μ.IsAddHaarMeasure]
 
+/- English proof (translation)
+Use `χ.continuous_of_finiteDimensional` as an intermediate fact. Unfold `eNeg`. Use `fun_prop`.
+-/
 theorem continuous_eNeg (χ : W →ₗ[ℝ] ℝ) : Continuous (eNeg χ) := by
   have := χ.continuous_of_finiteDimensional
   unfold eNeg
   fun_prop
 
+/- English proof (translation)
+Establish `h` using `Measure.countable_meas_pos_of_disjoint_iUnion₀ (μ := μ) (As := fun g : Γ => g +ᵥ D) (fun g => hD.nullMeasurableSet_vadd g) hD.aedisjoint`. Establish `: {g : Γ | 0 < μ (g +ᵥ D)} = Set.univ`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_univ, iff_true, measure_vadd]`. Conclude with `pos_iff_ne_zero.2 h0`.
+
+Rewrite `h` using `[this]`. Conclude with `Set.countable_univ_iff.1 h`.
+-/
 theorem countable_of_isAddFundamentalDomain {Γ : AddSubgroup W} {D : Set W}
     (hD : IsAddFundamentalDomain Γ D μ) (h0 : μ D ≠ 0) : Countable Γ := by
   have h := Measure.countable_meas_pos_of_disjoint_iUnion₀ (μ := μ)
@@ -122,6 +177,11 @@ theorem countable_of_isAddFundamentalDomain {Γ : AddSubgroup W} {D : Set W}
   rw [this] at h
   exact Set.countable_univ_iff.1 h
 
+/- English proof (translation)
+Establish `h1` using `hD.setIntegral_eq (hD.vadd_of_comm a) (f := g) fun l x => by`. Use `hg l l.2 x` as an intermediate fact. Rewrite `this` using `[add_comm]`. Conclude with `this`. Rewrite using `[h1]`.
+
+Establish `h2` using `(measurePreserving_vadd a μ).setIntegral_image_emb (measurableEmbedding_const_vadd a) g D`. Rewrite using `[show a +ᵥ D = (fun x => a +ᵥ x) '' D from rfl, h2]`. Simplify using `only [vadd_eq_add, add_comm]`.
+-/
 theorem setIntegral_add_right {Γ : AddSubgroup W} [Countable Γ] {D : Set W}
     (hD : IsAddFundamentalDomain Γ D μ) {g : W → ℂ} (hg : ∀ l ∈ Γ, ∀ x, g (x + l) = g x)
     (a : W) : ∫ x in D, g (x + a) ∂μ = ∫ x in D, g x ∂μ := by
@@ -135,6 +195,9 @@ theorem setIntegral_add_right {Γ : AddSubgroup W} [Countable Γ] {D : Set W}
   rw [show a +ᵥ D = (fun x => a +ᵥ x) '' D from rfl, h2]
   simp only [vadd_eq_add, add_comm]
 
+/- English proof (translation)
+Simplify using `only [coeff, setAverage_eq, Measure.real, hD.measure_eq hD']`. Use `congr 1`. Use `hD.setIntegral_eq hD' fun l x => ?_` and prove the remaining obligations. Establish `: l +ᵥ x = x + l` using `add_comm _ _`. Rewrite using `[this, hf l l.2, eNeg_add, (eNeg_eq_one_iff _ _).2 (hχ l l.2), mul_one]`.
+-/
 theorem coeff_congr_domain {Γ : AddSubgroup W} [Countable Γ] {D D' : Set W}
     (hD : IsAddFundamentalDomain Γ D μ) (hD' : IsAddFundamentalDomain Γ D' μ) {f : W → ℂ}
     (hf : ∀ l ∈ Γ, ∀ x, f (x + l) = f x) {χ : W →ₗ[ℝ] ℝ} (hχ : ∀ l ∈ Γ, ∃ k : ℤ, χ l = k) :
@@ -145,6 +208,11 @@ theorem coeff_congr_domain {Γ : AddSubgroup W} [Countable Γ] {D D' : Set W}
   have : l +ᵥ x = x + l := add_comm _ _
   rw [this, hf l l.2, eNeg_add, (eNeg_eq_one_iff _ _).2 (hχ l l.2), mul_one]
 
+/- English proof (translation)
+Simplify using `only [coeff, setAverage_eq]`. Rewrite using `[mul_smul_comm, ← setIntegral_add_right hD (g := fun b => f b * eNeg χ b) ?_ a, ← integral_const_mul]`. Use `congr 2`. Use extensionality with `x`. Rewrite using `[eNeg_add]`.
+
+Take the linear combination `(-(f (x + a) * eNeg χ x)) * eNeg_neg_mul χ a`. Introduce `l hl x`. Rewrite using `[hf l hl, eNeg_add, (eNeg_eq_one_iff _ _).2 (hχ l hl), mul_one]`.
+-/
 theorem coeff_translate {Γ : AddSubgroup W} [Countable Γ] {D : Set W}
     (hD : IsAddFundamentalDomain Γ D μ) {f : W → ℂ}
     (hf : ∀ l ∈ Γ, ∀ x, f (x + l) = f x) {χ : W →ₗ[ℝ] ℝ} (hχ : ∀ l ∈ Γ, ∃ k : ℤ, χ l = k)
@@ -159,6 +227,11 @@ theorem coeff_translate {Γ : AddSubgroup W} [Countable Γ] {D : Set W}
   · intro l hl x
     rw [hf l hl, eNeg_add, (eNeg_eq_one_iff _ _).2 (hχ l hl), mul_one]
 
+/- English proof (translation)
+Establish `h` using `coeff_translate hD hf hχ a`. Simplify using `only [ha] at h`. Establish `h1 : eNeg χ a ≠ 1` using `fun h => hχa ((eNeg_eq_one_iff _ _).1 h)`. Establish `h2 : (eNeg χ a - 1) * coeff μ D f χ = 0`. Establish `h3` using `eNeg_neg_mul χ a`.
+
+Express the relevant statement in the definitionally equal form `coeff μ D f χ = _ at h`. Take the linear combination `(eNeg χ a) * h + (coeff μ D f χ) * h3`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 h1)`.
+-/
 theorem coeff_eq_zero_of_period {Γ : AddSubgroup W} [Countable Γ] {D : Set W}
     (hD : IsAddFundamentalDomain Γ D μ) {f : W → ℂ}
     (hf : ∀ l ∈ Γ, ∀ x, f (x + l) = f x) {χ : W →ₗ[ℝ] ℝ} (hχ : ∀ l ∈ Γ, ∃ k : ℤ, χ l = k)
@@ -172,6 +245,9 @@ theorem coeff_eq_zero_of_period {Γ : AddSubgroup W} [Countable Γ] {D : Set W}
     linear_combination (eNeg χ a) * h + (coeff μ D f χ) * h3
   exact (mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 h1)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_eNeg_ne_one h0`. Conclude with `coeff_eq_zero_of_period hD (fun _ _ _ => rfl) hχ (a := a) (fun _ => rfl) fun h => ha ((eNeg_eq_one_iff _ _).2 h)`.
+-/
 theorem coeff_one_of_ne_zero {Γ : AddSubgroup W} [Countable Γ] {D : Set W}
     (hD : IsAddFundamentalDomain Γ D μ) {χ : W →ₗ[ℝ] ℝ} (hχ : ∀ l ∈ Γ, ∃ k : ℤ, χ l = k)
     (h0 : χ ≠ 0) : coeff μ D (fun _ => 1) χ = 0 := by
@@ -179,6 +255,9 @@ theorem coeff_one_of_ne_zero {Γ : AddSubgroup W} [Countable Γ] {D : Set W}
   exact coeff_eq_zero_of_period hD (fun _ _ _ => rfl) hχ (a := a) (fun _ => rfl)
     fun h => ha ((eNeg_eq_one_iff _ _).2 h)
 
+/- English proof (translation)
+Simplify using `only [coeff, eNeg_zero_left, mul_one]`. Conclude with `setAverage_const h0 h1 1`.
+-/
 theorem coeff_one_zero {D : Set W} (h0 : μ D ≠ 0) (h1 : μ D ≠ ⊤) :
     coeff μ D (fun _ => 1) 0 = 1 := by
   simp only [coeff, eNeg_zero_left, mul_one]
@@ -192,17 +271,28 @@ variable {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimension
   [MeasurableSpace W] [BorelSpace W] {μ : Measure W} [μ.IsAddHaarMeasure]
 
 omit [MeasurableSpace W] [BorelSpace W] in
+/- English proof (translation)
+The claim follows from `inferInstanceAs (Countable L)`.
+-/
 theorem countable_toAddSubgroup (L : Submodule ℤ W) [DiscreteTopology L] [IsZLattice ℝ L] :
     Countable L.toAddSubgroup := inferInstanceAs (Countable L)
 
 omit [MeasurableSpace W] [BorelSpace W] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, (Module.finBasis ℤ L).ofZLatticeBasis ℝ L, Basis.ofZLatticeBasis_span ℝ L _⟩`.
+-/
 theorem exists_basis (L : Submodule ℤ W) [DiscreteTopology L] [IsZLattice ℝ L] :
     ∃ (n : ℕ) (ω : Basis (Fin n) ℝ W), Submodule.span ℤ (Set.range ω) = L :=
   ⟨_, (Module.finBasis ℤ L).ofZLatticeBasis ℝ L, Basis.ofZLatticeBasis_span ℝ L _⟩
 
 omit [MeasurableSpace W] [BorelSpace W] in
 
+/- English proof (translation)
+Take `⟨n, ω, rfl⟩` from `exists_basis L`. Take `⟨C, hC⟩` from `(ZSpan.fundamentalDomain_isBounded ω).isCompact_closure.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `hC _ (subset_closure (ZSpan.fract_mem_fundamentalDomain ω x))`. Rewrite `h` using `[← hf _ (ZSpan.floor ω x).2, ZSpan.fract, sub_add_cancel]`.
+
+Conclude with `h`.
+-/
 theorem exists_bound (L : Submodule ℤ W) [DiscreteTopology L] [IsZLattice ℝ L] {f : W → ℂ}
     (hc : Continuous f) (hf : ∀ l ∈ L, ∀ x, f (x + l) = f x) : ∃ C, ∀ x, ‖f x‖ ≤ C := by
   obtain ⟨n, ω, rfl⟩ := exists_basis L
@@ -213,6 +303,9 @@ theorem exists_bound (L : Submodule ℤ W) [DiscreteTopology L] [IsZLattice ℝ 
   rw [← hf _ (ZSpan.floor ω x).2, ZSpan.fract, sub_add_cancel] at h
   exact h
 
+/- English proof (translation)
+Take `⟨n, ω, rfl⟩` from `exists_basis L`. Use `haveI := countable_toAddSubgroup (Submodule.span ℤ (Set.range ω))`. Establish `h : μ D = μ (ZSpan.fundamentalDomain ω)` using `IsAddFundamentalDomain.measure_eq (G := (Submodule.span ℤ (Set.range ω)).toAddSubgroup) hD (ZSpan.isAddFundamentalDomain' ω μ)`. Rewrite using `[h]`. Conclude with `⟨ZSpan.measure_fundamentalDomain_ne_zero ω, (ZSpan.fundamentalDomain_isBounded ω).measure_lt_top.ne⟩`.
+-/
 theorem measure_ne_zero_ne_top (L : Submodule ℤ W) [DiscreteTopology L] [IsZLattice ℝ L]
     {D : Set W} (hD : IsAddFundamentalDomain L D μ) : μ D ≠ 0 ∧ μ D ≠ ⊤ := by
   obtain ⟨n, ω, rfl⟩ := exists_basis L
@@ -224,6 +317,17 @@ theorem measure_ne_zero_ne_top (L : Submodule ℤ W) [DiscreteTopology L] [IsZLa
   exact ⟨ZSpan.measure_fundamentalDomain_ne_zero ω,
     (ZSpan.fundamentalDomain_isBounded ω).measure_lt_top.ne⟩
 
+/- English proof (translation)
+Use `haveI := countable_toAddSubgroup (Submodule.span ℤ (Set.range ω))`. Rewrite using `[coeff_congr_domain (Γ := (Submodule.span ℤ (Set.range ω)).toAddSubgroup) hD (ZSpan.isAddFundamentalDomain' ω μ) hf hχ]`. Use `set φ : (ι → ℝ) ≃L[ℝ] W := ω.equivFunL.symm with hφ`. Establish `hφa : ∀ t, φ t = ∑ i, t i • ω i` using `fun t => ω.equivFun_symm_apply t`. Use `set μ' : Measure W := (volume : Measure (ι → ℝ)).map φ with hμ'`.
+
+Use `haveI : μ'.IsAddHaarMeasure := φ.isAddHaarMeasure_map _`. Establish `hpre : φ ⁻¹' ZSpan.fundamentalDomain ω = Set.pi Set.univ fun _ => Set.Ico (0 : ℝ) 1`. Use extensionality with `t`. Establish `: ∀ i, ω.repr (φ t) i = t i` using `fun i => congrFun (ω.equivFun.apply_symm_apply t) i`. Simplify using `[ZSpan.mem_fundamentalDomain, this]`.
+
+Establish `hemb : MeasurableEmbedding φ` using `φ.toHomeomorph.measurableEmbedding`. Establish `h1 : μ' (ZSpan.fundamentalDomain ω) = 1`. Rewrite using `[hμ', hemb.map_apply, hpre, Real.volume_pi_Ico]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ g : W → ℂ, ∫ x in ZSpan.fundamentalDomain ω, g x ∂μ' = ∫ t in Set.pi Set.univ (fun _ : ι => Set.Icc (0 : ℝ) 1), g (φ t)` using `fun g => by`.
+
+Rewrite using `[hμ', hemb.setIntegral_map, hpre]`. Conclude with `setIntegral_congr_set (Measure.pi_Ico_ae_eq_pi_Icc (μ := fun _ => volume))`. Establish `h3 : μ = Measure.addHaarScalarFactor μ μ' • μ'` using `Measure.isAddLeftInvariant_eq_smul μ μ'`. Establish `h4 : Measure.addHaarScalarFactor μ μ' ≠ 0` using `(Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure μ μ').ne'`. Generalize the expression as in `Measure.addHaarScalarFactor μ μ' = c at h3 h4`.
+
+Rewrite using `[coeff, setAverage_eq, h3, Measure.restrict_smul, integral_smul_nnreal_measure, h2, Measure.real, Measure.smul_apply, h1, cubeCoeff]`. Simplify using `only [hφa]`. Rewrite using `[NNReal.smul_def, smul_smul]`. Simplify using `[h4]`.
+-/
 theorem coeff_eq_cubeCoeff {ι : Type*} [Fintype ι] (ω : Basis ι ℝ W) {D : Set W}
     (hD : IsAddFundamentalDomain (Submodule.span ℤ (Set.range ω)) D μ) {f : W → ℂ}
     (hf : ∀ l ∈ Submodule.span ℤ (Set.range ω), ∀ x, f (x + l) = f x) {χ : W →ₗ[ℝ] ℝ}
@@ -258,6 +362,19 @@ theorem coeff_eq_cubeCoeff {ι : Type*} [Fintype ι] (ω : Basis ι ℝ W) {D : 
   rw [NNReal.smul_def, smul_smul]
   simp [h4]
 
+/- English proof (translation)
+Use `⟨fun h χ _ => by simp [h, coeff], fun h => ?_⟩` and prove the remaining obligations. Take `⟨n, ω, rfl⟩` from `exists_basis L`. Establish `key` using `ReciprocityTheory.ChartRestriction.G.I2.tof_torus_unique (fun t : Fin n → ℝ => f (∑ i, t i • ω i)) (hc.comp (by fun_prop)) (fun x m => by`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Use `hf _ (Submodule.sum_mem _ fun i _ => ?_) _` and prove the remaining obligations.
+
+Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)) (fun m => by`. Use `set χ : W →ₗ[ℝ] ℝ := ∑ i, (m i : ℝ) • ω.coord i with hχd`. Establish `hχω : ∀ i, χ (ω i) = m i` using `fun i => by`. Simplify using `[hχd, Finsupp.single_apply]`.
+
+Establish `hχ` using `(integral_span_iff ω χ).2 fun i => ⟨_, hχω i⟩`. Establish `h1` using `h χ hχ`. Rewrite `h1` using `[coeff_eq_cubeCoeff ω hD hf hχ, cubeCoeff]`. Rewrite using `[← h1]`. Establish `: {x : Fin n → ℝ | ∀ i, x i ∈ Set.Ioc (0 : ℝ) 1} = Set.univ.pi fun _ => Set.Ioc 0 1` using `by ext; simp`.
+
+Rewrite using `[this]`. Use `(setIntegral_congr_set (Measure.pi_Ioc_ae_eq_pi_Icc (μ := fun _ => volume))).trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `t`. Rewrite using `[mul_comm, eNeg]`.
+
+Use `congr 2`. Simplify using `only [map_sum, map_smul, hχω, smul_eq_mul]`. Use `push_cast`. Simplify using `only [mul_comm (m _ : ℂ), neg_mul])`. Use extensionality with `x`.
+
+Use `key (ω.repr x)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem eq_zero_iff (L : Submodule ℤ W) [DiscreteTopology L] [IsZLattice ℝ L] {D : Set W}
     (hD : IsAddFundamentalDomain L D μ) {f : W → ℂ} (hc : Continuous f)
     (hf : ∀ l ∈ L, ∀ x, f (x + l) = f x) :
@@ -303,6 +420,11 @@ variable {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimension
 
 omit [FiniteDimensional ℝ W] [MeasurableSpace W] [BorelSpace W] [μ₁.IsAddHaarMeasure] in
 
+/- English proof (translation)
+Establish `hj` using `j.continuous_of_finiteDimensional`. Establish `hν` using `continuous_eNeg ν`. Use `haveI : IsFiniteMeasure (μ₁.restrict D₁) := isFiniteMeasure_restrict.2 h1`. Unfold `partialCoeff coeff`. Simplify using `only [setAverage_eq]`.
+
+Use `Continuous.const_smul ?_ _` and prove the remaining obligations. Use `continuous_of_dominated (bound := fun _ => C) (fun b => ?_) (fun b => ?_) (integrable_const C) ?_` and prove the remaining obligations. Conclude with `Continuous.aestronglyMeasurable (by fun_prop)`. Conclude with `Filter.Eventually.of_forall fun s => by rw [norm_mul, norm_eNeg, mul_one]; exact hC _`. Conclude with `Filter.Eventually.of_forall fun s => by fun_prop`.
+-/
 theorem continuous_partialCoeff {D₁ : Set W₁} (h1 : μ₁ D₁ ≠ ⊤) (j : W₁ →ₗ[ℝ] W) {f : W → ℂ}
     (hc : Continuous f) {C : ℝ} (hC : ∀ x, ‖f x‖ ≤ C) (ν : W₁ →ₗ[ℝ] ℝ) :
     Continuous (partialCoeff μ₁ D₁ j f ν) := by
@@ -321,6 +443,9 @@ theorem continuous_partialCoeff {D₁ : Set W₁} (h1 : μ₁ D₁ ≠ ⊤) (j :
 omit [FiniteDimensional ℝ W] [MeasurableSpace W] [BorelSpace W] [μ₁.IsAddHaarMeasure]
   [FiniteDimensional ℝ W₁] [BorelSpace W₁] in
 
+/- English proof (translation)
+Unfold `partialCoeff`. Use `congr 1`. Use extensionality with `s`. Rewrite using `[add_right_comm, hl]`.
+-/
 theorem partialCoeff_add_period (D₁ : Set W₁) (j : W₁ →ₗ[ℝ] W) {f : W → ℂ} (ν : W₁ →ₗ[ℝ] ℝ)
     {l : W} (hl : ∀ x, f (x + l) = f x) (b : W) :
     partialCoeff μ₁ D₁ j f ν (b + l) = partialCoeff μ₁ D₁ j f ν b := by
@@ -329,6 +454,19 @@ theorem partialCoeff_add_period (D₁ : Set W₁) (j : W₁ →ₗ[ℝ] W) {f : 
   ext s
   rw [add_right_comm, hl]
 
+/- English proof (translation)
+Use `haveI := countable_toAddSubgroup L`. Take `⟨C, hC⟩` from `exists_bound L hc hf`. Establish `hj` using `j.continuous_of_finiteDimensional`. Establish `hν` using `continuous_eNeg ν`. Establish `hχc` using `continuous_eNeg χ`.
+
+Use `haveI : IsFiniteMeasure (μ₁.restrict D₁) := isFiniteMeasure_restrict.2 h1`. Use `haveI : IsFiniteMeasure (μ.restrict D) := isFiniteMeasure_restrict.2 (measure_ne_zero_ne_top L hD).2`. Establish `hint : Integrable (Function.uncurry fun (b : W) (s : W₁) => f (b + j s) * eNeg ν s * eNeg χ b) ((μ.restrict D).prod (μ₁.restrict D₁))`. Use `Integrable.of_bound (Continuous.aestronglyMeasurable ?_) C (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Unfold `Function.uncurry`.
+
+Use `fun_prop`. Simplify using `only [Function.uncurry, norm_mul, norm_eNeg, mul_one]`. Conclude with `hC _`. Establish `hs : ∀ s, (μ.real D)⁻¹ • ∫ b in D, f (b + j s) * eNeg ν s * eNeg χ b ∂μ = eNeg (ν - χ ∘ₗ j) s * coeff μ D f χ` using `fun s => by`. Use `coeff_translate (Γ := L.toAddSubgroup) hD hf hχ (j s)` as an intermediate fact.
+
+Rewrite using `[sub_eq_add_neg, eNeg_add_left, mul_assoc, ← LinearMap.neg_comp, eNeg_comp, ← this, coeff, setAverage_eq, mul_smul_comm, ← integral_const_mul]`. Use `congr 2`. Use extensionality with `b`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [partialCoeff, coeff, setAverage_eq, integral_mul_const, smul_mul_assoc]`. Use `_ = (μ₁.real D₁)⁻¹ • ∫ s in D₁, (μ.real D)⁻¹ • ∫ b in D, f (b + j s) * eNeg ν s * eNeg χ b ∂μ ∂μ₁ := by`. Rewrite using `[integral_smul, integral_smul, integral_integral_swap hint, smul_comm]`. Use `_ = _ := by`. Simplify using `only [hs, integral_mul_const]`.
+
+Simplify using `only [coeff, setAverage_eq, one_mul, smul_mul_assoc]`.
+-/
 theorem coeff_partialCoeff_eq_mul (L : Submodule ℤ W) [DiscreteTopology L] [IsZLattice ℝ L]
     {D : Set W} (hD : IsAddFundamentalDomain L D μ) {D₁ : Set W₁} (h1 : μ₁ D₁ ≠ ⊤)
     (j : W₁ →ₗ[ℝ] W) {f : W → ℂ} (hc : Continuous f) (hf : ∀ l ∈ L, ∀ x, f (x + l) = f x)
@@ -370,6 +508,13 @@ theorem coeff_partialCoeff_eq_mul (L : Submodule ℤ W) [DiscreteTopology L] [Is
 
 open Classical in
 
+/- English proof (translation)
+Use `haveI := countable_toAddSubgroup L`. Use `haveI := countable_of_isAddFundamentalDomain hD₁ h0`. Rewrite using `[coeff_partialCoeff_eq_mul L hD h1 j hc hf ν hχ]`. Use `split_ifs with h`. Rewrite using `[h, sub_self, coeff_one_zero h0 h1, one_mul]`.
+
+Distinguish the cases in `hi : ∀ l ∈ L₁, ∃ k : ℤ, χ (j l) = k`. Rewrite using `[coeff_one_of_ne_zero hD₁ ?_ (sub_ne_zero.2 (Ne.symm h)), zero_mul]`. Introduce `l hl`. Take `⟨a, ha⟩` from `hν l hl`. Take `⟨b, hb⟩` from `hi l hl`.
+
+Conclude with `⟨a - b, by simp [ha, hb]⟩`. Use `push Not at hi`. Take `⟨l, hl, hk⟩` from `hi`. Rewrite using `[coeff_eq_zero_of_period (Γ := L.toAddSubgroup) hD hf hχ (hf₁ l hl) (fun ⟨k, h⟩ => hk k h), mul_zero]`.
+-/
 theorem coeff_partialCoeff (L : Submodule ℤ W) [DiscreteTopology L] [IsZLattice ℝ L]
     {D : Set W} (hD : IsAddFundamentalDomain L D μ) {L₁ : AddSubgroup W₁} {D₁ : Set W₁}
     (hD₁ : IsAddFundamentalDomain L₁ D₁ μ₁) (h0 : μ₁ D₁ ≠ 0) (h1 : μ₁ D₁ ≠ ⊤)
@@ -394,6 +539,9 @@ theorem coeff_partialCoeff (L : Submodule ℤ W) [DiscreteTopology L] [IsZLattic
       rw [coeff_eq_zero_of_period (Γ := L.toAddSubgroup) hD hf hχ (hf₁ l hl)
         (fun ⟨k, h⟩ => hk k h), mul_zero]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `exists_bound L hc hf`. Rewrite using `[eq_zero_iff L hD (continuous_partialCoeff h1 j hc hC ν) fun l hl x => partialCoeff_add_period D₁ j ν (hf l hl) x]`. Use `forall_congr' fun χ => forall_congr' fun hχ => ?_` and prove the remaining obligations. Rewrite using `[coeff_partialCoeff L hD hD₁ h0 h1 j hc hf hf₁ hν hχ]`. Apply the tactic sequence `by_cases h : χ ∘ₗ j = ν <;> simp [h]`.
+-/
 theorem partialCoeff_eq_zero_iff (L : Submodule ℤ W) [DiscreteTopology L] [IsZLattice ℝ L]
     {D : Set W} (hD : IsAddFundamentalDomain L D μ) {L₁ : AddSubgroup W₁} {D₁ : Set W₁}
     (hD₁ : IsAddFundamentalDomain L₁ D₁ μ₁) (h0 : μ₁ D₁ ≠ 0) (h1 : μ₁ D₁ ≠ ⊤)
@@ -411,6 +559,11 @@ theorem partialCoeff_eq_zero_iff (L : Submodule ℤ W) [DiscreteTopology L] [IsZ
 
 open Classical in
 
+/- English proof (translation)
+Use `haveI := countable_toAddSubgroup L`. Take `⟨C, hC⟩` from `exists_bound L hc hf`. Use `⟨fun ν hν => ⟨continuous_partialCoeff h1 j hc hC ν, fun l hl b => partialCoeff_add_period D₁ j ν (hf l hl) b, fun χ hχ => coeff_partialCoeff L hD hD₁ h0 h1 j hc hf hf₁ hν hχ, partialCoeff_eq_zero_iff L hD hD₁ h0 h1 j hc hf hf₁ hν⟩, fun χ hχ hi => ?_, eq_zero_iff L hD hc hf⟩` and prove the remaining obligations. Use `push Not at hi`. Take `⟨l, hl, hk⟩` from `hi`.
+
+Conclude with `coeff_eq_zero_of_period (Γ := L.toAddSubgroup) hD hf hχ (hf₁ l hl) fun ⟨k, h⟩ => hk k h`.
+-/
 theorem partialCoeff_spec_map (L : Submodule ℤ W) [DiscreteTopology L] [IsZLattice ℝ L]
     {D : Set W} (hD : IsAddFundamentalDomain L D μ) {L₁ : AddSubgroup W₁} {D₁ : Set W₁}
     (hD₁ : IsAddFundamentalDomain L₁ D₁ μ₁) (h0 : μ₁ D₁ ≠ 0) (h1 : μ₁ D₁ ≠ ⊤)
@@ -440,6 +593,13 @@ theorem partialCoeff_spec_map (L : Submodule ℤ W) [DiscreteTopology L] [IsZLat
 omit [MeasurableSpace W] [BorelSpace W] in
 open Classical in
 
+/- English proof (translation)
+Use `borelize W`. Establish `hD` using `ZSpan.isAddFundamentalDomain ω (Measure.addHaar : Measure W)`. Establish `hf'` using `periodic_span ω hf`. Take `⟨H₁, H₂, H₃⟩` from `partialCoeff_spec_map _ hD hD₁ h0 h1 j hc hf' hf₁`. Establish `e : ∀ χ : W →ₗ[ℝ] ℝ, (∀ i, ∃ k : ℤ, χ (ω i) = k) → coeff Measure.addHaar (ZSpan.fundamentalDomain ω) f χ = cubeCoeff ω f χ` using `fun χ hχ => coeff_eq_cubeCoeff ω hD hf' ((integral_span_iff ω χ).2 hχ)`.
+
+Simplify using `only [integral_span_iff] at H₁ H₂ H₃`. Use `⟨fun ν hν => ?_, fun χ hχ hi => e χ hχ ▸ H₂ χ hχ hi, ?_⟩` and prove the remaining obligations. Take `⟨a, b, c, d⟩` from `H₁ ν hν`. Use `⟨a, fun i => b _ (Submodule.subset_span ⟨i, rfl⟩), fun χ hχ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e χ hχ, ← c χ hχ, coeff_eq_cubeCoeff ω hD b ((integral_span_iff ω χ).2 hχ)]`.
+
+Rewrite using `[d]`. Conclude with `forall_congr' fun χ => forall_congr' fun hχ => by rw [e χ hχ]`. Rewrite using `[H₃]`. Conclude with `forall_congr' fun χ => forall_congr' fun hχ => by rw [e χ hχ]`.
+-/
 theorem partialCoeff_spec_cube {ι : Type*} [Fintype ι] (ω : Basis ι ℝ W)
     {L₁ : AddSubgroup W₁} {D₁ : Set W₁}
     (hD₁ : IsAddFundamentalDomain L₁ D₁ μ₁) (h0 : μ₁ D₁ ≠ 0) (h1 : μ₁ D₁ ≠ ⊤)

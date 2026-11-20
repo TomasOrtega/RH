@@ -20,6 +20,11 @@ section Ord
 
 variable {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X]
 
+/- English proof (translation)
+Distinguish the cases in `hz : Order.coheight z = 1`. Take `⟨a, rfl⟩` from `hf`. Establish `ha : a ≠ 0` using `fun h => h0 (by rw [h, map_zero])`. Rewrite using `[ord_algebraMap hz ha]`. Conclude with `Nat.cast_nonneg _`.
+
+Conclude with `(Scheme.ord_eq_zero_of_coheight_neq_one hz _).ge`.
+-/
 theorem ord_nonneg_of_regAt {f : X.functionField} {z : X} (hf : RegAt z f) (h0 : f ≠ 0) :
     0 ≤ Scheme.ord f z := by
   by_cases hz : Order.coheight z = 1
@@ -29,6 +34,11 @@ theorem ord_nonneg_of_regAt {f : X.functionField} {z : X} (hf : RegAt z f) (h0 :
     exact Nat.cast_nonneg _
   · exact (Scheme.ord_eq_zero_of_coheight_neq_one hz _).ge
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using (unitAt_one z).ord_eq_zero`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Scheme.ord_mul (pow_ne_zero _ h0) h0, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ord_pow' {f : X.functionField} (h0 : f ≠ 0) (z : X) (n : ℕ) :
     Scheme.ord (f ^ n) z = n * Scheme.ord f z := by
   induction n with
@@ -38,12 +48,18 @@ theorem ord_pow' {f : X.functionField} (h0 : f ≠ 0) (z : X) (n : ℕ) :
     push_cast
     ring
 
+/- English proof (translation)
+Establish `e` using `Scheme.ord_mul (x := z) h0 (inv_ne_zero h0)`. Rewrite `e` using `[mul_inv_cancel₀ h0, (unitAt_one z).ord_eq_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ord_inv' {f : X.functionField} (h0 : f ≠ 0) (z : X) :
     Scheme.ord f⁻¹ z = -Scheme.ord f z := by
   have e := Scheme.ord_mul (x := z) h0 (inv_ne_zero h0)
   rw [mul_inv_cancel₀ h0, (unitAt_one z).ord_eq_zero] at e
   linarith
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (unitAt_one z).ord_eq_zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, Scheme.ord_mul (h0 a (Finset.mem_insert_self a s)) (Finset.prod_ne_zero_iff.2 fun i hi => h0 i (Finset.mem_insert_of_mem hi)), ih fun i hi => h0 i (Finset.mem_insert_of_mem hi)]`.
+-/
 theorem ord_prod' {ι : Type} [DecidableEq ι] (s : Finset ι) (g : ι → X.functionField)
     (h0 : ∀ i ∈ s, g i ≠ 0) (z : X) :
     Scheme.ord (∏ i ∈ s, g i) z = ∑ i ∈ s, Scheme.ord (g i) z := by
@@ -57,24 +73,45 @@ theorem ord_prod' {ι : Type} [DecidableEq ι] (s : Finset ι) (g : ι → X.fun
 
 end Ord
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨N, map_natCast _ N⟩`.
+-/
 theorem regAt_natCast {Z : Scheme.{0}} [IsIntegral Z] (x : Z) (N : ℕ) : RegAt x (N : Z.functionField) :=
   ⟨N, map_natCast _ N⟩
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap (Z.presheaf.stalk (below y)) Z.functionField), Res.valAt_algebraMap, map_natCast]`.
+-/
 theorem valAt_natCast {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z) (N : ℕ) :
     TrueGeo.valAt y (N : Z.functionField) = N := by
   rw [← map_natCast (algebraMap (Z.presheaf.stalk (below y)) Z.functionField), Res.valAt_algebraMap, map_natCast]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, map_mul, ih]`.
+-/
 theorem abv_prod' {K : Type} [Field K] (w : AbsoluteValue K ℝ) (s : Finset ℕ) (f : ℕ → K) :
     w (∏ i ∈ s, f i) = ∏ i ∈ s, w (f i) := by
   induction s using Finset.induction_on with
   | empty => simp
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, map_mul, ih]
 
+/- English proof (translation)
+The claim follows from `((fnOf (⊤ : X.Opens) (TopologicalSpace.Opens.mem_top _)).charZero_iff (fnOf_injective ⊤ (TopologicalSpace.Opens.mem_top _))).1 h.charZero`.
+-/
 theorem charZero_fn {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
     (h : IsArithVar p D) : CharZero X.functionField :=
   ((fnOf (⊤ : X.Opens) (TopologicalSpace.Opens.mem_top _)).charZero_iff
     (fnOf_injective ⊤ (TopologicalSpace.Opens.mem_top _))).1 h.charZero
 
+/- English proof (translation)
+Establish `hneg : ∀ l ∈ S, Real.log (W l) ≤ 0` using `fun l hl => Real.log_nonpos (hW l hl).1.le (hW l hl).2`. Establish `hterm : ∀ l ∈ S, (m l : ℝ) * Real.log (W l) ≤ 0` using `fun l hl => mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg _) (hneg l hl)`. Use `split_ifs at hlg with h0`. Establish `h1 : ∑ l ∈ S, (m l : ℝ) * Real.log (W l) ≤ m l₀ * Real.log (W l₀)`. Use `Finset.single_le_sum (f := fun l => -((m l : ℝ) * Real.log (W l))) (fun l hl => neg_nonneg.2 (hterm l hl)) h0` as an intermediate fact.
+
+Rewrite `this` using `[Finset.sum_neg_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (m l₀ : ℝ) * Real.log (W l₀) ≤ n * a l₀ * Real.log (W l₀)` using `mul_le_mul_of_nonpos_right (hm l₀ h0) (hneg l₀ h0)`. Establish `h3 : (n : ℝ) * |lg| ≤ n * (a l₀ * -Real.log (W l₀))` using `mul_le_mul_of_nonneg_left hlg (Nat.cast_nonneg n)`. Establish `h4 : (n : ℝ) * (a l₀ * -Real.log (W l₀)) = -(n * a l₀ * Real.log (W l₀))` using `by ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hlg` using `[zero_mul]`. Establish `h1 : ∑ l ∈ S, (m l : ℝ) * Real.log (W l) ≤ 0` using `Finset.sum_nonpos hterm`. Establish `h2 : |lg| = 0` using `le_antisymm hlg (abs_nonneg _)`. Rewrite using `[h2, mul_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_log_add_le (S : Finset ℕ) (a : ℕ → ℝ) (m : ℕ → ℕ) (n : ℕ) (W : ℕ → ℝ)
     (hW : ∀ l ∈ S, 0 < W l ∧ W l ≤ 1) (l₀ : ℕ) (lg : ℝ) (hm : ∀ l ∈ S, n * a l ≤ m l)
     (hlg : |lg| ≤ (if l₀ ∈ S then a l₀ else 0) * -Real.log (W l₀)) :
@@ -100,6 +137,9 @@ theorem sum_log_add_le (S : Finset ℕ) (a : ℕ → ℝ) (m : ℕ → ℕ) (n :
     rw [h2, mul_zero]
     linarith
 
+/- English proof (translation)
+The claim follows from `|x| ≤ A := by by_contra hc push_neg at hc have hd : 0 < |x| - A := sub_pos.2 hc obtain ⟨n, hn⟩ := exists_nat_gt (B / (|x| - A)) have hn0 : 0 < n := Nat.cast_pos.1 ((div_nonneg hB hd.le).trans_lt hn) have h1 := h n hn0 rw [div_lt_iff₀ hd] at hn nlinarith`.
+-/
 theorem abs_le_of_forall_nat {x A B : ℝ} (hB : 0 ≤ B) (h : ∀ n : ℕ, 0 < n → n * |x| ≤ n * A + B) :
     |x| ≤ A := by
   by_contra hc
@@ -113,6 +153,53 @@ theorem abs_le_of_forall_nat {x A B : ℝ} (hB : 0 ≤ B) (h : ∀ n : ℕ, 0 < 
 
 open GlobalTheory.CoverNorm.Isom in
 
+/- English proof (translation)
+Introduce `F _ _ Y V _ M lg ⟨r, hr, hu, hc, hf⟩ S a hS hlg`. Use `haveI := CoverHt.isPreimmersion_j V`. Establish `hη` using `j_gen_specializes V`. Set `ρ : V.X.functionField ≃+* V.G.functionField` to `RingEquiv.ofBijective (SmallSec.fnMap V.j hη) ⟨(SmallSec.fnMap V.j hη).injective, SmallSec.fnMap_surjective V.j hη⟩`. Establish `hρ : ∀ (U : V.X.Opens) (hU : genericPoint V.X ∈ U) (hU' : genericPoint V.G ∈ V.j ⁻¹ᵁ U) (s : Γ(V.X, U)), ρ (fnOf U hU s) = fnOf (V.j ⁻¹ᵁ U) hU' (V.j.app U s)` using `fun U hU hU' s => SmallSec.fnMap_fnOf V.j hη hU hU' s`.
+
+Establish `hj : V.j (genericPoint V.G) = genericPoint V.X` using `(hη.antisymm (genericPoint_specializes _)).eq`. Establish `hv : ∀ {K : Type} [Field K] (y : Sp K ⟶ V.G) (g : V.X.functionField), TrueGeo.valAt (y ≫ V.j) g = TrueGeo.valAt y (ρ g)` using `fun y g => ModelFn.valAt_comp V.j hη y g`. Establish `hR` using `InducedIsom.isRatSec_lift V.j ρ hρ hj M.B hr`. Establish `hu' : ∀ i, ∀ x ∈ (M.B.pull V.j).U i, UnitAt x (r i : V.G.functionField)` using `fun i x hx => by`. Simplify using `using hu i x hx`.
+
+Establish `eρ : ∀ i, ρ ((Units.map ρ.symm.toMonoidHom (r fun _ => i) : V.X.functionFieldˣ) : V.X.functionField) = (r fun _ => i : V.G.functionField)` using `fun i => ρ.apply_symm_apply _`. Use `haveI := charZero_fn V.ar`. Use `⟨_, hR, fun τ y _ => ?_, fun z => ?_⟩` and prove the remaining obligations. Take `⟨σ, rfl, z, hz⟩` from `cxPts_from_generic_fibre V τ y`. Rewrite using `[logNorm]`.
+
+Establish `hyj` using `CxPts.mem_pick (M.φ (σ.comp (algebraMap (𝓞 F) F))).isLB y`. Generalize the expression as in `CxPts.pick (M.φ (σ.comp (algebraMap (𝓞 F) F))).isLB y = j at hyj ⊢`. Set `y₀ : Pts Y σ` to `⟨z.1 ≫ V.π, by rw [Category.assoc]; exact z.2⟩`. Establish `hun : under y = V.j (under z)`. Express the relevant statement in the definitionally equal form `y.1 _ = _`.
+
+Rewrite using `[hz]`. Both sides reduce to the same expression. Establish `m₁ : under z ∈ (M.B.pull V.j).U fun _ => j` using `Set.mem_iInter.2 fun _ => by`. Express the relevant statement in the definitionally equal form `V.j (under z) ∈ M.B.U j`. Rewrite using `[← hun]`.
+
+Conclude with `CxPts.mem_ptsIn.1 hyj`. Establish `H` using `hc σ z y₀ y (fun _ => j) rfl hz m₁`. Establish `hq : ratVal ((Units.map ρ.symm.toMonoidHom (r fun _ => j) : V.X.functionFieldˣ) : V.X.functionField) y = ratVal (r fun _ => j : V.G.functionField) z`. Rewrite using `[ModelFn.ratVal_eq, ModelFn.ratVal_eq, hz, hv, eρ]`. Simplify using `only [map_one, one_mul] at H`.
+
+Rewrite using `[hq]`. Use `first`. Consider the case `linarith`. Consider the case `(beta_reduce at H; linarith)`. Take `⟨i, hi⟩` from `exists_chart M.isLB z`.
+
+Establish `he` using `(presents_divOfRatSec M.isLB hR).isEqn i z hi`. Establish `hmult` using `he.mult_eq`. Generalize the expression as in `hg : ((Units.map ρ.symm.toMonoidHom (r fun _ => i) : V.X.functionFieldˣ) : V.X.functionField) = g at hmult`. Establish `eρi : ρ g = (r fun _ => i : V.G.functionField)` using `hg ▸ eρ i`. Establish `hg0 : g ≠ 0` using `hg ▸ Units.ne_zero _`.
+
+Establish `hl0 : ∀ l ∈ S, (l : V.X.functionField) ≠ 0` using `fun l hl => Nat.cast_ne_zero.2 (hS l hl).1.ne_zero`. Establish `hstep : ∀ u : V.X.functionField, (u = g ∨ u = g⁻¹) → ∀ (n : ℕ) (m : ℕ → ℕ), (∀ l ∈ S, (n : ℝ) * a l ≤ m l) → RegAt z (((∏ l ∈ S, l ^ m l : ℕ) : V.X.functionField) * u ^ n)`. Introduce `u hu0 n m hm`. Use `GlobalTheory.Mean4O.Cover.RegCrit.regAt_of_integral_values F Y V (M.B.U i) _ (fun v e z' yt hz' e₂ hU => ?_) z hi` and prove the remaining obligations. Set `y : AlgPt Y` to `⟨z' ≫ V.π, by rw [Category.assoc]; exact hz'⟩`.
+
+Establish `h₁ : ⊤ ≤ yt ⁻¹ᵁ M.B.U ((fun _ => i : (M.B.pull V.j).ι) PUnit.unit)` using `hU`. Establish `hpt : (z' ≫ V.j) (IsLocalRing.closedPoint _) ∈ M.B.U i`. Rewrite using `[← e₂]`. Conclude with `hU (Set.mem_univ _)`. Establish `m₁ : below z' ∈ (M.B.pull V.j).U (fun _ => i)` using `Set.mem_iInter.2 fun _ => hpt`.
+
+Establish `hw` using `hu' _ _ m₁`. Establish `H` using `hf v e y z' yt (fun _ => i) rfl e₂ h₁`. Simplify using `only [map_one, one_mul] at H`. Establish `hρu : UnitAt (below z') (ρ u) ∧ |Real.log (e.w (TrueGeo.valAt z' (ρ u)))| = |lg v e y|`. Break down `hu0 with rfl | rfl` into its components or cases.
+
+Conclude with `⟨by rw [eρi]; exact hw, by rw [eρi, H]⟩`. Use `⟨by rw [map_inv₀, eρi]; exact hw.inv, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, eρi, LineNorm.Neg.valAt_inv hw, map_inv₀, Real.log_inv, abs_neg, H]`. Rewrite using `[hv, map_mul, map_pow, map_natCast, SmallSec.valAt_mul (regAt_natCast _ _) (Res.regAt_pow hρu.1.regAt n), Res.valAt_pow hρu.1.regAt, valAt_natCast, map_mul, AbsoluteValue.map_pow]`. Establish `eN : e.w ((∏ l ∈ S, l ^ m l : ℕ) : AlgebraicClosure F) = ∏ l ∈ S, e.w (l : AlgebraicClosure F) ^ m l`.
+
+Rewrite using `[Nat.cast_prod, abv_prod']`. Simplify using `only [Nat.cast_pow, AbsoluteValue.map_pow]`. Rewrite using `[eN]`. Establish `hWS : ∀ l ∈ S, 0 < e.w (l : AlgebraicClosure F) ∧ e.w (l : AlgebraicClosure F) ≤ 1`. Introduce `l hl`.
+
+Establish `e₁ : e.w (l : AlgebraicClosure F) = NumberField.HeightOneSpectrum.adicAbv F v (l : F)`. Rewrite using `[← e.w_alg, map_natCast (algebraMap F (AlgebraicClosure F))]`. Establish `hl' : (l : F) ≠ 0` using `Nat.cast_ne_zero.2 (hS l hl).1.ne_zero`. Rewrite using `[e₁]`. Conclude with `⟨AbsoluteValue.pos _ hl', NumberField.HeightOneSpectrum.adicAbv_natCast_le_one F v l⟩`.
+
+Establish `ht : 0 < e.w (TrueGeo.valAt z' (ρ u))` using `e.w.pos (Res.valAt_ne_zero hρu.1)`. Establish `hsum` using `sum_log_add_le S a m n (fun l => e.w (l : AlgebraicClosure F)) hWS (resP v) (lg v e y) hm (hlg v e y)`. Establish `hP : 0 < ∏ l ∈ S, e.w (l : AlgebraicClosure F) ^ m l` using `Finset.prod_pos fun l hl => pow_pos (hWS l hl).1 _`. Establish `hlog : Real.log ((∏ l ∈ S, e.w (l : AlgebraicClosure F) ^ m l) * e.w (TrueGeo.valAt z' (ρ u)) ^ n) ≤ 0`. Rewrite using `[Real.log_mul hP.ne' (pow_pos ht n).ne', Real.log_prod (fun l hl => (pow_pos (hWS l hl).1 _).ne'), Real.log_pow]`.
+
+Simplify using `only [Real.log_pow]`. Establish `h5` using `le_abs_self (Real.log (e.w (TrueGeo.valAt z' (ρ u))))`. Rewrite `h5` using `[hρu.2]`. Establish `h6` using `mul_le_mul_of_nonneg_left h5 (Nat.cast_nonneg n : (0 : ℝ) ≤ n)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Assume the negation of the conclusion as `hgt`. Use `push_neg at hgt`. Conclude with `absurd hlog (not_le.2 (Real.log_pos hgt))`. Establish `hN0 : ∀ m : ℕ → ℕ, (((∏ l ∈ S, l ^ m l : ℕ)) : V.X.functionField) ≠ 0` using `fun m => by`. Rewrite using `[Nat.cast_prod]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun l hl => by rw [Nat.cast_pow]; exact pow_ne_zero _ (hl0 l hl)`. Establish `hordN : ∀ m : ℕ → ℕ, Scheme.ord (((∏ l ∈ S, l ^ m l : ℕ)) : V.X.functionField) z = ∑ l ∈ S, (m l : ℤ) * Scheme.ord (l : V.X.functionField) z`. Introduce `m`. Rewrite using `[Nat.cast_prod, ord_prod' _ _ (fun l hl => by rw [Nat.cast_pow]; exact pow_ne_zero _ (hl0 l hl)) z]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_pow, ord_pow' (hl0 l hl)]`. Establish `ho : ∀ l ∈ S, (0 : ℝ) ≤ Scheme.ord (l : V.X.functionField) z` using `fun l hl => by`. Conclude with `ord_nonneg_of_regAt (regAt_natCast z l) (hl0 l hl)` after adjusting the coercions. Establish `hbound : ∀ n : ℕ, 0 < n → (n : ℝ) * |(Scheme.ord g z : ℝ)| ≤ n * ∑ l ∈ S, a l * (Scheme.ord (l : V.X.functionField) z : ℝ) + ∑ l ∈ S, (Scheme.ord (l : V.X.functionField) z : ℝ)`. Introduce `n _`.
+
+Set `m : ℕ → ℕ` to `fun l => ⌈(n : ℝ) * a l⌉₊`. Establish `hm : ∀ l ∈ S, (n : ℝ) * a l ≤ m l` using `fun l _ => Nat.le_ceil _`. Establish `h₁` using `ord_nonneg_of_regAt (hstep g (Or.inl rfl) n m hm) (mul_ne_zero (hN0 m) (pow_ne_zero _ hg0))`. Establish `h₂` using `ord_nonneg_of_regAt (hstep g⁻¹ (Or.inr rfl) n m hm) (mul_ne_zero (hN0 m) (pow_ne_zero _ (inv_ne_zero hg0)))`. Rewrite `h₁` using `[Scheme.ord_mul (hN0 m) (pow_ne_zero _ hg0), hordN, ord_pow' hg0]`.
+
+Rewrite `h₂` using `[Scheme.ord_mul (hN0 m) (pow_ne_zero _ (inv_ne_zero hg0)), hordN, ord_pow' (inv_ne_zero hg0), ord_inv' hg0]`. Establish `hsum : (∑ l ∈ S, (m l : ℝ) * (Scheme.ord (l : V.X.functionField) z : ℝ)) ≤ n * ∑ l ∈ S, a l * (Scheme.ord (l : V.X.functionField) z : ℝ) + ∑ l ∈ S, (Scheme.ord (l : V.X.functionField) z : ℝ)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun l hl => ?_` and prove the remaining obligations. Establish `hcl : (m l : ℝ) ≤ n * a l + 1` using `(Nat.ceil_lt_add_one (mul_nonneg (Nat.cast_nonneg n) (hS l hl).2)).le`.
+
+Use polynomial arithmetic with `[ho l hl]`. Establish `h₁' : (0 : ℝ) ≤ ∑ l ∈ S, (m l : ℝ) * (Scheme.ord (l : V.X.functionField) z : ℝ) + n * (Scheme.ord g z : ℝ)` using `by exact_mod_cast h₁`. Establish `h₂' : (0 : ℝ) ≤ ∑ l ∈ S, (m l : ℝ) * (Scheme.ord (l : V.X.functionField) z : ℝ) + n * (-(Scheme.ord g z : ℝ))` using `by exact_mod_cast h₂`. Establish `habs : |(n : ℝ) * (Scheme.ord g z : ℝ)| ≤ ∑ l ∈ S, (m l : ℝ) * (Scheme.ord (l : V.X.functionField) z : ℝ)` using `abs_le.2 ⟨by linarith, by linarith⟩`. Rewrite `habs` using `[abs_mul, abs_of_nonneg (Nat.cast_nonneg n)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hmult]`. Conclude with `abs_le_of_forall_nat (Finset.sum_nonneg ho) hbound`.
+-/
 theorem exists_ratSec_orders_le : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) [IsLocallyNoetherian V.X] (M : HermLB V.p) (lg : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ), Norms V M (fun _ => 1) (fun _ _ => 0) lg → ∀ (S : Finset ℕ) (a : ℕ → ℝ), (∀ l ∈ S, l.Prime ∧ 0 ≤ a l) → (∀ (v : HeightOneSpectrum (𝓞 F)) (e : TrueGeo.Ext v) (y : AlgPt Y), |lg v e y| ≤ (if resP v ∈ S then a (resP v) else 0) * (-Real.log (e.w (resP v : AlgebraicClosure F)))) → ∃ (r : M.B.ι → V.X.functionFieldˣ) (hr : IsRatSec M.B r), (∀ σ, ∀ y ∈ offSupp V.p σ (M.div hr), logNorm (M.φ σ) r y = 0) ∧ ∀ z, |((M.div hr).mult z : ℝ)| ≤ ∑ l ∈ S, a l * (Scheme.ord ((l : V.X.functionField)) z : ℝ) := by
   intro F _ _ Y V _ M lg ⟨r, hr, hu, hc, hf⟩ S a hS hlg
   haveI := CoverHt.isPreimmersion_j V

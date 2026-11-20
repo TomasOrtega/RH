@@ -14,6 +14,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.FockVacuum
 
+/- English proof (translation)
+Introduce `h`. Set `l : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] ℂ` to `MvPolynomial.lcoeff ℂ 0`. Set `m : MultilinearMap ℂ (fun _ : ι => Formalism.BasicNotions.TH.Pol P Q R S) ℂ` to `(MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap (fun _ => l)`. Establish `h1` using `congrArg (PiTensorProduct.lift m) h`. Rewrite `h1` using `[PiTensorProduct.lift.tprod, map_zero]`.
+
+Simplify using `[m, l] at h1`.
+-/
 theorem tprod_one_ne_zero (ι : Type) [Fintype ι] (P Q R S : ℕ) :
     (PiTensorProduct.tprod ℂ (fun _ : ι => (1 : Formalism.BasicNotions.TH.Pol P Q R S))) ≠ 0 := by
   intro h
@@ -24,6 +29,9 @@ theorem tprod_one_ne_zero (ι : Type) [Fintype ι] (P Q R S : ℕ) :
   rw [PiTensorProduct.lift.tprod, map_zero] at h1
   simp [m, l] at h1
 
+/- English proof (translation)
+Introduce `r _ x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Model.heisLine, Darboux.rho, schr]`. Conclude with `hasDerivAt_const _ _`.
+-/
 theorem actsD_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (u : Matrix (Fin n) (Fin d) (AE F E)) :
     ActsD (evI F) (M.heisLine ψ u) (⇑(0 : SInf F (Fin n × Fin d))) (⇑(0 : SInf F (Fin n × Fin d))) := by
@@ -31,6 +39,17 @@ theorem actsD_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Model.heisLine, Darboux.rho, schr]
   exact hasDerivAt_const _ _
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d r s r' s' X W M hB hX hW hD hL`. Use `choose A hA hAθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists _ _ _ _ _ (hX.sig w) (hX.cartan w)`. Use `choose C hC hCθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists _ _ _ _ _ (hW.sig w) (hW.cartan w)`. Establish `fr : GlobalTheory.RealLift.Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C`. Use `⟨one_mul _, fun w => ?_, fun w => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[incM_map_piInf_emb, one_smul]`. Conclude with `hA w`. Rewrite using `[incM_map_piInf_emb]`. Conclude with `hC w`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hD F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hB.cm hB.std fr`.
+
+Establish `hr` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws hL hD (GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hD) F E σ n d _ _ _ _ X W M B.ψ B.emb A C Φ hB.cm hB.std fr hAθ hCθ hΦ`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hbot : M.Pol B.ψ B.emb = ⊥`. Use `eq_bot_iff.2 (sInf_le ⟨fun f₀ hf₀ => ?_, fun u _ f hf f₁ hf₁ => ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mem_bot]`. Assume the negation of the conclusion as `h`. Conclude with `hno f₀ h hf₀`. Rewrite `hf`, the goal using `[Submodule.mem_bot]`. Substitute `hf` using the available equality.
+
+Conclude with `(hL F _ 0 f₁ 0).2.2.1 _ hf₁ (actsD_zero M B.ψ u)`. Establish `hmem : Φ (PiTensorProduct.tprod ℂ fun _ => 1) ∈ M.Pol B.ψ B.emb` using `hr ▸ LinearMap.mem_range_self Φ _`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Conclude with `tprod_one_ne_zero _ _ _ _ _ (hΦ.1 (hmem.trans (map_zero Φ).symm))`.
+-/
 theorem exists_ne_zero_isGauss : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d r s r' s' : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W), B.IsGood σ → X.IsHerm σ B r s →
     W.IsSkew σ B r' s' → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.ActsLaws →

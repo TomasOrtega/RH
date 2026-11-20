@@ -48,12 +48,24 @@ def dup (φ : Matrix (Fin n) (Fin g) ℚ → ℂ) : Matrix (Fin 2) (Fin n × Fin
 def blk (n : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ) : Matrix (Fin n × Fin g) (Fin n × Fin g) ℂ :=
   Matrix.of fun p q => if p.1 = q.1 then τ p.2 q.2 else 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, one_pow 1⟩`.
+-/
 theorem isMu_one : IsMu 1 := ⟨1, one_pos, one_pow 1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, by simp⟩`.
+-/
 theorem ph_zero : Ph 0 := ⟨1, one_pos, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨4, by norm_num, by simp [Complex.I_pow_four]⟩`.
+-/
 theorem ph_I : Ph I := ⟨4, by norm_num, by simp [Complex.I_pow_four]⟩
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `ha`. Take `⟨k, hk, h'⟩` from `hb`. Use `⟨m * k, Nat.mul_pos hm hk, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem IsMu.mul {a b : ℂ} (ha : IsMu a) (hb : IsMu b) : IsMu (a * b) := by
   obtain ⟨m, hm, h⟩ := ha
   obtain ⟨k, hk, h'⟩ := hb
@@ -61,20 +73,34 @@ theorem IsMu.mul {a b : ℂ} (ha : IsMu a) (hb : IsMu b) : IsMu (a * b) := by
   calc (a * b) ^ (m * k) = (a ^ m) ^ k * (b ^ k) ^ m := by ring
     _ = 1 := by rw [h, h', one_pow, one_pow, one_mul]
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `ha`. Conclude with `⟨m, hm, by rw [inv_pow, h, inv_one]⟩`.
+-/
 theorem IsMu.inv {a : ℂ} (ha : IsMu a) : IsMu a⁻¹ := by
   obtain ⟨m, hm, h⟩ := ha
   exact ⟨m, hm, by rw [inv_pow, h, inv_one]⟩
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `ha`. Establish `h1 : ‖a‖ ^ m = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg a) hm.ne').1 h1`.
+-/
 theorem IsMu.norm_eq_one {a : ℂ} (ha : IsMu a) : ‖a‖ = 1 := by
   obtain ⟨m, hm, h⟩ := ha
   have h1 : ‖a‖ ^ m = 1 := by rw [← norm_pow, h, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg a) hm.ne').1 h1
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `ha`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[IsMu.norm_eq_one ⟨m, hm, h⟩, Complex.ofReal_one, one_pow, h]`.
+-/
 theorem IsMu.ph {a : ℂ} (ha : IsMu a) : Ph a := by
   obtain ⟨m, hm, h⟩ := ha
   refine ⟨m, hm, ?_⟩
   rw [IsMu.norm_eq_one ⟨m, hm, h⟩, Complex.ofReal_one, one_pow, h]
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `ha`. Take `⟨k, hk, h'⟩` from `hb`. Use `⟨m * k, Nat.mul_pos hm hk, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, h', norm_mul, Complex.ofReal_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Ph.mul {a b : ℂ} (ha : Ph a) (hb : Ph b) : Ph (a * b) := by
   obtain ⟨m, hm, h⟩ := ha
   obtain ⟨k, hk, h'⟩ := hb
@@ -84,6 +110,9 @@ theorem Ph.mul {a b : ℂ} (ha : Ph a) (hb : Ph b) : Ph (a * b) := by
       rw [h, h', norm_mul, Complex.ofReal_mul]
       ring
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `ha`. Conclude with `⟨m, hm, by rw [inv_pow, h, norm_inv, Complex.ofReal_inv, inv_pow]⟩`.
+-/
 theorem Ph.inv {a : ℂ} (ha : Ph a) : Ph a⁻¹ := by
   obtain ⟨m, hm, h⟩ := ha
   exact ⟨m, hm, by rw [inv_pow, h, norm_inv, Complex.ofReal_inv, inv_pow]⟩
@@ -92,6 +121,9 @@ def intPairs (κ ι : Type) : AddSubgroup (Matrix κ ι ℚ × Matrix κ ι ℚ)
   (AddMonoidHom.prodMap (Int.castAddHom ℚ).mapMatrix (Int.castAddHom ℚ).mapMatrix :
     Matrix κ ι ℤ × Matrix κ ι ℤ →+ Matrix κ ι ℚ × Matrix κ ι ℚ).range
 
+/- English proof (translation)
+Use `choose A hA using ha`. Use `choose B hB using hb`. Use `⟨∑ k, ∑ i, A k i * B k i, ?_⟩` and prove the remaining obligations. Simplify using `[dotProduct, hA, hB]`.
+-/
 theorem pair_int {a b : Matrix κ ι ℚ} (ha : ∀ k i, ∃ z : ℤ, a k i = z) (hb : ∀ k i, ∃ z : ℤ, b k i = z) :
     ∃ z : ℤ, (∑ k, a k ⬝ᵥ b k : ℚ) = z := by
   choose A hA using ha
@@ -101,6 +133,11 @@ theorem pair_int {a b : Matrix κ ι ℚ} (ha : ∀ k i, ∃ z : ℤ, a k i = z)
 
 omit [Fintype κ] [Fintype ι] in
 
+/- English proof (translation)
+Unfold `IntM`. Use `forall_congr' fun k => forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[IsIntegrallyClosed.isIntegral_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`.
+
+Conclude with `⟨z, by rw [← hz, eq_intCast]⟩`. Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨z, by rw [hz, eq_intCast]⟩`.
+-/
 theorem intM_iff_int {x : Matrix κ ι ℚ} : IntM x ↔ ∀ k i, ∃ z : ℤ, x k i = z := by
   unfold IntM
   refine forall_congr' fun k => forall_congr' fun i => ?_

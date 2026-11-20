@@ -15,6 +15,9 @@ variable {R : Type} [CommRing R]
 abbrev sc {S : Scheme.{0}} (x : Spec (CommRingCat.of R) ⟶ S) (c : R) : epsAt x ⟶ epsAt x :=
   LieEx.hom x (c • (LinearMap.id : R →ₗ[R] R))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sc_left {S : Scheme.{0}} (x : Spec (CommRingCat.of R) ⟶ S) (c : R) :
     (sc x c).left = Spec.map (CommRingCat.ofHom (epsMul c)) := rfl
 
@@ -47,17 +50,34 @@ def Corr.trans (C : Corr G₁ G₂ a₁ a₂ x₁ x₂) (D : Corr G₂ G₃ a₂
 
 variable {f : S₁ ⟶ S₂} {φ : G₁.left ⟶ G₂.left}
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Conclude with `h.2 (Over.mk a) x y x₀ y₀ hx hy`.
+-/
 theorem mul_push (h : IsGrpPullback G₁ G₂ f φ) {Z : Scheme.{0}} {a : Z ⟶ S₁} {b : Z ⟶ S₂} (hab : a ≫ f = b)
     (x y : Over.mk a ⟶ G₁) (x₀ y₀ : Over.mk b ⟶ G₂) (hx : x₀.left = x.left ≫ φ) (hy : y₀.left = y.left ≫ φ) :
     (x₀ * y₀).left = (x * y).left ≫ φ := by
   subst hab
   exact h.2 (Over.mk a) x y x₀ y₀ hx hy
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Conclude with `(congrArg (fun z => z.left) (map_one (pushHom h (Over.mk a)))).symm`.
+-/
 theorem one_push (h : IsGrpPullback G₁ G₂ f φ) {Z : Scheme.{0}} {a : Z ⟶ S₁} {b : Z ⟶ S₂} (hab : a ≫ f = b) :
     (1 : Over.mk b ⟶ G₂).left = (1 : Over.mk a ⟶ G₁).left ≫ φ := by
   subst hab
   exact (congrArg (fun z => z.left) (map_one (pushHom h (Over.mk a)))).symm
 
+/- English proof (translation)
+Establish `hb : (epsAt x₁).hom ≫ f = (epsAt x₂).hom`. Rewrite using `[← hx]`. Conclude with `Category.assoc _ _ _`. Establish `w1 : ∀ v : epsAt x₁ ⟶ G₁, (v.left ≫ φ) ≫ G₂.hom = (epsAt x₂).hom` using `fun v => by`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w v, hb]`.
+
+Establish `w2 : ∀ p : epsAt x₂ ⟶ G₂, p.left ≫ G₂.hom = (epsAt x₁).hom ≫ f` using `fun p => (Over.w p).trans hb.symm`. Set `F : (epsAt x₁ ⟶ G₁) → (epsAt x₂ ⟶ G₂)` to `fun v => Over.homMk (v.left ≫ φ) (w1 v)`. Establish `hF : ∀ v, (F v).left = v.left ≫ φ` using `fun _ => rfl`. Establish `hinj : Function.Injective F` using `fun v v' e => Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) e) ((Over.w v).trans (Over.w v').symm))`. Establish `hsurj : Function.Surjective F` using `fun p => ⟨Over.homMk (h.1.lift p.left (epsAt x₁).hom (w2 p)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`.
+
+Establish `hmul : ∀ v v', F (v * v') = F v * F v'` using `fun v v' => Over.OverMorphism.ext (mul_push h hb v v' (F v) (F v') rfl rfl).symm`. Use `⟨⟨MulEquiv.mk' (Equiv.ofBijective F ⟨hinj, hsurj⟩) hmul, fun v => ?_, fun a v => ?_, fun c v => ?_⟩, hF⟩` and prove the remaining obligations. Establish `h1` using `one_push h hx`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+
+Establish `hv' : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ v.left ≫ φ = (1 : Over.mk x₂ ⟶ G₂).left` using `hv`. Use `h.1.hom_ext (((Category.assoc _ _ _).trans hv').trans h1) ?_` and prove the remaining obligations. Conclude with `(Over.w ((LieEx.zsec x₁ : _ ⟶ LieEx.ob x₁ R) ≫ v)).trans (Over.w (1 : Over.mk x₁ ⟶ G₁)).symm`. Introduce `hv`. Establish `hv' : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ v.left = (1 : Over.mk x₁ ⟶ G₁).left` using `hv`.
+
+Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ φ) hv')).trans h1.symm`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(v.left ≫ (a₁ a).left) ≫ φ = (v.left ≫ φ) ≫ (a₂ a).left`. Rewrite using `[Category.assoc, Category.assoc, hact]`. Conclude with `Over.OverMorphism.ext (Category.assoc _ _ _)`.
+-/
 theorem exists_corr (h : IsGrpPullback G₁ G₂ f φ) (hact : ∀ a, (a₁ a).left ≫ φ = φ ≫ (a₂ a).left)
     (hx : x₁ ≫ f = x₂) : ∃ C : Corr G₁ G₂ a₁ a₂ x₁ x₂, ∀ v, (C.e v).left = v.left ≫ φ := by
   have hb : (epsAt x₁).hom ≫ f = (epsAt x₂).hom := by
@@ -97,6 +117,11 @@ section Span
 
 variable {X : Scheme.{0}} {G : Over X} [GrpObj G] {F : Type} [CommRing F]
 
+/- English proof (translation)
+Establish `h0 : M.pt 0 = 1`. Use `M.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Establish `hl : ∀ l : List Li, M.pt l.sum = (l.map M.pt).prod` using `fun l => by`.
+
+Proceed by induction on `l with`. Consider the case `nil => simpa using h0`. Consider the case `cons a l ih => simp [M.add, ih]`. Rewrite using `[← List.sum_ofFn, hl, List.map_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem pt_sum {x : Spec (CommRingCat.of F) ⟶ X} {Li : Type} [AddCommGroup Li] [Module F Li]
     (M : LieModel G x Li) {r : ℕ} (g : Fin r → Li) : M.pt (∑ i, g i) = (List.ofFn fun i => M.pt (g i)).prod := by
   have h0 : M.pt 0 = 1 := by
@@ -110,10 +135,16 @@ theorem pt_sum {x : Spec (CommRingCat.of F) ⟶ X} {Li : Type} [AddCommGroup Li]
   rw [← List.sum_ofFn, hl, List.map_ofFn]
   rfl
 
+/- English proof (translation)
+Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eigSp {Li : Type} [AddCommGroup Li] [Module F Li] {O : Type} [CommRing O]
     (ρ : O →+* Module.End F Li) (σ : O →+* F) (w : Li) : w ∈ eigSp ρ σ ↔ ∀ a, ρ a w = σ a • w := by
   simp [eigSp, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (epsMul (ψ c))) ≫ Spec.map (CommRingCat.ofHom (dualMap ψ)) = Spec.map (CommRingCat.ofHom (dualMap ψ)) ≫ Spec.map (CommRingCat.ofHom (epsMul c))`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, LieCarrier.dualMap_epsMul]`.
+-/
 theorem sc_epsHom (ψ : R →+* F) (z : Spec (CommRingCat.of R) ⟶ X) (x : Spec (CommRingCat.of F) ⟶ X)
     (hx : Spec.map (CommRingCat.ofHom ψ) ≫ z = x) (c : R) :
     sc x (ψ c) ≫ LieCarrier.epsHom ψ z x hx = LieCarrier.epsHom ψ z x hx ≫ sc z c := by
@@ -123,6 +154,9 @@ theorem sc_epsHom (ψ : R →+* F) (z : Spec (CommRingCat.of R) ⟶ X) (x : Spec
   rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp,
     LieCarrier.dualMap_epsMul]
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[LieEx.isTanAt_iff]`. Rewrite using `[← Category.assoc, LieEx.zsec_hom]`. Conclude with `hv`.
+-/
 theorem isTanAt_sc {z : Spec (CommRingCat.of R) ⟶ X} {v : epsAt z ⟶ G} (hv : IsTanAt G z v) (c : R) :
     IsTanAt G z (sc z c ≫ v) := by
   rw [LieEx.isTanAt_iff] at hv ⊢
@@ -131,6 +165,23 @@ theorem isTanAt_sc {z : Spec (CommRingCat.of R) ⟶ X} {v : epsAt z ⟶ G} (hv :
 
 variable [IsCommMonObj G] [Algebra R F]
 
+/- English proof (translation)
+Set `j : epsAt x ⟶ epsAt z` to `LieCarrier.epsHom (algebraMap R F) z x hx`. Establish `hj : ∀ c, sc x (algebraMap R F c) ≫ j = j ≫ sc z c` using `sc_epsHom _ z x hx`. Establish `hsm : ∀ (c : F) e, M.pt (c • e) = sc x c ≫ M.pt e` using `fun c e => Over.OverMorphism.ext (M.smul c e)`. Establish `hw : ∀ i, ∃ w, M.pt w = j ≫ ub i` using `fun i => M.onto _ (LieFib.isTanAt_epsHom _ _ _ _ _ (hut i))`. Use `choose w hw using hw`.
+
+Establish `key : ∀ cf : Fin r → R, M.pt (∑ i, cf i • w i) = j ≫ (List.ofFn fun i => sc z (cf i) ≫ ub i).prod`. Introduce `cf`. Rewrite using `[pt_sum]`. Use `Eq.trans ?_ (map_list_prod (preHom (G := G) j) _).symm` and prove the remaining obligations. Rewrite using `[List.map_ofFn]`.
+
+Use `congrArg List.prod (congrArg List.ofFn (funext fun i => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M.pt (cf i • w i) = j ≫ sc z (cf i) ≫ ub i`. Rewrite using `[← algebraMap_smul F (cf i) (w i), hsm, hw, ← Category.assoc, hj, Category.assoc]`. Use `⟨w, fun i => congrArg (fun q => q.left) (hw i), fun e => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨v, hvT, hv⟩, hE⟩`.
+
+Establish `hv' : M.pt e = j ≫ v` using `Over.OverMorphism.ext hv`. Establish `hE'` using `(mem_eigSp ρ _ e).1 hE`. Establish `hv1 : ∀ a, v ≫ act a = sc z (σ a) ≫ v`. Introduce `a`. Use `haveI := hA a`.
+
+Use `LieCarrier.tan_ext _ hinj z _ _ ((LieEx.isTanAt_iff _ _ _).2 ?_) (isTanAt_sc hvT _) ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, (LieEx.isTanAt_iff _ _ _).1 hvT, one_comp]`. Establish `e1 : j ≫ v ≫ act a = j ≫ sc z (σ a) ≫ v`. Rewrite using `[← Category.assoc, ← hv', ← hρ a e, hE' a, hsm, hσ, hv', ← Category.assoc, hj, Category.assoc]`. Conclude with `congrArg (fun q => q.left) e1`.
+
+Take `⟨cf, hcf⟩` from `hub v hvT hv1`. Establish `: e = ∑ i, cf i • w i` using `M.inj (by rw [key, hv', ← hcf])`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce `he`.
+
+Take `⟨cf, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 he`. Use `⟨⟨(List.ofFn fun i => sc z (cf i) ≫ ub i).prod, (LieEx.isTanAt_iff _ _ _).2 ?_, congrArg (fun q => q.left) (key cf)⟩, Submodule.sum_mem _ fun i _ => ?_⟩` and prove the remaining obligations. Use `(LieEx.tanSub z G).list_prod_mem fun v hv => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hv`. Conclude with `(LieEx.isTanAt_iff _ _ _).1 (isTanAt_sc (hut i) _)`.
+
+Rewrite using `[← algebraMap_smul F (cf i) (w i)]`. Use `Submodule.smul_mem _ _ ((mem_eigSp ρ _ _).2 fun a => M.inj ?_)` and prove the remaining obligations. Rewrite using `[hρ a, hsm, hw, hσ, ← Category.assoc, hj, Category.assoc, Category.assoc, hue]`.
+-/
 theorem span_eig (hinj : Function.Injective (algebraMap R F)) (z : Spec (CommRingCat.of R) ⟶ X)
     (x : Spec (CommRingCat.of F) ⟶ X) (hx : Spec.map (CommRingCat.ofHom (algebraMap R F)) ≫ z = x)
     {Li : Type} [AddCommGroup Li] [Module F Li] [Module R Li] [IsScalarTower R F Li] (M : LieModel G x Li)

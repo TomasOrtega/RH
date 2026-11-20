@@ -37,11 +37,19 @@ private def Cn : Spc where
 private def hT {A : Type} [One A] {n : ℕ} (i : Fin (n + 1)) (v : Fin (n + 1) → A) : Fin (n + 2) → A :=
   fun k => if h : (k : ℕ) ≤ i then v ⟨k, by omega⟩ else 1
 
+/- English proof (translation)
+Unfold `Fin.succAbove`. Apply the tactic sequence `split_ifs with h h' <;> simp [Fin.lt_def] at * <;> omega`.
+-/
 private theorem sa_val {n : ℕ} (i : Fin (n + 2)) (k : Fin (n + 1)) :
     ((i.succAbove k : Fin (n + 2)) : ℕ) = if (k : ℕ) < i then (k : ℕ) else k + 1 := by
   unfold Fin.succAbove
   split_ifs with h h' <;> simp [Fin.lt_def] at * <;> omega
 
+/- English proof (translation)
+Distinguish the cases in `h : (i : ℕ) < k`. Establish `h' : i.castSucc < k`. Rewrite using `[Fin.lt_def]`. Simplify using `using h`. Rewrite using `[Fin.predAbove_of_castSucc_lt _ _ h', Fin.coe_pred, if_pos h]`.
+
+Establish `h' : k ≤ i.castSucc`. Rewrite using `[Fin.le_def]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.predAbove_of_le_castSucc _ _ h', Fin.coe_castPred, if_neg h]`.
+-/
 private theorem pa_val {n : ℕ} (i : Fin (n + 1)) (k : Fin (n + 2)) :
     ((i.predAbove k : Fin (n + 1)) : ℕ) = if (i : ℕ) < k then (k : ℕ) - 1 else k := by
   by_cases h : (i : ℕ) < k
@@ -55,6 +63,9 @@ private theorem pa_val {n : ℕ} (i : Fin (n + 1)) (k : Fin (n + 2)) :
       omega
     rw [Fin.predAbove_of_le_castSucc _ _ h', Fin.coe_castPred, if_neg h]
 
+/- English proof (translation)
+Unfold `hT`. Rewrite using `[dif_pos h]`. Use `congr 1`. Conclude with `Fin.ext ha.symm`.
+-/
 private theorem hT_val {A : Type} [One A] {n : ℕ} (i : Fin (n + 1)) (v : Fin (n + 1) → A) (k : Fin (n + 2)) (a : Fin (n + 1))
     (h : (k : ℕ) ≤ i) (ha : (a : ℕ) = k) : hT i v k = v a := by
   unfold hT
@@ -62,19 +73,31 @@ private theorem hT_val {A : Type} [One A] {n : ℕ} (i : Fin (n + 1)) (v : Fin (
   congr 1
   exact Fin.ext ha.symm
 
+/- English proof (translation)
+Unfold `hT`. Rewrite using `[dif_neg (by omega)]`.
+-/
 private theorem hT_one {A : Type} [One A] {n : ℕ} (i : Fin (n + 1)) (v : Fin (n + 1) → A) (k : Fin (n + 2))
     (h : (i : ℕ) < k) : hT i v k = 1 := by
   unfold hT
   rw [dif_neg (by omega)]
 
+/- English proof (translation)
+The claim follows from `hT_one _ _ _ (by simp [sa_val])`.
+-/
 private theorem hT_a {A : Type} [One A] {n : ℕ} (v : Fin (n + 1) → A) (j : Fin (n + 1)) :
     hT 0 v ((0 : Fin (n + 2)).succAbove j) = 1 :=
   hT_one _ _ _ (by simp [sa_val])
 
+/- English proof (translation)
+The claim follows from `hT_val _ _ _ _ (by simp [sa_val]; omega) (by simp [sa_val])`.
+-/
 private theorem hT_b {A : Type} [One A] {n : ℕ} (v : Fin (n + 1) → A) (j : Fin (n + 1)) :
     hT (Fin.last n) v ((Fin.last (n + 1)).succAbove j) = v j :=
   hT_val _ _ _ _ (by simp [sa_val]; omega) (by simp [sa_val])
 
+/- English proof (translation)
+Unfold `hT`. Distinguish the cases in `hx : (x : ℕ) ≤ a`. Rewrite using `[dif_pos hx, dif_pos (h1.mp hx)]`. Conclude with `h2 hx (h1.mp hx)`. Rewrite using `[dif_neg hx, dif_neg (fun hy => hx (h1.mpr hy))]`.
+-/
 private theorem hT_eq_hT_of_le_iff_of_apply_eq {A : Type} [One A] {n m : ℕ} (a : Fin (n + 1)) (b : Fin (m + 1)) (v : Fin (n + 1) → A)
     (w : Fin (m + 1) → A) (x : Fin (n + 2)) (y : Fin (m + 2)) (h1 : (x : ℕ) ≤ a ↔ (y : ℕ) ≤ b)
     (h2 : ∀ (hx : (x : ℕ) ≤ a) (hy : (y : ℕ) ≤ b), v ⟨x, by omega⟩ = w ⟨y, by omega⟩) :
@@ -85,6 +108,11 @@ private theorem hT_eq_hT_of_le_iff_of_apply_eq {A : Type} [One A] {n m : ℕ} (a
     exact h2 hx (h1.mp hx)
   · rw [dif_neg hx, dif_neg (fun hy => hx (h1.mpr hy))]
 
+/- English proof (translation)
+Rewrite `hij` using `[Fin.le_def, Fin.coe_castSucc]`. Use `hT_eq_hT_of_le_iff_of_apply_eq _ _ _ _ _ _ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `simp only [sa_val, Fin.coe_castSucc, Fin.val_succ] split_ifs <;> omega`. Introduce `hx hy`. Simplify using `only [Function.comp_apply]`.
+
+Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [sa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢`. Apply the tactic sequence `all_goals (split_ifs at hx hy ⊢ <;> omega)`.
+-/
 private theorem hT_c {A : Type} [One A] {n : ℕ} (i : Fin (n + 2)) (j : Fin (n + 1)) (hij : i ≤ j.castSucc) (v : Fin (n + 2) → A)
     (k : Fin (n + 2)) : hT j.succ v (i.castSucc.succAbove k) = hT j (v ∘ i.succAbove) k := by
   rw [Fin.le_def, Fin.coe_castSucc] at hij
@@ -98,12 +126,20 @@ private theorem hT_c {A : Type} [One A] {n : ℕ} (i : Fin (n + 2)) (j : Fin (n 
     simp only [sa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢
     all_goals (split_ifs at hx hy ⊢ <;> omega)
 
+/- English proof (translation)
+Use `hT_eq_hT_of_le_iff_of_apply_eq _ _ _ _ _ _ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Simplify using `only [sa_val, Fin.coe_castSucc, Fin.val_succ]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 private theorem hT_d {A : Type} [One A] {n : ℕ} (j : Fin (n + 1)) (v : Fin (n + 2) → A)
     (k : Fin (n + 2)) : hT j.succ v (j.castSucc.succ.succAbove k) = hT j.castSucc v (j.castSucc.succ.succAbove k) := by
   refine hT_eq_hT_of_le_iff_of_apply_eq _ _ _ _ _ _ ?_ (fun _ _ => rfl)
   simp only [sa_val, Fin.coe_castSucc, Fin.val_succ]
   split_ifs <;> omega
 
+/- English proof (translation)
+Rewrite `hji` using `[Fin.lt_def, Fin.coe_castSucc]`. Use `hT_eq_hT_of_le_iff_of_apply_eq _ _ _ _ _ _ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `simp only [sa_val, Fin.coe_castSucc, Fin.val_succ] split_ifs <;> omega`. Introduce `hx hy`. Simplify using `only [Function.comp_apply]`.
+
+Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [sa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢`. Apply the tactic sequence `split_ifs at hx hy ⊢ <;> omega`.
+-/
 private theorem hT_e {A : Type} [One A] {n : ℕ} (i : Fin (n + 2)) (j : Fin (n + 1)) (hji : j.castSucc < i) (v : Fin (n + 2) → A)
     (k : Fin (n + 2)) : hT j.castSucc v (i.succ.succAbove k) = hT j (v ∘ i.succAbove) k := by
   rw [Fin.lt_def, Fin.coe_castSucc] at hji
@@ -117,6 +153,11 @@ private theorem hT_e {A : Type} [One A] {n : ℕ} (i : Fin (n + 2)) (j : Fin (n 
     simp only [sa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢
     split_ifs at hx hy ⊢ <;> omega
 
+/- English proof (translation)
+Rewrite `hij` using `[Fin.le_def]`. Use `hT_eq_hT_of_le_iff_of_apply_eq _ _ _ _ _ _ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `simp only [pa_val, Fin.coe_castSucc, Fin.val_succ] split_ifs <;> omega`. Introduce `hx hy`. Simplify using `only [Function.comp_apply]`.
+
+Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [pa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢`. Apply the tactic sequence `all_goals (split_ifs at hx hy ⊢ <;> omega)`.
+-/
 private theorem hT_f {A : Type} [One A] {n : ℕ} (i j : Fin (n + 1)) (hij : i ≤ j) (v : Fin (n + 1) → A)
     (k : Fin (n + 3)) : hT j v (i.castSucc.predAbove k) = hT j.succ (v ∘ i.predAbove) k := by
   rw [Fin.le_def] at hij
@@ -130,6 +171,11 @@ private theorem hT_f {A : Type} [One A] {n : ℕ} (i j : Fin (n + 1)) (hij : i �
     simp only [pa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢
     all_goals (split_ifs at hx hy ⊢ <;> omega)
 
+/- English proof (translation)
+Rewrite `hji` using `[Fin.le_def]`. Use `hT_eq_hT_of_le_iff_of_apply_eq _ _ _ _ _ _ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `simp only [pa_val, Fin.coe_castSucc, Fin.val_succ] split_ifs <;> omega`. Introduce `hx hy`. Simplify using `only [Function.comp_apply]`.
+
+Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [pa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢`. Apply the tactic sequence `split_ifs at hx hy ⊢ <;> omega`.
+-/
 private theorem hT_g {A : Type} [One A] {n : ℕ} (i j : Fin (n + 1)) (hji : j ≤ i) (v : Fin (n + 1) → A)
     (k : Fin (n + 3)) : hT j v (i.succ.predAbove k) = hT j.castSucc (v ∘ i.predAbove) k := by
   rw [Fin.le_def] at hji
@@ -143,6 +189,9 @@ private theorem hT_g {A : Type} [One A] {n : ℕ} (i j : Fin (n + 1)) (hji : j �
     simp only [pa_val, Fin.coe_castSucc, Fin.val_succ, Fin.val_mk] at hx hy ⊢
     split_ifs at hx hy ⊢ <;> omega
 
+/- English proof (translation)
+Unfold `hT`. Apply the tactic sequence `split_ifs <;> simp [hf]`.
+-/
 private theorem hT_map {A B : Type} [One A] [One B] {n : ℕ} (f : A → B) (hf : f 1 = 1) (i : Fin (n + 1)) (v : Fin (n + 1) → A)
     (k : Fin (n + 2)) : f (hT i v k) = hT i (f ∘ v) k := by
   unfold hT
@@ -246,6 +295,9 @@ private def liftH {C : Type*} [Category C] {X Y₁ Y₂ : SimplicialObject C} (p
       (by simp only [Category.assoc, SimplicialObject.σ_naturality, SimplicialObject.σ_naturality_assoc, l₂', l₂,
             H₂.h_comp_σ_succ_of_lt i j hji]) }
 
+/- English proof (translation)
+Establish `h` using `v.2`. Rewrite `h` using `[Set.range_unique]`. Conclude with `Ideal.span_singleton_eq_top.mp h`.
+-/
 private theorem unimodularRow_one_isUnit {A : Type} [CommRing A] (v : Um 1 A) : IsUnit (v.1 0) := by
   have h := v.2
   rw [Set.range_unique] at h
@@ -257,14 +309,25 @@ private def ofU {A : Type} [CommRing A] (u : Aˣ) : Um 1 A :=
   ⟨fun _ => u, by
     refine Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨0, rfl⟩) u.isUnit⟩
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 private theorem toU_ofU {A : Type} [CommRing A] (u : Aˣ) : toU (ofU u) = u := Units.ext rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression.
+-/
 private theorem ofU_toU {A : Type} [CommRing A] (v : Um 1 A) : ofU (toU v) = v := by
   apply Subtype.ext
   funext i
   fin_cases i
   rfl
 
+/- English proof (translation)
+Establish `e1` using `p.2`. Establish `e2` using `p'.2`. Rewrite `e1` using `[h]`. Establish `e3 : ((p.1.2 : A) • w.1) 0 = ((p'.1.2 : A) • w.1) 0`. Rewrite using `[← e1, ← e2]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul] at e3`. Establish `e4 : (p.1.2 : A) = p'.1.2` using `(unimodularRow_one_isUnit w).mul_right_cancel e3`. Conclude with `Subtype.ext (Prod.ext h (Units.ext e4))`.
+-/
 private theorem rankOne_hom_ext {A : Type} [CommRing A] {v w : Um 1 A} (p p' : v ⟶ w) (h : p.1.1 = p'.1.1) : p = p' := by
   have e1 := p.2
   have e2 := p'.2
@@ -280,10 +343,16 @@ private def arr {A : Type} [CommRing A] (u w : Aˣ) : ofU u ⟶ ofU w :=
     funext i
     simp [ofU]⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem eqToHom_g {A : Type} [CommRing A] {v w : Um 1 A} (h : v = w) : (eqToHom h).1.1 = 1 := by
   subst h
   rfl
 
+/- English proof (translation)
+Establish `hc : ∀ {u v w : Um 1 A} (p : u ⟶ v) (p' : v ⟶ w), (p ≫ p').1.1 = p'.1.1 * p.1.1` using `fun _ _ => rfl`. Use `CategoryTheory.Functor.ext h (fun a b f => ?_)` and prove the remaining obligations. Apply `rankOne_hom_ext` to reduce the goal to its premises. Rewrite using `[hc, hc, eqToHom_g, eqToHom_g, one_mul, mul_one]`. Conclude with `hg f`.
+-/
 private theorem chain_ext {A : Type} [CommRing A] {m : ℕ} (F G : Fin m ⥤ Um 1 A) (h : ∀ k, F.obj k = G.obj k)
     (hg : ∀ {a b : Fin m} (f : a ⟶ b), (F.map f).1.1 = (G.map f).1.1) : F = G := by
   have hc : ∀ {u v w : Um 1 A} (p : u ⟶ v) (p' : v ⟶ w), (p ≫ p').1.1 = p'.1.1 * p.1.1 :=
@@ -321,6 +390,9 @@ private def ob : PGL 1 ⟶ Cn where
     ext T v
     rfl
 
+/- English proof (translation)
+Use extensionality with `k T v`. Use function extensionality and compare the values at `j`. Conclude with `toU_ofU _`.
+-/
 private theorem phi_ob : phi ≫ ob = 𝟙 Cn := by
   ext k T v
   funext j
@@ -332,14 +404,23 @@ private abbrev fst1 (E : Spc) : X1 E ⟶ E := pullback.fst _ _
 
 private abbrev snd1 (E : Spc) : X1 E ⟶ PGL 1 := pullback.snd _ _
 
+/- English proof (translation)
+The claim follows from `(IsPullback.of_hasPullback (triv E 1) (PGL.pr 1)).map ((evaluation _ _).obj k)`.
+-/
 private theorem isPB (E : Spc) (k : SimplexCategoryᵒᵖ) :
     IsPullback ((fst1 E).app k) ((snd1 E).app k) ((triv E 1).app k) ((PGL.pr 1).app k) :=
   (IsPullback.of_hasPullback (triv E 1) (PGL.pr 1)).map ((evaluation _ _).obj k)
 
+/- English proof (translation)
+Use extensionality with `k T x`. Both sides reduce to the same expression.
+-/
 private theorem comp_triv {E E' : Spc} (f : E ⟶ E') : f ≫ triv E' 1 = triv E 1 := by
   ext k T x
   rfl
 
+/- English proof (translation)
+Use extensionality with `k T v`. Both sides reduce to the same expression.
+-/
 private theorem phi_pr : phi ≫ PGL.pr 1 = triv Cn 1 := by
   ext k T v
   rfl
@@ -358,10 +439,23 @@ private def c1 (E : Spc) : E ⟶ Cn where
 private def sec1 (E : Spc) : E ⟶ X1 E :=
   pullback.lift (𝟙 E) (c1 E ≫ phi) (by rw [Category.assoc, phi_pr, comp_triv, comp_triv])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 private theorem diagonal_section_fst (E : Spc) : sec1 E ≫ fst1 E = 𝟙 E := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 private theorem diagonal_section_snd (E : Spc) : sec1 E ≫ snd1 E = c1 E ≫ phi := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Use extensionality with `k T x`. Apply `chain_ext` to reduce the goal to its premises. Introduce `j`. Conclude with `ofU_toU _`. Introduce `a b f`.
+
+Establish `hc` using `congr_arg (fun φ => ((φ.app k).app T) x) (pullback.condition (f := triv E 1) (g := PGL.pr 1))`. Simplify using `only [NatTrans.comp_app] at hc`. Establish `h2` using `CategoryTheory.Functor.congr_hom hc f`. Establish `h3 : (𝟙 (SingleObj.star (GL (Fin 1) Γ(T.unop, ⊤)))) = 𝟙 _ ≫ (show SingleObj.star (GL (Fin 1) Γ(T.unop, ⊤)) ⟶ SingleObj.star _ from ((show Fin ((unop k).len + 1) ⥤ Um 1 Γ(T.unop, ⊤) from ((snd1 E).app k).app T x).map f).1.1) ≫ 𝟙 _` using `h2`. Rewrite `h3` using `[Category.id_comp, Category.comp_id]`.
+
+Conclude with `h3`.
+-/
 private theorem snd_ob_phi (E : Spc) : snd1 E ≫ ob ≫ phi = snd1 E := by
   ext k T x
   apply chain_ext
@@ -411,6 +505,9 @@ private def H1 (E : Spc) : SimplicialObject.Homotopy (𝟙 (X1 E)) (fst1 E ≫ s
     have h := (isPB E (op ⦋n + 1⦌)).lift_snd _ _ (cond i)
     rw [NatTrans.comp_app (snd1 E) ob (op ⦋n + 1⦌), ← Category.assoc, h, Category.assoc, Category.assoc, eo, Category.comp_id]
 
+/- English proof (translation)
+Establish `hH : Homotopy ((chainsN R).map (𝟙 (X1 E))) ((chainsN R).map (fst1 E ≫ sec1 E))` using `((H1 E).whiskerRight (free R)).toChainHomotopy`. Establish `hH' : Homotopy ((chains R).map (𝟙 (X1 E))) ((chains R).map (fst1 E ≫ sec1 E))` using `hH.extend ComplexShape.embeddingDownNat`. Set `e : HomotopyEquiv ((chains R).obj (X1 E)) ((chains R).obj E)` to `{ hom := (chains R).map (fst1 E) inv := (chains R).map (sec1 E) homotopyHomInvId := (Homotopy.ofEq ((chains R).map_comp _ _).symm).trans (hH'.symm.trans (Homotopy.ofEq ((chains R).map_id _))) homotopyInvHomId := Homotopy.ofEq (by`. Rewrite using `[← CategoryTheory.Functor.map_comp, diagonal_section_fst, CategoryTheory.Functor.map_id]) }`. Conclude with `e.quasiIso_hom`.
+-/
 private theorem chains_qi (R : Type) [CommRing R] (E : Spc) : QuasiIso ((chains R).map (fst1 E)) := by
   have hH : Homotopy ((chainsN R).map (𝟙 (X1 E))) ((chainsN R).map (fst1 E ≫ sec1 E)) :=
     ((H1 E).whiskerRight (free R)).toChainHomotopy
@@ -425,6 +522,9 @@ private theorem chains_qi (R : Type) [CommRing R] (E : Spc) : QuasiIso ((chains 
         rw [← CategoryTheory.Functor.map_comp, diagonal_section_fst, CategoryTheory.Functor.map_id]) }
   exact e.quasiIso_hom
 
+/- English proof (translation)
+Use `haveI := chains_qi R E`. Conclude with `fun n => GlobalTheory.T.quasiIso_hypercohomology_bijective R ((chains R).map (fst1 E)) F n`.
+-/
 private theorem eqv1 (R : Type) [CommRing R] (E : Spc) (F : Shv R) : Eqv R (fst1 E) F := by
   haveI := chains_qi R E
   exact fun n => GlobalTheory.T.quasiIso_hypercohomology_bijective R ((chains R).map (fst1 E)) F n
@@ -432,21 +532,33 @@ private theorem eqv1 (R : Type) [CommRing R] (E : Spc) (F : Shv R) : Eqv R (fst1
 section
 variable {q : ℕ} {X : Spc}
 
+/- English proof (translation)
+Substitute `h1 h2 h3 h4` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem cast_cast {n i n' i' n'' i'' : ℤ} (h1 : n = n') (h2 : i = i') (h3 : n' = n'') (h4 : i' = i'') (x : Ht q X n i) :
     (x.cast h1 h2).cast h3 h4 = x.cast (h1.trans h3) (h2.trans h4) := by
   subst h1 h2 h3 h4
   rfl
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Conclude with `Function.bijective_id`.
+-/
 private theorem cast_bij {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') :
     Function.Bijective (Ht.cast h1 h2 : Ht q X n i → Ht q X n' i') := by
   subst h1 h2
   exact Function.bijective_id
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.T.tateTwistCupProduct_graded_comm q X x (one q X), (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 X hX x, mul_zero, Int.negOnePow_zero, one_smul, cast_cast]`.
+-/
 private theorem cup_one' [NeZero q] (hX : Inv q X) {n i : ℤ} (x : Ht q X n i) :
     cup q x (one q X) = x.cast (by ring) (by ring) := by
   rw [GlobalTheory.T.tateTwistCupProduct_graded_comm q X x (one q X), (GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).1 X hX x, mul_zero, Int.negOnePow_zero, one_smul,
     cast_cast]
 
+/- English proof (translation)
+Substitute `hm hj` using the available equality. Conclude with `cup_one' hX x`.
+-/
 private theorem cup_one_cast [NeZero q] (hX : Inv q X) {n i m j : ℤ} (x : Ht q X n i) (hm : 0 = m) (hj : 0 = j) :
     cup q x ((one q X).cast hm hj) = x.cast (by omega) (by omega) := by
   subst hm hj
@@ -458,6 +570,11 @@ end UpperTheory.Rank1
 
 end
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Establish `e : ∀ y : Ht q X N I, Ht.cast ha hb (cup q y (cpow q x 0)) = y.cast (by omega) (by omega)`. Introduce `y`. Rewrite using `[cpow_zero, UpperTheory.Rank1.cup_one_cast hX, UpperTheory.Rank1.cast_cast]`. Simplify using `only [e]`.
+
+Conclude with `UpperTheory.Rank1.cast_bij _ _`.
+-/
 private theorem bijective_cast_cup_cpow_of_eq_zero {q : ℕ} [NeZero q] {X : Spc} (hX : Inv q X) (x : Ht q X 2 1) (k : ℕ) (hk : k = 0)
     {N I a b : ℤ} (ha : N + 2 * (k : ℤ) = a) (hb : I + (k : ℤ) = b) :
     Function.Bijective (fun y : Ht q X N I => Ht.cast ha hb (cup q y (cpow q x k))) := by
@@ -468,6 +585,11 @@ private theorem bijective_cast_cup_cpow_of_eq_zero {q : ℕ} [NeZero q] {X : Spc
   simp only [e]
   exact UpperTheory.Rank1.cast_bij _ _
 
+/- English proof (translation)
+Introduce `q _ E hE`. Establish `hX : Inv q (pullback (triv E 1) (PGL.pr 1))` using `fun U hU => hE U (hU.map (((pullback.fst (triv E 1) (PGL.pr 1)).app _).app _))`. Introduce `n i`. Simplify using `only [Fin.sum_univ_one]`. Establish `hp` using `UpperTheory.Rank1.eqv1 (ZMod q) E (tw q (i - ((0 : Fin 1) : ℕ))) (n - 2 * ((0 : Fin 1) : ℕ))`.
+
+Conclude with `((bijective_cast_cup_cpow_of_eq_zero hX _ _ rfl _ _).comp hp).comp (Equiv.piUnique _).bijective`.
+-/
 theorem UpperTheory.projectiveBundleFormula_rank_one_of_homotopyInvariant :
     ∀ (q : ℕ) [NeZero q] (E : Spc), Inv q E → PBF q E 1 := by
   intro q _ E hE

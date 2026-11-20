@@ -7,6 +7,9 @@ import Formalism.WachLatticeTwists.CoprimeLiftBounds.CoprimeLiftProofs.TheoremNF
 
 namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
 
+/- English proof (translation)
+The claim follows from `ring_objects_of_matrix_data eMat splitPts idemKO`.
+-/
 theorem ring_objects_exist : RingObjectsExist := ring_objects_of_matrix_data eMat splitPts idemKO
 
 end Formalism.RepresentationBoundsCohomology.ringDataObjects

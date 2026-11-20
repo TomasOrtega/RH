@@ -4,6 +4,13 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 
 namespace GlobalTheory.StepData
 
+/- English proof (translation)
+Establish `e : M = 1 + replicateCol Unit (Pi.single i (1 : k)) * replicateRow Unit (M i - Pi.single i (1 : k))`. Use extensionality with `a b`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Distinguish the cases in `hb : b = a`.
+
+Substitute `hb` using the available equality. Simplify using `[Matrix.mul_apply, hii]`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Pi.single_apply, hb, Ne.symm hb]`. Simplify using `[Matrix.mul_apply, h a b ha, Pi.single_apply, ha]`. Rewrite using `[e, det_one_add_replicateCol_mul_replicateRow]`.
+
+Simplify using `[hii]`.
+-/
 theorem det_eq_one_of_one_row {k n : Type*} [Field k] [Fintype n] [DecidableEq n] (M : Matrix n n k) (i : n)
     (h : ∀ a b, a ≠ i → M a b = (1 : Matrix n n k) a b) (hii : M i i = 1) : M.det = 1 := by
   have e : M = 1 + replicateCol Unit (Pi.single i (1 : k)) * replicateRow Unit (M i - Pi.single i (1 : k)) := by
@@ -17,6 +24,23 @@ theorem det_eq_one_of_one_row {k n : Type*} [Field k] [Fintype n] [DecidableEq n
   rw [e, det_one_add_replicateCol_mul_replicateRow]
   simp [hii]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `h _ _`. Conclude with `⟨⟨(reGL (ixZero r t)).symm h, h.2⟩, rfl, rfl⟩`. Consider the case `succ j ih`.
+
+Introduce `h h1 h2`. Use `set Q := P.iter t μ hμ j with hQ`. Set `h' : Q.stepJ t` to `⟨(reGL (ixSucc r t j)).symm h, h.2⟩`. Establish `eh' : (h' : GL (Ix r t j ⊕ t) k).val = (h : GL (Ix r t (j + 1)) k).val.submatrix (ixSucc r t j) (ixSucc r t j)` using `rfl`. Set `c` to `Q.corner h'`.
+
+Establish `ec : ∀ a b, (c : GL (Ix r t j) k).val a b = (h : GL (Ix r t (j + 1)) k).val (ixSucc r t j (.inl a)) (ixSucc r t j (.inl b))`. Introduce `a b`. Rewrite using `[Q.corner_val]`. Both sides reduce to the same expression. Establish `hne : ∀ a, a ≠ Sum.inl r₀ → ixSucc r t j (.inl a) ≠ Sum.inl r₀`.
+
+Introduce `a ha e`. Apply `ha` to reduce the goal to its premises. Establish `: (Sum.inl a : Ix r t j ⊕ t) = Sum.inl (Sum.inl r₀)` using `(ixSucc r t j).injective (e.trans rfl)`. Conclude with `Sum.inl_injective this`. Establish `c1 : ∀ a b, a ≠ Sum.inl r₀ → (c : GL (Ix r t j) k).val a b = (1 : Matrix (Ix r t j) (Ix r t j) k) a b`.
+
+Introduce `a b ha`. Rewrite using `[ec, h1 _ _ (hne a ha), Matrix.one_apply, Matrix.one_apply]`. Simplify using `[(ixSucc r t j).injective.eq_iff]`. Establish `c2 : (c : GL (Ix r t j) k).val (Sum.inl r₀) (Sum.inl r₀) = 1` using `by rw [ec]; exact h2`. Take `⟨g, hg, hl⟩` from `ih c c1 c2`.
+
+Use `⟨g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Use extensionality with `x y`. Conclude with `ec _ _`. Establish `d1 : Matrix.GeneralLinearGroup.det (c : GL (Ix r t j) k) = 1` using `Units.ext (by`.
+
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Units.val_one]`. Conclude with `det_eq_one_of_one_row _ _ c1 c2)`. Establish `d2 : Matrix.GeneralLinearGroup.det (h' : GL (Ix r t j ⊕ t) k) = 1` using `Units.ext (by`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Units.val_one, eh', det_submatrix_equiv_self]`. Conclude with `det_eq_one_of_one_row _ _ h1 h2)`.
+
+Establish `e0 : (P.iter t μ hμ (j + 1)).lam h = (Q.step t (μ (j + 1)) (hμ _)).lam h'` using `rfl`. Rewrite using `[e0, Q.step_lam _ _ h' c (Q.corner_val h'), ← hl, d1, d2]`. Simplify using the standard rewrite rules.
+-/
 theorem iter_lam_one_row (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (r t : Type) [Fintype r] [DecidableEq r] [Fintype t] [DecidableEq t] (P : TypeDatum k r)
     (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) (j : ℕ) (r₀ : r) : ∀ (h : (P.iter t μ hμ j).J),

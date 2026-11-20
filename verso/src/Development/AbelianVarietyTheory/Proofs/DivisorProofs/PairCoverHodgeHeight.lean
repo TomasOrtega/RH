@@ -20,10 +20,18 @@ section Block
 
 def bl {m : ℕ} (i k : Fin m) : ℕ := if k < i then 0 else if k = i then 1 else 2
 
+/- English proof (translation)
+Simplify using `only [bl, Fin.ext_iff, Fin.lt_def, Fin.le_def]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem block_lt_iff {m : ℕ} {i c k : Fin m} : bl i c < bl i k ↔ (c < i ∧ i ≤ k) ∨ (c ≤ i ∧ i < k) := by
   simp only [bl, Fin.ext_iff, Fin.lt_def, Fin.le_def]
   split_ifs <;> omega
 
+/- English proof (translation)
+Establish `e : ∀ k, A.mulVec cf k = ∑ j, A k j * cf j` using `fun _ => rfl`. Simplify using `only [e]`. Use `⟨fun k hk => Finset.sum_eq_zero fun j _ => ?_, Finset.sum_eq_single i (fun j _ hj => ?_) (by simp)⟩` and prove the remaining obligations. Break down `le_or_gt j i with hj | hj` into its components or cases. Rewrite using `[hA (block_lt_iff.2 (.inr ⟨hj, hk⟩)), zero_mul]`.
+
+Rewrite using `[h j hj, mul_zero]`. Break down `lt_or_gt_of_ne hj with hj | hj` into its components or cases. Rewrite using `[hA (block_lt_iff.2 (.inl ⟨hj, le_rfl⟩)), zero_mul]`. Rewrite using `[h j hj, mul_zero]`.
+-/
 theorem blockTriangular_mulVec {R : Type} [CommRing R] {m : ℕ} {i : Fin m} {A : Matrix (Fin m) (Fin m) R}
     (hA : A.BlockTriangular (bl i)) {cf : Fin m → R} (h : ∀ k, i < k → cf k = 0) :
     (∀ k, i < k → A.mulVec cf k = 0) ∧ A.mulVec cf i = A i i * cf i := by
@@ -37,6 +45,11 @@ theorem blockTriangular_mulVec {R : Type} [CommRing R] {m : ℕ} {i : Fin m} {A 
     · rw [hA (block_lt_iff.2 (.inl ⟨hj, le_rfl⟩)), zero_mul]
     · rw [h j hj, mul_zero]
 
+/- English proof (translation)
+Set `_` to `Matrix.invertibleOfIsUnitDet A hd`. Establish `h1` using `Matrix.blockTriangular_inv_of_blockTriangular hA`. Establish `h2` using `(blockTriangular_mulVec hA (cf := fun k => A⁻¹ k i) fun k hk => h1 (block_lt_iff.2 (.inr ⟨le_rfl, hk⟩))).2`. Establish `h3 : A.mulVec (fun k => A⁻¹ k i) i = (A * A⁻¹) i i` using `rfl`. Rewrite `h2` using `[h3, A.mul_nonsing_inv hd, Matrix.one_apply_eq]`.
+
+Conclude with `IsUnit.of_mul_eq_one _ h2.symm`.
+-/
 theorem isUnit_bl {R : Type} [CommRing R] {m : ℕ} {i : Fin m} {A : Matrix (Fin m) (Fin m) R}
     (hA : A.BlockTriangular (bl i)) (hd : IsUnit A.det) : IsUnit (A i i) := by
   let _ := Matrix.invertibleOfIsUnitDet A hd
@@ -49,6 +62,19 @@ theorem isUnit_bl {R : Type} [CommRing R] {m : ℕ} {i : Fin m} {A : Matrix (Fin
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
   {t : SAB H X}
 
+/- English proof (translation)
+Establish `hu` using `fun b => comb_tan hf (hM b)`. Establish `h0` using `(isUnit_bl hN hdet).ne_zero`. Use `IsLeast.csInf_eq ⟨⟨fun k => (M * Q) k i, h0, fun k hk => hN (block_lt_iff.2 (.inr ⟨le_rfl, hk⟩)), ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨w, -, hw⟩` from `exists_comb hu fun k => Q k i`. Establish `h1` using `tanLinG f hf u M _ w hM hw`.
+
+Conclude with `⟨w, (hΛ _ w h1).1 ⟨_, fun k => hQ k i, hw⟩, h1⟩`. Introduce and unpack `r ⟨cf, h1, h2, ⟨w, hw, hc⟩, rfl⟩`. Take `⟨a, ha, hc'⟩` from `(hΛ cf w hc).2 hw`. Establish `h3 : cf = (M * Q).mulVec (Q'.mulVec a)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, hQQ, Matrix.mul_one]`.
+
+Conclude with `hi _ _ _ hc (tanLinG f hf u M _ w hM hc')`. Set `_` to `Matrix.invertibleOfIsUnitDet _ hdet`. Establish `h4 : Q'.mulVec a = (M * Q)⁻¹.mulVec cf`. Rewrite using `[h3, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`. Establish `h5` using `(blockTriangular_mulVec (Matrix.blockTriangular_inv_of_blockTriangular hN) h2).1`.
+
+Rewrite `h5` using `[← h4]`. Establish `h6` using `(blockTriangular_mulVec hN h5).2`. Rewrite `h6` using `[← h3]`. Establish `h7 : ‖Q'.mulVec a i‖ ≤ 1`. Express the relevant statement in the definitionally equal form `‖∑ j, Q' i j * a j‖ ≤ 1`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hQ' _ _) (norm_nonneg _) (ha _)`. Use `inv_anti₀ (norm_pos_iff.2 h1) ?_` and prove the remaining obligations. Rewrite using `[h6, norm_mul]`.
+
+Conclude with `mul_le_of_le_one_right (norm_nonneg _) h7`.
+-/
 theorem grNorm_of_bl {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] {x : Sp C ⟶ X}
     {Λ : Set (Sp (DualNumber C) ⟶ t.G.left)} {m : ℕ} {f u : Fin m → (Sp (DualNumber C) ⟶ t.G.left)}
     (hf : ∀ k, IsTanAtG t x (f k)) (hi : Indep t x f) {M Q Q' : Matrix (Fin m) (Fin m) C}
@@ -90,6 +116,19 @@ def Lead {K : Type} [CommRing K] (x : Sp K ⟶ X) {m : ℕ} (u v : Fin m → (Sp
   ∃ (w : Sp (DualNumber K) ⟶ t.G.left) (cf : Fin m → K),
     IsCombAtG t x u a w ∧ IsCombAtG t x v cf w ∧ cf i = ρ ∧ ∀ k, i < k → cf k = 0
 
+/- English proof (translation)
+Establish `hfK` using `fun k => GlobalTheory.FactorDepth.isTanAtG_map t ι (hf k)`. Use `choose T hT1 hT2 hT3 using hv`. Set `T' : Matrix (Fin m) (Fin m) K` to `fun j i => T i j`. Establish `hT' : T'.BlockTriangular id` using `fun j k hk => hT2 k j hk`. Establish `key : ∀ a : Fin m → S, Lead t (spMap ι ≫ x) (fun k => spMap (Formalism.L2.Pj.dualMap ι) ≫ u k) v i ρ (fun b => ι (a b)) → (∀ k, i < k → M.mulVec a k = 0) ∧ ι (M.mulVec a i) = d i * ρ`.
+
+Introduce and unpack `a ⟨w, cf, h1, h2, h3, h4⟩`. Establish `e1` using `hiK _ _ _ (tanLinG _ hfK _ (M.map ι) _ w (fun c => GlobalTheory.LatDRFree.comb_map t ι (hM c)) h1) (tanLinG _ hfK v T' cf w hT3 h2)`. Establish `e2 : ∀ k, ι (M.mulVec a k) = T'.mulVec cf k` using `fun k => by`. Rewrite using `[← e1, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+
+Take `⟨e3, e4⟩` from `tri_mulVec hT' h4`. Conclude with `⟨fun k hk => hι (((e2 k).trans (e3 k hk)).trans (map_zero ι).symm), by rw [e2, e4, h3, ← hT1]⟩`. Take `⟨k1, k2⟩` from `key _ h`. Establish `k3 : ∀ c, c < i → ∀ k, i ≤ k → (M * A) k c = 0` using `fun c hc k hk => by`. Take `⟨g1, g2⟩` from `key _ (h' c hc)`.
+
+Establish `e : ∀ k, M.mulVec (fun b => A b i + A b c) k = M.mulVec (fun b => A b i) k + (M * A) k c` using `fun k => congrFun (Matrix.mulVec_add M (fun b => A b i) fun b => A b c) k`. Break down `hk.eq_or_lt with rfl | hk` into its components or cases. Rewrite `g2` using `[e, map_add, k2]`. Conclude with `hι ((add_eq_left.1 g2).trans (map_zero ι).symm)`. Use `g1 k hk` as an intermediate fact.
+
+Rewrite `this` using `[e, k1 k hk, zero_add]`. Then use the resulting hypothesis. Use `⟨fun k c hk => ?_, k2⟩` and prove the remaining obligations. Break down `block_lt_iff.1 hk with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases. Conclude with `k3 c a k b`. Break down `a.eq_or_lt with rfl | a` into its components or cases.
+
+Conclude with `k1 k b`. Conclude with `k3 c a k b.le`.
+-/
 theorem bl_of_lead {S K : Type} [CommRing S] [Field K] (ι : S →+* K) (hι : Function.Injective ι)
     {x : Sp S ⟶ X} {m : ℕ} {f u : Fin m → (Sp (DualNumber S) ⟶ t.G.left)}
     (hf : ∀ k, IsTanAtG t x (f k))
@@ -147,6 +186,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 def LtL (x y : Pad.Letter Dw) : Prop :=
   Fintype.equivFin (E →+* ℂ) x.1 < Fintype.equivFin (E →+* ℂ) y.1 ∨ (x.1 = y.1 ∧ (x.2 : ℕ) < y.2)
 
+/- English proof (translation)
+Take `⟨a, i⟩` from `x`. Take `⟨b, j⟩` from `y`. Apply the tactic sequence `rintro (h' | ⟨h', h''⟩) <;> rcases h with h | ⟨h, h₀⟩`. Conclude with `lt_asymm h h'`. Conclude with `h'.ne (congrArg _ h.symm)`.
+
+Conclude with `h.ne (congrArg _ h'.symm)`. Conclude with `lt_asymm h₀ h''`.
+-/
 theorem LtL.asymm {x y : Pad.Letter Dw} (h : LtL x y) : ¬ LtL y x := by
   obtain ⟨a, i⟩ := x
   obtain ⟨b, j⟩ := y
@@ -156,6 +200,11 @@ theorem LtL.asymm {x y : Pad.Letter Dw} (h : LtL x y) : ¬ LtL y x := by
   · exact h.ne (congrArg _ h'.symm)
   · exact lt_asymm h₀ h''
 
+/- English proof (translation)
+Use `List.pairwise_flatMap.2 ⟨fun a _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[List.pairwise_map]`. Conclude with `(List.pairwise_lt_finRange _).imp fun h => .inr ⟨rfl, h⟩`. Use `(List.pairwise_lt_finRange _).imp fun {a b} hab x hx y hy => ?_` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`.
+
+Take `⟨i', -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `.inl (by simpa using hab)`.
+-/
 theorem pairwise_ltL : (letters Dw).Pairwise LtL := by
   refine List.pairwise_flatMap.2 ⟨fun a _ => ?_, ?_⟩
   · rw [List.pairwise_map]
@@ -165,6 +214,11 @@ theorem pairwise_ltL : (letters Dw).Pairwise LtL := by
     obtain ⟨i', -, rfl⟩ := List.mem_map.1 hy
     exact .inl (by simpa using hab)
 
+/- English proof (translation)
+Establish `h` using `List.pairwise_iff_get.1 (pairwise_ltL (Dw := Dw))`. Use `⟨h a b, fun g => ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy a b with e | rfl | e` into its components or cases. Conclude with `e`. Conclude with `absurd g g.asymm`.
+
+Conclude with `absurd g (h b a e).asymm`.
+-/
 theorem lt_iff_ltL (a b : Fin (letters Dw).length) : a < b ↔ LtL ((letters Dw).get a) ((letters Dw).get b) := by
   have h := List.pairwise_iff_get.1 (pairwise_ltL (Dw := Dw))
   refine ⟨h a b, fun g => ?_⟩
@@ -176,6 +230,31 @@ theorem lt_iff_ltL (a b : Fin (letters Dw).length) : a < b ↔ LtL ((letters Dw)
 attribute [local instance] Over.cartesianMonoidalCategory in
 open ReciprocityTheory.ChartRestriction.G.PullbackSections MonoidalCategory CartesianMonoidalCategory MonObj in
 
+/- English proof (translation)
+Set `U : (τ : E →+* ℂ) → Fin (Dw.mult τ) → TanM x Z.t.G` to `fun τ a => GlobalTheory.LieMet.tanOf ((hu τ).1 a).1`. Set `e` to `Equiv.ofBijective _ (GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw)`. Establish `he : ∀ y, (letters Dw).get (e.symm y) = y` using `e.apply_symm_apply`. Establish `hc : ∀ cf w, IsCombAtG Z.t x (fun a : Fin (letters Dw).length => u ((letters Dw).get a).1 ((letters Dw).get a).2) cf w ↔ w = (tv (∑ τ, ∑ a, cf (e.symm ⟨τ, a⟩) • U τ a)).left` using `fun cf w => by`. Rewrite using `[← Fintype.sum_sigma fun y : Pad.Letter Dw => cf (e.symm y) • U y.1 y.2, ← Equiv.sum_comp e]`.
+
+Simplify using `only [Equiv.symm_apply_apply]`. Conclude with `GlobalTheory.Proof.frame_combination_coeff_unique.comb_iff (fun a => U (e a).1 (e a).2) cf w`. Establish `hτ : ∀ τ cf w, IsCombAtG Z.t x (u τ) cf w ↔ w = (tv (∑ a, cf a • U τ a)).left` using `fun τ cf w => GlobalTheory.Proof.frame_combination_coeff_unique.comb_iff (U τ) cf w`. Establish `hs : ∀ {m : ℕ} (W : TanM x Z.t.G) (V : Fin m → TanM x Z.t.G) w, IsCombAtG Z.t x (Fin.cons (tv W).left fun j => (tv (V j)).left : Fin (m + 1) → _) (fun _ => 1) w ↔ w = (tv (W + ∑ j, V j)).left` using `fun {m} W V w => by`. Use `GlobalTheory.Proof.frame_combination_coeff_unique.comb_iff (Fin.cons W V : Fin (m + 1) → _) (fun _ => 1) w` as an intermediate fact.
+
+Simplify using `only [one_smul, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ] at this`. Rewrite using `[← this]`. Use `iff_of_eq (congrArg (fun q => IsCombAtG Z.t x q _ w) (_root_.funext fun j => ?_))` and prove the remaining obligations. Conclude with `Fin.cases rfl (fun _ => rfl) j`. Establish `hek : e.symm ⟨σ, i⟩ = k` using `e.symm_apply_eq.2 hk.symm`.
+
+Establish `hlt : ∀ y, k < e.symm y ↔ LtL ⟨σ, i⟩ y` using `fun y => by rw [lt_iff_ltL, he, hk]`. Use `congrArg sInf (Set.ext fun r => ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨cf, h0, hz, ⟨w, hw, hcw⟩, rfl⟩`. Set `T : Finset (E →+* ℂ)` to `Finset.univ.filter fun τ => Fintype.equivFin (E →+* ℂ) τ < Fintype.equivFin (E →+* ℂ) σ`. Set `ε` to `T.equivFin.symm`.
+
+Use `⟨fun a => cf (e.symm ⟨σ, a⟩), by simpa only [hek] using h0, fun a ha => hz _ ((hlt _).2 (.inr ⟨rfl, ha⟩)), ⟨_, ⟨_, fun j => ε j, fun j => (tv (∑ a, cf (e.symm ⟨ε j, a⟩) • U (ε j) a)).left, fun j => ⟨(Finset.mem_filter.1 (ε j).2).2, eig_comb (hu _).1 ((hτ _ _ _).2 rfl)⟩, w, hw, ?_ …` and prove the remaining obligations. Rewrite using `[hs, (hc _ _).1 hcw, ε.sum_comp fun τ => ∑ a, cf (e.symm ⟨τ, a⟩) • U τ a, Finset.sum_coe_sort T fun τ => ∑ a, cf (e.symm ⟨τ, a⟩) • U τ a, ← Finset.sum_insert (f := fun τ => ∑ a, cf (e.symm ⟨τ, a⟩) • U τ a) (show σ ∉ T by simp [T])]`. Use `congrArg (fun q => (tv q).left) (Finset.sum_subset (Finset.subset_univ _) fun τ _ hτ' => ?_).symm` and prove the remaining obligations. Simplify using `only [T, Finset.mem_insert, Finset.mem_filter, Finset.mem_univ, true_and, not_or, not_lt] at hτ'`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hz _ ((hlt _).2 (.inl (hτ'.2.lt_of_ne fun h => hτ'.1 ((Fintype.equivFin _).injective h).symm))), zero_smul]`. Introduce and unpack `⟨cf, h0, hz, ⟨w₀, ⟨m, ρ, v, hv, w, hw, hcw⟩, hc₀⟩, rfl⟩ choose a ha using fun j => ((hu (ρ j)).2 _ (hv j).2).exists`. Set `G : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C` to `Pi.single σ cf + ∑ j, Pi.single (ρ j) (a j)`. Establish `hG : ∀ τ, Fintype.equivFin (E →+* ℂ) σ ≤ Fintype.equivFin (E →+* ℂ) τ → G τ = (Pi.single σ cf : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C) τ` using `fun τ h => by`. Simplify using `only [G, Pi.add_apply, Finset.sum_apply]`.
+
+Rewrite using `[Finset.sum_eq_zero fun j _ => Pi.single_eq_of_ne (fun g => ((hv j).1.trans_le h).ne (by rw [g])) _, add_zero]`. Establish `hσ : G σ = cf` using `(hG σ le_rfl).trans (Pi.single_eq_same _ _)`. Establish `hP : ∀ τ (b : Fin (Dw.mult τ) → C), ∑ τ', ∑ a, (Pi.single τ b : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C) τ' a • U τ' a = ∑ a, b a • U τ a` using `fun τ b => by`. Rewrite using `[Finset.sum_eq_single τ (fun τ' _ h => by simp [Pi.single_eq_of_ne h]) (by simp), Pi.single_eq_same]`. Use `⟨fun b => G (e b).1 (e b).2, ?_, fun b hb => ?_, ⟨w, hw, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show G (e k).1 (e k).2 ≠ 0`. Rewrite using `[← hek, e.apply_symm_apply, hσ]` and apply the resulting hypothesis. Take `⟨⟨τ, b⟩, rfl⟩` from `e.symm.surjective b beta_reduce`. Rewrite using `[e.apply_symm_apply]`. Break down `(hlt _).1 hb with h | ⟨h, h'⟩` into its components or cases.
+
+Use `show G τ b = 0`. Rewrite using `[hG τ h.le, Pi.single_eq_of_ne fun g => h.ne (congrArg _ g.symm)]`. Both sides reduce to the same expression. Take `rfl : σ = τ` from `h show G σ b = 0`. Rewrite using `[hσ]`.
+
+Conclude with `hz b h'`. Rewrite using `[hc]`. Rewrite `hcw` using `[(hτ _ _ _).1 hc₀, show v = _ from _root_.funext fun j => (hτ _ _ _).1 (ha j), hs]`. Rewrite using `[hcw]`. Use `congrArg (fun q => (tv q).left) ?_` and prove the remaining obligations.
+
+Establish `h1 : ∀ τ b, G (e (e.symm ⟨τ, b⟩)).1 (e (e.symm ⟨τ, b⟩)).2 = G τ b` using `fun τ b => by`. Rewrite using `[e.apply_symm_apply]`. Simplify using `only [h1]`. Simplify using `only [G, Pi.add_apply, Finset.sum_apply, add_smul, Finset.sum_add_distrib, Finset.sum_smul, hP]`. Use `congr 1`.
+
+Rewrite using `[← Finset.sum_congr rfl fun j _ => hP (ρ j) (a j), Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun τ _ => Finset.sum_comm`. Use `show _ = ‖G (e k).1 (e k).2‖⁻¹`. Rewrite using `[← hek, e.apply_symm_apply, hσ]`.
+-/
 theorem grNorm_concat {C : Type} [NontriviallyNormedField C] {φ : c.F →+* C} {x : Sp C ⟶ Z.X}
     (Λ : Set (Sp (DualNumber C) ⟶ Z.t.G.left))
     {u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber C) ⟶ Z.t.G.left)} (hu : ∀ τ, IsEigBasis Z φ x τ (u τ))
@@ -260,6 +339,13 @@ theorem grNorm_concat {C : Type} [NontriviallyNormedField C] {φ : c.F →+* C} 
 
 end Concat
 
+/- English proof (translation)
+Establish `key : ∀ l : Fin (n + 1), c.succ ≤ l → ∃ g : fl.F c.succ ⟶ fl.F l, g ≫ fl.ι l = fl.ι c.succ` using `fun l => by`. Proceed by induction on `l using Fin.induction with`. Consider the case `zero => exact fun h => absurd h (not_le.2 (Fin.succ_pos c))`. Consider the case `succ j ih`. Introduce `hj`.
+
+Break down `hj.eq_or_lt with e | e` into its components or cases. Conclude with `e ▸ ⟨𝟙 _, Category.id_comp _⟩`. Take `⟨g, hg⟩` from `ih (Fin.le_castSucc_iff.2 e)`. Conclude with `⟨g ≫ fl.step j, by rw [Category.assoc, fl.step_ι, hg]⟩`. Take `⟨g, hg⟩` from `key i.castSucc (Fin.le_castSucc_iff.2 (Fin.succ_lt_succ_iff.2 h))`.
+
+Use `⟨(g ≫ fl.step i).app W s, (QCoh.app_app _ _ _ _).trans ?_, (QCoh.app_app _ _ _ _).trans ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, show fl.step i ≫ fl.π i = 0 from Limits.cokernel.condition _, Limits.comp_zero]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, fl.step_ι, hg]`.
+-/
 theorem exists_lower {X : Scheme.{0}} {M : X.Modules} {n : ℕ} (fl : Vert.Flag M n) (W : X.Opens) {c i : Fin n}
     (h : c < i) (s : Γ(fl.F c.succ, W)) :
     ∃ s' : Γ(fl.F i.succ, W), (fl.π i).app W s' = 0 ∧ (fl.ι i.succ).app W s' = (fl.ι c.succ).app W s := by
@@ -286,6 +372,37 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {β : Oz →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (C : FlagCpt Z e)
 
+/- English proof (translation)
+Establish `a₅ : spMap χ' ≫ y = z ≫ πG` using `by rw [← b₁, ← sp_comp', a₃, reassoc_of% a₁]`. Establish `hzW : ⊤ ≤ (z ≫ j) ⁻¹ᵁ W` using `hyt ▸ fun q _ => hW (Set.mem_univ (spMap ε.O.subtype q))`. Establish `hV : ∀ {K : Type} [CommRing K] (w : Sp K ⟶ G), ⊤ ≤ (w ≫ j) ⁻¹ᵁ W → ⊤ ≤ ((w ≫ jG) ≫ jB) ⁻¹ᵁ V` using `fun w hy => by`. Rewrite using `[Category.assoc, h₁, ← Category.assoc]`. Conclude with `fun q _ => hWV (hy (Set.mem_univ q))`.
+
+Set `x` to `spMap σ ≫ y ≫ C.π ≫ genι Z`. Establish `d₀ : ∀ {T : Scheme.{0}} (g : gen Z ⟶ T), (s ≫ jG) ≫ πB ≫ g = spMap σ ≫ y ≫ C.π ≫ g` using `fun g => by`. Rewrite using `[Category.assoc, reassoc_of% h₂, reassoc_of% a₃]`. Establish `hub` using `hu.1 V f hf S (s ≫ jG) (hV s hsW) ((σ.comp φ₁).comp e.toRingHom) (by`. Rewrite using `[d₀, reassoc_of% c₁, sp_comp', sp_comp])`.
+
+Rewrite `hub` using `[d₀, show ((σ.comp φ₁).comp e.toRingHom).comp e.symm.toRingHom = σ.comp φ₁ from RingHom.ext fun a => by simp]`. Establish `nat : ∀ {K : Type} [CommRing K] (ψ : S →+* K) (y : Sp K ⟶ G) (_ : spMap ψ ≫ s = y) (hy), u V f hf K (y ≫ jG) hy = fun i => spMap (Formalism.L2.Pj.dualMap ψ) ≫ u V f hf S (s ≫ jG) (hV s hsW) i`. Introduce and unpack `K _ ψ _ rfl hy`. Conclude with `_root_.funext fun i => hu.2.2 V f hf S K ψ (s ≫ jG) _ hy i`. Generalize the expression as in `u V f hf S (s ≫ jG) (hV s hsW) = uS at hub nat`.
+
+Establish `hfb` using `eigBasis_bc fr σ τ`. Use `choose Mc hM using fun i => (hfb.2 _ (hub.1 i)).exists`. Use `choose Mc' hM' using fun i => (hub.2 _ (hfb.1 i)).exists`. Establish `hiK : ∀ {K : Type} [CommRing K] (ψ : S →+* K), IsEigBasis Z ((ψ.comp σ).comp φ₁) (spMap ψ ≫ x) τ fun k => spMap (Formalism.L2.Pj.dualMap ψ) ≫ spMap (Formalism.L2.Pj.dualMap σ) ≫ fr.v τ k` using `fun ψ => by`. Simplify using `only [x, dual_comp]`.
+
+Rewrite using `[sp_comp']`. Conclude with `eigBasis_bc fr _ τ`. Establish `e₁ : FlagCov.genPt G ≫ jG ≫ πB ≫ genι Z = spMap ι ≫ x`. Rewrite using `[← a₂, show x = _ from (d₀ _).symm]`. Simplify using `only [Category.assoc]`.
+
+Simplify using `only [e₁, nat ι _ a₂, evalPt_eq ι (s ≫ j) (x' := FlagCov.genPt G ≫ j) (by rw [← a₂, Category.assoc]) W hsW, map_add] at h h'`. Establish `hMM : Matrix.of (fun a b => Mc b a) * Matrix.of (fun a b => Mc' b a) = 1`. Use extensionality with `a b`. Use `congrFun (indep_of_eig hfb _ _ _ (tanLinG _ (fun k => (hfb.1 k).1) uS (Matrix.of fun a b => Mc b a) _ _ hM (hM' b)) (isCombAtG_single Z.t _ (fun k => (hfb.1 k).1) b)) a` as an intermediate fact. Rewrite using `[Matrix.one_apply, ← Pi.single_apply b (1 : S) a, ← this]`.
+
+Both sides reduce to the same expression. Establish `hdet : IsUnit (Matrix.of (fun a b => Mc b a) * A.map (TangentOrigin.evalPt (s ≫ j) W hsW)).det`. Rewrite using `[Matrix.det_mul, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(Matrix.isUnit_det_of_right_inverse hMM).mul (hA.map _)`. Take `⟨hN, hd⟩` from `bl_of_lead ι hι (fun k => (hfb.1 k).1) (indep_of_eig (hiK ι)) (M := Matrix.of fun a b => Mc b a) hM (v := fun k => spMap (Formalism.L2.Pj.dualMap φ) ≫ C.f0.v τ k) (d := fun k => φ (d τ k : C.Y.Fnˣ)) (fun i => by`.
+
+Take `⟨cf, g₁, g₂, g₃⟩` from `hT.2.2 τ i`. Use `⟨fun k => φ (cf k), congrArg φ g₁, fun k hk => (congrArg φ (g₂ k hk)).trans (map_zero φ), ?_⟩` and prove the remaining obligations. Establish `g₄` using `GlobalTheory.LatDRFree.comb_map Z.t φ g₃`. Simplify using `only [dual_comp, x] at g₄ ⊢`. Rewrite using `[sp_comp', b₂, ← sp_comp', reassoc_of% a₄]`.
+
+Conclude with `g₄) (A.map (TangentOrigin.evalPt (s ≫ j) W hsW)) i r h`. Use the proof step `(fun a ha => by simpa only [map_add, Matrix.map_apply] using h' a ha)`. Establish `hun` using `isUnit_bl hN hdet`. Use `⟨hun.unit, hd, ?_⟩` and prove the remaining obligations. Set `ψ` to `io.comp χ`.
+
+Establish `e₂ : spMap io ≫ (z ≫ jG) ≫ πB ≫ genι Z = spMap ψ ≫ x`. Rewrite using `[show x = _ from (d₀ _).symm, ← sp_comp']`. Simplify using `only [Category.assoc, reassoc_of% a₁]`. Establish `e₃ : ((io.comp (algebraMap F (AlgebraicClosure F))).comp e.symm.toRingHom) = (ψ.comp σ).comp φ₁`. Establish `: algebraMap F (AlgebraicClosure F) = (χ'.comp φ₁).comp e.toRingHom` using `EigLoc.spMap_inj (by`.
+
+Rewrite using `[← sp_comp, ← sp_comp, ← c₁, ← hz, ← C.π_str]`. Simplify using `only [Category.assoc, reassoc_of% a₅])`. Rewrite using `[this, ← b₁]`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `io (χ (σ (φ₁ (e (e.symm a))))) = io (χ (σ (φ₁ a)))`.
+
+Rewrite using `[e.apply_symm_apply]`. Establish `e₄ : ψ' = ψ.comp σ` using `RingHom.ext fun a => by rw [hψ, ← b₁]; rfl`. Rewrite `hΛ` using `[e₂, e₃, nat χ z a₁]`. Simplify using `only [dual_comp] at hΛ`. Establish `hint : ∀ a, ‖ψ (TangentOrigin.evalPt (s ≫ j) W hsW a)‖ ≤ 1` using `fun a => by`.
+
+Establish `g₁` using `evalPt_eq χ (s ≫ j) (x' := z ≫ j) (by rw [reassoc_of% a₁]) W hsW hzW a`. Establish `g₂` using `evalPt_eq ε.O.subtype yt hyt.symm W hW hzW a`. Conclude with `(hio _).2 (g₁ ▸ g₂ ▸ (TangentOrigin.evalPt yt W hW a).2)`. Establish `mm : (Matrix.of fun a b => Mc b a).map ψ * (A.map (TangentOrigin.evalPt (s ≫ j) W hsW)).map ψ = (Matrix.of (fun a b => Mc b a) * A.map (TangentOrigin.evalPt (s ≫ j) W hsW)).map ψ` using `Matrix.map_mul.symm`. Establish `hg` using `grNorm_of_bl (Λ := {w | InGr Z ((ψ.comp σ).comp φ₁) (spMap ψ ≫ x) (latDR Z.t (spMap ψ ≫ x)) τ w}) (fun k => ((hiK ψ).1 k).1) (indep_of_eig (hiK ψ)) (M := (Matrix.of fun a b => Mc b a).map ψ) (Q := (A.map (TangentOrigin.evalPt (s ≫ j) W hsW)).map ψ) (Q' := (A⁻¹.map (TangentOrigin. …`.
+
+Rewrite `hg` using `[mm]`. Simplify using `only [dual_comp, x] at hg`. Rewrite `hg` using `[sp_comp', ← e₄]`. Take `⟨hkl, hk'⟩` from `List.getElem?_eq_some_iff.1 hk`. Simplify using `only [lnStep, dif_pos hkl]`.
+
+Conclude with `(congrArg Real.log ((grNorm_concat _ (fun τ => eigBasis_bc fr ψ' τ) ⟨k, hkl⟩ hk').trans hg)).trans (Real.log_inv _)`.
+-/
 theorem lnStep_core {Bs Bg Y₀ G : Scheme.{0}} [IsIntegral G] {jB : Bg ⟶ Bs} {πB : Bg ⟶ gen Z} {M : Bs.Modules}
     {τ : E →+* ℂ} {u : FrAssign Z M (Dw.mult τ) jB} (hu : IsLieFrames Z e jB πB M _ τ false u)
     {π₀ : Y₀ ⟶ Bs} {j : G ⟶ Y₀}
@@ -415,6 +532,9 @@ theorem lnStep_core {Bs Bg Y₀ G : Scheme.{0}} [IsIntegral G] {jB : Bg ⟶ Bs} 
   exact (congrArg Real.log ((grNorm_concat _ (fun τ => eigBasis_bc fr ψ' τ) ⟨k, hkl⟩ hk').trans hg)).trans
     (Real.log_inv _)
 
+/- English proof (translation)
+Take `rfl : ip = ip'` from `rfl`. Substitute `hkd` using the available equality. Conclude with `lnStep_core C hu h₁ h₂ hf hWV A hA r hx hxV i h h' ε z hz yt hyt hW k hk hι fr hT a₁ a₂ a₃ a₄ b₁ b₂ c₁ hsW _ hio p hzV hΛ ψ' hψ`.
+-/
 theorem lnStep_padic {Bs Bg Y₀ G : Scheme.{0}} [IsIntegral G] {jB : Bg ⟶ Bs} {πB : Bg ⟶ gen Z} {M : Bs.Modules}
     {τ : E →+* ℂ} {u : FrAssign Z M (Dw.mult τ) jB} (hu : IsLieFrames Z e jB πB M _ τ false u)
     {π₀ : Y₀ ⟶ Bs} {j : G ⟶ Y₀}
@@ -461,6 +581,9 @@ theorem lnStep_padic {Bs Bg Y₀ G : Scheme.{0}} [IsIntegral G] {jB : Bg ⟶ Bs}
   exact lnStep_core C hu h₁ h₂ hf hWV A hA r hx hxV i h h' ε z hz yt hyt hW k hk hι fr hT a₁ a₂ a₃ a₄ b₁ b₂ c₁ hsW _ hio
     p hzV hΛ ψ' hψ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hp⟩ ∀ w, IsEigTan Z (((ioOf (resP v) ε).comp (algebraMap F (AlgebraicClosure F))).comp e.symm.toRingHom) (spMap (ioOf (resP v) ε) ≫ xg ≫ πB ≫ genι Z) τ w → ((∃ a : Fin r → ℂ_[resP v], (∀ i, ‖a i‖ ≤ 1) ∧ IsCombAtG Z.t (spMap (ioOf (resP v) ε) ≫ xg ≫ πB ≫ genι Z) (fun i => spMap ( …`.
+-/
 theorem grLat_at {X W : Scheme.{0}} {jB : W ⟶ X}
     {πB : W ⟶ gen Z} {M : X.Modules} {r : ℕ} {τ : E →+* ℂ} {u : FrAssign Z M r jB}
     (h : IsGrLat Z e jB πB M r τ u) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) (hp : (resP v).Prime)
@@ -479,6 +602,9 @@ theorem grLat_at {X W : Scheme.{0}} {jB : W ⟶ X}
           (latDR Z.t (spMap (ioOf (resP v) ε) ≫ xg ≫ πB ≫ genι Z)) τ w) :=
   h v hp ε xg xt h1 h2 U f hf h3 hx
 
+/- English proof (translation)
+The claim follows from `Fact.mk hp LineNorm.symLog C kind (.inr k) v ε ⟨z ≫ πG, hz⟩ = (-Real.log (ε.w (resP v)) / Real.log (resP v)) * -Real.log ‖ioOf (resP v) ε ((Scheme.stalkClosedPointTo z).hom n.1)‖ := by obtain ⟨hT, -⟩ := (C.gr_spec (below (z ≫ πG))).choose_spec.choose_spec.choose_spec obtain ⟨σ, a …`.
+-/
 theorem lnStep_eq {Bs Bg Y₀ G : Scheme.{0}} [IsIntegral G] {jB : Bg ⟶ Bs} {πB : Bg ⟶ gen Z} {M : Bs.Modules}
     {τ : E →+* ℂ} {u : FrAssign Z M (Dw.mult τ) jB} (hu : IsLieFrames Z e jB πB M _ τ false u)
     {π₀ : Y₀ ⟶ Bs} {j : G ⟶ Y₀}
@@ -555,6 +681,23 @@ theorem lnStep_eq {Bs Bg Y₀ G : Scheme.{0}} [IsIntegral G] {jB : Bg ⟶ Bs} {�
     (Fact.mk hp) hzV hΛ hio _ (fun _ => RingHom.comp_apply _ _ _) _ hkd
   exact ⟨n, k₁, (symLog_eq C hp ε _ kind _).trans (congrArg _ k₂)⟩
 
+/- English proof (translation)
+Simplify using `only [adlOf]`. Take `⟨hp', -, hw⟩` from `ioOf_spec F v ε`. Take `rfl : hp = hp'` from `rfl`. Establish `hx : ∀ x, expo Dw (Finsupp.single ((kind, R, st) : Pad.Sym E) 1) x = if (⟨τ, k⟩ : Pad.Letter Dw) = x then 1 else 0` using `fun x => by`. Rewrite using `[expo, Finsupp.sum_single_index (by simp)]`.
+
+Simplify using `[hst]`. Establish `hD : divOf C (expo Dw (Finsupp.single ((kind, R, st) : Pad.Sym E) 1)) = C.gr τ k`. Simplify using `[divOf, hx]`. Establish `hE` using `(C.gr_spec (below (z ≫ πG))).choose_spec.choose_spec.choose_spec.2 τ k`. Rewrite using `[LineNorm.lgOf_eq_lgCopy]`.
+
+Use `(LineNorm.lgCopy_eq C _ v ε ⟨z ≫ πG, hz⟩).trans ?_` and prove the remaining obligations. Rewrite using `[Finsupp.support_single _ (by omega), Finset.sum_singleton, Finsupp.single_eq_same]`. Simplify using `only [LineNorm.dg]`. Rewrite using `[h₄]`. Use `clear h₄`.
+
+Generalize the expression as in `(C.gr_spec (below (z ≫ πG))).choose_spec.choose_spec.choose = d at h₂ hE ⊢`. Establish `hP : ∏ x : Pad.Letter Dw, d x.1 x.2 ^ expo Dw (Finsupp.single ((kind, R, st) : Pad.Sym E) 1) x = d τ k`. Simplify using `only [hx]`. Rewrite using `[Finset.prod_eq_single (⟨τ, k⟩ : Pad.Letter Dw) (fun b _ hb => by rw [if_neg hb.symm, zpow_zero]) (by simp), if_pos rfl, zpow_one]`. Establish `hq` using `Base.isEqn_eqn (C.gr τ k) (below (z ≫ πG))`.
+
+Rewrite using `[hP, genAt, hD]`. Generalize the expression as in `eqn (C.gr τ k) (below (z ≫ πG)) = g at hq ⊢`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, ea⟩ : UnitAt (below (z ≫ πG)) ((d τ k * g⁻¹ : C.Y.Fnˣ) : C.Y.Fn) := by`. Simplify `hq.iff_unitAt.1 hE` using `[div_eq_mul_inv]`. Take `⟨a', e₁, e₂⟩` from `h₁ a`.
+
+Establish `e {T : Type} [Field T] (ψ : G.presheaf.stalk (below z) →+* T) : ψ (n⁻¹ : _ˣ) = (ψ n)⁻¹` using `map_units_inv ψ n`. Establish `e₃ : φ ((g⁻¹ : C.Y.Fnˣ) : C.Y.Fn) ^ 1 * (ρ : G.functionField) = algebraMap _ G.functionField (a' * (n⁻¹ : _ˣ))`. Establish `h0 : φ (d τ k : C.Y.Fnˣ) ≠ 0` using `(map_ne_zero φ).2 (d τ k).ne_zero`. Establish `h1` using `ρ.ne_zero`. Rewrite using `[map_mul, e, h₂, e₁, ea]`.
+
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish `n₁ : ε.w ((Scheme.stalkClosedPointTo (z ≫ πG)).hom a) ≠ 0` using `ε.w.ne_zero (ha.map _).ne_zero`. Establish `n₂ : ε.w ((Scheme.stalkClosedPointTo z).hom n.1) ≠ 0` using `ε.w.ne_zero (n.isUnit.map _).ne_zero`. Rewrite using `[e₃, ← ea, Base.valAt_stalk, Base.valAt_stalk, map_mul, e, e₂, map_mul, map_inv₀, Real.log_mul n₁ (inv_ne_zero n₂), Real.log_inv, hw ((Scheme.stalkClosedPointTo z).hom n.1)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lgOf_letter {G : Scheme.{0}} [IsIntegral G] {πG : G ⟶ C.Y.X} {φ : C.Y.Fn →+* G.functionField}
     {v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)} (hp : (resP v).Prime) (ε : Ext v)
     (z : Sp (AlgebraicClosure F) ⟶ G) (hz : (z ≫ πG) ≫ C.Y.str = spMap (algebraMap F (AlgebraicClosure F)))
@@ -615,6 +758,25 @@ theorem lgOf_letter {G : Scheme.{0}} [IsIntegral G] {πG : G ⟶ C.Y.X} {φ : C.
 
 end Free
 
+/- English proof (translation)
+Introduce `_ _ _ D O _ R _ c Bs _ q _ _ Bg jB πB G Y X Gs _ _ _ π ρ j πG φ jG _ _ hc σ M hM HM t ht hl F i r hr k hk v e y z yt ch hz hyt hU`. Take `⟨-, -, -, -, -, -, -, φs, h₁, h₂⟩` from `hc`. Take `⟨hp, -⟩` from `ioOf_spec _ v e`. Use `hM.isVB.isQuasicoherent` as an intermediate fact. Use `(hM.isVB.pullback π).isQuasicoherent` as an intermediate fact.
+
+Take `⟨y, hy⟩` from `y`. Take `rfl : z ≫ πG = y` from `hz`. Establish `hch : ∃ ck : ∀ k, Chart (F.gr k) 1, ck i = ch PUnit.unit ∧ ∀ k, yt (IsLocalRing.closedPoint e.O) ∈ (ck k).U` using `by choose U f hx hf using fun k => F.isVB_gr k (yt (IsLocalRing.closedPoint e.O))`. Take `⟨c₀, hc₀, hU'⟩ : ∃ c₀ : Chart (F.gr i) 1, c₀ = ch PUnit.unit ∧ yt (IsLocalRing.closedPoint e.O) ∈ c₀.U` from `⟨_, rfl, hU (Set.mem_univ _)⟩`. Use `⟨Function.update (fun k => ⟨U k, f k, hf k⟩) i c₀, (Function.update_self ..).trans hc₀, fun k => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hU'`. Rewrite using `[Function.update_of_ne hk]`.
+
+Conclude with `hx k`. Take `⟨ck, hck, hx⟩` from `hch`. Take `⟨V, f, hV, hf⟩` from `hM.isVB (π (ρ (yt (IsLocalRing.closedPoint e.O))))`. Take `⟨W, hxW, hWV, hW, s, hs, hfr⟩` from `exists_lifts F _ ck hx (ρ ⁻¹ᵁ (π ⁻¹ᵁ V)) hV`. Establish `hyW` using `le_pre yt W hxW`.
+
+Establish `hgW : ⊤ ≤ (FlagCov.genPt Gs ≫ j) ⁻¹ᵁ W` using `le_pre (R := Gs.functionField) _ _ (by`. Establish `h0 : ⊤ ≤ (z ≫ j) ⁻¹ᵁ W` using `hyt ▸ fun q _ => hyW (Set.mem_univ (spMap e.O.subtype q))`. Establish `h1 : FlagCov.genPt Gs (IsLocalRing.closedPoint _) = genericPoint Gs` using `Scheme.fromSpecStalk_closedPoint`. Conclude with `(congrArg (fun q => j q ∈ W) h1).mpr ((genericPoint_specializes (below z)).mem_open (j ⁻¹ᵁ W).isOpen (h0 (Set.mem_univ (IsLocalRing.closedPoint _)))))`. Establish `hgV : ⊤ ≤ ((FlagCov.genPt Gs ≫ jG) ≫ jB) ⁻¹ᵁ V`.
+
+Rewrite using `[Category.assoc, h₁, ← Category.assoc]`. Conclude with `fun q _ => hWV (hgW (Set.mem_univ q))`. Establish `hA : IsUnit (Matrix.det (Matrix.of fun b k => (((hf.pullback π).pullback ρ).basis hWV).repr ((F.ι k.succ).app W (s k)) b))`. Use `(((hf.pullback π).pullback ρ).basis hWV).isUnit_det (hfr.basis le_rfl)` as an intermediate fact. Rewrite `this` using `[Module.Basis.det_apply]`.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Use extensionality with `b k`. Rewrite using `[Module.Basis.toMatrix_apply, IsFrame.basis_apply, Twist.resM_self]`. Both sides reduce to the same expression. Take `⟨k₁, n, k₂, k₃⟩` from `lnStep_eq (O.Φ.C c) ht (π₀ := ρ ≫ π) h₁ h₂ hf hWV _ hA ((r fun _ => ck i)⁻¹ : Gs.functionFieldˣ) hgW hgV i (hr (fun _ => ck i) V f hf W (hW i) hWV (s i) (hs i) hgW hgV) (fun a ha => by`.
+
+Take `⟨s', g₁, g₂⟩` from `exists_lower F W ha (s a)`. Establish `g` using `hr (fun _ => ck i) V f hf W (hW i) hWV (s i + s') (by rw [map_add, g₁, add_zero]; exact hs i) hgW hgV`. Simplify using `only [map_add ((F.ι i.succ).app W).hom, g₂, map_add (Module.Basis.repr _), Finsupp.add_apply] at g`. Conclude with `g)`. Use `hl φs hp e z hy yt hyt hyW k hk (ArIn.ind ∅) (by simp [ArIn.ind])`.
+
+Establish `hri : (r fun _ => ck i) = r ch` using `congrArg _ (_root_.funext fun _ => hck)`. Rewrite using `[Nat.cast_one, one_mul, ← hri]`. Conclude with `lgOf_letter (O.Φ.C c) hp e z hy _ _ σ i (.inr k) hk _ _ k₁ n k₂ k₃`.
+-/
 theorem lg_whole_eq : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.RegularAlteration →
   ∀ (D : D7) (O : Setup D) (hO : O.Core) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp) (Bs : Scheme.{0}) [IsIntegral Bs] (q : Bs ⟶ Sp (𝓞 D.what₂.LL))
     (arq : IsArithVar q (dimGr D.what₂.Tau O.N O.j)) (nBs : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Bs)

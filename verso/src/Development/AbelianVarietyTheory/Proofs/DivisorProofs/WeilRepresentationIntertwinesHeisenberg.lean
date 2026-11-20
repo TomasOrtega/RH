@@ -10,6 +10,25 @@ open GlobalTheory.SplitWeil (SB nabs)
 
 namespace GlobalTheory.KSp
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ hψ hψ1 hψne χ hχ hη _ _ μ _ κ ω hK`. Set `U : Subgroup (UG c (stdJ ν E))` to `{ carrier := {g | ∀ w : Matrix α (ν ⊕ ν) E, Heisenberg₂ c hψ Q w * ω g = ω g * Heisenberg₂ c hψ Q (w * mat c g)} one_mem' := by`. Introduce `w`. Establish `h1 : mat c (1 : UG c (stdJ ν E)) = 1` using `rfl`. Rewrite using `[map_one, h1, Matrix.mul_one, mul_one, one_mul]`.
+
+Use the proof step `mul_mem' := by`. Introduce `g h hg hh w`. Establish `hm : mat c (g * h) = mat c g * mat c h` using `rfl`. Rewrite using `[map_mul, ← mul_assoc, hg, mul_assoc, hh, ← mul_assoc, hm, Matrix.mul_assoc]`. Use the proof step `inv_mem' := by`.
+
+Introduce `g hg w`. Establish `h1 : mat c g⁻¹ * mat c g = 1`. Express the relevant statement in the definitionally equal form `(((g⁻¹ * g : UG c (stdJ ν E)) : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression.
+
+Establish `h2` using `hg (w * mat c g⁻¹)`. Rewrite `h2` using `[Matrix.mul_assoc, h1, Matrix.mul_one]`. Establish `h3 : ω g⁻¹ * ω g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `h4 : ω g * ω g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Use `show Heisenberg₂ c hψ Q w * ω g⁻¹ = ω g⁻¹ * Heisenberg₂ c hψ Q (w * mat c g⁻¹)`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← mul_assoc, h3, one_mul]`. Use `_ = ω g⁻¹ * (Heisenberg₂ c hψ Q (w * mat c g⁻¹) * ω g) * ω g⁻¹ := by rw [h2]`. Use `_ = ω g⁻¹ * Heisenberg₂ c hψ Q (w * mat c g⁻¹) := by simp only [mul_assoc, h4, mul_one] }`. Establish `hsieg : sieg c ν ≤ U`.
+
+Introduce `p hp w`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, heis_apply, hK.par p hp]`. Conclude with `GlobalTheory.T.siegelParabolic_operators_heisenberg_compat F E c δ hE α ν Q hQ ψ hψ hψ1 hψne χ hχ hη p hp w φ`. Establish `hweyl : weyl c ν ∈ U`.
+
+Introduce `w`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, heis_apply, hK.wey]`. Establish `hs : ∀ f : Matrix α ν E → ℂ, heisFun c ψ Q w (κ • f) = κ • heisFun c ψ Q w f`. Introduce `f`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [heisFun, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, GlobalTheory.T.fourier_intertwines_weyl_heisenberg_schrodinger F E c δ hE α ν Q hQ ψ μ w φ]`. Both sides reduce to the same expression.
+
+Establish `hU` using `GlobalTheory.T.siegelParabolic_weylElement_generate_unitary F E c δ hE ν U hsieg hweyl`. Introduce `g w`. Establish `hg : g ∈ U` using `hU ▸ Subgroup.mem_top g`. Conclude with `hg w`.
+-/
 theorem weil_heis_intertwine : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [Algebra F E] [TopologicalSpace E] [IsModuleTopology F E] (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (α : Type) [Fintype α] [DecidableEq α] (ν : Type) [Fintype ν] [DecidableEq ν] (Q : Matrix α α E) (_ : IsHerm c Q) (ψ : AddChar F ℂ) (hψ : Continuous ψ) (_ : ∀ t, ‖ψ t‖ = 1) (_ : ψ ≠ 1) (χ : Eˣ →* Circle) (_ : Continuous χ) (_ : ResEtaPow (R := F) ⊥ χ (Fintype.card α)) [MeasurableSpace (Matrix α ν E)] [BorelSpace (Matrix α ν E)] (μ : Measure (Matrix α ν E)) [μ.IsAddHaarMeasure] (κ : ℂ) (ω : Representation ℂ (UG c (stdJ ν E)) (SB (Matrix α ν E))), IsKW c ψ χ Q μ κ ω → ∀ (g : UG c (stdJ ν E)) (w : Matrix α (ν ⊕ ν) E), Heisenberg₂ c hψ Q w * ω g = ω g * Heisenberg₂ c hψ Q (w * ((g : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E)) := by
   intro F _ _ _ _ _ E _ _ _ _ c δ hE α _ _ ν _ _ Q hQ ψ hψ hψ1 hψne χ hχ hη _ _ μ _ κ ω hK
   let U : Subgroup (UG c (stdJ ν E)) :=

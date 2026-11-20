@@ -5,6 +5,19 @@ namespace GlobalTheory.FlatFibreProduct
 
 open TensorProduct
 
+/- English proof (translation)
+Establish `k₁ : ∀ x, h₂.equiv (f.lTensor R' x) = f' (h₁.equiv x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r m => simp [IsBaseChange.equiv_tmul, hf]`.
+
+Consider the case `add x y hx hy => simp_all`. Establish `k₂ : ∀ x, h₃.equiv (g.lTensor R' x) = g' (h₂.equiv x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul r m => simp [IsBaseChange.equiv_tmul, hg]`. Consider the case `add x y hx hy => simp_all`. Establish `inj` using `Module.Flat.lTensor_preserves_injective_linearMap (M := R') f hinj`. Establish `ex` using `Module.Flat.lTensor_exact R' hex`. Use `⟨fun a b hab => ?_, fun y => ?_⟩` and prove the remaining obligations.
+
+Apply `h₁.equiv.symm.injective` to reduce the goal to its premises. Apply `inj` to reduce the goal to its premises. Apply `h₂.equiv.injective` to reduce the goal to its premises. Rewrite using `[k₁, k₁]`. Simplify using `using hab`.
+
+Take `⟨x, rfl⟩` from `h₂.equiv.surjective y`. Rewrite using `[← k₂, LinearEquiv.map_eq_zero_iff, ex x]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨h₁.equiv z, (k₁ z).symm⟩`.
+
+Introduce and unpack `⟨z, hz⟩`. Take `⟨w, rfl⟩` from `h₁.equiv.surjective z`. Use `⟨w, h₂.equiv.injective ?_⟩` and prove the remaining obligations. Rewrite using `[k₁, hz]`.
+-/
 theorem injective_exact_of_isBaseChange {R R' M₁ M₂ M₃ N₁ N₂ N₃ : Type*} [CommRing R] [CommRing R']
     [Algebra R R'] [Module.Flat R R']
     [AddCommGroup M₁] [AddCommGroup M₂] [AddCommGroup M₃] [Module R M₁] [Module R M₂] [Module R M₃]
@@ -47,6 +60,43 @@ theorem injective_exact_of_isBaseChange {R R' M₁ M₂ M₃ N₁ N₂ N₃ : Ty
       refine ⟨w, h₂.equiv.injective ?_⟩
       rw [k₁, hz]
 
+/- English proof (translation)
+Introduce `A B C D A' B' C' D' fB fC u v e eB eC eD aB aC u' v' hfl hB hC hD h1 h2 h3 h4 hfib`. Use `letI : Algebra A A' := e.hom.toAlgebra`. Use `letI : Algebra A B := fB.hom.toAlgebra`. Use `letI : Algebra A C := fC.hom.toAlgebra`. Use `letI : Algebra A D := (fB ≫ u).hom.toAlgebra`.
+
+Use `letI : Algebra A' B' := aB.hom.toAlgebra`. Use `letI : Algebra A' C' := aC.hom.toAlgebra`. Use `letI : Algebra A' D' := (aB ≫ u').hom.toAlgebra`. Use `letI : Algebra B B' := eB.hom.toAlgebra`. Use `letI : Algebra C C' := eC.hom.toAlgebra`.
+
+Use `letI : Algebra D D' := eD.hom.toAlgebra`. Use `letI : Algebra A B' := (e ≫ aB).hom.toAlgebra`. Use `letI : Algebra A C' := (e ≫ aC).hom.toAlgebra`. Use `letI : Algebra A D' := (e ≫ aB ≫ u').hom.toAlgebra`. Use `haveI : IsScalarTower A A' B' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Use `haveI : IsScalarTower A A' C' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsScalarTower A A' D' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsScalarTower A B B' := IsScalarTower.of_algebraMap_eq (fun x => congrArg (fun φ => φ.hom x) hB.w)`. Use `haveI : IsScalarTower A C C' := IsScalarTower.of_algebraMap_eq (fun x => congrArg (fun φ => φ.hom x) hC.w)`. Use `haveI : IsScalarTower A D D' := IsScalarTower.of_algebraMap_eq (fun x => congrArg (fun φ => φ.hom x) hD.w)`.
+
+Use `haveI : Module.Flat A A' := hfl`. Establish `PB : Algebra.IsPushout A A' B B'` using `CommRingCat.isPushout_iff_isPushout.mp hB`. Establish `PC : Algebra.IsPushout A A' C C'` using `CommRingCat.isPushout_iff_isPushout.mp hC`. Establish `PD : Algebra.IsPushout A A' D D'` using `CommRingCat.isPushout_iff_isPushout.mp hD`. Establish `hb₁ : IsBaseChange A' (Algebra.linearMap A A')` using `IsBaseChange.linearMap A A'`.
+
+Establish `hb₂` using `IsBaseChange.prodMap _ _ PB.out PC.out`. Establish `hb₃` using `PD.out`. Set `uL : B →ₗ[A] D` to `{ toFun := u.hom, map_add' := map_add _ map_smul' := fun a b => by`. Express the relevant statement in the definitionally equal form `u.hom (fB.hom a * b) = (fB ≫ u).hom a * u.hom b`. Rewrite using `[map_mul]`.
+
+Use `rfl }`. Set `vL : C →ₗ[A] D` to `{ toFun := v.hom, map_add' := map_add _ map_smul' := fun a c => by`. Express the relevant statement in the definitionally equal form `v.hom (fC.hom a * c) = (fB ≫ u).hom a * v.hom c`. Rewrite using `[map_mul, h4]`. Use `rfl }`.
+
+Set `u'L : B' →ₗ[A'] D'` to `{ toFun := u'.hom, map_add' := map_add _ map_smul' := fun a b => by`. Express the relevant statement in the definitionally equal form `u'.hom (aB.hom a * b) = (aB ≫ u').hom a * u'.hom b`. Rewrite using `[map_mul]`. Use `rfl }`. Set `v'L : C' →ₗ[A'] D'` to `{ toFun := v'.hom, map_add' := map_add _ map_smul' := fun a c => by`.
+
+Express the relevant statement in the definitionally equal form `v'.hom (aC.hom a * c) = (aB ≫ u').hom a * v'.hom c`. Rewrite using `[map_mul, h3]`. Use `rfl }`. Set `f : A →ₗ[A] B × C` to `(Algebra.linearMap A B).prod (Algebra.linearMap A C)`. Set `g : B × C →ₗ[A] D` to `uL.coprod (-vL)`.
+
+Set `f' : A' →ₗ[A'] B' × C'` to `(Algebra.linearMap A' B').prod (Algebra.linearMap A' C')`. Set `g' : B' × C' →ₗ[A'] D'` to `u'L.coprod (-v'L)`. Establish `hf : ∀ m, f' (Algebra.linearMap A A' m) = ((IsScalarTower.toAlgHom A B B').toLinearMap.prodMap (IsScalarTower.toAlgHom A C C').toLinearMap) (f m)`. Introduce `m`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Conclude with `congrArg (fun φ => φ.hom m) hB.w`. Conclude with `congrArg (fun φ => φ.hom m) hC.w`. Establish `hg : ∀ m, g' (((IsScalarTower.toAlgHom A B B').toLinearMap.prodMap (IsScalarTower.toAlgHom A C C').toLinearMap) m) = (IsScalarTower.toAlgHom A D D').toLinearMap (g m)`. Introduce and unpack `⟨b, c⟩`. Express the relevant statement in the definitionally equal form `u'.hom (eB.hom b) + -v'.hom (eC.hom c) = eD.hom (u.hom b + -v.hom c)`.
+
+Establish `e₁ : u'.hom (eB.hom b) = eD.hom (u.hom b)` using `congrArg (fun φ => φ.hom b) h1`. Establish `e₂ : v'.hom (eC.hom c) = eD.hom (v.hom c)` using `congrArg (fun φ => φ.hom c) h2`. Rewrite using `[map_add, map_neg, e₁, e₂]`. Establish `hinj : Function.Injective f`. Introduce `a₁ a₂ h`.
+
+Establish `hb : fB.hom a₁ = fB.hom a₂` using `congrArg Prod.fst h`. Establish `hc : fC.hom a₁ = fC.hom a₂` using `congrArg Prod.snd h`. Take `⟨a, -, ha⟩` from `hfib (fB.hom a₁) (fC.hom a₁) (by simpa using congrArg (fun φ => φ.hom a₁) h4)`. Conclude with `(ha a₁ ⟨rfl, rfl⟩).trans (ha a₂ ⟨hb.symm, hc.symm⟩).symm`. Establish `hex : Function.Exact f g`.
+
+Introduce and unpack `⟨b, c⟩`. Express the relevant statement in the definitionally equal form `u.hom b + -v.hom c = 0 ↔ _`. Rewrite using `[← sub_eq_add_neg, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Take `⟨a, ⟨ha₁, ha₂⟩, -⟩` from `hfib b c h`. Conclude with `⟨a, Prod.ext ha₁ ha₂⟩`. Introduce and unpack `⟨a, ha⟩`. Establish `hb : fB.hom a = b` using `congrArg Prod.fst ha`. Establish `hc : fC.hom a = c` using `congrArg Prod.snd ha`.
+
+Substitute `hb hc` using the available equality. Simplify using `using congrArg (fun φ => φ.hom a) h4`. Take `⟨inj', ex'⟩` from `injective_exact_of_isBaseChange hb₁ hb₂ hb₃ f g f' g' hf hg hinj hex`. Introduce `b' c' h`. Establish `h0 : g' (b', c') = 0`.
+
+Express the relevant statement in the definitionally equal form `u'.hom b' + -v'.hom c' = 0`. Rewrite using `[h, add_neg_cancel]`. Take `⟨a', ha'⟩` from `(ex' (b', c')).1 h0`. Use `⟨a', ⟨congrArg Prod.fst ha', congrArg Prod.snd ha'⟩, fun y hy => inj' ?_⟩` and prove the remaining obligations. Rewrite using `[ha']`.
+
+Conclude with `Prod.ext hy.1 hy.2`.
+-/
 theorem exists_unique_of_flat_of_isPushout : ∀ {A B C D A' B' C' D' : CommRingCat.{0}} (fB : A ⟶ B) (fC : A ⟶ C) (u : B ⟶ D) (v : C ⟶ D) (e : A ⟶ A') (eB : B ⟶ B') (eC : C ⟶ C') (eD : D ⟶ D') (aB : A' ⟶ B') (aC : A' ⟶ C') (u' : B' ⟶ D') (v' : C' ⟶ D'), e.hom.Flat → IsPushout e fB aB eB → IsPushout e fC aC eC → IsPushout e (fB ≫ u) (aB ≫ u') eD → eB ≫ u' = u ≫ eD → eC ≫ v' = v ≫ eD → aB ≫ u' = aC ≫ v' → fB ≫ u = fC ≫ v → (∀ (b : B) (c : C), u.hom b = v.hom c → ∃! a : A, fB.hom a = b ∧ fC.hom a = c) → ∀ (b' : B') (c' : C'), u'.hom b' = v'.hom c' → ∃! a' : A', aB.hom a' = b' ∧ aC.hom a' = c' := by
   intro A B C D A' B' C' D' fB fC u v e eB eC eD aB aC u' v' hfl hB hC hD h1 h2 h3 h4 hfib
   letI : Algebra A A' := e.hom.toAlgebra

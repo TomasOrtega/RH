@@ -17,12 +17,18 @@ variable {d : SD σ} {L : LD d}
 variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} {w₁ : d.G}
   {cM : (Fin L.n → AE F E) × AF F → d.G} {δ : E}
 
+/- English proof (translation)
+The claim follows from `I.inj_core h hp hpr h' h'' e`.
+-/
 theorem inj_core (h : Hyp L nb uM nb' w₁ cM δ) {p : d.G} (hp : p ∈ par2 σ d.Y) (hpr : p ∈ rat2 σ d.Y) {c c' : Cr L}
     {γ' γ'' : G2 σ L.Y} (h' : γ' ∈ rat2 σ L.Y) (h'' : γ'' ∈ rat2 σ L.Y)
     (e : p * (w₁ * (cM c.1 * L.j γ')) = w₁ * (cM c'.1 * L.j γ'')) :
     γ'' * γ'⁻¹ ∈ par2 σ L.Y ∧ (γ'' = γ' → c = c') :=
   I.inj_core h hp hpr h' h'' e
 
+/- English proof (translation)
+Conclude with `parabolic_conj_weyl_crossing h hp hpr c`.
+-/
 theorem conj_par (h : Hyp L nb uM nb' w₁ cM δ) {p' : G2 σ L.Y} (hp : p' ∈ par2 σ L.Y) (hpr : p' ∈ rat2 σ L.Y) (c : Cr L) :
     ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧ ∃ c₂ : Cr L, w₁ * (cM c.1 * L.j p') = p * (w₁ * cM c₂.1) := by
   exact parabolic_conj_weyl_crossing h hp hpr c

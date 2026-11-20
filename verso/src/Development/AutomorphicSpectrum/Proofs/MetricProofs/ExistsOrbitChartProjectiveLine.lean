@@ -14,16 +14,28 @@ def lineφ (w : Fin 1 → ℂ) : LPt := fun q => ![1, w 0] q.2
 
 def lineρ (z : LPt) : Fin 1 → ℂ := fun _ => z ⟨(), 1⟩ / z ⟨(), 0⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lineφ_zero (w : Fin 1 → ℂ) : lineφ w ⟨(), 0⟩ = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lineφ_one (w : Fin 1 → ℂ) : lineφ w ⟨(), 1⟩ = w 0 := rfl
 
+/- English proof (translation)
+Use `⟨fun k => ⟨0, by cases k; simp⟩, fun f hf => ?_⟩` and prove the remaining obligations. Establish `: f = 0` using `by simpa using hf`. Simplify using `[this]`.
+-/
 theorem lineφ_mem (w : Fin 1 → ℂ) :
     lineφ w ∈ mcPts (⊥ : Ideal (MRing fun _ : Unit => Fin 2)) := by
   refine ⟨fun k => ⟨0, by cases k; simp⟩, fun f hf => ?_⟩
   have : f = 0 := by simpa using hf
   simp [this]
 
+/- English proof (translation)
+Take `⟨⟨⟩, i⟩` from `q`. Use `fin_cases i`. Conclude with `analyticOnNhd_const`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticOnNhd _`.
+-/
 theorem lineφ_analytic (q : Σ _ : Unit, Fin 2) :
     AnalyticOnNhd ℂ (fun w : Fin 1 → ℂ => lineφ w q) Set.univ := by
   obtain ⟨⟨⟩, i⟩ := q
@@ -31,11 +43,21 @@ theorem lineφ_analytic (q : Σ _ : Unit, Fin 2) :
   · exact analyticOnNhd_const
   · exact (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticOnNhd _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[lineρ]`.
+-/
 theorem lineρ_lineφ (w : Fin 1 → ℂ) : lineρ (lineφ w) = w := by
   funext i
   obtain rfl : i = 0 := Subsingleton.elim _ _
   simp [lineρ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Establish `hp : p () = 0 ∨ p () = 1`. Break down `h : p () with ⟨n, hn⟩` into its components or cases. Use `interval_cases n`.
+
+Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`. Break down `hp with hp | hp` into its components or cases. Simplify using `[lineρ, affCoord, hp]`. Distinguish the cases in `h : w 0 = 0`.
+
+Simplify using `[lineρ, affCoord, hp, h]`. Simplify using `[lineρ, affCoord, hp, h]`.
+-/
 theorem lineρ_affCoord (p : (k : Unit) → Fin 2) (w : Fin 1 → ℂ) :
     lineρ (affCoord p (lineφ w)) = w := by
   funext i
@@ -51,12 +73,28 @@ theorem lineρ_affCoord (p : (k : Unit) → Fin 2) (w : Fin 1 → ℂ) :
     · simp [lineρ, affCoord, hp, h]
     · simp [lineρ, affCoord, hp, h]
 
+/- English proof (translation)
+Simplify using `only [div_eq_mul_inv]`. Conclude with `hf.fun_mul ((differentiableAt_inv h).comp x hg)`.
+-/
 theorem line_diff_div {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {f g : E → ℂ} {x : E}
     (hf : DifferentiableAt ℂ f x) (hg : DifferentiableAt ℂ g x) (h : g x ≠ 0) :
     DifferentiableAt ℂ (fun y => f y / g y) x := by
   simp only [div_eq_mul_inv]
   exact hf.fun_mul ((differentiableAt_inv h).comp x hg)
 
+/- English proof (translation)
+Establish `hφ : ∀ q, DifferentiableAt ℂ (fun w' : Fin 1 → ℂ => lineφ w' q) w` using `fun q => ((lineφ_analytic q) w (Set.mem_univ _)).differentiableAt`. Establish `hF : DifferentiableAt ℂ (fun w' => affCoord p (lineφ w')) w` using `differentiableAt_pi.2 fun q => by show DifferentiableAt ℂ (fun w' => lineφ w' q / lineφ w' ⟨q.1, p q.1⟩) w`. Conclude with `line_diff_div (hφ q) (hφ ⟨q.1, p q.1⟩) (hw q.1)`. Establish `h0 : affCoord p (lineφ w) ⟨(), 0⟩ ≠ 0`. Establish `hp : p () = 0 ∨ p () = 1`.
+
+Break down `h : p () with ⟨n, hn⟩` into its components or cases. Use `interval_cases n`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`. Use `hw ()` as an intermediate fact.
+
+Break down `hp with hp | hp` into its components or cases. Simplify using `[affCoord, hp]`. Rewrite `this` using `[hp]`. Simplify `this` using `[affCoord, hp]`. Establish `hG : DifferentiableAt ℂ lineρ (affCoord p (lineφ w))` using `differentiableAt_pi.2 fun _ => by`.
+
+Conclude with `line_diff_div (differentiableAt_apply (𝕜 := ℂ) (⟨(), 1⟩ : Σ _ : Unit, Fin 2) _) (differentiableAt_apply (𝕜 := ℂ) (⟨(), 0⟩ : Σ _ : Unit, Fin 2) _) h0`. Establish `hcomp` using `hG.hasFDerivAt.comp w hF.hasFDerivAt`. Establish `hid : (lineρ ∘ fun w' => affCoord p (lineφ w')) = id`. Use function extensionality and compare the values at `w'`. Conclude with `lineρ_affCoord p w'`.
+
+Rewrite `hcomp` using `[hid]`. Establish `hEq` using `hcomp.unique (hasFDerivAt_id w)`. Use `LinearMap.ker_eq_bot.2 fun a b hab => ?_` and prove the remaining obligations. Use `congrArg (fun L : (Fin 1 → ℂ) →L[ℂ] (Fin 1 → ℂ) => L a) hEq` as an intermediate fact. Establish `h2` using `congrArg (fun L : (Fin 1 → ℂ) →L[ℂ] (Fin 1 → ℂ) => L b) hEq`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.id_apply] at this h2`. Rewrite using `[← this, ← h2]`. Conclude with `congrArg _ hab`.
+-/
 theorem line_immersion (w : Fin 1 → ℂ) (p : (k : Unit) → Fin 2)
     (hw : ∀ k, lineφ w ⟨k, p k⟩ ≠ 0) :
     (fderiv ℂ (fun w' => affCoord p (lineφ w')) w).ker = ⊥ := by

@@ -28,6 +28,17 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Sep.LiesPair
 
+/- English proof (translation)
+Introduce `V _ _ _ hCN D A G _ _ hG U w₀ hw₀ N hN g w x fr hg hw hfr hov`. Use `haveI : CharZero V := hCN.2.2.2`. Establish `hL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨hCN.1, inferInstance, hCN.2.1, hCN.2.2.1⟩`. Establish `hB` using `D.tau_bimult`.
+
+Take `⟨o, ho₁, ho₂⟩` from `hg`. Use `letI := GlobalTheory.TorusExt.gtGroup D.toPre (FractionRing V)`. Establish `hkg : N • g = GlobalTheory.TorusExt.iota hB (FractionRing V) 0`. Rewrite using `[map_zero]`. Conclude with `((GlobalTheory.TorusExt.isNsmul_iff_eq _ _ _).1 ho₁).symm.trans ((GlobalTheory.TorusExt.isZero_iff_eq _).1 ho₂)`.
+
+Set `p` to `GlobalTheory.TorusExt.qkMk hB 0 g hkg`. Establish `hf : (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp (algebraMap (FractionRing V) (FractionRing V)) = algebraMap _ _` using `RingHom.comp_id _`. Set `pb` to `GlobalTheory.TorusExt.qkExt hB _ hf p`. Establish `hp` using `(GlobalTheory.TorusExt.qkExt_iff hB _ hf p _).2 rfl`. Set `xb : TFK (R` to `V) (AlgebraicClosure (FractionRing V)) ⟶ A.A := GlobalTheory.TorsionExt.fieldMap (FractionRing V) (AlgebraicClosure (FractionRing V)) ≫ x`.
+
+Take `⟨wb, frb, hwb, hfrb, hlb⟩` from `GlobalTheory.T.torusExtension_point_liesOver_after_field_extension V _ hA D A G hG U (AlgebraicClosure (FractionRing V)) w₀ hw₀ g w x fr hw hfr hov xb rfl`. Take `⟨f', f₁, -⟩` from `GlobalTheory.TorsionIso.torsion_eq hL V _ hA D A G hG U (AlgebraicClosure (FractionRing V)) N hN`. Establish `hq` using `(f₁ pb (f' pb)).2 rfl`. Take `⟨w', fr', hw', hfr', hl'⟩` from `GlobalTheory.Poinc.Tors.ValPair.liesOver_of_qkToAkU V _ hA D A G hG U (AlgebraicClosure (FractionRing V)) w₀ hw₀ _ hN pb (f' pb) rfl hq`. Establish `e` using `GlobalTheory.Poinc.Tors.OneOver.eq_of_liesOver hL V _ hA D A G hG U (AlgebraicClosure (FractionRing V)) w₀ hw₀ pb.g wb w' xb (f' pb) frb fr' hwb hw' hfrb hfr' hlb hl'`.
+
+Use `⟨p, rfl, rfl, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.TorsionExt.qkToAkU_iff_of_algebra hL.1.globalFns hL.1.kerPow U hN hp x).2 ?_` and prove the remaining obligations. Rewrite `hq` using `[← e]`. Conclude with `hq`.
+-/
 theorem exists_pair_of_liesOver : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V) D A G) (w₀ : W0 U.toUnifPre), w₀.IsGen → ∀ N : ℕ, 1 ≤ N → ∀ (g : GtPtF D.toPre (FractionRing V)) (w : Frm D.toPre (FractionRing V) 1 g.b) (x : TFK (R := V) (FractionRing V) ⟶ A.A) (fr : FrAt x), (∃ o, GtPtF.IsNsmul N g o ∧ o.IsZero) → w.IsGen → fr.IsGen → LiesOver U.toUnifPre w₀ g w x fr → ∃ p : QkPt D.toPre (FractionRing V) N, p.y = 0 ∧ p.g = g ∧ QkToAkU U.toUnifPre (FractionRing V) N p x := by
   intro V _ _ _ hCN D A G _ _ hG U w₀ hw₀ N hN g w x fr hg hw hfr hov
   haveI : CharZero V := hCN.2.2.2

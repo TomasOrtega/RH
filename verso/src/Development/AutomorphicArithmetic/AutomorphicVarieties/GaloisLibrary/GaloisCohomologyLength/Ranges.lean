@@ -5,6 +5,17 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LengthEqLengthIn
 
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank
 
+/- English proof (translation)
+Distinguish the cases in `H : ∀ i : ℕ, ∃ ζ : L, IsPrimitiveRoot ζ (p ^ i)`. Establish `hL (i : ℕ) : HasEnoughRootsOfUnity L (p ^ i)` using `⟨H i, rootsOfUnity.isCyclic _ _⟩`. Establish `hM (i : ℕ) : HasEnoughRootsOfUnity M (p ^ i)`. Take `⟨ζ, hζ⟩` from `H i`. Conclude with `⟨⟨φ ζ, hζ.map_of_injective φ.injective⟩, rootsOfUnity.isCyclic _ _⟩`.
+
+Use `ext1`. Use `PadicInt.ext_of_toZModPow.mp fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[cyclotomicCharacter.toZModPow, cyclotomicCharacter.toZModPow]`. Use `modularCyclotomicCharacter.unique M (HasEnoughRootsOfUnity.natCard_rootsOfUnity M (p ^ n)) _ fun t ht ↦ ?_` and prove the remaining obligations. Establish `hs : Units.map φ.symm.toMonoidHom t ∈ rootsOfUnity (p ^ n) L`.
+
+Rewrite `ht`, the goal using `[mem_rootsOfUnity]`. Rewrite using `[← map_pow, ht, map_one]`. Establish `key` using `modularCyclotomicCharacter.spec L (HasEnoughRootsOfUnity.natCard_rootsOfUnity L (p ^ n)) g hs`. Simplify using `only [Units.coe_map, Units.val_pow_eq_pow_val] at key`. Express the relevant statement in the definitionally equal form `g (φ.symm (t : M)) = (φ.symm (t : M)) ^ _ at key`.
+
+Rewrite using `[RingEquiv.trans_apply, RingEquiv.trans_apply, key, map_pow, RingEquiv.apply_symm_apply]`. Establish `H' : ¬ ∀ i : ℕ, ∃ ζ : M, IsPrimitiveRoot ζ (p ^ i)`. Introduce `hM`. Apply `H` to reduce the goal to its premises. Introduce `i`.
+
+Take `⟨ζ, hζ⟩` from `hM i`. Conclude with `⟨φ.symm ζ, hζ.map_of_injective φ.symm.injective⟩`. Use `ext1`. Simplify using `[cyclotomicCharacter, cyclotomicCharacter.toFun, H, H']`.
+-/
 private theorem cyclotomicCharacter_conj_ringEquiv {L M : Type} [Field L] [Field M] (p : ℕ) [Fact p.Prime]
     (φ : L ≃+* M) (g : L ≃+* L) :
     cyclotomicCharacter L p g = cyclotomicCharacter M p (φ.symm.trans (g.trans φ)) := by
@@ -35,6 +46,17 @@ private theorem cyclotomicCharacter_conj_ringEquiv {L M : Type} [Field L] [Field
     ext1
     simp [cyclotomicCharacter, cyclotomicCharacter.toFun, H, H']
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ D`. Establish `hcyc : (cycZ F Ω l).range = KStar.TotallyRealRoots.galImage l F`. Set `e : Ω ≃ₐ[F] AlgebraicClosure F` to `IsAlgClosure.equiv F Ω (AlgebraicClosure F)`. Establish `hpt : ∀ σ : Gal(Ω/F), cycZ F Ω l σ = KStar.TotallyRealRoots.eps l F (AlgEquiv.autCongr e σ)`. Introduce `σ`.
+
+Simplify using `only [cycZ, KStar.TotallyRealRoots.eps, MonoidHom.comp_apply]`. Conclude with `cyclotomicCharacter_conj_ringEquiv l e.toRingEquiv _`. Use extensionality with `x`. Simplify using `only [MonoidHom.mem_range, KStar.TotallyRealRoots.galImage]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨σ, rfl⟩`. Conclude with `⟨_, (hpt σ).symm⟩`. Introduce and unpack `⟨τ, rfl⟩`. Conclude with `⟨(AlgEquiv.autCongr e).symm τ, by rw [hpt, MulEquiv.apply_symm_apply]⟩`. Establish `hchi : D.chi.range = (cycZ F Ω l).range`.
+
+Establish `htop : (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 F)))).range = ⊤` using `MonoidHom.range_eq_top.mpr (QuotientGroup.mk'_surjective _)`. Rewrite using `[← D.hchi, MonoidHom.range_comp, htop, ← MonoidHom.range_eq_map]`. Use `⟨hcyc, hchi.trans hcyc, fun v ↦ ?_⟩` and prove the remaining obligations. Establish `hcomp : D.chi.comp (locFam D.S D.A v) = (cycZ F Ω l).comp (Dec (D.A v)).subtype`. Rewrite using `[← D.hchi]`.
+
+Both sides reduce to the same expression. Rewrite using `[hcomp, MonoidHom.range_comp, Subgroup.range_subtype]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.LDataCardLeFinrank.ranges :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (D : LData F Ω l), (cycZ F Ω l).range = KStar.TotallyRealRoots.galImage l F ∧ D.chi.range = KStar.TotallyRealRoots.galImage l F ∧ ∀ v : D.S, (D.chi.comp (locFam D.S D.A v)).range = decImage F l (D.A v) := by
   intro F Ω _ _ _ _ _ l _ D

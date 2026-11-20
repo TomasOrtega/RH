@@ -24,6 +24,13 @@ open GlobalTheory.Poinc.FibLat
 
 namespace GlobalTheory.UPoinc.GFib
 
+/- English proof (translation)
+Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', u', -, -, -, -, G, _, α, β, -, -, -, y₀, -, u, lb, j, -, hlab, -⟩` from `h`. Establish `hk : lb.yy.ker ≤ yy.ker` using `fun a ha => by`. Establish `h0 : lb.yy a = QuotientAddGroup.mk 0` using `by rw [AddMonoidHom.mem_ker.1 ha]; rfl`. Use `hlab a 0 h0` as an intermediate fact. Rewrite `this` using `[map_zero]`.
+
+Conclude with `AddMonoidHom.mem_ker.2 this`. Introduce `t ht`. Rewrite using `[← hker]`. Use `hk ?_` and prove the remaining obligations. Establish `h1 : t ∈ (X.S.rechart c₀ hc R' fg frac hth hev).perp lb.yy.ker` using `fun h hh => ht h (hker ▸ hk hh)`.
+
+Establish `h2` using `lb.isoFree.1 h1`. Rewrite `h2` using `[ThetaSys.perp_perp]`. Then use the resulting hypothesis.
+-/
 theorem TT_le_HH_of_uIsLab {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli D l} {cf : Coeff l} {C : UCompact Xo cf} (X : USetup C) {p : ℕ} [Fact p.Prime]
     {z : X.M.Z} (ct : UCTrait X p z) (yy : X.S.Gam →+ ModN (X.S.r * X.S.N) ct.T.P.D.toPre.X) (h : UIsLab X ct yy)
@@ -43,6 +50,27 @@ theorem TT_le_HH_of_uIsLab {E : Type} [Field E] [NumberField E] [IsCMField E] {H
 
 end GlobalTheory.UPoinc.GFib
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw hpq l Xo cf C X wi Y U₀ EE FinalForm q hO hE hP hpt p _ z hz ct ct' y y' hy hy' yy yy' hl hl'`. Establish `hker` using `GlobalTheory.T.unitaryTraitLabels_surjective_kernel E H Dw hpq l Xo cf C X p z ct yy hl.uIsLab`. Establish `hker'` using `GlobalTheory.T.unitaryTraitLabels_surjective_kernel E H Dw hpq l Xo cf C X p z ct' yy' hl'.uIsLab`. Establish `hTH` using `GlobalTheory.UPoinc.GFib.TT_le_HH_of_uIsLab X ct yy hl.uIsLab hker.2`. Take `⟨f, gγ, hf, hg⟩` from `GlobalTheory.T.unitaryEndomorphisms_torsion_extend_semiAbelian E H Dw l Xo cf C X wi Y U₀ EE FinalForm q hO hE hpt z hTH`.
+
+Establish `hL : 0 < X.S.r * X.S.N` using `Nat.mul_pos (by have := X.S.r_pos; omega) (by have := X.S.N_ge; omega)`. Establish `hprim : IsPrimitiveRoot (X.S.ζ ^ (X.S.r * X.S.N)) (X.S.r * X.S.N)` using `X.S.prim.pow (by positivity) (by ring)`. Set `ζ : X.o₁ˣ` to `(hprim.isUnit hL.ne').unit`. Establish `hζ : IsPrimitiveRoot (ζ : X.o₁) (X.S.r * X.S.N)` using `hprim`. Take `⟨s, σ, hs, hσ, hc⟩` from `GlobalTheory.T.characterLattice_unitaryClassicalTrait_centre E H Dw hpq l Xo cf C X wi Y U₀ EE FinalForm q hO hE hP hpt p z f gγ hf hg ζ hζ`.
+
+Take `⟨c, hc1, hc2⟩` from `hc ct y hy yy hl`. Take `⟨c', hc1', hc2'⟩` from `hc ct' y' hy' yy' hl'`. Establish `hx : q.base (y (cPt p)) = z`. Rewrite using `[← Scheme.Hom.comp_apply, hy, ct.cen]`. Establish `hx' : q.base (y' (cPt p)) = z`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, hy', ct'.cen]`. Establish `hrk : ∃ r₀ : ℕ, ∀ w, q.base w = z → RkAt FinalForm.G w r₀`. Take `⟨r₀, -, ⟨e₀⟩⟩` from `GlobalTheory.T.torusRank_eq_rank_thetaGroupOfPoint_perp X.o₁ X.Ω₁ X.S X.ρ Y U₀ EE FinalForm X.big hO hE (y (cPt p))`. Use `⟨r₀, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, ⟨e⟩⟩` from `GlobalTheory.T.torusRank_eq_rank_thetaGroupOfPoint_perp X.o₁ X.Ω₁ X.S X.ρ Y U₀ EE FinalForm X.big hO hE w`.
+
+Establish `hT : X.S.TT Y w = X.S.TT Y (y (cPt p))`. Simplify using `only [ThetaSys.TT]`. Rewrite using `[GlobalTheory.T.thetaGroupOfPoint_eq_along_modelHom X.o₁ X.Ω₁ X.S X.M Y q hpt X.hasDiv w, GlobalTheory.T.thetaGroupOfPoint_eq_along_modelHom X.o₁ X.Ω₁ X.S X.M Y q hpt X.hasDiv (y (cPt p))]`. Simplify using `only [hw, hx]`. Establish `e₁ : (Fin r → ZMod (X.S.r * X.S.N)) ≃ (Fin r₀ → ZMod (X.S.r * X.S.N))` using `(e.symm.toEquiv.trans (Equiv.setCongr (congrArg (fun H : AddSubgroup X.S.Gam => (H : Set X.S.Gam)) hT))).trans e₀.toEquiv`.
+
+Use `haveI : NeZero (X.S.r * X.S.N) := ⟨hL.ne'⟩`. Establish `hcard` using `Fintype.card_congr e₁`. Simplify using `only [Fintype.card_fun, ZMod.card, Fintype.card_fin] at hcard`. Establish `h2 : 2 ≤ X.S.r * X.S.N`. Use `X.S.r_pos` as an intermediate fact.
+
+Use `X.S.N_ge` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite `hr` using `[Nat.pow_right_injective h2 hcard]`. Then use the resulting hypothesis. Establish `hmove` using `GlobalTheory.T.characterLatticeAtFibre_const_preconnected X.o₁ X.Ω₁ Y FinalForm.G FinalForm.semi _ q z hz hrk (𝓞 E) _ f (fun a => (hf a).1) gγ ζ (X.S.r * X.S.N) hL (Units.ext (by simpa using hζ.pow_eq_one)) X.S.unit (fun t => (hg t).1) (fun t w hw => (hg t).2.2 w hw) ct.T.P.D.toP …`. Use `haveI : IsDomain X.o₁ := (inferInstance : GlobalTheory.ZH.ArithBase X.o₁ X.Ω₁).ded.toIsDomain`.
+
+Take `⟨θ, hθm, hθc⟩` from `GlobalTheory.T.characterLatticeAtFibre_unique_up_to_iso X.o₁ X.Ω₁ Y FinalForm.G FinalForm.semi (𝓞 E) _ f gγ ζ (X.S.r * X.S.N) hL hζ X.S.unit ct.T.P.D.toPre.X ct'.T.P.D.toPre.X _ c _ c' _ hmove hc1'`. Use `⟨θ, fun a v hv => ?_, fun a v => ?_⟩` and prove the remaining obligations. Take `⟨a', ha'⟩` from `hker'.1 (QuotientAddGroup.mk (θ v))`. Establish `hd : a' - a ∈ X.S.HH X.M z`. Rewrite using `[← ThetaSys.perp_TT]`.
+
+Use `ThetaSys.mem_perp'.2 fun t ht => ?_` and prove the remaining obligations. Establish `e1` using `hc2' a' (θ v) ⟨t, ht⟩ ha'`. Rewrite `e1` using `[hθc, hc2 a v ⟨t, ht⟩ hv]`. Establish `e2` using `hs.mul_left_cancel e1`. Rewrite using `[sub_eq_add_neg, eStd_add_right, eStd_neg_right, ← e2]`.
+
+Conclude with `add_neg_cancel _`. Rewrite `hd` using `[← hker'.2, AddMonoidHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[← hd, ha']`. Take `⟨b, rfl⟩` from `hσ a`. Conclude with `hθm b v`.
+-/
 theorem GlobalTheory.UPoinc.GFib.labelled_lattices_equiv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (C : UCompact Xo cf), ∀ (X : USetup C) (wi : UWit X) (Y : RatModel X.o₁ X.Ω₁) (U₀ : Y.Z.Opens) (EE : Y.Lat X.S.J) (_ : ZHOut X.ρ Y U₀ EE) (q : Y.Z ⟶ X.M.Z), X.S.Over₀ Y U₀ → X.S.IsEE Y U₀ EE → IsProper q → Y.pt ≫ q = X.M.pt → ∀ (p : ℕ) [Fact p.Prime] (z : X.M.Z), _root_.IsPreconnected (q.base ⁻¹' {z}) → ∀ (ct ct' : UCTrait X p z) (y y' : Sp (OO p) ⟶ Y.Z), y ≫ q = ct.y → y' ≫ q = ct'.y → ∀ (yy : X.S.Gam →+ ModN (X.S.r * X.S.N) ct.T.P.D.toPre.X) (yy' : X.S.Gam →+ ModN (X.S.r * X.S.N) ct'.T.P.D.toPre.X), UIsLabW X wi ct yy → UIsLabW X wi ct' yy' → ∃ θ : ct.T.P.D.toPre.X ≃+ ct'.T.P.D.toPre.X, (∀ a μ, yy a = QuotientAddGroup.mk μ → yy' a = QuotientAddGroup.mk (θ μ)) ∧ ∀ (a : 𝓞 E) v, θ (a • v) = a • θ v := by
   intro E _ _ _ H Dw hpq l Xo cf C X wi Y U₀ EE FinalForm q hO hE hP hpt p _ z hz ct ct' y y' hy hy' yy yy' hl hl'
   have hker := GlobalTheory.T.unitaryTraitLabels_surjective_kernel E H Dw hpq l Xo cf C X p z ct yy hl.uIsLab

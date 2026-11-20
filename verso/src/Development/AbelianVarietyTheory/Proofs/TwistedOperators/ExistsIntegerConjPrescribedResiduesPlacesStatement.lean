@@ -10,5 +10,8 @@ open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SW.Lev.exists_bar_mk_eq_at_places | exact GlobalTheory.SW.Lev.exists_bar_mk_eq_at_places | (intros; apply GlobalTheory.SW.Lev.exists_bar_mk_eq_at_places <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_integer_conj_prescribed_residues_places : ∀ (D : D7) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (b : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Formalism.L2.DIV.kP PP), ∃ c : 𝓞 D.host.E, ∀ PP ∈ P, Ideal.Quotient.mk PP.asIdeal (GlobalTheory.SW.Lev.bar c) = b PP := by
   first | exact @GlobalTheory.SW.Lev.exists_bar_mk_eq_at_places | exact GlobalTheory.SW.Lev.exists_bar_mk_eq_at_places | (intros; apply GlobalTheory.SW.Lev.exists_bar_mk_eq_at_places <;> assumption)

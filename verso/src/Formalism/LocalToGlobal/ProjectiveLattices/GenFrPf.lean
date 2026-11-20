@@ -13,6 +13,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G.Chart (JetR tvec tmap eigLat IsUnivChart)
 
+/- English proof (translation)
+Rewrite `he`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hM : (Matrix.of M).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (by intro i j h; exact hlow i j h)]`. Simplify using `[hdiag]`.
+
+Establish `hv : Matrix.vecMul g (Matrix.of M) = 0`. Establish `h0 : ∑ j, (Matrix.vecMul g (Matrix.of M) j) • e j = 0`. Rewrite using `[← hg]`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_comm`.
+
+Use function extensionality and compare the values at `j`. Conclude with `he _ h0 j`. Introduce `i`. Conclude with `congrFun (Matrix.eq_zero_of_vecMul_eq_zero (by rw [hM]; exact one_ne_zero) hv) i`.
+-/
 theorem gfp_li_tri {K : Type} [Field K] {m n : ℕ} (M : Fin m → Fin m → K) (hdiag : ∀ i, M i i = 1)
     (hlow : ∀ i j, j < i → M i j = 0) (e : Fin m → Fin n → K) (he : LinearIndependent K e) :
     LinearIndependent K (fun i => ∑ j, M i j • e j) := by
@@ -40,6 +47,9 @@ instance gfpSmooth {L : Type} [Field L] (x : Sp L ⟶ Xo.X) : Smooth ((Over.pull
   show Smooth (pullback.snd Xo.univ.t.G.hom x)
   infer_instance
 
+/- English proof (translation)
+Rewrite using `[xGen, Category.assoc, pullback.condition, sOf, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← Category.assoc]`. Use `congr 1`. Use `show genSp Z ≫ strK = Spec.map (CommRingCat.ofHom (algebraMap c.F (kap Z)))`. Rewrite using `[← Spec.map_preimage (genSp Z ≫ strK)]`. Both sides reduce to the same expression.
+-/
 theorem gfp_xGen_over (Z : Comp Xo c) : xGen Z ≫ Xo.s = sOf c (kap Z) := by
   rw [xGen, Category.assoc, pullback.condition, sOf, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← Category.assoc]
   congr 1
@@ -47,6 +57,9 @@ theorem gfp_xGen_over (Z : Comp Xo c) : xGen Z ≫ Xo.s = sOf c (kap Z) := by
   rw [← Spec.map_preimage (genSp Z ≫ strK)]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gfp_tower (Z : Comp Xo c) (r : c.F) :
     algebraMap c.F (Om Z) r = algebraMap (kap Z) (Om Z) (algebraMap c.F (kap Z) r) := by rfl
 
@@ -54,12 +67,26 @@ section Gen
 
 variable {L L' : Type} [Field L] [Field L'] [Algebra c.F L] [Algebra c.F L'] [Algebra L L']
 
+/- English proof (translation)
+Establish `h2 : (algebraMap L L').comp (algebraMap c.F L) = algebraMap c.F L'` using `RingHom.ext fun r => (htow r).symm`. Rewrite using `[Category.assoc, hx0, sOf, sOf, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← RingHom.comp_assoc, h2]`.
+-/
 theorem gfp_over_bc (htow : ∀ r : c.F, algebraMap c.F L' r = algebraMap L L' (algebraMap c.F L r))
     {x : Sp L ⟶ Xo.X} (hx0 : x ≫ Xo.s = sOf c L) : (spMap (algebraMap L L') ≫ x) ≫ Xo.s = sOf c L' := by
   have h2 : (algebraMap L L').comp (algebraMap c.F L) = algebraMap c.F L' :=
     RingHom.ext fun r => (htow r).symm
   rw [Category.assoc, hx0, sOf, sOf, ← ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← RingHom.comp_assoc, h2]
 
+/- English proof (translation)
+Set `A : Matrix (Fin m) (Fin n) K` to `Matrix.of d`. Establish `hinj : Function.Injective fun v => Matrix.vecMul v A` using `Matrix.vecMul_injective_iff.2 hd`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.vecMulLinear A) (LinearMap.ker_eq_bot.2 hinj)`. Establish `key : ∀ v, Matrix.vecMul v (A * (LinearMap.toMatrix' g).transpose) = v`. Introduce `v`.
+
+Rewrite using `[← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec]`. Conclude with `LinearMap.congr_fun hg v`. Establish `hAB : A * (LinearMap.toMatrix' g).transpose = 1`. Use extensionality with `i j`. Use `congrFun (key (Pi.single i 1)) j` as an intermediate fact.
+
+Simplify `this` using `[Matrix.vecMul, dotProduct, Pi.single_apply, Matrix.one_apply, eq_comm]`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `w hw`. Establish `hAB' : A.map (algebraMap K K') * ((LinearMap.toMatrix' g).transpose).map (algebraMap K K') = 1`. Rewrite using `[← Matrix.map_mul, hAB, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hv : Matrix.vecMul w (A.map (algebraMap K K')) = 0`. Use function extensionality and compare the values at `j`. Use `congrFun hw j` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, A, Finset.sum_apply]`. Establish `hw' : w = Matrix.vecMul (Matrix.vecMul w (A.map (algebraMap K K'))) (((LinearMap.toMatrix' g).transpose).map (algebraMap K K'))`.
+
+Rewrite using `[Matrix.vecMul_vecMul, hAB', Matrix.vecMul_one]`. Introduce `i`. Rewrite using `[hw', hv, Matrix.zero_vecMul]`. Both sides reduce to the same expression.
+-/
 private theorem li_bc_lemma {K K' : Type} [Field K] [Field K'] [Algebra K K'] {m n : ℕ}
     (d : Fin m → Fin n → K) (hd : LinearIndependent K d) :
     LinearIndependent K' (fun i => algebraMap K K' ∘ d i) := by
@@ -91,6 +118,19 @@ private theorem li_bc_lemma {K K' : Type} [Field K] [Field K'] [Algebra K K'] {m
   rw [hw', hv, Matrix.zero_vecMul]
   rfl
 
+/- English proof (translation)
+Take `⟨n, xc, hx⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.univChartLoc ((Over.pullback x).obj Xo.univ.t.G)`. Take `⟨xc', hx', hvec, htmap⟩` from `gfp_bc (L' := L') hx`. Set `bas : ∀ τ : E →+* ℂ, Module.Basis (Fin (Dw.mult τ)) L (gfpEig (c` to `c) hx τ) := fun τ => Module.finBasisOfFinrankEq L _ (gfp_finrank hx0 hx τ)`. Set `d : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Fin n → L` to `fun τ i => (bas τ i : Fin n → L)`. Establish `hd : ∀ τ, LinearIndependent L (d τ)` using `fun τ => (bas τ).linearIndependent.map' (gfpEig (c := c) hx τ).subtype (Submodule.ker_subtype _)`.
+
+Establish `hdW : ∀ τ i, d τ i ∈ gfpEig (c` using `c) hx τ := fun τ i => (bas τ i).2`. Set `d' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Fin n → L'` to `fun τ i => algebraMap L L' ∘ d τ i`. Establish `hd' : ∀ τ, LinearIndependent L' (d' τ)` using `fun τ => li_bc_lemma (d τ) (hd τ)`. Establish `hdW' : ∀ τ i, d' τ i ∈ gfpEig (c` using `c) hx' τ := by`. Introduce `τ i`.
+
+Establish `h` using `hdW τ i`. Simplify using `only [gfpEig, ReciprocityTheory.ChartRestriction.G.Chart.eigLat, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at h ⊢`. Introduce `a`. Simplify using `only [d']`. Rewrite using `[htmap, h a]`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[map_mul, htow]`. Set `e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Fin n → L'` to `fun τ i => ∑ j, M τ i j • d' τ j`. Establish `heW : ∀ τ i, e τ i ∈ gfpEig (c` using `c) hx' τ := fun τ i => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hdW' τ j)`.
+
+Establish `he : ∀ τ, LinearIndependent L' (e τ)` using `fun τ => gfp_li_tri (M τ) (hdiag τ) (hlow τ) (d' τ) (hd' τ)`. Establish `hx0'` using `gfp_over_bc htow hx0`. Use `⟨⟨x, hx0, fun τ i => gfpVec x xc (d τ i), fun τ i => gfp_tan hx _, fun τ i => (gfp_eig_iff hx τ _).2 (hdW τ i), fun τ w hw hE => gfp_basis hx0 hx τ (d τ) (hd τ) (hdW τ) w hw hE, (gfp_gen hT x).choose, (gfp_gen hT x).choose_spec⟩, ⟨spMap (algebraMap L L') ≫ x, hx0', fun τ i => gfp …` and prove the remaining obligations. Establish `hfun : (fun j => spMap (dualMap (algebraMap L L')) ≫ gfpVec x xc (d τ j)) = fun j => gfpVec (spMap (algebraMap L L') ≫ x) xc' (d' τ j)` using `funext fun j => (hvec _).symm`. Establish `key` using `(gfp_comb_iff hx' (d' τ) (M τ i) (e τ i)).2 rfl`.
+
+Rewrite `key` using `[← hfun]`. Conclude with `key`.
+-/
 theorem gfp_frPt_gen (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt)
     (htow : ∀ r : c.F, algebraMap c.F L' r = algebraMap L L' (algebraMap c.F L r))
     (x : Sp L ⟶ Xo.X) (hx0 : x ≫ Xo.s = sOf c L) (M : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Fin (Dw.mult τ) → L')
@@ -140,6 +180,9 @@ theorem gfp_frPt_gen (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt)
 
 end Gen
 
+/- English proof (translation)
+Introduce `Z`. Take `⟨y₀, y, h0, h1, h2⟩` from `gfp_frPt_gen (L := kap Z) (L' := Om Z) hT (gfp_tower Z) (xGen Z) (gfp_xGen_over Z) (fun τ => genCoef Z τ) (fun τ i => by simp [genCoef]) (fun τ i j hji => by simp [genCoef, not_lt.2 hji.le, hji.ne'])`. Conclude with `⟨y, h1, y₀, h0, h2⟩`.
+-/
 theorem genFrEx_of (hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt) : GenFrEx Xo c := by
   intro Z
   obtain ⟨y₀, y, h0, h1, h2⟩ := gfp_frPt_gen (L := kap Z) (L' := Om Z) hT (gfp_tower Z) (xGen Z)

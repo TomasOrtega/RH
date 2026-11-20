@@ -16,8 +16,14 @@ variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : 
 
 def cI (p : Fin (2 * r + k + 1)) : Fin (mdim k r 0) := ⟨p.val, by have := p.isLt; simp [mdim]; omega⟩
 
+/- English proof (translation)
+The claim follows from `Fin.ext (by simp [posL, cI])`.
+-/
 theorem posL_cI (p : Fin (2 * r + k + 1)) : posL k r 0 (cI p) = p := Fin.ext (by simp [posL, cI])
 
+/- English proof (translation)
+Introduce `p q h` and use `Fin.ext (by have := congrArg Fin.val h; simpa [cI] using this)`.
+-/
 theorem cI_inj : Function.Injective (cI (k := k) (r := r)) := fun p q h => Fin.ext (by
   have := congrArg Fin.val h; simpa [cI] using this)
 
@@ -29,9 +35,21 @@ abbrev SA (hD : IsOpen D) : Subalgebra ℂ (Module.End ℂ (VS k r 0 D E)) :=
 def EA (hD : IsOpen D) (p q : Fin (2 * r + k + 1)) : SA E hD :=
   ⟨Eh hD (cI p) (cI q), Algebra.subset_adjoin ⟨(cI p, cI q), rfl⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem EA_val (hD : IsOpen D) (p q : Fin (2 * r + k + 1)) : (EA (E := E) hD p q : Module.End ℂ (VS k r 0 D E)) =
     Eh hD (cI p) (cI q) := rfl
 
+/- English proof (translation)
+Introduce `a b c d`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `Eh_gl (E := E) (i := 0) hD (cI a) (cI b) (cI c) (cI d)`. Simplify using `only [Subalgebra.coe_sub, Subalgebra.coe_mul, EA_val]`. Rewrite using `[h]`.
+
+Use `congr 1`. Distinguish the cases in `hbc : b = c`. Rewrite using `[if_pos (congrArg cI hbc), if_pos hbc]`. Both sides reduce to the same expression. Rewrite using `[if_neg (fun e => hbc (cI_inj e)), if_neg hbc]`.
+
+Both sides reduce to the same expression. Distinguish the cases in `hda : d = a`. Rewrite using `[if_pos (congrArg cI hda), if_pos hda]`. Both sides reduce to the same expression. Rewrite using `[if_neg (fun e => hda (cI_inj e)), if_neg hda]`.
+
+Both sides reduce to the same expression.
+-/
 theorem EA_gl (hD : IsOpen D) : GlRel (EA (E := E) hD) := by
   intro a b c d
   apply Subtype.ext
@@ -51,9 +69,21 @@ def La (hD : IsOpen D) (v : VS k r 0 D E) (g : Mx k r) : SA E hD →ₗ[ℂ] E w
   map_add' x y := by simp
   map_smul' c x := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem La_apply (hD : IsOpen D) (v : VS k r 0 D E) (g : Mx k r) (x : SA E hD) :
     La hD v g x = ((x : Module.End ℂ (VS k r 0 D E)) v : Mx k r → E) g := rfl
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `x`. Use `show ∀ v : VS k r 0 D E, LeftEq k r z 0 D (v : Mx k r → E) → LeftEq k r z 0 D (x v : Mx k r → E)`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨p, rfl⟩` from `hy`.
+
+Introduce `v hv g hg n hn`. Establish `hng : n * g ∈ Glev k r 0 ∩ D` using `⟨Formalism.FourierDecayAlt.P.Qx3.glev_mul hn.2 hg.1, hN g hg n hn⟩`. Rewrite using `[ev_E hD p.1 p.2 v hng, ev_E hD p.1 p.2 v hg]`. Conclude with `((generator_action_preserved E k r z 0 D p.1 p.2 (v : Mx k r → E) (v : Mx k r → E) 1 hD v.2.1 v.2.1).2.1 hN hv) g hg n hn`. Consider the case `algebraMap c`.
+
+Introduce `v hv g hg n hn`. Simplify using `only [Module.algebraMap_end_apply, Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[hv g hg n hn, smul_comm]`. Consider the case `add y₁ y₂ _ _ h₁ h₂`. Introduce `v hv g hg n hn`.
+
+Simplify using `only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply]`. Rewrite using `[h₁ v hv g hg n hn, h₂ v hv g hg n hn, smul_add]`. Consider the case `mul y₁ y₂ _ _ h₁ h₂`. Introduce `v hv`. Conclude with `h₁ _ (h₂ v hv)`.
+-/
 theorem leftEq_SA (hD : IsOpen D) (z : Fin (2 * r + k + 1) → ℂ)
     (hN : ∀ g ∈ Glev k r 0 ∩ D, ∀ n ∈ Nlev k r 0, n * g ∈ D) (x : SA E hD) :
     ∀ v : VS k r 0 D E, LeftEq k r z 0 D (v : Mx k r → E) →
@@ -82,6 +112,11 @@ theorem leftEq_SA (hD : IsOpen D) (z : Fin (2 * r + k + 1) → ℂ)
 abbrev Tor (hD : IsOpen D) (j : ℕ) : Subalgebra ℂ (SA E hD) :=
   Algebra.adjoin ℂ {x | ∃ l : Fin r, j ≤ l.val ∧ x = EA hD (eI k r l) (eI k r l)}
 
+/- English proof (translation)
+Proceed by induction on `hP using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨l, hl, rfl⟩` from `hy`. Establish `h` using `EA_gl (E := E) hD p q (eI k r l) (eI k r l)`. Rewrite `h` using `[if_neg (hq l hl), if_neg (fun e => hp l hl e.symm), sub_zero]`.
+
+Conclude with `sub_eq_zero.1 h`. Consider the case `algebraMap c => exact Algebra.commute_algebraMap_right c _`. Consider the case `add y₁ y₂ _ _ h₁ h₂ => exact h₁.add_right h₂`. Consider the case `mul y₁ y₂ _ _ h₁ h₂ => exact h₁.mul_right h₂`.
+-/
 theorem comm_Tor (hD : IsOpen D) (j : ℕ) (p q : Fin (2 * r + k + 1))
     (hp : ∀ l : Fin r, j ≤ l.val → p ≠ eI k r l) (hq : ∀ l : Fin r, j ≤ l.val → q ≠ eI k r l) (P : SA E hD)
     (hP : P ∈ Tor hD j) : Commute (EA hD p q) P := by
@@ -95,9 +130,15 @@ theorem comm_Tor (hD : IsOpen D) (j : ℕ) (p q : Fin (2 * r + k + 1))
   | add y₁ y₂ _ _ h₁ h₂ => exact h₁.add_right h₂
   | mul y₁ y₂ _ _ h₁ h₂ => exact h₁.mul_right h₂
 
+/- English proof (translation)
+The claim follows from `Algebra.adjoin_mono fun _ ⟨l, hl, e⟩ => ⟨l, h.trans hl, e⟩`.
+-/
 theorem Tor_mono (hD : IsOpen D) {j j' : ℕ} (h : j ≤ j') : Tor (E := E) hD j' ≤ Tor hD j :=
   Algebra.adjoin_mono fun _ ⟨l, hl, e⟩ => ⟨l, h.trans hl, e⟩
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨l, h, rfl⟩`.
+-/
 theorem EA_mem_Tor (hD : IsOpen D) (l : Fin r) {j : ℕ} (h : j ≤ l.val) :
     EA (E := E) hD (eI k r l) (eI k r l) ∈ Tor hD j :=
   Algebra.subset_adjoin ⟨l, h, rfl⟩
@@ -106,6 +147,11 @@ end alg
 
 section qm
 
+/- English proof (translation)
+Unfold `qminor`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, map_list_prod, List.map_ofFn]`. Use `congr 2`.
+
+Use `congr 1`. Use function extensionality and compare the values at `l`. Simplify using `only [Function.comp_apply, Tm, map_add]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_qminor {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (φ : A →ₐ[ℂ] B) {n t : ℕ}
     (E : Fin n → Fin n → A) (a b : Fin t → Fin n) (u : ℂ) :
     φ (qminor E a b u) = qminor (fun p q => φ (E p q)) a b u := by
@@ -120,6 +166,11 @@ theorem map_qminor {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B
   congr 1
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `qminor`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 2`. Use `congr 1`. Use function extensionality and compare the values at `l`.
+
+Simplify using `only [Function.comp_apply, Tm]`. Use `congr 1`. Distinguish the cases in `h : a (σ l) = b l`. Rewrite using `[if_pos h, if_pos (congrArg ι h)]`. Rewrite using `[if_neg h, if_neg (fun e => h (hι e))]`.
+-/
 theorem qminor_reindex {A : Type} [Ring A] [Algebra ℂ A] {n n' t : ℕ} (E : Fin n' → Fin n' → A) (ι : Fin n → Fin n')
     (hι : Function.Injective ι) (a b : Fin t → Fin n) (u : ℂ) :
     qminor (fun p q => E (ι p) (ι q)) a b u = qminor E (ι ∘ a) (ι ∘ b) u := by
@@ -140,16 +191,29 @@ section main
 
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Set (Mx k r)} (hD : IsOpen D)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_congr rfl fun a _ => if_pos a.isLt`.
+-/
 theorem gauge_last (c : Fin r → ℂ) :
     (∏ a : Fin r, (if a.val < (Fin.last r).val then ‖c a‖ ^ (Mdim k r a - 1) else 1)) =
       ∏ a : Fin r, ‖c a‖ ^ (Mdim k r a - 1) :=
   Finset.prod_congr rfl fun a _ => if_pos a.isLt
 
+/- English proof (translation)
+Unfold `Q.resG`. Rewrite using `[gauge_last]`.
+-/
 theorem resG_last (J : Mx k r → E) (c : Fin r → ℂ) (g : Mx k r) :
     Q.resG k r (Fin.last r) J c g = ((∏ a : Fin r, ‖c a‖ ^ (Mdim k r a - 1) : ℝ) : ℂ) • J (wCell k r (Fin.last r) c * g) := by
   unfold Q.resG
   rw [gauge_last]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ Glev k r 0 ∩ D`. Rewrite using `[EA_val, ev_E hD _ _ _ hg]`. Establish `hloc` using `(good_eh (E := E) hD (cI (eI k r a)) (cI (eI k r b))).loc (cut k r 0 D f) f (fun x hx => cut_of_mem f hx) g hg`.
+
+Simplify using `only [posL_cI] at hloc`. Rewrite using `[posL_cI, posL_cI]`. Use `show EH k r (eI k r a) (eI k r b) (cut k r 0 D f) g = (if b.val = a.val + 1 then (1 : ℂ) else 0) • cut k r 0 D f g`. Rewrite using `[hloc, hRR E k r z' D f hz' hD hf hRf g hg a b hab, cut_of_mem f hg]`. Use `show ((Eh hD (cI (eI k r a)) (cI (eI k r b)) ⟨cut k r 0 D f, cut_mem hD hf⟩ : VS k r 0 D E) : Mx k r → E) g = (if b.val = a.val + 1 then (1 : ℂ) else 0) • cut k r 0 D f g`.
+
+Rewrite using `[(Eh hD (cI (eI k r a)) (cI (eI k r b)) ⟨cut k r 0 D f, cut_mem hD hf⟩).2.2 g hg, show cut k r 0 D f g = 0 from Set.indicator_of_notMem hg f, smul_zero]`.
+-/
 theorem root_vector_action_cutoff (z' : Fin (2 * r + k + 1) → ℂ) (hz' : inWb k r z') (hRR : RightRuleE) {f : Mx k r → E}
     (hf : SmoothLev k r 0 D f) (hRf : RightEq k r z' 0 D f) (a b : Fin r) (hab : a.val < b.val) :
     ((EA hD (eI k r a) (eI k r b) : SA E hD) : Module.End ℂ (VS k r 0 D E)) ⟨cut k r 0 D f, cut_mem hD hf⟩ =

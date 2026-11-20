@@ -19,6 +19,13 @@ open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM Global
 
 namespace GlobalTheory.FlatDegreeCompare.ArchExists
 
+/- English proof (translation)
+Establish `key : ∀ c : Fin n → ℂ, ∃ w, IsTangent w ∧ IsLieComb c v w ∧ u.IsDiff (∑ i, c i • W i) w` using `fun c => by`. Establish `h` using `UnifDifferential.isDiff_prod u (fun i => c i • W i) _ (fun i => Chart.isTan_scale (c i) ((Chart.isTan_iff _).2 (hv.1 i))) (fun i => UnifDifferential.isDiff_scale u (hW i) (c i))`. Conclude with `⟨_, (Chart.isTan_iff _).1 h.1, (Chart.isLieComb_iff c v _).2 rfl, h.2⟩`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`.
+
+Take `⟨w, h1, h2, h3⟩` from `key c`. Take `⟨w', h1', h2', h3'⟩` from `key 0`. Rewrite `h3` using `[hc]`. Simplify using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero] at h3'`. Take `rfl` from `(hu 0).unique ⟨h1, h3⟩ ⟨h1', h3'⟩`.
+
+Conclude with `congrFun (hv.2 _ _ w h2 h2')`.
+-/
 theorem linearIndependent_of_indep {A : Over (Sp ℂ)} [GrpObj A] [IsCommMonObj A] {L : LB A.left} {g n : ℕ}
     (u : HolUnif A L g) (hu : ∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v) {v : Fin n → (epsR ℂ ⟶ A)} (hv : Indep v)
     {W : Fin n → Fin g → ℂ} (hW : ∀ i, u.IsDiff (W i) (v i)) : LinearIndependent ℂ W := by

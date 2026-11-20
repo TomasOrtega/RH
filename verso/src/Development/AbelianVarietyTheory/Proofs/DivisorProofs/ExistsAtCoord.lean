@@ -15,6 +15,13 @@ open scoped GlobalTheory.VacAny
 
 namespace GlobalTheory.SplitCoord
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm n d X Y hdX hdY v t Z`. Establish `hA : IsUnit (X.J.map t).det`. Rewrite using `[show (X.J.map t).det = (t : E →+* Fv F v) X.J.det from (RingHom.map_det _ _).symm]`. Conclude with `isUnit_iff_ne_zero.2 fun h => hdX ((t : E →+* Fv F v).injective (by rw [map_zero]; exact h))`. Establish `hB : IsUnit (Y.J.map t)ᵀ.det`.
+
+Rewrite using `[Matrix.det_transpose, show (Y.J.map t).det = (t : E →+* Fv F v) Y.J.det from (RingHom.map_det _ _).symm]`. Conclude with `isUnit_iff_ne_zero.2 fun h => hdY ((t : E →+* Fv F v).injective (by rw [map_zero]; exact h))`. Prove the components needed by the constructor for the conclusion. Take `⟨x, hat, h0, h1⟩` from `GlobalTheory.SplitComps.exists_mat_comps hcm v t (0 : Matrix (Fin n) (Fin d) (Fv F v)) (-((X.J.map t)⁻¹ * Z * ((Y.J.map t)ᵀ)⁻¹))`. Use `⟨x, hat, h0, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [GlobalTheory.FlipMatch.coY, h1, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc, Units.val_one, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hA, Matrix.nonsing_inv_mul _ hB, Matrix.mul_one]`. Take `⟨x, hat, h0, h1⟩` from `GlobalTheory.SplitComps.exists_mat_comps hcm v t Z (0 : Matrix (Fin n) (Fin d) (Fv F v))`. Use `⟨x, hat, h1, ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.FlipMatch.coX, h0, inv_one, Units.val_one, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem exists_at_coord : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ {n d : ℕ} (X : Spc F E n) (Y : Spc F E d), X.J.det ≠ 0 → Y.J.det ≠ 0 → ∀ (v : Pl F) (t : E →ₐ[F] Fv F v)
     (Z : Matrix (Fin n) (Fin d) (Fv F v)),

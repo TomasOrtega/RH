@@ -11,6 +11,9 @@ noncomputable def clDown {B : Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word)
       rw [ysAt_ys_of_ne I.sel (I.tup I.mu0) (I.cst I.mu0) (by omega)]
       rfl⟩
 
+/- English proof (translation)
+Introduce `I _ u a i hi` and use `⟨I.clDown u a i hi⟩`.
+-/
 theorem nonempty_clDown : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (u : B.Word) (a : I.ι) (i : ℕ), B.R.m < i →
     Nonempty ((I.stp u a i).Cl → (I.stp u I.mu0 i).Cl) :=
   fun I _ u a i hi => ⟨I.clDown u a i hi⟩

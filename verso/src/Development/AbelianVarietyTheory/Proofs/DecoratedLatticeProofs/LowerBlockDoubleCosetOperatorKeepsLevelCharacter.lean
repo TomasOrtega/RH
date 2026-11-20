@@ -25,6 +25,25 @@ noncomputable section
 
 namespace GlobalTheory.LowerBlockHecke
 
+/- English proof (translation)
+Set `s : G → G → G` to `fun a y => if h : a * y ∈ J then (hR _ h).exists.choose else y`. Establish `hs : ∀ a ∈ J, ∀ y ∈ R, s a y ∈ R ∧ (s a y * g₀)⁻¹ * (a * y * g₀) ∈ J`. Introduce `a ha y hy`. Establish `h : a * y ∈ J` using `J.mul_mem ha (hRJ y hy)`. Establish `e : s a y = (hR _ h).exists.choose` using `dif_pos h`.
+
+Rewrite using `[e]`. Conclude with `(hR _ h).exists.choose_spec`. Establish `huniq : ∀ a ∈ J, ∀ y ∈ R, ∀ z ∈ R, (z * g₀)⁻¹ * (a * y * g₀) ∈ J → s a y = z`. Introduce `a ha y hy z hz hzJ`. Conclude with `(hR _ (J.mul_mem ha (hRJ y hy))).unique (hs a ha y hy) ⟨hz, hzJ⟩`.
+
+Establish `hinv : ∀ y ∈ R, s y₀⁻¹ (s y₀ y) = y`. Introduce `y hy`. Take `⟨hm, hK⟩` from `hs y₀ hy₀ y hy`. Apply `huniq _ (J.inv_mem hy₀) _ hm _ hy` to reduce the goal to its premises. Establish `e : (y * g₀)⁻¹ * (y₀⁻¹ * s y₀ y * g₀) = ((s y₀ y * g₀)⁻¹ * (y₀ * y * g₀))⁻¹` using `by group`.
+
+Rewrite using `[e]`. Conclude with `J.inv_mem hK`. Establish `hinv' : ∀ y ∈ R, s y₀ (s y₀⁻¹ y) = y`. Introduce `y hy`. Take `⟨hm, hK⟩` from `hs y₀⁻¹ (J.inv_mem hy₀) y hy`.
+
+Apply `huniq _ hy₀ _ hm _ hy` to reduce the goal to its premises. Establish `e : (y * g₀)⁻¹ * (y₀ * s y₀⁻¹ y * g₀) = ((s y₀⁻¹ y * g₀)⁻¹ * (y₀⁻¹ * y * g₀))⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `J.inv_mem hK`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_nbij' (s y₀) (s y₀⁻¹) (fun y hy => (hs y₀ hy₀ y hy).1) (fun y hy => (hs _ (J.inv_mem hy₀) y hy).1) hinv hinv' ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨hm, hK⟩` from `hs y₀ hy₀ y hy`. Use `set y' := s y₀ y`. Use `set k := (y' * g₀)⁻¹ * (y₀ * y * g₀)`.
+
+Establish `hyJ` using `hRJ y hy`. Establish `hy'J` using `hRJ y' hm`. Establish `hmJ : y'⁻¹ * (y₀ * y) ∈ J` using `J.mul_mem (J.inv_mem hy'J) (J.mul_mem hy₀ hyJ)`. Establish `ek : k = g₀⁻¹ * (y'⁻¹ * (y₀ * y)) * g₀` using `by simp only [k]; group`. Establish `hχk : χ k = χ (y'⁻¹ * (y₀ * y))` using `by rw [ek]; exact hconj _ hmJ (ek ▸ hK)`.
+
+Establish `e1 : y₀ * y * g₀ = y' * g₀ * k` using `by simp only [k]; group`. Establish `e2 : χ y₀ * χ y = χ y' * χ (y'⁻¹ * (y₀ * y))`. Rewrite using `[← hmul _ hy₀ _ hyJ, ← hmul _ hy'J _ hmJ, mul_inv_cancel_left]`. Rewrite using `[e1, hΦ _ _ hK, hχk]`. Establish `hy0` using `hne y hyJ`.
+
+Establish `hy'0` using `hne y' hy'J`. Establish `e3 : χ (y'⁻¹ * (y₀ * y)) = χ y₀ * χ y * (χ y')⁻¹`. Rewrite using `[e2, mul_comm (χ y'), mul_assoc, mul_inv_cancel₀ hy'0, mul_one]`. Rewrite using `[e3]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sum_translate {G : Type} [Group G] (J : Subgroup G) (g₀ : G) (R : Finset G) (hRJ : ∀ y ∈ R, y ∈ J)
     (hR : ∀ j ∈ J, ∃! j', j' ∈ R ∧ (j' * g₀)⁻¹ * (j * g₀) ∈ J) (χ : G → ℂ)
     (hmul : ∀ a ∈ J, ∀ b ∈ J, χ (a * b) = χ a * χ b) (hne : ∀ a ∈ J, χ a ≠ 0)
@@ -88,6 +107,13 @@ open ValuativeRel GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL Glo
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
 
+/- English proof (translation)
+Take `⟨h, hh, rfl⟩` from `hj`. Introduce `h0`. Establish `e1 : (GeneralLinearGroup.map (n` using `A ⊕ D) (algebraMap 𝒪[k] k) h).1.toBlocks₂₂ = (algebraMap 𝒪[k] k).mapMatrix h.1.toBlocks₂₂ := rfl`. Rewrite `h0` using `[e1, ← RingHom.map_det]`. Establish `h1 : h.1.toBlocks₂₂.det = 0` using `Subtype.ext h0`.
+
+Use `set u := GeneralLinearGroup.map (n := A ⊕ D) (IsLocalRing.residue 𝒪[k]) h with hu`. Establish `h21 : u.1.toBlocks₂₁ = 0`. Use extensionality with `i j`. Conclude with `hh (i := .inr i) (j := .inl j) (show false < true by decide)`. Establish `h22 : u.1.toBlocks₂₂.det = 0`.
+
+Establish `: u.1.toBlocks₂₂ = (IsLocalRing.residue 𝒪[k]).mapMatrix h.1.toBlocks₂₂` using `rfl`. Rewrite using `[this, ← RingHom.map_det, h1, map_zero]`. Use `u.det_ne_zero` as an intermediate fact. Rewrite `this` using `[← fromBlocks_toBlocks u.1, h21, det_fromBlocks_zero₂₁, h22, mul_zero]`. Conclude with `this rfl`.
+-/
 theorem det_lower_ne {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) : j.1.toBlocks₂₂.det ≠ 0 := by
   obtain ⟨h, hh, rfl⟩ := hj
   intro h0
@@ -106,6 +132,11 @@ theorem det_lower_ne {j : GL (A ⊕ D) k} (hj : j ∈ parahoric k A D) : j.1.toB
   rw [← fromBlocks_toBlocks u.1, h21, det_fromBlocks_zero₂₁, h22, mul_zero] at this
   exact this rfl
 
+/- English proof (translation)
+Use `set c : A ⊕ D → kˣ := fun i => ϖ ^ (Sum.elim (0 : A → ℤ) e i) with hc`. Establish `ht : mtor (A` using `A) ϖ e = diagT k (A ⊕ D) c := rfl`. Establish `hti : (mtor (A` using `A) ϖ e)⁻¹ = diagT k (A ⊕ D) c⁻¹ := by rw [ht, map_inv]`. Establish `hb : ((mtor ϖ e)⁻¹ * m * mtor ϖ e : GL (A ⊕ D) k).1.toBlocks₂₂ = diagonal (fun i => ((c (.inr i))⁻¹ : kˣ) : D → k) * m.1.toBlocks₂₂ * diagonal (fun i => (c (.inr i) : k))`. Rewrite using `[hti, ht, Units.val_mul, Units.val_mul, val_diagT, val_diagT]`.
+
+Use extensionality with `i j`. Simplify using `only [toBlocks₂₂, of_apply, diagonal_mul, mul_diagonal, Pi.inv_apply]`. Rewrite using `[hb, det_mul, det_mul, det_diagonal, det_diagonal, mul_comm, ← mul_assoc, ← Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules.
+-/
 theorem det_lower_conj_mtor (ϖ : kˣ) (e : D → ℤ) (m : GL (A ⊕ D) k) :
     ((mtor ϖ e)⁻¹ * m * mtor ϖ e : GL (A ⊕ D) k).1.toBlocks₂₂.det = m.1.toBlocks₂₂.det := by
   set c : A ⊕ D → kˣ := fun i => ϖ ^ (Sum.elim (0 : A → ℤ) e i) with hc
@@ -127,6 +158,39 @@ open GlobalTheory.ZonalCellDecomposition
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D c w hw j hj s hs PP hPP v φ hφ ξl hξ ι hι ϖ e R d hR F hF κ hκ g`. Take `⟨-, -, -, -, hch⟩` from `GlobalTheory.T.splitPlaceChart_parahoric_level_stabiliser_height D c w hw j hj s hs PP hPP v φ hφ`. Take `⟨⟨eq, hemb, -⟩, hlev, hchi⟩` from `hch ι hι`. Establish `hchi'` using `hchi ξl hξ`. Use `set J := parahoric (Fv D.host.F v) (Fin D.R.r) (Blocks j D.R.t) with hJ`.
+
+Use `set g₀ : GL (Fin D.R.r ⊕ Blocks j D.R.t) (Fv D.host.F v) := mtor ϖ e with hg₀`. Use `set χ : GL (Fin D.R.r ⊕ Blocks j D.R.t) (Fv D.host.F v) → ℂ := fun x => Lev.levChi s.V s.β s.L (ι x) with hχ`. Use `set k0 := gAt s.V (.inl v) κ with hk0def`. Establish `hk0 : k0 ∈ Lev.levG s.V s.β s.L`. Take `⟨hr, hL, hfl⟩` from `hs`.
+
+Establish `hfr : Formalism.L2.DIV.IsFrame s.β s.Λ` using `hfl.frame`. Establish `hP : s.L.P.H = ⊥` using `by rw [hL]; rfl`. Take `⟨-, hS, hl⟩` from `(LevLoc.mem_lev_iff s.V.gram s.β s.L hP _).1 hκ.2`. Establish `hkS` using `LevLoc.finE_gAt_mem_St hfr κ v ((GlobalTheory.T.finitePart_mem_frameStabilizer_iff_local_stabilizer D s.V s.β s.Λ hfr κ).1 hS v)`. Use `⟨GlobalTheory.ChainOnto.LevelFacts.emb_mem_GfC s.V v _, ?_⟩` and prove the remaining obligations.
+
+Use `(LevLoc.mem_lev_iff s.V.gram s.β s.L hP _).2 ⟨GlobalTheory.LevSplit.finE_mem_UA s.V _, hkS, fun PP' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e' : PP'.under (𝓞 D.host.F) = v`. Substitute `e'` using the available equality. Rewrite using `[← LevLoc.red_local hfr κ hS PP']`. Conclude with `hl PP'`.
+
+Rewrite using `[GlobalTheory.T.latticeReduction_eq_one_of_local_component_one D s.V s.β _ PP' hkS (GlobalTheory.AdelicU.proj_emb_ne _ _ e' _)]`. Conclude with `LevLoc.locOK_one _ _`. Use `set y₀ := eq.symm (GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v κ) with hy₀def`. Establish `hy0 : ι y₀ = k0`. Rewrite using `[hemb, hy₀def, eq.apply_symm_apply]`.
+
+Both sides reduce to the same expression. Establish `hy0J : y₀ ∈ J` using `(hlev y₀).1 (hy0 ▸ hk0)`. Use `set κ' := k0⁻¹ * κ with hκ'def`. Establish `hκ' : κ' ∈ Lev.levG s.V s.β s.L` using `mul_mem (inv_mem hk0) hκ`. Establish `hκeq : κ = k0 * κ'` using `by rw [hκ'def, mul_inv_cancel_left]`.
+
+Establish `hpκ' : GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v κ' = 1`. Rewrite using `[hκ'def, map_mul, map_inv]`. Use `show (GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v (GlobalTheory.AdelicU.emb D.sp.cm.sig s.V.gram v (GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v κ)))⁻¹ * GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v κ = 1`. Rewrite using `[GlobalTheory.AdelicU.proj_emb_self, inv_mul_cancel]`. Establish `hcomm : ∀ x, ι x * κ' = κ' * ι x` using `fun x => by`.
+
+Rewrite using `[hemb]`. Conclude with `(GlobalTheory.AdelicU.commute_emb D.sp.cm.sig s.V.gram (eq x) hpκ').eq`. Establish `hmul : ∀ a ∈ J, ∀ b ∈ J, χ (a * b) = χ a * χ b` using `fun a ha b hb => by`. Simplify using `only [hχ, map_mul]`. Conclude with `GlobalTheory.ChainOnto.LevelFacts.levChi_mul ((hlev a).2 ha) ((hlev b).2 hb)`.
+
+Establish `hne : ∀ a ∈ J, χ a ≠ 0` using `fun a ha => by`. Simplify using `only [hχ]`. Rewrite using `[hchi' a ha (Units.mk0 _ (det_lower_ne ha)) rfl]`. Conclude with `Units.ne_zero _`. Establish `hconj : ∀ m ∈ J, g₀⁻¹ * m * g₀ ∈ J → χ (g₀⁻¹ * m * g₀) = χ m` using `fun m hm hm' => by`.
+
+Simplify using `only [hχ]`. Rewrite using `[hchi' _ hm' (Units.mk0 _ (det_lower_ne hm')) rfl, hchi' m hm (Units.mk0 _ (det_lower_ne hm)) rfl]`. Establish `: Units.mk0 _ (det_lower_ne hm') = Units.mk0 _ (det_lower_ne hm)` using `Units.ext (det_lower_conj_mtor ϖ e m)`. Rewrite using `[this]`. Establish `hΦ : ∀ x, ∀ k ∈ J, F (g * ι (x * k)) = χ k * F (g * ι x)` using `fun x k hk => by`.
+
+Rewrite using `[map_mul, ← mul_assoc]`. Conclude with `hF _ ((hlev k).2 hk) _`. Establish `hxi : ∀ y ∈ R, ((ξl (d y) : ℂˣ) : ℂ) = (χ y)⁻¹` using `fun y hy => by`. Simplify using `only [hχ]`. Rewrite using `[hchi' y (hR.1 y hy).1 (d y) (hR.1 y hy).2]`.
+
+Simplify using the standard rewrite rules. Establish `hterm : ∀ y, F (g * κ * ι (y * g₀)) = Lev.levChi s.V s.β s.L κ' * F (g * ι (y₀ * y * g₀))` using `fun y => by`. Establish `e1 : g * κ * ι (y * g₀) = g * ι (y₀ * y * g₀) * κ'`. Rewrite using `[hκeq, mul_assoc y₀ y g₀, map_mul ι y₀, hy0]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[hcomm]`. Rewrite using `[e1, hF κ' hκ']`. Establish `key` using `sum_translate J g₀ R (fun y hy => (hR.1 y hy).1) hR.2 χ hmul hne hconj (fun x => F (g * ι x)) hΦ hy0J`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[hxi y hy, hterm y]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = Lev.levChi s.V s.β s.L κ' * (χ y₀ * ∑ y ∈ R, (χ y)⁻¹ * F (g * ι (y * g₀))) := by rw [key]`. Use `_ = Lev.levChi s.V s.β s.L κ * ∑ y ∈ R, ((ξl (d y) : ℂˣ) : ℂ) * F (g * ι (y * g₀)) := by`.
+
+Establish `h1 : Lev.levChi s.V s.β s.L κ = χ y₀ * Lev.levChi s.V s.β s.L κ'`. Rewrite using `[hκeq, GlobalTheory.ChainOnto.LevelFacts.levChi_mul hk0 hκ']`. Simplify using `only [hχ, hy0]`. Establish `h2 : ∑ y ∈ R, ((ξl (d y) : ℂˣ) : ℂ) * F (g * ι (y * g₀)) = ∑ y ∈ R, (χ y)⁻¹ * F (g * ι (y * g₀))` using `Finset.sum_congr rfl fun y hy => by rw [hxi y hy]`. Rewrite using `[h1, h2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hecke_level : ∀ D : D7, ForStageQ D fun c w j s => ∀ PP ∈ w.Q, ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v), IsProjAt φ PP → ∀ (ξl : (Fv D.host.F v)ˣ →* ℂˣ), LiftsChar φ PP ξl (w.ξ PP) → ∀ ι, IsChart s j φ ι → ∀ (ϖ : (Fv D.host.F v)ˣ) (e : Blocks j D.R.t → ℤ) (R : Finset (GL (Fin D.R.r ⊕ Blocks j D.R.t) (Fv D.host.F v))) (d : GL (Fin D.R.r ⊕ Blocks j D.R.t) (Fv D.host.F v) → (Fv D.host.F v)ˣ), GlobalTheory.ParHecke.IsReps (GlobalTheory.ZonalCellDecomposition.mtor ϖ e) R d → ∀ F : GA D s.V → ℂ, (∀ κ ∈ Lev.levG s.V s.β s.L, ∀ g, F (g * κ) = Lev.levChi s.V s.β s.L κ * F g) → ∀ κ ∈ Lev.levG s.V s.β s.L, ∀ g, ∑ y ∈ R, ((ξl (d y) : ℂˣ) : ℂ) * F (g * κ * ι (y * GlobalTheory.ZonalCellDecomposition.mtor ϖ e)) = Lev.levChi s.V s.β s.L κ * ∑ y ∈ R, ((ξl (d y) : ℂˣ) : ℂ) * F (g * ι (y * GlobalTheory.ZonalCellDecomposition.mtor ϖ e)) := by
   intro D c w hw j hj s hs PP hPP v φ hφ ξl hξ ι hι ϖ e R d hR F hF κ hκ g
   obtain ⟨-, -, -, -, hch⟩ := GlobalTheory.T.splitPlaceChart_parahoric_level_stabiliser_height D c w hw j hj s hs PP hPP v φ hφ

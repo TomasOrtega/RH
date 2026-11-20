@@ -30,6 +30,9 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 noncomputable section
 namespace GlobalTheory.SimilTheta
 
+/- English proof (translation)
+Rewrite using `[Scheme.germ_stalkClosedPointTo]`. Simplify using `[Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]`.
+-/
 theorem germ_stalkClosedPointTo_appLE {Y : Scheme.{0}} {R : CommRingCat.{0}} [IsLocalRing R] (f : Spec R ⟶ Y)
     (U : Y.Opens) (hU : f (IsLocalRing.closedPoint R) ∈ U) :
     Y.presheaf.germ U _ hU ≫ Scheme.stalkClosedPointTo f =
@@ -37,6 +40,11 @@ theorem germ_stalkClosedPointTo_appLE {Y : Scheme.{0}} {R : CommRingCat.{0}} [Is
   rw [Scheme.germ_stalkClosedPointTo]
   simp [Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]
 
+/- English proof (translation)
+Use `⟨p (IsLocalRing.closedPoint ℂ), (Scheme.stalkClosedPointTo (R := .of ℂ) p).hom, fun X f U => ?_, fun X f U a h => ?_⟩` and prove the remaining obligations. Rewrite using `[top_le_preimage_iff_mem, Subsingleton.elim (α := PrimeSpectrum ℂ) default (IsLocalRing.closedPoint ℂ)]`. Both sides reduce to the same expression. Establish `hU` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of ℂ) p (U := f ⁻¹ᵁ U) h).ge`. Establish `e` using `germ_stalkClosedPointTo_appLE (R := .of ℂ) p (f ⁻¹ᵁ U) h`.
+
+Rewrite using `[gs_eq f _ U h, ← valAt'_comp, valAt'_eq_valAt p hU]`. Conclude with `congrArg (fun q => q.hom ((f.app U).hom a)) e`.
+-/
 theorem exists_ev {Y : Scheme.{0}} (p : Sp ℂ ⟶ Y) :
     ∃ (y : Y) (ev : Y.presheaf.stalk y →+* ℂ),
       (∀ (X : Scheme.{0}) (f : Y ⟶ X) (U : X.Opens), f y ∈ U ↔ ⊤ ≤ (p ≫ f) ⁻¹ᵁ U) ∧
@@ -50,12 +58,18 @@ theorem exists_ev {Y : Scheme.{0}} (p : Sp ℂ ⟶ Y) :
     rw [gs_eq f _ U h, ← valAt'_comp, valAt'_eq_valAt p hU]
     exact congrArg (fun q => q.hom ((f.app U).hom a)) e
 
+/- English proof (translation)
+Use `(valAt'_map p (homOfLE (le_top : (⊤ : X.Opens) ≤ ⊤)).op _ le_top).trans ?_` and prove the remaining obligations. Use `(valAt'_comp p f ⊤ _).trans ?_` and prove the remaining obligations. Rewrite using `[hp, valAt'_id_top]`.
+-/
 theorem val_cst {X : Scheme.{0}} (p : Sp ℂ ⟶ X) (f : X ⟶ Sp ℂ) (hp : p ≫ f = 𝟙 _) (a : ℂ) :
     valAt' p ⊤ (cst f ⊤ a) = a := by
   refine (valAt'_map p (homOfLE (le_top : (⊤ : X.Opens) ≤ ⊤)).op _ le_top).trans ?_
   refine (valAt'_comp p f ⊤ _).trans ?_
   rw [hp, valAt'_id_top]
 
+/- English proof (translation)
+Take `rfl : (fun k => J (r ≫ φ k)) = j` from `funext h`. Substitute `hq` using the available equality. Conclude with `(congrArg ev (gs_unit r z _ (hJ.mem φ r) _).symm).trans (hev _ _ _ _ (hJ.mem φ r))`.
+-/
 theorem ev_val {X Y Z : Scheme.{0}} {p : Sp ℂ ⟶ Z} {z : Z} {ev : Z.presheaf.stalk z →+* ℂ}
     (hev : ∀ (X : Scheme.{0}) (f : Z ⟶ X) (U : X.Opens) (a : Γ(X, U)), f z ∈ U → ev (gs f z U a) = valAt' (p ≫ f) U a)
     {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ep : K → ℤ} (t : LB.Gen (LB.LinComb L φ ep)) (r : Z ⟶ Y)
@@ -67,15 +81,24 @@ theorem ev_val {X Y Z : Scheme.{0}} {p : Sp ℂ ⟶ Z} {z : Z} {ev : Z.presheaf.
 
 variable {g : ℕ} (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L g)
 
+/- English proof (translation)
+The claim follows from `map_zpow (MonoidHom.mk' (fun z : Multiplicative (Fin g → ℂ) => u.ex z.toAdd) fun _ _ => u.ex_add _ _) (Multiplicative.ofAdd z) n`.
+-/
 theorem ex_zsmul (n : ℤ) (z : Fin g → ℂ) : u.ex (n • z) = u.ex z ^ n :=
   map_zpow (MonoidHom.mk' (fun z : Multiplicative (Fin g → ℂ) => u.ex z.toAdd) fun _ _ => u.ex_add _ _)
     (Multiplicative.ofAdd z) n
 
+/- English proof (translation)
+Simplify using `only [List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, Fin.sum_univ_succ, Fin.sum_univ_zero, u.ex_add, ex_zsmul, CubeValues.ex_zero]`.
+-/
 theorem ex_prod (s : Fin 4 → ℤ) (y : Fin 4 → Fin g → ℂ) :
     (List.ofFn fun c => u.ex (y c) ^ s c).prod = u.ex (∑ c, s c • y c) := by
   simp only [List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, Fin.sum_univ_succ, Fin.sum_univ_zero,
     u.ex_add, ex_zsmul, CubeValues.ex_zero]
 
+/- English proof (translation)
+Establish `e₀ : pt ≫ toUnit _ = 𝟙 _` using `toUnit_unique _ _`. Rewrite using `[u.ex_add, ← ex_prod]`. Simplify using `only [alMap, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, MonObj.comp_mul, GrpObj.comp_zpow, MonObj.comp_one, hy, reassoc_of% e₀]`.
+-/
 theorem comp_alMap (al : Matrix (Fin 4) (Fin 4) ℤ) (r : Fin 4) (t : Fin g → ℂ) (y : Fin 4 → Fin g → ℂ)
     (pt : 𝟙_ (Over (Sp ℂ)) ⟶ Out.powObj x.P.A 4) (hy : ∀ c, pt ≫ Out.powPr x.P.A c = u.ex (y c)) :
     pt ≫ alMap x al r (u.ex t) = u.ex (∑ c, al r c • y c + t) := by
@@ -84,6 +107,25 @@ theorem comp_alMap (al : Matrix (Fin 4) (Fin 4) ℤ) (r : Fin 4) (t : Fin g → 
   simp only [alMap, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, MonObj.comp_mul,
     GrpObj.comp_zpow, MonObj.comp_one, hy, reassoc_of% e₀]
 
+/- English proof (translation)
+Set `pt : 𝟙_ (Over (Sp ℂ)) ⟶ Out.powObj x.P.A 4` to `(Out.powIsLimit x.P.A 4).lift (Fan.mk _ fun c => u.ex (y c))`. Establish `hy : ∀ c, pt ≫ Out.powPr x.P.A c = u.ex (y c)` using `fun c => (Out.powIsLimit x.P.A 4).fac (Fan.mk _ fun c => u.ex (y c)) ⟨c⟩`. Take `⟨p, hp⟩ : ∃ p : Sp ℂ ⟶ (Out.powObj x.P.A 4).left, p = pt.left` from `⟨_, rfl⟩`. Establish `e₁ : ∀ c, p ≫ (Out.powPr x.P.A c).left = (u.ex (y c)).left` using `fun c => by`. Rewrite using `[hp]`.
+
+Conclude with `congrArg (·.left) (hy c)`. Establish `e₂ : ∀ r, p ≫ (alMap x al r (ξ r)).left = (u.ex (∑ c, al r c • y c + tors τ al m k n r)).left` using `fun r => by`. Rewrite using `[hp, hξ]`. Conclude with `congrArg (·.left) (comp_alMap x u al r _ y pt hy)`. Take `⟨y₀, ev, hmem, hev⟩` from `exists_ev p`.
+
+Use `choose J hJ using fun ψ : (Out.powObj x.P.A 4).left ⟶ x.P.A.left => exists_chart x.P.isLB (ψ y₀)`. Establish `m₁ : ∀ c, ⊤ ≤ (u.ex (y c)).left ⁻¹ᵁ x.P.L.U (J (Out.powPr x.P.A c).left)` using `fun c => by`. Rewrite using `[← e₁]`. Conclude with `(hmem _ _ _).1 (hJ _)`. Establish `m₂ : ∀ r, ⊤ ≤ (u.ex (∑ c, al r c • y c + tors τ al m k n r)).left ⁻¹ᵁ x.P.L.U (J (alMap x al r (ξ r)).left)` using `fun r => by`.
+
+Rewrite using `[← e₂]`. Conclude with `(hmem _ _ _).1 (hJ _)`. Establish `v₁ : ∀ r, ev (gs (alMap x al r (ξ r)).left y₀ _ (x.th.f (J (alMap x al r (ξ r)).left))) = thetaChar τ a b (∑ c, al r c • y c + tors τ al m k n r) * u.fr (J (alMap x al r (ξ r)).left) (∑ c, al r c • y c + tors τ al m k n r)` using `fun r => by`. Rewrite using `[hev _ _ _ _ (hJ _), e₂]`. Conclude with `hth _ _ (m₂ r)`.
+
+Establish `v₂ : ∀ c i, ev (gs (Out.powPr x.P.A c).left y₀ (x.P.L.U (J (Out.powPr x.P.A c).left)) ((bs i).f (J (Out.powPr x.P.A c).left))) = Th i (y c) * u.fr (J (Out.powPr x.P.A c).left) (y c) ^ m` using `fun c i => (hev _ _ _ _ (hJ _)).trans (by rw [e₁]; exact hb i _ _ (m₁ c))`. Establish `v₃ : ∀ q : ℂ, ev (gs (𝟙 _) y₀ ⊤ (cst (Out.powObj x.P.A 4).hom ⊤ q)) = q` using `fun q => by`. Use `(hev _ _ _ _ (Set.mem_univ _)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Conclude with `val_cst p _ (by rw [hp]; exact Over.w pt) q`.
+
+Establish `v₄ : ev (val w (𝟙 _) y₀ J).val * Complex.exp (2 * Real.pi * Complex.I * ∑ c, (fun i => (n c i : ℂ)) ⬝ᵥ y c) = C * ((∏ r, u.fr (J (alMap x al r (ξ r)).left) (∑ c, al r c • y c + tors τ al m k n r)) * ∏ c, u.fr (J (Out.powPr x.P.A c).left) (y c) ^ (-(m : ℤ)))`. Apply the tactic sequence `rw [ev_val hev w (𝟙 _) hJ (Sum.elim (fun r => J (alMap x al r (ξ r)).left) fun c => J (Out.powPr x.P.A c).left) (by rintro (r | c) <;> exact congrArg J (Category.id_comp _)) pt.left ((Category.comp_id _).trans hp)]`. Conclude with `hC y pt hy _ m₂ m₁`. Establish `h` using `congrArg ev (hQ y₀ J hJ)`. Simplify using `only [map_prod, map_mul, map_sum, v₁, v₂, v₃, Finset.prod_mul_distrib] at h`.
+
+Establish `n₁ : (∏ r, u.fr (J (alMap x al r (ξ r)).left) (∑ c, al r c • y c + tors τ al m k n r)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun r _ => u.fr_ne _ _ (m₂ r)`. Establish `n₂ : (∏ c, u.fr (J (Out.powPr x.P.A c).left) (y c) ^ (-(m : ℤ))) * ∏ c, u.fr (J (Out.powPr x.P.A c).left) (y c) ^ m = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ (u.fr_ne _ _ (m₁ c)))]`.
+
+Simplify using `only [← _root_.mul_assoc, ← Finset.sum_mul] at h`. Apply `mul_right_cancel₀ n₁` to reduce the goal to its premises. Simplify using `only [_root_.mul_assoc C, ← Finset.mul_sum]`. Rewrite using `[simTheta]`. Generalize the expression as in `(∑ I' : Fin 4 → Fin N, Q I' * ∏ c, Th (I' c) (y c)) = S at h ⊢`.
+
+Generalize the expression as in `(∏ r, u.fr (J (alMap x al r (ξ r)).left) (∑ c, al r c • y c + tors τ al m k n r)) = F₁ at *`. Generalize the expression as in `(∏ c, u.fr (J (Out.powPr x.P.A c).left) (y c) ^ (-(m : ℤ))) = F₂ at *`. Generalize the expression as in `(∏ c, u.fr (J (Out.powPr x.P.A c).left) (y c) ^ m) = F₃ at *`. Generalize the expression as in `Complex.exp (2 * Real.pi * Complex.I * ∑ c, (fun i => (n c i : ℂ)) ⬝ᵥ y c) = e at *`. Take the linear combination `e * h + S * F₃ * v₄ + C * F₁ * S * n₂`.
+-/
 theorem theta_eq {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ} {al : Matrix (Fin 4) (Fin 4) ℤ} {m N : ℕ}
     (hth : u.IsFn x.th (thetaChar τ a b)) (bs : Fin N → RR x m) (Th : Fin N → (Fin g → ℂ) → ℂ)
     (hb : ∀ k, FnPw x u (bs k) (Th k)) (k n : Fin 4 → Fin g → ℤ) (ξ : Fin 4 → Pt x)
@@ -151,6 +193,41 @@ theorem theta_eq {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ} {al : M
   generalize Complex.exp (2 * Real.pi * Complex.I * ∑ c, (fun i => (n c i : ℂ)) ⬝ᵥ y c) = e at *
   linear_combination e * h + S * F₃ * v₄ + C * F₁ * S * n₂
 
+/- English proof (translation)
+Take `⟨p, hp⟩ : ∃ p : Sp ℂ ⟶ (𝟙_ (Over (Sp ℂ))).left, p = 𝟙 (Sp ℂ)` from `⟨_, rfl⟩`. Establish `hp' : ∀ {X : Scheme.{0}} (f : (𝟙_ (Over (Sp ℂ))).left ⟶ X), p ≫ f = f` using `fun f => by`. Rewrite using `[hp]`. Conclude with `Category.id_comp f`. Take `⟨y₀, ev, hmem, hev⟩` from `exists_ev p`.
+
+Use `choose J hJ using fun ψ : (𝟙_ (Over (Sp ℂ))).left ⟶ x.P.A.left => exists_chart x.P.isLB (ψ y₀)`. Take `⟨h₁, h₂⟩` from `hrho y₀ J hJ`. Establish `mem : ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ x.P.L.U (J (u.ex z).left)` using `fun z => by`. Use `(hmem _ _ _).1 (hJ (u.ex z).left)` as an intermediate fact. Rewrite `this` using `[hp']`. Then use the resulting hypothesis.
+
+Establish `e0 : (u.ex 0).left = eSec x.P.A` using `by rw [CubeValues.ex_zero]; exact PowUnif.one_left`. Establish `hmc : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `et : ∀ r, (m : ℤ) • tors τ al m k n r = lat τ (∑ c, al r c • k c) (∑ c, al r c • n c)` using `fun r => by`. Rewrite using `[tors, lat_sum, natCast_zsmul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hmc, one_smul]`. Simplify using `only [lat_zsmul]`.
+
+Establish `em : ∀ z, (u.ex z).left ≫ ((𝟙 x.P.A) ^ m).left = (u.ex ((m : ℤ) • z)).left` using `fun z => by`. Rewrite using `[ex_zsmul, zpow_natCast, ← Over.comp_left, MonObj.comp_pow, Category.comp_id]`. Establish `vr : ev (val x.rig (𝟙 _) y₀ J).val = u.fr (J (u.ex 0).left) 0`. Rewrite using `[ev_val hev x.rig (𝟙 _) hJ (fun _ => J (u.ex 0).left) (fun _ => congrArg J ((Category.id_comp _).trans e0.symm)) (𝟙 (Sp ℂ)) ((Category.comp_id _).trans hp)]`. Use `(hrig (fun _ => J (u.ex 0).left) fun q hq => Set.mem_iInter.2 fun _ => ?_).symm` and prove the remaining obligations.
+
+Use `mem 0 hq` as an intermediate fact. Rewrite using `[← e0]`. Conclude with `this`. Establish `vm : ∀ z, u.ex ((m : ℤ) • z) = u.ex 0 → ev (val mu (u.ex z).left y₀ J).val = D * (u.fr (J (u.ex 0).left) ((m : ℤ) • z) * u.fr (J (u.ex z).left) z ^ (-(m : ℤ) ^ 2))` using `fun z hz => by`. Rewrite using `[ev_val hev mu (u.ex z).left hJ ![J (u.ex 0).left, J (u.ex z).left] (fun i => by fin_cases i`.
+
+Conclude with `congrArg J ((em z).trans (congrArg (·.left) hz))`. Conclude with `congrArg J (Category.comp_id _)) (u.ex z).left (hp' _)]`. Conclude with `hD z _ (by rw [hz]; exact mem 0) (mem z)`. Establish `evz : ∀ (s : ((𝟙_ (Over (Sp ℂ))).left.presheaf.stalk y₀)ˣ) (i : ℤ), ev (s ^ i).val = ev s.val ^ i` using `fun s i => by`. Use `congrArg Units.val (map_zpow (Units.map (ev : _ →* ℂ)) s i)` as an intermediate fact.
+
+Rewrite `this` using `[Units.val_zpow_eq_zpow_val]`. Conclude with `this`. Establish `f0 : u.fr (J (u.ex 0).left) 0 ≠ 0` using `u.fr_ne _ _ (mem 0)`. Establish `hD1 : D = 1`. Establish `h` using `congrArg (fun s => ev (Units.val s)) h₁`.
+
+Simplify using `only [evz, vr] at h`. Rewrite `h` using `[← e0, vm 0 (by rw [smul_zero]), smul_zero, sub_eq_add_neg, zpow_add₀ f0, zpow_one]`. Conclude with `mul_right_cancel₀ (mul_ne_zero f0 (zpow_ne_zero _ f0)) (h.trans (_root_.one_mul _).symm)`. Establish `vw : ev (val w (eSec (Out.powObj x.P.A 4)) y₀ J).val = C * ((∏ r, u.fr (J (u.ex (tors τ al m k n r)).left) (tors τ al m k n r)) * ∏ _c : Fin 4, u.fr (J (u.ex 0).left) 0 ^ (-(m : ℤ)))`. Establish `hy : ∀ c : Fin 4, (1 : 𝟙_ (Over (Sp ℂ)) ⟶ Out.powObj x.P.A 4) ≫ Out.powPr x.P.A c = u.ex ((0 : Fin 4 → Fin g → ℂ) c)` using `fun c => by`.
+
+Rewrite using `[MonObj.one_comp, Pi.zero_apply, CubeValues.ex_zero]`. Establish `e1 : (1 : 𝟙_ (Over (Sp ℂ)) ⟶ Out.powObj x.P.A 4).left = eSec (Out.powObj x.P.A 4)` using `PowUnif.one_left`. Establish `ez : ∀ r, ∑ c, al r c • (0 : Fin 4 → Fin g → ℂ) c + tors τ al m k n r = tors τ al m k n r` using `fun r => by`. Simplify using the standard rewrite rules. Rewrite using `[ev_val hev w (eSec (Out.powObj x.P.A 4)) hJ (Sum.elim (fun r => J (u.ex (tors τ al m k n r)).left) fun _ => J (u.ex 0).left) (by`.
+
+Introduce and unpack `(r | c)`. Use `congrArg J ?_` and prove the remaining obligations. Use `congrArg (·.left) (comp_alMap x u al r (tors τ al m k n r) 0 1 hy)` as an intermediate fact. Rewrite `this` using `[ez, ← hξ]`. Rewrite using `[← e1, ← hξ]`.
+
+Conclude with `this`. Use `congrArg J ?_` and prove the remaining obligations. Rewrite using `[← e1]`. Conclude with `congrArg (·.left) (hy c)) (1 : 𝟙_ (Over (Sp ℂ)) ⟶ Out.powObj x.P.A 4).left ((hp' _).trans e1.symm)]`. Use `hC 0 1 hy (Sum.elim (fun r => J (u.ex (tors τ al m k n r)).left) fun _ => J (u.ex 0).left) (fun r => by rw [ez]; exact mem _) (fun c => mem 0)` as an intermediate fact.
+
+Simplify using `only [ez, Pi.zero_apply, dotProduct_zero, Finset.sum_const_zero, mul_zero, Complex.exp_zero, _root_.mul_one] at this`. Simplify `this` using `only [smul_zero, Finset.sum_const_zero, zero_add, Sum.elim_inl, Sum.elim_inr]`. Establish `vc : ev (gs (𝟙_ (Over (Sp ℂ))).hom y₀ ⊤ (cst (𝟙 (Sp ℂ)) ⊤ rho)) = rho`. Use `(hev _ _ _ _ (Set.mem_univ _)).trans ?_` and prove the remaining obligations. Rewrite using `[hp']`.
+
+Conclude with `val_cst (𝟙 _) (𝟙 _) (Category.comp_id _) rho`. Establish `vx : ∀ r, aut τ a b (∑ c, al r c • k c) (∑ c, al r c • n c) 0 * ev (val mu (ξ r).left y₀ J).val = u.fr (J (u.ex 0).left) 0 * (u.fr (J (u.ex (tors τ al m k n r)).left) (tors τ al m k n r) ^ (m ^ 2))⁻¹` using `fun r => by`. Rewrite using `[hξ, vm _ (by rw [et, (u.ker _).2 (hlat _ _), CubeValues.ex_zero]), hD1, _root_.one_mul, et, hfr (∑ c, al r c • k c) (∑ c, al r c • n c) _ 0 (mem 0), zero_add, zpow_neg, ← Nat.cast_pow, zpow_natCast, _root_.mul_assoc]`. Establish `h` using `congrArg ev h₂`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, Units.coe_prod, map_mul, map_pow, map_prod, evz, vr, vc, vw] at h`.
+
+Establish `hx` using `Finset.prod_congr (s₁ := Finset.univ) rfl fun r _ => vx r`. Simplify using `only [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_inv_distrib, Finset.prod_pow] at hx h`. Establish `n₁ : (∏ r, u.fr (J (u.ex (tors τ al m k n r)).left) (tors τ al m k n r)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun r _ => u.fr_ne _ _ (mem _)`. Generalize the expression as in `(∏ r, u.fr (J (u.ex (tors τ al m k n r)).left) (tors τ al m k n r)) = F at *`. Generalize the expression as in `u.fr (J (u.ex 0).left) 0 = f at *`.
+
+Generalize the expression as in `(∏ r, aut τ a b (∑ c, al r c • k c) (∑ c, al r c • n c) 0) = A at *`. Generalize the expression as in `(∏ r, ev (val mu (ξ r).left y₀ J).val) = M at *`. Establish `e : f ^ (4 - 4 * (m : ℤ) ^ 3) = ((f ^ (-(m : ℤ))) ^ 4) ^ (m ^ 2) * f ^ 4`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_add₀ f0]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Apply `mul_right_cancel₀ (zpow_ne_zero (4 - 4 * (m : ℤ) ^ 3) f0)` to reduce the goal to its premises. Establish `hF : F ^ (m ^ 2) * (F ^ (m ^ 2))⁻¹ = 1` using `mul_inv_cancel₀ (pow_ne_zero _ n₁)`. Rewrite `h` using `[mul_pow, mul_pow]`.
+
+Rewrite using `[mul_right_comm, ← h, e]`. Take the linear combination `(C ^ m ^ 2 * F ^ m ^ 2 * ((f ^ (-(m : ℤ))) ^ 4) ^ m ^ 2) * hx + (C ^ m ^ 2 * ((f ^ (-(m : ℤ))) ^ 4) ^ m ^ 2 * f ^ 4) * hF`.
+-/
 theorem rho_eq {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ} {al : Matrix (Fin 4) (Fin 4) ℤ} {m : ℕ} (hm : 1 ≤ m)
     (hrig : u.IsRig x.rig) (hlat : ∀ k n, lat τ k n ∈ u.Λ)
     (hfr : ∀ (k n : Fin g → ℤ) (i : x.P.L.ι) (z : Fin g → ℂ), ⊤ ≤ (u.ex z).left ⁻¹ᵁ x.P.L.U i →
@@ -267,6 +344,9 @@ theorem rho_eq {τ : Matrix (Fin g) (Fin g) ℂ} {a b : Fin g → ℂ} {al : Mat
     (C ^ m ^ 2 * ((f ^ (-(m : ℤ))) ^ 4) ^ m ^ 2 * f ^ 4) * hF
 
 omit x u in
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const (1 : ℂ)`. Consider the case `insert i s hi ih`. Simplify using `only [Finset.prod_insert hi]`. Conclude with `(h i (Finset.mem_insert_self _ _)).fun_mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem differentiableOn_prod {E K : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {W : Set E} (s : Finset K)
     {f : K → E → ℂ} (h : ∀ i ∈ s, DifferentiableOn ℂ (f i) W) : DifferentiableOn ℂ (fun e => ∏ i ∈ s, f i e) W := by
   classical
@@ -277,6 +357,11 @@ theorem differentiableOn_prod {E K : Type} [NormedAddCommGroup E] [NormedSpace �
     exact (h i (Finset.mem_insert_self _ _)).fun_mul (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
 omit x u in
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.TransposeMulCommute.mul_transpose_eq_of_transpose_mul_eq`. Consider the case `exact _root_.GlobalTheory.TransposeMulCommute.mul_transpose_eq_of_transpose_mul_eq`. Consider the case `(apply _root_.GlobalTheory.TransposeMulCommute.mul_transpose_eq_of_transpose_mul_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TransposeMulCommute.mul_transpose_eq_of_transpose_mul_eq <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.TransposeMulCommute.mul_transpose_eq_of_transpose_mul_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TransposeMulCommute.mul_transpose_eq_of_transpose_mul_eq ..)`.
+-/
 theorem mul_transpose_eq {al : Matrix (Fin 4) (Fin 4) ℤ} {m : ℕ} (hm : 1 ≤ m)
     (hal : al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ)) :
     al * al.transpose = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) := by
@@ -290,6 +375,13 @@ theorem mul_transpose_eq {al : Matrix (Fin 4) (Fin 4) ℤ} {m : ℕ} (hm : 1 ≤
 
 omit x u in
 
+/- English proof (translation)
+Establish `hmc : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `h1 : ∀ c, lat τ (k c) (n c) = ∑ r, al r c • (t r - lat τ (d r) (e r))` using `fun c => by`. Simplify using `only [smul_sub, Finset.sum_sub_distrib, h, lat_add, lat_sum, lat_zsmul, add_sub_cancel_right]`. Establish `h2 : ∀ v : Fin 4 → Fin g → ℂ, ∑ c, al r c • ∑ r', al r' c • v r' = (m : ℂ) • v r` using `fun v => by`. Simplify using `only [Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `: ∀ r', ∑ c, (al r c * al r' c) • v r' = if r = r' then (m : ℤ) • v r' else 0` using `fun r' => by`. Use `congrFun (congrFun (mul_transpose_eq hm hal) r) r'` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] at this`. Rewrite using `[← Finset.sum_smul, this]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [this, Finset.sum_ite_eq, Finset.mem_univ, if_true, natCast_zsmul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[tors]`. Simplify using `only [h1]`. Rewrite using `[h2, smul_smul, inv_mul_cancel₀ hmc, one_smul, sub_add_cancel]`.
+-/
 theorem eq_tors_add {τ : Matrix (Fin g) (Fin g) ℂ} {al : Matrix (Fin 4) (Fin 4) ℤ} {m : ℕ} (hm : 1 ≤ m)
     (hal : al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ)) (t : Fin 4 → Fin g → ℂ)
     (k n d e : Fin 4 → Fin g → ℤ)
@@ -313,6 +405,25 @@ theorem eq_tors_add {τ : Matrix (Fin g) (Fin g) ℂ} {al : Matrix (Fin 4) (Fin 
 
 omit x u in
 
+/- English proof (translation)
+Introduce `_ _ g m a b al Th hab hm hal hTh`. Take `⟨k, n, hkn⟩` from `GlobalTheory.T.exists_perm_representatives_mod_similitude g m al hm hal`. Use `choose qa hqa hqa' using fun I => GlobalTheory.T.exists_holomorphic_coord_similitudeThetaProduct g m a b al Th hab hm hal hTh (k I) (n I)`. Use `⟨fun p => (Matrix.of fun I => qa I p).det ^ (2 * m ^ 2) / (∏ I, ∏ r, aut (per p) a b (∑ c, al r c • k I c) (∑ c, al r c • n I c) 0) ^ 2, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [div_eq_mul_inv]`.
+
+Use `DifferentiableOn.fun_mul (DifferentiableOn.fun_pow ?_ _) (DifferentiableOn.fun_inv (DifferentiableOn.fun_pow ?_ _) fun p _ => pow_ne_zero _ (Finset.prod_ne_zero_iff.2 fun I _ => Finset.prod_ne_zero_iff.2 fun r _ => aut_ne_zero _ _ _ _ _ _))` and prove the remaining obligations. Simplify using `only [Matrix.det_apply', Matrix.of_apply]`. Conclude with `DifferentiableOn.fun_sum fun σ _ => DifferentiableOn.const_mul (differentiableOn_prod _ fun I _ => hqa _ _) _`. Conclude with `differentiableOn_prod _ fun I _ => differentiableOn_prod _ fun r _ => ((GlobalTheory.T.thetaChar_level_one_and_holomorphic_parameter g a b hab).2.2 _ _ _).differentiableOn`. Introduce and unpack `p hp x h u bs la hW hb ⟨ξ, mu, w, Q, rho, hne, hker, hmu, hw, hnorm, hQ, hla⟩`.
+
+Substitute `h` using the available equality. Establish `hlat : ∀ k n, lat (per p) k n ∈ u.Λ` using `fun k n => (hW.2.2.1 _).2 ⟨k, n, rfl⟩`. Use `choose t ht using fun I r => u.ex_onto (ξ I r)`. Establish `hk : ∀ I c, ∃ k' n', ∑ r, al r c • t I r = lat (per p) k' n'` using `fun I c => by`. Use `(hW.2.2.1 _).1 ((u.ker _).1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[← ex_prod]`. Simplify using `only [ht]`. Conclude with `hker I c`. Use `choose k' n' hk' using hk`. Establish `hx : ∀ I (k n d e : Fin 4 → Fin x.P.g → ℤ), (∀ c, k' I c = k c + ∑ r, al r c • d r ∧ n' I c = n c + ∑ r, al r c • e r) → ∀ r, ξ I r = u.ex (tors (per p) al m k n r)` using `fun I k n d e h r => by`.
+
+Rewrite using `[← ht, eq_tors_add hm hal (t I) k n d e (fun c => by rw [hk', (h c).1, (h c).2]) r, CubeValues.ex_add_period u _ _ (hlat _ _)]`. Take `⟨σ, hσ⟩` from `hkn k' n' (by`. Introduce and unpack `I I' hI ⟨d, e, h⟩`. Take `⟨r, hr⟩` from `hne I I' hI (IsLocalRing.closedPoint ℂ)`. Conclude with `hr (by rw [hx I _ _ d e h r, hx I' (k' I') (n' I') 0 0 (fun c => by simp) r]))`.
+
+Establish `hξ : ∀ I r, ξ I r = u.ex (tors (per p) al m (k (σ I)) (n (σ I)) r)` using `fun I => by`. Take `⟨d, e, h⟩` from `hσ I`. Conclude with `hx I _ _ d e h`. Take `⟨D, -, hD⟩` from `GlobalTheory.T.theta_generator_pullback_mul_const_in_frames _ m x rfl u (per p) a b al hab hW hm hal mu hmu`. Use `choose C _ hC using fun I => GlobalTheory.T.similitude_generator_eq_exp_in_frames _ m x rfl u (per p) a b al hab hW hm hal (k (σ I)) (n (σ I)) (ξ I) (hξ I) (w I) (hw I)`.
+
+Establish `h₁ : ∀ I, (fun I' => C I * Q I I') = qa (σ I) p` using `fun I => (hqa' (σ I) p hp _).1 (theta_eq x u hW.2.2.2.2.1 bs (fun i => Th i p) hb _ _ (ξ I) (hξ I) (w I) (C I) (hC I) (Q I) (hQ I))`. Establish `h₂` using `fun I => rho_eq x u hm hW.2.2.2.1 hlat (GlobalTheory.T.thetaUniformisation_frame_eq_automorphy_mul _ x rfl u (per p) a b hab hW) _ _ (ξ I) (hξ I) mu D hD (w I) (C I) (hC I) (rho I) fun q J hJ => ⟨(hnorm q J hJ).1, (hnorm q J hJ).2 I⟩`. Establish `h₃ : (∏ I, C I) * Q.det = Equiv.Perm.sign σ * (Matrix.of fun I => qa I p).det`. Rewrite using `[← Matrix.det_mul_column, ← Matrix.det_permute]`. Use `congr 1`.
+
+Use extensionality with `I I'`. Conclude with `congrFun (h₁ I) I'`. Establish `h₄ : (Matrix.of fun I => qa I p).det ^ 2 = ((∏ I, C I) * Q.det) ^ 2`. Rewrite using `[h₃, mul_pow]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+
+Establish `h₅` using `Finset.prod_congr (s₁ := Finset.univ) rfl fun I _ => h₂ I`. Rewrite `h₅` using `[Finset.prod_mul_distrib, Finset.prod_pow, Equiv.prod_comp σ fun I => ∏ r, aut (per p) a b (∑ c, al r c • k I c) (∑ c, al r c • n I c) 0]`. Use `beta_reduce`. Rewrite using `[eq_div_iff (pow_ne_zero _ (Finset.prod_ne_zero_iff.2 fun I _ => Finset.prod_ne_zero_iff.2 fun r _ => aut_ne_zero _ _ _ _ _ _)), hla, Finset.prod_pow, _root_.mul_assoc, ← mul_pow, h₅, pow_mul (Matrix.det (Matrix.of _)), h₄]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem l2Val_holomorphic : Out.Laws → ThetaUnifAV → ∀ (g m : ℕ) (a b : Fin g → ℂ) (al : Matrix (Fin 4) (Fin 4) ℤ) (Th : Fin (m ^ g) → (Fin g → Fin g → ℂ) → (Fin g → ℂ) → ℂ), charHalf g a b → 1 ≤ m → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → LevBasis a b m Th → ∃ lam : (Fin g → Fin g → ℂ) → ℂ, DifferentiableOn ℂ lam (Key.phDom g) ∧ ∀ p ∈ Key.phDom g, ∀ (x : KeyIn ℂ) (h : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (bs : Fin (m ^ x.P.g) → RR x m) (la : ℂˣ), Wit x h u (per p) a b → (∀ k, FnPw x u (bs k) (Th (k.cast (by rw [h])) p)) → IsSquareDeterminantComparison x m al bs la → (la : ℂ) = lam p := by
   intro _ _ g m a b al Th hab hm hal hTh
   obtain ⟨k, n, hkn⟩ := GlobalTheory.T.exists_perm_representatives_mod_similitude g m al hm hal

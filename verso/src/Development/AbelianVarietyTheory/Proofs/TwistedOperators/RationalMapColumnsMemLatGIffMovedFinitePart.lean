@@ -17,6 +17,9 @@ open scoped TensorProduct
 
 variable {D : D7}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(1 : AF D.host.F) ⊗ₜ[D.host.F] Y i j - (pairA D.host.F 1 0) ⊗ₜ[D.host.F] Y i j = _`. Rewrite using `[← TensorProduct.sub_tmul]`. Use `congr 1`. Conclude with `Prod.ext (sub_self (1 : Ainf D.host.F)) (sub_zero (1 : Af D.host.F))`.
+-/
 theorem finite_part_apply (V W : HSp D) (Y : Matrix (Fin W.rank) (Fin V.rank) D.host.E) (i : Fin W.rank) (j : Fin V.rank) :
     (ratW W V Y - realPt V W Y : WO V W) i j = (pairA D.host.F 0 1) ⊗ₜ[D.host.F] Y i j := by
   change (1 : AF D.host.F) ⊗ₜ[D.host.F] Y i j - (pairA D.host.F 1 0) ⊗ₜ[D.host.F] Y i j = _
@@ -31,6 +34,13 @@ def rk (V W : HSp D) (s : Fin V.rank → D.host.E) : (Fin W.rank → D.host.E) �
     ext i j
     simp only [Matrix.of_apply, Matrix.add_apply, Pi.add_apply, add_mul, TensorProduct.tmul_add]
 
+/- English proof (translation)
+Establish `hc'` using `(GlobalTheory.OneMapRef.FactsLat.isAA_span L c).1 hc`. Use `clear hc`. Proceed by induction on `hc' using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, t, ht, rfl⟩` from `hx`.
+
+Conclude with `AddSubgroup.subset_closure ⟨1, fun _ => one_mem _, fun _ h => absurd trivial h, a, ha, s, hs, t, ht, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`.
+
+Consider the case `neg y _ hy => rw [map_neg]`. Conclude with `neg_mem hy`.
+-/
 theorem rk_mem (V W : HSp D) (LV : Set (Fin V.rank → D.host.E)) (L : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E))
     (s : Fin V.rank → D.host.E) (hs : s ∈ LV) (c : Fin W.rank → D.host.E)
     (hc : c ∈ Submodule.span (𝓞 D.host.E) {w | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ v ∈ L, w = a • v}) :
@@ -52,6 +62,9 @@ def colF (V W : HSp D) (s : Fin V.rank → D.host.E) : WO V W →+ (Fin W.rank �
     ext m
     simp only [Matrix.add_apply, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Express the relevant statement in the definitionally equal form `∑ n, (α ⊗ₜ[D.host.F] X m n) * ((1 : Af D.host.F) ⊗ₜ[D.host.F] s n) = _`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, TensorProduct.tmul_sum]`.
+-/
 theorem colF_pure (V W : HSp D) (s : Fin V.rank → D.host.E) (α : Af D.host.F)
     (X : Matrix (Fin W.rank) (Fin V.rank) D.host.E) :
     colF V W s (Matrix.of fun i j => (pairA D.host.F 0 α) ⊗ₜ[D.host.F] X i j) =
@@ -60,6 +73,15 @@ theorem colF_pure (V W : HSp D) (s : Fin V.rank → D.host.E) (α : Af D.host.F)
   change ∑ n, (α ⊗ₜ[D.host.F] X m n) * ((1 : Af D.host.F) ⊗ₜ[D.host.F] s n) = _
   simp only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, TensorProduct.tmul_sum]
 
+/- English proof (translation)
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨α, hα, -, a, ha, s', hs', t, ht, rfl⟩` from `hx`. Rewrite using `[colF_pure V W s α fun i j => a * t i * ∑ k, star (s' k) * V.gram k j]`. Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 (((GlobalTheory.Member.latHat_eq_hat_and_gram D V).2.2.2.2.2.2.2.2.2.2 s).2 hs s' hs')`.
+
+Use `AddSubgroup.subset_closure ⟨α, hα, a • (r • t), Submodule.subset_span ⟨a, ha, _, L.smul_mem r ht, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = a * (algebraMap (𝓞 D.host.E) D.host.E r * t m)`. Rewrite using `[hr]`.
+
+Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = a * (s n * V.gram k n * star (s' k) * t m)`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`. Conclude with `neg_mem hy`.
+-/
 theorem colF_mem (V W : HSp D) (L : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E))
     (s : Fin V.rank → D.host.E) (hs : s ∈ GlobalTheory.Member.latC V) (u : WO V W)
     (hu : u ∈ latO V W (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E)) (L : Set (Fin W.rank → D.host.E)) fun _ => True) :
@@ -85,6 +107,11 @@ theorem colF_mem (V W : HSp D) (L : Submodule (𝓞 D.host.E) (Fin W.rank → D.
   | add y z _ _ hy hz => rw [map_add]; exact add_mem hy hz
   | neg y _ hy => rw [map_neg]; exact neg_mem hy
 
+/- English proof (translation)
+Establish `h1 : (Matrix.of fun a j => ∑ k, star (b k a) * V.gram k j) * b = 1`. Use extensionality with `a a'`. Rewrite using `[Matrix.one_apply, ← hb.1 a a', Matrix.mul_apply, Finset.sum_comm]`. Simplify using `only [Matrix.of_apply, Finset.sum_mul]`. Establish `h3 : b * (Matrix.of fun a j => ∑ k, star (b k a) * V.gram k j) = 1` using `mul_eq_one_comm.1 h1`.
+
+Establish `h2` using `congrFun (congrFun h3 n) j`. Rewrite `h2` using `[Matrix.one_apply, Matrix.mul_apply]`. Conclude with `h2`.
+-/
 theorem complete (V : HSp D) (b : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (hb : IsONLatBasis V b) (n j : Fin V.rank) :
     ∑ a, b n a * ∑ k, star (b k a) * V.gram k j = if n = j then 1 else 0 := by
   have h1 : (Matrix.of fun a j => ∑ k, star (b k a) * V.gram k j) * b = 1 := by
@@ -96,6 +123,19 @@ theorem complete (V : HSp D) (b : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (hb
   rw [Matrix.one_apply, Matrix.mul_apply] at h2
   exact h2
 
+/- English proof (translation)
+Establish `hbm : ∀ a, (fun i => b i a) ∈ GlobalTheory.Member.latC V` using `fun a => by`. Rewrite using `[← SetLike.mem_coe, GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq, hb.2]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `e : (ratW W V Y - realPt V W Y : WO V W) = ∑ a, rk V W (fun i => b i a) fun m => ∑ n, Y m n * b n a`. Use extensionality with `i j`. Rewrite using `[finite_part_apply, Matrix.sum_apply]`. Express the relevant statement in the definitionally equal form `_ = ∑ a, (pairA D.host.F 0 1) ⊗ₜ[D.host.F] ((∑ n, Y i n * b n a) * ∑ k, star (b k a) * V.gram k j)`. Rewrite using `[← TensorProduct.tmul_sum]`.
+
+Use `congr 1`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc, ← Finset.mul_sum, complete V b hb, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[e]`.
+
+Use `sum_mem fun a _ => rk_mem V W _ _ _ (hbm a) _ ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.MovedLat.latG_eq]`. Conclude with `h a`. Introduce `h a`. Establish `h1` using `colF_mem V W _ _ (hbm a) _ h`.
+
+Rewrite `h1` using `[← GlobalTheory.MovedLat.latG_eq]`. Establish `e : (ratW W V Y - realPt V W Y : WO V W) = Matrix.of fun i j => (pairA D.host.F 0 1) ⊗ₜ[D.host.F] Y i j`. Use extensionality with `i j`. Conclude with `finite_part_apply V W Y i j`. Rewrite `h1` using `[e, colF_pure]`.
+
+Take `⟨f1, f2, -⟩` from `GlobalTheory.Member.latG_lattice_and_completion D W y`. Conclude with `((hat_rational_points_and_approx D.host.F D.host.E W.rank _ f1 f2).1 _).1 h1`.
+-/
 theorem cols_iff_moved (V W : HSp D) (b : Matrix (Fin V.rank) (Fin V.rank) D.host.E) (hb : IsONLatBasis V b) (y : GA D W)
     (Y : Matrix (Fin W.rank) (Fin V.rank) D.host.E) :
     (∀ a, (fun m => ∑ n, Y m n * b n a) ∈ latG W y) ↔
@@ -130,6 +170,13 @@ theorem cols_iff_moved (V W : HSp D) (b : Matrix (Fin V.rank) (Fin V.rank) D.hos
     obtain ⟨f1, f2, -⟩ := GlobalTheory.Member.latG_lattice_and_completion D W y
     exact ((hat_rational_points_and_approx D.host.F D.host.E W.rank _ f1 f2).1 _).1 h1
 
+/- English proof (translation)
+Establish `h1 : ∀ z ∈ hat D.host.F (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E)), Matrix.mulVec (finHom V 1).1 z ∈ hat D.host.F (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E))`. Introduce `z hz`. Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec]`. Conclude with `hz`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `GlobalTheory.MovedLat.actO_mem V W 1 y⁻¹ _ _ _ _ h1 (GlobalTheory.MovedLat.bwd W y) u`. Introduce `h`. Establish `h2` using `GlobalTheory.MovedLat.actO_mem V W 1 y _ _ _ _ h1 (GlobalTheory.MovedLat.fwd W y) _ h`. Establish `h3` using `GlobalTheory.AdelicLatMove.actO_actO_inv V W 1 y u`. Rewrite `h3` using `[inv_one]`.
+
+Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+-/
 theorem moved_iff (V W : HSp D) (y : GA D W) (u : WO V W) :
     u ∈ (latO V W (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E))
         (Bridge.hLat W (FWT.fin W y) : Set (Fin W.rank → D.host.E)) fun _ => True) ↔
@@ -148,6 +195,9 @@ theorem moved_iff (V W : HSp D) (y : GA D W) (u : WO V W) :
     rw [inv_one] at h3
     rwa [h3] at h2
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R hR i b hb y Yr`. Establish `hV` using `(GlobalTheory.OneMapRef.FactsLat.selfDual_frame_level_one_lattice_eq_standard (hR.βV i)).trans (GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq _).symm`. Establish `hW` using `(GlobalTheory.OneMapRef.FactsLat.selfDual_frame_level_one_lattice_eq_standard (hR.βW i)).trans (GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq _).symm`. Rewrite using `[cols_iff_moved _ _ b hb, moved_iff, ← hV, ← hW]`.
+-/
 theorem cols_mem_iff : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks),
     R.toLevCh.Is A.μ0 → ∀ (i : Fin D.R.m) (b : Matrix (Fin (Vc D i).rank) (Fin (Vc D i).rank) D.host.E),

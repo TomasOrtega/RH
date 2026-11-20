@@ -10,6 +10,15 @@ open scoped ENNReal NNReal Classical
 
 namespace GlobalTheory.CompanionTheory.BasePsi
 
+/- English proof (translation)
+Take `⟨MG, hMG⟩` from `hGc.bounded_above_of_compact_support hGs`. Establish `hB : ∀ v : HeightOneSpectrum (𝓞 F), ∃ B : ℝ, 0 ≤ B ∧ (v ∈ S → ∀ x, |g v x| ≤ B)`. Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Take `⟨B, hB⟩` from `(hg v hv).1.bounded_above_of_compact_support (hg v hv).2`.
+
+Conclude with `⟨|B|, abs_nonneg _, fun _ x => (hB x).trans (le_abs_self B)⟩`. Conclude with `⟨0, le_rfl, fun h => absurd h hv⟩`. Use `choose B hB0 hB using hB`. Use `⟨|MG| * ∏ v ∈ S, B v, mul_nonneg (abs_nonneg _) (Finset.prod_nonneg fun v _ => hB0 v), fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.pure_adelic_function_formula]`.
+
+Use `split_ifs with h`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `(le_abs_self _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_mul, Finset.abs_prod]`. Use `mul_le_mul ((hMG _).trans (le_abs_self MG)) ?_ (Finset.prod_nonneg fun v _ => abs_nonneg _) (abs_nonneg _)` and prove the remaining obligations.
+
+Conclude with `Finset.prod_le_prod (fun v _ => abs_nonneg _) fun v hv => hB v hv _`. Simplify using the standard rewrite rules.
+-/
 theorem pure_rv_zero_le {F : Type} [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F)))
     (G : Ainf F → ℝ) (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ)
     (hGc : Continuous G) (hGs : HasCompactSupport G)
@@ -34,6 +43,35 @@ theorem pure_rv_zero_le {F : Type} [Field F] [NumberField F] (S : Finset (Height
     exact Finset.prod_le_prod (fun v _ => abs_nonneg _) fun v hv => hB v hv _
   · simp
 
+/- English proof (translation)
+Introduce `F _ _ hF θ hθ r hr S G g hGc hGs hg D hD`. Take `⟨M, hM0, hM⟩` from `pure_rv_zero_le S G g hGc hGs hg`. Take `⟨N, hN, hden⟩` from `GlobalTheory.T.bounded_denominators_compact_idele_set F D hD S (fun v => tsupport (g v)) (fun v hv => (hg v hv).2)`. Set `K : Set (Ainf F)` to `(fun p : (AF F)ˣ × Ainf F => (((p.1⁻¹ : (AF F)ˣ) : AF F).1) * p.2) '' (D ×ˢ tsupport G)`. Establish `hK : IsCompact K`.
+
+Use `(hD.prod hGs).image ?_` and prove the remaining obligations. Establish `c1 : Continuous fun a : AF F => a.1` using `continuous_fst`. Establish `c2 : Continuous fun p : (AF F)ˣ × Ainf F => ((p.1⁻¹ : (AF F)ˣ) : AF F)` using `Units.continuous_val.comp (continuous_inv.comp continuous_fst)`. Conclude with `(c1.comp c2).mul continuous_snd`. Take `⟨C₀, hC₀⟩` from `GlobalTheory.CompanionTheory.MassCount.countBd F hF θ hθ K hK N hN`.
+
+Use `⟨(max C₀ 0 * M).toNNReal, fun u hu δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨hfin, hle⟩` from `hC₀ δ hδ ⊤ top_ne_bot`. Use `set T : Set F := {x : F | x ≠ 0 ∧ (∃ y ∈ (⊤ : Ideal (𝓞 F)), (y : F) = N * x) ∧ θ δ * algebraMap F (Ainf F) x ∈ K} with hT`. Establish `hsupp : ∀ t : Fˣ, PositivityTheory.Rg.Base1.pure S G g (fun v => rv v 0) (pr t * (u * r δ)) ≠ 0 → (t : F) ∈ T`. Introduce `t ht`.
+
+Take `⟨hr1, hr2⟩` from `hr δ hδ`. Rewrite `ht` using `[GlobalTheory.T.pure_adelic_function_formula]`. Establish `h1 : ∀ v, ((pr t * (u * r δ) : (AF F)ˣ) : AF F).2 v = algebraMap F (Fv F v) (t : F) * (u : AF F).2 v`. Introduce `v`. Establish `: ((pr t * (u * r δ) : (AF F)ˣ) : AF F).2 v = algebraMap F (Fv F v) (t : F) * ((u : AF F).2 v * (r δ : AF F).2 v)` using `rfl`.
+
+Rewrite using `[this, hr2]`. Simplify using the standard rewrite rules. Establish `h0 : ((pr t * (u * r δ) : (AF F)ˣ) : AF F).1 = algebraMap F (Ainf F) (t : F) * ((u : AF F).1 * θ δ)`. Establish `: ((pr t * (u * r δ) : (AF F)ˣ) : AF F).1 = algebraMap F (Ainf F) (t : F) * ((u : AF F).1 * (r δ : AF F).1)` using `rfl`. Rewrite using `[this, hr1]`.
+
+Distinguish the cases in `hint : ∀ v, v ∉ S → ((pr t * (u * r δ) : (AF F)ˣ) : AF F).2 v ∈ v.adicCompletionIntegers F`. Use `swap`. Conclude with `absurd (if_neg hint) ht`. Rewrite `ht` using `[if_pos hint]`. Establish `hne : G ((pr t * (u * r δ) : (AF F)ˣ) : AF F).1 * ∏ v ∈ S, g v (((pr t * (u * r δ) : (AF F)ˣ) : AF F).2 v) ≠ 0`.
+
+Introduce `h`. Conclude with `ht (by rw [h]; simp)`. Establish `hG0` using `left_ne_zero_of_mul hne`. Establish `hp0` using `right_ne_zero_of_mul hne`. Establish `hgS : ∀ v ∈ S, algebraMap F (Fv F v) (t : F) * (u : AF F).2 v ∈ tsupport (g v)`.
+
+Introduce `v hv`. Rewrite using `[← h1 v]`. Conclude with `subset_tsupport _ (Finset.prod_ne_zero_iff.1 hp0 v hv)`. Take `⟨y, hy⟩` from `hden u hu (t : F) hgS (fun v hv => by rw [← h1 v]; exact hint v hv)`. Use `⟨t.ne_zero, ⟨y, Submodule.mem_top, hy⟩, ?_⟩` and prove the remaining obligations.
+
+Use `⟨(u, ((pr t * (u * r δ) : (AF F)ˣ) : AF F).1), ⟨hu, subset_tsupport _ hG0⟩, ?_⟩` and prove the remaining obligations. Establish `hinv : (((u⁻¹ : (AF F)ˣ) : AF F).1) * (u : AF F).1 = 1`. Conclude with `congrArg (fun w : (AF F)ˣ => (w : AF F).1) (inv_mul_cancel u)`. Use `show (((u⁻¹ : (AF F)ˣ) : AF F).1) * ((pr t * (u * r δ) : (AF F)ˣ) : AF F).1 = _`. Rewrite using `[h0]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hfin' : {t : Fˣ | (t : F) ∈ T}.Finite` using `hfin.preimage (Units.val_injective.injOn)`. Establish `hth : th (PositivityTheory.Rg.Base1.pure S G g fun v => rv v 0) (u * r δ) ≤ (hfin'.toFinset.card : ℝ≥0∞) * ENNReal.ofReal M`. Unfold `th`. Rewrite using `[tsum_eq_sum (s := hfin'.toFinset) (fun t ht => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `ht (hfin'.mem_toFinset.2 (hsupp t h)))]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcard : (hfin'.toFinset.card : ℝ) ≤ (T.ncard : ℝ)`. Establish `h1 : hfin'.toFinset.card = {t : Fˣ | (t : F) ∈ T}.ncard` using `(Set.ncard_eq_toFinset_card _ hfin').symm`.
+
+Rewrite using `[h1]`. Conclude with `Set.ncard_le_ncard_of_injOn (fun t : Fˣ => (t : F)) (fun t ht => ht) Units.val_injective.injOn hfin` after adjusting the coercions. Establish `hle' : δ ^ Module.finrank ℚ F * (T.ncard : ℝ) ≤ max C₀ 0`. Use `hle.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Establish `hd0 : (0 : ℝ) ≤ δ ^ Module.finrank ℚ F` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul hd0, ENNReal.ofReal_natCast, mul_assoc]`. Use `_ ≤ ENNReal.ofReal (max C₀ 0 * M) := by`. Use `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right ?_ hM0)` and prove the remaining obligations.
+
+Conclude with `(mul_le_mul_of_nonneg_left hcard hd0).trans hle'`. Use `_ = _ := by rw [ENNReal.ofReal]`.
+-/
 theorem th_pure_rv_zero_bound : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ θ : ℝ →+* Ainf F, Continuous θ → ∀ r : ℝ → (AF F)ˣ, IsRay θ r →
     ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ) (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ),
     Continuous G → HasCompactSupport G → (∀ v ∈ S, Continuous (g v) ∧ HasCompactSupport (g v)) →

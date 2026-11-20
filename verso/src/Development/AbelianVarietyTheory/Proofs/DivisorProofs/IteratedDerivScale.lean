@@ -9,6 +9,11 @@ open MeasureTheory Filter Topology
 
 namespace GlobalTheory.PsCo.PcdSFB
 
+/- English proof (translation)
+Establish `hf : Module.finrank ℝ (ι → ℂ) = Fintype.card ι * 2`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex]`. Rewrite using `[MeasureTheory.Measure.integral_comp_smul, hf]`. Establish `hs : 0 < Real.sqrt t` using `Real.sqrt_pos.2 ht`.
+
+Establish `h1 : |(((Real.sqrt t)⁻¹) ^ (Fintype.card ι * 2))⁻¹| = t ^ Fintype.card ι`. Rewrite using `[abs_of_pos (by positivity), inv_pow, inv_inv, mul_comm, pow_mul, Real.sq_sqrt ht.le]`. Rewrite using `[h1, Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scale_int {ι : Type} [Fintype ι] (g : (ι → ℂ) → ℂ) (t : ℝ) (ht : 0 < t) :
     (t : ℂ) ^ Fintype.card ι * ∫ B, g B = ∫ w, g ((Real.sqrt t)⁻¹ • w) := by
   have hf : Module.finrank ℝ (ι → ℂ) = Fintype.card ι * 2 := by
@@ -25,11 +30,23 @@ theorem scale_int {ι : Type} [Fintype ι] (g : (ι → ℂ) → ℂ) (t : ℝ) 
 def diag_int_map {ι : Type} [Fintype ι] (d : ι → ℂ) : (ι → ℂ) →ₗ[ℂ] (ι → ℂ) :=
   LinearMap.pi fun x => (d x • LinearMap.id : ℂ →ₗ[ℂ] ℂ).comp (LinearMap.proj x)
 
+/- English proof (translation)
+Rewrite using `[LinearMap.det_restrictScalars, diag_int_map, LinearMap.det_pi]`. Simplify using `[Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq]`.
+-/
 theorem diag_int_det {ι : Type} [Fintype ι] (d : ι → ℂ) :
     LinearMap.det ((diag_int_map d).restrictScalars ℝ) = ∏ x, ‖d x‖ ^ 2 := by
   rw [LinearMap.det_restrictScalars, diag_int_map, LinearMap.det_pi]
   simp [Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Use `set g := (diag_int_map d).restrictScalars ℝ with hg`. Establish `hdet : LinearMap.det g ≠ 0`. Rewrite using `[diag_int_det]`. Conclude with `Finset.prod_ne_zero_iff.2 fun x _ => pow_ne_zero _ (norm_ne_zero_iff.2 (hd x))`. Set `e` to `(g.equivOfDetNeZero hdet).toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv`.
+
+Establish `he : ∀ w, (e w) = fun x => d x * w x`. Introduce `w`. Use function extensionality and compare the values at `x`. Simplify using `[e, g, diag_int_map]`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (ι → ℂ)) hdet`.
+
+Establish `h1 : ∫ w, f (e w) = ∫ y, f y ∂(Measure.map e volume)` using `(integral_map_equiv e f).symm`. Simplify using `only [he] at h1`. Rewrite using `[h1]`. Establish `: (Measure.map e volume : Measure (ι → ℂ)) = Measure.map g volume` using `rfl`. Rewrite using `[this, hmap, integral_smul_measure, diag_int_det]`.
+
+Establish `hpos : 0 < ∏ x, ‖d x‖ ^ 2` using `Finset.prod_pos fun x _ => pow_pos (norm_pos_iff.2 (hd x)) 2`. Rewrite using `[abs_of_pos (inv_pos.2 hpos), ENNReal.toReal_ofReal (inv_pos.2 hpos).le]`. Rewrite using `[Complex.real_smul, div_eq_inv_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diag_int {ι : Type} [Fintype ι] (d : ι → ℂ) (hd : ∀ x, d x ≠ 0) (f : (ι → ℂ) → ℂ) :
     ∫ w : ι → ℂ, f (fun x => d x * w x) = (∫ w, f w) / ((∏ x, ‖d x‖ ^ 2 : ℝ) : ℂ) := by
   set g := (diag_int_map d).restrictScalars ℝ with hg
@@ -50,6 +67,13 @@ theorem diag_int {ι : Type} [Fintype ι] (d : ι → ℂ) (hd : ∀ x, d x ≠ 
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hl : HasDerivAt (fun s : ℝ => s • w) w 0`. Simplify using `using (hasDerivAt_id (0:ℝ)).smul_const w`. Establish `h2 : HasFDerivAt β L ((0:ℝ) • w)` using `by simpa using hβd`. Establish `h1 : HasDerivAt (fun s : ℝ => β (s • w)) (L w) 0` using `h2.comp_hasDerivAt (0:ℝ) hl`. Establish `h3` using `h1.tendsto_slope_zero_right`.
+
+Establish `h4 : Tendsto (fun t : ℝ => (Real.sqrt t)⁻¹) atTop (𝓝[>] 0)` using `tendsto_inv_atTop_nhdsGT_zero.comp Real.tendsto_sqrt_atTop`. Establish `h5` using `h3.comp h4`. Establish `hc : Continuous (fun v : ι → ℂ => ∑ x, ‖v x‖ ^ 2)` using `by fun_prop`. Establish `h6` using `(hc.tendsto (L w)).comp h5`. Use `h6.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_gt_atTop (0:ℝ)] with t ht`. Simplify using `only [Function.comp_def, zero_add, zero_smul, hβ0, sub_zero, inv_inv, Pi.smul_apply, norm_smul, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg t), mul_pow, Real.sq_sqrt ht.le, Finset.mul_sum]`.
+-/
 theorem blow_pt {ι : Type} [Fintype ι] (β : (ι → ℂ) → (ι → ℂ)) (L : (ι → ℂ) →L[ℝ] (ι → ℂ))
     (hβ0 : β 0 = 0) (hβd : HasFDerivAt β L 0) (w : ι → ℂ) :
     Tendsto (fun t : ℝ => t * ∑ x, ‖β ((Real.sqrt t)⁻¹ • w) x‖ ^ 2) atTop (𝓝 (∑ x, ‖L w x‖ ^ 2)) := by
@@ -68,6 +92,27 @@ theorem blow_pt {ι : Type} [Fintype ι] (β : (ι → ℂ) → (ι → ℂ)) (L
   simp only [Function.comp_def, zero_add, zero_smul, hβ0, sub_zero, inv_inv, Pi.smul_apply, norm_smul,
     Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg t), mul_pow, Real.sq_sqrt ht.le, Finset.mul_sum]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨m, hm0, hm⟩ : ∃ m : ℝ, 0 < m ∧ ∀ x, m ≤ ‖d x‖ := by`. Break down `isEmpty_or_nonempty ι with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun x => (h.false x).elim⟩`. Take `⟨x0, -, hx0⟩` from `Finset.exists_min_image Finset.univ (fun x => ‖d x‖) Finset.univ_nonempty`. Conclude with `⟨‖d x0‖, norm_pos_iff.2 (hd x0), fun x => hx0 x (Finset.mem_univ x)⟩`.
+
+Establish `hLlow : ∀ B, m * ‖B‖ ≤ ‖L B‖`. Introduce `B`. Rewrite using `[← le_div_iff₀' hm0]`. Use `(pi_norm_le_iff_of_nonneg (div_nonneg (norm_nonneg _) hm0.le)).2 fun x => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀' hm0]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hev` using `hβd.isLittleO.def (half_pos hm0)`. Take `⟨ρ, hρ0, hρ⟩` from `Metric.eventually_nhds_iff.1 hev`. Establish `hlow : ∀ B, ‖B‖ < ρ → m / 2 * ‖B‖ ≤ ‖β B‖`. Introduce `B hB`.
+
+Establish `h1` using `hρ (y := B) (by simpa [dist_zero_right] using hB)`. Simplify using `only [hβ0, sub_zero] at h1`. Establish `h2` using `hLlow B`. Establish `h3 : ‖L B‖ ≤ ‖β B‖ + ‖β B - L B‖`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨η, hη0, hη⟩` from `hprop (ρ / 2) (half_pos hρ0)`. Use `⟨2 / m, 1 / η, by positivity, fun t ht B hB => ?_⟩` and prove the remaining obligations. Establish `ht0 : 0 < t` using `lt_of_lt_of_le (by positivity) ht`. Establish `hsum_nn : 0 ≤ ∑ x, ‖β B x‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`.
+
+Establish `hS : ∑ x, ‖β B x‖ ^ 2 < 1 / t`. Rewrite using `[lt_div_iff₀ ht0]`. Combine the linear relations using `[mul_comm t (∑ x, ‖β B x‖ ^ 2)]`. Establish `hSη : ∑ x, ‖β B x‖ ^ 2 ≤ η`. Establish `: 1 / t ≤ η`.
+
+Rewrite using `[div_le_iff₀ ht0]`. Rewrite `ht` using `[div_le_iff₀ hη0]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBρ : ‖B‖ < ρ` using `lt_of_le_of_lt (hη B hSη) (half_lt_self hρ0)`.
+
+Establish `hb` using `hlow B hBρ`. Establish `hnorm2 : ‖β B‖ ^ 2 ≤ ∑ x, ‖β B x‖ ^ 2`. Establish `: ‖β B‖ ≤ Real.sqrt (∑ x, ‖β B x‖ ^ 2)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun x => ?_` and prove the remaining obligations. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises.
+
+Conclude with `Finset.single_le_sum (f := fun x => ‖β B x‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ x)`. Combine the equalities or inequalities in the displayed calculation. Establish `hst : 0 < Real.sqrt t` using `Real.sqrt_pos.2 ht0`. Establish `key : ‖β B‖ * Real.sqrt t < 1`. Establish `h1 : (‖β B‖ * Real.sqrt t) ^ 2 < 1`.
+
+Rewrite using `[mul_pow, Real.sq_sqrt ht0.le]`. Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[norm_nonneg (β B), hst]`. Rewrite using `[le_div_iff₀ hst, le_div_iff₀' hm0]`. Use polynomial arithmetic with `[norm_nonneg B]`.
+-/
 theorem blow_bound {ι : Type} [Fintype ι] (β : (ι → ℂ) → (ι → ℂ)) (d : ι → ℂ) (L : (ι → ℂ) →L[ℝ] (ι → ℂ))
     (hd : ∀ x, d x ≠ 0) (hL : ∀ w x, L w x = d x * w x) (hβ0 : β 0 = 0) (hβd : HasFDerivAt β L 0)
     (hprop : ∀ δ : ℝ, 0 < δ → ∃ η : ℝ, 0 < η ∧ ∀ B, ∑ x, ‖β B x‖ ^ 2 ≤ η → ‖B‖ ≤ δ) :
@@ -139,6 +184,29 @@ open scoped ContDiff
 
 namespace GlobalTheory.PsCo.PcdSFB
 
+/- English proof (translation)
+Introduce `ι _ β d L hd hL hβ hβ0 hβd hprop F hF hF1 ψ hψ`. Take `⟨C, T, hT, hCb⟩` from `blow_bound β d L hd hL hβ0 hβd hprop`. Establish `hint : ∀ t : ℝ, T ≤ t → Integrable (fun B => (F (t * ∑ x, ‖β B x‖ ^ 2) : ℂ) * ψ B)`. Introduce `t ht`. Apply `Continuous.integrable_of_hasCompactSupport` to reduce the goal to its premises.
+
+Use `fun_prop`. Apply `HasCompactSupport.intro (isCompact_closedBall (0 : ι → ℂ) (C / Real.sqrt t))` to reduce the goal to its premises. Introduce `B hB`. Establish `h1 : ¬ (t * ∑ x, ‖β B x‖ ^ 2 < 1)` using `fun h => hB (mem_closedBall_zero_iff.2 (hCb t ht B h))`. Simplify using `[hF1 _ (not_lt.1 h1)]`.
+
+Use `⟨eventually_atTop.2 ⟨T, hint⟩, ?_⟩` and prove the remaining obligations. Take `⟨MF, hMF⟩` from `(isCompact_Icc (a := (0 : ℝ)) (b := 1)).exists_bound_of_continuousOn hF.continuousOn`. Take `⟨Mψ, hMψ⟩` from `(isCompact_closedBall (0 : ι → ℂ) C).exists_bound_of_continuousOn hψ.continuousOn`. Establish `hlim : ψ 0 * ((∫ w : ι → ℂ, F (∑ x, ‖w x‖ ^ 2) : ℝ) : ℂ) / ((∏ x, ‖d x‖ ^ 2 : ℝ) : ℂ) = ∫ w : ι → ℂ, (F (∑ x, ‖L w x‖ ^ 2) : ℂ) * ψ 0`. Repeatedly rewrite using `[hL]`.
+
+Rewrite using `[diag_int d hd (fun v => (F (∑ x, ‖v x‖ ^ 2) : ℂ) * ψ 0), integral_mul_const, integral_complex_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hlim]`. Establish `hEq : ∀ᶠ t : ℝ in atTop, (∫ w, (F (t * ∑ x, ‖β ((Real.sqrt t)⁻¹ • w) x‖ ^ 2) : ℂ) * ψ ((Real.sqrt t)⁻¹ • w)) = (t : ℂ) ^ Fintype.card ι * ∫ B, (F (t * ∑ x, ‖β B x‖ ^ 2) : ℂ) * ψ B` using `by filter_upwards [eventually_gt_atTop (0 : ℝ)] with t ht`. Rewrite using `[scale_int (fun B => (F (t * ∑ x, ‖β B x‖ ^ 2) : ℂ) * ψ B) t ht]`.
+
+Use `Tendsto.congr' hEq ?_` and prove the remaining obligations. Use `tendsto_integral_filter_of_dominated_convergence (Set.indicator (Metric.closedBall (0 : ι → ℂ) C) (fun _ => |MF| * |Mψ|)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun t => (by fun_prop : Continuous fun w : ι → ℂ => (F (t * ∑ x, ‖β ((Real.sqrt t)⁻¹ • w) x‖ ^ 2) : ℂ) * ψ ((Real.sqrt t)⁻¹ • w)).aestronglyMeasurable`. Use `filter_upwards [eventually_ge_atTop T, eventually_ge_atTop (1 : ℝ)] with t ht ht1`. Use `Eventually.of_forall fun w => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hlt : t * ∑ x, ‖β ((Real.sqrt t)⁻¹ • w) x‖ ^ 2 < 1`. Establish `hB` using `hCb t ht _ hlt`. Establish `hs : 0 < Real.sqrt t` using `Real.sqrt_pos.2 (by linarith)`. Establish `hs1 : 1 ≤ Real.sqrt t` using `by rw [← Real.sqrt_one]; exact Real.sqrt_le_sqrt ht1`. Rewrite `hB` using `[norm_smul, norm_inv, Real.norm_of_nonneg hs.le]`.
+
+Establish `hw : ‖w‖ ≤ C`. Use `(inv_mul_le_iff₀ hs).1 hB` as an intermediate fact. Rewrite `this` using `[mul_div_cancel₀ _ hs.ne']`. Then use the resulting hypothesis. Establish `hw' : ‖(Real.sqrt t)⁻¹ • w‖ ≤ C`. Rewrite using `[norm_smul, norm_inv, Real.norm_of_nonneg hs.le]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.indicator_of_mem (mem_closedBall_zero_iff.2 hw), norm_mul, Complex.norm_real]`. Establish `hpos : 0 ≤ t * ∑ x, ‖β ((Real.sqrt t)⁻¹ • w) x‖ ^ 2` using `by positivity`. Conclude with `mul_le_mul ((hMF _ ⟨hpos, hlt.le⟩).trans (le_abs_self _)) ((hMψ _ (mem_closedBall_zero_iff.2 hw')).trans (le_abs_self _)) (norm_nonneg _) (abs_nonneg _)`. Rewrite using `[hF1 _ (not_lt.1 hlt)]`.
+
+Simplify using `only [Complex.ofReal_zero, zero_mul, norm_zero]`. Apply `Set.indicator_nonneg` to reduce the goal to its premises. Introduce `_ _`. Conclude with `mul_nonneg (abs_nonneg _) (abs_nonneg _)`. Conclude with `(integrable_indicator_iff measurableSet_closedBall).2 (integrableOn_const (measure_closedBall_lt_top).ne)`.
+
+Use `Eventually.of_forall fun w => ?_` and prove the remaining obligations. Establish `h1` using `blow_pt β L hβ0 hβd w`. Establish `h2 : Tendsto (fun t : ℝ => (Real.sqrt t)⁻¹ • w) atTop (𝓝 0)`. Establish `: Tendsto (fun t : ℝ => (Real.sqrt t)⁻¹) atTop (𝓝 0)` using `tendsto_inv_atTop_zero.comp Real.tendsto_sqrt_atTop`. Simplify using `using this.smul_const w`.
+
+Conclude with `((Complex.continuous_ofReal.comp hF).continuousAt.tendsto.comp h1).mul ((hψ.tendsto 0).comp h2)`.
+-/
 theorem stBlow : GlobalTheory.PsCo.Pc3.StBlow := by
   intro ι _ β d L hd hL hβ hβ0 hβd hprop F hF hF1 ψ hψ
   obtain ⟨C, T, hT, hCb⟩ := blow_bound β d L hd hL hβ0 hβd hprop
@@ -200,9 +268,17 @@ theorem stBlow : GlobalTheory.PsCo.Pc3.StBlow := by
       simpa using this.smul_const w
     exact ((Complex.continuous_ofReal.comp hF).continuousAt.tendsto.comp h1).mul ((hψ.tendsto 0).comp h2)
 
+/- English proof (translation)
+The claim follows from `hG.1.continuous_iteratedDeriv k (by exact_mod_cast le_top)`.
+-/
 theorem profile_cont {N : ℕ} {G : ℝ → ℝ} (hG : IsProfile N G) (k : ℕ) : Continuous (iteratedDeriv k G) :=
   hG.1.continuous_iteratedDeriv k (by exact_mod_cast le_top)
 
+/- English proof (translation)
+Establish `hopen : ∀ y, 1 < y → iteratedDeriv k G y = 0`. Introduce `y hy`. Establish `h0 : G =ᶠ[𝓝 y] fun _ => (0 : ℝ)` using `by filter_upwards [Ioi_mem_nhds hy] with z hz using hG.2.1 z (le_of_lt hz)`. Rewrite using `[h0.iteratedDeriv_eq k]`. Simplify using the standard rewrite rules.
+
+Establish `hcl : IsClosed {y : ℝ | iteratedDeriv k G y = 0}` using `isClosed_eq (profile_cont hG k) continuous_const`. Establish `hsub : closure (Set.Ioi (1 : ℝ)) ⊆ {y : ℝ | iteratedDeriv k G y = 0}` using `closure_minimal (fun y hy => hopen y hy) hcl`. Rewrite `hsub` using `[closure_Ioi]`. Conclude with `hsub hx`.
+-/
 theorem profile_van {N : ℕ} {G : ℝ → ℝ} (hG : IsProfile N G) (k : ℕ) (x : ℝ) (hx : 1 ≤ x) :
     iteratedDeriv k G x = 0 := by
   have hopen : ∀ y, 1 < y → iteratedDeriv k G y = 0 := by
@@ -217,11 +293,33 @@ theorem profile_van {N : ℕ} {G : ℝ → ℝ} (hG : IsProfile N G) (k : ℕ) (
   rw [closure_Ioi] at hsub
   exact hsub hx
 
+/- English proof (translation)
+Establish `h` using `iteratedDeriv_comp_const_mul (n := k) (hG.of_le (by exact_mod_cast le_top)) t`. Rewrite using `[h]`.
+-/
 theorem iteratedDeriv_scale {G : ℝ → ℝ} (hG : ContDiff ℝ ∞ G) (k : ℕ) (t x : ℝ) :
     iteratedDeriv k (fun y => G (t * y)) x = t ^ k * iteratedDeriv k G (t * x) := by
   have h := iteratedDeriv_comp_const_mul (n := k) (hG.of_le (by exact_mod_cast le_top)) t
   rw [h]
 
+/- English proof (translation)
+Unfold `StFamBlow`. Introduce `ι _ β d L hd hL hβ hβ0 hβd hprop G hG ψ hψ`. Establish `key` using `fun k => hB ι β d L hd hL hβ hβ0 hβd hprop (iteratedDeriv k G) (profile_cont hG k) (profile_van hG k) (ψ k) (hψ k)`. Establish `hrw : ∀ t : ℝ, ∀ k (B : ι → ℂ), ((iteratedDeriv k (fun x => G (t * x)) (∑ x, ‖β B x‖ ^ 2) : ℝ) : ℂ) * ψ k B = (t : ℂ) ^ k * (((iteratedDeriv k G (t * ∑ x, ‖β B x‖ ^ 2) : ℝ) : ℂ) * ψ k B)`. Introduce `t k B`.
+
+Rewrite using `[iteratedDeriv_scale hG.1 k t]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : ∀ᶠ t : ℝ in atTop, ∀ k ∈ Finset.range (Fintype.card ι + 1), Integrable fun B => ((iteratedDeriv k G (t * ∑ x, ‖β B x‖ ^ 2) : ℝ) : ℂ) * ψ k B` using `(eventually_all_finset _).2 fun k _ => (key k).1`. Establish `heq : ∀ᶠ t : ℝ in atTop, (∫ B, ∑ k ∈ Finset.range (Fintype.card ι + 1), ((iteratedDeriv k (fun x => G (t * x)) (∑ x, ‖β B x‖ ^ 2) : ℝ) : ℂ) * ψ k B) = ∑ k ∈ Finset.range (Fintype.card ι + 1), (t : ℂ) ^ k * ∫ B, ((iteratedDeriv k G (t * ∑ x, ‖β B x‖ ^ 2) : ℝ) : ℂ) * ψ k B` using `by filter_upwards [hint] with t ht`.
+
+Repeatedly rewrite using `[hrw t]`. Rewrite using `[integral_finsetSum _ fun k hk => (ht k hk).const_mul _]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Establish `hlim : ∀ k ∈ Finset.range (Fintype.card ι + 1), Tendsto (fun t : ℝ => (t : ℂ) ^ k * ∫ B, ((iteratedDeriv k G (t * ∑ x, ‖β B x‖ ^ 2) : ℝ) : ℂ) * ψ k B) atTop (𝓝 (if k = Fintype.card ι then ψ (Fintype.card ι) 0 * ((∫ w : ι → ℂ, iteratedDeriv (Fintype.card ι) G (∑ x, ‖w x‖ ^ 2) : ℝ) …`.
+
+Introduce `k hk`. Establish `hk' : k ≤ Fintype.card ι` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hk)`. Distinguish the cases in `hkN : k = Fintype.card ι`. Substitute `hkN` using the available equality. Simplify using `using (key (Fintype.card ι)).2`.
+
+Rewrite using `[if_neg hkN]`. Establish `hlt : k < Fintype.card ι` using `lt_of_le_of_ne hk' hkN`. Establish `h0 : Tendsto (fun t : ℝ => ((t : ℂ) ^ (Fintype.card ι - k))⁻¹) atTop (𝓝 0)`. Establish `h2 : Tendsto (fun t : ℝ => (t ^ (Fintype.card ι - k))⁻¹) atTop (𝓝 0)` using `(tendsto_pow_atTop (Nat.sub_ne_zero_of_lt hlt)).inv_tendsto_atTop`. Establish `h1 : Tendsto (fun t : ℝ => ‖((t : ℂ) ^ (Fintype.card ι - k))⁻¹‖) atTop (𝓝 0)`.
+
+Use `h2.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (0 : ℝ)] with t ht`. Rewrite using `[norm_inv, norm_pow, Complex.norm_real, Real.norm_of_nonneg ht]`. Conclude with `tendsto_zero_iff_norm_tendsto_zero.2 h1`. Establish `h3` using `((key k).2).mul h0`.
+
+Rewrite `h3` using `[mul_zero]`. Use `h3.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop (0 : ℝ)] with t ht`. Establish `htc : (t : ℂ) ≠ 0` using `by exact_mod_cast ht.ne'`. Establish `hpow : (t : ℂ) ^ Fintype.card ι = (t : ℂ) ^ k * (t : ℂ) ^ (Fintype.card ι - k)`.
+
+Rewrite using `[← pow_add, Nat.add_sub_cancel' hk']`. Rewrite using `[hpow]`. Clear the denominators using the available nonvanishing facts. Establish `hsum` using `tendsto_finsetSum _ hlim`. Rewrite `hsum` using `[Finset.sum_ite_eq' (Finset.range (Fintype.card ι + 1)) (Fintype.card ι), if_pos (Finset.self_mem_range_succ _)]`.
+
+Conclude with `hsum.congr' (by filter_upwards [heq] with t ht using ht.symm)`.
+-/
 theorem stFamBlow_of (hB : StBlow) : StFamBlow := by
   unfold StFamBlow
   intro ι _ β d L hd hL hβ hβ0 hβd hprop G hG ψ hψ
@@ -289,6 +387,9 @@ section
 
 namespace GlobalTheory.PsCo.Pcd
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.PsCo.PcdSFB.stFamBlow_of GlobalTheory.PsCo.PcdSFB.stBlow`.
+-/
 theorem stFamBlow : GlobalTheory.PsCo.Pc3.StFamBlow :=
   GlobalTheory.PsCo.PcdSFB.stFamBlow_of GlobalTheory.PsCo.PcdSFB.stBlow
 

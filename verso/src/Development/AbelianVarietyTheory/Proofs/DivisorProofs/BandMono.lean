@@ -4,6 +4,9 @@ universe u_1 u_2
 
 namespace GlobalTheory.BandMonotonicity
 
+/- English proof (translation)
+Introduce `d1 k _ ι _ _ ℓ i j X h hij r s hrs`. Conclude with `h r s (by omega)`.
+-/
 theorem band_mono :
     (let d1 : {k : Type u_1} → [Field k] → {ι : Type u_2} → (ι → ℕ) → ℕ → Matrix ι ι k → Prop :=
       @(fun {k : Type u_1} [Field k] {ι : Type u_2} (ℓ : ι → ℕ) (j : ℕ) (X : Matrix ι ι k) ↦

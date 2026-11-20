@@ -17,11 +17,17 @@ variable {D : D7}
 abbrev finfF (D : D7) : AE D →+* Af D.host.F ⊗[D.host.F] D.host.E :=
   (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom
 
+/- English proof (translation)
+Use `show finHom V g = 1 ↔ _`. Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_GinfC_iff (V : HSp D) (g : GA D V) : g ∈ GinfC V ↔ (Formalism.L2.Theta.mt V g).map (finfF D) = 1 := by
   show finHom V g = 1 ↔ _
   rw [Units.ext_iff]
   rfl
 
+/- English proof (translation)
+Establish `e1 : (x ⬝ m ⬝ y).map (finfF D) = x.map (finfF D) ⬝ m.map (finfF D) ⬝ y.map (finfF D)`. Rewrite using `[Matrix.map_mul (f := finfF D), Matrix.map_mul (f := finfF D)]`. Establish `e2 : (x ⬝ y).map (finfF D) = x.map (finfF D) ⬝ y.map (finfF D)` using `Matrix.map_mul (f := finfF D)`. Rewrite using `[e1, e2, hm, Matrix.mul_one]`.
+-/
 theorem map_sand {k n : ℕ} (x : Mx D k n) (m : Mx D n n) (y : Mx D n k) (hm : m.map (finfF D) = 1) :
     (x ⬝ m ⬝ y).map (finfF D) = (x ⬝ y).map (finfF D) := by
   have e1 : (x ⬝ m ⬝ y).map (finfF D) = x.map (finfF D) ⬝ m.map (finfF D) ⬝ y.map (finfF D) := by
@@ -29,16 +35,31 @@ theorem map_sand {k n : ℕ} (x : Mx D k n) (m : Mx D n n) (y : Mx D n k) (hm : 
   have e2 : (x ⬝ y).map (finfF D) = x.map (finfF D) ⬝ y.map (finfF D) := Matrix.map_mul (f := finfF D)
   rw [e1, e2, hm, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite `ha`, the goal using `[mem_GinfC_iff]`. Rewrite using `[OrthDec.mt_emb, Matrix.map_add _ (map_add (finfF D)), map_sand _ _ _ ha, GlobalTheory.MixModel.mt_one, Matrix.mul_one, ← Matrix.map_add _ (map_add (finfF D)), o.sum_eq_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem orth_emb_mem_GinfC {S A B : HSp D} (o : OrthDec S A B) {a : GA D A} (ha : a ∈ GinfC A) :
     o.emb (a, 1) ∈ GinfC S := by
   rw [mem_GinfC_iff] at ha ⊢
   rw [OrthDec.mt_emb, Matrix.map_add _ (map_add (finfF D)), map_sand _ _ _ ha, GlobalTheory.MixModel.mt_one, Matrix.mul_one,
     ← Matrix.map_add _ (map_add (finfF D)), o.sum_eq_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Simplify using `[trc, rTrans, Finset.sum_apply]`.
+-/
 theorem trc_apply {V : HSp D} (e : GA D V →₀ ℂ) (f : GA D V → ℂ) (x : GA D V) :
     trc e f x = ∑ g ∈ e.support, e g * f (x * g) := by
   simp [trc, rTrans, Finset.sum_apply]
 
+/- English proof (translation)
+Establish `h0 : IsContAut V (0 : GA D V → ℂ)` using `⟨fun _ _ _ => rfl, continuous_const⟩`. Establish `hadd : ∀ {f g : GA D V → ℂ}, IsContAut V f → IsContAut V g → IsContAut V (f + g)` using `fun hf hg => ⟨fun γ hγ x => by simp only [Pi.add_apply, hf.1 γ hγ x, hg.1 γ hγ x], hf.2.add hg.2⟩`. Establish `hsm : ∀ {f : GA D V → ℂ}, IsContAut V f → ∀ c : ℂ, IsContAut V (c • f)` using `fun hf c => ⟨fun γ hγ x => by simp only [Pi.smul_apply, hf.1 γ hγ x], hf.2.const_smul c⟩`. Take `⟨T, hT, rfl⟩` from `hG`. Proceed by induction on `hT using Submodule.span_induction generalizing x with`.
+
+Consider the case `mem T hT`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Rewrite using `[map_smul, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod]`. Conclude with `hsm ⟨(hT.aut v).left, (hT.aut v).cont⟩ r`.
+
+Consider the case `add x y hx hy => rw [map_add]`. Conclude with `hadd hx hy`. Consider the case `zero => simpa using h0`. Consider the case `add T₁ T₂ _ _ h₁ h₂ => rw [map_add, LinearMap.add_apply]`. Conclude with `hadd (h₁ x) (h₂ x)`.
+
+Consider the case `smul c T _ h => rw [map_smul, LinearMap.smul_apply]`. Conclude with `hsm (h x) c`.
+-/
 theorem isContAut_multT {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {J : Set (GA D V)}
     {χ : GA D V → ℂ} {G : SmT M →ₗ[ℂ] (GA D V → ℂ)} (hG : G ∈ MultT θ M J χ) (x : SmT M) : IsContAut V (G x) := by
   have h0 : IsContAut V (0 : GA D V → ℂ) := ⟨fun _ _ _ => rfl, continuous_const⟩
@@ -58,6 +79,9 @@ theorem isContAut_multT {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D}
   | add T₁ T₂ _ _ h₁ h₂ => rw [map_add, LinearMap.add_apply]; exact hadd (h₁ x) (h₂ x)
   | smul c T _ h => rw [map_smul, LinearMap.smul_apply]; exact hsm (h x) c
 
+/- English proof (translation)
+Substitute `hab` using the available equality. Simplify using `using hr`.
+-/
 theorem ontoUni_of_reindex {ι K : Type} [Group K] [TopologicalSpace K] {a b : ℕ} (hab : a = b)
     (r : K → ι → Matrix (Fin a) (Fin a) ℂ)
     (hr : OntoUni (fun k τ => (r k τ).reindex (finCongr hab) (finCongr hab))) : OntoUni r := by
@@ -69,6 +93,33 @@ end GlobalTheory.SeeSaw.PerXCls
 open GlobalTheory.SeeSaw.PerXCls in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D c 𝒯 t hc ht hP`. Take `⟨ρ, hρ, hA⟩` from `hP`. Introduce `n h y v`. Establish `hU : OntoUni (fun k : GinfC c.T => inB c.θ c.T ρ.BT k.1)` using `ontoUni_of_reindex ρ.hT (fun k : GinfC c.T => inB c.θ c.T ρ.BT k.1) hρ.uniT`. Take `⟨_, _, _, ν, hν1, hν2, hcls⟩` from `integral_eq_classSum D c.θ c.T ρ.BT hc.inf hU`.
+
+Take `⟨hN, hInt, hBr, hne, hblk⟩` from `hρ.low n h`. Establish `hemb : ∀ k : GinfC c.T, (c.oT n h).emb (k.1, 1) ∈ GinfC (c.X n)` using `fun k => orth_emb_mem_GinfC _ k.2`. Set `y0 : FrN D (ρ.N n)` to `ρ.fr n y`. Establish `hdet : ∀ (k : GinfC c.T) τ, IsUnit ((ρ.r n h.le ((c.oT n h).emb (k.1, 1)) τ * y0.1 τ).det)`. Introduce `k τ`.
+
+Rewrite using `[Matrix.det_mul]`. Establish `hu` using `(hρ.uni n h.le).uni ⟨_, hemb k⟩ τ`. Conclude with `(Matrix.isUnit_det_of_left_inverse (Matrix.mem_unitaryGroup_iff'.mp hu)).mul (y0.2 τ)`. Set `yk : GinfC c.T → FrN D (ρ.N n)` to `fun k => ⟨fun τ => ρ.r n h.le ((c.oT n h).emb (k.1, 1)) τ * y0.1 τ, hdet k⟩`. Take `⟨a, ha⟩` from `GlobalTheory.T.unitaryAverage_translate_eq_smul_branchingMap D.what₂.Tau (ρ.N n) ρ.NT hN (fun _ => 1) (fun _ => 1) (ρ.lam n) ρ.sg hInt (ρ.low n h) hBr hne (GinfC c.T) ν (fun k => ρ.rT k.1) hρ.uniT y0 yk (fun k => ⟨_, fun τ => hblk k.1 k.2 τ, fun τ => rfl⟩) (ρ.J v 1) (hρ.J v).1 (f …`.
+
+Use `⟨a, fun s ψ hψ F => ?_⟩` and prove the remaining obligations. Take `⟨⟨A, hA1⟩, B, hB⟩` from `hA s`. Take `⟨hvol, hstab, hsum⟩` from `hcls c.volT B.U B.cl B.h hB.reps`. Establish `rdtr` using `GlobalTheory.T.seesaw_scalar_forms_laws_on_class_data D c (t s) ρ A hc hρ hA1.1 n h.le ψ hψ`. Take `⟨J, χ, hCT⟩` from `(ht s).CT`.
+
+Establish `hF : IsContAut c.T (F.1 v)` using `isContAut_multT (hCT F.2) v`. Establish `key : ∀ β, ∫ h' in c.volT.𝓕, trc ((t s).eT n h β) (F.1 v) h' * (t s).rd n β ψ y ((c.oT n h).emb (h', 1)) ∂c.volT.μ = (volLev c.volT B.U : ℂ) * ∑ a', ((stabOrd B.U (B.h a') : ℕ) : ℂ)⁻¹ * (a * B.ell n h β a' F (ρ.low n h fun z => (t s).rd n β ψ ((ρ.fr n).symm z) ((c.oT n h).emb (B. …`. Introduce `β`. Take `⟨hr1, -, hr3, hr4⟩` from `rdtr β`. Rewrite using `[hsum]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hpt : ∀ k : GinfC c.T, trc ((t s).eT n h β) (F.1 v) (B.h a' * k.1) * (t s).rd n β ψ y ((c.oT n h).emb (B.h a' * k.1, 1)) = B.ell n h β a' F (ρ.J v k.1) * (fun z => (t s).rd n β ψ ((ρ.fr n).symm z) ((c.oT n h).emb (B.h a', 1))) (yk k)`. Introduce `k`.
+
+Rewrite using `[hB.top n h F v β a' k.1 k.2]`. Use `congr 1`. Establish `hm : (c.oT n h).emb (B.h a' * k.1, 1) = (c.oT n h).emb (B.h a', 1) * (c.oT n h).emb (k.1, 1)`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hm]`. Use `hr3 y _ _ _ (hemb k) ?_` and prove the remaining obligations. Introduce `τ`. Rewrite using `[Equiv.apply_symm_apply]`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt)]`.
+
+Conclude with `ha _ (hr4 _) _`. Use `Continuous.mul ?_ ((hr1 y).2.comp ((c.oT n h).continuous_emb.comp (continuous_id.prodMk continuous_const)))` and prove the remaining obligations. Establish `: trc ((t s).eT n h β) (F.1 v) = fun x => ∑ g ∈ ((t s).eT n h β).support, (t s).eT n h β g * F.1 v (x * g)`. Use function extensionality and compare the values at `fun x => trc_apply _ _ x`. Rewrite using `[this]`.
+
+Conclude with `continuous_finset_sum _ fun g _ => continuous_const.mul (hF.2.comp (continuous_mul_right g))`. Introduce `γ hγ g`. Rewrite using `[trc_apply, trc_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun g' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, hF.1 γ hγ]`. Establish `hm : (c.oT n h).emb (γ * g, 1) = (c.oT n h).emb (γ, 1) * (c.oT n h).emb (g, 1)`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[hm, (hr1 y).1 _ ((c.oT n h).emb_mem_GQ hγ (GQ _).one_mem)]`.
+
+Introduce `κ hκ g`. Conclude with `hB.inv n h ψ hψ F v y β g κ hκ`. Establish `htl` using `hB.tail n h ψ hψ F`. Unfold `Tup.perT`. Rewrite using `[Finset.sum_congr rfl fun β _ => key β]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun β _ => Finset.sum_congr rfl fun a' _ => by ring`. Use `_ = _ := by rw [htl]; ring`.
+-/
 theorem GlobalTheory.SeeSaw.perX_of_clsPinD : ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), c.Is → (∀ s, (t s).Is) →
     ClsPinD t → PerX t := by
   intro D c 𝒯 t hc ht hP

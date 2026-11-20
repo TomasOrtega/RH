@@ -77,11 +77,17 @@ def ChartImagDeriv.Statement : Prop :=
       ‖fderiv ℝ (fun q : (Fin D.n → ℂ) × (Fin D.m → ℂ) => D.Y q.1 j l) p‖ ≤
         A * Real.exp (D.radius p.1 / 2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, PosSemidef.zero⟩`.
+-/
 theorem InvEntryBound.hypotheses_met :
     (1 : Matrix (Fin 2) (Fin 2) ℝ) - (1 : ℝ) • (1 : Matrix (Fin 2) (Fin 2) ℝ) = 0 ∧
       (0 : Matrix (Fin 2) (Fin 2) ℝ).PosSemidef :=
   ⟨by simp, PosSemidef.zero⟩
 
+/- English proof (translation)
+Use `⟨by simpa using PosSemidef.zero, fun j l => ⟨differentiableAt_const _, ?_⟩⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem InvEntryDeriv.hypotheses_met :
     ((fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℝ)) 0 - (1 : ℝ) • (1 : Matrix (Fin 2) (Fin 2) ℝ)).PosSemidef ∧
       ∀ j l : Fin 2, DifferentiableAt ℝ (fun q : ℝ => (fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℝ)) q j l) 0 ∧
@@ -89,6 +95,9 @@ theorem InvEntryDeriv.hypotheses_met :
   refine ⟨by simpa using PosSemidef.zero, fun j l => ⟨differentiableAt_const _, ?_⟩⟩
   simp
 
+/- English proof (translation)
+Introduce `j l`. Use `⟨differentiableAt_const _, ?_, by simp⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases h : j = l <;> simp [Matrix.one_apply, h]`.
+-/
 theorem MatrixDetDeriv.hypotheses_met :
     ∀ j l : Fin 2, DifferentiableAt ℝ (fun q : ℝ => (fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℂ)) q j l) 0 ∧
       ‖(fun _ : ℝ => (1 : Matrix (Fin 2) (Fin 2) ℂ)) 0 j l‖ ≤ 1 ∧
@@ -97,11 +106,17 @@ theorem MatrixDetDeriv.hypotheses_met :
   refine ⟨differentiableAt_const _, ?_, by simp⟩
   by_cases h : j = l <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem LogDetGramDeriv.hypotheses_met :
     (1 : ℝ) ≤ ((1 : Matrix (Fin 1) (Fin 1) ℂ)ᴴ * ((1 : Matrix (Fin 1) (Fin 1) ℝ)⁻¹).map
       (fun x : ℝ => (x : ℂ)) * (1 : Matrix (Fin 1) (Fin 1) ℂ)).det.re := by
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isOpen_univ, analyticOnNhd_id, isCompact_closedBall _ _, Set.subset_univ _⟩`.
+-/
 theorem AnalyticDerivBound.hypotheses_met :
     IsOpen (Set.univ : Set ℂ) ∧ AnalyticOnNhd ℂ (fun x : ℂ => x) Set.univ ∧
       IsCompact (Metric.closedBall (0 : ℂ) 1) ∧ Metric.closedBall (0 : ℂ) 1 ⊆ Set.univ :=

@@ -9,6 +9,15 @@ open GlobalTheory.FlagCls
 
 namespace GlobalTheory.FlagCls
 
+/- English proof (translation)
+Introduce `Bg S πB hfin K _ _ x hx`. Take `⟨b, hb⟩` from `hx`. Take `⟨⟨s, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K S).symm.surjective x`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hb`. Establish `hs : (Spec.map φ ≫ S.fromSpecResidueField s) (IsLocalRing.closedPoint K) = s`.
+
+Simplify using `only [Scheme.Hom.comp_base, TopCat.hom_comp, ContinuousMap.coe_comp, Function.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`. Rewrite `hb` using `[hs]`. Substitute `hb` using the available equality. Use `letI : Algebra (S.residueField (πB b)) (Bg.residueField b) := (πB.residueFieldMap b).hom.toAlgebra`.
+
+Use `haveI : Module.Finite (S.residueField (πB b)) (Bg.residueField b) := GlobalTheory.residueFieldMap_finite_of_locallyQuasiFinite πB b`. Use `haveI : Algebra.IsAlgebraic (S.residueField (πB b)) (Bg.residueField b) := Algebra.IsAlgebraic.of_finite _ _`. Use `letI : Algebra (S.residueField (πB b)) K := φ.hom.toAlgebra`. Set `ψ : Bg.residueField b →ₐ[S.residueField (πB b)] K` to `IsAlgClosed.lift`. Use `⟨Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ Bg.fromSpecResidueField b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, ← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← Category.assoc, ← Spec.map_comp]`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply]`. Use `congr 2`. Use extensionality with `c`. Conclude with `ψ.commutes c`.
+-/
 theorem finite_exists_lift_algClosed_point : ∀ (Bg S : Scheme.{0}) (πB : Bg ⟶ S), IsFinite πB → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S), x (IsLocalRing.closedPoint K) ∈ Set.range πB → ∃ xb : Sp K ⟶ Bg, xb ≫ πB = x := by
   intro Bg S πB hfin K _ _ x hx
   obtain ⟨b, hb⟩ := hx

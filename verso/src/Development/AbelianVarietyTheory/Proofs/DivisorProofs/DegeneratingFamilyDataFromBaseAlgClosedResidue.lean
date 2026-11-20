@@ -13,6 +13,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.VData
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c φ V _ _ _ hV hk C hX`. Use `haveI : IsNoetherianRing V := hV.1.1`. Use `haveI : CharZero V := hV.2`. Use `haveI : Module.Projective (𝓞 E) C.P.D.toPre.X := GlobalTheory.Forms.projective_of_int (𝓞 E) _`. Use `haveI : Module.Finite (𝓞 E) C.P.D.toPre.X := Module.Finite.of_restrictScalars_finite ℤ _ _`.
+
+Establish `hr : 1 ≤ Module.finrank (𝓞 E) C.P.D.toPre.X` using `Module.finrank_pos`. Take `⟨Z, D', f, o', φB, -, -, -, hp, hq, hpb, hact, hw, -⟩` from `GlobalTheory.LowDat.exists_lower Xo c V hV C.toFam hr`. Establish `hrk` using `C.rank`. Use `haveI : IsMonHom (Iso.refl C.P.D.toPre.P.A).hom := inferInstanceAs (IsMonHom (𝟙 _))`. Take `⟨i, hi, hiφ⟩` from `grpPullback_iso (isGrpPullback_of_iso (Iso.refl C.P.D.toPre.P.A)) hpb`.
+
+Establish `hiφ' : i.hom.left ≫ φB = 𝟙 _` using `hiφ`. Establish `hia : ∀ a : 𝓞 E, (letI` using `H.starRing; C.P.oD.onB.act a) ≫ i.hom = i.hom ≫ o'.t.act.act a := by`. Introduce `a`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hpb.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hiφ', hact, ← Category.assoc, hiφ', Category.comp_id, Category.id_comp]`. Rewrite using `[Over.w, Over.w]`. Establish `hM : IsUnit ((l.M' : ℕ) : V)`. Establish `h1 : IsUnit ((l.M' : ℕ) : c.F)` using `IsUnit.mk0 _ (Nat.cast_ne_zero.2 (level_pos l).ne')`. Simplify using `using h1.map C.b`.
+
+Take `⟨x', hx₁, hx₂, hx₃⟩` from `GlobalTheory.T.abelian_scheme_module_action_homomorphism V hV.1.2.2.2 hk o'.t.G ⟨o'.t.semi.comm, o'.t.semi.smooth, o'.proper, o'.t.semi.geomConnected⟩ (𝓞 E) o'.t.act C.P.D.toPre.X (fun y => C.P.D.toPre.c y ≫ i.hom) (fun y z => by`. Rewrite using `[C.P.D.toPre.c_add, ← MonObj.mul_comp]`. Use the proof step `rfl)`. Use the proof step `(fun a y => by`. Use `letI := H.starRing`.
+
+Rewrite using `[C.P.oD.c_lin, Category.assoc, hia, Category.assoc]) l.M' hM`. Take `⟨L, θ₀, e, m, hθ, hb, hc⟩` from `GlobalTheory.T.lowerDatumObject_comes_from_base_of_linearPoints D' c V C.b o' C.P.D.toPre.X x' hx₁ hx₂`. Take `⟨N, b, hbas⟩` from `C.cone.basis`. Set `ε` to `b.map (pullBalEquiv H.bar e).symm`. Establish `hε : ∀ i, C.δ i = pull e.toLinearMap (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X)` using `fun j => by`.
+
+Establish `h1 : pullBalEquiv H.bar e (ε (.inl j)) = ⟨C.δ j, C.cone.mem j⟩`. Simplify using `[ε, hbas]`. Conclude with `(congrArg Subtype.val h1).symm`. Establish `hPL` using `C.P.D.toPre.P.isLB`. Establish `l₁ : LBIso C.P.D.toPre.P.L (o'.t.PP.L.pull i.hom.left)` using `LBIso.trans hPL (pull_isLB hPL _) (pull_isLB o'.t.PP.isLB _) ((GlobalTheory.PolBaseChange.lbIso_refl hPL).chartPull (chartPullId _) (Geo.Tor.chartPullPull _ _ _ rfl)) (GenSpread.lbIso_pull_of_lbIso hw i.hom.left hiφ'.symm).symm`.
+
+Establish `l₂ : LBIso o'.t.PP.L (L.o.t.PP.L.pull m.toSABMap.φ)` using `m.lin.imp fun _ h => h.1`. Establish `l₃ : LBIso o'.t.PP.L (L.D.P.L.pull (m.toSABMap.φ ≫ L.φB))` using `LBIso.trans o'.t.PP.isLB (pull_isLB L.o.t.PP.isLB _) (pull_isLB L.D.P.isLB _) l₂ (GenSpread.lbIso_pull_of_lbIso L.ab.2.2 _ rfl)`. Take `⟨s, h₁, h₂, h₃⟩` from `GlobalTheory.T.exists_periods_monomialFamily_coords_over_base Xo c φ V hV hk C D' L θ₀ e (i.hom.left ≫ m.toSABMap.φ ≫ L.φB) (((isGrpPullback_of_iso i).comp (m.cart.comp L.ab.1)).congr (by simp) rfl) (fun a => by`. Establish `h1` using `congrArg (·.left) (hia a)`. Simplify using `only [Over.comp_left] at h1`.
+
+Rewrite using `[← Category.assoc, h1, Category.assoc, ← Category.assoc _ m.toSABMap.φ, m.act, Category.assoc, L.ab.2.1]`. Simplify using `only [Category.assoc])`. Use the proof step `(LBIso.trans hPL (pull_isLB o'.t.PP.isLB _) (pull_isLB L.D.P.isLB _) l₁ (GenSpread.lbIso_pull_of_lbIso l₃ _ rfl))`. Use the proof step `(fun y => by`. Rewrite using `[← map_nsmul, ← hc, hx₃, Over.comp_left, Category.assoc]) N ε hε`.
+
+Conclude with `⟨D', L, θ₀, N, ε, e, s, by omega, by omega, hθ, hb, hε, h₁, h₂, h₃⟩`.
+-/
 theorem exists_divFrom : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base V → IsAlgClosed (ResidueField V) → ∀ (C : MonoFam Xo c φ V), Nontrivial C.P.D.toPre.X → ∃ (D' : Datum H) (L : LowBase D' c) (θ₀ : L.W →+* V) (N : ℕ) (ε : Module.Basis (Fin C.m ⊕ Fin N) ℤ (balForms H.bar L.D.X)) (e : C.P.D.toPre.X ≃ₗ[𝓞 E] L.D.X) (s : Fin C.m ⊕ Fin N → V), D'.p + Module.finrank (𝓞 E) C.P.D.toPre.X = Dw.p ∧ D'.q + Module.finrank (𝓞 E) C.P.D.toPre.X = Dw.q ∧ IsLocalHom θ₀ ∧ θ₀.comp L.b = C.b ∧ (∀ i, C.δ i = pull e.toLinearMap (ε (.inl i) : LinearMap.BilinForm ℤ L.D.X)) ∧ (∀ i, Associated (s (.inl i)) (C.s i)) ∧ (∀ j, IsUnit (s (.inr j))) ∧ DivFrom L C.P.D.toPre C.P.oD θ₀ s (fun k => (ε k : LinearMap.BilinForm ℤ L.D.X)) e := by
   intro E _ _ _ H Dw l Xo c φ V _ _ _ hV hk C hX
   haveI : IsNoetherianRing V := hV.1.1

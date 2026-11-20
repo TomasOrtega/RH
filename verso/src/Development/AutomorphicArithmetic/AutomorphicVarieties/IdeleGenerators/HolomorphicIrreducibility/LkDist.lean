@@ -7,6 +7,15 @@ open Polynomial
 
 namespace UpperTheory.V.Sd
 
+/- English proof (translation)
+Establish `hne : (1 - x) ≠ 0` using `sub_ne_zero.mpr (Ne.symm hx)`. Establish `hp` using `Polynomial.hasDerivAt_aeval (numL (k + 1)) x`. Establish `hq : HasDerivAt (fun y : ℂ => (1 - y) ^ (k + 1)) (((k + 1 : ℕ) : ℂ) * (1 - x) ^ k * (-1)) x`. Establish `h1 : HasDerivAt (fun y : ℂ => 1 - y) (-1) x`. Simplify using `using (hasDerivAt_id x).const_sub (1 : ℂ)`.
+
+Establish `h2` using `h1.pow (k + 1)`. Simplify using `only [Nat.add_sub_cancel] at h2`. Conclude with `h2`. Use `⟨_, hp.div hq (pow_ne_zero _ hne), ?_⟩` and prove the remaining obligations. Establish `e : numL (k + 2) = X * (derivative (numL (k + 1)) * (1 - X) + C ((k : ℤ) + 1) * numL (k + 1))` using `numL.eq_3 k`.
+
+Unfold `Lk`. Rewrite using `[e]`. Simplify using `only [map_mul, map_add, map_sub, map_one, aeval_X, aeval_C]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma lk_deriv (k : ℕ) (x : ℂ) (hx : x ≠ 1) :
     ∃ d : ℂ, HasDerivAt (fun y : ℂ => Lk (k + 1) y) d x ∧ x * d = Lk (k + 2) x := by
   have hne : (1 - x) ≠ 0 := sub_ne_zero.mpr (Ne.symm hx)
@@ -26,6 +35,25 @@ private lemma lk_deriv (k : ℕ) (x : ℂ) (hx : x ≠ 1) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hy : ∀ j : ℕ, (x * ζ ^ j) ^ w = x ^ w`. Introduce `j`. Rewrite using `[mul_pow, ← pow_mul, mul_comm j w, pow_mul, hζ.pow_eq_one, one_pow, mul_one]`. Establish `hxw : 1 - x ^ w ≠ 0` using `sub_ne_zero.mpr (Ne.symm hx)`. Establish `hne : ∀ j : ℕ, 1 - x * ζ ^ j ≠ 0`.
+
+Introduce `j h`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hy j, ← sub_eq_zero.mp h, one_pow]`. Establish `term : ∀ j : ℕ, Lk 1 (x * ζ ^ j) = (∑ m ∈ Finset.range w, (x * ζ ^ j) ^ m) / (1 - x ^ w) - 1`. Introduce `j`.
+
+Establish `g` using `geom_sum_mul (x * ζ ^ j) w`. Rewrite `g` using `[hy j]`. Unfold `Lk`. Simplify using `only [numL.eq_2, aeval_X, pow_one]`. Rewrite using `[eq_sub_iff_add_eq, div_add_one (hne j), div_eq_div_iff (hne j) hxw]`.
+
+Take the linear combination `g`. Establish `inner : ∀ m ∈ Finset.range w, ∑ j ∈ Finset.range w, (x * ζ ^ j) ^ m = if m = 0 then (w : ℂ) else 0`. Introduce `m hm`. Use `split_ifs with h0`. Simplify using `[h0]`.
+
+Establish `hm' : m < w` using `Finset.mem_range.mp hm`. Establish `hq : ζ ^ m ≠ 1` using `hζ.pow_ne_one_of_pos_of_lt h0 hm'`. Establish `g` using `geom_sum_mul (ζ ^ m) w`. Rewrite `g` using `[← pow_mul, mul_comm m w, pow_mul, hζ.pow_eq_one, one_pow, sub_self]`. Establish `hs : ∑ i ∈ Finset.range w, (ζ ^ m) ^ i = 0`.
+
+Break down `mul_eq_zero.mp g with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (sub_eq_zero.mp h) hq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, mul_comm j m]`. Use `_ = 0 := by rw [hs, mul_zero]`. Establish `total : ∑ j ∈ Finset.range w, ∑ m ∈ Finset.range w, (x * ζ ^ j) ^ m = w`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl inner, Finset.sum_ite_eq' (Finset.range w) 0]`.
+
+Simplify using `[Finset.mem_range.mpr (by omega : 0 < w)]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => term j), Finset.sum_sub_distrib, ← Finset.sum_div, total]`. Unfold `Lk`. Simplify using `only [numL.eq_2, aeval_X, pow_one, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma lk_one (w : ℕ) (hw : 1 ≤ w) (ζ x : ℂ) (hζ : IsPrimitiveRoot ζ w) (hx : x ^ w ≠ 1) :
     ∑ j ∈ Finset.range w, Lk 1 (x * ζ ^ j) = (w : ℂ) ^ 1 * Lk 1 (x ^ w) := by
   have hy : ∀ j : ℕ, (x * ζ ^ j) ^ w = x ^ w := by
@@ -70,6 +98,23 @@ private lemma lk_one (w : ℕ) (hw : 1 ≤ w) (ζ x : ℂ) (hζ : IsPrimitiveRoo
   field_simp
   ring
 
+/- English proof (translation)
+Introduce `w k hw hk`. Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base`. Introduce `ζ x hζ hx`. Conclude with `lk_one w hw ζ x hζ hx`.
+
+Consider the case `succ k hk ih`. Introduce `ζ x hζ hx`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Establish `hy : ∀ j : ℕ, (x * ζ ^ j) ^ w = x ^ w`. Introduce `j`.
+
+Rewrite using `[mul_pow, ← pow_mul, mul_comm j w, pow_mul, hζ.pow_eq_one, one_pow, mul_one]`. Establish `hne : ∀ j : ℕ, x * ζ ^ j ≠ 1`. Introduce `j h`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hy j, h, one_pow]`.
+
+Use `choose d hd hdx using fun j : ℕ => lk_deriv m (x * ζ ^ j) (hne j)`. Take `⟨e, he, hex⟩` from `lk_deriv m (x ^ w) hx`. Establish `hj : ∀ j : ℕ, HasDerivAt (fun y : ℂ => Lk (m + 1) (y * ζ ^ j)) (d j * ζ ^ j) x`. Introduce `j`. Conclude with `(hd j).comp x (hasDerivAt_mul_const (ζ ^ j))`.
+
+Establish `hF : HasDerivAt (fun y : ℂ => ∑ j ∈ Finset.range w, Lk (m + 1) (y * ζ ^ j)) (∑ j ∈ Finset.range w, d j * ζ ^ j) x` using `HasDerivAt.fun_sum (u := Finset.range w) (A := fun j (y : ℂ) => Lk (m + 1) (y * ζ ^ j)) (A' := fun j => d j * ζ ^ j) (fun j _ => hj j)`. Establish `hG : HasDerivAt (fun y : ℂ => (w : ℂ) ^ (m + 1) * Lk (m + 1) (y ^ w)) ((w : ℂ) ^ (m + 1) * (e * ((w : ℂ) * x ^ (w - 1)))) x` using `(he.comp x (hasDerivAt_pow w x)).const_mul _`. Establish `hev : (fun y : ℂ => ∑ j ∈ Finset.range w, Lk (m + 1) (y * ζ ^ j)) =ᶠ[nhds x] (fun y : ℂ => (w : ℂ) ^ (m + 1) * Lk (m + 1) (y ^ w))`. Establish `ho : IsOpen {y : ℂ | y ^ w ≠ 1}` using `isOpen_ne_fun (continuous_pow w) continuous_const`. Use `filter_upwards [ho.mem_nhds hx] with y hy'`.
+
+Conclude with `ih ζ y hζ hy'`. Establish `heq` using `hF.unique (hG.congr_of_eventuallyEq hev)`. Establish `hw' : x * x ^ (w - 1) = x ^ w`. Rewrite using `[← pow_succ']`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← hdx j]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = (w : ℂ) ^ (m + 1 + 1) * Lk (m + 1 + 1) (x ^ w) := by`. Rewrite using `[heq, ← hex, ← hw']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lkDist : LkDist := by
   intro w k hw hk
   induction k, hk using Nat.le_induction with

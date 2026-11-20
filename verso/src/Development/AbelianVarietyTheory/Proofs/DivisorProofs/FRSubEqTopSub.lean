@@ -11,6 +11,9 @@ namespace GlobalTheory.Mean4O.MetricSwap
 
 open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `[hxa]`. Simplify using the standard rewrite rules.
+-/
 theorem comp_swap_eq_cons {e : ℕ} (i : Fin (e + 1)) (W : Type) (x : Fin (e + 1) → W) (a : W) (hxa : x i = a) :
     x ∘ Equiv.swap 0 i = Fin.cons a (fun k => x (Equiv.swap 0 i k.succ)) := by
   funext k
@@ -18,6 +21,11 @@ theorem comp_swap_eq_cons {e : ℕ} (i : Fin (e + 1)) (W : Type) (x : Fin (e + 1
   · simp [hxa]
   · simp
 
+/- English proof (translation)
+Rewrite using `[← K.symm _ (Equiv.swap 0 i), ← K'.symm _ (Equiv.swap 0 i), comp_swap_eq_cons i _ _ (K.ar g) (Finset.piecewise_eq_of_mem _ _ _ hi), comp_swap_eq_cons i _ _ (K'.ar g) (Finset.piecewise_eq_of_mem _ _ _ hi), K.num_ar g hg, K'.num_ar g hg]`. Unfold `Man.int`. Use `congrArg (M.κ * ·) (Finset.sum_congr rfl fun σ _ => ?_)` and prove the remaining obligations. Use `(GlobalTheory.LeviOnly.mInt_eq_of_leviEq _ _ (M.A σ) _ _ (g σ) (fun k => K.firstChern_isPotential _ σ) (fun k => K'.firstChern_isPotential _ σ) ?_).1` and prove the remaining obligations. Introduce `k j y hy w`.
+
+Distinguish the cases in `hk : Equiv.swap 0 i k.succ ∈ S`. Rewrite using `[Finset.piecewise_eq_of_mem _ _ _ hk, Finset.piecewise_eq_of_mem _ _ _ hk, K.c1_ar g hg σ j y hy w, K'.c1_ar g hg σ j y hy w]`. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ hk, Finset.piecewise_eq_of_notMem _ _ _ hk]`. Conclude with `hv σ j y hy w`.
+-/
 theorem num_piece_eq {e : ℕ} {M : Man e} (K K' : Calc M) (v : K.V) (v' : K'.V) (g : M.Fun) (hg : M.Smooth g)
     (hv : ∀ σ, LeviEq (M.A σ) (K.c1 v σ) (K'.c1 v' σ)) (S : Finset (Fin (e + 1))) (i : Fin (e + 1)) (hi : i ∈ S) :
     K.num (S.piecewise (fun _ => K.ar g) (fun _ => v)) = K'.num (S.piecewise (fun _ => K'.ar g) (fun _ => v')) := by
@@ -34,6 +42,13 @@ theorem num_piece_eq {e : ℕ} {M : Man e} (K K' : Calc M) (v : K.V) (v' : K'.V)
   · rw [Finset.piecewise_eq_of_notMem _ _ _ hk, Finset.piecewise_eq_of_notMem _ _ _ hk]
     exact hv σ j y hy w
 
+/- English proof (translation)
+Unfold `Calc.top`. Establish `e1 : (fun _ : Fin (e + 1) => v + K.ar g) = (fun _ => K.ar g) + (fun _ => v)`. Use function extensionality and compare the values at `k`. Conclude with `add_comm _ _`. Establish `e2 : (fun _ : Fin (e + 1) => v' + K'.ar g) = (fun _ => K'.ar g) + (fun _ => v')`.
+
+Use function extensionality and compare the values at `k`. Conclude with `add_comm _ _`. Rewrite using `[e1, e2, K.num.map_add_univ, K'.num.map_add_univ, ← Finset.add_sum_erase _ _ (Finset.mem_univ ∅), ← Finset.add_sum_erase _ _ (Finset.mem_univ ∅), Finset.piecewise_empty, Finset.piecewise_empty]`. Establish `hs : ∑ S ∈ (Finset.univ : Finset (Finset (Fin (e + 1)))).erase ∅, K.num (S.piecewise (fun _ => K.ar g) (fun _ => v)) = ∑ S ∈ (Finset.univ : Finset (Finset (Fin (e + 1)))).erase ∅, K'.num (S.piecewise (fun _ => K'.ar g) (fun _ => v'))`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations.
+
+Take `⟨i, hi⟩` from `Finset.nonempty_iff_ne_empty.2 (Finset.ne_of_mem_erase hS)`. Conclude with `num_piece_eq K K' v v' g hg hv S i hi`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem top_add_sub {e : ℕ} {M : Man e} (K K' : Calc M) (v : K.V) (v' : K'.V) (g : M.Fun) (hg : M.Smooth g)
     (hv : ∀ σ, LeviEq (M.A σ) (K.c1 v σ) (K'.c1 v' σ)) :
     K.top (v + K.ar g) - K.top v = K'.top (v' + K'.ar g) - K'.top v' := by
@@ -57,6 +72,11 @@ end GlobalTheory.Mean4O.MetricSwap
 
 namespace GlobalTheory.Mean4O
 
+/- English proof (translation)
+Introduce `D Y T B B' c u s R hg`. Establish `hv : ∀ σ, LeviEq ((T.M c).A σ) ((T.K B c).c1 (T.L B c u + s • T.a B c) σ) ((T.K B' c).c1 (T.L B' c u + s • T.a B' c) σ)`. Introduce `σ j y hy w`. Rewrite using `[(T.K B c).isOneCochain_add _ _ σ j y hy w, Deg.leviAt_add _ ((T.K B c).firstChern_isPotential _ σ) ((T.K B c).firstChern_isPotential _ σ) j hy, (T.K B' c).isOneCochain_add _ _ σ j y hy w, Deg.leviAt_add _ ((T.K B' c).firstChern_isPotential _ σ) ((T.K B' c).firstChern_isPotential …`. Establish `key` using `MetricSwap.top_add_sub (T.K B c) (T.K B' c) _ _ _ hg hv`.
+
+Unfold `Real0.fR`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem fR_sub_eq_top_sub : ∀ (D : D7) (Y : DV.ShimX D.what₂.Tau) (T : Real0 Y) (B B' : ℝ) (c : Y.Comp) (u : GlobalTheory.Mean4.Wt Y) (s R : ℝ), (T.M c).Smooth ((T.F c).phR R u) → T.fR B c u s R - T.fR B' c u s R = (T.K B c).top (T.L B c u + s • T.a B c) - (T.K B' c).top (T.L B' c u + s • T.a B' c) := by
   intro D Y T B B' c u s R hg
   have hv : ∀ σ, LeviEq ((T.M c).A σ) ((T.K B c).c1 (T.L B c u + s • T.a B c) σ)

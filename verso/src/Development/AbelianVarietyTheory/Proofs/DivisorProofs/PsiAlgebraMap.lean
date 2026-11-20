@@ -31,6 +31,11 @@ def ring (hN : GradedFam c₀ N) : Subring F[X] where
     have := hN.smul k (-1) _ (hp k)
     simpa using this
 
+/- English proof (translation)
+Introduce `j`. Rewrite using `[coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hb`.
+
+Conclude with `hN.zero j`.
+-/
 theorem monomial_mem (hN : GradedFam c₀ N) {k : ℕ} {b : F} (hb : b ∈ N k) : monomial k b ∈ ring hN := by
   intro j
   rw [coeff_monomial]
@@ -45,6 +50,11 @@ def piece (hN : GradedFam c₀ N) (k : ℕ) : AddSubgroup (ring hN) where
   zero_mem' j _ := by rw [Subring.coe_zero, coeff_zero]
   neg_mem' {p} hp j hj := by rw [Subring.coe_neg, coeff_neg, hp j hj, neg_zero]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hp`. Use extensionality with `j`. Rewrite using `[coeff_monomial]`. Use `split_ifs with h`.
+
+Rewrite using `[h]`. Conclude with `hp j (Ne.symm h)`. Introduce `hp j hj`. Rewrite using `[hp, coeff_monomial, if_neg (Ne.symm hj)]`.
+-/
 theorem mem_piece_iff (hN : GradedFam c₀ N) {k : ℕ} {p : ring hN} :
     p ∈ piece hN k ↔ (p : F[X]) = monomial k ((p : F[X]).coeff k) := by
   constructor
@@ -59,12 +69,21 @@ theorem mem_piece_iff (hN : GradedFam c₀ N) {k : ℕ} {p : ring hN} :
 
 def hel (hN : GradedFam c₀ N) (k : ℕ) (b : F) (hb : b ∈ N k) : ring hN := ⟨monomial k b, monomial_mem hN hb⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_hel (hN : GradedFam c₀ N) (k : ℕ) (b : F) (hb : b ∈ N k) :
     (hel hN k b hb : F[X]) = monomial k b := rfl
 
+/- English proof (translation)
+Rewrite using `[mem_piece_iff, coe_hel, coeff_monomial, if_pos rfl]`.
+-/
 theorem hel_mem (hN : GradedFam c₀ N) (k : ℕ) (b : F) (hb : b ∈ N k) : hel hN k b hb ∈ piece hN k := by
   rw [mem_piece_iff, coe_hel, coeff_monomial, if_pos rfl]
 
+/- English proof (translation)
+Introduce `e`. Use `congrArg (fun p : ring hN => (p : F[X]).coeff k) e` as an intermediate fact. Simplify using `[coeff_monomial] at this`. Conclude with `h this`.
+-/
 theorem hel_ne_zero (hN : GradedFam c₀ N) {k : ℕ} {b : F} (hb : b ∈ N k) (h : b ≠ 0) : hel hN k b hb ≠ 0 := by
   intro e
   have := congrArg (fun p : ring hN => (p : F[X]).coeff k) e
@@ -77,15 +96,24 @@ def comp (hN : GradedFam c₀ N) (k : ℕ) : ring hN →+ piece hN k where
   map_zero' := by ext; simp
   map_add' p q := by ext; simp
 
+/- English proof (translation)
+Use `ext`. Simplify using `[comp, h]`.
+-/
 theorem comp_eq_zero (hN : GradedFam c₀ N) {k : ℕ} {p : ring hN} (h : (p : F[X]).coeff k = 0) : comp hN k p = 0 := by
   ext; simp [comp, h]
 
+/- English proof (translation)
+Use `ext1`. Conclude with `((mem_piece_iff hN).1 h).symm`.
+-/
 theorem comp_of_mem (hN : GradedFam c₀ N) {k : ℕ} {p : ring hN} (h : p ∈ piece hN k) : (comp hN k p : ring hN) = p := by
   ext1; exact ((mem_piece_iff hN).1 h).symm
 
 def dec (hN : GradedFam c₀ N) (p : ring hN) : DirectSum ℕ (fun k => piece hN k) :=
   ∑ k ∈ (p : F[X]).support, DirectSum.of (fun k => piece hN k) k (comp hN k p)
 
+/- English proof (translation)
+Use `Finset.sum_subset hS fun k _ hk => ?_` and prove the remaining obligations. Rewrite using `[comp_eq_zero hN (notMem_support_iff.1 hk), map_zero]`.
+-/
 theorem dec_eq (hN : GradedFam c₀ N) (p : ring hN) (S : Finset ℕ) (hS : (p : F[X]).support ⊆ S) :
     dec hN p = ∑ k ∈ S, DirectSum.of (fun k => piece hN k) k (comp hN k p) := by
   refine Finset.sum_subset hS fun k _ hk => ?_
@@ -139,12 +167,18 @@ variable (F) in
 
 def cL : F →+* FractionRing F[X] := (algebraMap F[X] (FractionRing F[X])).comp C
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.injective F[X] (FractionRing F[X])).comp C_injective`.
+-/
 theorem cL_injective : Function.Injective (cL F) :=
   (IsFractionRing.injective F[X] (FractionRing F[X])).comp C_injective
 
 def toL (hN : GradedFam c₀ N) : ring hN →+* FractionRing F[X] :=
   (algebraMap F[X] (FractionRing F[X])).comp (ring hN).subtype
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.injective F[X] (FractionRing F[X])).comp Subtype.val_injective`.
+-/
 theorem toL_injective (hN : GradedFam c₀ N) : Function.Injective (toL hN) :=
   (IsFractionRing.injective F[X] (FractionRing F[X])).comp Subtype.val_injective
 
@@ -157,6 +191,13 @@ def liftAt : Localization.AtPrime P →+* FractionRing F[X] :=
 def valL : AtPrime (piece hN) P →+* FractionRing F[X] :=
   (liftAt hN P).comp (algebraMap (AtPrime (piece hN) P) (Localization.AtPrime P))
 
+/- English proof (translation)
+Establish `hnum` using `(mem_piece_iff hN).1 g.num.2`. Establish `hden` using `(mem_piece_iff hN).1 g.den.2`. Establish `hs : ((g.den : ring hN) : F[X]).coeff g.deg ≠ 0`. Introduce `h0`. Apply `g.den_mem` to reduce the goal to its premises.
+
+Establish `: (g.den : ring hN) = 0` using `Subtype.ext (by rw [hden, h0, map_zero]; rfl)`. Rewrite using `[this]`. Conclude with `P.zero_mem`. Express the relevant statement in the definitionally equal form `liftAt hN P (mk g).val = _`. Rewrite using `[val_mk, Localization.mk_eq_mk', liftAt, IsLocalization.lift_mk'_spec]`.
+
+Express the relevant statement in the definitionally equal form `algebraMap F[X] _ ((g.num : ring hN) : F[X]) = algebraMap F[X] _ ((g.den : ring hN) : F[X]) * algebraMap F[X] _ (C _)`. Rewrite using `[← map_mul]`. Use `congr 1`. Rewrite using `[hnum, hden, coeff_monomial, if_pos rfl, coeff_monomial, if_pos rfl, monomial_mul_C, mul_div_cancel₀ _ hs]`.
+-/
 theorem valL_mk (g : NumDenSameDeg (piece hN) P.primeCompl) :
     valL hN P (mk g) = cL F (((g.num : ring hN) : F[X]).coeff g.deg / ((g.den : ring hN) : F[X]).coeff g.deg) := by
   have hnum := (mem_piece_iff hN).1 g.num.2
@@ -187,9 +228,15 @@ def valR : AtPrime (piece hN) P →+* (cL F).range :=
 
 def psiAt : AtPrime (piece hN) P →+* F := (eqR F).symm.toRingHom.comp (valR hN P)
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val ((eqR F).apply_symm_apply (valR hN P y))`.
+-/
 theorem cL_psiAt (y : AtPrime (piece hN) P) : cL F (psiAt hN P y) = valL hN P y :=
   congrArg Subtype.val ((eqR F).apply_symm_apply (valR hN P y))
 
+/- English proof (translation)
+The claim follows from `cL_injective (by rw [cL_psiAt, valL_mk])`.
+-/
 theorem psiAt_mk (g : NumDenSameDeg (piece hN) P.primeCompl) :
     psiAt hN P (mk g) = ((g.num : ring hN) : F[X]).coeff g.deg / ((g.den : ring hN) : F[X]).coeff g.deg :=
   cL_injective (by rw [cL_psiAt, valL_mk])
@@ -210,6 +257,15 @@ def gen {k : ℕ} (hk : 1 ≤ k) {b : F} (hb : b ∈ N k) (h0 : b ≠ 0) : Proj 
         DirectSum.decompose_of_mem_ne (piece hN) (hel_mem hN k b hb) (by omega)]
     exact h this)⟩
 
+/- English proof (translation)
+Establish `hred : IsReduced (Proj (piece hN))`. Establish `(x : Proj (piece hN)) : _root_.IsReduced ((Proj (piece hN)).presheaf.stalk x)`. Set `x' : ProjectiveSpectrum (piece hN)` to `x`. Establish `h1 : _root_.IsReduced (HomogeneousLocalization.AtPrime (piece hN) x'.asHomogeneousIdeal.toIdeal)` using `isReduced_of_injective (algebraMap _ (Localization.AtPrime x'.asHomogeneousIdeal.toIdeal)) (HomogeneousLocalization.val_injective _)`. Conclude with `isReduced_of_injective (Proj.stalkIso' (piece hN) x') (Proj.stalkIso' (piece hN) x').injective`.
+
+Conclude with `isReduced_of_isReduced_stalk _`. Establish `hcl : closure ({gen hN hk hb h0} : Set (ProjectiveSpectrum (piece hN))) = Set.univ`. Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Conclude with `(ProjectiveSpectrum.le_iff_mem_closure (piece hN) (gen hN hk hb h0) y).1 (by show (⊥ : HomogeneousIdeal (piece hN)) ≤ y.asHomogeneousIdeal`. Conclude with `bot_le)`.
+
+Establish `hirr : IrreducibleSpace (ProjectiveSpectrum (piece hN))`. Use `(irreducibleSpace_def _).2 ?_` and prove the remaining obligations. Rewrite using `[Set.top_eq_univ, ← hcl]`. Conclude with `(isIrreducible_singleton (x := gen hN hk hb h0)).closure`. Establish `: IrreducibleSpace (Proj (piece hN))` using `hirr`.
+
+Conclude with `isIntegral_of_irreducibleSpace_of_isReduced _`.
+-/
 theorem isIntegral {k : ℕ} (hk : 1 ≤ k) {b : F} (hb : b ∈ N k) (h0 : b ≠ 0) : IsIntegral (Proj (piece hN)) := by
   have hred : IsReduced (Proj (piece hN)) := by
     have (x : Proj (piece hN)) : _root_.IsReduced ((Proj (piece hN)).presheaf.stalk x) := by
@@ -247,12 +303,20 @@ def pmap : Proj (piece hN) ⟶ Sp R := Proj.toSpecZero (piece hN) ≫ Spec.map (
 def Dp (k : ℕ) (b : F) : (Proj (piece hN)).Opens := by
   classical exact if hb : b ∈ N k then Proj.basicOpen (piece hN) (hel hN k b hb) else ⊥
 
+/- English proof (translation)
+Rewrite using `[Dp, dif_pos hb]`.
+-/
 theorem Dp_of_mem {k : ℕ} {b : F} (hb : b ∈ N k) : Dp hN k b = Proj.basicOpen (piece hN) (hel hN k b hb) := by
   rw [Dp, dif_pos hb]
 
 def psi [IsIntegral (Proj (piece hN))] : (Proj (piece hN)).functionField →+* F :=
   (psiAt hN _).comp (Proj.stalkIso' (piece hN) (genericPoint (Proj (piece hN)))).toRingHom
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `mk_surjective (Proj.stalkIso' (piece hN) x w)`. Establish `hw : w = (Proj.stalkIso' (piece hN) x).symm (mk g)` using `((Proj.stalkIso' (piece hN) x).symm_apply_apply w).symm.trans (congrArg _ hg.symm)`. Substitute `hw` using the available equality. Establish `hsp : genericPoint (Proj (piece hN)) ⤳ x` using `genericPoint_specializes x`. Establish `hle : (genericPoint (Proj (piece hN))).asHomogeneousIdeal.toIdeal ≤ x.asHomogeneousIdeal.toIdeal` using `(ProjectiveSpectrum.le_iff_mem_closure (piece hN) _ _).2 (specializes_iff_mem_closure.1 hsp)`.
+
+Establish `key : Proj.stalkIso' (piece hN) (genericPoint (Proj (piece hN))) ((Proj (piece hN)).presheaf.stalkSpecializes hsp ((Proj.stalkIso' (piece hN) x).symm (mk g))) = mk (⟨g.deg, g.num, g.den, fun hy => g.den_mem (hle hy)⟩ : NumDenSameDeg (piece hN) (genericPoint (Proj (piece hN))).asH …` using `by erw [Proj.stalkIso'_symm_mk, TopCat.Presheaf.germ_stalkSpecializes_apply, Proj.stalkIso'_germ]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `psiAt hN _ (Proj.stalkIso' (piece hN) _ ((Proj (piece hN)).presheaf.stalkSpecializes hsp _)) = _`. Rewrite using `[key, RingEquiv.apply_symm_apply, psiAt_mk, psiAt_mk]`.
+-/
 theorem psi_algebraMap [IsIntegral (Proj (piece hN))] (x : Proj (piece hN)) (w : (Proj (piece hN)).presheaf.stalk x) :
     psi hN (algebraMap _ _ w) = psiAt hN _ (Proj.stalkIso' (piece hN) x w) := by
   obtain ⟨g, hg⟩ := mk_surjective (Proj.stalkIso' (piece hN) x w)

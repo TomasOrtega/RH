@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.ThetaLiftSmoothAut
 
+/- English proof (translation)
+Establish `hκ` using `(GlobalTheory.Mem.Lift.isKerSys_thKer hθ hω.std (GlobalTheory.Ker.isWeak_of_datum hω) hω.om_cont).swap`. Conclude with `(hκ.lift hP hθ ⟨hν, h𝓕⟩ ⟨hφ, hc⟩ ⟨Φ, hΦ⟩).2`.
+-/
 theorem isAutFunSm_thetaLift {D : D7} (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfFam D} (hθ : IsInfFam θ)
     {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hω : IsWeilDatumO ψ S T χS χT om)

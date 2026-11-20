@@ -9,6 +9,19 @@ namespace GlobalTheory.FlagMeas.SatModel
 
 open Formalism.MainNotions.S GlobalTheory.Count
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨d, hd, h⟩` from `hx`.
+
+Take `⟨e, he, h'⟩` from `hy`. Use `⟨d * e, mul_ne_zero hd he, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `Λ.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `Λ.smul_mem _ h`. Rewrite using `[mul_smul]`. Conclude with `Λ.smul_mem _ h'`. Consider the case `smul c x _ hx`. Take `⟨d, hd, h⟩` from `hx`.
+
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) c`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hb1 : algebraMap (𝓞 E) E b ≠ 0` using `by simpa using hb0`. Use `⟨b * d, mul_ne_zero hb0 hd, ?_⟩` and prove the remaining obligations. Establish `: (b * d) • (algebraMap (𝓞 E) E a / algebraMap (𝓞 E) E b) • x = a • d • x`.
+
+Rewrite using `[← algebraMap_smul E (b * d), ← algebraMap_smul E a, ← algebraMap_smul E d, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+
+Conclude with `Λ.smul_mem _ h`.
+-/
 theorem exists_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E))
     (y : Fin n → E) (hy : y ∈ Submodule.span E (Λ : Set (Fin n → E))) :
     ∃ d : 𝓞 E, d ≠ 0 ∧ d • y ∈ Λ := by
@@ -35,6 +48,11 @@ theorem exists_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ} (Λ : Sub
       rw [map_mul]; field_simp
     rw [this]; exact Λ.smul_mem _ h
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.2 fun y hy => hy.2`. Introduce `y hy`. Take `⟨d, hd, h⟩` from `exists_smul_mem Λ y (hΛ ▸ Submodule.mem_top)`. Establish `hd1 : algebraMap (𝓞 E) E d ≠ 0` using `by simpa using hd`.
+
+Establish `h1 : d • y ∈ Submodule.span E ((Λ ⊓ W.restrictScalars (𝓞 E) : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E))` using `Submodule.subset_span ⟨h, (W.restrictScalars (𝓞 E)).smul_mem d hy⟩`. Establish `h2` using `Submodule.smul_mem _ (algebraMap (𝓞 E) E d)⁻¹ h1`. Rewrite `h2` using `[← algebraMap_smul E d, smul_smul, inv_mul_cancel₀ hd1, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem span_inf {E : Type} [Field E] [NumberField E] {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E))
     (hΛ : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) (W : Submodule E (Fin n → E)) :
     Submodule.span E ((Λ ⊓ W.restrictScalars (𝓞 E) : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)) = W := by
@@ -49,6 +67,9 @@ theorem span_inf {E : Type} [Field E] [NumberField E] {n : ℕ} (Λ : Submodule 
     have h2 := Submodule.smul_mem _ (algebraMap (𝓞 E) E d)⁻¹ h1
     rwa [← algebraMap_smul E d, smul_smul, inv_mul_cancel₀ hd1, one_smul] at h2
 
+/- English proof (translation)
+Use `⟨by simp [h0], fun i k h => inf_le_inf_left _ fun y hy => hm h hy, fun i => ?_, fun i y => ?_, fun x hx y hy => hi x hx.2 y hy.2⟩` and prove the remaining obligations. Unfold `Formalism.HN.rkK`. Rewrite using `[span_inf Λ hΛ, span_inf Λ hΛ, hr]`. Rewrite using `[span_inf Λ hΛ]`. Both sides reduce to the same expression.
+-/
 theorem isSatFlag_inf (I : AutInst) (Λ : Submodule (𝓞 I.E) (Fin I.n → I.E))
     (hΛ : Submodule.span I.E (Λ : Set (Fin I.n → I.E)) = ⊤) {a : ℕ} (j : Fin a → ℕ)
     (W : Fin (a + 1) → Submodule I.E (Fin I.n → I.E)) (h0 : W 0 = ⊥) (hm : Monotone W)
@@ -61,6 +82,13 @@ theorem isSatFlag_inf (I : AutInst) (Λ : Submodule (𝓞 I.E) (Fin I.n → I.E)
     rw [span_inf Λ hΛ, span_inf Λ hΛ, hr]
   · rw [span_inf Λ hΛ]; rfl
 
+/- English proof (translation)
+Use `⟨_, isSatFlag_inf I I.L I.L_span _ ![⊥, I.E ∙ x] rfl ?_ ?_ ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i k h fin_cases i <;> fin_cases k <;> simp_all`. Introduce `i fin_cases i`. Express the relevant statement in the definitionally equal form `Module.finrank I.E (I.E ∙ x) = Module.finrank I.E (⊥ : Submodule I.E (Fin I.n → I.E)) + 1`. Rewrite using `[finrank_span_singleton hx, finrank_bot]`.
+
+Introduce `y hy z hz`. Express the relevant statement in the definitionally equal form `y ∈ I.E ∙ x at hy`. Express the relevant statement in the definitionally equal form `z ∈ I.E ∙ x at hz`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Take `⟨d, rfl⟩` from `Submodule.mem_span_singleton.1 hz`.
+
+Establish `: Formalism.UG.hform (starRingEnd I.E) I.J (c • x) (d • x) = starRingEnd I.E c * d * Formalism.UG.hform (starRingEnd I.E) I.J x x`. Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations. Rewrite using `[this, hi, mul_zero]`.
+-/
 theorem exists_isSatFlag_one (I : AutInst) (x : Fin I.n → I.E) (hx : x ≠ 0)
     (hi : Formalism.UG.hform (starRingEnd I.E) I.J x x = 0) :
     ∃ S, IsSatFlag I I.L (fun _ : Fin 1 => 1) S := by
@@ -82,6 +110,11 @@ theorem exists_isSatFlag_one (I : AutInst) (x : Fin I.n → I.E) (hx : x ≠ 0)
       refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
     rw [this, hi, mul_zero]
 
+/- English proof (translation)
+Establish `h : (2 : ℝ) ^ (-(1 / 2 : ℝ)) * 2 = 2 ^ (1 / 2 : ℝ)`. Rewrite using `[← Real.rpow_add_one (by norm_num)]; norm_num`. Establish `hp : (2 : ℝ) ^ (1 / 2 : ℝ) ≠ 0` using `by positivity`. Establish `h2 : (2 : ℝ) ^ (1 / 2 : ℝ) * 2 ^ (1 / 2 : ℝ) = 2`. Rewrite using `[← Real.rpow_add (by norm_num)]; norm_num`.
+
+Establish `e : cIw 1 1 (fun _ : Fin 1 => 1) = (2 : ℝ) ^ (-(1 / 2 : ℝ)) * (2 * Real.pi * (2 * Real.pi)) / (2 * Real.pi * 2 ^ (1 / 2 : ℝ))`. Simplify using `[cIw, dimN, volU, sphV, Finset.filter_singleton]`. Rewrite using `[e, div_eq_iff (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cIw_one_one : cIw 1 1 (fun _ : Fin 1 => 1) = Real.pi := by
   have h : (2 : ℝ) ^ (-(1 / 2 : ℝ)) * 2 = 2 ^ (1 / 2 : ℝ) := by
     rw [← Real.rpow_add_one (by norm_num)]; norm_num
@@ -95,17 +128,32 @@ theorem cIw_one_one : cIw 1 1 (fun _ : Fin 1 => 1) = Real.pi := by
   calc _ = (2 : ℝ) ^ (-(1 / 2 : ℝ)) * 2 * (2 * Real.pi * Real.pi) := by ring
     _ = _ := by rw [h]; ring
 
+/- English proof (translation)
+Unfold `volU sphV`. Use `Real.pi_pos` as an intermediate fact. Use `mul_pos (Finset.prod_pos fun l _ => by positivity) (by positivity)` and prove the remaining obligations.
+-/
 theorem volU_pos (i : ℕ) : 0 < volU i := by
   unfold volU sphV
   have := Real.pi_pos
   refine mul_pos (Finset.prod_pos fun l _ => by positivity) (by positivity)
 
+/- English proof (translation)
+Unfold `cIw`. Use `volU_pos` as an intermediate fact. Use `div_pos (mul_pos (by positivity) (mul_pos (this _) (this _))) (mul_pos (mul_pos (Finset.prod_pos fun i _ => mul_pos (this _) (by positivity)) (this _)) (this _))` and prove the remaining obligations.
+-/
 theorem cIw_pos (p q : ℕ) {a : ℕ} (j : Fin a → ℕ) : 0 < cIw p q j := by
   unfold cIw
   have := volU_pos
   refine div_pos (mul_pos (by positivity) (mul_pos (this _) (this _)))
     (mul_pos (mul_pos (Finset.prod_pos fun i _ => mul_pos (this _) (by positivity)) (this _)) (this _))
 
+/- English proof (translation)
+Establish `hv : 0 < Formalism.HermitianLatticesTheory.vInv E`. Unfold `Formalism.HermitianLatticesTheory.vInv`. Establish `: (0 : ℝ) < |(discr E : ℝ)|` using `abs_pos.2 (by exact_mod_cast discr_ne_zero E)`. Check the signs of the components of the expression. Unfold `rankFac Formalism.HermitianLatticesTheory.massRatioRightSide`.
+
+Generalize the expression as in `Formalism.HermitianLatticesTheory.vInv E = v at hv`. Generalize the expression as in `Formalism.HermitianLatticesTheory.fDeg E = f`. Establish `hπ` using `Real.pi_pos`. Establish `e1 : ((M.factorial : ℝ) * (v / Real.pi) ^ (M + 1)) * (2 * Real.pi ^ (M + 1) / (M.factorial : ℝ) * 2 ^ M) = (2 * v) ^ (M + 1)`. Establish `: (M.factorial : ℝ) ≠ 0` using `by positivity`.
+
+Rewrite using `[div_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (2 * v) ^ ((f : ℝ) * (((M + 1 : ℕ) : ℝ) - 1 / 2)) = ((2 * v) ^ (M + 1)) ^ f / Real.sqrt ((2 * v) ^ f)`. Rewrite using `[Real.sqrt_eq_rpow, ← pow_mul, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (by positivity), ← Real.rpow_sub (by positivity)]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, ← e1, mul_pow, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rankFac_eq (E : Type) [Field E] [NumberField E] [StarRing E] (M : ℕ) :
     rankFac E (M + 1) = Formalism.HermitianLatticesTheory.massRatioRightSide E (M + 1) *
       (2 * Real.pi ^ (M + 1) / (M.factorial : ℝ) * 2 ^ M) ^ Formalism.HermitianLatticesTheory.fDeg E := by
@@ -129,6 +177,21 @@ theorem rankFac_eq (E : Type) [Field E] [NumberField E] [StarRing E] (M : ℕ) :
   rw [e2, ← e1, mul_pow, Nat.add_sub_cancel]
   ring
 
+/- English proof (translation)
+Use `letI : Algebra E ℂ := φ.toAlgebra`. Take `⟨t, hts, hsp, hli⟩` from `exists_linearIndependent E s`. Use `haveI : Finite t := hli.finite`. Use `haveI : Fintype t := Fintype.ofFinite t`. Establish `hli' : LinearIndependent ℂ fun i : t => (algebraMap E ℂ ∘ (i : Fin n → E))` using `linearIndependent_algebraMap_comp_iff.2 hli`.
+
+Establish `h1` using `finrank_span_eq_card hli`. Establish `h2` using `finrank_span_eq_card hli'`. Rewrite `h1` using `[Subtype.range_coe, hsp]`. Rewrite using `[h1, ← h2]`. It suffices to establish `hs : Submodule.span ℂ ((fun y : Fin n → E => fun l => φ (y l)) '' s) = Submodule.span ℂ (Set.range fun i : t => (algebraMap E ℂ ∘ (i : Fin n → E))) by rw [hs]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hy' : y ∈ Submodule.span E t` using `hsp ▸ Submodule.subset_span hy`. Use `clear hy`.
+
+Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩`. Consider the case `zero`. Establish `: (fun l : Fin n => φ ((0 : Fin n → E) l)) = 0` using `by ext; simp`. Simplify using `only [this]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: (fun l : Fin n => φ ((x + y) l)) = (fun l => φ (x l)) + fun l => φ (y l)` using `by ext; simp`. Simplify using `only [this]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul c x _ hx`. Establish `: (fun l : Fin n => φ ((c • x) l)) = φ c • fun l => φ (x l)` using `by ext; simp`. Simplify using `only [this]`. Conclude with `Submodule.smul_mem _ _ hx`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨i, hts i.2, rfl⟩`.
+-/
 theorem finrank_span_image {E : Type} [Field E] {n : ℕ} (φ : E →+* ℂ) (s : Set (Fin n → E)) :
     Module.finrank ℂ (Submodule.span ℂ ((fun y : Fin n → E => fun l => φ (y l)) '' s)) =
       Module.finrank E (Submodule.span E s) := by
@@ -164,6 +227,11 @@ theorem finrank_span_image {E : Type} [Field E] {n : ℕ} (φ : E →+* ℂ) (s 
     rintro _ ⟨i, rfl⟩
     exact ⟨i, hts i.2, rfl⟩
 
+/- English proof (translation)
+Establish `hu : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `hinj : Function.Injective (Matrix.mulVecLin (I.P v)⁻¹)` using `Matrix.mulVec_injective_iff_isUnit.2 (Matrix.isUnit_nonsing_inv_iff.2 (I.P_unit v))`. Establish `: flagAt I S v i = (Submodule.span ℂ ((fun y : Fin I.n → I.E => fun l => I.φ v (y l)) '' (S i : Set _))).map (Matrix.mulVecLin (I.P v)⁻¹)`. Rewrite using `[Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, ← (Submodule.equivMapOfInjective _ hinj _).finrank_eq, finrank_span_image]`. Both sides reduce to the same expression.
+-/
 theorem finrank_flagAt (I : AutInst) {a : ℕ} (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E))
     (v : InfinitePlace I.F) (i : Fin (a + 1)) :
     Module.finrank ℂ (flagAt I S v i) = Formalism.HN.rkK (S i) := by
@@ -176,6 +244,17 @@ theorem finrank_flagAt (I : AutInst) {a : ℕ} (S : Fin (a + 1) → Submodule (�
   rw [this, ← (Submodule.equivMapOfInjective _ hinj _).finrank_eq, finrank_span_image]
   rfl
 
+/- English proof (translation)
+Take `⟨h0, hm, hr, -, hi⟩` from `h`. Establish `hu : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Use `⟨by simp [flagAt, h0]; exact Matrix.mulVec_zero _, fun i k hik => Submodule.span_mono (Set.image_mono (hm hik)), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[finrank_flagAt, finrank_flagAt, hr]`. Establish `key : ∀ x ∈ S (Fin.last a), ∀ y ∈ S (Fin.last a), star ((I.P v)⁻¹ *ᵥ fun l => I.φ v (x l)) ⬝ᵥ (Formalism.REAL.Jm (I.ε v) *ᵥ ((I.P v)⁻¹ *ᵥ fun l => I.φ v (y l))) = 0`.
+
+Introduce `x hx y hy`. Rewrite using `[← I.P_spec v, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`. Establish `h1` using `congrArg (I.φ v) (hi x hx y hy)`. Rewrite `h1` using `[map_zero]`. Rewrite using `[← h1]`.
+
+Simplify using `only [Formalism.UG.hform, map_sum, map_mul, dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, Matrix.map_apply, starRingEnd_apply, I.cm.cmUnram.2.1, mul_assoc]`. Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨x, hx, rfl⟩` from `hx`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨y, hy, rfl⟩ := hy`. Conclude with `key x hx y hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ h1 h2 => rw [Matrix.mulVec_add, dotProduct_add, h1, h2, add_zero]`.
+
+Consider the case `smul c y _ h1 => rw [Matrix.mulVec_smul, dotProduct_smul, h1, smul_zero]`. Consider the case `zero => simp`. Consider the case `add x z _ _ h1 h2 => rw [star_add, add_dotProduct, h1, h2, add_zero]`. Consider the case `smul c x _ h1 => rw [star_smul, smul_dotProduct, h1, smul_zero]`.
+-/
 theorem isIsoFlag_flagAt (I : AutInst) (Λ : Submodule (𝓞 I.E) (Fin I.n → I.E)) {a : ℕ} (j : Fin a → ℕ)
     (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)) (h : IsSatFlag I Λ j S) (v : InfinitePlace I.F) :
     IsIsoFlag (I.ε v) j (flagAt I S v) := by

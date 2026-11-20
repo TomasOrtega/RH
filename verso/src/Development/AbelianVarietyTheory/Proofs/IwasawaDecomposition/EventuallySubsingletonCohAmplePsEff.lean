@@ -22,11 +22,17 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun j m _ _ p _ => cohOn.subsingleton_of_isZero ((isZero_twist_iff (isLB_tens (isLB_lbPow hA j) (isLB_lbPow hN m))).2 hF) ⊤ p⟩`.
+-/
 theorem TwistConeVanishing.of_isZero {X : Scheme.{0}} {A N : LB X} (hA : A.IsLB) (hN : N.IsLB)
     {F : X.Modules} (hF : IsZero F) : TwistConeVanishing A N F :=
   ⟨0, fun j m _ _ p _ => cohOn.subsingleton_of_isZero
     ((isZero_twist_iff (isLB_tens (isLB_lbPow hA j) (isLB_lbPow hN m))).2 hF) ⊤ p⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `h₁`. Take `⟨b, hb⟩` from `h₃`. Use `⟨max a b, fun j m hj hm p hp => ?_⟩` and prove the remaining obligations. Establish `hT` using `isLB_tens (isLB_lbPow hA j) (isLB_lbPow hN m)`. Conclude with `cohOn.subsingleton₂ (Twist.shortExact_map hT hS) ⊤ p (ha j m (le_of_max_le_left hj) hm p hp) (hb j m (le_of_max_le_right hj) hm p hp)`.
+-/
 theorem TwistConeVanishing.of_shortExact {X : Scheme.{0}} {A N : LB X} (hA : A.IsLB) (hN : N.IsLB)
     {S : ShortComplex X.Modules} (hS : S.ShortExact) (h₁ : TwistConeVanishing A N S.X₁)
     (h₃ : TwistConeVanishing A N S.X₃) : TwistConeVanishing A N S.X₂ := by
@@ -37,6 +43,13 @@ theorem TwistConeVanishing.of_shortExact {X : Scheme.{0}} {A N : LB X} (hA : A.I
   exact cohOn.subsingleton₂ (Twist.shortExact_map hT hS) ⊤ p
     (ha j m (le_of_max_le_left hj) hm p hp) (hb j m (le_of_max_le_right hj) hm p hp)
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.IsNoetherian V` using `isNoetherian_of_isProjOver hf`. Take `⟨r, hr, s, hs⟩` from `hN.exists_hasNonzeroSec hA (m := 2) (by norm_num)`. Establish `hM : (lbPow (tens (lbPow N 2) A) r).IsLB` using `isLB_lbPow (isLB_tens (isLB_lbPow hN.isLB 2) hA.isLB) r`. Establish `hgen : genericPoint V ∈ Out.nonzeroLocus s` using `(sec_ne_zero_iff s).1 hs`. Take `⟨j₁, hj₁⟩` from `GlobalTheory.T.exists_subsingleton_coh_twist_tens_lbPow' k f hf A N hA hN.isLB G (2 * r)`.
+
+Establish `hCf : IsFiniteQC (cokernel (cutHom G hM s))` using `((cut_by_regular_section.{0} G hM).1 s).2.2.1`. Establish `hCs : support (cokernel (cutHom G hM s)) = support G \ ↑(Out.nonzeroLocus s)` using `((cut_by_regular_section.{0} G hM).1 s).2.2.2.1`. Use `haveI : IsFiniteQC (twistZ G (lbPow (tens (lbPow N 2) A) r) (-1)) := isFiniteQC_twist (isLB_lbZPow hM (-1))`. Use `GlobalTheory.T.twistedPowerVanishing_induction_by_section_sq_tensor A N hA.isLB hN.isLB r hr hM s G ⟨j₁, hj₁⟩ (h _ inferInstance ?_) (h _ hCf ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.T.notMem_support_ker_mulSection_of_nonvanishing hM s G _ hgen`.
+
+Rewrite using `[hCs]`. Conclude with `fun h' => h'.2 hgen`.
+-/
 theorem TwistConeVanishing.of_generic (k : Type) [Field k] {V : Scheme.{0}} [IsIntegral V]
     (f : V ⟶ Sp k) (hf : IsProjOver f) (A N : LB V) (hA : IsAmpleLB A) (hN : IsPsEff N)
     (G : V.Modules) [IsFiniteQC G]
@@ -63,6 +76,15 @@ end GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ X f hf A N hA hN hpe F hF`. Establish `: AlgebraicGeometry.IsNoetherian X` using `isNoetherian_of_isProjOver hf`. Use `devissage X (TwistConeVanishing A N) (fun _ h => .of_isZero hA.isLB hN h) (fun _ hS _ _ h₁ h₃ => .of_shortExact hA.isLB hN hS h₁ h₃) ?_ F hF` and prove the remaining obligations. Introduce `Z hZ hsmall G hG`. Use `haveI := hG`.
+
+Use `haveI := isIntegral_red hZ`. Establish `hAV : IsAmpleLB (A.pull (redι Z))` using `hA.pull_of_isClosedImmersion _`. Use `(GlobalTheory.T.twistedPowerHigherCohomVanishing_pullback_iff_pushforward (redι Z) A N hA.isLB hN G).1 ?_` and prove the remaining obligations. Use `TwistConeVanishing.of_generic k (redι Z ≫ f) (ProjSpace.isProjOver_comp_of_isClosedImmersion _ hf) _ _ hAV (hpe Z hZ) G ?_` and prove the remaining obligations. Introduce `E hE hη`.
+
+Use `haveI := hE`. Establish `hE' : IsFiniteQC ((Scheme.Modules.pushforward (redι Z)).obj E)` using `ProperFinite.isFiniteQC_pushforward (redι Z) hAV E`. Use `(GlobalTheory.T.twistedPowerHigherCohomVanishing_pullback_iff_pushforward (redι Z) A N hA.isLB hN E).2 (hsmall _ hE' ?_)` and prove the remaining obligations. Establish `hsub` using `GlobalTheory.T.support_pushforward_subset_image (redι Z) E`. Use `⟨hsub.trans ((Set.image_subset_range _ _).trans (range_redι Z).le), fun hle => hη ?_⟩` and prove the remaining obligations.
+
+Establish `hηZ : (redι Z) (genericPoint (Scheme.IdealSheafData.vanishingIdeal Z).subscheme) ∈ (Z : Set X)` using `(range_redι Z).le ⟨_, rfl⟩`. Take `⟨y, hy, hyη⟩` from `hsub (hle hηZ)`. Rewrite `hy` using `[(redι Z).isClosedEmbedding.injective hyη]`. Then use the resulting hypothesis.
+-/
 theorem eventually_subsingleton_coh_ample_psEff : ∀ (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Sp k), IsProjOver f → ∀ A N : LB X, IsAmpleLB A → N.IsLB → (∀ Z : Closeds X, IsIrreducible (Z : Set X) → IsPsEff (N.pull (redι Z))) → ∀ F : X.Modules, IsFiniteQC F → ∃ j₀ : ℕ, ∀ j m : ℕ, j₀ ≤ j → m ≤ j → ∀ p, 0 < p → Subsingleton (coh (twist F (tens (lbPow A j) (lbPow N m))) p) := by
   intro k _ X f hf A N hA hN hpe F hF
   have : AlgebraicGeometry.IsNoetherian X := isNoetherian_of_isProjOver hf

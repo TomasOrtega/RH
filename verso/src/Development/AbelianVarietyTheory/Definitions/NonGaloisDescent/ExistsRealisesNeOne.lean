@@ -64,6 +64,9 @@ open Classical in
 def hk (χ : G L Ω →* ℂˣ) : HeckeCharacter L :=
   if hx : ∃ X : HeckeCharacter L, Matches χ X ∧ ∃ N : ℕ, 0 < N ∧ X ^ N = 1 then hx.choose else 1
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _` and use `Units.ext rfl`.
+-/
 theorem matches_one : Matches (1 : G L Ω →* ℂˣ) (1 : HeckeCharacter L) := fun _ _ _ _ _ _ => Units.ext rfl
 
 end Hecke
@@ -112,6 +115,15 @@ def glf (gl : List (GTerm k Ω)) (w : HeightOneSpectrum (𝓞 k)) (s : ℂ) : �
 
 omit [NumberField k] [IsAlgClosure k Ω] in
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `U hU`. Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff k Ω U).1 hU`. Set `b` to `Module.finBasis k E`.
+
+Set `S : Set Ω` to `Set.range fun i => (b i : Ω)`. Use `haveI : Finite S := (Set.finite_range _).to_subtype`. Establish `hS : ∀ x ∈ S, IsIntegral L x`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `((IsIntegral.of_finite k (b i)).map E.val).tower_top`.
+
+Establish `hfd` using `IntermediateField.finiteDimensional_adjoin hS`. Use `Filter.mem_map.2 ((krullTopology_mem_nhds_one_iff L Ω _).2 ⟨IntermediateField.adjoin L S, hfd, fun σ hσ => hEU ?_⟩)` and prove the remaining obligations. Rewrite `hσ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `e : (resG k L Ω σ).toLinearMap ∘ₗ E.val.toLinearMap = E.val.toLinearMap` using `b.ext fun i => hσ _ (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`.
+
+Conclude with `LinearMap.congr_fun e ⟨x, hx⟩`.
+-/
 theorem continuous_resG (L : Type) [Field L] [Algebra L Ω] [Algebra k L] [IsScalarTower k L Ω] :
     Continuous (resG k L Ω) := by
   refine continuous_of_continuousAt_one _ ?_
@@ -218,6 +230,9 @@ structure Realises {A : ValuationSubring Ω} {k : Type} [Field k] [NumberField k
 
   indOne : ∀ σ : Weil h, gInd k (1 : G t.L Ω →* ℂˣ) σ = ∑ᶠ u, trW (b u).indOne σ
 
+/- English proof (translation)
+Introduce `σ` and use `by simp [GTerm.self]`.
+-/
 example {k : Type} [Field k] [NumberField k] [Algebra k Ω] [IsAlgClosure k Ω] (χ : G k Ω →* ℂˣ)
     (op : IsOpen (χ.ker : Set (G k Ω))) : GRel [GTerm.self χ op 1, GTerm.self χ op (-1)] := fun σ => by
   simp [GTerm.self]
@@ -226,6 +241,11 @@ namespace Inh
 
 variable {L : Type} [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω]
 
+/- English proof (translation)
+Establish `: IsGalois L Ω` using `IsAlgClosure.isGalois L Ω`. Establish `: Finite (G L Ω ⧸ χ.ker)` using `Subgroup.quotient_finite_of_isOpen _ op`. Establish `: χ.ker.FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Use `⟨χ.ker.index, Nat.pos_of_ne_zero Subgroup.FiniteIndex.index_ne_zero, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`.
+
+Conclude with `χ.ker.pow_index_mem σ`.
+-/
 theorem exists_pow_eq_one (χ : G L Ω →* ℂˣ) (op : IsOpen (χ.ker : Set (G L Ω))) :
     ∃ N : ℕ, 0 < N ∧ ∀ σ, χ σ ^ N = 1 := by
   have : IsGalois L Ω := IsAlgClosure.isGalois L Ω
@@ -235,6 +255,25 @@ theorem exists_pow_eq_one (χ : G L Ω →* ℂˣ) (op : IsOpen (χ.ker : Set (G
   rw [← map_pow]
   exact χ.ker.pow_index_mem σ
 
+/- English proof (translation)
+Take `⟨N, hN, hχ⟩` from `exists_pow_eq_one χ op`. Take `⟨art, hart⟩` from `GlobalTheory.globalArtinReciprocity_holds L Ω`. Establish `hn : ∀ σ, ‖((χ σ : ℂˣ) : ℂ)‖ = 1` using `fun σ => Complex.norm_eq_one_of_pow_eq_one (n := N) (by rw [← Units.val_pow_eq_pow_val, hχ, Units.val_one]) hN.ne'`. Set `c : G L Ω →* Circle` to `{ toFun := fun σ => ⟨χ σ, by simpa [Submonoid.unitSphere] using hn σ⟩ map_one' := Circle.ext (by simp) map_mul' := fun _ _ => Circle.ext (by simp; rfl) }`. Establish `hc : ∀ σ, ((c σ : Circle) : ℂ) = χ σ` using `fun _ => rfl`.
+
+Establish `hk : c.ker = χ.ker`. Use extensionality with `σ`. Simplify using `only [MonoidHom.mem_ker, Circle.ext_iff, hc, Units.ext_iff]`. Both sides reduce to the same expression. Establish `hop : IsOpen (c.ker : Set (G L Ω))` using `hk ▸ op`.
+
+Establish `hcc : Continuous c`. Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Use `continuousAt_const.congr (f := fun _ => 1) ?_` and prove the remaining obligations. Use `filter_upwards [hop.mem_nhds c.ker.one_mem] with σ hσ using (hσ : c σ = 1).symm`. Establish `hle : (commutator (G L Ω)).topologicalClosure ≤ c.ker` using `Subgroup.topologicalClosure_minimal _ (Abelianization.commutator_subset_ker c) (c.ker.isClosed_of_isOpen hop)`.
+
+Set `d : GlobalTheory.HeckeGal.Gab L Ω →* Circle` to `QuotientGroup.lift _ c hle`. Establish `hd : Continuous d` using `(QuotientGroup.isQuotientMap_mk _).continuous_iff.2 hcc`. Establish `hdiag : (GroundTheory.Global.IdeleGroup.diagonal L).range ≤ (d.comp art).ker`. Introduce `x hx`. Establish `: x ∈ art.ker`.
+
+Rewrite using `[hart.ker]`. Conclude with `Subgroup.le_topologicalClosure _ (Subgroup.mem_sup_left hx)`. Conclude with `(congrArg d (this : art x = 1)).trans (map_one d)`. Set `X : HeckeCharacter L` to `{ toMonoidHom := QuotientGroup.lift _ (d.comp art) hdiag continuous_toFun := (QuotientGroup.isQuotientMap_mk _).continuous_iff.2 (hd.comp hart.quot.continuous) }`. Use `⟨X, fun A u h a ha σ => Units.ext ?_, N, hN, ?_⟩` and prove the remaining obligations.
+
+Use `ha.glob art hart σ` as an intermediate fact. Express the relevant statement in the definitionally equal form `((d (art (Neutral.B1.localIdele L u (a σ))) : Circle) : ℂ) = _`. Rewrite using `[this]`. Both sides reduce to the same expression. Use extensionality with `x`.
+
+Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective x`. Take `⟨σ, hσ⟩` from `QuotientGroup.mk_surjective (art y)`. Establish `e : X y = c σ`. Express the relevant statement in the definitionally equal form `d (art y) = _`. Rewrite using `[← hσ]`.
+
+Both sides reduce to the same expression. Establish `: (X ^ N) y = X y ^ N` using `ContinuousMonoidHom.pow_apply _ _ _`. Rewrite using `[this, e]`. Simplify using `only [Circle.coe_pow, hc]`. Rewrite using `[← Units.val_pow_eq_pow_val, hχ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_matches (χ : G L Ω →* ℂˣ) (op : IsOpen (χ.ker : Set (G L Ω))) :
     ∃ X : HeckeCharacter L, Matches χ X ∧ ∃ N : ℕ, 0 < N ∧ X ^ N = 1 := by
   obtain ⟨N, hN, hχ⟩ := exists_pow_eq_one χ op
@@ -285,6 +324,9 @@ theorem exists_matches (χ : G L Ω →* ℂˣ) (op : IsOpen (χ.ker : Set (G L 
     rw [← Units.val_pow_eq_pow_val, hχ]
     rfl
 
+/- English proof (translation)
+Establish `hx` using `exists_matches χ op`. Rewrite using `[hk, dif_pos hx]`. Conclude with `hx.choose_spec`.
+-/
 theorem hk_spec (χ : G L Ω →* ℂˣ) (op : IsOpen (χ.ker : Set (G L Ω))) :
     Matches χ (hk χ) ∧ ∃ N : ℕ, 0 < N ∧ hk χ ^ N = 1 := by
   have hx := exists_matches χ op
@@ -297,17 +339,28 @@ variable (k : Type) [Field k] [Algebra k Ω] [Algebra k L] [IsScalarTower k L Ω
 
 omit [NumberField L] [IsAlgClosure L Ω] in
 
+/- English proof (translation)
+Introduce `_ _ e` and use `AlgEquiv.ext fun x => DFunLike.congr_fun e x`.
+-/
 theorem resG_injective : Function.Injective (resG k L Ω) := fun _ _ e =>
   AlgEquiv.ext fun x => DFunLike.congr_fun e x
 
 omit [NumberField L] [IsAlgClosure L Ω] in
 
+/- English proof (translation)
+Establish `hx : ∃ τ' : G L Ω, resG k L Ω τ' = resG k L Ω τ` using `⟨τ, rfl⟩`. Rewrite using `[ext0, dif_pos hx, resG_injective k hx.choose_spec]`.
+-/
 theorem extendByZero_restrict (χ : G L Ω →* ℂˣ) (τ : G L Ω) : ext0 k χ (resG k L Ω τ) = χ τ := by
   have hx : ∃ τ' : G L Ω, resG k L Ω τ' = resG k L Ω τ := ⟨τ, rfl⟩
   rw [ext0, dif_pos hx, resG_injective k hx.choose_spec]
 
 omit [NumberField L] [IsAlgClosure L Ω] in
 
+/- English proof (translation)
+Rewrite using `[gInd, gInd, mul_finsum]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Distinguish the cases in `hx : ∃ τ : G L Ω, resG k L Ω τ = q.out⁻¹ * σ * q.out`. Take `⟨τ, hτ⟩` from `hx`. Establish `: ξ (resG k L Ω τ) = ξ σ` using `by rw [hτ]; simp [mul_comm]`.
+
+Rewrite using `[← hτ, extendByZero_restrict, extendByZero_restrict]`. Simplify using `[this, mul_comm]`. Simplify using `[ext0, hx]`.
+-/
 theorem gInd_twist (χ : G L Ω →* ℂˣ) (ξ : G k Ω →* ℂˣ) (σ : G k Ω) :
     gInd k (χ * ξ.comp (resG k L Ω)) σ = ξ σ * gInd k χ σ := by
   rw [gInd, gInd, mul_finsum]
@@ -325,6 +378,11 @@ section Self
 
 variable {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 L)}
 
+/- English proof (translation)
+Establish `ht : (resG L L Ω).range = ⊤` using `eq_top_iff.2 fun τ _ => ⟨τ, rfl⟩`. Establish `: Subsingleton (G L Ω ⧸ (resG L L Ω).range)` using `ht ▸ QuotientGroup.subsingleton_quotient_top`. Set `_ : Unique (G L Ω ⧸ (resG L L Ω).range)` to `uniqueOfSubsingleton (QuotientGroup.mk 1)`. Rewrite using `[gInd, finsum_unique]`. Generalize the expression as in `(Quotient.out (default : G L Ω ⧸ (resG L L Ω).range) : G L Ω) = g`.
+
+Conclude with `(extendByZero_restrict L χ (g⁻¹ * σ * g)).trans (by simp [mul_comm])`.
+-/
 theorem gInd_self (χ : G L Ω →* ℂˣ) (σ : G L Ω) : gInd L χ σ = χ σ := by
   have ht : (resG L L Ω).range = ⊤ := eq_top_iff.2 fun τ _ => ⟨τ, rfl⟩
   have : Subsingleton (G L Ω ⧸ (resG L L Ω).range) := ht ▸ QuotientGroup.subsingleton_quotient_top
@@ -333,6 +391,11 @@ theorem gInd_self (χ : G L Ω →* ℂˣ) (σ : G L Ω) : gInd L χ σ = χ σ 
   generalize (Quotient.out (default : G L Ω ⧸ (resG L L Ω).range) : G L Ω) = g
   exact (extendByZero_restrict L χ (g⁻¹ * σ * g)).trans (by simp [mul_comm])
 
+/- English proof (translation)
+Rewrite using `[WD.lpOfChar, trW_mk]`. Establish `: (WDRep.ofChars h (ι` using `Fin 1) (fun _ => ξ) fun _ => hξ).ρ σ = ((ξ σ : ℂˣ) : ℂ) • 1 := by`. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem trW_char (h : IsPlaceOver A w) (ξ : Weil h →* ℂˣ) (hξ : GlobalTheory.WeilDeligne.IsSmooth ξ) (σ : Weil h) :
     trW (WD.lpOfChar h ξ hξ) σ = ξ σ := by
   rw [WD.lpOfChar, trW_mk]
@@ -341,10 +404,18 @@ theorem trW_char (h : IsPlaceOver A w) (ξ : Weil h →* ℂˣ) (hξ : GlobalThe
     simp
   rw [this]; simp
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[HeightOneSpectrum.under, Ideal.under, Ideal.mem_comap]`.
+-/
 theorem under_self (u : HeightOneSpectrum (𝓞 L)) : u.under (𝓞 L) = u := by
   ext x
   simp [HeightOneSpectrum.under, Ideal.under, Ideal.mem_comap]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `GlobalTheory.localArtinExists_holds L Ω A w h`. Take `⟨η, hη, e⟩` from `ha.factor (χ.comp (Weil h).subtype) (op.preimage continuous_subtype_val)`. Establish `: localChar (hk χ) w = η` using `MonoidHom.ext fun x => by`. Take `⟨σ, rfl⟩` from `ha.surj x`. Conclude with `((hk_spec χ op).1 A w h a ha σ).trans (DFunLike.congr_fun e σ)`.
+
+Conclude with `this ▸ hη`.
+-/
 theorem smooth_localChar (h : IsPlaceOver A w) (χ : G L Ω →* ℂˣ) (op : IsOpen (χ.ker : Set (G L Ω))) :
     IsSmoothChar (localChar (hk χ) w) := by
   obtain ⟨a, ha⟩ := GlobalTheory.localArtinExists_holds L Ω A w h
@@ -354,6 +425,9 @@ theorem smooth_localChar (h : IsPlaceOver A w) (χ : G L Ω →* ℂˣ) (op : Is
     exact ((hk_spec χ op).1 A w h a ha σ).trans (DFunLike.congr_fun e σ)
   exact this ▸ hη
 
+/- English proof (translation)
+The claim follows from `continuous_id psi := fun _ => rfl fix := fun σ => ⟨fun _ => ⟨_, rfl⟩, fun _ => ⟨(σ : G L Ω), rfl⟩⟩ art := fun χ X hX a ha (σ : Weil h) τ x e hx => by have e1 : τ = (σ : G L Ω) := resG_injective L (by rw [inv_one, one_mul, mul_one] at e; exact e) have e2 : x = a σ := Units.ext (co …`.
+-/
 theorem fcorr_self (h : IsPlaceOver A w) : FCorr L w (LocExt.self h) 1 (RingEquiv.refl _) where
   cont := continuous_id
   psi := fun _ => rfl
@@ -379,6 +453,13 @@ def selfTerm (h : IsPlaceOver A w) (χ : G L Ω →* ℂˣ) (op : IsOpen (χ.ker
   hχ := smooth_localChar (e ▸ h) χ op
   n := n
 
+/- English proof (translation)
+Establish `hs : Subsingleton ((GTerm.self χ op n).Over w)` using `⟨fun u u' => Subtype.ext (((under_self u.1).symm.trans u.2).trans ((under_self u'.1).symm.trans u'.2).symm)⟩`. Set `_ : Unique ((GTerm.self χ op n).Over w)` to `{ default := ⟨w, under_self w⟩, uniq := fun _ => hs.elim _ _ }`. Use `⟨fun ⟨u, hu⟩ => ?_, fun _ => rfl, fun _ => rfl, fun _ _ => rfl, fun σ => ?_, fun σ => ?_⟩` and prove the remaining obligations. Take `rfl : u = w` from `(under_self u).symm.trans hu`. Conclude with `fcorr_self h`.
+
+Rewrite using `[finsum_unique]`. Use `(gInd_self χ σ).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(trW_indOf_self _ _ σ).trans ((trW_char h _ _ σ).trans ?_)` and prove the remaining obligations. Conclude with `congrArg Units.val ((hk_spec χ op).1 A w h _ (GlobalTheory.localArtinExists_holds L Ω A w h).choose_spec σ)`. Rewrite using `[finsum_unique]`.
+
+Use `(gInd_self (1 : G L Ω →* ℂˣ) (σ : G L Ω)).trans (Eq.symm ?_)` and prove the remaining obligations. Conclude with `(trW_indOf_self (1 : Weil h →* ℂˣ) (isSmooth_one h) σ).trans (trW_char h 1 (isSmooth_one h) σ)`.
+-/
 theorem realises_self (h : IsPlaceOver A w) (χ : G L Ω →* ℂˣ) (op : IsOpen (χ.ker : Set (G L Ω))) (n : ℤ) :
     Realises (GTerm.self χ op n) (fun u => selfTerm h χ op n u.1 ((under_self u.1).symm.trans u.2)) (fun _ => 1)
       (fun _ => RingEquiv.refl _) := by
@@ -404,6 +485,9 @@ variable {k : Type} [Field k] [NumberField k] [Algebra k Ω] [IsAlgClosure k Ω]
 
 omit [NumberField k] [IsAlgClosure k Ω] in
 
+/- English proof (translation)
+Introduce `σ` and use `by have key : ∀ l : List (GTerm k Ω), ((GlobalTheory.DelGlob.gtw l ξ hξ).map fun t => (t.n : ℂ) * (gInd k t.χ σ - gInd k (1 : G t.L Ω →* ℂˣ) σ)).sum = ξ σ * (l.map fun t => (t.n : ℂ) * (gInd k t.χ σ - gInd k (1 : G t.L Ω →* ℂˣ) σ)).sum := fun l => by simp only [GlobalTheory.DelGl …`.
+-/
 theorem GRel.gtw {gl : List (GTerm k Ω)} (H : GRel gl) (ξ : G k Ω →* ℂˣ) (hξ : IsOpen (ξ.ker : Set (G k Ω))) :
     GRel (gtw gl ξ hξ) := fun σ => by
   have key : ∀ l : List (GTerm k Ω),
@@ -426,6 +510,11 @@ theorem GRel.gtw {gl : List (GTerm k Ω)} (H : GRel gl) (ξ : G k Ω →* ℂˣ)
       linear_combination ih
   rw [key, H σ, mul_zero]
 
+/- English proof (translation)
+Use `⟨fun H => MonoidHom.ext fun σ => Units.ext ?_, ?_⟩` and prove the remaining obligations. Use `H σ` as an intermediate fact. Simplify using `only [GTerm.self, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, gInd_self] at this`. Simplify `this` using `[sub_eq_zero]`. Introduce and unpack `rfl σ`.
+
+Simplify using `[GTerm.self]`.
+-/
 theorem gRel_self_iff (χ : G k Ω →* ℂˣ) (op : IsOpen (χ.ker : Set (G k Ω))) : GRel [GTerm.self χ op 1] ↔ χ = 1 := by
   refine ⟨fun H => MonoidHom.ext fun σ => Units.ext ?_, ?_⟩
   · have := H σ
@@ -434,6 +523,9 @@ theorem gRel_self_iff (χ : G k Ω →* ℂˣ) (op : IsOpen (χ.ker : Set (G k �
   · rintro rfl σ
     simp [GTerm.self]
 
+/- English proof (translation)
+The claim follows from `continuous_id psi := fun _ => rfl fix := fun σ => by rw [inv_one, one_mul, mul_one]; rfl art := fun χ X hX a ha σ τ x e hx => by have e1 : τ = (σ : G E.L Ω) := resG_injective k (by rw [inv_one, one_mul, mul_one] at e; exact e) have e2 : x = a σ := Units.ext (congrArg Units.val hx …`.
+-/
 theorem fcorr_locExt {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 k)} {h : IsPlaceOver A w} (E : LocExt h) :
     FCorr E.L E.v' E 1 (RingEquiv.refl _) where
   cont := continuous_id
@@ -445,6 +537,15 @@ theorem fcorr_locExt {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 k)} 
     rw [e1, e2]
     exact hX A E.v' E.h' a ha σ
 
+/- English proof (translation)
+Take `⟨E, hE⟩` from `exists_locExt_finrank_eq h d hd`. Take `⟨F, hF⟩` from `exists_locExt_finrank_eq E.h' 2 two_pos`. Set `M : IntermediateField E.L Ω` to `(IsScalarTower.toAlgHom E.L F.L Ω).fieldRange`. Establish `hM : Module.finrank E.L M = 2` using `(AlgEquiv.ofInjectiveField (IsScalarTower.toAlgHom E.L F.L Ω)).toLinearEquiv.finrank_eq.symm.trans hF`. Establish `: FiniteDimensional E.L M` using `Module.finite_of_finrank_pos (by omega)`.
+
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E.L`. Establish `: IsGalois E.L Ω` using `{}`. Establish `hi : M.fixingSubgroup.index = 2` using `(IntermediateField.finrank_eq_fixingSubgroup_index Ω M).symm.trans hM`. Establish `ho : IsOpen (M.fixingSubgroup : Set (G E.L Ω))` using `M.fixingSubgroup_isOpen`. Generalize the expression as in `M.fixingSubgroup = H at hi ho`.
+
+Set `χ : G E.L Ω →* ℂˣ` to `MonoidHom.mk' (fun σ => if σ ∈ H then 1 else -1) fun σ τ => by`. Use `Subgroup.mul_mem_iff_of_index_two hi (a := σ) (b := τ)` as an intermediate fact. Apply the tactic sequence `by_cases h1 : σ ∈ H <;> by_cases h2 : τ ∈ H <;> simp_all`. Establish `hker : H ≤ χ.ker` using `fun σ hσ => by simp [χ, MonoidHom.mem_ker, hσ]`. Use `⟨{ L := E.L, χ := χ, op := Subgroup.isOpen_mono hker ho, n := n }, hE, fun h1 => ?_, rfl⟩` and prove the remaining obligations.
+
+Take `⟨σ, hσ⟩ : ∃ σ, σ ∉ H` from `by by_contra! H'`. Rewrite `hi` using `[(Subgroup.eq_top_iff' _).2 H', Subgroup.index_top]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : χ σ = 1` using `DFunLike.congr_fun h1 σ`. Simplify using `[χ, hσ] at h2`.
+-/
 theorem exists_gterm_proper {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 k)} (h : IsPlaceOver A v) (d : ℕ)
     (hd : 0 < d) (n : ℤ) : ∃ t : GTerm k Ω, Module.finrank k t.L = d ∧ t.χ ≠ 1 ∧ t.n = n := by
   obtain ⟨E, hE⟩ := exists_locExt_finrank_eq h d hd
@@ -471,6 +572,11 @@ theorem exists_gterm_proper {A : ValuationSubring Ω} {v : HeightOneSpectrum (�
   have h2 : χ σ = 1 := DFunLike.congr_fun h1 σ
   simp [χ, hσ] at h2
 
+/- English proof (translation)
+Take `⟨t, -, ht, -⟩` from `exists_gterm_proper h 1 one_pos n`. Choose the witnesses or unpack the hypotheses as in `⟨w⟩ : Nonempty (HeightOneSpectrum (𝓞 t.L)) := by`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 t.L)`. Conclude with `⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField _)⟩⟩`. Take `⟨B, h'⟩` from `exists_isPlaceOver Ω w`.
+
+Conclude with `⟨t, w, B, h', ht, _, _, _, realises_self h' t.χ t.op n⟩`.
+-/
 theorem exists_realises_ne_one {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 k)} (h : IsPlaceOver A v) (n : ℤ) :
     ∃ (t : GTerm k Ω) (w : HeightOneSpectrum (𝓞 t.L)) (B : ValuationSubring Ω) (h' : IsPlaceOver B w), t.χ ≠ 1 ∧
       ∃ b g i, Realises (h := h') (GTerm.self t.χ t.op n) b g i := by

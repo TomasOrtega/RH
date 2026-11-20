@@ -13,6 +13,31 @@ open GlobalTheory.UnitLemma Polynomial Filter Topology
 
 namespace GlobalTheory.UnitLemma
 
+/- English proof (translation)
+Establish `L0` using `GlobalTheory.T.selfDual_stable_lattice_unit_orbits_finite`. Establish `S1` using `GlobalTheory.T.fullLattice_sandwich_between_integral_elements`. Establish `S2` using `GlobalTheory.T.torus_orbit_lattice_count_bounded_by_rho`. Establish `S3` using `GlobalTheory.T.UU_eq_sum_over_torus_orbits`. Establish `S4` using `GlobalTheory.T.torus_mod_integralUnits_structure_and_integrality`.
+
+Establish `S5` using `GlobalTheory.T.finiteAlgebraInvolution_rho_pow_eq_card_box`. Establish `S6` using `GlobalTheory.T.tendsto_ratio_box_counts_prod_one`. Introduce `K B hB a ha x hx`. Take `⟨r, φ, c, hsurj, hker, hc, hint⟩` from `S4 K B hB a ha`. Establish `hrho : ∀ k : ℕ, B.rho (algebraMap K.O B.A a ^ k) = ∏ i, (2 * k * c i + 1)` using `S5 K B a r φ c hsurj hker hint`.
+
+Establish `hpos : ∀ j : ℕ, 0 < B.rho (algebraMap K.O B.A a ^ j)` using `fun j => by`. Rewrite using `[hrho]; exact Finset.prod_pos fun i _ => by omega`. Take `⟨hfin, hstab⟩` from `L0 K B hB.2 x hx.1 hx.2`. Use `choose m hm using fun o : Orb K.O B.T (B.X x) => S1 K B hB a ha _ (Quot.out o).2.1`. Use `haveI := Fintype.ofFinite (Orb K.O B.T (B.X x))`.
+
+Use `set M := Finset.univ.sup m with hMdef`. Establish `hmM : ∀ o, m o ≤ M` using `fun o => Finset.le_sup (Finset.mem_univ o)`. Establish `key` using `fun (k : ℕ) (hk : M ≤ k) (o : Orb K.O B.T (B.X x)) => S2 K B _ (hstab _ (Quot.out o).2).1 (hstab _ (Quot.out o).2).2 a hpos M k hk (hm o M (hmM o)).1 (hm o M (hmM o)).2`. Establish `hUU : ∀ k, M ≤ k → (B.UU x (algebraMap K.O B.A a ^ k) : ℝ) = ∑ o : Orb K.O B.T (B.X x), (Nat.card {L' : Submodule K.O B.A // (∃ t ∈ B.T, L' = mulLat K.O (t : B.A) (Quot.out o).1) ∧ algebraMap K.O B.A a ^ k ∈ L'} : ℝ)`. Introduce `k hk`.
+
+Rewrite using `[S3 K B x _ hfin (fun o => (key k hk o).1), finsum_eq_sum_of_fintype]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hN : (B.N x : ℝ) = ∑ o : Orb K.O B.T (B.X x), (((stabLat K.O (Quot.out o).1 ⊓ B.T).relIndex (intUnits K.O B.A ⊓ B.T) : ℕ) : ℝ)`. Unfold `InvAlg.N orbSum`.
+
+Rewrite using `[finsum_eq_sum_of_fintype]`. Use `push_cast`. Simplify using the standard rewrite rules. Establish `hlo : ∀ k, M ≤ k → (B.N x : ℝ) * B.rho (algebraMap K.O B.A a ^ (k - M)) ≤ B.UU x (algebraMap K.O B.A a ^ k)`. Introduce `k hk`.
+
+Rewrite using `[hUU k hk, hN, Finset.sum_mul]`. Use `Finset.sum_le_sum fun o _ => ?_` and prove the remaining obligations. Conclude with `(key k hk o).2.1` after adjusting the coercions. Establish `hhi : ∀ k, M ≤ k → (B.UU x (algebraMap K.O B.A a ^ k) : ℝ) ≤ (B.N x : ℝ) * B.rho (algebraMap K.O B.A a ^ (k + M))`. Introduce `k hk`.
+
+Rewrite using `[hUU k hk, hN, Finset.sum_mul]`. Use `Finset.sum_le_sum fun o _ => ?_` and prove the remaining obligations. Conclude with `(key k hk o).2.2` after adjusting the coercions. Establish `hposR : ∀ j, (0 : ℝ) < B.rho (algebraMap K.O B.A a ^ j)` using `fun j => by exact_mod_cast hpos j`. Establish `hup : Tendsto (fun k : ℕ => (B.N x : ℝ) * B.rho (algebraMap K.O B.A a ^ (k + M)) / B.rho (algebraMap K.O B.A a ^ k)) atTop (𝓝 (B.N x : ℝ))`.
+
+Use `(S6 r c M).const_mul (B.N x : ℝ)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Use `this.congr fun k => ?_` and prove the remaining obligations. Rewrite using `[hrho, hrho, mul_div_assoc]`. Establish `hdown : Tendsto (fun k : ℕ => (B.N x : ℝ) * B.rho (algebraMap K.O B.A a ^ (k - M)) / B.rho (algebraMap K.O B.A a ^ k)) atTop (𝓝 (B.N x : ℝ))`.
+
+Establish `h1` using `((S6 r c M).inv₀ one_ne_zero).comp (tendsto_sub_atTop_nat M)`. Establish `h2` using `h1.const_mul (B.N x : ℝ)`. Rewrite `h2` using `[inv_one, mul_one]`. Use `h2.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop M] with k hk`.
+
+Simplify using `only [Function.comp_apply, inv_div]`. Rewrite using `[Nat.sub_add_cancel hk, hrho, hrho, mul_div_assoc]`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' hdown hup ?_ ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop M] with k hk`. Conclude with `div_le_div_of_nonneg_right (hlo k hk) (hposR k).le`.
+
+Use `filter_upwards [eventually_ge_atTop M] with k hk`. Conclude with `div_le_div_of_nonneg_right (hhi k hk) (hposR k).le`.
+-/
 theorem unitaryLimit : UnitaryLimit := by
   have L0 := GlobalTheory.T.selfDual_stable_lattice_unit_orbits_finite
   have S1 := GlobalTheory.T.fullLattice_sandwich_between_integral_elements

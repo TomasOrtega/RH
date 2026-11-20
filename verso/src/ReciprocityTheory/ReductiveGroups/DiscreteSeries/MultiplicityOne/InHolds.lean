@@ -4,6 +4,9 @@ import Formalism.FormalDegreeBessel.FinalG
 
 namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ReciprocityTheory.ChartRestriction.DS.Xi.heisenbergHaarFacts_hold, Formalism.FourierDecayAlt.P.setting_with_prescribed_data_exists, Formalism.FourierDecayAlt.P.b2_rank_one_coord, Formalism.FourierDecayAlt.P.bruhat_big_cell_factorization, Formalism.FourierDecayAlt.P.unipotent_wey …`.
+-/
 theorem multiplicity_one_hypotheses_hold : UnitaryGroupStructuralFacts :=
   ⟨ReciprocityTheory.ChartRestriction.DS.Xi.heisenbergHaarFacts_hold,
     Formalism.FourierDecayAlt.P.setting_with_prescribed_data_exists,

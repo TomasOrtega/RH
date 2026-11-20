@@ -23,6 +23,13 @@ def LevelSpanBSt : Prop :=
       {z | ∃ v ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), ∃ q₀ : Out.QkPt a.D₀ F l.M,
         QkExt (algebraMap (FractionRing k) F) (a.eta v) q₀ ∧ z = q₀.g.b})
 
+/- English proof (translation)
+Establish `h1 : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.coprime]`. Conclude with `Submodule.mem_top`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.mp h1`. Establish `hle : l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `Ideal.mul_le_right (I := l.Mb) (J := l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E))`.
+
+Rewrite `hle` using `[l.prod]`. Establish `hM : (l.M : 𝓞 E) ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `SetLike.le_def.mp hle (Ideal.subset_span (Set.mem_singleton _))`. Establish `hua : u • a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) N)`. Take `⟨b, -, hb⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp (ha u hu)`. Rewrite using `[← hb]`.
+
+Conclude with `Submodule.smul_mem_smul hM Submodule.mem_top`. Establish `hva : v • a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) N)` using `Submodule.smul_mem_smul hv Submodule.mem_top`. Establish `key` using `Submodule.add_mem _ hua hva`. Rewrite `key` using `[← add_smul, huv, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem coverAlg {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Level H) (N : Type)
     [AddCommGroup N] [Module (𝓞 E) N] (a : N)
     (ha : ∀ m ∈ l.Mb, m • a ∈ ((l.M : 𝓞 E)) • (⊤ : Submodule (𝓞 E) N)) :

@@ -72,6 +72,9 @@ end Fam
 
 section More
 
+/- English proof (translation)
+Take `⟨x, hx, hx'⟩` from `Ideal.exists_mem_pow_notMem_pow_succ w.1 (finPl_ne_bot w) w.2.ne_top 1`. Conclude with `⟨x, by simpa using hx, hx'⟩`.
+-/
 theorem exists_unif {K : Type} [Field K] [NumberField K] (w : FinPl K) :
     ∃ x : 𝓞 K, x ∈ w.1 ∧ x ∉ w.1 ^ 2 := by
   obtain ⟨x, hx, hx'⟩ := Ideal.exists_mem_pow_notMem_pow_succ w.1 (finPl_ne_bot w) w.2.ne_top 1

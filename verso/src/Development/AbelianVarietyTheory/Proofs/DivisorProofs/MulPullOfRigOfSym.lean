@@ -20,6 +20,11 @@ section Base
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
+/- English proof (translation)
+Use `hA.comm` as an intermediate fact. Take `⟨t, ht⟩` from `hC S A hA L hL _ (x3 A 0) (x3 A 1) (x3 A 2)`. Take `⟨t', ht', -⟩` from `exists_gen hL (φ' := thφ A (x3 A)) (ε' := thε) (fun U _ h => by`. Establish `e` using `prod_cub (x3 A 0) (x3 A 1) (x3 A 2) h`. Apply the tactic sequence `have i : lift (x3 A 0) (lift (x3 A 1) (x3 A 2)) = 𝟙 _ := by ext <;> simp [x3]`.
+
+Rewrite `e` using `[i]`. Simplify using `only [Over.id_left, Category.id_comp] at e`. Rewrite using `[e, Fin.prod_univ_eight]`. Simplify using `only [Matrix.cons_val, zpow_one, zpow_neg]) t ht`. Conclude with `⟨t', ht'⟩`.
+-/
 theorem hasGen_theta (hC : GlobalTheory.Published.CubeTheorem) (hA : IsAbelianScheme A) {L : LB A.left} (hL : L.IsLB) :
     HasGen L (thφ A (x3 A)) thε := by
   have := hA.comm

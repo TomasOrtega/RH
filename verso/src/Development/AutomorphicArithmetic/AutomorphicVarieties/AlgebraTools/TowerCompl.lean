@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Tower
 open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `ht : Module.IsTorsionBySet R N ((a ^ k : Ideal R) : Set R)` using `fun x b => by`. Establish `hb : (b : R) • x ∈ (a ^ k • ⊤ : Submodule R N)` using `Submodule.smul_mem_smul b.2 Submodule.mem_top`. Rewrite `hb` using `[h]`. Conclude with `(Submodule.mem_bot R).mp hb`. Use `letI iq : Module (R ⧸ a ^ k) N := ht.module`.
+
+Use `letI inst : Module (AdicCompletion a R) N := Module.compHom N (AdicCompletion.evalₐ a k).toRingHom`. Use `⟨inst, fun s r hs x => ?_⟩` and prove the remaining obligations. Use `show (AdicCompletion.evalₐ a k s) • x = r • x`. Rewrite using `[hs]`. Conclude with `ht.mk_smul r x`.
+-/
 private theorem tc_mod (R : Type) [CommRing R] (a : Ideal R) (k : ℕ) (N : Type) [AddCommGroup N]
     [Module R N] (h : (a ^ k • ⊤ : Submodule R N) = ⊥) :
     ∃ _ : Module (AdicCompletion a R) N, ∀ (s : AdicCompletion a R) (r : R),
@@ -22,6 +27,11 @@ private theorem tc_mod (R : Type) [CommRing R] (a : Ideal R) (k : ℕ) (N : Type
   rw [hs]
   exact ht.mk_smul r x
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `AdicCompletion.mk_surjective a R s`. Use `⟨x (k + 1), AdicCompletion.evalₐ_mk a (k + 1) x, ?_⟩` and prove the remaining obligations. Rewrite using `[AdicCompletion.evalₐ_mk, Ideal.Quotient.mk_eq_mk_iff_sub_mem]`. Establish `hc` using `x.property (Nat.le_succ k)`. Rewrite `hc` using `[SModEq.sub_mem]`.
+
+Simplify `hc` using `[Ideal.smul_eq_mul, Ideal.mul_top]`.
+-/
 private theorem tc_eval (R : Type) [CommRing R] (a : Ideal R) (k : ℕ) (s : AdicCompletion a R) :
     ∃ r : R, AdicCompletion.evalₐ a (k + 1) s = Ideal.Quotient.mk _ r ∧
       AdicCompletion.evalₐ a k s = Ideal.Quotient.mk _ r := by
@@ -32,12 +42,30 @@ private theorem tc_eval (R : Type) [CommRing R] (a : Ideal R) (k : ℕ) (s : Adi
   rw [SModEq.sub_mem] at hc
   simpa [Ideal.smul_eq_mul, Ideal.mul_top] using hc
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_pow, ← Submodule.restrictScalars_mem R, Ideal.smul_restrictScalars, Submodule.restrictScalars_top]`.
+-/
 private theorem tc_smul {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (a : Ideal R) (k : ℕ)
     (N : Type) [AddCommGroup N] [Module R N] [Module S N] [IsScalarTower R S N] (x : N) :
     x ∈ ((a.map (algebraMap R S)) ^ k • ⊤ : Submodule S N) ↔ x ∈ (a ^ k • ⊤ : Submodule R N) := by
   rw [← Ideal.map_pow, ← Submodule.restrictScalars_mem R, Ideal.smul_restrictScalars,
     Submodule.restrictScalars_top]
 
+/- English proof (translation)
+Introduce `R _ a ha P _ _ π hπ hker hkill hfin`. Use `haveI : IsAdicComplete (a.map (algebraMap R (AdicCompletion a R))) (AdicCompletion a R) := AdicCompletion.isAdicComplete_self a ha`. Use `choose inst hinst using fun k => tc_mod R a k (P k) (hkill k)`. Use `haveI tow : ∀ k, IsScalarTower R (AdicCompletion a R) (P k) := fun k => ⟨fun r s x => by`. Take `⟨r₀, h₀⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ a k s)`.
+
+Establish `h1 : AdicCompletion.evalₐ a k (r • s) = Ideal.Quotient.mk _ (r * r₀)`. Rewrite using `[map_smul, ← h₀, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul]`. Rewrite using `[hinst k (r • s) (r * r₀) h1, hinst k s r₀ h₀.symm, mul_smul]⟩`. Set `π' : ∀ k, P (k + 1) →ₗ[AdicCompletion a R] P k` to `fun k => { toFun := π k map_add' := (π k).map_add map_smul' := fun s x => by`. Take `⟨r, h1, h2⟩` from `tc_eval R a k s`.
+
+Use `show π k (s • x) = s • π k x`. Rewrite using `[hinst (k + 1) s r h1, hinst k s r h2, (π k).map_smul] }`. Establish `hker' : ∀ k, LinearMap.ker (π' k) = (a.map (algebraMap R (AdicCompletion a R))) ^ k • ⊤`. Introduce `k`. Use extensionality with `x`.
+
+Rewrite using `[tc_smul (S := AdicCompletion a R) a k (P (k + 1)) x, ← hker k, LinearMap.mem_ker, LinearMap.mem_ker]`. Apply the tactic sequence `all_goals exact Iff.rfl`. Establish `hkill' : ∀ k, ((a.map (algebraMap R (AdicCompletion a R))) ^ k • ⊤ : Submodule (AdicCompletion a R) (P k)) = ⊥`. Introduce `k`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `x hx`. Rewrite `hx` using `[tc_smul (S := AdicCompletion a R) a k (P k) x, hkill k]`. Conclude with `(Submodule.mem_bot _).mpr ((Submodule.mem_bot _).mp hx)`. Establish `hfin' : Module.Finite (AdicCompletion a R) (P 1)` using `Module.Finite.of_restrictScalars_finite R _ (P 1)`. Take `⟨M, _, _, q, hfinM, hsurj, hkerq, hcompat, hsep⟩` from `UpperTheory.V.AlgebraTools.exists_tower_limit (AdicCompletion a R) (a.map (algebraMap R (AdicCompletion a R))) P π' (fun k => hπ k) hker' hkill' hfin'`.
+
+Use `letI : Module R M := Module.compHom M (algebraMap R (AdicCompletion a R))`. Use `haveI : IsScalarTower R (AdicCompletion a R) M := ⟨fun r s m => by show (r • s) • m = (algebraMap R (AdicCompletion a R) r) • (s • m)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Use `⟨M, inferInstance, inferInstance, inferInstance, inferInstance, fun k => (q k).restrictScalars R, hfinM, fun k => hsurj k, ?_, fun k x => hcompat k x, fun x hx => hsep x hx⟩` and prove the remaining obligations. Introduce `k`.
+
+Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, ← tc_smul (S := AdicCompletion a R) a k M x, ← hkerq k, LinearMap.mem_ker]`. Apply the tactic sequence `all_goals exact Iff.rfl`.
+-/
 theorem UpperTheory.V.AlgebraTools.exists_tower_limit_completion :
     ∀ (R : Type) [CommRing R] (a : Ideal R), a.FG → ∀ (P : ℕ → Type) [∀ i, AddCommGroup (P i)] [∀ i, Module R (P i)] (π : ∀ k, P (k + 1) →ₗ[R] P k),
       (∀ k, Function.Surjective (π k)) → (∀ k, LinearMap.ker (π k) = a ^ k • ⊤) → (∀ k, (a ^ k • ⊤ : Submodule R (P k)) = ⊥) →

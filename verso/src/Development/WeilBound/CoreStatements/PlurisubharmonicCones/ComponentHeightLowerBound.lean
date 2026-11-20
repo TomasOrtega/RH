@@ -15,6 +15,13 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 noncomputable section
 namespace LevelTowerAlt
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `B.cover x`. Establish `hs : x ∈ (B.chart j).source` using `B.toPotentialCharts.mid_subset_source j (B.toPotentialCharts.inner_subset_mid j hj)`. Establish `ht` using `(B.chart j).map_source hs`. Establish `hn : (B.chart j).target ∈ 𝓝 (B.chart j x)` using `(B.chart j).open_target.mem_nhds ht`. Establish `h1 : ∀ᶠ y in 𝓝[(B.chart j).target] (B.chart j x), B.q j y + B.ph ((B.chart j).symm y) < B.q j (B.chart j x) + B.ph x + (r - B.ph x) / 2` using `(B.u_psh j).1 _ ht _ (by show B.q j (B.chart j x) + B.ph ((B.chart j).symm (B.chart j x)) < _`.
+
+Rewrite using `[(B.chart j).left_inv hs]`. Use the proof step `linarith)`. Rewrite `h1` using `[nhdsWithin_eq_nhds.2 hn]`. Establish `h2 : ∀ᶠ y in 𝓝 (B.chart j x), B.q j (B.chart j x) - (r - B.ph x) / 2 < B.q j y` using `((B.q_smooth j).continuousOn.continuousAt hn).eventually (lt_mem_nhds (by linarith))`. Establish `hc` using `(B.chart j).continuousAt hs`.
+
+Use `filter_upwards [hc.eventually h1, hc.eventually h2, (B.chart j).open_source.mem_nhds hs] with y a b c`. Rewrite `a` using `[(B.chart j).left_inv c]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ph_usc {n : ℕ} {X : Type} [TopologicalSpace X] {A : ReciprocityTheory.AnForm.M.FinHolAtlas n X}
     (B : GroundTheory.Heights₂.Heights.Regular.BoundedPshData A) (x : X) (r : ℝ) (hr : B.ph x < r) :
     ∀ᶠ x' in 𝓝 x, B.ph x' < r := by
@@ -36,6 +43,17 @@ theorem ph_usc {n : ℕ} {X : Type} [TopologicalSpace X] {A : ReciprocityTheory.
   rw [(B.chart j).left_inv c] at a
   linarith
 
+/- English proof (translation)
+Take `⟨a, t, ht, c, hc, rfl⟩` from `D.chart_cover w hw`. Establish `ht1 : t ∈ Metric.ball (0 : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) 1` using `mem_ball_zero_iff.2 (by linarith)`. Set `e : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ` to `fun i => if t i = 0 then 1 else 0`. Establish `h0 : Tendsto (fun s : ℝ => t + (s : ℂ) • e) (𝓝[>] 0) (𝓝 t)`. Establish `: Continuous fun s : ℝ => t + (s : ℂ) • e` using `by fun_prop`.
+
+Simplify using `using (this.tendsto 0).mono_left nhdsWithin_le_nhds`. Establish `hγ` using `((D.chart a).analytic t ht1).continuousAt`. Establish `hT : Continuous fun z : (Σ k, J k) → ℂ => torusSmul c z`. Unfold `torusSmul`. Use `fun_prop`.
+
+Establish `h1 : Tendsto (fun s : ℝ => torusSmul c ((D.chart a).γ (t + (s : ℂ) • e))) (𝓝[>] 0) (𝓝[D.Xo] (torusSmul c ((D.chart a).γ t)))`. Use `tendsto_nhdsWithin_iff.2 ⟨(hT.tendsto _).comp (hγ.tendsto.comp h0), ?_⟩` and prove the remaining obligations. Use `filter_upwards [h0.eventually (Metric.isOpen_ball.mem_nhds ht1), self_mem_nhdsWithin] with s hs hs0`. Establish `hm` using `(D.chart a).mem _ hs`. Use `⟨mcPts_smul D.arith.2.1.2.1 c hc hm, fun hb => ?_⟩` and prove the remaining obligations.
+
+Establish `hb'` using `D.bd_torus _ hb (fun k => (c k)⁻¹) fun k => inv_ne_zero (hc k)`. Establish `he : torusSmul (fun k => (c k)⁻¹) (torusSmul c ((D.chart a).γ (t + (s : ℂ) • e))) = (D.chart a).γ (t + (s : ℂ) • e)`. Use function extensionality and compare the values at `p`. Simplify using `[torusSmul, hc]`. Rewrite `hb'` using `[he, (D.chart a).boundary _ hs]`.
+
+Take `⟨i, -, hi⟩` from `hb'`. Establish `hs' : (s : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (ne_of_gt hs0)`. Apply the tactic sequence `by_cases h : t i = 0 <;> simp [e, h, hs'] at hi`. Conclude with `h1.neBot`.
+-/
 theorem Xo_dense {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {II : IntersectionSystem} {Ψ : Type}
     [Fintype Ψ] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {W : Ψ → Type} [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)]
     (D : ComponentData II Ψ K J Ω W) {w : (Σ k, J k) → ℂ} (hw : w ∈ mcPts (mCoordIdeal D.y)) :

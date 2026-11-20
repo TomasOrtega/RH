@@ -16,6 +16,25 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.DescPolKer
 
+/- English proof (translation)
+Introduce `X Y π Ga _ ρ A _ _ A₀ _ _ φ φ₂ P P₀ e hG hA hA₀ hφ hsq hP hP₀ hw hker T x ⟨t, ht⟩`. Break down `Nat.eq_zero_or_pos e with rfl | he` into its components or cases. Conclude with `pow_zero x`. Set `T₁ : Over X` to `Over.mk (pullback.snd T.hom π)`. Set `ε : T₁.left ⟶ T.left` to `pullback.fst T.hom π`.
+
+Establish `hε : Epi ε` using `GlobalTheory.GaloisCartDesc.epi_pullback_fst hG T.hom`. Set `x₁ : T₁ ⟶ A` to `Over.homMk (hφ.1.lift (ε ≫ x.left) (pullback.snd T.hom π) (by simp [ε, pullback.condition])) (hφ.1.lift_snd _ _ _)`. Establish `hx₁ : x₁.left ≫ φ = ε ≫ x.left` using `hφ.1.lift_fst _ _ _`. Establish `p₀ : IsPullback (snd A₀ T).left (fst A₀ T).left T.hom A₀.hom` using `(IsPullback.of_hasPullback A₀.hom T.hom).flip`. Establish `w₀ : ((snd A T₁).left ≫ ε) ≫ T.hom = ((fst A T₁).left ≫ φ) ≫ A₀.hom`.
+
+Establish `a₁` using `Over.w (snd A T₁)`. Establish `a₂` using `Over.w (fst A T₁)`. Simplify using `only [T₁, Over.mk_hom] at a₁`. Rewrite using `[Category.assoc, Category.assoc, hφ.1.w, ← Category.assoc (fst A T₁).left, a₂, ← a₁, Category.assoc]`. Simplify using `[ε, pullback.condition]`.
+
+Both sides reduce to the same expression. Set `hm : (A ⊗ T₁).left ⟶ (A₀ ⊗ T).left` to `p₀.lift _ _ w₀`. Establish `hc : (lift (snd A T₁ ≫ x₁) (fst A T₁)).left ≫ φ₂ = hm ≫ (lift (snd A₀ T ≫ x) (fst A₀ T)).left`. Establish `p₂ : IsPullback (snd A₀ A₀).left (fst A₀ A₀).left A₀.hom A₀.hom` using `(IsPullback.of_hasPullback A₀.hom A₀.hom).flip`. Apply `p₂.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, GlobalTheory.TripleDescent.lift_left_snd, Category.assoc, GlobalTheory.TripleDescent.lift_left_snd, p₀.lift_snd]`. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, GlobalTheory.TripleDescent.lift_left_fst, Category.assoc, GlobalTheory.TripleDescent.lift_left_fst, Over.comp_left, Over.comp_left, Category.assoc, hx₁, ← Category.assoc, ← Category.assoc, p₀.lift_fst]`. Take `⟨w, hwg⟩` from `hw`. Take `⟨t', ht', -⟩` from `GlobalTheory.FamFieldPull.exists_genPull w hwg hP₀ hP (K := PUnit) (fun _ => (lift (snd A T₁ ≫ x₁) (fst A T₁)).left) (fun _ => (lift (snd A₀ T ≫ x) (fst A₀ T)).left) (fun _ => 1) hm (fun _ => hc) t ht`. Establish `h₁ : x₁ ^ e = 1` using `hker T₁ x₁ ⟨t', ht'⟩`.
+
+Set `j : Over.mk (T₁.hom ≫ π) ⟶ T` to `Over.homMk ε (by simp [T₁, ε, pullback.condition])`. Establish `hj : (j ≫ x).left = x₁.left ≫ φ` using `by simp [j, hx₁]`. Establish `hpow : ∀ n : ℕ, ((j ≫ x) ^ (n + 1)).left = (x₁ ^ (n + 1)).left ≫ φ`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => simpa using hj`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ x₁]`. Conclude with `hφ.2 T₁ (x₁ ^ (n + 1)) x₁ _ _ ih hj`. Take `⟨k, rfl⟩ : ∃ k, e = k + 1` from `⟨e - 1, by omega⟩`.
+
+Establish `hy : (j ≫ x) ^ (k + 1) * (j ≫ x) ^ (k + 1) = (j ≫ x) ^ (k + 1)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← pow_add, show k + 1 + (k + 1) = (2 * k + 1) + 1 by ring, hpow, hpow, show 2 * k + 1 + 1 = (k + 1) + (k + 1) by ring, pow_add, h₁, _root_.one_mul]`. Establish `hy1` using `mul_eq_left.1 hy`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[← cancel_epi ε]`. Establish `e₁ : ε ≫ (x ^ (k + 1)).left = (j ≫ x ^ (k + 1)).left` using `by rw [Over.comp_left]; rfl`. Establish `e₂ : ε ≫ (1 : T ⟶ A₀).left = (j ≫ (1 : T ⟶ A₀)).left` using `by rw [Over.comp_left]; rfl`. Rewrite using `[e₁, e₂, MonObj.comp_pow, hy1, MonObj.comp_one]`.
+-/
 theorem pow_eq_one_of_descent : ∀ (X Y : Scheme.{0}) (π : X ⟶ Y) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)) (A : Over X) [GrpObj A] [IsCommMonObj A] (A₀ : Over Y) [GrpObj A₀] [IsCommMonObj A₀] (φ : A.left ⟶ A₀.left) (φ₂ : (G2 A).left ⟶ (G2 A₀).left) (P : LB (G2 A).left) (P₀ : LB (G2 A₀).left) (e : ℕ), GlobalTheory.ZM.IsGaloisCover Ga ρ π → IsAbelianScheme A → IsAbelianScheme A₀ → IsGrpPullback A A₀ π φ → IsSquare φ φ₂ → P.IsLB → P₀.IsLB → LBIso P (P₀.pull φ₂) → (∀ (T : Over X) (x : T ⟶ A), (∃ t : (P.pull (lift (snd A T ≫ x) (fst A T)).left).Gen, t.IsGen) → x ^ e = 1) → ∀ (T : Over Y) (x : T ⟶ A₀), (∃ t : (P₀.pull (lift (snd A₀ T ≫ x) (fst A₀ T)).left).Gen, t.IsGen) → x ^ e = 1 := by
   intro X Y π Ga _ ρ A _ _ A₀ _ _ φ φ₂ P P₀ e hG hA hA₀ hφ hsq hP hP₀ hw hker T x ⟨t, ht⟩
   rcases Nat.eq_zero_or_pos e with rfl | he

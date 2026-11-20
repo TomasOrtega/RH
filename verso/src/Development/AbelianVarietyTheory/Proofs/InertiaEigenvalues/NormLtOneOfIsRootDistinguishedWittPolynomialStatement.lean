@@ -10,6 +10,9 @@ open scoped Formalism.Per NNReal
 open Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RootLt.norm_lt_one_of_isRoot | exact GlobalTheory.RootLt.norm_lt_one_of_isRoot | (intros; apply GlobalTheory.RootLt.norm_lt_one_of_isRoot <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.norm_lt_one_of_isRoot_distinguished_witt_polynomial : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (P : Polynomial (Wq l a)), P.Monic →
     (∀ i < P.natDegree, (l : Wq l a) ∣ P.coeff i) → ∀ x : Om l, (P.map (GlobalTheory.TameFrob.iotaO l a)).IsRoot x → ‖x‖ < 1 := by
   first | exact @GlobalTheory.RootLt.norm_lt_one_of_isRoot | exact GlobalTheory.RootLt.norm_lt_one_of_isRoot | (intros; apply GlobalTheory.RootLt.norm_lt_one_of_isRoot <;> assumption)

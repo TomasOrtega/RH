@@ -10,6 +10,17 @@ namespace UpperTheory.RingTransport
 
 open MvPolynomial GlobalTheory.ExpFrame
 
+/- English proof (translation)
+Unfold `Formalism.GradedWeylDivisibility.dualWeyl at hf ⊢`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 hf`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `h1`, the goal using `[mem_weightedHomogeneousSubmodule]`. Introduce `d hd`.
+
+Apply `h1` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[coeff_map, h0, map_zero]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at h2 ⊢`.
+
+Introduce `l j hlj`. Establish `e` using `h2 l j hlj`. Simplify using `only [LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero] at e ⊢`. Establish `hc : ∀ g : MvPolynomial (Fin r × Fin n) R, map σ (Formalism.GradedWeylDivisibility.colAddGen R l j g) = Formalism.GradedWeylDivisibility.colAddGen S l j (map σ g)`. Introduce `g`.
+
+Unfold `Formalism.GradedWeylDivisibility.colAddGen`. Rewrite using `[aeval_eq_bind₁, aeval_eq_bind₁, map_bind₁]`. Use `congr 2`. Use function extensionality and compare the values at `v`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[← hc, e, map_rename]`.
+-/
 private theorem map_mem {R S : Type} [CommRing R] [CommRing S] (σ : R →+* S) {r n : ℕ} {ν : Fin n → ℕ}
     {f : MvPolynomial (Fin r × Fin n) R} (hf : f ∈ Formalism.GradedWeylDivisibility.dualWeyl R r n ν) :
     map σ f ∈ Formalism.GradedWeylDivisibility.dualWeyl S r n ν := by
@@ -42,6 +53,9 @@ private def onFactor {R S : Type} [CommRing R] [CommRing S] (σ : R →+* S) (r 
   map_zero' := by ext1; simp
   map_add' f f' := by ext1; simp
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[onFactor, smul_eq_C_mul]`.
+-/
 private theorem onFactor_smul {R S : Type} [CommRing R] [CommRing S] (σ : R →+* S) (r n : ℕ) (ν : Fin n → ℕ) (c : R)
     (f : Formalism.GradedWeylDivisibility.dualWeyl R r n ν) : onFactor σ r n ν (c • f) = σ c • onFactor σ r n ν f := by
   ext1
@@ -81,15 +95,26 @@ private def mlin (σ : R →+* S) :
 private def semi (σ : R →+* S) : NablaT R N mu →+ NablaT S N mu :=
   (PiTensorProduct.lift (mlin N mu σ)).toAddMonoidHom
 
+/- English proof (translation)
+Use `show (PiTensorProduct.lift (mlin N mu σ)) (PiTensorProduct.tprod R x) = _`. Rewrite using `[PiTensorProduct.lift.tprod]`. Both sides reduce to the same expression.
+-/
 private theorem semi_tprod (σ : R →+* S) (x : ∀ τ, Formalism.GradedWeylDivisibility.dualWeyl R N N (Formalism.CohomologicalDescent.LD.res N (mu τ))) :
     semi N mu σ (PiTensorProduct.tprod R x) = PiTensorProduct.tprod S (fun τ => onFactor σ N N _ (x τ)) := by
   show (PiTensorProduct.lift (mlin N mu σ)) (PiTensorProduct.tprod R x) = _
   rw [PiTensorProduct.lift.tprod]; rfl
 
+/- English proof (translation)
+The claim follows from `(PiTensorProduct.lift (mlin N mu σ)).map_smul c y`.
+-/
 private theorem semi_smul (σ : R →+* S) (c : R) (y : NablaT R N mu) :
     semi N mu σ (c • y) = σ c • semi N mu σ y :=
   (PiTensorProduct.lift (mlin N mu σ)).map_smul c y
 
+/- English proof (translation)
+Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c x`. Rewrite using `[semi_smul, semi_smul, semi_tprod, semi_tprod]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ`. Use `ext1`. Simplify using `[onFactor, map_map, MvPolynomial.map_id]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 private theorem semi_left_inv (g : R ≃+* S) (y : NablaT R N mu) :
     semi N mu g.symm.toRingHom (semi N mu g.toRingHom y) = y := by
   induction y using PiTensorProduct.induction_on with
@@ -103,6 +128,11 @@ private theorem semi_left_inv (g : R ≃+* S) (y : NablaT R N mu) :
       simp [onFactor, map_map, MvPolynomial.map_id]
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Use `ext1`. Simplify using `only [onFactor, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Formalism.UG.dualWeylRep_apply]`. Unfold `Formalism.UG.dwAct Formalism.GradedWeylDivisibility.rowAct`. Rewrite using `[aeval_eq_bind₁, aeval_eq_bind₁, map_bind₁]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `v`. Simplify using `only [map_sum, map_mul, map_C, map_X]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+-/
 private theorem onFactor_rep (σ : R →+* S) (u : GL (Fin N) R) (ν : Fin N → ℕ)
     (f : Formalism.GradedWeylDivisibility.dualWeyl R N N ν) :
     onFactor σ N N ν (Formalism.UG.dualWeylRep R N N ν u f) =
@@ -118,6 +148,11 @@ private theorem onFactor_rep (σ : R →+* S) (u : GL (Fin N) R) (ν : Fin N →
   rw [← map_inv]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c x`. Rewrite using `[map_smul, semi_smul, semi_smul, map_smul, GlobalTheory.SemilinTransport.grp_tprod, semi_tprod, semi_tprod, GlobalTheory.SemilinTransport.grp_tprod]`. Use `congr 2`. Use function extensionality and compare the values at `τ`.
+
+Conclude with `onFactor_rep N σ (h τ) _ (x τ)`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`.
+-/
 private theorem semi_grp [DecidableEq ι] (σ : R →+* S) (h : ι → GL (Fin N) R) (y : NablaT R N mu) :
     semi N mu σ (grp R N mu h y) =
       grp S N mu (fun τ => Matrix.GeneralLinearGroup.map σ (h τ)) (semi N mu σ y) := by
@@ -130,12 +165,18 @@ private theorem semi_grp [DecidableEq ι] (σ : R →+* S) (h : ι → GL (Fin N
     exact onFactor_rep N σ (h τ) _ (x τ)
   | add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[RingHom.map_det]`.
+-/
 private theorem det_map (σ : R →+* S) (u : GL (Fin N) R) :
     Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map σ u) =
       Units.map (σ : R →* S) (Matrix.GeneralLinearGroup.det u) := by
   ext
   simp [RingHom.map_det]
 
+/- English proof (translation)
+Rewrite using `[wtOp_apply, wtOp_apply, semi_smul, semi_grp]`. Use `congr 1`. Simplify using `only [det_map, ← map_zpow, ← map_prod]`. Both sides reduce to the same expression.
+-/
 private theorem semi_wtOp [Fintype ι] [DecidableEq ι] (sh : ι → ℤ) (σ : R →+* S) (h : ι → GL (Fin N) R) (y : NablaT R N mu) :
     semi N mu σ (wtOp R N mu sh h y) =
       wtOp S N mu sh (fun τ => Matrix.GeneralLinearGroup.map σ (h τ)) (semi N mu σ y) := by
@@ -148,6 +189,9 @@ end UpperTheory.RingTransport
 
 end
 
+/- English proof (translation)
+Introduce `K K' _ _ io n ι _ _ mu sh`. Use `⟨UpperTheory.RingTransport.semi n mu io.toRingHom, fun y y' e => ?_, fun c x => UpperTheory.RingTransport.semi_smul n mu _ c x, fun h x => UpperTheory.RingTransport.semi_wtOp n mu sh _ h x⟩` and prove the remaining obligations. Rewrite using `[← UpperTheory.RingTransport.semi_left_inv n mu io y, ← UpperTheory.RingTransport.semi_left_inv n mu io y', e]`.
+-/
 theorem UpperTheory.exists_injective_semilinear_nablaT_wtOp_equivariant :
     ∀ (K K' : Type) [CommRing K] [CommRing K'] (io : K ≃+* K') (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
         (mu : ι → ℕ → ℕ) (sh : ι → ℤ), ∃ Φ : NablaT K n mu →+ NablaT K' n mu, Function.Injective Φ ∧ (∀ (c : K) u, Φ (c • u) = io c • Φ u) ∧

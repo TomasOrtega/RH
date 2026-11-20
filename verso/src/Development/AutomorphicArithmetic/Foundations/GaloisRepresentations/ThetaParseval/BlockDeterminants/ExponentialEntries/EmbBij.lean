@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Theta
 open scoped TensorProduct Matrix Classical
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.RealLift UpperTheory.TP.RP
 
+/- English proof (translation)
+Introduce `E _ _ _ B`. Establish `key : ∀ w, IsCMField.equivInfinitePlace E (InfinitePlace.mk (B.emb w).1) = w`. Introduce `w`. Rewrite using `[IsCMField.equivInfinitePlace_apply, InfinitePlace.comap_mk, (B.emb w).2, InfinitePlace.mk_embedding]`. Establish `hf : (fun w => InfinitePlace.mk (B.emb w).1) = (IsCMField.equivInfinitePlace E).symm`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[Equiv.eq_symm_apply]`. Conclude with `key w`. Rewrite using `[hf]`. Conclude with `Equiv.bijective _`.
+-/
 theorem UpperTheory.TP.RP.embBij :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (B : Base (maximalRealSubfield E) E),
       Function.Bijective (fun w : InfinitePlace (maximalRealSubfield E) => InfinitePlace.mk (B.emb w).1) := by

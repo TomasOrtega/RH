@@ -14,6 +14,21 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep GlobalTheory.FieldPair
 
+/- English proof (translation)
+Introduce `hPr X _ _ _ p n hp hdim Γ m G x hm hlc hx hcut`. Take `⟨hlcx, hnk, hdimz⟩` from `hcut`. Use `haveI : AlgebraicGeometry.IsNoetherian X := isNoetherian_of_isProjOver hp`. Establish `hopen` using `(GlobalTheory.T.isOpen_kawamataLogTerminalLocus_logCanonicalLocus hPr ℂ X p n hp hdim Γ m G hm hlc).1`. Use `set T : Set X := {y | ¬ KltAt p n Γ y} with hT`.
+
+Establish `hTc : IsClosed T`. Rewrite using `[← isOpen_compl_iff]`. Use `hopen using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `[T]`.
+
+Establish `hgen : ∀ z ∈ T, z ⤳ x → z = x`. Introduce `z hzT hzx`. Assume the negation of the conclusion as `hne`. Establish `h0` using `hdimz z hzx hzT`. Take `⟨e, _, he, h1⟩` from `GlobalTheory.closure_point_topologicalKrullDim X n z hdim`.
+
+Establish `h1'` using `h1 x hzx (Ne.symm hne)`. Rewrite `h0` using `[he]`. Establish `: (e : WithBot ℕ∞) ≤ ((0 : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast h0`. Establish `: e ≤ 0` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨U, hxU, hU⟩` from `GlobalTheory.exists_open_inter_eq_singleton_of_no_generisation X T x hTc hx hnk hgen`. Use `⟨U, hxU, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Distinguish the cases in `hyx : y = x`. Substitute `hyx` using the available equality.
+
+Conclude with `hlcx`. Establish `: y ∉ T` using `fun h => hyx ((hU y hy).1 h)`. Establish `: KltAt p n Γ y` using `by simpa [T] using this`. Conclude with `this.lcAt`. Introduce `y hy hyx`.
+
+Establish `: y ∉ T` using `fun h => hyx ((hU y hy).1 h)`. Simplify `this` using `[T]`.
+-/
 theorem GlobalTheory.PairStep.exists_open_lc_klt_off_point :
     GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Γ : X → ℚ) (m : ℕ) (G : CartierDiv X) (x : X), 0 < m → IsLogCanonicalMultiple p n Γ m G → IsClosed ({x} : Set X) → LcCut p n Γ x 0 → ∃ U : X.Opens, x ∈ U ∧ (∀ y ∈ U, LcAt p n Γ y) ∧ (∀ y ∈ U, y ≠ x → KltAt p n Γ y) := by
   intro hPr X _ _ _ p n hp hdim Γ m G x hm hlc hx hcut

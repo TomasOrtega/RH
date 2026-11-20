@@ -30,13 +30,22 @@ structure IsLocSub (τ : D.what₂.Tau) (B : Submodule ℂ (GA D V → ℂ)) : P
 def locGen (τ : D.what₂.Tau) (ψ : GA D V → ℂ) : Submodule ℂ (GA D V → ℂ) :=
   sInf {B | ψ ∈ B ∧ IsLocSub θ M τ B}
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sInf.2 fun _ h => h.1`.
+-/
 theorem mem_locGen (τ : D.what₂.Tau) (ψ : GA D V → ℂ) : ψ ∈ locGen θ M τ ψ :=
   Submodule.mem_sInf.2 fun _ h => h.1
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sInf.2 fun B hB => hB.2.k g hg f (Submodule.mem_sInf.1 hf B hB) lie X hX f hf := Submodule.mem_sInf.2 fun B hB => hB.2.lie X hX f (Submodule.mem_sInf.1 hf B hB)`.
+-/
 theorem isLocSub_locGen (τ : D.what₂.Tau) (ψ : GA D V → ℂ) : IsLocSub θ M τ (locGen θ M τ ψ) where
   k g hg f hf := Submodule.mem_sInf.2 fun B hB => hB.2.k g hg f (Submodule.mem_sInf.1 hf B hB)
   lie X hX f hf := Submodule.mem_sInf.2 fun B hB => hB.2.lie X hX f (Submodule.mem_sInf.1 hf B hB)
 
+/- English proof (translation)
+The claim follows from `sInf_le ⟨hψ, hB⟩`.
+-/
 theorem locGen_le {τ : D.what₂.Tau} {ψ : GA D V → ℂ} {B : Submodule ℂ (GA D V → ℂ)} (hψ : ψ ∈ B)
     (hB : IsLocSub θ M τ B) : locGen θ M τ ψ ≤ B :=
   sInf_le ⟨hψ, hB⟩

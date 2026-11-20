@@ -15,6 +15,9 @@ namespace PositivityTheory.DzMono
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Rewrite using `[← Valuation.vlt_one_iff, ← Valuation.vlt_one_iff]`.
+-/
 theorem val_lt_one_iff_alt (x : w.adicCompletion E) :
     ValuativeRel.valuation (w.adicCompletion E) x < 1 ↔ Valued.v x < 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=

@@ -7,6 +7,9 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperTheory.ConvolutionTheory.RankTwoDescent
 open scoped Classical
 
+/- English proof (translation)
+Introduce `E _ _`. Set `μ : Measure (G1 E)` to `Measure.haar`. Take `⟨D, hD, -, hf⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup (Gam E)`. Conclude with `⟨⟨μ, D, inferInstance, M.unimod E μ, hD, hf μ⟩⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.measEEx :
     MeasEEx := by
   intro E _ _

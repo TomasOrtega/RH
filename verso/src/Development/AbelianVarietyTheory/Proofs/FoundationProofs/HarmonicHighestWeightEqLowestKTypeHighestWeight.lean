@@ -9,6 +9,21 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSi
 
 namespace GlobalTheory.HarmonicShape
 
+/- English proof (translation)
+Establish `hj : P ∈ jointHW μ (wtH n ap am)`. Use `⟨⟨h1.2, h2⟩, ⟨fun a b => ?_, fun a b => by simp⟩, fun _ j => j.elim0, fun i => i.elim0⟩` and prove the remaining obligations. Use `h3 a b` as an intermediate fact. Rewrite `this` using `[GlobalTheory.IndefiniteRowSideFullHecke.FockSingularValues.fockAct1_lower, neg_eq_zero]`. Conclude with `this`.
+
+Take `⟨α, β, γ, δ, ⟨-, -, -, -, a1, b1, c1, d1, -, -, -, -, e1, e2, e3, -⟩, -⟩` from `four_of_joint h1.1 hj`. Use function extensionality and compare the values at `x`. Break down `x with i | j` into its components or cases. Establish `hi` using `i.2`. Establish `u` using `e1 i`.
+
+Establish `v` using `e3 ⟨i.1, by omega⟩`. Rewrite `u` using `[b1 _ (by simp)]`. Rewrite `v` using `[d1 _ ((min_le_left _ _).trans (by rw [Fin.val_rev]; dsimp only; omega))]`. Simplify using `only [shiftNu, cPair, wtH, hi, dif_pos, Fin.eta] at u v`. Simplify using `only [wtK]`.
+
+Move the coercions through the operations in `at u v`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hj` using `j.2`. Establish `hr` using `j.rev.2`. Establish `u` using `e2 j`.
+
+Establish `v` using `e3 (Fin.rev ⟨j.rev.1, by omega⟩)`. Establish `hp : ¬ (Fin.rev (⟨j.rev.1, by omega⟩ : Fin n)).1 < p`. Rewrite using `[Fin.val_rev]`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `u` using `[c1 _ (by simp)]`. Rewrite `v` using `[a1 _ ((min_le_left _ _).trans (not_lt.1 hp))]`. Simplify using `only [shiftNu, cPair, wtH, dif_neg hp, Fin.rev_rev, hr, dif_pos, Fin.eta] at u v`. Simplify using `only [wtK]`. Move the coercions through the operations in `at u v`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem weight_eq_wtK (p q n : ℕ) (hn : p + q < n) (ap : Fin p → ℕ) (am : Fin q → ℕ)
     (μ : Ix p q → ℚ) (P : Pol p q n 0) (h1 : IsHW (fockAct1 p q n 0) μ P)
     (h2 : P ∈ hwSub (fockAct2 p q n 0) (wtH n ap am))

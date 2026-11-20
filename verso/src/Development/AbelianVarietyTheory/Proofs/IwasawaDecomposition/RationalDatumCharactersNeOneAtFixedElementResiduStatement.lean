@@ -13,6 +13,9 @@ open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.theta_xiRed_ne_one | exact GlobalTheory.HeightCounting.theta_xiRed_ne_one | (intros; apply GlobalTheory.HeightCounting.theta_xiRed_ne_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rationalDatum_characters_ne_one_at_fixedElement_residues : ∀ (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ)
     (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw)
     (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0)

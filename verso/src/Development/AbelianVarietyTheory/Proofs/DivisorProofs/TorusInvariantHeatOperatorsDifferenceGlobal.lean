@@ -25,6 +25,9 @@ namespace GlobalTheory.HeatUniqGlob
 
 open GlobalTheory.HeatGlue GlobalTheory.KS
 
+/- English proof (translation)
+Establish `h1` using `h 1`. Establish `h2` using `h 2`. Move the coercions through the operations in `at h1 h2`. Establish `hy : y = 0` using `by linear_combination (-c) * (2 * h1 - h2) - y * hc`. Conclude with `⟨by linear_combination h1 - hy, hy⟩`.
+-/
 theorem sep {Γ : Type} [CommRing Γ] {c x y : Γ} (hc : 2 * c = 1) (h : ∀ k : ℕ, (k : Γ) * x + (k : Γ) ^ 2 * y = 0) :
     x = 0 ∧ y = 0 := by
   have h1 := h 1
@@ -33,6 +36,25 @@ theorem sep {Γ : Type} [CommRing Γ] {c x y : Γ} (hc : 2 * c = 1) (h : ∀ k :
   have hy : y = 0 := by linear_combination (-c) * (2 * h1 - h2) - y * hc
   exact ⟨by linear_combination h1 - hy, hy⟩
 
+/- English proof (translation)
+Establish `hm : Wo ≤ m ⁻¹ᵁ (L.U (h.j i) ⊓ L.U (h.j i'))` using `le_inf (hW.trans (inf_le_left.trans (h.le i))) (hW.trans (inf_le_right.trans (h.le i')))`. Establish `hg` using `pbT_unit' m (L.g (h.j i) (h.j i')) hm`. Establish `hdi : IsDer (h.d i Wo)` using `isDer_of_isField (h.lift i).1 (hW.trans inf_le_left)`. Establish `hdi' : IsDer (h.d i' Wo)` using `isDer_of_isField (h.lift i').1 (hW.trans inf_le_right)`. Establish `hdd' : ∀ a, IsDer (dd a Wo)` using `fun a => isDer_of_isField (hdd a) le_top`.
+
+Establish `hs : ∀ a b, (h.Θ.map (constFn G.hom Wo)) a b = (h.Θ.map (constFn G.hom Wo)) b a` using `fun a b => by`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[show h.Θ a b = h.Θᵀ b a from rfl, h.symm]`. Establish `h2 : (2 : R) * algebraMap ℚ R (1 / 2) = 1`. Rewrite using `[← map_ofNat (algebraMap ℚ R) 2, ← map_mul]`.
+
+Evaluate the numerical expressions. Establish `two : (2 : Γ(G.left, Wo)) * constFn G.hom Wo (algebraMap ℚ R (1 / 2)) = 1`. Rewrite using `[← constFn_two G.hom Wo, ← constFn_mul, h2, constFn_one]`. Unfold `dlg`. Use `set g := pbT m (L.g (h.j i) (h.j i')).val Wo with hgdef`.
+
+Use `set gi := pbT m (L.g (h.j i) (h.j i'))⁻¹.val Wo with hgidef`. Establish `gk : ∀ k : ℕ, gi ^ k * g ^ k = 1` using `fun k => by rw [← mul_pow, mul_comm, hg, one_pow]`. Establish `key : ∀ f, (∀ k : ℕ, (k : Γ(G.left, Wo)) * (2 * (h.d i Wo f - h.d i' Wo f - ∑ a, ∑ b, constFn G.hom Wo (h.Θ a b) * (dd b Wo g * gi) * dd a Wo f) + (2 * (rsT (h.p' i) Wo - rsT (h.p' i') Wo) + (2 * ∑ a, constFn G.hom Wo (h.u a) * (dd a Wo g * gi) - ∑ a, ∑ b, constFn G.hom Wo (h.Θ a …`. Introduce `f k`. Establish `c` using `ringOp_conj hdi hdd' (Θ := h.Θ.map (constFn G.hom Wo)) hs (fun a => constFn G.hom Wo (h.u a)) (rsT (h.p i) Wo) (rsT (h.p' i) Wo) hg k f`.
+
+Establish `gl` using `h.glue k i i' Wo hW f`. Simplify using `only [op] at gl`. Simplify using `only [ringOp, Matrix.map_apply] at c`. Rewrite `gl` using `[c]`. Establish `canc : ∀ z : Γ(G.left, Wo), g ^ k * z = 0 → z = 0` using `fun z hz => by`.
+
+Establish `e` using `congrArg (gi ^ k * ·) hz`. Simplify using `only [mul_zero] at e`. Rewrite `e` using `[← _root_.mul_assoc, gk, _root_.one_mul]`. Conclude with `e`. Apply `canc` to reduce the goal to its premises.
+
+Take the linear combination `gl`. Establish `hB` using `fun f => (sep two (key f)).2`. Establish `hX` using `fun f => (sep two (key f)).1`. Establish `B0` using `hB 1`. Rewrite `B0` using `[_root_.mul_one]`.
+
+Establish `C0` using `hX 1`. Rewrite `C0` using `[hdi.map_one, hdi'.map_one, _root_.mul_one]`. Simplify using `only [(hdd' _).map_one, mul_zero, Finset.sum_const_zero, sub_zero] at C0`. Use `⟨fun f => ?_, by linear_combination B0, by linear_combination C0⟩` and prove the remaining obligations. Establish `A0` using `hX f`.
+
+Rewrite `A0` using `[show (2 * (rsT (h.p' i) Wo - rsT (h.p' i') Wo) + (2 * ∑ a, constFn G.hom Wo (h.u a) * (dd a Wo g * gi) - ∑ a, ∑ b, constFn G.hom Wo (h.Θ a b) * dd a Wo (dd b Wo g * gi))) = 0 by linear_combination C0]`. Take the linear combination `(constFn G.hom Wo (algebraMap ℚ R (1 / 2))) * A0 - (h.d i Wo f - h.d i' Wo f - ∑ a, ∑ b, constFn G.hom Wo (h.Θ a b) * (dd b Wo g * gi) * dd a Wo f) * two`.
+-/
 theorem within {R : Type} [CommRing R] [Algebra ℚ R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
     {X : Scheme.{0}} {m : G.left ⟶ X} {L : LB X} {n : ℕ} {dd : Fin n → Fld G.left} {D : R → R}
     (hdd : ∀ a, IsField ⊤ (dd a)) (h : Heat G m L dd D) (i i' : h.J) (Wo : G.left.Opens)
@@ -101,13 +123,22 @@ namespace GlobalTheory.HeatUniqGlob
 
 open GlobalTheory.HeatGlue GlobalTheory.KS
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun O hO => h.1 O (hO.trans hle), fun O hO => h.2.1 O (hO.trans hle), fun O O' h' hO => h.2.2 O O' h' (hO.trans hle)⟩`.
+-/
 theorem isField_mono {Z : Scheme.{0}} {W W' : Z.Opens} {d : Fld Z} (h : IsField W d) (hle : W' ≤ W) : IsField W' d :=
   ⟨fun O hO => h.1 O (hO.trans hle), fun O hO => h.2.1 O (hO.trans hle), fun O O' h' hO => h.2.2 O O' h' (hO.trans hle)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isField_mono h.1 hle, fun O hO r => h.2 O (hO.trans hle) r⟩`.
+-/
 theorem isLift_mono {R : Type} [CommRing R] {G : Over (Sp R)} {D : R → R} {W W' : G.left.Opens} {d : Fld G.left}
     (h : IsLift G D W d) (hle : W' ≤ W) : IsLift G D W' d :=
   ⟨isField_mono h.1 hle, fun O hO r => h.2 O (hO.trans hle) r⟩
 
+/- English proof (translation)
+Rewrite using `[show (2 : Γ(Z, O₀)) = 1 + 1 by norm_num, rsT_add, rsT_one h]; norm_num`.
+-/
 theorem rsT_two {Z : Scheme.{0}} {O₀ O : Z.Opens} (h : O ≤ O₀) : rsT (2 : Γ(Z, O₀)) O = 2 := by
   rw [show (2 : Γ(Z, O₀)) = 1 + 1 by norm_num, rsT_add, rsT_one h]; norm_num
 
@@ -117,6 +148,81 @@ namespace GlobalTheory.HeatUniqGlob
 
 open GlobalTheory.HeatGlue GlobalTheory.KS
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ Q O _ _ _ oa Y n v dd hinv D h h' hB hB' hΘ hu`. Establish `hL : Q.P.L.IsLB` using `Q.P.isLB`. Establish `hddF : ∀ a, IsField ⊤ (dd a)` using `fun a => (hinv a).1`. Establish `hdd : ∀ a (W : Y.H.left.Opens), IsDer (dd a W)` using `fun a W => isDer_of_isField (hddF a) le_top`. Establish `h2 : (2 : R) * algebraMap ℚ R (1 / 2) = 1`.
+
+Rewrite using `[← map_ofNat (algebraMap ℚ R) 2, ← map_mul]`. Evaluate the numerical expressions. Establish `two : ∀ W : Y.H.left.Opens, (2 : Γ(Y.H.left, W)) * constFn Y.H.hom W (algebraMap ℚ R (1 / 2)) = 1` using `fun W => by`. Rewrite using `[← constFn_two Y.H.hom W, ← constFn_mul, h2, constFn_one]`. Establish `hs : ∀ (W : Y.H.left.Opens) a b, constFn Y.H.hom W (h.Θ a b) = constFn Y.H.hom W (h.Θ b a)` using `fun W a b => by`.
+
+Rewrite using `[show h.Θ a b = h.Θᵀ b a from rfl, h.symm]`. Use `choose V hV using fun i => (hB i).1`. Use `choose V' hV' using fun i' => (hB' i').1`. Establish `W1` using `within hddF h`. Establish `W2` using `within hddF h'`.
+
+Rewrite `W2` using `[← hΘ, ← hu]`. Set `K : Type` to `h.J × h'.J`. Set `Wk : K → Y.H.left.Opens` to `fun k => Y.q.left ⁻¹ᵁ (V k.1 ⊓ V' k.2)`. Establish `hWk : ∀ k : K, Wk k = h.W k.1 ⊓ h'.W k.2` using `fun k => by rw [hV, hV']; rfl`. Establish `hcov : ⨆ k, Wk k = ⊤`.
+
+Simplify using `only [hWk]`. Rewrite using `[← iSup_inf_iSup, h.cover, h'.cover, inf_top_eq]`. Establish `l1 : ∀ k : K, Wk k ≤ h.W k.1` using `fun k => (hWk k).le.trans inf_le_left`. Establish `l2 : ∀ k : K, Wk k ≤ h'.W k.2` using `fun k => (hWk k).le.trans inf_le_right`. Establish `uh : ∀ {Wo : Y.H.left.Opens} {i : h.J}, Wo ≤ h.W i → Wo ≤ Y.q.left ⁻¹ᵁ Q.P.L.U (h.j i)` using `fun hw => hw.trans (h.le _)`.
+
+Establish `uh' : ∀ {Wo : Y.H.left.Opens} {i : h'.J}, Wo ≤ h'.W i → Wo ≤ Y.q.left ⁻¹ᵁ Q.P.L.U (h'.j i)` using `fun hw => hw.trans (h'.le _)`. Establish `hWU : ∀ k : K, Wk k ≤ Y.q.left ⁻¹ᵁ (Q.P.L.U (h.j k.1) ⊓ Q.P.L.U (h'.j k.2))` using `fun k => le_inf (uh (l1 k)) (uh' (l2 k))`. Establish `ex : ∀ k : K, ∃ c : Fin n → Γ(Y.H.left, Wk k), (∀ a, IsWt Y 0 _ (c a)) ∧ ∀ Wo, Wo ≤ Wk k → ∀ f, h.d k.1 Wo f - h'.d k.2 Wo f = ∑ a, rsT (c a) Wo * dd a Wo f` using `fun k => GlobalTheory.T.torusInvariant_lifts_sub_eq_sum_invariantFields R Q O oa Y n v dd hinv (V k.1 ⊓ V' k.2) D (h.d k.1) (h'.d k.2) (isLift_mono (h.lift _) (l1 k)) (isLift_mono (h'.lift _) (l2 k)) (fun α V'' hV'' f hf => (hB k.1).2.2.2 α V'' ((Y.q.left.preimage_mono hV'').tran …`. Use `choose c hcw hc using ex`. Establish `wℓ : ∀ (k : K) (δ : Fld Y.H.left), (∀ f, IsWt Y 0 (Wk k) f → IsWt Y 0 (Wk k) (δ (Wk k) f)) → IsWt Y 0 (Wk k) (dlg Y.H Y.q.left Q.P.L δ (h.j k.1) (h'.j k.2) (Wk k))` using `fun k δ hδ => by`.
+
+Unfold `dlg`. Conclude with `isWt_zero_mul (hδ _ (isWt_zero_pbT _ (hWU k))) (isWt_zero_pbT _ (hWU k))`. Take `⟨E, hE⟩ : ∃ E : ∀ k : K, Fin n → Γ(Y.H.left, Wk k), ∀ k a, E k a = c k a - ∑ b, constFn Y.H.hom (Wk k) (h.Θ a b) * dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) (Wk k)` from `⟨_, fun _ _ => rfl⟩`. Establish `wE : ∀ k a, IsWt Y 0 _ (E k a)` using `fun k a => by`. Rewrite using `[hE]`.
+
+Conclude with `isWt_sub (hcw k a) (isWt_sum _ _ fun b _ => isWt_zero_mul (isWt_zero_constFn _ _) (wℓ k (dd b) fun f hf => isWt_inv (hinv b) hf))`. Establish `PE : ∀ (k : K) (Wo : Y.H.left.Opens), Wo ≤ Wk k → ∀ f, h.d k.1 Wo f - h'.d k.2 Wo f = ∑ a, rsT (E k a) Wo * dd a Wo f + ∑ a, ∑ b, constFn Y.H.hom Wo (h.Θ a b) * dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) Wo * dd a Wo f`. Introduce `k Wo hWo f`. Establish `e : ∀ b, rsT (dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) (Wk k)) Wo = dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) Wo` using `fun b => rsT_dlg _ _ _ (hddF b) _ _ le_top hWo (hWU k)`. Rewrite using `[hc k Wo hWo f]`.
+
+Simplify using `only [hE, rsT_sub, rsT_sum, rsT_mul, rsT_constFn _ hWo, e, sub_mul, Finset.sum_sub_distrib, Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `cE : ∀ (k k' : K) (Wo : Y.H.left.Opens), Wo ≤ Wk k ⊓ Wk k' → ∀ a, rsT (E k a) Wo = rsT (E k' a) Wo`. Introduce `k k' Wo hWo`. Establish `hk : Wo ≤ Wk k` using `hWo.trans inf_le_left`.
+
+Establish `hk' : Wo ≤ Wk k'` using `hWo.trans inf_le_right`. Establish `z` using `GlobalTheory.T.raynaudExtension_invariantField_coeffs_unique R Q O oa Y n v dd hinv Wo (fun a => rsT (E k a) Wo - rsT (E k' a) Wo) (fun Wo' hWo' f => by`. Establish `h1 : Wo' ≤ Wk k` using `hWo'.trans hk`. Establish `h2 : Wo' ≤ Wk k'` using `hWo'.trans hk'`. Simplify using `only [rsT_sub, rsT_rsT hk hWo', rsT_rsT hk' hWo', sub_mul, Finset.sum_sub_distrib]`.
+
+Establish `p1` using `PE k Wo' h1 f`. Establish `p2` using `PE k' Wo' h2 f`. Establish `w1` using `(W1 k.1 k'.1 Wo' (le_inf (h1.trans (l1 k)) (h2.trans (l1 k')))).1 f`. Establish `w2` using `(W2 k.2 k'.2 Wo' (le_inf (h1.trans (l2 k)) (h2.trans (l2 k')))).1 f`. Establish `c1 : ∀ b, dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) Wo' = dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h.j k'.1) Wo' + dlg Y.H Y.q.left Q.P.L (dd b) (h.j k'.1) (h'.j k.2) Wo'` using `fun b => dlg_cocycle Y.H Y.q.left Q.P.L hL _ _ _ (hdd b Wo') (le_inf (le_inf (uh (h1.trans (l1 k))) (uh (h2.trans (l1 k')))) (uh' (h1.trans (l2 k))))`.
+
+Establish `c2 : ∀ b, dlg Y.H Y.q.left Q.P.L (dd b) (h.j k'.1) (h'.j k'.2) Wo' = dlg Y.H Y.q.left Q.P.L (dd b) (h.j k'.1) (h'.j k.2) Wo' + dlg Y.H Y.q.left Q.P.L (dd b) (h'.j k.2) (h'.j k'.2) Wo'` using `fun b => dlg_cocycle Y.H Y.q.left Q.P.L hL _ _ _ (hdd b Wo') (le_inf (le_inf (uh (h2.trans (l1 k'))) (uh' (h1.trans (l2 k)))) (uh' (h2.trans (l2 k'))))`. Simplify using `only [c1, c2, add_mul, mul_add, Finset.sum_add_distrib] at p1 p2`. Take the linear combination `-p1 + p2 + w1 - w2)`. Conclude with `fun a => sub_eq_zero.1 (z a)`. Establish `ce : ∀ a, ∃ r : R, ∀ k, E k a = constFn Y.H.hom _ r` using `fun a => GlobalTheory.T.raynaud_weight_zero_compatible_functions_eq_base_constant R Q O oa Y K Wk (fun k => ⟨_, rfl⟩) hcov (fun k => E k a) (fun k => wE k a) (fun k k' Wo hWo => cE k k' Wo hWo a)`.
+
+Use `choose e he using ce`. Establish `G2 : ∀ (i : h.J) (i' : h'.J) (Wo : Y.H.left.Opens), Wo ≤ h.W i ⊓ h'.W i' → ∀ f, h.d i Wo f - h'.d i' Wo f = ∑ a, constFn Y.H.hom Wo (e a) * dd a Wo f + ∑ a, ∑ b, constFn Y.H.hom Wo (h.Θ a b) * dlg Y.H Y.q.left Q.P.L (dd b) (h.j i) (h'.j i') Wo * dd a Wo f`. Introduce `i i' Wo hWo f`. Establish `hk : Wo ≤ Wk (i, i')` using `hWo.trans (hWk (i, i')).ge`. Use `PE (i, i') Wo hk f` as an intermediate fact.
+
+Simplify using `only [he, rsT_constFn _ hk] at this`. Conclude with `this`. Take `⟨P, hP⟩ : ∃ P : K → ∀ Wo : Y.H.left.Opens, Γ(Y.H.left, Wo), ∀ k Wo, P k Wo = 2 * (rsT (h.p k.1) Wo - rsT (h'.p k.2) Wo) + 2 * dlg Y.H Y.q.left Q.P.L (h.d k.1) (h.j k.1) (h'.j k.2) Wo - ∑ a, ∑ b, constFn Y.H.hom Wo (h.Θ a b) * dlg Y.H Y.q.left Q.P.L (dd a) (h.j k.1) (h'.j k.2) Wo …` from `⟨_, fun _ _ => rfl⟩`. Establish `rP : ∀ (k : K) (Wo : Y.H.left.Opens), Wo ≤ Wk k → rsT (P k (Wk k)) Wo = P k Wo`. Introduce `k Wo hWo`.
+
+Establish `e : ∀ b, rsT (dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) (Wk k)) Wo = dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) Wo` using `fun b => rsT_dlg _ _ _ (hddF b) _ _ le_top hWo (hWU k)`. Establish `e' : rsT (dlg Y.H Y.q.left Q.P.L (h.d k.1) (h.j k.1) (h'.j k.2) (Wk k)) Wo = dlg Y.H Y.q.left Q.P.L (h.d k.1) (h.j k.1) (h'.j k.2) Wo` using `rsT_dlg _ _ _ (h.lift k.1).1 _ _ (l1 k) hWo (hWU k)`. Simplify using `only [hP, rsT_sub, rsT_add, rsT_mul, rsT_sum, rsT_two hWo, rsT_constFn _ hWo, e, e', rsT_rsT (l1 k) hWo, rsT_rsT (l2 k) hWo]`. Establish `wP : ∀ k : K, IsWt Y 0 _ (P k (Wk k))` using `fun k => by`. Rewrite using `[hP]`.
+
+Establish `wd : IsWt Y 0 (Wk k) (dlg Y.H Y.q.left Q.P.L (h.d k.1) (h.j k.1) (h'.j k.2) (Wk k))` using `wℓ k _ fun f hf => (hB k.1).2.2.2 0 (V k.1 ⊓ V' k.2) (l1 k) f hf`. Establish `wb : ∀ b, IsWt Y 0 (Wk k) (dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) (Wk k))` using `fun b => wℓ k (dd b) fun f hf => isWt_inv (hinv b) hf`. Establish `w2 : IsWt Y 0 (Wk k) (2 : Γ(Y.H.left, Wk k))`. Use `isWt_zero_constFn (Y := Y) (Wk k) 2` as an intermediate fact. Rewrite `this` using `[constFn_two]`. Then use the resulting hypothesis.
+
+Use `isWt_sub (isWt_add (isWt_zero_mul w2 (isWt_sub (GlobalTheory.Heat.Adjust.isWt_rsT Y (l1 k) (hB k.1).2.1) (GlobalTheory.Heat.Adjust.isWt_rsT Y (l2 k) (hB' k.2).2.1))) (isWt_zero_mul w2 wd)) (isWt_sum _ _ fun a _ => isWt_sum _ _ fun b _ => isWt_zero_mul (isWt_zero_mul (isWt_zero_co …` and prove the remaining obligations. Establish `rel : ∀ (k k' : K) (Wo : Y.H.left.Opens), Wo ≤ Wk k ⊓ Wk k' → P k' Wo - P k Wo = 2 * ∑ a, constFn Y.H.hom Wo (e a) * dlg Y.H Y.q.left Q.P.L (dd a) (h'.j k.2) (h'.j k'.2) Wo`. Introduce `k k' Wo hWo`. Establish `h1 : Wo ≤ Wk k` using `hWo.trans inf_le_left`. Establish `h2 : Wo ≤ Wk k'` using `hWo.trans inf_le_right`.
+
+Establish `a1` using `h1.trans (l1 k)`. Establish `a2` using `h2.trans (l1 k')`. Establish `b1` using `h1.trans (l2 k)`. Establish `b2` using `h2.trans (l2 k')`. Establish `w1` using `W1 k.1 k'.1 Wo (le_inf a1 a2)`.
+
+Establish `w2` using `W2 k.2 k'.2 Wo (le_inf b1 b2)`. Establish `t1 : Wo ≤ Y.q.left ⁻¹ᵁ (Q.P.L.U (h.j k.1) ⊓ Q.P.L.U (h.j k'.1) ⊓ Q.P.L.U (h'.j k.2))` using `le_inf (le_inf (uh a1) (uh a2)) (uh' b1)`. Establish `t2 : Wo ≤ Y.q.left ⁻¹ᵁ (Q.P.L.U (h.j k'.1) ⊓ Q.P.L.U (h'.j k.2) ⊓ Q.P.L.U (h'.j k'.2))` using `le_inf (le_inf (uh a2) (uh' b1)) (uh' b2)`. Establish `c1 : ∀ δ : Fld Y.H.left, IsDer (δ Wo) → dlg Y.H Y.q.left Q.P.L δ (h.j k.1) (h'.j k.2) Wo = dlg Y.H Y.q.left Q.P.L δ (h.j k.1) (h.j k'.1) Wo + dlg Y.H Y.q.left Q.P.L δ (h.j k'.1) (h'.j k.2) Wo` using `fun δ hδ => dlg_cocycle Y.H Y.q.left Q.P.L hL _ _ _ hδ t1`. Establish `c2 : ∀ δ : Fld Y.H.left, IsDer (δ Wo) → dlg Y.H Y.q.left Q.P.L δ (h.j k'.1) (h'.j k'.2) Wo = dlg Y.H Y.q.left Q.P.L δ (h.j k'.1) (h'.j k.2) Wo + dlg Y.H Y.q.left Q.P.L δ (h'.j k.2) (h'.j k'.2) Wo` using `fun δ hδ => dlg_cocycle Y.H Y.q.left Q.P.L hL _ _ _ hδ t2`.
+
+Establish `hd1 : IsDer (h.d k.1 Wo)` using `isDer_of_isField (h.lift k.1).1 a1`. Establish `hd2 : IsDer (h.d k'.1 Wo)` using `isDer_of_isField (h.lift k'.1).1 a2`. Establish `KSx : dlg Y.H Y.q.left Q.P.L (h.d k.1) (h.j k'.1) (h'.j k.2) Wo - dlg Y.H Y.q.left Q.P.L (h.d k'.1) (h.j k'.1) (h'.j k.2) Wo = ∑ a, ∑ b, constFn Y.H.hom Wo (h.Θ a b) * dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h.j k'.1) Wo * dlg Y.H Y.q.left Q.P.L (dd a) (h.j k'.1) (h'.j k.2) Wo`. Use `w1.1 (pbT Y.q.left (Q.P.L.g (h.j k'.1) (h'.j k.2)).val Wo)` as an intermediate fact. Unfold `dlg at this ⊢`.
+
+Rewrite using `[← sub_mul, this, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Establish `KSz : dlg Y.H Y.q.left Q.P.L (h.d k'.1) (h'.j k.2) (h'.j k'.2) Wo - dlg Y.H Y.q.left Q.P.L (h'.d k.2) (h'.j k.2) (h'.j k'.2) Wo = ∑ a, constFn Y.H.hom Wo (e a) * dlg Y.H Y.q.left Q.P.L (dd a) (h'.j k.2) (h'.j k'.2) Wo + ∑ a, ∑ b, constFn Y.H.hom Wo (h.Θ a b) * dlg Y.H Y.q.left Q. …`.
+
+Use `G2 k'.1 k.2 Wo (le_inf a2 b1) (pbT Y.q.left (Q.P.L.g (h'.j k.2) (h'.j k'.2)).val Wo)` as an intermediate fact. Unfold `dlg at this ⊢`. Rewrite using `[← sub_mul, this, add_mul, Finset.sum_mul, Finset.sum_mul]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Establish `q1` using `quad_add (hs Wo) (fun a => dlg Y.H Y.q.left Q.P.L (dd a) (h.j k.1) (h.j k'.1) Wo) (fun a => dlg Y.H Y.q.left Q.P.L (dd a) (h.j k'.1) (h'.j k.2) Wo)`. Establish `q2` using `quad_add (hs Wo) (fun a => dlg Y.H Y.q.left Q.P.L (dd a) (h.j k'.1) (h'.j k.2) Wo) (fun a => dlg Y.H Y.q.left Q.P.L (dd a) (h'.j k.2) (h'.j k'.2) Wo)`.
+
+Rewrite using `[hP, hP, c1 _ hd1, c2 _ hd2]`. Simplify using `only [c1 _ (hdd _ Wo), c2 _ (hdd _ Wo)]`. Rewrite using `[q1, q2]`. Take the linear combination `-w1.2.1 + w2.2.1 - 2 * KSx + 2 * KSz`. Establish `G1` using `GlobalTheory.T.invariantField_comb_kills_weightZero_of_coboundary R Q O oa Y n v dd hinv K Wk (fun k => h'.j k.2) (fun k => ⟨_, rfl⟩) hcov (fun k => (hWU k).trans (Y.q.left.preimage_mono inf_le_right)) (fun k => constFn Y.H.hom (Wk k) (algebraMap ℚ R (1 / 2)) * P k (Wk k)) e (fun …`.
+
+Simplify using `only [rsT_mul, rsT_constFn _ (hWo.trans inf_le_left), rsT_constFn _ (hWo.trans inf_le_right), rP k Wo (hWo.trans inf_le_left), rP k' Wo (hWo.trans inf_le_right)]`. Rewrite using `[← mul_sub, rel k k' Wo hWo, ← _root_.mul_assoc, mul_comm (constFn _ _ _), two, _root_.one_mul])`. Establish `kill : ∀ (i₁ i₂ : h'.J) (Wo : Y.H.left.Opens), Wo ≤ h'.W i₁ → Wo ≤ h'.W i₂ → ∑ a, constFn Y.H.hom Wo (e a) * dlg Y.H Y.q.left Q.P.L (dd a) (h'.j i₁) (h'.j i₂) Wo = 0`. Introduce `i₁ i₂ Wo hw₁ hw₂`. Establish `hWo : Wo ≤ Y.q.left ⁻¹ᵁ (Q.P.L.U (h'.j i₁) ⊓ Q.P.L.U (h'.j i₂))` using `le_inf (uh' hw₁) (uh' hw₂)`.
+
+Establish `g` using `G1 (Q.P.L.U (h'.j i₁) ⊓ Q.P.L.U (h'.j i₂)) (pbT Y.q.left (Q.P.L.g (h'.j i₁) (h'.j i₂)).val (Y.q.left ⁻¹ᵁ (Q.P.L.U (h'.j i₁) ⊓ Q.P.L.U (h'.j i₂)))) (isWt_zero_pbT _ le_rfl)`. Establish `g'` using `congrArg (fun s => rsT s Wo) g`. Establish `e1 : ∀ a, rsT (constFn Y.H.hom (Y.q.left ⁻¹ᵁ (Q.P.L.U (h'.j i₁) ⊓ Q.P.L.U (h'.j i₂))) (e a) * dd a _ (pbT Y.q.left (Q.P.L.g (h'.j i₁) (h'.j i₂)).val (Y.q.left ⁻¹ᵁ (Q.P.L.U (h'.j i₁) ⊓ Q.P.L.U (h'.j i₂))))) Wo = constFn Y.H.hom Wo (e a) * dd a Wo (pbT Y.q.left (Q.P.L.g (h'.j i₁) ( …` using `fun a => by`. Rewrite using `[rsT_mul, rsT_constFn _ hWo, ← field_rsT (hddF a) le_top hWo, rsT_pbT _ le_rfl hWo]`. Simplify using `only [rsT_sum, rsT_zero, e1] at g'`.
+
+Unfold `dlg`. Use `congrArg (· * pbT Y.q.left (Q.P.L.g (h'.j i₁) (h'.j i₂))⁻¹.val Wo) g'` as an intermediate fact. Simplify using `only [zero_mul, Finset.sum_mul] at this`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+
+Take `⟨r₂, hr₂⟩` from `GlobalTheory.T.raynaud_weight_zero_compatible_functions_eq_base_constant R Q O oa Y K Wk (fun k => ⟨_, rfl⟩) hcov (fun k => P k (Wk k)) wP (fun k k' Wo hWo => by`. Rewrite using `[rP k Wo (hWo.trans inf_le_left), rP k' Wo (hWo.trans inf_le_right)]`. Use `rel k k' Wo hWo` as an intermediate fact. Rewrite `this` using `[kill k.2 k'.2 Wo (hWo.trans (inf_le_left.trans (l2 k))) (hWo.trans (inf_le_right.trans (l2 k')))]`. Take the linear combination `-this)`.
+
+Take `⟨Pq, hPq⟩ : ∃ Pq : K → ∀ Wo : Y.H.left.Opens, Γ(Y.H.left, Wo), ∀ k Wo, Pq k Wo = 2 * (rsT (h.p' k.1) Wo - rsT (h'.p' k.2) Wo) + 2 * ∑ a, constFn Y.H.hom Wo (h.u a) * dlg Y.H Y.q.left Q.P.L (dd a) (h.j k.1) (h'.j k.2) Wo - ∑ a, ∑ b, constFn Y.H.hom Wo (h.Θ a b) * dd a Wo (dlg Y.H …` from `⟨_, fun _ _ => rfl⟩`. Establish `rQ : ∀ (k : K) (Wo : Y.H.left.Opens), Wo ≤ Wk k → rsT (Pq k (Wk k)) Wo = Pq k Wo`. Introduce `k Wo hWo`. Establish `e : ∀ b, rsT (dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) (Wk k)) Wo = dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) Wo` using `fun b => rsT_dlg _ _ _ (hddF b) _ _ le_top hWo (hWU k)`. Establish `e2 : ∀ a b, rsT (dd a (Wk k) (dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) (Wk k))) Wo = dd a Wo (dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) Wo)` using `fun a b => by`.
+
+Rewrite using `[← field_rsT (hddF a) le_top hWo, e b]`. Simplify using `only [hPq, rsT_sub, rsT_add, rsT_mul, rsT_sum, rsT_two hWo, rsT_constFn _ hWo, e, e2, rsT_rsT (l1 k) hWo, rsT_rsT (l2 k) hWo]`. Establish `wQ : ∀ k : K, IsWt Y 0 _ (Pq k (Wk k))` using `fun k => by`. Rewrite using `[hPq]`. Establish `wb : ∀ b, IsWt Y 0 (Wk k) (dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) (Wk k))` using `fun b => wℓ k (dd b) fun f hf => isWt_inv (hinv b) hf`.
+
+Establish `w2 : IsWt Y 0 (Wk k) (2 : Γ(Y.H.left, Wk k))`. Use `isWt_zero_constFn (Y := Y) (Wk k) 2` as an intermediate fact. Rewrite `this` using `[constFn_two]`. Then use the resulting hypothesis. Use `isWt_sub (isWt_add (isWt_zero_mul w2 (isWt_sub (GlobalTheory.Heat.Adjust.isWt_rsT Y (l1 k) (hB k.1).2.2.1) (GlobalTheory.Heat.Adjust.isWt_rsT Y (l2 k) (hB' k.2).2.2.1))) (isWt_zero_mul w2 (isWt_sum _ _ fun a _ => isWt_zero_mul (isWt_zero_constFn _ _) (wb a)))) (isWt_sum _ _ fun a …` and prove the remaining obligations. Take `⟨r₁, hr₁⟩` from `GlobalTheory.T.raynaud_weight_zero_compatible_functions_eq_base_constant R Q O oa Y K Wk (fun k => ⟨_, rfl⟩) hcov (fun k => Pq k (Wk k)) wQ (fun k k' Wo hWo => by`.
+
+Rewrite using `[rQ k Wo (hWo.trans inf_le_left), rQ k' Wo (hWo.trans inf_le_right)]`. Establish `h1 : Wo ≤ Wk k` using `hWo.trans inf_le_left`. Establish `h2 : Wo ≤ Wk k'` using `hWo.trans inf_le_right`. Establish `a1` using `h1.trans (l1 k)`. Establish `a2` using `h2.trans (l1 k')`.
+
+Establish `b1` using `h1.trans (l2 k)`. Establish `b2` using `h2.trans (l2 k')`. Establish `w1` using `(W1 k.1 k'.1 Wo (le_inf a1 a2)).2.2`. Establish `w2` using `(W2 k.2 k'.2 Wo (le_inf b1 b2)).2.2`. Establish `t1 : Wo ≤ Y.q.left ⁻¹ᵁ (Q.P.L.U (h.j k.1) ⊓ Q.P.L.U (h.j k'.1) ⊓ Q.P.L.U (h'.j k.2))` using `le_inf (le_inf (uh a1) (uh a2)) (uh' b1)`.
+
+Establish `t2 : Wo ≤ Y.q.left ⁻¹ᵁ (Q.P.L.U (h.j k'.1) ⊓ Q.P.L.U (h'.j k.2) ⊓ Q.P.L.U (h'.j k'.2))` using `le_inf (le_inf (uh a2) (uh' b1)) (uh' b2)`. Establish `c1 : ∀ b, dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h'.j k.2) Wo = dlg Y.H Y.q.left Q.P.L (dd b) (h.j k.1) (h.j k'.1) Wo + dlg Y.H Y.q.left Q.P.L (dd b) (h.j k'.1) (h'.j k.2) Wo` using `fun b => dlg_cocycle Y.H Y.q.left Q.P.L hL _ _ _ (hdd b Wo) t1`. Establish `c2 : ∀ b, dlg Y.H Y.q.left Q.P.L (dd b) (h.j k'.1) (h'.j k'.2) Wo = dlg Y.H Y.q.left Q.P.L (dd b) (h.j k'.1) (h'.j k.2) Wo + dlg Y.H Y.q.left Q.P.L (dd b) (h'.j k.2) (h'.j k'.2) Wo` using `fun b => dlg_cocycle Y.H Y.q.left Q.P.L hL _ _ _ (hdd b Wo) t2`. Establish `dadd : ∀ a (x y : Γ(Y.H.left, Wo)), dd a Wo (x + y) = dd a Wo x + dd a Wo y` using `fun a => (hdd a Wo).1`. Rewrite using `[hPq, hPq]`.
+
+Simplify using `only [c1, c2, dadd, mul_add, Finset.sum_add_distrib]`. Take the linear combination `w1 - w2)`. Use `⟨e, algebraMap ℚ R (1 / 2) * r₂, algebraMap ℚ R (1 / 2) * r₁, G1, fun i i' Wo hWo => ⟨G2 i i' Wo hWo, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hk : Wo ≤ Wk (i, i')` using `hWo.trans (hWk (i, i')).ge`. Use `rP (i, i') Wo hk` as an intermediate fact.
+
+Rewrite `this` using `[hr₂, rsT_constFn _ hk, hP]`. Rewrite using `[constFn_mul, ← _root_.mul_assoc, two Wo, _root_.one_mul]`. Conclude with `this.symm`. Establish `hk : Wo ≤ Wk (i, i')` using `hWo.trans (hWk (i, i')).ge`. Use `rQ (i, i') Wo hk` as an intermediate fact.
+
+Rewrite `this` using `[hr₁, rsT_constFn _ hk, hPq]`. Rewrite using `[constFn_mul, ← _root_.mul_assoc, two Wo, _root_.one_mul]`. Conclude with `this.symm`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [Algebra ℚ R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∀ (D : Derivation ℤ R R) (h h' : Heat Y.H Y.q.left Q.P.L dd ⇑D), IsBasic Y h → IsBasic Y h' → h.Θ = h'.Θ → h.u = h'.u → ∃ (e : Fin n → R) (π π' : R), (∀ (V : Q.P.A.left.Opens) f, IsWt Y 0 (Y.q.left ⁻¹ᵁ V) f → ∑ a, constFn Y.H.hom _ (e a) * dd a _ f = 0) ∧ ∀ (i : h.J) (i' : h'.J) (Wo : Y.H.left.Opens), Wo ≤ h.W i ⊓ h'.W i' → (∀ f, h.d i Wo f - h'.d i' Wo f = ∑ a, constFn Y.H.hom Wo (e a) * dd a Wo f + ∑ a, ∑ b, constFn Y.H.hom Wo (h.Θ a b) * dlg Y.H Y.q.left Q.P.L (dd b) (h.j i) (h'.j i') Wo * dd a Wo f) ∧ 2 * (rsT (h.p i) Wo - rsT (h'.p i') Wo) + 2 * dlg Y.H Y.q.left Q.P.L (h.d i) (h.j i) (h'.j i') Wo - ∑ a, ∑ b, constFn Y.H.hom Wo (h.Θ a b) * dlg Y.H Y.q.left Q.P.L (dd a) (h.j i) (h'.j i') Wo * dlg Y.H Y.q.left Q.P.L (dd b) (h.j i) (h'.j i') Wo = 2 * constFn Y.H.hom Wo π ∧ 2 * (rsT (h.p' i) Wo - rsT (h'.p' i') Wo) + 2 * ∑ a, constFn Y.H.hom Wo (h.u a) * dlg Y.H Y.q.left Q.P.L (dd a) (h.j i) (h'.j i') Wo - ∑ a, ∑ b, constFn Y.H.hom Wo (h.Θ a b) * dd a Wo (dlg Y.H Y.q.left Q.P.L (dd b) (h.j i) (h'.j i') Wo) = 2 * constFn Y.H.hom Wo π' := by
   intro R _ _ _ _ _ Q O _ _ _ oa Y n v dd hinv D h h' hB hB' hΘ hu
   have hL : Q.P.L.IsLB := Q.P.isLB

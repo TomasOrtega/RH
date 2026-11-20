@@ -14,6 +14,9 @@ namespace GlobalTheory.ThK.SkewChain
 
 open GlobalTheory.ThK.TowerInt
 
+/- English proof (translation)
+Take `⟨_, Z₁, _, _, hsk, _⟩` from `GlobalTheory.ThK.Relat.exists_adapted hB h hP`. Conclude with `⟨Z₁, _, _, hsk⟩`.
+-/
 theorem skew_step {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} (hB : B.IsGood σ) {m m₁ r s : ℕ} {Y Z : Spc F E m} {Y₁ : Spc F E m₁}
     {P : Plane E m m₁} (h : (reJ Y Z).IsSkew σ B r s) (hP : IsIsoPlane σ B P Y Y₁) :
@@ -21,6 +24,11 @@ theorem skew_step {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   obtain ⟨_, Z₁, _, _, hsk, _⟩ := GlobalTheory.ThK.Relat.exists_adapted hB h hP
   exact ⟨Z₁, _, _, hsk⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d Y W Mo χX χW om r s r' s' hpair d₁ H' i₀ i₁ sp pl p hH hiso i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `h0`. Establish `hIP : IsIsoPlane σ B H' W (sp 0)` using `IsIsoPlane.of_adapted hH hpair.skew.cartan (hiso 0 h0).2.2.2.2.2.2.1`.
+
+Conclude with `skew_step hpair.base (Z := W) (P := H') hpair.skew hIP`. Consider the case `succ i ih`. Introduce `hi`. Take `⟨Z, r₁, s₁, h⟩` from `ih (by omega)`. Conclude with `skew_step hpair.base h (hiso i (by omega))`.
+-/
 theorem skew_chain : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (Y : Spc F E n) (W : Spc F E d)
     (Mo : Model σ Y W) (χX χW : Chr F E) (om : Rep σ Y W) (r s r' s' : ℕ), IsPair B Mo χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (sp : ∀ j : ℕ, Spc F E (d₁ - 2 * j))

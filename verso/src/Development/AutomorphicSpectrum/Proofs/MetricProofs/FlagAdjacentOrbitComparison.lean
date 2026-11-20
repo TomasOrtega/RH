@@ -19,6 +19,17 @@ section Cols
 
 variable {N j : ℕ} {a b ca cb : Fin N}
 
+/- English proof (translation)
+Establish `hbN` using `b.2`. Break down `hcase with h | h` into its components or cases. Establish `h1 : (a : ℕ) + 1 ≤ j` using `by omega`. Establish `h2 : (b : ℕ) + 1 ≤ j` using `by omega`. Simplify using `only [lastCol, if_pos h1] at hca`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos h1, if_pos h2, Finset.mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos h1]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos h1]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ¬ (a : ℕ) + 1 ≤ j` using `by omega`. Establish `h2 : ¬ (b : ℕ) + 1 ≤ j` using `by omega`.
+
+Simplify using `only [lastCol, if_neg h1] at hca`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg h1, if_neg h2, Finset.mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg h1]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg h1]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cols_next (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hcase : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1) :
     stepCols N j b = insert cb (stepCols N j a) ∧ cb ∉ stepCols N j a ∧ ca ∈ stepCols N j a := by
@@ -49,6 +60,13 @@ theorem cols_next (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hcase : (b : ℕ) < j
     · simp only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg h1]
       omega
 
+/- English proof (translation)
+Establish `hbN` using `b.2`. Establish `hp1` using `hp.1`. Break down `hcase with h | h` into its components or cases. Establish `h1 : (a : ℕ) + 1 ≤ j` using `by omega`. Establish `h2 : (a' : ℕ) + 1 ≤ j` using `by omega`.
+
+Simplify using `only [lastCol, if_pos h1] at hca`. Use extensionality with `c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos h1, if_pos h2, Finset.mem_erase, ne_eq, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ¬ (a : ℕ) + 1 ≤ j` using `by omega`.
+
+Establish `h2 : ¬ (a' : ℕ) + 1 ≤ j` using `by omega`. Simplify using `only [lastCol, if_neg h1] at hca`. Use extensionality with `c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg h1, if_neg h2, Finset.mem_erase, ne_eq, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cols_prev (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hcase : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) {a' : Fin N} (ha' : (a' : ℕ) + 1 = a) (hp : IsProperStep N j a') :
     stepCols N j a' = (stepCols N j a).erase ca := by
@@ -70,6 +88,11 @@ theorem cols_prev (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hcase : (b : ℕ) < j
       Finset.mem_erase, ne_eq, Fin.ext_iff]
     omega
 
+/- English proof (translation)
+Establish `hbN` using `b.2`. Rewrite using `[Finset.eq_empty_iff_forall_notMem]`. Introduce `c`. Distinguish the cases in `h1 : (a : ℕ) + 1 ≤ j`. Simplify using `only [lastCol, if_pos h1] at hca`.
+
+Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos h1, Finset.mem_erase, ne_eq, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [lastCol, if_neg h1] at hca`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg h1, Finset.mem_erase, ne_eq, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cols_first (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hcase : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) (h0 : (a : ℕ) = 0 ∨ (a : ℕ) = j) :
     (stepCols N j a).erase ca = ∅ := by
@@ -86,6 +109,13 @@ theorem cols_first (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hcase : (b : ℕ) < 
       Finset.mem_erase, ne_eq, Fin.ext_iff]
     omega
 
+/- English proof (translation)
+Establish `hbN` using `b.2`. Establish `hs : (ca : ℕ) < N - j ↔ (cb : ℕ) < N - j`. Distinguish the cases in `h1 : (a : ℕ) + 1 ≤ j`. Simplify using `only [lastCol, if_pos h1] at hca`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [lastCol, if_neg h1] at hca`. Use linear arithmetic over natural numbers and integers. Introduce `r s h`. Establish `hrs : r ≠ s` using `fun e => h (by rw [e])`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hrs, zero_add, Matrix.single_apply_of_ne]`.
+
+Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h hs.symm`.
+-/
 theorem transv_blockDiag (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hcase : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1) (t : ℂ) :
     IsBlockDiag j (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) ℂ) := by
@@ -102,6 +132,15 @@ theorem transv_blockDiag (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hcase : (b : �
   rintro ⟨rfl, rfl⟩
   exact h hs.symm
 
+/- English proof (translation)
+Establish `hbN` using `b.2`. Distinguish the cases in `h1 : (b : ℕ) + 1 = j`. Establish `h2 : (a : ℕ) < j` using `by omega`. Establish `e : stepCols N j b = wIdx N j`. Use extensionality with `c`.
+
+Use `c.2` as an intermediate fact. Simplify using `only [stepCols, wIdx, Finset.mem_filter, Finset.mem_univ, true_and, if_pos h1.le]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Simplify using `only [Fib.facOf, if_pos h1, if_pos h2]`.
+
+Establish `h3 : (b : ℕ) + 1 = N`. Assume the negation of the conclusion as `h3`. Conclude with `hp ⟨h1, h3⟩`. Establish `h4 : ¬ (b : ℕ) + 1 ≤ j` using `by omega`. Establish `e : stepCols N j b = omIdx N j`.
+
+Use extensionality with `c`. Simplify using `only [stepCols, omIdx, Finset.mem_filter, Finset.mem_univ, true_and, if_neg h4]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Simplify using `only [Fib.facOf, if_neg h1]`.
+-/
 theorem fac_next (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hcase : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hp : ¬ IsProperStep N j b) (h : Matrix (Fin N) (Fin N) ℂ) :
     Fib.facOf N j a h b = minorIJ h (stepCols N j b) (stepCols N j b) := by
@@ -126,6 +165,11 @@ theorem fac_next (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hcase : (b : ℕ) < j 
     rw [e]
     simp only [Fib.facOf, if_neg h1]
 
+/- English proof (translation)
+Establish `hbN` using `b.2`. Establish `h1 : (a' : ℕ) + 1 = j`. Assume the negation of the conclusion as `h1`. Conclude with `hp ⟨h1, by omega⟩`. Establish `h2 : ¬ (a : ℕ) < j` using `by omega`.
+
+Conclude with `⟨by simp only [Fib.facOf, if_pos h1, if_neg h2], by omega⟩`.
+-/
 theorem fac_prev (hb : (b : ℕ) = a + 1) {a' : Fin N} (ha' : (a' : ℕ) + 1 = a) (hp : ¬ IsProperStep N j a')
     (h : Matrix (Fin N) (Fin N) ℂ) : Fib.facOf N j a h a' = 1 ∧ (a : ℕ) = j := by
   have hbN := b.2
@@ -135,6 +179,11 @@ theorem fac_prev (hb : (b : ℕ) = a + 1) {a' : Fin N} (ha' : (a' : ℕ) + 1 = a
   have h2 : ¬ (a : ℕ) < j := by omega
   exact ⟨by simp only [Fib.facOf, if_pos h1, if_neg h2], by omega⟩
 
+/- English proof (translation)
+Establish `hN : 0 < N` using `by have := i.2; omega`. Establish `hd'` using `GlobalTheory.CompanionTheory.Ar.PB.CPts.detFac_ne_zero hj (⟨N - 1, by omega⟩ : Fin N) hh hd`. Establish `e1 : j ≤ N - 1 + 1` using `by omega`. Simplify using `only [detFac, if_pos e1, show N - 1 + 1 = N by omega, if_true, if_pos hj] at hd'`. Simplify using `only [Fib.facOf]`.
+
+Use `left_ne_zero_of_mul hd'` as an intermediate fact. Use `right_ne_zero_of_mul hd'` as an intermediate fact. Apply the tactic sequence `split_ifs <;> first | assumption | simp`.
+-/
 theorem fac_ne_zero (hj : j ≤ N) (i : Fin N) {h : Matrix (Fin N) (Fin N) ℂ} (hh : IsBlockDiag j h) (hd : h.det ≠ 0)
     (a : Fin N) : Fib.facOf N j a h i ≠ 0 := by
   have hN : 0 < N := by have := i.2; omega
@@ -152,6 +201,15 @@ section Xi
 
 variable {Ψ : Type} [DecidableEq Ψ] {N : ℕ}
 
+/- English proof (translation)
+Establish `e : ∀ i : Fin N, (xiCoef τ a (τ, i) : ℝ) * D i = (if (i : ℕ) + 1 = a then D i else 0) + (if i = b then D i else 0) - (if i = a then 2 * D i else 0)`. Introduce `i`. Establish `e1 : ((i : ℕ) = (a : ℕ) + 1) ↔ i = b` using `by rw [Fin.ext_iff, hb]`. Simplify using `only [xiCoef, if_true, e1]`. Use `push_cast`.
+
+Apply the tactic sequence `split_ifs <;> first | ring | simp`. Simplify using `only [e, Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congr 2`. Distinguish the cases in `ha : (a : ℕ) = 0`. Rewrite using `[h0 ha]`.
+
+Conclude with `Finset.sum_eq_zero fun i _ => if_neg (by omega)`. Establish `hlt` using `a.2`. Rewrite using `[Finset.sum_eq_single (⟨a - 1, by omega⟩ : Fin N)]`. Rewrite using `[if_pos (show ((a : ℕ) - 1) + 1 = a by omega)]`. Conclude with `hD _ (show ((a : ℕ) - 1) + 1 = a by omega)`.
+
+Introduce `i _ hne`. Use `if_neg fun e => hne (Fin.ext ?_)` and prove the remaining obligations. Use `show (i : ℕ) = (a : ℕ) - 1`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+-/
 theorem xi_sum (τ : Ψ) {a b : Fin N} (hb : (b : ℕ) = a + 1) (D : Fin N → ℝ) (D₀ : ℝ)
     (hD : ∀ a' : Fin N, (a' : ℕ) + 1 = a → D a' = D₀) (h0 : (a : ℕ) = 0 → D₀ = 0) :
     ∑ i, (xiCoef τ a (τ, i) : ℝ) * D i = D₀ + D b - 2 * D a := by
@@ -184,6 +242,9 @@ section Lines
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
   {Ψ : Type} {N j : ℕ}
 
+/- English proof (translation)
+Establish `hn : ∀ k, ‖c k‖ ≠ 0` using `fun k => norm_ne_zero_iff.2 (hc k)`. Rewrite using `[(fsHerm ι d).smul c z hc, Real.log_mul (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hn k)) ((fsHerm ι d).pos z hz).ne', Real.log_prod (fun k _ => zpow_ne_zero _ (hn k)), add_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => Real.log_zpow _ _`.
+-/
 theorem log_fs_smul (d : K → ℤ) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {z : (Σ k, ι k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     Real.log ((fsHerm ι d).h fun p => c p.1 * z p) =
@@ -195,6 +256,15 @@ theorem log_fs_smul (d : K → ℤ) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {z :
   congr 1
   exact Finset.sum_congr rfl fun k _ => Real.log_zpow _ _
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single k₀]`. Establish `e : M.dy p k₀ = 1`. Unfold `FlagModel.dy`. Rewrite using `[dif_neg (fun h => h p hk), if_pos hk]`. Rewrite using `[e]`.
+
+Simplify using the standard rewrite rules. Introduce `k _ hne`. Distinguish the cases in `h : ∀ p', M.blk p' ≠ some k`. Rewrite using `[hc k h]`. Simplify using the standard rewrite rules.
+
+Establish `e : M.dy p k = 0`. Unfold `FlagModel.dy`. Rewrite using `[dif_neg h, if_neg fun e => hne (by rw [hk] at e; exact (Option.some_injective _ e).symm)]`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem dy_sum_some (M : FlagModel y Ψ N j) {p : Ψ × Fin N} {k₀ : K} (hk : M.blk p = some k₀) {c : K → ℂ}
     (hc : ∀ k, (∀ p', M.blk p' ≠ some k) → c k = 1) :
     ∑ k, (M.dy p k : ℝ) * Real.log ‖c k‖ = Real.log ‖c k₀‖ := by
@@ -215,6 +285,11 @@ theorem dy_sum_some (M : FlagModel y Ψ N j) {p : Ψ × Fin N} {k₀ : K} (hk : 
       simp
   · simp
 
+/- English proof (translation)
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ∀ p', M.blk p' ≠ some k`. Rewrite using `[hc k h]`. Simplify using the standard rewrite rules. Establish `e : M.dy p k = 0`.
+
+Unfold `FlagModel.dy`. Rewrite using `[dif_neg h, if_neg fun e => by rw [hp] at e; exact absurd e (by simp)]`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+-/
 theorem dy_sum_none (M : FlagModel y Ψ N j) {p : Ψ × Fin N} (hp : M.blk p = none) {c : K → ℂ}
     (hc : ∀ k, (∀ p', M.blk p' ≠ some k) → c k = 1) :
     ∑ k, (M.dy p k : ℝ) * Real.log ‖c k‖ = 0 := by
@@ -228,6 +303,11 @@ theorem dy_sum_none (M : FlagModel y Ψ N j) {p : Ψ × Fin N} (hp : M.blk p = n
     rw [e]
     simp
 
+/- English proof (translation)
+Introduce `k hk`. Establish `a₁ : z ⟨k, F.c ⟨k, hk⟩⟩ = 1` using `h₁ ⟨k, hk⟩`. Establish `a₂ : z' ⟨k, F.c ⟨k, hk⟩⟩ = 1` using `h₂ ⟨k, hk⟩`. Rewrite `a₂` using `[hz']`. Establish `a₃ : c k * z ⟨k, F.c ⟨k, hk⟩⟩ = 1` using `a₂`.
+
+Rewrite `a₃` using `[a₁, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem base_one (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) {z z' : (Σ k, ι k) → ℂ} {c : K → ℂ}
     (hz' : z' = fun p => c p.1 * z p) (h₁ : ∀ k, basePart M.blk z ⟨k, F.c k⟩ = 1)
     (h₂ : ∀ k, basePart M.blk z' ⟨k, F.c k⟩ = 1) : ∀ k, (∀ p', M.blk p' ≠ some k) → c k = 1 := by
@@ -238,6 +318,9 @@ theorem base_one (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) {z 
   have a₃ : c k * z ⟨k, F.c ⟨k, hk⟩⟩ = 1 := a₂
   rwa [a₁, mul_one] at a₃
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Use `show z' ⟨q.1.1, q.2⟩ = z ⟨q.1.1, q.2⟩`. Rewrite using `[hz']`. Use `show c q.1.1 * _ = _`. Rewrite using `[hc _ q.1.2, one_mul]`.
+-/
 theorem base_eq {blk : Ψ × Fin N → Option K} {z z' : (Σ k, ι k) → ℂ} {c : K → ℂ}
     (hz' : z' = fun p => c p.1 * z p) (hc : ∀ k, (∀ p', blk p' ≠ some k) → c k = 1) :
     basePart blk z' = basePart blk z := by
@@ -247,6 +330,11 @@ theorem base_eq {blk : Ψ × Fin N → Option K} {z z' : (Σ k, ι k) → ℂ} {
   show c q.1.1 * _ = _
   rw [hc _ q.1.2, one_mul]
 
+/- English proof (translation)
+Use `Ind.minor_eq_of_plk M hb hF hG hk hg' hg (fun m => ?_) I` and prove the remaining obligations. Establish `a` using `e.2 k hk m`. Establish `a'` using `e'.2 k hk m`. Rewrite `a` using `[hz]`. Rewrite `a'` using `[hzb]`.
+
+Simplify using `only [plk]`. Rewrite using `[← a, ← a', hz']`.
+-/
 theorem minors_prop (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.blk} {bp : (Σ k, baseIdx ι M.blk k) → ℂ}
     (hb : bp ∈ mcPts (mCoordIdeal M.x)) (hF : M.IsFrame F) (hG : M.GoodAt F (mCoordIdeal bp)) {p : Ψ × Fin N} {k : K}
     (hk : M.blk p = some k) {z z' : (Σ k, ι k) → ℂ} {c : K → ℂ} (hz' : z' = fun q => c q.1 * z q)
@@ -261,6 +349,11 @@ theorem minors_prop (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.blk} 
   simp only [plk]
   rw [← a, ← a', hz']
 
+/- English proof (translation)
+Take `⟨h0, r1, r2⟩` from `hG.2.2 p hp`. Establish `e` using `(reg_mul hb r1 r2).2`. Rewrite `e` using `[mul_inv_cancel₀ h0]`. Establish `e1 : valAt M.x (1 : M.Ω) bp = 1` using `map_one (regVal M.x hb)`. Rewrite `e` using `[e1]`.
+
+Conclude with `left_ne_zero_of_mul (e ▸ one_ne_zero)`.
+-/
 theorem val_ups_ne (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.blk} {bp : (Σ k, baseIdx ι M.blk k) → ℂ}
     (hb : bp ∈ mcPts (mCoordIdeal M.x)) (hG : M.GoodAt F (mCoordIdeal bp)) {p : Ψ × Fin N} (hp : M.blk p = none) :
     valAt M.x (F.υ p) bp ≠ 0 := by
@@ -277,10 +370,16 @@ section Scal
 
 variable {N j : ℕ}
 
+/- English proof (translation)
+Unfold `minorIJ`. Rewrite using `[dif_pos rfl, Matrix.submatrix_one _ (S.orderEmbOfFin rfl).injective, Matrix.det_one]`.
+-/
 theorem minor_one (S : Finset (Fin N)) : minorIJ (1 : Matrix (Fin N) (Fin N) ℂ) S S = 1 := by
   unfold minorIJ
   rw [dif_pos rfl, Matrix.submatrix_one _ (S.orderEmbOfFin rfl).injective, Matrix.det_one]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `e` using `(GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j i hj).1 h⁻¹ h (stepCols N j i) (stepCols N j i)`. Rewrite `e` using `[Matrix.nonsing_inv_mul _ hd.isUnit, minor_one, Finset.sum_eq_zero fun I _ => by rw [hc I, mul_zero]]`. Conclude with `one_ne_zero e`.
+-/
 theorem exists_minor_ne (hj : j ≤ N) (i : Fin N) {h : Matrix (Fin N) (Fin N) ℂ} (hd : h.det ≠ 0) :
     ∃ I, minorIJ h I (stepCols N j i) ≠ 0 := by
   by_contra hc
@@ -289,6 +388,9 @@ theorem exists_minor_ne (hj : j ≤ N) (i : Fin N) {h : Matrix (Fin N) (Fin N) �
   rw [Matrix.nonsing_inv_mul _ hd.isUnit, minor_one, Finset.sum_eq_zero fun I _ => by rw [hc I, mul_zero]] at e
   exact one_ne_zero e
 
+/- English proof (translation)
+Take `⟨I, hI⟩` from `exists_minor_ne hj i hd`. Establish `a` using `e I`. Rewrite `a` using `[(GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j i hj).2.2.1 h B I hB hBt]`. Apply `mul_right_cancel₀ hI` to reduce the goal to its premises. Rewrite using `[← a, mul_comm]`.
+-/
 theorem scal_eq (hj : j ≤ N) (i : Fin N) {h B : Matrix (Fin N) (Fin N) ℂ} (hd : h.det ≠ 0) (hB : IsBlockDiag j B)
     (hBt : B.BlockTriangular id) {c : ℂ}
     (e : ∀ I, minorIJ (h * B) I (stepCols N j i) = c * minorIJ h I (stepCols N j i)) :
@@ -310,6 +412,17 @@ def wt (M : FlagModel y Ψ N j) (τ : Ψ) (a : Fin N) (F : FrameData ι Ψ N M.�
     (bp : (Σ k, baseIdx ι M.blk k) → ℂ) (g : Matrix (Fin N) (Fin N) ℂ) (i : Fin N) : ℝ :=
   if IsProperStep N j i then 0 else Real.log ‖valAt M.x (F.υ (τ, i)) bp * Fib.facOf N j a g i‖
 
+/- English proof (translation)
+Establish `hu : ∀ i, (if IsProperStep N j i then (1 : ℂ) else valAt M.x (F.υ (τ, i)) (basePart M.blk z₀) * Fib.facOf N j a h i) ≠ 0` using `fun i => by split_ifs with hp`. Conclude with `one_ne_zero`. Conclude with `mul_ne_zero (hv i hp) (hf i)`. Establish `hn : ∀ i, ‖(if IsProperStep N j i then (1 : ℂ) else valAt M.x (F.υ (τ, i)) (basePart M.blk z₀) * Fib.facOf N j a h i) ^ xiCoef τ a (τ, i)‖ ≠ 0` using `fun i => norm_ne_zero_iff.2 (zpow_ne_zero _ (hu i))`. Establish `e1 : Real.log ‖t * ∏ i : Fin N, (if IsProperStep N j i then (1 : ℂ) else valAt M.x (F.υ (τ, i)) (basePart M.blk z₀) * Fib.facOf N j a h i) ^ xiCoef τ a (τ, i)‖ = Real.log ‖t‖ + ∑ i, (xiCoef τ a (τ, i) : ℝ) * wt M τ a F (basePart M.blk z₀) h i`.
+
+Rewrite using `[norm_mul, norm_prod, Real.log_mul (norm_ne_zero_iff.2 ht) (Finset.prod_ne_zero_iff.2 fun i _ => hn i), Real.log_prod fun i _ => hn i]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_zpow, Real.log_zpow]`. Simplify using `only [wt]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `e2 : ∑ p, (xiCoef τ a p : ℝ) * (Real.log ((fsHerm ι (M.dy p)).h z₀) + Real.log ((fsHerm ι (M.dy p)).h z₁)) = ∑ i, (xiCoef τ a (τ, i) : ℝ) * (Real.log ((fsHerm ι (M.dy (τ, i))).h z₀) + Real.log ((fsHerm ι (M.dy (τ, i))).h z₁))`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single τ]`. Introduce `τ' _ hne`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `[xiCoef, hne]`. Simplify using the standard rewrite rules. Unfold `normRhs`. Rewrite using `[e2]`. Use `(congrArg₂ (· + ·) e1 rfl).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [mul_add, Finset.sum_add_distrib, Finset.mul_sum, add_assoc]`. Use `congr 2`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem normRhs_eq (M : FlagModel y Ψ N j) (τ : Ψ) (a : Fin N) (F : FrameData ι Ψ N M.Ω M.blk)
     (z₀ z₁ : (Σ k, ι k) → ℂ) (h : Matrix (Fin N) (Fin N) ℂ) {t : ℂ} (ht : t ≠ 0)
     (hv : ∀ i, ¬ IsProperStep N j i → valAt M.x (F.υ (τ, i)) (basePart M.blk z₀) ≠ 0)
@@ -354,6 +467,49 @@ end Main
 
 section Thm
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M τ a b k₀ ca cb hb hcase hk₀ hca hcb F z₀ z₁ z₀' z₁' h h' t t' hbp hn0 hn1 hb1 hF hG ho0 ho1 hh hd hh' hd' ht ht' e0 e1 e0' e1'`. Establish `hj` using `M.j_le`. Take `⟨c0, hc0, q0⟩` from `orbit_symm ho0`. Take `⟨c1, hc1, q1⟩` from `orbit_symm ho1`. Establish `ob0` using `base_one M F q0 (e0 a).1 (e0' a).1`.
+
+Establish `ob1` using `base_one M F q1 (e1 a).1 (e1' a).1`. Establish `bz0 : basePart M.blk z₀' = basePart M.blk z₀` using `base_eq q0 ob0`. Establish `bz1 : basePart M.blk z₁' = basePart M.blk z₀` using `(base_eq q1 ob1).trans hb1`. Establish `hT` using `transv_blockDiag (a := a) (b := b) (ca := ca) (cb := cb) hj hb hcase hca hcb`. Establish `m0 : ∀ i k, M.blk (τ, i) = some k → ∀ I, minorIJ h' I (stepCols N j i) = c0 k * minorIJ h I (stepCols N j i)` using `fun i k hk I => minors_prop M hbp hF hG hk q0 rfl bz0 hh hh' (e0 i) (e0' i) I`.
+
+Establish `m1 : ∀ i k, M.blk (τ, i) = some k → ∀ I, minorIJ (h' * (1 + Matrix.single cb ca t')) I (stepCols N j i) = c1 k * minorIJ (h * (1 + Matrix.single cb ca t)) I (stepCols N j i)` using `fun i k hk I => minors_prop M hbp hF hG hk q1 hb1 bz1 (hh.mul (hT t)) (hh'.mul (hT t')) (e1 i) (e1' i) I`. Establish `hsome : ∀ i, IsProperStep N j i → ∃ k, M.blk (τ, i) = some k` using `fun i hi => Option.ne_none_iff_exists'.1 fun e => (M.blk_none _).1 e hi`. Establish `tri : (h⁻¹ * h').BlockTriangular id` using `GlobalTheory.T.block_triangular_of_proportional_minors N j h h' hj hh hh' hd hd' fun i hi => by`. Take `⟨k, hk⟩` from `hsome i hi`. Conclude with `⟨c0 k, m0 i k hk⟩`.
+
+Take `⟨B, hBd⟩ : ∃ B, B = h⁻¹ * h'` from `⟨_, rfl⟩`. Establish `hBt : B.BlockTriangular id` using `hBd ▸ tri`. Establish `hBb : IsBlockDiag j B` using `hBd ▸ (hh.inv hd.isUnit).mul hh'`. Establish `hhB : h' = h * B` using `by rw [hBd, Matrix.mul_nonsing_inv_cancel_left _ _ hd.isUnit]`. Establish `hBdet : B.det ≠ 0` using `fun e => hd' (by rw [hhB, Matrix.det_mul, e, mul_zero])`.
+
+Establish `hdiag : ∀ c, B c c ≠ 0` using `fun c => by`. Rewrite `hBdet` using `[Matrix.det_of_upperTriangular hBt]`. Conclude with `Finset.prod_ne_zero_iff.1 hBdet c (Finset.mem_univ c)`. Establish `hΛ : ∀ S : Finset (Fin N), ∏ x ∈ S, B x x ≠ 0` using `fun S => Finset.prod_ne_zero_iff.2 fun c _ => hdiag c`. Establish `s0 : ∀ i k, M.blk (τ, i) = some k → c0 k = ∏ x ∈ stepCols N j i, B x x` using `fun i k hk => scal_eq hj i hd hBb hBt fun I => by rw [← hhB]; exact m0 i k hk I`.
+
+Establish `s1 : ∀ i k, M.blk (τ, i) = some k → i ≠ a → c1 k = ∏ x ∈ stepCols N j i, B x x` using `fun i k hk hi => scal_eq hj i hd hBb hBt fun I => by`. Establish `e` using `m1 i k hk I`. Rewrite `e` using `[GlobalTheory.T.elementary_twist_minor_other_steps N j a b ca cb hj hb hcase hca hcb h' t' i hi I, GlobalTheory.T.elementary_twist_minor_other_steps N j a b ca cb hj hb hcase hca hcb h t i hi I, hhB]`. Conclude with `e`. Take `⟨-, p2⟩` from `GlobalTheory.T.elementary_twist_minor_scalar N j a b ca cb hj hb hcase hca hcb h B t t' (c1 k₀) hd hBb hBt fun I => by`.
+
+Rewrite using `[← hhB]`. Conclude with `m1 a k₀ hk₀ I`. Establish `hv : ∀ i, ¬ IsProperStep N j i → valAt M.x (F.υ (τ, i)) (basePart M.blk z₀) ≠ 0` using `fun i hi => val_ups_ne M hbp hG ((M.blk_none _).2 hi)`. Establish `hv' : ∀ i, ¬ IsProperStep N j i → valAt M.x (F.υ (τ, i)) (basePart M.blk z₀') ≠ 0`. Rewrite using `[bz0]`.
+
+Conclude with `hv`. Rewrite using `[normRhs_eq M τ a F z₀ z₁ h ht hv (fun i => fac_ne_zero hj i hh hd a), normRhs_eq M τ a F z₀' z₁' h' ht' hv' (fun i => fac_ne_zero hj i hh' hd' a), bz0]`. Establish `f0 : ∀ i, Real.log ((fsHerm ι (M.dy (τ, i))).h z₀') = Real.log ((fsHerm ι (M.dy (τ, i))).h z₀) + ∑ k, (M.dy (τ, i) k : ℝ) * Real.log ‖c0 k‖` using `fun i => by`. Rewrite using `[q0]`. Conclude with `log_fs_smul _ hc0 hn0`.
+
+Establish `f1 : ∀ i, Real.log ((fsHerm ι (M.dy (τ, i))).h z₁') = Real.log ((fsHerm ι (M.dy (τ, i))).h z₁) + ∑ k, (M.dy (τ, i) k : ℝ) * Real.log ‖c1 k‖` using `fun i => by`. Rewrite using `[q1]`. Conclude with `log_fs_smul _ hc1 hn1`. Take `⟨D, hD⟩ : ∃ D : Fin N → ℝ, D = fun i => wt M τ a F (basePart M.blk z₀) h' i - wt M τ a F (basePart M.blk z₀) h i + (1 / 2) * (∑ k, (M.dy (τ, i) k : ℝ) * Real.log ‖c0 k‖ + ∑ k, (M.dy (τ, i) k : ℝ) * Real.log ‖c1 k‖)` from `⟨_, rfl⟩`. Take `⟨β, hβ⟩ : ∃ β, β = ∏ x ∈ (stepCols N j a).erase ca, B x x` from `⟨_, rfl⟩`.
+
+Establish `hβ0 : β ≠ 0` using `hβ ▸ hΛ _`. Establish `hproper : ∀ i, IsProperStep N j i → i ≠ a → D i = Real.log ‖∏ x ∈ stepCols N j i, B x x‖` using `fun i hi hia => by`. Take `⟨k, hk⟩` from `hsome i hi`. Rewrite using `[hD]`. Simplify using `only [wt, if_pos hi]`.
+
+Rewrite using `[dy_sum_some M hk ob0, dy_sum_some M hk ob1, s0 i k hk, s1 i k hk hia]`. Expand and normalize the polynomial expressions, which then agree. Establish `hprev : ∀ a' : Fin N, (a' : ℕ) + 1 = a → D a' = Real.log ‖β‖` using `fun a' ha' => by`. Establish `hne : a' ≠ a` using `fun e => by rw [e] at ha'; omega`. Distinguish the cases in `hp : IsProperStep N j a'`.
+
+Rewrite using `[hproper a' hp hne, cols_prev hj hb hcase hca ha' hp, hβ]`. Take `⟨g1, g2⟩` from `fac_prev (j := j) hb ha' hp h`. Take `⟨g3, -⟩` from `fac_prev (j := j) hb ha' hp h'`. Establish `hbl` using `(M.blk_none (τ, a')).2 hp`. Rewrite using `[hD]`.
+
+Simplify using `only [wt, if_neg hp]`. Rewrite using `[dy_sum_none M hbl ob0, dy_sum_none M hbl ob1, g1, g3, hβ, cols_first hj hb hcase hca (Or.inr g2)]`. Simplify using the standard rewrite rules. Establish `hzero : (a : ℕ) = 0 → Real.log ‖β‖ = 0` using `fun h0 => by`. Rewrite using `[hβ, cols_first hj hb hcase hca (Or.inl h0)]`.
+
+Simplify using the standard rewrite rules. Take `⟨cn, hcbn, hcam⟩` from `cols_next hj hb hcase hca hcb`. Establish `hDb : D b = Real.log ‖∏ x ∈ stepCols N j b, B x x‖`. Establish `hne : b ≠ a` using `fun e => by rw [e] at hb; omega`. Distinguish the cases in `hp : IsProperStep N j b`.
+
+Conclude with `hproper b hp hne`. Establish `hbl` using `(M.blk_none (τ, b)).2 hp`. Establish `e : Fib.facOf N j a h' b = Fib.facOf N j a h b * ∏ x ∈ stepCols N j b, B x x`. Rewrite using `[fac_next hj hb hcase hp, fac_next hj hb hcase hp, hhB]`. Conclude with `(GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j b hj).2.2.1 h B _ hBb hBt`.
+
+Rewrite using `[hD]`. Simplify using `only [wt, if_neg hp]`. Rewrite using `[dy_sum_none M hbl ob0, dy_sum_none M hbl ob1, e, ← mul_assoc, norm_mul _ (∏ x ∈ stepCols N j b, B x x), Real.log_mul (norm_ne_zero_iff.2 (mul_ne_zero (hv b hp) (fac_ne_zero hj b hh hd a))) (norm_ne_zero_iff.2 (hΛ _))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hap : IsProperStep N j a`.
+
+Assume the negation of the conclusion as `hp`. Use `(M.blk_none (τ, a)).2 hp` as an intermediate fact. Rewrite `this` using `[hk₀]`. Conclude with `absurd this (by simp)`. Establish `hDa : 2 * D a = Real.log ‖∏ x ∈ stepCols N j a, B x x‖ + Real.log ‖c1 k₀‖`.
+
+Rewrite using `[hD]`. Simplify using `only [wt, if_pos hap]`. Rewrite using `[dy_sum_some M hk₀ ob0, dy_sum_some M hk₀ ob1, s0 a k₀ hk₀]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `xi_sum τ hb D (Real.log ‖β‖) hprev hzero`.
+
+Establish `hlogs : Real.log ‖c1 k₀‖ + Real.log ‖t‖ = Real.log ‖β‖ + (Real.log ‖t'‖ + Real.log ‖B cb cb‖)`. Rewrite using `[← Real.log_mul (norm_ne_zero_iff.2 (hc1 k₀)) (norm_ne_zero_iff.2 ht), ← Real.log_mul (norm_ne_zero_iff.2 ht') (norm_ne_zero_iff.2 (hdiag cb)), ← Real.log_mul (norm_ne_zero_iff.2 hβ0) (mul_ne_zero (norm_ne_zero_iff.2 ht') (norm_ne_zero_iff.2 (hdiag cb))), ← norm_mul, ← norm_mul, …`. Establish `hDb' : D b = Real.log ‖∏ x ∈ stepCols N j a, B x x‖ + Real.log ‖B cb cb‖`. Rewrite using `[hDb, cn, Finset.prod_insert hcbn, norm_mul, mul_comm, Real.log_mul (norm_ne_zero_iff.2 (hΛ _)) (norm_ne_zero_iff.2 (hdiag cb))]`. Establish `hsum : ∑ i, (xiCoef τ a (τ, i) : ℝ) * D i = Real.log ‖t‖ - Real.log ‖t'‖`.
+
+Rewrite using `[key, hDb', hDa]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsplit : ∑ i, (xiCoef τ a (τ, i) : ℝ) * (wt M τ a F (basePart M.blk z₀) h' i + (1 / 2) * (Real.log ((fsHerm ι (M.dy (τ, i))).h z₀') + Real.log ((fsHerm ι (M.dy (τ, i))).h z₁'))) = ∑ i, (xiCoef τ a (τ, i) : ℝ) * (wt M τ a F (basePart M.blk z₀) h i + (1 / 2) * (Real.log ((fsHerm ι …`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[f0 i, f1 i, hD]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, hsum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normRhs_same : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → ∀ (F : FrameData ι Ψ N M.Ω M.blk) (z₀ z₁ z₀' z₁' : (Σ k, ι k) → ℂ) (h h' : Matrix (Fin N) (Fin N) ℂ) (t t' : ℂ), basePart M.blk z₀ ∈ mcPts (mCoordIdeal M.x) → (∀ k, ∃ i, z₀ ⟨k, i⟩ ≠ 0) → (∀ k, ∃ i, z₁ ⟨k, i⟩ ≠ 0) → basePart M.blk z₁ = basePart M.blk z₀ → M.IsFrame F → M.GoodAt F (mCoordIdeal (basePart M.blk z₀)) → SameOrbit z₀ z₀' → SameOrbit z₁ z₁' → IsBlockDiag j h → h.det ≠ 0 → IsBlockDiag j h' → h'.det ≠ 0 → t ≠ 0 → t' ≠ 0 → (∀ i, M.ExactAt F (τ, i) z₀ h) → (∀ i, M.ExactAt F (τ, i) z₁ (h * (1 + Matrix.single cb ca t))) → (∀ i, M.ExactAt F (τ, i) z₀' h') → (∀ i, M.ExactAt F (τ, i) z₁' (h' * (1 + Matrix.single cb ca t'))) → normRhs M τ a F z₀ z₁ h t = normRhs M τ a F z₀' z₁' h' t' := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M τ a b k₀ ca cb hb hcase hk₀ hca hcb F z₀ z₁ z₀' z₁' h h' t t' hbp hn0 hn1 hb1 hF hG
     ho0 ho1 hh hd hh' hd' ht ht' e0 e1 e0' e1'

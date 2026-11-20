@@ -2,9 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Simplify using `[wt]`.
+-/
 private theorem wt_add' (i j k : Fin 4) : wt i j + wt j k = wt i k := by
   simp [wt]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, Fin.sum_univ_four, Fin.sum_univ_four]`. Simplify using `only [map_add e, map_mul, hX, hY, HahnSeries.single_mul_single, ← map_add τ, wt_add', HahnSeries.single_add]`.
+-/
 private theorem laurent_mul_apply_eq_single_of_entries_single {R S : Type} [CommRing R] [CommRing S] (e : S →+* LaurentSeries R)
     (τ : ℤ × ℤ →+ ℤ) (X Y : M4 S) (X0 Y0 : M4 R)
     (hX : ∀ i j, e (X i j) = HahnSeries.single (τ (wt i j)) (X0 i j))
@@ -14,6 +20,9 @@ private theorem laurent_mul_apply_eq_single_of_entries_single {R S : Type} [Comm
   simp only [map_add e, map_mul, hX, hY, HahnSeries.single_mul_single, ← map_add τ, wt_add',
     HahnSeries.single_add]
 
+/- English proof (translation)
+Establish `hrev : ∀ i j : Fin 4, wt j.rev i.rev = wt i j` using `by decide`. Simplify using `only [adj, Matrix.of_apply, zsmul_eq_mul, map_mul, map_intCast, hX, hrev]`. Rewrite using `[← map_intCast (HahnSeries.C : R →+* LaurentSeries R), HahnSeries.C_apply, HahnSeries.single_mul_single, zero_add]`.
+-/
 private theorem laurent_adj_apply_eq_single_of_entries_single {R S : Type} [CommRing R] [CommRing S] (e : S →+* LaurentSeries R)
     (τ : ℤ × ℤ →+ ℤ) (X : M4 S) (X0 : M4 R)
     (hX : ∀ i j, e (X i j) = HahnSeries.single (τ (wt i j)) (X0 i j)) (i j : Fin 4) :
@@ -23,6 +32,9 @@ private theorem laurent_adj_apply_eq_single_of_entries_single {R S : Type} [Comm
   rw [← map_intCast (HahnSeries.C : R →+* LaurentSeries R), HahnSeries.C_apply,
     HahnSeries.single_mul_single, zero_add]
 
+/- English proof (translation)
+Establish `hw0 : ∀ i : Fin 4, wt i i = 0` using `by decide`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Matrix.smul_apply, hν, hw0]`. Simplify using `[Matrix.smul_apply, Matrix.one_apply_ne h]`.
+-/
 private theorem laurent_smul_one_apply_eq_single_of_eq_single {R S : Type} [CommRing R] [CommRing S] (e : S →+* LaurentSeries R)
     (τ : ℤ × ℤ →+ ℤ) (ν : S) (ν0 : R) (hν : e ν = HahnSeries.single 0 ν0) (i j : Fin 4) :
     e ((ν • (1 : M4 S)) i j) = HahnSeries.single (τ (wt i j)) ((ν0 • (1 : M4 R)) i j) := by
@@ -32,6 +44,45 @@ private theorem laurent_smul_one_apply_eq_single_of_eq_single {R S : Type} [Comm
     simp [Matrix.smul_apply, hν, hw0]
   · simp [Matrix.smul_apply, Matrix.one_apply_ne h]
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ Φ Λ _ _ a R _ _ _ S _ _ _ c e τ D hnil hL hc hN`. Establish `hw0 : ∀ i : Fin 4, wt i i = 0` using `by decide`. Establish `hresm : ∀ {T : Type} [CommRing T] [Algebra Λ T] [IsCO Λ T] (y : T), y ∈ maximalIdeal T → res Λ T y = 0`. Introduce `T _ _ _ y hy`. Simplify using `[res, (IsLocalRing.residue_eq_zero_iff y).mpr hy]`.
+
+Establish `hex0 : ∀ x : R, ∃ y : S, e y = HahnSeries.single 0 x ∧ res Λ S y = res Λ R x`. Introduce `x`. Take `⟨l, hl⟩` from `IsCO.res_surj (O := Λ) x`. Take `⟨y, hy, hye⟩` from `hL.mem 0 _ (Or.inr ⟨by omega, hl⟩)`. Use `⟨y + algebraMap Λ S l, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, hye, hL.alg, ← HahnSeries.single_add, sub_add_cancel]`. Rewrite using `[map_add, hresm y hy, AlgHom.commutes, zero_add] conv_rhs => rw [← sub_add_cancel x (algebraMap Λ R l)]`. Rewrite using `[map_add, hresm _ hl, AlgHom.commutes, zero_add]`. Establish `hent : ∀ g i j, ∃ y, e y = HahnSeries.single (τ (wt i j)) (D.r g i j)`. Introduce `g i j`.
+
+Break down `lt_trichotomy (τ (wt i j)) 0 with h | h | h` into its components or cases. Establish `hij : i ≠ j`. Introduce and unpack `rfl`. Rewrite `h` using `[hw0, map_zero]`. Conclude with `lt_irrefl _ h`.
+
+Take `⟨y, -, hy⟩` from `hL.mem _ _ (Or.inr ⟨hc i j, hN.off g i j hij h.le⟩)`. Conclude with `⟨y, hy⟩`. Rewrite using `[h]`. Take `⟨y, hy, -⟩` from `hex0 (D.r g i j)`. Conclude with `⟨y, hy⟩`.
+
+Take `⟨y, -, hy⟩` from `hL.mem _ _ (Or.inl h)`. Conclude with `⟨y, hy⟩`. Establish `hmem : ∀ g i j, i ≠ j → ∀ y, e y = HahnSeries.single (τ (wt i j)) (D.r g i j) → y ∈ maximalIdeal S`. Introduce `g i j hij y hy`. Break down `le_or_gt (τ (wt i j)) 0 with h | h` into its components or cases.
+
+Take `⟨y', hy', he'⟩` from `hL.mem _ _ (Or.inr ⟨hc i j, hN.off g i j hij h⟩)`. Rewrite using `[hL.inj (hy.trans he'.symm)]`. Conclude with `hy'`. Take `⟨y', hy', he'⟩` from `hL.mem _ _ (Or.inl h)`. Rewrite using `[hL.inj (hy.trans he'.symm)]`.
+
+Conclude with `hy'`. Set `pre : LaurentSeries R → S` to `fun z => if h : ∃ y, e y = z then h.choose else 0`. Establish `hpre : ∀ z, (∃ y, e y = z) → e (pre z) = z`. Introduce `z h`. Simplify using `only [pre, dif_pos h]`.
+
+Conclude with `h.choose_spec`. Establish `hpre0 : ∀ x : R, e (pre (HahnSeries.single 0 x)) = HahnSeries.single 0 x`. Introduce `x`. Take `⟨y, hy, -⟩` from `hex0 x`. Conclude with `hpre _ ⟨y, hy⟩`.
+
+Establish `hres0 : ∀ x : R, res Λ S (pre (HahnSeries.single 0 x)) = res Λ R x`. Introduce `x`. Take `⟨y, hy, hr⟩` from `hex0 x`. Rewrite using `[hL.inj ((hpre0 x).trans hy.symm)]`. Conclude with `hr`.
+
+Set `rr : Γ → M4 S` to `fun g => Matrix.of fun i j => pre (HahnSeries.single (τ (wt i j)) (D.r g i j))`. Establish `hrr : ∀ g i j, e (rr g i j) = HahnSeries.single (τ (wt i j)) (D.r g i j)` using `fun g i j => hpre _ (hent g i j)`. Establish `hext : ∀ X Y : M4 S, (∀ i j, e (X i j) = e (Y i j)) → X = Y` using `fun X Y h => Matrix.ext fun i j => hL.inj (h i j)`. Establish `h1 : ∀ i j, e ((1 : M4 S) i j) = HahnSeries.single (τ (wt i j)) ((1 : M4 R) i j)`. Introduce `i j`.
+
+Use `laurent_smul_one_apply_eq_single_of_eq_single e τ 1 1 (by rw [map_one, HahnSeries.single_zero_one]) i j` as an intermediate fact. Simplify `this` using `only [one_smul]`. Set `r' : Γ →* M4 S` to `{ toFun := rr map_one' := hext _ _ fun i j => by rw [hrr, D.r.map_one, h1] map_mul' := fun g h => hext _ _ fun i j => by`. Rewrite using `[hrr, D.r.map_mul, laurent_mul_apply_eq_single_of_entries_single e τ _ _ _ _ (hrr g) (hrr h)] }`. Establish `hr' : ∀ g i j, e (r' g i j) = HahnSeries.single (τ (wt i j)) (D.r g i j)` using `hrr`.
+
+Set `ψ' : (v : Φ.ι) → Fin 4 → ↥(Φ.Gv v) →* S` to `fun v i => { toFun := fun s => pre (HahnSeries.single 0 (D.ψ v i s)) map_one' := hL.inj (by rw [hpre0, (D.ψ v i).map_one, HahnSeries.single_zero_one, map_one]) map_mul' := fun s t => hL.inj (by`. Rewrite using `[hpre0, (D.ψ v i).map_mul, map_mul e, hpre0, hpre0, HahnSeries.single_mul_single, zero_add]) }`. Take `⟨K, hK⟩` from `hnil`. Establish `hinj : Function.Injective (Ideal.Quotient.mk (maximalIdeal R ^ K))`. Introduce `x y h`.
+
+Rewrite `h` using `[Ideal.Quotient.eq, hK, Ideal.zero_eq_bot, Ideal.mem_bot, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨⟨r', ψ'⟩, ⟨⟨?_, ?_, ?_⟩, ?_, ?_, ?_, ?_, ?_⟩, hr', fun v i s => hpre0 _⟩` and prove the remaining obligations. Introduce `g`. Establish `hg : adj (D.r g) * D.r g = _` using `hN.rep.mult g`. Use `show adj (r' g) * r' g = _`.
+
+Simplify using `only [RingHom.comp_apply] at hg ⊢`. Use `hext _ _ fun i j => ?_` and prove the remaining obligations. Rewrite using `[laurent_mul_apply_eq_single_of_entries_single e τ _ _ _ _ (laurent_adj_apply_eq_single_of_entries_single e τ _ _ (hr' g)) (hr' g), hg, laurent_smul_one_apply_eq_single_of_eq_single e τ _ _ (hL.alg _)]`. Introduce `g hg`. Use `hext _ _ fun i j => ?_` and prove the remaining obligations.
+
+Rewrite using `[hr', hN.rep.kill g hg, h1]`. Introduce `i j hij`. Apply `hL.inj` to reduce the goal to its premises. Rewrite using `[hr', hN.rep.nrm hij, HahnSeries.single_eq_zero, map_zero]`. Introduce `i j N`.
+
+Establish `h2 : IsLocallyConstant fun g => D.r g i j` using `IsLocallyConstant.desc _ _ (hN.cont i j K) hinj`. Conclude with `h2.comp (fun x => Ideal.Quotient.mk (maximalIdeal S ^ N) (pre (HahnSeries.single (τ (wt i j)) x)))`. Introduce `v i N`. Establish `h2 : IsLocallyConstant fun s => D.ψ v i s` using `IsLocallyConstant.desc _ _ (hN.contψ v i K) hinj`. Conclude with `h2.comp (fun x => Ideal.Quotient.mk (maximalIdeal S ^ N) (pre (HahnSeries.single 0 x)))`.
+
+Introduce `g i`. Rewrite using `[← hN.diag g i]`. Use `show res Λ S (pre (HahnSeries.single (τ (wt i i)) (D.r g i i))) = _`. Rewrite using `[hw0, map_zero]`. Conclude with `hres0 _`.
+
+Introduce `g i j hij _`. Conclude with `hmem g i j hij _ (hr' g i j)`. Introduce `v i s`. Rewrite using `[← hN.redψ v i s]`. Conclude with `hres0 _`.
+-/
 theorem UpperTheory.V.Ws.sxScaleRD :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ] [IsLocalRing Λ] {a : O →+* Λ} {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R] {S : Type} [CommRing S] [Algebra Λ S] [IsCO Λ S] {c : ℕ} {e : S →+* LaurentSeries R} {τ : ℤ × ℤ →+ ℤ} {D : RD Φ R}, IsNilpotent (maximalIdeal R) → Laur Λ c e → (∀ i j, -(c : ℤ) ≤ τ (wt i j)) → Φ.Near a τ D → ∃ D' : RD Φ S, Φ.Near a 0 D' ∧ (∀ g i j, e (D'.r g i j) = HahnSeries.single (τ (wt i j)) (D.r g i j)) ∧ ∀ v i s, e (D'.ψ v i s) = HahnSeries.single 0 (D.ψ v i s) := by
   intro O Γ _ _ _ Φ Λ _ _ a R _ _ _ S _ _ _ c e τ D hnil hL hc hN

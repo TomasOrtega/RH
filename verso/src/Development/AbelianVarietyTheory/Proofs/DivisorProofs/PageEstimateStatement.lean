@@ -19,6 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {L : SizeData₂ D} {Pm : ParameterChoice' D L}
 
+/- English proof (translation)
+Establish `h` using `Finset.le_sup (f := fun j : Fin D.R.m => WeightAlgebra.DF (Formalism.MainNotions.DIV.Cons.lR Tp hK ((j : ℕ) + 1))) (Finset.mem_univ (⟨k, hk⟩ : Fin D.R.m))`. Conclude with `h`.
+-/
 theorem le_sup_fin (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (k : ℕ) (hk : k < D.R.m) :
     WeightAlgebra.DF (Formalism.MainNotions.DIV.Cons.lR Tp hK (k + 1)) ≤
       Finset.univ.sup fun j : Fin D.R.m => WeightAlgebra.DF (Formalism.MainNotions.DIV.Cons.lR Tp hK ((j : ℕ) + 1)) := by
@@ -26,6 +29,11 @@ theorem le_sup_fin (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (k : ℕ) (hk : k < 
     (Finset.mem_univ (⟨k, hk⟩ : Fin D.R.m))
   exact h
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Finset.sup_le fun j _ => GlobalTheory.IndexAssembly.le_topDeg Tp hK ⟨by omega, by omega⟩`. Use `Finset.sup_le fun j hj => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`.
+
+Conclude with `le_sup_fin Tp hK k (by omega)`.
+-/
 theorem sup_fin_eq_topDeg (Tp : ParamsT D L Pm) (hK : DV.KapDef D) :
     (Finset.univ.sup fun j : Fin D.R.m => WeightAlgebra.DF (Formalism.MainNotions.DIV.Cons.lR Tp hK ((j : ℕ) + 1))) = GlobalTheory.IndexAssembly.topDeg Tp hK := by
   apply le_antisymm
@@ -41,6 +49,19 @@ namespace GlobalTheory.BigOn
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `(GlobalTheory.T.indexBoundParameterRequirements_eventually_family.and GlobalTheory.T.leaf_level_square_bound).imp fun Fm CH _ H => ?_` and prove the remaining obligations. Take `⟨⟨xs, hxs⟩, ⟨c1, hc1⟩⟩` from `H`. Use `⟨max c1 1, fun c hc hB => ?_⟩` and prove the remaining obligations. Take `⟨x2, hx2⟩` from `hc1 c ((le_max_left _ _).trans hc) hB`. Use `⟨max (max xs x2) (3 * c.C), fun x hx hle i p hp hm r O hr => ?_⟩` and prove the remaining obligations.
+
+Establish `hxs' : xs ≤ x` using `(le_max_left _ _).trans ((le_max_left _ _).trans hle)`. Establish `hx2' : x2 ≤ x` using `(le_max_right _ _).trans ((le_max_left _ _).trans hle)`. Establish `hxC : 3 * c.C ≤ x` using `(le_max_right _ _).trans hle`. Establish `hR` using `hxs x hx hxs' i`. Take `⟨hSq, hY⟩` from `hx2 x hx hx2' i p hp hm r O hr`.
+
+Establish `hE : ∀ C CH', ErrorConstantMatchesDefinition ((R2 p).num (F2 p) C CH') O C` using `fun C CH' => (GlobalTheory.BigOn.Check.twoRunDatum_boundUnit_at_indefinitePoint p (Fm.parT x hx i) r O hr C CH').1`. Establish `hb : O.b = (Fm.L x i).sc.b` using `(GlobalTheory.BigOn.Check.twoRunDatum_boundUnit_at_indefinitePoint p (Fm.parT x hx i) r O hr 0 0).2`. Take `⟨st, hd⟩` from `hr.1.depth`. Use `letI := st`. Use `letI := hostAlg (Fm.D x i)`.
+
+Establish `hd' : GlobalTheory.RunDepth.RunTie p.T.toCore (Fm.ex x hx i).errX (Fm.parT x hx i) (Fm.ex x hx i).kap_def ({ O with de2` using `(Fm.L x i).de2 } : Obj p c) (fun j : Fin (Fm.D x i).R.m => (j : ℕ) + 1) := { hd with }`. Establish `hN : GlobalTheory.IndexAssembly.NumTie (Fm.parT x hx i) (Fm.ex x hx i).kap_def ({ O with de2` using `(Fm.L x i).de2 } : Obj p c) := ⟨hr.1.rr_eq, hr.1.realisedChain_torus_eq, hr.1.Nc_eq, hr.1.DF_eq.trans (congrArg (fun n : ℕ => (n : ℝ)) (PageNumbers.sup_fin_eq_topDeg _ _)), rfl, hr.1.pde_eq⟩`. Establish `hx3 : 3 * c.C ≤ (Fm.L x i).sc.x` using `by rw [Fm.L_x x i hx]; exact hxC`. Establish `hC : Formalism.L2.Indef.Tree.OnPage.ConstC c` using `(le_max_right _ _).trans hc`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.IndexAssembly.numericLeaves hd' hN hR hC hB hx3`.
+
+Use `⟨h1, h2, h3, h4, hSq, hY, hb, ?_, hE⟩` and prove the remaining obligations. Establish `hx0 : 0 < (Fm.L x i).sc.x` using `by linarith [(Fm.L x i).sc.one_lt_alt]`. Establish `e1` using `Real.rpow_pos_of_pos hx0 (Fm.L x i).sc.eps`. Establish `e2` using `Real.rpow_pos_of_pos hx0 (-(Fm.L x i).sc.eps)`. Express the relevant statement in the definitionally equal form `0 ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps * (((Fm.D x i).R.f : ℝ) * (Fm.D x i).R.m * (Fm.L x i).sc.b * (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps + (Fm.L x i).Nc)`.
+
+Establish `hb0 : 0 < (Fm.L x i).sc.b` using `Real.exp_pos _`. Unfold `SizeData₂.Nc budgetNc rankBudget bSize`. Check the signs of the components of the expression.
+-/
 theorem pageSt : PageSt := by
   refine (GlobalTheory.T.indexBoundParameterRequirements_eventually_family.and GlobalTheory.T.leaf_level_square_bound).imp fun Fm CH _ H => ?_
   obtain ⟨⟨xs, hxs⟩, ⟨c1, hc1⟩⟩ := H

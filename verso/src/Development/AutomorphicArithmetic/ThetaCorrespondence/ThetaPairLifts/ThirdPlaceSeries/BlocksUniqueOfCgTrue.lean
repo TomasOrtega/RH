@@ -41,6 +41,9 @@ end True
 end GlobalTheory.HeightCounting.Blocks
 namespace GlobalTheory.HeightCounting
 open Formalism.BasicNotions GlobalTheory.CuspRep Blocks
+/- English proof (translation)
+Introduce `hL hF hG _ hJ hC _ _ C` and use `C.blocksUnique hL hF hG hJ.1 hC`.
+-/
 theorem blocksUnique_of_cgTrue_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, GlobalTheory.Published.AutomorphicFormsFiniteGL →
     _root_.UpperTheory.GalS.CuspUAlt → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.JacquetShalika →
     GlobalTheory.Published.ChebotarevDegreeOne → ∀ (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut), _root_.GlobalTheory.HeightCounting.CGTrueT hL D T → BlocksUnique D :=

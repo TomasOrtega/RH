@@ -8,6 +8,13 @@ variable {A E F : Type} [CommRing A] [CommRing E] [CommRing F]
 def Rel (ι : A →+* E) (f : A →+* F) (π P : A) (e : E) (x : F) : Prop :=
   ∃ (a : A) (m : ℕ) (y : E), e * ι π ^ m = ι a + ι P * y ∧ x * f π ^ m = f a
 
+/- English proof (translation)
+Take `⟨a, m, y, h1, h2⟩` from `h`. Take `⟨a', m', y', h1', h2'⟩` from `h'`. Take `⟨b, hb⟩` from `hk (a * π ^ m' - a' * π ^ m) (y' * ι π ^ m - y * ι π ^ m') (by`. Simplify using `only [map_sub, map_mul, map_pow]`. Take the linear combination `(-(ι π ^ m')) * h1 + (ι π ^ m) * h1')`.
+
+Establish `hf` using `congrArg f hb`. Rewrite `hf` using `[map_mul, hP, zero_mul, map_sub, map_mul, map_mul, map_pow, map_pow]`. Establish `hu' : IsUnit (f π ^ (m + m'))` using `hu.pow _`. Establish `h3 : x * f π ^ (m + m') = x' * f π ^ (m + m')`. Rewrite using `[pow_add]`.
+
+Take the linear combination `(f π ^ m') * h2 - (f π ^ m) * h2' + hf`. Conclude with `hu'.mul_right_cancel h3`.
+-/
 theorem rel_unique (ι : A →+* E) (f : A →+* F) (π P : A) (hu : IsUnit (f π)) (hP : f P = 0)
     (hk : ∀ (a : A) (y : E), ι a = ι P * y → ∃ b : A, a = P * b) {e : E} {x x' : F}
     (h : Rel ι f π P e x) (h' : Rel ι f π P e x') : x = x' := by
@@ -24,8 +31,16 @@ theorem rel_unique (ι : A →+* E) (f : A →+* F) (π P : A) (hu : IsUnit (f �
     linear_combination (f π ^ m') * h2 - (f π ^ m) * h2' + hf
   exact hu'.mul_right_cancel h3
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨a, 0, 0, by simp, by simp⟩`.
+-/
 theorem rel_map (ι : A →+* E) (f : A →+* F) (π P : A) (a : A) : Rel ι f π P (ι a) (f a) := ⟨a, 0, 0, by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨a, m, y, h1, h2⟩` from `h`. Take `⟨a', m', y', h1', h2'⟩` from `h'`. Use `⟨a * π ^ m' + a' * π ^ m, m + m', y * ι π ^ m' + y' * ι π ^ m, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, map_add, map_mul, map_mul, map_pow, map_pow]`. Take the linear combination `(ι π ^ m') * h1 + (ι π ^ m) * h1'`.
+
+Rewrite using `[pow_add, map_add, map_mul, map_mul, map_pow, map_pow]`. Take the linear combination `(f π ^ m') * h2 + (f π ^ m) * h2'`.
+-/
 theorem rel_add (ι : A →+* E) (f : A →+* F) (π P : A) {e e' : E} {x x' : F}
     (h : Rel ι f π P e x) (h' : Rel ι f π P e' x') : Rel ι f π P (e + e') (x + x') := by
   obtain ⟨a, m, y, h1, h2⟩ := h
@@ -36,6 +51,11 @@ theorem rel_add (ι : A →+* E) (f : A →+* F) (π P : A) {e e' : E} {x x' : F
   · rw [pow_add, map_add, map_mul, map_mul, map_pow, map_pow]
     linear_combination (f π ^ m') * h2 + (f π ^ m) * h2'
 
+/- English proof (translation)
+Take `⟨a, m, y, h1, h2⟩` from `h`. Take `⟨a', m', y', h1', h2'⟩` from `h'`. Use `⟨a * a', m + m', y * ι a' + ι a * y' + ι P * y * y', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, map_mul]`. Take the linear combination `(e' * ι π ^ m') * h1 + (ι a + ι P * y) * h1'`.
+
+Rewrite using `[pow_add, map_mul]`. Take the linear combination `(x' * f π ^ m') * h2 + f a * h2'`.
+-/
 theorem rel_mul (ι : A →+* E) (f : A →+* F) (π P : A) {e e' : E} {x x' : F}
     (h : Rel ι f π P e x) (h' : Rel ι f π P e' x') : Rel ι f π P (e * e') (x * x') := by
   obtain ⟨a, m, y, h1, h2⟩ := h
@@ -48,6 +68,11 @@ theorem rel_mul (ι : A →+* E) (f : A →+* F) (π P : A) {e e' : E} {x x' : F
 
 end
 
+/- English proof (translation)
+Establish `hex : ∀ e, ∃ x, Rel ι f π P e x` using `fun e => by`. Take `⟨a, m, y, h⟩` from `hs e`. Conclude with `⟨f a * Ring.inverse (f π ^ m), a, m, y, h, by rw [mul_assoc, Ring.inverse_mul_cancel _ (hu.pow m), mul_one]⟩`. Use `choose g hg using hex`. Establish `hgu : ∀ e x, Rel ι f π P e x → g e = x` using `fun e x h => rel_unique ι f π P hu hP hk (hg e) h`.
+
+Establish `h1` using `rel_map ι f π P 1`. Rewrite `h1` using `[map_one, map_one]`. Establish `h0` using `rel_map ι f π P 0`. Rewrite `h0` using `[map_zero, map_zero]`. Conclude with `⟨{ toFun := g map_one' := hgu _ _ h1 map_mul' := fun e e' => hgu _ _ (rel_mul ι f π P (hg e) (hg e')) map_zero' := hgu _ _ h0 map_add' := fun e e' => hgu _ _ (rel_add ι f π P (hg e) (hg e')) }, fun a => hgu _ _ (rel_map ι f π P a)⟩`.
+-/
 theorem exists_extension {A E F : Type} [CommRing A] [CommRing E] [CommRing F]
     (ι : A →+* E) (f : A →+* F) (π P : A) (hu : IsUnit (f π)) (hP : f P = 0)
     (hs : ∀ e : E, ∃ (a : A) (m : ℕ) (y : E), e * ι π ^ m = ι a + ι P * y)

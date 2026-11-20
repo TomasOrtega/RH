@@ -14,6 +14,19 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.KWhit
 open PositivityTheory.SiegelWeilFormula
+/- English proof (translation)
+Introduce `hT hTC hLB hU hS c F E _ _ _ _ _ σ d hE k cs Φs hK x hW nb lam 𝓖 hcd ε w hw T hND`. Establish `hTT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k` using `hT.2.2.2.1`. Establish `hTA : _root_.PositivityTheory.SiegelWeilFormula.ThetaAuto_k` using `hT.2.2.2.2`. Establish `hsch : ∀ i ∈ (Finset.univ : Finset (Fin k)), Φs i ∈ d.sch` using `fun i _ => (hK i).1`. Establish `hsum` using `_root_.PositivityTheory.SiegelWeilFormula.KWhit.lin_sum_mem_k d Finset.univ cs Φs hsch`.
+
+Establish `hIfun : d.I (∑ i, cs i • Φs i) = ∑ i, cs i • d.I (Φs i)`. Use function extensionality and compare the values at `y`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KWhit.lin_I_sum_k d hTT hTA Finset.univ cs Φs hsch y]`. Simplify using `[Finset.sum_apply]`. Establish `horb : d.orb T (d.om x (∑ i, cs i • Φs i)) = ∑ i, cs i * d.orb T (d.om x (Φs i))`.
+
+Rewrite using `[← hTC F E σ d _ hsum nb lam 𝓖 hcd T x, hIfun, _root_.PositivityTheory.SiegelWeilFormula.KWhit.lin_fc_sum_k hLB d hcd T hND x Finset.univ cs (fun i => d.I (Φs i)) (fun i => ((hTA F E σ d).2.2 _ (hK i).1).2.1) (fun i => ((hTA F E σ d).2.2 _ (hK i).1).2.2)]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hTC F E σ d _ (hK i).1 nb lam 𝓖 hcd T x]`. Establish `horbc : c * d.orb T (d.om x (∑ i, cs i • Φs i)) = ∑ i, cs i * (c * d.orb T (d.om x (Φs i)))`. Rewrite using `[horb, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+
+Use `choose t ht using fun i => hU F E σ d (s0 d.m d.n) (d.sec0 (Φs i)) (hS F E σ d (Φs i) (hK i)) (hE (Φs i) (hK i))`. Establish `hval` using `lin_holValueAt_sum Finset.univ cs (fun i z => ∫ β, flat d.a (d.sec0 (Φs i)) (s0 d.m d.n) z (w * nb β * x) * d.B.ψ (-d.tt (T.1.1 * β.1)) ∂lam) (fun i => c * d.orb T (d.om x (Φs i))) (s0 d.m d.n) (fun i _ => hW i nb lam 𝓖 hcd ε w hw T hND)`. Rewrite using `[horbc]`. Use `hval.congr ⟨∑ i, |t i|, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hzi : ∀ i, t i < z.re` using `fun i => lt_of_le_of_lt ((le_abs_self _).trans (Finset.single_le_sum (fun j _ => abs_nonneg (t j)) (Finset.mem_univ i))) hz`.
+
+Establish `hint : ∀ i, Integrable (fun β => flat d.a (d.sec0 (Φs i)) (s0 d.m d.n) z (w * nb β * x) * d.B.ψ (-d.tt (T.1.1 * β.1))) lam` using `fun i => ((ht i z (hzi i) nb lam 𝓖 hcd ε w hw x).1).mul_bdd (_root_.PositivityTheory.SiegelWeilFormula.KWhit.lin_psi_meas_k d T.1.1).aestronglyMeasurable (Eventually.of_forall fun β => (GlobalTheory.StdCharFromIsStd.norm_psi d.ok.good.std _).le)`. Use `show ∑ i, cs i * ∫ β, flat d.a (d.sec0 (Φs i)) (s0 d.m d.n) z (w * nb β * x) * d.B.ψ (-d.tt (T.1.1 * β.1)) ∂lam = ∫ β, flat d.a (d.sec0 (∑ i, cs i • Φs i)) (s0 d.m d.n) z (w * nb β * x) * d.B.ψ (-d.tt (T.1.1 * β.1)) ∂lam`. Use `(Finset.sum_congr rfl fun i _ => (integral_const_mul _ _).symm).trans ?_` and prove the remaining obligations. Rewrite using `[← integral_finsetSum _ fun i _ => (hint i).const_mul (cs i)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `β`. Simplify using `only [flat, _root_.PositivityTheory.SiegelWeilFormula.KWhit.constantTerm_finsetSum, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem linRedC_k : _root_.PositivityTheory.SiegelWeilFormula.KWhit.LinRedC_k := by
   intro hT hTC hLB hU hS c F E _ _ _ _ _ σ d hE k cs Φs hK x hW nb lam 𝓖 hcd ε w hw T hND
   have hTT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k := hT.2.2.2.1

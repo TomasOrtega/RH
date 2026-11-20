@@ -72,6 +72,9 @@ def pullC (n : ℕ) : Cn F n →ₛₗ[σ] Cn F' n where
   map_add' f g := funext fun s => map_add (m.τ _) _ _
   map_smul' r f := funext fun s => LinearMap.map_smulₛₗ (m.τ _) _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F'.map (toLast i s)).hom (m.τ _ (f (face i s ⋙ m.G))) = m.τ _ (∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F.map (m.G.map (toLast i s))).hom (f (face i s ⋙ m.G)))`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_zsmul, m.nat]`.
+-/
 theorem d_pullC (n : ℕ) (f : Cn F n) : d F' n (m.pullC n f) = m.pullC (n + 1) (d F n f) := by
   funext s
   change ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F'.map (toLast i s)).hom (m.τ _ (f (face i s ⋙ m.G))) =
@@ -100,10 +103,19 @@ def pull (n : ℕ) : H F n →ₛₗ[σ] H F' n :=
 
 end Mor
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (n : ℕ) (f : Cn F n) (s : ComposableArrows C n) : (Mor.id F).pullC n f s = f s := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : Bn F 0 = ⊥ := rfl
 
+/- English proof (translation)
+Simplify using `[d, Fin.sum_univ_two, sub_eq_add_neg]`.
+-/
 example (f : Cn F 0) (s : ComposableArrows C 1) :
     d F 0 f s = (F.map (toLast 0 s)).hom (f (face 0 s)) - (F.map (toLast 1 s)).hom (f (face 1 s)) := by
   simp [d, Fin.sum_univ_two, sub_eq_add_neg]

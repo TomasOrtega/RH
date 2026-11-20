@@ -10,6 +10,29 @@ open CrystallineSemistableComparison.Onto GlobalTheory.CompanionTheory.Surjectio
 
 open TensorProduct in
 
+/- English proof (translation)
+Set `f : MvPolynomial ι A →ₐ[A] Q` to `MvPolynomial.aeval u`. Set `g : MvPolynomial ι A →ₐ[A] A ⊗[B] P` to `MvPolynomial.aeval fun j => (1 : A) ⊗ₜ[B] v j`. Establish `key : ∀ c : B, (algebraMap B A c) ⊗ₜ[B] (1 : P) = (1 : A) ⊗ₜ[B] algebraMap B P c`. Introduce `c`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+
+Establish `hle : RingHom.ker f.toRingHom ≤ RingHom.ker g.toRingHom`. Express the relevant statement in the definitionally equal form `RingHom.ker (MvPolynomial.aeval (R := A) (S₁ := Q) u).toRingHom ≤ _`. Rewrite using `[hker]`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (rfl | ⟨j, rfl⟩)`.
+
+Express the relevant statement in the definitionally equal form `g _ = 0`. Simplify using `[g, hvk, Algebra.TensorProduct.one_def]`. Express the relevant statement in the definitionally equal form `g _ = 0`. Establish `e : g (MvPolynomial.C (algebraMap B A (b j)) - MvPolynomial.C (algebraMap B A (b k)) * MvPolynomial.X j) = (algebraMap B A (b j)) ⊗ₜ[B] (1 : P) - ((algebraMap B A (b k)) ⊗ₜ[B] (1 : P)) * ((1 : A) ⊗ₜ[B] v j)`. Simplify using `[g, Algebra.TensorProduct.algebraMap_apply]`.
+
+Rewrite using `[e, key, key, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← hb, sub_self]`. Establish `hmem : ∀ p ∈ RingHom.ker f, g p = 0` using `fun p hp => hle hp`. Set `h : Q →ₐ[A] A ⊗[B] P` to `(Ideal.Quotient.liftₐ (RingHom.ker f) g hmem).comp (Ideal.quotientKerAlgEquivOfSurjective hsurj).symm.toAlgHom`. Establish `hh : ∀ p, h (f p) = g p`. Introduce `p`.
+
+Establish `e : (Ideal.quotientKerAlgEquivOfSurjective (f` using `f) hsurj).symm (f p) = Ideal.Quotient.mk _ p := by`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Ideal.Quotient.liftₐ (RingHom.ker f) g hmem ((Ideal.quotientKerAlgEquivOfSurjective (f := f) hsurj).symm (f p)) = _`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression. Set `L : A ⊗[B] P →ₐ[A] Q` to `Algebra.TensorProduct.lift (Algebra.ofId A Q) θ fun _ _ => Commute.all _ _`. Establish `hL1 : ∀ y, L ((1 : A) ⊗ₜ[B] y) = θ y`. Introduce `y`. Simplify using `[L]`.
+
+Establish `hLg : L.comp g = f`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `[g, f, hL1, hv]`. Establish `hLh : L.comp h = AlgHom.id A Q`.
+
+Use `AlgHom.ext fun r => ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hsurj r`. Express the relevant statement in the definitionally equal form `L (h (f p)) = f p`. Rewrite using `[hh]`. Conclude with `DFunLike.congr_fun hLg p`.
+
+Establish `hhL : h.comp L = AlgHom.id A (A ⊗[B] P)`. Apply `Algebra.TensorProduct.ext` to reduce the goal to its premises. Use `AlgHom.ext fun a => ?_` and prove the remaining obligations. Use `(h.comp L).commutes a` as an intermediate fact. Simplify `this` using `[Algebra.TensorProduct.algebraMap_apply]`.
+
+Use `AlgHom.ext_of_adjoin_eq_top hadj ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Express the relevant statement in the definitionally equal form `h (L ((1 : A) ⊗ₜ[B] v j)) = (1 : A) ⊗ₜ[B] v j`. Establish `e : u j = f (MvPolynomial.X j)` using `by simp [f]`. Rewrite using `[hL1, hv, e, hh]`.
+
+Simplify using `[g]`. Set `eq : A ⊗[B] P ≃ₐ[A] Q` to `AlgEquiv.ofAlgHom L h hLh hhL`. Conclude with `IsBaseChange.of_equiv eq.toLinearEquiv fun x => hL1 x`.
+-/
 theorem isBaseChange_of_presentation {B A P Q ι : Type} [CommRing B] [CommRing A] [CommRing P] [CommRing Q]
     [Algebra B A] [Algebra B P] [Algebra A Q] [Algebra B Q] [IsScalarTower B A Q]
     (θ : P →ₐ[B] Q) (u : ι → Q) (v : ι → P) (k : ι) (b : ι → B)
@@ -77,16 +100,59 @@ theorem isBaseChange_of_presentation {B A P Q ι : Type} [CommRing B] [CommRing 
   let eq : A ⊗[B] P ≃ₐ[A] Q := AlgEquiv.ofAlgHom L h hLh hhL
   exact IsBaseChange.of_equiv eq.toLinearEquiv fun x => hL1 x
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem mon_eq_one {K : Type} [Field K] {n d : ℕ} {M : AddSubmonoid (Gam n d)} {g : Gam n d} (hg : g ∈ M) (h : g = 0) :
     mon K g hg = 1 := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem mon_congr {K : Type} [Field K] {n d : ℕ} {M : AddSubmonoid (Gam n d)} {g g' : Gam n d} (hg : g ∈ M) (hg' : g' ∈ M)
     (h : g = g') : mon K g hg = mon K g' hg' := by
   subst h
   rfl
 
+/- English proof (translation)
+Establish `hk : k ∈ ({k} : Finset (Fin d))` using `Finset.mem_singleton_self k`. Set `u : Fin d → Rb C {k}` to `C.u {k} k hk`. Establish `hphi : ∀ j, algebraMap (Bp K n d) (Aa C) (MvPolynomial.X (Sum.inr j)) = C.t j`. Introduce `j`. Express the relevant statement in the definitionally equal form `phi C _ = _`.
+
+Simplify using `[phi]`. Establish `hsurj : Function.Surjective (MvPolynomial.aeval (R` using `Aa C) (S₁ := Rb C {k}) u) := C.chart_surj k`. Establish `hker : RingHom.ker (MvPolynomial.aeval (R` using `Aa C) (S₁ := Rb C {k}) u).toRingHom = Ideal.span (insert (MvPolynomial.X k - 1) (Set.range fun j => MvPolynomial.C (algebraMap (Bp K n d) (Aa C) (MvPolynomial.X (Sum.inr j))) - MvPolynomial.C (algebraMap (Bp K n d) (Aa C) (MvPolynomial.X (Sum.inr k))) * MvPolynomial.X j)) := by`. Simplify using `only [hphi]`. Conclude with `C.chart_ker k`.
+
+Establish `huk : u k = 1`. Establish `hm : (MvPolynomial.X k - 1 : MvPolynomial (Fin d) (Aa C)) ∈ RingHom.ker (MvPolynomial.aeval (R` using `Aa C) (S₁ := Rb C {k}) u).toRingHom := by`. Rewrite using `[hker]`. Conclude with `Ideal.subset_span (Set.mem_insert _ _)`. Establish `h0 : (MvPolynomial.aeval (R` using `Aa C) (S₁ := Rb C {k}) u) (MvPolynomial.X k - 1) = 0 := hm`.
+
+Simplify `h0` using `[sub_eq_zero]`. Establish `htu : ∀ j, toR C {k} (C.t j) = toR C {k} (C.t k) * C.u {k} k hk j` using `fun j => C.t_eq {k} k hk j`. Set `w : E n d → C.R {k}` to `Sum.elim (fun l => toR C {k} (C.x l)) (fun j => if j = k then toR C {k} (C.t k) else C.u {k} k hk j)`. Set `Ψ : Bp K n d ≃ₐ[K] R0 K n d {k}` to `AlgEquiv.ofBijective _ (ChartBij.chart_bijective (K := K) (n := n) k)`. Set `θ : R0 K n d {k} →ₐ[K] C.R {k}` to `(MvPolynomial.aeval w).comp Ψ.symm.toAlgHom`.
+
+Establish `hθw : ∀ e, θ (mon K (wv k e) (wv_mem hk e)) = w e`. Introduce `e`. Establish `h1 : mon K (wv k e) (wv_mem hk e) = Ψ (MvPolynomial.X e)` using `by simp [Ψ]`. Express the relevant statement in the definitionally equal form `MvPolynomial.aeval w (Ψ.symm _) = _`. Rewrite using `[h1, AlgEquiv.symm_apply_apply, MvPolynomial.aeval_X]`.
+
+Establish `hθr : ∀ j, θ (mon K (ratE k j) (ratE_mem hk j)) = C.u {k} k hk j`. Introduce `j`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Rewrite using `[mon_eq_one _ (by simp [ratE]), map_one]`.
+
+Conclude with `huk.symm`. Establish `h1` using `hθw (Sum.inr j)`. Establish `h2 : wv k (Sum.inr j) = (ratE k j : Gam n d)` using `by simp [wv, h]`. Rewrite `h1` using `[mon_congr _ (ratE_mem hk j) h2]`. Simplify `h1` using `[w, h]`.
+
+Establish `hθ : ∀ b, θ (poly n K {k} b) = toR C {k} (phi C b)`. Establish `e : θ.comp (poly n K {k}) = (toR C {k}).comp (phi C)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `(l | j)`. Establish `h1` using `hθw (Sum.inl l)`.
+
+Simplify `h1` using `[poly_X, phi, w, wv]`. Establish `h1` using `hθw (Sum.inr k)`. Establish `h2 : wv k (Sum.inr k) = (oneE (Sum.inr k) : Gam n d)` using `by simp [wv]`. Rewrite `h1` using `[mon_congr _ (oneE_mem {k} _) h2]`. Establish `h3 : mon K (oneE (Sum.inr j) : Gam n d) (oneE_mem {k} _) = mon K (oneE (Sum.inr k)) (oneE_mem {k} _) * mon K (ratE k j) (ratE_mem hk j)`.
+
+Rewrite using `[mon_mul]`. Conclude with `mon_congr _ _ (by simp [ratE])`. Simplify using `only [AlgHom.comp_apply, poly_X, phi, MvPolynomial.aeval_X, Sum.elim_inr]`. Rewrite using `[h3, map_mul, h1, hθr, htu j]`. Simplify using `[w]`.
+
+Conclude with `fun b => DFunLike.congr_fun e b`. Use `⟨θ, hθ, hθr, ?_⟩` and prove the remaining obligations. Set `θ' : R0 K n d {k} →ₐ[Bp K n d] Rb C {k}` to `{ θ.toRingHom with commutes' := fun b => hθ b }`. Establish `hadj : Algebra.adjoin (Bp K n d) (Set.range fun j => mon K (ratE k j) (ratE_mem hk j) : Set (R0 K n d {k})) = ⊤`. Rewrite using `[eq_top_iff]`.
+
+Introduce and unpack `y -`. Take `⟨p, rfl⟩` from `(ChartBij.chart_bijective (K := K) (n := n) k).2 y`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c`. Establish `: MvPolynomial.aeval (fun e : E n d => mon K (wv k e) (wv_mem hk e)) (MvPolynomial.C c : Bp K n d) = algebraMap (Bp K n d) (R0 K n d {k}) (MvPolynomial.C c)`.
+
+Rewrite using `[algebraMap_cone_ring]`. Simplify using `[poly]`. Rewrite using `[this]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add p q hp hq => rw [map_add]`.
+
+Conclude with `Subalgebra.add_mem _ hp hq`. Consider the case `mul_X p e hp`. Rewrite using `[map_mul]`. Use `Subalgebra.mul_mem _ hp ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_X]`.
+
+Establish `hpoly : ∀ e' : E n d, mon K (oneE e') (oneE_mem {k} e') ∈ Algebra.adjoin (Bp K n d) (Set.range fun j => mon K (ratE k j) (ratE_mem hk j) : Set (R0 K n d {k}))`. Introduce `e'`. Rewrite using `[← poly_X, ← algebraMap_cone_ring]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Break down `e with l | j` into its components or cases.
+
+Conclude with `hpoly _`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Rewrite using `[mon_congr _ (oneE_mem {j} _) (by simp [wv] : wv j (Sum.inr j) = (oneE (Sum.inr j) : Gam n d))]`. Conclude with `hpoly _`.
+
+Rewrite using `[mon_congr _ (ratE_mem hk j) (by simp [wv, h] : wv k (Sum.inr j) = (ratE k j : Gam n d))]`. Conclude with `Algebra.subset_adjoin ⟨j, rfl⟩`. Establish `hbase` using `isBaseChange_of_presentation (B := Bp K n d) (A := Aa C) (P := R0 K n d {k}) (Q := Rb C {k}) θ' u (fun j => mon K (ratE k j) (ratE_mem hk j)) k (fun j => MvPolynomial.X (Sum.inr j)) hθr hsurj hker (mon_eq_one _ (by simp [ratE])) (fun j => by`. Simplify using `only [algebraMap_cone_ring, poly_X]`. Rewrite using `[mon_mul]`.
+
+Conclude with `mon_congr _ _ (by simp [ratE]))`. Use `hadj`. Conclude with `hbase`.
+-/
 theorem theta_one {K : Type} [Field K] {n d : ℕ} {A : Type} [CommRing A] [Algebra K A] (C : ChartRings K A n d) (k : Fin d) :
     ∃ (θ : R0 K n d {k} →ₐ[K] C.R {k}) (hθ : ∀ b, θ (poly n K {k} b) = toR C {k} (phi C b)),
       (∀ j, θ (mon K (ratE k j) (ratE_mem (Finset.mem_singleton_self k) j)) = C.u {k} k (Finset.mem_singleton_self k) j) ∧

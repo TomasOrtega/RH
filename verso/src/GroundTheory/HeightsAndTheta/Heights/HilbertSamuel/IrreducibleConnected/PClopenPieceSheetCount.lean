@@ -6,6 +6,39 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 open Matrix Filter Topology
 
+/- English proof (translation)
+Introduce `n d N A Z Ω O F hΩo hΩc hcov hO hF hXOF`. Use `set f : (Fin d → ℂ) → ℕ := fun y => {x | x ∈ Z ∧ x ∈ O ∧ A *ᵥ x = y}.ncard with hf_def`. Establish `hloc : ∀ y ∈ Ω, ∀ᶠ w in 𝓝 y, f w = f y`. Introduce `y hy`. Take `⟨hfin, _hcard, hsec⟩` from `hcov y hy`.
+
+Use `set S : Set (Fin n → ℂ) := {x | x ∈ Z ∧ A *ᵥ x = y} with hS`. Establish `hsec' : ∀ x ∈ S, ∃ (U : Set (Fin d → ℂ)) (V : Set (Fin n → ℂ)) (g : (Fin d → ℂ) → Fin n → ℂ), IsOpen U ∧ y ∈ U ∧ IsOpen V ∧ x ∈ V ∧ ContinuousOn g U ∧ g y = x ∧ (∀ w ∈ U, A *ᵥ g w = w) ∧ Z ∩ V = g '' U` using `fun x hx => hsec x hx.1 hx.2`. Use `choose! U V g hU hyU _hV _hxV hg hgy hAg hZV using hsec'`. Establish `hca : ∀ x ∈ S, ContinuousAt (g x) y` using `fun x hx => (hg x hx).continuousAt ((hU x hx).mem_nhds (hyU x hx))`. Establish `hgZ : ∀ x ∈ S, ∀ w ∈ U x, g x w ∈ Z`.
+
+Introduce `x hx w hw`. Establish `: g x w ∈ g x '' U x` using `⟨w, hw, rfl⟩`. Rewrite `this` using `[← hZV x hx]`. Conclude with `this.1`. Establish `e1 : ∀ᶠ w in 𝓝 y, w ∈ Ω` using `hΩo.mem_nhds hy`.
+
+Establish `e2 : ∀ᶠ w in 𝓝 y, ∀ x ∈ S, w ∈ U x` using `(eventually_all_finite hfin).2 fun x hx => (hU x hx).mem_nhds (hyU x hx)`. Establish `e3 : ∀ᶠ w in 𝓝 y, ∀ p ∈ S ×ˢ S, p.1 ≠ p.2 → g p.1 w ≠ g p.2 w`. Use `(eventually_all_finite (hfin.prod hfin)).2 fun p hp => ?_` and prove the remaining obligations. Distinguish the cases in `hne : p.1 = p.2`. Conclude with `Eventually.of_forall fun _ h => absurd hne h`.
+
+Establish `h` using `((hca p.1 hp.1).ne_iff_eventually_ne (hca p.2 hp.2)).1 (by rw [hgy p.1 hp.1, hgy p.2 hp.2]; exact hne)`. Conclude with `h.mono fun w hw _ => hw`. Establish `e4 : ∀ᶠ w in 𝓝 y, ∀ x ∈ S, x ∉ O → g x w ∉ F`. Use `(eventually_all_finite hfin).2 fun x hx => ?_` and prove the remaining obligations. Distinguish the cases in `hxO : x ∈ O`.
+
+Conclude with `Eventually.of_forall fun _ h => absurd hxO h`. Establish `hxF : x ∉ F`. Introduce `hxF`. Establish `hxX : x ∈ {x | x ∈ Z ∧ A *ᵥ x ∈ Ω}` using `⟨hx.1, by rw [hx.2]; exact hy⟩`. Establish `: x ∈ {x | x ∈ Z ∧ A *ᵥ x ∈ Ω} ∩ O` using `by rw [hXOF]; exact ⟨hxX, hxF⟩`.
+
+Conclude with `hxO this.2`. Use `(hca x hx).preimage_mem_nhds (hF.isOpen_compl.mem_nhds (by rw [hgy x hx]; exact hxF))` as an intermediate fact. Use `filter_upwards [this] with w hw _ using hw`. Establish `e5 : ∀ᶠ w in 𝓝 y, ∀ x ∈ S, x ∈ O → g x w ∈ O`. Use `(eventually_all_finite hfin).2 fun x hx => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hxO : x ∈ O`. Use `(hca x hx).preimage_mem_nhds (hO.mem_nhds (by rw [hgy x hx]; exact hxO)) filter_upwards [this] with w hw _ using hw` as an intermediate fact. Conclude with `Eventually.of_forall fun _ h => absurd h hxO`. Use `filter_upwards [e1, e2, e3, e4, e5] with w hwΩ hwU hwne hwF hwO`. Use `set G : (Fin n → ℂ) → Fin n → ℂ := fun x => g x w with hG`.
+
+Establish `hGinj : Set.InjOn G S`. Introduce `a ha b hb hab`. Assume the negation of the conclusion as `hne`. Conclude with `hwne (a, b) ⟨ha, hb⟩ hne hab`. Establish `hGmaps : G '' S ⊆ {x | x ∈ Z ∧ A *ᵥ x = w}`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨hgZ x hx w (hwU x hx), hAg x hx w (hwU x hx)⟩`. Take `⟨hfinw, hcardw, _⟩` from `hcov w hwΩ`. Establish `hGeq : G '' S = {x | x ∈ Z ∧ A *ᵥ x = w}`. Use `Set.eq_of_subset_of_ncard_le hGmaps ?_ hfinw` and prove the remaining obligations.
+
+Rewrite using `[hGinj.ncard_image, hcardw, _hcard]`. Establish `hT : {x | x ∈ Z ∧ x ∈ O ∧ A *ᵥ x = w} = G '' {x | x ∈ Z ∧ x ∈ O ∧ A *ᵥ x = y}`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzZ, hzO, hzw⟩`.
+
+Establish `hz : z ∈ G '' S` using `by rw [hGeq]; exact ⟨hzZ, hzw⟩`. Take `⟨x, hx, rfl⟩` from `hz`. Use `⟨x, ⟨hx.1, ?_, hx.2⟩, rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxO`. Apply `hwF x hx hxO` to reduce the goal to its premises.
+
+Establish `hX : G x ∈ {x | x ∈ Z ∧ A *ᵥ x ∈ Ω}` using `⟨hzZ, by rw [hzw]; exact hwΩ⟩`. Establish `: G x ∈ {x | x ∈ Z ∧ A *ᵥ x ∈ Ω} ∩ F` using `by rw [← hXOF]; exact ⟨hX, hzO⟩`. Conclude with `this.2`. Introduce and unpack `⟨x, ⟨hxZ, hxO, hxy⟩, rfl⟩`. Establish `hx : x ∈ S` using `⟨hxZ, hxy⟩`.
+
+Conclude with `⟨hgZ x hx w (hwU x hx), hwO x hx hxO, hAg x hx w (hwU x hx)⟩`. Simplify using `only [hf_def]`. Establish `hsub : {x | x ∈ Z ∧ x ∈ O ∧ A *ᵥ x = y} ⊆ S` using `fun x hx => ⟨hx.1, hx.2.2⟩`. Rewrite using `[hT, (hGinj.mono hsub).ncard_image]`. Establish `hcont : ContinuousOn f Ω`.
+
+Introduce `y hy`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, nhds_discrete ℕ, tendsto_pure]`. Conclude with `hloc y hy`. Break down `Ω.eq_empty_or_nonempty with hE | ⟨y₀, hy₀⟩` into its components or cases.
+
+Conclude with `⟨0, fun y hy => by rw [hE] at hy; exact absurd hy (Set.notMem_empty y)⟩`. Conclude with `⟨f y₀, fun y hy => hΩc.constant hcont hy hy₀⟩`.
+-/
 theorem ClopenPieceSheetCount.proof : ClopenPieceSheetCount.Statement := by
   intro n d N A Z Ω O F hΩo hΩc hcov hO hF hXOF
 

@@ -30,6 +30,9 @@ def hostOwnQ {R : Ranks} (H : Formalism.BasicNotions.Host R) (h15 : H.q % 15 = 1
       simp only [Finset.mem_insert] at hp ⊢
       tauto }
 
+/- English proof (translation)
+Evaluate the numerical expressions.
+-/
 example : Nat.Prime 211 ∧ 211 % 8 = 3 ∧ 211 % 15 = 1 := by norm_num
 
 end GlobalTheory.OwnPrimeRam

@@ -16,6 +16,9 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 section Items
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.TfC.OccursIff.Trace.exists_integralOp m ρ hρ φ hφ hφc`.
+-/
 theorem exists_integralOp_of_admissible {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] [MeasurableSpace G] [BorelSpace G]
     (m : Measure G) [m.IsHaarMeasure] {X : Type} [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ G X)
@@ -24,6 +27,9 @@ theorem exists_integralOp_of_admissible {G : Type} [Group G] [TopologicalSpace G
       l (A v) = ∫ g, φ g * l (ρ g v) ∂m) ∧ FiniteDimensional ℂ (LinearMap.range A) :=
   PositivityTheory.TfC.OccursIff.Trace.exists_integralOp m ρ hρ φ hφ hφc
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.TfC.OccursIff.Pair.admissible_and_equiv σ π hσ hσi hπ hπi B hB hB0 C hC hC0`.
+-/
 theorem admissible_and_equiv_of_pairing {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
     {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
@@ -35,6 +41,9 @@ theorem admissible_and_equiv_of_pairing {G : Type} [Group G] [TopologicalSpace G
     GroundTheory.Automorphic.IsAdmissible σ ∧ Nonempty (σ.Equiv π) :=
   PositivityTheory.TfC.OccursIff.Pair.admissible_and_equiv σ π hσ hσi hπ hπi B hB hB0 C hC hC0
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.TfC.CuspProjectionOrthogonality.occ_loccomp K n μ V hle hcl hinv hne hirr w`.
+-/
 theorem exists_localComponent_family (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n))
     [μ.IsHaarMeasure] (V : Submodule ℂ (Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ)))
     (hle : V ≤ cuspidalL2 μ) (hcl : IsClosed (V : Set (Lp ℂ 2 (quotientMeasure (rationalGLOne K n) μ))))
@@ -53,6 +62,9 @@ theorem exists_localComponent_family (K : Type) [Field K] [NumberField K] (n : �
 
 end Items
 
+/- English proof (translation)
+Introduce `v` and use `σ.smooth v`.
+-/
 theorem isSmooth_of_smIrr {G : Type} [Group G] [TopologicalSpace G] (σ : GlobalTheory.CuspRep.SmIrr G) :
     GroundTheory.Automorphic.IsSmooth σ.ρ := fun v => σ.smooth v
 
@@ -64,10 +76,16 @@ def pairL {X Y H : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Modul
     (fun x y y' => by simp)
     (fun c x y => by simp [mul_comm])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairL_apply {X Y H : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (f' : X →ₗ[ℂ] H) (f : Y →ₗ[ℂ] H) (x : X) (y : Y) :
     pairL f' f x y = inner ℂ (f y) (f' x) := rfl
 
+/- English proof (translation)
+Rewrite using `[pairL_apply, pairL_apply, hf, hf']`. Conclude with `UnitaryRep.inner_map_map _ _ _ _`.
+-/
 theorem pairL_invariant {G G' X Y H : Type} [Group G] [Group G'] [TopologicalSpace G'] [AddCommGroup X]
     [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (R : UnitaryRep G' H) (h : G → G') (σ : Representation ℂ G X) (π : Representation ℂ G Y)
@@ -77,6 +95,9 @@ theorem pairL_invariant {G G' X Y H : Type} [Group G] [Group G'] [TopologicalSpa
   rw [pairL_apply, pairL_apply, hf, hf']
   exact UnitaryRep.inner_map_map _ _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rhoL_def (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) (g : GL (Fin n) (w.adicCompletion K))
     (v : LL μ) :
     rhoL μ w g v = rightRegularRep (rationalGLOne K n) μ (MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) v :=
@@ -85,6 +106,21 @@ theorem rhoL_def (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) (g
 end PositivityTheory.TfC.OccursIff
 
 open PositivityTheory.TfC.OccursIff in
+/- English proof (translation)
+Introduce `K _ _ n μ _ V w _ _ m _ hV`. Take `⟨W, _, _, π, hπ, hπi, F, hF, hdense⟩` from `exists_localComponent_family K n μ V hV.le hV.closed hV.inv hV.ne_bot hV.irred w`. Establish `key : ∀ σ : GlobalTheory.CuspRep.SmIrr (Gw n w), Occurs μ V w σ → GroundTheory.Automorphic.IsAdmissible σ.ρ ∧ Nonempty (σ.ρ.Equiv π)`. Introduce and unpack `σ ⟨f', hf'0, hf'V, hf'eq⟩`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x, f' x ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hf'0 (LinearMap.ext fun x => not_not.1 fun hx => h ⟨x, hx⟩)`. Take `⟨f, hfF, z, hz⟩` from `hdense (f' x₀) (hf'V x₀) hx₀`. Establish `hfz : f z ≠ 0` using `fun h => hz (by rw [h, inner_zero_left])`. Use `admissible_and_equiv_of_pairing σ.ρ π (isSmooth_of_smIrr σ) σ.irred hπ hπi (pairL f' f) ?_ ?_ (pairL f f) ?_ ?_` and prove the remaining obligations.
+
+Conclude with `pairL_invariant (rightRegularRep (rationalGLOne K n) μ) (fun g => MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) σ.ρ π f' f (fun g x => (hf'eq g x).trans (rhoL_def μ w g _)) (hF f hfF).2`. Introduce `h`. Apply `hz` to reduce the goal to its premises. Use `LinearMap.congr_fun (LinearMap.congr_fun h x₀) z` as an intermediate fact. Simplify `this` using `[pairL_apply]`.
+
+Conclude with `pairL_invariant (rightRegularRep (rationalGLOne K n) μ) (fun g => MultiplicityOne.finProj K n (AdelicGLn.localEmbedding w g)) π π f f (hF f hfF).2 (hF f hfF).2`. Introduce `h`. Apply `hfz` to reduce the goal to its premises. Use `LinearMap.congr_fun (LinearMap.congr_fun h z) z` as an intermediate fact. Rewrite `this` using `[pairL_apply, LinearMap.zero_apply, LinearMap.zero_apply, inner_self_eq_zero]`.
+
+Conclude with `this`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hV.ne_bot`. Take `⟨f, hfF, z, hz⟩` from `hdense u hu hu0`. Use `⟨⟨W, π, fun v => hπ.1 v, hπi⟩, f, ?_, (hF f hfF).1, fun g x => (hF f hfF).2 g x⟩` and prove the remaining obligations.
+
+Introduce `h`. Apply `hz` to reduce the goal to its premises. Rewrite using `[h, LinearMap.zero_apply, inner_zero_left]`. Introduce `σ σ' h h'`. Take `⟨-, ⟨e⟩⟩` from `key σ h`.
+
+Take `⟨-, ⟨e'⟩⟩` from `key σ' h'`. Conclude with `⟨e.trans e'.symm⟩`. Introduce `σ h φ hφ`. Take `⟨A, hA, hAf⟩` from `exists_integralOp_of_admissible m σ.ρ (key σ h).1 φ hφ.1 hφ.2`. Conclude with `⟨_, A, hA, hAf, rfl⟩`.
+-/
 theorem PositivityTheory.TfC.OccursBasics_holds : UpperTheory.ConvolutionTheory.C.OccursBasics := by
   intro K _ _ n μ _ V w _ _ m _ hV
   obtain ⟨W, _, _, π, hπ, hπi, F, hF, hdense⟩ :=

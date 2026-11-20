@@ -15,6 +15,9 @@ open GlobalTheory.RegSch (ikS projS Lvl)
 
 namespace PositivityTheory.Rg.Rsw.L
 
+/- English proof (translation)
+Introduce `X _ _ _ _ _ _ A hc hmul hstar hsep hone`. Conclude with `⟨fun L hL => LPosExt.exist A hc hstar hone L hL, LPosExt.uniq' A hc hmul hstar hsep hone⟩`.
+-/
 theorem posExt : PosExt := by
   intro X _ _ _ _ _ _ A hc hmul hstar hsep hone
   exact ⟨fun L hL => LPosExt.exist A hc hstar hone L hL, LPosExt.uniq' A hc hmul hstar hsep hone⟩

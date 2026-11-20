@@ -18,6 +18,17 @@ open scoped ComplexOrder
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `HS K _ _ m h L W hL hc hWL hr`. Establish `hWfg : W.FG` using `Submodule.FG.of_le hL.1 hWL`. Take `⟨α, hαi, hfull, hmap⟩` from `GlobalTheory.T.finitely_generated_lattice_full_embedding K m W hWfg`. Set `hW : HermFam K (Fin (latRank K W) → K)` to `{ form := fun σ y z => h.form σ (α y) (α z) add_right := fun σ x y z => by simp only [map_add]; exact h.add_right σ _ _ _ smul_right := fun σ a x y => by simp only [map_smul]; exact h.smul_right σ a _ _ conj_symm := fun σ x y => h.conj_symm σ _ _ posDef := fun σ k v hv => h.posDe …`. Establish `hWc : GlobalTheory.Published.ConjInv hW` using `fun σ y z => hc σ (α y) (α z)`.
+
+Establish `hdeg : deg hW (W.comap (α.restrictScalars (𝓞 K))) = deg h W`. Use `GlobalTheory.T.degree_isometric_embedding_eq K _ m hW h α hαi (fun _ _ _ => rfl) _ hfull.1` as an intermediate fact. Rewrite `this` using `[hmap]`. Then use the resulting hypothesis. Take `⟨K', i1, i2, i3, hW', x', hBC', hx', hineq⟩` from `HS K (latRank K W) hW (W.comap (α.restrictScalars (𝓞 K))) hr hWc hfull 1 one_pos`. Take `⟨⟨h', hBC⟩, hLf, -⟩` from `GlobalTheory.T.hermitian_lattice_base_change K K' m h L hL.1`.
+
+Take `⟨β, hβi, hβf, hβα⟩` from `GlobalTheory.T.base_change_isometric_embedding K K' _ m α h hW h' hW' (fun _ _ _ => rfl) hBC hBC'`. Establish `hM' : Full (latBC K' (W.comap (α.restrictScalars (𝓞 K))))` using `(GlobalTheory.T.hermitian_lattice_base_change K K' _ hW _ hfull.1).2.1 hfull`. Establish `hmaps : ∀ y ∈ latBC K' (W.comap (α.restrictScalars (𝓞 K))), β y ∈ latBC K' L`. Introduce `y hy`. Establish `hle : latBC K' (W.comap (α.restrictScalars (𝓞 K))) ≤ (latBC K' L).comap (β.restrictScalars (𝓞 K'))`.
+
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `show β _ ∈ latBC K' L`. Rewrite using `[hβα z]`. Conclude with `Submodule.subset_span ⟨α z, hWL hz, rfl⟩`.
+
+Conclude with `hle hy`. Establish `hD` using `GlobalTheory.T.line_degree_le_under_embedding K' _ m hW' h' β _ (latBC K' L) x' hβi hβf hM' (hLf hL) hmaps hx'`. Use `⟨K', i1, i2, i3, h', β x', hBC, fun e => hx' (hβi (by rw [e, map_zero])), ?_⟩` and prove the remaining obligations. Rewrite using `[← hdeg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem siegel_sublattice_line : GlobalTheory.Published.AbsoluteSiegel → ∀ (K : Type) [Field K] [NumberField K] (m : ℕ) (h : HermFam K (Fin m → K)) (L W : Submodule (𝓞 K) (Fin m → K)), Full L → GlobalTheory.Published.ConjInv h → W ≤ L → 1 ≤ latRank K W → ∃ (K' : Type) (_ : Field K') (_ : NumberField K') (_ : Algebra K K') (h' : HermFam K' (Fin m → K')) (x : Fin m → K'), IsBC h h' ∧ x ≠ 0 ∧ deg h W / latRank K W - Real.log (latRank K W) / 2 - 1 ≤ deg h' (lineLat (latBC K' L) x) := by
   intro HS K _ _ m h L W hL hc hWL hr
   have hWfg : W.FG := Submodule.FG.of_le hL.1 hWL

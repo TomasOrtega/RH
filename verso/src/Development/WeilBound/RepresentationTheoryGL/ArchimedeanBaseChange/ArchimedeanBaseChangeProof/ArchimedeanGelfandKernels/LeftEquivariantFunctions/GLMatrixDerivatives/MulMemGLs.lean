@@ -15,12 +15,21 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit |>.ne_zero`.
+-/
 theorem mem_GLs_of (y : G n) : y.val ∈ GLs n := (Matrix.isUnit_iff_isUnit_det _).1 y.isUnit |>.ne_zero
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *`. Conclude with `mul_ne_zero hx hy`.
+-/
 theorem mul_mem_GLs {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *
   exact mul_ne_zero hx hy
 
+/- English proof (translation)
+Simplify using `only [act]`. Conclude with `integral_congr_ae (Eventually.of_forall fun y => by show (k y.val) (F (x * y.val)) = (k y.val) (F' (x * y.val))`. Rewrite using `[h (mul_mem_GLs hx (mem_GLs_of y))])`.
+-/
 theorem act_congr [MeasurableSpace (G n)] (μ : Measure (G n)) (E : KMod n) (k : Mat n → (E.V →L[ℂ] E.V))
     {F F' : Mat n → E.V} (h : Set.EqOn F F' (GLs n)) {x : Mat n} (hx : x ∈ GLs n) : act μ E k F x = act μ E k F' x := by
   simp only [act]
@@ -28,6 +37,13 @@ theorem act_congr [MeasurableSpace (G n)] (μ : Measure (G n)) (E : KMod n) (k :
     show (k y.val) (F (x * y.val)) = (k y.val) (F' (x * y.val))
     rw [h (mul_mem_GLs hx (mem_GLs_of y))])
 
+/- English proof (translation)
+Use `haveI := FiniteDimensional.complete ℂ E.V`. Take `⟨u, hu, hu0⟩` from `hWE n E f hf`. Establish `h1 : (1 : Mat n) ∈ GLs n` using `by simp [GLs]`. Establish `hDu` using `hDW hG n lam E Fr ε ι S Γ T hC u hu`. Establish `hk1` using `hks.2.2.2 _ hDu 1 h1`.
+
+Take `⟨hPs, hPd⟩` from `hP n E u hu g T' hgb`. Establish `eqA : Set.EqOn (fun x' => ∫ t, (g t : ℂ) • DC ε Fr (u t) x') (DC ε Fr fun x' => ∫ t, (g t : ℂ) • u t x') (GLs n)` using `fun x hx => param_dc ε Fr u hu.1 g T' hgb hPd x hx`. Establish `hz` using `hZ hG n lam E Fr ε ι S Γ T hC (fun x' => ∫ t, (g t : ℂ) • u t x') hPs w`. Establish `eqB : Set.EqOn (zOp w fun x' => ∫ t, (g t : ℂ) • u t x') (act μ E ks f) (GLs n)`. Introduce `x hx`.
+
+Rewrite using `[← hks.2.2.2 u hu x hx]`. Conclude with `act_congr μ E ks (fun y hy => hu0 y hy) hx`. Establish `eq0 : Set.EqOn (DC ε Fr f) (DC ε Fr (u 0)) (GLs n)` using `dc_congr ε Fr (isOpen_GLs n) fun y hy => (hu0 y hy).symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem act_dc (hDW : DCwave) (hP : ParamInt) (hZ : ZopDC) (hG : GelComm) (hWE : WaveEx) {lam : Fin n → ℤ} {E : KMod n}
     {Fr : Mat n → (E.V →L[ℂ] E.V)} {ε ι : Mat n →ₗ[ℝ] (E.V →L[ℂ] E.V)} {S : ℝ → (E.V →L[ℂ] E.V)} {Γ T : E.V →L[ℂ] E.V}
     (hC : CxData lam E Fr ε ι S Γ T) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]

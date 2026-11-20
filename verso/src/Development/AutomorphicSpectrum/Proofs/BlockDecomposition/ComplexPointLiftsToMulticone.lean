@@ -21,6 +21,15 @@ section Alg
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {A Ω : Type*} [CommRing A] [Field Ω]
 
+/- English proof (translation)
+Set `q : Geo.MRing ι →+* MvPolynomial K A` to `eval₂Hom (Int.castRingHom _) fun p => C (ρ p) * X p.1`. Establish `h1 : (MvPolynomial.map e).comp q = (Geo.mConeMap (fun p => e (ρ p)) : Geo.MRing ι →ₐ[ℤ] MvPolynomial K Ω).toRingHom`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `[q]`. Simplify using `[q, Geo.mConeMap]`.
+
+Establish `h0 : q f = 0`. Use `map_injective e he ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `congrArg (fun g => g f) h1` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations.
+
+Conclude with `hf`. Establish `h2 : (eval₂Hom ε t).comp q = (eval (fun p => t p.1 * ε (ρ p))).comp (MvPolynomial.map (Int.castRingHom ℂ))`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `[q]`. Simplify using `[q, mul_comm]`.
+
+Use `congrArg (fun g => g f) h2` as an intermediate fact. Simplify using `only [RingHom.comp_apply, h0, map_zero] at this`. Conclude with `this.symm`.
+-/
 theorem eval_eq_zero_of_mem_mCoordIdeal (e : A →+* Ω) (he : Function.Injective e) (ρ : (Σ k, ι k) → A)
     {f : Geo.MRing ι} (hf : f ∈ Geo.mCoordIdeal fun p => e (ρ p)) (ε : A →+* ℂ) (t : K → ℂ) :
     eval (fun p => t p.1 * ε (ρ p)) (MvPolynomial.map (Int.castRingHom ℂ) f) = 0 := by
@@ -49,6 +58,19 @@ end Alg
 
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ k, ∃ b : (MP ℤ m n).residueField x, b ≠ 0 ∧ ∀ j : Bk n k, ptCoord x ⟨k, j⟩ = b * (MP ℤ m n).evaluation (blockChart n k (c k)) x (mchart_le c k hx) (pullRatio (prB n k) _ (c k) le_rfl j)`. Introduce `k`. Set `W₀` to `blockChart n k (ptChart x k)`. Set `W₁` to `blockChart n k (c k)`. Set `V` to `W₀ ⊓ W₁`.
+
+Establish `hxV : x ∈ V` using `⟨mem_ptChart x k, mchart_le c k hx⟩`. Establish `hV₀ : V ≤ prB n k ⁻¹ᵁ chart ℤ (n k) (ptChart x k)` using `inf_le_left`. Establish `hV₁ : V ≤ prB n k ⁻¹ᵁ chart ℤ (n k) (c k)` using `inf_le_right`. Establish `e₀ : ∀ j : Bk n k, ptCoord x ⟨k, j⟩ = (MP ℤ m n).evaluation V x hxV (pullRatio (prB n k) V (ptChart x k) hV₀ j)`. Introduce `j`.
+
+Use `show (MP ℤ m n).evaluation W₀ x (mem_ptChart x k) (pullRatio (prB n k) W₀ (ptChart x k) le_rfl j) = _`. Rewrite using `[← ProjImage.evaluation_resG (inf_le_left : V ≤ W₀) x hxV]`. Conclude with `congrArg _ (resG_pullRatio (φ := prB n k) (hi := le_rfl) inf_le_left)`. Establish `e₁ : ∀ j : Bk n k, (MP ℤ m n).evaluation W₁ x (mchart_le c k hx) (pullRatio (prB n k) W₁ (c k) le_rfl j) = (MP ℤ m n).evaluation V x hxV (pullRatio (prB n k) V (c k) hV₁ j)`. Introduce `j`.
+
+Rewrite using `[← ProjImage.evaluation_resG (inf_le_right : V ≤ W₁) x hxV]`. Conclude with `congrArg _ (resG_pullRatio (φ := prB n k) (hi := le_rfl) inf_le_right)`. Use `⟨(MP ℤ m n).evaluation V x hxV (pullRatio (prB n k) V (ptChart x k) hV₀ (c k)), ?_, fun j => ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `e` using `congrArg ((MP ℤ m n).evaluation V x hxV) ((pullRatio_mul_pullRatio (φ := prB n k) (hi := hV₀) (hj := hV₁) (k := ptChart x k)).trans pullRatio_self)`.
+
+Rewrite `e` using `[map_mul, h0, zero_mul, map_one]`. Conclude with `zero_ne_one e`. Use `(e₀ j).trans ?_` and prove the remaining obligations. Rewrite using `[e₁ j, ← map_mul]`. Conclude with `congrArg _ (pullRatio_mul_pullRatio (φ := prB n k) (hi := hV₀) (hj := hV₁) (k := j)).symm`.
+
+Use `choose b hb hbe using key`. Use `⟨b, hb, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[ProjImage.evaluation_resG]`. Conclude with `hbe p.1 p.2`.
+-/
 theorem ptCoord_eq_mul (x : MP ℤ m n) (c : ∀ k, Bk n k) (hx : x ∈ mchart c) :
     ∃ b : Fin (m + 1) → (MP ℤ m n).residueField x, (∀ k, b k ≠ 0) ∧ ∀ p : Σ k, Bk n k,
       ptCoord x p = b p.1 * (MP ℤ m n).evaluation (mchart c) x hx
@@ -89,6 +111,9 @@ theorem ptCoord_eq_mul (x : MP ℤ m n) (c : ∀ k, Bk n k) (hx : x ∈ mchart c
   rw [ProjImage.evaluation_resG]
   exact hbe p.1 p.2
 
+/- English proof (translation)
+Establish `h1 : Function.Injective (X.residue (genericPoint X)).hom` using `RingHom.injective (R := X.functionField) (X.residue (genericPoint X)).hom`. Conclude with `h1.comp (fnOf_injective U h)`.
+-/
 theorem evaluation_genericPoint_injective {X : Scheme.{0}} [IsIntegral X] (U : X.Opens) (h : genericPoint X ∈ U) :
     Function.Injective (X.evaluation U (genericPoint X) h) := by
   have h1 : Function.Injective (X.residue (genericPoint X)).hom :=
@@ -101,6 +126,21 @@ namespace GlobalTheory.CompanionTheory.MPDict
 
 open UnderIdeal in
 
+/- English proof (translation)
+Introduce `m n X _ i _ y`. Take `⟨z, hz, hu⟩` from `exists_isUnder_of_cxPt m n (PtsOver.map i rfl _ y)`. Use `⟨z, ⟨hz, fun f hf => ?_⟩, hu⟩` and prove the remaining obligations. Use `choose c hc using hz`. Establish `hwk : ∀ k, PtsOver.map i rfl _ y ∈ ptsIn (mpStr ℤ m n) σ₀ (blockChart n k (c k))` using `fun k => (hu k (c k)).1.2 (hc k)`.
+
+Establish `hwV : PtsOver.map i rfl _ y ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart c)` using `CxPts.mem_ptsIn.2 (Set.mem_iInter.2 fun k => CxPts.mem_ptsIn.1 (hwk k))`. Establish `hyV : y ∈ ptsIn (i ≫ mpStr ℤ m n) σ₀ (i ⁻¹ᵁ mchart c)` using `hwV`. Establish `hη : genericPoint X ∈ i ⁻¹ᵁ mchart c` using `((genericPoint_spec X).mem_open_set_iff (i ⁻¹ᵁ mchart c).isOpen).2 ⟨_, trivial, CxPts.mem_ptsIn.1 hyV⟩`. Take `⟨b, hb, hbe⟩` from `ptCoord_eq_mul (i (genericPoint X)) c hη`. Set `r : (Σ k, Bk n k) → Γ(MP ℤ m n, mchart c)` to `fun p => resG _ (mchart_le c p.1) (pullRatio (prB n p.1) _ (c p.1) le_rfl p.2)`.
+
+Set `ρ : (Σ k, Bk n k) → Γ(X, i ⁻¹ᵁ mchart c)` to `fun p => (i.app (mchart c)).hom (r p)`. Set `φ` to `(i.residueFieldMap (genericPoint X)).hom`. Establish `hf' : f ∈ Geo.mCoordIdeal fun p => (X.evaluation _ _ hη).hom (ρ p)`. Establish `e` using `ProjImage.imageZ_mCoordIdeal_of_eq (ι := Bk n) (ι' := Bk n) id Function.injective_id id (fun _ => rfl) φ (fun k => φ (b k)) (fun k => (map_ne_zero φ).2 (hb k)) (ptCoord (i (genericPoint X))) (fun p => (X.evaluation _ _ hη).hom (ρ p)) (fun p => by`. Rewrite using `[hbe p, map_mul]`.
+
+Use `congr 1`. Conclude with `Scheme.evaluation_naturality_apply _ _ _ _)`. Rewrite `hf` using `[ptIdeal, ← e]`. Simplify `hf` using `[ReciprocityTheory.ChartRestriction.G.AI.I4.imageZ]`. Establish `h` using `eval_eq_zero_of_mem_mCoordIdeal (X.evaluation _ _ hη).hom (evaluation_genericPoint_injective _ hη) ρ hf' (evHom hyV) (fun k => z ⟨k, c k⟩)`.
+
+Establish `hz' : (fun p : Σ k, Bk n k => z ⟨p.1, c p.1⟩ * evHom hyV (ρ p)) = z`. Use function extensionality and compare the values at `⟨k, j⟩`. Establish `e1 : evHom hyV (ρ ⟨k, j⟩) = z ⟨k, j⟩ / z ⟨k, c k⟩`. Rewrite using `[← CxPts.ev_eq hyV]`. Use `Eq.trans ?_ ((hu k (c k)).2 j (hwk k))` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (CxPts.ev_res (mchart_le c k) hwV _)` and prove the remaining obligations. Conclude with `(valR_comp y.1 i (mchart c) (r ⟨k, j⟩)).symm`. Use `show z ⟨k, c k⟩ * evHom hyV (ρ ⟨k, j⟩) = z ⟨k, j⟩`. Rewrite using `[e1, mul_div_cancel₀ _ (hc k)]`. Rewrite `h` using `[hz']`.
+
+Conclude with `h`.
+-/
 theorem exists_mem_mcPts_isUnder : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i]
     (y : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀), ∃ z ∈ mcPts (ptIdeal (i (genericPoint X))), IsUnder (PtsOver.map i rfl _ y) z := by
   intro m n X _ i _ y

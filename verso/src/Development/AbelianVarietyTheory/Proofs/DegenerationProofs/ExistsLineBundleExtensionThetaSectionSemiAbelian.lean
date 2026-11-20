@@ -20,6 +20,13 @@ open GlobalTheory.ZJ
 
 namespace GlobalTheory.ZJ
 
+/- English proof (translation)
+Introduce `hE hM hS C L T n hG hT hTors hFew`. Establish `hB : T.BTest L` using `GlobalTheory.T.baseChangeTest_of_surjective_mul_abelianVariety hS C L T`. Establish `hO : IsOpen (T.Om L)` using `(GlobalTheory.ZJ.etale_mulN_and_isOpen_om_of_isSemiAbelian C L T hG hM).2`. Take `⟨ν, hν⟩` from `GlobalTheory.T.exists_norms_of_tests hE C L T hT hB`. Establish `h6 : L.CompanionTheory (T.Om L)` using `GlobalTheory.T.companionTheory_om_of_tests_torsionSections hE C L T n hT hB hTors hFew`.
+
+Establish `hγ` using `GlobalTheory.ZJ.Core.exists_gen_normOne C L T (T.Om L) ν hO hν h6`. Take `⟨-, hlft, -, hint, hflat, -, hop, -⟩` from `core_basic C`. Use `C.lft` as an intermediate fact. Establish `hsm : Smooth C.GG.hom`. Use `L.smooth` as an intermediate fact.
+
+Conclude with `SmoothOfRelativeDimension.smooth C.g _`. Establish `hN : Geo.Tor.IsNormalScheme C.G.toScheme` using `fun x => GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth C.GG.hom C.normal x`. Establish `hlft' : LocallyOfFiniteType (C.GG.hom ≫ C.π)` using `inferInstance`. Conclude with `GlobalTheory.T.exists_local_section_ne_zero_on_fibres' C L T (T.Om L) ν hO hν h6 (@GlobalTheory.exists_lineBundle_of_normOne_generators C.G.toScheme C.A.left hint (C.GG.hom ≫ C.π) hflat hlft' hN C.a hop T.L.L T.L.isLB ν hν.isNrm hγ)`.
+-/
 theorem exists_extension_with_section : Semi.extend_existsSt.{0} → Out.MulNSt → (∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B → ∀ n : ℕ, (n : K) ≠ 0 → Surjective (mulN B n).left) → ∀ (C : Core) (L : C.Law) (T : C.Theta) (n : ℕ), letI := L.grp; letI := L.comm; IsSemiAbelian C.GG → C.HasTests → C.TorsSec n → T.Few n → ∃ M : LB C.G.toScheme, M.IsLB ∧ LBIso (M.pull C.a) T.L.L ∧ ∀ z : C.Z, ∃ (N : C.Z.Opens) (σ : LB.Sec (M.pull (C.GG.hom ⁻¹ᵁ N).ι)), z ∈ N ∧ ∀ z' ∈ N, ∃ x ∈ Out.nonzeroLocus σ, C.GG.hom ((C.GG.hom ⁻¹ᵁ N).ι x) = z' := by
   intro hE hM hS C L T n hG hT hTors hFew
   have hB : T.BTest L := GlobalTheory.T.baseChangeTest_of_surjective_mul_abelianVariety hS C L T

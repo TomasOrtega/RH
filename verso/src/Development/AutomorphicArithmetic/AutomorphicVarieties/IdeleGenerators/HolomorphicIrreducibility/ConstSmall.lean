@@ -5,6 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.Ho
 
 open Formalism.ConjugateSelfDual Finset UpperTheory.V.Sd
 
+/- English proof (translation)
+Establish `hi : (χ⁻¹).IsPrimitive`. Rewrite using `[DirichletCharacter.isPrimitive_def, DirichletCharacter.conductor_inv]`. Conclude with `hχ`. Establish `h1 : ZMod.dft (χ : ZMod N → ℂ) = fun k => χ⁻¹ (-k) * gaussSum χ ZMod.stdAddChar`. Use function extensionality and compare the values at `fun k => hχ.fourierTransform_eq_inv_mul_gaussSum k`.
+
+Establish `h2` using `congrFun (ZMod.dft_dft (χ : ZMod N → ℂ)) (-1)`. Rewrite `h2` using `[h1, ZMod.dft_mul_const (fun k => χ⁻¹ (-k)), ZMod.dft_comp_neg (fun k => χ⁻¹ k)]`. Simplify using `only [neg_neg, map_one, smul_eq_mul, mul_one] at h2`. Establish `h3` using `hi.fourierTransform_eq_inv_mul_gaussSum 1`. Rewrite `h3` using `[inv_inv]`.
+
+Establish `h4 : ZMod.dft (fun k => χ⁻¹ k) 1 = χ (-1) * gaussSum χ⁻¹ ZMod.stdAddChar` using `h3`. Rewrite `h2` using `[h4]`. Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem gauss_mul_gauss_inv {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ.IsPrimitive) :
     gaussSum χ ZMod.stdAddChar * gaussSum χ⁻¹ ZMod.stdAddChar * χ (-1) = N := by
   have hi : (χ⁻¹).IsPrimitive := by
@@ -23,34 +30,61 @@ private theorem gauss_mul_gauss_inv {N : ℕ} [NeZero N] (χ : DirichletCharacte
 section
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Establish `: ‖x‖ ^ n = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 this`.
+-/
 private theorem root_le {x : Qbar l} {n : ℕ} (hn : n ≠ 0) (h : x ^ n = 1) : ‖x‖ = 1 := by
   have : ‖x‖ ^ n = 1 := by rw [← norm_pow, h, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 this
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap']`. Establish `: ‖((n : ℤ) : ℚ_[l])‖ < 1` using `Padic.norm_intCast_lt_one_iff.2 (Int.natCast_dvd_natCast.2 h)`. Simplify using `using this`.
+-/
 private theorem nat_lt {n : ℕ} (h : l ∣ n) : ‖(n : Qbar l)‖ < 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap']
   have : ‖((n : ℤ) : ℚ_[l])‖ < 1 := Padic.norm_intCast_lt_one_iff.2 (Int.natCast_dvd_natCast.2 h)
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hl.out).2 h`.
+-/
 private theorem nat_eq {n : ℕ} (h : ¬ l ∣ n) : ‖(n : Qbar l)‖ = 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap', Padic.norm_natCast_eq_one_iff]
   exact (Nat.Prime.coprime_iff_not_dvd hl.out).2 h
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+-/
 private theorem nadd_le {x y : Qbar l} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x + y‖ ≤ 1 :=
   (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans_lt (max_lt hx hy)`.
+-/
 private theorem add_lt {x y : Qbar l} (hx : ‖x‖ < 1) (hy : ‖y‖ < 1) : ‖x + y‖ < 1 :=
   (IsUltrametricDist.norm_add_le_max x y).trans_lt (max_lt hx hy)
 
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hx (norm_nonneg _) hy`.
+-/
 private theorem mul_le {x y : Qbar l} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x * y‖ ≤ 1 := by
   rw [norm_mul]; exact mul_le_one₀ hx (norm_nonneg _) hy
 
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) hx hy`.
+-/
 private theorem mul_lt {x y : Qbar l} (hx : ‖x‖ < 1) (hy : ‖y‖ ≤ 1) : ‖x * y‖ < 1 := by
   rw [norm_mul]; exact mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) hx hy
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (fun x => ‖x‖ ≤ 1) (fun _ _ => nadd_le) (by simp) h`.
+-/
 private theorem sum_le {I : Type} (s : Finset I) (f : I → Qbar l) (h : ∀ i ∈ s, ‖f i‖ ≤ 1) : ‖∑ i ∈ s, f i‖ ≤ 1 :=
   Finset.sum_induction f (fun x => ‖x‖ ≤ 1) (fun _ _ => nadd_le) (by simp) h
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (fun x => ‖x‖ < 1) (fun _ _ => add_lt) (by simp) h`.
+-/
 private theorem sum_lt {I : Type} (s : Finset I) (f : I → Qbar l) (h : ∀ i ∈ s, ‖f i‖ < 1) : ‖∑ i ∈ s, f i‖ < 1 :=
   Finset.sum_induction f (fun x => ‖x‖ < 1) (fun _ _ => add_lt) (by simp) h
 
@@ -62,6 +96,13 @@ private def intO (l : ℕ) [Fact l.Prime] : Subring (Qbar l) where
   zero_mem' := by simp
   neg_mem' := by simp
 
+/- English proof (translation)
+Establish `h1 : ‖x - 1‖ ≤ 1`. Rewrite using `[sub_eq_add_neg]`. Conclude with `nadd_le (root_le hl.out.ne_zero h).le (by simp)`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hl.out (⟨x - 1, h1⟩ : intO l) 1`. Establish `h2` using `congrArg (fun z : intO l => (z : Qbar l)) hr`.
+
+Simplify using `only [Subring.coe_add, SubmonoidClass.coe_pow, Subring.coe_mul, Subring.coe_one, sub_add_cancel, h, one_pow, Subring.coe_natCast, mul_one] at h2`. Establish `h3 : (x - 1) ^ l = -((l : Qbar l) * (x - 1) * r)` using `by linear_combination -h2`. Establish `h4 : ‖x - 1‖ ^ l < 1`. Rewrite using `[← norm_pow, h3, norm_neg]`. Conclude with `mul_lt (mul_lt (nat_lt dvd_rfl) h1) r.2`.
+
+Conclude with `lt_of_pow_lt_pow_left₀ l zero_le_one (by rwa [one_pow])`.
+-/
 private theorem root_sub_one {x : Qbar l} (h : x ^ l = 1) : ‖x - 1‖ < 1 := by
   have h1 : ‖x - 1‖ ≤ 1 := by
     rw [sub_eq_add_neg]
@@ -76,6 +117,11 @@ private theorem root_sub_one {x : Qbar l} (h : x ^ l = 1) : ‖x - 1‖ < 1 := b
     exact mul_lt (mul_lt (nat_lt dvd_rfl) h1) r.2
   exact lt_of_pow_lt_pow_left₀ l zero_le_one (by rwa [one_pow])
 
+/- English proof (translation)
+Distinguish the cases in `ha : IsUnit a`. Take `⟨u, rfl⟩` from `ha`. Use `(root_le (n := Fintype.card (ZMod N)ˣ) Fintype.card_ne_zero ?_).le` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, pow_card_eq_one]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[χ.map_nonunit ha]`. Simplify using the standard rewrite rules.
+-/
 private theorem char_le (ι : Qbar l ≃+* ℂ) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (a : ZMod N) :
     ‖ι.symm (χ a)‖ ≤ 1 := by
   by_cases ha : IsUnit a
@@ -84,9 +130,15 @@ private theorem char_le (ι : Qbar l ≃+* ℂ) {N : ℕ} [NeZero N] (χ : Diric
     rw [← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, pow_card_eq_one]; simp
   · rw [χ.map_nonunit ha]; simp
 
+/- English proof (translation)
+Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Simplify using the standard rewrite rules.
+-/
 private theorem add_pow_N {N : ℕ} [NeZero N] (a : ZMod N) : (ZMod.stdAddChar a : ℂ) ^ N = 1 := by
   rw [← AddChar.map_nsmul_eq_pow]; simp
 
+/- English proof (translation)
+Rewrite using `[gaussSum, map_sum]`. Use `sum_le _ _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `mul_le (char_le ι χ a) (root_le (NeZero.ne N) ?_).le` and prove the remaining obligations. Rewrite using `[← map_pow, add_pow_N, map_one]`.
+-/
 private theorem gauss_le (ι : Qbar l ≃+* ℂ) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
     ‖ι.symm (gaussSum χ ZMod.stdAddChar)‖ ≤ 1 := by
   rw [gaussSum, map_sum]
@@ -95,6 +147,9 @@ private theorem gauss_le (ι : Qbar l ≃+* ℂ) {N : ℕ} [NeZero N] (χ : Diri
   refine mul_le (char_le ι χ a) (root_le (NeZero.ne N) ?_).le
   rw [← map_pow, add_pow_N, map_one]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun z => ‖ι.symm z‖) (gauss_mul_gauss_inv χ hχ)`. Simplify using `only [map_mul, map_natCast, nat_eq hN] at h`. Use `le_antisymm (gauss_le ι _) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Rewrite `h` using `[mul_comm (ι.symm (gaussSum χ _))]`. Conclude with `(mul_lt (mul_lt hlt (gauss_le ι _)) (char_le ι χ _)).ne h`.
+-/
 private theorem gauss_eq (ι : Qbar l ≃+* ℂ) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ.IsPrimitive)
     (hN : ¬ l ∣ N) : ‖ι.symm (gaussSum χ⁻¹ ZMod.stdAddChar)‖ = 1 := by
   have h := congrArg (fun z => ‖ι.symm z‖) (gauss_mul_gauss_inv χ hχ)
@@ -103,12 +158,20 @@ private theorem gauss_eq (ι : Qbar l ≃+* ℂ) {N : ℕ} [NeZero N] (χ : Diri
   rw [mul_comm (ι.symm (gaussSum χ _))] at h
   exact (mul_lt (mul_lt hlt (gauss_le ι _)) (char_le ι χ _)).ne h
 
+/- English proof (translation)
+Unfold `Lk`. Rewrite using `[map_div₀, map_pow, map_sub, map_one]`. Use `congr 1`. Conclude with `(Polynomial.aeval_algHom_apply (ι.symm.toRingHom.toIntAlgHom) x (numL k)).symm`.
+-/
 private theorem map_Lk (ι : Qbar l ≃+* ℂ) (k : ℕ) (x : ℂ) : ι.symm (Lk k x) = Lk k (ι.symm x) := by
   unfold Lk
   rw [map_div₀, map_pow, map_sub, map_one]
   congr 1
   exact (Polynomial.aeval_algHom_apply (ι.symm.toRingHom.toIntAlgHom) x (numL k)).symm
 
+/- English proof (translation)
+Distinguish the cases in `h1 : x = 1`. Substitute `h1` using the available equality. Simplify using `[Lk, zero_pow (Nat.one_le_iff_ne_zero.1 hk)]`. Rewrite using `[map_Lk]`. Use `(lkSep l h2 N hN0 hN).1 k _ (by rw [← map_pow, hx, map_one]) fun h => h1 ?_` and prove the remaining obligations.
+
+Conclude with `ι.symm.injective (by rw [h, map_one])`.
+-/
 private theorem Lk_le (h2 : l ≠ 2) (ι : Qbar l ≃+* ℂ) {N : ℕ} (hN0 : 0 < N) (hN : ¬ l ∣ N) {k : ℕ} (hk : 1 ≤ k) {x : ℂ}
     (hx : x ^ N = 1) : ‖ι.symm (Lk k x)‖ ≤ 1 := by
   by_cases h1 : x = 1
@@ -120,11 +183,17 @@ private theorem Lk_le (h2 : l ≠ 2) (ι : Qbar l ≃+* ℂ) {N : ℕ} (hN0 : 0 
 
 end
 
+/- English proof (translation)
+Use `symm`. Use `Finset.sum_bij' (fun n _ => (n : ZMod N)) (fun a _ => a.val) (by simp) (fun a _ => by simp [ZMod.val_lt]) (fun n hn => ZMod.val_cast_of_lt (mem_range.1 hn)) (fun a _ => ZMod.natCast_zmod_val a) (fun _ _ => rfl)` and prove the remaining obligations.
+-/
 private theorem sum_zmod {N : ℕ} [NeZero N] (f : ZMod N → ℂ) : ∑ a : ZMod N, f a = ∑ n ∈ range N, f n := by
   symm
   refine Finset.sum_bij' (fun n _ => (n : ZMod N)) (fun a _ => a.val) (by simp) (fun a _ => by simp [ZMod.val_lt])
     (fun n hn => ZMod.val_cast_of_lt (mem_range.1 hn)) (fun a _ => ZMod.natCast_zmod_val a) (fun _ _ => rfl)
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `succ w ih`. Rewrite using `[Nat.mul_succ, Finset.sum_range_add, ih, Finset.sum_range_succ]`. Simplify using `only [add_comm (M * w)]`.
+-/
 private theorem sum_mul_range (M w : ℕ) (f : ℕ → ℂ) :
     ∑ n ∈ range (M * w), f n = ∑ j ∈ range w, ∑ b ∈ range M, f (b + M * j) := by
   induction w with
@@ -133,6 +202,11 @@ private theorem sum_mul_range (M w : ℕ) (f : ℕ → ℂ) :
     rw [Nat.mul_succ, Finset.sum_range_add, ih, Finset.sum_range_succ]
     simp only [add_comm (M * w)]
 
+/- English proof (translation)
+Rewrite using `[mul_comm, sum_mul_range]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `b hb hb0`.
+
+Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb0 (Nat.eq_zero_of_dvd_of_lt ((Nat.dvd_add_left (dvd_mul_right w j)).1 h) (mem_range.1 hb))`. Introduce `h`. Conclude with `absurd (mem_range.2 hw) h`.
+-/
 private theorem sum_multiples (M w : ℕ) (hw : 0 < w) (f : ℕ → ℂ) :
     ∑ n ∈ range (M * w), (if w ∣ n then f n else 0) = ∑ j ∈ range M, f (w * j) := by
   rw [mul_comm, sum_mul_range]
@@ -145,6 +219,15 @@ private theorem sum_multiples (M w : ℕ) (hw : 0 < w) (f : ℕ → ℂ) :
     exact hb0 (Nat.eq_zero_of_dvd_of_lt ((Nat.dvd_add_left (dvd_mul_right w j)).1 h) (mem_range.1 hb))
   · intro h; exact absurd (mem_range.2 hw) h
 
+/- English proof (translation)
+Rewrite using `[sum_mul_range, Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Establish `h1 : IsPrimitiveRoot (ζ ^ M) w` using `hζ.pow (by positivity) rfl`. Establish `h2 : ∀ j, ψ ((b + M * j : ℕ) : ZMod M) = ψ b` using `fun j => by simp`. Simplify using `only [h2]`.
+
+Distinguish the cases in `hb0 : b = 0`. Substitute `hb0 haveI : Fact (1 < M) := ⟨hM⟩` using the available equality. Simplify using `[ψ.map_zero]`. Establish `h3 : (ζ ^ b) ^ w ≠ 1`. Rewrite using `[← pow_mul, Ne, hζ.pow_eq_one_iff_dvd]`.
+
+Introduce `h`. Conclude with `hb0 (Nat.eq_zero_of_dvd_of_lt (Nat.dvd_of_mul_dvd_mul_right hw h) (mem_range.1 hb))`. Establish `h4` using `lkDist w k hw hk _ _ h1 h3`. Simplify using `only [← pow_mul, ← pow_add] at h4`. Rewrite using `[← Finset.mul_sum, h4, mul_comm b w]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sum_all {M w k : ℕ} (hM : 1 < M) (hw : 0 < w) (hk : 1 ≤ k) (ψ : DirichletCharacter ℂ M) {ζ : ℂ}
     (hζ : IsPrimitiveRoot ζ (M * w)) :
     ∑ n ∈ range (M * w), ψ n * Lk k (ζ ^ n) = (w : ℂ) ^ k * ∑ b ∈ range M, ψ b * Lk k (ζ ^ (w * b)) := by
@@ -165,6 +248,31 @@ private theorem sum_all {M w k : ℕ} (hM : 1 < M) (hw : 0 < w) (hk : 1 ≤ k) (
   simp only [← pow_mul, ← pow_add] at h4
   rw [← Finset.mul_sum, h4, mul_comm b w]; ring
 
+/- English proof (translation)
+Introduce `l hl ι M w _ φ θ χ h k hk c hc`. Establish `hw0 : 0 < w` using `h.prime.pos`. Establish `hM0 : 0 < M` using `zero_lt_one.trans h.one_lt`. Use `haveI : NeZero M := ⟨hM0.ne'⟩`. Use `haveI : Fact w.Prime := ⟨h.prime⟩`.
+
+Establish `hlw : ¬ l ∣ w` using `fun hd => hl.out.one_lt.ne' (Nat.dvd_one.1 ((Nat.dvd_sub_iff_right hw0 hd).1 h.dvd))`. Establish `hlN : ¬ l ∣ M * w` using `fun hd => (hl.out.dvd_mul.1 hd).elim h.cop hlw`. Use `set ζ : ℂ := ZMod.stdAddChar (1 : ZMod (M * w)) with hζdef`. Establish `hζn : ∀ n : ℕ, (ZMod.stdAddChar (n : ZMod (M * w)) : ℂ) = ζ ^ n` using `fun n => by`. Rewrite using `[hζdef, ← AddChar.map_nsmul_eq_pow]`.
+
+Simplify using the standard rewrite rules. Establish `hζ : IsPrimitiveRoot ζ (M * w)`. Use `⟨add_pow_N _, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[← hζn, (ZMod.isPrimitive_stdAddChar (M * w)).zmod_char_eq_one_iff]`. Conclude with `(ZMod.natCast_eq_zero_iff _ _).1 hn`.
+
+Establish `hL : ∀ n : ℕ, ‖ι.symm (Lk k (ζ ^ n))‖ ≤ 1` using `fun n => Lk_le h.odd ι (by positivity) hlN hk (by rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow])`. Establish `hmul : ∀ n : ℕ, χ⁻¹ (n : ZMod (M * w)) = φ⁻¹ (n : ZMod M) * θ⁻¹ (n : ZMod w)` using `fun n => by`. Simplify using `only [MulChar.inv_apply_eq_inv', h.mul, mul_inv]`. Establish `hφw : φ⁻¹ (w : ZMod M) = 1` using `by rw [MulChar.inv_apply_eq_inv', h.φw, inv_one]`. Use `set T : ℂ := ∑ b ∈ range M, φ⁻¹ (b : ZMod M) * Lk k (ζ ^ (w * b)) with hT`.
+
+Establish `hT1 : ‖ι.symm T‖ ≤ 1`. Rewrite using `[hT, map_sum]`. Conclude with `sum_le _ _ fun b _ => by rw [map_mul]; exact mul_le (char_le ι _ _) (hL _)`. Establish `hA` using `sum_all h.one_lt hw0 hk φ⁻¹ hζ`. Establish `hB` using `sum_multiples M w hw0 (fun n => φ⁻¹ (n : ZMod M) * Lk k (ζ ^ n))`.
+
+Simplify using `only [Nat.cast_mul, map_mul, hφw, one_mul] at hB`. Rewrite `hA`, `hB` using `[← hT]`. Establish `hS : ∑ a : ZMod (M * w), χ⁻¹ a * Lk k (ZMod.stdAddChar a : ℂ) = ∑ n ∈ range (M * w), (if w ∣ n then 0 else (θ⁻¹ (n : ZMod w) - 1) * (φ⁻¹ (n : ZMod M) * Lk k (ζ ^ n))) + ((w : ℂ) ^ k - 1) * T`. Rewrite using `[sub_mul, one_mul, ← hA, ← hB, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib, sum_zmod]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hmul, hζn]`. Use `split_ifs with hn`. Rewrite using `[(ZMod.natCast_eq_zero_iff _ _).2 hn, MulChar.map_zero]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hw1 : ‖ι.symm ((w : ℂ) ^ k - 1)‖ < 1`. Establish `h1 : l ∣ w ^ k - 1` using `h.dvd.trans (Nat.sub_one_dvd_pow_sub_one w k)`. Establish `h2 : ((w : ℂ) ^ k - 1) = ((w ^ k - 1 : ℕ) : ℂ)`. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ hw0)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h2, map_natCast]`. Conclude with `nat_lt h1`. Establish `hSlt : ‖ι.symm (∑ a : ZMod (M * w), χ⁻¹ a * Lk k (ZMod.stdAddChar a : ℂ))‖ < 1`. Rewrite using `[hS, map_add, map_mul, map_sum]`. Use `add_lt (sum_lt _ _ fun n _ => ?_) (mul_lt hw1 hT1)` and prove the remaining obligations.
+
+Use `split_ifs with hn`. Simplify using the standard rewrite rules. Rewrite using `[map_mul, map_mul, map_sub, map_one]`. Use `mul_lt (root_sub_one ?_) (mul_le (char_le ι _ _) (hL _))` and prove the remaining obligations. Establish `hu : IsUnit (n : ZMod w)` using `Ne.isUnit (mt (ZMod.natCast_eq_zero_iff _ _).1 hn)`.
+
+Rewrite using `[← map_pow, ← MulChar.pow_apply' _ hl.out.ne_zero, inv_pow, h.θpow, inv_one, MulChar.one_apply hu, map_one]`. Establish `h2 : ‖(2 : Qbar l)‖ = 1`. Establish `: ¬ l ∣ 2` using `fun hd => h.odd ((Nat.prime_dvd_prime_iff_eq hl.out Nat.prime_two).1 hd)`. Simplify using `using nat_eq (l := l) this`. Rewrite `hSlt` using `[← hc, map_mul, map_mul, norm_mul, norm_mul, gauss_eq ι χ (ePrim l M w φ θ χ h) hlN, map_ofNat, h2]`.
+
+Simplify using `using hSlt`.
+-/
 theorem UpperTheory.V.Sd.constSmall :
     UpperTheory.V.Sd.ConstSmall := by
   intro l hl ι M w _ φ θ χ h k hk c hc

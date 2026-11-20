@@ -21,8 +21,14 @@ def IsHalfIdem (D : D7) (ε : AE D) : Prop :=
     (∀ e, IsSplitIdem D e → (ε * e = e ∧ ε * cA D e = 0) ∨ (ε * e = 0 ∧ ε * cA D e = cA D e)) ∧
     ∀ v η, NonSplitAt D v η → algebraMap (AF D.host.F) (AE D) η * ε = 0
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_splitPlaces_selecting_adelicIdempotent D`.
+-/
 theorem exists_isHalfIdem (D : D7) : ∃ ε, IsHalfIdem D ε := GlobalTheory.T.exists_splitPlaces_selecting_adelicIdempotent D
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Use `adele_ext ?_ ?_` and prove the remaining obligations. Conclude with `(congrFun (congrFun (finRat_inf S T x) i) j).trans (congrFun (congrFun (fin_smul_fin (ratW T S x)) i) j).symm`. Use `show finPart D (ratW T S x i j) = finPart D ((1 - realIdem D) * ratW T S x i j)`. Rewrite using `[RingHom.map_mul, RingHom.map_sub, finPart_realIdem, RingHom.map_one, sub_zero, one_mul]`.
+-/
 theorem finRat_eq (S T : HSp D) (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     finRat S T x = (1 - realIdem D) • (ratW T S x : WO S T) := by
   funext i j
@@ -31,6 +37,9 @@ theorem finRat_eq (S T : HSp D) (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) 
   · show finPart D (ratW T S x i j) = finPart D ((1 - realIdem D) * ratW T S x i j)
     rw [RingHom.map_mul, RingHom.map_sub, finPart_realIdem, RingHom.map_one, sub_zero, one_mul]
 
+/- English proof (translation)
+Rewrite using `[finRat_eq, finRat_eq, smul_comm]`. Use `congr 1`. Use function extensionality and compare the values at `i j`. Conclude with `(incA D).map_mul c (x i j)`.
+-/
 theorem finRat_smul (S T : HSp D) (c : D.host.E) (x : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     finRat S T (c • x) = incA D c • finRat S T x := by
   rw [finRat_eq, finRat_eq, smul_comm]
@@ -54,6 +63,9 @@ def latQ (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.ran
     rw [finRat_smul]
     exact GlobalTheory.LatticeStable.smul_mem_latO D S T LS LT _ _ (finPart_intA r) _ hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latQ {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {x : Matrix (Fin T.rank) (Fin S.rank) D.host.E} :
     x ∈ latQ S T LS LT ↔ finRat S T x ∈ latO S T LS LT fun _ => True := Iff.rfl
@@ -90,9 +102,17 @@ def sandw {K : Type} [CommRing K] {m n : ℕ} (b : Matrix (Fin m) (Fin m) K) (a 
   map_add' x y := by rw [Matrix.mul_add, Matrix.add_mul]
   map_smul' c x := by rw [Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sandw_apply {K : Type} [CommRing K] {m n : ℕ} (b : Matrix (Fin m) (Fin m) K) (a : Matrix (Fin n) (Fin n) K)
     (x : Matrix (Fin m) (Fin n) K) : sandw b a x = b * x * a := rfl
 
+/- English proof (translation)
+Use extensionality with `⟨i, j⟩ ⟨k, l⟩`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.stdBasis_eq_single, sandw_apply]`. Establish `: ∀ x : Matrix (Fin m) (Fin n) K, (Matrix.stdBasis K (Fin m) (Fin n)).repr x (i, j) = x i j` using `fun x => by`. Simplify using `[Matrix.stdBasis]`. Rewrite using `[this]`.
+
+Simplify using `[Matrix.mul_apply, Matrix.single, ite_and]`.
+-/
 theorem toMatrix_sandw {K : Type} [CommRing K] {m n : ℕ} (b : Matrix (Fin m) (Fin m) K) (a : Matrix (Fin n) (Fin n) K) :
     LinearMap.toMatrix (Matrix.stdBasis K (Fin m) (Fin n)) (Matrix.stdBasis K (Fin m) (Fin n)) (sandw b a) = b ⊗ₖ aᵀ := by
   ext ⟨i, j⟩ ⟨k, l⟩
@@ -102,10 +122,16 @@ theorem toMatrix_sandw {K : Type} [CommRing K] {m n : ℕ} (b : Matrix (Fin m) (
   rw [this]
   simp [Matrix.mul_apply, Matrix.single, ite_and]
 
+/- English proof (translation)
+Rewrite using `[← toMatrix_sandw, LinearMap.det_toMatrix]`.
+-/
 theorem det_sandw {K : Type} [CommRing K] {m n : ℕ} (b : Matrix (Fin m) (Fin m) K) (a : Matrix (Fin n) (Fin n) K) :
     LinearMap.det (sandw b a) = (b ⊗ₖ aᵀ).det := by
   rw [← toMatrix_sandw, LinearMap.det_toMatrix]
 
+/- English proof (translation)
+Rewrite using `[← toMatrix_sandw, ← LinearMap.det_toMatrix (Matrix.stdBasis K (Fin m) (Fin n)), map_sub, LinearMap.toMatrix_one]`.
+-/
 theorem det_sandw_sub_one {K : Type} [CommRing K] {m n : ℕ} (b : Matrix (Fin m) (Fin m) K) (a : Matrix (Fin n) (Fin n) K) :
     LinearMap.det (sandw b a - 1) = (b ⊗ₖ aᵀ - 1).det := by
   rw [← toMatrix_sandw, ← LinearMap.det_toMatrix (Matrix.stdBasis K (Fin m) (Fin n)), map_sub, LinearMap.toMatrix_one]

@@ -10,6 +10,11 @@ open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C PositivityThe
 open GlobalTheory.PRep GlobalTheory.SmGL Formalism.BasicNotions GlobalTheory.CuspRep
 open scoped TensorProduct Classical
 
+/- English proof (translation)
+Introduce `K _ _ n w V _ _ ρ hs hi T hT`. Use `haveI := hi`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (w.adicCompletion K)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → w.adicCompletion K))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (w.adicCompletion K))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (Gw n w) := Units.isEmbedding_embedProduct.secondCountableTopology`.
+
+Establish `hsm : GroundTheory.Automorphic.IsSmooth ρ` using `fun v => hs v`. Set `φ : Representation.IntertwiningMap ρ ρ` to `{ toLinearMap := T, isIntertwining' := fun g => LinearMap.ext fun v => hT g v }`. Take `⟨c, hc⟩` from `(algebraMap_intertwiningMap_bijective_of_isSmooth hsm).2 φ`. Conclude with `⟨c, fun v => (congrArg (fun f : Representation.IntertwiningMap ρ ρ => f v) hc).symm⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.schurSm :
     ∀ {K : Type} [Field K] [NumberField K] (n : ℕ) (w : Pl K) {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (Gw n w) V), GlobalTheory.PRep.IsSmooth ρ → ρ.IsIrreducible → Schur ρ := by
   intro K _ _ n w V _ _ ρ hs hi T hT

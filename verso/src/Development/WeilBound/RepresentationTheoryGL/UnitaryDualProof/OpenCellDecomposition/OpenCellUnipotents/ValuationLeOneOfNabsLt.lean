@@ -17,10 +17,16 @@ namespace PositivityTheory.RgUd.CellA
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h` using `(nabs_le_iff z 1).1 (by rw [nabs_one]; exact hz.le)`. Simplify using `using h`.
+-/
 theorem valuation_le_one_of_nabs_lt (z : kˣ) (hz : nabs k z < 1) : valuation k (z : k) ≤ 1 := by
   have h := (nabs_le_iff z 1).1 (by rw [nabs_one]; exact hz.le)
   simpa using h
 
+/- English proof (translation)
+Establish `hti : 0 < t ^ i` using `pow_pos ht i`. Rewrite using `[← Real.rpow_natCast (t ^ i) (m * r), ← Real.rpow_add hti, Real.sqrt_eq_rpow, ← Real.rpow_natCast (t ^ (1 / 2 : ℝ)), ← Real.rpow_mul ht.le, ← Real.rpow_natCast t i, ← Real.rpow_mul ht.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scalar_id (t : ℝ) (ht : 0 < t) (i m r : ℕ) :
     (t ^ i) ^ (m * r) * (t ^ i) ^ (-((m * r : ℕ) : ℝ) / 2) = Real.sqrt t ^ (i * m * r) := by
   have hti : 0 < t ^ i := pow_pos ht i
@@ -35,6 +41,29 @@ variable {r m : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `hv`. Establish `hv0 : v ≠ 0` using `fun h => hv (h ▸ Submodule.zero_mem _)`. Take `⟨J, vol, _, hJker, hJU, _, hJvol⟩` from `CellB.openJ k ψ hψ 2 (r + m) (dd r m) (hdd r m) ρ hρ`. Take `⟨n, _, hwhit, hcpt, hopen, f, hf, hfv, hf0⟩` from `exists_bump k ψ hψ 2 (r + m) (dd r m) (hdd r m) ρ hρ v`. Establish `hle : CellB.congrL k r m n ≤ unipU k (dd r m) (hdd r m)` using `inf_le_left`.
+
+Establish `hwL : ∀ (u : GL (Fin (r + m)) k) (hb : u ∈ unipB k (Fin (r + m))), u ∈ CellB.congrL k r m n → whitChar ψ (r + m) ⟨u, hb⟩ = 1` using `fun u hb hu => hwhit u hb (CellB.mem_congrL.1 hu).2`. Take `⟨hpos, hJf⟩` from `hJvol _ hle hcpt hopen`. Establish `hJ0` using `hJf ⟨f, hf⟩ v (fun u hb hu => by`. Rewrite using `[hwL u hb hu, Units.val_one, one_smul]`. Conclude with `hfv u hu) hf0`.
+
+Establish `hz1` using `valuation_le_one_of_nabs_lt z hz`. Use `⟨f, ?_, fun i => ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h2` using `(hJker ⟨f, hf⟩).2 h`. Rewrite `h2` using `[hJ0]`.
+
+Conclude with `hv ((Submodule.smul_mem_iff _ (Complex.ofReal_ne_zero.2 hpos.ne')).1 h2)`. Establish `hval : valuation k ((z ^ i : kˣ) : k) ≤ 1`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `pow_le_one₀ zero_le' hz1`. Use `set a := aDiag k (r + m) m (z ^ i) with ha`.
+
+Establish `hconj` using `conj_aDiag (r := r) (m := m) k (z ^ i)`. Establish `hB : ∀ u ∈ unipB k (Fin (r + m)), a * u * a⁻¹ ∈ unipB k (Fin (r + m))` using `fun u hu => aDiag_conj_mem_unipB k _ m (z ^ i) hu`. Establish `hU : ∀ u ∈ unipU k (dd r m) (hdd r m), a * u * a⁻¹ ∈ unipU k (dd r m) (hdd r m)` using `fun u hu => aDiag_conj_mem_unipU k (z ^ i) hu`. Establish `hUi : ∀ u ∈ unipU k (dd r m) (hdd r m), a⁻¹ * u * a ∈ unipU k (dd r m) (hdd r m)`. Introduce `u hu`.
+
+Establish `h` using `aDiag_conj_mem_unipU (r := r) (m := m) k (z ^ i)⁻¹ hu`. Rewrite `h` using `[← aDiag_inv, inv_inv]`. Then use the resulting hypothesis. Establish `hLc : ∀ u ∈ CellB.congrL k r m n, a * u * a⁻¹ ∈ CellB.congrL k r m n`. Introduce `u hu`. Take `⟨hu1, hu2⟩` from `CellB.mem_congrL.1 hu`.
+
+Conclude with `CellB.mem_congrL.2 ⟨hU u hu1, aDiag_conj_mem_congr k _ m (z ^ i) hval n ((mem_unipU_two k).1 hu1).1 hu2⟩`. Take `⟨_, hm, hJa⟩` from `J_translate ψ J vol hJvol _ hle hcpt hopen hwL f hf v hfv hf0 a (levZ k r m (z ^ i)) hconj hB hU hUi hLc`. Use `set δ : ℂ := ((deltaHalf k (fun a : Fin 2 => Fin (dd r m a)) (levZ k r m (z ^ i)) : ℂˣ) : ℂ) with hδ`. Establish `hvol` using `CellB.vol_conj_aDiag ψ ρ J vol hJU hJvol (fun u => mem_unipU_two k) n (z ^ i) hval hwL ⟨_, hm⟩ (δ • ρ (levZ k r m (z ^ i)) v) (by rw [hcent]; exact smul_ne_zero (Units.ne_zero _) (smul_ne_zero (Units.ne_zero _) hv0)) (fun u hu => by`. Take `⟨u', hu', rfl⟩` from `Subgroup.mem_map.1 hu`.
+
+Use `show _ = _`. Rewrite using `[translate_apply (dd r m) (hdd r m) ρ a _ hconj f]`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Rewrite using `[show a⁻¹ * (a * u' * a⁻¹) * a = u' by group, hfv u' hu'])`. Use the proof step `(fun u hu hnu => by show _ = _`.
+
+Rewrite using `[translate_apply (dd r m) (hdd r m) ρ a _ hconj f]`. Rewrite using `[hf0 _ (hUi u hu) (fun h => hnu (Subgroup.mem_map.2 ⟨a⁻¹ * u * a, h, by show a * (a⁻¹ * u * a) * a⁻¹ = u group⟩)), map_zero, smul_zero])`. Establish `hmem : parInd (stdBlocks (dd r m) (hdd r m)) ρ a f - (((Real.sqrt (nabs k z) : ℝ) : ℂ) ^ (i * m * r) * (ω z : ℂ) ^ i) • f ∈ openFns (dd r m) (hdd r m) ρ` using `sub_mem hm (Submodule.smul_mem _ _ hf)`. Apply `(hJker ⟨_, hmem⟩).1` to reduce the goal to its premises. Establish `hsplit : J ⟨_, hmem⟩ = J ⟨_, hm⟩ - (((Real.sqrt (nabs k z) : ℝ) : ℂ) ^ (i * m * r) * (ω z : ℂ) ^ i) • J ⟨f, hf⟩`.
+
+Rewrite using `[← map_smul, ← map_sub]`. Both sides reduce to the same expression. Rewrite using `[hsplit, hJa, hJ0, hvol, hcent, hδ, deltaHalf_levZ, nabs_pow]`. Use `Submodule.zero_mem _` and compare the differences between its conclusion and the goal. Rewrite using `[smul_smul, smul_smul, smul_smul, ← sub_smul]`.
+
+Use `zero_smul ℂ v` and compare the differences between its conclusion and the goal. Rewrite using `[sub_eq_zero, map_pow, Units.val_pow_eq_pow_val, ← Complex.ofReal_pow, ← scalar_id (nabs k z) (GlobalTheory.SplitWeil.nabs_pos k z) i m r]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem openCellPar (ψ : AddChar k Circle) (hψ : Continuous ψ)
     (ρ : Representation ℂ (Levi k fun a => Fin (dd r m a)) W) (hρ : IsSmooth ρ) (ω : kˣ →* ℂˣ)
     (hcent : ∀ (z : kˣ) (t : W), ρ (levZ k r m z) t = (ω z : ℂ) • t)

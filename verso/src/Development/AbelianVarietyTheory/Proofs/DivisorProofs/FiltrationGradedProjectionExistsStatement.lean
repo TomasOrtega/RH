@@ -8,6 +8,9 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.LieFilt GlobalTheory.GrFilt
 open GlobalTheory.Twist (resM)
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GrFiltProj.exists_isProj | exact GlobalTheory.GrFiltProj.exists_isProj | (intros; apply GlobalTheory.GrFiltProj.exists_isProj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.filtration_graded_projection_exists : ∀ {X : Scheme.{0}} [IsIntegral X] {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules} {r : ι → ℕ}
     (o : ι → ℕ), Function.Injective o → ∀ (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a), (∀ a, Mono (u a)) →
     (∀ x : X, ∃ V : X.Opens, x ∈ V ∧ LocAdapted r o T u V) → FrameMem r o T u → GenSpanEq r o T u →

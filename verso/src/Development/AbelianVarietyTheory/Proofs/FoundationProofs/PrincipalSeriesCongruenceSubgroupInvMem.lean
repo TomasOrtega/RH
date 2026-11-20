@@ -51,6 +51,15 @@ def congrAlg (ψ : Fin n → kˣ →* ℂˣ) (hψ : Ordered ψ) :
     intro c i j hij
     simp [Matrix.algebraMap_eq_diagonal, Matrix.diagonal_apply_ne _ hij.ne, triv_zero]
 
+/- English proof (translation)
+Use `set A : Matrix (Fin m) (Fin m) R := (g : Matrix (Fin m) (Fin m) R)`. Use `set p := A.charpoly`. Establish `hCH : Polynomial.aeval A p = 0` using `Matrix.aeval_self_charpoly A`. Establish `hdec : p.divX * Polynomial.X + Polynomial.C (p.coeff 0) = p` using `Polynomial.divX_mul_X_add p`. Establish `hdet : A.det = (-1) ^ Fintype.card (Fin m) * p.coeff 0` using `Matrix.det_eq_sign_charpoly_coeff A`.
+
+Establish `hu : IsUnit (p.coeff 0)`. Establish `h` using `(Matrix.isUnit_iff_isUnit_det A).mp (Units.isUnit g)`. Rewrite `h` using `[hdet]`. Conclude with `isUnit_of_mul_isUnit_right h`. Take `⟨u, hu⟩` from `hu`.
+
+Establish `h1 : Polynomial.aeval A p.divX * A = -algebraMap R _ (p.coeff 0)`. Rewrite `hCH` using `[← hdec]`. Simplify using `only [map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C] at hCH`. Conclude with `eq_neg_of_add_eq_zero_left hCH`. Establish `key : ((-(↑u⁻¹ : R)) • Polynomial.aeval A p.divX) * A = 1`.
+
+Rewrite using `[smul_mul_assoc, h1, Algebra.algebraMap_eq_smul_one, ← hu, neg_smul_neg, smul_smul, Units.inv_mul, one_smul]`. Establish `e : ((g⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) = (-(↑u⁻¹ : R)) • Polynomial.aeval A p.divX` using `Units.inv_eq_of_mul_eq_one_left key`. Rewrite using `[e]`. Conclude with `Subalgebra.smul_mem _ (Polynomial.aeval_mem_adjoin_singleton R A) _`.
+-/
 theorem inv_val_mem_adjoin {R : Type} [CommRing R] {m : ℕ} (g : GL (Fin m) R) :
     ((g⁻¹ : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) ∈ Algebra.adjoin R {(g : Matrix (Fin m) (Fin m) R)} := by
   set A : Matrix (Fin m) (Fin m) R := (g : Matrix (Fin m) (Fin m) R)
@@ -79,6 +88,11 @@ end GlobalTheory.PsType
 
 open GlobalTheory.PsType in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n ψ hψ a ha`. Take `⟨haK, hat⟩` from `ha`. Take `⟨g, rfl⟩` from `haK`. Establish `hg : (g : Matrix (Fin n) (Fin n) 𝒪[k]) ∈ congrAlg ψ hψ` using `fun i j hij => hat i j hij`. Establish `hinv : ((g⁻¹ : GL (Fin n) 𝒪[k]) : Matrix (Fin n) (Fin n) 𝒪[k]) ∈ congrAlg ψ hψ` using `Algebra.adjoin_le (Set.singleton_subset_iff.mpr hg) (inv_val_mem_adjoin g)`.
+
+Use `⟨inv_mem ⟨g, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[← map_inv]`. Conclude with `hinv i j hij`.
+-/
 theorem GlobalTheory.PsType.grp_inv_mem : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (ψ : Fin n → kˣ →* ℂˣ), Ordered ψ → ∀ a ∈ grp ψ, a⁻¹ ∈ grp ψ := by
   intro k _ _ _ _ n ψ hψ a ha

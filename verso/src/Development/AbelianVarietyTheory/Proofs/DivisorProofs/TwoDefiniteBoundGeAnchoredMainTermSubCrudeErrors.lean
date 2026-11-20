@@ -9,6 +9,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.DefArith
 
+/- English proof (translation)
+Establish `hm : Dw.mult τ.1 = Dw.p` using `by unfold Datum.mult; rw [if_pos τ.2]`. Establish `hk : ∀ k : Fin (Dw.p + Dw.q), (laOf Dw a n τ k : ℝ) = (a (τ.1, k) : ℝ) + ((n / 2 : ℕ) : ℝ)`. Introduce `k`. Establish `h` using `k.2`. Establish `hlt : (k : ℕ) < Dw.p` using `by omega`.
+
+Simplify using `[laOf, weightOf, hlt]`. Use `norm_cast`. Repeatedly rewrite using `[hk]`. Rewrite using `[Finset.sum_add_distrib, Fin.sum_univ_eq_sum_range (fun i => (a (τ.1, i) : ℝ)) (Dw.p + Dw.q)]`. Establish `hs : (GlobalTheory.DualWeyl.size (part Dw a τ.1) : ℝ) = ∑ i ∈ Finset.range Dw.p, (a (τ.1, i) : ℝ)`.
+
+Unfold `GlobalTheory.DualWeyl.size part`. Use `push_cast`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => (a (τ.1, i) : ℝ)) (Dw.mult τ.1), hm]`. Rewrite using `[hs, hq, add_zero]`. Take `⟨r, rfl⟩` from `hn`.
+
+Establish `: (r + r) / 2 = r` using `by omega`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, this, hq, add_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_laOf_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hq : Dw.q = 0) (hn : Even n) (τ : Psi H) :
     (∑ k, (laOf Dw a n τ k : ℝ)) = (GlobalTheory.DualWeyl.size (part Dw a τ.1) : ℝ) + (Dw.p : ℝ) * n / 2 := by
@@ -36,6 +45,23 @@ end GlobalTheory.DefArith
 
 namespace GlobalTheory.DefArith
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw a n kc lo hq hp hn`. Establish `hp0 : (Dw.p : ℝ) ≠ 0`. Establish `: (0 : ℝ) < Dw.p` using `by exact_mod_cast hp`. Conclude with `this.ne'`. Establish `hτ : ∀ τ : Psi H, -((Dw.p : ℝ) * (anchor Dw a n kc τ : ℝ) * lo) - |lo| * ∑ k, |(laOf Dw a n τ k : ℝ) - (anchor Dw a n kc τ : ℝ)| - Real.log (GlobalTheory.DualWeyl.dim (part Dw a τ.1) : ℝ) ≤ 2 * ((((GlobalTheory.DualWeyl.size (part Dw a τ.1) : ℝ)) / Dw.p + (n : ℝ) / 2) * (-flatDeg …`.
+
+Introduce `τ`. Establish `hS` using `sum_laOf_eq Dw a n hq hn τ`. Establish `hsplit : (∑ k, (laOf Dw a n τ k : ℝ)) = (Dw.p : ℝ) * (anchor Dw a n kc τ : ℝ) + ∑ k, ((laOf Dw a n τ k : ℝ) - (anchor Dw a n kc τ : ℝ))`. Rewrite using `[Finset.sum_sub_distrib]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, hq, add_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hb : -(|lo| * ∑ k, |(laOf Dw a n τ k : ℝ) - (anchor Dw a n kc τ : ℝ)|) ≤ -((∑ k, ((laOf Dw a n τ k : ℝ) - (anchor Dw a n kc τ : ℝ))) * lo)`. Rewrite using `[neg_le_neg_iff]`. Combine the equalities or inequalities in the displayed calculation. Establish `he : 2 * ((((GlobalTheory.DualWeyl.size (part Dw a τ.1) : ℝ)) / Dw.p + (n : ℝ) / 2) * (-flatDegVal Dw lo) - Real.log (GlobalTheory.DualWeyl.dim (part Dw a τ.1) : ℝ) / 2) = -((∑ k, (laOf Dw a n τ k : ℝ)) * lo) - Real.log (GlobalTheory.DualWeyl.dim (part Dw a τ.1) : ℝ)`.
+
+Rewrite using `[hS]`. Unfold `flatDegVal`. Rewrite using `[hq]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[he, hsplit]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : 0 < Real.log (2 * Real.pi)` using `Real.log_pos (by linarith [Real.pi_gt_three])`. Establish `hN : 0 ≤ (n : ℝ) * (Fintype.card (Psi H) : ℝ) * (Dw.p : ℝ)` using `by positivity`. Establish `hl : -((n : ℝ) * (Fintype.card (Psi H) : ℝ) * (Dw.p : ℝ) * |GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd E|) ≤ 2 * ((n : ℝ) * ((Fintype.card (Psi H) : ℝ) * Dw.p) * (Real.log (2 * Real.pi) / 4 - GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDef …`.
+
+Establish `h1` using `le_abs_self (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd E)`. Establish `h2 : -|GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd E| ≤ Real.log (2 * Real.pi) / 2 - GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd E` using `by linarith`. Establish `h3` using `mul_le_mul_of_nonneg_left h2 hN`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsum` using `Finset.sum_le_sum fun τ (_ : τ ∈ Finset.univ) => hτ τ`.
+
+Establish `eL : -(∑ τ : Psi H, (Dw.p : ℝ) * (anchor Dw a n kc τ : ℝ) * lo) - |lo| * (∑ τ : Psi H, ∑ k, |(laOf Dw a n τ k : ℝ) - (anchor Dw a n kc τ : ℝ)|) - (∑ τ : Psi H, Real.log (GlobalTheory.DualWeyl.dim (part Dw a τ.1) : ℝ)) = ∑ τ : Psi H, (-((Dw.p : ℝ) * (anchor Dw a n kc τ : ℝ) * lo) …`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_neg_distrib, Finset.mul_sum]`. Establish `eR : 2 * defBound Dw a n (-flatDegVal Dw lo) = ∑ τ : Psi H, 2 * ((((GlobalTheory.DualWeyl.size (part Dw a τ.1) : ℝ)) / Dw.p + (n : ℝ) / 2) * (-flatDegVal Dw lo) - Real.log (GlobalTheory.DualWeyl.dim (part Dw a τ.1) : ℝ) / 2) + 2 * ((n : ℝ) * ((Fintype.card (Psi H) : ℝ) * Dw.p) * …`. Unfold `defBound`. Rewrite using `[mul_add, Finset.mul_sum]`.
+
+Rewrite using `[eL, eR]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem two_defBound_ge : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) (n kc : ℕ) (lo : ℝ), Dw.q = 0 → 1 ≤ Dw.p → Even n → -(∑ τ : Psi H, (Dw.p : ℝ) * (anchor Dw a n kc τ : ℝ) * lo) - |lo| * (∑ τ : Psi H, ∑ k, |(laOf Dw a n τ k : ℝ) - (anchor Dw a n kc τ : ℝ)|) - (∑ τ : Psi H, Real.log (GlobalTheory.DualWeyl.dim (part Dw a τ.1) : ℝ)) - (n : ℝ) * (Fintype.card (Psi H) : ℝ) * (Dw.p : ℝ) * |GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd E| ≤ 2 * defBound Dw a n (-flatDegVal Dw lo) := by
   intro E _ _ _ H Dw a n kc lo hq hp hn
   have hp0 : (Dw.p : ℝ) ≠ 0 := by

@@ -6,6 +6,9 @@ open scoped ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.WeilSplit.SplitAdditiveCharacter
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ _ χ _ _ c₁ c₂ Φ x g`. Conclude with `GlobalTheory.CompanionTheory.WeilSplit.Uni.split_weil_whittaker_unipotent_equivariant F χ c₁ c₂ Φ x g`.
+-/
 theorem sPsi : Ad3.K.GL2LocalData.SPsi := by
   intro F _ _ _ _ _ _ _ χ _ _ c₁ c₂ Φ x g
   exact GlobalTheory.CompanionTheory.WeilSplit.Uni.split_weil_whittaker_unipotent_equivariant F χ c₁ c₂ Φ x g

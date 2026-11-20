@@ -22,6 +22,31 @@ namespace GlobalTheory.LastKerLoc
 
 open GlobalTheory.LocFlat.CFac in
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ _ _ p ν hν ψ hψ ψk hχ ρ B S X T L'' o'' τ hL hτ s z₀ hs hz n n' Z _ _ _ _ _ _ FA F₀ FS FT FX hcore hFX T₁ T₂ hT₁ hT₂`. Take `⟨-, hck, -⟩` from `GlobalTheory.T.weilCharacter_splitPlace_exists_continuous_nontrivial D k p ψ hψ`. Take `⟨hψc, hψ1⟩` from `hck ψk hχ`. Set `κ : WO S L'' → WO B.L S` to `fun w => GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj B.L S ((rat τ : Mx D B.L.rank L''.rank) * w)`. Set `Bl : SB (Matrix Z n k) →ₗ[ℂ] SB (Matrix n (n' ⊕ Unit) k) →ₗ[ℂ] (WO B.A S → WO S X → ℂ)` to `LinearMap.mk₂ ℂ (fun Ψ₂ Ψ₁ u => o''.boxT S (T₂ Ψ₂) fun w => T₁ Ψ₁ ((B.o.resS S).symm (u, κ w))) (by intros; funext u v; simp only [OrthDec.boxT, map_add, Pi.add_apply, add_mul]) (by intros; funext u v; simp only [OrthDec.boxT, map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]) (by …`.
+
+Take `⟨Λ, hΛ1, hΛ2⟩` from `GlobalTheory.T.exists_pair_space_linear_map_via_partial_fourier k ν hν ψk hψc hψ1 n n' Z _ Bl`. Take `⟨hXi, hPsi⟩` from `GlobalTheory.T.last_column_datum_tensor_mem_schwartzBruhat k ν hν ψk hψc hψ1 n n' Z`. Take `⟨hHat, hDec⟩` from `GlobalTheory.T.row_fourier_onto_and_span_transformed_last_row k ν hν ψk hψc hψ1 n Z`. Establish `hBl : ∀ a Ψ u v, Bl a Ψ u v = T₂ a (o''.resT S v).1 * T₁ Ψ ((B.o.resS S).symm (u, κ (o''.resT S v).2))` using `fun _ _ _ _ => rfl`. Use `⟨Λ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `Ξ₂ v`. Take `⟨N, a, c, g, hg, hsum⟩` from `hDec Ξ₂`. Establish `hsl` using `fun i => GlobalTheory.T.localModel_slice_firstSummand D k p ψ ρ B S s n n' FA F₀ FS hcore T₁ hT₁ (c i) (κ (o''.resT S v).2)`. Use `choose T' hT' hT'eq using hsl`. Take `⟨hz0, hlin⟩` from `GlobalTheory.T.splitLocalPlace_local_models_linear_subspace D k p ψ n n' B.A S FA FS`.
+
+Use `⟨∑ i, (T₂ (a i) (o''.resT S v).1) • T' i, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.sum_induction _ (fun T => p.IsModel ψ FA FS T) (fun _ _ h1 h2 => (hlin _ _ h1 h2).1) hz0 ?_` and prove the remaining obligations. Introduce `i _`. Conclude with `(hlin _ _ (hT' i) (hT' i)).2 _`. Introduce `Ξ₁ Ξ hΞ u`.
+
+Establish `hΞs : Ξ = ∑ i, prodSB Ξ₁ (g i)`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Rewrite using `[hΞ, Submodule.coe_sum, Finset.sum_apply, hsum, Submodule.coe_sum, Finset.sum_apply, Finset.mul_sum]`. Both sides reduce to the same expression.
+
+Establish `hPi : ∀ i, ∃ Ψ₁ : SB (Matrix n (n' ⊕ Unit) k), ∀ x, Ψ₁.1 x = Ξ₁.1 x.toCols₁ * (c i).1 (Matrix.of fun r _ => x r (Sum.inr ()))` using `fun i => hPsi Ξ₁ (c i)`. Use `choose Ψ hΨ using hPi`. Establish `hterm : ∀ i, Λ (prodSB Ξ₁ (g i)) = Bl (a i) (Ψ i)` using `fun i => hΛ2 Ξ₁ (a i) (c i) (Ψ i) (prodSB Ξ₁ (g i)) (hΨ i) (fun q => by rw [prodSB_apply, hg])`. Rewrite using `[hΞs, map_sum, Finset.sum_apply, Finset.sum_apply, LinearMap.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hterm, hBl, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, hT'eq i Ξ₁ (Ψ i) (hΨ i) u]`. Introduce `Ξ₁ u`. Take `⟨FL, hFL, hsl⟩` from `GlobalTheory.T.local_model_restricted_to_line_slice D k p ψ ρ B S s n n' FA F₀ FS hcore T₁ hT₁`. Take `⟨TLS, hTLS, hTLSeq⟩` from `hsl Ξ₁ u`. Take `⟨FL'', hFL'', TL, hTL, hTLeq⟩` from `GlobalTheory.T.lineModel_kappa_transform_isLocalModel D k p ν hν ψ hψ ψk hχ B.L S L'' B.ζ τ hL hτ s z₀ hs hz n FS FL hFL TLS hTLS`.
+
+Set `P : SB (Matrix (Z ⊕ Unit) n k) →ₗ[ℂ] SB (Matrix n n' k × Matrix (Z ⊕ Unit) n k)` to `{ toFun := fun g => prodSB Ξ₁ g map_add' := fun g g' => by apply Subtype.ext; funext q; simp [prodFn, mul_add] map_smul' := fun c g => by apply Subtype.ext; funext q; simp [prodFn]; ring }`. Set `TX : SB (Matrix (Z ⊕ Unit) n k) →ₗ[ℂ] (WO S X → ℂ)` to `LinearMap.proj u ∘ₗ Λ ∘ₗ P`. Establish `hTXa : ∀ g, TX g = Λ (prodSB Ξ₁ g) u` using `fun _ => rfl`. Use `⟨TX, GlobalTheory.T.local_model_box_product_orthogonal_sum_target D k p ψ S X T L'' o'' n Z FS FT FL'' FX ?_ T₂ TL hT₂ hTL TX ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hFX]`.
+
+Use `congr 1`. Use extensionality with `r j`. Simplify using `[Matrix.mul_apply, hFL'', Matrix.mulVec, dotProduct]`. Introduce `a b Φ hΦ`. Take `⟨c, hc⟩` from `hHat b`.
+
+Take `⟨Ψ₁, hΨ₁⟩` from `hPsi Ξ₁ c`. Establish `h` using `hΛ2 Ξ₁ a c Ψ₁ (prodSB Ξ₁ Φ) hΨ₁ (fun q => by rw [prodSB_apply, hΦ, hc]; rfl)`. Use function extensionality and compare the values at `v`. Rewrite using `[hTXa, h, hBl, OrthDec.boxT, hTLeq c b hc, hTLSeq c Ψ₁ hΨ₁]`. Introduce `Ξ₂ Ξ hΞ v`.
+
+Establish `: Ξ = prodSB Ξ₁ Ξ₂` using `Subtype.ext (funext hΞ)`. Substitute `this` using the available equality. Both sides reduce to the same expression. Introduce `Ψ₁ Ψ₂`. Take `⟨Ξ, hΞ⟩` from `hXi Ψ₁ Ψ₂`.
+
+Use `⟨Ξ, hΞ, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[hΛ1 Ψ₁ Ψ₂ Ξ hΞ]`. Both sides reduce to the same expression.
+-/
 theorem lastLoc : ∀ (D : D7), LastLoc D := by
   intro D k _ _ _ _ _ _ p ν hν ψ hψ ψk hχ ρ B S X T L'' o'' τ hL hτ s z₀ hs hz n n' Z _ _ _ _ _ _ FA F₀ FS FT FX hcore hFX T₁ T₂ hT₁ hT₂
   classical

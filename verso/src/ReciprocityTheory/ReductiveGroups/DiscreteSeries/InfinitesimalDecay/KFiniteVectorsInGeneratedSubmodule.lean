@@ -9,6 +9,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Take `⟨S, hSf, hxS, hSK⟩` from `hx`. Establish `h` using `sigLam_kfin hgap hP hv₀ S hSf hSK hxS`. Simplify using `only [kfinLam, Submodule.mem_comap, Submodule.mem_map] at h`. Take `⟨y, hy, hyx⟩` from `h`. Conclude with `⟨y, hy, hyx⟩`.
+-/
 theorem kfin_mem_genSub {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
     (hlam : S7.IsHCParam lam) (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)

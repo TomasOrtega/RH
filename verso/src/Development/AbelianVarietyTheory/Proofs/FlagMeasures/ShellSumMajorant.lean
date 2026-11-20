@@ -8,6 +8,9 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory.Dec
 
+/- English proof (translation)
+Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma exp_mul_exp_neg_eq_shell (a : ℝ) (r : ℕ) :
     Real.exp (2 * a * (r + 1)) * Real.exp (-(4 * a * r)) =
       Real.exp (2 * a) * Real.exp (-(2 * a)) ^ r := by
@@ -15,6 +18,31 @@ private lemma exp_mul_exp_neg_eq_shell (a : ℝ) (r : ℕ) :
   congr 1
   ring
 
+/- English proof (translation)
+Introduce `n q h hn hq hh`. Establish `hq1 : (1 : ℝ) ≤ (q : ℝ)` using `by exact_mod_cast hq`. Establish `hsq : 1 ≤ Real.sqrt (q : ℝ)` using `Real.one_le_sqrt.mpr hq1`. Establish `hsqpos : 0 < Real.sqrt (q : ℝ)` using `by linarith`. Establish `hn1 : (1 : ℝ) ≤ (n : ℝ) ^ 2`.
+
+Establish `: (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Use the polynomial consequences of the given equalities and inequalities. Establish `hh0 : 0 ≤ h`. Establish `: 0 ≤ 32 * (n : ℝ) ^ 2 * Real.sqrt q` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hgeo` using `fun r : ℕ => exp_mul_exp_neg_eq_shell ((n : ℝ) ^ 2) r`. Establish `h3 : 3 ≤ Real.exp (2 * (n : ℝ) ^ 2)`. Combine the linear relations using `[Real.add_one_le_exp (2 * (n : ℝ) ^ 2)]`. Establish `he0 : 0 ≤ Real.exp (-(2 * (n : ℝ) ^ 2))` using `(Real.exp_pos _).le`. Establish `he : Real.exp (-(2 * (n : ℝ) ^ 2)) ≤ 1 / 2`.
+
+Rewrite using `[Real.exp_neg, inv_eq_one_div, div_le_div_iff₀ (by linarith) (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy hxy`. Simplify using `only [Set.mem_Ici] at hx hy`.
+
+Unfold `GlobalTheory.Count.decE`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hm : min (2 * x ^ 2) (x / Real.sqrt q) ≤ min (2 * y ^ 2) (y / Real.sqrt q)`. Apply `min_le_min` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+
+Conclude with `div_le_div_of_nonneg_right hxy hsqpos.le`. Rewrite using `[neg_mul, neg_mul, neg_le_neg_iff]`. Conclude with `mul_le_mul_of_nonneg_left hm (by positivity)`. Introduce `r`. Unfold `GlobalTheory.Count.decE`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Simplify using the standard rewrite rules. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`.
+
+Establish `hmin : min (2 * (r : ℝ) ^ 2) (r / Real.sqrt q) = r / Real.sqrt q`. Apply `min_eq_right` to reduce the goal to its premises. Establish `: (r : ℝ) / Real.sqrt q ≤ r` using `div_le_self (by linarith) hsq`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hmin, neg_mul]`.
+
+Apply `neg_le_neg` to reduce the goal to its premises. Establish `hd : 32 * (n : ℝ) ^ 2 ≤ h / Real.sqrt q`. Rewrite using `[le_div_iff₀ hsqpos]`. Conclude with `hh`. Use `mul_le_mul_of_nonneg_right hd (by linarith : (0 : ℝ) ≤ r)` as an intermediate fact.
+
+Establish `hdiv : h / 8 * (r / Real.sqrt q) = h / Real.sqrt q * r / 8` using `by ring`. Rewrite using `[hdiv]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[funext hgeo]`. Conclude with `(summable_geometric_of_lt_one he0 (by linarith)).mul_left _`.
+
+Rewrite using `[funext hgeo, tsum_mul_left, tsum_geometric_of_lt_one he0 (by linarith)]`. Establish `hinv : (1 - Real.exp (-(2 * (n : ℝ) ^ 2)))⁻¹ ≤ 2`. Rewrite using `[inv_eq_one_div, div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_le_mul_of_nonneg_left hinv (Real.exp_pos (2 * (n : ℝ) ^ 2)).le` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem shell_sum_majorant : ∀ (n q : ℕ) (h : ℝ), 1 ≤ n → 1 ≤ q → 32 * (n : ℝ) ^ 2 * Real.sqrt q ≤ h → AntitoneOn (decE q h) (Set.Ici 0) ∧ (∀ r : ℕ, decE q h r ≤ Real.exp (-(4 * (n : ℝ) ^ 2 * r))) ∧ Summable (fun r : ℕ => Real.exp (2 * (n : ℝ) ^ 2 * (r + 1)) * Real.exp (-(4 * (n : ℝ) ^ 2 * r))) ∧ ∑' r : ℕ, Real.exp (2 * (n : ℝ) ^ 2 * (r + 1)) * Real.exp (-(4 * (n : ℝ) ^ 2 * r)) ≤ 2 * Real.exp (2 * (n : ℝ) ^ 2) := by
   intro n q h hn hq hh
   have hq1 : (1 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq

@@ -19,6 +19,11 @@ open GlobalTheory.KeyPow GlobalTheory.KeyKa
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hloc : IsZariskiLocalAtSource @LocallyOfFinitePresentation` using `HasRingHomProperty.instIsZariskiLocalAtSource (P := @LocallyOfFinitePresentation)`. Use `IsZariskiLocalAtSource.of_openCover (ProjSpace.chartCover R N) fun (i : Fin (N + 1)) => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LocallyOfFinitePresentation (ProjSpace.chartι R N i ≫ PSpace.str R N)`. Rewrite using `[ProjSpace.chartι_str]`. Express the relevant statement in the definitionally equal form `LocallyOfFinitePresentation (Spec.map (CommRingCat.ofHom (MvPolynomial.C : R →+* MvPolynomial {j // j ≠ i} R)))`.
+
+Rewrite using `[LocallyOfFinitePresentation.SpecMap_iff, CommRingCat.hom_ofHom, ← MvPolynomial.algebraMap_eq, RingHom.finitePresentation_algebraMap]`. Use `infer_instance`.
+-/
 theorem locallyOfFinitePresentation_pspace_str (R : Type) [CommRing R] (N : ℕ) :
     LocallyOfFinitePresentation (PSpace.str R N) := by
   have hloc : IsZariskiLocalAtSource @LocallyOfFinitePresentation :=
@@ -32,6 +37,35 @@ theorem locallyOfFinitePresentation_pspace_str (R : Type) [CommRing R] (N : ℕ)
     RingHom.finitePresentation_algebraMap]
   infer_instance
 
+/- English proof (translation)
+Introduce `S _ R₀ X X₀ f f₀ π _ _ _ hX hP`. Establish `hsub : ∀ {A B : Subring S} (hAB : A ≤ B), B.subtype.comp (Subring.inclusion hAB) = A.subtype` using `fun _ => RingHom.ext fun _ => rfl`. Establish `hincl : ∀ {A B C : Subring S} (hAB : A ≤ B) (hBC : B ≤ C) (hAC : A ≤ C), (Subring.inclusion hBC).comp (Subring.inclusion hAB) = Subring.inclusion hAC` using `fun _ _ _ => RingHom.ext fun _ => rfl`. Establish `hsp : ∀ {A B : Subring S} (hAB : A ≤ B), spMap B.subtype ≫ spMap (Subring.inclusion hAB) = spMap A.subtype`. Introduce `A B hAB`.
+
+Rewrite using `[← spMap_comp, hsub]`. Establish `hsp2 : ∀ {A B C : Subring S} (hAB : A ≤ B) (hBC : B ≤ C) (hAC : A ≤ C), spMap (Subring.inclusion hBC) ≫ spMap (Subring.inclusion hAB) = spMap (Subring.inclusion hAC)`. Introduce `A B C hAB hBC hAC`. Rewrite using `[← spMap_comp, hincl]`. Take `⟨L, -, M, s, hv⟩` from `(ProjSpace.isProjBy_iff_isProjOver f).2 hP`.
+
+Take `⟨hs, hci⟩` from `(ProjSpace.veryAmpleBy_iff f s).1 hv`. Use `set i := ProjSpace.toProj f s hs with hi`. Establish `hif : i ≫ PSpace.str S M = f` using `ProjSpace.toProj_str f s hs`. Establish `: LocallyOfFinitePresentation (PSpace.str R₀ M)` using `locallyOfFinitePresentation_pspace_str R₀ M`. Establish `hφ : (i ≫ ProjSpace.baseChange M R₀.subtype) ≫ PSpace.str R₀ M = π ≫ f₀`.
+
+Rewrite using `[Category.assoc, ProjSpace.baseChange_str, ← Category.assoc, hif, hX.w]`. Take `⟨F₁, hF₁⟩` from `morphism_descends_to_subring S R₀ X X₀ (PSpace R₀ M) f f₀ (PSpace.str R₀ M) π (i ≫ ProjSpace.baseChange M R₀.subtype) hX hφ`. Use `set R₀' : Subring S := R₀ ⊔ Subring.closure (F₁ : Set S) with hR₀'`. Establish `h₀ : R₀ ≤ R₀'` using `le_sup_left`. Establish `hF₁' : (F₁ : Set S) ⊆ R₀'` using `fun x hx => (le_sup_right : Subring.closure (F₁ : Set S) ≤ R₀') (Subring.subset_closure hx)`.
+
+Take `⟨X₀', π₀', f₀', hX₀'⟩ : ∃ (X₀' : Scheme.{0}) (π₀' : X₀' ⟶ X₀) (f₀' : X₀' ⟶ Sp R₀'), IsPullback π₀' f₀' f₀ (spMap (Subring.inclusion h₀))` from `⟨_, _, _, IsPullback.of_hasPullback _ _⟩`. Take `⟨j, hjπ, hjf⟩ : ∃ j : X ⟶ X₀', j ≫ π₀' = π ∧ j ≫ f₀' = f ≫ spMap R₀'.subtype` from `⟨hX₀'.lift π (f ≫ spMap R₀'.subtype) (by rw [Category.assoc, hsp h₀, hX.w]), hX₀'.lift_fst _ _ _, hX₀'.lift_snd _ _ _⟩`. Take `⟨ψ, hjψ, hψq⟩` from `hF₁ R₀' h₀ hF₁' X₀' f₀' π₀' j hX₀' hjπ hjf`. Establish `hbc₀` using `ProjSpace.isPullback_baseChange M (Subring.inclusion h₀)`. Take `⟨g₀, hg₀b, hg₀q⟩ : ∃ g₀ : X₀' ⟶ PSpace R₀' M, g₀ ≫ ProjSpace.baseChange M (Subring.inclusion h₀) = ψ ∧ g₀ ≫ PSpace.str R₀' M = f₀'` from `⟨hbc₀.lift ψ f₀' (by rw [hψq, hX₀'.w]), hbc₀.lift_fst _ _ _, hbc₀.lift_snd _ _ _⟩`.
+
+Establish `: IsProper (PSpace.str R₀' M)` using `isProper_str R₀' M`. Establish `: QuasiCompact f₀'` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hX₀' inferInstance`. Establish `: QuasiSeparated f₀'` using `MorphismProperty.of_isPullback (P := @QuasiSeparated) hX₀' inferInstance`. Establish `: LocallyOfFiniteType f₀'` using `MorphismProperty.of_isPullback (P := @LocallyOfFiniteType) hX₀' inferInstance`. Establish `: LocallyOfFiniteType (g₀ ≫ PSpace.str R₀' M)` using `by rw [hg₀q]; infer_instance`.
+
+Establish `: QuasiSeparated (g₀ ≫ PSpace.str R₀' M)` using `by rw [hg₀q]; infer_instance`. Establish `: QuasiCompact (g₀ ≫ PSpace.str R₀' M)` using `by rw [hg₀q]; infer_instance`. Establish `: LocallyOfFiniteType g₀` using `locallyOfFiniteType_of_comp g₀ (PSpace.str R₀' M)`. Establish `: QuasiSeparated g₀` using `QuasiSeparated.of_comp g₀ (PSpace.str R₀' M)`. Establish `: QuasiCompact g₀` using `QuasiCompact.of_comp g₀ (PSpace.str R₀' M)`.
+
+Establish `hY` using `ProjSpace.isPullback_baseChange M R₀'.subtype`. Establish `hbc : ProjSpace.baseChange M R₀'.subtype ≫ ProjSpace.baseChange M (Subring.inclusion h₀) = ProjSpace.baseChange M R₀.subtype`. Rewrite using `[← ProjSpace.baseChange_comp, hsub]`. Establish `hleft : IsPullback j f f₀' (spMap R₀'.subtype)`. Use `IsPullback.of_right ?_ hjf hX₀'` and prove the remaining obligations.
+
+Rewrite using `[hjπ, hsp h₀]`. Conclude with `hX`. Establish `hsq : IsPullback j i g₀ (ProjSpace.baseChange M R₀'.subtype)`. Use `IsPullback.of_bot ?_ ?_ hY` and prove the remaining obligations. Rewrite using `[hif, hg₀q]`.
+
+Conclude with `hleft`. Apply `hbc₀.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hg₀b, hjψ, Category.assoc, hbc]`. Rewrite using `[Category.assoc, hg₀q, hjf, Category.assoc, ProjSpace.baseChange_str, ← Category.assoc, hif]`. Take `⟨F₂, hF₂⟩` from `GlobalTheory.T.isClosedImmersion_descends_to_subring' S R₀' X₀' (PSpace R₀' M) X (PSpace S M) g₀ (PSpace.str R₀' M) i j (ProjSpace.baseChange M R₀'.subtype) (PSpace.str S M) hY hsq hci`.
+
+Use `⟨F₁ ∪ F₂, fun R₁ h hF X₁ f₁ π₁ hX₁ => ?_⟩` and prove the remaining obligations. Establish `h' : R₀' ≤ R₁` using `sup_le h (Subring.closure_le.2 fun x hx => hF (Finset.mem_coe.2 (Finset.mem_union_left _ (Finset.mem_coe.1 hx))))`. Establish `hF₂' : (F₂ : Set S) ⊆ R₁` using `fun x hx => hF (Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_coe.1 hx)))`. Take `⟨πX₁, hπ₁, hf₁⟩ : ∃ πX₁ : X₁ ⟶ X₀', πX₁ ≫ π₀' = π₁ ∧ πX₁ ≫ f₀' = f₁ ≫ spMap (Subring.inclusion h')` from `⟨hX₀'.lift π₁ (f₁ ≫ spMap (Subring.inclusion h')) (by rw [Category.assoc, hsp2 h₀ h' h, hX₁.w]), hX₀'.lift_fst _ _ _, hX₀'.lift_snd _ _ _⟩`. Establish `hleft₁ : IsPullback πX₁ f₁ f₀' (spMap (Subring.inclusion h'))`.
+
+Use `IsPullback.of_right ?_ hf₁ hX₀'` and prove the remaining obligations. Rewrite using `[hπ₁, hsp2 h₀ h' h]`. Conclude with `hX₁`. Establish `hY₁` using `ProjSpace.isPullback_baseChange M (Subring.inclusion h')`. Take `⟨g₁, hg₁b, hg₁q⟩ : ∃ g₁ : X₁ ⟶ PSpace R₁ M, g₁ ≫ ProjSpace.baseChange M (Subring.inclusion h') = πX₁ ≫ g₀ ∧ g₁ ≫ PSpace.str R₁ M = f₁` from `⟨hY₁.lift (πX₁ ≫ g₀) f₁ (by rw [Category.assoc, hg₀q, hf₁]), hY₁.lift_fst _ _ _, hY₁.lift_snd _ _ _⟩`.
+
+Establish `hsq₁ : IsPullback πX₁ g₁ g₀ (ProjSpace.baseChange M (Subring.inclusion h'))`. Use `IsPullback.of_bot ?_ hg₁b.symm hY₁` and prove the remaining obligations. Rewrite using `[hg₁q, hg₀q]`. Conclude with `hleft₁`. Use `hF₂ R₁ h' hF₂' X₁ (PSpace R₁ M) g₁ πX₁ (ProjSpace.baseChange M (Subring.inclusion h')) (PSpace.str R₁ M) hY₁ hsq₁` as an intermediate fact.
+
+Rewrite using `[← hg₁q]`. Conclude with `ProjSpace.isProjOver_comp_of_isClosedImmersion g₁ (ProjSpace.isProjOver_pspace_str R₁ M)`.
+-/
 theorem isProjOver_descends_to_subring :
     ∀ (S : Type) [CommRing S] (R₀ : Subring S) (X X₀ : Scheme.{0}) (f : X ⟶ Sp S) (f₀ : X₀ ⟶ Sp R₀) (π : X ⟶ X₀) [QuasiCompact f₀] [QuasiSeparated f₀] [LocallyOfFiniteType f₀], IsPullback π f f₀ (spMap R₀.subtype) → IsProjOver f → ∃ F : Finset S, ∀ (R₁ : Subring S) (h : R₀ ≤ R₁), (F : Set S) ⊆ R₁ → ∀ (X₁ : Scheme.{0}) (f₁ : X₁ ⟶ Sp R₁) (π₁ : X₁ ⟶ X₀), IsPullback π₁ f₁ f₀ (spMap (Subring.inclusion h)) → IsProjOver f₁ := by
   intro S _ R₀ X X₀ f f₀ π _ _ _ hX hP

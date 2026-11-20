@@ -164,6 +164,9 @@ section Hypotheses
 
 variable (k : Type u) [Field k] (N : ℕ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mem_secs_twistBundle_one, span_range_eq_twistMod_one⟩`.
+-/
 theorem twist_hyps {Ω : Type w} [Field Ω] [Algebra k Ω] (x : Fin (N + 1) → Ω) :
     (∀ j, x j ∈ (twistBundle k x 1).secs) ∧
     ∀ I, Submodule.span (chartRing k x I) (Set.range x) = (twistBundle k x 1).sub I :=

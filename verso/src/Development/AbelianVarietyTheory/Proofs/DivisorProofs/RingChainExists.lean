@@ -29,6 +29,11 @@ section Generic
 variable {A R : Type} [CommRing A] [CommRing R] {σ : A →+* R} {M N M' N' : Type} [AddCommGroup M] [Module A M]
   [AddCommGroup N] [Module A N] [AddCommGroup M'] [Module R M'] [AddCommGroup N'] [Module R N']
 
+/- English proof (translation)
+Use `⟨P.mapQ P' f fun x hx => (h x).1 hx, ⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun z => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ((h x).2 ((Submodule.Quotient.mk_eq_zero _).1 hx))`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Take `⟨x, hx⟩` from `hs z`.
+
+Conclude with `⟨Submodule.Quotient.mk x, ((Submodule.Quotient.eq _).2 hx).symm⟩`.
+-/
 theorem exists_quot_bij (f : M →ₛₗ[σ] M') (P : Submodule A M) (P' : Submodule R M') (h : ∀ x, x ∈ P ↔ f x ∈ P')
     (hs : ∀ z, ∃ x, z - f x ∈ P') : ∃ Φ : (M ⧸ P) →ₛₗ[σ] M' ⧸ P', Function.Bijective Φ ∧
       ∀ x, Φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (f x) := by
@@ -41,11 +46,17 @@ theorem exists_quot_bij (f : M →ₛₗ[σ] M') (P : Submodule A M) (P' : Submo
 
 omit [Module A M] in
 
+/- English proof (translation)
+Use `choose g hg using fun x => hΨ.2 (f x)`. Conclude with `⟨AddMonoidHom.mk' g fun x y => hΨ.1 (by rw [map_add, hg, hg, hg, map_add]), hg⟩`.
+-/
 theorem exists_add_lift (Ψ : N →ₛₗ[σ] N') (hΨ : Function.Bijective Ψ) (f : M →+ N') :
     ∃ ψ : M →+ N, ∀ x, Ψ (ψ x) = f x := by
   choose g hg using fun x => hΨ.2 (f x)
   exact ⟨AddMonoidHom.mk' g fun x y => hΨ.1 (by rw [map_add, hg, hg, hg, map_add]), hg⟩
 
+/- English proof (translation)
+Use `choose g hg using fun x => hΨ.2 (f x)`. Conclude with `⟨⟨⟨g, fun x y => hΨ.1 (by rw [map_add, hg, hg, hg, map_add])⟩, fun a x => hΨ.1 (by rw [map_smulₛₗ, hg, hg, map_smulₛₗ]; rfl)⟩, hg⟩`.
+-/
 theorem exists_lin_lift (Ψ : N →ₛₗ[σ] N') (hΨ : Function.Bijective Ψ) (f : M →ₛₗ[σ] N') :
     ∃ ψ : M →ₗ[A] N, ∀ x, Ψ (ψ x) = f x := by
   choose g hg using fun x => hΨ.2 (f x)
@@ -57,6 +68,9 @@ def res (f : M →ₛₗ[σ] M') (H : Submodule R M') : H.comap f →ₛₗ[σ] 
   map_add' _ _ := Subtype.ext (map_add f _ _)
   map_smul' _ _ := Subtype.ext (map_smulₛₗ f _ _)
 
+/- English proof (translation)
+The claim follows from `exists_quot_bij (res f H) _ _ (fun x => h x.1) fun z => by obtain ⟨x, hx⟩ := hs z.1 exact ⟨⟨x, by simpa using H.sub_mem z.2 (hB hx)⟩, hx⟩`.
+-/
 theorem exists_qt_bij (f : M →ₛₗ[σ] M') (H B : Submodule R M') (hB : B ≤ H) (P : Submodule A M) (h : ∀ x, x ∈ P ↔ f x ∈ B)
     (hs : ∀ z, ∃ x, z - f x ∈ B) : ∃ Φ : Qt (H.comap f) P →ₛₗ[σ] Qt H B, Function.Bijective Φ ∧
       ∀ x, Φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (res f H x) :=
@@ -64,6 +78,15 @@ theorem exists_qt_bij (f : M →ₛₗ[σ] M') (H B : Submodule R M') (hB : B �
     obtain ⟨x, hx⟩ := hs z.1
     exact ⟨⟨x, by simpa using H.sub_mem z.2 (hB hx)⟩, hx⟩
 
+/- English proof (translation)
+Set `j : P →ₗ[R] Qt H B` to `Submodule.mkQ _ ∘ₗ al.codRestrict H fun y => hr ⟨y, rfl⟩`. Set `q : H →ₗ[R] Qt H B ⧸ LinearMap.range j` to `Submodule.mkQ _ ∘ₗ Submodule.mkQ _`. Establish `hq : LinearMap.ker pr ≤ LinearMap.ker q` using `fun x hx => by`. Take `⟨y, hy⟩` from `(hk x).1 hx`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨y, congrArg Submodule.Quotient.mk (Subtype.ext hy)⟩`.
+
+Use `⟨j, (LinearMap.ker pr).liftQ q hq ∘ₗ (pr.quotKerEquivOfSurjective hs).symm.toLinearMap, fun _ => rfl, fun x => ?_, fun x x' => ?_⟩` and prove the remaining obligations. Establish `h1 : (pr.quotKerEquivOfSurjective hs).symm (pr x) = Submodule.Quotient.mk x`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Conclude with `congrArg ((LinearMap.ker pr).liftQ q hq) h1`.
+
+Rewrite using `[eq_comm, Submodule.Quotient.eq, ← Submodule.Quotient.mk_sub, Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `h1 : (x' : X) - x - al y ∈ B` using `(Submodule.Quotient.eq (B.comap H.subtype)).1 hy.symm`. Conclude with `⟨_, h1, _, ⟨y, rfl⟩, sub_add_cancel _ _⟩`.
+
+Introduce and unpack `⟨u, hu, _, ⟨y, rfl⟩, e⟩`. Use `⟨y, ((Submodule.Quotient.eq _).2 ?_).symm⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x' : X) - x - al y ∈ B`. Rewrite using `[← e, add_sub_cancel_right]` and apply the resulting hypothesis.
+-/
 theorem exists_j_rho {X P Ω : Type} [AddCommGroup X] [Module R X] [AddCommGroup P] [Module R P] [AddCommGroup Ω]
     [Module R Ω] (H B : Submodule R X) (al : P →ₗ[R] X) (hr : LinearMap.range al ≤ H) (pr : H →ₗ[R] Ω)
     (hs : Function.Surjective pr) (hk : ∀ x : H, pr x = 0 ↔ (x : X) ∈ LinearMap.range al) :
@@ -100,6 +123,11 @@ def unitMap (e : R ⊗[A] M ≃ₗ[R] M') : M →ₛₗ[algebraMap A R] M' where
   map_smul' a y := by
     rw [← map_smul, TensorProduct.smul_tmul', ← TensorProduct.smul_tmul, Algebra.smul_def, smul_eq_mul]
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Use `⟨fun x => ?_, fun z => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mem_smul_pointwise_iff_exists, Submodule.mem_top, true_and]`. Use `⟨fun ⟨y, hy⟩ => ⟨piMap (algebraMap A R) _ y, by rw [← hy, map_smulₛₗ]⟩, fun ⟨y, hy⟩ => ?_⟩` and prove the remaining obligations. Use `choose u hu using fun i => h.2 (x i) ⟨y i, (congrFun hy i).symm⟩`.
+
+Conclude with `⟨u, funext fun i => (hu i).symm⟩`. Use `choose x u hu using fun i => h.1 (z i)`. Conclude with `⟨x, (Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨u, trivial, funext fun i => (hu i).symm⟩⟩`.
+-/
 theorem pi_modIso {a : A} {g : R} (hg : algebraMap A R a = g) (h : ModIso R a) (n : ℕ) :
     (∀ x, x ∈ baseOf a n ↔ piMap (algebraMap A R) _ x ∈ baseOf g n) ∧
       ∀ z, ∃ x, z - piMap (algebraMap A R) _ x ∈ baseOf g n := by
@@ -112,6 +140,13 @@ theorem pi_modIso {a : A} {g : R} (hg : algebraMap A R a = g) (h : ModIso R a) (
   · choose x u hu using fun i => h.1 (z i)
     exact ⟨x, (Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨u, trivial, funext fun i => (hu i).symm⟩⟩
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `ha`. Use `⟨fun r => ?_, fun x ⟨r, hr⟩ => ?_⟩` and prove the remaining obligations. Take `⟨x, y, hy⟩` from `LatDescent.adic_surj A q (ec.symm r)`. Establish `h1` using `congrArg ec hy`. Rewrite `h1` using `[ec.apply_symm_apply, map_add, map_mul, he, he]`.
+
+Conclude with `⟨x, algebraMap A R t * ec y, by rw [h1, ← mul_assoc, ← map_mul, ← ht]; ring⟩`. Take `⟨x', y, hy⟩` from `LatDescent.adic_surj A q (ec.symm r)`. Take `⟨b, hb⟩` from `LatDescent.adic_inj A q (x - a * x') (algebraMap A _ a * y) (ec.injective (by`. Establish `h1` using `congrArg ec hy`. Rewrite `h1` using `[ec.apply_symm_apply, map_add, map_mul, he, he]`.
+
+Rewrite using `[map_mul, map_mul, he, he, he, map_sub, map_mul, hr, h1]`. Use the proof step `ring))`. Conclude with `⟨x' + t * b, by rw [mul_add, ← mul_assoc, ← ht, ← hb]; ring⟩`.
+-/
 theorem modIso_of_dvd {q : A} (ec : AdicCompletion (Ideal.span {q}) A ≃+* R)
     (he : ∀ a, ec (algebraMap A _ a) = algebraMap A R a) {a : A} (ha : a ∣ q) : ModIso R a := by
   obtain ⟨t, ht⟩ := ha
@@ -142,6 +177,9 @@ variable (A) in
 
 abbrev up (n : ℕ) : lat D c A n →ₛₗ[algebraMap A S.R] H D c n := res _ _
 
+/- English proof (translation)
+Establish `h1 : fontaineTheta S.R p (xiN S 1) = ∑ i ∈ Finset.range p, zeta S.ε 2 ^ i`. Simplify using `[xiN, xi, fontaineTheta_teichmuller, zeta]`. Establish `h2 : ∑ i ∈ Finset.range p, zeta S.ε 2 ^ i = (p : S.R) + ∑ i ∈ Finset.range p, (zeta S.ε 2 ^ i - 1)` using `by simp`. Rewrite using `[h1, h2]`. Conclude with `(FrobQuot.zeta_sub_one_dvd_two S n).trans (dvd_add (FrobQuot.zeta_sub_one_dvd_p S 1) (Finset.dvd_sum fun i _ => sub_one_dvd_pow_sub_one _ i))`.
+-/
 theorem zeta_dvd_theta_xiN (S : CycPerfd p) (n : ℕ) : zeta S.ε (n + 2) - 1 ∣ fontaineTheta S.R p (xiN S 1) := by
   have h1 : fontaineTheta S.R p (xiN S 1) = ∑ i ∈ Finset.range p, zeta S.ε 2 ^ i := by
     simp [xiN, xi, fontaineTheta_teichmuller, zeta]
@@ -154,15 +192,32 @@ variable {π : A} (hπ : algebraMap A S.R π = zeta S.ε 1 - 1) (mπ : ModIso S.
 
 include hπ mπ
 
+/- English proof (translation)
+The claim follows from `exists_qt_bij _ _ _ (base_le_H D c n) _ (pi_modIso hπ mπ _).1 (pi_modIso hπ mπ _).2`.
+-/
 theorem exists_qq (n : ℕ) : ∃ Φ : Qt (lat D c A n) (baseOf π G.height) →ₛₗ[algebraMap A S.R] QQ D c n,
     Function.Bijective Φ ∧ ∀ x, Φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (up D c A n x) :=
   exists_qt_bij _ _ _ (base_le_H D c n) _ (pi_modIso hπ mπ _).1 (pi_modIso hπ mπ _).2
 
+/- English proof (translation)
+The claim follows from `exists_qt_bij _ _ _ (H_succ_le D c n) _ (fun _ => Iff.rfl) fun z => ((pi_modIso hπ mπ _).2 z).imp fun _ h => base_le_H D c (n + 1) h`.
+-/
 theorem exists_ll (n : ℕ) : ∃ Φ : Qt (lat D c A n) (lat D c A (n + 1)) →ₛₗ[algebraMap A S.R] LL D c n,
     Function.Bijective Φ ∧ ∀ x, Φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (up D c A n x) :=
   exists_qt_bij _ _ _ (H_succ_le D c n) _ (fun _ => Iff.rfl) fun z =>
     ((pi_modIso hπ mπ _).2 z).imp fun _ h => base_le_H D c (n + 1) h
 
+/- English proof (translation)
+Take `⟨Φ, hΦ, kΦ⟩` from `exists_qq D c hπ mπ (n + 1)`. Take `⟨Ψ, hΨ, kΨ⟩` from `exists_qq D c hπ mπ n`. Take `⟨ψ', h1, h2⟩` from `frobenius_quot_T p D S G c n`. Take `⟨ψ, hψ⟩` from `exists_add_lift Ψ hΨ (ψ'.comp Φ.toAddMonoidHom)`. Use `⟨ψ, ?_, fun x y => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `GlobalTheory.T.frobenius_semilinear_compatible p 1 A S.R mp _ _ _ _ Φ Ψ hΦ hΨ ψ ψ' hψ (by rw [pow_one]; exact h2)`. Rewrite `h` using `[pow_one]`. Then use the resulting hypothesis. Establish `h3 : ψ (Submodule.Quotient.mk x) = Submodule.Quotient.mk y ↔ ψ' (Submodule.Quotient.mk (up D c A _ x)) = Submodule.Quotient.mk (up D c A _ y)`. Rewrite using `[← hΨ.1.eq_iff, hψ, kΨ, ← kΦ]`. Both sides reduce to the same expression.
+
+Rewrite using `[h3]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨k, hk, e⟩` from `(mem_H D c (n + 1) _).1 (up D c A _ x).2`. Take `⟨v, hv⟩` from `zeta_sub_one_dvd S n`.
+
+Establish `e' : (zeta S.ε 1 - 1) • piMap (fontaineTheta S.R p) _ (piMap frobenius _ k) = (zeta S.ε (n + 1) - 1) • v • piMap (fontaineTheta S.R p) _ (piMap frobenius _ k)` using `by rw [smul_smul, ← hv]`. Rewrite `h` using `[h1 k _ ⟨_, (mem_H D c n _).2 ⟨_, hk, e'⟩⟩ hk e e']`. Conclude with `⟨k, hk, e, _, e', (Submodule.Quotient.eq ((base S G.height).comap (H D c n).subtype)).1 h.symm⟩`. Introduce and unpack `⟨k, hk, e, y₀, e', h⟩`. Rewrite using `[h1 k _ ⟨_, (mem_H D c n _).2 ⟨_, hk, e'⟩⟩ hk e e']`.
+
+Conclude with `((Submodule.Quotient.eq ((base S G.height).comap (H D c n).subtype)).2 h).symm`.
+-/
 theorem exists_psi (mp : ModIso S.R (p : A)) (n : ℕ) :
     ∃ ψ : Qt (lat D c A (n + 1)) (baseOf π G.height) →+ Qt (lat D c A n) (baseOf π G.height), IsFrobLin A p p ψ ∧
       ∀ (x : lat D c A (n + 1)) (y : lat D c A n), ψ (Submodule.Quotient.mk x) = Submodule.Quotient.mk y ↔
@@ -197,6 +252,21 @@ variable {Lie : Type} [AddCommGroup Lie] [Module A Lie] (eL : S.R ⊗[A] Lie ≃
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨Φ, hΦ, kΦ⟩` from `exists_ll D c hπ mπ n`. Take `⟨q1, q2⟩` from `GlobalTheory.T.base_change_nakayama_approximation A S.R p p (map_natCast _ p) mp Lie G.Lie eL`. Take `⟨Ψ, hΨ, kΨ⟩` from `exists_quot_bij (unitMap eL) ((p : A) • ⊤) ((p : S.R) • ⊤) (fun y => ⟨fun h => by`. Take `⟨z, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 h`. Rewrite using `[map_smulₛₗ, map_natCast]`.
+
+Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ trivial, q2 y⟩) q1`. Take `⟨-, lam, h1, h2⟩` from `LieTwist.LL_equiv_lie_twist p D S G c n`. Take `⟨-, ⟨w, hw⟩, -, s, hs⟩` from `CycElem.theta_xiN_facts p S n`. Take `⟨e, he⟩` from `h2 s hs`. Take `⟨u, hu⟩` from `b_eq_unit_smul_alDual p D S`.
+
+Take `⟨hb, hinj⟩` from `hu G c`. Take `⟨κ', k1, k2⟩` from `GlobalTheory.T.teichmuller_extension_of_scalars p (n + 1) S.R _ u s ⟨w, by rw [hw, mul_comm]⟩ (fun r => by`. Take `⟨a, rfl⟩` from `S.surj r`. Conclude with `⟨_, hs a, (CycElem.theta_xiN_facts p S (n + 1)).1 a⟩) _ _ lam e he`. Take `⟨κ, hκ⟩` from `exists_add_lift Ψ hΨ (κ'.comp Φ.toAddMonoidHom)`.
+
+Use `⟨κ, GlobalTheory.T.frobenius_semilinear_compatible p (n + 1) A S.R mp _ _ _ _ Φ Ψ hΦ hΨ κ κ' hκ k2, fun x y => ?_⟩` and prove the remaining obligations. Establish `h3 : κ (Submodule.Quotient.mk x) = Submodule.Quotient.mk y ↔ κ' (Submodule.Quotient.mk (up D c A _ x)) = Submodule.Quotient.mk (eL (1 ⊗ₜ y))`. Rewrite using `[← kΦ x]`. Conclude with `hΨ.1.eq_iff.symm.trans (Iff.of_eq (congrArg₂ Eq (hκ _) (kΨ y)))`. Rewrite using `[h3]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨k, hk, e⟩` from `(mem_H D c n _).1 (up D c A _ x).2`. Take `⟨m, hm⟩` from `(mem_K D c _ k).1 hk`. Take `rfl : (fun j => (phiInv p S.R)^[n + 1] (coord D c m j)) = k` from `funext hm`.
+
+Rewrite `h` using `[← h1 m _ e, k1]`. Conclude with `⟨m, e, _, by rw [hb, map_smul], (Submodule.Quotient.eq _).1 h.symm⟩`. Introduce and unpack `⟨m, e, y₀, e', h⟩`. Rewrite `e'` using `[hb, ← map_smul]`. Rewrite using `[← h1 m (up D c A _ x) e, k1, ← hinj e']`.
+
+Conclude with `((Submodule.Quotient.eq _).2 h).symm`.
+-/
 theorem exists_kappa (mp : ModIso S.R (p : A)) (n : ℕ) :
     ∃ κ : Qt (lat D c A n) (lat D c A (n + 1)) →+ Lie ⧸ (p : A) • (⊤ : Submodule A Lie), IsFrobLin A p (p ^ (n + 1)) κ ∧
       ∀ (x : lat D c A n) (y : Lie), κ (Submodule.Quotient.mk x) = Submodule.Quotient.mk y ↔
@@ -236,6 +306,25 @@ theorem exists_kappa (mp : ModIso S.R (p : A)) (n : ℕ) :
     rw [← h1 m (up D c A _ x) e, k1, ← hinj e']
     exact ((Submodule.Quotient.eq _).2 h).symm
 
+/- English proof (translation)
+Establish `: Module.Projective S.R G.dual.omega` using `Module.Projective.of_equiv' eO`. Establish `: Module.Finite S.R G.dual.omega` using `Module.Finite.equiv eO`. Establish `hrefl : Module.IsReflexive S.R G.dual.omega` using `inferInstance`. Establish `hreg : IsSMulRegular G.dual.omega (zeta S.ε 1 - 1)` using `Module.Flat.isSMulRegular_of_isRegular ((Commute.isRegular_iff fun _ => Commute.all _ _).2 (isSMulRegular_zeta_sub_one S 0))`. Take `⟨Φ, hΦ, kΦ⟩` from `exists_qq D c hπ mπ 0`.
+
+Take `⟨pr, hs, hal, hk⟩` from `OmegaProj.exists_projection p D S G c hrefl`. Establish `hr` using `(FirstLattice.exact_seq p D S G c hrefl).2.2.1`. Take `⟨j', ρ', j1, r1, r2⟩` from `exists_j_rho (H D c 0) (base S G.height) c.alDual hr pr hs hk`. Establish `kill : ∀ z : QQ D c 0, (zeta S.ε 1 - 1) • z = 0` using `fun z => by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ((mem_base S _).2 ⟨z.1, rfl⟩)`. Take `⟨j, hj⟩` from `exists_lin_lift Φ hΦ (j'.comp (unitMap eL))`. Take `⟨Ψ, hΨ, kΨ⟩` from `exists_quot_bij Φ (LinearMap.range j) (LinearMap.range j') (fun x => ⟨by`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, (hj y).symm⟩, by`.
+
+Introduce and unpack `⟨z, hz⟩`. Take `⟨y, hy⟩` from `(GlobalTheory.T.base_change_nakayama_approximation A S.R π _ hπ mπ Lie G.Lie eL).1 z`. Take `⟨t, -, ht⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy`. Use `⟨y, hΦ.1 ?_⟩` and prove the remaining obligations. Rewrite using `[hj, ← hz, ← sub_add_cancel z (eL (1 ⊗ₜ y)), ← ht, map_add, map_smul, kill, zero_add]`.
+
+Use the proof step `rfl⟩) fun z => (hΦ.2 z).imp fun x hx => by rw [hx, sub_self]; exact zero_mem _`. Take `⟨ρ, hρ⟩` from `exists_lin_lift Ψ hΨ (ρ'.comp (unitMap eO))`. Use `⟨j, ρ, fun z => ?_, fun y x => ?_, fun w x => ?_⟩` and prove the remaining obligations. Take `⟨z', hz'⟩` from `Submodule.Quotient.mk_surjective _ (Ψ z)`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z'`.
+
+Take `⟨w, hw⟩` from `(GlobalTheory.T.base_change_nakayama_approximation A S.R π _ hπ mπ Om _ eO).1 (pr x)`. Take `⟨t, -, ht⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hw`. Take `⟨t, rfl⟩` from `hs t`. Use `⟨w, hΨ.1 ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, ← hz', ← r1, ← sub_add_cancel (pr x) (eO (1 ⊗ₜ w)), ← ht, map_add, map_smul, r1, ← Submodule.Quotient.mk_smul, kill, Submodule.Quotient.mk_zero, zero_add]`.
+
+Both sides reduce to the same expression. Rewrite using `[← hΦ.1.eq_iff, hj, kΦ, LinearMap.comp_apply, j1, eq_comm]`. Conclude with `Submodule.Quotient.eq _`. Rewrite using `[← hΨ.1.eq_iff, hρ, kΨ, kΦ]`. Express the relevant statement in the definitionally equal form `ρ' (eO (1 ⊗ₜ w)) = _ ↔ _`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨x₀, hx⟩` from `hs (eO (1 ⊗ₜ w))`. Rewrite `h` using `[← hx, r1, r2]`. Conclude with `⟨x₀, x₀.2, by rw [← hx, hal], h⟩`.
+
+Introduce and unpack `⟨x₀, hx, e, h⟩`. Establish `h1 : eO (1 ⊗ₜ w) = pr ⟨x₀, hx⟩` using `hreg (e.trans (hal ⟨x₀, hx⟩).symm)`. Rewrite using `[h1, r1, r2]`. Conclude with `h`.
+-/
 theorem exists_j_rho_lat {Om : Type} [AddCommGroup Om] [Module A Om] [Module.Finite A Om] [Module.Projective A Om]
     (eO : S.R ⊗[A] Om ≃ₗ[S.R] G.dual.omega) :
     ∃ (j : Lie →ₗ[A] Qt (lat D c A 0) (baseOf π G.height))
@@ -294,6 +383,17 @@ theorem exists_j_rho_lat {Om : Type} [AddCommGroup Om] [Module A Om] [Module.Fin
 
 end Group
 
+/- English proof (translation)
+Introduce `p _ D S G c A _ _ _ _ ec he h o e π γ hπp hγp hπ hγ Lie Om _ _ _ _ _ _ _ _ eL eO`. Substitute `e` using the available equality. Establish `mπ : ModIso S.R π` using `modIso_of_dvd ec he hπp`. Establish `mp : ModIso S.R (p : A)` using `modIso_of_dvd ec he dvd_rfl`. Use `choose ψ ψ1 ψ2 using exists_psi D c hπ mπ mp`.
+
+Use `choose κ κ1 κ2 using exists_kappa D c hπ mπ eL mp`. Take `⟨j, ρ, ρ1, j1, ρ2⟩` from `exists_j_rho_lat D c hπ mπ eL eO`. Establish `fp` using `fun n => LatDescent.preimage_finite_projective p D A S ec he G c n (lat D c A n) fun _ => Iff.rfl`. Establish `: Module.Projective S.R G.Lie` using `Module.Projective.of_equiv' eL`. Use `⟨{ L := lat D c A finite := fun n => (fp n).1 projective := fun n => (fp n).2.1 base_le := fun n x hx => base_le_H D c n (((pi_modIso hπ mπ _).1 x).1 hx) succ_le := fun n => Submodule.comap_mono (H_succ_le D c n) kill := fun n _ x hx => ?_ gam := fun n hn x hx => ?_ lfree := fun …` and prove the remaining obligations.
+
+Take `⟨y, hy, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx`. Take `⟨v, hv⟩` from `zeta_dvd_theta_xiN S n`. Rewrite using `[(pi_modIso hπ mπ _).1, map_smulₛₗ, hγ 0 (Nat.zero_le _), zero_add, hv, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (zeta_sub_one_smul_mem_base p D S G c (n + 1) _ hy)`. Take `⟨y, hy, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx`.
+
+Rewrite using `[Submodule.mem_comap, map_smulₛₗ, hγ n hn.le]`. Conclude with `(LieTwist.LL_equiv_lie_twist p D S G c n).1 _ hy`. Take `⟨Φ, hΦ, -⟩` from `exists_ll D c hπ mπ n`. Take `⟨-, lam, -, h2⟩` from `LieTwist.LL_equiv_lie_twist p D S G c n`. Take `⟨-, -, -, s, hs⟩` from `CycElem.theta_xiN_facts p S n`.
+
+Take `⟨e, he'⟩` from `h2 s hs`. Conclude with `GlobalTheory.T.projective_lift_of_reduction A S.R (γ n) _ (hγ n hn.le) (modIso_of_dvd ec he (hγp n hn.le)) s _ _ _ Φ hΦ lam e he'`.
+-/
 theorem existsSt : ExistsSt := by
   intro p _ D S G c A _ _ _ _ ec he h o e π γ hπp hγp hπ hγ Lie Om _ _ _ _ _ _ _ _ eL eO
   subst e

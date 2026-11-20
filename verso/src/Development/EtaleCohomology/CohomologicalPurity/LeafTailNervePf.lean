@@ -16,6 +16,9 @@ def Uts (m : ℕ) : Scheme.{0}ᵒᵖ ⥤ Type := Scheme.Γ ⋙ UtsR m
 def evP (n : SimplexCategoryᵒᵖ) (A B : Spc) : (A ⨯ B).obj n ≅ A.obj n ⨯ B.obj n :=
   PreservesLimitPair.iso ((evaluation SimplexCategoryᵒᵖ (Scheme.{0}ᵒᵖ ⥤ Type)).obj n) A B
 
+/- English proof (translation)
+Simplify using `only [evP, PreservesLimitPair.iso_hom]`. Conclude with `prodComparison_natural ((evaluation SimplexCategoryᵒᵖ (Scheme.{0}ᵒᵖ ⥤ Type)).obj n) f g`.
+-/
 @[reassoc] theorem evalProdIso_hom_naturality (n : SimplexCategoryᵒᵖ) {A B A' B' : Spc} (f : A ⟶ A') (g : B ⟶ B') :
     (prod.map f g).app n ≫ (evP n A' B').hom = (evP n A B).hom ≫ prod.map (f.app n) (g.app n) := by
   simp only [evP, PreservesLimitPair.iso_hom]
@@ -30,10 +33,24 @@ def LeafUnitsRep : Prop := ∀ (R : Type) [CommRing R] (m : ℕ),
   ∃ (R' : Type) (_ : CommRing R') (_ : R →+* R'),
     Nonempty (Uts m ⨯ yoneda.obj (Spec (CommRingCat.of R)) ≅ yoneda.obj (Spec (CommRingCat.of R')))
 
+/- English proof (translation)
+Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, ← evalProdIso_hom_naturality, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+-/
 theorem evalProdIso_inv_naturality (n : SimplexCategoryᵒᵖ) {A B A' B' : Spc} (f : A ⟶ A') (g : B ⟶ B') :
     (evP n A B).inv ≫ (prod.map f g).app n = prod.map (f.app n) (g.app n) ≫ (evP n A' B').inv := by
   rw [Iso.inv_comp_eq, ← Category.assoc, ← evalProdIso_hom_naturality, Category.assoc, Iso.hom_inv_id, Category.comp_id]
 
+/- English proof (translation)
+Introduce `d R _ n`. Take `⟨R', _, ψ, ⟨r⟩⟩` from `hU R n.unop.len`. Take `⟨a₁, a₀, w⟩` from `hN d n`. Set `r' : Uts n.unop.len ⨯ (sp R).obj n ≅ (sp R').obj (op (SimplexCategory.mk 0))` to `r`. Set `f₁ : (PR (d + 1) 1 R).obj n ≅ (PR (d + 1) 1 R').obj (op (SimplexCategory.mk 0))` to `evP n _ _ ≪≫ prod.mapIso a₁ (Iso.refl _) ≪≫ prod.associator _ _ _ ≪≫ prod.mapIso (Iso.refl _) r' ≪≫ (evP (op (SimplexCategory.mk 0)) (Pj (d + 1) 1) (sp R')).symm`.
+
+Set `f₀ : (PR d 0 R).obj n ≅ (PR d 0 R').obj (op (SimplexCategory.mk 0))` to `evP n _ _ ≪≫ prod.mapIso a₀ (Iso.refl _) ≪≫ prod.associator _ _ _ ≪≫ prod.mapIso (Iso.refl _) r' ≪≫ (evP (op (SimplexCategory.mk 0)) (Pj d 0) (sp R')).symm`. Establish `w1 : (Pj.tail d).app n ≫ a₀.hom ≫ prod.fst = a₁.hom ≫ prod.fst ≫ (Pj.tail d).app (op (SimplexCategory.mk 0))`. Rewrite using `[reassoc_of% w]`. Simplify using the standard rewrite rules. Establish `w2 : (Pj.tail d).app n ≫ a₀.hom ≫ prod.snd = a₁.hom ≫ prod.snd`.
+
+Rewrite using `[reassoc_of% w]`. Simplify using the standard rewrite rules. Use `⟨R', inferInstance, ψ, f₁, f₀, ?_⟩` and prove the remaining obligations. Simplify using `only [f₁, f₀, Iso.trans_hom, Iso.symm_hom, prod.mapIso_hom, Iso.refl_hom, Category.assoc]`. Use `erw [evalProdIso_inv_naturality, evalProdIso_hom_naturality_assoc]`.
+
+Use `congr 1`. Simplify using `only [← Category.assoc]`. Use `congr 1`. Apply `prod.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Rewrite using `[w1, w2]`. Simplify using the standard rewrite rules. Rewrite using `[w1, w2]`.
+-/
 theorem LeafTailNerve_of (hN : LeafNerveSplit) (hU : LeafUnitsRep) : LeafTailNerve := by
   intro d R _ n
   obtain ⟨R', _, ψ, ⟨r⟩⟩ := hU R n.unop.len

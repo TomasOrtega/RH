@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.LeviDesc
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.IntertwiningOperators.main`. Consider the case `exact _root_.GlobalTheory.IntertwiningOperators.main`. Consider the case `(apply _root_.GlobalTheory.IntertwiningOperators.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntertwiningOperators.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.IntertwiningOperators.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntertwiningOperators.main ..)`.
+-/
 theorem intertwiner_eq_zero_of_isCoprime {K : Type} [Field K] {a b : ℕ}
     (A : Matrix (Fin a) (Fin a) K) (B : Matrix (Fin b) (Fin b) K) (C : Matrix (Fin b) (Fin a) K)
     (hc : IsCoprime A.charpoly B.charpoly) (hC : C * A = B * C) : C = 0 := by
@@ -22,6 +27,25 @@ theorem intertwiner_eq_zero_of_isCoprime {K : Type} [Field K] {a b : ℕ}
   | (intros; apply @_root_.GlobalTheory.IntertwiningOperators.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.IntertwiningOperators.main ..)
 
+/- English proof (translation)
+Introduce `E _ _ n a b h w m hsep g hg`. Establish `hcop` using `hsep.isCoprime`. Establish `hM : IsUnit (Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * (0 : Matrix (Fin a) (Fin b) (w.adicCompletion E))) 0 m.2.val))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_reindex_self, Matrix.mul_zero, Matrix.det_fromBlocks_zero₁₂]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp m.1.isUnit).mul ((Matrix.isUnit_iff_isUnit_det _).mp m.2.isUnit)`.
+
+Establish `hval : ((blk h w m 0 : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * (0 : Matrix (Fin a) (Fin b) (w.adicCompletion E))) 0 m.2.val)`. Simplify using `only [blk]`. Rewrite using `[dif_pos hM]`. Both sides reduce to the same expression. Rewrite `hval` using `[Matrix.mul_zero]`.
+
+Establish `hc : (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * (blk h w m 0 : GLw n w) = ((blk h w m 0 : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * g`. Use `congrArg Units.val (show g * blk h w m 0 = blk h w m 0 * MonoidHom.id _ g from hg)` as an intermediate fact. Simplify using `using this`. Rewrite `hc` using `[hval]`. Use `set e := finSumFinEquiv.trans (finCongr h) with he`.
+
+Use `set g' := Matrix.reindex e.symm e.symm (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) with hg'`. Establish `hgg : (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.reindex e e g'`. Simplify using `[hg']`. Rewrite `hc` using `[hgg, ← Matrix.fromBlocks_toBlocks g']`. Establish `hc2` using `congrArg (Matrix.reindex e.symm e.symm) hc`.
+
+Simplify using `only [Matrix.reindex_apply, Equiv.symm_symm, Matrix.submatrix_mul_equiv, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id, Matrix.fromBlocks_multiply] at hc2`. Rewrite `hc2` using `[Matrix.fromBlocks_inj]`. Establish `hC : g'.toBlocks₂₁ * m.1.val = m.2.val * g'.toBlocks₂₁`. Use `hc2.2.2.1` as an intermediate fact. Simplify using `using this`.
+
+Establish `hC0` using `intertwiner_eq_zero_of_isCoprime _ _ _ hcop hC`. Use `show (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)).BlockTriangular fun i : Fin n => decide (a ≤ (i : ℕ))`. Introduce `i j hij`. Establish `hi : a ≤ (i : ℕ)`. Assume the negation of the conclusion as `hc'`.
+
+Use `revert hij`. Simplify using `only [hc', decide_false]`. Apply the tactic sequence `cases decide (a ≤ (j : ℕ)) <;> decide`. Establish `hj : ¬ a ≤ (j : ℕ)`. Introduce `hc'`.
+
+Use `revert hij`. Simplify using `only [hc', decide_true]`. Apply the tactic sequence `cases decide (a ≤ (i : ℕ)) <;> decide`. Establish `hie : i = e (Sum.inr ⟨(i : ℕ) - a, by omega⟩)` using `by ext; simp [he]; omega`. Establish `hje : j = e (Sum.inl ⟨(j : ℕ), by omega⟩)` using `by ext; simp [he]`.
+
+Rewrite using `[hgg, hie, hje]`. Establish `: g'.toBlocks₂₁ ⟨(i : ℕ) - a, by omega⟩ ⟨(j : ℕ), by omega⟩ = 0` using `by rw [hC0]; rfl`. Simplify `this` using `[Matrix.toBlocks₂₁]`.
+-/
 theorem twCent_blk_le_parP : ∀ (E : Type) [Field E] [NumberField E] (n a b : ℕ) (h : a + b = n) (w : Pl E)
     (m : GLw a w × GLw b w), (m.1.val.charpoly * m.2.val.charpoly).Separable →
     twCent (MonoidHom.id (GLw n w)) (blk h w m 0) ≤ GlobalTheory.LeviDesc.parP a n w := by

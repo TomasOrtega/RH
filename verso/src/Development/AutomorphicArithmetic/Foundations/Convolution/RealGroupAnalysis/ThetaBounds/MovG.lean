@@ -7,6 +7,17 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M f hf φ g₀ h`. Establish `hu : LInv (fun g : G1 F => f (gl g * dM (nu F h) * (gl g₀)⁻¹) * Th (W.Om g (W.L h φ)).1)`. Introduce `γ g`. Establish `h1 : gl (ratS F γ * g) * dM (nu F h) * (gl g₀)⁻¹ = ratGL F 2 (Matrix.SpecialLinearGroup.toGL γ) * (gl g * dM (nu F h) * (gl g₀)⁻¹)`. Rewrite using `[gl_mul, gl_ratS]`.
+
+Use `group`. Establish `h2 : W.Om (ratS F γ * g) (W.L h φ) = W.Om (ratS F γ) (W.Om g (W.L h φ))`. Rewrite using `[map_mul, Module.End.mul_apply]`. Use `show f (gl (ratS F γ * g) * dM (nu F h) * (gl g₀)⁻¹) * Th (W.Om (ratS F γ * g) (W.L h φ)).1 = _`. Rewrite using `[h1, hf, h2, W.th_Om]`.
+
+Establish `key` using `rtInv F M _ hu (cD (nu F h) g₀)`. Use `Eq.trans (MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)) key` and prove the remaining obligations. Establish `h1 : gl (g * cD (nu F h) g₀) * dM (nu F h) * (gl g₀)⁻¹ = gl g * dM (nu F h)`. Rewrite using `[gl_mul, gl_cD]`. Use `group`.
+
+Establish `h2 : W.L h (W.Om g₀ φ) = W.Om (cD (nu F h) g₀) (W.L h φ)`. Use `congrArg (fun T : Module.End ℂ (S4 F) => T φ) (W.comm h g₀)` as an intermediate fact. Simplify `this` using `only [Module.End.mul_apply]`. Establish `h3 : W.Om (g * cD (nu F h) g₀) (W.L h φ) = W.Om g (W.L h (W.Om g₀ φ))`. Rewrite using `[h2, map_mul, Module.End.mul_apply]`.
+
+Use `show f (gl g * dM (nu F h)) * Th (W.Om g (W.L h (W.Om g₀ φ))).1 = f (gl (g * cD (nu F h) g₀) * dM (nu F h) * (gl g₀)⁻¹) * Th (W.Om (g * cD (nu F h) g₀) (W.L h φ)).1`. Rewrite using `[h1, h3]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.movG :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F), MovG W M := by
   intro F E _ _ _ _ _ _ _ D W M f hf φ g₀ h

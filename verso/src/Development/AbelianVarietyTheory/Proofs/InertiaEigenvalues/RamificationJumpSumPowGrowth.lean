@@ -8,6 +8,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ _ _ _ _ _ _ _ p E A B C hA hE hC hB`. Take `⟨j, hj, hr, -, hG⟩` from `GlobalTheory.T.galoisGroup_fixedField_baseChange_localField K L A`. Establish `hmem : ∀ σ, j σ ∈ A` using `fun σ => hr.le ⟨σ, rfl⟩`. Establish `hw : wild ↥(IntermediateField.fixedField A) L = fun t => (wild K L t).comap j`. Use function extensionality and compare the values at `t`.
+
+Conclude with `hG _`. Establish `h0 : lowerRamificationGroup ↥(IntermediateField.fixedField A) L 0 = ⊤`. Rewrite using `[hG, eq_top_iff]`. Introduce `σ _`. Conclude with `hA (hmem σ)`.
+
+Establish `key` using `GlobalTheory.T.min_jumpSum_le_jumpSum_of_totally_ramified ↥(IntermediateField.fixedField A) L p E (B.comap j) (C.comap j) h0 hE (fun σ τ => by`. Use `hC _ (hmem σ) _ (hmem τ)` as an intermediate fact. Simplify `this)` using `[Subgroup.mem_comap, map_mul, map_inv]`. Use the proof step `(fun σ h => by`. Establish `h' : j σ ^ p ∈ C` using `by simpa [Subgroup.mem_comap, map_pow] using h`.
+
+Conclude with `hB _ (hmem σ) h')`. Rewrite `key` using `[hw, jumpSum_comap_injective _ _ j _ B hj, jumpSum_comap_injective _ _ j _ C hj, hr]`. Conclude with `key`.
+-/
 theorem jumpSum_pow_growth :
     ∀ (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L] [IsGalois K L] (p E : ℕ) (A B C : Subgroup (L ≃ₐ[K] L)), A ≤ lowerRamificationGroup K L 0 → OrdIs L p E → (∀ σ ∈ A, ∀ τ ∈ A, σ * τ * σ⁻¹ * τ⁻¹ ∈ C) → (∀ σ ∈ A, σ ^ p ∈ C → σ ∈ B) → min (2 * jumpSum (wild K L) A B) (jumpSum (wild K L) A B + E) ≤ jumpSum (wild K L) A C := by
   intro K L _ _ _ _ _ _ _ _ _ _ _ _ p E A B C hA hE hC hB

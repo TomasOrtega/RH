@@ -8,6 +8,11 @@ open UpperTheory.Gal.W2.Seed (Arith Setup)
 open UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Pl UpperTheory.Gal.Int.Geo.Pl.Tj
 attribute [local instance] Ideal.Quotient.field
 
+/- English proof (translation)
+Establish `h` using `UpperTheory.Gal.CertificateRingHomMap.mem_Sim.1 k.2`. Establish `h2` using `congrArg (RingHom.mapMatrix (pLoc E u)) h`. Rewrite `h2` using `[map_mul]`. Use `h2.trans ?_` and prove the remaining obligations. Use extensionality with `i j`.
+
+Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply, sim]`.
+-/
 private theorem cjEnt_rel {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (k : GUf E n) (u : Plc E) :
     ((comp (cj u) k).val.map (conjLoc (GlobalTheory.SplitPts.conjE E) u))ᵀ * (comp u k).val =
       pLoc E u (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim k : AfQˣ) : AfQ)) •
@@ -19,6 +24,11 @@ private theorem cjEnt_rel {E : Type} [Field E] [NumberField E] [IsCMField E] {n 
   ext i j
   by_cases hij : i = j <;> simp [hij, Matrix.one_apply, sim]
 
+/- English proof (translation)
+Introduce `E _ _ _ n g w i k`. Use `⟨GlobalTheory.SplitPts.conjSrc_conjSrc_cm w, ?_⟩` and prove the remaining obligations. Establish `hrel` using `cjEnt_rel g w`. Establish `hGt : ((comp (cj w) g).val.map (conjLoc (GlobalTheory.SplitPts.conjE E) w))ᵀ = pLoc E w (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g : AfQˣ) : AfQ)) • (comp w g⁻¹).val`. Rewrite using `[map_inv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h` using `congrFun (congrFun hGt k) i`. Rewrite `h` using `[Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← (conjLoc_spec (GlobalTheory.SplitPts.conjE E) w).2.2, h]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Gal.Int.Geo.Pl.Tj.cjEnt :
     UpperTheory.Gal.Int.Geo.Pl.Tj.CjEnt := by
   intro E _ _ _ n g w i k

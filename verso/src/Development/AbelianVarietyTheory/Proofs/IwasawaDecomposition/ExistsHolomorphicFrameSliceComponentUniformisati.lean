@@ -20,8 +20,14 @@ namespace GlobalTheory.UnifSlice
 
 open Matrix Formalism.DegreeFormula GlobalTheory.TrueCx ReciprocityTheory.ChartRestriction.G.FD
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.boundedDomain_arithmeticGroup_locally_injective`.
+-/
 theorem locInj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r j : ℕ) (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (hj : j ≤ r) (Tau : Type) [Fintype Tau] (κ : Tau ≃ X.Ψ), X.p0 = r - j → ∀ z₀ ∈ Formalism.DegreeFormula.DomI Tau j (r - j), ∃ O : Set (Tau → Matrix (Fin j) (Fin (r - j)) ℂ), IsOpen O ∧ z₀ ∈ O ∧ ∀ z ∈ O ∩ Formalism.DegreeFormula.DomI Tau j (r - j), ∀ z' ∈ O ∩ Formalism.DegreeFormula.DomI Tau j (r - j), ∀ γ ∈ X.Γ, z' = Formalism.DegreeFormula.moebI (GlobalTheory.TrueCx.toUpq X hj κ γ) z → z = z' := GlobalTheory.T.boundedDomain_arithmeticGroup_locally_injective
 
+/- English proof (translation)
+Take `⟨b, hb, hb0, hm, t, ht⟩` from `GlobalTheory.PointOfFrames.exists_frBor U hU hσ k x (U.un k x') h`. Take `⟨γ, hγ, b', hb', e⟩` from `(hU.2.2.2.1 k k ⟨_, hm⟩ x').1 ⟨t, ht⟩`. Establish `e' : x'.1 = rmul (lact γ (rmul x.1 b)) b'` using `eq_of_heq (Sigma.mk.inj e).2`. Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[e', domPt_rmul _ hj κ hb', domPt_lact _ hj κ hp γ hm, GlobalTheory.PointOfFrames.domPt_rmul_block _ hj κ _ b hb (by rw [← hp]; exact hb0)]`.
+-/
 theorem domPt_rel_of_pt_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (U : Formalism.L2.PjFree.Unf Xo c σ r)
     (hU : Formalism.L2.PjFree.IsUnf U) (hσ : Formalism.L2.PjFree.GoodEmb c σ)
@@ -35,16 +41,40 @@ theorem domPt_rel_of_pt_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   rw [e', domPt_rmul _ hj κ hb', domPt_lact _ hj κ hp γ hm,
     GlobalTheory.PointOfFrames.domPt_rmul_block _ hj κ _ b hb (by rw [← hp]; exact hb0)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨i, a, b⟩`. Both sides reduce to the same expression.
+-/
 theorem flat_unflat {ι : Type} {p q : ℕ} (v : ι × Fin p × Fin q → ℂ) : flat (unflat v) = v := by
   funext ⟨i, a, b⟩; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use extensionality with `a b`. Both sides reduce to the same expression.
+-/
 theorem unflat_flat {ι : Type} {p q : ℕ} (z : ι → Matrix (Fin p) (Fin q) ℂ) : unflat (flat z) = z := by
   funext i; ext a b; rfl
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun _ => continuous_matrix fun _ _ => continuous_apply _`.
+-/
 theorem continuous_unflat {ι : Type} {p q : ℕ} :
     Continuous (unflat : (ι × Fin p × Fin q → ℂ) → ι → Matrix (Fin p) (Fin q) ℂ) :=
   continuous_pi fun _ => continuous_matrix fun _ _ => continuous_apply _
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ U hσ hU k x₀ n hn`. Establish `hj : Dw.p ≤ Dw.p + Dw.q` using `Nat.le_add_right _ _`. Establish `hp : (U.X k).p0 = Dw.p + Dw.q - Dw.p` using `by have := (hU.2.1 k).1; omega`. Establish `hcard : Fintype.card ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p)) = n`. Rewrite using `[hn, Fintype.card_prod, Fintype.card_prod, Fintype.card_coe, Fintype.card_fin, Fintype.card_fin, Nat.add_sub_cancel_left]`.
+
+Set `f : ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p)) ≃ Fin n` to `Fintype.equivFinOfCardEq hcard`. Set `L : V n ≃L[ℂ] ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ)` to `(EuclideanSpace.equiv (Fin n) ℂ).trans (LinearEquiv.funCongrLeft ℂ ℂ f).toContinuousLinearEquiv`. Use `set z₀ := domPt (U.X k) hj (Equiv.refl (U.X k).Ψ) x₀.1 with hz₀`. Establish `hz₀D : z₀ ∈ DomI (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p)` using `domPt_mem (U.X k) hj _ hp x₀.2`. Take `⟨O, hO, hz₀O, hinj⟩` from `locInj E (Dw.p + Dw.q) Dw.p (U.X k) hj (U.X k).Ψ (Equiv.refl _) hp z₀ hz₀D`.
+
+Set `ψ : V n → Frame (U.X k).Ψ (Dw.p + Dw.q)` to `fun w => SecFrame.frameAt (U.X k) hj (Equiv.refl _) (unflat (L w))`. Establish `hdom : ∀ w, unflat (L w) ∈ DomI (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) → ψ w ∈ (U.X k).dom` using `fun w hw => SecFrame.frameAt_mem (U.X k) hj _ hp hw`. Establish `hpt : ∀ w, domPt (U.X k) hj (Equiv.refl (U.X k).Ψ) (ψ w) = unflat (L w)` using `fun w => SecFrame.domPt_frameAt (U.X k) hj _ _`. Use `⟨{w | unflat (L w) ∈ O} ∩ L ⁻¹' DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p), L.symm (flat z₀), ψ, (hO.preimage (continuous_unflat.comp L.continuous)).inter (GlobalTheory.HodgeDomain.ActionDeriv.isOpen_domFlat.preimage L.continuous), ?_, fun w hw => hdom w hw.2, fun τ i i' => ((Se …` and prove the remaining obligations. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show unflat (L (L.symm (flat z₀))) ∈ O`. Rewrite using `[L.apply_symm_apply, unflat_flat]`. Conclude with `hz₀O`. Use `show unflat (L (L.symm (flat z₀))) ∈ DomI (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p)`. Rewrite using `[L.apply_symm_apply, unflat_flat]`.
+
+Conclude with `hz₀D`. Establish `e0 : domPt (U.X k) hj (Equiv.refl (U.X k).Ψ) (ψ (L.symm (flat z₀))) = domPt (U.X k) hj (Equiv.refl (U.X k).Ψ) x₀.1`. Rewrite using `[hpt, L.apply_symm_apply, unflat_flat]`. Establish `h5 : ∀ τ, Formalism.MJ.moeb (frameCo (U.X k) hj (ψ (L.symm (flat z₀))) τ) 0 = Formalism.MJ.moeb (frameCo (U.X k) hj x₀.1 τ) 0` using `fun τ => congrFun e0 τ`. Conclude with `PointWell.pt_eq_of_block hU hσ k ⟨_, h⟩ x₀ (fun τ => PointWell.block_of_moeb_eq (U.X k) hj hp h x₀.2 τ (h5 τ)) (fun τ => PointWell.block_of_moeb_eq (U.X k) hj hp x₀.2 h τ (h5 τ).symm)`.
+
+Take `⟨γ, hγ, hγe⟩` from `domPt_rel_of_pt_eq U hU hσ k hj hp (Equiv.refl (U.X k).Ψ) ⟨_, h⟩ ⟨_, h'⟩ e`. Establish `hγe' : unflat (L w') = moebI (toUpq (U.X k) hj (Equiv.refl (U.X k).Ψ) γ) (unflat (L w))`. Rewrite using `[← hpt w', ← hpt w]`. Conclude with `hγe`. Establish `h1` using `hinj _ ⟨hw.1, hw.2⟩ _ ⟨hw'.1, hw'.2⟩ γ hγ hγe'`.
+
+Establish `h2 : L w = L w'` using `by rw [← flat_unflat (L w), h1, flat_unflat]`. Conclude with `L.injective h2`.
+-/
 theorem exists_slice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (k : U.Comp) (x₀ : (U.X k).dom) (n : ℕ), n = (U.X k).Ψ.card * (Dw.p * Dw.q) → ∃ (W : Set (V n)) (a : V n) (ψ : V n → Frame (U.X k).Ψ (Dw.p + Dw.q)), IsOpen W ∧ a ∈ W ∧ (∀ w ∈ W, ψ w ∈ (U.X k).dom) ∧ (∀ τ i i', DifferentiableOn ℂ (fun w => mat (ψ w) τ i i') W) ∧ (∀ h : ψ a ∈ (U.X k).dom, (U.un k ⟨ψ a, h⟩).x = (U.un k x₀).x) ∧ ∀ w ∈ W, ∀ w' ∈ W, ∀ (h : ψ w ∈ (U.X k).dom) (h' : ψ w' ∈ (U.X k).dom), (U.un k ⟨ψ w, h⟩).x = (U.un k ⟨ψ w', h'⟩).x → w = w' := by
   intro E _ _ _ H Dw l Xo c σ U hσ hU k x₀ n hn
   classical

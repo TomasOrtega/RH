@@ -44,6 +44,9 @@ def IsAdmS (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] {M a :
     Continuous Φinf ∧ HasCompactSupport Φinf ∧ IsPureFin b Φf Φv ∧ IsProdInfFin Φ Φinf Φf ∧
       IsSmoothCc F E Φinf
 
+/- English proof (translation)
+Take `⟨d, b, Φinf, Φf, Φv, h1, h2, h3, h4, -⟩` from `h`. Conclude with `⟨d, b, Φinf, Φf, Φv, h1, h2, h3, h4⟩`.
+-/
 theorem IsAdmS.adm {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {M a : ℕ}
     {Φ : (Fin a → Fin M → AF F ⊗[F] E) → ℂ} (h : IsAdmS F E Φ) : IsAdm F E Φ := by
   obtain ⟨d, b, Φinf, Φf, Φv, h1, h2, h3, h4, -⟩ := h

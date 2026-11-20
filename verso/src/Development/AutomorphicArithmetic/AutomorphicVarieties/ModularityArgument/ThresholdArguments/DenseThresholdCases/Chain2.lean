@@ -8,8 +8,40 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
+/- English proof (translation)
+Introduce `i j hij hw` and use `hX i j hij fun hs => hw (h hs)`.
+-/
 private theorem supp_mono {R : Type} [CommRing R] {S S' : Finset (ℤ × ℤ)} (h : S ⊆ S') {X : M4 R} (hX : SuppM S X) :
     SuppM S' X := fun i j hij hw => hX i j hij fun hs => hw (h hs)
+/- English proof (translation)
+Introduce `hP hS Ω _ _ _ l _ c D T₀ hC hO hT hL ι 𝔞 c₀ hc₀`. Establish `hG : D.Good` using `hC.1`. Establish `hF : T₀.Fit` using `⟨hO, Or.inl ⟨hC, hT⟩⟩`. Establish `ha : ∀ x ∈ maximalIdeal c.O, 𝔞.red c x = 0` using `fun x hx => (residue_eq_zero_iff _).2 (map_nonunit (𝔞.a c) x hx)`. Establish `hrt` using `(Chain.rtFacts D hG T₀ hO _ _ ha).1`.
+
+Take `⟨s₀, hs₀, ho₀⟩` from `Chain.exists_residual_datum_over_restriction_to_rationals hP D T₀ hF _ _ ha c₀ hc₀.res ⟨hc₀.supp, fun _ => hc₀.flag⟩`. Establish `hq₀` using `goodQ D hG T₀ hF _ _ ha _ c₀ s₀ hc₀ hrt ho₀ hs₀`. Take `⟨W, s, -, -, hW, hs, -, hsQ, -, hsP, -, -, hsA⟩` from `gysinAl hP D T₀ hF _ _ ha ∅ (by simp) s₀ s₀ hs₀ hs₀ (hq₀ ∅).2.1 (hq₀ ∅).2.1`. Take `⟨T₁, h01, hL1, hD⟩` from `diesEx D hG T₀ hL hO W hW`. Use `⟨T₁, h01, hL1, fun T h1 hdeep => ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : T₀.Le T` using `(leFit D hG T₀ T₁ h01).2.2.2.2.2.2 T h1`. Take `⟨lO, lT, -, -, lF, -⟩` from `leFit D hG T₀ T h0`. Establish `tO` using `lO hO`. Establish `tT` using `lT hT`. Establish `tF` using `lF hF`.
+
+Establish `hDT : ∀ w ∈ W, Dies l w T.F` using `fun w hw θ h1' h2 => (IntermediateField.fixingSubgroup_antitone h1.le).trans (hD w hw θ h1' h2)`. Take `⟨c₁, h, Q, hQ, hQV, hQE⟩` from `hS Ω l c D T hC tO tT hdeep ι`. Use `⟨c₁, h, Q, hQ, fun c₀' ho hr => ?_⟩` and prove the remaining obligations. Take `⟨sR, sV, sE⟩` from `_root_.UpperTheory.V.Ws.Chain.isRes_map_red_and_inV_ent_map_red_of_map_residue D T ι 𝔞 h Q hQ`. Establish `sV` using `sV hQV`.
+
+Take `⟨c₃, r₃, o₃⟩` from `restrT D hG T₀ T h0 hF _ _ ha W hW hDT s hs (Or.inr (Or.inl hsQ.1))`. Take `⟨t, rt, ot⟩` from `restrT D hG T₀ T h0 hF _ _ ha W hW hDT s₀ (hq₀ W).1 (Or.inr (Or.inr hs₀))`. Establish `hsP' : s.In nP` using `⟨fun g => supp_mono (by decide) (hsQ.1 g), hsQ.2⟩`. Establish `hsM : Supp nM s.r` using `fun g => supp_mono (by decide) (hsQ.1 g)`. Take `⟨-, f2, f3, f4, -, -, f7, -⟩` from `overFacts D hG T₀ T h0 hF _ _ ha W ∅ s s₀ c₃ t hs (hq₀ W).1 r₃ rt o₃ ot`.
+
+Take `⟨-, -, -, -, -, -, -, g8⟩` from `overFacts D hG T₀ T h0 hF _ _ ha W ∅ s₀ s t c₃ (hq₀ W).1 hs rt r₃ ot o₃`. Take `rfl : c₀' = t` from `g8 c₀ _ hc₀.res.pair ho₀ c₀' hr ho`. Establish `q₃ : Supp qQ c₃.r` using `f2 _ hsQ.1`. Establish `i₃ : c₃.In nP` using `f3 hsP'`. Establish `m₃ : Supp nM c₃.r` using `f2 _ hsM`.
+
+Establish `p₃ : c₃.SamePs c₀'` using `f4 hsP' (hq₀ W).2.1 hsP`. Establish `a₃ : Ent c₃.r (-wAl)` using `(f7 hsM).1 hsA`. Take `⟨-, i₀, g₀⟩` from `goodQ D hG T tF _ _ ha (resQ T₀.F T₀.g0) c₀ c₀' (h0.pr ▸ hc₀) (h0.pr ▸ hrt) ho hr ∅`. Establish `ok : (T.fr ∅).Ok (𝔞.red c)` using `(std hP D T tF ∅ c le_rfl).2 _ _ ha`. Establish `hmu : ∀ v, ∀ s ∈ (T.fr ∅).Mu v, s ∈ (T.fr ∅).Gv v` using `fun v s hs => hs.1`.
+
+Establish `hrb` using `(Chain.rtFacts D hG T tO _ _ ha).2`. Take `⟨c₄', r₄', u₄', n₄', e₄'⟩` from `Chain.levi (T.fr ∅) _ hmu c₃ r₃ m₃`. Take `⟨c₄, r₄, e₄, n₄⟩` from `Chain.movePs (T.fr ∅) _ ok.mul hmu (fun v s hs => (hrb _ _).2 (tT.atL _ (T.ovl v) s hs)) c₄' r₄' u₄' n₄' fun v => (Q.map (𝔞.red c₁)).n v 2 0`. Establish `u₄ : Supp {-wAl} c₄.r` using `e₄ ▸ u₄'`. Establish `m₄ : Supp nM c₄.r` using `fun g => supp_mono (by decide) (u₄ g)`.
+
+Establish `v₄ : Supp vV c₄.r` using `fun g => supp_mono (by decide) (u₄ g)`. Establish `al : c₃.SameAl c₄` using `⟨fun g => by rw [e₄, e₄'.1], fun v => ((n₄ v).2.1.trans (e₄'.2 v)).symm⟩`. Establish `a₄ : Ent c₄.r (-wAl)`. Take `⟨g, hg⟩` from `((Chain.entIff (T.fr ∅) (𝔞.red c) c₃ r₃).2 m₃).1 a₃`. Conclude with `((Chain.entIff (T.fr ∅) (𝔞.red c) c₄ r₄).2 m₄).2 ⟨g, al.1 g ▸ hg⟩`.
+
+Establish `G₀ : (T.fr ∅).Good (𝔞.red c) c₀'` using `g₀.elim (fun x => Or.inl ⟨x.1, Or.inl x.2⟩) fun x => Or.inr (Or.inr (Or.inl x))`. Establish `G₃ : (T.fr ∅).Good (𝔞.red c) c₃`. Distinguish the cases in `hp : Ent c₃.r (-wPs)`. Conclude with `Or.inl ⟨hp, Or.inr a₃⟩`. Break down `g₀ with x | x` into its components or cases.
+
+Take `⟨g, hg⟩` from `((Chain.entIff (T.fr ∅) (𝔞.red c) c₀' hr).1 i₀.1).1 x.1`. Conclude with `absurd (((Chain.entIff (T.fr ∅) (𝔞.red c) c₃ r₃).1 i₃.1).2 ⟨g, p₃.1 g ▸ hg⟩) hp`. Use `Or.inr (Or.inr (Or.inl ⟨⟨fun g i j hij hw => ?_, fun v => ⟨i₃.2 v, p₃.2 v ▸ (x.1.2 v).2⟩⟩, a₃⟩))` and prove the remaining obligations. Distinguish the cases in `hq : wt i j = -wPs`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hp ⟨g, i, j, hq, hne⟩`. Conclude with `q₃ g i j hij (by revert hw hq; revert i j; decide)`. Establish `G₄ : (T.fr ∅).Good (𝔞.red c) c₄` using `Or.inr (Or.inr (Or.inl ⟨⟨v₄, fun v => ⟨(n₄ v).1, (n₄ v).2.2 ▸ (sV.2 v).2⟩⟩, a₄⟩))`. Establish `Gs : (T.fr ∅).Good (𝔞.red c) (Q.map (𝔞.red c₁))`. Break down `hQE with x | x` into its components or cases.
+
+Conclude with `Or.inr (Or.inr (Or.inl ⟨sV, sE _ x⟩))`. Use `Or.inr (Or.inr (Or.inr ⟨sV, sE _ x.1, sE _ x.2, fun v => ?_⟩))` and prove the remaining obligations. Take `⟨g, hg, hne⟩` from `tT.bigL _ (T.ovl v)`. Conclude with `⟨g, hg, fun h1 => hne (by rw [(hrb _ _).1 h1, one_pow])⟩`. Establish `L₁` using `lineP (T.fr ∅) _ ok c₀' c₃ hr r₃ i₀ i₃ ⟨fun g => (p₃.1 g).symm, fun v => (p₃.2 v).symm⟩`.
+
+Establish `L₂` using `lineM (T.fr ∅) _ ok c₃ c₄ r₃ r₄ m₃ m₄ al`. Establish `L₃` using `lineP (T.fr ∅) _ ok c₄ _ r₄ sR ⟨fun g => supp_mono (by decide) (v₄ g), fun v => (n₄ v).1⟩ ⟨fun g => supp_mono (by decide) (sV.1 g), fun v => (sV.2 v).1⟩ ⟨fun g => (v₄ g 2 0 (by decide) (by decide)).trans (sV.1 g 2 0 (by decide) (by decide)).symm, fun v => (n₄ v).2.2⟩`. Conclude with `⟨G₀, ((Relation.ReflTransGen.single ⟨G₃, L₁⟩).tail ⟨G₄, L₂⟩).tail ⟨Gs, L₃⟩⟩`.
+-/
 theorem UpperTheory.V.Ws.deep_tower_residue_chain_exists :
     CohomologyHyp → _root_.UpperTheory.V.Ws.SeedIIAlt → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T₀ : Tower D), Ctx2 D → T₀.Ok → T₀.Two → TameL l T₀.F → ∀ (ι : PadicAlgCl l ≃+* ℂ) (𝔞 : Amb l) (c₀ : PD Unit (G ℚ Ω) 𝔞.k), LatShape D T₀.pr (resQ T₀.F T₀.g0) (𝔞.red c) c₀ →
       ∃ T₁ : Tower D, T₀.Le T₁ ∧ TameL l T₁.F ∧ ∀ T : Tower D, T₁.Le T → T.Deep →

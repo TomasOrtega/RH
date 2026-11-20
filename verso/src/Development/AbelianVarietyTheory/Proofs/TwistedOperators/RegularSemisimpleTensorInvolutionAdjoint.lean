@@ -7,6 +7,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RegSS
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, Algebra.commutes]`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ l c`.
+-/
 theorem pointsAdjoint_toMat_tmul {F E : Type} [Field F] [CommRing E] [Algebra F E] {n : Type}
     [Fintype n] [DecidableEq n] (σ : E →ₐ[F] E) (J γ : Matrix n n E) (R : Type) [CommRing R]
     [Algebra F R] (l : plusAlg σ J γ) (c : E ⊗[F] R) :
@@ -14,6 +17,11 @@ theorem pointsAdjoint_toMat_tmul {F E : Type} [Field F] [CommRing E] [Algebra F 
   rw [Algebra.smul_def, Algebra.commutes]
   exact Algebra.TensorProduct.lift_tmul _ _ _ l c
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ n _ _ σ J γ h R _ _ u`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp [adj_zero]`. Consider the case `tmul a b`. Establish `ha` using `(adj_eq_iff _ h.nondeg _ _).2 a.2`.
+
+Establish `hc : lConj σ J (γ : Matrix n n E) R (a ⊗ₜ b) = a ⊗ₜ sigR σ R b` using `rfl`. Rewrite using `[hc, pointsAdjoint_toMat_tmul, pointsAdjoint_toMat_tmul, adj_smul, adj_map (σ : E →+* E) (sigR σ R) (inclE (F := F) R) (inclE_conj σ R) h.nondeg, ha]`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, adj_add, ha, hb]`.
+-/
 theorem pointsAdjoint : PointsAdjoint := by
   intro F E _ _ _ _ n _ _ σ J γ h R _ _ u
   induction u using TensorProduct.induction_on with

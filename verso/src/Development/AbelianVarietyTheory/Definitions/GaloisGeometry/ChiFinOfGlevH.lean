@@ -17,6 +17,11 @@ open scoped TensorProduct
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hint : IsIntegral O x` using `⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hn.ne', by simp [hx]⟩`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Establish `hy1 : y ^ k * y = 1`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises.
+
+Rewrite using `[← pow_succ, map_pow, hy, hx, map_one]`. Use `⟨⟨y ^ k, y, hy1, by rw [mul_comm]; exact hy1⟩, ?_⟩` and prove the remaining obligations. Use `show algebraMap O K (y ^ k) * x = 1`. Rewrite using `[← hy, ← map_mul, hy1, map_one]`.
+-/
 theorem unit_of_root {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K]
     (x : K) (n : ℕ) (hn : 0 < n) (hx : x ^ n = 1) : ∃ o : Oˣ, algebraMap O K (o : O) * x = 1 := by
   have hint : IsIntegral O x :=
@@ -30,6 +35,17 @@ theorem unit_of_root {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuation
   show algebraMap O K (y ^ k) * x = 1
   rw [← hy, ← map_mul, hy1, map_one]
 
+/- English proof (translation)
+Establish `ex : ∀ a : G₀, ∃ o : Oˣ, ∀ r : LL, emb r = (χ a : ℂ) → algebraMap O K (o : O) * e r = 1`. Introduce `a`. Take `⟨r, hr⟩` from `hrat a`. Take `⟨n, hn, hc⟩` from `hfin`. Establish `hrn : r ^ n = 1` using `emb.injective (by`.
+
+Rewrite using `[map_pow, hr, map_one, ← Units.val_pow_eq_pow_val, hc, Units.val_one])`. Take `⟨o, ho⟩` from `unit_of_root (O := O) (e r) n hn (by rw [← map_pow, hrn, map_one])`. Conclude with `⟨o, fun r' hr' => by rw [emb.injective (hr'.trans hr.symm)]; exact ho⟩`. Use `choose f hf using ex`. Use `⟨MonoidHom.mk' f ?_, fun a r hr => hf a r hr⟩` and prove the remaining obligations.
+
+Introduce `a b`. Take `⟨ra, hra⟩` from `hrat a`. Take `⟨rb, hrb⟩` from `hrat b`. Establish `h1` using `hf (a * b) (ra * rb) (by rw [map_mul, hra, hrb, map_mul, Units.val_mul])`. Establish `h2` using `hf a ra hra`.
+
+Establish `h3` using `hf b rb hrb`. Establish `h4 : algebraMap O K ((f a * f b : Oˣ) : O) * e (ra * rb) = 1`. Rewrite using `[Units.val_mul, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : e (ra * rb) ≠ 0` using `fun h0 => by rw [h0, mul_zero] at h1; exact zero_ne_one h1`.
+
+Conclude with `Units.ext (IsFractionRing.injective O K (mul_right_cancel₀ hne (h1.trans h4.symm)))`.
+-/
 theorem exists_char {G₀ LL O K : Type} [Group G₀] [Field LL] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     [IsFractionRing O K] (emb : LL →+* ℂ) (e : LL →+* K) (χ : G₀ →* ℂˣ) (hrat : ∀ a, ∃ r : LL, emb r = (χ a : ℂ))
     (hfin : ∃ n : ℕ, 0 < n ∧ ∀ a, χ a ^ n = 1) :
@@ -86,6 +102,9 @@ def kap (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) (p : ℕ) :
       rw [bc_reGL]
       exact ha.2 v hv)
 
+/- English proof (translation)
+Use `show bc (prV (E := D.host.E) v) (glue _ _ (_, _)) = 1`. Rewrite using `[bc_glue_one _ _ _ (epsP_over D.host.F p D.host.E v hv)]`. Conclude with `map_one _`.
+-/
 theorem kap_over (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) (p : ℕ) (a : awayG D.sp.cm.sig (D.sp.X (i + 1)).gram (ulocOf Fo β) p)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (hv : ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal) :
     bc (prV (E := D.host.E) v) (kap Fo β p a).1 = 1 := by
@@ -93,6 +112,9 @@ theorem kap_over (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) (p : ℕ) (a : awayG D
   rw [bc_glue_one _ _ _ (epsP_over D.host.F p D.host.E v hv)]
   exact map_one _
 
+/- English proof (translation)
+Use `show bc (prV (E := D.host.E) v) (glue _ _ (_, _)) = _`. Rewrite using `[bc_glue_zero _ _ _ (epsP_off D.host.F p D.host.E v hv)]`. Both sides reduce to the same expression.
+-/
 theorem kap_off (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) (p : ℕ) (a : awayG D.sp.cm.sig (D.sp.X (i + 1)).gram (ulocOf Fo β) p)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (hv : ((p : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal) :
     bc (prV (E := D.host.E) v) (kap Fo β p a).1 =
@@ -103,6 +125,11 @@ theorem kap_off (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) (p : ℕ) (a : awayG D.
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `h1 : (Fo.K β).lev.chi (κ * (kap Fo β p a)⁻¹) = 1`. Use `(Fo.K β).lev.chi_triv _ fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`. Distinguish the cases in `hv : ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal`. Rewrite using `[hκp v hv, kap_over Fo β p a v hv, inv_one, one_mul]`.
+
+Rewrite using `[hκo v hv, kap_off Fo β p a v hv, mul_inv_cancel]`. Rewrite `h1` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem chi_kap (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) (p : ℕ) (a : awayG D.sp.cm.sig (D.sp.X (i + 1)).gram (ulocOf Fo β) p)
     (κ : (Fo.K β).lev.U)
     (hκp : ∀ v : HeightOneSpectrum (𝓞 D.host.F), ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal → bc (prV (E := D.host.E) v) κ.1 = 1)
@@ -119,6 +146,11 @@ theorem chi_kap (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) (p : ℕ) (a : awayG D.
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `β`. Take `⟨n, hn, hc⟩` from `hfin β`. Take `⟨ψ, hψ⟩` from `exists_char (O := (D.gat u w hg).O) D.what₂.embLL e ((Fo.K β).lev.chi.comp (kap Fo β (D.what₂.places.resChar w))) (fun a => hrat β _) ⟨n, hn, fun a => hc _⟩`. Use `⟨ψ, fun a κ hκp hκo => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hrat β κ`.
+
+Conclude with `⟨r, hr, hψ a r (hr.trans (congrArg (fun z : ℂˣ => (z : ℂ)) (chi_kap Fo β _ a κ hκp hκo)))⟩`.
+-/
 theorem psiEx_of (Fo : FormsIn M (i + 1) hi) (e : D.what₂.LL →+* (D.gat u w hg).Kf)
     (hfr : IsFractionRing (D.gat u w hg).O (D.gat u w hg).Kf)
     (hrat : ∀ β, ChiRatAll (Fo.K β).lev D.what₂.embLL)
@@ -151,6 +183,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {gp : Fin 2 → ℕ}
 
+/- English proof (translation)
+Establish `: Finite (kv F v)` using `Formalism.UG.P.glint_finite_residueField v`. Establish `: Finite (Matrix (Fin n) (Fin n) (kv F v))` using `inferInstanceAs (Finite (Fin n → Fin n → kv F v))`. Conclude with `Finite.of_injective (fun u : GL (Fin n) (kv F v) => (u : Matrix (Fin n) (Fin n) (kv F v))) (fun _ _ h => Units.ext h)`.
+-/
 theorem finite_glk (v : HeightOneSpectrum (𝓞 F)) : Finite (GL (Fin n) (kv F v)) := by
   have : Finite (kv F v) := Formalism.UG.P.glint_finite_residueField v
   have : Finite (Matrix (Fin n) (Fin n) (kv F v)) := inferInstanceAs (Finite (Fin n → Fin n → kv F v))
@@ -158,6 +193,19 @@ theorem finite_glk (v : HeightOneSpectrum (𝓞 F)) : Finite (GL (Fin n) (kv F v
 
 open Classical in
 
+/- English proof (translation)
+Establish `hfin : ∀ a, {v : HeightOneSpectrum (𝓞 F) | (gp a : 𝓞 F) ∈ v.asIdeal}.Finite` using `fun a => Formalism.L2.G.finite_setOf_mem_asIdeal (Nat.cast_ne_zero.2 (hgp a))`. Establish `hN : ∀ v : HeightOneSpectrum (𝓞 F), 0 < Nat.card (GL (Fin n) (kv F v))` using `fun v => haveI := finite_glk (n := n) v Nat.card_pos`. Use `⟨∏ a : Fin 2, ∏ v ∈ (hfin a).toFinset, Nat.card (GL (Fin n) (kv F v)), Finset.prod_pos fun a _ => Finset.prod_pos fun v _ => hN v, fun κ => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, L.chi_eq κ, Units.val_one, ← Finset.prod_pow]`.
+
+Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `hsup : Function.mulSupport (fun v : HeightOneSpectrum (𝓞 F) => ∏ᶠ (h : (gp a : 𝓞 F) ∈ v.asIdeal), (((lam a v h (L.red a v h κ) : ℂˣ) : ℂ))⁻¹) ⊆ ((hfin a).toFinset : Set (HeightOneSpectrum (𝓞 F)))`. Introduce `v hv`. Rewrite `hv` using `[Function.mem_mulSupport, finprod_eq_dif]`. Distinguish the cases in `h : (gp a : 𝓞 F) ∈ v.asIdeal`.
+
+Conclude with `Finset.mem_coe.2 ((Set.Finite.mem_toFinset (hfin a)).2 h)`. Rewrite `hv` using `[dif_neg h]`. Conclude with `absurd rfl hv`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsup, ← Finset.prod_pow]`. Use `Finset.prod_eq_one fun v hv => ?_` and prove the remaining obligations.
+
+Establish `h : (gp a : 𝓞 F) ∈ v.asIdeal` using `(Set.Finite.mem_toFinset (hfin a)).1 hv`. Rewrite using `[finprod_eq_dif, dif_pos h]`. Establish `hd : Nat.card (GL (Fin n) (kv F v)) ∣ ∏ a : Fin 2, ∏ v ∈ (hfin a).toFinset, Nat.card (GL (Fin n) (kv F v))` using `(Finset.dvd_prod_of_mem _ hv).trans (Finset.dvd_prod_of_mem (fun a : Fin 2 => ∏ v ∈ (hfin a).toFinset, Nat.card (GL (Fin n) (kv F v))) (Finset.mem_univ a))`. Take `⟨q, hq⟩` from `hd`. Establish `h1 : (L.red a v h κ) ^ Nat.card (GL (Fin n) (kv F v)) = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_pow, Subgroup.coe_one]`. Use `finite_glk (n := n) v` as an intermediate fact. Conclude with `pow_card_eq_one'`. Establish `h2 : ((lam a v h (L.red a v h κ) : ℂˣ) : ℂ) ^ Nat.card (GL (Fin n) (kv F v)) = 1`.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, h1, map_one, Units.val_one]`. Rewrite using `[hq, inv_pow, pow_mul, h2, one_pow, inv_one]`.
+-/
 theorem chi_fin_of_glevH {S : StepLevel F E σ J T f bad} {G : GLoc F E σ gp}
     {H : ∀ (a : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp a : 𝓞 F) ∈ v.asIdeal → Subgroup (GL (Fin n) (kv F v))}
     {lam : ∀ a v h, H a v h →* ℂˣ} (L : GLevH S G H lam) (hgp : ∀ a, gp a ≠ 0) :
@@ -201,6 +249,9 @@ end Gen
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `chi_fin_of_glevH F.glevM fun a => (D.host.g_prime a).ne_zero`.
+-/
 theorem chi_fin_top (F : FormsTiedSym D u Ch chOf) (j : ℕ) (hj : j ≤ D.R.m) (h : j = D.R.m) :
     ∃ m : ℕ, 0 < m ∧ ∀ κ, (F.cls j hj (Or.inr h)).lev.chi κ ^ m = 1 := by
   subst h
@@ -208,6 +259,11 @@ theorem chi_fin_top (F : FormsTiedSym D u Ch chOf) (j : ℕ) (hj : j ≤ D.R.m) 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Distinguish the cases in `h : i + 1 = D.R.m`. Rewrite using `[formsInMem_top F dt i hi h]`. Introduce `β`. Conclude with `chi_fin_top F (i + 1) hi h`. Rewrite using `[formsInMem_mid F dt i hi (by omega)]`.
+
+Introduce `β`. Conclude with `chi_fin_of_glevH (F.glevC (i + 1) _ _ β) fun a => (D.host.g_prime a).ne_zero`.
+-/
 theorem finMem_of (F : FormsTiedSym D u Ch chOf) (dt : MemDt F) (i : ℕ) (hi : i + 1 ≤ D.R.m) :
     ∀ β, ∃ m : ℕ, 0 < m ∧ ∀ κ, ((formsInMem F dt i hi).K β).lev.chi κ ^ m = 1 := by
   by_cases h : i + 1 = D.R.m
@@ -238,6 +294,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {gp : Fin 2 → ℕ} {LL : Type} [Field LL]
 
+/- English proof (translation)
+Introduce `κ`. Establish `h : (S.chi κ : ℂ) ∈ emb.fieldRange`. Rewrite using `[L.chi_eq κ]`. Use `prod_mem fun a _ => ?_` and prove the remaining obligations. Use `finprod_induction (fun z : ℂ => z ∈ emb.fieldRange) (one_mem _) (fun x y hx hy => mul_mem hx hy) fun v => ?_` and prove the remaining obligations.
+
+Use `finprod_induction (fun z : ℂ => z ∈ emb.fieldRange) (one_mem _) (fun x y hx hy => mul_mem hx hy) fun hv => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `hl a v hv (L.red a v hv κ)`. Conclude with `inv_mem (RingHom.mem_fieldRange.2 ⟨k, hk⟩)`. Conclude with `RingHom.mem_fieldRange.1 h`.
+-/
 theorem chiRat_of_glevH {S : StepLevel F E σ J T f bad} {G : GLoc F E σ gp}
     {H : ∀ (a : Fin 2) (v : HeightOneSpectrum (𝓞 F)), (gp a : 𝓞 F) ∈ v.asIdeal → Subgroup (GL (Fin n) (kv F v))}
     {lam : ∀ a v h, H a v h →* ℂˣ} (L : GLevH S G H lam) (emb : LL →+* ℂ)
@@ -262,6 +323,9 @@ def LamCRat (F : FormsTiedSym D u Ch chOf) : Prop :=
 def LamMRat (F : FormsTiedSym D u Ch chOf) : Prop :=
   ∀ a v h (M : HSym D (D.R.N D.R.m) true v), ∃ k : D.what₂.LL, D.what₂.embLL k = ((F.lamM a v h M : ℂˣ) : ℂ)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `chiRat_of_glevH F.glevM D.what₂.embLL hM`.
+-/
 theorem chiRat_top (F : FormsTiedSym D u Ch chOf) (hM : LamMRat F) (j : ℕ) (hj : j ≤ D.R.m) (h : j = D.R.m) :
     ChiRatAll (F.cls j hj (Or.inr h)).lev D.what₂.embLL := by
   subst h
@@ -269,6 +333,11 @@ theorem chiRat_top (F : FormsTiedSym D u Ch chOf) (hM : LamMRat F) (j : ℕ) (hj
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Distinguish the cases in `h : i + 1 = D.R.m`. Rewrite using `[formsInMem_top F dt i hi h]`. Introduce `β`. Conclude with `chiRat_top F hM (i + 1) hi h`. Rewrite using `[formsInMem_mid F dt i hi (by omega)]`.
+
+Introduce `β`. Conclude with `chiRat_of_glevH (F.glevC (i + 1) _ _ β) D.what₂.embLL (hC (i + 1) β)`.
+-/
 theorem ratMem_of (F : FormsTiedSym D u Ch chOf) (hC : LamCRat F) (hM : LamMRat F) (dt : MemDt F) (i : ℕ) (hi : i + 1 ≤ D.R.m) :
     ∀ β, ChiRatAll ((formsInMem F dt i hi).K β).lev D.what₂.embLL := by
   by_cases h : i + 1 = D.R.m

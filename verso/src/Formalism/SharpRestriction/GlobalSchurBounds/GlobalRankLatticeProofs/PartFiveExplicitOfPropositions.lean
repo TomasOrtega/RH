@@ -5,18 +5,35 @@ noncomputable section
 namespace Formalism.MainNotions.StandardLattice
 open NumberField Formalism.BasicNotions Finset
 
+/- English proof (translation)
+The claim follows from `volume_eq_mass_at_rank D h2v`.
+-/
 theorem volumeY0EqualsMass_of_aux2v (D : D7) (h2v : VolumeEqMass₂ D) : BaseVolumeEqualsMass D := volume_eq_mass_at_rank D h2v
 
 section P3
 open Formalism.MainNotions.S MeasureTheory
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Unfold `pY qY`. Simplify using `only [Formalism.BasicNotions.Ranks.sigY0]`. Use `D.R.m_add_three_le_k` as an intermediate fact. Apply the tactic sequence `constructor <;> omega`.
+-/
 theorem signature_counts_ge_one (D : D7) : 1 ≤ pY D ∧ 1 ≤ qY D := by
   unfold pY qY
   simp only [Formalism.BasicNotions.Ranks.sigY0]
   have := D.R.m_add_three_le_k
   constructor <;> omega
 
+/- English proof (translation)
+Introduce `hAll hT hEx ep0 he1 he2 ρ hgap`. Take `⟨H, i1, i2, σ, hDS, hF⟩` from `hEx ρ`. Establish `hcs : CompleteSpace H` using `hDS.1`. Establish `hnt : Nontrivial H` using `hDS.2.1`. Take `⟨w, hw⟩` from `exists_ne (0 : H)`.
+
+Establish `hHC` using `line_param_harish_chandra D ρ`. Establish `hdt` using `(hT _ (epsSH D.R) (lamSH D.R (D.hc ρ)) hHC H σ hDS).2`. Establish `hp : ((Finset.univ.filter (fun a => epsSH D.R a = true)).card : ℝ) = (pY D : ℝ)`. Establish `: (Finset.univ.filter (fun a => epsSH D.R a = true)).card = nPlus (epsSH D.R)` using `rfl`. Rewrite using `[this, sign_vector_eq_line_sign, count_plus_finCast, count_plus_line_sign]`.
+
+Establish `hq : ((Finset.univ.filter (fun a => epsSH D.R a = false)).card : ℝ) = (qY D : ℝ)`. Establish `: (Finset.univ.filter (fun a => epsSH D.R a = false)).card = nMinus (epsSH D.R)` using `rfl`. Rewrite using `[this, sign_vector_eq_line_sign, count_minus_finCast, count_minus_line_sign]`. Establish `hN : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = (D.R.r : ℝ)` using `by rw [dimS_eq]`. Establish `hg' : Formalism.QuantumDeterminants.GapAtLeast (epsSH D.R) (lamSH D.R (D.hc ρ)) (spectralGapLowerBound D ep0)`.
+
+Rewrite using `[sign_vector_eq_line_sign, param_vector_eq_line_param]`. Conclude with `gapAtLeast_finCast _ _ _ _ hgap`. Establish `key` using `hAll _ (epsSH D.R) (lamSH D.R (D.hc ρ)) ep0 (spectralGapLowerBound D ep0) H σ w (by rw [hp]; exact_mod_cast (signature_counts_ge_one D).1) (by rw [hq]; exact_mod_cast (signature_counts_ge_one D).2) hHC hg' (by rw [hN]; exact he1) he2 (by rw [hp, hq, hN]; unfold spectralGapLowerBo …`. Rewrite `key` using `[formal_degree_of_eq _ σ _ hF w hw, hp, hq, hdt]`. Rewrite `key` using `[← dimV_eq_fdegHC _ hHC.1]`.
+
+Rewrite `key` using `[sign_vector_eq_line_sign, param_vector_eq_line_param, dim_weyl_finCast, formal_degree_finCast, abs_param_sup_finCast]`. Use `⟨key.1, ?_⟩` and prove the remaining obligations. Establish `e : ((pY D : ℝ) * (qY D : ℝ)) = ((pY D * qY D : ℕ) : ℝ)` using `by push_cast; rfl`. Rewrite `key` using `[e, Real.rpow_natCast]`. Conclude with `key.2`.
+-/
 theorem theorem_three_sigma_holds (D : D7) : SigmaDegreeBoundOfDiscreteSeriesBounds D := by
   intro hAll hT hEx ep0 he1 he2 ρ hgap
   obtain ⟨H, i1, i2, σ, hDS, hF⟩ := hEx ρ
@@ -46,6 +63,9 @@ theorem theorem_three_sigma_holds (D : D7) : SigmaDegreeBoundOfDiscreteSeriesBou
   rw [e, Real.rpow_natCast] at key
   exact key.2
 
+/- English proof (translation)
+Introduce `hS hA hE x i`. Establish `h` using `hA x i`. Unfold `Adm3 at h`. Apply the tactic sequence `exact theorem_three_sigma_holds _ (hS x i).1 (by first | exact h.2 | exact h.2.1 | exact h.2.2 | exact h.2.2.1 | exact h.2.2.2 | exact h.2.2.2.1 | exact h.2.2.2.2) (hE x i)`.
+-/
 theorem family_theorem_three_sigma_holds {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : FamilySigmaStatement Fm := by
   intro hS hA hE x i
   have h := hA x i
@@ -56,6 +76,13 @@ theorem family_theorem_three_sigma_holds {eps : ℝ} (Fm : Formalism.MainNotions
 
 end P3
 
+/- English proof (translation)
+Unfold `spectralGapLowerBound gap3`. Establish `hr1 : (1 : ℝ) ≤ D.R.r`. Establish `: 1 ≤ D.R.r`. Simplify using `only [Formalism.BasicNotions.Ranks.r]`. Use `D.R.m_add_three_le_k` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hlog : 0 ≤ Real.log D.R.r` using `Real.log_nonneg hr1`. Establish `hX : 0 ≤ (↑(min (pY D) (qY D)) : ℝ) * (↑(pY D) * ↑(qY D)) ^ 3` using `by positivity`. Apply `div_le_div_of_nonneg_right ?_ (sq_nonneg ep0)` to reduce the goal to its premises.
+
+Establish `h1 : (8192 : ℝ) ≤ C * D.R.r` using `by nlinarith`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h1) (mul_nonneg hX hlog)]`.
+-/
 theorem explicit_gap_le_general_gap (D : D7) (C ep0 : ℝ) (hC : 8192 ≤ C) : spectralGapLowerBound D ep0 ≤ gap3 D C ep0 := by
   unfold spectralGapLowerBound gap3
   have hr1 : (1 : ℝ) ≤ D.R.r := by
@@ -70,6 +97,15 @@ theorem explicit_gap_le_general_gap (D : D7) (C ep0 : ℝ) (hC : 8192 ≤ C) : s
   have h1 : (8192 : ℝ) ≤ C * D.R.r := by nlinarith
   nlinarith [mul_nonneg (sub_nonneg.2 h1) (mul_nonneg hX hlog)]
 
+/- English proof (translation)
+Introduce `ep0 h1 h2 ρ hg`. Take `⟨hA, hB⟩` from `h ep0 h1 h2 ρ (fun a b hab => (explicit_gap_le_general_gap D C ep0 hC).trans (hg a b hab))`. Use `⟨hA, hB.trans ?_⟩` and prove the remaining obligations. Establish `hr1 : (1 : ℝ) ≤ D.R.r`. Establish `: 1 ≤ D.R.r`.
+
+Simplify using `only [Formalism.BasicNotions.Ranks.r]`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hd` using `(formalDegreeFactor_pos_of_strictAnti (rowSgn D) (rowLam D ρ) (line_param_strictAnti D ρ)).le`.
+
+Establish `hl` using `lamAbs_nonneg (rowLam D ρ)`. Establish `hpq : (0 : ℝ) ≤ (pY D : ℝ) * (qY D : ℝ)` using `by positivity`. Apply `mul_le_mul_of_nonneg_left _ (by linarith)` to reduce the goal to its premises. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Establish `h3 : (3 : ℝ) ≤ C * D.R.r` using `by nlinarith`.
+
+Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h3) (mul_nonneg hpq hl)]`.
+-/
 theorem theorem_three_sigma_of_explicit (D : D7) (C : ℝ) (hC : 8192 ≤ C) (h : SigmaDegreeTwoSidedBoundOfGap D) : PointsLemma D C := by
   intro ep0 h1 h2 ρ hg
   obtain ⟨hA, hB⟩ := h ep0 h1 h2 ρ (fun a b hab => (explicit_gap_le_general_gap D C ep0 hC).trans (hg a b hab))
@@ -88,6 +124,13 @@ theorem theorem_three_sigma_of_explicit (D : D7) (C : ℝ) (hC : 8192 ≤ C) (h 
   have h3 : (3 : ℝ) ≤ C * D.R.r := by nlinarith
   nlinarith [mul_nonneg (sub_nonneg.2 h3) (mul_nonneg hpq hl)]
 
+/- English proof (translation)
+Establish `hf : (0 : ℝ) < D.R.f` using `by exact_mod_cast degree_pos_alt D`. Establish `hv : 1 ≤ D.host.v / Real.pi` using `(one_le_div Real.pi_pos).2 hpi`. Establish `hterm : ∀ j, j < D.R.m → (Fintype.card D.what₂.Tau : ℝ) * Real.log w0 ≤ ∑ ρ, Real.log (w j ρ * D.host.v / Real.pi)`. Introduce `j hj`. Rewrite using `[← nsmul_eq_mul, ← Finset.card_univ, ← Finset.sum_const]`.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `ρ _`. Apply `Real.log_le_log hw0` to reduce the goal to its premises. Rewrite using `[mul_div_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hterm` using `[D.what₂.card_Tau]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul, one_div, inv_mul_cancel_left₀ hf.ne']`. Use `_ ≤ _ := Finset.sum_le_sum fun j hj => mul_le_mul_of_nonneg_left (hterm j (Finset.mem_range.1 hj)) (by positivity)`.
+-/
 theorem weighted_log_sum_lower_bound (D : D7) (w : ℕ → D.what₂.Tau → ℝ) (w0 : ℝ) (hw0 : 0 < w0) (hpi : Real.pi ≤ D.host.v)
     (hw : ∀ ρ j, j < D.R.m → w0 ≤ w j ρ) :
     (D.R.m : ℝ) * Real.log w0 ≤
@@ -112,6 +155,17 @@ theorem weighted_log_sum_lower_bound (D : D7) (w : ℕ → D.what₂.Tau → ℝ
     _ ≤ _ := Finset.sum_le_sum fun j hj =>
         mul_le_mul_of_nonneg_left (hterm j (Finset.mem_range.1 hj)) (by positivity)
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, hΔ, -, -, -, -, -, hw, hwb, hb0, -⟩` from `hB`. Establish `hk : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions. Establish `hx` using `sc.one_lt_alt`.
+
+Establish `hbase : 1 ≤ bN D ρ 0`. Establish `h` using `(hb0 ρ).1`. Rewrite `h` using `[le_div_iff₀ (by linarith)]`. Establish `h4 : (1 : ℝ) ≤ D.R.k * (4 * Δ)` using `by nlinarith`. Establish `h5 : (D.R.k : ℝ) * (4 * Δ) ≤ D.R.k * (4 * Δ) * sc.x` using `le_mul_of_one_le_right (by positivity) hx.le`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmono : ∀ i, i < D.R.m → bN D ρ 0 ≤ bN D ρ i`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`.
+
+Conclude with `le_rfl`. Consider the case `succ i ih`. Introduce `hi`. Establish `h1` using `ih (by omega)`. Establish `h2` using `(hw ρ i (by omega)).2.1`.
+
+Establish `h3` using `hwb ρ i hi`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[(hw ρ j hj).2.1, hmono j hj]`.
+-/
 theorem weights_ge_one_section_B (D : D7) (sc : Scale) (C0 Δ : ℝ) (w : ℕ → D.what₂.Tau → ℝ) (hB : DataB D sc C0 Δ w)
     (ρ : D.what₂.Tau) (j : ℕ) (hj : j < D.R.m) : 1 ≤ w j ρ := by
   obtain ⟨-, -, -, -, -, -, hΔ, -, -, -, -, -, hw, hwb, hb0, -⟩ := hB
@@ -138,6 +192,13 @@ theorem weights_ge_one_section_B (D : D7) (sc : Scale) (C0 Δ : ℝ) (w : ℕ �
       linarith
   linarith [(hw ρ j hj).2.1, hmono j hj]
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, hg, -⟩` from `hB`. Establish `hk : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions. Establish `hb : 0 < sc.b` using `Real.exp_pos _`.
+
+Establish `h1` using `(hg i).1`. Establish `hpos : 0 < ((D.R.k : ℝ) * sc.b) ^ 8` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_pow, Formalism.BasicNotions.Scale.b, Real.log_exp]`. Evaluate the numerical expressions.
+
+Use `_ ≤ Real.log (((D.R.k : ℝ) * sc.b) ^ 8) := Real.log_le_log (by positivity) (pow_le_pow_left₀ hb.le (by nlinarith) 8)`. Use `_ ≤ Real.log (D.host.g i : ℝ) := Real.log_le_log hpos h1`.
+-/
 theorem eight_L_le_log_g (D : D7) (sc : Scale) (C0 Δ : ℝ) (w : ℕ → D.what₂.Tau → ℝ) (hB : DataB D sc C0 Δ w) (i : Fin 2) :
     8 * sc.L ≤ Real.log (D.host.g i : ℝ) := by
   obtain ⟨-, -, -, -, -, hg, -⟩ := hB
@@ -154,6 +215,25 @@ theorem eight_L_le_log_g (D : D7) (sc : Scale) (C0 Δ : ℝ) (w : ℕ → D.what
         Real.log_le_log (by positivity) (pow_le_pow_left₀ hb.le (by nlinarith) 8)
     _ ≤ Real.log (D.host.g i : ℝ) := Real.log_le_log hpos h1
 
+/- English proof (translation)
+Introduce `Δ w hA Γ hΓ u hT2 hf2 hT1 hT3`. Establish `hB` using `hA.1`. Establish `hg` using `three_le_level_of_section_B D sc C0 Δ w hB`. Establish `hD` using `dual_degree_pos D hg`. Establish `hd` using `dual_degree_word_pos D hg (massI_pos D D.R.k) u`.
+
+Establish `hk` using `D.R.k_ge`. Establish `hf : 1 ≤ D.R.f` using `le_trans one_le_two (le_trans D.R.two_le_m D.R.m_le_f)`. Establish `hfk : 2 * D.R.f ≤ 2 ^ D.R.k`. Establish `h3 : 2 ^ D.R.k = 2 * 2 ^ (D.R.k - 1)`. Rewrite using `[← pow_succ']`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hX : Real.exp (logXuD D u) ^ (D.R.f * D.R.k) = DstarD D / duStarU D u`. Establish `hfR : (0 : ℝ) < D.R.f` using `by exact_mod_cast hf`.
+
+Establish `hkR : (0 : ℝ) < D.R.k` using `by exact_mod_cast (by omega : 0 < D.R.k)`. Rewrite using `[← Real.exp_nat_mul]`. Unfold `logXuD logXu`. Use `push_cast`. Rewrite using `[show (D.R.f : ℝ) * D.R.k * (1 / ((D.R.f : ℝ) * D.R.k) * Real.log (DstarD D / duStarU D u)) = Real.log (DstarD D / duStarU D u) by field_simp]`.
+
+Conclude with `Real.exp_log (div_pos hD hd)`. Establish `hT : (2 : ℝ) ≤ ((D.mem u).A.T : ℝ)` using `by exact_mod_cast hT2`. Take `⟨c1, c2, c3, c4⟩` from `Formalism.HermitianLattices.GenusMassVolumes.mass_corollary D.R.f D.R.k ((D.mem u).A.T : ℝ) (Real.exp (logXuD D u)) Γ (DstarD D) (duStarU D u) _ (logXuD D u) (logXuD D u) hf (by omega) hfk hT (Real.exp_pos _) hΓ hD hd hX hT1 hT3 rfl (by rw [Real.log_exp]) (by rw [Real.log_exp])`. Establish `hL` using `scale_one_le_L sc`. Establish `hlog2 : Real.log 2 ≤ 1` using `by have := Real.log_two_lt_d9; linarith`.
+
+Establish `hΓ0 : 0 < Γ` using `by linarith`. Establish `eΓ : Γ ^ (-(2 : ℝ)) = (Γ⁻¹) ^ 2`. Rewrite using `[Real.rpow_neg hΓ0.le, Real.rpow_two, inv_pow]`. Establish `l1` using `(h5 Δ w hA u).1`. Use `⟨⟨by rw [eΓ]; exact c1, by rw [eΓ]; exact c2⟩, by linarith, by linarith, fun hG => ⟨c4, by linarith, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hm : (44 : ℝ) ≤ D.R.m` using `by exact_mod_cast hA.2.2.2.1`. Establish `s1` using `weighted_log_sum_lower_bound D w 1 one_pos hB.1 (fun ρ j hj => weights_ge_one_section_B D sc C0 Δ w hB ρ j hj)`. Rewrite `s1` using `[Real.log_one, mul_zero]`. Establish `s2 : 16 * sc.L ≤ ∑ i : Fin 2, Real.log (D.host.g i : ℝ)`. Rewrite using `[Fin.sum_univ_two]`.
+
+Use `eight_L_le_log_g D sc C0 Δ w hB 0` as an intermediate fact. Use `eight_L_le_log_g D sc C0 Δ w hB 1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `lowS at l1`. Establish `s3 : (D.R.m : ℝ) * (16 * sc.L) ≤ (D.R.m : ℝ) * ∑ i : Fin 2, Real.log (D.host.g i : ℝ)` using `mul_le_mul_of_nonneg_left s2 (by linarith)`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem corollary_five_four_of_explicit (D : D7) (sc : Scale) (C0 CY : ℝ) (h5 : Conclusion5Sharp D sc C0 CY) : VandermondeCountExplicit D sc C0 CY := by
   intro Δ w hA Γ hΓ u hT2 hf2 hT1 hT3
   have hB := hA.1
@@ -199,6 +279,9 @@ theorem corollary_five_four_of_explicit (D : D7) (sc : Scale) (C0 CY : ℝ) (h5 
     mul_le_mul_of_nonneg_left s2 (by linarith)
   nlinarith
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h5, corollary_five_six_of_explicit D sc C0 CY h5, corollary_five_four_of_explicit D sc C0 CY h5, hv⟩`.
+-/
 theorem part_five_explicit_of_propositions (D : D7) (sc : Scale) (C0 CY : ℝ) (h5 : Conclusion5Sharp D sc C0 CY) (hv : VandermondeVariationExplicitBound D sc C0 CY) :
     VandermondeCountBound D sc C0 CY := ⟨h5, corollary_five_six_of_explicit D sc C0 CY h5, corollary_five_four_of_explicit D sc C0 CY h5, hv⟩
 

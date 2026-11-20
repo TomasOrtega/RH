@@ -7,6 +7,9 @@ namespace LateralTheory.E.ChainsDiscCoprodPf
 
 variable (R : Type) [CommRing R]
 
+/- English proof (translation)
+Simplify using `only [chains, chainsXIso, Functor.comp_map]`. Use `erw [HomologicalComplex.extendMap_f _ ComplexShape.embeddingDownNat (i := n) rfl]`. Both sides reduce to the same expression.
+-/
 theorem chains_disc_f {P Q : PSh} (f : P ⟶ Q) (n : ℕ) :
     ((chains R).map (disc.map f)).f (-(n : ℤ)) =
       (chainsXIso R (disc.obj P) n).hom ≫ (free R).map f ≫ (chainsXIso R (disc.obj Q) n).inv := by
@@ -14,10 +17,20 @@ theorem chains_disc_f {P Q : PSh} (f : P ⟶ Q) (n : ℕ) :
   erw [HomologicalComplex.extendMap_f _ ComplexShape.embeddingDownNat (i := n) rfl]
   rfl
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.isZero_extend_X _ ComplexShape.embeddingDownNat i (fun n => hi n)`.
+-/
 theorem isZero_chains_X (E : Spc) (i : ℤ) (hi : ∀ n : ℕ, -(n : ℤ) ≠ i) :
     IsZero (((chains R).obj E).X i) :=
   HomologicalComplex.isZero_extend_X _ ComplexShape.embeddingDownNat i (fun n => hi n)
 
+/- English proof (translation)
+Use `⟨Cofan.IsColimit.mk _ (fun s => b.hom ≫ hc.desc (Cofan.mk s.pt fun j => (a j).inv ≫ s.inj j)) ?_ ?_⟩` and prove the remaining obligations. Introduce `s j`. Use `hc.fac (Cofan.mk s.pt fun j => (a j).inv ≫ s.inj j) ⟨j⟩` as an intermediate fact. Simplify using `only [Cofan.mk_ι_app] at this`. Express the relevant statement in the definitionally equal form `f' j ≫ _ = _`.
+
+Simplify using `only [hf, Category.assoc, Iso.inv_hom_id_assoc, this, Iso.hom_inv_id_assoc]`. Introduce `s m hm`. Rewrite using `[← Iso.inv_comp_eq]`. Use `hc.uniq (Cofan.mk s.pt fun j => (a j).inv ≫ s.inj j) _ ?_` and prove the remaining obligations. Introduce and unpack `⟨j⟩`.
+
+Express the relevant statement in the definitionally equal form `f j ≫ b.inv ≫ m = (a j).inv ≫ s.inj j`. Rewrite using `[← hm j]`. Express the relevant statement in the definitionally equal form `f j ≫ b.inv ≫ m = (a j).inv ≫ f' j ≫ m`. Simplify using `only [hf, Category.assoc, Iso.inv_hom_id_assoc]`.
+-/
 theorem cofan_of_isos {C : Type*} [Category C] {ι : Type} {A A' : ι → C} {B B' : C}
     (a : ∀ j, A' j ≅ A j) (b : B' ≅ B) (f : ∀ j, A j ⟶ B) (f' : ∀ j, A' j ⟶ B')
     (hf : ∀ j, f' j = (a j).hom ≫ f j ≫ b.inv) (hc : IsColimit (Cofan.mk B f)) :
@@ -37,11 +50,19 @@ theorem cofan_of_isos {C : Type*} [Category C] {ι : Type} {A A' : ι → C} {B 
     change f j ≫ b.inv ≫ m = (a j).inv ≫ f' j ≫ m
     simp only [hf, Category.assoc, Iso.inv_hom_id_assoc]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Cofan.IsColimit.mk _ (fun _ => 0) (fun _ j => (hA j).eq_of_src _ _) (fun _ _ _ => hB.eq_of_src _ _)⟩`.
+-/
 theorem cofan_of_zero {C : Type*} [Category C] [HasZeroMorphisms C] {ι : Type} {A : ι → C} {B : C}
     (hA : ∀ j, IsZero (A j)) (hB : IsZero B) (f : ∀ j, A j ⟶ B) :
     Nonempty (IsColimit (Cofan.mk B f)) :=
   ⟨Cofan.IsColimit.mk _ (fun _ => 0) (fun _ j => (hA j).eq_of_src _ _) (fun _ _ _ => hB.eq_of_src _ _)⟩
 
+/- English proof (translation)
+Rewrite using `[(isColimitMapCoconeCofanMkEquiv _ _ _).nonempty_congr]`. Distinguish the cases in `h : 0 < i`. Establish `h' : ∀ n : ℕ, -(n : ℤ) ≠ i` using `fun n => by omega`. Conclude with `cofan_of_zero (fun j => isZero_chains_X R _ i h') (isZero_chains_X R _ i h') _`. Establish `hi : i = -(((-i).toNat : ℕ) : ℤ)` using `by omega`.
+
+Rewrite using `[hi]`. Generalize the expression as in `(-i).toNat = n`. Conclude with `cofan_of_isos (fun j => chainsXIso R (disc.obj (P j)) n) (chainsXIso R (disc.obj Q) n) (fun j => (free R).map (p j)) _ (fun j => chains_disc_f R (p j) n) hc`.
+-/
 theorem degColimit {ι : Type} (P : ι → PSh) (Q : PSh) (p : ∀ j, P j ⟶ Q)
     (hc : IsColimit (Cofan.mk ((free R).obj Q) fun j => (free R).map (p j))) (i : ℤ) :
     Nonempty (IsColimit ((HomologicalComplex.eval _ _ i).mapCocone
@@ -56,6 +77,9 @@ theorem degColimit {ι : Type} (P : ι → PSh) (Q : PSh) (p : ∀ j, P j ⟶ Q)
     exact cofan_of_isos (fun j => chainsXIso R (disc.obj (P j)) n) (chainsXIso R (disc.obj Q) n)
       (fun j => (free R).map (p j)) _ (fun j => chains_disc_f R (p j) n) hc
 
+/- English proof (translation)
+Introduce `R _ ι P Q p ⟨hc⟩`. Conclude with `⟨HomologicalComplex.isColimitOfEval _ _ (fun i => (degColimit R P Q p hc i).some)⟩`.
+-/
 theorem ChainsDiscCoprod_of : LateralTheory.E.CoprodPf.ChainsDiscCoprod := by
   intro R _ ι P Q p ⟨hc⟩
   exact ⟨HomologicalComplex.isColimitOfEval _ _ (fun i => (degColimit R P Q p hc i).some)⟩

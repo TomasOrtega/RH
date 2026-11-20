@@ -8,6 +8,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.FlatKerLarge
 
+/- English proof (translation)
+Establish `sqZ : ∀ w, i' (liftSemi fZ w) = liftSemi fM (i.lTensor R' w)` using `fun w ↦ by`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x z => rw [LinearMap.lTensor_tmul, liftSemi_tmul, liftSemi_tmul, map_smul, hZ]`.
+
+Establish `sqN : ∀ w, d' (liftSemi fM w) = liftSemi fN (d.lTensor R' w)` using `fun w ↦ by`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x z => rw [LinearMap.lTensor_tmul, liftSemi_tmul, liftSemi_tmul, map_smul, hN]`.
+
+Establish `hinj : Function.Injective (i.lTensor R')` using `Module.Flat.lTensor_preserves_injective_linearMap i hi`. Establish `hex : Function.Exact (i.lTensor R') (d.lTensor R')` using `Module.Flat.lTensor_exact R' hid`. Use `⟨fun a b hab ↦ hinj (hM.1 ?_), fun z' ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← sqZ, ← sqZ, hab]`. Take `⟨m, hm⟩` from `hM.2 (i' z')`.
+
+Establish `h0 : d.lTensor R' m = 0` using `hNi (by rw [← sqN, hm, hid'.apply_apply_eq_zero, map_zero])`. Take `⟨w, rfl⟩` from `(hex m).1 h0`. Conclude with `⟨w, hi' (by rw [sqZ, hm])⟩`.
+-/
 theorem liftSemi_bijective_of_exact {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
     [Module.Flat R R'] {Z M N Z' M' N' : Type*}
     [AddCommGroup Z] [Module R Z] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
@@ -39,6 +48,9 @@ theorem liftSemi_bijective_of_exact {R R' : Type} [CommRing R] [CommRing R'] [Al
     obtain ⟨w, rfl⟩ := (hex m).1 h0
     exact ⟨w, hi' (by rw [sqZ, hm])⟩
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ Z _ _ M _ _ N _ _ Z' _ _ M' _ _ N' _ _ i d i' d' fZ fM fN hi hid hi' hid' hZ hN hM hNi`. Conclude with `liftSemi_bijective_of_exact i d i' d' fZ fM fN hi hid hi' hid' hZ hN hM hNi`.
+-/
 theorem liftSemi_bijective_of_exact_large : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] [Module.Flat R R'] (Z : Type 1) [AddCommGroup Z] [Module R Z] (M : Type 1) [AddCommGroup M] [Module R M] (N : Type 1) [AddCommGroup N] [Module R N] (Z' : Type 1) [AddCommGroup Z'] [Module R' Z'] (M' : Type 1) [AddCommGroup M'] [Module R' M'] (N' : Type 1) [AddCommGroup N'] [Module R' N'] (i : Z →ₗ[R] M) (d : M →ₗ[R] N) (i' : Z' →ₗ[R'] M') (d' : M' →ₗ[R'] N') (fZ : Z →ₛₗ[algebraMap R R'] Z') (fM : M →ₛₗ[algebraMap R R'] M') (fN : N →ₛₗ[algebraMap R R'] N'), Function.Injective i → Function.Exact i d → Function.Injective i' → Function.Exact i' d' → (∀ z, i' (fZ z) = fM (i z)) → (∀ x, d' (fM x) = fN (d x)) → Function.Bijective (liftSemi fM) → Function.Injective (liftSemi fN) → Function.Bijective (liftSemi fZ) := by
   intro R R' _ _ _ _ Z _ _ M _ _ N _ _ Z' _ _ M' _ _ N' _ _ i d i' d' fZ fM fN hi hid hi' hid' hZ hN hM hNi
   exact liftSemi_bijective_of_exact i d i' d' fZ fM fN hi hid hi' hid' hZ hN hM hNi

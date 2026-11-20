@@ -18,6 +18,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Ker.OntoLat
 
+/- English proof (translation)
+Use `choose g hg using fun j : ℕ => hex _ j.factorial_pos`. Set `U : Ultrafilter ℕ` to `Ultrafilter.of Filter.atTop`. Establish `hU : ∀ n, 0 < n → ∀ᶠ j : ℕ in U, n ∣ j.factorial` using `fun n hn => Ultrafilter.of_le _ ((Filter.eventually_ge_atTop n).mono fun j hj => Nat.dvd_factorial hn hj)`. Establish `hs : ∀ n : ℕ, ∃ i : ℕ, 0 < n → (n ∣ i.factorial ∧ ∀ᶠ j in U, ∀ a, ∃ e, g j a = g i a + n • e)` using `fun n => by`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+
+Conclude with `⟨0, fun h => absurd h (lt_irrefl 0)⟩`. Take `⟨i, hi⟩` from `IsoTower.exists_eventually_congr U (fun j => (g j).toAddMonoidHom) hn _ (hU n hn)`. Conclude with `⟨i, fun _ => hi⟩`. Use `choose s hs using hs`. Use `⟨fun n => g (s n), fun n m hn hm a => ?_, fun n hn => ?_, fun n hn => ?_⟩` and prove the remaining obligations.
+
+Take `⟨j, h1, h2⟩` from `((hs _ (Nat.mul_pos hn hm)).2.and (hs n hn).2).exists`. Take `⟨e1, h1⟩` from `h1 a`. Take `⟨e2, h2⟩` from `h2 a`. Use `⟨e2 - m • e1, ?_⟩` and prove the remaining obligations. Use `show g (s (n * m)) a = g (s n) a + _`.
+
+Rewrite using `[smul_sub, ← mul_smul, ← add_sub_assoc, ← h2, h1, add_sub_cancel_right]`. Take `⟨r, hr⟩` from `(hs n hn).1`. Establish `hr0 : 0 < r` using `Nat.pos_of_mul_pos_left (hr ▸ (s n).factorial_pos)`. Take `⟨⟨h1, h2⟩, -⟩` from `hg (s n)`. Rewrite `h1`, `h2` using `[hr]`.
+
+Use `⟨fun a => ⟨?_, ?_⟩, fun a' => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨e, he⟩`. Establish `he' : g (s n) a = n • e` using `he`. Take `⟨b, hb⟩` from `(h1 (r • a)).1 ⟨e, by rw [map_nsmul, he', mul_comm, mul_smul]⟩`. Conclude with `⟨b, hc r hr0 _ _ (by rw [hb, mul_comm, mul_smul])⟩`.
+
+Introduce and unpack `⟨e, rfl⟩`. Conclude with `⟨_, map_nsmul _ _ _⟩`. Take `⟨a, e, h⟩` from `h2 a'`. Conclude with `⟨a, r • e, by rw [h, mul_smul]⟩`. Take `⟨r, hr⟩` from `(hs n hn).1`.
+
+Conclude with `hQ n r _ (hr ▸ (hg (s n)).2)`.
+-/
 theorem exists_tower {R L M : Type} [CommRing R] [AddCommGroup L] [AddCommGroup M] [Module R L] [Module R M]
     [Module.Finite ℤ L] [Module.Finite ℤ M] (hc : ∀ r : ℕ, 0 < r → ∀ a c : L, r • a = r • c → a = c)
     (Q : ℕ → (L →ₗ[R] M) → Prop) (hQ : ∀ n m f, Q (n * m) f → Q n f)
@@ -62,6 +77,31 @@ theorem exists_tower {R L M : Type} [CommRing R] [AddCommGroup L] [AddCommGroup 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use `set ξ : E := X.κ0 / 2 with hξ`. Establish `hξ' : ξ = X.ξ0 ∨ ξ = -X.ξ0` using `X.κ0_xi.imp (fun h => by rw [hξ, h]; ring) fun h => by rw [hξ, h]; ring`. Establish `hξ0 : ξ ≠ 0`. Apply the tactic sequence `rcases hξ' with h | h <;> rw [h]`. Use `exacts [X.ξ0_ne, neg_ne_zero.2 X.ξ0_ne]`.
+
+Establish `hξc : cc ξ = -ξ`. Use `X.ξ0_im` as an intermediate fact. Apply the tactic sequence `rcases hξ' with h | h <;> rw [h]`. Conclude with `this`. Simplify using `only [cc, map_neg] at this ⊢`.
+
+Rewrite using `[this]`. Establish `hI0 : FractionalIdeal.spanSingleton (𝓞 E)⁰ ξ ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hξ0`. Establish `hJ : ∀ z : E, z ∈ FractionalIdeal.dual ℤ ℚ (FractionalIdeal.spanSingleton (𝓞 E)⁰ ξ) ↔ ∀ a : 𝓞 E, ∃ k : ℤ, Algebra.trace ℚ E (-ξ * ((a : E) * z)) = k`. Introduce `z`. Rewrite using `[FractionalIdeal.mem_dual hI0]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h a`. Take `⟨k, hk⟩` from `h ((-a) • ξ) ((FractionalIdeal.mem_spanSingleton _).2 ⟨-a, rfl⟩)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[eq_intCast, Algebra.traceForm_apply, Algebra.smul_def, map_neg]`.
+
+Rewrite using `[hk]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = z * (-(a : E) * ξ)`. Expand and normalize the polynomial expressions, which then agree. Introduce `h w hw`.
+
+Take `⟨c, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hw`. Take `⟨k, hk⟩` from `h (-c)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_intCast, ← hk, Algebra.traceForm_apply, Algebra.smul_def]`. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `-ξ * (((-c : 𝓞 E) : E) * z) = z * ((c : E) * ξ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `htr : ∀ z : E, Algebra.trace ℚ E (cc z) = Algebra.trace ℚ E z` using `fun z => Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) z`. Use `⟨_, FractionalIdeal.dual_ne_zero ℤ ℚ hI0, fun z hz => ?_, fun L hL x => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hz`, the goal using `[hJ]`. Introduce `a`. Take `⟨k, hk⟩` from `hz (-RingOfIntegers.mapRingEquiv (IsCMField.complexConj E : E ≃+* E) a)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, ← htr]`.
+
+Use `congr 1`. Establish `e : ((-RingOfIntegers.mapRingEquiv (IsCMField.complexConj E : E ≃+* E) a : 𝓞 E) : E) = -cc (a : E)` using `rfl`. Rewrite using `[e]`. Simplify using `only [cc, map_mul, map_neg, IsCMField.complexConj_apply_apply] at hξc ⊢`. Rewrite using `[hξc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hE : ∀ (a : 𝓞 E) (u v : Fin r → E), EF X (a • u) v = Algebra.trace ℚ E (-ξ * ((a : E) * herm X.Gm u v))` using `fun a u v => by`. Rewrite using `[EF_def, ← algebraMap_smul E, HermitianTraceFormVanishing.herm_smul_left]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`.
+
+Rewrite using `[hJ]`. Introduce `a`. Rewrite using `[← hE]`. Conclude with `(hL.2 _).1 (L.smul_mem a hx) y hy`. Introduce `h`.
+
+Use `(hL.2 x).2 fun y hy => ?_` and prove the remaining obligations. Use `(hJ _).1 (h y hy) 1` as an intermediate fact. Rewrite `this` using `[← hE, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem exists_valueIdeal (X : Data E r) : ∃ J : FractionalIdeal (𝓞 E)⁰ E, J ≠ 0 ∧ (∀ z ∈ J, cc z ∈ J) ∧
     ∀ L : Lt E r, SelfD X L → ∀ x, x ∈ L ↔ ∀ y ∈ L, herm X.Gm x y ∈ J := by
   set ξ : E := X.κ0 / 2 with hξ
@@ -126,6 +166,19 @@ theorem exists_valueIdeal (X : Data E r) : ∃ J : FractionalIdeal (𝓞 E)⁰ E
       have := (hJ _).1 (h y hy) 1
       rwa [← hE, one_smul] at this
 
+/- English proof (translation)
+Take `⟨J, hJ0, hJc, hJ⟩` from `exists_valueIdeal X`. Establish `h1 : ReciprocityTheory.MultiplicativeHeights.IsLattice L` using `⟨hL.1, SW.TensLat.span_of_selfD X hL⟩`. Establish `h2 : ReciprocityTheory.MultiplicativeHeights.IsLattice L'` using `⟨hL'.1, SW.TensLat.span_of_selfD X hL'⟩`. Establish `hγ` using `SelfDualGenus.exists_isLocalIsometry_of_modular hJ0 hJc X.Gm_herm X.Gm_herm X.Gm_det X.Gm_det h2 h1 (hJ L' hL') (hJ L hL)`. Use `haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.2 hL.1`.
+
+Use `haveI : Module.Finite ℤ L := Module.Finite.trans (𝓞 E) L`. Use `haveI : Module.Finite (𝓞 E) L' := Module.Finite.iff_fg.2 hL'.1`. Use `haveI : Module.Finite ℤ L' := Module.Finite.trans (𝓞 E) L'`. Take `⟨f, f1, f2, f3⟩` from `exists_tower (R := 𝓞 E) (L := L) (M := L') (fun n hn a b h => by`. Establish `hn' : (n : E) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`.
+
+Establish `h' : (n : E) • (a : Fin r → E) = (n : E) • (b : Fin r → E)`. Simplify `congrArg Subtype.val h` using `only [Nat.cast_smul_eq_nsmul, Submodule.coe_smul_of_tower]`. Conclude with `Subtype.ext (smul_right_injective _ hn' h'))`. Use the proof step `(fun n f => ∀ a a' : L, ∃ z ∈ J, herm X.Gm (f a) (f a') - herm X.Gm a a' = n • z)`. Use the proof step `(fun n m f h a a' => by`.
+
+Take `⟨z, hz, e⟩` from `h a a'`. Conclude with `⟨m • z, nsmul_mem (show z ∈ (J : Submodule (𝓞 E) E) from hz) m, by rw [e, mul_smul]⟩)`. Use the proof step `(fun n hn => by`. Take `⟨f, hf, hf'⟩` from `IsomModN.exists_isometry_mod h1 h2 (IsomModN.isLattice_ideal hJ0) (fun x hx y hy i _ => (hJ L' hL' x).1 hx y hy) hγ hn`. Use `⟨f, hf, fun a a' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨m, hm, e⟩` from `hf' a a'`. Conclude with `⟨m 0, hm 0 trivial, e⟩)`. Establish `hh : ∀ x y : Fin r → E, (∑ a, ∑ b, x a * X.Gm a b * c (y b)) = herm X.Gm x y` using `fun x y => by`. Simplify using `only [herm, hcc]`. Take `⟨g, g1, -, g3⟩` from `AdLat.exists_adelic_matrix_of_tower F E r L L' f h1.1 h1.2 h2.1 h2.2 f1 f2`.
+
+Use `⟨g, g1, g3 c X.Gm J (fun x hx y hy => ?_) fun n hn x y => ?_⟩` and prove the remaining obligations. Rewrite using `[hh]`. Conclude with `(hJ L' hL' x).1 hx y hy`. Take `⟨z, hz, e⟩` from `f3 n hn x y`. Conclude with `⟨z, hz, by rw [hh, hh, ← e, add_sub_cancel]⟩`.
+-/
 theorem exists_adelic_matrix [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] (F : Type) [Field F]
     [NumberField F] [Algebra F E] (c : E ≃ₐ[F] E) (hcc : ∀ x, c x = cc x) (X : Data E r) {L L' : Lt E r}
     (hL : SelfD X L) (hL' : SelfD X L') :
@@ -168,6 +221,11 @@ theorem exists_adelic_matrix [Algebra.Unramified (𝓞 (maximalRealSubfield E)) 
   · obtain ⟨z, hz, e⟩ := f3 n hn x y
     exact ⟨z, hz, by rw [hh, hh, ← e, add_sub_cancel]⟩
 
+/- English proof (translation)
+Use `haveI := (hostOfRecord D).unram`. Take `⟨g, g1, g2⟩` from `exists_adelic_matrix D.host.F (Member.cF D) (Member.latHat_eq_hat_and_gram D T).2.2.2.2.2.1 C.X (SW.Lev.selfD_of_sympl C.sympl) hL`. Rewrite `g2` using `[C.m.gT]`. Take `⟨k, hk, rfl⟩` from `(UnitarySplit.real_finite_split D T).2.2.2.1 g g2`. Use `⟨k, hk, fun u => ?_⟩` and prove the remaining obligations.
+
+Establish `e : u ∈ hatV L ↔ u ∈ (AdLat.hat D.host.F (L : Set (Fin T.rank → D.host.E)) : Set _)` using `Iff.rfl`. Rewrite using `[e, ← g1]`. Conclude with `⟨fun ⟨u₀, h₀, h⟩ => ⟨u₀, h₀, h.symm⟩, fun ⟨u₀, h₀, h⟩ => ⟨u₀, h₀, h.symm⟩⟩`.
+-/
 theorem exists_mov_of_selfD {D : D7} {S T : HSp D} (C : Ctx S T) {L : Lt D.host.E T.rank} (hL : SelfD C.X L) :
     ∃ g ∈ GfC T, IsMov (fmt T g) C.X.Λ L := by
   haveI := (hostOfRecord D).unram
@@ -180,6 +238,9 @@ theorem exists_mov_of_selfD {D : D7} {S T : HSp D} (C : Ctx S T) {L : Lt D.host.
   rw [e, ← g1]
   exact ⟨fun ⟨u₀, h₀, h⟩ => ⟨u₀, h₀, h.symm⟩, fun ⟨u₀, h₀, h⟩ => ⟨u₀, h₀, h.symm⟩⟩
 
+/- English proof (translation)
+Introduce `D S T C Lv L hL`. Take `⟨g, -, hg⟩` from `exists_mov_of_selfD C hL.1`. Conclude with `((GlobalTheory.T.self_dual_lattices_at_level D S T C).2 Lv g L hL.1.1 hg).2.2.2 hL`.
+-/
 theorem exists_trivAt_mov : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ Lv : SW.Level C.X, ∀ L ∈ Lv.lats,
     ∃ g ∈ GfC T, TrivAt T (C.under Lv) g ∧ IsMov (fmt T g) C.X.Λ L := by
   intro D S T C Lv L hL

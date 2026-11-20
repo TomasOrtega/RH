@@ -21,6 +21,9 @@ def cutStd : Formalism.FourierDecayAlt.LE.Cut where
   nonneg _ := Real.smoothTransition.nonneg _
   le_one _ := Real.smoothTransition.le_one _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨c.smooth, ⟨1 / 2, by norm_num, fun x hx => c.zero x hx.le⟩, c.one⟩`.
+-/
 theorem isCut0_cut (c : Formalism.FourierDecayAlt.LE.Cut) : Formalism.FourierDecayAlt.C6.IsCut0 c.χ :=
   ⟨c.smooth, ⟨1 / 2, by norm_num, fun x hx => c.zero x hx.le⟩, c.one⟩
 
@@ -44,6 +47,9 @@ def carrierInT (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂
     (sgOf (Formalism.L2.SG.SpectralTiesReal.gOf D e) (plE D) ((D.mem u).A.T : ℝ) ((D.mem u').A.T : ℝ) de de' (l + 1)) ν' m₀
     (fun j => Formalism.FourierDecayAlt.Top.topOf (parE e u u' de de' j) (l + 1) (towersOf X C u u' e j) (ν' j) (m₀ j) (Θ j) (TP j)) A₀
 
+/- English proof (translation)
+Use `⟨⟨isCut0_cut c, fun v => ⟨rfl, ?_, hF v, isPlace_of _ hN hty v, hcc v, hcap v⟩⟩, fun v => hΘ v⟩` and prove the remaining obligations. Conclude with `towerOf_norm (baseOf X C u u' (tauE X e v)) (baseOf_μW1 X C u u' _) (baseOf_μW'1 X C u u' _) rfl`.
+-/
 theorem builtT_carrierInT (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)
@@ -80,6 +86,15 @@ theorem builtT_carrierInT (u u' : D.what₂.Word) (e : InfinitePlace D.host.E �
   refine ⟨⟨isCut0_cut c, fun v => ⟨rfl, ?_, hF v, isPlace_of _ hN hty v, hcc v, hcap v⟩⟩, fun v => hΘ v⟩
   exact towerOf_norm (baseOf X C u u' (tauE X e v)) (baseOf_μW1 X C u u' _) (baseOf_μW'1 X C u u' _) rfl
 
+/- English proof (translation)
+Establish `h1 : l + 1 ≠ 1` using `by omega`. Establish `h2 : l + 1 ≠ c.k` using `by omega`. Establish `hu : ∀ d : ℕ → ℝ, c.u d (l + 1) = c.v l - 1 / 2 - d l * c.Del`. Introduce `d`. Unfold `Formalism.FourierDecayAlt.Sz.Cfg.u`.
+
+Rewrite using `[if_neg h1, if_neg h2, Nat.add_sub_cancel]`. Unfold `Formalism.FourierDecayAlt.I.OnCut`. Rewrite using `[hu, hu]`. Take `⟨hY1, hY2⟩` from `hY`. Apply the tactic sequence `rcases hw with h | h <;> rcases hw' with h' | h'`.
+
+Conclude with `absurd (h.trans h'.symm) hne`. Use `right`. Rewrite using `[h, h']`. Apply the tactic sequence `constructor <;> linarith`. Use `left`.
+
+Rewrite using `[h, h']`. Apply the tactic sequence `constructor <;> linarith`. Conclude with `absurd (h.trans h'.symm) hne`.
+-/
 theorem onCut_cfg (c : Formalism.FourierDecayAlt.Sz.Cfg) (de de' : ℕ → ℝ) (l : ℕ) (hl1 : 1 ≤ l) (hlk : l + 2 ≤ c.k)
     (hw : de l = 0 ∨ de l = 1) (hw' : de' l = 0 ∨ de' l = 1) (hne : de l ≠ de' l) (_hD : 3 ≤ c.Del) (Y : ℝ)
     (hY : Y ∈ Set.Icc (5 / 2 - c.v l) (c.Del / 2 - c.v l)) :

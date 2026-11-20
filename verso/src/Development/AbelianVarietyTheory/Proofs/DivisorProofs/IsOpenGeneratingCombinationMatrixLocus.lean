@@ -12,6 +12,9 @@ namespace GlobalTheory.HomFixOpen
 
 variable {A₀ X T : Scheme.{0}} {N : LB A₀} {mA mB : ℕ}
 
+/- English proof (translation)
+Establish `e : comb a φ p c z q j = (gm φ z (N.U q ⊓ N.U q') (N.g q q')).val * comb a φ p c z q' j`. Simplify using `only [comb, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_compat (a i) φ z hq hq', mul_left_comm]`. Rewrite using `[e, Units.isUnit_units_mul]`.
+-/
 theorem isUnit_comb_chart (a : Fin mA → LB.Sec N) (φ : X ⟶ A₀) (p : X ⟶ T) (c : Fin mA → Fin mB → Γ(T, ⊤))
     (z : X) {q q' : N.ι} (hq : φ z ∈ N.U q) (hq' : φ z ∈ N.U q') (j : Fin mB) :
     IsUnit (comb a φ p c z q j) ↔ IsUnit (comb a φ p c z q' j) := by
@@ -21,6 +24,9 @@ theorem isUnit_comb_chart (a : Fin mA → LB.Sec N) (φ : X ⟶ A₀) (p : X ⟶
     rw [gs_compat (a i) φ z hq hq', mul_left_comm]
   rw [e, Units.isUnit_units_mul]
 
+/- English proof (translation)
+Simplify using `only [comb, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_comp h p y ⊤ trivial, gs_comp h φ y (N.U q) hq]`.
+-/
 theorem comb_comp {Y : Scheme.{0}} (a : Fin mA → LB.Sec N) (φ : X ⟶ A₀) (p : X ⟶ T) (c : Fin mA → Fin mB → Γ(T, ⊤))
     (h : Y ⟶ X) (y : Y) (q : N.ι) (hq : φ (h y) ∈ N.U q) (j : Fin mB) :
     comb a (h ≫ φ) (h ≫ p) c y q j = (h.stalkMap y).hom (comb a φ p c (h y) q j) := by
@@ -28,10 +34,16 @@ theorem comb_comp {Y : Scheme.{0}} (a : Fin mA → LB.Sec N) (φ : X ⟶ A₀) (
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [gs_comp h p y ⊤ trivial, gs_comp h φ y (N.U q) hq]
 
+/- English proof (translation)
+The claim follows from `gs_pull f g z ⊤ trivial c`.
+-/
 theorem gs_top {Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (z : X) (c : Γ(Z, ⊤)) :
     gs f z ⊤ (g.appTop.hom c) = gs (f ≫ g) z ⊤ c :=
   gs_pull f g z ⊤ trivial c
 
+/- English proof (translation)
+Simplify using `only [gs_eq f z U h, map_sum]`.
+-/
 theorem gs_sum' {Y : Scheme.{0}} (f : X ⟶ Y) (z : X) (U : Y.Opens) (h : f z ∈ U) {n : ℕ} (b : Fin n → Γ(Y, U)) :
     gs f z U (∑ i, b i) = ∑ i, gs f z U (b i) := by
   simp only [gs_eq f z U h, map_sum]
@@ -43,6 +55,9 @@ def combFn (a : Fin mA → LB.Sec N) (φ : X ⟶ A₀) (p : X ⟶ T) (c : Fin mA
     (j : Fin mB) : Γ(X, φ ⁻¹ᵁ N.U q) :=
   ∑ i, (X.presheaf.map (homOfLE le_top).op).hom (p.appTop.hom (c i j)) * (φ.app (N.U q)).hom ((a i).f q)
 
+/- English proof (translation)
+Establish `hz' : (𝟙 X) z ∈ φ ⁻¹ᵁ N.U q` using `hz`. Rewrite using `[combFn, gs_sum' (𝟙 X) z _ hz']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_mul _ z _ hz', gs_res _ z le_top hz', gs_top, gs_pull (𝟙 X) φ z (N.U q) hz, Category.id_comp, Category.id_comp]`.
+-/
 theorem gs_combFn (a : Fin mA → LB.Sec N) (φ : X ⟶ A₀) (p : X ⟶ T) (c : Fin mA → Fin mB → Γ(T, ⊤)) (q : N.ι)
     (j : Fin mB) (z : X) (hz : φ z ∈ N.U q) : gs (𝟙 X) z _ (combFn a φ p c q j) = comb a φ p c z q j := by
   have hz' : (𝟙 X) z ∈ φ ⁻¹ᵁ N.U q := hz
@@ -51,6 +66,13 @@ theorem gs_combFn (a : Fin mA → LB.Sec N) (φ : X ⟶ A₀) (p : X ⟶ T) (c :
   rw [gs_mul _ z _ hz', gs_res _ z le_top hz', gs_top, gs_pull (𝟙 X) φ z (N.U q) hz, Category.id_comp,
     Category.id_comp]
 
+/- English proof (translation)
+Establish `e : good a φ p c = ⋃ q, ⋃ j, (X.basicOpen (combFn a φ p c q j) : Set X)`. Use extensionality with `z`. Simplify using `only [good, Set.mem_setOf_eq, Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, j, hu⟩`.
+
+Use `⟨q, j, ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[← gs_combFn a φ p c q j z hq]`. Conclude with `(GlobalTheory.LBGerm.isUnit_gs_iff (𝟙 X) z _ hq _).1 hu`. Introduce and unpack `⟨q, j, hz⟩`. Establish `hq : φ z ∈ N.U q` using `X.basicOpen_le _ hz`.
+
+Use `⟨q, hq, j, ?_⟩` and prove the remaining obligations. Rewrite using `[← gs_combFn a φ p c q j z hq]`. Conclude with `(GlobalTheory.LBGerm.isUnit_gs_iff (𝟙 X) z _ hq _).2 hz`. Rewrite using `[e]`. Conclude with `isOpen_iUnion fun q => isOpen_iUnion fun j => (X.basicOpen _).isOpen`.
+-/
 theorem isOpen_good (a : Fin mA → LB.Sec N) (φ : X ⟶ A₀) (p : X ⟶ T) (c : Fin mA → Fin mB → Γ(T, ⊤)) :
     IsOpen (good a φ p c) := by
   have e : good a φ p c = ⋃ q, ⋃ j, (X.basicOpen (combFn a φ p c q j) : Set X) := by
@@ -73,6 +95,27 @@ end GlobalTheory.HomFixOpen
 
 namespace GlobalTheory.HomFixOpen
 
+/- English proof (translation)
+Introduce `Rg _ A₀ f _ N mA mB a hN`. Set `π₁` to `pullback.fst f (affπ Rg (mA * mB))`. Set `π₂` to `pullback.snd f (affπ Rg (mA * mB))`. Set `G` to `good a π₁ π₂ (matOf (𝟙 (Sp (MvPolynomial (Fin (mA * mB)) Rg))))`. Establish `hG : IsOpen G` using `isOpen_good _ _ _ _`.
+
+Establish `hC : IsClosed (π₂ '' Gᶜ)` using `π₂.isClosedMap _ hG.isClosed_compl`. Use `⟨⟨(π₂ '' Gᶜ)ᶜ, hC.isOpen_compl⟩, fun T X' g φ p hP => ?_⟩` and prove the remaining obligations. Establish `w : φ ≫ f = (p ≫ g) ≫ affπ Rg (mA * mB)` using `by rw [Category.assoc]; exact hP.w`. Set `h` to `pullback.lift φ (p ≫ g) w`. Establish `h1 : h ≫ π₁ = φ` using `pullback.lift_fst _ _ _`.
+
+Establish `h2 : h ≫ π₂ = p ≫ g` using `pullback.lift_snd _ _ _`. Establish `hπ₁ : ∀ z, π₁ (h z) = φ z` using `fun z => by rw [← Scheme.Hom.comp_apply, h1]`. Establish `key : ∀ z q j, φ z ∈ N.U q → comb a φ p (matOf g) z q j = (h.stalkMap z).hom (comb a π₁ π₂ (matOf (𝟙 _)) (h z) q j)`. Introduce `z q j hq`. Rewrite using `[← comb_comp a π₁ π₂ _ h z q (by rw [hπ₁]; exact hq) j]`.
+
+Simplify using `only [comb, h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[h2, matOf, matOf, coord, coord, gs_top, gs_top, Category.comp_id]`. Establish `unitIff : ∀ z q j, φ z ∈ N.U q → (IsUnit (comb a φ p (matOf g) z q j) ↔ IsUnit (comb a π₁ π₂ (matOf (𝟙 _)) (h z) q j))`.
+
+Introduce `z q j hq`. Rewrite using `[key z q j hq]`. Conclude with `isUnit_map_iff _ _`. Establish `stepA : Generates a φ p (matOf g) ↔ ∀ z, h z ∈ G`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg z`. Take `⟨q, hq⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hN (φ z)`. Take `⟨j, hj⟩` from `hg z q hq`. Conclude with `⟨q, by rw [hπ₁]; exact hq, j, (unitIff z q j hq).1 hj⟩`. Introduce `hg z q hq`.
+
+Take `⟨q', hq', j, hj⟩` from `hg z`. Conclude with `⟨j, (unitIff z q j hq).2 ((isUnit_comb_chart a π₁ π₂ _ (h z) hq' (by rw [hπ₁]; exact hq) j).1 hj)⟩`. Rewrite using `[stepA]`. Establish `hP' : IsPullback h p π₂ g` using `IsPullback.of_right (by rw [h1]; exact hP) h2 (IsPullback.of_hasPullback _ _)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg τ show g τ ∈ (π₂ '' Gᶜ)ᶜ`. Introduce and unpack `⟨w', hw, he⟩`. Take `⟨y, hy1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := π₂) (g := g) w' τ he`. Apply `hw` to reduce the goal to its premises. Establish `e : h (hP'.isoPullback.inv y) = w'`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, hP'.isoPullback_inv_fst, hy1]`. Rewrite using `[← e]`. Conclude with `hg _`. Introduce `hg z`. Assume the negation of the conclusion as `hz`.
+
+Conclude with `hg (p z) ⟨h z, hz, by rw [← Scheme.Hom.comp_apply, h2, Scheme.Hom.comp_apply]⟩`.
+-/
 theorem main : ∀ (Rg : Type) [CommRing Rg] (A₀ : Scheme.{0}) (f : A₀ ⟶ Sp Rg) [UniversallyClosed f] (N : LB A₀) (mA mB : ℕ) (a : Fin mA → LB.Sec N), N.IsLB → ∃ U : (Sp (MvPolynomial (Fin (mA * mB)) Rg)).Opens, ∀ (T X' : Scheme.{0}) (g : T ⟶ Sp (MvPolynomial (Fin (mA * mB)) Rg)) (φ : X' ⟶ A₀) (p : X' ⟶ T), IsPullback φ p f (g ≫ affπ Rg (mA * mB)) → (GlobalTheory.HomFixUniv.Generates a φ p (matOf g) ↔ ∀ τ, g τ ∈ U) := by
   intro Rg _ A₀ f _ N mA mB a hN
   let π₁ := pullback.fst f (affπ Rg (mA * mB))

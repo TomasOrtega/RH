@@ -16,10 +16,16 @@ def pullbackSubmodule : Submodule k (S.X₂.V × Y.V) :=
     β.hom.toLinearMap ∘ₗ LinearMap.snd k S.X₂.V Y.V)
 
 variable {S β} in
+/- English proof (translation)
+Simplify using `[pullbackSubmodule, sub_eq_zero]`.
+-/
 theorem mem_pullbackSubmodule {p : S.X₂.V × Y.V} :
     p ∈ pullbackSubmodule S β ↔ S.g.hom p.1 = β.hom p.2 := by
   simp [pullbackSubmodule, sub_eq_zero]
 
+/- English proof (translation)
+Introduce `p hp`. Rewrite using `[Submodule.mem_comap, mem_pullbackSubmodule]`. Rewrite `hp` using `[mem_pullbackSubmodule]`. Simplify using `[Rep.hom_comm_apply, hp]`.
+-/
 theorem pullbackSubmodule_le_comap (g : G) :
     pullbackSubmodule S β ≤ (pullbackSubmodule S β).comap ((S.X₂.ρ.prod Y.ρ) g) := by
   intro p hp
@@ -37,10 +43,19 @@ noncomputable def pullbackFst : pullbackRep S β ⟶ S.X₂ :=
 noncomputable def pullbackSnd : pullbackRep S β ⟶ Y :=
   Rep.ofHom ⟨LinearMap.snd k S.X₂.V Y.V ∘ₗ (pullbackSubmodule S β).subtype, fun _ => rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackFst_apply (p : pullbackRep S β) : (pullbackFst S β).hom p = p.1.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackSnd_apply (p : pullbackRep S β) : (pullbackSnd S β).hom p = p.1.2 := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(S.f ≫ S.g).hom x = 0`. Rewrite using `[S.zero]`. Both sides reduce to the same expression.
+-/
 theorem g_apply_f_apply (x : S.X₁) : S.g.hom (S.f.hom x) = 0 := by
   change (S.f ≫ S.g).hom x = 0
   rw [S.zero]
@@ -58,10 +73,19 @@ noncomputable def pullbackι : S.X₁ ⟶ pullbackRep S β :=
     · simp [pullbackιLinear, Rep.hom_comm_apply]
     · simp [pullbackιLinear]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackι_apply_fst (x : S.X₁) : ((pullbackι S β).hom x).1.1 = S.f.hom x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackι_apply_snd (x : S.X₁) : ((pullbackι S β).hom x).1.2 = 0 := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem pullbackι_pullbackSnd : pullbackι S β ≫ pullbackSnd S β = 0 := by
   ext x
   rfl
@@ -69,14 +93,36 @@ theorem pullbackι_pullbackSnd : pullbackι S β ≫ pullbackSnd S β = 0 := by
 noncomputable def pullbackSES : ShortComplex (Rep.{u} k G) :=
   ShortComplex.mk (pullbackι S β) (pullbackSnd S β) (pullbackι_pullbackSnd S β)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackSES_X₁ : (pullbackSES S β).X₁ = S.X₁ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackSES_X₂ : (pullbackSES S β).X₂ = pullbackRep S β := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackSES_X₃ : (pullbackSES S β).X₃ = Y := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackSES_f : (pullbackSES S β).f = pullbackι S β := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackSES_g : (pullbackSES S β).g = pullbackSnd S β := rfl
 
 variable {S} in
 
+/- English proof (translation)
+Establish `hex` using `function_exact_of_shortExact hS`. Establish `hinj : Function.Injective S.f.hom` using `(Rep.mono_iff_injective _).1 hS.mono_f`. Establish `hsurj : Function.Surjective S.g.hom` using `(Rep.epi_iff_surjective _).1 hS.epi_g`. Use `shortExact_of_linear ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b hab`.
+
+Conclude with `hinj (congrArg (fun p : pullbackRep S β => p.1.1) hab)`. Introduce `y`. Take `⟨x, hx⟩` from `hsurj (β.hom y)`. Conclude with `⟨⟨(x, y), mem_pullbackSubmodule.2 hx⟩, rfl⟩`. Introduce `p hp`.
+
+Establish `hp2 : p.1.2 = 0` using `hp`. Establish `hg : S.g.hom p.1.1 = 0`. Rewrite using `[(mem_pullbackSubmodule.1 p.2), hp2, map_zero]`. Take `⟨x, hx⟩` from `(hex p.1.1).1 hg`. Use `⟨x, Subtype.ext (Prod.ext hx hp2.symm)⟩` and prove the remaining obligations.
+-/
 theorem pullbackSES_shortExact (hS : S.ShortExact) : (pullbackSES S β).ShortExact := by
   have hex := function_exact_of_shortExact hS
   have hinj : Function.Injective S.f.hom := (Rep.mono_iff_injective _).1 hS.mono_f
@@ -105,8 +151,17 @@ noncomputable def pullbackSESHom : pullbackSES S β ⟶ S where
     ext p
     exact mem_pullbackSubmodule.1 p.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackSESHom_τ₁ : (pullbackSESHom S β).τ₁ = 𝟙 S.X₁ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackSESHom_τ₂ : (pullbackSESHom S β).τ₂ = pullbackFst S β := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackSESHom_τ₃ : (pullbackSESHom S β).τ₃ = β := rfl
 
 end GroundTheory.GroupCoh

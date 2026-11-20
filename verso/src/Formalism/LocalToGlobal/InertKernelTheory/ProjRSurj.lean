@@ -14,6 +14,9 @@ variable {K A B : Type} [Field K] [AddCommGroup A] [Module K A] [AddCommGroup B]
 def projR (R : Submodule K (A × B)) : R →ₗ[K] R.map (LinearMap.fst K A B) :=
   LinearMap.codRestrict _ ((LinearMap.fst K A B).comp R.subtype) fun r => Submodule.mem_map.2 ⟨r.1, r.2, rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨a, ha⟩`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 ha`. Conclude with `⟨⟨y, hy⟩, rfl⟩`.
+-/
 theorem projR_surj (R : Submodule K (A × B)) : Function.Surjective (projR R) := by
   rintro ⟨a, ha⟩
   obtain ⟨y, hy, rfl⟩ := Submodule.mem_map.1 ha

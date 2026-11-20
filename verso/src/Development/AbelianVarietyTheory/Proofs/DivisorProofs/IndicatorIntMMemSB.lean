@@ -15,6 +15,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 def IsSmU (χ : kˣ →* ℂˣ) : Prop := IsOpen (χ.ker : Set kˣ) ∧ ∀ x, ‖(χ x : ℂ)‖ = 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, by simp⟩`.
+-/
 theorem isSmU_one : IsSmU (1 : kˣ →* ℂˣ) := ⟨by simp, by simp⟩
 
 variable (k) in
@@ -27,6 +30,9 @@ def IsEqv {n : ℕ} (ν : kˣ →* ℂˣ) (z : ℂ) (l : (Matrix (Fin n) (Fin n)
   ∀ g₁ g₂ : GL (Fin n) k, ∀ φ ∈ SB (Matrix (Fin n) (Fin n) k),
     (ν (gdet g₁ * gdet g₂) : ℂ) * apow (gdet g₁ * gdet g₂) z * l (fun X => φ (g₁.val * X * g₂.val)) = l φ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => by simp⟩`.
+-/
 example (n : ℕ) : IsEqv (n := n) (1 : kˣ →* ℂˣ) 0 (fun φ => φ 0) :=
   ⟨fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ _ => by simp⟩
 
@@ -59,6 +65,9 @@ section Frames
 
 variable {R S D : Type} [Fintype R] [DecidableEq R] [Fintype S] [DecidableEq S] [Fintype D] [DecidableEq D]
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Establish `c1 : Continuous fun g : Matrix R R k => g * P` using `continuous_id.matrix_mul continuous_const`. Establish `c2 : Continuous fun X : Matrix R D k => X * P'` using `continuous_id.matrix_mul continuous_const`. Establish `e : IsClosedEmbedding fun g : Matrix R R k => g * P` using `Function.LeftInverse.isClosedEmbedding (f := fun X : Matrix R D k => X * P') (fun g => by simp only [Matrix.mul_assoc, hP, Matrix.mul_one]) c2 c1`. Conclude with `⟨hΦ.1.comp_continuous c1, hΦ.2.comp_isClosedEmbedding e⟩`.
+-/
 theorem restrict_mem_SB {P : Matrix R D k} {P' : Matrix D R k} (hP : P * P' = 1) {Φ : Matrix R D k → ℂ}
     (hΦ : Φ ∈ SB (Matrix R D k)) : (fun g : Matrix R R k => Φ (g * P)) ∈ SB (Matrix R R k) := by
   obtain ⟨_, _⟩ := Model.secondCountable_and_t2_local_field (k := k)
@@ -71,6 +80,9 @@ theorem restrict_mem_SB {P : Matrix R D k} {P' : Matrix D R k} (hP : P * P' = 1)
 
 omit [DecidableEq R] [DecidableEq D] in
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Establish `hc : IsCompact (intM k R D)` using `isCompact_intMatrix`. Establish `hK : IsClopen (intM k R D)` using `⟨hc.isClosed, isOpen_intMatrix⟩`. Conclude with `⟨(LocallyConstant.indicator (1 : LocallyConstant _ ℂ) hK).isLocallyConstant, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩`.
+-/
 theorem indicator_intM_mem_SB : (intM k R D).indicator (1 : Matrix R D k → ℂ) ∈ SB (Matrix R D k) := by
   obtain ⟨_, _⟩ := Model.secondCountable_and_t2_local_field (k := k)
   have hc : IsCompact (intM k R D) := isCompact_intMatrix
@@ -78,6 +90,13 @@ theorem indicator_intM_mem_SB : (intM k R D).indicator (1 : Matrix R D k → ℂ
   exact ⟨(LocallyConstant.indicator (1 : LocallyConstant _ ℂ) hK).isLocallyConstant,
     HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Establish `hI` using `indicator_intM_mem_SB (k := k) (R := R) (D := S)`. Establish `c1 : Continuous fun X : Matrix R D k => X * Pᵀ` using `continuous_id.matrix_mul continuous_const`. Establish `c2 : Continuous fun X : Matrix R D k => X * Qᵀ` using `continuous_id.matrix_mul continuous_const`. Establish `c3 : Continuous fun x : Matrix R R k × Matrix R S k => x.1 * P + x.2 * Q` using `(continuous_fst.matrix_mul continuous_const).add (continuous_snd.matrix_mul continuous_const)`.
+
+Use `⟨fun X => φ (X * Pᵀ) * (intM k R S).indicator 1 (X * Qᵀ), ⟨(hφ.1.comp_continuous c1).mul (hI.1.comp_continuous c2), ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro ((hφ.2.isCompact.prod hI.2.isCompact).image c3) fun X hX => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 h`. Use `hX ⟨(X * Pᵀ, X * Qᵀ), ⟨subset_tsupport _ h1, subset_tsupport _ h2⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mul_assoc, ← Matrix.mul_add, hPQ, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc, hP, hQ, Matrix.mul_one, Matrix.mul_zero]`. Rewrite using `[Set.indicator_of_mem (show (0 : Matrix R S k) ∈ intM k R S from fun _ _ => zero_mem _)]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_extend_SB {P : Matrix R D k} {Q : Matrix S D k} (hP : P * Pᵀ = 1) (hQ : P * Qᵀ = 0)
     (hPQ : Pᵀ * P + Qᵀ * Q = 1) {φ : Matrix R R k → ℂ} (hφ : φ ∈ SB (Matrix R R k)) :
     ∃ Φ ∈ SB (Matrix R D k), ∀ g, Φ (g * P) = φ g := by
@@ -100,6 +119,13 @@ theorem exists_extend_SB {P : Matrix R D k} {Q : Matrix S D k} (hP : P * Pᵀ = 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[frameMatrixFirstColumnBlock_mul_apply]`. Simplify using `[X0, one_apply, eq_comm]`. Use extensionality with `i j`.
+
+Rewrite using `[frameMatrixSecondColumnBlock_mul_apply]`. Simplify using `[Y0, one_apply, eq_comm]`. Use extensionality with `i j`. Simplify using `[frameMatrixFirstColumnBlock_mul_apply, Y0]`. Use extensionality with `i j`.
+
+Simplify using `[frameMatrixSecondColumnBlock_mul_apply, X0]`. Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := σ.surjective i <;> obtain ⟨j | j, rfl⟩ := σ.surjective j <;>`. Simplify using `[X0, Y0, Matrix.mul_apply, one_apply, eq_comm]`.
+-/
 theorem frame_rel (σ : R ⊕ S ≃ D) : X0 k σ * (X0 k σ)ᵀ = 1 ∧ Y0 k σ * (Y0 k σ)ᵀ = 1 ∧ X0 k σ * (Y0 k σ)ᵀ = 0 ∧
     Y0 k σ * (X0 k σ)ᵀ = 0 ∧ (X0 k σ)ᵀ * X0 k σ + (Y0 k σ)ᵀ * Y0 k σ = 1 := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
@@ -115,19 +141,31 @@ end Frames
 
 variable {a a' : ℕ} {z : ℂ} {ν α β : kˣ →* ℂˣ}
 
+/- English proof (translation)
+The claim follows from `restrict_mem_SB (frame_rel _).1 hΦ`.
+-/
 theorem restrict_X0 {Φ : Matrix (Fin a) (Fin (a + a')) k → ℂ} (hΦ : Φ ∈ SB (Matrix (Fin a) (Fin (a + a')) k)) :
     (fun g : Matrix (Fin a) (Fin a) k => Φ (g * X0 k (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')))) ∈ SB _ :=
   restrict_mem_SB (frame_rel _).1 hΦ
 
+/- English proof (translation)
+The claim follows from `restrict_mem_SB (frame_rel _).2.1 hΨ`.
+-/
 theorem restrict_Y0 {Ψ : Matrix (Fin a') (Fin (a + a')) k → ℂ} (hΨ : Ψ ∈ SB (Matrix (Fin a') (Fin (a + a')) k)) :
     (fun g : Matrix (Fin a') (Fin a') k => Ψ (g * Y0 k (finSumFinEquiv : Fin a ⊕ Fin a' ≃ Fin (a + a')))) ∈ SB _ :=
   restrict_mem_SB (frame_rel _).2.1 hΨ
 
+/- English proof (translation)
+Unfold `mapA`. Rewrite using `[← omA_mul, one_mul]`.
+-/
 theorem mapA_omA_right (l : (Matrix (Fin a) (Fin a) k → ℂ) → ℂ) (Φ : Matrix (Fin a) (Fin (a + a')) k → ℂ)
     (x h : GL (Fin (a + a')) k) : mapA a' l ν β (omA ν β 1 x Φ) h = mapA a' l ν β Φ (h * x) := by
   unfold mapA
   rw [← omA_mul, one_mul]
 
+/- English proof (translation)
+Unfold `mapB`. Rewrite using `[← omB_mul, one_mul]`.
+-/
 theorem mapB_omB_right (l : (Matrix (Fin a') (Fin a') k → ℂ) → ℂ) (Ψ : Matrix (Fin a') (Fin (a + a')) k → ℂ)
     (x h : GL (Fin (a + a')) k) : mapB a l ν α (omB ν α 1 x Ψ) h = mapB a l ν α Ψ (h * x) := by
   unfold mapB
@@ -147,6 +185,9 @@ def locMat {v : Pl F} (t : E →ₐ[F] Fv F v) {n : ℕ} {J : Matrix (Fin n) (Fi
   map_one' := by simp
   map_mul' g h := by simp [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locMat_val {v : Pl F} (t : E →ₐ[F] Fv F v) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (b : GL (Fin n) (Fv F v))
     (g : UA σ J) : (locMat t b g).val = (b⁻¹).val * (mat g).map (piW t) * b.val := rfl
 

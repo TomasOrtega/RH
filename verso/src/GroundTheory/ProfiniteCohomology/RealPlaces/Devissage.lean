@@ -27,15 +27,30 @@ namespace TateCompactDualityHypotheses
 variable (H : TateCompactDualityHypotheses φ ψ n D t U₀)
 
 include H in
+/- English proof (translation)
+The claim follows from `finite_of_nonempty_addEquiv H.nonempty_addEquiv`.
+-/
 theorem finite_D : Finite D :=
   finite_of_nonempty_addEquiv H.nonempty_addEquiv
 
 include H in
+/- English proof (translation)
+The claim follows from `nsmul_eq_zero_of_nonempty_addEquiv H.nonempty_addEquiv d`.
+-/
 theorem nsmul_D (d : D) : n • d = 0 :=
   nsmul_eq_zero_of_nonempty_addEquiv H.nonempty_addEquiv d
 
 include H in
 
+/- English proof (translation)
+Take `⟨W, hW, J, _, i, hi⟩` from `exists_injective_biproduct_coind_le (n := n) U₀ M hM`. Establish `hφ : ∀ {r s : ℕ} (h : r + s = 3), 1 ≤ s → Function.Bijective (tateCompactDualityMap φ ψ D h t (⨁ fun _ : J => Rep.coind (W : Subgroup G).subtype (zmodRep.{u} (W : Subgroup G) n) : Rep.{u} (ULift.{u} ℤ) G))` using `fun h hs => bijective_tateCompactDualityMap_biproduct φ ψ D h t _ fun _ => H.bijective_coind W hW h hs`. Establish `hnI : ∀ x : ((⨁ fun _ : J => Rep.coind (W : Subgroup G).subtype (zmodRep.{u} (W : Subgroup G) n) : Rep.{u} (ULift.{u} ℤ) G) : Type u), n • x = 0`. Introduce `x`. Rewrite using `[biproduct_eq_sum _ x, Finset.smul_sum]`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← map_nsmul, nsmul_coind_zmodRep_eq_zero W, map_zero]`. Establish `hmono : Mono i` using `(Rep.mono_iff_injective i).2 hi`. Set `S` to `ShortComplex.mk i (cokernel.π i) (cokernel.condition i)`. Establish `hS : S.ShortExact` using `ShortComplex.ShortExact.mk' (S.exact_of_g_is_cokernel (cokernelIsCokernel i)) hmono (inferInstance : Epi (cokernel.π i))`.
+
+Establish `hQd : IsDiscreteRep (cokernel i)` using `isDiscreteRep_X₃_of_shortExact hS`. Establish `hsurj : Function.Surjective (cokernel.π i).hom` using `(Rep.epi_iff_surjective _).1 inferInstance`. Establish `hQf : Finite ((cokernel i : Rep.{u} (ULift.{u} ℤ) G) : Type u)` using `Finite.of_surjective _ hsurj`. Use `⟨_, cokernel i, inferInstance, hQd, inferInstance, hQf, i, cokernel.π i, cokernel.condition i, hS, hnI, fun x => ?_, hφ⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hsurj x`.
+
+Rewrite using `[← map_nsmul, hnI, map_zero]`.
+-/
 theorem exists_devissage (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) :
     ∃ (I Q : Rep.{u} (ULift.{u} ℤ) G) (_ : IsDiscreteRep I) (_ : IsDiscreteRep Q) (_ : Finite I)
@@ -90,6 +105,13 @@ variable (H : TateCompactDualityHypotheses φ ψ n D t U₀)
 
 include H in
 
+/- English proof (translation)
+Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI⟩` from `H.exists_devissage M hM`. Establish `hi : Function.Injective i.hom` using `(Rep.mono_iff_injective i).1 hS.mono_f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+
+Establish `h1 : tateCompactDualityMap φ ψ D (rfl : 0 + 3 = 3) t I ((cohomologyMap i 0).hom x) = 0`. Use extensionality with `y`. Rewrite using `[tateCompactDualityMap_cohomologyMap φ ψ D (rfl : 0 + 3 = 3) t i x y, hx]`. Both sides reduce to the same expression. Establish `h2 : (cohomologyMap i 0).hom x = 0` using `(injective_iff_map_eq_zero _).1 (hI (rfl : 0 + 3 = 3) (by norm_num)).1 _ h1`.
+
+Conclude with `(injective_iff_map_eq_zero _).1 (injective_cohomologyMap_zero i hi) x h2`.
+-/
 theorem injective_zero (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) :
     Function.Injective (tateCompactDualityMap φ ψ D (rfl : 0 + 3 = 3) t M) := by
@@ -108,6 +130,17 @@ theorem injective_zero (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite
 
 include H in
 
+/- English proof (translation)
+Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI⟩` from `H.exists_devissage M hM`. Set `S` to `ShortComplex.mk i p w`. Establish `hT : (dualShortComplex D S).ShortExact` using `dualShortComplex_shortExact H.nonempty_addEquiv hS hnI`. Establish `hsurj : Function.Surjective (tateCompactCohomologyResMap φ ψ (dualMap D i) 3).hom`.
+
+Introduce `y`. Establish `: Subsingleton (tateCompactCohomologyRes φ ψ (dualRep D Q) 4)` using `H.subsingleton_four (dualRep D Q) (nsmul_dualRep_eq_zero H.nsmul_D)`. Conclude with `(ShortComplex.moduleCat_exact_iff _).1 (tateCompactRes_exact₃ φ ψ hT 3) y (Subsingleton.elim _ _)`. Introduce `l`. Take `⟨v, hv⟩` from `(hI (rfl : 0 + 3 = 3) (by norm_num)).2 (l.comp (tateCompactCohomologyResMap φ ψ (dualMap D i) 3).hom.toAddMonoidHom)`.
+
+Establish `hpv : (cohomologyMap p 0).hom v = 0`. Apply `(injective_iff_map_eq_zero _).1 (H.injective_zero Q hnQ)` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[tateCompactDualityMap_cohomologyMap φ ψ D (rfl : 0 + 3 = 3) t p v y, hv]`. Express the relevant statement in the definitionally equal form `l ((tateCompactCohomologyResMap φ ψ (dualMap D p) 3 ≫ tateCompactCohomologyResMap φ ψ (dualMap D i) 3).hom y) = 0`.
+
+Rewrite using `[← tateCompactCohomologyResMap_comp, ← dualMap_comp, w, dualMap_zero, tateCompactCohomologyResMap_zero]`. Conclude with `map_zero l`. Take `⟨m, hm⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₂ hS 0) v hpv`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+
+Take `⟨z, rfl⟩` from `hsurj y`. Rewrite using `[← tateCompactDualityMap_cohomologyMap φ ψ D (rfl : 0 + 3 = 3) t i m z]`. Express the relevant statement in the definitionally equal form `tateCompactDualityMap φ ψ D (rfl : 0 + 3 = 3) t I ((cohomologyMap S.f 0).hom m) z = _`. Rewrite using `[hm, hv]`. Both sides reduce to the same expression.
+-/
 theorem surjective_zero (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) :
     Function.Surjective (tateCompactDualityMap φ ψ D (rfl : 0 + 3 = 3) t M) := by
@@ -144,6 +177,9 @@ theorem surjective_zero (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finit
   rfl
 
 include H in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.injective_zero M hM, H.surjective_zero M hM⟩`.
+-/
 theorem bijective_zero (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) :
     Function.Bijective (tateCompactDualityMap φ ψ D (rfl : 0 + 3 = 3) t M) :=
@@ -153,6 +189,19 @@ variable {r s : ℕ} (h₁ : r + 1 + s = 3) (h₀ : r + (s + 1) = 3) (hs : 1 ≤
 
 include H hs in
 
+/- English proof (translation)
+Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI⟩` from `H.exists_devissage M hM`. Set `S` to `ShortComplex.mk i p w`. Establish `hT : (dualShortComplex D S).ShortExact` using `dualShortComplex_shortExact H.nonempty_addEquiv hS hnI`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Establish `h1 : tateCompactDualityMap φ ψ D h₁ t I ((cohomologyMap i (r + 1)).hom x) = 0`. Use extensionality with `y`. Rewrite using `[tateCompactDualityMap_cohomologyMap φ ψ D h₁ t i x y, hx]`. Both sides reduce to the same expression.
+
+Establish `hix : (cohomologyMap i (r + 1)).hom x = 0` using `(injective_iff_map_eq_zero _).1 (hI h₁ hs).1 _ h1`. Take `⟨q, hq⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hS r (r + 1) rfl) x hix`. Establish `hker : ((tateCompactCohomologyResMap φ ψ (dualMap D p) (s + 1)).hom.toAddMonoidHom).ker ≤ (tateCompactDualityMap φ ψ D h₀ t Q q).ker`. Introduce `z hz`. Take `⟨y, hy⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (tateCompactRes_exact₁ φ ψ hT s) z hz`.
+
+Rewrite using `[AddMonoidHom.mem_ker, ← hy]`. Establish `e` using `tateCompactDualityMap_δ φ ψ D t hS hT h₁ h₀ q y`. Express the relevant statement in the definitionally equal form `tateCompactDualityMap φ ψ D h₁ t M ((δ hS r (r + 1) rfl).hom q) y = _ at e`. Rewrite `e` using `[hq, hx, AddMonoidHom.zero_apply]`. Conclude with `eq_zero_of_neg_neg_one_pow_zsmul s e.symm`.
+
+Take `⟨χ, hχ⟩` from `zmod_exists_comp_eq_of_ker_le (nsmul_tateCompactCohomologyRes_eq_zero φ ψ (nsmul_dualRep_eq_zero H.nsmul_D) (s + 1)) _ _ hker`. Take `⟨v, hv⟩` from `(ih I hnI).2 χ`. Establish `hpv : (cohomologyMap p r).hom v = q`. Apply `(ih Q hnQ).1` to reduce the goal to its premises. Use extensionality with `z`.
+
+Rewrite using `[tateCompactDualityMap_cohomologyMap φ ψ D h₀ t p v z, hv, ← hχ]`. Both sides reduce to the same expression. Rewrite using `[← hq, ← hpv]`. Conclude with `congrArg (fun F => F.hom v) (comp_δ hS r (r + 1) rfl)`.
+-/
 theorem injective_succ
     (ih : ∀ (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M], (∀ m : M, n • m = 0) →
       Function.Bijective (tateCompactDualityMap φ ψ D h₀ t M))
@@ -195,6 +244,21 @@ theorem injective_succ
 
 include H hs in
 
+/- English proof (translation)
+Use `H.finite_D` as an intermediate fact. Take `⟨I, Q, _, _, _, _, i, p, w, hS, hnI, hnQ, hI⟩` from `H.exists_devissage M hM`. Set `S` to `ShortComplex.mk i p w`. Establish `hT : (dualShortComplex D S).ShortExact` using `dualShortComplex_shortExact H.nonempty_addEquiv hS hnI`. Introduce `l`.
+
+Take `⟨v, hv⟩` from `(hI h₁ hs).2 (l.comp (tateCompactCohomologyResMap φ ψ (dualMap D i) s).hom.toAddMonoidHom)`. Establish `hpv : (cohomologyMap p (r + 1)).hom v = 0`. Apply `(injective_iff_map_eq_zero _).1 (H.injective_succ h₁ h₀ hs ih Q hnQ)` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[tateCompactDualityMap_cohomologyMap φ ψ D h₁ t p v y, hv]`.
+
+Express the relevant statement in the definitionally equal form `l ((tateCompactCohomologyResMap φ ψ (dualMap D p) s ≫ tateCompactCohomologyResMap φ ψ (dualMap D i) s).hom y) = 0`. Rewrite using `[← tateCompactCohomologyResMap_comp, ← dualMap_comp, w, dualMap_zero, tateCompactCohomologyResMap_zero]`. Conclude with `map_zero l`. Take `⟨x', hx'⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₂ hS (r + 1)) v hpv`. Use `set ν := l - tateCompactDualityMap φ ψ D h₁ t M x' with hν`.
+
+Establish `hker : ((tateCompactδRes φ ψ hT s).hom.toAddMonoidHom).ker ≤ ν.ker`. Introduce `y hy`. Take `⟨z, hz⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (tateCompactRes_exact₃ φ ψ hT s) y hy`. Rewrite using `[AddMonoidHom.mem_ker, ← hz, hν, AddMonoidHom.sub_apply, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `l ((tateCompactCohomologyResMap φ ψ (dualMap D i) s).hom z) = tateCompactDualityMap φ ψ D h₁ t M x' ((tateCompactCohomologyResMap φ ψ (dualMap D i) s).hom z)`.
+
+Rewrite using `[← tateCompactDualityMap_cohomologyMap φ ψ D h₁ t i x' z]`. Express the relevant statement in the definitionally equal form `_ = tateCompactDualityMap φ ψ D h₁ t I ((cohomologyMap S.f (r + 1)).hom x') z`. Rewrite using `[hx', hv]`. Both sides reduce to the same expression. Take `⟨χ, hχ⟩` from `zmod_exists_comp_eq_of_ker_le (nsmul_tateCompactCohomologyRes_eq_zero φ ψ (nsmul_dualRep_eq_zero H.nsmul_D) (s + 1)) _ _ hker`.
+
+Take `⟨q, hq⟩` from `(ih Q hnQ).2 χ`. Use `⟨x' + (-(-1 : ℤ) ^ s) • (δ hS r (r + 1) rfl).hom q, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Establish `e` using `tateCompactDualityMap_δ φ ψ D t hS hT h₁ h₀ q y`. Express the relevant statement in the definitionally equal form `tateCompactDualityMap φ ψ D h₁ t M ((δ hS r (r + 1) rfl).hom q) y = _ at e`.
+
+Establish `hχy : χ ((tateCompactδRes φ ψ hT s).hom y) = ν y` using `congrArg (fun f => f y) hχ`. Rewrite using `[map_add, map_zsmul, AddMonoidHom.add_apply, AddMonoidHom.smul_apply, e, hq, neg_neg_one_pow_zsmul_zsmul]`. Express the relevant statement in the definitionally equal form `_ + χ ((tateCompactδRes φ ψ hT s).hom y) = l y`. Rewrite using `[hχy, hν, AddMonoidHom.sub_apply, add_sub_cancel]`.
+-/
 theorem surjective_succ
     (ih : ∀ (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M], (∀ m : M, n • m = 0) →
       Function.Bijective (tateCompactDualityMap φ ψ D h₀ t M))
@@ -242,6 +306,9 @@ theorem surjective_succ
   rw [hχy, hν, AddMonoidHom.sub_apply, add_sub_cancel]
 
 include H hs in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.injective_succ h₁ h₀ hs ih M hM, H.surjective_succ h₁ h₀ hs ih M hM⟩`.
+-/
 theorem bijective_succ
     (ih : ∀ (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M], (∀ m : M, n • m = 0) →
       Function.Bijective (tateCompactDualityMap φ ψ D h₀ t M))
@@ -269,6 +336,11 @@ variable (H : TateCompactDualityHypotheses φ ψ n D t U₀)
 
 include H in
 
+/- English proof (translation)
+Establish `b0` using `fun (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, n • m = 0) => H.bijective_zero M hM`. Establish `b1` using `fun (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, n • m = 0) => H.bijective_succ (r := 0) (s := 2) rfl rfl (by norm_num) b0 M hM`. Establish `b2` using `fun (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, n • m = 0) => H.bijective_succ (r := 1) (s := 1) rfl rfl (by norm_num) b1 M hM`. Take `⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ : (r = 0 ∧ s = 3) ∨ (r = 1 ∧ s = 2) ∨ (r = 2 ∧ s = 1)` from `by omega`. Conclude with `b0 M hM`.
+
+Conclude with `b1 M hM`. Conclude with `b2 M hM`.
+-/
 theorem bijective_tateCompactDualityMap (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) {r s : ℕ} (h : r + s = 3) (hs : 1 ≤ s) :
     Function.Bijective (tateCompactDualityMap φ ψ D h t M) := by

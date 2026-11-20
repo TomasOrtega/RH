@@ -21,11 +21,17 @@ def halfInf (F : Type) [Field F] [NumberField F] : (AF F)ˣ where
 def halfE (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] : (AF F ⊗[F] E)ˣ :=
   Units.map (algebraMap (AF F) (AF F ⊗[F] E)).toMonoidHom (halfInf F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_halfE (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] :
     (halfE F E).1 = (halfInf F).1 ⊗ₜ[F] (1 : E) := rfl
 
 open scoped TensorProduct in
 open NumberField in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.Eis.Conv.halfE, _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Algebra.TensorProduct.algebraMap_apply]`.
+-/
 theorem _root_.GlobalTheory.Eis.Conv.sigR_halfE {F E : Type} [Field F] [NumberField F] [Field E]
     [Algebra F E] (σ : E →ₐ[F] E) :
     _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) σ (_root_.GlobalTheory.Eis.Conv.halfE F E).1 =

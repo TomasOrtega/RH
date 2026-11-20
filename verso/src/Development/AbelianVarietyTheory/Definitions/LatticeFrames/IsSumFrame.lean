@@ -227,6 +227,9 @@ def liftA {S A L T : HSp D} (o : OrthDec S A L) (om : Om S T) (vA : Vol A) (φ :
     (h : GA D T) (w : WO L T) : ℂ :=
   ∫ a in vA.𝓕, φ a * om (o.emb (a, 1), h) Ξ ((o.resS T).symm (0, w)) ∂vA.μ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem handBF_eq {ρ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} (s : StepBF ψ B J) {L' : HSp D} {ζ' : Fin L'.rank → D.host.E}
     (l : Link B L' ζ') (φ : GA D B.A → ℂ) (Ξ : WO B.V₀ J.W₀ → ℂ) (h : GA D J.W₀) (w : WO J.W₀ L') :
     handBF s l φ Ξ h w = star (liftA B.o s.om₀ B.vA φ Ξ h (l.κ J.W₀ w)) := rfl

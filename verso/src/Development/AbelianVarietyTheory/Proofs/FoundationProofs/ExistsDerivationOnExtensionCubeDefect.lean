@@ -18,6 +18,11 @@ def trExtDer (tr : S → S) {n : ℕ} (a b : Fin n → S) (e : S) (D : S → M) 
 
 variable {B C : Subalgebra A S} {tr : S → S} {n : ℕ} {a b : Fin n → S} {e : S} {D : S → M}
 
+/- English proof (translation)
+Unfold `trTwist`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `C.mul_mem (h.b_mem i) hx`. Establish `h2` using `C.mul_mem (h.b_mem i) hy`.
+
+Rewrite using `[mul_add, h.tr_add _ h1 _ h2, hD.add _ (h.tr_mem _ h1) _ (h.tr_mem _ h2), smul_add]`.
+-/
 theorem trTwist_add (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {x y : S} (hx : x ∈ C)
     (hy : y ∈ C) : trTwist tr a b D (x + y) = trTwist tr a b D x + trTwist tr a b D y := by
   unfold trTwist
@@ -27,6 +32,11 @@ theorem trTwist_add (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {x y : S} (hx
   have h2 := C.mul_mem (h.b_mem i) hy
   rw [mul_add, h.tr_add _ h1 _ h2, hD.add _ (h.tr_mem _ h1) _ (h.tr_mem _ h2), smul_add]
 
+/- English proof (translation)
+Unfold `trTwist`. Establish `key : ∀ i, a i • D (tr (b i * (β * x))) = β • (a i • D (tr (b i * x))) + (a i * tr (b i * x)) • D β`. Introduce `i`. Establish `h1` using `C.mul_mem (h.b_mem i) hx`. Establish `hm : b i * (β * x) = β * (b i * x)` using `by ring`.
+
+Rewrite using `[hm, h.tr_mul _ hβ _ h1, hD.mul _ hβ _ (h.tr_mem _ h1), smul_add, mul_smul, smul_comm (a i) β]`. Repeatedly rewrite using `[key, Finset.sum_add_distrib, ← Finset.smul_sum, ← Finset.sum_smul, h.left x hx]`.
+-/
 theorem trTwist_smul (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {β x : S} (hβ : β ∈ B)
     (hx : x ∈ C) : trTwist tr a b D (β * x) = β • trTwist tr a b D x + (e * x) • D β := by
   unfold trTwist
@@ -38,12 +48,18 @@ theorem trTwist_smul (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {β x : S} (
     rw [hm, h.tr_mul _ hβ _ h1, hD.mul _ hβ _ (h.tr_mem _ h1), smul_add, mul_smul, smul_comm (a i) β]
   simp_rw [key, Finset.sum_add_distrib, ← Finset.smul_sum, ← Finset.sum_smul, h.left x hx]
 
+/- English proof (translation)
+Use `trTwist_add h hD C.zero_mem C.zero_mem` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`.
+-/
 theorem trTwist_zero (h : IsTrData B C tr a b e) (hD : IsDerOn B D) :
     trTwist tr a b D (0 : S) = 0 := by
   have := trTwist_add h hD C.zero_mem C.zero_mem
   rw [add_zero] at this
   simpa using this
 
+/- English proof (translation)
+Unfold `trTwistDefect`. Rewrite using `[mul_add, trTwist_add h hD (C.mul_mem hx hu) (C.mul_mem hx hv), trTwist_add h hD hu hv, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem defect_add (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {x u v : S} (hx : x ∈ C)
     (hu : u ∈ C) (hv : v ∈ C) :
     trTwistDefect tr a b D x (u + v) = trTwistDefect tr a b D x u + trTwistDefect tr a b D x v := by
@@ -51,11 +67,19 @@ theorem defect_add (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {x u v : S} (h
   rw [mul_add, trTwist_add h hD (C.mul_mem hx hu) (C.mul_mem hx hv), trTwist_add h hD hu hv, smul_add]
   abel
 
+/- English proof (translation)
+Unfold `trTwistDefect`. Rewrite using `[mul_zero, trTwist_zero h hD, smul_zero, sub_zero]`.
+-/
 theorem defect_zero (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {x : S} (hx : x ∈ C) :
     trTwistDefect tr a b D x 0 = 0 := by
   unfold trTwistDefect
   rw [mul_zero, trTwist_zero h hD, smul_zero, sub_zero]
 
+/- English proof (translation)
+Unfold `trTwistDefect`. Establish `hm : x * (β * u) = β * (x * u)` using `by ring`. Rewrite using `[hm, trTwist_smul h hD hβ (C.mul_mem hx hu), trTwist_smul h hD hβ hu, smul_add, smul_sub, smul_smul x (e * u), smul_comm x β]`. Establish `: x * (e * u) = e * (x * u)` using `by ring`. Rewrite using `[this]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem defect_smul (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {x β u : S} (hx : x ∈ C)
     (hβ : β ∈ B) (hu : u ∈ C) :
     trTwistDefect tr a b D x (β * u) = β • trTwistDefect tr a b D x u := by
@@ -67,6 +91,11 @@ theorem defect_smul (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {x β u : S} 
   rw [this]
   abel
 
+/- English proof (translation)
+Establish `: ∀ s : Finset (Fin n), trTwistDefect tr a b D x (∑ i ∈ s, c i * a i) = ∑ i ∈ s, c i • trTwistDefect tr a b D x (a i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using defect_zero h hD hx`. Consider the case `insert j s hj ih`.
+
+Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, defect_add h hD hx (C.mul_mem (h.le (hc j)) (h.a_mem j)) (C.sum_mem fun i _ => C.mul_mem (h.le (hc i)) (h.a_mem i)), defect_smul h hD hx (hc j) (h.a_mem j), ih]`. Conclude with `this Finset.univ`.
+-/
 theorem defect_sum (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {x : S} (hx : x ∈ C)
     (c : Fin n → S) (hc : ∀ i, c i ∈ B) :
     trTwistDefect tr a b D x (∑ i, c i * a i) = ∑ i, c i • trTwistDefect tr a b D x (a i) := by
@@ -82,6 +111,9 @@ theorem defect_sum (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {x : S} (hx : 
         defect_smul h hD hx (hc j) (h.a_mem j), ih]
   exact this Finset.univ
 
+/- English proof (translation)
+Unfold `trTwistDefect`. Rewrite using `[smul_sub, mul_assoc, mul_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem defect_mul (x y u : S) :
     trTwistDefect tr a b D (x * y) u =
       trTwistDefect tr a b D x (y * u) + x • trTwistDefect tr a b D y u := by
@@ -89,6 +121,17 @@ theorem defect_mul (x y u : S) :
   rw [smul_sub, mul_assoc, mul_smul]
   abel
 
+/- English proof (translation)
+Establish `step1 : ∀ j, e • (b j • trTwistDefect tr a b D x (y * a j)) = ∑ i, (tr (b i * (y * a j)) * b j) • trTwistDefect tr a b D x (a i)`. Introduce `j`. Establish `hya` using `C.mul_mem hy (h.a_mem j)`. Establish `hl : e * (y * a j) = ∑ i, tr (b i * (y * a j)) * a i`. Rewrite using `[← h.left _ hya]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[smul_comm, ← defect_smul h hD hx h.e_mem hya, hl, defect_sum h hD hx _ fun i => h.tr_mem _ (C.mul_mem (h.b_mem i) hya), Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [smul_smul, mul_comm (b j)]`. Rewrite using `[Finset.smul_sum]`. Repeatedly rewrite using `[step1]`.
+
+Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul]`. Establish `hr : ∀ i, ∑ j, tr (b i * (y * a j)) * b j = y • (e • b i)`. Introduce `i`. Use `h.right _ (C.mul_mem (h.b_mem i) hy)` as an intermediate fact.
+
+Rewrite using `[smul_eq_mul, smul_eq_mul, ← mul_assoc, mul_comm y e, mul_assoc, mul_comm y (b i), ← this]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [mul_comm]; congr 2; ring`. Repeatedly rewrite using `[hr]`. Unfold `trExtDer`. Rewrite using `[Finset.smul_sum, Finset.smul_sum]`.
+
+Repeatedly rewrite using `[smul_smul, smul_eq_mul, mul_assoc]`.
+-/
 theorem trExtDer_swap (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {x y : S} (hx : x ∈ C)
     (hy : y ∈ C) : y • trExtDer tr a b e D x =
       e • ∑ j, b j • trTwistDefect tr a b D x (y * a j) := by
@@ -116,6 +159,17 @@ theorem trExtDer_swap (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {x y : S} (
   rw [Finset.smul_sum, Finset.smul_sum]
   simp_rw [smul_smul, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Unfold `trExtDer`. Rewrite using `[← smul_add, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Unfold `trTwistDefect`.
+
+Rewrite using `[← smul_add, add_mul, trTwist_add h hD (C.mul_mem hx (h.a_mem j)) (C.mul_mem hy (h.a_mem j)), add_smul]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Use `mul x hx y hy := by`. Establish `e1 : trExtDer tr a b e D (x * y) = e • ∑ j, b j • trTwistDefect tr a b D x (y * a j) + x • trExtDer tr a b e D y`.
+
+Unfold `trExtDer`. Repeatedly rewrite using `[defect_mul, smul_add, Finset.sum_add_distrib, smul_add]`. Use `congr 1`. Rewrite using `[Finset.smul_sum, Finset.smul_sum, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_comm (b j) x, smul_comm e x]`.
+
+Rewrite using `[e1, ← trExtDer_swap h hD hx hy, add_comm]`. Use `alg c := by`. Unfold `trExtDer`. Establish `hc : algebraMap A S c ∈ B` using `B.algebraMap_mem c`. Establish `: ∀ j, b j • trTwistDefect tr a b D (algebraMap A S c) (a j) = (b j * (e * a j)) • D (algebraMap A S c)`.
+
+Introduce `j`. Unfold `trTwistDefect`. Rewrite using `[trTwist_smul h hD hc (h.a_mem j), add_sub_cancel_left, smul_smul]`. Simplify using `[this, hD.alg c]`.
+-/
 theorem trExtDer_isDerOn (h : IsTrData B C tr a b e) (hD : IsDerOn B D) :
     IsDerOn C (trExtDer tr a b e D) where
   add x hx y hy := by
@@ -147,6 +201,13 @@ theorem trExtDer_isDerOn (h : IsTrData B C tr a b e) (hD : IsDerOn B D) :
       rw [trTwist_smul h hD hc (h.a_mem j), add_sub_cancel_left, smul_smul]
     simp [this, hD.alg c]
 
+/- English proof (translation)
+Unfold `trExtDer`. Establish `: ∀ j, b j • trTwistDefect tr a b D β (a j) = (b j * (e * a j)) • D β`. Introduce `j`. Unfold `trTwistDefect`. Rewrite using `[trTwist_smul h hD hβ (h.a_mem j), add_sub_cancel_left, smul_smul]`.
+
+Repeatedly rewrite using `[this, ← Finset.sum_smul, smul_smul]`. Establish `hs : ∑ j, b j * (e * a j) = e * e`. Rewrite using `[← h.sum, Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[hs]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trExtDer_apply_of_mem (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {β : S} (hβ : β ∈ B) :
     trExtDer tr a b e D β = (e ^ 3) • D β := by
   unfold trExtDer
@@ -159,6 +220,9 @@ theorem trExtDer_apply_of_mem (h : IsTrData B C tr a b e) (hD : IsDerOn B D) {β
     rw [← h.sum, Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring
   rw [hs]; congr 1; ring
 
+/- English proof (translation)
+Introduce `A S M _ _ _ _ _ B C tr n a b e h D hD`. Conclude with `⟨trExtDer tr a b e D, trExtDer_isDerOn h hD, fun β hβ => trExtDer_apply_of_mem h hD hβ⟩`.
+-/
 theorem exists_derOn_ext : ∀ (A S M : Type) [CommRing A] [CommRing S] [Algebra A S] [AddCommGroup M]
     [Module S M] (B C : Subalgebra A S) (tr : S → S) (n : ℕ) (a b : Fin n → S) (e : S),
     IsTrData B C tr a b e → ∀ D : S → M, IsDerOn B D →

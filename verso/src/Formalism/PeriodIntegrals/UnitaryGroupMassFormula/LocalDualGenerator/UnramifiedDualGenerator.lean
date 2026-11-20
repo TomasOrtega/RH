@@ -9,6 +9,9 @@ open ValuativeRel IsLocalRing
 
 namespace PI.LocDualGen.FpU
 
+/- English proof (translation)
+Establish `h : ringChar F = p` using `ringChar.eq F p`. Substitute `h` using the available equality. Take `⟨b, hb⟩` from `FiniteField.trace_to_zmod_nondegenerate F (one_ne_zero : (1 : F) ≠ 0)`. Conclude with `⟨b, by simpa using hb⟩`.
+-/
 theorem exists_trace_ne_zero (F : Type) [Field F] [Finite F] (p : ℕ) [Fact p.Prime] [CharP F p]
     [Algebra (ZMod p) F] : ∃ z : F, Algebra.trace (ZMod p) F z ≠ 0 := by
   have h : ringChar F = p := ringChar.eq F p
@@ -25,10 +28,28 @@ variable [CharP 𝓀[K] l]
 
 attribute [local instance] algRes
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qi13.linIndep <;> assumption`.
+-/
 theorem linIndep (hcont : Continuous (algebraMap ℚ_[l] K)) :
     LinearIndependent ℚ_[l] (fun i => (blift K l i : K)) :=
   by apply _root_.UpperTheory.Reformulated.B.Qi13.linIndep <;> assumption
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ 𝒪[K]`. Conclude with `⟨0, by simpa using hx⟩`. Establish `hx1 : 1 < valuation K x`. Rewrite `hx` using `[Valuation.mem_integer_iff, not_le]`. Conclude with `hx`.
+
+Establish `hx0 : x ≠ 0`. Introduce `h`. Rewrite `hx1` using `[h, map_zero]`. Conclude with `absurd hx1 (not_lt.mpr zero_le)`. Establish `hinv : x⁻¹ ∈ 𝒪[K]`.
+
+Rewrite using `[Valuation.mem_integer_iff, map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ hx1.le`. Establish `hr0 : (⟨x⁻¹, hinv⟩ : 𝒪[K]) ≠ 0`. Introduce `h`. Use `congrArg Subtype.val h` as an intermediate fact.
+
+Conclude with `inv_ne_zero hx0 this`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hr0 huni`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hu' : x⁻¹ = ((u : 𝒪[K]) : K) * (l : K) ^ n`. Use `congrArg Subtype.val hu` as an intermediate fact.
+
+Simplify using `using this`. Establish `huu : ((u : 𝒪[K]) : K) * (((u⁻¹ : (𝒪[K])ˣ) : 𝒪[K]) : K) = 1`. Rewrite using `[← Subring.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression. Establish `hxe : x = (((u : 𝒪[K]) : K) * (l : K) ^ n)⁻¹` using `by rw [← hu', inv_inv]`.
+
+Establish `hl0 : ((l : K)) ^ n ≠ 0`. Introduce `h`. Rewrite `hu'` using `[h, mul_zero]`. Conclude with `inv_ne_zero hx0 hu'`. Establish `hv : (l : K) ^ n * x = (((u⁻¹ : (𝒪[K])ˣ) : 𝒪[K]) : K)`.
+
+Rewrite using `[hxe, mul_inv, ← mul_assoc, mul_comm ((l : K) ^ n), mul_assoc, mul_inv_cancel₀ hl0, mul_one]`. Conclude with `inv_eq_of_mul_eq_one_right huu`. Rewrite using `[hv]`. Conclude with `(u⁻¹ : (𝒪[K])ˣ).1.2`.
+-/
 theorem exists_pow_mul_mem (huni : Irreducible ((l : ℕ) : 𝒪[K])) (x : K) :
     ∃ n : ℕ, (l : K) ^ n * x ∈ 𝒪[K] := by
   by_cases hx : x ∈ 𝒪[K]
@@ -66,6 +87,15 @@ theorem exists_pow_mul_mem (huni : Irreducible ((l : ℕ) : 𝒪[K])) (x : K) :
   rw [hv]
   exact (u⁻¹ : (𝒪[K])ˣ).1.2
 
+/- English proof (translation)
+Introduce `x _`. Take `⟨n, hn⟩` from `exists_pow_mul_mem K l huni x`. Take `⟨c, hc⟩` from `span K l hcont huni ⟨_, hn⟩`. Establish `hc'` using `congrArg Subtype.val hc`. Rewrite `hc'` using `[Phi_coe]`.
+
+Express the relevant statement in the definitionally equal form `(l : K) ^ n * x = _ at hc'`. Establish `hl0 : (l : K) ^ n ≠ 0` using `pow_ne_zero _ (by`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] K)]`. Conclude with `(map_ne_zero _).mpr (by exact_mod_cast (Fact.out : l.Prime).ne_zero))`. Establish `hx : x = ∑ i, (((l : ℚ_[l]) ^ n)⁻¹ * (c i : ℚ_[l])) • (blift K l i : K)`.
+
+Establish `e : x = ((l : K) ^ n)⁻¹ * ((l : K) ^ n * x)` using `by field_simp`. Rewrite using `[e, hc', Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_inv₀, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hx]`. Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`.
+-/
 theorem spanTop (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : ℕ) : 𝒪[K])) :
     ⊤ ≤ Submodule.span ℚ_[l] (Set.range fun i => (blift K l i : K)) := by
   intro x _
@@ -90,6 +120,9 @@ def B (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : ℕ)
     Module.Basis (Fin (fdim K l)) ℚ_[l] K :=
   Module.Basis.mk (linIndep K l hcont) (spanTop K l hcont huni)
 
+/- English proof (translation)
+Simplify using `[B]`.
+-/
 theorem B_apply (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : ℕ) : 𝒪[K]))
     (i : Fin (fdim K l)) : B K l hcont huni i = (blift K l i : K) := by
   simp [B]
@@ -98,6 +131,11 @@ def coef (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : �
     (y : 𝒪[K]) : Fin (fdim K l) → ℤ_[l] :=
   (span K l hcont huni y).choose
 
+/- English proof (translation)
+Establish `h' : (y : K) = ((Phi K l hcont (coef K l hcont huni y) : 𝒪[K]) : K)` using `congrArg Subtype.val (span K l hcont huni y).choose_spec`. Rewrite using `[h', Phi_coe]`. Establish `e : ∑ i, algebraMap ℚ_[l] K ((coef K l hcont huni y i : ℤ_[l]) : ℚ_[l]) * (blift K l i : K) = ∑ i, ((coef K l hcont huni y i : ℤ_[l]) : ℚ_[l]) • B K l hcont huni i`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[B_apply, Algebra.smul_def]`.
+
+Rewrite using `[e, repr_sum]`.
+-/
 theorem repr_coe (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : ℕ) : 𝒪[K]))
     (y : 𝒪[K]) (j : Fin (fdim K l)) :
     (B K l hcont huni).repr (y : K) j = (coef K l hcont huni y j : ℚ_[l]) := by
@@ -110,6 +148,9 @@ theorem repr_coe (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible
     rw [B_apply, Algebra.smul_def]
   rw [e, repr_sum]
 
+/- English proof (translation)
+Use `conv_lhs => rw [(span K l hcont huni y).choose_spec]`. Rewrite using `[res_Phi, repr_sum]`. Both sides reduce to the same expression.
+-/
 theorem res_coef (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : ℕ) : 𝒪[K]))
     (y : 𝒪[K]) (j : Fin (fdim K l)) :
     (bb K l).repr (residue 𝒪[K] y) j = PadicInt.toZMod (coef K l hcont huni y j) := by
@@ -117,6 +158,11 @@ theorem res_coef (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible
   rw [res_Phi, repr_sum]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace (B K l hcont huni), Matrix.trace]`. Rewrite using `[show ((∑ i, coef K l hcont huni (x * blift K l i) i : ℤ_[l]) : ℚ_[l]) = ∑ i, ((coef K l hcont huni (x * blift K l i) i : ℤ_[l]) : ℚ_[l]) from map_sum PadicInt.Coe.ringHom _ _]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, B_apply]`. Establish `e : (x : K) * (blift K l i : K) = ((x * blift K l i : 𝒪[K]) : K)` using `rfl`.
+
+Rewrite using `[e, repr_coe]`.
+-/
 theorem trace_eq (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : ℕ) : 𝒪[K]))
     (x : 𝒪[K]) : Algebra.trace ℚ_[l] K (x : K) =
       ((∑ i, coef K l hcont huni (x * blift K l i) i : ℤ_[l]) : ℚ_[l]) := by
@@ -129,6 +175,9 @@ theorem trace_eq (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible
   have e : (x : K) * (blift K l i : K) = ((x * blift K l i : 𝒪[K]) : K) := rfl
   rw [e, repr_coe]
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace (bb K l), Matrix.trace, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, ← res_blift K l i, ← map_mul, res_coef]`.
+-/
 theorem toZMod_trace (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : ℕ) : 𝒪[K]))
     (x : 𝒪[K]) : PadicInt.toZMod (∑ i, coef K l hcont huni (x * blift K l i) i) =
       Algebra.trace (ZMod l) 𝓀[K] (residue 𝒪[K] x) := by
@@ -136,11 +185,19 @@ theorem toZMod_trace (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreduc
   refine Finset.sum_congr rfl (fun i _ => ?_)
   rw [Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, ← res_blift K l i, ← map_mul, res_coef]
 
+/- English proof (translation)
+Rewrite using `[trace_eq K l hcont huni]`. Conclude with `(∑ i, coef K l hcont huni (x * blift K l i) i).2`.
+-/
 theorem trace_int (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : ℕ) : 𝒪[K]))
     (x : 𝒪[K]) : ‖Algebra.trace ℚ_[l] K (x : K)‖ ≤ 1 := by
   rw [trace_eq K l hcont huni]
   exact (∑ i, coef K l hcont huni (x * blift K l i) i).2
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `exists_trace_ne_zero 𝓀[K] l`. Take `⟨x, rfl⟩` from `residue_surjective z`. Use `⟨x, fun hlt => hz ?_⟩` and prove the remaining obligations. Rewrite using `[← toZMod_trace K l hcont huni]`. Rewrite `hlt` using `[trace_eq K l hcont huni]`.
+
+Establish `hnu : (∑ i, coef K l hcont huni (x * blift K l i) i) ∈ maximalIdeal ℤ_[l]` using `(mem_maximalIdeal _).mpr (PadicInt.mem_nonunits.mpr hlt)`. Rewrite `hnu` using `[← PadicInt.ker_toZMod]`. Conclude with `hnu`.
+-/
 theorem exists_trace_unit (hcont : Continuous (algebraMap ℚ_[l] K))
     (huni : Irreducible ((l : ℕ) : 𝒪[K])) : ∃ x : 𝒪[K], ¬ ‖Algebra.trace ℚ_[l] K (x : K)‖ < 1 := by
   obtain ⟨z, hz⟩ := exists_trace_ne_zero 𝓀[K] l
@@ -155,6 +212,27 @@ theorem exists_trace_unit (hcont : Continuous (algebraMap ℚ_[l] K))
 
 end Main
 
+/- English proof (translation)
+Introduce `K _ _ _ l _ _ hlf _ hcont _ huni a`. Use `haveI := hlf`. Use `haveI := charP_res K l huni`. Use `letI := algRes K l`. Take `⟨z, hz⟩` from `exists_trace_unit K l hcont huni`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H`. Assume the negation of the conclusion as `ha`. Establish `ha1 : 1 < valuation K a`. Rewrite `ha` using `[Valuation.mem_integer_iff, not_le]`.
+
+Conclude with `ha`. Establish `ha0 : a ≠ 0`. Introduce `h`. Rewrite `ha1` using `[h, map_zero]`. Conclude with `absurd ha1 (not_lt.mpr zero_le)`.
+
+Establish `hinv : a⁻¹ ∈ 𝒪[K]`. Rewrite using `[Valuation.mem_integer_iff, map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ ha1.le`. Establish `hnu : (⟨a⁻¹, hinv⟩ : 𝒪[K]) ∈ maximalIdeal 𝒪[K]`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation K)).isUnit_iff_valuation_eq_one]`.
+
+Introduce `h1`. Express the relevant statement in the definitionally equal form `valuation K a⁻¹ = 1 at h1`. Rewrite `h1` using `[map_inv₀, inv_eq_one]`. Rewrite `ha1` using `[h1]`. Conclude with `lt_irrefl _ ha1`.
+
+Rewrite `hnu` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer _).mp huni, Ideal.mem_span_singleton']`. Take `⟨t, ht⟩` from `hnu`. Establish `ht' : (t : K) * (l : K) = a⁻¹` using `congrArg Subtype.val ht`. Establish `hl0 : (l : K) ≠ 0`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] K)]`.
+
+Conclude with `(map_ne_zero _).mpr (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Establish `hat : a * (t : K) = algebraMap ℚ_[l] K ((l : ℚ_[l])⁻¹)`. Rewrite using `[map_inv₀, map_natCast]`. Clear the denominators using the available nonvanishing facts. Use `congrArg (fun w => a * w) ht'` as an intermediate fact.
+
+Simplify using `only [mul_inv_cancel₀ ha0] at this`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `H (t * z)`. Express the relevant statement in the definitionally equal form `‖Algebra.trace ℚ_[l] K (a * ((t : K) * (z : K)))‖ ≤ 1 at h1`.
+
+Rewrite `h1` using `[← mul_assoc, hat, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul, norm_mul, norm_inv]`. Establish `hlpos : 0 < ‖(l : ℚ_[l])‖` using `norm_pos_iff.mpr (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Rewrite `h1` using `[inv_mul_le_iff₀ hlpos, mul_one]`. Conclude with `hz (lt_of_le_of_lt h1 Padic.norm_p_lt_one)`. Introduce `ha b`.
+
+Conclude with `trace_int K l hcont huni ⟨a * b, mul_mem ha b.2⟩`.
+-/
 theorem unramified_dual_generator : PI.LocDualGen.W.FpDualUnram := by
   intro K _ _ _ l _ _ hlf _ hcont _ huni a
   haveI := hlf

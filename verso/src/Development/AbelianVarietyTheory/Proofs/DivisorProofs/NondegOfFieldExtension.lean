@@ -25,6 +25,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TChart.AbPol
 
+/- English proof (translation)
+The claim follows from `P.isAb.comm RelAmple P.A ((abelian₂ P.A P.L).pull (lift (𝟙 P.A) (𝟙 P.A)).left) := by haveI := P.isAb.comm have hL : Laws := GlobalTheory.abelianSchemeLaws_all.1 have hA := P.isAb have hLB := P.isLB have hΔ := GlobalTheory.FullSiegel.cls_diag hL.mulPull P have hΔ' := pull_isLB (Gl …`.
+-/
 theorem relAmple_lam_diag {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S) :
     haveI := P.isAb.comm
     RelAmple P.A ((abelian₂ P.A P.L).pull (lift (𝟙 P.A) (𝟙 P.A)).left) := by
@@ -40,6 +43,9 @@ theorem relAmple_lam_diag {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S)
   exact R'.2.2.2 _ hΔ' ((CechPic.cls_eq_iff (isLB_lbPow hLB 2) hΔ').1 ((CechPic.cls_lbPow hLB 2 _).trans hΔ.symm))
     (R.2.1.2 P.ample)
 
+/- English proof (translation)
+Take `⟨hP, ⟨t₁, ht₁⟩, ⟨t₂, ht₂⟩, hs⟩` from `h`. Conclude with `⟨pull_isLB hP _, gen_chartPull (chartPullLinComb P _ _ _ _ (Pdiv.PullbackComparison.pφ f A) (fun _ => Pdiv.PullbackComparison.lift_one_id f A)) t₁ ht₁, gen_chartPull (chartPullLinComb P _ _ _ _ (Pdiv.PullbackComparison.pφ f A) (fun _ => Pdiv.PullbackComparison.lift_id_one f A)) t …`.
+-/
 theorem isBiRig_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) (A : Over S) [GrpObj A] [IsCommMonObj A] {P : LB (G2 A).left}
     (h : IsBiRig A P) : IsBiRig ((Over.pullback f).obj A) (P.pull (Pdiv.PullbackComparison.pφ₂ f A)) := by
   obtain ⟨hP, ⟨t₁, ht₁⟩, ⟨t₂, ht₂⟩, hs⟩ := h
@@ -49,6 +55,15 @@ theorem isBiRig_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) (A : Over S) [GrpObj
     LBIso.chartPull (Geo.Tor.chartPullPull P _ _ rfl)
       (chartPullLinComb P _ _ _ _ (Pdiv.PullbackComparison.pφ₂ f A) (fun _ => Pdiv.PullbackComparison.lift_swap f A)) hs⟩
 
+/- English proof (translation)
+Use `letI := i.toAlgebra`. Establish `: Subsingleton (Spec (CommRingCat.of K))` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Establish `: Nonempty (Spec (CommRingCat.of K'))` using `inferInstanceAs (Nonempty (PrimeSpectrum K'))`. Establish `: Flat (spMap i)` using `inferInstanceAs (Flat (specOf i))`. Establish `: Surjective (spMap i)` using `inferInstanceAs (Surjective (specOf i))`.
+
+Set `T' : Over (Sp K)` to `Over.mk (pullback.fst T.hom (spMap i) ≫ T.hom)`. Set `q : T' ⟶ T` to `Over.homMk (pullback.fst T.hom (spMap i)) rfl`. Establish `hq : Epi q.left` using `Flat.epi_of_flat_of_surjective (pullback.fst T.hom (spMap i))`. Establish `key : q ≫ x = 1`. Use `GlobalTheory.NondegSpread.eq_one_of_generic_nondeg K K' A A' φ φ₂ h sq P P' hP hP' e hn T' (pullback.snd T.hom (spMap i)) pullback.condition (q ≫ x) ?_` and prove the remaining obligations.
+
+Establish `z` using `(CechPic.cls_eq_zero_iff (pull_isLB hP _)).2 hx`. Use `(CechPic.cls_eq_zero_iff (pull_isLB hP _)).1 ?_` and prove the remaining obligations. Rewrite `z`, the goal using `[CechPic.cls_pull hP]`. Establish `e' : lift (snd A T' ≫ q ≫ x) (fst A T') = (A ◁ q) ≫ lift (snd A T ≫ x) (fst A T)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`.
+
+Rewrite using `[e', Over.comp_left, CechPic.pull_comp, z, map_zero]`. Establish `e₂ : q ≫ x = q ≫ (1 : T ⟶ A)` using `by rw [key, MonObj.comp_one]`. Conclude with `Over.OverMorphism.ext ((cancel_epi q.left).1 (congrArg (fun r => r.left) e₂))`.
+-/
 theorem nondeg_of_fieldExtension {K K' : Type} [Field K] [Field K'] (i : K →+* K') (A : Over (Sp K)) [GrpObj A]
     (A' : Over (Sp K')) [GrpObj A'] {φ : A'.left ⟶ A.left} {φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left}
     (h : IsGrpPullback A' A (spMap i) φ) (sq : IsSquare φ φ₂) {P : LB (A ⊗ A).left} {P' : LB (A' ⊗ A').left}
@@ -76,6 +91,19 @@ theorem nondeg_of_fieldExtension {K K' : Type} [Field K] [Field K'] (i : K →+*
   have e₂ : q ≫ x = q ≫ (1 : T ⟶ A) := by rw [key, MonObj.comp_one]
   exact Over.OverMorphism.ext ((cancel_epi q.left).1 (congrArg (fun r => r.left) e₂))
 
+/- English proof (translation)
+Use `haveI := hA.proper`. Use `haveI := hA.smooth`. Use `GlobalTheory.ProperFinite.relAmple_of_geometricFibres A hM fun K' _ _ y => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩ : ∃ g : O →+* K', spMap g = y` from `⟨(Spec.preimage y).hom, by simp [spMap]⟩`. Use `haveI : (RingHom.ker g).IsPrime := RingHom.ker_isPrime g`.
+
+Set `Op` to `Localization.AtPrime (RingHom.ker g)`. Use `haveI : IsDomain Op := IsLocalization.isDomain_localization (RingHom.ker g).primeCompl_le_nonZeroDivisors`. Use `haveI : IsNoetherianRing Op := IsLocalization.isNoetherianRing (RingHom.ker g).primeCompl _ inferInstance`. Use `haveI : IsIntegrallyClosed Op := isIntegrallyClosed_of_isLocalization Op (RingHom.ker g).primeCompl (RingHom.ker g).primeCompl_le_nonZeroDivisors`. Use `letI : Algebra Op K := IsLocalization.localizationAlgebraOfSubmonoidLe Op K (RingHom.ker g).primeCompl (nonZeroDivisors O) (RingHom.ker g).primeCompl_le_nonZeroDivisors`.
+
+Use `haveI : IsScalarTower O Op K := IsLocalization.localization_isScalarTower_of_submonoid_le Op K (RingHom.ker g).primeCompl (nonZeroDivisors O) (RingHom.ker g).primeCompl_le_nonZeroDivisors`. Use `haveI : IsFractionRing Op K := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (RingHom.ker g).primeCompl Op K`. Establish `e₁ : spMap (algebraMap Op K) ≫ spMap (algebraMap O Op) = spMap (algebraMap O K)`. Rewrite using `[← spMap_comp, ← IsScalarTower.algebraMap_eq]`. Establish `hu : ∀ x : (RingHom.ker g).primeCompl, IsUnit (g x)` using `fun x => isUnit_iff_ne_zero.2 x.2`.
+
+Set `g' : Op →+* K'` to `IsLocalization.lift hu`. Establish `e₂ : spMap g' ≫ spMap (algebraMap O Op) = spMap g`. Rewrite using `[← spMap_comp]`. Conclude with `congrArg spMap (IsLocalization.lift_comp hu)`. Set `Ap` to `(Over.pullback (spMap (algebraMap O Op))).obj A`.
+
+Establish `pp` using `isGrpPullback_pullback A (spMap (algebraMap O Op))`. Establish `pK` using `isGrpPullback_pullback A (spMap (algebraMap O K))`. Set `φ` to `pp.1.lift (pullback.fst A.hom (spMap (algebraMap O K))) (((Over.pullback (spMap (algebraMap O K))).obj A).hom ≫ spMap (algebraMap Op K)) (by rw [Category.assoc, e₁]; exact pK.1.w)`. Establish `hφ : φ ≫ pullback.fst A.hom (spMap (algebraMap O Op)) = pullback.fst A.hom (spMap (algebraMap O K))` using `pp.1.lift_fst _ _ _`. Establish `hpb : IsGrpPullback _ Ap (spMap (algebraMap Op K)) φ` using `pp.cancel (pK.congr e₁.symm hφ.symm) (pp.1.lift_snd _ _ _)`.
+
+Establish `hp : RelAmple Ap (M.pull (pullback.fst A.hom _))` using `GlobalTheory.AmpleGenericLocal.relAmple_of_generic Op K Ap _ φ (Out.TLinPf.isAb_pullback _ A hA) hpb _ _ (pull_isLB hM _) (pull_isLB hM _) (GlobalTheory.FibreAmple.lbIso_pull_comp hφ.symm (GlobalTheory.lbIso_refl (pull_isLB hM _))) hamp`. Conclude with `GlobalTheory.isAmpleLB_of_relAmple_of_isAffine (Over.mk (pullback.snd A.hom (spMap g))) (pull_isLB hM _) (GlobalTheory.FibreAmple.relAmple_of_factor hM pp.1 (IsPullback.of_hasPullback A.hom (spMap g)) (spMap g') e₂ (pull_isLB hM _) (GlobalTheory.lbIso_refl (pull_isLB hM _)) hp)`.
+-/
 theorem relAmple_of_generic (O K : Type) [CommRing O] [IsDomain O] [IsNoetherianRing O] [IsIntegrallyClosed O] [Field K]
     [Algebra O K] [IsFractionRing O K] (A : Over (Sp O)) [GrpObj A] (hA : IsAbelianScheme A) {M : LB A.left} (hM : M.IsLB)
     (hamp : RelAmple ((Over.pullback (spMap (algebraMap O K))).obj A) (M.pull (pullback.fst A.hom _))) :
@@ -120,12 +148,26 @@ theorem relAmple_of_generic (O K : Type) [CommRing O] [IsDomain O] [IsNoetherian
     (GlobalTheory.FibreAmple.relAmple_of_factor hM pp.1 (IsPullback.of_hasPullback A.hom (spMap g)) (spMap g') e₂
       (pull_isLB hM _) (GlobalTheory.lbIso_refl (pull_isLB hM _)) hp)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [Category.assoc, h.1, ← Category.assoc, h'.1, Category.assoc], by rw [Category.assoc, h.2, ← Category.assoc, h'.2, Category.assoc]⟩`.
+-/
 theorem isSquare_comp {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} {φ : G'.left ⟶ G.left}
     {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} {ψ : G''.left ⟶ G'.left} {ψ₂ : (G'' ⊗ G'').left ⟶ (G' ⊗ G').left}
     (h' : IsSquare ψ ψ₂) (h : IsSquare φ φ₂) : IsSquare (ψ ≫ φ) (ψ₂ ≫ φ₂) :=
   ⟨by rw [Category.assoc, h.1, ← Category.assoc, h'.1, Category.assoc],
     by rw [Category.assoc, h.2, ← Category.assoc, h'.2, Category.assoc]⟩
 
+/- English proof (translation)
+Use `haveI := hA.proper`. Set `K` to `FractionRing O`. Set `i : K →+* K'` to `IsFractionRing.lift hj`. Establish `e₁ : spMap i ≫ spMap (algebraMap O K) = spMap j`. Rewrite using `[← spMap_comp]`.
+
+Conclude with `congrArg spMap (RingHom.ext fun x => IsFractionRing.lift_algebraMap hj x)`. Set `f` to `spMap (algebraMap O K)`. Set `AK` to `(Over.pullback f).obj A`. Establish `pK` using `Pdiv.PullbackComparison.isGrpPullback f A`. Establish `sK` using `Pdiv.PullbackComparison.isSquare f A`.
+
+Set `ψ` to `pK.1.lift φ (A'.hom ≫ spMap i) (by rw [Category.assoc, e₁]; exact h.1.w)`. Establish `hψ : ψ ≫ Pdiv.PullbackComparison.pφ f A = φ` using `pK.1.lift_fst _ _ _`. Establish `hpb : IsGrpPullback A' AK (spMap i) ψ` using `pK.cancel (h.congr e₁.symm hψ.symm) (pK.1.lift_snd _ _ _)`. Establish `sψ` using `GlobalTheory.LamPull.exists_isSquare hpb.1.w`. Establish `e₂` using `GlobalTheory.LamPull.isSquare_unique sq (hψ ▸ isSquare_comp sψ sK)`.
+
+Establish `hM` using `pull_isLB hP.1 (lift (𝟙 A) (𝟙 A)).left`. Use `haveI : IsProper A'.hom := MorphismProperty.of_isPullback h.1 hA.proper`. Establish `ha' : RelAmple A' ((P.pull (lift (𝟙 A) (𝟙 A)).left).pull φ)` using `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine A' (pull_isLB hM φ)).2 ((GlobalTheory.isAmpleLB_congr (pull_isLB hP' _) (pull_isLB hM φ) (GlobalTheory.SiegelPull.diag_iso sq e)).1 ((GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine A' (pull_isLB hP' _)).1 ha))`. Establish `hamp : RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left)` using `relAmple_of_generic O K A hA hM (GlobalTheory.FibreAmple.relAmple_of_fieldExtension hM i (IsPullback.of_hasPullback A.hom f) (e₁ ▸ h.1) (pull_isLB hM _) (GlobalTheory.lbIso_refl (pull_isLB hM _)) ha')`. Establish `hPK` using `pull_isLB hP.1 (Pdiv.PullbackComparison.pφ₂ f A)`.
+
+Use `⟨hP, hamp, GlobalTheory.NondegSpread.nondeg_of_generic O K A AK _ _ hA pK sK P _ hP.1 hPK (GlobalTheory.lbIso_refl hPK) hP.2.1 hP.2.2.1 hP.2.2.2 hamp (nondeg_of_fieldExtension i AK A' hpb sψ hPK hP' ?_ hn)⟩` and prove the remaining obligations. Conclude with `LBIso.trans hP' (pull_isLB hP.1 _) (pull_isLB hPK _) e (GlobalTheory.FibreAmple.lbIso_pull_comp e₂ (GlobalTheory.lbIso_refl hPK))`.
+-/
 theorem isPPol_of_field (O K' : Type) [CommRing O] [IsDomain O] [IsNoetherianRing O] [IsIntegrallyClosed O] [Field K']
     (j : O →+* K') (hj : Function.Injective j) (A : Over (Sp O)) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
     (A' : Over (Sp K')) [GrpObj A'] {φ : A'.left ⟶ A.left} {φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left}
@@ -164,6 +206,31 @@ theorem isPPol_of_field (O K' : Type) [CommRing O] [IsDomain O] [IsNoetherianRin
   exact LBIso.trans hP' (pull_isLB hP.1 _) (pull_isLB hPK _) e
     (GlobalTheory.FibreAmple.lbIso_pull_comp e₂ (GlobalTheory.lbIso_refl hPK))
 
+/- English proof (translation)
+Introduce `g n φ hn C G₁ _ _ P ⟨hCN, _, hG, hP, hU⟩ hab`. Take `⟨hmono, -, hcone, hdef, ht⟩` from `GlobalTheory.TChart.Taut.monomial_chart g n φ (by omega) C`. Establish `hn' : (0 : ℤ) < n` using `by omega`. Take `⟨R', _, _, _, ρ, -, D, ε, hCN', hρ, hfin, -, -, href, -⟩` from `GlobalTheory.PolDeg.refine_monomial_of_polarised C.R C.Q C.m C.t (fun k => (n : ℤ) • C.δ k) hCN hmono C.bd ht (fun k y z => by simp only [LinearMap.smul_apply, (hcone.mem k).1 y z]) (fun k y => by simpa only [LinearMap.smul_apply, smul_eq_mul] using mul_nonneg hn'.le (hcone.nonne …`. Take `⟨k, hk⟩` from `hdef y hy`.
+
+Conclude with `⟨k, by simpa only [LinearMap.smul_apply, smul_eq_mul] using mul_pos hn' hk⟩)`. Take `⟨G', _, _, π, π₂, B, U, hπ, sπ, eπ⟩` from `hU R' ρ hCN' hρ hfin D ε href`. Use `set t := ∏ k, C.t k with htd`. Establish `ht0 : t ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => ht k`. Set `O` to `Localization.Away t`.
+
+Use `haveI := hCN.1`. Use `haveI := hCN.2.1`. Establish `hle : Submonoid.powers t ≤ nonZeroDivisors C.R` using `powers_le_nonZeroDivisors_of_noZeroDivisors ht0`. Use `haveI : IsDomain O := IsLocalization.isDomain_localization hle`. Use `haveI : IsNoetherianRing O := IsLocalization.isNoetherianRing (Submonoid.powers t) _ inferInstance`.
+
+Use `haveI : IsIntegrallyClosed O := isIntegrallyClosed_of_isLocalization O (Submonoid.powers t) hle`. Set `f` to `spMap (algebraMap C.R O)`. Set `A` to `(Over.pullback f).obj G₁`. Establish `hG' : IsSemiAbelian A` using `IsSemiAbelian.pullback f G₁ hG`. Establish `habA : abLocus A = Set.univ` using `Set.eq_univ_of_forall fun z => (abLocus_pullback abLocusOne hG (IsPullback.of_hasPullback G₁.hom f) z).1 ((hab _).2 fun hz => z.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hz (IsLocalization.Away.algebraMap_isUnit t)))`.
+
+Establish `hA : IsAbelianScheme A` using `{ comm := hG'.comm smooth := hG'.smooth proper := GlobalTheory.AbLocusProperNormal.isProper_of_abLocus_eq_univ _ _ hG' habA geomConnected := hG'.geomConnected }`. Establish `pA` using `Pdiv.PullbackComparison.isGrpPullback f G₁`. Establish `sA` using `Pdiv.PullbackComparison.isSquare f G₁`. Use `⟨A, inferInstance, inferInstance, _, _, pA, sA, hA, ?_⟩` and prove the remaining obligations. Set `κ : C.R →+* FractionRing R'` to `(algebraMap R' (FractionRing R')).comp ρ`.
+
+Establish `hκ : Function.Injective κ` using `(IsFractionRing.injective R' (FractionRing R')).comp hρ`. Establish `hu : IsUnit (κ t)` using `isUnit_iff_ne_zero.2 ((map_ne_zero_iff κ hκ).2 ht0)`. Set `j : O →+* FractionRing R'` to `IsLocalization.Away.lift t hu`. Establish `hjκ : j.comp (algebraMap C.R O) = κ` using `IsLocalization.Away.lift_comp t hu`. Establish `hj : Function.Injective j`.
+
+Use `(IsLocalization.lift_injective_iff _).2 fun x x' => ?_` and prove the remaining obligations. Rewrite using `[(IsLocalization.injective O hle).eq_iff, hκ.eq_iff]`. Establish `e₁ : spMap j ≫ f = (𝟙 _ ≫ jK R') ≫ spMap ρ`. Rewrite using `[Category.id_comp, ← spMap_comp, hjκ, spMap_comp]`. Use `haveI := U.gen_hom`.
+
+Use `haveI := B.isAb.comm`. Use `haveI : IsMonHom U.gen.symm.hom := inferInstanceAs (IsMonHom U.gen.inv)`. Establish `ha : IsGrpPullback B.A G' (𝟙 _ ≫ jK R') (U.gen.inv.left ≫ pullback.fst G'.hom (jK R'))` using `(isGrpPullback_of_iso U.gen.symm).comp (isGrpPullback_pullback G' (jK R'))`. Establish `sa` using `GlobalTheory.LamPull.exists_isSquare ha.1.w`. Establish `hb` using `ha.comp hπ`.
+
+Set `ψ` to `pA.1.lift _ (B.A.hom ≫ spMap j) (by rw [Category.assoc _ _ f, e₁]; exact hb.1.w)`. Establish `hψ : ψ ≫ Pdiv.PullbackComparison.pφ f G₁ = _` using `pA.1.lift_fst _ _ _`. Establish `hpb : IsGrpPullback B.A A (spMap j) ψ` using `pA.cancel (hb.congr e₁.symm hψ.symm) (pA.1.lift_snd _ _ _)`. Establish `sψ` using `GlobalTheory.LamPull.exists_isSquare hpb.1.w`. Establish `e₂` using `GlobalTheory.LamPull.isSquare_unique (isSquare_comp sa sπ) (hψ ▸ isSquare_comp sψ sA)`.
+
+Establish `hLG : U.LG.L.IsLB` using `U.LG.isLB`. Establish `eL : LBIso B.L (U.LG.L.pull (U.gen.inv.left ≫ pullback.fst G'.hom (jK R')))`. Establish `e` using `(CechPic.cls_eq_iff (pull_isLB B.isLB _) (pull_isLB hLG _)).2 U.ext`. Rewrite `e` using `[CechPic.cls_pull B.isLB, CechPic.cls_pull hLG]`. Rewrite using `[← CechPic.cls_eq_iff B.isLB (pull_isLB hLG _), CechPic.cls_pull hLG, CechPic.pull_comp, ← e, ← CechPic.pull_comp, ← Over.comp_left, Iso.inv_hom_id, Over.id_left, CechPic.pull_id]`.
+
+Establish `hΛ` using `GlobalTheory.FullSiegel.isLB_lam (G := B.A) B.isLB`. Establish `hΛ'` using `GlobalTheory.FullSiegel.isLB_lam (G := G') hLG`. Use `isPPol_of_field O _ j hj A hA B.A hpb sψ (isBiRig_pullback f G₁ hP) hΛ ?_ (relAmple_lam_diag B) (GlobalTheory.FullSiegel.eq_one_of_lam_triv B.isLB B.rigid B.ktriv)` and prove the remaining obligations. Establish `c₁` using `(CechPic.cls_eq_iff hΛ (pull_isLB hΛ' _)).2 (GlobalTheory.LamPull.lbIso_lam_pull ha hLG B.isLB eL sa)`. Establish `c₂` using `(CechPic.cls_eq_iff hΛ' (pull_isLB hP.1 _)).2 eπ`.
+
+Rewrite using `[← CechPic.cls_eq_iff hΛ (pull_isLB (pull_isLB hP.1 _) _), c₁, CechPic.cls_pull hΛ', c₂, CechPic.cls_pull hP.1, CechPic.cls_pull (pull_isLB hP.1 _), CechPic.cls_pull hP.1, ← CechPic.pull_comp, ← CechPic.pull_comp, e₂]`.
+-/
 theorem exists_isPPol_away : ∀ (g n : ℕ) (φ : InvFun ℤ), 3 ≤ n → ∀ (C : Taut (zetaAway n) g n φ) (G₁ : Over (Sp C.R)) [GrpObj G₁] [IsCommMonObj G₁] (P : LB (G2 G₁).left), IsMumPol C.Q G₁ P → (∀ p : Sp C.R, p ∈ abLocus G₁ ↔ ∏ k, C.t k ∉ p.asIdeal) → ∃ (A : Over (Sp (Localization.Away (∏ k, C.t k)))) (_ : GrpObj A) (_ : IsCommMonObj A) (π₀ : A.left ⟶ G₁.left) (π₂ : (G2 A).left ⟶ (G2 G₁).left), IsGrpPullback A G₁ (spMap (algebraMap C.R (Localization.Away (∏ k, C.t k)))) π₀ ∧ IsSquare π₀ π₂ ∧ IsAbelianScheme A ∧ IsPPol A (P.pull π₂) := by
   intro g n φ hn C G₁ _ _ P ⟨hCN, _, hG, hP, hU⟩ hab
   obtain ⟨hmono, -, hcone, hdef, ht⟩ := GlobalTheory.TChart.Taut.monomial_chart g n φ (by omega) C

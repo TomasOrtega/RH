@@ -16,6 +16,9 @@ def thickR (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ) :
     O ⧸ IsLocalRing.maximalIdeal O ^ (n + 1 + 1) →+* O ⧸ IsLocalRing.maximalIdeal O ^ (n + 1) :=
   Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (n + 1)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thickR_comp (n : ℕ) : (thickR O n).comp (thickQ O (n + 1)) = thickQ O n := rfl
 
 def thickFib (n : ℕ) : Scheme.{0} :=
@@ -26,6 +29,9 @@ def thickι (n : ℕ) : thickFib f n ⟶ Y := pullback.fst _ _
 def thickStr (n : ℕ) : thickFib f n ⟶ Spec (.of (O ⧸ IsLocalRing.maximalIdeal O ^ (n + 1))) :=
   pullback.snd _ _
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_hasPullback _ _`.
+-/
 theorem thickFib_isPullback (n : ℕ) :
     IsPullback (thickι f n) (thickStr f n) f (Spec.map (CommRingCat.ofHom (thickQ O n))) :=
   IsPullback.of_hasPullback _ _
@@ -35,9 +41,15 @@ def thickTr (n : ℕ) : thickFib f n ⟶ thickFib f (n + 1) :=
     (by rw [Category.comp_id, Category.id_comp])
     (by rw [Category.comp_id, ← Spec.map_comp, ← CommRingCat.ofHom_comp, thickR_comp])
 
+/- English proof (translation)
+The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+-/
 theorem thickTr_ι (n : ℕ) : thickTr f n ≫ thickι f (n + 1) = thickι f n :=
   (pullback.lift_fst _ _ _).trans (Category.comp_id _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem thickTr_str (n : ℕ) :
     thickTr f n ≫ thickStr f (n + 1) = thickStr f n ≫ Spec.map (CommRingCat.ofHom (thickR O n)) :=
   pullback.lift_snd _ _ _

@@ -13,6 +13,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 4000000
+/- English proof (translation)
+Use `⟨{ PV := _root_.GlobalTheory.HeightCounting.Fin3.psiVectorLocal L l std := (by with_unfolding_all exact (l.mt.ad.std :)) eW := (by with_unfolding_all exact (l.mt.ad.eW :)) read := fun μ h i y g => ?_ rat := (by with_unfolding_all exact (l.mt.ad.rat :)) wt := (by with_unfolding_al …` and prove the remaining obligations. Establish `h1` using `l.mt.ad.read ((by with_unfolding_all exact (μ :))) ((by with_unfolding_all exact (h :))) ((by with_unfolding_all exact (i :))) ((by with_unfolding_all exact (y :))) ((by with_unfolding_all exact (g :)))`. Establish `h2` using `hY.jMt μ h i y`. Use `kexactB h1.trans (congrFun (eq_of_heq h2) _).symm`.
+-/
 theorem exists_mtAd_psi_vector_of_yRel {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
     {x : St P} (L : LocAll (lay0 (Dof x))) (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0) (hY : YRel L Y) :
     ∃ ad : MtAd Y (_root_.GlobalTheory.HeightCounting.Fin3.localMultiplicityFamily L l), ad.PV = _root_.GlobalTheory.HeightCounting.Fin3.psiVectorLocal L l := by

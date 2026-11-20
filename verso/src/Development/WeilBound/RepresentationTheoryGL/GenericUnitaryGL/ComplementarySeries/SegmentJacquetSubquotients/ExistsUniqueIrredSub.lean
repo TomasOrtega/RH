@@ -13,6 +13,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hρ` using `PositivityTheory.Lit1.SegRep.PIrr.isIrreducible_piTensor_segTerm σ l`. Establish `hsρ : IsSmooth (piTensor (segTerm σ.ρ l))` using `isSmooth_piTensor fun a => isSmooth_twist σ.smooth (IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow _))`. Establish `hsπ : IsSmooth (multiProd (consecBlocks l d) (segTerm σ.ρ l))` using `isSmooth_parInd _ _`. Use `GlobalTheory.CompanionTheory.SocleJm.nontrivial_indSp (consecBlocks l d) hρ hsρ` as an intermediate fact. Establish `hfl : HasFiniteLength (multiProd (consecBlocks l d) (segTerm σ.ρ l))` using `GlobalTheory.CompanionTheory.BZInd.inductionFiniteLength k _ _ _ _ _ _ hsρ (hasFiniteLength_of_isIrreducible hρ)`.
+
+Establish `hone : ∀ T : Subrepresentation (multiProd (consecBlocks l d) (segTerm σ.ρ l)), IsAtom T → 1 ≤ jhMult (piTensor (segTerm σ.ρ l)) (jac (consecBlocks l d) T.toRepresentation)` using `GlobalTheory.CompanionTheory.SocleJm.one_le_jhMult_jac_atom _ hρ`. Establish `hjm : jhMult (piTensor (segTerm σ.ρ l)) (jac (consecBlocks l d) (multiProd (consecBlocks l d) (segTerm σ.ρ l))) ≤ 1` using `h1.le`. Establish `hsoc : ∃ τ : IrrRep (GL (Fin (l * d)) k), IsSocle τ.ρ (multiProd (consecBlocks l d) (segTerm σ.ρ l))` using `GlobalTheory.CompanionTheory.SocleJm.exists_isSocle_of_forall_isAtom (π := multiProd (consecBlocks l d) (segTerm σ.ρ l)) (consecBlocks l d) hρ hsπ hfl hone hjm`. Take `⟨τ, hτ, f, hf, hS⟩` from `hsoc`. Establish `hat : IsAtom f.range` using `isAtom_range hτ f hf`.
+
+Establish `hatom : ∀ S' : Subrepresentation (multiProd (consecBlocks l d) (segTerm σ.ρ l)), S'.toRepresentation.IsIrreducible → IsAtom S'` using `fun S' hS' => by`. Set `g : S'.toRepresentation.IntertwiningMap (multiProd (consecBlocks l d) (segTerm σ.ρ l))` to `⟨S'.toSubmodule.subtype, fun _ => rfl⟩`. Establish `hr : g.range = S'` using `Subrepresentation.toSubmodule_injective (Submodule.range_subtype _)`. Establish `h` using `isAtom_range hS' g Subtype.val_injective`. Rewrite `h` using `[hr]`. Then use the resulting hypothesis.
+
+Use `⟨f.range, GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom _ hat, fun S' hS' => hS S' (hatom S' hS'), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Set `ι : f.range.toRepresentation.IntertwiningMap (multiProd (consecBlocks l d) (segTerm σ.ρ l))` to `⟨f.range.toSubmodule.subtype, fun _ => rfl⟩`. Establish `hinj : Function.Injective (jacMap (consecBlocks l d) ι)` using `GlobalTheory.JacInj.jacMap_injective k _ _ _ (consecBlocks l d) _ _ f.range.toRepresentation (multiProd (consecBlocks l d) (segTerm σ.ρ l)) ι hsπ Subtype.val_injective`. Conclude with `(GlobalTheory.CompanionTheory.SocleJm.jhMult_le_of_injective hρ (jacMap (consecBlocks l d) ι) hinj).trans hjm`. Conclude with `hone _ hat`.
+-/
 theorem exists_unique_irred_sub {d l : ℕ} (hd : 0 < d) (hl : 0 < l) (σ : IrrRep (GL (Fin d) k))
     (hσ : IsCuspidal σ.ρ)
     (h1 : jhMult (piTensor (segTerm σ.ρ l))

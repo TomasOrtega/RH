@@ -10,6 +10,11 @@ open scoped TensorProduct NNReal ENNReal
 
 namespace GlobalTheory.GaugeEx.SdInf
 
+/- English proof (translation)
+Use `haveI := hμ.1`. Set `T : V ≃ₜ W` to `{ e.toEquiv with continuous_toFun := he, continuous_invFun := he' }`. Establish `hm : MeasurableEmbedding e` using `T.measurableEmbedding`. Use `⟨e.isAddHaarMeasure_map μ he he', fun Φ hΦ hsup hI z => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `e.surjective z`.
+
+Rewrite `hI` using `[hm.integrable_map_iff]`. Simplify using `only [hm.integral_map, Function.comp_def, h] at hI ⊢`. Rewrite using `[← map_neg]`. Conclude with `hμ.2 (fun x => Φ (e x)) (hΦ.comp he) (hsup.comp_homeomorph T) hI z`.
+-/
 theorem selfDual_map {V W : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [MeasurableSpace V] [BorelSpace V] [AddCommGroup W] [TopologicalSpace W] [IsTopologicalAddGroup W]
     [MeasurableSpace W] [BorelSpace W] (e : V ≃+ W) (he : Continuous e) (he' : Continuous e.symm)
@@ -25,6 +30,9 @@ theorem selfDual_map {V W : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopol
   rw [← map_neg]
   exact hμ.2 (fun x => Φ (e x)) (hΦ.comp he) (hsup.comp_homeomorph T) hI z
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yzb9.existsUnique_of_equiv e he he' l ha hs hc hn`.
+-/
 theorem existsUnique_of_equiv {V W : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [MeasurableSpace V] [BorelSpace V] [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     (e : V ≃+ W) (he : Continuous e) (he' : Continuous e.symm) (l : V → V → ℝ)
@@ -34,6 +42,17 @@ theorem existsUnique_of_equiv {V W : Type} [AddCommGroup V] [TopologicalSpace V]
       SelfDual μ (fun x y => Complex.exp (2 * Real.pi * Complex.I * ((l x y : ℝ) : ℂ))) :=
   _root_.UpperTheory.Reformulated.B.Yzb9.existsUnique_of_equiv e he he' l ha hs hc hn
 
+/- English proof (translation)
+Set `g : W → Circle` to `fun x => ⟨f x, by simp [Submonoid.unitSphere, h1]⟩`. Establish `hg : Continuous g` using `hf.subtype_mk _`. Establish `hgadd : ∀ x y, g (x + y) = g x * g y` using `fun x y => Subtype.ext (hadd x y)`. Establish `h0 : g 0 = 1`. Use `hgadd 0 0` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Take `⟨G, ⟨hG0, hG⟩, -⟩` from `Circle.isCoveringMap_exp.existsUnique_continuousMap_lifts ⟨g, hg⟩ 0 0 (by simp [h0])`. Establish `hG' : ∀ x, Circle.exp (G x) = g x` using `fun x => congrFun hG x`. Establish `hGadd : ∀ x y, G (x + y) = G x + G y`.
+
+Introduce `x y`. Establish `hc : Continuous fun y : W => G (x + y) - G x - G y` using `by fun_prop`. Use `Circle.isCoveringMap_exp.const_of_comp hc (fun y y' => by` as an intermediate fact. Simplify using `only [Circle.exp_sub, hG', hgadd]`. Use the proof step `simp) y 0`.
+
+Simplify using `only [add_zero, hG0, sub_self] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun x => G x / (2 * Real.pi), by fun_prop, fun x y => by simp only [hGadd, add_div], fun x => ?_⟩` and prove the remaining obligations. Establish `: f x = ((Circle.exp (G x) : Circle) : ℂ)` using `by rw [hG']`. Rewrite using `[this, Circle.coe_exp]`.
+
+Use `congr 1`. Establish `: (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_log_char {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] (f : W → ℂ)
     (hf : Continuous f) (h1 : ∀ x, ‖f x‖ = 1) (hadd : ∀ x y, f (x + y) = f x * f y) :
     ∃ L : W → ℝ, Continuous L ∧ (∀ x y, L (x + y) = L x + L y) ∧
@@ -69,6 +88,11 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Establish `h1 : (c ⊗ₜ[F] e : R ⊗[F] E) = c • ((1 : R) ⊗ₜ[F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, map_smul, smul_eq_mul]`. Use `congr 1`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← LinearMap.trace_baseChange]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem trace_tmul (c : R) (e : E) :
     Algebra.trace R (R ⊗[F] E) (c ⊗ₜ[F] e) = c * algebraMap F R (Algebra.trace F E e) := by
   have h1 : (c ⊗ₜ[F] e : R ⊗[F] E) = c • ((1 : R) ⊗ₜ[F] e) := by
@@ -80,6 +104,13 @@ theorem trace_tmul (c : R) (e : E) :
   ext x
   simp
 
+/- English proof (translation)
+Set `b` to `Module.finBasis F E`. Set `b'` to `(Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) b`. Establish `key : ∀ (k) (z : R ⊗[F] E), (Algebra.TensorProduct.basis R b').repr z k = Algebra.trace R (R ⊗[F] E) (z * (1 : R) ⊗ₜ[F] b k)`. Introduce `k z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy, add_mul]`. Consider the case `tmul a e`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, trace_tmul, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `[b', LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]`.
+
+Use `(Algebra.TensorProduct.basis R b').ext_elem fun k => ?_` and prove the remaining obligations. Rewrite using `[key, h]`. Simplify using the standard rewrite rules.
+-/
 theorem trace_nondeg [Algebra.IsSeparable F E] (z : R ⊗[F] E)
     (h : ∀ w, Algebra.trace R (R ⊗[F] E) (z * w) = 0) : z = 0 := by
   classical
@@ -100,6 +131,9 @@ theorem trace_nondeg [Algebra.IsSeparable F E] (z : R ⊗[F] E)
 variable (σ : E →ₐ[F] E)
 
 omit [FiniteDimensional F E] in
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e => show a ⊗ₜ[F] σ (σ e) = _`. Rewrite using `[hσ]`.
+-/
 theorem sigR_sigR (hσ : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) : sigR R σ (sigR R σ z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -108,6 +142,11 @@ theorem sigR_sigR (hσ : ∀ x, σ (σ x) = x) (z : R ⊗[F] E) : sigR R σ (sig
     show a ⊗ₜ[F] σ (σ e) = _
     rw [hσ]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e => show Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] σ e) = _`. Rewrite using `[trace_tmul, trace_tmul]`.
+
+Use `congr 2`. Conclude with `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective σ (Algebra.IsAlgebraic.algHom_bijective σ)) e`.
+-/
 theorem trace_sigR (z : R ⊗[F] E) :
     Algebra.trace R (R ⊗[F] E) (sigR R σ z) = Algebra.trace R (R ⊗[F] E) z := by
   induction z using TensorProduct.induction_on with
@@ -123,16 +162,27 @@ theorem trace_sigR (z : R ⊗[F] E) :
 variable {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 omit [FiniteDimensional F E] in
+/- English proof (translation)
+Simplify using `only [BR, hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem BR_add (X X' Y : Fin 1 → Fin M → R ⊗[F] E) :
     BR R σ J (X + X') Y = BR R σ J X Y + BR R σ J X' Y := by
   simp only [BR, hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 omit [FiniteDimensional F E] in
+/- English proof (translation)
+Simplify using `only [BR, hR, Formalism.UG.hform, Pi.smul_apply, mul_smul_comm, ← Finset.smul_sum, map_smul, smul_eq_mul, mul_comm t, Finset.sum_mul]`.
+-/
 theorem BR_smul (t : R) (X Y : Fin 1 → Fin M → R ⊗[F] E) :
     BR R σ J X (t • Y) = BR R σ J X Y * t := by
   simp only [BR, hR, Formalism.UG.hform, Pi.smul_apply, mul_smul_comm, ← Finset.smul_sum, map_smul,
     smul_eq_mul, mul_comm t, Finset.sum_mul]
 
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← trace_sigR R σ]`. Use `congr 1`. Simplify using `only [hR, Formalism.UG.hform, map_sum, map_mul, sigR_sigR R σ hσ]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: sigR R σ (JR R J j i) = JR R J i j` using `by show (1 : R) ⊗ₜ[F] σ (J j i) = (1 : R) ⊗ₜ[F] J i j`. Rewrite using `[hJ.1]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem BR_symm (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (X Y : Fin 1 → Fin M → R ⊗[F] E) :
     BR R σ J X Y = BR R σ J Y X := by
   refine Finset.sum_congr rfl fun a _ => ?_
@@ -146,6 +196,13 @@ theorem BR_symm (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (X Y : Fin 1 �
     rw [hJ.1]
   rw [this]; ring
 
+/- English proof (translation)
+Establish `h1 : Matrix.vecMul (fun i => sigR R σ (X 0 i)) (JR R J) = 0`. Use function extensionality and compare the values at `j`. Use `trace_nondeg R _ fun w => ?_` and prove the remaining obligations. Use `h fun _ => Pi.single j w` as an intermediate fact. Simplify `this` using `[BR, hR, Formalism.UG.hform, Pi.single_apply, Matrix.vecMul, dotProduct, Finset.sum_mul]`.
+
+Establish `hu : IsUnit (JR R J : Matrix (Fin M) (Fin M) (R ⊗[F] E)).det`. Establish `: (JR R J : Matrix (Fin M) (Fin M) (R ⊗[F] E)).det = inclR R J.det` using `((inclR R).map_det J).symm`. Rewrite using `[this]`. Conclude with `(Ne.isUnit hJ.2).map _`. Establish `h2` using `congrArg (fun v => Matrix.vecMul v (JR R J)⁻¹) h1`.
+
+Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu, Matrix.vecMul_one, Matrix.zero_vecMul] at h2`. Use function extensionality and compare the values at `a i`. Rewrite using `[Subsingleton.elim a 0, ← sigR_sigR R σ hσ (X 0 i), congrFun h2 i]`. Simplify using the standard rewrite rules.
+-/
 theorem BR_nondeg [Algebra.IsSeparable F E] (hσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J)
     (X : Fin 1 → Fin M → R ⊗[F] E) (h : ∀ Y, BR R σ J X Y = 0) : X = 0 := by
   have h1 : Matrix.vecMul (fun i => sigR R σ (X 0 i)) (JR R J) = 0 := by
@@ -165,6 +222,9 @@ theorem BR_nondeg [Algebra.IsSeparable F E] (hσ : ∀ x, σ (σ x) = x) (hJ : I
   rw [Subsingleton.elim a 0, ← sigR_sigR R σ hσ (X 0 i), congrFun h2 i]
   simp
 
+/- English proof (translation)
+Establish `h1 : Continuous (Algebra.trace R (R ⊗[F] E))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h2` using `GlobalTheory.AdelicUnitaryTop.continuous_sigR R σ`. Unfold `BR hR Formalism.UG.hform`. Use `fun_prop`.
+-/
 theorem BR_continuous [TopologicalSpace R] [IsTopologicalRing R] (Y : Fin 1 → Fin M → R ⊗[F] E) :
     Continuous fun X => BR R σ J X Y := by
   have h1 : Continuous (Algebra.trace R (R ⊗[F] E)) := IsModuleTopology.continuous_of_linearMap _
@@ -174,6 +234,9 @@ theorem BR_continuous [TopologicalSpace R] [IsTopologicalRing R] (Y : Fin 1 → 
 
 end Alg
 
+/- English proof (translation)
+Use `⟨AddEquiv.piCongrRight fun v => (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v)).toAddEquiv, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_pi fun v => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal v)).continuous.comp (continuous_apply v)`. Conclude with `continuous_pi fun v => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal v)).symm.continuous.comp (continuous_apply v)`.
+-/
 theorem exists_equiv_Ainf (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     ∃ a : Ainf F ≃+ (InfinitePlace F → ℝ), Continuous a ∧ Continuous a.symm := by
   refine ⟨AddEquiv.piCongrRight fun v =>
@@ -185,6 +248,19 @@ theorem exists_equiv_Ainf (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
       (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal v)).symm.continuous.comp
         (continuous_apply v)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM ψ hψ`. Take `⟨hF, -, -, hσ'⟩` from `hCM`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises.
+
+Rewrite using `[hσ', hσ', star_star]`. Establish `hnd` using `(GlobalTheory.T.localComponents_nontrivial_adelic_character F ψ hψ).2.2`. Take `⟨a, ha, ha'⟩` from `exists_equiv_Ainf F`. Establish `hpc : Continuous (psiInf F ψ)` using `hψ.1.comp (continuous_id.prodMk continuous_const)`. Take `⟨L₀, hL₀c, hL₀a, hL₀⟩` from `exists_log_char (fun u => psiInf F ψ (a.symm u)) (hpc.comp ha') (fun u => hψ.2.1 _) (fun u v => by`.
+
+Simplify using `only [psiInf, map_add, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Conclude with `Prod.ext rfl (add_zero _).symm)`. Set `L : Ainf F → ℝ` to `fun x => L₀ (a x)`. Establish `hLc : Continuous L` using `hL₀c.comp ha`.
+
+Establish `hLa : ∀ x y, L (x + y) = L x + L y` using `fun x y => by simp only [L, map_add, hL₀a]`. Establish `hL : ∀ x, psiInf F ψ x = Complex.exp (2 * Real.pi * Complex.I * ((L x : ℝ) : ℂ))` using `fun x => by simpa using hL₀ (a x)`. Establish `hLn : ∀ x, (∀ y, L (x * y) = 0) → x = 0` using `fun x h => hnd x fun y => by simp [hL, h]`. Use `⟨?_, fun M J hJ => ?_⟩` and prove the remaining obligations. Use `existsUnique_of_equiv a ha ha' (fun s t => L (s * t)) (fun x x' y => by rw [add_mul, hLa]) (fun x y => by rw [mul_comm]) (fun y => hLc.comp (continuous_id.mul continuous_const)) hLn` as an intermediate fact.
+
+Simplify `this` using `only [SdR, hL]`. Simplify using `only [SdW, hL]`. Set `c` to `(Algebra.TensorProduct.basis (Ainf F) (Module.finBasis F E)).equivFun`. Establish `hc : Continuous c` using `IsModuleTopology.continuous_of_linearMap c.toLinearMap`. Establish `hc' : Continuous c.symm` using `IsModuleTopology.continuous_of_linearMap c.symm.toLinearMap`.
+
+Set `e : (Fin 1 → Fin M → Ainf F ⊗[F] E) ≃+ (Fin 1 → Fin M → Fin (Module.finrank F E) → InfinitePlace F → ℝ)` to `AddEquiv.piCongrRight fun _ => AddEquiv.piCongrRight fun _ => c.toAddEquiv.trans (AddEquiv.piCongrRight fun _ => a)`. Use `existsUnique_of_equiv e ?_ ?_ (fun X Y => L (BR (Ainf F) σ J X Y)) (fun X X' Y => by rw [BR_add, hLa]) (fun X Y => by rw [BR_symm _ σ J hσ hJ]) (fun Y => hLc.comp (BR_continuous _ σ J Y)) (fun X h => BR_nondeg _ σ J hσ hJ X fun Y => hLn _ fun t => by rw [← BR_smul]; exact h _)` and prove the remaining obligations. Use `show Continuous fun (X : Fin 1 → Fin M → Ainf F ⊗[F] E) i j k => a (c (X i j) k) fun_prop`. Use `show Continuous fun (X : Fin 1 → Fin M → Fin (Module.finrank F E) → InfinitePlace F → ℝ) i j => c.symm fun k => a.symm (X i j k) fun_prop`.
+-/
 theorem existsUnique_selfDual_inf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → (∃! ν, SdR (Ainf F) (psiInf F ψ) ν) ∧ ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∃! μ, SdW F E σ M J (Ainf F) (psiInf F ψ) 1 μ := by
   intro F E _ _ _ _ _ σ hCM ψ hψ
   obtain ⟨hF, -, -, hσ'⟩ := hCM

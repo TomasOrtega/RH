@@ -16,12 +16,20 @@ section cont
 
 variable {k p ρ : ℕ}
 
+/- English proof (translation)
+Establish `hl : Continuous fun g : B.Mat k r => ell k r z g` using `Formalism.FourierDecayAlt.P.B7.continuous_ell (k := k) (r := r) z`. Unfold `psi`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul hl))))`.
+-/
 theorem psi_contM {r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) : Continuous (fun g : B.Mat k r => psi k r z c g) := by
   have hl : Continuous fun g : B.Mat k r => ell k r z g := Formalism.FourierDecayAlt.P.B7.continuous_ell (k := k) (r := r) z
   unfold psi
   exact Complex.continuous_exp.comp (continuous_const.mul
     (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul hl))))
 
+/- English proof (translation)
+Unfold `U.lowW`. Use `continuous_const.add ?_` and prove the remaining obligations. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`.
+
+Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+-/
 theorem lowW_cont (σ : Equiv.Perm (Fin p)) : Continuous (fun v : U.LW σ → ℂ => U.lowW σ v) := by
   unfold U.lowW
   refine continuous_const.add ?_
@@ -31,10 +39,16 @@ theorem lowW_cont (σ : Equiv.Perm (Fin p)) : Continuous (fun v : U.LW σ → �
   · exact continuous_apply _
   · exact continuous_const
 
+/- English proof (translation)
+Unfold `lhOf`. Conclude with `(continuous_const.matrix_mul (lowW_cont σ)).matrix_mul continuous_const`.
+-/
 theorem lhOf_cont (σ : Equiv.Perm (Fin p)) : Continuous (fun v : U.LW σ → ℂ => lhOf σ v) := by
   unfold lhOf
   exact (continuous_const.matrix_mul (lowW_cont σ)).matrix_mul continuous_const
 
+/- English proof (translation)
+Unfold `U.subS`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `(continuous_apply _).comp (continuous_apply _)`. Conclude with `continuous_const`.
+-/
 theorem subS_cont : Continuous (fun M : Matrix (Fin p) (Fin p) ℂ => U.subS M) := by
   unfold U.subS
   refine continuous_finsetSum _ fun i _ => ?_
@@ -42,6 +56,9 @@ theorem subS_cont : Continuous (fun M : Matrix (Fin p) (Fin p) ℂ => U.subS M) 
   · exact (continuous_apply _).comp (continuous_apply _)
   · exact continuous_const
 
+/- English proof (translation)
+Unfold `U.supS`. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `(continuous_apply _).comp (continuous_apply _)`. Conclude with `continuous_const`.
+-/
 theorem supS_cont : Continuous (fun M : Matrix (Fin p) (Fin p) ℂ => U.supS M) := by
   unfold U.supS
   refine continuous_finsetSum _ fun i _ => ?_
@@ -49,18 +66,29 @@ theorem supS_cont : Continuous (fun M : Matrix (Fin p) (Fin p) ℂ => U.supS M) 
   · exact (continuous_apply _).comp (continuous_apply _)
   · exact continuous_const
 
+/- English proof (translation)
+Unfold `U.cornerA`. Use `split_ifs`. Conclude with `(continuous_apply _).comp (continuous_apply _)`. Conclude with `continuous_const`.
+-/
 theorem cornerA_cont {s : ℕ} : Continuous (fun a : Fin s → Fin p → ℂ => U.cornerA a) := by
   unfold U.cornerA
   split_ifs
   · exact (continuous_apply _).comp (continuous_apply _)
   · exact continuous_const
 
+/- English proof (translation)
+Unfold `U.cornerB`. Use `split_ifs`. Conclude with `(continuous_apply _).comp (continuous_apply _)`. Conclude with `continuous_const`.
+-/
 theorem cornerB_cont {s : ℕ} : Continuous (fun b : Fin p → Fin s → ℂ => U.cornerB b) := by
   unfold U.cornerB
   split_ifs
   · exact (continuous_apply _).comp (continuous_apply _)
   · exact continuous_const
 
+/- English proof (translation)
+Unfold `U.psiStar U.psiH`. Establish `hR` using `Formalism.FourierDecayAlt.P.Dx2.SplitF.rn_cont (k := k) (p + 0) ρ`. Use `((psi_contM z0 cStd).comp (hR.comp (continuous_fst.comp continuous_fst))).mul (continuous_star.comp ((psi_contM z0' cStd).comp (hR.comp (continuous_snd.comp continuous_fst)))) |>.mul ?_` and prove the remaining obligations. Use `(Formalism.FourierDecayAlt.P.G7.continuous_psi _).comp ?_` and prove the remaining obligations. Use `((?_ : Continuous _).add ?_).add ?_ |>.add ?_` and prove the remaining obligations.
+
+Conclude with `subS_cont.comp ((continuous_const.matrix_mul ((lowW_cont σ).comp (continuous_fst.comp (continuous_snd.comp continuous_snd)))).matrix_mul continuous_const)`. Conclude with `supS_cont.comp (Formalism.FourierDecayAlt.P.Dx2.SplitM.continuous_upper.comp (continuous_snd.comp (continuous_snd.comp continuous_snd)))`. Conclude with `cornerA_cont.comp (continuous_fst.comp (continuous_fst.comp continuous_snd))`. Conclude with `cornerB_cont.comp (continuous_snd.comp (continuous_fst.comp continuous_snd))`.
+-/
 theorem psiStar_cont (σ : Equiv.Perm (Fin p)) (z0 z0' : Fin (2 * (p + ρ) + k + 1) → ℂ) :
     Continuous (fun ξ : U.Xi k p 0 ρ σ => U.psiStar k ρ σ z0 z0' ξ) := by
   unfold U.psiStar U.psiH
@@ -82,20 +110,32 @@ section gaxi
 
 variable {k p ρ : ℕ}
 
+/- English proof (translation)
+Rewrite using `[lower_corner_hermitian_zero, (head_hermitian_eq p σ d η.2.1 η.2.2).1]`.
+-/
 theorem zjH_eq (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (η : U.XiH p 0 σ) (Z : G.Mat 0) :
     U.ZjH σ d η Z = lhOf σ η.2.1 * U.hMat σ d * G.upper η.2.2 := by
   rw [lower_corner_hermitian_zero, (head_hermitian_eq p σ d η.2.1 η.2.2).1]
 
+/- English proof (translation)
+Simplify using `only [zjH_eq]`. Conclude with `((lhOf_cont σ).comp (continuous_fst.comp continuous_snd)).matrix_mul continuous_const |>.matrix_mul (Formalism.FourierDecayAlt.P.Dx2.SplitM.continuous_upper.comp (continuous_snd.comp continuous_snd))`.
+-/
 theorem zjH_cont (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (Z : G.Mat 0) :
     Continuous (fun η : U.XiH p 0 σ => U.ZjH σ d η Z) := by
   simp only [zjH_eq]
   exact ((lhOf_cont σ).comp (continuous_fst.comp continuous_snd)).matrix_mul continuous_const |>.matrix_mul
     (Formalism.FourierDecayAlt.P.Dx2.SplitM.continuous_upper.comp (continuous_snd.comp continuous_snd))
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.level_determinant_z, detM_zero, mul_one]`.
+-/
 theorem zjH_det (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (η : U.XiH p 0 σ) (Z : G.Mat 0) :
     (U.ZjH σ d η Z).det = (U.hMat σ d).det := by
   rw [Formalism.FourierDecayAlt.P.level_determinant_z, detM_zero, mul_one]
 
+/- English proof (translation)
+Establish `e : (fun η : U.XiH p 0 σ => (U.ZjH σ d η Z)ᴴ⁻¹) = fun η => Ring.inverse (star (U.hMat σ d).det) • ((U.ZjH σ d η Z)ᴴ).adjugate`. Use function extensionality and compare the values at `η`. Rewrite using `[Matrix.inv_def, Matrix.det_conjTranspose, zjH_det]`. Rewrite using `[e]`. Conclude with `Continuous.const_smul (c := Ring.inverse (star (U.hMat σ d).det)) ((zjH_cont σ d Z).matrix_conjTranspose.matrix_adjugate)`.
+-/
 theorem zjH_inv_cont (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (Z : G.Mat 0) :
     Continuous (fun η : U.XiH p 0 σ => (U.ZjH σ d η Z)ᴴ⁻¹) := by
   have e : (fun η : U.XiH p 0 σ => (U.ZjH σ d η Z)ᴴ⁻¹) =
@@ -105,6 +145,11 @@ theorem zjH_inv_cont (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (Z : G.Mat 0)
   rw [e]
   exact Continuous.const_smul (c := Ring.inverse (star (U.hMat σ d).det)) ((zjH_cont σ d Z).matrix_conjTranspose.matrix_adjugate)
 
+/- English proof (translation)
+Establish `e : (fun x => U.mMap k p ρ (f x) (γ x)) = fun x => U.blk3 0 0 (fi x * G.wMat p) 0 (γ x) 0 (G.wMat p * f x) 0 0`. Use function extensionality and compare the values at `x`. Rewrite using `[he]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `Formalism.FourierDecayAlt.P.Dx2.SplitF.continuous_block3_matrix continuous_const continuous_const (hfi.matrix_mul continuous_const) continuous_const hγ continuous_const (continuous_const.matrix_mul hf) continuous_const continuous_const`.
+-/
 theorem mMap_cont {X : Type*} [TopologicalSpace X] {f fi : X → Matrix (Fin p) (Fin p) ℂ} {γ : X → B.Mat k ρ}
     (hf : Continuous f) (hfi : Continuous fi) (he : ∀ x, fi x = (f x)ᴴ⁻¹) (hγ : Continuous γ) :
     Continuous (fun x => U.mMap k p ρ (f x) (γ x)) := by
@@ -115,6 +160,11 @@ theorem mMap_cont {X : Type*} [TopologicalSpace X] {f fi : X → Matrix (Fin p) 
   exact Formalism.FourierDecayAlt.P.Dx2.SplitF.continuous_block3_matrix continuous_const continuous_const (hfi.matrix_mul continuous_const)
     continuous_const hγ continuous_const (continuous_const.matrix_mul hf) continuous_const continuous_const
 
+/- English proof (translation)
+Establish `hR` using `Formalism.FourierDecayAlt.P.Dx2.SplitF.rn_cont (k := k) (p + 0) ρ`. Establish `e : (fun q : U.Xi k p 0 ρ σ × B.Mat k ρ => U.gaXi k ρ σ d q.1 Z q.2) = fun q => U.Rn k (p + 0) ρ (-q.1.1.1) * U.mMap k (p + 0) ρ (U.ZjH σ d q.1.2 Z) q.2 * U.Rn k (p + 0) ρ q.1.1.2`. Use function extensionality and compare the values at `q`. Rewrite using `[U.gaXi, Formalism.FourierDecayAlt.P.PBM.rn_inv]`. Rewrite using `[e]`.
+
+Use `((hR.comp (continuous_neg.comp (continuous_fst.comp (continuous_fst.comp continuous_fst)))).matrix_mul ?_).matrix_mul (hR.comp (continuous_snd.comp (continuous_fst.comp continuous_fst)))` and prove the remaining obligations. Conclude with `mMap_cont ((zjH_cont σ d Z).comp (continuous_snd.comp continuous_fst)) ((zjH_inv_cont σ d Z).comp (continuous_snd.comp continuous_fst)) (fun _ => rfl) continuous_snd`.
+-/
 theorem gaXi_cont2 (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (Z : G.Mat 0) :
     Continuous (fun q : U.Xi k p 0 ρ σ × B.Mat k ρ => U.gaXi k ρ σ d q.1 Z q.2) := by
   have hR := Formalism.FourierDecayAlt.P.Dx2.SplitF.rn_cont (k := k) (p + 0) ρ
@@ -128,6 +178,9 @@ theorem gaXi_cont2 (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (Z : G.Mat 0) :
   exact mMap_cont ((zjH_cont σ d Z).comp (continuous_snd.comp continuous_fst))
     ((zjH_inv_cont σ d Z).comp (continuous_snd.comp continuous_fst)) (fun _ => rfl) continuous_snd
 
+/- English proof (translation)
+Use `⟨Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation σ d hd ξ Z (by rw [detM_zero]; exact one_ne_zero) hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi Formalism.FourierDecayAlt.P.hat_z_on_slice, detM_zero, mul_one]`. Conclude with `Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd`.
+-/
 theorem gaXi_dom (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0) (ξ : U.Xi k p 0 ρ σ) (Z : G.Mat 0)
     {γ : B.Mat k ρ} (hγ : γ ∈ B.GV k ρ) :
     U.gaXi k ρ σ d ξ Z γ ∈ {x : B.Mat k (p + 0 + ρ) | x ∈ B.GV k (p + 0 + ρ) ∧ U.DjU k (p + 0) ρ x ≠ 0} := by
@@ -146,6 +199,9 @@ section m4
 variable {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Establish `h0` using `gaXi_cont2 (k := k) (ρ := ρ) σ d Z`. Establish `hc : Continuous (fun ξ : U.Xi k p 0 ρ σ => (ξ, γ))` using `by fun_prop`. Conclude with `Continuous.comp (g := fun q : U.Xi k p 0 ρ σ × B.Mat k ρ => U.gaXi k ρ σ d q.1 Z q.2) (f := fun ξ : U.Xi k p 0 ρ σ => (ξ, γ)) h0 hc`.
+-/
 theorem gaXi_contξ (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (Z : G.Mat 0) (γ : B.Mat k ρ) :
     Continuous (fun ξ : U.Xi k p 0 ρ σ => U.gaXi k ρ σ d ξ Z γ) := by
   have h0 := gaXi_cont2 (k := k) (ρ := ρ) σ d Z
@@ -153,6 +209,9 @@ theorem gaXi_contξ (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (Z : G.Mat 0) 
   exact Continuous.comp (g := fun q : U.Xi k p 0 ρ σ × B.Mat k ρ => U.gaXi k ρ σ d q.1 Z q.2)
     (f := fun ξ : U.Xi k p 0 ρ σ => (ξ, γ)) h0 hc
 
+/- English proof (translation)
+Establish `h2 : Continuous (fun ξ : U.Xi k p 0 ρ σ => H (U.gaXi k ρ σ d ξ Z γ))` using `ContinuousOn.comp_continuous hHc (gaXi_contξ σ d Z γ) (fun ξ => gaXi_dom σ d hd ξ Z hγ)`. Conclude with `(psiStar_cont σ z0 z0').smul h2`.
+-/
 theorem slice_int_cont' (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)
     (H : B.Mat k (p + ρ) → (Wq →L[ℂ] Wp)) (hHc : ContinuousOn H {x | x ∈ B.GV k (p + ρ) ∧ U.DjU k p ρ x ≠ 0})
     (z0 z0' : Fin (2 * (p + ρ) + k + 1) → ℂ) (Z : G.Mat 0) (γ : B.Mat k ρ) (hγ : γ ∈ B.GV k ρ) :
@@ -161,6 +220,9 @@ theorem slice_int_cont' (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ 
     ContinuousOn.comp_continuous hHc (gaXi_contξ σ d Z γ) (fun ξ => gaXi_dom σ d hd ξ Z hγ)
   exact (psiStar_cont σ z0 z0').smul h2
 
+/- English proof (translation)
+The claim follows from `slice_int_cont' σ d hd H hHc z0 z0' _ γ hγ`.
+-/
 theorem slice_int_cont (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)
     (H : B.Mat k (p + ρ) → (Wq →L[ℂ] Wp)) (hHc : ContinuousOn H {x | x ∈ B.GV k (p + ρ) ∧ U.DjU k p ρ x ≠ 0})
     (z0 z0' : Fin (2 * (p + ρ) + k + 1) → ℂ) (γ : B.Mat k ρ) (hγ : γ ∈ B.GV k ρ) :
@@ -174,6 +236,11 @@ section m12
 variable {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Establish `hG` using `Formalism.FourierDecayAlt.P.unitary_group_closed k ρ`. Unfold `B.sgs`. Use `hG.mul_mem _ (hG.mul_mem _ (hG.mul_mem _ (hG.mul_mem _ ?_ _ ?_) _ hg) _ ?_) _ ?_` and prove the remaining obligations. Conclude with `hG.inv_mem _ (Formalism.FourierDecayAlt.P.B6.UWset_sub k ρ _ hP.1)`. Conclude with `hG.inv_mem _ (Formalism.FourierDecayAlt.P.B6.Nset_sub k ρ hP.2.1)`.
+
+Conclude with `Formalism.FourierDecayAlt.P.B6.Nset_sub k ρ hP.2.2.2`. Conclude with `Formalism.FourierDecayAlt.P.B6.UWset_sub k ρ _ hP.2.2.1`.
+-/
 theorem sgs_GV {Bs : B.RealPlaceData k ρ Wp Wq} {P : B.SS k ρ} (hP : Bs.inSS P) {g : B.Mat k ρ} (hg : g ∈ B.GV k ρ) :
     B.sgs P g ∈ B.GV k ρ := by
   have hG := Formalism.FourierDecayAlt.P.unitary_group_closed k ρ
@@ -184,6 +251,11 @@ theorem sgs_GV {Bs : B.RealPlaceData k ρ Wp Wq} {P : B.SS k ρ} (hP : Bs.inSS P
   · exact Formalism.FourierDecayAlt.P.B6.Nset_sub k ρ hP.2.2.2
   · exact Formalism.FourierDecayAlt.P.B6.UWset_sub k ρ _ hP.2.2.1
 
+/- English proof (translation)
+Establish `hWc` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bs.z).closed`. Establish `hWc'` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bs.z').closed`. Establish `hNc` using `(Formalism.FourierDecayAlt.P.unipotent_radical_closed k ρ).closed`. Establish `e : {P : B.SS k ρ | Bs.inSS P} = (fun p : B.SS k ρ => (p.1.1 : B.Mat k ρ)) ⁻¹' (UWset k ρ Bs.z) ∩ ((fun p : B.SS k ρ => (p.1.2 : B.Mat k ρ)) ⁻¹' (Nset k ρ) ∩ ((fun p : B.SS k ρ => (p.2.1 : B.Mat k ρ)) ⁻¹' (UWset k ρ Bs.z') ∩ (fun p : B.SS k ρ => (p.2.2 : B.Mat k ρ)) ⁻¹' (Nset k ρ …`. Use extensionality with `p`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(hWc.preimage continuous_fst.fst).inter ((hNc.preimage continuous_fst.snd).inter ((hWc'.preimage continuous_snd.fst).inter (hNc.preimage continuous_snd.snd)))`.
+-/
 theorem isClosed_inSS (Bs : B.RealPlaceData k ρ Wp Wq) : IsClosed {P : B.SS k ρ | Bs.inSS P} := by
   have hWc := (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bs.z).closed
   have hWc' := (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bs.z').closed
@@ -197,6 +269,9 @@ theorem isClosed_inSS (Bs : B.RealPlaceData k ρ Wp Wq) : IsClosed {P : B.SS k �
   exact (hWc.preimage continuous_fst.fst).inter ((hNc.preimage continuous_fst.snd).inter
     ((hWc'.preimage continuous_snd.fst).inter (hNc.preimage continuous_snd.snd)))
 
+/- English proof (translation)
+Establish `hinv1 : ContinuousOn (fun p : B.SS k ρ => (Matrix.of p.1.1 : B.Mat k ρ)⁻¹) {P | Bs.inSS P}` using `(Formalism.FourierDecayAlt.P.B6.inv_continuousOn k ρ).comp (continuous_fst.fst).continuousOn (fun p hp => hp.1.1)`. Establish `hinv2 : ContinuousOn (fun p : B.SS k ρ => (Matrix.of p.1.2 : B.Mat k ρ)⁻¹) {P | Bs.inSS P}` using `(Formalism.FourierDecayAlt.P.B6.inv_continuousOn k ρ).comp (continuous_fst.snd).continuousOn (fun p hp => hp.2.1.1)`. Establish `hc4 : ContinuousOn (fun p : B.SS k ρ => (Matrix.of p.2.2 : B.Mat k ρ)) {P | Bs.inSS P}` using `(continuous_snd.snd).continuousOn`. Establish `hc5 : ContinuousOn (fun p : B.SS k ρ => (Matrix.of p.2.1 : B.Mat k ρ)) {P | Bs.inSS P}` using `(continuous_snd.fst).continuousOn`. Conclude with `(((hinv1.mul hinv2).mul continuousOn_const).mul hc4).mul hc5`.
+-/
 theorem sgs_contOn (Bs : B.RealPlaceData k ρ Wp Wq) (g : B.Mat k ρ) :
     ContinuousOn (fun P : B.SS k ρ => B.sgs P g) {P | Bs.inSS P} := by
   have hinv1 : ContinuousOn (fun p : B.SS k ρ => (Matrix.of p.1.1 : B.Mat k ρ)⁻¹) {P | Bs.inSS P} :=
@@ -209,11 +284,29 @@ theorem sgs_contOn (Bs : B.RealPlaceData k ρ Wp Wq) (g : B.Mat k ρ) :
     (continuous_snd.fst).continuousOn
   exact (((hinv1.mul hinv2).mul continuousOn_const).mul hc4).mul hc5
 
+/- English proof (translation)
+Unfold `JF.xiP`. Conclude with `((psi_contM Bs.z cStd).comp continuous_fst.snd).mul (continuous_star.comp ((psi_contM Bs.z' cStd).comp continuous_snd.snd))`.
+-/
 theorem continuous_xi₂ (Bs : B.RealPlaceData k ρ Wp Wq) : Continuous (fun P : B.SS k ρ => JF.xiP Bs P) := by
   unfold JF.xiP
   exact ((psi_contM Bs.z cStd).comp continuous_fst.snd).mul
     (continuous_star.comp ((psi_contM Bs.z' cStd).comp continuous_snd.snd))
 
+/- English proof (translation)
+Use `set S : Set (B.SS k ρ × U.Xi k p 0 ρ σ) := {q | Bj.inSS q.1} with hSdef`. Establish `hS : IsClosed S` using `(isClosed_inSS Bj).preimage continuous_fst`. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW'` as an intermediate fact.
+
+Establish `hae : ∀ᵐ q ∂(Bj.μSS.prod (U.muXi k p 0 ρ σ)), q ∈ S` using `Measure.quasiMeasurePreserving_fst.ae (Formalism.FourierDecayAlt.P.Dx2.OrbJ.ae_inSS Bj)`. Establish `hsgs : ContinuousOn (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => B.sgs q.1 g) S` using `(sgs_contOn Bj g).comp continuous_fst.continuousOn (fun q hq => hq)`. Establish `hpair : ContinuousOn (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => (q.2, B.sgs q.1 g)) S` using `continuous_snd.continuousOn.prodMk hsgs`. Establish `hga : ContinuousOn (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => U.gaXi k ρ σ d q.2 (fun a => a.elim0) (B.sgs q.1 g)) S` using `ContinuousOn.comp (g := fun r : U.Xi k p 0 ρ σ × B.Mat k ρ => U.gaXi k ρ σ d r.1 (fun a => a.elim0) r.2) (f := fun q : B.SS k ρ × U.Xi k p 0 ρ σ => (q.2, B.sgs q.1 g)) (gaXi_cont2 σ d _).continuousOn hpair (Set.mapsTo_univ _ _)`. Establish `hH : ContinuousOn (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => H (U.gaXi k ρ σ d q.2 (fun a => a.elim0) (B.sgs q.1 g))) S` using `ContinuousOn.comp (g := H) (f := fun q : B.SS k ρ × U.Xi k p 0 ρ σ => U.gaXi k ρ σ d q.2 (fun a => a.elim0) (B.sgs q.1 g)) hHc hga (fun q hq => gaXi_dom σ d hd q.2 _ (sgs_GV hq hg))`.
+
+Establish `hps : Continuous (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => U.psiStar k ρ σ (liftVec k p ρ Bj.z) (liftVec k p ρ Bj.z') q.2)` using `(psiStar_cont σ _ _).comp continuous_snd`. Establish `hc1' : Continuous (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => q.1.1.1)` using `continuous_fst.fst.fst`. Establish `hc3' : Continuous (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => q.1.2.1)` using `continuous_fst.snd.fst`. Establish `hc1 : ContinuousOn (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => (Matrix.of q.1.1.1 : B.Mat k ρ)) S` using `hc1'.continuousOn`. Establish `hc3 : ContinuousOn (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => (Matrix.of q.1.2.1 : B.Mat k ρ)) S` using `hc3'.continuousOn`.
+
+Establish `hπ : ContinuousOn (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => Bj.π (Matrix.of q.1.1.1)) S` using `ContinuousOn.comp (g := Bj.π) (f := fun q : B.SS k ρ × U.Xi k p 0 ρ σ => (Matrix.of q.1.1.1 : B.Mat k ρ)) Bj.π_cont hc1 (fun q hq => hq.1)`. Establish `hinv3 : ContinuousOn (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => (Matrix.of q.1.2.1 : B.Mat k ρ)⁻¹) S` using `ContinuousOn.comp (g := fun g : B.Mat k ρ => g⁻¹) (f := fun q : B.SS k ρ × U.Xi k p 0 ρ σ => (Matrix.of q.1.2.1 : B.Mat k ρ)) (Formalism.FourierDecayAlt.P.B6.inv_continuousOn k ρ) hc3 (fun q hq => hq.2.2.1.1)`. Establish `hπ' : ContinuousOn (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => Bj.π' (Matrix.of q.1.2.1 : B.Mat k ρ)⁻¹) S` using `Bj.π'_cont.comp hinv3 (fun q hq => Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hq.2.2.1)`. Establish `hxi : Continuous (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => JF.xiP Bj q.1)` using `(continuous_xi₂ Bj).comp continuous_fst`. Establish `hcont : ContinuousOn (FL Bj (liftVec k p ρ Bj.z) (liftVec k p ρ Bj.z') σ d H g) S`.
+
+Unfold `FL`. Conclude with `hxi.continuousOn.smul (hπ.clm_comp ((hps.continuousOn.smul hH).clm_comp hπ'))`. Establish `: BorelSpace (Mt k ρ × Mt k ρ)` using `Prod.borelSpace`. Establish `: BorelSpace (B.SS k ρ)` using `Prod.borelSpace`. Establish `: BorelSpace ((G.UT p → ℂ) × (Fin p → ℝ))` using `Prod.borelSpace`.
+
+Establish `: BorelSpace (U.RC k p ρ)` using `Prod.borelSpace`. Establish `: BorelSpace (U.RC k p ρ × U.RC k p ρ)` using `Prod.borelSpace`. Establish `: BorelSpace ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))` using `Prod.borelSpace`. Establish `: BorelSpace ((U.LW σ → ℂ) × (G.UT p → ℂ))` using `Prod.borelSpace`. Establish `: BorelSpace (U.XiH p 0 σ)` using `Prod.borelSpace`.
+
+Establish `: BorelSpace (U.Xi k p 0 ρ σ)` using `Prod.borelSpace`. Establish `: BorelSpace (B.SS k ρ × U.Xi k p 0 ρ σ)` using `Prod.borelSpace`. Establish `h1` using `hcont.aestronglyMeasurable (μ := Bj.μSS.prod (U.muXi k p 0 ρ σ)) hS.measurableSet`. Rewrite `h1` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis.
+-/
 theorem fl_aesm (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)
     (H : B.Mat k (p + ρ) → (Wq →L[ℂ] Wp)) (hHc : ContinuousOn H {x | x ∈ B.GV k (p + ρ) ∧ U.DjU k p ρ x ≠ 0})
     (g : B.Mat k ρ) (hg : g ∈ B.GV k ρ) :
@@ -286,12 +379,21 @@ def xiOf (σ : Equiv.Perm (Fin p)) (q : XL k p ρ σ × XR k p ρ) : U.Xi k p 0 
 
 def ssOf (σ : Equiv.Perm (Fin p)) (q : XL k p ρ σ × XR k p ρ) : B.SS k ρ := (q.1.1, q.2.1)
 
+/- English proof (translation)
+Unfold `xiOf`. Use `fun_prop`.
+-/
 theorem xiOf_cont (σ : Equiv.Perm (Fin p)) : Continuous (xiOf (k := k) (ρ := ρ) σ) := by
   unfold xiOf; fun_prop
 
+/- English proof (translation)
+Unfold `ssOf`. Use `fun_prop`.
+-/
 theorem ssOf_cont (σ : Equiv.Perm (Fin p)) : Continuous (ssOf (k := k) (ρ := ρ) σ) := by
   unfold ssOf; fun_prop
 
+/- English proof (translation)
+Unfold `NR`. Establish `h1 : Continuous (fun y : XR k p ρ => U.embG k p ρ (Matrix.of y.1.2))` using `(Formalism.FourierDecayAlt.P.Dx2.SplitF.embg_cont (k := k) p ρ).comp continuous_fst.snd`. Establish `h2 : Continuous (fun y : XR k p ρ => U.muP k p ρ (G.upper y.2.2))` using `(Formalism.FourierDecayAlt.P.Dx2.SplitF.mup_cont (k := k) p ρ).comp continuous_snd.snd`. Establish `h3 : Continuous (fun y : XR k p ρ => U.Rn k p ρ (rcAct (Matrix.of y.1.1) y.2.1))` using `(Formalism.FourierDecayAlt.P.Dx2.SplitF.rn_cont (k := k) p ρ).comp (Continuous.comp (g := fun r : Mt k ρ × U.RC k p ρ => rcAct (Matrix.of r.1) r.2) (f := fun y : XR k p ρ => (y.1.1, y.2.1)) rcAct_cont (by fun_prop))`. Conclude with `(h1.matrix_mul h2).matrix_mul h3`.
+-/
 theorem NR_cont : Continuous (fun y : XR k p ρ => NR y) := by
   unfold NR
   have h1 : Continuous (fun y : XR k p ρ => U.embG k p ρ (Matrix.of y.1.2)) :=
@@ -304,6 +406,31 @@ theorem NR_cont : Continuous (fun y : XR k p ρ => NR y) := by
         (f := fun y : XR k p ρ => (y.1.1, y.2.1)) rcAct_cont (by fun_prop))
   exact (h1.matrix_mul h2).matrix_mul h3
 
+/- English proof (translation)
+Use `set S : Set (XL k p ρ σ × XR k p ρ) := {q | Bj.inSS (ssOf σ q)} with hSdef`. Establish `hS : IsClosed S` using `(isClosed_inSS Bj).preimage (ssOf_cont σ)`. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW'` as an intermediate fact.
+
+Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact. Establish `hae : ∀ᵐ q ∂((muL Bj σ).prod (muR Bj)), q ∈ S`. Establish `a1 : ∀ᵐ x : XL k p ρ σ ∂(muL Bj σ), (Matrix.of x.1.1 : B.Mat k ρ) ∈ UWset k ρ Bj.z ∧ (Matrix.of x.1.2 : B.Mat k ρ) ∈ QuantumDeterminants.Nset k ρ`. Establish `b : ∀ᵐ y : Mt k ρ × Mt k ρ ∂(Bj.μW.prod Bj.μN), (Matrix.of y.1 : B.Mat k ρ) ∈ UWset k ρ Bj.z ∧ (Matrix.of y.2 : B.Mat k ρ) ∈ QuantumDeterminants.Nset k ρ` using `(Measure.quasiMeasurePreserving_fst.ae (Formalism.FourierDecayAlt.P.B5.haar_ae Bj.haarW)).and (Measure.quasiMeasurePreserving_snd.ae (Formalism.FourierDecayAlt.P.B5.haar_ae Bj.haarN))`. Conclude with `(Measure.quasiMeasurePreserving_fst (μ := Bj.μW.prod Bj.μN) (ν := (U.muRC k p ρ).prod ((volume : Measure ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))).prod (volume : Measure (U.LW σ → ℂ))))).ae b`.
+
+Establish `a2 : ∀ᵐ y : XR k p ρ ∂(muR Bj), (Matrix.of y.1.1 : B.Mat k ρ) ∈ UWset k ρ Bj.z' ∧ (Matrix.of y.1.2 : B.Mat k ρ) ∈ QuantumDeterminants.Nset k ρ`. Establish `b : ∀ᵐ y : Mt k ρ × Mt k ρ ∂(Bj.μW'.prod Bj.μN), (Matrix.of y.1 : B.Mat k ρ) ∈ UWset k ρ Bj.z' ∧ (Matrix.of y.2 : B.Mat k ρ) ∈ QuantumDeterminants.Nset k ρ` using `(Measure.quasiMeasurePreserving_fst.ae (Formalism.FourierDecayAlt.P.B5.haar_ae Bj.haarW')).and (Measure.quasiMeasurePreserving_snd.ae (Formalism.FourierDecayAlt.P.B5.haar_ae Bj.haarN))`. Conclude with `(Measure.quasiMeasurePreserving_fst (μ := Bj.μW'.prod Bj.μN) (ν := (U.muRC k p ρ).prod (volume : Measure (G.UT p → ℂ)))).ae b`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae a1, Measure.quasiMeasurePreserving_snd.ae a2] with q h1 h2`. Conclude with `⟨h1.1, h1.2, h2.1, h2.2⟩`.
+
+Use `set A : XL k p ρ σ × XR k p ρ → B.Mat k (p + ρ) := fun q => U.gaXi k ρ σ d (xiOf σ q) (fun a => a.elim0) (B.sgs (ssOf σ q) g) with hAdef`. Establish `hsgs : ContinuousOn (fun q : XL k p ρ σ × XR k p ρ => B.sgs (ssOf σ q) g) S` using `(sgs_contOn Bj g).comp (ssOf_cont σ).continuousOn (fun q hq => hq)`. Establish `hpair : ContinuousOn (fun q : XL k p ρ σ × XR k p ρ => (xiOf σ q, B.sgs (ssOf σ q) g)) S` using `(xiOf_cont σ).continuousOn.prodMk hsgs`. Establish `hA : ContinuousOn A S` using `ContinuousOn.comp (g := fun r : U.Xi k p 0 ρ σ × B.Mat k ρ => U.gaXi k ρ σ d r.1 (fun a => a.elim0) r.2) (f := fun q : XL k p ρ σ × XR k p ρ => (xiOf σ q, B.sgs (ssOf σ q) g)) (gaXi_cont2 σ d _).continuousOn hpair (Set.mapsTo_univ _ _)`. Establish `hHA : ContinuousOn (fun q => H (A q)) S` using `ContinuousOn.comp (g := H) (f := A) hHc hA (fun q hq => gaXi_dom σ d hd (xiOf σ q) _ (sgs_GV hq hg))`.
+
+Establish `hc3' : Continuous (fun q : XL k p ρ σ × XR k p ρ => q.2.1.1)` using `continuous_snd.fst.fst`. Establish `hc3 : ContinuousOn (fun q : XL k p ρ σ × XR k p ρ => (Matrix.of q.2.1.1 : B.Mat k ρ)) S` using `hc3'.continuousOn`. Establish `hinv3 : ContinuousOn (fun q : XL k p ρ σ × XR k p ρ => (Matrix.of q.2.1.1 : B.Mat k ρ)⁻¹) S` using `ContinuousOn.comp (g := fun g : B.Mat k ρ => g⁻¹) (f := fun q : XL k p ρ σ × XR k p ρ => (Matrix.of q.2.1.1 : B.Mat k ρ)) (Formalism.FourierDecayAlt.P.B6.inv_continuousOn k ρ) hc3 (fun q hq => hq.2.2.1.1)`. Establish `hπ : ContinuousOn (fun q : XL k p ρ σ × XR k p ρ => Bj.π' (Matrix.of q.2.1.1 : B.Mat k ρ)⁻¹) S` using `ContinuousOn.comp (g := Bj.π') (f := fun q : XL k p ρ σ × XR k p ρ => (Matrix.of q.2.1.1 : B.Mat k ρ)⁻¹) Bj.π'_cont hinv3 (fun q hq => Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hq.2.2.1)`. Establish `hps : Continuous (fun q : XL k p ρ σ × XR k p ρ => star (psi k (p + ρ) B0.z' cStd (NR q.2)))` using `continuous_star.comp ((psi_contM B0.z' cStd).comp (NR_cont.comp continuous_snd))`.
+
+Establish `hnice : ContinuousOn (fun q : XL k p ρ σ × XR k p ρ => star (psi k (p + ρ) B0.z' cStd (NR q.2)) • (H (A q)).comp (Bj.π' (Matrix.of q.2.1.1 : B.Mat k ρ)⁻¹)) S` using `hps.continuousOn.smul (hHA.clm_comp hπ)`. Establish `heq : ∀ q ∈ S, KrI B0 H (sxL Bj σ q.1 * U.mMap k p ρ (U.hMat σ d) g) (PsiR q.2) = star (psi k (p + ρ) B0.z' cStd (NR q.2)) • (H (A q)).comp (Bj.π' (Matrix.of q.2.1.1 : B.Mat k ρ)⁻¹)`. Introduce `q hq`. Take `⟨hh, hν, hh', hν'⟩` from `hq`. Establish `uh : IsUnit (Matrix.of q.1.1.1 : B.Mat k ρ).det` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bj.z).unit _ hh`.
+
+Establish `uν : IsUnit (Matrix.of q.1.1.2 : B.Mat k ρ).det` using `(Formalism.FourierDecayAlt.P.unipotent_radical_closed k ρ).unit _ hν`. Establish `uh' : IsUnit (Matrix.of q.2.1.1 : B.Mat k ρ).det` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bj.z').unit _ hh'`. Establish `hH' : (Matrix.of q.2.1.1 : B.Mat k ρ)ᴴ * Hpk k ρ * Matrix.of q.2.1.1 = Hpk k ρ` using `hh'.1`. Establish `hpt : sxL Bj σ q.1 * U.mMap k p ρ (U.hMat σ d) g * Matrix.of (PsiR q.2).2 * Matrix.of (PsiR q.2).1 = A q`. Use `hGS k p ρ σ d (xiOf σ q) (fun a => a.elim0) (Matrix.of q.1.1.1) (Matrix.of q.1.1.2) (Matrix.of q.2.1.1) (Matrix.of q.2.1.2) g uh uν hH'` as an intermediate fact.
+
+Use `show _ = U.gaXi k ρ σ d (xiOf σ q) (fun a => a.elim0) (B.sgs (ssOf σ q) g)`. Rewrite using `[show B.sgs (ssOf σ q) g = (Matrix.of q.1.1.1 : B.Mat k ρ)⁻¹ * (Matrix.of q.1.1.2 : B.Mat k ρ)⁻¹ * g * Matrix.of q.2.1.2 * Matrix.of q.2.1.1 from rfl]`. Use `symm`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [sxL, if_pos (show GoodL Bj σ q.1 from ⟨hh, hν⟩), PsiR, NR, of_levMt, Equiv.apply_symm_apply]`.
+
+Both sides reduce to the same expression. Establish `hpi : B0.π' (Matrix.of (PsiR q.2).1)⁻¹ = Bj.π' (Matrix.of q.2.1.1 : B.Mat k ρ)⁻¹`. Simplify using `only [PsiR, of_levMt]`. Rewrite using `[← Formalism.FourierDecayAlt.P.LeftFubiniLemmas.embG_inv uh', hπ']`. Establish `hN : Matrix.of (PsiR q.2).2 = NR q.2` using `by simp only [PsiR, Equiv.apply_symm_apply]`.
+
+Unfold `KrI`. Rewrite using `[hpt, hpi, hN]`. Establish `: BorelSpace (Mt k ρ × Mt k ρ)` using `Prod.borelSpace`. Establish `: BorelSpace ((G.UT p → ℂ) × (Fin p → ℝ))` using `Prod.borelSpace`. Establish `: BorelSpace (U.RC k p ρ)` using `Prod.borelSpace`.
+
+Establish `: BorelSpace ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))` using `Prod.borelSpace`. Establish `: BorelSpace (((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ)) × (U.LW σ → ℂ))` using `Prod.borelSpace`. Establish `: BorelSpace (U.RC k p ρ × (((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ)) × (U.LW σ → ℂ)))` using `Prod.borelSpace`. Establish `: BorelSpace (XL k p ρ σ)` using `Prod.borelSpace`. Establish `: BorelSpace (U.RC k p ρ × (G.UT p → ℂ))` using `Prod.borelSpace`.
+
+Establish `: BorelSpace (XR k p ρ)` using `Prod.borelSpace`. Establish `: BorelSpace (XL k p ρ σ × XR k p ρ)` using `Prod.borelSpace`. Establish `h1` using `(hnice.congr heq).aestronglyMeasurable (μ := (muL Bj σ).prod (muR Bj)) hS.measurableSet`. Rewrite `h1` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Then use the resulting hypothesis.
+-/
 theorem aestronglyMeasurable_germ_integrand (hGS : GaXiSplit) (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k (p + ρ) Wp Wq)
     (hz' : B0.z' = liftVec k p ρ Bj.z') (hπ' : ∀ y, Bj.π' y = B0.π' (U.embG k p ρ y))
     (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)

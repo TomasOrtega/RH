@@ -29,6 +29,9 @@ open Formalism.FourierDecayAlt.P.TwoByOneBlock Formalism.FourierDecayAlt.P.BigCe
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `Hb`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem hb_mul_self : Hb k * Hb k = 1 := by
   unfold Hb
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -36,12 +39,30 @@ theorem hb_mul_self : Hb k * Hb k = 1 := by
   funext j
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Apply `Matrix.isUnit_det_of_left_inverse (B := Hb k * μᴴ * Hb k)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isUnit_det_of_hb {μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (h : μᴴ * Hb k * μ = Hb k) :
     IsUnit μ.det := by
   apply Matrix.isUnit_det_of_left_inverse (B := Hb k * μᴴ * Hb k)
   calc Hb k * μᴴ * Hb k * μ = Hb k * (μᴴ * Hb k * μ) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [h, hb_mul_self]
 
+/- English proof (translation)
+Use `⟨WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul hA hn.1) hB, ?_, ?_⟩` and prove the remaining obligations. Introduce `a i hai`. Establish `hea : ¬ mid k r (eI k r a)`. Use `a.isLt` as an intermediate fact. Simplify using `only [mid, eI]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (eI k r a)]`. Rewrite using `[hB1 _ _ hea, if_pos rfl, mul_one, Matrix.mul_apply, Finset.sum_eq_single (eI k r a)]`. Rewrite using `[hn.2.1 a (eI k r a) (by simp [eI]), if_pos rfl, mul_one, hA1 _ _ hea]`. Introduce `l _ hl`.
+
+Distinguish the cases in `hla : a.val ≤ l.val`. Rewrite using `[hn.2.1 a l hla, if_neg hl, mul_zero]`. Establish `hlm : ¬ mid k r l` using `by have := a.isLt; simp only [mid]; omega`. Rewrite using `[hA1 i l hlm, if_neg (by rw [Fin.ext_iff]; omega), zero_mul]`. Simplify using the standard rewrite rules.
+
+Introduce `l _ hl`. Rewrite using `[hB1 _ _ hea, if_neg hl, mul_zero]`. Simplify using the standard rewrite rules. Introduce `i j hj1 hj2 hi`. Establish `hjm : mid k r j` using `⟨hj1, hj2⟩`.
+
+Rewrite using `[Matrix.mul_apply]`. Establish `key : ∀ m, (A * n) i m * B m j = A i m * B m j`. Introduce `m`. Distinguish the cases in `hm : mid k r m`. Use `congr 1`.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single m]`. Rewrite using `[hn.2.2 m m hm.1 hm.2 hm.1, if_pos rfl, mul_one]`. Introduce `l _ hl`. Distinguish the cases in `hlr : r ≤ l.val`. Rewrite using `[hn.2.2 l m hm.1 hm.2 hlr, if_neg hl, mul_zero]`.
+
+Establish `hlm : ¬ mid k r l` using `by simp only [mid]; omega`. Rewrite using `[hA1 i l hlm, if_neg (by rw [Fin.ext_iff]; omega), zero_mul]`. Simplify using the standard rewrite rules. Rewrite using `[hB3 m j hjm hm, mul_zero, mul_zero]`. Rewrite using `[Finset.sum_congr rfl (fun m _ => key m), ← Matrix.mul_apply, hAB, Matrix.one_apply]`.
+-/
 theorem conj_mem_of_levi (A B n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (hAB : A * B = 1) (hA : A ∈ UH (Hpk k r)) (hB : B ∈ UH (Hpk k r))
     (hA1 : ∀ i j, ¬ mid k r j → A i j = if i = j then 1 else 0)
@@ -82,6 +103,17 @@ theorem conj_mem_of_levi (A B n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k +
       · rw [hB3 m j hjm hm, mul_zero, mul_zero]
     rw [Finset.sum_congr rfl (fun m _ => key m), ← Matrix.mul_apply, hAB, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `hg₁` using `big_cell_mem_holds k r c μ₁ hc h₁`. Establish `hg` using `big_cell_mem_holds k r c μ hc h`. Establish `u₁` using `WeylGroupFacts.isUnit_of_uh hg₁`. Establish `hμ₁` using `isUnit_det_of_hb h₁`. Use `⟨WeylGroupFacts.uh_mul (WeylGroupFacts.uh_inv hg₁) hg, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i j hj`. Rewrite using `[Matrix.mul_apply, Finset.sum_congr rfl (fun l _ => by rw [bc_out_col c μ μ₁ l j hj]), ← Matrix.mul_apply, Matrix.nonsing_inv_mul _ u₁, Matrix.one_apply]`. Introduce `m j hj hm`. Take `⟨t, rfl⟩` from `mid_exists hj`. Establish `e1 : (Pi.single (wI k r t) 1 : Fin (2 * r + k + 1) → ℂ) = jV k r (Pi.single t 1)`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : mid k r i`. Take `⟨s, rfl⟩` from `mid_exists hi`. Rewrite using `[jV_wI]`. Simplify using `only [Pi.single_apply, wI_inj.eq_iff]`.
+
+Rewrite using `[jV_out _ hi, Pi.single_apply, if_neg (fun he : i = wI k r t => hi (he ▸ mid_wI t))]`. Establish `col : ((bigCell k r c μ₁)⁻¹ * bigCell k r c μ) m (wI k r t) = (((bigCell k r c μ₁)⁻¹ * bigCell k r c μ) *ᵥ Pi.single (wI k r t) 1) m`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `back : ∀ v : Fin (k + 1) → ℂ, jV k r v = bigCell k r c μ₁ *ᵥ jV k r (μ₁⁻¹ *ᵥ v)`.
+
+Introduce `v`. Rewrite using `[bigCell_mulVec_jV, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hμ₁, Matrix.one_mulVec]`. Rewrite using `[col, ← Matrix.mulVec_mulVec, e1, bigCell_mulVec_jV, back, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ u₁, Matrix.one_mulVec, jV_out _ hm]`.
+-/
 theorem cellQuot_props (c : Fin r → ℂ) (μ₁ μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (hc : ∀ a, c a ≠ 0) (h₁ : μ₁ᴴ * Hb k * μ₁ = Hb k) (h : μᴴ * Hb k * μ = Hb k) :
     (bigCell k r c μ₁)⁻¹ * bigCell k r c μ ∈ UH (Hpk k r) ∧
@@ -114,6 +146,17 @@ theorem cellQuot_props (c : Fin r → ℂ) (μ₁ μ : Matrix (Fin (k + 1)) (Fin
     rw [col, ← Matrix.mulVec_mulVec, e1, bigCell_mulVec_jV, back, Matrix.mulVec_mulVec,
       Matrix.nonsing_inv_mul _ u₁, Matrix.one_mulVec, jV_out _ hm]
 
+/- English proof (translation)
+Introduce `k r c μ₁ μ hc h₁ h n`. Establish `u₁` using `WeylGroupFacts.isUnit_of_uh (big_cell_mem_holds k r c μ₁ hc h₁)`. Establish `u` using `WeylGroupFacts.isUnit_of_uh (big_cell_mem_holds k r c μ hc h)`. Take `⟨hA, hA1, hA3⟩` from `cellQuot_props c μ₁ μ hc h₁ h`. Take `⟨hB, hB1, hB3⟩` from `cellQuot_props c μ μ₁ hc h h₁`.
+
+Establish `hinv : ((bigCell k r c μ₁)⁻¹ * bigCell k r c μ)⁻¹ = (bigCell k r c μ)⁻¹ * bigCell k r c μ₁`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ u₁]`. Establish `hAB : (bigCell k r c μ₁)⁻¹ * bigCell k r c μ * ((bigCell k r c μ)⁻¹ * bigCell k r c μ₁) = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ u, Matrix.nonsing_inv_mul _ u₁]`. Establish `hBA : (bigCell k r c μ)⁻¹ * bigCell k r c μ₁ * ((bigCell k r c μ₁)⁻¹ * bigCell k r c μ) = 1`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ u₁, Matrix.nonsing_inv_mul _ u]`. Rewrite using `[hinv]`. Prove the components needed by the constructor for the conclusion. Conclude with `conj_mem_of_levi _ _ n hAB hA hB hA1 hB1 hB3`. Introduce `hn'`.
+
+Use `conj_mem_of_levi _ _ _ hBA hB hA hB1 hA1 hA3 hn'` as an intermediate fact. Establish `e : (bigCell k r c μ)⁻¹ * bigCell k r c μ₁ * ((bigCell k r c μ₁)⁻¹ * bigCell k r c μ * n * ((bigCell k r c μ)⁻¹ * bigCell k r c μ₁)) * ((bigCell k r c μ₁)⁻¹ * bigCell k r c μ) = n`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = n := by rw [hBA, Matrix.one_mul, Matrix.mul_one]`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem levi_conj_mem_iff : ∀ (k r : ℕ) (c : Fin r → ℂ) (μ₁ μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ),
     (∀ a, c a ≠ 0) → μ₁ᴴ * Formalism.QuantumDeterminants.Hb k * μ₁ = Formalism.QuantumDeterminants.Hb k →
     μᴴ * Formalism.QuantumDeterminants.Hb k * μ = Formalism.QuantumDeterminants.Hb k →

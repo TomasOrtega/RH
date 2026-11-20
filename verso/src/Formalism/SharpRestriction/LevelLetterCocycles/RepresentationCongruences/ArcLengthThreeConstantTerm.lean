@@ -21,6 +21,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Establish `hp11 : 11 ≤ PD.p` using `hB.1`. Establish `hl5 : 5 ≤ PD.p` using `by omega`. Establish `hSur : Formalism.MainNotions.LiftingTheory.Sur W F` using `hB.2.1.2.1`. Establish `hthick : ∀ s' < (arcOf b w S η up size).len c, ((arcOf b w S η up size).ty (c - (s' : ZMod n))).thick`. Introduce `s' _`.
+
+Use `show ((if up (c - (s' : ZMod n)) then Formalism.MainNotions.LocalTheoryWindows.LT.up (size (c - (s' : ZMod n))) else Formalism.MainNotions.LocalTheoryWindows.LT.down (size (c - (s' : ZMod n)))).thick) = true`. Apply the tactic sequence `cases up (c - (s' : ZMod n)) <;> rfl`. Take `⟨d₁, b₁, sol₁, c₁, hb₁, hpr⟩` from `constants_pre W (arcOf b w S η up size) F c bb sol k₀ hOK hc hcase hl5 hHF hArcL hW₁ hSur rr hkill hbb`. Conclude with `LiftsAtT.letter W (arcOf b w S η up size) F c bb sol k₀ hbb (liftsAt_constants_type W (arcOf b w S η up size) F c bb sol k₀ hOK hc hthick hcase hl5 hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hArcL hW₁ hW₂ hSur rr hkill hbb hk₀ b₁ sol₁ hb₁ c₁ hpr X₂)`.
+-/
 theorem arc_length_three_constant_term [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

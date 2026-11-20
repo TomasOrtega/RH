@@ -9,6 +9,9 @@ namespace GlobalTheory.KerDia.RhoDia
 section Gen
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hN : q.deco.1.N = p.deco.1.N` using `by rw [hd]; rfl`. Establish `hbe : q.deco.1.be = p.deco.1.be` using `by rw [hd]; rfl`. Establish `h` using `ptFr_congr (p := q) (p' := p) hN hbe hfr`. Unfold `detPt ptIdl`. Rewrite using `[h, hN]`.
+-/
 theorem pointDeterminant_diamondOperator_invariant {R : Ranks} (H : Formalism.BasicNotions.Host R) (SQ : Finset (HeightOneSpectrum (𝓞 H.E))) {n : ℕ}
     {ST SG Q : Finset (HeightOneSpectrum (𝓞 H.E))} (p q : DecoF H.E n ST SG Q) (P : ST) (c : (𝓞 H.E ⧸ P.1.asIdeal)ˣ)
     (hd : q.deco = DecoSet.dia1 P c p.deco) (hfr : q.fr = p.fr) : detPt H SQ q = detPt H SQ p := by
@@ -20,6 +23,11 @@ theorem pointDeterminant_diamondOperator_invariant {R : Ranks} (H : Formalism.Ba
 
 end Gen
 
+/- English proof (translation)
+Introduce `B X I _ u a i b p b' p' P s`. Take `⟨h1, h2, -⟩` from `GlobalTheory.LvT.Built.decoratedLatticePoint_move_diamond p P s`. Take `⟨h1', h2', -⟩` from `GlobalTheory.LvT.Built.decoratedLatticePoint_move_diamond p' P s`. Establish `e` using `pointDeterminant_diamondOperator_invariant B.host I.SQ p.1.1 _ P s h1 h2`. Establish `e'` using `pointDeterminant_diamondOperator_invariant B.host I.SQ p'.1.1 _ P s h1' h2'`.
+
+Prove the components needed by the constructor for the conclusion. Use `show ((rhoAt I.SQ I.C (I.xi a) i (p.mv (DecoSet.dia1 P s p.1.1.deco)).1.1 : ℂˣ) : ℂ) = ((rhoAt I.SQ I.C (I.xi a) i p.1.1 : ℂˣ) : ℂ)`. Rewrite using `[rhoAt_eq, rhoAt_eq, e]`. Use `show ((rhoAt' I.SQ I.C (I.xi a) i (p'.mv (DecoSet.dia1 P s p'.1.1.deco)).1.1 : ℂˣ) : ℂ) = ((rhoAt' I.SQ I.C (I.xi a) i p'.1.1 : ℂˣ) : ℂ)`. Rewrite using `[rhoAt'_eq, rhoAt'_eq, e']`.
+-/
 theorem rho_dia : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Laws → ∀ (u : B.Word) (a : I.ι) (i : ℕ) (b : (I.stp u a i).β) (p : (I.stp u a i).D b) (b' : (I.stp u a (i + 1)).β) (p' : (I.stp u a (i + 1)).D b') (P : (I.atIn u a).ST) (s : (Res P.1)ˣ), I.rho u a i b (((I.atIn u a).A i).dia b P s p) = I.rho u a i b p ∧ I.rho' u a i b' (((I.atIn u a).A (i + 1)).dia b' P s p') = I.rho' u a i b' p' := by
   intro B X I _ u a i b p b' p' P s
   obtain ⟨h1, h2, -⟩ := GlobalTheory.LvT.Built.decoratedLatticePoint_move_diamond p P s

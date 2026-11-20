@@ -18,6 +18,23 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.Inf0
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ hM h₀ d b μ ν m hμ hν hm φ hφc hφ0 hφr D hDc hD`. Take `⟨ρ, e, hρ, he, heρ, hen, -⟩` from `GlobalTheory.T.infinite_adele_haar_map_eq_scaled_volume F hCM.1`. Establish `hd : d = 2`. Establish `h` using `Module.finrank_eq_card_basis b`. Simplify `h.symm` using `[hCM.2.2.1]`.
+
+Establish `hLoc : IsLocR (Ainf F)` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1`. Take `⟨hTR, hLC, hSC, hT2, -, -, -, -⟩` from `id hLoc`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Take `⟨hKr, hKl, hKs, hK2, -, -, -, hVb, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Ainf F)`. Use `haveI := hKr`.
+
+Use `haveI := hKl`. Use `haveI := hKs`. Use `haveI := hK2`. Use `haveI := hVb 1 M`. Take `⟨hXl, hXs, hX2, hXb, hlift⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hCM (Ainf F) 1`.
+
+Use `haveI := hXl`. Use `haveI := hXs`. Use `haveI := hX2`. Use `haveI := hXb`. Take `⟨g, hgc, hgf⟩` from `hlift M J hJ`.
+
+Establish `hreal : ∀ (A Pm : InfinitePlace F → Matrix (Fin M × Fin d) (Fin M × Fin d) ℝ) (Di : (InfinitePlace F → ℝ) → ℝ), Continuous Di → (∀ U : Set (InfinitePlace F → ℝ), MeasurableSet U → ∫⁻ x in qR0 A ⁻¹' U, ENNReal.ofReal (gaussR Pm x) = ∫⁻ y in U, ENNReal.ofReal (Di y)) → ∀ f : (Infin …`. Introduce `A Pm Di hDi hdens f hf hf0 hfr ε hε`. Establish `hcard : Fintype.card (Fin M × Fin d) = M * 2` using `by simp [hd]`. Take `⟨C, hC⟩` from `GlobalTheory.T.quadratic_box_volume_bound (InfinitePlace F) (Fin M × Fin d) A Pm Di (by omega) hDi hdens`. Establish `hQ : Measurable (qR0 A : (InfinitePlace F → Fin M × Fin d → ℝ) → _)`.
+
+Use `Continuous.measurable (continuous_pi fun w => continuous_const.mul ?_)` and prove the remaining obligations. Conclude with `(continuous_apply w).dotProduct (continuous_const.matrix_mulVec (continuous_apply w))`. Conclude with `GlobalTheory.T.quadratic_box_integral_small_ball (InfinitePlace F) (Fin M × Fin d) _ (by omega) (qR0 A) hQ C hC f hf hf0 hfr ε hε`. Use `GlobalTheory.T.disintegration_injective_open_map _ _ _ μ ν (gramR (Ainf F) σ J) g Subtype.val Subtype.val_injective hgc hgf _ m (GlobalTheory.CompanionTheory.WeilSiegel.FreeOpen.isOpen_free F E σ hCM (Ainf F) hLoc 1 M) hm φ hφc hφ0 D hDc hD ?_ _` and prove the remaining obligations. Introduce `ε hε`.
+
+Take `⟨δ, R, hδ, hR, hK, hb⟩` from `GlobalTheory.T.archimedean_rank_one_volume_bound F E σ hCM M J hJ hM d b ρ e hρ he heρ hen hreal μ ν hμ hν φ hφc hφ0 hφr ε hε`. Use `⟨_, hK, ?_, hb⟩` and prove the remaining obligations. Introduce `X hX`. Use `GlobalTheory.T.archimedean_rank_one_free_of_places F E σ hCM M d b ρ e hρ he heρ X fun w h => ?_` and prove the remaining obligations. Establish `h1` using `(hX w).1`.
+
+Establish `h2 : ‖(fun w => xw e b X w) w‖ = 0` using `by show ‖xw e b X w‖ = 0`. Rewrite using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem fibre_rapid_zero_eq_density : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (h₀ : ∀ a b : Fin 1, σ ((0 : Matrix (Fin 1) (Fin 1) E) b a) = (0 : Matrix (Fin 1) (Fin 1) E) a b), ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (μ : Measure (Fin 1 → Fin M → Ainf F ⊗[F] E)) (ν : Measure (HermR (Ainf F) σ 1)) (m : HermR (Ainf F) σ 1 → Measure (Fin 1 → Fin M → Ainf F ⊗[F] E)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsGramFibFree (Ainf F) σ J 1 μ ν m → ∀ φ : (Fin 1 → Fin M → Ainf F ⊗[F] E) → ℝ, Continuous φ → (∀ X, 0 ≤ φ X) → RapidDecay b (fun X => (φ X : ℂ)) → ∀ D : HermR (Ainf F) σ 1 → ℝ, Continuous D → (∀ U : Set (HermR (Ainf F) σ 1), MeasurableSet U → ∫⁻ X in gramR (Ainf F) σ J ⁻¹' (Subtype.val '' U), ENNReal.ofReal (φ X) ∂μ = ∫⁻ S in U, ENNReal.ofReal (D S) ∂ν) → ∫⁻ X, ENNReal.ofReal (φ X) ∂(m (hermOf (Ainf F) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀)) = ENNReal.ofReal (D (hermOf (Ainf F) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀)) := by
   intro F E _ _ _ _ _ σ hCM M J hJ hM h₀ d b μ ν m hμ hν hm φ hφc hφ0 hφr D hDc hD
   obtain ⟨ρ, e, hρ, he, heρ, hen, -⟩ := GlobalTheory.T.infinite_adele_haar_map_eq_scaled_volume F hCM.1

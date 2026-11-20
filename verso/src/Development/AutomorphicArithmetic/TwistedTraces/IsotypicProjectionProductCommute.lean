@@ -5,6 +5,37 @@ import Development.AutomorphicArithmetic.TwistedTraces.FixedProjectionApplyEquiv
 open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.C.Sf
 
+/- English proof (translation)
+Introduce `r G _ _ _ _ _ _ H _ _ _ S _ _ π τ Z hsm hc hZc hZi s I R hRZ hRs hI L K hL hKL hsK i f hf`. Set `a : Fin r → (H →L[ℂ] H)` to `fun j => prj (fixU (π j) (L j))`. Establish `hcomm : ∀ p q, p ≠ q → Commute (a p) (a q)` using `fun p q hpq => by`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Conclude with `((UpperTheory.fixedProjection_invariant_and_commuting_reps (G p) (G q) H (π p) (π q) (L p) (L q)).2.2.2 (hc p q hpq)).2 v`.
+
+Establish `hact : ∀ j, j ≠ i → ∀ g v, a j (π i g v) = π i g (a j v)` using `fun j hj g v => ((UpperTheory.fixedProjection_invariant_and_commuting_reps (G j) (G i) H (π j) (π i) (L j) (L i)).2.2.2 (hc j i hj)).1 g v`. Take `⟨hprod, hQc⟩` from `UpperTheory.list_ofFn_prod_eq_mul_update_one_of_pairwise_commute (H →L[ℂ] H) r a hcomm i`. Set `b : Fin r → (H →L[ℂ] H)` to `Function.update a i 1`. Set `Q : H →L[ℂ] H` to `(List.ofFn b).prod`. Establish `hQa : Commute (a i) Q` using `hQc (a i) fun j hj => hcomm i j hj.symm`.
+
+Establish `hQπ : ∀ g v, Q (π i g v) = π i g (Q v)` using `fun g v => by`. Establish `h : Commute (π i g : H →L[ℂ] H) Q` using `hQc _ fun j hj => by`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Conclude with `(hact j hj g v).symm`. Conclude with `(congrArg (fun T : H →L[ℂ] H => T v) h.eq).symm`.
+
+Establish `hb : ∀ p q, p ≠ q → Commute (b p) (b q)` using `fun p q hpq => by`. Distinguish the cases in `hp : p = i`. Substitute `hp` using the available equality. Simplify using `only [b, Function.update_self]`. Conclude with `Commute.one_left _`.
+
+Distinguish the cases in `hq : q = i`. Substitute `hq` using the available equality. Simplify using `only [b, Function.update_self]`. Conclude with `Commute.one_right _`. Simplify using `only [b, Function.update_of_ne hp, Function.update_of_ne hq]`.
+
+Conclude with `hcomm p q hpq`. Establish `hQZ : ∀ v ∈ Z, Q v ∈ Z`. Set `M : Submonoid (H →L[ℂ] H)` to `{ carrier := {T | ∀ v ∈ Z, T v ∈ Z} mul_mem' := fun ha hb v hv => ha _ (hb v hv) one_mem' := fun v hv => hv }`. Establish `hM : Q ∈ M`. Use `Submonoid.list_prod_mem M fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨j, rfl⟩` from `List.mem_ofFn.mp hx`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `only [b, Function.update_self]`. Conclude with `M.one_mem`.
+
+Simplify using `only [b, Function.update_of_ne hj]`. Conclude with `fun v hv => (UpperTheory.fixedProjection_invariant_and_commuting_reps (G j) (G j) H (π j) (π j) (L j) (L j)).2.2.1 Z hZc (hZi j) v hv`. Conclude with `hM`. Establish `hQfix : ∀ j, j ≠ i → ∀ v, Q v ∈ fixU (π j) (L j)` using `fun j hj v => by`. Establish `h` using `(UpperTheory.list_ofFn_prod_eq_mul_update_one_of_pairwise_commute (H →L[ℂ] H) r b hb j).1`.
+
+Establish `h2 : Q v = a j ((List.ofFn (Function.update b j 1)).prod v)`. Establish `h3 : b j = a j` using `Function.update_of_ne hj _ _`. Express the relevant statement in the definitionally equal form `(List.ofFn b).prod v = _`. Rewrite using `[h, h3]`. Both sides reduce to the same expression.
+
+Rewrite using `[h2]`. Conclude with `(UpperTheory.fixedProjection_invariant_and_commuting_reps (G j) (G j) H (π j) (π j) (L j) (L j)).1 _`. Set `f' : S i →ₗ[ℂ] H` to `(R : H →ₗ[ℂ] H) ∘ₗ (Q : H →ₗ[ℂ] H) ∘ₗ f ∘ₗ ((I i).symm : S i →ₗ[ℂ] S i)`. Establish `hf' : ∀ y, f' y = R (Q (f ((I i).symm y)))` using `fun y => rfl`. Establish `hfZ : ∀ x, f x ∈ Z` using `fun x => (Submodule.mem_inf.1 (hf.mem x)).1`.
+
+Use `⟨f', ⟨fun y => ?_, fun g y => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hf']`. Establish `hw` using `hQZ _ (hfZ ((I i).symm y))`. Use `Submodule.mem_inf.2 ⟨hRZ _ hw, ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf]`.
+
+Introduce `j hj u hu`. Establish `h` using `hRs j ((s j).symm u) _ hw`. Rewrite `h` using `[(s j).apply_symm_apply]`. Rewrite using `[← h, hQfix j hj _ _ (hsK j u hu)]`. Establish `hIs : (I i).symm (τ i g y) = τ i ((s i).symm g) ((I i).symm y)`.
+
+Apply `(I i).injective` to reduce the goal to its premises. Rewrite using `[hI, (I i).apply_symm_apply, (I i).apply_symm_apply, (s i).apply_symm_apply]`. Rewrite using `[hf', hf', hIs, hf.map, hQπ, hRs i _ _ (hQZ _ (hfZ _)), (s i).apply_symm_apply]`. Establish `hE : Eqv (τ i) (π i) ⊤ f` using `⟨fun _ => Submodule.mem_top, hf.map⟩`. Establish `h1` using `UpperTheory.fixedProjection_apply_equivariant_eq (G i) H (S i) (τ i) (hsm i) (π i) (L i) (hL i).1 (hL i).2 f hE x`.
+
+Establish `h2 : (List.ofFn a).prod (f x) = Q (a i (f x))`. Rewrite using `[hprod]`. Conclude with `congrArg (fun T : H →L[ℂ] H => T (f x)) hQa.eq`. Rewrite using `[hf', (I i).symm_apply_apply]`. Express the relevant statement in the definitionally equal form `R ((List.ofFn a).prod (f x)) = _`.
+
+Rewrite using `[h2]`. Express the relevant statement in the definitionally equal form `R (Q (prj (fixU (π i) (L i)) (f x))) = _`. Rewrite using `[h1]`.
+-/
 theorem UpperTheory.isotypic_projection_product_commute :
     ∀ (r : ℕ) (G : Fin r → Type) [∀ i, Group (G i)] [∀ i, TopologicalSpace (G i)] [∀ i, IsTopologicalGroup (G i)] [∀ i, LocallyCompactSpace (G i)] [∀ i, T2Space (G i)] [∀ i, TotallyDisconnectedSpace (G i)] (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (S : Fin r → Type) [∀ i, AddCommGroup (S i)] [∀ i, Module ℂ (S i)] (π : ∀ i, UnitaryRep (G i) H) (τ : ∀ i, Representation ℂ (G i) (S i)) (Z : Submodule ℂ H) (hsm : ∀ i, GroundTheory.Automorphic.IsSmooth (τ i)), (∀ i j, i ≠ j → ∀ g h v, π i g (π j h v) = π j h (π i g v)) → IsClosed (Z : Set H) → (∀ i, (π i).IsInvariant Z) → ∀ (s : ∀ i, G i ≃ₜ* G i) (I : ∀ i, S i ≃ₗ[ℂ] S i) (R : H →L[ℂ] H), (∀ v ∈ Z, R v ∈ Z) → (∀ i g, ∀ v ∈ Z, R (π i g v) = π i (s i g) (R v)) → (∀ i g x, I i (τ i g x) = τ i (s i g) (I i x)) → ∀ (L K : ∀ i, Subgroup (G i)) (hL : (∀ i, IsCompact (L i : Set (G i)) ∧ IsOpen (L i : Set (G i)))), (∀ i, K i ≤ L i) → (∀ i, ∀ k ∈ K i, (s i).symm k ∈ L i) → ∀ i f, Eqv (τ i) (π i) (Z ⊓ ⨅ j, ⨅ _ : j ≠ i, fixU (π j) (K j)) f → ∃ f', Eqv (τ i) (π i) (Z ⊓ ⨅ j, ⨅ _ : j ≠ i, fixU (π j) (K j)) f' ∧ ∀ x, R ((List.ofFn fun j => prj (fixU (π j) (L j))).prod (f x)) = f' (I i (fixedProj (τ i) (hsm i) (hL i).1 (hL i).2 x : S i)) := by
   intro r G _ _ _ _ _ _ H _ _ _ S _ _ π τ Z hsm hc hZc hZi s I R hRZ hRs hI L K hL hKL hsK i f hf

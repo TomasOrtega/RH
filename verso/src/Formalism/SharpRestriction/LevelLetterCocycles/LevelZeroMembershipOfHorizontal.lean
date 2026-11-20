@@ -20,6 +20,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [IsDomain O] [NeZero n] [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O]
 
+/- English proof (translation)
+Introduce `x k f _ hr hfr hx`. Take `⟨ζ, hζ⟩` from `hζex`. Use `choose u hu hfu using hfr`. Conclude with `Formalism.MainNotions.UnusedSlot80.CrD.secIn_of_fil W C A hA c' hc' T hT b hb.1 e ζ hζ f u hu hfu (fil_of_rep W levB C Ti E1 E2 h4 A hA c' hc' T hT b sol hb e ζ hζ x k f u hfu hr hx)`.
+-/
 theorem level_zero_membership_of_horizontal (C : Formalism.MainNotions.UnusedSlot80.LevC.Ctx W) (Ti : Formalism.MainNotions.UnusedSlot80.LevE.Comparison₂ W levB)
     (E1 : Formalism.MainNotions.UnusedSlot80.LevE.ExpFrame0 W levB) (E2 : Formalism.MainNotions.UnusedSlot80.LevE.ExpNoNeg0 W levB)
     (h4 : Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration W) (hζex : ∃ ζ : LL, IsPrimitiveRoot ζ PD.p) (A : ArcP n) (hA : A.OK)

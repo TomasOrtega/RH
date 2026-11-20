@@ -24,6 +24,9 @@ def evM {p : ℕ} [Fact p.Prime] (P : MvPolynomial (ι × Fin n × Fin n) ℂ_[p
     (ι → Matrix (Fin n) (Fin n) ℂ_[p]) → ℂ_[p] :=
   fun y => MvPolynomial.eval (fun k : ι × Fin n × Fin n => y k.1 k.2.1 k.2.2) P
 
+/- English proof (translation)
+Unfold `Formalism.L2.Forms.ten Formalism.MainNotions.flipTwoThree.ten`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun τ _ => (MvPolynomial.map_rename _ _ _).symm`.
+-/
 theorem ten_int_map (R : Type) [CommRing R] (f : ι → MvPolynomial (Fin n × Fin n) ℤ) :
     Formalism.L2.Forms.ten (fun τ => MvPolynomial.map (Int.castRingHom R) (f τ)) =
       MvPolynomial.map (Int.castRingHom R) (Formalism.MainNotions.flipTwoThree.ten f) := by
@@ -31,6 +34,9 @@ theorem ten_int_map (R : Type) [CommRing R] (f : ι → MvPolynomial (Fin n × F
   rw [map_prod]
   exact Finset.prod_congr rfl fun τ _ => (MvPolynomial.map_rename _ _ _).symm
 
+/- English proof (translation)
+Unfold `evM Formalism.MainNotions.flipTwoThree.ten`. Rewrite using `[map_prod, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_rename, MvPolynomial.eval_rename]`. Both sides reduce to the same expression.
+-/
 theorem prod_eval_eq_evM {p : ℕ} [Fact p.Prime] (f : ι → MvPolynomial (Fin n × Fin n) ℤ)
     (y : ι → Matrix (Fin n) (Fin n) ℂ_[p]) :
     ∏ τ, MvPolynomial.eval (fun k : Fin n × Fin n => y τ k.1 k.2) (MvPolynomial.map (Int.castRingHom ℂ_[p]) (f τ)) =
@@ -41,6 +47,25 @@ theorem prod_eval_eq_evM {p : ℕ} [Fact p.Prime] (f : ι → MvPolynomial (Fin 
   rw [MvPolynomial.map_rename, MvPolynomial.eval_rename]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hP`. Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem P hP`. Take `⟨r, f, hr, hf, rfl⟩` from `hP`.
+
+Establish `hx : Formalism.MainNotions.flipTwoThree.ten f ∈ Submodule.span ℤ (Set.range Z.bZ)`. Rewrite using `[Z.span_eq]`. Conclude with `Submodule.subset_span ⟨f, hf, rfl⟩`. Take `⟨z, hz⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hx`. Use `⟨fun i => r * (z i : K), fun i => mul_mem hr (intCast_mem _ _), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ten_int_map, ← hz, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_mul, map_intCast, mul_smul, Int.cast_smul_eq_zsmul]`. Consider the case `zero => exact ⟨0, fun _ => zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨c, hc, rfl⟩` from `hx`. Take `⟨c', hc', rfl⟩` from `hy`. Use `⟨c + c', fun i => add_mem (hc i) (hc' i), ?_⟩` and prove the remaining obligations. Simplify using `[add_smul, Finset.sum_add_distrib]`. Consider the case `neg x _ hx`.
+
+Take `⟨c, hc, rfl⟩` from `hx`. Use `⟨-c, fun i => neg_mem (hc i), ?_⟩` and prove the remaining obligations. Simplify using `[neg_smul, Finset.sum_neg_distrib]`. Introduce and unpack `⟨c, hc, rfl⟩`. Establish `key : ∀ x ∈ Submodule.span ℤ {p | ∃ f : ι → MvPolynomial (Fin n × Fin n) ℤ, (∀ τ, f τ ∈ delSq ℤ n (lam τ)) ∧ p = Formalism.MainNotions.flipTwoThree.ten f}, ∀ r ∈ intW Pl w, σ r • MvPolynomial.map (Int.castRingHom ℂ) x ∈ vlIntSpan σ Pl w lam`.
+
+Introduce `x hx r hr`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨r, f, hr, hf, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ten_int_map]`. Consider the case `zero`. Rewrite using `[map_zero, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
+
+Rewrite using `[map_add, smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[map_zsmul, smul_comm]`. Conclude with `zsmul_mem hx a`.
+
+Use `sum_mem fun i _ => key _ ?_ _ (hc i)` and prove the remaining obligations. Rewrite using `[← Z.span_eq]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+-/
 theorem mem_vlIntSpan_iff {K : Type} [Field K] (σ : K →+* ℂ) (Pl : Rows.Places K) (w : Pl.Pl)
     (lam : ι → DomWeight n) (Z : ZBasis lam) (P : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     P ∈ vlIntSpan σ Pl w lam ↔ ∃ c : Z.J0 → K, (∀ i, c i ∈ intW Pl w) ∧
@@ -91,6 +116,33 @@ theorem mem_vlIntSpan_iff {K : Type} [Field K] (σ : K →+* ℂ) (Pl : Rows.Pla
     rw [← Z.span_eq]
     exact Submodule.subset_span ⟨i, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hF`. Proceed by induction on `hF using AddSubgroup.closure_induction with`. Consider the case `mem F hF`. Take `⟨r, f, hr, hf, rfl⟩` from `hF`.
+
+Establish `hx : Formalism.MainNotions.flipTwoThree.ten f ∈ Submodule.span ℤ (Set.range Z.bZ)`. Rewrite using `[Z.span_eq]`. Conclude with `Submodule.subset_span ⟨f, fun τ => hf τ, rfl⟩`. Take `⟨z, hz⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hx`. Use `⟨fun i => r * (z i : ℂ_[p]), fun i => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hr (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one _ _)`. Use function extensionality and compare the values at `y`. Rewrite using `[prod_eval_eq_evM, ← hz]`. Simplify using `only [evM, map_sum, map_zsmul, zsmul_eq_mul, map_mul, map_intCast, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨0, fun _ => by simp, by funext y; simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨d, hd, rfl⟩` from `hx`.
+
+Take `⟨d', hd', rfl⟩` from `hy`. Use `⟨d + d', fun i => (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hd i) (hd' i)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Simplify using `[add_mul, Finset.sum_add_distrib]`. Consider the case `neg x _ hx`.
+
+Take `⟨d, hd, rfl⟩` from `hx`. Use `⟨-d, fun i => by rw [Pi.neg_apply, norm_neg]; exact hd i, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Simplify using `[neg_mul, Finset.sum_neg_distrib]`. Introduce and unpack `⟨d, hd, rfl⟩`.
+
+Establish `key : ∀ x ∈ Submodule.span ℤ {p | ∃ f : ι → MvPolynomial (Fin n × Fin n) ℤ, (∀ τ, f τ ∈ delSq ℤ n (lam τ)) ∧ p = Formalism.MainNotions.flipTwoThree.ten f}, ∀ a : ℂ_[p], ‖a‖ ≤ 1 → (fun y => a * evM (MvPolynomial.map (Int.castRingHom ℂ_[p]) x) y) ∈ WeylLatticeDuality.DelW p ι n (fu …`. Introduce `x hx a ha`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`.
+
+Use `AddSubgroup.subset_closure ⟨a, f, ha, fun τ => hf τ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Rewrite using `[prod_eval_eq_evM]`. Consider the case `zero`. Establish `e : (fun y : ι → Matrix (Fin n) (Fin n) ℂ_[p] => a * evM (MvPolynomial.map (Int.castRingHom ℂ_[p]) 0) y) = 0`.
+
+Use function extensionality and compare the values at `y`. Simplify using `[evM]`. Rewrite using `[e]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
+
+Establish `e : (fun v : ι → Matrix (Fin n) (Fin n) ℂ_[p] => a * evM (MvPolynomial.map (Int.castRingHom ℂ_[p]) (x + y)) v) = (fun v => a * evM (MvPolynomial.map (Int.castRingHom ℂ_[p]) x) v) + (fun v => a * evM (MvPolynomial.map (Int.castRingHom ℂ_[p]) y) v)`. Use function extensionality and compare the values at `v`. Simplify using `[evM, mul_add]`. Rewrite using `[e]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul z x _ hx`. Establish `e : (fun v : ι → Matrix (Fin n) (Fin n) ℂ_[p] => a * evM (MvPolynomial.map (Int.castRingHom ℂ_[p]) (z • x)) v) = z • (fun v => a * evM (MvPolynomial.map (Int.castRingHom ℂ_[p]) x) v)`. Use function extensionality and compare the values at `v`. Simplify using `only [evM, map_zsmul, zsmul_eq_mul, map_mul, map_intCast, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `zsmul_mem hx z`. Establish `e : (fun y => ∑ i, d i * evM (MvPolynomial.map (Int.castRingHom ℂ_[p]) (Z.bZ i)) y) = ∑ i, (fun y => d i * evM (MvPolynomial.map (Int.castRingHom ℂ_[p]) (Z.bZ i)) y)`. Use function extensionality and compare the values at `y`. Simplify using `[Finset.sum_apply]`.
+
+Rewrite using `[e]`. Use `sum_mem fun i _ => key _ ?_ _ (hd i)` and prove the remaining obligations. Rewrite using `[← Z.span_eq]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+-/
 theorem mem_delW_iff {p : ℕ} [Fact p.Prime] (lam : ι → DomWeight n) (Z : ZBasis lam)
     (F : (ι → Matrix (Fin n) (Fin n) ℂ_[p]) → ℂ_[p]) :
     F ∈ WeylLatticeDuality.DelW p ι n (fun τ => (lam τ).natW) ↔ ∃ d : Z.J0 → ℂ_[p], (∀ i, ‖d i‖ ≤ 1) ∧
@@ -170,6 +222,25 @@ theorem mem_delW_iff {p : ℕ} [Fact p.Prime] (lam : ι → DomWeight n) (Z : ZB
     rw [← Z.span_eq]
     exact Submodule.subset_span ⟨i, rfl⟩
 
+/- English proof (translation)
+Introduce `K ι _ _ _ σ Pl w p _ φ hφ n lam G hG`. Use `choose r e hr using fun τ => exists_weylBasis n (lam τ).natW (natW_anti (lam τ))`. Use `set Z := zOf lam e with hZ`. Establish `hG' : G ∈ Submodule.span K (Set.range fun i => MvPolynomial.map (Int.castRingHom K) (Z.bZ i))`. Rewrite using `[Z.span_F K]`.
+
+Conclude with `hG`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hG'`. Establish `hmap : ∀ (L : Type) [Field L] (s : K →+* L), MvPolynomial.map s G = ∑ i, s (c i) • MvPolynomial.map (Int.castRingHom L) (Z.bZ i)`. Introduce `L _ s`. Rewrite using `[← hc, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, MvPolynomial.map_map, ← MvPolynomial.smul_eq_C_mul]`. Establish `h : s.comp (Int.castRingHom K) = Int.castRingHom L` using `RingHom.ext_int _ _`. Rewrite using `[h]`. Use `show _ ↔ evM (MvPolynomial.map φ G) ∈ _`.
+
+Rewrite using `[mem_vlIntSpan_iff σ Pl w lam Z, mem_delW_iff lam Z]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c', hc', he⟩`. Establish `hcc : c = c'`. Rewrite `he` using `[hmap ℂ σ]`.
+
+Establish `h0 : ∑ i, (σ (c i) - σ (c' i)) • MvPolynomial.map (Int.castRingHom ℂ) (Z.bZ i) = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, he, sub_self]`. Use function extensionality and compare the values at `i`. Conclude with `σ.injective (sub_eq_zero.1 (Fintype.linearIndependent_iff.1 (Z.li ℂ) _ h0 i))`. Substitute `hcc` using the available equality.
+
+Use `⟨fun i => φ (c i), fun i => (hφ _).1 (hc' i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Rewrite using `[hmap ℂ_[p] φ]`. Simplify using `[evM, MvPolynomial.smul_eval]`. Introduce and unpack `⟨d, hd, he⟩`.
+
+Establish `hpoly : MvPolynomial.map φ G = ∑ i, d i • MvPolynomial.map (Int.castRingHom ℂ_[p]) (Z.bZ i)`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Establish `h1` using `congrFun he (fun τ a b => x (τ, a, b))`. Rewrite using `[map_sum]`.
+
+Simplify using `only [MvPolynomial.smul_eval]`. Conclude with `h1`. Rewrite `hpoly` using `[hmap ℂ_[p] φ]`. Establish `hcd : ∀ i, φ (c i) = d i`. Establish `h0 : ∑ i, (φ (c i) - d i) • MvPolynomial.map (Int.castRingHom ℂ_[p]) (Z.bZ i) = 0`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib, hpoly, sub_self]`. Conclude with `fun i => sub_eq_zero.1 (Fintype.linearIndependent_iff.1 (Z.li ℂ_[p]) _ h0 i)`. Conclude with `⟨c, fun i => (hφ _).2 ((hcd i).symm ▸ hd i), hmap ℂ σ⟩`.
+-/
 theorem map_mem_vlIntSpan_iff_delW : ∀ {K ι : Type} [Field K] [NumberField K] [Fintype ι] (σ : K →+* ℂ) (Pl : Rows.Places K) (w : Pl.Pl) {p : ℕ} [Fact p.Prime] (φ : K →+* ℂ_[p]), (∀ x, x ∈ intW Pl w ↔ ‖φ x‖ ≤ 1) → ∀ {n : ℕ} (lam : ι → DomWeight n) (G : MvPolynomial (ι × Fin n × Fin n) K), G ∈ Formalism.L2.DIV.VV K lam → (MvPolynomial.map σ G ∈ vlIntSpan σ Pl w lam ↔ (fun y : ι → Matrix (Fin n) (Fin n) ℂ_[p] => MvPolynomial.eval (fun k : ι × Fin n × Fin n => y k.1 k.2.1 k.2.2) (MvPolynomial.map φ G)) ∈ WeylLatticeDuality.DelW p ι n (fun τ => (lam τ).natW)) := by
   classical
   intro K ι _ _ _ σ Pl w p _ φ hφ n lam G hG

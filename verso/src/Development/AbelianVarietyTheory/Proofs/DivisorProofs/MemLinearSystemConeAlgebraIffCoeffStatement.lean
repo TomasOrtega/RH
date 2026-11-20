@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFormDegree
 open MvPolynomial GlobalTheory.ChowHt GlobalTheory.CompHt GlobalTheory.DegCmp Filter
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DegCmp.mem_coneAlg_iff_coeff | exact GlobalTheory.DegCmp.mem_coneAlg_iff_coeff | (intros; apply GlobalTheory.DegCmp.mem_coneAlg_iff_coeff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mem_linearSystemConeAlgebra_iff_coeff : ∀ (K V Ω : Type) [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Algebra K Ω] (ev : V →ₗ[K] Ω) (p : Polynomial Ω), p ∈ coneAlg ev ↔ ∀ d : ℕ, p.coeff d ∈ ((LinearMap.range ev) ^ d : Submodule K Ω) := by
   first | exact @GlobalTheory.DegCmp.mem_coneAlg_iff_coeff | exact GlobalTheory.DegCmp.mem_coneAlg_iff_coeff | (intros; apply GlobalTheory.DegCmp.mem_coneAlg_iff_coeff <;> assumption)

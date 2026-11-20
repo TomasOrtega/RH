@@ -11,6 +11,11 @@ open NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 open Formalism.MainNotions.S
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `htop : (⊥ : Subalgebra I.F I.E) = ⊤`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `RingHom.mem_range.1 ((I.cm.fixed x).1 (h x))`.
+
+Conclude with `Algebra.mem_bot.2 ⟨a, ha⟩`. Establish `h1` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.1 htop`. Rewrite `h1` using `[I.cm.deg2]`. Conclude with `absurd h1 (by norm_num)`.
+-/
 theorem exists_nonfixed (I : AutInst) : ∃ θ : I.E, star θ ≠ θ := by
   by_contra h
   push_neg at h
@@ -22,6 +27,17 @@ theorem exists_nonfixed (I : AutInst) : ∃ θ : I.E, star θ ≠ θ := by
   rw [I.cm.deg2] at h1
   exact absurd h1 (by norm_num)
 
+/- English proof (translation)
+Establish `hli : LinearIndependent I.F ![(1 : I.E), θ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `ht : t = 0`. Assume the negation of the conclusion as `ht`.
+
+Apply `hθ` to reduce the goal to its premises. Establish `h' : s • (1 : I.E) = -(t • θ)` using `eq_neg_of_add_eq_zero_left hst`. Establish `hθeq : algebraMap I.F I.E (-(t⁻¹ * s)) = θ`. Rewrite using `[Algebra.algebraMap_eq_smul_one, neg_smul, mul_smul, h', smul_neg, neg_neg, smul_smul, inv_mul_cancel₀ ht, one_smul]`. Conclude with `(I.cm.fixed θ).2 (RingHom.mem_range.2 ⟨_, hθeq⟩)`.
+
+Use `⟨?_, ht⟩` and prove the remaining obligations. Substitute `ht` using the available equality. Rewrite `hst` using `[zero_smul, add_zero, smul_eq_zero]`. Conclude with `hst.resolve_right one_ne_zero`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank (by simp [I.cm.deg2])`.
+
+Establish `he : e ∈ Submodule.span I.F (Set.range ![(1 : I.E), θ])`. Rewrite using `[hsp]`. Conclude with `Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun I.F).1 he`. Use `⟨c 0, c 1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hc, Fin.sum_univ_two]`. Simplify using the standard rewrite rules.
+-/
 theorem decompE (I : AutInst) (θ : I.E) (hθ : star θ ≠ θ) (e : I.E) :
     ∃ f g : I.F, e = f • (1 : I.E) + g • θ := by
   have hli : LinearIndependent I.F ![(1 : I.E), θ] := by
@@ -47,6 +63,11 @@ theorem decompE (I : AutInst) (θ : I.E) (hθ : star θ ≠ θ) (e : I.E) :
   rw [← hc, Fin.sum_univ_two]
   simp
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul a e`. Take `⟨f, g, rfl⟩` from `decompE I θ hθ e`. Conclude with `⟨f • a, g • a, by rw [TensorProduct.tmul_add, TensorProduct.smul_tmul, TensorProduct.smul_tmul]⟩`.
+
+Consider the case `add x y hx hy`. Take `⟨p, q, rfl⟩` from `hx`. Take `⟨p', q', rfl⟩` from `hy`. Conclude with `⟨p + p', q + q', by simp only [TensorProduct.add_tmul]; abel⟩`.
+-/
 theorem decompV (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (θ : I.E) (hθ : star θ ≠ θ)
     (x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) :
     ∃ p q : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v, x = p ⊗ₜ 1 + q ⊗ₜ θ := by
@@ -60,14 +81,29 @@ theorem decompV (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (θ : I.E) (hθ
     obtain ⟨p', q', rfl⟩ := hy
     exact ⟨p + p', q + q', by simp only [TensorProduct.add_tmul]; abel⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incL_apply (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (p : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) :
     incL I v p = p ⊗ₜ 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[incL_apply]`. Simplify using `[sigV]`.
+-/
 theorem sigV_incL (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (p : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) :
     sigV I v (incL I v p) = incL I v p := by
   rw [incL_apply]
   simp [sigV]
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `exists_nonfixed I`. Take `⟨p, q, rfl⟩` from `decompV I v θ hθ x`. Use `⟨p, ?_⟩` and prove the remaining obligations. Use `haveI : Nontrivial (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) := ⟨hv.exists_pair_ne⟩`. Establish `hsig : I.cm.sig θ = star θ` using `rfl`.
+
+Establish `hs : sigV I v (p ⊗ₜ 1 + q ⊗ₜ θ) = p ⊗ₜ 1 + q ⊗ₜ star θ`. Simplify using `[sigV, hsig]`. Establish `hq : q ⊗ₜ[I.F] (θ - star θ) = 0`. Rewrite using `[TensorProduct.tmul_sub, sub_eq_zero]`. Establish `h2` using `hx`.
+
+Rewrite `h2` using `[hs]`. Conclude with `(add_left_cancel h2).symm`. Establish `hu : θ - star θ ≠ 0` using `sub_ne_zero.2 (Ne.symm hθ)`. Establish `hq1 : incL I v q = 0`. Rewrite using `[incL_apply]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_inv_cancel₀ hu]`. Use `_ = 0 := by rw [hq, zero_mul]`. Establish `hq0 : q = 0` using `(incL I v).injective (hq1.trans (map_zero _).symm)`. Rewrite using `[hq0, TensorProduct.zero_tmul, add_zero, incL_apply]`.
+-/
 theorem fixed_incL (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (hv : IsFieldAt I v)
     (x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) (hx : sigV I v x = x) :
     ∃ p, x = incL I v p := by
@@ -93,6 +129,37 @@ theorem fixed_incL (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (hv : IsFiel
   have hq0 : q = 0 := (incL I v).injective (hq1.trans (map_zero _).symm)
   rw [hq0, TensorProduct.zero_tmul, add_zero, incL_apply]
 
+/- English proof (translation)
+Introduce `I v hv α hα`. Use `haveI : Nontrivial (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) := ⟨hv.exists_pair_ne⟩`. Establish `hinv : ∀ y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E, sigV I v (sigV I v y) = y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a e`. Establish `h1 : ∀ e' : I.E, I.cm.sig e' = star e'` using `fun _ => rfl`. Simplify using `[sigV, h1]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+
+Take `⟨τ, hτ⟩` from `fixed_incL I v hv (α + sigV I v α) (by rw [map_add, hinv, add_comm])`. Distinguish the cases in `hτi : τ ∈ v.adicCompletionIntegers I.F`. Conclude with `⟨τ, hτi, hτ⟩`. Establish `key : ∀ r₀ : v.adicCompletion I.F, α = incL I v r₀ → ∃ t ∈ v.adicCompletionIntegers I.F, α + sigV I v α = incL I v t`. Introduce and unpack `r₀ rfl`.
+
+Establish `h1 : incL I v (r₀ * r₀) = incL I v 1`. Rewrite using `[map_mul, map_one, ← hα, sigV_incL]`. Establish `hr0 : r₀ * r₀ = 1` using `(incL I v).injective h1`. Establish `hmem : r₀ ∈ v.adicCompletionIntegers I.F`. Break down `ValuationSubring.mem_or_inv_mem (v.adicCompletionIntegers I.F) r₀ with h | h` into its components or cases.
+
+Conclude with `h`. Rewrite `h` using `[inv_eq_of_mul_eq_one_right hr0]`. Then use the resulting hypothesis. Conclude with `⟨r₀ + r₀, add_mem hmem hmem, by rw [sigV_incL, map_add]⟩`. Establish `hdom : ∀ x y : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E, x * y = 0 → x = 0 ∨ y = 0`. Introduce `x y hxy`.
+
+Distinguish the cases in `hx : x = 0`. Conclude with `Or.inl hx`. Take `⟨b, hb⟩` from `hv.mul_inv_cancel hx right`. Combine the equalities or inequalities in the displayed calculation. Establish `hτinv : τ⁻¹ ∈ v.adicCompletionIntegers I.F` using `(ValuationSubring.mem_or_inv_mem _ τ).resolve_left hτi`.
+
+Establish `hτ0 : τ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hτi (zero_mem _)`. Use `set s : v.adicCompletionIntegers I.F := ⟨τ⁻¹ * τ⁻¹, mul_mem hτinv hτinv⟩ with hs`. Establish `hsK : (s : v.adicCompletion I.F) = τ⁻¹ * τ⁻¹` using `rfl`.
+
+Establish `hsm : s ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers I.F)`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, hu⟩`. Apply `hτi` to reduce the goal to its premises. Establish `h1 : ((u⁻¹ : (v.adicCompletionIntegers I.F)ˣ) : v.adicCompletionIntegers I.F) * s = 1`.
+
+Rewrite using `[← hu, Units.inv_mul]`. Establish `h3` using `congrArg (v.adicCompletionIntegers I.F).subtype h1`. Rewrite `h3` using `[map_mul, map_one]`. Express the relevant statement in the definitionally equal form `(((u⁻¹ : (v.adicCompletionIntegers I.F)ˣ) : v.adicCompletionIntegers I.F) : v.adicCompletion I.F) * (τ⁻¹ * τ⁻¹) = 1 at h3`. Establish `hw : (((u⁻¹ : (v.adicCompletionIntegers I.F)ˣ) : v.adicCompletionIntegers I.F) : v.adicCompletion I.F) = τ * τ`.
+
+Clear denominators, using `at h3` for the nonvanishing conditions. Take the linear combination `h3`. Establish `hτeq : τ = (((u⁻¹ : (v.adicCompletionIntegers I.F)ˣ) : v.adicCompletionIntegers I.F) : v.adicCompletion I.F) * τ⁻¹`. Rewrite using `[hw]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[hτeq]`. Conclude with `mul_mem (((u⁻¹ : (v.adicCompletionIntegers I.F)ˣ) : v.adicCompletionIntegers I.F)).2 hτinv`. Use `haveI : HenselianLocalRing (v.adicCompletionIntegers I.F) := inferInstance`. Take `⟨a, ha, -⟩` from `HenselianLocalRing.is_henselian (Polynomial.X ^ 2 + (Polynomial.C s - Polynomial.X)) (by monicity!) 0 (by simpa using hsm) (by simp)`. Establish `ha2 : a ^ 2 + (s - a) = 0` using `by simpa using ha`.
+
+Establish `haK : (a : v.adicCompletion I.F) ^ 2 + (τ⁻¹ * τ⁻¹ - a) = 0`. Establish `h` using `congrArg (v.adicCompletionIntegers I.F).subtype ha2`. Rewrite `h` using `[map_add, map_pow, map_sub, map_zero]`. Conclude with `h`. Establish `hr : (τ * a) * (τ - τ * a) = 1`.
+
+Establish `e1 : (a : v.adicCompletion I.F) - a ^ 2 = τ⁻¹ * τ⁻¹` using `by linear_combination -haK`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : incL I v (τ * a) * incL I v (τ - τ * a) = 1`. Rewrite using `[← map_mul, hr, map_one]`. Establish `e3 : incL I v (τ * a) + incL I v (τ - τ * a) = α + sigV I v α`.
+
+Rewrite using `[← map_add, show τ * a + (τ - τ * a) = τ by ring, hτ]`. Establish `hprod : (α - incL I v (τ * a)) * (α - incL I v (τ - τ * a)) = 0`. Take the linear combination `(-α) * e3 + e2 - hα`. Break down `hdom _ _ hprod with h | h` into its components or cases. Conclude with `key _ (sub_eq_zero.1 h)`.
+
+Conclude with `key _ (sub_eq_zero.1 h)`.
+-/
 theorem trace_integral' : TraceInt := by
   intro I v hv α hα
   haveI : Nontrivial (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E) := ⟨hv.exists_pair_ne⟩

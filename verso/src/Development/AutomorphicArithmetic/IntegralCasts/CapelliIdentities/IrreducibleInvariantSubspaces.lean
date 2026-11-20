@@ -16,6 +16,17 @@ noncomputable def UpperTheory.Reformulated.B.IrreducibleInvariantSubspaces.IsIrr
     {Γ k : Type} → [inst : Group Γ] → [inst_1 : Field k] → {n : ℕ} → (Γ →* GL (Fin n) k) → Prop :=
     fun {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) ↦ UpperTheory.Reformulated.B.IrreducibleInvariantSubspaces.IsIrrSub r ⊤
 
+/- English proof (translation)
+Introduce `k _ Γ _ n r r' g h hirr`. Take `⟨hne, -, hmin⟩` from `hirr`. Use `⟨hne, fun _ _ _ => Submodule.mem_top, fun W _ hW => ?_⟩` and prove the remaining obligations. Establish `hgg : ∀ v : Fin n → k, (↑(g⁻¹) : Matrix (Fin n) (Fin n) k).mulVec ((↑g : Matrix (Fin n) (Fin n) k).mulVec v) = v`. Introduce `v`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `hinv : UpperTheory.Reformulated.B.IrreducibleInvariantSubspaces.IsInv r' (W.comap (Matrix.mulVecLin (↑(g⁻¹) : Matrix (Fin n) (Fin n) k)))`. Introduce `x v hv`. Rewrite `hv`, the goal using `[Submodule.mem_comap, Matrix.mulVecLin_apply]`. Rewrite using `[h x, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hgg]`.
+
+Conclude with `hW x _ hv`. Break down `hmin _ le_top hinv with h0 | h1` into its components or cases. Use `left`. Rewrite `h0`, the goal using `[Submodule.eq_bot_iff]`. Introduce `v hv`.
+
+Establish `h2 : (↑g : Matrix (Fin n) (Fin n) k).mulVec v = 0`. Apply `h0` to reduce the goal to its premises. Rewrite using `[Submodule.mem_comap, Matrix.mulVecLin_apply, hgg]`. Conclude with `hv`. Rewrite using `[← hgg v, h2, Matrix.mulVec_zero]`.
+
+Use `right`. Rewrite `h1`, the goal using `[Submodule.eq_top_iff']`. Introduce `v`. Establish `h2` using `h1 ((↑g : Matrix (Fin n) (Fin n) k).mulVec v)`. Rewrite `h2` using `[Submodule.mem_comap, Matrix.mulVecLin_apply, hgg]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Reformulated.B.IrreducibleInvariantSubspaces.irr_conj :
     ∀ {k : Type} [inst : Field k] {Γ : Type} [inst_1 : Group Γ] {n : ℕ} (r r' : Γ →* GL (Fin n) k) (g : GL (Fin n) k),
       (∀ (x : Γ), (r' : Γ → GL (Fin n) k) x = g * (r : Γ → GL (Fin n) k) x * g⁻¹) →

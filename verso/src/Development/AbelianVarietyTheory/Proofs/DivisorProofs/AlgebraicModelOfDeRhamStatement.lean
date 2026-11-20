@@ -6,5 +6,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBi
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 open GlobalTheory.LatVal GlobalTheory.LatJet
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ModelAlgProof.modelAlg | exact GlobalTheory.ModelAlgProof.modelAlg | (intros; apply GlobalTheory.ModelAlgProof.modelAlg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.algebraic_model_of_de_rham : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ModelAlg := by
   first | exact @GlobalTheory.ModelAlgProof.modelAlg | exact GlobalTheory.ModelAlgProof.modelAlg | (intros; apply GlobalTheory.ModelAlgProof.modelAlg <;> assumption)

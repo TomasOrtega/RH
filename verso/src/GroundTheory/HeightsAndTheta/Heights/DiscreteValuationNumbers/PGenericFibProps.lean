@@ -10,6 +10,9 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_map, coeff_map, coeff_weightedHomogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem weightedHomogeneousComponent_map {σ M R S : Type*} [AddCommMonoid M] [CommRing R]
     [CommRing S] (φ : R →+* S) (w : σ → M) (n : M) (p : MvPolynomial σ R) :
     weightedHomogeneousComponent w n (MvPolynomial.map φ p) =
@@ -22,6 +25,21 @@ theorem weightedHomogeneousComponent_map {σ M R S : Type*} [AddCommMonoid M] [C
 
 attribute [local instance] MvPolynomial.algebraMvPolynomial
 
+/- English proof (translation)
+Introduce `O _ _ _ K _ _ ι _ P hP hT`. Use `set φ := algebraMap O (FractionRing O) with hφ`. Set `M : Submonoid (MRing ι O)` to `(nonZeroDivisors O).map (C (σ := Σ k, ι k))`. Establish `: IsLocalization M (MRing ι (FractionRing O))` using `MvPolynomial.isLocalization (nonZeroDivisors O) (FractionRing O)`. Establish `hmap : algebraMap (MRing ι O) (MRing ι (FractionRing O)) = MvPolynomial.map φ` using `rfl`.
+
+Establish `hdisj : Disjoint (M : Set (MRing ι O)) P`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨m, hm, rfl⟩ hmP`. Establish `: m ∈ P.comap (C : O →+* MRing ι O)` using `hmP`. Rewrite `this` using `[hT, Ideal.mem_bot]`.
+
+Conclude with `nonZeroDivisors.ne_zero hm this`. Establish `hgen : genFib P = Ideal.map (algebraMap (MRing ι O) (MRing ι (FractionRing O))) P` using `rfl`. Establish `hprime : (genFib P).IsPrime` using `hgen ▸ IsLocalization.isPrime_of_isPrime_disjoint M _ P hP.isPrime hdisj`. Establish `hunder : (genFib P).comap (MvPolynomial.map φ) = P` using `IsLocalization.under_map_of_isPrime_disjoint M (MRing ι (FractionRing O)) hP.isPrime hdisj`. Use `⟨hprime, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx b`. Rewrite `hx` using `[hgen, IsLocalization.mem_map_algebraMap_iff M]`. Take `⟨⟨⟨p, hp⟩, ⟨_, ⟨m, hm, rfl⟩⟩⟩, h⟩` from `hx`. Simplify using `only [hmap, map_C] at h`. Establish `hm0 : φ m ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hm`.
+
+Establish `hx' : x = C (φ m)⁻¹ * MvPolynomial.map φ p`. Rewrite using `[← h, mul_comm x, ← mul_assoc, ← C_mul, inv_mul_cancel₀ hm0, C_1, one_mul]`. Rewrite using `[hx', weightedHomogeneousComponent_C_mul, weightedHomogeneousComponent_map]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (hP.multiHomog p hp b))`. Introduce `s c hs hsP`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `d hd`. Apply `hs` to reduce the goal to its premises. Introduce `h0`. Rewrite `hd` using `[coeff_map, h0, map_zero]`.
+
+Conclude with `hd rfl`. Introduce `h`. Apply `hsP` to reduce the goal to its premises. Rewrite using `[← hunder]`. Conclude with `h`.
+-/
 theorem GenericFibProps.proof : GenericFibProps.Statement := by
   intro O _ _ _ K _ _ ι _ P hP hT
   set φ := algebraMap O (FractionRing O) with hφ

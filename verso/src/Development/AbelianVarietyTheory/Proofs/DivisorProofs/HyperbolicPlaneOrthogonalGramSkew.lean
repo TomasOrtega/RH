@@ -26,6 +26,23 @@ namespace GlobalTheory.ThK.DescGenCusp
 
 open GlobalTheory.LeviPlane in
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Establish `hcA : Continuous (cA (F` using `F) (E := E) σ) := IsModuleTopology.continuous_of_linearMap (cA (F := F) (E := E) σ).toLinearMap`. Use `set c : AE F E →+* AE F E := (cA σ).toRingHom with hcdef`.
+
+Establish `hc : ∀ x, c (c x) = x` using `fun x => cA_invol hσ x`. Establish `hJ : ∀ i j, c (incM F Y.J j i) = -incM F Y.J i j`. Introduce `i j`. Simplify using `only [hcdef, incM, Matrix.map_apply, cAr_inclR, hY, map_neg]`. Establish `hxx : fm c (incM F Y.J) (incV F H.x) (incV F H.x) = 0` using `by rw [fm_inc, hxx', map_zero]`.
+
+Establish `hyy : fm c (incM F Y.J) (incV F H.y) (incV F H.y) = 0` using `by rw [fm_inc, hyy', map_zero]`. Establish `hxy : fm c (incM F Y.J) (incV F H.x) (incV F H.y) = 1` using `by rw [fm_inc, hxy', map_one]`. Establish `hι : ∀ j, fm c (incM F Y.J) (fun i => incM F H.ι i j) (incV F H.x) = 0 ∧ fm c (incM F Y.J) (fun i => incM F H.ι i j) (incV F H.y) = 0`. Introduce `j`. Establish `hcol : (fun i => incM F H.ι i j) = incV F (H.ι *ᵥ Pi.single j 1)`.
+
+Use extensionality with `i`. Simplify using `[incV, incM]`. Rewrite using `[hcol, fm_inc, fm_inc, (horth _).1, (horth _).2, map_zero]`. Conclude with `⟨rfl, rfl⟩`. Set `L : AE F E → AE F E → Matrix (Fin d) (Fin d) (AE F E)` to `fun s r => lev c (incM F Y.J) (incV F H.x) (incV F H.y) s r`.
+
+Establish `hmul : ∀ s r s' r', L s r * L s' r' = L (s * s') (r * r')` using `fun s r s' r' => lev_mul hc hJ hxx hyy hxy s r s' r'`. Establish `h1 : L 1 1 = 1` using `lev_one hc hJ hxx hyy hxy`. Set `g : (AE F E)ˣ → GL (Fin d) (AE F E)` to `fun t => ⟨L (t : AE F E) (cA σ ((t⁻¹ : (AE F E)ˣ) : AE F E)), L ((t⁻¹ : (AE F E)ˣ) : AE F E) (cA σ (t : AE F E)), by rw [hmul, ← map_mul, Units.mul_inv, Units.inv_mul, map_one, h1], by rw [hmul, ← map_mul, Units.inv_mul, Units.mul_inv, map_one, h1]⟩`. Establish `hg : ∀ t, g t ∈ GlobalTheory.WeilM.UG (cA σ) (incM F Y.J)`. Introduce `t`.
+
+Use `show (L _ _)ᵀ * incM F Y.J * (L _ _).map (cA σ) = incM F Y.J`. Conclude with `lev_unitary hc hJ hxx hyy hxy (t : AE F E) (cA σ ((t⁻¹ : (AE F E)ˣ) : AE F E)) (by show (t : AE F E) * cA σ (cA σ _) = 1; rw [cA_invol hσ, Units.mul_inv])`. Use `⟨fun t => ⟨g t, hg t⟩, ?_, fun t => ⟨lev_X hxx hxy _ _, lev_Y hc hJ hxx hyy hxy _ _, ?_⟩⟩` and prove the remaining obligations. Establish `hLc : Continuous fun p : AE F E × AE F E => L p.1 p.2`. Simplify using `only [L, lev]`.
+
+Use `fun_prop`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hLc.comp (Units.continuous_val.prodMk (hcA.comp Units.continuous_coe_inv))).congr fun t => rfl`. Establish `e2 : ∀ t, (((g t)⁻¹ : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = L ((t⁻¹ : (AE F E)ˣ) : AE F E) (cA σ (t : AE F E))` using `fun t => rfl`.
+
+Conclude with `(hLc.comp (Units.continuous_coe_inv.prodMk (hcA.comp Units.continuous_val))).congr fun t => (e2 t).symm`. Establish `: mat (1 : UA σ Y₁.J) = 1` using `rfl`. Rewrite using `[this, Matrix.mul_one]`. Conclude with `lev_mul_ι _ hι _ _`.
+-/
 theorem exists_continuous_levi {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {d d₁ : ℕ} (Y : Spc F E d) (Y₁ : Spc F E d₁) (H : Plane E d d₁)
     (hY : ∀ i j, σ (Y.J j i) = -Y.J i j) (hxx' : form σ Y.J H.x H.x = 0) (hyy' : form σ Y.J H.y H.y = 0)
@@ -78,6 +95,11 @@ theorem exists_continuous_levi {F E : Type} [Field F] [NumberField F] [Field E] 
     rw [this, Matrix.mul_one]
     exact lev_mul_ι _ hι _ _
 
+/- English proof (translation)
+Introduce `h0`. Apply `hJ.2` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul]`. Establish `: (J.map σ).det = σ J.det`. Rewrite using `[AlgHom.map_det]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, h0, map_zero, mul_zero]`.
+-/
 theorem det_ne_zero_of_isHermND {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c₀ : E) (hJ : IsHermND σ (c₀ • J.map σ)) : J.det ≠ 0 := by
   intro h0
@@ -87,6 +109,15 @@ theorem det_ne_zero_of_isHermND {F E : Type} [Field F] [NumberField F] [Field E]
     rw [AlgHom.map_det]; rfl
   rw [this, h0, map_zero, mul_zero]
 
+/- English proof (translation)
+Take `⟨x₀, hx₀⟩` from `hne`. Take `⟨μ, 𝓕, hμ, h𝓕, h1⟩` from `hdom`. Take `⟨i1, -, i3, -⟩` from `GlobalTheory.UnipCT.topFacts σ W.J`. Use `haveI := i1`. Use `haveI : FirstCountableTopology (UA σ W.J) := @TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ i3`.
+
+Establish `hcc` using `GlobalTheory.UnipCocptForm.cocompact_unip_form W W₁ H hCM hsk hn hxx hyy hxy horth hgram hd hd₁`. Establish `hfa : Continuous fa`. Establish `e : fa = fun h => ∫ u in 𝓕, f (u.1 * h) ∂μ` using `funext fun h => hct μ 𝓕 hμ h𝓕 h1 h`. Rewrite using `[e]`. Conclude with `GlobalTheory.CtLeviCont.continuous_setIntegral_of_cocompact hcc hfi hf μ 𝓕 (by rw [h1]; exact ENNReal.one_ne_top)`.
+
+Take `⟨m, hmc, hm⟩` from `exists_continuous_levi σ (GlobalTheory.SiegelSet.sigma_sigma hCM) W W₁ H hsk hxx hyy hxy horth`. Establish `hpos : ∀ t : (AE F E)ˣ, (0 : ℝ) < (GlobalTheory.Doubling.absE F E t : ℝ)` using `fun t => by`. Establish `h : GlobalTheory.Doubling.absE F E t * GlobalTheory.Doubling.absE F E t⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `NNReal.coe_pos.2 (pos_iff_ne_zero.2 (left_ne_zero_of_mul_eq_one h))`. Establish `hne : ∀ t : (AE F E)ˣ, (((GlobalTheory.Doubling.absE F E t : ℝ) ^ za : ℝ) : ℂ) * fa x₀ ≠ 0` using `fun t => mul_ne_zero (Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos (hpos t) za).ne') hx₀`.
+
+Establish `e : (fun t : (AE F E)ˣ => (χa t : ℂ)) = fun t => fa (m t * x₀) / ((((GlobalTheory.Doubling.absE F E t : ℝ) ^ za : ℝ) : ℂ) * fa x₀)` using `funext fun t => by`. Rewrite using `[eq_div_iff (hne t), hlaw t (m t) (hm t) x₀, mul_assoc]`. Rewrite using `[e]`. Use `(hfa.comp (hmc.mul continuous_const)).div (Continuous.mul (Complex.continuous_ofReal.comp ?_) continuous_const) hne` and prove the remaining obligations. Conclude with `(NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE).rpow_const fun t => Or.inl (hpos t).ne'`.
+-/
 theorem continuous_law {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {n n₁ : ℕ} (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁)
     (hsk : ∀ i j, σ (W.J j i) = -W.J i j) (hn : n = n₁ + 2) (hxx : form σ W.J H.x H.x = 0) (hyy : form σ W.J H.y H.y = 0)
@@ -120,6 +151,41 @@ theorem continuous_law {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   refine (hfa.comp (hmc.mul continuous_const)).div (Continuous.mul (Complex.continuous_ofReal.comp ?_) continuous_const) hne
   exact (NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE).rpow_const fun t => Or.inl (hpos t).ne'
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ hCM n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram hdom χa za f fa hfc hfinv hCT hLaw M hMc hML hMr h c₀ hc₀ hH₁ hH hyp φ₁ hφ₁ K₁ hK₁ r Xf Yf hW₁ S' hS'`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hCM`. Use `set e := GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀ with he`. Use `set e₁ := GlobalTheory.ThK.SquareIntegrability.toGAd hσ W₁.J hc₀ with he₁`. Establish `hφ₁' : φ₁ = fun y => fa (M (e₁.symm y) * h)` using `funext fun y => hφ₁ (e₁.symm y) y rfl`.
+
+Substitute `hφ₁'` using the available equality. Establish `hzero : GlobalTheory.StdPar.IsCuspOn σ (c₀ • W₁.J.map σ) Xf Yf S' K₁ 0` using `⟨GlobalTheory.StdPar.isAutOn_const _ _ _ _ _ K₁ 0, fun S₂ _ => GlobalTheory.StdPar.isConstAlong_const _ _ _ S₂ 0⟩`. Distinguish the cases in `hfa : ∀ x, fa x = 0`. Establish `e0 : (fun y => fa (M (e₁.symm y) * h)) = fun _ => (0 : ℂ)` using `funext fun y => hfa _`. Rewrite using `[e0]`.
+
+Use `⟨hzero, fun _ => 0, GlobalTheory.StdPar.isConstAlong_const _ _ _ S' 0, fun ψ _ μ 𝓕 _ _ g g' => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `push_neg at hfa`. Establish `hχ` using `GlobalTheory.CTLawRat.law_trivial_rat F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hH₁ hH hdom χa za f fa hfc hfinv hCT hLaw hfa`. Establish `hχc` using `continuous_law σ hCM W W₁ H hsk hn hxx hyy hxy horth hgram (det_ne_zero_of_isHermND σ W.J c₀ hH) (det_ne_zero_of_isHermND σ W₁.J c₀ hH₁) hdom χa za f fa hfc hfinv hCT hLaw hfa`.
+
+Take `⟨X', Y', hW', hx0, hy0, hsucc⟩` from `GlobalTheory.PlaneFrameCons.exists_isWittFrame_cons F E σ hCM n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hH₁ hH r Xf Yf hW₁`. Establish `hS'' : ¬ ∀ k ∈ (insert 0 (S'.map (Fin.succEmb r))), ∀ l ≤ k, l ∈ (insert 0 (S'.map (Fin.succEmb r)))`. Introduce `hall`. Use `push_neg at hS'`. Take `⟨k, hk, l, hlk, hl⟩` from `hS'`.
+
+Use `hall k.succ (Finset.mem_insert_of_mem (Finset.mem_map_of_mem _ hk)) l.succ (Fin.succ_le_succ_iff.2 hlk)` as an intermediate fact. Break down `Finset.mem_insert.1 this with h0 | h1` into its components or cases. Conclude with `Fin.succ_ne_zero _ h0`. Take `⟨l', hl', el⟩` from `Finset.mem_map.1 h1`. Conclude with `hl (Fin.succ_injective _ (by simpa using el) ▸ hl')`.
+
+Take `⟨hMmul, hMcomm⟩` from `GlobalTheory.LeviPlaneHom.levi_section_hom F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hH₁ hH M hML`. Take `⟨μ₀, 𝓕₀, hμ₀, h𝓕₀, h1₀⟩` from `GlobalTheory.StdPar.exists_haar_fundamentalDomain_mass_one F E σ hCM n₁ _ hH₁ r Xf Yf hW₁ S'`. Take `⟨μB, 𝓕B, hμB, h𝓕B, h1B⟩` from `GlobalTheory.StdPar.exists_haar_fundamentalDomain_mass_one F E σ hCM n _ hH (r + 1) X' Y' hW' (insert 0 (S'.map (Fin.succEmb r)))`. Establish `hfinv' : ∀ γ ∈ ratPts σ (c₀ • W.J.map σ), ∀ g, (fun x => f (e.symm x)) (γ * g) = (fun x => f (e.symm x)) g`. Introduce `γ hγ g`.
+
+Use `show f (e.symm (γ * g)) = f (e.symm g)`. Rewrite using `[map_mul]`. Conclude with `hfinv _ ((GlobalTheory.ThK.GLTwo.toGAd_mem_ratPts hσ W.J hc₀ _).1 (by simpa [e] using hγ)) _`. Establish `hfc' : Continuous (fun x => f (e.symm x))` using `hfc.comp (GlobalTheory.ThK.GLTwo.continuous_toGAd hσ W.J hc₀).2`. Take `⟨c'', hc''⟩` from `GlobalTheory.StdPar.exists_isConstAlong F E σ hCM n _ hH (r + 1) X' Y' hW' (insert 0 (S'.map (Fin.succEmb r))) _ hfc' hfinv'`.
+
+Establish `hstage` using `GlobalTheory.T.hyperbolic_plane_complement_second F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hH₁ hH hdom M hMc hML hMr r Xf Yf hW₁ X' Y' hW' hx0 hy0 hsucc S' f fa hfc hfinv hCT c'' hc''`. Establish `hlaw : ∀ (t : (AE F E)ˣ) (m : UA σ W.J), IsLevi (W₁` using `W₁) H t 1 m → ∀ X, c'' (e (m * X)) = (χa t : ℂ) * (((GlobalTheory.Doubling.absE F E t : ℝ) ^ za : ℝ) : ℂ) * c'' (e X) := by`. Introduce `t m hm X`. Rewrite using `[hstage μ₀ 𝓕₀ hμ₀ h𝓕₀ h1₀, hstage μ₀ 𝓕₀ hμ₀ h𝓕₀ h1₀, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[← mul_assoc, ← hMcomm t m hm, mul_assoc, hLaw t m hm]`. Use `⟨hzero, fun y => c'' (e (M (e₁.symm y) * h)), ?_, fun ψ hψ μ 𝓕 hμ h𝓕 g g' => ?_⟩` and prove the remaining obligations. Introduce `μ₁ 𝓕₁ hμ₁ h𝓕₁ h1₁ y show c'' (e (M (e₁.symm y) * h)) = _`. Rewrite using `[hstage μ₁ 𝓕₁ hμ₁ h𝓕₁ h1₁]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, hMmul, mul_assoc]`. Both sides reduce to the same expression. Take `⟨K', hK', Ψ, hΨ, hΨv⟩` from `GlobalTheory.T.hyperbolic_plane_complement_third hKP F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hH₁ hH M hMc hML hMr r Xf Yf hW₁ X' Y' hW' hx0 hy0 hsucc S' χa hχ hχc K₁ hK₁ ψ hψ`. Establish `hlift : ∀ (g : UA σ W.J) (g' : GAd σ (c₀ • W.J.map σ)), g.1 = g'.1 → (fun x => f (e.symm x)) g' = f g`.
+
+Introduce `g g' hg`. Use `show f (e.symm g') = f g`. Use `congr 1`. Conclude with `Subtype.ext hg.symm`. Take `⟨-, c₃, hc₃, hpair⟩` from `hyp (fun x => f (e.symm x)) hlift K' hK' (r + 1) X' Y' hW' (insert 0 (S'.map (Fin.succEmb r))) hS''`.
+
+Establish `hceq : c₃ = c''` using `funext fun G => by rw [hc₃ μB 𝓕B hμB h𝓕B h1B, hc'' μB 𝓕B hμB h𝓕B h1B]`. Substitute `hceq` using the available equality. Use `set G := e (M (e₁.symm g) * h)`. Use `set G' := e (M (e₁.symm g'))`. Establish `key` using `GlobalTheory.T.hyperbolic_plane_complement_fourth F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hH₁ hH M hMc hML hMr r Xf Yf hW₁ X' Y' hW' hx0 hy0 hsucc S' (fun m => c₃ (m * G) * conj (Ψ (m * G'))) (fun m => c₃ (e (M (e₁.symm (m * g)) * h)) * conj (ψ (m * g'))) ? …`.
+
+Use `⟨key.1, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[key.2]`. Simplify using the standard rewrite rules. Introduce `t m y hm ht show c₃ (e (m * M (e₁.symm y)) * G) * conj (Ψ (e (m * M (e₁.symm y)) * G')) = c₃ (e (M (e₁.symm (y * g)) * h)) * conj (ψ (y * g'))`. Establish `e1 : e (m * M (e₁.symm y)) * G = e (m * (M (e₁.symm (y * g)) * h))`.
+
+Simplify using `only [G]`. Rewrite using `[← map_mul, map_mul e₁.symm, hMmul]`. Simplify using `only [mul_assoc]`. Establish `e2 : e (m * M (e₁.symm y)) * G' = e (m * M (e₁.symm (y * g')))`. Simplify using `only [G']`.
+
+Rewrite using `[← map_mul, map_mul e₁.symm, hMmul]`. Simplify using `only [mul_assoc]`. Rewrite using `[e1, e2, hlaw t m hm, hΨv t m _ hm, ht]`. Establish `hu : (χa t : ℂ) * conj (χa t : ℂ) = 1`. Rewrite using `[← Circle.coe_inv_eq_conj, ← Circle.coe_mul, mul_inv_cancel, Circle.coe_one]`.
+
+Simplify using `only [NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, mul_one, map_mul]`. Take the linear combination `(c₃ (e (M (e₁.symm y * e₁.symm g)) * e h) * conj (ψ (y * g'))) * hu`. Introduce `μ'' 𝓕'' hμ'' h𝓕''`. Take `⟨i1, -, i3⟩` from `hpair Ψ hΨ μ'' 𝓕'' hμ'' h𝓕'' G G'`. Use `⟨i1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[i3]`. Simplify using the standard rewrite rules.
+-/
 theorem cuspComp_generator_eq_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

@@ -25,6 +25,9 @@ def infEmbedLevel : F.1 →ₐ[K.1] AlgebraicClosure v.Completion :=
   ι.comp (IsScalarTower.toAlgHom K.1 F.1 ℚ̄)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infEmbedLevel_apply (x : F.1) : infEmbedLevel ι F x = ι x :=
   rfl
 
@@ -37,18 +40,27 @@ def infTensorLift :
     (fun _ _ ↦ Commute.all _ _)).comp
       (GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v).symm.toAlgHom
 
+/- English proof (translation)
+Simplify using `[infTensorLift, -GroundTheory.Global.InfinitePlace.tensorPiEquiv_apply]`.
+-/
 theorem infTensorLift_tensorPiEquiv' (t : v.Completion ⊗[K.1] F.1) :
     infTensorLift ι F (GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v t) =
       Algebra.TensorProduct.lift (Algebra.ofId _ _) (infEmbedLevel ι F)
         (fun _ _ ↦ Commute.all _ _) t := by
   simp [infTensorLift, -GroundTheory.Global.InfinitePlace.tensorPiEquiv_apply]
 
+/- English proof (translation)
+Rewrite using `[infTensorLift_tensorPiEquiv', Algebra.TensorProduct.lift_tmul]`. Both sides reduce to the same expression.
+-/
 theorem infTensorLift_tensorPiEquiv (a : v.Completion) (x : F.1) :
     infTensorLift ι F (GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v (a ⊗ₜ x)) =
       algebraMap v.Completion (AlgebraicClosure v.Completion) a * ι x := by
   rw [infTensorLift_tensorPiEquiv', Algebra.TensorProduct.lift_tmul]
   rfl
 
+/- English proof (translation)
+Establish `: algebraMap F.1 (GroundTheory.Global.InfinitePlace.PiPlacesOver (L` using `F.1) v) x = GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v (1 ⊗ₜ x) := by`. Use function extensionality and compare the values at `w`. Rewrite using `[GroundTheory.Global.InfinitePlace.tensorPiEquiv_apply, GroundTheory.Global.InfinitePlace.tensorPiHom_tmul, map_one, one_mul]`. Both sides reduce to the same expression. Rewrite using `[this, infTensorLift_tensorPiEquiv, map_one, one_mul]`.
+-/
 theorem infTensorLift_algebraMap (x : F.1) :
     infTensorLift ι F (algebraMap F.1 (GroundTheory.Global.InfinitePlace.PiPlacesOver (L := F.1) v) x) =
       ι x := by
@@ -61,6 +73,9 @@ theorem infTensorLift_algebraMap (x : F.1) :
   rw [this, infTensorLift_tensorPiEquiv, map_one, one_mul]
 
 open Classical in
+/- English proof (translation)
+Use `Fintype.ofFinite (v.placesOver F.1)` as an intermediate fact. Conclude with `exists_unique_map_single_one_eq_one (infTensorLift ι F).toRingHom`.
+-/
 theorem exists_unique_infTensorLift_single :
     ∃! w : v.placesOver F.1, infTensorLift ι F (Pi.single w 1) = 1 := by
   have := Fintype.ofFinite (v.placesOver F.1)
@@ -70,15 +85,24 @@ def infPlaceOfEmbedding : v.placesOver F.1 :=
   (exists_unique_infTensorLift_single ι F).exists.choose
 
 open Classical in
+/- English proof (translation)
+The claim follows from `(exists_unique_infTensorLift_single ι F).exists.choose_spec`.
+-/
 theorem infTensorLift_single_infPlaceOfEmbedding :
     infTensorLift ι F (Pi.single (infPlaceOfEmbedding ι F) 1) = 1 :=
   (exists_unique_infTensorLift_single ι F).exists.choose_spec
 
 open Classical in
+/- English proof (translation)
+The claim follows from `(exists_unique_infTensorLift_single ι F).unique h (infTensorLift_single_infPlaceOfEmbedding ι F)`.
+-/
 theorem eq_infPlaceOfEmbedding_of_infTensorLift {w : v.placesOver F.1}
     (h : infTensorLift ι F (Pi.single w 1) = 1) : w = infPlaceOfEmbedding ι F :=
   (exists_unique_infTensorLift_single ι F).unique h (infTensorLift_single_infPlaceOfEmbedding ι F)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hu]`.
+-/
 theorem pi_single_algebraMap_eq_infinite {w : v.placesOver F.1} [DecidableEq (v.placesOver F.1)]
     (a : v.Completion) :
     Pi.single w (algebraMap v.Completion (w : NumberField.InfinitePlace F.1).Completion a) =
@@ -106,6 +130,9 @@ def infCompletionEmbedding :
     rw [pi_single_algebraMap_eq_infinite, map_mul, AlgHom.commutes,
       infTensorLift_single_infPlaceOfEmbedding, mul_one]
 
+/- English proof (translation)
+Use `Fintype.ofFinite (v.placesOver F.1)` as an intermediate fact. Conclude with `map_eq_map_single_of_map_single_one (φ := (infTensorLift ι F).toRingHom) (infTensorLift_single_infPlaceOfEmbedding ι F) y`. Use the proof step `@[simp]`.
+-/
 theorem infTensorLift_eq (y : GroundTheory.Global.InfinitePlace.PiPlacesOver (L := F.1) v) :
     infTensorLift ι F y = infCompletionEmbedding ι F (y (infPlaceOfEmbedding ι F)) := by
   classical
@@ -114,6 +141,9 @@ theorem infTensorLift_eq (y : GroundTheory.Global.InfinitePlace.PiPlacesOver (L 
     (infTensorLift_single_infPlaceOfEmbedding ι F) y
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[← infTensorLift_algebraMap ι F x, infTensorLift_eq]`. Both sides reduce to the same expression.
+-/
 theorem infCompletionEmbedding_algebraMap (x : F.1) :
     infCompletionEmbedding ι F
       (algebraMap F.1 (infPlaceOfEmbedding ι F : NumberField.InfinitePlace F.1).Completion x) =
@@ -121,6 +151,13 @@ theorem infCompletionEmbedding_algebraMap (x : F.1) :
   rw [← infTensorLift_algebraMap ι F x, infTensorLift_eq]
   rfl
 
+/- English proof (translation)
+Establish `key : (f.comp (Pi.evalAlgHom _ _ w)).comp (GroundTheory.Global.InfinitePlace.tensorPiEquiv (L` using `F.1) v).toAlgHom = (g.comp (Pi.evalAlgHom _ _ w)).comp (GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v).toAlgHom := by`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a x`. Express the relevant statement in the definitionally equal form `f ((GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v (a ⊗ₜ x)) w) = g ((GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v (a ⊗ₜ x)) w)`. Rewrite using `[GroundTheory.Global.InfinitePlace.tensorPiEquiv_apply, GroundTheory.Global.InfinitePlace.tensorPiHom_tmul, map_mul, map_mul]`.
+
+Use `congr 1`. Rewrite using `[AlgHom.commutes, AlgHom.commutes]`. Conclude with `h x`. Use extensionality with `y`. Take `⟨t, ht⟩` from `(GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v).surjective (Pi.single w y)`.
+
+Use `DFunLike.congr_fun key t` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, Pi.evalAlgHom_apply] at this`. Rewrite `this` using `[show (GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v).toAlgHom t = GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v t from rfl, ht, Pi.single_eq_same]`. Conclude with `this`.
+-/
 theorem algHom_ext_infCompletion {B : Type*} [Semiring B] [Algebra K.1 B]
     [Algebra v.Completion B] [IsScalarTower K.1 v.Completion B] {w : v.placesOver F.1}
     {f g : (w : NumberField.InfinitePlace F.1).Completion →ₐ[v.Completion] B}
@@ -149,6 +186,13 @@ theorem algHom_ext_infCompletion {B : Type*} [Semiring B] [Algebra K.1 B]
     Pi.single_eq_same] at this
   exact this
 
+/- English proof (translation)
+Establish `key : infTensorLift ι F = j.comp (Pi.evalAlgHom _ _ w)`. Establish `: (infTensorLift ι F).comp (GroundTheory.Global.InfinitePlace.tensorPiEquiv (L` using `F.1) v).toAlgHom = (j.comp (Pi.evalAlgHom _ _ w)).comp (GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v).toAlgHom := by`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a x`. Express the relevant statement in the definitionally equal form `infTensorLift ι F (GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v (a ⊗ₜ x)) = j ((GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v (a ⊗ₜ x)) w)`.
+
+Rewrite using `[infTensorLift_tensorPiEquiv, GroundTheory.Global.InfinitePlace.tensorPiEquiv_apply, GroundTheory.Global.InfinitePlace.tensorPiHom_tmul, map_mul, ← hj x]`. Use `congr 1`. Conclude with `(j.commutes a).symm`. Use extensionality with `y`. Take `⟨t, rfl⟩` from `(GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := F.1) v).surjective y`.
+
+Conclude with `DFunLike.congr_fun this t`. Apply `eq_infPlaceOfEmbedding_of_infTensorLift` to reduce the goal to its premises. Use `(DFunLike.congr_fun key _).trans ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, Pi.evalAlgHom_apply, Pi.single_eq_same, map_one]`.
+-/
 theorem eq_infPlaceOfEmbedding {w : v.placesOver F.1}
     (j : (w : NumberField.InfinitePlace F.1).Completion →ₐ[v.Completion]
       AlgebraicClosure v.Completion)
@@ -176,6 +220,9 @@ theorem eq_infPlaceOfEmbedding {w : v.placesOver F.1}
 
 section Decomposition
 
+/- English proof (translation)
+Establish `h` using `(denseRange_coe v).equalizer ((continuous_infiniteCompletionMap _ w').comp (continuous_algebraMap v.Completion (w'.comap ((τ : F.1 ≃+* F.1) : F.1 →+* F.1)).Completion)) (continuous_algebraMap v.Completion w'.Completion) (funext fun a ↦ ?_)`. Conclude with `congrFun h c`. Simplify using `only [Function.comp_apply]`. Express the relevant statement in the definitionally equal form `AdeleBaseChange.infiniteCompletionMap (τ : F.1 ≃+* F.1) w' (algebraMap v.Completion _ (algebraMap K.1 v.Completion (WithAbs.ofAbs a))) = algebraMap v.Completion w'.Completion (algebraMap K.1 v.Completion (WithAbs.ofAbs a))`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply K.1 F.1, AdeleBaseChange.infiniteCompletionMap_algebraMap, AlgEquiv.coe_ringEquiv, AlgEquiv.commutes, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem infiniteCompletionMap_algebraMap_completion (τ : F.1 ≃ₐ[K.1] F.1)
     (w' : NumberField.InfinitePlace F.1) [w'.LiesOver v]
     [(w'.comap ((τ : F.1 ≃+* F.1) : F.1 →+* F.1)).LiesOver v] (c : v.Completion) :
@@ -197,6 +244,17 @@ theorem infiniteCompletionMap_algebraMap_completion (τ : F.1 ≃ₐ[K.1] F.1)
 
 variable [F.1.fixingSubgroup.Normal]
 
+/- English proof (translation)
+Use `set τ := decompHom v.Completion (infEmbedLevel ι F) σ`. Use `set w₀ := infPlaceOfEmbedding ι F`. Establish `hcomap : (w₀ : NumberField.InfinitePlace F.1).comap ((τ : F.1 ≃+* F.1) : F.1 →+* F.1) = τ⁻¹ • (w₀ : NumberField.InfinitePlace F.1)` using `AdeleBaseChange.comap_eq_inv_smul τ w₀`. Establish `hu : ((w₀ : NumberField.InfinitePlace F.1).comap ((τ : F.1 ≃+* F.1) : F.1 →+* F.1)).LiesOver v`. Rewrite using `[GroundTheory.Global.InfinitePlace.liesOver_iff_comap_eq, hcomap, GroundTheory.Global.InfinitePlace.comap_smul_algebraMap, ← GroundTheory.Global.InfinitePlace.liesOver_iff_comap_eq]`.
+
+Conclude with `w₀.2`. Set `u : v.placesOver F.1` to `⟨_, hu⟩`. Set `j : (u : NumberField.InfinitePlace F.1).Completion →ₐ[v.Completion] AlgebraicClosure v.Completion` to `σ.symm.toAlgHom.comp ((infCompletionEmbedding ι F).comp { AdeleBaseChange.infiniteCompletionMap (τ : F.1 ≃+* F.1) w₀ with commutes' := infiniteCompletionMap_algebraMap_completion F τ w₀ })`. Establish `hj : ∀ x : F.1, j (algebraMap F.1 _ x) = ι x`. Introduce `x`.
+
+Express the relevant statement in the definitionally equal form `σ.symm (infCompletionEmbedding ι F (AdeleBaseChange.infiniteCompletionMap (τ : F.1 ≃+* F.1) w₀ (algebraMap F.1 _ x))) = ι x`. Rewrite using `[AdeleBaseChange.infiniteCompletionMap_algebraMap, infCompletionEmbedding_algebraMap]`. Establish `h` using `decompHom_apply (Kv := v.Completion) (infEmbedLevel ι F) σ x`. Rewrite `h` using `[infEmbedLevel_apply, infEmbedLevel_apply]`. Rewrite using `[AlgEquiv.coe_ringEquiv, h, AlgEquiv.symm_apply_apply]`.
+
+Establish `h` using `congrArg Subtype.val (eq_infPlaceOfEmbedding ι F j hj)`. Express the relevant statement in the definitionally equal form `(w₀ : NumberField.InfinitePlace F.1).comap ((τ : F.1 ≃+* F.1) : F.1 →+* F.1) = (w₀ : NumberField.InfinitePlace F.1) at h`. Rewrite `h` using `[hcomap]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h]`.
+
+Use `_ = w₀ := smul_inv_smul τ _`.
+-/
 theorem decompHom_smul_infPlaceOfEmbedding (σ : Gal(AlgebraicClosure v.Completion/v.Completion)) :
     decompHom v.Completion (infEmbedLevel ι F) σ • (infPlaceOfEmbedding ι F :
       NumberField.InfinitePlace F.1) = infPlaceOfEmbedding ι F := by
@@ -239,17 +297,31 @@ def infLocalDecompHom :
   (decompHom v.Completion (infEmbedLevel ι F)).codRestrict _ fun σ ↦
     MulAction.mem_stabilizer_iff.2 (decompHom_smul_infPlaceOfEmbedding ι F σ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_infLocalDecompHom (σ : Gal(AlgebraicClosure v.Completion/v.Completion)) :
     (infLocalDecompHom ι F σ : Gal(F.1/K.1)) = decompHom v.Completion (infEmbedLevel ι F) σ :=
   rfl
 
+/- English proof (translation)
+The claim follows from `decompHom_apply (Kv := v.Completion) (infEmbedLevel ι F) σ x`.
+-/
 theorem ι_infLocalDecompHom_apply (σ : Gal(AlgebraicClosure v.Completion/v.Completion)) (x : F.1) :
     ι ((infLocalDecompHom ι F σ : Gal(F.1/K.1)) x : F.1) = σ (ι x) :=
   decompHom_apply (Kv := v.Completion) (infEmbedLevel ι F) σ x
 
+/- English proof (translation)
+The claim follows from `(continuous_decompHom (infEmbedLevel ι F)).subtype_mk _`.
+-/
 theorem continuous_infLocalDecompHom : Continuous (infLocalDecompHom ι F) :=
   (continuous_decompHom (infEmbedLevel ι F)).subtype_mk _
 
+/- English proof (translation)
+Establish `: (infCompletionEmbedding ι F).comp (infiniteDecompositionAlgEquiv v (infPlaceOfEmbedding ι F : NumberField.InfinitePlace F.1) (infLocalDecompHom ι F σ)).toAlgHom = σ.toAlgHom.comp (infCompletionEmbedding ι F)`. Apply `algHom_ext_infCompletion` to reduce the goal to its premises. Introduce `x`. Express the relevant statement in the definitionally equal form `infCompletionEmbedding ι F (infLocalDecompHom ι F σ • algebraMap F.1 _ x) = σ (infCompletionEmbedding ι F (algebraMap F.1 _ x))`. Establish `e : infLocalDecompHom ι F σ • algebraMap F.1 (infPlaceOfEmbedding ι F : NumberField.InfinitePlace F.1).Completion x = algebraMap F.1 (infPlaceOfEmbedding ι F : NumberField.InfinitePlace F.1).Completion ((infLocalDecompHom ι F σ : Gal(F.1/K.1)) x)` using `infiniteDecomposition_smul_coe (infLocalDecompHom ι F σ) (WithAbs.toAbs _ x)`.
+
+Rewrite using `[e, infCompletionEmbedding_algebraMap, infCompletionEmbedding_algebraMap, ι_infLocalDecompHom_apply]`. Conclude with `DFunLike.congr_fun this y`.
+-/
 theorem infCompletionEmbedding_smul (σ : Gal(AlgebraicClosure v.Completion/v.Completion))
     (y : (infPlaceOfEmbedding ι F : NumberField.InfinitePlace F.1).Completion) :
     infCompletionEmbedding ι F (infLocalDecompHom ι F σ • y) = σ (infCompletionEmbedding ι F y) := by
@@ -282,6 +354,9 @@ def infLocalUnitsMor :
           (infPlaceOfEmbedding ι F : NumberField.InfinitePlace F.1).Completion)))⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infLocalUnitsMor_hom_apply
     (x : Additive ((infPlaceOfEmbedding ι F : NumberField.InfinitePlace F.1).Completion)ˣ) :
     ((Additive.toMul ((infLocalUnitsMor ι F).hom x) : (AlgebraicClosure v.Completion)ˣ) :

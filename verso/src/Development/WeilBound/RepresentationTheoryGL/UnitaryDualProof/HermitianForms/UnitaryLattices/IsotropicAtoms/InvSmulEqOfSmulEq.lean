@@ -59,12 +59,22 @@ section Api
 variable {m N : ℕ} (h : m + 2 ≤ N) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V)
   (ψ : AddChar k Circle)
 
+/- English proof (translation)
+Rewrite using `[← inv_smul_smul₀ hb x, hk, smul_smul, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem inv_smul_eq_of_smul_eq_alt {M : Type} [AddCommGroup M] [Module ℂ M] {a b : ℂ} {x y : M} (ha : a ≠ 0) (hb : b ≠ 0)
     (hk : b • x = a • y) : a⁻¹ • x = b⁻¹ • y := by
   rw [← inv_smul_smul₀ hb x, hk, smul_smul, smul_smul]
   congr 1
   field_simp
 
+/- English proof (translation)
+Use `⟨fun t ht => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `A.neg_mem (hT s hs)`. Take `⟨s, ⟨hs, hs'⟩, hu⟩` from `hTr (-a) (A.neg_mem ha)`. Use `⟨-s, ⟨Finset.mem_image_of_mem _ hs, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `H.neg_mem hs'` as an intermediate fact. Rewrite `this` using `[show -(-a - s) = a - -s by abel]`. Then use the resulting hypothesis. Introduce and unpack `t ⟨ht, ht'⟩`. Take `⟨s', hs'', rfl⟩` from `Finset.mem_image.mp ht`. Use `hu s' ⟨hs'', by` as an intermediate fact.
+
+Use `H.neg_mem ht'` as an intermediate fact. Rewrite using `[show -(a - -s') = -a - s' by abel] at this⟩` and apply the resulting hypothesis. Rewrite using `[this]`.
+-/
 theorem transversal_neg {X : Type} [AddCommGroup X] [DecidableEq X] {A H : AddSubgroup X} {T : Finset X}
     (hT : ∀ t ∈ T, t ∈ A) (hTr : ∀ a ∈ A, ∃! t, t ∈ T ∧ a - t ∈ H) :
     (∀ t ∈ T.image Neg.neg, t ∈ A) ∧ ∀ a ∈ A, ∃! t, t ∈ T.image Neg.neg ∧ a - t ∈ H := by
@@ -82,26 +92,46 @@ theorem transversal_neg {X : Type} [AddCommGroup X] [DecidableEq X] {A H : AddSu
         rwa [show -(a - -s') = -a - s' by abel] at this⟩
       rw [this]
 
+/- English proof (translation)
+Rewrite using `[AddChar.map_neg_eq_inv, Circle.coe_inv_eq_conj]`.
+-/
 theorem conj_psi (y : k) : starRingEnd ℂ ((ψ y : Circle) : ℂ) = ((ψ (-y) : Circle) : ℂ) := by
   rw [AddChar.map_neg_eq_inv, Circle.coe_inv_eq_conj]
 
+/- English proof (translation)
+Rewrite using `[dotProduct_add, AddChar.map_add_eq_mul, hb', mul_one, colEl_add, map_mul, Module.End.mul_apply, hb]`.
+-/
 theorem avgF_add {ξ : Fin (m + 1) → k} {v : V} (a b : Fin (m + 1) → k) (hb : π (colEl k m N h b) v = v)
     (hb' : ψ (ξ ⬝ᵥ b) = 1) :
     (starRingEnd ℂ ((ψ (ξ ⬝ᵥ (a + b)) : Circle) : ℂ)) • π (colEl k m N h (a + b)) v =
       (starRingEnd ℂ ((ψ (ξ ⬝ᵥ a) : Circle) : ℂ)) • π (colEl k m N h a) v := by
   rw [dotProduct_add, AddChar.map_add_eq_mul, hb', mul_one, colEl_add, map_mul, Module.End.mul_apply, hb]
 
+/- English proof (translation)
+Conclude with `(hπ v).preimage (continuous_colEl m N h)`.
+-/
 theorem isOpen_stabSub (hπ : IsSmooth π) (v : V) : IsOpen (stabSub h π v : Set (Fin (m + 1) → k)) := by
   exact (hπ v).preimage (continuous_colEl m N h)
 
+/- English proof (translation)
+Establish `hc : Continuous fun x : Fin n → k => ξ ⬝ᵥ x` using `continuous_const.dotProduct continuous_id`. Conclude with `(isOpen_ker_char ψ hψ).preimage hc`.
+-/
 theorem isOpen_charSub (hψ : Continuous ψ) {n : ℕ} (ξ : Fin n → k) : IsOpen (charSub k ψ ξ : Set (Fin n → k)) := by
   have hc : Continuous fun x : Fin n → k => ξ ⬝ᵥ x := continuous_const.dotProduct continuous_id
   exact (isOpen_ker_char ψ hψ).preimage hc
 
+/- English proof (translation)
+Conclude with `comap_lat (n + 1) _ (Units.isUnit g) A hA.1 hA.2`.
+-/
 theorem isLat_comap {n : ℕ} (g : GL (Fin (n + 1)) k) {A : AddSubgroup (Fin (n + 1) → k)} (hA : IsLat A) :
     IsLat (A.comap (Matrix.mulVecLin (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k)).toAddMonoidHom) := by
   exact comap_lat (n + 1) _ (Units.isUnit g) A hA.1 hA.2
 
+/- English proof (translation)
+Establish `hd : ∃ p, AvgData ψ h π ξ A v p` using `⟨p, hp⟩`. Rewrite using `[avg, dif_pos hd]`. Take `⟨hq1, hq2, hq3, hq4, hq5, hq6⟩` from `hd.choose_spec`. Take `⟨hp1, hp2, hp3, hp4, hp5, hp6⟩` from `hp`. Establish `key` using `card_smul_sum_eq hq1 hp1 hq5 hq6 hp5 hp6 (fun t => (starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) • π (colEl k m N h t) v) (fun a b hb => avgF_add h π ψ a b (hq3 b hb) (hq4 b hb)) (fun a b hb => avgF_add h π ψ a b (hp3 b hb) (hp4 b hb))`.
+
+Establish `hcq : (hd.choose.2.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (transversal_nonempty hq6).card_pos.ne'`. Establish `hcp : (p.2.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (transversal_nonempty hp6).card_pos.ne'`. Conclude with `inv_smul_eq_of_smul_eq_alt hcq hcp key`.
+-/
 theorem avg_eq {ξ : Fin (m + 1) → k} {A : AddSubgroup (Fin (m + 1) → k)} {v : V}
     {p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)} (hp : AvgData ψ h π ξ A v p) :
     avg ψ h π ξ A v = ((p.2.card : ℂ)⁻¹) •
@@ -117,12 +147,18 @@ theorem avg_eq {ξ : Fin (m + 1) → k} {A : AddSubgroup (Fin (m + 1) → k)} {v
   have hcp : (p.2.card : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (transversal_nonempty hp6).card_pos.ne'
   exact inv_smul_eq_of_smul_eq_alt hcq hcp key
 
+/- English proof (translation)
+Take `⟨T, hT, hTr⟩` from `exists_transversal A U hA.1 hU hUA`. Conclude with `⟨T, hUA, hU, fun a ha => hUv ha, fun a ha => hUξ ha, hT, hTr⟩`.
+-/
 theorem exists_avgData_of (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (v : V)
     (U : AddSubgroup (Fin (m + 1) → k)) (hU : IsOpen (U : Set (Fin (m + 1) → k))) (hUA : U ≤ A)
     (hUv : U ≤ stabSub h π v) (hUξ : U ≤ charSub k ψ ξ) : ∃ T, AvgData ψ h π ξ A v (U, T) := by
   obtain ⟨T, hT, hTr⟩ := exists_transversal A U hA.1 hU hUA
   exact ⟨T, hUA, hU, fun a ha => hUv ha, fun a ha => hUξ ha, hT, hTr⟩
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `exists_avgData_of h π ψ ξ hA v (U ⊓ A ⊓ stabSub h π v ⊓ charSub k ψ ξ) (by`. Simplify using `only [AddSubgroup.coe_inf]`. Conclude with `((hU.inter hA.2).inter (isOpen_stabSub h π hπ v)).inter (isOpen_charSub ψ hψ ξ))`. Use the proof step `(inf_le_left.trans (inf_le_left.trans inf_le_right)) (inf_le_left.trans inf_le_right) inf_le_right`. Conclude with `⟨_, hT, inf_le_left.trans (inf_le_left.trans inf_le_left)⟩`.
+-/
 theorem exists_avgData (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) (v : V) (U : AddSubgroup (Fin (m + 1) → k)) (hU : IsOpen (U : Set (Fin (m + 1) → k))) :
     ∃ p, AvgData ψ h π ξ A v p ∧ p.1 ≤ U := by
@@ -133,17 +169,26 @@ theorem exists_avgData (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 
     (inf_le_left.trans (inf_le_left.trans inf_le_right)) (inf_le_left.trans inf_le_right) inf_le_right
   exact ⟨_, hT, inf_le_left.trans (inf_le_left.trans inf_le_left)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hp.1, hp.2.1, hw, hp.2.2.2⟩`.
+-/
 theorem avgData_of_fix {ξ : Fin (m + 1) → k} {A : AddSubgroup (Fin (m + 1) → k)} {v w : V}
     {p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)} (hp : AvgData ψ h π ξ A v p)
     (hw : ∀ a ∈ p.1, π (colEl k m N h a) w = w) : AvgData ψ h π ξ A w p :=
   ⟨hp.1, hp.2.1, hw, hp.2.2.2⟩
 
+/- English proof (translation)
+Take `⟨p, hp, hpU⟩` from `exists_avgData h π ψ hψ hπ ξ hA v (stabSub h π w) (isOpen_stabSub h π hπ w)`. Conclude with `⟨p, hp, avgData_of_fix h π ψ hp (fun a ha => hpU ha)⟩`.
+-/
 theorem exists_avgData₂ (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k)
     {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (v w : V) :
     ∃ p, AvgData ψ h π ξ A v p ∧ AvgData ψ h π ξ A w p := by
   obtain ⟨p, hp, hpU⟩ := exists_avgData h π ψ hψ hπ ξ hA v (stabSub h π w) (isOpen_stabSub h π hπ w)
   exact ⟨p, hp, avgData_of_fix h π ψ hp (fun a ha => hpU ha)⟩
 
+/- English proof (translation)
+Take `⟨p, hp, hpw⟩` from `exists_avgData₂ h π ψ hψ hπ ξ hA v w`. Establish `hpvw : AvgData ψ h π ξ A (v + w) p` using `avgData_of_fix h π ψ hp (fun a ha => by rw [map_add, hp.2.2.1 a ha, hpw.2.2.1 a ha])`. Rewrite using `[avg_eq h π ψ hpvw, avg_eq h π ψ hp, avg_eq h π ψ hpw, ← smul_add, ← Finset.sum_add_distrib]`. Simplify using `only [map_add, smul_add]`.
+-/
 theorem avg_add (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) (v w : V) : avg ψ h π ξ A (v + w) = avg ψ h π ξ A v + avg ψ h π ξ A w := by
   obtain ⟨p, hp, hpw⟩ := exists_avgData₂ h π ψ hψ hπ ξ hA v w
@@ -152,6 +197,11 @@ theorem avg_add (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → 
   rw [avg_eq h π ψ hpvw, avg_eq h π ψ hp, avg_eq h π ψ hpw, ← smul_add, ← Finset.sum_add_distrib]
   simp only [map_add, smul_add]
 
+/- English proof (translation)
+Take `⟨p, hp, -⟩` from `exists_avgData h π ψ hψ hπ ξ hA v (stabSub h π v) (isOpen_stabSub h π hπ v)`. Establish `hpc : AvgData ψ h π ξ A (c • v) p` using `avgData_of_fix h π ψ hp (fun a ha => by rw [map_smul, hp.2.2.1 a ha])`. Rewrite using `[avg_eq h π ψ hpc, avg_eq h π ψ hp, smul_comm c]`. Use `congr 1`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_comm]`.
+-/
 theorem avg_smul (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) (c : ℂ) (v : V) : avg ψ h π ξ A (c • v) = c • avg ψ h π ξ A v := by
   obtain ⟨p, hp, -⟩ := exists_avgData h π ψ hψ hπ ξ hA v (stabSub h π v) (isOpen_stabSub h π hπ v)
@@ -163,6 +213,11 @@ theorem avg_smul (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) →
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [map_smul, smul_comm]
 
+/- English proof (translation)
+Take `⟨p, hp, hpw⟩` from `exists_avgData₂ h π ψ hψ hπ ξ hA v (π (colEl k m N h a) v)`. Rewrite using `[avg_eq h π ψ hp, avg_eq h π ψ hpw, map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `e : π (colEl k m N h a) (π (colEl k m N h t) v) = π (colEl k m N h t) (π (colEl k m N h a) v)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, ← colEl_add, add_comm, colEl_add, map_mul, Module.End.mul_apply]`. Rewrite using `[map_smul, e]`.
+-/
 theorem colEl_comm_avg' (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k)
     {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (a : Fin (m + 1) → k) (v : V) :
     π (colEl k m N h a) (avg ψ h π ξ A v) = avg ψ h π ξ A (π (colEl k m N h a) v) := by
@@ -174,6 +229,11 @@ theorem colEl_comm_avg' (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m +
     rw [← Module.End.mul_apply, ← map_mul, ← colEl_add, add_comm, colEl_add, map_mul, Module.End.mul_apply]
   rw [map_smul, e]
 
+/- English proof (translation)
+Take `⟨p, hp, hpw⟩` from `exists_avgData₂ h π ψ hψ hπ ξ hA v (π (colEl k m N h a) v)`. Establish `hs` using `sum_transversal_add hp.1 hp.2.2.2.2.1 hp.2.2.2.2.2 (fun t => (starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) • π (colEl k m N h t) v) (fun x y hy => avgF_add h π ψ x y (hp.2.2.1 y hy) (hp.2.2.2.1 y hy)) ha`. Establish `e : ∀ t, (starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) • π (colEl k m N h t) (π (colEl k m N h a) v) = ((ψ (ξ ⬝ᵥ a) : Circle) : ℂ) • ((starRingEnd ℂ ((ψ (ξ ⬝ᵥ (t + a)) : Circle) : ℂ)) • π (colEl k m N h (t + a)) v)`. Introduce `t`. Rewrite using `[colEl_add, map_mul, Module.End.mul_apply, smul_smul]`.
+
+Use `congr 1`. Rewrite using `[conj_psi, conj_psi, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, dotProduct_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[avg_eq h π ψ hpw, avg_eq h π ψ hp, Finset.sum_congr rfl (fun t _ => e t), ← Finset.smul_sum, hs, smul_comm]`.
+-/
 theorem avg_colEl (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) {a : Fin (m + 1) → k} (ha : a ∈ A) (v : V) :
     avg ψ h π ξ A (π (colEl k m N h a) v) = ((ψ (ξ ⬝ᵥ a) : Circle) : ℂ) • avg ψ h π ξ A v := by
@@ -192,12 +252,28 @@ theorem avg_colEl (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) �
     ring
   rw [avg_eq h π ψ hpw, avg_eq h π ψ hp, Finset.sum_congr rfl (fun t _ => e t), ← Finset.smul_sum, hs, smul_comm]
 
+/- English proof (translation)
+Rewrite using `[colEl_comm_avg' h π ψ hψ hπ ξ hA a v, avg_colEl h π ψ hψ hπ ξ hA ha v]`.
+-/
 theorem colEl_avg (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) {a : Fin (m + 1) → k} (ha : a ∈ A) (v : V) :
     π (colEl k m N h a) (avg ψ h π ξ A v) = ((ψ (ξ ⬝ᵥ a) : Circle) : ℂ) • avg ψ h π ξ A v := by
   rw [colEl_comm_avg' h π ψ hψ hπ ξ hA a v, avg_colEl h π ψ hψ hπ ξ hA ha v]
 
 open Classical in
+/- English proof (translation)
+Take `⟨hp1, hp2, hp3, hp4, hp5, hp6⟩` from `hp`. Establish `e : ∀ t, (starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) * ((ψ (η ⬝ᵥ t) : Circle) : ℂ) = ((ψ ((η - ξ) ⬝ᵥ t) : Circle) : ℂ)`. Introduce `t`. Rewrite using `[conj_psi, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, sub_dotProduct]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`. Establish `hc : (p.2.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (transversal_nonempty hp6).card_pos.ne'`. Use `split_ifs with hA`. Establish `h1 : ∀ t ∈ p.2, ((ψ ((η - ξ) ⬝ᵥ t) : Circle) : ℂ) = 1`.
+
+Introduce `t ht`. Rewrite using `[sub_dotProduct, AddChar.map_sub_eq_div, hA t (hp5 t ht), div_self', Circle.coe_one]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_const, nsmul_eq_mul, mul_one, inv_mul_cancel₀ hc]`. Use `push Not at hA`. Take `⟨a, ha, hne⟩` from `hA`.
+
+Establish `hz : ∑ t ∈ p.2, ((ψ ((η - ξ) ⬝ᵥ t) : Circle) : ℂ) = 0`. Use `sum_transversal_char hp1 hp5 hp6 (fun t => ((ψ ((η - ξ) ⬝ᵥ t) : Circle) : ℂ)) ?_ ?_ ha ?_` and prove the remaining obligations. Introduce `x y`. Rewrite using `[dotProduct_add, AddChar.map_add_eq_mul, Circle.coe_mul]`. Introduce `x hx`.
+
+Rewrite using `[sub_dotProduct, AddChar.map_sub_eq_div, hη x hx, hp4 x hx, div_one, Circle.coe_one]`. Introduce `H`. Apply `hne` to reduce the goal to its premises. Establish `H2 : ψ ((η - ξ) ⬝ᵥ a) = 1`. Rewrite using `[← Circle.coe_inj, Circle.coe_one]`.
+
+Conclude with `H`. Rewrite `H2` using `[sub_dotProduct, AddChar.map_sub_eq_div]`. Conclude with `(div_eq_one.mp H2).symm`. Rewrite using `[hz, mul_zero]`.
+-/
 theorem char_sum {ξ η : Fin (m + 1) → k} {A : AddSubgroup (Fin (m + 1) → k)} {v : V}
     {p : AddSubgroup (Fin (m + 1) → k) × Finset (Fin (m + 1) → k)} (hp : AvgData ψ h π ξ A v p)
     (hη : ∀ a ∈ p.1, ψ (η ⬝ᵥ a) = 1) :
@@ -236,6 +312,11 @@ theorem char_sum {ξ η : Fin (m + 1) → k} {A : AddSubgroup (Fin (m + 1) → k
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨p, hp, hpU⟩` from `exists_avgData h π ψ hψ hπ ξ hA v (charSub k ψ η) (isOpen_charSub ψ hψ η)`. Establish `hs` using `char_sum h π ψ hp (fun a ha => hpU ha)`. Rewrite using `[avg_eq h π ψ hp]`. Establish `e : ∀ t ∈ p.2, (starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) • π (colEl k m N h t) v = ((starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) * ((ψ (η ⬝ᵥ t) : Circle) : ℂ)) • v`. Introduce `t ht`.
+
+Rewrite using `[hv t (hp.2.2.2.2.1 t ht), smul_smul]`. Rewrite using `[Finset.sum_congr rfl e, ← Finset.sum_smul, smul_smul, hs]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem avg_eigen (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ η : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) (v : V) (hv : ∀ a ∈ A, π (colEl k m N h a) v = ((ψ (η ⬝ᵥ a) : Circle) : ℂ) • v) :
     avg ψ h π ξ A v = if ∀ a ∈ A, ψ (ξ ⬝ᵥ a) = ψ (η ⬝ᵥ a) then v else 0 := by
@@ -249,11 +330,17 @@ theorem avg_eigen (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ η : Fin (m + 1)
   rw [Finset.sum_congr rfl e, ← Finset.sum_smul, smul_smul, hs]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `avg_smul h π ψ hψ hπ ξ hA 0 0` as an intermediate fact. Simplify using `using this`.
+-/
 theorem avg_zero' (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) : avg ψ h π ξ A 0 = 0 := by
   have := avg_smul h π ψ hψ hπ ξ hA 0 0
   simpa using this
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty, avg_zero' h π ψ hψ hπ ξ hA]`. Introduce `i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, avg_add h π ψ hψ hπ ξ hA, ih]`.
+-/
 theorem avg_sum' (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) {ι : Type} (s : Finset ι) (f : ι → V) :
     avg ψ h π ξ A (∑ i ∈ s, f i) = ∑ i ∈ s, avg ψ h π ξ A (f i) := by
@@ -265,6 +352,11 @@ theorem avg_sum' (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) →
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨p, hp, hpU⟩` from `exists_avgData h π ψ hψ hπ ξ hA v (charSub k ψ η) (isOpen_charSub ψ hψ η)`. Establish `hs` using `char_sum h π ψ hp (fun a ha => hpU ha)`. Rewrite using `[avg_eq h π ψ hp, avg_smul h π ψ hψ hπ η hA', avg_sum' h π ψ hψ hπ η hA']`. Establish `e : ∀ t ∈ p.2, avg ψ h π η A' ((starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) • π (colEl k m N h t) v) = ((starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) * ((ψ (η ⬝ᵥ t) : Circle) : ℂ)) • avg ψ h π η A' v`. Introduce `t ht`.
+
+Rewrite using `[avg_smul h π ψ hψ hπ η hA', avg_colEl h π ψ hψ hπ η hA' (hAA' (hp.2.2.2.2.1 t ht)), smul_smul]`. Rewrite using `[Finset.sum_congr rfl e, ← Finset.sum_smul, smul_smul, hs]`. Distinguish the cases in `hc : ∀ a ∈ A, ψ (ξ ⬝ᵥ a) = ψ (η ⬝ᵥ a)`. Rewrite using `[if_pos hc, if_pos (fun a ha => (hc a ha).symm), one_smul]`. Rewrite using `[if_neg hc, if_neg (fun H => hc (fun a ha => (H a ha).symm)), zero_smul]`.
+-/
 theorem avg_avg (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ η : Fin (m + 1) → k) {A A' : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) (hA' : IsLat A') (hAA' : A ≤ A') (v : V) :
     avg ψ h π η A' (avg ψ h π ξ A v) = if ∀ a ∈ A, ψ (η ⬝ᵥ a) = ψ (ξ ⬝ᵥ a) then avg ψ h π η A' v else 0 := by
@@ -280,6 +372,15 @@ theorem avg_avg (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ η : Fin (m + 1) �
   · rw [if_pos hc, if_pos (fun a ha => (hc a ha).symm), one_smul]
   · rw [if_neg hc, if_neg (fun H => hc (fun a ha => (H a ha).symm)), zero_smul]
 
+/- English proof (translation)
+Take `⟨p, hp, hpw⟩` from `exists_avgData₂ h π ψ hψ hπ ξ hA v w`. Rewrite using `[avg_eq h π ψ hp, avg_eq h π ψ hpw]`. Take `⟨hp1, hp2, hp3, hp4, hp5, hp6⟩` from `hp`. Take `⟨hT', hTr'⟩` from `transversal_neg hp5 hp6`. Establish `hF : ∀ a, ∀ b ∈ p.1, ((ψ (ξ ⬝ᵥ (a + b)) : Circle) : ℂ) * B v (π (colEl k m N h (a + b)) w) = ((ψ (ξ ⬝ᵥ a) : Circle) : ℂ) * B v (π (colEl k m N h a) w)`.
+
+Introduce `a b hb`. Rewrite using `[dotProduct_add, AddChar.map_add_eq_mul, hp4 b hb, mul_one, colEl_add, map_mul, Module.End.mul_apply, hpw.2.2.1 b hb]`. Establish `key` using `card_smul_sum_eq hp1 hp1 hp5 hp6 hT' hTr' (fun s => ((ψ (ξ ⬝ᵥ s) : Circle) : ℂ) * B v (π (colEl k m N h s) w)) hF hF`. Rewrite `key` using `[Finset.card_image_of_injective _ neg_injective, Finset.sum_image (fun x _ y _ hxy => neg_injective hxy)]`. Establish `hc : (p.2.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (transversal_nonempty hp6).card_pos.ne'`.
+
+Establish `key'` using `smul_right_injective ℂ hc key`. Simplify using `only [map_smul, map_smulₛₗ, map_sum, LinearMap.smul_apply, LinearMap.sum_apply, smul_eq_mul, map_inv₀, map_natCast, starRingEnd_self_apply]`. Use `congr 1`. Use `(Finset.sum_congr rfl fun t _ => ?_).trans key'.symm` and prove the remaining obligations. Use `show _ = ((ψ (ξ ⬝ᵥ (-t)) : Circle) : ℂ) * B v (π (colEl k m N h (-t)) w)`.
+
+Establish `hv : π (colEl k m N h (-t)) (π (colEl k m N h t) v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← colEl_add, neg_add_cancel, colEl_zero, map_one, Module.End.one_apply]`. Rewrite using `[conj_psi, dotProduct_neg, ← hB (-t) (π (colEl k m N h t) v) w, hv]`.
+-/
 theorem form_avg (hψ : Continuous ψ) (hπ : IsSmooth π) (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
     (hB : ∀ x v w, B (π (colEl k m N h x) v) (π (colEl k m N h x) w) = B v w) (ξ : Fin (m + 1) → k)
     {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (v w : V) :
@@ -308,6 +409,27 @@ theorem form_avg (hψ : Continuous ψ) (hπ : IsSmooth π) (B : V →ₗ[ℂ] V 
     rw [← Module.End.mul_apply, ← map_mul, ← colEl_add, neg_add_cancel, colEl_zero, map_one, Module.End.one_apply]
   rw [conj_psi, dotProduct_neg, ← hB (-t) (π (colEl k m N h t) v) w, hv]
 
+/- English proof (translation)
+Take `⟨p, hp, -⟩` from `exists_avgData h π ψ hψ hπ (Matrix.vecMul ξ (g : Matrix (Fin (m + 1)) (Fin (m + 1)) k)) hA u (stabSub h π u) (isOpen_stabSub h π hπ u)`. Establish `hp0` using `hp`. Take `⟨hp1, hp2, hp3, hp4, hp5, hp6⟩` from `hp0`. Establish `hgg : ∀ x : Fin (m + 1) → k, (g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ (((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x) = x`. Introduce `x`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hgg' : ∀ x : Fin (m + 1) → k, ((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ ((g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x) = x`. Introduce `x`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hinj : Function.Injective (fun x : Fin (m + 1) → k => (g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x)`.
+
+Introduce `x y hxy`. Use `congrArg (fun z => ((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ z) hxy` as an intermediate fact. Simplify `this` using `only [hgg']`. Establish `hcomm : ∀ (y : Fin (m + 1) → k) (w : V), π (colEl k m N h ((g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ y)) (π (blkAt k (m + 1) N (by omega) g) w) = π (blkAt k (m + 1) N (by omega) g) (π (colEl k m N h y) w)`. Introduce `y w`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, ← blkAt_mul_colEl, map_mul, Module.End.mul_apply]`. Establish `hq : AvgData ψ h π ξ (A.comap (Matrix.mulVecLin ((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k)).toAddMonoidHom) (π (blkAt k (m + 1) N (by omega) g) u) (p.1.comap (Matrix.mulVecLin ((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k)).toAddMonoi …`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `hp1 hx`.
+
+Rewrite using `[AddSubgroup.coe_comap]`. Conclude with `hp2.preimage (Continuous.matrix_mulVec continuous_const continuous_id)`. Introduce `x hx`. Use `hcomm (((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x) u` as an intermediate fact. Rewrite `this` using `[hgg]`.
+
+Rewrite using `[this, hp3 (((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x) hx]`. Introduce `x hx`. Use `hp4 (((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ x) hx` as an intermediate fact. Rewrite `this` using `[← Matrix.dotProduct_mulVec, hgg]`. Then use the resulting hypothesis. Introduce `t ht`.
+
+Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp ht`. Express the relevant statement in the definitionally equal form `((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ ((g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ s) ∈ A`. Rewrite using `[hgg']`. Conclude with `hp5 s hs`. Introduce `a ha`.
+
+Take `⟨s, ⟨hs, hs'⟩, hu⟩` from `hp6 _ ha`. Use `⟨(g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ s, ⟨Finset.mem_image_of_mem _ hs, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ (a - (g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ s) ∈ p.1`. Rewrite using `[Matrix.mulVec_sub, hgg']`. Conclude with `hs'`.
+
+Introduce and unpack `t ⟨ht, ht'⟩`. Take `⟨s', hs'', rfl⟩` from `Finset.mem_image.mp ht`. Express the relevant statement in the definitionally equal form `((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ (a - (g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) *ᵥ s') ∈ p.1 at ht'`. Rewrite `ht'` using `[Matrix.mulVec_sub, hgg']`. Rewrite using `[hu s' ⟨hs'', ht'⟩]`.
+
+Rewrite using `[avg_eq h π ψ hq, avg_eq h π ψ hp, Finset.card_image_of_injective _ hinj, Finset.sum_image (fun x _ y _ hxy => hinj hxy), map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hcomm, Matrix.dotProduct_mulVec]`.
+-/
 theorem avg_conj (hψ : Continuous ψ) (hπ : IsSmooth π) (g : GL (Fin (m + 1)) k) (ξ : Fin (m + 1) → k)
     {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (u : V) :
     avg ψ h π ξ (A.comap (Matrix.mulVecLin ((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k)).toAddMonoidHom)
@@ -377,11 +499,21 @@ theorem avg_conj (hψ : Continuous ψ) (hπ : IsSmooth π) (g : GL (Fin (m + 1))
   refine Finset.sum_congr rfl fun s _ => ?_
   rw [map_smul, hcomm, Matrix.dotProduct_mulVec]
 
+/- English proof (translation)
+Establish `: ⇑(1 : AddChar k Circle) = fun _ => 1` using `funext fun x => AddChar.one_apply x`. Rewrite using `[this]`. Conclude with `continuous_const`.
+-/
 theorem continuous_one_char : Continuous (⇑(1 : AddChar k Circle)) := by
   have : ⇑(1 : AddChar k Circle) = fun _ => 1 := funext fun x => AddChar.one_apply x
   rw [this]
   exact continuous_const
 
+/- English proof (translation)
+Substitute `hξ0` using the available equality. Establish `hiff : ∀ p, AvgData ψ h π 0 A v p ↔ AvgData 1 h π 0 A v p`. Introduce `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, c, -, e, f⟩`.
+
+Conclude with `⟨a, b, c, fun x _ => by simp, e, f⟩`. Introduce and unpack `⟨a, b, c, -, e, f⟩`. Conclude with `⟨a, b, c, fun x _ => by simp, e, f⟩`. Distinguish the cases in `hd : ∃ p, AvgData ψ h π 0 A v p`. Take `⟨p, hp⟩` from `hd`.
+
+Rewrite using `[avg_eq h π ψ hp, avg_eq h π 1 ((hiff p).mp hp)]`. Simplify using `only [zero_dotProduct, AddChar.map_zero_eq_one]`. Establish `hd' : ¬ ∃ p, AvgData 1 h π 0 A v p` using `fun ⟨p, hp⟩ => hd ⟨p, (hiff p).mpr hp⟩`. Rewrite using `[avg, avg, dif_neg hd, dif_neg hd']`.
+-/
 theorem avg_zero_char (ξ0 : Fin (m + 1) → k) (hξ0 : ξ0 = 0) (A : AddSubgroup (Fin (m + 1) → k)) (v : V) :
     avg ψ h π ξ0 A v = avg (1 : AddChar k Circle) h π 0 A v := by
   subst hξ0
@@ -399,6 +531,11 @@ theorem avg_zero_char (ξ0 : Fin (m + 1) → k) (hξ0 : ξ0 = 0) (A : AddSubgrou
   · have hd' : ¬ ∃ p, AvgData 1 h π 0 A v p := fun ⟨p, hp⟩ => hd ⟨p, (hiff p).mpr hp⟩
     rw [avg, avg, dif_neg hd, dif_neg hd']
 
+/- English proof (translation)
+Take `⟨p, hp, hpU⟩` from `exists_avgData h π ψ hψ hπ ξ hA v (charSub k ψ ξ') (isOpen_charSub ψ hψ ξ')`. Establish `hp' : AvgData ψ h π ξ' A v p` using `⟨hp.1, hp.2.1, hp.2.2.1, fun a ha => hpU ha, hp.2.2.2.2⟩`. Rewrite using `[avg_eq h π ψ hp, avg_eq h π ψ hp']`. Use `congr 1`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations.
+
+Rewrite using `[hξ t (hp.2.2.2.2.1 t ht)]`.
+-/
 theorem avg_congr_char (hψ : Continuous ψ) (hπ : IsSmooth π) {ξ ξ' : Fin (m + 1) → k} {A : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) (hξ : ∀ a ∈ A, ψ (ξ ⬝ᵥ a) = ψ (ξ' ⬝ᵥ a)) (v : V) :
     avg ψ h π ξ A v = avg ψ h π ξ' A v := by
@@ -409,6 +546,9 @@ theorem avg_congr_char (hψ : Continuous ψ) (hπ : IsSmooth π) {ξ ξ' : Fin (
   refine Finset.sum_congr rfl fun t ht => ?_
   rw [hξ t (hp.2.2.2.2.1 t ht)]
 
+/- English proof (translation)
+The claim follows from `colEl_comm_avg' h π ψ hψ hπ ξ hA a v`.
+-/
 theorem colEl_comm_avg (hψ : Continuous ψ) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)}
     (hA : IsLat A) (a : Fin (m + 1) → k) (v : V) :
     π (colEl k m N h a) (avg ψ h π ξ A v) = avg ψ h π ξ A (π (colEl k m N h a) v) :=

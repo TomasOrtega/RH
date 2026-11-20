@@ -19,10 +19,18 @@ local notation "𝒜" => E ⊗[F] FiniteAdeleRing (𝓞 F) F
 local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)
 local notation "ι" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem csGlob_eq (g : GL n 𝒜) (Λ : Submodule (𝓞 E) (n → E)) :
     Formalism.UG.CS.globLat g Λ =
       adelstabLam F E g (latS (F := F) (FiniteAdeleRing (𝓞 F) F) 𝒮 Λ) := rfl
 
+/- English proof (translation)
+Take `⟨c₁, hc₁, h₁⟩` from `adelstabL_lower (F := F) Λ hspan`. Take `⟨c₂, hc₂, h₂⟩` from `adelstabL_upper (F := F) Λ hfin`. Take `⟨d, hd, c, hc, hcg, hcgi⟩` from `levelaf_exists_denom (E := E) g`. Establish `hG` using `adelstab_entries g d c hc hcg`. Establish `hGi` using `adelstab_entries g⁻¹ d c hc hcgi`.
+
+Establish `hf` using `adelstab_finite g _ c₂ d hc₂ hd h₂ hG`. Establish `hs` using `adelstab_span g _ c₁ d hc₁ hd h₁ hGi`. Rewrite using `[csGlob_eq]`. Conclude with `⟨Module.Finite.iff_fg.mp hf, hs⟩`.
+-/
 theorem csGlob_lattice (Λ : Submodule (𝓞 E) (n → E)) (hfin : Module.Finite (𝓞 E) Λ)
     (hspan : Submodule.span E (Λ : Set (n → E)) = ⊤) (g : GL n 𝒜) :
     Submodule.IsLattice E (Formalism.UG.CS.globLat g Λ) := by
@@ -62,6 +70,17 @@ def csGlobN : Submodule (𝓞 F) E where
     rw [Algebra.smul_def, map_mul, IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E]
     exact mul_mem (adelstab_incl_int _) hx
 
+/- English proof (translation)
+Use `set β := Module.finBasis F E`. Take `⟨d₀, hd₀, -, hd₀i⟩` from `sf_den (fun i => β i)`. Use `set β' := (Algebra.traceForm F E).dualBasis (traceForm_nondegenerate F E) β`. Use `set W : Submodule (𝓞 F) E := Submodule.span (𝓞 F) (Set.range fun i => d₀⁻¹ * β' i)`. Establish `hle : csGlobN F E ≤ W`.
+
+Introduce `e he`. Establish `h1` using `adelstab_dual β d₀ hd₀i e (adelstab_tr_mem e he)`. Set `Lm : E →ₗ[𝓞 F] E` to `(LinearMap.mulLeft F d₀⁻¹).restrictScalars (𝓞 F)`. Establish `h2` using `Submodule.mem_map_of_mem (f := Lm) h1`. Rewrite `h2` using `[Submodule.map_span]`.
+
+Establish `h3 : Lm (d₀ * e) = e`. Simplify using `only [Lm, LinearMap.coe_restrictScalars, LinearMap.mulLeft_apply]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hd₀, one_mul]`. Rewrite `h2` using `[h3]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Conclude with `⟨i, rfl⟩`. Establish `: Module.Finite (𝓞 F) W` using `Module.Finite.span_of_finite _ (Set.finite_range _)`. Establish `: IsNoetherian (𝓞 F) W` using `inferInstance`. Establish `: IsNoetherian (𝓞 F) (csGlobN F E)` using `isNoetherian_of_le hle`.
+
+Conclude with `Module.Finite.iff_fg.mp inferInstance`.
+-/
 theorem csGlob_N_fg : (csGlobN F E).FG := by
   classical
   set β := Module.finBasis F E
@@ -86,6 +105,13 @@ theorem csGlob_N_fg : (csGlobN F E).FG := by
   have : IsNoetherian (𝓞 F) (csGlobN F E) := isNoetherian_of_le hle
   exact Module.Finite.iff_fg.mp inferInstance
 
+/- English proof (translation)
+Establish `hne : csGlobN F E ≠ ⊥`. Introduce `h`. Establish `h1 : (1 : E) ∈ csGlobN F E` using `by show ι 1 ∈ 𝒮`. Rewrite using `[map_one]`. Conclude with `one_mem _`.
+
+Rewrite `h1` using `[h, Submodule.mem_bot]`. Conclude with `one_ne_zero h1`. Establish `hI : IsIntegral (𝓞 F) e` using `isIntegral_of_smul_mem_submodule (csGlobN F E) hne csGlob_N_fg e (fun m hm => by show ι (e * m) ∈ 𝒮`. Rewrite using `[map_mul]`. Conclude with `mul_mem he hm)`.
+
+Conclude with `isIntegral_trans (R := ℤ) (A := 𝓞 F) e hI`.
+-/
 theorem csGlob_int (e : E) (he : ι e ∈ 𝒮) : IsIntegral ℤ e := by
   have hne : csGlobN F E ≠ ⊥ := by
     intro h
@@ -111,6 +137,9 @@ local notation "𝒜" => E ⊗[F] FiniteAdeleRing (𝓞 F) F
 local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)
 local notation "ι" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F (FiniteAdeleRing (𝓞 F) F), IsScalarTower.algebraMap_apply (𝓞 F) F E, Algebra.algebraMap_eq_smul_one (A := FiniteAdeleRing (𝓞 F) F), ← TensorProduct.smul_tmul, ← Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem csGlob_tmul_int (x : E) (ρ : 𝓞 F) :
     x ⊗ₜ[F] algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) ρ = ι (algebraMap (𝓞 F) E ρ * x) := by
   rw [IsScalarTower.algebraMap_apply (𝓞 F) F (FiniteAdeleRing (𝓞 F) F),
@@ -119,6 +148,11 @@ theorem csGlob_tmul_int (x : E) (ρ : 𝓞 F) :
     ← Algebra.smul_def]
   rfl
 
+/- English proof (translation)
+Take `⟨m, bb, hb⟩` from `Module.Finite.exists_fin (R := ℤ) (M := 𝓞 E)`. Take `⟨r, hr, rfl⟩` from `levelaf_decomp bb hb hs`. Use `choose ρ y hy hρ using fun j => hA F D hD (r j) (hr j)`. Use `⟨∑ j, algebraMap (𝓞 F) (𝓞 E) (ρ j) * bb j, ∑ j, algebraMap (𝓞 E) E (bb j) ⊗ₜ[F] y j, sum_mem fun j _ => levelaf_tmul_mem _ (hy j), ?_⟩` and prove the remaining obligations. Simplify using `only [hρ, TensorProduct.tmul_add, Finset.sum_add_distrib, map_sum, Finset.mul_sum, levelafC, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[csGlob_tmul_int, map_mul (algebraMap (𝓞 E) E), ← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E, map_mul]`.
+-/
 theorem csGlob_approx (hA : Formalism.UG.CS.IntAdApprox) (D : 𝓞 F) (hD : D ≠ 0) (s : 𝒜)
     (hs : s ∈ 𝒮) : ∃ b : 𝓞 E, ∃ t ∈ 𝒮, s = ι (algebraMap (𝓞 E) E b) + levelafC E D * t := by
   classical
@@ -147,6 +181,15 @@ local notation "ι" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
 omit [NumberField F] [Algebra F E] in
 
+/- English proof (translation)
+Establish `hk : ∀ k : n, ∃ N : ℕ, ∃ f : Fin N → E, ∃ w : Fin N → Λ, ∑ j, f j • (w j : n → E) = Pi.single k 1`. Introduce `k`. Establish `: (Pi.single k 1 : n → E) ∈ Submodule.span E (Λ : Set (n → E))`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`.
+
+Take `⟨N, f, w, h⟩` from `Submodule.mem_span_set'.1 this`. Conclude with `⟨N, f, fun j => ⟨w j, (w j).2⟩, h⟩`. Use `choose N f w hw using hk`. Take `⟨m, hm0, hm⟩` from `adelstabL_den (fun p : Σ k : n, Fin (N k) => f p.1 p.2)`. Use `⟨m, hm0, fun k => ?_⟩` and prove the remaining obligations.
+
+Establish `: (Pi.single k (m : E) : n → E) = ∑ j, (⟨(m : E) * f k j, hm ⟨k, j⟩⟩ : 𝓞 E) • (w k j : n → E)`. Establish `h1 : (Pi.single k (m : E) : n → E) = (m : E) • (Pi.single k 1 : n → E)`. Rewrite using `[← Pi.single_smul', smul_eq_mul, mul_one]`. Rewrite using `[h1, ← hw k, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← algebraMap_smul E, smul_smul]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `sum_mem fun j _ => Λ.smul_mem _ (w k j).2`.
+-/
 theorem csGlob_single (Λ : Submodule (𝓞 E) (n → E))
     (hspan : Submodule.span E (Λ : Set (n → E)) = ⊤) :
     ∃ m : ℤ, m ≠ 0 ∧ ∀ k, (Pi.single k (m : E) : n → E) ∈ Λ := by
@@ -172,6 +215,31 @@ theorem csGlob_single (Λ : Submodule (𝓞 E) (n → E))
   rw [this]
   exact sum_mem fun j _ => Λ.smul_mem _ (w k j).2
 
+/- English proof (translation)
+Take `⟨m, hm0, hsingle⟩` from `csGlob_single Λ hspan`. Take `⟨c₂, hc₂, h₂⟩` from `adelstabL_upper (F := F) Λ hfin`. Use `set c₁ : 𝓞 F := (m : 𝓞 F)`. Establish `hc₁ : c₁ ≠ 0` using `Int.cast_ne_zero.2 hm0`. Establish `hcE : algebraMap (𝓞 F) E c₁ = (m : E)` using `map_intCast _ _`.
+
+Establish `key : ∀ u ∈ latS (F` using `F) (FiniteAdeleRing (𝓞 F) F) 𝒮 Λ, ∃ y ∈ Λ, ∃ s : n → 𝒜, (∀ i, s i ∈ 𝒮) ∧ u = fun i => ι (y i) + levelafC E c₁ * s i := by`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨x, hx, rfl⟩` from `hu`.
+
+Conclude with `⟨x, hx, 0, fun _ => zero_mem _, by ext i; simp⟩`. Consider the case `zero => exact ⟨0, zero_mem _, 0, fun _ => zero_mem _, by ext i; simp⟩`. Consider the case `add u w _ _ hu hw`. Take `⟨y, hy, s, hs, rfl⟩` from `hu`. Take `⟨y', hy', s', hs', rfl⟩` from `hw`.
+
+Use `⟨y + y', add_mem hy hy', s + s', fun i => add_mem (hs i) (hs' i), ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Pi.add_apply, map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a u _ hu`.
+
+Take `⟨y, hy, s, hs, rfl⟩` from `hu`. Take `⟨b, t, ht, hab⟩` from `csGlob_approx (F := F) (E := E) hA (c₁ * c₂) (mul_ne_zero hc₁ hc₂) (a : 𝒜) a.2`. Establish `hy2 : ∀ i, levelafC E c₂ * ι (y i) ∈ 𝒮` using `h₂ _ (Submodule.subset_span ⟨y, hy, rfl⟩)`. Use `⟨b • y, Λ.smul_mem b hy, fun i => levelafC E c₂ * ι (y i) * t + (a : 𝒜) * s i, fun i => add_mem (mul_mem (hy2 i) ht) (mul_mem a.2 (hs i)), ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+
+Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul]`. Rewrite using `[show algebraMap 𝒮 𝒜 a = (a : 𝒜) from rfl, hab, levelafC_mul]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Establish `hx' : (fun i => ι (x i)) ∈ latS (F` using `F) (FiniteAdeleRing (𝓞 F) F) 𝒮 Λ := by`. Establish `: ((1⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun i => ι (x i)) ∈ latS (F` using `F) (FiniteAdeleRing (𝓞 F) F) 𝒮 Λ := hx`. Rewrite `this` using `[inv_one, Units.val_one, one_mulVec]`. Then use the resulting hypothesis. Take `⟨y, hy, s, hs, he⟩` from `key _ hx'`.
+
+Establish `hmE : (m : E) ≠ 0` using `Int.cast_ne_zero.2 hm0`. Establish `hint : ∀ i, IsIntegral ℤ ((x i - y i) * (m : E)⁻¹)`. Introduce `i`. Apply `csGlob_int (F := F)` to reduce the goal to its premises. Establish `hi` using `congrFun he i`.
+
+Rewrite using `[map_mul, map_sub, hi, ← adelstab_incl_C, hcE, add_sub_cancel_left, mul_right_comm, ← map_mul, mul_inv_cancel₀ hmE, map_one, one_mul]`. Conclude with `hs i`. Establish `hdiff : x - y = ∑ i, (⟨_, hint i⟩ : 𝓞 E) • (Pi.single i (m : E) : n → E)`. Use extensionality with `j`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j]`.
+
+Rewrite using `[Pi.smul_apply, Pi.single_eq_same, Algebra.smul_def] show (x - y) j = (x j - y j) * (m : E)⁻¹ * (m : E)`. Rewrite using `[inv_mul_cancel_right₀ hmE, Pi.sub_apply]`. Introduce `k _ hkj`. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne (Ne.symm hkj), smul_zero]`. Conclude with `fun h => absurd (Finset.mem_univ j) h`.
+
+Establish `hxy : x = y + (x - y)` using `by abel`. Rewrite using `[hxy, hdiff]`. Conclude with `add_mem hy (sum_mem fun i _ => Λ.smul_mem _ (hsingle i))`. Introduce `hx show ((1⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun i => ι (x i)) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) 𝒮 Λ`. Rewrite using `[inv_one, Units.val_one, one_mulVec]`.
+
+Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+-/
 theorem csGlob_one (hA : Formalism.UG.CS.IntAdApprox) (Λ : Submodule (𝓞 E) (n → E))
     (hfin : Module.Finite (𝓞 E) Λ) (hspan : Submodule.span E (Λ : Set (n → E)) = ⊤) :
     Formalism.UG.CS.globLat (F := F) 1 Λ = Λ := by
@@ -242,10 +310,16 @@ theorem csGlob_one (hA : Formalism.UG.CS.IntAdApprox) (Λ : Submodule (𝓞 E) (
 
 end OneMain
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n _ _ Λ hfin hspan`. Conclude with `csGlob_one csGlob_intAdApprox Λ hfin hspan`.
+-/
 theorem global_lattice_one_holds : Formalism.UG.CS.GlobLatOne := by
   intro F E _ _ _ _ _ n _ _ Λ hfin hspan
   exact csGlob_one csGlob_intAdApprox Λ hfin hspan
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n _ _ Λ hfin hspan g`. Conclude with `csGlob_lattice Λ hfin hspan g`.
+-/
 theorem global_lattice_isLattice_holds : Formalism.UG.CS.GlobLatLattice := by
   intro F E _ _ _ _ _ n _ _ Λ hfin hspan g
   exact csGlob_lattice Λ hfin hspan g

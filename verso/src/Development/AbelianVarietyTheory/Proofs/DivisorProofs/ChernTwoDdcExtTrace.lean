@@ -8,6 +8,11 @@ open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianCur
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hz : ∀ {n : Type} [Fintype n] [DecidableEq n], Fintype.card n = 1 → ∀ G : V → Matrix n n ℂ, chernTwo G z ξ₁ η₁ ξ₂ η₂ = 0`. Introduce `n _ _ hn G`. Establish `hs : Subsingleton n` using `Fintype.card_le_one_iff_subsingleton.mp hn.le`. Establish `h : ∀ a b : n, curvMinor G z a b ξ₁ η₁ ξ₂ η₂ = 0` using `fun a b => by`. Rewrite using `[Subsingleton.elim b a]`.
+
+Conclude with `curvMinor_self G z a ξ₁ η₁ ξ₂ η₂`. Simplify using `[chernTwo, h]`. Rewrite using `[hd, chTwo_eq, chTwo_eq, chTwo_eq, hz hm, hz hl]`. Simplify using `only [wedge, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ddcForm_extTrace_eq_rank_two
     {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ V] [IsScalarTower ℝ ℂ V]
     {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]

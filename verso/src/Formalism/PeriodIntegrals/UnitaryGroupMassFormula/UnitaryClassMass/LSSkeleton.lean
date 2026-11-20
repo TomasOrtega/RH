@@ -50,10 +50,16 @@ section Glue
 variable {E V : Type} [Field E] [NumberField E] [AddCommGroup V] [Module E V] [Module (𝓞 E) V]
   [IsScalarTower (𝓞 E) E V]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul E s v, LinearEquiv.map_smul]`.
+-/
 theorem equivFun_osmul {M : ℕ} (b : Module.Basis (Fin M) E V) (s : 𝓞 E) (v : V) :
     b.equivFun (s • v) = (algebraMap (𝓞 E) E s) • b.equivFun v := by
   rw [← algebraMap_smul E s v, LinearEquiv.map_smul]
 
+/- English proof (translation)
+Unfold `crdOf`. Use `show v ∈ L0 ↔ ∑ i, b.equivFun v i • b i ∈ L0`. Rewrite using `[b.sum_equivFun]`.
+-/
 theorem mem_iff_crdOf {M : ℕ} (b : Module.Basis (Fin M) E V) (L0 : Submodule (𝓞 E) V) (v : V) :
     v ∈ L0 ↔ b.equivFun v ∈ crdOf b L0 := by
   unfold crdOf
@@ -62,6 +68,27 @@ theorem mem_iff_crdOf {M : ℕ} (b : Module.Basis (Fin M) E V) (L0 : Submodule (
 
 end Glue
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hs hnd hL hsig g`. Take `⟨N, hN, hNL⟩` from `s1 F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig g`. Use `⟨N, hN, hNL, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `s3 F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig g p hp`. Use `⟨iotaG σ (gramOf h b) b γ, isomStep F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig γ, ?_⟩` and prove the remaining obligations.
+
+Use `set ι := iotaG σ (gramOf h b) b γ with hι`. Establish `hE` using `equivStep F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig 1 γ 1`. Rewrite `hE` using `[mul_one, OneMemClass.coe_one, mul_one]`. Establish `h1 : latSet σ (gramOf h b) b L0 1 = (L0 : Set V)`. Use extensionality with `v`.
+
+Use `show b.equivFun v ∈ PI.UnitaryGroupMassFormula.UJClassFin.abelian₂ σ (gramOf h b) (crdOf b L0) 1 ↔ v ∈ L0`. Rewrite using `[s2 F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig, mem_iff_crdOf b L0]`. Rewrite `hE` using `[h1]`. Establish `hcomm : ∀ (s : 𝓞 E) (w : V), ι (s • w) = s • ι w` using `fun s w => by`. Rewrite using `[← algebraMap_smul E s w, LinearEquiv.map_smul, algebraMap_smul]`.
+
+Use extensionality with `v`. Establish `key : (∃ s ∈ hcompl (K` using `E) p, s • v ∈ N) ↔ (∃ s ∈ hcompl (K := E) p, s • v ∈ ι '' (L0 : Set V)) := by`. Rewrite using `[← hE]`. Use `hγ (b.equivFun v)` as an intermediate fact. Simplify using `only [← equivFun_osmul] at this`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hv⟩`. Establish `hv' : s • v ∈ (N : Set V)` using `hv`. Rewrite `hv'` using `[hN]`. Take `⟨t, ht, htv⟩` from `this.1 ⟨s, hs, hv'⟩`.
+
+Conclude with `⟨t, ht, htv⟩`. Introduce and unpack `⟨s, hs, hv⟩`. Take `⟨t, ht, htv⟩` from `this.2 ⟨s, hs, hv⟩`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Use `show t • v ∈ (N : Set V)`.
+
+Rewrite using `[hN]`. Conclude with `htv`. Use `show v ∈ ((locS (hcompl (K := E) p) L0).map ((ι : V →ₗ[E] V).restrictScalars (𝓞 E))) ↔ v ∈ locS (hcompl (K := E) p) N`. Rewrite using `[Submodule.mem_map]`. Express the relevant statement in the definitionally equal form `(∃ w, (∃ s ∈ hcompl (K := E) p, s • w ∈ L0) ∧ ι w = v) ↔ ∃ s ∈ hcompl (K := E) p, s • v ∈ N`.
+
+Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, ⟨s, hs, hw⟩, rfl⟩`. Conclude with `⟨s, hs, s • w, hw, hcomm s w⟩`. Introduce and unpack `⟨s, hs, l, hl, hlv⟩`.
+
+Use `⟨ι.symm v, ⟨s, hs, ?_⟩, ι.apply_symm_apply v⟩` and prove the remaining obligations. Establish `e : s • ι.symm v = l`. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[hcomm, ι.apply_symm_apply, hlv]`. Rewrite using `[e]`.
+
+Conclude with `hl`.
+-/
 theorem latStep_of_parts (s1 : LSLat) (s2 : LSOne) (s3 : LSLoc) : LatStep := by
   intro F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hs hnd hL hsig g
   obtain ⟨N, hN, hNL⟩ := s1 F E σ V h M b L0 hσ hθ hτ hs hnd hL hsig g

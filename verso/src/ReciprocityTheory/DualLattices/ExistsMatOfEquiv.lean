@@ -35,11 +35,19 @@ def pullHopf {N X : Type} [AddCommGroup N] [Fintype N] [DecidableEq N] [AddCommG
     rintro _ ⟨f, hf, rfl⟩
     exact ⟨fun x => f (-x), AA.antipode f hf, funext fun x => by simp [LinearMap.funLeft_apply]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullHopf_carrier {N X : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
     [AddCommGroup X] [Fintype X] [DecidableEq X] (ψ : X →+ N) (AA : HopfOrder (C := C) R N)
     (hlat : IsLat R (AA.carrier.map (LinearMap.funLeft R C ψ))) :
     (pullHopf ψ AA hlat).carrier = AA.carrier.map (LinearMap.funLeft R C ψ) := rfl
 
+/- English proof (translation)
+Take `⟨B, hB, rfl⟩` from `hM`. Use `⟨B.submatrix e e, by rwa [Matrix.det_submatrix_equiv_self], ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Establish `h1 : (fun j x => (B.submatrix e e) x j) = (⇑(LinearMap.funLeft R C e) ∘ fun j x => B x j) ∘ e`. Use function extensionality and compare the values at `j x`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, e.surjective.range_comp]`.
+-/
 theorem isLat_map_equiv {X K : Type} [Fintype X] [DecidableEq X] {_ : Fintype K} {_ : DecidableEq K}
     (e : X ≃ K) {M : Submodule R (K → C)} (hM : IsLat R M) :
     IsLat R (M.map (LinearMap.funLeft R C e)) := by
@@ -52,9 +60,17 @@ theorem isLat_map_equiv {X K : Type} [Fintype X] [DecidableEq X] {_ : Fintype K}
     rfl
   rw [h1, e.surjective.range_comp]
 
+/- English proof (translation)
+The claim follows from `A.lat`.
+-/
 theorem hopfLat {K : Type} {_ : AddCommGroup K} {_ : Fintype K} {_ : DecidableEq K}
     (A : HopfOrder (C := C) R K) : IsLat R A.carrier := A.lat
 
+/- English proof (translation)
+Take `⟨⟨AK, hAK⟩, -⟩` from `h2 C R v hv N ψ.range AA`. Set `e` to `AddMonoidHom.ofInjective hψ`. Establish `hmap : (AA.carrier.map (resK ψ.range)).map (LinearMap.funLeft R C e.toEquiv) = AA.carrier.map (LinearMap.funLeft R C ψ)`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`.
+
+Rewrite using `[← hmap, ← hAK]`. Conclude with `isLat_map_equiv e.toEquiv (hopfLat AK)`.
+-/
 theorem isLat_pull (v : Valuation C NNReal) (hv : v.Integers R) {N X : Type} [AddCommGroup N]
     [Fintype N] [DecidableEq N] [AddCommGroup X] [Fintype X] [DecidableEq X]
     (ψ : X →+ N) (hψ : Function.Injective ψ) (AA : HopfOrder (C := C) R N) :
@@ -75,6 +91,23 @@ section Split
 
 variable {S : Type} [CommRing S] {n k : Type} [Fintype n] [DecidableEq n] [Fintype k] [DecidableEq k]
 
+/- English proof (translation)
+Establish `hcol : ∀ j : n, ∃ c : k → S, B *ᵥ c = e *ᵥ Pi.single j 1`. Introduce `j`. Establish `hmem : e *ᵥ Pi.single j 1 ∈ LinearMap.range B.mulVecLin`. Rewrite using `[hr]`. Conclude with `⟨_, rfl⟩`.
+
+Take `⟨c, hc⟩` from `hmem`. Conclude with `⟨c, hc⟩`. Use `choose c hc using hcol`. Set `L : Matrix k n S` to `Matrix.of fun i j => c j i`. Establish `hBL : B * L = e`.
+
+Use extensionality with `i j`. Establish `h1` using `congrFun (hc j) i`. Rewrite `h1` using `[Matrix.mulVec_single_one, Matrix.col_apply]`. Rewrite using `[← h1]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, L]`.
+
+Establish `heB : e * B = B`. Use extensionality with `i j`. Establish `hmem : B *ᵥ Pi.single j 1 ∈ LinearMap.range e.mulVecLin`. Rewrite using `[← hr]`. Conclude with `⟨_, rfl⟩`.
+
+Take `⟨w, hw⟩` from `hmem`. Establish `h2 : e *ᵥ (B *ᵥ Pi.single j 1) = B *ᵥ Pi.single j 1`. Rewrite using `[← hw]`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, he]`. Rewrite `h2` using `[Matrix.mulVec_mulVec, Matrix.mulVec_single_one, Matrix.mulVec_single_one]`.
+
+Simplify `congrFun h2 i` using `[Matrix.col_apply]`. Establish `hinj : Function.Injective B.mulVecLin` using `LinearMap.ker_eq_bot.1 hk`. Use `⟨L, ?_, hBL⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h3 : B *ᵥ ((L * B) *ᵥ Pi.single j 1) = B *ᵥ Pi.single j 1`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hBL, heB]`. Establish `h4 : (L * B) *ᵥ Pi.single j 1 = Pi.single j 1` using `hinj h3`. Rewrite `h4` using `[Matrix.mulVec_single_one]`. Establish `h5` using `congrFun h4 i`. Simplify using `only [Matrix.col_apply] at h5`.
+
+Rewrite using `[h5, Matrix.one_apply, Pi.single_apply]`.
+-/
 theorem exists_split (e : Matrix n n S) (he : e * e = e) (B : Matrix n k S)
     (hr : LinearMap.range B.mulVecLin = LinearMap.range e.mulVecLin)
     (hk : LinearMap.ker B.mulVecLin = ⊥) : ∃ L : Matrix k n S, L * B = 1 ∧ B * L = e := by

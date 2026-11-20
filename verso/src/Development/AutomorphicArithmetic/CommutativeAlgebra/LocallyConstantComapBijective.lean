@@ -1,6 +1,11 @@
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
+/- English proof (translation)
+Take `⟨e, he, rfl⟩` from `PrimeSpectrum.isClopen_iff.1 hC`. Take `⟨d, hd, rfl⟩` from `PrimeSpectrum.isClopen_iff.1 hD`. Establish `h1 : φ e = φ d`. Apply `PrimeSpectrum.basicOpen_injOn_isIdempotentElem (he.map φ) (hd.map φ)` to reduce the goal to its premises. Apply `SetLike.coe_injective` to reduce the goal to its premises.
+
+Rewrite using `[← PrimeSpectrum.comap_basicOpen, ← PrimeSpectrum.comap_basicOpen]`. Conclude with `hCD`. Rewrite using `[(h (φ e) (he.map φ)).unique ⟨he, rfl⟩ ⟨hd, h1.symm⟩]`.
+-/
 private theorem clopen_pre_inj {B B' : Type} [CommRing B] [CommRing B'] (φ : B →+* B')
     (h : ∀ e' : B', IsIdempotentElem e' → ∃! e : B, IsIdempotentElem e ∧ φ e = e')
     {C D : Set (PrimeSpectrum B)} (hC : IsClopen C) (hD : IsClopen D)
@@ -14,6 +19,9 @@ private theorem clopen_pre_inj {B B' : Type} [CommRing B] [CommRing B'] (φ : B 
     exact hCD
   rw [(h (φ e) (he.map φ)).unique ⟨he, rfl⟩ ⟨hd, h1.symm⟩]
 
+/- English proof (translation)
+Take `⟨e', he', rfl⟩` from `PrimeSpectrum.isClopen_iff.1 hC'`. Take `⟨e, ⟨he, rfl⟩, -⟩` from `h e' he'`. Conclude with `⟨_, PrimeSpectrum.isClopen_iff.2 ⟨e, he, rfl⟩, rfl⟩`.
+-/
 private theorem clopen_pre_surj {B B' : Type} [CommRing B] [CommRing B'] (φ : B →+* B')
     (h : ∀ e' : B', IsIdempotentElem e' → ∃! e : B, IsIdempotentElem e ∧ φ e = e')
     {C' : Set (PrimeSpectrum B')} (hC' : IsClopen C') :
@@ -22,6 +30,31 @@ private theorem clopen_pre_surj {B B' : Type} [CommRing B] [CommRing B'] (φ : B
   obtain ⟨e, ⟨he, rfl⟩, -⟩ := h e' he'
   exact ⟨_, PrimeSpectrum.isClopen_iff.2 ⟨e, he, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `B B' _ _ φ Y h`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `hfib : ∀ y, (a : PrimeSpectrum B → Y) ⁻¹' {y} = (b : PrimeSpectrum B → Y) ⁻¹' {y}`. Introduce `y`.
+
+Apply `clopen_pre_inj φ h (a.isLocallyConstant.isClopen_fiber y) (b.isLocallyConstant.isClopen_fiber y)` to reduce the goal to its premises. Use extensionality with `q`. Establish `hq : a (PrimeSpectrum.comap φ q) = b (PrimeSpectrum.comap φ q)` using `DFunLike.congr_fun hab q`. Express the relevant statement in the definitionally equal form `a (PrimeSpectrum.comap φ q) = y ↔ b (PrimeSpectrum.comap φ q) = y`. Rewrite using `[hq]`.
+
+Use extensionality with `p`. Establish `hp : p ∈ (b : PrimeSpectrum B → Y) ⁻¹' {a p}`. Rewrite using `[← hfib]`. Both sides reduce to the same expression. Conclude with `hp.symm`.
+
+Introduce `a' choose C hCc hC using fun y => clopen_pre_surj φ h (a'.isLocallyConstant.isClopen_fiber y)`. Establish `hdisj : ∀ y z, y ≠ z → C y ∩ C z = ∅`. Introduce `y z hyz`. Apply `clopen_pre_inj φ h ((hCc y).inter (hCc z)) isClopen_empty` to reduce the goal to its premises. Rewrite using `[Set.preimage_inter, hC, hC, Set.preimage_empty]`.
+
+Use extensionality with `q`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Conclude with `fun h1 h2 => hyz (h1.symm.trans h2)`. Establish `hcov : (⋃ y ∈ Set.range a', C y) = Set.univ`. Apply `clopen_pre_inj φ h (a'.range_finite.isClopen_biUnion fun y _ => hCc y) isClopen_univ` to reduce the goal to its premises.
+
+Rewrite using `[Set.preimage_iUnion₂, Set.preimage_univ]`. Use extensionality with `q`. Simplify using `only [Set.mem_iUnion, Set.mem_univ, iff_true]`. Conclude with `⟨a' q, ⟨q, rfl⟩, by rw [hC]; rfl⟩`. Establish `hex : ∀ p, ∃ y, p ∈ C y`.
+
+Introduce `p`. Establish `hp : p ∈ ⋃ y ∈ Set.range a', C y` using `hcov ▸ Set.mem_univ p`. Take `⟨y, -, hy⟩` from `Set.mem_iUnion₂.1 hp`. Conclude with `⟨y, hy⟩`. Use `choose a ha using hex`.
+
+Establish `hiff : ∀ p y, a p = y ↔ p ∈ C y`. Introduce `p y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `ha p`.
+
+Introduce `hy`. Assume the negation of the conclusion as `hne`. Establish `: p ∈ C (a p) ∩ C y` using `⟨ha p, hy⟩`. Rewrite `this` using `[hdisj _ _ hne]`. Conclude with `this`.
+
+Establish `hlc : IsLocallyConstant a`. Use `(IsLocallyConstant.iff_isOpen_fiber).2 fun y => ?_` and prove the remaining obligations. Establish `: a ⁻¹' {y} = C y`. Use extensionality with `p`. Conclude with `hiff p y`.
+
+Rewrite using `[this]`. Conclude with `(hCc y).isOpen`. Use `⟨⟨a, hlc⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `q`. Establish `hq : q ∈ PrimeSpectrum.comap φ ⁻¹' C (a' q)`.
+
+Rewrite using `[hC]`. Both sides reduce to the same expression. Conclude with `(hiff _ _).2 hq`.
+-/
 theorem UpperTheory.locallyConstant_comap_bijective :
     ∀ (B B' : Type) [CommRing B] [CommRing B'] (φ : B →+* B') (Y : Type), (∀ e' : B', IsIdempotentElem e' → ∃! e : B, IsIdempotentElem e ∧ φ e = e') → Function.Bijective (fun a : LocallyConstant (PrimeSpectrum B) Y => a.comap ⟨PrimeSpectrum.comap φ, PrimeSpectrum.continuous_comap φ⟩) := by
   intro B B' _ _ φ Y h

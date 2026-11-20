@@ -15,6 +15,11 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.GenFan
 
+/- English proof (translation)
+Introduce `E _ _ _ H D hr φ h₁ h₂ l Xo c`. Take `⟨Y, BD, d, k, hd, -, hsm, hsnc, hsupp, hch, ha⟩` from `hP E H D hr φ h₁ h₂ l Xo c`. Use `⟨Y, BD, d, k, hd, ⟨hsm, hsnc, fun x hx => ?_⟩, (hasCones_iff _ _).2 fun z => ?_, GlobalTheory.T.toric_charts_global_conditions φ h₁ h₂ Y BD d hsm hsnc hsupp hch, ha (GlobalTheory.T.toric_charts_polarized_model φ Y BD d hr hsm hsnc hsupp hch)⟩` and prove the remaining obligations. Take `⟨k, _, m, e, ξ, t, P, γ, -, -, hx', htc, -⟩` from `(hch x hx).exists_isToricChart`. Conclude with `⟨k, _, m, e, ξ, t, P, γ, hx', htc⟩`.
+
+Break down `exists_of_id Y z with ⟨x, hx, rfl⟩ | ⟨w, rfl⟩` into its components or cases. Conclude with `GlobalTheory.T.coneAt_of_toric_chart φ Y BD d x (hch x hx)`. Conclude with `GlobalTheory.T.coneAt_interior_point φ Y w`.
+-/
 theorem genFanSt_of_toroidalCharts (hP : GlobalTheory.Published.ToroidalChartsForFan) : GenFanSt := by
   intro E _ _ _ H D hr φ h₁ h₂ l Xo c
   obtain ⟨Y, BD, d, k, hd, -, hsm, hsnc, hsupp, hch, ha⟩ := hP E H D hr φ h₁ h₂ l Xo c

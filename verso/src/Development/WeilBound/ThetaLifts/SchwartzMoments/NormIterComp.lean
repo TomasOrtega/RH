@@ -8,11 +8,19 @@ open scoped SchwartzMap ContDiff
 
 variable {A B : Type} [NormedAddCommGroup A] [NormedSpace ℝ A] [NormedAddCommGroup B] [NormedSpace ℝ B]
 
+/- English proof (translation)
+Rewrite using `[p.iteratedFDeriv_comp_right (φ.smooth ⊤) _ (by exact_mod_cast le_top)]`. Simplify using `using ContinuousMultilinearMap.norm_compContinuousLinearMap_le (iteratedFDeriv ℝ i φ (p x)) (fun _ => p)`.
+-/
 theorem norm_iter_comp {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (p : E →L[ℝ] A) (φ : 𝓢(A, ℂ)) (i : ℕ) (x : E) :
     ‖iteratedFDeriv ℝ i (⇑φ ∘ p) x‖ ≤ ‖iteratedFDeriv ℝ i φ (p x)‖ * ‖p‖ ^ i := by
   rw [p.iteratedFDeriv_comp_right (φ.smooth ⊤) _ (by exact_mod_cast le_top)]
   simpa using ContinuousMultilinearMap.norm_compContinuousLinearMap_le (iteratedFDeriv ℝ i φ (p x)) (fun _ => p)
 
+/- English proof (translation)
+Establish `h` using `WithLp.prod_norm_sq_eq_of_L2 x`. Establish `h1` using `norm_nonneg x.fst`. Establish `h2` using `norm_nonneg x.snd`. Establish `h3 : ‖x‖ ≤ ‖x.fst‖ + ‖x.snd‖`. Use `abs_le_of_sq_le_sq' ?_ (by positivity) |>.2` and prove the remaining obligations.
+
+Use polynomial arithmetic with `[mul_nonneg h1 h2]`. Express the relevant statement in the definitionally equal form `‖x‖ ≤ (1 + ‖x.fst‖) * (1 + ‖x.snd‖)`. Use polynomial arithmetic with `[mul_nonneg h1 h2]`.
+-/
 theorem norm_le_prod (x : WithLp 2 (A × B)) :
     ‖x‖ ≤ (1 + ‖WithLp.fstL 2 ℝ A B x‖) * (1 + ‖WithLp.sndL 2 ℝ A B x‖) := by
   have h := WithLp.prod_norm_sq_eq_of_L2 x
@@ -54,6 +62,9 @@ def tens (φ : 𝓢(A, ℂ)) (f : 𝓢(B, ℂ)) : 𝓢(WithLp 2 (A × B), ℂ) w
           rw [mul_pow]; ring
       _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tens_apply (φ : 𝓢(A, ℂ)) (f : 𝓢(B, ℂ)) (a : A) (b : B) : tens φ f (WithLp.toLp 2 (a, b)) = φ a * f b := rfl
 
 end PositivityTheory.ThKOwn

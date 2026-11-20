@@ -9,6 +9,21 @@ set_option autoImplicit false
 
 namespace GlobalTheory.PDForm
 
+/- English proof (translation)
+Introduce `R B _ _ _ J δ G _ _ J' δ' q h n hd hq hJ hk`. Take `⟨-, -, hsurj, hker⟩` from `GlobalTheory.T.deRhamAlgebra_quotientRing_surjective_and_kernel R B G q h hq`. Take `⟨-, -, hmul, -, -, hanti, -⟩` from `(GlobalTheory.T.divPowerCompatRel_filtration_twoSided_rel_eq_bot_of_base).1 R B J δ`. Establish `hv : ∀ m, ∀ a ∈ J, (0 : Derivation R B B) (δ.dpow (m + 1) a) = δ.dpow m a * (0 : Derivation R B B) a`. Introduce `m a _`.
+
+Simplify using the standard rewrite rules. Establish `hd0` using `((GlobalTheory.T.contraction_lieDerivative_divPowerCompat_filtration_rules).2 R B J δ 0 hv n).2.1`. Use `⟨fun x hx ↦ ?_, fun x hx ↦ ?_⟩` and prove the remaining obligations. Establish `hle : rel R δ' ≤ (rel R δ).map h.mDR`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨m, a', ha', rfl⟩`. Rewrite `ha'` using `[hJ, Ideal.mem_map_iff_of_surjective _ hq]`. Take `⟨a, ha, rfl⟩` from `ha'`. Establish `e : ι1 (D R G (δ'.dpow (m + 1) (q a)) - δ'.dpow m (q a) • D R G (q a)) = h.mDR (ι1 (D R B (δ.dpow (m + 1) a) - δ.dpow m a • D R B a))`. Rewrite using `[h.mDR_ι, map_sub h.m1, h.m1_D, h.oneFormMap_smul_semilinear, h.m1_D, hd.2 a ha, hd.2 a ha]`.
+
+Rewrite using `[e]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.subset_span ⟨m, a, ha, rfl⟩)`. Take `⟨y, hy, hxy⟩` from `(Ideal.mem_map_iff_of_surjective _ hsurj).1 (hle hx)`. Establish `hK : x - y ∈ filDR R δ n`. Use `hker (filDR R δ n) (hmul n) (fun b hb ↦ ?_) (x - y) (by rw [map_sub, hxy, sub_self])` and prove the remaining obligations.
+
+Establish `hb1 : algebraMap B (DR R B) b ∈ filDR R δ (n + 1)` using `Ideal.mem_sup_left (Ideal.subset_span ⟨b, (hk b).1 hb, rfl⟩)`. Use `⟨hanti n (n + 1) (Nat.le_succ n) hb1, ?_⟩` and prove the remaining obligations. Rewrite using `[← dDR_algebraMap]`. Conclude with `hd0 _ hb1`. Establish `hyn : y ∈ filDR R δ n` using `Ideal.mem_sup_right hy`.
+
+Simplify using `using add_mem hK hyn`. Establish `hle : filDR R δ (n + 1) ≤ (rel R δ').comap h.mDR`. Use `sup_le (Ideal.span_le.2 ?_) (fun z hz ↦ mDR_mem_rel h hd hz)` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Express the relevant statement in the definitionally equal form `h.mDR (algebraMap B _ b) ∈ rel R δ'`.
+
+Rewrite using `[h.mDR_algebraMap, (hk b).2 hb, map_zero]`. Conclude with `zero_mem _`. Conclude with `hle hx`.
+-/
 theorem quot_fil_rel : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (J : Ideal B) (δ : DividedPowers J) (G : Type) [CommRing G] [Algebra R G] (J' : Ideal G) (δ' : DividedPowers J') (q : B →+* G) (h : SemiHom (RingHom.id R) q) (n : ℕ), IsDPMorphism δ δ' q → Function.Surjective q → J' = J.map q → (∀ b, q b = 0 ↔ b ∈ fil δ (n + 1)) → (∀ x, h.mDR x ∈ rel R δ' → x ∈ filDR R δ n) ∧ ∀ x ∈ filDR R δ (n + 1), h.mDR x ∈ rel R δ' := by
   intro R B _ _ _ J δ G _ _ J' δ' q h n hd hq hJ hk
   obtain ⟨-, -, hsurj, hker⟩ := GlobalTheory.T.deRhamAlgebra_quotientRing_surjective_and_kernel R B G q h hq

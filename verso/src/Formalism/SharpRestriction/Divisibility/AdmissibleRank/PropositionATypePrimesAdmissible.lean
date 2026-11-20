@@ -20,37 +20,82 @@ section P18rec
 
 variable (D : D7) (L : SizeData₂ D) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch)
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem integrality_admissible_of_inputs (h : ThetaNormsAndLinks.Conclusion1 D X) : LiftErrorLocal.adm1 D X := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem height_admissible_of_inputs (h : ThetaNormsAndLinks.Conclusion2 D X) : LiftErrorLocal.adm2 D X := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem jet_admissible_of_prismatic (h : ModuliIntegralCharts.LinkConditions D X.P6) : LiftErrorLocal.adm3 D X := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem jet_admissible_of_jet_lattice (h : BoundaryLocalData.Conclusion5 D X.P6) : LiftErrorLocal.adm3 D X := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem jet_function_admissible_of (CRd : ℝ) (h : ThetaNormsAndLinks.CoveringRadiusFunction D X CRd) : LiftErrorLocal.adm3b D X CRd := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem theorem_zero_admissible_of (H : WeightAlgebra.KHyp) (C2 A2 CR CT : ℝ) (h : WeightAlgebra.Conclusion1 L X.W H C2 A2 CR CT) :
     LiftErrorLocal.ArchimedeanSignatureMatching D L X H C2 A2 CR CT := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem galois_generic_admissible_of (h : ThetaNormsAndLinks.Conclusion5 D nch) : LiftErrorLocal.adm5 D nch := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem share_admissible_of_inputs (h : ThetaNormsAndLinks.Conclusion6 D nch) : LiftErrorLocal.adm6 D nch := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem lattice_ranks_admissible_of (h : ThetaNormsAndLinks.ShareLatticeRanks D nch) : LiftErrorLocal.TorsionSectionsReflex D nch := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem link_admissible_of_inputs (h : ThetaNormsAndLinks.LinkConditions D X) : LiftErrorLocal.adm10 D X := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem run_admissible_of_inputs (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) (h : ThetaNormsAndLinks.RunConditions D L X H C2 A2 CR CT CRd) :
     LiftErrorLocal.adm11 D L X H C2 A2 CR CT CRd := h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h1, h2⟩`.
+-/
 theorem lemma_one_two_A_hypotheses_of (h1 : ThetaNormsAndLinks.Conclusion1 D X) (h2 : ThetaNormsAndLinks.Conclusion2 D X) : LiftErrorLocal.AdmLA D X := ⟨h1, h2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h1, h2, h66, h3b⟩`.
+-/
 theorem lemma_B_hypotheses_of (CRd : ℝ) (h1 : ThetaNormsAndLinks.Conclusion1 D X) (h2 : ThetaNormsAndLinks.Conclusion2 D X) (h66 : ModuliIntegralCharts.LinkConditions D X.P6)
     (h3b : ThetaNormsAndLinks.CoveringRadiusFunction D X CRd) : LiftErrorLocal.AdmLB D X CRd := ⟨h1, h2, h66, h3b⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h1, h2, a9⟩`.
+-/
 theorem proposition_C_hypotheses_of (h1 : ThetaNormsAndLinks.Conclusion1 D X) (h2 : ThetaNormsAndLinks.Conclusion2 D X) (a9 : LiftErrorLocal.adm9 D X) : LiftErrorLocal.AdmC D X := ⟨h1, h2, a9⟩
 
+/- English proof (translation)
+Take `⟨p1, p2, p3b, p5, p6, p6b, -, p10, p11, -⟩` from `h8`. Conclude with `⟨p1, p2, h66, p3b, h08, p5, p6, p6b, a7, a8, a9, p10, p11, a12⟩`.
+-/
 theorem division_admissible_of_inputs (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ)
     (h8 : ThetaNormsAndLinks.Conclusion₂ D L X H C2 A2 CR CT CRd) (h66 : ModuliIntegralCharts.LinkConditions D X.P6) (h08 : WeightAlgebra.Conclusion1 L X.W H C2 A2 CR CT)
     (a7 : LiftErrorLocal.adm7 D X) (a8 : LiftErrorLocal.adm8 D X) (a9 : LiftErrorLocal.adm9 D X) (a12 : LiftErrorLocal.adm12 D) :
@@ -58,12 +103,18 @@ theorem division_admissible_of_inputs (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd 
   obtain ⟨p1, p2, p3b, p5, p6, p6b, -, p10, p11, -⟩ := h8
   exact ⟨p1, p2, h66, p3b, h08, p5, p6, p6b, a7, a8, a9, p10, p11, a12⟩
 
+/- English proof (translation)
+Take `⟨-, -, p3b, p5, p6, p6b, -, p10, p11, -⟩` from `h8`. Conclude with `⟨p3b, h08, p5, p6, p6b, a7, a8, p10, p11, a12⟩`.
+-/
 theorem proposition_A_hypotheses_of (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ)
     (h8 : ThetaNormsAndLinks.Conclusion₂ D L X H C2 A2 CR CT CRd) (h08 : WeightAlgebra.Conclusion1 L X.W H C2 A2 CR CT)
     (a7 : LiftErrorLocal.adm7 D X) (a8 : LiftErrorLocal.adm8 D X) (a12 : LiftErrorLocal.adm12 D) : LiftErrorLocal.AdmA D L X H C2 A2 CR CT CRd := by
   obtain ⟨-, -, p3b, p5, p6, p6b, -, p10, p11, -⟩ := h8
   exact ⟨p3b, h08, p5, p6, p6b, a7, a8, p10, p11, a12⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.N.locsCoverTw_of D h`.
+-/
 theorem local_cover_admissible_of (h : D.nd.LocsCover) : LiftErrorLocal.adm12 D := Formalism.MainNotions.N.locsCoverTw_of D h
 
 end P18rec
@@ -72,15 +123,30 @@ section PDV08rec
 
 variable (D : D7) (L : SizeData₂ D) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) (Z : ThetaNormsAndLinks.Loc8 X)
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem projector_integral_admissible_of (h : PDVN.ConjugationNormInvariance D) : ThetaNormsAndLinks.admA D := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem sup_lattice_is_lattice_admissible (h : WeightFamilies.adm1 X.B) : ThetaNormsAndLinks.MLatticeCond D X := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem transference_admissible_of (h : WeightFamilies.TransferenceTheoremCond) : ThetaNormsAndLinks.TransferenceTheoremCond := h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hW, h⟩`.
+-/
 theorem twist_export_clause_of_twist_field (hW : ∀ i0 w, LiftErrorLocal.Over D i0 w → D.ntw.NonzeroIndexPlace (nch.twI w)) (h : IntegralHeckeForms.adm7 D X.I.E) :
     ThetaNormsAndLinks.admT4 D X := ⟨hW, h⟩
 
+/- English proof (translation)
+The claim follows from `IsotypicCorollary.goodPartRank_of_corollary D h4 C`.
+-/
 theorem trace_input_of_multiplicity_theorem (h4 : IsotypicCorollary.Stmt D) (C : NChoice D) : ThetaNormsAndLinks.EqualGoodMultiplicities D C := IsotypicCorollary.goodPartRank_of_corollary D h4 C
 
 def ThetaNormLinkHypotheses (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) : Prop :=
@@ -91,6 +157,9 @@ def ThetaNormLinkHypotheses (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) : P
     (ThetaNormsAndLinks.RunColumnChoices D X ∧ ThetaNormsAndLinks.ScalarSizeConditions D L X H C2 A2 CR CT CRd ∧ ThetaNormsAndLinks.FurtherSizeConditions D L X H C2 A2 CR ∧ ThetaNormsAndLinks.GlobalScalarBounds D L X H ∧
       ThetaNormsAndLinks.RegularityOffTypePrimes D L X H)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨aI, aQ, RankInputBounds.rank_input_holds D L P X CRd hC6, aGG, ⟨aR, GeometricGenericity.geometric_generic_of_layer_two D L P TN, aBad, IsotypicCorollary.goodPartRank_of_corollary D h4 nch, aGst⟩, aSp, ⟨aSg, aSr, aSo, aSe⟩, ⟨aT4, aNN, aK, aD, aW⟩, ⟨aRc, aRn, aR4, aRs, aRd⟩⟩`.
+-/
 theorem inputs_remaining_of_clauses (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) (P : ParameterChoice' D L) (hC6 : 6 ≤ CRd)
     (TN : Formalism.L2.NExpTied D) (h4 : IsotypicCorollary.Stmt D)
     (aI : ThetaNormsAndLinks.admissible_unitary_of_inputs D X Z) (aQ : ThetaNormsAndLinks.SandwichExists D X) (aGG : ThetaNormsAndLinks.MirabolicIndexCond D) (aR : ThetaNormsAndLinks.admR D nch) (aBad : ThetaNormsAndLinks.BadRowShareBound D L nch)
@@ -103,6 +172,9 @@ theorem inputs_remaining_of_clauses (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : 
     ⟨aR, GeometricGenericity.geometric_generic_of_layer_two D L P TN, aBad, IsotypicCorollary.goodPartRank_of_corollary D h4 nch, aGst⟩, aSp, ⟨aSg, aSr, aSo, aSe⟩,
     ⟨aT4, aNN, aK, aD, aW⟩, ⟨aRc, aRn, aR4, aRs, aRd⟩⟩
 
+/- English proof (translation)
+Take `⟨aI, aQ, aRk, aG, ⟨aR, aG2, aBad, aTR, aGst⟩, aSp, aS, ⟨aT4, aNN, aK, aD, aW⟩, aRun⟩` from `lv`. Conclude with `⟨aI, aQ, hB, aRk, aG, ⟨aR, aG2, aBad, aTR, CutDivD.projector_statement_of_stability D aGst, aGst⟩, aSp, aS, ⟨hM, aT4, aNN, aK, aD, aW⟩, aRun⟩`.
+-/
 theorem inputs_admissible_of (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) (hM : WeightFamilies.adm1 X.B)
     (hB : WeightFamilies.TransferenceTheoremCond) (lv : ThetaNormLinkHypotheses D L X Z H C2 A2 CR CT CRd) : ThetaNormsAndLinks.admitted D L X Z H C2 A2 CR CT CRd := by
   obtain ⟨aI, aQ, aRk, aG, ⟨aR, aG2, aBad, aTR, aGst⟩, aSp, aS, ⟨aT4, aNN, aK, aD, aW⟩, aRun⟩ := lv
@@ -110,6 +182,9 @@ theorem inputs_admissible_of (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ) (h
 
 end PDV08rec
 
+/- English proof (translation)
+Establish `p08` using `(quadratic_statement_of_parts L X.W K H Ch Ah Cq Aq C2h A2 CR Bx CT A s08b s08 a1 a2 a3 a4 b3 bB bC).1`. Establish `p66 : ModuliIntegralCharts.LinkConditions D X.P6` using `(s66b a66).2.2.2.2.1`. Establish `pIn` using `sIn hCRd (inputs_admissible_of D L X Z H C2h A2 CR CT CRd a1 bB lv)`. Conclude with `⟨p08, pIn, s18 (division_admissible_of_inputs D L X H C2h A2 CR CT CRd pIn p66 p08 a7 a8 a9 a12)⟩`.
+-/
 theorem chainG_rec (D : D7) (L : SizeData₂ D) (EX : ErrX D) {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) (Z : ThetaNormsAndLinks.Loc8 X)
     (Y : BoundaryLocalData.Prov D X.P6) (K : WeightAlgebra.KAdm) (H : WeightAlgebra.KHyp)
     (Ch Ah Cq Aq C2h A2 CR Bx CT A ka CRd C1 C2 C3 CA CD : ℝ) (hCRd : 2 ≤ CRd)
@@ -140,9 +215,15 @@ def UnitClauseAtBaseTuple : Prop := ∀ i0 w, LiftErrorLocal.Over D i0 w → ∀
 def TwistedIndexBound (D : D7) : Prop := ∀ i0 w, LiftErrorLocal.Over D i0 w → ∀ j ∈ LiftErrorLocal.lifts D, TwistedAt D w →
   (D.what₂.jw (D.what₂.muTw w) j w : ℝ) ≤ (D.what₂.places.ramIdx w : ℝ) * (D.what₂.etaJ j w : ℝ)
 
+/- English proof (translation)
+Introduce `i0 w hw j hj` and use `⟨hb i0 w hw j hj, fun ht => ⟨hU w ht j hj, hjw i0 w hw j hj ht⟩⟩`.
+-/
 theorem unit_clause_admissible_of_parts (hb : UnitClauseAtBaseTuple X) (hU : ∀ w, TwistedAt D w → PDVN.UAt X w) (hjw : TwistedIndexBound D) : LiftErrorLocal.adm7 D X :=
   fun i0 w hw j hj => ⟨hb i0 w hw j hj, fun ht => ⟨hU w ht j hj, hjw i0 w hw j hj ht⟩⟩
 
+/- English proof (translation)
+Introduce `_ w _ hw` and use `h w hw`.
+-/
 theorem twist_admissible_of_good_twists' (h : TwGoodAt D nch X.I) : LiftErrorLocal.adm8 D X := fun _ w _ hw => h w hw
 
 end P18parts
@@ -159,6 +240,9 @@ section Fam
 variable {eps : ℝ} (Fm : FamP eps)
   (XF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), LiftErrorLocal.Loc (Fm.D x i) (Fm.ex x hx i).nch)
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx h0 i => h x hx h0 i⟩`.
+-/
 theorem theorem_zero_admissible_family_of (H : WeightAlgebra.KHyp) (C2h A2 CR : ℝ)
     (h : WeightAlgebra.ConclusionF1 Fm (fun x hx i => (XF x hx i).B) (fun x hx i => (XF x hx i).P6)
       (fun x hx i => (XF x hx i).W) H C2h A2 CR) :
@@ -167,10 +251,18 @@ theorem theorem_zero_admissible_family_of (H : WeightAlgebra.KHyp) (C2h A2 CR : 
   obtain ⟨x0, h⟩ := h
   exact ⟨x0, fun x hx h0 i => h x hx h0 i⟩
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem jet_admissible_family_of
     (h : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ModuliIntegralCharts.LinkConditions (Fm.D x i) (XF x hx i).P6) :
     ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), LiftErrorLocal.adm3 (Fm.D x i) (XF x hx i) := h
 
+/- English proof (translation)
+Take `⟨xa, h8⟩` from `h8`. Take `⟨xb, h08⟩` from `theorem_zero_admissible_family_of Fm XF H C2h A2 CR h08`. Take `⟨xc, unit_twist_local_clauses_family⟩` from `unit_twist_local_clauses_family`. Use `⟨max xa (max xb xc), fun x hx h0 i => ?_⟩` and prove the remaining obligations. Establish `ha : xa ≤ x` using `le_trans (le_max_left _ _) h0`.
+
+Establish `hb : xb ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) h0`. Establish `hc : xc ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) h0`. Take `⟨a7, a8, a9, a12⟩` from `unit_twist_local_clauses_family x hx hc i`. Conclude with `division_admissible_of_inputs _ _ _ H C2h A2 CR _ CRd (h8 x hx ha i) (jet_admissible_family_of Fm XF h66 x hx i) (h08 x hx hb i) a7 a8 a9 a12`.
+-/
 theorem division_admissible_family_of (H : WeightAlgebra.KHyp) (C2h A2 CR CRd : ℝ)
     (h8 : ThetaNormsAndLinks.ConclusionOnFamily Fm XF H C2h A2 CR CRd)
     (h66 : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ModuliIntegralCharts.LinkConditions (Fm.D x i) (XF x hx i).P6)
@@ -192,6 +284,9 @@ theorem division_admissible_family_of (H : WeightAlgebra.KHyp) (C2h A2 CR CRd : 
 
 variable (ZF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ThetaNormsAndLinks.Loc8 (XF x hx i))
 
+/- English proof (translation)
+Take `⟨x0, lv⟩` from `lv`. Use `⟨x0, fun x hx h0 i => ?_⟩` and prove the remaining obligations. Establish `h1 : WeightFamilies.adm1 (XF x hx i).B` using `hM x hx i`. Conclude with `inputs_admissible_of _ _ _ _ H C2h A2 CR _ CRd h1 hB (lv x hx h0 i)`.
+-/
 theorem inputs_admissible_family_of (H : WeightAlgebra.KHyp) (C2h A2 CR CRd : ℝ)
     (hM : WeightFamilies.familyUnitInput Fm (fun x hx i => (XF x hx i).B)) (hB : WeightFamilies.TransferenceTheoremCond)
     (lv : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
@@ -208,6 +303,11 @@ section ChainF
 
 variable {eps : ℝ} (Fm : FamP eps)
 
+/- English proof (translation)
+Take `⟨x0, a14⟩` from `a14`. Take `⟨⟨x1, p1⟩, p2, ⟨x3, p3⟩⟩` from `s08b (fun x hx i => (T x hx i).B) ob ⟨b1, ⟨x0, fun x hr hx i => (a14 x hr hx i).2.1.2⟩, b3, bB, bC⟩`. Use `s08 (fun x hx i => (T x hx i).B) (fun x hx i => (T x hx i).P) (fun x hx i => (T x hx i).W) o8 ⟨max x0 (max x1 x3), fun x hr hx i => ?_⟩` and prove the remaining obligations. Establish `hx0 : x0 ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hx1 : x1 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`.
+
+Establish `hx3 : x3 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Take `⟨a1, a2, a3, a4⟩` from `a14 x hr hx0 i`. Conclude with `⟨a1, a2, a3, a4, p1 x hr hx1 i, p2 x hr i, p3 x hr hx3 i⟩`.
+-/
 theorem chain_sup_lattice_family (T : ∀ x (_ : Fm.x1 < x) (i : Fm.Ix x), Trip (Fm.D x i)) (Ob : WeightFamilies.ObjClass) (O8 : WeightAlgebra.ObjClass)
     (K : WeightAlgebra.KAdm) (H : WeightAlgebra.KHyp) (Ch Ah Cq Aq C2h A2 CR CH : ℝ)
     (s08b : WeightFamilies.PacketAlongFamilyInClass Ob K.CG K.AG K.CL K.AL K.CRm H.CK Ch Ah Cq Aq Fm CH)
@@ -257,6 +357,13 @@ structure LvG (Ob : WeightFamilies.ObjClass) (O8 : WeightAlgebra.ObjClass) (O18 
   aTG : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, TwGoodAt (Fm.D x i) (Fm.ex x hx i).nch (XF x hx i).I
   a12 : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, N.LocsCoverTw (Fm.D x i)
 
+/- English proof (translation)
+Take `⟨a, h1⟩` from `lv.a79`. Take `⟨b, h2⟩` from `lv.aU`. Take `⟨c, h3⟩` from `lv.aTG`. Take `⟨d, h4⟩` from `lv.a12`. Use `⟨max (max a b) (max c d), fun x hx h0 i => ?_⟩` and prove the remaining obligations.
+
+Establish `ha : a ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) h0`. Establish `hb : b ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) h0`. Establish `hc : c ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) h0`. Establish `hd : d ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) h0`. Take `⟨b7, j7, h9⟩` from `h1 x hx ha i`.
+
+Conclude with `⟨unit_clause_admissible_of_parts _ b7 (h2 x hx hb i) j7, twist_admissible_of_good_twists' _ (h3 x hx hc i), h9, h4 x hx hd i⟩`.
+-/
 theorem LvG.unit_twist_local_clauses_family {Ob : WeightFamilies.ObjClass} {O8 : WeightAlgebra.ObjClass} {O18 : LiftErrorLocal.ObjClass} {K : WeightAlgebra.KAdm} {H : WeightAlgebra.KHyp} {C2h A2 CR CRd : ℝ}
     (lv : LvG Fm XF ZF YF Ob O8 O18 K H C2h A2 CR CRd) :
     ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
@@ -274,6 +381,9 @@ theorem LvG.unit_twist_local_clauses_family {Ob : WeightFamilies.ObjClass} {O8 :
   obtain ⟨b7, j7, h9⟩ := h1 x hx ha i
   exact ⟨unit_clause_admissible_of_parts _ b7 (h2 x hx hb i) j7, twist_admissible_of_good_twists' _ (h3 x hx hc i), h9, h4 x hx hd i⟩
 
+/- English proof (translation)
+Establish `p08` using `chain_sup_lattice_family Fm (fun x hx i => tripOf (XF x hx i)) Ob O8 K H Ch Ah Cq Aq C2h A2 CR CH s08b s08 lv.ob lv.o8 (lv.a14.imp fun _ h x hx h0 i => ⟨lv.b1 x hx i, h x hx h0 i⟩) lv.b1 lv.b3 lv.bB lv.bC`. Establish `p66 : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ModuliIntegralCharts.LinkConditions (Fm.D x i) (XF x hx i).P6` using `fun x hx i => (s66b lv.a66 x hx i).2.2.2.2`. Establish `pIn` using `sIn (inputs_admissible_family_of Fm XF ZF H C2h A2 CR CRd lv.b1 lv.bB lv.lv)`. Conclude with `⟨p08, pIn, s18 XF lv.o18 (division_admissible_family_of Fm XF H C2h A2 CR CRd pIn p66 p08 lv.unit_twist_local_clauses_family)⟩`.
+-/
 theorem chainGF (Ob : WeightFamilies.ObjClass) (O8 : WeightAlgebra.ObjClass) (O18 : LiftErrorLocal.ObjClass) (K : WeightAlgebra.KAdm) (H : WeightAlgebra.KHyp)
     (Ch Ah Cq Aq C2h A2 CR ka CRd C1 C2 C3 CA CD CH : ℝ)
     (s08b : WeightFamilies.PacketAlongFamilyInClass Ob K.CG K.AG K.CL K.AL K.CRm H.CK Ch Ah Cq Aq Fm CH)
@@ -292,6 +402,9 @@ theorem chainGF (Ob : WeightFamilies.ObjClass) (O8 : WeightAlgebra.ObjClass) (O1
   have pIn := sIn (inputs_admissible_family_of Fm XF ZF H C2h A2 CR CRd lv.b1 lv.bB lv.lv)
   exact ⟨p08, pIn, s18 XF lv.o18 (division_admissible_family_of Fm XF H C2h A2 CR CRd pIn p66 p08 lv.unit_twist_local_clauses_family)⟩
 
+/- English proof (translation)
+Take `⟨x0, lv⟩` from `lv`. Use `⟨x0, fun x hx h0 i => ?_⟩` and prove the remaining obligations. Take `⟨aI, aQ, a9⟩` from `lv x hx h0 i`. Establish `h` using `sC x hx i (proposition_C_hypotheses_of _ _ (ThetaNormsAndLinks.stmt1 _ _ _ aI) (ThetaNormsAndLinks.stmt2 _ _ aQ) a9)`. Conclude with `⟨h.1, h.2, sD x i⟩`.
+-/
 theorem degree_bound_family_of_inputs (C1 C2 C3 CD : ℝ)
     (sC : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), LiftErrorLocal.PropositionCStatement (Fm.D x i) (Fm.L x i) (Fm.ex x hx i).errX (XF x hx i)
       C1 C2 C3)
@@ -308,6 +421,9 @@ theorem degree_bound_family_of_inputs (C1 C2 C3 CD : ℝ)
   have h := sC x hx i (proposition_C_hypotheses_of _ _ (ThetaNormsAndLinks.stmt1 _ _ _ aI) (ThetaNormsAndLinks.stmt2 _ _ aQ) a9)
   exact ⟨h.1, h.2, sD x i⟩
 
+/- English proof (translation)
+Take `⟨CD, hD⟩` from `CutKapD.kappa_degree_bound_holds`. Conclude with `⟨CD, degree_bound_family_of_inputs Fm XF ZF C1 C2 C3 CD sC (fun x i => hD (Fm.D x i) (Fm.L x i)) lv⟩`.
+-/
 theorem degree_bound_family_of_inputs' (C1 C2 C3 : ℝ)
     (sC : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), LiftErrorLocal.PropositionCStatement (Fm.D x i) (Fm.L x i) (Fm.ex x hx i).errX (XF x hx i) C1 C2 C3)
     (lv : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
@@ -338,6 +454,11 @@ abbrev rankExponentOfSelection (sb : WeightFamilies.Sel) (s8 : WeightAlgebra.Sel
 abbrev gCR (sb : WeightFamilies.Sel) (s8 : WeightAlgebra.Sel) (K0 : WeightAlgebra.KAdm) (H : WeightAlgebra.KHyp) : ℝ :=
   s8.CR (gK sb K0).deg H.deg (gAq sb s8 K0 H)
 
+/- English proof (translation)
+Take `⟨sb, h08b⟩` from `h08b`. Take `⟨s8, h08⟩` from `h08`. Take `⟨C1, C2, C3, CA, CD, h18⟩` from `h18`. Use `⟨sb, s8, C1, C2, C3, CA, CD, (h08b.and (h08.and (h66.and (hIn.and h18)))).imp fun Fm CH _ h K0 H CRd hCRm hCRd XF ZF YF lv => ?_⟩` and prove the remaining obligations. Take `⟨a, b, e, c, d⟩` from `h`.
+
+Conclude with `chainGF Fm XF ZF YF Ob O8 O18 (gK sb K0) H (s8.Ch (gK sb K0) H) (s8.Ah (gK sb K0).deg H.deg) (gCq sb s8 K0 H) (gAq sb s8 K0 H) (rankConstantOfSelection sb s8 K0 H) (rankExponentOfSelection sb s8 K0 H) (gCR sb s8 K0 H) ka CRd C1 C2 C3 CA CD CH (a K0.CG K0.AG K0.CRm H.CK (s8.Ch (gK …`.
+-/
 theorem chainG (𝒞 : FamClass) (Ob : WeightFamilies.ObjClass) (O8 : WeightAlgebra.ObjClass) (O18 : LiftErrorLocal.ObjClass) (ka : ℝ)
     (h08b : WeightFamilies.ClosedAbsoluteShare Ob 𝒞) (h08 : WeightAlgebra.ClosedSupNormFirstForm O8 𝒞) (h66 : BoundaryLocalData.ClosedFamilyKeyFormula 𝒞 ka)
     (hIn : ThetaNormsAndLinks.ClosedAbsoluteShare 𝒞)
@@ -367,15 +488,27 @@ section ON
 
 variable {D : D7} {CH : NChoice D} {Xd : DivX D}
 
+/- English proof (translation)
+Introduce `_` and use `⟨h08, hLB, hWB, h11⟩`.
+-/
 theorem PDVN_AdmRun_of (X : LiftErrorLocal.Loc D CH) (L : SizeData₂ D) (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd : ℝ)
     (h08 : WeightAlgebra.Conclusion1 L X.W H C2 A2 CR CT) (hLB : LiftErrorLocal.LemmaBWeightBound D X CRd) (hWB : ThetaNormsAndLinks.WeightGeneratorsInLattice D X)
     (h11 : ThetaNormsAndLinks.RunConditions D L X H C2 A2 CR CT CRd) : PDVN.AdmRun X L H C2 A2 CR CT CRd := fun _ => ⟨h08, hLB, hWB, h11⟩
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem proposition_A_type_primes_admissible (L : SizeData₂ D) (O : PDVN.ONObj D CH Xd) (CA : ℝ) (h : LiftErrorLocal.ConjugationNormInvariance D L O.X CA) : PDVN.admA L O CA := h
 
+/- English proof (translation)
+The claim follows from `ThetaNormsAndLinks.offTypePrime_of D O h.1 h.2.1 h.2.2.1 h.2.2.2 h'`.
+-/
 theorem off_type_lattices_admissible_of (O : PDVN.ONObj D CH Xd) (h : ThetaNormsAndLinks.AtEveryPlace D O.X) (h' : ThetaNormsAndLinks.LinkLatticesEveryPlace D O.X') : PDVN.OffTypePrimeConditions O :=
   ThetaNormsAndLinks.offTypePrime_of D O h.1 h.2.1 h.2.2.1 h.2.2.2 h'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, h'⟩`.
+-/
 theorem orbit_content_admissible_of (O : PDVN.ONObj D CH Xd) (C6 : ℝ) (h : CartierLocalBounds.Conclusion5 D Xd O.X.P6 O.c6 C6)
     (h' : CartierLocalBounds.Conclusion5 D Xd O.X'.P6 O.c6' C6) : PDVN.OrbitContentCond O C6 := ⟨h, h'⟩
 
@@ -389,6 +522,9 @@ def ONIn (L : SizeData₂ D) (O : PDVN.ONObj D CH Xd) (H : WeightAlgebra.KHyp) (
 def ONLv (L : SizeData₂ D) (O : PDVN.ONObj D CH Xd) (C6 Cd Cs : ℝ) : Prop :=
   L.FDef ∧ PDVN.unitBoundAtTwistedPlaces O ∧ PDVN.DepthFromContent L O C6 Cd ∧ PDVN.TypePrimeSizeConds L O Cs ∧ PDVN.TwistedPlacesCover D
 
+/- English proof (translation)
+Take `⟨⟨a1, a2, a3⟩, ⟨b1, b2, bW, b3⟩, ⟨pA, g10⟩, ⟨gA, gL'⟩, ⟨c1, c2⟩⟩` from `h`. Take `⟨l2, l4, l6, l7, l8⟩` from `lv`. Conclude with `⟨l2, PDVN_AdmRun_of O.X L H C2 A2 CR CT CRd a1 a2 g10.2 a3, PDVN_AdmRun_of O.X' L H C2 A2 CR CT CRd b1 b2 bW b3, proposition_A_type_primes_admissible L O CA pA, l4, off_type_lattices_admissible_of O gA gL', orbit_content_admissible_of O C6 c1 c2, l6, l7, l8, fun _ w _ _ => gA.2.1 …`.
+-/
 theorem PDVN_AdmON_of (L : SizeData₂ D) (O : PDVN.ONObj D CH Xd) (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd C6 Cd Cs CA : ℝ)
     (h : ONIn L O H C2 A2 CR CT CRd C6 CA) (lv : ONLv L O C6 Cd Cs) :
     PDVN.AdmON L O H C2 A2 CR CT CRd C6 Cd Cs CA := by
@@ -397,6 +533,9 @@ theorem PDVN_AdmON_of (L : SizeData₂ D) (O : PDVN.ONObj D CH Xd) (H : WeightAl
   exact ⟨l2, PDVN_AdmRun_of O.X L H C2 A2 CR CT CRd a1 a2 g10.2 a3, PDVN_AdmRun_of O.X' L H C2 A2 CR CT CRd b1 b2 bW b3,
     proposition_A_type_primes_admissible L O CA pA, l4, off_type_lattices_admissible_of O gA gL', orbit_content_admissible_of O C6 c1 c2, l6, l7, l8, fun _ w _ _ => gA.2.1 w⟩
 
+/- English proof (translation)
+Take `⟨q1, q2, q3b, -, -, -, -, q10, q11, qA⟩` from `pIn`. Conclude with `⟨⟨p08, sLB (lemma_B_hypotheses_of D O.X CRd q1 q2 p66 q3b), q11⟩, ⟨p08', sLB' (lemma_B_hypotheses_of D O.X' CRd r1 r2 p66' r3b), rWB, r11⟩, ⟨pA, q10⟩, ⟨qA, rLK⟩, ⟨(s02 a02).2.2.2.2, (s02' a02').2.2.2.2⟩⟩`.
+-/
 theorem ONIn_of (L : SizeData₂ D) (O : PDVN.ONObj D CH Xd) (H : WeightAlgebra.KHyp) (C2 A2 CR CT CRd C6 CA : ℝ)
     (p08 : WeightAlgebra.Conclusion1 L O.X.W H C2 A2 CR CT) (p08' : WeightAlgebra.Conclusion1 L O.X'.W H C2 A2 CR CT) (pA : LiftErrorLocal.ConjugationNormInvariance D L O.X CA)
     (pIn : ThetaNormsAndLinks.Conclusion₂ D L O.X H C2 A2 CR CT CRd)
@@ -418,6 +557,9 @@ section ONF
 
 variable {eps : ℝ} (Fm : FamP eps) (OF : PDVN.ONObjF Fm)
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx h0 i => PDVN_AdmON_of _ _ H C2 A2 CR _ CRd C6 Cd Cs CA (h x hx h0 i).1 (h x hx h0 i).2⟩`.
+-/
 theorem PDVN_AdmONF_of (H : WeightAlgebra.KHyp) (C2 A2 CR CRd C6 Cd Cs CA : ℝ)
     (h : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
       ONIn (Fm.L x i) (OF x hx i) H C2 A2 CR (Fm.Ct + 1) CRd C6 CA ∧ ONLv (Fm.L x i) (OF x hx i) C6 Cd Cs) :
@@ -425,6 +567,9 @@ theorem PDVN_AdmONF_of (H : WeightAlgebra.KHyp) (C2 A2 CR CRd C6 Cd Cs CA : ℝ)
   obtain ⟨x0, h⟩ := h
   exact ⟨x0, fun x hx h0 i => PDVN_AdmON_of _ _ H C2 A2 CR _ CRd C6 Cd Cs CA (h x hx h0 i).1 (h x hx h0 i).2⟩
 
+/- English proof (translation)
+The claim follows from `(sON (PDVN_AdmONF_of Fm OF H C2 A2 CR CRd C6 Cd Cs CA h)).concl hg`.
+-/
 theorem ONTwJF_of (H : WeightAlgebra.KHyp) (C2 A2 CR CRd C6 Cd Cs CA C CHc : ℝ)
     (sON : PDVN.FamilyOntoIndicesOfAdmissible H C2 A2 CR CRd C6 Cd Cs CA C Fm OF CHc)
     (h : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
@@ -442,6 +587,9 @@ section ONchain
 
 variable {eps : ℝ} (Fm : FamP eps)
 
+/- English proof (translation)
+Take `⟨a, hP⟩` from `hP`. Take `⟨b, hQ⟩` from `hQ`. Conclude with `⟨max a b, fun x hx h0 i => ⟨hP x hx (le_trans (le_max_left _ _) h0) i, hQ x hx (le_trans (le_max_right _ _) h0) i⟩⟩`.
+-/
 theorem thr_and {P Q : ∀ x, Fm.x1 < x → Fm.Ix x → Prop}
     (hP : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, P x hx i)
     (hQ : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, Q x hx i) :
@@ -452,6 +600,11 @@ theorem thr_and {P Q : ∀ x, Fm.x1 < x → Fm.Ix x → Prop}
 
 variable (OF : PDVN.ONObjF Fm)
 
+/- English proof (translation)
+Establish `q08` using `theorem_zero_admissible_family_of Fm (fun x hx i => (OF x hx i).X) H C2h A2 CR p08`. Establish `q08'` using `theorem_zero_admissible_family_of Fm (fun x hx i => (OF x hx i).X') H C2h A2 CR p08'`. Take `⟨x0, h⟩` from `thr_and Fm q08 (thr_and Fm q08' (thr_and Fm pIn (thr_and Fm pIn' (thr_and Fm p18 p02))))`. Use `⟨x0, fun x hx h0 i => ?_⟩` and prove the remaining obligations. Take `⟨a, a', ⟨-, -, -, -, -, -, -, q10, q11, qA⟩, ⟨rLB, rWB, r11, rLK⟩, b, c⟩` from `h x hx h0 i`.
+
+Conclude with `⟨⟨a, b.2.2.2.1, q11⟩, ⟨a', rLB, rWB, r11⟩, ⟨b.2.2.2.2.2.2.1, q10⟩, ⟨qA, rLK⟩, c⟩`.
+-/
 theorem ONInF_of (H : WeightAlgebra.KHyp) (C2h A2 CR CRd C6 C1 C2 C3 CA CD : ℝ)
     (p08 : WeightAlgebra.ConclusionF1 Fm (fun x hx i => (OF x hx i).X.B)
       (fun x hx i => (OF x hx i).X.P6)
@@ -482,6 +635,13 @@ section ONstmts
 
 variable {eps : ℝ} (Fm : FamP eps) (OF : PDVN.ONObjF Fm)
 
+/- English proof (translation)
+Take `⟨p08, pIn, p18⟩` from `chainGF Fm (fun x hx i => (OF x hx i).X) ZF YF Ob O8 O18 K H Ch Ah Cq Aq C2h A2 CR ka CRd C1 C2 C3 CA CD CH s08b s08 s66b sIn s18 lv`. Take `⟨p08', pIn', p18'⟩` from `chainGF Fm (fun x hx i => (OF x hx i).X') ZF' YF' Ob O8 O18 K H Ch Ah Cq Aq C2h A2 CR ka' CRd C1 C2 C3 CA CD CH s08b s08 s66b' sIn' s18 lv'`. Establish `q' : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, LiftErrorLocal.LemmaBWeightBound (Fm.D x i) (OF x hx i).X' CRd ∧ ThetaNormsAndLinks.WeightGeneratorsInLattice (Fm.D x i) (OF x hx i).X' ∧ ThetaNormsAndLinks.RunConditions (Fm.D x i) (Fm.L x i) (OF x hx i).X' H C2h A2 CR …`. Take `⟨x0, h⟩` from `thr_and Fm p18' (thr_and Fm pIn' lv'.lv)`. Use `⟨x0, fun x hx h0 i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, b, c⟩` from `h x hx h0 i`. Take `⟨-, -, -, aLB, -⟩` from `a`. Take `⟨-, -, -, -, -, -, -, -, b11, -, -, -, bLK⟩` from `b`. Take `⟨-, -, -, -, -, -, -, ⟨-, -, -, -, cWB⟩, -⟩` from `c`. Conclude with `⟨aLB, cWB, b11, bLK⟩`.
+
+Establish `q02 : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, CartierLocalBounds.Conclusion5 (Fm.D x i) (Fm.X x i) (OF x hx i).X.P6 (OF x hx i).c6 C6 ∧ CartierLocalBounds.Conclusion5 (Fm.D x i) (Fm.X x i) (OF x hx i).X'.P6 (OF x hx i).c6' C6`. Take `⟨x0, h⟩` from `thr_and Fm s02 a02`. Conclude with `⟨x0, fun x hx h0 i => ⟨((h x hx h0 i).1.1 (h x hx h0 i).2.1).2.2.2.2, ((h x hx h0 i).1.2 (h x hx h0 i).2.2).2.2.2.2⟩⟩`. Conclude with `ONInF_of Fm OF H C2h A2 CR CRd C6 C1 C2 C3 CA CD p08 p08' pIn q' p18 q02`.
+-/
 theorem ONInF_of_stmts
     (ZF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ThetaNormsAndLinks.Loc8 (OF x hx i).X)
     (ZF' : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ThetaNormsAndLinks.Loc8 (OF x hx i).X')

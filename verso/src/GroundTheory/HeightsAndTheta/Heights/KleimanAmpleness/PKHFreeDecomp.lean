@@ -12,6 +12,13 @@ namespace KHFreeDecomp
 
 variable {S : Type} [CommRing S] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Proceed by induction on `ht using Submonoid.closure_induction with`. Consider the case `mem f hf`. Take `⟨k, i, hi, rfl⟩` from `hf`. Use `⟨Finsupp.single ⟨k, i⟩ 1, rfl, fun q hq => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_singleton.mp (Finsupp.support_single_subset hq)]`.
+
+Conclude with `hi`. Consider the case `one => exact ⟨0, by rw [← C_1, C_apply], by simp⟩`. Consider the case `mul f g _ _ hf hg`. Take `⟨u, rfl, hu⟩` from `hf`. Take `⟨v, rfl, hv⟩` from `hg`.
+
+Use `⟨u + v, by rw [monomial_mul, one_mul], fun q hq => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_union.mp (Finsupp.support_add hq) with h | h` into its components or cases. Conclude with `hu q h`. Conclude with `hv q h`.
+-/
 theorem cellMon_monomial {I : ∀ k, Finset (ι k)} {t : MRingOver S ι} (ht : t ∈ KH.cellMon S I) :
     ∃ u : (Σ k, ι k) →₀ ℕ, t = monomial u 1 ∧ ∀ q ∈ u.support, q.2 ∈ I q.1 := by
   classical
@@ -41,15 +48,28 @@ def overDen (T : Submonoid (MRingOver S ι)) (t : T) : M →ₗ[S] LocalizedModu
   map_smul' s m := by
     rw [RingHom.id_apply, LocalizedModule.smul'_mk]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem overDen_apply (T : Submonoid (MRingOver S ι)) (t : T) (m : M) :
     overDen T t m = LocalizedModule.mk m t := rfl
 
 end Frac
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, Ideal.Quotient.mk_algebraMap]`.
+-/
 theorem quot_mk_smul (s : S) (p : MRingOver S ι) :
     Ideal.Quotient.mk (⊥ : Ideal (MRingOver S ι)) (s • p) = s • Ideal.Quotient.mk ⊥ p := by
   rw [Algebra.smul_def, Algebra.smul_def, map_mul, Ideal.Quotient.mk_algebraMap]
 
+/- English proof (translation)
+Establish `hneg : ∀ k, negSet (fun q => (v q : ℤ) - u q) k ⊆ I k`. Introduce `k i hi`. Simplify using `only [negSet, Finset.mem_filter, Finset.mem_univ, true_and] at hi`. Conclude with `hu ⟨k, i⟩ (Finsupp.mem_support_iff.mpr (by omega))`. Establish `hexp : negExp (fun q => (v q : ℤ) - u q) + v = u + posExp (fun q => (v q : ℤ) - u q)`.
+
+Use extensionality with `q`. Simplify using `only [Finsupp.add_apply, posExp, negExp, Finsupp.coe_equivFunOnFinite_symm]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[monoFrac, dif_pos hneg, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [one_smul, Submonoid.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, monomial_mul, mul_one]`. Rewrite using `[hexp]`.
+-/
 theorem mk_monomial_eq (I : ∀ k, Finset (ι k)) (u v : (Σ k, ι k) →₀ ℕ) (hu : ∀ q ∈ u.support, q.2 ∈ I q.1)
     (ht : (monomial u (1 : S) : MRingOver S ι) ∈ KH.cellMon S I) :
     LocalizedModule.mk (Ideal.Quotient.mk (⊥ : Ideal (MRingOver S ι)) (monomial v 1)) ⟨monomial u 1, ht⟩ =
@@ -69,6 +89,21 @@ theorem mk_monomial_eq (I : ∀ k, Finset (ι k)) (u v : (Σ k, ι k) →₀ ℕ
     monomial_mul, mul_one]
   rw [hexp]
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial S with hS | hS` into its components or cases. Introduce `x _`. Establish `hx : x = 0` using `by rw [← one_smul S x, Subsingleton.elim (1 : S) 0, zero_smul]`. Rewrite using `[hx]`. Conclude with `zero_mem _`.
+
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, ⟨t, ht⟩, b, htb, hm, rfl⟩`. Take `⟨u, rfl, huI⟩` from `cellMon_monomial ht`. Establish `hub : ∀ k, ∑ i, u ⟨k, i⟩ = b k`. Introduce `k`.
+
+Use `htb u ?_ k` and prove the remaining obligations. Rewrite using `[support_monomial, if_neg one_ne_zero]`. Conclude with `Finset.mem_singleton_self u`. Establish `hle : KH.quotPart S (⊥ : Ideal (MRingOver S ι)) ((c + fun k => (b k : ℤ)) + d) ≤ (Submodule.span S (monoFrac S I '' {a | blockSum a = c + d})).comap (overDen (KH.cellMon S I) ⟨monomial u 1, ht⟩)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨p, ⟨hpos, hp⟩, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Establish `hsum : p = ∑ v ∈ p.support, coeff v p • (monomial v 1 : MRingOver S ι)` using `by conv_lhs => rw [p.as_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`.
+
+Rewrite using `[hsum, map_sum, map_sum]`. Use `Submodule.sum_mem _ fun v hv => ?_` and prove the remaining obligations. Rewrite using `[quot_mk_smul, map_smul]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨fun q => (v q : ℤ) - u q, ?_, ?_⟩)` and prove the remaining obligations. Establish `hv'` using `hp v hv show blockSum _ = c + d`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [blockSum, Finset.sum_sub_distrib]`. Establish `h1 : ∑ i, ((v ⟨k, i⟩ : ℕ) : ℤ) = ((((c + fun k => (b k : ℤ)) + d) k).toNat : ℤ)`. Conclude with `hv' k` after adjusting the coercions. Establish `h2 : ∑ i, ((u ⟨k, i⟩ : ℕ) : ℤ) = b k` using `by exact_mod_cast hub k`.
+
+Establish `h3` using `hpos k`. Simplify using `only [Pi.add_apply] at h1 h3 ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[overDen_apply, mk_monomial_eq I u v huI ht]`. Conclude with `hle hm`.
+-/
 theorem locPart_le (I : ∀ k, Finset (ι k)) (c d : K → ℤ) :
     KH.locPart ι (fun c => KH.quotPart S (⊥ : Ideal (MRingOver S ι)) (c + d)) (KH.cellMon S I) c ≤
       Submodule.span S (monoFrac S I '' {a | blockSum a = c + d}) := by
@@ -113,6 +148,9 @@ theorem locPart_le (I : ∀ k, Finset (ι k)) (c d : K → ℤ) :
     · rw [overDen_apply, mk_monomial_eq I u v huI ht]
   exact hle hm
 
+/- English proof (translation)
+Unfold `embed`. Rewrite using `[LinearMap.pi_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[LinearMap.zero_apply, monoFrac, dif_neg h, smul_zero]`.
+-/
 theorem embed_apply_cell [LinearOrder K] [∀ k, LinearOrder (ι k)] (a : (Σ k, ι k) → ℤ) (n : ℕ)
     (F : KH.Cell K ι n → S) (I : KH.Cell K ι n) :
     embed S a n (fun J => F J.1) I = F I • monoFrac S I.1 a := by
@@ -127,6 +165,15 @@ end KHFreeDecomp
 
 open KHFreeDecomp in
 
+/- English proof (translation)
+Introduce `S _ K _ _ ι _ _ c d n φ hφ`. Establish `hI : ∀ I : KH.Cell K ι n, ∃ l : ((Σ k, ι k) → ℤ) →₀ S, l ∈ Finsupp.supported S S {a | blockSum a = c + d} ∧ Finsupp.linearCombination S (monoFrac S I.1) l = φ I`. Introduce `I`. Establish `hx : φ I ∈ KH.locPart ι (fun c => KH.quotPart S (⊥ : Ideal (MRingOver S ι)) (c + d)) (KH.cellMon S I.1) c` using `hφ I (Set.mem_univ _)`. Conclude with `(Finsupp.mem_span_image_iff_linearCombination S).mp (locPart_le I.1 c d hx)`.
+
+Use `choose l hl hlφ using hI`. Set `_ : Fintype (KH.Cell K ι n)` to `by unfold KH.Cell; infer_instance`. Use `⟨Finset.univ.biUnion fun I => (l I).support, fun a J => l J.1 a, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Take `⟨I, -, haI⟩` from `Finset.mem_biUnion.mp ha`.
+
+Conclude with `hl I haI`. Use function extensionality and compare the values at `I`. Rewrite using `[Finset.sum_apply, ← hlφ I, Finsupp.linearCombination_apply, Finsupp.sum]`. Use `beta_reduce`. Use `(Finset.sum_subset (s₁ := (l I).support) (s₂ := Finset.univ.biUnion fun I => (l I).support) (f := fun a => l I a • monoFrac S I.1 a) (fun a ha => Finset.mem_biUnion.mpr ⟨I, Finset.mem_univ _, ha⟩) ?_).trans (Finset.sum_congr rfl fun a _ => (embed_apply_cell a n (fun J => l J a) I …` and prove the remaining obligations.
+
+Introduce `a _ ha`. Rewrite `ha` using `[Finsupp.mem_support_iff, not_not]`. Rewrite using `[ha, zero_smul]`.
+-/
 theorem KHFreeDecomp.full : KHFreeDecomp.Statement := by
   intro S _ K _ _ ι _ _ c d n φ hφ
   classical

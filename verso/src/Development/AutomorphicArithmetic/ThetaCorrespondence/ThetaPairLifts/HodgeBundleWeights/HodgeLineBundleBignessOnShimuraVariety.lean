@@ -18,6 +18,27 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 set_option autoImplicit false
 namespace GlobalTheory.HodgeBig
+/- English proof (translation)
+Introduce `hP _ _ hS hK E _ _ _ H Dw l Xo c TF Z _ _ hF δ hδ hpull`. Take `⟨ω, hω, e, hdom⟩` from `HodgeDominates.exists_lb_dominates hP.p22 hS hK.toroidalChartsForFan TF`. Take `⟨_, -, hproj, -, hsurj, -⟩` from `GlobalTheory.BaseVar.isVariety_barComp E H Dw l Xo c TF Z hF`. Establish `hprojY : IsProjOver (str₀ TF.X Z)` using `(GlobalTheory.VarFlag.isVariety₀_flag E H Dw l Xo c TF Z hF).2.1`. Establish `hN` using `hP.q7`.
+
+Set `χ : AllWt.Weight Dw` to `fun _ i => if (i : ℕ) < Dw.p then (1 : ℤ) else -1`. Establish `hB : (ω.pull (barComp TF.Y Z).ι).IsLB` using `pull_isLB hω _`. Establish `hBp : CechPic.pull (π₀ TF.X Z) (cls _ hB) = cls (L₀ TF.X Z χ) (isLB_L₀ TF.X Z _)`. Rewrite using `[cls_pull hω _ hB, ← CechPic.pull_comp, morphismRestrict_ι, CechPic.pull_comp, ← e]`. Conclude with `(cls_pull (TF.X.isLB_Llam _) _ _).symm`.
+
+Set `C` to `common₀ TF.X Z`. Set `φ` to `AddMonoidHom.mk' (fun a => cls (L₀ TF.X Z a) (C.isLB a)) (cls_common_add C)`. Establish `hφ : ∀ a, cls (L₀ TF.X Z a) (isLB_L₀ TF.X Z a) = φ a` using `fun _ => rfl`. Set `w : AllWt.Weight Dw` to `∑ τ : Psi H, NefWt.unitWt τ (-1)`. Establish `ew : 2 • hodgeWt Dw - χ = w`.
+
+Use function extensionality and compare the values at `τ i`. Simplify using `only [w, Finset.sum_apply, NefWt.unitWt_apply, Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.sub_apply, Pi.smul_apply, hodgeWt, CompHt.barWt, χ, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hwnef : (letI` using `algebraΓOfHom (str₀ TF.X Z); IsNef c.F (L₀ TF.X Z w)) := by`. Use `letI := algebraΓOfHom (str₀ TF.X Z)`.
+
+Take `⟨A, hA⟩` from `exists_isAmpleLB_of_isProjOver hprojY`. Use `IsNef.of_cls_eq_sum Finset.univ (fun τ : Psi H => (_root_.GlobalTheory.NefUnit.isNef_hodgeBundle_unitWeight (_root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems.toClassicalTheorems hP) hN E H Dw l Xo c TF Z hF τ).2) (fun _ => 1) hA (isLB_L₀ TF.X Z w) ?_` and prove the remaining obligations. Rewrite using `[hφ, map_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => (one_smul _ _).symm`. Use `letI := algebraΓOfHom (s₀ TF.Y Z)`.
+
+Establish `hf : ∀ r : c.F, algebraMap c.F Γ(X₀ TF.Y Z, ⊤) r = (s₀ TF.Y Z).appTop ((Scheme.ΓSpecIso (.of c.F)).inv r)` using `fun _ => rfl`. Establish `hp' : IsProjOver (strHom c.F (X₀ TF.Y Z))` using `by rw [strHom_eq hf]; exact hproj`. Establish `h2` using `isLB_lbPow hδ 2`. Establish `hNl` using `LB.isLB_div h2 hB`. Establish `hNp : CechPic.pull (π₀ TF.X Z) (cls _ hNl) = cls (L₀ TF.X Z w) (isLB_L₀ TF.X Z _)`.
+
+Rewrite using `[cls_div h2 hB hNl, map_sub, cls_lbPow hδ 2 h2, map_nsmul, hpull, hBp, hφ, hφ, hφ, ← ew, map_sub, map_nsmul]`. Establish `hNnef : IsNef c.F (LB.div (lbPow δ 2) (ω.pull (barComp TF.Y Z).ι))` using `GlobalTheory.NefDescent.isNef_of_pull c.F _ _ (π₀ TF.X Z) (s₀ TF.Y Z) (str₀ TF.X Z) _ hNl _ (isLB_L₀ TF.X Z w) (π₀_s₀ TF.X Z) hproj hprojY hsurj hNp hwnef`. Establish `: IsProper (s₀ TF.Y Z)` using `ThetaDescent.isProper_of_isProjOver hproj`. Establish `: CompactSpace (X₀ TF.Y Z)` using `QuasiCompact.compactSpace_of_compactSpace (s₀ TF.Y Z)`. Take `⟨A, hA⟩` from `exists_isAmpleLB_of_isProjOver TF.Y.proj`.
+
+Establish `hA₀ : IsAmpleLB (A.pull (barComp TF.Y Z).ι)` using `hA.pull_of_isOpenImmersion _`. Establish `hw : TF.Y.j (genPt Z) ∈ barComp TF.Y Z` using `(j_mem_barComp Z _).2 (CompSplitPfB.cspB_genPt_mem Z)`. Take `⟨m, hm, s, hs⟩` from `hdom (genPt Z) A hA.isLB`. Establish `hD` using `LB.isLB_div (isLB_lbPow hω m) hA.isLB`. Establish `ht : (⟨_, hw⟩ : X₀ TF.Y Z) ∈ nonzeroLocus (lbSecPull _ s (barComp TF.Y Z).ι)`.
+
+Rewrite using `[HodgeDominates.nonzeroLocus_lbSecPull]`. Conclude with `hs`. Establish `hNm` using `hNnef.pow hA₀ m`. Establish `hbig` using `hNm.isBig_tens_ample hN hp' hA₀`. Establish `hδm : IsBig c.F (lbPow δ (2 * m))` using `hbig.of_cls_eq_add hf hproj (pull_isLB hD _) ⟨_, sec_ne_zero_of_mem ht⟩ (isLB_lbPow hδ _) (by`.
+
+Rewrite using `[cls_tens hNm.isLB hA₀.isLB, cls_lbPow hNl, cls_div h2 hB hNl, cls_lbPow hδ, cls_lbPow hδ, cls_pull hω, cls_pull hA.isLB, cls_pull hD, cls_div (isLB_lbPow hω m) hA.isLB, cls_lbPow hω, map_sub, map_nsmul, smul_sub, mul_comm, mul_smul]`. Use the proof step `abel)`. Conclude with `hδm.of_pow hδ (by omega) fun n => finite_coh_zero_twist_of_isProjOver hf hproj (isLB_lbPow hδ n)`.
+-/
 theorem hodgeLineBundle_isBig : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), 1 ≤ Dw.p → 1 ≤ Dw.q → FnAlgClosed Xo c → ∀ (δ : LB (X₀ TF.Y Z)) (hδ : δ.IsLB), CechPic.pull (π₀ TF.X Z) (cls δ hδ) = cls (L₀ TF.X Z (hodgeWt Dw)) (isLB_L₀ TF.X Z _) → letI := algebraΓOfHom (s₀ TF.Y Z); IsBig c.F δ := by
   intro hP _ _ hS hK E _ _ _ H Dw l Xo c TF Z _ _ hF δ hδ hpull
   classical
@@ -92,6 +113,9 @@ open GlobalTheory.LevDesc (TypeFrame grpHR grpGHR levDet secRing move)
 open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelAut)
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.HodgeBig.hodgeLineBundle_isBig | exact _root_.GlobalTheory.HodgeBig.hodgeLineBundle_isBig | (intros; apply _root_.GlobalTheory.HodgeBig.hodgeLineBundle_isBig <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hodgeLineBundle_bigness_on_shimuraVariety : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), 1 ≤ Dw.p → 1 ≤ Dw.q → FnAlgClosed Xo c → ∀ (δ : LB (X₀ TF.Y Z)) (hδ : δ.IsLB), CechPic.pull (π₀ TF.X Z) (cls δ hδ) = cls (L₀ TF.X Z (hodgeWt Dw)) (isLB_L₀ TF.X Z _) → letI := algebraΓOfHom (s₀ TF.Y Z); IsBig c.F δ := by
   first | exact @_root_.GlobalTheory.HodgeBig.hodgeLineBundle_isBig | exact _root_.GlobalTheory.HodgeBig.hodgeLineBundle_isBig | (intros; apply _root_.GlobalTheory.HodgeBig.hodgeLineBundle_isBig <;> assumption)
 end

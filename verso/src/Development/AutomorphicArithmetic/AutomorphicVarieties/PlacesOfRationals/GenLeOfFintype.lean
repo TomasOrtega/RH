@@ -15,6 +15,13 @@ variable {Γ : Type} [Group Γ]
 
 def GenLe (H : Subgroup Γ) (r : ℕ) : Prop := ∃ x : Fin r → Γ, Subgroup.closure (Set.range x) = H
 
+/- English proof (translation)
+Take `⟨f⟩ : Nonempty (κ ↪ Fin r)` from `Function.Embedding.nonempty_of_card_le (by simpa using h)`. Use `⟨Function.extend f x 1, le_antisymm ((Subgroup.closure_le _).2 ?_) (Subgroup.closure_mono ?_)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Distinguish the cases in `hi : ∃ k, f k = i`. Take `⟨k, rfl⟩` from `hi`.
+
+Rewrite using `[f.injective.extend_apply]`. Conclude with `Subgroup.subset_closure ⟨k, rfl⟩`. Rewrite using `[Function.extend_apply' _ _ _ hi]`. Conclude with `one_mem _`. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Conclude with `⟨f k, f.injective.extend_apply _ _ _⟩`.
+-/
 theorem genLe_of_fintype {κ : Type} [Fintype κ] (x : κ → Γ) {r : ℕ} (h : Fintype.card κ ≤ r) :
     GenLe (Subgroup.closure (Set.range x)) r := by
   classical
@@ -30,10 +37,16 @@ theorem genLe_of_fintype {κ : Type} [Fintype κ] (x : κ → Γ) {r : ℕ} (h :
   · rintro _ ⟨k, rfl⟩
     exact ⟨f k, f.injective.extend_apply _ _ _⟩
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `h`. Conclude with `genLe_of_fintype x (by simpa using hrs)`.
+-/
 theorem GenLe.mono {H : Subgroup Γ} {r s : ℕ} (h : GenLe H r) (hrs : r ≤ s) : GenLe H s := by
   obtain ⟨x, rfl⟩ := h
   exact genLe_of_fintype x (by simpa using hrs)
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `h`. Conclude with `⟨f ∘ x, by rw [MonoidHom.map_closure, Set.range_comp]⟩`.
+-/
 theorem GenLe.map {Γ' : Type} [Group Γ'] {H : Subgroup Γ} {r : ℕ} (h : GenLe H r) (f : Γ →* Γ') : GenLe (H.map f) r := by
   obtain ⟨x, rfl⟩ := h
   exact ⟨f ∘ x, by rw [MonoidHom.map_closure, Set.range_comp]⟩
@@ -50,6 +63,11 @@ def OrbGen (ρ : Γ →* Monoid.End C) (A : Subgroup C) (g : ℕ) : Prop := ∃ 
 def coinv (l : ℕ) (ρ : Γ →* Monoid.End C) : Subgroup C :=
   Subgroup.closure ({c | ∃ a, c = a ^ l} ∪ {c | ∃ σ a, c = ρ σ a * a⁻¹})
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h`. Use `⟨fun i => if h : i.1 < g then a ⟨i.1, h⟩ else 1, le_antisymm ((Subgroup.closure_le _).2 ?_) (Subgroup.closure_mono ?_)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, i, rfl⟩`. Distinguish the cases in `h : i.1 < g`. Simplify using `only [dif_pos h]`.
+
+Conclude with `Subgroup.subset_closure ⟨σ, _, rfl⟩`. Simplify using `only [dif_neg h, map_one]`. Conclude with `one_mem _`. Introduce and unpack `_ ⟨σ, i, rfl⟩`. Conclude with `⟨σ, Fin.castLE hg i, by simp⟩`.
+-/
 theorem OrbGen.mono {ρ : Γ →* Monoid.End C} {A : Subgroup C} {g g' : ℕ} (h : OrbGen ρ A g) (hg : g ≤ g') :
     OrbGen ρ A g' := by
   obtain ⟨a, rfl⟩ := h
@@ -96,12 +114,18 @@ def IsRecip (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra ℚ Ω] 
 
 def rk (p : ℕ) : ℕ := if p = 2 then 2 else 1
 
+/- English proof (translation)
+Rewrite using `[← jacobiSym.mul_left, ZMod.val_mul]`. Apply `jacobiSym.mod_left'` to reduce the goal to its premises. Conclude with `congrArg (Nat.cast : ℕ → ℤ) (Nat.mod_mod_of_dvd _ h)` after adjusting the coercions.
+-/
 theorem jacobi_val_mul {N q : ℕ} [NeZero N] (h : q ∣ N) (a b : ZMod N) :
     jacobiSym (((a * b).val : ℕ) : ℤ) q = jacobiSym ((a.val : ℕ) : ℤ) q * jacobiSym ((b.val : ℕ) : ℤ) q := by
   rw [← jacobiSym.mul_left, ZMod.val_mul]
   apply jacobiSym.mod_left'
   exact_mod_cast congrArg (Nat.cast : ℕ → ℤ) (Nat.mod_mod_of_dvd _ h)
 
+/- English proof (translation)
+Rewrite using `[← jacobiSym.one_left q, ZMod.val_one_eq_one_mod]`. Apply `jacobiSym.mod_left'` to reduce the goal to its premises. Conclude with `congrArg (Nat.cast : ℕ → ℤ) (Nat.mod_mod_of_dvd _ h)` after adjusting the coercions.
+-/
 theorem jacobi_val_one {N q : ℕ} [NeZero N] (h : q ∣ N) : jacobiSym ((((1 : ZMod N)).val : ℕ) : ℤ) q = 1 := by
   rw [← jacobiSym.one_left q, ZMod.val_one_eq_one_mod]
   apply jacobiSym.mod_left'

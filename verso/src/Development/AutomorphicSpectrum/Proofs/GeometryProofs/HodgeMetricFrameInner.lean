@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.FrameGram
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ D σ a x y c c' hx hy`. Take `⟨t', m, hP, hA⟩` from `GlobalTheory.T.complex_abelian_fibre_ample E H L D σ`. Take `⟨hab, g, u, Hm, χ, hAH, d₁, d₂⟩` from `FrameEx.exists_goodUnif E H _ D.t (emb σ) t' m hP hA`. Establish `hp : IsGrpPullback t'.G D.t.G (emb σ) m.φ` using `m.cart`. Take `⟨v, hlift, vA, hvA, hdiff⟩` from `hx`.
+
+Take `⟨w, hlift', wA, hwA, hdiff'⟩` from `hy`. Establish `e : spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 (Sp (𝓞 L)) = emb σ` using `Category.comp_id _`. Set `v₀ : epsAt (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 (Sp (𝓞 L))) ⟶ D.t.G` to `Over.homMk v.left (by simpa using Over.w v)`. Set `w₀ : epsAt (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 (Sp (𝓞 L))) ⟶ D.t.G` to `Over.homMk w.left (by simpa using Over.w w)`. Establish `hl₀ : D.MB.Lifts (σ.comp (algebraMap (𝓞 L) L)) (𝟙 D.t.G.left) x v₀` using `hlift`.
+
+Establish `hl₁ : D.MB.Lifts (σ.comp (algebraMap (𝓞 L) L)) (𝟙 D.t.G.left) y w₀` using `hlift'`. Take `⟨hL, hvt, hwt, A', _, φ', g', u', Hm', χ', p, q, a', b', hp', hah', ep, eq', dp, dq, hval⟩` from `D.fib σ x y v₀ w₀ hl₀ hl₁`. Establish `hp₀ : IsGrpPullback t'.G D.t.G (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 (Sp (𝓞 L))) m.φ` using `IsGrpPullback.congr hp e.symm rfl`. Establish `hpz : IsGrpPullback A' D.t.G (emb σ) φ'` using `IsGrpPullback.congr hp' e rfl`. Set `x₁ : epsR ℂ ⟶ t'.G` to `(HodgeLin.tanEquiv hp₀).symm v₀`.
+
+Set `y₁ : epsR ℂ ⟶ t'.G` to `(HodgeLin.tanEquiv hp₀).symm w₀`. Establish `hx₁ : HodgeLin.tanEquiv hp₀ x₁ = v₀` using `(HodgeLin.tanEquiv hp₀).apply_symm_apply _`. Establish `hy₁ : HodgeLin.tanEquiv hp₀ y₁ = w₀` using `(HodgeLin.tanEquiv hp₀).apply_symm_apply _`. Establish `tx₁ : IsTangent x₁` using `(HodgeLin.isTangent_iff hp₀ x₁).2 (by rw [hx₁]; exact hvt)`. Establish `ty₁ : IsTangent y₁` using `(HodgeLin.isTangent_iff hp₀ y₁).2 (by rw [hy₁]; exact hwt)`.
+
+Establish `lx₁ : x₁.left ≫ m.φ = v.left` using `congrArg (fun r => r.left) hx₁`. Establish `ly₁ : y₁.left ≫ m.φ = w.left` using `congrArg (fun r => r.left) hy₁`. Take `⟨cx, hcx, -⟩` from `d₁ x₁ tx₁`. Take `⟨cy, hcy, -⟩` from `d₁ y₁ ty₁`. Establish `T1` using `GlobalTheory.T.hol_unif_compare_isogeny (Sp (𝓞 L)) D.t.G D.t.PP.L (emb σ) t'.G a.A m.φ a.φ g D.g u a.u Hm a.Hm χ a.χ D.t.PP.isLB hab hp a.cart d₁ d₂ hAH a.ah y₁ x₁ wA vA cy cx c' c ty₁ tx₁ (hwA.trans ly₁.symm) (hvA.trans lx₁.symm) hcy hcx hdiff' hdiff`.
+
+Establish `T2` using `GlobalTheory.T.hol_unif_compare_isogeny (Sp (𝓞 L)) D.t.G D.t.PP.L (emb σ) t'.G A' m.φ φ' g g' u u' Hm Hm' χ χ' D.t.PP.isLB hab hp hpz d₁ d₂ hAH hah' y₁ x₁ q p cy cx b' a' ty₁ tx₁ (eq'.trans ly₁.symm) (ep.trans lx₁.symm) hcy hcx dq dp`. Establish `hH : a.herm c' c = hermForm Hm' b' a'` using `T1.trans T2.symm`. Rewrite using `[hH]`. Conclude with `hval`.
+-/
 theorem inner_eq_pi_herm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ) (a : D.Frame σ) (x y : D.B.carrier) (c c' : Fin D.g → ℂ), D.IsVec a x c → D.IsVec a y c' → ((D.B.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x) ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] y) : ℂ) = Real.pi * a.herm c' c := by
   intro E _ _ _ H L _ _ D σ a x y c c' hx hy
   obtain ⟨t', m, hP, hA⟩ := GlobalTheory.T.complex_abelian_fibre_ample E H L D σ

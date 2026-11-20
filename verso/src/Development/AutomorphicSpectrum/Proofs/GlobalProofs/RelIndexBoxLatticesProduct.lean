@@ -16,6 +16,9 @@ variable {F : Type} [Field F]
 def line (O : Subring F) (c : F) : AddSubgroup F :=
   O.toAddSubgroup.map (AddMonoidHom.mulLeft c)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho, rfl⟩`. Conclude with `⟨o, ho, rfl⟩`. Introduce and unpack `⟨o, ho, rfl⟩`. Conclude with `⟨o, ho, rfl⟩`.
+-/
 theorem mem_line {O : Subring F} {c x : F} : x ∈ line O c ↔ ∃ o ∈ O, x = c * o := by
   constructor
   · rintro ⟨o, ho, rfl⟩
@@ -23,6 +26,11 @@ theorem mem_line {O : Subring F} {c x : F} : x ∈ line O c ↔ ∃ o ∈ O, x =
   · rintro ⟨o, ho, rfl⟩
     exact ⟨o, ho, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_map, mem_line, AddMonoidHom.coe_mulLeft]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨o, ho, rfl⟩, rfl⟩`. Conclude with `⟨o, ho, by ring⟩`.
+
+Introduce and unpack `⟨o, ho, rfl⟩`. Conclude with `⟨c * o, ⟨o, ho, rfl⟩, by ring⟩`.
+-/
 theorem map_line (O : Subring F) (e c : F) :
     (line O c).map (AddMonoidHom.mulLeft e) = line O (e * c) := by
   ext x
@@ -40,6 +48,11 @@ section Local
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}
 
+/- English proof (translation)
+Establish `hvy : 0 < ValuativeRel.valuation F y` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hy)`. Establish `h1 : x / y ∈ O`. Rewrite using `[mem_iff_val_le h, map_div₀]`. Conclude with `div_le_one_of_le₀ hxy zero_le'`. Introduce `z hz`.
+
+Take `⟨o, ho, rfl⟩` from `mem_line.1 hz`. Conclude with `mem_line.2 ⟨x / y * o, O.mul_mem h1 ho, by field_simp⟩`.
+-/
 theorem line_le_of_val_le (h : LF O ϖ nrm q) {x y : F} (hy : y ≠ 0)
     (hxy : ValuativeRel.valuation F x ≤ ValuativeRel.valuation F y) : line O x ≤ line O y := by
   have hvy : 0 < ValuativeRel.valuation F y := zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hy)
@@ -50,10 +63,18 @@ theorem line_le_of_val_le (h : LF O ϖ nrm q) {x y : F} (hy : y ≠ 0)
   obtain ⟨o, ho, rfl⟩ := mem_line.1 hz
   exact mem_line.2 ⟨x / y * o, O.mul_mem h1 ho, by field_simp⟩
 
+/- English proof (translation)
+The claim follows from `le_antisymm (line_le_of_val_le h hy hxy.le) (line_le_of_val_le h hx hxy.ge)`.
+-/
 theorem line_eq_of_val_eq (h : LF O ϖ nrm q) {x y : F} (hx : x ≠ 0) (hy : y ≠ 0)
     (hxy : ValuativeRel.valuation F x = ValuativeRel.valuation F y) : line O x = line O y :=
   le_antisymm (line_le_of_val_le h hy hxy.le) (line_le_of_val_le h hx hxy.ge)
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_ball, mem_line, ← h.O_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨_, hx, by field_simp⟩`.
+
+Introduce and unpack `⟨o, ho, rfl⟩`. Rewrite using `[mul_comm d⁻¹, mul_assoc, inv_mul_cancel₀ hd, mul_one]` and apply the resulting hypothesis.
+-/
 theorem ball_eq_line (h : LF O ϖ nrm q) {d : F} (hd : d ≠ 0) : ball d = line O d⁻¹ := by
   ext x
   rw [mem_ball, mem_line, ← h.O_eq]
@@ -63,6 +84,11 @@ theorem ball_eq_line (h : LF O ϖ nrm q) {d : F} (hd : d ≠ 0) : ball d = line 
   · rintro ⟨o, ho, rfl⟩
     rwa [mul_comm d⁻¹, mul_assoc, inv_mul_cancel₀ hd, mul_one]
 
+/- English proof (translation)
+Establish `hϖ0 : ϖ ^ k ≠ 0` using `pow_ne_zero _ h.ne`. Establish `hp : ∃ p : 𝒪[F], Irreducible p ∧ (p : F) = (Units.mk0 ϖ h.ne : Fˣ)` using `⟨_, irreducible_pi h, rfl⟩`. Establish `h1` using `relIndex_ball (Units.mk0 ϖ h.ne) hp (k : ℤ)`. Establish `hu : (((Units.mk0 ϖ h.ne : Fˣ) ^ (k : ℤ) : Fˣ) : F) = ϖ ^ k` using `by simp`. Rewrite `h1` using `[hu, ball_eq_line h one_ne_zero, ball_eq_line h hϖ0, Int.toNat_natCast, inv_one]`.
+
+Establish `hinj : Function.Injective (AddMonoidHom.mulLeft (c * ϖ ^ k))` using `mul_right_injective₀ (mul_ne_zero hc hϖ0)`. Establish `h2` using `AddSubgroup.relIndex_map_map_of_injective (line O 1) (line O (ϖ ^ k)⁻¹) hinj`. Rewrite `h2` using `[map_line, map_line, mul_one, mul_assoc, mul_inv_cancel₀ hϖ0, mul_one]`. Rewrite using `[h2, h1, h.card]`. Both sides reduce to the same expression.
+-/
 theorem relIndex_line_pow (h : LF O ϖ nrm q) {c : F} (hc : c ≠ 0) (k : ℕ) :
     (line O (c * ϖ ^ k)).relIndex (line O c) = q ^ k := by
   have hϖ0 : ϖ ^ k ≠ 0 := pow_ne_zero _ h.ne
@@ -78,6 +104,13 @@ theorem relIndex_line_pow (h : LF O ϖ nrm q) {c : F} (hc : c ≠ 0) (k : ℕ) :
   rw [h2, h1, h.card]
   rfl
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `val_eq_pow_of_int h ho0 ((mem_iff_val_le h o).1 ho)`. Establish `hline : line O (c * o) = line O (c * ϖ ^ k)` using `line_eq_of_val_eq h (mul_ne_zero hc ho0) (mul_ne_zero hc (pow_ne_zero _ h.ne)) (by rw [map_mul, map_mul, hk, map_pow])`. Establish `hq : (q : ℝ) ≠ 0`. Use `one_lt_q h` as an intermediate fact. Conclude with `(by omega : q ≠ 0)` after adjusting the coercions.
+
+Establish `hn : nrm o = ((q : ℝ) ^ k)⁻¹`. Use `nrm_eq_zpow h (x := o) (e := (k : ℤ)) (by simpa using hk)` as an intermediate fact. Simplify `this` using `[_root_.zpow_neg]`. Establish `hnc : nrm c ≠ 0` using `(nrm.pos hc).ne'`. Rewrite using `[hline, relIndex_line_pow h hc k, map_mul, hn]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem relIndex_line (h : LF O ϖ nrm q) {c o : F} (hc : c ≠ 0) (ho : o ∈ O) (ho0 : o ≠ 0) :
     (((line O (c * o)).relIndex (line O c) : ℕ) : ℝ) = nrm c / nrm (c * o) := by
   obtain ⟨k, hk⟩ := val_eq_pow_of_int h ho0 ((mem_iff_val_le h o).1 ho)
@@ -112,16 +145,31 @@ noncomputable def ext0 {n : ℕ} (β : Fin n → ℕ) : (Idx β → F) →+ Matr
     ext a b
     by_cases hab : β a ≤ β b <;> simp [hab]
 
+/- English proof (translation)
+Establish `: β p.1.1 ≤ β p.1.2` using `p.2`. Simplify using `[ext0, this]`.
+-/
 theorem matrixExtendByZero_apply {n : ℕ} (β : Fin n → ℕ) (x : Idx β → F) (p : Idx β) :
     ext0 β x p.1.1 p.1.2 = x p := by
   have : β p.1.1 ≤ β p.1.2 := p.2
   simp [ext0, this]
 
+/- English proof (translation)
+Introduce `x y hxy`. Use function extensionality and compare the values at `p`. Rewrite using `[← matrixExtendByZero_apply β x p, ← matrixExtendByZero_apply β y p, hxy]`.
+-/
 theorem extendByZero_injective {n : ℕ} (β : Fin n → ℕ) : Function.Injective (ext0 (F := F) β) := by
   intro x y hxy
   funext p
   rw [← matrixExtendByZero_apply β x p, ← matrixExtendByZero_apply β y p, hxy]
 
+/- English proof (translation)
+Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hX, hX'⟩`. Use `AddSubgroup.mem_map.2 ⟨fun p => X p.1.1 p.1.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_pi]`.
+
+Introduce `p _`. Conclude with `mem_line.2 (hX' _ _)`. Use extensionality with `a b`. Distinguish the cases in `hab : β a ≤ β b`. Simplify using `[ext0, hab]`.
+
+Simplify using `[ext0, hab, hX (not_le.1 hab)]`. Introduce and unpack `h`. Take `⟨x, hx, rfl⟩` from `AddSubgroup.mem_map.1 h`. Rewrite `hx` using `[AddSubgroup.mem_pi]`. Use `⟨fun a b hab => ?_, fun a b => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[ext0, not_le.2 hab]`. Distinguish the cases in `hab : β a ≤ β b`. Take `⟨o, ho, e⟩` from `mem_line.1 (hx ⟨(a, b), hab⟩ (Set.mem_univ _))`. Conclude with `⟨o, ho, by simpa [ext0, hab] using e⟩`. Conclude with `⟨0, O.zero_mem, by simp [ext0, hab]⟩`.
+-/
 theorem boxAdd_eq_map (O : Subring F) {n : ℕ} (β : Fin n → ℕ) (c : Fin n → Fin n → F) :
     boxAdd O β c =
       (AddSubgroup.pi Set.univ fun p : Idx β => line O (c p.1.1 p.1.2)).map (ext0 β) := by
@@ -148,6 +196,11 @@ theorem boxAdd_eq_map (O : Subring F) {n : ℕ} (β : Fin n → ℕ) (c : Fin n 
 
 end Box
 
+/- English proof (translation)
+Introduce `F _ _ _ _ O ϖ nrm q h n β c c' hc hc' hcc`. Rewrite using `[boxAdd_eq_map, boxAdd_eq_map, AddSubgroup.relIndex_map_map_of_injective _ _ (extendByZero_injective β), relIndex_pi', Nat.cast_prod, Finset.prod_subtype (Finset.univ.filter fun p : Fin n × Fin n => β p.1 ≤ β p.2) (p := fun p : Fin n × Fin n => β p.1 ≤ β p.2) (fun p => by simp)]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Take `⟨o, ho, e⟩` from `hcc p.1.1 p.1.2`. Establish `ho0 : o ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hc' p.1.1 p.1.2 (by simpa using e)`. Rewrite using `[e]`. Conclude with `relIndex_line h (hc _ _) ho ho0`.
+-/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}, LF O ϖ nrm q → ∀ (n : ℕ) (β : Fin n → ℕ) (c c' : Fin n → Fin n → F), (∀ a b, c a b ≠ 0) → (∀ a b, c' a b ≠ 0) → (∀ a b, ∃ o ∈ O, c' a b = c a b * o) → (((boxAdd O β c').relIndex (boxAdd O β c) : ℕ) : ℝ) = ∏ p ∈ Finset.univ.filter (fun p : Fin n × Fin n => β p.1 ≤ β p.2), nrm (c p.1 p.2) / nrm (c' p.1 p.2) := by
   intro F _ _ _ _ O ϖ nrm q h n β c c' hc hc' hcc
   rw [boxAdd_eq_map, boxAdd_eq_map, AddSubgroup.relIndex_map_map_of_injective _ _ (extendByZero_injective β),

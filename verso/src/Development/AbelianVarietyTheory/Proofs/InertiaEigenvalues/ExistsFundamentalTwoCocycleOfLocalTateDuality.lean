@@ -13,6 +13,17 @@ open Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheory.Cyc.Twis
 
 namespace GlobalTheory.TateTop
 
+/- English proof (translation)
+Introduce `l _ P K`. Take `⟨hΦ1, hΦ2⟩` from `continuous_fixingSubgroupEquiv K.1`. Use `set Φ := K.1.fixingSubgroupEquiv with hΦ`. Establish `hcyc : IsCyc P.χQ` using `P.χQ_cyc`. Set `χZ : Formalism.GaloisCohomology.GK l K.1 →* ℤ_[l]ˣ` to `(cyclotomicCharacter (PadicAlgCl l) l).comp (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK l K.1) (PadicAlgCl l))`.
+
+Establish `hχZ : ∀ g, ((χZ g : ℤ_[l]) : ℚ_[l]) = (P.χQ (Φ.symm g : GQ l) : ℚ_[l])` using `fun g => by`. Rewrite using `[isCyc_unique hcyc (isCyc_cycChar l)]`. Both sides reduce to the same expression. Establish `hχc : Continuous fun g => (χZ g : ℤ_[l])`. Rewrite using `[continuous_iff_coe]`.
+
+Simplify using `only [hχZ]`. Conclude with `hcyc.continuous.comp (continuous_subtype_val.comp hΦ1)`. Take `⟨c, hc⟩` from `exists_gen_all hχc fun r => by`. Establish `: NeZero (l ^ (r + 1))` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Conclude with `exists_gen hχc (hT l K.1 K.2 (r + 1) (ZMod (l ^ (r + 1))) (ReciprocityTheory.Gal.charRep (redChar χZ (r + 1))) (Nat.succ_pos _) (contAction_charRep _ ((continuous_toZModPow _).comp hχc))).1 fun M _ _ _ _ _ rho hrho => (hT l K.1 K.2 (r + 1) M rho (Nat.succ_pos _) hrho).2.2.2.2`.
+
+Use `⟨Φ.symm.surjective.compactSpace hΦ1, χZ.comp Φ.toMonoidHom, _, hχc.comp hΦ2, fun g => ?_, fun r => (hc r).transport Φ hΦ2 hΦ1, fun r hr => ?_⟩` and prove the remaining obligations. Establish `h1` using `hχZ (Φ g)`. Rewrite `h1` using `[show Φ.symm (Φ g) = g from Φ.symm_apply_apply g, ← P.PD_χ K g]`. Conclude with `h1`. Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+
+Establish `hfin` using `(GlobalTheory.T.finite_H1_H2_local hT l K.1 K.2 r (ZMod (l ^ r)) (ReciprocityTheory.Gal.charRep (redChar χZ r)) hr (contAction_charRep _ ((continuous_toZModPow _).comp hχc))).1`. Take `⟨e⟩` from `(GlobalTheory.contCohomology_transport_mulEquiv (ZMod (l ^ r)) (Formalism.GaloisCohomology.GK l K.1) ↥(GK K) (ZMod (l ^ r)) Φ hΦ2 hΦ1 (ReciprocityTheory.Gal.charRep (redChar χZ r)) (ReciprocityTheory.Gal.charRep ((Units.map (PadicInt.toZModPow r : ℤ_[l] →+* ZMod (l ^ r)).toMonoid …`. Conclude with `Finite.of_equiv _ e`.
+-/
 theorem exists_fundamental_cocycle_loc (hT : Formalism.GaloisCohomology.LocalTateDualityK) :
     ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l), CompactSpace ↥(GK K) ∧
       ∃ (χ : ↥(GK K) →* ℤ_[l]ˣ) (c : ↥(GK K) × ↥(GK K) → ℤ_[l]),

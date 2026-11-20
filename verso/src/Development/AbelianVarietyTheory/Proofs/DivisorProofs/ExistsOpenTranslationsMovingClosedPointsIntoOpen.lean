@@ -15,6 +15,41 @@ noncomputable section
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ G _ _ hG V hV s hs`. Take `⟨v, hvV, hvc⟩` from `hV`. Use `set F : Set G.left := G.hom ⁻¹' {closedPoint R} with hFdef`. Establish `hFc : IsClosed F` using `(isClosed_singleton_closedPoint R).preimage G.hom.continuous`. Establish `hcond : ∀ p : (G ⊗ G).left, G.hom ((snd G G).left p) = G.hom ((fst G G).left p)` using `fun p => by`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply]`. Conclude with `congrArg (fun h : (G ⊗ G).left ⟶ Sp R => h p) pullback.condition.symm`. Establish `hsurj : ∀ x : G.left, G.hom x = closedPoint R → (snd G G).left '' ((fst G G).left ⁻¹' {x}) = F`. Introduce `x hx`. Use extensionality with `w`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩ show G.hom _ = closedPoint R`. Rewrite using `[hcond p, show (fst G G).left p = x from hp, hx]`. Introduce `hw`. Take `⟨p, h1, h2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := G.hom) (g := G.hom) x w (hx.trans hw.symm)`.
+
+Conclude with `⟨p, h1, h2⟩`. Establish `hmu : ∀ p : (G ⊗ G).left, G.hom (μ[G].left p) = G.hom ((fst G G).left p)` using `fun p => by`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, Over.w μ[G]]`. Both sides reduce to the same expression. Set `Ψ : G ⊗ G ⟶ G ⊗ G` to `lift (fst G G) ((fst G G)⁻¹ * snd G G)`.
+
+Establish `hΨ1 : Ψ ≫ fst G G = fst G G` using `lift_fst _ _`. Establish `hΨ2 : Ψ ≫ μ[G] = snd G G` using `by show fst G G * ((fst G G)⁻¹ * snd G G) = snd G G`. Conclude with `mul_inv_cancel_left _ _`. Establish `hmsurj : ∀ x : G.left, G.hom x = closedPoint R → μ[G].left '' ((fst G G).left ⁻¹' {x}) = F`. Introduce `x hx`.
+
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩ show G.hom _ = closedPoint R`. Rewrite using `[hmu p, show (fst G G).left p = x from hp, hx]`. Introduce `hw`.
+
+Take `⟨q, hq, rfl⟩` from `(hsurj x hx).symm ▸ hw`. Use `⟨Ψ.left q, ?_, ?_⟩` and prove the remaining obligations. Use `show (fst G G).left (Ψ.left q) = x`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hΨ1]`. Conclude with `hq`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hΨ2]`. Establish `hFirr : IsIrreducible F`. Rewrite using `[← hsurj v hvc]`. Conclude with `(GlobalTheory.T.isIrreducible_preimage_fst_of_isSemiAbelian R G hG v).image _ (snd G G).left.continuous.continuousOn`. Use `set gpt := hFirr.genericPoint`.
+
+Establish `hgp : IsGenericPoint gpt F`. Use `hFirr.isGenericPoint_genericPoint_closure` as an intermediate fact. Rewrite `this` using `[hFc.closure_eq]`. Then use the resulting hypothesis. Establish `gen_of : ∀ (f : (G ⊗ G).left → G.left), Continuous f → ∀ (Z : Set (G ⊗ G).left) (ξ : (G ⊗ G).left), IsGenericPoint ξ Z → f '' Z = F → f ξ = gpt`. Introduce `f hf Z ξ hξ hZ`.
+
+Use `IsGenericPoint.eq ?_ hgp` and prove the remaining obligations. Use `show closure {f ξ} = F`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `hFc.closure_subset_iff.2 (Set.singleton_subset_iff.2 (hZ ▸ ⟨ξ, hξ.mem, rfl⟩))`. Rewrite using `[← hZ, ← hξ.def, ← Set.image_singleton]`.
+
+Conclude with `image_closure_subset_closure_image hf`. Set `T : G.left → Set G.left` to `fun x => (snd G G).left '' ((fst G G).left ⁻¹' {x} ∩ μ[G].left ⁻¹' (V : Set G.left)ᶜ)`. Establish `hTc : ∀ x ∈ s, IsClosed (T x)`. Introduce `x hx`. Use `GlobalTheory.T.isClosed_image_snd_of_subset_semiAbelian_fibre R G hG x (hs x hx).1 (hs x hx).2 _ ?_ Set.inter_subset_left` and prove the remaining obligations.
+
+Conclude with `((hs x hx).2.preimage (fst G G).left.continuous).inter (V.isOpen.isClosed_compl.preimage μ[G].left.continuous)`. Establish `hgpV : gpt ∈ (V : Set G.left)` using `(hgp.specializes (show v ∈ F from hvc)).mem_open V.isOpen hvV`. Establish `hgpT : ∀ x ∈ s, gpt ∉ T x`. Introduce `x hx ⟨n, ⟨hn1, hn2⟩, hn3⟩`. Establish `hZc : IsClosed ((fst G G).left ⁻¹' {x})` using `(hs x hx).2.preimage (fst G G).left.continuous`.
+
+Establish `hZi` using `GlobalTheory.T.isIrreducible_preimage_fst_of_isSemiAbelian R G hG x`. Establish `hξ : IsGenericPoint hZi.genericPoint ((fst G G).left ⁻¹' {x})`. Use `hZi.isGenericPoint_genericPoint_closure` as an intermediate fact. Rewrite `this` using `[hZc.closure_eq]`. Then use the resulting hypothesis. Establish `e2` using `gen_of _ (snd G G).left.continuous _ _ hξ (hsurj x (hs x hx).1)`.
+
+Establish `em` using `gen_of _ μ[G].left.continuous _ _ hξ (hmsurj x (hs x hx).1)`. Establish `hnξ : hZi.genericPoint = n` using `GlobalTheory.T.eq_of_specializes_semiAbelian_square_same_projections R G hG x (hs x hx).1 (hs x hx).2 _ _ hξ.mem hn1 (e2.trans hn3.symm) (hξ.specializes hn1)`. Conclude with `hn2 (hnξ ▸ em ▸ hgpV)`. Use `⟨⟨(⋃ x ∈ (s : Set G.left), T x)ᶜ, isOpen_compl_iff.2 (s.finite_toSet.isClosed_biUnion hTc)⟩, ⟨gpt, ?_, hgp.mem⟩, ?_⟩` and prove the remaining obligations. Use `show gpt ∉ ⋃ x ∈ (s : Set G.left), T x`.
+
+Simplify using `only [Set.mem_iUnion, not_exists]`. Conclude with `fun x hx => hgpT x hx`. Introduce `Ω _ t x a hx ha z`. Assume the negation of the conclusion as `hz`. Set `q : Over.mk t ⟶ G ⊗ G` to `lift x a`.
+
+Establish `h1 : (fst G G).left (q.left z) = x.left z`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, lift_fst]`. Establish `h2 : (snd G G).left (q.left z) = a.left z`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, lift_snd]`. Establish `h3 : μ[G].left (q.left z) = (x * a).left z`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left]`. Both sides reduce to the same expression. Establish `hO` using `ha z`. Simplify using `only [TopologicalSpace.Opens.mem_mk, Set.mem_compl_iff, Set.mem_iUnion, not_exists] at hO`. Conclude with `hO (x.left z) (hx z) ⟨q.left z, ⟨h1, by simp only [Set.mem_preimage, Set.mem_compl_iff, h3]; exact hz⟩, h2⟩`.
+-/
 theorem exists_open_mul_mem : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (V : G.left.Opens), (∃ v ∈ V, G.hom v = closedPoint R) → ∀ s : Finset G.left, (∀ x ∈ s, G.hom x = closedPoint R ∧ IsClosed ({x} : Set G.left)) → ∃ O : G.left.Opens, (∃ u ∈ O, G.hom u = closedPoint R) ∧ ∀ (Ω : Type) [Field Ω] (t : Sp Ω ⟶ Sp R) (x a : Over.mk t ⟶ G), (∀ z, x.left z ∈ s) → (∀ z, a.left z ∈ O) → ∀ z, (x * a).left z ∈ V := by
   intro R _ _ _ G _ _ hG V hV s hs
   obtain ⟨v, hvV, hvc⟩ := hV

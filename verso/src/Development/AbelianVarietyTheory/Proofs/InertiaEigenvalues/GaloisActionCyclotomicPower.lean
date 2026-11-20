@@ -19,8 +19,16 @@ def galFq (g : GQ l) : Fq l a →+* Fq l a :=
     rw [mem_resSub, RingHom.comp_apply, ← map_pow]
     exact congrArg (Per.σF g) (mem_resSub.1 x.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_galFq (g : GQ l) (x : Fq l a) : Fq.val l a (galFq l a g x) = Per.σF g (Fq.val l a x) := rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.FrobeniusPower.main`. Consider the case `exact _root_.GlobalTheory.FrobeniusPower.main`. Consider the case `(apply _root_.GlobalTheory.FrobeniusPower.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FrobeniusPower.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.FrobeniusPower.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FrobeniusPower.main ..)`. Consider the case `(intro h; exact _root_.GlobalTheory.FrobeniusPower.main h _ (fun _ => Iff.rfl))`. Consider the case `exact _root_.GlobalTheory.FrobeniusPower.main ‹_› _ (fun _ => Iff.rfl)`. Consider the case `(apply _root_.GlobalTheory.FrobeniusPower.main <;> first | assumption | exact fun _ => Iff.rfl)`.
+-/
 theorem exists_pow_eq (φ : Fq l a →+* Fq l a) : ∃ m : ℕ, ∀ x, φ x = x ^ l ^ m := by
   first
   | exact @_root_.GlobalTheory.FrobeniusPower.main
@@ -33,6 +41,11 @@ theorem exists_pow_eq (φ : Fq l a →+* Fq l a) : ∃ m : ℕ, ∀ x, φ x = x 
   | exact _root_.GlobalTheory.FrobeniusPower.main ‹_› _ (fun _ => Iff.rfl)
   | (apply _root_.GlobalTheory.FrobeniusPower.main <;> first | assumption | exact fun _ => Iff.rfl)
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_pow_eq l a (galFq l a g)`. Use `⟨(m : ZMod a), fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.val_natCast, ← pow_eq_pow_mod m (sigma_pow_eq_one l a)]`. Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RingIface.sigA_coeff]`.
+
+Express the relevant statement in the definitionally equal form `Per.σF g (Fq.val l a (w.coeff n)) = Fq.val l a (((sigma l a ^ m) w).coeff n)`. Rewrite using `[coeff_sigma_pow, ← hm, val_galFq]`.
+-/
 theorem gal_wA_pow (g : GQ l) :
     ∃ s : ZMod a, ∀ w : Wq l a, Per.σA g (wA l a w) = wA l a ((sigma l a ^ s.val) w) := by
   obtain ⟨m, hm⟩ := exists_pow_eq l a (galFq l a g)

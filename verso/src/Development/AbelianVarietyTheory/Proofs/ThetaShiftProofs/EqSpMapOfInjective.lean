@@ -11,6 +11,11 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 
 namespace GlobalTheory.ArcPoint
 
+/- English proof (translation)
+Take `⟨φ, rfl⟩` from `Spec.map_surjective x`. Establish `h' : Spec.map (φ ≫ CommRingCat.ofHom i) = Spec.map (CommRingCat.ofHom (i.comp ρ))`. Rewrite using `[Spec.map_comp]`. Conclude with `h`. Establish `h2` using `Spec.map_injective h'`.
+
+Use `congr 1`. Use extensionality with `k`. Conclude with `hi (DFunLike.congr_fun (congrArg CommRingCat.Hom.hom h2) k)`.
+-/
 theorem eq_spMap_of_injective {K A B : Type} [CommRing K] [CommRing A] [CommRing B] (i : A →+* B)
     (hi : Function.Injective i) (x : Sp A ⟶ Sp K) (ρ : K →+* A) (h : spMap i ≫ x = spMap (i.comp ρ)) :
     x = spMap ρ := by
@@ -22,6 +27,19 @@ theorem eq_spMap_of_injective {K A B : Type} [CommRing K] [CommRing A] [CommRing
   ext k
   exact hi (DFunLike.congr_fun (congrArg CommRingCat.Hom.hom h2) k)
 
+/- English proof (translation)
+Establish `hval : (Conv.halfRing T).val.toRingHom.comp ((algebraMap ℂ (Conv.halfRing T)).comp bF) = (algebraMap ℂ ℂ⸨X⸩).comp bF` using `RingHom.ext fun _ => rfl`. Establish `hover : yT ≫ s = spMap ((algebraMap ℂ (Conv.halfRing T)).comp bF) ≫ spMap κ`. Rewrite using `[← spMap_comp]`. Use `eq_spMap_of_injective (Conv.halfRing T).val.toRingHom Subtype.val_injective _ _ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hT, Category.assoc, pullback.condition, ← Category.assoc, hs, ← spMap_comp, ← RingHom.comp_assoc, hval]`.
+
+Set `yF : Sp (Conv.halfRing T) ⟶ pullback s (spMap κ)` to `pullback.lift yT _ hover`. Establish `hgen : spMap (Conv.halfRing T).val.toRingHom ≫ yF = y`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, hT]`. Rewrite using `[Category.assoc, pullback.lift_snd, hs, ← spMap_comp, hval]`.
+
+Take `⟨T', hle, hw'⟩` from `Conv.exists_sumsAt_halfCurve (yT := yF ≫ j) (χ := χ) rfl (RingHom.id _) (by`. Rewrite using `[RingHom.id_comp, RingHom.id_comp, ← hj, ← hgen, Category.assoc, ← Category.assoc (spMap _) (spMap _), ← spMap_comp]`. Use the proof step `rfl) hU`. Use `⟨T', hle, fun w hw hw2 z hz1 hz2 => ?_⟩` and prove the remaining obligations. Establish `hz : z = spMap (Conv.ev T w hw).toRingHom ≫ yF`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, hz1]`. Rewrite using `[Category.assoc, pullback.lift_snd, hz2, ← spMap_comp]`. Use `congr 2`. Use extensionality with `x`.
+
+Conclude with `((Conv.ev T w hw).commutes (bF x)).symm`. Establish `hzj : z ≫ j = Conv.halfCurve (yF ≫ j) w`. Rewrite using `[hz, Conv.halfCurve_eq _ hw, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[hzj]`.
+
+Conclude with `⟨(hw' w hw2).1, (hw' w hw2).2 f⟩`.
+-/
 theorem sumsAt_of_halfRing {K F : Type} [CommRing K] [CommRing F] {X Y : Scheme.{0}} (s : X ⟶ Sp K) (κ : K →+* F)
     (bF : F →+* ℂ) (j : pullback s (spMap κ) ⟶ Y) (χ : Sp ℂ⟦X⟧ ⟶ Y) (y : Sp ℂ⸨X⸩ ⟶ pullback s (spMap κ))
     (hj : y ≫ j = spMap (algebraMap ℂ⟦X⟧ ℂ⸨X⸩) ≫ χ)
@@ -62,6 +80,11 @@ theorem sumsAt_of_halfRing {K F : Type} [CommRing K] [CommRing F] {X Y : Scheme.
   rw [hzj]
   exact ⟨(hw' w hw2).1, (hw' w hw2).2 f⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ D l Xo c O _ β Y _ _ bF a χ W Λ C Γ Ψ g ty Fu laA laM K U f hU`. Take `⟨T', hle, h⟩` from `sumsAt_of_halfRing Xo.s _ bF Y.j χ C.yF C.yF_j C.yF_over Ψ.yT Ψ.yT_gen U f hU`. Use `⟨max T' K.T, fun w hw z hz1 hz2 => ?_⟩` and prove the remaining obligations. Establish `h1 : T' < w.im` using `(le_max_left _ _).trans_lt hw`. Establish `h2 : Ψ.T < w.im` using `hle.trans_lt h1`.
+
+Conclude with `h w h2 h1 z (hz1.trans ((K.u_eq w ((le_max_right _ _).trans_lt hw)).trans (Ψ.yw_eq w h2))) hz2`.
+-/
 theorem point_sumsAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (bF : c.F →+* ℂ) (a : ArcIn D l β ℂ (bF.comp β)) (χ : Sp ℂ⟦X⟧ ⟶ Y.X) (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ) (Λ : GtAn a) (C : Chain W Λ) (Γ : Germs) (Ψ : SpecPts C.Φ Γ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (bF.comp (IntermediateField.inclusion c.le).toRingHom) ty) (laA laM : D.La → Λ.A.La) (K : Cmp Fu Λ.A Ψ.yw Ψ.pi laA laM), ∀ (U : Y.X.Opens) (f : Γ(Y.X, U)), ⊤ ≤ χ ⁻¹ᵁ U → ∃ T' : ℝ, ∀ w : ℂ, T' < w.im → ∀ yF : Sp ℂ ⟶ Xo.XF c, yF ≫ pullback.fst _ _ = Fu.u K.i (K.Pw w) → yF ≫ pullback.snd _ _ = spMap bF → ⊤ ≤ (yF ≫ Y.j) ⁻¹ᵁ U ∧ SumsAt (valR χ U f) w (valAt' (yF ≫ Y.j) U f) := by
   intro E _ _ _ H _ D l Xo c O _ β Y _ _ bF a χ W Λ C Γ Ψ g ty Fu laA laM K U f hU
   obtain ⟨T', hle, h⟩ := sumsAt_of_halfRing Xo.s _ bF Y.j χ C.yF C.yF_j C.yF_over Ψ.yT Ψ.yT_gen U f hU

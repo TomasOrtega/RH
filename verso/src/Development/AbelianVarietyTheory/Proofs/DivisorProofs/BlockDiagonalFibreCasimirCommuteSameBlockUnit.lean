@@ -5,6 +5,27 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 
 namespace GlobalTheory.HoweR
 
+/- English proof (translation)
+Introduce `ι M _ _ _ _ s F hF a b hab`. Rewrite using `[← sub_eq_zero]`. Establish `key : ∀ c d, F c d * F d c * F a b - F a b * (F c d * F d c) = ((if c = a then F c d * F d b else 0) - (if b = d then F c d * F a c else 0)) + ((if d = a then F c b * F d c else 0) - (if b = c then F a d * F d c else 0))`. Introduce `c d`. Establish `e : F c d * F d c * F a b - F a b * (F c d * F d c) = F c d * (F d c * F a b - F a b * F d c) + (F c d * F a b - F a b * F c d) * F d c` using `by noncomm_ring`.
+
+Rewrite using `[e, hF d c a b, hF c d a b]`. Simplify using `only [mul_sub, sub_mul, mul_ite, ite_mul, mul_zero, zero_mul]`. Establish `h0 : cas s F * F a b - F a b * cas s F = ∑ c, ∑ d, if s c = s d then (((if c = a then F c d * F d b else 0) - (if b = d then F c d * F a c else 0)) + ((if d = a then F c b * F d c else 0) - (if b = c then F a d * F d c else 0))) else 0`. Simplify using `only [cas, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : s c = s d`. Simplify using `only [h, if_true]`. Conclude with `key c d`. Simplify using `only [h, if_false, zero_mul, mul_zero, sub_self]`. Establish `h1 : (∑ c, ∑ d, if s c = s d then (if c = a then F c d * F d b else 0) else 0) = ∑ d, if s a = s d then F a d * F d b else 0`.
+
+Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules.
+
+Establish `h4 : (∑ c, ∑ d, if s c = s d then (if b = c then F a d * F d c else 0) else 0) = ∑ d, if s a = s d then F a d * F d b else 0`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using `[hab]`. Introduce `c _ hc`. Simplify using `[Ne.symm hc]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : (∑ c, ∑ d, if s c = s d then (if b = d then F c d * F a c else 0) else 0) = ∑ c, if s c = s a then F c b * F a c else 0`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single b]`. Simplify using `[hab]`.
+
+Introduce `d _ hd`. Simplify using `[Ne.symm hd]`. Simplify using the standard rewrite rules. Establish `h3 : (∑ c, ∑ d, if s c = s d then (if d = a then F c b * F d c else 0) else 0) = ∑ c, if s c = s a then F c b * F a c else 0`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `d _ hd`. Simplify using `[hd]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h0]`. Establish `split : (∑ c, ∑ d, if s c = s d then (((if c = a then F c d * F d b else 0) - (if b = d then F c d * F a c else 0)) + ((if d = a then F c b * F d c else 0) - (if b = c then F a d * F d c else 0))) else 0) = ((∑ c, ∑ d, if s c = s d then (if c = a then F c d * F d b else 0) else 0 …`. Simplify using `only [← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[split, h1, h2, h3, h4]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cas_mul_comm_of_block : ∀ (ι M : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup M] [Module ℂ M] (s : ι → Bool)
     (F : ι → ι → Module.End ℂ M), IsGl F → ∀ a b, s a = s b → cas s F * F a b = F a b * cas s F := by
   intro ι M _ _ _ _ s F hF a b hab

@@ -35,10 +35,18 @@ section Near
 
 variable {S : Scheme.{0}} {k : Type} [Field k] {x : Sp k ⟶ S} {P Q : ∀ (K : Type) [Field K], (Sp K ⟶ S) → Prop}
 
+/- English proof (translation)
+Take `⟨V, π, v, e, hπ, h⟩` from `h`. Conclude with `⟨V, π, v, e, hπ, fun K _ w => H K _ (h K w)⟩`.
+-/
 theorem Near.mono (h : Near x P) (H : ∀ (K : Type) [Field K] (y : Sp K ⟶ S), P K y → Q K y) : Near x Q := by
   obtain ⟨V, π, v, e, hπ, h⟩ := h
   exact ⟨V, π, v, e, hπ, fun K _ w => H K _ (h K w)⟩
 
+/- English proof (translation)
+Take `⟨V, π, v, e, hπ, h⟩` from `h`. Take `⟨V', π', v', e', hπ', h'⟩` from `h'`. Use `⟨pullback π π', pullback.fst π π' ≫ π, pullback.lift v v' (e.trans e'.symm), by` and prove the remaining obligations. Rewrite using `[pullback.lift_fst_assoc, e], inferInstance, fun K _ w => ⟨?_, ?_⟩⟩`. Rewrite using `[← Category.assoc]`.
+
+Conclude with `h K _`. Rewrite using `[pullback.condition, ← Category.assoc]`. Conclude with `h' K _`.
+-/
 theorem Near.and (h : Near x P) (h' : Near x Q) : Near x fun K _ y => P K y ∧ Q K y := by
   obtain ⟨V, π, v, e, hπ, h⟩ := h
   obtain ⟨V', π', v', e', hπ', h'⟩ := h'
@@ -47,12 +55,18 @@ theorem Near.and (h : Near x P) (h' : Near x Q) : Near x fun K _ y => P K y ∧ 
   · rw [← Category.assoc]; exact h K _
   · rw [pullback.condition, ← Category.assoc]; exact h' K _
 
+/- English proof (translation)
+Take `⟨V', π', v', e', hπ', h'⟩` from `h`. Use `⟨V', π' ≫ π, v', by rw [← Category.assoc, e', e], inferInstance, fun K _ w => ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc]`. Conclude with `h' K w`.
+-/
 theorem Near.push {V : Scheme.{0}} {π : V ⟶ S} [LocallyOfFiniteType π] {v : Sp k ⟶ V} (e : v ≫ π = x)
     (h : Near v fun K _ w => P K (w ≫ π)) : Near x P := by
   obtain ⟨V', π', v', e', hπ', h'⟩ := h
   refine ⟨V', π' ≫ π, v', by rw [← Category.assoc, e', e], inferInstance, fun K _ w => ?_⟩
   rw [← Category.assoc]; exact h' K w
 
+/- English proof (translation)
+Take `⟨V, π, v, e', hπ, h⟩` from `h`. Use `⟨pullback π ρ, pullback.snd π ρ, pullback.lift v x' (e'.trans e.symm), pullback.lift_snd _ _ _, inferInstance, fun K _ w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P K ((w ≫ pullback.snd π ρ) ≫ ρ)`. Rewrite using `[Category.assoc, ← pullback.condition, ← Category.assoc]`. Conclude with `h K _`.
+-/
 theorem Near.pull {S' : Scheme.{0}} {x' : Sp k ⟶ S'} {ρ : S' ⟶ S} (e : x' ≫ ρ = x) (h : Near x P) :
     Near x' fun K _ y => P K (y ≫ ρ) := by
   obtain ⟨V, π, v, e', hπ, h⟩ := h
@@ -62,6 +76,11 @@ theorem Near.pull {S' : Scheme.{0}} {x' : Sp k ⟶ S'} {ρ : S' ⟶ S} (e : x' �
   rw [Category.assoc, ← pullback.condition, ← Category.assoc]
   exact h K _
 
+/- English proof (translation)
+Establish `hr : Set.range x ⊆ Set.range U.ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hx z`. Use `⟨U, U.ι, IsOpenImmersion.lift U.ι x hr, IsOpenImmersion.lift_fac _ _ _, inferInstance, fun K _ w z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `(w z).2`.
+-/
 theorem near_opens (U : S.Opens) (hx : ∀ z, x z ∈ U) : Near x fun _ _ y => ∀ z, y z ∈ U := by
   have hr : Set.range x ⊆ Set.range U.ι := by
     rintro _ ⟨z, rfl⟩; rw [Scheme.Opens.range_ι]; exact hx z
@@ -71,6 +90,13 @@ theorem near_opens (U : S.Opens) (hx : ∀ z, x z ∈ U) : Near x fun _ _ y => �
 
 end Near
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (x default)) isOpen_univ`. Use `replace hU : IsAffineOpen U := hU`. Establish `hr : Set.range x ⊆ Set.range hU.fromSpec`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[hU.range_fromSpec, Subsingleton.elim z default]`.
+
+Conclude with `hxU`. Take `⟨ρ, hρ⟩` from `Spec.map_surjective (IsOpenImmersion.lift hU.fromSpec x hr)`. Establish `: IsClosedImmersion (spMap ρ.hom.rangeRestrict)` using `IsClosedImmersion.spec_of_surjective _ ρ.hom.rangeRestrict_surjective`. Use `⟨ρ.hom.range, spMap ρ.hom.rangeRestrict ≫ hU.fromSpec, ?_, inferInstance⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← IsOpenImmersion.lift_fac hU.fromSpec x hr, ← hρ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_subring {S : Scheme.{0}} {k : Type} [Field k] (x : Sp k ⟶ S) :
     ∃ (A : Subring k) (π : Sp A ⟶ S), spMap A.subtype ≫ π = x ∧ LocallyOfFiniteType π := by
   obtain ⟨_, ⟨U, hU, rfl⟩, hxU, -⟩ :=
@@ -86,6 +112,9 @@ theorem exists_subring {S : Scheme.{0}} {k : Type} [Field k] (x : Sp k ⟶ S) :
   rw [← Category.assoc, ← Spec.map_comp, ← IsOpenImmersion.lift_fac hU.fromSpec x hr, ← hρ]
   rfl
 
+/- English proof (translation)
+Use `⟨(Algebra.adjoin A₀ (F : Set k)).toSubring, fun a ha => (Algebra.adjoin A₀ (F : Set k)).algebraMap_mem ⟨a, ha⟩, Algebra.subset_adjoin, ?_⟩` and prove the remaining obligations. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Establish `: Algebra.FiniteType A₀ (Algebra.adjoin A₀ (F : Set k))` using `(Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_adjoin_finset F)`. Conclude with `RingHom.finiteType_algebraMap.2 this`.
+-/
 theorem exists_adjoin {k : Type} [Field k] (A₀ : Subring k) (F : Finset k) :
     ∃ (A : Subring k) (h : A₀ ≤ A), (F : Set k) ⊆ A ∧ LocallyOfFiniteType (spMap (Subring.inclusion h)) := by
   refine ⟨(Algebra.adjoin A₀ (F : Set k)).toSubring, fun a ha => (Algebra.adjoin A₀ (F : Set k)).algebraMap_mem ⟨a, ha⟩,
@@ -95,6 +124,11 @@ theorem exists_adjoin {k : Type} [Field k] (A₀ : Subring k) (F : Finset k) :
     (Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_adjoin_finset F)
   exact RingHom.finiteType_algebraMap.2 this
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h.out`. Use `⟨s.image R.subtype, fun A hA x hx => ?_⟩` and prove the remaining obligations. Establish `H (x : R) : (x : k) ∈ A`. Establish `hx : x ∈ Algebra.adjoin ℤ (s : Set R)` using `hs ▸ Algebra.mem_top`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx => exact hA (by simpa using hx)`. Consider the case `algebraMap r => simp`. Consider the case `add x y _ _ hx hy => exact A.add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact A.mul_mem hx hy`. Conclude with `H ⟨x, hx⟩`.
+-/
 theorem exists_finset_le {k : Type} [Field k] (R : Subring k) (h : Algebra.FiniteType ℤ R) :
     ∃ F : Finset k, ∀ A : Subring k, (F : Set k) ⊆ A → R ≤ A := by
   classical
@@ -109,6 +143,9 @@ theorem exists_finset_le {k : Type} [Field k] (R : Subring k) (h : Algebra.Finit
     | mul x y _ _ hx hy => exact A.mul_mem hx hy
   exact H ⟨x, hx⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `w : ψ ≫ G.hom = (G₂.hom ≫ a) ≫ b` using `by rw [h₂.1.w, Category.assoc]`. Conclude with `⟨h₁.1.lift _ _ w, h₁.1.lift_fst _ _ w, IsGrpPullback.cancel h₁ (h₂.congr rfl (h₁.1.lift_fst _ _ w).symm) (h₁.1.lift_snd _ _ w)⟩`.
+-/
 theorem exists_factor {S S₁ S₂ : Scheme.{0}} {G : Over S} {G₁ : Over S₁} {G₂ : Over S₂} [GrpObj G] [GrpObj G₁]
     [GrpObj G₂] {a : S₂ ⟶ S₁} {b : S₁ ⟶ S} {c : S₂ ⟶ S} (e : a ≫ b = c) {φ : G₁.left ⟶ G.left}
     {ψ : G₂.left ⟶ G.left} (h₁ : IsGrpPullback G₁ G b φ) (h₂ : IsGrpPullback G₂ G c ψ) :
@@ -118,6 +155,13 @@ theorem exists_factor {S S₁ S₂ : Scheme.{0}} {G : Over S} {G₁ : Over S₁}
   exact ⟨h₁.1.lift _ _ w, h₁.1.lift_fst _ _ w,
     IsGrpPullback.cancel h₁ (h₂.congr rfl (h₁.1.lift_fst _ _ w).symm) (h₁.1.lift_snd _ _ w)⟩
 
+/- English proof (translation)
+Proceed by induction on `hs using IsConstructible.empty_union_induction with`. Consider the case `open_retrocompact U hU _`. Use `⟨hU.mem_nhds, fun h => ?_⟩` and prove the remaining obligations. Establish `: U = ∅`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `h ((hξ.mem_open_set_iff hU).2 (by simpa using Set.nonempty_iff_ne_empty.2 hne))`. Simplify using `[this]`. Consider the case `union s _ t _ hs ht`. Use `⟨fun h => h.elim (fun h => Filter.mem_of_superset (hs.1 h) Set.subset_union_left) (fun h => Filter.mem_of_superset (ht.1 h) Set.subset_union_right), fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.compl_union]`.
+
+Conclude with `Filter.inter_mem (hs.2 fun h' => h (Or.inl h')) (ht.2 fun h' => h (Or.inr h'))`. Consider the case `compl s _ hs => exact ⟨hs.2, fun h => by rw [compl_compl]; exact hs.1 (not_not.1 h)⟩`.
+-/
 theorem mem_nhds_of_isConstructible {Z : Type*} [TopologicalSpace Z] {ξ : Z} (hξ : IsGenericPoint ξ Set.univ)
     {s : Set Z} (hs : IsConstructible s) : (ξ ∈ s → s ∈ 𝓝 ξ) ∧ (ξ ∉ s → sᶜ ∈ 𝓝 ξ) := by
   induction hs using IsConstructible.empty_union_induction with
@@ -134,6 +178,11 @@ theorem mem_nhds_of_isConstructible {Z : Type*} [TopologicalSpace Z] {ξ : Z} (h
     exact Filter.inter_mem (hs.2 fun h' => h (Or.inl h')) (ht.2 fun h' => h (Or.inr h'))
   | compl s _ hs => exact ⟨hs.2, fun h => by rw [compl_compl]; exact hs.1 (not_not.1 h)⟩
 
+/- English proof (translation)
+Use `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom f) hf` as an intermediate fact. Establish `h : DenseRange (spMap f)` using `(spMap f).denseRange`. Establish `e : Set.range (spMap f) = {spMap f z}`. Use extensionality with `y`. Conclude with `⟨by rintro ⟨z', rfl⟩; rw [Subsingleton.elim z' z]; rfl, by rintro rfl; exact ⟨z, rfl⟩⟩`.
+
+Rewrite using `[IsGenericPoint, ← e]`. Conclude with `h.closure_range`.
+-/
 theorem isGenericPoint_spMap {A k : Type} [CommRing A] [Field k] (f : A →+* k) (hf : Function.Injective f)
     (z : Sp k) : IsGenericPoint (spMap f z) Set.univ := by
   have := ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom f) hf
@@ -144,6 +193,9 @@ theorem isGenericPoint_spMap {A k : Type} [CommRing A] [Field k] (f : A →+* k)
   rw [IsGenericPoint, ← e]
   exact h.closure_range
 
+/- English proof (translation)
+Take `⟨U, hU, hUo, hx⟩` from `mem_nhds_iff.1 ((mem_nhds_of_isConstructible (isGenericPoint_spMap A.subtype A.subtype_injective default) hC).1 h)`. Conclude with `(near_opens ⟨U, hUo⟩ fun z => by rw [Subsingleton.elim z default]; exact hx).mono fun K _ y hy z => hU (hy z)`.
+-/
 theorem near_of_isConstructible {k : Type} [Field k] (A : Subring k) {C : Set (Sp A)} (hC : IsConstructible C)
     (h : spMap A.subtype default ∈ C) : Near (spMap A.subtype) fun _ _ y => ∀ z, y z ∈ C := by
   obtain ⟨U, hU, hUo, hx⟩ := mem_nhds_iff.1
@@ -151,6 +203,13 @@ theorem near_of_isConstructible {k : Type} [Field k] (A : Subring k) {C : Set (S
   exact (near_opens ⟨U, hUo⟩ fun z => by rw [Subsingleton.elim z default]; exact hx).mono
     fun K _ y hy z => hU (hy z)
 
+/- English proof (translation)
+Establish `: CompactSpace Q` using `QuasiCompact.compactSpace_of_compactSpace s`. Establish `: QuasiSeparatedSpace Q` using `(quasiSeparated_iff_quasiSeparatedSpace s).1 inferInstance`. Establish `h₁ : IsConstructible (Set.range c)` using `Set.image_univ ▸ c.isConstructible_image IsConstructible.univ`. Use `(near_of_isConstructible A (s.isConstructible_image h₁.compl).compl ?_).mono ?_` and prove the remaining obligations. Introduce and unpack `⟨b, hb, e⟩`.
+
+Take `⟨b', rfl, -⟩` from `Scheme.exists_preimage_of_isPullback h b default e`. Take `⟨g, rfl⟩` from `c'.surjective b'`. Conclude with `hb ⟨F g, by rw [← Scheme.Hom.comp_apply, w, Scheme.Hom.comp_apply]⟩`. Introduce and unpack `K _ y hy b ⟨z, hz⟩`. Assume the negation of the conclusion as `hb`.
+
+Conclude with `hy z ⟨b, hb, hz.symm⟩`.
+-/
 theorem near_surjective {k : Type} [Field k] (A : Subring k) {P Q P' Q' : Scheme.{0}} (c : P ⟶ Q) (s : Q ⟶ Sp A)
     [LocallyOfFinitePresentation c] [QuasiCompact c] [LocallyOfFinitePresentation s] [QuasiCompact s]
     [QuasiSeparated s] {F : P' ⟶ P} {c' : P' ⟶ Q'} {β : Q' ⟶ Q} {s' : Q' ⟶ Sp k}
@@ -171,6 +230,27 @@ theorem near_surjective {k : Type} [Field k] (A : Subring k) {P Q P' Q' : Scheme
 def AbAt {S : Scheme.{0}} (B : Over S) [GrpObj B] (K : Type) [Field K] (y : Sp K ⟶ S) : Prop :=
   ∃ (B' : Over (Sp K)) (_ : GrpObj B') (p : B'.left ⟶ B.left), IsGrpPullback B' B y p ∧ IsAbelianScheme B'
 
+/- English proof (translation)
+Establish `hc` using `hB.comm`. Establish `hs` using `hB.smooth`. Establish `hpr` using `hB.proper`. Establish `hg` using `hB.geomConnected`. Take `⟨R₀, B₀, _, _, φ₀, -, hft₀, hs₀, hsep₀, hqc₀, H₀⟩` from `GlobalTheory.smooth_grpScheme_descends_to_fg_subring k B ∅ hs inferInstance inferInstance`.
+
+Use `⟨R₀, B₀, _, φ₀, hft₀, hs₀, hsep₀, hqc₀, H₀, ?_⟩` and prove the remaining obligations. Set `Ω` to `AlgebraicClosure k`. Set `j : k →+* Ω` to `algebraMap k Ω`. Establish `hp : IsProjOver (pullback.snd B.hom (spMap j))` using `(ProjSpace.isProjBy_iff_isProjOver _).1 (AbelianProjective.isProjBy_of_isAbelianScheme Ω ((Over.pullback (spMap j)).obj B) (isAbelianScheme_pullback_obj _ B hB))`. Set `c₀` to `(j.comp R₀.subtype).rangeRestrict`.
+
+Establish `e₀ : spMap (j.comp R₀.subtype).range.subtype ≫ spMap c₀ = spMap j ≫ spMap R₀.subtype`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `: IsClosedImmersion (spMap c₀)` using `IsClosedImmersion.spec_of_surjective _ (j.comp R₀.subtype).rangeRestrict_surjective`. Take `⟨F, hF⟩` from `GlobalTheory.isProjOver_descends_to_subring Ω _ _ _ _ (pullback.snd B₀.hom (spMap c₀)) _ (SpreadScheme.isPullback_lift ((IsPullback.of_hasPullback B.hom (spMap j)).paste_horiz H₀.1) _ _ e₀) hp`.
+
+Take `⟨R₁, h₁, hF₁, hft₁⟩` from `exists_adjoin (j.comp R₀.subtype).range F`. Set `f₁` to `pullback.snd (pullback.snd B₀.hom (spMap c₀)) (spMap (Subring.inclusion h₁))`. Establish `hp₁ : IsProjOver f₁` using `hF R₁ h₁ hF₁ _ _ _ (IsPullback.of_hasPullback _ _)`. Establish `Q₁ : IsPullback (pullback.fst _ _ ≫ pullback.fst _ _) f₁ B₀.hom (spMap (Subring.inclusion h₁) ≫ spMap c₀)` using `(IsPullback.of_hasPullback _ _).paste_horiz (IsPullback.of_hasPullback _ _)`. Establish `e₁ : spMap R₁.subtype ≫ spMap (Subring.inclusion h₁) ≫ spMap c₀ = spMap j ≫ spMap R₀.subtype`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hfib : GeometricallyConnected (pullback.snd f₁ (spMap R₁.subtype))`. Establish `Q` using `(IsPullback.of_hasPullback f₁ (spMap R₁.subtype)).paste_horiz Q₁`. Rewrite `Q` using `[e₁]`.
+
+Establish `w` using `Q.w.trans (Category.assoc _ _ _).symm`. Conclude with `MorphismProperty.of_isPullback (P := @GeometricallyConnected) (IsPullback.of_right (by rw [H₀.1.lift_fst _ _ w]; exact Q) (H₀.1.lift_snd _ _ w) H₀.1) hg`. Take `⟨f, hf, hconn⟩` from `ConnOpen.geometricallyConnected_near R₁ _ f₁ _ R₁.subtype hp₁ inferInstance hfib`. Set `a` to `algebraMap R₁ (Localization.Away f)`. Establish `hc₂` using `hconn _ a (IsLocalization.Away.algebraMap_isUnit f)`.
+
+Establish `hp₂ : IsProper (pullback.snd f₁ (spMap a))` using `projProper _ _ _ (ProjSpace.isProjOver_pullback_snd a hp₁)`. Establish `Q₂` using `(IsPullback.of_hasPullback f₁ (spMap a)).paste_horiz Q₁`. Establish `: IsOpenImmersion (spMap a)` using `inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom a)))`. Establish `: IsNoetherianRing R₀` using `Algebra.FiniteType.isNoetherianRing ℤ R₀`. Generalize the expression as in `hρ : spMap a ≫ spMap (Subring.inclusion h₁) ≫ spMap c₀ = ρ at Q₂`.
+
+Establish `: LocallyOfFiniteType ρ` using `by rw [← hρ]; infer_instance`. Establish `hC : IsConstructible (Set.range ρ)` using `Set.image_univ ▸ ρ.isConstructible_image IsConstructible.univ`. Establish `hψ : spMap (IsLocalization.Away.lift f (g` using `R₁.subtype) hf.isUnit : Localization.Away f →+* Ω) ≫ spMap a = spMap R₁.subtype := by`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, IsLocalization.Away.lift_comp]`. Use `(near_of_isConstructible R₀ hC ⟨spMap (IsLocalization.Away.lift f (g := R₁.subtype) hf.isUnit : Localization.Away f →+* Ω) default, ?_⟩).mono fun K _ y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← hρ, reassoc_of% hψ, e₁, Scheme.Hom.comp_apply]`. Conclude with `congrArg _ (Subsingleton.elim _ _)`. Establish `: Surjective (pullback.fst y ρ)` using `⟨fun z => by`. Rewrite using `[← Set.mem_range, Scheme.Pullback.range_fst]`. Conclude with `hy z⟩`.
+
+Establish `Q₃` using `(IsPullback.of_hasPullback (pullback.snd f₁ (spMap a)) (pullback.snd y ρ)).paste_horiz Q₂`. Rewrite `Q₃` using `[← pullback.condition]`. Establish `w` using `Q₃.w.trans (Category.assoc _ _ _).symm`. Establish `Q₄` using `IsPullback.of_right (by rw [pullback.lift_fst _ _ w]; exact Q₃) (pullback.lift_snd _ _ w) (IsPullback.of_hasPullback B₀.hom y)`. Conclude with `⟨_, _, _, isGrpPullback_pullback B₀ y, inferInstance, inferInstanceAs (Smooth (pullback.snd _ _)), GrpFlatDesc.isProper_of_isPullback Q₄, GrpFlatDesc.geometricallyConnected_of_isPullback Q₄⟩`.
+-/
 theorem exists_abelian_model (k : Type) [Field k] (B : Over (Sp k)) [GrpObj B] (hB : IsAbelianScheme B) :
     ∃ (R : Subring k) (B₀ : Over (Sp R)) (_ : GrpObj B₀) (φ : B.left ⟶ B₀.left), Algebra.FiniteType ℤ R ∧
       Smooth B₀.hom ∧ IsSeparated B₀.hom ∧ QuasiCompact B₀.hom ∧ IsGrpPullback B B₀ (spMap R.subtype) φ ∧
@@ -234,6 +314,13 @@ theorem exists_abelian_model (k : Type) [Field k] (B : Over (Sp k)) [GrpObj B] (
   exact ⟨_, _, _, isGrpPullback_pullback B₀ y, inferInstance, inferInstanceAs (Smooth (pullback.snd _ _)),
     GrpFlatDesc.isProper_of_isPullback Q₄, GrpFlatDesc.geometricallyConnected_of_isPullback Q₄⟩
 
+/- English proof (translation)
+Use `replace hτ : IsPullback τ t (c ≫ s) (spMap (algebraMap A k)) := hτ`. Take `⟨R, e, hR, he, H⟩` from `SpreadScheme.models_iso (k := A) (V := k) hτ hτ'`. Establish `hc : e.hom ≫ pullback.fst _ _ = pullback.fst _ _ ≫ c`. Use `Spread.hom_ext_bcMap (c ≫ s) R.val Subtype.val_injective s ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, pullback.condition, reassoc_of% he]`.
+
+Establish `h₁ : (hτ.isoPullback.hom ≫ Spread.bcMap (c ≫ s) R.val) ≫ pullback.fst _ _ = τ`. Rewrite using `[Category.assoc, Spread.bcMap_fst, IsPullback.isoPullback_hom_fst]`. Rewrite using `[← cancel_epi hτ.isoPullback.hom, ← Category.assoc, H _ h₁ (by`. Rewrite using `[Category.assoc, Spread.bcMap_snd, IsPullback.isoPullback_hom_snd_assoc]), ← Category.assoc,`. Use the proof step `← Category.assoc, h₁]`.
+
+Establish `: Algebra.FiniteType A R` using `(Subalgebra.fg_iff_finiteType _).1 hR`. Use `⟨Sp R, spMap (algebraMap A R), spMap R.val.toRingHom, Spread.spMap_algHom_comp R.val, (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 this), fun K _ w T' τ' t' h => ?_⟩` and prove the remaining obligations. Establish `h₂ : IsPullback e.hom (pullback.snd _ _) (pullback.snd _ _) (𝟙 _)` using `.of_horiz_isIso ⟨by simpa using he⟩`. Establish `h₃` using `(SpreadScheme.isPullback_lift h w _ rfl).paste_horiz (h₂.paste_horiz (.of_hasPullback _ _))`. Rewrite `h₃` using `[hc, pullback.lift_fst_assoc, Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem near_isPullback {k : Type} [Field k] (A : Subring k) {P Q T : Scheme.{0}} (c : P ⟶ Q) (s : Q ⟶ Sp A)
     [LocallyOfFinitePresentation (c ≫ s)] [QuasiCompact (c ≫ s)] [QuasiSeparated (c ≫ s)] [Flat (c ≫ s)]
     [LocallyOfFinitePresentation s] [QuasiCompact s] [IsSeparated s] {τ : T ⟶ P} {t : T ⟶ Sp k}
@@ -258,6 +345,13 @@ theorem near_isPullback {k : Type} [Field k] (A : Subring k) {P Q T : Scheme.{0}
   have h₃ := (SpreadScheme.isPullback_lift h w _ rfl).paste_horiz (h₂.paste_horiz (.of_hasPullback _ _))
   rwa [hc, pullback.lift_fst_assoc, Category.id_comp] at h₃
 
+/- English proof (translation)
+Set `f` to `spMap (algebraMap K (AlgebraicClosure K))`. Establish `hB'` using `isAbelianScheme_pullback_obj f B hB`. Use `hB'.smooth` as an intermediate fact. Use `hB'.geomConnected` as an intermediate fact. Establish `: Smooth ((Over.pullback f).obj G).hom` using `inferInstanceAs (Smooth (pullback.snd _ _))`.
+
+Establish `: GeometricallyConnected ((Over.pullback f).obj G).hom` using `inferInstanceAs (GeometricallyConnected (pullback.snd _ _))`. Use `grpObj_geometricallyIntegral_of_smooth _ ((Over.pullback f).obj G)` as an intermediate fact. Use `grpObj_geometricallyIntegral_of_smooth _ ((Over.pullback f).obj B)` as an intermediate fact. Establish `: IsIntegral ((Over.pullback f).obj G).left` using `GeometricallyIntegral.isIntegral_of_subsingleton ((Over.pullback f).obj G).hom`. Establish `: IsIntegral ((Over.pullback f).obj B).left` using `GeometricallyIntegral.isIntegral_of_subsingleton ((Over.pullback f).obj B).hom`.
+
+Establish `hq` using `SS.isPullback_overPullback_map_left f q`. Establish `: Surjective ((Over.pullback f).map q).left` using `MorphismProperty.of_isPullback (P := @Surjective) hq ‹_›`. Establish `: QuasiCompact ((Over.pullback f).map q).left` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hq ‹_›`. Use `flat_descendsAlong_fpqc` as an intermediate fact. Conclude with `MorphismProperty.of_isPullback_of_descendsAlong (P := @Flat) hq.flip (ExtDescent.fpqc_of_isPullback (IsPullback.of_hasPullback B.hom f)) (SS.flat_of_isDominant_grpHom _ _ _ ((Over.pullback f).map q))`.
+-/
 theorem flat_of_surjective {K : Type} [Field K] {G B : Over (Sp K)} [GrpObj G] [GrpObj B] [Smooth G.hom]
     [GeometricallyConnected G.hom] (hB : IsAbelianScheme B) (q : G ⟶ B) [IsMonHom q] [Surjective q.left]
     [QuasiCompact q.left] : Flat q.left := by
@@ -286,6 +380,21 @@ def RkAt {S : Scheme.{0}} (G : Over S) [GrpObj G] (r : ℕ) (K : Type) [Field K]
   ∀ (G' : Over (Sp K)) [GrpObj G'] (F : G'.left ⟶ G.left), IsGrpPullback G' G y F →
     ∃ T' : TorusExtension G', @Module.finrank ℤ T'.X _ T'.addCommGroup.toAddCommMonoid _ = r
 
+/- English proof (translation)
+Introduce `G' _ F hF`. Take `⟨B', _, p, hB, hab⟩` from `hB`. Take `⟨i', hi, -⟩` from `GlobalTheory.UU.existsUnique_torusCompat hF.1 i`. Establish `w : (F ≫ q.left) ≫ B.hom = G'.hom ≫ y` using `by rw [Category.assoc, Over.w, hF.1.w]`. Set `q' : G' ⟶ B'` to `Over.homMk (hB.1.lift _ _ w) (hB.1.lift_snd _ _ w)`.
+
+Establish `hq : q'.left ≫ p = F ≫ q.left` using `hB.1.lift_fst _ _ w`. Establish `sq : IsPullback F q'.left q.left p`. Use `IsPullback.of_bot ?_ hq.symm hB.1` and prove the remaining obligations. Rewrite using `[Over.w, Over.w]`. Conclude with `hF.1`.
+
+Establish `ker : IsPullback i' (toUnit _) q' (η[B'])`. Establish `e₁ : SplitTorus.bcMap y X ≫ i.left = i'.left ≫ F` using `GlobalTheory.UU.torusCompat_iff.1 hi`. Establish `e₂` using `GlobalTheory.UU.eSec_comp_of_isGrpPullback hB`. Establish `w' : i'.left ≫ q'.left = (splitTorus (Sp K) X).hom ≫ (η[B']).left`. Use `hB.1.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hq, ← Category.assoc, ← e₁, k₁.w]`. Conclude with `(congrArg (_ ≫ ·) e₂.symm).trans (Category.assoc _ _ _).symm`. Rewrite using `[Category.assoc, Over.w, Over.w, Category.assoc, Over.w]`. Conclude with `(Category.comp_id _).symm`. Rewrite `k₁` using `[e₁]`.
+
+Establish `k₂ : IsPullback i'.left (splitTorus (Sp K) X).hom q'.left (η[B']).left` using `IsPullback.of_right (k₁.of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp) (by simpa using e₂.symm)) w' sq`. Rewrite `k₂`, `w'` using `[← Rosenlicht.toUnit_left]`. Conclude with `IsPullback.of_map (Over.forget (Sp K)) (Over.OverMorphism.ext w') k₂`. Use `GlobalTheory.UU.isMonHom_of_over_isMonHom hF hB q q' hq` as an intermediate fact. Establish `: Surjective q'.left` using `⟨fun b => by`.
+
+Take `⟨g, hg⟩` from `hs (p b) ⟨B'.hom b, by rw [← Scheme.Hom.comp_apply, ← hB.1.w, Scheme.Hom.comp_apply]⟩`. Take `⟨z, -, hz⟩` from `Scheme.exists_preimage_of_isPullback sq g b hg`. Conclude with `⟨z, hz⟩⟩`. Establish `: QuasiCompact q'.left` using `MorphismProperty.of_isPullback (P := @QuasiCompact) sq inferInstance`. Establish `: Smooth G'.hom` using `MorphismProperty.of_isPullback (P := @Smooth) hF.1 inferInstance`.
+
+Establish `: GeometricallyConnected G'.hom` using `MorphismProperty.of_isPullback (P := @GeometricallyConnected) hF.1 inferInstance`. Conclude with `⟨{ X := X B := B' isAbelian := hab q := q' i := i' q_hom := inferInstance i_hom := hi.isMonHom hF q_flat := flat_of_surjective hab q' q_surjective := inferInstance q_quasiCompact := inferInstance isKernel := ker }, rfl⟩`.
+-/
 theorem rkAt_of_fibre {S : Scheme.{0}} {K : Type} [Field K] {y : Sp K ⟶ S} {X : Type} [AddCommGroup X]
     [Module.Free ℤ X] [Module.Finite ℤ X] {G B : Over S} [GrpObj G] [GrpObj B] [Smooth G.hom]
     [GeometricallyConnected G.hom] (hB : AbAt B K y) (q : G ⟶ B) [IsMonHom q] [QuasiCompact q.left]
@@ -337,6 +446,23 @@ theorem rkAt_of_fibre {S : Scheme.{0}} {K : Type} [Field K] {y : Sp K ⟶ S} {X 
            q_quasiCompact := inferInstance
            isKernel := ker }, rfl⟩
 
+/- English proof (translation)
+Use `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom A.subtype) A.subtype_injective` as an intermediate fact. Establish `hT` using `SplitTorus.isGrpPullback_bcMap (spMap A.subtype) X`. Use `ExtUnique.isMonHom_of_isGrpPullback hG hB q' q hq.symm` as an intermediate fact. Use `ExtUnique.isMonHom_of_isGrpPullback hT hG i' i hi.symm` as an intermediate fact. Establish `k₀ : IsPullback i'.left (splitTorus (Sp k) X).hom q'.left (η[B']).left`.
+
+Use `hk.map (Over.forget _)` as an intermediate fact. Rewrite using `[← Rosenlicht.toUnit_left]`. Conclude with `this`. Establish `sq : IsPullback φ q'.left q.left β`. Use `IsPullback.of_bot ?_ hq hB.1` and prove the remaining obligations.
+
+Rewrite using `[Over.w, Over.w]`. Conclude with `hG.1`. Establish `k₁` using `k₀.paste_horiz sq`. Rewrite `k₁` using `[← hi, GlobalTheory.UU.eSec_comp_of_isGrpPullback hB]`. Establish `w : i.left ≫ q.left = (splitTorus (Sp A) X).hom ≫ (η[B]).left`.
+
+Establish `: i ≫ q = toUnit _ ≫ η[B]` using `ExtUnique.over_hom_ext_of_isPullback hT.1 (by`. Rewrite using `[Over.comp_left, Over.comp_left, ← Category.assoc, k₁.w, Rosenlicht.toUnit_left, ← Category.assoc, ← Category.assoc, hT.1.w])`. Rewrite using `[← Rosenlicht.toUnit_left]`. Conclude with `congrArg (fun z => z.left) this`. Establish `: LocallyOfFinitePresentation (q.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`.
+
+Establish `: QuasiCompact (q.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsSeparated (q.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: LocallyOfFinitePresentation q.left` using `TangentCrit.locallyOfFinitePresentation_of_comp _ B.hom`. Establish `: QuasiCompact q.left` using `.of_comp _ B.hom`. Establish `: IsSeparated q.left` using `.of_comp _ B.hom`.
+
+Set `e : Sp A ⟶ B.left` to `(η[B]).left`. Set `c : (splitTorus (Sp A) X).left ⟶ pullback q.left e` to `pullback.lift _ _ w`. Establish `c₁ : c ≫ pullback.fst _ _ = i.left` using `pullback.lift_fst _ _ _`. Establish `c₂ : c ≫ pullback.snd _ _ = (splitTorus (Sp A) X).hom` using `pullback.lift_snd _ _ _`. Establish `: Smooth (c ≫ pullback.snd _ _)` using `by rw [c₂]; infer_instance`.
+
+Establish `: IsAffineHom (c ≫ pullback.snd _ _)` using `by rw [c₂]; infer_instance`. Establish `hiso` using `near_isPullback A c (pullback.snd _ _) (τ := SplitTorus.bcMap (spMap A.subtype) X) (t := (splitTorus (Sp k) X).hom) (by rw [c₂]; exact hT.1) (IsPullback.of_right (by rw [Category.assoc, c₁]; exact k₁) (by rw [Category.assoc, c₂, hT.1.w]) (IsPullback.of_hasPullback q.left e))`. Use `((hab.and (near_surjective A q.left B.hom hB.1 hq)).and hiso).mono fun K _ y ⟨⟨h₁, h₂⟩, h₃⟩ => ?_` and prove the remaining obligations. Use `rkAt_of_fibre h₁ q h₂ i ?_` and prove the remaining obligations. Use `(h₃ _ _ _ (by rw [c₂]; exact SplitTorus.isPullback_bcMap y X)).paste_horiz (IsPullback.of_hasPullback q.left e)` as an intermediate fact.
+
+Rewrite `this` using `[Category.assoc, c₁]`. Then use the resulting hypothesis.
+-/
 theorem near_rkAt_of_maps {k : Type} [Field k] (A : Subring k) {X : Type} [AddCommGroup X] [Module.Free ℤ X]
     [Module.Finite ℤ X] {G B : Over (Sp A)} [GrpObj G] [GrpObj B] [Smooth G.hom] [IsSeparated G.hom]
     [QuasiCompact G.hom] [GeometricallyConnected G.hom] [Smooth B.hom] [IsSeparated B.hom] [QuasiCompact B.hom]
@@ -387,6 +513,9 @@ theorem near_rkAt_of_maps {k : Type} [Field k] (A : Subring k) {X : Type} [AddCo
     (IsPullback.of_hasPullback q.left e)
   rwa [Category.assoc, c₁] at this
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).trans ((congrArg _ (SplitTorus.bcMap_torusFst a X)).trans ((SplitTorus.bcMap_torusFst b X).trans (SplitTorus.bcMap_torusFst c X).symm))`. Express the relevant statement in the definitionally equal form `_ ≫ (splitTorus S₀ X).hom = _ ≫ (splitTorus S₀ X).hom`. Rewrite using `[Category.assoc, SplitTorus.bcMap_hom, SplitTorus.bcMap_hom_assoc, SplitTorus.bcMap_hom, h]`.
+-/
 theorem bcMap_comp {S S₁ S₀ : Scheme.{0}} {a : S₁ ⟶ S₀} {b : S ⟶ S₁} {c : S ⟶ S₀} (h : b ≫ a = c) (X : Type)
     [AddCommGroup X] : SplitTorus.bcMap b X ≫ SplitTorus.bcMap a X = SplitTorus.bcMap c X := by
   apply pullback.hom_ext
@@ -395,6 +524,29 @@ theorem bcMap_comp {S S₁ S₀ : Scheme.{0}} {a : S₁ ⟶ S₀} {b : S ⟶ S�
   · change _ ≫ (splitTorus S₀ X).hom = _ ≫ (splitTorus S₀ X).hom
     rw [Category.assoc, SplitTorus.bcMap_hom, SplitTorus.bcMap_hom_assoc, SplitTorus.bcMap_hom, h]
 
+/- English proof (translation)
+Take `@⟨X, _, _, _, B', _, hB', q', _, -, _, -, i', _, hk⟩` from `T`. Take `⟨A₀, π₀, e₀, _⟩` from `exists_subring x`. Take `⟨R, B₀, _, β₀, hft, _, _, _, hB₀, hab⟩` from `exists_abelian_model k B' hB'`. Take `⟨F, hF⟩` from `exists_finset_le R hft`. Take `⟨A₁, h₁, hF₁, _⟩` from `exists_adjoin A₀ F`.
+
+Establish `sub : ∀ {A A' : Subring k} (h : A ≤ A'), spMap A'.subtype ≫ spMap (Subring.inclusion h) = spMap A.subtype` using `fun h => by rw [← Spec.map_comp]; rfl`. Set `π₁` to `spMap (Subring.inclusion h₁) ≫ π₀`. Establish `e₁ : spMap A₁.subtype ≫ π₁ = x` using `by rw [← Category.assoc, sub, e₀]`. Establish `hG₁` using `isGrpPullback_pullback G π₁`. Establish `hB₁` using `isGrpPullback_pullback B₀ (spMap (Subring.inclusion (hF A₁ hF₁)))`.
+
+Take `⟨φ₁, -, hφ₁⟩` from `exists_factor e₁ hG₁ hG`. Take `⟨β₁, -, hβ₁⟩` from `exists_factor (sub _) hB₁ hB₀`. Set `G₁` to `(Over.pullback π₁).obj G`. Set `B₁` to `(Over.pullback (spMap (Subring.inclusion (hF A₁ hF₁)))).obj B₀`. Establish `: Smooth G₁.hom` using `inferInstanceAs (Smooth (pullback.snd _ _))`.
+
+Establish `: IsSeparated G₁.hom` using `inferInstanceAs (IsSeparated (pullback.snd _ _))`. Establish `: QuasiCompact G₁.hom` using `inferInstanceAs (QuasiCompact (pullback.snd _ _))`. Establish `: GeometricallyConnected G₁.hom` using `inferInstanceAs (GeometricallyConnected (pullback.snd _ _))`. Establish `: Smooth B₁.hom` using `inferInstanceAs (Smooth (pullback.snd _ _))`. Establish `: IsSeparated B₁.hom` using `inferInstanceAs (IsSeparated (pullback.snd _ _))`.
+
+Establish `: QuasiCompact B₁.hom` using `inferInstanceAs (QuasiCompact (pullback.snd _ _))`. Establish `hT₁` using `SplitTorus.isPullback_bcMap (spMap A₁.subtype) X`. Take `⟨Sq, hSq⟩` from `morphism_descends_to_subring k A₁ _ _ _ G'.hom G₁.hom B₁.hom φ₁ (q'.left ≫ β₁) hφ₁.1 (by rw [Category.assoc, hβ₁.1.w, Over.w_assoc, hφ₁.1.w])`. Take `⟨Si, hSi⟩` from `morphism_descends_to_subring k A₁ _ _ _ _ (splitTorus (Sp A₁) X).hom G₁.hom _ (i'.left ≫ φ₁) hT₁ (by rw [Category.assoc, hφ₁.1.w, Over.w_assoc, hT₁.w])`. Take `⟨A₂, h₂, hF₂, _⟩` from `exists_adjoin A₁ (Sq ∪ Si)`.
+
+Rewrite `hF₂` using `[Finset.coe_union, Set.union_subset_iff]`. Set `j` to `spMap (Subring.inclusion h₂)`. Establish `hG₂` using `isGrpPullback_pullback G₁ j`. Establish `hB₂` using `isGrpPullback_pullback B₁ j`. Take `⟨φ₂, eφ, hφ₂⟩` from `exists_factor (sub h₂) hG₂ hφ₁`.
+
+Take `⟨β₂, eβ, hβ₂⟩` from `exists_factor (sub h₂) hB₂ hβ₁`. Establish `hTj` using `SplitTorus.isPullback_bcMap j X`. Establish `hT₂` using `SplitTorus.isPullback_bcMap (spMap A₂.subtype) X`. Take `⟨ψq, hq₁, hq₂⟩` from `hSq A₂ h₂ hF₂.1 _ _ _ φ₂ hG₂.1 eφ hφ₂.1.w`. Take `⟨ψi, hi₁, hi₂⟩` from `hSi A₂ h₂ hF₂.2 _ _ _ _ hTj (bcMap_comp (sub h₂) X) hT₂.w`.
+
+Establish `wq` using `hq₂.trans hG₂.1.w`. Establish `wi` using `hi₂.trans hTj.w`. Establish `: Smooth ((Over.pullback j).obj G₁).hom` using `inferInstanceAs (Smooth (pullback.snd _ _))`. Establish `: IsSeparated ((Over.pullback j).obj G₁).hom` using `inferInstanceAs (IsSeparated (pullback.snd _ _))`. Establish `: QuasiCompact ((Over.pullback j).obj G₁).hom` using `inferInstanceAs (QuasiCompact (pullback.snd _ _))`.
+
+Establish `: GeometricallyConnected ((Over.pullback j).obj G₁).hom` using `inferInstanceAs (GeometricallyConnected (pullback.snd _ _))`. Establish `: Smooth ((Over.pullback j).obj B₁).hom` using `inferInstanceAs (Smooth (pullback.snd _ _))`. Establish `: IsSeparated ((Over.pullback j).obj B₁).hom` using `inferInstanceAs (IsSeparated (pullback.snd _ _))`. Establish `: QuasiCompact ((Over.pullback j).obj B₁).hom` using `inferInstanceAs (QuasiCompact (pullback.snd _ _))`. Take `⟨q, eq⟩ : ∃ q : (Over.pullback j).obj G₁ ⟶ (Over.pullback j).obj B₁, q.left ≫ pullback.fst _ _ = ψq` from `⟨Over.homMk (hB₂.1.lift _ _ wq) (hB₂.1.lift_snd _ _ wq), hB₂.1.lift_fst _ _ wq⟩`.
+
+Take `⟨i, ei⟩ : ∃ i : splitTorus (Sp A₂) X ⟶ (Over.pullback j).obj G₁, i.left ≫ pullback.fst _ _ = ψi` from `⟨Over.homMk (hG₂.1.lift _ _ wi) (hG₂.1.lift_snd _ _ wi), hG₂.1.lift_fst _ _ wi⟩`. Establish `H` using `near_rkAt_of_maps A₂ hφ₂ hβ₂ q' i' hk q (hB₂.1.hom_ext ((Category.assoc _ _ _).trans ((congrArg _ eq).trans (hq₁.trans ((Category.assoc _ _ _).trans (congrArg _ eβ)).symm))) (by rw [Category.assoc, Category.assoc, Over.w, hφ₂.1.w, hβ₂.1.w, Over.w_assoc])) i (hG₂.1.hom_ext ((Categ …`. Take `⟨χ, -, hχ⟩` from `exists_factor rfl (hB₂.comp hB₁) hp`. Conclude with `⟨B'', _, χ, hχ, ha⟩)`. Use `Near.push (π := j ≫ π₁) (v := spMap A₂.subtype) (by rw [← Category.assoc, sub, e₁]) (H.mono fun K _ y hy G'' _ ψ hψ => ?_)` and prove the remaining obligations.
+
+Take `⟨χ, -, hχ⟩` from `exists_factor rfl (hG₂.comp hG₁) hψ`. Conclude with `hy G'' χ hχ`.
+-/
 theorem near_rkAt {S : Scheme.{0}} {k : Type} [Field k] (x : Sp k ⟶ S) (G : Over S) [GrpObj G] [Smooth G.hom]
     [IsSeparated G.hom] [QuasiCompact G.hom] [GeometricallyConnected G.hom] {G' : Over (Sp k)} [GrpObj G']
     {φ : G'.left ⟶ G.left} (hG : IsGrpPullback G' G x φ) (T : TorusExtension G') :
@@ -468,6 +620,11 @@ theorem near_rkAt {S : Scheme.{0}} {k : Type} [Field k] (x : Sp k ⟶ S) (G : Ov
   obtain ⟨χ, -, hχ⟩ := exists_factor rfl (hG₂.comp hG₁) hψ
   exact hy G'' χ hχ
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t S f k _ x T`. Use `t.semi.smooth` as an intermediate fact. Use `t.semi.separated` as an intermediate fact. Use `t.semi.quasiCompact` as an intermediate fact. Use `t.semi.geomConnected` as an intermediate fact.
+
+Take `⟨V, π, v, e, hπ, h⟩` from `(near_rkAt (x ≫ f) t.G (isGrpPullback_pullback _ _) T).pull (x' := x) rfl`. Conclude with `⟨V, π, v, e, hπ, fun K _ w => h K w _ _ ((isGrpPullback_pullback _ _).congr (Category.assoc _ _ _).symm rfl)⟩`.
+-/
 theorem exists_spread : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (S : Scheme.{0}) (f : S ⟶ X) (k : Type) [Field k] (x : Sp k ⟶ S) (T : TorusExtension ((Over.pullback (x ≫ f)).obj t.G)), ∃ (V : Scheme.{0}) (π : V ⟶ S) (v : Sp k ⟶ V), v ≫ π = x ∧ LocallyOfFiniteType π ∧ ∀ (K : Type) [Field K] (w : Sp K ⟶ V), ∃ T' : TorusExtension ((Over.pullback (w ≫ π ≫ f)).obj t.G), @Module.finrank ℤ T'.X _ T'.addCommGroup.toAddCommMonoid _ = @Module.finrank ℤ T.X _ T.addCommGroup.toAddCommMonoid _ := by
   intro E _ _ _ H X t S f k _ x T
   have := t.semi.smooth

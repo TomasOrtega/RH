@@ -8,11 +8,23 @@ namespace PI.AddIntG.Wk
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [dX, PowerSeries.coeff_mk, PowerSeries.coeff_derivative]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dX_eq_derivative (f : PowerSeries ℂ_[p]) : dX f = PowerSeries.derivative ℂ_[p] f := by
   ext n
   simp only [dX, PowerSeries.coeff_mk, PowerSeries.coeff_derivative]
   ring
 
+/- English proof (translation)
+Establish `hw1` using `wq_const h`. Establish `hder` using `dX_eq_derivative wq`. Establish `h' : wq = 1 + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * (PowerSeries.X : PowerSeries ℂ_[p]) * wq + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₂ * (PowerSeries.X : PowerSeries ℂ_[p]) ^ 2 * wq + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₃ * (PowerSeries.X : PowerSeries ℂ_[p]) ^ 3 * wq …` using `h`. Establish `hD` using `congrArg (PowerSeries.derivative ℂ_[p]) h'`. Simplify using `only [map_add, Derivation.leibniz, Derivation.leibniz_pow, Derivation.map_algebraMap, PowerSeries.derivative_X, Derivation.map_one_eq_zero, smul_eq_mul, nsmul_eq_mul] at hD`.
+
+Establish `hQ : PowerSeries.constantCoeff (wq * (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * (PowerSeries.X : PowerSeries ℂ_[p]) + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₃ * (PowerSeries.X : PowerSeries ℂ_[p]) ^ 3 * wq - 2)) ≠ 0`. Establish `h2 : PowerSeries.constantCoeff (2 : PowerSeries ℂ_[p]) = 2`. Rewrite using `[show (2 : PowerSeries ℂ_[p]) = 1 + 1 by norm_num, map_add, map_one]`. Evaluate the numerical expressions. Simplify using `[hw1, h2]`.
+
+Establish `key : (-(2 : PowerSeries ℂ_[p]) * wq - (PowerSeries.X : PowerSeries ℂ_[p]) * PowerSeries.derivative ℂ_[p] wq) * (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₁ * (PowerSeries.X : PowerSeries ℂ_[p]) + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) W.a₂ * (PowerSeries.X : PowerSeries ℂ_[p]) ^ 2 + …`. Take the linear combination `(PowerSeries.X : PowerSeries ℂ_[p]) * hD`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [omegaW, Gv, wser, hder]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = -1 := by`. Rewrite using `[key, neg_mul, PowerSeries.mul_inv_cancel _ hQ]`.
+-/
 theorem omega_mul_Gv {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     omegaW W wq * Gv W (PowerSeries.X : PowerSeries ℂ_[p]) (wser wq) = -1 := by
   have hw1 := wq_const h

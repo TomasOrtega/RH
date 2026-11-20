@@ -10,6 +10,13 @@ noncomputable section
 
 namespace IncidenceZeroLocus
 
+/- English proof (translation)
+Establish `htop : Submodule.span K (Set.range A.col) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun K ρ).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨f, rfl⟩`. Simplify using `using hA f`. Take `⟨κ', a, ha, hspan, hli⟩` from `exists_linearIndependent' K A.col`.
+
+Establish `: Finite κ'` using `Finite.of_injective a ha`. Set `_ : Fintype κ'` to `Fintype.ofFinite κ'`. Set `b` to `Module.Basis.mk hli (by rw [hspan, htop])`. Establish `hcard : Fintype.card ρ = Fintype.card κ'`. Rewrite using `[← Module.finrank_fintype_fun_eq_card K, Module.finrank_eq_card_basis b]`.
+
+Set `eqv` to `Fintype.equivOfCardEq hcard`. Use `⟨a ∘ eqv, ?_⟩` and prove the remaining obligations. Establish `hli' : LinearIndependent K (A.submatrix id (a ∘ eqv)).col` using `hli.comp eqv eqv.injective`. Rewrite `hli'` using `[Matrix.linearIndependent_cols_iff_isUnit, Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Conclude with `hli'`.
+-/
 theorem exists_det_submatrix_ne_zero {K ρ κ : Type*} [Field K] [Fintype ρ] [DecidableEq ρ]
     [Fintype κ] (A : Matrix ρ κ K)
     (hA : ∀ f, Pi.single f 1 ∈ Submodule.span K (Set.range A.col)) :
@@ -32,6 +39,9 @@ theorem exists_det_submatrix_ne_zero {K ρ κ : Type*} [Field K] [Fintype ρ] [D
     isUnit_iff_ne_zero] at hli'
   exact hli'
 
+/- English proof (translation)
+Use extensionality with `d`. Simplify using `only [coeff_homogeneousComponent, coeff_map]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem homogeneousComponent_map {R S σ : Type*} [CommSemiring R] [CommSemiring S] (g : R →+* S)
     (N : ℕ) (p : MvPolynomial σ R) :
     homogeneousComponent N (map g p) = map g (homogeneousComponent N p) := by
@@ -39,10 +49,18 @@ theorem homogeneousComponent_map {R S σ : Type*} [CommSemiring R] [CommSemiring
   simp only [coeff_homogeneousComponent, coeff_map]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[Finset.mem_finsuppAntidiag, Finsupp.degree_eq_sum]`.
+-/
 theorem mem_finsuppAntidiag_univ_iff {n N : ℕ} (f : Fin n →₀ ℕ) :
     f ∈ (Finset.univ : Finset (Fin n)).finsuppAntidiag N ↔ f.degree = N := by
   simp [Finset.mem_finsuppAntidiag, Finsupp.degree_eq_sum]
 
+/- English proof (translation)
+Rewrite using `[eval₂_eq', Finset.sum_coe_sort ((Finset.univ : Finset (Fin n)).finsuppAntidiag N) (fun f => g (coeff f p) * ∏ j, x j ^ f j)]`. Use `Finset.sum_subset (fun d hd => ?_) (fun d _ hd => ?_)` and prove the remaining obligations. Establish `h` using `hp (mem_support_iff.mp hd)`. Rewrite using `[mem_finsuppAntidiag_univ_iff, Finsupp.degree_eq_weight_one]`. Conclude with `h`.
+
+Rewrite using `[notMem_support_iff.mp hd, map_zero, zero_mul]`.
+-/
 theorem eval₂_eq_sum_degree {R S : Type*} [CommSemiring R] [CommSemiring S] {n N : ℕ} (g : R →+* S)
     (x : Fin n → S) (p : MvPolynomial (Fin n) R) (hp : p.IsHomogeneous N) :
     eval₂ g x p = ∑ f : ((Finset.univ : Finset (Fin n)).finsuppAntidiag N),
@@ -55,6 +73,73 @@ theorem eval₂_eq_sum_degree {R S : Type*} [CommSemiring R] [CommSemiring S] {n
     exact h
   · rw [notMem_support_iff.mp hd, map_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `F _ n k Q hQ Ω _ _ _ v hv`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Take `⟨S, hS⟩` from `(IsNoetherian.noetherian Q : Q.FG)`. Establish `hSQ : ∀ q ∈ S, q ∈ Q` using `fun q hq => by rw [← hS]; exact Submodule.subset_span hq`.
+
+Set `G : (S ⊕ Fin k) → MvPolynomial (Fin n) (MvPolynomial (Fin k × Fin n) F)` to `Sum.elim (fun q => map (algebraMap F (MvPolynomial (Fin k × Fin n) F)) (q : MvPolynomial (Fin n) F)) (fun i => ∑ j, C (X (i, j)) * X j)`. Set `φv : MvPolynomial (Fin k × Fin n) F →+* Ω` to `(aeval v : MvPolynomial (Fin k × Fin n) F →ₐ[F] Ω)`. Establish `hφv : φv.comp (algebraMap F (MvPolynomial (Fin k × Fin n) F)) = algebraMap F Ω` using `AlgHom.comp_algebraMap _`. Set `Jv : Ideal (MvPolynomial (Fin n) Ω)` to `Ideal.span (Set.range fun t => map φv (G t))`. Establish `hzero : ∀ y ∈ zeroLocus Ω Jv, y = 0`.
+
+Introduce `y hy`. Assume the negation of the conclusion as `hy0`. Establish `hyQ : ∀ q ∈ Q, aeval y q = 0`. Establish `hle : Q ≤ RingHom.ker (aeval y : MvPolynomial (Fin n) F →ₐ[F] Ω)`. Rewrite using `[← hS, Submodule.span_le]`.
+
+Introduce `q hq`. Establish `h` using `hy _ (Ideal.subset_span ⟨Sum.inl ⟨q, hq⟩, rfl⟩)`. Simplify using `only [G, Sum.elim_inl, map_map, hφv] at h`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, ← h, aeval_def, aeval_def, eval₂_map]`. Simplify using the standard rewrite rules.
+
+Conclude with `fun q hq => hle hq`. Take `⟨i, hi⟩` from `hno y hy0 hyQ`. Establish `h` using `hy _ (Ideal.subset_span ⟨Sum.inr i, rfl⟩)`. Simplify using `[G, φv, coe_aeval_eq_eval] at h`. Conclude with `hi h`.
+
+Establish `hrad : ∀ j, ∃ m, (X j : MvPolynomial (Fin n) Ω) ^ m ∈ Jv`. Introduce `j`. Establish `h : (X j : MvPolynomial (Fin n) Ω) ∈ vanishingIdeal Ω (zeroLocus Ω Jv)`. Rewrite using `[mem_vanishingIdeal_iff]`. Introduce `y hy`.
+
+Rewrite using `[hzero y hy]`. Simplify using the standard rewrite rules. Rewrite `h` using `[vanishingIdeal_zeroLocus_eq_radical]`. Conclude with `h`. Use `choose e he using hrad`.
+
+Use `set N := ∑ j, e j + 1 with hN`. Establish `hmono : ∀ f : Fin n →₀ ℕ, f.degree = N → monomial f (1 : Ω) ∈ Jv`. Introduce `f hf`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, e j ≤ f j := by`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Establish `hle : ∑ j, f j ≤ ∑ j, e j` using `Finset.sum_le_sum fun j _ => (h j).le`. Rewrite `hle` using `[← Finsupp.degree_eq_sum, hf]`. Use linear arithmetic over natural numbers and integers. Establish `hle : Finsupp.single j (e j) ≤ f` using `Finsupp.single_le_iff.mpr hj`.
+
+Establish `h : monomial f (1 : Ω) = X j ^ e j * monomial (f - Finsupp.single j (e j)) 1`. Rewrite using `[X_pow_eq_monomial, monomial_mul, one_mul, add_tsub_cancel_of_le hle]`. Rewrite using `[h]`. Conclude with `Jv.mul_mem_right _ (he j)`. Set `Rows : Finset (Fin n →₀ ℕ)` to `(Finset.univ : Finset (Fin n)).finsuppAntidiag N`.
+
+Set `Mf : Finset (Fin n →₀ ℕ)` to `(Finset.range (N + 1)).biUnion fun d => (Finset.univ : Finset (Fin n)).finsuppAntidiag d`. Establish `memMf : ∀ m, m ∈ Mf ↔ m.degree ≤ N` using `fun m => by`. Simplify using `[Mf, Finset.mem_finsuppAntidiag, Finsupp.degree_eq_sum, Nat.lt_succ_iff]`. Set `c : (S ⊕ Fin k) × Mf → MvPolynomial (Fin n) (MvPolynomial (Fin k × Fin n) F)` to `fun p => homogeneousComponent N (monomial (p.2 : Fin n →₀ ℕ) 1 * G p.1)`. Set `Mx : Matrix Rows ((S ⊕ Fin k) × Mf) (MvPolynomial (Fin k × Fin n) F)` to `fun f p => coeff (f : Fin n →₀ ℕ) (c p)`.
+
+Establish `hspanv : ∀ f : Rows, Pi.single f 1 ∈ Submodule.span Ω (Set.range (Mx.map φv).col)`. Set `π : MvPolynomial (Fin n) Ω →ₗ[Ω] (Rows → Ω)` to `LinearMap.pi fun f => lcoeff Ω (f : Fin n →₀ ℕ)`. Set `W` to `Submodule.span Ω (Set.range fun p => map φv (c p))`. Establish `hWle : W.map π ≤ Submodule.span Ω (Set.range (Mx.map φv).col)`. Rewrite using `[Submodule.map_span, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨_, ⟨p, rfl⟩, rfl⟩`. Use `Submodule.subset_span ⟨p, ?_⟩` and prove the remaining obligations. Use extensionality with `f`. Simplify using `[π, Mx, coeff_map, Matrix.col]`. Both sides reduce to the same expression.
+
+Establish `hterm : ∀ t (m : Fin n →₀ ℕ), homogeneousComponent N (monomial m (1 : Ω) * map φv (G t)) ∈ W`. Introduce `t m`. Distinguish the cases in `hm : m ∈ Mf`. Use `Submodule.subset_span ⟨(t, ⟨m, hm⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [c]`.
+
+Rewrite using `[← homogeneousComponent_map, map_mul, map_monomial, map_one φv]`. Rewrite using `[homogeneousComponent_eq_zero']`. Conclude with `W.zero_mem`. Introduce `d hd`. Rewrite `hd` using `[mem_support_iff, coeff_monomial_mul']`.
+
+Use `split_ifs at hd with hmd`. Rewrite `hm` using `[memMf, not_le]`. Establish `hmd' : m.degree ≤ d.degree`. Rewrite using `[Finsupp.degree_eq_sum, Finsupp.degree_eq_sum]`. Conclude with `Finset.sum_le_sum fun i _ => hmd i`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `absurd rfl hd`. Establish `hJW : ∀ p ∈ Jv, homogeneousComponent N p ∈ W`. Introduce `p hp`. Take `⟨a, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.mp hp`.
+
+Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Rewrite using `[(a t).as_sum, Finset.sum_mul, map_sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Establish `hmon : monomial m (coeff m (a t)) = coeff m (a t) • monomial m (1 : Ω)`.
+
+Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hmon, smul_mul_assoc, map_smul]`. Conclude with `W.smul_mem _ (hterm t m)`. Introduce `f`. Establish `hf : (f : Fin n →₀ ℕ).degree = N` using `(mem_finsuppAntidiag_univ_iff _).mp f.2`.
+
+Establish `hmem : monomial (f : Fin n →₀ ℕ) (1 : Ω) ∈ W`. Establish `h` using `hJW _ (hmono _ hf)`. Rewrite `h` using `[homogeneousComponent_eq_self (isHomogeneous_monomial _ hf)]`. Then use the resulting hypothesis. Establish `h` using `hWle (Submodule.mem_map_of_mem hmem)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `f'`. Simplify using `only [π, LinearMap.pi_apply, lcoeff_apply, coeff_monomial, Pi.single_apply]`. Distinguish the cases in `hff : f' = f`. Substitute `hff` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg hff, if_neg (fun h' => hff (Subtype.ext h'.symm))]`. Take `⟨σ', hσ'⟩` from `exists_det_submatrix_ne_zero (Mx.map φv) hspanv`. Take `⟨D, hD⟩ : ∃ D, D = (Mx.submatrix id σ').det` from `⟨_, rfl⟩`. Establish `hDv : aeval v D ≠ 0`. Establish `h1 : φv D = ((Mx.map φv).submatrix id σ').det`.
+
+Rewrite using `[hD]`. Conclude with `RingHom.map_det φv _`. Establish `h2 : φv D = aeval v D` using `rfl`. Rewrite using `[← h2, h1]`. Conclude with `hσ'`.
+
+Establish `hDinc : D ∈ incIdeal Q k`. Simplify using `only [incIdeal, Submodule.mem_iInf, RingHom.mem_ker]`. Introduce `u hu`. Take `⟨x, hx0, hxQ, hxu⟩` from `hu`. Set `φu : MvPolynomial (Fin k × Fin n) F →+* AlgebraicClosure F` to `(aeval u : MvPolynomial (Fin k × Fin n) F →ₐ[F] AlgebraicClosure F)`.
+
+Establish `hφu : φu.comp (algebraMap F (MvPolynomial (Fin k × Fin n) F)) = algebraMap F (AlgebraicClosure F)` using `AlgHom.comp_algebraMap _`. Establish `hcol : ∀ p, eval₂ φu x (c p) = 0`. Introduce and unpack `⟨t, m, hm⟩`. Break down `t with ⟨q, hq⟩ | i` into its components or cases. Establish `hqQ : homogeneousComponent N (monomial m 1 * q) ∈ Q` using `hQ _ (Q.mul_mem_left _ (hSQ q hq)) N`.
+
+Establish `h` using `hxQ _ hqQ`. Simplify using `only [c, G, Sum.elim_inl]`. Rewrite using `[show monomial m (1 : MvPolynomial (Fin k × Fin n) F) * map (algebraMap F (MvPolynomial (Fin k × Fin n) F)) q = map (algebraMap F (MvPolynomial (Fin k × Fin n) F)) (monomial m 1 * q) by`. Rewrite using `[map_mul, map_monomial, map_one (algebraMap F (MvPolynomial (Fin k × Fin n) F))], homogeneousComponent_map, eval₂_map, hφu, ← aeval_def]`. Conclude with `h`.
+
+Simplify using `only [c, G, Sum.elim_inr]`. Establish `hh : (monomial m (1 : MvPolynomial (Fin k × Fin n) F) * ∑ j, C (X (i, j)) * X j).IsHomogeneous (m.degree + 1)` using `(isHomogeneous_monomial _ rfl).mul (IsHomogeneous.sum _ _ _ fun j _ => isHomogeneous_C_mul_X _ _)`. Rewrite using `[homogeneousComponent_of_mem hh]`. Use `split_ifs`. Rewrite using `[eval₂_mul, eval₂_sum]`.
+
+Use `mul_zero _` and compare the differences between its conclusion and the goal. Use `(Finset.sum_congr rfl fun j _ => ?_).trans (hxu i)` and prove the remaining obligations. Simplify using `[φu]`. Simplify using the standard rewrite rules. Set `w : Rows → AlgebraicClosure F` to `fun f => ∏ j, x j ^ (f : Fin n →₀ ℕ) j`.
+
+Establish `hw0 : w ≠ 0`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hx0`. Establish `hmemj : Finsupp.single j N ∈ Rows` using `(mem_finsuppAntidiag_univ_iff _).mpr (Finsupp.degree_single _ _)`. Introduce `hw`. Establish `h` using `congrFun hw ⟨_, hmemj⟩`.
+
+Simplify using `only [w, Pi.zero_apply] at h`. Rewrite `h` using `[Fintype.prod_eq_single j (fun i hi => by simp [Finsupp.single_apply, Ne.symm hi])]`. Simplify using `only [Finsupp.single_eq_same] at h`. Conclude with `hj ((pow_eq_zero_iff (n := N) (by omega)).mp h)`. Establish `hwM : Matrix.vecMul w ((Mx.map φu).submatrix id σ') = 0`.
+
+Use function extensionality and compare the values at `p`. Establish `h` using `hcol (σ' p)`. Rewrite `h` using `[eval₂_eq_sum_degree φu x _ (homogeneousComponent_isHomogeneous _ _)]`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.submatrix_apply, Matrix.map_apply, id, Pi.zero_apply]`. Use `(Finset.sum_congr rfl fun f _ => ?_).trans h` and prove the remaining obligations.
+
+Conclude with `mul_comm _ _`. Establish `hdet` using `Matrix.exists_vecMul_eq_zero_iff.mp ⟨w, hw0, hwM⟩`. Establish `h1 : φu D = ((Mx.map φu).submatrix id σ').det`. Rewrite using `[hD]`. Conclude with `RingHom.map_det φu _`.
+
+Establish `h2 : φu D = aeval u D` using `rfl`. Rewrite using `[← h2, h1]`. Conclude with `hdet`. Conclude with `hDv (hv D hDinc)`.
+-/
 theorem proof : IncidenceZeroLocus.Statement := by
   classical
   intro F _ n k Q hQ Ω _ _ _ v hv

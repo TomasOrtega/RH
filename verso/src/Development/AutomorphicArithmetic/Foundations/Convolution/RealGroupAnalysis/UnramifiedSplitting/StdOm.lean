@@ -8,6 +8,49 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W v hG k hk`. Take `⟨sa, sm, sc, -⟩` from `sgLaws F v`. Take `⟨ga, gi, gm⟩` from `hG.psi`. Establish `s0 : sg v (0 : Kv v) = 0` using `by simpa using (sm 0 0).symm`. Establish `pa : ∀ x y : A F, ψ (x + y) = ψ x * ψ y` using `fun x y => by simp only [ψ, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+
+Establish `im : ∀ {x y : Kv v}, IsInt x → IsInt y → IsInt (x * y)` using `fun hx hy => by show Valued.v _ ≤ 1`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' hx hy`. Establish `ia : ∀ {x y : Kv v}, IsInt x → IsInt y → IsInt (x + y)` using `fun hx hy => Valuation.map_add_le _ hx hy`. Establish `ineg : ∀ {x : Kv v}, IsInt x → IsInt (-x)` using `fun hx => (Valuation.map_neg _ _).le.trans hx`.
+
+Establish `i2 : IsInt (2 : Kv v)` using `hG.two.le`. Establish `iδ : IsInt (cp v (rt D.δ))` using `hG.del.le`. Establish `k1 : ∀ (a : A F) y, IsInt (cp v a) → IsInt y → ψ (a * sg v y) = 1` using `fun a y ha hy => by`. Rewrite using `[sm]`. Conclude with `gi _ (im ha hy)`.
+
+Establish `k2 : ∀ a : A F, (∀ c, IsInt c → ψ (a * sg v c) = 1) → IsInt (cp v a)` using `fun a h => gm _ fun c hc => by`. Use `h c hc` as an intermediate fact. Rewrite `this` using `[sm, mul_comm]`. Then use the resulting hypothesis. Establish `hn : ∀ b, IsInt (cp v b) → ∀ φ : S4 F, Std v φ.1 → Std v (W.Om (nU b) φ).1` using `fun b hb φ hφ => by`. Use `⟨fun x hx => hφ.1 x fun e => hx (by rw [W.Om_n, e, mul_zero]), fun x y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[W.Om_n, W.Om_n, hφ.2 x y hy]`. Distinguish the cases in `h0 : φ.1 x = 0`. Rewrite using `[h0, mul_zero, mul_zero]`. Establish `hx` using `hφ.1 x h0`. Establish `e : b * q4 D.δ (fun i => x i + sg v (y i)) = b * q4 D.δ x + b * (2 * x 2 + sg v (y 2)) * sg v (y 2) + -(b * (rt D.δ * (2 * x 3 + sg v (y 3)))) * sg v (y 3) + -(b * x 1) * sg v (y 0) + -(b * (x 0 + sg v (y 0))) * sg v (y 1)`.
+
+Simplify using `only [q4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, pa, pa, pa, pa, k1 _ _ _ (hy 2), k1 _ _ _ (hy 3), k1 _ _ _ (hy 0), k1 _ _ _ (hy 1), mul_one, mul_one, mul_one, mul_one]`. Apply the tactic sequence `all_goals simp only [map_neg, map_mul, map_add, map_ofNat, sc]`. Conclude with `ineg (im hb (ia (hx 0) (hy 0)))`.
+
+Conclude with `ineg (im hb (hx 1))`. Conclude with `ineg (im hb (im iδ (ia (im i2 (hx 3)) (hy 3))))`. Conclude with `im hb (ia (im i2 (hx 2)) (hy 2))`. Establish `hw : ∀ φ : S4 F, Std v φ.1 → Std v (W.Om (wW F) φ).1` using `fun φ hφ => by`. Use `⟨fun x hx => ?_, fun x y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hx` using `[W.Om_w]`. Establish `h1 : ∀ y : Fin 4 → Kv v, (∀ i, IsInt (y i)) → ψ (B4 D.δ (fun i => sg v (y i)) x) = 1` using `fun y hy => by`. Establish `h2` using `integral_add_right_eq_self (μ := adeleMeasurePi F) (fun z : V4 F => φ.1 z * ψ (B4 D.δ z x)) (fun i => sg v (y i))`. Establish `h3 : ∀ z : V4 F, φ.1 (z + fun i => sg v (y i)) * ψ (B4 D.δ (z + fun i => sg v (y i)) x) = ψ (B4 D.δ (fun i => sg v (y i)) x) * (φ.1 z * ψ (B4 D.δ z x))` using `fun z => by`. Establish `e : B4 D.δ (z + fun i => sg v (y i)) x = B4 D.δ z x + B4 D.δ (fun i => sg v (y i)) x`.
+
+Simplify using `only [B4, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, pa, show φ.1 (z + fun i => sg v (y i)) = φ.1 z from hφ.2 z y hy]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h3, integral_const_mul] at h2`.
+
+Conclude with `mul_right_cancel₀ hx (h2.trans (one_mul _).symm)`. Establish `h4 : ∀ (i : Fin 4) c, IsInt c → ψ (B4 D.δ (fun j => sg v ((Pi.single i c : Fin 4 → Kv v) j)) x) = 1` using `fun i c hc => h1 _ fun j => by`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Simplify using `using hc`.
+
+Simplify using `[Pi.single_eq_of_ne e, IsInt]`. Establish `a0` using `k2 (-x 0) fun c hc => by rw [← h4 1 c hc]; congr 1; simp [B4, s0, mul_comm]`. Establish `a1` using `k2 (-x 1) fun c hc => by rw [← h4 0 c hc]; congr 1; simp [B4, s0, mul_comm]`. Establish `a2` using `k2 (2 * x 2) fun c hc => by rw [← h4 2 c hc]; congr 1; simp [B4, s0]; ring`. Establish `a3` using `k2 (-(2 * (rt D.δ * x 3))) fun c hc => by rw [← h4 3 c hc]; congr 1; simp [B4, s0]; ring`.
+
+Establish `d1 : Valued.v (cp v (rt D.δ)) = 1` using `hG.del`. Simplify using `only [IsInt, map_neg, Valuation.map_neg, map_mul, map_ofNat, hG.two, d1, one_mul] at a0 a1 a2 a3`. Introduce `i`. Use `fin_cases i`. Use `exacts [a0, a1, a2, a3]`.
+
+Rewrite using `[W.Om_w, W.Om_w]`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Use `beta_reduce`. Distinguish the cases in `h0 : φ.1 z = 0`. Rewrite using `[h0, zero_mul, zero_mul]`.
+
+Establish `hz` using `hφ.1 z h0`. Establish `e : B4 D.δ z (fun i => x i + sg v (y i)) = B4 D.δ z x + 2 * z 2 * sg v (y 2) + -(2 * (rt D.δ * z 3)) * sg v (y 3) + -z 1 * sg v (y 0) + -z 0 * sg v (y 1)`. Simplify using `only [B4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, pa, pa, pa, pa, k1 _ _ _ (hy 2), k1 _ _ _ (hy 3), k1 _ _ _ (hy 0), k1 _ _ _ (hy 1), mul_one, mul_one, mul_one, mul_one]`.
+
+Apply the tactic sequence `all_goals simp only [map_neg, map_mul, map_ofNat]`. Conclude with `ineg (hz 0)`. Conclude with `ineg (hz 1)`. Conclude with `ineg (im i2 (im iδ (hz 3)))`. Conclude with `im i2 (hz 2)`.
+
+Establish `ml : ∀ (x y : G1 F) (i k : Fin 2), (x * y).1 i k = x.1 i 0 * y.1 0 k + x.1 i 1 * y.1 1 k` using `fun x y i k => by show (x.1 * y.1) i k = _`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hk'` using `genV F v k hk`. Use `clear hk`. Proceed by induction on `hk' using Subgroup.closure_induction'' with`.
+
+Consider the case `one => intro φ hφ`. Simplify using `using hφ`. Consider the case `mem x hx`. Break down `hx with ⟨b, hb, rfl⟩ | rfl` into its components or cases. Use `exacts [hn b hb, hw]`.
+
+Consider the case `inv_mem x hx`. Break down `hx with ⟨b, hb, rfl⟩ | rfl` into its components or cases. Establish `e : (nU b)⁻¹ = nU (-b)` using `inv_eq_of_mul_eq_one_right (by`. Use extensionality with `i k : 1`. Rewrite using `[ml]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [nU])`. Rewrite using `[e]`. Conclude with `hn _ (by rw [map_neg]; exact ineg hb)`. Establish `e : (wW F)⁻¹ = wW F * (wW F * wW F)` using `inv_eq_of_mul_eq_one_right (by`. Use extensionality with `i k : 1`.
+
+Simplify using `only [ml]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [wW])`. Rewrite using `[e, map_mul, map_mul]`. Conclude with `fun φ hφ => hw _ (hw _ (hw _ hφ))`. Consider the case `mul x y _ _ hx hy`.
+
+Rewrite using `[map_mul]`. Conclude with `fun φ hφ => hx _ (hy _ hφ)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.H.stdOm :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (v : P F), Gd D.δ v → ∀ (k : G1 F), IntAt v k → ∀ φ : S4 F, Std v φ.1 → Std v (W.Om k φ).1 := by
   intro F E _ _ _ _ _ _ _ D W v hG k hk

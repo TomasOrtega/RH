@@ -30,6 +30,21 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 namespace GlobalTheory.SelfInterImage
 
+/- English proof (translation)
+Establish `hP : IsArithVar (PSpace.str (𝓞 K) m) m` using `GlobalTheory.TrueGeo.Base.isArithVar_pspace m`. Take `⟨Z, i, _, _, hi⟩` from `exists_isClosedImmersion_genericPoint (π (genericPoint X))`. Establish `hr : Set.range i = closure {π (genericPoint X)}`. Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq, hi]`.
+
+Conclude with `h₁.def.symm`. Establish `: Surjective (Limits.pullback.snd i π)` using `⟨by`. Rewrite using `[← Set.range_eq_univ, Scheme.Pullback.range_snd, hr]`. Conclude with `Set.eq_univ_of_forall fun y => ((genericPoint_specializes y).map π.continuous).mem_closure⟩`. Use `isIso_of_isClosedImmersion_of_surjective (Limits.pullback.snd i π)` as an intermediate fact.
+
+Take `⟨g, rfl⟩ : ∃ g : X ⟶ Z, g ≫ i = π` from `⟨inv (Limits.pullback.snd i π) ≫ Limits.pullback.fst i π, by`. Rewrite using `[Category.assoc, Limits.pullback.condition, IsIso.inv_hom_id_assoc]⟩`. Establish `hg : g (genericPoint X) = genericPoint Z` using `i.isClosedEmbedding.injective hi.symm`. Establish `hdg : g.residueDegree (genericPoint X) = 1`. Rewrite `hdeg` using `[GlobalTheory.CurveDegreesCompare.residueDegree_comp, GlobalTheory.Published.residueDegree_of_isClosedImmersion i, one_mul]`. Then use the resulting hypothesis.
+
+Establish `hch : CharZero Γ(Z, ⊤)` using `have := hX.charZero`. Use the proof step `g.appTop.hom.charZero`. Establish `hZn` using `hP.isNoetherian_sub i`. Establish `hpp : IsProper p`. Take `⟨N, j, _, hj⟩` from `hX.isProjOver`.
+
+Use `isProper_str (𝓞 K) N` as an intermediate fact. Conclude with `hj ▸ inferInstance`. Establish `hst` using `isProper_str (𝓞 K) m`. Establish `hgp : IsProper g`. Establish `: IsProper (g ≫ i ≫ PSpace.str (𝓞 K) m)` using `by rw [← Category.assoc, hπ]; exact hpp`.
+
+Conclude with `IsProper.of_comp g (i ≫ PSpace.str (𝓞 K) m)`. Establish `hgs : Function.Surjective g`. Rewrite using `[← Set.range_eq_univ, ← g.isClosedMap.isClosed_range.closure_eq]`. Conclude with `Set.eq_univ_of_univ_subset ((genericPoint_spec Z).def.ge.trans (closure_mono (Set.singleton_subset_iff.2 ⟨_, hg⟩)))`. Establish `hdZ : topologicalKrullDim Z = (D + 1 : ℕ)` using `le_antisymm ((GlobalTheory.PosBaseChange.dim_le_of_isClosedMap g.isClosedMap hgs).trans hX.dim_eq.le) (hX.dim_eq.ge.trans (GlobalTheory.ProperCover.dim_le_of_residueDegree_pos g hg (hdg ▸ one_pos)))`.
+
+Establish `hZ : IsArithVar (i ≫ PSpace.str (𝓞 K) m) D` using `hP.of_isClosedImmersion i hch hdZ`. Take `⟨h, hh, -⟩` from `hC.existsUnique hP (HermLB.fs (PSpace.str (𝓞 K) m) (ProjSpace.O1_isLB (𝓞 K) m) (ProjSpace.coord (𝓞 K) m) (ProjSpace.iSup_nonzeroLocus_coord (𝓞 K) m) A hA hc)`. Establish `h₁` using `hC.heightProjection (𝓞 K) _ X _ p m D hP hX (g ≫ i) hπ ((topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hr).trans hdZ) (by rw [hdeg]; exact one_ne_zero) _ h hh`. Establish `h₂` using `(hh.isSelfInter_restrict hP i rfl).unique hZ (hF K m D δ Z i hZ A hA hc f (hi ▸ hf))`. Rewrite `h₁` using `[hdeg, Nat.cast_one, one_mul, ← hi, h₂]`. Then use the resulting hypothesis.
+-/
 theorem isSelfInter_pull_fs (hF : GlobalTheory.Published.FubiniStudyChowHeight) (hC : GlobalTheory.Published.CycleHeights) {K : Type} [Field K]
     [NumberField K] {m D δ : ℕ} {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp (𝓞 K)} (hX : IsArithVar p D)
     (π : X ⟶ PSpace (𝓞 K) m) (hπ : π ≫ PSpace.str (𝓞 K) m = p) (hdeg : π.residueDegree (genericPoint X) = 1)
@@ -85,6 +100,11 @@ theorem isSelfInter_pull_fs (hF : GlobalTheory.Published.FubiniStudyChowHeight) 
   have h₂ := (hh.isSelfInter_restrict hP i rfl).unique hZ (hF K m D δ Z i hZ A hA hc f (hi ▸ hf))
   rwa [hdeg, Nat.cast_one, one_mul, ← hi, h₂] at h₁
 
+/- English proof (translation)
+Rewrite using `[formHeight, formHeight, HeightUnique.linSubst_one]`. Use `congr 2`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `h0 : linSubst (A σ) (MvPolynomial.map σ f) ≠ 0` using `fun e => by`. Establish `e'` using `congrArg (linSubst (A σ)⁻¹) e`.
+
+Rewrite `e'` using `[HeightUnique.linSubst_linSubst, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (hA σ)), HeightUnique.linSubst_one, linSubst, map_zero]`. Conclude with `hf (MvPolynomial.map_injective σ σ.injective (e'.trans (map_zero _).symm))`. Establish `hm' : ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous (fun _ => δ) (MvPolynomial.map σ f)` using `fun s hs => hm s (MvPolynomial.support_map_subset σ f hs)`. Rewrite using `[GlobalTheory.ImageHeightUnique.map_linSubst, HeightUnique.linSubst_linSubst, h σ, ← HeightUnique.linSubst_linSubst, GlobalTheory.SphereMeanDrop.blockSphereMean_incl B N n δ _ hN hNn h0 (HeightUnique.linSubst_homog _ hm')]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formHeight_linSubst_eq {K : Type} [Field K] [NumberField K] {B N n δ : ℕ} (hN : 0 < N) (hNn : N ≤ n)
     {g : Matrix (Fin N) (Fin n) K} {A : (K →+* ℂ) → Matrix (Fin N) (Fin N) ℂ}
     {A' : (K →+* ℂ) → Matrix (Fin n) (Fin n) ℂ} (hA : ∀ σ, (A σ).det ≠ 0)
@@ -106,6 +126,11 @@ theorem formHeight_linSubst_eq {K : Type} [Field K] [NumberField K] {B N n δ : 
     GlobalTheory.SphereMeanDrop.blockSphereMean_incl B N n δ _ hN hNn h0 (HeightUnique.linSubst_homog _ hm')]
   ring
 
+/- English proof (translation)
+Establish `e (a : Fin n) : ∑ k, A' k a * v k = ∑ j, (g * A') j a * β j`. Simplify using `only [hv, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Simplify using `only [e, h]`.
+
+Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE hNn) (Fin.castLE_injective hNn) _ _ (fun a ha => ?_) fun a => ?_` and prove the remaining obligations. Establish `: ∀ j : Fin N, (j : ℕ) ≠ a` using `fun j hj => ha ⟨j, Fin.ext hj⟩`. Simplify using `[Matrix.mul_apply, this]`. Simplify using `[Matrix.mul_apply, Fin.val_inj]`.
+-/
 theorem sum_normSq_eq {N n : ℕ} (hNn : N ≤ n) {g : Matrix (Fin N) (Fin n) ℂ} {A : Matrix (Fin N) (Fin N) ℂ}
     {A' : Matrix (Fin n) (Fin n) ℂ}
     (h : g * A' = A * Matrix.of fun (j : Fin N) (k : Fin n) => if (j : ℕ) = (k : ℕ) then (1 : ℂ) else 0)
@@ -125,6 +150,19 @@ theorem sum_normSq_eq {N n : ℕ} (hNn : N ≤ n) {g : Matrix (Fin N) (Fin n) �
 variable {K V Ω : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω]
 
+/- English proof (translation)
+Use `set e : Fin n → K := fun l => ∑ j, g j k * c l j with he`. Establish `hexp : (gw k : V) = ∑ l, e l • (gw l : V)`. Rewrite using `[hg k]`. Repeatedly rewrite using `[hc, he, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) (Finset.univ.image e)`. Use `choose β hβ using fun l => hd _ (Finset.mem_image_of_mem e (Finset.mem_univ l))`. Establish `hβ' : ∀ l, ((β l : 𝓞 K) : K) = ((d : 𝓞 K) : K) * e l` using `fun l => by`. Rewrite using `[← Algebra.smul_def, ← hβ l]`. Establish `hx1 : (((d : 𝓞 K) • gw k : W) : V) = ∑ l, β l • (gw l : V)`.
+
+Rewrite using `[Submodule.coe_smul, ← algebraMap_smul K, hexp, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K (β l), smul_smul]`. Use `congr 1`. Conclude with `(hβ' l).symm`.
+
+Establish `hx2 : (((d : 𝓞 K) • gw k : W) : V) = ∑ _i : Fin 1, (d : 𝓞 K) • (gw k : V)`. Simplify using the standard rewrite rules. Establish `e1` using `hℓ n β gw _ hx1`. Establish `e2` using `hℓ 1 (fun _ => (d : 𝓞 K)) (fun _ => gw k) _ hx2`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton] at e2`.
+
+Establish `hd0 : σ ((d : 𝓞 K) : K) ≠ 0`. Rewrite using `[map_ne_zero, ne_eq, RingOfIntegers.coe_eq_zero_iff]`. Conclude with `nonZeroDivisors.coe_ne_zero d`. Apply `mul_left_cancel₀ hd0` to reduce the goal to its premises. Rewrite using `[← e2, e1]`.
+
+Simplify using `only [hβ', map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [he, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem semilinear_gen {W : Submodule (𝓞 K) V} {N n : ℕ} {b : Module.Basis (Fin N) K V} {g : Matrix (Fin N) (Fin n) K}
     {c : Matrix (Fin n) (Fin N) K} {gw : Fin n → W} (σ : K →+* ℂ) (ℓ : W → ℂ)
     (hg : ∀ k, (gw k : V) = ∑ j, g j k • b j) (hc : ∀ j, b j = ∑ k, c k j • (gw k : V))
@@ -165,6 +203,11 @@ theorem semilinear_gen {W : Submodule (𝓞 K) V} {N n : ℕ} {b : Module.Basis 
 
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Establish `key (v : V) : ev v / ev (u i) ∈ IntermediateField.adjoin K (Set.range fun j => ev (u j) / ev (u i))`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 (hu.ge (Submodule.mem_top (x := v)))`. Rewrite using `[map_sum, Finset.sum_div]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_div_assoc]`.
+
+Conclude with `IntermediateField.smul_mem _ (IntermediateField.subset_adjoin _ _ (Set.mem_range_self j))`. Use `top_le_iff.1 (hR.2.ge.trans (IntermediateField.adjoin_le_iff.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨v, w, rfl⟩`. Rewrite using `[← div_div_div_cancel_right₀ hi]`. Conclude with `div_mem (key v) (key w)`.
+-/
 theorem adjoin_ratios_eq_top {ev : V →ₗ[K] Ω} (hR : GlobalTheory.DegVal.GenRatios ev) {n : ℕ} {u : Fin n → V}
     (hu : Submodule.span K (Set.range u) = ⊤) {i : Fin n} (hi : ev (u i) ≠ 0) :
     IntermediateField.adjoin K (Set.range fun j => ev (u j) / ev (u i)) = ⊤ := by
@@ -179,6 +222,47 @@ theorem adjoin_ratios_eq_top {ev : V →ₗ[K] Ω} (hR : GlobalTheory.DegVal.Gen
   rw [← div_div_div_cancel_right₀ hi]
   exact div_mem (key v) (key w)
 
+/- English proof (translation)
+Take `⟨N, n, b, g, A, c, gw, hF, hg, hc, hφ⟩` from `hM.fs_shift hR.1 t`. Establish `hspan : Submodule.span K (Set.range fun k => (gw k : V)) = ⊤`. Use `top_le_iff.1 (b.span_eq.ge.trans (Submodule.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[hc j]`.
+
+Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Take `⟨i₀, hi₀⟩ : ∃ k, ev (gw k) ≠ 0` from `by by_contra! h`. Conclude with `hR.1 (LinearMap.ext_on_range hspan fun k => h k)`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by have := i₀.pos; omega⟩`. Establish `hgc : g * c = 1`.
+
+Use extensionality with `j l`. Establish `e` using `congrArg (fun v => b.repr v j) (hc l)`. Simplify using `only [hg, map_sum, map_smul, Module.Basis.repr_self, Finsupp.finsetSum_apply, Finsupp.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at e`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [eq_comm (a := j), e, mul_comm]`.
+
+Take `⟨hNn, M, P, hMP, hPM, hgM⟩` from `GlobalTheory.T.right_inverse_coordinate_normal_form K N (m + 1) g c hgc`. Take `⟨A', hA', hU', hgA⟩` from `GlobalTheory.T.unitary_conjugate_matrix_family K N (m + 1) g M A hNn (Matrix.isUnit_det_of_right_inverse hMP).ne_zero hgM hF.herm (GlobalTheory.ConjUnitary.conj_frame_unitary K N A hF.conj hF.herm)`. Take `⟨N₀, b₀, f₀, hf₀⟩` from `(imageDeg_pos_iff ev D).1 hD`. Establish `hf` using `isChowFormInt_basis ev b₀ b hf₀`. Use `set f := linSubst (b₀.toMatrix b) f₀`.
+
+Use `set δ := imageDeg ev D`. Establish `hN : 0 < N`. Take `⟨z, hz, -⟩` from `hf.exists_point`. Take `⟨j, -⟩` from `Function.ne_iff.1 hz`. Conclude with `j.pos`.
+
+Establish `hgJ : g = (Matrix.of fun (j : Fin N) (k : Fin (m + 1)) => if (j : ℕ) = (k : ℕ) then (1 : K) else 0) * P`. Rewrite using `[← hgM, Matrix.mul_assoc, hMP, Matrix.mul_one]`. Establish `hf' : IsChowFormInt (coneIdeal K fun k => ev (gw k)) D δ (linSubst g f)`. Establish `h₁` using `GlobalTheory.T.chow_form_coordinate_substitution K N (m + 1) D δ _ _ f hNn (fun q => mem_coneIdeal_coord _ (fun j => ev (b j)) q) hf`. Establish `h₂` using `isChowFormInt_linSubst hPM hMP (fun q => mem_coneIdeal_coord P _ q) h₁`.
+
+Rewrite `h₂` using `[HeightUnique.linSubst_linSubst, ← hgJ]`. Use `h₂ using 3 with k` and compare the differences between its conclusion and the goal. Establish `e : ev (gw k) = ∑ j, algebraMap K Ω (g j k) * ev (b j)`. Simplify using `only [hg, map_sum, map_smul, Algebra.smul_def]`. Rewrite using `[e]`.
+
+Use `conv_lhs => rw [hgJ]`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `hδ : (0 : ℝ) < ((D : ℝ) + 1) * δ` using `mul_pos (by positivity) (Nat.cast_pos.2 hD)`.
+
+Establish `hht : ((D : ℝ) + 1) * δ * (imageHeight Nm W ev D + t) = formHeight δ g A f`. Take `⟨N₁, n₁, b₁, g₁, A₁, -, -, hF₁, -⟩` from `hM.fs`. Rewrite using `[← imageHeight_exp_smul (exists_isImageHeight_iff.2 ⟨⟨_, _, _, _, _, hF₁⟩, hD⟩) t, GlobalTheory.ImageHeightUnique.imageHeight_eq K V Ω _ W ev D (formHeight δ g A f / (((D : ℝ) + 1) * δ)) ⟨N, m + 1, b, g, A, δ, f, hF, hf, mul_div_cancel₀ _ hδ.ne'⟩, mul_div_cancel₀ _ hδ.ne']`. Set `L'` to `L.shift (fun _ => t) (fun _ => rfl)`. Set `sk : Fin (m + 1) → L'.B.Sec` to `fun k => s (gw k)`.
+
+Establish `hsk : ⨆ k, nonzeroLocus (sk k) = ⊤`. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hM.bpf.ge (TopologicalSpace.Opens.mem_top x))`. Take `⟨j, hj⟩` from `exists_chart L.isLB x`. Establish `hwm : (w : V) ∈ Submodule.span (𝓞 K) (Set.range fun k => (gw k : V))`.
+
+Rewrite using `[show (fun k => (gw k : V)) = fun k => ∑ j, g j k • b j from funext hg, hF.span]`. Conclude with `w.2`. Take `⟨β, hβ⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).1 hwm`. Establish `h1` using `(X.mem_basicOpen _ x hj).1 ((mem_nonzeroLocus_iff _ j hj).1 hw)`. Rewrite `h1` using `[GlobalTheory.ImageModel.sec_linear K V Ω Nm W ev D X p L ψ s hM hR.1 _ β gw w hβ.symm j, map_sum]`.
+
+Take `⟨k, -, hk⟩` from `IsLocalRing.exists_of_isUnit_sum h1`. Rewrite `hk` using `[map_mul]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, (mem_nonzeroLocus_iff (s (gw k)) j hj).2 ((X.mem_basicOpen _ x hj).2 (isUnit_of_mul_isUnit_right hk))⟩`. Set `A₀ : (𝓞 K →+* ℂ) → Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ` to `fun τ => A' (TrueGeo.OfLattice.extEmb τ)`. Establish `hA₀ : ∀ τ, (A₀ τ).det ≠ 0` using `fun τ => hA' _`.
+
+Establish `hU₀ : ∀ τ : 𝓞 K →+* ℂ, ∃ U ∈ Matrix.unitaryGroup (Fin (m + 1)) ℂ, A₀ ((starRingEnd ℂ).comp τ) = (A₀ τ).map (starRingEnd ℂ) * U` using `fun τ => by`. Establish `he : TrueGeo.OfLattice.extEmb ((starRingEnd ℂ).comp τ) = (starRingEnd ℂ).comp (TrueGeo.OfLattice.extEmb τ)` using `TrueGeo.OfLattice.extEmb_eq (by rw [RingHom.comp_assoc, TrueGeo.OfLattice.extEmb_comp])`. Simplify using `only [A₀, he]`. Conclude with `hU' _`. Establish `hiso` using `GlobalTheory.T.hermitian_metric_unitary_gauge (𝓞 K) X p L' m sk hsk A₀ hA₀ hU₀ fun τ i y hy => by`.
+
+Take `⟨σ, rfl⟩ : ∃ σ : K →+* ℂ, σ.comp (algebraMap (𝓞 K) K) = τ` from `⟨_, TrueGeo.OfLattice.extEmb_comp τ⟩`. Establish `he : TrueGeo.OfLattice.extEmb (σ.comp (algebraMap (𝓞 K) K)) = σ` using `TrueGeo.OfLattice.extEmb_eq rfl`. Use `(hφ σ i y hy).trans (congrArg Real.log ?_)` and prove the remaining obligations. Simplify using `only [A₀, he]`. Use `Eq.trans ?_ (sum_normSq_eq hNn (hgA σ) (β := fun j => ∑ l, σ (c l j) * valR y.1 (L.B.U i) ((s (gw l)).f i)) (semilinear_gen σ (fun w => valR y.1 (L.B.U i) ((s w).f i)) hg hc fun m β u x hx => GlobalTheory.ImageModel.valR_section_sum K V Ω Nm W ev D X p L ψ s hM hR.1 _ i y hy m β …` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 2`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+
+Set `π` to `ProjSpace.toProj p sk hsk`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hsk.ge (TopologicalSpace.Opens.mem_top (genericPoint X)))`. Take `⟨n, hn⟩` from `exists_chart L.isLB (genericPoint X)`. Establish `hne : fnOf _ hn ((s (gw i)).f n) ≠ 0` using `fnOf_sec_ne_zero (L := L.B) hi hn`. Establish `hyi : ev (gw i) ≠ 0` using `fun h0 => by`.
+
+Establish `e` using `hM.ratio (gw i₀) (gw i) n hn`. Rewrite `e` using `[h0, map_zero, zero_mul]`. Conclude with `mul_ne_zero ((map_ne_zero ψ).2 hi₀) hne e`. Establish `hη : genericPoint X ∈ nonzeroLocus (sk i) ⊓ L.B.U n` using `⟨hi, hn⟩`. Establish `hU : nonzeroLocus (sk i) ⊓ L.B.U n ≤ π ⁻¹ᵁ ProjSpace.chart (𝓞 K) m i` using `inf_le_left.trans (ProjSpace.toProj_preimage_chart p sk hsk i).ge`.
+
+Establish `hrat (j) : fnOf _ hη (ProjSpace.pullRatio π _ i hU j) = ψ (ev (gw j) / ev (gw i))`. Establish `e` using `congrArg (fnOf _ hη) (ProjSpace.sec_eq_pullRatio_toProj_mul p sk hsk i j n hU inf_le_right)`. Establish `r (k) : fnOf _ hη (resG X (inf_le_right : nonzeroLocus (sk i) ⊓ L.B.U n ≤ L.B.U n) ((s (gw k)).f n)) = fnOf _ hn ((s (gw k)).f n)` using `fnOf_resG _ hη _`. Use `replace e : fnOf _ hn ((s (gw j)).f n) = fnOf _ hη (ProjSpace.pullRatio π _ i hU j) * fnOf _ hn ((s (gw i)).f n) := (r j).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg (_ * ·) (r i))))`. Establish `e'` using `hM.ratio (gw i) (gw j) n hn`.
+
+Rewrite using `[map_div₀, eq_div_iff ((map_ne_zero ψ).2 hyi)]`. Use `mul_right_cancel₀ hne ?_` and prove the remaining obligations. Rewrite using `[← e', e]`. Expand and normalize the polynomial expressions, which then agree. Establish `hI` using `GlobalTheory.T.projective_chart_generic_point_function K Ω m (fun k => ev (gw k)) X p π ψ i _ hη hU (ProjSpace.toProj_str p sk hsk) hM.base hyi hrat`.
+
+Establish `hdeg` using `GlobalTheory.T.projective_chart_surjective_function K Ω m _ X p π ψ i _ hη hU (ProjSpace.toProj_str p sk hsk) hM.bij.2 hM.base (adjoin_ratios_eq_top hR hspan hyi) hrat`. Establish `h₁` using `hiso.isSelfInter hM.arith (isSelfInter_pull_fs hFS hC hM.arith π (ProjSpace.toProj_str p sk hsk) hdeg A₀ hA₀ hU₀ _ (hI ▸ hf'))`. Establish `hA : (fun σ : K →+* ℂ => A₀ (σ.comp (algebraMap (𝓞 K) K))) = A'` using `funext fun σ => congrArg A' (TrueGeo.OfLattice.extEmb_eq rfl)`. Rewrite using `[ha.unique hM.arith h₁, hA, formHeight_linSubst_eq hN hNn hF.herm hgA hf.ne_zero hf.homog, ← hht]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem selfInter_eq (hFS : GlobalTheory.Published.FubiniStudyChowHeight) (hC : GlobalTheory.Published.CycleHeights)
     {Nm : (K →+* ℂ) → V → ℝ} {W : Submodule (𝓞 K) V} {ev : V →ₗ[K] Ω} {D : ℕ} {X : Scheme.{0}} [IsIntegral X]
     {p : X ⟶ Sp (𝓞 K)} {L : HermLB p} {ψ : Ω →+* X.functionField} {s : W → L.B.Sec} {t a : ℝ}
@@ -310,12 +394,18 @@ theorem selfInter_eq (hFS : GlobalTheory.Published.FubiniStudyChowHeight) (hC : 
 
 open IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O in
 
+/- English proof (translation)
+Introduce `hF hP _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hR hD hM ha` and use `(selfInter_eq hF hP.q11 hR hD hM ha).le`.
+-/
 theorem selfInter_le_of_chow : GlobalTheory.Published.FubiniStudyChowHeight → Hypotheses2 → ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (W : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (D : ℕ) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (L : GlobalTheory.HermLB p) (ψ : Ω →+* X.functionField) (s : W → L.B.Sec) (t a : ℝ), (∀ σ : K →+* ℂ, (starRingEnd ℂ).comp σ ≠ σ) → HasGram Nm → (∀ σ x, Nm ((starRingEnd ℂ).comp σ) x = Nm σ x) → W.FG → Submodule.span K (W : Set V) = ⊤ → GlobalTheory.DegVal.GenRatios ev → 0 < imageDeg ev D → GlobalTheory.ImageModel.IsModelOf Nm W ev D p L ψ s → (L.shift (fun _ => t) (fun _ => rfl)).IsSelfInter a → a ≤ (Module.finrank ℚ K : ℝ) * ((D : ℝ) + 1) * ((imageDeg ev D : ℝ) * (imageHeight Nm W ev D + t)) :=
   fun hF hP _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hR hD hM ha =>
     (selfInter_eq hF hP.q11 hR hD hM ha).le
 
 open IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O in
 
+/- English proof (translation)
+Introduce `hX` and use `selfInter_le_of_chow hX.fsch`.
+-/
 theorem selfInter_le : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (W : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (D : ℕ) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (L : GlobalTheory.HermLB p) (ψ : Ω →+* X.functionField) (s : W → L.B.Sec) (t a : ℝ), (∀ σ : K →+* ℂ, (starRingEnd ℂ).comp σ ≠ σ) → HasGram Nm → (∀ σ x, Nm ((starRingEnd ℂ).comp σ) x = Nm σ x) → W.FG → Submodule.span K (W : Set V) = ⊤ → GlobalTheory.DegVal.GenRatios ev → 0 < imageDeg ev D → GlobalTheory.ImageModel.IsModelOf Nm W ev D p L ψ s → (L.shift (fun _ => t) (fun _ => rfl)).IsSelfInter a → a ≤ (Module.finrank ℚ K : ℝ) * ((D : ℝ) + 1) * ((imageDeg ev D : ℝ) * (imageHeight Nm W ev D + t)) :=
   fun hX => selfInter_le_of_chow hX.fsch
 

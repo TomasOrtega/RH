@@ -16,6 +16,9 @@ def lift {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W) (f : UA �
     (Φ₁ : (Fin n × Fin d → AF F) → ℂ) (μ : Measure (UA σ W.J)) (𝓕 : Set (UA σ W.J)) (g : UA σ X.J) : ℂ :=
   ∫ h in 𝓕, f h * (starRingEnd ℂ) (theta om Φ₁ g h) ∂μ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lift_apply {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W) (f : UA σ W.J → ℂ)
     (Φ₁ : (Fin n × Fin d → AF F) → ℂ) (μ : Measure (UA σ W.J)) (𝓕 : Set (UA σ W.J)) (g : UA σ X.J) :
     lift om f Φ₁ μ 𝓕 g = ∫ h in 𝓕, f h * (starRingEnd ℂ) (theta om Φ₁ g h) ∂μ := rfl

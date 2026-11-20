@@ -13,6 +13,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbCover
 
+/- English proof (translation)
+Introduce `K _ _ A _ hA V hV`. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Establish `: GeometricallyIntegral A.hom` using `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hA.smooth hA.geomConnected`. Establish `: IsIntegral A.left` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian A.hom`.
+
+Establish `: CompactSpace A.left` using `QuasiCompact.compactSpace_of_compactSpace A.hom`. Set `O : (𝟙_ (Over (Sp K)) ⟶ A) → A.left.Opens` to `fun a => (𝟙 A * (toUnit A ≫ a)).left ⁻¹ᵁ V ⊓ (𝟙 A * (toUnit A ≫ a)⁻¹).left ⁻¹ᵁ V`. Establish `key : ∀ y : 𝟙_ (Over (Sp K)) ⟶ A, ∃ a : 𝟙_ (Over (Sp K)) ⟶ A, ∀ p, y.left p ∈ O a`. Introduce `y`. Use `GlobalTheory.AbelianProjective.isIso_transl_left y` as an intermediate fact.
+
+Establish `: IsIso ((toUnit A ≫ y) * 𝟙 A).left` using `inferInstanceAs (IsIso ((Over.forget _).map ((toUnit A ≫ y) * 𝟙 A)))`. Establish `: IsIso (ι[A] ≫ ((toUnit A ≫ y) * 𝟙 A)).left` using `inferInstanceAs (IsIso ((Over.forget _).map (ι[A] ≫ ((toUnit A ≫ y) * 𝟙 A))))`. Establish `h1 : ((((toUnit A ≫ y) * 𝟙 A).left ⁻¹ᵁ V : A.left.Opens) : Set A.left).Nonempty` using `GlobalTheory.SS.AmpCub.nonempty_preimage _ hV`. Establish `h2 : (((ι[A] ≫ ((toUnit A ≫ y) * 𝟙 A)).left ⁻¹ᵁ V : A.left.Opens) : Set A.left).Nonempty` using `GlobalTheory.SS.AmpCub.nonempty_preimage _ hV`. Establish `h3` using `nonempty_preirreducible_inter (TopologicalSpace.Opens.isOpen _) (TopologicalSpace.Opens.isOpen _) h1 h2`.
+
+Take `⟨a, ha⟩` from `GlobalTheory.AbelianProjective.exists_point A ((((toUnit A ≫ y) * 𝟙 A).left ⁻¹ᵁ V ⊓ (ι[A] ≫ ((toUnit A ≫ y) * 𝟙 A)).left ⁻¹ᵁ V).isOpen).isLocallyClosed h3`. Use `⟨a, fun p => ?_⟩` and prove the remaining obligations. Establish `e : y ≫ (𝟙 A * (toUnit A ≫ a)) = a ≫ ((toUnit A ≫ y) * 𝟙 A)`. Simplify using `[MonObj.comp_mul, ← Category.assoc]`. Establish `e' : y ≫ (𝟙 A * (toUnit A ≫ a)⁻¹) = a ≫ ι[A] ≫ ((toUnit A ≫ y) * 𝟙 A)`.
+
+Simplify using `[MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc]`. Both sides reduce to the same expression. Establish `hp` using `ha p`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(y.left ≫ (𝟙 A * (toUnit A ≫ a)).left) p ∈ V`.
+
+Rewrite using `[← Over.comp_left, e, Over.comp_left]`. Conclude with `hp.1`. Express the relevant statement in the definitionally equal form `(y.left ≫ (𝟙 A * (toUnit A ≫ a)⁻¹).left) p ∈ V`. Rewrite using `[← Over.comp_left, e', Over.comp_left]`. Conclude with `hp.2`.
+
+Establish `htop : ⨆ a, O a = ⊤`. Assume the negation of the conclusion as `hne`. Establish `hc : ((⨆ a, O a : A.left.Opens) : Set A.left)ᶜ.Nonempty` using `Set.nonempty_compl.2 fun h => hne (TopologicalSpace.Opens.ext h)`. Take `⟨y, hy⟩` from `GlobalTheory.AbelianProjective.exists_point A (TopologicalSpace.Opens.isOpen _).isClosed_compl.isLocallyClosed hc`. Take `⟨a, ha⟩` from `key y`.
+
+Conclude with `hy (IsLocalRing.closedPoint K) (TopologicalSpace.Opens.mem_iSup.2 ⟨a, ha _⟩)`. Take `⟨F, hF⟩` from `isCompact_univ.elim_finite_subcover (fun a => (O a : Set A.left)) (fun a => (O a).isOpen) fun x _ => by`. Establish `hx : x ∈ ⨆ a, O a` using `by rw [htop]; trivial`. Conclude with `Set.mem_iUnion.2 (TopologicalSpace.Opens.mem_iSup.1 hx)`. Use `⟨F.card, fun i => (F.equivFin.symm i).1, top_unique fun x _ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha, hx⟩` from `Set.mem_iUnion₂.1 (hF (Set.mem_univ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨F.equivFin ⟨a, ha⟩, by simp only [Equiv.symm_apply_apply]; exact hx⟩`.
+-/
 theorem cover : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ V : A.left.Opens, (V : Set A.left).Nonempty → ∃ (n : ℕ) (a : Fin n → (𝟙_ (Over (Sp K)) ⟶ A)), ⨆ i, ((𝟙 A * (toUnit A ≫ a i)).left ⁻¹ᵁ V ⊓ (𝟙 A * (toUnit A ≫ a i)⁻¹).left ⁻¹ᵁ V) = ⊤ := by
   classical
   intro K _ _ A _ hA V hV

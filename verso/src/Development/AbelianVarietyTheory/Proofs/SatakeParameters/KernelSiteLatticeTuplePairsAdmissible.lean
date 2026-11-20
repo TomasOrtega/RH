@@ -20,6 +20,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD`. Introduce `j hj La La' hL hL'`. Apply the tactic sequence `have hm : (sysS H X std).mm = D.R.m := by first | (rfl; done) | exact X.fl_m | exact I.fl_m`. Establish `hjm : j + 1 ≤ D.R.m` using `hm ▸ hj`. Establish `hSD0` using `GlobalTheory.T.kernelLattice_selfDual_even_rank_at_site t std J hD j (by omega) La hL`.
+
+Establish `hSD1` using `GlobalTheory.T.kernelLattice_selfDual_even_rank_at_site t std J hD (j + 1) hjm La' hL'`. Establish `hA : TaylorLogMetric.admitted D _ _ ((J.fd std).kerN j La) ((J.fd std).kerN (j + 1) La')` using `⟨hSD0.1, hSD1.1, hSD0.2, hSD1.2⟩`. Establish `hInt : ∀ x, IntOff (t.O u μ).S (xiM (sysS H X std) (J.fd std) (J.xi0 std S.Xi) j La La' x)` using `fun x => GlobalTheory.T.intOff_xi0_of_joint t std J S j La La' _`. Establish `hK` using `GlobalTheory.kerTh_entire_algCoef D t.cc t.δ t.B t.χ t.cc_ok t.δ_ok t.χ_ok (ssRec t u μ) (t.rd u μ).lev _ _ _ (t.O u μ).S hA (GlobalTheory.T.site_finite_data_level_pos_bad_prime_factors t std J) hInt`. Establish `hC` using `(GlobalTheory.SelfDualChiAlg.chi_detId_and_chiFac_alg D t.χ t.χ_ok).2 _ _ hA`.
+
+Establish `hsp : ∀ (i : ℕ) (hi : i ≤ D.R.m) (Lb : (sysS H X std).Lt i), ((sysS H X std).Pj i).IsLatTup Lb.2 → ∀ v, locSp ((sysS H X std).G.P.W v) (J.rho std v) ((J.fd std).kerN i Lb) = ((sysS H X std).latAt v i Lb.2).map ((((J.fd std).frM i Lb v).mulVecLin).restrictScalars ((sysS H X std).G …`. Introduce `i hi Lb hLb v`. Consider the cases of `i with`. Consider the case `zero => exact GlobalTheory.T.frame_localLattice_span_kernelLattice_zero t std J hD Lb hLb v`. Consider the case `succ k => exact GlobalTheory.T.frame_localLattice_span_kernelLattice_succ t std J hD k hi Lb hLb v`.
+
+Use `⟨hA, GlobalTheory.T.movedPairDatum_congr t std J S hD j hj La La' hL hL', hK.1, hK.2, GlobalTheory.T.latticeTuplePairScalar_mem_algebraicClosure t std J S hD j hj La La' hL hL', hC.1, hC.2, fun v => ⟨?_, ?_, hsp j (by omega) La hL v, hsp (j + 1) hjm La' hL' v⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.isUnit_det_frameMatrix_ofCharts (J.cp std) J.a ∅ j La v`. Conclude with `GlobalTheory.isUnit_det_frameMatrix_ofCharts (J.cp std) J.a ∅ (j + 1) La' v`.
+-/
 theorem pairOK_allSites : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => J.Dict std → S.Pair) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD
   intro j hj La La' hL hL'

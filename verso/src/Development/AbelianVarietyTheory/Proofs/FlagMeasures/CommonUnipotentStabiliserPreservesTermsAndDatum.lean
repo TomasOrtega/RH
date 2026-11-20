@@ -20,12 +20,23 @@ structure Keeps (F : FlagD H r) (s : V ≃ₗ[K] V) : Prop where
 section Group
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+The claim follows from `h.flag r x`.
+-/
 theorem Keeps.flagX {F : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (x : V) :
     s x ∈ F.X ↔ x ∈ F.X := h.flag r x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ _ => Iff.rfl, fun a => by simp, fun y _ => by simp⟩`.
+-/
 theorem keeps_one (F : FlagD H r) : Keeps F 1 :=
   ⟨fun _ _ => rfl, fun _ _ => Iff.rfl, fun a => by simp, fun y _ => by simp⟩
 
+/- English proof (translation)
+Use `⟨fun x y => ?_, fun a x => ?_, fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `[hs.iso, ht.iso]`. Simplify using `[hs.flag, ht.flag]`. Establish `h1` using `(hs.flag _ _).2 (ht.vec a)`. Establish `h2` using `add_mem h1 (hs.vec a)`.
+
+Simplify using `using h2`. Establish `h1` using `(hs.flagX _).2 (ht.mid y hy)`. Establish `h2` using `add_mem h1 (hs.mid y hy)`. Simplify using `using h2`.
+-/
 theorem Keeps.mul {F : FlagD H r} {s t : V ≃ₗ[K] V} (hs : Keeps F s) (ht : Keeps F t) :
     Keeps F (s * t) := by
   refine ⟨fun x y => ?_, fun a x => ?_, fun a => ?_, fun y hy => ?_⟩
@@ -38,8 +49,16 @@ theorem Keeps.mul {F : FlagD H r} {s t : V ≃ₗ[K] V} (hs : Keeps F s) (ht : K
     have h2 := add_mem h1 (hs.mid y hy)
     simpa using h2
 
+/- English proof (translation)
+The claim follows from `s.apply_symm_apply x`.
+-/
 theorem apply_inv (s : V ≃ₗ[K] V) (x : V) : s (s⁻¹ x) = x := s.apply_symm_apply x
 
+/- English proof (translation)
+Use `⟨fun x y => ?_, fun a x => ?_, fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hs.iso, apply_inv, apply_inv]`. Rewrite using `[← hs.flag, apply_inv]`. Rewrite using `[← hs.flag, map_sub, apply_inv]`. Simplify using `using neg_mem (hs.vec a)`.
+
+Rewrite using `[← hs.flagX, map_sub, apply_inv]`. Simplify using `using neg_mem (hs.mid y hy)`.
+-/
 theorem Keeps.inv {F : FlagD H r} {s : V ≃ₗ[K] V} (hs : Keeps F s) : Keeps F s⁻¹ := by
   refine ⟨fun x y => ?_, fun a x => ?_, fun a => ?_, fun y hy => ?_⟩
   · rw [← hs.iso, apply_inv, apply_inv]
@@ -49,9 +68,23 @@ theorem Keeps.inv {F : FlagD H r} {s : V ≃ₗ[K] V} (hs : Keeps F s) : Keeps F
   · rw [← hs.flagX, map_sub, apply_inv]
     simpa using neg_mem (hs.mid y hy)
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono fun _ hc => lt_of_lt_of_le hc h)`.
+-/
 theorem xa_mono (F : FlagD H r) {a b : ℕ} (h : a ≤ b) : F.Xa a ≤ F.Xa b :=
   Submodule.span_mono (Set.image_mono fun _ hc => lt_of_lt_of_le hc h)
 
+/- English proof (translation)
+Take `⟨h1, -, h3, h4⟩` from `h`. Establish `hmem : ∀ b : Fin r, F.e b.castSucc ∈ F.X` using `fun b => Submodule.subset_span ⟨b, b.2, rfl⟩`. Use `⟨h1, fun a x => ?_, fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hle : (F.Xa a).map (s : V →ₗ[K] V) ≤ F.Xa a`. Rewrite using `[Submodule.map_le_iff_le_comap]`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `hb1 : F.e b.castSucc ∈ F.Xa a` using `Submodule.subset_span ⟨b, hb, rfl⟩`. Establish `hb2` using `xa_mono F (le_of_lt hb) (h3 b)`. Simplify using `using add_mem hb2 hb1`.
+
+Establish `heq : (F.Xa a).map (s : V →ₗ[K] V) = F.Xa a` using `Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_map_eq s _)`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[← heq]`. Take `⟨y, hy, hxy⟩` from `hx`.
+
+Rewrite using `[← s.injective hxy]` and apply the resulting hypothesis. Introduce `hx`. Conclude with `hle ⟨x, hx, rfl⟩`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact h4 _ F.zperp`.
+
+Consider the case `cast b => exact h3 b`. Use `h4 y fun b => ?_` and prove the remaining obligations. Rewrite using `[← H.herm, hy _ (hmem b), star_zero]`.
+-/
 theorem keeps_of_inN [FiniteDimensional K V] {F : FlagD H r} {s : V ≃ₗ[K] V}
     (h : F.InN (s : V →ₗ[K] V)) : Keeps F s := by
   obtain ⟨h1, -, h3, h4⟩ := h
@@ -82,6 +115,11 @@ theorem keeps_of_inN [FiniteDimensional K V] {F : FlagD H r} {s : V ≃ₗ[K] V}
 
 end Group
 
+/- English proof (translation)
+Unfold `NF.R at hs`. Proceed by induction on `hs using Subgroup.closure_induction with`. Consider the case `mem x hx => exact ⟨keeps_of_inN hx.1, keeps_of_inN hx.2⟩`. Consider the case `one => exact ⟨keeps_one _, keeps_one _⟩`. Consider the case `mul x y _ _ hx hy => exact ⟨hx.1.mul hy.1, hx.2.mul hy.2⟩`.
+
+Consider the case `inv x _ hx => exact ⟨hx.1.inv, hx.2.inv⟩`.
+-/
 theorem keeps_of_mem [FiniteDimensional K V] (N : NF H r) {s : V ≃ₗ[K] V} (hs : s ∈ N.R) :
     Keeps N.F s ∧ Keeps N.F' s := by
   unfold NF.R at hs
@@ -92,14 +130,23 @@ theorem keeps_of_mem [FiniteDimensional K V] (N : NF H r) {s : V ≃ₗ[K] V} (h
   | inv x _ hx => exact ⟨hx.1.inv, hx.2.inv⟩
 
 omit [StarRing K] in
+/- English proof (translation)
+The claim follows from `Submodule.smul_mem_pointwise_smul x s Λ hx`.
+-/
 theorem apply_mem_smul (s : V ≃ₗ[K] V) {Λ : Submodule (𝓞 K) V} {x : V} (hx : x ∈ Λ) :
     s x ∈ s • Λ := Submodule.smul_mem_pointwise_smul x s Λ hx
 
 omit [StarRing K] in
+/- English proof (translation)
+The claim follows from `(Submodule.mem_smul_pointwise_iff_exists x s Λ).1 hx`.
+-/
 theorem exists_of_mem_smul {s : V ≃ₗ[K] V} {Λ : Submodule (𝓞 K) V} {x : V} (hx : x ∈ s • Λ) :
     ∃ y ∈ Λ, s y = x := (Submodule.mem_smul_pointwise_iff_exists x s Λ).1 hx
 
 omit [StarRing K] in
+/- English proof (translation)
+Use `⟨fun h => ?_, apply_mem_smul s⟩` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `exists_of_mem_smul h`. Rewrite using `[← s.injective hxy]` and apply the resulting hypothesis.
+-/
 theorem apply_mem_smul_iff (s : V ≃ₗ[K] V) (Λ : Submodule (𝓞 K) V) (x : V) :
     s x ∈ s • Λ ↔ x ∈ Λ := by
   refine ⟨fun h => ?_, apply_mem_smul s⟩
@@ -107,6 +154,9 @@ theorem apply_mem_smul_iff (s : V ≃ₗ[K] V) (Λ : Submodule (𝓞 K) V) (x : 
   rwa [← s.injective hxy]
 
 omit [StarRing K] in
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hx`. Use `⟨s y, apply_mem_smul s hy, ?_⟩` and prove the remaining obligations. Use `show g • s y = s (g • y)`. Rewrite using `[← algebraMap_smul K g y, map_smul, algebraMap_smul]`.
+-/
 theorem apply_mem_smulLat (s : V ≃ₗ[K] V) {Λ : Submodule (𝓞 K) V} (g : 𝓞 K) {x : V}
     (hx : x ∈ smulLat g Λ) : s x ∈ smulLat g (s • Λ) := by
   obtain ⟨y, hy, rfl⟩ := hx
@@ -114,6 +164,11 @@ theorem apply_mem_smulLat (s : V ≃ₗ[K] V) {Λ : Submodule (𝓞 K) V} (g : �
   show g • s y = s (g • y)
   rw [← algebraMap_smul K g y, map_smul, algebraMap_smul]
 
+/- English proof (translation)
+Introduce `t ht`. Take `⟨l, hl, x, hx, he⟩` from `Submodule.mem_sup.1 ht`. Establish `he' : l + x = t • F.e a` using `he`. Use `Submodule.mem_sup.2 ⟨s l, apply_mem_smul s hl, s x - t • (s (F.e a) - F.e a), sub_mem ((h.flag _ _).2 hx) (Submodule.smul_mem (F.Xa a.val) t (h.vec a)), ?_⟩` and prove the remaining obligations. Use `show _ = t • F.e a`.
+
+Rewrite using `[smul_sub, ← map_smul, ← he', map_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lead_le {F : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (Λ : Submodule (𝓞 K) V)
     (a : Fin (r + 1)) : lead F Λ a ≤ lead F (s • Λ) a := by
   intro t ht
@@ -125,15 +180,30 @@ theorem lead_le {F : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (Λ : Submod
   rw [smul_sub, ← map_smul, ← he', map_add]
   abel
 
+/- English proof (translation)
+Use `le_antisymm ?_ (lead_le h Λ a)` and prove the remaining obligations. Simplify using `using lead_le h.inv (s • Λ) a`.
+-/
 theorem lead_eq {F : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (Λ : Submodule (𝓞 K) V)
     (a : Fin (r + 1)) : lead F (s • Λ) a = lead F Λ a := by
   refine le_antisymm ?_ (lead_le h Λ a)
   simpa using lead_le h.inv (s • Λ) a
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => by rw [lead_eq h, hΛ.1], by rw [lead_eq h, hΛ.2]⟩`.
+-/
 theorem isFrame_smul {F : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) {Λ : Submodule (𝓞 K) V}
     {aa : Fin r → Submodule (𝓞 K) K} (hΛ : IsFrame F Λ aa) : IsFrame F (s • Λ) aa :=
   ⟨fun a => by rw [lead_eq h, hΛ.1], by rw [lead_eq h, hΛ.2]⟩
 
+/- English proof (translation)
+Introduce `a t x' hx' hx`. Take `⟨l', hl', rfl⟩` from `exists_of_mem_smul hx'`. Establish `h1 : l' - t • F'.e a ∈ F'.Xa a.val`. Rewrite using `[← h'.flag]`. Use `sub_mem hx (Submodule.smul_mem _ t (h'.vec a))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Take `⟨l, hl, h2, h3⟩` from `hΛ a t l' hl' h1`. Use `⟨s l, apply_mem_smul s hl, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `add_mem ((h.flag _ _).2 h2) (Submodule.smul_mem _ t (h.vec a))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[← map_sub]`.
+
+Conclude with `apply_mem_smulLat s g h3`.
+-/
 theorem isAdm_smul {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (h' : Keeps F' s)
     {Λ : Submodule (𝓞 K) V} {g : 𝓞 K} (hΛ : IsAdm F F' Λ g) : IsAdm F F' (s • Λ) g := by
   intro a t x' hx' hx
@@ -153,6 +223,17 @@ theorem isAdm_smul {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (h' : 
   · rw [← map_sub]
     exact apply_mem_smulLat s g h3
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hΛ`. Establish `hL` using `(isLatMod_top_bot_iff Λ).1 h1`. Establish `hspan : Submodule.span K ((s • Λ : Submodule (𝓞 K) V) : Set V) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Take `⟨y, rfl⟩` from `s.surjective x`. Establish `hy : y ∈ Submodule.span K (Λ : Set V)` using `by rw [hL.span_eq_top]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (apply_mem_smul s hy)`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem (ha trivial) (hb trivial)`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c (ha trivial)`. Use `⟨(isLatMod_top_bot_iff _).2 ⟨Submodule.FG.map _ hL.fg, hspan⟩, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Take `⟨y, rfl⟩` from `s.surjective x`. Rewrite using `[apply_mem_smul_iff, mem_dual_iff, hspan]`. Use `conv_rhs => rw [← h2, mem_dual_iff, hL.span_eq_top]`. Use `and_congr (by simp) ⟨fun hh x hx => ?_, fun hh x hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h]`. Conclude with `hh _ (apply_mem_smul s hx)`. Take `⟨z, hz, rfl⟩` from `exists_of_mem_smul hx`. Rewrite using `[h]`. Conclude with `hh z hz`.
+-/
 theorem isUnimod_smul {s : V ≃ₗ[K] V} (h : ∀ x y, H.B (s x) (s y) = H.B x y)
     {Λ : Submodule (𝓞 K) V} (hΛ : IsUnimod H Λ) : IsUnimod H (s • Λ) := by
   obtain ⟨h1, h2⟩ := hΛ
@@ -178,19 +259,31 @@ theorem isUnimod_smul {s : V ≃ₗ[K] V} (h : ∀ x y, H.B (s x) (s y) = H.B x 
     rw [h]; exact hh z hz
 
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+The claim follows from `h.mid y fun x hx => (mem_perp_iff H _ y).1 hy x (Submodule.mem_sup_left hx)`.
+-/
 theorem sub_mem_left {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) {y : V}
     (hy : y ∈ uPerp F F') : s y - y ∈ F.X :=
   h.mid y fun x hx => (mem_perp_iff H _ y).1 hy x (Submodule.mem_sup_left hx)
 
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+The claim follows from `h.mid y fun x hx => (mem_perp_iff H _ y).1 hy x (Submodule.mem_sup_right hx)`.
+-/
 theorem sub_mem_right {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F' s) {y : V}
     (hy : y ∈ uPerp F F') : s y - y ∈ F'.X :=
   h.mid y fun x hx => (mem_perp_iff H _ y).1 hy x (Submodule.mem_sup_right hx)
 
 omit [NumberField K] [StarRing K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Rewrite using `[← h, map_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem shift (s : V ≃ₗ[K] V) {l x y : V} (h : l + x = y) : s l + (s x - (s y - y)) = y := by
   rw [← h, map_add]; abel
 
+/- English proof (translation)
+Introduce and unpack `y ⟨hy, hy'⟩`. Take `⟨l, hl, x, hx, he⟩` from `Submodule.mem_sup.1 hy'`. Conclude with `⟨hy, Submodule.mem_sup.2 ⟨s l, apply_mem_smul s hl, _, sub_mem ((h.flagX _).2 hx) (sub_mem_left h hy), shift s he⟩⟩`.
+-/
 theorem latL_le {F : FlagD H r} (F' : FlagD H r) {s : V ≃ₗ[K] V} (h : Keeps F s)
     (Λ : Submodule (𝓞 K) V) : latL F F' Λ ≤ latL F F' (s • Λ) := by
   rintro y ⟨hy, hy'⟩
@@ -198,11 +291,21 @@ theorem latL_le {F : FlagD H r} (F' : FlagD H r) {s : V ≃ₗ[K] V} (h : Keeps 
   exact ⟨hy, Submodule.mem_sup.2 ⟨s l, apply_mem_smul s hl, _,
     sub_mem ((h.flagX _).2 hx) (sub_mem_left h hy), shift s he⟩⟩
 
+/- English proof (translation)
+Use `le_antisymm ?_ (latL_le F' h Λ)` and prove the remaining obligations. Simplify using `using latL_le F' h.inv (s • Λ)`.
+-/
 theorem latL_eq {F : FlagD H r} (F' : FlagD H r) {s : V ≃ₗ[K] V} (h : Keeps F s)
     (Λ : Submodule (𝓞 K) V) : latL F F' (s • Λ) = latL F F' Λ := by
   refine le_antisymm ?_ (latL_le F' h Λ)
   simpa using latL_le F' h.inv (s • Λ)
 
+/- English proof (translation)
+Introduce and unpack `⟨y', y⟩ ⟨⟨hy', hy⟩, hp⟩`. Take `⟨⟨l', l⟩, ⟨⟨hl', hl⟩, hc⟩, ⟨x', x⟩, ⟨hx', hx⟩, he⟩` from `Submodule.mem_sup.1 hp`. Establish `he1 : l' + x' = y'` using `congrArg Prod.fst he`. Establish `he2 : l + x = y` using `congrArg Prod.snd he`. Use `⟨⟨⟨latL_le F h' Λ hy'.1, hy'.2⟩, ⟨latL_le F' h Λ hy.1, hy.2⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.mem_sup.2 ⟨(s l', s l), ⟨⟨apply_mem_smul s hl', apply_mem_smul s hl⟩, ?_⟩, (s x' - (s y' - y'), s x - (s y - y)), ⟨sub_mem ((h'.flagX _).2 hx') (sub_mem_left h' hy'.1.1), sub_mem ((h.flagX _).2 hx) (sub_mem_left h hy.1.1)⟩, Prod.ext (shift s he1) (shift s he2)⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hc`. Establish `hab' : a + b = l - l'` using `hab`. Use `Submodule.mem_sup.2 ⟨s a, apply_mem_smulLat s g ha, s b, ⟨apply_mem_smul s hb.1, (h.flagX _).2 hb.2⟩, ?_⟩` and prove the remaining obligations. Use `show _ = s l - s l'`.
+
+Rewrite using `[← map_add, hab', map_sub]`.
+-/
 theorem iotaGraph_le {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (h' : Keeps F' s)
     (Λ : Submodule (𝓞 K) V) (g : 𝓞 K) : iotaGraph F F' Λ g ≤ iotaGraph F F' (s • Λ) g := by
   rintro ⟨y', y⟩ ⟨⟨hy', hy⟩, hp⟩
@@ -222,16 +325,27 @@ theorem iotaGraph_le {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (h' 
   show _ = s l - s l'
   rw [← map_add, hab', map_sub]
 
+/- English proof (translation)
+Use `le_antisymm ?_ (iotaGraph_le h h' Λ g)` and prove the remaining obligations. Simplify using `using iotaGraph_le h.inv h'.inv (s • Λ) g`.
+-/
 theorem iotaGraph_eq {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (h' : Keeps F' s)
     (Λ : Submodule (𝓞 K) V) (g : 𝓞 K) : iotaGraph F F' (s • Λ) g = iotaGraph F F' Λ g := by
   refine le_antisymm ?_ (iotaGraph_le h h' Λ g)
   simpa using iotaGraph_le h.inv h'.inv (s • Λ) g
 
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+The claim follows from `and_congr (h.flagX x) (h'.flagX x)`.
+-/
 theorem apply_mem_II {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (h' : Keeps F' s) (x : V) :
     s x ∈ II F F' ↔ x ∈ II F F' :=
   and_congr (h.flagX x) (h'.flagX x)
 
+/- English proof (translation)
+Introduce and unpack `y ⟨⟨hy1, hy2⟩, hy3⟩`. Take `⟨l, ⟨hl, hl'⟩, x, hx, he⟩` from `Submodule.mem_sup.1 hy1`. Use `⟨⟨Submodule.mem_sup.2 ⟨s l, ⟨apply_mem_smul s hl, ?_⟩, _, sub_mem ((apply_mem_II h h' _).2 hx) ⟨sub_mem_left h hy2, sub_mem_right h' hy2⟩, shift s he⟩, hy2⟩, hy3⟩` and prove the remaining obligations. Use `(mem_perp_iff H _ _).2 fun z hz => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `s.surjective z`.
+
+Rewrite using `[h.iso]`. Conclude with `(mem_perp_iff H _ _).1 hl' w ((apply_mem_II h h' _).1 hz)`.
+-/
 theorem latTh_le {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (h' : Keeps F' s)
     (Λ : Submodule (𝓞 K) V) : latTh F F' Λ ≤ latTh F F' (s • Λ) := by
   rintro y ⟨⟨hy1, hy2⟩, hy3⟩
@@ -244,12 +358,18 @@ theorem latTh_le {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (h' : Ke
   rw [h.iso]
   exact (mem_perp_iff H _ _).1 hl' w ((apply_mem_II h h' _).1 hz)
 
+/- English proof (translation)
+Use `le_antisymm ?_ (latTh_le h h' Λ)` and prove the remaining obligations. Simplify using `using latTh_le h.inv h'.inv (s • Λ)`.
+-/
 theorem latTh_eq {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (h' : Keeps F' s)
     (Λ : Submodule (𝓞 K) V) : latTh F F' (s • Λ) = latTh F F' Λ := by
   refine le_antisymm ?_ (latTh_le h h' Λ)
   simpa using latTh_le h.inv h'.inv (s • Λ)
 
 omit [StarRing K] in
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨y, rfl⟩` from `s.surjective x`. Rewrite using `[apply_mem_smul_iff, Submodule.mem_inf, Submodule.mem_inf, apply_mem_smul_iff]`. Conclude with `and_congr Iff.rfl (hS y)`.
+-/
 theorem smul_inf_rs (s : V ≃ₗ[K] V) (Λ : Submodule (𝓞 K) V) {S : Submodule K V}
     (hS : ∀ x, s x ∈ S ↔ x ∈ S) : s • Λ ⊓ rs (𝓞 K) S = s • (Λ ⊓ rs (𝓞 K) S) := by
   ext x
@@ -258,16 +378,25 @@ theorem smul_inf_rs (s : V ≃ₗ[K] V) (Λ : Submodule (𝓞 K) V) {S : Submodu
   exact and_congr Iff.rfl (hS y)
 
 omit [StarRing K] in
+/- English proof (translation)
+The claim follows from `AddSubgroup.relIndex_map_map_of_injective B.toAddSubgroup A.toAddSubgroup (f := s.toLinearMap.toAddMonoidHom) s.injective`.
+-/
 theorem idx_smul (s : V ≃ₗ[K] V) (A B : Submodule (𝓞 K) V) : idx (s • A) (s • B) = idx A B :=
   AddSubgroup.relIndex_map_map_of_injective B.toAddSubgroup A.toAddSubgroup
     (f := s.toLinearMap.toAddMonoidHom) s.injective
 
+/- English proof (translation)
+Unfold `bOne latF`. Rewrite using `[smul_inf_rs s Λ h.flagX, smul_inf_rs s Λ (h.flag j), smul_inf_rs s Λ (apply_mem_II h h'), ← Submodule.smul_sup', idx_smul]`.
+-/
 theorem bOne_eq {F F' : FlagD H r} {s : V ≃ₗ[K] V} (h : Keeps F s) (h' : Keeps F' s)
     (Λ : Submodule (𝓞 K) V) (j : ℕ) : bOne F F' (s • Λ) j = bOne F F' Λ j := by
   unfold bOne latF
   rw [smul_inf_rs s Λ h.flagX, smul_inf_rs s Λ (h.flag j), smul_inf_rs s Λ (apply_mem_II h h'),
     ← Submodule.smul_sup', idx_smul]
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H _ r N g Λ _ hΛ s hs`. Take `⟨h, h'⟩` from `keeps_of_mem N hs`. Take `⟨⟨h1, h2, h3⟩, h4⟩` from `hΛ`. Conclude with `⟨⟨⟨isUnimod_smul h.iso h1, isFrame_smul h h2, isFrame_smul h' h3⟩, isAdm_smul h h' h4⟩, ⟨latL_eq _ h Λ, latL_eq _ h' Λ, iotaGraph_eq h h' Λ _⟩, latTh_eq h h' Λ, bOne_eq h h' Λ _⟩`.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : NF H r), ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → ∀ s ∈ N.R, N.IsTerm g (s • Λ) ∧ N.SameDat g Λ (s • Λ) ∧ latTh N.F N.F' (s • Λ) = latTh N.F N.F' Λ ∧ N.bI (s • Λ) = N.bI Λ := by
   intro K V _ _ _ _ _ _ _ _ H _ r N g Λ _ hΛ s hs
   obtain ⟨h, h'⟩ := keeps_of_mem N hs

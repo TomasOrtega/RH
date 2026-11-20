@@ -18,6 +18,25 @@ namespace GlobalTheory.PrincipalMove
 
 open GlobalTheory.FinPlLoc
 
+/- English proof (translation)
+Introduce `D W ρ x Q g k u hg hk hM`. Use `set e : AE D := idem D Q with he_def`. Establish `he : e * e = e` using `idem_mul_self Q`. Establish `hr : g * k ∈ grpAt W Q` using `mul_mem hg hk`. Use `set U : Matrix (Fin ρ) (Fin ρ) (AE D) := u.1.1 with hU`.
+
+Establish `hu : ∀ i j : Fin ρ, (j < i → U i j = 0) ∧ U i i = 1` using `fun i j => u.2 i j`. Set `u' : GL (Fin ρ) (AE D)` to `mixGL he u.1 1`. Establish `hu'v : u'.val = e • U + (1 - e) • (1 : Matrix (Fin ρ) (Fin ρ) (AE D))` using `rfl`. Establish `hu' : u' ∈ UX D ρ`. Introduce `i j`.
+
+Use `⟨fun hij => ?_, ?_⟩` and prove the remaining obligations. Use `show u'.val i j = 0`. Rewrite using `[hu'v]`. Simplify using `[Matrix.add_apply, Matrix.smul_apply, (hu i j).1 hij, Matrix.one_apply_ne hij.ne']`. Use `show u'.val i i = 1`.
+
+Rewrite using `[hu'v]`. Simplify using `[Matrix.add_apply, Matrix.smul_apply, (hu i i).2]`. Use `⟨g * k, ⟨u', hu', ?_⟩, hr, by group⟩` and prove the remaining obligations. Establish `heM : e • (mt W k ⬝ x - mt W g⁻¹ ⬝ (x ⬝ U)) = 0`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]`. Conclude with `(mem_idOff_iff Q _).1 (hM i j)`. Establish `hgg : mt W g * mt W g⁻¹ = 1`. Rewrite using `[← FinPlLoc.mt_mul, mul_inv_cancel, FinPlLoc.mt_one]`. Establish `h1 : e • (mt W (g * k) ⬝ x) = e • (x ⬝ U)`.
+
+Establish `: mt W (g * k) ⬝ x = x ⬝ U + mt W g ⬝ (mt W k ⬝ x - mt W g⁻¹ ⬝ (x ⬝ U))`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc (mt W g) (mt W g⁻¹), hgg, Matrix.one_mul, FinPlLoc.mt_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, smul_add, ← Matrix.mul_smul (mt W g), heM, Matrix.mul_zero, add_zero]`. Establish `h2 : (1 - e) • (mt W (g * k) ⬝ x) = (1 - e) • x`.
+
+Establish `hm` using `(mem_grpAt_iff Q (g * k)).1 hr`. Establish `: (1 - e) • mt W (g * k) = (1 - e) • (1 : Matrix (Fin W.rank) (Fin W.rank) (AE D))` using `by conv_lhs => rw [← hm]`. Simplify using `only [mix, smul_add, smul_smul]`. Establish `h3 : (1 - e) * e = 0` using `by rw [sub_mul, one_mul, he, sub_self]`. Establish `h4 : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, one_mul, mul_sub, mul_one, he, sub_self, sub_zero]`.
+
+Rewrite using `[h3, h4, zero_smul, zero_add]`. Rewrite using `[← Matrix.smul_mul, this, Matrix.smul_mul, Matrix.one_mul]`. Use `show mt W (g * k) ⬝ x = x ⬝ u'.val`. Rewrite using `[hu'v]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← add_smul, add_sub_cancel, one_smul]`. Use `_ = e • (x ⬝ U) + (1 - e) • x := by rw [h1, h2]`. Use `_ = x ⬝ (e • U + (1 - e) • (1 : Matrix (Fin ρ) (Fin ρ) (AE D))) := by`. Rewrite using `[Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_one]`.
+-/
 theorem exists_move : ∀ {D : D7} (W : HSp D) {ρ : ℕ} (x : Mx D W.rank ρ) (Q : GlobalTheory.FinPl.Pl D → Prop) (g k : GA D W) (u : UX D ρ), g ∈ grpAt W Q → k ∈ grpAt W Q → MxOff Q (mt W k ⬝ x - mt W g⁻¹ ⬝ (x ⬝ u.1.1)) → ∃ r ∈ Rgrp W x, r ∈ grpAt W Q ∧ g = r * k⁻¹ := by
   intro D W ρ x Q g k u hg hk hM
   set e : AE D := idem D Q with he_def

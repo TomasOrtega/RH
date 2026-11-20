@@ -15,6 +15,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar Formalism.BasicNotio
 
 namespace GlobalTheory.TrueGeo.HtEvalUp
 
+/- English proof (translation)
+Establish `: Finite {y // p y}` using `Nat.finite_of_card_ne_zero (hd ▸ hd0)`. Use `letI := Fintype.ofFinite {y // p y}`. Rewrite using `[← finsum_subtype_eq_finsum_cond, ← finsum_subtype_eq_finsum_cond, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, ← hd, Nat.card_eq_fintype_card, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, Finset.card_univ]`.
+
+Use `_ ≤ _ := Finset.sum_le_sum fun i _ => h i.1 i.2`.
+-/
 theorem le_mul_finsum_cond {α : Type} {p : α → Prop} {d : ℕ} (hd : Nat.card {y // p y} = d) (hd0 : d ≠ 0)
     (r c : ℝ) (f g : α → ℝ) (h : ∀ y, p y → c + g y ≤ r * f y) :
     (d : ℝ) * c + ∑ᶠ (y) (_ : p y), g y ≤ r * ∑ᶠ (y) (_ : p y), f y := by
@@ -26,6 +31,9 @@ theorem le_mul_finsum_cond {α : Type} {p : α → Prop} {d : ℕ} (hd : Nat.car
         rw [Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, Finset.card_univ]
     _ ≤ _ := Finset.sum_le_sum fun i _ => h i.1 i.2
 
+/- English proof (translation)
+Rewrite using `[finsum_eq_sum_of_support_subset f (s := (hf.union hg).toFinset) (by intro a ha; simp [ha]), finsum_eq_sum_of_support_subset g (s := (hf.union hg).toFinset) (by intro a ha; simp [ha])]`. Conclude with `Finset.sum_le_sum fun a _ => h a`.
+-/
 theorem finsum_le_finsum_of_finite {α : Type} {f g : α → ℝ} (hf : (Function.support f).Finite)
     (hg : (Function.support g).Finite) (h : ∀ a, f a ≤ g a) : ∑ᶠ a, f a ≤ ∑ᶠ a, g a := by
   classical
@@ -33,6 +41,43 @@ theorem finsum_le_finsum_of_finite {α : Type} {f g : α → ℝ} (hf : (Functio
     finsum_eq_sum_of_support_subset g (s := (hf.union hg).toFinset) (by intro a ha; simp [ha])]
   exact Finset.sum_le_sum fun a _ => h a
 
+/- English proof (translation)
+Introduce `F _ _ C Y A k x hx hlg s hs α β hβ hα hβv`. Establish `hE : A.D.IsEqn x (eqn A.D x)` using `Base.isEqn_eqn A.D x`. Establish `hEk : ((k : ℕ) • A.D).IsEqn x (eqn A.D x ^ (k : ℕ))` using `hE.nsmul _`. Establish `hu : UnitAt x (s * (eqn A.D x : Y.Fn) ^ (k : ℕ))`. Use `hEk.generatesAt_iff.1 hs` as an intermediate fact.
+
+Simplify `this` using `[Units.val_pow_eq_pow_val]`. Take `⟨d, hd0, hc⟩` from `HtTwist.exists_card Y.str x hx`. Take `⟨N, hN, H⟩` from `exists_finprod_valAt_eq F Y x hx _ hu`. Establish `hk : (0 : ℝ) < ((k : ℕ) : ℝ)` using `Nat.cast_pos.2 k.pos`. Establish `hArch (σ : F →+* ℂ) : (d : ℝ) * (-(α σ + (k : ℕ) * (A.n : ℕ) * A.ci (InfinitePlace.mk σ))) + -Real.log ‖σ N‖ ≤ ((k : ℕ) : ℝ) * ∑ᶠ (z : Pts Y σ) (_ : under z = x), (Real.log (C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D x)⁻¹ : Y.Fnˣ)) z) / 2 - (A.n : ℕ) * A.ci (InfinitePlace.mk σ))`.
+
+Take `⟨hf, hp⟩` from `H ℂ σ`. Establish `key` using `TrivNef.finsum_neg_log (normHom : ℂ →*₀ ℝ).toMonoidHom (fun a ha => norm_ne_zero_iff.2 ha) hf (fun y => valAt y.1 (s * (eqn A.D x : Y.Fn) ^ (k : ℕ))) fun y hy => (Base.valAt_zpow y.1 (hy ▸ hu)).1`. Rewrite `key` using `[hp]`. Establish `key' : ∑ᶠ (z : Pts Y σ) (_ : under z = x), -Real.log ‖valAt z.1 (s * (eqn A.D x : Y.Fn) ^ (k : ℕ))‖ = -Real.log ‖σ N‖` using `key`. Rewrite using `[← key']`.
+
+Use `le_mul_finsum_cond (hc ℂ σ) hd0 _ _ _ _ fun z hz => ?_` and prove the remaining obligations. Establish `hz' : below z.1 = x` using `hz`. Establish `hz2 : under z = x` using `hz`. Establish `hGz : valAt z.1 (s * (eqn A.D x : Y.Fn) ^ (k : ℕ)) ≠ 0` using `(Base.valAt_zpow z.1 (hz' ▸ hu)).1`. Establish `hsplit : s = s * (eqn A.D x : Y.Fn) ^ (k : ℕ) * (((eqn A.D x)⁻¹ : Y.Fnˣ) : Y.Fn) ^ (k : ℕ)`.
+
+Rewrite using `[mul_assoc, ← mul_pow, Units.mul_inv, one_pow, mul_one]`. Establish `hgen : A.D.GeneratesAt (under z) (((eqn A.D x)⁻¹ : Y.Fnˣ) : Y.Fn)`. Rewrite using `[hz2, Units.val_inv_eq_inv_val]`. Conclude with `CartierDiv.isEqn_iff_generatesAt_inv.1 hE`. Establish `hreg : ((k : ℕ) • A.D).RegularAt (under z) ((((eqn A.D x)⁻¹ : Y.Fnˣ) : Y.Fn) ^ (k : ℕ))`.
+
+Rewrite using `[hz2]`. Use `(CartierDiv.isEqn_iff_generatesAt_inv.1 hEk).regularAt using 1` and compare the differences between its conclusion and the goal. Simplify using `[Units.val_pow_eq_pow_val, inv_pow]`. Establish `hGreg : RegAt (under z) (s * (eqn A.D x : Y.Fn) ^ (k : ℕ))` using `by rw [hz2]; exact hu.regAt`. Establish `hpn : C.pn Y σ _ (C.mPow Y σ A.D (k : ℕ) (A.m σ)) (C.cx Y σ s) z = ‖valAt z.1 (s * (eqn A.D x : Y.Fn) ^ (k : ℕ))‖ ^ 2 * C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D x)⁻¹ : Y.Fnˣ)) z ^ (k : ℕ)` using `by conv_lhs => rw [hsplit]`.
+
+Rewrite using `[C.pn_mul Y σ _ _ _ _ z hGreg hreg, C.pn_mPow Y σ A.D (k : ℕ) (A.m σ) _ z hgen, TrivNef.ratVal_eq_valAt]`. Establish `hh` using `hα σ z hz`. Rewrite `hh` using `[hpn]`. Establish `hP0` using `C.pn_nonneg Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D x)⁻¹ : Y.Fnˣ)) z`. Establish `ha : 0 < ‖valAt z.1 (s * (eqn A.D x : Y.Fn) ^ (k : ℕ))‖` using `norm_pos_iff.2 hGz`.
+
+Establish `hP : 0 < C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D x)⁻¹ : Y.Fnˣ)) z`. Break down `hP0.lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Rewrite `hh` using `[← h, zero_pow (PNat.ne_zero k), mul_zero]`.
+
+Conclude with `absurd hh (not_le.2 (Real.exp_pos _))`. Establish `hl` using `Real.log_le_log (Real.exp_pos _) hh`. Rewrite `hl` using `[Real.log_exp, Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow]`. Simplify using `only [Nat.cast_ofNat] at hl`. Establish `e : ((k : ℕ) : ℝ) * (Real.log (C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D x)⁻¹ : Y.Fnˣ)) z) / 2 - (A.n : ℕ) * A.ci (InfinitePlace.mk σ)) = ((k : ℕ) : ℝ) * Real.log (C.pn Y σ A.D (A.m σ) (C.cx Y σ ((eqn A.D x)⁻¹ : Y.Fnˣ)) z) / 2 - (k : ℕ) * (A.n : ℕ) * A.ci (InfinitePlace.mk σ)` using `by ring`.
+
+Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : Nat.card {y : AlgPt Y // below y.1 = x} = d` using `hc _ _`. Establish `hFin (v : HeightOneSpectrum (𝓞 F)) : (d : ℝ) * (-β v) + -Real.log (NumberField.HeightOneSpectrum.adicAbv F v N) ≤ ((k : ℕ) : ℝ) * ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v (Ext.instNonempty v).some y`. Take `⟨hf, hp⟩` from `H (AlgebraicClosure F) (algebraMap F _)`.
+
+Establish `key` using `TrivNef.finsum_neg_log (Ext.instNonempty v).some.w.toMonoidHom (fun a ha => (Ext.instNonempty v).some.w.ne_zero ha) hf (fun y => valAt y.1 (s * (eqn A.D x : Y.Fn) ^ (k : ℕ))) fun y hy => (Base.valAt_zpow y.1 (hy ▸ hu)).1`. Rewrite `key` using `[hp]`. Establish `key' : ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), -Real.log ((Ext.instNonempty v).some.w (valAt y.1 (s * (eqn A.D x : Y.Fn) ^ (k : ℕ)))) = -Real.log (NumberField.HeightOneSpectrum.adicAbv F v N)` using `key.trans (congrArg (fun a => -Real.log a) ((Ext.instNonempty v).some.w_alg N))`. Rewrite using `[← key']`. Use `le_mul_finsum_cond hA hd0 _ _ _ _ fun y hy => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hβv v (Ext.instNonempty v).some y hy`. Establish `hw : 0 < (Ext.instNonempty v).some.w (valAt y.1 (s * (eqn A.D x : Y.Fn) ^ (k : ℕ)))` using `(Ext.instNonempty v).some.w.pos (Base.valAt_zpow y.1 (hy ▸ hu)).1`. Establish `hl` using `Real.log_le_log (Real.exp_pos _) h1`. Rewrite `hl` using `[Real.log_exp, Real.log_mul hw.ne' (Real.exp_pos _).ne', Real.log_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hfin : Finite {y : AlgPt Y // below y.1 = x}` using `Nat.finite_of_card_ne_zero (hA ▸ hd0)`. Establish `hS : (Function.support fun v : HeightOneSpectrum (𝓞 F) => ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v (Ext.instNonempty v).some y).Finite`. Use `(Set.finite_iUnion fun y : {y : AlgPt Y // below y.1 = x} => hlg y.1 y.2).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hv` to reduce the goal to its premises.
+
+Use `finsum_eq_zero_of_forall_eq_zero fun y => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_if]`. Use `split_ifs with hy`. Assume the negation of the conclusion as `h0`. Conclude with `hn (Set.mem_iUnion.2 ⟨⟨y, hy⟩, ⟨_, h0⟩⟩)`.
+
+Both sides reduce to the same expression. Take `⟨hPF1, hPF2⟩` from `sum_log_embedding_add_finsum_log_adicAbv_eq_zero F N hN`. Establish `hb1 : (Function.support fun v => (d : ℝ) * (-β v)).Finite` using `hβ.subset fun v hv h0 => hv (by simp [h0])`. Establish `hb2 : (Function.support fun v => -Real.log (NumberField.HeightOneSpectrum.adicAbv F v N)).Finite` using `hPF1.subset fun v hv h0 => hv (by simp [h0])`. Establish `hb3 : (Function.support fun v => (d : ℝ) * (-β v) + -Real.log (NumberField.HeightOneSpectrum.adicAbv F v N)).Finite` using `(hb1.union hb2).subset (Function.support_add _ _)`.
+
+Establish `hb4 : (Function.support fun v => ((k : ℕ) : ℝ) * ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v (Ext.instNonempty v).some y).Finite` using `hS.subset fun v hv h0 => hv (by simp [h0])`. Establish `hFsum` using `finsum_le_finsum_of_finite hb3 hb4 hFin`. Rewrite `hFsum` using `[finsum_add_distrib hb1 hb2, ← mul_finsum, ← mul_finsum, finsum_neg_distrib, finsum_neg_distrib]`. Establish `hAsum` using `Finset.sum_le_sum fun σ (_ : σ ∈ Finset.univ) => hArch σ`. Rewrite `hAsum` using `[Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_neg_distrib, Finset.sum_neg_distrib]`.
+
+Establish `hdite : (∑ᶠ v : HeightOneSpectrum (𝓞 F), if h : Nonempty (Ext v) then ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v h.some y else 0) = ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v (Ext.instNonempty v).some y` using `finsum_congr fun v => dif_pos (Ext.instNonempty v)`. Establish `hn : (0 : ℝ) < ((A.n : ℕ) : ℝ)` using `Nat.cast_pos.2 A.n.pos`. Establish `hF : (0 : ℝ) < (Module.finrank ℚ F : ℝ)` using `Nat.cast_pos.2 Module.finrank_pos`. Establish `hd : (0 : ℝ) < (d : ℝ)` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero hd0)`. Rewrite using `[Adl.ht, hdite, hA, div_le_div_iff₀ (by positivity) (by positivity)]`.
+
+Use polynomial arithmetic with `[mul_pos hn hF]`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (k : ℕ+) (x : Y.X),
     IsClosed ({x} : Set Y.X) →
     (∀ y : AlgPt Y, below y.1 = x → {v : HeightOneSpectrum (𝓞 F) | ∃ e : Ext v, A.lg v e y ≠ 0}.Finite) →

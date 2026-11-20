@@ -25,6 +25,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.ModelPlaceBuilt2OfC
 
 namespace Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity
 
+/- English proof (translation)
+Take `⟨h4, h5, h6⟩` from `capWords_all_of hJ hJR hJL derivative_local_representative right_exponential_evaluation left_exponential_evaluation capelli_vector_as_generators right_capelli_as_generators left_capelli_as_generators exponential_degree_holds exponential_symbol_holds determinant_shift_coefficient …`. Conclude with `chartEqs_of_J operator_capelli_vector operator_right_capelli operator_left_capelli nilpotent_of_char_poly conjugation_algebraic_holds left_covariance_chart_holds chart_covariance_holds right_chart_holds nilpotent_lie_finite_holds h4 h5 h6 compact_zero_holds frame_existence vector …`.
+-/
 theorem chartEqs_of_capJoints (hJ : CapWordsOfParts) (hJR : CapRWordsOfParts) (hJL : CapLWordsOfParts) :
     ChartEqs := by
   obtain ⟨h4, h5, h6⟩ := capWords_all_of hJ hJR hJL derivative_local_representative right_exponential_evaluation left_exponential_evaluation capelli_vector_as_generators

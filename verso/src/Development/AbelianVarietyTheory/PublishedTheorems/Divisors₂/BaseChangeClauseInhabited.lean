@@ -8,6 +8,11 @@ namespace GlobalTheory.Published.CycPerfd.Model
 open GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `h : ∀ x : PreTilt S.R p, frobenius (teichmuller p x) = teichmuller p x ^ p` using `fun x => by`. Rewrite using `[WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, ← map_pow]`. Both sides reduce to the same expression. Establish `h2 : teichmuller p (root S.ε) ^ p = teichmuller p S.ε`. Rewrite using `[← map_pow]`.
+
+Use `congr 1`. Conclude with `(_root_.frobeniusEquiv (PreTilt S.R p) p).apply_symm_apply S.ε`. Simplify using `only [xi, Sandwich.mu, map_sum, map_pow, map_sub, map_one, h, h2]`. Rewrite using `[geom_sum_mul]`.
+-/
 theorem frobenius_mu (S : CycPerfd p) :
     frobenius (Sandwich.mu S.ε) = frobenius (xi S.ε) * Sandwich.mu S.ε := by
   have h : ∀ x : PreTilt S.R p, frobenius (teichmuller p x) = teichmuller p x ^ p := fun x => by
@@ -18,9 +23,15 @@ theorem frobenius_mu (S : CycPerfd p) :
   simp only [xi, Sandwich.mu, map_sum, map_pow, map_sub, map_one, h, h2]
   rw [geom_sum_mul]
 
+/- English proof (translation)
+Rewrite using `[← RingHom.mem_ker, S.ker_eq]`. Conclude with `Ideal.mem_span_singleton_self _`.
+-/
 theorem theta_xi (S : CycPerfd p) : fontaineTheta S.R p (xi S.ε) = 0 := by
   rw [← RingHom.mem_ker, S.ker_eq]; exact Ideal.mem_span_singleton_self _
 
+/- English proof (translation)
+Introduce `h` and use `by have hx : xi S.ε = (p : Ainf p S.R) := by simp [xi, root, h] have h0 := theta_xi S rw [hx, map_natCast] at h0 have h1 : (1 : S.R) = 0 := S.reg (by simp [h0]) exact S.nonunit.out (by rw [h0, ← h1]; exact isUnit_one)`.
+-/
 theorem eps_ne_one (S : CycPerfd p) : S.ε ≠ 1 := fun h => by
   have hx : xi S.ε = (p : Ainf p S.R) := by simp [xi, root, h]
   have h0 := theta_xi S
@@ -47,6 +58,13 @@ def muSemi (O O' : Type) [CommRing O] [CommRing O'] [Algebra O O'] (X : Type) [A
     | add x y hx hy => simp only [map_add, hx, hy]
     | single k c => simp
 
+/- English proof (translation)
+Establish `hT : ∀ m : ℕ, muSemi O O' (ZMod m) (PDiv.muT O m) = PDiv.muT O' m` using `fun m => by`. Simplify using `[muSemi, PDiv.muT]`. Set `s : SemiHom (algebraMap O O') (PDivGroup.mu p O') (PDivGroup.mu p O)` to `⟨fun n => muSemi O O' _, fun n a => by`. Proceed by induction on `a using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `single k c`. Establish `e : (AddMonoidAlgebra.single k c : AddMonoidAlgebra O (ZMod (p ^ (n + 1)))) = c • PDiv.muT O _ ^ k.val`. Rewrite using `[PDiv.muT_pow, ZMod.natCast_zmod_val]`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `muRes p O' n (muSemi O O' _ _) = muSemi O O' _ (muRes p O n _)`. Rewrite using `[e, map_smul (muRes p O n), PDiv.SemiBialgHom.smul_map, PDiv.SemiBialgHom.smul_map, map_smul (muRes p O' n), map_pow, map_pow, map_pow, map_pow, muRes_muT, hT, hT, muRes_muT]⟩`. Conclude with `⟨s.lift, fun n => (s.lift_app n 1 _).trans ((one_smul _ _).trans (hT _))⟩`.
+-/
 theorem exists_muCompare (O O' : Type) [CommRing O] [CommRing O'] [Algebra O O'] :
     ∃ j : PDivGroup.mu p O' ⟶ (PDivGroup.mu p O).baseChange O',
       ∀ n, j.app n (1 ⊗ₜ AddMonoidAlgebra.single 1 1) = AddMonoidAlgebra.single 1 1 := by
@@ -66,12 +84,18 @@ theorem exists_muCompare (O O' : Type) [CommRing O] [CommRing O'] [Algebra O O']
           map_pow, map_pow, muRes_muT, hT, hT, muRes_muT]⟩
   exact ⟨s.lift, fun n => (s.lift_app n 1 _).trans ((one_smul _ _).trans (hT _))⟩
 
+/- English proof (translation)
+Take `⟨S, -⟩` from `CycPerfd.nonempty p`. Conclude with `⟨S, _, S.over_refl, eps_ne_one S, exists_muCompare _ _⟩`.
+-/
 theorem baseChange_clause_inhabited : ∃ (S : CycPerfd p) (α : Ainf p S.R →+* Ainf p S.R), S.Over S α ∧ S.ε ≠ 1 ∧
     ∃ j : PDivGroup.mu p S.R ⟶ (PDivGroup.mu p S.R).baseChange S.R,
       ∀ n, j.app n (1 ⊗ₜ AddMonoidAlgebra.single 1 1) = AddMonoidAlgebra.single 1 1 := by
   obtain ⟨S, -⟩ := CycPerfd.nonempty p
   exact ⟨S, _, S.over_refl, eps_ne_one S, exists_muCompare _ _⟩
 
+/- English proof (translation)
+Take `⟨M, map, φ, lie, du, l, e, h1, -⟩` from `h p`. Use `⟨M S G, φ S G, lie S G, (h1 S G).2.2.2.2.2.2.1, (h1 S G).2.2.2.2.2.2.2.1, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, theta_xi, zero_smul]`.
+-/
 theorem xi_mem_fil (h : PrismaticDieudonnePerfd) (S : CycPerfd p) (G : PDivGroup p S.R) :
     ∃ (M : ModuleCat.{0} (Ainf p S.R)) (φ : M →ₛₗ[(frobenius : Ainf p S.R →+* Ainf p S.R)] M)
       (lie : M →ₛₗ[fontaineTheta S.R p] G.dual.Lie), Function.Surjective lie ∧

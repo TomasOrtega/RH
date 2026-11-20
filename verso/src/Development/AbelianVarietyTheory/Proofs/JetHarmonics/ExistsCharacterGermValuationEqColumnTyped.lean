@@ -35,6 +35,9 @@ def letterEquiv (Ty : Type) (r : Ty → ℕ) (n : ℕ) : (Σ τ : Ty, Fin (r τ)
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h` using `congrArg (algebraMap R k) (congrFun hu i)`. Simplify using `only [Matrix.mulVec, dotProduct, linPart, Matrix.of_apply, map_sum, map_mul, Pi.smul_apply, smul_eq_mul] at h`. Simplify using `only [Matrix.mulVec, dotProduct, TB.dAct, FB.actK, MvPowerSeries.coeff_map, Pi.smul_apply, smul_eq_mul]`. Conclude with `h`.
+-/
 theorem dAct_mulVec {R : Type} [CommRing R] {d : ℕ} {OE : Type} [CommRing OE] [StarRing OE] (k : Type) [CommRing k]
     [Algebra ℚ k] [Algebra R k] (B : FB R d OE) (a : OE) (u : Fin d → R) (s : R)
     (hu : (linPart (B.A.act a)).mulVec u = s • u) :
@@ -46,12 +49,32 @@ theorem dAct_mulVec {R : Type} [CommRing R] {d : ℕ} {OE : Type} [CommRing OE] 
   simp only [Matrix.mulVec, dotProduct, TB.dAct, FB.actK, MvPowerSeries.coeff_map, Pi.smul_apply, smul_eq_mul]
   exact h
 
+/- English proof (translation)
+Unfold `PowGerm.boxSer`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun b _ => (MvPowerSeries.rename_map _ φ (g b)).symm`.
+-/
 theorem map_boxSer {R k : Type} [CommRing R] [CommRing k] (φ : R →+* k) {n d : ℕ} (g : Fin n → PS R 1 d) :
     MvPowerSeries.map φ (PowGerm.boxSer g) = PowGerm.boxSer (fun b => MvPowerSeries.map φ (g b)) := by
   unfold PowGerm.boxSer
   rw [map_prod]
   exact Finset.prod_congr rfl fun b _ => (MvPowerSeries.rename_map _ φ (g b)).symm
 
+/- English proof (translation)
+Introduce `C _ _ v O _ _ hv d OE _ _ B h hg w0 k n Ty _ r _ σ u hu h0 hN ty P hP χ hχ hx`. Take `⟨P', rfl⟩ : ∃ P', P = MvPolynomial.rename (letterEquiv Ty r n) P'` from `⟨MvPolynomial.rename (letterEquiv Ty r n).symm P, by simp [MvPolynomial.rename_rename]⟩`. Rewrite `hx`, the goal using `[MvPolynomial.eval_rename]`. Use `set y : (Σ τ : Ty, Fin (r τ)) × Fin n → O := (fun ℓ : Letter Ty r n => ∑ j, u ⟨ℓ.1, ℓ.2.1⟩ j * dl (χ ℓ.2.2) j) ∘ (letterEquiv Ty r n) with hy`. Use `set x : O := MvPolynomial.eval y P' with hxdef`.
+
+Establish `hinj : Function.Injective (algebraMap O C)` using `hv.hom_inj`. Establish `hx0 : 0 < v (algebraMap O C x)`. Rewrite using `[pos_iff_ne_zero, Valuation.ne_zero_iff]`. Conclude with `fun e => hx (hinj (by rw [e, map_zero]))`. Take `⟨N, hNlt, ha⟩` from `hN x hx`.
+
+Use `choose a ha1 ha2 using ha`. Establish `hh : MvPowerSeries.constantCoeff h = 0`. Use `congrArg MvPowerSeries.constantCoeff hg.ax0` as an intermediate fact. Rewrite `this` using `[TB.WickVanishing.gt_const_ev_eq _ (TB.WickVanishing.pair_points_zero_constant TB.WickVanishing.gp_zero₂ (TB.WickVanishing.gp_pt 0)), map_zero]`. Then use the resulting hypothesis. Take `⟨g, ρ, hρ, hsum⟩` from `GlobalTheory.T.covariantDerivative_value_character_germs O d OE C B h hg hinj w0 N k n (ballIdeal hv _ hx0) (by show v (algebraMap O C (N : O)) < _; rwa [map_natCast]) (fun b => a (ty b)) (fun _ => 1) (fun b => by rw [ha1, mul_one]) (Σ τ : Ty, Fin (r τ)) u (fun b => {l | l.1 = ty …`.
+
+Establish `hl' : l.1 = ty b` using `hl`. Establish `h2 : v (algebraMap O C (σ l.1 (a (ty b)) - 1)) < v (algebraMap O C x)`. Rewrite using `[hl']`. Conclude with `ha2 _`. Use `⟨h2, ?_, dAct_mulVec C B _ _ _ (hu l _)⟩` and prove the remaining obligations.
+
+Apply `hv.isUnit_of_one'` to reduce the goal to its premises. Establish `h3` using `v.map_one_add_of_lt (lt_of_lt_of_le h2 (hv.map_le_one x))`. Rewrite using `[map_sub, map_one, add_sub_cancel] at h3)` and apply the resulting hypothesis. Use the proof step `(fun b l hl l' hl' => by`. Establish `e1 : l.1 = ty b` using `hl`.
+
+Establish `e2 : l'.1 = ty b` using `hl'`. Take `⟨a0, ha0⟩` from `h0 (ty b)`. Conclude with `GlobalTheory.T.canonicalGauge_eigenvector_pairing_integral O d OE C B h hg (σ (ty b)) a0 ha0 (u l) (u l') (fun c => e1 ▸ hu l c) (fun c => e2 ▸ hu l' c) _)`. Use `χ y (fun b => (hχ b).1)`. Use the proof step `(fun b l _ => GlobalTheory.MultiplicativeSeries.main O d B.G (χ b) (hχ b).2 (u l))`.
+
+Use the proof step `P' (fun mo hmo l b hne => by`. Establish `hmem : Finsupp.mapDomain (letterEquiv Ty r n) mo ∈ (MvPolynomial.rename (letterEquiv Ty r n) P').support`. Rewrite using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_rename_mapDomain _ (letterEquiv Ty r n).injective]`. Conclude with `MvPolynomial.mem_support_iff.1 hmo`. Conclude with `hP _ hmem (letterEquiv Ty r n (l, b)) (by rwa [Finsupp.mapDomain_apply (letterEquiv Ty r n).injective]))`.
+
+Use `⟨PowGerm.boxSer g, ?_⟩` and prove the remaining obligations. Rewrite using `[map_boxSer, MvPolynomial.map_rename, GlobalTheory.nabValN_boxSer O d OE B C h w0 hh k n _ (Σ τ : Ty, Fin (r τ)) (Letter Ty r n) (letterEquiv Ty r n) _ (fun l i => algebraMap O C (u l i)) _ (fun _ => rfl) (fun _ => rfl), MvPolynomial.support_map_of_injective _ hinj]`. Simplify using `only [MvPolynomial.coeff_map]`. Rewrite using `[hsum, map_add]`. Conclude with `v.map_add_eq_of_lt_left hρ`.
+-/
 theorem exists_germ_valuation_eq : ∀ (C : Type) [Field C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ (d : ℕ) (OE : Type) [CommRing OE] [StarRing OE] (B : FB O d OE) (h : PS C 2 d), B.IsCanonGauge C h → ∀ (w0 : OE) (k n : ℕ) (Ty : Type) [Fintype Ty] (r : Ty → ℕ) [Fintype (Letter Ty r n)] (σ : Ty → (OE →+* O)) (u : (Σ τ : Ty, Fin (r τ)) → Fin d → O), (∀ ℓ a, (linPart (B.A.act a)).mulVec (u ℓ) = σ ℓ.1 a • u ℓ) → (∀ τ, ∃ a0, IsUnit (σ τ a0 - σ τ (star a0))) → (∀ x : O, x ≠ 0 → ∃ N : ℕ, v (N : C) < v (algebraMap O C x) ∧ ∀ τ, ∃ a : OE, star a * a = (N : OE) ∧ v (algebraMap O C (σ τ a - 1)) < v (algebraMap O C x)) → ∀ (ty : Fin n → Ty) (P : MvPolynomial (Letter Ty r n) O), (∀ mo ∈ P.support, ∀ ℓ, mo ℓ ≠ 0 → ℓ.1 = ty ℓ.2.2) → ∀ χ : Fin n → PS O 1 d, (∀ b, IsCh B.G.F (χ b)) → MvPolynomial.eval (fun ℓ : Letter Ty r n => ∑ j, u ⟨ℓ.1, ℓ.2.1⟩ j * dl (χ ℓ.2.2) j) P ≠ 0 → ∃ f : PS O n d, v (nabValN B C h w0 k (MvPowerSeries.map (algebraMap O C) f) (fun ℓ : Letter Ty r n => ℓ.2.2) (fun (ℓ : Letter Ty r n) i => algebraMap O C (u ⟨ℓ.1, ℓ.2.1⟩ i)) (MvPolynomial.map (algebraMap O C) P)) = v (algebraMap O C (MvPolynomial.eval (fun ℓ : Letter Ty r n => ∑ j, u ⟨ℓ.1, ℓ.2.1⟩ j * dl (χ ℓ.2.2) j) P)) := by
   intro C _ _ v O _ _ hv d OE _ _ B h hg w0 k n Ty _ r _ σ u hu h0 hN ty P hP χ hχ hx
   classical

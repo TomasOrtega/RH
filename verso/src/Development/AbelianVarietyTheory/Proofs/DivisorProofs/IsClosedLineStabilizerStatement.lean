@@ -10,6 +10,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.IwasawaKAvgInt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IwasawaKAvgInt.isClosed_lineStab_arch | exact GlobalTheory.IwasawaKAvgInt.isClosed_lineStab_arch | (intros; apply GlobalTheory.IwasawaKAvgInt.isClosed_lineStab_arch <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isClosed_line_stabilizer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (X : Spc F E n) (x : Fin n → E), x ≠ 0 →
     IsClosed (lineStab σ X x : Set (UAtSub σ X (evI F))) := by

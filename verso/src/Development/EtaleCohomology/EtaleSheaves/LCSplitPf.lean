@@ -16,12 +16,32 @@ def Torsor : Prop := ∀ (q : ℕ) [NeZero q] (S : Type) [CommRing S] (f g : S),
     Function.Surjective (PrimeSpectrum.comap (algebraMap S C)) ∧
     (Nonempty (C →ₐ[S] S) → ∃ a b, φ = lcMap (rL f g) a - lcMap (rR f g) b)
 
+/- English proof (translation)
+Introduce `q _ S _ hS f g hfg φ`. Take `⟨ε, hε, hφ⟩` from `hI q _ φ`. Take `⟨C, _, _, hEt, hFin, hSurj, hsec⟩` from `hT q S f g hfg φ ε hε hφ`. Conclude with `hsec (hF S C hS hSurj)`.
+-/
 theorem LCSplit_of_idem (hF : FinEtSection) (hI : Idem) (hT : Torsor) : LCSplit := by
   intro q _ S _ hS f g hfg φ
   obtain ⟨ε, hε, hφ⟩ := hI q _ φ
   obtain ⟨C, _, _, hEt, hFin, hSurj, hsec⟩ := hT q S f g hfg φ ε hε hφ
   exact hsec (hF S C hS hSurj)
 
+/- English proof (translation)
+Introduce `q _ R _ φ`. Set `E` to `fun c : ZMod q => PrimeSpectrum.isIdempotentElemEquivClopens (R := R) |>.symm ⟨{x | φ x = c}, φ.isLocallyConstant.isClopen_fiber c⟩`. Establish `hB : ∀ c, PrimeSpectrum.basicOpen (E c).1 = ⟨{x | φ x = c}, (φ.isLocallyConstant.isClopen_fiber c).isOpen⟩` using `fun c => PrimeSpectrum.basicOpen_isIdempotentElemEquivClopens_symm _`. Establish `hmem : ∀ (p : PrimeSpectrum R) c, φ p = c ↔ (E c).1 ∉ p.asIdeal`. Introduce `p c`.
+
+Use `congrArg (fun U : TopologicalSpace.Opens (PrimeSpectrum R) => p ∈ U) (hB c)` as an intermediate fact. Simplify using `only [PrimeSpectrum.mem_basicOpen] at this`. Conclude with `(this.to_iff.trans (by rfl)).symm`. Use `⟨fun c => (E c).1, ?_, hmem⟩` and prove the remaining obligations. Establish `hid : ∀ c, IsIdempotentElem (E c).1` using `fun c => (E c).2`.
+
+Establish `horth : OrthogonalIdempotents (fun c => (E c).1)`. Use `⟨hid, ?_⟩` and prove the remaining obligations. Introduce `c d hcd`. Apply `IsIdempotentElem.eq_zero_of_isNilpotent ((hid c).mul (hid d))` to reduce the goal to its premises. Rewrite using `[nilpotent_iff_mem_prime]`.
+
+Introduce `J hJ`. Assume the negation of the conclusion as `h`. Establish `hc : (E c).1 ∉ J` using `fun hc => h (J.mul_mem_right _ hc)`. Establish `hd : (E d).1 ∉ J` using `fun hd => h (J.mul_mem_left _ hd)`. Conclude with `hcd (((hmem ⟨J, hJ⟩ c).2 hc).symm.trans ((hmem ⟨J, hJ⟩ d).2 hd))`.
+
+Use `CompleteOrthogonalIdempotents.of_prod_one_sub horth ?_` and prove the remaining obligations. Establish `hP : IsIdempotentElem (∏ c, (1 - (E c).1))` using `by classical`. Proceed by induction on `(Finset.univ : Finset (ZMod q)) using Finset.induction_on with`. Consider the case `empty => simpa using IsIdempotentElem.one`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha]`.
+
+Conclude with `(hid a).one_sub.mul ih`. Apply `IsIdempotentElem.eq_zero_of_isNilpotent hP` to reduce the goal to its premises. Rewrite using `[nilpotent_iff_mem_prime]`. Introduce `J hJ`. Rewrite using `[Ideal.IsPrime.prod_mem_iff]`.
+
+Use `⟨φ ⟨J, hJ⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `hn : (E (φ ⟨J, hJ⟩)).1 ∉ J` using `(hmem ⟨J, hJ⟩ _).1 rfl`. Establish `h0 : (E (φ ⟨J, hJ⟩)).1 * (1 - (E (φ ⟨J, hJ⟩)).1) ∈ J`. Rewrite using `[mul_sub, mul_one, (hid _).eq, sub_self]`. Conclude with `J.zero_mem`.
+
+Conclude with `(hJ.mem_or_mem h0).resolve_left hn`.
+-/
 theorem idem_of : Idem := by
   intro q _ R _ φ
   classical
@@ -62,6 +82,9 @@ theorem idem_of : Idem := by
     rw [mul_sub, mul_one, (hid _).eq, sub_self]; exact J.zero_mem
   exact (hJ.mem_or_mem h0).resolve_left hn
 
+/- English proof (translation)
+The claim follows from `LCSplit_of_idem hF idem_of hT`.
+-/
 theorem LCSplit_of (hF : FinEtSection) (hT : Torsor) : LCSplit := LCSplit_of_idem hF idem_of hT
 
 section Conc
@@ -120,12 +143,18 @@ def TorSec : Prop := ∀ (q : ℕ) [NeZero q] (S : Type) [CommRing S] (f g : S),
   letI := (torMap f g hε).toAlgebra
   Nonempty (Tor f g hε →ₐ[S] S) → ∃ a b, φ = lcMap (rL f g) a - lcMap (rR f g) b
 
+/- English proof (translation)
+Introduce `q _ S _ f g hfg φ ε hε hφ`. Use `letI := (torMap f g hε).toAlgebra`. Take `⟨h1, h2, h3⟩` from `hE q S f g hfg ε hε`. Conclude with `⟨Tor f g hε, inferInstance, (torMap f g hε).toAlgebra, h1, h2, h3, hS q S f g hfg φ ε hε hφ⟩`.
+-/
 theorem torsor_of (hE : TorEt) (hS : TorSec) : Torsor := by
   intro q _ S _ f g hfg φ ε hε hφ
   letI := (torMap f g hε).toAlgebra
   obtain ⟨h1, h2, h3⟩ := hE q S f g hfg ε hε
   exact ⟨Tor f g hε, inferInstance, (torMap f g hε).toAlgebra, h1, h2, h3, hS q S f g hfg φ ε hε hφ⟩
 
+/- English proof (translation)
+The claim follows from `LCSplit_of hF (torsor_of hE hS)`.
+-/
 theorem LCSplit_of_tor (hF : FinEtSection) (hE : TorEt) (hS : TorSec) : LCSplit := LCSplit_of hF (torsor_of hE hS)
 
 end LateralTheory.E.LCSplitPf

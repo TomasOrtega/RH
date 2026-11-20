@@ -15,6 +15,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `: CompleteSpace Wp` using `FiniteDimensional.complete ℂ Wp`. Establish `: CompleteSpace Wq` using `FiniteDimensional.complete ℂ Wq`. Establish `hp : ∀ n : ℕ, A.comp (D' ^ n) = (D ^ n).comp A`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => ext v`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Use extensionality with `v`. Establish `e1` using `congrArg (fun T : Wq →L[ℂ] Wp => T (D' v)) ih`.
+
+Establish `e2` using `congrArg (fun T : Wq →L[ℂ] Wp => T v) h`. Simplify using `only [ContinuousLinearMap.comp_apply] at e1 e2 ⊢`. Rewrite using `[pow_succ, pow_succ, ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, e1, e2]`. Establish `h1` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) D'`. Establish `h2` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) D`.
+
+Establish `g1` using `h1.map (ContinuousLinearMap.compL ℂ Wq Wq Wp A) (ContinuousLinearMap.continuous _)`. Establish `g2` using `h2.map ((ContinuousLinearMap.compL ℂ Wq Wp Wp).flip A) (ContinuousLinearMap.continuous _)`. Establish `e : ((ContinuousLinearMap.compL ℂ Wq Wq Wp A) ∘ fun n : ℕ => ((n.factorial : ℂ)⁻¹) • D' ^ n) = (((ContinuousLinearMap.compL ℂ Wq Wp Wp).flip A) ∘ fun n : ℕ => ((n.factorial : ℂ)⁻¹) • D ^ n)`. Use function extensionality and compare the values at `n`. Simplify using `only [Function.comp_apply, ContinuousLinearMap.compL_apply, ContinuousLinearMap.flip_apply, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp, hp]`.
+
+Rewrite `g1` using `[e]`. Conclude with `g1.unique g2`.
+-/
 theorem exp_intertwine {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [NormedSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) (D' : Wq →L[ℂ] Wq)
     (D : Wp →L[ℂ] Wp) (h : A.comp D' = D.comp A) :
@@ -43,6 +54,9 @@ theorem exp_intertwine {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ W
   rw [e] at g1
   exact g1.unique g2
 
+/- English proof (translation)
+Establish `h` using `HermitianFormRankFour.exp_semiconj (g * X * g⁻¹) X g (by`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hg, Matrix.mul_one])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (NormedSpace.exp (g * X * g⁻¹)) g g⁻¹, Matrix.mul_nonsing_inv _ hg, Matrix.mul_one]`. Use `_ = g * NormedSpace.exp X * g⁻¹ := by rw [h]`.
+-/
 theorem exp_conj {g : Mx k r} (hg : IsUnit g.det) (X : Mx k r) :
     NormedSpace.exp (g * X * g⁻¹) = g * NormedSpace.exp X * g⁻¹ := by
   have h := HermitianFormRankFour.exp_semiconj (g * X * g⁻¹) X g (by
@@ -51,6 +65,15 @@ theorem exp_conj {g : Mx k r} (hg : IsUnit g.det) (X : Mx k r) :
         rw [Matrix.mul_assoc (NormedSpace.exp (g * X * g⁻¹)) g g⁻¹, Matrix.mul_nonsing_inv _ hg, Matrix.mul_one]
     _ = g * NormedSpace.exp X * g⁻¹ := by rw [h]
 
+/- English proof (translation)
+Take `⟨X, hX⟩ : ∃ X, X = ∑ p : Fin m × Fin m, B p.1 p.2 • unitB (Hpk k r) Bs p.1 p.2` from `⟨_, rfl⟩`. Rewrite using `[← hX]`. Establish `hsk : Xᴴ * Hpk k r + Hpk k r * X = 0`. Rewrite using `[hX, ← KLG.sum_unitB]`. Conclude with `HermitianFormRankFour.skew_of Qx8.hpk_herm hBs`.
+
+Establish `hs` using `HermitianFormSums.ec_sum elementary_lie_elements hπ Finset.univ (fun p : Fin m × Fin m => B p.1 p.2) (fun p => unitB (Hpk k r) Bs p.1 p.2) (fun p => frame_lie hB p.1 p.2) 0 (SkewHermitianParts.inGl_zero z)`. Use `beta_reduce at hs`. Rewrite `hs` using `[← hX]`. Establish `hL : InLieW k r z X`. Use `hs.1.1` as an intermediate fact.
+
+Rewrite `this` using `[SkewHermitianParts.hpart1_skew hsk]`. Then use the resulting hypothesis. Establish `he : ecOp π X = dOp π X`. Unfold `ecOp`. Rewrite using `[SkewHermitianParts.hpart1_skew hsk, SkewHermitianParts.hpart2_skew hsk, SkewHermitianParts.dOp_zero, smul_zero, add_zero]`. Use `⟨hL, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `representation_exp W k r z π hπ X hL 1`. Simplify using `only [Complex.ofReal_one, one_smul] at h2`. Rewrite using `[h2, ← he, hs.2]`.
+-/
 theorem pi_exp_frame {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W]
     {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (W →L[ℂ] W)} (hπ : Qr.IsRepW k r z π) {m : ℕ}
     {Bs : Fin m → Fin (2 * r + k + 1) → ℂ} (hB : IsFrameOf k r [z] Bs) (B : Matrix (Fin m) (Fin m) ℂ)
@@ -81,6 +104,39 @@ theorem pi_exp_frame {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [Fini
 end KLR
 
 open KLR in
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ k r z z' π π' hz hz' hT hT' hπ hπ' g hg hGG Fr hFr A hA h hh h' hh' hgh`. Establish `hgu` using `hg.1`. Establish `hgU : IsUnit g.det` using `WeylGroupFacts.isUnit_of_uh hgu`. Establish `hhU : IsUnit h.det` using `WeylGroupFacts.isUnit_of_uh hh.1`. Establish `cancel : ∀ M : Mx k r, IsUnit M.det → ∀ v, M⁻¹ *ᵥ (M *ᵥ v) = v` using `fun M hM v => by`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hM, Matrix.one_mulVec]`. Take `⟨y, hy⟩ : ∃ y, y = g⁻¹ *ᵥ z` from `⟨_, rfl⟩`. Rewrite `hFr` using `[← hy]`. Establish `hgy : g *ᵥ y = z` using `by rw [hy]; exact Qx8.inv_mulVec_uh hgu z`. Establish `hginv : g⁻¹ ∈ Glev k r (Fin.last r)` using `FrameEntries.glev_inv hg`.
+
+Establish `hyW : inWb k r y` using `by rw [hy]; exact Qx8.inWb_mulVec hginv hz`. Establish `hyy : herm (Hpk k r) y y = -((Tz k r z : ℝ) : ℂ)`. Rewrite using `[← Qx8.herm_self', ← hgy, Qx8.herm_UH hgu]`. Establish `hζ : herm (Hpk k r) z' y = zetaL k r z z' (Fin.last r) g`. Unfold `zetaL`.
+
+Rewrite using `[Qx8.fvec_last, Qx8.fvec_last, ← hgy, Qx8.herm_UH hgu]`. Establish `hpos` using `Qx8.GGl_pos hz hz' hT hT' hg hGG`. Establish `hG2 : 0 < Complex.normSq (herm (Hpk k r) y z') - Tz k r z * Tz k r z'`. Rewrite using `[← Qx8.herm_conj, hζ]`. Establish `hc : Complex.normSq (star (zetaL k r z z' (Fin.last r) g)) = Complex.normSq (zetaL k r z z' (Fin.last r) g)` using `Complex.normSq_conj _`.
+
+Rewrite using `[hc]`. Conclude with `hpos`. Take `⟨e', s, c, hs, he', he'W, he'z, he'e⟩` from `Qx8.orth_unit hyW hz' hT' hyy (Qx8.herm_self' z') hG2`. Establish `hFz' : ∀ a, herm (Hpk k r) (Fr a) z' = 0` using `fun a => hFr.2.2 a z' (by simp)`. Establish `hFy : ∀ a, herm (Hpk k r) (Fr a) y = 0` using `fun a => hFr.2.2 a y (by simp)`.
+
+Establish `hFe : ∀ a, herm (Hpk k r) (Fr a) e' = 0`. Introduce `a`. Rewrite using `[he', Qx8.herm_smul_right', Qx8.herm_add_right', Qx8.herm_smul_right', hFy, hFz']`. Simplify using the standard rewrite rules. Establish `hFr2 : IsFrameOf k r [z', e'] Fr` using `⟨hFr.1, hFr.2.1, fun a v hv => by`.
+
+Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Break down `hv with rfl | rfl` into its components or cases. Conclude with `hFz' a`. Conclude with `hFe a⟩`. Establish `hFz'1 : IsFrameOf k r [z'] Fr` using `⟨hFr.1, hFr.2.1, fun a v hv => by`.
+
+Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Substitute `hv` using the available equality. Conclude with `hFz' a⟩`. Establish `e1 : h *ᵥ (g *ᵥ (h' *ᵥ y)) = h *ᵥ z`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hgh, hgy, hh.2.2]`.
+
+Establish `e2 : g *ᵥ (h' *ᵥ y) = z`. Rewrite using `[← cancel h hhU (g *ᵥ (h' *ᵥ y)), e1, cancel h hhU z]`. Establish `hh'y : h' *ᵥ y = y`. Combine the equalities or inequalities in the displayed calculation. Establish `hh'e : h' *ᵥ e' = e'`.
+
+Rewrite using `[he', Matrix.mulVec_smul, Matrix.mulVec_add, Matrix.mulVec_smul, hh'y, hh'.2.2]`. Take `⟨B, hBs, hBe⟩` from `KLG.stab_exp hz' hT' he'W he'z he'e hFr2 hh' hh'e`. Rewrite `hBe` using `[KLG.sum_unitB]`. Take `⟨-, hE'⟩` from `pi_exp_frame hπ' hFz'1 B hBs`. Establish `hgF : IsFrameOf k r [z] (fun a => g *ᵥ Fr a)` using `⟨fun a => Qx8.inWb_mulVec hg (hFr.1 a), fun a b => by`.
+
+Rewrite using `[Qx8.herm_UH hgu]; exact hFr.2.1 a b, fun a v hv => by`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hv`. Substitute `hv` using the available equality. Rewrite using `[← hgy, Qx8.herm_UH hgu]`. Conclude with `hFy a⟩`.
+
+Take `⟨hL, hE⟩` from `pi_exp_frame hπ hgF B hBs`. Establish `hconj : g * h' * g⁻¹ = NormedSpace.exp (∑ p : Fin (k - 1) × Fin (k - 1), B p.1 p.2 • unitB (Hpk k r) (fun a => g *ᵥ Fr a) p.1 p.2)`. Establish `hsum : (∑ p : Fin (k - 1) × Fin (k - 1), B p.1 p.2 • unitB (Hpk k r) (fun a => g *ᵥ Fr a) p.1 p.2) = g * (∑ p : Fin (k - 1) × Fin (k - 1), B p.1 p.2 • unitB (Hpk k r) Fr p.1 p.2) * g⁻¹`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Qx8.unitB_conj Fr p.1 p.2 hgu]`. Rewrite using `[hsum, ← hBe]`. Conclude with `(exp_conj hgU _).symm`. Establish `hD : A.comp (∑ p : Fin (k - 1) × Fin (k - 1), B p.1 p.2 • ecOp π' (unitB (Hpk k r) Fr p.1 p.2)) = (∑ p : Fin (k - 1) × Fin (k - 1), B p.1 p.2 • ecOp π (unitB (Hpk k r) (fun a => g *ᵥ Fr a) p.1 p.2)).comp A`. Use extensionality with `v`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `hA p.1 p.2 v`. Establish `hX` using `exp_intertwine A _ _ hD`.
+
+Rewrite `hX` using `[← hE', ← hE, hBe, ← hconj]`. Establish `hmem : g * h' * g⁻¹ ∈ UWset k r z`. Rewrite using `[hconj]`. Use `exp_uw hL 1` as an intermediate fact. Simplify using `using this`.
+
+Establish `hone : h * (g * h' * g⁻¹) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hgh, Matrix.mul_nonsing_inv _ hgU]`. Rewrite using `[hX, ← ContinuousLinearMap.comp_assoc, ← hπ.1.2 h hh _ hmem, hone, hπ.1.1]`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+-/
 theorem lie_group_realization : KLLieGrp := by
   intro Wp Wq _ _ _ _ _ _ k r z z' π π' hz hz' hT hT' hπ hπ' g hg hGG Fr hFr A hA h hh h' hh' hgh
   have hgu := hg.1

@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.N
 import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.HolomorphicIrreducibility.StrongApp
 
 open NumberField Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V.Sd Matrix in
+/- English proof (translation)
+Introduce `M hM g`. Take `⟨hK, hA⟩` from `UpperTheory.V.Af.Nf.kOpen M hM`. Take `⟨γ, h, y, u, hu, -, e⟩` from `UpperTheory.V.Sd.strongApp ℚ _ hK g`. Take `⟨r, u', -, hu', rfl⟩` from `UpperTheory.V.Af.Nf.ratAd.1 y`. Establish `h1 : aff (Units.map (algebraMap ℚ (Af ℚ)).toMonoidHom r * u') 0 = toF (aff r 0) * aff u' 0`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, toF, Matrix.mul_apply, Fin.sum_univ_two]`. Use `⟨γ * aff r 0, (toR (aff r 0))⁻¹ * GeneralLinearGroup.map ev h, aff u' 0 * u, mul_mem (hA u' hu' 0 (zero_mem _)) hu, ?_⟩` and prove the remaining obligations. Rewrite using `[e, h1, ← upR_ev, map_mul (ratGL ℚ 2), ratGL_eq (aff r 0), upR_comm (toR _), map_mul upR, map_inv upR, mul_assoc (toF _), map_mul (finGL ℚ 2) (toF _), ← mul_assoc (upR _), upR_comm _ (toF _)]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`.
+-/
 theorem UpperTheory.V.Af.Nf.decomp :
     UpperTheory.V.Af.Nf.Decomp := by
   intro M hM g

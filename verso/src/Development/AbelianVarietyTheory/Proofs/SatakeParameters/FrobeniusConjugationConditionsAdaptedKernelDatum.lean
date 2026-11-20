@@ -20,6 +20,19 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 
 namespace GlobalTheory.Ggeo
 
+/- English proof (translation)
+Introduce `hAlg hHost D L hT Gi Gl K Y cX ex t hHyp hAd h3 ep be sg`. Establish `main : ∀ u μ (w : D.what₂.places.Pl), LevFree Y u μ w → IsResidueClassZero D (D.what₂.places.resChar w) → ∀ i < D.R.m, ∀ c c', ∀ Q : MvPowerSeries (OrbitPlaces.Pl D × Fin (D.R.N i) × Fin (D.R.N (i + 1))) ℂ_[D.what₂.places.resChar w] → Prop, (HostAt t.B t.χ (D.what₂.places.resChar …`. Introduce `u μ w hLF' hC i hi c c' Q hQ`. Establish `hprime : (D.what₂.places.resChar w).Prime` using `Fact.out`. Establish `h5 : 5 ≤ D.what₂.places.resChar w` using `(DIV.Inh.orbit_admissible_of_split_bound D h3).2 _ hprime hC`.
+
+Establish `hAdPl : Formalism.L2.Ker.AdPl D w` using `Or.inl hC`. Take `⟨Pm, hB, -, hConj, hTh⟩` from `hAd w hAdPl u μ hLF'`. Take `⟨hAdm, hComb⟩` from `GlobalTheory.Ggeo.KerComb.comb_of_tied hAlg D L hT Gi Gl K Y cX ex t hHyp u μ w hLF' i hi c c'`. Establish `hHA` using `hHost D t.cc t.δ t.B t.χ t.cc_ok t.δ_ok t.χ_ok (D.what₂.places.resChar w) (t.ent.lam w) h5 (Or.inl hC)`. Establish `hS : StdBases D (t.ent.lam w) ((t.O u μ).lat i c).1 (Pm i c)` using `GlobalTheory.T.isStandardBasesLatticeAtPlace_of_adapted_bases D _ (t.ent.lam w) _ _ _ ((t.O u μ).lat i c).2.1 (fun τ => hB i hi.le c τ) (fun τ τ' h => hConj i hi.le c τ τ' h)`.
+
+Establish `hS' : StdBases D (t.ent.lam w) ((t.O u μ).lat (i + 1) c').1 (Pm (i + 1) c')` using `GlobalTheory.T.isStandardBasesLatticeAtPlace_of_adapted_bases D _ (t.ent.lam w) _ _ _ ((t.O u μ).lat (i + 1) c').2.1 (fun τ => hB (i + 1) hi c' τ) (fun τ τ' h => hConj (i + 1) hi c' τ τ' h)`. Establish `key` using `hQ hHA h5 _ _ _ _ hAdm hS hS' _ hComb`. Rewrite using `[hTh i hi c c', GlobalTheory.T.atLin_adaptedCoef_eq_standardSeries]`. Conclude with `key`. Use `⟨fun u μ w hLF hC hP0 i hi _ c c' => ?_, fun u μ w hLF hC i hi _ c c' => ?_⟩` and prove the remaining obligations.
+
+Conclude with `main u μ w hLF hC i hi c c' (OrbitPlaces.ThetaExpansionRealPlaces D (D.what₂.places.resChar w)) fun hHA h5 => GlobalTheory.T.thetaExpansionRealPlaces_stdSer_of_adm' D t.cc t.δ t.B t.χ (D.what₂.places.resChar w) (t.ent.lam w) hHA h5 hC hP0 _ _`. Establish `hodd : Odd (nP D (D.what₂.places.resChar w))`. Establish `hs : ¬ IsSg D (D.what₂.places.resChar w)` using `fun h => by`. Establish `h1 : D.host.cls (D.what₂.places.resChar w) = PrimeClass.inertClass` using `hC.1`. Establish `h2 : D.host.cls (D.what₂.places.resChar w) = PrimeClass.signal` using `h`.
+
+Rewrite `h2` using `[h1]`. Consider the cases of `h2`. Unfold `nP`. Rewrite using `[if_neg hs]`. Conclude with `hC.2.1`.
+
+Conclude with `main u μ w hLF hC.1 i hi c c' (OrbitPlaces.EvenConditionsAllReal D (D.what₂.places.resChar w)) fun hHA h5 => UpperTheory.lattice_pairs_odd_degree_isometric D t.cc t.δ t.B t.χ (D.what₂.places.resChar w) (t.ent.lam w) hHA h5 hC.1 hodd _ _`.
+-/
 theorem frobeniusConjugation_conditions_adaptedKernelDatum_alt : Formalism.L2.KerInert.AlgTAll → (∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Formalism.L2.Ker.Base D cc δ) (χ : IdE D → ℂ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IsChi D χ → ∀ (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]), 5 ≤ p → (IsResidueClassZero D p ∨ IsSg D p) → HostAt B χ p lam) → ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : Formalism.L2.Ker.KerEntTied ex), t.Hyp → t.Adapted → 3 ≤ D.host.splitBound → ∀ ep be sg, OrbitPlaces.EvenConditionsAtC (OrbitPlaces.ofKer (nuRowOK D) t.ent ep be sg) Y := by
   intro hAlg hHost D L hT Gi Gl K Y cX ex t hHyp hAd h3 ep be sg
   have main : ∀ u μ (w : D.what₂.places.Pl), LevFree Y u μ w → IsResidueClassZero D (D.what₂.places.resChar w) → ∀ i < D.R.m, ∀ c c',

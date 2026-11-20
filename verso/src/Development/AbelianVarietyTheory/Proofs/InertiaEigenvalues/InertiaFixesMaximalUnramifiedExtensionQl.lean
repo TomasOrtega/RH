@@ -8,6 +8,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.InertQlUnr
 
+/- English proof (translation)
+Introduce `l _ g hg x hx`. Conclude with `GlobalTheory.InerQl.IK_fixes_Kur _ hg hx`.
+-/
 theorem IK_qlExt_fixes_Kur : ∀ (l : ℕ) [Fact l.Prime] (g : ↥(GK (Formalism.MainNotions.ElementDenominator.qlExt l))), g ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) → ∀ x ∈ MaximalUnramifiedExtension l, (g : GQ l) x = x := by
   intro l _ g hg x hx
   exact GlobalTheory.InerQl.IK_fixes_Kur _ hg hx

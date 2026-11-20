@@ -18,10 +18,16 @@ def monOf (f : Fin e → ι) : ι →₀ ℕ := ∑ j, Finsupp.single (f j) 1
 def polyWt (F : MvPolynomial ι ℝ) (f : Fin e → ι) : ℝ :=
   coeff (monOf f) F * ((monOf f).prod fun _ n => (n.factorial : ℝ)) / e.factorial
 
+/- English proof (translation)
+Simplify using `only [polyWt, coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polyWt_add (F G : MvPolynomial ι ℝ) (f : Fin e → ι) :
     polyWt (F + G) f = polyWt F f + polyWt G f := by
   simp only [polyWt, coeff_add]; ring
 
+/- English proof (translation)
+Simplify using `only [polyWt, coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polyWt_smul (c : ℝ) (F : MvPolynomial ι ℝ) (f : Fin e → ι) :
     polyWt (c • F) f = c * polyWt F f := by
   simp only [polyWt, coeff_smul, smul_eq_mul]; ring
@@ -34,10 +40,16 @@ def combPot (P : ι → LocPot X) (n : ι → ℤ) : LocPot X :=
 def polyInt (A : FinHolAtlas e X) (P : ι → LocPot X) (F : MvPolynomial ι ℝ) (g : X → ℝ) : ℝ :=
   ∑ f : Fin e → ι, polyWt F f * mInt A (P ∘ f) g
 
+/- English proof (translation)
+Simplify using `only [polyInt, polyWt_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem polyInt_add (A : FinHolAtlas e X) (P : ι → LocPot X) (F G : MvPolynomial ι ℝ) (g : X → ℝ) :
     polyInt A P (F + G) g = polyInt A P F g + polyInt A P G g := by
   simp only [polyInt, polyWt_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [polyInt, polyWt_smul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem polyInt_smul (A : FinHolAtlas e X) (P : ι → LocPot X) (c : ℝ) (F : MvPolynomial ι ℝ)
     (g : X → ℝ) : polyInt A P (c • F) g = c * polyInt A P F g := by
   simp only [polyInt, polyWt_smul, Finset.mul_sum, mul_assoc]
@@ -47,6 +59,9 @@ def polyIntL (A : FinHolAtlas e X) (P : ι → LocPot X) (g : X → ℝ) : MvPol
   map_add' F G := polyInt_add A P F G g
   map_smul' c F := polyInt_smul A P c F g
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem polyIntL_apply (A : FinHolAtlas e X) (P : ι → LocPot X) (g : X → ℝ)
     (F : MvPolynomial ι ℝ) : polyIntL A P g F = polyInt A P F g := rfl
 

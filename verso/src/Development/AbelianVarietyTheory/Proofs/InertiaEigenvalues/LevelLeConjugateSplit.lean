@@ -11,6 +11,11 @@ namespace GlobalTheory.LamTie.ConjLevel
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Take `⟨-, hef⟩` from `GlobalTheory.CMVal.Euler.SplitPlace.split_place E v hs`. Take `⟨b, hb⟩` from `exists_int_cong P z hz`. Take `⟨a, ha⟩` from `(hef P hP).2.2 b`. Establish `h3` using `OrderUnits.val_int_le P 1 _ (by simpa using ha)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Rewrite `h3` using `[map_sub (algebraMap (𝓞 E) E), map_sub (algebraMap E (Af E)), sub_coord]`. Use `Valuation.map_sub_le _ hb h3` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Conclude with `this`.
+-/
 theorem exists_cong_one [IsCMField E] {v : HeightOneSpectrum (OF E)} (hs : Splits v) {P : HeightOneSpectrum (𝓞 E)}
     (hP : Over P v) (z : P.adicCompletion E) (hz : Valued.v z ≤ 1) :
     ∃ a : OF E, Valued.v (iota a P - z) ≤ WithZero.exp (-((1 : ℕ) : ℤ)) := by
@@ -24,6 +29,19 @@ theorem exists_cong_one [IsCMField E] {v : HeightOneSpectrum (OF E)} (hs : Split
   rw [sub_sub_sub_cancel_left] at this
   exact this
 
+/- English proof (translation)
+Take `⟨-, hef⟩` from `GlobalTheory.CMVal.Euler.SplitPlace.split_place E v hs`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, by simpa [iota_zero, zero_coord] using hz⟩`. Consider the case `succ m ih`. Take `⟨a, ha⟩` from `ih`.
+
+Take `⟨t, ht, ht'⟩` from `Ideal.exists_mem_pow_notMem_pow_succ v.asIdeal v.ne_bot v.isPrime.ne_top m`. Establish `hv : Valued.v (iota t P) = WithZero.exp (-(m : ℤ))`. Use `eq_exp_of_le (val_iota_le_of_mem hP m ht) fun h3 => ht' ?_` and prove the remaining obligations. Rewrite using `[← (hef P hP).2.1, ← val_iota_le_iff]`. Use `h3 using 2` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `ht0 : iota t P ≠ 0` using `fun h => by`. Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`.
+
+Take `⟨c, hc⟩` from `exists_cong_one hs hP ((iota a P - z) / iota t P) (by`. Rewrite using `[map_div₀, hv, div_le_one₀ WithZero.exp_pos]`. Conclude with `ha)`. Use `⟨a - t * c, ?_⟩` and prove the remaining obligations. Establish `: iota (a - t * c) P - z = -(iota t P * (iota c P - (iota a P - z) / iota t P))`.
+
+Rewrite using `[iota_sub, iota_mul, sub_coord, mul_coord]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Valuation.map_neg, map_mul, hv]`. Use `(mul_le_mul' le_rfl hc).trans_eq ?_` and prove the remaining obligations.
+
+Rewrite using `[← WithZero.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_cong [IsCMField E] {v : HeightOneSpectrum (OF E)} (hs : Splits v) {P : HeightOneSpectrum (𝓞 E)}
     (hP : Over P v) (m : ℕ) (z : P.adicCompletion E) (hz : Valued.v z ≤ 1) :
     ∃ a : OF E, Valued.v (iota a P - z) ≤ WithZero.exp (-(m : ℤ)) := by
@@ -52,6 +70,25 @@ theorem exists_cong [IsCMField E] {v : HeightOneSpectrum (OF E)} (hs : Splits v)
     congr 1
     push_cast; ring
 
+/- English proof (translation)
+Distinguish the cases in `hne : P = P'`. Conclude with `hne ▸ hn`. Take `⟨h2, hef⟩` from `GlobalTheory.CMVal.Euler.SplitPlace.split_place E v hs`. Establish `hmul` using `loc_mul_loc hF hP hP' hne (h2 P P' hP hP' hne)`. Take `⟨m, hm⟩` from `GlobalTheory.Mem.UnrAe.exists_levelLe χ P'`.
+
+Introduce `u hu hu'`. Establish `hu1 : Valued.v (u : P'.adicCompletion E) = 1` using `hu`. Take `⟨a, h4⟩` from `exists_cong hs hP' (m + n + 1) u hu1.le`. Establish `hlt : WithZero.exp (-((m + n + 1 : ℕ) : ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hlt1 : WithZero.exp (-((1 : ℕ) : ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `h5 : Valued.v (iota a P') = 1`.
+
+Rewrite using `[Valuation.map_eq_of_sub_lt _ (hu1 ▸ h4.trans_lt hlt), hu1]`. Establish `hav : a ∉ v.asIdeal ^ 1` using `fun h => (h5 ▸ val_iota_le_of_mem hP' 1 h).not_gt hlt1`. Establish `ha0 : a ≠ 0` using `fun h => hav (h ▸ zero_mem _)`. Establish `hunit : Valued.v (iota a P) = 1`. Use `eq_exp_of_le (m := 0) (by simpa using val_iota_le_one P a) fun h3 => hav (by` as an intermediate fact.
+
+Rewrite using `[← (hef P hP).2.1, ← val_iota_le_iff]`. Simplify using `using h3)`. Simplify using `using this`. Establish `hsub : a - 1 ∈ v.asIdeal ^ n`. Rewrite using `[← (hef P' hP').2.1, ← val_iota_le_iff, iota_sub, iota_one, sub_coord, one_coord]`.
+
+Use `Valuation.map_add_le _ (h4.trans (WithZero.exp_le_exp.2 (show -((m + n + 1 : ℕ) : ℤ) ≤ -(n : ℤ) by omega))) hu'` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `h6 : χ.loc P (locF P a ha0) = 1`. Use `hn _ hunit ?_` and prove the remaining obligations. Use `val_iota_le_of_mem hP n hsub` as an intermediate fact.
+
+Rewrite `this` using `[iota_sub, iota_one, sub_coord, one_coord]`. Conclude with `this`. Establish `h7` using `hmul a ha0`. Rewrite `h7` using `[h6, one_mul]`. Establish `h8 : χ.loc P' (locF P' a ha0 / u) = 1`.
+
+Use `hm _ ?_ ?_` and prove the remaining obligations. Use `show Valued.v ((locF P' a ha0 / u : (P'.adicCompletion E)ˣ) : P'.adicCompletion E) = 1`. Rewrite using `[Units.val_div_eq_div_val, map_div₀, coe_locF, h5, hu1, div_one]`. Rewrite using `[Units.val_div_eq_div_val, div_sub_one u.ne_zero, map_div₀, hu1, div_one, coe_locF]`. Conclude with `h4.trans (WithZero.exp_le_exp.2 (by omega))`.
+
+Rewrite `h8` using `[map_div, div_eq_one, h7]`. Conclude with `h8.symm`.
+-/
 theorem levelLe_of_split [IsCMField E] {χ : HChar E} (hF : TrivOnF χ) {v : HeightOneSpectrum (OF E)} (hs : Splits v)
     {P P' : HeightOneSpectrum (𝓞 E)} (hP : Over P v) (hP' : Over P' v) {n : ℕ} (hn : LevelLe χ P n) : LevelLe χ P' n := by
   by_cases hne : P = P'
@@ -98,6 +135,9 @@ theorem levelLe_of_split [IsCMField E] {χ : HChar E} (hF : TrivOnF χ) {v : Hei
 
 open Formalism.BasicNotions GlobalTheory.ToricDenom in
 
+/- English proof (translation)
+Introduce `R H χ hF w w' hw hs n hn`. Establish `: IsCMField H.E` using `H.isCMField_hostE`. Conclude with `levelLe_of_split hF hs (over_below w) (hw ▸ over_below w') hn`.
+-/
 theorem levelLe_conj : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (χ : Formalism.L2.Host.HChar H.E), χ.TrivOn H.F →
     ∀ w w' : HeightOneSpectrum (𝓞 H.E), below w = below w' → Splits (below w) → ∀ n : ℕ, χ.LevelLe w n → χ.LevelLe w' n := by
   intro R H χ hF w w' hw hs n hn

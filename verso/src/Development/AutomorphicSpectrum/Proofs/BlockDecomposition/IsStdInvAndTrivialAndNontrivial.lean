@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.StdAddChar
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ χ hχ`. Use `⟨GlobalTheory.CompanionTheory.SphStd.isStd_inv hχ, GlobalTheory.CompanionTheory.SphOne.coe_eq_one_of_isStd hχ, ?_⟩` and prove the remaining obligations. Establish `hnot` using `not_isTrivialOn_addCharConductor_sub_one hχ.1 hχ.2.1`. Rewrite `hnot` using `[hχ.2.2]`. Unfold `IsTrivialOn at hnot`.
+
+Use `push_neg at hnot`. Take `⟨x, hx, hx1⟩` from `hnot`. Establish `hϖ : (GLnLocal.uniformizer F : F) ∈ valBall F 1` using `mem_valBall_one_iff.2 (GLnLocal.valuation_uniformizer_lt_one F)`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `mul_mem_valBall hϖ hx`.
+
+Establish `h0 : (1 : ℤ) + (0 - 1) = 0` using `by norm_num`. Rewrite `h` using `[h0]`. Conclude with `mem_valBall_zero_iff.1 h`. Introduce `h`. Apply `hx1` to reduce the goal to its premises.
+
+Establish `h' : ((χ x : Circle) : ℂ) = 1` using `h`. Conclude with `Circle.ext (by simpa using h')`.
+-/
 theorem isStd_inv_and_trivial_and_nontrivial : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (χ : AddChar F Circle), IsStd χ → IsStd χ⁻¹ ∧ (∀ x ∈ 𝒪[F], Circle.coeHom.compAddChar χ x = 1) ∧ ∃ x : F, (GLnLocal.uniformizer F : F) * x ∈ 𝒪[F] ∧ Circle.coeHom.compAddChar χ x ≠ 1 := by
   intro F _ _ _ _ _ _ χ hχ
   refine ⟨GlobalTheory.CompanionTheory.SphStd.isStd_inv hχ, GlobalTheory.CompanionTheory.SphOne.coe_eq_one_of_isStd hχ, ?_⟩

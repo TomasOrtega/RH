@@ -4,6 +4,27 @@ open Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ s ρ A B hρ hB hAB hball`. Use `set S := s.toFinset.powerset.filter (fun Z : Finset K => ∀ W ∈ Z, ∀ W' ∈ Z, W ≠ W' → ρ < ‖W - W'‖) with hS`. Establish `hne : S.Nonempty` using `⟨∅, by simp [hS]⟩`. Take `⟨Z, hZS, hZmax⟩` from `Finset.exists_max_image S Finset.card hne`. Rewrite `hZS` using `[hS, Finset.mem_filter, Finset.mem_powerset]`.
+
+Take `⟨hZsub, hZsep⟩` from `hZS`. Establish `hZs : ∀ W ∈ Z, W ∈ s` using `fun W hW => Multiset.mem_toFinset.mp (hZsub hW)`. Establish `hcov : ∀ z ∈ s, ∃ W ∈ Z, ‖z - W‖ ≤ ρ`. Introduce `z hz`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Establish `hzZ : z ∉ Z`. Introduce `hzZ`. Use `h z hzZ` as an intermediate fact. Simplify using `at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : insert z Z ∈ S`. Rewrite using `[hS, Finset.mem_filter, Finset.mem_powerset]`. Use `⟨Finset.insert_subset (Multiset.mem_toFinset.mpr hz) hZsub, ?_⟩` and prove the remaining obligations. Introduce `W hW W' hW' hne`.
+
+Rewrite `hW`, `hW'` using `[Finset.mem_insert]`. Apply the tactic sequence `rcases hW with rfl | hW <;> rcases hW' with rfl | hW'`. Conclude with `absurd rfl hne`. Conclude with `h W' hW'`. Rewrite using `[norm_sub_rev]`.
+
+Conclude with `h W hW`. Conclude with `hZsep W hW W' hW' hne`. Use `hZmax _ hmem` as an intermediate fact. Rewrite `this` using `[Finset.card_insert_of_notMem hzZ]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hle : s ≤ ∑ W ∈ Z, s.filter (fun z => ‖z - W‖ ≤ ρ)`. Rewrite using `[Multiset.le_iff_count]`. Introduce `a`. Rewrite using `[Multiset.count_sum']`. Distinguish the cases in `ha : a ∈ s`.
+
+Take `⟨W, hW, hd⟩` from `hcov a ha`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Multiset.count_filter_of_pos (p := fun z => ‖z - W‖ ≤ ρ) hd]`. Use `_ ≤ _ := Finset.single_le_sum (f := fun W => Multiset.count a (s.filter (fun z => ‖z - W‖ ≤ ρ))) (fun _ _ => Nat.zero_le _) hW`. Rewrite using `[Multiset.count_eq_zero_of_notMem ha]`.
+
+Conclude with `Nat.zero_le _`. Establish `hcard : Multiset.card s ≤ Z.card * B`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[map_sum]`. Use `_ ≤ ∑ W ∈ Z, B := Finset.sum_le_sum fun W hW => hball W (hZs W hW)`.
+
+Use `_ = Z.card * B := by simp`. Conclude with `⟨Z, Nat.le_of_mul_le_mul_right (hAB.trans hcard) hB, hZs, hZsep⟩`.
+-/
 theorem multiset_many_separated_points : ∀ (K : Type) [NormedAddCommGroup K] (s : Multiset K) (ρ : ℝ) (A B : ℕ), 0 ≤ ρ → 0 < B → A * B ≤ Multiset.card s → (∀ W ∈ s, Multiset.card (s.filter fun z => ‖z - W‖ ≤ ρ) ≤ B) → ∃ Z : Finset K, A ≤ Z.card ∧ (∀ W ∈ Z, W ∈ s) ∧ ∀ W ∈ Z, ∀ W' ∈ Z, W ≠ W' → ρ < ‖W - W'‖ := by
   intro K _ s ρ A B hρ hB hAB hball
   set S := s.toFinset.powerset.filter

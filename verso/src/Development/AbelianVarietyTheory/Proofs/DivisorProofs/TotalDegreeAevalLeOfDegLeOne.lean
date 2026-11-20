@@ -8,6 +8,13 @@ noncomputable section
 
 namespace GlobalTheory.SZShift
 
+/- English proof (translation)
+Use `conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun d hd => ?_)` and prove the remaining obligations. Rewrite using `[aeval_monomial]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.algebraMap_apply, totalDegree_C, zero_add, Finsupp.prod]`. Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (le_totalDegree hd)` and prove the remaining obligations. Rewrite using `[Finsupp.sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `(totalDegree_pow _ _).trans (by simpa using Nat.mul_le_mul_left (d i) (hg i))`.
+-/
 theorem totalDegree_aeval_le_of_deg_le_one {σ τ F E : Type} [CommRing F] [CommRing E] [Algebra F E]
     (g : σ → MvPolynomial τ E) (hg : ∀ i, (g i).totalDegree ≤ 1) (P : MvPolynomial σ F) :
     (aeval g P).totalDegree ≤ P.totalDegree := by

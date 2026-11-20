@@ -14,6 +14,19 @@ namespace GlobalTheory.AdjSpan
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `S A _ _ Q hQ O _ bar r e hbar hspan act hact he`. Take `⟨hA, hL, h₁, h₂, -, hamp⟩` from `hQ`. Establish `hbi` using `GlobalTheory.Biadditive.biadditive_of_triv_axes GlobalTheory.globalFns_holds S A _ hA (pull_isLB hL _) hamp Q hL h₁ h₂`. Set `B : ((A ⊗ A) ⟶ A) → ((A ⊗ A) ⟶ A) → Pic (A ⊗ A).left` to `fun u v => pull (lift u v).left (cls Q hL)`. Establish `addL : ∀ u u' v, B (u * u') v = B u v + B u' v` using `fun u u' v => by`.
+
+Establish `z` using `(cls_eq_zero_iff (LB.isLB_linComb hL _ _)).2 (hbi (A ⊗ A) u u' v).1`. Rewrite `z` using `[cls_linComb hL, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at z`. Use `show pull _ _ = pull _ _ + pull _ _`. Rewrite using `[← sub_eq_zero, ← z]`.
+
+Normalize the expressions using the abelian group laws. Establish `addR : ∀ u v v', B u (v * v') = B u v + B u v'` using `fun u v v' => by`. Establish `z` using `(cls_eq_zero_iff (LB.isLB_linComb hL _ _)).2 (hbi (A ⊗ A) v v' u).2`. Rewrite `z` using `[cls_linComb hL, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at z`.
+
+Use `show pull _ _ = pull _ _ + pull _ _`. Rewrite using `[← sub_eq_zero, ← z]`. Normalize the expressions using the abelian group laws. Set `f : O → Pic (A ⊗ A).left` to `fun a => B (fst A A ≫ act a) (snd A A) - B (fst A A) (snd A A ≫ act (bar a))`. Establish `fadd : ∀ a b, f (a + b) = f a + f b` using `fun a b => by`.
+
+Simplify using `only [f]`. Rewrite using `[hbar, hact.2.2.2, hact.2.2.2, MonObj.comp_mul, MonObj.comp_mul, addL, addR]`. Normalize the expressions using the abelian group laws. Set `F : O →+ Pic (A ⊗ A).left` to `AddMonoidHom.mk' f fadd`. Establish `Fe : ∀ i, F (e i) = 0` using `fun i => by show f (e i) = 0`.
+
+Conclude with `sub_eq_zero.2 ((cls_eq_iff (pull_isLB hL _) (pull_isLB hL _)).2 (he i))`. Establish `hker : Submodule.span ℤ (Set.range e) ≤ LinearMap.ker F.toIntLinearMap` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact Fe i)`. Introduce `a`. Establish `ha : F a = 0` using `hker (hspan ▸ Submodule.mem_top : a ∈ Submodule.span ℤ (Set.range e))`. Conclude with `(cls_eq_iff (pull_isLB hL _) (pull_isLB hL _)).1 (sub_eq_zero.1 ha)`.
+-/
 theorem adj_of_span : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (Q : LB (A ⊗ A).left), QHyp A Q → ∀ (O : Type) [Ring O] (bar : O → O) (r : ℕ) (e : Fin r → O), (∀ a b, bar (a + b) = bar a + bar b) → Submodule.span ℤ (Set.range e) = ⊤ → ∀ (act : O → (A ⟶ A)), IsRAct A act → (∀ i, LBIso (Q.pull (lift (fst A A ≫ act (e i)) (snd A A)).left) (Q.pull (lift (fst A A) (snd A A ≫ act (bar (e i)))).left)) → Adj A Q bar act := by
   intro S A _ _ Q hQ O _ bar r e hbar hspan act hact he
   obtain ⟨hA, hL, h₁, h₂, -, hamp⟩ := hQ

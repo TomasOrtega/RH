@@ -15,6 +15,15 @@ section gen
 variable {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `hz1 : B0.z = liftVec k p ρ Bj.z` using `by rw [← hz, JCTx5.castV_rfl]`. Establish `hz1' : B0.z' = liftVec k p ρ Bj.z'` using `by rw [← hz', JCTx5.castV_rfl]`. Establish `hπ1 : ∀ y, Bj.π' y = B0.π' (U.embG k p ρ y)` using `fun y => by`. Rewrite using `[hπ' y, Dx2.MN.castM_rfl, Dx2.Tower.lev_eq_embG]`.
+
+Establish `hHc' : ContinuousOn H {x | x ∈ B.GV k (p + ρ) ∧ U.DjU k p ρ x ≠ 0}`. Use `hHc.mono ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨hx.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Ux3.zhDmin]`.
+
+Conclude with `hx.2`. Take `⟨hi, heq⟩` from `SliceIntegralLemmas.jfSliceInt hp σ d hd Bj B0 hz1' hπ1 hW' hW0' hNj hN0 g hg H hHc' R hR`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify `hi` using `only [Dx2.MN.castM_rfl]`. Rewrite using `[JCTx5.castV_rfl, JCTx5.castV_rfl, hz1, hz1']`.
+
+Simplify using `only [Dx2.MN.castM_rfl]`. Conclude with `heq`.
+-/
 theorem slice_integral_level_reduction (e : p + ρ = n) (hp : 1 ≤ p) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)
     (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq)
     (hz : D.castV e (liftVec k p ρ Bj.z) = B0.z) (hz' : D.castV e (liftVec k p ρ Bj.z') = B0.z')
@@ -54,6 +63,15 @@ section top
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Take `⟨hh1, rfl⟩` from `hh`. Establish `e : D.ptSize h + (P.r - D.ptSize h) = P.r` using `by omega`. Establish `hzj` using `p.T.z_lev (D.ptSize h) hjr`. Establish `hzj'` using `p.T.z'_lev (D.ptSize h) hjr`. Establish `hπj : ∀ y, (p.T.bs (D.ptSize h)).π' y = p.T.base.π' (D.castM e (ιLev P.k _ _ y))` using `fun y => p.T.π'_lev _ hjr y`.
+
+Take `⟨hWj, hW'j, hNj⟩` from `p.hT (D.ptSize h) hjr`. Take `⟨hW0, hW'0, hN0⟩` from `p.hT 0 (Nat.zero_le _)`. Establish `hW0' : p.T.base.μW' = (p.T.bs (D.ptSize h)).μW'.map (PBM.levMt (D.ptSize h) (P.r - D.ptSize h) e)` using `PBM.haar_lev _ _ e _ _ hzj' _ _ p.T.base.haarW' (p.T.bs _).haarW' hW'0 hW'j`. Establish `hGc : ContinuousOn G {x | x ∈ B.GV P.k P.r ∧ Dmin P.k P.r p.T.base.z p.T.base.z' x ⟨D.ptSize h, by omega⟩ ≠ 0}` using `(PBE.ckOn_continuousOn' subset_rfl hG).mono fun x hx => hx.1`. Take `⟨H1i, H1e⟩` from `slice_integral_level_reduction e hj1 (D.ptPerm h) (D.ptDiag h) (CutHB.ptDiag_ne ⟨hh1, rfl⟩) (p.T.bs (D.ptSize h)) p.T.base hzj hzj' hπj hW'j hW0' hNj hN0 γ hOm G hGc R hR`.
+
+Establish `hcf : ∀ (e' : P.r - D.ptSize h = P.r - D.ptSize h) (F : B.Mat P.k (P.r - D.ptSize h) → (Wq →L[ℂ] Wp)), D.castF e' F = F` using `fun e' F => by`. Use function extensionality and compare the values at `x`. Simplify using `only [D.castF, Dx2.MN.castM_rfl]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [PBQ.ellH, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply]`.
+
+Simplify using `only [SliceIntegralLemmas.psiH] at H1i`. Conclude with `H1i`. Rewrite using `[hcf, D.sliceAt, dif_pos hjr]`. Simplify using `only [PBQ.ellH, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply]`. Conclude with `H1e`.
+-/
 theorem slice_gen (P : M.Par) (p : KB.Pl P Wp Wq) (G : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (hG : B.CkOn ⊤ (B.GV P.k P.r) G) (R : ℝ) (hR : ∀ x ∈ B.GV P.k P.r, G x ≠ 0 → B.gN x ≤ R)
     (h : C.LPt) (j : ℕ) (hjr : j ≤ P.r) (hh : D.IsLocPt h j) (hj1 : 1 ≤ j) (γ : B.Mat P.k (P.r - j))
@@ -90,6 +108,13 @@ theorem slice_gen (P : M.Par) (p : KB.Pl P Wp Wq) (G : B.Mat P.k P.r → (Wq →
     simp only [PBQ.ellH, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply]
     exact H1e
 
+/- English proof (translation)
+Substitute `hρ` using the available equality. Establish `h0 : ∀ (hl : 0 < 0 + 2), Dmin k 0 z z' γ ⟨0, hl⟩ = 1`. Introduce `hl`. Simplify using `[Dmin]`. Establish `h1 : Dmin k 0 z z' γ (Fin.last (0 + 1)) = Q.zetaL k 0 z z' (Fin.last 0) γ`.
+
+Rewrite using `[PBI.zetaL_eq_zhat]`. Simplify using `[Dmin, Matrix.det_unique]`. Use `⟨hγ, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Establish `hl0 : l = ⟨0, by omega⟩` using `Fin.ext (by simpa using hl)`.
+
+Rewrite using `[hl0, h0]`. Conclude with `one_ne_zero`. Unfold `Gf`. Rewrite using `[h1, h0]`. Simplify `hG` using `[Q.GGl]`.
+-/
 theorem om_zero {k ρ : ℕ} (hρ : ρ = 0) (z z' : Fin (2 * ρ + k + 1) → ℂ) (γ : B.Mat k ρ) (hγ : γ ∈ B.GV k ρ)
     (hG : 0 < Q.GGl k ρ z z' γ) : γ ∈ JF.Om k ρ z z' := by
   subst hρ
@@ -116,6 +141,9 @@ namespace Formalism.FourierDecayAlt.P.CutEXSlice
 
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Establish `hOm : γ ∈ JF.Om P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z'` using `om_zero (Nat.sub_self _) _ _ γ hγ hGG`. Take `⟨R, hR⟩` from `hG.1.2.1`. Conclude with `slice_gen P p G hG.1.1 R hR h P.r le_rfl hh hr γ hOm`.
+-/
 theorem sliceTop_pos (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)
     (hr : 1 ≤ P.r) (G : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (hG : CutEX.TopCls p.T.base G)
@@ -133,6 +161,9 @@ end Formalism.FourierDecayAlt.P.CutEXSlice
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p G hG h hh γ hγ hGG`. Break down `Nat.eq_zero_or_pos P.r with h0 | h1` into its components or cases. Conclude with `CutEXSl0.sliceTop_zero Wp Wq P p h0 G hG h hh γ hγ hGG`. Conclude with `CutEXSlice.sliceTop_pos Wp Wq P p h1 G hG h hh γ hγ hGG`.
+-/
 theorem slice_top_exhaustion : CutEX.SliceTop := by
   intro Wp Wq _ _ _ _ _ _ P p G hG h hh γ hγ hGG
   rcases Nat.eq_zero_or_pos P.r with h0 | h1

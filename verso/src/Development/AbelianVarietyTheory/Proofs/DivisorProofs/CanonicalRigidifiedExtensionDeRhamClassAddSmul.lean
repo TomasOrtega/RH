@@ -18,18 +18,30 @@ section Basic
 
 variable {X : Over (Sp R)} (f f' : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))) (r : R)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fv_add_apply (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D']
     (φ : D →ₐ[R] D') (x : Pt X D) : fv (f + f') D D' φ x = fv f D D' φ x + fv f' D D' φ x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fv_smul_apply (D : Type) [CommRing D] [Algebra R D] (D' : Type) [CommRing D'] [Algebra R D']
     (φ : D →ₐ[R] D') (x : Pt X D) : fv (r • f) D D' φ x = r • fv f D D' φ x := rfl
 
+/- English proof (translation)
+Unfold `cotVal`. Simplify using `only [fv_add_apply, map_add, map_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cotVal_add_apply {D : Type} [CommRing D] [Bialgebra R D] (y : Pt X D) :
     cotVal (f + f') y = cotVal f y + cotVal f' y := by
   unfold cotVal
   simp only [fv_add_apply, map_add, map_sub]
   abel
 
+/- English proof (translation)
+Unfold `cotVal`. Simplify using `only [fv_smul_apply, map_smul, map_sub, smul_sub]`.
+-/
 theorem cotVal_smul_apply {D : Type} [CommRing D] [Bialgebra R D] (y : Pt X D) :
     cotVal (r • f) y = r • cotVal f y := by
   unfold cotVal
@@ -69,20 +81,39 @@ def Dat.scale (r : R) (d : Dat t c) : Dat t (r • c) where
     simp only [fv_smul_apply, map_smul]
     rw [← smul_sub, h]
 
+/- English proof (translation)
+Simplify using `only [Dat.coc, Dat.sum, fv_add_apply, map_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem Dat.coc_sum (d : Dat t c) (d' : Dat t c') (n : ℕ) : (d.sum d').coc n = d.coc n + d'.coc n := by
   simp only [Dat.coc, Dat.sum, fv_add_apply, map_add]
   abel
 
+/- English proof (translation)
+Simplify using `only [Dat.om, Dat.sum, cotVal_add_apply, map_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem Dat.om_sum (d : Dat t c) (d' : Dat t c') (n : ℕ) : (d.sum d').om n = d.om n + d'.om n := by
   simp only [Dat.om, Dat.sum, cotVal_add_apply, map_add]
   abel
 
+/- English proof (translation)
+Simplify using `only [Dat.coc, Dat.scale, fv_smul_apply, map_smul, smul_sub]`.
+-/
 theorem Dat.coc_scale (r : R) (d : Dat t c) (n : ℕ) : (d.scale r).coc n = r • d.coc n := by
   simp only [Dat.coc, Dat.scale, fv_smul_apply, map_smul, smul_sub]
 
+/- English proof (translation)
+Simplify using `only [Dat.om, Dat.scale, cotVal_smul_apply, map_smul, smul_sub]`.
+-/
 theorem Dat.om_scale (r : R) (d : Dat t c) (n : ℕ) : (d.scale r).om n = r • d.om n := by
   simp only [Dat.om, Dat.scale, cotVal_smul_apply, map_smul, smul_sub]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `c c' _ _ ⟨d, z, w, hz, hw, rfl⟩ ⟨d', z', w', hz', hw', rfl⟩`. Use `⟨d.sum d', z + z', w + w', fun n ↦ ?_, fun n ↦ ?_, (map_add G.rigMk _ _).symm⟩` and prove the remaining obligations. Rewrite using `[Dat.coc_sum, ← hz, ← hz']`. Both sides reduce to the same expression.
+
+Rewrite using `[Dat.om_sum, ← hw, ← hw']`. Both sides reduce to the same expression. Introduce and unpack `r c _ ⟨d, z, w, hz, hw, rfl⟩`. Use `⟨d.scale r, r • z, r • w, fun n ↦ ?_, fun n ↦ ?_, (map_smul G.rigMk r (z, w)).symm⟩` and prove the remaining obligations. Rewrite using `[Dat.coc_scale, ← hz]`.
+
+Both sides reduce to the same expression. Rewrite using `[Dat.om_scale, ← hw]`. Both sides reduce to the same expression.
+-/
 theorem isCan_add_smul (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R)
     (t : G.TorsionTower A) :
     (∀ (c c' : primDR A) (x x' : G.RigExt), IsCan t c x → IsCan t c' x' → IsCan t (c + c') (x + x')) ∧

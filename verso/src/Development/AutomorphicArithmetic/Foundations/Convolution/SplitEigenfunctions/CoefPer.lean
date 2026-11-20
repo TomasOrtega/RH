@@ -11,6 +11,19 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 open UpperTheory.ConvolutionTheory.RankTwoDescent UpperTheory.ConvolutionTheory.RankTwoDescent.Cp
 
+/- English proof (translation)
+Introduce `_ _ _ momKill orbFn E _ _ _ D W M N P φ hφ h0 h`. Use `haveI := N.haar`. Take `⟨j, -, hj, -⟩` from `reps E D`. Take `⟨hp, hw, hi⟩` from `yInt E D W M N P φ hφ`. Establish `hδ : D.δ < 0` using `by simpa using D.neg (Rat.castHom ℝ)`.
+
+Use `haveI : SFinite (mY D.δ N) := by unfold mY; infer_instance`. Establish `hU` using `perCont E D W M N P φ hφ`. Use `set U : G1 E → ℂ := fun h : G1 E => UPer D M fun x => φ.1 (x * gl h) with hUd`. Establish `key : ∀ c : G1 E → ℂ, Continuous c → HasCompactSupport c → ∫ y, c y * U y ∂N.μ = 0` using `fun c hc hs => by`. Take `⟨Ψ, hΨ, hΨ'⟩` from `orbFn E D M j hj c hc hs`.
+
+Take `⟨h1, h2⟩` from `zAll E D W M N P φ hφ j hj c hc hs Ψ hΨ hΨ'`. Rewrite using `[← h2]`. Conclude with `momKill D.δ hδ _ (mY D.δ N) (pY D) _ hp hw hi (fun ph hph => (yEq E D W M N P φ hφ ph hph).symm.trans (h0 ph hph)) Ψ hΨ h1`. Assume the negation of the conclusion as `hne`. Take `⟨χ, h1, -, hs, h01⟩` from `exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := h)) isClosed_empty (Set.disjoint_empty _)`.
+
+Establish `h2` using `key (fun y => (χ y : ℂ) * starRingEnd ℂ (U y)) ((Complex.continuous_ofReal.comp χ.continuous).mul (Complex.continuous_conj.comp hU)) ((hs.comp_left (g := Complex.ofReal) Complex.ofReal_zero).mul_right)`. Establish `e : ∀ y, (χ y : ℂ) * starRingEnd ℂ (U y) * U y = ((χ y * ‖U y‖ ^ 2 : ℝ) : ℂ)` using `fun y => by`. Rewrite using `[mul_assoc, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+
+Simplify using `only [e, integral_complex_ofReal, Complex.ofReal_eq_zero] at h2`. Use `(Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (μ := N.μ) (x := h) (χ.continuous.mul (hU.norm.pow 2)) hs.mul_right (fun y => mul_nonneg (h01 y).1 (sq_nonneg ‖U y‖)) ?_).ne' h2` and prove the remaining obligations. Establish `: χ h = 1` using `h1 rfl`. Express the relevant statement in the definitionally equal form `χ h * ‖U h‖ ^ 2 ≠ 0`. Rewrite using `[this, one_mul]`.
+
+Conclude with `pow_ne_zero _ (norm_ne_zero_iff.2 hne)`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.coefPer :
     DecE → Maj → OrbS → MomKill → OrbFn → CoefPer := by
   intro _ _ _ momKill orbFn E _ _ _ D W M N P φ hφ h0 h

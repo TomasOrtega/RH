@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.HandFam
 
+/- English proof (translation)
+Establish `h1 : ‖ψ a‖ = 1` using `hψ.1.2.1 a`. Establish `h2 : ψ a * star (ψ a) = 1`. Rewrite using `[Complex.star_def, Complex.mul_conj', h1]`. Simplify using the standard rewrite rules. Establish `h3 : ψ a * ψ (-a) = 1` using `by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+
+Establish `h0 : ψ a ≠ 0` using `by intro h; rw [h, zero_mul] at h3; exact zero_ne_one h3`. Conclude with `mul_left_cancel₀ h0 (h2.trans h3.symm)`.
+-/
 theorem star_psi_eq {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) :
     star (ψ a) = ψ (-a) := by
   have h1 : ‖ψ a‖ = 1 := hψ.1.2.1 a
@@ -26,6 +31,27 @@ theorem star_psi_eq {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D
   have h0 : ψ a ≠ 0 := by intro h; rw [h, zero_mul] at h3; exact zero_ne_one h3
   exact mul_left_cancel₀ h0 (h2.trans h3.symm)
 
+/- English proof (translation)
+Introduce `D ψ ρ B J s L' ζ' hz l φ Ξ hφ hΞ`. Take `⟨hτ, -⟩` from `GlobalTheory.T.besselLineLink_gram_similitude_bijective D ρ B L' ζ' hz l`. Take `⟨hadd, hcont, hrat, heq, hsym, -⟩` from `GlobalTheory.T.hermitianLinkMap_additive_rational_equivariant D B.L L' J.W₀ l.τ 1 hτ (l.κ J.W₀) (fun _ => rfl)`. Establish `hF : ∀ p, IsThetaFunO ψ B.V₀ J.W₀ (s.om₀ p Ξ)` using `fun p => s.weil₀.om_pres p Ξ hΞ`. Establish `hsub` using `GlobalTheory.T.weilRepresentation_rational_translate_substitution D ψ B.V₀ J.W₀ s.χV s.χW s.om₀ s.weil₀ Ξ hΞ`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h γ w`. Establish `hr : (B.o.resS J.W₀).symm (0, l.κ J.W₀ (ratW L' J.W₀ γ)) ∈ ratMx D J.W₀.rank B.V₀.rank`. Rewrite using `[B.o.resS_symm_apply, Matrix.zero_mul, zero_add]`. Conclude with `ratMx_mul (hrat _ (rat_mem γ)) (rat_mem _)`.
+
+Take `⟨δ, hδ⟩` from `hr`. Establish `hs : symplOH B.V₀ J.W₀ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ (ratW L' J.W₀ γ))) ((B.o.resS J.W₀).symm (0, l.κ J.W₀ w)) = -(symplOH J.W₀ L' (ratW L' J.W₀ γ) w)`. Rewrite using `[B.o.symplOH_resS]`. Simplify using `only [AddEquiv.apply_symm_apply, symplOH_zero_left, zero_add]`. Rewrite using `[symplOH, symplOH, hsym]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ h₀, s.om₀ (B.o.emb (h₀, 1), h) Ξ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ (ratW L' J.W₀ γ + w))) = ψ (symplOH J.W₀ L' (ratW L' J.W₀ γ) w) * s.om₀ (B.o.emb (h₀, 1), h) Ξ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ w))`. Introduce `h₀`. Establish `e : ((0 : WO B.A J.W₀), l.κ J.W₀ (ratW L' J.W₀ γ + w)) = ((0 : WO B.A J.W₀), l.κ J.W₀ (ratW L' J.W₀ γ)) + (0, l.κ J.W₀ w)`.
+
+Rewrite using `[hadd, Prod.mk_add_mk, add_zero]`. Establish `hq` using `(hF (B.o.emb (h₀, 1), h)).quasi δ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ w))`. Establish `hδ' : rat δ = (B.o.resS J.W₀).symm (0, l.κ J.W₀ (ratW L' J.W₀ γ))` using `hδ`. Rewrite `hq` using `[ratW_eq, hδ', hs, neg_neg]`. Rewrite using `[e, map_add, hq]`.
+
+Simplify using `only [handBF, key]`. Repeatedly rewrite using `[mul_left_comm (φ _) (ψ _)]`. Rewrite using `[integral_const_mul, star_mul', star_psi_eq s.weil₀.std]`. Establish `jc` using `GlobalTheory.T.weilDatum_theta_jointlyContinuous D ψ B.V₀ J.W₀ s.χV s.χW s.om₀ s.weil₀ Ξ hΞ`. Establish `hmap : Continuous fun q : GA D B.A × (GA D J.W₀ × WO J.W₀ L') => ((B.o.emb (q.1, 1), q.2.1), (B.o.resS J.W₀).symm (0, l.κ J.W₀ q.2.2))` using `((B.o.continuous_emb.comp (continuous_fst.prodMk continuous_const)).prodMk (continuous_fst.comp continuous_snd)).prodMk ((B.o.continuous_resS_symm J.W₀).comp (continuous_const.prodMk (hcont.comp (continuous_snd.comp continuous_snd))))`.
+
+Establish `hK` using `GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D B.A B.cpt B.vA (GA D J.W₀ × WO J.W₀ L') (fun h₀ p => φ h₀ * s.om₀ (B.o.emb (h₀, 1), p.1) Ξ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ p.2))) ((hφ.2.comp continuous_fst).mul (jc.comp hmap)) (by`. Introduce `γ hγ h₀ p`. Establish `e : B.o.emb (γ * h₀, 1) = B.o.emb (γ, 1) * B.o.emb (h₀, 1)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `hq` using `hsub (B.o.emb (γ, 1)) (B.o.emb_mem_GQ hγ (one_mem _)) 1 (one_mem _) (B.o.emb (h₀, 1)) p.1 ((B.o.resS J.W₀).symm (0, l.κ J.W₀ p.2))`.
+
+Rewrite `hq` using `[one_mul]`. Rewrite using `[hφ.1 γ hγ h₀, e, hq, inv_one, mt_one, Matrix.one_mul]`. Simplify using `only [B.o.resS_symm_apply, Matrix.zero_mul, zero_add, Matrix.mul_assoc, B.o.pB_emb, mt_one, Matrix.one_mul])`. Conclude with `continuous_star.comp hK.2.1`. Introduce `γ hγ h w`.
+
+Establish `hκ` using `heq γ⁻¹ w`. Rewrite `hκ` using `[inv_inv]`. Establish `key : ∀ h₀, s.om₀ (B.o.emb (h₀, 1), γ * h) Ξ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ w)) = s.om₀ (B.o.emb (h₀, 1), h) Ξ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ (w ⬝ mt J.W₀ γ)))`. Introduce `h₀`. Establish `hq` using `hsub 1 (one_mem _) γ hγ (B.o.emb (h₀, 1)) h ((B.o.resS J.W₀).symm (0, l.κ J.W₀ w))`.
+
+Rewrite `hq` using `[one_mul]`. Rewrite using `[hq, mt_one, Matrix.mul_one, hκ]`. Simplify using `only [B.o.resS_symm_apply, Matrix.zero_mul, zero_add, Matrix.mul_assoc]`. Simplify using `only [handBF, key]`.
+-/
 theorem handBF_isQuasiFam : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ)
     (s : StepBF ψ B J) (L' : HSp D) (ζ' : Fin L'.rank → D.host.E), IsLineVec L' ζ' → ∀ (l : Link B L' ζ')
     (φ : GA D B.A → ℂ) (Ξ : WO B.V₀ J.W₀ → ℂ), IsContAut B.A φ → IsThetaFunO ψ B.V₀ J.W₀ Ξ →

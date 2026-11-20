@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Imports
 
 namespace GlobalTheory.CompanionTheory.Ar.Lattice
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yha6.main Λ N hN`.
+-/
 theorem exists_basis_span_eq_of_saturated (Λ : Type) [AddCommGroup Λ] [Module.Free ℤ Λ]
     [Module.Finite ℤ Λ] (N : Submodule ℤ Λ)
     (hN : ∀ (v : Λ) (n : ℤ), n ≠ 0 → n • v ∈ N → v ∈ N) :

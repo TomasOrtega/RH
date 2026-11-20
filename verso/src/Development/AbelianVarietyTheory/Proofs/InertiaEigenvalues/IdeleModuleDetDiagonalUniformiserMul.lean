@@ -11,6 +11,9 @@ open scoped ENNReal nonZeroDivisors Classical
 
 namespace GlobalTheory.CellDec.DetMod
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [GlobalTheory.CellDec.adl_zero]`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, GlobalTheory.CellDec.adl_add]`.
+-/
 theorem prod_adl {E : Type} [Field E] [NumberField E] {ι : Type} (s : Finset ι)
     (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ) (m : ι → HeightOneSpectrum (𝓞 E) →₀ ℤ) :
     ∏ i ∈ s, GlobalTheory.CellDec.adl ϖ (m i) = GlobalTheory.CellDec.adl ϖ (∑ i ∈ s, m i) := by
@@ -18,6 +21,15 @@ theorem prod_adl {E : Type} [Field E] [NumberField E] {ι : Type} (s : Finset ι
   | empty => simp [GlobalTheory.CellDec.adl_zero]
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, GlobalTheory.CellDec.adl_add]
 
+/- English proof (translation)
+Set `p : Ad E →+* InfiniteAdeleRing E` to `RingHom.fst (InfiniteAdeleRing E) (Af E)`. Use `Units.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Establish `h` using `GlobalTheory.CuspRep.det_map p (finGL E a k)`. Establish `h0 : GeneralLinearGroup.map p (finGL E a k) = 1` using `map_cornerGL_of_zero (sFin E) p (fun x => rfl) k`. Rewrite `h` using `[h0, map_one, Units.val_one]`.
+
+Express the relevant statement in the definitionally equal form `p _ = _`. Rewrite using `[← h]`. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing E) = (1 : InfiniteAdeleRing E) - 0 + 0`. Simplify using the standard rewrite rules. Establish `h` using `GlobalTheory.CuspRep.det_map (pFin E) (finGL E a k)`.
+
+Establish `h0 : GeneralLinearGroup.map (pFin E) (finGL E a k) = GeneralLinearGroup.map (RingHom.id _) k` using `map_cornerGL_of_hom (sFin E) (pFin E) (RingHom.id _) (fun x => rfl) k`. Rewrite `h` using `[h0]`. Express the relevant statement in the definitionally equal form `pFin E _ = _`. Rewrite using `[← h]`. Express the relevant statement in the definitionally equal form `_ = (1 : Af E) - 1 + (GeneralLinearGroup.det k : (Af E)ˣ)`.
+
+Rewrite using `[sub_self, zero_add]`. Both sides reduce to the same expression.
+-/
 theorem det_finGL' {E : Type} [Field E] [NumberField E] {a : ℕ} (k : GL (Fin a) (Af E)) :
     GeneralLinearGroup.det (finGL E a k) = finId E (GeneralLinearGroup.det k) := by
   let p : Ad E →+* InfiniteAdeleRing E := RingHom.fst (InfiniteAdeleRing E) (Af E)
@@ -42,6 +54,15 @@ theorem det_finGL' {E : Type} [Field E] [NumberField E] {a : ℕ} (k : GL (Fin a
 
 end GlobalTheory.CellDec.DetMod
 
+/- English proof (translation)
+Introduce `E _ _ n ϖ hϖ l g`. Rewrite using `[map_mul, map_mul, Positive.val_mul]`. Use `congr 1`. Establish `hdet : GeneralLinearGroup.det (GlobalTheory.SmGL.diagT (Af E) (Fin n) fun i => GlobalTheory.CellDec.adl ϖ (Finsupp.mapRange (fun x : Fin n → ℤ => x i) rfl l)) = ∏ i, GlobalTheory.CellDec.adl ϖ (Finsupp.mapRange (fun x : Fin n → ℤ => x i) rfl l)`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[GeneralLinearGroup.val_det_apply, GlobalTheory.SmGL.val_diagT, Matrix.det_diagonal, Units.coe_prod]`. Unfold `GlobalTheory.CellDec.tl`. Rewrite using `[GlobalTheory.CellDec.DetMod.det_finGL', hdet, GlobalTheory.CellDec.DetMod.prod_adl]`. Rewrite using `[GlobalTheory.AdeleScale.ideleModule_finId_adl ϖ hϖ _ l.support]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Use `congr 2`. Rewrite using `[Finsupp.finset_sum_apply]`. Both sides reduce to the same expression. Introduce `v hv`. Rewrite `hv` using `[Finsupp.notMem_support_iff]`.
+
+Rewrite using `[Finsupp.finset_sum_apply]`. Simplify using `[hv]`.
+-/
 theorem GlobalTheory.CellDec.DetMod.ideleModule_det_tl_mul : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ),
     (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) →
     ∀ (l : HeightOneSpectrum (𝓞 E) →₀ (Fin n → ℤ)) (g : GA E n),

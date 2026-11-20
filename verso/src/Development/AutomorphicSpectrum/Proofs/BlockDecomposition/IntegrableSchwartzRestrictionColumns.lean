@@ -17,18 +17,30 @@ variable {D : D7} {n r t a : ℕ}
 
 def colIdx (hn : r + t = n) (j : Fin t) : Fin n := finCongr hn (finSumFinEquiv (Sum.inr j))
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Sum.inr_injective (finSumFinEquiv.injective ((finCongr hn).injective h))`.
+-/
 theorem colIdx_injective (hn : r + t = n) : Function.Injective (colIdx hn) := fun _ _ h =>
   Sum.inr_injective (finSumFinEquiv.injective ((finCongr hn).injective h))
 
 def colPr (hn : r + t = n) (y : Mx D a n) : Mx D a t := y.submatrix id (colIdx hn)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[colPr, colIdx, jn, Matrix.submatrix_apply]`.
+-/
 theorem colPr_jn (hn : r + t = n) (x : Mx D a r) (v : Mx D a t) : colPr hn (jn hn x v) = v := by
   ext i j
   simp [colPr, colIdx, jn, Matrix.submatrix_apply]
 
+/- English proof (translation)
+The claim follows from `continuous_id.matrix_submatrix _ _`.
+-/
 theorem continuous_colPr (hn : r + t = n) : Continuous (colPr (D := D) (a := a) hn) :=
   continuous_id.matrix_submatrix _ _
 
+/- English proof (translation)
+The claim follows from `continuous_matrix fun i j => by show Continuous fun v : Mx D a t => Matrix.fromCols x v i ((finSumFinEquiv.trans (finCongr hn)).symm j) rcases (finSumFinEquiv.trans (finCongr hn)).symm j with s | s · exact continuous_const · exact continuous_id.matrix_elem i s`.
+-/
 theorem continuous_jn (hn : r + t = n) (x : Mx D a r) : Continuous (jn (D := D) hn x) :=
   continuous_matrix fun i j => by
     show Continuous fun v : Mx D a t => Matrix.fromCols x v i ((finSumFinEquiv.trans (finCongr hn)).symm j)
@@ -36,6 +48,11 @@ theorem continuous_jn (hn : r + t = n) (x : Mx D a r) : Continuous (jn (D := D) 
     · exact continuous_const
     · exact continuous_id.matrix_elem i s
 
+/- English proof (translation)
+Unfold `GlobalTheory.Unf.realSize`. Use `Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `e : ∀ j, compAt θ τ v i j = compAt θ τ (jn hn x v) i (colIdx hn j)` using `fun j => by`. Use `colPr_jn hn x v` as an intermediate fact. Use `conv_lhs => rw [← this]`.
+
+Both sides reduce to the same expression. Simplify using `only [e]`. Establish `h` using `Finset.sum_le_univ_sum_of_nonneg (f := fun j => ‖compAt θ τ (jn hn x v) i j‖) (s := Finset.univ.map ⟨colIdx hn, colIdx_injective hn⟩) fun _ => norm_nonneg _`. Rewrite `h` using `[Finset.sum_map]`. Conclude with `h`.
+-/
 theorem realSize_le (θ : InfFam D) (hn : r + t = n) (x : Mx D a r) (v : Mx D a t) :
     GlobalTheory.Unf.realSize θ v ≤ GlobalTheory.Unf.realSize θ (jn hn x v) := by
   unfold GlobalTheory.Unf.realSize
@@ -50,6 +67,15 @@ theorem realSize_le (θ : InfFam D) (hn : r + t = n) (x : Mx D a r) (v : Mx D a 
   rw [Finset.sum_map] at h
   exact h
 
+/- English proof (translation)
+Distinguish the cases in `hb : GlobalTheory.Unf.InBox K (jn hn x v)`. Establish `hb' : GlobalTheory.Unf.InBox (colPr hn '' K) v`. Take `⟨k, hk, h0⟩` from `hb`. Use `⟨colPr hn k, ⟨k, hk, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Use `congrFun (congrFun h0 i) (colIdx hn j)` as an intermediate fact. Establish `e : v i j = jn hn x v i (colIdx hn j)` using `by conv_lhs => rw [← colPr_jn hn x v]`. Both sides reduce to the same expression. Use `show finPart D (v i j - k i (colIdx hn j)) = 0`. Rewrite using `[e]`.
+
+Conclude with `this`. Unfold `GlobalTheory.Unf.maj`. Rewrite using `[if_pos hb, if_pos hb']`. Establish `h1` using `GlobalTheory.Unf.realSize_nonneg θ v`. Establish `h2` using `realSize_le θ hn x v`.
+
+Use `gcongr`. Establish `h0 : GlobalTheory.Unf.maj θ K N (jn hn x v) = 0` using `by unfold GlobalTheory.Unf.maj; rw [if_neg hb]`. Rewrite using `[h0]`. Conclude with `GlobalTheory.Unf.maj_nonneg θ _ N v`.
+-/
 theorem maj_jn_le (θ : InfFam D) (hn : r + t = n) (K : Set (Mx D a n)) (N : ℕ) (x : Mx D a r) (v : Mx D a t) :
     GlobalTheory.Unf.maj θ K N (jn hn x v) ≤ GlobalTheory.Unf.maj θ (colPr hn '' K) N v := by
   by_cases hb : GlobalTheory.Unf.InBox K (jn hn x v)
@@ -73,6 +99,11 @@ theorem maj_jn_le (θ : InfFam D) (hn : r + t = n) (K : Set (Mx D a n)) (N : ℕ
     rw [h0]
     exact GlobalTheory.Unf.maj_nonneg θ _ N v
 
+/- English proof (translation)
+Introduce `D n r t θ hθ a hn μt _ Φ x`. Take `⟨i1, i2, i3, i4, -⟩` from `lattice_Mx D a t`. Use `haveI : BorelSpace (Mx D a t) := ⟨rfl⟩`. Take `⟨hc, K, hK, hC⟩` from `GlobalTheory.SchwartzMaj.continuous_and_le_maj D θ hθ a n Φ.1 (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ a n Φ.1 Φ.2)`. Take `⟨N, hN⟩` from `GlobalTheory.Unf.MajInt.maj_integrable D θ hθ a t (fun _ _ => True) 0 μt inferInstance (.of_forall fun _ _ _ h => (h trivial).elim) (fun s _ => map_add_right_eq_self μt s)`.
+
+Take `⟨C, hC⟩` from `hC N`. Establish `hK' : IsCompact (colPr hn '' K)` using `hK.image (continuous_colPr hn)`. Establish `hC0 : ∀ v, ‖Φ.1 (jn hn x v)‖ ≤ |C| * GlobalTheory.Unf.maj θ (colPr hn '' K) N v` using `fun v => (hC _).trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (GlobalTheory.Unf.maj_nonneg θ K N _)).trans (mul_le_mul_of_nonneg_left (maj_jn_le θ hn K N x v) (abs_nonneg C)))`. Conclude with `((hN _ hK').const_mul |C|).mono' (hc.comp (continuous_jn hn x)).aestronglyMeasurable (.of_forall hC0)`.
+-/
 theorem integrable_slice : ∀ {D : D7} {n r t : ℕ} {θ : InfFam D} (hθ : IsInfFam θ) {a : ℕ} (hn : r + t = n)
     (μt : Measure (Mx D a t)) [μt.IsAddHaarMeasure] (Φ : schwartzA θ a n) (x : Mx D a r),
     Integrable (fun v => Φ.1 (jn hn x v)) μt := by

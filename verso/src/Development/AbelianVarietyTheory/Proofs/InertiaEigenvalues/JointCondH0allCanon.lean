@@ -14,6 +14,19 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.HubX
 
+/- English proof (translation)
+Introduce `hF D L HW R X hC hJ h41 hAdm i hTw hg hRA hS π hπ`. Take `⟨⟨ep, hep⟩, hJb, hJc, hJd, hJe, hJf, hJg⟩` from `hJ`. Establish `hls : D.nd.l i ∉ D.host.small` using `fun h => hRA.1 (Or.inl h)`. Establish `hl2 : D.nd.l i ≠ 2` using `UpperTheory.Small.ne_two D.host hls`. Establish `hlq : D.nd.l i ≠ D.host.q` using `fun h => hRA.2.1 (Or.inl h)`.
+
+Establish `hld : D.nd.l i ≠ D.host.d` using `fun h => hRA.2.1 (Or.inr h)`. Establish `hg0 : D.nd.l i ≠ D.host.g 0` using `fun h => hg (by simp [TwistedPlaces.gset, h])`. Establish `hg1 : D.nd.l i ≠ D.host.g 1` using `fun h => hg (by simp [TwistedPlaces.gset, h])`. Establish `hπZ : π ∈ D.nd.Z i` using `LargeLevelLemmas.zgoodSubsetZ i hπ`. Take `⟨-, -, -, hdec⟩` from `GlobalTheory.T.pointConditions_of_pointGaloisRepFamilies D X.r X.ρ hC.fam i π hπZ`.
+
+Establish `hgood` using `hC.fam.good i`. Establish `hcont` using `hC.fam.cont i π`. Establish `hr1 : 1 ≤ D.R.r`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hrV : D.R.r ≤ D.R.nV` using `Nat.le_add_right _ _`. Use `⟨hOf L, hOf L, hl2, ?_⟩` and prove the remaining obligations. Introduce `u _ w hw _`. Establish `hur : (D.nbr i w hw).Kw.1 ≤ MaximalUnramifiedExtension (D.nd.l i)` using `GlobalTheory.T.hostCompletion_le_maxUnramified_padic D i hls hlq hld w hw`.
+
+Use `⟨GlobalTheory.HubLoc.le_Ks_one_of_Kur _ hur, ?_⟩` and prove the remaining obligations. Introduce `C hs hc L2`. Establish `hcrys` using `(GlobalTheory.T.decomposition_local_away D i (X.r i) (X.ρ i) π h41 (hAdm i) hgood hcont hdec hg0 hg1 w hw C).2.2.2`. Establish `hjump` using `fun τ => GlobalTheory.T.decomposition_local_above D L ep hep hJb hJc hJe hJf i (X.r i) (X.ρ i) π hgood hπZ hdec w hw C τ (T2O D.nd i (X.ρ i) π) (Or.inr rfl)`. Establish `key` using `GlobalTheory.T.torsionExponent_le_of_jumps_at_embeddings_unramified D.loc HW D.locA (D.nd.l i) (D.nbr i w hw).Kw C.LL hs (hOf L) D.R.r (4 * D.R.n) (tTwoLocalLattice D i (X.ρ i) π C hc L2) hur (GlobalTheory.bridge_finrank_le D i w hw) hr1 (fun τ => (hjump τ).1)`.
+
+Use `⟨hcrys, key.1, fun τ => (hjump τ).2, ?_⟩` and prove the remaining obligations. Rewrite using `[hC.c0]`. Use `key.2.trans ?_` and prove the remaining obligations. Unfold `c0of`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ hrV)) _`.
+-/
 theorem jointCondH0all_canon : GlobalTheory.Published.FontaineBcris → ∀ (D : D7) (L : SizeData₂ D) (HW : HWOf D.loc) (R : KillingConditions.RowK) (X : KillingConditions.HubData D), GlobalTheory.HubX.Canon L HW R X → AdmissibleParameterJ.JumpConditions L → SumRepresentations.Conclusion41 D → (∀ i, TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL (D := D) i) → ∀ i : D.nd.Loc, TwistedPlaces.TwLoc D i → D.nd.l i ∉ TwistedPlaces.gset D → KillingConditions.RangeAD L X.exc (D.nd.l i) → TwistedPlaces.SplitK D (D.nd.l i) → ∀ π ∈ D.nd.Zgood i, ∃ M0 h0 : ℕ, GlobalTheory.HubX.DecompositionInvariantsCondition D HW i (X.ρ i) π (X.dc i) (X.c0 i) M0 h0 := by
   intro hF D L HW R X hC hJ h41 hAdm i hTw hg hRA hS π hπ
   obtain ⟨⟨ep, hep⟩, hJb, hJc, hJd, hJe, hJf, hJg⟩ := hJ

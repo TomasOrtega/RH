@@ -13,6 +13,9 @@ namespace MaDensLeibniz
 
 variable {D : ℕ}
 
+/- English proof (translation)
+Take `⟨U, hP, hU, hzU⟩` from `eventually_nhds_iff.mp ((hf.eventually (by simp)).and (hg.eventually (by simp)))`. Conclude with `⟨U, hU, hzU, fun y hy => (hP y hy).1.contDiffWithinAt, fun y hy => (hP y hy).2.contDiffWithinAt⟩`.
+-/
 theorem exists_open_contDiffOn (f g : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (hf : ContDiffAt ℝ 2 f z)
     (hg : ContDiffAt ℝ 2 g z) :
     ∃ U : Set (Fin D → ℂ), IsOpen U ∧ z ∈ U ∧ ContDiffOn ℝ 2 f U ∧ ContDiffOn ℝ 2 g U := by
@@ -21,18 +24,27 @@ theorem exists_open_contDiffOn (f g : (Fin D → ℂ) → ℝ) (z : Fin D → �
   exact ⟨U, hU, hzU, fun y hy => (hP y hy).1.contDiffWithinAt,
     fun y hy => (hP y hy).2.contDiffWithinAt⟩
 
+/- English proof (translation)
+Establish `h : cplx f = fun y => Complex.ofRealCLM (f y)` using `by funext y; simp [cplx]`. Rewrite using `[h]`. Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp z hf`.
+-/
 theorem contDiffAt_cplx {f : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ} (hf : ContDiffAt ℝ 2 f z) :
     ContDiffAt ℝ 2 (cplx f) z := by
   have h : cplx f = fun y => Complex.ofRealCLM (f y) := by funext y; simp [cplx]
   rw [h]
   exact Complex.ofRealCLM.contDiff.contDiffAt.comp z hf
 
+/- English proof (translation)
+Rewrite using `[dzb_cplx_eq_star, dz_cplx_mul k f g y hf hg, dzb_cplx_eq_star, dzb_cplx_eq_star]`. Simplify using `[cplx, star_add]`.
+-/
 theorem dzb_cplx_mul (k : Fin D) (f g : (Fin D → ℂ) → ℝ) (y : Fin D → ℂ)
     (hf : DifferentiableAt ℝ f y) (hg : DifferentiableAt ℝ g y) :
     dzb k (cplx fun x => f x * g x) y = cplx f y * dzb k (cplx g) y + cplx g y * dzb k (cplx f) y := by
   rw [dzb_cplx_eq_star, dz_cplx_mul k f g y hf hg, dzb_cplx_eq_star, dzb_cplx_eq_star]
   simp [cplx, star_add]
 
+/- English proof (translation)
+Rewrite using `[dzb_cplx, dzb_cplx, fderiv_sq_half f y hf]`. Simplify using `only [FunLike.coe_smul, Pi.smul_apply, smul_eq_mul, cplx]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dzb_cplx_sq_half (k : Fin D) (f : (Fin D → ℂ) → ℝ) (y : Fin D → ℂ)
     (hf : DifferentiableAt ℝ f y) :
     dzb k (cplx fun x => f x ^ 2 / 2) y = cplx f y * dzb k (cplx f) y := by
@@ -41,6 +53,13 @@ theorem dzb_cplx_sq_half (k : Fin D) (f : (Fin D → ℂ) → ℝ) (y : Fin D �
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨U, hU, hzU, hfU, hgU⟩` from `exists_open_contDiffOn f g z hf hg`. Use extensionality with `j k`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[hessCDz_thm D _ U hU (hfU.mul hgU) z hzU j k, hessCDz_thm D f U hU hfU z hzU j k, hessCDz_thm D g U hU hgU z hzU j k]`. Establish `hev : dzb k (cplx fun y => f y * g y) =ᶠ[𝓝 z] fun y => cplx f y * dzb k (cplx g) y + cplx g y * dzb k (cplx f) y` using `by filter_upwards [hU.mem_nhds hzU] with y hy`.
+
+Conclude with `dzb_cplx_mul k f g y ((hfU.contDiffAt (hU.mem_nhds hy)).differentiableAt (by norm_num)) ((hgU.contDiffAt (hU.mem_nhds hy)).differentiableAt (by norm_num))`. Establish `hF` using `(contDiffAt_cplx hf).differentiableAt (n := 2) (by norm_num)`. Establish `hG` using `(contDiffAt_cplx hg).differentiableAt (n := 2) (by norm_num)`. Establish `hF'` using `differentiableAt_dzb (j := k) (contDiffAt_cplx hf)`. Establish `hG'` using `differentiableAt_dzb (j := k) (contDiffAt_cplx hg)`.
+
+Rewrite using `[dz_congr hev, dz_add (hF.fun_mul hG') (hG.fun_mul hF'), dz_mul hF hG', dz_mul hG hF']`. Simplify using `only [gradMat, cplx]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hessC_mul (f g : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (hf : ContDiffAt ℝ 2 f z)
     (hg : ContDiffAt ℝ 2 g z) :
     hessC (fun y => f y * g y) z =
@@ -63,6 +82,13 @@ theorem hessC_mul (f g : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (hf : Cont
   simp only [gradMat, cplx]
   ring
 
+/- English proof (translation)
+Take `⟨U, hU, hzU, hfU, -⟩` from `exists_open_contDiffOn f f z hf hf`. Use extensionality with `j k`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[hessCDz_thm D _ U hU ((hfU.pow 2).div_const 2) z hzU j k, hessCDz_thm D f U hU hfU z hzU j k]`. Establish `hev : dzb k (cplx fun y => f y ^ 2 / 2) =ᶠ[𝓝 z] fun y => cplx f y * dzb k (cplx f) y` using `by filter_upwards [hU.mem_nhds hzU] with y hy`.
+
+Conclude with `dzb_cplx_sq_half k f y ((hfU.contDiffAt (hU.mem_nhds hy)).differentiableAt (by norm_num))`. Establish `hF` using `(contDiffAt_cplx hf).differentiableAt (n := 2) (by norm_num)`. Establish `hF'` using `differentiableAt_dzb (j := k) (contDiffAt_cplx hf)`. Rewrite using `[dz_congr hev, dz_mul hF hF']`. Simplify using `only [gradMat, cplx]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hessC_sq_half (f : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (hf : ContDiffAt ℝ 2 f z) :
     hessC (fun y => f y ^ 2 / 2) z = (f z : ℂ) • hessC f z + gradMat f f z := by
   obtain ⟨U, hU, hzU, hfU, -⟩ := exists_open_contDiffOn f f z hf hf
@@ -78,6 +104,9 @@ theorem hessC_sq_half (f : (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (hf : Co
   simp only [gradMat, cplx]
   ring
 
+/- English proof (translation)
+Simplify using `using mdisc_cons_smul_add 1 1 A A' B`.
+-/
 theorem mdisc_cons_add {n : ℕ} (A A' : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
     (B : Fin n → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
     mdisc (Fin.cons (A + A') B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) =
@@ -85,6 +114,13 @@ theorem mdisc_cons_add {n : ℕ} (A A' : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
         mdisc (Fin.cons A' B : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) := by
   simpa using mdisc_cons_smul_add 1 1 A A' B
 
+/- English proof (translation)
+Introduce `D φ f g z hf hg`. Prove the components needed by the constructor for the conclusion. Rewrite using `[maDens_cons_eq, maDens_cons_eq, maDens_cons_eq, hessC_mul f g z hf hg]`. Unfold `gradDens`. Rewrite using `[mdisc_cons_add, mdisc_cons_add, mdisc_cons_smul_add]`.
+
+Simplify using `only [Complex.add_re, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[maDens_cons_eq, maDens_cons_eq, hessC_sq_half f z hf]`. Unfold `gradDens`. Rewrite using `[mdisc_cons_add, mdisc_cons_smul_fst]`.
+
+Simplify using `only [Complex.add_re, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proof : MaDensLeibniz.Statement := by
   intro D φ f g z hf hg
   constructor

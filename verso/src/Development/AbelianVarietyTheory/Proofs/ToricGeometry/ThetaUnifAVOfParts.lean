@@ -7,6 +7,11 @@ open scoped BigOperators Real
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 P rig hrig`. Take `⟨u₀, hco, hlift⟩` from `h1 P`. Take `⟨u, Hm, χ, Ef, hex, hr, hd⟩` from `h4 P rig hrig u₀`. Rewrite `hco`, `hlift` using `[← hex]`. Establish `hb` using `h6 P u Hm χ Ef hd`.
+
+Establish `hAH` using `h9 P u Hm χ Ef hd hb`. Establish `ht` using `h2 P.A P.L P.g u hco`. Use `⟨u, Hm, χ, Ef, hAH, hr, ht.1, ht.2, h3 P.A P.L P.g u hlift, fun n => ⟨(h7 P u Hm χ Ef hd n).1, fun θ hθ => ?_⟩, hd.2.2.1, hb, h5 P u Hm χ Ef hd⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `h8 P u Hm χ Ef hAH hd hb n θ hθ`. Conclude with `⟨s, hs, fun s' hs' => (h7 P u Hm χ Ef hd n).2 θ s' s hs' hs⟩`.
+-/
 theorem thetaUnifAV_of_parts :
     (∀ P : Out.PolAV (Sp ℂ), ∃ u : HolUnif P.A (⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩
         : LB P.A.left) P.g, (∃ (U : P.A.left.Opens) (t : Fin P.g → Γ(P.A.left,

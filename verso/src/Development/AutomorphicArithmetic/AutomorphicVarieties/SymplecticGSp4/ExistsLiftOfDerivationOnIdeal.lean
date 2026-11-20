@@ -11,6 +11,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.SIn
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.EptInt
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
+/- English proof (translation)
+Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero]`. Introduce `s v hv hs i hi`. Establish `h1` using `(iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero _).1 h s (fun i => (v i : R)) hv (by rw [← AddSubmonoidClass.coe_finset_sum, hs]; rfl) i hi`.
+
+Conclude with `Subtype.ext h1`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`. Establish `hx' : x ∈ ⨆ j, 𝒜 j` using `hx`. Proceed by induction on `hx' using Submodule.iSup_induction' with`.
+
+Consider the case `mem i x hi => exact Submodule.mem_iSup_of_mem i hi`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx1 hy1 ihx ihy => exact add_mem (ihx hx1) (ihy hy1)`.
+-/
 private theorem graded_subalgebra_internal {O R X : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup X]
     [DecidableEq X] (𝒜 : X → Submodule O R) [SetLike.GradedMonoid 𝒜] (h : iSupIndep 𝒜) :
     DirectSum.IsInternal fun j => (𝒜 j).comap (gradedSub 𝒜).val.toLinearMap := by
@@ -29,6 +36,27 @@ private theorem graded_subalgebra_internal {O R X : Type} [CommRing O] [CommRing
     | zero => exact zero_mem _
     | add x y hx1 hy1 ihx ihy => exact add_mem (ihx hx1) (ihy hy1)
 
+/- English proof (translation)
+Establish `hk' : ∀ f f', φ f = φ f' → X f = X f'` using `fun f f' h => by`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `hk _ (by rw [map_sub, h, sub_self])`. Establish `hm : ∀ (w : ℤ × ℤ), ∀ f ∈ 𝓑 w, ∀ p q : ℕ, w.1 + p = q → ∃ a, φ a = f * u ^ p * v ^ q`. Introduce `w f hf p q h`.
+
+Establish `h1` using `SetLike.GradedMul.mul_mem (SetLike.GradedMul.mul_mem hf (SetLike.pow_mem_graded p hu)) (SetLike.pow_mem_graded q hv)`. Establish `h2 : w + p • ((1, 0) : ℤ × ℤ) + q • ((-1, 0) : ℤ × ℤ) = (0, w.2)`. Apply the tactic sequence `ext <;> simp`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[h2]`.
+
+Conclude with `hs _ _ h1`. Establish `h0 : ∀ w : ℤ × ℤ, w.1 + ((-w.1).toNat : ℕ) = (w.1.toNat : ℕ)` using `fun w => by omega`. Use `choose g hg using fun (w : ℤ × ℤ) (f : 𝓑 w) => hm w f f.2 _ _ (h0 w)`. Set `ψ : ∀ w, 𝓑 w →ₗ[O] K` to `fun w => { toFun := fun f => X (g w f) * ((c⁻¹ : Kˣ) : K) ^ w.1.toNat map_add' := fun a b => by`. Rewrite using `[← add_mul, ← map_add]`.
+
+Use `congr 1`. Conclude with `hk' _ _ (by rw [map_add, hg, hg, hg, Submodule.coe_add]; ring)`. Use the proof step `map_smul' := fun r b => by`. Rewrite using `[RingHom.id_apply, ← smul_mul_assoc, ← map_smul]`. Use `congr 1`.
+
+Conclude with `hk' _ _ (by rw [map_smul, hg, hg, Submodule.coe_smul, smul_mul_assoc, smul_mul_assoc]) }`. Establish `hψ : ∀ w (f : 𝓑 w) (p q : ℕ) a, w.1 + p = q → φ a = f * u ^ p * v ^ q → X a = ψ w f * (c : K) ^ q`. Introduce `w f p q a h ha`. Take `⟨d, hd⟩ : ∃ d : ℕ, q = w.1.toNat + d` from `⟨q - w.1.toNat, by omega⟩`. Establish `hp : p = (-w.1).toNat + d` using `by omega`.
+
+Establish `e1 : X a = X (g w f * a₀ ^ d)` using `hk' _ _ (by`. Rewrite using `[ha, map_mul, map_pow, hg, h₀, hd, hp]`. Use the proof step `ring)`. Use `show _ = X (g w f) * ((c⁻¹ : Kˣ) : K) ^ w.1.toNat * _`. Rewrite using `[e1, map_mul, map_pow, hc, hd, pow_add, mul_assoc, ← mul_assoc (_ ^ _), ← mul_pow, Units.inv_mul, one_pow, one_mul]`.
+
+Establish `hone : ψ 0 (GradedMonoid.GOne.one (A` using `fun j => 𝓑 j)) = 1 := by`. Use `hψ 0 (GradedMonoid.GOne.one (A := fun j => 𝓑 j)) 0 0 1 (by simp) (by simp)` as an intermediate fact. Simplify using `using this.symm`. Establish `hmul : ∀ {i j} (a : 𝓑 i) (b : 𝓑 j), ψ (i + j) (GradedMonoid.GMul.mul (A` using `fun j => 𝓑 j) a b) = ψ i a * ψ j b := by`. Introduce `i j a b`.
+
+Establish `e1` using `hψ i a _ _ _ (h0 i) (hg i a)`. Establish `e2` using `hψ j b _ _ _ (h0 j) (hg j b)`. Establish `e3` using `hψ (i + j) (GradedMonoid.GMul.mul (A := fun j => 𝓑 j) a b) ((-i.1).toNat + (-j.1).toNat) (i.1.toNat + j.1.toNat) (g i a * g j b) (by simp only [Prod.fst_add]; omega) (by rw [map_mul, hg, hg, SetLike.coe_gMul]; ring)`. Rewrite `e3` using `[map_mul, e1, e2]`. Apply `(c.isUnit.pow (i.1.toNat + j.1.toNat)).mul_right_cancel` to reduce the goal to its premises.
+
+Rewrite using `[← e3]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(DirectSum.toAlgebra O (fun j => 𝓑 j) ψ hone hmul).comp (DirectSum.decomposeAlgEquiv 𝓑).toAlgHom, fun n a ha => ?_⟩` and prove the remaining obligations. Establish `h : DirectSum.decompose 𝓑 (φ a) = DirectSum.of (fun j => 𝓑 j) (0, n) ⟨φ a, ha⟩` using `DirectSum.decompose_of_mem 𝓑 ha`. Establish `e` using `hψ (0, n) ⟨φ a, ha⟩ 0 0 a (by simp) (by simp)`.
+
+Rewrite `e` using `[pow_zero, mul_one]`. Rewrite using `[e]`. Simplify using `[h, DirectSum.toAlgebra]`. Use `erw [DirectSum.toSemiring_of]`. Both sides reduce to the same expression.
+-/
 private theorem extend_point_degree_zero_graded {O A B K : Type} [CommRing O] [CommRing A] [CommRing B] [CommRing K] [Algebra O A]
     [Algebra O B] [Algebra O K] (𝓑 : ℤ × ℤ → Submodule O B) [GradedAlgebra 𝓑] (φ : A →ₐ[O] B) (X : A →ₐ[O] K)
     (hk : ∀ f, φ f = 0 → X f = 0) (hs : ∀ n, ∀ b ∈ 𝓑 (0, n), ∃ a, φ a = b) (u v : B) (hu : u ∈ 𝓑 (1, 0))
@@ -91,6 +119,11 @@ private theorem extend_point_degree_zero_graded {O A B K : Type} [CommRing O] [C
   erw [DirectSum.toSemiring_of]
   rfl
 
+/- English proof (translation)
+Establish `hδ' : ∀ f g, δ (f * g) = x f • δ g + x g • δ f` using `hδ`. Establish `h1 : δ 1 = 0`. Use `hδ' 1 1` as an intermediate fact. Simplify using `using this`. Apply the tactic sequence `refine ⟨{ toFun := fun f => TrivSqZeroExt.inl (x f) + TrivSqZeroExt.inr (δ f) map_one' := by ext <;> simp [h1] map_mul' := fun f g => by ext <;> simp [hδ', mul_comm] map_zero' := by ext <;> simp map_add' := fun f g => by ext <;> simp commutes' := fun r => by`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one (A := A), Algebra.algebraMap_eq_smul_one (A := DualNumber K)]`. Apply the tactic sequence `ext <;> simp [h1] }, fun f => ?_⟩`. Apply the tactic sequence `constructor <;> simp`.
+-/
 private theorem derivation_to_dual_number_point {O A K : Type} [CommRing O] [CommRing A] [Field K] [Algebra O A] [Algebra O K]
     (x : A →ₐ[O] K) (δ : A →ₗ[O] K) (hδ : δ ∈ PtDer x K) :
     ∃ X : A →ₐ[O] DualNumber K, ∀ f, (X f).fst = x f ∧ (X f).snd = δ f := by
@@ -108,6 +141,9 @@ private theorem derivation_to_dual_number_point {O A K : Type} [CommRing O] [Com
               ext <;> simp [h1] }, fun f => ?_⟩
   constructor <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `let e : Multiplicative K →* DualNumber K := { toFun := fun a => TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr a.toAdd map_one' := by ext <;> simp map_mul' := fun f g => by ext <;> simp [add_comm] }`. Use `⟨(e.toHomUnits (.ofAdd a), e.toHomUnits (.ofAdd b)), fun w => ?_⟩` and prove the remaining obligations. Simplify using `only [wv]`. Rewrite using `[← map_zpow e.toHomUnits, ← map_zpow e.toHomUnits, ← map_mul, MonoidHom.coe_toHomUnits]`. Apply the tactic sequence `constructor <;> simp [e, mul_comm]`.
+-/
 private theorem torus_dual_number_weight_vector (K : Type) [Field K] (a b : K) : ∃ s : (DualNumber K)ˣ × (DualNumber K)ˣ, ∀ w,
     (wv s w : DualNumber K).fst = 1 ∧ (wv s w : DualNumber K).snd = a * w.1 + b * w.2 := by
   let e : Multiplicative K →* DualNumber K :=
@@ -119,6 +155,9 @@ private theorem torus_dual_number_weight_vector (K : Type) [Field K] (a b : K) :
   rw [← map_zpow e.toHomUnits, ← map_zpow e.toHomUnits, ← map_mul, MonoidHom.coe_toHomUnits]
   constructor <;> simp [e, mul_comm]
 
+/- English proof (translation)
+Set `e` to `Units.map (algebraMap K (DualNumber K) : K →* DualNumber K)`. Use `⟨(e t.1, e t.2), fun w => ?_⟩` and prove the remaining obligations. Establish `: wv (e t.1, e t.2) w = e (wv t w)` using `by simp only [wv, map_mul, map_zpow]`. Rewrite using `[this]`. Apply the tactic sequence `constructor <;> simp [e, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 private theorem torus_dual_number_lift_zero (K : Type) [Field K] (t : Kˣ × Kˣ) : ∃ s : (DualNumber K)ˣ × (DualNumber K)ˣ, ∀ w,
     (wv s w : DualNumber K).fst = wv t w ∧ (wv s w : DualNumber K).snd = 0 := by
   let e := Units.map (algebraMap K (DualNumber K) : K →* DualNumber K)
@@ -128,6 +167,21 @@ private theorem torus_dual_number_lift_zero (K : Type) [Field K] (t : Kˣ × Kˣ
   constructor <;> simp [e, TrivSqZeroExt.algebraMap_eq_inl]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Take `⟨hker, hsur, hgr⟩` from `kerA D hD M`. Take `⟨ξ₀, hξ₀⟩` from `ptLift D hD M x hx`. Establish `hirr` using `twoIrr D hD M hL hS hF hN ξ₀ (hξ₀ ▸ h2)`. Establish `hne : ∀ i j, ∃ g, ξ₀ (M.ent g i j) ≠ 0` using `fun i j => by`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Establish `h1 : Submodule.span (PadicAlgCl l) (Set.range (M.rep ξ₀)) ≤ LinearMap.ker (Matrix.entryLinearMap (PadicAlgCl l) (PadicAlgCl l) i j)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `hc g`.
+
+Rewrite `h1` using `[hirr]`. Simplify using `using h1 (Submodule.mem_top (x := Matrix.single i j 1))`. Take `⟨g₁, hg₁⟩` from `hne 0 1`. Take `⟨g₂, hg₂⟩` from `hne 1 0`. Establish `hu : (M.ent g₁ 0 1).1 ∈ M.sPart (1, 0)` using `M.entry_mem g₁ 0 1`.
+
+Establish `hv : (M.ent g₂ 1 0).1 ∈ M.sPart (-1, 0)` using `M.entry_mem g₂ 1 0`. Take `⟨a₀, -, ha₀⟩` from `hsur 0 (M.ent g₁ 0 1 * M.ent g₂ 1 0) (SetLike.GradedMul.mul_mem hu hv)`. Establish `hxa : x a₀ ≠ 0`. Rewrite using `[← hξ₀, AlgHom.comp_apply, ha₀, map_mul]`. Conclude with `mul_ne_zero hg₁ hg₂`.
+
+Take `⟨X, hX⟩` from `derivation_to_dual_number_point x δ hδ`. Establish `hXu : IsUnit (X a₀)` using `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (by rw [(hX a₀).1]; exact hxa.isUnit)`. Set `𝒜 : ℤ × ℤ → Submodule c.O M.SS` to `fun j => (M.sPart j).comap M.SS.val.toLinearMap`. Establish `hint : DirectSum.IsInternal 𝒜` using `graded_subalgebra_internal M.sPart (sInternal D hD M).1`. Use `letI : GradedAlgebra 𝒜 := { toDecomposition := hint.chooseDecomposition one_mem := (SetLike.GradedOne.one_mem : (1 : M.S) ∈ M.sPart 0) mul_mem := fun _ _ _ _ ha hb => (SetLike.GradedMul.mul_mem ha hb : _ ∈ M.sPart _) }`.
+
+Take `⟨Ξ, hΞ⟩` from `extend_point_degree_zero_graded 𝒜 M.toSS X (fun f hf => by`. Use `(hker f).1 hf` as an intermediate fact. Use `ext`. Rewrite using `[(hX f).1, hx f this]`. Both sides reduce to the same expression.
+
+Rewrite using `[(hX f).2, hI f this]`. Use the proof step `rfl)`. Use the proof step `(fun n b hb => by obtain ⟨a, -, ha⟩ := hsur n b hb; exact ⟨a, ha⟩) _ _ hu hv a₀ ha₀ hXu.unit rfl`. Conclude with `⟨Ξ, fun n f hf => ⟨(congrArg TrivSqZeroExt.fst (hΞ n f (hgr n f hf))).trans (hX f).1, (congrArg TrivSqZeroExt.snd (hΞ n f (hgr n f hf))).trans (hX f).2⟩⟩`.
+-/
 private theorem exists_lift_of_derivation_on_ideal {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (D : Raw Ω c) (hD : D.Good) (M : Model D) [GradedAlgebra M.gr] (hL : Loc.LocalPublishedTheorems) (hS : SoV Ω l) (hF : D.Fin0)
     (hN : D.NoEnd) (x : M.A →ₐ[c.O] PadicAlgCl l) (hx : OnS M.eqns.ideal x)
@@ -174,6 +228,29 @@ private theorem exists_lift_of_derivation_on_ideal {Ω : Type} [Field Ω] [CharZ
     (congrArg TrivSqZeroExt.snd (hΞ n f (hgr n f hf))).trans (hX f).2⟩⟩
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Take `⟨-, -, hgr⟩` from `kerA D hD M`. Take `⟨Ξ, hΞ⟩` from `exists_lift_of_derivation_on_ideal D hD M hL hS hF hN x hx h2 δ hδ hI`. Set `p : DualNumber (PadicAlgCl l) →ₐ[c.O] PadicAlgCl l` to `TrivSqZeroExt.fstHom c.O _ _`. Set `q : PadicAlgCl l →ₐ[c.O] DualNumber (PadicAlgCl l)` to `TrivSqZeroExt.inlAlgHom c.O _ _`. Take `⟨t, r, hr, hrt⟩` from `ptScale D hD M hF (p.comp Ξ)`.
+
+Take `⟨s, hs⟩` from `torus_dual_number_lift_zero _ t`. Take `⟨Ξ₁, -, hΞ₁⟩` from `ptAct D hD M (DualNumber (PadicAlgCl l)) Ξ s`. Establish `hfst : ∀ w (f : M.SS), f.1 ∈ M.sPart w → (Ξ₁ f).fst = wv t w * (Ξ f).fst` using `fun w f hf => by`. Rewrite using `[hΞ₁ w f hf, TrivSqZeroExt.fst_mul, (hs w).1]`. Establish `hsnd : ∀ w (f : M.SS), f.1 ∈ M.sPart w → (Ξ₁ f).snd = wv t w * (Ξ f).snd` using `fun w f hf => by`.
+
+Rewrite using `[hΞ₁ w f hf, DualNumber.snd_mul, (hs w).1, (hs w).2, zero_mul, add_zero]`. Establish `hr1 : ∀ g i j, (M.rep Ξ₁ g i j).fst = r g i j` using `fun g i j => by`. Rewrite using `[hrt]`. Conclude with `hfst _ _ (M.entry_mem g i j)`. Establish `hr2 : M.rep (p.comp Ξ₁) = r`.
+
+Use extensionality with `g i j`. Conclude with `hr1 g i j`. Establish `hpx : ∀ n, ∀ f ∈ M.gr n, (Ξ₁ (M.toSS f)).fst = wv t (0, n) * x f` using `fun n f hf => by`. Rewrite using `[hfst _ _ (hgr n f hf), (hΞ n f hf).1]`. Establish `hirr1 : Irr r`.
+
+Rewrite using `[← hr2]`. Use `twoIrr D hD M hL hS hF hN _ ⟨fun h => h2.1 fun n hn f hf => ?_, fun h => h2.2 fun n hn f hf => ?_⟩` and prove the remaining obligations. Use `all_goals`. Establish `h3 : (Ξ₁ (M.toSS f)).fst = 0` using `h n hn f hf`. Rewrite `h3` using `[hpx n f hf]`.
+
+Conclude with `(Units.mul_right_eq_zero _).1 h3`. Establish `hin : D.PtIn _ (M.rep Ξ₁)` using `tanScale D hD M hF Ξ₁ fun g i j => by`. Conclude with `(congrArg (fun z => ‖z - D.r0E g i j‖) (hr1 g i j)).trans_lt ((eptInt D hD r hr).2.1 g i j)`. Take `⟨a, b, hab⟩` from `rigidDiag D hD r hr (hR r hr hirr1) _ hin hr1`. Take `⟨s', hs'⟩` from `torus_dual_number_weight_vector _ a b`.
+
+Take `⟨Ξ₂, -, hΞ₂⟩` from `ptAct D hD M (DualNumber (PadicAlgCl l)) (q.comp (p.comp Ξ₁)) s'`. Establish `h2f : ∀ w (f : M.SS), f.1 ∈ M.sPart w → (Ξ₂ f).fst = (Ξ₁ f).fst` using `fun w f hf => by`. Rewrite using `[hΞ₂ w f hf, TrivSqZeroExt.fst_mul, (hs' w).1, one_mul]`. Both sides reduce to the same expression. Establish `h2s : ∀ w (f : M.SS), f.1 ∈ M.sPart w → (Ξ₂ f).snd = (a * w.1 + b * w.2) * (Ξ₁ f).fst` using `fun w f hf => by`.
+
+Rewrite using `[hΞ₂ w f hf, DualNumber.snd_mul, (hs' w).1, (hs' w).2]`. Use `show 1 * 0 + _ * (Ξ₁ f).fst = _`. Rewrite using `[mul_zero, zero_add]`. Establish `he : Ξ₂ = Ξ₁` using `ptExt D hD M hF (DualNumber (PadicAlgCl l)) _ _ (by`. Use extensionality with `g i j`.
+
+Conclude with `h2f _ _ (M.entry_mem g i j)`. Conclude with `((h2s _ _ (M.entry_mem g i j)).trans (congrArg _ (hr1 g i j))).trans (hab g i j).symm)`. Use `⟨b, fun n f hf => ?_⟩` and prove the remaining obligations. Establish `e` using `h2s _ _ (hgr n f hf)`. Substitute `he` using the available equality.
+
+Establish `e` using `(hsnd _ _ (hgr n f hf)).symm.trans e`. Rewrite `e` using `[hpx n f hf, (hΞ n f hf).2]`. Apply `(Units.mul_right_inj (wv t (0, n))).1` to reduce the goal to its premises. Rewrite using `[e]`. Simplify using `only [Int.cast_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem derivation_kills_ideal_lifts {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (D : Raw Ω c) (hD : D.Good) (M : Model D) [GradedAlgebra M.gr] (hL : Loc.LocalPublishedTheorems) (hS : SoV Ω l) (hF : D.Fin0)
     (hN : D.NoEnd) (hR : D.AllIrr D.RigidAt) (x : M.A →ₐ[c.O] PadicAlgCl l) (hx : OnS M.eqns.ideal x)
@@ -231,6 +308,13 @@ private theorem derivation_kills_ideal_lifts {Ω : Type} [Field Ω] [CharZero Ω
   simp only [Int.cast_zero]
   ring
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD M _ hL hS hF hN hR x hx h2 δ hδ δ' hδ' hI hI'`. Take `⟨b, hb⟩` from `derivation_kills_ideal_lifts D hD M hL hS hF hN hR x hx h2 δ hδ hI`. Take `⟨b', hb'⟩` from `derivation_kills_ideal_lifts D hD M hL hS hF hN hR x hx h2 δ' hδ' hI'`. Establish `key : ∀ c₁ c₂ : PadicAlgCl l, c₁ * b + c₂ * b' = 0 → c₁ • δ + c₂ • δ' = 0` using `fun c₁ c₂ h => by`. Use extensionality with `f`.
+
+Proceed by induction on `f using DirectSum.Decomposition.inductionOn M.gr with`. Consider the case `zero => exact map_zero _`. Consider the case `@homogeneous n f`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hb n f f.2, hb' n f f.2, LinearMap.zero_apply]`. Take the linear combination `((n : PadicAlgCl l) * x f) * h`.
+
+Consider the case `add f g hf hg => rw [map_add, hf, hg]`. Simplify using the standard rewrite rules. Distinguish the cases in `h0 : b = 0`. Conclude with `⟨1, 0, Or.inl one_ne_zero, key _ _ (by simp [h0])⟩`. Conclude with `⟨b', -b, Or.inr (neg_ne_zero.2 h0), key _ _ (by ring)⟩`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.m4 :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, ∀ [GradedAlgebra M.gr], Loc.LocalPublishedTheorems → SoV Ω l → D.Fin0 → D.NoEnd → D.AllIrr D.RigidAt → Alg.M4 M.gr (PadicAlgCl l) M.eqns.ideal := by
   intro Ω _ _ _ l _ c D hD M _ hL hS hF hN hR x hx h2 δ hδ δ' hδ' hI hI'

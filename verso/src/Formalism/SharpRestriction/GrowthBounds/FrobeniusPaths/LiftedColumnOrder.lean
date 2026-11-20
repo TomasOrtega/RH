@@ -19,6 +19,9 @@ def FrobCong : Prop :=
 
 variable {p f O}
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `hF s s' hs β`. Use `⟨C (algebraMap (WF p f) O τ), ?_⟩` and prove the remaining obligations. Use `congrArg (fun x => (C (algebraMap (WF p f) O x) : MvPolynomial (Fin N × Fin (r + K)) O)) hτ` as an intermediate fact. Simplify `this` using `[phiS, psiO]`.
+-/
 lemma phiS_cong (hF : FrobCong p f) (s s' : ℤ) (hs : s ≤ s') (β : WF p f) :
     ((p : ℕ) : MvPolynomial (Fin N × Fin (r + K)) O) ∣
       (phiS p f O N r K s β) ^ (p ^ (s' - s).toNat) - phiS p f O N r K s' β := by
@@ -27,10 +30,16 @@ lemma phiS_cong (hF : FrobCong p f) (s s' : ℤ) (hs : s ≤ s') (β : WF p f) :
   have := congrArg (fun x => (C (algebraMap (WF p f) O x) : MvPolynomial (Fin N × Fin (r + K)) O)) hτ
   simpa [phiS, psiO] using this
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, h]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 lemma map_inv_one (φ : WF p f →+* MvPolynomial (Fin N × Fin (r + K)) O)
     (M M' : Matrix (Fin (r + K)) (Fin (r + K)) (WF p f)) (h : M * M' = 1) : M.map φ * M'.map φ = 1 := by
   rw [← Matrix.map_mul, h]; exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Rewrite using `[← Lam_mul, map_inv_one φ M M' h, Lam_one]`.
+-/
 lemma Lam_inv_one (φ : WF p f →+* MvPolynomial (Fin N × Fin (r + K)) O)
     (M M' : Matrix (Fin (r + K)) (Fin (r + K)) (WF p f)) (h : M * M' = 1) :
     abelian₂ (M.map φ) * abelian₂ (M'.map φ) = 1 := by
@@ -100,6 +109,17 @@ def zetaL (w : O) (LL : LiftLetters (Fin N)) (g g' : Matrix (Fin (r + K)) (Fin (
   if LL.vec i then Matrix.vecMul (yO w LL i) ((g'⁻¹ * g).map (phiS p f O N r K (LL.pos i)))
   else Matrix.mulVec ((g⁻¹ * g').map (phiS p f O N r K (LL.pos i))) (yO w LL i)
 
+/- English proof (translation)
+Unfold `letG zetaL`. Distinguish the cases in `hv : LL.vec i = true`. Rewrite using `[if_pos hv, if_pos hv, map_sum]`. Simplify using `only [map_mul, liftSubst_X_vec p f O w LL r g' hg' i _ hv, algHom_C, Matrix.vecMul, dotProduct, map_sum, Matrix.map_apply, phiS, RingHom.comp_apply, map_C, yO, map_X]`. Establish `e : ∀ c : Fin (r + K), ∑ a, sigMat p f O g'⁻¹ (LL.pos i) c a * sigMat p f O g (LL.pos i) a b = algebraMap O (KK O) (psiO p f O (LL.pos i) ((g'⁻¹ * g) c b))`.
+
+Introduce `c`. Rewrite using `[← Matrix.mul_apply, ← sigMat_mul, sigMat_apply]`. Simplify using `only [← e, Finset.sum_mul, map_sum, Finset.mul_sum, C_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => by`.
+
+Rewrite using `[MvPolynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv' : LL.vec i = false` using `by simpa using hv`. Rewrite using `[if_neg hv, if_neg hv, map_sum, sigMat_inv p f O g hg]`. Simplify using `only [map_mul, liftSubst_X_cov p f O w LL r g' i _ hv', algHom_C, Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply, phiS, RingHom.comp_apply, map_C, yO, map_X]`.
+
+Establish `e : ∀ c : Fin (r + K), ∑ a, sigMat p f O g⁻¹ (LL.pos i) b a * sigMat p f O g' (LL.pos i) a c = algebraMap O (KK O) (psiO p f O (LL.pos i) ((g⁻¹ * g') b c))`. Introduce `c`. Rewrite using `[← Matrix.mul_apply, ← sigMat_mul, sigMat_apply]`. Simplify using `only [← e, Finset.sum_mul, map_sum, Finset.mul_sum, C_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => by`. Rewrite using `[MvPolynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma lift_substitution_letter (w : O) (LL : LiftLetters (Fin N)) (g g' : Matrix (Fin (r + K)) (Fin (r + K)) (WF p f))
     (hg : IsGLW g) (hg' : IsGLW g') (i : Fin N) (b : Fin (r + K)) :
     liftSubst p f O w r LL g' (letG p f (O := O) LL g i b) =
@@ -128,6 +148,11 @@ lemma lift_substitution_letter (w : O) (LL : LiftLetters (Fin N)) (g g' : Matrix
     exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => by
       rw [MvPolynomial.algebraMap_eq]; ring
 
+/- English proof (translation)
+Rewrite using `[KKc_eq]`. Establish `h1` using `ZZ_map (liftSubst p f O w r LL g').toRingHom p (letG p f (O := O) LL g) LL.pos mu c N le_rfl z J`. Establish `h2` using `ZZ_map (MvPolynomial.map (algebraMap O (KK O))) p (zetaL p f w LL g g') LL.pos mu c N le_rfl z J`. Rewrite using `[h2]`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `i b`. Conclude with `lift_substitution_letter p f w LL g g' hg hg' i b`.
+-/
 lemma lift_substitution_column_kernel (w : O) (LL : LiftLetters (Fin N)) (g g' : Matrix (Fin (r + K)) (Fin (r + K)) (WF p f))
     (hg : IsGLW g) (hg' : IsGLW g') (z : ℤ) (mu : Fin (N + 1) → Fin (r + K) → ℤ) (c : ℤ)
     (J : Finset (Fin (r + K))) :
@@ -142,6 +167,23 @@ lemma lift_substitution_column_kernel (w : O) (LL : LiftLetters (Fin N)) (g g' :
   funext i b
   exact lift_substitution_letter p f w LL g g' hg hg' i b
 
+/- English proof (translation)
+Establish `a1 : (g⁻¹ * g') * (g'⁻¹ * g) = 1`. Rewrite using `[mul_assoc, ← mul_assoc g', Matrix.mul_nonsing_inv g' hg', one_mul, Matrix.nonsing_inv_mul g hg]`. Establish `a2 : (g'⁻¹ * g) * (g⁻¹ * g') = 1`. Rewrite using `[mul_assoc, ← mul_assoc g, Matrix.mul_nonsing_inv g hg, one_mul, Matrix.nonsing_inv_mul g' hg']`. Establish `vecZ : ∀ i, LL.vec i = true → Matrix.vecMul (zetaL p f S.w LL g g' i) ((g⁻¹ * g').map (phiS p f O N r K (LL.pos i))) = yO S.w LL i`.
+
+Introduce `i hv`. Unfold `zetaL`. Rewrite using `[if_pos hv, Matrix.vecMul_vecMul, map_inv_one _ _ _ a2, Matrix.vecMul_one]`. Establish `covZ : ∀ i, LL.vec i = false → Matrix.mulVec ((g'⁻¹ * g).map (phiS p f O N r K (LL.pos i))) (zetaL p f S.w LL g g' i) = yO S.w LL i`. Introduce `i hv`.
+
+Unfold `zetaL; rw [if_neg (by simp [hv]), Matrix.mulVec_mulVec, map_inv_one _ _ _ a2, Matrix.one_mulVec]`. Establish `hts : Nonempty (TS p (C S.w : MvPolynomial (Fin N × Fin (r + K)) O) c mu LL.pos (zetaL p f S.w LL g g') (yO S.w LL))`. Distinguish the cases in `hc : 1 ≤ c`. Use `⟨mkTS hF S hsq c mu LL.pos _ _ (g⁻¹ * g') (g'⁻¹ * g) a1 a2 (fun j h hw => ?_) (fun j h hw => ?_)⟩` and prove the remaining obligations. Break down `hw with ⟨h1, _⟩ | ⟨_, h2⟩` into its components or cases.
+
+Conclude with `vecZ _ (H.rise j h h1).1`. Conclude with `absurd hc h2`. Break down `hw with ⟨_, h2⟩ | ⟨h1, _⟩` into its components or cases. Conclude with `absurd hc h2`. Conclude with `covZ _ (H.fall j h h1).1`.
+
+Use `⟨mkTS hF S hsq c mu LL.pos _ _ (g'⁻¹ * g).transpose (g⁻¹ * g').transpose (by rw [← Matrix.transpose_mul, a1, Matrix.transpose_one]) (by rw [← Matrix.transpose_mul, a2, Matrix.transpose_one]) (fun j h hw => ?_) (fun j h hw => ?_)⟩` and prove the remaining obligations. Break down `hw with ⟨_, h2⟩ | ⟨h1, _⟩` into its components or cases. Conclude with `absurd h2 hc`. Rewrite using `[Matrix.transpose_map, Matrix.vecMul_transpose]`. Conclude with `covZ _ (H.fall j h h1).1`.
+
+Break down `hw with ⟨h1, _⟩ | ⟨_, h2⟩` into its components or cases. Rewrite using `[Matrix.transpose_map, Matrix.mulVec_transpose]`. Conclude with `vecZ _ (H.rise j h h1).1`. Conclude with `absurd h2 hc`. Take `⟨ts⟩` from `hts`.
+
+Establish `hmain` using `fun J => (Ord_main p (Fact.out : p.Prime).ne_zero S.w LL mu c H hmono hposc _ ts N le_rfl z (fun i _ _ => hz i) J).1`. Take `⟨q, hq⟩` from `ts.inv z _ _ hmain J`. Rewrite `hq` using `[oS_top]`. Unfold `InWjRg`. Rewrite using `[lift_substitution_column_kernel p f S.w LL g g' hg hg', hq]`.
+
+Introduce `m`. Conclude with `⟨q.coeff m, by rw [coeff_map, ← C_pow, coeff_C_mul]⟩`.
+-/
 theorem lifted_column_order (hF : FrobCong p f) (S : UniformizedDVR p O) (hsq : S.SqP) (LL : LiftLetters (Fin N))
     (g g' : Matrix (Fin (r + K)) (Fin (r + K)) (WF p f)) (hg : IsGLW g) (hg' : IsGLW g') (z : ℤ)
     (mu : Fin (N + 1) → Fin (r + K) → ℤ) (c : ℤ) (H : ColOK LL mu c) (hmono : Monotone LL.pos)

@@ -12,6 +12,15 @@ namespace GlobalTheory.TwInputs.HEig
 
 open GlobalTheory.Triple GlobalTheory.EigTie
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.TwistChoice.isLocalHom_O (X := X) i`. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Conclude with `⟨0, map_zero _⟩`. Break down `ValuationRing.isInteger_or_isInteger (X.O0 i) z with ⟨a, e⟩ | ⟨c, e⟩` into its components or cases. Conclude with `⟨a, e⟩`.
+
+Distinguish the cases in `hc : IsUnit c`. Take `⟨u, rfl⟩` from `hc`. Use `⟨↑u⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap (X.O0 i) (FractionRing (X.O0 i)) (u : X.O0 i) * algebraMap (X.O0 i) (FractionRing (X.O0 i)) ((u⁻¹ : (X.O0 i)ˣ) : X.O0 i) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+
+Rewrite `h1` using `[e]`. Rewrite using `[← inv_inv z]`. Conclude with `(eq_inv_of_mul_eq_one_right h1)`. It suffices to derive a contradiction. Establish `e2 : algebraMap (X.O i) (FractionRing (X.O i)) (y * algebraMap (X.O0 i) (X.O i) c) = 1`.
+
+Rewrite using `[map_mul, ← h, ← fracMap_algebraMap, ← map_mul, e, mul_inv_cancel₀ hz, map_one]`. Establish `e3 : y * algebraMap (X.O0 i) (X.O i) c = 1` using `IsFractionRing.injective (X.O i) (FractionRing (X.O i)) (by rw [e2, map_one])`. Conclude with `hc (isUnit_of_map_unit (algebraMap (X.O0 i) (X.O i)) c (isUnit_iff_exists_inv.2 ⟨y, by rw [mul_comm]; exact e3⟩))`.
+-/
 theorem exists_small_ring_elem_of_fraction_map_integral {D : D7} (X : NTw D.R D.host D.what₂ D.LL0 D.nd) (i : X.Tw) (z : FractionRing (X.O0 i))
     (y : X.O i) (h : fracMap X i z = algebraMap (X.O i) (FractionRing (X.O i)) y) :
     ∃ a : X.O0 i, algebraMap (X.O0 i) (FractionRing (X.O0 i)) a = z := by
@@ -42,6 +51,11 @@ namespace GlobalTheory.TwInputs.HEig
 
 open GlobalTheory.Triple GlobalTheory.EigTie
 
+/- English proof (translation)
+Establish `hD : P ∉ placesOver D.host.E (if D.ntw.l i = D.host.pde then D.host.pde' else D.host.pde)` using `fun h => hS (D.ntw.primes_subset_exceptional i (by rw [← Finset.mem_coe, D.ntw.pD_eq i]; exact h))`. Unfold `CharFrame.delAt`. Use `split_ifs with h`. Rewrite `hD` using `[if_pos h]`. Conclude with `cf.isDel'.unr P hD`.
+
+Rewrite `hD` using `[if_neg h]`. Conclude with `cf.isDel.unr P hD`.
+-/
 theorem delAt_unr {D : D7} (cf : CharFrame D) (i : D.ntw.Tw) {P : PlE D.host} (hS : P ∉ D.ntw.S0 i) :
     (cf.delAt (D.ntw.l i)).UnrAt P := by
   have hD : P ∉ placesOver D.host.E (if D.ntw.l i = D.host.pde then D.host.pde' else D.host.pde) := fun h =>
@@ -59,6 +73,19 @@ namespace GlobalTheory.TwInputs.HEig
 
 open GlobalTheory.Triple GlobalTheory.EigTie
 
+/- English proof (translation)
+Use `set δ : ℂ := (((cf.delAt (D.ntw.l i)).val P : ℂˣ) : ℂ) with hδ`. Establish `hδ0 : δ ≠ 0` using `Units.ne_zero _`. Establish `hz : ‖δ‖ = 1` using `cf.delAt_unitary _ _`. Rewrite `hxd` using `[Units.val_inv_eq_inv_val]`. Establish `hread : ρ.toC ((D.ntw.delta i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) = ρ.ι (ρ.κ (D.ntw.emb0 i xd))`.
+
+Rewrite using `[Reading.toC_apply, ← hdel]`. Both sides reduce to the same expression. Consider the cases of `b`. Establish `hx0 : (xd : D.what₂.LL) ≠ 0`. Introduce `h0`.
+
+Rewrite `hxd` using `[h0, map_zero]`. Conclude with `inv_ne_zero hδ0 hxd.symm`. Establish `hstar : ((xd⁻¹ : D.LL0) : D.what₂.LL) = star (xd : D.what₂.LL)`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[D.starLL_cx, hxd, ← Complex.inv_eq_conj (by rw [norm_inv, hz, inv_one]), inv_inv]`.
+
+Rewrite using `[IntermediateField.coe_inv, map_inv₀, hxd, inv_inv]`. Establish `e : D.ntw.emb0 i xd = D.ntw.emb0b i xd⁻¹` using `(D.ntw.restX_coefficientEmbedding_conj i xd⁻¹ xd ?_).symm`. Establish `h1` using `ρ.read xd⁻¹`. Simplify using `only [embSide, Bool.false_eq_true, if_false] at h1`. Simplify using `only [Bool.false_eq_true, if_false]`.
+
+Rewrite using `[map_units_inv, hread, e, h1]`. Use `show (D.what₂.embLL ((xd⁻¹ : D.LL0) : D.what₂.LL))⁻¹ = δ⁻¹`. Rewrite using `[IntermediateField.coe_inv, map_inv₀, hxd, inv_inv]`. Rewrite using `[hstar, star_star]`. Establish `h1` using `ρ.read xd`.
+
+Simplify using `only [embSide, if_true] at h1`. Simplify using `only [if_true, hread, h1]`. Conclude with `hxd`.
+-/
 theorem toC_delta {D : D7} (cf : CharFrame D) (i : D.ntw.Tw) {b : Bool} (ρ : GlobalTheory.Triple.Reading D.ntw i b)
     {P : PlE D.host} (σ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om) (xd : D.LL0)
     (hxd : D.what₂.embLL (xd : D.what₂.LL) = (((cf.delAt (D.ntw.l i)).val P)⁻¹ : ℂˣ).1)
@@ -99,6 +126,27 @@ namespace GlobalTheory.TwInputs.HEig
 
 open GlobalTheory.Triple GlobalTheory.EigTie
 
+/- English proof (translation)
+Introduce `D cf Rw low Pq S hL eig θ Bs Sb hSb hET i s ρ π hπ k P hk hP hS`. Break down `Nat.eq_zero_or_pos k with rfl | hk1` into its components or cases. Conclude with `⟨1, by rw [map_one, Bs.hEig_zero], by rw [map_one, heckeVal_zero]⟩`. Take `⟨σ, -, hσ⟩` from `GlobalTheory.TripleGal.exists_mem_Dec_isFrob D P (D.nd.plOm.1 P) (D.nd.plOm.2 P)`. Establish `hl : P ∉ placesOver D.host.E (D.ntw.l i)` using `fun h => hS (D.ntw.twistExcludedPlaces_contains_residueChar i h)`.
+
+Take `⟨xd, hxd, hdel⟩` from `Bs.deltaRead i P hl (delAt_unr cf i hS) _ σ (D.nd.plOm.2 P) hσ`. Use `set u : (D.ntw.O0 i)ˣ := if D.ntw.side i s then D.ntw.delta i σ else (D.ntw.delta i σ)⁻¹ with hu`. Establish `hc : Bs.cHk i (D.ntw.side i s) P = Units.map (algebraMap (D.ntw.O0 i) (D.ntw.O i)).toMonoidHom u` using `Bs.cHk_del i (D.ntw.side i s) P hS σ hσ`. Use `set e : ↥D.LL0 := eig (D.ntw.jS i s) (Bs.rowS i s) k P with he`. Use `set z : FractionRing (D.ntw.O0 i) := embSide D.ntw i (D.ntw.side i s) e with hz`.
+
+Establish `hrow` using `Bs.rowS_eig i s k P hk1 hk hP hS`. Establish `hread : (show FractionRing (D.ntw.O i) from readLL0 S i (D.ntw.side i s) e) = fracMap D.ntw i z` using `rfl`. Rewrite `hrow` using `[hread, hc]`. Use `set A : D.ntw.O0 i →+* FractionRing (D.ntw.O i) := (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i))).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i)) with hA`. Establish `hcu : algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) ((Units.map (algebraMap (D.ntw.O0 i) (D.ntw.O i)).toMonoidHom u : (D.ntw.O i)ˣ) : D.ntw.O i) = A u` using `rfl`.
+
+Rewrite `hrow` using `[hcu]`. Establish `hAu : A (u : D.ntw.O0 i) * A ((u⁻¹ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hzO : fracMap D.ntw i z = algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (D.ntw.hEig i s k P * algebraMap (D.ntw.O0 i) (D.ntw.O i) (((u⁻¹ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) ^ k))`. Rewrite using `[map_mul, hrow, map_pow, map_pow]`.
+
+Express the relevant statement in the definitionally equal form `_ = A (u : D.ntw.O0 i) ^ k * fracMap D.ntw i z * A ((u⁻¹ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) ^ k`. Rewrite using `[mul_comm _ (fracMap D.ntw i z), mul_assoc, ← mul_pow, hAu, one_pow, mul_one]`. Take `⟨a, ha⟩` from `exists_small_ring_elem_of_fraction_map_integral D.ntw i z _ hzO`. Use `⟨(u : D.ntw.O0 i) ^ k * a, ?_, ?_⟩` and prove the remaining obligations. Apply `IsFractionRing.injective (D.ntw.O i) (FractionRing (D.ntw.O i))` to reduce the goal to its premises.
+
+Rewrite using `[hrow, ← fracMap_algebraMap, map_mul, map_mul, ha, map_pow, map_pow, fracMap_algebraMap]`. Both sides reduce to the same expression. Establish `hloc : D.naut.locG π P = Rw.locR (Bs.rowS i s) P` using `hπ.2 P hP`. Take `⟨hocc, hgood, -⟩` from `Bs.rhoS i s`. Establish `hocc' : D.what₂.isot ((jIdx s).1 + 1) (Bs.rowS i s) ≠ ⊥` using `by rwa [jIdx_add_one]`.
+
+Establish `hET'` using `(hET (jIdx s) (Bs.rowS i s) hocc' hgood P hP (fun h => hS (hSb i h))).2 k hk1 hk`. Rewrite `hET'` using `[jIdx_add_one]`. Establish `hδ : ρ.toC (u : D.ntw.O0 i) = _` using `toC_delta cf i ρ σ xd hxd hdel`. Establish `hae : ρ.toC a = D.what₂.embLL (e : D.what₂.LL)`. Rewrite using `[Reading.toC_apply]`.
+
+Express the relevant statement in the definitionally equal form `ρ.ι (ρ.κ (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i)) a)) = _`. Rewrite using `[ha, hz, ρ.read]`. Both sides reduce to the same expression. Rewrite using `[map_mul, map_pow, hδ, hae, he, hET', heckeVal, satake, hloc, muBase, HChar.val_mul, Units.val_mul]`. Use `set q : ℂ := ((normV P : ℕ) : ℂ)`.
+
+Use `set c : ℂ := (((cf.delAt (D.ntw.l i)).val P : ℂˣ) : ℂ)⁻¹`. Establish `hmap : (D.naut.frobEig (Rw.locR (Bs.rowS i s) P)).map (fun a => a⁻¹ * ((((cf.mu0 (jIdx s)).val P : ℂˣ) : ℂ) * (((cf.delAt (D.ntw.l i)).val P : ℂˣ) : ℂ))⁻¹ * (q ^ (D.R.nV / 2))⁻¹) = ((D.naut.frobEig (Rw.locR (Bs.rowS i s) P)).map (fun a => a⁻¹ * (((cf.mu0 (jIdx s)).val P : ℂˣ) : ℂ …`. Rewrite using `[Multiset.map_map]`. Use `Multiset.map_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, smul_eq_mul, c, mul_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hmap, ← Multiset.pow_smul_esymm, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hEig_eq_heckeVal : ∀ (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf Rw low Pq S hL eig θ), ∀ Sb : Finset (PlE D.host), (∀ i, Sb ⊆ D.ntw.S0 i) → EigTrue D cf Rw Sb eig → ∀ i (s : D.ntw.Sig i) (ρ : GlobalTheory.Triple.Reading D.ntw i (D.ntw.side i s)) (π : D.naut.CG D.R.r), GlobalTheory.EigTie.IsRowPar Rw (Bs.rowS i s) π → ∀ k P, k ≤ D.R.r → IsSplitPl D.host P → P ∉ D.ntw.S0 i → ∃ x : D.ntw.O0 i, algebraMap (D.ntw.O0 i) (D.ntw.O i) x = D.ntw.hEig i s k P ∧ ρ.toC x = GlobalTheory.Triple.heckeVal (GlobalTheory.Triple.muBase cf (D.ntw.l i) (GlobalTheory.Triple.jIdx s)) π k P := by
   intro D cf Rw low Pq S hL eig θ Bs Sb hSb hET i s ρ π hπ k P hk hP hS
   rcases Nat.eq_zero_or_pos k with rfl | hk1

@@ -9,6 +9,23 @@ namespace GlobalTheory.RangeKerCount
 
 open GlobalTheory.KerRangeCount Formalism.L2.Col
 
+/- English proof (translation)
+Introduce `κ _ _ U U' _ _ _ _ _ _ f t e hU' he`. Use `letI : Fintype κ := Fintype.ofFinite κ`. Rewrite using `[Nat.card_eq_fintype_card (α := κ)]`. Establish `hq0 : Fintype.card κ ≠ 0` using `Fintype.card_ne_zero`. Establish `hrk` using `f.finrank_range_add_finrank_ker`.
+
+Establish `hin : ∀ n, Nat.card {X : Submodule κ U // X ≤ LinearMap.ker f ∧ Module.finrank κ X = n} = Formalism.L2.Col.gaussBin (Fintype.card κ) (Module.finrank κ (LinearMap.ker f)) n`. Introduce `n`. Rewrite using `[← card_below (LinearMap.ker f) n]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun X => and_comm)`. Establish `hL : Nat.card {X : Submodule κ U' // LinearMap.range f ≤ X ∧ Module.finrank κ X + e = Module.finrank κ U'} = Formalism.L2.Col.gaussBin (Fintype.card κ) (Module.finrank κ (LinearMap.ker f) + t) e`.
+
+Distinguish the cases in `hem : e ≤ Module.finrank κ (LinearMap.ker f) + t`. Rewrite using `[gaussBin_symm hq0 (Module.finrank κ (LinearMap.ker f) + t) e (Module.finrank κ (LinearMap.ker f) + t - e) (by omega)]`. Establish `h` using `card_above (k := κ) (LinearMap.range f) (Module.finrank κ (LinearMap.ker f) + t - e)`. Rewrite `h` using `[show Module.finrank κ U' - Module.finrank κ (LinearMap.range f) = Module.finrank κ (LinearMap.ker f) + t by omega]`. Rewrite using `[← h]`.
+
+Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun X => ⟨fun h => ⟨by omega, h.1⟩, fun h => ⟨h.2, by omega⟩⟩)`. Establish `: IsEmpty {X : Submodule κ U' // LinearMap.range f ≤ X ∧ Module.finrank κ X + e = Module.finrank κ U'}` using `⟨fun X => by have := Submodule.finrank_mono X.2.1; have := X.2.2; omega⟩`. Rewrite using `[Nat.card_of_isEmpty, gaussBin_eq_zero _ (by omega)]`. Use `set q := Fintype.card κ`. Use `set m := Module.finrank κ (LinearMap.ker f)`.
+
+Use `set g : ℕ → ℕ := fun n => (if n ≤ e then q ^ (n * (t - (e - n))) * Formalism.L2.Col.gaussBin q t (e - n) else 0) * Formalism.L2.Col.gaussBin q m n with hg`. Establish `hR : ∑ n ∈ Finset.range (Module.finrank κ U + 1), (if n ≤ e then q ^ (n * (t - (e - n))) * Formalism.L2.Col.gaussBin q t (e - n) else 0) * Nat.card {X : Submodule κ U // X ≤ LinearMap.ker f ∧ Module.finrank κ X = n} = ∑ n ∈ Finset.range (Module.finrank κ U + 1), g n` using `Finset.sum_congr rfl fun n _ => by rw [hin]`. Establish `h2 : ∑ n ∈ Finset.range (e + 1), g n = ∑ n ∈ Finset.range (e + Module.finrank κ U + 1), g n` using `Finset.sum_subset (Finset.range_mono (by omega)) fun n _ hn => by`. Rewrite `hn` using `[Finset.mem_range]`. Simplify using `only [hg]`.
+
+Rewrite using `[if_neg (by omega), zero_mul]`. Establish `h3 : ∑ n ∈ Finset.range (Module.finrank κ U + 1), g n = ∑ n ∈ Finset.range (e + Module.finrank κ U + 1), g n` using `Finset.sum_subset (Finset.range_mono (by omega)) fun n _ hn => by`. Rewrite `hn` using `[Finset.mem_range]`. Simplify using `only [hg]`. Rewrite using `[gaussBin_eq_zero q (show m < n by omega), mul_zero]`.
+
+Rewrite using `[hL, hR, h3, ← h2, gaussBin_add hq0 m t e, ← Finset.sum_range_reflect]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Rewrite `hn` using `[Finset.mem_range]`. Simplify using `only [hg]`. Rewrite using `[if_pos (by omega), show e + 1 - 1 - n = e - n by omega, show e - (e - n) = n by omega]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_above_range_eq_sum : ∀ (κ : Type) [Field κ] [Finite κ] (U U' : Type) [AddCommGroup U] [Module κ U] [FiniteDimensional κ U] [AddCommGroup U'] [Module κ U'] [FiniteDimensional κ U'] (f : U →ₗ[κ] U') (t e : ℕ), Module.finrank κ U' = Module.finrank κ U + t → e ≤ Module.finrank κ U' → Nat.card {X : Submodule κ U' // LinearMap.range f ≤ X ∧ Module.finrank κ X + e = Module.finrank κ U'} = ∑ n ∈ Finset.range (Module.finrank κ U + 1), (if n ≤ e then Nat.card κ ^ (n * (t - (e - n))) * Formalism.L2.Col.gaussBin (Nat.card κ) t (e - n) else 0) * Nat.card {X : Submodule κ U // X ≤ LinearMap.ker f ∧ Module.finrank κ X = n} := by
   intro κ _ _ U U' _ _ _ _ _ _ f t e hU' he
   classical

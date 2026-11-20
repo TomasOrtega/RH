@@ -5,6 +5,9 @@ open CategoryTheory Opposite Matrix GlobalTheory GlobalTheory.PDivGroup GlobalTh
 
 namespace GlobalTheory.ResiduePointLift
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ _ hv A _ _ _ _ c`. Use `haveI : IsFractionRing O C := hv.isFractionRing`. Use `haveI : IsIntegrallyClosed O := hv.isIntegrallyClosed`. Take `⟨ψ, h1, h2⟩` from `GlobalTheory.UT.ExactTerm.exists_ringHom_lift C (c : A →+* IsLocalRing.ResidueField O) (RingHom.ext fun o => by simp [IsLocalRing.ResidueField.algebraMap_eq])`. Use `⟨{ ψ with commutes' := fun o => RingHom.congr_fun h1 o }, fun a => RingHom.congr_fun h2 a⟩` and prove the remaining obligations.
+-/
 theorem exists_algHom_lift : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O] [IsLocalRing O], v.Integers O →

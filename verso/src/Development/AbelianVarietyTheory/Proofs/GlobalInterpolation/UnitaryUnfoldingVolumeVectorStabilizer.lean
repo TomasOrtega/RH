@@ -31,6 +31,15 @@ open scoped ENNReal TensorProduct
 
 namespace GlobalTheory.VolumeUnfolding
 
+/- English proof (translation)
+Establish `hd` using `(GlobalTheory.T.hermitian_form_and_selfDual_lattice_in_frame_coords F E cm W).1`. Use `⟨Matrix.of fun i j => W.frame.repr (ι (W'.frame j)) i, ?_, fun j => ?_, fun y => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Use `hd (ι (W'.frame a)) (ι (W'.frame b))` as an intermediate fact. Rewrite `this` using `[hι]`.
+
+Use `Eq.trans ?_ this` and prove the remaining obligations. Simplify using `only [hE, Formalism.UG.hform, Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Establish `h : ι (W'.frame j) ∈ LinearMap.ker (W.hT x)` using `hr ▸ LinearMap.mem_range_self _ _`. Conclude with `(hd x (ι (W'.frame j))).trans h`.
+
+Use `(hL _).trans (iff_of_eq (congrArg (· ∈ W.L0) ?_))` and prove the remaining obligations. Simplify using `only [map_sum, map_smul, Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← W.frame.sum_repr (ι (W'.frame j)), Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm]`.
+-/
 theorem exists_perp_matrix {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (cm : CMData F E) (W W' : HSpace E) (ι : W'.V →ₗ[E] W.V) (x : W.V)
     (hι : HSpace.IsIsomEmb W' W ι) (hr : LinearMap.range ι = LinearMap.ker (W.hT x))
@@ -57,6 +66,13 @@ theorem exists_perp_matrix {F E : Type} [Field F] [NumberField F] [Field E] [Num
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [smul_smul, mul_comm]
 
+/- English proof (translation)
+Establish `e : (B.map τ)ᴴ = (Formalism.UG.cT (σ : E →+* E) B).map τ`. Use extensionality with `i j`. Conclude with `(h.2.2.2 τ _).symm`. Use `⟨by rw [e, ← hB, Matrix.map_mul, Matrix.map_mul], funext fun j => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun z => star (τ z)) (hx j)`.
+
+Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, star_sum, star_mul', map_zero, star_zero] at h1`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Finset.sum_mul, Pi.zero_apply]`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h2 : τ ((σ : E →+* E) (x a)) = star (τ (x a))` using `h.2.2.2 τ _`.
+
+Rewrite using `[h2, star_star, ← h.2.2.2 τ (J a b), hJ.1 b a]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem perp_matrix_map {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {M M' : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J)
     {J' : Matrix (Fin M') (Fin M') E} {B : Matrix (Fin M) (Fin M') E} {x : Fin M → E}
@@ -82,12 +98,20 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {τ : E →+* ℂ} {θ : Ainf F ⊗[F] E →+* ℂ}
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← hθ.1 z]`. Simplify using `[inclR]`.
+-/
 theorem proj_incl (hθ : IsInfEmb τ θ) (z : E) :
     (θ.comp (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom) (inclR (AF F) z) = τ z := by
   rw [← hθ.1 z]
   simp [inclR]
 
 omit [NumberField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Set `p` to `θ.comp (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom`. Establish `h1` using `congrArg p (congrFun (congrFun hg 0) i)`. Establish `h2` using `RingHom.map_mulVec p (HA.mat _ _ _ g).1 (ratTup (F := F) (AF F) x 0) i`. Establish `h3 : p ∘ ratTup (F` using `F) (AF F) x 0 = fun i => τ (x 0 i) := funext fun i => proj_incl hθ _`.
+
+Rewrite `h2` using `[h3]`. Conclude with `h2.symm.trans (h1.trans (proj_incl hθ _))`.
+-/
 theorem infMat_fix (hθ : IsInfEmb τ θ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {x : Fin 1 → Fin M → E}
     {g : HA (AF F) σ J} (hg : g ∈ Hstab (AF F) σ J x) :
     infMat σ J θ g *ᵥ (fun i => τ (x 0 i)) = fun i => τ (x 0 i) := by
@@ -100,6 +124,9 @@ theorem infMat_fix (hθ : IsInfEmb τ θ) {M : ℕ} {J : Matrix (Fin M) (Fin M) 
   exact h2.symm.trans (h1.trans (proj_incl hθ _))
 
 omit [NumberField E] in
+/- English proof (translation)
+Set `p` to `θ.comp (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom`. Establish `h3 : (B.map (inclR (AF F))).map p = B.map τ` using `Matrix.ext fun _ _ => proj_incl hθ _`. Rewrite using `[← h3]`. Conclude with `(Matrix.map_mul (f := p)).symm.trans ((congrArg (fun m => m.map p) hg).trans (Matrix.map_mul (f := p)))`.
+-/
 theorem infMat_frame (hθ : IsInfEmb τ θ) {M M' : ℕ} {J : Matrix (Fin M) (Fin M) E} {J' : Matrix (Fin M') (Fin M') E}
     {B : Matrix (Fin M) (Fin M') E} {g : HA (AF F) σ J} {g' : HA (AF F) σ J'} (hg : FrameRel J J' B g g') :
     infMat σ J θ g * B.map τ = B.map τ * infMat σ J' θ g' := by
@@ -110,6 +137,13 @@ theorem infMat_frame (hθ : IsInfEmb τ θ) {M M' : ℕ} {J : Matrix (Fin M) (Fi
 
 end Real
 
+/- English proof (translation)
+Establish `hd` using `(GlobalTheory.T.hermitian_form_and_selfDual_lattice_in_frame_coords F E cm W).1`. Establish `hxx : hE cm.sig W.gram (coordTup W x 0) (coordTup W x 0) = β` using `(hd x x).trans hx`. Take `⟨hw1, hw2⟩` from `GlobalTheory.T.rational_vectors_same_length_one_unitary_orbit F E cm.sig (isCMExt cm) _ W.gram (isHermND cm W) (coordTup W x) (hxx ▸ hβ)`. Use `⟨fun a b hab => ?_, fun y => Iff.trans ⟨?_, ?_⟩ (hw2 y)⟩` and prove the remaining obligations. Conclude with `Subtype.ext (W.frame.repr.injective (Finsupp.ext (congrFun (congrFun (hw1 hab) 0))))`.
+
+Introduce and unpack `⟨x', rfl⟩`. Conclude with `⟨coordTup W x'.1, ((hd x'.1 x'.1).trans x'.2).trans hxx.symm, rfl⟩`. Introduce and unpack `⟨x', h1, rfl⟩`. Establish `e : coordTup W (W.frame.equivFun.symm (x' 0)) = x'`. Use function extensionality and compare the values at `a i`.
+
+Rewrite using `[Subsingleton.elim a 0]`. Conclude with `congrFun (W.frame.equivFun.apply_symm_apply (x' 0)) i`. Use `⟨⟨W.frame.equivFun.symm (x' 0), ?_⟩, congrArg _ e⟩` and prove the remaining obligations. Rewrite `h1` using `[← e]`. Conclude with `(hd _ _).symm.trans (h1.trans hxx)`.
+-/
 theorem rational_orbit {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (cm : CMData F E) (W : HSpace E) (x : W.V) {β : E} (hx : W.hT x x = β) (hβ : β ≠ 0) :
     Function.Injective (fun x' : {x' : W.V // W.hT x' x' = β} => ratTup (F := F) (AF F) (coordTup W x'.1)) ∧
@@ -131,6 +165,11 @@ theorem rational_orbit {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
     rw [← e] at h1
     exact (hd _ _).symm.trans (h1.trans hxx)
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Use `haveI := D.host.isCMField_hostE`. Establish `hU : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E)` using `Formalism.L2.Pj.unramBridge_holds D.host.E fun P hP => by`. Take `⟨θ, t, ht, hθ⟩` from `D.sp.cm.cmUnram.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations.
+
+Establish `: RingOfIntegers.mapRingEquiv (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E) θ = t` using `RingOfIntegers.ext ht.symm`. Rewrite using `[this]` and apply the resulting hypothesis. Introduce `P hP _`. Conclude with `Algebra.unramified_iff_forall.1 hU ⟨P, hP⟩`.
+-/
 theorem unramified_host (D : D7) : UnramifiedAtFinite D.host.F D.host.E := by
   letI := D.host.cmStar
   haveI := D.host.isCMField_hostE
@@ -147,6 +186,45 @@ theorem unramified_host (D : D7) : UnramifiedAtFinite D.host.F D.host.E := by
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `μ μ' 𝓕 𝓕' hμ hμ' h𝓕 h𝓕' _ _`. Establish `hcm` using `isCMExt D.sp.cm`. Establish `hJ` using `isHermND D.sp.cm W`. Establish `hJ'` using `isHermND D.sp.cm W'`. Establish `hτ : IsCMFam (embOf D)` using `GlobalTheory.Mem.Vol.isCMFam_host D.R D.host _ D.eTau`.
+
+Apply the tactic sequence `have hβ0 : algebraMap D.host.F D.host.E β ≠ 0 := by rcases hβ with rfl | rfl <;> simp`. Take `⟨τ₀⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Establish `hM : W.rank = P + Q` using `by have := sig_sum W hs τ₀; rw [hPQ] at this; exact this.symm`. Establish `hM' : W'.rank = P' + Q'` using `by have := sig_sum W' hs' τ₀; rw [hPQ'] at this; exact this.symm`. Establish `hMM : W'.rank + 1 = W.rank` using `by omega`.
+
+Take `⟨hd, L, hLs, hLc⟩` from `GlobalTheory.T.hermitian_form_and_selfDual_lattice_in_frame_coords _ _ D.sp.cm W`. Take `⟨-, L', hLs', hLc'⟩` from `GlobalTheory.T.hermitian_form_and_selfDual_lattice_in_frame_coords _ _ D.sp.cm W'`. Take `⟨B, hB, hBx, hBL⟩` from `exists_perp_matrix D.sp.cm W W' ι x hι hr hL`. Establish `hxx : hE D.sp.cm.sig W.gram (coordTup W x 0) (coordTup W x 0) = algebraMap _ _ β` using `(hd x x).trans hx`. Establish `hx0 : hE D.sp.cm.sig W.gram (coordTup W x 0) (coordTup W x 0) ≠ 0` using `hxx ▸ hβ0`.
+
+Establish `hxL' : coordTup W x 0 ∈ L`. Rewrite using `[← SetLike.mem_coe, hLc]`. Express the relevant statement in the definitionally equal form `∑ i, W.frame.repr x i • W.frame i ∈ W.L0`. Rewrite using `[W.frame.sum_repr]` and apply the resulting hypothesis. Use `⟨hμ.2.1, fun θ hθ => ⟨(hμ.2.2 θ hθ).1, fun A hA => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hAx : ∀ ρ, star (A ρ *ᵥ fun i => embOf D ρ (coordTup W x 0 i)) ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ (A ρ *ᵥ fun i => embOf D ρ (coordTup W x 0 i)) ≠ 0` using `fun ρ h0 => by`. Use `(GlobalTheory.UnfoldingCompare.norm_coords W (embOf D ρ) (GlobalTheory.UnfoldingCompare.emb_star D _) (A ρ) (hA ρ) x).symm.trans h0` as an intermediate fact. Rewrite `this` using `[hx]`. Conclude with `hβ0 ((map_eq_zero _).1 this)`. Establish `hBτ` using `fun ρ => perp_matrix_map hcm hJ hB hBx (embOf D ρ)`.
+
+Use `⟨?_, fun j hj => ?_⟩` and prove the remaining obligations. Establish `key : ∀ ρ, ∃ j : UpqT P' Q' →* UpqT P Q, IsStabEmb (A ρ *ᵥ fun i => embOf D ρ (coordTup W x 0 i)) j` using `fun ρ => by`. Establish `h1` using `hs' (embOf D ρ)`. Rewrite `h1` using `[hPQ']`. Take `⟨A', N', hA', -, hr'⟩` from `GlobalTheory.VolPairExists.exists_frame h1`.
+
+Establish `e1 : (A ρ * B.map (embOf D ρ) * N')ᴴ * Formalism.UG.Jpq P Q * A ρ = N'ᴴ * ((B.map (embOf D ρ))ᴴ * W.gram.map (embOf D ρ))`. Rewrite using `[← hA ρ]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Establish `e2 : (A ρ * B.map (embOf D ρ) * N')ᴴ * Formalism.UG.Jpq P Q * (A ρ * B.map (embOf D ρ) * N') = Formalism.UG.Jpq P' Q'`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, e1, Matrix.mul_assoc N'ᴴ, (hBτ ρ).1, GlobalTheory.VolPairExists.conj_frame hA' hr']`.
+
+Establish `e3 : ((A ρ * B.map (embOf D ρ) * N')ᴴ * Formalism.UG.Jpq P Q) *ᵥ (A ρ *ᵥ fun i => embOf D ρ (coordTup W x 0 i)) = 0`. Rewrite using `[Matrix.mulVec_mulVec, e1, ← Matrix.mulVec_mulVec, (hBτ ρ).2, Matrix.mulVec_zero]`. Take `⟨j, hj⟩` from `GlobalTheory.UnfoldingCompare.exists_stab_hom hc (hAx ρ) e2 e3`. Conclude with `⟨j, _, e2, e3, hj⟩`. Use `choose j hj using key`.
+
+Conclude with `⟨j, hj⟩`. Establish `: ∀ P Q, IsTopologicalGroup (UpqT P Q)` using `fun P Q => inferInstanceAs (IsTopologicalGroup (Formalism.UG.Upq P Q))`. Establish `: ∀ P Q, T2Space (UpqT P Q)` using `fun P Q => inferInstanceAs (T2Space (Formalism.UG.Upq P Q))`. Establish `: ∀ P Q, BorelSpace (UpqT P Q)` using `fun P Q => ⟨rfl⟩`. Establish `: ∀ P Q, LocallyCompactSpace (UpqT P Q)` using `fun P Q => (GlobalTheory.UpqUnimodular.modelEquiv P Q).toHomeomorph.isClosedEmbedding.locallyCompactSpace`.
+
+Establish `: ∀ P Q, SecondCountableTopology (UpqT P Q)` using `fun P Q => (GlobalTheory.UpqUnimodular.modelEquiv P Q).toHomeomorph.secondCountableTopology`. Use `D.cd.haar` as an intermediate fact. Use `fun P Q => GlobalTheory.UpqUnimodular.isMulRightInvariant_of_isHaarMeasure P Q (D.cd.cd P Q) (D.cd.haar P Q)` as an intermediate fact. Use `fun P Q => GlobalTheory.QuotDiscrete.isInvInvariant_of_isMulRightInvariant (D.cd.cd P Q)` as an intermediate fact. Establish `hjc : IsClosedEmbedding (piEmb j)` using `IsClosedEmbedding.piMap fun ρ => GlobalTheory.T.isClosedEmbedding_of_isStabilizerEmbeddingUpq P Q P' Q' hc _ (hAx ρ) (j ρ) (hj ρ)`.
+
+Establish `hjm` using `hjc.continuous.measurable`. Take `⟨b, hb, hb1⟩` from `GlobalTheory.T.exists_bruhatFunction_of_closedEmbedding _ _ (piEmb j) hjc (Measure.pi fun _ => D.cd.cd P' Q')`. Use `⟨GlobalTheory.T.exists_isQuotientMeasure_of_bruhat _ _ (piEmb j) hjm _ _ b hb hb1, fun ν hν => ?_⟩` and prove the remaining obligations. Take `⟨i1, i2, i3⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary _ _ D.sp.cm.sig W.rank W.gram`. Take `⟨i1', i2', i3'⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary _ _ D.sp.cm.sig W'.rank W'.gram`.
+
+Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig W.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig W.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig W'.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig W'.gram` as an intermediate fact. Use `hμ.1` as an intermediate fact.
+
+Use `hμ'.1` as an intermediate fact. Establish `hK` using `(isOpen_stab (σ := D.sp.cm.sig) W.gram L hLs.1 hLs.2.1).measurableSet`. Establish `hK'` using `(isOpen_stab (σ := D.sp.cm.sig) W'.gram L' hLs'.1 hLs'.2.1).measurableSet`. Establish `hdet' : ∀ ρ, (W'.gram.map (embOf D ρ)).det ≠ 0` using `fun ρ => by`. Establish `: (W'.gram.map (embOf D ρ)).det = embOf D ρ W'.gram.det` using `((embOf D ρ).map_det W'.gram).symm`.
+
+Rewrite using `[this]`. Conclude with `(map_ne_zero _).2 hJ'.2`. Use `choose A' hA' hAj using fun ρ => GlobalTheory.T.exists_complement_frame_compatible_stabilizerEmbedding P Q P' Q' _ _ hc hM' _ _ _ _ (A ρ) (hA ρ) (hBτ ρ).1 (hdet' ρ) (hBτ ρ).2 (hAx ρ) (j ρ) (hj ρ)`. Take `⟨⟨N, hN, hN'⟩, ψ, hψ, hψA, hψm⟩` from `GlobalTheory.T.map_restrict_latticeStabiliser_measure_eq_compactDual _ _ _ hcm _ (embOf D) θ hθ _ P Q hM W.gram hJ.2 A hA L hK D.cd μ (by rw [hLc]; exact (hμ.2.2 θ hθ).2 A hA)`. Take `⟨-, ψ', hψ', hψA', hψm'⟩` from `GlobalTheory.T.map_restrict_latticeStabiliser_measure_eq_compactDual _ _ _ hcm _ (embOf D) θ hθ _ P' Q' hM' W'.gram hJ'.2 A' hA' L' hK' D.cd μ' (by rw [hLc']; exact (hμ'.2.2 θ hθ).2 A' hA')`.
+
+Take `⟨hpt, hpt'⟩` from `GlobalTheory.T.exists_measurable_realOrbitMap_of_adelicOrbit _ _ _ hcm _ (embOf D) hτ θ hθ _ P Q W.gram A N hN hN' (coordTup W x)`. Use `⟨hpt, fun pt hp Φi hΦ => ?_⟩` and prove the remaining obligations. Take `⟨hpm, hpi, hph⟩` from `hpt' pt hp`. Take `⟨φ, hφc, hφi, hφr, hφB, hφΓ⟩` from `GlobalTheory.T.exists_adelic_unitary_complement_range_stabiliser _ _ _ hcm _ _ W.gram W'.gram B (coordTup W x) hMM hJ hJ' hB hBx hx0`. Establish `hφx : ∀ g, φ g ∈ Hstab (AF D.host.F) D.sp.cm.sig W.gram (coordTup W x)` using `fun g => hφr ▸ ⟨g, rfl⟩`.
+
+Establish `hφψ : ∀ g, ψ (φ g) = piEmb j (ψ' g)` using `fun g => funext fun ρ => hAj ρ _ _ _ _ (infMat_fix (hθ ρ) (hφx g)) (infMat_frame (hθ ρ) (hφB g)) (hψA (φ g) ρ) (hψA' g ρ)`. Take `⟨u, hu, hu1, hu2⟩` from `GlobalTheory.T.exists_unfoldingKernel_levelSubgroup_bruhat_alt _ _ _ _ μ μ' _ _ _ _ hK hK' φ ψ ψ' (piEmb j) hψ.measurable hψ'.measurable hjm (fun g => GlobalTheory.T.latHat_stabiliser_iff_complement_frameRel hT _ _ _ hcm (unramified_host D) _ _ W.gram W'.gram B (coordTup W x) hMM …`. Take `⟨hw1, hw2⟩` from `rational_orbit D.sp.cm W x hx hβ0`. Establish `: Countable (ratPts (AF D.host.F) D.sp.cm.sig W.gram)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _`. Establish `: Countable (ratPts (AF D.host.F) D.sp.cm.sig W'.gram)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _`.
+
+Rewrite using `[← hu1]`. Use `GlobalTheory.T.lintegral_tsum_orbit_unfold_alt _ _ _ {x' : W.V // W.hT x' x' = algebraMap _ _ β} μ μ' (ratPts _ _ _) (ratPts _ _ _) 𝓕 𝓕' h𝓕 h𝓕' φ hφc.measurable hφi hφΓ _ hφr (fun x' => ratTup (F := D.host.F) (AF D.host.F) (coordTup W x'.1)) hw1 hw2 u hu (phiLat (L0c D W) Φi) fun …` and prove the remaining obligations. Rewrite using `[hu2, hph h (ψ h) (hψA h)]`. Use `congrArg (· * _) ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.finPart_inv_smul_mem_latHat_iff_stab_mul_level hT _ _ _ hcm (unramified_host D) _ W.gram hJ L hLs β hβ (coordTup W x) hxL' hxx h`.
+
+Establish `h2 : (L : Set _) = L0c D W` using `hLc`. Rewrite using `[← h2]`. Use `Set.indicator_eq_indicator (h1.trans ⟨?_, ?_⟩) rfl` and prove the remaining obligations. Introduce and unpack `⟨a, ha, h3⟩`. Take `⟨g, rfl⟩ : a ∈ φ.range` from `hφr ▸ ha`.
+
+Conclude with `⟨g, h3⟩`. Introduce and unpack `⟨g, h3⟩`. Conclude with `⟨_, hφx g, h3⟩`.
+-/
 theorem unfoldAt (hT : StabTransitive) (D : D7) (W W' : HSpace D.host.E) (P Q P' Q' : ℕ)
     (hc : P' + Q' + 1 = P + Q) (hs : W.SigOK) (hPQ : ∀ τ, W.sig τ = (P, Q)) (hs' : W'.SigOK)
     (hPQ' : ∀ τ, W'.sig τ = (P', Q')) (β : D.host.F) (hβ : β = 1 ∨ β = -1) (x : W.V)
@@ -266,6 +344,11 @@ theorem unfoldAt (hT : StabTransitive) (D : D7) (W W' : HSpace D.host.E) (P Q P'
     · rintro ⟨g, h3⟩
       exact ⟨_, hφx g, h3⟩
 
+/- English proof (translation)
+Introduce `_ _ hT D W P Q hs hPQ _ s hs1 x hx hxL W' ι hι hr hs' hPQ' hL`. Consider the cases of `s`. Establish `h1 : 1 ≤ Q` using `by simpa using hs1`. Use `unfoldAt hT D W W' P Q P (Q - 1) (by omega) hs hPQ hs' hPQ' (-1) (Or.inr rfl) x (by rw [map_neg, map_one]; exact hx) hxL ι hι hr hL` as an intermediate fact. Rewrite `this` using `[map_neg, map_one]`. Then use the resulting hypothesis.
+
+Establish `h1 : 1 ≤ P` using `by simpa using hs1`. Use `unfoldAt hT D W W' P Q (P - 1) Q (by omega) hs hPQ hs' hPQ' 1 (Or.inl rfl) x (by rw [map_one]; exact hx) hxL ι hι hr hL` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+-/
 theorem unfolding : GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.QuotientMeasures → GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryHaarMeasure.AdelicUnitaryHaar →
     GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeStabilizers.StabTransitive → ∀ D : Formalism.BasicNotions.D7, GlobalTheory.IndefiniteRowSideFullHecke.InfiniteCoordinateUnfold.Unfolding D := by
   intro _ _ hT D W P Q hs hPQ _ s hs1 x hx hxL W' ι hι hr hs' hPQ' hL

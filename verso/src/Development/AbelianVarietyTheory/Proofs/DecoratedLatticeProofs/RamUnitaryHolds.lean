@@ -21,9 +21,15 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 def pet (vS : Vol S) (ψ ψ' : Form k n (GA D S → ℂ)) (P : Pair k n) : ℂ :=
   ∫ g in vS.𝓕, ψ P g * star (ψ' P g) ∂vS.μ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rep_apply (β : Frame p S n) (g : GL n k) (f : GA D S → ℂ) (x : GA D S) :
     β.rep g f x = f (x * β.gl g) := rfl
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `MulAction.exists_smul_eq (GL n k) P Q`. Unfold `pet`. Rewrite using `[hψ g P, hψ' g P]`. Simplify using `only [rep_apply]`. Conclude with `(GlobalTheory.ChainOnto.setIntegral_fd_mul_right D S vS.μ vS.𝓕 vS.haar vS.fund (fun x => ψ P x * star (ψ' P x)) (fun γ hγ x => by simp only [hl P γ hγ, hl' P γ hγ]) (β.gl g)).symm`.
+-/
 theorem pet_const (vS : Vol S) (β : Frame p S n) {ψ ψ' : Form k n (GA D S → ℂ)} (hψ : ψ ∈ EqForm β.rep)
     (hψ' : ψ' ∈ EqForm β.rep) (hl : ∀ P, ∀ γ ∈ GQ S, ∀ g, ψ P (γ * g) = ψ P g)
     (hl' : ∀ P, ∀ γ ∈ GQ S, ∀ g, ψ' P (γ * g) = ψ' P g) (P Q : Pair k n) : pet vS ψ ψ' P = pet vS ψ ψ' Q := by
@@ -34,6 +40,17 @@ theorem pet_const (vS : Vol S) (β : Frame p S n) {ψ ψ' : Form k n (GA D S →
   exact (GlobalTheory.ChainOnto.setIntegral_fd_mul_right D S vS.μ vS.𝓕 vS.haar vS.fund (fun x => ψ P x * star (ψ' P x))
     (fun γ hγ x => by simp only [hl P γ hγ, hl' P γ hγ]) (β.gl g)).symm
 
+/- English proof (translation)
+Establish `hint : ∀ P₁ P, IntegrableOn (fun g => φ P₁ g * star (ψ P g)) vS.𝓕 vS.μ` using `fun P₁ P => (GlobalTheory.CocompactParam.continuous_integral_param D S hS vS Unit (fun g _ => φ P₁ g * star (ψ P g)) (((hφ P₁).2.mul (hψ P).2.star).comp continuous_fst) (fun γ hγ g _ => by simp only [(hφ P₁).1 γ hγ, (hψ P).1 γ hγ])).1 ()`. Establish `e1 : ∀ P ∈ withLat L, pet vS (FFStar q χ φ) ψ P = ∑ P₁ ∈ withKer L, χ (-cross q P₁ P) * ∫ g in vS.𝓕, φ P₁ g * star (ψ P g) ∂vS.μ`. Introduce `P hP`. Rewrite `hP` using `[mem_withLat]`. Unfold `pet`.
+
+Rewrite using `[FFStar_apply, hP]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, mul_assoc]`. Rewrite using `[integral_finset_sum _ (fun P₁ _ => (hint P₁ P).const_mul _)]`. Conclude with `Finset.sum_congr rfl fun P₁ _ => integral_const_mul _ _`. Establish `e2 : ∀ P₁ ∈ withKer L, pet vS φ (FF q χ ψ) P₁ = ∑ P ∈ withLat L, χ (-cross q P₁ P) * ∫ g in vS.𝓕, φ P₁ g * star (ψ P g) ∂vS.μ`.
+
+Introduce `P₁ hP₁`. Rewrite `hP₁` using `[mem_withKer]`. Unfold `pet`. Rewrite using `[FF_apply, hP₁]`. Establish `: ∀ g, φ P₁ g * star ((∑ P ∈ withLat L, χ (cross q P₁ P) • ψ P) g) = ∑ P ∈ withLat L, χ (-cross q P₁ P) * (φ P₁ g * star (ψ P g))` using `fun g => by`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, star_sum, Finset.mul_sum, star_mul']`. Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[← hχ]`. Express the relevant statement in the definitionally equal form `φ P₁ g * ((starRingEnd ℂ) (χ (cross q P₁ P)) * star (ψ P g)) = _`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [this]`. Rewrite using `[integral_finset_sum _ (fun P _ => (hint P₁ P).const_mul _)]`. Conclude with `Finset.sum_congr rfl fun P _ => integral_const_mul _ _`. Rewrite using `[Finset.sum_congr rfl e1, Finset.sum_congr rfl e2, Finset.sum_comm]`.
+-/
 theorem sum_pet_FFStar (vS : Vol S) (hS : CoCpt S) (q : Unif k) (χ : AddChar 𝓀[k] ℂ)
     (hχ : ∀ a, (starRingEnd ℂ) (χ a) = χ (-a))
     {φ ψ : Form k n (GA D S → ℂ)} (hφ : ∀ P, IsContAut S (φ P)) (hψ : ∀ P, IsContAut S (ψ P))
@@ -74,6 +91,23 @@ end GlobalTheory.FinPl.RamUnit
 
 namespace GlobalTheory.FinPl.RamUnit
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p n _ _ q χ hχ ε S hS vS β P φ₀ φ₀' hφ₀ hφ₀'`. Take `⟨φ, hφ, rfl⟩` from `hφ₀`. Take `⟨φ', hφ', rfl⟩` from `hφ₀'`. Establish `hB` using `GlobalTheory.FinPl.ramBijective_holds D k p n q χ hχ (resChar χ hχ q) rfl ε S β P`. Take `⟨hA, eA⟩` from `hB.2.1 φ hφ`.
+
+Take `⟨hA', eA'⟩` from `hB.2.1 φ' hφ'`. Rewrite using `[eA, eA']`. Establish `hO : OperatorIdentities k n (GA D S → ℂ) q (resChar χ hχ q)` using `((GlobalTheory.PairOp.pairOperatorStatement k q χ hχ n).1 (GA D S → ℂ)).2`. Use `set X := FFStar q (resChar χ hχ q) φ with hX`. Use `set X' := FFStar q (resChar χ hχ q) φ' with hX'`.
+
+Establish `cX : ∀ Q, IsContAut S (X Q)` using `fun Q => by`. Use `hA.2.2 (ε⁻¹ • Q)` as an intermediate fact. Rewrite `this` using `[dia_apply, smul_inv_smul]`. Then use the resulting hypothesis. Establish `cX' : ∀ Q, IsContAut S (X' Q)` using `fun Q => by`. Use `hA'.2.2 (ε⁻¹ • Q)` as an intermediate fact.
+
+Rewrite `this` using `[dia_apply, smul_inv_smul]`. Then use the resulting hypothesis. Establish `eFF : FF q (resChar χ hχ q) X' = ((resCard k : ℂ) ^ Fintype.card n) • φ'` using `hO.FF_FFStar_ram φ' hφ'.2.1`. Establish `c2 : ∀ Q, IsContAut S ((FF q (resChar χ hχ q) X') Q)` using `fun Q => by`. Rewrite using `[eFF]`. Conclude with `⟨fun γ hγ g => by simp only [Pi.smul_apply, smul_eq_mul, (hφ'.2.2 Q).1 γ hγ], continuous_const.mul (hφ'.2.2 Q).2⟩`.
+
+Establish `hsum` using `sum_pet_FFStar vS hS q (resChar χ hχ q) (conj_resChar hχ q) hφ.2.2 cX' P.lat`. Establish `k1 : ∀ Q ∈ withLat P.lat, pet vS X X' Q = pet vS X X' (ε • P)` using `fun Q _ => pet_const vS β (FFStar_mem_EqForm q _ hφ.1) (FFStar_mem_EqForm q _ hφ'.1) (fun Q => (cX Q).1) (fun Q => (cX' Q).1) Q (ε • P)`. Establish `k2 : ∀ Q ∈ withKer P.lat, pet vS φ (FF q (resChar χ hχ q) X') Q = pet vS φ (FF q (resChar χ hχ q) X') P` using `fun Q _ => pet_const vS β hφ.1 (FF_mem_EqForm q _ (FFStar_mem_EqForm q _ hφ'.1)) (fun Q => (hφ.2.2 Q).1) (fun Q => (c2 Q).1) Q P`. Rewrite `hsum` using `[Finset.sum_congr rfl k1, Finset.sum_congr rfl k2, Finset.sum_const, Finset.sum_const, ← card_withLat_eq_card_withKer]`. Establish `hN : (withLat P.lat).card ≠ 0` using `(Finset.card_pos.2 ⟨P, mem_withLat.2 rfl⟩).ne'`.
+
+Establish `hpe : pet vS X X' (ε • P) = pet vS φ (FF q (resChar χ hχ q) X') P`. Rewrite `hsum` using `[← Nat.cast_smul_eq_nsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `smul_right_injective ℂ (Nat.cast_ne_zero.2 hN) hsum`. Express the relevant statement in the definitionally equal form `pet vS X X' (ε • P) = _`. Rewrite using `[hpe, eFF]`.
+
+Unfold `pet`. Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul', star_pow, Complex.star_def, Complex.conj_natCast]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ramUnitary_holds : ∀ D : D7, GlobalTheory.FinPl.RamUnitary D := by
   intro D k _ _ _ _ p n _ _ q χ hχ ε S hS vS β P φ₀ φ₀' hφ₀ hφ₀'
   obtain ⟨φ, hφ, rfl⟩ := hφ₀

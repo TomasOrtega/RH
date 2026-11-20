@@ -6,6 +6,21 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.WeilDeligne
 
+/- English proof (translation)
+Establish `h1 : ∀ τ : Weil h, ∃ m : ℕ, 0 < m ∧ Commute (ρ (frob h) ^ m) (ρ τ)`. Introduce `τ`. Take `⟨m, hm, he⟩` from `exists_pow_eq_pow_of_deg_eq E Ω A w h V ρ hρ (frob h) (τ * frob h * τ⁻¹) (by simp [deg_mul, deg_inv])`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[← map_pow, ← map_pow, conj_pow]`.
+
+Use `show _ * _ = _ * _`. Rewrite using `[← map_pow]`. Use `conv_lhs => rw [he]`. Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel_right]`. Establish `h2 : ∀ S : Set (End ℂ V), S.Finite → (∀ x ∈ S, ∃ τ, ρ τ = x) → ∃ m : ℕ, 0 < m ∧ ∀ x ∈ S, Commute (ρ (frob h) ^ m) x`.
+
+Introduce `S hS`. Proceed by induction on `S, hS using Set.Finite.induction_on with`. Consider the case `empty => exact fun _ => ⟨1, one_pos, by simp⟩`. Consider the case `@insert x S _ _ ih`. Introduce `hx`.
+
+Take `⟨m, hm, hc⟩` from `ih fun y hy => hx y (Set.mem_insert_of_mem _ hy)`. Take `⟨τ, rfl⟩` from `hx x (Set.mem_insert _ _)`. Take `⟨n, hn, hc'⟩` from `h1 τ`. Use `⟨m * n, Nat.mul_pos hm hn, ?_⟩` and prove the remaining obligations. Introduce and unpack `y (rfl | hy)`.
+
+Rewrite using `[mul_comm, pow_mul]`. Conclude with `hc'.pow_left m`. Rewrite using `[pow_mul]`. Conclude with `(hc y hy).pow_left n`. Take `⟨m, hm, hc⟩` from `h2 _ hρ.finite_range (by rintro _ ⟨σ, rfl⟩; exact ⟨_, rfl⟩)`.
+
+Use `⟨m, hm, fun σ => ?_⟩` and prove the remaining obligations. Establish `h0 : deg ((frob h ^ deg σ)⁻¹ * σ) = 0`. Simplify using `[deg_mul, deg_inv, deg_zpow, deg_frob]`. Establish `h3 : Commute (ρ (frob h) ^ m) (ρ ((frob h ^ deg σ)⁻¹ * σ))` using `hc _ ⟨⟨_, deg_eq_zero_iff.mp h0⟩, rfl⟩`. Establish `h4 : Commute (ρ (frob h) ^ m) (ρ (frob h ^ deg σ))` using `(((Commute.refl (frob h)).zpow_right _).map ρ).pow_left m`.
+
+Use `h4.mul_right h3` as an intermediate fact. Rewrite `this` using `[← map_mul, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem exists_pow_frob_commute {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
     {h : IsPlaceOver A w} {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
@@ -47,6 +62,11 @@ theorem exists_pow_frob_commute {E Ω : Type} [Field E] [NumberField E] [Field �
   rwa [← map_mul, mul_inv_cancel_left] at this
 
 open NumberField IsDedekindDomain Polynomial Module in
+/- English proof (translation)
+Establish `hfin : Set.Finite {μ | T.HasEigenvalue μ}` using `Module.End.finite_hasEigenvalue T`. Use `⟨Lagrange.interpolate hfin.toFinset id f, fun α v hv => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv0 : v = 0`. Simplify using `[hv0]`. Establish `hev : T.HasEigenvector α v` using `⟨hv, hv0⟩`.
+
+Rewrite using `[Module.End.aeval_apply_of_hasEigenvector hev]`. Establish `hnode` using `Lagrange.eval_interpolate_at_node (s := hfin.toFinset) (v := id) f (Set.injOn_id _) (i := α) (by simpa using Module.End.hasEigenvalue_of_hasEigenvector hev)`. Simplify using `only [id] at hnode`. Rewrite using `[hnode]`.
+-/
 private lemma exists_polynomial_eigenspace_smul_lemma {V : Type} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (T : Module.End ℂ V) (f : ℂ → ℂ) :
     ∃ p : ℂ[X], ∀ (α : ℂ) (v : V), v ∈ T.eigenspace α → aeval T p v = f α • v := by
@@ -63,6 +83,9 @@ private lemma exists_polynomial_eigenspace_smul_lemma {V : Type} [AddCommGroup V
   rw [hnode]
 
 open NumberField IsDedekindDomain Polynomial Module in
+/- English proof (translation)
+Establish `hle : ⨆ α, T.eigenspace α ≤ LinearMap.ker (g - g')` using `iSup_le fun α v hv => by simp [sub_eq_zero, h α v hv]`. Rewrite `hle` using `[hT.iSup_eigenspace_eq_top]`. Use extensionality with `v`. Simplify `hle (Submodule.mem_top : v ∈ ⊤)` using `[sub_eq_zero]`.
+-/
 private lemma eq_of_eq_on_eigenspaces_lemma_2 {V : Type} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (T : Module.End ℂ V) (hT : T.IsSemisimple) {g g' : Module.End ℂ V}
     (h : ∀ (α : ℂ) (v : V), v ∈ T.eigenspace α → g v = g' v) : g = g' := by
@@ -73,6 +96,9 @@ private lemma eq_of_eq_on_eigenspaces_lemma_2 {V : Type} [AddCommGroup V] [Modul
   simpa [sub_eq_zero] using hle (Submodule.mem_top : v ∈ ⊤)
 
 open NumberField IsDedekindDomain Polynomial Module in
+/- English proof (translation)
+Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ, Module.End.mul_apply, hv, map_smul, ih, smul_smul, pow_succ, mul_comm]`.
+-/
 private lemma mem_eigenspace_pow_lemma_3 {V : Type} [AddCommGroup V] [Module ℂ V]
     (T : Module.End ℂ V) {α : ℂ} {v : V} (hv : v ∈ T.eigenspace α) (m : ℕ) :
     v ∈ (T ^ m).eigenspace (α ^ m) := by
@@ -82,6 +108,9 @@ private lemma mem_eigenspace_pow_lemma_3 {V : Type} [AddCommGroup V] [Module ℂ
   | succ m ih => rw [pow_succ, Module.End.mul_apply, hv, map_smul, ih, smul_smul, pow_succ, mul_comm]
 
 open NumberField IsDedekindDomain Polynomial Module in
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p r hp hr => rw [map_add]`. Conclude with `hp.add_right hr`. Consider the case `monomial n x => rw [aeval_monomial]`. Conclude with `(Algebra.commute_algebraMap_right x S).mul_right (hST.pow_right n)`.
+-/
 private lemma commute_aeval_of_commute_lemma_4 {V : Type} [AddCommGroup V] [Module ℂ V]
     {S T : Module.End ℂ V} (hST : Commute S T) (p : ℂ[X]) : Commute S (aeval T p) := by
   induction p using Polynomial.induction_on' with
@@ -90,6 +119,31 @@ private lemma commute_aeval_of_commute_lemma_4 {V : Type} [AddCommGroup V] [Modu
 
 open NumberField IsDedekindDomain Polynomial Module in
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h V _ _ _ a b c hc hρ hN`. Use `set φ := _root_.GlobalTheory.WeilDeligne.frob h with hφ`. Use `set Φ : Module.End ℂ V := a.ρ φ with hΦdef`. Establish `hΦ : Φ.IsSemisimple` using `a.semisimple φ`. Establish `hq : (1 : ℝ) < (_root_.Formalism.ConjugateSelfDual.normV w : ℝ)` using `by exact_mod_cast _root_.GlobalTheory.WeilDeligne.one_lt_normV w`.
+
+Use `set s : ℂ := Complex.log c / (Real.log (_root_.Formalism.ConjugateSelfDual.normV w : ℝ) : ℂ) with hsdef`. Establish `hlogq : (Real.log (_root_.Formalism.ConjugateSelfDual.normV w : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.log_pos hq).ne'`. Establish `hs : Complex.exp (s * Real.log (_root_.Formalism.ConjugateSelfDual.normV w : ℝ)) = c`. Rewrite using `[hsdef, div_mul_cancel₀ _ hlogq, Complex.exp_log hc]`. Use `set lam : ℂ → ℂ := fun α => Complex.exp (s * Real.log ‖α‖) with hlamdef`.
+
+Establish `hlam : ∀ α : ℂ, α ≠ 0 → lam ((_root_.Formalism.ConjugateSelfDual.normV w : ℂ) * α) = c * lam α`. Introduce `α hα`. Simplify using `only [hlamdef, norm_mul, Complex.norm_natCast]`. Rewrite using `[Real.log_mul (by positivity) (norm_ne_zero_iff.mpr hα)]`. Rewrite using `[Complex.ofReal_add, mul_add, Complex.exp_add, hs]`.
+
+Establish `hΦinj : ∀ v : V, Φ v = 0 → v = 0`. Introduce `v hv`. Establish `: a.ρ φ⁻¹ (Φ v) = v`. Rewrite using `[hΦdef, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← this, hv, map_zero]`.
+
+Take `⟨p, hp⟩` from `exists_polynomial_eigenspace_smul_lemma Φ lam`. Take `⟨p', hp'⟩` from `exists_polynomial_eigenspace_smul_lemma Φ (fun α => (lam α)⁻¹)`. Establish `hgg' : aeval Φ p * aeval Φ p' = 1` using `eq_of_eq_on_eigenspaces_lemma_2 Φ hΦ fun α v hv => by`. Rewrite using `[Module.End.mul_apply, hp' α v hv, map_smul, hp α v hv, smul_smul, inv_mul_cancel₀ (Complex.exp_ne_zero _), one_smul, Module.End.one_apply]`. Establish `hg'g : aeval Φ p' * aeval Φ p = 1` using `eq_of_eq_on_eigenspaces_lemma_2 Φ hΦ fun α v hv => by`.
+
+Rewrite using `[Module.End.mul_apply, hp α v hv, map_smul, hp' α v hv, smul_smul, mul_inv_cancel₀ (Complex.exp_ne_zero _), one_smul, Module.End.one_apply]`. Use `⟨LinearEquiv.ofLinear (aeval Φ p) (aeval Φ p') hgg' hg'g, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ v`. Rewrite using `[← hρ]`. Express the relevant statement in the definitionally equal form `aeval Φ p (a.ρ σ v) = a.ρ σ (aeval Φ p v)`.
+
+Take `⟨m, hm, hpow⟩` from `_root_.GlobalTheory.WeilDeligne.exists_pow_eq_pow_of_deg_eq E Ω A w h V a.ρ a.smooth (σ * φ * σ⁻¹) φ (by rw [_root_.GlobalTheory.WeilDeligne.deg_mul, _root_.GlobalTheory.WeilDeligne.deg_mul, _root_.GlobalTheory.WeilDeligne.deg_inv]; ring)`. Rewrite `hpow` using `[← map_pow, conj_pow, map_mul, map_mul, map_pow]`. Establish `hcomm : Commute (a.ρ σ) (Φ ^ m)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, inv_mul_cancel, map_one, mul_one]`.
+
+Use `_ = Φ ^ m * a.ρ σ := by rw [← mul_assoc, hpow]`. Take `⟨pm, hpm⟩` from `exists_polynomial_eigenspace_smul_lemma (Φ ^ m) (fun μ => Complex.exp (s * Real.log ‖μ‖ / m))`. Establish `hgm : aeval Φ p = aeval (Φ ^ m) pm` using `eq_of_eq_on_eigenspaces_lemma_2 Φ hΦ fun α v hv => by`. Rewrite using `[hp α v hv, hpm (α ^ m) v (mem_eigenspace_pow_lemma_3 Φ hv m)]`. Use `congr 1`.
+
+Simplify using `only [hlamdef, norm_pow, Real.log_pow]`. Use `congr 1`. Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[hgm]`. Conclude with `(LinearMap.congr_fun (commute_aeval_of_commute_lemma_4 hcomm pm) v).symm`. Introduce `v`. Rewrite using `[hN]`. Express the relevant statement in the definitionally equal form `aeval Φ p (a.N v) = c • a.N (aeval Φ p v)`.
+
+Establish `key : aeval Φ p * a.N = c • (a.N * aeval Φ p)` using `eq_of_eq_on_eigenspaces_lemma_2 Φ hΦ fun α v hv => by`. Rewrite using `[Module.End.mul_apply, LinearMap.smul_apply, Module.End.mul_apply, hp α v hv, map_smul]`. Distinguish the cases in `hα : α = 0`. Establish `hv0 : v = 0` using `hΦinj v (by`. Rewrite `hv` using `[Module.End.mem_eigenspace_iff]`.
+
+Rewrite using `[hv, hα, zero_smul])`. Simplify using `[hv0]`. Rewrite using `[hp _ _ (a.map_N_eigenspace (_root_.GlobalTheory.WeilDeligne.deg_frob) hv), hlam α hα, smul_smul]`. Conclude with `LinearMap.congr_fun key v`.
+-/
 theorem _root_.GlobalTheory.WeilDeligne.WDRep.iso_of_N_eq_smul : ∀ (E Ω : Type) [Field E] [NumberField E]
     [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω)
     (w : HeightOneSpectrum (𝓞 E)) (h : _root_.Formalism.ConjugateSelfDual.IsPlaceOver A w) (V : Type) [AddCommGroup V] [Module ℂ V]

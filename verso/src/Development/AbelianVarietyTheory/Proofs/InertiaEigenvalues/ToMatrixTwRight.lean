@@ -17,22 +17,36 @@ variable {r : ℕ} {k k' : Type} [CommRing k] [CommRing k']
 def mapGl (φ : k →+* k') (Y : Gl r k) : Gl r k' :=
   (Y.1.map φ, fun i => φ (Y.2.1 i), fun i => φ (Y.2.2.1 i), φ Y.2.2.2)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+-/
 theorem map_mulVec' (φ : k →+* k') (A : Matrix (Fin r) (Fin r) k) (v : Fin r → k) :
     (fun i => φ ((A *ᵥ v) i)) = A.map φ *ᵥ fun i => φ (v i) := by
   funext i
   simp [Matrix.mulVec, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.vecMul, dotProduct, map_sum, map_mul]`.
+-/
 theorem map_vecMul' (φ : k →+* k') (A : Matrix (Fin r) (Fin r) k) (v : Fin r → k) :
     (fun i => φ ((v ᵥ* A) i)) = (fun i => φ (v i)) ᵥ* A.map φ := by
   funext i
   simp [Matrix.vecMul, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp [Matrix.map_one]`. Consider the case `succ m ih => rw [pow_succ, pow_succ, Matrix.map_mul, ih]`.
+-/
 theorem map_pow' (φ : k →+* k') (A : Matrix (Fin r) (Fin r) k) (i : ℕ) :
     (A ^ i).map φ = (A.map φ) ^ i := by
   induction i with
   | zero => simp [Matrix.map_one]
   | succ m ih => rw [pow_succ, pow_succ, Matrix.map_mul, ih]
 
+/- English proof (translation)
+Simplify using `only [mapGl, act]`. Use `Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ rfl))` and prove the remaining obligations. Simplify using `[Matrix.map_mul, Matrix.GeneralLinearGroup.map]`. Conclude with `map_mulVec' φ _ _`. Simplify using `only`.
+
+Rewrite using `[map_vecMul']`. Simplify using `[Matrix.GeneralLinearGroup.map]`.
+-/
 theorem mapGl_act (φ : k →+* k') (γ : GL (Fin r) k) (Y : Gl r k) :
     mapGl φ (act γ Y) = act (Matrix.GeneralLinearGroup.map φ γ) (mapGl φ Y) := by
   simp only [mapGl, act]
@@ -43,11 +57,19 @@ theorem mapGl_act (φ : k →+* k') (γ : GL (Fin r) k) (Y : Gl r k) :
     rw [map_vecMul']
     simp [Matrix.GeneralLinearGroup.map]
 
+/- English proof (translation)
+Simplify using `only [mom, mapGl]`. Rewrite using `[← map_pow', ← map_mulVec']`. Simplify using `[dotProduct, map_sum, map_mul]`.
+-/
 theorem mom_mapGl (φ : k →+* k') (Y : Gl r k) (i : ℕ) : mom (mapGl φ Y) i = φ (mom Y i) := by
   simp only [mom, mapGl]
   rw [← map_pow', ← map_mulVec']
   simp [dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Simplify using `only [JR.inv, Inv.map, mapGl]`. Use `Prod.ext ?_ (Prod.ext ?_ rfl)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only`. Rewrite using `[Matrix.charpoly_map, Polynomial.coeff_map]`.
+
+Use function extensionality and compare the values at `i`. Conclude with `mom_mapGl φ Y i`.
+-/
 theorem inv_mapGl (φ : k →+* k') (Y : Gl r k) : inv (mapGl φ Y) = (inv Y).map φ := by
   simp only [JR.inv, Inv.map, mapGl]
   refine Prod.ext ?_ (Prod.ext ?_ rfl)
@@ -57,19 +79,31 @@ theorem inv_mapGl (φ : k →+* k') (Y : Gl r k) : inv (mapGl φ Y) = (inv Y).ma
   · funext i
     exact mom_mapGl φ Y i
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Cm, mapGl, Matrix.of_apply, Matrix.map_apply]`. Rewrite using `[← map_pow', ← map_vecMul']`.
+-/
 theorem Cm_mapGl (φ : k →+* k') (Y : Gl r k) : Cm (mapGl φ Y) = (Cm Y).map φ := by
   ext i j
   simp only [Cm, mapGl, Matrix.of_apply, Matrix.map_apply]
   rw [← map_pow', ← map_vecMul']
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Bm, mapGl, Matrix.of_apply, Matrix.map_apply]`. Rewrite using `[← map_pow', ← map_mulVec']`.
+-/
 theorem Bm_mapGl (φ : k →+* k') (Y : Gl r k) : Bm (mapGl φ Y) = (Bm Y).map φ := by
   ext i j
   simp only [Bm, mapGl, Matrix.of_apply, Matrix.map_apply]
   rw [← map_pow', ← map_mulVec']
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Inv_map_map {k'' : Type} [CommRing k''] (φ : k →+* k') (ψ : k' →+* k'') (a : Inv r k) :
     (a.map φ).map ψ = a.map (ψ.comp φ) := rfl
 
+/- English proof (translation)
+Introduce `a b hab`. Simplify using `only [Inv.map, Prod.mk.injEq] at hab`. Take `⟨h1, h2, h3⟩` from `hab`. Conclude with `Prod.ext (funext fun i => h (congrFun h1 i)) (Prod.ext (funext fun i => h (congrFun h2 i)) (h h3))`.
+-/
 theorem Inv_map_injective (φ : k →+* k') (h : Function.Injective φ) :
     Function.Injective (fun a : Inv r k => a.map φ) := by
   intro a b hab
@@ -89,31 +123,49 @@ def tw (e : Basis (Fin n) E V) (γ : GL (Fin n) E) : Basis (Fin n) E V :=
   e.map (LinearEquiv.ofLinear (Matrix.toLin e e (γ⁻¹ : GL (Fin n) E)) (Matrix.toLin e e (γ : Matrix _ _ E))
     (by rw [← Matrix.toLin_mul]; simp) (by rw [← Matrix.toLin_mul]; simp))
 
+/- English proof (translation)
+Simplify using `[tw, Matrix.toLin_self]`.
+-/
 theorem tw_apply (e : Basis (Fin n) E V) (γ : GL (Fin n) E) (j : Fin n) :
     tw e γ j = ∑ i, ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j • e i := by
   simp [tw, Matrix.toLin_self]
 
+/- English proof (translation)
+Rewrite using `[tw_apply, Basis.repr_sum_self]`.
+-/
 theorem repr_tw_apply (e : Basis (Fin n) E V) (γ : GL (Fin n) E) (i j : Fin n) :
     e.repr (tw e γ j) i = ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j := by
   rw [tw_apply, Basis.repr_sum_self]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show e.repr (Matrix.toLin e e (γ : Matrix (Fin n) (Fin n) E) y) i = _`. Rewrite using `[← LinearMap.toMatrix_mulVec_repr e e, LinearMap.toMatrix_toLin]`.
+-/
 theorem tw_repr (e : Basis (Fin n) E V) (γ : GL (Fin n) E) (y : V) :
     (fun i => (tw e γ).repr y i) = (γ : Matrix (Fin n) (Fin n) E) *ᵥ fun i => e.repr y i := by
   funext i
   show e.repr (Matrix.toLin e e (γ : Matrix (Fin n) (Fin n) E) y) i = _
   rw [← LinearMap.toMatrix_mulVec_repr e e, LinearMap.toMatrix_toLin]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Basis.toMatrix_apply, congrFun (tw_repr e γ (e j)) i]`. Simplify using `[Basis.repr_self, Finsupp.single_apply, Matrix.mulVec, dotProduct]`.
+-/
 theorem toMatrix_tw_left (e : Basis (Fin n) E V) (γ : GL (Fin n) E) :
     (tw e γ).toMatrix e = (γ : Matrix (Fin n) (Fin n) E) := by
   ext i j
   rw [Basis.toMatrix_apply, congrFun (tw_repr e γ (e j)) i]
   simp [Basis.repr_self, Finsupp.single_apply, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Basis.toMatrix_apply, repr_tw_apply]`.
+-/
 theorem toMatrix_tw_right (e : Basis (Fin n) E V) (γ : GL (Fin n) E) :
     e.toMatrix (tw e γ) = ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) := by
   ext i j
   rw [Basis.toMatrix_apply, repr_tw_apply]
 
+/- English proof (translation)
+Establish `key : ∀ (b : Basis (Fin n) E V) (g : GL (Fin n) E) (y : V) (i : Fin n), (tw b g).repr y i = ((g : Matrix (Fin n) (Fin n) E) *ᵥ fun i => b.repr y i) i` using `fun b g y i => congrFun (tw_repr b g y) i`. Use `Basis.repr_injective (LinearEquiv.ext fun x => Finsupp.ext fun i => ?_)` and prove the remaining obligations. Simplify using `only [key, Units.val_mul, Matrix.mulVec_mulVec]`.
+-/
 theorem tw_tw (e : Basis (Fin n) E V) (γ δ : GL (Fin n) E) : tw (tw e γ) δ = tw e (δ * γ) := by
   have key : ∀ (b : Basis (Fin n) E V) (g : GL (Fin n) E) (y : V) (i : Fin n),
       (tw b g).repr y i = ((g : Matrix (Fin n) (Fin n) E) *ᵥ fun i => b.repr y i) i :=
@@ -121,6 +173,9 @@ theorem tw_tw (e : Basis (Fin n) E V) (γ δ : GL (Fin n) E) : tw (tw e γ) δ =
   refine Basis.repr_injective (LinearEquiv.ext fun x => Finsupp.ext fun i => ?_)
   simp only [key, Units.val_mul, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Use `⟨⟨e'.toMatrix e, e.toMatrix e', Basis.toMatrix_mul_toMatrix_flip e' e, Basis.toMatrix_mul_toMatrix_flip e e'⟩, Basis.repr_injective (LinearEquiv.ext fun x => Finsupp.ext fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[congrFun (tw_repr e _ x) i]`. Simplify using `[Basis.toMatrix_mulVec_repr]`.
+-/
 theorem exists_tw (e e' : Basis (Fin n) E V) : ∃ γ : GL (Fin n) E, tw e γ = e' := by
   refine ⟨⟨e'.toMatrix e, e.toMatrix e', Basis.toMatrix_mul_toMatrix_flip e' e,
     Basis.toMatrix_mul_toMatrix_flip e e'⟩,
@@ -128,6 +183,11 @@ theorem exists_tw (e e' : Basis (Fin n) E V) : ∃ γ : GL (Fin n) E, tw e γ = 
   rw [congrFun (tw_repr e _ x) i]
   simp [Basis.toMatrix_mulVec_repr]
 
+/- English proof (translation)
+Simplify using `only [Yb, act]`. Use `Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ rfl))` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix (tw e γ) e (tw e γ) e, toMatrix_tw_left, toMatrix_tw_right]`. Conclude with `tw_repr e γ v`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[tw_apply, map_sum, Matrix.vecMul, dotProduct, mul_comm]`.
+-/
 theorem Yb_tw (e : Basis (Fin n) E V) (T : V →ₗ[E] V) (v : V) (l : V →ₗ[E] E) (γ : GL (Fin n) E) :
     Yb (tw e γ) T v l = act γ (Yb e T v l) := by
   simp only [Yb, act]
@@ -139,6 +199,11 @@ theorem Yb_tw (e : Basis (Fin n) E V) (T : V →ₗ[E] V) (v : V) (l : V →ₗ[
   · funext j
     simp [tw_apply, map_sum, Matrix.vecMul, dotProduct, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.toMatrix_pow]`. Simplify using `only [Matrix.vecMul, dotProduct, LinearMap.toMatrix_apply]`. Use `conv_rhs => rw [← e.sum_repr ((T ^ i) (e j))]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem vecMul_pow_Yb (e : Basis (Fin n) E V) (T : V →ₗ[E] V) (l : V →ₗ[E] E) (i : ℕ) (j : Fin n) :
     ((fun j => l (e j)) ᵥ* (LinearMap.toMatrix e e T) ^ i) j = l ((T ^ i) (e j)) := by
   rw [LinearMap.toMatrix_pow]
@@ -148,12 +213,20 @@ theorem vecMul_pow_Yb (e : Basis (Fin n) E V) (T : V →ₗ[E] V) (l : V →ₗ[
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Cm, Yb, Matrix.of_apply]`. Conclude with `vecMul_pow_Yb e T l i j`.
+-/
 theorem Cm_Yb (e : Basis (Fin n) E V) (T : V →ₗ[E] V) (v : V) (l : V →ₗ[E] E) :
     Cm (Yb e T v l) = Matrix.of fun i j : Fin n => l ((T ^ (i : ℕ)) (e j)) := by
   ext i j
   simp only [Cm, Yb, Matrix.of_apply]
   exact vecMul_pow_Yb e T l i j
 
+/- English proof (translation)
+Simplify using `only [mom, Yb]`. Rewrite using `[LinearMap.toMatrix_pow, LinearMap.toMatrix_mulVec_repr]`. Use `conv_rhs => rw [← e.sum_repr ((T ^ i) v)]`. Simplify using `only [dotProduct]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem mom_Yb (e : Basis (Fin n) E V) (T : V →ₗ[E] V) (v : V) (l : V →ₗ[E] E) (i : ℕ) :
     mom (Yb e T v l) i = l ((T ^ i) v) := by
   simp only [mom, Yb]
@@ -164,6 +237,11 @@ theorem mom_Yb (e : Basis (Fin n) E V) (T : V →ₗ[E] V) (v : V) (l : V →ₗ
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [JR.inv]`. Use `Prod.ext ?_ (Prod.ext ?_ rfl)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Yb]`. Rewrite using `[LinearMap.charpoly_toMatrix]`.
+
+Use function extensionality and compare the values at `i`. Conclude with `mom_Yb e T v l i`.
+-/
 theorem inv_Yb [Module.Finite E V] (e : Basis (Fin n) E V) (T : V →ₗ[E] V) (v : V) (l : V →ₗ[E] E) :
     inv (Yb e T v l) = (fun i : Fin n => T.charpoly.coeff i, fun i : Fin n => l ((T ^ (i : ℕ)) v), 0) := by
   simp only [JR.inv]
@@ -174,6 +252,9 @@ theorem inv_Yb [Module.Finite E V] (e : Basis (Fin n) E V) (T : V →ₗ[E] V) (
   · funext i
     exact mom_Yb e T v l i
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Cm, Bm, mom, Matrix.of_apply]`. Rewrite using `[pow_add, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem Cm_mul_Bm {k : Type} [CommRing k] (Y : Gl n k) :
     Cm Y * Bm Y = Matrix.of fun i j : Fin n => mom Y ((i : ℕ) + (j : ℕ)) := by
   ext i j
@@ -187,6 +268,17 @@ def lat (e : Basis (Fin n) E V) : Submodule O V := Submodule.span O (Set.range e
 
 variable [IsDomain O] [Module.IsTorsionFree O E]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Unfold `lat at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨j, rfl⟩` from `hx`. Introduce `i`. Rewrite using `[Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Conclude with `⟨1, map_one _⟩`.
+
+Conclude with `⟨0, map_zero _⟩`. Consider the case `zero => intro i; exact ⟨0, by simp⟩`. Consider the case `add x z _ _ hx hz`. Introduce `i`. Rewrite using `[map_add, Finsupp.add_apply]`.
+
+Conclude with `Subring.add_mem _ (hx i) (hz i)`. Consider the case `smul a x _ hx`. Introduce `i`. Rewrite using `[← algebraMap_smul E a x, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `Subring.mul_mem _ ⟨a, rfl⟩ (hx i)`.
+
+Introduce `h choose c hc using h`. Rewrite using `[← e.sum_repr y]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hc i, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem mem_lat (e : Basis (Fin n) E V) (y : V) :
     y ∈ lat O e ↔ ∀ i, e.repr y i ∈ (algebraMap O E).range := by
   constructor
@@ -216,12 +308,23 @@ theorem mem_lat (e : Basis (Fin n) E V) (y : V) :
     rw [← hc i, algebraMap_smul]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem lat_fg (e : Basis (Fin n) E V) : (lat O e).FG := Submodule.fg_span (Set.finite_range _)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← e.span_eq]`. Conclude with `Submodule.span_mono Submodule.subset_span`.
+-/
 theorem span_lat (e : Basis (Fin n) E V) : Submodule.span E (lat O e : Set V) = ⊤ := by
   rw [eq_top_iff, ← e.span_eq]
   exact Submodule.span_mono Submodule.subset_span
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Rewrite using `[LinearMap.toMatrix_apply]`. Conclude with `(mem_lat O e _).1 (h _ (by unfold lat; exact Submodule.subset_span ⟨j, rfl⟩)) i`. Introduce `h y hy`.
+
+Rewrite `hy`, the goal using `[mem_lat]`. Introduce `i`. Rewrite using `[← LinearMap.toMatrix_mulVec_repr e e T y]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (h i j) (hy j)`.
+-/
 theorem lat_stable_iff (e : Basis (Fin n) E V) (T : V →ₗ[E] V) :
     (∀ y ∈ lat O e, T y ∈ lat O e) ↔ ∀ i j, LinearMap.toMatrix e e T i j ∈ (algebraMap O E).range := by
   constructor
@@ -235,6 +338,11 @@ theorem lat_stable_iff (e : Basis (Fin n) E V) (T : V →ₗ[E] V) :
     simp only [Matrix.mulVec, dotProduct]
     exact Subring.sum_mem _ fun j _ => Subring.mul_mem _ (h i j) (hy j)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h j`. Conclude with `h _ (by unfold lat; exact Submodule.subset_span ⟨j, rfl⟩)`. Introduce `h y hy`. Rewrite `hy` using `[mem_lat]`.
+
+Rewrite using `[← e.sum_repr y, map_sum]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `Subring.mul_mem _ (hy i) (h i)`.
+-/
 theorem lat_fun_iff (e : Basis (Fin n) E V) (l : V →ₗ[E] E) :
     (∀ y ∈ lat O e, l y ∈ (algebraMap O E).range) ↔ ∀ j, l (e j) ∈ (algebraMap O E).range := by
   constructor
@@ -247,6 +355,11 @@ theorem lat_fun_iff (e : Basis (Fin n) E V) (l : V →ₗ[E] E) :
     rw [map_smul, smul_eq_mul]
     exact Subring.mul_mem _ (hy i) (h i)
 
+/- English proof (translation)
+Rewrite using `[show lat O (tw e γ) = Submodule.span O (Set.range (tw e γ)) from rfl, Submodule.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `hj` using `(mem_lat O e (tw e γ j)).1 (h ⟨j, rfl⟩) i`. Rewrite `hj` using `[repr_tw_apply]`. Then use the resulting hypothesis.
+
+Introduce and unpack `h _ ⟨j, rfl⟩`. Conclude with `(mem_lat O e _).2 fun i => by rw [repr_tw_apply]; exact h i j`.
+-/
 theorem lat_tw_le_iff (e : Basis (Fin n) E V) (γ : GL (Fin n) E) :
     lat O (tw e γ) ≤ lat O e ↔
       ∀ i j, ((γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j ∈ (algebraMap O E).range := by
@@ -258,6 +371,15 @@ theorem lat_tw_le_iff (e : Basis (Fin n) E V) (γ : GL (Fin n) E) :
   · rintro h _ ⟨j, rfl⟩
     exact (mem_lat O e _).2 fun i => by rw [repr_tw_apply]; exact h i j
 
+/- English proof (translation)
+Establish `h1 : tw e δ = tw (tw e γ) (δ * γ⁻¹)` using `by rw [tw_tw, inv_mul_cancel_right]`. Establish `h2 : tw e γ = tw (tw e δ) (δ * γ⁻¹)⁻¹`. Rewrite using `[tw_tw, _root_.mul_inv_rev, _root_.inv_inv, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[le_antisymm_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hle, hge⟩ i j`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hk` using `(lat_tw_le_iff O (tw e δ) (δ * γ⁻¹)⁻¹).1 (by rw [← h2]; exact hge) i j`. Rewrite `hk` using `[_root_.inv_inv]`. Then use the resulting hypothesis. Conclude with `(lat_tw_le_iff O (tw e γ) (δ * γ⁻¹)).1 (by rw [← h1]; exact hle) i j`.
+
+Introduce `h`. Prove the components needed by the constructor for the conclusion. Rewrite using `[h1]`. Conclude with `(lat_tw_le_iff O _ _).2 fun i j => (h i j).2`. Rewrite using `[h2]`.
+
+Conclude with `(lat_tw_le_iff O _ _).2 fun i j => by rw [_root_.inv_inv]; exact (h i j).1`.
+-/
 theorem lat_tw_eq_iff (e : Basis (Fin n) E V) (γ δ : GL (Fin n) E) :
     lat O (tw e δ) = lat O (tw e γ) ↔
       ∀ i j, ((δ * γ⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j ∈ (algebraMap O E).range ∧

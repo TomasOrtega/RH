@@ -13,6 +13,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK.LiftConst
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq hp d₁ W₁ H' i₀ i₁ hH' c hc Φ Φ' hΦ' hPM hCT hdec Φ₁ Φ₁' hΦ₁' hPM₁ μ 𝓕 hμ h𝓕 g g'`. Take `⟨T, hT⟩` from `GlobalTheory.T.definite_adapted_plane_theta_identity hKP F E σ B a a' G X om om' R Rf hM hq hp d₁ W₁ H' i₀ i₁ hH' c hc Φ Φ' hΦ' hPM hCT hdec Φ₁ Φ₁' hΦ₁' hPM₁ μ 𝓕 hμ h𝓕`. Conclude with `GlobalTheory.T.automorphic_invariant_split_places_const hKP F E σ B a' G.V' G.q (a' - G.q) hM.triple.base hM.triple.geo.hV' T _ (GlobalTheory.T.definite_adapted_plane_theta_reduction hKP F E σ B a a' G X om om' R Rf hM hq hp d₁ W₁ H' i₀ i₁ hH' c hc Φ Φ' hΦ' hPM hCT hdec Φ₁ Φ₁' hΦ …`.
+-/
 theorem thetaLiftAnisotropic_const : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ c : ℂ,

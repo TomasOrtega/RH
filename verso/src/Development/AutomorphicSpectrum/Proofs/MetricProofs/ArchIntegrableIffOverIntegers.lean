@@ -15,6 +15,9 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.Weight.ChernIntegrableOn`. Rewrite using `[integrableOn_congr_fun h hS, integrableOn_congr_fun h hS]`. Unfold `GlobalTheory.Weight.chernInt`. Rewrite using `[setIntegral_congr_fun hS h, setIntegral_congr_fun hS h]`.
+-/
 private theorem chernIntegrableOn_and_chernInt_congr {k : Type} [CommRing k] {Y : Scheme} {q : Y ⟶ Sp k} {σ : k →+* ℂ}
     {B : ReciprocityTheory.ChartRestriction.G.Semi.LB Y} (φ : GlobalTheory.Weight q σ B) (d : ℕ) {S : Set (GlobalTheory.CxPts q σ)}
     (hS : MeasurableSet S) {f g : GlobalTheory.CxPts q σ → ℝ} (h : Set.EqOn f g S) :
@@ -25,6 +28,19 @@ private theorem chernIntegrableOn_and_chernInt_congr {k : Type} [CommRing k] {Y 
   · unfold GlobalTheory.Weight.chernInt
     rw [setIntegral_congr_fun hS h, setIntegral_congr_fun hS h]
 
+/- English proof (translation)
+Introduce `k _ X _ p t τ D hX N M ψ ν hψN hνM hψ e r hr`. Distinguish the cases in `hσ : Nonempty (k →+* ℂ)`. Take `⟨σ₀⟩` from `hσ haveI : CharZero k := σ₀.charZero haveI := hX.isDomain haveI := hX.finite`. Establish `hS : MeasurableSet (offSupp t τ (M.div hr))` using `(GlobalTheory.CxPts.isOpen_ptsIn _).measurableSet`. Take `⟨h1, h2⟩` from `GlobalTheory.T.chernIntegrableOn_iff_sheets k X p t τ hX.isProjOver e N.B N.φ ψ hψN N.cInf hψ _ hS (logNorm ν r)`.
+
+Establish `hmeas : ∀ σ : k →+* ℂ, MeasurableSet (offSupp p σ (M.div hr))` using `fun σ => (GlobalTheory.CxPts.isOpen_ptsIn _).measurableSet`. Establish `hEq : ∀ σ : k →+* ℂ, Set.EqOn (fun z => logNorm ν r (GlobalTheory.CompanionTheory.Ar.BaseZ.sheet t τ z)) (logNorm (M.φ σ) r) (offSupp p σ (M.div hr))` using `fun σ y hy => GlobalTheory.T.logNorm_sheet_eq k X p t τ M.B M.φ ν hνM r hr σ y hy`. Establish `hiff : ψ.ChernIntegrableOn e (offSupp t τ (M.div hr)) (logNorm ν r) ↔ N.ArchIntegrable M e hr`. Rewrite using `[h1]`. Unfold `GlobalTheory.HermLB.ArchIntegrable`.
+
+Conclude with `forall_congr' fun σ => (chernIntegrableOn_and_chernInt_congr (N.φ σ) e (hmeas σ) (hEq σ)).1`. Use `⟨hiff, fun hInt => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 (hiff.mpr hInt)]`. Unfold `GlobalTheory.HermLB.archInt`. Conclude with `finsum_congr fun σ => (chernIntegrableOn_and_chernInt_congr (N.φ σ) e (hmeas σ) (hEq σ)).2`.
+
+Establish `hE : IsEmpty (k →+* ℂ)` using `not_nonempty_iff.mp hσ haveI : IsEmpty (GlobalTheory.CxPts t τ) := ⟨fun y => hE.false (Spec.preimage (Subtype.val y ≫ p)).hom⟩`. Establish `hS0 : offSupp t τ (M.div hr) = ∅` using `Set.eq_empty_of_isEmpty _`. Establish `hA : N.ArchIntegrable M e hr`. Unfold `GlobalTheory.HermLB.ArchIntegrable`. Introduce `σ`.
+
+Conclude with `hE.elim σ`. Use `⟨⟨fun _ => hA, fun _ => ?_⟩, fun _ => ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.Weight.ChernIntegrableOn`. Rewrite using `[hS0]`. Conclude with `⟨integrableOn_empty, integrableOn_empty⟩`.
+
+Unfold `GlobalTheory.HermLB.archInt GlobalTheory.Weight.chernInt`. Rewrite using `[hS0, finsum_of_isEmpty]`. Simplify using the standard rewrite rules.
+-/
 theorem archInt_over_int : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) (D : ℕ), IsArithVar p D → ∀ (N M : HermLB p) (ψ : Weight t τ N.B) (ν : Weight t τ M.B), WOver N.φ ψ → WOver M.φ ν → ψ.IsCInf → ∀ (e : ℕ) (r : M.B.ι → X.functionFieldˣ) (hr : IsRatSec M.B r), (ψ.ChernIntegrableOn e (offSupp t τ (M.div hr)) (logNorm ν r) ↔ N.ArchIntegrable M e hr) ∧ (N.ArchIntegrable M e hr → ψ.chernInt e (offSupp t τ (M.div hr)) (logNorm ν r) = N.archInt M e hr) := by
   intro k _ X _ p t τ D hX N M ψ ν hψN hνM hψ e r hr
   by_cases hσ : Nonempty (k →+* ℂ)

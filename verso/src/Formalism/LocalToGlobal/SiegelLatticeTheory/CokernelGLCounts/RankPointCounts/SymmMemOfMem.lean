@@ -17,6 +17,13 @@ section Grp
 
 variable {D : D7} {T : D.host.E} (F : LFlag (VS D) D.R.rS T)
 
+/- English proof (translation)
+Introduce `x hx`. Set `f : U →ₗ[D.host.E] U` to `(s : (VS D).V →ₗ[D.host.E] (VS D).V).restrict (p := U) (q := U) (fun y hy => h y hy)`. Establish `hinj : Function.Injective f`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `s.injective` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hab`. Take `⟨y, hy⟩` from `(LinearMap.injective_iff_surjective.mp hinj) ⟨x, hx⟩`. Establish `hyx : s y.1 = x` using `congrArg Subtype.val hy`. Rewrite using `[← hyx, LinearEquiv.symm_apply_apply]`.
+
+Conclude with `y.2`.
+-/
 theorem symm_mem_of_mem (s : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U : Submodule D.host.E (VS D).V)
     (h : ∀ x ∈ U, s x ∈ U) : ∀ x ∈ U, s.symm x ∈ U := by
   intro x hx
@@ -32,15 +39,29 @@ theorem symm_mem_of_mem (s : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U : Submodule 
   rw [← hyx, LinearEquiv.symm_apply_apply]
   exact y.2
 
+/- English proof (translation)
+Conclude with `Formalism.L2.SG.Pf.xflag_mono_td F (Nat.le_succ j)`.
+-/
 theorem Xflag_mono (j : ℕ) : Xflag F j ≤ Xflag F (j + 1) := by
   exact Formalism.L2.SG.Pf.xflag_mono_td F (Nat.le_succ j)
 
+/- English proof (translation)
+Conclude with `PI.DCRelEquiv.UnitaryGroupMassFormula.Xflag_le_X F j`.
+-/
 theorem Xflag_le_X (j : ℕ) : Xflag F j ≤ Xsp F := by
   exact PI.DCRelEquiv.UnitaryGroupMassFormula.Xflag_le_X F j
 
+/- English proof (translation)
+Conclude with `(Formalism.L2.SG.Pf.xflag_r F).symm`.
+-/
 theorem X_eq_Xflag : Xsp F = Xflag F D.R.rS := by
   exact (Formalism.L2.SG.Pf.xflag_r F).symm
 
+/- English proof (translation)
+Introduce `x hx`. Consider the cases of `j with`. Consider the case `zero`. Rewrite `hx` using `[Formalism.L2.SG.Pf.xflag_zero_td F, Submodule.mem_bot]`. Rewrite using `[hx, map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `succ j`. Establish `h1` using `Xflag_mono F j (hs j x hx)`. Establish `h2` using `Submodule.add_mem _ h1 hx`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem flag_pres {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x ∈ Xflag F (j + 1), s x - x ∈ Xflag F j)
     (j : ℕ) : ∀ x ∈ Xflag F j, s x ∈ Xflag F j := by
   intro x hx
@@ -54,6 +75,11 @@ theorem flag_pres {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x �
     have h2 := Submodule.add_mem _ h1 hx
     rwa [sub_add_cancel] at h2
 
+/- English proof (translation)
+Introduce `j x hx`. Establish `hy : s.symm x ∈ Xflag F (j + 1)` using `symm_mem_of_mem s (Xflag F (j + 1)) (flag_pres F hs (j + 1)) x hx`. Establish `h1` using `hs j (s.symm x) hy`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Establish `h2` using `Submodule.neg_mem _ h1`.
+
+Rewrite `h2` using `[neg_sub]`. Then use the resulting hypothesis.
+-/
 theorem flag_inv {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x ∈ Xflag F (j + 1), s x - x ∈ Xflag F j) :
     ∀ j, ∀ x ∈ Xflag F (j + 1), s.symm x - x ∈ Xflag F j := by
   intro j x hx
@@ -64,6 +90,9 @@ theorem flag_inv {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x ∈
   have h2 := Submodule.neg_mem _ h1
   rwa [neg_sub] at h2
 
+/- English proof (translation)
+Introduce `j x hx`. Establish `htx : t x ∈ Xflag F (j + 1)` using `flag_pres F ht (j + 1) x hx`. Establish `h1` using `Submodule.add_mem _ (hs j (t x) htx) (ht j x hx)`. Use `show s (t x) - x ∈ Xflag F j`. Rewrite `h1` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem flag_mul {s t : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hs : ∀ j, ∀ x ∈ Xflag F (j + 1), s x - x ∈ Xflag F j) (ht : ∀ j, ∀ x ∈ Xflag F (j + 1), t x - x ∈ Xflag F j) :
     ∀ j, ∀ x ∈ Xflag F (j + 1), (s * t) x - x ∈ Xflag F j := by
@@ -73,12 +102,20 @@ theorem flag_mul {s t : (VS D).V ≃ₗ[D.host.E] (VS D).V}
   show s (t x) - x ∈ Xflag F j
   rwa [sub_add_sub_cancel] at h1
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[X_eq_Xflag F]`. Conclude with `flag_pres F hs _ x hx`.
+-/
 theorem X_pres {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : ∀ j, ∀ x ∈ Xflag F (j + 1), s x - x ∈ Xflag F j) :
     ∀ x ∈ Xsp F, s x ∈ Xsp F := by
   intro x hx
   rw [X_eq_Xflag F] at hx ⊢
   exact flag_pres F hs _ x hx
 
+/- English proof (translation)
+Simplify using `only [SRat, Set.mem_setOf_eq] at hs ⊢`. Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hs.1, flag_inv F hs.2.1, ?_⟩` and prove the remaining obligations. Establish `h1` using `symm_mem_of_mem s (Xsp F) (X_pres F hs.2.1) _ hs.2.2`. Establish `h2` using `Submodule.neg_mem _ h1`. Rewrite `h2` using `[map_sub, LinearEquiv.symm_apply_apply, neg_sub]`.
+
+Conclude with `h2`.
+-/
 theorem SRat_inv {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : s ∈ SRat F) : s.symm ∈ SRat F := by
   simp only [SRat, Set.mem_setOf_eq] at hs ⊢
   refine ⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hs.1, flag_inv F hs.2.1, ?_⟩
@@ -87,6 +124,11 @@ theorem SRat_inv {s : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : s ∈ SRat F) : 
   rw [map_sub, LinearEquiv.symm_apply_apply, neg_sub] at h2
   exact h2
 
+/- English proof (translation)
+Simplify using `only [SRat, Set.mem_setOf_eq] at hs ht ⊢`. Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem hs.1 ht.1, flag_mul F hs.2.1 ht.2.1, ?_⟩` and prove the remaining obligations. Establish `hw` using `ht.2.2`. Establish `hsw` using `X_pres F hs.2.1 _ hw`. Establish `key : (s * t) F.fl.z - F.fl.z = (s F.fl.z - F.fl.z) + (s (t F.fl.z - F.fl.z) - (t F.fl.z - F.fl.z)) + (t F.fl.z - F.fl.z)` using `by show s (t F.fl.z) - F.fl.z = _`.
+
+Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ hs.2.2 (Submodule.sub_mem _ hsw hw)) hw`.
+-/
 theorem SRat_mul {s t : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : s ∈ SRat F) (ht : t ∈ SRat F) : s * t ∈ SRat F := by
   simp only [SRat, Set.mem_setOf_eq] at hs ht ⊢
   refine ⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem hs.1 ht.1, flag_mul F hs.2.1 ht.2.1, ?_⟩
@@ -99,6 +141,11 @@ theorem SRat_mul {s t : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hs : s ∈ SRat F) 
   rw [key]
   exact Submodule.add_mem _ (Submodule.add_mem _ hs.2.2 (Submodule.sub_mem _ hsw hw)) hw
 
+/- English proof (translation)
+Establish `hi' : ∀ a b, (VS D).hT (n a) (n b) = (VS D).hT a b` using `hi`. Introduce `y hy`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hy ⊢`. Introduce `x hx`. Establish `h1` using `hi' (n.symm x) y`.
+
+Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[h1]`. Conclude with `hy _ (hX x hx)`.
+-/
 theorem perp_pres {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hi : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hX : ∀ x ∈ Xsp F, n.symm x ∈ Xsp F) : ∀ y ∈ orth (VS D) (Xsp F), n y ∈ orth (VS D) (Xsp F) := by
   have hi' : ∀ a b, (VS D).hT (n a) (n b) = (VS D).hT a b := hi
@@ -110,6 +157,11 @@ theorem perp_pres {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hi : n ∈ Formalism
   rw [h1]
   exact hy _ (hX x hx)
 
+/- English proof (translation)
+Simplify using `only [NRat, Set.mem_setOf_eq] at hn ⊢`. Establish `hX : ∀ x ∈ Xsp F, n.symm x ∈ Xsp F` using `symm_mem_of_mem n (Xsp F) (X_pres F hn.2.1)`. Establish `hO` using `perp_pres F hn.1 hX`. Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hn.1, flag_inv F hn.2.1, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hy` using `symm_mem_of_mem n (orth (VS D) (Xsp F)) hO x hx`. Establish `h2` using `Submodule.neg_mem _ (hn.2.2 _ hy)`. Rewrite `h2` using `[LinearEquiv.apply_symm_apply, neg_sub]`. Conclude with `h2`.
+-/
 theorem NRat_inv {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) : n.symm ∈ NRat F := by
   simp only [NRat, Set.mem_setOf_eq] at hn ⊢
   have hX : ∀ x ∈ Xsp F, n.symm x ∈ Xsp F := symm_mem_of_mem n (Xsp F) (X_pres F hn.2.1)
@@ -121,6 +173,11 @@ theorem NRat_inv {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) : 
   rw [LinearEquiv.apply_symm_apply, neg_sub] at h2
   exact h2
 
+/- English proof (translation)
+Simplify using `only [NRat, Set.mem_setOf_eq] at hn hm ⊢`. Use `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem hn.1 hm.1, flag_mul F hn.2.1 hm.2.1, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hw` using `hm.2.2 x hx`. Establish `hnw` using `X_pres F hn.2.1 _ hw`.
+
+Establish `key : (n * m) x - x = (n x - x) + (n (m x - x) - (m x - x)) + (m x - x)` using `by show n (m x) - x = _`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ (hn.2.2 x hx) (Submodule.sub_mem _ hnw hw)) hw`.
+-/
 theorem NRat_mul {n m : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ NRat F) (hm : m ∈ NRat F) : n * m ∈ NRat F := by
   simp only [NRat, Set.mem_setOf_eq] at hn hm ⊢
   refine ⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).mul_mem hn.1 hm.1, flag_mul F hn.2.1 hm.2.1, ?_⟩

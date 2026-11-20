@@ -26,9 +26,19 @@ def NFHypL : Prop :=
         if hq : r + k < q.val ∧ 2 * r + k - q.val < D.ptSize a then
           star (U.hMat (D.ptPerm a) (D.ptDiag a) ⟨a'.val, ha'⟩ ⟨2 * r + k - q.val, hq.2⟩) else 0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem castM_apply' {k a b : ℕ} (h : a = b) (g : B.Mat k a) (i j : Fin (2 * b + k + 1)) :
     D.castM h g i j = g (Fin.cast (by rw [h]) i) (Fin.cast (by rw [h]) j) := rfl
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(U.eB k p ρ).surjective j`. Rewrite using `[U.mMap, Ux3.block3_apply]`. Break down `y with (y | y) | y` into its components or cases. Rewrite using `[dif_pos (by rw [Ux3.block_index_first_val]; exact y.isLt)]`. Simplify using `only [Matrix.fromBlocks_apply₂₁, Matrix.fromCols_apply_inl]`.
+
+Rewrite using `[Ux3.wMat_mul_apply]`. Conclude with `congrArg (Z c.rev) (Fin.ext (Ux3.block_index_first_val (k := k) (ρ := ρ) y).symm)`. Rewrite using `[dif_neg (by rw [Ux3.block_index_middle_val]; omega)]`. Simplify using `[Matrix.fromBlocks_apply₂₁, Matrix.fromCols_apply_inr]`. Rewrite using `[dif_neg (by rw [Ux3.block_index_last_val]; omega)]`.
+
+Simplify using `[Matrix.fromBlocks_apply₂₂]`.
+-/
 theorem embedding_map_apply_last_block {k p ρ : ℕ} (Z : Matrix (Fin p) (Fin p) ℂ) (γ : B.Mat k ρ) (c : Fin p)
     (j : Fin (2 * (p + ρ) + k + 1)) :
     U.mMap k p ρ Z γ (U.eB k p ρ (Sum.inr c)) j =
@@ -45,6 +55,13 @@ theorem embedding_map_apply_last_block {k p ρ : ℕ} (Z : Matrix (Fin p) (Fin p
   · rw [dif_neg (by rw [Ux3.block_index_last_val]; omega)]
     simp [Matrix.fromBlocks_apply₂₂]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(U.eB k p ρ).surjective i`. Rewrite using `[U.mMap, Ux3.block3_apply]`. Break down `y with (y | y) | y` into its components or cases. Rewrite using `[dif_neg (by rw [Ux3.block_index_first_val]; omega)]`. Simplify using `[Matrix.fromBlocks_apply₁₁]`.
+
+Rewrite using `[dif_neg (by rw [Ux3.block_index_middle_val]; omega)]`. Simplify using `[Matrix.fromBlocks_apply₁₁]`. Rewrite using `[dif_pos (by rw [Ux3.block_index_last_val]; omega)]`. Simplify using `only [Matrix.fromBlocks_apply₂₁, Matrix.fromCols_apply_inl]`. Conclude with `congrArg (fun c => (G.wMat p * Z) c b) (Fin.ext (by show (U.eB k p ρ (Sum.inr y)).val - (p + (2 * ρ + k + 1)) = y.val`.
+
+Rewrite using `[Ux3.block_index_last_val]`. Use the proof step `omega)).symm`.
+-/
 theorem embedding_map_apply_first_block {k p ρ : ℕ} (Z : Matrix (Fin p) (Fin p) ℂ) (γ : B.Mat k ρ) (b : Fin p)
     (i : Fin (2 * (p + ρ) + k + 1)) :
     U.mMap k p ρ Z γ i (U.eB k p ρ (Sum.inl (Sum.inl b))) =
@@ -63,6 +80,19 @@ theorem embedding_map_apply_first_block {k p ρ : ℕ} (Z : Matrix (Fin p) (Fin 
       show (U.eB k p ρ (Sum.inr y)).val - (p + (2 * ρ + k + 1)) = y.val
       rw [Ux3.block_index_last_val]; omega)).symm
 
+/- English proof (translation)
+Introduce `k r a hle g' hg' hloc`. Establish `hd : ∀ i, D.ptDiag a i ≠ 0` using `fun i => Formalism.FourierDecayAlt.P.JCTx6.Link2.ptScal_ne a hloc.1 i i.2`. Establish `hZ : (U.hMat (D.ptPerm a) (D.ptDiag a)).det ≠ 0` using `Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne _ _ hd`. Establish `hM : U.mMap k (D.ptSize a) (r - D.ptSize a) (U.hMat (D.ptPerm a) (D.ptDiag a)) g' ∈ B.GV k (D.ptSize a + (r - D.ptSize a))` using `(Formalism.FourierDecayAlt.P.slice_membership k (D.ptSize a) (r - D.ptSize a)).1 _ g' hZ hg'`. Use `⟨Formalism.FourierDecayAlt.P.PBE.castM_GV _ hM, fun a' q ha' => ?_, fun a' q ha' => ?_⟩` and prove the remaining obligations.
+
+Unfold `PBG.xi0`. Rewrite using `[Formalism.FourierDecayAlt.P.PBM.herm_bvec_eI', Formalism.FourierDecayAlt.P.PBM.mulVec_bvec_apply]`. Unfold `levelZeroPointOver`. Rewrite using `[castM_apply']`. Establish `hi : (Fin.cast (by omega) (esI k r a') : Fin (2 * (D.ptSize a + (r - D.ptSize a)) + k + 1)) = U.eB k (D.ptSize a) (r - D.ptSize a) (Sum.inr ⟨D.ptSize a - 1 - a'.val, by omega⟩)` using `by ext; rw [Ux3.block_index_last_val]; simp [esI]; omega`.
+
+Rewrite using `[hi, embedding_map_apply_last_block]`. Distinguish the cases in `hq : q.val < D.ptSize a`. Rewrite using `[dif_pos (by simpa using hq), dif_pos hq]`. Use `congr 1`. Use `ext`.
+
+Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg (by simpa using hq), dif_neg hq]`. Unfold `PBG.y0`. Rewrite using `[Formalism.FourierDecayAlt.P.PBM.mulVec_bvec_apply]`.
+
+Establish `hgu : IsUnit g'.det` using `WeylGroupFacts.isUnit_of_uh hg'`. Unfold `levelZeroPointOver`. Rewrite using `[← Formalism.FourierDecayAlt.P.PBH.asm_castM_inv, Formalism.FourierDecayAlt.P.PBM.mMap_inv _ _ (isUnit_iff_ne_zero.mpr hZ) hgu, castM_apply']`. Establish `hj : (Fin.cast (by omega) (eI k r a') : Fin (2 * (D.ptSize a + (r - D.ptSize a)) + k + 1)) = U.eB k (D.ptSize a) (r - D.ptSize a) (Sum.inl (Sum.inl ⟨a'.val, ha'⟩))` using `by ext; rw [Ux3.block_index_first_val]; simp [eI]`. Rewrite using `[hj, embedding_map_apply_first_block]`.
+
+Distinguish the cases in `hq : r + k < q.val ∧ 2 * r + k - q.val < D.ptSize a`. Rewrite using `[dif_pos (by simp; omega), dif_pos hq, Ux3.wMat_mul_apply, Matrix.conjTranspose_apply]`. Apply the tactic sequence `congr 2 <;> ext <;> simp [Fin.val_rev] <;> omega`. Rewrite using `[dif_neg (by simp; omega), dif_neg hq]`.
+-/
 theorem normal_form_left_hypothesis : NFHypL := by
   intro k r a hle g' hg' hloc
   have hd : ∀ i, D.ptDiag a i ≠ 0 := fun i => Formalism.FourierDecayAlt.P.JCTx6.Link2.ptScal_ne a hloc.1 i i.2

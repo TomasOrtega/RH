@@ -21,6 +21,37 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.HeatV
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ _ _ _ t P m tt htt hab c hc n v' dd' hinv DV Θ₁ hKS`. Establish `hc' : spMap (resV R c) ≫ 𝟙 (Sp R) = chart (bo R c)`. Rewrite using `[Category.comp_id]`. Conclude with `spMap_resV R c`. Choose the witnesses or unpack the hypotheses as in `⟨hv, hb⟩ : (∀ i, IsTanAtG t (spMap (resV R c) ≫ 𝟙 (Sp R)) (spMap (dualMap (resV R c)) ≫ (tv (v' i)).left)) ∧ ∀ w, IsTanAtG t (spMap (resV R c) ≫ 𝟙 (Sp R)) w → ∃! a : Fin n → Γ(Sp R, (bo R c).1), IsCombAtG t (spMap (resV R c) ≫ 𝟙 (Sp R)) (fun i => spMap (dualMap (resV R c)) ≫ (tv …`.
+
+Use `GlobalTheory.LocM.FrameBase.tanBasis_baseChange t (resV R c) (𝟙 (Sp R)) n _ (fun i => GlobalTheory.LieMet.isTan_tv (v' i)) ?_` and prove the remaining obligations. Introduce `w hw`. Use `⟨v'.repr (GlobalTheory.LieMet.tanOf hw), ?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `show IsCombAtG t _ _ _ (tv (GlobalTheory.LieMet.tanOf hw)).left`. Rewrite using `[GlobalTheory.LieMet.isComb_iff]`.
+
+Conclude with `(v'.sum_repr _).symm`. Establish `h` using `(GlobalTheory.LieMet.isComb_iff v' a (GlobalTheory.LieMet.tanOf hw)).1 ha`. Rewrite using `[h]`. Use extensionality with `i`. Simplify using `[Finsupp.single_apply]`.
+
+Rewrite `hv`, `hb` using `[hc']`. Establish `hc0 : c ≠ 0`. Rewrite using `[hc]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => htt i`. Set `s : Γ(Sp R, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c`.
+
+Set `gg : Γ(Sp R, ⊤) →+* FractionRing R` to `(algebraMap R (FractionRing R)).comp (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom`. Establish `hs : (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom s = c` using `by simp [s]`. Establish `hu : IsUnit (gg s)`. Rewrite using `[isUnit_iff_ne_zero]`. Simplify using `only [gg, RingHom.comp_apply, hs]`.
+
+Conclude with `(IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hc0))`. Establish `gg_inj : Function.Injective gg`. Introduce `x y h`. Establish `h1` using `IsFractionRing.injective R (FractionRing R) h`. Simplify using `using congrArg (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom h1`.
+
+Set `x₀ : Γ(Sp R, (bo R c).1) →+* FractionRing R` to `IsLocalization.Away.lift (S := Γ(Sp R, (Sp R).basicOpen s)) s hu`. Establish `hx₀ : ∀ y, x₀ (algebraMap Γ(Sp R, ⊤) Γ(Sp R, (Sp R).basicOpen s) y) = gg y`. Introduce `y`. Use `show IsLocalization.Away.lift (S := Γ(Sp R, (Sp R).basicOpen s)) s hu _ = _`. Rewrite using `[IsLocalization.Away.lift, IsLocalization.lift_eq]`.
+
+Establish `hinj : Function.Injective x₀` using `by show Function.Injective (IsLocalization.Away.lift (S := Γ(Sp R, (Sp R).basicOpen s)) s hu)`. Rewrite using `[IsLocalization.Away.lift, IsLocalization.lift_injective_iff]`. Introduce `x y`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `congrArg x₀ h` as an intermediate fact. Rewrite `this` using `[hx₀, hx₀]`. Then use the resulting hypothesis. Introduce `h`. Rewrite using `[gg_inj h]`. Establish `hres : x₀.comp (resV R c) = algebraMap R (FractionRing R)`.
+
+Use extensionality with `r`. Use `show x₀ (algebraMap Γ(Sp R, ⊤) Γ(Sp R, (Sp R).basicOpen s) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) = _`. Rewrite using `[hx₀]`. Simplify using `[gg]`. Establish `hsp : spMap x₀ ≫ chart (bo R c) = ReciprocityTheory.ChartRestriction.G.Out.jK R`.
+
+Rewrite using `[← spMap_resV R c]`. Use `show Spec.map (CommRingCat.ofHom x₀) ≫ Spec.map (CommRingCat.ofHom (resV R c)) = Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))`. Rewrite using `[← hres, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `gpG` using `GlobalTheory.ThetaBaseChange.grp_generic P.U.toUnifPre`.
+
+Establish `hgi : P.U.gen.inv.left ≫ P.U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `hext : LBIso (P.A.L.pull P.U.gen.hom.left) (t.PP.L.pull (pullback.fst t.G.hom (ReciprocityTheory.ChartRestriction.G.Out.jK R)))`. Establish `h` using `P.U.ext`. Rewrite `h` using `[P.bundle]`.
+
+Conclude with `h`. Establish `hL : LBIso P.A.L (t.PP.L.pull (P.U.gen.inv.left ≫ pullback.fst t.G.hom (ReciprocityTheory.ChartRestriction.G.Out.jK R)))`. Establish `h1 : LBIso (P.A.L.pull (P.U.gen.inv.left ≫ P.U.gen.hom.left)) (t.PP.L.pull (P.U.gen.inv.left ≫ pullback.fst t.G.hom (ReciprocityTheory.ChartRestriction.G.Out.jK R)))` using `LBIso.chartPull (chartPullSame P.A.L _ (fun _ => P.U.gen.hom.left) _ P.U.gen.inv.left fun _ => rfl) (chartPullSame t.PP.L _ (fun _ => pullback.fst t.G.hom (ReciprocityTheory.ChartRestriction.G.Out.jK R)) _ P.U.gen.inv.left fun _ => rfl) hext`. Conclude with `LBIso.chartPull (chartPullUnpull P.A.L _ hgi) (chartPullSame t.PP.L _ _ _ (𝟙 _) fun _ => (Category.id_comp _).symm) h1`. Use `haveI : CharZero R := charZero_of_injective_algebraMap (algebraMap ℚ R).injective`.
+
+Use `haveI : CharZero (FractionRing R) := charZero_of_injective_algebraMap (IsFractionRing.injective R (FractionRing R))`. Establish `key` using `GlobalTheory.T.kodairaSpencer_matrix_transpose_eq_at_polarized_point E H (Sp R) t (bo R c).1 (bo R c) n _ hv hb (FractionRing R) x₀ P.A (P.U.gen.inv.left ≫ pullback.fst t.G.hom (ReciprocityTheory.ChartRestriction.G.Out.jK R)) (gpG.congr hsp.symm rfl) hL le_rfl DV Θ₁ hKS`. Use extensionality with `a b`. Apply `hinj` to reduce the goal to its premises. Use `congrFun (congrFun key a) b` as an intermediate fact.
+
+Simplify `this` using `[Matrix.transpose_apply, Matrix.map_apply]`.
+-/
 theorem isKS_symm_abLocus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R), (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → ∀ (c : R), c = ∏ i, tt i → ∀ (n : ℕ) (v' : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) t.G)) (dd' : Fin n → Fld t.G.left), (∀ a, IsInv t.G (v' a) (dd' a)) → ∀ (DV : Γ(Sp R, (GlobalTheory.HeatV.bo R c).1) → Γ(Sp R, (GlobalTheory.HeatV.bo R c).1)) (Θ₁ : Matrix (Fin n) (Fin n) Γ(Sp R, (GlobalTheory.HeatV.bo R c).1)), IsKS t (GlobalTheory.HeatV.bo R c).1 (GlobalTheory.HeatV.bo R c) (fun a => spMap (dualMap (GlobalTheory.HeatV.resV R c)) ≫ (tv (v' a)).left) DV Θ₁ → Θ₁ᵀ = Θ₁ := by
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt htt hab c hc n v' dd' hinv DV Θ₁ hKS
 

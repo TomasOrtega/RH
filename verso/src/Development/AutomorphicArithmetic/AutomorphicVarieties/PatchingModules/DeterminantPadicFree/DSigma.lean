@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `F G _ _ n D χ Y g hχ`. Establish `e1 : D.r (D.σ g) = (D.μ g : F) • (D.r g⁻¹)ᵀ`. Establish `h : (D.r g⁻¹)ᵀ * (D.r g)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← map_mul, mul_inv_cancel, map_one, Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Matrix.mul_assoc, h, Matrix.one_mul]`. Use `_ = _ := by rw [D.form, Matrix.mul_smul, Matrix.mul_one]`. Establish `e2 : D.r (D.σ g)⁻¹ = (D.μ g⁻¹ : F) • (D.r g)ᵀ`. Establish `h : (D.r g)ᵀ * (D.r g⁻¹)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← map_mul, inv_mul_cancel, map_one, Matrix.transpose_one]`.
+
+Rewrite using `[← map_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, h, Matrix.one_mul]`. Use `_ = _ := by rw [D.form, Matrix.mul_smul, Matrix.mul_one]`. Establish `e3 : ((D.μ g : F) * D.μ g⁻¹) • (1 : Matrix (Fin n) (Fin n) F) = 1`.
+
+Establish `h : D.r (D.σ g) * D.r (D.σ g)⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Rewrite `h` using `[e1, e2, Matrix.smul_mul, Matrix.mul_smul, ← Matrix.transpose_mul, ← map_mul, mul_inv_cancel, map_one, Matrix.transpose_one, smul_smul]`. Conclude with `h`. Establish `key : D.r (D.σ g) * Y * D.r (D.σ g)⁻¹ = (D.r g⁻¹)ᵀ * Y * (D.r g)ᵀ`. Rewrite using `[e1, e2, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`.
+
+Rewrite using `[show ((D.μ g : F) * D.μ g⁻¹) • ((D.r g⁻¹)ᵀ * Y * (D.r g)ᵀ) = (((D.μ g : F) * D.μ g⁻¹) • (1 : Matrix (Fin n) (Fin n) F)) * ((D.r g⁻¹)ᵀ * Y * (D.r g)ᵀ) by`. Rewrite using `[Matrix.smul_mul, Matrix.one_mul], e3, Matrix.one_mul]`. Simplify using `only [dTw, hχ, key, Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+-/
 theorem UpperTheory.V.Pa.Det.dSigma :
     ∀ {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F G n) (χ : G → F) (Y : Matrix (Fin n) (Fin n) F) (g : G), (∀ g, χ (D.σ g) = χ g) → dTw χ D.r Y (D.σ g) = (dTw χ D.r Yᵀ g)ᵀ := by
   intro F G _ _ n D χ Y g hχ

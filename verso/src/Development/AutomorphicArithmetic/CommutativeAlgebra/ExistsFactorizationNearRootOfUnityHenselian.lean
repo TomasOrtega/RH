@@ -12,9 +12,15 @@ namespace UpperTheory.LinearFiltration
 section
 variable {A D : Type} [CommRing A] [CommRing D] [Algebra A D]
 
+/- English proof (translation)
+The claim follows from `(Iff.rfl)`.
+-/
 private lemma mem_S (T : TC A D) (j : ℕ) (x : D) :
     x ∈ T.S j ↔ x ∈ T.B ∧ T.s ^ j * x ∈ T.C := (Iff.rfl)
 
+/- English proof (translation)
+Rewrite `*` using `[mem_S]`. Use `⟨T.B.mul_mem hx.1 hy.1, ?_⟩` and prove the remaining obligations. Use `T.C.mul_mem hx.2 hy.2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma S_mul (T : TC A D) {i j : ℕ} {x y : D} (hx : x ∈ T.S i) (hy : y ∈ T.S j) :
     x * y ∈ T.S (i + j) := by
   rw [mem_S] at *
@@ -23,12 +29,18 @@ private lemma S_mul (T : TC A D) {i j : ℕ} {x y : D} (hx : x ∈ T.S i) (hy : 
   convert this using 1
   ring
 
+/- English proof (translation)
+Rewrite using `[mem_S]`. Use `⟨one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_one]`. Conclude with `pow_mem T.sC j`.
+-/
 private lemma S_one (T : TC A D) (j : ℕ) : (1 : D) ∈ T.S j := by
   rw [mem_S]
   refine ⟨one_mem _, ?_⟩
   rw [mul_one]
   exact pow_mem T.sC j
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using S_one T 0`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Nat.succ_mul]`. Conclude with `S_mul T ih hx`.
+-/
 private lemma S_pow (T : TC A D) {j : ℕ} {x : D} (hx : x ∈ T.S j) (k : ℕ) :
     x ^ k ∈ T.S (k * j) := by
   induction k with
@@ -37,15 +49,38 @@ private lemma S_pow (T : TC A D) {j : ℕ} {x : D} (hx : x ∈ T.S j) (k : ℕ) 
     rw [pow_succ, Nat.succ_mul]
     exact S_mul T ih hx
 
+/- English proof (translation)
+Rewrite using `[← mul_pow, mul_comm, T.ts, one_pow]`.
+-/
 private lemma st_pow (T : TC A D) (j : ℕ) : T.s ^ j * T.t ^ j = 1 := by
   rw [← mul_pow, mul_comm, T.ts, one_pow]
 
+/- English proof (translation)
+Rewrite using `[mem_S]`. Use `⟨pow_mem T.tB j, ?_⟩` and prove the remaining obligations. Rewrite using `[st_pow]`. Conclude with `one_mem _`.
+-/
 private lemma power_mem_filtration (T : TC A D) (j : ℕ) : T.t ^ j ∈ T.S j := by
   rw [mem_S]
   refine ⟨pow_mem T.tB j, ?_⟩
   rw [st_pow]
   exact one_mem _
 
+/- English proof (translation)
+Take `⟨ι, β, U, V, hB, hV⟩` from `hC`. Take `⟨hVj, hfin⟩` from `hV j`. Use `set F := hfin.toFinset with hF`. Establish `hSB : ∀ x, x ∈ T.B ↔ ↑(β.repr x).support ⊆ U`. Introduce `x`.
+
+Rewrite using `[← Subalgebra.mem_toSubmodule, hB, Module.Basis.mem_span_image]`. Establish `hSC : ∀ x, T.s ^ j * x ∈ T.C ↔ ↑(β.repr x).support ⊆ V j`. Introduce `x`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.comap (LinearMap.mulLeft A (T.s ^ j)) (Subalgebra.toSubmodule T.C) ↔ _`. Rewrite using `[hVj, Module.Basis.mem_span_image]`.
+
+Set `L : D →ₗ[A] (Fin F.card → A)` to `LinearMap.pi fun i => (Finsupp.lapply (F.equivFin.symm i : ι)).comp β.repr.toLinearMap`. Use `⟨F.card, fun i => β (F.equivFin.symm i : ι), L, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Establish `hi : (F.equivFin.symm i : ι) ∈ U ∩ V j` using `hfin.mem_toFinset.1 (F.equivFin.symm i).2`. Rewrite using `[mem_S, hSB, hSC, Module.Basis.repr_self]`.
+
+Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> refine (Finset.coe_subset.2 Finsupp.support_single_subset).trans ?_ <;>`. Simplify using `[hi.1, hi.2]`. Introduce `i k`. Express the relevant statement in the definitionally equal form `β.repr (β (F.equivFin.symm k : ι)) (F.equivFin.symm i : ι) = _`. Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply]`.
+
+Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg, if_neg h]`. Introduce `h'`.
+
+Conclude with `h (F.equivFin.symm.injective (Subtype.ext h'.symm))`. Introduce `x hx hL`. Rewrite `hx` using `[mem_S, hSB, hSC]`. Establish `h0 : β.repr x = 0`. Use extensionality with `a`.
+
+Distinguish the cases in `ha : a ∈ (β.repr x).support`. Establish `haF : a ∈ F` using `hfin.mem_toFinset.2 ⟨hx.1 ha, hx.2 ha⟩`. Establish `h1` using `congrFun hL (F.equivFin ⟨a, haF⟩)`. Express the relevant statement in the definitionally equal form `β.repr x (F.equivFin.symm (F.equivFin ⟨a, haF⟩) : ι) = 0 at h1`. Simplify using `using h1`.
+
+Simplify using `using ha`. Simplify using `using h0`.
+-/
 private lemma coord_setup (T : TC A D) (hC : T.Coord) (j : ℕ) :
     ∃ (n : ℕ) (e : Fin n → D) (L : D →ₗ[A] (Fin n → A)),
       (∀ i, e i ∈ T.S j) ∧ (∀ i k, L (e k) i = if i = k then 1 else 0) ∧
@@ -89,6 +124,15 @@ private lemma coord_setup (T : TC A D) (hC : T.Coord) (j : ℕ) :
       · simpa using ha
     simpa using h0
 
+/- English proof (translation)
+Establish `key : ∀ d : D, ∀ i, L (d * x) i ∈ I`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span D (algebraMap A D '' (I : Set A)) at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hy`.
+
+Introduce `d i`. Rewrite using `[mul_comm, ← Algebra.smul_def, map_smul]`. Simplify using `using I.mul_mem_right (L d i) ha`. Consider the case `zero => intro d i`. Simplify using the standard rewrite rules.
+
+Consider the case `add y z _ _ hy hz`. Introduce `d i`. Rewrite using `[mul_add, map_add]`. Conclude with `I.add_mem (hy d i) (hz d i)`. Consider the case `smul e y _ hy`.
+
+Introduce `d i`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hy (d * e) i`. Simplify using `using key 1 i`.
+-/
 private lemma L_mem {n : ℕ} (I : Ideal A) (L : D →ₗ[A] (Fin n → A)) (x : D)
     (hx : x ∈ I.map (algebraMap A D)) (i : Fin n) : L x i ∈ I := by
   have key : ∀ d : D, ∀ i, L (d * x) i ∈ I := by
@@ -118,16 +162,25 @@ variable {D : Type} [CommRing D] {n : ℕ}
 private def lin (c : D) (a : Fin n → D) : MvPolynomial (Fin n) D :=
   MvPolynomial.C c + ∑ i, MvPolynomial.C (a i) * MvPolynomial.X i
 
+/- English proof (translation)
+Simplify using `[lin]`.
+-/
 private lemma eval_lin (c : D) (a y : Fin n → D) :
     MvPolynomial.eval y (lin c a) = c + ∑ i, a i * y i := by
   simp [lin]
 
+/- English proof (translation)
+Simplify using `[lin, MvPolynomial.pderiv_X, Pi.single_apply, map_sum, Derivation.leibniz]`.
+-/
 private lemma pderiv_lin (c : D) (a : Fin n → D) (j : Fin n) :
     MvPolynomial.pderiv j (lin c a) = MvPolynomial.C (a j) := by
   simp [lin, MvPolynomial.pderiv_X, Pi.single_apply, map_sum, Derivation.leibniz]
 
 end
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `x ∈ maximalIdeal A • (⊤ : Submodule A D) ↔ _`. Rewrite using `[Ideal.smul_top_eq_map]`. Both sides reduce to the same expression.
+-/
 private lemma mem_mm_top {A D : Type} [CommRing A] [IsLocalRing A] [CommRing D] [Algebra A D] (x : D) :
     x ∈ mm (⊤ : Subalgebra A D) ↔ x ∈ (maximalIdeal A).map (algebraMap A D) := by
   change x ∈ maximalIdeal A • (⊤ : Submodule A D) ↔ _
@@ -137,6 +190,53 @@ private lemma mem_mm_top {A D : Type} [CommRing A] [IsLocalRing A] [CommRing D] 
 end UpperTheory.LinearFiltration
 
 open UpperTheory.LinearFiltration in
+/- English proof (translation)
+Introduce `A D _ _ _ _ T hF hC q hq ω hω`. Use `set M := maximalIdeal A with hM`. Use `set J := M.map (algebraMap A D) with hJ`. Establish `hωJ : ω ^ q - 1 ∈ J` using `(mem_mm_top _).1 hω`. Establish `hq0 : 0 < q`.
+
+Break down `Nat.eq_zero_or_pos q with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hq`. Conclude with `h`. Take `⟨T', hT'F, hT't, -, hlift, hproj, -, -⟩` from `exists_twoChart_quotient_of_finite_coord A D T hF hC M`.
+
+Establish `hω' : (Ideal.Quotient.mk J ω) ^ q = 1`. Rewrite using `[← map_pow, ← map_one (Ideal.Quotient.mk J), Ideal.Quotient.eq]`. Conclude with `hωJ`. Take `⟨m₀, hm₀⟩` from `exists_power_decomposition_of_root_of_unity A (D ⧸ J) T' hT'F q hq hq0 (Ideal.Quotient.mk J ω) hω'`. Take `⟨k₁, hk₁⟩` from `T.locB ω`.
+
+Take `⟨k₂, hk₂⟩` from `T.locC ω`. Take `⟨m, hm⟩ : ∃ m, m = m₀ + k₁ + k₂` from `⟨_, rfl⟩`. Establish `hmm : m ≥ m₀` using `by omega`. Establish `hW : ω * T.t ^ m ∈ T.S (2 * m)`. Rewrite using `[mem_S]`.
+
+Prove the components needed by the constructor for the conclusion. Establish `e : ω * T.t ^ m = T.t ^ (m₀ + k₂) * (T.t ^ k₁ * ω)` using `by rw [hm]; ring`. Rewrite using `[e]`. Conclude with `mul_mem (pow_mem T.tB _) hk₁`. Establish `e : T.s ^ (2 * m) * (ω * T.t ^ m) = T.s ^ (m₀ + k₁) * (T.s ^ k₂ * ω)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `mul_mem (pow_mem T.sC _) hk₂`. Take `⟨n, e, L, he, hLe, hLinj⟩` from `coord_setup T hC (2 * q * m)`. Establish `hdec : ∀ k, ∃ a ∈ T.S (q * m), ∃ b ∈ T.S (q * m), ∃ c ∈ T.S (2 * m), a + T.t ^ (q * m) * b - (q : D) * (ω * T.t ^ m) ^ (q - 1) * c - e k ∈ J`.
+
+Introduce `k`. Take `⟨a', ha', b', hb', c', hc', hk⟩` from `(hm₀ m hmm).2 _ (hproj _ _ (he k))`. Take `⟨a, ha, rfl⟩` from `hlift _ _ ha'`. Take `⟨b, hb, rfl⟩` from `hlift _ _ hb'`. Take `⟨c, hc, rfl⟩` from `hlift _ _ hc'`.
+
+Use `⟨a, ha, b, hb, c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `hk` using `[hT't]`. Simplify using `only [map_sub, map_add, map_mul, map_pow, map_natCast]`. Rewrite using `[hk]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose a ha b hb c hc hkey using hdec`. Use `set Φ : MvPolynomial (Fin n) D := lin (T.t ^ (q * m)) a * lin 1 b - (lin (ω * T.t ^ m) c) ^ q with hΦ`. Establish `ev0 : ∀ (c0 : D) (v : Fin n → D), MvPolynomial.eval 0 (lin c0 v) = c0`. Introduce `c0 v`.
+
+Rewrite using `[eval_lin]`. Simplify using the standard rewrite rules. Establish `h0 : ∀ i, L (MvPolynomial.eval 0 Φ) i ∈ M`. Introduce `i`. Apply `L_mem M L` to reduce the goal to its premises.
+
+Establish `e0 : MvPolynomial.eval 0 Φ = -(T.t ^ (q * m)) * (ω ^ q - 1)`. Rewrite using `[hΦ]`. Simplify using `only [map_sub, map_mul, map_pow, ev0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e0]`.
+
+Conclude with `J.mul_mem_left _ hωJ`. Establish `hd0 : ∀ j, MvPolynomial.eval 0 (MvPolynomial.pderiv j Φ) = a j + T.t ^ (q * m) * b j - (q : D) * (ω * T.t ^ m) ^ (q - 1) * c j`. Introduce `j`. Rewrite using `[hΦ]`. Simplify using `only [map_sub, Derivation.leibniz, Derivation.leibniz_pow, pderiv_lin, smul_eq_mul, nsmul_eq_mul, map_add, map_mul, map_pow, map_natCast, ev0, MvPolynomial.eval_C]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hd : ∀ i j, L (MvPolynomial.eval 0 (MvPolynomial.pderiv j Φ)) i - (if i = j then 1 else 0) ∈ M`. Introduce `i j`. Establish `h1` using `L_mem M L _ (hkey j) i`. Rewrite `h1` using `[map_sub, Pi.sub_apply, hLe i j]`.
+
+Rewrite using `[hd0]`. Conclude with `h1`. Take `⟨x, hxM, hΦx⟩` from `exists_zero_of_linear_form_jacobian_henselian A D n Φ L h0 hd`. Use `set y : Fin n → D := fun j => algebraMap A D (x j) with hy`. Establish `hsum : ∀ (j : ℕ) (v : Fin n → D), (∀ k, v k ∈ T.S j) → ∑ k, v k * y k ∈ T.S j`.
+
+Introduce `j v hv`. Use `Submodule.sum_mem _ (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (hv k)`. Establish `hsumM : ∀ (S : Subalgebra A D) (v : Fin n → D), (∀ k, v k ∈ S) → ∑ k, v k * y k ∈ mm S`.
+
+Introduce `S v hv`. Use `Submodule.sum_mem _ (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_comm, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem_smul (hxM k) (by simpa using hv k)`. Establish `hev : MvPolynomial.eval y Φ = (T.t ^ (q * m) + ∑ k, a k * y k) * (1 + ∑ k, b k * y k) - (ω * T.t ^ m + ∑ k, c k * y k) ^ q`.
+
+Rewrite using `[hΦ]`. Simplify using `only [map_sub, map_mul, map_pow, eval_lin]`. Establish `hmem : MvPolynomial.eval y Φ ∈ T.S (2 * q * m)`. Rewrite using `[hev]`. Use `Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations.
+
+Establish `e1 : 2 * q * m = q * m + q * m` using `by ring`. Rewrite using `[e1]`. Conclude with `S_mul T (Submodule.add_mem _ (power_mem_filtration T _) (hsum _ _ ha)) (Submodule.add_mem _ (S_one T _) (hsum _ _ hb))`. Establish `e2 : 2 * q * m = q * (2 * m)` using `by ring`. Rewrite using `[e2]`.
+
+Conclude with `S_pow T (Submodule.add_mem _ hW (hsum _ _ hc)) q`. Establish `hzero` using `hLinj _ hmem hΦx`. Establish `hkey2 : (T.t ^ (q * m) + ∑ k, a k * y k) * (1 + ∑ k, b k * y k) = (ω * T.t ^ m + ∑ k, c k * y k) ^ q`. Rewrite `hzero` using `[hev]`. Conclude with `sub_eq_zero.1 hzero`.
+
+Use `⟨1 + ∑ k, b k * y k, ?_, 1 + T.s ^ (q * m) * ∑ k, a k * y k, ?_, ω + T.s ^ m * ∑ k, c k * y k, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `add_mem (one_mem _) ((mem_S T _ _).1 (hsum _ _ hb)).1`. Conclude with `add_mem (one_mem _) ((mem_S T _ _).1 (hsum _ _ ha)).2`. Rewrite using `[add_sub_cancel_left]`. Conclude with `hsumM T.B b (fun k => ((mem_S T _ _).1 (hb k)).1)`.
+
+Rewrite using `[add_sub_cancel_left, Finset.mul_sum]`. Repeatedly rewrite using `[← mul_assoc]`. Conclude with `hsumM T.C (fun k => T.s ^ (q * m) * a k) (fun k => ((mem_S T _ _).1 (ha k)).2)`. Rewrite using `[add_sub_cancel_left, Finset.mul_sum]`. Repeatedly rewrite using `[← mul_assoc]`.
+
+Conclude with `hsumM ⊤ (fun k => T.s ^ m * c k) (fun _ => Algebra.mem_top)`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `st_pow T (q * m)`. Take the linear combination `(-(1 + ∑ k, b k * y k)) * h`. Use `_ = T.s ^ (q * m) * (ω * T.t ^ m + ∑ k, c k * y k) ^ q := by rw [hkey2]`.
+
+Use `_ = (ω + T.s ^ m * ∑ k, c k * y k) ^ q := by`. Rewrite using `[show T.s ^ (q * m) = (T.s ^ m) ^ q by ring, ← mul_pow]`. Use `congr 1`. Take the linear combination `ω * st_pow T m`.
+-/
 theorem UpperTheory.exists_factorization_near_root_of_unity_henselian :
     ∀ (A D : Type) [CommRing A] [HenselianLocalRing A] [CommRing D] [Algebra A D] (T : TC A D), T.Fin → T.Coord → ∀ (q : ℕ), IsUnit (q : A) → ∀ ω : D, ω ^ q - 1 ∈ mm (⊤ : Subalgebra A D) →
       ∃ g' ∈ T.B, ∃ g ∈ T.C, ∃ μ : D, g' - 1 ∈ mm T.B ∧ g - 1 ∈ mm T.C ∧ μ - ω ∈ mm (⊤ : Subalgebra A D) ∧ g * g' = μ ^ q := by

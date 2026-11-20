@@ -8,6 +8,57 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hL0 : 0 < L` using `by linarith`. Establish `hu0 : 0 < u`. Establish `: 0 < (A / 4 + (B + 1) ^ 2 / c₃ + 5 * (B + 1)) * L ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h16 : 0 ≤ (B + 1) ^ 2 / c₃ * L ^ 3` using `by positivity`.
+
+Establish `h17 : 0 ≤ A * L ^ 3` using `by positivity`. Establish `h18 : 0 ≤ (B + 1) * L ^ 3` using `by positivity`. Establish `hu2' : (A / 4 + (B + 1) ^ 2 / c₃ + 5 * (B + 1)) * L ^ 3 = A * L ^ 3 / 4 + (B + 1) ^ 2 / c₃ * L ^ 3 + 5 * ((B + 1) * L ^ 3)` using `by ring`. Establish `hP0 : L ^ 2 * ℓ / 8 ≤ u`. Establish `: L ^ 2 * ℓ ≤ L ^ 2 * (ℓm + A * L)` using `mul_le_mul_of_nonneg_left hℓ (by positivity)`.
+
+Establish `e : L ^ 2 * (ℓm + A * L) = L ^ 2 * ℓm + A * L ^ 3` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hℓ0 : 0 < ℓ` using `by linarith`. Establish `hP1 : L ^ 2 / 8 ≤ u / ℓ` using `by rw [le_div_iff₀ hℓ0]; linarith`. Establish `hP2 : L ^ 2 / 8 ≤ u / lm`.
+
+Establish `: u / ℓ ≤ u / lm` using `div_le_div_of_nonneg_left hu0.le (by linarith) hlm`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQ : 0 ≤ Real.log (32 * (|A₀| + 1))` using `Real.log_nonneg (by nlinarith [abs_nonneg A₀])`. Establish `hl128 : 0 ≤ Real.log 128` using `Real.log_nonneg (by norm_num)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hA : lm + 2 ≤ (6 + A) * Real.exp ((ε / 5 + 1) * L)`. Establish `ee : (ε / 5 + 1) * L = ε / 5 * L + L` using `by ring`. Establish `hεL : 0 ≤ ε / 5 * L` using `by positivity`. Establish `e1 : Real.exp (ε / 5 * L) ≤ Real.exp ((ε / 5 + 1) * L)` using `Real.exp_le_exp.mpr (by linarith)`. Establish `e2 : L ≤ Real.exp ((ε / 5 + 1) * L)`.
+
+Use `Real.add_one_le_exp L` as an intermediate fact. Establish `: Real.exp L ≤ Real.exp ((ε / 5 + 1) * L)` using `Real.exp_le_exp.mpr (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : 1 ≤ Real.exp ((ε / 5 + 1) * L)` using `Real.one_le_exp (by positivity)`. Establish `e4` using `mul_le_mul_of_nonneg_left e2 hA0.le`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : Real.log (lm + 2) ≤ Real.log (6 + A) + (ε / 5 + 1) * L`. Combine the equalities or inequalities in the displayed calculation. Establish `hl806 : 0 ≤ Real.log (6 + A)` using `Real.log_nonneg (by linarith)`. Establish `hlog0 : 0 ≤ Real.log (lm + 2)` using `Real.log_nonneg (by linarith)`.
+
+Establish `hC : |C₀| * Real.log (lm + 2) ≤ L ^ 2 / 8`. Establish `: |C₀| * Real.log (lm + 2) ≤ |C₀| * (Real.log (6 + A) + (ε / 5 + 1) * L)` using `mul_le_mul_of_nonneg_left hB (abs_nonneg _)`. Establish `: |C₀| * (Real.log (6 + A) + (ε / 5 + 1) * L) ≤ |C₀| * ((Real.log (6 + A) + ε / 5 + 1) * L)`. Apply `mul_le_mul_of_nonneg_left _ (abs_nonneg _)` to reduce the goal to its premises. Establish `: Real.log (6 + A) ≤ Real.log (6 + A) * L` using `by nlinarith`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5` using `mul_le_mul_of_nonneg_right hL5 hL0.le`. Establish `e5 : |C₀| * ((Real.log (6 + A) + ε / 5 + 1) * L) = (8 * |C₀| * (Real.log (6 + A) + ε / 5 + 1) * L) / 8` using `by ring`. Establish `e6 : L ^ 2 / 8 = L * L / 8` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hlog0` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) (by linarith)`. Use `_ = lm * (|C₀| * Real.log (lm + 2)) := by ring`. Use `_ ≤ lm * (L ^ 2 / 8) := mul_le_mul_of_nonneg_left hC (by linarith)`.
+
+Use `_ ≤ ℓ * (L ^ 2 / 8) := mul_le_mul_of_nonneg_right hlm (by positivity)`. Use `_ ≤ u := by linarith`. Establish `hc : c₀ * L ^ 2 / 8 ≤ c₀ / ℓ * u`. Use `mul_le_mul_of_nonneg_left hP1 hc₀.le` as an intermediate fact. Establish `e1 : c₀ / ℓ * u = c₀ * (u / ℓ)` using `by ring`.
+
+Establish `e2 : c₀ * L ^ 2 / 8 = c₀ * (L ^ 2 / 8)` using `by ring`. Rewrite using `[e1, e2]`. Conclude with `this`. Establish `hk : (ε / 5 + 2 + B) * L + Real.log 128 ≤ c₀ * L ^ 2 / 8`. Establish `h8 : 8 * (ε / 5 + 2 + B + Real.log 128) ≤ c₀ * L` using `by rwa [div_le_iff₀ hc₀, mul_comm L] at hL2`.
+
+Establish `h9` using `mul_le_mul_of_nonneg_right h8 hL0.le`. Establish `: Real.log 128 ≤ Real.log 128 * L` using `by nlinarith`. Establish `e : c₀ * L ^ 2 / 8 = c₀ * L * L / 8` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlu : u = Real.exp (Real.log u)` using `(Real.exp_log hu0).symm`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hlu]`. Conclude with `Real.exp_le_exp.mpr hlogu`. Use `_ = Real.exp ((ε / 5 + 2) * L - c₀ * L ^ 2 / 8 + Real.log 16) := by`. Rewrite using `[Real.exp_add, Real.exp_log (by norm_num), sub_eq_add_neg, Real.exp_add]; ring`.
+
+Use `_ ≤ Real.exp (-(B * L) - Real.log 8) := Real.exp_le_exp.mpr (by`. Establish `: Real.log 128 = Real.log 16 + Real.log 8`. Rewrite using `[← Real.log_mul (by norm_num) (by norm_num)]; norm_num`. Use the proof step `linarith)`. Use `_ = Real.exp (-(B * L)) / 8 := by rw [Real.exp_sub, Real.exp_log (by norm_num)]`.
+
+Use `set Q := 32 * (|A₀| + 1)`. Establish `hQ0 : 0 < Q` using `by positivity`. Establish `hA : 2 * |A₀| ≤ Q / 16` using `by simp only [Q]; linarith [abs_nonneg A₀]`. Establish `key : ∀ t : ℝ, B * L + Real.log Q ≤ t → 2 * |A₀| * Real.exp (-t) ≤ Real.exp (-(B * L)) / 16`. Introduce `t ht`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_sub, Real.exp_log hQ0]`. Clear the denominators using the available nonvanishing facts. Establish `t1 : B * L + Real.log Q ≤ c₃ * u / lm`. Establish `: 8 * (B + Real.log Q) ≤ c₃ * L` using `by rwa [div_le_iff₀ hc₃, mul_comm L] at hL3`.
+
+Establish `h2 : c₃ * (L ^ 2 / 8) ≤ c₃ * u / lm`. Rewrite using `[mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hP2 hc₃.le`. Establish `h9` using `mul_le_mul_of_nonneg_right this hL0.le`. Establish `: Real.log Q ≤ Real.log Q * L` using `by nlinarith`.
+
+Establish `e : c₃ * (L ^ 2 / 8) = c₃ * L * L / 8` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t2 : B * L + Real.log Q ≤ Real.sqrt (c₃ * u)`. Establish `: (B + 1) * L ≤ Real.sqrt (c₃ * u)`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises.
+
+Establish `: c₃ * ((B + 1) ^ 2 / c₃ * L ^ 3) = (B + 1) ^ 2 * L ^ 3` using `by field_simp`. Establish `h3 : (B + 1) ^ 2 / c₃ * L ^ 3 ≤ u`. Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_le_mul_of_nonneg_left h3 hc₃.le` as an intermediate fact. Establish `hL23 : L ^ 2 ≤ L ^ 3`.
+
+Establish `: L ^ 3 = L ^ 2 * L` using `by ring`. Rewrite using `[this]`. Use polynomial arithmetic with `[sq_nonneg L]`. Establish `e : ((B + 1) * L) ^ 2 = (B + 1) ^ 2 * L ^ 2` using `by ring`. Use `mul_le_mul_of_nonneg_left hL23 (sq_nonneg (B + 1))` as an intermediate fact.
+
+Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Use `key _ t1` as an intermediate fact. Use `key _ t2` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl4 : Real.log 4 ≤ 2`. Establish `e : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Use `Real.log_two_lt_d9` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4L : 4 * L ≤ L ^ 3`. Establish `: L ^ 3 = L ^ 2 * L` using `by ring`. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h5L` using `mul_le_mul_of_nonneg_left h4L (by linarith : 0 ≤ B + 1)`. Establish `h6L : 0 ≤ B * L` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem final_ineqK (A B ε c₀ c₃ A₀ C₀ L u lm ℓm ℓ : ℝ) (hA0 : 0 < A) (hB0 : 0 < B) (hε : 0 < ε) (hc₀ : 0 < c₀) (hc₃ : 0 < c₃)
     (hL1 : 2 ≤ L) (hL2 : 8 * (ε / 5 + 2 + B + Real.log 128) / c₀ ≤ L)
     (hL3 : 8 * (B + Real.log (32 * (|A₀| + 1))) / c₃ ≤ L) (hL4 : Real.log (32 * (|A₀| + 1)) ≤ L)
@@ -145,6 +196,9 @@ private theorem final_ineqK (A B ε c₀ c₃ A₀ C₀ L u lm ℓm ℓ : ℝ) (
       _ = _ := by rw [Real.exp_sub, Real.exp_log (by norm_num)]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `|∑ q ∈ PPset m₀ a₀ U, (jacobiSym (q : ℤ) s : ℝ)| ≤ Y ^ (-B) * ((PPset m₀ a₀ U).card : ℝ) := by classical intro ε A B hε hA0 hB0 have hP : PNTAPRelW := Formalism.HermitianLattices.Ext.PrimesInProgressions.pnt_progressions_relative_weak_holds have hZ : Formalism.ZeroFreeDirichlet.Z …`.
+-/
 theorem twistK :
     ∀ ε A B : ℝ, 0 < ε → 0 < A → 0 < B → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀, ∀ (U : ℝ) (m₀ a₀ : ℕ), admitted ε Y U m₀ a₀ →
       ∃ nstar : ℕ, ∀ s : ℕ, 1 < s → Odd s → Squarefree s → s.Coprime m₀ → (s : ℝ) ≤ Y ^ A → s ≠ nstar →

@@ -18,6 +18,13 @@ namespace GlobalTheory.Size.Translate
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `wordSum`. Rewrite using `[Finset.sum_range_succ', add_comm]`. Use `congr 1`. Simplify using `[wordAct_nil]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Fintype.sum_prod_type']`. Use `symm`. Use `Fintype.sum_equiv (Fin.snocEquiv fun _ => ι) _ _ fun q => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = p (wordAct A (List.ofFn (fun i => (Fin.snoc (α := fun _ => ι) q.2 q.1 i : ι))) x)`.
+
+Rewrite using `[List.ofFn_succ']`. Simplify using `[Fin.snoc_castSucc, Fin.snoc_last, List.concat_eq_append, wordAct_append, wordAct_cons, wordAct_nil]`.
+-/
 theorem wordSum_succ {ι X : Type} [Fintype ι] (A : ι → X → X) (p : X → ℝ≥0∞) (d : ℕ) (x : X) :
     wordSum A p (d + 1) x = p x + ∑ i, wordSum A p d (A i x) := by
   classical
@@ -36,6 +43,9 @@ theorem wordSum_succ {ι X : Type} [Fintype ι] (A : ι → X → X) (p : X → 
 
 variable {D : D7} {θ : InfFam D} {V : HSp D}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on`. Simplify using `using growthSob_smul (θ := θ) (φ := (0 : GA D V → ℂ)) (0 : ℂ) d N`. Name the introduced variables `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(growthSob_add_le (hf a) (Submodule.sum_mem _ fun b _ => hf b) d N).trans (add_le_add le_rfl ih)`.
+-/
 theorem growthSob_sum_le {α : Type} (s : Finset α) (f : α → GA D V → ℂ) (hf : ∀ a, f a ∈ SmFun θ V) (d N : ℕ) :
     growthSob θ V d N (∑ a ∈ s, f a) ≤ ∑ a ∈ s, growthSob θ V d N (f a) := by
   classical
@@ -45,6 +55,11 @@ theorem growthSob_sum_le {α : Type} (s : Finset α) (f : α → GA D V → ℂ)
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     exact (growthSob_add_le (hf a) (Submodule.sum_mem _ fun b _ => hf b) d N).trans (add_le_add le_rfl ih)
 
+/- English proof (translation)
+Rewrite using `[RderC_eq_sum_glDer hθ hs τ Z]`. Establish `hmem : ∀ a : Fin V.rank × Fin V.rank, Z a.1 a.2 • glDer θ V (τ, a) φ ∈ SmFun θ V` using `fun a => (SmFun θ V).smul_mem _ ((linOnSm_RderC (θ := θ) τ (Matrix.single a.1 a.2 1)).mem φ hs)`. Use `(growthSob_sum_le Finset.univ _ hmem d N).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[growthSob_smul]`. Conclude with `mul_le_mul' (hB a.1 a.2) (wordSum_letter_le (A := glDer θ V) (p := growthSize V N) d (τ, a) φ)`. Use `_ = _ := by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+-/
 theorem growthSob_RderC_le (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hs : φ ∈ SmFun θ V) (τ : D.what₂.Tau)
     {Z : Matrix (Fin V.rank) (Fin V.rank) ℂ} {B : ℝ≥0∞} (hB : ∀ a b, ‖Z a b‖ₑ ≤ B) (d N : ℕ) :
     growthSob θ V d N (RderC θ V τ Z φ) ≤
@@ -61,6 +76,13 @@ theorem growthSob_RderC_le (hθ : IsInfFam θ) {φ : GA D V → ℂ} (hs : φ �
           (wordSum_letter_le (A := glDer θ V) (p := growthSize V N) d (τ, a) φ)
     _ = _ := by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
 
+/- English proof (translation)
+Take `⟨h1, -, -, hmul, -⟩` from `height_laws V`. Unfold `growthSize`. Use `iSup_le fun g => ?_` and prove the remaining obligations. Establish `hgpos : 0 < height V g` using `lt_of_lt_of_le one_pos (h1 g)`. Establish `hhpos : 0 < height V h` using `lt_of_lt_of_le one_pos (h1 h)`.
+
+Establish `hghpos : 0 < height V (g * h)` using `lt_of_lt_of_le one_pos (h1 (g * h))`. Establish `hq : 0 ≤ ‖φ (g * h)‖ / height V (g * h) ^ N` using `div_nonneg (norm_nonneg _) (pow_pos hghpos N).le`. Establish `key : ‖rTr V h φ g‖ / height V g ^ N ≤ height V h ^ N * (‖φ (g * h)‖ / height V (g * h) ^ N)`. Express the relevant statement in the definitionally equal form `‖φ (g * h)‖ / height V g ^ N ≤ _`. Rewrite using `[div_le_iff₀ (pow_pos hgpos N)]`.
+
+Establish `hp : height V (g * h) ^ N ≤ (height V g * height V h) ^ N` using `pow_le_pow_left₀ hghpos.le (hmul g h) N`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (pow_pos hhpos N).le, ENNReal.ofReal_pow hhpos.le]`. Use `_ ≤ ENNReal.ofReal (height V h) ^ N * ⨆ g', ENNReal.ofReal (‖φ g'‖ / height V g' ^ N) := by gcongr; exact le_iSup (fun g' => ENNReal.ofReal (‖φ g'‖ / height V g' ^ N)) (g * h)`.
+-/
 theorem growthSize_rTr_le (h : GA D V) (N : ℕ) (φ : GA D V → ℂ) :
     growthSize V N (rTr V h φ) ≤ ENNReal.ofReal (height V h) ^ N * growthSize V N φ := by
   obtain ⟨h1, -, -, hmul, -⟩ := height_laws V
@@ -85,6 +107,15 @@ theorem growthSize_rTr_le (h : GA D V) (N : ℕ) (φ : GA D V → ℂ) :
     _ ≤ ENNReal.ofReal (height V h) ^ N * ⨆ g', ENNReal.ofReal (‖φ g'‖ / height V g' ^ N) :=
         by gcongr; exact le_iSup (fun g' => ENNReal.ofReal (‖φ g'‖ / height V g' ^ N)) (g * h)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `normInf_le_height V hθ`. Use `⟨Real.toNNReal (C ^ 2), fun h τ a b c d => ?_⟩` and prove the remaining obligations. Establish `hent : ∀ i j, ‖infMat D.sp.cm.sig V.gram (θ τ) h i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) h⁻¹ i j‖ ≤ C * height V h`. Introduce `i j`. Use `le_trans ?_ (hC h)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hcomp : adAt θ h τ (Matrix.single a b 1) c d = infMat D.sp.cm.sig V.gram (θ τ) h⁻¹ c a * infMat D.sp.cm.sig V.gram (θ τ) h b d`. Simplify using `[adAt, Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Establish `hx` using `hent c a`. Establish `hy` using `hent b d`.
+
+Establish `hx' : ‖infMat D.sp.cm.sig V.gram (θ τ) h⁻¹ c a‖ ≤ C * height V h`. Combine the linear relations using `[norm_nonneg (infMat D.sp.cm.sig V.gram (θ τ) h c a)]`. Establish `hy' : ‖infMat D.sp.cm.sig V.gram (θ τ) h b d‖ ≤ C * height V h`. Combine the linear relations using `[norm_nonneg (infMat D.sp.cm.sig V.gram (θ τ) h⁻¹ b d)]`. Establish `hht : 0 ≤ height V h` using `le_trans zero_le_one ((height_laws V).1 h)`.
+
+Establish `hreal : ‖infMat D.sp.cm.sig V.gram (θ τ) h⁻¹ c a‖ * ‖infMat D.sp.cm.sig V.gram (θ τ) h b d‖ ≤ C ^ 2 * height V h ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcomp, ← ofReal_norm_eq_enorm, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_adAt_le (hθ : IsInfFam θ) (V : HSp D) : ∃ C : ℝ≥0, ∀ (h : GA D V) τ a b c d,
     ‖adAt θ h τ (Matrix.single a b 1) c d‖ₑ ≤ C * ENNReal.ofReal (height V h) ^ 2 := by
   obtain ⟨C, hC⟩ := normInf_le_height V hθ
@@ -125,6 +156,11 @@ theorem exists_adAt_le (hθ : IsInfFam θ) (V : HSp D) : ∃ C : ℝ≥0, ∀ (h
       ≤ ENNReal.ofReal (C ^ 2 * height V h ^ 2) := ENNReal.ofReal_le_ofReal hreal
     _ = _ := by rw [ENNReal.ofReal_mul (sq_nonneg C), ENNReal.ofReal_pow hht]; rfl
 
+/- English proof (translation)
+Take `⟨hX, hY⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z`. Establish `hZ` using `(GlobalTheory.SmoothAutCheck.parts_sum V τ Z).symm`. Use `set X := (1 / 2 : ℂ) • (Z + conjAt V τ Z) with hXdef`. Use `set Y := (1 / (2 * Complex.I)) • (Z - conjAt V τ Z) with hYdef`. Establish `hsum : adAt θ h τ Z = adAt θ h τ X + Complex.I • adAt θ h τ Y` using `by conv_lhs => rw [hZ]`.
+
+Simplify using `only [adAt, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[hsum, RderC_add hθ hs, RderC_smul hθ hs, GlobalTheory.SmoothAutCheck.RderC_eq θ V τ (adAt_mem_lieAt hθ h hX), GlobalTheory.SmoothAutCheck.RderC_eq θ V τ (adAt_mem_lieAt hθ h hY)]`. Express the relevant statement in the definitionally equal form `Rder θ V τ X (rTr V h φ) + Complex.I • Rder θ V τ Y (rTr V h φ) = _`. Rewrite using `[Rder_rTr_adelic hθ h hX, Rder_rTr_adelic hθ h hY]`. Both sides reduce to the same expression.
+-/
 private theorem rderC_rTr' (hθ : IsInfFam θ) (h : GA D V) {φ : GA D V → ℂ} (hs : φ ∈ SmFun θ V)
     (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     RderC θ V τ Z (rTr V h φ) = rTr V h (RderC θ V τ (adAt θ h τ Z) φ) := by
@@ -142,6 +178,19 @@ private theorem rderC_rTr' (hθ : IsInfFam θ) (h : GA D V) {φ : GA D V → ℂ
   rw [Rder_rTr_adelic hθ h hX, Rder_rTr_adelic hθ h hY]
   rfl
 
+/- English proof (translation)
+Take `⟨C₁, hC₁⟩` from `exists_adAt_le hθ V`. Proceed by induction on `d with`. Consider the case `zero`. Use `⟨1, fun h _ φ _ => ?_⟩` and prove the remaining obligations. Simplify `growthSize_rTr_le h N φ` using `[growthSob, wordSum_zero]`.
+
+Consider the case `succ d ih`. Take `⟨C, hC⟩` from `ih`. Use `⟨1 + (Fintype.card (D.what₂.Tau × Fin V.rank × Fin V.rank) : ℝ≥0) * C * (Fintype.card (Fin V.rank × Fin V.rank) : ℝ≥0) * C₁, fun h hh φ hs => ?_⟩` and prove the remaining obligations. Establish `hT : 1 ≤ ENNReal.ofReal (height V h)`. Rewrite using `[← ENNReal.ofReal_one]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal ((height_laws V).1 h)`. Establish `hS0 : growthSize V N φ ≤ growthSob θ V (d + 1) N φ` using `le_wordSum (A := glDer θ V) (p := growthSize V N) (l := []) (Nat.zero_le _) φ`. Establish `hterm : ∀ a : D.what₂.Tau × Fin V.rank × Fin V.rank, growthSob θ V d N (glDer θ V a (rTr V h φ)) ≤ C * ENNReal.ofReal (height V h) ^ (N + 2 * d) * ((Fintype.card (Fin V.rank × Fin V.rank) : ℝ≥0∞) * ((C₁ * ENNReal.ofReal (height V h) ^ 2) * growthSob θ V (d + 1) N φ))`. Introduce `a`. Establish `e : glDer θ V a (rTr V h φ) = rTr V h (RderC θ V a.1 (adAt θ h a.1 (Matrix.single a.2.1 a.2.2 1)) φ)` using `rderC_rTr' hθ h hs a.1 _`.
+
+Rewrite using `[e]`. Use `(hC h hh _ ((linOnSm_RderC (θ := θ) a.1 _).mem φ hs)).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `growthSob_RderC_le hθ hs a.1 (fun b c => hC₁ h a.1 a.2.1 a.2.2 b c) d N`. Establish `hpow : ENNReal.ofReal (height V h) ^ N ≤ ENNReal.ofReal (height V h) ^ (N + 2 * (d + 1))` using `pow_le_pow_right₀ hT (by omega)`.
+
+Establish `e0 : growthSob θ V (d + 1) N (rTr V h φ) = growthSize V N (rTr V h φ) + ∑ a, growthSob θ V d N (glDer θ V a (rTr V h φ))` using `wordSum_succ _ _ _ _`. Rewrite using `[e0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_growthSob_rTr_le (hθ : IsInfFam θ) (V : HSp D) (N d : ℕ) : ∃ C : ℝ≥0, ∀ h ∈ GinfC V, ∀ φ ∈ SmFun θ V,
     growthSob θ V d N (rTr V h φ) ≤ C * ENNReal.ofReal (height V h) ^ (N + 2 * d) * growthSob θ V d N φ := by
   obtain ⟨C₁, hC₁⟩ := exists_adAt_le hθ V
@@ -188,6 +237,9 @@ theorem exists_growthSob_rTr_le (hθ : IsInfFam θ) (V : HSp D) (N d : ℕ) : �
           push_cast
           ring
 
+/- English proof (translation)
+Introduce `D θ hθ V d N`. Take `⟨C, hC⟩` from `exists_growthSob_rTr_le hθ V N d`. Use `⟨C, N + 2 * d, fun h hh φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (le_trans zero_le_one ((height_laws V).1 h))]`. Conclude with `hC h hh φ hφ`.
+-/
 theorem growthSob_rTr_le : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (d N : ℕ), ∃ (C : NNReal) (m : ℕ),
     ∀ h ∈ GinfC V, ∀ φ ∈ GlobalTheory.Mem.AutSpace.SmFun θ V, GlobalTheory.Size.growthSob θ V d N (rTr V h φ) ≤
       (C : ENNReal) * ENNReal.ofReal (GlobalTheory.Grow.height V h ^ m) * GlobalTheory.Size.growthSob θ V d N φ := by

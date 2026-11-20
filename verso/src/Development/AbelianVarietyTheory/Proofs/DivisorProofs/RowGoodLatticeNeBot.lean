@@ -7,6 +7,13 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Forma
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.CovTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Establish `hinj : Function.Injective (Fintype.linearCombination K b)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Conclude with `funext (Fintype.linearIndependent_iff.1 hb c (by rwa [Fintype.linearCombination_apply] at hc))`.
+
+Establish `h0 : (⊥ : Submodule O V).comap ((Fintype.linearCombination K b).restrictScalars O) = ⊥`. Rewrite using `[Submodule.comap_bot]`. Conclude with `LinearMap.ker_eq_bot.2 hinj`. Establish `h` using `hM.span_eq_top`. Rewrite `h` using `[h0]`.
+
+Use `haveI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩`. Simplify using `at h`.
+-/
 theorem GlobalTheory.CovTop.ne_bot_of_isLattice_coords {O K V : Type} [CommRing O] [Field K] [Algebra O K] [AddCommGroup V] [Module K V]
     [Module O V] [IsScalarTower O K V] (M : Submodule O V) {d : ℕ} (hd : 0 < d) (b : Fin d → V) (hb : LinearIndependent K b)
     (hM : Submodule.IsLattice K (M.comap ((Fintype.linearCombination K b).restrictScalars O))) : M ≠ ⊥ := by
@@ -23,6 +30,11 @@ theorem GlobalTheory.CovTop.ne_bot_of_isLattice_coords {O K V : Type} [CommRing 
   haveI : Nonempty (Fin d) := ⟨⟨0, hd⟩⟩
   simp at h
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y0 cX ex Csz p hp _ i`. Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hp.ok hp.sep p.charW hp.prim`. Establish `hD : (p.S false).dW i = (p.S false).D` using `(primRows3 hp.ok hp.sep p.R p.F p.charW hp.prim).dW_eq (hR.wf false) i`. Establish `hpos : 0 < (p.S false).D` using `(primRows3 hp.ok hp.sep p.R p.F p.charW hp.prim).D_pos`. Establish `hli : LinearIndependent D.what₂.LL (p.R.toRealDat.bL p.F.lv2 false i)` using `(Module.finBasis D.what₂.LL (p.R.toRealDat.WL p.F.lv2 false i)).linearIndependent.map' (p.R.toRealDat.WL p.F.lv2 false i).subtype (Submodule.ker_subtype _)`.
+
+Conclude with `GlobalTheory.CovTop.ne_bot_of_isLattice_coords (latGood p.R.toRealDat p.F.lv2 i) (show 0 < (p.S false).dW i from hD.symm ▸ hpos) (p.R.toRealDat.bL p.F.lv2 false i) hli (hp.prim.mLat i)`.
+-/
 theorem GlobalTheory.CovTop.latGood_ne_bot_at : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L}
     {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
     (p : PtAt ex Csz), p.Rows → RecTied D L → ∀ i : Fin D.R.m, latGood p.R.toRealDat p.F.lv2 i ≠ ⊥ := by

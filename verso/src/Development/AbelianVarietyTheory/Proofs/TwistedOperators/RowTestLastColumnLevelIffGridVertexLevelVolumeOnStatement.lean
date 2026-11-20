@@ -9,5 +9,8 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RowLevelUnit.levRow_iff_levJ | exact GlobalTheory.RowLevelUnit.levRow_iff_levJ | (intros; apply GlobalTheory.RowLevelUnit.levRow_iff_levJ <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rowTest_lastColumn_level_iff_gridVertexLevelVolumeOne : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t i (hi : i ≤ D.R.m) (k : FinPt ch.G (.grid i D.R.m)), finG (ch.G.V (.grid i D.R.m)) k ∈ ch.S.toGridChoice.levRow t i hi ↔ finG (ch.G.V (.grid i D.R.m)) k ∈ levJ ch.G t (.grid i D.R.m) := by
   first | exact @GlobalTheory.RowLevelUnit.levRow_iff_levJ | exact GlobalTheory.RowLevelUnit.levRow_iff_levJ | (intros; apply GlobalTheory.RowLevelUnit.levRow_iff_levJ <;> assumption)

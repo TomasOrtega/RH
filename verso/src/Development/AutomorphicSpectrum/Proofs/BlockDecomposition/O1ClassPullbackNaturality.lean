@@ -36,6 +36,9 @@ def chartPullPullO {R : Type} [CommRing R] {N : ℕ} {S T : Scheme.{0}} (r : T �
       exact (appLE_pullRatio (hi := inf_le_left) r hle).symm
     rw [e, gm_res (𝟙 T) y hle ⟨hi, hj⟩, gm_pull (𝟙 T) r y _ hm, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[← cls_pull (isLB_pullO φ 1) r (pull_isLB (isLB_pullO φ 1) r)]`. Conclude with `(cls_eq_iff _ _).2 (LBIso.chartPull (chartPullPullO r φ) (chartPullPull (pullO φ 1) r) (PolBaseChange.lbIso_refl (isLB_pullO φ 1)))`.
+-/
 theorem cls_pullO_comp {R : Type} [CommRing R] {N : ℕ} {S T : Scheme.{0}} (r : T ⟶ S) (φ : S ⟶ PSpace R N) :
     cls (pullO (r ≫ φ) 1) (isLB_pullO _ 1) = CechPic.pull r (cls (pullO φ 1) (isLB_pullO _ 1)) := by
   rw [← cls_pull (isLB_pullO φ 1) r (pull_isLB (isLB_pullO φ 1) r)]

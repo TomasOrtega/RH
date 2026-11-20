@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Establish `h : ∀ i ∈ Finset.range k, (P ^ i * (P - Q) * Q ^ (k - 1 - i)).trace = (P ^ (i + 1) * Q ^ (k - (i + 1))).trace - (P ^ i * Q ^ (k - i)).trace`. Introduce `i hi`. Establish `hi' : i < k` using `Finset.mem_range.mp hi`. Establish `e1 : k - 1 - i = k - (i + 1)` using `by omega`. Establish `e2 : k - i = (k - (i + 1)) + 1` using `by omega`.
+
+Rewrite using `[e1, e2, ← Matrix.trace_sub, mul_sub, sub_mul, ← pow_succ, pow_succ' Q, mul_assoc]`. Rewrite using `[Finset.sum_congr rfl h, Finset.sum_range_sub (fun i => (P ^ i * Q ^ (k - i)).trace)]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_trace_pow_mul_sub_mul_pow (R : Type) [CommRing R] (r : Type) [Fintype r]
     [DecidableEq r] (P Q : Matrix r r R) (k : ℕ) :
     ∑ i ∈ Finset.range k, (P ^ i * (P - Q) * Q ^ (k - 1 - i)).trace

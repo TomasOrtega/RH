@@ -11,6 +11,11 @@ open scoped Classical
 
 namespace GlobalTheory.LatChain
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `h` using `congrArg (fun z => A.adjugate.mulVec z) hxy`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec] at h`. Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hA this`.
+-/
 theorem mulVec_injective_of_det_ne_zero {R : Type} [CommRing R] [IsDomain R] {N : ℕ}
     (A : Matrix (Fin N) (Fin N) R) (hA : A.det ≠ 0) : Function.Injective A.mulVec := by
   intro x y hxy
@@ -21,6 +26,21 @@ theorem mulVec_injective_of_det_ne_zero {R : Type} [CommRing R] [IsDomain R] {N 
   simp only [Pi.smul_apply, smul_eq_mul] at this
   exact mul_left_cancel₀ hA this
 
+/- English proof (translation)
+Introduce `R _ _ _ N A hA`. Set `f : (Fin N → R) →ₗ[R] (Fin N → R)` to `Matrix.toLin' A`. Establish `hinj : Function.Injective f`. Introduce `x y h`. Conclude with `mulVec_injective_of_det_ne_zero A hA (by simpa [f, Matrix.toLin'_apply] using h)`.
+
+Set `e : (Fin N → R) ≃ₗ[R] LinearMap.range f` to `LinearEquiv.ofInjective f hinj`. Set `std` to `Pi.basisFun R (Fin N)`. Set `bN : Module.Basis (Fin N) R (LinearMap.range f)` to `std.map e`. Establish `hrk : Module.finrank R (LinearMap.range f) = Module.finrank R (Fin N → R)`. Rewrite using `[Module.finrank_eq_card_basis bN, Module.finrank_eq_card_basis std]`.
+
+Take `⟨b', a, ab', hab⟩` from `Submodule.exists_smith_normal_form_of_rank_eq std hrk`. Set `w : Module.Basis (Fin N) R (Fin N → R)` to `ab'.map e.symm`. Establish `hw : ∀ j, A.mulVec (w j) = a j • b' j`. Introduce `j`. Establish `h1 : f (w j) = (ab' j : Fin N → R)`.
+
+Simplify using `only [w, Module.Basis.map_apply]`. Conclude with `congrArg Subtype.val (e.apply_symm_apply (ab' j))`. Rewrite using `[← hab j, ← h1]`. Simplify using `[f, Matrix.toLin'_apply]`. Set `Q` to `std.toMatrix w`.
+
+Set `P` to `std.toMatrix b'`. Establish `hQV : Q * w.toMatrix std = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip std w`. Establish `hVQ : w.toMatrix std * Q = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip w std`. Establish `hPW : P * b'.toMatrix std = 1` using `Module.Basis.toMatrix_mul_toMatrix_flip std b'`. Establish `hMQ : A * Q = P * Matrix.diagonal a`.
+
+Use extensionality with `i j`. Establish `h1` using `congrFun (hw j) i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at h1`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`. Simplify using `only [Q, P, std, Module.Basis.toMatrix_apply, Pi.basisFun_repr]`.
+
+Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨P, b'.toMatrix std, w.toMatrix std, Q, a, hPW, hVQ, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem smith_of_det_ne_zero : ∀ (R : Type) [CommRing R] [IsDomain R] [IsPrincipalIdealRing R] (N : ℕ)
     (A : Matrix (Fin N) (Fin N) R), A.det ≠ 0 → ∃ (u v u' v' : Matrix (Fin N) (Fin N) R) (g : Fin N → R),
       u * v = 1 ∧ u' * v' = 1 ∧ A = u * Matrix.diagonal g * u' := by

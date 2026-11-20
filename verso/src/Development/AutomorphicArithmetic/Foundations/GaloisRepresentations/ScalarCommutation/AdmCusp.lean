@@ -6,6 +6,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnfoldedEqOrbitalRe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TwOrbUEqZeroOfCusp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IwahoriRegularSplit
 
+/- English proof (translation)
+Introduce `X _ k _ _ _ _ _ _ _ n Ty hJo hJc hker hcusp f hf h hh`. Establish `hform : ∀ g, f (Ty.L.loc g * h) = UpperTheory.Gal.W2.Seed.tyFn Ty.J Ty.ψ g * f h`. Introduce `g`. Unfold `UpperTheory.Gal.W2.Seed.tyFn`. Use `split_ifs with hg`.
+
+Rewrite using `[Ty.L.comm g h hh]`. Conclude with `hf.2.2 ⟨g, hg⟩ h`. Rewrite using `[zero_mul]`. Assume the negation of the conclusion as `hne`. Apply `hg` to reduce the goal to its premises.
+
+Establish `hmem` using `hf.2.1 _ hne`. Rewrite `hmem` using `[map_mul, Ty.L.pr_loc, hh, mul_one]`. Then use the resulting hypothesis. Establish `hTC : GlobalTheory.Block5c.TypeCusp` using `GlobalTheory.typeFunction_constantTerm_eq_zero`. Establish `hT` using `hTC k (Fin n) Ty.J hJo hJc Ty.ψ hker (fun a b e ha hb u hu h₀ => UpperTheory.Gal.Spc.typeSlice k n Ty.J hJo hJc Ty.ψ hker hcusp a b e ha hb u hu h₀) (UpperTheory.Gal.W2.Seed.tyFn Ty.J Ty.ψ) (fun g hg => by simp [UpperTheory.Gal.W2.Seed.tyFn, hg]) (fun g hg => by simp [UpperTheory …`. Introduce `a b ε ha hb μ hμ u hu g₀ h₀`.
+
+Establish `hz` using `hT.2.2.2 a b ε ha hb μ hμ u hu g₀ h₀`. Repeatedly rewrite using `[hform]`. Rewrite using `[MeasureTheory.integral_mul_const, hz, zero_mul]`.
+-/
 theorem UpperTheory.Gal.Spc.cuspIrr_kFinite_rep_eq_centralCuspForm :
     UpperTheory.Gal.Spc.AdmCusp := by
   intro X _ k _ _ _ _ _ _ _ n Ty hJo hJc hker hcusp f hf h hh

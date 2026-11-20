@@ -3,6 +3,21 @@ import GroundTheory.HeightsAndTheta.Heights.ComplexAnalyticSets.StGenericNoether
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NoetherNormalizationChart
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PseudoDivision
 
+/- English proof (translation)
+Introduce `A _ _ n q _ hq _`. Take `⟨f, hfq, hf⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hq`. Take `⟨e, a, ha, hlc⟩` from `UpperTheory.exists_monic_change_of_variables A n f hf`. Establish `hg : e f ≠ 0` using `fun h ↦ hf (e.injective (by simpa using h))`. Set `π : Polynomial (MvPolynomial (Fin n) A) →ₐ[A] MvPolynomial (Fin (n + 1)) A ⧸ q` to `(Ideal.Quotient.mkₐ A q).comp e.symm.toAlgHom`.
+
+Establish `hπf : π (e f) = 0`. Simplify `hfq` using `[π, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hsurj : Function.Surjective π` using `(Ideal.Quotient.mkₐ_surjective A q).comp e.symm.surjective`. Set `z : Fin n → MvPolynomial (Fin (n + 1)) A ⧸ q` to `fun i ↦ π (Polynomial.C (MvPolynomial.X i))`. Establish `hz : ∀ c : MvPolynomial (Fin n) A, MvPolynomial.aeval z c = π (Polynomial.C c)`.
+
+Introduce `c`. Establish `: MvPolynomial.aeval z = π.comp (Polynomial.CAlgHom)`. Use extensionality with `i`. Simplify using `[z]`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Set `N` to `(e f).natDegree`. Use `⟨a, ha, z, (Finset.range N).image (fun j ↦ π Polynomial.X ^ j), fun d ↦ ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hsurj d`. Take `⟨k, s, r, hk, hr⟩` from `UpperTheory.pseudo_division (MvPolynomial (Fin n) A) (e f) p hg`.
+
+Establish `h1 : a ^ k • π p = π r`. Use `congrArg π hk` as an intermediate fact. Rewrite `this` using `[map_add, map_mul π (e f), hπf, zero_mul, zero_add, hlc, map_mul, ← hz, ← map_pow, MvPolynomial.aeval_C, ← Algebra.smul_def]`. Conclude with `this`. Establish `h2 : r = ∑ j ∈ Finset.range N, Polynomial.C (r.coeff j) * Polynomial.X ^ j`.
+
+Rewrite `hr` using `[Polynomial.degree_eq_natDegree hg]`. Distinguish the cases in `hr0 : r = 0`. Simplify using `[hr0]`. Simplify `Polynomial.as_sum_range' r N ((Polynomial.natDegree_lt_iff_degree_lt hr0).mpr hr)` using `only [Polynomial.C_mul_X_pow_eq_monomial]`. Use `⟨k, fun t ↦ ∑ j ∈ Finset.range N with π Polynomial.X ^ j = t, r.coeff j, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h1, h2, map_sum, ← Finset.sum_fiberwise_of_maps_to (g := fun j ↦ π Polynomial.X ^ j) (fun j hj ↦ Finset.mem_image_of_mem _ hj), ← h2]`. Use `Finset.sum_congr rfl fun t _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j hj ↦ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hz, (Finset.mem_filter.mp hj).2]`.
+-/
 theorem UpperTheory.Reformulated.B.GenericNoetherNormalisationCapelliIdentities.proof.{u} :
     GroundTheory.Heights₂.Heights.GenericNoetherNormalisation.Statement.{u} := by
   intro A _ _ n q _ hq _

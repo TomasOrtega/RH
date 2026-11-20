@@ -6,6 +6,9 @@ open scoped TensorProduct Matrix
 open NumberField Formalism.BasicNotions.TH GlobalTheory.RealLift GlobalTheory.FockIncl GlobalTheory.FockInclK
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FockInclK.mul_frame_eq_frame_mul_exp_extMat | exact GlobalTheory.FockInclK.mul_frame_eq_frame_mul_exp_extMat | (intros; apply GlobalTheory.FockInclK.mul_frame_eq_frame_mul_exp_extMat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eigenvector_fixed_by_compact_commuting : ∀ (d d₁ R S : ℕ) (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) (K θ : Matrix (Fin d) (Fin d) ℂ)
     (K₁ : Matrix (Fin d₁) (Fin d₁) ℂ) (ιH : Matrix (Fin d) (Fin d₁) ℂ) (Cw : Matrix (Fin d) (Ix (R + 1) (S + 1)) ℂ)
     (C₁w : Matrix (Fin d₁) (Ix R S) ℂ) (Y : Mat R S) (x : Fin d → ℂ) (c : ℂ), c ≠ 0 →

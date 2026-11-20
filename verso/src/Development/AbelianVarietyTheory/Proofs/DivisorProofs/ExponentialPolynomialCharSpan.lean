@@ -10,17 +10,28 @@ noncomputable def weight (p : ℂ[X]) : ℕ := if p = 0 then 0 else p.natDegree 
 
 noncomputable def diff (a b r : ℂ) (p : ℂ[X]) : ℂ[X] := C a * taylor r p - C b * p
 
+/- English proof (translation)
+Unfold `diff`. Use `(natDegree_sub_le _ _).trans (max_le ?_ (natDegree_C_mul_le _ _))` and prove the remaining obligations. Conclude with `(natDegree_C_mul_le _ _).trans (natDegree_taylor _ _).le`.
+-/
 lemma natDegree_diff_le (a b r : ℂ) (p : ℂ[X]) : (diff a b r p).natDegree ≤ p.natDegree := by
   unfold diff
   refine (natDegree_sub_le _ _).trans (max_le ?_ (natDegree_C_mul_le _ _))
   exact (natDegree_C_mul_le _ _).trans (natDegree_taylor _ _).le
 
+/- English proof (translation)
+Unfold `diff`. Rewrite using `[coeff_sub, coeff_C_mul, coeff_C_mul, coeff_taylor_natDegree, coeff_natDegree]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma coeff_diff (a b r : ℂ) (p : ℂ[X]) :
     (diff a b r p).coeff p.natDegree = (a - b) * p.leadingCoeff := by
   unfold diff
   rw [coeff_sub, coeff_C_mul, coeff_C_mul, coeff_taylor_natDegree, coeff_natDegree]
   ring
 
+/- English proof (translation)
+Distinguish the cases in `hp : p = 0`. Substitute `hp` using the available equality. Simplify using `[weight, diff]`. Use `natDegree_diff_le a b r p` as an intermediate fact. Unfold `weight`.
+
+Apply the tactic sequence `split_ifs <;> omega`.
+-/
 lemma weight_diff_le (a b r : ℂ) (p : ℂ[X]) : weight (diff a b r p) ≤ weight p := by
   by_cases hp : p = 0
   · subst hp; simp [weight, diff]
@@ -28,6 +39,13 @@ lemma weight_diff_le (a b r : ℂ) (p : ℂ[X]) : weight (diff a b r p) ≤ weig
     unfold weight
     split_ifs <;> omega
 
+/- English proof (translation)
+Establish `h1` using `natDegree_diff_le a a r p`. Establish `h2` using `coeff_diff a a r p`. Rewrite `h2` using `[sub_self, zero_mul]`. Unfold `weight`. Rewrite using `[if_neg hp]`.
+
+Use `split_ifs with h`. Use linear arithmetic over natural numbers and integers. Establish `: (diff a a r p).natDegree ≠ p.natDegree`. Introduce `e`. Rewrite `h2` using `[← e, coeff_natDegree, leadingCoeff_eq_zero]`.
+
+Conclude with `h h2`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma weight_diff_lt (a r : ℂ) (p : ℂ[X]) (hp : p ≠ 0) : weight (diff a a r p) < weight p := by
   have h1 := natDegree_diff_le a a r p
   have h2 := coeff_diff a a r p
@@ -42,12 +60,26 @@ lemma weight_diff_lt (a r : ℂ) (p : ℂ[X]) (hp : p ≠ 0) : weight (diff a a 
       exact h h2
     omega
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `coeff_diff a b r p`. Rewrite `h2` using `[h, coeff_zero]`. Conclude with `mul_ne_zero (sub_ne_zero.2 hab) (leadingCoeff_ne_zero.2 hp) h2.symm`.
+-/
 lemma diff_ne_zero (a b r : ℂ) (p : ℂ[X]) (hab : a ≠ b) (hp : p ≠ 0) : diff a b r p ≠ 0 := by
   intro h
   have h2 := coeff_diff a b r p
   rw [h, coeff_zero] at h2
   exact mul_ne_zero (sub_ne_zero.2 hab) (leadingCoeff_ne_zero.2 hp) h2.symm
 
+/- English proof (translation)
+Introduce `h`. Establish `hx : ∀ x, p.eval (x + r) = p.eval x`. Introduce `x`. Use `congrArg (eval x) h` as an intermediate fact. Simplify using `only [diff, eval_sub, eval_mul, eval_C, taylor_eval, eval_zero] at this`.
+
+Rewrite `this` using `[← mul_sub, mul_eq_zero, sub_eq_zero]`. Conclude with `this.resolve_left ha`. Establish `hn : ∀ n : ℕ, p.eval ((n : ℂ) * r) = p.eval 0`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => simp`. Consider the case `succ n ih => rw [← ih, ← hx (n * r)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hz : p - C (p.eval 0) = 0`. Apply `eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.infinite_of_injective_forall_mem (f := fun n : ℕ => (n : ℂ) * r) ?_ ?_` and prove the remaining obligations. Introduce `m n hmn`. Conclude with `mul_right_cancel₀ hr hmn` after adjusting the coercions.
+
+Introduce `n`. Simplify using `[hn n]`. Apply `hp` to reduce the goal to its premises. Rewrite using `[sub_eq_zero.1 hz, natDegree_C]`.
+-/
 lemma diff_self_ne_zero (a r : ℂ) (p : ℂ[X]) (ha : a ≠ 0) (hr : r ≠ 0) (hp : p.natDegree ≠ 0) :
     diff a a r p ≠ 0 := by
   intro h
@@ -79,6 +111,13 @@ noncomputable def spanTr (P : ι → ℂ[X]) : Submodule ℂ (G → ℂ) :=
   Submodule.span ℂ (Set.range fun s : G => fun t : G =>
     ∑ i, (P i).eval ((L (s * t) : ℝ) : ℂ) * ((χ i (s * t) : ℂˣ) : ℂ))
 
+/- English proof (translation)
+Use `Submodule.span_le.2 (Set.range_subset_iff.2 fun s' => ?_)` and prove the remaining obligations. Establish `h1 : (fun t : G => ∑ i, (P i).eval ((L ((s * s') * t) : ℝ) : ℂ) * ((χ i ((s * s') * t) : ℂˣ) : ℂ)) ∈ spanTr L χ P` using `Submodule.subset_span ⟨s * s', rfl⟩`. Establish `h2 : (fun t : G => ∑ i, (P i).eval ((L (s' * t) : ℝ) : ℂ) * ((χ i (s' * t) : ℂˣ) : ℂ)) ∈ spanTr L χ P` using `Submodule.subset_span ⟨s', rfl⟩`. Establish `h3` using `Submodule.sub_mem _ h1 (Submodule.smul_mem _ a h2)`. Rewrite using `[SetLike.mem_coe]`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc s s' t, hL s (s' * t), map_mul (χ i) s]`.
+
+Simplify using `only [diff, eval_sub, eval_mul, eval_C, taylor_eval, Units.val_mul, Complex.ofReal_add]`. Rewrite using `[add_comm ((L s : ℝ) : ℂ)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma spanTr_diff_le (hL : ∀ x y, L (x * y) = L x + L y) (P : ι → ℂ[X]) (s : G) (a : ℂ) :
     spanTr L χ (fun i => diff (χ i s : ℂˣ) a (L s) (P i)) ≤ spanTr L χ P := by
   refine Submodule.span_le.2 (Set.range_subset_iff.2 fun s' => ?_)
@@ -97,6 +136,19 @@ lemma spanTr_diff_le (hL : ∀ x y, L (x * y) = L x + L y) (P : ι → ℂ[X]) (
   rw [add_comm ((L s : ℝ) : ℂ)]
   ring
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `P hn hP`. Establish `step : ∀ (s : G) (i₁ : ι), P i₁ ≠ 0 → diff (χ i₀ s : ℂˣ) (χ i₁ s : ℂˣ) (L s) (P i₀) ≠ 0 → (fun t => ((χ i₀ t : ℂˣ) : ℂ)) ∈ spanTr L χ P`. Introduce `s i₁ h1 h2`.
+
+Use `spanTr_diff_le L χ hL P s (χ i₁ s : ℂˣ) (ih _ ?_ _ rfl h2)` and prove the remaining obligations. Rewrite using `[← hn]`. Conclude with `Finset.sum_lt_sum (fun i _ => weight_diff_le _ _ _ _) ⟨i₁, Finset.mem_univ _, weight_diff_lt _ _ _ h1⟩`. Distinguish the cases in `hA : ∃ i₁, i₁ ≠ i₀ ∧ P i₁ ≠ 0`. Take `⟨i₁, hi, h1⟩` from `hA`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, χ i₀ s ≠ χ i₁ s := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hi (hχ (MonoidHom.ext hc)).symm`. Conclude with `step s i₁ h1 (diff_ne_zero _ _ _ _ (fun e => hs (Units.ext e)) hP)`.
+
+Use `push Not at hA`. Distinguish the cases in `hd : (P i₀).natDegree = 0`. Take `⟨c, hc⟩ : ∃ c, P i₀ = C c` from `⟨_, eq_C_of_natDegree_eq_zero hd⟩`. Establish `hc0 : c ≠ 0` using `by rintro rfl; exact hP (by simpa using hc)`. Establish `h2 : (fun t : G => ∑ i, (P i).eval ((L (1 * t) : ℝ) : ℂ) * ((χ i (1 * t) : ℂˣ) : ℂ)) ∈ spanTr L χ P` using `Submodule.subset_span ⟨1, rfl⟩`.
+
+Use `Submodule.smul_mem _ c⁻¹ h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Simplify using `only [Pi.smul_apply, smul_eq_mul, one_mul]`. Rewrite using `[Finset.sum_eq_single i₀ (fun i _ hi => by simp [hA i hi]) (by simp), hc, eval_C, ← mul_assoc, inv_mul_cancel₀ hc0, one_mul]`. Take `⟨s, hs⟩` from `h0`.
+
+Conclude with `step s i₀ hP (diff_self_ne_zero _ _ _ (Units.ne_zero _) (by exact_mod_cast hs) hd)`.
+-/
 theorem mem_spanTr (hL : ∀ x y, L (x * y) = L x + L y) (h0 : ∃ t, L t ≠ 0)
     (hχ : Function.Injective χ) (i₀ : ι) (n : ℕ) :
     ∀ P : ι → ℂ[X], ∑ i, weight (P i) = n → P i₀ ≠ 0 →
@@ -138,6 +190,9 @@ end GlobalTheory.TranslateSpan
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `_ _ L hL h0 _ _ χ hχ P i₀ hP` and use `TranslateSpan.mem_spanTr L χ hL h0 hχ i₀ _ P rfl hP`.
+-/
 theorem character_mem_span_translates :
     ∀ (G : Type) [CommGroup G] (L : G → ℝ), (∀ x y, L (x * y) = L x + L y) → (∃ t, L t ≠ 0) →
     ∀ (ι : Type) [Fintype ι] (χ : ι → G →* ℂˣ), Function.Injective χ →

@@ -15,6 +15,9 @@ section LocalIndex
 
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ} [NeZero n] [HasEnoughRootsOfUnity K n]
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K n`. Establish `hζv` using `hζ.map_of_injective (algebraMap K (v.adicCompletion K)).injective`. Establish `hn : ‖(n : v.adicCompletion K)‖ ≠ 0` using `norm_ne_zero_iff.2 (natCast_ne_zero_adicCompletion (v := v) (NeZero.ne n))`. Rewrite using `[index_range_powMonoidHom_adicCompletion v (NeZero.ne n), hζv.card_rootsOfUnity, div_mul_cancel₀ _ hn, sq]`.
+-/
 theorem index_range_powMonoidHom_adicCompletion_mul_norm (v : HeightOneSpectrum (𝓞 K)) :
     ((powMonoidHom n : (v.adicCompletion K)ˣ →* (v.adicCompletion K)ˣ).range.index : ℝ) *
       ‖(n : v.adicCompletion K)‖ = (n : ℝ) ^ 2 := by
@@ -27,6 +30,11 @@ theorem index_range_powMonoidHom_adicCompletion_mul_norm (v : HeightOneSpectrum 
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K n`. Establish `h` using `hζ.map_of_injective (InfinitePlace.embedding_of_isReal hw).injective`. Use `set x := InfinitePlace.embedding_of_isReal hw ζ`. Establish `habs : |x| = 1`. Establish `h1 : |x| ^ n = 1` using `by rw [← abs_pow, h.pow_eq_one, abs_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (abs_nonneg x) (NeZero.ne n)).1 h1`. Establish `hx2 : x ^ 2 = 1` using `by rw [← sq_abs, habs, one_pow]`. Conclude with `(Nat.dvd_prime Nat.prime_two).1 (h.dvd_of_pow_eq_one 2 hx2)`.
+-/
 theorem eq_one_or_eq_two_of_isReal {w : InfinitePlace K} (hw : w.IsReal) : n = 1 ∨ n = 2 := by
   obtain ⟨ζ, hζ⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot K n
   have h := hζ.map_of_injective (InfinitePlace.embedding_of_isReal hw).injective
@@ -39,6 +47,13 @@ theorem eq_one_or_eq_two_of_isReal {w : InfinitePlace K} (hw : w.IsReal) : n = 1
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Establish `hnorm : ‖(n : w.Completion)‖ = n`. Establish `h : ‖(n : w.Completion)‖ = w (n : K)`. Rewrite using `[← map_natCast (algebraMap K w.Completion) n]`. Conclude with `InfinitePlace.Completion.norm_coe (K := K) (v := w) _`. Rewrite using `[h, InfinitePlace.map_natCast]`.
+
+Rewrite using `[index_range_powMonoidHom_infinitePlaceCompletion w (NeZero.ne n), hnorm]`. Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Rewrite using `[hw.mult_eq_one, pow_one]`. Apply the tactic sequence `rcases eq_one_or_eq_two_of_isReal (n := n) hw with h | h <;> subst h <;> norm_num [hw]`. Establish `hw' : ¬w.IsReal` using `InfinitePlace.not_isReal_iff_isComplex.2 hw`.
+
+Rewrite using `[hw.mult_eq_two]`. Simplify using `[hw']`.
+-/
 theorem index_range_powMonoidHom_infinitePlaceCompletion_mul_norm (w : InfinitePlace K) :
     ((powMonoidHom n : (w.Completion)ˣ →* (w.Completion)ˣ).range.index : ℝ) *
       ‖(n : w.Completion)‖ ^ w.mult = (n : ℝ) ^ 2 := by
@@ -55,6 +70,11 @@ theorem index_range_powMonoidHom_infinitePlaceCompletion_mul_norm (w : InfiniteP
     rw [hw.mult_eq_two]
     simp [hw']
 
+/- English proof (translation)
+Establish `hpf` using `prod_norm_natCast_mul_prod_infinitePlace (K := K) (NeZero.ne n) S hS`. Apply `Nat.cast_injective (R := ℝ)` to reduce the goal to its premises. Rewrite using `[relIndex_powerSubgroup_empty]`. Use `push_cast`. Establish `key : ((∏ v ∈ S, ((powMonoidHom n : (v.adicCompletion K)ˣ →* _).range.index : ℝ)) * ∏ w : InfinitePlace K, ((powMonoidHom n : (w.Completion)ˣ →* _).range.index : ℝ)) * ((∏ v ∈ S, ‖(n : v.adicCompletion K)‖) * ∏ w : InfinitePlace K, ‖(n : w.Completion)‖ ^ w.mult) = (n : ℝ) ^ (2 * …`.
+
+Rewrite using `[mul_mul_mul_comm, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Repeatedly rewrite using `[index_range_powMonoidHom_adicCompletion_mul_norm, index_range_powMonoidHom_infinitePlaceCompletion_mul_norm]`. Rewrite using `[Finset.prod_const, Finset.prod_const, Finset.card_univ, ← pow_mul, ← pow_mul, ← pow_add, mul_add]`. Rewrite `key` using `[hpf, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem relIndex_powerSubgroup_empty_eq_pow (S : Finset (HeightOneSpectrum (𝓞 K)))
     (hS : ∀ v : HeightOneSpectrum (𝓞 K), (n : 𝓞 K) ∈ v.asIdeal → v ∈ S) :
     (powerSubgroup n (S : Set (HeightOneSpectrum (𝓞 K))) ∅).relIndex
@@ -82,6 +102,23 @@ universe u
 
 variable {K : Type u} [Field K] [NumberField K] {n : ℕ} [NeZero n] [HasEnoughRootsOfUnity K n]
 
+/- English proof (translation)
+Use extensionality with `e`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_subgroupOf, coe_sUnitsToSIdeles, powerSubgroup, mem_localSubgroup, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, hi, -⟩`. Take `⟨z, hz⟩` from `hFI.exists_pow_eq_of_forall_pow_eq S hS hJ e.2 (fun v hv ↦ by`.
+
+Take `⟨u, hu⟩` from `hf v hv`. Use `⟨(u : v.adicCompletion K), ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← powMonoidHom_apply, hu, finiteProj_diagonal]`. Use the proof step `rfl)`. Use the proof step `(fun w ↦ by`.
+
+Take `⟨u, hu⟩` from `hi w`. Use `⟨(u : w.Completion), ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← powMonoidHom_apply, hu, infiniteProj_diagonal]`. Use the proof step `rfl)`. Establish `hz0 : z ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow (NeZero.ne n)]`. Conclude with `((e : Kˣ)).ne_zero hz.symm`. Use `set zu : Kˣ := Units.mk0 z hz0`. Establish `hzun : zu ^ n = (e : Kˣ)` using `Units.ext (by rw [Units.val_pow_eq_pow_val, Units.val_mk0, hz])`.
+
+Establish `hzu : zu ∈ S.unit K`. Introduce `v hv`. Establish `he : v.valuationOfNeZero (e : Kˣ) = 1`. Establish `h` using `e.2 v hv`. Rewrite `h` using `[← valuationOfNeZero_eq]`.
+
+Conclude with `h` after adjusting the coercions. Establish `h1 : v.valuationOfNeZero zu ^ n = 1` using `by rw [← map_pow, hzun, he]`. Rewrite using `[← valuationOfNeZero_eq, (pow_eq_one_iff.1 h1).resolve_right (NeZero.ne n), WithZero.coe_one]`. Conclude with `⟨⟨zu, hzu⟩, Subtype.ext hzun⟩`. Introduce and unpack `⟨f, rfl⟩`.
+
+Use `⟨fun v _ ↦ ⟨finiteProj v (diagonal K f), ?_⟩, fun w ↦ ⟨infiniteProj w (diagonal K f), ?_⟩, fun v hv ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[powMonoidHom_apply, ← map_pow, ← map_pow]`. Both sides reduce to the same expression. Rewrite using `[powMonoidHom_apply, ← map_pow, ← map_pow]`. Both sides reduce to the same expression.
+
+Conclude with `(diagonal_mem_sIdeles_iff S _).2 (powMonoidHom n f).2 v (by simpa using hv)`.
+-/
 theorem FirstInequality.comap_sUnitsToSIdeles_powerSubgroup (hFI : FirstInequality.{u})
     (S : Set (HeightOneSpectrum (𝓞 K)))
     (hS : ∀ v : HeightOneSpectrum (𝓞 K), (n : 𝓞 K) ∈ v.asIdeal → v ∈ S)
@@ -129,6 +166,13 @@ theorem FirstInequality.comap_sUnitsToSIdeles_powerSubgroup (hFI : FirstInequali
       rfl
     · exact (diagonal_mem_sIdeles_iff S _).2 (powMonoidHom n f).2 v (by simpa using hv)
 
+/- English proof (translation)
+Use `set T : Set (HeightOneSpectrum (𝓞 K)) := (S : Set (HeightOneSpectrum (𝓞 K))) with hT`. Use `set W := (powerSubgroup n T ∅).subgroupOf (sIdeles T)`. Establish `hle : powerSubgroup n T ∅ ≤ sIdeles T`. Simplify using `using powerSubgroup_le_sIdeles T ∅ n`. Establish `hmap : W.map (sIdelesToIdeleClassGroup T) = (powerSubgroup n T ∅).map (IdeleClassGroup.mk K)`.
+
+Rewrite using `[sIdelesToIdeleClassGroup, ← Subgroup.map_map, Subgroup.subgroupOf_map_subtype, inf_of_le_left hle]`. Establish `hW : W.index = n ^ (2 * (S.card + Fintype.card (InfinitePlace K)))` using `relIndex_powerSubgroup_empty_eq_pow S hS`. Establish `hE : (W.comap (sUnitsToSIdeles T)).index = n ^ (S.card + Fintype.card (InfinitePlace K))`. Rewrite using `[hFI.comap_sUnitsToSIdeles_powerSubgroup T (fun v hv ↦ Finset.mem_coe.2 (hS v hv)) hJ, SUnit.index_range_powMonoidHom, add_comm]`. Simplify using `[T]`.
+
+Establish `h` using `index_map_mul_index_comap T hJ W`. Rewrite `h` using `[hmap, hE, hW, two_mul, pow_add n (S.card + Fintype.card (InfinitePlace K)) (S.card + Fintype.card (InfinitePlace K))]`. Conclude with `Nat.eq_of_mul_eq_mul_right (pow_pos (NeZero.pos n) _) h`.
+-/
 theorem FirstInequality.index_map_powerSubgroup (hFI : FirstInequality.{u})
     (S : Finset (HeightOneSpectrum (𝓞 K)))
     (hS : ∀ v : HeightOneSpectrum (𝓞 K), (n : 𝓞 K) ∈ v.asIdeal → v ∈ S)

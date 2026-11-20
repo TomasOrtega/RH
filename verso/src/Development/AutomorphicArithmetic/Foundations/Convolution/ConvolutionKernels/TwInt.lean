@@ -14,6 +14,33 @@ open GroundTheory.Automorphic.CuspidalProjection PositivityTheory.Rg.Tf.Core Upp
 open scoped InnerProductSpace
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `K _ _ n μ _ θ a g ha ha' hg hg'`. Use `haveI := Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := n) μ`. Take `⟨C1, N1, hC1, b1⟩` from `(kvBd K n μ a).1 ha`. Take `⟨C2, N2, hC2, b2⟩` from `(kvBd K n μ (ccStar g)).1 hg`. Take `⟨C4, hC4, b4⟩` from `(kvBd K n μ (ccStar g)).2 hg' 0`.
+
+Take `⟨D, c, hD, bt⟩` from `qhtTw K n μ θ`. Take `⟨q1, -, qm⟩` from `qhtBasic K n`. Use `⟨N1 + c * N2, fun N' => ?_⟩` and prove the remaining obligations. Take `⟨C3, hC3, b3⟩` from `(kvBd K n μ a).2 ha' N'`. Use `set v := (quotientMeasure (Gam K n) μ).real Set.univ with hv`.
+
+Establish `hv0 : 0 ≤ v` using `measureReal_nonneg`. Use `⟨v * (C1 * (C2 * D ^ N2) + C3 * C4), fun f M Z hZ hM hf h0 => ?_⟩` and prove the remaining obligations. Take `⟨hi, ht⟩` from `cuspTrInt K n μ θ f a g M ha' hg' hM hf`. Use `set Q := M ∘L (ContinuousLinearMap.id ℂ (L2 μ) - Pc μ) with hQ`. Establish `hPP : ∀ u w : L2 μ, ⟪Pc μ u, M (Pc μ w)⟫_ℂ = ⟪u, M (Pc μ w)⟫_ℂ`.
+
+Introduce `u w`. Establish `e1 : M (Pc μ w) = Pc μ (M w)` using `DFunLike.congr_fun hM w`. Establish `e2 : Pc μ (Pc μ (M w)) = Pc μ (M w)` using `Submodule.starProjection_eq_self_iff.2 (Submodule.starProjection_apply_mem _ _)`. Rewrite using `[e1]`. Use `conv_rhs => rw [← e2]`.
+
+Conclude with `Submodule.inner_starProjection_left_eq_right _ _ _`. Establish `hsum : ∀ y : RightCosetSpace (Gam K n), twKQ θ f y = ⟪Pc μ (kv μ a (Quotient.out y)), M (Pc μ (kv μ (ccStar g) (θ.e (Quotient.out y))))⟫_ℂ + ⟪kv μ a (Quotient.out y), Q (kv μ (ccStar g) (θ.e (Quotient.out y)))⟫_ℂ`. Introduce `y`. Rewrite using `[hPP, ← inner_add_right, twKQ, twK, kerId K n μ f a g M hf]`. Use `congr 1`.
+
+Simplify using `[hQ]`. Establish `hcont : Continuous fun y : RightCosetSpace (Gam K n) => ⟪kv μ a (Quotient.out y), Q (kv μ (ccStar g) (θ.e (Quotient.out y)))⟫_ℂ`. Use `continuous_coinduced_dom.2 ?_` and prove the remaining obligations. Establish `hc : Continuous fun x : G1 K n => ⟪kv μ a x, Q (kv μ (ccStar g) (θ.e x))⟫_ℂ` using `(kvCont K n μ a).inner (Q.continuous.comp ((kvCont K n μ (ccStar g)).comp θ.e.continuous))`. Use `hc.congr fun x => ?_` and prove the remaining obligations.
+
+Take `⟨γ, hγ⟩` from `mk_eq_mk_iff.1 (show mk (Gam K n) (Quotient.out (mk (Gam K n) x)) = mk (Gam K n) x from Quotient.out_eq _)`. Express the relevant statement in the definitionally equal form `_ = ⟪kv μ a (Quotient.out (mk (Gam K n) x)), Q (kv μ (ccStar g) (θ.e (Quotient.out (mk (Gam K n) x))))⟫_ℂ`. Rewrite using `[← hγ]`. Express the relevant statement in the definitionally equal form `_ = ⟪kv μ a ((γ : G1 K n) * x), Q (kv μ (ccStar g) (θ.e ((γ : G1 K n) * x)))⟫_ℂ`. Rewrite using `[map_mul, (ropAe K n μ a).2 _ γ.2, (ropAe K n μ (ccStar g)).2 _ ((θ.mem_gam _).2 γ.2)]`.
+
+Establish `hZ0 : 0 < Z` using `lt_of_lt_of_le one_pos hZ`. Establish `est` using `intEst (quotientMeasure (Gam K n) μ) _ (twKQ θ f) _ _ Z (C1 * (C2 * D ^ N2) * Z ^ (N1 + c * N2) * ‖Q‖) (C3 * C4 * (Z ^ N')⁻¹ * ‖M‖) qm hi hcont.aestronglyMeasurable (by positivity) (by positivity) hsum (fun y hy => h0 _ hy) (fun y hy => ?_) (fun y hy => ?_)`. Rewrite using `[twInt, ht]`. Use `est.trans (add_le_add ?_ ?_)` and prove the remaining obligations. Establish `: 0 ≤ v * (C3 * C4) * Z ^ (N1 + c * N2) * ‖Q‖` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ v * (C1 * (C2 * D ^ N2)) * (Z ^ N')⁻¹ * ‖M‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `set x : G1 K n := Quotient.out y`. Establish `hx0 : 0 ≤ qht x` using `zero_le_one.trans (q1 x)`.
+
+Establish `u1 : ‖kv μ a x‖ ≤ C1 * Z ^ N1` using `(b1 x).trans (by gcongr)`. Establish `u2 : ‖kv μ (ccStar g) (θ.e x)‖ ≤ C2 * (D * Z ^ c) ^ N2`. Use `(b2 _).trans ?_` and prove the remaining obligations. Establish `h3 : qht (θ.e x) ≤ D * Z ^ c` using `(bt x).trans (by gcongr)`. Establish `h4 : 0 ≤ qht (θ.e x)` using `zero_le_one.trans (q1 _)`.
+
+Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul u1 ((Q.le_opNorm _).trans ?_) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Use `gcongr`. Use `_ = _ := by rw [mul_pow, ← pow_mul, pow_add]; ring`.
+
+Use `set x : G1 K n := Quotient.out y`. Establish `u1 : ‖Pc μ (kv μ a x)‖ ≤ C3 * (Z ^ N')⁻¹` using `(b3 x).trans (by gcongr)`. Establish `u2 : ‖Pc μ (kv μ (ccStar g) (θ.e x))‖ ≤ C4` using `by simpa using b4 (θ.e x)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul u1 ((M.le_opNorm _).trans ?_) (norm_nonneg _) (by positivity)` and prove the remaining obligations.
+
+Use `gcongr`. Use `_ = _ := by ring`.
+-/
 theorem UpperTheory.ConvolutionTheory.K.kern2 :
     Kern2 := by
   intro K _ _ n μ _ θ a g ha ha' hg hg'

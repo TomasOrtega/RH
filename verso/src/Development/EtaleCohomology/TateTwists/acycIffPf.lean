@@ -9,18 +9,30 @@ variable {R : Type} [CommRing R]
 abbrev ev (U : Scheme.{0}) : Shv R ⥤ ModuleCat.{1} (ULift.{1} R) :=
   sheafToPresheaf Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R)) ⋙ (evaluation _ _).obj (op U)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem app_comp {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) (U : Scheme.{0}) (x : Sec F U) :
     Sec.map (φ ≫ ψ) x = Sec.map ψ (Sec.map φ x) := rfl
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f => f.hom x) (φ.hom.naturality g.op)`.
+-/
 theorem map_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) :=
   congrArg (fun f => f.hom x) (φ.hom.naturality g.op)
 
+/- English proof (translation)
+Establish `: Mono ((ev U).map S.iCycles)` using `inferInstance`. Conclude with `(ModuleCat.mono_iff_injective _).1 this`.
+-/
 theorem iCycles_inj (S : ShortComplex (Shv R)) (U : Scheme.{0}) :
     Function.Injective (Sec.map S.iCycles (U := U)) := by
   have : Mono ((ev U).map S.iCycles) := inferInstance
   exact (ModuleCat.mono_iff_injective _).1 this
 
+/- English proof (translation)
+Set `S' : ShortComplex (Shv R)` to `ShortComplex.mk S.iCycles S.g S.iCycles_g`. Establish `hS' : S'.Exact` using `S'.exact_of_f_is_kernel S.cyclesIsKernel`. Establish `hE : (S'.map (ev U)).Exact` using `hS'.map_of_mono_of_preservesKernel (ev U) (inferInstanceAs (Mono S.iCycles)) inferInstance`. Conclude with `(ShortComplex.moduleCat_exact_iff _).1 hE z hz`.
+-/
 theorem iCycles_surj (S : ShortComplex (Shv R)) (U : Scheme.{0}) (z : Sec S.X₂ U) (hz : Sec.map S.g z = 0) :
     ∃ c : Sec S.cycles U, Sec.map S.iCycles c = z := by
   let S' : ShortComplex (Shv R) := ShortComplex.mk S.iCycles S.g S.iCycles_g
@@ -28,6 +40,17 @@ theorem iCycles_surj (S : ShortComplex (Shv R)) (U : Scheme.{0}) (z : Sec S.X₂
   have hE : (S'.map (ev U)).Exact := hS'.map_of_mono_of_preservesKernel (ev U) (inferInstanceAs (Mono S.iCycles)) inferInstance
   exact (ShortComplex.moduleCat_exact_iff _).1 hE z hz
 
+/- English proof (translation)
+Rewrite using `[S.exact_iff_epi_toCycles, ← Sheaf.isLocallySurjective_iff_epi' _ S.toCycles]`. Prove the components needed by the constructor for the conclusion. Introduce `h U z hz`. Take `⟨c, rfl⟩` from `iCycles_surj S U z hz`. Use `⟨_, Presheaf.imageSieve_mem Scheme.etaleTopology.{0} S.toCycles.hom (U := op U) c, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `V g ⟨t, ht⟩`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `h1 : Sec.map S.f t = Sec.map S.iCycles (Sec.map S.toCycles t)`. Rewrite using `[← app_comp, S.toCycles_i]`. Rewrite using `[h1, ← map_res]`.
+
+Conclude with `congrArg _ ht`. Introduce `h`. Prove the components needed by the constructor for the conclusion. Introduce `U c`. Take `⟨Sv, hSv, hP⟩` from `h U (Sec.map S.iCycles c) (by rw [← app_comp, S.iCycles_g]; rfl)`.
+
+Use `Scheme.etaleTopology.{0}.superset_covering ?_ hSv` and prove the remaining obligations. Introduce `V g hg`. Take `⟨y, hy⟩` from `hP V g hg`. Use `⟨y, iCycles_inj S V ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map S.iCycles (Sec.map S.toCycles y) = Sec.map S.iCycles (Sec.res g c)`.
+
+Rewrite using `[← app_comp, S.toCycles_i, hy, map_res]`.
+-/
 theorem exact_iff (S : ShortComplex (Shv R)) : S.Exact ↔
     ∀ (U : Scheme.{0}) (z : Sec S.X₂ U), Sec.map S.g z = 0 →
       Loc U fun V g => ∃ y : Sec S.X₁ V, Sec.map S.f y = Sec.res g z := by
@@ -56,6 +79,11 @@ theorem exact_iff (S : ShortComplex (Shv R)) : S.Exact ↔
 end LateralTheory.EtaleFoundations.acycIffPf
 
 open LateralTheory.EtaleFoundations.acycIffPf in
+/- English proof (translation)
+Introduce `R _ C`. Unfold `LateralTheory.EtaleFoundations.acyc.LocAcyc`. Prove the components needed by the constructor for the conclusion. Introduce `h U n z hz`. Use `(HomologicalComplex.exactAt_iff' C (n - 1) n (n + 1) (by simp) (by simp)).1 (h n)` as an intermediate fact.
+
+Conclude with `(exact_iff _).1 this U z hz`. Introduce `h n`. Rewrite using `[HomologicalComplex.exactAt_iff' C (n - 1) n (n + 1) (by simp) (by simp)]`. Conclude with `(exact_iff _).2 fun U z hz => h U n z hz`.
+-/
 theorem LateralTheory.EtaleFoundations.acyc.acycIff_of : LateralTheory.EtaleFoundations.acyc.acycIff := by
   intro R _ C
   unfold LateralTheory.EtaleFoundations.acyc.LocAcyc

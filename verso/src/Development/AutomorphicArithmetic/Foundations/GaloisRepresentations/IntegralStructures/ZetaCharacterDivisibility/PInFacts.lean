@@ -13,6 +13,9 @@ open GlobalTheory.BlockSum (blockRep)
 open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac IsSSMat)
 open UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, Matrix.mul_assoc, pow_succ]`.
+-/
 private theorem pow_intertwine {k : Type} [Field k] {a d : ℕ} {P : Matrix (Fin d) (Fin d) k}
     {R : Matrix (Fin a) (Fin a) k} {A : Matrix (Fin d) (Fin a) k} (h : P * A = A * R) (n : ℕ) :
     P ^ n * A = A * R ^ n := by
@@ -20,6 +23,9 @@ private theorem pow_intertwine {k : Type} [Field k] {a d : ℕ} {P : Matrix (Fin
   | zero => simp
   | succ n ih => rw [pow_succ, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, Matrix.mul_assoc, pow_succ]
 
+/- English proof (translation)
+Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, Matrix.add_mul, Matrix.mul_add, hp, hq]`. Consider the case `monomial n c`. Rewrite using `[aeval_monomial, aeval_monomial, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]`. Simplify using `only [smul_mul_assoc, one_mul, Matrix.smul_mul, Matrix.mul_smul, pow_intertwine h n]`.
+-/
 private theorem aeval_intertwine {k : Type} [Field k] {a d : ℕ} {P : Matrix (Fin d) (Fin d) k}
     {R : Matrix (Fin a) (Fin a) k} {A : Matrix (Fin d) (Fin a) k} (h : P * A = A * R) (Q : k[X]) :
     aeval P Q * A = A * aeval R Q := by
@@ -29,6 +35,13 @@ private theorem aeval_intertwine {k : Type} [Field k] {a d : ℕ} {P : Matrix (F
     rw [aeval_monomial, aeval_monomial, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]
     simp only [smul_mul_assoc, one_mul, Matrix.smul_mul, Matrix.mul_smul, pow_intertwine h n]
 
+/- English proof (translation)
+Establish `hker : LinearMap.ker A.mulVecLin = ⊥`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker A.mulVecLin`. Establish `h2 : Module.finrank k (LinearMap.range A.mulVecLin) = a` using `hA`. Rewrite `h1` using `[h2, Module.finrank_fin_fun]`. Conclude with `Submodule.finrank_eq_zero.mp (by omega)`.
+
+Establish `hinj` using `LinearMap.ker_eq_bot.mp hker`. Use extensionality with `i j`. Establish `hv : M.mulVec (Pi.single j 1) = N.mulVec (Pi.single j 1)`. Apply `hinj` to reduce the goal to its premises. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, h]`.
+
+Simplify using `using congrFun hv i`.
+-/
 private theorem left_cancel {k : Type} [Field k] {a d : ℕ} {A : Matrix (Fin d) (Fin a) k} (hA : A.rank = a)
     {M N : Matrix (Fin a) (Fin a) k} (h : A * M = A * N) : M = N := by
   have hker : LinearMap.ker A.mulVecLin = ⊥ := by
@@ -43,6 +56,11 @@ private theorem left_cancel {k : Type} [Field k] {a d : ℕ} {A : Matrix (Fin d)
     simp only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, h]
   simpa using congrFun hv i
 
+/- English proof (translation)
+Introduce `Γ k _ _ a d r ρ ⟨A, hA, hc⟩`. Use `⟨hA ▸ A.rank_le_height, fun g hg => ?_, fun g Q hQ => ?_⟩` and prove the remaining obligations. Establish `h` using `hc g`. Rewrite `h` using `[hg]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Apply `left_cancel hA` to reduce the goal to its premises. Simplify using `using h.symm`. Apply `left_cancel hA` to reduce the goal to its premises. Rewrite using `[← aeval_intertwine (hc g) Q, hQ]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.Gal.Int.Div.inFacts_of :
     InFacts := by
   intro Γ k _ _ a d r ρ ⟨A, hA, hc⟩

@@ -3,6 +3,37 @@ open Complex Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Simplify using `only [LSeries.convolution_def]`. Establish `hL : ∀ p ∈ n.divisorsAntidiagonal, (ψ p.1 * (p.1:ℂ)^(e-1) * g p.1) * (θ p.2 * g p.2) = ∑ δ ∈ (Nat.gcd p.1 p.2).divisors, χ δ * (δ:ℂ)^(2*e) * ψ p.1 * (p.1:ℂ)^(e-1) * θ p.2 * g (n / δ^2)`. Introduce `p hp`. Rewrite `hp` using `[Nat.mem_divisorsAntidiagonal]`. Establish `h1 : 0 < p.1` using `Nat.pos_of_ne_zero (fun h => hn (by rw [← hp.1, h, zero_mul]))`.
+
+Establish `h2 : 0 < p.2` using `Nat.pos_of_ne_zero (fun h => hn (by rw [← hp.1, h, mul_zero]))`. Rewrite using `[show (ψ p.1 * (p.1:ℂ)^(e-1) * g p.1) * (θ p.2 * g p.2) = ψ p.1 * (p.1:ℂ)^(e-1) * θ p.2 * (g p.1 * g p.2) by ring, hg _ _ h1 h2, Finset.mul_sum, hp.1]`. Conclude with `Finset.sum_congr rfl (fun δ _ => by ring)`. Establish `hR : ∀ p ∈ n.divisorsAntidiagonal, z p.1 * (g p.2 * b p.2) = ∑ q ∈ p.2.divisorsAntidiagonal, z p.1 * g p.2 * (ψ q.1 * (q.1:ℂ)^(e-1) * θ q.2)`. Introduce `p hp`.
+
+Rewrite `hp` using `[Nat.mem_divisorsAntidiagonal]`. Establish `h2 : p.2 ≠ 0` using `fun h => hn (by rw [← hp.1, h, mul_zero])`. Rewrite using `[hb _ h2, ← mul_assoc, Finset.mul_sum]`. Rewrite using `[Finset.sum_congr rfl hL, Finset.sum_congr rfl hR, Finset.sum_sigma', Finset.sum_sigma']`. Establish `key : ∀ s x y : ℕ, 0 < s → s * s * (x * y) = n → z (s * s) * g (x * y) * (ψ x * (x:ℂ)^(e-1) * θ y) = χ s * (s:ℂ)^(2*e) * ψ (s * x) * ((s * x : ℕ):ℂ)^(e-1) * θ (s * y) * g (n / s^2)`.
+
+Introduce `s x y hs hn'`. Establish `hsq : Nat.sqrt (s * s) = s` using `Nat.sqrt_eq s`. Establish `hdiv : n / s^2 = x * y`. Rewrite using `[← hn', sq, Nat.mul_div_cancel_left _ (Nat.mul_pos hs hs)]`. Establish `hpow : (s:ℂ)^(2*e) * (s:ℂ)^(e-1) = (s:ℂ)^(3*e-1)`.
+
+Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hz, hsq, if_pos rfl, hdiv, hψ, hθ, ← hpow]`. Use `push_cast`.
+
+Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `dec : ∀ a : (_ : ℕ × ℕ) × (ℕ × ℕ), a ∈ n.divisorsAntidiagonal.sigma (fun p => p.2.divisorsAntidiagonal) → z a.1.1 * g a.1.2 * (ψ a.2.1 * (a.2.1:ℂ)^(e-1) * θ a.2.2) ≠ 0 → ∃ s x y : ℕ, 0 < s ∧ s * s * (x * y) = n ∧ a = ⟨(s * s, x * y), (x, y)⟩`. Introduce and unpack `⟨⟨a, c⟩, ⟨x, y⟩⟩ hmem hne`. Simplify using `only [Finset.mem_sigma, Nat.mem_divisorsAntidiagonal] at hmem`.
+
+Take `⟨⟨hac, -⟩, hxy, -⟩` from `hmem`. Establish `h : Nat.sqrt a * Nat.sqrt a = a`. Assume the negation of the conclusion as `h`. Apply `hne` to reduce the goal to its premises. Simplify using `only [hz, if_neg h, zero_mul]`.
+
+Establish `ha : a ≠ 0` using `fun h0 => hn (by rw [← hac, h0, zero_mul])`. Use `⟨Nat.sqrt a, x, y, Nat.sqrt_pos.mpr (Nat.pos_of_ne_zero ha), by rw [h, hxy, hac], ?_⟩` and prove the remaining obligations. Rewrite using `[h, hxy]`. Use `symm`. Use `Finset.sum_bij_ne_zero (fun a _ _ => (⟨(Nat.sqrt a.1.1 * a.2.1, Nat.sqrt a.1.1 * a.2.2), Nat.sqrt a.1.1⟩ : (_ : ℕ × ℕ) × ℕ)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `a ha hne`. Take `⟨s, x, y, hs, hn', rfl⟩` from `dec a ha hne`. Establish `hx : 0 < x` using `Nat.pos_of_ne_zero (by rintro rfl; apply hn; rw [← hn']; ring)`. Simplify using `only [Finset.mem_sigma, Nat.mem_divisorsAntidiagonal, Nat.mem_divisors, Nat.sqrt_eq]`. Use `⟨⟨by rw [← hn']; ring, hn⟩, Nat.dvd_gcd (dvd_mul_right s x) (dvd_mul_right s y), (Nat.gcd_pos_of_pos_left _ (Nat.mul_pos hs hx)).ne'⟩` and prove the remaining obligations.
+
+Introduce `a1 h11 h12 a2 h21 h22 heq`. Take `⟨s, x, y, hs, hn', rfl⟩` from `dec a1 h11 h12`. Take `⟨t, u, v, ht, hn'', rfl⟩` from `dec a2 h21 h22`. Simplify using `only [Nat.sqrt_eq, Sigma.mk.injEq, Prod.mk.injEq, heq_eq_eq] at heq`. Take `⟨⟨h1, h2⟩, h3⟩` from `heq`.
+
+Substitute `h3` using the available equality. Take `rfl` from `Nat.eq_of_mul_eq_mul_left hs h1`. Take `rfl` from `Nat.eq_of_mul_eq_mul_left hs h2`. Both sides reduce to the same expression. Introduce and unpack `⟨⟨x, y⟩, δ⟩ hb0 hne`.
+
+Simplify using `only [Finset.mem_sigma, Nat.mem_divisorsAntidiagonal, Nat.mem_divisors] at hb0`. Take `⟨⟨hxy, -⟩, hδ, hg0⟩` from `hb0`. Establish `hδ0 : 0 < δ` using `Nat.pos_of_dvd_of_pos hδ (Nat.pos_of_ne_zero hg0)`. Take `⟨x', rfl⟩` from `dvd_trans hδ (Nat.gcd_dvd_left x y)`. Take `⟨y', rfl⟩` from `dvd_trans hδ (Nat.gcd_dvd_right (δ * x') y)`.
+
+Establish `hn'' : δ * δ * (x' * y') = n` using `by rw [← hxy]; ring`. Establish `hxy0 : x' * y' ≠ 0` using `fun h0 => hn (by rw [← hn'', h0, mul_zero])`. Use `⟨⟨(δ * δ, x' * y'), (x', y')⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_sigma, Nat.mem_divisorsAntidiagonal]`. Conclude with `⟨⟨hn'', hn⟩, trivial, hxy0⟩`.
+
+Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use `Eq.trans ?_ h0` and prove the remaining obligations. Conclude with `(key δ x' y' hδ0 hn'').symm`. Simplify using `only [Nat.sqrt_eq]`.
+
+Introduce `a ha hne`. Take `⟨s, x, y, hs, hn', rfl⟩` from `dec a ha hne`. Simplify using `only [Nat.sqrt_eq]`. Conclude with `key s x y hs hn'`.
+-/
 theorem rankin_convolution_coeff_of_squareSupported (e : ℕ) (χ ψ θ g b z : ℕ → ℂ)
     (hψ : ∀ m n, ψ (m * n) = ψ m * ψ n) (hθ : ∀ m n, θ (m * n) = θ m * θ n)
     (hg : ∀ m n : ℕ, 0 < m → 0 < n → g m * g n = ∑ δ ∈ (Nat.gcd m n).divisors, χ δ * (δ : ℂ) ^ (2 * e) * g (m * n / δ ^ 2))
@@ -91,6 +122,9 @@ theorem rankin_convolution_coeff_of_squareSupported (e : ℕ) (χ ψ θ g b z : 
     simp only [Nat.sqrt_eq]
     exact key s x y hs hn'
 
+/- English proof (translation)
+Introduce `e χ ψ θ g b hψ hθ hg hb n hn`. Conclude with `rankin_convolution_coeff_of_squareSupported e χ ψ θ g b _ hψ hθ hg hb (fun _ => rfl) n hn`.
+-/
 theorem rankin_convolution_coeff : ∀ (e : ℕ) (χ ψ θ g b : ℕ → ℂ), (∀ m n, ψ (m * n) = ψ m * ψ n) → (∀ m n, θ (m * n) = θ m * θ n) → (∀ m n : ℕ, 0 < m → 0 < n → g m * g n = ∑ δ ∈ (Nat.gcd m n).divisors, χ δ * (δ : ℂ) ^ (2 * e) * g (m * n / δ ^ 2)) → (∀ n, n ≠ 0 → b n = ∑ p ∈ n.divisorsAntidiagonal, ψ p.1 * (p.1 : ℂ) ^ (e - 1) * θ p.2) → ∀ n : ℕ, n ≠ 0 → LSeries.convolution (fun n : ℕ => ψ n * (n : ℂ) ^ (e - 1) * g n) (fun n : ℕ => θ n * g n) n = LSeries.convolution (fun n : ℕ => if Nat.sqrt n * Nat.sqrt n = n then χ (Nat.sqrt n) * ψ (Nat.sqrt n) * θ (Nat.sqrt n) * (Nat.sqrt n : ℂ) ^ (3 * e - 1) else 0) (fun n : ℕ => g n * b n) n := by
   intro e χ ψ θ g b hψ hθ hg hb n hn
   exact rankin_convolution_coeff_of_squareSupported e χ ψ θ g b _ hψ hθ hg hb (fun _ => rfl) n hn

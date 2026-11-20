@@ -8,6 +8,21 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 
 namespace GlobalTheory.MemberReflect
 
+/- English proof (translation)
+Introduce `O _ _ _ hic hno hdim W _ _ _ _ g hg hloc I a ha`. Use `haveI := hic`. Use `haveI := hno`. Establish `hDVR : IsDiscreteValuationRing O`. Take `⟨hf, hrad⟩` from `ringKrullDim_eq_one_iff_of_isLocalRing_isDomain.1 hdim`.
+
+Establish `key` using `(IsDiscreteValuationRing.TFAE O hf).out 0 3`. Apply the tactic sequence `try simp only [List.length_cons, List.getElem_cons_succ, List.getElem_cons_zero] at key`. Use `key.2 ⟨inferInstance, maximalIdeal O, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(isField_iff_maximalIdeal_eq).not.1 hf`. Conclude with `(maximalIdeal.isMaximal O).isPrime`.
+
+Introduce and unpack `P ⟨hP, hPp⟩`. Take `⟨x, hxP, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hP`. Use `le_antisymm (le_maximalIdeal hPp.ne_top) ?_` and prove the remaining obligations. Use `(hrad x hx0).trans ?_` and prove the remaining obligations. Rewrite using `[hPp.radical_le_iff, Ideal.span_singleton_le_iff_mem]`.
+
+Conclude with `hxP`. Use `letI := g.toAlgebra`. Use `haveI : IsLocalHom (algebraMap O W) := hloc`. Use `haveI : Module.Flat O W := by`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`.
+
+Introduce `x hx`. Take `⟨⟨r, hr⟩, hrx⟩` from `hx`. Establish `hr0 : r ≠ 0` using `nonZeroDivisors.ne_zero hr`. Establish `h1 : g r * x = 0`. Establish `: r • x = 0` using `hrx`.
+
+Rewrite `this` using `[Algebra.smul_def]`. Conclude with `this`. Establish `h2 : g r ≠ 0` using `fun h => hr0 (hg (by simpa using h))`. Simplify using `using (mul_eq_zero.1 h1).resolve_left h2`. Use `haveI := Module.FaithfullyFlat.of_flat_of_isLocalHom (A := O) (B := W)`.
+
+Rewrite using `[← Ideal.comap_map_eq_self_of_faithfullyFlat (B := W) I, Ideal.mem_comap]`. Conclude with `ha`.
+-/
 theorem mem_of_map_mem_map : ∀ (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O], IsIntegrallyClosed O →
     IsNoetherianRing O → ringKrullDim O = 1 → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W →
     ∀ (g : O →+* W), Function.Injective g → IsLocalHom g → ∀ (I : Ideal O) (a : O), g a ∈ I.map g → a ∈ I := by

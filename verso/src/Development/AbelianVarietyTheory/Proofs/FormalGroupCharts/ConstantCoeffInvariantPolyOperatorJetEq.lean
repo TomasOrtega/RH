@@ -13,6 +13,11 @@ open GlobalTheory.ChartCmp
 
 namespace GlobalTheory.ChartCmp
 
+/- English proof (translation)
+Introduce `k _ d n F Ix _ cp u P m f g hP hfg`. Rewrite using `[GlobalTheory.PowGerm.NabJet.constantCoeff_DpolyN_eq F cp u P f _ subset_rfl, GlobalTheory.PowGerm.NabJet.constantCoeff_DpolyN_eq F cp u P g _ subset_rfl]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Use `congr 1`. Use `GlobalTheory.PowGerm.NabJet.constantCoeff_DmonN_congr F cp u e f g fun mo hmo => ?_` and prove the remaining obligations.
+
+Use `hfg mo (hmo.trans (le_trans ?_ hP))` and prove the remaining obligations. Use `MvPolynomial.le_totalDegree he` as an intermediate fact. Rewrite using `[Finsupp.degree_apply]` and apply the resulting hypothesis.
+-/
 theorem constantCoeff_DpolyN_jEq : ∀ (k : Type) [CommRing k] (d n : ℕ) (F : Fin d → PS k 2 d) (Ix : Type) [Fintype Ix] (cp : Ix → Fin n) (u : Ix → Fin d → k) (P : MvPolynomial Ix k) (m : ℕ) (f g : PS k n d), P.totalDegree ≤ m → JEq m f g → MvPowerSeries.constantCoeff (DpolyN F cp u P f) = MvPowerSeries.constantCoeff (DpolyN F cp u P g) := by
   intro k _ d n F Ix _ cp u P m f g hP hfg
   classical

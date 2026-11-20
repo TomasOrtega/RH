@@ -29,6 +29,11 @@ def IsEvalAt (Ω z : ℂ) (e : W.toAffine.CoordinateRing →+* ℂ) : Prop :=
   (∀ r, e (algebraMap ℂ _ r) = r) ∧ e (affineX W) = Λ.weierstrassP z / Ω ^ 2 ∧
     e (affineY W) = Λ.derivWeierstrassP z / (2 * Ω ^ 3)
 
+/- English proof (translation)
+Take `⟨P, Q, R, S, hQ, hS, h⟩` from `exists_rational_weierstrassP hf`. Set `t : ℂ[X] → W.toAffine.CoordinateRing` to `fun p => p.eval₂ (algebraMap ℂ _) (algebraMap ℂ _ (Ω ^ 2) * affineX W)`. Use `⟨t P * t S + algebraMap ℂ _ (2 * Ω ^ 3) * affineY W * t R * t Q, t Q * t S, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h, eventually_codiscrete_eval_weierstrassP_ne_zero (L := Λ) hQ, eventually_codiscrete_eval_weierstrassP_ne_zero (L := Λ) hS] with z hz h1 h2 e ⟨e0, ex, ey⟩`. Establish `ht : ∀ p, e (t p) = p.eval (Λ.weierstrassP z)` using `fun p => by`.
+
+Establish `h3 : e.comp (algebraMap ℂ _) = RingHom.id ℂ` using `RingHom.ext e0`. Rewrite using `[hom_eval₂, h3, map_mul, e0, ex, mul_div_cancel₀ _ (pow_ne_zero 2 hΩ), eval₂_id]`. Simplify using `only [map_add, map_mul, ht, e0, ey, hz]`. Use `⟨mul_ne_zero h1 h2, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_quotient (hΩ : Ω ≠ 0) {f : ℂ → ℂ} (hf : IsEllipticFunction Λ f) :
     ∃ a d : W.toAffine.CoordinateRing, ∀ᶠ z in codiscrete ℂ, ∀ e, IsEvalAt Λ W Ω z e →
       e d ≠ 0 ∧ e a = e d * f z := by
@@ -45,6 +50,11 @@ theorem exists_quotient (hΩ : Ω ≠ 0) {f : ℂ → ℂ} (hf : IsEllipticFunct
   refine ⟨mul_ne_zero h1 h2, ?_⟩
   field_simp
 
+/- English proof (translation)
+Use `choose a d h using fun j => exists_quotient Λ W hΩ (hf j)`. Use `⟨fun j => a j * ∏ i ∈ Finset.univ.erase j, d i, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_all.2 h] with z hz e he`. Use `⟨∏ i, e (d i), Finset.prod_ne_zero_iff.2 fun i _ => (hz i e he).1, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_prod, (hz j e he).2, ← Finset.mul_prod_erase _ _ (Finset.mem_univ j)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_vector (hΩ : Ω ≠ 0) {ι : Type} [Fintype ι] {f : ι → ℂ → ℂ} (hf : ∀ j, IsEllipticFunction Λ (f j)) :
     ∃ v : ι → W.toAffine.CoordinateRing, ∀ᶠ z in codiscrete ℂ, ∀ e, IsEvalAt Λ W Ω z e →
       ∃ c : ℂ, c ≠ 0 ∧ ∀ j, e (v j) = c * f j z := by
@@ -74,6 +84,11 @@ namespace GlobalTheory.CMTorsion
 
 open Filter Topology GlobalTheory.ProjHol
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.latticeCurve_Δ_ne_zero Λ`. Rewrite `h` using `[GlobalTheory.latticeCurve_Δ]`. Establish `e : (curve Λ Ω).Δ = (Λ.g₂ ^ 3 - 27 * Λ.g₃ ^ 2) / Ω ^ 12`. Simplify using `only [curve, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `div_ne_zero h (pow_ne_zero _ hΩ)`.
+-/
 theorem curve_Δ_ne_zero (Λ : PeriodPair) (Ω : ℂ) (hΩ : Ω ≠ 0) : (curve Λ Ω).Δ ≠ 0 := by
   have h := GlobalTheory.latticeCurve_Δ_ne_zero Λ
   rw [GlobalTheory.latticeCurve_Δ] at h
@@ -85,11 +100,27 @@ theorem curve_Δ_ne_zero (Λ : PeriodPair) (Ω : ℂ) (hΩ : Ω ≠ 0) : (curve 
   rw [e]
   exact div_ne_zero h (pow_ne_zero _ hΩ)
 
+/- English proof (translation)
+Use `mem_codiscreteWithin_iff_forall_mem_nhdsNE.1 h z (Set.mem_univ z)` as an intermediate fact. Simplify `this` using `[Filter.Eventually]`.
+-/
 theorem eventually_nhdsNE_of_codiscrete {p : ℂ → Prop} (h : ∀ᶠ z in codiscrete ℂ, p z) (z : ℂ) :
     ∀ᶠ w in 𝓝[≠] z, p w := by
   have := mem_codiscreteWithin_iff_forall_mem_nhdsNE.1 h z (Set.mem_univ z)
   simpa [Filter.Eventually] using this
 
+/- English proof (translation)
+Introduce `Λ Ω hΩ N φ hstr hper hhol`. Establish `hH : IsHolTo (Set.univ : Set ℂ) φ` using `fun U s => by`. Simplify `hhol U s` using `only [Set.mem_univ, true_and]`. Establish `: (curve Λ Ω).IsElliptic` using `⟨IsUnit.mk0 _ (curve_Δ_ne_zero Λ Ω hΩ)⟩`. Take `⟨k, hk⟩` from `exists_inChart (φ 0)`.
+
+Take `⟨v, hv⟩` from `exists_vector Λ (curve Λ Ω) hΩ (f := fun j w => rv (φ w) k j) fun j => ⟨meromorphic_rv hH hk j, fun z l hl => by simp only [hper z l hl]⟩`. Establish `hev : ∀ z₀, ∀ᶠ z in 𝓝[≠] z₀, InChart (φ z) k ∧ ∃ e : (curve Λ Ω).toAffine.CoordinateRing →+* ℂ, (∀ r, e (algebraMap ℂ _ r) = r) ∧ pt Λ Ω z = spMap e ≫ GlobalTheory.WeierstrassCurve.chartZ (curve Λ Ω) ∧ ∃ c : ℂ, c ≠ 0 ∧ ∀ j, e (v j) = c * rv (φ z) k j` using `fun z₀ => by`. Establish `hl : ∀ᶠ z in 𝓝[≠] z₀, z ∉ Λ.lattice` using `by filter_upwards [nhdsWithin_le_nhds (Λ.compl_lattice_sdiff_singleton_mem_nhds z₀), self_mem_nhdsWithin] with z h1 h2 h3 using h1 ⟨h3, h2⟩`. Use `filter_upwards [eventually_nhdsNE_inChart hH hk z₀, eventually_nhdsNE_of_codiscrete hv z₀, hl] with z h1 h2 h3`. Establish `h4` using `GlobalTheory.WeierstrassCurve.affineEval_algebraMap (curve Λ Ω) (RingHom.id ℂ) _ _ (HolPt.affine_equation Λ Ω hΩ z h3)`.
+
+Conclude with `⟨h1, _, h4, HolPt.pt_eq_chartZ Λ Ω hΩ z h3, h2 _ ⟨h4, GlobalTheory.WeierstrassCurve.affineEval_affineX .., GlobalTheory.WeierstrassCurve.affineEval_affineY ..⟩⟩`. Establish `hvk : v k ≠ 0`. Take `⟨z, h1, e, -, -, c, hc, h⟩` from `(hev 0).exists`. Introduce `h0`. Use `h k` as an intermediate fact.
+
+Rewrite `this` using `[h0, map_zero, rv_self h1, _root_.mul_one]`. Conclude with `hc this.symm`. Take `⟨ψ, hψ, hpt⟩` from `exists_extend (curve Λ Ω) v k hvk`. Establish `hs : ∀ z, (pt Λ Ω z ≫ ψ) ≫ PSpace.str ℂ N = φ z ≫ PSpace.str ℂ N` using `fun z => by`. Rewrite using `[hstr, Category.assoc, hψ, pt, GlobalTheory.WeierstrassCurve.ptHom_toSpec]`.
+
+Conclude with `Spec.map_id _`. Use `⟨ψ, hψ, fun z₀ => eq_of_eventuallyEq (ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp (HolPt.isHolTo_pt Λ Ω hΩ) ψ) hH (hs z₀) ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev z₀] with z ⟨h1, e, _, h2, c, hc, h⟩`. Establish `h3 : e (v k) = c` using `by rw [h, rv_self h1, _root_.mul_one]`. Establish `h4 : (e ∘ v) k ≠ 0` using `h3.trans_ne hc`.
+
+Establish `h5 : Ideal.span (Set.range (e ∘ v)) = ⊤` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨k, rfl⟩) (IsUnit.mk0 _ h4)`. Establish `h6 : pt Λ Ω z ≫ ψ = GlobalTheory.ProjSpace.pt (e.comp (algebraMap ℂ _)) (e ∘ v) h5`. Rewrite using `[h2, Category.assoc, hpt e h4 h5]`. Use `eq_of_rv_eq (hs z) (h6 ▸ inChart_pt _ _ h5 h4) h1 fun j => ?_` and prove the remaining obligations. Rewrite using `[h6, rv_pt _ _ h5 h4, Function.comp_apply, Function.comp_apply, h3, h, mul_div_cancel_left₀ _ hc]`.
+-/
 theorem exists_hom_of_periodic_holomorphic : ∀ (Λ : PeriodPair) (Ω : ℂ), Ω ≠ 0 → ∀ (N : ℕ) (φ : ℂ → (Sp ℂ ⟶ PSpace ℂ N)), (∀ z, φ z ≫ PSpace.str ℂ N = 𝟙 _) → (∀ z, ∀ l ∈ Λ.lattice, φ (z + l) = φ z) → (∀ (U : (PSpace ℂ N).Opens) (s : Γ(PSpace ℂ N, U)), IsOpen {z | ⊤ ≤ (φ z) ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun z => valAt' (φ z) U s) {z | ⊤ ≤ (φ z) ⁻¹ᵁ U}) → ∃ ψ : scheme (curve Λ Ω) ⟶ PSpace ℂ N, ψ ≫ PSpace.str ℂ N = toSpec (curve Λ Ω) ∧ ∀ z, pt Λ Ω z ≫ ψ = φ z := by
   intro Λ Ω hΩ N φ hstr hper hhol
   have hH : IsHolTo (Set.univ : Set ℂ) φ := fun U s => by

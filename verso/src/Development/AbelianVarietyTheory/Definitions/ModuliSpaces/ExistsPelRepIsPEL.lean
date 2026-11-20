@@ -20,6 +20,17 @@ open Out.Inh GlobalTheory.ZM.Model GlobalTheory.ZM.DimZero
 
 variable {o : Type} [CommRing o] {S S' : Scheme.{0}} {k : ℕ}
 
+/- English proof (translation)
+Use `haveI := h.proper`. Use `haveI := h.smooth`. Use `haveI : IsReduced A.left := GlobalTheory.isReduced_of_smooth_of_isReduced A.hom`. Set `e : S ⟶ A.left` to `eSec A`. Establish `he : e ≫ A.hom = 𝟙 S` using `Over.w η[A]`.
+
+Use `haveI : IsClosedImmersion e := by haveI : IsClosedImmersion (e ≫ A.hom) := by rw [he]; infer_instance`. Conclude with `IsClosedImmersion.of_comp e A.hom`. Use `haveI : Surjective e := ⟨fun a => by`. Set `K` to `AlgebraicClosure (A.left.residueField a)`. Set `y : Sp K ⟶ A.left` to `spMap (algebraMap (A.left.residueField a) K) ≫ A.left.fromSpecResidueField a`.
+
+Establish `h1` using `hp K (y ≫ A.hom) (Over.homMk y rfl)`. Establish `h2 : y = (y ≫ A.hom) ≫ e`. Use `congrArg (·.left) h1` as an intermediate fact. Simplify `this` using `[Hom.one_def, e, eSec]`. Establish `h3 : y default = a`.
+
+Simplify using `only [y, Scheme.Hom.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`. Conclude with `⟨(y ≫ A.hom) default, by rw [← Scheme.Hom.comp_apply, ← h2, h3]⟩⟩`. Use `haveI : IsIso e := isIso_of_isClosedImmersion_of_surjective e`. Use `haveI : IsIso (e ≫ A.hom) := by rw [he]; infer_instance`.
+
+Conclude with `IsIso.of_isIso_comp_left e _`.
+-/
 theorem isIso_of_points [IsReduced S] (A : Over S) [GrpObj A] (h : IsAbelianScheme A)
     (hp : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S) (y : Over.mk x ⟶ A), y = 1) : IsIso A.hom := by
   haveI := h.proper
@@ -45,6 +56,17 @@ theorem isIso_of_points [IsReduced S] (A : Over S) [GrpObj A] (h : IsAbelianSche
   haveI : IsIso (e ≫ A.hom) := by rw [he]; infer_instance
   exact IsIso.of_isIso_comp_left e _
 
+/- English proof (translation)
+Establish `uniq : ∀ {T : Over S'} (x y : T ⟶ c.A), x = y` using `fun x y => Over.OverMorphism.ext (by rw [← cancel_mono c.A.hom, Over.w x, Over.w y])`. Establish `aux : ∀ {X Y Z : Scheme.{0}} (u : X ⟶ S') (d : S ⟶ Z) (p : Z ⟶ S) (q : X ⟶ Y) (a : Y ⟶ S') (f : S' ⟶ S), d ≫ p = 𝟙 S → q ≫ a = u → (u ≫ f ≫ d) ≫ p = q ≫ a ≫ f`. Introduce and unpack `X Y Z _ d p q a f h rfl`. Simplify using `[h]`. Take `⟨r, hr⟩` from `c.rig₁`.
+
+Establish `hF : (fst c.A c.A).left ≫ (lift (1 : c.A ⟶ c.A) (𝟙 c.A)).left = 𝟙 _`. Establish `: fst c.A c.A ≫ lift (1 : c.A ⟶ c.A) (𝟙 c.A) = 𝟙 _` using `CartesianMonoidalCategory.hom_ext _ _ (uniq _ _) (uniq _ _)`. Conclude with `congrArg (·.left) this`. Set `d : 𝟙_ (Over S) ⟶ 𝟙_ (Over S) ⊗ 𝟙_ (Over S)` to `lift (𝟙 _) (𝟙 _)`. Establish `d1 : d.left ≫ (fst _ _ : 𝟙_ (Over S) ⊗ 𝟙_ (Over S) ⟶ _).left = 𝟙 S`.
+
+Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Establish `d2 : d.left ≫ (snd _ _ : 𝟙_ (Over S) ⊗ 𝟙_ (Over S) ⟶ _).left = 𝟙 S`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+
+Use `⟨c.A.hom ≫ f, (c.A ⊗ c.A).hom ≫ f ≫ d.left, ⟨?_, fun T x y x₀ y₀ _ _ => ?_⟩, ⟨?_, ?_⟩, lbIso_of_gen _ _ _ hF _ (DVR.pullGen_isGen _ _ _ r hr (fst c.A c.A).left) (linComb_triv_g _ _), fun a => ?_⟩` and prove the remaining obligations. Use `show IsPullback (c.A.hom ≫ f) c.A.hom (𝟙 S) f`. Conclude with `IsPullback.of_vert_isIso ⟨by simp⟩`. Establish `h1 : (x₀ * y₀).left ≫ 𝟙 S = T.hom ≫ f` using `Over.w (x₀ * y₀)`. Conclude with `((Category.comp_id _).symm.trans h1).trans ((congrArg (· ≫ f) (Over.w (x * y))).symm.trans (Category.assoc _ _ _))`.
+
+Conclude with `aux _ _ _ _ _ _ d1 (Over.w (fst c.A c.A))`. Conclude with `aux _ _ _ _ _ _ d2 (Over.w (snd c.A c.A))`. Establish `h1 : (c.lev a).left ≫ c.A.hom = 𝟙 S'` using `Over.w (c.lev a)`. Establish `h2 : ((zeroSieg k ζ s).lev a).left ≫ 𝟙 S = 𝟙 S` using `Over.w ((zeroSieg k ζ s).lev a)`. Conclude with `((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ f) h1).trans (Category.id_comp _))).trans ((congrArg (f ≫ ·) ((Category.comp_id _).symm.trans h2)).trans (Category.comp_id _)).symm`.
+-/
 theorem siegPB_zero {B : Type} [CommRing B] {ζ' : B} {s' : S' ⟶ Sp B} (c : SiegPre 0 k ζ' s') [IsIso c.A.hom]
     (ζ : o) (s : S ⟶ Sp o) (f : S' ⟶ S) : SiegPB c (zeroSieg k ζ s) f := by
   have uniq : ∀ {T : Over S'} (x y : T ⟶ c.A), x = y := fun x y =>
@@ -90,6 +112,9 @@ def zeroFam (k : ℕ) (ζ : o)
     exact ⟨s', Category.comp_id _, siegPB_zero c ζ _ s'⟩
   inj := fun _ _ _ _ _ _ _ h _ _ => by simpa using h
 
+/- English proof (translation)
+Set `β : o →+* K` to `(Spec.preimage (x ≫ s')).hom`. Establish `hβ : x ≫ s' = spMap β` using `by simp [β, spMap]`. Take `⟨h1, h2, -⟩` from `c.geom K x β (hζ.map β).unit hβ rfl`. Take `⟨a, rfl⟩` from `h2 y hy`. Conclude with `(h1 a).2 ⟨0, Subsingleton.elim _ _⟩`.
+-/
 theorem tors_eq_one {ζ : o} (hζ : IsUnit ζ) {s' : S ⟶ Sp o} (c : SiegPre 0 k ζ s') (K : Type) [Field K]
     [IsAlgClosed K] (x : Sp K ⟶ S) (y : Over.mk x ⟶ c.A) (hy : y ^ k = 1) : y = 1 := by
   let β : o →+* K := (Spec.preimage (x ≫ s')).hom
@@ -101,6 +126,9 @@ theorem tors_eq_one {ζ : o} (hζ : IsUnit ζ) {s' : S ⟶ Sp o} (c : SiegPre 0 
 def zeroFamLevelZero {ζ : o} (hζ : IsUnit ζ) : SFam 0 0 ζ :=
   zeroFam 0 ζ fun _ _ c _ => isIso_of_points c.A c.ab fun K _ _ x y => tors_eq_one hζ c K x y (pow_zero y)
 
+/- English proof (translation)
+The claim follows from `isIso_of_points c.A c.ab fun K _ _ t y => by have hB' : IsAbelianScheme ((Over.pullback t).obj c.A) := { comm := by have := c.ab.comm; infer_instance smooth := by have := c.ab.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by have := c.ab.proper; show IsProper ( …`.
+-/
 theorem isIso_of_count
     (H : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B] (g n : ℕ), IsAbelianScheme B →
       SmoothOfRelativeDimension g B.hom → (n : K) ≠ 0 →
@@ -191,6 +219,9 @@ def emptyFam (h k : ℕ) (ζ : o) (ho : ¬ (⊥ : Ideal o).IsPrime) : SFam h k �
       fun _ => (isInitialOfIsEmpty (X := S)).hom_ext _ _⟩
   inj := fun R _ _ x => (IsEmpty.false (x (IsLocalRing.closedPoint R))).elim
 
+/- English proof (translation)
+Use `GlobalTheory.hom_ext_of_fromSpecStalk fun x => ?_` and prove the remaining obligations. Take `⟨c', hc'⟩` from `(GlobalTheory.siegPre_pullback h k o ζ S (Sp (S.presheaf.stalk x)) s' _ (S.fromSpecStalk x) c rfl).1`. Conclude with `F.inj (S.presheaf.stalk x) _ _ _ c' ((Category.assoc _ _ _).trans ((congrArg (S.fromSpecStalk x ≫ ·) hs).trans (Category.assoc _ _ _).symm)) (GlobalTheory.SiegelPullComp.pb_comp h₁ hc') (GlobalTheory.SiegelPullComp.pb_comp h₂ hc')`.
+-/
 theorem hom_ext {h : ℕ} {ζ : o} (F : SFam h k ζ) {s' : S ⟶ Sp o} (c : SiegPre h k ζ s') (f f' : S ⟶ F.X)
     (hs : f ≫ F.s = f' ≫ F.s) (h₁ : SiegPB c F.univ f) (h₂ : SiegPB c F.univ f') : f = f' := by
   refine GlobalTheory.hom_ext_of_fromSpecStalk fun x => ?_
@@ -199,8 +230,20 @@ theorem hom_ext {h : ℕ} {ζ : o} (F : SFam h k ζ) {s' : S ⟶ Sp o} (c : Sieg
     ((Category.assoc _ _ _).trans ((congrArg (S.fromSpecStalk x ≫ ·) hs).trans (Category.assoc _ _ _).symm))
     (GlobalTheory.SiegelPullComp.pb_comp h₁ hc') (GlobalTheory.SiegelPullComp.pb_comp h₂ hc')
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨zeroFamLevelZero isUnit_one⟩`.
+-/
 example : Nonempty (SFam 0 0 (1 : ℤ)) := ⟨zeroFamLevelZero isUnit_one⟩
 
+/- English proof (translation)
+Use extensionality with `⟨x, hx⟩`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | ⟨n, hn, rfl⟩` into its components or cases. Establish `: (⟨zeta 0, Subring.subset_closure (Or.inl rfl)⟩ : ZP p 0) = 1` using `Subtype.ext (by simp [zeta]) erw [this, map_one, map_one]`.
+
+Distinguish the cases in `h0 : n = 0`. Establish `: (⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr ⟨n, hn, rfl⟩)⟩ : ZP p 0) = 0` using `Subtype.ext (by simp [h0]) erw [this, map_zero, map_zero]`. Establish `: (n : ZP p 0) * (⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr ⟨n, hn, rfl⟩)⟩ : ZP p 0) = 1` using `Subtype.ext (by simp [h0])`. Establish `h1` using `congrArg f this`. Establish `h2` using `congrArg f' this`.
+
+Rewrite `h1`, `h2` using `[map_mul, map_natCast, map_one]`. Conclude with `(IsUnit.of_mul_eq_one _ h1).mul_left_cancel (h1.trans h2.symm)`. Consider the case `zero => exact (map_zero f).trans (map_zero f').symm`. Consider the case `one => exact (map_one f).trans (map_one f').symm`. Consider the case `add x y hx hy a b => exact (map_add f ⟨x, hx⟩ ⟨y, hy⟩).trans ((congrArg₂ (· + ·) a b).trans (map_add f' _ _).symm)`.
+
+Consider the case `neg x hx a => exact (map_neg f ⟨x, hx⟩).trans ((congrArg (- ·) a).trans (map_neg f' _).symm)`. Consider the case `mul x y hx hy a b => exact (map_mul f ⟨x, hx⟩ ⟨y, hy⟩).trans ((congrArg₂ (· * ·) a b).trans (map_mul f' _ _).symm)`.
+-/
 theorem zp_hom_ext (p : ℕ) {R : Type} [CommRing R] (f f' : ZP p 0 →+* R) : f = f' := by
   ext ⟨x, hx⟩
   induction hx using Subring.closure_induction with
@@ -223,6 +266,13 @@ theorem zp_hom_ext (p : ℕ) {R : Type} [CommRing R] (f f' : ZP p 0 →+* R) : f
   | neg x hx a => exact (map_neg f ⟨x, hx⟩).trans ((congrArg (- ·) a).trans (map_neg f' _).symm)
   | mul x y hx hy a b => exact (map_mul f ⟨x, hx⟩ ⟨y, hy⟩).trans ((congrArg₂ (· * ·) a b).trans (map_mul f' _ _).symm)
 
+/- English proof (translation)
+Establish `hζ : IsUnit (zetaZP p 0)`. Establish `: zetaZP p 0 = 1` using `Subtype.ext (by simp [zeta, zetaZP])`. Rewrite using `[this]`. Conclude with `isUnit_one`. Use `⟨_, (zeroFamLevelZero hζ).sRep (zeroFamLevelZero hζ).smooth (inferInstanceAs (QuasiCompact (𝟙 _))) (zeroFamLevelZero hζ).princ ?_ ?_, (inferInstance : Nonempty (Sp (ZP p 0)))⟩` and prove the remaining obligations.
+
+Introduce `C O _ _ _ _ _ _ _ _ hO _ β c _ _ haveI : IsDomain O := hO.1.isDomain _ haveI := isIso_of_points c.A c.ab fun K _ _ x y => tors_eq_one hζ c K x y (pow_zero y)`. Conclude with `⟨spMap β, Category.comp_id _, siegPB_zero c _ _ _⟩`. Introduce `K _ x _ _ _`. Establish `u : ∀ y y' : Sp (DualNumber K) ⟶ Sp (ZP p 0), y = y'` using `fun y y' => by`. Rewrite using `[← Spec.map_preimage y, ← Spec.map_preimage y']`.
+
+Use `congr 1`. Conclude with `CommRingCat.hom_ext (zp_hom_ext p _ _)`. Conclude with `u _ _`.
+-/
 theorem exists_sRep (p : ℕ) : ∃ Ag : SiegelFamily 0 p 0, SRep Ag ∧ Nonempty Ag.X := by
   have hζ : IsUnit (zetaZP p 0) := by
     have : zetaZP p 0 = 1 := Subtype.ext (by simp [zeta, zetaZP])
@@ -243,6 +293,13 @@ theorem exists_sRep (p : ℕ) : ∃ Ag : SiegelFamily 0 p 0, SRep Ag ∧ Nonempt
 def zeroFamLevel {ζ : o} (hζ : IsUnit ζ) (hku : IsUnit (k : o)) (hk : 2 ≤ k) : SFam 0 k ζ :=
   zeroFam k ζ fun _ _ c _ => isIso_of_count GlobalTheory.UU.TorsionCount.card_torsion_points_unconditional hζ hku hk c
 
+/- English proof (translation)
+Take `⟨o, _, b, em, j, hem, hj, -, hc⟩` from `GlobalTheory.ZM.CycBase.exists_base n e p _ hn hp hnp he rfl`. Establish `hk : 2 ≤ n ^ e` using `hn.two_le.trans (Nat.le_self_pow (by omega) n)`. Establish `hζ : IsUnit (zetaZP p (n ^ e))` using `hj ▸ b.ζ.isUnit.map j`. Establish `hku : IsUnit ((n ^ e : ℕ) : ZP p (n ^ e))`. Use `b.unit.map j` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `haveI := hem.1`. Use `⟨⟨o, _, b, em, zeroFamLevel b.ζ.isUnit b.unit hk, hem, (inferInstance : Nonempty (Sp o))⟩, _, (zeroFamLevel hζ hku hk).sRep (zeroFamLevel hζ hku hk).smooth (inferInstanceAs (QuasiCompact (𝟙 _))) (zeroFamLevel hζ hku hk).princ ?_ ?_, (inferInstance : Nonempty (Sp (ZP p (n ^ e))))⟩` and prove the remaining obligations. Introduce `C O _ _ _ _ _ _ _ _ hO _ β c _ _ haveI : IsDomain O := hO.1.isDomain _ haveI := isIso_of_count GlobalTheory.UU.TorsionCount.card_torsion_points_unconditional hζ hku hk c`. Conclude with `⟨spMap β, Category.comp_id _, siegPB_zero c _ _ _⟩`.
+
+Introduce `K _ x _ _ _`. Conclude with `hc K x`.
+-/
 theorem exists_arith (n e p : ℕ) (hn : n.Prime) (hp : p.Prime) (hnp : n ≠ p) (he : 1 ≤ e) :
     (∃ (o : Type) (_ : CommRing o) (b : TBase o (n ^ e)) (em : o →+* ℂ) (F : SFam 0 (n ^ e) (b.ζ : o)),
       ArBase em ∧ Nonempty F.X) ∧ ∃ Ag : SiegelFamily 0 p (n ^ e), SRep Ag ∧ Nonempty Ag.X := by
@@ -263,6 +320,9 @@ theorem exists_arith (n e p : ℕ) (hn : n.Prime) (hp : p.Prime) (hnp : n ≠ p)
   · intro K _ x _ _ _
     exact hc K x
 
+/- English proof (translation)
+Use `(F.rep _ (𝟙 _) (zeroSieg k ζ _) inferInstance ?_ (principal_zeroSieg k ζ _)).imp fun _ h => h.1` and prove the remaining obligations. Introduce `x`. Establish `hsp : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum o) ⤳ x` using `(PrimeSpectrum.le_iff_specializes _ _).1 (show (⊥ : Ideal o) ≤ _ from bot_le)`. Conclude with `hsp.mem_closed isClosed_closure (subset_closure rfl)`.
+-/
 theorem exists_section [IsDomain o] {ζ : o} (F : SFam 0 k ζ) : ∃ f : Sp o ⟶ F.X, f ≫ F.s = 𝟙 _ := by
   refine (F.rep _ (𝟙 _) (zeroSieg k ζ _) inferInstance ?_ (principal_zeroSieg k ζ _)).imp fun _ h => h.1
   intro x
@@ -270,6 +330,9 @@ theorem exists_section [IsDomain o] {ζ : o} (F : SFam 0 k ζ) : ∃ f : Sp o �
     (PrimeSpectrum.le_iff_specializes _ _).1 (show (⊥ : Ideal o) ≤ _ from bot_le)
   exact hsp.mem_closed isClosed_closure (subset_closure rfl)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, Models.Inhab.zeroTriple H _, fun _ => 1, pelRep_zero _ a _ ρ _, isPEL_zero H a _ ρ hk _, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 (𝟙_ (Over (Sp ℂ))))), lbIso_of_g _ _ (fun _ _ => rfl) (linComb_triv_g _ _), fun _ => toUnit_unique _ _, fun _ _ => (_root_.mul_one _).symm, fun i …`.
+-/
 theorem exists_pelRep_isPEL {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {J : Type} (a : J → 𝓞 E)
     (ρ : ℂ) (hk : k ≠ 0) : ∃ (t : TObj 0 k J (baseC k hk) (𝟙 (Sp ℂ))) (τ : SAB H (Sp ℂ)) (lev : _),
       PELRep (Test.zeroDatum H) a (zeroBas H) ρ t ∧ IsPEL (Test.zeroDatum H) a (zeroBas H) ρ t τ ∧
@@ -279,6 +342,9 @@ theorem exists_pelRep_isPEL {E : Type} [Field E] [NumberField E] [IsCMField E] (
     lbIso_of_g _ _ (fun _ _ => rfl) (linComb_triv_g _ _), fun _ => toUnit_unique _ _,
     fun _ _ => (_root_.mul_one _).symm, fun i => i.elim0⟩
 
+/- English proof (translation)
+Take `⟨f, -⟩` from `h.rep (PowerSeries ℂ) PowerSeries.C _ _ PowerSeries.C_injective (isPEL_zero H a _ ρ hk _)`. Conclude with `⟨f (IsLocalRing.closedPoint (PowerSeries ℂ))⟩`.
+-/
 theorem nonempty_of_pelRep {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {J : Type} (a : J → 𝓞 E)
     (ρ : ℂ) (hk : k ≠ 0) {s : S ⟶ Sp ℂ} (t : TObj 0 k J (baseC k hk) s)
     (h : PELRep (Test.zeroDatum H) a (zeroBas H) ρ t) : Nonempty S := by

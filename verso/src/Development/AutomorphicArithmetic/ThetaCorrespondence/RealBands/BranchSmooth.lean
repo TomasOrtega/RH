@@ -8,6 +8,13 @@ open MeasureTheory Matrix Finset Formalism.MainNotions.S Formalism.REAL Formalis
 open scoped InnerProductSpace
 
 open GlobalTheory.SepReal.ProjSm in
+/- English proof (translation)
+Introduce `n e ε lam ε' mu B hpar H H' _ _ _ _ π σ hπ hσ T hT v hv`. Take `⟨-, -, -, -, -, -, hlie, hexp, -⟩` from `GlobalTheory.T.unitary_stabiliser_embedding_norm_laws n e ε ε' hpar.signs`. Introduce `k Xs hXs`. Establish `key : (fun t : Fin k → ℝ => σ ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) (T v)) = fun t => T (π ((List.ofFn fun i => NormedSpace.exp (t i • embL e (Xs i))).prod) v)`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[← hT _ (list_mem _ (by`. Introduce `x hx`. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hx`. Conclude with `exp_mem (hXs i) (t i))), embH_list, List.map_ofFn]`. Simplify using `only [Function.comp_def, hexp]`.
+
+Rewrite using `[key]`. Conclude with `(T.restrictScalars ℝ).contDiff.comp (hv k (fun i => embL e (Xs i)) fun i => hlie _ (hXs i))`.
+-/
 theorem UpperTheory.Lit.Branch.mapSmooth :
     MapSmooth := by
   intro n e ε lam ε' mu B hpar H H' _ _ _ _ π σ hπ hσ T hT v hv

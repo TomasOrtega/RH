@@ -9,6 +9,11 @@ namespace GlobalTheory.CrLocal
 
 variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
 
+/- English proof (translation)
+Use `letI := moduleTopology ℚ_[l] V`. Use `letI := moduleTopology ℚ_[l] W`. Use `haveI : IsModuleTopology ℚ_[l] V := ⟨rfl⟩`. Use `haveI : IsModuleTopology ℚ_[l] W := ⟨rfl⟩`. Use `haveI : ContinuousAdd W := IsModuleTopology.toContinuousAdd ℚ_[l] W`.
+
+Conclude with `(IsModuleTopology.continuous_of_linearMap f).comp hc`.
+-/
 theorem qcont_map {X V W : Type} [TopologicalSpace X] [AddCommGroup V] [Module ℚ_[l] V] [AddCommGroup W]
     [Module ℚ_[l] W] (f : V →ₗ[ℚ_[l]] W) {c : X → V} (hc : QCont l c) : QCont l fun x => f (c x) := by
   letI := moduleTopology ℚ_[l] V
@@ -18,6 +23,9 @@ theorem qcont_map {X V W : Type} [TopologicalSpace X] [AddCommGroup V] [Module �
   haveI : ContinuousAdd W := IsModuleTopology.toContinuousAdd ℚ_[l] W
   exact (IsModuleTopology.continuous_of_linearMap f).comp hc
 
+/- English proof (translation)
+Use `letI := moduleTopology ℚ_[l] V`. Use `haveI : IsModuleTopology ℚ_[l] V := ⟨rfl⟩`. Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd ℚ_[l] V`. Conclude with `Continuous.add hc hd`.
+-/
 theorem qcont_add {X V : Type} [TopologicalSpace X] [AddCommGroup V] [Module ℚ_[l] V] {c d : X → V}
     (hc : QCont l c) (hd : QCont l d) : QCont l fun x => c x + d x := by
   letI := moduleTopology ℚ_[l] V
@@ -25,6 +33,9 @@ theorem qcont_add {X V : Type} [TopologicalSpace X] [AddCommGroup V] [Module ℚ
   haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd ℚ_[l] V
   exact Continuous.add hc hd
 
+/- English proof (translation)
+Use `letI := moduleTopology ℚ_[l] V`. Use `haveI : IsModuleTopology ℚ_[l] V := ⟨rfl⟩`. Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd ℚ_[l] V`. Conclude with `continuous_finset_sum _ fun i _ => hc i`.
+-/
 theorem qcont_sum {X V ι : Type} [Fintype ι] [TopologicalSpace X] [AddCommGroup V] [Module ℚ_[l] V] {c : ι → X → V}
     (hc : ∀ i, QCont l (c i)) : QCont l fun x => ∑ i, c i x := by
   letI := moduleTopology ℚ_[l] V
@@ -32,6 +43,13 @@ theorem qcont_sum {X V ι : Type} [Fintype ι] [TopologicalSpace X] [AddCommGrou
   haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd ℚ_[l] V
   exact continuous_finset_sum _ fun i _ => hc i
 
+/- English proof (translation)
+Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd ℚ_[l] V`. Establish `h' : ∀ v, Continuous fun g => ρ g v` using `fun v => by`. Use `h v` as an intermediate fact. Unfold `QCont at this`. Rewrite `this` using `[← eq_moduleTopology ℚ_[l] V]`. Then use the resulting hypothesis.
+
+Set `b` to `Module.finBasis ℚ_[l] V`. Establish `e : (fun p : G × V => ρ p.1 p.2) = fun p => ∑ i, b.coord i p.2 • ρ p.1 (b i)`. Use function extensionality and compare the values at `p`. Use `conv_lhs => rw [← b.sum_repr p.2, map_sum]`. Simplify using `only [map_smul, Basis.coord_apply]`.
+
+Unfold `ReciprocityTheory.Gal.ContAction`. Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun i _ => ((IsModuleTopology.continuous_of_linearMap (b.coord i)).comp continuous_snd).smul ((h' _).comp continuous_fst)`.
+-/
 theorem contAction_of_qcont {V : Type} [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V]
     [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] (ρ : Representation ℚ_[l] G V)
     (h : ∀ v, QCont l fun g => ρ g v) : ContAction ρ := by
@@ -50,6 +68,11 @@ theorem contAction_of_qcont {V : Type} [AddCommGroup V] [Module ℚ_[l] V] [Fini
   exact continuous_finset_sum _ fun i _ =>
     ((IsModuleTopology.continuous_of_linearMap (b.coord i)).comp continuous_snd).smul ((h' _).comp continuous_fst)
 
+/- English proof (translation)
+Establish `e : (fun g => resCoef ℚ_[l] (colRep ρ) g v) = fun g => ∑ i, ∑ j, ((LinearMap.single ℚ_[l] (fun _ : Fin 3 => B) i).comp (LinearMap.mulRight ℚ_[l] (v j))) ((ρ g : Matrix (Fin 3) (Fin 3) B) i j)`. Use function extensionality and compare the values at `g`. Use extensionality with `k`. Express the relevant statement in the definitionally equal form `(ρ g : Matrix (Fin 3) (Fin 3) B).mulVec v k = _`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.single_apply]`.
+
+Rewrite using `[e]`. Conclude with `qcont_sum fun i => qcont_sum fun j => qcont_map _ (h i j)`.
+-/
 theorem qcont_colRep {B : Type} [CommRing B] [Algebra ℚ_[l] B] (ρ : G →* GL (Fin 3) B)
     (h : ∀ i j, QCont l fun g => (ρ g : Matrix (Fin 3) (Fin 3) B) i j) (v : Fin 3 → B) :
     QCont l fun g => resCoef ℚ_[l] (colRep ρ) g v := by
@@ -65,6 +88,11 @@ theorem qcont_colRep {B : Type} [CommRing B] [Algebra ℚ_[l] B] (ρ : G →* GL
 
 variable [IsTopologicalGroup G] {φ : G →* GQ l}
 
+/- English proof (translation)
+Use `letI := moduleTopology ℚ_[l] V`. Use `letI := moduleTopology ℚ_[l] W`. Use `haveI : IsModuleTopology ℚ_[l] V := ⟨rfl⟩`. Use `haveI : IsModuleTopology ℚ_[l] W := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup V := IsModuleTopology.topologicalAddGroup ℚ_[l] V`.
+
+Use `haveI : IsTopologicalAddGroup W := IsModuleTopology.topologicalAddGroup ℚ_[l] W`. Conclude with `((isCrys_isDR_sub_quot φ hφ ρ σ (contAction_of_qcont ρ hρ) (contAction_of_qcont σ hσ) f hf).1 hi).1 h`.
+-/
 theorem cr_sub (hφ : IsOpenEmbedding φ) {V W : Type} [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V]
     [AddCommGroup W] [Module ℚ_[l] W] [FiniteDimensional ℚ_[l] W] (ρ : Representation ℚ_[l] G V)
     (σ : Representation ℚ_[l] G W) (hρ : ∀ v, QCont l fun g => ρ g v) (hσ : ∀ v, QCont l fun g => σ g v)
@@ -78,6 +106,11 @@ theorem cr_sub (hφ : IsOpenEmbedding φ) {V W : Type} [AddCommGroup V] [Module 
   haveI : IsTopologicalAddGroup W := IsModuleTopology.topologicalAddGroup ℚ_[l] W
   exact ((isCrys_isDR_sub_quot φ hφ ρ σ (contAction_of_qcont ρ hρ) (contAction_of_qcont σ hσ) f hf).1 hi).1 h
 
+/- English proof (translation)
+Use `letI := moduleTopology ℚ_[l] V`. Use `letI := moduleTopology ℚ_[l] W`. Use `haveI : IsModuleTopology ℚ_[l] V := ⟨rfl⟩`. Use `haveI : IsModuleTopology ℚ_[l] W := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup V := IsModuleTopology.topologicalAddGroup ℚ_[l] V`.
+
+Use `haveI : IsTopologicalAddGroup W := IsModuleTopology.topologicalAddGroup ℚ_[l] W`. Conclude with `(isCrys_isDR_prod φ hφ ρ σ (contAction_of_qcont ρ hρ) (contAction_of_qcont σ hσ)).1 h h'`.
+-/
 theorem cr_prod (hφ : IsOpenEmbedding φ) {V W : Type} [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V]
     [AddCommGroup W] [Module ℚ_[l] W] [FiniteDimensional ℚ_[l] W] (ρ : Representation ℚ_[l] G V)
     (σ : Representation ℚ_[l] G W) (hρ : ∀ v, QCont l fun g => ρ g v) (hσ : ∀ v, QCont l fun g => σ g v)
@@ -90,6 +123,15 @@ theorem cr_prod (hφ : IsOpenEmbedding φ) {V W : Type} [AddCommGroup V] [Module
   haveI : IsTopologicalAddGroup W := IsModuleTopology.topologicalAddGroup ℚ_[l] W
   exact (isCrys_isDR_prod φ hφ ρ σ (contAction_of_qcont ρ hρ) (contAction_of_qcont σ hσ)).1 h h'
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `⟨PUnit, inferInstance, inferInstance, inferInstance, 1, 0, fun v => ?_, ?_, fun _ _ => Subsingleton.elim _ _, by simp⟩` and prove the remaining obligations. Conclude with `@continuous_const _ _ _ (moduleTopology ℚ_[l] PUnit) v`. Unfold `IsCr`.
+
+Rewrite using `[Module.finrank_zero_of_subsingleton, Module.finrank_zero_of_subsingleton, mul_zero]`. Consider the case `insert a S _ ih`. Take `⟨W, _, _, _, σ, f, h1, h2, h3, h4⟩` from `ih`. Take `⟨W', _, _, _, σ', f', h1', h2', h3', h4'⟩` from `h a`. Use `⟨W × W', inferInstance, inferInstance, inferInstance, σ.prod σ', f.prod f', fun v => ?_, cr_prod hφ σ σ' h1 h1' h2 h2', fun g x => ?_, fun x hx i hi => ?_⟩` and prove the remaining obligations.
+
+Use `qcont_add (qcont_map (LinearMap.inl ℚ_[l] W W') (h1 v.1)) (qcont_map (LinearMap.inr ℚ_[l] W W') (h1' v.2))` as an intermediate fact. Use `this using 2 with g` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp [Representation.prod]`. Apply the tactic sequence `ext <;> simp [Representation.prod, h3, h3']`. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases.
+
+Conclude with `h4' x (congrArg Prod.snd hx)`. Conclude with `h4 x (congrArg Prod.fst hx) i hi`.
+-/
 theorem exists_cr_of_finset (hφ : IsOpenEmbedding φ) {V ι : Type} [AddCommGroup V] [Module ℚ_[l] V]
     (ρ : Representation ℚ_[l] G V) (N : ι → Set V)
     (h : ∀ i, ∃ (W : Type) (_ : AddCommGroup W) (_ : Module ℚ_[l] W) (_ : FiniteDimensional ℚ_[l] W)
@@ -119,6 +161,13 @@ theorem exists_cr_of_finset (hφ : IsOpenEmbedding φ) {V ι : Type} [AddCommGro
       · exact h4' x (congrArg Prod.snd hx)
       · exact h4 x (congrArg Prod.fst hx) i hi
 
+/- English proof (translation)
+Introduce `l _ G _ _ _ φ hφ B _ _ _ ρ hc h`. Use `haveI : IsArtinianRing B := IsArtinianRing.of_finite ℚ_[l] B`. Use `haveI : Fintype (MaximalSpectrum B) := Fintype.ofFinite _`. Take `⟨W, _, _, _, σ, f, h1, h2, h3, h4⟩` from `exists_cr_of_finset hφ (resCoef ℚ_[l] (colRep ρ)) (fun m : MaximalSpectrum B => {v | ∀ i, algebraMap B (Localization.AtPrime m.asIdeal) (v i) = 0}) (fun m => by`. Set `a : B →ₗ[ℚ_[l]] Localization.AtPrime m.asIdeal` to `(IsScalarTower.toAlgHom ℚ_[l] B (Localization.AtPrime m.asIdeal)).toLinearMap`.
+
+Use `haveI : Module.Finite ℚ_[l] (Localization.AtPrime m.asIdeal) := Module.Finite.of_surjective a (IsArtinianRing.localization_surjective m.asIdeal.primeCompl _)`. Use `⟨Fin 3 → Localization.AtPrime m.asIdeal, inferInstance, inferInstance, inferInstance, resCoef ℚ_[l] (colRep ((Matrix.GeneralLinearGroup.map (algebraMap B (Localization.AtPrime m.asIdeal))).comp ρ)), a.compLeft (Fin 3), qcont_colRep _ fun i j => qcont_map a (hc i j), h _, fun g x …` and prove the remaining obligations. Use extensionality with `k`. Conclude with `RingHom.map_mulVec (algebraMap B (Localization.AtPrime m.asIdeal)) _ x k) Finset.univ`. Use `cr_sub hφ (resCoef ℚ_[l] (colRep ρ)) σ (qcont_colRep ρ hc) h1 f h3 ?_ h2` and prove the remaining obligations.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use function extensionality and compare the values at `i`. Conclude with `eq_zero_of_localization _ fun J hJ => h4 x hx ⟨J, hJ⟩ (Finset.mem_univ _) i`.
+-/
 theorem isCr_of_local : ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] (ρ : G →* GL (Fin 3) B), (∀ i j, QCont l fun g => (ρ g : Matrix (Fin 3) (Fin 3) B) i j) → (∀ (B' : Type) [CommRing B'] [IsLocalRing B'] [Algebra ℚ_[l] B'] [Module.Finite ℚ_[l] B'] [Algebra B B'] [IsScalarTower ℚ_[l] B B'], IsCr φ (colRep ((Matrix.GeneralLinearGroup.map (algebraMap B B')).comp ρ))) → IsCr φ (colRep ρ) := by
   intro l _ G _ _ _ φ hφ B _ _ _ ρ hc h
   haveI : IsArtinianRing B := IsArtinianRing.of_finite ℚ_[l] B

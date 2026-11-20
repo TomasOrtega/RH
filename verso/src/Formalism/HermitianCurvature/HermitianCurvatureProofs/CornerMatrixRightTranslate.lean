@@ -11,11 +11,21 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 
 section entries
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptEntry_cons (s1 : ℕ) (t1 : ℂ) (rest : C.LPt) (a b : ℕ) :
     D.ptEntry ((s1, t1) :: rest) a b =
       if a < s1 ∧ b < s1 then (if a + b + 1 = s1 then t1 else 0)
       else if s1 ≤ a ∧ s1 ≤ b then D.ptEntry rest (a - s1) (b - s1) else 0 := rfl
 
+/- English proof (translation)
+Proceed by induction on `h generalizing a b with`. Consider the case `nil`. Simplify using `only [List.nil_append, D.ptSize, List.map_nil, List.sum_nil, Nat.sub_zero]`. Rewrite using `[ptEntry_cons]`. Simplify using `only [D.ptEntry]`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Consider the case `cons blk h ih`. Take `⟨s1, t1⟩` from `blk`. Establish `hsz : D.ptSize ((s1, t1) :: h) = s1 + D.ptSize h` using `by simp [D.ptSize]`. Rewrite using `[List.cons_append, hsz, ptEntry_cons, ih]`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | omega | (rw [ptEntry_cons]; split_ifs <;> first | rfl | omega)`.
+-/
 theorem ptEntry_append (h : C.LPt) (s : ℕ) (t : ℂ) (a b : ℕ) :
     D.ptEntry (h ++ [(s, t)]) a b =
       if a < D.ptSize h ∧ b < D.ptSize h then D.ptEntry h a b
@@ -34,6 +44,15 @@ theorem ptEntry_append (h : C.LPt) (s : ℕ) (t : ℂ) (a b : ℕ) :
     rw [List.cons_append, hsz, ptEntry_cons, ih]
     split_ifs <;> first | rfl | omega | (rw [ptEntry_cons]; split_ifs <;> first | rfl | omega)
 
+/- English proof (translation)
+Unfold `D.ptMatN`. Rewrite using `[ptEntry_append]`. Unfold `C3.Zb`. Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`.
+
+Distinguish the cases in `h1 : a.val < D.ptSize h`. Rewrite using `[dif_pos h1]`. Distinguish the cases in `h2 : b.val < D.ptSize h`. Rewrite using `[if_pos ⟨h1, h2⟩, dif_pos h2]`. Rewrite using `[if_neg (fun h => h2 h.2), if_neg (fun h => by omega), dif_neg h2]`.
+
+Rewrite using `[dif_neg h1, if_neg (fun h => h1 h.1)]`. Distinguish the cases in `h2 : D.ptSize h ≤ b.val`. Rewrite using `[if_pos ⟨by omega, h2⟩]`. Distinguish the cases in `h3 : a.val - D.ptSize h + (b.val - D.ptSize h) + 1 = s`. Rewrite using `[if_pos ⟨by omega, by omega, h3⟩, if_pos ⟨h2, by omega, by omega, h3⟩]`.
+
+Rewrite using `[if_neg (fun h => h3 h.2.2), if_neg (fun h => h3 h.2.2.2)]`. Rewrite using `[if_neg (fun h => h2 h.2), if_neg (fun h => h2 h.1)]`.
+-/
 theorem ptMatN_zb (h : C.LPt) (s : ℕ) (t : ℂ) (n : ℕ) (hn : n = D.ptSize h + s) (a b : Fin n) :
     D.ptMatN (h ++ [(s, t)]) n a b = C3.Zb (D.ptSize h) s (D.ptMatN h (D.ptSize h)) t a.val b.val := by
   unfold D.ptMatN
@@ -60,6 +79,11 @@ section point
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Unfold `Zhat`. Rewrite using `[← Matrix.mulVec_mulVec]`. Use `congr 2`. Unfold `fvec`.
+
+Use `split_ifs with hb`. Conclude with `hn0.2.1 ⟨b.val, hb⟩`. Conclude with `hn0.2.2.1`.
+-/
 theorem corner_matrix_right_translate (z z' : Fin (2 * r + k + 1) → ℂ) (γ n0 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (hn0 : n0 ∈ C3.N0set k r z') : Zhat k r z z' (γ * n0) = Zhat k r z z' γ := by
   ext a b
@@ -71,6 +95,9 @@ theorem corner_matrix_right_translate (z z' : Fin (2 * r + k + 1) → ℂ) (γ n
   · exact hn0.2.1 ⟨b.val, hb⟩
   · exact hn0.2.2.1
 
+/- English proof (translation)
+Unfold `Dmin C3.Dlead`. Use `congr 1`. Use extensionality with `a b`. Rewrite using `[Matrix.submatrix_apply, hZ]`. Both sides reduce to the same expression.
+-/
 theorem dmin_zb (z z' : Fin (2 * r + k + 1) → ℂ) (x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (i0 s : ℕ) (hh : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ)
     (hZ : ∀ a b : Fin (r + 1), Zhat k r z z' x a b = C3.Zb i0 s hh t a.val b.val) (l : Fin (r + 2)) :
@@ -83,11 +110,31 @@ theorem dmin_zb (z z' : Fin (2 * r + k + 1) → ℂ) (x : Matrix (Fin (2 * r + k
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {D : Set (Q.Mx k r)}
 
+/- English proof (translation)
+Use `show ((vK hD K hK : VS k r 0 D E) : Q.Mx k r → E) x₁ = K x₁`. Conclude with `cut_of_mem K hx₁`.
+-/
 theorem La_one (hD : IsOpen D) (K : Q.Mx k r → E) (hK : Q.SmoothLev k r 0 D K) (x₁ : Q.Mx k r)
     (hx₁ : x₁ ∈ Q.Glev k r 0 ∩ D) : La hD K hK x₁ 1 = K x₁ := by
   show ((vK hD K hK : VS k r 0 D E) : Q.Mx k r → E) x₁ = K x₁
   exact cut_of_mem K hx₁
 
+/- English proof (translation)
+Establish `hi0 : i0 ≤ r` using `by omega`. Establish `hDl : ∀ l : Fin (r + 2), Dmin k r z z' x₁ l = C3.Dlead i0 s hh t l.val` using `dmin_zb z z' x₁ i0 s hh t hZ`. Establish `hDi0 : C3.Dlead i0 s hh t i0 = hh.det` using `(Formalism.FourierDecayAlt.P.SignAntidiagonal.derivative_leading_zb i0 s hh t).1`. Take `⟨B, hB⟩` from `Formalism.FourierDecayAlt.P.SignAntidiagonal.leading_term_identity (Module.End ℂ (VS k r 0 D E)) k r (E0 hD) (xi0 x₁) i0 hi0`. Establish `hdetxi : (Matrix.of fun a b : Fin i0 => xi0 x₁ (Fin.castLE hi0 a) (C3.xR k r i0 hi0 b)).det = hh.det`.
+
+Rewrite using `[det_upper_minor_eq_minor z z' x₁ i0 hi0, hDl, ← hDi0]`. Establish `hpoly : PolyRepN i0 (fun u => (Dmin k r z z' x₁ (Fin.last _))⁻¹ • C3.AAop k r r le_rfl u K x₁) (((-1 : ℂ) ^ (s - 1) * t⁻¹) • K x₁)`. Use `⟨fun l => if hl : l < i0 then ((-1 : ℂ) ^ (s - 1) * t⁻¹) • ((hh.det)⁻¹ • La hD K hK x₁ (B ⟨l, hl⟩)) else ((-1 : ℂ) ^ (s - 1) * t⁻¹) • K x₁, by simp, fun u => ?_⟩` and prove the remaining obligations. Establish `hE` using `Formalism.FourierDecayAlt.P.SignAntidiagonal.column_indicator_expansion (Module.End ℂ (VS k r 0 D E)) E k r z' yb (E0 hD) (La hD K hK x₁) (xi0 x₁) i0 s hh t u hs hj (La_rule hD z' K hK hR x₁) hdet ht hz' hyb hzy hnf1 hnf2`. Rewrite `hE` using `[La_AAx hD K hK x₁ hx₁]`.
+
+Establish `hlast : Dmin k r z z' x₁ (Fin.last (r + 1)) = C3.Dlead i0 s hh t (r + 1)` using `by rw [hDl]; rfl`. Simplify using `only`. Rewrite using `[hlast, hE, hDi0, hB u]`. Simplify using `only [map_add, map_sum, Finset.sum_range_succ, dif_neg (lt_irrefl i0)]`. Establish `hm : ∀ (c : ℂ) (X : Module.End ℂ (VS k r 0 D E)), La hD K hK x₁ (algebraMap ℂ (Module.End ℂ (VS k r 0 D E)) c * X) = c • La hD K hK x₁ X`.
+
+Introduce `c X`. Rewrite using `[← Algebra.smul_def, map_smul]`. Establish `ha : ∀ c : ℂ, La hD K hK x₁ (algebraMap ℂ (Module.End ℂ (VS k r 0 D E)) c) = c • K x₁`. Introduce `c`. Rewrite using `[← mul_one (algebraMap ℂ _ c), hm, La_one hD K hK x₁ hx₁]`.
+
+Rewrite using `[ha, Finset.sum_range (fun l => u ^ l • if hl : l < i0 then ((-1 : ℂ) ^ (s - 1) * t⁻¹) • ((hh.det)⁻¹ • La hD K hK x₁ (B ⟨l, hl⟩)) else ((-1 : ℂ) ^ (s - 1) * t⁻¹) • K x₁)]`. Simplify using `only [hm, dif_pos (Fin.isLt _), Fin.eta]`. Rewrite using `[smul_add, smul_add, Finset.smul_sum, Finset.smul_sum, add_comm]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `l _`. Rewrite using `[smul_comm ((hh.det)⁻¹) (u ^ (l : ℕ)), smul_comm ((-1 : ℂ) ^ (s - 1) * t⁻¹) (u ^ (l : ℕ))]`. Simplify using `only [smul_smul]`. Rewrite using `[hdetxi]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Take `⟨c, hc, hf⟩` from `polyRepN_shift hpoly (((2 * r + k : ℕ) : ℂ) / 2)`. Use `⟨fun n => c n.val, ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.val_last]`. Rewrite using `[hc, div_eq_mul_inv]`.
+
+Use `hf (y : ℂ)` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, Fin.sum_univ_eq_sum_range (fun l => ((y : ℂ) ^ l) • c l)]`.
+-/
 theorem top_poly (hD : IsOpen D) (z z' yb : Fin (2 * r + k + 1) → ℂ) (i0 s : ℕ) (hs : 2 ≤ s) (hj : i0 + s = r + 1)
     (hh : Matrix (Fin i0) (Fin i0) ℂ) (t : ℂ) (hdet : hh.det ≠ 0) (ht : t ≠ 0) (x₁ : Q.Mx k r)
     (hx₁ : x₁ ∈ Q.Glev k r 0 ∩ D) (hz' : inWb k r z') (hyb : inWb k r yb) (hzy : herm (Hpk k r) z' yb = t)

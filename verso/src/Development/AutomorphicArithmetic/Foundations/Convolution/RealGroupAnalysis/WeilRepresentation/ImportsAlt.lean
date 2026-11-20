@@ -5,6 +5,9 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter
 open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published GroundTheory.Global GroundTheory.Automorphic.GJMatrix
 open UpperTheory.ConvolutionTheory.R2
 
+/- English proof (translation)
+Introduce `F _ _ _ π`. Take `⟨ω, h, -⟩` from `UpperTheory.V.Af.Rn.centChar F π`. Conclude with `⟨ω.1, ω.2.1, fun f hf s g => h s f hf g⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.cen :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], St.Cen F := by
   intro F _ _ _ π

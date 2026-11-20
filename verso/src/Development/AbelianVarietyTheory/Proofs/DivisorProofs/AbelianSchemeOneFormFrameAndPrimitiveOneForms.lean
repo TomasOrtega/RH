@@ -16,6 +16,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `R _ A _ g hA hg`. Take `⟨M, _, _, j, hfin, hproj, hb⟩` from `GlobalTheory.T.exists_invariant_oneForm_frame_abelianScheme R A g hA hg`. Conclude with `⟨hasFrame_of_isBaseChange R (AffOp A.left) (OAff A.hom) M j fun U ↦ ⟨_, fun _ ↦ rfl, hb U⟩, GlobalTheory.T.globalOneForms_primitive_abelianScheme R A g hA hg⟩`.
+-/
 theorem hasFrame_and_primF_of_isAbelianScheme : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → HasFrame (OAff A.hom) ∧ PrimF A := by
   intro R _ A _ g hA hg

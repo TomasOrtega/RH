@@ -13,10 +13,22 @@ namespace GlobalTheory.CompanionTheory.MirPair.ConjEv
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_box_iff_forall_valuation_le {m : ℕ} {s : kˣ} {x : Fin m → k} :
     x ∈ GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box m s ↔ ∀ j, valuation k (x j) ≤ valuation k (s : k) :=
   Iff.rfl
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty (Fin m) with hm | hm` into its components or cases. Conclude with `⟨t, fun x _ => mem_box_iff_forall_valuation_le.2 fun j => isEmptyElim j⟩`. Take `⟨ij, hij⟩` from `Finite.exists_max (fun ij : Fin m × Fin m => valuation k (g ij.1 ij.2))`. Distinguish the cases in `h0 : g ij.1 ij.2 = 0`. Use `⟨t, fun x _ => ?_⟩` and prove the remaining obligations.
+
+Establish `hg : g = 0`. Use extensionality with `i j`. Simplify `hij (i, j)` using `[h0]`. Rewrite using `[hg, Matrix.zero_mulVec]`. Conclude with `zero_mem _`.
+
+Use `⟨Units.mk0 _ h0 * t, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_box_iff_forall_valuation_le]`. Introduce `i`. Use `show valuation k (∑ j, g i j * x j) ≤ _`. Use `Finset.sum_induction _ (fun y => valuation k y ≤ valuation k ((Units.mk0 _ h0 * t : kˣ) : k)) (fun a b ha hb => (valuation k).map_add_le ha hb) (by simp) (fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_mul, Units.val_mul, map_mul, Units.val_mk0]`. Conclude with `mul_le_mul' (hij (i, j)) (hx j)`.
+-/
 theorem exists_mulVec_box (m : ℕ) (g : Matrix (Fin m) (Fin m) k) (t : kˣ) :
     ∃ t' : kˣ, ∀ x ∈ box m t, g *ᵥ x ∈ box m t' := by
   rcases isEmpty_or_nonempty (Fin m) with hm | hm
@@ -38,6 +50,9 @@ theorem exists_mulVec_box (m : ℕ) (g : Matrix (Fin m) (Fin m) k) (t : kˣ) :
     rw [map_mul, Units.val_mul, map_mul, Units.val_mk0]
     exact mul_le_mul' (hij (i, j)) (hx j)
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[mem_box_iff_forall_valuation_le]`. Conclude with `fun j => le_trans (hx j) h`.
+-/
 theorem box_mono {m : ℕ} {t t' : kˣ} (h : valuation k (t : k) ≤ valuation k (t' : k)) :
     ∀ x ∈ box m t, x ∈ box m t' := by
   intro x hx
@@ -46,6 +61,11 @@ theorem box_mono {m : ℕ} {t t' : kˣ} (h : valuation k (t : k) ≤ valuation k
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Establish `e1 : c * t⁻¹ = (c * r⁻¹) * (r * t⁻¹)`. Rewrite using `[mul_assoc, inv_mul_cancel_left]`. Establish `e2 : t * (r * t⁻¹) = r`. Rewrite using `[mul_comm r, ← mul_assoc, mul_inv_cancel, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e1, Units.val_mul, map_mul]`. Use `_ ≤ valuation k (t : k) * valuation k ((r * t⁻¹ : kˣ) : k) := mul_le_mul' h le_rfl`. Use `_ = valuation k (r : k) := by`. Rewrite using `[← map_mul, ← Units.val_mul, e2]`.
+-/
 theorem val_mul_inv_le {c r t : kˣ} (h : valuation k ((c * r⁻¹ : kˣ) : k) ≤ valuation k (t : k)) :
     valuation k ((c * t⁻¹ : kˣ) : k) ≤ valuation k (r : k) := by
   have e1 : c * t⁻¹ = (c * r⁻¹) * (r * t⁻¹) := by
@@ -61,11 +81,17 @@ theorem val_mul_inv_le {c r t : kˣ} (h : valuation k ((c * r⁻¹ : kˣ) : k) �
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.MirPair.wt`. Rewrite using `[GlobalTheory.BZMir.mulVec_last_of_mem k _ p.2]`.
+-/
 theorem wt_mir (ψ : AddChar k Circle) {n : ℕ} (p : Mir k n) (y : Fin (n + 1) → k) :
     wt ψ n (((p : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ y) = wt ψ n y := by
   unfold GlobalTheory.CompanionTheory.MirPair.wt
   rw [GlobalTheory.BZMir.mulVec_last_of_mem k _ p.2]
 
+/- English proof (translation)
+Rewrite using `[show ((s + 1 : ℕ) : ℂ) = (s : ℂ) + 1 by push_cast; ring, GlobalTheory.SmGL.absPow_add, MonoidHom.mul_apply, Units.val_mul, GlobalTheory.SmGL.val_absPow k 1, Complex.cpow_one]`.
+-/
 theorem absPow_succ_val (s : ℕ) (u : kˣ) :
     ((absPow k ((s + 1 : ℕ) : ℂ) u : ℂˣ) : ℂ) = ((absPow k (s : ℂ) u : ℂˣ) : ℂ) * ((nabs k u : ℝ) : ℂ) := by
   rw [show ((s + 1 : ℕ) : ℂ) = (s : ℂ) + 1 by push_cast; ring, GlobalTheory.SmGL.absPow_add,
@@ -76,6 +102,15 @@ variable [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasur
   (T : Representation ℂ (Mir k (n + 1)) V) (T' : Representation ℂ (Mir k (n + 1)) V')
   (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) (s : ℕ)
 
+/- English proof (translation)
+Take `⟨-, -, hlevi⟩` from `GlobalTheory.CompanionTheory.MirPair.coef_rules T T' B s hB`. Establish `hw : ∀ x : Fin (n + 1) → k, GlobalTheory.CompanionTheory.MirPair.wt ψ n x = GlobalTheory.CompanionTheory.MirPair.wt ψ n ((((p : GL (Fin (n + 1)) k)⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ x)`. Introduce `x`. Establish `h` using `GlobalTheory.CompanionTheory.MirPair.ConjEv.wt_mir ψ p⁻¹ x`. Rewrite `h` using `[Subgroup.coe_inv]`.
+
+Conclude with `h.symm`. Establish `hF` using `GlobalTheory.CompanionTheory.MirPair.setIntegral_inv_mulVec ν (n + 1) (p : GL (Fin (n + 1)) k) M (fun y => GlobalTheory.CompanionTheory.MirPair.wt ψ n y * GlobalTheory.CompanionTheory.MirPair.coef T B v v' y)`. Establish `key : ∀ x : Fin (n + 1) → k, GlobalTheory.CompanionTheory.MirPair.wt ψ n x * GlobalTheory.CompanionTheory.MirPair.coef T B (T (GlobalTheory.BZMir.levi k (n + 1) (p : GL (Fin (n + 1)) k)) v) (T' (GlobalTheory.BZMir.levi k (n + 1) (p : GL (Fin (n + 1)) k)) v') x = ((GlobalTheory.Sm …`. Introduce `x`. Rewrite using `[hlevi, ← hw]`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `GlobalTheory.CompanionTheory.MirPair.JJ`. Simplify using `only [key]`. Rewrite using `[integral_const_mul, hF, ← mul_assoc]`. Use `congr 1`.
+
+Rewrite using `[GlobalTheory.SmGL.detChar_apply, GlobalTheory.SmGL.detChar_apply, GlobalTheory.CompanionTheory.MirPair.ConjEv.absPow_succ_val]`.
+-/
 theorem JJ_conj (hB : TwInv T T' B s) (p : Mir k n) (M : Set (Fin (n + 1) → k)) (v : V) (v' : V') :
     JJ ν ψ T B M (T (levi k (n + 1) (p : GL (Fin (n + 1)) k)) v)
         (T' (levi k (n + 1) (p : GL (Fin (n + 1)) k)) v') =
@@ -114,6 +149,13 @@ end GlobalTheory.CompanionTheory.MirPair.ConjEv
 
 namespace GlobalTheory.CompanionTheory.MirPair
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ν _ ψ c n V V' _ _ _ _ T T' B s hψ hc hT hT' hB p v v' A hA`. Take `⟨t₀, ht₀⟩` from `hA`. Take `⟨r, hr⟩` from `GlobalTheory.T.mirabolic_pairing_conductor_bound ν ψ c T T' B s hψ hc hT hT' hB (p : GL (Fin (n + 1)) k) v v'`. Choose the witnesses or unpack the hypotheses as in `⟨t₁, ht₁₀, ht₁r⟩ : ∃ t₁ : kˣ, valuation k (t₀ : k) ≤ valuation k (t₁ : k) ∧ valuation k ((c * r⁻¹ : kˣ) : k) ≤ valuation k (t₁ : k) := by`. Break down `le_total (valuation k (t₀ : k)) (valuation k ((c * r⁻¹ : kˣ) : k)) with h | h` into its components or cases.
+
+Conclude with `⟨c * r⁻¹, h, le_rfl⟩`. Conclude with `⟨t₀, le_rfl, h⟩`. Take `⟨t₂, ht₂⟩` from `GlobalTheory.CompanionTheory.MirPair.ConjEv.exists_mulVec_box (n + 1) ((p : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) t₁`. Use `⟨t₂, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.MirPair.ConjEv.JJ_conj ν ψ T T' B s hB p]`.
+
+Use `congr 1`. Rewrite using `[← ht₀ t₁ ht₁₀]`. Conclude with `hr t₁ (GlobalTheory.CompanionTheory.MirPair.ConjEv.val_mul_inv_le ht₁r) t (fun x hx => GlobalTheory.CompanionTheory.MirPair.ConjEv.box_mono ht _ (ht₂ x hx))`.
+-/
 theorem evVal_conj : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] (ψ : AddChar k Circle) (c : kˣ) {n : ℕ} {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (T : Representation ℂ (Mir k (n + 1)) V) (T' : Representation ℂ (Mir k (n + 1)) V') (B : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ) (s : ℕ), Continuous ψ → HasConductor ψ c → IsSmooth T → IsSmooth T' → TwInv T T' B s → ∀ (p : Mir k n) (v : V) (v' : V') (A : ℂ), EvVal ν ψ T B v v' A → EvVal ν ψ T B (T (levi k (n + 1) (p : GL (Fin (n + 1)) k)) v) (T' (levi k (n + 1) (p : GL (Fin (n + 1)) k)) v') (((detChar (Fin (n + 1)) (absPow k ((s + 1 : ℕ) : ℂ)) (p : GL (Fin (n + 1)) k) : ℂˣ) : ℂ) * A) := by
   intro k _ _ _ _ _ _ ν _ ψ c n V V' _ _ _ _ T T' B s hψ hc hT hT' hB p v v' A hA
   obtain ⟨t₀, ht₀⟩ := hA

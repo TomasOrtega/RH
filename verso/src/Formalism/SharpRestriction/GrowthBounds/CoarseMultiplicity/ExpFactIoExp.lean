@@ -8,6 +8,25 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees MvPolynomial
 
+/- English proof (translation)
+Distinguish the cases in `hx0 : x = 0`. Conclude with `⟨0, by simp [hx0]⟩`. Break down `hx with hx | hv` into its components or cases. Conclude with `absurd hx hx0`. Use `haveI : Fact p.Prime := ⟨hp⟩`.
+
+Establish `hv' : (c : ℤ) ≤ padicValRat p x` using `by exact_mod_cast hv`. Simplify using `only [padicValRat] at hv'`. Establish `hden : ¬ p ∣ x.den`. Introduce `hd`. Establish `hnum : ¬ (p : ℤ) ∣ x.num`.
+
+Introduce `hn`. Establish `h1 : p ∣ x.num.natAbs` using `Int.ofNat_dvd_left.mp hn`. Establish `h2` using `Nat.dvd_gcd h1 hd`. Rewrite `h2` using `[x.reduced.gcd_eq_one]`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.mp h2)`.
+
+Establish `h0 : padicValInt p x.num = 0` using `padicValInt.eq_zero_of_not_dvd hnum`. Establish `h1 : 1 ≤ padicValNat p x.den` using `one_le_padicValNat_of_dvd x.den_nz hd`. Rewrite `hv'` using `[h0]`. Use linear arithmetic over natural numbers and integers. Establish `hpv0 : padicValNat p x.den = 0` using `padicValNat.eq_zero_of_not_dvd hden`.
+
+Rewrite `hv'` using `[hpv0]`. Establish `hdvd : (p : ℤ) ^ c ∣ x.num`. Use `(padicValInt_dvd_iff (p := p) c x.num).mpr (Or.inr (by omega))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Take `⟨n, hn⟩` from `hdvd`.
+
+Establish `hcop : Nat.Coprime p x.den` using `(Nat.Prime.coprime_iff_not_dvd hp).mpr hden`. Establish `hb` using `Nat.gcd_eq_gcd_ab p x.den`. Rewrite `hb` using `[hcop.gcd_eq_one, Nat.cast_one]`. Establish `hb' : (p : O) * (Nat.gcdA p x.den : O) + (x.den : O) * (Nat.gcdB p x.den : O) = 1`. Use `congrArg (Int.cast : ℤ → O) hb` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Conclude with `this.symm`. Establish `hdu : IsUnit (x.den : O)`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one hb' with h | h` into its components or cases. Conclude with `absurd (isUnit_of_mul_isUnit_left h) hpO`.
+
+Conclude with `isUnit_of_mul_isUnit_left h`. Establish `hinv : algebraMap O K (↑hdu.unit⁻¹ : O) * (x.den : K) = 1`. Rewrite using `[← map_natCast (algebraMap O K), ← map_mul, IsUnit.val_inv_mul, map_one]`. Establish `hainv : algebraMap O K (↑hdu.unit⁻¹ : O) = (x.den : K)⁻¹` using `eq_inv_of_mul_eq_one_left hinv`. Use `⟨(n : O) * ↑hdu.unit⁻¹, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_intCast, hainv, Rat.cast_def, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rat_int {O K : Type} [CommRing O] [IsLocalRing O] [Field K] [CharZero K] [Algebra O K] {p : ℕ} (hp : p.Prime)
     (hpO : ¬ IsUnit (p : O)) (x : ℚ) (c : ℕ) (hx : PadicGe p x c) :
     ∃ y : O, (x : K) = (p : K) ^ c * algebraMap O K y := by
@@ -59,6 +78,21 @@ def Rblk (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : SegBlock (seg
   open Classical in
   ∏ x ∈ Finset.univ \ (Finset.univ.image (symVar C0 CE1 CE2 X j)), (baseExp C0 CE1 CE2 X j b x).factorial
 
+/- English proof (translation)
+Establish `hinj` using `symVar_inj C0 CE1 CE2 X j`. Establish `hsumv : ∀ x, (μ.sum fun v n => Finsupp.single (symVar C0 CE1 CE2 X j v) (symLev X.p C0 CE1 CE2 X j v * n)) x = ∑ v ∈ μ.support, if symVar C0 CE1 CE2 X j v = x then symLev X.p C0 CE1 CE2 X j v * μ v else 0`. Introduce `x`. Rewrite using `[Finsupp.sum_apply]`. Conclude with `Finset.sum_congr rfl fun v _ => Finsupp.single_apply`.
+
+Establish `hout : ∀ x ∉ Finset.univ.image (symVar C0 CE1 CE2 X j), ioExp C0 CE1 CE2 X j b μ x = baseExp C0 CE1 CE2 X j b x`. Introduce `x hx`. Rewrite using `[ioExp, Finsupp.add_apply, hsumv, Finset.sum_eq_zero, add_zero]`. Introduce `v _`. Rewrite using `[if_neg]`.
+
+Introduce `h`. Conclude with `hx (Finset.mem_image.2 ⟨v, Finset.mem_univ _, h⟩)`. Establish `hin : ∀ v, ioExp C0 CE1 CE2 X j b μ (symVar C0 CE1 CE2 X j v) = baseExp C0 CE1 CE2 X j b (symVar C0 CE1 CE2 X j v) + symLev X.p C0 CE1 CE2 X j v * μ v`. Introduce `v`. Rewrite using `[ioExp, Finsupp.add_apply, hsumv]`.
+
+Use `congr 1`. Rewrite using `[Finset.sum_eq_single v]`. Rewrite using `[if_pos rfl]`. Introduce `v' _ hne`. Rewrite using `[if_neg]`.
+
+Conclude with `fun h => hne (hinj h)`. Introduce `hv`. Establish `h0 : μ v = 0` using `by simpa using hv`. Rewrite using `[if_pos rfl, h0, mul_zero]`. Rewrite using `[expFact, Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero)]`.
+
+Rewrite using `[← Finset.prod_sdiff (Finset.subset_univ (Finset.univ.image (symVar C0 CE1 CE2 X j)))]`. Rewrite using `[Finset.prod_image (fun a _ c _ h => hinj h)]`. Use `congr 1`. Unfold `Rblk`. Conclude with `Finset.prod_congr rfl fun x hx => by rw [hout x (Finset.mem_sdiff.1 hx).2]`.
+
+Conclude with `Finset.prod_congr rfl fun v _ => by rw [hin v]`.
+-/
 theorem expFact_ioExp (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m)
     (μ : BV C0 CE1 CE2 X j →₀ ℕ) :
     expFact (ioExp C0 CE1 CE2 X j b μ) = Rblk C0 CE1 CE2 X j b *
@@ -100,6 +134,29 @@ theorem expFact_ioExp (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : 
     exact Finset.prod_congr rfl fun x hx => by rw [hout x (Finset.mem_sdiff.1 hx).2]
   · exact Finset.prod_congr rfl fun v _ => by rw [hin v]
 
+/- English proof (translation)
+Establish `hinj` using `topOdd_inj X j`. Establish `hite : ∀ (Q : Prop) [Decidable Q] (f : ((X.TT × Bool) × Fin (X.m + 1)) →₀ ℕ) (y), (if Q then f else 0) y = if Q then f y else 0`. Introduce `Q _ f y`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hne : ∀ (i : Fin (segS X.TT j)) (β : Bool) (c : Fin (X.m + 1)), i ≠ i0 → ((topOdd X j i, β), c) ≠ ((topOdd X j i0, β0), c0)`.
+
+Introduce `i β c hi h`. Conclude with `hi (hinj (congrArg (fun y => y.1.1) h))`. Rewrite using `[baseExp, Finsupp.add_apply]`. Use `congr 1`. Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single i0]`.
+
+Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single c0]`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply]`. Apply the tactic sequence `cases β0 <;> simp`. Introduce `c _ hc`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply, if_neg, if_neg]`.
+
+Both sides reduce to the same expression. Introduce `h`. Conclude with `hc (congrArg (fun y => y.2) h)`. Introduce `h`. Conclude with `hc (congrArg (fun y => y.2) h)`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ c0) h`. Introduce `i _ hi`. Rewrite using `[Finsupp.finset_sum_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply, if_neg (hne i true c hi), if_neg (hne i false c hi)]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ i0) h`. Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single i0]`.
+
+Rewrite using `[hite]`. Distinguish the cases in `h1 : (i0 : ℕ) < (X.seg C0 CE1 CE2 j).sigma`. Distinguish the cases in `hc : c0 = 0`. Substitute `hc` using the available equality. Rewrite using `[if_pos h1, if_pos ⟨h1, rfl⟩, Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply]`.
+
+Apply the tactic sequence `cases β0 <;> simp`. Rewrite using `[if_pos h1, if_neg (fun h => hc h.2), Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply, if_neg, if_neg]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `hc (congrArg (fun y => y.2) h).symm`.
+
+Introduce `h`. Conclude with `hc (congrArg (fun y => y.2) h).symm`. Rewrite using `[if_neg h1, if_neg (fun h => h1 h.1)]`. Introduce `i _ hi`. Rewrite using `[hite]`.
+
+Use `split_ifs`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply, if_neg (hne i true 0 hi), if_neg (hne i false 0 hi)]`. Both sides reduce to the same expression. Both sides reduce to the same expression. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i0) h`.
+-/
 theorem baseExp_odd (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m)
     (i0 : Fin (segS X.TT j)) (β0 : Bool) (c0 : Fin (X.m + 1)) :
     baseExp C0 CE1 CE2 X j b ((topOdd X j i0, β0), c0) = (if β0 then b.rz i0 c0 else b.ry i0 c0) +
@@ -163,6 +220,9 @@ theorem baseExp_odd (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : Se
     · intro h
       exact absurd (Finset.mem_univ i0) h
 
+/- English proof (translation)
+Establish `hite : ∀ (Q : Prop) [Decidable Q] (f : ((X.TT × Bool) × Fin (X.m + 1)) →₀ ℕ) (y), (if Q then f else 0) y = if Q then f y else 0`. Introduce `Q _ f y`. Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `[baseExp, Finsupp.finset_sum_apply, Finsupp.single_apply, topOdd_ne_end, hite]`.
+-/
 theorem baseExp_end (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m)
     (β0 : Bool) (c0 : Fin (X.m + 1)) : baseExp C0 CE1 CE2 X j b ((topEnd X j, β0), c0) = 0 := by
   classical

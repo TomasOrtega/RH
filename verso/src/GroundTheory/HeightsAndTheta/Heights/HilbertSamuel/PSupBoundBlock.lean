@@ -15,6 +15,11 @@ section Invariance
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Rewrite using `[eval_eq', eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg` using `hf m (support_map_subset _ _ hm)`. Establish `hc : ∏ p : (Σ k, ι k), c p.1 ^ m p = c k₀ ^ n`. Rewrite using `[Fintype.prod_sigma]`.
+
+Repeatedly rewrite using `[Finset.prod_pow_eq_pow_sum, hdeg]`. Rewrite using `[Fintype.prod_eq_single k₀ fun k hk => by simp [blockDeg, hk]]`. Simplify using `[blockDeg]`. Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem SupBoundBlock.eval_torus_blockDeg {f : MRing ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n))
     (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     eval (fun p => c p.1 * z p) (map (Int.castRingHom ℂ) f) =
@@ -30,6 +35,11 @@ theorem SupBoundBlock.eval_torus_blockDeg {f : MRing ι} {k₀ : K} {n : ℕ} (h
   simp_rw [mul_pow, Finset.prod_mul_distrib, hc]
   ring
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Rewrite using `[SupBoundBlock.eval_torus_blockDeg hf, A.smul c z' hc, hA]`. Establish `hprod : ∏ k, ‖c k‖ ^ unitDeg k₀ k = ‖c k₀‖`. Rewrite using `[Fintype.prod_eq_single k₀ fun k hk => by simp [unitDeg, hk]]`. Simplify using `[unitDeg]`.
+
+Rewrite using `[hprod, norm_mul, norm_pow, mul_pow]`. Establish `: ‖c k₀‖ ^ n ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 (hc k₀))`. Rewrite using `[mul_div_mul_left _ _ this]`.
+-/
 theorem SupBoundBlock.normRatio_torus {f : MRing ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n)) (A : HermLine ι)
     (hA : A.a = unitDeg k₀) {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
     ‖eval z (map (Int.castRingHom ℂ) f)‖ / A.h z ^ n = ‖eval z' (map (Int.castRingHom ℂ) f)‖ / A.h z' ^ n := by
@@ -44,6 +54,9 @@ theorem SupBoundBlock.normRatio_torus {f : MRing ι} {k₀ : K} {n : ℕ} (hf : 
 
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Simplify using `only [Set.ofPred_forall, Set.ofPred_exists]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+-/
 theorem SupBoundBlock.isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   simp only [Set.ofPred_forall, Set.ofPred_exists]
   exact isOpen_iInter_of_finite fun k => isOpen_iUnion fun i =>
@@ -51,6 +64,25 @@ theorem SupBoundBlock.isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | �
 
 end Invariance
 
+/- English proof (translation)
+Introduce `D K _ _ ι _ Ω _ _ d`. Take `⟨A, L, W, dV, -, hW, hμ, hsec⟩` from `hR D K ι Ω d`. Take `⟨⟨C, hC⟩, -⟩` from `hS A L W dV hW`. Use `⟨max C 0 * Real.sqrt 2, fun n hn f hf z hz => ?_⟩` and prove the remaining obligations. Use `set g : ((Σ k, ι k) → ℂ) → ℝ := fun w => ‖eval w (map (Int.castRingHom ℂ) f)‖ / d.A.h w ^ n with hg`.
+
+Use `set M := max C 0 * Real.sqrt 2 * (n : ℝ) ^ ((D : ℝ) / 2) * blockL2Norm d n f with hM`. Take `⟨s, hs, hps⟩` from `hsec n f hf`. Establish `hL2 : Real.sqrt (sectionL2NormSq W dV n s) ≤ Real.sqrt 2 * blockL2Norm d n f`. Establish `hI : sectionL2NormSq W dV n s = ∫ x, g (blockPt d x) ^ 2 ∂d.dV`. Rewrite using `[sectionL2NormSq, hμ]`.
+
+Conclude with `integral_congr_ae (Eventually.of_forall hps)`. Establish `h2 : 0 ≤ ∫ x, (‖eval (conjPt (blockPt d x)) (map (Int.castRingHom ℂ) f)‖ / d.A.h (conjPt (blockPt d x)) ^ n) ^ 2 ∂d.dV` using `integral_nonneg fun _ => sq_nonneg _`. Rewrite using `[hI, blockL2Norm, ← Real.sqrt_mul (by norm_num)]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hpow : Real.sqrt ((n : ℝ) ^ D) = (n : ℝ) ^ ((D : ℝ) / 2)`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg n)]`. Put the polynomial expressions in normal form. Establish `hres : ∀ x, g (blockPt d x) ≤ M`. Introduce `x`.
+
+Establish `h1 : g (blockPt d x) ≤ Real.sqrt (ptNormSq W n s x)`. Rewrite using `[hps x, Real.sqrt_sq_eq_abs]`. Conclude with `le_abs_self _`. Establish `h3` using `hC n hn s hs x`. Rewrite `h3` using `[hpow]`.
+
+Establish `ha : 0 ≤ (n : ℝ) ^ ((D : ℝ) / 2)` using `Real.rpow_nonneg (Nat.cast_nonneg n) _`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_max_left _ _`. Use `_ ≤ max C 0 * (n : ℝ) ^ ((D : ℝ) / 2) * (Real.sqrt 2 * blockL2Norm d n f) := by gcongr`. Use `_ = M := by rw [hM]; ring`.
+
+Establish `hoff : ∀ w ∈ mcPts (mCoordIdeal d.y), w ∉ mcPts d.J → g w ≤ M`. Introduce `w hw hwJ`. Take `⟨x, hx⟩` from `d.R.surj w hw hwJ`. Combine the equalities or inequalities in the displayed calculation. Take `⟨F, hFJ, hFP⟩` from `SetLike.not_le_iff_exists.1 d.R.nondeg`.
+
+Use `set S := {w | w ∈ mcPts (mCoordIdeal d.y) ∧ eval w (map (Int.castRingHom ℂ) F) ≠ 0} with hSdef`. Establish `hcl : z ∈ closure S` using `hN K ι (mCoordIdeal d.y) (D + 1) F d.arith hFP hz`. Establish `hSM : ∀ w ∈ S, g w ≤ M` using `fun w hw => hoff w hw.1 fun hJ => hw.2 (hJ.2 F hFJ)`. Establish `hcont : ContinuousAt g z`. Establish `hh : ContinuousAt d.A.h z` using `d.semipos.1.continuousOn.continuousAt (SupBoundBlock.isOpen_blockNonzero.mem_nhds hz.1)`.
+
+Conclude with `(continuous_norm.comp (MvPolynomial.continuous_eval _)).continuousAt.div (hh.pow n) (pow_ne_zero _ (d.A.pos z hz.1).ne')`. Use `mem_closure_iff_nhdsWithin_neBot.1 hcl` as an intermediate fact. Conclude with `le_of_tendsto (hcont.tendsto.mono_left nhdsWithin_le_nhds) (eventually_nhdsWithin_of_forall hSM)`.
+-/
 theorem SupBoundBlock.proof (hS : SupNormAgainstL2.Statement) (hR : ResolutionPullback.Statement)
     (hN : NonvanishingDense.Statement) : SupBoundBlock.Statement := by
   intro D K _ _ ι _ Ω _ _ d

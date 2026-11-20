@@ -7,6 +7,17 @@ open MeasureTheory Filter Matrix Formalism.REAL Formalism.MainNotions.S GlobalTh
 open GlobalTheory.Dec (IsHaarSub IsIsoC NW IsSqIntIrr)
 open scoped Topology InnerProductSpace
 
+/- English proof (translation)
+Use `set R : ℝ := Real.sqrt (hs (umat g)) with hR`. Establish `hR0 : 0 ≤ R` using `Real.sqrt_nonneg _`. Establish `hs0 : 0 ≤ hs (umat g)` using `by unfold hs; positivity`. Establish `hg : hs (coeMatrixAlt ε g) ≤ R ^ 2` using `by rw [hR, Real.sq_sqrt hs0]; exact le_rfl`. Establish `hn : 0 ≤ Real.sqrt n` using `Real.sqrt_nonneg _`.
+
+Establish `hρ0 : 0 ≤ R * (Real.sqrt n + 1)` using `by positivity`. Establish `hx : ‖x‖ ≤ R * (Real.sqrt n + 1)`. Rewrite using `[pi_norm_le_iff_of_nonneg hρ0]`. Introduce `i`. Rewrite using `[pi_norm_le_iff_of_nonneg hρ0]`.
+
+Introduce `j`. Use `norm_entry_mul_near_one_le (g := coeMatrixAlt ε g) hR0 hg h i j` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, determinant_character_mul_inv, Matrix.one_mul]`. Conclude with `this`. Establish `h1 : 1 + ‖x‖ ≤ (Real.sqrt n + 1) * (1 + R)` using `by nlinarith`.
+
+Establish `h2 : (1 + ‖x‖) ^ (2 * n ^ 2 + 1) ≤ (Real.sqrt n + 1) ^ (2 * n ^ 2 + 1) * wt g`. Unfold `wt`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) h1 _`. Establish `hw : 0 < wt g` using `by unfold wt; positivity`.
+
+Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast, ← div_eq_mul_inv, inv_eq_one_div, div_le_div_iff₀ hw (by positivity), one_mul]`. Conclude with `h2`.
+-/
 private lemma wt_le {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) (x : MatrixCoordinates n)
     (h : hs (coeMatrixAlt ε g⁻¹ * Matrix.of x - 1) < 1 / 4) :
     (wt g)⁻¹ ≤ (Real.sqrt n + 1) ^ (2 * n ^ 2 + 1) * (1 + ‖x‖) ^ (-((2 * n ^ 2 + 1 : ℕ) : ℝ)) := by
@@ -34,6 +45,15 @@ private lemma wt_le {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) (x : MatrixCoord
     div_le_div_iff₀ hw (by positivity), one_mul]
   exact h2
 
+/- English proof (translation)
+Take `⟨-, -, h0, hinv⟩` from `hν`. Use `set A : Set (UJ ε) := {g | hs (coeMatrixAlt ε g⁻¹ * Matrix.of x - 1) < 1 / 4} with hA`. Use `set W : Set (UJ ε) := {k | hsG k ≤ (2 * Real.sqrt n + 1) ^ 2} with hW`. Establish `hWm : MeasurableSet W` using `(isClosed_le (continuous_hs_real_place_taylor.comp (continuous_coeMatrix ε)) continuous_const).measurableSet`. Distinguish the cases in `hne : (A ∩ (S : Set (UJ ε))).Nonempty`.
+
+Take `⟨h, hh, hS⟩` from `hne`. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono fun g hg => ?_` and prove the remaining obligations. Use `show hs (coeMatrixAlt ε (h⁻¹ * g)) ≤ _`. Use `frobenius_bound_of_mul_near_one hg hh ?_` and prove the remaining obligations.
+
+Rewrite using `[determinant_character_mul, ← Matrix.mul_assoc, Matrix.mul_assoc (coeMatrixAlt ε h⁻¹), determinant_character_mul_inv, Matrix.mul_one]`. Use `_ = ν.map (fun g => h⁻¹ * g) W := (Measure.map_apply (measurable_const_mul _) hWm).symm`. Use `_ = ν W := by rw [hinv h⁻¹ (S.inv_mem hS)]`. Establish `: ν A = 0` using `measure_mono_null (fun g hg hS => hne ⟨g, hg, hS⟩) h0`. Rewrite using `[this]`.
+
+Conclude with `bot_le`.
+-/
 private lemma slice_le {n : ℕ} {ε : Fin n → Bool} (S : Subgroup (UJ ε)) (ν : Measure (UJ ε))
     (hν : IsHaarSub (S : Set (UJ ε)) ν) (x : MatrixCoordinates n) :
     ν {g | hs (coeMatrixAlt ε g⁻¹ * Matrix.of x - 1) < 1 / 4} ≤
@@ -57,6 +77,35 @@ private lemma slice_le {n : ℕ} {ε : Fin n → Bool} (S : Subgroup (UJ ε)) (�
     rw [this]
     exact bot_le
 
+/- English proof (translation)
+Introduce `n ε S ν hν`. Use `haveI : IsFiniteMeasureOnCompacts ν := hν.2.1`. Set `lam : Measure (MatrixCoordinates n)` to `Measure.addHaar`. Set `O : Set (MatrixCoordinates n)` to `{x | hs (Matrix.of x - 1) < 1 / 4}`. Set `W : Set (UJ ε)` to `{k | hsG k ≤ (2 * Real.sqrt n + 1) ^ 2}`.
+
+Establish `hof : Continuous (fun x : MatrixCoordinates n => Matrix.of x)` using `continuous_id`. Establish `hO_open : IsOpen O` using `isOpen_lt (continuous_hs_real_place_taylor.comp (hof.sub continuous_const)) continuous_const`. Establish `hO_pos : 0 < lam O` using `hO_open.measure_pos lam ⟨Matrix.of.symm 1, by simp [O, hs]⟩`. Establish `hW_fin : ν W < ⊤`. Establish `hc : IsCompact W`.
+
+Use `(isClosedEmbeddingMatrix n ε).1.isCompact_preimage ((hermitian_small_ball n ε).1 ((2 * Real.sqrt n + 1) ^ 2))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `⟨fun h => ⟨g.2, h⟩, fun h => h.2⟩`. Conclude with `hc.measure_lt_top`.
+
+Establish `hwpos : ∀ g : UJ ε, 0 < wt g` using `fun g => by unfold wt; positivity`. Establish `hwc : Continuous fun g : UJ ε => (wt g)⁻¹`. Use `Continuous.inv₀ ?_ fun g => (hwpos g).ne'` and prove the remaining obligations. Conclude with `(continuous_const.add (continuous_hs_real_place_taylor.comp (continuous_coeMatrix ε)).sqrt).pow _`. Set `w : UJ ε → ENNReal` to `fun g => ENNReal.ofReal (wt g)⁻¹`.
+
+Establish `hwm : Measurable w` using `hwc.measurable.ennreal_ofReal`. Set `U : Set (UJ ε × MatrixCoordinates n)` to `{p | hs (coeMatrixAlt ε p.1⁻¹ * Matrix.of p.2 - 1) < 1 / 4}`. Establish `hU : MeasurableSet U` using `(isOpen_lt (continuous_hs_real_place_taylor.comp ((((continuous_coeMatrix ε).comp (continuous_inv.comp continuous_fst)).matrix_mul (hof.comp continuous_snd)).sub continuous_const)) continuous_const).measurableSet`. Set `f : UJ ε → MatrixCoordinates n → ENNReal` to `fun g x => U.indicator (fun p => w p.1) (g, x)`. Establish `hf : Measurable (Function.uncurry f)` using `(hwm.comp measurable_fst).indicator hU`.
+
+Establish `h1 : ∫⁻ g, ∫⁻ x, f g x ∂lam ∂ν = (∫⁻ g, w g ∂ν) * lam O`. Rewrite using `[← lintegral_mul_const _ hwm]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Establish `hdet : LinearMap.det (leftMulReal (coeMatrixAlt ε g⁻¹)) = 1` using `det_leftMulReal_eq_one (g⁻¹).2`. Establish `e : f g = (leftMulReal (coeMatrixAlt ε g⁻¹) ⁻¹' O).indicator fun _ => w g`.
+
+Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Establish `hm : MeasurableSet (leftMulReal (coeMatrixAlt ε g⁻¹) ⁻¹' O)` using `(hO_open.preimage (LinearMap.continuous_of_finiteDimensional _)).measurableSet`. Rewrite using `[e, lintegral_indicator_const hm, Measure.addHaar_preimage_linearMap lam (by rw [hdet]; exact one_ne_zero), hdet]`. Simplify using the standard rewrite rules.
+
+Set `c : ENNReal` to `ENNReal.ofReal ((Real.sqrt n + 1) ^ (2 * n ^ 2 + 1))`. Set `b : MatrixCoordinates n → ENNReal` to `fun x => ENNReal.ofReal ((1 + ‖x‖) ^ (-((2 * n ^ 2 + 1 : ℕ) : ℝ)))`. Establish `hfr : Module.finrank ℝ (MatrixCoordinates n) = 2 * n ^ 2`. Simplify using `[MatrixCoordinates, Module.finrank_pi_fintype, Complex.finrank_real_complex]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hb : ∫⁻ x, b x ∂lam < ⊤` using `finite_integral_one_add_norm (by rw [hfr]; exact_mod_cast Nat.lt_succ_self _)`. Establish `h2 : ∀ x, ∫⁻ g, f g x ∂ν ≤ (c * ν W) * b x`. Introduce `x`. Establish `hm : MeasurableSet {g : UJ ε | hs (coeMatrixAlt ε g⁻¹ * Matrix.of x - 1) < 1 / 4}` using `measurable_prodMk_right hU`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `lintegral_mono fun g => ?_` and prove the remaining obligations. Distinguish the cases in `hg : hs (coeMatrixAlt ε g⁻¹ * Matrix.of x - 1) < 1 / 4`. Establish `hgU : (g, x) ∈ U` using `hg`. Simplify using `only [f]`. Rewrite using `[Set.indicator_of_mem hgU, Set.indicator_of_mem (by exact hg)]`.
+
+Simplify using `only [w, c, b]`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Conclude with `ENNReal.ofReal_le_ofReal (wt_le g x hg)`. Establish `hgU : (g, x) ∉ U` using `hg`. Simplify using `only [f]`.
+
+Rewrite using `[Set.indicator_of_notMem hgU]`. Conclude with `bot_le`. Use `_ = c * b x * ν {g : UJ ε | hs (coeMatrixAlt ε g⁻¹ * Matrix.of x - 1) < 1 / 4} := lintegral_indicator_const hm _`. Use `_ ≤ c * b x * ν W := mul_le_mul' le_rfl (slice_le S ν hν x)`. Use `_ = (c * ν W) * b x := by ring`.
+
+Establish `hcW : c * ν W ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hW_fin.ne`. Establish `h3 : (∫⁻ g, w g ∂ν) * lam O < ⊤`. Rewrite using `[← h1, lintegral_lintegral_swap hf.aemeasurable]`. Use `(lintegral_mono h2).trans_lt ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ hcW]`.
+
+Conclude with `ENNReal.mul_lt_top hcW.lt_top hb`. Establish `h4 : ∫⁻ g, w g ∂ν < ⊤` using `ENNReal.lt_top_of_mul_ne_top_left h3.ne hO_pos.ne'`. Use `⟨hwc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Eventually.of_forall fun g => inv_nonneg.2 (hwpos g).le)]`. Conclude with `h4`.
+-/
 theorem UpperTheory.Lit.Cusp.integrable_wt :
     ∀ (n : ℕ) (ε : Fin n → Bool) (S : Subgroup (UJ ε)) (ν : Measure (UJ ε)), IsHaarSub (S : Set (UJ ε)) ν →
       Integrable (fun g : UJ ε => (wt g)⁻¹) ν := by

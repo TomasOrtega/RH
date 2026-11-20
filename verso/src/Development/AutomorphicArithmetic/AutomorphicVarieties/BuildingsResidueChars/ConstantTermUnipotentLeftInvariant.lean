@@ -4,6 +4,11 @@ open NumberField NumberField.mixedEmbedding Matrix MeasureTheory GroundTheory.Au
 open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Introduce `K _ _ n r φ hφ X g`. Establish `hfd` using `isAddFundamentalDomain_unipFundamentalDomain (K := K) (n := n) (r := r)`. Establish `hfd'` using `hfd.vadd_of_comm X`. Rewrite using `[constantTerm_eq_setIntegral hφ hfd, constantTerm_eq_setIntegral hφ hfd' g, ← Set.image_vadd]`. Simplify using `only [vadd_eq_add]`.
+
+Rewrite using `[(measurePreserving_add_left (unipMeasure K n r) X).setIntegral_image_emb (MeasurableEquiv.addLeft X).measurableEmbedding]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun Y => ?_)` and prove the remaining obligations. Use `show φ (unipGL Y * (unipGL X * g)) = φ (unipGL (X + Y) * g)`. Rewrite using `[add_comm X Y, unipGL_add, mul_assoc]`.
+-/
 theorem UpperTheory.constantTerm_unipotent_left_invariant :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (φ : AdelicGLn.AdelicGL K n → ℂ), IsLeftInvariant φ → ∀ (X : UPos n r → AdeleRing (𝓞 K) K) g, constantTerm r φ (unipGL X * g) = constantTerm r φ g := by
   intro K _ _ n r φ hφ X g

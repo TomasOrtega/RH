@@ -29,12 +29,18 @@ variable {l : ℕ} [Fact l.Prime]
 @[reducible] def zlMod {K LL : FinExt l} (T : Lt K LL) : Module ℤ_[l] ↥T.L.T :=
   Module.compHom ↥T.L.T (algebraMap ℤ_[l] ↥(OL LL))
 
+/- English proof (translation)
+The claim follows from `letI := Module.compHom M (algebraMap ℤ_[l] O) ⟨fun c a x => by rw [Algebra.smul_def, mul_smul]; rfl⟩`.
+-/
 theorem zlTower_gen {O M : Type} [CommRing O] [Algebra ℤ_[l] O] [AddCommGroup M] [Module O M] :
     letI := Module.compHom M (algebraMap ℤ_[l] O)
     IsScalarTower ℤ_[l] O M :=
   letI := Module.compHom M (algebraMap ℤ_[l] O)
   ⟨fun c a x => by rw [Algebra.smul_def, mul_smul]; rfl⟩
 
+/- English proof (translation)
+The claim follows from `zlTower_gen`.
+-/
 theorem zlTower {K LL : FinExt l} (T : Lt K LL) :
     @IsScalarTower ℤ_[l] ↥(OL LL) ↥T.L.T _ _ (zlMod T).toSMul :=
   zlTower_gen

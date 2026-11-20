@@ -11,19 +11,37 @@ namespace UpperTheory.Gal.Spc
 
 variable {X M M' : Type} [Group X] [Group M] [Group M']
 
+/- English proof (translation)
+Use `(GlobalTheory.LFun.finite_heckeVec hK hf (1 : Representation ℂ X ℂ) 1).subset fun q hq => ?_` and prove the remaining obligations. Simplify using `using left_ne_zero_of_mul hq`.
+-/
 private theorem fin_out {K : Subgroup X} (hK : IsCommensurated K) {f : X → ℂ} (hf : f ∈ Hecke ℂ K) (c : X ⧸ K → ℂ) :
     (Function.support fun q : X ⧸ K => f q.out * c q).Finite := by
   refine (GlobalTheory.LFun.finite_heckeVec hK hf (1 : Representation ℂ X ℂ) 1).subset fun q hq => ?_
   simpa using left_ne_zero_of_mul hq
 
+/- English proof (translation)
+Simplify using `only [conv, Pi.add_apply, add_mul]`. Conclude with `finsum_add_distrib (fin_out hK hf _) (fin_out hK hf' _)`.
+-/
 private theorem conv_add {K : Subgroup X} (hK : IsCommensurated K) {f f' : X → ℂ} (hf : f ∈ Hecke ℂ K) (hf' : f' ∈ Hecke ℂ K)
     (y : X → ℂ) (g : X) : conv K (f + f') y g = conv K f y g + conv K f' y g := by
   simp only [conv, Pi.add_apply, add_mul]
   exact finsum_add_distrib (fin_out hK hf _) (fin_out hK hf' _)
 
+/- English proof (translation)
+Simplify using `only [conv, Pi.smul_apply, smul_eq_mul, mul_assoc, mul_finsum]`.
+-/
 private theorem conv_smul (K : Subgroup X) (r : ℂ) (f y : X → ℂ) (g : X) : conv K (r • f) y g = r * conv K f y g := by
   simp only [conv, Pi.smul_apply, smul_eq_mul, mul_assoc, mul_finsum]
 
+/- English proof (translation)
+Establish `h1 : ∀ x, x ∈ DoubleCoset.doubleCoset (1 : X) (K : Set X) K ↔ x ∈ K` using `fun x => by`. Rewrite using `[DoubleCoset.mem_doubleCoset]`. Conclude with `⟨by rintro ⟨a, ha, b, hb, rfl⟩; exact mul_mem (mul_mem ha (one_mem K)) hb, fun h => ⟨x, h, 1, one_mem K, by simp⟩⟩`. Establish `h0 : ((1 : X) : X ⧸ K).out ∈ K`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K (1 : X)`.
+
+Rewrite using `[hk, one_mul]`. Conclude with `k.2`. Rewrite using `[conv, finsum_eq_single _ ((1 : X) : X ⧸ K) fun q hq => ?_]`. Rewrite using `[dosetInd, Set.indicator_of_mem ((h1 _).2 h0), Pi.one_apply, one_mul]`. Distinguish the cases in `hg : g ∈ K`.
+
+Rewrite using `[Set.indicator_of_mem ((h1 _).2 hg), Set.indicator_of_mem ((h1 _).2 (mul_mem (inv_mem h0) hg))]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (mt (h1 _).1 hg), Set.indicator_of_notMem fun h => hg ?_]`. Simplify using `using mul_mem h0 ((h1 _).1 h)`. Rewrite using `[dosetInd, Set.indicator_of_notMem fun h => hq ?_, zero_mul]`.
+
+Rewrite using `[← q.out_eq', QuotientGroup.eq]`. Simplify using `using (h1 _).1 h`.
+-/
 private theorem ind_one (K : Subgroup X) (g : X) : conv K (dosetInd ℂ K 1) (dosetInd ℂ K 1) g = dosetInd ℂ K 1 g := by
   have h1 : ∀ x, x ∈ DoubleCoset.doubleCoset (1 : X) (K : Set X) K ↔ x ∈ K := fun x => by
     rw [DoubleCoset.mem_doubleCoset]
@@ -43,6 +61,11 @@ private theorem ind_one (K : Subgroup X) (g : X) : conv K (dosetInd ℂ K 1) (do
     rw [← q.out_eq', QuotientGroup.eq]
     simpa using (h1 _).1 h
 
+/- English proof (translation)
+Use `GlobalTheory.LFun.hecke_induction (p := fun φ => ∃ v ∈ Hecke ℂ T.K₀, ∀ g, conv T.K₀ v (T.tf (L.loc t)) g = T.tf 1 (g * (L.loc (L.pr g))⁻¹) * conv I φ (dosetInd ℂ I t) (L.pr g)) ⟨0, zero_mem _, fun g => by simp [conv]⟩ ?_ ?_ hφ` and prove the remaining obligations. Introduce and unpack `f hf f' hf' ⟨v, hv, e⟩ ⟨v', hv', e'⟩`. Conclude with `⟨v + v', add_mem hv hv', fun g => by rw [conv_add T.cms hv hv', conv_add hI hf hf', e, e', mul_add]⟩`. Introduce `r s`. Use `⟨r • T.tf (L.loc s), Submodule.smul_mem _ _ (pTfAdm X M T _ (h2.1 s)).1.1, fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[conv_smul, conv_smul, tfLoc_holds X M M' T L I h1 h2, mul_left_comm]`.
+-/
 private theorem lift_ex (T : TyLev X M) (L : Loc X M') (I : Subgroup M') (h1 : L.Fact T.K I) (h2 : T.L.Apart L) (hI : IsCommensurated I)
     (t : M') {φ : M' → ℂ} (hφ : φ ∈ Hecke ℂ I) : ∃ v ∈ Hecke ℂ T.K₀, ∀ g, conv T.K₀ v (T.tf (L.loc t)) g =
       T.tf 1 (g * (L.loc (L.pr g))⁻¹) * conv I φ (dosetInd ℂ I t) (L.pr g) := by
@@ -54,6 +77,9 @@ private theorem lift_ex (T : TyLev X M) (L : Loc X M') (I : Subgroup M') (h1 : L
     refine ⟨r • T.tf (L.loc s), Submodule.smul_mem _ _ (pTfAdm X M T _ (h2.1 s)).1.1, fun g => ?_⟩
     rw [conv_smul, conv_smul, tfLoc_holds X M M' T L I h1 h2, mul_left_comm]
 
+/- English proof (translation)
+Take `⟨v, hv, h⟩` from `lift_ex T L I h1 h2 hI t hφ`. Use `⟨v, hv, funext fun g => ?_⟩` and prove the remaining obligations. Establish `h3` using `tfLoc_holds X M M' T L I h1 h2 1 1 g`. Rewrite `h3` using `[map_one, (tfIdem_holds X M T 1 (map_one _)).2.1, ind_one]`. Rewrite using `[h, e, ← h3]`.
+-/
 private theorem inv_ex (T : TyLev X M) (L : Loc X M') (I : Subgroup M') (h1 : L.Fact T.K I) (h2 : T.L.Apart L) (hI : IsCommensurated I)
     (t : M') {φ : M' → ℂ} (hφ : φ ∈ Hecke ℂ I) (e : conv I φ (dosetInd ℂ I t) = dosetInd ℂ I 1) :
     ∃ v ∈ Hecke ℂ T.K₀, conv T.K₀ v (T.tf (L.loc t)) = T.tf 1 := by
@@ -63,6 +89,17 @@ private theorem inv_ex (T : TyLev X M) (L : Loc X M') (I : Subgroup M') (h1 : L.
   rw [map_one, (tfIdem_holds X M T 1 (map_one _)).2.1, ind_one] at h3
   rw [h, e, ← h3]
 
+/- English proof (translation)
+Introduce `X M _ _ T ι M' _ L I t W`. Proceed by induction on `W using Finset.induction_on with`. Consider the case `empty`. Use `fun _ _ => ⟨1, one_mem _, map_one _, by simp, fun h hh _ => ?_, T.tf 1, (pTfAdm X M T 1 (map_one _)).1.1, (tfIdem_holds X M T 1 (map_one _)).2.1⟩` and prove the remaining obligations. Rewrite using `[(tfIdem_holds X M T h hh).2.1, (tfIdem_holds X M T h hh).2.2]`.
+
+Consider the case `insert w W hw ih`. Introduce `h1 h2`. Take `⟨τ, m, p0, p1, c, u, hu, e⟩` from `ih (fun x hx => ⟨(h1 x (Finset.mem_insert_of_mem hx)).1, (h1 x (Finset.mem_insert_of_mem hx)).2.1, fun y hy => (h1 x (Finset.mem_insert_of_mem hx)).2.2 y (Finset.mem_insert_of_mem hy)⟩) fun x hx => h2 x (Finset.mem_insert_of_mem hx)`. Take `⟨f1, f2, f3⟩` from `h1 w (Finset.mem_insert_self w W)`. Take `⟨g1, φ, g2, g3⟩` from `h2 w (Finset.mem_insert_self w W)`.
+
+Establish `ap : ∀ x ∈ W, (L w).Apart (L x)` using `fun x hx => f3 x (Finset.mem_insert_of_mem hx) fun h => hw (h ▸ hx)`. Establish `q : (L w).pr τ = 1` using `(Subgroup.closure_le (L w).pr.ker).2 (by rintro _ ⟨x, hx, rfl⟩; exact (ap x hx).1 _) m`. Take `⟨v, hv, ev⟩` from `inv_ex T (L w) (I w) f1 f2 g1 (t w) g2 g3`. Establish `a1` using `(pTfAdm X M T _ (f2.1 (t w))).1.1`. Establish `a2` using `(pTfAdm X M T τ p0).1.1`.
+
+Establish `R` using `pConvRing X T.K₀ T.cms`. Establish `e1` using `tfMulL_holds X M _ T (L w) (I w) f1 f2 (t w) τ p0 q`. Use `⟨(L w).loc (t w) * τ, mul_mem (Subgroup.subset_closure ⟨w, Finset.mem_insert_self w W, rfl⟩) (Subgroup.closure_mono (by rintro _ ⟨x, hx, rfl⟩; exact ⟨x, Finset.mem_insert_of_mem hx, rfl⟩) m), by rw [map_mul, f2.1, p0, one_mul], fun x hx => ?_, fun h hh hW => ?_, conv T.K₀ u v, (R …` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Rewrite using `[map_mul, (L x).pr_loc, q, mul_one]`.
+
+Rewrite using `[map_mul, (ap x hx).2, p1 x hx, one_mul]`. Establish `a3` using `(pTfAdm X M T h hh).1.1`. Establish `hw1` using `hW w (Finset.mem_insert_self w W)`. Rewrite using `[← e1, (R _ a1 _ a2).2 _ a3, c h hh fun x hx => hW x (Finset.mem_insert_of_mem hx), ← (R _ a1 _ a3).2 _ a2, tfMulL_holds X M _ T (L w) (I w) f1 f2 (t w) h hh hw1, ← tfMulR_holds X M _ T (L w) (I w) f1 f2 (t w) h hh hw1, (R _ a3 _ a1).2 _ a2]`. Rewrite using `[← e1, (R u hu v hv).2 _ (R _ a1 _ a2).1, ← (R v hv _ a1).2 _ a2, ev, (tfIdem_holds X M T τ p0).2.2, e]`.
+-/
 theorem exists_invertible_hecke_function_at_finite_places : ∀ (X M : Type) [Group X] [Group M] (T : TyLev X M) (ι : Type) (M' : ι → Type) [∀ w, Group (M' w)] (L : ∀ w, Loc X (M' w))
     (I : ∀ w, Subgroup (M' w)) (t : ∀ w, M' w) (W : Finset ι),
     (∀ w ∈ W, (L w).Fact T.K (I w) ∧ T.L.Apart (L w) ∧ ∀ w' ∈ W, w ≠ w' → (L w).Apart (L w')) →

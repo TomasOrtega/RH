@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.PolOrdPull
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `D.exists_mem ((y ≫ π) (closedPoint A))`. Establish `hk' : ⊤ ≤ (y ≫ π) ⁻¹ᵁ D.U k` using `(Scheme.preimage_eq_top_of_closedPoint_mem _ hk).ge`. Establish `hk'' : ⊤ ≤ y ⁻¹ᵁ (D.pull π h).U k` using `hk'`. Rewrite using `[GlobalTheory.TraitGen.idlAlong_idealSheaf_eq (D.pull π h) y k hk'', GlobalTheory.TraitGen.idlAlong_idealSheaf_eq D (y ≫ π) k hk']`. Use `congr 2`.
+-/
 theorem idlAlong_pull {X Y : Scheme.{0}} (D : GlobalTheory.EffCartierData X) (π : Y ⟶ X) (h : D.KeepsRegular π)
     {A : Type} [CommRing A] [IsLocalRing A] (y : Sp A ⟶ Y) :
     idlAlong (D.pull π h).idealSheaf y = idlAlong D.idealSheaf (y ≫ π) := by
@@ -24,6 +27,13 @@ theorem idlAlong_pull {X Y : Scheme.{0}} (D : GlobalTheory.EffCartierData X) (π
 end GlobalTheory.PolOrdPull
 
 open GlobalTheory.PolOrdPull in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O O' _ _ β β' X Z π ψ DX h hj ⟨n⟩ hX`. Introduce `W _ _ _ hW ϖ hϖ χ t m P hgen be hbe hmon`. Take `⟨m₂, -⟩` from `GlobalTheory.LevelCover.sab_comp m n rfl`. Establish `hgen' : Set.range (jK W ≫ χ ≫ π) ⊆ Set.range X.j`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Take `⟨z, hz⟩` from `hgen ⟨w, rfl⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hj, Scheme.Hom.comp_apply, hz]`. Both sides reduce to the same expression. Take `⟨k, hk, hI⟩` from `hX W hW ϖ hϖ (χ ≫ π) t m₂ P hgen' be hbe hmon`.
+
+Conclude with `⟨k, hk, (idlAlong_pull DX π h χ).trans hI⟩`.
+-/
 theorem GlobalTheory.TorRef.isPhiDiv_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F) (β' : O' →+* c.F) (X : Model Xo c β) (Z : Model Xo c β') (π : Z.X ⟶ X.X) (ψ : InvFun (𝓞 E)) (DX : GlobalTheory.EffCartierData X.X) (h : DX.KeepsRegular π), Z.j ≫ π = X.j → Nonempty (SABMap Z.t X.t π) → IsPhiDiv ψ X DX → IsPhiDiv ψ Z (DX.pull π h) := by
   intro E _ _ _ H D l Xo c O O' _ _ β β' X Z π ψ DX h hj ⟨n⟩ hX
   intro W _ _ _ hW ϖ hϖ χ t m P hgen be hbe hmon

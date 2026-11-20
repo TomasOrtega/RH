@@ -9,6 +9,11 @@ open scoped MatrixGroups ModularForm Manifold
 
 namespace GlobalTheory.Hk
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `g _`. Rewrite using `[Finset.sum_empty, SlashAction.zero_slash]`. Conclude with `zero_form_isBoundedAtImInfty`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem isBoundedAt_finsetSum {ι : Type*} (s : Finset ι) (c : OnePoint ℝ) (k : ℤ) {F : ι → ℍ → ℂ}
     (h : ∀ i ∈ s, c.IsBoundedAt (F i) k) : c.IsBoundedAt (∑ i ∈ s, F i) k := by
   classical
@@ -21,6 +26,15 @@ theorem isBoundedAt_finsetSum {ι : Type*} (s : Finset ι) (c : OnePoint ℝ) (k
     rw [Finset.sum_insert ha]
     exact (h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Introduce `N l q k hN hl hq hqd f`. Establish `hq0 : 0 < q` using `hq.pos`. Establish `hinv : ∀ γ ∈ lev N l, (⇑f) ∣[k] γ = ⇑f` using `fun γ hγ => by`. Rewrite using `[SL_slash]`. Conclude with `f.slash_action_eq' _ ⟨γ, hγ, rfl⟩`.
+
+Establish `hU` using `GlobalTheory.T.heckeUOperatorExplicit_slash_invariant_gamma1InterGamma0 N l q k (⇑f) hN hl hq hqd hinv`. Use `⟨{ toFun := uOp q ⇑f slash_action_eq' := ?_ holo' := (GlobalTheory.T.mdifferentiable_heckeOperatorsExplicit q k 1 (⇑f) hq0 f.holo').1 bdd_at_cusps' := ?_ }, rfl⟩` and prove the remaining obligations. Introduce `γ hγ`. Take `⟨s, hs, rfl⟩` from `Subgroup.mem_map.1 hγ`. Use `hU s hs` as an intermediate fact.
+
+Rewrite `this` using `[SL_slash]`. Conclude with `this`. Introduce `c hc`. Rewrite using `[GlobalTheory.T.heckeUOperatorExplicit_eq_sum_slash q k (⇑f) hq0]`. Conclude with `isBoundedAt_finsetSum _ c k fun j _ => GlobalTheory.T.slash_rat_isBoundedAt_gamma1InterGamma0Level N l k _ hN hl (by`.
+
+Simplify using `[Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.det_fin_two_of]`. Conclude with `hq0) f c hc` after adjusting the coercions.
+-/
 theorem uOp_modularForm : ∀ (N l q : ℕ) (k : ℤ), 0 < N → 0 < l → q.Prime → q ∣ N * l →
     ∀ f : ModularForm (GlobalTheory.Hk.lev N l) k, ∃ g : ModularForm (GlobalTheory.Hk.lev N l) k,
       ⇑g = GlobalTheory.Hk.uOp q ⇑f := by

@@ -13,12 +13,32 @@ namespace GlobalTheory.RedQuot
 
 open Coalgebra Bialgebra
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `G.res_surjective n a`. Rewrite using `[mulP_res, semi_mulBy, ← s.res_app, mulP_res]`.
+-/
 theorem semi_app_mulP {p : ℕ} {R R₀ : Type} [CommRing R] [CommRing R₀] {σ : R →+* R₀}
     {G : PDivGroup p R} {G₀ : PDivGroup p R₀} (s : SemiHom σ G₀ G) (n : ℕ) (a : G.A n) :
     s.app (n + 1) (G.mulP n a) = G₀.mulP n (s.app n a) := by
   obtain ⟨b, rfl⟩ := G.res_surjective n a
   rw [mulP_res, semi_mulBy, ← s.res_app, mulP_res]
 
+/- English proof (translation)
+Rewrite using `[smul_pow_app, smul_pow_app]`. Set `X : ∀ n, G.A n → G₀.A n` to `fun n a => s'.app n (χ.app n (mulBy R (G.A n) (p ^ e) a))`. Set `Y : ∀ n, G.A n → G₀.A n` to `fun n a => s.app n (mulBy R (G.A n) (p ^ d) a)`. Establish `hX : ∀ n z, X (n + 1) (G.mulP n z) = G₀.mulP n (X n z)` using `fun n z => by`. Simplify using `only [X]`.
+
+Rewrite using `[← map_mulBy (G.mulP n), app_mulP, semi_app_mulP]`. Establish `hY : ∀ n z, Y (n + 1) (G.mulP n z) = G₀.mulP n (Y n z)` using `fun n z => by`. Simplify using `only [Y]`. Rewrite using `[← map_mulBy (G.mulP n), semi_app_mulP]`. Establish `base : ∀ n b, X n (mulBy R (G.A n) (p ^ m) b) = Y n (mulBy R (G.A n) (p ^ m) b)`.
+
+Introduce `n b`. Establish `h` using `ident s s' ψ χ m N h1 h2 n (mulBy R (G.A n) (p ^ e) b)`. Simplify using `only [X, Y]`. Rewrite `h` using `[mulBy_mulBy, ← pow_add, hNe, pow_add, mul_comm, ← mulBy_mulBy]`. Rewrite using `[h, ← semi_mulBy (s'.app n), ← map_mulBy (χ.app n), mulBy_mulBy, mulBy_mulBy, mul_comm]`.
+
+Establish `step : ∀ k, (∀ n b, X n (mulBy R (G.A n) (p ^ (k + 1)) b) = Y n (mulBy R (G.A n) (p ^ (k + 1)) b)) → ∀ n b, X n (mulBy R (G.A n) (p ^ k) b) = Y n (mulBy R (G.A n) (p ^ k) b)`. Introduce `k hk n b`. Take `⟨c, rfl⟩` from `G.res_surjective n b`. Apply `GlobalTheory.PDivGroup.Test.mulP_injective G₀ n` to reduce the goal to its premises. Establish `e1 : G.mulP n (mulBy R (G.A n) (p ^ k) (G.res n c)) = mulBy R (G.A (n + 1)) (p ^ (k + 1)) c`.
+
+Rewrite using `[map_mulBy, mulP_res, mulBy_mulBy, ← pow_succ]`. Rewrite using `[← hX, ← hY, e1, hk]`. Establish `all : ∀ j, j ≤ m → ∀ n b, X n (mulBy R (G.A n) (p ^ (m - j)) b) = Y n (mulBy R (G.A n) (p ^ (m - j)) b)`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero => intro _`. Simplify using `using base`. Consider the case `succ j ih`. Introduce `hj`. Establish `h` using `ih (by omega)`.
+
+Rewrite `h` using `[show m - j = (m - (j + 1)) + 1 by omega]`. Conclude with `step _ h`. Establish `e0 : ∀ k (z : G.A k), mulBy R (G.A k) 1 z = z` using `fun k z => by`. Simplify using `[mulBy]`. Establish `h0` using `all m le_rfl n a`.
+
+Simplify using `only [X, Y, Nat.sub_self, pow_zero, e0] at h0`. Conclude with `h0`.
+-/
 theorem cancel (p : ℕ) [Fact p.Prime] (R R₀ : Type) [CommRing R] [CommRing R₀] [Algebra R R₀]
     (G' G : PDivGroup p R) (G₀ : PDivGroup p R₀) (s : SemiHom (algebraMap R R₀) G₀ G)
     (s' : SemiHom (algebraMap R R₀) G₀ G') (ψ : G ⟶ G') (χ : G' ⟶ G) (m N d e : ℕ)

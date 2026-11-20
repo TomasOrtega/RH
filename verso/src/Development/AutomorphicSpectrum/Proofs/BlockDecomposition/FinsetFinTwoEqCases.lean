@@ -17,6 +17,9 @@ section Gen
 
 variable {A : Type} [CommRing A] {M : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Both sides reduce to the same expression.
+-/
 theorem sum_two {B : Type} [AddCommMonoid B] (f : Fin (M + 2) → B) :
     ∑ i, f i = f 0 + (f 1 + ∑ i : Fin M, f i.succ.succ) := by
   rw [Fin.sum_univ_succ, Fin.sum_univ_succ]; rfl
@@ -30,22 +33,55 @@ def dg (u : Matrix (Fin M) (Fin M) A) : Matrix (Fin (M + 2)) (Fin (M + 2)) A :=
 
 section DgEntries
 variable (u : Matrix (Fin M) (Fin M) A)
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dg_zero_zero : dg u 0 0 = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dg_zero_one : dg u 0 1 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dg_one_zero : dg u 1 0 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dg_one_one : dg u 1 1 = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dg_zero_rest (j : Fin M) : dg u 0 j.succ.succ = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dg_one_rest (j : Fin M) : dg u 1 j.succ.succ = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dg_rest_zero (i : Fin M) : dg u i.succ.succ 0 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dg_rest_one (i : Fin M) : dg u i.succ.succ 1 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dg_rest_rest (i j : Fin M) : dg u i.succ.succ j.succ.succ = u i j := rfl
 end DgEntries
 
+/- English proof (translation)
+Use `Fin.cases h0 (fun i => ?_) i` and prove the remaining obligations. Conclude with `Fin.cases h1 h2 i`.
+-/
 theorem finset_fin_two_eq_cases {p : Fin (M + 2) → Prop} (h0 : p 0) (h1 : p 1) (h2 : ∀ i : Fin M, p i.succ.succ)
     (i : Fin (M + 2)) : p i := by
   refine Fin.cases h0 (fun i => ?_) i
   exact Fin.cases h1 h2 i
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `finset_fin_two_eq_cases (p := fun i => P i j = Q i j) ?_ ?_ (fun i => ?_) i` and prove the remaining obligations. Conclude with `finset_fin_two_eq_cases (p := fun j => P 0 j = Q 0 j) h00 h01 h0r j`. Conclude with `finset_fin_two_eq_cases (p := fun j => P 1 j = Q 1 j) h10 h11 h1r j`. Conclude with `finset_fin_two_eq_cases (p := fun j => P i.succ.succ j = Q i.succ.succ j) (hr0 i) (hr1 i) (hrr i) j`.
+-/
 theorem mat_ext2 {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A}
     (h00 : P 0 0 = Q 0 0) (h01 : P 0 1 = Q 0 1) (h10 : P 1 0 = Q 1 0) (h11 : P 1 1 = Q 1 1)
     (h0r : ∀ j : Fin M, P 0 j.succ.succ = Q 0 j.succ.succ)
@@ -59,25 +95,52 @@ theorem mat_ext2 {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A}
   · exact finset_fin_two_eq_cases (p := fun j => P 1 j = Q 1 j) h10 h11 h1r j
   · exact finset_fin_two_eq_cases (p := fun j => P i.succ.succ j = Q i.succ.succ j) (hr0 i) (hr1 i) (hrr i) j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem one_zero_zero : (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 0 0 = 1 := rfl
+/- English proof (translation)
+The claim follows from `Matrix.one_apply_eq _`.
+-/
 @[simp] theorem one_one_one : (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 1 1 = 1 :=
   Matrix.one_apply_eq _
+/- English proof (translation)
+The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+-/
 @[simp] theorem one_zero_one : (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 0 1 = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
+/- English proof (translation)
+The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+-/
 @[simp] theorem one_one_zero : (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 1 0 = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
+/- English proof (translation)
+The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+-/
 @[simp] theorem one_zero_rest (j : Fin M) :
     (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 0 j.succ.succ = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
+/- English proof (translation)
+The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+-/
 @[simp] theorem one_one_rest (j : Fin M) :
     (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 1 j.succ.succ = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
+/- English proof (translation)
+The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+-/
 @[simp] theorem one_rest_zero (i : Fin M) :
     (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) i.succ.succ 0 = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
+/- English proof (translation)
+The claim follows from `Matrix.one_apply_ne (by simp [Fin.ext_iff])`.
+-/
 @[simp] theorem one_rest_one (i : Fin M) :
     (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) i.succ.succ 1 = 0 :=
   Matrix.one_apply_ne (by simp [Fin.ext_iff])
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne]`. Simplify using `using h`.
+-/
 @[simp] theorem one_rest_rest (i j : Fin M) :
     (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) i.succ.succ j.succ.succ =
       (1 : Matrix (Fin M) (Fin M) A) i j := by
@@ -86,9 +149,15 @@ theorem mat_ext2 {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A}
   · rw [Matrix.one_apply_ne h, Matrix.one_apply_ne]
     simpa using h
 
+/- English proof (translation)
+Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp`.
+-/
 theorem dg_one : dg (1 : Matrix (Fin M) (Fin M) A) = 1 := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>`. Simplify using `[Matrix.mul_apply, sum_two]`.
+-/
 theorem dg_mul (u v : Matrix (Fin M) (Fin M) A) : dg (u * v) = dg u * dg v := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>
     simp [Matrix.mul_apply, sum_two]
@@ -99,6 +168,9 @@ def rowv (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (x : Fin M → A) (b : F
 def hv (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (x y : Fin M → A) : A :=
   ∑ b, rowv s J x b * y b
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, sum_two, hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest, mul_zero, mul_one, zero_mul, Finset.sum_const …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_entry (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
     (P : Matrix (Fin (M + 2)) (Fin (M + 2)) A) (i j : Fin (M + 2)) :
     (cT s P * hypOne J * P) i j = s (P 0 i) * P 1 j + s (P 1 i) * P 0 j +
@@ -112,12 +184,20 @@ theorem gram_entry (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
 def ColE (P : Matrix (Fin (M + 2)) (Fin (M + 2)) A) : Prop :=
   ∀ i, P i 0 = (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) i 0
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hQ _]`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_one]`.
+-/
 theorem mul_col {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A} (hQ : ColE Q) (i : Fin (M + 2)) :
     (P * Q) i 0 = P i 0 := by
   rw [Matrix.mul_apply]
   simp only [hQ _]
   rw [← Matrix.mul_apply, Matrix.mul_one]
 
+/- English proof (translation)
+Apply the tactic sequence `have h := gram_entry s J P 0 j`. Rewrite `h` using `[hU]`. Establish `h00 : P 0 0 = 1` using `hC 0`. Establish `h10 : P 1 0 = 0` using `hC 1`. Establish `hr : (fun a : Fin M => P a.succ.succ 0) = 0`.
+
+Use function extensionality and compare the values at `a`. Conclude with `hC _`. Rewrite `h` using `[h00, h10, hr]`. Simplify `h.symm` using `[hv, rowv]`.
+-/
 theorem row_one (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
     {P : Matrix (Fin (M + 2)) (Fin (M + 2)) A} (hU : cT s P * hypOne J * P = hypOne J)
     (hC : ColE P) (j : Fin (M + 2)) : P 1 j = hypOne J 0 j := by
@@ -130,18 +210,32 @@ theorem row_one (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
   rw [h00, h10, hr] at h
   simpa [hv, rowv] using h.symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[blk, Matrix.mul_apply, sum_two, hP, hQ]`.
+-/
 theorem blk_mul {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A}
     (hP : ∀ i : Fin M, P i.succ.succ 0 = 0) (hQ : ∀ j : Fin M, Q 1 j.succ.succ = 0) :
     blk (P * Q) = blk P * blk Q := by
   ext i j
   simp [blk, Matrix.mul_apply, sum_two, hP, hQ]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[blk]`.
+-/
 theorem blk_one : blk (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) A) = 1 := by
   ext i j; simp [blk]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[blk]`.
+-/
 theorem blk_dg (u : Matrix (Fin M) (Fin M) A) : blk (dg u) = u := by
   ext i j; simp [blk]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `have h := gram_entry s J P i.succ.succ j.succ.succ`. Rewrite `h` using `[hU, row_one s J hU hC j.succ.succ, hypOne_zero_rest, hypOne_rest_rest]`. Establish `h2 : P 1 i.succ.succ = 0` using `by rw [row_one s J hU hC]; rfl`. Rewrite `h` using `[h2]`.
+
+Simplify using `only [map_zero, mul_zero, zero_mul, add_zero, zero_add] at h`. Rewrite using `[h]`. Simplify using `[Matrix.mul_apply, cT, blk, hv, rowv]`.
+-/
 theorem blk_unitary (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
     {P : Matrix (Fin (M + 2)) (Fin (M + 2)) A} (hU : cT s P * hypOne J * P = hypOne J)
     (hC : ColE P) : cT s (blk P) * J * blk P = J := by
@@ -154,6 +248,11 @@ theorem blk_unitary (s : A →+* A) (J : Matrix (Fin M) (Fin M) A)
   rw [h]
   simp [Matrix.mul_apply, cT, blk, hv, rowv]
 
+/- English proof (translation)
+Establish `key : ∀ i j : Fin M, hv s J (fun a => u a i) (fun b => u b j) = J i j`. Introduce `i j`. Use `congrFun (congrFun hu i) j` as an intermediate fact. Rewrite using `[← this]`. Simplify using `[Matrix.mul_apply, cT, hv, rowv]`.
+
+Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> rw [gram_entry] <;>`. Simplify using `[key, hv, rowv, hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest]`. Apply the tactic sequence `all_goals exact key _ _`.
+-/
 theorem dg_unitary (s : A →+* A) (J u : Matrix (Fin M) (Fin M) A) (hu : cT s u * J * u = J) :
     cT s (dg u) * hypOne J * dg u = hypOne J := by
   have key : ∀ i j : Fin M, hv s J (fun a => u a i) (fun b => u b j) = J i j := by
@@ -183,20 +282,35 @@ def stabG (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) : Subgroup (GL (Fin (M 
 
 variable {s : A →+* A} {J : Matrix (Fin M) (Fin M) A}
 
+/- English proof (translation)
+The claim follows from `hg.1`.
+-/
 theorem stabG_unit {g : GL (Fin (M + 2)) A} (hg : g ∈ stabG s J) :
     cT s (g : Matrix (Fin (M + 2)) (Fin (M + 2)) A) * hypOne J * (g : Matrix _ _ A) = hypOne J := hg.1
 
+/- English proof (translation)
+The claim follows from `hg.2`.
+-/
 theorem stabG_col {g : GL (Fin (M + 2)) A} (hg : g ∈ stabG s J) :
     ColE (g : Matrix (Fin (M + 2)) (Fin (M + 2)) A) := hg.2
 
+/- English proof (translation)
+Rewrite using `[stabG_col hg]`. Simplify using the standard rewrite rules.
+-/
 theorem stabG_rest_zero {g : GL (Fin (M + 2)) A} (hg : g ∈ stabG s J) (i : Fin M) :
     (g : Matrix (Fin (M + 2)) (Fin (M + 2)) A) i.succ.succ 0 = 0 := by
   rw [stabG_col hg]; simp
 
+/- English proof (translation)
+Rewrite using `[row_one s J (stabG_unit hg) (stabG_col hg)]`. Both sides reduce to the same expression.
+-/
 theorem stabG_row {g : GL (Fin (M + 2)) A} (hg : g ∈ stabG s J) (j : Fin M) :
     (g : Matrix (Fin (M + 2)) (Fin (M + 2)) A) 1 j.succ.succ = 0 := by
   rw [row_one s J (stabG_unit hg) (stabG_col hg)]; rfl
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul]`. Conclude with `blk_mul (stabG_rest_zero hg) (stabG_row hh)`.
+-/
 theorem blk_mul_stabG {g h : GL (Fin (M + 2)) A} (hg : g ∈ stabG s J) (hh : h ∈ stabG s J) :
     blk ((g * h : GL (Fin (M + 2)) A) : Matrix (Fin (M + 2)) (Fin (M + 2)) A) =
       blk (g : Matrix _ _ A) * blk (h : Matrix _ _ A) := by
@@ -217,10 +331,16 @@ def piG : stabG s J →* GL (Fin M) A :=
         exact blk_one })
     (fun g h => Units.ext (blk_mul_stabG g.2 h.2))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piG_val (g : stabG s J) :
     ((piG s J g : GL (Fin M) A) : Matrix (Fin M) (Fin M) A) =
       blk ((g : GL (Fin (M + 2)) A) : Matrix (Fin (M + 2)) (Fin (M + 2)) A) := rfl
 
+/- English proof (translation)
+The claim follows from `blk_unitary s J (stabG_unit g.2) (stabG_col g.2)`.
+-/
 theorem piG_mem (g : stabG s J) : piG s J g ∈ UJ s J :=
   blk_unitary s J (stabG_unit g.2) (stabG_col g.2)
 
@@ -231,10 +351,16 @@ def dgHom : Matrix (Fin M) (Fin M) A →* Matrix (Fin (M + 2)) (Fin (M + 2)) A w
 
 def dgGL : GL (Fin M) A →* GL (Fin (M + 2)) A := Units.map dgHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dgGL_val (u : GL (Fin M) A) :
     ((dgGL u : GL (Fin (M + 2)) A) : Matrix (Fin (M + 2)) (Fin (M + 2)) A) =
       dg (u : Matrix (Fin M) (Fin M) A) := rfl
 
+/- English proof (translation)
+Use `⟨dg_unitary s J _ hu, fun i => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => dg (u : Matrix (Fin M) (Fin M) A) i 0 = (1 : Matrix _ _ A) i 0) ?_ ?_ (fun i => ?_) i <;> simp`.
+-/
 theorem dgGL_mem {u : GL (Fin M) A} (hu : u ∈ UJ s J) : dgGL u ∈ stabG s J := by
   refine ⟨dg_unitary s J _ hu, fun i => ?_⟩
   refine finset_fin_two_eq_cases (p := fun i => dg (u : Matrix (Fin M) (Fin M) A) i 0 = (1 : Matrix _ _ A) i 0)
@@ -248,56 +374,123 @@ def nM (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w : Fin M → A) (z : A) 
 
 section NEntries
 variable (s J) (w : Fin M → A) (z : A)
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nM_zero_zero : nM s J w z 0 0 = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nM_zero_one : nM s J w z 0 1 = z := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nM_one_zero : nM s J w z 1 0 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nM_one_one : nM s J w z 1 1 = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nM_zero_rest (j : Fin M) : nM s J w z 0 j.succ.succ = -rowv s J w j := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nM_one_rest (j : Fin M) : nM s J w z 1 j.succ.succ = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nM_rest_zero (i : Fin M) : nM s J w z i.succ.succ 0 = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nM_rest_one (i : Fin M) : nM s J w z i.succ.succ 1 = w i := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nM_rest_rest (i j : Fin M) :
     nM s J w z i.succ.succ j.succ.succ = (1 : Matrix (Fin M) (Fin M) A) i j := rfl
 end NEntries
 
+/- English proof (translation)
+Simplify using `[rowv, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem rowv_add (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w w' : Fin M → A) (b : Fin M) :
     rowv s J (w + w') b = rowv s J w b + rowv s J w' b := by
   simp [rowv, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[rowv]`.
+-/
 theorem rowv_neg (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w : Fin M → A) (b : Fin M) :
     rowv s J (-w) b = -rowv s J w b := by
   simp [rowv]
 
+/- English proof (translation)
+Simplify using `[rowv]`.
+-/
 theorem rowv_zero (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (b : Fin M) :
     rowv s J (0 : Fin M → A) b = 0 := by
   simp [rowv]
 
+/- English proof (translation)
+Simplify using `[hv, rowv_neg]`.
+-/
 theorem hv_neg_left (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w w' : Fin M → A) :
     hv s J (-w) w' = -hv s J w w' := by
   simp [hv, rowv_neg]
 
+/- English proof (translation)
+Simplify using `[hv]`.
+-/
 theorem hv_neg_right (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w w' : Fin M → A) :
     hv s J w (-w') = -hv s J w w' := by
   simp [hv]
 
+/- English proof (translation)
+Simplify using `[hv, Matrix.one_apply]`.
+-/
 theorem hv_single (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w : Fin M → A) (j : Fin M) :
     hv s J w (fun b => (1 : Matrix (Fin M) (Fin M) A) b j) = rowv s J w j := by
   simp [hv, Matrix.one_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp [rowv_zero]`.
+-/
 theorem nM_zero (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) : nM s J 0 0 = 1 := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp [rowv_zero]
 
+/- English proof (translation)
+Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>`. Simplify using `[Matrix.mul_apply, sum_two, rowv_add, Matrix.one_apply, hv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nM_mul (s : A →+* A) (J : Matrix (Fin M) (Fin M) A) (w w' : Fin M → A) (z z' : A) :
     nM s J w z * nM s J w' z' = nM s J (w + w') (z + z' - hv s J w w') := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>
     simp [Matrix.mul_apply, sum_two, rowv_add, Matrix.one_apply, hv]
   ring
 
+/- English proof (translation)
+Simplify using `only [rowv, map_sum, map_mul, hs]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [hJ, mul_comm]`.
+-/
 theorem s_rowv (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (w : Fin M → A) (i : Fin M) :
     s (rowv s J w i) = ∑ b, J i b * w b := by
   simp only [rowv, map_sum, map_mul, hs]
   exact Finset.sum_congr rfl fun b _ => by rw [hJ, mul_comm]
 
+/- English proof (translation)
+Use `mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[gram_entry]`. Simplify using `[hv, rowv, hypOne_zero_zero]`. Rewrite using `[gram_entry]`. Simplify using `[hv, rowv, hypOne_zero_one]`.
+
+Rewrite using `[gram_entry]`. Simplify using `[hv, rowv, hypOne_one_zero]`. Rewrite using `[gram_entry]`. Simplify using `only [nM_zero_one, nM_one_one, nM_rest_one, map_one, one_mul, mul_one, hypOne_one_one]`. Rewrite using `[← hz]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `j`. Rewrite using `[gram_entry]`. Simplify using `[hv, rowv, hypOne_zero_rest]`. Introduce `j`.
+
+Rewrite using `[gram_entry]`. Simplify using `only [nM_zero_one, nM_one_one, nM_one_rest, nM_zero_rest, nM_rest_one, nM_rest_rest, map_one, one_mul, mul_zero, zero_add, hypOne_one_rest, hv_single]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i`. Rewrite using `[gram_entry]`.
+
+Simplify using `[hv, rowv, hypOne_rest_zero]`. Introduce `i`. Rewrite using `[gram_entry]`. Simplify using `only [nM_zero_rest, nM_one_rest, nM_one_one, nM_zero_one, nM_rest_one, nM_rest_rest, map_neg, map_zero, s_rowv hs hJ, mul_one, zero_mul, add_zero, hypOne_rest_one]`. Simplify using `[hv, rowv, Matrix.one_apply]`.
+
+Introduce `i j`. Rewrite using `[gram_entry]`. Simplify using `[hv, rowv, hypOne_rest_rest, Matrix.one_apply]`.
+-/
 theorem nM_unitary (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (w : Fin M → A) (z : A)
     (hz : z + s z + hv s J w w = 0) : cT s (nM s J w z) * hypOne J * nM s J w z = hypOne J := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
@@ -336,9 +529,15 @@ def nGL (hs : ∀ x, s (s x) = x) (w : Fin M → A) (z : A) (hz : z + s z + hv s
     congr 1
     rw [← hz]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nGL_val (hs : ∀ x, s (s x) = x) (w : Fin M → A) (z : A) (hz : z + s z + hv s J w w = 0) :
     ((nGL hs w z hz : GL (Fin (M + 2)) A) : Matrix (Fin (M + 2)) (Fin (M + 2)) A) = nM s J w z := rfl
 
+/- English proof (translation)
+Use `⟨nM_unitary hs hJ w z hz, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[nGL_val]`. Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => nM s J w z i 0 = (1 : Matrix _ _ A) i 0) ?_ ?_ (fun i => ?_) i <;>`. Simplify using the standard rewrite rules.
+-/
 theorem nGL_mem (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (w : Fin M → A) (z : A)
     (hz : z + s z + hv s J w w = 0) : nGL hs w z hz ∈ stabG s J := by
   refine ⟨nM_unitary hs hJ w z hz, fun i => ?_⟩
@@ -346,9 +545,29 @@ theorem nGL_mem (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (w :
   refine finset_fin_two_eq_cases (p := fun i => nM s J w z i 0 = (1 : Matrix _ _ A) i 0) ?_ ?_ (fun i => ?_) i <;>
     simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[blk]`.
+-/
 theorem blk_nM (w : Fin M → A) (z : A) : blk (nM s J w z) = 1 := by
   ext i j; simp [blk]
 
+/- English proof (translation)
+Establish `h00 : P 0 0 = 1` using `hC 0`. Establish `h10 : P 1 0 = 0` using `hC 1`. Establish `hr0 : ∀ i : Fin M, P i.succ.succ 0 = 0` using `fun i => by rw [hC]; simp`. Establish `h11 : P 1 1 = 1` using `row_one s J hU hC 1`. Establish `h1r : ∀ j : Fin M, P 1 j.succ.succ = 0` using `fun j => row_one s J hU hC j.succ.succ`.
+
+Establish `hrr : ∀ i j : Fin M, P i.succ.succ j.succ.succ = (1 : Matrix (Fin M) (Fin M) A) i j` using `fun i j => congrFun (congrFun hb i) j`. Establish `e1 : ∀ j : Fin M, P 0 j.succ.succ = -rowv s J (fun i => P i.succ.succ 1) j`. Introduce `j`. Apply the tactic sequence `have h := gram_entry s J P 1 j.succ.succ`. Rewrite `h` using `[hU, hypOne_one_rest, h1r, h11]`.
+
+Simplify using `only [mul_zero, map_one, one_mul, zero_add] at h`. Establish `e : (fun b : Fin M => P b.succ.succ j.succ.succ) = fun b => (1 : Matrix (Fin M) (Fin M) A) b j`. Use function extensionality and compare the values at `b`. Conclude with `hrr b j`. Rewrite `h` using `[e, hv_single]`.
+
+Conclude with `eq_neg_of_add_eq_zero_left h.symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `using h00`. Simplify using the standard rewrite rules.
+
+Simplify using `using h10`. Simplify using `using h11`. Introduce `j`. Simplify using `using e1 j`. Introduce `j`.
+
+Simplify using `using h1r j`. Introduce `i`. Simplify using `using hr0 i`. Introduce `i`. Simplify using the standard rewrite rules.
+
+Introduce `i j`. Simplify using `using hrr i j`. Apply the tactic sequence `have h := gram_entry s J P 1 1`. Rewrite `h` using `[hU, hypOne_one_one, h11]`. Simplify using `only [map_one, one_mul, mul_one] at h`.
+
+Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eq_nM {P : Matrix (Fin (M + 2)) (Fin (M + 2)) A} (hU : cT s P * hypOne J * P = hypOne J)
     (hC : ColE P) (hb : blk P = 1) :
     P = nM s J (fun i => P i.succ.succ 1) (P 0 1) ∧
@@ -391,19 +610,34 @@ section Map
 
 variable {B : Type} [CommRing B] (φ : A →+* B)
 
+/- English proof (translation)
+Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp`.
+-/
 theorem dg_map (u : Matrix (Fin M) (Fin M) A) : (dg u).map φ = dg (u.map φ) := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blk_map (P : Matrix (Fin (M + 2)) (Fin (M + 2)) A) : blk (P.map φ) = (blk P).map φ := rfl
 
+/- English proof (translation)
+Simplify using `[rowv, hφ]`.
+-/
 theorem rowv_map {s' : B →+* B} (hφ : ∀ x, φ (s x) = s' (φ x)) (w : Fin M → A) (b : Fin M) :
     φ (rowv s J w b) = rowv s' (J.map φ) (fun i => φ (w i)) b := by
   simp [rowv, hφ]
 
+/- English proof (translation)
+Simplify using `[hv, rowv_map φ hφ]`.
+-/
 theorem hv_map {s' : B →+* B} (hφ : ∀ x, φ (s x) = s' (φ x)) (w w' : Fin M → A) :
     φ (hv s J w w') = hv s' (J.map φ) (fun i => φ (w i)) (fun i => φ (w' i)) := by
   simp [hv, rowv_map φ hφ]
 
+/- English proof (translation)
+Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>`. Simplify using `[rowv_map φ hφ, Matrix.one_apply, apply_ite φ]`.
+-/
 theorem nM_map {s' : B →+* B} (hφ : ∀ x, φ (s x) = s' (φ x)) (w : Fin M → A) (z : A) :
     (nM s J w z).map φ = nM s' (J.map φ) (fun i => φ (w i)) (φ z) := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>
@@ -415,6 +649,9 @@ section Vec
 
 variable {k : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => (dg u *ᵥ (Fin.cons x (Fin.cons y v) : Fin (M + 2) → A)) i = (Fin.cons x (Fin.cons y (u *ᵥ v)) : Fin (M + 2) → A) i) ?_ ?_ (fun i => ?_) i <;>`. Simplify using `[Matrix.mulVec, dotProduct, sum_two]`.
+-/
 theorem dg_mulVec_cons (u : Matrix (Fin M) (Fin M) A) (x y : A) (v : Fin M → A) :
     dg u *ᵥ (Fin.cons x (Fin.cons y v) : Fin (M + 2) → A) = Fin.cons x (Fin.cons y (u *ᵥ v)) := by
   funext i
@@ -425,6 +662,11 @@ theorem dg_mulVec_cons (u : Matrix (Fin M) (Fin M) A) (x y : A) (v : Fin M → A
 def topRow (P : Matrix (Fin (M + 2)) (Fin (M + 2)) A) (v : Fin M → A) : A :=
   ∑ i, P 0 i.succ.succ * v i
 
+/- English proof (translation)
+Establish `hrr : ∀ i j : Fin M, P i.succ.succ j.succ.succ = (1 : Matrix (Fin M) (Fin M) A) i j` using `fun i j => congrFun (congrFun hb i) j`. Use function extensionality and compare the values at `i`. Use `finset_fin_two_eq_cases (p := fun i => (P *ᵥ (Fin.cons x (Fin.cons 0 v) : Fin (M + 2) → A)) i = (Fin.cons (x + topRow P v) (Fin.cons 0 v) : Fin (M + 2) → A) i) ?_ ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[Matrix.mulVec, dotProduct, sum_two, h00, topRow]`. Simplify using `[Matrix.mulVec, dotProduct, sum_two, h10, h1r]`.
+
+Simplify using `[Matrix.mulVec, dotProduct, sum_two, hr0, hrr, Matrix.one_apply]`.
+-/
 theorem mulVec_cons_of_blk {P : Matrix (Fin (M + 2)) (Fin (M + 2)) A}
     (h00 : P 0 0 = 1) (h10 : P 1 0 = 0) (hr0 : ∀ i : Fin M, P i.succ.succ 0 = 0)
     (h1r : ∀ j : Fin M, P 1 j.succ.succ = 0) (hb : blk P = 1) (x : A) (v : Fin M → A) :
@@ -439,6 +681,9 @@ theorem mulVec_cons_of_blk {P : Matrix (Fin (M + 2)) (Fin (M + 2)) A}
   · simp [Matrix.mulVec, dotProduct, sum_two, h10, h1r]
   · simp [Matrix.mulVec, dotProduct, sum_two, hr0, hrr, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `hrr : ∀ i j : Fin M, Q i.succ.succ j.succ.succ = (1 : Matrix (Fin M) (Fin M) A) i j` using `fun i j => congrFun (congrFun hQb i) j`. Simplify using `only [topRow, Matrix.mul_apply, sum_two, hP0, hQ, hrr, Finset.sum_add_distrib, add_mul, mul_zero, zero_add, one_mul, Matrix.one_apply, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[add_comm]`.
+-/
 theorem topRow_mul {P Q : Matrix (Fin (M + 2)) (Fin (M + 2)) A} (hP0 : P 0 0 = 1)
     (hQ : ∀ j : Fin M, Q 1 j.succ.succ = 0) (hQb : blk Q = 1) (v : Fin M → A) :
     topRow (P * Q) v = topRow P v + topRow Q v := by
@@ -457,6 +702,9 @@ section Over
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Apply the tactic sequence `refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>`. Simplify using `[JR, hypOne_zero_zero, hypOne_zero_one, hypOne_one_zero, hypOne_one_one, hypOne_zero_rest, hypOne_one_rest, hypOne_rest_zero, hypOne_rest_one, hypOne_rest_rest]`.
+-/
 theorem JR_hypOne {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     JR (F := F) R (hypOne J) = hypOne (JR (F := F) R J) := by
   refine mat_ext2 ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ <;> intros <;>
@@ -467,29 +715,57 @@ variable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 def mkH (g : GL (Fin M) (R ⊗[F] E)) (hg : g ∈ HR R σ J) : HA R σ J := (⟨g, hg⟩ : HR R σ J)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mkH (g : GL (Fin M) (R ⊗[F] E)) (hg : g ∈ HR R σ J) :
     HA.mat R σ J (mkH R σ J g hg) = g := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.property (show HR R σ J from h)`.
+-/
 theorem mat_mem (h : HA R σ J) : HA.mat R σ J h ∈ HR R σ J :=
   Subtype.property (show HR R σ J from h)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (p := fun x => x ∈ HR R σ J) e`.
+-/
 theorem HA_ext {g h : HA R σ J} (e : HA.mat R σ J g = HA.mat R σ J h) : g = h :=
   Subtype.ext (p := fun x => x ∈ HR R σ J) e
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul' (g h : HA R σ J) : HA.mat R σ J (g * h) = HA.mat R σ J g * HA.mat R σ J h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one' : HA.mat R σ J 1 = 1 := rfl
 
+/- English proof (translation)
+Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_succ]`.
+-/
 theorem mulVec_first (P : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) (i : Fin (M + 2)) :
     (P *ᵥ (Fin.cons 1 fun _ => 0 : Fin (M + 2) → R ⊗[F] E)) i = P i 0 := by
   simp [Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → R ⊗[F] E) i = (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) i 0) ?_ ?_ (fun i => ?_) i <;> simp`.
+-/
 theorem first_eq_one (i : Fin (M + 2)) :
     (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → R ⊗[F] E) i =
       (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) i 0 := by
   refine finset_fin_two_eq_cases (p := fun i => (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → R ⊗[F] E) i =
       (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) i 0) ?_ ?_ (fun i => ?_) i <;> simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `e i`. Use `congrFun (congrFun e 0) i` as an intermediate fact. Express the relevant statement in the definitionally equal form `(((HA.mat R σ (hypOne J) h : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) *ᵥ (Fin.cons 1 fun _ => 0 : Fin (M + 2) → R ⊗[F] E)) i = (Fin.cons 1 fun _ => 0 : Fin (M + 2) → R ⊗[F] E) i at this`. Rewrite `this` using `[mulVec_first, first_eq_one]`.
+
+Conclude with `this`. Introduce `c`. Use function extensionality and compare the values at `a i`. Express the relevant statement in the definitionally equal form `(((HA.mat R σ (hypOne J) h : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) *ᵥ (Fin.cons 1 fun _ => 0 : Fin (M + 2) → R ⊗[F] E)) i = (Fin.cons 1 fun _ => 0 : Fin (M + 2) → R ⊗[F] E) i`. Rewrite using `[mulVec_first, first_eq_one]`.
+
+Conclude with `c i`.
+-/
 theorem colE_iff (h : HA R σ (hypOne J)) :
     actW R σ (hypOne J) h (e0 _ M) = e0 _ M ↔
       ColE ((HA.mat R σ (hypOne J) h : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) := by
@@ -509,6 +785,9 @@ theorem colE_iff (h : HA R σ (hypOne J)) :
     rw [mulVec_first, first_eq_one]
     exact c i
 
+/- English proof (translation)
+Use `⟨?_, (colE_iff R σ J p.1).1 p.2⟩` and prove the remaining obligations. Rewrite using `[← JR_hypOne]`. Conclude with `mat_mem R σ (hypOne J) p.1`.
+-/
 theorem stab_mem_stabG (p : stabilizer₂ R σ J) :
     HA.mat R σ (hypOne J) p.1 ∈ stabG (sigR R σ) (JR R J) := by
   refine ⟨?_, (colE_iff R σ J p.1).1 p.2⟩
@@ -534,21 +813,36 @@ def iotaR : HA R σ J →* stabilizer₂ R σ J :=
       change dgGL (HA.mat R σ J u * HA.mat R σ J v) = dgGL _ * dgGL _
       rw [map_mul])))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_piR (p : stabilizer₂ R σ J) :
     ((HA.mat R σ J (piR R σ J p) : GL _ _) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) =
       blk ((HA.mat R σ (hypOne J) p.1 : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_iotaR (u : HA R σ J) :
     ((HA.mat R σ (hypOne J) (iotaR R σ J u).1 : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) =
       dg ((HA.mat R σ J u : GL _ _) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) := rfl
 
+/- English proof (translation)
+The claim follows from `HA_ext R σ J (Units.ext (blk_dg _))`.
+-/
 theorem piR_iotaR (u : HA R σ J) : piR R σ J (iotaR R σ J u) = u :=
   HA_ext R σ J (Units.ext (blk_dg _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actW_eq {n : ℕ} (h : HA R σ (hypOne J)) (X : Fin n → Fin (M + 2) → R ⊗[F] E) (a : Fin n) :
     actW R σ (hypOne J) h X a =
       ((HA.mat R σ (hypOne J) h : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) *ᵥ X a := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → R ⊗[F] E) i = (Fin.cons 1 (Fin.cons 0 (0 : Fin M → R ⊗[F] E)) : Fin (M + 2) → R ⊗[F] E) i) ?_ ?_ (fun i => ?_) i <;>`. Simplify using the standard rewrite rules.
+-/
 theorem first_cons :
     (Fin.cons 1 (fun _ => 0) : Fin (M + 2) → R ⊗[F] E) = Fin.cons 1 (Fin.cons 0 (0 : Fin M → R ⊗[F] E)) := by
   funext i
@@ -556,6 +850,11 @@ theorem first_cons :
     (Fin.cons 1 (Fin.cons 0 (0 : Fin M → R ⊗[F] E)) : Fin (M + 2) → R ⊗[F] E) i) ?_ ?_ (fun i => ?_) i <;>
     simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Rewrite using `[actW_eq, mat_iotaR]`. Use `Fin.cases ?_ (fun j => ?_) r` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dg _ *ᵥ (Fin.cons 1 fun _ => 0) = (Fin.cons 1 fun _ => 0)`. Rewrite using `[first_cons, dg_mulVec_cons, Matrix.mulVec_zero]`.
+
+Express the relevant statement in the definitionally equal form `dg _ *ᵥ Fin.cons (a 0 j) (Fin.cons 0 (Y j)) = Fin.cons (a 0 j) (Fin.cons 0 _)`. Rewrite using `[dg_mulVec_cons]`. Both sides reduce to the same expression.
+-/
 theorem actW_iotaR (k : ℕ) (u : HA R σ J) (a : Fin 1 → Fin k → R ⊗[F] E)
     (Y : Fin k → Fin M → R ⊗[F] E) :
     actW R σ (hypOne J) (iotaR R σ J u : HA R σ (hypOne J)) (consA a Y) =
@@ -572,24 +871,49 @@ theorem actW_iotaR (k : ℕ) (u : HA R σ J) (a : Fin 1 → Fin k → R ⊗[F] E
 abbrev matP (p : stabilizer₂ R σ J) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E) :=
   ((HA.mat R σ (hypOne J) p.1 : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E))
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (HA_ext R σ (hypOne J) (Units.ext e))`.
+-/
 theorem stabilizer_ext {p q : stabilizer₂ R σ J} (e : matP R σ J p = matP R σ J q) : p = q :=
   Subtype.ext (HA_ext R σ (hypOne J) (Units.ext e))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMatrix_mul₂ (p q : stabilizer₂ R σ J) : matP R σ J (p * q) = matP R σ J p * matP R σ J q := rfl
 
+/- English proof (translation)
+The claim follows from `(stab_mem_stabG R σ J p).1`.
+-/
 theorem toMatrix_unitary₂ (p : stabilizer₂ R σ J) :
     cT (sigR R σ) (matP R σ J p) * hypOne (JR R J) * matP R σ J p = hypOne (JR R J) :=
   (stab_mem_stabG R σ J p).1
 
+/- English proof (translation)
+The claim follows from `(stab_mem_stabG R σ J p).2`.
+-/
 theorem toMatrix_col (p : stabilizer₂ R σ J) : ColE (matP R σ J p) := (stab_mem_stabG R σ J p).2
 
+/- English proof (translation)
+The claim follows from `stabG_row (stab_mem_stabG R σ J p) j`.
+-/
 theorem toMatrix_row (p : stabilizer₂ R σ J) (j : Fin M) : matP R σ J p 1 j.succ.succ = 0 :=
   stabG_row (stab_mem_stabG R σ J p) j
 
+/- English proof (translation)
+Rewrite using `[← mat_piR, MonoidHom.mem_ker.1 hm]`. Both sides reduce to the same expression.
+-/
 theorem ker_blk {m : stabilizer₂ R σ J} (hm : m ∈ (piR R σ J).ker) : blk (matP R σ J m) = 1 := by
   rw [← mat_piR, MonoidHom.mem_ker.1 hm]
   rfl
 
+/- English proof (translation)
+Establish `hc` using `toMatrix_col R σ J m.1`. Establish `h00 : matP R σ J m.1 0 0 = 1` using `hc 0`. Establish `h10 : matP R σ J m.1 1 0 = 0` using `hc 1`. Establish `hr0 : ∀ i : Fin M, matP R σ J m.1 i.succ.succ 0 = 0` using `fun i => by rw [hc]; simp`. Establish `key` using `mulVec_cons_of_blk h00 h10 hr0 (toMatrix_row R σ J m.1) (ker_blk R σ J m.2)`.
+
+Use function extensionality and compare the values at `r`. Rewrite using `[actW_eq]`. Use `Fin.cases ?_ (fun j => ?_) r` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `matP R σ J m.1 *ᵥ (Fin.cons 1 fun _ => 0) = (Fin.cons 1 fun _ => 0)`. Rewrite using `[first_cons, key]`.
+
+Simplify using `[topRow]`. Express the relevant statement in the definitionally equal form `matP R σ J m.1 *ᵥ Fin.cons (a 0 j) (Fin.cons 0 (Y j)) = Fin.cons (a 0 j + topRow (matP R σ J m.1) (Y j)) (Fin.cons 0 (Y j))`. Rewrite using `[key]`.
+-/
 theorem actW_ker {k : ℕ} (m : (piR R σ J).ker) (a : Fin 1 → Fin k → R ⊗[F] E)
     (Y : Fin k → Fin M → R ⊗[F] E) :
     actW R σ (hypOne J) ((m : stabilizer₂ R σ J) : HA R σ (hypOne J)) (consA a Y) =
@@ -609,6 +933,9 @@ theorem actW_ker {k : ℕ} (m : (piR R σ J).ker) (a : Fin 1 → Fin k → R ⊗
       Fin.cons (a 0 j + topRow (matP R σ J m.1) (Y j)) (Fin.cons 0 (Y j))
     rw [key]
 
+/- English proof (translation)
+The claim follows from `topRow_mul (toMatrix_col R σ J x.1 0) (toMatrix_row R σ J y.1) (ker_blk R σ J y.2) v`.
+-/
 theorem topRow_ker_mul (x y : (piR R σ J).ker) (v : Fin M → R ⊗[F] E) :
     topRow (matP R σ J ((x * y : (piR R σ J).ker) : stabilizer₂ R σ J)) v =
       topRow (matP R σ J x.1) v + topRow (matP R σ J y.1) v :=
@@ -616,18 +943,33 @@ theorem topRow_ker_mul (x y : (piR R σ J).ker) (v : Fin M → R ⊗[F] E) :
 
 section Rat
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `exists_ratH R σ J u hu`. Use `(mem_HFinIn_iff R σ (hypOne J) _).2 ⟨dgGL (g : GL (Fin M) E), (dgGL_mem (s := (σ : E →+* E)) g.2).1, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `dg_map (inclR R) _`.
+-/
 theorem iotaR_rat {u : HA R σ J} (hu : u ∈ HFinIn R σ J) : iotaR R σ J u ∈ ratP R σ J := by
   obtain ⟨g, rfl⟩ := exists_ratH R σ J u hu
   refine (mem_HFinIn_iff R σ (hypOne J) _).2
     ⟨dgGL (g : GL (Fin M) E), (dgGL_mem (s := (σ : E →+* E)) g.2).1, Units.ext ?_⟩
   exact dg_map (inclR R) _
 
+/- English proof (translation)
+Apply the tactic sequence `refine finset_fin_two_eq_cases (p := fun i => inclR (F := F) (E := E) R ((1 : Matrix (Fin (M + 2)) (Fin (M + 2)) E) i 0) = (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) i 0) ?_ ?_ (fun i => ?_) i <;> simp`.
+-/
 theorem incl_one_entry (i : Fin (M + 2)) :
     inclR (F := F) (E := E) R ((1 : Matrix (Fin (M + 2)) (Fin (M + 2)) E) i 0) =
       (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) i 0 := by
   refine finset_fin_two_eq_cases (p := fun i => inclR (F := F) (E := E) R ((1 : Matrix (Fin (M + 2)) (Fin (M + 2)) E) i 0) =
       (1 : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) i 0) ?_ ?_ (fun i => ?_) i <;> simp
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_ratH R σ (hypOne J) p.1 hp`. Establish `hm : matP R σ J p = ((g : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E).map (inclR R)`. Express the relevant statement in the definitionally equal form `((HA.mat R σ (hypOne J) p.1 : GL _ _) : Matrix (Fin (M + 2)) (Fin (M + 2)) (R ⊗[F] E)) = _`. Rewrite using `[hg, mat_ratH]`. Both sides reduce to the same expression.
+
+Establish `hc : ColE ((g : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E)`. Introduce `i`. Apply `hinj` to reduce the goal to its premises. Establish `h` using `toMatrix_col R σ J p i`. Rewrite `h` using `[hm]`.
+
+Rewrite using `[incl_one_entry]`. Conclude with `h`. Establish `hS : (g : GL (Fin (M + 2)) E) ∈ stabG (σ : E →+* E) J` using `⟨g.2, hc⟩`. Use `(mem_HFinIn_iff R σ J _).2 ⟨piG _ _ ⟨_, hS⟩, piG_mem _, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(blk ((g : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E)).map (inclR R) = blk (matP R σ J p)`.
+
+Rewrite using `[hm]`. Both sides reduce to the same expression.
+-/
 theorem piR_rat (hinj : Function.Injective (inclR (F := F) (E := E) R)) {p : stabilizer₂ R σ J}
     (hp : p ∈ ratP R σ J) : piR R σ J p ∈ HFinIn R σ J := by
   obtain ⟨g, hg⟩ := exists_ratH R σ (hypOne J) p.1 hp
@@ -657,6 +999,9 @@ section Top
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   [TopologicalSpace R] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Establish `h : Continuous f ↔ Continuous (fun x => HA.mat R σ J (f x))` using `(Topology.IsInducing.subtypeVal (t := (HR R σ J : Set (GL (Fin M) (R ⊗[F] E))))).continuous_iff`. Rewrite using `[h, Units.continuous_iff]`. Both sides reduce to the same expression.
+-/
 theorem continuous_HA_iff {X : Type} [TopologicalSpace X] {f : X → HA R σ J} :
     Continuous f ↔
       Continuous (fun x => ((HA.mat R σ J (f x) : GL _ _) : Matrix (Fin M) (Fin M) (R ⊗[F] E))) ∧
@@ -666,6 +1011,9 @@ theorem continuous_HA_iff {X : Type} [TopologicalSpace X] {f : X → HA R σ J} 
   rw [h, Units.continuous_iff]
   rfl
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Use `finset_fin_two_eq_cases (p := fun i => Continuous fun x => f x i j) ?_ ?_ (fun i => ?_) i` and prove the remaining obligations. Conclude with `finset_fin_two_eq_cases (p := fun j => Continuous fun x => f x 0 j) h00 h01 h0r j`. Conclude with `finset_fin_two_eq_cases (p := fun j => Continuous fun x => f x 1 j) h10 h11 h1r j`. Conclude with `finset_fin_two_eq_cases (p := fun j => Continuous fun x => f x i.succ.succ j) (hr0 i) (hr1 i) (hrr i) j`.
+-/
 theorem continuous_mat2 {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
     {f : X → Matrix (Fin (M + 2)) (Fin (M + 2)) A}
     (h00 : Continuous fun x => f x 0 0) (h01 : Continuous fun x => f x 0 1)
@@ -681,10 +1029,16 @@ theorem continuous_mat2 {A X : Type} [TopologicalSpace A] [TopologicalSpace X]
   · exact finset_fin_two_eq_cases (p := fun j => Continuous fun x => f x 1 j) h10 h11 h1r j
   · exact finset_fin_two_eq_cases (p := fun j => Continuous fun x => f x i.succ.succ j) (hr0 i) (hr1 i) (hrr i) j
 
+/- English proof (translation)
+The claim follows from `continuous_matrix fun _ _ => continuous_id.matrix_elem _ _`.
+-/
 theorem continuous_blk {A : Type} [CommRing A] [TopologicalSpace A] :
     Continuous (blk : Matrix (Fin (M + 2)) (Fin (M + 2)) A → Matrix (Fin M) (Fin M) A) :=
   continuous_matrix fun _ _ => continuous_id.matrix_elem _ _
 
+/- English proof (translation)
+Use `continuous_mat2 ?_ ?_ ?_ ?_ (fun _ => ?_) (fun _ => ?_) (fun _ => ?_) (fun _ => ?_) (fun i j => ?_)` and prove the remaining obligations. Use `any_goals exact continuous_const`. Conclude with `continuous_id.matrix_elem i j`.
+-/
 theorem continuous_dg {A : Type} [CommRing A] [TopologicalSpace A] :
     Continuous (dg : Matrix (Fin M) (Fin M) A → Matrix (Fin (M + 2)) (Fin (M + 2)) A) := by
   refine continuous_mat2 ?_ ?_ ?_ ?_ (fun _ => ?_) (fun _ => ?_) (fun _ => ?_) (fun _ => ?_)
@@ -692,15 +1046,24 @@ theorem continuous_dg {A : Type} [CommRing A] [TopologicalSpace A] :
   any_goals exact continuous_const
   exact continuous_id.matrix_elem i j
 
+/- English proof (translation)
+The claim follows from `(continuous_HA_iff R σ (hypOne J)).1 continuous_subtype_val`.
+-/
 theorem continuous_matStab :
     Continuous (fun p : stabilizer₂ R σ J => matP R σ J p) ∧
       Continuous (fun p : stabilizer₂ R σ J => matP R σ J p⁻¹) :=
   (continuous_HA_iff R σ (hypOne J)).1 continuous_subtype_val
 
+/- English proof (translation)
+Rewrite using `[continuous_HA_iff]`. Conclude with `⟨continuous_blk.comp (continuous_matStab R σ J).1, continuous_blk.comp (continuous_matStab R σ J).2⟩`.
+-/
 theorem continuous_piR : Continuous (piR R σ J) := by
   rw [continuous_HA_iff]
   exact ⟨continuous_blk.comp (continuous_matStab R σ J).1, continuous_blk.comp (continuous_matStab R σ J).2⟩
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Rewrite using `[continuous_HA_iff]`. Establish `h` using `(continuous_HA_iff R σ J).1 (continuous_id (X := HA R σ J))`. Conclude with `⟨continuous_dg.comp h.1, continuous_dg.comp h.2⟩`.
+-/
 theorem continuous_iotaR : Continuous (iotaR R σ J) := by
   refine Continuous.subtype_mk ?_ _
   rw [continuous_HA_iff]
@@ -714,9 +1077,15 @@ section Unip
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_incl (x : E) : sigR R σ (inclR R x) = inclR R (σ x) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Simplify using `only [JR, Matrix.map_apply, sigR_incl, hJ]`.
+-/
 theorem JR_herm (hJ : ∀ i j, σ (J j i) = J i j) (i j : Fin M) :
     sigR R σ (JR R J j i) = JR R J i j := by
   simp only [JR, Matrix.map_apply, sigR_incl, hJ]
@@ -731,19 +1100,31 @@ def nP (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (w : Fin 
       exact h),
     (colE_iff R σ J _).2 (nGL_mem (J := JR R J) (HaarCoord.sigR_sigR R hσ) (JR_herm R σ J hJ) w z hz).2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMatrix_unipotent (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (w : Fin M → R ⊗[F] E)
     (z : R ⊗[F] E) (hz : z + sigR R σ z + hv (sigR R σ) (JR R J) w w = 0) :
     matP R σ J (nP hσ hJ w z hz) = nM (sigR R σ) (JR R J) w z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toMatrix_unipotent_inv (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (w : Fin M → R ⊗[F] E)
     (z : R ⊗[F] E) (hz : z + sigR R σ z + hv (sigR R σ) (JR R J) w w = 0) :
     matP R σ J (nP hσ hJ w z hz)⁻¹ = nM (sigR R σ) (JR R J) (-w) (sigR R σ z) := rfl
 
+/- English proof (translation)
+The claim follows from `MonoidHom.mem_ker.2 (HA_ext R σ J (Units.ext (blk_nM w z)))`.
+-/
 theorem nP_mem_ker (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (w : Fin M → R ⊗[F] E)
     (z : R ⊗[F] E) (hz : z + sigR R σ z + hv (sigR R σ) (JR R J) w w = 0) :
     nP hσ hJ w z hz ∈ (piR R σ J).ker :=
   MonoidHom.mem_ker.2 (HA_ext R σ J (Units.ext (blk_nM w z)))
 
+/- English proof (translation)
+Establish `h` using `(eq_nM (toMatrix_unitary₂ R σ J p) (toMatrix_col R σ J p) (ker_blk R σ J hp)).2`. Rewrite `h` using `[e]`. Conclude with `⟨h, stabilizer_ext R σ J e⟩`.
+-/
 theorem nM_form (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) {p : stabilizer₂ R σ J}
     (hp : p ∈ (piR R σ J).ker) {w : Fin M → R ⊗[F] E} {z : R ⊗[F] E}
     (e : matP R σ J p = nM (sigR R σ) (JR R J) w z) :
@@ -752,6 +1133,9 @@ theorem nM_form (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) 
   rw [e] at h
   exact ⟨h, stabilizer_ext R σ J e⟩
 
+/- English proof (translation)
+Take `⟨hz, e⟩` from `nM_form hσ hJ hp (eq_nM (toMatrix_unitary₂ R σ J p) (toMatrix_col R σ J p) (ker_blk R σ J hp)).1`. Conclude with `⟨_, _, hz, e⟩`.
+-/
 theorem exists_nP (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) {p : stabilizer₂ R σ J}
     (hp : p ∈ (piR R σ J).ker) :
     ∃ (w : Fin M → R ⊗[F] E) (z : R ⊗[F] E)
@@ -760,6 +1144,9 @@ theorem exists_nP (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j
     (eq_nM (toMatrix_unitary₂ R σ J p) (toMatrix_col R σ J p) (ker_blk R σ J hp)).1
   exact ⟨_, _, hz, e⟩
 
+/- English proof (translation)
+Use `(mem_HFinIn_iff R σ (hypOne J) _).2 ⟨nGL (s := (σ : E →+* E)) hσ w z hz, (nGL_mem (s := (σ : E →+* E)) hσ hJ w z hz).1, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `nM_map (inclR R) (fun x => (sigR_incl R σ x).symm) w z`.
+-/
 theorem nP_mem_ratP (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (w : Fin M → E) (z : E)
     (hz : z + σ z + hv (σ : E →+* E) J w w = 0)
     (hz' : inclR R z + sigR R σ (inclR R z) +
@@ -776,6 +1163,9 @@ section Half
 
 variable {A : Type} [CommRing A] {M : ℕ} {s : A →+* A} {J : Matrix (Fin M) (Fin M) A}
 
+/- English proof (translation)
+Simplify using `only [hv, rowv, map_sum, map_mul, hs, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem s_hv (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (x y : Fin M → A) :
     s (hv s J x y) = hv s J y x := by
   simp only [hv, rowv, map_sum, map_mul, hs, Finset.sum_mul]
@@ -784,12 +1174,18 @@ theorem s_hv (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) (x y : 
   rw [hJ]
   ring
 
+/- English proof (translation)
+Simplify using `only [map_sub, map_mul, hh, s_hv hs hJ, ht]`. Take the linear combination `(-hv s J w w) * h2`.
+-/
 theorem z_half (hs : ∀ x, s (s x) = x) (hJ : ∀ i j, s (J j i) = J i j) {half t : A}
     (h2 : half + half = 1) (hh : s half = half) (ht : s t = -t) (w : Fin M → A) :
     (t - half * hv s J w w) + s (t - half * hv s J w w) + hv s J w w = 0 := by
   simp only [map_sub, map_mul, hh, s_hv hs hJ, ht]
   linear_combination (-hv s J w w) * h2
 
+/- English proof (translation)
+Simplify using `[topRow, hv]`.
+-/
 theorem topRow_nM (w v : Fin M → A) (z : A) : topRow (nM s J w z) v = -hv s J w v := by
   simp [topRow, hv]
 
@@ -802,13 +1198,26 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
 def halfR (F E : Type) [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R] : R ⊗[F] E :=
   inclR R (2⁻¹ : E)
 
+/- English proof (translation)
+Establish `h : (2⁻¹ : E) + 2⁻¹ = 1` using `by norm_num`. Rewrite using `[halfR, ← map_add, h, map_one]`.
+-/
 theorem halfR_add [CharZero E] : halfR F E R + halfR F E R = 1 := by
   have h : (2⁻¹ : E) + 2⁻¹ = 1 := by norm_num
   rw [halfR, ← map_add, h, map_one]
 
+/- English proof (translation)
+Rewrite using `[halfR, sigR_incl, map_inv₀, map_ofNat]`.
+-/
 theorem sigR_halfR (σ : E →ₐ[F] E) [CharZero E] : sigR R σ (halfR F E R) = halfR F E R := by
   rw [halfR, sigR_incl, map_inv₀, map_ofNat]
 
+/- English proof (translation)
+Establish `hind : LinearIndependent F ![(1 : E), δ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `a b hab`. Rewrite `hab` using `[Algebra.smul_def, Algebra.smul_def]`. Establish `h1` using `congrArg σ hab`.
+
+Simplify using `only [map_add, map_mul, AlgHom.commutes, map_one, hσδ, map_zero] at h1`. Establish `ha : (2 : E) * algebraMap F E a = 0` using `by linear_combination hab + h1`. Establish `ha0 : a = 0` using `by simpa using ha`. Substitute `ha0` using the available equality. Establish `hb : algebraMap F E b * δ = 0` using `by simpa using hab`.
+
+Conclude with `⟨rfl, by simpa [hδ] using hb⟩`. Establish `hspan` using `hind.span_eq_top_of_card_eq_finrank (by simp [h2])`. Establish `he : e ∈ Submodule.span F (Set.range ![(1 : E), δ])` using `by rw [hspan]; trivial`. Simplify using `only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union] at he`. Conclude with `Submodule.mem_span_pair.1 he`.
+-/
 theorem exists_coord {σ : E →ₐ[F] E} [CharZero E] (h2 : Module.finrank F E = 2) {δ : E} (hδ : δ ≠ 0)
     (hσδ : σ δ = -δ) (e : E) : ∃ x y : F, x • (1 : E) + y • δ = e := by
   have hind : LinearIndependent F ![(1 : E), δ] := by
@@ -827,6 +1236,13 @@ theorem exists_coord {σ : E →ₐ[F] E} [CharZero E] (h2 : Module.finrank F E 
   simp only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.singleton_union] at he
   exact Submodule.mem_span_pair.1 he
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul r e`. Take `⟨x, y, rfl⟩` from `exists_coord h2 hδ hσδ e`. Use `⟨x • r, y • r, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Consider the case `add u v hu hv`. Take `⟨a, b, rfl⟩` from `hu`. Take `⟨a', b', rfl⟩` from `hv`. Use `⟨a + a', b + b', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.add_tmul, TensorProduct.add_tmul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_tensor_coord {σ : E →ₐ[F] E} [CharZero E] (h2 : Module.finrank F E = 2) {δ : E}
     (hδ : δ ≠ 0) (hσδ : σ δ = -δ) (t : R ⊗[F] E) :
     ∃ a b : R, t = a ⊗ₜ[F] (1 : E) + b ⊗ₜ[F] δ := by
@@ -844,6 +1260,11 @@ theorem exists_tensor_coord {σ : E →ₐ[F] E} [CharZero E] (h2 : Module.finra
     rw [TensorProduct.add_tmul, TensorProduct.add_tmul]
     abel
 
+/- English proof (translation)
+Take `⟨a, b, rfl⟩` from `exists_tensor_coord R h2 hδ hσδ t`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[map_add, HaarCoord.sigR_tmul, HaarCoord.sigR_tmul, map_one, hσδ, TensorProduct.tmul_neg]`. Establish `h0 : a ⊗ₜ[F] (1 : E) + a ⊗ₜ[F] (1 : E) = 0` using `by linear_combination ht`. Establish `h1 : a ⊗ₜ[F] (1 : E) = 0`.
+
+Establish `h3` using `halfR_add (F := F) (E := E) R`. Take the linear combination `(a ⊗ₜ[F] (1 : E)) * (-h3) + halfR F E R * h0`. Rewrite using `[h1, zero_add]`.
+-/
 theorem eq_tmul_of_skew {σ : E →ₐ[F] E} [CharZero E] (h2 : Module.finrank F E = 2) {δ : E}
     (hδ : δ ≠ 0) (hσδ : σ δ = -δ) {t : R ⊗[F] E} (ht : sigR R σ t = -t) :
     ∃ b : R, t = b ⊗ₜ[F] δ := by

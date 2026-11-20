@@ -15,6 +15,13 @@ section Transport
 variable {X Y : Scheme.{0}} (L : LB X) (σ : Y ⟶ X) (ρ : X ⟶ Y) (e : ρ ≫ σ = 𝟙 X) (n : ℤ)
 
 include e in
+/- English proof (translation)
+Use extensionality with `y`. Establish `h : σ (ρ y) = y` using `by rw [← Scheme.Hom.comp_apply, e]; rfl`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations.
+
+Use `Set.mem_iInter.1 hy PUnit.unit` as an intermediate fact. Use `show σ (ρ y) ∈ L.U (j PUnit.unit)`. Rewrite using `[h]`. Conclude with `this`. Introduce `hy`.
+
+Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Establish `: σ (ρ y) ∈ L.U (j PUnit.unit)` using `Set.mem_iInter.1 hy 0`. Rewrite `this` using `[h]`. Conclude with `this`.
+-/
 theorem chart_eq (j : PUnit → L.ι) :
     LB.wchart L (fun _ : PUnit => 𝟙 X) j = ρ ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => σ) (fun _ => j PUnit.unit) := by
   ext y
@@ -30,6 +37,9 @@ theorem chart_eq (j : PUnit → L.ι) :
     have : σ (ρ y) ∈ L.U (j PUnit.unit) := Set.mem_iInter.1 hy 0
     rw [h] at this; exact this
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem appLE_congr {f g : X ⟶ Y} (h : f = g) (U : Y.Opens) (V : X.Opens) (h₁ : V ≤ f ⁻¹ᵁ U) (h₂ : V ≤ g ⁻¹ᵁ U) :
     f.appLE U V h₁ = g.appLE U V h₂ := by subst h; rfl
 
@@ -58,6 +68,9 @@ def down (b : (LB.LinComb L (K := Fin 1) (fun _ => σ) (fun _ => n)).Sec) :
     · exact (congrArg (fun φ => φ.hom (b.f fun _ => j PUnit.unit))
         ((Scheme.Hom.map_appLE ρ hle _).trans (Scheme.Hom.appLE_map ρ _ _).symm) :)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Conclude with `(ConcreteCategory.bijective_of_isIso (ρ.app U)).1`.
+-/
 theorem appLE_injective [IsIso ρ] (U : Y.Opens) (V : X.Opens) (h : V = ρ ⁻¹ᵁ U) :
     Function.Injective (ρ.appLE U V h.le).hom := by
   subst h
@@ -70,6 +83,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 open Out in
 
+/- English proof (translation)
+Establish `hr` using `H ℂ P n hn`. Set `T : Over (Sp ℂ)` to `baseOver (Sp ℂ)`. Set `c : Γ(T.left, ⊤) ≃+* ℂ` to `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv`. Use `haveI : Nontrivial Γ(T.left, ⊤) := c.symm.injective.nontrivial`. Take `⟨b, hb⟩` from `exists_linearIndependent_of_le_finrank (R := Γ(T.left, ⊤)) (M := SecM P.A P.L n T) hr.ge`.
+
+Set `ρ : P.A ⟶ T ⊗ P.A` to `lift (Over.homMk P.A.hom (Category.comp_id _)) (𝟙 _)`. Establish `ρ₂ : ρ.left ≫ (snd T P.A).left = 𝟙 _` using `congrArg (fun q => q.left) (lift_snd _ _ : ρ ≫ _ = _)`. Establish `ρ₁ : ρ.left ≫ (fst T P.A).left = P.A.hom` using `congrArg (fun q => q.left) (lift_fst _ _ : ρ ≫ _ = _)`. Establish `ρ₃ : (snd T P.A).left ≫ ρ.left = 𝟙 _`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ρ₁).trans (pullback.condition.symm.trans ((Category.comp_id _).trans (Category.id_comp _).symm)))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ρ₂).trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Use `haveI : IsIso ρ.left := ⟨_, ρ₂, ρ₃⟩`. Use `⟨fun i => down P.L (snd T P.A).left ρ.left ρ₂ n (SecM.toSec P.A (b i)), fun a ha => ?_⟩` and prove the remaining obligations. Establish `h0 : ∑ i, c.symm (a i) • b i = 0`.
+
+Use `Subtype.ext (funext fun j => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, j = fun _ => k` from `⟨j 0, funext fun q => by rw [Subsingleton.elim q 0]⟩`. Use `appLE_injective ρ.left _ _ (chart_eq P.L (snd T P.A).left ρ.left ρ₂ (fun _ => k)) ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((ha (fun _ => k)).trans (map_zero _).symm)` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`.
+
+Use `(congrArg _ (Finset.sum_apply _ _ _)).trans ?_` and prove the remaining obligations. Use `(map_sum (ρ.left.appLE _ _ (chart_eq P.L (snd T P.A).left ρ.left ρ₂ (fun _ => k)).le).hom _ _).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Use `(map_mul _ (liftHom P.A _ (c.symm (a i))) ((b i).1 fun _ => k)).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Establish `h1` using `(Scheme.Hom.appLE_comp_appLE ρ.left (fst T P.A).left ⊤ _ _ (fun _ _ => trivial) (chart_eq P.L (snd T P.A).left ρ.left ρ₂ (fun _ => k)).le).trans (appLE_congr ρ₁ ⊤ _ _ (fun _ _ => trivial))`. Conclude with `congrArg (fun φ => φ.hom (c.symm (a i))) h1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `c.symm.injective ((Fintype.linearIndependent_iff.1 hb _ h0 i).trans (map_zero _).symm)`.
+-/
 theorem exists_indep_sections (H : Out.GlobalSectionsRankAlgClosed) (P : Out.PolAV (Sp ℂ)) (n : ℕ) (hn : 1 ≤ n) :
     ∃ s : Fin (n ^ P.g) → (lbPow P.L n).Sec, ∀ a : Fin (n ^ P.g) → ℂ,
       (∀ j, ∑ i, constFn P.A.hom _ (a i) * (s i).f j = 0) → a = 0 := by

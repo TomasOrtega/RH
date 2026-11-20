@@ -68,13 +68,24 @@ variable (S : ShortComplex (ModuleCat.{u} R))
     (hN : ∀ x, x ∈ N ↔ ι x ∈ LinearMap.range S.f.hom)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 lemma moduleLeftHomologyData_i_hom :
     (moduleLeftHomologyData S K ι hι hrange N hN).i.hom = ι := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma moduleLeftHomologyData_π_hom :
     (moduleLeftHomologyData S K ι hι hrange N hN).π.hom = N.mkQ := rfl
 
+/- English proof (translation)
+Use `set h := moduleLeftHomologyData S K ι hι hrange N hN`. Establish `h1 : (S.homologyπ ≫ h.homologyIso.hom).hom z = (h.cyclesIso.hom ≫ h.π).hom z`. Rewrite using `[h.homologyπ_comp_homologyIso_hom]`. Establish `h2 : (h.cyclesIso.hom ≫ h.i).hom z = S.iCycles.hom z`. Rewrite using `[h.cyclesIso_hom_comp_i]`.
+
+Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h1 h2`. Rewrite using `[h1]`. Establish `: h.cyclesIso.hom.hom z = x` using `hι (by rw [hx, ← h2]; rfl)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 lemma moduleLeftHomologyData_homologyIso_hom_homologyπ [S.HasHomology]
     (z : S.cycles) (x : K) (hx : ι x = S.iCycles.hom z) :
     (moduleLeftHomologyData S K ι hι hrange N hN).homologyIso.hom.hom (S.homologyπ.hom z) =
@@ -126,6 +137,13 @@ section Complexes
 
 variable {R : Type u} [CommRing R]
 
+/- English proof (translation)
+Use `set e := (HomologicalComplex.natIsoSc' (ModuleCat.{u} R) c i j k hi hk).hom.app C`. Establish `h1 : (HomologicalComplex.homologyFunctorIso' _ c i j k hi hk).hom.app C = ShortComplex.homologyMap e`. Simplify using `[HomologicalComplex.homologyFunctorIso', e]`. Conclude with `Category.id_comp _`. Establish `h2 : (ShortComplex.homologyMap e).hom ((C.sc j).homologyπ.hom z) = (C.sc' i j k).homologyπ.hom ((ShortComplex.cyclesMap e).hom z)` using `congr(($(ShortComplex.homologyπ_naturality e)).hom z)`.
+
+Establish `h3 : (C.sc' i j k).iCycles.hom ((ShortComplex.cyclesMap e).hom z) = e.τ₂.hom ((C.sc j).iCycles.hom z)` using `congr(($(ShortComplex.cyclesMap_i e)).hom z)`. Establish `h4 : (C.sc' i j k).iCycles.hom ((ShortComplex.cyclesMap e).hom z) = (C.iCycles j).hom z`. Rewrite using `[h3]`. Simplify using `[e]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1]`. Use `(congrArg (fun w => (moduleLeftHomologyData _ K ι hι hrange N hN).homologyIso.hom.hom w) h2).trans ?_` and prove the remaining obligations. Conclude with `moduleLeftHomologyData_homologyIso_hom_homologyπ _ K ι hι hrange N hN _ x (hx.trans h4.symm)`.
+-/
 lemma homologyFunctorIso'_moduleLeftHomologyData_apply {ιc : Type*} {c : ComplexShape ιc}
     (C : HomologicalComplex (ModuleCat.{u} R) c) (i j k : ιc) (hi : c.prev j = i)
     (hk : c.next j = k) (K : Type u) [AddCommGroup K] [Module R K]
@@ -156,6 +174,11 @@ lemma homologyFunctorIso'_moduleLeftHomologyData_apply {ιc : Type*} {c : Comple
     h2).trans ?_
   exact moduleLeftHomologyData_homologyIso_hom_homologyπ _ K ι hι hrange N hN _ x (hx.trans h4.symm)
 
+/- English proof (translation)
+Use `set e := (HomologicalComplex.natIsoSc' (ModuleCat.{u} R) c i j k hi hk).inv.app C`. Use `set h := moduleLeftHomologyData _ K ι hι hrange N hN`. Use `⟨(ShortComplex.cyclesMap e).hom (h.cyclesIso.inv.hom x), ?_⟩` and prove the remaining obligations. Establish `h3 : (C.sc j).iCycles.hom ((ShortComplex.cyclesMap e).hom (h.cyclesIso.inv.hom x)) = e.τ₂.hom ((C.sc' i j k).iCycles.hom (h.cyclesIso.inv.hom x))` using `congr(($(ShortComplex.cyclesMap_i e)).hom (h.cyclesIso.inv.hom x))`. Establish `h4 : (C.sc' i j k).iCycles.hom (h.cyclesIso.inv.hom x) = ι x` using `congr(($(h.cyclesIso_inv_comp_iCycles)).hom x)`.
+
+Use `h3.trans ?_` and prove the remaining obligations. Rewrite using `[h4]`. Simplify using `[e]`. Both sides reduce to the same expression.
+-/
 lemma exists_cycles_of_moduleLeftHomologyData {ιc : Type*} {c : ComplexShape ιc}
     (C : HomologicalComplex (ModuleCat.{u} R) c) (i j k : ιc) (hi : c.prev j = i)
     (hk : c.next j = k) (K : Type u) [AddCommGroup K] [Module R K]

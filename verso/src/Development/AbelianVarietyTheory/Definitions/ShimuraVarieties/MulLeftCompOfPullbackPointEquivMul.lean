@@ -12,6 +12,15 @@ namespace GlobalTheory
 abbrev specOver (R A : Type u) [CommRing R] [CommRing A] [Algebra R A] : Over (Spec (.of R)) :=
   Over.mk (Spec.map (CommRingCat.ofHom (algebraMap R A)))
 
+/- English proof (translation)
+Establish `key : ∀ x : X, ∃ e : f x = g x, f.stalkMap x = (Y.presheaf.stalkCongr (Inseparable.of_eq e)).hom ≫ g.stalkMap x`. Introduce `x`. Establish `e1 : (SpecToEquivOfLocalRing Y (X.presheaf.stalk x)).symm ⟨f x, f.stalkMap x, inferInstance⟩ = (SpecToEquivOfLocalRing Y (X.presheaf.stalk x)).symm ⟨g x, g.stalkMap x, inferInstance⟩`. Simplify using `only [SpecToEquivOfLocalRing_symm_apply]`. Rewrite using `[Scheme.SpecMap_stalkMap_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk, h x]`.
+
+Conclude with `SpecToEquivOfLocalRing_eq_iff.mp ((Equiv.injective _) e1)`. Establish `hc : ∀ (U : Y.Opens) (s : Γ(Y, U)) (y y' : Y) (e : y = y') (hy : y ∈ U) (hy' : y' ∈ U), (Y.presheaf.stalkCongr (Inseparable.of_eq e)).hom (Y.presheaf.germ U y hy s) = Y.presheaf.germ U y' hy' s`. Introduce and unpack `U s y _ rfl hy hy'`. Simplify using the standard rewrite rules. Use `Scheme.Hom.ext ?_ fun U => ?_` and prove the remaining obligations.
+
+Use extensionality with `x`. Conclude with `(key x).1`. Use extensionality with `s`. Apply `TopCat.Presheaf.section_ext X.sheaf` to reduce the goal to its premises. Introduce `x hx`.
+
+Take `⟨e, he⟩` from `key x`. Establish `hfx : f x ∈ U` using `e ▸ hx`. Express the relevant statement in the definitionally equal form `X.presheaf.germ _ x hx _ = X.presheaf.germ _ x hx _`. Rewrite using `[CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply, ← Scheme.Hom.germ_stalkMap_apply f U x hfx, ← Scheme.Hom.germ_stalkMap_apply g U x hx, he, CommRingCat.comp_apply, hc U s (f x) (g x) e hfx hx]`.
+-/
 theorem hom_ext_of_fromSpecStalk {X Y : Scheme.{u}} {f g : X ⟶ Y}
     (h : ∀ x, X.fromSpecStalk x ≫ f = X.fromSpecStalk x ≫ g) : f = g := by
   have key : ∀ x : X, ∃ e : f x = g x, f.stalkMap x =
@@ -40,6 +49,9 @@ theorem hom_ext_of_fromSpecStalk {X Y : Scheme.{u}} {f g : X ⟶ Y}
       ← Scheme.Hom.germ_stalkMap_apply f U x hfx, ← Scheme.Hom.germ_stalkMap_apply g U x hx, he,
       CommRingCat.comp_apply, hc U s (f x) (g x) e hfx hx]
 
+/- English proof (translation)
+Apply `hom_ext_of_fromSpecStalk` to reduce the goal to its premises. Introduce `x`. Rewrite using `[Spec.fromSpecStalk_eq']`. Conclude with `h ((Spec (.of A)).presheaf.stalk x) (StructureSheaf.toStalk _ _).hom`.
+-/
 theorem hom_ext_of_isLocalRing {A : Type u} [CommRing A] {Y : Scheme.{u}}
     {f g : Spec (.of A) ⟶ Y}
     (h : ∀ (B : Type u) [CommRing B] [IsLocalRing B] (φ : A →+* B),
@@ -53,6 +65,27 @@ section Glue
 
 variable {R : Type u} [CommRing R]
 
+/- English proof (translation)
+Use `choose U j hj fU hmem hfU using H`. Set `𝒰 : T.left.OpenCover` to `{ I₀ := T.left, X i := (U i).left, f i := (j i).left, mem₀ := by`. Rewrite using `[Scheme.presieve₀_mem_precoverage_iff]`. Conclude with `⟨fun t ↦ ⟨t, by simpa using hmem t⟩, fun i ↦ hj i⟩ }`. Establish `hcomp : ∀ a b, pullback.fst (j a).left (j b).left ≫ (fU a).left = pullback.snd (j a).left (j b).left ≫ (fU b).left`.
+
+Introduce `a b`. Use `hj a` as an intermediate fact. Use `hj b` as an intermediate fact. Set `P : Over (Spec (.of R))` to `Over.mk (pullback.fst (j a).left (j b).left ≫ (j a).left ≫ T.hom)`. Use `haveI : IsReduced P.left := isReduced_of_isOpenImmersion (pullback.fst (j a).left (j b).left ≫ (j a).left)`.
+
+Set `p₁ : P ⟶ U a` to `Over.homMk (pullback.fst _ _) (by show _ = pullback.fst _ _ ≫ (j a).left ≫ T.hom`. Rewrite using `[Over.w])`. Set `p₂ : P ⟶ U b` to `Over.homMk (pullback.snd _ _) (by show _ = pullback.fst _ _ ≫ (j a).left ≫ T.hom`. Rewrite using `[pullback.condition_assoc, Over.w])`. Establish `hp : p₁ ≫ j a = p₂ ≫ j b`.
+
+Use `ext`. Simplify using `[p₁, p₂, pullback.condition]`. Establish `key : p₁ ≫ fU a = p₂ ≫ fU b`. Rewrite using `[over_hom_eq_iff_forall_field_algebra]`. Introduce `k _ _ x`.
+
+Rewrite using `[← Category.assoc, ← Category.assoc, hfU, hfU, Category.assoc, Category.assoc, hp]`. Simplify `congrArg CommaMorphism.left key` using `[p₁, p₂]`. Set `g₀ : T.left ⟶ Y.left` to `𝒰.glueMorphisms (fun t ↦ (fU t).left) hcomp`. Establish `hg : ∀ t, (j t).left ≫ g₀ = (fU t).left` using `fun t ↦ 𝒰.ι_glueMorphisms _ hcomp t`. Establish `hw : g₀ ≫ Y.hom = T.hom`.
+
+Use `𝒰.hom_ext _ _ fun t ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(j t).left ≫ g₀ ≫ Y.hom = (j t).left ≫ T.hom`. Rewrite using `[← Category.assoc, hg, Over.w, Over.w]`. Use `⟨Over.homMk g₀ hw, fun k _ _ x ↦ ?_⟩` and prove the remaining obligations. Use `set t := x.left (IsLocalRing.closedPoint k) with ht`.
+
+Use `hj t` as an intermediate fact. Establish `hr : Set.range x.left ⊆ Set.range (j t).left`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Subsingleton.elim (α := ↥(Spec (CommRingCat.of k))) p (IsLocalRing.closedPoint k)]`. Conclude with `hmem t`.
+
+Set `y₀ : Spec (.of k) ⟶ (U t).left` to `IsOpenImmersion.lift (j t).left x.left hr`. Establish `hy₀ : y₀ ≫ (j t).left = x.left` using `IsOpenImmersion.lift_fac _ _ _`. Set `y : specOver R k ⟶ U t` to `Over.homMk y₀ (by`. Rewrite using `[← Over.w (j t), ← Category.assoc, hy₀, Over.w])`. Establish `hxy : x = y ≫ j t`.
+
+Use `ext`. Simplify using `[y, hy₀]`. Establish `hjt : j t ≫ Over.homMk g₀ hw = fU t`. Use `ext`. Simplify using `[hg]`.
+
+Rewrite using `[hxy, Category.assoc, hjt, hfU]`.
+-/
 theorem exists_over_hom_of_locally {T Y : Over (Spec (.of R))} [IsReduced T.left]
     [IsSeparated Y.hom]
     (F : ∀ (k : Type u) [Field k] [Algebra R k], (specOver R k ⟶ T) → (specOver R k ⟶ Y))
@@ -131,6 +164,9 @@ def pullbackPointEquiv (h : IsPullback φ G'.hom G.hom f) (T : Over S') :
     ((h.lift_snd ..).trans (Over.w x).symm))
   right_inv y := Over.OverMorphism.ext (h.lift_fst ..)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackPointEquiv_apply_left (h : IsPullback φ G'.hom G.hom f) {T : Over S'}
     (x : T ⟶ G') : (pullbackPointEquiv h T x).left = x.left ≫ φ := rfl
 
@@ -143,6 +179,9 @@ def pullbackRepresentableBy [GrpObj G] (h : IsPullback φ G'.hom G.hom f) :
 def grpObjOfIsPullback [GrpObj G] (h : IsPullback φ G'.hom G.hom f) : GrpObj G' :=
   GrpObj.ofRepresentableBy G' _ (pullbackRepresentableBy h)
 
+/- English proof (translation)
+Conclude with `((yonedaGrpObjIsoOfRepresentableBy G' _ (pullbackRepresentableBy h)).hom.app (Opposite.op T)).hom.map_mul x y`.
+-/
 theorem pullbackPointEquiv_mul [GrpObj G] (h : IsPullback φ G'.hom G.hom f) {T : Over S'}
     (x y : T ⟶ G') :
     letI := grpObjOfIsPullback h
@@ -150,6 +189,11 @@ theorem pullbackPointEquiv_mul [GrpObj G] (h : IsPullback φ G'.hom G.hom f) {T 
   exact ((yonedaGrpObjIsoOfRepresentableBy G' _ (pullbackRepresentableBy h)).hom.app
     (Opposite.op T)).hom.map_mul x y
 
+/- English proof (translation)
+Use `letI := grpObjOfIsPullback h`. Use `letI : CommMonoid ((Over.map f).obj (G' ⊗ G') ⟶ G) := Hom.commMonoid`. Use `⟨(pullbackPointEquiv h _).injective ?_⟩` and prove the remaining obligations. Establish `e1 : (β_ G' G').hom ≫ μ = snd G' G' * fst G' G'`. Rewrite using `[Hom.mul_def]`.
+
+Use `congr 1`. Establish `e2 : (μ : G' ⊗ G' ⟶ G') = fst G' G' * snd G' G'`. Rewrite using `[Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[e1, e2, pullbackPointEquiv_mul, pullbackPointEquiv_mul, mul_comm]`.
+-/
 theorem isCommMonObj_of_isPullback [GrpObj G] [IsCommMonObj G]
     (h : IsPullback φ G'.hom G.hom f) :
     letI := grpObjOfIsPullback h
@@ -164,6 +208,11 @@ theorem isCommMonObj_of_isPullback [GrpObj G] [IsCommMonObj G]
     rw [Hom.mul_def, lift_fst_snd, Category.id_comp]
   rw [e1, e2, pullbackPointEquiv_mul, pullbackPointEquiv_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[← pullbackPointEquiv_apply_left h, hm, Hom.mul_def, Hom.mul_def, Over.comp_left, Over.comp_left, ← Category.assoc]`. Use `congr 1`. Use `ext`. Rewrite using `[Category.assoc]`. Express the relevant statement in the definitionally equal form `(lift (pullbackPointEquiv h T' x') (pullbackPointEquiv h T' y') ≫ fst G G).left = t ≫ (lift x y ≫ fst G G).left`.
+
+Rewrite using `[lift_fst, lift_fst, pullbackPointEquiv_apply_left, hx]`. Rewrite using `[Category.assoc]`. Express the relevant statement in the definitionally equal form `(lift (pullbackPointEquiv h T' x') (pullbackPointEquiv h T' y') ≫ snd G G).left = t ≫ (lift x y ≫ snd G G).left`. Rewrite using `[lift_snd, lift_snd, pullbackPointEquiv_apply_left, hy]`.
+-/
 theorem mul_left_comp_of_pullbackPointEquiv_mul [GrpObj G] [GrpObj G']
     (h : IsPullback φ G'.hom G.hom f) {T' : Over S'} {T : Over S} (t : T'.left ⟶ T.left)
     {x' y' : T' ⟶ G'} {x y : T ⟶ G}

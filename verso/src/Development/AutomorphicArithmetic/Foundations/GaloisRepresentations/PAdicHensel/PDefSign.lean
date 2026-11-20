@@ -4,12 +4,20 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKMid GlobalTheory.LKDef GlobalTheory.CuspRep GlobalTheory.UnitaryBC UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1
 open scoped TensorProduct
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.star_apply, Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem re_dot_swap {n : ℕ} (y x : Fin n → ℂ) : (star y ⬝ᵥ x).re = (star x ⬝ᵥ y).re := by
   simp only [dotProduct, Complex.re_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   simp only [Pi.star_apply, Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im]
   ring
 
+/- English proof (translation)
+Establish `hy : M *ᵥ x ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Use `congrArg (fun v => Mi *ᵥ v) h0` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, h1]`.
+
+Use `h _ hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, re_dot_swap]`. Then use the resulting hypothesis.
+-/
 private theorem def_of_inv {n : ℕ} (M Mi : Matrix (Fin n) (Fin n) ℂ) (h1 : Mi * M = 1) (s : ℝ)
     (h : ∀ y : Fin n → ℂ, y ≠ 0 → 0 < s * (star y ⬝ᵥ (Mi *ᵥ y)).re) (x : Fin n → ℂ) (hx : x ≠ 0) :
     0 < s * (star x ⬝ᵥ (M *ᵥ x)).re := by
@@ -21,6 +29,11 @@ private theorem def_of_inv {n : ℕ} (M Mi : Matrix (Fin n) (Fin n) ℂ) (h1 : M
   have := h _ hy
   rwa [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec, re_dot_swap] at this
 
+/- English proof (translation)
+Establish `hy : star x ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Simplify using `using congrArg star h0`. Establish `key : star x ⬝ᵥ (M.map (starRingEnd ℂ) *ᵥ x) = starRingEnd ℂ (star (star x) ⬝ᵥ (M *ᵥ star x))`.
+
+Simplify using `[dotProduct, Matrix.mulVec, map_sum, map_mul]`. Rewrite using `[key, Complex.conj_re]`. Conclude with `h _ hy`.
+-/
 private theorem def_conj {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (s : ℝ)
     (h : ∀ y : Fin n → ℂ, y ≠ 0 → 0 < s * (star y ⬝ᵥ (M *ᵥ y)).re) (x : Fin n → ℂ) (hx : x ≠ 0) :
     0 < s * (star x ⬝ᵥ (M.map (starRingEnd ℂ) *ᵥ x)).re := by
@@ -34,6 +47,9 @@ private theorem def_conj {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (s : ℝ)
   rw [key, Complex.conj_re]
   exact h _ hy
 
+/- English proof (translation)
+Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hA), Matrix.map_one _ (map_zero f) (map_one f)]`.
+-/
 private theorem inv_map_ring {n : ℕ} {R R' : Type*} [Field R] [Field R'] (f : R →+* R') (A : Matrix (Fin n) (Fin n) R)
     (hA : A.det ≠ 0) : (A⁻¹).map f = (A.map f)⁻¹ := by
   symm
@@ -41,6 +57,11 @@ private theorem inv_map_ring {n : ℕ} {R R' : Type*} [Field R] [Field R'] (f : 
   rw [← Matrix.map_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hA),
     Matrix.map_one _ (map_zero f) (map_one f)]
 
+/- English proof (translation)
+Establish `hHi : (H⁻¹).map (cj E) = H⁻¹` using `by rw [inv_map_ring _ _ hd, hH]`. Establish `hHiT : (H⁻¹)ᵀ = H⁻¹` using `by rw [Matrix.transpose_nonsing_inv, hT]`. Establish `key : ((β * H⁻¹).map (cj E))ᵀ = β * H⁻¹`. Rewrite using `[Matrix.map_mul, hHi, Matrix.transpose_mul, hHiT]`. Use `conv_rhs => rw [← hs]`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hd), Matrix.mul_one]`. Use `congrFun (congrFun key b) a` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `this`.
+-/
 private theorem herm_N {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (H β : Matrix (Fin n) (Fin n) E)
     (hH : H.map (cj E) = H) (hT : Hᵀ = H) (hd : H.det ≠ 0) (hs : H⁻¹ * (β.map (cj E))ᵀ * H = β) (a b : Fin n) :
     IsCMField.complexConj E ((β * H⁻¹) a b) = (β * H⁻¹) b a := by
@@ -54,6 +75,29 @@ private theorem herm_N {E : Type} [Field E] [NumberField E] [IsCMField E] {n : �
   rw [Matrix.transpose_apply, Matrix.map_apply] at this
   exact this
 
+/- English proof (translation)
+Introduce `E _ _ _ A n p _ S B`. Establish `hT : (A.H n)ᵀ = A.H n` using `Matrix.diagonal_transpose _`. Establish `hH' : (A.H n).map (cj E) = A.H n`. Establish `h` using `congrArg Matrix.transpose (A.herm n)`. Rewrite `h` using `[Matrix.transpose_transpose]`.
+
+Rewrite using `[h]`. Conclude with `hT`. Establish `hsym : (A.H n)⁻¹ * ((mat S ↑B.β).map (cj E))ᵀ * A.H n = mat S ↑B.β`. Establish `h` using `B.sym`. Express the relevant statement in the definitionally equal form `MulOpposite.unop (hermStar (A.H n) (A.det_ne n) (mat S ↑B.β)) = mat S ↑B.β at h`.
+
+Rewrite `h` using `[hermStar_apply]`. Express the relevant statement in the definitionally equal form `((A.H n).map (cj E))⁻¹ * ((mat S ↑B.β).map (cj E))ᵀ * (A.H n).map (cj E) = _ at h`. Rewrite `h` using `[hH']`. Then use the resulting hypothesis. Use `⟨herm_N _ _ hH' hT (A.det_ne n) hsym, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`.
+
+Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Establish `hu : IsUnit (mat S ↑B.β)` using `B.β.isUnit`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero (A.det_ne n)`.
+
+Introduce `τ x hx set v := InfinitePlace.mk τ with hvdef set ε : ℝ := if v = InfinitePlace.mk A.τ₀ then 1 else -1 with hεdef`. Establish `hpos : ∀ y : Fin n → ℂ, y ≠ 0 → 0 < ε * (star y ⬝ᵥ ((((A.H n).map v.embedding)ᵀ * (mat S ↑(B.β⁻¹)).map v.embedding) *ᵥ y)).re`. Introduce `y hy`. Establish `hp` using `B.posR v y hy`. Establish `hsig : sigPosH (S.G.gram_herm v) = sigPos (A.herm n) v.embedding` using `rfl`.
+
+Rewrite `hp` using `[hsig]`. Establish `hme : InfinitePlace.mk v.embedding = v` using `InfinitePlace.mk_embedding v`. Distinguish the cases in `hv : v = InfinitePlace.mk A.τ₀`. Establish `h1` using `((S.sig v.embedding).1 (by rw [hme]; exact hv)).1`. Rewrite using `[hεdef, if_pos hv, one_mul]`.
+
+Conclude with `hp.1 h1`. Establish `h0` using `((S.sig v.embedding).2 (by rw [hme]; exact hv)).1`. Rewrite using `[hεdef, if_neg hv, neg_one_mul, neg_pos]`. Conclude with `hp.2 (by rw [h0]; exact zero_ne_one)`. Establish `h1 : (((A.H n).map v.embedding)ᵀ * (mat S ↑(B.β⁻¹)).map v.embedding) * (mat S ↑B.β * (A.H n)⁻¹).map v.embedding = 1`.
+
+Establish `hb : mat S ↑(B.β⁻¹) * mat S ↑B.β = 1` using `B.β.inv_mul`. Establish `h2 : A.H n * mat S ↑(B.β⁻¹) * (mat S ↑B.β * (A.H n)⁻¹) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (mat S ↑(B.β⁻¹)), hb, Matrix.one_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (A.det_ne n))]`. Rewrite using `[← Matrix.transpose_map, hT, ← Matrix.map_mul, ← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hM` using `def_of_inv _ _ h1 ε hpos`.
+
+Break down `InfinitePlace.embedding_mk_eq τ with he | he` into its components or cases. Establish `he' : v.embedding = τ` using `he`. Rewrite `hM` using `[he']`. Conclude with `hM x hx`. Establish `he' : v.embedding = ComplexEmbedding.conjugate τ` using `he`.
+
+Rewrite `hM` using `[he']`. Establish `hc` using `def_conj _ ε hM x hx`. Establish `hcc : ((mat S ↑B.β * (A.H n)⁻¹).map (ComplexEmbedding.conjugate τ)).map (starRingEnd ℂ) = (mat S ↑B.β * (A.H n)⁻¹).map τ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`.
+
+Rewrite `hc` using `[hcc]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Gal.G1.pDefSign :
     DefSign := by
   classical

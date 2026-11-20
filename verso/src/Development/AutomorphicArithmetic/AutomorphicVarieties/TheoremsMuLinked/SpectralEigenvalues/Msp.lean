@@ -3,6 +3,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.O
 open IsLocalRing Matrix Filter UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.Lev UpperTheory.V.AlgebraTools UpperTheory.V.Th
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `O B κ _ _ _ _ n x P α hP a ha`. Use `set J : Ideal (MSplitAlg P n) := (RingHom.ker x).map (algebraMap B (MSplitAlg P n)) with hJ`. Set `ψ : MvPolynomial (κ × Fin n) B →+* (MSplitAlg P n ⧸ J)` to `(Ideal.Quotient.mk J).comp (Ideal.Quotient.mk (mSplitIdeal P n))`. Set `g : B →+* (MSplitAlg P n ⧸ J)` to `ψ.comp MvPolynomial.C`. Set `h : O →+* (MSplitAlg P n ⧸ J)` to `g.comp (algebraMap O B)`.
+
+Establish `hg : ∀ b : B, g b = (Ideal.Quotient.mk J) (algebraMap B (MSplitAlg P n) b)`. Introduce `b`. Use `show (Ideal.Quotient.mk J) ((Ideal.Quotient.mk (mSplitIdeal P n)) (MvPolynomial.C b)) = _`. Rewrite using `[← MvPolynomial.algebraMap_eq, Ideal.Quotient.mk_algebraMap]`. Establish `hgx : g = h.comp (x : B →+* O)`.
+
+Use extensionality with `b`. Use `show g b = g (algebraMap O B (x b))`. Rewrite using `[← sub_eq_zero, ← map_sub, hg, Ideal.Quotient.eq_zero_iff_mem]`. Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Rewrite using `[RingHom.mem_ker]`.
+
+Simplify using the standard rewrite rules. Establish `hg' : (Ideal.Quotient.mk J).comp (algebraMap B (MSplitAlg P n)) = h.comp (x : B →+* O)`. Rewrite using `[← hgx]`. Use extensionality with `b`. Conclude with `(hg b).symm`.
+
+Establish `hroot : ∀ j i, ∏ k, (ψ (MvPolynomial.X (j, i)) - h (α j k)) = 0`. Introduce `j i`. Establish `e` using `MSplitAlg.prod_root P n j`. Establish `e2` using `congrArg (fun q => Polynomial.eval (ψ (MvPolynomial.X (j, i))) (q.map (Ideal.Quotient.mk J))) e`. Rewrite `e2` using `[Polynomial.map_map, hg', ← Polynomial.map_map, hP j]`.
+
+Simplify using `only [Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Polynomial.eval_prod, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at e2`. Rewrite using `[← e2]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (sub_self _)`. Establish `hh : ∀ c : O, ψ (MvPolynomial.C (algebraMap O B c)) = h c` using `fun _ => rfl`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Express the relevant statement in the definitionally equal form `ψ (_ * a) = 0`. Rewrite using `[map_mul]`. Use `set δ := ψ (∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O B (α j k)))) with hδ`. Establish `hδX : ∀ p : κ × Fin n, δ * (ψ (MvPolynomial.X p) - h (α p.1 p.2)) = 0`. Introduce and unpack `⟨j, i⟩`.
+
+Take `⟨q, hq⟩ : (∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O B (α j k))) : MvPolynomial (κ × Fin n) B) ∣ ∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O B (α j k)))` from `(Finset.dvd_prod_of_mem (fun i => ∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O B (α j k)))) (Finset.mem_univ i)).trans (Finset.dvd_prod_of_mem (fun j => ∏ i, ∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O B (α …`. Rewrite using `[hδ, hq, map_mul, mul_right_comm]`. Simplify using `only [map_prod, map_sub, hh]`. Rewrite using `[Finset.prod_erase_mul _ _ (Finset.mem_univ i), hroot, zero_mul]`. Establish `key : ∀ b : MvPolynomial (κ × Fin n) B, δ * (ψ b - h (MvPolynomial.eval₂ (x : B →+* O) (fun p => α p.1 p.2) b)) = 0`.
+
+Introduce `b`. Use `MvPolynomial.induction_on (motive := fun b => δ * (ψ b - h (MvPolynomial.eval₂ (x : B →+* O) (fun p => α p.1 p.2) b)) = 0) b ?_ ?_ ?_` and prove the remaining obligations. Introduce `c`. Establish `hc : ψ (MvPolynomial.C c) = h ((x : B →+* O) c)` using `by show g c = _`. Rewrite using `[hgx]`.
+
+Both sides reduce to the same expression. Rewrite using `[MvPolynomial.eval₂_C, hc, sub_self, mul_zero]`. Introduce `p q hp hq`. Rewrite using `[map_add, MvPolynomial.eval₂_add, map_add]`. Take the linear combination `hp + hq`.
+
+Introduce `p v hp`. Rewrite using `[map_mul, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X, map_mul]`. Use `beta_reduce`. Take the linear combination `(ψ (MvPolynomial.X v)) * hp + h (MvPolynomial.eval₂ (x : B →+* O) (fun p => α p.1 p.2) p) * hδX v`. Establish `hk` using `key a`.
+
+Rewrite `hk` using `[ha, map_zero, sub_zero]`. Conclude with `hk`.
+-/
 theorem UpperTheory.V.Th.Sp.msp :
     ∀ (O B κ : Type) [CommRing O] [CommRing B] [Algebra O B] [Fintype κ] (n : ℕ) (x : B →ₐ[O] O) (P : κ → Polynomial B) (α : κ → Fin n → O), (∀ j, (P j).map (x : B →+* O) = ∏ i, (Polynomial.X - Polynomial.C (α j i))) → ∀ a : MvPolynomial (κ × Fin n) B, MvPolynomial.eval₂ (x : B →+* O) (fun p => α p.1 p.2) a = 0 → Ideal.Quotient.mk (mSplitIdeal P n) ((∏ j, ∏ i, ∏ k ∈ Finset.univ.erase i, (MvPolynomial.X (j, i) - MvPolynomial.C (algebraMap O B (α j k)))) * a) ∈ (RingHom.ker x).map (algebraMap B (MSplitAlg P n)) := by
   intro O B κ _ _ _ _ n x P α hP a ha

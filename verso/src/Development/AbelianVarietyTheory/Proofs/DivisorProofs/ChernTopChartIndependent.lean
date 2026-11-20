@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.ChernWeilLine
 
+/- English proof (translation)
+Take `⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Establish `hW` using `(isOpen_ptsIn (p := p) (σ := σ) W).mem_nhds h₁`. Establish `hc : ContinuousAt (fun z a => ev p σ W (g a) z) y` using `continuousAt_pi.2 fun a => (continuousOn_ev (g a)).continuousAt hW`. Use `filter_upwards [hW, hc.preimage_mem_nhds (h₂.mem_nhds h₃), h₅.eventuallyEq_nhds] with z hz hzO hz5`. Conclude with `⟨W, ι, i, g, F, O, hz, h₂, hzO, h₄, hz5⟩`.
+-/
 theorem cInfAt_eventually {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
     {f : CxPts p σ → ℝ} {y : CxPts p σ} (h : CInfAt f y) : ∀ᶠ z in 𝓝 y, CInfAt f z := by
   obtain ⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
@@ -22,6 +25,9 @@ theorem cInfAt_eventually {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp
   filter_upwards [hW, hc.preimage_mem_nhds (h₂.mem_nhds h₃), h₅.eventuallyEq_nhds] with z hz hzO hz5
   exact ⟨W, ι, i, g, F, O, hz, h₂, hzO, h₄, hz5⟩
 
+/- English proof (translation)
+Establish `hc : ∀ x : ι × ℕ, chernPoly (fun u => G u x.1) v x.2 = chernPoly (fun u => G' u x.1) v x.2`. Introduce `x`. Unfold `chernPoly curvPoly`. Simplify using `only [curv_congr (h.mono fun u hu => congrFun hu x.1)]`. Simplify using `only [chernTop, hc]`.
+-/
 theorem chernTop_congr {n : ℕ} {ι : Type} {m : ι → ℕ} (R : MvPolynomial (ι × ℕ) ℝ)
     {G G' : V n → Mat m ℂ} {v : V n} (h : G =ᶠ[𝓝 v] G') : chernTop R G v = chernTop R G' v := by
   have hc : ∀ x : ι × ℕ, chernPoly (fun u => G u x.1) v x.2 = chernPoly (fun u => G' u x.1) v x.2 := by
@@ -32,6 +38,21 @@ theorem chernTop_congr {n : ℕ} {ι : Type} {m : ι → ℕ} (R : MvPolynomial 
 
 end GlobalTheory.ChernWeilLine
 
+/- English proof (translation)
+Introduce `F _ _ Y σ ι _ Δ m hM t c c' y hy hy' A hA`. Use `set R : MvPolynomial (ι × ℕ) ℝ := (∑ i, C (t i) * X (i, 1)) ^ Y.dim`. Set `K : V Y.dim → Mat (fun _ : ι => 1) ℂ` to `fun v => lineGram (cxSt F) m A (c'.e.symm v)`. Establish `ho` using `isOpen_over c.e c'.e.open_source`. Establish `hm` using `mem_over c.e hy hy'`.
+
+Establish `hφ : AnalyticAt ℂ (c'.e ∘ c.e.symm) (c.e y)` using `GlobalTheory.SCV.analyticAt_of_differentiableOn (c.holo_trans c') (ho.mem_nhds hm)`. Establish `e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy)`. Establish `hy'' : c'.e.symm (c'.e y) = y` using `c'.e.left_inv hy'`. Establish `hsm` using `hM.smooth y mem_ptsIn_top A hA`. Establish `hK2 : ∀ τ, MContDiffAt 2 (fun u => K u τ) (c'.e y)`.
+
+Introduce `τ a b`. Establish `hre` using `GlobalTheory.ChernWeilLine.cInfAt_eventually (hsm τ a b).1`. Establish `him` using `GlobalTheory.ChernWeilLine.cInfAt_eventually (hsm τ a b).2`. Establish `hn : ∀ {f : Pts Y σ → ℝ}, (∀ᶠ z in 𝓝 y, CInfAt f z) → ContDiffAt ℝ 2 (f ∘ c'.e.symm) (c'.e y)`. Introduce `f hf`.
+
+Establish `hs : c'.e.target ∩ c'.e.symm ⁻¹' {z | CInfAt f z} ∈ 𝓝 (c'.e y)`. Use `Filter.inter_mem (c'.e.open_target.mem_nhds (c'.e.map_source hy')) ?_` and prove the remaining obligations. Conclude with `(c'.e.continuousAt_symm (c'.e.map_source hy')).preimage_mem_nhds (hy''.symm ▸ hf)`. Conclude with `((contDiffOn_chart (fun z hz => hz) c').contDiffAt hs).of_le (by norm_cast)`. Establish `h1` using `(Complex.ofRealCLM.contDiff.contDiffAt.comp _ (hn hre)).add ((Complex.ofRealCLM.contDiff.contDiffAt.comp _ (hn him)).mul (contDiffAt_const (c := Complex.I)))`.
+
+Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Complex.ofRealCLM_apply, K]`. Conclude with `(Complex.re_add_im _).symm`. Establish `hKu : ∀ τ, IsUnit (K (c'.e y) τ).det`. Introduce `τ`.
+
+Establish `hp` using `hM.posDef y mem_ptsIn_top A hA τ`. Simplify using `only [K, hy'']`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 hp.isUnit`. Establish `key` using `GlobalTheory.ChernPull.chernTop_comp R K (c'.e ∘ c.e.symm) (c.e y) hφ (e₂ ▸ hK2) (e₂ ▸ hKu)`. Establish `hg : (fun v => lineGram (cxSt F) m A (c.e.symm v)) =ᶠ[𝓝 (c.e y)] fun w => K ((c'.e ∘ c.e.symm) w)` using `by filter_upwards [ho.mem_nhds hm] with w hw`.
+
+Simplify using `only [K, Function.comp_apply, c'.e.left_inv hw.2]`. Rewrite using `[GlobalTheory.ChernWeilLine.chernTop_congr R hg, key, e₂, transDet, Complex.sq_norm]`.
+-/
 theorem GlobalTheory.ChernWeilLine.chernTop_lineGram_trans : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {σ : F →+* ℂ} {ι : Type} [Fintype ι] {Δ : ι → Y.Dv} (m : ∀ i, (cxSt F).Met Y σ (Δ i)), IsMetricOn (ofDivisors Δ) ⊤ (lineGram (cxSt F) m) → ∀ (t : ι → ℝ) (c c' : GlobalTheory.AlgChart Y.str σ Y.dim) (y : Pts Y σ), y ∈ c.e.source → y ∈ c'.e.source → ∀ A ∈ (ofDivisors Δ).S (under y), chernTop ((∑ i, C (t i) * X (i, 1)) ^ Y.dim) (fun v => lineGram (cxSt F) m A (c.e.symm v)) (c.e y) = ‖transDet c.e c'.e y‖ ^ 2 * chernTop ((∑ i, C (t i) * X (i, 1)) ^ Y.dim) (fun v => lineGram (cxSt F) m A (c'.e.symm v)) (c'.e y) := by
   intro F _ _ Y σ ι _ Δ m hM t c c' y hy hy' A hA
   set R : MvPolynomial (ι × ℕ) ℝ := (∑ i, C (t i) * X (i, 1)) ^ Y.dim

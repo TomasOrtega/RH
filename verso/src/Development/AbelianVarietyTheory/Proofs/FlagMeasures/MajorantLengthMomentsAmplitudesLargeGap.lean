@@ -21,6 +21,15 @@ noncomputable section
 
 namespace GlobalTheory.AmpMomentsGap
 
+/- English proof (translation)
+Establish `hex : DSExistG` using `hH.1.2.2.2.1`. Establish `hC : ∃ P, PI.UpqRep.IsCayleyU k r (PI.BesselPeriodGGP.eps48 k r) P`. Take `⟨P, hP, -⟩` from `hR0.2`. Conclude with `⟨P, hP⟩`. Establish `H` using `GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hN`.
+
+Establish `key : ∀ ν : Fin (2 * r + k + 1) → ℤ, ∃ R : Rep k r, (∑ a, (ν a).natAbs ≤ q0 → R.IsDS (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ))) ∧ (ν = ν₀ → R = R0)`. Introduce `ν`. Distinguish the cases in `h0 : ν = ν₀`. Use `⟨R0, fun _ => ?_, fun _ => rfl⟩` and prove the remaining obligations. Substitute `h0` using the available equality.
+
+Conclude with `hR0`. Distinguish the cases in `hq : ∑ a, (ν a).natAbs ≤ q0`. Take `⟨R, hR⟩` from `hex k r _ _ (H.2 ν hq).1 hC ⟨h / 2, (H.2 ν hq).2.2.1, H.1.2.2.2.2⟩`. Conclude with `⟨R, fun _ => GlobalTheory.isDS_of_isDG hR, fun h => absurd h h0⟩`. Conclude with `⟨R0, fun h => absurd h hq, fun _ => rfl⟩`.
+
+Use `choose R hR using key`. Conclude with `⟨R, fun ν hν => (hR ν).1 hν, (hR ν₀).2 rfl⟩`.
+-/
 theorem family_through_at_gap (hH : GlobalTheory.GapIn.Hyp) (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ)
     (b bv ga h : ℝ) (q0 : ℕ) (ν₀ : Fin (2 * r + k + 1) → ℤ) (R0 : Rep k r) (hN : Num k r lam u b bv ga h q0)
     (hR0 : R0.IsDS (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν₀ a : ℝ))) :
@@ -46,6 +55,29 @@ theorem family_through_at_gap (hH : GlobalTheory.GapIn.Hyp) (k r : ℕ) (lam : F
   choose R hR using key
   exact ⟨R, fun ν hν => (hR ν).1 hν, (hR ν₀).2 rfl⟩
 
+/- English proof (translation)
+Substitute `hR` using the available equality. Establish `hν : n1 ν ≤ q0` using `le_trans (Nat.le_add_right _ _) h1`. Take `⟨hNum, hFam, hSide, hSF⟩` from `id hS`. Take `⟨⟨-, -, -, -, hOK⟩, hfam⟩` from `GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hNum`. Take `⟨-, -, hgap, -⟩` from `hfam ν hν`.
+
+Establish `hDS` using `hFam ν hν`. Take `⟨hBe, hpos, -⟩` from `hSF ν hν`. Take `⟨-, -, -, hsm, hTK, -, hKT, -⟩` from `GlobalTheory.rep_basic_of_isDS hH.1.1.2.2.1 k r _ _ (R ν) hDS`. Establish `hn : 0 < ‖v‖` using `norm_pos_iff.2 hv`. Use `set w : (R ν).H := ((‖v‖⁻¹ : ℝ) : ℂ) • v with hw`.
+
+Establish `hw1 : ‖w‖ = 1`. Rewrite using `[hw, norm_smul, Complex.norm_real, norm_inv, norm_norm]`. Conclude with `inv_mul_cancel₀ hn.ne'`. Establish `hvw : v = ((‖v‖ : ℝ) : ℂ) • w`. Rewrite using `[hw, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hn.ne', Complex.ofReal_one, one_smul]`.
+
+Establish `hwl : PI.UpqRep.IsLowUnitH k r (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ)) (R ν).σ w`. Take `⟨P, hP, hvP⟩` from `hlow`. Conclude with `⟨P, hP, hw1, Submodule.smul_mem _ _ hvP⟩`. Establish `hwK : (R ν).KFin w` using `PI.UnitaryGroupMassFormula.LowSmooth.isKFinHpk_of_lowUnit hwl`. Establish `hvK : (R ν).KFin v`.
+
+Take `⟨S, hS1, hS2, hS3⟩` from `hwK`. Conclude with `⟨S, hS1, by rw [hvw]; exact S.smul_mem _ hS2, hS3⟩`. Establish `hws : w ∈ (R ν).sm` using `hTK _ (hKT _ hwK)`. Take `⟨v₁, hv₁, hl⟩` from `GlobalTheory.T.exists_kFinite_besselPeriod_ne_zero_gap hH k r _ _ (h / 2) (R ν) Wp z π u μW μN μG νq B (l ν) v hDS hgap hOK hSide hB hvK h0 ht hBe`. Establish `hnz : NzOn (R ν) (l ν)` using `⟨v₁, hTK _ (hKT _ hv₁), hl⟩`.
+
+Establish `hDG : (R ν).IsDG (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ))` using `⟨hDS.1, hDS.2, ⟨h / 2, hgap, hOK⟩⟩`. Take `⟨c, hc⟩` from `GlobalTheory.GapLine.bessel_line_gap hH k r _ _ (R ν) Wp z π u μW μN μG νq (l ν) B hDG hSide hBe.1 hnz hB`. Apply the tactic sequence `have hmass := ((Gp91.GlobalTheory.T.bessel_functional_l2_bound_and_isometry hH.1 k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg ((GlobalTheory.T.families_have_largeGap_of_numericalHypotheses.2 k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg).1 hS) ν hν).2 hnz).2 w hws`. Establish `hmom` using `GlobalTheory.T.oneMajorantLength_moment_lowestKType hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν q h1 h2 w hwl a`. Take `⟨-, -, -, -, hW, hN, hG, hq⟩` from `hSide`.
+
+Take `⟨m0, m1⟩` from `Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts hW hN`. Establish `hae` using `Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot hG.2.2.1 m0 m1 hq`. Use `set K : ℝ := (‖v‖ * ‖c‖) ^ 2 / dg ν with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Establish `hpt : ∀ᵐ x ∂νq, ‖B ((R ν).σ (Matrix.of x) v)‖ ^ 2 = K * (dg ν * ‖l ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)` using `by filter_upwards [hae] with x hx`.
+
+Establish `hxs` using `hsm _ hx w hws`. Establish `: B ((R ν).σ (Matrix.of x) v) = ((‖v‖ : ℝ) : ℂ) • c • l ν ((R ν).σ (Matrix.of x) w)` using `by conv_lhs => rw [hvw, map_smul]`. Rewrite using `[hB.2.1 _ _ hxs, hc _ hxs]`. Rewrite using `[this, norm_smul, norm_smul, Complex.norm_real, norm_norm, hK]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `e1 : l2SG νq (fun g => B ((R ν).σ g v)) = ENNReal.ofReal K`. Rewrite `hmass` using `[hw1, one_pow, ENNReal.ofReal_one]`. Rewrite using `[← mul_one (ENNReal.ofReal K), ← hmass, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hpt] with x hx`.
+
+Rewrite using `[GlobalTheory.AmpMoments.sq_nnnorm, hx, one_mul, ENNReal.ofReal_mul hK0]`. Rewrite using `[e1, mul_comm (ENNReal.ofReal _) (ENNReal.ofReal K)]`. Use `le_trans (le_of_eq ?_) (mul_le_mul_right hmom _)` and prove the remaining obligations. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hpt] with x hx`. Establish `hl0 : 0 ≤ lenA k r z (Matrix.of x) a ^ (2 * q)` using `pow_nonneg Metric.infDist_nonneg _`. Rewrite using `[GlobalTheory.AmpMoments.sq_nnnorm, hx, ← ENNReal.ofReal_mul hl0, ← ENNReal.ofReal_mul hK0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem moment_of_bessel (hH : GlobalTheory.GapIn.Hyp) {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [CompleteSpace Wp] [FiniteDimensional ℂ Wp] {lam : Fin (2 * r + k + 1) → ℝ} {u : ℕ → ℝ} {b bv ga h : ℝ} {q0 : ℕ}
     {z : Fin (2 * r + k + 1) → ℂ} {π : MatKR k r → (Wp →L[ℂ] Wp)} {μW μN μG νq : Measure (Mt k r)}
@@ -117,6 +149,35 @@ theorem moment_of_bessel (hH : GlobalTheory.GapIn.Hyp) {k r : ℕ} {Wp : Type} [
   rw [GlobalTheory.AmpMoments.sq_nnnorm, hx, ← ENNReal.ofReal_mul hl0, ← ENNReal.ofReal_mul hK0]
   congr 1; ring
 
+/- English proof (translation)
+Introduce `hH Cg cb Cu cT CT C0 C1 Cq`. Use `⟨2 * Cg + 2 + |CT| + 10 * max 2 Cu, fun Cn => ⟨|Cn| + |Cq|, ?_⟩⟩` and prove the remaining obligations. Introduce `D large₂ C' Cl hCl hBig hZ τ w w' hTT θ _ W hW lam' hlam A hA a q hq`. Use `haveI := FiniteDimensional.complete ℂ W.Wp`. Take `⟨-, -, hb, hm, -, -, -, hmk, hv, -, hka, hvb, hg, hgb, hCg, -, hT, -⟩` from `GlobalTheory.Amp.RangeModel.sizes_of D large₂ C' Cl Cg cb Cu cT CT C0 hBig.1 hZ`.
+
+Establish `hθ` using `GlobalTheory.Amp.RangeModel.theta_pos D τ w w' θ W hW`. Take `⟨hNum, -, heps⟩` from `GlobalTheory.T.momentPieriNumerics_of_sizeHyps D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl τ w (uOne D w τ) (fun i => by`. Use `i.isLt` as an intermediate fact. Simplify using `only [uOne]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]; rfl)`.
+
+Establish `hex : ∀ i, ∃ n : ℤ, lam' i = lamD D τ i + n` using `fun i => by`. Take `⟨n₁, h₁⟩` from `hA.1.2 i`. Take `⟨n₂, h₂⟩` from `hNum.2.1.2 i`. Conclude with `⟨n₁ - n₂, by push_cast at *; linarith⟩`. Use `choose ν hν using hex`.
+
+Take `rfl : lam' = fun i => lamD D τ i + (ν i : ℝ)` from `funext hν`. Establish `hn1 : ((n1 ν : ℕ) : ℝ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3`. Use `le_trans (le_of_eq ?_) hlam` and prove the remaining obligations. Simplify using `[n1, l1dist]`. Take `⟨hr1, hr2⟩` from `GlobalTheory.AmpMoments.radius_bound hm hmk hBig.2.2 hn1 hq`.
+
+Set `R0 : Rep D.R.k D.R.rS` to `{ H := A.H, σ := A.σ }`. Take `⟨hA1, hA2, hA3, -, hA5, hA6, hA7, hA8, hA9, -⟩` from `hA`. Rewrite `hA2`, `hA7` using `[← heps]`. Establish `hDS : R0.IsDS (PI.BesselPeriodGGP.eps48 D.R.k D.R.rS) (fun i => lamD D τ i + (ν i : ℝ))` using `⟨hA1, hA2⟩`. Take `⟨R, hFam, hR⟩` from `family_through_at_gap hH _ _ _ _ _ _ _ _ _ ν R0 hNum hDS`.
+
+Use `set c : ℝ := 2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) with hc`. Establish `hc2 : c = 2 * (Real.pi / D.host.v / gg D)` using `by rw [hc, hka, gg]; ring`. Establish `hc0 : 0 < c` using `by rw [hc2]; have := Real.pi_pos; positivity`. Take `⟨t, htG, htN, htz, hts⟩` from `GlobalTheory.T.exists_unitaryTorus_scale_besselCharacter D.R.k D.R.rS (c : ℂ) (by exact_mod_cast hc0.ne')`. Use `choose s hs0 hs1 hs2 hs3 using hts`.
+
+Establish `htd : IsUnit t.det` using `Matrix.isUnit_det_of_right_inverse (Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv htG).2.1`. Take `⟨U, U', l, l', dg, hS, -⟩` from `GlobalTheory.T.amplitudeLocalData_momentPieriHypotheses hH D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl τ w w' θ W hTT hθ hW t htG htN (fun z hz => (htz z hz).2) R hFam`. Take `⟨-, -, hz, -, hTz, -, hG, -, -, -, -, -, hQ, -⟩` from `hW`. Take `⟨g1, g2, g3, g4, g5, g6, g7, g8⟩` from `hS.2.2.1`. Establish `hSide : SideG D.R.k D.R.rS W.z W.π U W.μW W.μN W.μG W.νS` using `⟨g1, g2, g3, g4, g5, GlobalTheory.AmpMoments.haar_of_conj htd htN g6, g7, hQ⟩`.
+
+Establish `hB` using `(((GlobalTheory.BesselMoveGap.bessel_move_gap hH _ _ W.Wp W.z W.π U (c : ℂ) W.μW W.μN W.μG W.νS t htG htN (htz _ hz).2.1 (htz _ hz).2.2 hSide).2 R0 (GlobalTheory.TensCompare.isURepOn_of_isDS hDS)).1 A.B).1 (GlobalTheory.AmpMoments.isBesselMapSm_of hA3)`. Take `⟨hmul, -⟩` from `GlobalTheory.rep_basic_of_isDS hH.1.1.2.2.1 _ _ _ _ R0 hDS`. Take `⟨m0, m1⟩` from `Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts g5 g6`. Establish `hae` using `Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot g7.2.2.1 m0 m1 g8`. Use `set νq := W.νS.map fun x => fun i j => (t⁻¹ * Matrix.of x) i j with hνq`.
+
+Establish `hpt : ∀ᵐ x ∂νq, A.Φ (t * Matrix.of x) = A.B (R0.σ t (R0.σ (Matrix.of x) A.v0))` using `by filter_upwards [hae] with x hx`. Conclude with `congrArg A.B (hmul t htG _ hx A.v0)`. Establish `e1 : l2SG W.νS A.Φ = l2SG νq (fun g => A.B (R0.σ t (R0.σ g A.v0)))`. Unfold `l2SG`. Rewrite using `[GlobalTheory.AmpMoments.lintegral_translate W.νS t htd]`.
+
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hpt] with x hx`. Rewrite using `[← hx]`. Both sides reduce to the same expression. Establish `hfr : 0 < Module.finrank ℂ W.Wp`.
+
+Take `⟨_, _, -, hρ⟩` from `g3`. Use `haveI := hρ.1`. Conclude with `Module.finrank_pos`. Establish `key` using `moment_of_bessel hH hS ν q hr1 hr2 R0 hR _ hB A.v0 hA6 hA7 (by rw [← e1, hA9]; exact (ENNReal.ofReal_pos.2 (by positivity)).ne') (by rw [← e1, hA9]; exact ENNReal.ofReal_ne_top) a`. Establish `hsz` using `GlobalTheory.AmpMoments.size_bound (q := q) (Cu := Cu) hb hv hvb hg hgb hCg (T := Tz D.R.k D.R.rS W.z) (CT := CT) (r := D.R.rS) (by rw [hTz]; have := hT w; rw [hm] at this; exact_mod_cast this) (norm_nonneg (s a)) (by`.
+
+Use `hs1 a` as an intermediate fact. Rewrite `this` using `[Complex.norm_real, Real.norm_of_nonneg hc0.le, ← inv_div c 2, hc2, mul_div_cancel_left₀ _ (two_ne_zero (α := ℝ))]`. Conclude with `this)`. Establish `hm' : (D.R.m : ℝ) = 2 * D.R.rS + 2` using `by rw [hm]; push_cast; ring`. Rewrite using `[e1, hm']`.
+
+Use `le_trans ?_ (mul_le_mul_left (ENNReal.ofReal_le_ofReal hsz) _)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (by positivity), mul_assoc]`. Use `le_trans (le_of_eq ?_) (mul_le_mul_right key _)` and prove the remaining obligations. Rewrite using `[GlobalTheory.AmpMoments.lintegral_translate W.νS t htd, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hpt] with x hx`. Rewrite using `[← hx, ← mul_assoc, ← ENNReal.ofReal_mul (by positivity), ← mul_pow, ← GlobalTheory.AmpMoments.lenA_mul W.z t (Matrix.of x) s hs0 (fun b => hs3 b _ hz), BranchingSupport.TensInh.lenA_eq_lA]`. Both sides reduce to the same expression.
+-/
 theorem amplitude_moments_gap : GlobalTheory.GapIn.Hyp → ∀ Cg cb Cu cT CT C0 C1 Cq : ℝ, ∃ C : ℝ, ∀ Cn : ℝ, ∃ m₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl : ℝ), 1000 ≤ Cl → Big D large₂ Cl m₀ → MomIn D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 Cq C := by
   intro hH Cg cb Cu cT CT C0 C1 Cq
   refine ⟨2 * Cg + 2 + |CT| + 10 * max 2 Cu, fun Cn => ⟨|Cn| + |Cq|, ?_⟩⟩

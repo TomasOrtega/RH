@@ -32,6 +32,11 @@ open GlobalTheory.UT.CoefBasic
 section
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S}
 
+/- English proof (translation)
+Introduce `i j`. Establish `h` using `congrArg (· ^ k) (he i j)`. Simplify using `only [mul_zpow, ← map_zpow] at h`. Use `h.trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Simplify using `only [LB.LinComb, Fintype.prod_unique, zpow_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem powFrame_isGen (z : T ⟶ A)
     (e : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => z.left) (fun _ => 1)))
     (he : e.IsGen) (k : ℤ) : (powFrame A L z e k).IsGen := by
@@ -42,6 +47,11 @@ theorem powFrame_isGen (z : T ⟶ A)
   simp only [LB.LinComb, Fintype.prod_unique, zpow_one]
   rfl
 
+/- English proof (translation)
+Introduce `i j`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `v : ∀ i : Fin 1 → L.ι, y ∈ LB.wchart L (fun _ : Fin 1 => T.hom ≫ eSec A) i → gm (𝟙 T.left) y (LB.wchart L (fun _ : Fin 1 => T.hom ≫ eSec A) i) ((rigT A L ρ T k).s i) = gm T.hom y (LB.wchart L (fun _ : PUnit => eSec A) (fun _ => i 0)) (ρ.s fun _ => i 0) ^ k` using `fun i hi => (map_zpow _ _ _).trans (congrArg (· ^ k) (gm_rp₁ T.hom y _ _ (rigT_le A L i) hi _))`. Establish `e` using `gen_trans (L := L) (φ := fun _ : PUnit.{1} => eSec A) (ε := fun _ => 1) hρ T.hom y (j := fun _ => i 0) (j' := fun _ => j 0) (rigT_le A L (T := T) i hy.1) (rigT_le A L (T := T) j hy.2)`. Rewrite `e` using `[trF, Fintype.prod_unique, zpow_one]`.
+
+Use `((gm_res (𝟙 _) y _ hy _).trans (v i hy.1)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb L (fun _ : Fin 1 => T.hom ≫ eSec A) (fun _ => k) (𝟙 _) y i j hy.1 hy.2) ((gm_res (𝟙 _) y _ hy _).trans (v j hy.2)))).symm)` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one, Category.id_comp, ← mul_zpow]`. Conclude with `congrArg (· ^ k) e`.
+-/
 theorem rigT_isGen {ρ : LB.Gen (L.pull (eSec A))} (hρ : ρ.IsGen) (k : ℤ) : (rigT A L ρ T k).IsGen := by
   intro i j
   refine unit_ext fun y hy => ?_
@@ -58,14 +68,25 @@ theorem rigT_isGen {ρ : LB.Gen (L.pull (eSec A))} (hρ : ρ.IsGen) (k : ℤ) : 
   rw [Fin.prod_univ_one, Category.id_comp, ← mul_zpow]
   exact congrArg (· ^ k) e
 
+/- English proof (translation)
+Rewrite using `[ptSecT, translPt, comp_lift_assoc, lift_fst_assoc, lift_snd, Category.id_comp, ← Hom.mul_def, _root_.mul_one]`.
+-/
 theorem ptSec_translPt (x : T ⟶ A) : ptSecT A (1 : T ⟶ A) ≫ translPt A x = x := by
   rw [ptSecT, translPt, comp_lift_assoc, lift_fst_assoc, lift_snd, Category.id_comp, ← Hom.mul_def, _root_.mul_one]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, translT, comp_lift, ptSec_translPt, ptSecT, lift_fst]`. Both sides reduce to the same expression.
+-/
 theorem ptSec_translT (x : T ⟶ A) : (ptSecT A (1 : T ⟶ A)).left ≫ (translT A x).left = (ptSecT A x).left := by
   rw [← Over.comp_left, translT, comp_lift, ptSec_translPt, ptSecT, lift_fst]; rfl
 
 end
 
+/- English proof (translation)
+Introduce `q`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.1 (v.ne_top_iff.2 hc)`. Take `⟨S, hS⟩` from `h (q - r)`. Use `⟨S, fun T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, ← mul_sub, v.map_mul, ← hr, show q = r + (q - r) by ring, WithTop.coe_add]`.
+
+Conclude with `add_le_add le_rfl (hS T hT)`.
+-/
 theorem sumV_mul {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {Ix : Type} {x : Ix → F} {s c : F}
     (h : SumV v x s) (hc : c ≠ 0) : SumV v (fun i => c * x i) (c * s) := by
   intro q
@@ -75,6 +96,11 @@ theorem sumV_mul {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {Ix : T
   rw [← Finset.mul_sum, ← mul_sub, v.map_mul, ← hr, show q = r + (q - r) by ring, WithTop.coe_add]
   exact add_le_add le_rfl (hS T hT)
 
+/- English proof (translation)
+Introduce `q`. Take `⟨S, hS⟩` from `h q`. Use `⟨S.map e.symm.toEmbedding, fun T hT => ?_⟩` and prove the remaining obligations. Use `hS (T.map e.toEmbedding) fun i hi => by` as an intermediate fact. Simplify using `using hT (Finset.mem_map_of_mem e.symm.toEmbedding hi)`.
+
+Rewrite `this` using `[Finset.sum_map]`. Then use the resulting hypothesis.
+-/
 theorem sumV_equiv {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {Ix Ix' : Type} (e : Ix' ≃ Ix) {x : Ix → F} {s : F}
     (h : SumV v x s) : SumV v (fun i => x (e i)) s := by
   intro q
@@ -84,6 +110,15 @@ theorem sumV_equiv {F : Type} [Field F] {v : AddValuation F (WithTop ℚ)} {Ix I
     simpa using hT (Finset.mem_map_of_mem e.symm.toEmbedding hi)
   rwa [Finset.sum_map] at this
 
+/- English proof (translation)
+Establish `e₀ : (ptSecT A.A (1 : TFK (R` using `R) F ⟶ A.A)).left ≫ (snd (TFK (R := R) F) A.A).left = (TFK (R := R) F).hom ≫ eSec A.A := by`. Rewrite using `[← Over.comp_left, ptSecT, lift_snd]`. Both sides reduce to the same expression. Establish `e₁ : (ptSecT A.A (1 : TFK (R` using `R) F ⟶ A.A)).left ≫ (translPt A.A θ.pt).left = θ.pt.left := by`. Rewrite using `[← Over.comp_left, ptSec_translPt]`.
+
+Take `⟨u, hu, hv⟩` from `TWM.exists_ratio (F := F) A.isLB (LB.mulGen A.L _ _ _ _ (LB.pullGen A.L _ _ θ.φ (ptSecT A.A 1).left) (powFrame A.A A.L θ.pt e N)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ θ.isGen _) (powFrame_isGen θ.pt e he N)) (rigT A.A A.L ρ (TFK (R := R) F) (N : ℤ)) (rigT_is …`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Fin.prod_univ_one, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg]`. Conclude with `(congrArg₂ (fun a b => h a ^ (N : ℤ) * (h b ^ (N : ℤ))⁻¹ * h θ.pt.left ^ (N : ℤ)) e₀ e₁).trans (inv_mul_cancel_right _ _))`. Use `⟨u, hu, fun t t' c ha ht z J hJ => ?_⟩` and prove the remaining obligations. Establish `a₁` using `GlobalTheory.BoxTheta.act_val θ t t' ha (ptSecT A.A 1).left z hJ`.
+
+Rewrite `a₁` using `[ptSec_translT]`. Establish `a₀` using `(val_pull (L := A.L) (K := Fin 2) (φ := ![(snd (TFK (R := R) F) A.A).left, (translPt A.A θ.pt).left]) (ε := ![(N : ℤ), -(N : ℤ)]) hJ θ.φ (ptSecT A.A 1).left (𝟙 _)).trans (congrArg (fun r => val (L := A.L) (K := Fin 2) (φ := ![(snd (TFK (R := R) F) A.A).left, (translPt A.A θ.pt).l …`. Establish `a₂` using `((Units.val_mul _ _).symm.trans (congrArg Units.val ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) a₀ rfl)).symm)).trans (hv _ (𝟙 _) z J hJ)`. Establish `a₃` using `ht z J hJ`. Establish `a₄ : cst (R` using `R) F z (u * c) = cst (R := R) F z u * cst (R := R) F z c := by`.
+
+Rewrite using `[cst_eq, cst_eq, cst_eq, map_mul]`. Use `a₁.trans ((congrArg _ a₃).trans ?_)` and prove the remaining obligations. Rewrite using `[a₄]`. Use `(mul_left_comm _ _ _).trans ((congrArg _ a₂).trans ?_)` and prove the remaining obligations. Conclude with `(_root_.mul_assoc _ _ _).symm.trans (congrArg₂ (fun a b : (TFK (R := R) F).left.presheaf.stalk z => a * b) (_root_.mul_comm _ _) rfl)`.
+-/
 theorem exists_act_value {R : Type} [CommRing R] [IsDomain R] {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
     {F : Type} [Field F] [Algebra (FractionRing R) F] {ρ : LB.Gen (A.L.pull (eSec A.A))} (hρ : ρ.IsGen) (N : ℕ)
     (θ : ThetaGrp A.A A.L (N : ℤ) (TFK (R := R) F))
@@ -123,6 +158,19 @@ theorem exists_act_value {R : Type} [CommRing R] [IsDomain R] {A : PolAV (Spec (
   refine (mul_left_comm _ _ _).trans ((congrArg _ a₂).trans ?_)
   exact (_root_.mul_assoc _ _ _).symm.trans (congrArg₂ (fun a b : (TFK (R := R) F).left.presheaf.stalk z => a * b) (_root_.mul_comm _ _) rfl)
 
+/- English proof (translation)
+Introduce `hL V _ _ _ _ hcpl ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ ρ hN N hN1 q x hx e he w hw`. Establish `hB : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hcpl⟩`. Use `haveI : Subsingleton (TFK (R := V) F).left := inferInstanceAs (Subsingleton (Spec (CommRingCat.of F)))`. Use `haveI : Nonempty (TFK (R := V) F).left := inferInstanceAs (Nonempty (Spec (CommRingCat.of F)))`. Take `⟨hxN, hθ⟩` from `hx w₀ hN.1`.
+
+Take `⟨θ, rfl⟩` from `GlobalTheory.BoxTheta.exists_theta hL.1.kerPow A hN1 (T := TFK (R := V) F) x hxN`. Take `⟨w', hw', hΦ⟩` from `hθ θ rfl`. Take `⟨u, hu, hval⟩` from `exists_act_value hN.2.1 N θ e he`. Take `⟨o, ho⟩` from `exists_zero_gt (D := D.toPre) (F := F)`. Take `⟨w₁, hw₁⟩` from `(coef_basic V D.toPre F N o).2.1 ho.1`.
+
+Establish `hadd : o.IsAdd q.g q.g`. Rewrite using `[GlobalTheory.TorusExt.isZero_unique ho GlobalTheory.TorusExt.isZero_gtZero]`. Use `GlobalTheory.TorusExt.isAdd_gtAdd (GlobalTheory.TorusExt.gtZero D.toPre F) q.g` as an intermediate fact. Rewrite `this` using `[GlobalTheory.TorusExt.gtZero_add]`. Then use the resulting hypothesis. Take `⟨ω, hω, -, hc⟩` from `GlobalTheory.UT.CoefPhi.coef_phi hL V _ hB D F N hN1 q w' hw' o q.g hadd w₁ hw₁.1`.
+
+Take `⟨d, hd, -, hdc⟩` from `((coef_basic V D.toPre F N q.g).2.2 ω hω).2.2.1 w hw`. Use `⟨d * u, mul_ne_zero hd hu, fun t s c hts hc' => ?_⟩` and prove the remaining obligations. Take `⟨t', ht'⟩` from `GlobalTheory.VVRank.exists_isTwistPull A.A (ψ := translT A.A θ.pt) (m := translPt A.A θ.pt) (hm := lift_snd _ _) (a := N) (b := N) (α := θ.φ) A.isLB θ.isGen t`. Take `⟨s', hs', -⟩` from `((GlobalTheory.UT.expBijF_and_expandsF_lin hL V _ hB D A G hG U).1 F N hN1 w₀ hN.1).1 t'`. Establish `h₁` using `(GlobalTheory.UT.EvalZero.value_at_origin hL V _ hB D A G hG U F).2.2 w₀ ρ hN N t' s' hs' o w₁ ho hw₁ (u * c) (hval t t' c ht' hc')`.
+
+Establish `h₂` using `sumV_equiv (Equiv.addRight q.y) (GlobalTheory.UT.AdicValSum.main V ϖ hϖ F v hv _ _ _ h₁).1`. Establish `h₃` using `hc 1 N le_rfl (Nat.mul_one N).symm q (one_nsmul _).symm rfl w' w₁ ω ⟨hw', fun _ _ _ => (pow_one _).symm⟩ ⟨hw₁.1, fun _ _ _ => (pow_one _).symm⟩ ⟨hω, fun _ _ _ => (pow_one _).symm⟩ s s' (hΦ t t' s s' hts hs' ht')`. Establish `h₄` using `sumV_mul h₂ hd`. Simplify using `only [Equiv.coe_addRight, h₃, ← hdc] at h₄`. Rewrite using `[_root_.mul_assoc]`.
+
+Conclude with `h₄`.
+-/
 theorem value_at_level : LL → AllUV fun {V} _ _ _ {ϖ} hϖ {D} Q {F} _ _ {v} hv {A} {G} _ _ U => ∀ w₀ ρ, NormW U.toUnifPre w₀ ρ → ∀ (N : ℕ), 1 ≤ N → ∀ (q : QkPt D.toPre F N) (x : TFK (R := V) F ⟶ A.A), QkToAkU U.toUnifPre F N q x → ∀ e : LB.Gen (LB.LinComb A.L (Y := (TFK (R := V) F).left) (K := Fin 1) (fun _ => x.left) (fun _ => 1)), e.IsGen → ∀ w : Frm D.toPre F N q.g.b, w.IsGen → ∃ κ : F, κ ≠ 0 ∧ ∀ (t : SecA A F N) s (c : F), U.ExpandsF F N w₀ t s → (∀ z J, Good A.L z J → sA t (ptSecT A.A x).left z J = @id ((TFK (R := V) F).left.presheaf.stalk z) (cst (R := V) F z c) * (val (powFrame A.A A.L x e N) (𝟙 _) z J).val) → SumV v (coef s q.g w) (κ * c) := by
   intro hL V _ _ _ _ hcpl ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ ρ hN N hN1 q x hx e he w hw
   have hB : AdmBase V (maximalIdeal V) := ⟨inferInstance, inferInstance, inferInstance, hcpl⟩

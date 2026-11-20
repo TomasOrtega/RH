@@ -97,6 +97,9 @@ def Good (M : Model l K) : Prop :=
 def genMap {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) : M.gen ⟶ N.gen :=
   pullback.lift (pullback.fst _ _ ≫ u) (pullback.snd _ _) (by rw [Category.assoc, hu, pullback.condition])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem genMap_q {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) : genMap u hu ≫ N.q = M.q := pullback.lift_snd _ _ _
 
 def V (M : Model l K) (n : ℕ) : Type 1 := GlobalTheory.EtC.HQ l (GlobalTheory.EtC.sch.obj (GlobalTheory.Et.geom (PadicAlgCl l) M.q)) n 0

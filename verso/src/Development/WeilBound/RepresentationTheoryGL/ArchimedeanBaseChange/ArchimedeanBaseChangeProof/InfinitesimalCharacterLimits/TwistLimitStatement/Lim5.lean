@@ -6,6 +6,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitNodeEmbedd
 
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation.LimG
 
+/- English proof (translation)
+Introduce `hFD` and use `PositivityTheory.Rg.BcB.SpectralAccumulation.Lim5.limit_of_finite_discrete hFD GlobalTheory.T.limit_block_types GlobalTheory.T.limit_twist_bound GlobalTheory.T.limit_node_embedding PositivityTheory.Rg.BcB.SpectralAccumulation.Trees.treeLemmas.2.2.1 PositivityTheory.Rg.BcB.Spectra …`.
+-/
 theorem lim5 : PositivityTheory.Rg.BcB.SpectralAccumulation.FinDisc → PositivityTheory.Rg.BcB.SpectralAccumulation.Lim5 := fun hFD =>
   PositivityTheory.Rg.BcB.SpectralAccumulation.Lim5.limit_of_finite_discrete hFD GlobalTheory.T.limit_block_types GlobalTheory.T.limit_twist_bound GlobalTheory.T.limit_node_embedding
     PositivityTheory.Rg.BcB.SpectralAccumulation.Trees.treeLemmas.2.2.1 PositivityTheory.Rg.BcB.SpectralAccumulation.Trees.treeLemmas.2.1

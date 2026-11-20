@@ -8,6 +8,25 @@ namespace Formalism.MainNotions.ModuliIntegralCharts.H1
 
 open NumberField
 
+/- English proof (translation)
+Introduce `E _ _ Y _ _ _ R' hR' r y z hgen a`. Use `set X : Submodule (𝓞 E) Y := Submodule.span (𝓞 E) (Set.range fun b => y b + R' • z b) with hX`. Establish `hdec : ∀ a : Y, ∃ x ∈ X, ∃ t : Y, a = x + R' • t`. Introduce `a`. Take `⟨u, hu, t, rfl⟩` from `hgen a`.
+
+Establish `hspan : Submodule.span (𝓞 E) (Set.range y) ≤ X ⊔ LinearMap.range (R' • LinearMap.id : Y →ₗ[𝓞 E] Y)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_sup]`. Use `⟨y b + R' • z b, Submodule.subset_span ⟨b, rfl⟩, R' • (-z b), ⟨-z b, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_neg, add_neg_cancel_right]`. Take `⟨x, hx, w, ⟨t', rfl⟩, rfl⟩` from `Submodule.mem_sup.1 (hspan hu)`. Use `⟨x, hx, t' + t, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, smul_add, add_assoc]`. Set `Xz : Submodule ℤ Y` to `X.restrictScalars ℤ`.
+
+Set `I : Ideal ℤ` to `Ideal.span {(R' : ℤ)}`. Establish `hfg : (⊤ : Submodule ℤ (Y ⧸ Xz)).FG` using `Module.Finite.fg_top`. Establish `hle : (⊤ : Submodule ℤ (Y ⧸ Xz)) ≤ I • ⊤`. Introduce `m _`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective Xz m`.
+
+Take `⟨x, hx, t, rfl⟩` from `hdec b`. Establish `hx' : Submodule.Quotient.mk (p` using `Xz) x = 0 := (Submodule.Quotient.mk_eq_zero Xz).2 ((Submodule.restrictScalars_mem ℤ X x).2 hx)`. Rewrite using `[Submodule.Quotient.mk_add, hx', zero_add, Submodule.Quotient.mk_smul, ← Nat.cast_smul_eq_nsmul ℤ]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`. Take `⟨s, hs1, hs⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul I ⊤ hfg hle`.
+
+Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Rewrite `hs1` using `[Ideal.mem_span_singleton, zero_sub, dvd_neg]`. Establish `h1 : ((R' : ℤ)) = 1` using `Int.eq_one_of_dvd_one (Int.natCast_nonneg R') hs1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hsa : s • a ∈ X`. Establish `h0 : s • Submodule.Quotient.mk (p` using `Xz) a = 0 := hs _ Submodule.mem_top`. Rewrite `h0` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `(Submodule.restrictScalars_mem ℤ X _).1 h0`. Use `⟨s.natAbs, Int.natAbs_pos.2 hs0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ]`. Break down `Int.natAbs_eq s with h | h` into its components or cases. Rewrite using `[← h]`. Conclude with `hsa`. Establish `: ((s.natAbs : ℤ)) = -s` using `by omega`.
+
+Rewrite using `[this, neg_smul]`. Conclude with `X.neg_mem hsa`.
+-/
 theorem etSpan_holds : ETSpanStatement := by
   intro E _ _ Y _ _ _ R' hR' r y z hgen a
   set X : Submodule (𝓞 E) Y := Submodule.span (𝓞 E) (Set.range fun b => y b + R' • z b) with hX

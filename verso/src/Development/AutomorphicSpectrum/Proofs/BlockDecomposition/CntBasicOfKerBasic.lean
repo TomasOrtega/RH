@@ -9,6 +9,15 @@ open PositivityTheory.Rg.BcB.E1
 
 namespace GlobalTheory.CompanionTheory.KernelCount
 
+/- English proof (translation)
+Establish `hC : IsCompact ((fun z => x * z * x⁻¹) '' Ω)` using `hΩ.image (by fun_prop)`. Establish `hfin` using `X.proper _ hC`. Establish `hsupp : (Function.support fun γ : X.Γ => Ω.indicator (1 : X.G → ℝ≥0∞) (x⁻¹ * (γ : X.G) * x)) ⊆ (hfin.toFinset : Set X.Γ)`. Introduce `γ hγ`. Establish `hmem : x⁻¹ * (γ : X.G) * x ∈ Ω`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hγ (Set.indicator_of_notMem h _)`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_ofPred_eq]`. Conclude with `⟨_, hmem, by group⟩`. Unfold `cnt`.
+
+Rewrite using `[tsum_eq_sum (s := hfin.toFinset) (fun γ hγ => by`. Assume the negation of the conclusion as `h`. Conclude with `hγ (by simpa using hsupp h))]`. Use `(ENNReal.sum_lt_top.2 fun γ _ => ?_).ne` and prove the remaining obligations. Use `lt_of_le_of_lt (Set.indicator_le_self' (fun _ _ => zero_le) _) ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules.
+-/
 theorem cnt_ne_top (X : Ctx) (Ω : Set X.G) (hΩ : IsCompact Ω) (x : X.G) : cnt X.Γ Ω x ≠ ⊤ := by
   have hC : IsCompact ((fun z => x * z * x⁻¹) '' Ω) :=
     hΩ.image (by fun_prop)
@@ -29,6 +38,11 @@ theorem cnt_ne_top (X : Ctx) (Ω : Set X.G) (hΩ : IsCompact Ω) (x : X.G) : cnt
   refine lt_of_le_of_lt (Set.indicator_le_self' (fun _ _ => zero_le) _) ?_
   simp
 
+/- English proof (translation)
+Unfold `cnt`. Rewrite using `[← Equiv.tsum_eq (MulAut.conj (⟨γ, hγ⟩ : X.Γ)).toEquiv]`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Establish `: (γ * x)⁻¹ * (((MulAut.conj (⟨γ, hγ⟩ : X.Γ)).toEquiv δ : X.Γ) : X.G) * (γ * x) = x⁻¹ * (δ : X.G) * x`. Simplify using `only [MulEquiv.toEquiv_eq_coe, EquivLike.coe_coe, MulAut.conj_apply, Subgroup.coe_mul, InvMemClass.coe_inv]`.
+
+Use `group`. Rewrite using `[this]`.
+-/
 theorem cnt_mul_left (X : Ctx) (Ω : Set X.G) (γ : X.G) (hγ : γ ∈ X.Γ) (x : X.G) :
     cnt X.Γ Ω (γ * x) = cnt X.Γ Ω x := by
   unfold cnt
@@ -41,10 +55,16 @@ theorem cnt_mul_left (X : Ctx) (Ω : Set X.G) (γ : X.G) (hγ : γ ∈ X.Γ) (x 
     group
   rw [this]
 
+/- English proof (translation)
+The claim follows from `ENNReal.tsum_le_tsum fun _ => Set.indicator_le_indicator_of_subset h (fun _ => zero_le) _`.
+-/
 theorem cnt_mono (X : Ctx) {Ω Ω' : Set X.G} (h : Ω ⊆ Ω') (x : X.G) :
     cnt X.Γ Ω x ≤ cnt X.Γ Ω' x :=
   ENNReal.tsum_le_tsum fun _ => Set.indicator_le_indicator_of_subset h (fun _ => zero_le) _
 
+/- English proof (translation)
+Distinguish the cases in `hz : z ∈ tsupport φ`. Rewrite using `[Set.indicator_of_mem hz, Pi.one_apply, mul_one, ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (hB z)`. Rewrite using `[image_eq_zero_of_notMem_tsupport hz]`. Simplify using the standard rewrite rules.
+-/
 theorem enorm_le_indicator {G : Type} [TopologicalSpace G] (φ : G → ℂ) (B : ℝ)
     (hB : ∀ z, ‖φ z‖ ≤ B) (z : G) :
     ‖φ z‖ₑ ≤ ENNReal.ofReal B * (tsupport φ).indicator (1 : G → ℝ≥0∞) z := by
@@ -54,6 +74,11 @@ theorem enorm_le_indicator {G : Type} [TopologicalSpace G] (φ : G → ℂ) (B :
   · rw [image_eq_zero_of_notMem_tsupport hz]
     simp
 
+/- English proof (translation)
+Introduce `X`. Use `⟨fun Ω hΩ x => cnt_ne_top X Ω hΩ x, fun Ω γ hγ x => cnt_mul_left X Ω γ hγ x, fun Ω Ω' hs x => cnt_mono X hs x, fun φ B hφ hB x => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, -, -, hk⟩` from `h X φ hφ`. Use `(hk x x).trans ?_` and prove the remaining obligations. Unfold `cnt`.
+
+Rewrite using `[← ENNReal.tsum_mul_left]`. Conclude with `ENNReal.tsum_le_tsum fun γ => enorm_le_indicator φ B hB _`.
+-/
 theorem cntBasic_of_kerBasic (h : KerBasic) : CntBasic := by
   intro X
   refine ⟨fun Ω hΩ x => cnt_ne_top X Ω hΩ x, fun Ω γ hγ x => cnt_mul_left X Ω γ hγ x,

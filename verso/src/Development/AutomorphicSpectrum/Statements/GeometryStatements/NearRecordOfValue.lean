@@ -26,9 +26,15 @@ section Tower
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
   {Xo : ∀ l : Level H, Moduli D l} {l : Level H} {c : Coeff l} {Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)}
 
+/- English proof (translation)
+Simplify using `[hostRd, rootDiscr_def]`.
+-/
 theorem hostRd_eq (E : Type) [Field E] [NumberField E] : hostRd E = rootDiscr E := by
   simp [hostRd, rootDiscr_def]
 
+/- English proof (translation)
+Use extensionality with `r`. Rewrite using `[o.S_iff, RootTower.InS]`. Use `⟨fun h => h.2.elim (fun h2 => ?_) id, fun h => ⟨((o.bad_iff r).1 h).1, Or.inr h⟩⟩` and prove the remaining obligations. Take `rfl : r = 2` from `le_antisymm h2 h.1.two_le`. Conclude with `T.two_mem`.
+-/
 theorem S_two {T : RootTower (CMType H) (D.p + D.q)} (o : TowerOrigin Y T) : o.S 2 = T.bad := by
   ext r
   rw [o.S_iff, RootTower.InS]
@@ -36,6 +42,11 @@ theorem S_two {T : RootTower (CMType H) (D.p + D.q)} (o : TowerOrigin Y T) : o.S
   obtain rfl : r = 2 := le_antisymm h2 h.1.two_le
   exact T.two_mem
 
+/- English proof (translation)
+Take `⟨o, ho⟩` from `hT`. Establish `h1` using `T.j_pos`. Establish `h2` using `T.j_lt`. Establish `h3` using `o.j_eq`. Rewrite using `[← S_two o]`.
+
+Conclude with `h E H D Xo l c Y (o.S 2) (T.M 2 a) (o.Sys a) (o.Fx a) (o.Or 2 a) hY (by omega) (by omega) (fun r => by rw [S_two o]; exact o.bad_iff r) (ho 2 a) τ`.
+-/
 theorem tower (h : RootFlatOnHodge) [IsAbelianGalois ℚ E] (hY : IsGlobal Xo l c Y)
     {T : RootTower (CMType H) (D.p + D.q)} (hT : IsTowerOf Y T) (a : T.Comp) (τ : CMType H) :
     ∃ R : RootFlat (T.M 2 a) τ, NearRecord (D.p + D.q) T.bad (hostRd E) (hostLval H) R.ht := by
@@ -49,6 +60,15 @@ theorem tower (h : RootFlatOnHodge) [IsAbelianGalois ℚ E] (hY : IsGlobal Xo l 
 
 end Tower
 
+/- English proof (translation)
+Establish `hγ` using `Real.eulerMascheroniConstant_lt_two_thirds`. Establish `hπ` using `Real.pi_lt_d4`. Establish `hπ0` using `Real.pi_pos`. Establish `he : Real.exp (2 / 3) ≤ 1.9496`. Establish `h3 : Real.exp (2 / 3) ^ 3 = Real.exp 1 ^ 2`.
+
+Rewrite using `[← Real.exp_nat_mul, ← Real.exp_nat_mul]`. Evaluate the numerical expressions. Establish `h1` using `Real.exp_one_lt_d9`. Establish `h0` using `Real.exp_pos 1`. Use `le_of_pow_le_pow_left₀ three_ne_zero (by norm_num) ?_` and prove the remaining obligations.
+
+Rewrite using `[h3]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h : Real.log (Real.exp (2 / 3) * (2 * Real.pi) * 2 ^ 2) ≤ Real.log (7 ^ 2)` using `Real.log_le_log (by positivity) (by nlinarith [Real.exp_pos (2 / 3)])`. Rewrite `h` using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_exp, Real.log_pow, Real.log_pow]`. Move the coercions through the operations in `at h`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem const_le : Real.eulerMascheroniConstant + Real.log (2 * Real.pi) + 2 * Real.log 2 ≤ 2 * Real.log 7 := by
   have hγ := Real.eulerMascheroniConstant_lt_two_thirds
   have hπ := Real.pi_lt_d4
@@ -67,6 +87,9 @@ theorem const_le : Real.eulerMascheroniConstant + Real.log (2 * Real.pi) + 2 * R
   push_cast at h
   linarith
 
+/- English proof (translation)
+The claim follows from `|((p : ℝ) - q) / 2 * (Real.eulerMascheroniConstant + Real.log (2 * Real.pi) - l - L) + q * (2 * lK - l)| + ((p + q : ℕ) : ℝ) * Real.log 2 ≤ ((p + q : ℕ) : ℝ) * (3 / 2 * l + |L| / 2) := by have hc := const_le have hγ := Real.one_half_lt_eulerMascheroniConstant have h2 : 0 < Real.l …`.
+-/
 theorem value_bound (p q : ℕ) (lK l L : ℝ) (h7 : Real.log 7 / 2 ≤ lK) (hl : lK ≤ l) :
     |((p : ℝ) - q) / 2 * (Real.eulerMascheroniConstant + Real.log (2 * Real.pi) - l - L) + q * (2 * lK - l)| +
       ((p + q : ℕ) : ℝ) * Real.log 2 ≤ ((p + q : ℕ) : ℝ) * (3 / 2 * l + |L| / 2) := by

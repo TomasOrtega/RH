@@ -20,6 +20,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.IndefR.p
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.Mem.R3.Tr
 open scoped Matrix
 
+/- English proof (translation)
+Consider the cases of `B`. Consider the cases of `B'`. Simplify using `only at h`. Substitute `h` using the available equality. Consider the cases of `hp`.
+
+Conclude with `⟨MulEquiv.refl _, fun g => HEq.rfl⟩`.
+-/
 theorem GlobalTheory.Mem.R3.DefLatBC.typePrimeFiniteGroup_heq_of_eq_preData (B B' : Base) (px : PreX B.toPre) (px' : PreX B'.toPre) (h : B'.toPre = B.toPre) (hp : HEq px' px) :
     ∃ e : Gc B px ≃* Gc B' px', ∀ g, HEq (e g) g := by
   cases B
@@ -29,6 +34,9 @@ theorem GlobalTheory.Mem.R3.DefLatBC.typePrimeFiniteGroup_heq_of_eq_preData (B B
   cases hp
   exact ⟨MulEquiv.refl _, fun g => HEq.rfl⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE _ _ hp => ?_` and prove the remaining obligations. Use `intros`. Conclude with `GlobalTheory.Mem.R3.DefLatBC.typePrimeFiniteGroup_heq_of_eq_preData B B' w.px w'.px hE.1 hp`.
+-/
 theorem GlobalTheory.Mem.R3.DefLatBC.gc_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

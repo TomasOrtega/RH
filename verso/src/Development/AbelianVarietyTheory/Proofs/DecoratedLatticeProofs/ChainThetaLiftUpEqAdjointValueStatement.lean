@@ -18,5 +18,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (SplitPro
 open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric datum)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainTw.upVal_of_span_adj | exact GlobalTheory.ChainTw.upVal_of_span_adj | (intros; apply GlobalTheory.ChainTw.upVal_of_span_adj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chain_theta_lift_up_eq_adjoint_value : ∀ D : D7, SoftQ D → UpSpanQ D → UpAdjQ D → UpVal D := by
   first | exact @GlobalTheory.ChainTw.upVal_of_span_adj | exact GlobalTheory.ChainTw.upVal_of_span_adj | (intros; apply GlobalTheory.ChainTw.upVal_of_span_adj <;> assumption)

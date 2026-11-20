@@ -12,6 +12,9 @@ open scoped ENNReal Classical
 open Limits
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NefDeRhamRoots.nonneg_roots | exact GlobalTheory.NefDeRhamRoots.nonneg_roots | (intros; apply GlobalTheory.NefDeRhamRoots.nonneg_roots <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nef_dominant_weight_positivity : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H),
   ∀ (B : ℝ), 2 ≤ B → ∀ (w : Wt O.Y), WeightThresholdDefs.Dominant O.Y w → NefCond O.Y B w →
   ∀ (c : O.s.Comp) (X' : Scheme.{0}) (p' : X' ⟶ Sp (𝓞 D.what₂.LL)), IsProjOver p' →

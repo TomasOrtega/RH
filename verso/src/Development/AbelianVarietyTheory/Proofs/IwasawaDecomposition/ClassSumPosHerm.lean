@@ -7,6 +7,13 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.Mem.Col2.ClassSumPos
 
+/- English proof (translation)
+Take `⟨P, -, rfl⟩` from `hf`. Establish `hP : P ≠ 0`. Introduce and unpack `rfl`. Conclude with `h0 (map_zero _)`. Establish `e : (fun τ => ((fr0 emb σ n).1 τ)⁻¹) = (1 : ι → Matrix (Fin n) (Fin n) ℂ)`.
+
+Use function extensionality and compare the values at `τ`. Use `show (1 : Matrix (Fin n) (Fin n) ℂ)⁻¹ = 1`. Conclude with `inv_one`. Establish `h1` using `polOf_fnOf (Gr emb σ n) (shiftOf lam) (fr0 emb σ n) P`. Rewrite `h1` using `[e]`.
+
+Unfold `ipVal`. Rewrite using `[ipFr_apply, h1, ← nfL_apply]`. Conclude with `ps_nfL_pos lam P hP`.
+-/
 theorem ipVal_pos {E K ι : Type} [Field E] [Field K] [Fintype ι] {n : ℕ} (emb : ι → E →+* K) (σ : K →+* ℂ)
     (lam : ι → DomWeight n) (f : Fr emb σ n → ℂ) (hf : f ∈ ValC (Gr emb σ n) lam) (h0 : f ≠ 0) :
     0 < ipVal emb σ lam f f := by
@@ -24,12 +31,22 @@ theorem ipVal_pos {E K ι : Type} [Field E] [Field K] [Fintype ι] {n : ℕ} (em
   rw [ipFr_apply, h1, ← nfL_apply]
   exact ps_nfL_pos lam P hP
 
+/- English proof (translation)
+Unfold `ipVal`. Rewrite using `[ipFr_apply, ipFr_apply, ← nfL_apply, ← nfL_apply, starRingEnd_apply, ps_nfL_symm]`.
+-/
 theorem ipVal_herm {E K ι : Type} [Field E] [Field K] [Fintype ι] {n : ℕ} (emb : ι → E →+* K) (σ : K →+* ℂ)
     (lam : ι → DomWeight n) (φ ψ : Fr emb σ n → ℂ) :
     ipVal emb σ lam φ ψ = starRingEnd ℂ (ipVal emb σ lam ψ φ) := by
   unfold ipVal
   rw [ipFr_apply, ipFr_apply, ← nfL_apply, ← nfL_apply, starRingEnd_apply, ps_nfL_symm]
 
+/- English proof (translation)
+Introduce `E K ι _ _ _ _ _ _ _ n S emb σ lam _ hS _`. Use `⟨fun φ hφ h0 => ?_, ipVal_herm emb σ lam⟩` and prove the remaining obligations. Establish `hw : ∀ c : S.Cl, (0 : ℂ) < ((Nat.card (S.Stab c) : ℕ) : ℂ)⁻¹` using `fun c => by haveI := hS.fin_stab c.1 (S.rep c)`. Establish `hc : (0 : ℝ) < ((Nat.card (S.Stab c) : ℕ) : ℝ)⁻¹` using `inv_pos.2 (Nat.cast_pos.2 Nat.card_pos)`. Use `Complex.zero_lt_real.2 hc` as an intermediate fact.
+
+Simplify using `using this`. Establish `hpos : (0 : ℂ) < ∑ c : S.Cl, ((Nat.card (S.Stab c) : ℕ) : ℂ)⁻¹ * ipVal emb σ lam (φ c) (φ c)`. Take `⟨c0, hc0⟩` from `Function.ne_iff.1 h0`. Use `Finset.sum_pos' (fun c _ => ?_) ⟨c0, Finset.mem_univ _, mul_pos (hw c0) (ipVal_pos emb σ lam _ (hφ c0).1 hc0)⟩` and prove the remaining obligations. Distinguish the cases in `h : φ c = 0`.
+
+Rewrite using `[h, map_zero, mul_zero]`. Conclude with `(mul_pos (hw c) (ipVal_pos emb σ lam _ (hφ c).1 h)).le`. Conclude with `(Complex.lt_def.1 hpos).1`.
+-/
 theorem classSum_pos_herm : ∀ {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι] {n : ℕ} (S : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n), FOk emb σ → S.Ok → ∀ [Fintype S.Cl], (∀ φ ∈ S.Fi emb σ lam, φ ≠ 0 → 0 < (∑ c : S.Cl, ((Nat.card (S.Stab c) : ℕ) : ℂ)⁻¹ * ipVal emb σ lam (φ c) (φ c)).re) ∧ ∀ φ ψ : Fr emb σ n → ℂ, ipVal emb σ lam φ ψ = starRingEnd ℂ (ipVal emb σ lam ψ φ) := by
   intro E K ι _ _ _ _ _ _ _ n S emb σ lam _ hS _
   refine ⟨fun φ hφ h0 => ?_, ipVal_herm emb σ lam⟩

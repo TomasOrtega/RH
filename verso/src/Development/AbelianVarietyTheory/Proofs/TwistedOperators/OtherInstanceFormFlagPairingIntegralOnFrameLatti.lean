@@ -23,6 +23,17 @@ noncomputable section
 namespace GlobalTheory.SeeConjChar
 open Classical
 
+/- English proof (translation)
+Introduce `D X h β hβ PP a z hz`. Establish `hLf` using `GlobalTheory.KgFrame.Lf_eq D`. Establish `hzL : z ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf`. Rewrite using `[hLf]`. Conclude with `(hβ z).2 hz`.
+
+Use `set S : Set (Fin (Yc D 0).rank → EAf D) := {v | v ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf} with hS`. Establish `h0 : (0 : Fin (Yc D 0).rank → EAf D) ∈ S` using `by show (0 : Fin (Yc D 0).rank → EAf D) ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf`. Conclude with `zero_mem _`. Take `⟨hef, hz0, hbw⟩` from `X.vectorsInLattice`. Establish `he : ∀ a, e0T X h a ∈ S` using `GlobalTheory.SeeConjRead.cast_fun_mem_Lf h X.e0 (fun a => (hef a).1)`.
+
+Establish `hf : ∀ a, f0T X h a ∈ S` using `GlobalTheory.SeeConjRead.cast_fun_mem_Lf h X.f0 (fun a => (hef a).2)`. Establish `hb : ∀ a, bwT X h a ∈ S` using `GlobalTheory.SeeConjRead.cast_fun_mem_Lf h X.bw (fun a => (hbw a).1)`. Establish `hbd : ∀ a, bwdT X h a ∈ S` using `GlobalTheory.SeeConjRead.cast_fun_mem_Lf h X.bwd (fun a => (hbw a).2)`. Establish `hzz : z0T X h ∈ S` using `GlobalTheory.SeeConjRead.cast_mem_Lf h X.z0 hz0`. Establish `hv : pairAt X h PP a ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf` using `by show pairAt X h PP a ∈ S`.
+
+Unfold `pairAt`. Use `split_ifs`. Conclude with `GlobalTheory.SeeConjRead.flagV_mem S h0 _ _ _ _ _ _ _ hf he hbd hzz a`. Conclude with `GlobalTheory.SeeConjRead.flagV_mem S h0 _ _ _ _ _ _ _ hf he (fun i => hb _) hzz a`. Unfold `hT`.
+
+Conclude with `intAf_cast X h _ (Formalism.L2.SG.Pf.unitaryCongruence.hA_int _ (GlobalTheory.SeeConjRead.cast_mem_Lf h.symm _ hv) (GlobalTheory.SeeConjRead.cast_mem_Lf h.symm _ hzL))`.
+-/
 theorem hT_pairAt_int : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (β : GL (Fin (Yc D 0).rank) (EAf D)), IsFrame β (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) → ∀ (PP : Pl D.host.E) (a : Fin (Yc D 0).rank) (z : Fin (Yc D 0).rank → EAf D), (∀ i, Matrix.mulVec (β⁻¹).val z i ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) → GlobalTheory.SeeConjChar.hT X h (pairAt X h PP a) z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   intro D X h β hβ PP a z hz
   have hLf := GlobalTheory.KgFrame.Lf_eq D

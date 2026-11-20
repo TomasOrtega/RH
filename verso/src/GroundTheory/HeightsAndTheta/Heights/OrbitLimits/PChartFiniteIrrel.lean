@@ -11,6 +11,25 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 universe u v w
 
+/- English proof (translation)
+Introduce `K _ ι _ F _ V f i hV hf hirr`. Set `_` to `MvPolynomial.weightedGradedAlgebra F (mw (ι := ι))`. Set `M : Ideal (MRingOver F ι)` to `Ideal.span (weightedHomogeneousSubmodule F (mw (ι := ι)) (fun _ => 1) : Set (MRingOver F ι))`. Establish `hMrad : M ≤ (V ⊔ Ideal.span {f}).radical`. Rewrite using `[← Ideal.sInf_minimalPrimes]`.
+
+Use `le_sInf fun W hW => Ideal.span_le.mpr fun x hx => ?_` and prove the remaining obligations. Establish `h` using `hirr W hW`. Simplify using `only [IsRelevant, not_forall, not_exists, not_not] at h`. Take `⟨k, hk⟩` from `h`. Conclude with `weighted_le_of_irrel (e := fun _ => 1) hk le_rfl hx`.
+
+Take `⟨N, hN⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hMrad (IsNoetherian.noetherian M)`. Establish `hA : ∀ t, N ≤ t → weightedHomogeneousSubmodule F (mw (ι` using `ι)) (fun _ => t) ≤ (V ⊔ Ideal.span {f}).restrictScalars F := fun t ht _ hh => hN (Ideal.pow_le_pow_right ht (ChartFiniteIrrel.weighted_le_pow t hh))`. Establish `hVh : V.IsHomogeneous (weightedHomogeneousSubmodule F (mw (ι` using `ι))) := by`. Take `⟨S₀, hS₀, rfl⟩` from `hV`. Conclude with `Ideal.homogeneous_span _ S₀ fun x hx =>`.
+
+Set `⟨a, ha⟩` to `hS₀ x hx`. Use the proof step `⟨a, mem_weighted_of_isMultiHomog ha⟩`. Set `π` to `(Ideal.Quotient.mkₐ F (chartIdeal V i)).toLinearMap`. Set `B : ℕ → Submodule F (MRingOver F ι ⧸ chartIdeal V i)` to `fun t => (weightedHomogeneousSubmodule F (mw (ι := ι)) (fun _ => t)).map π`. Establish `hmono : ∀ t, B t ≤ B (t + 1)`.
+
+Introduce and unpack `t _ ⟨h, hh, rfl⟩`. Use `⟨h * ∏ k, (X ⟨k, i k⟩ : MRingOver F ι) ^ (fun _ : K => 1) k, SetLike.mul_mem_graded hh (mem_weighted_of_isMultiHomog (isMultiHomog_coordProd i _)), ?_⟩` and prove the remaining obligations. Simplify using `[π, map_prod, mk_chartIdeal_X_self]`. Establish `hstep : ∀ t, N ≤ t + 1 → B (t + 1) ≤ (B t).map (LinearMap.mulLeft F (π f))`. Introduce and unpack `t ht _ ⟨h, hh, rfl⟩`.
+
+Establish `h2 : h ∈ weightedHomogeneousSubmodule F (mw (ι` using `ι)) (fun _ => t + 1) ⊓ (V ⊔ Ideal.span {f}).restrictScalars F := ⟨hh, hA _ ht hh⟩`. Rewrite `h2` using `[sup_span_inf_eq' hVh (mem_weighted_of_isMultiHomog hf) (d := fun _ => t + 1) (fun _ => Nat.le_add_left 1 t), show ((fun _ : K => t + 1) - fun _ => 1) = fun _ => t from funext fun _ => by simp]`. Take `⟨v, ⟨-, hv⟩, _, ⟨g, hg, rfl⟩, rfl⟩` from `Submodule.mem_sup.mp h2`. Use `⟨π g, ⟨g, hg, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hv0 : Ideal.Quotient.mk (chartIdeal V i) v = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left hv)`.
+
+Simplify using `[π, hv0]`. Establish `heq : ∀ t, N ≤ t → B t = B (t + 1)` using `fun t ht => Submodule.eq_of_le_of_finrank_le (hmono t) ((Submodule.finrank_mono (hstep t (by omega))).trans (Submodule.finrank_map_le _ _))`. Establish `hconst : ∀ t, N ≤ t → B t = B N` using `fun t ht => by`. Proceed by induction on `t, ht using Nat.le_induction with`. Consider the case `base => rfl`.
+
+Consider the case `succ t ht ih => rw [← heq t ht, ih]`. Establish `htop : B N = ⊤`. Use `eq_top_iff.mpr fun a _ => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨e₀, he₀⟩` from `exists_homog_chart V i b`.
+
+Take `⟨b', hb', hbb⟩` from `he₀ (fun _ => N + ∑ k, e₀ k) fun k => le_add_left (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k))`. Rewrite using `[← hconst _ (Nat.le_add_right _ _)]`. Conclude with `⟨b', hb', hbb⟩`. Rewrite using `[Module.finite_def, ← htop]`. Conclude with `Module.Finite.iff_fg.mp inferInstance`.
+-/
 theorem ChartFiniteIrrel.proof : ChartFiniteIrrel.Statement.{u, v, w} := by
   intro K _ ι _ F _ V f i hV hf hirr
   classical

@@ -10,6 +10,21 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce `hSE hKU hKF hIK hIE hPR p _ D O _ _ _ _ f b N r w _ hstd M j c T κ _ _ x σ hxσ o₁ m₁ y y' hy hy' P P' d hR hR' hcard hiff`. Establish `hw : w ≠ ⊤` using `Ideal.IsMaximal.ne_top ‹_›`. Take `⟨⟨k, hk⟩, hmon, hact, -, -, ψi, hmoni, h1, h2⟩` from `P.isog`. Take `⟨⟨k', hk'⟩, hmon', hact', -, -, ψi', hmoni', h1', h2'⟩` from `P'.isog`. Use `replace h1 : P.ψ ≫ ψi = 𝟙 o₁.A ^ p ^ k := h1.trans (by rw [hk])`.
+
+Use `replace h2 : ψi ≫ P.ψ = 𝟙 P.o'.A ^ p ^ k := h2.trans (congrArg (fun n => 𝟙 P.o'.A ^ n) hk)`. Establish `hS : IsSub o₁.A (UKer r o₁ P.ψ)` using `(hKU p D O b N r w hw hstd.ule (Sp κ) σ o₁ P.o' P.ψ ψi k hmon hmoni hact h1 h2).2.1`. Use `replace h1' : P'.ψ ≫ ψi' = 𝟙 o₁.A ^ p ^ k' := h1'.trans (by rw [hk'])`. Use `replace h2' : ψi' ≫ P'.ψ = 𝟙 P'.o'.A ^ p ^ k' := h2'.trans (congrArg (fun n => 𝟙 P'.o'.A ^ n) hk')`. Establish `hS' : IsSub o₁.A (UKer r o₁ P'.ψ)` using `(hKU p D O b N r w hw hstd.ule (Sp κ) σ o₁ P'.o' P'.ψ ψi' k' hmon' hmoni' hact' h1' h2').2.1`.
+
+Establish `hcard' : Nat.card { g // UKer r o₁ P'.ψ (𝟙_ (Over (Sp κ))) g } = d`. Rewrite using `[← hcard]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun g => (hiff g).symm)`. Establish `e₁` using `hSE p D O b N r κ σ o₁ P.o' P'.o' P.ψ P'.ψ hmon' hS d hR hcard (fun g hg => ((hiff g).1 hg).1)`. Establish `e₂` using `hSE p D O b N r κ σ o₁ P'.o' P.o' P'.ψ P.ψ hmon hS' d hR' hcard' (fun g hg => ((hiff g).2 hg).1)`.
+
+Establish `hU : ∀ (U : Over (Sp κ)) (g : U ⟶ o₁.A), UKer r o₁ P.ψ U g ↔ UKer r o₁ P'.ψ U g` using `fun U g => ⟨e₁ U g, e₂ U g⟩`. Establish `hK : ∀ (U : Over (Sp κ)) (g : U ⟶ o₁.A), g ≫ P.ψ = 1 ↔ g ≫ P'.ψ = 1` using `fun U g => ⟨hKF p D O b N r w hw hstd.ule κ σ c o₁ P.o' P'.o' P.ψ P'.ψ P.isog P'.isog hU U g, hKF p D O b N r w hw hstd.ule κ σ c o₁ P'.o' P.o' P'.ψ P.ψ P'.isog P.isog (fun U g => (hU U g).symm) U g⟩`. Take `⟨m, hm⟩` from `hIK p D O b N κ σ c o₁ P.o' P'.o' P.ψ P'.ψ P.isog P'.isog hK`. Take `⟨n₁, hn₁⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ P.m' T.mt`. Take `⟨n₂, hn₂⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ P'.m' T.mt`.
+
+Establish `hσ : ∀ z : Sp κ ⟶ T.Y, z ≫ T.s = x → (z ≫ T.t) ≫ M.s = σ`. Introduce `z hz`. Rewrite using `[Category.assoc, ← T.st, ← Category.assoc, hz, hxσ]`. Take `⟨ht, hφ⟩` from `hIE p D O b N hstd.three hstd.cop M (Sp κ) σ P.o' P'.o' (y ≫ T.t) (y' ≫ T.t) (hσ y hy) (hσ y' hy') n₁ n₂ m`. Use `⟨ht, ?_⟩` and prove the remaining obligations.
+
+Introduce `a ha ha'`. Choose the witnesses or unpack the hypotheses as in `⟨a', rfl⟩ : ∃ a' : 𝟙_ (Over (Sp κ)) ⟶ o₁.A, a'.left ≫ m₁.φ = a := by`. Establish `hsq : a ≫ M.univ.A.hom = 𝟙 _ ≫ x` using `by rw [ha, hy, Category.id_comp]`. Use `⟨Over.homMk (m₁.cart.1.lift a (𝟙 _) hsq) ?_, m₁.cart.1.lift_fst _ _ _⟩` and prove the remaining obligations. Rewrite using `[m₁.cart.1.lift_snd]`.
+
+Both sides reduce to the same expression. Rewrite using `[(hPR p D O b N M r w j c T (Sp κ) x σ o₁ m₁ y hy P a').2 ha, (hPR p D O b N M r w j c T (Sp κ) x σ o₁ m₁ y' hy' P' a').2 ha', Over.comp_left, Over.comp_left, ← hm, ← hn₂]`. Simplify using `only [Category.assoc]`. Rewrite using `[hφ, hn₁]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.caseE_of :
     SameE → KerU → KerFromU → IsoOfKer → ImgEq → PulledRead → CaseE := by
   intro hSE hKU hKF hIK hIE hPR p _ D O _ _ _ _ f b N r w _ hstd M j c T κ _ _ x σ hxσ o₁ m₁ y y' hy hy'

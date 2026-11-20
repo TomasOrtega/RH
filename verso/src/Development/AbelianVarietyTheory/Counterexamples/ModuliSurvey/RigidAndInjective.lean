@@ -17,6 +17,13 @@ namespace GlobalTheory.DataRigid
 
 open GlobalTheory.MatchRigid
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l c k _ bF a P _ oP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂ d₁ d₂ hlev`. Establish `W₁ : GlobalTheory.LN.Match a PowerSeries.C PowerSeries.X P.toPre oP φ₁ he₁ w₁ e₁` using `d₁`. Establish `W₂ : GlobalTheory.LN.Match a PowerSeries.C PowerSeries.X P.toPre oP φ₂ he₂ w₂ e₂` using `d₂`. Take `⟨F, _, _, _, _, hF⟩` from `GlobalTheory.HostModel.exists_common_field k`. Establish `: CharZero k` using `charZero_of_injective_ringHom bF.injective`.
+
+Establish `: CharZero F` using `charZero_of_injective_ringHom ((algebraMap (FractionRing k) F).comp (algebraMap k _)).injective`. Establish `hM : (l.M : F) ≠ 0` using `Nat.cast_ne_zero.2 (lt_of_lt_of_le three_pos l.three_le).ne'`. Establish `hrz : ∃ r z : c.F, ((RingHom.id c.F r : c.F) : ℂ) = H.rt0 ∧ ((RingHom.id c.F z : c.F) : ℂ) = zeta l.A` using `⟨⟨H.rt0, c.le (IntermediateField.subset_adjoin _ _ (by simp))⟩, ⟨zeta l.A, c.le (IntermediateField.subset_adjoin _ _ (by simp))⟩, rfl, rfl⟩`. Establish `hl` using `fun v hv q₀ q₁ q₂ hq (t₁ : IsTransport a w₁ e₁ _ q₀ q₁) (t₂ : IsTransport a w₂ e₂ _ q₀ q₂) => hlev F _ hF rfl l.M (a.eta v) (Or.inr ⟨rfl, v, hv, HEq.rfl⟩) q₀ q₁ q₂ hq t₁.1 t₂.1 t₁.2 t₂.2`. Establish `hφ` using `map_eq P.tau_bimult W₁ W₂ hF rfl hrz hl hL hM`.
+
+Use `⟨hφ, lattice_eq P.tau_bimult W₁ W₂ hF rfl hrz hl hL hM fun y => ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ThetaShiftProofs.be_self_eq_of_witData a P oP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂ d₁ d₂ _ _ (by simp)`. Substitute `hφ` using the available equality. Conclude with `heq_of_eq (rigidified_iso_unique hL.globalFns P.toPre.P a.D₀.P.isLB φ₁ w₁ w₂ W₁.2.1 W₂.2.1 _ _ W₁.2.2.1 W₂.2.2.1)`.
+-/
 theorem dataRigid_of_laws (hL : Laws) : DataRigidSt := by
   intro E _ _ _ H D l c k _ bF a P _ oP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂ d₁ d₂ hlev
   have W₁ : GlobalTheory.LN.Match a PowerSeries.C PowerSeries.X P.toPre oP φ₁ he₁ w₁ e₁ := d₁
@@ -37,8 +44,14 @@ theorem dataRigid_of_laws (hL : Laws) : DataRigidSt := by
     exact heq_of_eq (rigidified_iso_unique hL.globalFns P.toPre.P a.D₀.P.isLB φ₁ w₁ w₂ W₁.2.1 W₂.2.1 _ _ W₁.2.2.1
       W₂.2.2.1)
 
+/- English proof (translation)
+The claim follows from `dataRigid_of_laws GlobalTheory.abelianSchemeLaws_all.1`.
+-/
 theorem dataRigid : DataRigidSt := dataRigid_of_laws GlobalTheory.abelianSchemeLaws_all.1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨dataRigid, GlobalTheory.TorsionMapInj.qkToAk_injective_closed⟩`.
+-/
 theorem rigid_and_injective : DataRigidSt ∧ QkToAkInjSt :=
   ⟨dataRigid, GlobalTheory.TorsionMapInj.qkToAk_injective_closed⟩
 

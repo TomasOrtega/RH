@@ -11,11 +11,17 @@ namespace GroundTheory.Heights₂.Heights.Inter
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem SemilocRankAdjoin.chart_congr {K' Ω : Type*} {ι' : K' → Type*} (x' : (Σ k', ι' k') → Ω)
     (i' : ∀ k', ι' k') {a b : K'} (h : a = b) : x' ⟨a, i' a⟩ = x' ⟨b, i' b⟩ := by
   subst h
   rfl
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `hP`. Use `⟨MvPolynomial.map (Int.castRingHom ℚ) '' S, ?_, Ideal.map_span _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, ha⟩` from `hS f hf`. Conclude with `⟨a, fun m hm => ha m (MvPolynomial.support_map_subset _ _ hm)⟩`.
+-/
 theorem SemilocRankAdjoin.isMultiHomogIdeal_map {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) :
     IsMultiHomogIdeal (P.map (MvPolynomial.map (Int.castRingHom ℚ) : MRing ι →+* MRingOver ℚ ι)) := by
@@ -25,6 +31,33 @@ theorem SemilocRankAdjoin.isMultiHomogIdeal_map {K : Type} [Fintype K] {ι : K �
   obtain ⟨a, ha⟩ := hS f hf
   exact ⟨a, fun m hm => ha m (MvPolynomial.support_map_subset _ _ hm)⟩
 
+/- English proof (translation)
+Set `y' : (Σ k', ι' k') → G.Φ'` to `fun q => G.x' q / G.x' ⟨q.1, i' q.1⟩`. Set `t : K → G.Φ'` to `fun k => G.x' ⟨κ k, i' (κ k)⟩`. Set `Φ₁` to `(IsScalarTower.toAlgHom F G.Φ G.Φ').fieldRange`. Set `L₀` to `IntermediateField.adjoin F (Set.range (y' ∘ v))`. Set `L` to `IntermediateField.adjoin F (Set.range y')`.
+
+Set `E` to `IntermediateField.adjoin F (Set.range t)`. Establish `mono : ∀ {A B : Set G.Φ'}, A ⊆ B → IntermediateField.adjoin F A ≤ IntermediateField.adjoin F B` using `fun h => IntermediateField.adjoin_le_iff.2 (h.trans (IntermediateField.subset_adjoin _ _))`. Establish `hchart : ∀ q : Σ k, ι k, G.x' ⟨(v q).1, i' (v q).1⟩ = t q.1` using `fun q => SemilocRankAdjoin.chart_congr G.x' i' (hv.2.2.1 q)`. Establish `hmem : ∀ c, algebraMap G.Φ G.Φ' c ∈ Φ₁` using `fun c => AlgHom.mem_fieldRange.2 ⟨c, rfl⟩`. Establish `ht1 : ∀ k, t k ∈ Φ₁` using `fun k => by`.
+
+Take `⟨p₀, h⟩` from `hv.2.2.2 ⟨κ k, i' (κ k)⟩ ⟨k, rfl⟩`. Use `show G.x' ⟨κ k, i' (κ k)⟩ ∈ Φ₁`. Rewrite using `[← h, G.compat]`. Conclude with `hmem _`. Establish `hyv : ∀ q, y' (v q) ∈ Φ₁` using `fun q => by show G.x' (v q) / G.x' ⟨(v q).1, i' (v q).1⟩ ∈ Φ₁`.
+
+Rewrite using `[hchart, G.compat]`. Conclude with `div_mem (hmem _) (ht1 q.1)`. Establish `hL₀E : L₀ ⊔ E = Φ₁`. Use `le_antisymm (sup_le (IntermediateField.adjoin_le_iff.2 ?_) (IntermediateField.adjoin_le_iff.2 ?_)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`.
+
+Conclude with `hyv q`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `ht1 k`. Introduce `z hz`. Take `⟨c, rfl⟩` from `AlgHom.mem_fieldRange.1 hz`.
+
+Take `⟨f, g, -, rfl⟩` from `G.gen c`. Establish `hpoly : ∀ f : MRing ι, algebraMap G.Φ G.Φ' (aeval G.x f) ∈ L₀ ⊔ E`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`.
+
+Rewrite using `[aeval_C, ← IsScalarTower.algebraMap_apply, algebraMap_int_eq, eq_intCast]`. Conclude with `intCast_mem _ a`. Consider the case `add f g hf hg`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem hf hg`.
+
+Consider the case `mul_X f q hf`. Rewrite using `[map_mul, map_mul, aeval_X, ← G.compat]`. Use `mul_mem hf ?_` and prove the remaining obligations. Establish `hq : G.x' (v q) = y' (v q) * t q.1` using `by show _ = G.x' (v q) / G.x' ⟨(v q).1, i' (v q).1⟩ * t q.1`. Rewrite using `[hchart, div_mul_cancel₀ _ (hx (κ q.1))]`.
+
+Rewrite using `[hq]`. Conclude with `mul_mem ((le_sup_left : L₀ ≤ L₀ ⊔ E) (IntermediateField.subset_adjoin _ _ ⟨q, rfl⟩)) ((le_sup_right : E ≤ L₀ ⊔ E) (IntermediateField.subset_adjoin _ _ ⟨q.1, rfl⟩))`. Use `show IsScalarTower.toAlgHom F G.Φ G.Φ' (aeval G.x f / aeval G.x g) ∈ L₀ ⊔ E`. Rewrite using `[map_div₀]`. Conclude with `div_mem (hpoly f) (hpoly g)`.
+
+Establish `hLE : L ⊔ E = Φ₁ ⊔ IntermediateField.adjoin F (Set.range fun q : Σ k : FibreBlock κ, ι' k.1 => G.x' ⟨q.1.1, q.2⟩ / G.x' ⟨q.1.1, i' q.1.1⟩)`. Use `le_antisymm (sup_le (IntermediateField.adjoin_le_iff.2 ?_) (((le_sup_right : E ≤ L₀ ⊔ E).trans hL₀E.le).trans le_sup_left)) (sup_le ?_ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Distinguish the cases in `hq : q.1 ∈ Set.range κ`. Take `⟨r, rfl⟩` from `hv.2.2.2 q hq`.
+
+Conclude with `(le_sup_left : Φ₁ ≤ _) (hyv r)`. Conclude with `(le_sup_right : IntermediateField.adjoin _ _ ≤ _) (IntermediateField.subset_adjoin _ _ ⟨⟨⟨q.1, hq⟩, q.2⟩, rfl⟩)`. Rewrite using `[← hL₀E]`. Conclude with `sup_le_sup_right (mono (Set.range_comp_subset_range v y')) E`. Use `(mono ?_).trans le_sup_left` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨⟨q.1.1, q.2⟩, rfl⟩`. Establish `hindep : AlgebraicIndependent L t` using `(hT F G.Φ' K' ι' G.x' i' hx hmh).comp κ hv.1`. Rewrite using `[← AdjoinIndepRelfinrank.proof F G.Φ' L₀ L K t (mono (Set.range_comp_subset_range v y')) hindep, FinrankAdjoinRange.proof F G.Φ G.Φ']`. Express the relevant statement in the definitionally equal form `IntermediateField.relfinrank (L₀ ⊔ E) (L ⊔ E) = _`.
+
+Rewrite using `[hL₀E, hLE]`.
+-/
 theorem SemilocRankAdjoin.chain (hT : ChartScalingIndep.Statement) {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)] {κ : K → K'}
     {v : (Σ k, ι k) → (Σ k', ι' k')} {P' : Ideal (MRing ι')} (G : GenFibre v P') (i' : ∀ k', ι' k')
@@ -107,6 +140,15 @@ theorem SemilocRankAdjoin.chain (hT : ChartScalingIndep.Statement) {K : Type} [F
   change IntermediateField.relfinrank (L₀ ⊔ E) (L ⊔ E) = _
   rw [hL₀E, hLE]
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v P' n G s α W i' hv hP' hZ hs hsP hW hi'`. Establish `hker : ∀ f : MRing ι', aeval G.x' f = 0 ↔ f ∈ P'` using `fun f => by rw [← RingHom.mem_ker, G.genericFibre_ker_target]`. Establish `: CharZero G.Φ'` using `charZero_of_inj_zero fun m hm => by`. Establish `h : (C (m : ℤ) : MRing ι') ∈ P'` using `(hker _).1 (by rw [aeval_C]; exact_mod_cast hm)`. Establish `h' : (m : ℤ) ∈ P'.comap (C : ℤ →+* MRing ι')` using `h`.
+
+Rewrite `h'` using `[hP'.2.2.1, Ideal.mem_bot]`. Conclude with `h'` after adjusting the coercions. Establish `: CharZero G.Φ` using `(RingHom.charZero_iff (algebraMap G.Φ G.Φ').injective).2 inferInstance`. Establish `: IsScalarTower ℚ G.Φ G.Φ'` using `IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Establish `hkerQ : RingHom.ker (aeval G.x' : MRingOver ℚ ι' →ₐ[ℚ] G.Φ') = P'.map (MvPolynomial.map (Int.castRingHom ℚ) : MRing ι' →+* MRingOver ℚ ι')`.
+
+Set `_` to `MvPolynomial.algebraMvPolynomial (σ := Σ k', ι' k') (R := ℤ) (S := ℚ)`. Establish `_ : IsLocalization ((nonZeroDivisors ℤ).map (C (σ` using `Σ k', ι' k') (R := ℤ))) (MRingOver ℚ ι') := MvPolynomial.isLocalization _ _`. Use `(IsLocalization.map_under ((nonZeroDivisors ℤ).map (C (σ := Σ k', ι' k') (R := ℤ))) (MRingOver ℚ ι') (RingHom.ker (aeval G.x' : MRingOver ℚ ι' →ₐ[ℚ] G.Φ'))).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `f`.
+
+Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, algebraMap_def, aeval_map_algebraMap, hker]`. Establish `hx : ∀ k', G.x' ⟨k', i' k'⟩ ≠ 0` using `fun k' h => hi' k' ((hker _).1 (by rw [aeval_X, h]))`. Rewrite using `[hF K ι K' ι' κ v P' n G s α W i' hv hP' hZ hs hsP hW hi', SemilocRankAdjoin.chain hT G i' ℚ hv hx (hkerQ ▸ SemilocRankAdjoin.isMultiHomogIdeal_map hP'.2.1.2.1)]`.
+-/
 theorem SemilocRankAdjoin.proof (hF : SemilocRankFrac.Statement) (hT : ChartScalingIndep.Statement) :
     SemilocRankAdjoin.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' n G s α W i' hv hP' hZ hs hsP hW hi'

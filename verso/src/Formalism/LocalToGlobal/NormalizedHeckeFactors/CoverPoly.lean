@@ -7,6 +7,11 @@ open Module
 variable {K₁ K₂ V₁ V₂ : Type*} [Field K₁] [Field K₂] [AddCommGroup V₁] [Module K₁ V₁] [AddCommGroup V₂]
   [Module K₂ V₂]
 
+/- English proof (translation)
+Establish `hx : ι x = ∑ i, σ (b.repr x i) • (Module.Basis.mk hli hsp.ge) i` using `by conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.mk_apply, Function.comp_apply]`. Use `first`.
+
+Consider the case `exact LinearMap.map_smulₛₗ ι (b.repr x i) (b i)`. Consider the case `exact map_smulₛₗ ι (b.repr x i) (b i)`. Consider the case `simp`. Rewrite using `[hx, Module.Basis.repr_sum_self]`.
+-/
 theorem repr_transport (σ : K₁ →+* K₂) (ι : V₁ →ₛₗ[σ] V₂) {n : Type*} [Fintype n] [DecidableEq n]
     (b : Module.Basis n K₁ V₁) (hli : LinearIndependent K₂ (ι ∘ b))
     (hsp : Submodule.span K₂ (Set.range (ι ∘ b)) = ⊤) (x : V₁) (r : n) :
@@ -22,6 +27,9 @@ theorem repr_transport (σ : K₁ →+* K₂) (ι : V₁ →ₛₗ[σ] V₂) {n 
       | simp
   rw [hx, Module.Basis.repr_sum_self]
 
+/- English proof (translation)
+Establish `hM : LinearMap.toMatrix (Module.Basis.mk hli hsp.ge) (Module.Basis.mk hli hsp.ge) A₂ = (LinearMap.toMatrix b b A₁).map σ`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, Matrix.map_apply, LinearMap.toMatrix_apply, Module.Basis.mk_apply, Function.comp_apply, h j, repr_transport σ ι b hli hsp]`. Rewrite using `[← LinearMap.charpoly_toMatrix A₂ (Module.Basis.mk hli hsp.ge), hM, Matrix.charpoly_map, LinearMap.charpoly_toMatrix]`.
+-/
 theorem charpoly_transport_basis [Module.Finite K₁ V₁] [Module.Finite K₂ V₂] (σ : K₁ →+* K₂) (ι : V₁ →ₛₗ[σ] V₂) {n : Type*} [Fintype n] [DecidableEq n]
     (b : Module.Basis n K₁ V₁) (hli : LinearIndependent K₂ (ι ∘ b))
     (hsp : Submodule.span K₂ (Set.range (ι ∘ b)) = ⊤) (A₁ : Module.End K₁ V₁) (A₂ : Module.End K₂ V₂)
@@ -35,6 +43,9 @@ theorem charpoly_transport_basis [Module.Finite K₁ V₁] [Module.Finite K₂ V
   rw [← LinearMap.charpoly_toMatrix A₂ (Module.Basis.mk hli hsp.ge), hM, Matrix.charpoly_map,
     LinearMap.charpoly_toMatrix]
 
+/- English proof (translation)
+The claim follows from `charpoly_transport_basis σ ι b hli hsp A₁ A₂ fun a => h (b a)`.
+-/
 theorem charpoly_transport [Module.Finite K₁ V₁] [Module.Finite K₂ V₂] (σ : K₁ →+* K₂) (ι : V₁ →ₛₗ[σ] V₂) {n : Type*} [Fintype n] [DecidableEq n]
     (b : Module.Basis n K₁ V₁) (hli : LinearIndependent K₂ (ι ∘ b))
     (hsp : Submodule.span K₂ (Set.range (ι ∘ b)) = ⊤) (A₁ : Module.End K₁ V₁) (A₂ : Module.End K₂ V₂)

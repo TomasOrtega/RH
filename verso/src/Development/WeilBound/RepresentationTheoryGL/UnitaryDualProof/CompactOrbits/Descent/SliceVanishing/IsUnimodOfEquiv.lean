@@ -6,6 +6,19 @@ open MeasureTheory MeasureTheory.Measure
 
 namespace PositivityTheory.RgUd.T.Desc.SLF
 
+/- English proof (translation)
+Introduce `g`. Establish `hg : modularCharacterFun (φ g) = 1` using `h (φ g)`. Use `show modularCharacterFun g = 1`. Use `borelize G₁ G₂`. Set `μ₂ : Measure G₂` to `haar`.
+
+Establish `hme : MeasurableEmbedding (φ.symm : G₂ → G₁)` using `φ.symm.toHomeomorph.measurableEmbedding`. Set `μ₁ : Measure G₁` to `map (φ.symm : G₂ → G₁) μ₂`. Use `haveI : IsHaarMeasure μ₁ := ContinuousMulEquiv.isHaarMeasure_map μ₂ φ.symm`. Rewrite using `[modularCharacterFun_eq_haarScalarFactor μ₁ g]`. Rewrite `hg` using `[modularCharacterFun_eq_haarScalarFactor μ₂ (φ g)]`.
+
+Take `⟨f, hfc, hf0, hf1⟩` from `exists_continuous_nonneg_pos (1 : G₁)`. Set `f₂ : G₂ → ℝ` to `fun y => f (φ.symm y)`. Establish `hf₂c : Continuous f₂` using `f.continuous.comp φ.symm.continuous`. Establish `hf₂s : HasCompactSupport f₂` using `hfc.comp_homeomorph φ.symm.toHomeomorph`. Establish `I1 : ∫ x, f x ∂μ₁ = ∫ y, f₂ y ∂μ₂` using `hme.integral_map _`.
+
+Establish `I2 : ∫ x, f x ∂(map (· * g) μ₁) = ∫ y, f₂ y ∂(map (· * φ g) μ₂)`. Rewrite using `[integral_map (measurable_mul_const g).aemeasurable f.continuous.aestronglyMeasurable, show μ₁ = map (φ.symm : G₂ → G₁) μ₂ from rfl, hme.integral_map, integral_map (measurable_mul_const (φ g)).aemeasurable hf₂c.aestronglyMeasurable]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [f₂, map_mul, ContinuousMulEquiv.symm_apply_apply]`.
+
+Establish `hpos : ∫ x, f x ∂μ₁ ≠ 0` using `(f.continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero hfc hf0 hf1).ne'`. Establish `hpos₂ : ∫ y, f₂ y ∂μ₂ ≠ 0`. Rewrite using `[← I1]`. Conclude with `hpos`. Establish `hg' : ((haarScalarFactor (map (· * φ g) μ₂) μ₂ : NNReal) : ℝ) = 1`.
+
+Rewrite using `[hg]`. Both sides reduce to the same expression. Rewrite `hg'` using `[haarScalarFactor_eq_integral_div _ _ hf₂c hf₂s hpos₂]`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[haarScalarFactor_eq_integral_div _ _ f.continuous hfc hpos, I2, I1, hg', NNReal.coe_one]`.
+-/
 theorem isUnimod_of_equiv {G₁ G₂ : Type*} [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁] [LocallyCompactSpace G₁]
     [Group G₂] [TopologicalSpace G₂] [IsTopologicalGroup G₂] [LocallyCompactSpace G₂] (φ : G₁ ≃ₜ* G₂)
     (h : PositivityTheory.PfBern.Frob.IsUnimod G₂) : PositivityTheory.PfBern.Frob.IsUnimod G₁ := by

@@ -10,6 +10,15 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 
 namespace GlobalTheory.CompanionTheory.LatCHyp
 
+/- English proof (translation)
+Establish `hmem : ∀ (n : ℕ) (x y : Q), x ≡ y [SMOD (Ideal.span {a} ^ n • ⊤ : Submodule Q Q)] ↔ e x ≡ e y [SMOD (Ideal.span {e a} ^ n • ⊤ : Submodule R R)]`. Introduce `n x y`. Rewrite using `[SModEq.sub_mem, SModEq.sub_mem, smul_eq_mul, smul_eq_mul, Ideal.mul_top, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.span_singleton_pow, Ideal.mem_span_singleton, Ideal.mem_span_singleton, ← map_pow, ← map_sub]`. Conclude with `(map_dvd_iff e).symm`. Use `{ haus' := ?_, prec' := ?_ }` and prove the remaining obligations.
+
+Introduce `x hx`. Establish `h0 : e x = 0`. Use `h.toIsHausdorff.haus' (e x) fun n => ?_` and prove the remaining obligations. Use `(hmem n x 0).1 (hx n)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis.
+
+Conclude with `(map_eq_zero_iff e e.injective).1 h0`. Introduce `f hf`. Take `⟨L, hL⟩` from `h.toIsPrecomplete.prec' (fun n => e (f n)) (fun {m n} hmn => (hmem m _ _).1 (hf hmn))`. Use `⟨e.symm L, fun n => (hmem n _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[RingEquiv.apply_symm_apply]`.
+
+Conclude with `hL n`.
+-/
 theorem isAdicComplete_of_equiv {Q R : Type*} [CommRing Q] [CommRing R] (e : Q ≃+* R) (a : Q)
     (h : IsAdicComplete (Ideal.span {e a}) R) : IsAdicComplete (Ideal.span {a}) Q := by
   have hmem : ∀ (n : ℕ) (x y : Q),
@@ -40,17 +49,31 @@ def eQ : (Ainf l ⧸ Ideal.span {xi0 l}) ≃+* OC l :=
   (Ideal.quotEquivOfEq (ker_theta0 (l := l)).symm).trans
     (RingHom.quotientKerEquivOfSurjective (IsPerfectoidField.surjective_fontaineTheta (K := ℂ_[l]) l))
 
+/- English proof (translation)
+The claim follows from `map_natCast _ n`.
+-/
 theorem eQ_natCast (n : ℕ) : eQ l (n : Ainf l ⧸ Ideal.span {xi0 l}) = (n : OC l) := map_natCast _ n
 
+/- English proof (translation)
+The claim follows from `IsPerfectoidField.norm_natCast_integer_lt_one (K := ℂ_[l]) l`.
+-/
 theorem norm_l_lt_one : ‖((l : OC l) : ℂ_[l])‖ < 1 :=
   IsPerfectoidField.norm_natCast_integer_lt_one (K := ℂ_[l]) l
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : ((l : OC l) : ℂ_[l]) = (l : ℂ_[l])` using `by simp`. Rewrite `h1` using `[h]`. Conclude with `(Nat.cast_ne_zero (R := ℂ_[l])).2 (Fact.out : l.Prime).ne_zero (by simpa using h1.symm)`.
+-/
 theorem l_ne_zero : (l : OC l) ≠ 0 := by
   intro h
   have h1 : ((l : OC l) : ℂ_[l]) = (l : ℂ_[l]) := by simp
   rw [h] at h1
   exact (Nat.cast_ne_zero (R := ℂ_[l])).2 (Fact.out : l.Prime).ne_zero (by simpa using h1.symm)
 
+/- English proof (translation)
+Establish `hx0 : (x : ℂ_[l]) ≠ 0` using `fun h => hx (Subtype.ext h)`. Establish `hxp : 0 < ‖(x : ℂ_[l])‖` using `norm_pos_iff.2 hx0`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hxp (norm_l_lt_one l)`. Use `⟨n, ⟨((l : OC l) : ℂ_[l]) ^ n / x, mem_normInteger.2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_pow]`.
+
+Conclude with `div_le_one_of_le₀ hn.le hxp.le`. Simplify using `[mul_div_cancel₀ _ hx0]`.
+-/
 theorem dvd_pow_l {x : OC l} (hx : x ≠ 0) : ∃ n : ℕ, x ∣ (l : OC l) ^ n := by
   have hx0 : (x : ℂ_[l]) ≠ 0 := fun h => hx (Subtype.ext h)
   have hxp : 0 < ‖(x : ℂ_[l])‖ := norm_pos_iff.2 hx0
@@ -60,6 +83,15 @@ theorem dvd_pow_l {x : OC l} (hx : x ≠ 0) : ∃ n : ℕ, x ∣ (l : OC l) ^ n 
     exact div_le_one_of_le₀ hn.le hxp.le
   · simp [mul_div_cancel₀ _ hx0]
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Conclude with `Or.inr (dvd_zero y)`. Establish `hx0 : (x : ℂ_[l]) ≠ 0` using `fun h => hx (Subtype.ext h)`. Break down `le_total ‖(y : ℂ_[l])‖ ‖(x : ℂ_[l])‖ with h | h` into its components or cases. Use `Or.inl ⟨⟨(y : ℂ_[l]) / x, mem_normInteger.2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`. Simplify using `[mul_div_cancel₀ _ hx0]`. Establish `hy : y ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hx0 (norm_eq_zero.1 (le_antisymm (by simpa using h) (norm_nonneg _)))`. Establish `hy0 : (y : ℂ_[l]) ≠ 0` using `fun h => hy (Subtype.ext h)`. Use `Or.inr ⟨⟨(x : ℂ_[l]) / y, mem_normInteger.2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ h (norm_nonneg _)`.
+
+Simplify using `[mul_div_cancel₀ _ hy0]`.
+-/
 theorem dvd_total_OC (x y : OC l) : x ∣ y ∨ y ∣ x := by
   rcases eq_or_ne x 0 with rfl | hx
   · exact Or.inr (dvd_zero y)
@@ -76,6 +108,11 @@ theorem dvd_total_OC (x y : OC l) : x ∣ y ∨ y ∣ x := by
     · rw [norm_div]; exact div_le_one_of_le₀ h (norm_nonneg _)
     · simp [mul_div_cancel₀ _ hy0]
 
+/- English proof (translation)
+Establish `h0 : (n : ℤ_[l]) ≠ 0` using `by exact_mod_cast hn`. Use `⟨(n : ℤ_[l]).valuation, IsPerfectoidField.padicIntToWitt (K := ℂ_[l]) l (((PadicInt.unitCoeff h0)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]), ?_⟩` and prove the remaining obligations. Establish `h1 : (n : ℤ_[l]) * (((PadicInt.unitCoeff h0)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) = (l : ℤ_[l]) ^ (n : ℤ_[l]).valuation`. Establish `e2` using `congrArg (· * (((PadicInt.unitCoeff h0)⁻¹ : ℤ_[l]ˣ) : ℤ_[l])) (PadicInt.unitCoeff_spec h0)`. Use `e2.trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((PadicInt.unitCoeff h0 : ℤ_[l]ˣ) : ℤ_[l]) * _ * _ = _`. Rewrite using `[mul_comm ((PadicInt.unitCoeff h0 : ℤ_[l]ˣ) : ℤ_[l]), mul_assoc, Units.mul_inv, mul_one]`. Establish `h2` using `congrArg (IsPerfectoidField.padicIntToWitt (K := ℂ_[l]) l) h1`. Simplify `h2` using `only [map_mul, map_pow, map_natCast]`.
+-/
 theorem unit_ainf (n : ℕ) (hn : n ≠ 0) : ∃ (k : ℕ) (u : Ainf l), (n : Ainf l) * u = (l : Ainf l) ^ k := by
   have h0 : (n : ℤ_[l]) ≠ 0 := by exact_mod_cast hn
   refine ⟨(n : ℤ_[l]).valuation, IsPerfectoidField.padicIntToWitt (K := ℂ_[l]) l
@@ -91,25 +128,45 @@ theorem unit_ainf (n : ℕ) (hn : n ≠ 0) : ∃ (k : ℕ) (u : Ainf l), (n : Ai
 
 abbrev xiB : BdRp l := wittToBDeRhamPlus (normInteger ℂ_[l]) l (xi0 l)
 
+/- English proof (translation)
+Rewrite using `[← IsPerfectoidField.maximalIdeal_bDeRhamPlus_eq_span (K := ℂ_[l]) (p := l) (ker_theta0 (l := l))]`. Conclude with `maximalIdeal_eq_span_tBdR`.
+-/
 theorem span_xiB : Ideal.span {xiB l} = Ideal.span {tBdR l} := by
   rw [← IsPerfectoidField.maximalIdeal_bDeRhamPlus_eq_span (K := ℂ_[l]) (p := l) (ker_theta0 (l := l))]
   exact maximalIdeal_eq_span_tBdR
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_span_singleton.1 ((span_xiB l).symm ▸ Ideal.mem_span_singleton_self _)`.
+-/
 theorem xi_dvd_fontaine_t : xiB l ∣ tBdR l :=
   Ideal.mem_span_singleton.1 ((span_xiB l).symm ▸ Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_span_singleton.1 ((span_xiB l) ▸ Ideal.mem_span_singleton_self _)`.
+-/
 theorem t_dvd_xiB : tBdR l ∣ xiB l :=
   Ideal.mem_span_singleton.1 ((span_xiB l) ▸ Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+The claim follows from `(IsPerfectoidField.irreducible_wittToBDeRhamPlus (K := ℂ_[l]) (p := l) (ker_theta0 (l := l))).ne_zero`.
+-/
 theorem xiB_ne_zero : xiB l ≠ 0 :=
   (IsPerfectoidField.irreducible_wittToBDeRhamPlus (K := ℂ_[l]) (p := l) (ker_theta0 (l := l))).ne_zero
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (xiB l) ^ k = 0`. Rewrite using `[← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton.2 (pow_dvd_pow_of_dvd (t_dvd_xiB l) k))`.
+-/
 theorem nil_k (k : ℕ) : fk l k (xi0 l) ^ k = 0 := by
   change Ideal.Quotient.mk _ (xiB l) ^ k = 0
   rw [← map_pow]
   exact Ideal.Quotient.eq_zero_iff_mem.2
     (Ideal.mem_span_singleton.2 (pow_dvd_pow_of_dvd (t_dvd_xiB l) k))
 
+/- English proof (translation)
+Establish `h1 : wittToBDeRhamPlus (normInteger ℂ_[l]) l a ∈ IsLocalRing.maximalIdeal (BDeRhamPlus (normInteger ℂ_[l]) l)`. Rewrite using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus_eq_span (K := ℂ_[l]) (p := l) (ker_theta0 (l := l))]`. Conclude with `Ideal.mem_span_singleton.2 h`. Rewrite `h1` using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus (K := ℂ_[l]) (p := l), RingHom.mem_ker, IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus]`. Establish `h2 : a ∈ RingHom.ker (theta0 l)` using `Subtype.ext h1`.
+
+Rewrite `h2` using `[ker_theta0]`. Conclude with `Ideal.mem_span_singleton.1 h2`.
+-/
 theorem dvd_of_witt_mem {a : Ainf l} (h : xiB l ∣ wittToBDeRhamPlus (normInteger ℂ_[l]) l a) : xi0 l ∣ a := by
   have h1 : wittToBDeRhamPlus (normInteger ℂ_[l]) l a ∈
       IsLocalRing.maximalIdeal (BDeRhamPlus (normInteger ℂ_[l]) l) := by
@@ -121,6 +178,13 @@ theorem dvd_of_witt_mem {a : Ainf l} (h : xiB l ∣ wittToBDeRhamPlus (normInteg
   rw [ker_theta0] at h2
   exact Ideal.mem_span_singleton.1 h2
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Apply `dvd_of_witt_mem` to reduce the goal to its premises. Use `set w := wittToBDeRhamPlus (normInteger ℂ_[l]) l a with hw`. Establish `h1 : Ideal.Quotient.mk (Ideal.span {tBdR l ^ k}) (w * xiB l ^ i) = Ideal.Quotient.mk _ (xiB l ^ (i + 1) * b)`. Rewrite using `[map_mul, map_mul, map_pow, map_pow]`.
+
+Conclude with `h`. Establish `h2` using `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 h1)`. Establish `h3 : xiB l ^ (i + 1) ∣ tBdR l ^ k` using `(pow_dvd_pow _ hi).trans (pow_dvd_pow_of_dvd (xi_dvd_fontaine_t l) k)`. Establish `h4 : xiB l ^ (i + 1) ∣ w * xiB l ^ i`. Take `⟨c, hc⟩` from `h3.trans h2`.
+
+Conclude with `⟨c + b, by linear_combination hc⟩`. Rewrite `h4` using `[pow_succ', mul_comm w, mul_comm (xiB l)]`. Conclude with `(mul_dvd_mul_iff_left (pow_ne_zero i (xiB_ne_zero l))).1 h4`.
+-/
 theorem gr_k (k i : ℕ) (hi : i < k) (a : Ainf l) (b : Bk l k)
     (h : fk l k a * fk l k (xi0 l) ^ i = fk l k (xi0 l) ^ (i + 1) * b) : xi0 l ∣ a := by
   obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective b
@@ -139,6 +203,13 @@ theorem gr_k (k i : ℕ) (hi : i < k) (a : Ainf l) (b : Bk l k)
   rw [pow_succ', mul_comm w, mul_comm (xiB l)] at h4
   exact (mul_dvd_mul_iff_left (pow_ne_zero i (xiB_ne_zero l))).1 h4
 
+/- English proof (translation)
+Establish `hl : eQ l (l : Ainf l ⧸ Ideal.span {xi0 l}) = (l : OC l)` using `eQ_natCast l l`. Use `{ one_le := hk nil := nil_k l k gr := fun i hi a b h => gr_k l k i hi a b h dom := (eQ l).toMulEquiv.isDomain _ val := fun x y => ?_ dv := fun x hx => ?_ l0 := fun h => ?_ cpl := ?_ unit := unit_ainf l }` and prove the remaining obligations. Break down `dvd_total_OC l (eQ l x) (eQ l y) with h | h` into its components or cases. Conclude with `Or.inl ((map_dvd_iff (eQ l)).1 h)`. Conclude with `Or.inr ((map_dvd_iff (eQ l)).1 h)`.
+
+Take `⟨n, hn⟩` from `dvd_pow_l l (x := eQ l x) ((map_ne_zero_iff _ (eQ l).injective).2 hx)`. Use `⟨n, (map_dvd_iff (eQ l)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hl]` and apply the resulting hypothesis. Apply `l_ne_zero l` to reduce the goal to its premises. Rewrite using `[← hl, h, map_zero]`.
+
+Use `isAdicComplete_of_equiv (eQ l) _ ?_` and prove the remaining obligations. Rewrite using `[hl]`. Conclude with `IsPerfectoidField.isAdicComplete (K := ℂ_[l]) l`.
+-/
 theorem hyp_k (l : ℕ) [Fact l.Prime] (k : ℕ) (hk : 1 ≤ k) : Lat.Hyp (Lat.fk l k) (xi0 l) l k := by
   have hl : eQ l (l : Ainf l ⧸ Ideal.span {xi0 l}) = (l : OC l) := eQ_natCast l l
   refine

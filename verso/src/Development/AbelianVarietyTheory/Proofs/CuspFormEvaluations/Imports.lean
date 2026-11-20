@@ -4,6 +4,13 @@ namespace GlobalTheory.CuspFormEvaluationSupplement
 
 universe u_1
 
+/- English proof (translation)
+Introduce `R _ P hP N`. Proceed by induction on `N using induction_on_primes with`. Consider the case `zero => intro h`. Conclude with `absurd rfl h`. Consider the case `one`.
+
+Introduce `_ h1`. Conclude with `absurd ((Ideal.eq_top_iff_one P).mpr (by simpa using h1)) hP.ne_top`. Consider the case `prime_mul p a hp ih`. Introduce `hN hmem`. Establish `ha : a ≠ 0` using `by rintro rfl; simp at hN`.
+
+Move the coercions through the operations in `at hmem`. Break down `hP.mem_or_mem hmem with h | h` into its components or cases. Conclude with `⟨p, hp, dvd_mul_right p a, h⟩`. Take `⟨q, hq, hqa, hqP⟩` from `ih ha h`. Conclude with `⟨q, hq, dvd_mul_of_dvd_right hqa p, hqP⟩`.
+-/
 theorem main : ∀ {R : Type u_1} [inst : CommRing R] {P : Ideal R}, Ideal.IsPrime P → ∀ (N : ℕ), N ≠ (0 : ℕ) → (↑N : R) ∈ P → ∃ (p : ℕ), Nat.Prime p ∧ p ∣ N ∧ (↑p : R) ∈ P := by
   intro R _ P hP N
   induction N using induction_on_primes with

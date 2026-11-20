@@ -14,10 +14,18 @@ section Smith
 
 variable {R : Type*} [CommRing R] [IsDomain R] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yoa2.mul_left_cancel_of_det_ne_zero hA h`.
+-/
 theorem mul_left_cancel_of_det_ne_zero {A X Y : Matrix (Fin n) (Fin n) R} (hA : A.det ≠ 0)
     (h : A * X = A * Y) : X = Y :=
   _root_.UpperTheory.Reformulated.B.Yoa2.mul_left_cancel_of_det_ne_zero hA h
 
+/- English proof (translation)
+Introduce `v w h`. Establish `h' : A.mulVec v = A.mulVec w` using `h`. Establish `h2` using `congrArg (fun x => A.adjugate.mulVec x) h'`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec] at h2`. Use function extensionality and compare the values at `i`.
+
+Use `congrFun h2 i` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hA this`.
+-/
 theorem mulVecLin_injective_of_det_ne_zero {A : Matrix (Fin n) (Fin n) R} (hA : A.det ≠ 0) :
     Function.Injective A.mulVecLin := by
   intro v w h
@@ -30,6 +38,9 @@ theorem mulVecLin_injective_of_det_ne_zero {A : Matrix (Fin n) (Fin n) R} (hA : 
   simp only [Pi.smul_apply, smul_eq_mul] at this
   exact mul_left_cancel₀ hA this
 
+/- English proof (translation)
+Establish `hrank : Module.finrank R (LinearMap.range A.mulVecLin) = Module.finrank R (Fin n → R)` using `LinearMap.finrank_range_of_inj (mulVecLin_injective_of_det_ne_zero hA)`. Take `⟨b, a, c, hc⟩` from `Submodule.exists_smith_normal_form_of_rank_eq (Pi.basisFun R (Fin n)) hrank`. Conclude with `⟨b, a, c, hc⟩`.
+-/
 theorem exists_smith_data [IsPrincipalIdealRing R] (A : Matrix (Fin n) (Fin n) R) (hA : A.det ≠ 0) :
     ∃ (b : Module.Basis (Fin n) R (Fin n → R)) (a : Fin n → R)
       (c : Module.Basis (Fin n) R (LinearMap.range A.mulVecLin)),
@@ -40,6 +51,21 @@ theorem exists_smith_data [IsPrincipalIdealRing R] (A : Matrix (Fin n) (Fin n) R
     Submodule.exists_smith_normal_form_of_rank_eq (Pi.basisFun R (Fin n)) hrank
   exact ⟨b, a, c, hc⟩
 
+/- English proof (translation)
+Set `P : Matrix (Fin n) (Fin n) R` to `(Pi.basisFun R (Fin n)).toMatrix b`. Establish `hP : ∀ k i, P k i = b i k` using `fun k i => by`. Simplify using `[P, Module.Basis.toMatrix_apply]`. Set `C : Matrix (Fin n) (Fin n) R` to `Matrix.of fun i j => c.repr ⟨A *ᵥ Pi.single j 1, LinearMap.mem_range_self A.mulVecLin _⟩ i`. Establish `hAPC : A = P * diagonal a * C`.
+
+Use extensionality with `k j`. Establish `h1` using `c.sum_repr ⟨A *ᵥ Pi.single j 1, LinearMap.mem_range_self A.mulVecLin _⟩`. Establish `h2` using `congrArg (fun x : LinearMap.range A.mulVecLin => (x : Fin n → R) k) h1`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hc, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h2`. Establish `h3 : (A *ᵥ Pi.single j 1) k = A k j` using `by rw [Matrix.mulVec_single_one]; rfl`.
+
+Rewrite using `[← h3, ← h2, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal, hP]`. Simplify using `only [C, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hmem : ∀ i, ∃ w : Fin n → R, A *ᵥ w = c i` using `fun i => by`. Take `⟨w, hw⟩` from `LinearMap.mem_range.mp (c i).2`. Conclude with `⟨w, hw⟩`. Use `choose w hw using hmem`. Set `W : Matrix (Fin n) (Fin n) R` to `Matrix.of fun k i => w i k`.
+
+Establish `hAW : A * W = P * diagonal a`. Use extensionality with `k i`. Rewrite using `[Matrix.mul_diagonal, hP]`. Use `congrFun (hw i) k` as an intermediate fact. Rewrite `this` using `[hc, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[mul_comm, ← this, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Both sides reduce to the same expression. Establish `hWC : W * C = 1`. Apply `mul_left_cancel_of_det_ne_zero hA` to reduce the goal to its premises. Rewrite using `[Matrix.mul_one, ← Matrix.mul_assoc, hAW, ← hAPC]`.
+
+Establish `hCW : C * W = 1` using `mul_eq_one_comm.mp hWC`. Use `⟨⟨P, (b.toMatrix (Pi.basisFun R (Fin n))), Module.Basis.toMatrix_mul_toMatrix_flip _ _, Module.Basis.toMatrix_mul_toMatrix_flip _ _⟩, ⟨C, W, hCW, hWC⟩, hAPC⟩` and prove the remaining obligations.
+-/
 theorem exists_eq_mul_diagonal_mul_of_smith (A : Matrix (Fin n) (Fin n) R) (hA : A.det ≠ 0)
     (b : Module.Basis (Fin n) R (Fin n → R)) (a : Fin n → R)
     (c : Module.Basis (Fin n) R (LinearMap.range A.mulVecLin))
@@ -88,6 +114,17 @@ section DVR
 
 variable {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨b, a, c, hc⟩` from `exists_smith_data A hA`. Establish `ha : ∀ i, a i ≠ 0` using `fun i hi => c.ne_zero i (Subtype.ext (by rw [hc, hi, zero_smul]; rfl))`. Use `choose e u hu using fun i => IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (ha i) hϖ`. Set `σ : Equiv.Perm (Fin n)` to `Tuple.sort (OrderDual.toDual ∘ e)`. Establish `hσ : Antitone (e ∘ σ)` using `monotone_toDual_comp_iff.mp (Tuple.monotone_sort _)`.
+
+Set `b'` to `b.reindex σ.symm`. Set `c'` to `c.reindex σ.symm`. Establish `hc' : ∀ i, (c' i : Fin n → R) = (a ∘ σ) i • b' i` using `fun i => by`. Simplify using `[c', b', hc]`. Take `⟨P, Q, hPQ⟩` from `exists_eq_mul_diagonal_mul_of_smith A hA b' (a ∘ σ) c' hc'`.
+
+Set `U : GL (Fin n) R` to `⟨diagonal fun i => (u (σ i) : R), diagonal fun i => ((u (σ i))⁻¹ : Rˣ), by rw [diagonal_mul_diagonal]; simp, by rw [diagonal_mul_diagonal]; simp⟩`. Use `⟨P * U, Q, e ∘ σ, hσ, ?_⟩` and prove the remaining obligations. Rewrite using `[hPQ, Units.val_mul]`. Use `congr 1`. Rewrite using `[Matrix.mul_assoc]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `diagonal (a ∘ σ) = diagonal (fun i => (u (σ i) : R)) * diagonal fun i => ϖ ^ e (σ i)`. Rewrite using `[diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hu (σ i)`.
+-/
 theorem exists_eq_mul_diagonal_pow_mul {ϖ : R} (hϖ : Irreducible ϖ)
     (A : Matrix (Fin n) (Fin n) R) (hA : A.det ≠ 0) :
     ∃ (P Q : GL (Fin n) R) (e : Fin n → ℕ), Antitone e ∧
@@ -121,6 +158,17 @@ section ZeroBlock
 
 variable {K : Type*} [Field K] {n : ℕ}
 
+/- English proof (translation)
+Establish `hli : LinearIndependent K (fun j : J => M.col j)` using `(linearIndependent_cols_iff_isUnit.mpr hM).comp _ Subtype.val_injective`. Set `π : (Fin n → K) →ₗ[K] ((Iᶜ : Finset (Fin n)) → K)` to `LinearMap.funLeft K K (fun i : (Iᶜ : Finset (Fin n)) => (i : Fin n))`. Establish `hdisj : Disjoint (Submodule.span K (Set.range fun j : J => M.col j)) (LinearMap.ker π)`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hxπ`.
+
+Set `W : Submodule K (Fin n → K)` to `⨅ i ∈ I, LinearMap.ker (LinearMap.proj i)`. Establish `hW : Submodule.span K (Set.range fun j : J => M.col j) ≤ W`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `only [W, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply]`.
+
+Introduce `i hi`. Conclude with `h i hi j j.2`. Establish `hxW` using `hW hx`. Simplify using `only [W, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply] at hxW`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `hi : i ∈ I`. Conclude with `hxW i hi`. Use `congrFun (LinearMap.mem_ker.mp hxπ) ⟨i, Finset.mem_compl.mpr hi⟩` as an intermediate fact. Simplify `this` using `[π, LinearMap.funLeft_apply]`. Establish `hli'` using `hli.map hdisj`.
+
+Establish `hcard` using `hli'.fintype_card_le_finrank`. Rewrite `hcard` using `[Module.finrank_fintype_fun_eq_card, Fintype.card_coe, Fintype.card_coe, Finset.card_compl, Fintype.card_fin]`. Use `Finset.card_le_univ I` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_add_card_le_of_isUnit {M : Matrix (Fin n) (Fin n) K} (hM : IsUnit M)
     (I J : Finset (Fin n)) (h : ∀ i ∈ I, ∀ j ∈ J, M i j = 0) : I.card + J.card ≤ n := by
   classical
@@ -162,6 +210,9 @@ open ValuativeRel GLnLocal DoubleCoset
 variable (F : Type*) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   (n : ℕ)
 
+/- English proof (translation)
+The claim follows from `(Valuation.ne_zero_iff _).mp (valuation_uniformizer_ne_zero F)`.
+-/
 theorem uniformizer_ne_zero : (uniformizer F : F) ≠ 0 :=
   (Valuation.ne_zero_iff _).mp (valuation_uniformizer_ne_zero F)
 
@@ -179,6 +230,9 @@ def diagPow (μ : Fin n → ℤ) : GL (Fin n) F :=
       rw [_root_.zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ (uniformizer_ne_zero F))]⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_diagPow (μ : Fin n → ℤ) :
     (diagPow F n μ : Matrix (Fin n) (Fin n) F) = diagonal fun i => (uniformizer F : F) ^ μ i :=
   rfl
@@ -186,6 +240,19 @@ theorem coe_diagPow (μ : Fin n → ℤ) :
 def IsDominant {n : ℕ} (μ : Fin n → ℤ) : Prop :=
   Antitone μ
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_pow_mul_mem_of_isCompact F n (isCompact_singleton (x := g))`. Establish `hm' : ∀ i j, (uniformizer F : F) ^ m * g i j ∈ 𝒪[F]` using `hm g rfl`. Set `A : Matrix (Fin n) (Fin n) 𝒪[F]` to `Matrix.of fun i j => ⟨_, hm' i j⟩`. Establish `hAmap : A.map (𝒪[F]).subtype = (uniformizer F : F) ^ m • (g : Matrix (Fin n) (Fin n) F)`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Establish `hA : A.det ≠ 0`. Introduce `h`. Establish `h'` using `congrArg (𝒪[F]).subtype h`. Rewrite `h'` using `[map_zero, RingHom.map_det, RingHom.mapMatrix_apply, hAmap, det_smul]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ (pow_ne_zero _ (uniformizer_ne_zero F))) ((Matrix.isUnit_iff_isUnit_det _).mp g.isUnit).ne_zero h'`. Take `⟨P, Q, e, he, hPQ⟩` from `exists_eq_mul_diagonal_pow_mul (irreducible_uniformizer F) A hA`. Use `⟨fun i => (e i : ℤ) - m, fun i j hij => by have := he hij; simp only; omega, integralGLHom F n P, ⟨P, rfl⟩, integralGLHom F n Q, ⟨Q, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `key` using `congrArg (RingHom.mapMatrix (𝒪[F]).subtype) hPQ`. Simplify using `only [map_mul, RingHom.mapMatrix_apply] at key`.
+
+Rewrite `key` using `[hAmap, diagonal_map (map_zero _)]`. Establish `hdiag : (diagonal fun i => ((𝒪[F]).subtype (GLnLocal.uniformizer F ^ e i))) = (uniformizer F : F) ^ m • diagonal fun i => (uniformizer F : F) ^ ((e i : ℤ) - m)`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, diagonal_apply, diagonal_apply]`. Use `split_ifs`.
+
+Rewrite using `[smul_eq_mul, map_pow, zpow_sub₀ (uniformizer_ne_zero F), zpow_natCast, zpow_natCast, mul_div_cancel₀ _ (pow_ne_zero _ (uniformizer_ne_zero F))]`. Both sides reduce to the same expression. Rewrite using `[smul_zero]`. Rewrite `key` using `[hdiag, Matrix.mul_smul, Matrix.smul_mul]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, Units.val_mul, coe_diagPow]`. Conclude with `smul_right_injective _ (pow_ne_zero m (uniformizer_ne_zero F)) key`.
+-/
 theorem exists_eq_mul_diagPow_mul (g : GL (Fin n) F) :
     ∃ μ : Fin n → ℤ, IsDominant μ ∧ ∃ k₁ ∈ integralGL F n, ∃ k₂ ∈ integralGL F n,
       g = k₁ * diagPow F n μ * k₂ := by
@@ -222,6 +289,21 @@ theorem exists_eq_mul_diagPow_mul (g : GL (Fin n) F) :
   rw [Units.val_mul, Units.val_mul, coe_diagPow]
   exact smul_right_injective _ (pow_ne_zero m (uniformizer_ne_zero F)) key
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Take `⟨u, rfl⟩` from `hk'`. Establish `hϖ` using `uniformizer_ne_zero F`. Establish `hent : ∀ i j, (u i j : F) = (GLnLocal.uniformizer F : F) ^ (μ j - ν i) * k i j`.
+
+Introduce `i j`. Use `congrArg (fun g : GL (Fin n) F => (g : Matrix (Fin n) (Fin n) F) i j) h` as an intermediate fact. Simplify using `only [Units.val_mul, coe_diagPow, mul_diagonal, diagonal_mul, integralGLHom_apply] at this`. Establish `hν0 : (GLnLocal.uniformizer F : F) ^ ν i ≠ 0` using `zpow_ne_zero _ hϖ`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← this, zpow_sub₀ hϖ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hkint` using `((mem_integralGL_iff F n).mp hk).1`. Establish `hzero : ∀ i ∈ Finset.Ici t, ∀ j ∈ Finset.Iic t, RingHom.mapMatrix (IsLocalRing.residue 𝒪[F]) (u : Matrix (Fin n) (Fin n) 𝒪[F]) i j = 0`. Introduce `i hi j hj`.
+
+Rewrite `hi` using `[Finset.mem_Ici]`. Rewrite `hj` using `[Finset.mem_Iic]`. Establish `hd : 1 ≤ μ j - ν i`. Establish `h1` using `hμ hj`. Establish `h2` using `hν hi`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨d, hd'⟩ : ∃ d : ℕ, μ j - ν i = d + 1` from `⟨(μ j - ν i - 1).toNat, by omega⟩`. Establish `hx : (GLnLocal.uniformizer F : F) ^ d * k i j ∈ 𝒪[F]` using `Subring.mul_mem _ (Subring.pow_mem _ (GLnLocal.uniformizer F).2 _) (hkint i j)`. Establish `hu : u i j = GLnLocal.uniformizer F * ⟨_, hx⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hent, hd', zpow_add₀ hϖ, zpow_one, zpow_natCast]`. Express the relevant statement in the definitionally equal form `_ = (GLnLocal.uniformizer F : F) * ((GLnLocal.uniformizer F : F) ^ d * k i j)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, IsLocalRing.residue_eq_zero_iff, hu]`. Conclude with `Ideal.mul_mem_right _ _ ((IsLocalRing.mem_maximalIdeal _).mpr (irreducible_uniformizer F).not_isUnit)`.
+
+Establish `hcard` using `card_add_card_le_of_isUnit ((Units.isUnit u).map (RingHom.mapMatrix (IsLocalRing.residue 𝒪[F]))) _ _ hzero`. Rewrite `hcard` using `[Fin.card_Ici, Fin.card_Iic]`. Use `t.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_of_mul_diagPow_eq {μ ν : Fin n → ℤ} (hμ : IsDominant μ) (hν : IsDominant ν)
     {k k' : GL (Fin n) F} (hk : k ∈ integralGL F n) (hk' : k' ∈ integralGL F n)
     (h : k * diagPow F n μ = diagPow F n ν * k') (t : Fin n) : μ t ≤ ν t := by
@@ -266,6 +348,9 @@ theorem le_of_mul_diagPow_eq {μ ν : Fin n → ℤ} (hμ : IsDominant μ) (hν 
   have := t.isLt
   omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Use `le_antisymm (le_of_mul_diagPow_eq F n hμ hν hk hk' h t) (le_of_mul_diagPow_eq F n hν hμ (inv_mem hk) (inv_mem hk') ?_ t)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_of_mul_diagPow_eq {μ ν : Fin n → ℤ} (hμ : IsDominant μ) (hν : IsDominant ν)
     {k k' : GL (Fin n) F} (hk : k ∈ integralGL F n) (hk' : k' ∈ integralGL F n)
     (h : k * diagPow F n μ = diagPow F n ν * k') : μ = ν := by
@@ -276,11 +361,17 @@ theorem eq_of_mul_diagPow_eq {μ ν : Fin n → ℤ} (hμ : IsDominant μ) (hν 
     _ = k⁻¹ * (k * diagPow F n μ) * k'⁻¹ := by rw [h]
     _ = diagPow F n μ * k'⁻¹ := by group
 
+/- English proof (translation)
+The claim follows from `mem_doubleCoset`.
+-/
 theorem mem_doubleCoset_diagPow {μ : Fin n → ℤ} {g : GL (Fin n) F} :
     g ∈ doubleCoset (diagPow F n μ) (integralGL F n : Set (GL (Fin n) F)) (integralGL F n) ↔
       ∃ k₁ ∈ integralGL F n, ∃ k₂ ∈ integralGL F n, g = k₁ * diagPow F n μ * k₂ :=
   mem_doubleCoset
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, rfl⟩` from `(mem_doubleCoset_diagPow F n).mp h₁`. Take `⟨c, hc, d, hd, hcd⟩` from `(mem_doubleCoset_diagPow F n).mp h₂`. Use `eq_of_mul_diagPow_eq F n hμ hν (mul_mem (inv_mem hc) ha) (mul_mem hd (inv_mem hb)) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_of_mem_doubleCoset {μ ν : Fin n → ℤ} (hμ : IsDominant μ) (hν : IsDominant ν)
     {g : GL (Fin n) F}
     (h₁ : g ∈ doubleCoset (diagPow F n μ) (integralGL F n : Set (GL (Fin n) F)) (integralGL F n))
@@ -293,6 +384,9 @@ theorem eq_of_mem_doubleCoset {μ ν : Fin n → ℤ} (hμ : IsDominant μ) (hν
     _ = c⁻¹ * (c * diagPow F n ν * d) * b⁻¹ := by rw [hcd]
     _ = diagPow F n ν * (d * b⁻¹) := by group
 
+/- English proof (translation)
+Take `⟨μ, hμ, h⟩` from `exists_eq_mul_diagPow_mul F n g`. Conclude with `⟨μ, ⟨hμ, (mem_doubleCoset_diagPow F n).mpr h⟩, fun ν hν => (eq_of_mem_doubleCoset F n hν.1 hμ hν.2 ((mem_doubleCoset_diagPow F n).mpr h))⟩`.
+-/
 theorem existsUnique_mem_doubleCoset (g : GL (Fin n) F) :
     ∃! μ : Fin n → ℤ, IsDominant μ ∧
       g ∈ doubleCoset (diagPow F n μ) (integralGL F n : Set (GL (Fin n) F)) (integralGL F n) := by
@@ -317,6 +411,9 @@ def dominantEquivDoubleCoset :
       exact (DoubleCoset.eq (integralGL F n) (integralGL F n) _ _).mpr ⟨k₁, hk₁, k₂, hk₂, hk⟩⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dominantEquivDoubleCoset_apply (μ : {μ : Fin n → ℤ // IsDominant μ}) :
     dominantEquivDoubleCoset F n μ =
       DoubleCoset.mk (integralGL F n) (integralGL F n) (diagPow F n μ) :=

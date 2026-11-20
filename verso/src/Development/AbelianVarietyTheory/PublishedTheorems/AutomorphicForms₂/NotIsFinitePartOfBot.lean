@@ -12,6 +12,11 @@ namespace GlobalTheory.CuspRep.CuspidalL2GL.SpecModel
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Establish `hπ` using `isIrrUnitary_rep hu hi`. Use `hπ.complete` as an intermediate fact. Establish `h1 : ContinuousLinearMap.id ℂ H ∈ homIn hi.1.rep hi.1.rep ⊤` using `mem_homIn_top.2 fun _ _ => rfl`. Establish `hT : hi.1.rep g ∈ homIn hi.1.rep hi.1.rep ⊤` using `mem_homIn_top.2 fun k x => DFunLike.congr_fun ((map_mul hi.1.rep g k).symm.trans ((congrArg _ (hc g k)).trans (map_mul hi.1.rep k g))) x`. Use `⟨be (hi.1.rep g) (.id ℂ H), fun F hF => congrArg Subtype.val (show hi.1.rep g ⟨F, hF⟩ = be (hi.1.rep g) (.id ℂ H) • ⟨F, hF⟩ from ext_inner_left ℂ fun y => ?_)⟩` and prove the remaining obligations.
+
+Conclude with `(inner_eq_be hπ hπ.unitary hT h1 _ y).trans (inner_smul_right _ _ _).symm`.
+-/
 theorem exists_scalar {G K : Type} [Group G] [TopologicalSpace G] [NormedAddCommGroup K] [InnerProductSpace ℂ K]
     [CompleteSpace K] {ρ : G →* (K →L[ℂ] K)} (hu : GlobalTheory.OpTrace.IsUnitaryRep ρ) (hc : ∀ g h : G, g * h = h * g)
     {H : Submodule ℂ K} (hi : IsIrredSubrep ρ H) (g : G) : ∃ c : ℂ, ∀ F ∈ H, ρ g F = c • F := by
@@ -24,6 +29,29 @@ theorem exists_scalar {G K : Type} [Group G] [TopologicalSpace G] [NormedAddComm
     (show hi.1.rep g ⟨F, hF⟩ = be (hi.1.rep g) (.id ℂ H) • ⟨F, hF⟩ from ext_inner_left ℂ fun y => ?_)⟩
   exact (inner_eq_be hπ hπ.unitary hT h1 _ y).trans (inner_smul_right _ _ _).symm
 
+/- English proof (translation)
+Establish `hu` using `isUnitaryRep_R (latticeGL E 1) μ`. Use `choose c hc using exists_scalar hu mul_comm_one hi`. Take `⟨F, hF, h0⟩` from `(Submodule.ne_bot_iff _).1 hi.2.1`. Establish `h1 : ∀ g, R (latticeGL E 1) μ g F = F → c g = 1` using `fun g e => smul_left_injective ℂ h0 (by beta_reduce; rw [← hc g F hF, e, one_smul])`. Set `ω : GA E 1 →* ℂ` to `{ toFun := c map_one' := h1 1 (by rw [map_one]; rfl) map_mul' := fun g h => smul_left_injective ℂ h0 (by beta_reduce`.
+
+Rewrite using `[← hc _ F hF, map_mul, mul_apply_eq_comp, hc h F hF, map_smul, hc g F hF, smul_smul, mul_comm]) }`. Establish `hn : ∀ g, ‖c g‖ = 1` using `fun g => by`. Use `norm_R g F` as an intermediate fact. Rewrite `this` using `[hc g F hF, norm_smul]`. Conclude with `(mul_eq_right₀ (norm_ne_zero_iff.2 h0)).1 this`.
+
+Establish `hcont : Continuous c`. Establish `: c = fun g => ⟪F, R (latticeGL E 1) μ g F⟫_ℂ / ⟪F, F⟫_ℂ` using `funext fun g => by`. Rewrite using `[hc g F hF, inner_smul_right, mul_div_assoc, div_self (inner_self_ne_zero.2 h0), mul_one]`. Rewrite using `[this]`. Conclude with `(continuous_const.inner (continuous_R F)).div_const _`.
+
+Set `χ : GA E 1 →* Circle` to `{ toFun := fun g => ⟨c g, mem_sphere_zero_iff_norm.2 (hn g)⟩ map_one' := Subtype.ext ω.map_one map_mul' := fun g h => Subtype.ext (ω.map_mul g h) }`. Establish `hχ : Continuous χ` using `hcont.subtype_mk _`. Establish `key : ∀ F' ∈ H, ∃ z : ℂ, lift (latticeGL E 1) F' =ᵐ[μ] fun x => z * c x` using `fun F' hF' => GlobalTheory.AutMult.Model.exists_ae_eq_char hχ fun g => hc g F' hF'`. Establish `hΓ : ∀ γ ∈ latticeGL E 1, c γ = 1` using `fun γ hγ => h1 γ (l2DiscreteQuotient_ext_iff_lift_ae_eq.2 ((lift_R γ F).trans (.of_forall fun x => by beta_reduce; rw [mul_comm_one]; exact leftInv_lift F γ hγ x)))`. Set `ν : HChar E` to `⟨(ω.comp (toGL E)).toHomUnits, Units.isEmbedding_val₀.continuous_iff.2 (hcont.comp (continuous_toGL E)), fun γ => Units.ext (hΓ _ ((mem_latticeGL E _).2 ⟨γ, 0, by rw [det_toGL, zpow_zero, mul_one]; rfl⟩))⟩`.
+
+Establish `hν : ∀ g, ((chiDet 1 ν g : ℂˣ) : ℂ) = c g` using `fun g => congrArg c (toGL_det E g)`. Establish `hV : ∀ φ ∈ ((CuspSub.triv E le_rfl).twist ν).V, ∃ z : ℂ, φ.1 = fun x => z * c x`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Take `⟨z, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Conclude with `⟨z, funext fun x => (mulChi_apply ν _ x).trans (by rw [hν]; exact congrArg (· * _) (mul_one z))⟩`.
+
+Establish `hV' : ∀ z : ℂ, ∃ φ ∈ ((CuspSub.triv E le_rfl).twist ν).V, φ.1 = fun x => z * c x` using `fun z => ⟨_, ⟨z • oneFn E 1, Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _), rfl⟩,`. Use function extensionality and compare the values at `fun x => (mulChi_apply ν _ x).trans (by rw [hν]; exact congrArg (· * _) (mul_one z))⟩`. Establish `e : classes ((CuspSub.triv E le_rfl).twist ν).V μ = H`. Use `le_antisymm ?_ fun F' hF' => ?_` and prove the remaining obligations. Introduce and unpack `F' ⟨φ, hφ, e⟩`.
+
+Take `⟨z, hz⟩` from `hV φ hφ`. Take `⟨z₀, hz₀⟩` from `key F hF`. Establish `hz0 : z₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `h0 (l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (hz₀.trans (Filter.EventuallyEq.trans (.of_forall fun x => zero_mul _) (show lift (latticeGL E 1) (0 : L2 (latticeGL E 1) μ) =ᵐ[μ] 0 from ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 _)).symm)))`.
+
+Establish `: F' = (z / z₀) • F` using `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (e.trans (Filter.EventuallyEq.trans (.of_forall fun x => by`. Rewrite using `[hz]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use the proof step `field_simp) (GlobalTheory.AutMult.Model.lift_smul _ hz₀).symm))`. Conclude with `this ▸ H.smul_mem _ hF`.
+
+Take `⟨z, hz⟩` from `key F' hF'`. Take `⟨φ, hφ, e⟩` from `hV' z`. Conclude with `⟨φ, hφ, e ▸ hz⟩`. Use `⟨ν, fun φ hφ t g => ?_, fun φ hφ => ?_, by rw [e, hi.1.1.submodule_topologicalClosure_eq], fun F' hF' _ => e ▸ hF'⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hV φ hφ`.
+
+Rewrite using `[hz]`. Express the relevant statement in the definitionally equal form `z * ω _ = z * ω _`. Rewrite using `[map_mul, show ω (splitCentre E 1 t) = 1 from h1 _ (R_splitCentre t (hH hF)), one_mul]`. Take `⟨z, hz⟩` from `hV φ hφ`. Rewrite using `[hz]`.
+
+Use `memL2_of_rank_one (continuous_const.mul hcont) fun γ hγ g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z * ω _ = z * ω _`. Rewrite using `[map_mul, show ω γ = 1 from hΓ γ hγ, one_mul]`.
+-/
 theorem finiteVectors_one (μ : Measure (GA E 1)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
     (H : Submodule ℂ (L2 (latticeGL E 1) μ)) (hH : H ≤ L2cusp μ) (hi : IsIrredSubrep (R (latticeGL E 1) μ) H) :
     ∃ ν : HChar E, IsFinitePartOf μ ((CuspSub.triv E le_rfl).twist ν) H := by
@@ -95,6 +123,11 @@ theorem finiteVectors_one (μ : Measure (GA E 1)) [μ.IsHaarMeasure] [μ.IsMulRi
     change z * ω _ = z * ω _
     rw [map_mul, show ω γ = 1 from hΓ γ hγ, one_mul]
 
+/- English proof (translation)
+Establish `: Subsingleton (Quot (latticeGL E 0))` using `⟨fun p q => Quotient.inductionOn₂ p q fun x y => by`. Rewrite using `[Subsingleton.elim x y]⟩`. Use `FiniteDimensional.of_injective (V₂ := ℂ) (K := ℂ) { toFun := fun F : L2 (latticeGL E 0) μ => lift (latticeGL E 0) F 1 map_add' := fun F F' => ?_ map_smul' := fun c F => ?_ } fun F F' e => l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (.of_forall fun x => by rw [Subsingleton.elim x 1]; …` and prove the remaining obligations. Take `⟨x, hx⟩` from `(ae_quotMeasure_iff.1 (Lp.coeFn_add F F')).exists`. Rewrite `hx` using `[Subsingleton.elim x 1]`.
+
+Conclude with `hx`. Take `⟨x, hx⟩` from `(ae_quotMeasure_iff.1 (Lp.coeFn_smul c F)).exists`. Rewrite `hx` using `[Subsingleton.elim x 1]`. Conclude with `hx`.
+-/
 theorem finiteDimensional_zero (μ : Measure (GA E 0)) [μ.IsHaarMeasure] :
     FiniteDimensional ℂ (L2 (latticeGL E 0) μ) := by
   have : Subsingleton (Quot (latticeGL E 0)) := ⟨fun p q => Quotient.inductionOn₂ p q fun x y => by
@@ -110,11 +143,21 @@ theorem finiteDimensional_zero (μ : Measure (GA E 0)) [μ.IsHaarMeasure] :
     rw [Subsingleton.elim x 1] at hx
     exact hx
 
+/- English proof (translation)
+Use `finiteDimensional_zero μ` as an intermediate fact. Conclude with `EnoughCompact.isDiscreteSum (isUnitaryRep_Rcusp μ) fun v hv => ⟨ContinuousLinearMap.id ℂ _, isCompactOperator_of_locallyCompactSpace_rng _, fun _ _ _ => rfl, hv⟩`.
+-/
 theorem discrete_zero (μ : Measure (GA E 0)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] : IsDiscreteSum (Rcusp μ) := by
   have := finiteDimensional_zero μ
   exact EnoughCompact.isDiscreteSum (isUnitaryRep_Rcusp μ) fun v hv =>
     ⟨ContinuousLinearMap.id ℂ _, isCompactOperator_of_locallyCompactSpace_rng _, fun _ _ _ => rfl, hv⟩
 
+/- English proof (translation)
+Establish `hcl : ∀ F, F ∈ classes (CuspSub.triv E (a` using `0) zero_le_one).V μ := fun F => ⟨lift (latticeGL E 0) F 1 • oneFn E 0, Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _), .of_forall fun x => by rw [Subsingleton.elim x 1]; exact (mul_one _).symm⟩`. Take `⟨F, hF, h0⟩` from `(Submodule.ne_bot_iff _).1 hi.2.1`. Establish `hz : lift (latticeGL E 0) F 1 ≠ 0` using `fun e => h0 (l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (Filter.EventuallyEq.trans (.of_forall fun x => by rw [Subsingleton.elim x 1]; exact e) (show lift (latticeGL E 0) (0 : L2 (latticeGL E 0) μ) =ᵐ[μ] 0 from ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 _)).symm))`. Establish `hH : ∀ F', F' ∈ H` using `fun F' => by`. Establish `: F' = (lift (latticeGL E 0) F' 1 / lift (latticeGL E 0) F 1) • F` using `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (Filter.EventuallyEq.trans (.of_forall fun x => by`.
+
+Rewrite using `[Subsingleton.elim x 1]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use the proof step `field_simp)`. Use the proof step `(GlobalTheory.AutMult.Model.lift_smul _ .rfl).symm)`. Conclude with `this ▸ H.smul_mem _ hF`.
+
+Use `⟨isNormalised_triv _, fun φ hφ => ?_, le_antisymm (fun F' _ => hH F') fun F' _ => Submodule.le_topologicalClosure _ (hcl F'), fun F' _ _ => hcl F'⟩` and prove the remaining obligations. Establish `hd` using `isFundamentalDomain_stdDom (latticeGL E 0) μ`. Use `(memL2_iff_fundamental_domain hd).2 ⟨fun _ _ _ => congrArg _ (Subsingleton.elim _ _), MemLp.restrict _ ?_⟩` and prove the remaining obligations. Conclude with `(continuous_of_discreteTopology).memLp_of_hasCompactSupport (.of_compactSpace _)`.
+-/
 theorem finiteVectors_zero (μ : Measure (GA E 0)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
     (H : Submodule ℂ (L2 (latticeGL E 0) μ)) (hi : IsIrredSubrep (R (latticeGL E 0) μ) H) :
     IsFinitePartOf μ (CuspSub.triv E zero_le_one) H := by
@@ -137,8 +180,20 @@ theorem finiteVectors_zero (μ : Measure (GA E 0)) [μ.IsHaarMeasure] [μ.IsMulR
   refine (memL2_iff_fundamental_domain hd).2 ⟨fun _ _ _ => congrArg _ (Subsingleton.elim _ _), MemLp.restrict _ ?_⟩
   exact (continuous_of_discreteTopology).memLp_of_hasCompactSupport (.of_compactSpace _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, fun g => by rw [Subsingleton.elim g 1]⟩`.
+-/
 theorem bounded_zero (φ : Sm E 0) : ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C := ⟨_, fun g => by rw [Subsingleton.elim g 1]⟩
 
+/- English proof (translation)
+Use `by_contra! h`. Take `⟨σ, hσ⟩` from `exists_not_isUnitary (E := E)`. Proceed by induction on `σ using Quotient.inductionOn with | _ π => ?_`. Use `hσ ((CG.isUnitary_mk π).2 ?_)` and prove the remaining obligations. Take `⟨ω, hω⟩` from `Central.exists_hasCentral E 1 π`.
+
+Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Take `⟨C, hC⟩` from `h φ (π.cusp φ hφ)`. Take `⟨g, hg⟩ : ∃ g, φ.1 g ≠ 0` from `Function.ne_iff.1 fun e => h0 (Subtype.ext e)`. Establish `hle : ∀ x, ‖((ω.1 x : ℂˣ) : ℂ)‖ ≤ 1` using `fun x => by`. Assume the negation of the conclusion as `hc`.
+
+Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (C / ‖φ.1 g‖) (not_le.1 hc)`. Use `hC (GeneralLinearGroup.scalar (Fin 1) (x ^ n) * g)` as an intermediate fact. Rewrite `this` using `[hω.apply hφ, norm_mul, map_pow, Units.val_pow_eq_pow_val, norm_pow]`. Conclude with `hn.not_ge ((le_div_iff₀ (norm_pos_iff.2 hg)).2 this)`. Use `⟨ω, fun x => le_antisymm (hle x) ?_, hω⟩` and prove the remaining obligations.
+
+Use `hle x⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv, Units.val_inv_eq_inv_val, norm_inv]`. Conclude with `(inv_le_one₀ (norm_pos_iff.2 (Units.ne_zero _))).1 this`.
+-/
 theorem exists_unbounded : ∃ φ : Sm E 1, IsCuspForm φ ∧ ¬ ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C := by
   by_contra! h
   obtain ⟨σ, hσ⟩ := exists_not_isUnitary (E := E)
@@ -159,12 +214,18 @@ theorem exists_unbounded : ∃ φ : Sm E 1, IsCuspForm φ ∧ ¬ ∃ C : ℝ, �
   rw [map_inv, Units.val_inv_eq_inv_val, norm_inv] at this
   exact (inv_le_one₀ (norm_pos_iff.2 (Units.ne_zero _))).1 this
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 π.ne_bot exact toL2_ne_zero (h.finitePartMemL2 φ hφ) (ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level) (fun e => h0 (Subtype.ext e)) (h.classes_le (toL2_mem_classes hφ (h.finitePartMemL2 φ hφ)))`.
+-/
 theorem not_isFinitePartOf_bot {a : ℕ} (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
     (π : CuspSub E a) : ¬ IsFinitePartOf μ π ⊥ := fun h => by
   obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 π.ne_bot
   exact toL2_ne_zero (h.finitePartMemL2 φ hφ) (ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level)
     (fun e => h0 (Subtype.ext e)) (h.classes_le (toL2_mem_classes hφ (h.finitePartMemL2 φ hφ)))
 
+/- English proof (translation)
+Take `rfl | rfl : a = 0 ∨ a = 1` from `by omega`. Conclude with `⟨fun μ _ _ H _ hi => ⟨_, finiteVectors_zero μ H hi⟩, fun φ _ _ => bounded_zero φ⟩`. Conclude with `⟨fun μ _ _ H hH hi => (finiteVectors_one μ H hH hi).elim fun _ h => ⟨_, h⟩, fun _ => bounded_one⟩`.
+-/
 theorem clauses_of_le_one {a : ℕ} (ha : a ≤ 1) :
     (∀ (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (H : Submodule ℂ (L2 (latticeGL E a) μ)),
       H ≤ L2cusp μ → IsIrredSubrep (R (latticeGL E a) μ) H → ∃ π : CuspSub E a, IsFinitePartOf μ π H) ∧

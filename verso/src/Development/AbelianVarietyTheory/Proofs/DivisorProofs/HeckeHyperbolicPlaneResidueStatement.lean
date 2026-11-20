@@ -6,6 +6,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB GlobalTheory.LocTypeGood
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocTypeStep.hasLocType_alphaSpan | exact GlobalTheory.LocTypeStep.hasLocType_alphaSpan | (intros; apply GlobalTheory.LocTypeStep.hasLocType_alphaSpan <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hecke_hyperbolic_plane_residue : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hcm : IsCMExt F E σ) (α β : Chr F E) (v : Pl F) (τ : E →ₐ[F] Fv F v), NotRealPow τ α β →
     IsHecke F E α → IsHecke F E β → ∀ kα : ℕ, ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range α kα →

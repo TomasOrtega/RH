@@ -14,6 +14,9 @@ open Formalism.L2.Host (aboveF)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TateUnr.tate_unr | exact GlobalTheory.TateUnr.tate_unr | (intros; apply GlobalTheory.TateUnr.tate_unr <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_zeta_integral_unramified : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ν : Chr F E) (v : Pl F),
     (∀ w ∈ aboveF (L := E) F v, UnrAt ν w) → ∀ μ : Measure (idelesAt E (evFin F v)), IsNormE E v μ →
     ∀ 𝔞 : FractionalIdeal (𝓞 E)⁰ E, 𝔞 ≠ 0 → ∀ s : ℕ, 1 ≤ s →

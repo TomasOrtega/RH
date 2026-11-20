@@ -35,6 +35,17 @@ def CovolSum (X : CData) (R : ℝ) : Prop :=
     (∀ y ∈ ys, IsFundInf X.I y (muInf X.I) (D y)) →
     ∑ y ∈ ys, muInf X.I (D y) ≤ ENNReal.ofReal (X.I.gaugeU * R)
 
+/- English proof (translation)
+Take `⟨hH, hF, -⟩` from `RegData_of_HypB X hX`. Establish `hμ : X.μf.IsHaarMeasure` using `hH`. Take `⟨ys, hys, ⟨D, hD⟩, heq⟩` from `hU X.I X.μf X.fund hF`. Establish `hU0 : 0 < X.I.gaugeU` using `Finset.prod_pos fun v _ => (hGD _ (X.I.ε v)).2`. Establish `hsum` using `hB ys D hys hD`.
+
+Establish `hvol` using `heq D hD`. Take `⟨hpos1, hKfin⟩` from `kg_pos_fin X hμ (le_refl 1)`. Establish `hKpos : 0 < X.μf X.I.Kset` using `lt_of_lt_of_le hpos1 (measure_mono (kg_sub X.I 1))`. Use `set μK := (X.μf X.I.Kset).toReal with hμK`. Establish `hμK0 : 0 < μK` using `ENNReal.toReal_pos hKpos.ne' hKfin.ne`.
+
+Establish `huR : 0 ≤ X.I.gaugeU * R` using `mul_nonneg hU0.le hR0`. Establish `hle : X.I.vol X.μf X.fund ≤ μK * (X.I.gaugeU * R)`. Unfold `AutInst.vol`. Rewrite using `[hvol]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `ENNReal.toReal_mono (ENNReal.mul_ne_top hKfin.ne ENNReal.ofReal_ne_top) ?_` and prove the remaining obligations. Use `gcongr`. Use `_ = μK * (X.I.gaugeU * R) := by rw [ENNReal.toReal_mul, ENNReal.toReal_ofReal huR]`. Unfold `GaugeVolumeBoundVar`. Establish `hp : 0 < μK * X.I.gaugeU` using `mul_pos hμK0 hU0`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gauge_volume_bound_of_parts (hU : UnfoldVol) (hGD : ∀ (n : ℕ) (ε : Fin n → Bool), Gauge.GaugeDens ε) (X : CData) {n₀ : ℕ} {A C0 R : ℝ}
     (hX : X.HypB n₀ A) (hR0 : 0 ≤ R) (hB : CovolSum X R)
     (hR : R ≤ cn_Y X ^ (C0 * (X.I.n : ℝ) ^ 2 * (X.I.f : ℝ))) : GaugeVolumeBoundVar X C0 := by

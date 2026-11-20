@@ -28,13 +28,24 @@ open UpperTheory.V.HV (Coef)
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
+/- English proof (translation)
+Take `⟨hc, hf, hlm, -, -, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `⟨hc, hf, (CharP.charP_iff_prime_eq_zero hl.out).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (IsLocalRing.residue c.O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hlm`.
+-/
 private theorem coef_isCoef (l : ℕ) [hl : Fact l.Prime] (c : Coef l) : Pa.IsCoef l c.O := by
   obtain ⟨hc, hf, hlm, -, -, -⟩ := UpperTheory.V.abelian₂.dvr_finite l c.O
   refine ⟨hc, hf, (CharP.charP_iff_prime_eq_zero hl.out).2 ?_⟩
   rw [← map_natCast (IsLocalRing.residue c.O), IsLocalRing.residue_eq_zero_iff]
   exact hlm
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨P.loc.bz, P.loc.geo, GlobalTheory.Published.TameLocal_of_duality P.coh.lt⟩`.
+-/
 private theorem locP_of (P : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) : _root_.UpperTheory.V.Pa.LocPAlt :=
   ⟨P.loc.bz, P.loc.geo, GlobalTheory.Published.TameLocal_of_duality P.coh.lt⟩
+/- English proof (translation)
+Introduce `P l _ L Ω _ _ _ _ _ _ s V hS _ c _ n hn r B Λ ι`. Take `⟨R⟩` from `_root_.UpperTheory.V.Hi.nonempty_unitaryHeckeData P l L Ω s n hn V (QData.empty V hS) c r ι Λ`. Set `K : (hset (QData.empty V hS) R.τ₀).Lev` to `⟨fun q => Empty.elim q, fun q => Empty.elim q⟩`. Take `⟨J, hJ⟩` from `_root_.UpperTheory.V.Hi.exists_hecke_ideal P l L Ω s n hn V _ c r ι B Λ R K`. Establish `hE` using `_root_.UpperTheory.Gal.projectedFormsSystemPart.decomposition_and_automorphicAway_of_isJ P l L Ω s n hn V _ c r ι B Λ R K hS J hJ`.
+
+Use `haveI := coef_isCoef l c`. Conclude with `⟨J, ⟨_root_.UpperTheory.V.Hi.ring_props_of_is_j_unitary_hecke_data P l L Ω s n hn V _ c r ι B Λ R K hS J hJ, _root_.UpperTheory.V.Hi.dense_of_is_j_unitary_hecke_data P l L Ω s n hn V _ c r ι B Λ R K hS J hJ, _root_.UpperTheory.V.Hi.hecke_ideal_point_properties P l L Ω s n hn V _ …`.
+-/
 theorem UpperTheory.V.Hi.hida_unitary_of_printed_hida :
     _root_.UpperTheory.V.Af.HypothesesH' → _root_.UpperTheory.V.W.HidaUAlt := by
   intro P l _ L Ω _ _ _ _ _ _ s V hS _ c _ n hn r B Λ ι

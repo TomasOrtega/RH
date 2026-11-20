@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.CatCoh.KunnethOne
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis K W`. Establish `key : ∀ (j : Module.Free.ChooseBasisIndex K W) (s : V ⊗[K] W), TensorProduct.equivFinsuppOfBasisRight b s j = TensorProduct.rid K V (LinearMap.lTensor V (b.coord j) s)`. Introduce `j s`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul m n => simp [TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply]`. Consider the case `add u v hu hv => simp only [map_add, Finsupp.add_apply, hu, hv]`. Apply `(TensorProduct.equivFinsuppOfBasisRight b).injective` to reduce the goal to its premises. Use extensionality with `j`. Rewrite using `[key, h, map_zero, Finsupp.zero_apply]`.
+-/
 theorem tensor_eq_zero_of_forall {K : Type} [Field K] {V W : Type} [AddCommGroup V] [Module K V]
     [AddCommGroup W] [Module K W] (t : V ⊗[K] W)
     (h : ∀ l : W →ₗ[K] K, TensorProduct.rid K V (LinearMap.lTensor V l t) = 0) : t = 0 := by
@@ -48,12 +53,20 @@ def contr (M : Type) [AddCommGroup M] [Module K M] (Λ : C1 G →ₗ[K] K) :
     LinearMap.proj (R := K) (φ := fun T' => (T ⟶ T') → M ⊗[K] G.obj T') T' ∘ₗ
     LinearMap.proj (R := K) (φ := fun T => ∀ (T' : Q) (_ : T ⟶ T'), M ⊗[K] G.obj T') T
 
+/- English proof (translation)
+Simplify using `[contr, LinearMap.sum_apply]`.
+-/
 theorem contr_apply (M : Type) [AddCommGroup M] [Module K M] (Λ : C1 G →ₗ[K] K)
     (c : ∀ (T T' : Q) (_ : T ⟶ T'), M ⊗[K] G.obj T') :
     contr G M Λ c = ∑ T, ∑ T', ∑ φ : T ⟶ T',
       TensorProduct.rid K M (LinearMap.lTensor M (coef G Λ T T' φ) (c T T' φ)) := by
   simp [contr, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[contr_apply]`. Simplify using `only [LinearMap.lTensor_tmul, TensorProduct.rid_tmul, ← Finset.sum_smul]`. Use `congr 1`. Simplify using `only [coef, LinearMap.comp_apply, ← map_sum]`. Use `congr 1`.
+
+Simplify using `only [LinearMap.single_apply, Finset.univ_sum_single]`.
+-/
 theorem contr_tmul (M : Type) [AddCommGroup M] [Module K M] (Λ : C1 G →ₗ[K] K) (z : M)
     (h : C1 G) : contr G M Λ (fun T T' φ => z ⊗ₜ[K] h T T' φ) = Λ h • z := by
   rw [contr_apply]
@@ -63,6 +76,11 @@ theorem contr_tmul (M : Type) [AddCommGroup M] [Module K M] (Λ : C1 G →ₗ[K]
   congr 1
   simp only [LinearMap.single_apply, Finset.univ_sum_single]
 
+/- English proof (translation)
+Simplify using `only [contr_apply, map_sum]`. Use `Finset.sum_congr rfl fun T _ => Finset.sum_congr rfl fun T' _ => Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations. Proceed by induction on `c T T' φ using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m n => simp`.
+
+Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+-/
 theorem contr_natural (M N : Type) [AddCommGroup M] [Module K M] [AddCommGroup N] [Module K N]
     (Λ : C1 G →ₗ[K] K) (h : M →ₗ[K] N) (c : ∀ (T T' : Q) (_ : T ⟶ T'), M ⊗[K] G.obj T') :
     contr G N Λ (fun T T' φ => LinearMap.rTensor (G.obj T') h (c T T' φ)) = h (contr G M Λ c) := by
@@ -74,6 +92,17 @@ theorem contr_natural (M N : Type) [AddCommGroup M] [Module K M] [AddCommGroup N
   | tmul m n => simp
   | add u v hu hv => simp only [map_add, hu, hv]
 
+/- English proof (translation)
+Set `D : (∀ T : Q, M ⊗[K] G.obj T) →ₗ[K] (∀ (T T' : Q) (_ : T ⟶ T'), M ⊗[K] G.obj T')` to `LinearMap.pi fun T => LinearMap.pi fun T' => LinearMap.pi fun φ => LinearMap.lTensor M (mp G φ).toLinearMap ∘ₗ LinearMap.proj (R := K) (φ := fun T => M ⊗[K] G.obj T) T - LinearMap.proj (R := K) (φ := fun T => M ⊗[K] G.obj T) T'`. Establish `hD : contr G M Λ ∘ₗ D = 0`. Use `LinearMap.pi_ext fun T₀ x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul z u`. Establish `e : D (Pi.single T₀ (z ⊗ₜ[K] u)) = fun T T' φ => z ⊗ₜ[K] (-d0 G (Pi.single T₀ u : C0 G) T T' φ)`. Use function extensionality and compare the values at `T T' φ`. Simplify using `only [D, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.proj_apply, amitsur_d0_apply, neg_sub, TensorProduct.tmul_sub]`. Apply the tactic sequence `by_cases h1 : T = T₀ <;> by_cases h2 : T' = T₀`.
+
+Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Substitute `h1` using the available equality. Simplify using `[Pi.single_eq_of_ne h2]`.
+
+Substitute `h2` using the available equality. Simplify using `[Pi.single_eq_of_ne h1]`. Simplify using `[Pi.single_eq_of_ne h1, Pi.single_eq_of_ne h2]`. Establish `c` using `contr_tmul G M Λ z (-d0 G (Pi.single T₀ u : C0 G))`. Simplify using `only [Pi.neg_apply] at c`.
+
+Rewrite using `[LinearMap.comp_apply, e, c, map_neg, hΛ, neg_zero, zero_smul, LinearMap.zero_apply]`. Consider the case `add u v hu hv => simp only [Pi.single_add, map_add, hu, hv]`. Conclude with `LinearMap.congr_fun hD w`.
+-/
 theorem kunneth_contraction_d0_vanishes (M : Type) [AddCommGroup M] [Module K M] (Λ : C1 G →ₗ[K] K)
     (hΛ : ∀ g : C0 G, Λ (d0 G g) = 0) (w : ∀ T : Q, M ⊗[K] G.obj T) :
     contr G M Λ (fun T T' φ => LinearMap.lTensor M (mp G φ).toLinearMap (w T) - w T') = 0 := by
@@ -109,6 +138,31 @@ end GlobalTheory.CatCoh.KunnethOne
 
 namespace GlobalTheory.CatCoh.KunnethOne
 
+/- English proof (translation)
+Introduce `K _ P Q _ _ _ _ F G E i₁ i₂ h₁ h₂ hb n x y f hf`. Use `haveI := Fintype.ofFinite Q`. Use `haveI : ∀ T T' : Q, Fintype (T ⟶ T') := fun _ _ => Fintype.ofFinite _`. Apply `tensor_eq_zero_of_forall` to reduce the goal to its premises. Introduce `l`.
+
+Simplify using `only [map_sum, LinearMap.lTensor_tmul, TensorProduct.rid_tmul]`. Take `⟨Λ, hΛ⟩` from `LinearMap.exists_extend (l ∘ₗ H1.mk G)`. Establish `hΛy : ∀ z : Z1 G, Λ z.1 = l (H1.mk G z)` using `fun z => LinearMap.congr_fun hΛ z`. Establish `hΛd : ∀ g : C0 G, Λ (d0 G g) = 0` using `fun g => by`. Establish `e` using `hΛy ⟨d0 G g, commAlgFunctorCoboundaryZero_mem_cocyclesOne G g⟩`.
+
+Rewrite using `[e, H1.mk_eq_zero.2 ⟨g, rfl⟩, map_zero]`. Simplify using `only [← hΛy, ← map_smul, ← map_sum]`. Rewrite using `[H1.mk_eq_zero]`. Set `β : ∀ T : P × Q, F.obj T.1 ⊗[K] G.obj T.2 ≃ₐ[K] E.obj T` to `fun T => AlgEquiv.ofBijective _ (hb T)`. Establish `hβ : ∀ (T : P × Q) (z : F.obj T.1) (u : G.obj T.2), β T (z ⊗ₜ u) = i₁ T z * i₂ T u` using `fun T z u => Algebra.TensorProduct.productMap_apply_tmul _ _ _ _`.
+
+Establish `natL : ∀ (p p' : P) (T : Q) (a : p ⟶ p') (t : F.obj p ⊗[K] G.obj T), β (p', T) (LinearMap.rTensor (G.obj T) (mp F a).toLinearMap t) = mp E ((a, 𝟙 T) : (p, T) ⟶ (p', T)) (β (p, T) t)`. Introduce `p p' T a t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z u`.
+
+Rewrite using `[LinearMap.rTensor_tmul, hβ, hβ, map_mul, ← h₁ (p, T) (p', T), ← h₂ (p, T) (p', T)]`. Simplify using `[mp_id]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Establish `natR : ∀ (p : P) (T T' : Q) (b : T ⟶ T') (t : F.obj p ⊗[K] G.obj T), β (p, T') (LinearMap.lTensor (F.obj p) (mp G b).toLinearMap t) = mp E ((𝟙 p, b) : (p, T) ⟶ (p, T')) (β (p, T) t)`. Introduce `p T T' b t`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z u`. Rewrite using `[LinearMap.lTensor_tmul, hβ, hβ, map_mul, ← h₁ (p, T) (p, T'), ← h₂ (p, T) (p, T')]`. Simplify using `[mp_id]`.
+
+Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Use `⟨fun p => contr G (F.obj p) Λ (fun T T' φ => (β (p, T')).symm (f (p, T) (p, T') ((𝟙 p, φ) : (p, T) ⟶ (p, T')))), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p p' a`. Rewrite using `[amitsur_d0_apply]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`.
+
+Establish `step : ∀ (T T' : Q) (b : T ⟶ T'), (β (p', T')).symm (f (p', T) (p', T') ((𝟙 p', b) : (p', T) ⟶ (p', T'))) - LinearMap.rTensor (G.obj T') (mp F a).toLinearMap ((β (p, T')).symm (f (p, T) (p, T') ((𝟙 p, b) : (p, T) ⟶ (p, T')))) = ∑ i, (x i).1 p p' a ⊗ₜ[K] (y i).1 T T' b - (LinearMa …`. Introduce `T T' b`. Apply `(β (p', T')).injective` to reduce the goal to its premises. Establish `H1` using `hf (p, T) (p', T) (p', T') (a, 𝟙 T) (𝟙 p', b)`. Establish `H2` using `hf (p, T) (p, T') (p', T') (𝟙 p, b) (a, 𝟙 T')`.
+
+Rewrite `H1`, `H2` using `[d1_apply]`. Simplify using `only [prod_comp, Category.comp_id, Category.id_comp] at H1 H2`. Simplify using `only [Z1.id, map_zero, zero_mul, Finset.sum_const_zero] at H2`. Simplify using `only [← h₁, mp_id] at H1`. Simplify using `only [map_sub, map_sum, AlgEquiv.apply_symm_apply, natL, natR, hβ]`.
+
+Take the linear combination `H1 - H2`. Establish `nat` using `contr_natural G (F.obj p) (F.obj p') Λ (mp F a).toLinearMap (fun T T' φ => (β (p, T')).symm (f (p, T) (p, T') ((𝟙 p, φ) : (p, T) ⟶ (p, T'))))`. Rewrite `nat` using `[AlgHom.toLinearMap_apply]`. Rewrite using `[← nat, ← map_sub]`. Use `trans contr G (F.obj p') Λ ((∑ i, fun T T' φ => (x i).1 p p' a ⊗ₜ[K] (y i).1 T T' φ) - fun T T' φ => LinearMap.lTensor (F.obj p') (mp G φ).toLinearMap ((β (p', T)).symm (f (p, T) (p', T) ((a, 𝟙 T) : (p, T) ⟶ (p', T)))) - (β (p', T')).symm (f (p, T') (p', T') ((a, 𝟙 T') : (p, T') …`.
+
+Use `congr 1`. Use function extensionality and compare the values at `T T' b`. Simplify using `only [Pi.sub_apply, Finset.sum_apply]`. Conclude with `step T T' b`. Rewrite using `[map_sub, kunneth_contraction_d0_vanishes _ _ _ hΛd, sub_zero, map_sum]`.
+
+Simplify using `only [contr_tmul]`.
+-/
 theorem sum_tmul_eq_zero_of_cup : ∀ (K : Type) [Field K] (P Q : Type) [Category.{0} P] [Category.{0} Q] [Finite Q] [Quiver.IsThin Q] (F : P ⥤ CommAlgCat.{0} K) (G : Q ⥤ CommAlgCat.{0} K) (E : P × Q ⥤ CommAlgCat.{0} K) (i₁ : ∀ T : P × Q, F.obj T.1 →ₐ[K] E.obj T) (i₂ : ∀ T : P × Q, G.obj T.2 →ₐ[K] E.obj T), (∀ (T T' : P × Q) (a : T ⟶ T') (b : F.obj T.1), i₁ T' (mp F a.1 b) = mp E a (i₁ T b)) → (∀ (T T' : P × Q) (a : T ⟶ T') (b : G.obj T.2), i₂ T' (mp G a.2 b) = mp E a (i₂ T b)) → (∀ T, Function.Bijective (Algebra.TensorProduct.productMap (i₁ T) (i₂ T))) → ∀ (n : ℕ) (x : Fin n → Z1 F) (y : Fin n → Z1 G) (f : C1 E), (∀ (T T' T'' : P × Q) (a : T ⟶ T') (b : T' ⟶ T''), d1 E f T T' T'' a b = ∑ i, mp E b (i₁ T' ((x i).1 _ _ a.1)) * i₂ T'' ((y i).1 _ _ b.2)) → ∑ i, GlobalTheory.CatCoh.H1.mk F (x i) ⊗ₜ[K] GlobalTheory.CatCoh.H1.mk G (y i) = 0 := by
   intro K _ P Q _ _ _ _ F G E i₁ i₂ h₁ h₂ hb n x y f hf
   classical

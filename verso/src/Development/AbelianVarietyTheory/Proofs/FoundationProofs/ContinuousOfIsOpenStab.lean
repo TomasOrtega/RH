@@ -13,12 +13,22 @@ namespace GlobalTheory.SlTwoCusp
 
 open Topology
 
+/- English proof (translation)
+Establish `hc : Continuous (TR.infEq F).symm` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp (continuous_apply w)`. Conclude with `hc.comp continuous_fst`.
+-/
 theorem continuous_pInf' (F : Type) [Field F] [NumberField F] [IsTotallyReal F] : Continuous (TR.pInf F) := by
   have hc : Continuous (TR.infEq F).symm :=
     continuous_pi fun w =>
       (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp (continuous_apply w)
   exact hc.comp continuous_fst
 
+/- English proof (translation)
+Introduce `F _ _ _ a φ hφ`. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Establish `hm : Continuous fun x : GA F a => g⁻¹ * x` using `continuous_const.mul continuous_id`. Establish `hI : Continuous (Matrix.GeneralLinearGroup.map (TR.pInf F) : GA F a → GL (Fin a) (TR.Rinf F))` using `Continuous.units_map _ (continuous_id.matrix_map (continuous_pInf' F))`. Establish `hFn : Continuous (Matrix.GeneralLinearGroup.map (pFin F) : GA F a → GL (Fin a) (Af F))` using `Continuous.units_map _ (continuous_id.matrix_map continuous_snd)`.
+
+Establish `h1 : Continuous fun x : GA F a => TR.toL (Matrix.GeneralLinearGroup.map (TR.pInf F) (g⁻¹ * x)).val` using `(Units.continuous_val (M := Matrix (Fin a) (Fin a) (TR.Rinf F))).comp (hI.comp hm)`. Establish `h2 : ContinuousAt (fun x : GA F a => TR.chart φ.1 g (TR.toL (Matrix.GeneralLinearGroup.map (TR.pInf F) (g⁻¹ * x)).val)) g` using `ContinuousAt.comp (f := fun x : GA F a => TR.toL (Matrix.GeneralLinearGroup.map (TR.pInf F) (g⁻¹ * x)).val) (TR.contDiffAt_chart φ.2 g (TR.val_mem_invSet _)).continuousAt h1.continuousAt`. Use `h2.congr ?_` and prove the remaining obligations. Establish `h3 : {x : GA F a | TR.finRep F a (Matrix.GeneralLinearGroup.map (pFin F) (g⁻¹ * x)) φ = φ} ∈ 𝓝 g` using `(hφ.preimage (hFn.comp hm)).mem_nhds (by simp)`. Use `filter_upwards [h3] with x hx`.
+
+Rewrite using `[TR.chart_val]`. Use `conv_lhs => rw [← hx]`. Express the relevant statement in the definitionally equal form `φ.1 (g * TR.infGL F a _ * finGL F a _) = _`. Rewrite using `[mul_assoc, TR.infGL_mul_finGL, mul_inv_cancel_left]`.
+-/
 theorem continuous_of_isOpen_stab : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) (φ : TR.Sm F a),
     IsOpen {k | TR.finRep F a k φ = φ} → Continuous φ.1 := by
   intro F _ _ _ a φ hφ

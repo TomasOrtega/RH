@@ -19,18 +19,34 @@ variable {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K �
 
 def degZ (b : K → ℕ) : K → ℤ := fun k => (b k : ℤ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[degZ]`.
+-/
 theorem degZ_add (b b' : K → ℕ) : degZ (b + b') = degZ b + degZ b' := by
   funext k; simp [degZ]
 
+/- English proof (translation)
+Introduce `b b' h`. Use function extensionality and compare the values at `k`. Establish `h'` using `congr_fun h k`. Simplify using `only [degZ] at h'`. Conclude with `h'` after adjusting the coercions.
+-/
 theorem degZ_injective : Function.Injective (degZ : (K → ℕ) → K → ℤ) := by
   intro b b' h; funext k
   have h' := congr_fun h k
   simp only [degZ] at h'
   exact_mod_cast h'
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[degZ]`.
+-/
 theorem degZ_zero : degZ (0 : K → ℕ) = 0 := by
   funext k; simp [degZ]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro m x hx`. Simplify `hx` using `[degZ_zero]`. Consider the case `succ n ih`. Introduce `m x hx`.
+
+Rewrite using `[pow_succ, mul_smul]`. Establish `h` using `ih _ _ (hM.smul_mem v m x hx)`. Use `h using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `only [degZ, unitDeg, blockWeight, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+-/
 theorem X_pow_smul_mem (hM : IsMultigrading ι M piece) (v : Σ k, ι k) (n : ℕ) :
     ∀ (m : K → ℤ) (x : M), x ∈ piece m →
       ((X v : MRing ι F) ^ n) • x ∈ piece (m + degZ (n • blockWeight ι v)) := by
@@ -45,6 +61,13 @@ theorem X_pow_smul_mem (hM : IsMultigrading ι M piece) (v : Σ k, ι k) (n : �
     simp only [degZ, unitDeg, blockWeight, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply]
     split_ifs <;> push_cast <;> ring
 
+/- English proof (translation)
+Proceed by induction on `d using Finsupp.induction with`. Consider the case `zero => intro m x hx`. Simplify `hx` using `[degZ_zero]`. Consider the case `single_add v n d _ _ ih`. Introduce `m x hx`.
+
+Establish `e : (monomial (Finsupp.single v n + d) (1 : F) : MRing ι F) = (X v : MRing ι F) ^ n * monomial d (1 : F)`. Rewrite using `[X_pow_eq_monomial, monomial_mul, one_mul]`. Rewrite using `[e, mul_smul]`. Establish `h` using `X_pow_smul_mem hM v n _ _ (ih m x hx)`. Use `h using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[map_add, Finsupp.weight_single, degZ_add, add_assoc, add_comm (degZ _)]`.
+-/
 theorem monomial_smul_mem (hM : IsMultigrading ι M piece) (d : (Σ k, ι k) →₀ ℕ) :
     ∀ (m : K → ℤ) (x : M), x ∈ piece m →
       (monomial d (1 : F) : MRing ι F) • x ∈ piece (m + degZ (Finsupp.weight (blockWeight ι) d)) := by
@@ -60,6 +83,11 @@ theorem monomial_smul_mem (hM : IsMultigrading ι M piece) (d : (Σ k, ι k) →
     convert h using 2
     rw [map_add, Finsupp.weight_single, degZ_add, add_assoc, add_comm (degZ _)]
 
+/- English proof (translation)
+Establish `ef` using `f.as_sum`. Rewrite using `[ef]`. Rewrite using `[Finset.sum_smul]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (blockWeight ι) d = b` using `hf (mem_support_iff.mp hd)`.
+
+Establish `e : (monomial d (coeff d f) : MRing ι F) = coeff d f • monomial d (1 : F)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, smul_assoc]`. Conclude with `Submodule.smul_mem _ _ (hw ▸ monomial_smul_mem hM d m x hx)`.
+-/
 theorem homog_smul_mem (hM : IsMultigrading ι M piece) {f : MRing ι F} {b : K → ℕ}
     (hf : IsWeightedHomogeneous (blockWeight ι) f b) {m : K → ℤ} {x : M} (hx : x ∈ piece m) :
     f • x ∈ piece (m + degZ b) := by
@@ -77,6 +105,11 @@ section Graded
 
 variable [DecidableEq (K → ℤ)] [DirectSum.Decomposition piece]
 
+/- English proof (translation)
+Establish `ef` using `f.as_sum`. Use `conv_lhs => rw [ef]`. Rewrite using `[Finset.sum_smul, DirectSum.decompose_sum, DFinsupp.finsetSum_apply, AddSubmonoidClass.coe_finsetSum, Finset.sum_filter, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Establish `hd : (monomial d (coeff d f) : MRing ι F) • x ∈ piece (c + degZ (Finsupp.weight (blockWeight ι) d))` using `homog_smul_mem hM (isWeightedHomogeneous_monomial _ _ _ rfl) hx`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `DirectSum.decompose_of_mem_same piece hd`. Rewrite using `[zero_smul]`. Conclude with `DirectSum.decompose_of_mem_ne piece hd h`.
+-/
 theorem decompose_smul (hM : IsMultigrading ι M piece) (f : MRing ι F) {c : K → ℤ} {x : M}
     (hx : x ∈ piece c) (m : K → ℤ) :
     (DirectSum.decompose piece (f • x) m : M) =
@@ -98,12 +131,20 @@ def IsGradedSub (piece : (K → ℤ) → Submodule F M) [DirectSum.Decomposition
     (N : Submodule (MRing ι F) M) : Prop :=
   ∀ y ∈ N, ∀ m, (DirectSum.decompose piece y m : M) ∈ N
 
+/- English proof (translation)
+Introduce `y hy m`. Rewrite `hy` using `[Submodule.mem_bot]`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem isGradedSub_bot : IsGradedSub piece (⊥ : Submodule (MRing ι F) M) := by
   intro y hy m
   rw [Submodule.mem_bot] at hy
   subst hy
   simp
 
+/- English proof (translation)
+Introduce `y hy m`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hy`. Take `⟨s, rfl⟩` from `Submodule.mem_span_singleton.mp hb`. Rewrite using `[DirectSum.decompose_add, DirectSum.add_apply, Submodule.coe_add]`. Use `add_mem (Submodule.mem_sup_left (hN a ha m)) (Submodule.mem_sup_right ?_)` and prove the remaining obligations.
+
+Rewrite using `[decompose_smul hM s hx m]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)`.
+-/
 theorem isGradedSub_sup (hM : IsMultigrading ι M piece) {N : Submodule (MRing ι F) M}
     (hN : IsGradedSub piece N) {c : K → ℤ} {x : M} (hx : x ∈ piece c) :
     IsGradedSub piece (N ⊔ Submodule.span (MRing ι F) {x}) := by
@@ -115,6 +156,11 @@ theorem isGradedSub_sup (hM : IsMultigrading ι M piece) {N : Submodule (MRing �
   rw [decompose_smul hM s hx m]
   exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)
 
+/- English proof (translation)
+Introduce `f hf b`. Rewrite `hf`, the goal using `[Submodule.mem_colon_singleton]`. Establish `h` using `hN _ hf (c + degZ b)`. Rewrite `h` using `[decompose_smul hM f hx]`. Use `h using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[weightedHomogeneousComponent_apply]`. Use `Finset.sum_congr (Finset.filter_congr fun d _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Conclude with `⟨fun h => by rw [h], fun h => degZ_injective (add_left_cancel h)⟩`.
+-/
 theorem isMultiHomog_colon (hM : IsMultigrading ι M piece) {N : Submodule (MRing ι F) M}
     (hN : IsGradedSub piece N) {c : K → ℤ} {x : M} (hx : x ∈ piece c) :
     IsMultiHomogIdeal (N.colon {x}) := by
@@ -127,6 +173,11 @@ theorem isMultiHomog_colon (hM : IsMultigrading ι M piece) {N : Submodule (MRin
   refine Finset.sum_congr (Finset.filter_congr fun d _ => ?_) fun _ _ => rfl
   exact ⟨fun h => by rw [h], fun h => degZ_injective (add_left_cancel h)⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hN` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+
+Rewrite using `[← DirectSum.sum_support_decompose piece y]`. Conclude with `Submodule.sum_mem _ fun i _ => h i _ (Submodule.coe_mem _)`.
+-/
 theorem exists_homog_not_mem {N : Submodule (MRing ι F) M} (hN : N ≠ ⊤) :
     ∃ (c : K → ℤ) (x : M), x ∈ piece c ∧ x ∉ N := by
   classical
@@ -140,6 +191,11 @@ theorem exists_homog_not_mem {N : Submodule (MRing ι F) M} (hN : N ≠ ⊤) :
 
 end Graded
 
+/- English proof (translation)
+Use `letI := weightedGradedAlgebra F w`. Establish `hH : q.IsHomogeneous (weightedHomogeneousSubmodule F w)`. Introduce `i r hr`. Establish `e : (DirectSum.decompose (weightedHomogeneousSubmodule F w) r i : MvPolynomial σ F) = weightedHomogeneousComponent w i r` using `weightedDecomposition.decompose'_apply F w r i`. Rewrite using `[e]`.
+
+Conclude with `hq r hr i`. Use `hH.isPrime_of_homogeneous_mem_or_mem hne ?_` and prove the remaining obligations. Introduce and unpack `a b ⟨i, hi⟩ ⟨j, hj⟩ hab`. Conclude with `h a b ⟨i, hi⟩ ⟨j, hj⟩ hab`.
+-/
 theorem isPrime_of_forms_ordered {σ L : Type*} [AddCommMonoid L] [LinearOrder L]
     [IsOrderedCancelAddMonoid L] (w : σ → L) (q : Ideal (MvPolynomial σ F))
     (hq : ∀ r ∈ q, ∀ i, weightedHomogeneousComponent w i r ∈ q) (hne : q ≠ ⊤)
@@ -157,6 +213,17 @@ theorem isPrime_of_forms_ordered {σ L : Type*} [AddCommMonoid L] [LinearOrder L
   rintro a b ⟨i, hi⟩ ⟨j, hj⟩ hab
   exact h a b ⟨i, hi⟩ ⟨j, hj⟩ hab
 
+/- English proof (translation)
+Use `letI : LinearOrder K := LinearOrder.lift' (Fintype.equivFin K) (Fintype.equivFin K).injective`. Use `haveI : WellFoundedLT K := Finite.to_wellFoundedLT`. Establish `hw : ∀ d : (Σ k, ι k) →₀ ℕ, Finsupp.weight (fun v => toLex (blockWeight ι v)) d = toLex (Finsupp.weight (blockWeight ι) d)`. Introduce `d`. Proceed by induction on `d using Finsupp.induction with`.
+
+Consider the case `zero => simp`. Consider the case `single_add v n d _ _ ih`. Rewrite using `[map_add, map_add, ih, Finsupp.weight_single, Finsupp.weight_single, toLex_add, toLex_smul]`. Both sides reduce to the same expression. Establish `hc : ∀ (i : Lex (K → ℕ)) (r : MRing ι F), weightedHomogeneousComponent (fun v => toLex (blockWeight ι v)) i r = weightedHomogeneousComponent (blockWeight ι) (ofLex i) r`.
+
+Introduce `i r`. Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_weightedHomogeneousComponent, hw]`. Conclude with `if_congr ⟨fun e => by rw [← e]; rfl, fun e => by rw [e]; rfl⟩ rfl rfl`. Establish `hh : ∀ (a : MRing ι F) (i : Lex (K → ℕ)), IsWeightedHomogeneous (fun v => toLex (blockWeight ι v)) a i → IsWeightedHomogeneous (blockWeight ι) a (ofLex i)`.
+
+Introduce `a i ha d hd`. Use `ha hd` as an intermediate fact. Rewrite `this` using `[hw]`. Rewrite using `[← this, ofLex_toLex]`. Use `isPrime_of_forms_ordered (fun v => toLex (blockWeight ι v)) q (fun r hr i => ?_) hne ?_` and prove the remaining obligations.
+
+Rewrite using `[hc]`. Conclude with `hq r hr _`. Introduce and unpack `a b ⟨i, hi⟩ ⟨j, hj⟩ hab`. Conclude with `h a b ⟨_, hh a i hi⟩ ⟨_, hh b j hj⟩ hab`.
+-/
 theorem isPrime_of_forms (q : Ideal (MRing ι F)) (hq : IsMultiHomogIdeal q) (hne : q ≠ ⊤)
     (h : ∀ a b : MRing ι F, (∃ i, IsWeightedHomogeneous (blockWeight ι) a i) →
       (∃ j, IsWeightedHomogeneous (blockWeight ι) b j) → a * b ∈ q → a ∈ q ∨ b ∈ q) :
@@ -195,6 +262,17 @@ section Chain
 
 variable [DecidableEq (K → ℤ)] [DirectSum.Decomposition piece]
 
+/- English proof (translation)
+Use `isPrime_of_forms _ (isMultiHomog_colon hM hN hx) ?_ ?_` and prove the remaining obligations. Introduce `htop`. Apply `hxN` to reduce the goal to its premises. Establish `h1 : (1 : MRing ι F) ∈ N.colon {x}` using `htop ▸ Submodule.mem_top`. Rewrite `h1` using `[Submodule.mem_colon_singleton, one_smul]`. Then use the resulting hypothesis.
+
+Introduce and unpack `a b - ⟨j, hj⟩ hab`. Distinguish the cases in `hb : b ∈ N.colon {x}`. Conclude with `Or.inr hb`. Use `left`. Rewrite `hb`, `hab` using `[Submodule.mem_colon_singleton]`.
+
+Establish `hbx : b • x ∈ piece (c + degZ j)` using `homog_smul_mem hM hj hx`. Establish `hle : N.colon {x} ≤ N.colon {b • x}`. Introduce `s hs`. Rewrite `hs`, the goal using `[Submodule.mem_colon_singleton]`. Rewrite using `[smul_comm]`.
+
+Conclude with `N.smul_mem b hs`. Establish `heq` using `eq_of_le_of_not_lt hle (hmax _ _ hbx hb)`. Establish `ha : a ∈ N.colon {b • x}`. Rewrite using `[Submodule.mem_colon_singleton, ← mul_smul]`. Conclude with `hab`.
+
+Rewrite `ha` using `[← heq]`. Then use the resulting hypothesis.
+-/
 theorem isPrime_colon (hM : IsMultigrading ι M piece) {N : Submodule (MRing ι F) M}
     (hN : IsGradedSub piece N) {c : K → ℤ} {x : M} (hx : x ∈ piece c) (hxN : x ∉ N)
     (hmax : ∀ (c' : K → ℤ) (y : M), y ∈ piece c' → y ∉ N → ¬ N.colon {x} < N.colon {y}) :
@@ -221,6 +299,9 @@ theorem isPrime_colon (hM : IsMultigrading ι M piece) {N : Submodule (MRing ι 
       exact hab
     rwa [← heq] at ha
 
+/- English proof (translation)
+Take `⟨c₀, x₀, hx₀, hx₀N⟩` from `exists_homog_not_mem (piece := piece) hNt`. Take `⟨I, ⟨c, x, hx, hxN, rfl⟩, hI⟩` from `set_has_maximal_iff_noetherian.mpr (inferInstance : IsNoetherian (MRing ι F) (MRing ι F)) {I | ∃ (c : K → ℤ) (x : M), x ∈ piece c ∧ x ∉ N ∧ N.colon {x} = I} ⟨_, c₀, x₀, hx₀, hx₀N, rfl⟩`. Conclude with `⟨c, x, hx, hxN, isPrime_colon hM hN hx hxN fun c' y hy hyN => hI _ ⟨c', y, hy, hyN, rfl⟩, isMultiHomog_colon hM hN hx⟩`.
+-/
 theorem exists_step (hM : IsMultigrading ι M piece) {N : Submodule (MRing ι F) M}
     (hN : IsGradedSub piece N) (hNt : N ≠ ⊤) :
     ∃ (c : K → ℤ) (x : M), x ∈ piece c ∧ x ∉ N ∧ (N.colon {x}).IsPrime ∧
@@ -234,6 +315,17 @@ theorem exists_step (hM : IsMultigrading ι M piece) {N : Submodule (MRing ι F)
     isPrime_colon hM hN hx hxN fun c' y hy hyN => hI _ ⟨c', y, hy, hyN, rfl⟩,
     isMultiHomog_colon hM hN hx⟩
 
+/- English proof (translation)
+Use `haveI : IsNoetherian (MRing ι F) M := inferInstance`. Use `haveI : WellFoundedGT (Submodule (MRing ι F) M) := isNoetherian_iff'.mp inferInstance`. Introduce `N₀`. Proceed by induction on `N₀ using WellFoundedGT.induction with`. Consider the case `_ N₀ ih`.
+
+Introduce `hN₀`. Distinguish the cases in `ht : N₀ = ⊤`. Conclude with `⟨0, fun _ => N₀, Fin.elim0, Fin.elim0, Fin.elim0, rfl, ht, fun j => j.elim0⟩`. Take `⟨c, x, hx, hxN, hq, hqh⟩` from `exists_step hM hN₀ ht`. Establish `hlt : N₀ < N₀ ⊔ Submodule.span (MRing ι F) {x}`.
+
+Use `lt_of_le_of_ne le_sup_left fun h => hxN ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self x)`. Take `⟨n, N, x', c', q', h0, hl, hj⟩` from `ih _ hlt (isGradedSub_sup hM hN₀ hx)`. Use `⟨n + 1, Fin.cons N₀ N, Fin.cons x x', Fin.cons c c', Fin.cons (N₀.colon {x}) q', rfl, ?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Fin.succ_last, Fin.cons_succ]`. Conclude with `hl`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.cons_zero, Fin.castSucc_zero, Fin.cons_succ]`. Conclude with `⟨hx, h0, hq, hqh, fun s => Submodule.mem_colon_singleton.symm⟩`.
+
+Simplify using `only [← Fin.succ_castSucc, Fin.cons_succ]`. Conclude with `hj j`.
+-/
 theorem exists_chain [Module.Finite (MRing ι F) M] (hM : IsMultigrading ι M piece) :
     ∀ N₀ : Submodule (MRing ι F) M, IsGradedSub piece N₀ →
       ∃ (n : ℕ) (N : Fin (n + 1) → Submodule (MRing ι F) M) (x : Fin n → M) (c : Fin n → K → ℤ)
@@ -271,6 +363,11 @@ end Chain
 
 end MultigradedFiltration
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ M _ _ _ _ _ piece hM`. Use `letI := hM.internal.chooseDecomposition`. Take `⟨n, N, x, c, q, h0, hl, hj⟩` from `MultigradedFiltration.exists_chain hM ⊥ MultigradedFiltration.isGradedSub_bot`. Use `⟨n, N, x, c, q, h0, hl, hj, fun W hW => ?_⟩` and prove the remaining obligations. Use `haveI : W.IsPrime := hW.1.1`.
+
+Use `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HilbertSamuel.card_eq_length_of_filtration N x q h0 hl (fun j => (hj j).2.1) (fun j => (hj j).2.2.1) (fun j => (hj j).2.2.2.2) W hW using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+-/
 theorem MultigradedFiltration.proof : MultigradedFiltration.Statement.{u, v} := by
   intro F _ K _ _ ι _ M _ _ _ _ _ piece hM
   classical

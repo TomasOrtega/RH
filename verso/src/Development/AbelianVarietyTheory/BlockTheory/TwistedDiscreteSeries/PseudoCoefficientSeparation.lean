@@ -32,6 +32,11 @@ def PseudoCoeffSeparation : Prop :=
       HasTrace (repOp (groupRep ε hπ.2.1.1) μ f) c → c ≠ 0 →
         HasInfChar ε (fun a => (lam a : ℂ)) π ∧ (IsURepOn (UJset ε) π → UEquiv ε π D ∧ c = 1)
 
+/- English proof (translation)
+Use `⟨fun i j h => ?_, fun i j h => ?_⟩` and prove the remaining obligations. Establish `h1 : ((i : ℕ) : ℤ) < (j : ℕ)` using `by exact_mod_cast h`. Establish `h2 : (0 : ℤ) < r` using `by exact_mod_cast i.pos`. Simplify using `only [neg_lt_neg_iff]`. Conclude with `mul_lt_mul_of_pos_left h1 h2`.
+
+Simplify using `only [h]`. Use `push_cast`. Put the polynomial expressions in normal form. Both sides reduce to the same expression.
+-/
 theorem hasWideGaps_mul (r : ℕ) : HasWideGaps fun i : Fin r => -((r : ℤ) * (i : ℕ)) := by
   refine ⟨fun i j h => ?_, fun i j h => ?_⟩
   · have h1 : ((i : ℕ) : ℤ) < (j : ℕ) := by exact_mod_cast h
@@ -43,8 +48,16 @@ theorem hasWideGaps_mul (r : ℕ) : HasWideGaps fun i : Fin r => -((r : ℤ) * (
     ring_nf
     rfl
 
+/- English proof (translation)
+Introduce `h` and use `by simpa using h.2 0 1 rfl`.
+-/
 example : ¬ HasWideGaps ![1, 0, -1] := fun h => by simpa using h.2 0 1 rfl
 
+/- English proof (translation)
+Take `⟨h, f, -, hf⟩` from `GlobalTheory.Published.pseudoCoefficientUpq_trivial 1 μ`. Use `⟨⟨Subsingleton.strictAnti _, fun i j e => by omega⟩, ⟨h, fun v w _ _ => ?_⟩, f, hf, ⟨h.2.1, ⟨h.2.2.1.1, h.2.2.1.2.2, fun _ _ _ => rfl, fun _ => inferInstance⟩, h.2.2.2.1⟩, hf.trace_self⟩` and prove the remaining obligations. Use `GlobalTheory.Dec.isZEigen_const (allPos 1) (inner ℂ w v)` as an intermediate fact. Use `this using 2 with a` and compare the differences between its conclusion and the goal. Simplify using `[Formalism.QuantumDeterminants.rhoStd]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_data_rank_one (μ : Measure (UJ (allPos 1))) [μ.IsHaarMeasure] :
     HasWideGaps (fun _ : Fin 1 => (0 : ℤ)) ∧
       ∃ hD : IsDiscreteWithInfChar (allPos 1) (fun _ => 0) fun _ => ContinuousLinearMap.id ℂ ℂ,

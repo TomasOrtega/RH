@@ -11,6 +11,9 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LieFilt.locAdapted_of_matrix | exact GlobalTheory.LieFilt.locAdapted_of_matrix | (intros; apply GlobalTheory.LieFilt.locAdapted_of_matrix <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.frame_matrix_restriction : ∀ {X W : Scheme.{0}} (jB : W ⟶ X) {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules} {r : ι → ℕ} {g : ℕ}
     (o : ι → ℕ) (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a) {U V V' : X.Opens} (hV : V ≤ U) (hV' : V' ≤ V)
     (ℓ : Fin g → Γ(L, U)) (hℓ : VB.IsFrame ℓ) (f : ∀ a, Fin (r a) → Γ(E a, V)), (∀ a, VB.IsFrame (f a)) →

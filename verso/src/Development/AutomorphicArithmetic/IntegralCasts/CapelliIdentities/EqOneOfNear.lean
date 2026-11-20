@@ -2,6 +2,21 @@ import Mathlib
 
 namespace UpperTheory.Reformulated.B.S7
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hu1 : ‖u‖ ≤ 1`. Use `IsUltrametricDist.norm_add_le_max (u - 1) 1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one]`. Conclude with `this.trans (max_le h.le le_rfl)`.
+
+Establish `hpow : ∀ i : ℕ, ‖u ^ i - 1‖ < 1`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`.
+
+Establish `e : u ^ (i + 1) - 1 = (u ^ i - 1) * u + (u - 1)` using `by ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ h)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) hu1).trans_lt ih`.
+
+Establish `hsum : ∀ n : ℕ, ‖(∑ i ∈ Finset.range n, u ^ i) - (n : PadicAlgCl l)‖ < 1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Establish `e : (∑ i ∈ Finset.range (n + 1), u ^ i) - ((n + 1 : ℕ) : PadicAlgCl l) = ((∑ i ∈ Finset.range n, u ^ i) - (n : PadicAlgCl l)) + (u ^ n - 1)`. Rewrite using `[Finset.sum_range_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ih (hpow n))`. Establish `h0 : (∑ i ∈ Finset.range m, u ^ i) = 0`. Use `geom_sum_mul u m` as an intermediate fact. Rewrite `this` using `[hu, sub_self]`. Conclude with `(mul_eq_zero.mp this).resolve_right (sub_ne_zero.mpr hne)`.
+
+Establish `hlt` using `hsum m`. Rewrite `hlt` using `[h0, zero_sub, norm_neg]`. Establish `e : (m : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (m : ℚ_[l])` using `by simp`. Rewrite `hlt` using `[e, norm_algebraMap']`. Conclude with `hm (Padic.norm_natCast_lt_one_iff.mp hlt)`.
+-/
 theorem eq_one_of_near {l : ℕ} [Fact l.Prime] {u : PadicAlgCl l} {m : ℕ} (hm : ¬ l ∣ m) (hu : u ^ m = 1)
     (h : ‖u - 1‖ < 1) : u = 1 := by
   by_contra hne

@@ -26,6 +26,31 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.FlagBase.OneClass
 
+/- English proof (translation)
+Take `⟨σ, hσ, hσ1, hσ2⟩` from `GlobalTheory.T.exists_measurable_coset_section' G (K ⊓ M) (by rw [Subgroup.coe_inf]; exact hK.inter hM)`. Establish `hκ : ∀ k, k * (σ k)⁻¹ ∈ K ⊓ M` using `fun k => by simpa using (K ⊓ M).inv_mem (hσ1 k)`. Establish `key : ∀ DN DM : Set G, MeasurableSet DN → MeasurableSet DM → (∀ x ∈ (N : Set G), ∃ γ ∈ ΓN, γ * x ∈ DN) → (∀ x ∈ (M : Set G), ∃ γ ∈ ΓM, γ * x ∈ DM) → C * covol Γ μ A ≤ c * (μN DN * ∫⁻ m in DM ∩ Z, δ m ∂μM)`. Introduce `DN DM hDN hDM cN cM`. Take `⟨D, hD, hiff⟩` from `GlobalTheory.T.measurableSet_iwasawa_slice_of_transversal G N M K σ hN.measurableSet hM.measurableSet hK.measurableSet hσ hσ1 hσ2 hnorm huniq DN (DM ∩ Z) hDN (hDM.inter hZ)`.
+
+Establish `hcov : ∀ x ∈ A, ∃ γ ∈ Γ, γ * x ∈ D`. Introduce `x hx`. Take `⟨u, hu, m, hm, k, hk, rfl⟩` from `hdec x`. Take `⟨γM, hγM, hγD⟩` from `cM (m * (k * (σ k)⁻¹)) (M.mul_mem hm (hκ k).2)`. Take `⟨hγM', γ, hγ, u₀, hu₀, rfl⟩` from `hΓM γM hγM`.
+
+Establish `hu' : u₀ * (γM * u * γM⁻¹) ∈ N` using `N.mul_mem hu₀ (hnorm _ hγM' _ hu)`. Take `⟨γN, hγN, hγD'⟩` from `cN _ hu'`. Establish `hγ'` using `hmul _ (hΓN _ hγN) _ hγ`. Use `⟨_, hγ', ?_⟩` and prove the remaining obligations. Establish `e : γN * (u₀ * γM) * (u * m * k) = γN * (u₀ * (γM * u * γM⁻¹)) * (γM * m) * k` using `by group`.
+
+Establish `e' : γN * (u₀ * γM) * (u * m * k) = γN * (u₀ * (γM * u * γM⁻¹)) * (γM * m * (k * (σ k)⁻¹)) * σ k` using `by group`. Establish `hσK : σ k ∈ K` using `by simpa using K.mul_mem (hσ1 k).1 hk`. Establish `hZ'` using `hA _ hγ' _ hx`. Rewrite `hZ'` using `[e']`. Establish `hN'` using `N.mul_mem (hΓN' _ hγN) hu'`.
+
+Establish `hM'` using `M.mul_mem hγM' hm`. Rewrite using `[e, hiff _ hN' _ hM' _ hk]`. Conclude with `⟨hγD', by rwa [mul_assoc], hAZ _ hN' _ (M.mul_mem hM' (hκ k).2) _ hσK hZ'⟩`. Combine the equalities or inequalities in the displayed calculation. Conclude with `iInf_le_of_le D (iInf_le_of_le hD (iInf_le _ hcov))`.
+
+Use `_ = C * ∫⁻ g, D.indicator 1 g ∂μ := by rw [lintegral_indicator_one hD]`. Use `_ ≤ _ := by`. Rewrite using `[hform _ (measurable_one.indicator hD)]`. Use `gcongr`. Conclude with `GlobalTheory.T.iwasawa_slice_indicator_lintegral_le G N M K μN μM μK δ (fun k => k * (σ k)⁻¹) D DN (DM ∩ Z) hδ (measurable_id.mul hσ.inv) hDN (hDM.inter hZ) h1 h2 h3 h4 (fun k _ => hκ k) hr hδr (fun u hu m hm k hk h => (hiff u hu m hm k hk).1 h)`.
+
+Establish `hcR0 : c * R ≠ 0` using `mul_ne_zero hc0 hR0`. Establish `hcR : c * R ≠ ⊤` using `ENNReal.mul_ne_top hc hR`. Rewrite using `[show covol ΓM (μM.withDensity w) M = ⨅ (D : Set G) (_ : MeasurableSet D) (_ : ∀ x ∈ (M : Set G), ∃ γ ∈ ΓM, γ * x ∈ D), μM.withDensity w D from rfl]`. Simplify using `only [ENNReal.mul_iInf_of_ne hcR0 hcR, le_iInf_iff]`. Introduce `DM hDM cM`.
+
+Establish `hX : t * ∫⁻ m in DM ∩ Z, δ m ∂μM ≤ μM.withDensity w DM`. Rewrite using `[withDensity_apply _ hDM, ← lintegral_const_mul _ hδ]`. Use `le_trans (lintegral_mono_ae ?_) (lintegral_mono_set (μ := μM) (f := w) (Set.inter_subset_left (t := Z)))` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem (hDM.inter hZ), ae_restrict_of_ae (mem_ae_iff.2 h2)] with m hm hm'`. Conclude with `hw m hm' hm.2`.
+
+Distinguish the cases in `hT : ∫⁻ m in DM ∩ Z, δ m ∂μM = ⊤`. Rewrite `hX` using `[hT, ENNReal.mul_top ht0, top_le_iff]`. Rewrite using `[hX, ENNReal.mul_top hcR0]`. Conclude with `le_top`. Distinguish the cases in `h0 : ∫⁻ m in DM ∩ Z, δ m ∂μM = 0`.
+
+Establish `hne : covol ΓN μN N ≠ ⊤` using `ne_top_of_le_ne_top (ENNReal.mul_ne_top hR ht) hcN`. Establish `hlt` using `hne.lt_top`. Simplify using `only [covol, iInf_lt_iff] at hlt`. Take `⟨DN, hDN, cN, -⟩` from `hlt`. Use `key DN DM hDN hDM cN cM` as an intermediate fact.
+
+Rewrite `this` using `[h0, mul_zero, mul_zero]`. Conclude with `this.trans (zero_le)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show covol ΓN μN N = ⨅ (D : Set G) (_ : MeasurableSet D) (_ : ∀ x ∈ (N : Set G), ∃ γ ∈ ΓN, γ * x ∈ D), μN D from rfl]`. Simplify using `only [ENNReal.mul_iInf_of_ne (mul_ne_zero hc0 h0) (ENNReal.mul_ne_top hc hT), le_iInf_iff]`.
+
+Introduce `DN hDN cN`. Use `(key DN DM hDN hDM cN cM).trans_eq (by ring)` and prove the remaining obligations. Use `_ ≤ (c * ∫⁻ m in DM ∩ Z, δ m ∂μM) * (R * t) := by gcongr`. Use `_ = c * R * (t * ∫⁻ m in DM ∩ Z, δ m ∂μM) := by ring`. Use `_ ≤ _ := by gcongr`.
+-/
 theorem covol_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [PolishSpace G]
     [MeasurableSpace G] [BorelSpace G] (N M K : Subgroup G) (hN : IsClosed (N : Set G)) (hM : IsClosed (M : Set G))
     (hK : IsClosed (K : Set G)) (hnorm : ∀ m ∈ M, ∀ u ∈ N, m * u * m⁻¹ ∈ N)
@@ -111,12 +136,18 @@ theorem covol_le {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G
     _ = c * R * (t * ∫⁻ m in DM ∩ Z, δ m ∂μM) := by ring
     _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Unfold `Formalism.HN.sizeQ Formalism.HN.htQ Formalism.F.covol`. Use `Real.rpow_nonneg ?_ _` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> positivity`.
+-/
 theorem size_nonneg (I : AutInst) (x : I.GA) (A B : Submodule (𝓞 I.E) (Fin I.n → I.E)) :
     0 ≤ Formalism.HN.sizeQ (bas I) (frm I x) A B := by
   unfold Formalism.HN.sizeQ Formalism.HN.htQ Formalism.F.covol
   refine Real.rpow_nonneg ?_ _
   split_ifs <;> positivity
 
+/- English proof (translation)
+Establish `hp : 0 < (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (n ^ 2))) 1)).toReal` using `ENNReal.toReal_pos (Metric.measure_ball_pos _ _ one_pos).ne' measure_ball_lt_top.ne`. Take `⟨r, hr, hr0⟩` from `((h.eventually (lt_mem_nhds hp)).and self_mem_nhdsWithin).exists`. Assume the negation of the conclusion as `hc`. Conclude with `absurd hr (not_lt.2 (div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg (not_lt.1 hc) ENNReal.toReal_nonneg) (pow_nonneg (le_of_lt hr0) _)))`.
+-/
 theorem gauge_pos {n : ℕ} {ε : Fin n → Bool} {c : ℝ} (h : IsGauge ε c) : 0 < c := by
   have hp : 0 < (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (n ^ 2))) 1)).toReal :=
     ENNReal.toReal_pos (Metric.measure_ball_pos _ _ one_pos).ne' measure_ball_lt_top.ne
@@ -125,6 +156,11 @@ theorem gauge_pos {n : ℕ} {ε : Fin n → Bool} {c : ℝ} (h : IsGauge ε c) :
   exact absurd hr (not_lt.2 (div_nonpos_of_nonpos_of_nonneg
     (mul_nonpos_of_nonpos_of_nonneg (not_lt.1 hc) ENNReal.toReal_nonneg) (pow_nonneg (le_of_lt hr0) _)))
 
+/- English proof (translation)
+Unfold `layerProd`. Simplify using `only [id]`. Use `mul_pos (Finset.prod_pos fun i _ => Finset.prod_pos fun k _ => ?_) (Finset.prod_pos fun i _ => ?_)` and prove the remaining obligations. Use `h i` as an intermediate fact. Use `h k` as an intermediate fact.
+
+Check the signs of the components of the expression. Use `h i` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem layerProd_pos (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) {τ : Fin a → ℝ} (h : ∀ i, 0 < τ i) :
     0 < layerProd n f j τ id := by
   unfold layerProd
@@ -136,6 +172,11 @@ theorem layerProd_pos (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) {τ : Fin a → 
   · have := h i
     positivity
 
+/- English proof (translation)
+Unfold `layerProd`. Simplify using `only [id]`. Use `mul_nonneg (Finset.prod_nonneg fun i _ => Finset.prod_nonneg fun k _ => ?_) (Finset.prod_nonneg fun i _ => ?_)` and prove the remaining obligations. Use `h i` as an intermediate fact. Use `h k` as an intermediate fact.
+
+Check the signs of the components of the expression. Use `h i` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem layerProd_nonneg (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) {τ : Fin a → ℝ} (h : ∀ i, 0 ≤ τ i) :
     0 ≤ layerProd n f j τ id := by
   unfold layerProd
@@ -148,6 +189,9 @@ theorem layerProd_nonneg (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) {τ : Fin a �
   · have := h i
     positivity
 
+/- English proof (translation)
+Unfold `layerProd`. Simplify using `only [id]`. Apply the tactic sequence `refine Measurable.mul (Finset.measurable_prod _ fun i _ => Finset.measurable_prod _ fun k _ => ?_) (Finset.measurable_prod _ fun i _ => ?_) <;> fun_prop`.
+-/
 theorem measurable_layerProd (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) :
     Measurable fun τ : Fin a → ℝ => layerProd n f j τ id := by
   unfold layerProd
@@ -155,6 +199,9 @@ theorem measurable_layerProd (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) :
   refine Measurable.mul (Finset.measurable_prod _ fun i _ => Finset.measurable_prod _ fun k _ => ?_)
     (Finset.measurable_prod _ fun i _ => ?_) <;> fun_prop
 
+/- English proof (translation)
+Establish `h : ∀ V, 0 ≤ detOn g V` using `fun V => by`. Unfold `detOn`. Apply the tactic sequence `split_ifs <;> positivity`. Conclude with `Real.rpow_nonneg (div_nonneg (h _) (h _)) _`.
+-/
 theorem locSize_nonneg {n a : ℕ} (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ))
     (g : Matrix (Fin n) (Fin n) ℂ) (i : Fin a) : 0 ≤ locSize j W g i := by
   have h : ∀ V, 0 ≤ detOn g V := fun V => by
@@ -162,6 +209,9 @@ theorem locSize_nonneg {n a : ℕ} (j : Fin a → ℕ) (W : Fin (a + 1) → Subm
     split_ifs <;> positivity
   exact Real.rpow_nonneg (div_nonneg (h _) (h _)) _
 
+/- English proof (translation)
+Rewrite using `[← mem_ae_iff]`. Establish `: ∀ᵐ x ∂(Measure.pi μ), ∀ i, x i ∈ (H i : Set (G i))` using `ae_all_iff.2 fun i => Measure.tendsto_eval_ae_ae.eventually (mem_ae_iff.2 (h i))`. Use `filter_upwards [this] with x hx i _ using hx i`.
+-/
 theorem pi_compl {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] [∀ i, MeasurableSpace (G i)]
     (μ : ∀ i, Measure (G i)) [∀ i, SigmaFinite (μ i)] (H : ∀ i, Subgroup (G i))
     (h : ∀ i, μ i (H i : Set (G i))ᶜ = 0) :
@@ -171,6 +221,59 @@ theorem pi_compl {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)]
     ae_all_iff.2 fun i => Measure.tendsto_eval_ae_ae.eventually (mem_ae_iff.2 (h i))
   filter_upwards [this] with x hx i _ using hx i
 
+/- English proof (translation)
+Introduce `I I₀ e xf a j S Λ x₀ T T' T₀ hj had p q hsig c c₀ hc hc₀ B hB hBs`. Distinguish the cases in `hA : {g | sizesAt I xf S g ∈ B} = ∅`. Establish `: covol (flagGroup I xf S) (Measure.pi fun v => Formalism.REAL.muG (I.ε v)) {g | sizesAt I xf S g ∈ B} = 0`. Rewrite using `[hA]`. Use `le_antisymm (iInf_le_of_le ∅ (iInf_le_of_le MeasurableSet.empty (iInf_le_of_le (by simp) ?_))) zero_le` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, mul_zero]`. Conclude with `zero_le`. Take `⟨g₀, hg₀⟩` from `Set.nonempty_iff_ne_empty.2 hA`. Establish `hsat` using `GlobalTheory.T.isSaturatedIsotropicFlag_of_adaptedBasis I I₀ e xf a j S Λ x₀ T T' T₀ hj had`.
+
+Establish `hiso` using `GlobalTheory.T.isTotallyIsotropicFlag_complexified_saturatedFlag I _ a j S hsat`. Take `⟨-, hrd, hrd1, hf, hcard, -⟩` from `GlobalTheory.T.autInst_degree_rootDiscriminant_rank I`. Establish `hf0 : I.f ≠ 0` using `by omega`. Establish `hex` using `fun v => GlobalTheory.T.exists_gauge_measures_isotropicFlag_parabolic I.n (I.ε v) a j _ hj (hiso v)`. Use `choose μN hσN hμN using fun v => (hex v).1`.
+
+Use `choose μM hσM hμM using fun v => (hex v).2.1`. Use `choose μK hK0 hK1 hKl using fun v => (hex v).2.2`. Use `haveI : ∀ v, IsProbabilityMeasure (μK v) := fun v => ⟨hK1 v⟩`. Establish `hgN` using `fun v => GlobalTheory.T.isotropicFlagUnipotentRadical_closed_subgroup_keeps I.n (I.ε v) a j _ (hiso v)`. Establish `hgM` using `fun v => GlobalTheory.T.isotropicFlagLevi_maxCompact_closed_subgroups I.n (I.ε v) a (flagAt I S v)`.
+
+Use `choose N hN using fun v => (hgN v).1`. Use `choose M hM using fun v => (hgM v).1`. Use `choose K hK using fun v => (hgM v).2.2.1`. Establish `mN : ∀ x : I.Ginf, x ∈ Subgroup.pi Set.univ N ↔ ∀ v, x v ∈ flagN (I.ε v) (flagAt I S v)` using `fun x => by`. Simplify using `only [Subgroup.mem_pi, Set.mem_univ, true_imp_iff, ← hN, SetLike.mem_coe]`.
+
+Establish `mM : ∀ x : I.Ginf, x ∈ Subgroup.pi Set.univ M ↔ ∀ v, x v ∈ flagM (I.ε v) (flagAt I S v)` using `fun x => by`. Simplify using `only [Subgroup.mem_pi, Set.mem_univ, true_imp_iff, ← hM, SetLike.mem_coe]`. Establish `mK : ∀ x : I.Ginf, x ∈ Subgroup.pi Set.univ K ↔ ∀ v, x v ∈ maxK (I.ε v)` using `fun x => by`. Simplify using `only [Subgroup.mem_pi, Set.mem_univ, true_imp_iff, ← hK, SetLike.mem_coe]`. Use `haveI : ∀ v, PolishSpace (Formalism.REAL.UJ (I.ε v)) := fun v => by haveI : PolishSpace (Matrix (Fin I.n) (Fin I.n) ℂ) := inferInstanceAs (PolishSpace (Fin I.n → Fin I.n → ℂ))`.
+
+Conclude with `(Formalism.REAL.isClosedEmbeddingMatrix I.n (I.ε v)).1.polishSpace`. Establish `hiw` using `fun v => GlobalTheory.T.iwasawa_decomposition_unitary_isotropicFlag I.n (I.ε v) a j _ (hiso v)`. Establish `hdec : ∀ g : I.Ginf, ∃ u ∈ Subgroup.pi Set.univ N, ∃ m ∈ Subgroup.pi Set.univ M, ∃ k ∈ Subgroup.pi Set.univ K, g = u * m * k`. Introduce `g`. Use `choose u hu m hm k hk he using fun v => (hiw v).1 (g v)`.
+
+Conclude with `⟨u, (mN _).2 hu, m, (mM _).2 hm, k, (mK _).2 hk, funext he⟩`. Establish `hmove : ∀ u ∈ Subgroup.pi Set.univ N, ∀ m ∈ Subgroup.pi Set.univ M, ∀ k ∈ Subgroup.pi Set.univ K, ∀ i, sizesAt I xf S (u * m * k) i ^ I.f = sizesAt I xf S 1 i ^ I.f * ∏ v, locSize j (flagAt I S v) (uMat (m v)) i` using `fun u hu m hm k hk i => GlobalTheory.T.gradedPieceSizes_unipotent_levi_compact_move I xf a j hj S hsat u m k ((mN _).1 hu) ((mM _).1 hm) ((mK _).1 hk) i`. Establish `hs0 : ∀ g i, 0 ≤ sizesAt I xf S g i` using `fun g i => size_nonneg I _ _ _`. Establish `hm1 : ∀ m ∈ Subgroup.pi Set.univ M, ∀ i, sizesAt I xf S m i ^ I.f = sizesAt I xf S 1 i ^ I.f * ∏ v, locSize j (flagAt I S v) (uMat (m v)) i`. Introduce `m hm i`.
+
+Simplify using `using hmove 1 (one_mem _) m hm 1 (one_mem _) i`. Establish `hs1 : ∀ i, 0 < sizesAt I xf S 1 i`. Introduce `i`. Take `⟨u, hu, m, hm, k, hk, rfl⟩` from `hdec g₀`. Use `(hs0 1 i).lt_of_ne' fun h0 => ?_` and prove the remaining obligations.
+
+Establish `h` using `hmove u hu m hm k hk i`. Rewrite `h` using `[h0, zero_pow hf0, zero_mul]`. Conclude with `((hBs hg₀).2 i).1.ne' (pow_eq_zero_iff hf0 |>.1 h)`. Set `s : I.Ginf → Fin a → ℝ` to `fun m i => (sizesAt I xf S 1 i ^ I.f * ∏ v, locSize j (flagAt I S v) (uMat (m v)) i) ^ ((I.f : ℝ)⁻¹)`. Establish `hloc : ∀ v, Measurable fun (g : Formalism.REAL.UJ (I.ε v)) (i : Fin a) => locSize j (flagAt I S v) (uMat g) i` using `fun v => measurable_pi_iff.2 fun i => GlobalTheory.T.measurable_flagLocalSizes_unitary _ _ _ _ _ i`.
+
+Establish `hsm : Measurable s` using `measurable_pi_iff.2 fun i => (measurable_const.mul (Finset.measurable_prod _ fun v _ => (GlobalTheory.T.measurable_flagLocalSizes_unitary _ _ _ _ _ i).comp (measurable_pi_apply v))).pow_const _`. Establish `hs : ∀ u ∈ Subgroup.pi Set.univ N, ∀ m ∈ Subgroup.pi Set.univ M, ∀ k ∈ Subgroup.pi Set.univ K, s m = sizesAt I xf S (u * m * k)`. Introduce `u hu m hm k hk`. Use function extensionality and compare the values at `i`. Simplify using `only [s]`.
+
+Rewrite using `[← hmove u hu m hm k hk i, Real.pow_rpow_inv_natCast (hs0 _ i) hf0]`. Establish `hsM : ∀ m ∈ Subgroup.pi Set.univ M, s m = sizesAt I xf S m` using `fun m hm => by`. Simplify using `using hs 1 (one_mem _) m hm 1 (one_mem _)`. Set `δ : ∀ v, Formalism.REAL.UJ (I.ε v) → ENNReal` to `fun v m => ENNReal.ofReal (layerProd I.n 1 j (locSize j (flagAt I S v) (uMat m)) id)`. Establish `hδ : ∀ v, Measurable (δ v)` using `fun v => ((measurable_layerProd I.n 1 j).comp (hloc v)).ennreal_ofReal`.
+
+Establish `hL1` using `layerProd_pos I.n I.f j hs1`. Establish `htδ : ∀ m ∈ Subgroup.pi Set.univ M, ENNReal.ofReal (layerProd I.n I.f j (sizesAt I xf S 1) id) * ∏ v, δ v (m v) = ENNReal.ofReal (layerProd I.n I.f j (sizesAt I xf S m) id)`. Introduce `m hm`. Rewrite using `[GlobalTheory.T.flagLayerProductMeasure_mul_prod_local _ I.n I.f a j _ _ (fun v => locSize j (flagAt I S v) (uMat (m v))) (hm1 m hm), ENNReal.ofReal_mul hL1.le, ENNReal.ofReal_prod_of_nonneg fun v _ => layerProd_nonneg _ _ _ (locSize_nonneg _ _ _)]`. Establish `ht0 : ENNReal.ofReal (layerProd I.n I.f j (sizesAt I xf S 1) id) ≠ 0` using `by simpa using hL1`.
+
+Establish `hcp` using `fun v => gauge_pos (hc v)`. Establish `hIw` using `SatModel.cIw_pos p q j`. Establish `hR : 0 < (2 * Formalism.HermitianLatticesTheory.vInv I.E) ^ ((I.f : ℝ) * dimN I.n j / 2)` using `Real.rpow_pos_of_pos (by rw [hrd]; linarith) _`. Set `F : (Fin a → ℝ) → ENNReal` to `B.indicator fun τ => ENNReal.ofReal (layerProd I.n I.f j τ id)`. Establish `hF : Measurable F` using `(measurable_layerProd I.n I.f j).ennreal_ofReal.indicator hB`.
+
+Establish `hform` using `GlobalTheory.T.iwasawaNMKIntegration_pi_product _ (fun v => Formalism.REAL.UJ (I.ε v)) (fun v => Formalism.REAL.muG (I.ε v)) μN μM μK (fun v => ENNReal.ofReal (c v)) (fun _ => ENNReal.ofReal (cIw p q j)) δ (fun v => by simpa using hcp v) (fun v => ENNReal.ofReal_ne_top) hδ (fun v …`. Rewrite `hform` using `[← ENNReal.ofReal_prod_of_nonneg fun v _ => (hcp v).le, Finset.prod_const, Finset.card_univ, hcard, ← ENNReal.ofReal_pow hIw.le]`. Establish `hrad` using `GlobalTheory.T.unipotentRadical_integral_points_covolume I xf a j hj S hsat μN hμN`. Rewrite `hrad` using `[ENNReal.ofReal_mul hR.le]`. Establish `hlevi` using `GlobalTheory.T.levi_factor_integral_mod_integral_points_le I I₀ e xf a j S Λ x₀ T T' T₀ hj had μM c₀ hμM hc₀ F hF`.
+
+Establish `eN : {g : I.Ginf | ∀ v, g v ∈ flagN (I.ε v) (flagAt I S v)} = ((Subgroup.pi Set.univ N : Subgroup I.Ginf) : Set I.Ginf)` using `Set.ext fun x => (mN x).symm`. Establish `eM : {g : I.Ginf | ∀ v, g v ∈ flagM (I.ε v) (flagAt I S v)} = ((Subgroup.pi Set.univ M : Subgroup I.Ginf) : Set I.Ginf)` using `Set.ext fun x => (mM x).symm`. Rewrite `hrad` using `[eN]`. Rewrite `hlevi` using `[eM]`. Establish `hmain` using `covol_le (G := I.Ginf) (Subgroup.pi Set.univ N) (Subgroup.pi Set.univ M) (Subgroup.pi Set.univ K) (isClosed_set_pi fun v _ => (show IsClosed (N v : Set (Formalism.REAL.UJ (I.ε v))) by`.
+
+Rewrite using `[hN]`. Conclude with `(hgN v).2.1))`. Use the proof step `(isClosed_set_pi fun v _ => (show IsClosed (M v : Set (Formalism.REAL.UJ (I.ε v))) by`. Rewrite using `[hM]`. Conclude with `(hgM v).2.1))`.
+
+Use the proof step `(isClosed_set_pi fun v _ => (show IsClosed (K v : Set (Formalism.REAL.UJ (I.ε v))) by`. Rewrite using `[hK]`. Conclude with `(hgM v).2.2.2.1))`. Use the proof step `(fun m hm u hu => (mN _).2 fun v => (hgM v).2.2.2.2 _ ((mM _).1 hm v) _ ((mN _).1 hu v))`. Use the proof step `(fun u hu m hm h => funext fun v => (hiw v).2 _ ((mN _).1 hu v) _ ((mM _).1 hm v) ((mK _).1 h v)) hdec`.
+
+Use the proof step `(Measure.pi fun v => Formalism.REAL.muG (I.ε v)) (Measure.pi μN) (Measure.pi μM) (Measure.pi μK)`. Use the proof step `(fun m => ∏ v, δ v (m v)) (fun m => F (sizesAt I xf S m))`. Use the proof step `(Finset.measurable_prod _ fun v _ => (hδ v).comp (measurable_pi_apply v))`. Use the proof step `(pi_compl _ _ fun v => by rw [hN]; exact (hμN v).1) (pi_compl _ _ fun v => by rw [hM]; exact (hμM v).1)`. Use the proof step `(pi_compl _ _ fun v => by rw [hK]; exact hK0 v) measure_univ`.
+
+Use the proof step `(fun l hl => (measurePreserving_pi μM μM (f := fun v g => g * l v) fun v => ⟨measurable_mul_const _, GlobalTheory.T.isRiemannianHaarOnSubgroup_map_mul_right_unitary I.n (I.ε v) (M v) _ (μM v) (by rw [hM]; exact (hgM v).2.1) (by rw [hM]; exact hμM v) (l v) (hl.2 v trivial) ((mK _) …`. Use the proof step `(fun l hl m hm => by`. Use `(ENNReal.mul_right_inj ht0 ENNReal.ofReal_ne_top).1 ?_` and prove the remaining obligations. Rewrite using `[htδ _ hm, htδ _ (mul_mem hm hl.2), ← hsM m hm, hs 1 (one_mem _) m hm l hl.1, one_mul])`. Use `_ _ _ _ (by simpa using pow_pos hIw _) ENNReal.ofReal_ne_top (by simpa using hR) ENNReal.ofReal_ne_top ht0`.
+
+Use the proof step `ENNReal.ofReal_ne_top hform (flagGroup I xf S)`. Use the proof step `{g : I.Ginf | ∃ γ ∈ I.GFset, γ.1 = g ∧ xf⁻¹ * γ.2 * xf ∈ I.Kset ∧ ∀ v, g v ∈ flagN (I.ε v) (flagAt I S v)}`. Use the proof step `(leviGroup I xf S) {g | sizesAt I xf S g ∈ B} (s ⁻¹' B)`. Use the proof step `(hsm hB) (GlobalTheory.T.flagLatticeStabiliserRealGroup_mul_mem I xf a S)`. Use the proof step `(fun x ⟨γ, h1, h2, h3, h4⟩ => ⟨⟨γ, h1, h2, h3⟩, fun v => (hgN v).2.2 _ (h4 v)⟩)`.
+
+Use the proof step `(fun m ⟨h1, g, hg, u, hu, h2⟩ => ⟨(mM _).2 h1, g, hg, u, (mN _).2 hu, h2⟩)`. Use the proof step `(fun x ⟨γ, h1, h2, h3, h4⟩ => (mN _).2 h4)`. Use the proof step `(fun γ hγ g hg => by`. Rewrite using `[Set.mem_setOf_eq, GlobalTheory.T.flagGradedPieceSizes_stabiliser_mul I xf a j S hsat γ hγ g]`. Conclude with `hg)`.
+
+Use the proof step `(fun u hu m hm k hk h => by`. Rewrite using `[Set.mem_preimage, hs u hu m hm k hk]`. Conclude with `h)`. Use the proof step `(fun m hm hZ => by`. Rewrite `hZ` using `[Set.mem_preimage, hsM m hm]`.
+
+Rewrite using `[htδ m hm]`. Simplify using `only [F, Set.indicator_of_mem hZ, le_refl]) hrad`. Establish `hint : ∫⁻ τ in {τ : Fin a → ℝ | ∀ i, 0 < τ i}, F τ * ENNReal.ofReal (∏ i, 2 * (I.f : ℝ) * j i / τ i) ≤ ∫⁻ τ in B, ENNReal.ofReal (dens I.n I.f j τ)`. Rewrite using `[← lintegral_indicator hB]`. Use `(setLIntegral_le_lintegral _ _).trans (lintegral_mono fun τ => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hτ : τ ∈ B`. Simplify using `only [F, Set.indicator_of_mem hτ, FlagMeas.dens]`. Rewrite using `[ENNReal.ofReal_mul (layerProd_pos _ _ _ fun i => ((hBs hτ).2 i).1).le]`. Simplify using `only [F, Set.indicator_of_notMem hτ, zero_mul, le_refl]`. Use `hmain.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[ENNReal.ofReal_mul (pow_pos hIw _).le, mul_assoc _ (∏ i, _), mul_assoc _ (_ * _) (∫⁻ τ in B, _)]`. Use `gcongr`. Use `hlevi.trans ?_` and prove the remaining obligations. Use `gcongr`.
+-/
 theorem bound : ∀ (I I₀ : AutInst) (e : I₀.E ≃+* I.E) (xf : I.Gf) (a : ℕ) (j : Fin a → ℕ) (S : Fin (a + 1) → Submodule (𝓞 I.E) (Fin I.n → I.E)) (Λ : ∀ i, Submodule (𝓞 I.E) (Fin (j i) → I.E)) (x₀ : I₀.Gf) (T T' : ∀ i, Matrix (Fin I.n) (Fin (j i)) I.E) (T₀ : Matrix (Fin I.n) (Fin I₀.n) I.E), (∀ i, 1 ≤ j i) → IsAdapted I I₀ e xf j S Λ x₀ T T' T₀ → ∀ (p q : ℕ), HasSig I p q → ∀ (c : InfinitePlace I.F → ℝ) (c₀ : InfinitePlace I₀.F → ℝ), IsGaugeAll I c → IsGaugeAll I₀ c₀ → ∀ B : Set (Fin a → ℝ), MeasurableSet B → B ⊆ simplexH a → ENNReal.ofReal (∏ v, c v) * covol (flagGroup I xf S) (Measure.pi fun v => Formalism.REAL.muG (I.ε v)) {g | sizesAt I xf S g ∈ B} ≤ ENNReal.ofReal (cIw p q j ^ I.f * (2 * Formalism.HermitianLatticesTheory.vInv I.E) ^ ((I.f : ℝ) * dimN I.n j / 2)) * (∏ i, ENNReal.ofReal (2 ^ (I.f * j i ^ 2)) * slabVol I.E (j i) (Λ i)) * (ENNReal.ofReal (∏ v, c₀ v) * covol (latGroup I₀ x₀) (Measure.pi fun v => Formalism.REAL.muG (I₀.ε v)) Set.univ) * ∫⁻ τ in B, ENNReal.ofReal (dens I.n I.f j τ) := by
   intro I I₀ e xf a j S Λ x₀ T T' T₀ hj had p q hsig c c₀ hc hc₀ B hB hBs
   by_cases hA : {g | sizesAt I xf S g ∈ B} = ∅

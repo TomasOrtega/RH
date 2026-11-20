@@ -25,6 +25,9 @@ def pkgOf (D : D7) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) : S
   swap := splitAlgEquiv_sigR (isCMExt_host D) τ
   int := fun _ => mem_intLoc_iff_split (isCMExt_host D) τ
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem sigR_tensNU {F E R R' : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R] [CommRing R']
     [Algebra F R'] (σ : E →ₐ[F] E) (j : R →ₗ[F] R') (hj : ∀ a b, j (a * b) = j a * j b) (y : R ⊗[F] E) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R' σ (tensNU j hj y) = tensNU j hj (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ y) := by
@@ -33,6 +36,9 @@ theorem sigR_tensNU {F E R R' : Type} [Field F] [Field E] [Algebra F E] [CommRin
   | tmul a e => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ (1 - tensNU (inFin v) (inFin_mul v) 1 + tensNU (inFin v) (inFin_mul v) w.1) = 1 - tensNU (inFin v) (inFin_mul v) 1 + tensNU (inFin v) (inFin_mul v) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ …`. Rewrite using `[map_add, map_sub, map_one, sigR_tensNU, sigR_tensNU, map_one]`.
+-/
 theorem conjUnit_ideleAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (w : (Fv F v ⊗[F] E)ˣ) :
     conjUnit σ (ideleAt F E v w) = ideleAt F E v (conjUnit σ w) := by
@@ -41,6 +47,9 @@ theorem conjUnit_ideleAt {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     1 - tensNU (inFin v) (inFin_mul v) 1 + tensNU (inFin v) (inFin_mul v) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ w.1)
   rw [map_add, map_sub, map_one, sigR_tensNU, sigR_tensNU, map_one]
 
+/- English proof (translation)
+Take `⟨⟨η, hη⟩, h2⟩` from `h`. Establish `e : x * conjUnit D.sp.cm.sig x = idF D (Units.map (Algebra.norm (AF D.host.F) : AE D →* AF D.host.F) x)` using `Units.ext (algebraMap_norm_eq (isCMExt_host D) x.1).symm`. Rewrite using `[e, h2 η hη, hη.2.2.1, one_pow]`.
+-/
 theorem resEta_norm {D : D7} {χ : (AE D)ˣ →* Circle} {r : ℕ} (h : ResEta D χ r) (x : (AE D)ˣ) :
     χ (x * conjUnit D.sp.cm.sig x) = 1 := by
   obtain ⟨⟨η, hη⟩, h2⟩ := h
@@ -49,6 +58,11 @@ theorem resEta_norm {D : D7} {χ : (AE D)ˣ →* Circle} {r : ℕ} (h : ResEta D
     Units.ext (algebraMap_norm_eq (isCMExt_host D) x.1).symm
   rw [e, h2 η hη, hη.2.2.1, one_pow]
 
+/- English proof (translation)
+Establish `h1 : (P.π u).1 * (P.π (u⁻¹ : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ)).1 = 1`. Rewrite using `[← Prod.fst_mul, ← map_mul, Units.mul_inv, map_one, Prod.fst_one]`. Use `⟨⟨P.π.symm ((P.π u).1, 1), P.π.symm ((P.π (u⁻¹ : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ)).1, 1), ?_, ?_⟩, Units.ext (P.π.injective ?_)⟩` and prove the remaining obligations. Rewrite using `[← map_mul, Prod.mk_mul_mk, h1, mul_one]`. Conclude with `map_one _`.
+
+Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_comm, h1, mul_one]`. Conclude with `map_one _`. Express the relevant statement in the definitionally equal form `_ = P.π (P.π.symm ((P.π u).1, 1) * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ D.sp.cm.sig (P.π.symm ((P.π u).1, 1)))`. Rewrite using `[map_mul, P.swap, AlgEquiv.apply_symm_apply]`. Conclude with `Prod.ext (by simp) (by simp [hu])`.
+-/
 theorem diag_eq_norm {D : D7} {v : Pl D} (P : SplitPkg D v) (u : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ)
     (hu : (P.π u).1 = (P.π u).2) : ∃ w, u = w * conjUnit D.sp.cm.sig w := by
   have h1 : (P.π u).1 * (P.π (u⁻¹ : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ)).1 = 1 := by
@@ -66,6 +80,13 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {v : HeightOneSpectrum (𝓞 F)}
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `intLoc_induction (p := fun y => Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (tensNU (inFin v) (inFin_mul v) y) ∈ AddSubgroup.closure {y : Af F ⊗[F] E | ∃ a ∈ Formalism.MainNotions.StandardLattice.intAf F, ∃ x : 𝓞 E, y = a ⊗ₜ[F] (x : E)}) (fun a ha x => AddSubgroup.subset_c …` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[evalV_singleFin_self]`. Conclude with `ha`.
+
+Rewrite using `[evalV_singleFin_ne hw]`. Conclude with `zero_mem _`. Rewrite using `[map_zero, map_zero]`. Conclude with `zero_mem _`. Rewrite using `[map_add, map_add]`.
+
+Conclude with `add_mem hy hz`. Rewrite using `[map_neg, map_neg]`. Conclude with `neg_mem hy`.
+-/
 theorem snd_tensNU_mem {y : Fv F v ⊗[F] E} (hy : y ∈ intLoc F E v) :
     Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (tensNU (inFin v) (inFin_mul v) y) ∈
       AddSubgroup.closure {y : Af F ⊗[F] E | ∃ a ∈ Formalism.MainNotions.StandardLattice.intAf F, ∃ x : 𝓞 E, y = a ⊗ₜ[F] (x : E)} := by
@@ -82,6 +103,9 @@ theorem snd_tensNU_mem {y : Fv F v ⊗[F] E} (hy : y ∈ intLoc F E v) :
   · rw [map_neg, map_neg]; exact neg_mem hy
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[ideleAt, val_extUnit, map_add, map_sub, map_one]`. Conclude with `add_mem (sub_mem (AddSubgroup.subset_closure ⟨1, fun w => by rw [map_one]; exact one_mem _, 1, rfl⟩) (snd_tensNU_mem (one_mem _))) (snd_tensNU_mem hu)`.
+-/
 theorem snd_ideleAt_mem {u : (Fv F v ⊗[F] E)ˣ} (hu : u.1 ∈ intLoc F E v) :
     Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (ideleAt F E v u).1 ∈
       AddSubgroup.closure {y : Af F ⊗[F] E | ∃ a ∈ Formalism.MainNotions.StandardLattice.intAf F, ∃ x : 𝓞 E, y = a ⊗ₜ[F] (x : E)} := by
@@ -90,6 +114,9 @@ theorem snd_ideleAt_mem {u : (Fv F v ⊗[F] E)ˣ} (hu : u.1 ∈ intLoc F E v) :
     (snd_tensNU_mem (one_mem _))) (snd_tensNU_mem hu)
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`. Conclude with `map_extUnit_zero _ (inFin v) (inFin_mul v) (fun a => evalV_singleFin_ne hw a) u`.
+-/
 theorem eval_snd_ideleAt {w : HeightOneSpectrum (𝓞 F)} (hw : w ≠ v) (u : (Fv F v ⊗[F] E)ˣ) :
     Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w) (AlgHom.id F E)
       (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (ideleAt F E v u).1) = 1 := by
@@ -97,12 +124,18 @@ theorem eval_snd_ideleAt {w : HeightOneSpectrum (𝓞 F)} (hw : w ≠ v) (u : (F
   exact map_extUnit_zero _ (inFin v) (inFin_mul v) (fun a => evalV_singleFin_ne hw a) u
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `map_extUnit_zero _ _ _ (fun _ => rfl) u`.
+-/
 theorem fst_ideleAt (u : (Fv F v ⊗[F] E)ˣ) :
     Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (ideleAt F E v u).1 = 1 :=
   map_extUnit_zero _ _ _ (fun _ => rfl) u
 
 end Gen
 
+/- English proof (translation)
+Use `h _ (fst_ideleAt u) (fun w hw => eval_snd_ideleAt hw u) (snd_ideleAt_mem hu) ?_` and prove the remaining obligations. Rewrite using `[← MonoidHom.map_inv]`. Conclude with `snd_ideleAt_mem hu'`.
+-/
 theorem unram_ideleAt {D : D7} {χ : (AE D)ˣ →* Circle} {v : Pl D} (h : CharUnramAt D χ v)
     {u : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ} (hu : u.1 ∈ intLoc D.host.F D.host.E v)
     (hu' : (u⁻¹).1 ∈ intLoc D.host.F D.host.E v) : χ (ideleAt D.host.F D.host.E v u) = 1 := by
@@ -110,6 +143,13 @@ theorem unram_ideleAt {D : D7} {χ : (AE D)ˣ →* Circle} {v : Pl D} (h : CharU
   rw [← MonoidHom.map_inv]
   exact snd_ideleAt_mem hu'
 
+/- English proof (translation)
+Introduce `D ψ hψ χ hχ r hr S`. Establish `hev` using `(GlobalTheory.T.character_conductor_condition D.host.F ψ hψ).and (GlobalTheory.FinPl.LastInhab.eventually_charUnramAt D χ hχ.1)`. Take `⟨v, hv, ⟨τ⟩⟩` from `GlobalTheory.Orb.exists_split_place_notMem (isCMExt_host D) (S ∪ (Filter.eventually_cofinite.1 hev).toFinset)`. Rewrite `hv` using `[Finset.mem_union, not_or, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not]`. Use `⟨v, hv.1, pkgOf D v τ, hv.2.1, fun u h1 h2 h3 => ?_, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Use `unram_ideleAt hv.2.2 (((pkgOf D v τ).int _).2 ⟨h1, by rw [h3]; exact one_mem _⟩) (((pkgOf D v τ).int _).2 ⟨h2, ?_⟩)` and prove the remaining obligations. Establish `e : ((pkgOf D v τ).π u).2 * ((pkgOf D v τ).π (u⁻¹ : (Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ)).2 = 1`. Rewrite using `[← Prod.snd_mul, ← map_mul, Units.mul_inv, map_one, Prod.snd_one]`. Rewrite `e` using `[h3, one_mul]`. Rewrite using `[e]`.
+
+Conclude with `one_mem _`. Take `⟨w, rfl⟩` from `diag_eq_norm _ u hu`. Rewrite using `[map_mul, ← conjUnit_ideleAt]`. Conclude with `resEta_norm hr _`.
+-/
 theorem placeEx : PlaceEx := by
   classical
   intro D ψ hψ χ hχ r hr S

@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {B : Base} {C : Cols B} {a : Late B C} (c : Refill a) {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
 variable {Ks : Type} [Field Ks] [NumberField Ks] [iK : Algebra Ks a.D.what₂.LL]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem finTypRep_trans_cast {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {S S' : Set (Formalism.L2.NG.FinTyp E n)}
     (e : S = S') {α : Type} (f : α ≃ Formalism.L2.Col.FinTypCls S) (x : α) :
     Formalism.L2.Col.finTypRep S (f x) = Formalism.L2.Col.finTypRep S' (f.trans (Equiv.cast (congrArg Formalism.L2.Col.FinTypCls e)) x) := by
@@ -37,6 +40,9 @@ def occB : Set (Formalism.L2.NG.FinTyp a.D.host.E a.D.R.r) :=
   {π | ∃ l, isotLB c.to a R.θ Y.PY (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.levR F l))) (levChi _ (R.βY 0) (R.dat0 (R.levR F l))) R.e0
     (principalLevelFrame.FinTyp.conjT π) ≠ ⊥}
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((congrArg (fun m : type_of% (@principalLevelFrame.isotL a.D) => {π : Formalism.L2.NG.FinTyp a.D.host.E a.D.R.r | ∃ l, m R.θ Y.PY (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.levR F l))) (levChi _ (R.βY 0) (R.dat0 (R.levR F l))) R.e0 (principalLevelFrame.FinT …`.
+-/
 theorem occ_eq : occA Y = occB c Y :=
   (by with_unfolding_all exact ((congrArg (fun m : type_of% (@principalLevelFrame.isotL a.D) => {π : Formalism.L2.NG.FinTyp a.D.host.E a.D.R.r | ∃ l,
     m R.θ Y.PY (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.levR F l))) (levChi _ (R.βY 0) (R.dat0 (R.levR F l))) R.e0
@@ -45,9 +51,15 @@ theorem occ_eq : occA Y = occB c Y :=
 def eFTB : a.D.what₂.FT ≃ Formalism.L2.Col.FinTypCls (occB c Y) :=
   Equiv.trans (β := Formalism.L2.Col.FinTypCls (occA Y)) Y.eFT (Equiv.cast (congrArg Formalism.L2.Col.FinTypCls (occ_eq c Y)))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((finTypRep_trans_cast (occ_eq c Y) Y.eFT π) :))`.
+-/
 theorem rep_eq (π : a.D.what₂.FT) : principalLevelFrame.rowRepR R.θ (Y.eFT π) = Formalism.L2.Col.finTypRep (occB c Y) (eFTB c Y π) :=
   (by with_unfolding_all exact ((finTypRep_trans_cast (occ_eq c Y) Y.eFT π) :))
 
+/- English proof (translation)
+The claim follows from `(Y.prtE π).trans ((by with_unfolding_all exact ((congrArg₂ (fun (m : type_of% (@principalLevelFrame.isotL a.D)) (ρ : Formalism.L2.NG.FinTyp a.D.host.E a.D.R.r) => (m R.θ Y.PY (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.levR F true))) (levChi _ (R.βY 0) (R.dat0 (R.levR F true))) R.e0 (pr …`.
+-/
 theorem prtE_tr (π : a.D.what₂.FT) : Y.Ish.prt π = (isotLB c.to a R.θ Y.PY (R.MY 0)
     (levS _ (R.βY 0) (R.dat0 (R.levR F true))) (levChi _ (R.βY 0) (R.dat0 (R.levR F true))) R.e0
     (principalLevelFrame.FinTyp.conjT (Formalism.L2.Col.finTypRep (occB c Y) (eFTB c Y π)))).map
@@ -56,6 +68,9 @@ theorem prtE_tr (π : a.D.what₂.FT) : Y.Ish.prt π = (isotLB c.to a R.θ Y.PY 
     (m R.θ Y.PY (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.levR F true))) (levChi _ (R.βY 0) (R.dat0 (R.levR F true))) R.e0
       (principalLevelFrame.FinTyp.conjT ρ)).map (PiTensorProduct.lift : MMap (R.MY 0) ≃ₗ[ℂ] _).toLinearMap) (isotL_eq c.to a) (rep_eq c Y π)) :)))
 
+/- English proof (translation)
+The claim follows from `(Y.prtE0 π).trans ((by with_unfolding_all exact ((congrArg₂ (fun (m : type_of% (@principalLevelFrame.isotL a.D)) (ρ : Formalism.L2.NG.FinTyp a.D.host.E a.D.R.r) => (m R.θ Y.PY (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.levR F false))) (levChi _ (R.βY 0) (R.dat0 (R.levR F false))) R.e0 …`.
+-/
 theorem replacementValues_baseLevelTypeParts_eq (π : a.D.what₂.FT) : Y.Iz.prt π = (isotLB c.to a R.θ Y.PY (R.MY 0)
     (levS _ (R.βY 0) (R.dat0 (R.levR F false))) (levChi _ (R.βY 0) (R.dat0 (R.levR F false))) R.e0
     (principalLevelFrame.FinTyp.conjT (Formalism.L2.Col.finTypRep (occB c Y) (eFTB c Y π)))).map
@@ -64,6 +79,9 @@ theorem replacementValues_baseLevelTypeParts_eq (π : a.D.what₂.FT) : Y.Iz.prt
     (m R.θ Y.PY (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.levR F false))) (levChi _ (R.βY 0) (R.dat0 (R.levR F false))) R.e0
       (principalLevelFrame.FinTyp.conjT ρ)).map (PiTensorProduct.lift : MMap (R.MY 0) ≃ₗ[ℂ] _).toLinearMap) (isotL_eq c.to a) (rep_eq c Y π)) :)))
 
+/- English proof (translation)
+The claim follows from `(Y.prtWE i π).trans ((by with_unfolding_all exact ((congrArg₂ (fun (m : type_of% (@principalLevelFrame.isotL a.D)) (ρ : Formalism.L2.NG.FinTyp a.D.host.E a.D.R.r) => (m R.θ (Y.PW i) (R.MW i (sg0 a.D A.A)) (levS _ (R.βW i) (R.datWp i (R.levL F false (sg0 a.D A.A)))) (levChi _ (R.β …`.
+-/
 theorem prtWE_tr (i : Fin a.D.R.m) (π : a.D.what₂.FT) : Y.IL.prtW i π = (isotLB c.to a R.θ (Y.PW i) (R.MW i (sg0 a.D A.A))
     (levS _ (R.βW i) (R.datWp i (R.levL F false (sg0 a.D A.A)))) (levChi _ (R.βW i) (R.datWp i (R.levL F false (sg0 a.D A.A))))
     (R.eWf i (sg0 a.D A.A)) (Formalism.L2.Col.finTypRep (occB c Y) (eFTB c Y π))).map
@@ -74,6 +92,9 @@ theorem prtWE_tr (i : Fin a.D.R.m) (π : a.D.what₂.FT) : Y.IL.prtW i π = (iso
       (R.eWf i (sg0 a.D A.A)) ρ).map (PiTensorProduct.lift : MMap (R.MW i (sg0 a.D A.A)) ≃ₗ[ℂ] _).toLinearMap)
     (isotL_eq c.to a) (rep_eq c Y π)) :)))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `case bij => exact (by with_unfolding_all exact ((Y.isomFin i).bij :))`. Use `case conj => exact (by with_unfolding_all exact ((Y.isomFin i).conj :))`. Use `case lat => exact (by with_unfolding_all exact ((Y.isomFin i).lat :))`.
+-/
 theorem isomFin_tr (i : Fin a.D.R.m) : @principalLevelFrame.IsIsomFin c.to.D (Yc c.to.D 0) (Wc c.to.D ((i))) ((Y.ιW i)) := by
   constructor
   case bij => exact (by with_unfolding_all exact ((Y.isomFin i).bij :))
@@ -163,23 +184,38 @@ def riemannRochSpaceCoordinateEquiv : (Fin ((cxW R F u).data F.cr false).D → a
 def jWu (i : Fin a.D.R.m) :
     (Fin (((cxW R F u).data F.cr false).dW i) → a.D.what₂.LL) →ₛₗ[a.D.what₂.embLL] a.D.what₂.Mj ((i : ℕ) + 1) := (by with_unfolding_all exact ((Z.jW i) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact (Z.jEE :))`.
+-/
 theorem jEEu : ∀ y, (Y.Ish.jE (a.D.jEE (eRRu Z u y))).1 =
     PiTensorProduct.lift (R.HE.e (Tw.out (s := twAt a.D.what₂.embLL A.A.v0) (E := R.HE.H)
       ((cxW R F u).iC F.cr true A.A.μ0 (Cx.cpt A.A.v0.embedding y)))) := (by with_unfolding_all exact (Z.jEE :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact (Z.jEE0 :))`.
+-/
 theorem jEE0u : ∀ y, (Y.Iz.jE (X0.s.jEE (riemannRochSpaceCoordinateEquiv Z u y))).1 =
     PiTensorProduct.lift (R.HE.e (Tw.out (s := twAt a.D.what₂.embLL A.A.v0) (E := R.HE.H)
       ((cxW R F u).iC F.cr false A.A.μ0 (Cx.cpt A.A.v0.embedding y)))) := (by with_unfolding_all exact (Z.jEE0 :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact (Z.met :))`.
+-/
 theorem metu : ∀ v, v ≠ A.A.v0 → ∀ x y, Formalism.HermitianLatticesTheory.majAt a.D.div.RR.b a.D.div.RR.X v (eRRu Z u x) (eRRu Z u y) =
     Formalism.HermitianLatticesTheory.majAt (Pi.basisFun a.D.what₂.LL _) ((cxW R F u).data F.cr true).XE v x y := (by with_unfolding_all exact (Z.met :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact (Z.met0 :))`.
+-/
 theorem met0u : ∀ v, v ≠ A.A.v0 → ∀ x y, Formalism.HermitianLatticesTheory.majAt X0.s.RR.b X0.s.RR.X v (riemannRochSpaceCoordinateEquiv Z u x) (riemannRochSpaceCoordinateEquiv Z u y) =
     Formalism.HermitianLatticesTheory.majAt (Pi.basisFun a.D.what₂.LL _) ((cxW R F u).data F.cr false).XE v x y := (by with_unfolding_all exact (Z.met0 :))
 
 include Z in
 open Classical in
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact (Z.etaJ :))`.
+-/
 theorem etaJu : ∀ (i : Fin a.D.R.m) w, a.D.what₂.etaJ ((i : ℕ) + 1) w =
     if a.D.plEq w ∈ R.twPl then A.A.fam.etaJ F.P0 F.ψ0 (A.fam3.toSub2 (cxW R F u).zs) i (R.mu (a.D.plEq w)) (a.D.plEq w) else 0 :=
   (by with_unfolding_all exact (Z.etaJ :))

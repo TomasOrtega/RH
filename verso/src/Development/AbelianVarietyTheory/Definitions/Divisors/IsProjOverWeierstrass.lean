@@ -121,9 +121,15 @@ structure Secs {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (M : Modif R
 
 attribute [instance] Secs.grp
 
+/- English proof (translation)
+Introduce `Z p p' e z J hJ` and use `(H Z p' p e.symm z J hJ).symm`.
+-/
 theorem Agree.symm {X Y Y' : Scheme.{0}} {L : LB X} {h : Y ⟶ X} {h' : Y' ⟶ X} {k : ℕ} {s : SecK L h k} {s' : SecK L h' k}
     (H : Agree L s s') : Agree L s' s := fun Z p p' e z J hJ => (H Z p' p e.symm z J hJ).symm
 
+/- English proof (translation)
+Introduce `σ j` and use `h σ _ (Nat.one_le_pow _ _ hn)`.
+-/
 theorem GalEq.galEqN {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {A : PolAV (Sp (FractionRing R))}
     {lab : Labels D A} (h : GalEq lab) {n : ℕ} (hn : 0 < n) : GalEqN n lab :=
   fun σ j => h σ _ (Nat.one_le_pow _ _ hn)
@@ -137,14 +143,23 @@ variable {K : Type} [CommRing K] [IsDomain K] {X : Type} [AddCommGroup X] [Modul
 def tq (q : X → (FractionRing K)ˣ) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (z : Fin r → X) : (FractionRing K)ˣ :=
   ∏ i, ∏ j, polar q (z i) (z j) ^ W i j
 
+/- English proof (translation)
+The claim follows from `(congrArg (gm _ z _) (psi_isConst q y _)).trans (gm_res _ z _ (hJ.mem _ _) _)`.
+-/
 theorem val_psi {Y : Type} [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y] (q : Y → (FractionRing K)ˣ) (y : Y) (z J)
     (hJ : Good (toricPre K Y q).P.L z J) : val ((toricPre K Y q).psi y) (𝟙 _) z J = gm (𝟙 _) z ⊤ (unitOn (q y)) :=
   (congrArg (gm _ z _) (psi_isConst q y _)).trans (gm_res _ z _ (hJ.mem _ _) _)
 
+/- English proof (translation)
+The claim follows from `(congrArg (gm _ z _) (tau_isConst q a b _)).trans (gm_res _ z _ (hJ.mem _ _) _)`.
+-/
 theorem val_tau {Y : Type} [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y] (q : Y → (FractionRing K)ˣ) (a b : Y) (z J)
     (hJ : Good (toricPre K Y q).P.L z J) : val ((toricPre K Y q).tau a b) (𝟙 _) z J = gm (𝟙 _) z ⊤ (unitOn (polar q a b)) :=
   (congrArg (gm _ z _) (tau_isConst q a b _)).trans (gm_res _ z _ (hJ.mem _ _) _)
 
+/- English proof (translation)
+Set `F : (FractionRing K)ˣ →* _` to `(gm (𝟙 (TK K).left) z ⊤).comp (MonoidHom.mk' unitOn unitOn_mul)`. Express the relevant statement in the definitionally equal form `F _ = ∏ i, ∏ j, F _ ^ _`. Simplify using `only [tq, map_prod, map_zpow]`.
+-/
 theorem gm_tq (q : X → (FractionRing K)ˣ) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (y : Fin r → X) (z : (TK K).left) :
     gm (𝟙 (TK K).left) z ⊤ (unitOn (tq q W y)) = ∏ i, ∏ j, gm (𝟙 (TK K).left) z ⊤ (unitOn (polar q (y i) (y j))) ^ W i j := by
   let F : (FractionRing K)ˣ →* _ := (gm (𝟙 (TK K).left) z ⊤).comp (MonoidHom.mk' unitOn unitOn_mul)
@@ -177,6 +192,9 @@ def rho : GaussianInt →+* Matrix (Fin 2) (Fin 2) ℤ where
   map_zero' := by ext i j; fin_cases i <;> fin_cases j <;> simp
   map_add' a b := by ext i j; fin_cases i <;> fin_cases j <;> simp <;> ring
 
+/- English proof (translation)
+Establish `h : ∀ z : Fin 2 → ℤ, tq (fun n : ℤ => u ^ (n ^ 2)) (1 : Matrix (Fin 2) (Fin 2) ℤ) z = u ^ (2 * z 0 * z 0 + 2 * z 1 * z 1)` using `fun z => by simp [tq, Fin.prod_univ_two, polar_zpow_sq, zpow_add]`. Rewrite using `[polar, h, h, h, ← zpow_neg, ← zpow_neg, ← zpow_add, ← zpow_add]`. Use `congr 1`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polar_tq (u : (FractionRing K)ˣ) (y z : Fin 2 → ℤ) :
     polar (tq (fun n : ℤ => u ^ (n ^ 2)) (1 : Matrix (Fin 2) (Fin 2) ℤ)) y z = u ^ (4 * (y 0 * z 0 + y 1 * z 1)) := by
   have h : ∀ z : Fin 2 → ℤ, tq (fun n : ℤ => u ^ (n ^ 2)) (1 : Matrix (Fin 2) (Fin 2) ℤ) z = u ^ (2 * z 0 * z 0 + 2 * z 1 * z 1) :=
@@ -186,6 +204,11 @@ theorem polar_tq (u : (FractionRing K)ˣ) (y z : Fin 2 → ℤ) :
   simp only [Pi.add_apply]
   ring
 
+/- English proof (translation)
+Use `letI : Module GaussianInt (Fin 2 → ℤ) := Module.compHom (Fin 2 → ℤ) ((Matrix.toLinAlgEquiv' (R := ℤ)).toRingEquiv.toRingHom.comp rho)`. Establish `hs : ∀ (a : GaussianInt) (z : Fin 2 → ℤ), a • z = (rho a).mulVec z` using `fun _ _ => rfl`. Use `⟨inferInstance, toricOAct _ GaussianInt (fun a y z => ?_), fun a z i => ?_, fun _ _ => toUnit_unique _ _⟩` and prove the remaining obligations. Rewrite using `[polar_tq, polar_tq, hs, hs]`. Use `congr 1`.
+
+Simplify using `[rho, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrFun (hs a z) i`.
+-/
 theorem isAct_gauss (u : (FractionRing K)ˣ) :
     ∃ (_ : Module GaussianInt (toricPre K (Fin 2 → ℤ) (tq (fun n : ℤ => u ^ (n ^ 2)) 1)).X)
       (o : (toricPre K (Fin 2 → ℤ) (tq (fun n : ℤ => u ^ (n ^ 2)) 1)).OAct GaussianInt),
@@ -204,6 +227,13 @@ end Tensor
 section Cover
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
+/- English proof (translation)
+Use `hW.1` as an intermediate fact. Use `hW.2.1` as an intermediate fact. Take `⟨D, rfl, hX⟩` from `GlobalTheory.SelfUnif.exists_degData GlobalTheory.firstFiveLaws.1.cube (maximalIdeal W) P`. Set `A : PolAV (Spec (CommRingCat.of (FractionRing W)))` to `GlobalTheory.AmpleSpecialisation.baseChange D.toPre.P (jK W)`. Set `eA : (Over.pullback (jK W)).obj D.toPre.P.A ≅ A.A` to `Iso.refl _`.
+
+Establish `hA : IsMonHom eA.hom`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Category.comp_id _`. Use `show μ ≫ 𝟙 _ = (𝟙 _ ⊗ₘ 𝟙 _) ≫ μ`. Rewrite using `[Category.comp_id, id_tensorHom_id, Category.id_comp]`.
+
+Both sides reduce to the same expression. Establish `hw : ∃ w : LB.Iso (A.L.pull eA.hom.left) (D.toPre.P.L.pull (pullback.fst D.toPre.P.A.hom (jK W))), w.IsGen` using `LBIso.chartPull (h := 𝟙 _) (GlobalTheory.chartPullPull _ _) (chartPullId _) (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB D.toPre.P.isLB (pullback.fst D.toPre.P.A.hom (jK W))))`. Conclude with `⟨D, A, ⟨GlobalTheory.SelfUnif.selfPre D A eA hA hw, fun k _ => GlobalTheory.SelfUnif.expBij D A eA hA hw GlobalTheory.globalFns_holds (IsAdicComplete.le_jacobson_bot _) k⟩, rfl⟩`.
+-/
 theorem selfUnif {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (hW : GlobalTheory.LN.CDvr W) (P : PolAV (Sp W)) :
     ∃ (D : DegData W (maximalIdeal W)) (A : PolAV (Sp (FractionRing W))) (U : Unif (maximalIdeal W) D A P.A), U.LG.L = P.L := by
   have := hW.1
@@ -223,6 +253,13 @@ theorem selfUnif {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (hW : Glob
   exact ⟨D, A, ⟨GlobalTheory.SelfUnif.selfPre D A eA hA hw, fun k _ =>
     GlobalTheory.SelfUnif.expBij D A eA hA hw GlobalTheory.globalFns_holds (IsAdicComplete.le_jacobson_bot _) k⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Distinguish the cases in `h : IsUnit (φ ϖ)`. Use `Or.inr ⟨IsLocalization.lift (M := nonZeroDivisors R) (fun y => ?_), IsLocalization.lift_comp _⟩` and prove the remaining obligations. Take `⟨n, u, e⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero y.2) hϖ`. Rewrite using `[e, map_mul, map_pow]`.
+
+Conclude with `(u.isUnit.map φ).mul (h.pow n)`. Use `Or.inl ⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `hm : a ∈ maximalIdeal R` using `hn`. Rewrite `hm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`.
+
+Take `⟨c, rfl⟩` from `hm`. Rewrite `ha` using `[map_mul]`. Conclude with `h (isUnit_of_mul_isUnit_left ha)`.
+-/
 theorem local_or_factor [IsDiscreteValuationRing R] {W : Type} [CommRing W] [IsLocalRing W] (φ : R →+* W) :
     IsLocalHom φ ∨ ∃ ψ : FractionRing R →+* W, ψ.comp (algebraMap R _) = φ := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible R
@@ -239,6 +276,17 @@ theorem local_or_factor [IsDiscreteValuationRing R] {W : Type} [CommRing W] [IsL
     rw [map_mul] at ha
     exact h (isUnit_of_mul_isUnit_left ha)
 
+/- English proof (translation)
+Take `⟨hL, -, -, h4, h5⟩` from `GlobalTheory.firstFiveLaws`. Use `hR.1` as an intermediate fact. Establish `hR' : AdmBase R (maximalIdeal R)` using `⟨inferInstance, inferInstance, inferInstance, hR.2.1⟩`. Establish `hgi : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`.
+
+Establish `hlb : LBIso A.L (U.LG.L.pull (U.gen.inv.left ≫ pullback.fst G.hom (jK R)))` using `LBIso.chartPull (h := U.gen.inv.left) (chartPullSec A.L _ _ hgi) (chartPullSame U.LG.L _ (fun _ => pullback.fst G.hom (jK R)) _ _ fun _ => rfl) U.ext`. Use `⟨{ toModif := Modif.self R G := G grp := iG comm := cG semi := hG P := GlobalTheory.ValueForm.modelCP U.toUnifPre hL.globalFns A := A α := U.gen.inv.left ≫ pullback.fst G.hom (jK R) α_cart := GlobalTheory.ThetaBaseChange.grp_generic U.toUnifPre α_lb := hlb trait := ?_ }, rfl, rfl …` and prove the remaining obligations. Introduce `W _ _ _ hW φ ξ hφ hξ`. Take `rfl : ξ = spMap φ` from `(Category.comp_id ξ).symm.trans hξ`. Use `hW.1` as an intermediate fact.
+
+Establish `hW' : AdmBase W (maximalIdeal W)` using `⟨inferInstance, inferInstance, inferInstance, hW.2.1⟩`. Establish `hid : spMap φ = spMap (RingHom.id W) ≫ spMap φ` using `by show spMap φ = Spec.map (𝟙 _) ≫ spMap φ`. Rewrite using `[Spec.map_id, Category.id_comp]`. Break down `local_or_factor φ with hloc | ⟨ψ, hψ⟩` into its components or cases. Take `⟨D', hD, A', U', hP⟩` from `GlobalTheory.UT.EndBaseChange.exists_pull hL.polBaseChange h4.unifBaseChange h5.psiOnExists hR' hW' φ hφ (map_maximalIdeal_le φ) hG U`.
+
+Establish `hb : (Iso.refl ((Over.pullback (specOf φ)).obj G)).hom.left ≫ pullback.fst G.hom (specOf φ) = pullback.fst G.hom (specOf φ)` using `Category.id_comp _`. Conclude with `⟨W, _, inferInstance, inferInstance, RingHom.id W, (Over.pullback (specOf φ)).obj G, inferInstance, inferInstance, (Iso.refl ((Over.pullback (specOf φ)).obj G)).hom.left ≫ pullback.fst G.hom (specOf φ), D', A', U', hW, Function.injective_id, RingHom.Finite.id W, (isGrpPullback_pu …`. Take `⟨D', A', U', hU⟩` from `selfUnif hW (GlobalTheory.AmpleSpecialisation.baseChange A (spMap ψ))`. Use `⟨W, _, inferInstance, inferInstance, RingHom.id W, (GlobalTheory.AmpleSpecialisation.baseChange A (spMap ψ)).A, inferInstance, inferInstance, pullback.fst A.A.hom (spMap ψ) ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R), D', A', U', hW, Function.injective_id, RingHom.Finite.id W, ? …` and prove the remaining obligations. Use `((isGrpPullback_pullback A.A (spMap ψ)).comp (GlobalTheory.ThetaBaseChange.grp_generic U.toUnifPre)).congr ?_ rfl` and prove the remaining obligations.
+
+Use `Eq.trans ?_ hid` and prove the remaining obligations. Rewrite using `[← hψ]`. Conclude with `(Spec.map_comp _ _).symm`. Rewrite using `[hU]`. Conclude with `LBIso.chartPull (h := pullback.fst A.A.hom (spMap ψ)) (GlobalTheory.chartPullPull A.L _) (chartPullSame U.LG.L _ (fun _ => U.gen.inv.left ≫ pullback.fst G.hom (jK R)) _ _ fun _ => rfl) hlb`.
+-/
 theorem exists_uCover (hR : GlobalTheory.LN.CDvr R) {D : DegData R (maximalIdeal R)} {G : Over (Sp R)} [iG : GrpObj G]
     [cG : IsCommMonObj G] {A : PolAV (Sp (FractionRing R))} (hG : IsSemiAbelian G) (U : Unif (maximalIdeal R) D A G) :
     ∃ C : UCover R, C.toModif = Modif.self R ∧ C.A = A ∧ C.G.left = G.left := by
@@ -289,6 +337,9 @@ theorem exists_uCover (hR : GlobalTheory.LN.CDvr R) {D : DegData R (maximalIdeal
       exact LBIso.chartPull (h := pullback.fst A.A.hom (spMap ψ)) (GlobalTheory.chartPullPull A.L _)
         (chartPullSame U.LG.L _ (fun _ => U.gen.inv.left ≫ pullback.fst G.hom (jK R)) _ _ fun _ => rfl) hlb
 
+/- English proof (translation)
+Take `⟨A, G, _, _, D, U, hG, hA, hr, -⟩` from `GlobalTheory.TateUnif.exists_unif_rank_one`. Take `⟨C, -, rfl, h⟩` from `exists_uCover ⟨inferInstance, base_powerSeries.1.2.2.2, base_powerSeries.2⟩ hG U`. Conclude with `⟨C, D, G, _, _, hA, h, hr, ⟨U⟩⟩`.
+-/
 theorem uCover_rank_one : ∃ (C : UCover (PowerSeries ℚ)) (D : DegData (PowerSeries ℚ) (maximalIdeal (PowerSeries ℚ)))
     (G : Over (Sp (PowerSeries ℚ))) (_ : GrpObj G) (_ : IsCommMonObj G), C.A.g = 1 ∧ C.G.left = G.left ∧
       Module.finrank ℤ D.toPre.X = 1 ∧ Nonempty (Unif (maximalIdeal _) D C.A G) := by
@@ -309,9 +360,17 @@ def cpK (L : LB X) (h : Y ⟶ X) : ChartPull (LB.LinComb L (K := Fin 1) (fun _ =
 
 def secK {L : LB X} (t : L.Sec) (h : Y ⟶ X) : SecK L h 1 := GlobalTheory.chartSec (cpK L h) t
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.nonzeroLocus_chartSec _ t fun _ j hj => ⟨fun _ => j, Set.mem_iInter.2 fun _ => hj⟩`.
+-/
 theorem nz_secK {L : LB X} (t : L.Sec) (h : Y ⟶ X) : nonzeroLocus (secK t h) = h ⁻¹ᵁ nonzeroLocus t :=
   GlobalTheory.nonzeroLocus_chartSec _ t fun _ j hj => ⟨fun _ => j, Set.mem_iInter.2 fun _ => hj⟩
 
+/- English proof (translation)
+Introduce `Z p p' e z J hJ`. Establish `a` using `GlobalTheory.gs_chartSec (cpK L h) t p z (fun _ => J (p ≫ h)) (hJ.mem _ p)`. Establish `b` using `GlobalTheory.gs_chartSec (cpK L h') t p' z (fun _ => J (p' ≫ h')) (hJ.mem _ p')`. Use `a.trans (Eq.trans ?_ b.symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gs (p ≫ h) z (L.U (J (p ≫ h))) (t.f _) = gs (p' ≫ h') z (L.U (J (p' ≫ h'))) (t.f _)`.
+
+Rewrite using `[e]`.
+-/
 theorem agree_secK {L : LB X} (t : L.Sec) (h : Y ⟶ X) (h' : Y' ⟶ X) : Agree L (secK t h) (secK t h') := by
   intro Z p p' e z J hJ
   have a := GlobalTheory.gs_chartSec (cpK L h) t p z (fun _ => J (p ≫ h)) (hJ.mem _ p)
@@ -320,6 +379,11 @@ theorem agree_secK {L : LB X} (t : L.Sec) (h : Y ⟶ X) (h' : Y' ⟶ X) : Agree 
   change gs (p ≫ h) z (L.U (J (p ≫ h))) (t.f _) = gs (p' ≫ h') z (L.U (J (p' ≫ h'))) (t.f _)
   rw [e]
 
+/- English proof (translation)
+Establish `hs : ⨆ i, nonzeroLocus (secK (t i) h) = ⊤`. Simplify using `only [nz_secK]`. Rewrite using `[← Scheme.Hom.preimage_iSup, ht]`. Both sides reduce to the same expression. Use `⟨hs, GlobalTheory.ProjSpace.toProj_eq_comp_of_locally ht h hs fun z => (GlobalTheory.ProjSpace.exists_chart_of_iSup_nonzeroLocus ht (h z)).elim fun k hk => ⟨h ⁻¹ᵁ L.U k, hk, k, le_rfl, fun _ => k, fun _ hy => Set.mem_iInter.2 fun _ => hy, 1, fun _ => ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `(resG_resG _ _ _).trans (_root_.one_mul _).symm`.
+-/
 theorem toProj_secK {R : Type} [CommRing R] {N : ℕ} {L : LB X} (f : X ⟶ Sp R) (t : Fin (N + 1) → L.Sec)
     (ht : ⨆ i, nonzeroLocus (t i) = ⊤) (h : Y ⟶ X) :
     ∃ hs, GlobalTheory.ProjSpace.toProj (h ≫ f) (fun i => secK (t i) h) hs = h ≫ GlobalTheory.ProjSpace.toProj f t ht := by
@@ -333,6 +397,9 @@ theorem toProj_secK {R : Type} [CommRing R] {N : ℕ} {L : LB X} (f : X ⟶ Sp R
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
+/- English proof (translation)
+Introduce `W _ _ _ hW _ _ _ _ _` and use `⟨W, _, inferInstance, inferInstance, RingHom.id W, secK t _, hW, Function.injective_id, RingHom.Finite.id W, agree_secK _ _ _⟩`.
+-/
 theorem traitReg_secK (M : Modif R) (G : Over M.S) {L : LB G.left} (t : L.Sec) (α : Y ⟶ G.left) :
     TraitReg M G L (secK t α) := fun W _ _ _ hW _ _ _ _ _ =>
   ⟨W, _, inferInstance, inferInstance, RingHom.id W, secK t _, hW, Function.injective_id, RingHom.Finite.id W, agree_secK _ _ _⟩
@@ -396,6 +463,13 @@ def constSecs (M : Modif R) (G₀ : Over (Sp R)) [GrpObj G₀] [Smooth G₀.hom]
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
+/- English proof (translation)
+Set `g : MvPolynomial.homogeneousSubmodule (Fin 3) R →+*ᵍ GlobalTheory.WeierstrassCurve.grading W` to `{ __ := Ideal.Quotient.mk (GlobalTheory.WeierstrassCurve.cubicIdeal W), map_mem := fun hf => ⟨_, hf, rfl⟩ }`. Establish `hg : Function.Surjective g` using `Ideal.Quotient.mk_surjective`. Establish `hi` using `ProjSpace.irrelevant_le_map_of_surjective g hg`. Use `⟨2, Proj.map g hi, ProjSpace.isClosedImmersion_projMap g hg hi, ?_⟩` and prove the remaining obligations. Use `(Proj.mapAffineOpenCover g hi).openCover.hom_ext _ _ fun s => ?_` and prove the remaining obligations.
+
+Establish `key : ∀ (d : ℕ) (hd : 0 < d) (s : MvPolynomial (Fin 3) R) (hs : s ∈ MvPolynomial.homogeneousSubmodule (Fin 3) R d), Proj.awayι (GlobalTheory.WeierstrassCurve.grading W) (g s) (g.2 hs) hd ≫ Proj.map g hi ≫ PSpace.str R 2 = Proj.awayι (GlobalTheory.WeierstrassCurve.grading W) (g s) …`. Introduce `d hd s hs`. Rewrite using `[Proj.awayι_comp_map_assoc _ _ hd s hs, PSpace.str, Proj.awayι_toSpecZero_assoc]`. Use `erw [Proj.awayι_toSpecZero_assoc]`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp]`.
+
+Use `congr 1`. Conclude with `key _ s.1.2 _ s.2.2`.
+-/
 theorem isProjOver_weierstrass {R : Type} [CommRing R] (W : _root_.WeierstrassCurve R) :
     IsProjOver (GlobalTheory.WeierstrassCurve.toSpec W) := by
   let g : MvPolynomial.homogeneousSubmodule (Fin 3) R →+*ᵍ GlobalTheory.WeierstrassCurve.grading W :=
@@ -415,6 +489,13 @@ theorem isProjOver_weierstrass {R : Type} [CommRing R] (W : _root_.WeierstrassCu
     congr 1
   exact key _ s.1.2 _ s.2.2
 
+/- English proof (translation)
+Take `⟨W, hW⟩ : ∃ W : _root_.WeierstrassCurve (PowerSeries ℚ), W = ⟨1, 0, 0, PowerSeries.X, 0⟩` from `⟨_, rfl⟩`. Take `⟨U, hU, hsm, hqc, hgi⟩` from `GlobalTheory.WeierstrassCurve.exists_smoothLocus _ W`. Establish `hs : Smooth (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W)` using `SmoothOfRelativeDimension.smooth 1 _`. Take `⟨_, _, -, hmul⟩` from `GlobalTheory.exists_grpObj_smoothLocus _ W U hU hs hgi`. Take `⟨hG, i, hi⟩` from `GlobalTheory.MultiplicativeReduction.isSemiAbelian_and_specialFibre W hW U hU hs hgi hqc hmul`.
+
+Take `⟨N, c, _, hc⟩` from `isProjOver_weierstrass W`. Set `G₀` to `Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W)`. Establish `: Smooth G₀.hom` using `hs`. Establish `him : IsImmersion (U.ι ≫ c)` using `inferInstance`. Establish `hE : (W.map (algebraMap _ (FractionRing (PowerSeries ℚ)))).IsElliptic` using `hW ▸ GlobalTheory.MultiplicativeReduction.isElliptic_generic`.
+
+Use `⟨G₀, inferInstance, hG, GlobalTheory.MultiplicativeReduction.isProper_pullback_snd W U hU _ (by rw [← _root_.WeierstrassCurve.map_Δ]; exact hE.isUnit.ne_zero), _, LB.isLB_pull (GlobalTheory.ProjSpace.O1_isLB _ N) _, @constSecs _ _ _ _ _ M G₀ _ _ N (U.ι ≫ c) him (by rw [Category.a …` and prove the remaining obligations.
+-/
 theorem secs_multiplicative (M : Modif (PowerSeries ℚ)) :
     ∃ (G₀ : Over (Sp (PowerSeries ℚ))) (_ : GrpObj G₀) (_ : IsSemiAbelian G₀)
       (_ : IsProper ((Over.pullback (jK (PowerSeries ℚ))).obj G₀).hom)

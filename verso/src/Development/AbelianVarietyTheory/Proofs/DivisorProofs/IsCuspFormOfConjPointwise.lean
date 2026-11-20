@@ -13,6 +13,19 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ a C hC hact hZ φ hφ`. Take `⟨h, hc⟩` from `hφ`. Use `⟨⟨?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `γ g`. Rewrite using `[hC, hC, h.left]`.
+
+Use `h.level using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Express the relevant statement in the definitionally equal form `act (.fin k) (C φ) = C φ ↔ act (.fin k) φ = φ`. Rewrite using `[hact]`. Conclude with `C.injective.eq_iff`.
+
+Use `h.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E a k φ)).map C.toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨k, rfl⟩, (hact (.cpt k) φ).symm⟩`. Use `h.zfin` as an intermediate fact.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)).map C.toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨z', h1, h2⟩` from `hZ z hz`. Conclude with `⟨_, Submodule.subset_span ⟨z', h1, rfl⟩, (h2 φ).symm⟩`. Introduce `g`.
+
+Take `⟨K, N, h1⟩` from `h.growth g`. Use `⟨K, N, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hC, RCLike.norm_conj]`. Conclude with `h1 y`. Introduce `r hr0 hra _ _ μ 𝓕 hμ h𝓕 g`.
+
+Use `hc r hr0 hra μ 𝓕 hμ h𝓕 g` as an intermediate fact. Repeatedly rewrite using `[hC]`. Rewrite using `[integral_conj, this, map_zero]`.
+-/
 theorem isCuspForm_of_conj_pointwise : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (C : Sm E a ≃ₗ⋆[ℂ] Sm E a), (∀ φ g, (C φ).1 g = starRingEnd ℂ (φ.1 g)) → (∀ o φ, act o (C φ) = C (act o φ)) → (∀ z ∈ Zalg E a, ∃ z' ∈ Zalg E a, ∀ φ, z (C φ) = C (z' φ)) → ∀ φ : Sm E a, IsCuspForm φ → IsCuspForm (C φ) := by
   intro E _ _ _ a C hC hact hZ φ hφ
   obtain ⟨h, hc⟩ := hφ

@@ -23,13 +23,22 @@ variable {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)}
 def complMap (h : w.under (𝓞 F) = v) : Fv F v →+* w.adicCompletion E := by
   subst h; exact GlobalTheory.AdeleBaseChange.locMap F w
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem complMap_rfl (w : HeightOneSpectrum (𝓞 E)) :
     complMap (rfl : w.under (𝓞 F) = _) = GlobalTheory.AdeleBaseChange.locMap F w := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `GlobalTheory.AdeleBaseChange.locMap_algebraMap w x`.
+-/
 theorem complMap_algebraMap (h : w.under (𝓞 F) = v) (x : F) :
     complMap h (algebraMap F _ x) = algebraMap E _ (algebraMap F E x) := by
   subst h; exact GlobalTheory.AdeleBaseChange.locMap_algebraMap w x
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `GlobalTheory.AdeleBaseChange.locMap_int w a ha`.
+-/
 theorem complMap_mem (h : w.under (𝓞 F) = v) {a : Fv F v} (ha : a ∈ v.adicCompletionIntegers F) :
     complMap h a ∈ Ov E w := by
   subst h; exact GlobalTheory.AdeleBaseChange.locMap_int w a ha
@@ -39,6 +48,9 @@ def toCompl (h : w.under (𝓞 F) = v) : Fv F v ⊗[F] E →+* w.adicCompletion 
   (Algebra.TensorProduct.productMap (⟨complMap h, complMap_algebraMap h⟩ : Fv F v →ₐ[F] w.adicCompletion E)
     (⟨algebraMap E _, fun _ => rfl⟩ : E →ₐ[F] w.adicCompletion E)).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toCompl_tmul (h : w.under (𝓞 F) = v) (a : Fv F v) (x : E) :
     toCompl h (a ⊗ₜ[F] x) = complMap h a * algebraMap E _ x := rfl
 
@@ -72,6 +84,9 @@ def IsInertChart (h : w.under (𝓞 F) = v) (c : w.adicCompletion E →+* w.adic
 
 variable {σ J L}
 
+/- English proof (translation)
+Establish `e` using `Final.StabStd (w.adicCompletion E) (Ov E w) (Fin n) Subtype.val_injective`. Establish `hm : ∀ y : Fin n → w.adicCompletion E, y ∈ stdLat (n` using `Fin n) (Ov E w) ↔ ∀ i, y i ∈ Ov E w := fun y => ⟨fun h i => by obtain ⟨r, hr⟩ := h i trivial; exact hr ▸ r.2, fun h i _ => ⟨⟨_, h i⟩, rfl⟩⟩`. Use `e.le fun y => ?_` and prove the remaining obligations. Rewrite using `[hm, hm, hb, ha, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_left]`.
+-/
 theorem IsFrameAt.inv_mul_mem {a b : GL (Fin n) (w.adicCompletion E)} (ha : IsFrameAt w L a) (hb : IsFrameAt w L b) :
     a⁻¹ * b ∈ KGL w n := by
   have e := Final.StabStd (w.adicCompletion E) (Ov E w) (Fin n) Subtype.val_injective
@@ -80,12 +95,20 @@ theorem IsFrameAt.inv_mul_mem {a b : GL (Fin n) (w.adicCompletion E)} (ha : IsFr
   refine e.le fun y => ?_
   rw [hm, hm, hb, ha, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_left]
 
+/- English proof (translation)
+Take `⟨⟨a, ha, e1⟩, -⟩` from `he`. Take `⟨⟨b, hb, e2⟩, -⟩` from `he'`. Conclude with `⟨_, ha.inv_mul_mem hb, fun g => by rw [e1, e2]; group⟩`.
+-/
 theorem IsSplitChart.exists_conj {h : w.under (𝓞 F) = v} {e e' : GLoc σ J v ≃* GL (Fin n) (w.adicCompletion E)}
     (he : IsSplitChart σ J L h e) (he' : IsSplitChart σ J L h e') : ∃ k ∈ KGL w n, ∀ g, e' g = k⁻¹ * e g * k := by
   obtain ⟨⟨a, ha, e1⟩, -⟩ := he
   obtain ⟨⟨b, hb, e2⟩, -⟩ := he'
   exact ⟨_, ha.inv_mul_mem hb, fun g => by rw [e1, e2]; group⟩
 
+/- English proof (translation)
+Take `⟨-, ⟨a, ha, ha', e1⟩, -⟩` from `he`. Take `⟨-, ⟨b, hb, hb', e2⟩, -⟩` from `he'`. Establish `hk : a⁻¹ * b ∈ GU c n`. Express the relevant statement in the definitionally equal form `cT c (a⁻¹ * b).1 * antiJ _ n * (a⁻¹ * b).1 = antiJ _ n`. Use `conv_lhs => rw [← ha']`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← cT_mul, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel_left, hb']`. Conclude with `⟨⟨_, hk⟩, ⟨hk, ha.inv_mul_mem hb⟩, fun g => Subtype.ext (by`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, e1, e2]`. Use the proof step `group)⟩`.
+-/
 theorem IsInertChart.exists_conj {h : w.under (𝓞 F) = v} {c : w.adicCompletion E →+* w.adicCompletion E}
     {e e' : GLoc σ J v ≃* GU c n} (he : IsInertChart σ J L h c e) (he' : IsInertChart σ J L h c e') :
     ∃ k ∈ KU c n, ∀ g, e' g = k⁻¹ * e g * k := by
@@ -131,6 +154,9 @@ def IsSysParam (h : w.under (𝓞 F) = v) (c : List ℤ → ℂ) (B : Multiset �
 
 variable {σ J L} {h : w.under (𝓞 F) = v} {ρ : Representation ℂ (GLoc σ J v) V} {x : V} {B B' : Multiset ℂˣ}
 
+/- English proof (translation)
+Introduce and unpack `⟨P, Q, hne, hP, hQ⟩`. Establish `key : ∀ R : HeightOneSpectrum (𝓞 E), R.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal → w = R` using `fun R hR => HeightOneSpectrum.ext (w.isMaximal.eq_of_le R.isPrime.ne_top (hw ▸ Ideal.map_le_iff_le_comap.2 hR.ge))`. Conclude with `hne ((key P hP).symm.trans (key Q hQ))`.
+-/
 theorem not_isSplit_of_isInertAt (hw : IsInertAt F E v w) : ¬ IsSplit (E := E) v := by
   rintro ⟨P, Q, hne, hP, hQ⟩
   have key : ∀ R : HeightOneSpectrum (𝓞 E), R.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal → w = R :=
@@ -138,34 +164,57 @@ theorem not_isSplit_of_isInertAt (hw : IsInertAt F E v w) : ¬ IsSplit (E := E) 
       (hw ▸ Ideal.map_le_iff_le_comap.2 hR.ge))
   exact hne ((key P hP).symm.trans (key Q hQ))
 
+/- English proof (translation)
+Apply the tactic sequence `rcases hx with ⟨-, e, -, hx⟩ | ⟨-, c, ϖ, e, α, -, -, hx, -⟩ <;> exact hx.1`.
+-/
 theorem IsParamVec.ne_zero (hx : IsParamVec σ J L h ρ x B) : x ≠ 0 := by
   rcases hx with ⟨-, e, -, hx⟩ | ⟨-, c, ϖ, e, α, -, -, hx, -⟩ <;> exact hx.1
 
+/- English proof (translation)
+Break down `hx with ⟨-, e, he, hx⟩ | ⟨-, c, ϖ, e, α, -, he, hx, -⟩` into its components or cases. Conclude with `(mem_fixed_comp_symm e he.2).1 hx.2.1`. Conclude with `(mem_fixed_comp_symm e he.2.2).1 hx.2.1`.
+-/
 theorem IsParamVec.mem_fixed (hx : IsParamVec σ J L h ρ x B) : x ∈ fixed ρ (stabLoc σ J L v) := by
   rcases hx with ⟨-, e, he, hx⟩ | ⟨-, c, ϖ, e, α, -, he, hx, -⟩
   · exact (mem_fixed_comp_symm e he.2).1 hx.2.1
   · exact (mem_fixed_comp_symm e he.2.2).1 hx.2.1
 
+/- English proof (translation)
+Break down `hx with ⟨-, e, -, hx⟩ | ⟨-, c, ϖ, e, α, -, -, -, rfl⟩` into its components or cases. Conclude with `hx.2.2.1`. Conclude with `GlobalTheory.LGrp.card_bcParam n α`.
+-/
 theorem IsParamVec.card (hx : IsParamVec σ J L h ρ x B) : B.card = n := by
   rcases hx with ⟨-, e, -, hx⟩ | ⟨-, c, ϖ, e, α, -, -, -, rfl⟩
   · exact hx.2.2.1
   · exact GlobalTheory.LGrp.card_bcParam n α
 
+/- English proof (translation)
+Break down `hρ with ⟨hv, e, he, hρ⟩ | ⟨hv, c, ϖ, e, α, hU, he, hρ, hB⟩` into its components or cases. Conclude with `Or.inl ⟨hv, e, he, hρ.2 x ((mem_fixed_comp_symm e he.2).2 hx) h0⟩`. Conclude with `Or.inr ⟨hv, c, ϖ, e, α, hU, he, hρ.2 x ((mem_fixed_comp_symm e he.2.2).2 hx) h0, hB⟩`.
+-/
 theorem HasParam.isParamVec (hρ : HasParam σ J L h ρ B) (hx : x ∈ fixed ρ (stabLoc σ J L v)) (h0 : x ≠ 0) :
     IsParamVec σ J L h ρ x B := by
   rcases hρ with ⟨hv, e, he, hρ⟩ | ⟨hv, c, ϖ, e, α, hU, he, hρ, hB⟩
   · exact Or.inl ⟨hv, e, he, hρ.2 x ((mem_fixed_comp_symm e he.2).2 hx) h0⟩
   · exact Or.inr ⟨hv, c, ϖ, e, α, hU, he, hρ.2 x ((mem_fixed_comp_symm e he.2.2).2 hx) h0, hB⟩
 
+/- English proof (translation)
+Break down `hρ with ⟨hv, e, he, hρ⟩ | ⟨hv, c, ϖ, e, α, hU, he, hρ, hB⟩` into its components or cases. Conclude with `hρ.exists_vec.imp fun x hx => Or.inl ⟨hv, e, he, hx⟩`. Conclude with `hρ.exists_vec.imp fun x hx => Or.inr ⟨hv, c, ϖ, e, α, hU, he, hx, hB⟩`.
+-/
 theorem HasParam.exists_vec (hρ : HasParam σ J L h ρ B) : ∃ x, IsParamVec σ J L h ρ x B := by
   rcases hρ with ⟨hv, e, he, hρ⟩ | ⟨hv, c, ϖ, e, α, hU, he, hρ, hB⟩
   · exact hρ.exists_vec.imp fun x hx => Or.inl ⟨hv, e, he, hx⟩
   · exact hρ.exists_vec.imp fun x hx => Or.inr ⟨hv, c, ϖ, e, α, hU, he, hx, hB⟩
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `hρ.exists_vec`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨x, hx.mem_fixed, hx.ne_zero⟩`.
+-/
 theorem HasParam.isSpherical (hρ : HasParam σ J L h ρ B) : GlobalTheory.LGrp.IsSpherical ρ (stabLoc σ J L v) := by
   obtain ⟨x, hx⟩ := hρ.exists_vec
   exact (Submodule.ne_bot_iff _).2 ⟨x, hx.mem_fixed, hx.ne_zero⟩
 
+/- English proof (translation)
+Establish `hf` using `hx.mem_fixed`. Break down `hx with ⟨-, e', he', hx⟩ | ⟨hw, -⟩` into its components or cases. Take `⟨k, hk, hc⟩` from `he'.exists_conj he`. Conclude with `⟨hx.1, (mem_fixed_comp_symm e he.2).2 hf, hx.2.2.1, fun ϖ hϖ j hj => by`. Rewrite using `[heckeVec_comp_symm_congr e' e he'.2 hk hc (Tj_mem_hecke hϖ j).1 hf, hx.2.2.2 ϖ hϖ j hj]⟩`.
+
+Conclude with `absurd hv (not_isSplit_of_isInertAt hw)`.
+-/
 theorem IsParamVec.isSatVecGL (hx : IsParamVec σ J L h ρ x B) (hv : IsSplit (E := E) v)
     {e : GLoc σ J v ≃* GL (Fin n) (w.adicCompletion E)} (he : IsSplitChart σ J L h e) :
     IsSatVecGL w (ρ.comp e.symm.toMonoidHom) x B := by
@@ -176,6 +225,9 @@ theorem IsParamVec.isSatVecGL (hx : IsParamVec σ J L h ρ x B) (hv : IsSplit (E
       rw [heckeVec_comp_symm_congr e' e he'.2 hk hc (Tj_mem_hecke hϖ j).1 hf, hx.2.2.2 ϖ hϖ j hj]⟩
   · exact absurd hv (not_isSplit_of_isInertAt hw)
 
+/- English proof (translation)
+Establish `hf` using `(mem_fixed_comp_symm e he.2.2).1 hx.2.1`. Take `⟨k, hk, hc⟩` from `he.exists_conj he'`. Conclude with `⟨hx.1, (mem_fixed_comp_symm e' he'.2.2).2 hf, fun t ht => by`. Rewrite using `[heckeVec_comp_symm_congr e e' he.2.2 hk hc ht.1 hf, hx.2.2 t ht]⟩`.
+-/
 theorem IsSatVecU.of_chart {c : w.adicCompletion E →+* w.adicCompletion E} {e e' : GLoc σ J v ≃* GU c n}
     (he : IsInertChart σ J L h c e) (he' : IsInertChart σ J L h c e') {ϖ : w.adicCompletion E} {q : ℕ}
     {α : Fin (n / 2) → ℂˣ} (hx : IsSatVecU ϖ q (ρ.comp e.symm.toMonoidHom) x α) :
@@ -185,21 +237,33 @@ theorem IsSatVecU.of_chart {c : w.adicCompletion E →+* w.adicCompletion E} {e 
   exact ⟨hx.1, (mem_fixed_comp_symm e' he'.2.2).2 hf, fun t ht => by
     rw [heckeVec_comp_symm_congr e e' he.2.2 hk hc ht.1 hf, hx.2.2 t ht]⟩
 
+/- English proof (translation)
+Break down `hx' with ⟨-, e, he, hx'⟩ | ⟨hw, -⟩` into its components or cases. Conclude with `(hx.isSatVecGL hv he).unique hx'`. Conclude with `absurd hv (not_isSplit_of_isInertAt hw)`.
+-/
 theorem IsParamVec.unique_of_isSplit (hv : IsSplit (E := E) v) (hx : IsParamVec σ J L h ρ x B)
     (hx' : IsParamVec σ J L h ρ x B') : B = B' := by
   rcases hx' with ⟨-, e, he, hx'⟩ | ⟨hw, -⟩
   · exact (hx.isSatVecGL hv he).unique hx'
   · exact absurd hv (not_isSplit_of_isInertAt hw)
 
+/- English proof (translation)
+Rewrite using `[paramOf, dif_pos ⟨B, hρ⟩]`. Conclude with `Exists.choose_spec (⟨B, hρ⟩ : ∃ B, HasParam σ J L h ρ B)`.
+-/
 theorem HasParam.hasParam_paramOf (hρ : HasParam σ J L h ρ B) : HasParam σ J L h ρ (paramOf σ J L h ρ) := by
   rw [paramOf, dif_pos ⟨B, hρ⟩]
   exact Exists.choose_spec (⟨B, hρ⟩ : ∃ B, HasParam σ J L h ρ B)
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `hρ.exists_vec`. Conclude with `(hρ.hasParam_paramOf.isParamVec hx.mem_fixed hx.ne_zero).unique_of_isSplit hv hx`.
+-/
 theorem HasParam.paramOf_eq_of_isSplit (hv : IsSplit (E := E) v) (hρ : HasParam σ J L h ρ B) :
     paramOf σ J L h ρ = B := by
   obtain ⟨x, hx⟩ := hρ.exists_vec
   exact (hρ.hasParam_paramOf.isParamVec hx.mem_fixed hx.ne_zero).unique_of_isSplit hv hx
 
+/- English proof (translation)
+Use `Or.inl ⟨hv, e, he, ?_⟩` and prove the remaining obligations. Use `hasSatGL_psFunGL (w := w) α using 1` and compare the differences between its conclusion and the goal. Conclude with `MonoidHom.ext fun g => congrArg (psFunGL w α) (e.apply_symm_apply g)`.
+-/
 theorem hasParam_psFunGL (hv : IsSplit (E := E) v) {e : GLoc σ J v ≃* GL (Fin n) (w.adicCompletion E)}
     (he : IsSplitChart σ J L h e) (α : Fin n → ℂˣ) :
     HasParam σ J L h ((psFunGL w α).comp e.toMonoidHom) (Finset.univ.val.map α) := by
@@ -246,10 +310,16 @@ def LSRep (π : ∀ v, Representation ℂ (GLoc σ J v) (Vl v)) (m : HeightOneSp
 
 variable {σ J L S}
 
+/- English proof (translation)
+Introduce `v hv w e` and use `by subst e; exact (h _ hv w rfl).hasParam_paramOf`.
+-/
 theorem HasParamOff.paramFam {π : ∀ v, Representation ℂ (GLoc σ J v) (Vl v)} {c : Fam E}
     (h : HasParamOff σ J L S π c) : HasParamOff σ J L S π (paramFam σ J L π) := fun v hv w e => by
   subst e; exact (h _ hv w rfl).hasParam_paramOf
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `(h _ hw w rfl).exists_vec`. Conclude with `hx.card`.
+-/
 theorem HasParamOff.card {π : ∀ v, Representation ℂ (GLoc σ J v) (Vl v)} {c : Fam E}
     (h : HasParamOff σ J L S π c) {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ above E S) : (c w).card = n := by
   obtain ⟨x, hx⟩ := (h _ hw w rfl).exists_vec
@@ -290,9 +360,15 @@ def toHChar (χ : (AF F)ˣ →* Circle) (h : IsHeckeF F χ) : HChar F :=
   ⟨Circle.toUnits.comp χ, Units.continuous_iff.2 ⟨continuous_subtype_val.comp h.1,
     (continuous_subtype_val.comp h.1.inv).congr fun x => Circle.coe_inv (χ x)⟩, fun k => (congrArg Circle.toUnits (h.2 k)).trans (map_one _)⟩
 
+/- English proof (translation)
+Introduce `x` and use `Circle.norm_coe (χ x)`.
+-/
 theorem isUnitary_toHChar (χ : (AF F)ˣ →* Circle) (h : IsHeckeF F χ) : (toHChar χ h).IsUnitary :=
   fun x => Circle.norm_coe (χ x)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1⟩`.
+-/
 theorem IsEta.isHeckeF {η : (AF F)ˣ →* Circle} (h : IsEta F E η) : IsHeckeF F η := ⟨h.1, h.2.1⟩
 
 variable (F E) in
@@ -304,9 +380,15 @@ def toFinAd : Af F ⊗[F] E →+* FiniteAdeleRing (𝓞 E) E :=
     (⟨GlobalTheory.AdeleBaseChange.adMap F E, GlobalTheory.AdeleBaseChange.adMap_algebraMap⟩ : Af F →ₐ[F] FiniteAdeleRing (𝓞 E) E)
     (⟨algebraMap E _, fun _ => rfl⟩ : E →ₐ[F] FiniteAdeleRing (𝓞 E) E)).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toFinAd_tmul (a : Af F) (x : E) :
     toFinAd F E (a ⊗ₜ[F] x) = GlobalTheory.AdeleBaseChange.adMap F E a * algebraMap E _ x := rfl
 
+/- English proof (translation)
+Set `c` to `(Algebra.TensorProduct.comm F E (Af F)).toRingEquiv`. Establish `h : ∀ x a, ((toFinAd F E).comp c.toRingHom) (x ⊗ₜ[F] a) = algebraMap E _ x * GlobalTheory.AdeleBaseChange.adMap F E a` using `fun x a => (toFinAd_tmul a x).trans (mul_comm _ _)`. Conclude with `(Function.Bijective.of_comp_iff _ c.bijective).1 ⟨GlobalTheory.AdeleBaseChange.map_injective h, GlobalTheory.AdeleBaseChange.map_surjective h⟩`.
+-/
 theorem toFinAd_bijective : Function.Bijective (toFinAd F E) := by
   let c := (Algebra.TensorProduct.comm F E (Af F)).toRingEquiv
   have h : ∀ x a, ((toFinAd F E).comp c.toRingHom) (x ⊗ₜ[F] a) =
@@ -318,6 +400,11 @@ variable (F E) in
 
 def finAdEquiv : Af F ⊗[F] E ≃+* FiniteAdeleRing (𝓞 E) E := RingEquiv.ofBijective _ toFinAd_bijective
 
+/- English proof (translation)
+Substitute `h` using the available equality. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Both sides reduce to the same expression. Consider the case `tmul a x => rfl`.
+
+Consider the case `add a b ha hb => simp only [map_add, ← ha, ← hb]`. Both sides reduce to the same expression.
+-/
 theorem finAdEquiv_apply {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v)
     (y : Af F ⊗[F] E) : finAdEquiv F E y w =
       toCompl h (Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E) y) := by
@@ -368,20 +455,46 @@ def charFam : Fam E := fun w => if UnrAt χ w then {val χ w} else 0
 
 def charL (S : Set (HeightOneSpectrum (𝓞 F))) (s : ℂ) : ℂ := LS S (charFam χ) s
 
+/- English proof (translation)
+The claim follows from `map_mul Circle.toUnits _ _`.
+-/
 @[simp] theorem val_mul : val (χ * ψ) w = val χ w * val ψ w := map_mul Circle.toUnits _ _
+/- English proof (translation)
+The claim follows from `map_inv Circle.toUnits _`.
+-/
 @[simp] theorem val_inv : val χ⁻¹ w = (val χ w)⁻¹ := map_inv Circle.toUnits _
+/- English proof (translation)
+The claim follows from `map_one Circle.toUnits`.
+-/
 @[simp] theorem val_one : val (1 : (AF F ⊗[F] E)ˣ →* Circle) w = 1 := map_one Circle.toUnits
+/- English proof (translation)
+The claim follows from `Circle.norm_coe _`.
+-/
 theorem norm_locChar (x : (w.adicCompletion E)ˣ) : ‖(locChar χ w x : ℂ)‖ = 1 := Circle.norm_coe _
+/- English proof (translation)
+The claim follows from `norm_locChar χ w _`.
+-/
 theorem norm_val : ‖(val χ w : ℂ)‖ = 1 := norm_locChar χ w _
 
 variable {χ ψ w}
 
+/- English proof (translation)
+Introduce `x hx` and use `(map_mul Circle.toUnits _ _).trans (show locChar χ w x * locChar ψ w x = 1 by rw [h x hx, h' x hx, one_mul])`.
+-/
 theorem UnrAt.mul (h : UnrAt χ w) (h' : UnrAt ψ w) : UnrAt (χ * ψ) w := fun x hx =>
   (map_mul Circle.toUnits _ _).trans (show locChar χ w x * locChar ψ w x = 1 by rw [h x hx, h' x hx, one_mul])
 
+/- English proof (translation)
+Introduce `x hx` and use `(map_inv Circle.toUnits _).trans (inv_eq_one.2 (h x hx))`.
+-/
 theorem UnrAt.inv (h : UnrAt χ w) : UnrAt χ⁻¹ w := fun x hx =>
   (map_inv Circle.toUnits _).trans (inv_eq_one.2 (h x hx))
 
+/- English proof (translation)
+Establish `h1 : IsUnitAt w (x * (atFin w (unif w))⁻¹)`. Use `Formalism.L2.Host.unif_spec w` as an intermediate fact. Unfold `IsUnifAt at hx this`. Unfold `IsUnitAt`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hx, this, mul_inv_cancel₀ WithZero.exp_ne_zero]`.
+
+Use `h _ h1` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem UnrAt.locChar_eq_val (h : UnrAt χ w) {x : (w.adicCompletion E)ˣ} (hx : IsUnifAt w x) :
     locChar χ w x = val χ w := by
   have h1 : IsUnitAt w (x * (atFin w (unif w))⁻¹) := by
@@ -392,8 +505,14 @@ theorem UnrAt.locChar_eq_val (h : UnrAt χ w) {x : (w.adicCompletion E)ˣ} (hx :
   have := h _ h1
   rwa [map_mul, map_inv, mul_inv_eq_one] at this
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem charFam_of_unrAt (h : UnrAt χ w) : charFam χ w = {val χ w} := if_pos h
 
+/- English proof (translation)
+Introduce `w _` and use `by unfold charFam split_ifs · refine ⟨by simp, fun b hb => ?_⟩ rw [Multiset.mem_singleton.1 hb, Real.rpow_zero, norm_val] · simp`.
+-/
 theorem bounded_charFam (T : Set (HeightOneSpectrum (𝓞 E))) (χ : (AF F ⊗[F] E)ˣ →* Circle) :
     Bounded T (charFam χ) 1 0 := fun w _ => by
   unfold charFam
@@ -402,9 +521,15 @@ theorem bounded_charFam (T : Set (HeightOneSpectrum (𝓞 E))) (χ : (AF F ⊗[F
     rw [Multiset.mem_singleton.1 hb, Real.rpow_zero, norm_val]
   · simp
 
+/- English proof (translation)
+The claim follows from `(bounded_charFam T χ).converges (by simpa using hs)`.
+-/
 theorem converges_charFam (T : Set (HeightOneSpectrum (𝓞 E))) (χ : (AF F ⊗[F] E)ˣ →* Circle) {s : ℂ}
     (hs : 1 < s.re) : Converges T (charFam χ) s := (bounded_charFam T χ).converges (by simpa using hs)
 
+/- English proof (translation)
+The claim follows from `(h.twist fun w _ => by simp [norm_val]).converges hs`.
+-/
 theorem Bounded.converges_twist_val {T : Set (HeightOneSpectrum (𝓞 E))} {c : Fam E} {r : ℕ} {κ : ℝ}
     (h : Bounded T c r κ) (μ : (AF F ⊗[F] E)ˣ →* Circle) {s : ℂ} (hs : κ + 1 < s.re) :
     Converges T (LFun.twist c (val μ)⁻¹) s :=
@@ -420,7 +545,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isHeckeChar_iff (χ : (AE D)ˣ →* Circle) : IsHeckeChar D χ ↔ IsHecke D.host.F D.host.E χ := Iff.rfl
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem resEta_iff (χ : (AE D)ˣ →* Circle) (k : ℕ) :
     Formalism.L2.Theta.ResEta D χ k ↔ ResEta D.host.F D.host.E χ k := Iff.rfl
 
@@ -444,12 +575,18 @@ abbrev LSD (c : Fam D.host.E) (μ : (AE D)ˣ →* Circle) (s : ℂ) : ℂ := LST
 
 end Record
 
+/- English proof (translation)
+Establish `: charFam (1 : (AF F ⊗[F] E)ˣ →* Circle) = fun _ => {1}`. Use function extensionality and compare the values at `fun w => (charFam_of_unrAt (χ := 1) fun _ _ => map_one Circle.toUnits).trans (by simp)`. Rewrite using `[charL, this, LS, zetaOff]`.
+-/
 example (S : Set (HeightOneSpectrum (𝓞 F))) (s : ℂ) :
     charL (1 : (AF F ⊗[F] E)ˣ →* Circle) S s = zetaOff (above E S) s := by
   have : charFam (1 : (AF F ⊗[F] E)ˣ →* Circle) = fun _ => {1} :=
     funext fun w => (charFam_of_unrAt (χ := 1) fun _ _ => map_one Circle.toUnits).trans (by simp)
   rw [charL, this, LS, zetaOff]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[twist]`.
+-/
 example (μ : (AF F ⊗[F] E)ˣ →* Circle) : twist (fun w => {val μ w}) (val μ)⁻¹ = fun _ => {1} := by
   funext w; simp [twist]
 

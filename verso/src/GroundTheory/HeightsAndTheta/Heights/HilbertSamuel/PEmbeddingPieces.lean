@@ -12,6 +12,21 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ F _ _ _ y D L c w hP hbir hL hex hw`. Set `S : (F →+* ℂ) → Set ((Σ k, ι k) → ℂ)` to `fun sg => {z | LiesOver y sg z}`. Establish `hSc : ∀ sg, IsClosed (S sg)` using `fun sg => EmbeddingWeight.isClosed_liesOver y sg`. Establish `hSs : ∀ sg (t : K → ℂ) (z : (Σ k, ι k) → ℂ), (∀ k, t k ≠ 0) → z ∈ S sg → (fun p => t p.1 * z p) ∈ S sg` using `fun _ t _ _ hz => EmbeddingWeight.liesOver_smul hz t`. Establish `hex' : ∀ z ∈ mcPts (mCoordIdeal y), ∃! sg, z ∈ S sg` using `hex`.
+
+Establish `hind : ∀ (d : (F →+* ℂ) → ℝ), ∀ z ∈ mcPts (mCoordIdeal y), ∀ sg, LiesOver y sg z → ∑ s, d s * (S s).indicator (fun _ => (1 : ℝ)) z = d sg`. Introduce `d z hz sg hsg`. Rewrite using `[Finset.sum_eq_single sg]`. Rewrite using `[Set.indicator_of_mem (show z ∈ S sg from hsg), mul_one]`. Introduce `s _ hs`.
+
+Establish `hns : z ∉ S s` using `fun h => hs ((hex z hz).unique h hsg)`. Rewrite using `[Set.indicator_of_notMem hns, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ sg) h`. Establish `hwL : ptsIntegral (mCoordIdeal y) (pot L) w = ptsIntegral (mCoordIdeal y) (pot L) (fun z => ∑ s, c s * (S s).indicator (fun _ => (1 : ℝ)) z)`.
+
+Use `GroundTheory.Heights₂.Heights.Inter.DiagRAux.ptsIntegral_congr_mcPts _ (fun _ _ _ => rfl) ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨sg, hsg, -⟩` from `hex z hz`. Rewrite using `[hind c z hz sg hsg]`. Conclude with `(hw z hz sg hsg).self_of_nhds`.
+
+Establish `h1 : ptsIntegral (mCoordIdeal y) (pot L) (fun _ => 1) = ptsIntegral (mCoordIdeal y) (pot L) (fun z => ∑ s, (fun _ => (1 : ℝ)) s * (S s).indicator (fun _ => (1 : ℝ)) z)`. Use `GroundTheory.Heights₂.Heights.Inter.DiagRAux.ptsIntegral_congr_mcPts _ (fun _ _ _ => rfl) ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨sg, hsg, -⟩` from `hex z hz`. Rewrite using `[hind _ z hz sg hsg]`.
+
+Rewrite using `[hwL, h1, hA K ι _ D L (F →+* ℂ) S c hP hL hSc hSs hex', hA K ι _ D L (F →+* ℂ) S (fun _ => 1) hP hL hSc hSs hex']`. Break down `isEmpty_or_nonempty (F →+* ℂ) with he | ⟨⟨s0⟩⟩` into its components or cases. Simplify using `[Finset.univ_eq_empty]`. Establish `hI : ∀ s, ptsIntegral (mCoordIdeal y) (pot L) ((S s).indicator fun _ => (1 : ℝ)) = ptsIntegral (mCoordIdeal y) (pot L) ((S s0).indicator fun _ => (1 : ℝ))` using `fun s => hD K ι Ω F y D L s s0 hP hbir hL hex`. Simplify using `only [hI, ← Finset.sum_mul, one_mul, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Establish `hcard : (Fintype.card (F →+* ℂ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem EmbeddingPieces.proof (hA : PiecesAdditive.Statement) (hD : PieceDegree.Statement) :
     EmbeddingPieces.Statement := by
   intro K _ ι _ Ω _ F _ _ _ y D L c w hP hbir hL hex hw

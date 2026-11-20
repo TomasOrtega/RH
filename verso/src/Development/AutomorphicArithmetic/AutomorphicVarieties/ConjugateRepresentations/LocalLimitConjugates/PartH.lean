@@ -7,6 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresent
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresentations.LocalLimitConjugates.CharOf
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresentations.LocalLimitConjugates.AutOf
 
+/- English proof (translation)
+The claim follows from `UpperTheory.V.Cj.H.partH_of UpperTheory.V.Cj.exactSub UpperTheory.V.Lit.Bor.frameEx UpperTheory.V.Lit.Bor.oneReal UpperTheory.V.Cj.H.harmSub UpperTheory.V.Cj.H.harmSS UpperTheory.V.Cj.H.hodgeEx UpperTheory.V.Cj.H.charOf UpperTheory.V.Cj.H.autOf`.
+-/
 theorem UpperTheory.V.Cj.partH : UpperTheory.V.Cj.PartH :=
   UpperTheory.V.Cj.H.partH_of UpperTheory.V.Cj.exactSub UpperTheory.V.Lit.Bor.frameEx UpperTheory.V.Lit.Bor.oneReal UpperTheory.V.Cj.H.harmSub
     UpperTheory.V.Cj.H.harmSS UpperTheory.V.Cj.H.hodgeEx UpperTheory.V.Cj.H.charOf UpperTheory.V.Cj.H.autOf

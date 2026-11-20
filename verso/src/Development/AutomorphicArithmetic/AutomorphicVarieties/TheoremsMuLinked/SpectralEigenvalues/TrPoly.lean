@@ -3,6 +3,15 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.TraceIntegralSubrin
 
 open IsLocalRing Polynomial
 
+/- English proof (translation)
+Introduce `O _ _ n A α p h`. Set `K` to `AlgebraicClosure (FractionRing O)`. Set `f : O →+* K` to `(algebraMap (FractionRing O) K).comp (algebraMap O (FractionRing O))`. Establish `hf : Function.Injective f` using `(algebraMap (FractionRing O) K).injective.comp (IsFractionRing.injective O (FractionRing O))`. Apply `hf` to reduce the goal to its premises.
+
+Establish `htr : ∀ M : Matrix (Fin n) (Fin n) O, f M.trace = (M.map f).trace`. Introduce `M`. Simplify using `[Matrix.trace, map_sum]`. Establish `haeval : (aeval A p).map f = aeval (A.map f) (p.map f)`. Use `Polynomial.map_aeval_eq_aeval_map (φ := f) (ψ := f.mapMatrix) ?_ p A` as an intermediate fact.
+
+Simplify using `using this`. Use extensionality with `c i j`. Simplify using `[Matrix.algebraMap_matrix_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hchar : (A.map f).charpoly = ((Finset.univ.val.map fun i => f (α i)).map fun a => X - C a).prod`.
+
+Rewrite using `[Matrix.charpoly_map, h, Polynomial.map_prod]`. Simplify using `[Finset.prod_eq_multiset_prod, Multiset.map_map, Function.comp_def]`. Rewrite using `[htr, haeval, GlobalTheory.CompanionTheory.TraceSpec.trace_aeval_matrix, hchar, Polynomial.roots_multiset_prod_X_sub_C, map_sum]`. Simplify using `[Multiset.map_map, Finset.sum_eq_multiset_sum, Function.comp_def]`.
+-/
 theorem UpperTheory.V.Th.Sp.trp :
     ∀ (O : Type) [CommRing O] [IsDomain O] (n : ℕ) (A : Matrix (Fin n) (Fin n) O) (α : Fin n → O) (p : O[X]), A.charpoly = ∏ i, (X - C (α i)) → (aeval A p).trace = ∑ i, p.eval (α i) := by
   intro O _ _ n A α p h

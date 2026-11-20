@@ -10,6 +10,11 @@ namespace GlobalTheory.UnitLemma.Desc
 
 open GlobalTheory.UnitLemma Polynomial
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨f, rfl⟩` from `Sandwich.exists_aeval B hP x`. Rewrite using `[aeval_eq_sum_range]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+
+Use `show B.g ^ i ∈ Algebra.adjoin K.O {B.g}`. Conclude with `Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_singleton _)) i`.
+-/
 theorem span_adjoin_gen_eq_top {K : UQ} (B : InvAlg K) (hP : B.P.Separable) :
     Submodule.span K.E ((Subalgebra.toSubmodule (Algebra.adjoin K.O {B.g}) : Submodule K.O B.A) : Set B.A) = ⊤ := by
   rw [eq_top_iff]
@@ -20,6 +25,11 @@ theorem span_adjoin_gen_eq_top {K : UQ} (B : InvAlg K) (hP : B.P.Separable) :
   show B.g ^ i ∈ Algebra.adjoin K.O {B.g}
   exact Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_singleton _)) i
 
+/- English proof (translation)
+Introduce `K B a hP ha`. Take `⟨m, hm⟩` from `Sandwich.integral_sub B hP a ha.2.1 _ (span_adjoin_gen_eq_top B hP)`. Use `⟨m, fun r hr => ?_⟩` and prove the remaining obligations. Establish `h` using `hm m le_rfl r hr`. Establish `e : (al K a ^ m) • r = algebraMap K.O B.A a ^ m * r`.
+
+Rewrite using `[Algebra.smul_def, al, ← map_pow, ← map_pow, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem pow_smul_mem_adjoin_gen : ∀ (K : UQ) (B : InvAlg K) (a : K.O), B.P.Separable → K.Small a →
     ∃ N : ℕ, ∀ r : B.A, IsIntegral K.O r → (al K a ^ N) • r ∈ Algebra.adjoin K.O {B.g} := by
   intro K B a hP ha

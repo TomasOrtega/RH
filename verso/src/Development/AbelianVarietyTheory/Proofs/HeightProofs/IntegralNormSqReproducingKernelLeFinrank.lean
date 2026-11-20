@@ -23,6 +23,9 @@ namespace GlobalTheory.KFourier
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[mul_comm, ← Complex.normSq_eq_norm_sq]`. Conclude with `Complex.mul_conj _`.
+-/
 theorem integral_star_mul_self {ε : Fin n → Bool} (f : KG ε → ℂ) :
     ∫ k, star (f k) * f k ∂(muK ε) = ((∫ k, ‖f k‖ ^ 2 ∂(muK ε) : ℝ) : ℂ) := by
   rw [← integral_complex_ofReal]
@@ -68,6 +71,15 @@ def l2InnerCore {ε : Fin n → Bool} (V : Submodule ℂ (KG ε → ℂ)) (hV : 
     ext k
     simpa using congrFun h3 k
 
+/- English proof (translation)
+Use `letI c := l2InnerCore V hV`. Use `letI : NormedAddCommGroup V := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ)`. Use `letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore c.toCore`. Establish `hin : ∀ p q : V, inner ℂ p q = ∫ k, star (p.1 k) * q.1 k ∂(muK ε)` using `fun _ _ => rfl`. Establish `hn : ∀ p : V, ∫ k, ‖p.1 k‖ ^ 2 ∂(muK ε) = ‖p‖ ^ 2`.
+
+Introduce `p`. Establish `h` using `inner_self_eq_norm_sq_to_K (𝕜 := ℂ) p`. Rewrite `h` using `[hin, integral_star_mul_self]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[h, Complex.ofReal_pow]`.
+
+Both sides reduce to the same expression. Set `b` to `stdOrthonormalBasis ℂ V`. Use `⟨fun j => (b j).1, fun j => (b j).2, fun j => ?_, fun r hr => ?_⟩` and prove the remaining obligations. Rewrite using `[hn, b.orthonormal.1 j, one_pow]`. Rewrite using `[hn ⟨r, hr⟩, ← b.sum_sq_norm_inner_left]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_parseval {ε : Fin n → Bool} (V : Submodule ℂ (KG ε → ℂ)) [FiniteDimensional ℂ V]
     (hV : ∀ p ∈ V, Continuous p) :
     ∃ φ : Fin (Module.finrank ℂ V) → KG ε → ℂ, (∀ j, φ j ∈ V) ∧ (∀ j, ∫ k, ‖φ j k‖ ^ 2 ∂(muK ε) = 1) ∧
@@ -89,6 +101,11 @@ theorem exists_parseval {ε : Fin n → Bool} (V : Submodule ℂ (KG ε → ℂ)
   · rw [hn ⟨r, hr⟩, ← b.sum_sq_norm_inner_left]
     rfl
 
+/- English proof (translation)
+Consider the cases of `i with`. Consider the case `zero`. Rewrite `h`, the goal using `[lowV, Submodule.mem_bot]`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+
+Consider the case `succ j => exact mul_left_mem a h`.
+-/
 theorem mul_left_mem_low {ε : Fin n → Bool} (a : KG ε) {i : ℕ} {φ : KG ε → ℂ} (h : φ ∈ lowV ε i) :
     (fun k => φ (a * k)) ∈ lowV ε i := by
   cases i with
@@ -117,8 +134,14 @@ def topV (ε : Fin n → Bool) (i : ℕ) : Submodule ℂ (KG ε → ℂ) where
       funext k; simp only [Pi.smul_apply, smul_eq_mul]; ring
     rw [this, integral_const_mul, ha' q hq, mul_zero]
 
+/- English proof (translation)
+Introduce `_ h` and use `h.1`.
+-/
 theorem topV_le (ε : Fin n → Bool) (i : ℕ) : topV ε i ≤ polyV ε i := fun _ h => h.1
 
+/- English proof (translation)
+Use `⟨mul_left_mem a h.1, fun q hq => ?_⟩` and prove the remaining obligations. Establish `h1` using `h.2 _ (mul_left_mem_low a⁻¹ hq)`. Rewrite `h1` using `[← integral_mul_left_eq_self (μ := muK ε) _ a]`. Simplify `h1` using `only [inv_mul_cancel_left]`.
+-/
 theorem mul_left_mem_top {ε : Fin n → Bool} (a : KG ε) {i : ℕ} {φ : KG ε → ℂ} (h : φ ∈ topV ε i) :
     (fun k => φ (a * k)) ∈ topV ε i := by
   refine ⟨mul_left_mem a h.1, fun q hq => ?_⟩
@@ -126,6 +149,11 @@ theorem mul_left_mem_top {ε : Fin n → Bool} (a : KG ε) {i : ℕ} {φ : KG ε
   rw [← integral_mul_left_eq_self (μ := muK ε) _ a] at h1
   simpa only [inv_mul_cancel_left] using h1
 
+/- English proof (translation)
+Use `⟨star_mem he.1, fun q hq => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[map_mul, mul_comm]`.
+
+Both sides reduce to the same expression. Use `_ = (starRingEnd ℂ) (∫ k, e k * q k ∂(muK ε)) := integral_conj`. Use `_ = 0 := by rw [he.2.1 q hq, map_zero]`.
+-/
 theorem star_mem_top {ε : Fin n → Bool} {i : ℕ} {e : KG ε → ℂ} (he : IsKer ε i e) :
     (fun k => star (e k)) ∈ topV ε i := by
   refine ⟨star_mem he.1, fun q hq => ?_⟩
@@ -135,6 +163,17 @@ theorem star_mem_top {ε : Fin n → Bool} {i : ℕ} {e : KG ε → ℂ} (he : I
     _ = (starRingEnd ℂ) (∫ k, e k * q k ∂(muK ε)) := integral_conj
     _ = 0 := by rw [he.2.1 q hq, map_zero]
 
+/- English proof (translation)
+Introduce `n ε i e he`. Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds n ε).1`. Use `haveI : FiniteDimensional ℂ (topV ε i) := Submodule.finiteDimensional_of_le (topV_le ε i)`. Take `⟨φ, hφ, h1, hP⟩` from `exists_parseval (topV ε i) (fun p hp => continuous_of_mem hp.1)`. Establish `key : ∀ a : KG ε, ∫ k, ‖e k‖ ^ 2 ∂(muK ε) = ∑ j, ‖φ j a‖ ^ 2`.
+
+Introduce `a`. Establish `h` using `hP _ (mul_left_mem_top a⁻¹ (star_mem_top he))`. Simplify using `only [star_star, norm_star] at h`. Rewrite `h` using `[integral_mul_left_eq_self (μ := muK ε) (fun k => ‖e k‖ ^ 2) a⁻¹]`. Rewrite using `[h]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h2` using `mul_left_mem_top a (hφ j)`. Establish `h3` using `he.2.2 _ h2.1 h2.2`. Rewrite using `[← integral_mul_left_eq_self (μ := muK ε) _ a]`. Simplify using `only [inv_mul_cancel_left, mul_one] at h3 ⊢`.
+
+Rewrite using `[h3]`. Establish `hint : ∀ j, Integrable (fun a => ‖φ j a‖ ^ 2) (muK ε)`. Introduce `j`. Establish `hp` using `continuous_of_mem (hφ j).1`. Establish `hns : Continuous (fun k => ‖φ j k‖ ^ 2)` using `by fun_prop`.
+
+Conclude with `(integrable_of_continuousK (Complex.continuous_ofReal.comp hns)).re`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integral_norm_sq_ker_le : ∀ {n : ℕ} (ε : Fin n → Bool) (i : ℕ) (e : KG ε → ℂ), IsKer ε i e →
     ∫ k, ‖e k‖ ^ 2 ∂(muK ε) ≤ (Module.finrank ℂ (polyV ε i) : ℝ) := by
   intro n ε i e he

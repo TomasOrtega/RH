@@ -4,6 +4,9 @@ open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalC
 
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
+/- English proof (translation)
+Introduce `R _ _ X f _ _ _ _`. Use `⟨GlobalTheory.finitePart f, GlobalTheory.isFinite_finitePart f, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.mem_finitePart_of_eq_closedPoint f x hx`.
+-/
 theorem exists_isFinite_open_of_henselian : ∀ (R : Type) [CommRing R] [HenselianLocalRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) [LocallyQuasiFinite f] [LocallyOfFiniteType f] [IsSeparated f] [QuasiCompact f], ∃ U : X.Opens, IsFinite (U.ι ≫ f) ∧ ∀ x : X, f x = IsLocalRing.closedPoint R → x ∈ U := by
   intro R _ _ X f _ _ _ _
   refine ⟨GlobalTheory.finitePart f, GlobalTheory.isFinite_finitePart f, fun x hx => ?_⟩

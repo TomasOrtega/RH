@@ -16,6 +16,13 @@ noncomputable section
 
 namespace GlobalTheory.WeierstrassCurve
 
+/- English proof (translation)
+Establish `hρ : (Chart.dualMapR f).comp (algebraMap R (DualNumber R)) = (algebraMap R' (DualNumber R')).comp f`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hP : (Chart.dualMapR f ∘ ![DualNumber.eps, -1, 0]) = ![DualNumber.eps, -1, 0]` using `by ext1 j; fin_cases j`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Establish `h₁` using `h.map_comp (Chart.dualMapR f)`. Rewrite `h₁` using `[hρ, hP]`. Use `⟨h₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hφ.1.of_iso (Iso.refl _) (asIso ψ) (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp [hψ]) (by simp)`.
+
+Rewrite using `[← Category.assoc, PolBaseChange.eSec_comm hφ, Category.assoc, he]`. Rewrite using `[← Category.assoc, hv', Category.assoc, hv]`. Conclude with `(SpecMap_ptHom W _ _ h _).trans (ptHom_congr W _ _ _ hρ hP _)`.
+-/
 theorem fibre_over_scheme {R R' : Type} [CommRing R] [CommRing R'] (W : WeierstrassCurve R) (f : R →+* R')
     {A : Over (Sp R)} {A' : Over (Sp R')} [GrpObj A] [GrpObj A'] {ψ : A.left ⟶ scheme W} [IsIso ψ]
     (hψ : ψ ≫ toSpec W = A.hom) (he : eSec A ≫ ψ = zero W) {v : epsR R ⟶ A}
@@ -40,6 +47,13 @@ theorem fibre_over_scheme {R R' : Type} [CommRing R] [CommRing R'] (W : Weierstr
   · rw [← Category.assoc, hv', Category.assoc, hv]
     exact (SpecMap_ptHom W _ _ h _).trans (ptHom_congr W _ _ _ hρ hP _)
 
+/- English proof (translation)
+Introduce `R _ W hΔ`. Take `⟨P, ψ, v, hg, hiso, hψ, he, ⟨h, hv⟩, hb⟩` from `GlobalTheory.WeierstrassCurve.exists_polAV R W hΔ`. Use `⟨P, v, hg, hb, fun R' _ f P' φ v' hP hv' => ?_, fun s P' φ v' u w hP hv' hd => ?_⟩` and prove the remaining obligations. Take `⟨h', h1, h2, h3⟩` from `fibre_over_scheme W f hψ he hv hP.2.1 hv'`. Conclude with `OriginTangent.isLieBasis_eps R W R' f P'.A (φ ≫ ψ) v' h' h1 h2 h3`.
+
+Take `⟨h', h1, h2, h3⟩` from `fibre_over_scheme W s hψ he hv hP.2.1 hv'`. Take `⟨hw, x, y, t, hx, hy, hper, heq, ht, ht0, ht1, hty, hlim⟩` from `GlobalTheory.T.exists_weierstrass_coordinates_on_line R W s P'.A (φ ≫ ψ) v' h' h1 h2 h3 P'.L P'.g u w hd`. Take `⟨L, hL⟩` from `GlobalTheory.exists_periodPair_of_lattice_in_line P'.g u.Λ w (hP.1.trans hg) hw u.discrete u.full`. Establish `hset : (L.lattice : Set ℂ) = {z | z • w ∈ u.Λ}` using `Set.ext hL`. Establish `key` using `GlobalTheory.invariants_eq_of_periodic_solution L (W.map s) x y t 1 one_ne_zero (hset ▸ hx) (hset ▸ hy) (fun l hl => hper l ((hL l).1 hl)) (fun z hz => heq z fun e => hz ((hL z).2 e)) ht ht0 ht1 hty hlim`.
+
+Simplify using `only [one_pow, _root_.one_mul, WeierstrassCurve.map_c₄, WeierstrassCurve.map_c₆, WeierstrassCurve.map_Δ] at key`. Conclude with `⟨hw, L, hL, key⟩`.
+-/
 theorem exists_polAV_invariants : ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R), IsUnit W.Δ → ∃ (P : Out.PolAV (Sp R)) (v : epsR R ⟶ P.A), P.g = 1 ∧ IsLieBasis ![v] ∧ (∀ (R' : Type) [CommRing R'] (f' : R →+* R') (P' : Out.PolAV (Sp R')) (φ' : P'.A.left ⟶ P.A.left) (v' : epsR R' ⟶ P'.A), IsPolFibre f' P P' φ' → IsVecOver f' φ' v v' → IsLieBasis ![v']) ∧ (∀ (s' : R →+* ℂ) (P' : Out.PolAV (Sp ℂ)) (φ' : P'.A.left ⟶ P.A.left) (v' : epsR ℂ ⟶ P'.A) (u' : HolUnif P'.A P'.L P'.g) (w' : Fin P'.g → ℂ), IsPolFibre s' P P' φ' → IsVecOver s' φ' v v' → u'.IsDiff w' v' → w' ≠ 0 ∧ ∃ L : PeriodPair, (∀ z : ℂ, z ∈ L.lattice ↔ z • w' ∈ u'.Λ) ∧ s' W.c₄ = 12 * L.g₂ ∧ s' W.c₆ = 216 * L.g₃ ∧ s' W.Δ = L.g₂ ^ 3 - 27 * L.g₃ ^ 2) := by
   intro R _ W hΔ
   obtain ⟨P, ψ, v, hg, hiso, hψ, he, ⟨h, hv⟩, hb⟩ := GlobalTheory.WeierstrassCurve.exists_polAV R W hΔ

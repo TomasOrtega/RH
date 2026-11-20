@@ -10,6 +10,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.BalMono
 
+/- English proof (translation)
+Use `Forms.projective_of_int O X` as an intermediate fact. Use `Forms.finite_balTensor (O := O) (X := X)` as an intermediate fact. Use `Forms.free_balTensor (X := X) hw` as an intermediate fact. Set `e` to `Module.Free.chooseBasis ℤ ((TensorProduct ℤ X X) ⧸ Forms.balTensorRel O X)`. Establish `hm` using `Forms.balTensorMk_mem_balForms O X`.
+
+Set `β : _ → PolFan.balForms (star : O → O) X` to `fun j => ⟨(Forms.balTensorMk O).compr₂ (e.coord j), fun y x => congrArg (e.coord j) (hm.1 y x), fun a y x => congrArg (e.coord j) (hm.2 a y x)⟩`. Set `L : J → ((TensorProduct ℤ X X) ⧸ Forms.balTensorRel O X) →+ ℤ` to `fun i => Forms.balTensorLift (O := O) ⟨(ε i : LinearMap.BilinForm ℤ X), (ε i).2.1, (ε i).2.2⟩`. Establish `hL (i a b) : L i (Forms.balTensorMk O a b) = (ε i : LinearMap.BilinForm ℤ X) a b` using `rfl`. Set `Φ : ((TensorProduct ℤ X X) ⧸ Forms.balTensorRel O X) →+ B` to `∑ i, (zmultiplesHom B (c i)).comp (L i)`. Establish `hΦa (t) : Φ t = ∑ i, L i t • c i`.
+
+Simplify using `[Φ, AddMonoidHom.finsetSum_apply]`. Establish `hΦ : Φ = 0` using `Forms.balTensor_hom_ext fun a b => by`. Rewrite using `[hΦa]`. Conclude with `hc a b`. Establish `hε (i) : ε i = ∑ j, L i (e j) • β j`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `LinearMap.ext fun a => LinearMap.ext fun b => ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[← hL, ← e.sum_repr (Forms.balTensorMk O a b), map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, smul_eq_mul, _root_.mul_comm]`. Both sides reduce to the same expression. Establish `hδ (i) : L i (∑ j, ε.repr (β j) k • e j) = ε.repr (ε i) k`. Establish `h1` using `congrArg (ε.coord k) (hε i)`. Rewrite `h1` using `[map_sum]`.
+
+Rewrite using `[map_sum, ← ε.coord_apply, h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, smul_eq_mul, smul_eq_mul, _root_.mul_comm, ε.coord_apply]`. Establish `h` using `hΦa (∑ j, ε.repr (β j) k • e j)`. Simplify using `only [hδ, hΦ, AddMonoidHom.zero_apply] at h`.
+
+Simplify `h.symm` using `[Finsupp.single_apply]`.
+-/
 theorem coords_eq_zero {O : Type} [CommRing O] [StarRing O] [IsDedekindDomain O]
     [Module.Finite ℤ O] [Module.Free ℤ O] {w : O} (hw : w + star w = 1)
     {X : Type} [AddCommGroup X] [Module O X] [Module.Finite ℤ X] [Module.Free ℤ X]
@@ -54,6 +69,17 @@ theorem coords_eq_zero {O : Type} [CommRing O] [StarRing O] [IsDedekindDomain O]
   simp only [hδ, hΦ, AddMonoidHom.zero_apply] at h
   simpa [Finsupp.single_apply] using h.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ _ _ _ F _ I _ ε x y hx hy h`. Use `letI : StarRing (𝓞 E) := { star := H.bar star_involutive := fun a => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((H.bar (H.bar a) : 𝓞 E) : E) = a`. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+
+Use `star_mul := fun a b => by rw [map_mul, _root_.mul_comm]`. Use `star_add := fun a b => map_add H.bar a b }`. Establish `hw : H.w0 + H.bar H.w0 = 1` using `PullbackSections.CVA.cmHostUnit_add_conj_eq_one H`. Set `u : I → Fˣ` to `fun i => Units.mk0 (x i) (hx i)`. Set `v : I → Fˣ` to `fun i => Units.mk0 (y i) (hy i)`.
+
+Establish `huv : ∀ a b, ∏ i, (u i / v i) ^ ((ε i : LinearMap.BilinForm ℤ X) a b) = 1`. Introduce `a b`. Rewrite using `[Finset.prod_congr rfl (fun i _ => div_zpow _ _ _), Finset.prod_div_distrib, div_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Simplify `h a b` using `[u, v, Units.coe_prod]`.
+
+Use function extensionality and compare the values at `k`. Establish `hk` using `coords_eq_zero (O := 𝓞 E) hw ε (fun i => Additive.ofMul (u i / v i)) (fun a b => by`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Simplify using `only [toMul_sum, toMul_zsmul, toMul_ofMul, toMul_zero]`. Conclude with `huv a b) k`.
+
+Establish `hk' : u k / v k = 1` using `hk`. Simplify `congrArg Units.val (div_eq_one.1 hk')` using `[u, v]`.
+-/
 theorem eq_of_prod_zpow_eq : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X] (F : Type) [Field F] (I : Type) [Fintype I] (ε : Module.Basis I ℤ (balForms H.bar X)) (x y : I → F), (∀ i, x i ≠ 0) → (∀ i, y i ≠ 0) → (∀ a b, ∏ i, x i ^ (ε i : LinearMap.BilinForm ℤ X) a b = ∏ i, y i ^ (ε i : LinearMap.BilinForm ℤ X) a b) → x = y := by
   intro E _ _ _ H X _ _ _ _ F _ I _ ε x y hx hy h
   letI : StarRing (𝓞 E) :=

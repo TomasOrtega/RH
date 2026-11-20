@@ -23,6 +23,9 @@ section
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[GlobalTheory.Size.wordAct_cons, ih]`. Conclude with `GlobalTheory.Size.dRho_add hψ hθ a.1 _ (GlobalTheory.Size.theta_word hψ hθ l h) (GlobalTheory.Size.theta_word hψ hθ l h')`.
+-/
 theorem word_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool))
     {f f' : WO S T → ℂ} (h : IsThetaFunO ψ S T f) (h' : IsThetaFunO ψ S T f') :
     GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (f + f') =
@@ -33,6 +36,9 @@ theorem word_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.wh
     rw [GlobalTheory.Size.wordAct_cons, ih]
     exact GlobalTheory.Size.dRho_add hψ hθ a.1 _ (GlobalTheory.Size.theta_word hψ hθ l h) (GlobalTheory.Size.theta_word hψ hθ l h')
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons a l ih`. Rewrite using `[GlobalTheory.Size.wordAct_cons]`. Conclude with `GlobalTheory.Size.dRho_mem_thetaLevel hψ hθ ih a.1 _`.
+-/
 theorem word_mem (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool))
     {U : AddSubgroup (WO S T)} {f : WO S T → ℂ} (h : f ∈ thetaLevel ψ S T U) :
     GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l f ∈ thetaLevel ψ S T U := by
@@ -42,6 +48,11 @@ theorem word_mem (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.wh
     rw [GlobalTheory.Size.wordAct_cons]
     exact GlobalTheory.Size.dRho_mem_thetaLevel hψ hθ ih a.1 _
 
+/- English proof (translation)
+Proceed by induction on `l generalizing d with`. Consider the case `nil => exact le_rfl`. Consider the case `cons a l ih`. Rewrite using `[GlobalTheory.Size.wordAct_cons]`. Use `(GlobalTheory.Size.sobO_heisDer_le d a).trans ((ih (d + 1)).trans (le_of_eq ?_))` and prove the remaining obligations.
+
+Use `congr 1`. Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sobO_word_le (μ : Measure (WO S T)) (𝓕 : Set (WO S T))
     (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)) (f : WO S T → ℂ) (d : ℕ) :
     sobO ψ θ μ 𝓕 d (GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l f) ≤ sobO ψ θ μ 𝓕 (d + l.length) f := by
@@ -56,6 +67,15 @@ theorem sobO_word_le (μ : Measure (WO S T)) (𝓕 : Set (WO S T))
 
 end
 
+/- English proof (translation)
+Introduce `D ψ hψ θ hθ S T μ 𝓕 hm U hU u hu hC l`. Take `⟨d₀, C, hb⟩` from `GlobalTheory.ThetaDensSup.sup_le_sobO D ψ hψ θ hθ S T μ 𝓕 hm U hU`. Rewrite using `[Metric.uniformCauchySeqOn_iff]`. Introduce `ε hε`. Establish `hη : (0 : ℝ) < ε / (C + 1)` using `by positivity`.
+
+Take `⟨J, hJ⟩` from `hC (d₀ + l.length) (ENNReal.ofReal (ε / (C + 1))) (ENNReal.ofReal_pos.2 hη)`. Use `⟨J, fun i hi j hj w _ => ?_⟩` and prove the remaining obligations. Establish `hd : u i - u j ∈ thetaLevel ψ S T U` using `Submodule.sub_mem _ (hu i) (hu j)`. Establish `he` using `word_add hψ hθ l hd.1 (hu j).1`. Rewrite `he` using `[sub_add_cancel]`.
+
+Establish `h1` using `(hb _ (word_mem hψ hθ l hd) w).trans (mul_le_mul_right ((sobO_word_le μ 𝓕 l _ d₀).trans (hJ i hi j hj).le) _)`. Rewrite using `[dist_eq_norm, he, Pi.add_apply, add_sub_cancel_right]`. Rewrite `h1` using `[← ofReal_norm, ← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_mul C.coe_nonneg, ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Use `h1.trans_lt ?_` and prove the remaining obligations. Rewrite using `[← mul_div_assoc, div_lt_iff₀ (by positivity)]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem uniformCauchySeqOn_word : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ S T : HSp D, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∀ u : ℕ → WO S T → ℂ, (∀ j, u j ∈ thetaLevel ψ S T U) → (∀ d, ∀ ε : ℝ≥0∞, 0 < ε → ∃ J, ∀ i ≥ J, ∀ j ≥ J, sobO ψ θ μ 𝓕 d (u i - u j) < ε) → ∀ l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), UniformCauchySeqOn (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) Filter.atTop Set.univ := by
   intro D ψ hψ θ hθ S T μ 𝓕 hm U hU u hu hC l
   obtain ⟨d₀, C, hb⟩ := GlobalTheory.ThetaDensSup.sup_le_sobO D ψ hψ θ hθ S T μ 𝓕 hm U hU

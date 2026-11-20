@@ -7,6 +7,19 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.NewPrime.Burnside
 
+/- English proof (translation)
+Establish `hB : ∀ B : Matrix n n (IsLocalRing.ResidueField O), ∃ M ∈ Submodule.span O (Set.range T), M.map (IsLocalRing.residue O) = B` using `fun B => by`. Establish `hM : B ∈ Submodule.span (IsLocalRing.ResidueField O) (Set.range fun g => (T g).map (IsLocalRing.residue O))` using `h ▸ Submodule.mem_top`. Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem B hB`. Take `⟨g, rfl⟩` from `hB`.
+
+Conclude with `⟨T g, Submodule.subset_span ⟨g, rfl⟩, rfl⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, Matrix.map_zero _ (map_zero _)⟩`. Consider the case `add B B' _ _ h h'`. Take `⟨M, hM, rfl⟩` from `h`. Take `⟨M', hM', rfl⟩` from `h'`.
+
+Conclude with `⟨M + M', Submodule.add_mem _ hM hM', Matrix.map_add _ (map_add _) _ _⟩`. Consider the case `smul t B _ h`. Take `⟨M, hM, rfl⟩` from `h`. Take `⟨t, rfl⟩` from `IsLocalRing.residue_surjective t`. Conclude with `⟨t • M, Submodule.smul_mem _ _ hM, by ext p q; simp⟩`.
+
+Rewrite using `[eq_top_iff]`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := IsLocalRing.maximalIdeal O) Module.Finite.fg_top (IsLocalRing.maximalIdeal_le_jacobson _) fun M _ => ?_` and prove the remaining obligations. Take `⟨M', hM', e⟩` from `hB (M.map (IsLocalRing.residue O))`. Establish `e1 : M = M' + (M - M')` using `by abel`. Rewrite using `[e1]`.
+
+Use `Submodule.add_mem_sup hM' ?_` and prove the remaining obligations. Rewrite using `[Matrix.matrix_eq_sum_single (M - M')]`. Use `Submodule.sum_mem _ fun p _ => Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Establish `e2 : Matrix.single p q ((M - M') p q) = (M - M') p q • Matrix.single p q (1 : O)`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+
+Rewrite using `[e2]`. Use `Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, Matrix.sub_apply, map_sub, sub_eq_zero]`. Conclude with `(congrFun (congrFun e p) q).symm`.
+-/
 theorem span_top_of_residue {G O n : Type} [CommRing O] [IsLocalRing O] [Fintype n] [DecidableEq n] (T : G → Matrix n n O)
     (h : Submodule.span (IsLocalRing.ResidueField O) (Set.range fun g => (T g).map (IsLocalRing.residue O)) = ⊤) :
     Submodule.span O (Set.range T) = ⊤ := by
@@ -43,6 +56,17 @@ theorem span_top_of_residue {G O n : Type} [CommRing O] [IsLocalRing O] [Fintype
   rw [← IsLocalRing.residue_eq_zero_iff, Matrix.sub_apply, map_sub, sub_eq_zero]
   exact (congrFun (congrFun e p) q).symm
 
+/- English proof (translation)
+Establish `hB : ∀ B : Matrix n n O, B.map (algebraMap O A) ∈ S` using `fun B => by`. Establish `hM : B ∈ Submodule.span O (Set.range T)` using `h ▸ Submodule.mem_top`. Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem B hB`. Take `⟨g, rfl⟩` from `hB`.
+
+Conclude with `hS g`. Consider the case `zero => rw [Matrix.map_zero _ (map_zero _)]`. Conclude with `Submodule.zero_mem _`. Consider the case `add B B' _ _ h h' => rw [Matrix.map_add _ (map_add _)]`. Conclude with `Submodule.add_mem _ h h'`.
+
+Consider the case `smul t B _ h`. Establish `: (t • B).map (algebraMap O A) = algebraMap O A t • B.map (algebraMap O A)` using `by ext p q; simp`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ h`. Rewrite using `[eq_top_iff]`.
+
+Introduce `M _`. Rewrite using `[Matrix.matrix_eq_sum_single M]`. Use `Submodule.sum_mem _ fun p _ => Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Establish `: Matrix.single p q (M p q) = M p q • (Matrix.single p q (1 : O)).map (algebraMap O A)`. Rewrite using `[Matrix.map_single, map_one, Matrix.smul_single, smul_eq_mul, mul_one]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (hB _)`.
+-/
 theorem eq_top_of_map {G O A n : Type} [CommRing O] [CommRing A] [Algebra O A] [Fintype n] [DecidableEq n]
     (T : G → Matrix n n O) (h : Submodule.span O (Set.range T) = ⊤) (S : Submodule A (Matrix n n A))
     (hS : ∀ g, (T g).map (algebraMap O A) ∈ S) : S = ⊤ := by
@@ -67,6 +91,11 @@ theorem eq_top_of_map {G O A n : Type} [CommRing O] [CommRing A] [Algebra O A] [
   rw [this]
   exact Submodule.smul_mem _ _ (hB _)
 
+/- English proof (translation)
+Introduce `D N X bkP i s A _ _ _ _ κ Q hS`. Use `eq_top_of_map (fun g => ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i))) (span_top_of_residue _ hS.1.2.1.1) _ fun g => ?_` and prove the remaining obligations. Establish `: ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)).map (algebraMap (X.O0 i) A) = (algebraMap (X.O0 i) A ((chiS i s g : (X.O0 i)ˣ) : X.O0 i) * (((κ g)⁻¹ : Aˣ) : A)) • (((κ g : Aˣ) : A) • (Tmat i s g).map (algebraMap (X.O0 i) A))`. Rewrite using `[smul_smul, Units.inv_mul_cancel_right]`. Use extensionality with `p q`.
+
+Simplify using `only [Tmat, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, ← map_mul, Units.mul_inv_cancel_left]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)`.
+-/
 theorem span_twist_eq_top : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), ∀ (A : Type) [CommRing A] [IsLocalRing A] [Finite A] [Algebra (X.O0 i) A] (κ : GE N →* Aˣ) (Q : Finset (PlE D.host)), Setup bkP i s κ Q → Submodule.span A (Set.range fun g => ((κ g : Aˣ) : A) • (Tmat i s g).map (algebraMap (X.O0 i) A)) = ⊤ := by
   intro D N X bkP i s A _ _ _ _ κ Q hS
   refine eq_top_of_map (fun g => ((X.rhoS i s g : GL (Fin D.R.r) (X.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)))

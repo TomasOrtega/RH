@@ -25,16 +25,25 @@ variable {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ 
 
 include w in
 
+/- English proof (translation)
+Substitute `w` using the available equality. Establish `e` using `Scheme.Hom.appLE_comp_appLE π q ⊤ U W le_top hW`. Conclude with `congrArg (fun f ↦ (CommRingCat.Hom.hom f).comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom) e`.
+-/
 theorem algX_eq {U : B.Opens} {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ U) :
     (π.appLE U W hW).hom.comp (algX q U) = algX p W := by
   subst w
   have e := Scheme.Hom.appLE_comp_appLE π q ⊤ U W le_top hW
   exact congrArg (fun f ↦ (CommRingCat.Hom.hom f).comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom) e
 
+/- English proof (translation)
+The claim follows from `le_preimage_comp y.1 π hW hy`.
+-/
 theorem map_mem {U : B.Opens} {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ U) {y : CxPts p σ} (hy : y ∈ ptsIn p σ W) :
     PtsOver.map π w (spMap σ) y ∈ ptsIn q σ U :=
   le_preimage_comp y.1 π hW hy
 
+/- English proof (translation)
+The claim follows from `valR_appLE y.1 π hW hy g`.
+-/
 theorem ev_appLE {U : B.Opens} {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ U) {y : CxPts p σ} (hy : y ∈ ptsIn p σ W)
     (g : Γ(B, U)) : ev p σ W ((π.appLE U W hW).hom g) y = ev q σ U g (PtsOver.map π w (spMap σ) y) :=
   valR_appLE y.1 π hW hy g
@@ -45,6 +54,11 @@ variable {U : B.Opens} {W : Y.Opens} (hW : W ≤ π ⁻¹ᵁ U) {N : Type} (n : 
 def cellHom {b : CxPts q σ} (hb : b ∈ ptsIn q σ U) (z : N → ℂ) : Γ(Y, W) →+* ℂ :=
   (MvPolynomial.eval₂Hom (evHom hb) z).comp (RingEquiv.ofBijective _ hΦ).symm.toRingHom
 
+/- English proof (translation)
+Establish `H : φ.comp (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n) = MvPolynomial.eval₂Hom (evHom hb) z` using `MvPolynomial.ringHom_ext (fun g => by simp [h₁]) fun s => by simp [h₂]`. Use extensionality with `g`. Take `⟨P, rfl⟩` from `hΦ.2 g`. Establish `e : (RingEquiv.ofBijective _ hΦ).symm (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n P) = P` using `(RingEquiv.ofBijective _ hΦ).symm_apply_apply P`. Simplify using `only [cellHom, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, e]`.
+
+Rewrite using `[← H, RingHom.comp_apply]`.
+-/
 theorem cellHom_eq {b : CxPts q σ} (hb : b ∈ ptsIn q σ U) (z : N → ℂ) (φ : Γ(Y, W) →+* ℂ)
     (h₁ : ∀ g, φ ((π.appLE U W hW).hom g) = evHom hb g) (h₂ : ∀ s, φ (n s) = z s) :
     cellHom π hW n hΦ hb z = φ := by
@@ -57,6 +71,9 @@ theorem cellHom_eq {b : CxPts q σ} (hb : b ∈ ptsIn q σ U) (z : N → ℂ) (�
   simp only [cellHom, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, e]
   rw [← H, RingHom.comp_apply]
 
+/- English proof (translation)
+Establish `e : (RingEquiv.ofBijective _ hΦ).symm ((π.appLE U W hW).hom g) = MvPolynomial.C g`. Rewrite using `[RingEquiv.symm_apply_eq]`. Simplify using the standard rewrite rules. Simplify using `only [cellHom, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, e, MvPolynomial.eval₂Hom_C]`.
+-/
 theorem cellHom_appLE {b : CxPts q σ} (hb : b ∈ ptsIn q σ U) (z : N → ℂ) (g : Γ(B, U)) :
     cellHom π hW n hΦ hb z ((π.appLE U W hW).hom g) = evHom hb g := by
   have e : (RingEquiv.ofBijective _ hΦ).symm ((π.appLE U W hW).hom g) = MvPolynomial.C g := by
@@ -64,6 +81,9 @@ theorem cellHom_appLE {b : CxPts q σ} (hb : b ∈ ptsIn q σ U) (z : N → ℂ)
   simp only [cellHom, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, e,
     MvPolynomial.eval₂Hom_C]
 
+/- English proof (translation)
+Establish `e : (RingEquiv.ofBijective _ hΦ).symm (n s) = MvPolynomial.X s`. Rewrite using `[RingEquiv.symm_apply_eq]`. Simplify using the standard rewrite rules. Simplify using `only [cellHom, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, e, MvPolynomial.eval₂Hom_X']`.
+-/
 theorem cellHom_n {b : CxPts q σ} (hb : b ∈ ptsIn q σ U) (z : N → ℂ) (s : N) :
     cellHom π hW n hΦ hb z (n s) = z s := by
   have e : (RingEquiv.ofBijective _ hΦ).symm (n s) = MvPolynomial.X s := by
@@ -83,16 +103,28 @@ def cellPt {b : CxPts q σ} (hb : b ∈ ptsIn q σ U) (z : N → ℂ) : CxPts p 
   ofHom hWa (cellHom π hW n hΦ hb z) fun a => by
     rw [← algX_eq π w hW, RingHom.comp_apply, cellHom_appLE, ← ev_eq hb, ev_algX hb]
 
+/- English proof (translation)
+The claim follows from `ofHom_mem _ _ _`.
+-/
 theorem cellPt_mem {b : CxPts q σ} (hb : b ∈ ptsIn q σ U) (z : N → ℂ) :
     cellPt π w hW hWa n hΦ hb z ∈ ptsIn p σ W := ofHom_mem _ _ _
 
+/- English proof (translation)
+The claim follows from `ev_ofHom _ _ _ g`.
+-/
 theorem ev_cellPt {b : CxPts q σ} (hb : b ∈ ptsIn q σ U) (z : N → ℂ) (g : Γ(Y, W)) :
     ev p σ W g (cellPt π w hW hWa n hΦ hb z) = cellHom π hW n hΦ hb z g := ev_ofHom _ _ _ g
 
+/- English proof (translation)
+Rewrite using `[ev_cellPt, cellHom_n]`.
+-/
 theorem ev_n_cellPt {b : CxPts q σ} (hb : b ∈ ptsIn q σ U) (z : N → ℂ) (s : N) :
     ev p σ W (n s) (cellPt π w hW hWa n hΦ hb z) = z s := by
   rw [ev_cellPt, cellHom_n]
 
+/- English proof (translation)
+Establish `hm` using `map_mem π w hW (cellPt_mem π w hW hWa n hΦ hb z)`. Use `Subtype.ext (ext_of_valR hU hm hb fun g => ?_)` and prove the remaining obligations. Establish `h₁` using `ev_appLE π w hW (cellPt_mem π w hW hWa n hΦ hb z) g`. Rewrite `h₁` using `[ev_cellPt, cellHom_appLE, ← ev_eq hb]`. Conclude with `h₁.symm`.
+-/
 theorem map_cellPt (hU : IsAffineOpen U) {b : CxPts q σ} (hb : b ∈ ptsIn q σ U) (z : N → ℂ) :
     PtsOver.map π w (spMap σ) (cellPt π w hW hWa n hΦ hb z) = b := by
   have hm := map_mem π w hW (cellPt_mem π w hW hWa n hΦ hb z)
@@ -101,6 +133,9 @@ theorem map_cellPt (hU : IsAffineOpen U) {b : CxPts q σ} (hb : b ∈ ptsIn q σ
   rw [ev_cellPt, cellHom_appLE, ← ev_eq hb] at h₁
   exact h₁.symm
 
+/- English proof (translation)
+Use `Subtype.ext (ext_of_valR hWa (cellPt_mem π w hW hWa n hΦ _ _) hy fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev p σ W g _ = ev p σ W g y`. Rewrite using `[ev_cellPt, cellHom_eq π hW n hΦ _ _ (evHom hy) (fun g => ?_) (fun s => ?_), ← ev_eq hy]`. Rewrite using `[← ev_eq hy, ← ev_eq (map_mem π w hW hy), ev_appLE π w hW hy]`. Rewrite using `[← ev_eq hy]`.
+-/
 theorem cellPt_self {y : CxPts p σ} (hy : y ∈ ptsIn p σ W) :
     cellPt π w hW hWa n hΦ (map_mem π w hW hy) (fun s => ev p σ W (n s) y) = y := by
   refine Subtype.ext (ext_of_valR hWa (cellPt_mem π w hW hWa n hΦ _ _) hy fun g => ?_)
@@ -109,6 +144,9 @@ theorem cellPt_self {y : CxPts p σ} (hy : y ∈ ptsIn p σ W) :
   · rw [← ev_eq hy, ← ev_eq (map_mem π w hW hy), ev_appLE π w hW hy]
   · rw [← ev_eq hy]
 
+/- English proof (translation)
+Substitute `e ez` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cellPt_congr {b b' : CxPts q σ} (hb : b ∈ ptsIn q σ U) (hb' : b' ∈ ptsIn q σ U) (e : b = b')
     {z z' : N → ℂ} (ez : z = z') : cellPt π w hW hWa n hΦ hb z = cellPt π w hW hWa n hΦ hb' z' := by
   subst e ez; rfl
@@ -124,6 +162,9 @@ variable {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ 
 
 omit [CommRing k] in
 
+/- English proof (translation)
+Use `differentiable_euclidean.2 fun i => ?_` and prove the remaining obligations. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `only [base, EuclideanSpace.single_apply, if_true]`. Use `fun_prop`.
+-/
 theorem differentiable_base : Differentiable ℂ (base e) := by
   refine differentiable_euclidean.2 fun i => ?_
   obtain rfl : i = 0 := Subsingleton.elim _ _
@@ -141,24 +182,46 @@ def inv (v : V (d + 1)) : CxPts p σ :=
 
 variable {e c hW hWa n hΦ}
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem inv_eq {v : V (d + 1)} (h : base e v ∈ c.e.target) : inv π w e c hW hWa n hΦ y₀ v =
     cellPt π w hW hWa n hΦ (c.source_subset (c.e.map_target h)) (fun s => v (e.symm (some s))) := dif_pos h
 
+/- English proof (translation)
+Rewrite using `[inv_eq _ _ _ h]`. Conclude with `cellPt_mem ..`.
+-/
 theorem inv_mem {v : V (d + 1)} (h : base e v ∈ c.e.target) : inv π w e c hW hWa n hΦ y₀ v ∈ ptsIn p σ W := by
   rw [inv_eq _ _ _ h]; exact cellPt_mem ..
 
+/- English proof (translation)
+Rewrite using `[inv_eq _ _ _ h]`. Conclude with `map_cellPt _ _ _ _ _ _ c.affine _ _`.
+-/
 theorem map_inv {v : V (d + 1)} (h : base e v ∈ c.e.target) :
     PtsOver.map π w (spMap σ) (inv π w e c hW hWa n hΦ y₀ v) = c.e.symm (base e v) := by
   rw [inv_eq _ _ _ h]; exact map_cellPt _ _ _ _ _ _ c.affine _ _
 
+/- English proof (translation)
+Rewrite using `[inv_eq _ _ _ h]`. Conclude with `ev_n_cellPt ..`.
+-/
 theorem ev_n_inv {v : V (d + 1)} (h : base e v ∈ c.e.target) (s : Σ a, Low (r a)) :
     ev p σ W (n s) (inv π w e c hW hWa n hΦ y₀ v) = v (e.symm (some s)) := by
   rw [inv_eq _ _ _ h]; exact ev_n_cellPt ..
 
+/- English proof (translation)
+Rewrite using `[ev_appLE π w hW (inv_mem π w y₀ h), map_inv π w y₀ h]`.
+-/
 theorem ev_appLE_inv {v : V (d + 1)} (h : base e v ∈ c.e.target) (g : Γ(B, c.U)) :
     ev p σ W ((π.appLE c.U W hW).hom g) (inv π w e c hW hWa n hΦ y₀ v) = ev q σ c.U g (c.e.symm (base e v)) := by
   rw [ev_appLE π w hW (inv_mem π w y₀ h), map_inv π w y₀ h]
 
+/- English proof (translation)
+Take `⟨P, rfl⟩` from `hΦ.2 g`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `hd : DifferentiableOn ℂ (fun v => ev q σ c.U a (c.e.symm (base e v))) {v | base e v ∈ c.e.target}` using `(c.holo c.U a).comp (differentiable_base e).differentiableOn fun v hv => ⟨hv, c.source_subset (c.e.map_target hv)⟩`. Use `hd.congr fun v hv => ?_` and prove the remaining obligations.
+
+Simplify using `only [MvPolynomial.eval₂Hom_C]`. Conclude with `ev_appLE_inv π w y₀ hv a`. Consider the case `add P Q hP hQ`. Simplify using `only [map_add, ev_add]`. Conclude with `hP.add hQ`.
+
+Consider the case `mul_X P s hP`. Establish `hd : DifferentiableOn ℂ (fun v : V (d + 1) => v (e.symm (some s))) {v | base e v ∈ c.e.target}` using `by fun_prop`. Simplify using `only [map_mul, ev_mul, MvPolynomial.eval₂Hom_X']`. Conclude with `hP.mul (hd.congr fun v hv => ev_n_inv π w y₀ hv s)`.
+-/
 theorem holo_inv (g : Γ(Y, W)) :
     DifferentiableOn ℂ (fun v => ev p σ W g (inv π w e c hW hWa n hΦ y₀ v)) {v | base e v ∈ c.e.target} := by
   obtain ⟨P, rfl⟩ := hΦ.2 g
@@ -264,6 +327,9 @@ end GlobalTheory.CellChart
 
 open GlobalTheory.CellChart in
 
+/- English proof (translation)
+Introduce `k _ B Y q p π w ι _ r d e σ c W hW hWa n hΦ hne`. Take `⟨b₀, hb₀⟩` from `hne`. Use `⟨cellChart π w e c hW hWa n hΦ (cellPt π w hW hWa n hΦ (c.source_subset hb₀) 0), ⟨rfl, rfl, fun y _ => ?_⟩, inter_subset_right, fun y _ a s => ?_⟩` and prove the remaining obligations. Conclude with `base_pt e (c.e (PtsOver.map π w (spMap σ) y)) fun a s => ev p σ W (n ⟨a, s⟩) y`. Conclude with `congrFun (congrFun (fib_pt e (c.e (PtsOver.map π w (spMap σ) y)) fun a s => ev p σ W (n ⟨a, s⟩) y) a) s`.
+-/
 theorem GlobalTheory.cell_chart : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (r : ι → ℕ) (d : ℕ) (e : Fin (d + 1) ≃ Option (Σ a, Low (r a))) (σ : k →+* ℂ) (c : AlgChart q σ 1) (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ c.U), IsAffineOpen W → ∀ n : (Σ a, Low (r a)) → Γ(Y, W), Function.Bijective (MvPolynomial.eval₂Hom (π.appLE c.U W hW).hom n) → c.e.source.Nonempty → ∃ c' : AlgChart p σ (d + 1), IsCell e π w c c' ∧ c'.e.source ⊆ ptsIn p σ W ∧ ∀ y ∈ c'.e.source, ∀ a s, fib e (c'.e y) a s = ev p σ W (n ⟨a, s⟩) y := by
   intro k _ B Y q p π w ι _ r d e σ c W hW hWa n hΦ hne
   obtain ⟨b₀, hb₀⟩ := hne

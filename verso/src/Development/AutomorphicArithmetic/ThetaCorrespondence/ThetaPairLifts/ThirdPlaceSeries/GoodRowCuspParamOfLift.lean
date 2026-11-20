@@ -10,6 +10,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 namespace GlobalTheory.ParAsm
+/- English proof (translation)
+Introduce `D Rw hL h45 hEFK hCM hdef hLift hLoc j hj1 hj2 σ hiso hgood`. Take `⟨π, μ, hπ⟩` from `hLift j hj1 hj2 σ hiso`. Take `⟨Pa, hPa⟩` from `h45 hEFK hCM j hj1 hj2 (one_le_nV D) (hdef j hj1 hj2) π hπ.sph`. Establish `hmu` using `_root_.GlobalTheory.T.trivial_piece_mem_base_change D Rw hL j σ π μ Pa hπ (hLoc σ) hPa`. Conclude with `_root_.GlobalTheory.T.exists_isCuspParam_of_bc_good_index D Rw hL j σ π μ Pa hπ (hLoc σ) hPa hmu hgood`.
+-/
 theorem goodRowCuspParam_of_lift_alt : ∀ (D : D7) (Rw : RowSide D), _root_.GlobalTheory.HeightCounting.Up.ParityLaws D → SphericalInertData.Conclusion1 D → SphericalInertData.HypEFK D → SphericalInertData.HypCM D →
     (∀ j, 1 ≤ j → j ≤ D.R.m → (D.sp.V j).IsDefinite) → LiftAll D Rw → (∀ σ, RowLoc D Rw σ) →
     GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.GoodRowCuspParam D Rw := by

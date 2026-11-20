@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `α _ ν ι s g`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `MeasureTheory.Lp.coeFn_zero ℂ 2 ν`.
+
+Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Use `filter_upwards [MeasureTheory.Lp.coeFn_add (g a) (∑ j ∈ s, g j), ih] with x hx hx'`. Rewrite using `[hx, Pi.add_apply, hx']`.
+-/
 theorem UpperTheory.Reformulated.B.Yxa1.main :
     ∀ {α : Type} [inst : MeasurableSpace α] {ν : MeasureTheory.Measure α} {ι : Type} (s : Finset ι)
       (g : ι → ↥(MeasureTheory.Lp ℂ (2 : ENNReal) ν)),

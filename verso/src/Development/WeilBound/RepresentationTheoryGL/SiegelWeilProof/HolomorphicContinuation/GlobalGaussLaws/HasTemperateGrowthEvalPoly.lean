@@ -15,6 +15,13 @@ namespace PositivityTheory.Rg.Sw.Glob
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Use `set y := fr⁻¹ * z with hy`. Establish `hz : z = fr * y` using `by rw [hy, Matrix.mul_nonsing_inv_cancel_left _ _ h1]`. Establish `e : zᴴ * M * z = yᴴ * y`. Rewrite using `[hz, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e, Matrix.trace]`. Use `push_cast`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, Matrix.mul_apply]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, ← Complex.conj_mul']`. Both sides reduce to the same expression.
+-/
 theorem trace_frame {m : ℕ} {M fr : Matrix (Fin m) (Fin m) ℂ} (h1 : IsUnit fr.det) (h2 : frᴴ * M * fr = 1)
     (z : Matrix (Fin m) (Fin n) ℂ) :
     Matrix.trace (zᴴ * M * z) = ((∑ a, ∑ i, ‖(fr⁻¹ * z) a i‖ ^ 2 : ℝ) : ℂ) := by
@@ -33,6 +40,11 @@ theorem trace_frame {m : ℕ} {M fr : Matrix (Fin m) (Fin m) ℂ} (h1 : IsUnit f
   rw [Matrix.conjTranspose_apply, ← Complex.conj_mul']
   rfl
 
+/- English proof (translation)
+Unfold `gauss gAway gs cLoc`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Rewrite using `[← Finset.add_sum_erase Finset.univ _ (Finset.mem_univ τ), trace_frame hfr.1 hfr.2.2 (z τ)]`. Establish `hf : (Finset.univ.filter fun τ' => τ' ≠ τ) = Finset.univ.erase τ`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hf]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gauss_split {V : HSp D} {τ : D.what₂.Tau} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} (l : D.what₂.Tau → ℝ)
     (hfr : IsTauFrame V τ s ε fr) (z : D.what₂.Tau → Matrix (Fin V.rank) (Fin n) ℂ) :
@@ -48,23 +60,38 @@ theorem gauss_split {V : HSp D} {τ : D.what₂.Tau} {s : D.what₂.Tau → Matr
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `[evalPoly]`.
+-/
 theorem evalPoly_add {m : ℕ} (p q : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ)
     (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) : evalPoly (p + q) z = evalPoly p z + evalPoly q z := by
   simp [evalPoly]
 
+/- English proof (translation)
+Simplify using `[evalPoly]`.
+-/
 theorem evalPoly_mul {m : ℕ} (p q : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ)
     (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) : evalPoly (p * q) z = evalPoly p z * evalPoly q z := by
   simp [evalPoly]
 
+/- English proof (translation)
+Simplify using `[evalPoly]`.
+-/
 theorem evalPoly_C {m : ℕ} (a : ℂ) (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) :
     evalPoly (MvPolynomial.C a : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) z = a := by
   simp [evalPoly]
 
+/- English proof (translation)
+Simplify using `[evalPoly]`.
+-/
 theorem evalPoly_X {m : ℕ} (v : D.what₂.Tau × Fin m × Fin n × Bool) (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) :
     evalPoly (MvPolynomial.X v : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) z =
       if v.2.2.2 then conj (z v.1 v.2.1 v.2.2.1) else z v.1 v.2.1 v.2.2.1 := by
   simp [evalPoly]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+-/
 theorem eval_bind₁' {σ ι : Type*} (f : σ → ℂ) (g : ι → MvPolynomial σ ℂ) (p : MvPolynomial ι ℂ) :
     MvPolynomial.eval f (MvPolynomial.bind₁ g p) = MvPolynomial.eval (fun i => MvPolynomial.eval f (g i)) p := by
   induction p using MvPolynomial.induction_on with
@@ -78,6 +105,9 @@ def polyAt {m : ℕ} (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) (P :
       ∑ a, MvPolynomial.C (star ((fr⁻¹) k.1 a)) * MvPolynomial.X (τ, a, k.2.1, true)
     else ∑ a, MvPolynomial.C ((fr⁻¹) k.1 a) * MvPolynomial.X (τ, a, k.2.1, false)) P
 
+/- English proof (translation)
+Unfold `evalPoly polyAt evX`. Use `(eval_bind₁' _ _ _).trans (congrArg (fun f => MvPolynomial.eval f P) (funext fun k => ?_))` and prove the remaining obligations. Take `⟨c, i, b⟩` from `k`. Apply the tactic sequence `cases b <;> simp [Matrix.mul_apply, star_sum]`.
+-/
 theorem evalPoly_polyAt {m : ℕ} (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) (P : PX m n)
     (z : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ) : evalPoly (polyAt τ fr P) z = evX P (fr⁻¹ * z τ) := by
   unfold evalPoly polyAt evX
@@ -85,6 +115,23 @@ theorem evalPoly_polyAt {m : ℕ} (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin
   obtain ⟨c, i, b⟩ := k
   cases b <;> simp [Matrix.mul_apply, star_sum]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨1, fun _ => MvPolynomial.C a, fun _ => 1, by simp, fun z => ?_⟩` and prove the remaining obligations. Simplify using `[evalPoly, evX]`. Consider the case `add p q hp hq`.
+
+Take `⟨k1, P1, p1, h1, e1⟩` from `hp`. Take `⟨k2, P2, p2, h2, e2⟩` from `hq`. Use `⟨k1 + k2, Fin.append P1 P2, Fin.append p1 p2, ?_, fun z => ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations.
+
+Simplify using `using h1 j`. Simplify using `using h2 j`. Rewrite using `[Fin.sum_univ_add, evalPoly_add, e1, e2]`. Simplify using the standard rewrite rules. Consider the case `mul_X p v hp`.
+
+Take `⟨k, Pi, pi, h, e⟩` from `hp`. Distinguish the cases in `hv : v.1 = τ`. Use `⟨k, fun i => Pi i * (if v.2.2.2 then ∑ c, MvPolynomial.C (star (fr v.2.1 c)) * MvPolynomial.X (c, v.2.2.1, true) else ∑ c, MvPolynomial.C (fr v.2.1 c) * MvPolynomial.X (c, v.2.2.1, false)), pi, h, fun z => ?_⟩` and prove the remaining obligations. Establish `hz : z τ = fr * (fr⁻¹ * z τ)` using `(Matrix.mul_nonsing_inv_cancel_left _ _ hfr).symm`. Establish `hw : (if v.2.2.2 then conj (z v.1 v.2.1 v.2.2.1) else z v.1 v.2.1 v.2.2.1) = evX (if v.2.2.2 then ∑ c, MvPolynomial.C (star (fr v.2.1 c)) * MvPolynomial.X (c, v.2.2.1, true) else ∑ c, MvPolynomial.C (fr v.2.1 c) * MvPolynomial.X (c, v.2.2.1, false)) (fr⁻¹ * z τ)`.
+
+Rewrite using `[hv]`. Use `conv_lhs => rw [hz]`. Apply the tactic sequence `split_ifs <;> simp [evX, Matrix.mul_apply, map_sum]`. Rewrite using `[evalPoly_mul, e, evalPoly_X, hw, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [evX, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨k, Pi, fun i => pi i * MvPolynomial.X v, fun i w hw => ?_, fun z => ?_⟩` and prove the remaining obligations. Use `MvPolynomial.vars_mul (pi i) (MvPolynomial.X v) hw` as an intermediate fact. Rewrite `this` using `[Finset.mem_union, MvPolynomial.vars_X]`.
+
+Break down `this with h' | h'` into its components or cases. Conclude with `h i w h'`. Rewrite `h'` using `[Finset.mem_singleton]`. Rewrite using `[h']`. Conclude with `hv`.
+
+Rewrite using `[evalPoly_mul, e, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[evalPoly_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem poly_split {m : ℕ} (τ : D.what₂.Tau) {fr : Matrix (Fin m) (Fin m) ℂ} (hfr : IsUnit fr.det)
     (p : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) :
     ∃ (k : ℕ) (Pi : Fin k → PX m n) (pi : Fin k → MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ),
@@ -134,6 +181,19 @@ theorem poly_split {m : ℕ} (τ : D.what₂.Tau) {fr : Matrix (Fin m) (Fin m) �
         rw [evalPoly_mul]
         ring
 
+/- English proof (translation)
+Introduce `D n V θ l s τ ε fr _ hfr Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem φ hφ`. Take `⟨p, g, hg, rfl⟩` from `hφ`. Take `⟨k, Pi, pi, hpi, e⟩` from `poly_split τ hfr.1 p`.
+
+Use `⟨k, Pi, fun i x => evalPoly (pi i) (fun τ => compAt θ τ x) * gAway V l s τ (fun τ => compAt θ τ x) * g (fun i j => finPart D (x i j)), fun i => Submodule.subset_span ⟨pi i, g, hg, hpi i, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply, e, gauss_split l hfr, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [tens, fP]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨k1, P1, Ψ1, h1, e1⟩` from `hx`. Take `⟨k2, P2, Ψ2, h2, e2⟩` from `hy`.
+
+Use `⟨k1 + k2, Fin.append P1 P2, Fin.append Ψ1 Ψ2, fun i => Fin.addCases (fun j => by simpa using h1 j) (fun j => by simpa using h2 j) i, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add, e1, e2]`. Simplify using the standard rewrite rules. Consider the case `smul a x _ hx`. Take `⟨k, Qs, Ψi, h, e⟩` from `hx`.
+
+Use `⟨k, Qs, fun i => a • Ψi i, fun i => Submodule.smul_mem _ a (h i), ?_⟩` and prove the remaining obligations. Rewrite using `[e, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem splitFock : SplitFock := by
   intro D n V θ l s τ ε fr _ hfr Φ hΦ
   induction hΦ using Submodule.span_induction with
@@ -164,18 +224,34 @@ theorem splitFock : SplitFock := by
     simp only [tens, Pi.smul_apply, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[tens]`.
+-/
 theorem tens_zero {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ)
     (f : (Fin m → Fin n → ℂ) → ℂ) : tens θ τ fr f (0 : Mx D m n → ℂ) = 0 := by
   funext x; simp [tens]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_add]`.
+-/
 theorem tens_add {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ)
     (f : (Fin m → Fin n → ℂ) → ℂ) (Ψ Ψ' : Mx D m n → ℂ) : tens θ τ fr f (Ψ + Ψ') = tens θ τ fr f Ψ + tens θ τ fr f Ψ' := by
   funext x; simp [tens, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tens_smul {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ)
     (f : (Fin m → Fin n → ℂ) → ℂ) (a : ℂ) (Ψ : Mx D m n → ℂ) : tens θ τ fr f (a • Ψ) = a • tens θ τ fr f Ψ := by
   funext x; simp only [tens, Pi.smul_apply, smul_eq_mul]; ring
 
+/- English proof (translation)
+Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem φ hφ`. Take `⟨p, g, hg, -, rfl⟩` from `hφ`. Use `Submodule.subset_span ⟨polyAt τ fr P * p, g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [tens, fP, evalPoly_mul, evalPoly_polyAt, gauss_split l hfr]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [tens_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [tens_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [tens_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem tensMem_fock {V : HSp D} {θ : InfFam D} {l : D.what₂.Tau → ℝ} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {τ : D.what₂.Tau} {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hfr : IsTauFrame V τ s ε fr)
     {Ψ : Mx D V.rank n → ℂ} (hΨ : Ψ ∈ awayA θ V n l s τ) (P : PX V.rank n) :
@@ -196,6 +272,15 @@ def coordCLM {m : ℕ} (v : D.what₂.Tau × Fin m × Fin n × Bool) : (D.what�
     ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => Fin n → ℂ) v.2.1).comp
       (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : D.what₂.Tau => Fin m → Fin n → ℂ) v.1))
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `e : (fun w : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly (MvPolynomial.C a) (fun τ => Matrix.of (w τ))) = fun _ => a` using `funext fun w => evalPoly_C a _`. Rewrite using `[e]`. Conclude with `Function.HasTemperateGrowth.const a`.
+
+Consider the case `add p q hp hq`. Establish `e : (fun w : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly (p + q) (fun τ => Matrix.of (w τ))) = (fun w => evalPoly p (fun τ => Matrix.of (w τ))) + fun w => evalPoly q (fun τ => Matrix.of (w τ))`. Use function extensionality and compare the values at `fun w => evalPoly_add p q _`. Rewrite using `[e]`. Conclude with `hp.add hq`.
+
+Consider the case `mul_X p v hp`. Establish `hc : Function.HasTemperateGrowth (fun w : D.what₂.Tau → Fin m → Fin n → ℂ => if v.2.2.2 then conj (w v.1 v.2.1 v.2.2.1) else w v.1 v.2.1 v.2.2.1)` using `by split_ifs`. Conclude with `(Complex.conjCLE.toContinuousLinearMap.comp (coordCLM v)).hasTemperateGrowth`. Conclude with `(coordCLM v).hasTemperateGrowth`. Establish `e : (fun w : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly (p * MvPolynomial.X v) (fun τ => Matrix.of (w τ))) = (fun w => evalPoly p (fun τ => Matrix.of (w τ))) * fun w => if v.2.2.2 then conj (w v.1 v.2.1 v.2.2.1) else w v.1 v.2.1 v.2.2.1`.
+
+Use function extensionality and compare the values at `fun w => by rw [evalPoly_mul, evalPoly_X]; rfl`. Rewrite using `[e]`. Conclude with `hp.mul hc`.
+-/
 theorem hasTemperateGrowth_evalPoly {m : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) :
     Function.HasTemperateGrowth (fun w : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly p (fun τ => Matrix.of (w τ))) := by
   induction p using MvPolynomial.induction_on with
@@ -223,6 +308,11 @@ theorem hasTemperateGrowth_evalPoly {m : ℕ} (p : MvPolynomial (D.what₂.Tau �
     rw [e]
     exact hp.mul hc
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `φ ⟨p, g, hg, rfl⟩`. Take `⟨f, hf⟩` from `GlobalTheory.GaussSchwartz.exists_schwartz_gauss D n V l hl s hs`. Use `Submodule.subset_span ⟨SchwartzMap.smulLeftCLM ℂ (fun w => evalPoly p (fun τ => Matrix.of (w τ))) f, g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_evalPoly p), hf, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem fockA_le_schwartzA {V : HSp D} {θ : InfFam D} {l : D.what₂.Tau → ℝ} (hl : ∀ τ, l τ ≠ 0)
     {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hs : ∀ τ, IsCartanInv (gramAt D V τ) (s τ)) :
     fockA θ V n l s ≤ schwartzA θ V.rank n := by
@@ -234,6 +324,9 @@ theorem fockA_le_schwartzA {V : HSp D} {θ : InfFam D} {l : D.what₂.Tau → �
   rw [SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_evalPoly p), hf, smul_eq_mul]
   rfl
 
+/- English proof (translation)
+Introduce `D n V θ l s τ ε fr _ hl hs hfr Ψ hΨ P`. Establish `h` using `tensMem_fock hfr hΨ P`. Conclude with `⟨fockA_le_schwartzA hl hs h, h⟩`.
+-/
 theorem tensMem : TensMem := by
   intro D n V θ l s τ ε fr _ hl hs hfr Ψ hΨ P
   have h := tensMem_fock hfr hΨ P

@@ -17,17 +17,26 @@ namespace GlobalTheory.CompanionTheory.ColumnSplitting.ShiftP
 section Generic
 variable {R : Type} [CommRing R] {r t n : ℕ}
 
+/- English proof (translation)
+Unfold `bl`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `[add_comm]`.
+-/
 theorem upperUnipotent_mul (hn : r + t = n) (y y' : Matrix (Fin r) (Fin t) R) :
     bl hn 1 y 0 1 * bl hn 1 y' 0 1 = bl hn 1 (y + y') 0 1 := by
   unfold bl
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
   simp [add_comm]
 
+/- English proof (translation)
+Unfold `bl`. Rewrite using `[Matrix.fromBlocks_one]`. Conclude with `Matrix.submatrix_one_equiv _`.
+-/
 theorem upperUnipotent_zero (hn : r + t = n) : bl hn (1 : Matrix (Fin r) (Fin r) R) 0 0 1 = 1 := by
   unfold bl
   rw [Matrix.fromBlocks_one]
   exact Matrix.submatrix_one_equiv _
 
+/- English proof (translation)
+Unfold `bl`. Rewrite using `[Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules.
+-/
 theorem det_bl_one (hn : r + t = n) (y : Matrix (Fin r) (Fin t) R) : (bl hn 1 y 0 1).det = 1 := by
   unfold bl
   rw [Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]
@@ -43,10 +52,16 @@ def shear {r : ℕ} (hn : r + t = n) (y : Mx D r t) : GL (Fin n) (AE D) where
   val_inv := by rw [upperUnipotent_mul, add_neg_cancel, upperUnipotent_zero]
   inv_val := by rw [upperUnipotent_mul, neg_add_cancel, upperUnipotent_zero]
 
+/- English proof (translation)
+The claim follows from `Units.ext (det_bl_one hn y)`.
+-/
 theorem det_shear {r : ℕ} (hn : r + t = n) (y : Mx D r t) :
     Matrix.GeneralLinearGroup.det (shear (D := D) hn y : GL (Fin n) (AE D)) = 1 :=
   Units.ext (det_bl_one hn y)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.IwaAd.integral_mul_right m μ hμ (shear hn y) f`. Rewrite `h` using `[det_shear, map_one, one_npow, one_mul]`. Conclude with `h`.
+-/
 theorem integral_shear {r : ℕ} (hn : r + t = n) (y : Mx D r t) {m : ℕ} (μ : Measure (Mx D m n)) (hμ : μ.IsAddHaarMeasure)
     (f : Mx D m n → ℂ) : ∫ U, f (mm U (bl hn 1 y 0 1)) ∂μ = ∫ U, f U ∂μ := by
   have h := GlobalTheory.CompanionTheory.IwaAd.integral_mul_right m μ hμ (shear hn y) f
@@ -57,6 +72,11 @@ end GlobalTheory.CompanionTheory.ColumnSplitting.ShiftP
 
 namespace GlobalTheory.CompanionTheory.ColumnSplitting
 
+/- English proof (translation)
+Introduce `D n t B W d hn I Φ y a`. Take `⟨𝓕, hf⟩` from `I.cov₁`. Establish `e` using `ShiftP.integral_shear hn y I.μ₁ hf.1 (fun U => projS I.νK Φ (d.jX ⬝ U + d.j0 ⬝ (mm a (bl hn 1 y 0 1))))`. Simplify using `only [ikp, ikS]`. Rewrite using `[← e]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun U => ?_)` and prove the remaining obligations. Simplify using `only [projS]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [mm, Matrix.mul_assoc, Matrix.add_mul]`.
+-/
 theorem shift : Shift := by
   intro D n t B W d hn I Φ y a
   obtain ⟨𝓕, hf⟩ := I.cov₁

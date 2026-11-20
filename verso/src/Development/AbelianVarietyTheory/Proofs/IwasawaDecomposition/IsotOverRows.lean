@@ -19,6 +19,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hW hDS hN`. Use `EvG.imp (evG_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev) fun K _ _ _ _ hHost => ?_` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `B f T hO _ _ _ _ w _ Z Wt hX z p0 Y hHo _ _ hGrp _ hRd hME`. Establish `hH : Formalism.IndefR.Links.HostHyp (w.st Z).toD7` using `(hHost (w.st Z) hO).1`.
+
+Establish `hGS : Formalism.L2.DIV.GoodStable z.Xg`. Establish `hI` using `GlobalTheory.DimPartsCompare.TameTie.idemTie hN.greenC (GlobalTheory.DimPartsCompare.tameTie_of_typesTrue (D := (w.st Z).toD7) hGrp).2.1`. Use `GlobalTheory.Mem.R3.GoodDual.goodStable_of_coeff (w.st Z).B.embLL z.Xg z.good.irr fun g => ?_` and prove the remaining obligations. Apply `(w.st Z).B.embLL.injective` to reduce the goal to its premises. Rewrite using `[z.good.2, z.good.2, map_inv, GlobalTheory.Mem.R3.GoodDual.goodIdempotent_coeff_inv_eq_coeff hI]`.
+
+Establish `hIR : Formalism.BasicNotions.Rows.IsotRank (w.st Z).toD7.what₂` using `GlobalTheory.Mem.R3.isotRank_of_multEq hW hDS hN.hc hN.decay _ _ _ _ _ _ _ z.R z.F z.cG _ Y z.pins hHo hH hGS (GlobalTheory.CuspDec.cuspDecomp hN.hc hN.decay _) hME`. Conclude with `(GlobalTheory.NRows.L0.parts_positive_scalars_without_congruence_lengths hW hDS hN.hc hN.decay _ _ _ _ _ _ _ z.R z.F z.cG p0 Y hRd z.pins hHo hH).1 hIR`.
+-/
 theorem isot_overRows : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → PrN →
     OverRows fun _ _ _ _ w Z _ _ z p0 Y => RationalReadingWithoutCongruence z.R z.F p0 Y → GlobalTheory.CuspMult.MultEq z.R.toRealDat →
       Formalism.BasicNotions.Rows.IsotInternal (w.st Z).toD7.what₂ := by
@@ -40,6 +47,11 @@ theorem isot_overRows : GlobalTheory.Published.WeilRepresentationUnitaryPair →
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hW hDS hH hN`. Establish `h1` using `GlobalTheory.HeightCounting.Up.RowModel.overRows_allSt (isot_overRows hW hDS hN)`. Establish `h0 : StepW Start Pinned` using `StepW.of_all fun _ _ _ _ _ _ _ s => s.1`. Use `(StepW.and h1 (h0.trans hH.multL)).trans (StepW.of_all fun K B f T w _ _ hh P x => ?_)` and prove the remaining obligations. Take `⟨hA, hB⟩` from `hh`.
+
+Conclude with `hA P x x.r.Z (hB x.o.Z P.hX P.Wt x.m.z x.fits.grp x.fits.grpAt x.m.exAt x.m.inGeo)`.
+-/
 theorem isot_allSt : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → HypH → PrN →
     AllSt fun _ _ _ _ _ _ x => Formalism.BasicNotions.Rows.IsotInternal (Dof x).what₂ := by
   intro hW hDS hH hN

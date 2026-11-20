@@ -66,6 +66,9 @@ def Canon [IsLocalRing R] (Q : Data R) (G : Over (Sp R)) [GrpObj G] [IsCommMonOb
       inc ≫ pr = 𝟙 G ∧ pr ≫ inc = oG.act F.e ∧
       LBIso P ((abelian₂ G' U'.LG.L).pull (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f) : G2 G ⟶ G2 G').left)
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem Canon.isLB [IsLocalRing R] {Q : Data R} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {P : LB (G2 G).left}
     (h : Canon Q G P) : P.IsLB := h.1
 
@@ -77,16 +80,28 @@ def PFactor.ofFactor {D D' : DegPre R} (F : Factor D D') (hF : F.Alg) (hB : D.Ta
   tau a b z J J' hJ hJ' := ((PolDeg.Wit.exists_tau D a b).choose_spec.2 _ _ z J' hJ').trans (F.tau a b z J J' hJ hJ')
   alg := hF
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 theorem PFactor.ofFactor_e {D D' : DegPre R} (F : Factor D D') (hF : F.Alg) (hB : D.TauBimult) :
     (PFactor.ofFactor F hF hB).e = F.e ∧ (PFactor.ofFactor F hF hB).f = F.f := ⟨rfl, rfl⟩
 
 def Wit.pfac : PFactor (PolDeg.Wit.ofDeg InhTate.tatePre InhTate.tauBimult) Wit.tate2 :=
   PFactor.ofFactor Wit.fac Wit.fac_alg InhTate.tauBimult
 
+/- English proof (translation)
+The claim follows from `Wit.fac_e`.
+-/
 theorem Wit.pfac_e : Wit.pfac.e ≠ 0 ∧ Wit.pfac.e ≠ 1 := Wit.fac_e
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : Wit.pfac.f = (1 : ℤ × ℤ) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : Wit.pfac.O = (ℤ × ℤ) := rfl
 
 end GlobalTheory.Mum

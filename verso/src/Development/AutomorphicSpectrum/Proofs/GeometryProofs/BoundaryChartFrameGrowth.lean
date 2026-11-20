@@ -17,26 +17,41 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 noncomputable section
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C' : Type} [CommRing A] [CommRing B] [CommRing C'] (f : A →+* B) (g : B →+* C') :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+-/
 theorem dualMap_comp' {A B C' : Type} [CommRing A] [CommRing B] [CommRing C'] (f : A →+* B) (g : B →+* C') :
     (dualMap g).comp (dualMap f) = dualMap (g.comp f) := by
   refine RingHom.ext fun a => ?_
   ext <;> simp [dualMap]
 
+/- English proof (translation)
+Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_comp_algebraMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     (dualMap f).comp (algebraMap A (DualNumber A)) = (algebraMap B (DualNumber B)).comp f := by
   refine RingHom.ext fun a => ?_
   ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Use `hp.hom_ext h ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono j, Category.assoc, Category.assoc, ← hp.w, ← Category.assoc, h, Category.assoc]`.
+-/
 theorem eq_of_cart {P Q A B T : Scheme.{0}} {φ : P ⟶ Q} {p : P ⟶ A} {q : Q ⟶ B} {j : A ⟶ B} [Mono j]
     (hp : IsPullback φ p q j) {x y : T ⟶ P} (h : x ≫ φ = y ≫ φ) : x = y := by
   refine hp.hom_ext h ?_
   rw [← cancel_mono j, Category.assoc, Category.assoc, ← hp.w, ← Category.assoc, h, Category.assoc]
 
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) ≤ L ^ (N + N')` using `one_le_pow₀ hL`. Establish `h2 : L ^ N ≤ L ^ (N + N')` using `pow_le_pow_right₀ hL (Nat.le_add_right _ _)`. Establish `h3 : y ≤ 1 + y ^ 2` using `by nlinarith [sq_nonneg (y - 1)]`. Establish `h4 : A * L ^ N ≤ A * L ^ (N + N')` using `mul_le_mul_of_nonneg_left h2 hA`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem le_of_sq_le {y A L : ℝ} {N N' : ℕ} (hA : 0 ≤ A) (hL : 1 ≤ L) (h : y ^ 2 ≤ A * L ^ N) :
     y ≤ (1 + A) * L ^ (N + N') := by
   have h1 : (1 : ℝ) ≤ L ^ (N + N') := one_le_pow₀ hL
@@ -45,6 +60,17 @@ theorem le_of_sq_le {y A L : ℝ} {N N' : ℕ} (hA : 0 ≤ A) (hL : 1 ≤ L) (h 
   have h4 : A * L ^ N ≤ A * L ^ (N + N') := mul_le_mul_of_nonneg_left h2 hA
   nlinarith
 
+/- English proof (translation)
+Establish `hLp : 0 < L` using `by linarith`. Establish `hK₁ : 0 ≤ K₁` using `hg.trans g1`. Establish `hK₂ : 0 ≤ K₂` using `hd.trans d1`. Establish `hA : |K₁ * K₂| = K₁ * K₂` using `abs_of_nonneg (mul_nonneg hK₁ hK₂)`. Rewrite using `[hA]`.
+
+Establish `hA0 : 0 ≤ K₁ * K₂` using `mul_nonneg hK₁ hK₂`. Establish `hx2 : 0 < x ^ 2` using `by positivity`. Prove the components needed by the constructor for the conclusion. Use `le_of_sq_le hA0 hL ?_` and prove the remaining obligations. Establish `e : x ^ 2 * (K₁ * L ^ N₁ * g) = K₁ * L ^ N₁ * d` using `by rw [← h]; ring`.
+
+Establish `p1 : x ^ 2 ≤ x ^ 2 * (K₁ * L ^ N₁ * g)` using `le_mul_of_one_le_right hx2.le g2`. Establish `p2 : K₁ * L ^ N₁ * d ≤ K₁ * L ^ N₁ * K₂` using `mul_le_mul_of_nonneg_left d1 (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.add_comm N₁ N₂]`. Use `le_of_sq_le hA0 hL ?_` and prove the remaining obligations.
+
+Establish `hi : x⁻¹ ^ 2 * x ^ 2 = 1` using `by field_simp`. Establish `hi0 : 0 < x⁻¹ ^ 2` using `by positivity`. Establish `p1 : x⁻¹ ^ 2 ≤ x⁻¹ ^ 2 * (K₂ * L ^ N₂ * d)` using `le_mul_of_one_le_right hi0.le d2`. Establish `e : x⁻¹ ^ 2 * (K₂ * L ^ N₂ * d) = K₂ * L ^ N₂ * g`. Rewrite using `[← h]; calc _ = (x⁻¹ ^ 2 * x ^ 2) * (K₂ * L ^ N₂ * g) := by ring _ = _ := by rw [hi, _root_.one_mul]`.
+
+Establish `p2 : K₂ * L ^ N₂ * g ≤ K₂ * L ^ N₂ * K₁` using `mul_le_mul_of_nonneg_left g1 (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_bounds_of_gram {x g d K₁ K₂ L : ℝ} {N₁ N₂ : ℕ} (hx : 0 < x) (hg : 0 ≤ g) (hd : 0 ≤ d) (hL : 1 ≤ L)
     (h : x ^ 2 * g = d) (g1 : g ≤ K₁) (g2 : 1 ≤ K₁ * L ^ N₁ * g) (d1 : d ≤ K₂) (d2 : 1 ≤ K₂ * L ^ N₂ * d) :
     x ≤ (1 + |K₁ * K₂|) * L ^ (N₁ + N₂) ∧ x⁻¹ ≤ (1 + |K₁ * K₂|) * L ^ (N₁ + N₂) := by
@@ -78,6 +104,17 @@ theorem norm_bounds_of_gram {x g d K₁ K₂ L : ℝ} {N₁ N₂ : ℕ} (hx : 0 
       _ ≤ _ := p2
       _ = _ := by ring
 
+/- English proof (translation)
+Establish `hu : ∀ b ∈ B, IsUnit (ψ b r)` using `fun b hb => isUnit_iff_ne_zero.2 (hr b hb)`. Set `ψ' : (Fin n → ℂ) → (Localization.Away r →+* ℂ)` to `fun b => if h : b ∈ B then IsLocalization.Away.lift r (hu b h) else IsLocalization.Away.lift r (hu b₀ hb₀)`. Establish `hc : ∀ b ∈ B, (ψ' b).comp (algebraMap R (Localization.Away r)) = ψ b`. Introduce `b hb`. Use extensionality with `x`.
+
+Simplify using `only [ψ', dif_pos hb, RingHom.comp_apply]`. Conclude with `IsLocalization.Away.lift_eq r (hu b hb) x`. Use `⟨ψ', hc, fun x => ?_⟩` and prove the remaining obligations. Take `⟨k, a, hx⟩` from `IsLocalization.Away.surj r x`. Establish `e : ∀ b ∈ B, ψ' b x = ψ b a / ψ b r ^ k`.
+
+Introduce `b hb`. Establish `h1` using `congrArg (ψ' b) hx`. Establish `h2 : ∀ y, ψ' b (algebraMap R _ y) = ψ b y` using `fun y => by`. Rewrite using `[← hc b hb]`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[map_mul, map_pow, h2, h2]`. Rewrite using `[eq_div_iff (pow_ne_zero _ (hr b hb))]`. Conclude with `h1`. Establish `hp : DifferentiableOn ℂ (fun b => ψ b r ^ k) B` using `fun b hb => ((hd r) b hb).pow k`. Establish `hi : DifferentiableOn ℂ (fun b => (ψ b r ^ k)⁻¹) B` using `fun b hb => (hp b hb).inv (pow_ne_zero _ (hr b hb))`.
+
+Establish `hq : DifferentiableOn ℂ (fun b => ψ b a * (ψ b r ^ k)⁻¹) B` using `fun b hb => (hd a b hb).mul (hi b hb)`. Conclude with `hq.congr fun b hb => by rw [e b hb, div_eq_mul_inv]`.
+-/
 theorem exists_away_family {R : Type} [CommRing R] {n : ℕ} (ψ : (Fin n → ℂ) → (R →+* ℂ)) (r : R)
     {B : Set (Fin n → ℂ)} {b₀ : Fin n → ℂ} (hb₀ : b₀ ∈ B) (hr : ∀ b ∈ B, ψ b r ≠ 0)
     (hd : ∀ x : R, DifferentiableOn ℂ (fun b => ψ b x) B) :
@@ -114,6 +151,9 @@ section Chart
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {σK : KA l →+* ℂ} {n a : ℕ}
 
+/- English proof (translation)
+Establish `h : (C.M.pt e).left ≫ C.t.G.hom = spMap (algebraMap C.R (DualNumber C.R)) ≫ 𝟙 _` using `Over.w (C.M.pt e)`. Rewrite using `[Category.assoc, h, Category.comp_id, spMap_comp', spMap_comp', dualMap_comp_algebraMap]`.
+-/
 theorem BdryChart.pt_w (C : BdryChart Xo σK n a) {R' : Type} [CommRing R'] (f : C.R →+* R') (e : Fin C.g → C.R) :
     (spMap (dualMap f) ≫ (C.M.pt e).left) ≫ C.t.G.hom =
       spMap (algebraMap R' (DualNumber R')) ≫ spMap f := by
@@ -124,9 +164,15 @@ def BdryChart.val (C : BdryChart Xo σK n a) (z : Fin n → ℂ) (e : Fin C.g �
     epsAt (spMap (C.ψ z)) ⟶ C.t.G :=
   Over.homMk (spMap (dualMap (C.ψ z)) ≫ (C.M.pt e).left) (C.pt_w _ e)
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem BdryChart.isVal_val (C : BdryChart Xo σK n a) (z : Fin n → ℂ) {m : ℕ} (u : Fin m → Fin C.g → C.R) :
     C.IsVal z u (fun i => C.val z (u i)) := fun _ => rfl
 
+/- English proof (translation)
+Use `haveI := C.j_open`. Rewrite using `[← cancel_mono C.j, Category.assoc, Category.assoc, (C.pt_eq z hz).1]`. Establish `hw` using `C.m₁.cart.1.w`. Rewrite using `[← hw, ← Category.assoc, h]`. Conclude with `C.pt_w _ e`.
+-/
 theorem BdryChart.tan_w (C : BdryChart Xo σK n a) {z : Fin n → ℂ} (hz : z ∈ punct n a 1) {e : Fin C.g → C.R}
     {uu : Sp (DualNumber ℂ) ⟶ C.tV.G.left} (h : uu ≫ C.m₁.φ = spMap (dualMap (C.ψ z)) ≫ (C.M.pt e).left) :
     uu ≫ C.tV.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ C.pt z := by
@@ -136,6 +182,9 @@ theorem BdryChart.tan_w (C : BdryChart Xo σK n a) {z : Fin n → ℂ} (hz : z �
   rw [← hw, ← Category.assoc, h]
   exact C.pt_w _ e
 
+/- English proof (translation)
+Use `choose uu h₂ h₁ using hv`. Set `t : Fin m → (epsAt (C.pt z) ⟶ C.tV.G)` to `fun i => Over.homMk (uu i) (C.tan_w hz (h₁ i))`. Establish `A` using `hodgeGram_iff_of_sabMap E H _ _ C.t C.tV C.j C.m₁ (C.pt z) (spMap (C.ψ z)) m t v' Γ (C.pt_eq z hz).1.symm (fun i => (h₁ i).trans (hv' i).symm)`. Establish `B` using `hodgeGram_iff_of_sabMap E H _ _ Xo.univ.t C.tV C.k C.m₂ (C.pt z) x m t v Γ hx h₂`. Conclude with `A.symm.trans B`.
+-/
 theorem BdryChart.hodgeGram_iff (C : BdryChart Xo σK n a) {z : Fin n → ℂ} (hz : z ∈ punct n a 1)
     {x : Sp ℂ ⟶ Xo.X} (hx : x = C.pt z ≫ C.k) {m : ℕ} (u : Fin m → Fin C.g → C.R)
     (v : Fin m → (epsAt x ⟶ Xo.univ.t.G))
@@ -156,16 +205,31 @@ def BdryChart.liftVec (C : BdryChart Xo σK n a) {R' : Type} [CommRing R'] (f : 
   C.m₁.cart.1.lift (spMap (dualMap f) ≫ (C.M.pt e).left) (spMap (algebraMap R' (DualNumber R')) ≫ i)
     (by rw [C.pt_w f e, Category.assoc, hi])
 
+/- English proof (translation)
+The claim follows from `C.m₁.cart.1.lift_fst _ _ _`.
+-/
 theorem BdryChart.liftVec_fst (C : BdryChart Xo σK n a) {R' : Type} [CommRing R'] (f : C.R →+* R') (i : Sp R' ⟶ C.V)
     (hi : i ≫ C.j = spMap f) (e : Fin C.g → C.R) :
     C.liftVec f i hi e ≫ C.m₁.φ = spMap (dualMap f) ≫ (C.M.pt e).left :=
   C.m₁.cart.1.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `C.m₁.cart.1.lift_snd _ _ _`.
+-/
 theorem BdryChart.liftVec_snd (C : BdryChart Xo σK n a) {R' : Type} [CommRing R'] (f : C.R →+* R') (i : Sp R' ⟶ C.V)
     (hi : i ≫ C.j = spMap f) (e : Fin C.g → C.R) :
     C.liftVec f i hi e ≫ C.tV.G.hom = spMap (algebraMap R' (DualNumber R')) ≫ i :=
   C.m₁.cart.1.lift_snd _ _ _
 
+/- English proof (translation)
+Use `haveI := C.j_open`. Establish `hopen : IsOpen (Set.range C.j)` using `C.j.isOpenEmbedding.isOpen_range`. Take `⟨x⟩ : Nonempty (Sp ℂ)` from `inferInstance`. Establish `hmem : (spMap (C.ψ z)) x ∈ Set.range C.j`. Rewrite using `[← (C.pt_eq z hz).1]`.
+
+Conclude with `⟨(C.pt z) x, by simp⟩`. Take `⟨_, ⟨r, rfl⟩, hr, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := ((spMap (C.ψ z)) x : PrimeSpectrum C.R)) hmem hopen`. Use `⟨r, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hr` to reduce the goal to its premises.
+
+Use `show C.ψ z r ∈ x.asIdeal`. Rewrite using `[h0]`. Conclude with `Ideal.zero_mem _`. Establish `hrange : Set.range (spMap (algebraMap C.R (Localization.Away r))) ⊆ Set.range C.j`. Use `subset_trans ?_ hsub` and prove the remaining obligations.
+
+Use `PrimeSpectrum.localization_away_comap_range (Localization.Away r) r` as an intermediate fact. Conclude with `this.le`. Conclude with `⟨IsOpenImmersion.lift C.j _ hrange, IsOpenImmersion.lift_fac _ _ _⟩`.
+-/
 theorem BdryChart.exists_away (C : BdryChart Xo σK n a) {z : Fin n → ℂ} (hz : z ∈ punct n a 1) :
     ∃ r : C.R, C.ψ z r ≠ 0 ∧ ∃ i : Sp (Localization.Away r) ⟶ C.V,
       i ≫ C.j = spMap (algebraMap C.R (Localization.Away r)) := by
@@ -191,9 +255,17 @@ theorem BdryChart.exists_away (C : BdryChart Xo σK n a) {z : Fin n → ℂ} (hz
 
 end Chart
 
+/- English proof (translation)
+Introduce `_ hz` and use `⟨Metric.ball_subset_ball h hz.1, hz.2⟩`.
+-/
 theorem punct_mono {n a : ℕ} {ρ ρ' : ℝ} (h : ρ ≤ ρ') : punct n a ρ ⊆ punct n a ρ' :=
   fun _ hz => ⟨Metric.ball_subset_ball h hz.1, hz.2⟩
 
+/- English proof (translation)
+Establish `e : punct n a ρ = Metric.ball 0 ρ ∩ ⋂ i : Fin n, {z : Fin n → ℂ | i.val < a → z i ≠ 0}`. Use extensionality with `z`. Simplify using `[punct]`. Rewrite using `[e]`. Use `Metric.isOpen_ball.inter (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `h : i.val < a`. Simplify `isOpen_ne_fun (continuous_apply i) continuous_const` using `[h]`. Simplify using `[h]`.
+-/
 theorem isOpen_punct_set (n a : ℕ) (ρ : ℝ) : IsOpen (punct n a ρ) := by
   have e : punct n a ρ = Metric.ball 0 ρ ∩ ⋂ i : Fin n, {z : Fin n → ℂ | i.val < a → z i ≠ 0} := by
     ext z
@@ -209,6 +281,9 @@ section Hol
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e₁ : v = v'` using `funext fun i => Over.OverMorphism.ext (hv i)`. Establish `e₂ : w = w'` using `funext fun i => Over.OverMorphism.ext (hw i)`. Rewrite using `[← e₁, ← e₂]`. Conclude with `hf`.
+-/
 theorem isFramed_congr {U : Set (Xo.XF c)} {τ : E →+* ℂ} {F : Type} [Field F] {β : c.F →+* F}
     {y y' : Sp F ⟶ Xo.XF c} (h : y = y') {v : Vecs y D.p} {w : Vecs y D.q} {v' : Vecs y' D.p} {w' : Vecs y' D.q}
     (hv : ∀ i, (v i).left = (v' i).left) (hw : ∀ i, (w i).left = (w' i).left)
@@ -219,6 +294,9 @@ theorem isFramed_congr {U : Set (Xo.XF c)} {τ : E →+* ℂ} {F : Type} [Field 
   rw [← e₁, ← e₂]
   exact hf
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e₁ : v = v'` using `funext fun i => Over.OverMorphism.ext (hv i)`. Establish `e₂ : w = w'` using `funext fun i => Over.OverMorphism.ext (hw i)`. Rewrite using `[e₁, e₂]`.
+-/
 theorem cfn_congr (Φ : CFn Xo c) {y y' : Sp ℂ ⟶ Xo.XF c} (h : y = y') {v : Vecs y D.p} {w : Vecs y D.q}
     {v' : Vecs y' D.p} {w' : Vecs y' D.q}
     (hv : ∀ i, (v i).left = (v' i).left) (hw : ∀ i, (w i).left = (w' i).left) : Φ y v w = Φ y' v' w' := by
@@ -227,6 +305,27 @@ theorem cfn_congr (Φ : CFn Xo c) {y y' : Sp ℂ ⟶ Xo.XF c} (h : y = y') {v : 
   have e₂ : w = w' := funext fun i => Over.OverMorphism.ext (hw i)
   rw [e₁, e₂]
 
+/- English proof (translation)
+Use `haveI := C.j_open`. Take `⟨r, hr, i, hi⟩` from `C.exists_away hz₀`. Use `set B : Set (Fin n → ℂ) := punct n a 1 ∩ (Metric.ball 0 1 ∩ (fun b => C.ψ b r) ⁻¹' {0}ᶜ) with hB`. Establish `hBo : IsOpen B` using `(isOpen_punct_set n a 1).inter ((C.hol.2 r).continuousOn.isOpen_inter_preimage Metric.isOpen_ball isOpen_compl_singleton)`. Establish `hb₀ : z₀ ∈ B` using `⟨hz₀, hz₀.1, hr⟩`.
+
+Establish `hsub : B ⊆ Metric.ball 0 1` using `fun b hb => hb.1.1`. Take `⟨ψ', hψ', hd⟩` from `exists_away_family C.ψ r hb₀ (fun b hb => hb.2.2) (fun x => (C.hol.2 x).mono hsub)`. Set `f` to `algebraMap C.R (Localization.Away r)`. Set `lv : (Fin C.g → C.R) → (Sp (DualNumber (Localization.Away r)) ⟶ C.tV.G.left)` to `C.liftVec f i hi`. Set `x : Sp (Localization.Away r) ⟶ Xo.XF c` to `i ≫ k'`.
+
+Establish `hvw : ∀ e, (lv e ≫ C.m₂.φ) ≫ Xo.univ.t.G.hom = spMap (algebraMap (Localization.Away r) (DualNumber (Localization.Away r))) ≫ under x`. Introduce `e`. Establish `hw` using `C.m₂.cart.1.w`. Rewrite using `[Category.assoc, hw, ← Category.assoc, C.liftVec_snd f i hi e]`. Simplify using `only [under, x, Category.assoc, hk]`.
+
+Establish `hvb : ∀ b e, (spMap (dualMap (ψ' b)) ≫ lv e ≫ C.m₂.φ) ≫ Xo.univ.t.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ under (spMap (ψ' b) ≫ x)`. Introduce `b e`. Rewrite using `[Category.assoc, hvw e, ← Category.assoc, spMap_comp', dualMap_comp_algebraMap, ← spMap_comp']`. Simplify using `only [under, Category.assoc]`. Set `vR : Fin D.p → (epsAt (under x) ⟶ Xo.univ.t.G)` to `fun a => Over.homMk (lv (u₁ a) ≫ C.m₂.φ) (hvw _)`.
+
+Set `wR : Fin D.q → (epsAt (under x) ⟶ Xo.univ.t.G)` to `fun a => Over.homMk (lv (u₂ a) ≫ C.m₂.φ) (hvw _)`. Set `v : ∀ b, Vecs (spMap (ψ' b) ≫ x) D.p` to `fun b a => Over.homMk (spMap (dualMap (ψ' b)) ≫ lv (u₁ a) ≫ C.m₂.φ) (hvb b _)`. Set `w : ∀ b, Vecs (spMap (ψ' b) ≫ x) D.q` to `fun b a => Over.homMk (spMap (dualMap (ψ' b)) ≫ lv (u₂ a) ≫ C.m₂.φ) (hvb b _)`. Establish `hy : ∀ b ∈ B, C.pt b ≫ k' = spMap (ψ' b) ≫ x`. Introduce `b hb`.
+
+Establish `: C.pt b = spMap (ψ' b) ≫ i`. Rewrite using `[← cancel_mono C.j, (C.pt_eq b hb.1).1, Category.assoc, hi, spMap_comp', hψ' b hb]`. Rewrite using `[this, Category.assoc]`. Establish `huu : ∀ b ∈ B, ∀ (e : Fin C.g → C.R) (uu : Sp (DualNumber ℂ) ⟶ C.tV.G.left), uu ≫ C.m₁.φ = spMap (dualMap (C.ψ b)) ≫ (C.M.pt e).left → uu ≫ C.m₂.φ = spMap (dualMap (ψ' b)) ≫ lv e ≫ C.m₂.φ`. Introduce `b hb e uu h`.
+
+Establish `: uu = spMap (dualMap (ψ' b)) ≫ lv e`. Use `eq_of_cart C.m₁.cart.1 ?_` and prove the remaining obligations. Rewrite using `[h, Category.assoc, C.liftVec_fst f i hi e, ← Category.assoc, spMap_comp', dualMap_comp', hψ' b hb]`. Rewrite using `[this, Category.assoc]`. Establish `key : ∀ b ∈ B, IsFramed Set.univ τ σ (spMap (ψ' b) ≫ x) (v b) (w b) ∧ φ b = Φ (spMap (ψ' b) ≫ x) (v b) (w b)`.
+
+Introduce `b hb`. Take `⟨v₀, w₀, hf, hv, hw, he⟩` from `hz b hb.1`. Establish `ev : ∀ a, (v₀ a).left = (v b a).left` using `fun a => by`. Take `⟨uu, h₂, h₁⟩` from `hv a`. Rewrite using `[← h₂]`.
+
+Conclude with `huu b hb _ uu h₁`. Establish `ew : ∀ a, (w₀ a).left = (w b a).left` using `fun a => by`. Take `⟨uu, h₂, h₁⟩` from `hw a`. Rewrite using `[← h₂]`. Conclude with `huu b hb _ uu h₁`.
+
+Conclude with `⟨isFramed_congr (hy b hb) ev ew hf, he.trans (cfn_congr Φ (hy b hb) ev ew)⟩`. Establish `hD` using `hU.hol (Localization.Away r) x vR wR n B ψ' v w hBo hd (fun b hb => ⟨(key b hb).1, fun _ => rfl, fun _ => rfl⟩)`. Establish `hφ : DifferentiableOn ℂ φ B` using `hD.congr fun b hb => (key b hb).2`. Conclude with `hφ.differentiableAt (hBo.mem_nhds hb₀)`.
+-/
 theorem differentiableAt_of_chart {τ : E →+* ℂ} {σ : c.F →+* ℂ} {Φ : CFn Xo c} {n a : ℕ}
     (C : BdryChart Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) n a) (k' : C.V ⟶ Xo.XF c)
     (u₁ : Fin D.p → Fin C.g → C.R) (u₂ : Fin D.q → Fin C.g → C.R) (φ : (Fin n → ℂ) → ℂ)
@@ -300,6 +399,23 @@ theorem differentiableAt_of_chart {τ : E →+* ℂ} {σ : c.F →+* ℂ} {Φ : 
 
 end Hol
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c τ σ Φ n a C k' u₁ u₂ φ hpq hσ hτ hU hk h1 h2 hz`. Establish `hρ : (σ.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ = H.rt0`. Establish `e : (IntermediateField.inclusion c.le).toRingHom (baseKA l).ρ = tauIn c τ H.rt` using `Subtype.ext hτ.symm`. Rewrite using `[RingHom.comp_apply, e]`. Conclude with `hσ`.
+
+Take `⟨ρ₁, K₁, N₁, hρ₁, hρ₁', b₁⟩` from `GlobalTheory.T.hodge_gram_bound_near_boundary E H D l Xo _ n a C hpq hρ D.p u₁ h1`. Take `⟨ρ₂, K₂, N₂, hρ₂, hρ₂', b₂⟩` from `GlobalTheory.T.hodge_gram_bound_near_boundary E H D l Xo _ n a C hpq hρ D.q u₂ h2`. Establish `hρ0 : 0 < min ρ₁ ρ₂` using `lt_min hρ₁ hρ₂`. Establish `hρ1 : min ρ₁ ρ₂ ≤ 1` using `(min_le_left _ _).trans hρ₁'`. Establish `hset : ∀ z, z ∈ punct n a (min ρ₁ ρ₂) ↔ z ∈ ball (0 : Fin n → ℂ) (min ρ₁ ρ₂) ∧ ∀ i ∈ Finset.univ.filter (fun i : Fin n => i.val < a), z i ≠ 0`.
+
+Introduce `z`. Simplify using `[punct]`. Take `⟨h, hh, hne, heq⟩` from `exists_unit_extension_of_log_growth n (Finset.univ.filter (fun i : Fin n => i.val < a)) φ (min ρ₁ ρ₂) (1 + |K₁ * K₂|) (N₁ + N₂) hρ0 (fun z hz' => (differentiableAt_of_chart C k' u₁ u₂ φ hU hk hz (punct_mono hρ1 ((hset z).2 hz'))).differentiableWithinAt) (fun z hz₁ hz₂ => by`. Establish `hp : z ∈ punct n a (min ρ₁ ρ₂)` using `(hset z).2 ⟨hz₁, hz₂⟩`. Establish `hp1 : z ∈ punct n a 1` using `punct_mono hρ1 hp`.
+
+Take `⟨v, w, hf, hv, hw, he⟩` from `hz z hp1`. Establish `hx : under (C.pt z ≫ k') = C.pt z ≫ C.k`. Simplify using `only [under, Category.assoc, hk]`. Take `⟨⟨Γ, hΓ⟩, bΓ⟩` from `b₁ z (punct_mono (min_le_left _ _) hp) _ (C.isVal_val z u₁)`. Take `⟨⟨Δ, hΔ⟩, bΔ⟩` from `b₂ z (punct_mono (min_le_right _ _) hp) _ (C.isVal_val z u₂)`.
+
+Establish `gΓ` using `(C.hodgeGram_iff hp1 hx u₁ v hv _ (C.isVal_val z u₁) Γ).1 hΓ`. Establish `gΔ` using `(C.hodgeGram_iff hp1 hx u₂ w hw _ (C.isVal_val z u₂) Δ).1 hΔ`. Establish `hn` using `hU.norm _ v w Γ Δ hf gΓ gΔ`. Establish `hne` using `hU.ne _ v w hf`. Rewrite `hn`, `hne` using `[← he]`.
+
+Establish `hL : (1 : ℝ) ≤ logSize a z`. Establish `: 0 ≤ ∑ i ∈ Finset.univ.filter (fun i : Fin n => i.val < a), |Real.log ‖z i‖|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Simplify using `only [logSize]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨g1, g2⟩` from `bΓ Γ hΓ`.
+
+Take `⟨d1, d2⟩` from `bΔ Δ hΔ`. Use `norm_bounds_of_gram (norm_pos_iff.2 hne) (norm_nonneg _) (norm_nonneg _) hL hn g1 g2 d1 d2` as an intermediate fact. Use `⟨hne, this.1, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_inv]`. Conclude with `this.2)`.
+
+Use `⟨min ρ₁ ρ₂, h, hρ0, hρ1, hh, hne, fun z hz' => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2⟩` from `(hset z).1 hz'`. Conclude with `heq z a1 a2`.
+-/
 theorem exists_unit_extension_of_bdryChart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (τ : E →+* ℂ) (σ : c.F →+* ℂ) (Φ : CFn Xo c) (n a : ℕ) (C : BdryChart Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) n a) (k' : C.V ⟶ Xo.XF c) (u₁ : Fin D.p → Fin C.g → C.R) (u₂ : Fin D.q → Fin C.g → C.R) (φ : (Fin n → ℂ) → ℂ), 1 ≤ D.p + D.q → σ (tauIn c τ H.rt) = H.rt0 → τ (H.rt : E) = H.rt0 → IsUnitAn τ σ Φ → k' ≫ pullback.fst _ _ = C.k → LinearIndependent ℂ (fun i b => C.ψ 0 (u₁ i b)) → LinearIndependent ℂ (fun i b => C.ψ 0 (u₂ i b)) → (∀ z ∈ punct n a 1, ∃ (v : Vecs (C.pt z ≫ k') D.p) (w : Vecs (C.pt z ≫ k') D.q), IsFramed Set.univ τ σ (C.pt z ≫ k') v w ∧ (∀ i, ∃ uu : Sp (DualNumber ℂ) ⟶ C.tV.G.left, uu ≫ C.m₂.φ = (v i).left ∧ uu ≫ C.m₁.φ = spMap (dualMap (C.ψ z)) ≫ (C.M.pt (u₁ i)).left) ∧ (∀ j, ∃ uu : Sp (DualNumber ℂ) ⟶ C.tV.G.left, uu ≫ C.m₂.φ = (w j).left ∧ uu ≫ C.m₁.φ = spMap (dualMap (C.ψ z)) ≫ (C.M.pt (u₂ j)).left) ∧ φ z = Φ (C.pt z ≫ k') v w) → ∃ (ρ : ℝ) (h : (Fin n → ℂ) → ℂ), 0 < ρ ∧ ρ ≤ 1 ∧ DifferentiableOn ℂ h (ball 0 ρ) ∧ (∀ z ∈ ball (0 : Fin n → ℂ) ρ, h z ≠ 0) ∧ ∀ z ∈ punct n a ρ, h z = φ z := by
   intro E _ _ _ H D l Xo c τ σ Φ n a C k' u₁ u₂ φ hpq hσ hτ hU hk h1 h2 hz
   have hρ : (σ.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ = H.rt0 := by

@@ -12,6 +12,15 @@ import Development.AbelianVarietyTheory.Proofs.AbelianSchemeLawProofs.AbelianSch
 import Formalism.LocalToGlobal.ProjectiveLattices.GenFrPfS
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.FlatDegreeCompare
 
+/- English proof (translation)
+Establish `h1 : IsGrpPullback t₀.G Xo.univ.t.G x m1.φ` using `m1.cart`. Establish `key : ∀ w : epsR K ⟶ t₀.G, IsEigAt c ρ (w.left ≫ m1.φ) ↔ ∀ a, (w ≫ t₀.act.act a).left = spMap (epsScaleR (algebraMap c.F K (embK c ρ a))) ≫ w.left`. Introduce `w`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.KSExist.FrameLift.eig_iff h1 (m1.act a) w (algebraMap c.F K (embK c ρ a))`.
+
+Use `Iff.trans ?_ (h.trans ?_)` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite using `[e, Over.comp_left, GlobalTheory.GrpTangent.epsScale_left]`.
+
+Introduce `e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[e, Over.comp_left, GlobalTheory.GrpTangent.epsScale_left]`. Use `⟨fun i => (GlobalTheory.KSExist.FrameLift.tan_iff h1 (v i)).2 (hv.1 i).1, fun i => (key _).2 (hv.1 i).2, fun w hw he => ?_⟩` and prove the remaining obligations. Take `⟨w', rfl⟩` from `GlobalTheory.KSExist.FrameLift.exists_lift h1 (T := epsR K) w hw.1`.
+
+Take `⟨a, ha, hu⟩` from `hv.2 w' ⟨(GlobalTheory.KSExist.FrameLift.tan_iff h1 w').1 hw, (key _).1 he⟩`. Conclude with `⟨a, GlobalTheory.LieBasisRing.isCombAt_of_isLieComb h1 v a w' ha, fun b hb => hu b (GlobalTheory.KSExist.FrameLift.isLieComb_of_isCombAt h1 v b w' hb)⟩`.
+-/
 private theorem basisAt_of_eigBasis {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {K : Type} [Field K] [Algebra c.F K]
     {x : Sp K ⟶ Xo.X} {t₀ : SAB H (Sp K)} (m1 : SABMap t₀ Xo.univ.t x) (ρ : E →+* ℂ)
@@ -39,6 +48,15 @@ private theorem basisAt_of_eigBasis {E : Type} [Field E] [NumberField E] [IsCMFi
   exact ⟨a, GlobalTheory.LieBasisRing.isCombAt_of_isLieComb h1 v a w' ha,
     fun b hb => hu b (GlobalTheory.KSExist.FrameLift.isLieComb_of_isCombAt h1 v b w' hb)⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c K _ _ _ x hx t₀ m1 ρ ρ' hne v v' hv hv'`. Use `choose u₀ hu₀ using fun τ => GlobalTheory.IntFramesCompare.exists_eigenBasisAt (c := c) hx τ`. Take `⟨s, hs⟩` from `gfp_gen GlobalTheory.abelianSchemeLaws_all.2.secTwist x`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu, e, e'⟩ : ∃ u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber K) ⟶ Xo.univ.t.G.left), (∀ τ, EigenLatticeFrames.IsEigenBasisAt Xo c x τ (u τ)) ∧ (u ρ = fun i => (v i).left ≫ m1.φ) ∧ u ρ' = fun i => (v' i).left ≫ m1.φ := by`. Use `⟨Function.update (Function.update u₀ ρ fun i => (v i).left ≫ m1.φ) ρ' fun i => (v' i).left ≫ m1.φ, fun τ => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h' : τ = ρ'`. Substitute `h'` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `basisAt_of_eigBasis m1 _ v' hv'`. Rewrite using `[Function.update_of_ne h']`.
+
+Distinguish the cases in `h : τ = ρ`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `basisAt_of_eigBasis m1 _ v hv`. Rewrite using `[Function.update_of_ne h]`.
+
+Conclude with `hu₀ τ`. Rewrite using `[Function.update_of_ne hne, Function.update_self]`. Rewrite using `[Function.update_self]`. Conclude with `⟨⟨x, hx, u, fun τ => (hu τ).1, fun τ => (hu τ).2.1, fun τ => (hu τ).2.2, s, hs⟩, rfl, fun i => (congrFun e i).symm, fun i => (congrFun e' i).symm⟩`.
+-/
 theorem UpperTheory.tangent_families_distinct_embeddings_independent :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (x : Sp K ⟶ Xo.X), x ≫ Xo.s = sOf c K → ∀ (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t x) (ρ ρ' : E →+* ℂ), ρ ≠ ρ' → ∀ (v : Fin (Dw.mult ρ) → (epsR K ⟶ t₀.G)) (v' : Fin (Dw.mult ρ') → (epsR K ⟶ t₀.G)), EigenvectorLieDegree.IsEigBasis t₀.act ((EigenvectorLieDegree.embIn c (algebraMap c.F K) ρ).comp (algebraMap (𝓞 E) E)) v → EigenvectorLieDegree.IsEigBasis t₀.act ((EigenvectorLieDegree.embIn c (algebraMap c.F K) ρ').comp (algebraMap (𝓞 E) E)) v' → ∃ y : FrPt Xo c K, y.x = x ∧ (∀ i, (v i).left ≫ m1.φ = y.u ρ i) ∧ ∀ i, (v' i).left ≫ m1.φ = y.u ρ' i := by
   intro E _ _ _ H Dw l Xo c K _ _ _ x hx t₀ m1 ρ ρ' hne v v' hv hv'

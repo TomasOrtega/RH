@@ -9,6 +9,13 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Use `set S := ∑ j, ∑ k, ‖σx j k‖ ^ 2 with hS`. Establish `hS0 : 0 ≤ S` using `by positivity`. Establish `h1 : ‖σx‖ ≤ Real.sqrt S`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).mpr fun j => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).mpr fun k => ?_` and prove the remaining obligations.
+
+Apply `(Real.le_sqrt (norm_nonneg _) hS0).mpr` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 2 * sq2 n σx = S`. Unfold `sq2`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_sq_le_two_form_sq (n : ℕ) (σx : Fin n → Fin n → ℂ) : ‖σx‖ ^ 2 ≤ 2 * sq2 n σx := by
   set S := ∑ j, ∑ k, ‖σx j k‖ ^ 2 with hS
   have hS0 : 0 ≤ S := by positivity
@@ -27,6 +34,11 @@ theorem norm_sq_le_two_form_sq (n : ℕ) (σx : Fin n → Fin n → ℂ) : ‖σ
   calc ‖σx‖ ^ 2 ≤ (Real.sqrt S) ^ 2 := pow_le_pow_left₀ (norm_nonneg _) h1 2
     _ = S := Real.sq_sqrt hS0
 
+/- English proof (translation)
+Establish `h1 : ‖a + b‖ ^ 2 ≤ 2 * ‖a‖ ^ 2 + 2 * ‖b‖ ^ 2`. Use `norm_add_le a b` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg (‖a‖ - ‖b‖), norm_nonneg (a + b), norm_nonneg a, norm_nonneg b]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_mul (by norm_num)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem cut_pt_tri {E : Type*} [SeminormedAddCommGroup E] (a b : E) (X : ℝ) (hX : 0 ≤ X) :
     ENNReal.ofReal (‖a + b‖ ^ 2 * X) ≤
       2 * ENNReal.ofReal (‖a‖ ^ 2 * X) + 2 * ENNReal.ofReal (‖b‖ ^ 2 * X) := by
@@ -40,6 +52,15 @@ theorem cut_pt_tri {E : Type*} [SeminormedAddCommGroup E] (a b : E) (X : ℝ) (h
           ENNReal.ofReal_mul (by norm_num)]
         simp
 
+/- English proof (translation)
+Establish `hpt : ∀ j k, ‖(a + b) j k‖ ^ 2 ≤ 2 * ‖a j k‖ ^ 2 + 2 * ‖b j k‖ ^ 2` using `fun j k => by`. Use `norm_add_le (a j k) (b j k)` as an intermediate fact. Simplify using `only [Pi.add_apply]`. Use polynomial arithmetic with `[sq_nonneg (‖a j k‖ - ‖b j k‖), norm_nonneg (a j k + b j k), norm_nonneg (a j k), norm_nonneg (b j k)]`. Establish `h1 : sq2 n (a + b) ≤ 2 * sq2 n a + 2 * sq2 n b`.
+
+Unfold `sq2`. Use `Finset.sum_le_sum fun j (_ : j ∈ Finset.univ) => Finset.sum_le_sum fun k (_ : k ∈ Finset.univ) => hpt j k` as an intermediate fact. Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsa : 0 ≤ sq2 n a`.
+
+Unfold `sq2`. Check the signs of the components of the expression. Establish `hsb : 0 ≤ sq2 n b`. Unfold `sq2`. Check the signs of the components of the expression.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_add (mul_nonneg (by norm_num) (mul_nonneg hsa hX)) (mul_nonneg (by norm_num) (mul_nonneg hsb hX)), ENNReal.ofReal_mul (p := 2) (by norm_num), ENNReal.ofReal_mul (p := 2) (by norm_num)]`. Simplify using the standard rewrite rules.
+-/
 theorem two_form_weighted_add_le (n : ℕ) (a b : Fin n → Fin n → ℂ) (X : ℝ) (hX : 0 ≤ X) :
     ENNReal.ofReal (sq2 n (a + b) * X) ≤
       2 * ENNReal.ofReal (sq2 n a * X) + 2 * ENNReal.ofReal (sq2 n b * X) := by
@@ -68,6 +89,9 @@ theorem two_form_weighted_add_le (n : ℕ) (a b : Fin n → Fin n → ℂ) (X : 
           ENNReal.ofReal_mul (p := 2) (by norm_num)]
         simp
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul hp, ENNReal.ofReal_mul hq]`.
+-/
 theorem cut_ofReal_lin (p q a b c : ℝ) (hp : 0 ≤ p) (hq : 0 ≤ q) (ha : 0 ≤ a) (hb : 0 ≤ b)
     (h : c ≤ p * a + q * b) :
     ENNReal.ofReal c ≤ ENNReal.ofReal p * ENNReal.ofReal a + ENNReal.ofReal q * ENNReal.ofReal b := by
@@ -75,6 +99,9 @@ theorem cut_ofReal_lin (p q a b c : ℝ) (hp : 0 ≤ p) (hq : 0 ≤ q) (ha : 0 �
     _ = _ := by
       rw [ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_mul hp, ENNReal.ofReal_mul hq]
 
+/- English proof (translation)
+Rewrite using `[lintegral_add_left' (hG.const_mul _), lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.add_lt_top.mpr ⟨ENNReal.mul_lt_top ENNReal.ofReal_lt_top hGf, ENNReal.mul_lt_top ENNReal.ofReal_lt_top hHf⟩`.
+-/
 theorem cut_lint_lin {M : Type*} [MeasurableSpace M] (μ : Measure M) (G H : M → ℝ≥0∞)
     (hG : AEMeasurable G μ) (p q : ℝ) (hGf : ∫⁻ x, G x ∂μ < ⊤) (hHf : ∫⁻ x, H x ∂μ < ⊤) :
     ∫⁻ x, (ENNReal.ofReal p * G x + ENNReal.ofReal q * H x) ∂μ < ⊤ := by
@@ -83,6 +110,9 @@ theorem cut_lint_lin {M : Type*} [MeasurableSpace M] (μ : Measure M) (G H : M �
   exact ENNReal.add_lt_top.mpr ⟨ENNReal.mul_lt_top ENNReal.ofReal_lt_top hGf,
     ENNReal.mul_lt_top ENNReal.ofReal_lt_top hHf⟩
 
+/- English proof (translation)
+Use `⟨?_, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Use `image_eq_zero_of_notMem_tsupport hx` as an intermediate fact. Conclude with `this` after adjusting the coercions. Conclude with `image_eq_zero_of_notMem_tsupport (fun h => hx (tsupport_d_subset n z j _ h))`. Conclude with `image_eq_zero_of_notMem_tsupport (fun h => hx (tsupport_db_subset n z j _ h))`.
+-/
 theorem cut_zero_off {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (η : M → ℝ) (x : M)
     (hx : x ∉ tsupport (fun y => (η y : ℂ))) :
     η x = 0 ∧ (∀ j, d n z j (fun y => (η y : ℂ)) x = 0) ∧
@@ -92,6 +122,13 @@ theorem cut_zero_off {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) 
   · exact image_eq_zero_of_notMem_tsupport (fun h => hx (tsupport_d_subset n z j _ h))
   · exact image_eq_zero_of_notMem_tsupport (fun h => hx (tsupport_db_subset n z j _ h))
 
+/- English proof (translation)
+Establish `h1 : ∀ c : ℝ, SmoothR n z (fun x => ph x + (fun _ => c) x * ψ x)` using `fun c => SmoothR.add n z _ _ hph (SmoothR.mul n z _ _ (Smooth.const n z ((c : ℝ) : ℂ)) hψ)`. Establish `e1 : w1 ph ψ = fun x => ph x + (fun _ => (-2 : ℝ)) x * ψ x`. Use function extensionality and compare the values at `x`. Simplify using `only [w1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e2 : w2 ph ψ = fun x => ph x + (fun _ => (-1 : ℝ)) x * ψ x`. Use function extensionality and compare the values at `x`. Simplify using `only [w2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`.
+
+Conclude with `⟨h1 _, h1 _⟩`.
+-/
 theorem cut_smoothR_w {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (ph ψ : M → ℝ)
     (hph : SmoothR n z ph) (hψ : SmoothR n z ψ) :
     SmoothR n z (w1 ph ψ) ∧ SmoothR n z (w2 ph ψ) := by
@@ -103,6 +140,47 @@ theorem cut_smoothR_w {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     funext x; simp only [w2]; ring
   rw [e1, e2]; exact ⟨h1 _, h1 _⟩
 
+/- English proof (translation)
+Introduce `z hz e ph ψ he hph hψ hcut hcpt f w σ hf hw hσ hadj hS`. Take `⟨hW1, hW2⟩` from `cut_smoothR_w n z ph ψ hph hψ`. Establish `cW1` using `SmoothR.cut_continuous n z hz _ hW1`. Establish `cW2` using `SmoothR.cut_continuous n z hz _ hW2`. Establish `cph` using `SmoothR.cut_continuous n z hz _ hph`.
+
+Establish `hE : ∀ x, w1 ph ψ x - w2 ph ψ x = -ψ x` using `fun x => by simp only [w1, w2]; ring`. Establish `cE : Continuous (fun x => w1 ph ψ x - w2 ph ψ x)` using `cW1.sub cW2`. Use `choose η hηT hη01 hη1 hηD using hcut`. Establish `hcont : ∀ ν, Continuous (η ν)` using `fun ν => SmoothR.cut_continuous n z hz _ (hηT ν).1`. Establish `hdc : ∀ ν j, Continuous (d n z j (fun y => (η ν y : ℂ)))` using `fun ν j => Smooth.continuous n z hz _ (Smooth.d n z j _ (hηT ν).1)`.
+
+Establish `hdbc : ∀ ν j, Continuous (db n z j (fun y => (η ν y : ℂ)))` using `fun ν j => Smooth.continuous n z hz _ (Smooth.db n z j _ (hηT ν).1)`. Apply the tactic sequence `have hLf : LocalL2Isometry (vol n z) f := locL2_of_weighted_bound _ f (fun x => ‖f x‖ ^ 2) (w2 ph ψ) 1 zero_le_one cW2 hf.1 (fun x => by simp) hf.2`. Apply the tactic sequence `have hLσ : LocalL2Isometry (vol n z) σ := locL2_of_weighted_bound _ σ (fun x => sq2 n (σ x)) ph 2 zero_le_two cph hσ.1 (fun x => norm_sq_le_two_form_sq n (σ x)) hσ.2`. Use `set b1 : M → ℝ≥0∞ := fun x => ENNReal.ofReal (‖f x‖ ^ 2 * Real.exp (-w2 ph ψ x)) with hb1`. Use `set b2 : M → ℝ≥0∞ := fun x => ENNReal.ofReal 2 * ENNReal.ofReal (‖w x‖ ^ 2 * Real.exp (-w1 ph ψ x)) + ENNReal.ofReal 2 * b1 x with hb2`.
+
+Use `set b3 : M → ℝ≥0∞ := fun x => ENNReal.ofReal 2 * ENNReal.ofReal (sq2 n (σ x) * Real.exp (-ph x)) + ENNReal.ofReal 4 * b1 x with hb3`. Establish `hb1f : ∫⁻ x, b1 x ∂vol n z < ⊤` using `hf.2`. Establish `hb2f : ∫⁻ x, b2 x ∂vol n z < ⊤` using `cut_lint_lin _ _ _ (cut_aem _ w hw.1 _ cW1) 2 2 hw.2 hb1f`. Establish `hb3f : ∫⁻ x, b3 x ∂vol n z < ⊤` using `cut_lint_lin _ _ _ (aemeasurable_weighted_two_form n _ σ hσ.1 _ cph) 2 4 hσ.2 hb1f`. Establish `bF : ∀ (c : ℝ), |c| ≤ 1 → ∀ x, ENNReal.ofReal (‖(c : ℂ) • f x‖ ^ 2 * Real.exp (-w2 ph ψ x)) ≤ b1 x` using `fun c hc x => ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (cut_ptF c hc (f x)) (Real.exp_pos _).le)`.
+
+Establish `bW : ∀ ν (c : ℝ), |c| ≤ 1 → ∀ x, ENNReal.ofReal (‖(c : ℂ) * w x - (Real.exp (w1 ph ψ x - w2 ph ψ x) : ℂ) * ∑ j, d n z j (fun y => (η ν y : ℂ)) x * f x j‖ ^ 2 * Real.exp (-w1 ph ψ x)) ≤ b2 x`. Introduce `ν c hc x`. Rewrite using `[hE x]`. Conclude with `cut_ofReal_lin 2 2 _ _ _ zero_le_two zero_le_two (by positivity) (by positivity) (cut_ptW c hc (w x) _ (‖f x‖ ^ 2) _ (ph x) (ψ x) (cut_S_bound n z (η ν) (f x) x) (hηD ν x) (sq_nonneg _))`. Establish `bS : ∀ ν (c : ℝ), |c| ≤ 1 → ∀ x, ENNReal.ofReal (sq2 n (fun j k => (c : ℂ) * σ x j k + wedge (fun i => db n z i (fun y => (η ν y : ℂ)) x) (fun i => f x i) j k) * Real.exp (-ph x)) ≤ b3 x`.
+
+Introduce `ν c hc x`. Conclude with `cut_ofReal_lin 2 4 _ _ _ zero_le_two zero_le_four (mul_nonneg (two_form_sq_nonneg n _) (Real.exp_pos _).le) (by positivity) (cut_ptS c hc (σ x) _ _ _ (‖f x‖ ^ 2) (ph x) (ψ x) rfl (EuclideanSpace.norm_sq_eq (f x)).symm (hηD ν x))`. Establish `habs : ∀ ν x, |η ν x| ≤ 1` using `fun ν x => abs_le.2 ⟨by linarith [(hη01 ν x).1], (hη01 ν x).2⟩`. Establish `habs1 : ∀ ν x, |η ν x - 1| ≤ 1` using `fun ν x => abs_le.2 ⟨by linarith [(hη01 ν x).1], by linarith [(hη01 ν x).2]⟩`. Establish `hmF : ∀ ν, MemWeightedL2OneForm n z (fun x => (η ν x : ℂ) • f x) (w2 ph ψ)` using `fun ν => ⟨(Complex.continuous_ofReal.comp (hcont ν)).aestronglyMeasurable.smul hf.1, (lintegral_mono fun x => bF _ (habs ν x) x).trans_lt hb1f⟩`.
+
+Establish `hmW : ∀ ν, MemWeightedL2 n z (cutW n z ph ψ (η ν) f w) (w1 ph ψ)` using `fun ν => ⟨cut_aesmW n z _ ph ψ (η ν) (η ν) f w (hcont ν) cE (hdc ν) hf.1 hw.1, (lintegral_mono fun x => bW ν _ (habs ν x) x).trans_lt hb2f⟩`. Establish `hmS : ∀ ν, MemWeightedL2TwoForm n z (cutS n z (η ν) f σ) ph` using `fun ν => ⟨cut_aesmS n z _ (η ν) (η ν) f σ (hcont ν) (hdbc ν) hf.1 hσ.1, (lintegral_mono fun x => bS ν _ (habs ν x) x).trans_lt hb3f⟩`. Establish `hA : ∀ ν, IsWeakAdj n z (w1 ph ψ) (w2 ph ψ) (fun x => (η ν x : ℂ) • f x) (cutW n z ph ψ (η ν) f w)` using `fun ν => hMA z hz _ _ (η ν) f w hW1 hW2 (hηT ν).1 hf hw hadj`. Establish `hSS : ∀ ν, IsWeakS n z (fun x => (η ν x : ℂ) • f x) (cutS n z (η ν) f σ)` using `fun ν => hMS z hz (η ν) f σ (hηT ν).1 hLf hLσ hS`. Establish `hcF : ∀ ν, HasCompactSupport (fun x => (η ν x : ℂ) • f x)` using `fun ν => (hηT ν).2.mono' fun x hx => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hx (by simp [(cut_zero_off n z (η ν) x h).1])`. Establish `hcW : ∀ ν, HasCompactSupport (cutW n z ph ψ (η ν) f w)` using `fun ν => (hηT ν).2.mono' fun x hx => by`. Assume the negation of the conclusion as `h`. Take `⟨h0, h1, -⟩` from `cut_zero_off n z (η ν) x h`.
+
+Conclude with `hx (by simp [cutW, h0, h1])`. Establish `hcS : ∀ ν, HasCompactSupport (cutS n z (η ν) f σ)` using `fun ν => (hηT ν).2.mono' fun x hx => by`. Assume the negation of the conclusion as `h`. Take `⟨h0, -, h2⟩` from `cut_zero_off n z (η ν) x h`. Use `hx ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `j k`. Simplify using `[cutS, wedge, h0, h2]`. Establish `eF : ∀ ν x, (η ν x : ℂ) • f x - f x = ((η ν x - 1 : ℝ) : ℂ) • f x` using `fun ν x => by push_cast; rw [sub_smul, one_smul]`. Establish `eW : ∀ ν x, cutW n z ph ψ (η ν) f w x - w x = ((η ν x - 1 : ℝ) : ℂ) * w x - (Real.exp (w1 ph ψ x - w2 ph ψ x) : ℂ) * ∑ j, d n z j (fun y => (η ν y : ℂ)) x * f x j` using `fun ν x => by simp only [cutW]; push_cast; ring`. Establish `eS : ∀ ν x, cutS n z (η ν) f σ x - σ x = fun j k => ((η ν x - 1 : ℝ) : ℂ) * σ x j k + wedge (fun i => db n z i (fun y => (η ν y : ℂ)) x) (fun i => f x i) j k` using `fun ν x => by funext j k; simp only [cutS, Pi.sub_apply]; push_cast; ring`.
+
+Establish `hvan : ∀ x, ∀ᶠ ν : ℕ in atTop, (η ν x = 1 ∧ (∀ j, d n z j (fun y => (η ν y : ℂ)) x = 0) ∧ ∀ j, db n z j (fun y => (η ν y : ℂ)) x = 0)`. Introduce `x`. Use `filter_upwards [tendsto_natCast_atTop_atTop.eventually_gt_atTop (e x)] with ν hν`. Establish `hU : IsOpen {y | e y < (ν : ℝ)}` using `isOpen_lt he continuous_const`. Establish `h1 : ∀ y ∈ {y | e y < (ν : ℝ)}, η ν y = 1` using `fun y hy => hη1 ν y (le_of_lt hy)`.
+
+Conclude with `⟨h1 x hν, fun j => (cut_d_eq_zero n z hz j (η ν) _ hU h1 x hν).1, fun j => (cut_d_eq_zero n z hz j (η ν) _ hU h1 x hν).2⟩`. Establish `tF : Tendsto (fun ν : ℕ => ∫⁻ x, ENNReal.ofReal (‖(η ν x : ℂ) • f x - f x‖ ^ 2 * Real.exp (-w2 ph ψ x)) ∂vol n z) atTop (𝓝 0)`. Use `tendsto_lintegral_of_dominated_convergence' (μ := vol n z) (f := fun _ => 0) (F := fun ν x => ENNReal.ofReal (‖(η ν x : ℂ) • f x - f x‖ ^ 2 * Real.exp (-w2 ph ψ x))) b1 (fun ν => cut_aem _ (fun x => (η ν x : ℂ) • f x - f x) (((Complex.continuous_ofReal.comp (hcont ν)).aestronglyM …` as an intermediate fact. Simplify `this` using `only [lintegral_zero]`. Establish `tW : Tendsto (fun ν : ℕ => ∫⁻ x, ENNReal.ofReal (‖cutW n z ph ψ (η ν) f w x - w x‖ ^ 2 * Real.exp (-w1 ph ψ x)) ∂vol n z) atTop (𝓝 0)`.
+
+Use `tendsto_lintegral_of_dominated_convergence' (μ := vol n z) (f := fun _ => 0) (F := fun ν x => ENNReal.ofReal (‖cutW n z ph ψ (η ν) f w x - w x‖ ^ 2 * Real.exp (-w1 ph ψ x))) b2 (fun ν => cut_aem _ (fun x => cutW n z ph ψ (η ν) f w x - w x) ((cut_aesmW n z _ ph ψ (η ν) (η ν) f w ( …` as an intermediate fact. Simplify using `[cutW, h.1, h.2.1]))`. Simplify `this` using `only [lintegral_zero]`. Establish `tS : Tendsto (fun ν : ℕ => ∫⁻ x, ENNReal.ofReal (sq2 n (cutS n z (η ν) f σ x - σ x) * Real.exp (-ph x)) ∂vol n z) atTop (𝓝 0)`. Use `tendsto_lintegral_of_dominated_convergence' (μ := vol n z) (f := fun _ => 0) (F := fun ν x => ENNReal.ofReal (sq2 n (cutS n z (η ν) f σ x - σ x) * Real.exp (-ph x))) b3 (fun ν => aemeasurable_weighted_two_form n _ (fun x => cutS n z (η ν) f σ x - σ x) ((cut_aesmS n z _ (η ν) (η ν …` as an intermediate fact.
+
+Establish `: cutS n z (η ν) f σ x - σ x = 0`. Use function extensionality and compare the values at `j k`. Simplify using `[cutS, wedge, h.1, h.2.2]`. Simplify using `only`. Rewrite using `[this]`.
+
+Simplify using `[sq2]))`. Simplify `this` using `only [lintegral_zero]`. Introduce `δ hδ`. Use `set q : ℝ≥0∞ := min δ 1 / 4 with hq`. Establish `hmin0 : min δ 1 ≠ 0` using `(lt_min hδ one_pos).ne'`.
+
+Establish `hq0 : 0 < q` using `ENNReal.div_pos hmin0 (by norm_num)`. Establish `h4q : 4 * q ≤ δ` using `ENNReal.mul_div_le.trans (min_le_left _ _)`. Establish `fin : ∀ a b : ℝ≥0∞, a < q → b < q → 2 * a + 2 * b < δ`. Introduce `a b ha hb`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨ν, hν1, hν2, hν3⟩` from `(((tendsto_order.1 tF).2 q hq0).and (((tendsto_order.1 tW).2 q hq0).and ((tendsto_order.1 tS).2 q hq0))).exists`. Take `⟨g, hg, hg1, hg2, hg3⟩` from `hcpt _ _ _ (hmF ν) (hmW ν) (hmS ν) (hA ν) (hSS ν) (hcF ν) (hcW ν) (hcS ν) q hq0`. Use `⟨g, hg, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `nV at hg1 ⊢`. Use `lt_of_le_of_lt ?_ (fin _ _ hg1 hν1)` and prove the remaining obligations.
+
+Use `cut_lint_tri _ _ _ _ (cut_aem _ (fun x => (η ν x : ℂ) • f x - f x) ((Complex.continuous_ofReal.comp (hcont ν)).aestronglyMeasurable.smul hf.1 |>.sub hf.1) _ cW2) fun x => ?_` and prove the remaining obligations. Use `cut_pt_tri (g x - (η ν x : ℂ) • f x) ((η ν x : ℂ) • f x - f x) _ (Real.exp_pos (-w2 ph ψ x)).le` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Unfold `wint at hg2 ⊢`. Use `lt_of_le_of_lt ?_ (fin _ _ hg2 hν2)` and prove the remaining obligations.
+
+Use `cut_lint_tri _ _ _ _ (cut_aem _ (fun x => cutW n z ph ψ (η ν) f w x - w x) ((cut_aesmW n z _ ph ψ (η ν) (η ν) f w (hcont ν) cE (hdc ν) hf.1 hw.1).sub hw.1) _ cW1) fun x => ?_` and prove the remaining obligations. Use `cut_pt_tri (tstar n z (w1 ph ψ) (w2 ph ψ) g x - cutW n z ph ψ (η ν) f w x) (cutW n z ph ψ (η ν) f w x - w x) _ (Real.exp_pos (-w1 ph ψ x)).le` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Unfold `n2 at hg3 ⊢`. Use `lt_of_le_of_lt ?_ (fin _ _ hg3 hν3)` and prove the remaining obligations.
+
+Use `cut_lint_tri _ _ _ _ (aemeasurable_weighted_two_form n _ (fun x => cutS n z (η ν) f σ x - σ x) ((cut_aesmS n z _ (η ν) (η ν) f σ (hcont ν) (hdbc ν) hf.1 hσ.1).sub hσ.1) _ cph) fun x => ?_` and prove the remaining obligations. Use `two_form_weighted_add_le n (sbar n z g x - cutS n z (η ν) f σ x) (cutS n z (η ν) f σ x - σ x) _ (Real.exp_pos (-ph x)).le` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem cutoff (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (hMA : MultAdjStatement n M) (hMS : MultSStatement n M) :
     CutoffStatement n M := by

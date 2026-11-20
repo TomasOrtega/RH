@@ -16,6 +16,9 @@ open scoped Classical
 open GlobalTheory.BoxLattice GlobalTheory.EvAdm
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BoxLattice.dual_rat | exact GlobalTheory.BoxLattice.dual_rat | (intros; apply GlobalTheory.BoxLattice.dual_rat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_trace_dual_rational : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     ∀ μ : κ → mixedEmbedding.mixedSpace F, (∀ l ∈ boxLat F κ a, ∃ k : ℤ, GlobalTheory.VacLn.trPair F κ l μ = k) →
       ∃ z : κ → F, μ = ratInf F κ z := by

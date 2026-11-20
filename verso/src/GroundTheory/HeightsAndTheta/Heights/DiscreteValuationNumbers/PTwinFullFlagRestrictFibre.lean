@@ -16,14 +16,27 @@ variable {Ω : Type*} [Field Ω] [Algebra O Ω]
 variable {x : (Σ k, ι k) → Ω} {Q : Ideal (MRingOver (kap O) ι)} [Q.IsPrime]
 variable {N : ℕ} {V : Type*} [AddCommGroup V] [Module Ω V] {B : ChartBundle O (mseg x) N V}
 
+/- English proof (translation)
+Rewrite using `[← aeval_segForm (R := O)]`. Conclude with `aeval_ne_zero hPQ (isMultiHomog_segForm s) (red_segForm_notMem hs)`.
+-/
 theorem mseg_ne_zero (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s : ∀ k, ι k}
     (hs : mseg (genPt (kap O) Q) s ≠ 0) : mseg x s ≠ 0 := by
   rw [← aeval_segForm (R := O)]
   exact aeval_ne_zero hPQ (isMultiHomog_segForm s) (red_segForm_notMem hs)
 
+/- English proof (translation)
+Simplify using `using isLocFrac_C (Q := Q) (1 : O)`.
+-/
 theorem isLocFrac_one : IsLocFrac O Q (1 : MRingOver O ι) 1 := by
   simpa using isLocFrac_C (Q := Q) (1 : O)
 
+/- English proof (translation)
+Proceed by induction on `hm using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨F, G, hFG, s, hs, e, he, rfl⟩` from `hv`. Establish `h2 : a * (aeval x F / aeval x G) ∈ locAlg x Q` using `mul_mem ha (mem_locAlg hPQ hFG)`. Take `⟨F', G', h', _, he'⟩` from `mem_locAlg_iff.1 h2`.
+
+Use `AddSubgroup.subset_closure ⟨F', G', h', s, hs, e, he, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, he']`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [smul_add]`.
+
+Conclude with `add_mem hu hv`. Consider the case `neg u _ hu => rw [smul_neg]`. Conclude with `neg_mem hu`.
+-/
 theorem smul_mem_stalk (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a : Ω} (ha : a ∈ locAlg x Q) {m : V}
     (hm : m ∈ stalk O x Q B) : a • m ∈ stalk O x Q B := by
   induction hm using AddSubgroup.closure_induction with
@@ -37,14 +50,25 @@ theorem smul_mem_stalk (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a : Ω} (ha : a �
   | add u v _ _ hu hv => rw [smul_add]; exact add_mem hu hv
   | neg u _ hu => rw [smul_neg]; exact neg_mem hu
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, 1, isLocFrac_one, s, hs, e, he, by simp⟩`.
+-/
 theorem lat_le_stalk {s : ∀ k, ι k} (hs : mseg (genPt (kap O) Q) s ≠ 0) {e : V} (he : e ∈ B.lat s) :
     e ∈ stalk O x Q B :=
   AddSubgroup.subset_closure ⟨1, 1, isLocFrac_one, s, hs, e, he, by simp⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resMap_apply (m : stalk O x Q B) :
     resMap O x Q B m = (Submodule.span (FractionRing (MRingOver (kap O) ι ⧸ Q)) (resRel O x Q B)).mkQ
       ((1 : FractionRing (MRingOver (kap O) ι ⧸ Q)) ⊗ₜ[ℤ] m) := rfl
 
+/- English proof (translation)
+Take `⟨F, G, hFG, _, rfl⟩` from `mem_locAlg_iff.1 ha`. Rewrite using `[rs_frac hPQ hFG]`. Establish `hrel : resOf O Q F G ⊗ₜ[ℤ] m - (1 : FractionRing (MRingOver (kap O) ι ⧸ Q)) ⊗ₜ[ℤ] (⟨(aeval x F / aeval x G) • (m : V), smul_mem_stalk hPQ ha m.2⟩ : stalk O x Q B) ∈ resRel O x Q B` using `⟨F, G, hFG, m, _, rfl, rfl⟩`. Establish `h0` using `(Submodule.Quotient.mk_eq_zero (Submodule.span (FractionRing (MRingOver (kap O) ι ⧸ Q)) (resRel O x Q B))).2 (Submodule.subset_span hrel)`. Rewrite `h0` using `[Submodule.Quotient.mk_sub, sub_eq_zero]`.
+
+Rewrite using `[resMap_apply, resMap_apply, Submodule.mkQ_apply, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Conclude with `h0.symm`.
+-/
 theorem resMap_smul (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a : Ω} (ha : a ∈ locAlg x Q) (m : stalk O x Q B) :
     resMap O x Q B ⟨a • (m : V), smul_mem_stalk hPQ ha m.2⟩ = rs x Q a • resMap O x Q B m := by
   obtain ⟨F, G, hFG, _, rfl⟩ := mem_locAlg_iff.1 ha
@@ -58,10 +82,16 @@ theorem resMap_smul (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {a : Ω} (ha : a ∈ 
   rw [resMap_apply, resMap_apply, Submodule.mkQ_apply, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
   exact h0.symm
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.mem_map_of_mem _ (AddSubgroup.mem_addSubgroupOf.2 hy)`.
+-/
 theorem resMap_mem_resLat {s : ∀ k, ι k} {y : stalk O x Q B} (hy : (y : V) ∈ B.lat s) :
     resMap O x Q B y ∈ resLat O x Q B s :=
   AddSubgroup.mem_map_of_mem _ (AddSubgroup.mem_addSubgroupOf.2 hy)
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `AddSubgroup.mem_map.1 he`. Rewrite `hy` using `[AddSubgroup.mem_addSubgroupOf]`. Take `⟨a, ha, ha', rfl⟩` from `exists_lift hPQ s hc`. Rewrite using `[← resMap_smul hPQ ha' y]`. Conclude with `resMap_mem_resLat (B.stable s a ha _ hy)`.
+-/
 theorem resLat_smul_mem (hPQ : redIdeal O (mcIdeal O x) ≤ Q) (s : ∀ k, ι k)
     {c : FractionRing (MRingOver (kap O) ι ⧸ Q)} (hc : c ∈ chartRing (kap O) (mseg (genPt (kap O) Q)) s)
     {e : resFibre O x Q B} (he : e ∈ resLat O x Q B s) : c • e ∈ resLat O x Q B s := by
@@ -71,6 +101,11 @@ theorem resLat_smul_mem (hPQ : redIdeal O (mcIdeal O x) ≤ Q) (s : ∀ k, ι k)
   rw [← resMap_smul hPQ ha' y]
   exact resMap_mem_resLat (B.stable s a ha _ hy)
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `AddSubgroup.mem_map.1 he`. Rewrite `hy` using `[AddSubgroup.mem_addSubgroupOf]`. Take `⟨m, hm⟩` from `B.overlap s t (mseg_ne_zero hPQ hs) (mseg_ne_zero hPQ ht) _ hy`. Take `⟨h1, h2⟩` from `seg_ratio (x := x) hPQ ht s`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h2, ← rs_pow hPQ h1, ← resMap_smul hPQ (pow_mem h1 m) y]`. Conclude with `resMap_mem_resLat hm`.
+-/
 theorem resLat_overlap (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s t : ∀ k, ι k}
     (hs : mseg (genPt (kap O) Q) s ≠ 0) (ht : mseg (genPt (kap O) Q) t ≠ 0) {e : resFibre O x Q B}
     (he : e ∈ resLat O x Q B s) : ∃ m : ℕ,
@@ -91,11 +126,17 @@ variable (hPQ : redIdeal O (mcIdeal O x) ≤ Q) {s : ∀ k, ι k} (hs : mseg (ge
     (∀ q, ∃ n : ℕ, f ^ n * a q ∈ chartRing O (mseg x) s) ∧ e = ∑ q, a q • b q)
 
 include hPQ hs hf hf0 in
+/- English proof (translation)
+The claim follows from `(inv_mem_of_rs_ne_zero hPQ (chartRing_sub hPQ hs hf).1 hf0).1`.
+-/
 theorem inv_mem_locAlg : f⁻¹ ∈ locAlg x Q :=
   (inv_mem_of_rs_ne_zero hPQ (chartRing_sub hPQ hs hf).1 hf0).1
 
 include hPQ hs hf hf0 in
 
+/- English proof (translation)
+Establish `hf' : f ≠ 0` using `ne_zero_of_rs_ne_zero hPQ hf0`. Establish `e : a = f⁻¹ ^ n * (f ^ n * a)`. Rewrite using `[← mul_assoc, ← mul_pow, inv_mul_cancel₀ hf', one_pow, one_mul]`. Rewrite using `[e]`. Conclude with `mul_mem (pow_mem (inv_mem_locAlg hPQ hs hf hf0) n) (chartRing_sub hPQ hs ha).1`.
+-/
 theorem mem_locAlg_of_pow_mul {a : Ω} {n : ℕ} (ha : f ^ n * a ∈ chartRing O (mseg x) s) : a ∈ locAlg x Q := by
   have hf' : f ≠ 0 := ne_zero_of_rs_ne_zero hPQ hf0
   have e : a = f⁻¹ ^ n * (f ^ n * a) := by
@@ -104,6 +145,9 @@ theorem mem_locAlg_of_pow_mul {a : Ω} {n : ℕ} (ha : f ^ n * a ∈ chartRing O
   exact mul_mem (pow_mem (inv_mem_locAlg hPQ hs hf hf0) n) (chartRing_sub hPQ hs ha).1
 
 include hlat in
+/- English proof (translation)
+Use `(hlat (b q)).2 ⟨Pi.single q 1, fun q' => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul, Pi.single_apply] split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Simplify using `[Pi.single_apply]`.
+-/
 theorem frame_pow_mem (q : Fin N) : ∃ n : ℕ, f ^ n • b q ∈ B.lat s := by
   refine (hlat (b q)).2 ⟨Pi.single q 1, fun q' => ⟨0, ?_⟩, ?_⟩
   · rw [pow_zero, one_mul, Pi.single_apply]
@@ -114,6 +158,11 @@ theorem frame_pow_mem (q : Fin N) : ∃ n : ℕ, f ^ n • b q ∈ B.lat s := by
 
 include hPQ hs hf hf0 hlat in
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `frame_pow_mem hlat q`. Establish `hf' : f ≠ 0` using `ne_zero_of_rs_ne_zero hPQ hf0`. Establish `e : b q = f⁻¹ ^ n • (f ^ n • b q)`. Rewrite using `[smul_smul, ← mul_pow, inv_mul_cancel₀ hf', one_pow, one_smul]`. Rewrite using `[e]`.
+
+Conclude with `smul_mem_stalk hPQ (pow_mem (inv_mem_locAlg hPQ hs hf hf0) n) (lat_le_stalk hs hn)`.
+-/
 theorem frame_mem_stalk (q : Fin N) : b q ∈ stalk O x Q B := by
   obtain ⟨n, hn⟩ := frame_pow_mem hlat q
   have hf' : f ≠ 0 := ne_zero_of_rs_ne_zero hPQ hf0
@@ -124,6 +173,17 @@ theorem frame_mem_stalk (q : Fin N) : b q ∈ stalk O x Q B := by
 
 include hPQ hs hf hf0 hlat in
 
+/- English proof (translation)
+Proceed by induction on `hm using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨F, G, hFG, t, ht, e, he, rfl⟩` from `hv`. Establish `hxt` using `mseg_ne_zero hPQ ht`. Establish `hxs` using `mseg_ne_zero hPQ hs`.
+
+Take `⟨k, hk⟩` from `B.overlap t s hxt hxs e he`. Take `⟨a, ha, hae⟩` from `(hlat _).1 ⟨0, by simpa using hk⟩`. Establish `ha' : ∀ q, a q ∈ locAlg x Q` using `fun q => by`. Take `⟨n, hn⟩` from `ha q`. Conclude with `mem_locAlg_of_pow_mul hPQ hs hf hf0 hn`.
+
+Establish `hr : aeval x F / aeval x G * (mseg x s / mseg x t) ^ k ∈ locAlg x Q` using `mul_mem (mem_locAlg hPQ hFG) (pow_mem (seg_ratio hPQ ht s).1 k)`. Use `⟨fun q => aeval x F / aeval x G * (mseg x s / mseg x t) ^ k * a q, fun q => mul_mem hr (ha' q), ?_⟩` and prove the remaining obligations. Establish `he' : e = (mseg x s / mseg x t) ^ k • ∑ q, a q • b q`. Rewrite using `[← hae, smul_smul, ← mul_pow, div_mul_div_comm, mul_comm (mseg x s), div_self (mul_ne_zero hxt hxs), one_pow, one_smul]`. Rewrite using `[he', Finset.smul_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [smul_smul, mul_assoc]`. Consider the case `zero => exact ⟨0, fun _ => zero_mem _, by simp⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨a, ha, rfl⟩` from `hu`.
+
+Take `⟨a', ha', rfl⟩` from `hv`. Conclude with `⟨a + a', fun q => add_mem (ha q) (ha' q), by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `neg u _ hu`. Take `⟨a, ha, rfl⟩` from `hu`. Conclude with `⟨-a, fun q => neg_mem (ha q), by simp [neg_smul, Finset.sum_neg_distrib]⟩`.
+-/
 theorem stalk_coords {m : V} (hm : m ∈ stalk O x Q B) :
     ∃ a : Fin N → Ω, (∀ q, a q ∈ locAlg x Q) ∧ m = ∑ q, a q • b q := by
   induction hm using AddSubgroup.closure_induction with
@@ -157,6 +217,9 @@ theorem stalk_coords {m : V} (hm : m ∈ stalk O x Q B) :
 
 include hPQ hs hf hf0 hlat in
 
+/- English proof (translation)
+Establish `e : m = ∑ q, (⟨a q • b q, smul_mem_stalk hPQ (ha q) (frame_mem_stalk hPQ hs hf hf0 hlat q)⟩ : stalk O x Q B)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hm, AddSubmonoidClass.coe_finset_sum]`. Rewrite using `[e, map_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => resMap_smul hPQ (ha q) ⟨b q, _⟩`.
+-/
 theorem resMap_sum {a : Fin N → Ω} (ha : ∀ q, a q ∈ locAlg x Q) (m : stalk O x Q B)
     (hm : (m : V) = ∑ q, a q • b q) :
     resMap O x Q B m = ∑ q, rs x Q (a q) • resMap O x Q B ⟨b q, frame_mem_stalk hPQ hs hf hf0 hlat q⟩ := by
@@ -169,6 +232,21 @@ theorem resMap_sum {a : Fin N → Ω} (ha : ∀ q, a q ∈ locAlg x Q) (m : stal
 
 include hPQ hs hf hf0 hlat in
 
+/- English proof (translation)
+Establish `hmem : ∀ (m : stalk O x Q B) q, bas.equivFun m q ∈ locAlg x Q`. Introduce `m q`. Take `⟨a, ha, hm⟩` from `stalk_coords hPQ hs hf hf0 hlat m.2`. Establish `: bas.equivFun m = a`. Rewrite using `[hm, show ∑ q, a q • b q = bas.equivFun.symm a by`.
+
+Rewrite using `[Module.Basis.equivFun_symm_apply]`. Simplify using `only [hbas], LinearEquiv.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `ha q`. Set `ψ : stalk O x Q B →+ (Fin N → FractionRing (MRingOver (kap O) ι ⧸ Q))` to `{ toFun := fun m q => rs x Q (bas.equivFun m q) map_zero' := by funext q; simp [rs_zero hPQ] map_add' := fun m m' => by`.
+
+Use function extensionality and compare the values at `q`. Simplify using `only [AddSubgroup.coe_add, map_add, Pi.add_apply]`. Conclude with `rs_add hPQ (hmem m q) (hmem m' q) }`. Set `Φ₀ : FractionRing (MRingOver (kap O) ι ⧸ Q) ⊗[ℤ] stalk O x Q B →ₗ[ℤ] (Fin N → FractionRing (MRingOver (kap O) ι ⧸ Q))` to `TensorProduct.lift (LinearMap.mk₂ ℤ (fun r m => r • ψ m) (fun r r' m => add_smul r r' (ψ m)) (fun c r m => smul_assoc c r (ψ m)) (fun r m m' => by rw [map_add, smul_add]) (fun c r m => by rw [map_zsmul, smul_comm]))`. Establish `hΦ₀ : ∀ r m, Φ₀ (r ⊗ₜ m) = r • ψ m` using `fun r m => TensorProduct.lift.tmul r m`.
+
+Set `Φ : FractionRing (MRingOver (kap O) ι ⧸ Q) ⊗[ℤ] stalk O x Q B →ₗ[FractionRing (MRingOver (kap O) ι ⧸ Q)] (Fin N → FractionRing (MRingOver (kap O) ι ⧸ Q))` to `{ toFun := Φ₀ map_add' := map_add Φ₀ map_smul' := fun c t => by`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r m => rw [TensorProduct.smul_tmul', hΦ₀, hΦ₀, smul_eq_mul, mul_smul]`. Both sides reduce to the same expression.
+
+Consider the case `add u v hu hv => rw [smul_add, map_add, map_add, hu, hv, smul_add] }`. Establish `hΦ : ∀ r m, Φ (r ⊗ₜ m) = r • ψ m` using `hΦ₀`. Establish `hker : Submodule.span _ (resRel O x Q B) ≤ LinearMap.ker Φ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨F, G, hFG, m, m', hm', rfl⟩`.
+
+Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, hΦ, one_smul]`. Rewrite using `[sub_eq_zero]`. Use function extensionality and compare the values at `q`. Express the relevant statement in the definitionally equal form `resOf O Q F G * rs x Q (bas.equivFun m q) = rs x Q (bas.equivFun m' q)`. Rewrite using `[hm', map_smul, Pi.smul_apply, smul_eq_mul, rs_mul hPQ (mem_locAlg hPQ hFG) (hmem m q), rs_frac hPQ hFG]`.
+
+Use `⟨(Submodule.span _ (resRel O x Q B)).liftQ Φ hker, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[resMap_apply, Submodule.mkQ_apply, Submodule.liftQ_apply, hΦ, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem exists_coordMap (bas : Module.Basis (Fin N) Ω V) (hbas : ∀ q, bas q = b q) :
     ∃ φ : resFibre O x Q B →ₗ[FractionRing (MRingOver (kap O) ι ⧸ Q)]
         (Fin N → FractionRing (MRingOver (kap O) ι ⧸ Q)),
@@ -218,6 +296,23 @@ theorem exists_coordMap (bas : Module.Basis (Fin N) Ω V) (hbas : ∀ q, bas q =
 
 include hPQ hs hf hf0 hlat in
 
+/- English proof (translation)
+Set `bas : Module.Basis (Fin N) Ω V` to `Module.Basis.mk hb (by rw [hsp])`. Establish `hbas : ∀ q, bas q = b q` using `fun q => Module.Basis.mk_apply _ _ q`. Take `⟨φ, hφ⟩` from `exists_coordMap hPQ hs hf hf0 hlat bas hbas`. Prove the components needed by the constructor for the conclusion. Apply `LinearIndependent.of_comp φ` to reduce the goal to its premises.
+
+Establish `e : ∀ q q', φ (resMap O x Q B ⟨b q, frame_mem_stalk hPQ hs hf hf0 hlat q⟩) q' = Pi.basisFun (FractionRing (MRingOver (kap O) ι ⧸ Q)) (Fin N) q q'`. Introduce `q q'`. Rewrite using `[hφ, Pi.basisFun_apply]`. Establish `h1 : bas.equivFun (b q) q' = Pi.single (M` using `fun _ => Ω) q 1 q' := by`. Rewrite using `[← hbas q, Module.Basis.equivFun_self]`.
+
+Simplify using `[Pi.single_apply, eq_comm]`. Express the relevant statement in the definitionally equal form `rs x Q (bas.equivFun (b q) q') = _`. Rewrite using `[h1, Pi.single_apply, Pi.single_apply]`. Use `split_ifs`. Conclude with `rs_one hPQ`.
+
+Conclude with `rs_zero hPQ`. Establish `e' : φ ∘ (fun q => resMap O x Q B ⟨b q, frame_mem_stalk hPQ hs hf hf0 hlat q⟩) = Pi.basisFun (FractionRing (MRingOver (kap O) ι ⧸ Q)) (Fin N)`. Use function extensionality and compare the values at `q q'`. Conclude with `e q q'`. Rewrite using `[e']`.
+
+Conclude with `(Pi.basisFun _ _).linearIndependent`. Use `Submodule.eq_top_iff'.2 fun z => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [Submodule.Quotient.mk_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `tmul r m`. Establish `e : (Submodule.Quotient.mk (r ⊗ₜ[ℤ] m) : resFibre O x Q B) = r • resMap O x Q B m`. Rewrite using `[resMap_apply, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e]`.
+
+Use `Submodule.smul_mem _ r ?_` and prove the remaining obligations. Take `⟨a, ha, hm⟩` from `stalk_coords hPQ hs hf hf0 hlat m.2`. Rewrite using `[resMap_sum hPQ hs hf hf0 hlat ha m hm]`. Conclude with `Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨q, rfl⟩)`. Consider the case `add u v hu hv => rw [Submodule.Quotient.mk_add]`.
+
+Conclude with `add_mem hu hv`.
+-/
 theorem frame_res_basis (hb : LinearIndependent Ω b) (hsp : Submodule.span Ω (Set.range b) = ⊤) :
     LinearIndependent (FractionRing (MRingOver (kap O) ι ⧸ Q))
         (fun q => resMap O x Q B ⟨b q, frame_mem_stalk hPQ hs hf hf0 hlat q⟩) ∧
@@ -263,6 +358,27 @@ theorem frame_res_basis (hb : LinearIndependent Ω b) (hsp : Submodule.span Ω (
 
 include hPQ hs hf hf0 hlat in
 
+/- English proof (translation)
+Establish `hfl : f ∈ locAlg x Q` using `(chartRing_sub hPQ hs hf).1`. Establish `hfc : rs x Q f ∈ chartRing (kap O) (mseg (genPt (kap O) Q)) s` using `(chartRing_sub hPQ hs hf).2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Take `⟨y, hy, hye⟩` from `AddSubgroup.mem_map.1 hn`.
+
+Rewrite `hy` using `[AddSubgroup.mem_addSubgroupOf]`. Take `⟨a, ha, hya⟩` from `(hlat y).1 ⟨0, by simpa using hy⟩`. Establish `ha' : ∀ q, a q ∈ locAlg x Q` using `fun q => by`. Take `⟨n, hn⟩` from `ha q`. Conclude with `mem_locAlg_of_pow_mul hPQ hs hf hf0 hn`.
+
+Establish `hpow : rs x Q f ^ n ≠ 0` using `pow_ne_zero _ hf0`. Use `⟨fun q => (rs x Q f ^ n)⁻¹ * rs x Q (a q), fun q => ?_, ?_⟩` and prove the remaining obligations. Take `⟨n', hn'⟩` from `ha q`. Use `⟨n + n', ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_assoc, mul_comm (rs x Q f ^ n'), mul_assoc, ← mul_assoc (rs x Q f ^ n), mul_inv_cancel₀ hpow, one_mul, ← rs_pow hPQ hfl, ← rs_mul hPQ (ha' q) (pow_mem hfl n'), mul_comm]`.
+
+Conclude with `(chartRing_sub hPQ hs hn').2`. Establish `h1 : rs x Q f ^ n • e = ∑ q, rs x Q (a q) • resMap O x Q B ⟨b q, frame_mem_stalk hPQ hs hf hf0 hlat q⟩`. Rewrite using `[← hye]`. Conclude with `resMap_sum hPQ hs hf hf0 hlat ha' y hya`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce and unpack `⟨a, ha, rfl⟩`. Set `Sat : AddSubgroup (resFibre O x Q B)` to `{ carrier := {e | ∃ n : ℕ, rs x Q f ^ n • e ∈ resLat O x Q B s} zero_mem' := ⟨0, by simp⟩ add_mem' := by`. Introduce and unpack `e e' ⟨n, hn⟩ ⟨n', hn'⟩`. Use `⟨n + n', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, pow_add]`.
+
+Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `resLat_smul_mem hPQ s (pow_mem hfc n') hn`. Rewrite using `[mul_smul]`. Conclude with `resLat_smul_mem hPQ s (pow_mem hfc n) hn'`.
+
+Use the proof step `neg_mem' := by`. Introduce and unpack `e ⟨n, hn⟩`. Conclude with `⟨n, by rw [smul_neg]; exact neg_mem hn⟩ }`. Express the relevant statement in the definitionally equal form `_ ∈ Sat`. Use `sum_mem fun q _ => ?_` and prove the remaining obligations.
+
+Take `⟨n, hn⟩` from `ha q`. Take `⟨k, hk⟩` from `frame_pow_mem hlat q`. Use `⟨n + k, ?_⟩` and prove the remaining obligations. Establish `h2 : rs x Q f ^ k • resMap O x Q B ⟨b q, frame_mem_stalk hPQ hs hf hf0 hlat q⟩ ∈ resLat O x Q B s`. Rewrite using `[← rs_pow hPQ hfl, ← resMap_smul hPQ (pow_mem hfl k)]`.
+
+Conclude with `resMap_mem_resLat hk`. Establish `e : rs x Q f ^ (n + k) • (a q • resMap O x Q B ⟨b q, frame_mem_stalk hPQ hs hf hf0 hlat q⟩) = (rs x Q f ^ n * a q) • (rs x Q f ^ k • resMap O x Q B ⟨b q, frame_mem_stalk hPQ hs hf hf0 hlat q⟩)`. Rewrite using `[smul_smul, smul_smul, pow_add]`. Put the polynomial expressions in normal form. Rewrite using `[e]`.
+
+Conclude with `resLat_smul_mem hPQ s hn h2`.
+-/
 theorem frame_res_lat (e : resFibre O x Q B) :
     (∃ n : ℕ, rs x Q f ^ n • e ∈ resLat O x Q B s) ↔
       ∃ a : Fin N → FractionRing (MRingOver (kap O) ι ⧸ Q),

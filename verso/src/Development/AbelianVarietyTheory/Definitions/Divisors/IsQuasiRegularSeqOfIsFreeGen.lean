@@ -21,6 +21,9 @@ open H0
 
 variable {k : Type} [CommRing k] {Y T : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `let ⟨W, hW, h₁, h₂⟩ := Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens hy ⟨⟨W, hW⟩, h₁, h₂⟩`.
+-/
 theorem exists_affine {U : Y.Opens} {y : Y} (hy : y ∈ U) :
     ∃ W : Y.affineOpens, y ∈ W.1 ∧ W.1 ≤ U :=
   let ⟨W, hW, h₁, h₂⟩ := Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens hy
@@ -28,22 +31,43 @@ theorem exists_affine {U : Y.Opens} {y : Y} (hy : y ∈ U) :
 
 variable (I : Y.IdealSheafData)
 
+/- English proof (translation)
+Take `⟨W, hW, -⟩` from `exists_affine (U := ⊤) (y := y) trivial`. Rewrite using `[ds_stalkId_eq_map _ W y hW, ds_stalkId_eq_map _ W y hW, ← Ideal.map_pow]`. Both sides reduce to the same expression.
+-/
 theorem stalkId_pow (a : ℕ) (y : Y) : stalkId (I ^ a) y = stalkId I y ^ a := by
   obtain ⟨W, hW, -⟩ := exists_affine (U := ⊤) (y := y) trivial
   rw [ds_stalkId_eq_map _ W y hW, ds_stalkId_eq_map _ W y hW, ← Ideal.map_pow]
   rfl
 
+/- English proof (translation)
+The claim follows from `not_not.1 fun h => hy ((mem_support_iff_stalkId I y).2 h)`.
+-/
 theorem stalkId_eq_top {y : Y} (hy : y ∉ I.support) : stalkId I y = ⊤ :=
   not_not.1 fun h => hy ((mem_support_iff_stalkId I y).2 h)
 
+/- English proof (translation)
+The claim follows from `I.range_subschemeι.le ⟨z, rfl⟩`.
+-/
 theorem ι_mem_support (z : I.subscheme) : I.subschemeι z ∈ I.support :=
   I.range_subschemeι.le ⟨z, rfl⟩
 
 variable {I} in
 
+/- English proof (translation)
+The claim follows from `I.range_subschemeι.ge hy`.
+-/
 theorem exists_ι_eq {y : Y} (hy : y ∈ I.support) : ∃ z : I.subscheme, I.subschemeι z = y :=
   I.range_subschemeι.ge hy
 
+/- English proof (translation)
+Establish `key (W : Y.affineOpens) (hW : I.subschemeι z ∈ W.1) (a : Γ(Y, W.1)) : (I.subschemeι.stalkMap z).hom (ger _ hW a) = ger (U` using `I.subschemeι ⁻¹ᵁ W.1) z hW ((I.subschemeι.app W.1).hom a) := Scheme.Hom.germ_stalkMap_apply _ _ z hW a`. Use `le_antisymm (fun x hx => ?_) ?_` and prove the remaining obligations. Take `⟨U, hU, a, rfl⟩` from `Y.presheaf.germ_exist x`. Establish `h₀ : ger (U` using `I.subschemeι ⁻¹ᵁ U) z hU ((I.subschemeι.app U).hom a) = ger (U := I.subschemeι ⁻¹ᵁ U) z hU 0 := (Scheme.Hom.germ_stalkMap_apply _ _ z hU a).symm.trans (hx.trans (map_zero _).symm)`. Take `⟨V, hV, i₁, i₂, e⟩` from `I.subscheme.presheaf.germ_eq z hU hU _ _ h₀`.
+
+Take `⟨V', hV', hVV⟩` from `I.subschemeι.isClosedEmbedding.isInducing.isOpen_iff.1 V.2`. Take `⟨W, hW, hle⟩` from `exists_affine (U := U ⊓ ⟨V', hV'⟩) (y := I.subschemeι z) ⟨hU, hVV.ge hV⟩`. Establish `hWV : I.subschemeι ⁻¹ᵁ W.1 ≤ V` using `fun w hw => hVV.le (hle hw).2`. Establish `hm : resG Y (hle.trans inf_le_left) a ∈ I.ideal W`. Rewrite using `[← I.ker_subschemeι_app W, RingHom.mem_ker, Scheme.Hom.app_eq_appLE, LB.appLE_resG, ← resG_app, ← resG_resG i₁.le hWV]`.
+
+Conclude with `(congrArg (resG _ hWV) (e.trans (map_zero _))).trans (map_zero _)`. Rewrite using `[ds_stalkId_eq_map I W _ hW]`. Conclude with `ger_resG (hle.trans inf_le_left) _ hW a ▸ Ideal.mem_map_of_mem _ hm`. Take `⟨W, hW, -⟩` from `exists_affine (U := ⊤) (y := I.subschemeι z) trivial`. Rewrite using `[ds_stalkId_eq_map I W _ hW, Ideal.map_le_iff_le_comap]`.
+
+Introduce `a ha`. Rewrite `ha` using `[← I.ker_subschemeι_app W, RingHom.mem_ker]`. Conclude with `(key W hW a).trans ((congrArg _ ha).trans (map_zero _))`.
+-/
 theorem ker_stalkMap (z : I.subscheme) :
     RingHom.ker (I.subschemeι.stalkMap z).hom = stalkId I (I.subschemeι z) := by
   have key (W : Y.affineOpens) (hW : I.subschemeι z ∈ W.1) (a : Γ(Y, W.1)) :
@@ -72,6 +96,9 @@ theorem ker_stalkMap (z : I.subscheme) :
     rw [← I.ker_subschemeι_app W, RingHom.mem_ker] at ha
     exact (key W hW a).trans ((congrArg _ ha).trans (map_zero _))
 
+/- English proof (translation)
+Use `⟨fun h y hy => ds_stalkId_eq_map I W y hy ▸ Ideal.mem_map_of_mem _ h, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← I.ker_subschemeι_app W, RingHom.mem_ker]`. Use `fun_ext_ger fun z hz => ?_` and prove the remaining obligations. Use `(ker_stalkMap I z).ge (h _ hz)` as an intermediate fact. Conclude with `(Scheme.Hom.germ_stalkMap_apply _ _ z hz a).symm.trans (this.trans (map_zero _).symm)`.
+-/
 theorem mem_ideal_iff_ger (W : Y.affineOpens) (a : Γ(Y, W.1)) :
     a ∈ I.ideal W ↔ ∀ y hy, ger y hy a ∈ stalkId I y := by
   refine ⟨fun h y hy => ds_stalkId_eq_map I W y hy ▸ Ideal.mem_map_of_mem _ h, fun h => ?_⟩
@@ -85,12 +112,18 @@ variable {L : LB Y} (hL : L.IsLB) {ι : Type} (s : ι → L.Sec)
 abbrev secGer (j : L.ι) (y : Y) (hj : y ∈ L.U j) : ι → Y.presheaf.stalk y :=
   fun i => ger y hj ((s i).f j)
 
+/- English proof (translation)
+Take `⟨W, hW, hle⟩` from `exists_affine hj`. Rewrite using `[ds_stalkId_eq_map _ W y hW, ideal_cutIdeal hL s W j hle, Ideal.map_span, ← Set.range_comp]`. Conclude with `congrArg (fun f => Ideal.span (Set.range f)) (funext fun i => ger_resG hle y hW _)`.
+-/
 theorem stalkId_cutIdeal (j : L.ι) (y : Y) (hj : y ∈ L.U j) :
     stalkId (cutIdeal hL s) y = Ideal.span (Set.range (secGer s j y hj)) := by
   obtain ⟨W, hW, hle⟩ := exists_affine hj
   rw [ds_stalkId_eq_map _ W y hW, ideal_cutIdeal hL s W j hle, Ideal.map_span, ← Set.range_comp]
   exact congrArg (fun f => Ideal.span (Set.range f)) (funext fun i => ger_resG hle y hW _)
 
+/- English proof (translation)
+Introduce `j` and use `fun_ext_ger fun z hz => by have : ger (U := L.U j) ((cutIdeal hL s).subschemeι z) hz ((s i).f j) ∈ RingHom.ker ((cutIdeal hL s).subschemeι.stalkMap z).hom := by rw [ker_stalkMap, stalkId_cutIdeal hL s j _ hz] exact Ideal.subset_span ⟨i, rfl⟩ exact (Scheme.Hom.germ_stalkMap_apply …`.
+-/
 theorem vanishesAlong_cutIdeal (i : ι) : VanishesAlong (s i) (cutIdeal hL s).subschemeι :=
   fun j => fun_ext_ger fun z hz => by
     have : ger (U := L.U j) ((cutIdeal hL s).subschemeι z) hz ((s i).f j) ∈ RingHom.ker ((cutIdeal hL s).subschemeι.stalkMap z).hom := by
@@ -98,6 +131,9 @@ theorem vanishesAlong_cutIdeal (i : ι) : VanishesAlong (s i) (cutIdeal hL s).su
       exact Ideal.subset_span ⟨i, rfl⟩
     exact (Scheme.Hom.germ_stalkMap_apply _ _ z hz _).symm.trans (this.trans (map_zero _).symm)
 
+/- English proof (translation)
+Establish `e` using `congrArg (ger y (memInf hj hj')) (sec_rel (s i) j j' inf_le_left inf_le_right le_rfl)`. Rewrite `e` using `[map_mul, ger_resG, ger_resG, ger_resG, ← val_tr]`. Then use the resulting hypothesis.
+-/
 theorem secGer_change (j j' : L.ι) (y : Y) (hj : y ∈ L.U j) (hj' : y ∈ L.U j') (i : ι) :
     secGer s j y hj i = tr L y j j' * secGer s j' y hj' i := by
   have e := congrArg (ger y (memInf hj hj')) (sec_rel (s i) j j' inf_le_left inf_le_right le_rfl)
@@ -107,6 +143,13 @@ section Etale
 
 variable {p : Y ⟶ Sp k}
 
+/- English proof (translation)
+Establish `h₁` using `HasRingHomProperty.appLE @FormallyUnramified (I.subschemeι ≫ p) h ⟨⊤, isAffineOpen_top _⟩ ⟨_, W.2.preimage I.subschemeι⟩ le_top`. Establish `h₂` using `RingHom.FormallyUnramified.respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv h₁`. Set `e : Γ(I.subscheme, I.subschemeι ⁻¹ᵁ W.1) ≃+* Γ(Y, W.1) ⧸ I.ideal W` to `(RingHom.quotientKerEquivOfSurjective (I.subschemeι_app_surjective W)).symm.trans (Ideal.quotEquivOfEq (I.ker_subschemeι_app W))`. Establish `h₃` using `RingHom.FormallyUnramified.respectsIso.1 _ e h₂`. Establish `e₁` using `Scheme.Hom.appLE_comp_appLE I.subschemeι p ⊤ W.1 (I.subschemeι ⁻¹ᵁ W.1) le_top le_rfl`.
+
+Establish `e₂ (a : Γ(Y, W.1)) : e ((I.subschemeι.app W.1).hom a) = Ideal.Quotient.mk _ a`. Rewrite using `[RingEquiv.trans_apply, ← RingHom.quotientKerEquivOfSurjective_apply_mk (I.subschemeι_app_surjective W), RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Rewrite `e₁` using `[Scheme.Hom.appLE_eq_app]`. Use `(congrArg RingHom.FormallyUnramified (RingHom.ext fun c => ?_)).mp h₃` and prove the remaining obligations.
+
+Conclude with `(congrArg e (congrArg (fun g => g.hom ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom c)) e₁).symm).trans (e₂ _)`.
+-/
 theorem formallyUnramified_quotient (h : FormallyUnramified (I.subschemeι ≫ p)) (W : Y.affineOpens) :
     ((Ideal.Quotient.mk (I.ideal W)).comp (algX p W.1)).FormallyUnramified := by
   have h₁ := HasRingHomProperty.appLE @FormallyUnramified (I.subschemeι ≫ p) h
@@ -129,6 +172,11 @@ theorem formallyUnramified_quotient (h : FormallyUnramified (I.subschemeι ≫ p
 
 variable {D : ℕ} [SmoothOfRelativeDimension D p] (K : CanonLB p D) (s : Fin D → L.Sec)
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `exists_ι_eq hy`. Take `⟨W, hW, hle⟩` from `exists_affine hij`. Establish `hu` using `formallyUnramified_quotient _ h W`. Rewrite `hu` using `[ideal_cutIdeal hL s W j (hle.trans inf_le_right)]`. Use `K.isUnit_map_jacobian i W.2 (hle.trans inf_le_left) _ hu (((cutIdeal hL s).subschemeι.stalkMap z).hom.comp (ger _ hW)) fun a => by` as an intermediate fact.
+
+Rewrite using `[RingHom.comp_apply, ger_resG, ← RingHom.mem_ker, ker_stalkMap, stalkId_cutIdeal hL s j _ hij.2]`. Conclude with `Ideal.subset_span ⟨a, rfl⟩`. Rewrite `this` using `[← K.resG_jacFun s i j hle, RingHom.comp_apply, ger_resG]`. Conclude with `IsUnit.of_map _ _ this`.
+-/
 theorem isUnit_ger_jacFun (h : FormallyUnramified ((cutIdeal hL s).subschemeι ≫ p)) {y : Y}
     (hy : y ∈ (cutIdeal hL s).support) (i : K.bundle.ι) (j : L.ι)
     (hij : y ∈ K.bundle.U i ⊓ L.U j) : IsUnit (ger y hij (K.jacFun s i j)) := by
@@ -144,6 +192,15 @@ theorem isUnit_ger_jacFun (h : FormallyUnramified ((cutIdeal hL s).subschemeι �
   rw [← K.resG_jacFun s i j hle, RingHom.comp_apply, ger_resG] at this
   exact IsUnit.of_map _ _ this
 
+/- English proof (translation)
+Set `` to `α.toAlgebra`. Establish `: Algebra.IsStandardSmoothOfRelativeDimension D k A` using `h`. Consider the cases of `subsingleton_or_nontrivial A with`. Consider the case `inl _ => exact isQuasiRegularSeq_of_smul_top_eq_top (Subsingleton.elim _ _)`. Consider the case `inr _`.
+
+Use `Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth D (R := k) (S := A)` as an intermediate fact. Establish `hr : Module.finrank A Ω[A⁄k] = D` using `Module.finrank_eq_of_rank_eq (Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential (R := k) (S := A) D)`. Set `b` to `Module.finBasisOfFinrankEq A Ω[A⁄k] hr`. Set `v : Fin D → Ω[A⁄k]` to `fun i => KaehlerDifferential.D k A (x i)`. Establish `e` using `alternating_map_sum_smul_eq_det_smul (exteriorPower.ιMulti A D) (Matrix.of fun i j => b.repr (v i) j) b`.
+
+Simplify using `only [Matrix.of_apply, b.sum_repr] at e`. Establish `hu` using `(TopForm.isFreeGen_ιMulti b).smul_iff.1 ((congrArg (TopForm.IsFreeGen A) e).mp hx)`. Rewrite `hu` using `[← Matrix.det_transpose]`. Take `⟨h₁, h₂⟩` from `(b.is_basis_iff_det (v := v)).2 hu`. Set `` to `(MvPolynomial.eval₂Hom α x).toAlgebra`.
+
+Establish `: IsScalarTower k (MvPolynomial (Fin D) k) A` using `IsScalarTower.of_algebraMap_eq fun r => (MvPolynomial.eval₂Hom_C α x r).symm`. Establish `hX (i) : algebraMap (MvPolynomial (Fin D) k) A (MvPolynomial.X i) = x i` using `MvPolynomial.eval₂Hom_X' α x i`. Use `EtaleCoordJacobian.etale_of_basis k A (Fin D) (Module.Basis.mk h₁ h₂.ge) fun i => by rw [Module.Basis.mk_apply, hX]` as an intermediate fact. Simplify `(isQuasiRegularSeq_X (R := k) (Fin D)).of_flat A` using `only [hX]`.
+-/
 theorem isQuasiRegularSeq_of_isFreeGen {A : Type} [CommRing A] {α : k →+* A} {D : ℕ}
     (h : α.IsStandardSmoothOfRelativeDimension D) (x : Fin D → A)
     (hx : TopForm.IsFreeGen A (TopForm.dForm α x)) : IsQuasiRegularSeq A x := by
@@ -174,6 +231,17 @@ theorem isQuasiRegularSeq_of_isFreeGen {A : Type} [CommRing A] {α : k →+* A} 
 
 omit K in
 
+/- English proof (translation)
+Set `K` to `CanonLB.all p D`. Take `⟨i, hi⟩` from `exists_chart K.isLB y`. Establish `hb : y ∈ Y.basicOpen (K.jacFun s i j)` using `(Y.mem_basicOpen _ y (memInf hi hj)).2 (isUnit_ger_jacFun hL K s h hy i j _)`. Take `⟨⟨V, hV⟩, hx, hle⟩` from `exists_affine hb`. Establish `h` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension D) p ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨V, hV⟩ le_top`.
+
+Take `⟨σ, hs, h⟩` from `(RingHom.locally_iff_isLocalization RingHom.isStandardSmoothOfRelativeDimension_respectsIso _).1 h`. Take `⟨t, hxt⟩ : ∃ t : (σ : Set Γ(Y, V)), y ∈ Y.basicOpen (t : Γ(Y, V))` from `Opens.mem_iSup.1 (((IsAffineOpen.iSup_basicOpen_eq_self_iff hV).2 hs).ge hx)`. Use `IsAffineOpen.isLocalization_basicOpen hV (t : Γ(Y, V))` as an intermediate fact. Establish `h₁` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv (h t t.2 Γ(Y, Y.basicOpen (t : Γ(Y, V))))`. Establish `h₂ : (algX p (Y.basicOpen (t : Γ(Y, V)))).IsStandardSmoothOfRelativeDimension D`.
+
+Rewrite using `[← TopForm.resG_comp_algX p (Y.basicOpen_le (t : Γ(Y, V)))]`. Conclude with `h₁`. Establish `hW` using `IsAffineOpen.basicOpen hV (t : Γ(Y, V))`. Establish `l₁` using `(Y.basicOpen_le (t : Γ(Y, V))).trans hle`. Establish `l₂` using `l₁.trans (Y.basicOpen_le _)`.
+
+Establish `hu : IsUnit (resG Y l₂ (K.jacFun s i j))` using `resG_resG (Y.basicOpen_le _) l₁ (K.jacFun s i j) ▸ (Y.toRingedSpace.isUnit_res_basicOpen (K.jacFun s i j)).map (resG Y l₁)`. Rewrite `hu` using `[K.resG_jacFun, K.isUnit_jacobian_iff i hW]`. Set `` to `TopCat.Presheaf.algebra_section_stalk Y.presheaf (⟨y, hxt⟩ : Y.basicOpen (t : Γ(Y, V)))`. Use `hW.isLocalization_stalk ⟨y, hxt⟩` as an intermediate fact. Establish `hq` using `(isQuasiRegularSeq_of_isFreeGen h₂ _ hu.gen).of_isLocalization (Y.presheaf.stalk y) (hW.primeIdealOf ⟨y, hxt⟩).asIdeal.primeCompl`.
+
+Conclude with `(congrArg _ (funext fun a => ger_resG (l₂.trans inf_le_right) y hxt _)).mp hq`.
+-/
 theorem isQuasiRegularSeq_secGer (h : FormallyUnramified ((cutIdeal hL s).subschemeι ≫ p)) {y : Y}
     (hy : y ∈ (cutIdeal hL s).support) (j : L.ι) (hj : y ∈ L.U j) :
     IsQuasiRegularSeq (Y.presheaf.stalk y) (secGer s j y hj) := by

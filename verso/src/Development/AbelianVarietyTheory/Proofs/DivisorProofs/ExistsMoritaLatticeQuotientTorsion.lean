@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.EtLevMorita
 
+/- English proof (translation)
+Establish `hne : m ^ k ≠ ⊤` using `fun h => hm.ne_top (top_le_iff.1 (h ▸ Ideal.pow_le_self hk))`. Use `haveI : Nontrivial (A ⧸ m ^ k) := Ideal.Quotient.nontrivial_iff.2 hne`. Take `⟨M0, hM0⟩` from `Ideal.exists_maximal (A ⧸ m ^ k)`. Establish `key : ∀ M : Ideal (A ⧸ m ^ k), M.IsMaximal → M.comap (Ideal.Quotient.mk (m ^ k)) = m`. Introduce `M hM`.
+
+Establish `h1 : (M.comap (Ideal.Quotient.mk (m ^ k))).IsMaximal` using `Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `h2 : m ^ k ≤ M.comap (Ideal.Quotient.mk (m ^ k))`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 hx]`. Conclude with `M.zero_mem`.
+
+Establish `h3 : m ≤ M.comap (Ideal.Quotient.mk (m ^ k))` using `h1.isPrime.le_of_pow_le h2`. Conclude with `(hm.eq_of_le h1.ne_top h3).symm`. Conclude with `IsLocalRing.of_unique_max_ideal ⟨M0, hM0, fun M hM => Ideal.comap_injective_of_surjective _ Ideal.Quotient.mk_surjective ((key M hM).trans (key M0 hM0).symm)⟩`.
+-/
 theorem isLocalRing_quot_pow {A : Type} [CommRing A] (m : Ideal A) [hm : m.IsMaximal] (k : ℕ)
     (hk : k ≠ 0) : IsLocalRing (A ⧸ m ^ k) := by
   have hne : m ^ k ≠ ⊤ := fun h => hm.ne_top (top_le_iff.1 (h ▸ Ideal.pow_le_self hk))
@@ -36,12 +43,18 @@ variable {O : Type} [Ring O] {G : Type} [CommGroup G] (act : O → G → G)
   (hcomp : ∀ b c g, act (b * c) g = act b (act c g)) (hadd : ∀ b c g, act (b + c) g = act b g * act c g)
 
 include hmul in
+/- English proof (translation)
+Establish `h` using `hmul b 1 1`. Rewrite `h` using `[_root_.mul_one]`. Conclude with `left_eq_mul.1 h`.
+-/
 theorem act_one_eq (b : O) : act b 1 = 1 := by
   have h := hmul b 1 1
   rw [_root_.mul_one] at h
   exact left_eq_mul.1 h
 
 include hadd in
+/- English proof (translation)
+Establish `h` using `hadd 0 0 g`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.1 h`.
+-/
 theorem act_zero_eq (g : G) : act 0 g = 1 := by
   have h := hadd 0 0 g
   rw [add_zero] at h
@@ -62,6 +75,31 @@ end GlobalTheory.EtLevMorita
 
 open GlobalTheory.EtLevMorita in
 
+/- English proof (translation)
+Introduce `p _ D w0 r hw hp G _ act hmul hone hcomp hadd f hfadd hfsm hfinj hfonto`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Use `⟨fun _ => 1, fun _ _ => (_root_.mul_one 1).symm, fun b _ => (act_one_eq act hmul b).symm, fun x => ?_, fun g hg => ⟨0, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [true_iff]`. Establish `hx : x = algebraMap (𝓞 D.F) D.O 1 • x` using `by simp`.
+
+Rewrite using `[hx]`. Conclude with `Submodule.subset_span ⟨1, by simp, x, rfl⟩`. Establish `h1` using `hg 1 (by simp)`. Rewrite `h1` using `[map_one, hone]`. Conclude with `h1.symm`.
+
+Use `haveI := isLocalRing_quot_pow w0 r hr.ne'`. Use `letI : Module D.O (Additive G) := actModule act hmul hone hcomp hadd`. Use `letI : Module (𝓞 D.F) (Additive G) := Module.compHom (Additive G) (algebraMap (𝓞 D.F) D.O)`. Use `haveI : IsScalarTower (𝓞 D.F) D.O (Additive G) := ⟨fun c b x => by show (c • b) • x = algebraMap (𝓞 D.F) D.O c • (b • x)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`.
+
+Use `letI : Module (𝓞 D.F) D.La := Module.compHom D.La (algebraMap (𝓞 D.F) D.O)`. Use `haveI : IsScalarTower (𝓞 D.F) D.O D.La := ⟨fun c b x => by show (c • b) • x = algebraMap (𝓞 D.F) D.O c • (b • x)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Establish `hsm : ∀ (b : D.O) (x : Additive G), b • x = Additive.ofMul (act b x.toMul)` using `fun _ _ => rfl`. Set `T : Submodule D.O (Additive G)` to `{ carrier := {x | ∀ c ∈ w0 ^ r, act (algebraMap (𝓞 D.F) D.O c) x.toMul = 1} add_mem' := fun {x y} hx hy c hc => by show act _ (x.toMul * y.toMul) = 1`.
+
+Rewrite using `[hmul, hx c hc, hy c hc, _root_.mul_one]`. Use the proof step `zero_mem' := fun c _ => act_one_eq act hmul _`. Use the proof step `smul_mem' := fun b x hx c hc => by show act _ (act b x.toMul) = 1`. Rewrite using `[← hcomp, Algebra.commutes, hcomp, hx c hc, act_one_eq act hmul] }`. Establish `hf0 : f 0 = 1`.
+
+Establish `h` using `hfadd 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.1 h`. Establish `hfT : ∀ a, Additive.ofMul (f a) ∈ T` using `fun a c hc => by show act _ (f a) = 1`. Rewrite using `[← hfsm, Ideal.Quotient.eq_zero_iff_mem.2 hc, zero_smul, hf0]`.
+
+Set `fl : (Fin (D.m * D.n) → 𝓞 D.F ⧸ w0 ^ r) →ₗ[𝓞 D.F] T` to `{ toFun := fun a => ⟨Additive.ofMul (f a), hfT a⟩ map_add' := fun a a' => Subtype.ext (by show Additive.ofMul (f (a + a')) = Additive.ofMul (f a) + Additive.ofMul (f a')`. Rewrite using `[hfadd]`. Use the proof step `rfl)`. Use the proof step `map_smul' := fun c a => Subtype.ext (by show Additive.ofMul (f (c • a)) = algebraMap (𝓞 D.F) D.O c • Additive.ofMul (f a)`. Rewrite using `[← algebraMap_smul (𝓞 D.F ⧸ w0 ^ r) c a, Ideal.Quotient.algebraMap_eq, hfsm]`.
+
+Use the proof step `rfl) }`. Establish `hfl : Function.Bijective fl`. Use `⟨fun a a' h => hfinj (congrArg (fun t : T => (t : Additive G).toMul) h), fun t => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hfonto (t : Additive G).toMul t.2`. Conclude with `⟨a, Subtype.ext (by show Additive.ofMul (f a) = _; rw [ha]; rfl)⟩`.
+
+Set `eT : T ≃ₗ[𝓞 D.F] (Fin (D.m * D.n) → 𝓞 D.F ⧸ w0 ^ r)` to `(LinearEquiv.ofBijective fl hfl).symm`. Take `⟨g, hgs, hgsm, hgker⟩` from `GlobalTheory.T.level_quotient_module_surjection p D w0 r hw`. Set `gl : D.La →ₗ[𝓞 D.F] (Fin (D.m * D.n) → 𝓞 D.F ⧸ w0 ^ r)` to `{ toFun := g map_add' := g.map_add map_smul' := fun c x => by show g (algebraMap (𝓞 D.F) D.O c • x) = c • g x`. Rewrite using `[hgsm, ← Ideal.Quotient.algebraMap_eq, algebraMap_smul] }`. Establish `hker : LinearMap.ker gl = (wSub D w0 r).restrictScalars (𝓞 D.F)`.
+
+Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, Submodule.restrictScalars_mem]`. Conclude with `hgker x`. Set `eL : (D.La ⧸ wSub D w0 r) ≃ₗ[𝓞 D.F] (Fin (D.m * D.n) → 𝓞 D.F ⧸ w0 ^ r)` to `(Submodule.Quotient.restrictScalarsEquiv (𝓞 D.F) (wSub D w0 r)).symm ≪≫ₗ Submodule.quotEquivOfEq _ _ hker.symm ≪≫ₗ gl.quotKerEquivOfSurjective hgs`. Take `⟨φ, hφs, hφk⟩` from `GlobalTheory.T.order_surjects_matrix_algebra_mod_prime_power p D w0 r hw hp`.
+
+Take `⟨e⟩` from `GlobalTheory.T.morita_nonempty_equiv_of_local_quotient_matrix (𝓞 D.F) (w0 ^ r) inferInstance D.m D.n D.m_pos D.O φ hφs hφk (D.La ⧸ wSub D w0 r) T eL eT`. Use `⟨fun x => ((e (Submodule.Quotient.mk x) : T) : Additive G).toMul, fun x y => ?_, fun b x => ?_, fun x => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.Quotient.mk_add, map_add, Submodule.coe_add, toMul_add]`. Simplify using `only [Submodule.Quotient.mk_smul, map_smul, Submodule.coe_smul, hsm, toMul_ofMul]`. Rewrite using `[toMul_eq_one, ZeroMemClass.coe_eq_zero, LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`.
+
+Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (e.symm ⟨Additive.ofMul g, hg⟩)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Simplify using `only [hy, LinearEquiv.apply_symm_apply, toMul_ofMul]`.
+-/
 theorem GlobalTheory.EtLevMorita.exists_lev : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (w0 : Ideal (𝓞 D.F)) (r : ℕ), w0.IsMaximal → (p : 𝓞 D.F) ∈ w0 →
   ∀ (G : Type) [CommGroup G] (act : D.O → G → G), (∀ b g h, act b (g * h) = act b g * act b h) → (∀ g, act 1 g = g) →
   (∀ b c g, act (b * c) g = act b (act c g)) → (∀ b c g, act (b + c) g = act b g * act c g) →

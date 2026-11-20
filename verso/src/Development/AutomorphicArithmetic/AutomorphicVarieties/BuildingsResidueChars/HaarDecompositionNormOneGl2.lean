@@ -10,6 +10,11 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 open scoped ComplexConjugate Classical InnerProductSpace
 open scoped NumberField.AdeleRing
 
+/- English proof (translation)
+Take `⟨⟨a, d⟩, rfl⟩` from `hs u`. Establish `hu : Measurable fun c : C => c * p (a, d)` using `hm.comp (measurable_id.prodMk measurable_const)`. Use `⟨hu, ?_⟩` and prove the remaining obligations. Establish `hq` using `(hκ a).prod (hν d)`. Rewrite using `[Measure.map_map hu hp]`.
+
+Establish `e : (fun c : C => c * p (a, d)) ∘ p = p ∘ Prod.map (· * a) (· * d)`. Use function extensionality and compare the values at `x`. Conclude with `hmul x (a, d)`. Rewrite using `[e, ← Measure.map_map hp hq.measurable, hq.map_eq]`.
+-/
 private theorem map_right_inv {A H C : Type} [Group A] [Group H] [Group C] [MeasurableSpace A] [MeasurableSpace H]
     [MeasurableSpace C] (κ : Measure A) (ν : Measure H) [SFinite κ] [SFinite ν] (p : A × H → C) (hp : Measurable p)
     (hm : Measurable fun x : C × C => x.1 * x.2) (hs : Function.Surjective p) (hmul : ∀ x y, p x * p y = p (x * y))
@@ -25,6 +30,19 @@ private theorem map_right_inv {A H C : Type} [Group A] [Group H] [Group C] [Meas
     exact hmul x (a, d)
   rw [e, ← Measure.map_map hp hq.measurable, hq.map_eq]
 
+/- English proof (translation)
+Introduce `K _ _ κ₂ hκ`. Use `haveI := hκ.prob`. Take `⟨α, β, -, -, hdec, -, hA, hF⟩` from `UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) 2`. Take `⟨-, -, hcomm, harc, -⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.levLaws (K := K) 2 ∅`. Set `ν₀ : Measure (AdelicGLn.integralFiniteGL K 2)` to `Measure.haarMeasure ⊤`.
+
+Use `haveI : IsProbabilityMeasure ν₀ := ⟨by simpa using Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (AdelicGLn.integralFiniteGL K 2)))⟩`. Set `ν : Measure (AdelicGLn.integralFiniteGL K 2)` to `ν₀.inv`. Use `haveI hνp : IsProbabilityMeasure ν := Measure.isProbabilityMeasure_map measurable_inv.aemeasurable`. Establish `hνo : ν.IsOpenPosMeasure` using `continuous_inv.isOpenPosMeasure_map inv_surjective`. Establish `hνr : ∀ d, MeasurePreserving (· * d) ν ν` using `fun d => measurePreserving_mul_right ν d`.
+
+Set `p : archCompact K 2 × AdelicGLn.integralFiniteGL K 2 → KG K 2` to `fun x => ⟨arc1 x.1 * fin1 (x.2 : FA K 2), (KG K 2).mul_mem (hA x.1) (hF x.2)⟩`. Establish `hpc : Continuous p` using `Continuous.subtype_mk ((harc.comp continuous_fst).mul (MultiplicityOne.continuous_finProj.comp (continuous_subtype_val.comp continuous_snd))) _`. Establish `hpm : Measurable p` using `hpc.measurable`. Establish `hps : Function.Surjective p` using `fun k => ⟨(α k, β k), Subtype.ext (hdec k).symm⟩`. Establish `hmul : ∀ x y, p x * p y = p (x * y)`.
+
+Introduce `x y`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `arc1 x.1 * fin1 (x.2 : FA K 2) * (arc1 y.1 * fin1 (y.2 : FA K 2)) = arc1 (x.1 * y.1) * fin1 ((x.2 * y.2 : AdelicGLn.integralFiniteGL K 2) : FA K 2)`. Establish `e1 : arc1 (x.1 * y.1) = arc1 x.1 * arc1 y.1` using `by simp [arc1]`. Establish `e2 : fin1 ((x.2 * y.2 : AdelicGLn.integralFiniteGL K 2) : FA K 2) = fin1 (x.2 : FA K 2) * fin1 (y.2 : FA K 2)`.
+
+Simplify using `[fin1]`. Rewrite using `[e1, e2, mul_assoc, mul_assoc, ← mul_assoc (fin1 (x.2 : FA K 2)), (hcomm y.1 (x.2 : FA K 2)).symm.eq, mul_assoc]`. Use `haveI : IsProbabilityMeasure (κ₂.prod ν) := inferInstance`. Use `⟨ν, Measure.map p (κ₂.prod ν), hνp, hνo, Measure.isProbabilityMeasure_map hpm.aemeasurable, map_right_inv κ₂ ν p hpm (continuous_mul.measurable) hps hmul hκ.right hνr, ?_⟩` and prove the remaining obligations. Introduce `F hFc`.
+
+Establish `hc : Continuous fun x => F (p x : G1 K 2)` using `hFc.comp hpc`. Rewrite using `[integral_map hpm.aemeasurable hFc.aestronglyMeasurable, integral_prod _ (hc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _))]`.
+-/
 theorem UpperTheory.haar_decomposition_norm_one_gl2 :
     ∀ {K : Type} [Field K] [NumberField K] (κ₂ : Measure (archCompact K 2)), IsHaarK κ₂ → ∃ (ν : Measure (AdelicGLn.integralFiniteGL K 2)) (ρ : Measure (KG K 2)), IsProbabilityMeasure ν ∧ ν.IsOpenPosMeasure ∧ IsProbabilityMeasure ρ ∧ (∀ u : KG K 2, MeasurePreserving (· * u) ρ ρ) ∧ ∀ F : G1 K 2 → ℂ, (Continuous fun k : KG K 2 => F k) → ∫ v, F (v : G1 K 2) ∂ρ = ∫ a, ∫ d, F (arc1 a * fin1 (d : FA K 2)) ∂ν ∂κ₂ := by
   intro K _ _ κ₂ hκ

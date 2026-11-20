@@ -16,6 +16,9 @@ namespace CrystallinePoints.Pd
 
 variable {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {X X' X'' : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨ρ, e⟩` from `φ`. Take `⟨ρ', e'⟩` from `ψ`. Take `rfl : ρ = ρ'` from `AlgHom.ext h`. Both sides reduce to the same expression.
+-/
 theorem hom_ext' {s : X ⟶ Sp R} {P Q : Pt s} {φ ψ : P.Hom Q} (h : ∀ b, φ.ρ b = ψ.ρ b) : φ = ψ := by
   obtain ⟨ρ, e⟩ := φ
   obtain ⟨ρ', e'⟩ := ψ
@@ -30,6 +33,9 @@ instance ptCat (s : X ⟶ Sp R) : Category.{0} (Pt s) where
   comp_id _ := hom_ext' fun _ ↦ rfl
   assoc _ _ _ := hom_ext' fun _ ↦ rfl
 
+/- English proof (translation)
+The claim follows from `hom_ext' h`.
+-/
 @[ext] theorem hom_ext {s : X ⟶ Sp R} {P Q : Pt s} {φ ψ : P ⟶ Q} (h : ∀ b, φ.ρ b = ψ.ρ b) : φ = ψ := hom_ext' h
 
 @[reducible] def FP (s : X ⟶ Sp R) : Pt s ⥤ CommAlgCat.{0} R where
@@ -74,11 +80,17 @@ def pushC (h : φ ≫ s = s' ≫ spMap σ) : CoefMap σ (FP s) (FP s') where
 
 def pullP (h : φ ≫ s = s' ≫ spMap σ) : H1OnPoints s →ₛₗ[σ] H1OnPoints s' := (pushC h).pull1
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem pullP_toP (m : IsMor (dp0 R) s (dp0 R') s' σ φ) (c : FirstDeRham s) :
     pullP m.w (toP s c) = toP s' (m.pull1 c) := by
   obtain ⟨f, rfl⟩ := H1.mk_surjective _ c
   rfl
 
+/- English proof (translation)
+The claim follows from `((pushC h).pullCohomologyOne_comp (pushC h') c).symm.trans (((pushC h).comp (pushC h')).pullCohomologyOne_eq_of_natTrans (pushC h'') { app := fun T ↦ { ρ := { RingHom.id T.B with commutes' := fun r ↦ congrArg (algebraMap R'' T.B) (e r) } pt := by change spMap (RingHom.id T.B) ≫ ( …`.
+-/
 theorem pullP_pullP {τ : R' →+* R''} {ψ : X'' ⟶ X'} {ρ : R →+* R''} {χ : X'' ⟶ X}
     (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ) (h'' : χ ≫ s = s'' ≫ spMap ρ)
     (e : ∀ r, τ (σ r) = ρ r) (e' : ψ ≫ φ = χ) (c : H1OnPoints s) : pullP h' (pullP h c) = pullP h'' c :=
@@ -90,6 +102,13 @@ theorem pullP_pullP {τ : R' →+* R''} {ψ : X'' ⟶ X'} {ρ : R →+* R''} {χ
             rw [GlobalTheory.Cris.spMap_id, ← e']; simp }
       naturality := fun _ _ _ ↦ hom_ext fun _ ↦ rfl } (fun _ _ ↦ rfl) c)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hc`. Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Take `⟨g, hg⟩` from `H1.mk_eq_zero.1 hc`. Use `h1_mk_mem_f1_of_isRep_zero R X s Unit (fun _ ↦ ⊤) (by simp) f ⟨fun _ P ↦ g P, fun _ P Q φ _ ↦ ?_, fun _ _ _ _ _ ↦ sub_self _⟩` and prove the remaining obligations.
+
+Conclude with `(congrFun (congrFun (congrFun hg P) Q) φ).symm`. Introduce `hc`. Rewrite `hc` using `[hodgeFiltration_eq_range]`. Take `⟨f, rfl⟩` from `hc`. Use `H1.mk_eq_zero.2 ⟨0, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `T T' φ`. Rewrite using `[map_zero]`. Conclude with `(f.2 (Pt.Hom.triv φ) rfl rfl).symm`.
+-/
 theorem toP_eq_zero_iff (c : FirstDeRham s) : toP s c = 0 ↔ c ∈ F1 s := by
   constructor
   · intro hc
@@ -106,6 +125,9 @@ theorem toP_eq_zero_iff (c : FirstDeRham s) : toP s c = 0 ↔ c ∈ F1 s := by
     rw [map_zero]
     exact (f.2 (Pt.Hom.triv φ) rfl rfl).symm
 
+/- English proof (translation)
+Establish `hx : inv s ≫ s = spMap (algebraMap R R)` using `by rw [IsIso.inv_hom_id]; exact (GlobalTheory.Cris.spMap_id R).symm`. Use `H1.eq_zero_of_isInitial _ (T₀ := ⟨R, inv s, hx⟩) (Limits.IsInitial.ofUniqueHom (fun T ↦ (⟨Algebra.ofId R T.B, ?_⟩ : Pt.Hom ⟨R, inv s, hx⟩ T)) fun T m ↦ ?_) c` and prove the remaining obligations. Rewrite using `[IsIso.comp_inv_eq]`. Conclude with `T.w.symm`. Conclude with `hom_ext fun b ↦ (m.ρ.commutes b).trans ((Algebra.ofId R T.B).commutes b).symm`.
+-/
 theorem H1OnPoints_eq_zero_of_isIso (s : X ⟶ Sp R) [IsIso s] (c : H1OnPoints s) : c = 0 := by
   have hx : inv s ≫ s = spMap (algebraMap R R) := by rw [IsIso.inv_hom_id]; exact (GlobalTheory.Cris.spMap_id R).symm
   refine H1.eq_zero_of_isInitial _ (T₀ := ⟨R, inv s, hx⟩)
@@ -116,6 +138,9 @@ theorem H1OnPoints_eq_zero_of_isIso (s : X ⟶ Sp R) [IsIso s] (c : H1OnPoints s
 def epsFn {Y : Scheme.{0}} (t : Y ⟶ Sp (DualNumber R)) : Γ(Y, ⊤) :=
   GlobalTheory.AbLaw.cst t ⊤ DualNumber.eps
 
+/- English proof (translation)
+Rewrite using `[epsFn, ← map_mul, DualNumber.eps_mul_eps, map_zero]`.
+-/
 theorem epsFn_sq {Y : Scheme.{0}} (t : Y ⟶ Sp (DualNumber R)) : epsFn t * epsFn t = 0 := by
   rw [epsFn, ← map_mul, DualNumber.eps_mul_eps, map_zero]
 

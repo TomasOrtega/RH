@@ -20,6 +20,31 @@ namespace GlobalTheory.RowEx
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨a1, h1⟩` from `h1`. Take `⟨a2, h2⟩` from `h2`. Take `⟨a3, h3⟩` from `h3`. Use `⟨max a1 (max a2 a3), fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x1, h1⟩` from `h1 ε CF (le_of_max_le_left hC)`.
+
+Take `⟨x2, h2⟩` from `h2 ε CF (le_of_max_le_left (le_of_max_le_right hC))`. Take `⟨x3, h3⟩` from `h3 ε CF (le_of_max_le_right (le_of_max_le_right hC))`. Use `⟨max x1 (max x2 x3), fun s he hx P f κ => ?_⟩` and prove the remaining obligations. Establish `hx1` using `le_of_max_le_left hx`. Establish `hx2` using `le_of_max_le_left (le_of_max_le_right hx)`.
+
+Establish `hx3` using `le_of_max_le_right (le_of_max_le_right hx)`. Distinguish the cases in `H : ∃ (X : Stages) (f' : Fr X.B.toPre) (_ : X.B.toPre = P) (_ : HEq f' f) (large₂ : SizeData₂ X.toD7) (_ : large₂.sc = s) (Γ : Type) (_ : Group Γ) (_ : Fintype Γ) (Pl0 T : Type) (A : FamIn X.toD7.what₂.LL Γ Pl0 T X.toD7.R.m) (Ks : Type) (_ : Field Ks) (_ : NumberField Ks) (_ : Al …`. Use `swap`. Conclude with `⟨∅, by simp, fun X f' a b large₂ c Γ _ _ Pl0 T A Ks _ _ _ R F d e g i _ => absurd ⟨X, f', a, b, large₂, c, Γ, _, _, Pl0, T, A, Ks, _, _, _, R, F, d, e, g, i⟩ H⟩`. Take `⟨X0, f0, a0, b0, Lg0, rfl, Γ0, _, _, Pl00, T0, A0, Ks0, _, _, _, R0, F0, d0, e0, g0, i0⟩` from `H`.
+
+Take `⟨G0, W0, hW0, ⟨S0⟩⟩` from `h1 _ Lg0 he hx1 Γ0 Pl00 T0 A0 Ks0 R0 F0 d0 g0`. Take `⟨M, ρ, ξ, cv, rm, S, rp, n, e, c, hS, hIs⟩` from `h2 _ Lg0 he hx2 Γ0 Pl00 T0 A0 Ks0 R0 F0 d0 G0 W0 hW0 S0`. Take `⟨N, hN, hAll⟩` from `h3 _ Lg0 he hx3 Γ0 Pl00 T0 A0 Ks0 R0 F0 d0 _ hIs rfl`. Take `⟨b⟩ : Nonempty (Module.Basis (Fin (Module.finrank ℚ N)) ℚ N)` from `⟨Module.finBasis ℚ N⟩`. Use `⟨Finset.univ.image fun i => ((b i : N) : ℂ), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `z hz`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `IntermediateField.isAlgebraic_iff.1 (Algebra.IsAlgebraic.isAlgebraic _)`. Introduce `X f' a b' large₂ hs Γ _ _ Pl0 T A Ks _ _ _ R F d e' g i hz`. Establish `hk : HEq (keyOf R.toLevCh) (keyOf R0.toLevCh)` using `i.trans i0.symm`.
+
+Establish `hpre : X.B.toPre = X0.B.toPre` using `a.trans a0.symm`. Establish `key : ∀ (P P' : Pre) (_ : P = P') (k : Key P) (k' : Key P'), HEq k k' → ∀ x ∈ k, ∃ y ∈ k', HEq x.1 y.1 ∧ HEq x.2 y.2`. Introduce and unpack `P _ rfl k k' h x hx`. Take `rfl` from `eq_of_heq h`. Conclude with `⟨x, hx, HEq.rfl, HEq.rfl⟩`.
+
+Establish `hι : ∀ t : T, ∃ t0 : T0, HEq (R.xiH t) (R0.xiH t0) ∧ HEq (R.Q t) (R0.Q t0)` using `fun t => by`. Take `⟨_, ⟨t0, rfl⟩, h⟩` from `key _ _ hpre _ _ hk _ ⟨t, rfl⟩`. Conclude with `⟨t0, h⟩`. Use `choose ι hι using hι`. Establish `one : ∀ (P P' : Pre) (_ : P = P'), HEq (1 : HChar P.host.E) (1 : HChar P'.host.E)` using `by rintro P _ rfl; rfl`.
+
+Establish `hb : ι A.μ0 = A0.μ0` using `d0.core.lev.xi_inj (by`. Rewrite using `[d0.core.lev.xi_base]`. Use `(hι A.μ0).1` as an intermediate fact. Rewrite `this` using `[d.core.lev.xi_base]`. Conclude with `eq_of_heq (this.symm.trans (one _ _ hpre)))`.
+
+Establish `hL : LAgree R0.toLevCh R.toLevCh A0.μ0 A.μ0 ι` using `⟨hpre, d0.core.lev, d.core.lev, ⟨f0, f', b'.trans b0.symm, e0, e'⟩, hb, fun t => (hι t).1, fun t => (hι t).2, d0.betaX, d.betaX⟩`. Take `⟨G, hG⟩` from `cG _ _ _ _ _ _ _ _ _ hL _ G0`. Take `⟨W, hW, hWA⟩` from `cW _ _ _ _ _ Γ Pl0 A Ks R _ ι hL d.core.chain d.core.models _ G0 G hG W0`. Take `⟨S', hS'⟩` from `cS _ _ _ _ _ _ _ _ _ hL _ G0 G hG W0 W hWA S.toGridChoice`. Establish `hA : Agree S.toGridChoice S' A0.μ0 A.μ0 ι` using `⟨hL, hG, hWA, hS'⟩`.
+
+Establish `h2'` using `h2 _ large₂ (hs ▸ he) (hs ▸ hx2) Γ Pl0 T A Ks R F d`. Rewrite `h2'` using `[hs]`. Take `⟨M', ρ', ξ', cv', rm', S2, rp', n', e2, c', hS2, hIs'⟩` from `h2' G W hW S'`. Use `⟨_, hIs', rfl, ?_⟩` and prove the remaining obligations. Take `⟨u1, u2, u3⟩` from `t1 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hA N (algebraMap N ℂ)`.
+
+Establish `hAll' : AllIn (algebraMap N ℂ) S' A.μ0` using `⟨u1 hAll.chars, u2 hAll.root, t2 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hA N _ hAll.phase, t3 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hA N _ hAll.jet, u3 hAll.ratios, t4 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hA N _ hAll.bot⟩`. Substitute `hS2` using the available equality. Use `hAll'.numbersIn.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[← b.sum_repr y, map_sum]`.
+
+Use `X.toD7.what₂.embLL.fieldRange.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Rat.smul_def, map_mul, map_ratCast]`. Conclude with `X.toD7.what₂.embLL.fieldRange.mul_mem (SubfieldClass.ratCast_mem _ _) (hz _ (Finset.mem_image_of_mem _ (Finset.mem_univ i)))`.
+-/
 theorem exKey_of (h1 : GridEx) (h2 : IsEx) (h3 : NFAll) (cG : CarryG) (cW : CarryW) (cS : CarryS)
     (t1 : TrEasy) (t2 : TrPhase) (t3 : TrJet) (t4 : TrBot) : ExKey := by
   classical

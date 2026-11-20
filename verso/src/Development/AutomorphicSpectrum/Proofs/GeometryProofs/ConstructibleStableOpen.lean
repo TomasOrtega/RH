@@ -10,6 +10,13 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ V, irreducibleComponent x ⊆ V`. Introduce `x hx y hy`. Establish `hS : IsGenericPoint (isIrreducible_irreducibleComponent (x` using `x)).genericPoint (irreducibleComponent x) := (isIrreducible_irreducibleComponent (x := x)).isGenericPoint_genericPoint isClosed_irreducibleComponent`. Conclude with `hs (hS.specializes hy) (hg (hS.specializes mem_irreducibleComponent) hx)`. Establish `hV : V = ⋃₀ {C | C ∈ irreducibleComponents X ∧ C ⊆ V}`.
+
+Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `x hx`. Conclude with `⟨irreducibleComponent x, ⟨irreducibleComponent_mem_irreducibleComponents x, key x hx⟩, mem_irreducibleComponent⟩`. Conclude with `Set.sUnion_subset fun C hC => hC.2`. Rewrite using `[hV, Set.sUnion_eq_biUnion]`.
+
+Conclude with `Set.Finite.isClosed_biUnion (TopologicalSpace.NoetherianSpace.finite_irreducibleComponents.subset fun C hC => hC.1) fun C hC => isClosed_of_mem_irreducibleComponents C hC.1`.
+-/
 theorem isClosed_of_stable_of_noetherian {X : Type*} [TopologicalSpace X]
     [TopologicalSpace.NoetherianSpace X] [QuasiSober X] (V : Set X)
     (hg : StableUnderGeneralization V) (hs : StableUnderSpecialization V) : IsClosed V := by
@@ -31,6 +38,9 @@ theorem isClosed_of_stable_of_noetherian {X : Type*} [TopologicalSpace X]
     (TopologicalSpace.NoetherianSpace.finite_irreducibleComponents.subset fun C hC => hC.1)
     fun C hC => isClosed_of_mem_irreducibleComponents C hC.1
 
+/- English proof (translation)
+Rewrite using `[← isClosed_compl_iff]`. Conclude with `isClosed_of_stable_of_noetherian Uᶜ (stableUnderGeneralization_compl_iff.mpr hs) (stableUnderSpecialization_compl_iff.mpr hg)`.
+-/
 theorem isOpen_of_stable (k : Type) [CommRing k] [IsNoetherianRing k] (U : Set (PrimeSpectrum k))
     (hg : StableUnderGeneralization U) (hs : StableUnderSpecialization U) : IsOpen U := by
   rw [← isClosed_compl_iff]

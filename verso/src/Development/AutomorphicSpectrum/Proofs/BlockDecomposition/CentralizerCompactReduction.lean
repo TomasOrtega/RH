@@ -12,6 +12,9 @@ open scoped Pointwise
 
 namespace GlobalTheory.CompanionTheory.TorusCh
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem double_coset_eq_iff {G : Type*} [Group G] (D g g' a a' : G) :
     g * D * a⁻¹ = g' * D * a'⁻¹ ↔ (g⁻¹ * g')⁻¹ * D * (a⁻¹ * a') = D := by
   constructor
@@ -27,6 +30,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 def orbMap (d : GL (Fin n) E) (g : GA E n) : GA E n := g * ratGL E n d * (thetaA E n g)⁻¹
 
+/- English proof (translation)
+Establish `hm : g⁻¹ * g' ∈ adCent d ↔ (g⁻¹ * g')⁻¹ * ratGL E n d * thetaA E n (g⁻¹ * g') = ratGL E n d` using `Iff.rfl`. Rewrite using `[hm, map_mul, map_inv]`. Conclude with `double_coset_eq_iff _ _ _ _ _`.
+-/
 theorem orbMap_eq_iff (d : GL (Fin n) E) (g g' : GA E n) :
     orbMap d g = orbMap d g' ↔ g⁻¹ * g' ∈ adCent d := by
   have hm : g⁻¹ * g' ∈ adCent d ↔
@@ -34,15 +40,24 @@ theorem orbMap_eq_iff (d : GL (Fin n) E) (g g' : GA E n) :
   rw [hm, map_mul, map_inv]
   exact double_coset_eq_iff _ _ _ _ _
 
+/- English proof (translation)
+Unfold `orbMap`. Conclude with `(continuous_id.mul continuous_const).mul GlobalTheory.CompanionTheory.KerTwFin.continuous_thetaA.inv`.
+-/
 theorem continuous_orbMap (d : GL (Fin n) E) : Continuous (orbMap (E := E) (n := n) d) := by
   unfold orbMap
   exact (continuous_id.mul continuous_const).mul GlobalTheory.CompanionTheory.KerTwFin.continuous_thetaA.inv
 
+/- English proof (translation)
+Unfold `orbMap`. Rewrite using `[GlobalTheory.CompanionTheory.RatDisc.thetaA_ratGL, map_mul, map_mul, map_inv]`.
+-/
 theorem orbMap_ratGL (d r : GL (Fin n) E) :
     orbMap d (ratGL E n r) = ratGL E n (r * d * (thetaE E n r)⁻¹) := by
   unfold orbMap
   rw [GlobalTheory.CompanionTheory.RatDisc.thetaA_ratGL, map_mul, map_mul, map_inv]
 
+/- English proof (translation)
+Use `((GlobalTheory.CompanionTheory.KerTwFin.finite_ratGL_mem (hC.image (continuous_orbMap d))).image (ratGL E n)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h1, _, ⟨r, rfl⟩, rfl⟩`. Rewrite `h1`, the goal using `[orbMap_ratGL]`. Conclude with `⟨_, h1, rfl⟩`.
+-/
 theorem finite_orbMap_inter (d : GL (Fin n) E) {C : Set (GA E n)} (hC : IsCompact C) :
     (orbMap d '' C ∩ orbMap d '' ((ratGL E n).range : Set (GA E n))).Finite := by
   refine ((GlobalTheory.CompanionTheory.KerTwFin.finite_ratGL_mem (hC.image (continuous_orbMap d))).image (ratGL E n)).subset ?_
@@ -50,6 +65,9 @@ theorem finite_orbMap_inter (d : GL (Fin n) E) {C : Set (GA E n)} (hC : IsCompac
   rw [orbMap_ratGL] at h1 ⊢
   exact ⟨_, h1, rfl⟩
 
+/- English proof (translation)
+Use `⟨r, ?_, rfl⟩` and prove the remaining obligations. Establish `h' : twConj (thetaA E n) (ratGL E n r) (ratGL E n d) = ratGL E n d` using `h`. Rewrite `h'` using `[twConj, GlobalTheory.CompanionTheory.RatDisc.thetaA_ratGL, ← map_inv, ← map_mul, ← map_mul]`. Conclude with `GlobalTheory.CompanionTheory.KerTwFin.injective_ratGL h'`.
+-/
 theorem ratGL_mem_ratCent (d r : GL (Fin n) E) (h : ratGL E n r ∈ adCent d) :
     ratGL E n r ∈ ratCent d := by
   refine ⟨r, ?_, rfl⟩
@@ -57,6 +75,11 @@ theorem ratGL_mem_ratCent (d r : GL (Fin n) E) (h : ratGL E n r ∈ adCent d) :
   rw [twConj, GlobalTheory.CompanionTheory.RatDisc.thetaA_ratGL, ← map_inv, ← map_mul, ← map_mul] at h'
   exact GlobalTheory.CompanionTheory.KerTwFin.injective_ratGL h'
 
+/- English proof (translation)
+Introduce `E _ _ _ n d C hC`. Take `⟨T, hTΓ, hT⟩` from `GroundTheory.Automorphic.Anisotropic.exists_finset_of_orbit (orbMap d) (adCent d) (ratGL E n).range (orbMap_eq_iff d) C (finite_orbMap_inter d hC)`. Use `⟨⋃ δ ∈ T, (fun c => δ⁻¹ * c) '' C, T.isCompact_biUnion fun δ _ => hC.image (continuous_const.mul continuous_id), ?_⟩` and prove the remaining obligations. Introduce and unpack `t ht ⟨γ, hγ, c, hc, rfl⟩`. Take `⟨δ, hδT, hγδ, -⟩` from `hT _ ht γ hγ c hc rfl`.
+
+Take `⟨r, rfl⟩` from `hγ`. Take `⟨s, rfl⟩` from `hTΓ δ hδT`. Rewrite `hγδ` using `[← map_mul]`. Use `Set.mem_mul.2 ⟨ratGL E n (r * s), ratGL_mem_ratCent d _ hγδ, (ratGL E n s)⁻¹ * c, Set.mem_biUnion hδT ⟨c, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mul_assoc, mul_inv_cancel_left]`.
+-/
 theorem exists_isCompact_ratCent_mul :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (d : GL (Fin n) E) (C : Set (GA E n)), IsCompact C →
       ∃ C' : Set (GA E n), IsCompact C' ∧ ∀ t ∈ adCent d, t ∈ ((ratGL E n).range : Set (GA E n)) * C →

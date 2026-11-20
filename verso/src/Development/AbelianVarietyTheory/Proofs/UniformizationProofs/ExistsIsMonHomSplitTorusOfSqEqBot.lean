@@ -30,9 +30,15 @@ open GlobalTheory.SqZero GlobalTheory.Diag
 variable {A : Type} [CommRing A] {X Y : Type} [AddCommGroup X] [AddCommGroup Y]
   {C C' : Type} [CommRing C] [Algebra A C] [CommRing C'] [Algebra A C']
 
+/- English proof (translation)
+The claim follows from `AddMonoidAlgebra.algHom_ext h (Subsingleton.elim _ _)`.
+-/
 theorem algHom_ext' {φ ψ : AddMonoidAlgebra A X →ₐ[A] C}
     (h : ∀ x, φ (single x 1) = ψ (single x 1)) : φ = ψ := AddMonoidAlgebra.algHom_ext h (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Use `(GlobalTheory.Diag.left_eq_iff (g := Spec.map (CommRingCat.ofHom (algebraMap A C))) φ.toRingHom ?_ (spMap φ ≫ w) w).1 ?_ x` and prove the remaining obligations. Establish `h` using `Over.w (spMap φ)`. Rewrite `h` using `[spMap_left]`. Conclude with `h.symm`. Rewrite using `[Over.comp_left, spMap_left]`.
+-/
 theorem charVal_spMap (φ : C →ₐ[A] C') (w : sp C ⟶ splitTorus (Spec (CommRingCat.of A)) X) (x : X) :
     charVal (spMap φ ≫ w) x = φ (charVal w x) := by
   refine (GlobalTheory.Diag.left_eq_iff (g := Spec.map (CommRingCat.ofHom (algebraMap A C))) φ.toRingHom ?_
@@ -47,6 +53,9 @@ variable (A X) in
 def univ : sp (AddMonoidAlgebra A X) ⟶ splitTorus (Spec (CommRingCat.of A)) X :=
   ofVal _ (AddMonoidAlgebra.of A X)
 
+/- English proof (translation)
+Rewrite using `[charVal_spMap, univ, GlobalTheory.Diag.charVal_ofVal, AddMonoidAlgebra.of_apply, toAdd_ofAdd]`.
+-/
 theorem charVal_univ (φ : AddMonoidAlgebra A X →ₐ[A] C) (x : X) :
     charVal (spMap φ ≫ univ A X) x = φ (single x 1) := by
   rw [charVal_spMap, univ, GlobalTheory.Diag.charVal_ofVal, AddMonoidAlgebra.of_apply, toAdd_ofAdd]
@@ -56,12 +65,18 @@ def valHom (w : sp C ⟶ splitTorus (Spec (CommRingCat.of A)) X) : Multiplicativ
   map_one' := charVal_zero w
   map_mul' _ _ := charVal_add w _ _
 
+/- English proof (translation)
+Use `⟨AddMonoidAlgebra.lift A C X (valHom w), GlobalTheory.Diag.charVal_ext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[charVal_univ, AddMonoidAlgebra.lift_single, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem exists_eq_univ (w : sp C ⟶ splitTorus (Spec (CommRingCat.of A)) X) :
     ∃ φ : AddMonoidAlgebra A X →ₐ[A] C, spMap φ ≫ univ A X = w := by
   refine ⟨AddMonoidAlgebra.lift A C X (valHom w), GlobalTheory.Diag.charVal_ext fun x => ?_⟩
   rw [charVal_univ, AddMonoidAlgebra.lift_single, one_smul]
   rfl
 
+/- English proof (translation)
+Set `F : Multiplicative (X × X) →* C` to `(valHom v).comp (AddMonoidHom.toMultiplicative (AddMonoidHom.fst X X)) * (valHom w).comp (AddMonoidHom.toMultiplicative (AddMonoidHom.snd X X))`. Apply the tactic sequence `refine ⟨AddMonoidAlgebra.lift A C (X × X) F, GlobalTheory.Diag.charVal_ext fun x => ?_, GlobalTheory.Diag.charVal_ext fun x => ?_⟩ <;>`. Rewrite using `[charVal_univ]`. Simplify using `[F, valHom, GlobalTheory.Diag.charVal_zero]`.
+-/
 theorem exists_eq_univ₂ (v w : sp C ⟶ splitTorus (Spec (CommRingCat.of A)) X) :
     ∃ φ : AddMonoidAlgebra A (X × X) →ₐ[A] C,
       spMap (φ.comp (mapDomainAlgHom A A (AddMonoidHom.inl X X))) ≫ univ A X = v ∧
@@ -74,6 +89,11 @@ theorem exists_eq_univ₂ (v w : sp C ⟶ splitTorus (Spec (CommRingCat.of A)) X
   · rw [charVal_univ]
     simp [F, valHom, GlobalTheory.Diag.charVal_zero]
 
+/- English proof (translation)
+Use `GlobalTheory.Diag.charVal_ext fun x => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Diag.charVal_mul, charVal_univ, charVal_univ, charVal_univ]`. Simplify using `only [AlgHom.comp_apply]`. Rewrite using `[← map_mul]`. Use `congr 1`.
+
+Simplify using `[AddMonoidAlgebra.single_mul_single]`.
+-/
 theorem univ_add (φ : AddMonoidAlgebra A Y →ₐ[A] C) (u v : X →+ Y) :
     spMap (φ.comp (mapDomainAlgHom A A (u + v))) ≫ univ A X =
       spMap (φ.comp (mapDomainAlgHom A A u)) ≫ univ A X *
@@ -85,6 +105,15 @@ theorem univ_add (φ : AddMonoidAlgebra A Y →ₐ[A] C) (u v : X →+ Y) :
   congr 1
   simp [AddMonoidAlgebra.single_mul_single]
 
+/- English proof (translation)
+Set `inst : Algebra A Γ(Z.left, ⊤)` to `(Z.hom.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom).toAlgebra`. Establish `e : CommRingCat.ofHom (algebraMap A Γ(Z.left, ⊤)) = (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ Z.hom.appTop` using `rfl`. Establish `hw : Z.left.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (algebraMap A Γ(Z.left, ⊤))) = Z.hom`. Rewrite using `[e, Spec.map_comp, ← Category.assoc, ← Scheme.toSpecΓ_naturality, Category.assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Use `⟨Γ(Z.left, ⊤), inferInstance, inst, Over.homMk Z.left.toSpecΓ hw, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a`. Set `F : Multiplicative X →* Γ(Z.left, ⊤)` to `{ toFun := fun x => SplitTorus.val a x.toAdd map_one' := SplitTorus.val_zero a map_mul' := fun x y => SplitTorus.val_add a x.toAdd y.toAdd }`. Use `⟨GlobalTheory.Diag.ofVal _ F, SplitTorus.hom_ext fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.Diag.charVal_ofVal (g := Spec.map (CommRingCat.ofHom (algebraMap A Γ(Z.left, ⊤)))) F x`. Unfold `GlobalTheory.Diag.charVal at h1`.
+
+Rewrite using `[SplitTorus.val_comp, SplitTorus.val_eq]`. Express the relevant statement in the definitionally equal form `(Z.left.toSpecΓ.appTop).hom _ = _`. Rewrite using `[Scheme.toSpecΓ_appTop]`. Conclude with `h1`. Introduce `J s hs j hj show Z.hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom j) = 0`.
+
+Rewrite using `[hs, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, SplitTorus.specMap_appTop_apply, CommRingCat.hom_ofHom, Ideal.Quotient.eq_zero_iff_mem.2 hj, map_zero, map_zero]`.
+-/
 theorem exists_affinization (Z : Over (Spec (CommRingCat.of A))) :
     ∃ (C : Type) (_ : CommRing C) (_ : Algebra A C) (p : Z ⟶ sp C),
       (∀ a : Z ⟶ splitTorus (Spec (CommRingCat.of A)) X, ∃ a', p ≫ a' = a) ∧
@@ -118,6 +147,13 @@ theorem exists_affinization (Z : Over (Spec (CommRingCat.of A))) :
       SplitTorus.specMap_appTop_apply, CommRingCat.hom_ofHom, Ideal.Quotient.eq_zero_iff_mem.2 hj,
       map_zero, map_zero]
 
+/- English proof (translation)
+Take `⟨C, _, _, p, hp, -⟩` from `exists_affinization (A := A) (X := X) (splitTorus (Spec (CommRingCat.of A)) X)`. Take `⟨a', ha'⟩` from `hp (𝟙 _)`. Take `⟨φ, hφ⟩` from `exists_eq_univ a'`. Use `⟨p ≫ spMap φ, by rw [Category.assoc, hφ, ha'], ?_⟩` and prove the remaining obligations. Take `⟨α, hα⟩` from `GlobalTheory.SqZero.exists_spMap (univ A X ≫ p ≫ spMap φ)`.
+
+Establish `h1 : spMap α ≫ univ A X = spMap (AlgHom.id A (AddMonoidAlgebra A X)) ≫ univ A X`. Rewrite using `[spMap_id, Category.id_comp, ← hα, Category.assoc, Category.assoc, hφ, ha', Category.comp_id]`. Establish `h2 : α = AlgHom.id A _` using `algHom_ext' fun x => by`. Establish `h3` using `congrArg (fun w => charVal w x) h1`. Simplify `h3` using `only [charVal_univ]`.
+
+Rewrite using `[hα, h2, spMap_id]`.
+-/
 theorem exists_inv_univ : ∃ r : splitTorus (Spec (CommRingCat.of A)) X ⟶ sp (AddMonoidAlgebra A X),
     r ≫ univ A X = 𝟙 _ ∧ univ A X ≫ r = 𝟙 _ := by
   obtain ⟨C, _, _, p, hp, -⟩ := exists_affinization (A := A) (X := X) (splitTorus (Spec (CommRingCat.of A)) X)
@@ -132,6 +168,11 @@ theorem exists_inv_univ : ∃ r : splitTorus (Spec (CommRingCat.of A)) X ⟶ sp 
     simpa only [charVal_univ] using h3
   rw [hα, h2, spMap_id]
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Take `⟨a', ha'⟩ : ∃ a' : Over.mk s ⟶ (Over.pullback i).obj G, a'.left ≫ pullback.fst G.hom i = a.left` from `⟨Over.homMk (pullback.lift a.left s (Over.w a)) (pullback.lift_snd _ _ _), pullback.lift_fst _ _ _⟩`. Take `⟨b', hb'⟩ : ∃ b' : Over.mk s ⟶ (Over.pullback i).obj G, b'.left ≫ pullback.fst G.hom i = b.left` from `⟨Over.homMk (pullback.lift b.left s (Over.w b)) (pullback.lift_snd _ _ _), pullback.lift_fst _ _ _⟩`. Establish `hpf : ((Over.pullback i).map f).left ≫ pullback.fst H.hom i = pullback.fst G.hom i ≫ f.left` using `pullback.lift_fst _ _ _`. Establish `h1` using `SplitTorus.mul_left_comp_fst G i a' b' a b ha'.symm hb'.symm`.
+
+Establish `h2` using `SplitTorus.mul_left_comp_fst H i (a' ≫ (Over.pullback i).map f) (b' ≫ (Over.pullback i).map f) (a ≫ f) (b ≫ f) (by rw [Over.comp_left, Over.comp_left, Category.assoc, hpf, ← Category.assoc, ha']) (by rw [Over.comp_left, Over.comp_left, Category.assoc, hpf, ← Category.assoc, hb'])`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[h2, ← MonObj.mul_comp, Over.comp_left, Over.comp_left, Category.assoc, hpf, ← Category.assoc, ← h1]`.
+-/
 theorem mul_comp_of_pullback {S S' : Scheme.{0}} (i : S' ⟶ S) {G H : Over S} [GrpObj G] [GrpObj H]
     (f : G ⟶ H) [IsMonHom ((Over.pullback i).map f)] {W : Scheme.{0}} (s : W ⟶ S') (z : W ⟶ S)
     (hz : z = s ≫ i) (a b : Over.mk z ⟶ G) : (a * b) ≫ f = a ≫ f * b ≫ f := by
@@ -153,6 +194,13 @@ theorem mul_comp_of_pullback {S S' : Scheme.{0}} (i : S' ⟶ S) {G H : Over S} [
   rw [h2, ← MonObj.mul_comp, Over.comp_left, Over.comp_left, Category.assoc, hpf, ← Category.assoc,
     ← h1]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hb x`. Establish `h0 : b ∈ RingHom.ker (AddMonoidAlgebra.mapRingHom X (Ideal.Quotient.mk J))`. Use `(Ideal.map_le_iff_le_comap.2 ?_) hb` and prove the remaining obligations. Introduce `a ha`.
+
+Simplify using `[AddMonoidAlgebra.coe_algebraMap, AddMonoidAlgebra.mapRingHom_single, Ideal.Quotient.eq_zero_iff_mem, ha]`. Establish `h1` using `congrArg (fun c => c.coeff x) (RingHom.mem_ker.1 h0)`. Simplify `h1` using `[AddMonoidAlgebra.coeff_mapRingHom, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `hb`. Rewrite using `[← AddMonoidAlgebra.sum_coeff_single b, Finsupp.sum]`.
+
+Use `Ideal.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Establish `hx : single x (b.coeff x) = algebraMap A (AddMonoidAlgebra A X) (b.coeff x) * single x 1`. Rewrite using `[← Algebra.smul_def, AddMonoidAlgebra.smul_single', _root_.mul_one]`. Rewrite using `[hx]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hb x))`.
+-/
 theorem mem_map_iff (J : Ideal A) (b : AddMonoidAlgebra A X) :
     b ∈ J.map (algebraMap A (AddMonoidAlgebra A X)) ↔ ∀ x, b.coeff x ∈ J := by
   constructor
@@ -173,11 +221,17 @@ theorem mem_map_iff (J : Ideal A) (b : AddMonoidAlgebra A X) :
     rw [hx]
     exact Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hb x))
 
+/- English proof (translation)
+Introduce `a ha` and use `by have h := Ideal.mem_map_of_mem (φ : C →+* C') ha rwa [Ideal.map_map, AlgHom.comp_algebraMap] at h`.
+-/
 theorem map_mem_map {J : Ideal A} (φ : C →ₐ[A] C') :
     ∀ a ∈ J.map (algebraMap A C), φ a ∈ J.map (algebraMap A C') := fun a ha => by
   have h := Ideal.mem_map_of_mem (φ : C →+* C') ha
   rwa [Ideal.map_map, AlgHom.comp_algebraMap] at h
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_pow, hJ, Ideal.map_bot]`.
+-/
 theorem map_algebraMap_sq {J : Ideal A} (hJ : J ^ 2 = ⊥) : J.map (algebraMap A C) ^ 2 = ⊥ := by rw [← Ideal.map_pow, hJ, Ideal.map_bot]
 
 section Cocycle
@@ -189,6 +243,9 @@ def pull (G : Over (Spec (CommRingCat.of A))) [GrpObj G] (u : X →+ Y) :
     (sp (AddMonoidAlgebra A X) ⟶ G) →* (sp (AddMonoidAlgebra A Y) ⟶ G) :=
   pointsMap G (mapDomainAlgHom A A u)
 
+/- English proof (translation)
+Rewrite using `[pull, pull, pull, ptsMap_apply, ptsMap_apply, ptsMap_apply, ← Category.assoc, spMap_comp, AddMonoidAlgebra.mapDomainAlgHom_comp]`.
+-/
 theorem pull_pull (u : X →+ Y) (v : Y →+ Z) (y : sp (AddMonoidAlgebra A X) ⟶ G) :
     pull G v (pull G u y) = pull G (v.comp u) y := by
   rw [pull, pull, pull, ptsMap_apply, ptsMap_apply, ptsMap_apply, ← Category.assoc, spMap_comp,
@@ -200,12 +257,18 @@ def pullKer (G : Over (Spec (CommRingCat.of A))) [GrpObj G] (J : Ideal A) (u : X
   ((pull G u).comp (Subgroup.subtype _)).codRestrict _ fun y =>
     comp_mem_redKer y.2 _ (map_mem_map _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_pullKer (u : X →+ Y)
     (y : redKer (R := A) G (J.map (algebraMap A (AddMonoidAlgebra A X)))) :
     (pullKer G J u y).1 = pull G u y.1 := rfl
 
 variable [IsCommMonObj G] [Smooth G.hom] {n : ℕ} {v : Fin n → (epsR A ⟶ G)}
 
+/- English proof (translation)
+Establish `h` using `kerEquiv_map hv (map_algebraMap_sq hJ) (map_algebraMap_sq hJ) (mapDomainAlgHom A A u) (map_mem_map _) y i`. Establish `e : pullKer G J u y = ⟨spMap (mapDomainAlgHom A A u) ≫ y.1, comp_mem_redKer y.2 (mapDomainAlgHom A A u) (map_mem_map _)⟩` using `Subtype.ext (coe_pullKer u y)`. Rewrite using `[e, h]`. Simplify using the standard rewrite rules.
+-/
 theorem kerEquiv_pullKer (hv : IsLieBasis v) (hJ : J ^ 2 = ⊥) (u : X →+ Y)
     (y : redKer (R := A) G (J.map (algebraMap A (AddMonoidAlgebra A X)))) (i : Fin n) :
     (kerEquiv hv (map_algebraMap_sq hJ) (Additive.ofMul (pullKer G J u y)) i :
@@ -221,6 +284,19 @@ theorem kerEquiv_pullKer (hv : IsLieBasis v) (hJ : J ^ 2 = ⊥) (u : X →+ Y)
 
 open AddMonoidHom in
 
+/- English proof (translation)
+Use `set f : Fin n → AddMonoidAlgebra A (X × X) := fun i => ((kerEquiv hv (map_algebraMap_sq hJ) (Additive.ofMul δ) i : AddMonoidAlgebra A (X × X))) with hf`. Establish `hcoc : ∀ i, AddMonoidAlgebra.mapDomain (fun p : X × X => ((0 : X), p.1, p.2)) (f i) - AddMonoidAlgebra.mapDomain (fun p : X × X => (p.1, p.1, p.2)) (f i) + AddMonoidAlgebra.mapDomain (fun p : X × X => (p.1, p.2, p.2)) (f i) - AddMonoidAlgebra.mapDomain (fun p : X × X => (p.1, p.2 …`. Introduce `i`. Establish `h` using `congrArg (fun z => ((kerEquiv hv (map_algebraMap_sq hJ) (Additive.ofMul z) i : AddMonoidAlgebra A (X × (X × X))))) hδ`. Simplify using `only [ofMul_div, ofMul_mul, ofMul_one, map_sub, map_add, map_zero, Pi.sub_apply, Pi.add_apply, Pi.zero_apply, AddSubgroupClass.coe_sub, AddMemClass.coe_add, ZeroMemClass.coe_zero] at h`.
+
+Rewrite `h` using `[kerEquiv_pullKer hv hJ, kerEquiv_pullKer hv hJ, kerEquiv_pullKer hv hJ, kerEquiv_pullKer hv hJ]`. Conclude with `h`. Establish `key : ∀ i, ∃ g : AddMonoidAlgebra A X, AddMonoidAlgebra.mapDomain (fun y : X => ((0 : X), y)) g - AddMonoidAlgebra.mapDomain (fun y : X => (y, y)) g + AddMonoidAlgebra.mapDomain (fun y : X => (y, (0 : X))) g = f i` using `fun i => (addMonoidAlgebra_existsUnique_coboundary (f i) (hcoc i)).exists`. Use `choose g hg using key`. Establish `hmem : ∀ i, g i ∈ J.map (algebraMap A (AddMonoidAlgebra A X))`.
+
+Introduce `i`. Rewrite using `[mem_map_iff]`. Introduce `x`. Rewrite using `[(addMonoidAlgebra_coboundary_eq_iff (f i) (hcoc i) (g i)).1 (hg i) x]`. Conclude with `(mem_map_iff J (f i)).1 (kerEquiv hv (map_algebraMap_sq hJ) (Additive.ofMul δ) i).2 (0, x)`.
+
+Use `⟨Additive.toMul ((kerEquiv hv (map_algebraMap_sq hJ)).symm fun i => ⟨g i, hmem i⟩), ?_⟩` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Apply `(kerEquiv hv (map_algebraMap_sq hJ)).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `e2 : (⇑(AddMonoidHom.inl X X + AddMonoidHom.inr X X) : X → X × X) = fun y => (y, y)`. Use function extensionality and compare the values at `fun y => by simp`. Simplify using `only [ofMul_div, ofMul_mul, map_sub, map_add, Pi.sub_apply, Pi.add_apply, AddSubgroupClass.coe_sub, AddMemClass.coe_add]`. Rewrite using `[kerEquiv_pullKer hv hJ, kerEquiv_pullKer hv hJ, kerEquiv_pullKer hv hJ]`. Simplify using `only [ofMul_toMul, AddEquiv.apply_symm_apply, e2]`.
+
+Conclude with `hg i`.
+-/
 theorem exists_coboundary (hv : IsLieBasis v) (hJ : J ^ 2 = ⊥)
     (δ : redKer (R := A) G (J.map (algebraMap A (AddMonoidAlgebra A (X × X)))))
     (hδ : pullKer G J (inr X (X × X)) δ / pullKer G J ((AddMonoidHom.fst X X).prod (AddMonoidHom.id _)) δ *
@@ -270,6 +346,17 @@ theorem exists_coboundary (hv : IsLieBasis v) (hJ : J ^ 2 = ⊥)
 
 open AddMonoidHom in
 
+/- English proof (translation)
+Establish `e1 : ((AddMonoidHom.fst X X).prod (AddMonoidHom.id (X × X))).comp (AddMonoidHom.inr X X) = (AddMonoidHom.inr X (X × X)).comp (AddMonoidHom.inr X X)` using `AddMonoidHom.ext fun y => by simp`. Establish `e2 : ((AddMonoidHom.fst X X).prod ((AddMonoidHom.snd X X).prod (AddMonoidHom.snd X X))).comp (AddMonoidHom.inr X X) = (AddMonoidHom.inr X (X × X)).comp (AddMonoidHom.inl X X + AddMonoidHom.inr X X)` using `AddMonoidHom.ext fun y => by simp`. Establish `e3 : (prodMap (AddMonoidHom.id X) (AddMonoidHom.inl X X)).comp (AddMonoidHom.inr X X) = (AddMonoidHom.inr X (X × X)).comp (AddMonoidHom.inl X X)` using `AddMonoidHom.ext fun y => by simp`. Establish `e4 : ((AddMonoidHom.fst X X).prod ((AddMonoidHom.snd X X).prod (AddMonoidHom.snd X X))).comp (AddMonoidHom.inl X X + AddMonoidHom.inr X X) = ((AddMonoidHom.fst X X).prod (AddMonoidHom.id (X × X))).comp (AddMonoidHom.inl X X + AddMonoidHom.inr X X)` using `AddMonoidHom.ext fun y => by simp`. Establish `e5 : (prodMap (AddMonoidHom.id X) (AddMonoidHom.inl X X)).comp (AddMonoidHom.inl X X + AddMonoidHom.inr X X) = ((AddMonoidHom.fst X X).prod (AddMonoidHom.id (X × X))).comp (AddMonoidHom.inl X X)` using `AddMonoidHom.ext fun y => by simp`.
+
+Establish `e6 : (prodMap (AddMonoidHom.id X) (AddMonoidHom.inl X X)).comp (AddMonoidHom.inl X X) = ((AddMonoidHom.fst X X).prod ((AddMonoidHom.snd X X).prod (AddMonoidHom.snd X X))).comp (AddMonoidHom.inl X X)` using `AddMonoidHom.ext fun y => by simp`. Take `⟨κ, hκ⟩` from `exists_coboundary hv hJ ⟨_, hh⟩ (by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_div, Subgroup.coe_one, coe_pullKer, map_mul, map_div, pull_pull]`. Rewrite using `[e1, e2, e3, e4, e5, e6]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_div, ofMul_mul, ofMul_one]`. Use the proof step `abel)`. Use `⟨κ.1, κ.2, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun z => Additive.ofMul (Subtype.val z)) hκ`.
+
+Simplify using `only [Subgroup.coe_mul, Subgroup.coe_div, coe_pullKer, ofMul_div, ofMul_mul] at h1`. Rewrite using `[map_div, map_div, map_div]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_div, ofMul_mul]`. Rewrite `h1`, the goal using `[← sub_eq_zero]`.
+
+Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_correction (hv : IsLieBasis v) (hJ : J ^ 2 = ⊥) (h : sp (AddMonoidAlgebra A X) ⟶ G)
     (hh : pull G (inr X X) h / pull G (inl X X + inr X X) h * pull G (inl X X) h ∈
       redKer (R := A) G (J.map (algebraMap A (AddMonoidAlgebra A (X × X))))) :
@@ -321,6 +408,27 @@ open SqZero TorusDefect
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `hL : ∃ (n : ℕ) (v : Fin n → (epsR A ⟶ G)), IsLieBasis v` using `ReciprocityTheory.ChartRestriction.G.Chart.exists_isLieBasis G inferInstance`. Take `⟨r, hr1, hr2⟩` from `TorusDefect.exists_inv_univ (A := A) (X := X)`. Take `⟨n, v, hv⟩` from `hL`. Establish `hur : ∀ {W : Over (Spec (CommRingCat.of A))} (q : sp (AddMonoidAlgebra A X) ⟶ W), univ A X ≫ r ≫ q = q` using `fun q => by rw [← Category.assoc, hr2, Category.id_comp]`. Establish `hh : pull G (AddMonoidHom.inr X X) (univ A X ≫ f) / pull G (AddMonoidHom.inl X X + AddMonoidHom.inr X X) (univ A X ≫ f) * pull G (AddMonoidHom.inl X X) (univ A X ≫ f) ∈ redKer G (J.map (algebraMap A (AddMonoidAlgebra A (X × X))))`.
+
+Rewrite using `[mem_redKer]`. Establish `hx : ∀ u : X →+ X × X, spMap (Ideal.Quotient.mkₐ A (J.map (algebraMap A (AddMonoidAlgebra A (X × X))))) ≫ pull G u (univ A X ≫ f) = (spMap ((Ideal.Quotient.mkₐ A (J.map (algebraMap A (AddMonoidAlgebra A (X × X))))).comp (mapDomainAlgHom A A u)) ≫ univ A X) ≫ f` using `fun u => by`. Rewrite using `[pull, ptsMap_apply, ← Category.assoc, spMap_comp, Category.assoc]`. Establish `hz : Spec.map (CommRingCat.ofHom (algebraMap A (AddMonoidAlgebra A (X × X) ⧸ J.map (algebraMap A (AddMonoidAlgebra A (X × X)))))) = Spec.map (CommRingCat.ofHom (Ideal.quotientMap (J.map (algebraMap A (AddMonoidAlgebra A (X × X)))) (algebraMap A _) Ideal.le_comap_map)) ≫ Spec.map …`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `congr 2`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_div, hx, hx, hx, univ_add, mul_comp_of_pullback (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))) f _ _ hz]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_div, ofMul_mul, ofMul_one]`. Normalize the expressions using the abelian group laws.
+
+Take `⟨κ, hκ, hmul⟩` from `TorusDefect.exists_correction hv hJ (univ A X ≫ f) hh`. Establish `hpull : ∀ {C : Type} [CommRing C] [Algebra A C] (φ : AddMonoidAlgebra A (X × X) →ₐ[A] C) (u : X →+ X × X), spMap (φ.comp (mapDomainAlgHom A A u)) ≫ (univ A X ≫ f / κ) = spMap φ ≫ pull G u (univ A X ≫ f / κ)` using `fun φ u => by`. Rewrite using `[pull, ptsMap_apply, ← Category.assoc, spMap_comp]`. Use `⟨r ≫ (univ A X ≫ f / κ), ?_, ?_⟩` and prove the remaining obligations. Use `isMonHom_of_mul _ fun T x y => ?_` and prove the remaining obligations.
+
+Take `⟨C, _, _, p, hp, -⟩` from `TorusDefect.exists_affinization (X := X) T`. Take `⟨x', rfl⟩` from `hp x`. Take `⟨y', rfl⟩` from `hp y`. Take `⟨φ, rfl, rfl⟩` from `TorusDefect.exists_eq_univ₂ x' y'`. Rewrite using `[← MonObj.comp_mul, ← univ_add]`.
+
+Simplify using `only [Category.assoc, hur]`. Rewrite using `[← MonObj.comp_mul, hpull, hpull, hpull, hmul]`. Use `congr 1`. Conclude with `MonObj.comp_mul _ _ _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.pullback_map_left, pullback.lift_fst]`. Take `⟨a, ha⟩ : ∃ a : Over.mk (pullback.snd (splitTorus (Spec (CommRingCat.of A)) X).hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))) ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))) ⟶ splitTorus (Spec (CommRingCat.of A)) X, a.left = pullback.fst _ _` from `⟨Over.homMk _ pullback.condition, rfl⟩`. Take `⟨C, _, _, p, hp, hJC⟩` from `TorusDefect.exists_affinization (X := X) (Over.mk (pullback.snd (splitTorus (Spec (CommRingCat.of A)) X).hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))) ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))))`. Take `⟨a', ha'⟩` from `hp a`.
+
+Take `⟨ψ, hψ⟩` from `TorusDefect.exists_eq_univ a'`. Establish `hle : J.map (algebraMap A (AddMonoidAlgebra A X)) ≤ RingHom.ker (ψ : AddMonoidAlgebra A X →+* C)` using `Ideal.map_le_iff_le_comap.2 fun j hj => by show ψ (algebraMap A _ j) = 0`. Rewrite using `[AlgHom.commutes]`. Conclude with `hJC J _ rfl j hj`. Establish `hκ0 : spMap ψ ≫ κ = 1` using `comp_eq_one_of_mem_redKer hκ ψ fun b hb => RingHom.mem_ker.1 (hle hb)`.
+
+Establish `E : a ≫ r ≫ (univ A X ≫ f / κ) = a ≫ f`. Rewrite using `[← ha', ← hψ]`. Simplify using `only [Category.assoc, hur]`. Rewrite using `[GrpObj.comp_div, hκ0, div_one]`. Rewrite using `[← ha, ← Over.comp_left, ← Over.comp_left, E]`.
+
+Simplify using `only [Over.pullback_map_left, pullback.lift_snd]`.
+-/
 theorem exists_isMonHom_splitTorus_of_sq_eq_bot (A : Type) [CommRing A] [IsLocalRing A]
     (J : Ideal A) (hJ : J ^ 2 = ⊥) (X : Type) [AddCommGroup X]
     (G : Over (Spec (CommRingCat.of A))) [GrpObj G] [IsCommMonObj G] [Smooth G.hom]

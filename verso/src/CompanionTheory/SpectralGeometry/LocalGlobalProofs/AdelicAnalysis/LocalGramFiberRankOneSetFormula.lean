@@ -18,11 +18,19 @@ section Alg
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem conj_invol (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hσ`. Use `push_neg at hσ`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `h.2.1` as an intermediate fact. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ` to reduce the goal to its premises.
+
+Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Use `h.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hσ]`. Simplify `this.symm` using `[ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem exists_conj_ne (h : IsCMExt F E σ) : ∃ e : E, σ e ≠ e := by
   by_contra hσ
   push_neg at hσ
@@ -35,6 +43,21 @@ theorem exists_conj_ne (h : IsCMExt F E σ) : ∃ e : E, σ e ≠ e := by
   rw [hσ] at this
   simpa [ComplexEmbedding.conjugate_coe_eq] using this.symm
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_conj_ne h`. Use `⟨e - σ e, by rw [map_sub, conj_invol h]; ring, ?_⟩` and prove the remaining obligations. Use `set w := e - σ e with hw`. Establish `hw' : σ w = -w` using `by rw [hw, map_sub, conj_invol h]; ring`. Establish `hw0 : w ≠ 0` using `fun h0 => he (sub_eq_zero.mp h0).symm`.
+
+Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`. Establish `hli : LinearIndependent F ![(1 : E), w]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h1 : s • (1 : E) - t • w = 0`.
+
+Use `congrArg σ hst` as an intermediate fact. Establish `e1 : ∀ (a : F) (x : E), σ (a • x) = a • σ x` using `fun a x => by`. Rewrite using `[Algebra.smul_def, map_mul, AlgHom.commutes, Algebra.smul_def]`. Rewrite `this` using `[map_add, e1, e1, map_one, hw', map_zero, smul_neg]`. Rewrite using `[sub_eq_add_neg]`.
+
+Conclude with `this`. Establish `h3 : (2 * s) • (1 : E) = 0`. Establish `: (2 * s) • (1 : E) = (s • (1 : E) + t • w) + (s • (1 : E) - t • w)`. Rewrite using `[two_mul, add_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[this, hst, h1, add_zero]`. Establish `hs : s = 0`. Use `(smul_eq_zero.mp h3).resolve_right one_ne_zero` as an intermediate fact. Conclude with `(mul_eq_zero.mp this).resolve_left h2`. Establish `ht : t = 0`.
+
+Rewrite `hst` using `[hs, zero_smul, zero_add]`. Conclude with `(smul_eq_zero.mp hst).resolve_right hw0`. Conclude with `⟨hs, ht⟩`. Establish `htop` using `hli.span_eq_top_of_card_eq_finrank' (by simp [h.2.2.1])`. Introduce `x`.
+
+Establish `hx : x ∈ Submodule.span F (Set.range ![(1 : E), w])` using `by rw [htop]; trivial`. Simplify using `only [Matrix.range_cons, Matrix.range_empty, Set.union_empty, Set.union_singleton] at hx`. Rewrite `hx` using `[Set.pair_comm, Submodule.mem_span_pair]`. Conclude with `hx`.
+-/
 theorem exists_imag (h : IsCMExt F E σ) :
     ∃ w : E, σ w = -w ∧ ∀ e : E, ∃ a c : F, a • (1 : E) + c • w = e := by
   obtain ⟨e, he⟩ := exists_conj_ne h
@@ -73,9 +96,25 @@ theorem exists_imag (h : IsCMExt F E σ) :
 
 variable (R : Type) [Field R] [Algebra F R]
 
+/- English proof (translation)
+Simplify using `[sigR]`.
+-/
 theorem sigR_tmul (r : R) (e : E) : sigR R σ (r ⊗ₜ[F] e) = r ⊗ₜ[F] σ e := by
   simp [sigR]
 
+/- English proof (translation)
+Take `⟨w, hw, hspan⟩` from `exists_imag h`. Establish `hdec : ∀ y : R ⊗[F] E, ∃ r t : R, y = r ⊗ₜ[F] (1 : E) + t ⊗ₜ[F] w`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`.
+
+Consider the case `tmul r e`. Take `⟨a, c, rfl⟩` from `hspan e`. Use `⟨a • r, c • r, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_add, TensorProduct.smul_tmul, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy`.
+
+Take `⟨r, t, rfl⟩` from `hx`. Take `⟨r', t', rfl⟩` from `hy`. Use `⟨r + r', t + t', ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.add_tmul, TensorProduct.add_tmul]`. Normalize the expressions using the abelian group laws.
+
+Take `⟨r, t, rfl⟩` from `hdec y`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `h1 : sigR R σ (t ⊗ₜ[F] w) = -(t ⊗ₜ[F] w)`. Rewrite using `[sigR_tmul, hw, TensorProduct.tmul_neg]`. Establish `h0 : sigR R σ (r ⊗ₜ[F] (1 : E)) = r ⊗ₜ[F] (1 : E)`.
+
+Rewrite using `[sigR_tmul, map_one]`. Rewrite `hy` using `[map_add, h0, h1]`. Establish `h2 : (2 : F) • (t ⊗ₜ[F] w) = 0`. Establish `: t ⊗ₜ[F] w = -(t ⊗ₜ[F] w)` using `(add_left_cancel hy).symm`. Rewrite using `[two_smul]`.
+
+Use `nth_rw 1 [this]`. Normalize the expressions using the abelian group laws. Establish `h3 : t ⊗ₜ[F] w = 0` using `(smul_eq_zero.mp h2).resolve_left two_ne_zero`. Rewrite using `[h3, add_zero]`.
+-/
 theorem fixed_tmul (h : IsCMExt F E σ) (y : R ⊗[F] E) (hy : sigR R σ y = y) :
     ∃ r : R, y = r ⊗ₜ[F] (1 : E) := by
   obtain ⟨w, hw, hspan⟩ := exists_imag h
@@ -107,6 +146,11 @@ theorem fixed_tmul (h : IsCMExt F E σ) (y : R ⊗[F] E) (hy : sigR R σ y = y) 
   have h3 : t ⊗ₜ[F] w = 0 := (smul_eq_zero.mp h2).resolve_left two_ne_zero
   rw [h3, add_zero]
 
+/- English proof (translation)
+Establish `h1 : r ⊗ₜ[F] (1 : E) = algebraMap R (R ⊗[F] E) r`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Establish `h2 : (algebraMap F R 2) = 2` using `map_ofNat _ 2`. Rewrite using `[h1, Algebra.trace_algebraMap, Module.finrank_baseChange, h.2.2.1]`. Establish `h3 : algebraMap F R (1 / 2) * 2 = 1`.
+
+Rewrite using `[← h2, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[two_nsmul, ← two_mul, ← mul_assoc, h3, one_mul]`.
+-/
 theorem half_trace_tmul (h : IsCMExt F E σ) (r : R) :
     algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (r ⊗ₜ[F] (1 : E)) = r := by
   have h1 : r ⊗ₜ[F] (1 : E) = algebraMap R (R ⊗[F] E) r := by
@@ -119,6 +163,15 @@ theorem half_trace_tmul (h : IsCMExt F E σ) (r : R) :
 
 variable {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 
+/- English proof (translation)
+Establish `hinv : ∀ y : R ⊗[F] E, sigR R σ (sigR R σ y) = y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => rw [sigR_tmul, sigR_tmul, conj_invol h]`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hJR : ∀ i j, sigR R σ (JR R J j i) = JR R J i j`. Introduce `i j`. Simplify using `only [JR, Matrix.map_apply, inclR]`. Use `show sigR R σ ((1 : R) ⊗ₜ[F] J j i) = (1 : R) ⊗ₜ[F] J i j`.
+
+Rewrite using `[sigR_tmul, hJ.1]`. Use `show sigR R σ (hform (sigR R σ) (JR R J) x x) = hform (sigR R σ) (JR R J) x x`. Simplify using `only [hform, map_sum, map_mul, hinv]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hJR]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sigR_hR_self (h : IsCMExt F E σ) (hJ : IsHermND σ J) (x : Fin M → R ⊗[F] E) :
     sigR R σ (hR R σ J x x) = hR R σ J x x := by
   have hinv : ∀ y : R ⊗[F] E, sigR R σ (sigR R σ y) = y := by
@@ -142,9 +195,19 @@ theorem sigR_hR_self (h : IsCMExt F E σ) (hJ : IsHermND σ J) (x : Fin M → R 
 def qS (σ : E →ₐ[F] E) (S : HermR R σ 1) : R :=
   algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) ((S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) 0 0)
 
+/- English proof (translation)
+The claim follows from `half_trace_tmul R h r`.
+-/
 theorem qS_hermScal (h : IsCMExt F E σ) (r : R) : qS R σ (hermScal R σ r) = r :=
   half_trace_tmul R h r
 
+/- English proof (translation)
+Establish `hfix : sigR R σ ((S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) 0 0) = (S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) 0 0` using `S.2 0 0`. Take `⟨r, hr⟩` from `fixed_tmul R h _ hfix`. Establish `hq : qS R σ S = r`. Unfold `qS`. Rewrite using `[hr]`.
+
+Conclude with `half_trace_tmul R h r`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a c`. Take `rfl : a = 0` from `Subsingleton.elim _ _`. Take `rfl : c = 0` from `Subsingleton.elim _ _`.
+
+Rewrite using `[hq, hr]`. Both sides reduce to the same expression.
+-/
 theorem hermScal_qS (h : IsCMExt F E σ) (S : HermR R σ 1) : hermScal R σ (qS R σ S) = S := by
   have hfix : sigR R σ ((S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) 0 0) =
       (S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) 0 0 := S.2 0 0
@@ -160,12 +223,18 @@ theorem hermScal_qS (h : IsCMExt F E σ) (S : HermR R σ 1) : hermScal R σ (qS 
   rw [hq, hr]
   rfl
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `fixed_tmul R h (gramR R σ J X 0 0) (sigR_hR_self R h hJ (X 0))`. Rewrite using `[hr, half_trace_tmul R h r]`.
+-/
 theorem gram_entry (h : IsCMExt F E σ) (hJ : IsHermND σ J) (X : Fin 1 → Fin M → R ⊗[F] E) :
     gramR R σ J X 0 0 =
       (algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0)) ⊗ₜ[F] (1 : E) := by
   obtain ⟨r, hr⟩ := fixed_tmul R h (gramR R σ J X 0 0) (sigR_hR_self R h hJ (X 0))
   rw [hr, half_trace_tmul R h r]
 
+/- English proof (translation)
+Establish `h1 : r ⊗ₜ[F] (1 : E) = algebraMap R (R ⊗[F] E) r`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[h1]`. Conclude with `(isUnit_iff_ne_zero.mpr hr).map _`.
+-/
 theorem isUnit_tmul {r : R} (hr : r ≠ 0) : IsUnit (r ⊗ₜ[F] (1 : E)) := by
   have h1 : r ⊗ₜ[F] (1 : E) = algebraMap R (R ⊗[F] E) r := by
     simp [Algebra.TensorProduct.algebraMap_apply]
@@ -180,6 +249,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E}
 variable (R : Type) [Field R] [Algebra F R] [TopologicalSpace R]
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (R ⊗[F] E) := IsModuleTopology.toContinuousAdd R (R ⊗[F] E)`. Establish `h1 : Continuous fun r : R => r ⊗ₜ[F] (1 : E)`. Establish `: (fun r : R => r ⊗ₜ[F] (1 : E)) = (Algebra.linearMap R (R ⊗[F] E) : R → R ⊗[F] E)`. Use function extensionality and compare the values at `r`.
+
+Simplify using `[Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[this]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `continuous_matrix fun _ _ => h1`.
+-/
 theorem continuous_hermScal [IsTopologicalRing R] : Continuous (hermScal R σ) := by
   haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
   haveI : ContinuousAdd (R ⊗[F] E) := IsModuleTopology.toContinuousAdd R (R ⊗[F] E)
@@ -192,6 +266,9 @@ theorem continuous_hermScal [IsTopologicalRing R] : Continuous (hermScal R σ) :
   refine Continuous.subtype_mk ?_ _
   exact continuous_matrix fun _ _ => h1
 
+/- English proof (translation)
+Unfold `qS`. Use `continuous_const.mul (htr.comp ?_)` and prove the remaining obligations. Conclude with `(continuous_subtype_val.matrix_elem 0 0)`.
+-/
 theorem continuous_qS (htr : Continuous (Algebra.trace R (R ⊗[F] E))) [IsTopologicalRing R] :
     Continuous (qS R σ) := by
   unfold qS
@@ -200,6 +277,21 @@ theorem continuous_qS (htr : Continuous (Algebra.trace R (R ⊗[F] E))) [IsTopol
 
 variable [MeasurableSpace R] [BorelSpace R]
 
+/- English proof (translation)
+Use `haveI : BorelSpace (HermR R σ 1) := ⟨rfl⟩`. Use `haveI : IsEmpty {p : Fin 1 × Fin 1 // p.1 < p.2} := ⟨fun p => by`. Establish `h1` using `p.2`. Establish `h2 : p.1.1 = p.1.2` using `Subsingleton.elim _ _`. Rewrite `h1` using `[h2]`.
+
+Conclude with `lt_irrefl _ h1⟩`. Use `set f : HermR R σ 1 → (Fin 1 → R) × ({p : Fin 1 × Fin 1 // p.1 < p.2} → R ⊗[F] E) := fun S => ((fun i : Fin 1 => algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) ((S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E)) i i)), (fun p : {p : Fin 1 × Fin 1 // p.1 < p.2} => (S : Matrix (Fin 1) (F …`. Use `set g : (Fin 1 → R) × ({p : Fin 1 × Fin 1 // p.1 < p.2} → R ⊗[F] E) → HermR R σ 1 := fun x => hermScal R σ (x.1 0) with hg`. Establish `hgm : Measurable g` using `(continuous_hermScal R).measurable.comp ((measurable_pi_apply 0).comp measurable_fst)`. Establish `hgf : ∀ S, g (f S) = S` using `fun S => hermScal_qS R h S`.
+
+Establish `hfg : ∀ x, f (g x) = x`. Introduce `x`. Use `Prod.ext ?_ (funext fun p => isEmptyElim p)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`.
+
+Conclude with `qS_hermScal R h (x.1 0)`. Establish `himg : ∀ s : Set (HermR R σ 1), f '' s = g ⁻¹' s`. Introduce `s`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨S, hS, rfl⟩`. Simplify `hS` using `[hgf S]`. Introduce `hx`. Conclude with `⟨g x, hx, hfg x⟩`. Establish `hinj : Function.Injective f` using `Function.LeftInverse.injective hgf`.
+
+Establish `hP : MeasurableSet {S | qS R σ S ∈ V}` using `(continuous_qS R htr).measurable hV`. Establish `hset : f '' {S | qS R σ S ∈ V} = (Set.pi Set.univ fun _ : Fin 1 => V) ×ˢ Set.univ`. Rewrite using `[himg]`. Use extensionality with `x`. Establish `e : qS R σ (g x) = x.1 0` using `qS_hermScal R h (x.1 0)`.
+
+Simplify using `[e]`. Use `show Measure.comap f _ _ = _`. Rewrite using `[Measure.comap_apply f hinj (fun s hs => by rw [himg]; exact hgm hs) _ hP, hset, Measure.pi_of_empty (fun _ : {p : Fin 1 × Fin 1 // p.1 < p.2} => coordK R b lam), Measure.prod_prod, Measure.pi_pi]`. Simplify using the standard rewrite rules.
+-/
 theorem coordHerm_qS (h : IsCMExt F E σ) [IsTopologicalRing R] [SecondCountableTopology R]
     (htr : Continuous (Algebra.trace R (R ⊗[F] E)))
     {d : ℕ} (b : Module.Basis (Fin d) F E) (lam : Measure R) [SigmaFinite lam] {V : Set R}
@@ -255,6 +347,21 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 
+/- English proof (translation)
+Take `⟨hf1, hf2, -⟩` from `hfib`. Use `set Q : Set (Fin 1 → Fin M → R ⊗[F] E) := {X | algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0) ∈ V} with hQdef`. Use `set W : Set (Fin 1 → Fin M → R ⊗[F] E) := {X | IsUnit (gramR R σ J X).det} with hW`. Establish `hAQ : MeasurableSet (A ∩ Q)` using `hA.inter hQ`. Establish `hQW : Q ⊆ W`.
+
+Introduce `X hX`. Establish `hne : algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0) ≠ 0` using `fun e => h0 (e ▸ hX)`. Use `show IsUnit (gramR R σ J X).det`. Apply the tactic sequence `rw [Matrix.det_fin_one, gram_entry R h hJ X]`. Conclude with `isUnit_tmul R hne`.
+
+Establish `key` using `hf2 ((A ∩ Q).indicator 1) (measurable_one.indicator hAQ)`. Rewrite `key` using `[lintegral_indicator_one₀ hAQ.nullMeasurableSet, Measure.restrict_apply hAQ, Set.inter_eq_left.mpr (Set.inter_subset_right.trans hQW)]`. Rewrite using `[key, ← lintegral_indicator hP]`. Use `lintegral_congr fun S => ?_` and prove the remaining obligations. Rewrite using `[lintegral_indicator_one hAQ]`.
+
+Use `set G : Set (Fin 1 → Fin M → R ⊗[F] E) := gramR R σ J ⁻¹' {(S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E))} ∩ W with hG`. Establish `hGc : m S Gᶜ = 0` using `hf1 S`. Establish `hGq : ∀ X ∈ G, algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0) = qS R σ S`. Introduce `X hX`. Establish `: gramR R σ J X = (S : Matrix (Fin 1) (Fin 1) (R ⊗[F] E))` using `hX.1`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Distinguish the cases in `hS : qS R σ S ∈ V`. Rewrite using `[Set.indicator_of_mem (show S ∈ {S | qS R σ S ∈ V} from hS)]`. Use `le_antisymm (measure_mono Set.inter_subset_left) ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hGq X hX.2]`. Conclude with `hS⟩`. Rewrite using `[Set.indicator_of_notMem (show S ∉ {S | qS R σ S ∈ V} from hS)]`. Establish `hsub : A ∩ Q ⊆ Gᶜ`.
+
+Introduce `X hX hXG`. Establish `hXQ : algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0) ∈ V` using `hX.2`. Rewrite `hXQ` using `[hGq X hXG]`. Conclude with `hS hXQ`. Conclude with `measure_mono_null hsub hGc`.
+-/
 theorem mass_eq_lintegral (R : Type) [Field R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R]
     (h : IsCMExt F E σ) (hJ : IsHermND σ J)
     {μ : Measure (Fin 1 → Fin M → R ⊗[F] E)} {ν : Measure (HermR R σ 1)}
@@ -307,6 +414,9 @@ theorem mass_eq_lintegral (R : Type) [Field R] [Algebra F R] [TopologicalSpace R
       exact hS hXQ
     exact measure_mono_null hsub hGc
 
+/- English proof (translation)
+The claim follows from `|(coordW R b lam 1 M (A ∩ {X | algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) (gramR R σ J X 0 0) ∈ V})).toReal - (m (hermScal R σ s) A).toReal * (lam V).toReal| ≤ ε * (lam V).toReal := by obtain ⟨h1, h2, h3, h4, -⟩ := id hloc haveI := h1 haveI := h2 haveI := h3 haveI := h4 …`.
+-/
 theorem ratio_field (R : Type) [Field R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R]
     [BorelSpace R] (hloc : IsLocR R) (h : IsCMExt F E σ) (hJ : IsHermND σ J)
     {d : ℕ} (b : Module.Basis (Fin d) F E) (lam : Measure R) (hlam : lam.IsAddHaarMeasure)
@@ -416,6 +526,9 @@ namespace GlobalTheory.CompanionTheory.SW
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ d b v lam hlam m hfib A hAc hAo s hs ε hε`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Conclude with `FibreRatio.ratio_field (Fv F v) (GlobalTheory.T.completion_is_local_ring F v) hσ hJ b lam hlam.1 m hfib A hAc hAo s hs ε hε`.
+-/
 theorem fibre_mass_ratio : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → ∀ m, IsGramFib (Fv F v) σ J 1 (coordW (Fv F v) b lam 1 M) (coordHerm (Fv F v) σ b lam 1) m → ∀ A : Set (Fin 1 → Fin M → Fv F v ⊗[F] E), IsCompact A → IsOpen A → ∀ s : Fv F v, s ≠ 0 → ∀ ε : ℝ, 0 < ε → ∃ U ∈ 𝓝 s, ∀ V : Set (Fv F v), MeasurableSet V → V ⊆ U → |(coordW (Fv F v) b lam 1 M (A ∩ {X | algebraMap F (Fv F v) (1 / 2) * Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (gramR (Fv F v) σ J X 0 0) ∈ V})).toReal - (m (hermScal (Fv F v) σ s) A).toReal * (lam V).toReal| ≤ ε * (lam V).toReal := by
   intro F E _ _ _ _ _ σ hσ M J hJ d b v lam hlam m hfib A hAc hAo s hs ε hε
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩

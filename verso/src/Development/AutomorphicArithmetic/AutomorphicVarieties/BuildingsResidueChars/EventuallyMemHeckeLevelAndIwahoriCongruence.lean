@@ -13,18 +13,27 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Unfold `CaseU.cmp`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 private theorem cmp_of {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w : Plc L}
     (h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x : UA L n) : cmp n w ((away l L n).rangeRestrict x) = cLoc w x := by
   unfold CaseU.cmp
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Unfold `CaseU.cmp`. Rewrite using `[dif_neg h]`. Both sides reduce to the same expression.
+-/
 private theorem cmp_not {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w : Plc L}
     (h : ¬ ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x : Ga l L n) : cmp n w x = 1 := by
   unfold CaseU.cmp
   rw [dif_neg h]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal`. Simplify using `only [cmp_of h]`. Conclude with `((UpperTheory.unitaryAdelic_localComponents_continuous_levels_open L n).1 w).comp continuous_subtype_val`. Simplify using `only [cmp_not h]`. Conclude with `continuous_const`.
+-/
 private theorem cmp_cont (l : ℕ) [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] (n : ℕ) (w : Plc L) :
     Continuous fun k : finU L n => cmp n w ((away l L n).rangeRestrict (k : UA L n)) := by
   by_cases h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal
@@ -33,6 +42,9 @@ private theorem cmp_cont (l : ℕ) [Fact l.Prime] {L : Type} [Field L] [NumberFi
   · simp only [cmp_not h]
     exact continuous_const
 
+/- English proof (translation)
+Use `(hU.preimage (cmp_cont l n w)).mem_nhds ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cmp n w ((away l L n).rangeRestrict ((1 : finU L n) : UA L n)) ∈ U`. Rewrite using `[OneMemClass.coe_one, map_one, map_one]`. Conclude with `one_mem U`.
+-/
 private theorem cmp_ev (l : ℕ) [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] (n : ℕ) (w : Plc L)
     (U : Subgroup (GLw n w)) (hU : IsOpen (U : Set (GLw n w))) :
     ∀ᶠ k : finU L n in nhds 1, cmp n w ((away l L n).rangeRestrict (k : UA L n)) ∈ U := by
@@ -41,6 +53,9 @@ private theorem cmp_ev (l : ℕ) [Fact l.Prime] {L : Type} [Field L] [NumberFiel
   rw [OneMemClass.coe_one, map_one, map_one]
   exact one_mem U
 
+/- English proof (translation)
+Distinguish the cases in `h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal`. Rewrite using `[cmp_of h]` and apply the resulting hypothesis. Rewrite using `[cmp_not h]`. Conclude with `one_mem _`.
+-/
 private theorem cmp_int {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w : Plc L}
     (x : UA L n) (hx : cLoc w x ∈ KO (w.adicCompletion L) (Fin n)) :
     cmp n w ((away l L n).rangeRestrict x) ∈ KO (w.adicCompletion L) (Fin n) := by
@@ -49,11 +64,27 @@ private theorem cmp_int {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberFie
   · rw [cmp_not h]
     exact one_mem _
 
+/- English proof (translation)
+Use `choose x hx t ht y hy e using fun v => (iwMem _ (I v) b (g v)).2.1.1 (hg v)`. Conclude with `(iwMem _ (piIwa I) b g).2.1.2 ⟨x, fun v _ => hx v, t, fun v _ => ht v, y, fun v _ => hy v, funext e⟩`.
+-/
 private theorem pi_mem_first_iwahori_filtration {σ : Type} [Finite σ] {G : σ → Type} [∀ v, Group (G v)] (I : ∀ v, Iwa (G v)) (b : ℕ)
     (g : ∀ v, G v) (hg : ∀ v, g v ∈ (I v).I1 b) : g ∈ (piIwa I).I1 b := by
   choose x hx t ht y hy e using fun v => (iwMem _ (I v) b (g v)).2.1.1 (hg v)
   exact (iwMem _ (piIwa I) b g).2.1.2 ⟨x, fun v _ => hx v, t, fun v _ => ht v, y, fun v _ => hy v, funext e⟩
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q c m τ₀ hτ K b`. Take `⟨hc, hK, hint⟩` from `UpperTheory.unitaryAdelic_localComponents_continuous_levels_open L n`. Take `⟨U, hU, hUe⟩` from `isOpen_induced_iff.1 hτ`. Establish `h1 : ∀ᶠ k : finU L n in nhds 1, (fun u : s.St => cmp n (s.w u) ((away l L n).rangeRestrict (k : UA L n)) : GV n (wt s)) ∈ U`. Use `(hU.preimage (continuous_pi fun u : s.St => cmp_cont l n (s.w u))).mem_nhds ?_` and prove the remaining obligations.
+
+Establish `h0 : (1 : KT n (wt s)) ∈ Subtype.val ⁻¹' U`. Rewrite using `[hUe]`. Conclude with `one_mem τ₀.ker`. Establish `e : (fun u : s.St => cmp n (s.w u) ((away l L n).rangeRestrict ((1 : finU L n) : UA L n)) : GV n (wt s)) = 1`. Use function extensionality and compare the values at `u`.
+
+Rewrite using `[OneMemClass.coe_one, map_one, map_one]`. Both sides reduce to the same expression. Rewrite using `[Set.mem_preimage, e]`. Conclude with `h0`. Establish `h2` using `cmp_ev l n (s.w s.v0) _ (hK (s.w s.v0) 1)`.
+
+Establish `h3 : ∀ᶠ k : finU L n in nhds 1, ∀ q : Q.Q, cmp n (Q.wq q) ((away l L n).rangeRestrict (k : UA L n)) ∈ K.1 q` using `Filter.eventually_all.2 fun q => cmp_ev l n (Q.wq q) (K.1 q) (K.2 q).1`. Establish `h4 : ∀ᶠ k : finU L n in nhds 1, ∀ v : V.frame.Vl, cLoc (s.w v.1) (k : UA L n) ∈ Kc ((s.w v.1).adicCompletion L) n (b + 1)` using `by haveI : Finite V.frame.Vl := (hset Q τ₀).finV.finite`. Use `Filter.eventually_all.2 fun v => ?_` and prove the remaining obligations. Use `((hK (s.w v.1) (b + 1)).preimage ((hc (s.w v.1)).comp continuous_subtype_val)).mem_nhds ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cLoc (s.w v.1) ((1 : finU L n) : UA L n) ∈ Kc ((s.w v.1).adicCompletion L) n (b + 1)`.
+
+Rewrite using `[OneMemClass.coe_one, map_one]`. Conclude with `one_mem _`. Use `filter_upwards [hint, h1, h2, h3, h4] with k k0 k1 k2 k3 k4`. Establish `hu : (away l L n).rangeRestrict (k : UA L n) ∈ Ub n s` using `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun u => cmp_int _ (k0 _), k2⟩`. Use `⟨⟨⟨_, hu⟩, UpperTheory.mem_heckeLevel_of_local_components_mem l L Ω s n hn V Q c m τ₀ K _ (fun w _ => cmp_int _ (k0 w)) k3, rfl, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `: toKT n s ⟨_, hu⟩ ∈ Subtype.val ⁻¹' U` using `k1`. Rewrite `this` using `[hUe]`. Conclude with `this`. Conclude with `pi_mem_first_iwahori_filtration (fun v : V.frame.Vl => glIwa ((s.w v.1).adicCompletion L) n) b _ fun v => (glBridge ((s.w v.1).adicCompletion L) n ℂ 1).2.2.2.2.1 b (k4 v)`.
+-/
 theorem UpperTheory.eventually_mem_heckeLevel_and_iwahoriCongruence :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n → ∀ (V : s.Lev) (Q : QData V) (c : Coef l) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O), IsOpen (τ₀.ker : Set (KT n (wt s))) → ∀ (K : (hset Q τ₀).Lev) (b : ℕ), ∀ᶠ k : finU L n in nhds 1, (∃ u : Ub n s, u ∈ (hset Q τ₀).lev K ∧ (u : Ga l L n) = (away l L n).rangeRestrict (k : UA L n) ∧ τ₀ (toKT n s u) = 1) ∧ (fun v : V.frame.Vl => cLoc (s.w v.1) (k : UA L n)) ∈ (hset Q τ₀).X.I.I1 b := by
   intro l _ L Ω _ _ _ _ _ _ s n hn V Q c m τ₀ hτ K b

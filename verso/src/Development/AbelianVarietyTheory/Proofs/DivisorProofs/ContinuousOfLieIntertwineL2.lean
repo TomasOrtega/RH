@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.RealWeil
 
+/- English proof (translation)
+Use `weylAlg_induction (P := fun B => ∃ B' : Sch l →L[ℂ] Sch l, ∀ f, B (A' f) = A' (B' f)) ⟨1, fun f => by simp⟩ ?_ ⟨0, fun f => by simp⟩ ?_ ?_ hB` and prove the remaining obligations. Introduce and unpack `A w ⟨B', h⟩`. Use `⟨B' * dRho (L'.symm w), fun f => ?_⟩` and prove the remaining obligations. Establish `e` using `hI (L'.symm w) f`. Rewrite `e` using `[LinearEquiv.apply_symm_apply]`.
+
+Rewrite using `[ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, ← e, h]`. Introduce and unpack `A B ⟨A₁, h₁⟩ ⟨B₁, h₂⟩`. Conclude with `⟨A₁ + B₁, fun f => by simp [h₁, h₂]⟩`. Introduce and unpack `c A ⟨A₁, h⟩`. Conclude with `⟨c • A₁, fun f => by simp [h]⟩`.
+-/
 theorem exists_weylAlg_conj {l : Type} [Fintype l] (L' : (l ⊕ l → ℝ) ≃ₗ[ℝ] (l ⊕ l → ℝ))
     (A' : Sch l →ₗ[ℂ] Sch l) (hI : ∀ w f, A' (dRho w f) = dRho (L' w) (A' f))
     {B : Sch l →L[ℂ] Sch l} (hB : B ∈ weylAlg l) :
@@ -28,6 +33,11 @@ theorem exists_weylAlg_conj {l : Type} [Fintype l] (L' : (l ⊕ l → ℝ) ≃�
   · rintro c A ⟨A₁, h⟩
     exact ⟨c • A₁, fun f => by simp [h]⟩
 
+/- English proof (translation)
+Rewrite using `[SchwartzMap.norm_toLp, SchwartzMap.norm_toLp, ENNReal.toReal_rpow, ← ENNReal.toReal_mul]`. Use `ENNReal.toReal_mono (ENNReal.mul_ne_top (ENNReal.rpow_ne_top_of_nonneg (by norm_num) hC) (f.eLpNorm_lt_top 2 volume).ne) ?_` and prove the remaining obligations. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num), eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num)]`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_two]`. Rewrite using `[← ENNReal.mul_rpow_of_nonneg _ _ (by norm_num)]`.
+
+Conclude with `ENNReal.rpow_le_rpow (h f) (by norm_num)`.
+-/
 theorem norm_toLp_le_of_lintegral_le {l : Type} [Fintype l] (A' : Sch l →ₗ[ℂ] Sch l) (C : ℝ≥0∞) (hC : C ≠ ⊤)
     (h : ∀ f, ∫⁻ x, ‖A' f x‖ₑ ^ 2 ≤ C * ∫⁻ x, ‖f x‖ₑ ^ 2) (f : Sch l) :
     ‖(A' f).toLp 2 volume‖ ≤ C.toReal ^ (1 / 2 : ℝ) * ‖f.toLp 2 volume‖ := by
@@ -42,6 +52,15 @@ theorem norm_toLp_le_of_lintegral_le {l : Type} [Fintype l] (A' : Sch l →ₗ[�
 
 end GlobalTheory.RealWeil
 
+/- English proof (translation)
+Introduce `l _ L' A' C hC h2 hI`. Use `WithSeminorms.continuous_of_continuous_comp (schwartz_withSeminorms ℂ (EuclideanSpace ℝ l) ℂ) A' fun i => ?_` and prove the remaining obligations. Take `⟨B, hB, hle⟩` from `GlobalTheory.RealWeil.exists_seminorm_le (l := l) i.1 i.2`. Use `choose B' hB' using fun r => GlobalTheory.RealWeil.exists_weylAlg_conj L' A' hI (hB r)`. Set `c : NNReal` to `Real.toNNReal (C.toReal ^ (1 / 2 : ℝ))`.
+
+Set `q : Seminorm ℂ (GlobalTheory.RealWeil.Sch l)` to `∑ r, c • (normSeminorm ℂ (GlobalTheory.RealWeil.L2 l)).comp ((GlobalTheory.RealWeil.schwartzToL2 l).comp (B' r)).toLinearMap`. Use `Seminorm.continuous_of_le (q := q) (Seminorm.continuous_finsetSum fun r _ => ?_) fun f => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun f => (c : ℝ) * ‖(GlobalTheory.RealWeil.schwartzToL2 l) (B' r f)‖`. Conclude with `continuous_const.mul (continuous_norm.comp ((GlobalTheory.RealWeil.schwartzToL2 l).comp (B' r)).continuous)`. Establish `e : q f = ∑ r, (c : ℝ) * ‖(B' r f).toLp 2 volume‖`.
+
+Simplify using `[q, GlobalTheory.RealWeil.schwartzToL2_apply, NNReal.smul_def, smul_eq_mul]`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `SchwartzMap.seminorm ℂ i.1 i.2 (A' f) ≤ _`. Use `(hle (A' f)).trans (Finset.sum_le_sum fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[hB']`.
+
+Use `(GlobalTheory.RealWeil.norm_toLp_le_of_lintegral_le A' C hC h2 _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[show (c : ℝ) = C.toReal ^ (1 / 2 : ℝ) from Real.coe_toNNReal _ (Real.rpow_nonneg ENNReal.toReal_nonneg _)]`.
+-/
 theorem GlobalTheory.RealWeil.continuous_of_dRho_intertwine_of_L2_bound : ∀ (l : Type) [Fintype l] (L' : (l ⊕ l → ℝ) ≃ₗ[ℝ] (l ⊕ l → ℝ))
     (A' : GlobalTheory.RealWeil.Sch l →ₗ[ℂ] GlobalTheory.RealWeil.Sch l) (C : ℝ≥0∞), C ≠ ⊤ →
     (∀ f, ∫⁻ x, ‖A' f x‖ₑ ^ 2 ≤ C * ∫⁻ x, ‖f x‖ₑ ^ 2) →

@@ -9,6 +9,13 @@ open Classical
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Establish `hu : IsUnit c.det` using `isUnit_iff_ne_zero.2 hc`. Establish `key : ∀ a : J → S, ∑ i, a i • c i = Matrix.vecMul (fun i => (a i : Ω)) c` using `fun a => by`. Use extensionality with `j`. Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply, Subalgebra.smul_def]`. Use `(Submodule.mem_span_range_iff_exists_fun S (v := fun i => c i)).trans ?_` and prove the remaining obligations.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩ j`. Rewrite using `[key, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu, Matrix.vecMul_one]`. Conclude with `(a j).2`. Introduce `h`.
+
+Use `⟨fun j => ⟨_, h j⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Use `show Matrix.vecMul (Matrix.vecMul v c⁻¹) c = v`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hu, Matrix.vecMul_one]`.
+-/
 theorem mem_span_rows_iff_vecMul_inv {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : Subalgebra o Ω)
     {J : Type} [Fintype J] [DecidableEq J] {c : Matrix J J Ω} (hc : c.det ≠ 0) (v : J → Ω) :
     v ∈ Submodule.span S (Set.range c) ↔ ∀ j, Matrix.vecMul v c⁻¹ j ∈ S := by
@@ -32,6 +39,9 @@ namespace RatModel
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) [IsNoetherianRing o]
   {J : Type} [Fintype J] [DecidableEq J]
 
+/- English proof (translation)
+The claim follows from `(mem_span_rows_iff_vecMul_inv _ hc v).2 fun j => M.mem_O_of_forall_valuationRing hn x _ fun ξ hξ hv => (mem_span_rows_iff_vecMul_inv _ hc v).1 (h ξ hξ hv) j`.
+-/
 theorem mem_span_rows_of_forall_valuationRing (hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z)
     {c : Matrix J J Ω} (hc : c.det ≠ 0) (x : M.Z) (v : J → Ω)
     (h : ∀ ξ : M.Z, ξ ⤳ x → ValuationRing (M.O ξ) → v ∈ Submodule.span (M.O ξ) (Set.range c)) :
@@ -39,6 +49,9 @@ theorem mem_span_rows_of_forall_valuationRing (hn : ReciprocityTheory.ChartRestr
   (mem_span_rows_iff_vecMul_inv _ hc v).2 fun j => M.mem_O_of_forall_valuationRing hn x _ fun ξ hξ hv =>
     (mem_span_rows_iff_vecMul_inv _ hc v).1 (h ξ hξ hv) j
 
+/- English proof (translation)
+The claim follows from `le_antisymm (Submodule.span_le.2 fun v hv => M.mem_span_rows_of_forall_valuationRing hn hc x v fun ξ hξ hr => (h ξ hξ hr).le (Submodule.subset_span hv)) (Submodule.span_le.2 fun v hv => M.mem_span_rows_of_forall_valuationRing hn hb x v fun ξ hξ hr => (h ξ hξ hr).ge (Submodule.sub …`.
+-/
 theorem span_rows_eq_of_forall_valuationRing (hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z)
     {b c : Matrix J J Ω} (hb : b.det ≠ 0) (hc : c.det ≠ 0) (x : M.Z)
     (h : ∀ ξ : M.Z, ξ ⤳ x → ValuationRing (M.O ξ) →
@@ -52,6 +65,11 @@ theorem span_rows_eq_of_forall_valuationRing (hn : ReciprocityTheory.ChartRestri
 
 end RatModel
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ M _ _ hn J _ _ b D hb h`. Establish `hx : ∀ x : M.Z, ∃ (z : M.Z) (W : M.Z.Opens), x ∈ W ∧ ∀ ξ ∈ W, ValuationRing (M.O ξ) → Submodule.span (M.O ξ) (Set.range (b z)) = D ξ` using `fun x => by`. Take `⟨z, hz, hzc⟩` from `nonempty_inter_closedPoints (Z := closure ({x} : Set M.Z)) ⟨x, subset_closure rfl⟩ isClosed_closure.isLocallyClosed`. Take `⟨W, hzW, hW⟩` from `h z hzc`. Conclude with `⟨z, W, (specializes_iff_mem_closure.2 hz).mem_open W.isOpen hzW, hW⟩`.
+
+Use `choose g U hU hg using hx`. Establish `main : ∀ (W : M.Z.Opens) (c : Matrix J J Ω), c.det ≠ 0 → (∀ ξ ∈ W, ValuationRing (M.O ξ) → D ξ = Submodule.span (M.O ξ) (Set.range c)) → ∀ x ∈ W, Submodule.span (M.O x) (Set.range (b (g x))) = Submodule.span (M.O x) (Set.range c)` using `fun W c hc hW x hx => M.span_rows_eq_of_forall_valuationRing hn (hb _) hc x fun ξ hξ hr => (hg x ξ (hξ.mem_open (U x).isOpen (hU x)) hr).trans (hW ξ (hξ.mem_open W.isOpen hx) hr)`. Use `⟨⟨fun x => Submodule.span (M.O x) (Set.range (b (g x))), fun x => ⟨U x, b (g x), hU x, hb _, main _ _ (hb _) fun ξ hξ hr => (hg x ξ hξ hr).symm⟩⟩, fun z hz => ?_, main⟩` and prove the remaining obligations. Take `⟨W, hzW, hW⟩` from `h z hz`. Conclude with `main W _ (hb z) (fun ξ hξ hr => (hW ξ hξ hr).symm) z hzW`.
+-/
 theorem exists_lat_of_height_le_one :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) [IsNoetherianRing o]
       [JacobsonSpace M.Z], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z → ∀ (J : Type) [Fintype J] [DecidableEq J]

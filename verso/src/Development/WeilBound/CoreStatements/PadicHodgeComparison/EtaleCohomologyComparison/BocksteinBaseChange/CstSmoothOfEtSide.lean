@@ -16,6 +16,19 @@ namespace CrystallineSemistableComparison
 def EtSideS : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K],
   EtSide (Model.Sm (l := l) (K := K))
 
+/- English proof (translation)
+Establish `hS : SeamS`. Introduce `l _ K _`. Take `⟨Amp, h1, h2, h3, h4⟩` from `h.p l K`. Take `⟨β, β₁, e⟩` from `gB l K Amp (h.main l) (h.compat l) (h.c1 l)`. Take `⟨r⟩` from `hX l K`.
+
+Take `⟨F⟩` from `h4 r`. Use `⟨dat Amp, ⟨gL l K Amp (h.compatH l) (h.rin l) h.uniq h1 h2, gE l K Amp (h.et l K), ⟨β⟩, h3⟩, ?_⟩` and prove the remaining obligations. Rewrite `F` using `[← e]`. Use `fac l K _ _ _ _ _ β β₁ F` as an intermediate fact. Rewrite `this` using `[(hC l K r).2]`. Then use the resulting hypothesis.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l _ K _ M hM hs n a b`. Take `⟨D, ⟨hL, ⟨e⟩, ⟨β⟩, ⟨κ⟩⟩, hsp⟩` from `hS l K`. Take `⟨P, hP⟩` from `pre l K _ _ D (facts l K) (hI l K) hL e β κ`. Conclude with `adm l K _ _ P _ (regCr l K) M ⟨hM, hs⟩ n (inj l K _ _ P (facts l K) (hI l K) M ⟨hM, hs⟩ n).1 (hP _ _ (t_inv_mem l) (regCr l K).q_mem hsp M ⟨hM, hs⟩ ⟨hM, hs⟩ n) a b`.
+
+Introduce `l _ K _`. Take `⟨D, ⟨hL, ⟨e⟩, ⟨β⟩, ⟨κ⟩⟩, -⟩` from `hS l K`. Take `⟨P, -⟩` from `pre l K _ _ D (facts l K) (hI l K) hL e β κ`. Conclude with `⟨P.cmp (hI l K) (inj l K _ _ P (facts l K) (hI l K))⟩`. Introduce `l _ K _ r`.
+
+Take `⟨Amp, h1, h2, ⟨κ⟩, h4⟩` from `h.p l K`. Take `⟨β, β₁, e⟩` from `gB l K Amp (h.main l) (h.compat l) (h.c1 l)`. Take `⟨F⟩` from `h4 r`. Take `⟨ε⟩` from `gE l K Amp (h.et l K)`. Rewrite `F` using `[← e]`.
+
+Conclude with `phi l K _ _ _ _ _ (facts l K) (hC l K r).1 (hI l K) (gL l K Amp (h.compatH l) (h.rin l) h.uniq h1 h2) ε β β₁ κ F`.
+-/
 theorem cstSmooth_of_etSide (gL : GlueL) (gE : GlueE) (gB : GlueB) (hC : BcrisPeriodFacts) (hX : ResEx)
     (hI : EtSideS) (h : Chapters) : CstSmooth := by
   have hS : SeamS := by

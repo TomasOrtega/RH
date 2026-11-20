@@ -28,6 +28,9 @@ def ConeLaurent.ofLP : LaurentPolynomial Ω →+* ConeLaurent S x := RingHom.id 
 
 omit [CommRing S] [Algebra S Ω] in
 variable {S x} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ConeLaurent.toLaurent_ofLaurent (y : LaurentPolynomial Ω) :
     ConeLaurent.toLP S x (ConeLaurent.ofLP S x y) = y := rfl
 
@@ -47,11 +50,20 @@ instance : IsScalarTower S (Poly S N) (ConeLaurent S x) where
 
 variable {S x}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coneLaurent_smul (p : Poly S N) (w : ConeLaurent S x) : p • w = coneLaurent S x p * w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coneLaurent_smul_scalar (s : S) (w : ConeLaurent S x) :
     s • w = algebraMap S (Poly S N) s • w := rfl
 
+/- English proof (translation)
+Use `show Polynomial.toLaurent (cone (S := S) x f) = AddMonoidAlgebra.single (e : ℤ) (aeval x f)`. Rewrite using `[cone_of_isHomogeneous x hf, Polynomial.toLaurent_C_mul_X_pow, ← LaurentPolynomial.single_eq_C_mul_T]`.
+-/
 theorem coneLaurent_of_isHomogeneous {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) :
     coneLaurent S x f = ConeLaurent.ofLP S x (AddMonoidAlgebra.single (e : ℤ) (aeval x f)) := by
   show Polynomial.toLaurent (cone (S := S) x f) = AddMonoidAlgebra.single (e : ℤ) (aeval x f)
@@ -80,22 +92,39 @@ def coneSingle (c : ℤ) : Ω →ₗ[S] ConeLaurent S x where
 
 variable {S x}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Finsupp.single c v) c = v`. Rewrite using `[Finsupp.single_eq_same]`.
+-/
 theorem coeffAt_coneSingle_same (c : ℤ) (v : Ω) : coeffAt S x c (coneSingle S x c v) = v := by
   change (Finsupp.single c v) c = v
   rw [Finsupp.single_eq_same]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Finsupp.single c v) d = 0`. Rewrite using `[Finsupp.single_eq_of_ne h.symm]`.
+-/
 theorem coeffAt_coneSingle_ne {c d : ℤ} (h : c ≠ d) (v : Ω) : coeffAt S x d (coneSingle S x c v) = 0 := by
   change (Finsupp.single c v) d = 0
   rw [Finsupp.single_eq_of_ne h.symm]
 
+/- English proof (translation)
+The claim follows from `LaurentPolynomial.ext (R := Ω) (p := ConeLaurent.toLP S x w) (q := ConeLaurent.toLP S x w') h`.
+-/
 theorem coneLaurent_ext {w w' : ConeLaurent S x} (h : ∀ d, coeffAt S x d w = coeffAt S x d w') : w = w' :=
   LaurentPolynomial.ext (R := Ω) (p := ConeLaurent.toLP S x w) (q := ConeLaurent.toLP S x w') h
 
 def coneSupp (w : ConeLaurent S x) : Finset ℤ := (ConeLaurent.toLP S x w).coeff.support
 
+/- English proof (translation)
+The claim follows from `Finsupp.mem_support_iff`.
+-/
 theorem mem_coneSupp {w : ConeLaurent S x} {d : ℤ} : d ∈ coneSupp w ↔ coeffAt S x d w ≠ 0 :=
   Finsupp.mem_support_iff
 
+/- English proof (translation)
+Use `coneLaurent_ext fun d => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Distinguish the cases in `hd : d ∈ coneSupp w`. Rewrite using `[Finset.sum_eq_single d (fun c _ hc => coeffAt_coneSingle_ne hc _) (fun h => absurd hd h), coeffAt_coneSingle_same]`. Rewrite using `[Finset.sum_eq_zero fun c hc => coeffAt_coneSingle_ne (fun h => hd (by rw [← h]; exact hc)) _]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hd (mem_coneSupp.mpr (Ne.symm h))`.
+-/
 theorem sum_coneSingle (w : ConeLaurent S x) :
     ∑ c ∈ coneSupp w, coneSingle S x c (coeffAt S x c w) = w := by
   refine coneLaurent_ext fun d => ?_
@@ -107,6 +136,9 @@ theorem sum_coneSingle (w : ConeLaurent S x) :
     by_contra h
     exact hd (mem_coneSupp.mpr (Ne.symm h))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(ConeLaurent.toLP S x (coneLaurent S x f * w)).coeff c = _`. Rewrite using `[map_mul, coneLaurent_of_isHomogeneous hf, ConeLaurent.toLaurent_ofLaurent, AddMonoidAlgebra.coeff_single_mul_apply, neg_add_eq_sub]`. Both sides reduce to the same expression.
+-/
 theorem coeffAt_smul_of_isHomogeneous {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e)
     (w : ConeLaurent S x) (c : ℤ) : coeffAt S x c (f • w) = aeval x f * coeffAt S x (c - e) w := by
   change (ConeLaurent.toLP S x (coneLaurent S x f * w)).coeff c = _
@@ -114,12 +146,18 @@ theorem coeffAt_smul_of_isHomogeneous {f : Poly S N} {e : ℕ} (hf : f.IsHomogen
     AddMonoidAlgebra.coeff_single_mul_apply, neg_add_eq_sub]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `coneLaurent S x f * ConeLaurent.ofLP S x (AddMonoidAlgebra.single c v) = ConeLaurent.ofLP S x (AddMonoidAlgebra.single (c + e) (aeval x f * v))`. Rewrite using `[coneLaurent_of_isHomogeneous hf, ← map_mul, AddMonoidAlgebra.single_mul_single, add_comm]`.
+-/
 theorem smul_coneSingle {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) (c : ℤ) (v : Ω) :
     f • coneSingle S x c v = coneSingle S x (c + e) (aeval x f * v) := by
   change coneLaurent S x f * ConeLaurent.ofLP S x (AddMonoidAlgebra.single c v) =
     ConeLaurent.ofLP S x (AddMonoidAlgebra.single (c + e) (aeval x f * v))
   rw [coneLaurent_of_isHomogeneous hf, ← map_mul, AddMonoidAlgebra.single_mul_single, add_comm]
 
+/- English proof (translation)
+Use `IsUnit.of_mul_eq_one (coneSingle S x (-c) a⁻¹) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ConeLaurent.ofLP S x (AddMonoidAlgebra.single c a) * ConeLaurent.ofLP S x (AddMonoidAlgebra.single (-c) a⁻¹) = 1`. Rewrite using `[← map_mul, AddMonoidAlgebra.single_mul_single, add_neg_cancel, mul_inv_cancel₀ ha]`. Conclude with `map_one _`.
+-/
 theorem isUnit_coneSingle (c : ℤ) {a : Ω} (ha : a ≠ 0) : IsUnit (coneSingle S x c a) := by
   refine IsUnit.of_mul_eq_one (coneSingle S x (-c) a⁻¹) ?_
   change ConeLaurent.ofLP S x (AddMonoidAlgebra.single c a) *
@@ -146,9 +184,15 @@ def FinGradedSub.coneSub : Submodule (Poly S N) (ConeLaurent S x) where
     have := M.smul_mem e (c - e) _ _ (homogeneousComponent_isHomogeneous e p) (hw (c - e))
     rwa [sub_add_cancel, smul_eq_mul] at this
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem FinGradedSub.mem_coneSub {w : ConeLaurent S x} : w ∈ M.coneSub ↔ ∀ c, coeffAt S x c w ∈ M.piece c :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `d` and use `by by_cases h : c = d · subst h; rw [coeffAt_coneSingle_same]; exact hv · rw [coeffAt_coneSingle_ne h]; exact zero_mem _`.
+-/
 theorem FinGradedSub.coneSingle_mem_coneSub {c : ℤ} {v : Ω} (hv : v ∈ M.piece c) :
     coneSingle S x c v ∈ M.coneSub := fun d => by
   by_cases h : c = d
@@ -161,6 +205,9 @@ def FinGradedSub.conePiece (a : ℤ) : Submodule S M.coneSub where
   zero_mem' d _ := by rw [Submodule.coe_zero, map_zero]
   smul_mem' s m hm d hd := by rw [Submodule.coe_smul_of_tower, map_smul, hm d hd, smul_zero]
 
+/- English proof (translation)
+Use `coneLaurent_ext fun d => ?_` and prove the remaining obligations. Distinguish the cases in `h : a = d`. Substitute `h` using the available equality. Rewrite using `[coeffAt_coneSingle_same]`. Rewrite using `[coeffAt_coneSingle_ne h, hm d (Ne.symm h)]`.
+-/
 theorem FinGradedSub.eq_coneSingle_of_mem_conePiece {a : ℤ} {m : M.coneSub} (hm : m ∈ M.conePiece a) :
     (m : ConeLaurent S x) = coneSingle S x a (coeffAt S x a m) := by
   refine coneLaurent_ext fun d => ?_
@@ -168,6 +215,9 @@ theorem FinGradedSub.eq_coneSingle_of_mem_conePiece {a : ℤ} {m : M.coneSub} (h
   · subst h; rw [coeffAt_coneSingle_same]
   · rw [coeffAt_coneSingle_ne h, hm d (Ne.symm h)]
 
+/- English proof (translation)
+Introduce `_ hd` and use `coeffAt_coneSingle_ne (Ne.symm hd) v`.
+-/
 theorem FinGradedSub.coneSingle_mem_conePiece {c : ℤ} {v : Ω} (hv : v ∈ M.piece c) :
     (⟨coneSingle S x c v, M.coneSingle_mem_coneSub hv⟩ : M.coneSub) ∈ M.conePiece c :=
   fun _ hd => coeffAt_coneSingle_ne (Ne.symm hd) v
@@ -198,6 +248,17 @@ def FinGradedSub.coneGraded : GradedPMod S N M.coneSub where
     change coeffAt S x e (p • (m : ConeLaurent S x)) = 0
     rw [coeffAt_smul_of_isHomogeneous hp, hm (e - d) (by omega), mul_zero]
 
+/- English proof (translation)
+Take `⟨n, deg, gen, hgen, hspan⟩` from `M.fg`. Establish `heq : M.coneSub = Submodule.span (Poly S N) (Set.range fun j => coneSingle S x (deg j) (gen j))`. Use `le_antisymm (fun w hw => ?_) (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Rewrite using `[← sum_coneSingle w]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations.
+
+Establish `hv` using `hspan c (hw c)`. Use `Submodule.span_induction (p := fun v _ => coneSingle S x c v ∈ Submodule.span (Poly S N) (Set.range fun j => coneSingle S x (deg j) (gen j))) ?_ ?_ ?_ ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨j, f, e, hf, hej, rfl⟩`. Establish `: coneSingle S x c (aeval x f • gen j) = f • coneSingle S x (deg j) (gen j)`. Rewrite using `[smul_coneSingle hf, smul_eq_mul, show deg j + (e : ℤ) = c by omega]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `a b _ _ ha hb`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Introduce `s a _ ha`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_of_tower_mem _ s ha`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `M.coneSingle_mem_coneSub (hgen j)`. Rewrite using `[Module.Finite.iff_fg, heq]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem FinGradedSub.coneSub_finite : Module.Finite (Poly S N) M.coneSub := by
   obtain ⟨n, deg, gen, hgen, hspan⟩ := M.fg
   have heq : M.coneSub = Submodule.span (Poly S N) (Set.range fun j => coneSingle S x (deg j) (gen j)) := by

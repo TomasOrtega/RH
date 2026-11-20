@@ -16,6 +16,9 @@ open GlobalTheory.CompanionTheory.GL2Factorization
 
 namespace GlobalTheory.CompanionTheory.GL2Factorization.NormWth
 
+/- English proof (translation)
+The claim follows from `|A| ^ ((m : ℝ) / 2) * Real.exp (-(2 * Real.pi * |A|)) := by set D : ℝ := p * u - q * r with hD have hD2 : D * D = 1 := by rw [hD]; linear_combination (r * r + u * u) * h00 + h11 - (p * r + q * u) * h01 have hp : p = D * u := by rw [hD]; linear_combination (-p) * h11 + r * h01 hav …`.
+-/
 theorem norm_core (m : ℕ) (A B p q r u d : ℝ) (hB : B ≠ 0)
     (h00 : p * p + q * q = 1) (h11 : r * r + u * u = 1) (h01 : p * r + q * u = 0)
     (hd : d = A * B * B * (p * u - q * r)) (hpos : 0 < d) :
@@ -87,6 +90,9 @@ theorem norm_core (m : ℕ) (A B p q r u d : ℝ) (hB : B ≠ 0)
   have : |B| ^ m ≠ 0 := (pow_pos hab m).ne'
   field_simp
 
+/- English proof (translation)
+The claim follows from `|(a : ℝ)| ^ (((n.natAbs + 1 : ℕ) : ℝ) / 2) * Real.exp (-(2 * Real.pi * |(a : ℝ)|)) := by intro n a b k hk have h00 : k.val 0 0 * k.val 0 0 + k.val 0 1 * k.val 0 1 = 1 := by have := congrFun (congrFun hk 0) 0 simpa [Matrix.mul_apply, Fin.sum_univ_two] using this have h11 : k.val 1 …`.
+-/
 theorem norm_WthR_iwasawa_le : ∀ (n : ℤ) (a b : ℝˣ) (k : GL (Fin 2) ℝ), k.val * k.valᵀ = 1 →
     ‖GL2LocalData.WthR n (dg2 (a * b) b * k)‖ ≤
       |(a : ℝ)| ^ (((n.natAbs + 1 : ℕ) : ℝ) / 2) * Real.exp (-(2 * Real.pi * |(a : ℝ)|)) := by

@@ -14,6 +14,19 @@ noncomputable section
 
 namespace GlobalTheory.ThK.LemF
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B a a' G X om om' hT K hK v`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV' hT`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨K₀, -, -, hK₀, hc, -, -⟩` from `GlobalTheory.StabHaar.stabEx hPr F E σ B a' G.V' _ _ hP.base hP.herm`. Establish `e : K = K₀` using `Subgroup.ext fun g => (hK g).trans (hK₀ g).symm`.
+
+Substitute `e` using the available equality. Conclude with `isCompact_iff_compactSpace.1 (isCompact_KAt hc (evFin F v))`. Introduce `φ hφ`. Take `⟨U, hU, hUact⟩` from `((GlobalTheory.T.theta_action_exists hPr) F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hP v).2.2 φ hφ`. Establish `hmul` using `locOpMul hPr F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hP v`.
+
+Establish `h1W : (1 : UA σ G.W.J) ∈ UAt σ G.W (evFin F v)` using `(UAtSub σ G.W (evFin F v)).one_mem`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `k₀`. Establish `hc : Continuous fun k : KAt K (evFin F v) => (((k₀⁻¹ * k : KAt K (evFin F v)) : UA σ G.V'.J), (1 : UA σ G.W.J))` using `(continuous_subtype_val.comp (continuous_const.mul continuous_id)).prodMk continuous_const`. Establish `hU' : U ∈ 𝓝 ((((k₀⁻¹ * k₀ : KAt K (evFin F v)) : UA σ G.V'.J), (1 : UA σ G.W.J)))`.
+
+Rewrite using `[inv_mul_cancel]`. Conclude with `hU`. Use `filter_upwards [hc.continuousAt.preimage_mem_nhds hU'] with k hk`. Use `set h : KAt K (evFin F v) := k₀⁻¹ * k with hh`. Establish `hkh : k = k₀ * h` using `by rw [hh, mul_inv_cancel_left]`.
+
+Establish `hhv : (h : UA σ G.V'.J) ∈ UAt σ G.V' (evFin F v)` using `(mem_KAt.1 h.2).2`. Establish `hk₀v : (k₀ : UA σ G.V'.J) ∈ UAt σ G.V' (evFin F v)` using `(mem_KAt.1 k₀.2).2`. Establish `hfix : locOp v (om' ((h : UA σ G.V'.J), 1)) φ = φ` using `locOp_eq hφ hφ (hUact _ hk hhv h1W)`. Establish `e1 : (((k₀ * h : KAt K (evFin F v)) : UA σ G.V'.J), (1 : UA σ G.W.J)) = ((k₀ : UA σ G.V'.J), (1 : UA σ G.W.J)) * ((h : UA σ G.V'.J), 1)`. Simplify using `[Prod.mk_mul_mk]`.
+
+Use `show locOp v (om' ((k : UA σ G.V'.J), 1)) φ = locOp v (om' ((k₀ : UA σ G.V'.J), 1)) φ`. Rewrite using `[hkh, e1, hmul _ _ hk₀v h1W hhv h1W φ hφ, hfix]`.
+-/
 theorem compact_locConst_KAt : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W)
     (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ K : Subgroup (UA σ G.V'.J), IsStab B K → ∀ v : Pl F,

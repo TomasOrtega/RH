@@ -22,15 +22,28 @@ structure IsForm : Prop where
 
 variable {j}
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨x, Submodule.subset_span ⟨x, hx, rfl⟩, rfl⟩`.
+-/
 theorem isRatSub_span (S : Set X) : IsRatSub j (Submodule.span ℂ (j '' S)) := by
   refine le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)
   · rintro _ ⟨x, hx, rfl⟩; exact hx
   · rintro _ ⟨x, hx, rfl⟩; exact ⟨x, Submodule.subset_span ⟨x, hx, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← h, ← h', ← Submodule.span_union, ← Set.image_union]`. Conclude with `isRatSub_span _`.
+-/
 theorem IsRatSub.sup {W W' : Submodule ℂ E} (h : IsRatSub j W) (h' : IsRatSub j W') : IsRatSub j (W ⊔ W') := by
   rw [← h, ← h', ← Submodule.span_union, ← Set.image_union]
   exact isRatSub_span _
 
+/- English proof (translation)
+Take `⟨n, b, hb, -⟩` from `h.basis`. Set `_` to `σ.toAlgebra`. Establish `h1 : LinearIndependent K fun i => b.equivFun (v i)` using `hv.map' (b.equivFun : X →ₗ[K] (Fin n → K)) b.equivFun.ker`. Establish `h2` using `(linearIndependent_algebraMap_comp_iff (S := ℂ)).2 h1`. Establish `h3` using `h2.map' (Fintype.linearCombination ℂ fun i => j (b i)) (LinearMap.ker_eq_bot'.2 fun c hc => funext (Fintype.linearIndependent_iff.1 hb c (by simpa [Fintype.linearCombination_apply] using hc)))`.
+
+It suffices to establish `he : (fun i => j (v i)) = (Fintype.linearCombination ℂ fun i => j (b i)) ∘ fun i => (algebraMap K ℂ) ∘ b.equivFun (v i) by rw [he]; exact h3`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp, Fintype.linearCombination_apply]`. Use `conv_lhs => rw [← b.sum_equivFun (v i)]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Both sides reduce to the same expression.
+-/
 theorem IsForm.linInd (h : IsForm j) {ι : Type} [Fintype ι] {v : ι → X} (hv : LinearIndependent K v) :
     LinearIndependent ℂ fun i => j (v i) := by
   obtain ⟨n, b, hb, -⟩ := h.basis
@@ -50,10 +63,20 @@ theorem IsForm.linInd (h : IsForm j) {ι : Type} [Fintype ι] {v : ι → X} (hv
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_smulₛₗ]; rfl
 
+/- English proof (translation)
+Take `⟨n, b, -, -⟩` from `h.basis`. Conclude with `Module.Finite.of_basis b`.
+-/
 theorem IsForm.finite (h : IsForm j) : FiniteDimensional K X := by
   obtain ⟨n, b, -, -⟩ := h.basis
   exact Module.Finite.of_basis b
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `: x = ∑ i, b.equivFun ⟨x, hx⟩ i • (b i : X)`. Use `congrArg Subtype.val (b.sum_equivFun ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`.
+
+Conclude with `this.symm`. Rewrite using `[this, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨b i, (b i).2, rfl⟩`.
+-/
 theorem span_image_eq {T : Submodule K X} {ι : Type} [Fintype ι] (b : Basis ι K T) :
     Submodule.span ℂ (j '' (T : Set X)) = Submodule.span ℂ (Set.range fun i => j (b i)) := by
   refine le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)
@@ -68,6 +91,9 @@ theorem span_image_eq {T : Submodule K X} {ι : Type} [Fintype ι] (b : Basis ι
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
   · rintro _ ⟨i, rfl⟩; exact ⟨b i, (b i).2, rfl⟩
 
+/- English proof (translation)
+Use `h.finite` as an intermediate fact. Rewrite using `[span_image_eq (finBasis K T)]`. Use `finrank_span_eq_card (h.linInd ((finBasis K T).linearIndependent.map' T.subtype T.ker_subtype))` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this`.
+-/
 theorem IsForm.finrank_span (h : IsForm j) (T : Submodule K X) :
     finrank ℂ (Submodule.span ℂ (j '' (T : Set X))) = finrank K T := by
   have := h.finite
@@ -76,12 +102,32 @@ theorem IsForm.finrank_span (h : IsForm j) (T : Submodule K X) :
   rw [Fintype.card_fin] at this
   exact this
 
+/- English proof (translation)
+Establish `h1` using `h.finrank_span ⊤`. Take `⟨n, b, -, hs⟩` from `h.basis`. Rewrite `h1` using `[Submodule.top_coe, Set.image_univ, hs]`. Simplify using `using h1`.
+-/
 theorem IsForm.finrank_eq (h : IsForm j) : finrank ℂ E = finrank K X := by
   have h1 := h.finrank_span ⊤
   obtain ⟨n, b, -, hs⟩ := h.basis
   rw [Submodule.top_coe, Set.image_univ, hs] at h1
   simpa using h1
 
+/- English proof (translation)
+Use `h.finite` as an intermediate fact. Use `choose p hp using h.inner`. Use `set S : Submodule K X := W.comap j`. Establish `hWS : Submodule.span ℂ (j '' (S : Set X)) = W` using `hW`. Set `b` to `finBasis K S`.
+
+Set `φ : X →ₗ[K] (Fin (finrank K S) → K)` to `{ toFun := fun x i => p (b i) x map_add' := fun x y => by`. Use function extensionality and compare the values at `i`. Apply `σ.injective` to reduce the goal to its premises. Simplify using `only [Pi.add_apply, map_add, ← hp, inner_add_right]`. Use the proof step `map_smul' := fun a x => by`.
+
+Use function extensionality and compare the values at `i`. Apply `σ.injective` to reduce the goal to its premises. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, map_mul, ← hp, map_smulₛₗ, inner_smul_right] }`. Establish `hker : LinearMap.ker φ ≤ Wᗮ.comap j`. Introduce `x hx`.
+
+Use `show j x ∈ Wᗮ`. Rewrite using `[← hWS, span_image_eq b, Submodule.mem_orthogonal]`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`.
+
+Take `⟨i, rfl⟩` from `hu`. Establish `: p (b i) x = 0` using `congrFun (LinearMap.mem_ker.1 hx) i`. Rewrite using `[hp, this, map_zero]`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [inner_add_left, hu, hv, add_zero]`.
+
+Consider the case `smul a u _ hu => rw [inner_smul_left, hu, mul_zero]`. Use `Submodule.eq_of_le_of_finrank_le (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`. Establish `e1` using `h.finrank_span (Wᗮ.comap j)`.
+
+Establish `e2` using `Submodule.finrank_mono hker`. Establish `e3` using `φ.finrank_range_add_finrank_ker`. Establish `e4 : finrank K (LinearMap.range φ) ≤ finrank K S`. Simplify using `using (LinearMap.range φ).finrank_le`. Establish `e5` using `h.finrank_span S`.
+
+Rewrite `e5` using `[hWS]`. Establish `e6` using `W.finrank_add_finrank_orthogonal`. Establish `e7` using `h.finrank_eq`. Establish `e8 : finrank ℂ (Submodule.span ℂ (j '' {x | j x ∈ Wᗮ})) = finrank K (Wᗮ.comap j)` using `e1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem IsForm.orthogonal [FiniteDimensional ℂ E] (h : IsForm j) {W : Submodule ℂ E} (hW : IsRatSub j W) :
     IsRatSub j Wᗮ := by
   have := h.finite
@@ -126,6 +172,9 @@ theorem IsForm.orthogonal [FiniteDimensional ℂ E] (h : IsForm j) {W : Submodul
     have e8 : finrank ℂ (Submodule.span ℂ (j '' {x | j x ∈ Wᗮ})) = finrank K (Wᗮ.comap j) := e1
     omega
 
+/- English proof (translation)
+Use `h.orthogonal ((h.orthogonal hW).sup (h.orthogonal hW'))` as an intermediate fact. Rewrite `this` using `[← Submodule.inf_orthogonal, Submodule.orthogonal_orthogonal, Submodule.orthogonal_orthogonal]`. Then use the resulting hypothesis.
+-/
 theorem IsForm.inf [FiniteDimensional ℂ E] (h : IsForm j) {W W' : Submodule ℂ E} (hW : IsRatSub j W)
     (hW' : IsRatSub j W') : IsRatSub j (W ⊓ W') := by
   have := h.orthogonal ((h.orthogonal hW).sup (h.orthogonal hW'))
@@ -139,10 +188,16 @@ open Formalism.IndefR.Links
 
 variable {E E' : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [NormedAddCommGroup E'] [InnerProductSpace ℂ E'] (s : Bool)
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `⟨fun ⟨y, hy, h⟩ => h ▸ hy, fun hx => ⟨Tw.out x, hx, rfl⟩⟩`.
+-/
 theorem tw_map_sub (V : Submodule ℂ E) : V.map (Tw.mkL s E) = Tw.sub s V := by
   ext x
   exact ⟨fun ⟨y, hy, h⟩ => h ▸ hy, fun hx => ⟨Tw.out x, hx, rfl⟩⟩
 
+/- English proof (translation)
+Rewrite using `[← tw_map_sub, Submodule.map_span]`. Both sides reduce to the same expression.
+-/
 theorem tw_span (S : Set E) : Submodule.span ℂ (Tw.mk s '' S) = Tw.sub s (Submodule.span ℂ S) := by
   rw [← tw_map_sub, Submodule.map_span]; rfl
 
@@ -151,6 +206,13 @@ variable [FiniteDimensional ℂ E] [FiniteDimensional ℂ E'] {K X : Type} [Fiel
 
 end Twist
 
+/- English proof (translation)
+Take `⟨hinj, hr, hip⟩` from `hM`. Take `⟨-, ⟨hli, hsp⟩, hiso⟩` from `GlobalTheory.classPres_extMem_extBij_isom _ _ _ _ _ _ _ _ _ _ P`. Use `⟨⟨_, S.basis, ?_, ?_⟩, fun x y => ⟨S.csum x y, ?_⟩⟩` and prove the remaining obligations. Use `LinearIndependent.of_comp M.e ?_` and prove the remaining obligations. Establish `: (M.e ∘ fun i => j (S.basis i)) = fun i => P.extL (S.basis i)` using `funext fun i => hj _`.
+
+Rewrite using `[this]`. Conclude with `hli`. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_top, hr, ← Set.range_comp]`. Establish `: (M.e ∘ j) = P.extL` using `funext hj`.
+
+Rewrite using `[this]`. Conclude with `hsp`. Rewrite using `[hip, hj, hj]`. Conclude with `hiso x y`.
+-/
 theorem isForm_of_pres {G Γ W K : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] [Field K] [NumberField K]
     [StarRing K] {ι : Γ →* G} {S : Formalism.L2.DIV.CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ}
     (P : Formalism.IndefR.Bridge.ClassPres ι S σ ρ J χ) (M : Formalism.IndefR.Links.HMod (G → W))
@@ -184,6 +246,9 @@ section Compare
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun b => pos_iff_ne_bot R F b`.
+-/
 theorem lPos_iff_ne_bot : R.LPos F ↔ ∀ b, (A.fam.R A.μ0).inV0 (F.lvl b) ((R.toCx F).Z A.μ0) ≠ ⊥ :=
   forall_congr' fun b => pos_iff_ne_bot R F b
 
@@ -193,6 +258,9 @@ def RationalAtBaseWeight : Prop := RatZAt (R.toCx F) A.μ0
 
 variable {R} in
 
+/- English proof (translation)
+The claim follows from `isForm_of_pres (R.B.R t).pres (R.HX t) (h.HX t) (R.jX t) (h.jX t)`.
+-/
 theorem isForm_jX (h : R.IsModels) (t : T) : IsForm (R.jX t) :=
   isForm_of_pres (R.B.R t).pres (R.HX t) (h.HX t) (R.jX t) (h.jX t)
 

@@ -15,6 +15,9 @@ variable (R : Type) [CommRing R] {D : Type} [CommRing D] [Algebra R D]
 
 def locMap (s : D) : D →ₐ[R] Localization.Away s := IsScalarTower.toAlgHom R D _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locMap_apply (s x : D) : locMap R s x = algebraMap D (Localization.Away s) x := rfl
 
 def locR (a b : D) : Localization.Away a →ₐ[R] Localization.Away (a * b) :=
@@ -31,22 +34,39 @@ def locL (a b : D) : Localization.Away b →ₐ[R] Localization.Away (a * b) :=
     rw [← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply] at this
     exact this⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locR_apply (a b : D) (x : Localization.Away a) :
     locR R a b x = IsLocalization.Away.awayToAwayRight a b x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locL_apply (a b : D) (x : Localization.Away b) :
     locL R a b x = IsLocalization.Away.awayToAwayLeft b a x := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[AlgHom.comp_apply, locR_apply, locMap_apply, locMap_apply]`. Conclude with `IsLocalization.Away.awayToAwayRight_eq a b x`.
+-/
 theorem locR_comp (a b : D) : (locR R a b).comp (locMap R a) = locMap R (a * b) := by
   ext x
   rw [AlgHom.comp_apply, locR_apply, locMap_apply, locMap_apply]
   exact IsLocalization.Away.awayToAwayRight_eq a b x
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[AlgHom.comp_apply, locL_apply, locMap_apply, locMap_apply]`. Conclude with `IsLocalization.Away.awayToAwayLeft_eq b a x`.
+-/
 theorem locL_comp (a b : D) : (locL R a b).comp (locMap R b) = locMap R (a * b) := by
   ext x
   rw [AlgHom.comp_apply, locL_apply, locMap_apply, locMap_apply]
   exact IsLocalization.Away.awayToAwayLeft_eq b a x
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, IsScalarTower.toAlgHom_apply, locMap_apply]`. Use `first`. Consider the case `exact (IsLocalization.Away.map_eq (S := Localization.Away s) (P := Localization.Away (φ s)) s x).symm`. Consider the case `simp [Localization.awayMapₐ, IsLocalization.Away.mapₐ, IsLocalization.Away.map, IsLocalization.map_eq]`.
+
+Consider the case `(show _ = IsLocalization.map _ (φ : D →+* E) _ _; exact (IsLocalization.map_eq _ _).symm)`.
+-/
 theorem awayMap_comp {E : Type} [CommRing E] [Algebra R E] (φ : D →ₐ[R] E) (s : D) :
     (IsScalarTower.toAlgHom R E (Localization.Away (φ s))).comp φ = (Localization.awayMapₐ φ s).comp (locMap R s) := by
   ext x
@@ -56,6 +76,9 @@ theorem awayMap_comp {E : Type} [CommRing E] [Algebra R E] (φ : D →ₐ[R] E) 
     | simp [Localization.awayMapₐ, IsLocalization.Away.mapₐ, IsLocalization.Away.map, IsLocalization.map_eq]
     | (show _ = IsLocalization.map _ (φ : D →+* E) _ _; exact (IsLocalization.map_eq _ _).symm)
 
+/- English proof (translation)
+Take `⟨i, h⟩` from `h`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[← spOver_comp, Category.assoc]`. Introduce `p _`. Conclude with `h (Set.mem_univ _)`.
+-/
 theorem sm_comp {X : Over (Sp R)} {K : Type} {W : K → X.left.Opens} (y : Pt X D) {E E' : Type} [CommRing E]
     [Algebra R E] [CommRing E'] [Algebra R E'] (ψ : D →ₐ[R] E) (θ : E →ₐ[R] E') (h : Sm W (spOver ψ ≫ y)) :
     Sm W (spOver (θ.comp ψ) ≫ y) := by
@@ -65,6 +88,23 @@ theorem sm_comp {X : Over (Sp R)} {K : Type} {W : K → X.left.Opens} (y : Pt X 
   intro p _
   exact h (Set.mem_univ _)
 
+/- English proof (translation)
+Introduce `R _ X K W hW D _ _ y τ hτ`. Set `S : Set D` to `{s | ∃ i, ∀ p : PrimeSpectrum D, p ∈ PrimeSpectrum.basicOpen s → y.left.base p ∈ W i}`. Establish `hS : Ideal.span S = ⊤`. Rewrite using `[← PrimeSpectrum.iSup_basicOpen_eq_top_iff', eq_top_iff]`. Introduce `p _`.
+
+Establish `hp : y.left.base p ∈ ⨆ i, W i` using `by rw [hW]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hp`. Take `⟨_, ⟨s, rfl⟩, hps, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := p) (u := (y.left ⁻¹ᵁ W i).carrier) hi (y.left ⁻¹ᵁ W i).isOpen`. Simplify using `only [TopologicalSpace.Opens.mem_iSup]`. Conclude with `⟨s, ⟨i, fun q hq ↦ hsub hq⟩, hps⟩`.
+
+Establish `hψ : ∀ s ∈ S, Sm W (spOver (locMap R s) ≫ y)`. Introduce and unpack `s ⟨i, hi⟩`. Use `⟨i, fun q _ ↦ hi _ ?_⟩` and prove the remaining obligations. Use `show PrimeSpectrum.comap (algebraMap D (Localization.Away s)) q ∈ PrimeSpectrum.basicOpen s`. Rewrite using `[PrimeSpectrum.mem_basicOpen]`.
+
+Introduce `h`. Conclude with `q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h (IsLocalization.Away.algebraMap_isUnit s))`. Establish `hcomp : ∀ a b : S, IsLocalization.Away.awayToAwayRight (P` using `Localization.Away (a.1 * b.1)) a.1 b.1 (τ (Localization.Away a.1) (locMap R a.1)) = IsLocalization.Away.awayToAwayLeft (P := Localization.Away (a.1 * b.1)) b.1 a.1 (τ (Localization.Away b.1) (locMap R b.1)) := by`. Introduce `a b`. Establish `h1` using `hτ _ _ (locMap R a.1) (locR R a.1 b.1) (hψ a.1 a.2)`.
+
+Establish `h2` using `hτ _ _ (locMap R b.1) (locL R a.1 b.1) (hψ b.1 b.2)`. Rewrite `h1` using `[locR_comp]`. Rewrite `h2` using `[locL_comp]`. Rewrite using `[← locR_apply R, ← locL_apply R, ← h1, ← h2]`. Take `⟨d, hd, hu⟩` from `Localization.existsUnique_algebraMap_eq_of_span_eq_top S hS (fun a ↦ τ (Localization.Away a.1) (locMap R a.1)) hcomp`.
+
+Use `⟨d, ?_, fun d' hd' ↦ hu d' fun a ↦ (hd' _ (locMap R a.1) (hψ a.1 a.2)).symm⟩` and prove the remaining obligations. Introduce `E _ _ φ hφ`. Establish `hS' : Ideal.span ((φ : D →+* E) '' S) = ⊤`. Rewrite using `[← Ideal.map_span, hS, Ideal.map_top]`. Apply `Localization.algebraMap_injective_of_span_eq_top _ hS'` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `b`. Take `⟨b, s, hs, rfl⟩` from `b`. Establish `h1` using `hτ _ _ φ (IsScalarTower.toAlgHom R E (Localization.Away (φ s))) hφ`. Establish `h2` using `hτ _ _ (locMap R s) (Localization.awayMapₐ φ s) (hψ s hs)`. Rewrite `h1` using `[awayMap_comp, h2, ← hd ⟨s, hs⟩, ← locMap_apply R, ← AlgHom.comp_apply, ← awayMap_comp]`.
+
+Conclude with `h1.symm`.
+-/
 theorem existsUnique_of_natural : ∀ (R : Type) [CommRing R] (X : Over (Sp R)) (K : Type) (W : K → X.left.Opens),
     ⨆ i, W i = ⊤ → ∀ (D : Type) [CommRing D] [Algebra R D] (y : Pt X D)
     (τ : ∀ (E : Type) [CommRing E] [Algebra R E], (D →ₐ[R] E) → E),

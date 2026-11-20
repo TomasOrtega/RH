@@ -20,6 +20,13 @@ noncomputable def cocone : Cocone (diag S hS) where
   ι := { app := fun i => CommRingCat.ofHom (S i).val.toRingHom
          naturality := fun i j h => by ext x; rfl }
 
+/- English proof (translation)
+Use `haveI : ReflectsColimitsOfShape ι (forget CommRingCat.{0}) := reflectsColimitsOfShape_of_reflectsIsomorphisms`. Use `⟨isColimitOfReflects (forget CommRingCat.{0}) ?_⟩` and prove the remaining obligations. Use `Types.FilteredColimit.isColimitOf _ _ ?_ ?_` and prove the remaining obligations. Introduce `x`. Express the relevant statement in the definitionally equal form `A at x`.
+
+Take `⟨i, hi⟩` from `hcov x`. Conclude with `⟨i, ⟨x, hi⟩, rfl⟩`. Introduce `i j xi xj h`. Take `⟨k, hik, hjk⟩` from `directed_of (· ≤ ·) i j`. Use `⟨k, homOfLE hik, homOfLE hjk, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h`.
+-/
 theorem cocone_isColimit [IsDirected ι (· ≤ ·)] [Nonempty ι] (hcov : ∀ a, ∃ i, a ∈ S i) :
     Nonempty (IsColimit (cocone S hS)) := by
   haveI : ReflectsColimitsOfShape ι (forget CommRingCat.{0}) :=
@@ -40,6 +47,9 @@ end GlobalTheory.UnionHInv
 
 open GlobalTheory.UnionHInv in
 
+/- English proof (translation)
+Introduce `q _ A _ ι _ _ _ S hS hcov hu hH`. Take `⟨hc⟩` from `cocone_isColimit S hS hcov`. Conclude with `GlobalTheory.T.etaleHomotopyInvariantTwists_of_filtered_colimit q ι (diag S hS) (cocone S hS) hc hu hH`.
+-/
 theorem GlobalTheory.EtC.hInv_of_directed_union : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι] (S : ι → Subalgebra ℤ A), Monotone S → (∀ a, ∃ i, a ∈ S i) → (∀ i, IsUnit (q : S i)) → (∀ i, HInv q (S i)) → HInv q A := by
   intro q _ A _ ι _ _ _ S hS hcov hu hH
   obtain ⟨hc⟩ := cocone_isColimit S hS hcov

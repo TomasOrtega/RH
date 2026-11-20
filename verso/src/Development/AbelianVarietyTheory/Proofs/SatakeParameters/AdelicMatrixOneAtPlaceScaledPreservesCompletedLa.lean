@@ -12,6 +12,29 @@ noncomputable section
 namespace GlobalTheory.AwayScale
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Take `⟨b, hb0, hb⟩` from `GlobalTheory.Idele.exists_mul_integral a`. Use `set c : 𝓞 F := b * (M : 𝓞 F) with hc`. Establish `hc0 : c ≠ 0` using `mul_ne_zero hb0 (by exact_mod_cast hM.ne')`. Establish `hfin : {w : HeightOneSpectrum (𝓞 F) | w.asIdeal ∣ Ideal.span {c}}.Finite` using `Ideal.finite_factors (by simpa [Ideal.span_singleton_eq_bot] using hc0)`. Set `e : HeightOneSpectrum (𝓞 F) → ℕ` to `fun w => if w = v then 1 else (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {c})).factors`.
+
+Take `⟨t, ht⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := insert v hfin.toFinset) (fun w => w.asIdeal) e (fun w _ => w.prime) (fun w _ w' _ h h' => h (HeightOneSpectrum.ext h')) (fun w => if (w : HeightOneSpectrum (𝓞 F)) = v then 1 else 0)`. Establish `htv : t ∉ v.asIdeal`. Introduce `h`. Establish `h1` using `ht v (Finset.mem_insert_self _ _)`. Simplify using `only [e, if_true, pow_one] at h1`.
+
+Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h2 : (1 : 𝓞 F) = t - (t - 1)` using `by ring`. Rewrite using `[h2]`. Conclude with `sub_mem h h1`.
+
+Establish `hval : ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → w.intValuation t ≤ w.intValuation c`. Introduce `w hw`. Distinguish the cases in `hws : w ∈ hfin.toFinset`. Establish `h1` using `ht w (Finset.mem_insert_of_mem hws)`. Simplify using `only [hw, if_false, sub_zero, e] at h1`.
+
+Rewrite using `[w.intValuation_if_neg hc0]`. Conclude with `(w.intValuation_le_pow_iff_mem t _).2 h1`. Establish `h1 : c ∉ w.asIdeal`. Introduce `h`. Apply `hws` to reduce the goal to its premises.
+
+Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Ideal.dvd_span_singleton.2 h`. Rewrite using `[(w.intValuation_eq_one_iff_mem_primeCompl c).2 h1]`. Conclude with `w.intValuation_le_one t`. Establish `hcF : algebraMap (𝓞 F) F c ≠ 0`.
+
+Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 F) F)]`. Conclude with `hc0`. Establish `hbF : algebraMap (𝓞 F) F b ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 F) F)]`. Conclude with `hb0`.
+
+Establish `hMF : (M : F) ≠ 0` using `by exact_mod_cast hM.ne'`. Use `⟨t, htv, algebraMap F _ (algebraMap (𝓞 F) F t / algebraMap (𝓞 F) F c) * (algebraMap F _ (algebraMap (𝓞 F) F b) * a), ?_, ?_⟩` and prove the remaining obligations. Introduce `w show (algebraMap F _ (algebraMap (𝓞 F) F t / algebraMap (𝓞 F) F c) * (algebraMap F _ (algebraMap (𝓞 F) F b) * a)) w ∈ w.adicCompletionIntegers F`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Rewrite using `[GlobalTheory.Idele.adele_mul_apply, GlobalTheory.Idele.adele_mul_apply, ha, mul_zero, mul_zero]`. Conclude with `zero_mem _`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, GlobalTheory.Idele.adele_mul_apply, map_mul]`. Use `mul_le_one' ?_ (hb w)` and prove the remaining obligations. Rewrite using `[GlobalTheory.Idele.adele_algebraMap_apply, GlobalTheory.Idele.valued_algebraMap, map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`.
+
+Rewrite using `[div_le_one₀ (by rw [pos_iff_ne_zero]; exact w.intValuation_ne_zero c hc0)]`. Conclude with `hval w hw`. Rewrite using `[← mul_assoc, ← mul_assoc, ← map_mul, ← map_mul]`. Use `congr 2`. Rewrite using `[hc, map_mul, map_natCast]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem scalar (v : HeightOneSpectrum (𝓞 F)) (a : FiniteAdeleRing (𝓞 F) F) (ha : a v = 0) (M : ℕ) (hM : 0 < M) :
     ∃ t : 𝓞 F, t ∉ v.asIdeal ∧ ∃ y ∈ Formalism.UG.intAd F,
       algebraMap F (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) F t) * a =
@@ -74,6 +97,9 @@ theorem scalar (v : HeightOneSpectrum (𝓞 F)) (a : FiniteAdeleRing (𝓞 F) F)
     rw [hc, map_mul, map_natCast]
     field_simp
 
+/- English proof (translation)
+Introduce `w`. Use `show algebraMap F (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) F r) w ∈ w.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, GlobalTheory.Idele.adele_algebraMap_apply, GlobalTheory.Idele.valued_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `w.intValuation_le_one r`.
+-/
 theorem algebraMap_mem_intAd (r : 𝓞 F) :
     algebraMap F (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) F r) ∈ Formalism.UG.intAd F := by
   intro w
@@ -82,6 +108,11 @@ theorem algebraMap_mem_intAd (r : 𝓞 F) :
     GlobalTheory.Idele.valued_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]
   exact w.intValuation_le_one r
 
+/- English proof (translation)
+Use `choose t ht y hy he using fun i => scalar v (a i) (ha i) M hM`. Establish `hT : ∏ i, t i ∈ v.asIdeal.primeCompl` using `Submonoid.prod_mem _ fun i _ => ht i`. Use `⟨∏ i, t i, hT, fun i => ?_⟩` and prove the remaining obligations. Use `⟨algebraMap F _ (algebraMap (𝓞 F) F (∏ j ∈ Finset.univ.erase i, t j)) * y i, mul_mem (algebraMap_mem_intAd _) (hy i), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), map_mul, map_mul, mul_comm (algebraMap F _ _), mul_assoc, he i]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scalarFam (v : HeightOneSpectrum (𝓞 F)) {ι : Type} [Fintype ι] (a : ι → FiniteAdeleRing (𝓞 F) F)
     (ha : ∀ i, a i v = 0) (M : ℕ) (hM : 0 < M) :
     ∃ t : 𝓞 F, t ∉ v.asIdeal ∧ ∀ i, ∃ y ∈ Formalism.UG.intAd F,
@@ -97,12 +128,18 @@ theorem scalarFam (v : HeightOneSpectrum (𝓞 F)) {ι : Type} [Fintype ι] (a :
     mul_assoc, he i]
   ring
 
+/- English proof (translation)
+Use `show (Algebra.TensorProduct.map (AlgHom.id F E) (Formalism.UG.evalV F v)) (x ⊗ₜ[F] a) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+-/
 theorem prV_tmul {E : Type} [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (x : E)
     (a : FiniteAdeleRing (𝓞 F) F) : prV (E := E) v (x ⊗ₜ[F] a) = x ⊗ₜ[F] a v := by
   show (Algebra.TensorProduct.map (AlgHom.id F E) (Formalism.UG.evalV F v)) (x ⊗ₜ[F] a) = _
   rw [Algebra.TensorProduct.map_tmul]
   rfl
 
+/- English proof (translation)
+Simplify using `[map_sum, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply, Module.Basis.repr_self, Finsupp.single_apply]`.
+-/
 theorem basis_coeff {E N : Type} [Field E] [AddCommGroup N] [Module F N] [Algebra F E] {d : ℕ}
     (bE : Module.Basis (Fin d) F E) (x : Fin d → N) (k : Fin d) :
     TensorProduct.equivFinsuppOfBasisLeft bE (∑ j, bE j ⊗ₜ[F] x j) k = x k := by
@@ -110,6 +147,9 @@ theorem basis_coeff {E N : Type} [Field E] [AddCommGroup N] [Module F N] [Algebr
   simp [map_sum, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply, Module.Basis.repr_self,
     Finsupp.single_apply]
 
+/- English proof (translation)
+Establish `h` using `TensorProduct.equivFinsuppOfBasisLeft_symm_apply bE (TensorProduct.equivFinsuppOfBasisLeft bE z)`. Rewrite `h` using `[LinearEquiv.symm_apply_apply, Finsupp.sum_fintype _ _ (by simp)]`. Conclude with `h`.
+-/
 theorem basis_expand {E N : Type} [Field E] [AddCommGroup N] [Module F N] [Algebra F E] {d : ℕ}
     (bE : Module.Basis (Fin d) F E) (z : E ⊗[F] N) :
     z = ∑ j, bE j ⊗ₜ[F] TensorProduct.equivFinsuppOfBasisLeft bE z j := by
@@ -118,6 +158,19 @@ theorem basis_expand {E N : Type} [Field E] [AddCommGroup N] [Module F N] [Algeb
   rw [LinearEquiv.symm_apply_apply, Finsupp.sum_fintype _ _ (by simp)] at h
   exact h
 
+/- English proof (translation)
+Set `bE` to `Module.finBasis F E`. Take `⟨c, hc0, hcb⟩` from `GlobalTheory.LatAdelicBasis.exists_nat_multiples (Finset.univ.image bE)`. Use `choose o ho using fun j => hcb (bE j) (Finset.mem_image_of_mem _ (Finset.mem_univ j))`. Set `a : ι × Fin (Module.finrank F E) → FiniteAdeleRing (𝓞 F) F` to `fun p => TensorProduct.equivFinsuppOfBasisLeft bE (m p.1) p.2`. Establish `hexp : ∀ i, m i = ∑ j, bE j ⊗ₜ[F] a (i, j)` using `fun i => basis_expand bE (m i)`.
+
+Establish `ha : ∀ p, a p v = 0`. Introduce `p`. Establish `h` using `hm p.1`. Rewrite `h` using `[hexp p.1, map_sum]`. Simplify using `only [prV_tmul] at h`.
+
+Use `congrArg (fun z => TensorProduct.equivFinsuppOfBasisLeft bE z p.2) h` as an intermediate fact. Simplify using `only [basis_coeff, map_zero, Finsupp.coe_zero, Pi.zero_apply] at this`. Conclude with `this`. Take `⟨t, ht, hty⟩` from `scalarFam v a ha (M * c) (Nat.mul_pos hM hc0)`. Use `choose y hy he using hty`.
+
+Use `⟨t, ht, fun i => ⟨∑ j, (algebraMap (𝓞 E) E (o j) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) * ((1 : E) ⊗ₜ[F] y (i, j)), ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `sum_mem fun j _ => mul_mem (GlobalTheory.LatAdelicBasis.left_mem F E (o j)) (GlobalTheory.LatAdelicBasis.right_mem F E (y (i, j)) (hy (i, j)))`. Establish `htE : ((algebraMap (𝓞 F) (𝓞 E) t : 𝓞 E) : E) = algebraMap F E (algebraMap (𝓞 F) F t)` using `rfl`. Rewrite using `[hexp i, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Formalism.UG.inclE, Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Rewrite using `[htE, ← ho j, ← Algebra.smul_def, TensorProduct.smul_tmul, Algebra.smul_def, he (i, j)]`. Rewrite using `[← Algebra.smul_def, ← TensorProduct.smul_tmul, Algebra.smul_def]`. Use `congr 1`. Rewrite using `[Nat.cast_mul, map_mul, map_natCast, map_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tensorFam {E : Type} [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F))
     {ι : Type} [Fintype ι] (m : ι → E ⊗[F] FiniteAdeleRing (𝓞 F) F) (hm : ∀ i, prV (E := E) v (m i) = 0)
     (M : ℕ) (hM : 0 < M) :
@@ -158,6 +211,33 @@ theorem tensorFam {E : Type} [Field E] [NumberField E] [Algebra F E] (v : Height
 
 end GlobalTheory.AwayScale
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ N Lb hfg hsp v k hk`. Take `⟨n, hn0, hn1, hn2⟩` from `GlobalTheory.LatAdelicBasis.exists_level Lb hfg hsp`. Set `ι` to `Formalism.UG.inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Set `K : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)` to `(k : Matrix _ _ _)`. Set `m : Fin N × Fin N → E ⊗[F] FiniteAdeleRing (𝓞 F) F` to `fun p => (K - 1) p.1 p.2`.
+
+Establish `hK : K.map (prV (E` using `E) v) = 1 := congrArg Units.val hk`. Establish `hm : ∀ p, prV (E` using `E) v (m p) = 0 := by`. Introduce `p`. Establish `h1 : (K - 1).map (prV (E` using `E) v) = 0 := by`. Rewrite using `[Matrix.map_sub _ (fun a b => map_sub _ a b), hK, Matrix.map_one _ (map_zero _) (map_one _), sub_self]`.
+
+Conclude with `congrFun (congrFun h1 p.1) p.2`. Take `⟨t, ht, hty⟩` from `GlobalTheory.AwayScale.tensorFam v m hm (n * n) (Nat.mul_pos hn0 hn0)`. Use `choose y hy he using hty`. Use `⟨t, ht, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hι : ∀ o : 𝓞 E, ι (algebraMap (𝓞 E) E o) ∈ Formalism.L2.Herm.intAf F E` using `fun o => GlobalTheory.LatAdelicBasis.left_mem F E o`.
+
+Establish `hZ : ∀ w ∈ Formalism.L2.Herm.hatL (F` using `F) Lb, ∀ i, ι (n : E) * w i ∈ Formalism.L2.Herm.intAf F E := by`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨x, hx, rfl⟩` from `hw`.
+
+Introduce `i`. Take `⟨o, ho⟩` from `hn2 x hx i`. Use `show ι (n : E) * ι (x i) ∈ _`. Rewrite using `[← map_mul, ho]`. Conclude with `hι o`.
+
+Consider the case `zero => intro i`. Simplify using the standard rewrite rules. Consider the case `add w w' _ _ hw hw' => intro i`. Rewrite using `[Pi.add_apply, mul_add]`. Conclude with `add_mem (hw i) (hw' i)`.
+
+Consider the case `smul r w _ hw`. Introduce `i`. Rewrite using `[Subring.smul_def, Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Conclude with `mul_mem r.2 (hw i)`. Establish `hW : ∀ w : Fin N → E ⊗[F] FiniteAdeleRing (𝓞 F) F, (∀ i, ∃ u ∈ Formalism.L2.Herm.intAf F E, w i = ι (n : E) * u) → w ∈ Formalism.L2.Herm.hatL (F` using `F) Lb := by`.
+
+Introduce `w hw`. Use `choose u hu hwu using hw`. Establish `hw' : w = ∑ i, (⟨u i, hu i⟩ : Formalism.L2.Herm.intAf F E) • (fun l => ι (((n : E) • (Pi.single i 1 : Fin N → E)) l))`. Use function extensionality and compare the values at `l`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single l]`.
+
+Rewrite using `[Subring.smul_def, Pi.smul_apply, smul_eq_mul, Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one, hwu l, mul_comm]`. Introduce `i _ hil`. Rewrite using `[Subring.smul_def, Pi.smul_apply, Pi.smul_apply, Pi.single_eq_of_ne (Ne.symm hil), smul_zero, map_zero, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ l) h`.
+
+Rewrite using `[hw']`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hn1 i, rfl⟩)`. Establish `htE : ι ((algebraMap (𝓞 F) (𝓞 E) t : 𝓞 E) : E) ∈ Formalism.L2.Herm.intAf F E` using `hι _`. Establish `hsplit : K *ᵥ z = z + (K - 1) *ᵥ z` using `by rw [Matrix.sub_mulVec, Matrix.one_mulVec, add_sub_cancel]`. Use `show ι ((algebraMap (𝓞 F) (𝓞 E) t : 𝓞 E) : E) • (K *ᵥ z) ∈ _`.
+
+Rewrite using `[hsplit, smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Use `(Formalism.L2.Herm.hatL (F := F) Lb).smul_mem (⟨_, htE⟩ : Formalism.L2.Herm.intAf F E) hz` as an intermediate fact. Rewrite `this` using `[Subring.smul_def]`. Then use the resulting hypothesis. Use `hW _ fun i => ?_` and prove the remaining obligations.
+
+Establish `hent : (ι ((algebraMap (𝓞 F) (𝓞 E) t : 𝓞 E) : E) • ((K - 1) *ᵥ z)) i = ι (n : E) * ∑ j, y (i, j) * (ι (n : E) * z j)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1` using `he (i, j)`. Rewrite using `[← mul_assoc]`.
+
+Express the relevant statement in the definitionally equal form `ι _ * m (i, j) * z j = _`. Rewrite using `[h1, Nat.cast_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨_, sum_mem fun j _ => mul_mem (hy (i, j)) (hZ z hz j), hent⟩`.
+-/
 theorem GlobalTheory.AwayScale.main : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (Lb : Submodule (𝓞 E) (Fin N → E)), Lb.FG → Submodule.span E (Lb : Set (Fin N → E)) = ⊤ →
     ∀ (v : HeightOneSpectrum (𝓞 F)) (k : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), bc (prV (E := E) v) k = 1 →

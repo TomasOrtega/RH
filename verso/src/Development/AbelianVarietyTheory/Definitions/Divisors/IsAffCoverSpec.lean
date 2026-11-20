@@ -89,11 +89,17 @@ section Compare
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
+/- English proof (translation)
+Simplify using `only [filAt, Submodule.mem_iInf, LinearMap.mem_ker, Set.mem_setOf_eq, Module.Basis.coord_apply, holCount]`. Conclude with `forall_congr' fun T => not_imp_comm`.
+-/
 theorem mem_filAt_iff {p : ℕ} {m : ℤ} {a : Alt n} :
     a ∈ filAt n p m ↔ ∀ T, (bas n).repr a T ≠ 0 → (T.card : ℤ) = m ∧ p ≤ holCount T := by
   simp only [filAt, Submodule.mem_iInf, LinearMap.mem_ker, Set.mem_setOf_eq, Module.Basis.coord_apply, holCount]
   exact forall_congr' fun T => not_imp_comm
 
+/- English proof (translation)
+Rewrite using `[mem_filAt_iff, mem_holGe_iff]`. Conclude with `⟨fun h => ⟨fun T hT => by exact_mod_cast (h T hT).1, fun T hT => (h T hT).2⟩, fun h T hT => ⟨by exact_mod_cast h.1 T hT, h.2 T hT⟩⟩`.
+-/
 theorem mem_filAt_nat {p k : ℕ} {a : Alt n} : a ∈ filAt n p k ↔ HasDeg k a ∧ a ∈ holGe n p := by
   rw [mem_filAt_iff, mem_holGe_iff]
   exact ⟨fun h => ⟨fun T hT => by exact_mod_cast (h T hT).1, fun T hT => (h T hT).2⟩,
@@ -101,25 +107,44 @@ theorem mem_filAt_nat {p k : ℕ} {a : Alt n} : a ∈ filAt n p k ↔ HasDeg k a
 
 variable {A}
 
+/- English proof (translation)
+Simplify using `only [smCx, Submodule.mem_iInf, Submodule.mem_comap]`. Both sides reduce to the same expression.
+-/
 theorem mem_smCx_C {p : ℕ} {m : ℤ} {α : smForms A} : α ∈ (smCx A p).C m ↔ ∀ x, α.1 x ∈ filAt n p m := by
   simp only [smCx, Submodule.mem_iInf, Submodule.mem_comap]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mem_smCx_C, HolAtlas.typeGe_iff]`. Simplify using `only [mem_filAt_nat]`. Conclude with `forall_and`.
+-/
 theorem mem_smCx_C_nat {p k : ℕ} {α : smForms A} : α ∈ (smCx A p).C k ↔ A.IsDeg k α ∧ A.TypeGe p α := by
   rw [mem_smCx_C, HolAtlas.typeGe_iff]
   simp only [mem_filAt_nat]
   exact forall_and
 
+/- English proof (translation)
+Use `eq_bot_iff.2 fun α hα => Subtype.ext (funext fun x => (bas n).ext_elem fun T => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `(mem_filAt_iff.1 (mem_smCx_C.1 hα x) T (by simpa using h)).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem smCx_C_neg {p : ℕ} {m : ℤ} (hm : m < 0) : (smCx A p).C m = ⊥ := by
   refine eq_bot_iff.2 fun α hα => Subtype.ext (funext fun x => (bas n).ext_elem fun T => ?_)
   by_contra h
   have := (mem_filAt_iff.1 (mem_smCx_C.1 hα x) T (by simpa using h)).1
   omega
 
+/- English proof (translation)
+Rewrite using `[Cx.Z, Submodule.mem_inf, mem_smCx_C_nat, LinearMap.mem_ker, HolAtlas.mem_closedForms, Subtype.ext_iff]`. Conclude with `⟨fun h => ⟨⟨α.2, h.1.1, h.2⟩, h.1.2⟩, fun h => ⟨⟨h.1.2.1, h.2⟩, h.1.2.2⟩⟩`.
+-/
 theorem mem_smCx_Z_nat {p k : ℕ} {α : smForms A} : α ∈ (smCx A p).Z k ↔ α.1 ∈ A.closedForms k ∧ A.TypeGe p α := by
   rw [Cx.Z, Submodule.mem_inf, mem_smCx_C_nat, LinearMap.mem_ker, HolAtlas.mem_closedForms, Subtype.ext_iff]
   exact ⟨fun h => ⟨⟨α.2, h.1.1, h.2⟩, h.1.2⟩, fun h => ⟨⟨h.1.2.1, h.2⟩, h.1.2.2⟩⟩
 
+/- English proof (translation)
+Rewrite using `[Cx.B]`. Consider the cases of `k with`. Consider the case `zero`. Rewrite using `[smCx_C_neg (by norm_num), Submodule.map_bot, HolAtlas.exactForms_zero, Submodule.mem_bot, Submodule.mem_bot]`. Conclude with `Subtype.ext_iff`.
+
+Consider the case `succ k`. Rewrite using `[show ((k + 1 : ℕ) : ℤ) - 1 = k by push_cast; ring, HolAtlas.mem_exactForms_succ, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨η, hη, rfl⟩`. Conclude with `⟨η, η.2, (mem_smCx_C_nat.1 hη).1, rfl⟩`.
+
+Introduce and unpack `⟨η, hη, hk, e⟩`. Conclude with `⟨⟨η, hη⟩, mem_smCx_C_nat.2 ⟨hk, fun _ _ _ => Nat.zero_le _⟩, Subtype.ext e.symm⟩`.
+-/
 theorem mem_smCx_B_nat {k : ℕ} {α : smForms A} : α ∈ (smCx A 0).B k ↔ α.1 ∈ A.exactForms k := by
   rw [Cx.B]
   cases k with
@@ -136,6 +161,11 @@ theorem mem_smCx_B_nat {k : ℕ} {α : smForms A} : α ∈ (smCx A 0).B k ↔ α
 
 variable (A)
 
+/- English proof (translation)
+Introduce `m α hα`. Use `⟨?_, (A.isDga).d_d α⟩` and prove the remaining obligations. Break down `lt_or_ge m 0 with hm | hm` into its components or cases. Rewrite `hα` using `[smCx_C_neg hm, Submodule.mem_bot]`. Rewrite using `[hα, map_zero]`.
+
+Conclude with `zero_mem _`. Use `lift m to ℕ using hm`. Rewrite `hα` using `[mem_smCx_C_nat]`. Conclude with `(mem_smCx_C_nat (k := m + 1)).2 ⟨hα.1.dExt, hα.2.dExt⟩`.
+-/
 theorem isCx_smCx (p : ℕ) : (smCx A p).IsCx := by
   intro m α hα
   refine ⟨?_, (A.isDga).d_d α⟩
@@ -155,6 +185,9 @@ def zEquiv (k : ℕ) : (smCx A 0).Z k ≃ₗ[ℂ] A.closedForms k where
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_zEquiv (k : ℕ) (α : (smCx A 0).Z k) : (zEquiv A k α : A.Fld) = α.1.1 := rfl
 
 def hsmEquiv (k : ℕ) : HSm A k ≃ₗ[ℂ] A.HSm k :=
@@ -163,9 +196,17 @@ def hsmEquiv (k : ℕ) : HSm A k ≃ₗ[ℂ] A.HSm k :=
     rw [Submodule.mem_map_equiv]
     exact mem_smCx_B_nat)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hsmEquiv_mk (k : ℕ) (α : (smCx A 0).Z k) :
     hsmEquiv A k (Submodule.Quotient.mk α) = HolAtlas.HSm.mk A k (zEquiv A k α) := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨α, hα, rfl⟩`. Conclude with `⟨zEquiv A k α, (mem_smCx_Z_nat.1 hα).2, rfl⟩`. Introduce and unpack `⟨β, hβ, e⟩`. Use `⟨(zEquiv A k).symm β, mem_smCx_Z_nat.2 ⟨β.2, hβ⟩, (hsmEquiv A k).injective ?_⟩` and prove the remaining obligations.
+
+Conclude with `e`.
+-/
 theorem mem_FSm_iff (p k : ℕ) (c : HSm A k) : c ∈ FSm A p k ↔ hsmEquiv A k c ∈ HolAtlas.HSm.fil A p k := by
   constructor
   · rintro ⟨α, hα, rfl⟩
@@ -174,6 +215,9 @@ theorem mem_FSm_iff (p k : ℕ) (c : HSm A k) : c ∈ FSm A p k ↔ hsmEquiv A k
     refine ⟨(zEquiv A k).symm β, mem_smCx_Z_nat.2 ⟨β.2, hβ⟩, (hsmEquiv A k).injective ?_⟩
     exact e
 
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[Submodule.mem_map_equiv, mem_FSm_iff, LinearEquiv.apply_symm_apply]`.
+-/
 theorem map_FSm (p k : ℕ) : (FSm A p k).map (hsmEquiv A k).toLinearMap = HolAtlas.HSm.fil A p k := by
   ext c
   rw [Submodule.mem_map_equiv, mem_FSm_iff, LinearEquiv.apply_symm_apply]
@@ -184,15 +228,30 @@ section Basic₂
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
+/- English proof (translation)
+The claim follows from `map_zero _`.
+-/
 example : dL A 0 = 0 := map_zero _
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (m : ℤ) : Module ℂ (HSm A m) := inferInstance
 
+/- English proof (translation)
+The claim follows from `Submodule.zero_mem _`.
+-/
 example (m : ℤ) : (0 : HSm A m) ∈ FSm A 3 m := Submodule.zero_mem _
 
+/- English proof (translation)
+The claim follows from `(hsmEquiv _ 0).finrank_eq.trans HolAtlas.HSm.finrank_std₀`.
+-/
 example : Module.finrank ℂ (HSm (HolAtlas.std 0) (0 : ℕ)) = 1 :=
   (hsmEquiv _ 0).finrank_eq.trans HolAtlas.HSm.finrank_std₀
 
+/- English proof (translation)
+The claim follows from `HolAtlas.dExt_zFld_ne_zero`.
+-/
 example : dF (HolAtlas.std 1) HolAtlas.zFld ≠ 0 := HolAtlas.dExt_zFld_ne_zero
 
 end Basic₂
@@ -201,18 +260,36 @@ section Inhab
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
+/- English proof (translation)
+The claim follows from `(h.smooth i T).mono Set.inter_subset_left compat x x' _ hx := h.compat x x' hx`.
+-/
 theorem FormOn.of_isForm {α : A.Fld} (h : A.IsForm α) (S : Set M) : FormOn A S α where
   smooth i T := (h.smooth i T).mono Set.inter_subset_left
   compat x x' _ hx := h.compat x x' hx
 
+/- English proof (translation)
+Establish `h` using `(HolAtlas.isForm_algebra M n A).1`. Establish `h0` using `((HolAtlas.isForm_algebra M n A).2 0 1 1 h h).2.2`. Rewrite `h0` using `[zero_smul]`. Conclude with `FormOn.of_isForm A h0 S`.
+-/
 theorem FormOn.zero (S : Set M) : FormOn A S 0 := by
   have h := (HolAtlas.isForm_algebra M n A).1
   have h0 := ((HolAtlas.isForm_algebra M n A).2 0 1 1 h h).2.2
   rw [zero_smul] at h0
   exact FormOn.of_isForm A h0 S
 
+/- English proof (translation)
+The claim follows from `FormOn.of_isForm A (HolAtlas.isForm_algebra M n A).1 S`.
+-/
 example (S : Set M) : FormOn A S 1 := FormOn.of_isForm A (HolAtlas.isForm_algebra M n A).1 S
 
+/- English proof (translation)
+Use `letI := ffAlg (𝟙 (Sp K))`. Establish `hinf : ∀ I : Finset Unit, I.inf (fun _ : Unit => (⊤ : (Sp K).Opens)) = ⊤` using `fun I => by simp`. Use `⟨rfl, fun I _ => ?_, ?_, fun I => ?_, fun I _ y => ?_⟩` and prove the remaining obligations. Rewrite using `[hinf]`. Conclude with `isAffineOpen_top _`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hinf]`. Discharge the goal by the elementary cases of `trivial`. Express the relevant statement in the definitionally equal form `y ∈ (⊤ : Subalgebra K (Sp K).functionField) ↔ _`. Simplify using `only [Algebra.mem_top, true_iff]`.
+
+Establish `key : ∀ (V : (Sp K).Opens) (hV : V = ⊤) (h : genericPoint (Sp K) ∈ V), Function.Surjective ((Sp K).presheaf.germ V (genericPoint (Sp K)) h).hom`. Introduce `V hV h`. Substitute `hV` using the available equality. Use `haveI : Nonempty (⊤ : (Sp K).Opens) := ⟨⟨genericPoint (Sp K), trivial⟩⟩`. Establish `hF` using `functionField_isFractionRing_of_isAffineOpen (Sp K) ⊤ (isAffineOpen_top _)`.
+
+Establish `hK : IsField Γ(Sp K, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv.isField (Field.toIsField K)`. Conclude with `(IsFractionRing.surjective_iff_isField (R := Γ(Sp K, ⊤)) (K := (Sp K).functionField)).2 hK`. Conclude with `key _ (hinf I) _ y`.
+-/
 theorem isAffCover_spec (K : Type) [Field K] :
     letI := ffAlg (𝟙 (Sp K))
     IsAffCover (𝟙 (Sp K)) (fun _ : Unit => (⊤ : (Sp K).Opens)) (fun _ => ⊤) := by

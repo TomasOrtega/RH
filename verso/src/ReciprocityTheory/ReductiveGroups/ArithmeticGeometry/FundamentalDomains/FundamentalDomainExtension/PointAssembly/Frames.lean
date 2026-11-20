@@ -7,10 +7,16 @@ open scoped ComplexConjugate
 
 noncomputable section
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_dom_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (x : Frame X.Ψ r) : x ∈ X.dom ↔ ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧
       ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gram_eq {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (M : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G M = M.transpose * G.map τ * M.map (starRingEnd ℂ) := by
@@ -19,6 +25,9 @@ theorem gram_eq {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix (F
     Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Rewrite `h` using `[gram_eq, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[h0, zero_mul, zero_mul]`.
+-/
 theorem det_ne_of_gram {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (M : Matrix (Fin r) (Fin r) ℂ) (h : (gram τ G M).det ≠ 0) : M.det ≠ 0 := by
   rw [gram_eq, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose] at h
@@ -26,9 +35,17 @@ theorem det_ne_of_gram {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Ma
   apply h
   rw [h0, zero_mul, zero_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lminor_last {r : ℕ} (M : Matrix (Fin r) (Fin r) ℂ) : lminor M (Fin.last r) = M.det := by
   rfl
 
+/- English proof (translation)
+Establish `h1` using `h (Fin.last r)`. Establish `h2 : dmin X.Gm x τ (Fin.last r) ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0]`. Simplify using `at h1`.
+
+Unfold `dmin at h2`. Rewrite `h2` using `[lminor_last]`. Conclude with `det_ne_of_gram _ _ _ h2`.
+-/
 theorem det_of_minors {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (x : Frame X.Ψ r) (τ : X.Ψ) (h : ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re) :
     (mat x τ).det ≠ 0 := by
@@ -41,6 +58,11 @@ theorem det_of_minors {E : Type} [Field E] [NumberField E] [IsCMField E] {r : �
   rw [lminor_last] at h2
   exact det_ne_of_gram _ _ _ h2
 
+/- English proof (translation)
+Introduce `r X x`. Use function extensionality and compare the values at `τ`. Establish `h1 : X.lowBlock 0 τ = 1`. Use extensionality with `a b`. Simplify using `[Data.lowBlock, Matrix.one_apply]`.
+
+Simplify using `only [Data.xZ, h1, Matrix.mul_one]`. Both sides reduce to the same expression.
+-/
 theorem chart_zero_eq_alt {E : Type} [Field E] [NumberField E] [IsCMField E] : XZZero E := by
   intro r X x
   funext τ
@@ -50,6 +72,11 @@ theorem chart_zero_eq_alt {E : Type} [Field E] [NumberField E] [IsCMField E] : X
   simp only [Data.xZ, h1, Matrix.mul_one]
   rfl
 
+/- English proof (translation)
+Introduce `r X la x hx`. Establish `hx' : ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re` using `hx`. Unfold `Data.nfac`. Use `Finset.prod_pos (fun τ _ => Finset.prod_pos (fun i _ => Real.rpow_pos_of_pos ?_ _))` and prove the remaining obligations. Establish `hne : ∀ j, dmin X.Gm x τ j ≠ 0`.
+
+Introduce `j h0`. Use `(hx' τ).2 j` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Conclude with `norm_pos_iff.mpr (div_ne_zero (hne _) (hne _))`.
+-/
 theorem normFactor_pos_alt {E : Type} [Field E] [NumberField E] [IsCMField E] : NfacPos E := by
   intro r X la x hx
   have hx' : ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧
@@ -63,6 +90,15 @@ theorem normFactor_pos_alt {E : Type} [Field E] [NumberField E] [IsCMField E] : 
     simp at this
   exact norm_pos_iff.mpr (div_ne_zero (hne _) (hne _))
 
+/- English proof (translation)
+Introduce `r X n x hn hx`. Rewrite `hx`, the goal using `[mem_dom_iff]`. Introduce `τ`. Establish `hcol : ∀ a, col (mat (X.lmulC n x) τ) a = Matrix.mulVec (n τ) (col (mat x τ) a)`. Introduce `a`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[col, mat, Data.lmulC, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Both sides reduce to the same expression. Establish `hg : gram τ.1 X.Gm (mat (X.lmulC n x) τ) = gram τ.1 X.Gm (mat x τ)`. Use extensionality with `a b`.
+
+Simplify using `only [gram, Matrix.of_apply, hcol, hn τ]`. Establish `hd : ∀ i, dmin X.Gm (X.lmulC n x) τ i = dmin X.Gm x τ i`. Introduce `i`. Simplify using `only [dmin, hg]`. Establish `hpos : ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm (X.lmulC n x) τ i).re`.
+
+Introduce `i`. Rewrite using `[hd]`. Conclude with `(hx τ).2 i`. Conclude with `⟨det_of_minors X (X.lmulC n x) τ hpos, hpos⟩`.
+-/
 theorem unitary_domain {E : Type} [Field E] [NumberField E] [IsCMField E] : UnitDom E := by
   intro r X n x hn hx
   rw [mem_dom_iff] at hx ⊢
@@ -85,6 +121,15 @@ theorem unitary_domain {E : Type} [Field E] [NumberField E] [IsCMField E] : Unit
     exact (hx τ).2 i
   exact ⟨det_of_minors X (X.lmulC n x) τ hpos, hpos⟩
 
+/- English proof (translation)
+Introduce `r X x hx`. Rewrite using `[mem_dom_iff]`. Introduce `τ`. Establish `hdm : ∀ i : Fin (r + 1), dmin X.Gm x τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Introduce `i`.
+
+Simplify using `only [dmin, lminor, hx τ]`. Rewrite using `[Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Simplify using `[psgn, Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ))]`. Establish `hps : ∀ i : ℕ, psgn X.p0 i ≠ 0`. Introduce `i`.
+
+Unfold `psgn`. Use `Finset.prod_ne_zero_iff.mpr (fun a _ => ?_)` and prove the remaining obligations. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hpos : ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re`.
+
+Introduce `i`. Rewrite using `[hdm, Complex.ofReal_re]`. Conclude with `mul_self_pos.mpr (hps i)`. Conclude with `⟨det_of_minors X x τ hpos, hpos⟩`.
+-/
 theorem orthonormal_domain {E : Type} [Field E] [NumberField E] [IsCMField E] : OrthoDom E := by
   intro r X x hx
   rw [mem_dom_iff]
@@ -106,6 +151,15 @@ theorem orthonormal_domain {E : Type} [Field E] [NumberField E] [IsCMField E] : 
     exact mul_self_pos.mpr (hps i)
   exact ⟨det_of_minors X x τ hpos, hpos⟩
 
+/- English proof (translation)
+Unfold `Data.opN`. Establish `key : ∀ v : Fin n → ℂ, √(∑ i, ‖Matrix.mulVec (t • A) v i‖ ^ 2) = ‖t‖ * √(∑ i, ‖Matrix.mulVec A v i‖ ^ 2)`. Introduce `v`. Simplify using `only [Matrix.smul_mulVec, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, ← Finset.mul_sum]`. Rewrite using `[Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+
+Use `open scoped Pointwise in`. Establish `hset : {s | ∃ v : Fin n → ℂ, v ≠ 0 ∧ s = √(∑ i, ‖Matrix.mulVec (t • A) v i‖ ^ 2) / √(∑ j, ‖v j‖ ^ 2)} = ‖t‖ • {s | ∃ v : Fin n → ℂ, v ≠ 0 ∧ s = √(∑ i, ‖Matrix.mulVec A v i‖ ^ 2) / √(∑ j, ‖v j‖ ^ 2)}`. Use extensionality with `s`. Simplify using `only [Set.mem_setOf_eq, Set.mem_smul_set, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨_, ⟨v, hv, rfl⟩, by rw [key, mul_div_assoc]⟩`. Introduce and unpack `⟨_, ⟨v, hv, rfl⟩, rfl⟩`. Conclude with `⟨v, hv, by rw [key, mul_div_assoc]⟩`. Use `open scoped Pointwise in`.
+
+Rewrite using `[hset, Real.sSup_smul_of_nonneg (norm_nonneg t), smul_eq_mul]`.
+-/
 theorem opN_smul {m n : ℕ} (t : ℂ) (A : Matrix (Fin m) (Fin n) ℂ) :
     Data.opN (t • A) = ‖t‖ * Data.opN A := by
   unfold Data.opN
@@ -128,6 +182,11 @@ theorem opN_smul {m n : ℕ} (t : ℂ) (A : Matrix (Fin m) (Fin n) ℂ) :
   open scoped Pointwise in
   rw [hset, Real.sSup_smul_of_nonneg (norm_nonneg t), smul_eq_mul]
 
+/- English proof (translation)
+Introduce `r X t Z`. Unfold `Data.zN`. Establish `h : ∀ τ, Data.opN (Matrix.of ((t • Z) τ)) = ‖t‖ * Data.opN (Matrix.of (Z τ))`. Introduce `τ`. Rewrite using `[← opN_smul]`.
+
+Both sides reduce to the same expression. Simplify using `only [h]`. Rewrite using `[Real.mul_iSup_of_nonneg (norm_nonneg t)]`.
+-/
 theorem chartNorm_smul {E : Type} [Field E] [NumberField E] [IsCMField E] : ZnSmul E := by
   intro r X t Z
   unfold Data.zN
@@ -138,6 +197,11 @@ theorem chartNorm_smul {E : Type} [Field E] [NumberField E] [IsCMField E] : ZnSm
   simp only [h]
   rw [Real.mul_iSup_of_nonneg (norm_nonneg t)]
 
+/- English proof (translation)
+Introduce `r X Z`. Unfold `Data.zN`. Use `Real.iSup_nonneg (fun τ => ?_)` and prove the remaining obligations. Unfold `Data.opN`. Use `Real.sSup_nonneg (fun t ht => ?_)` and prove the remaining obligations.
+
+Take `⟨v, _, rfl⟩` from `ht`. Check the signs of the components of the expression.
+-/
 theorem chartNorm_nonneg {E : Type} [Field E] [NumberField E] [IsCMField E] : ZnNonneg E := by
   intro r X Z
   unfold Data.zN
@@ -147,6 +211,19 @@ theorem chartNorm_nonneg {E : Type} [Field E] [NumberField E] [IsCMField E] : Zn
   obtain ⟨v, _, rfl⟩ := ht
   positivity
 
+/- English proof (translation)
+Introduce `r X x b hb hxb τ`. Rewrite `hxb` using `[mem_dom_iff]`. Establish `hdet : (mat (rmul x b) τ).det ≠ 0` using `(hxb τ).1`. Establish `hdx : (mat x τ).det ≠ 0`. Introduce `h0`.
+
+Apply `hdet` to reduce the goal to its premises. Rewrite using `[show mat (rmul x b) τ = mat x τ * mat b τ from rfl, Matrix.det_mul, h0, zero_mul]`. Establish `hcol : ∀ a, col (mat (rmul x b) τ) a = ∑ c, b τ c a • col (mat x τ) c`. Introduce `a`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[col, mat, rmul, Matrix.mul_apply, Finset.sum_apply, mul_comm]`. Both sides reduce to the same expression. Establish `hli : ∀ y : Matrix (Fin r) (Fin r) ℂ, y.det ≠ 0 → LinearIndependent ℂ (fun a : Fin X.p0 => col y (Fin.castLE X.p0_le a))`. Introduce `y hy`. Establish `h1` using `Matrix.linearIndependent_cols_of_isUnit ((Matrix.isUnit_iff_isUnit_det y).mpr (isUnit_iff_ne_zero.mpr hy))`.
+
+Conclude with `h1.comp (Fin.castLE X.p0_le) (Fin.castLE_injective _)`. Establish `hle : Submodule.span ℂ (Set.range fun a : Fin X.p0 => col (mat (rmul x b) τ) (Fin.castLE X.p0_le a)) ≤ Submodule.span ℂ (Set.range fun a : Fin X.p0 => col (mat x τ) (Fin.castLE X.p0_le a))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Simplify using `only [hcol]`.
+
+Use `Submodule.sum_mem _ (fun c _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hc : (c : ℕ) < X.p0`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨c, hc⟩, rfl⟩)`. Establish `ha` using `a.isLt`. Establish `hz : b τ c (Fin.castLE X.p0_le a) = 0` using `(hb τ).2 c (Fin.castLE X.p0_le a) (by rw [Fin.lt_iff_val_lt_val, Fin.coe_castLE]; omega)`.
+
+Rewrite using `[hz, zero_smul]`. Conclude with `Submodule.zero_mem _`. Use `(Submodule.eq_of_le_of_finrank_eq hle ?_).symm` and prove the remaining obligations. Rewrite using `[finrank_span_eq_card (hli _ hdet), finrank_span_eq_card (hli _ hdx)]`.
+-/
 theorem borel_flag_translate {E : Type} [Field E] [NumberField E] [IsCMField E] : BorFlag E := by
   classical
   intro r X x b hb hxb τ

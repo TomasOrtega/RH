@@ -12,11 +12,27 @@ variable {G Γ W K : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerPro
   [NumberField K] [StarRing K] {ι : Γ →* G} {S : CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W}
   {J : Subgroup G} {χ : J →* ℂˣ} (P : ClassPres ι S σ ρ J χ)
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `(P.stabI c).surjective g`. Rewrite using `[← P.coef_act, f.2 c g]`.
+-/
 theorem coef_inv (f : S.Forms) (c : S.Cl) (g : stab ι J (P.y c)) :
     (χ (stabK ι g) : ℂ) • ρ (g : Γ) (P.coef ((f : S.Cl → S.V) c)) = P.coef ((f : S.Cl → S.V) c) := by
   obtain ⟨g, rfl⟩ := (P.stabI c).surjective g
   rw [← P.coef_act, f.2 c g]
 
+/- English proof (translation)
+Establish `hs` using `P.dec_spec (ι γ * P.y c * k)`. Establish `hc : P.decC (ι γ * P.y c * k) = c` using `(P.reps (ι γ * P.y c * k)).unique ⟨_, _, hs⟩ ⟨γ, k, rfl⟩`. Unfold `ClassPres.ext`. Rewrite `hs`, the goal using `[hc]`. Generalize the expression as in `P.decG (ι γ * P.y c * k) = γ' at hs ⊢`.
+
+Generalize the expression as in `P.decK (ι γ * P.y c * k) = k' at hs ⊢`. Establish `e : (P.y c)⁻¹ * ι (γ⁻¹ * γ') * P.y c = (k : G) * (k' : G)⁻¹`. Establish `h2 : ι γ' = ι γ * P.y c * k * (k' : G)⁻¹ * (P.y c)⁻¹` using `by rw [hs]; group`. Rewrite using `[map_mul, map_inv, h2]`. Use `group`.
+
+Establish `hm : γ⁻¹ * γ' ∈ stab ι J (P.y c)`. Rewrite using `[mem_stab, e]`. Conclude with `J.mul_mem k.2 (J.inv_mem k'.2)`. Establish `hk : stabK ι (⟨_, hm⟩ : stab ι J (P.y c)) = k' * k⁻¹`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [stabK]`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `hi` using `coef_inv P f c ⟨_, hm⟩`. Rewrite `hi` using `[hk]`.
+
+Use `conv_rhs => rw [← hi]`. Rewrite using `[map_smul, smul_smul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 1`. Rewrite using `[map_mul, map_inv, ← Units.val_mul]`. Use `congr 1`.
+
+Rewrite using `[mul_comm, inv_mul_cancel_right]`. Simplify using the standard rewrite rules.
+-/
 theorem ext_dec (f : S.Forms) (γ : Γ) (c : S.Cl) (k : J) :
     P.ext (f : S.Cl → S.V) (ι γ * P.y c * k) = (χ k : ℂ) • ρ γ (P.coef ((f : S.Cl → S.V) c)) := by
   have hs := P.dec_spec (ι γ * P.y c * k)
@@ -45,11 +61,19 @@ theorem ext_dec (f : S.Forms) (γ : Γ) (c : S.Cl) (k : J) :
     rw [mul_comm, inv_mul_cancel_right]
   · simp
 
+/- English proof (translation)
+Use `ext_dec P f 1 c 1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem ext_y (f : S.Forms) (c : S.Cl) :
     P.ext (f : S.Cl → S.V) (P.y c) = P.coef ((f : S.Cl → S.V) c) := by
   have := ext_dec P f 1 c 1
   simpa using this
 
+/- English proof (translation)
+Introduce `f γ h k`. Take `⟨c, ⟨γ', k', rfl⟩, -⟩` from `P.reps h`. Establish `e : ι γ * (ι γ' * P.y c * k') * k = ι (γ * γ') * P.y c * (k' * k : J)`. Simplify using `[mul_assoc]`. Rewrite using `[e, ext_dec, ext_dec, map_mul, map_mul, map_smul, smul_smul, Units.val_mul, mul_comm]`.
+
+Both sides reduce to the same expression.
+-/
 theorem extMem : P.ExtMem := by
   intro f γ h k
   obtain ⟨c, ⟨γ', k', rfl⟩, -⟩ := P.reps h
@@ -58,6 +82,9 @@ theorem extMem : P.ExtMem := by
   rw [e, ext_dec, ext_dec, map_mul, map_mul, map_smul, smul_smul, Units.val_mul, mul_comm]
   rfl
 
+/- English proof (translation)
+Introduce `f f'`. Unfold `adInner CSD.csum`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[ext_y, ext_y, P.coef_pair, map_mul, map_inv₀, map_natCast, CSD.wt, ← Nat.card_congr (P.stabI c).toEquiv, Nat.card_eq_fintype_card]`.
+-/
 theorem isom : P.Isom := by
   intro f f'
   unfold adInner CSD.csum
@@ -68,8 +95,14 @@ theorem isom : P.Isom := by
 
 def bW : Module.Basis S.ιV ℂ W := Module.Basis.mk P.coef_li (by rw [P.coef_span])
 
+/- English proof (translation)
+Simplify using `[bW]`.
+-/
 theorem bW_apply (j : S.ιV) : bW P j = P.coef (S.bV j) := by simp [bW]
 
+/- English proof (translation)
+Establish `: P.coef x = ∑ i, σ (S.bV.repr x i) • bW P i` using `by conv_lhs => rw [← S.bV.sum_repr x]`. Rewrite using `[map_sum]`. Simplify using `only [map_smulₛₗ, bW_apply]`. Rewrite using `[this, Module.Basis.repr_sum_self]`.
+-/
 theorem repr_coef (x : S.V) (j : S.ιV) : (bW P).repr (P.coef x) j = σ (S.bV.repr x j) := by
   have : P.coef x = ∑ i, σ (S.bV.repr x i) • bW P i := by
     conv_lhs => rw [← S.bV.sum_repr x]
@@ -77,6 +110,9 @@ theorem repr_coef (x : S.V) (j : S.ιV) : (bW P).repr (P.coef x) j = σ (S.bV.re
     simp only [map_smulₛₗ, bW_apply]
   rw [this, Module.Basis.repr_sum_self]
 
+/- English proof (translation)
+Introduce `x x' h`. Apply `S.bV.repr.injective` to reduce the goal to its premises. Use extensionality with `j`. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[← repr_coef P, ← repr_coef P, h]`.
+-/
 theorem coef_injective : Function.Injective P.coef := by
   intro x x' h
   apply S.bV.repr.injective
@@ -84,6 +120,11 @@ theorem coef_injective : Function.Injective P.coef := by
   apply σ.injective
   rw [← repr_coef P, ← repr_coef P, h]
 
+/- English proof (translation)
+Introduce `f f' h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Apply `coef_injective P` to reduce the goal to its premises. Rewrite using `[← ext_y, ← ext_y]`.
+
+Conclude with `congrFun h _`.
+-/
 theorem extL_injective : Function.Injective P.extL := by
   intro f f' h
   apply Subtype.ext
@@ -92,12 +133,24 @@ theorem extL_injective : Function.Injective P.extL := by
   rw [← ext_y, ← ext_y]
   exact congrFun h _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Take `⟨c, ⟨γ, k, rfl⟩, -⟩` from `P.reps g`. Rewrite using `[hF γ _ k, hF' γ _ k, h]`.
+-/
 theorem eq_of_reps {F F' : G → W} (hF : F ∈ AdForms ι ρ J χ) (hF' : F' ∈ AdForms ι ρ J χ)
     (h : ∀ c, F (P.y c) = F' (P.y c)) : F = F' := by
   funext g
   obtain ⟨c, ⟨γ, k, rfl⟩, -⟩ := P.reps g
   rw [hF γ _ k, hF' γ _ k, h]
 
+/- English proof (translation)
+Use `letI : Algebra K ℂ := σ.toAlgebra`. Set `Φ : S.Forms →ₗ[K] (S.Cl × S.ιV → K)` to `{ toFun := fun f p => S.bV.repr ((f : S.Cl → S.V) p.1) p.2 map_add' := by intro f f'; funext p; simp map_smul' := by intro a f; funext p; simp }`. Establish `hΦ : LinearMap.ker Φ = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `f f' h`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Apply `S.bV.repr.injective` to reduce the goal to its premises. Use extensionality with `j`. Conclude with `congrFun h (c, j)`.
+
+Establish `h1` using `S.basis.linearIndependent.map' Φ hΦ`. Establish `h2` using `(linearIndependent_algebraMap_comp_iff (S := ℂ)).2 h1`. Set `Ψ : (G → W) →ₗ[ℂ] (S.Cl × S.ιV → ℂ)` to `{ toFun := fun F p => (bW P).repr (F (P.y p.1)) p.2 map_add' := by intro f f'; funext p; simp map_smul' := by intro a f; funext p; simp }`. Use `LinearIndependent.of_comp Ψ ?_` and prove the remaining obligations. Establish `e : (⇑Ψ ∘ fun i => P.extL (S.basis i)) = fun i => ⇑(algebraMap K ℂ) ∘ (⇑Φ ∘ ⇑S.basis) i`.
+
+Use function extensionality and compare the values at `i p`. Use `show (bW P).repr (P.ext _ (P.y p.1)) p.2 = σ (S.bV.repr ((S.basis i : S.Cl → S.V) p.1) p.2)`. Rewrite using `[ext_y, repr_coef]`. Rewrite using `[e]`. Conclude with `h2`.
+-/
 theorem ext_li : LinearIndependent ℂ (fun i => P.extL (S.basis i)) := by
   letI : Algebra K ℂ := σ.toAlgebra
   let Φ : S.Forms →ₗ[K] (S.Cl × S.ιV → K) :=
@@ -138,6 +191,19 @@ def avgForm (S : CSD K) (c : S.Cl) (x : S.V) : S.Forms :=
       exact Fintype.sum_equiv (Equiv.mulLeft γ) _ _ fun _ => rfl
     · simp [Pi.single_eq_of_ne h]⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `extMem P f`. Introduce `F hF`.
+
+Establish `hmem : ∀ M : Submodule ℂ (G → W), (∀ f, P.extL f ∈ M) → (∑ c, ∑ j, ((Fintype.card (S.Gam c) : ℂ)⁻¹ * (bW P).repr (F (P.y c)) j) • P.extL (avgForm S c (S.bV j))) ∈ M` using `fun M hM => M.sum_mem fun c _ => M.sum_mem fun j _ => M.smul_mem _ (hM _)`. Establish `key : F = ∑ c, ∑ j, ((Fintype.card (S.Gam c) : ℂ)⁻¹ * (bW P).repr (F (P.y c)) j) • P.extL (avgForm S c (S.bV j))`. Use `eq_of_reps P hF (hmem _ (extMem P)) fun c => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, Pi.smul_apply, ClassPres.extL_apply, ext_y]`. Rewrite using `[Finset.sum_eq_single c]`.
+
+Establish `hg : ∀ g : S.Gam c, ∑ j, (bW P).repr (F (P.y c)) j • P.coef (S.ρ c g (S.bV j)) = F (P.y c)`. Introduce `g`. Establish `h1` using `hF (P.stabI c g : Γ) (P.y c) (stabK ι (P.stabI c g))`. Rewrite `h1` using `[stabK_spec]`. Use `conv_rhs => rw [h1, ← (bW P).sum_repr (F (P.y c))]`.
+
+Simplify using `only [P.coef_act, map_sum, map_smul, Finset.smul_sum, bW_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => smul_comm _ _ _`. Simplify using `only [avgForm, Pi.single_eq_same, map_sum, mul_smul, ← Finset.smul_sum]`. Simplify using `only [Finset.smul_sum (s := (Finset.univ : Finset (S.Gam c)))]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [hg, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀, one_smul]`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Introduce `c' _ hc`. Simplify using `[avgForm, Pi.single_eq_of_ne (Ne.symm hc)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[key]`. Conclude with `hmem _ fun f => Submodule.subset_span ⟨f, rfl⟩`.
+-/
 theorem ext_span : Submodule.span ℂ (Set.range P.extL) = AdForms ι ρ J χ := by
   classical
   apply le_antisymm
@@ -177,6 +243,9 @@ end GlobalTheory.PresBasic
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ P` and use `⟨PresBasic.extMem P, PresBasic.isom P, ⟨PresBasic.ext_li P, PresBasic.ext_span P⟩, PresBasic.ext_y P, PresBasic.extL_injective P⟩`.
+-/
 theorem classPres_basic : ∀ {G Γ W K : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] [Field K] [NumberField K] [StarRing K] (ι : Γ →* G) (S : CSD K) (σ : K →+* ℂ) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) (P : ClassPres ι S σ ρ J χ), P.ExtMem ∧ P.Isom ∧ P.ExtBij ∧ (∀ (f : S.Forms) c, P.ext (f : S.Cl → S.V) (P.y c) = P.coef ((f : S.Cl → S.V) c)) ∧ Function.Injective P.extL :=
   fun _ _ _ _ _ _ P => ⟨PresBasic.extMem P, PresBasic.isom P, ⟨PresBasic.ext_li P, PresBasic.ext_span P⟩,
     PresBasic.ext_y P, PresBasic.extL_injective P⟩

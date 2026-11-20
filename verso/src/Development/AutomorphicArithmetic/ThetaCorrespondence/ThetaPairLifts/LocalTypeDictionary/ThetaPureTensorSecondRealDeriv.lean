@@ -15,6 +15,9 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 noncomputable section
 namespace GlobalTheory.ThetaRealDeriv
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `_ _ D ψ θ _ _ W W₁ X A A₁ B α β _ ωA ωB _ _ e Bs Γ Xc om om' h _ _ R Rf hM f φ u f₁ _ _ hact hφ hvac`. Take `rfl` from `h.ψ`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x : Fin W₁.rank × Fin (W.rank + W₁.rank) → v.adicCompletion D.host.F | ∀ i, x i ∈ v.adicCompletionIntegers D.host.F} 1` using `(hvac.and hM.triple.geo.hM'.std).mono fun v h => h.1.trans h.2`. Conclude with `exists_line D W₁ X e Bs hM.triple.base Γ.V' Γ.W (h.JW₁.trans (neg_one_smul _ _)) h.JX hM.triple.geo.hV'.herm Γ.M' u _ _ (GlobalTheory.TensUniq.pure_mem_schA f φ hφ hstd) (GlobalTheory.TensUniq.pure_mem_schA f₁ φ hφ hstd) fun x => hact _ (GlobalTheory.ThK.EvUniqInf.rest_pure f φ h …`.
+-/
 theorem theta_pure_tensor_second_real_deriv : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
@@ -59,6 +62,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThetaRealDeriv.theta_pure_tensor_second_real_deriv | exact _root_.GlobalTheory.ThetaRealDeriv.theta_pure_tensor_second_real_deriv | (intros; apply _root_.GlobalTheory.ThetaRealDeriv.theta_pure_tensor_second_real_deriv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_pure_tensor_hasDerivAt_second : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

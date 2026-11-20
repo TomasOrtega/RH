@@ -15,6 +15,9 @@ variable {D : D7} {Tw : TwForms D} {inQ : D.what₂.Tup → HeightOneSpectrum (�
   {T : Formalism.L2.Herm.TwChTied D inQ} {H : Formalism.L2.Herm.HermColsCh D} {J : Formalism.L2.Herm.TwChJointS T H}
   {F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u)}
 
+/- English proof (translation)
+The claim follows from `Nat.succ_le_succ (Nat.zero_le i)`.
+-/
 theorem one_le (i : ℕ) : 1 ≤ i + 1 := Nat.succ_le_succ (Nat.zero_le i)
 
 set_option maxHeartbeats 4000000 in

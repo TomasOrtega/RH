@@ -22,6 +22,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SiegelLift
 
+/- English proof (translation)
+Set `τ : B ⟶ (Spec B).presheaf.stalk (s y)` to `StructureSheaf.toStalk B (s y)`. Use `⟨τ ≫ s.stalkMap y, ?_, ?_⟩` and prove the remaining obligations. Establish `hs : (s.stalkMap y).hom.FormallySmooth` using `Scheme.Hom.mem_smoothLocus.mp (s.smoothLocus_eq_top.ge (Set.mem_univ y))`. Use `letI : Algebra B ((Spec B).presheaf.stalk (s y)) := StructureSheaf.stalkAlgebra B (s y)`. Use `(s y).isPrime` as an intermediate fact.
+
+Establish `: IsLocalization.AtPrime ((Spec B).presheaf.stalk (s y)) (s y).asIdeal` using `StructureSheaf.IsLocalization.to_stalk B (s y)`. Establish `h₀ : Algebra.FormallySmooth B ((Spec B).presheaf.stalk (s y))` using `Algebra.FormallySmooth.of_isLocalization (s y).asIdeal.primeCompl`. Conclude with `RingHom.FormallySmooth.comp (RingHom.formallySmooth_algebraMap.2 h₀) hs`. Establish `e : (Spec B).fromSpecStalk (s y) = Spec.map τ` using `Spec.fromSpecStalk_eq' _ _`. Rewrite using `[Spec.map_comp, ← Scheme.SpecMap_stalkMap_fromSpecStalk, e]`.
+-/
 private theorem formallySmooth_stalk {B : CommRingCat.{0}} {X : Scheme.{0}} (s : X ⟶ Spec B) [Smooth s] (y : X) :
     ∃ α : B ⟶ X.presheaf.stalk y, α.hom.FormallySmooth ∧ Spec.map α = X.fromSpecStalk y ≫ s := by
   let τ : B ⟶ (Spec B).presheaf.stalk (s y) := StructureSheaf.toStalk B (s y)
@@ -38,6 +43,11 @@ private theorem formallySmooth_stalk {B : CommRingCat.{0}} {X : Scheme.{0}} (s :
   · have e : (Spec B).fromSpecStalk (s y) = Spec.map τ := Spec.fromSpecStalk_eq' _ _
     rw [Spec.map_comp, ← Scheme.SpecMap_stalkMap_fromSpecStalk, e]
 
+/- English proof (translation)
+Use `letI := α.toAlgebra`. Use `letI := β'.toAlgebra`. Use `letI := (π.comp β').toAlgebra`. Use `haveI : Algebra.FormallySmooth B A := hα`. Set `π₁ : R' →ₐ[B] O` to `{ π with commutes' := fun _ => rfl }`.
+
+Set `χ₁ : A →ₐ[B] O` to `{ χ with commutes' := fun b => RingHom.congr_fun hc b }`. Establish `hn : IsNilpotent (RingHom.ker (π₁ : R' →+* O))` using `⟨2, hk⟩`. Use `⟨(Algebra.FormallySmooth.liftOfSurjective χ₁ π₁ hs hn : A →+* R'), RingHom.ext fun a => ?_, RingHom.ext fun b => (Algebra.FormallySmooth.liftOfSurjective χ₁ π₁ hs hn).commutes b⟩` and prove the remaining obligations. Conclude with `Algebra.FormallySmooth.liftOfSurjective_apply χ₁ π₁ hs hn a`.
+-/
 private theorem ring_lift {B A O R' : Type} [CommRing B] [CommRing A] [CommRing O] [CommRing R'] (α : B →+* A)
     (hα : α.FormallySmooth) (π : R' →+* O) (hs : Function.Surjective π) (hk : RingHom.ker π ^ 2 = ⊥)
     (β' : B →+* R') (χ : A →+* O) (hc : χ.comp α = π.comp β') :
@@ -53,6 +63,13 @@ private theorem ring_lift {B A O R' : Type} [CommRing B] [CommRing A] [CommRing 
     RingHom.ext fun b => (Algebra.FormallySmooth.liftOfSurjective χ₁ π₁ hs hn).commutes b⟩
   exact Algebra.FormallySmooth.liftOfSurjective_apply χ₁ π₁ hs hn a
 
+/- English proof (translation)
+Take `⟨α, hα, e⟩` from `formallySmooth_stalk s (f (IsLocalRing.closedPoint O))`. Establish `hχ` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of O) f`. Establish `hc : α ≫ Scheme.stalkClosedPointTo (R` using `CommRingCat.of O) f = CommRingCat.ofHom (π.comp β') := by`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, e, ← Category.assoc, hχ, hf]`.
+
+Take `⟨χ', h₁, h₂⟩` from `ring_lift α.hom hα π hs hk β' (Scheme.stalkClosedPointTo (R := CommRingCat.of O) f).hom (congrArg (fun g => g.hom) hc)`. Use `⟨Spec.map (CommRingCat.ofHom χ') ≫ X.fromSpecStalk _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← e, ← Spec.map_comp, ← h₂]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h₁]`.
+
+Conclude with `hχ`.
+-/
 private theorem point_lift {B O R' : Type} [CommRing B] [CommRing O] [IsLocalRing O] [CommRing R'] {X : Scheme.{0}}
     (s : X ⟶ Geo.Tor.Sp B) [Smooth s] (π : R' →+* O) (hs : Function.Surjective π) (hk : RingHom.ker π ^ 2 = ⊥)
     (β' : B →+* R') (f : Geo.Tor.Sp O ⟶ X) (hf : f ≫ s = Geo.Tor.spMap (π.comp β')) :
@@ -70,6 +87,13 @@ private theorem point_lift {B O R' : Type} [CommRing B] [CommRing O] [IsLocalRin
   · rw [← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, h₁]
     exact hχ
 
+/- English proof (translation)
+Introduce `h p M Ag hA hMp hM O R' _ _ _ _ π hs hk β hβ c hc`. Establish `hd : Dense {x : Geo.Tor.Sp O | (Geo.Tor.spMap β x).asIdeal = ⊥}`. Establish `h0 : Dense ({(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum O)} : Set (PrimeSpectrum O))`. Rewrite using `[dense_iff_closure_eq, PrimeSpectrum.closure_singleton]`. Conclude with `PrimeSpectrum.zeroLocus_bot`.
+
+Use `h0.mono ?_` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `(RingHom.injective_iff_ker_eq_bot β).1 hβ`. Take `⟨f, hf, hcf⟩` from `hA.2 _ _ c inferInstance hd hc`. Take `⟨β', rfl⟩` from `GlobalTheory.zp_lift_sqZero p M R' O π hs hk hMp hM β`.
+
+Establish `: Smooth Ag.s` using `have := Ag.smooth`. Use the proof step `SmoothOfRelativeDimension.smooth (h * (h + 1) / 2) _`. Take `⟨f', hf', e⟩` from `point_lift Ag.s π hs hk β' f hf`. Take `⟨⟨c', hc'⟩, hp⟩` from `GlobalTheory.siegPre_pullback h M _ _ _ _ _ _ f' Ag.univ hf'`. Conclude with `⟨β', c', hp c' hc' Ag.princ, GlobalTheory.SiegelPullComp.pb_cancel hc' (by rw [e]; exact hcf)⟩`.
+-/
 theorem exists_principal_lift : ∀ (h p M : ℕ) (Ag : Geo.Tor.SiegelFamily h p M), GlobalTheory.ZM.SRep Ag → M.Coprime p → M ≠ 0 → ∀ (O R' : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [CommRing R'] (π : R' →+* O), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ → ∀ β : Geo.Tor.ZP p M →+* O, Function.Injective β → ∀ c : Geo.Tor.SiegPre h M (Geo.Tor.zetaZP p M) (Geo.Tor.spMap β), c.Principal → ∃ (β' : Geo.Tor.ZP p M →+* R') (c' : Geo.Tor.SiegPre h M (Geo.Tor.zetaZP p M) (Geo.Tor.spMap β')), c'.Principal ∧ Geo.Tor.SiegPB c c' (Geo.Tor.spMap π) := by
   intro h p M Ag hA hMp hM O R' _ _ _ _ π hs hk β hβ c hc
   have hd : Dense {x : Geo.Tor.Sp O | (Geo.Tor.spMap β x).asIdeal = ⊥} := by

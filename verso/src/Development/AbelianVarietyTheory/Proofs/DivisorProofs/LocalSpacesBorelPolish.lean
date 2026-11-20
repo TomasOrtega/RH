@@ -8,6 +8,17 @@ open GlobalTheory.ThK.LemF.QuotInv
 
 namespace GlobalTheory.ThK.LemF.QuotInv.Facts
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ m v`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+
+Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Establish `hV : IsClosed (vecAt F E m (evFin F v) : Set (Fin m → AE F E))`.
+
+Express the relevant statement in the definitionally equal form `IsClosed {w : Fin m → AE F E | ∀ u, evFin F v u = 0 → u • w = 0}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun u => isClosed_iInter fun _ => isClosed_eq (continuous_id.const_smul u) continuous_const`. Establish `hS : IsClosed (skewAt σ (evFin F v) : Set (AE F E))`. Establish `hc : Continuous (cA σ : AE F E → AE F E)` using `GlobalTheory.AdelicUnitaryTop.continuous_sigR (AF F) σ`.
+
+Express the relevant statement in the definitionally equal form `IsClosed ({c : AE F E | ∀ u, evFin F v u = 0 → u • c = 0} ∩ {c | cA σ c = -c})`. Use `IsClosed.inter ?_ (isClosed_eq hc continuous_neg)` and prove the remaining obligations. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun u => isClosed_iInter fun _ => isClosed_eq (continuous_id.const_smul u) continuous_const`. Use `haveI : BorelSpace (AE F E) := inferInstance`.
+
+Use `haveI : BorelSpace (Fin m → AE F E) := Pi.borelSpace`. Use `haveI : SecondCountableTopology (Fin m → AE F E) := inferInstance`. Use `⟨⟨hV.isClosedEmbedding_subtypeVal.locallyCompactSpace, hV.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology, inferInstance, Subtype.borelSpace _⟩, ⟨hS.isClosedEmbedding_subtypeVal.locallyCompactSpace, hS.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopol …` and prove the remaining obligations.
+-/
 theorem vecAt_skewAt_facts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (m : ℕ) (v : Pl F),
     (LocallyCompactSpace (vecAt F E m (evFin F v)) ∧ SecondCountableTopology (vecAt F E m (evFin F v)) ∧
       T2Space (vecAt F E m (evFin F v)) ∧ BorelSpace (vecAt F E m (evFin F v))) ∧

@@ -18,13 +18,22 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : ℕ
 def crdS (S : HermR (Fv F v) σ a) (i j : Fin a) (k : Fin d) : Fv F v :=
   (Algebra.TensorProduct.basis (Fv F v) b).repr ((S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j) k
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_hermO_iff (S : HermR (Fv F v) σ a) :
     S ∈ hermO b v σ a ↔ ∀ i j k, crdS b v σ a S i j k ∈ v.adicCompletionIntegers F := Iff.rfl
 
+/- English proof (translation)
+Simplify using `[crdS, Matrix.add_apply, map_add]`.
+-/
 theorem crdS_add (S T : HermR (Fv F v) σ a) (i j : Fin a) (k : Fin d) :
     crdS b v σ a (S + T) i j k = crdS b v σ a S i j k + crdS b v σ a T i j k := by
   simp [crdS, Matrix.add_apply, map_add]
 
+/- English proof (translation)
+Simplify using `only [crdS, coe_hermSMul, Matrix.smul_apply, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+-/
 theorem crdS_smul (t : Fv F v) (S : HermR (Fv F v) σ a) (i j : Fin a) (k : Fin d) :
     crdS b v σ a (t • S) i j k = t * crdS b v σ a S i j k := by
   simp only [crdS, coe_hermSMul, Matrix.smul_apply, map_smul, Finsupp.smul_apply, smul_eq_mul]
@@ -44,21 +53,43 @@ def redH : (hermO b v σ a) →+
     ext
     simp [crdS_add]
 
+/- English proof (translation)
+Introduce `h`. Use `unifV_val v` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe this`.
+-/
 theorem unifV_ne_zero : unifV v ≠ 0 := by
   intro h
   have := unifV_val v
   rw [h, map_zero] at this
   exact WithZero.zero_ne_coe this
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.Aut.val_le_exp_neg_one_of_lt_one v ((ReciprocityTheory.Aut.mem_maxIdeal_iff v x).1 ((residue_eq_zero_iff x).1 h))`.
+-/
 theorem val_of_res (x : v.adicCompletionIntegers F) (h : residue _ x = 0) :
     Valued.v (x : Fv F v) ≤ WithZero.exp (-1 : ℤ) :=
   ReciprocityTheory.Aut.val_le_exp_neg_one_of_lt_one v
     ((ReciprocityTheory.Aut.mem_maxIdeal_iff v x).1 ((residue_eq_zero_iff x).1 h))
 
+/- English proof (translation)
+The claim follows from `(residue_eq_zero_iff x).2 ((ReciprocityTheory.Aut.mem_maxIdeal_iff v x).2 h)`.
+-/
 theorem res_of_val (x : v.adicCompletionIntegers F) (h : Valued.v (x : Fv F v) < 1) :
     residue _ x = 0 :=
   (residue_eq_zero_iff x).2 ((ReciprocityTheory.Aut.mem_maxIdeal_iff v x).2 h)
 
+/- English proof (translation)
+Use extensionality with `S`. Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_addSubgroupOf]`. Establish `hπ` using `unifV_val v`. Establish `hπ0` using `unifV_ne_zero v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `hc : ∀ i j k, Valued.v (crdS b v σ a S i j k) ≤ WithZero.exp (-1 : ℤ)`. Introduce `i j k`. Establish `h1 : residue _ (⟨crdS b v σ a S i j k, (mem_hermO_iff b v σ a S).1 S.2 i j k⟩ : v.adicCompletionIntegers F) = 0` using `congrFun (congrFun (congrFun h i) j) k`. Establish `h2` using `val_of_res v _ h1`.
+
+Conclude with `h2`. Use `(mem_smulSub _ _ _).2 ⟨(unifV v)⁻¹ • (S : HermR (Fv F v) σ a), ?_, ?_⟩` and prove the remaining obligations. Use `(mem_hermO_iff b v σ a _).2 fun i j k => ?_` and prove the remaining obligations. Rewrite using `[crdS_smul, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, map_inv₀, hπ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[zero_add, pow_one, smul_smul, mul_inv_cancel₀ hπ0, one_smul]`. Introduce `h`. Take `⟨p, hp, hpS⟩` from `(mem_smulSub _ _ _).1 h`. Use function extensionality and compare the values at `i j k`. Establish `hlt : Valued.v (crdS b v σ a S i j k) < 1`.
+
+Rewrite using `[← hpS, zero_add, pow_one, crdS_smul, map_mul, hπ]`. Establish `hp1 : Valued.v (crdS b v σ a p i j k) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ((mem_hermO_iff b v σ a p).1 hp i j k)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+
+Establish `h3` using `res_of_val v ⟨crdS b v σ a S i j k, (mem_hermO_iff b v σ a S).1 S.2 i j k⟩ hlt`. Conclude with `h3`.
+-/
 theorem ker_redH :
     (redH b v σ a).ker = (hF b v σ a 0).addSubgroupOf (hermO b v σ a) := by
   ext S

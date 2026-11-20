@@ -15,6 +15,9 @@ def twSum {G : Type} [Group G] [TopologicalSpace G] (θ : G →* G) (K : Subgrou
 def pairTw {G₁ G₂ : Type} [Group G₁] [Group G₂] (θ₁ : G₂ →* G₁) (θ₂ : G₁ →* G₂) : G₁ × G₂ →* G₁ × G₂ :=
   (θ₁.comp (MonoidHom.snd G₁ G₂)).prod (θ₂.comp (MonoidHom.fst G₁ G₂))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pairTw_apply {G₁ G₂ : Type} [Group G₁] [Group G₂] (θ₁ : G₂ →* G₁) (θ₂ : G₁ →* G₂) (y : G₁ × G₂) :
     pairTw θ₁ θ₂ y = (θ₁ y.2, θ₂ y.1) := rfl
 

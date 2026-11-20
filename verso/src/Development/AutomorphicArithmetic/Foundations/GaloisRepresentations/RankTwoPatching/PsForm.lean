@@ -22,6 +22,11 @@ namespace UpperTheory.Gal.SV
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Establish `hl : Unl (GroundTheory.LocalField.residueCard (w.adicCompletion E)) (GlobalTheory.RoadU.chars ξ hξ)` using `fun χ ⟨c, hc⟩ χ' ⟨b, hb⟩ h1 e => hu _ hb _ hc ((UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.link_iff b c).2 ⟨h1, e⟩)`. Take `⟨e⟩` from `unlFull (w.adicCompletion E) n σ.V σ.ρ ξ hξ hs' hl`. Establish `hL` using `(UpperTheory.V.Z.Win.MonodromyFreeReciprocity.isL_chars σ.ρ σ.irred ξ hξ hu e).of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred)`. Establish `hr : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = sumList (List.ofFn fun i => WD.lpOfChar h ((ξ i).comp a) (ha.smooth (hξ i)))`.
+
+Rewrite using `[L.langlands _ _ hL, segSum, List.map_ofFn]`. Use `congr 1`. Use `List.ofFn_inj.mpr (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Segment.single, Segment.first_ofFirst, Segment.len_ofFirst, Nat.cast_one, sub_self, zero_div, WD.lpTw_zero, GlobalTheory.LocLanglands.Test.lpChar_lpSp_one, L.one]`. Rewrite using `[algNorm, L.nu, hr]`.
+-/
 theorem psForm {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {rc : IrrGL (w.adicCompletion E) → WD h}
     (L : LawsT a ha rc) {n : ℕ} (σ : SmIrr (GL (Fin n) (w.adicCompletion E))) (ξ : Fin n → (w.adicCompletion E)ˣ →* ℂˣ)
     (hξ : ∀ i, IsSmoothChar (ξ i)) (hs' : HasSupport σ.ρ (GlobalTheory.RoadU.chars ξ hξ)) (hu : GlobalTheory.RoadU.Unlinked (GlobalTheory.RoadU.chars ξ hξ)) :
@@ -40,6 +45,11 @@ theorem psForm {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} 
       zero_div, WD.lpTw_zero, GlobalTheory.LocLanglands.Test.lpChar_lpSp_one, L.one]
   rw [algNorm, L.nu, hr]
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h rc ⟨a, ha, L⟩ n σ hP`. Take `⟨ξ, hξ, hs, hu⟩` from `GlobalTheory.RoadU.plainTor_exists_chars _ _ hP`. Establish `hA` using `psForm L σ ξ hξ (hs.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred).symm) hu`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA]`.
+
+Conclude with `UpperTheory.V.Z.Win.MonodromyFreeReciprocity.tor_sum _ _ _ (by rw [← hA, L.dim]; rfl)`. Rewrite using `[hA, WD.monomial_twist_iff]`. Conclude with `UpperTheory.V.Z.Win.MonodromyFreeReciprocity.monodromy_free_sum_list _ fun z hz => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hz`. Conclude with `UpperTheory.V.Z.Win.MonodromyFreeReciprocity.monodromy_free_of_character _ _`.
+-/
 theorem gdOf : GdOf := by
   intro E Ω _ _ _ _ _ A w h rc ⟨a, ha, L⟩ n σ hP
   obtain ⟨ξ, hξ, hs, hu⟩ := GlobalTheory.RoadU.plainTor_exists_chars _ _ hP
@@ -52,6 +62,25 @@ theorem gdOf : GdOf := by
       obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hz
       exact UpperTheory.V.Z.Win.MonodromyFreeReciprocity.monodromy_free_of_character _ _
 
+/- English proof (translation)
+Take `⟨a, ha, L⟩` from `hrc`. Take `⟨a', ha', L'⟩` from `hrc'`. Establish `hi` using `P.cont`. Establish `hi' : Continuous i.symm` using `GlobalTheory.LocalFieldIso.continuous_symm i hi`. Take `⟨ξ, hξ, hs, hu⟩` from `GlobalTheory.RoadU.plainTor_exists_chars _ _ hP`.
+
+Establish `hρ : HasSupport σ.ρ (GlobalTheory.RoadU.chars ξ hξ)` using `hs.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred).symm`. Set `ξ' : Fin n → (u.adicCompletion K)ˣ →* ℂˣ` to `fun k => (ξ k).comp (Units.map i.symm.toRingHom.toMonoidHom)`. Establish `hξ' : ∀ k, IsSmoothChar (ξ' k)` using `fun k => IsOpen.preimage (f := Units.map i.symm.toRingHom.toMonoidHom) (Continuous.units_map _ hi') (hξ k)`. Establish `h5 : ∀ t, Units.map i.symm.toRingHom.toMonoidHom (Units.map i.toRingHom.toMonoidHom t) = t` using `fun t => Units.ext (i.symm_apply_apply _)`. Establish `hg : ∀ g : GL (Fin n) (u.adicCompletion K), Matrix.GeneralLinearGroup.map i.toRingHom (Matrix.GeneralLinearGroup.map i.symm.toRingHom g) = g` using `fun g => Units.ext (Matrix.ext fun _ _ => i.apply_symm_apply _)`.
+
+Set `φ : Representation.Equiv (σ.ρ.comp (Matrix.GeneralLinearGroup.map (n` to `Fin n) i.symm.toRingHom)) σ'.ρ := GlobalTheory.LocGL.equivOfBijective ⟨e.toLinearMap, fun g => LinearMap.ext fun x => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `e (σ.ρ (Matrix.GeneralLinearGroup.map i.symm.toRingHom g) x) = σ'.ρ g (e x)`. Rewrite using `[he, hg]⟩ e.bijective`. Establish `h3` using `(GlobalTheory.SuppIne.hasSupport_comp i hi hi' hρ).of_equiv φ`.
+
+Establish `h4 : (GlobalTheory.RoadU.chars ξ hξ).map (GlobalTheory.SuppIne.trGL i hi') = GlobalTheory.RoadU.chars ξ' hξ'`. Rewrite using `[GlobalTheory.RoadU.chars, GlobalTheory.RoadU.chars, Multiset.map_map]`. Conclude with `Multiset.map_congr rfl fun k _ => GlobalTheory.DegOneChar.trGL_ofChar i hi' (ξ k) (hξ k) (hξ' k)`. Rewrite `h3` using `[h4]`. Establish `hu' : GlobalTheory.RoadU.Unlinked (GlobalTheory.RoadU.chars ξ' hξ')`.
+
+Introduce `y hy z hz heq`. Take `⟨k, -, rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨m, -, rfl⟩` from `Multiset.mem_map.1 hz`. Rewrite `heq` using `[IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`. Use `hu _ (Multiset.mem_map_of_mem _ (Finset.mem_univ_val k)) _ (Multiset.mem_map_of_mem _ (Finset.mem_univ_val m)) ?_` and prove the remaining obligations.
+
+Rewrite using `[IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`. Use `MonoidHom.ext fun t => ?_` and prove the remaining obligations. Establish `h6` using `DFunLike.congr_fun heq (Units.map i.toRingHom.toMonoidHom t)`. Rewrite `h6` using `[MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.comp_apply, h5, GlobalTheory.LocalFieldIso.absPow_map i hi]`. Conclude with `h6`.
+
+Take `⟨S, hS, -, h0, hsum, -, hSt, -, -, hch⟩` from `GlobalTheory.WDTransport.exists_equiv_wd E Ω A w h K Ω A u h' (RingEquiv.refl Ω) j i P`. Establish `hl : ∀ l : List (WD h), S (sumList l) = sumList (l.map S)` using `fun l => by`. Proceed by induction on `l with`. Consider the case `nil => exact h0`. Consider the case `cons b l ih => exact (hsum b (sumList l)).trans (congrArg (WD.lpSum (S b)) ih)`.
+
+Use `(hS _ _).2 ?_` and prove the remaining obligations. Rewrite using `[psForm L σ ξ hξ hρ hu, psForm L' σ' ξ' hξ' h3 hu', hSt, hl, List.map_ofFn]`. Use `congr 2`. Use `List.ofFn_inj.mpr (funext fun k => hch _ _ _ _ fun s s' hss => ?_)` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, GlobalTheory.T.localArtinMap_unique_transport_placeIso hG GlobalTheory.Published.chevalleyUnits' E Ω A w h K Ω A u h' _ j i P a a' ha ha' s s' hss]`.
+
+Conclude with `(congrArg (ξ k) (h5 _)).symm`.
+-/
 theorem recTr (hG : GlobalTheory.Published.GlobalArtinReciprocity) {K : Type} [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω]
     {u : HeightOneSpectrum (𝓞 K)} {h' : IsPlaceOver A u} {j : E →+* K} {i : w.adicCompletion E ≃+* u.adicCompletion K}
     (P : PlaceIso A w A u (RingEquiv.refl Ω) j i) {n : ℕ} (σ : SmIrr (GL (Fin n) (w.adicCompletion E)))

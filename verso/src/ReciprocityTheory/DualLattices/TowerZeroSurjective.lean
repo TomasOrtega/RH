@@ -39,6 +39,9 @@ namespace Dat
 
 variable (D : Dat p g B Tw Dt Oe σ cp)
 
+/- English proof (translation)
+Establish `h0 : ∀ j, p • D.L.τ j 0 = 0` using `fun j => by simpa using D.L.τ_tors j 0`. Simplify using `only [ptOf, Finset.smul_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [smul_comm, h0, smul_zero]`.
+-/
 lemma pt_p (t : Nb p g) : p • ptOf B D.L.τ t = 0 := by
   have h0 : ∀ j, p • D.L.τ j 0 = 0 := fun j => by simpa using D.L.τ_tors j 0
   simp only [ptOf, Finset.smul_sum]

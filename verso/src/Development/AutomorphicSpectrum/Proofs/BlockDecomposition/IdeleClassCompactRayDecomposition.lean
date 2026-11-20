@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.RankOneSiegelWeil
 
+/- English proof (translation)
+Unfold `IsNm`. Establish `hs : sigR (AF F) σ ((u : AF F) ⊗ₜ[F] (1 : E)) = (u : AF F) ⊗ₜ[F] (1 : E)`. Simplify using `[sigR]`. Establish `e : ((ofF u : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = (u : AF F) ⊗ₜ[F] (1 : E)` using `rfl`. Rewrite using `[e, hs, Units.val_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+-/
 theorem isNm_ofF {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (u : (AF F)ˣ) : IsNm σ (ofF u : (AF F ⊗[F] E)ˣ) (u * u) := by
   unfold IsNm
@@ -17,6 +20,9 @@ theorem isNm_ofF {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   have e : ((ofF u : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = (u : AF F) ⊗ₜ[F] (1 : E) := rfl
   rw [e, hs, Units.val_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GroundTheory.BlockD.ThmBHecke.coe_ideleEquiv]`. Conclude with `GroundTheory.BlockD.ThmBHecke.adeleEquiv_incA (t : E)`.
+-/
 theorem ideleEquiv_ofE {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (t : Eˣ) :
     GroundTheory.BlockD.ThmBHecke.ideleEquiv F E (ofE t) = IdeleGroup.diagonal E t := by
@@ -24,6 +30,19 @@ theorem ideleEquiv_ofE {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   rw [GroundTheory.BlockD.ThmBHecke.coe_ideleEquiv]
   exact GroundTheory.BlockD.ThmBHecke.adeleEquiv_incA (t : E)
 
+/- English proof (translation)
+Take `⟨D, hD, -, hxD⟩` from `IdeleGroup.exists_isCompact_normOneSubgroup E`. Use `⟨(GroundTheory.BlockD.ThmBHecke.ideleEquiv F E).symm '' D, hD.image GroundTheory.BlockD.ThmBHecke.continuous_ideleEquiv_symm, fun y n hyn => ?_⟩` and prove the remaining obligations. Establish `hd : 0 < Module.finrank ℚ F` using `Module.finrank_pos`. Establish `hm : 2 * Module.finrank ℚ F ≠ 0` using `by omega`. Establish `hn : 0 < md n` using `(IdeleGroup.ideleModule F n).2`.
+
+Use `set m := 2 * Module.finrank ℚ F with hmdef`. Use `set ε : ℝ := md n ^ ((m : ℝ)⁻¹) with hεdef`. Establish `hε : 0 < ε` using `Real.rpow_pos_of_pos hn _`. Establish `hεm : md n = ε ^ m` using `(Real.rpow_inv_natCast_pow hn.le hm).symm`. Establish `hray : md (r ε * r ε) = ε ^ m`.
+
+Establish `h1` using `((GlobalTheory.T.ray_norm_and_module_formula F hcm.1 θ hθ r hr).2 ε hε)`. Establish `h2 : md (r ε * r ε) = md (r ε) * md (r ε)` using `by simp [md, map_mul]`. Rewrite using `[h2, h1, hmdef, two_mul, pow_add]`. Establish `hy` using `GlobalTheory.T.idele_module_eq_norm_module F E σ hcm y n hyn`. Establish `hu` using `GlobalTheory.T.idele_module_eq_norm_module F E σ hcm (ofF (r ε)) (r ε * r ε) (isNm_ofF σ (r ε))`.
+
+Use `set I := GroundTheory.BlockD.ThmBHecke.ideleEquiv F E with hI`. Establish `hker : I (y * (ofF (r ε))⁻¹) ∈ IdeleGroup.normOneSubgroup E`. Use `MonoidHom.mem_ker.2 (Subtype.ext ?_)` and prove the remaining obligations. Establish `hpos : (0 : ℝ) < ε ^ m` using `pow_pos hε m`. Rewrite using `[map_mul, map_inv, map_mul, map_inv]`.
+
+Express the relevant statement in the definitionally equal form `((IdeleGroup.ideleModule E (I y) : ℝ)) * ((IdeleGroup.ideleModule E (I (ofF (r ε))) : ℝ))⁻¹ = 1`. Rewrite using `[hy, hu, hray, hεm]`. Conclude with `mul_inv_cancel₀ hpos.ne'`. Take `⟨t, ht⟩` from `hxD _ hker`. Use `⟨t⁻¹, I.symm (IdeleGroup.diagonal E t * I (y * (ofF (r ε))⁻¹)), ε, ⟨_, ht, rfl⟩, hε, ?_, hεm⟩` and prove the remaining obligations.
+
+Apply `I.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, MulEquiv.apply_symm_apply, hI, ideleEquiv_ofE, map_inv, ← hI, map_mul, map_inv]`. Simplify using `only [mul_assoc, inv_mul_cancel_left, inv_mul_cancel, mul_one]`.
+-/
 theorem exists_unit_decomp (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (θ : ℝ →+* Ainf F) (hθ : Continuous θ)
     (r : ℝ → (AF F)ˣ) (hr : IsRay θ r) :

@@ -6,6 +6,11 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.De
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.WeilDeligne GlobalTheory.GalOfCusp GlobalTheory.HeckeGal GlobalTheory.LocLanglands GlobalTheory.Published UpperTheory.V.W
 
+/- English proof (translation)
+Set `φ : Emb l w → (F →+* Qbar l)` to `fun j => (j.1).comp (algebraMap F (HeightOneSpectrum.adicCompletion F w))`. Use `Finite.of_injective φ ?_` and prove the remaining obligations. Introduce `i j hij`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hd` using `HeightOneSpectrum.denseRange_algebraMap (K := F) w`.
+
+Establish `hfun : (i.1 : HeightOneSpectrum.adicCompletion F w → Qbar l) = j.1` using `hd.equalizer i.2 j.2 (funext fun x => DFunLike.congr_fun hij x)`. Conclude with `DFunLike.coe_injective hfun`.
+-/
 private theorem finite_emb {F : Type} [Field F] [NumberField F] (l : ℕ) [Fact l.Prime] (w : Plc F) :
     Finite (Emb l w) := by
   classical
@@ -19,6 +24,23 @@ private theorem finite_emb {F : Type} [Field F] [NumberField F] (l : ℕ) [Fact 
     hd.equalizer i.2 j.2 (funext fun x => DFunLike.congr_fun hij x)
   exact DFunLike.coe_injective hfun
 
+/- English proof (translation)
+Use `open Polynomial in`. Establish `hmul : ∀ f g : L[X], (f * g).coeff 1 = f.coeff 0 * g.coeff 1 + f.coeff 1 * g.coeff 0`. Introduce `f g`. Rewrite using `[coeff_mul, Finset.Nat.antidiagonal_succ]`. Simplify using `[add_comm]`.
+
+Establish `hlin : ∀ (a : L) (m : ℕ), ((1 + C a * X) ^ m).coeff 0 = 1 ∧ ((1 + C a * X) ^ m).coeff 1 = (m : L) * a`. Introduce `a m`. Proceed by induction on `m with`. Consider the case `zero => simp [coeff_one]`. Consider the case `succ m ih`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, mul_coeff_zero, ih.1]`. Simplify using the standard rewrite rules. Rewrite using `[pow_succ, hmul, ih.1, ih.2]`. Simplify using `[coeff_one, coeff_C_mul_X]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hprod : ∀ (m : ι → ℕ) (s : Finset ι), (∏ i ∈ s, (1 + C (c i) * X) ^ m i).coeff 0 = 1 ∧ (∏ i ∈ s, (1 + C (c i) * X) ^ m i).coeff 1 = ∑ i ∈ s, (m i : L) * c i`. Introduce `m s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simp [coeff_one]`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_coeff_zero, ih.1, (hlin (c j) (m j)).1, one_mul]`.
+
+Rewrite using `[hmul, ih.1, ih.2, (hlin (c j) (m j)).1, (hlin (c j) (m j)).2]`. Expand and normalize the polynomial expressions, which then agree. Establish `heq : (∏ i, (1 + C (c i) * X) ^ p i) = ∏ i, (1 + C (c i) * X) ^ q i`. Apply `Polynomial.eq_of_infinite_eval_eq` to reduce the goal to its premises. Apply `Set.Infinite.mono (s := Set.range (fun n : ℕ => (n : L)))` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨n, rfl⟩`. Simplify using `only [Set.mem_setOf_eq, eval_prod, eval_pow, eval_add, eval_one, eval_mul, eval_C, eval_X]`. Conclude with `H n`. Conclude with `Set.infinite_range_of_injective Nat.cast_injective`. Establish `h1` using `congrArg (fun P : L[X] => P.coeff 1) heq`.
+
+Rewrite `h1` using `[(hprod p Finset.univ).2, (hprod q Finset.univ).2]`. Conclude with `h1`.
+-/
 private theorem lin_term {ι L : Type} [Fintype ι] [Field L] [CharZero L] (c : ι → L) (p q : ι → ℕ)
     (H : ∀ n : ℕ, ∏ i, (1 + c i * n) ^ p i = ∏ i, (1 + c i * n) ^ q i) :
     ∑ i, (p i : L) * c i = ∑ i, (q i : L) * c i := by
@@ -62,6 +84,39 @@ private theorem lin_term {ι L : Type} [Fintype ι] [Field L] [CharZero L] (c : 
   rw [(hprod p Finset.univ).2, (hprod q Finset.univ).2] at h1
   exact h1
 
+/- English proof (translation)
+Establish `hnat : ∀ n : ℕ, v (n : k) ≤ 1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Use `push_cast`. Conclude with `le_trans (v.map_add _ _) (max_le ih (by simp))`. Establish `hS : ∀ y : k, v y < 1 → ∑ i, (e i : L) * τ i y = 0`. Introduce `y hy`. Establish `key : ∀ n : ℕ, ∏ i, (1 + τ i y * n) ^ (e i).toNat = ∏ i, (1 + τ i y * n) ^ (-e i).toNat`.
+
+Introduce `n`. Establish `hlt : v ((n : k) * y) < 1`. Rewrite using `[v.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hu : v (1 + (n : k) * y) = 1` using `v.map_one_add_of_lt hlt`.
+
+Establish `hu0 : (1 + (n : k) * y) ≠ 0`. Introduce `h0`. Rewrite `hu` using `[h0, v.map_zero]`. Conclude with `zero_ne_one hu`. Establish `hx : ∀ i, τ i (1 + (n : k) * y) = 1 + τ i y * n`.
+
+Introduce `i`. Simplify using `[map_add, map_mul, map_natCast, mul_comm]`. Establish `hne : ∀ i, τ i (1 + (n : k) * y) ≠ 0` using `fun i => (map_ne_zero (τ i)).2 hu0`. Establish `h` using `H _ hu`. Establish `hsplit : ∀ i, τ i (1 + (n : k) * y) ^ e i = τ i (1 + (n : k) * y) ^ (e i).toNat / τ i (1 + (n : k) * y) ^ (-e i).toNat`.
+
+Introduce `i`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_sub₀ (hne i), Int.toNat_sub_toNat_neg]`. Simplify using `only [hsplit] at h`. Rewrite `h` using `[Finset.prod_div_distrib, div_eq_one_iff_eq (Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (hne i))]`. Simplify `h` using `only [hx]`.
+
+Establish `h2` using `lin_term (fun i => τ i y) (fun i => (e i).toNat) (fun i => (-e i).toNat) key`. Establish `hcast : ∀ i, (e i : L) = ((e i).toNat : L) - ((-e i).toNat : L)`. Introduce `i`. Use `congrArg (fun z : ℤ => (z : L)) (Int.toNat_sub_toNat_neg (e i))` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Conclude with `this.symm`. Simplify using `only [hcast, sub_mul, Finset.sum_sub_distrib]`. Conclude with `sub_eq_zero.2 h2`. Set `R` to `v.integer`. Set `ρ : ι → (R →* L)` to `fun i => (τ i).toMonoidHom.comp R.subtype.toMonoidHom`.
+
+Establish `hinj : Function.Injective ρ`. Introduce `i j hij`. Apply `hτ` to reduce the goal to its premises. Use extensionality with `x`. Break down `le_or_gt (v x) 1 with hx | hx` into its components or cases.
+
+Use `DFunLike.congr_fun hij ⟨x, hx⟩` as an intermediate fact. Simplify `this` using `[ρ]`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`.
+
+Establish `hxi : v x⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Conclude with `(inv_lt_one_of_one_lt₀ hx).le`. Use `DFunLike.congr_fun hij ⟨x⁻¹, hxi⟩` as an intermediate fact. Simplify using `only [ρ, MonoidHom.coe_comp, Function.comp_apply] at this`.
+
+Simplify `this` using `[map_inv₀]`. Establish `hli` using `(linearIndependent_monoidHom R L).comp ρ hinj`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Establish `hz` using `hli (fun i => (e i : L) * τ i π) (by`. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, Function.comp_apply, smul_eq_mul, Pi.zero_apply]`. Establish `ha : v (π * (a : k)) < 1`. Rewrite using `[v.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `hS _ ha` as an intermediate fact.
+
+Simplify using `only [map_mul] at this`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[ρ, mul_assoc])`. Use function extensionality and compare the values at `i`.
+
+Establish `hi` using `hz i`. Establish `hπ : τ i π ≠ 0` using `(map_ne_zero (τ i)).2 h0`. Establish `: (e i : L) = 0`. Break down `mul_eq_zero.1 hi with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd h hπ`. Simplify using `using this`.
+-/
 private theorem indep {ι k L Γ : Type} [Fintype ι] [Field k] [Field L] [CharZero L]
     [LinearOrderedCommGroupWithZero Γ] (v : Valuation k Γ) (π : k) (h0 : π ≠ 0) (h1 : v π < 1)
     (τ : ι → k →+* L) (hτ : Function.Injective τ) (e : ι → ℤ)
@@ -151,6 +206,33 @@ private theorem indep {ι k L Γ : Type} [Fintype ι] [Field k] [Field L] [CharZ
   simpa using this
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ A w h ha0 κ wt wt' hw hw'`. Take `⟨a, ha⟩` from `ha0`. Take `⟨ph, hph⟩` from `hw`. Take `⟨ph', hph'⟩` from `hw'`. Use `haveI : Finite (Emb l w) := finite_emb l w`.
+
+Use `letI : Fintype (Emb l w) := Fintype.ofFinite _`. Set `K : Subgroup ↥(Ine (F` to `F) A) := ph.ker ⊓ ph'.ker`. Use `haveI : CompactSpace ↥(Ine (F := F) A) := isCompact_iff_compactSpace.mp (isClosed_Ine (F := F) A).isCompact`. Establish `hKo : IsOpen (K : Set ↥(Ine (F` using `F) A)) := hph.1.inter hph'.1`. Use `haveI : Finite (↥(Ine (F := F) A) ⧸ K) := Subgroup.quotient_finite_of_isOpen K hKo`.
+
+Use `haveI : K.Normal := Subgroup.normal_inf_normal _ _`. Establish `hm0 : K.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `hrel : ∀ σ : ↥(Ine (F` using `F) A), ∏ τ : Emb l w, (τ.1 (a (ineIncl h σ) : HeightOneSpectrum.adicCompletion F w)) ^ ((K.index : ℤ) * (wt' τ - wt τ)) = 1 := by`. Introduce `σ`. Establish `hmem` using `K.pow_index_mem σ`.
+
+Establish `hk1 : ph (σ ^ K.index) = 1` using `hmem.1`. Establish `hk2 : ph' (σ ^ K.index) = 1` using `hmem.2`. Establish `e1` using `hph.2 a ha (σ ^ K.index)`. Establish `e2` using `hph'.2 a ha (σ ^ K.index)`. Rewrite `e1` using `[hk1, mul_one]`.
+
+Rewrite `e2` using `[hk2, mul_one]`. Establish `e` using `e1.symm.trans e2`. Rewrite `e` using `[finprod_eq_prod_of_fintype, finprod_eq_prod_of_fintype]`. Simplify using `only [map_pow, Units.val_pow_eq_pow_val] at e`. Establish `hy : ((a (ineIncl h σ)) : HeightOneSpectrum.adicCompletion F w) ≠ 0` using `Units.ne_zero _`.
+
+Establish `hne : ∀ τ : Emb l w, τ.1 ((a (ineIncl h σ)) : HeightOneSpectrum.adicCompletion F w) ≠ 0` using `fun τ => (map_ne_zero τ.1).2 hy`. Establish `hsp : ∀ τ : Emb l w, τ.1 ((a (ineIncl h σ)) : HeightOneSpectrum.adicCompletion F w) ^ ((K.index : ℤ) * (wt' τ - wt τ)) = (τ.1 ((a (ineIncl h σ)) : HeightOneSpectrum.adicCompletion F w) ^ K.index) ^ (-wt τ) / (τ.1 ((a (ineIncl h σ)) : HeightOneSpectrum.adicCompletion F w) ^ K.inde …`. Introduce `τ`. Rewrite using `[← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_sub₀ (hne τ)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hsp]`. Rewrite using `[Finset.prod_div_distrib, e, div_self (Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (pow_ne_zero _ (hne τ)))]`. Take `⟨γ, hγ0, hγ1⟩` from `ValuativeRel.IsNontrivial.exists_lt_one (R := HeightOneSpectrum.adicCompletion F w)`. Take `⟨π, hπ⟩` from `ValuativeRel.valuation_surjective γ`.
+
+Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `hγ0.ne hπ`. Establish `he` using `indep (ValuativeRel.valuation (HeightOneSpectrum.adicCompletion F w)) π hπ0 (hπ ▸ hγ1) (fun τ : Emb l w => τ.1) Subtype.val_injective (fun τ => (K.index : ℤ) * (wt' τ - wt τ)) (by`.
+
+Introduce `u hu`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Rewrite `hu` using `[map_zero]`. Conclude with `zero_ne_one hu`.
+
+Establish `hord : GlobalTheory.SmGL.ord _ (Units.mk0 u hu0) = 0` using `GlobalTheory.SmGL.ord_eq_zero_iff.2 (by simpa using hu)`. Take `⟨ρ, hρ⟩` from `ha.surj (Units.mk0 u hu0)`. Establish `hdeg : deg ρ = 0`. Use `ha.ord_eq ρ` as an intermediate fact. Rewrite `this` using `[hρ, hord]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hI : (ρ : G F Ω) ∈ Ine (F` using `F) A := actsAs_zero_iff.1 (actsAs_of_deg (a := 0) (b := 0) (by simp [hdeg]))`. Establish `hr : ineIncl h ⟨(ρ : G F Ω), hI⟩ = ρ` using `Subtype.ext rfl`. Use `hrel ⟨(ρ : G F Ω), hI⟩` as an intermediate fact. Rewrite `this` using `[hr, hρ]`.
+
+Simplify using `using this)`. Use function extensionality and compare the values at `τ`. Establish `hτ` using `congrFun he τ`. Simplify using `only [Pi.zero_apply, mul_eq_zero, Nat.cast_eq_zero] at hτ`. Break down `hτ with hτ | hτ` into its components or cases.
+
+Conclude with `absurd hτ hm0`. Conclude with `(sub_eq_zero.1 hτ).symm`.
+-/
 theorem UpperTheory.V.Loc.laUnique :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w), (∃ a, IsLocalArtin h a) → ∀ (κ : ↥(Dec (F := F) A) →* (Qbar l)ˣ) (wt wt' : Emb l w → ℤ), IsLocAlg h κ wt → IsLocAlg h κ wt' → wt = wt' := by
   intro F Ω _ _ _ _ _ l _ A w h ha0 κ wt wt' hw hw'

@@ -10,12 +10,24 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [MonObj.comp_one]`. Consider the case `succ k ih => rw [pow_succ, MonObj.comp_mul, ih, Category.comp_id, pow_succ]`.
+-/
 theorem comp_pow_id_torscard {S : Scheme.{0}} {G T : Over S} [GrpObj G] (x : T ⟶ G) (n : ℕ) :
     x ≫ (𝟙 G) ^ n = x ^ n := by
   induction n with
   | zero => simp [MonObj.comp_one]
   | succ k ih => rw [pow_succ, MonObj.comp_mul, ih, Category.comp_id, pow_succ]
 
+/- English proof (translation)
+Establish `hn0 : (n : ℤ) ≠ 0`. Introduce `h`. Apply `hn` to reduce the goal to its premises. Simplify using `at h`. Simplify using `[h]`.
+
+Take `⟨hiso, hdeg⟩` from `GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree K A (n : ℤ) hn0`. Establish `hf : ((n : ℤ) • 𝟙 A).hom = (𝟙 A.X) ^ n`. Rewrite using `[natCast_zsmul, nsmul_hom, id_hom]`. Establish `hker : ∀ {T : Over (Sp K)} (x : T ⟶ A.X), x ≫ ((n : ℤ) • 𝟙 A).hom = x ^ n`. Introduce `T x`.
+
+Rewrite using `[hf, comp_pow_id_torscard]`. Establish `hd` using `GlobalTheory.T.isogenyDegree_eq_card_kernel_of_killed_by_invertible K A A ((n : ℤ) • 𝟙 A) n hn hiso (fun T x hx => by rw [← hker]; exact hx)`. Rewrite `hd` using `[hdeg, Int.natAbs_natCast]`. Rewrite using `[hd]`. Apply `Nat.card_congr` to reduce the goal to its premises.
+
+Conclude with `Equiv.subtypeEquivRight (fun x => by rw [MonoidHom.mem_ker, ptMap_apply, hker])`.
+-/
 theorem card_torsion_pt (K : Type) [Field K] (A : AbVar K) (n : ℕ) (hn : (n : K) ≠ 0) :
     Nat.card {x : A.Pt // x ^ n = 1} = n ^ (2 * A.dim) := by
   have hn0 : (n : ℤ) ≠ 0 := by

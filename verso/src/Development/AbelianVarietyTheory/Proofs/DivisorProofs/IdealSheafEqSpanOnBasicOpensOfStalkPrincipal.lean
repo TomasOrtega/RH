@@ -15,6 +15,29 @@ set_option autoImplicit false
 
 namespace GlobalTheory.IdealSpread
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨s₁, hs₁M, hs₁⟩ : ∃ s₁ ∈ M, s₁ * d ∈ J := by`. Establish `hd : algebraMap A R d ∈ J.map (algebraMap A R)` using `h ▸ Ideal.subset_span rfl`. Take `⟨⟨⟨a, ha⟩, m⟩, hm⟩` from `(IsLocalization.mem_map_algebraMap_iff M R).1 hd`. Simplify using `only at hm`. Rewrite `hm` using `[← map_mul]`.
+
+Take `⟨c, hc⟩` from `IsLocalization.exists_of_eq (M := M) hm`. Use `⟨c * m, M.mul_mem c.2 m.2, ?_⟩` and prove the remaining obligations. Establish `: (c : A) * (d * m) = c * a` using `hc`. Rewrite using `[show (c : A) * m * d = c * (d * m) by ring, this]`. Conclude with `J.mul_mem_left _ ha`.
+
+Establish `hone : ∀ g ∈ J, ∃ t ∈ M, ∃ c, t * g = c * d`. Introduce `g hg`. Establish `hg' : algebraMap A R g ∈ Ideal.span {algebraMap A R d}` using `h ▸ Ideal.mem_map_of_mem _ hg`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 hg'`. Take `⟨⟨a, m⟩, ham⟩` from `IsLocalization.surj M r`.
+
+Simplify using `only at ham`. Establish `: algebraMap A R (m * g) = algebraMap A R (a * d)`. Rewrite using `[map_mul, map_mul, ← ham, ← hr]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc⟩` from `IsLocalization.exists_of_eq (M := M) this`.
+
+Conclude with `⟨c * m, M.mul_mem c.2 m.2, c * a, by linear_combination hc⟩`. Establish `key : ∀ T : Finset A, (∀ g ∈ T, ∃ t ∈ M, ∃ c, t * g = c * d) → ∃ t ∈ M, ∀ g ∈ T, ∃ c, t * g = c * d`. Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact fun _ => ⟨1, M.one_mem, by simp⟩`.
+
+Consider the case `insert a S haS ih`. Introduce `hT`. Take `⟨t, htM, ht⟩` from `ih (fun g hg => hT g (Finset.mem_insert_of_mem hg))`. Take `⟨t', ht'M, c', hc'⟩` from `hT a (Finset.mem_insert_self a S)`. Use `⟨t * t', M.mul_mem htM ht'M, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hg with rfl | hg` into its components or cases. Conclude with `⟨t * c', by rw [mul_assoc, hc', mul_assoc]⟩`. Take `⟨c, hc⟩` from `ht g hg`. Conclude with `⟨t' * c, by rw [mul_comm t t', mul_assoc, hc, mul_assoc]⟩`. Take `⟨S, rfl⟩` from `hJ`.
+
+Take `⟨t, htM, ht⟩` from `key S fun g hg => hone g (Ideal.subset_span hg)`. Establish `hall : ∀ j ∈ Ideal.span (S : Set A), ∃ c, t * j = c * d`. Introduce `j hj`. Proceed by induction on `hj using Submodule.span_induction with`. Consider the case `mem x hx => exact ht x hx`.
+
+Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [mul_add, ha, hb, add_mul]⟩`.
+
+Consider the case `smul a x _ hx`. Take `⟨b, hb⟩` from `hx`. Conclude with `⟨a * b, by rw [smul_eq_mul, mul_left_comm, hb, mul_assoc]⟩`. Use `⟨s₁ * t, M.mul_mem hs₁M htM, ?_, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm s₁ t, mul_assoc]`.
+
+Conclude with `Ideal.mul_mem_left _ _ hs₁`. Take `⟨c, hc⟩` from `hall j hj`. Conclude with `⟨s₁ * c, by rw [mul_assoc, hc, mul_assoc]⟩`.
+-/
 theorem exists_of_map_eq_span {A R : Type} [CommRing A] [CommRing R] [Algebra A R] (M : Submonoid A)
     [IsLocalization M R] {J : Ideal A} (hJ : J.FG) (d : A)
     (h : J.map (algebraMap A R) = Ideal.span {algebraMap A R d}) :
@@ -78,6 +101,19 @@ end GlobalTheory.IdealSpread
 
 namespace GlobalTheory.IdealSpread
 
+/- English proof (translation)
+Use `letI : Algebra Γ(X, U.1) (X.presheaf.stalk x₀) := (X.presheaf.germ U.1 x₀ hx).hom.toAlgebra`. Use `haveI hL : IsLocalization.AtPrime (X.presheaf.stalk x₀) (U.2.primeIdealOf ⟨x₀, hx⟩).asIdeal := U.2.isLocalization_stalk ⟨x₀, hx⟩`. Take `⟨s, hsM, hsd, hsJ⟩` from `exists_of_map_eq_span (R := X.presheaf.stalk x₀) (U.2.primeIdealOf ⟨x₀, hx⟩).asIdeal.primeCompl (IsNoetherian.noetherian (I.ideal U)) d h`. Use `⟨s, (X.mem_basicOpen s x₀ hx).2 (IsLocalization.map_units (X.presheaf.stalk x₀) ⟨s, hsM⟩), fun t ht => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (resG X (X.basicOpen_le t) s)`.
+
+Establish `h0 : IsUnit (resG X (X.basicOpen_le s) s)` using `X.toRingedSpace.isUnit_res_basicOpen s`. Establish `h1` using `h0.map (resG X ht)`. Establish `e : resG X ht (resG X (X.basicOpen_le s) s) = resG X (X.basicOpen_le t) s`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Rewrite using `[← I.map_ideal_basicOpen U t]`. Express the relevant statement in the definitionally equal form `(I.ideal U).map (resG X (X.basicOpen_le t)) = _`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `j hj`. Take `⟨c, hc⟩` from `hsJ j hj`. Rewrite using `[Ideal.mem_comap, Ideal.mem_span_singleton']`. Use `⟨↑hu.unit⁻¹ * resG X (X.basicOpen_le t) c, ?_⟩` and prove the remaining obligations. Use `congrArg (resG X (X.basicOpen_le t)) hc` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_mul]`. Rewrite using `[mul_assoc, ← this, ← mul_assoc, IsUnit.val_inv_mul, one_mul]`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Establish `hm` using `Ideal.mem_map_of_mem (resG X (X.basicOpen_le t)) hsd`. Rewrite `hm` using `[map_mul]`.
+
+Use `Ideal.mul_mem_left _ (↑hu.unit⁻¹ : Γ(X, X.basicOpen t)) hm` as an intermediate fact. Rewrite `this` using `[← mul_assoc, IsUnit.val_inv_mul, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem ideal_eq_span_of_germ (X : Scheme.{0}) (I : X.IdealSheafData) (U : X.affineOpens) (x₀ : X) (hx : x₀ ∈ U.1)
     (d : Γ(X, U.1)) (hN : IsNoetherianRing Γ(X, U.1))
     (h : (I.ideal U).map (X.presheaf.germ U.1 x₀ hx).hom = Ideal.span {(X.presheaf.germ U.1 x₀ hx).hom d}) :

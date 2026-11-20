@@ -25,6 +25,17 @@ namespace GlobalTheory.NormSum.CoordAlg
 
 open Classical Formalism.UG Formalism.UG.P Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.NormSum.IntOver GlobalTheory.NormSum.RepAt GlobalTheory.NormSum.PtsMem
 
+/- English proof (translation)
+Use `set g : Matrix (Fin N) (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D) := ((h : GL (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin N) (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D)) with hg`. Use `choose m hm0 hm using fun ij : Fin N × Fin N => denom (F := ℚ) (E := D.host.E) (g ij.1 ij.2)`. Use `set M := ∏ ij, m ij with hMdef`. Establish `hM0 : 0 < M` using `Finset.prod_pos fun ij _ => hm0 ij`. Take `⟨p, hpM, hp⟩` from `Nat.exists_infinite_primes (M + Q + 1)`.
+
+Establish `hpM' : ¬ p ∣ M` using `fun hd => by have := Nat.le_of_dvd hM0 hd; omega`. Take `⟨v, hv, hw⟩` from `exists_place p hp`. Establish `hMv : ((M : ℕ) : 𝓞 ℚ) ∉ v.asIdeal`. Introduce `hm'`. Take `⟨x, y, e⟩` from `(Nat.isCoprime_iff_coprime.2 (Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp).2 hpM'))).map (Int.castRingHom (𝓞 ℚ))`.
+
+Use `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (by simpa using hm')) (Ideal.mul_mem_left _ _ (by simpa using hv))`. Establish `hi : ∀ i j, afsplitEps D.host.E v * g i j ∈ OhE D` using `fun i j => eps_mul_mem v M hMv _ (by`. Rewrite using `[hMdef, ← Finset.prod_erase_mul _ _ (Finset.mem_univ (i, j)), Nat.cast_mul, mul_assoc]`.
+
+Conclude with `mul_mem (natCast_mem _ _) (hm (i, j)))`. Take `⟨k, hk, hint, htriv⟩` from `exists_int (F := ℚ) (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) v (h : GL (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D)) h.2 (Units.inv_eq_of_mul_eq_one_left ((mem_GA D _).1 h.2)) hi`. Use `⟨p, by omega, hp, ⟨k, hk⟩, (mem_intG _).2 hint, fun i j l => ?_⟩` and prove the remaining obligations. Use `zero_at (F := ℚ) (E := D.host.E) v p hp hw (g i j - (1 : Matrix (Fin N) (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D)) i j) l` as an intermediate fact. Rewrite `this` using `[← htriv i j]`.
+
+Conclude with `this`.
+-/
 theorem exists_prime_integralOver_gt (D : D7) (N : ℕ) (h : GA D N) (Q : ℕ) :
     ∃ p : ℕ, Q < p ∧ p.Prime ∧ IntegralOver D p h := by
   set g : Matrix (Fin N) (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D) := ((h : GL (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin N) (Fin N) (Formalism.MainNotions.StandardLatticesGL3.AE D)) with hg
@@ -51,6 +62,13 @@ theorem exists_prime_integralOver_gt (D : D7) (N : ℕ) (h : GA D N) (Q : ℕ) :
   rw [← htriv i j] at this
   exact this
 
+/- English proof (translation)
+Introduce `_hPr hI D δ t0 Q P h U`. Take `⟨S, dl, hL⟩` from `GlobalTheory.NormSum.Denom.exists_letters D`. Take `⟨p, hpQ, hp, k', hk', htr⟩` from `exists_prime_integralOver_gt D P.d h Q`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hQ0` using `P.level_pos`.
+
+Establish `hsp : p ∣ Q → SplitIn D p` using `fun hd => absurd (Nat.le_of_dvd hQ0 hd) (by omega)`. Take `⟨hterm, -, -⟩` from `GlobalTheory.T.definiteThetaPair_terms_norms_independent_representatives D (hI D) ⊤ δ t0 Q P.crv P.pt0 P hQ0`. Establish `hmem : P.coord h U ∈ Qbar`. Unfold `Pair.coord`. Use `finsum_induction (· ∈ Qbar) (zero_mem _) (fun x y => add_mem) (fun x => ?_)` and prove the remaining obligations.
+
+Use `mul_mem (inv_mem (natCast_mem _ _)) ?_` and prove the remaining obligations. Take `⟨γ, k, γ', h1, h2, h3⟩` from `(hI D).rep P.a p hp x.out`. Rewrite using `[← hterm γ (Subgroup.subset_closure ⟨γ', h1⟩) k (Subgroup.subset_closure h2)]`. Conclude with `(CoordBound.term_bound_of_jets GlobalTheory.T.jets_torsion_translates_cm_theta_product D (hI D) S dl hL δ t0 Q P p hsp (CoordBound.nonempty_place p).some _ h k' hk' h3 htr U).1`. Conclude with `mem_algebraicClosure_iff.1 hmem`.
+-/
 theorem coord_isAlgebraic : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ (D : D7) (δ t0 : ℂ) (Q : ℕ) (P : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q)
     (h : Formalism.MainNotions.StandardLatticesGL3.GA D P.d) (U : GlobalTheory.NormSum.Tup D P.a P.d P.n), IsAlgebraic ℚ (P.coord h U) := by
   intro _hPr hI D δ t0 Q P h U

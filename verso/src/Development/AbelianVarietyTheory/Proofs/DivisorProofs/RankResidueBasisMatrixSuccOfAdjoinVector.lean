@@ -5,6 +5,35 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hϖ h1 h2 h3 h4 h5`. Use `set bar := residue O with hbar`. Establish `hmap : ∀ (A : Matrix (Fin n) (Fin n) O) (v : Fin n → O), (A.map bar) *ᵥ (bar ∘ v) = bar ∘ (A *ᵥ v)`. Introduce `A v`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(RingHom.map_mulVec bar A v i).symm`. Establish `hlift : ∀ z : Fin n → ResidueField O, ∃ v : Fin n → O, bar ∘ v = z`. Introduce `z`. Use `⟨fun i => (residue_surjective (z i)).choose, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Conclude with `(residue_surjective (z i)).choose_spec`. Use `set V := LinearMap.range (As.map bar).mulVecLin`. Use `set Wc := LinearMap.range (Ac.map bar).mulVecLin`. Use `set xb : Fin n → ResidueField O := bar ∘ x`. Establish `hV : V = Wc ⊔ Submodule.span (ResidueField O) {xb}`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `v ⟨z, rfl⟩`. Take `⟨w, rfl⟩` from `hlift z`. Take `⟨u, c, hc⟩` from `h2 w`. Rewrite using `[Matrix.mulVecLin_apply, hmap, hc]`.
+
+Establish `: bar ∘ (Ac *ᵥ u + fun a => c * x a) = (Ac.map bar) *ᵥ (bar ∘ u) + bar c • xb`. Rewrite using `[hmap]`. Use function extensionality and compare the values at `i`. Simplify using `[xb]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.add_mem_sup ⟨bar ∘ u, rfl⟩ (Submodule.smul_mem _ _ (Submodule.subset_span rfl))`. Apply `sup_le` to reduce the goal to its premises. Introduce and unpack `v ⟨z, rfl⟩`. Take `⟨u, rfl⟩` from `hlift z`. Take `⟨w, hw⟩` from `h4 u`.
+
+Use `⟨bar ∘ w, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVecLin_apply, hmap, hmap, hw]`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Take `⟨w, hw⟩` from `h3`. Conclude with `⟨bar ∘ w, by rw [Matrix.mulVecLin_apply, hmap, hw]⟩`.
+
+Establish `hxb : xb ∉ Wc`. Introduce and unpack `⟨z, hz⟩`. Take `⟨u, rfl⟩` from `hlift z`. Rewrite `hz` using `[Matrix.mulVecLin_apply, hmap]`. Establish `hmem : ∀ a, (x - Ac *ᵥ u) a ∈ Ideal.span {ϖ}`.
+
+Introduce `a`. Rewrite using `[← hϖ.maximalIdeal_eq, ← residue_eq_zero_iff]`. Use `congrFun hz a` as an intermediate fact. Simplify using `only [Function.comp_apply, xb] at this`. Rewrite using `[Pi.sub_apply, map_sub, ← hbar, this, sub_self]`.
+
+Use `choose y hy using fun a => Ideal.mem_span_singleton'.1 (hmem a)`. Take `⟨u', hu'⟩` from `h1 y`. Apply `h5` to reduce the goal to its premises. Use `⟨u + u', ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, hu']`.
+
+Use function extensionality and compare the values at `a`. Use `hy a` as an intermediate fact. Simplify using `only [Pi.sub_apply] at this`. Simplify using `only [Pi.add_apply]`. Rewrite using `[mul_comm, this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hxb0 : xb ≠ 0`. Introduce `h`. Conclude with `hxb (h ▸ Wc.zero_mem)`. Establish `hinf : Wc ⊓ Submodule.span (ResidueField O) {xb} = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce and unpack `v ⟨hvW, hvs⟩`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hvs`. Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`.
+
+Conclude with `absurd (by simpa [hc] using Wc.smul_mem c⁻¹ hvW) hxb`. Establish `key` using `Submodule.finrank_sup_add_finrank_inf_eq Wc (Submodule.span (ResidueField O) {xb})`. Rewrite `key` using `[hinf, finrank_bot, add_zero, finrank_span_singleton hxb0, ← hV]`. Use `show Module.finrank _ V = Module.finrank _ Wc + 1`. Conclude with `key`.
+-/
 theorem rank_residue_succ_of_adjoin
     {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (n : ℕ) (ϖ : O)
     (Ac As : Matrix (Fin n) (Fin n) O) (x : Fin n → O) :

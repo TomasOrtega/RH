@@ -13,6 +13,11 @@ noncomputable section
 
 namespace JQExpansion
 
+/- English proof (translation)
+Introduce `w`. Simplify using `only [comp_apply, Complex.ofReal_one]`. Distinguish the cases in `hw : 0 < w.im`. Conclude with `hf w hw`. Establish `hw' : (w + 1).im ≤ 0` using `by simpa using hw`.
+
+Rewrite using `[ofComplex_apply_eq_of_im_nonpos hw' (not_lt.mp hw)]`.
+-/
 lemma periodic_comp_ofComplex_of {f : ℍ → ℂ}
     (hf : ∀ z : ℂ, 0 < z.im → f (ofComplex (z + 1)) = f (ofComplex z)) :
     Periodic (f ∘ ofComplex) ((1 : ℝ) : ℂ) := by
@@ -23,6 +28,39 @@ lemma periodic_comp_ofComplex_of {f : ℍ → ℂ}
   · have hw' : (w + 1).im ≤ 0 := by simpa using hw
     rw [ofComplex_apply_eq_of_im_nonpos hw' (not_lt.mp hw)]
 
+/- English proof (translation)
+Use `set Q : ℍ → ℂ := fun τ ↦ Periodic.qParam 1 τ with hQdef`. Use `set φ : ℍ → ℂ := fun τ ↦ Periodic.qParam 1 τ * modularJ τ with hφdef`. Establish `hqper : ∀ z : ℂ, Periodic.qParam 1 (z + 1) = Periodic.qParam 1 z` using `fun z ↦ by`. Simplify using `only [Periodic.qParam, Complex.ofReal_one, div_one, mul_add, mul_one, Complex.exp_add, Complex.exp_two_pi_mul_I]`. Establish `hQper : Periodic (Q ∘ ofComplex) ((1 : ℝ) : ℂ)` using `periodic_comp_ofComplex_of fun z hz ↦ by`.
+
+Establish `hz1 : 0 < (z + 1).im` using `by simpa using hz`. Simplify using `only [hQdef, ofComplex_apply_of_im_pos hz, ofComplex_apply_of_im_pos hz1,`. Use the proof step `]`. Conclude with `hqper z`. Establish `hφper : Periodic (φ ∘ ofComplex) ((1 : ℝ) : ℂ)` using `periodic_comp_ofComplex_of fun z hz ↦ by`.
+
+Establish `hE` using `SlashInvariantFormClass.periodic_comp_ofComplex E₄ one_mem_strictPeriods_SL z`. Establish `hD` using `SlashInvariantFormClass.periodic_comp_ofComplex CuspForm.discriminant one_mem_strictPeriods_SL z`. Establish `hz1 : 0 < (z + 1).im` using `by simpa using hz`. Simplify using `only [comp_apply, Complex.ofReal_one, CuspForm.coe_discriminant] at hE hD`. Simplify using `only [hφdef, modularJ, hE, hD]`.
+
+Rewrite using `[ofComplex_apply_of_im_pos hz, ofComplex_apply_of_im_pos hz1]`. Simplify using `only [hqper]`. Establish `hQhol : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) Q` using `UpperHalfPlane.mdifferentiable_iff.mpr ((Periodic.differentiable_qParam (h := 1)).differentiableOn.congr fun z hz ↦ by`. Simplify using `[hQdef, ofComplex_apply_of_im_pos (show 0 < z.im from hz)])`. Establish `hφhol : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) φ` using `UpperHalfPlane.mdifferentiable_iff.mpr ((UpperHalfPlane.mdifferentiable_iff.mp hQhol).mul differentiableOn_modularJC)`.
+
+Establish `hQb : IsBoundedAtImInfty Q` using `isBoundedAtImInfty_iff.mpr ⟨1, 0, fun τ _ ↦ (Periodic.norm_qParam_lt_one one_pos τ.im_pos).le⟩`. Establish `hφb : IsBoundedAtImInfty φ`. Take `⟨M, A, hM⟩` from `isBoundedAtImInfty_iff.mp (ModularFormClass.bdd_at_infty E₄)`. Take `⟨C, hC⟩` from `exp_isBigO_discriminant.bound`. Take `⟨A', hA'⟩` from `(atImInfty_mem _).mp hC`.
+
+Use `isBoundedAtImInfty_iff.mpr ⟨C * M ^ 3, max A A', fun τ hτ ↦ ?_⟩` and prove the remaining obligations. Establish `h1` using `hM τ (le_of_max_le_left hτ)`. Establish `hΔ : 0 < ‖ModularForm.discriminant τ‖` using `norm_pos_iff.mpr (discriminant_ne_zero τ)`. Establish `h2 : ‖Periodic.qParam 1 (τ : ℂ)‖ / ‖ModularForm.discriminant τ‖ ≤ C`. Establish `h3` using `hA' τ (le_of_max_le_right hτ)`.
+
+Simplify using `only [Set.mem_ofPred_eq, Real.norm_of_nonneg (Real.exp_pos _).le] at h3`. Rewrite using `[div_le_iff₀ hΔ, Periodic.norm_qParam, div_one, UpperHalfPlane.coe_im]`. Conclude with `h3`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hφdef, modularJ, norm_mul, norm_div, norm_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ C * M ^ 3 := mul_le_mul h2 (pow_le_pow_left₀ (norm_nonneg _) h1 3) (by positivity) (le_trans (by positivity) h2)`. Establish `hQa` using `UpperHalfPlane.analyticAt_cuspFunction_zero one_pos hQper hQhol hQb`. Establish `hφa` using `UpperHalfPlane.analyticAt_cuspFunction_zero one_pos hφper hφhol hφb`. Establish `hΔa` using `ModularFormClass.analyticAt_cuspFunction_zero CuspForm.discriminant one_pos one_mem_strictPeriods_SL`.
+
+Establish `hE3a` using `ModularFormClass.analyticAt_cuspFunction_zero (E₄.pow 3) one_pos one_mem_strictPeriods_SL`. Establish `hQX : qExpansion 1 Q = X`. Establish `hsum : ∀ τ : ℍ, HasSum (fun n : ℕ ↦ (if n = 1 then (1 : ℂ) else 0) • Periodic.qParam 1 (τ : ℂ) ^ n) (Q τ)`. Introduce `τ`. Establish `e : (fun n : ℕ ↦ (if n = 1 then (1 : ℂ) else 0) • Periodic.qParam 1 (τ : ℂ) ^ n) = fun n ↦ if n = 1 then Periodic.qParam 1 (τ : ℂ) else 0`.
+
+Use function extensionality and compare the values at `n`. Apply the tactic sequence `split_ifs with h <;> simp [h]`. Rewrite using `[e]`. Conclude with `hasSum_ite_eq 1 _`. Use extensionality with `m`.
+
+Establish `h` using `UpperHalfPlane.qExpansion_coeff_unique (⟨Q, hQhol.continuous⟩ : C(ℍ, ℂ)) one_pos hQa hsum m`. Rewrite using `[coeff_X]`. Conclude with `h.symm`. Establish `hprod : φ * ⇑CuspForm.discriminant = Q * ⇑(E₄.pow 3)`. Use function extensionality and compare the values at `τ`.
+
+Use `discriminant_ne_zero τ` as an intermediate fact. Simplify using `only [Pi.mul_apply, hφdef, hQdef, modularJ, ModularForm.coe_pow, Pi.pow_apply, CuspForm.coe_discriminant]`. Clear the denominators using the available nonvanishing facts. Establish `hq` using `congrArg (qExpansion 1) hprod`. Take `⟨D, hD0, hΔ⟩` from `DeltaQExpansionIntegral.proof`.
+
+Rewrite `hq` using `[UpperHalfPlane.qExpansion_mul hφa hΔa, UpperHalfPlane.qExpansion_mul hQa hE3a, hQX, ModularForm.qExpansion_pow one_pos one_mem_strictPeriods_SL, DeltaQExpansionIntegral.qExpansion_E₄, CuspForm.coe_discriminant, hΔ, map_mul, map_X, ← mul_assoc, mul_comm (qExpansion 1 φ) X, mul_as …`. Establish `hq'` using `mul_left_cancel₀ X_ne_zero hq`. Use `set E4Z : PowerSeries ℤ := 1 + (240 : ℤ) • DeltaQExpansionIntegral.sigmaSeries 3 with hE4Z`. Use `set u := invOfUnit D 1 with hu`. Establish `hDu : D * u = 1` using `mul_invOfUnit D 1 (by simp [hD0])`.
+
+Establish `ha : qExpansion 1 φ = map (Int.castRingHom ℂ) (E4Z ^ 3 * u)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hDu, map_one, mul_one]`. Use `_ = map (Int.castRingHom ℂ) (E4Z ^ 3 * u) := by`. Rewrite using `[map_mul, ← mul_assoc, hq', map_mul, map_pow]`.
+
+Use `⟨fun n ↦ coeff n (E4Z ^ 3 * u), ?_, fun τ ↦ ?_⟩` and prove the remaining obligations. Simplify using `[hu, hE4Z, constantCoeff_invOfUnit, DeltaQExpansionIntegral.sigmaSeries]`. Establish `h` using `UpperHalfPlane.hasSum_qExpansion one_pos hφper hφhol hφb τ`. Establish `e : ∀ n, coeff n (map (Int.castRingHom ℂ) (E4Z ^ 3 * u)) = ((coeff n (E4Z ^ 3 * u) : ℤ) : ℂ)` using `fun n ↦ by rw [coeff_map, eq_intCast]`. Simplify using `only [ha, e, smul_eq_mul] at h`.
+
+Conclude with `h`.
+-/
 theorem proof : JQExpansion.Statement := by
   set Q : ℍ → ℂ := fun τ ↦ Periodic.qParam 1 τ with hQdef
   set φ : ℍ → ℂ := fun τ ↦ Periodic.qParam 1 τ * modularJ τ with hφdef

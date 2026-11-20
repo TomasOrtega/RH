@@ -12,6 +12,9 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 open Classical in
+/- English proof (translation)
+Use `finsum_mem_eq_sum_of_inter_support_eq f ?_` and prove the remaining obligations. Use extensionality with `q`. Simplify using `only [mem_inter_iff, Function.mem_support, Finset.coe_filter, mem_setOf_eq]`. Conclude with `⟨fun h => ⟨⟨hT q h.2, h.1⟩, h.2⟩, fun h => ⟨h.1.2, h.2⟩⟩`.
+-/
 private theorem finsum_eq_sum_filter {Q : Type} (f : Q → ℂ) (S : Set Q) (T : Finset Q) (hT : ∀ q, f q ≠ 0 → q ∈ T) :
     ∑ᶠ q ∈ S, f q = ∑ q ∈ T.filter (· ∈ S), f q := by
   refine finsum_mem_eq_sum_of_inter_support_eq f ?_
@@ -19,6 +22,19 @@ private theorem finsum_eq_sum_filter {Q : Type} (f : Q → ℂ) (S : Set Q) (T :
   simp only [mem_inter_iff, Function.mem_support, Finset.coe_filter, mem_setOf_eq]
   exact ⟨fun h => ⟨⟨hT q h.2, h.1⟩, h.2⟩, fun h => ⟨h.1.2, h.2⟩⟩
 
+/- English proof (translation)
+Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Take `⟨B, hB, hEB⟩ : ∃ B, IsCompact B ∧ GroundTheory.Global.fundamentalSet K ⊆ B` from `⟨closure (GroundTheory.Global.fundamentalSetInfinite K) ×ˢ _, (GroundTheory.Global.isCompact_closure_fundamentalSetInfinite K).prod (GroundTheory.Global.isCompact_integralFiniteAdeles K), fun x hx => ⟨subset_closure hx.1, hx.2⟩⟩`. Establish `hadd : Continuous fun p : 𝔸[K] × (UPos n r → 𝔸[K]) => p.2 + e p.1` using `continuous_snd.add (he.comp continuous_fst)`. Establish `hT` using `hfin _ ((hB.prod hC).image hadd)`. Establish `hshift : ∀ y, ∫ X in unipFundamentalDomain K n r, ∑ᶠ q ∈ S, f q (X + y) ∂unipMeasure K n r = ∫ X in unipFundamentalDomain K n r, ∑ᶠ q ∈ S, f q X ∂unipMeasure K n r`.
+
+Introduce `y`. Use `setIntegral_add_right_of_periodic isAddFundamentalDomain_unipFundamentalDomain (h := fun X => ∑ᶠ q ∈ S, f q X) (fun ξ hξ s => ?_) y` and prove the remaining obligations. Take `⟨σ, hσ, h⟩` from `hper ξ hξ`. Conclude with `finsum_mem_eq_of_bijOn σ hσ fun q _ => h q s`. Establish `hint : ∀ q, Integrable (Function.uncurry fun y X => f q (X + e y)) (((GroundTheory.Global.adeleMeasure K).restrict (GroundTheory.Global.fundamentalSet K)).prod ((unipMeasure K n r).restrict (unipFundamentalDomain K n r)))`.
+
+Introduce `q`. Rewrite using `[Measure.prod_restrict]`. Conclude with `(((hf q).comp hadd).continuousOn.integrableOn_compact (hB.prod hC)).mono_set (prod_mono hEB hDC)`. Establish `hint1 : ∀ q y, IntegrableOn (fun X => f q (X + y)) (unipFundamentalDomain K n r) (unipMeasure K n r)` using `fun q y => (((hf q).comp (continuous_add_const y)).continuousOn.integrableOn_compact hC).mono_set hDC`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[setIntegral_const, Measure.real, GroundTheory.Global.adeleMeasure_fundamentalSet]`. Simplify using the standard rewrite rules. Use `_ = ∫ y in GroundTheory.Global.fundamentalSet K, ∑ q ∈ hT.toFinset.filter (· ∈ S), ∫ X in unipFundamentalDomain K n r, f q (X + e y) ∂unipMeasure K n r ∂GroundTheory.Global.adeleMeasure K := by`. Use `setIntegral_congr_fun (GroundTheory.Global.measurableSet_fundamentalSet K) fun y hy => ?_` and prove the remaining obligations. Use `show _ = ∑ q ∈ hT.toFinset.filter (· ∈ S), ∫ X in unipFundamentalDomain K n r, f q (X + e y) ∂unipMeasure K n r`.
+
+Rewrite using `[← integral_finsetSum _ fun q _ => hint1 q (e y), ← hshift (e y)]`. Use `setIntegral_congr_fun measurableSet_unipFundamentalDomain fun X hX => ?_` and prove the remaining obligations. Use `finsum_eq_sum_filter (fun q => f q (X + e y)) S _ fun q hq => ?_` and prove the remaining obligations. Conclude with `hT.mem_toFinset.2 ⟨_, ⟨(y, X), ⟨hEB hy, hDC hX⟩, rfl⟩, hq⟩`. Use `_ = 0 := by`.
+
+Use `(integral_finsetSum _ fun q _ => (hint q).integral_prod_left).trans ?_` and prove the remaining obligations. Use `Finset.sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Use `(integral_integral_swap (hint q)).trans ?_` and prove the remaining obligations. Simplify using `only [hd q (Finset.mem_filter.1 hq).2, integral_zero]`.
+-/
 private theorem one_dir {K : Type} [Field K] [NumberField K] {n r : ℕ} {Q : Type} (f : Q → (UPos n r → 𝔸[K]) → ℂ)
     (hf : ∀ q, Continuous (f q)) (hfin : ∀ C, IsCompact C → {q | ∃ X ∈ C, f q X ≠ 0}.Finite) (S : Set Q)
     (hper : ∀ ξ ∈ unipLattice K n r, ∃ σ : Q → Q, BijOn σ S S ∧ ∀ q X, f q (ξ + X) = f (σ q) X)
@@ -66,6 +82,13 @@ private theorem one_dir {K : Type} [Field K] [NumberField K] {n r : ℕ} {Q : Ty
         refine (integral_integral_swap (hint q)).trans ?_
         simp only [hd q (Finset.mem_filter.1 hq).2, integral_zero]
 
+/- English proof (translation)
+Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Establish `hT` using `hfin _ hC`. Establish `key : ∀ S' : Set Q, ∫ X in unipFundamentalDomain K n r, ∑ᶠ q ∈ S', f q X ∂unipMeasure K n r = ∑ q ∈ hT.toFinset.filter (· ∈ S'), ∫ X in unipFundamentalDomain K n r, f q X ∂unipMeasure K n r`. Introduce `S'`. Rewrite using `[← integral_finsetSum _ fun q _ => (((hf q).continuousOn.integrableOn_compact hC).mono_set hDC)]`.
+
+Use `setIntegral_congr_fun measurableSet_unipFundamentalDomain fun X hX => ?_` and prove the remaining obligations. Conclude with `finsum_eq_sum_filter (fun q => f q X) S' _ fun q hq => hT.mem_toFinset.2 ⟨_, hDC hX, hq⟩`. Rewrite using `[key, ← Finset.sum_fiberwise_of_maps_to (g := c) (t := (hT.toFinset.filter (· ∈ S)).image c) fun q hq => Finset.mem_image_of_mem c hq]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Use `h a` as an intermediate fact.
+
+Rewrite `this` using `[key]`. Rewrite using `[Finset.filter_filter]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use extensionality with `q`. Simplify using the standard rewrite rules.
+-/
 private theorem many_dir {K : Type} [Field K] [NumberField K] {n r : ℕ} {Q J : Type} (f : Q → (UPos n r → 𝔸[K]) → ℂ)
     (hf : ∀ q, Continuous (f q)) (hfin : ∀ C, IsCompact C → {q | ∃ X ∈ C, f q X ≠ 0}.Finite) (S : Set Q) (c : Q → J)
     (h : ∀ a, ∫ X in unipFundamentalDomain K n r, ∑ᶠ q ∈ {q | q ∈ S ∧ c q = a}, f q X ∂unipMeasure K n r = 0) :
@@ -92,6 +115,9 @@ private theorem many_dir {K : Type} [Field K] [NumberField K] {n r : ℕ} {Q J :
 private noncomputable def act {K : Type} [Field K] [NumberField K] (η : Gam K (2 + 2)) (q : Cos K) : Cos K :=
   Quotient.mk _ (q.out * η)
 
+/- English proof (translation)
+Establish `h : (QuotientGroup.rightRel (ParΓ K 2 2)) (Quotient.mk (QuotientGroup.rightRel (ParΓ K 2 2)) γ).out γ` using `Quotient.exact (Quotient.out_eq _)`. Use `Quotient.sound (QuotientGroup.rightRel_apply.2 ?_)` and prove the remaining obligations. Establish `h'` using `QuotientGroup.rightRel_apply.1 h`. Rewrite using `[mul_inv_rev, mul_assoc, mul_inv_cancel_left]` and apply the resulting hypothesis.
+-/
 private theorem act_mk {K : Type} [Field K] [NumberField K] (η γ : Gam K (2 + 2)) :
     act η (Quotient.mk _ γ) = Quotient.mk _ (γ * η) := by
   have h : (QuotientGroup.rightRel (ParΓ K 2 2)) (Quotient.mk (QuotientGroup.rightRel (ParΓ K 2 2)) γ).out γ :=
@@ -100,16 +126,39 @@ private theorem act_mk {K : Type} [Field K] [NumberField K] (η γ : Gam K (2 + 
   have h' := QuotientGroup.rightRel_apply.1 h
   rwa [mul_inv_rev, mul_assoc, mul_inv_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[show act η q = Quotient.mk _ (q.out * η) from rfl, act_mk, mul_assoc, h, mul_one, Quotient.out_eq]`.
+-/
 private theorem act_act {K : Type} [Field K] [NumberField K] (η η' : Gam K (2 + 2)) (h : η * η' = 1) (q : Cos K) :
     act η' (act η q) = q := by
   rw [show act η q = Quotient.mk _ (q.out * η) from rfl, act_mk, mul_assoc, h, mul_one, Quotient.out_eq]
 
+/- English proof (translation)
+Take `⟨δ, hδ, h⟩` from `(pkLaws (K := K)).2.2.2 (q.out * η)`. Rewrite using `[show act η q = Quotient.mk _ (q.out * η) from rfl, h, mul_assoc, hF δ hδ, Subgroup.coe_mul, mul_assoc]`.
+-/
 private theorem act_val {K : Type} [Field K] [NumberField K] (F : G1 K (2 + 2) → ℂ)
     (hF : ∀ γ ∈ PK K, ∀ g, F (γ * g) = F g) (η : Gam K (2 + 2)) (q : Cos K) (x : G1 K (2 + 2)) :
     F (((act η q).out : G1 K (2 + 2)) * x) = F ((q.out : G1 K (2 + 2)) * (η * x)) := by
   obtain ⟨δ, hδ, h⟩ := (pkLaws (K := K)).2.2.2 (q.out * η)
   rw [show act η q = Quotient.mk _ (q.out * η) from rfl, h, mul_assoc, hF δ hδ, Subgroup.coe_mul, mul_assoc]
 
+/- English proof (translation)
+Introduce `K _ _ F hFc hF hband r S hS hD g`. Take `⟨R, hR⟩` from `hband`. Set `u : unipLattice K (2 + 2) r → Gam K (2 + 2)` to `fun ξ => ⟨unipOne K (2 + 2) r ξ.1, unipOne_mem_rationalGLOne r ξ⟩`. Establish `hu : ∀ ξ, u ξ * u (-ξ) = 1` using `fun ξ => Subtype.ext (by show unipOne K (2 + 2) r ξ.1 * unipOne K (2 + 2) r (-ξ.1) = 1`. Rewrite using `[← unipOne_add, add_neg_cancel, unipOne_zero])`.
+
+Establish `hu' : ∀ ξ, u (-ξ) * u ξ = 1` using `fun ξ => by simpa using hu (-ξ)`. Establish `hSa : ∀ ξ q, q ∈ S → act (u ξ) q ∈ S` using `fun ξ q hq => hS q.out (q.out * u ξ) ξ rfl (by rwa [Quotient.out_eq])`. Establish `hDa : ∀ ξ (q : Cos K) a, Dies F r (q.out : G1 K (2 + 2)) a → Dies F r ((act (u ξ) q).out : G1 K (2 + 2)) a`. Introduce `ξ q a h x`. Rewrite using `[← h (unipOne K (2 + 2) r ξ.1 * x)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[mul_assoc, act_val F hF, mul_assoc]`. Use `congr 2`. Use `show unipOne K (2 + 2) r ξ.1 * _ = _`.
+
+Rewrite using `[← mul_assoc, ← mul_assoc, ← unipOne_add, ← unipOne_add, add_comm ξ.1]`. Set `c : Cos K → UPos (2 + 2) r → K` to `fun q => Classical.epsilon fun a => Dies F r (q.out : G1 K (2 + 2)) a`. Establish `hc : ∀ ξ q, c (act (u ξ) q) = c q`. Introduce `ξ q`. Use `congrArg Classical.epsilon (funext fun a => propext ⟨fun h => ?_, hDa ξ q a⟩)` and prove the remaining obligations.
+
+Use `hDa (-ξ) _ a h` as an intermediate fact. Rewrite `this` using `[act_act _ _ (hu ξ)]`. Then use the resulting hypothesis. Establish `hcont : Continuous fun X => unipOne K (2 + 2) r X * g` using `(continuous_unipOne r).mul continuous_const`. Establish `hf : ∀ q : Cos K, Continuous fun X => F ((q.out : G1 K (2 + 2)) * (unipOne K (2 + 2) r X * g))` using `fun q => hFc.comp (continuous_const.mul hcont)`. Establish `hfin : ∀ C, IsCompact C → {q : Cos K | ∃ X ∈ C, F ((q.out : G1 K (2 + 2)) * (unipOne K (2 + 2) r X * g)) ≠ 0}.Finite`.
+
+Introduce `C hC`. Use `(locFin _ (-R) (hC.image hcont)).subset ?_` and prove the remaining obligations. Introduce and unpack `q ⟨X, hX, h⟩`. Conclude with `⟨_, ⟨X, hX, rfl⟩, (abs_le.1 (hR _ h)).1⟩`. Use `many_dir _ hf hfin S c fun a => ?_` and prove the remaining obligations.
+
+Establish `hm : ∀ ξ, MapsTo (act (u ξ)) {q | q ∈ S ∧ c q = a} {q | q ∈ S ∧ c q = a}` using `fun ξ q hq => ⟨hSa ξ q hq.1, (hc ξ q).trans hq.2⟩`. Establish `hb : ∀ ξ, BijOn (act (u ξ)) {q | q ∈ S ∧ c q = a} {q | q ∈ S ∧ c q = a}` using `fun ξ => Set.InvOn.bijOn (f' := act (u (-ξ))) ⟨fun q _ => act_act _ _ (hu ξ) q, fun q _ => act_act _ _ (hu' ξ) q⟩ (hm ξ) (hm (-ξ))`. Use `one_dir _ hf hfin _ (fun ξ hξ => ⟨act (u ⟨ξ, hξ⟩), hb _, fun q X => ?_⟩) (fun y p => y * algebraMap K 𝔸[K] (a p)) (continuous_pi fun p => continuous_id.mul continuous_const) ?_` and prove the remaining obligations. Rewrite using `[act_val F hF, unipOne_add, mul_assoc]`. Introduce and unpack `q ⟨hq, rfl⟩ X`.
+
+Establish `h : Dies F r (q.out : G1 K (2 + 2)) (c q)` using `Classical.epsilon_spec (hD q hq)`. Rewrite using `[← h (unipOne K (2 + 2) r X * g)]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[add_comm X, unipOne_add, mul_assoc, mul_assoc]`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.killAvg :
     ∀ {K : Type} [Field K] [NumberField K] (F : G1 K (2 + 2) → ℂ), Continuous F → (∀ γ ∈ PK K, ∀ g, F (γ * g) = F g) → InBand F → ∀ (r : ℕ) (S : Set (Cos K)),
       (∀ (γ γ' : Gam K (2 + 2)) (ξ : unipLattice K (2 + 2) r), (γ' : G1 K (2 + 2)) = γ * unipOne K (2 + 2) r ξ.1 →

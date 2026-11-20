@@ -10,6 +10,9 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTh
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NormExt.main | exact GlobalTheory.NormExt.main | (intros; apply GlobalTheory.NormExt.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unit_at_points_over_prime_bound : GlobalTheory.DetHT.RegLocSt → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : GlobalTheory.Mean4O.Cover Y) (U W : V.X.Opens), (W : Set V.X).Nonempty →
     ∀ (v : HeightOneSpectrum (𝓞 F)) (p : ℕ), p.Prime → (p : 𝓞 F) ∈ v.asIdeal → ∀ (h : V.X.functionField) (ρ : ℝ),
     (∀ (e : TrueGeo.Ext v) (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X),

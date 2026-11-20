@@ -12,6 +12,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 
 namespace UpperTheory.Gal.TypesAndIwahori
 
+/- English proof (translation)
+The claim follows from `unlinked_of_tameSphProd loc_holds GlobalTheory.RgGu.Holds.genericUnlinkedGL_holds PositivityTheory.Exh.langlandsMultisegments_holds PositivityTheory.Exh.standardCosocleGL_holds (GlobalTheory.CompanionTheory.Leib.genericProdIff_of_whitHeredity _ (GlobalTheory.CompanionTheory.Rodie …`.
+-/
 theorem unlinked_of_typeVec (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     (N c : ℕ) (d : Fin c → ℕ) (hd : ∑ b, d b = N) (hpos : ∀ b, 0 < d b) (V : Type) [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible) (hg : IsGeneric π)

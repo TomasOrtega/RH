@@ -19,6 +19,15 @@ namespace GlobalTheory.SUCong
 
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Set `f : congSU S σ H ϖ k →* Multiplicative (Matrix n n (Res S ϖ))` to `{ toFun := fun g => Multiplicative.ofAdd (levMap S ϖ k ((g : GL n A) : Matrix n n A)) map_one' := by`. Use `(GlobalTheory.T.level_map_eq_zero_iff S σ H ϖ q k hR 1 (one_mem _)).2 (one_mem _)` as an intermediate fact. Simplify using `using this`. Use the proof step `map_mul' := fun g h => by`. Simplify using `only [Subgroup.coe_mul]`.
+
+Rewrite using `[GlobalTheory.T.level_map_additive S σ H ϖ q k hR hk g h g.2 h.2]`. Use `rfl }`. Establish `hker : f.ker = (congSU S σ H ϖ (k + 1)).subgroupOf (congSU S σ H ϖ k)`. Use extensionality with `g`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf]`.
+
+Conclude with `GlobalTheory.T.level_map_eq_zero_iff S σ H ϖ q k hR g g.2`. Rewrite using `[Subgroup.relIndex, ← hker, Subgroup.index_ker]`. Rewrite using `[← GlobalTheory.T.card_skew_trace_eq S σ H ϖ q hR hF]`. Use `Nat.card_congr { toFun := fun x => ⟨Multiplicative.toAdd x.1, ?_⟩ invFun := fun Y => ⟨Multiplicative.ofAdd Y.1, ?_⟩ left_inv := fun x => rfl right_inv := fun Y => rfl }` and prove the remaining obligations. Take `⟨g, hg⟩` from `x.2`.
+
+Rewrite using `[← hg]`. Conclude with `GlobalTheory.T.level_map_mem_skew_trace S σ H ϖ q k hR hF hk g g.2`. Take `⟨g, hg, hgY⟩` from `GlobalTheory.T.level_map_surjective_skew S σ H ϖ q k hR hF hk Y.1 Y.2`. Conclude with `⟨⟨g, hg⟩, by simp [f, hgY]⟩`.
+-/
 theorem relIndex_congSU (S : Subring A) (σ : A →+* A) (H : Matrix n n A) (ϖ : A) (q k : ℕ)
     (hR : GoodRing S σ ϖ q) (hF : GoodForm S σ H) (hk : 1 ≤ k) :
     (congSU S σ H ϖ (k + 1)).relIndex (congSU S σ H ϖ k) = q ^ (Fintype.card n ^ 2 - 1) := by
@@ -56,6 +65,11 @@ open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat 
 
 namespace GlobalTheory.TamCnt
 
+/- English proof (translation)
+Introduce `E _ _ _ r G Λ hr hU hSD v k hk`. Establish `hlt : v.asIdeal ^ 2 < v.asIdeal`. Simplify using `using Ideal.pow_right_strictAnti v.asIdeal v.ne_bot v.isPrime.ne_top (show 1 < 2 by norm_num)`. Take `⟨π, hπ, hπ2⟩` from `SetLike.exists_of_lt hlt`. Take `⟨P, hF, hEq⟩` from `GlobalTheory.T.exists_local_good_form_at_prime E r G Λ hr hU hSD v π hπ hπ2`.
+
+Establish `hR` using `GlobalTheory.T.local_ring_good_at_uniformizer E hU v π hπ hπ2`. Rewrite using `[hEq (k + 1), hEq k, Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj P).injective]`. Use `GlobalTheory.SUCong.relIndex_congSU _ _ _ _ _ k hR hF hk` as an intermediate fact. Simplify using `using this`.
+-/
 theorem relIndex_locCong : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)), 2 ≤ r → Unr E → SelfDualLat G Λ → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (k : ℕ), 1 ≤ k → (GlobalTheory.TamCnt.locCong (IsCMField.complexConj E).toAlgHom Gᵀ Λ v (k + 1)).relIndex (GlobalTheory.TamCnt.locCong (IsCMField.complexConj E).toAlgHom Gᵀ Λ v k) = Ideal.absNorm v.asIdeal ^ (r ^ 2 - 1) := by
   intro E _ _ _ r G Λ hr hU hSD v k hk
   have hlt : v.asIdeal ^ 2 < v.asIdeal := by

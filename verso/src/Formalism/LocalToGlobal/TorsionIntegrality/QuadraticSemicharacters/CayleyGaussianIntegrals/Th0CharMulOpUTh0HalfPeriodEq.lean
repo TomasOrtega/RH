@@ -12,14 +12,23 @@ namespace Formalism.L2.Th1.H
 
 section SlopeTestRemainingChoices
 
+/- English proof (translation)
+Simplify using `only [altE, stdH_apply, Complex.im_sum, Formalism.L2.Th1.F.altE]`.
+-/
 theorem altE_std (L : PeriodPair) (n : Type*) [Fintype n] [DecidableEq n] (x y : n → ℂ) :
     altE (stdH L n) x y = ∑ i, Formalism.L2.Th1.F.altE L (x i) (y i) := by
   simp only [altE, stdH_apply, Complex.im_sum, Formalism.L2.Th1.F.altE]
 
+/- English proof (translation)
+Simplify using `[stdLat, AddSubgroup.mem_pi]`.
+-/
 theorem mem_stdLat (L : PeriodPair) (n : Type*) (x : n → ℂ) :
     x ∈ stdLat L n ↔ ∀ i, x i ∈ L.lattice := by
   simp [stdLat, AddSubgroup.mem_pi]
 
+/- English proof (translation)
+Rewrite using `[← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exp_pi_int (k : ℤ) :
     Complex.exp ((Real.pi : ℂ) * Complex.I * ((k : ℝ) : ℂ)) = (-1 : ℂ) ^ k := by
   rw [← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]
@@ -27,16 +36,25 @@ theorem exp_pi_int (k : ℤ) :
   push_cast
   ring
 
+/- English proof (translation)
+Break down `Int.even_or_odd k with h | h` into its components or cases. Conclude with `Or.inl h.neg_one_zpow`. Conclude with `Or.inr h.neg_one_zpow`.
+-/
 theorem neg_one_zpow_pm (k : ℤ) : (-1 : ℂ) ^ k = 1 ∨ (-1 : ℂ) ^ k = -1 := by
   rcases Int.even_or_odd k with h | h
   · exact Or.inl h.neg_one_zpow
   · exact Or.inr h.neg_one_zpow
 
+/- English proof (translation)
+Break down `Int.even_or_odd k with h | h` into its components or cases. Rewrite using `[h.neg_one_zpow, (Int.natAbs_even.mpr h).neg_one_pow]`. Rewrite using `[h.neg_one_zpow, (Int.natAbs_odd.mpr h).neg_one_pow]`.
+-/
 theorem neg_one_pow_natAbs (k : ℤ) : (-1 : ℂ) ^ k.natAbs = (-1 : ℂ) ^ k := by
   rcases Int.even_or_odd k with h | h
   · rw [h.neg_one_zpow, (Int.natAbs_even.mpr h).neg_one_pow]
   · rw [h.neg_one_zpow, (Int.natAbs_odd.mpr h).neg_one_pow]
 
+/- English proof (translation)
+Establish `h : Formalism.L2.Th1.F.herm L ((s : ℂ) * a + (t : ℂ) * b) c = (s : ℂ) * Formalism.L2.Th1.F.herm L a c + (t : ℂ) * Formalism.L2.Th1.F.herm L b c`. Simplify using `only [Formalism.L2.Th1.F.herm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Formalism.L2.Th1.F.altE, h, Complex.add_im, Complex.im_ofReal_mul, Complex.im_ofReal_mul]`. Both sides reduce to the same expression.
+-/
 theorem cayleyGaussianIntegrals_lin_fact (L : PeriodPair) (s t : ℝ) (a b c : ℂ) :
     Formalism.L2.Th1.F.altE L ((s : ℂ) * a + (t : ℂ) * b) c
       = s * Formalism.L2.Th1.F.altE L a c + t * Formalism.L2.Th1.F.altE L b c := by
@@ -47,15 +65,34 @@ theorem cayleyGaussianIntegrals_lin_fact (L : PeriodPair) (s t : ℝ) (a b c : �
   rw [Formalism.L2.Th1.F.altE, h, Complex.add_im, Complex.im_ofReal_mul, Complex.im_ofReal_mul]
   rfl
 
+/- English proof (translation)
+Use `Formalism.L2.Th1.F.OperatorUThetaLemmas.altE_swap L a a` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cayleyGaussianIntegrals_self_fact (L : PeriodPair) (a : ℂ) : Formalism.L2.Th1.F.altE L a a = 0 := by
   have := Formalism.L2.Th1.F.OperatorUThetaLemmas.altE_swap L a a
   linarith
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Th1.F.altE, Formalism.L2.Th1.F.OperatorUThetaLemmas.herm_add_left, Complex.add_im]`. Both sides reduce to the same expression.
+-/
 theorem period_skew_form_add_left (L : PeriodPair) (a b c : ℂ) :
     Formalism.L2.Th1.F.altE L (a + b) c = Formalism.L2.Th1.F.altE L a c + Formalism.L2.Th1.F.altE L b c := by
   rw [Formalism.L2.Th1.F.altE, Formalism.L2.Th1.F.OperatorUThetaLemmas.herm_add_left, Complex.add_im]
   rfl
 
+/- English proof (translation)
+Take `⟨m₁, h1⟩` from `h1`. Take `⟨m₂, h2⟩` from `h2`. Establish `hu` using `L.basis.sum_repr u`. Rewrite `hu` using `[Fin.sum_univ_two, L.basis_zero, L.basis_one, Complex.real_smul, Complex.real_smul]`. Use `set s := L.basis.repr u 0`.
+
+Use `set t := L.basis.repr u 1`. Establish `hsw` using `Formalism.L2.Th1.F.OperatorUThetaLemmas.altE_swap L L.ω₁ L.ω₂`. Rewrite `h1` using `[← hu, cayleyGaussianIntegrals_lin_fact, cayleyGaussianIntegrals_self_fact, hsw]`. Rewrite `h2` using `[← hu, cayleyGaussianIntegrals_lin_fact, cayleyGaussianIntegrals_self_fact]`. Establish `hE` using `Formalism.L2.Th1.F.altEBasis L`.
+
+Rewrite using `[← hu]`. Use `split_ifs at hE`. Rewrite `h1`, `h2` using `[hE]`. Use `PeriodPair.mem_lattice.mpr ⟨-m₂, m₁, ?_⟩` and prove the remaining obligations. Establish `hs : s = -(m₂ : ℝ)` using `by linarith`.
+
+Establish `ht : t = (m₁ : ℝ)` using `by linarith`. Rewrite using `[hs, ht]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1`, `h2` using `[hE]`.
+
+Use `PeriodPair.mem_lattice.mpr ⟨m₂, -m₁, ?_⟩` and prove the remaining obligations. Establish `hs : s = (m₂ : ℝ)` using `by linarith`. Establish `ht : t = -(m₁ : ℝ)` using `by linarith`. Rewrite using `[hs, ht]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_lattice_of_dual (L : PeriodPair) (u : ℂ)
     (h1 : ∃ m : ℤ, Formalism.L2.Th1.F.altE L u L.ω₁ = (m : ℝ))
     (h2 : ∃ m : ℤ, Formalism.L2.Th1.F.altE L u L.ω₂ = (m : ℝ)) : u ∈ L.lattice := by
@@ -86,6 +123,9 @@ theorem mem_lattice_of_dual (L : PeriodPair) (u : ℂ)
     push_cast
     ring
 
+/- English proof (translation)
+Unfold `Formalism.L2.Th1.F.semiChar`. Use `split_ifs`. Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`.
+-/
 theorem semiChar_pm (L : PeriodPair) (ω : ℂ) :
     Formalism.L2.Th1.F.semiChar L ω = 1 ∨ Formalism.L2.Th1.F.semiChar L ω = -1 := by
   unfold Formalism.L2.Th1.F.semiChar
@@ -93,6 +133,9 @@ theorem semiChar_pm (L : PeriodPair) (ω : ℂ) :
   · exact Or.inl rfl
   · exact Or.inr rfl
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `Formalism.L2.Th1.F.altEInt L ω ω₀ h h0`. Rewrite using `[Formalism.L2.Th1.F.thetaZeroCharacter, hk, exp_pi_int]`. Apply the tactic sequence `rcases semiChar_pm L ω with h1 | h1 <;> rcases neg_one_zpow_pm k with h2 | h2 <;> rw [h1, h2] <;>`. Evaluate the numerical expressions.
+-/
 theorem th0Char_pm (L : PeriodPair) (ω₀ ω : ℂ) (h0 : ω₀ ∈ L.lattice) (h : ω ∈ L.lattice) :
     Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ ω = 1 ∨ Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ ω = -1 := by
   obtain ⟨k, hk⟩ := Formalism.L2.Th1.F.altEInt L ω ω₀ h h0
@@ -100,13 +143,22 @@ theorem th0Char_pm (L : PeriodPair) (ω₀ ω : ℂ) (h0 : ω₀ ∈ L.lattice) 
   rcases semiChar_pm L ω with h1 | h1 <;> rcases neg_one_zpow_pm k with h2 | h2 <;> rw [h1, h2] <;>
     norm_num
 
+/- English proof (translation)
+Apply the tactic sequence `rcases th0Char_pm L ω₀ ω h0 h with h1 | h1 <;> rw [h1] <;> norm_num`.
+-/
 theorem th0Char_sq (L : PeriodPair) (ω₀ ω : ℂ) (h0 : ω₀ ∈ L.lattice) (h : ω ∈ L.lattice) :
     Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ ω * Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ ω = 1 := by
   rcases th0Char_pm L ω₀ ω h0 h with h1 | h1 <;> rw [h1] <;> norm_num
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Th1.F.thetaZeroCharacter, Formalism.L2.Th1.F.semiChar, Formalism.L2.Th1.F.altE, Formalism.L2.Th1.F.herm]`.
+-/
 theorem th0Char_zero (L : PeriodPair) (ω₀ : ℂ) : Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ 0 = 1 := by
   simp [Formalism.L2.Th1.F.thetaZeroCharacter, Formalism.L2.Th1.F.semiChar, Formalism.L2.Th1.F.altE, Formalism.L2.Th1.F.herm]
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Th1.F.thetaZeroCharacter]`. Rewrite using `[Formalism.L2.Th1.F.semiCharMul L x y hx hy, period_skew_form_add_left]`. Use `push_cast`. Rewrite using `[mul_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem th0Char_add (L : PeriodPair) (ω₀ x y : ℂ) (hx : x ∈ L.lattice) (hy : y ∈ L.lattice) :
     Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ (x + y)
       = Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ x * Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ y
@@ -117,6 +169,11 @@ theorem th0Char_add (L : PeriodPair) (ω₀ x y : ℂ) (hx : x ∈ L.lattice) (h
   rw [mul_add, Complex.exp_add]
   ring
 
+/- English proof (translation)
+Rewrite using `[stdChar, Finset.prod_eq_single i]`. Rewrite using `[Pi.single_eq_same]`. Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj, th0Char_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem stdChar_single (L : PeriodPair) (ω₀ : ℂ) {n : Type*} [Fintype n] [DecidableEq n] (i : n) (ω : ℂ) :
     stdChar L ω₀ (Pi.single i ω : n → ℂ) = Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ ω := by
   rw [stdChar, Finset.prod_eq_single i]
@@ -126,6 +183,11 @@ theorem stdChar_single (L : PeriodPair) (ω₀ : ℂ) {n : Type*} [Fintype n] [D
   · intro h
     exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Establish `h` using `(Formalism.L2.Th1.F.th0Basic L ω₀ h0 hh).2.2.2.2 ω hω z`. Establish `hsq` using `th0Char_sq L ω₀ ω h0 hω`. Rewrite using `[Formalism.L2.Th1.F.opU, h, ← Formalism.L2.Th1.F.thetaZeroCharacter]`. Establish `he : Complex.exp ((Real.pi : ℂ) * Formalism.L2.Th1.F.herm L z ω + (Real.pi : ℂ) * Formalism.L2.Th1.F.herm L ω ω / 2) * Complex.exp (-(Real.pi : ℂ) * Formalism.L2.Th1.F.herm L z ω - (Real.pi : ℂ) * Formalism.L2.Th1.F.herm L ω ω / 2) = 1`. Rewrite using `[← Complex.exp_add, ← Complex.exp_zero]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(Formalism.L2.Th1.F.th0 L (ω₀ / 2) z * (Complex.exp ((Real.pi : ℂ) * Formalism.L2.Th1.F.herm L z ω + (Real.pi : ℂ) * Formalism.L2.Th1.F.herm L ω ω / 2) * Complex.exp (-(Real.pi : ℂ) * Formalism.L2.Th1.F.herm L z ω - (Real.pi : ℂ) * Formalism.L2.Th1.F.herm L ω ω / 2))) * hsq + For …`.
+-/
 theorem th0Char_mul_opU_th0_half_period_eq (L : PeriodPair) (ω₀ : ℂ) (h0 : ω₀ ∈ L.lattice) (hh : ω₀ / 2 ∉ L.lattice) (ω : ℂ)
     (hω : ω ∈ L.lattice) (z : ℂ) :
     Formalism.L2.Th1.F.thetaZeroCharacter L ω₀ ω * Formalism.L2.Th1.F.opU L ω (Formalism.L2.Th1.F.th0 L (ω₀ / 2)) z
@@ -149,6 +211,19 @@ theorem th0Char_mul_opU_th0_half_period_eq (L : PeriodPair) (ω₀ : ℂ) (h0 : 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `L n _ _`. Use `AddSubgroup.ext fun x => ⟨fun hx => ?_, fun hx y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_stdLat]`. Introduce `i`. Establish `key : ∀ ω ∈ L.lattice, ∃ m : ℤ, Formalism.L2.Th1.F.altE L (x i) ω = (m : ℝ)`.
+
+Introduce `ω hω`. Establish `hy : (Pi.single i ω : n → ℂ) ∈ stdLat L n`. Rewrite using `[mem_stdLat]`. Introduce `j`. Distinguish the cases in `hj : j = i`.
+
+Substitute `hj` using the available equality. Rewrite using `[Pi.single_eq_same]` and apply the resulting hypothesis. Rewrite using `[Pi.single_eq_of_ne hj]`. Conclude with `L.lattice.zero_mem`. Take `⟨m, hm⟩` from `hx _ hy`.
+
+Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[altE_std, Finset.sum_eq_single i]`. Rewrite `hm` using `[Pi.single_eq_same]`. Then use the resulting hypothesis. Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj]`.
+
+Simplify using `[Formalism.L2.Th1.F.altE, Formalism.L2.Th1.F.herm]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Conclude with `mem_lattice_of_dual L (x i) (key _ L.ω₁_mem_lattice) (key _ L.ω₂_mem_lattice)`. Rewrite using `[mem_stdLat] at hx hy choose k hk using fun i => Formalism.L2.Th1.F.altEInt L (x i) (y i) (hx i) (hy i)`.
+
+Use `⟨∑ i, k i, ?_⟩` and prove the remaining obligations. Rewrite using `[altE_std]`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => hk i`.
+-/
 theorem StdSelfDual_proof : StdSelfDual := by
   intro L n _ _
   refine AddSubgroup.ext fun x => ⟨fun hx => ?_, fun hx y hy => ?_⟩
@@ -181,6 +256,13 @@ theorem StdSelfDual_proof : StdSelfDual := by
     push_cast
     exact Finset.sum_congr rfl fun i _ => hk i
 
+/- English proof (translation)
+Introduce `L ω₀ n _ _ h0`. Use `⟨fun x hx => ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[mem_stdLat]`. Unfold `stdChar`. Use `Finset.prod_induction _ (fun c : ℂ => c = 1 ∨ c = -1) ?_ (Or.inl rfl) (fun i _ => th0Char_pm L ω₀ (x i) h0 (hx i))` and prove the remaining obligations.
+
+Introduce `a b ha hb`. Apply the tactic sequence `rcases ha with h1 | h1 <;> rcases hb with h2 | h2 <;> rw [h1, h2] <;> norm_num`. Rewrite `hx`, `hy` using `[mem_stdLat]`. Simplify using `only [stdChar, Pi.add_apply]`. Rewrite using `[altE_std, Complex.ofReal_sum, Finset.mul_sum, Complex.exp_sum, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => th0Char_add L ω₀ (x i) (y i) (hx i) (hy i)`.
+-/
 theorem StdSemiChar_proof : StdSemiChar := by
   intro L ω₀ n _ _ h0
   refine ⟨fun x hx => ?_, fun x hx y hy => ?_⟩
@@ -196,6 +278,13 @@ theorem StdSemiChar_proof : StdSemiChar := by
       ← Finset.prod_mul_distrib]
     exact Finset.prod_congr rfl fun i _ => th0Char_add L ω₀ (x i) (y i) (hx i) (hy i)
 
+/- English proof (translation)
+Introduce `L ω₀ n _ _ h0 hh α hα`. Take `⟨hd, h1, -⟩` from `Formalism.L2.Th1.F.th0Basic L ω₀ h0 hh`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `z _`. Unfold `F0 prodFn`.
+
+Use `Finset.analyticAt_fun_prod _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(hd.analyticAt (z i)).comp_of_eq ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : n => ℂ) i).analyticAt z) rfl`. Introduce `x hx z`. Rewrite using `[hα x hx, F0, heisenbergStandard, stdChar, ← Finset.prod_mul_distrib, prodFn]`. Rewrite `hx` using `[mem_stdLat]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => th0Char_mul_opU_th0_half_period_eq L ω₀ h0 hh (x i) (hx i) (z i)`. Simplify using `[F0, prodFn, h1]`.
+-/
 theorem product_theta_mem : ProductThetaMem := by
   intro L ω₀ n _ _ h0 hh α hα
   obtain ⟨hd, h1, -⟩ := Formalism.L2.Th1.F.th0Basic L ω₀ h0 hh
@@ -211,6 +300,29 @@ theorem product_theta_mem : ProductThetaMem := by
     exact Finset.prod_congr rfl fun i _ => th0Char_mul_opU_th0_half_period_eq L ω₀ h0 hh (x i) (hx i) (z i)
   · simp [F0, prodFn, h1]
 
+/- English proof (translation)
+Take `⟨hGa, hGf⟩` from `hG`. Establish `hu : Differentiable ℂ (fun t : ℂ => Function.update w i t)`. Rewrite using `[differentiable_pi]`. Introduce `j`. Distinguish the cases in `h : j = i`.
+
+Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Conclude with `differentiable_id`. Simplify using `only [Function.update_of_ne h]`. Conclude with `differentiable_const _`.
+
+Establish `hGd : Differentiable ℂ G` using `fun z => (hGa z (Set.mem_univ z)).differentiableAt`. Establish `hline` using `Formalism.L2.Th1.F.th0Line L ω₀ (fun t => G (Function.update w i t)) h0 hh (hGd.comp hu) ?_ (w i)`. Simplify `hline` using `only [Function.update_eq_self]`. Introduce `ω hω t`. Establish `hx : (Pi.single i ω : n → ℂ) ∈ stdLat L n`.
+
+Rewrite using `[mem_stdLat]`. Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[Pi.single_eq_same]` and apply the resulting hypothesis.
+
+Rewrite using `[Pi.single_eq_of_ne hj]`. Conclude with `L.lattice.zero_mem`. Establish `hfix` using `hGf _ hx (Function.update w i t)`. Establish `hsum : Function.update w i t + Pi.single i ω = Function.update w i (t + ω)`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj, Pi.single_eq_of_ne hj]`. Establish `hH1 : stdH L n (Function.update w i t) (Pi.single i ω) = Formalism.L2.Th1.F.herm L t ω`.
+
+Rewrite using `[stdH_apply, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj]`. Simplify using `[Formalism.L2.Th1.F.herm]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `hH2 : stdH L n (Pi.single i ω) (Pi.single i ω) = Formalism.L2.Th1.F.herm L ω ω`. Rewrite using `[stdH_apply, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules.
+
+Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj]`. Simplify using `[Formalism.L2.Th1.F.herm]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+
+Rewrite `hfix` using `[hα _ hx, stdChar_single, opU, hsum, hH1, hH2]`. Establish `hsq` using `th0Char_sq L ω₀ ω h0 hω`. Establish `he : Complex.exp ((Real.pi : ℂ) * Formalism.L2.Th1.F.herm L t ω + (Real.pi : ℂ) * Formalism.L2.Th1.F.herm L ω ω / 2) * Complex.exp (-(Real.pi : ℂ) * Formalism.L2.Th1.F.herm L t ω - (Real.pi : ℂ) * Formalism.L2.Th1.F.herm L ω ω / 2) = 1`. Rewrite using `[← Complex.exp_add, ← Complex.exp_zero]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show G (Function.update w i (t + ω)) = _`. Rewrite using `[← hfix]`. Take the linear combination `(-(G (Function.update w i (t + ω))) * (Complex.exp ((Real.pi : ℂ) * Formalism.L2.Th1.F.herm L t ω + (Real.pi : ℂ) * Formalism.L2.Th1.F.herm L ω ω / 2) * Complex.exp (-(Real.pi : ℂ) * Formalism.L2.Th1.F.herm L t ω - (Real.pi : ℂ) * Formalism.L2.Th1.F.herm L ω ω / 2))) * hsq - G (F …`.
+-/
 theorem th_split (L : PeriodPair) (ω₀ : ℂ) (n : Type) [Fintype n] [DecidableEq n] (h0 : ω₀ ∈ L.lattice)
     (hh : ω₀ / 2 ∉ L.lattice) (α : (n → ℂ) → ℂ) (hα : ∀ x ∈ stdLat L n, α x = stdChar L ω₀ x)
     (G : (n → ℂ) → ℂ) (hG : G ∈ Th (stdH L n) α (stdLat L n)) (w : n → ℂ) (i : n) :
@@ -279,6 +391,17 @@ theorem th_split (L : PeriodPair) (ω₀ : ℂ) (n : Type) [Fintype n] [Decidabl
           - (Real.pi : ℂ) * Formalism.L2.Th1.F.herm L ω ω / 2))) * hsq
       - G (Function.update w i (t + ω)) * he
 
+/- English proof (translation)
+Introduce `L ω₀ n _ _ h0 hh α hα G hG`. Establish `key : ∀ (s : Finset n) (z : n → ℂ), G z = (∏ i ∈ s, Formalism.L2.Th1.F.th0 L (ω₀ / 2) (z i)) * G (fun j => if j ∈ s then 0 else z j)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro z`.
+
+Simplify using the standard rewrite rules. Consider the case `insert i s hi ih`. Introduce `z`. Rewrite using `[ih z, th_split L ω₀ n h0 hh α hα G hG (fun j => if j ∈ s then 0 else z j) i, Finset.prod_insert hi]`. Establish `h1 : Function.update (fun j => if j ∈ s then 0 else z j) i 0 = fun j => if j ∈ insert i s then 0 else z j`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Finset.mem_insert, hj]`.
+
+Rewrite using `[h1]`. Simplify using `only [hi, if_false]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `z`. Establish `h` using `key Finset.univ z`.
+
+Simplify using `only [Finset.mem_univ, if_true] at h`. Rewrite using `[h]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, F0, prodFn]`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem ThStd_proof : ThStd := by
   intro L ω₀ n _ _ h0 hh α hα G hG
   have key : ∀ (s : Finset n) (z : n → ℂ),
@@ -308,6 +431,11 @@ theorem ThStd_proof : ThStd := by
   rw [mul_comm]
   rfl
 
+/- English proof (translation)
+Establish `hmem0 : (a : ℂ) ∈ (Formalism.L2.Th1.F.cmPair a b d ha hd).lattice` using `(Formalism.L2.Th1.F.cmPair a b d ha hd).ω₁_mem_lattice`. Establish `hhalf : (a : ℂ) / 2 ∉ (Formalism.L2.Th1.F.cmPair a b d ha hd).lattice` using `(Formalism.L2.Th1.F.cmPair a b d ha hd).ω₁_div_two_notMem_lattice`. Establish `hmem : (m : ℂ) * (a : ℂ) + (k : ℂ) * Formalism.L2.Th1.F.cmTheta b d ∈ (Formalism.L2.Th1.F.cmPair a b d ha hd).lattice` using `PeriodPair.mem_lattice.mpr ⟨m, k, rfl⟩`. Take `⟨-, h1, -, -, hq⟩` from `Formalism.L2.Th1.F.th0Basic (Formalism.L2.Th1.F.cmPair a b d ha hd) (a : ℂ) hmem0 hhalf`. Establish `hA` using `hq _ hmem 0`.
+
+Establish `hB` using `Formalism.L2.Th1.F.cmTheta0 a b c d ha hd h4 hodd h8 m k 0`. Rewrite `hB` using `[hA, h1, mul_one, mul_one, ← Formalism.L2.Th1.F.thetaZeroCharacter]`. Rewrite using `[← neg_one_pow_natAbs]`. Conclude with `mul_right_cancel₀ (Complex.exp_ne_zero _) hB`.
+-/
 theorem cm_th0Char (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (h4 : 4 * (a : ℤ) * c = b ^ 2 + d)
     (hodd : Odd a) (h8 : d % 8 = 7) (m k : ℤ) :
     Formalism.L2.Th1.F.thetaZeroCharacter (Formalism.L2.Th1.F.cmPair a b d ha hd) (a : ℂ)
@@ -326,6 +454,11 @@ theorem cm_th0Char (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (h4
   rw [← neg_one_pow_natAbs]
   exact mul_right_cancel₀ (Complex.exp_ne_zero _) hB
 
+/- English proof (translation)
+Introduce `a b c d ha hd h4 hodd h8 n _ _ x hx`. Rewrite `hx` using `[mem_stdLat]`. Establish `hs : Real.sqrt d ≠ 0` using `(Real.sqrt_pos.mpr (by exact_mod_cast hd)).ne'`. Rewrite using `[alphaQ, qOf, stdH_apply, Complex.re_sum, Finset.mul_sum, Complex.ofReal_sum, Finset.mul_sum, Complex.exp_sum, stdChar]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Take `⟨m, k, hmk⟩` from `PeriodPair.mem_lattice.mp (hx i)`. Establish `hmk' : (m : ℂ) * (a : ℂ) + (k : ℂ) * Formalism.L2.Th1.F.cmTheta b d = x i` using `hmk`. Rewrite using `[← hmk', cm_th0Char a b c d ha hd h4 hodd h8 m k, (Formalism.L2.Th1.F.cmNorm a b c d ha hd h4 m k).2.1, Complex.ofReal_re, ← exp_pi_int]`. Use `congr 3`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem CmStdChar_proof : CmStdChar := by
   intro a b c d ha hd h4 hodd h8 n _ _ x hx
   rw [mem_stdLat] at hx

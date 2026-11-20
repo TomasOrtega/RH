@@ -26,6 +26,9 @@ structure LUData (X : Data E r) (x0 : Frame X.Ψ r) where
   uniq : ∀ z ∈ OmF X x0, ∀ b ∈ Bor X.Ψ r, Δ (rmul (cpt X x0 z) b) ≠ 0 ∧
     zOf (rmul (cpt X x0 z) b) = z ∧ bOf (rmul (cpt X x0 z) b) = b
 
+/- English proof (translation)
+Take `⟨Δ, zOf, bOf, h1, h2, h3, h4, h5, h6⟩` from `hLU r X x0 hx0`. Conclude with `⟨⟨Δ, zOf, bOf, h1, h2, h3, h4, h5, h6⟩⟩`.
+-/
 theorem luData_of (hLU : LUStatement (E := E)) (X : Data E r) (x0 : Frame X.Ψ r) (hx0 : IsOrth X x0) :
     Nonempty (LUData X x0) := by
   obtain ⟨Δ, zOf, bOf, h1, h2, h3, h4, h5, h6⟩ := hLU r X x0 hx0
@@ -35,14 +38,25 @@ variable (X : Data E r)
 
 def oneF : Frame X.Ψ r := fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private lemma mem_bor_iff' {Ψ : Finset (E →+* ℂ)} {b : Frame Ψ r} :
     b ∈ Bor Ψ r ↔ ∀ τ : Ψ, (mat b τ).det ≠ 0 ∧ ∀ a c : Fin r, c < a → b τ a c = 0 :=
   Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma mat_rmul' {Ψ : Finset (E →+* ℂ)} (x b : Frame Ψ r) (τ : Ψ) :
     mat (rmul x b) τ = mat x τ * mat b τ :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[mem_bor_iff']`. Introduce `τ`. Use `⟨?_, fun a c h => ?_⟩` and prove the remaining obligations. Use `show (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0`. Simplify using the standard rewrite rules.
+
+Use `show (1 : Matrix (Fin r) (Fin r) ℂ) a c = 0`. Conclude with `Matrix.one_apply_ne (ne_of_gt h)`.
+-/
 theorem oneF_mem : oneF X ∈ Bor X.Ψ r := by
   rw [mem_bor_iff']
   intro τ
@@ -52,21 +66,35 @@ theorem oneF_mem : oneF X ∈ Bor X.Ψ r := by
   · show (1 : Matrix (Fin r) (Fin r) ℂ) a c = 0
     exact Matrix.one_apply_ne (ne_of_gt h)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show mat x τ * (1 : Matrix (Fin r) (Fin r) ℂ) = x τ`. Rewrite using `[Matrix.mul_one]`. Both sides reduce to the same expression.
+-/
 theorem rmul_oneF (x : Frame X.Ψ r) : rmul x (oneF X) = x := by
   funext τ
   show mat x τ * (1 : Matrix (Fin r) (Fin r) ℂ) = x τ
   rw [Matrix.mul_one]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show mat x τ * mat b τ * mat b' τ = mat x τ * (mat b τ * mat b' τ)`. Conclude with `Matrix.mul_assoc _ _ _`.
+-/
 theorem rmul_assoc (x b b' : Frame X.Ψ r) : rmul (rmul x b) b' = rmul x (rmul b b') := by
   funext τ
   show mat x τ * mat b τ * mat b' τ = mat x τ * (mat b τ * mat b' τ)
   exact Matrix.mul_assoc _ _ _
 
+/- English proof (translation)
+Conclude with `⟨fun h a c hca => h a c hca, fun h a c hca => h hca⟩`.
+-/
 theorem upper_iff (b : Frame X.Ψ r) (τ : X.Ψ) :
     (∀ a c : Fin r, c < a → b τ a c = 0) ↔ (mat b τ).BlockTriangular id := by
   exact ⟨fun h a c hca => h a c hca, fun h a c hca => h hca⟩
 
+/- English proof (translation)
+Rewrite using `[mem_bor_iff']`. Introduce `τ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mat_rmul', Matrix.det_mul]`. Conclude with `mul_ne_zero (mem_bor_iff'.1 hb τ).1 (mem_bor_iff'.1 hb' τ).1`.
+
+Use `(upper_iff X _ τ).2 ?_` and prove the remaining obligations. Rewrite using `[mat_rmul']`. Conclude with `((upper_iff X b τ).1 (mem_bor_iff'.1 hb τ).2).mul ((upper_iff X b' τ).1 (mem_bor_iff'.1 hb' τ).2)`.
+-/
 theorem mul_mem {b b' : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (hb' : b' ∈ Bor X.Ψ r) :
     rmul b b' ∈ Bor X.Ψ r := by
   rw [mem_bor_iff']
@@ -80,6 +108,13 @@ theorem mul_mem {b b' : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (hb' : b' ∈ Bor 
 
 def invF (b : Frame X.Ψ r) : Frame X.Ψ r := fun τ => ((mat b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ)
 
+/- English proof (translation)
+Rewrite using `[mem_bor_iff']`. Introduce `τ`. Establish `hu : IsUnit (mat b τ).det` using `isUnit_iff_ne_zero.2 (mem_bor_iff'.1 hb τ).1`. Establish `e : mat (invF X b) τ = (mat b τ)⁻¹` using `rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `(Matrix.isUnit_nonsing_inv_det _ hu).ne_zero`. Use `(upper_iff X _ τ).2 ?_` and prove the remaining obligations. Rewrite using `[e]`. Use `haveI := Matrix.invertibleOfIsUnitDet _ hu`.
+
+Conclude with `Matrix.blockTriangular_inv_of_blockTriangular ((upper_iff X b τ).1 (mem_bor_iff'.1 hb τ).2)`.
+-/
 theorem invF_mem {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) : invF X b ∈ Bor X.Ψ r := by
   rw [mem_bor_iff']
   intro τ
@@ -93,11 +128,19 @@ theorem invF_mem {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) : invF X b ∈ Bor X
     haveI := Matrix.invertibleOfIsUnitDet _ hu
     exact Matrix.blockTriangular_inv_of_blockTriangular ((upper_iff X b τ).1 (mem_bor_iff'.1 hb τ).2)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show mat b τ * (mat b τ)⁻¹ = (1 : Matrix (Fin r) (Fin r) ℂ)`. Conclude with `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (mem_bor_iff'.1 hb τ).1)`.
+-/
 theorem rmul_invF {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) : rmul b (invF X b) = oneF X := by
   funext τ
   show mat b τ * (mat b τ)⁻¹ = (1 : Matrix (Fin r) (Fin r) ℂ)
   exact Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (mem_bor_iff'.1 hb τ).1)
 
+/- English proof (translation)
+Use `show (mat b τ * mat b' τ) i i = b τ i i * b' τ i i`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Both sides reduce to the same expression. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases.
+
+Rewrite using `[show mat b τ i k = 0 from (mem_bor_iff'.1 hb τ).2 i k h, zero_mul]`. Rewrite using `[show mat b' τ k i = 0 from (mem_bor_iff'.1 hb' τ).2 k i h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem diag_mul {b b' : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (hb' : b' ∈ Bor X.Ψ r) (τ : X.Ψ) (i : Fin r) :
     rmul b b' τ i i = b τ i i * b' τ i i := by
   show (mat b τ * mat b' τ) i i = b τ i i * b' τ i i
@@ -110,6 +153,11 @@ theorem diag_mul {b b' : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (hb' : b' ∈ Bor
   · intro h
     exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Unfold `bchar`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[diag_mul X hb hb' τ i, mul_zpow]`.
+-/
 theorem bchar_mul (la : Wt X.Ψ r) {b b' : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (hb' : b' ∈ Bor X.Ψ r) :
     bchar la (rmul b b') = bchar la b * bchar la b' := by
   unfold bchar
@@ -119,6 +167,9 @@ theorem bchar_mul (la : Wt X.Ψ r) {b b' : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r)
   refine Finset.prod_congr rfl (fun i _ => ?_)
   rw [diag_mul X hb hb' τ i, mul_zpow]
 
+/- English proof (translation)
+Simplify using `[bchar, oneF]`.
+-/
 theorem bchar_oneF (la : Wt X.Ψ r) : bchar la (oneF X) = 1 := by
   simp [bchar, oneF]
 
@@ -126,6 +177,11 @@ variable {X} {x0 : Frame X.Ψ r} (D : LUData X x0)
 
 def cell : Set (Frame X.Ψ r) := {x | x ∈ X.dom ∧ D.Δ x ≠ 0}
 
+/- English proof (translation)
+Take `⟨hz, hbx, hxe⟩` from `D.split x hx hΔ`. Establish `e : rmul x b = rmul (cpt X x0 (D.zOf x)) (rmul (D.bOf x) b)`. Rewrite using `[← rmul_assoc X, ← hxe]`. Take `⟨h1, h2, h3⟩` from `D.uniq (D.zOf x) hz (rmul (D.bOf x) b) (mul_mem X hbx hb)`. Rewrite using `[e]`.
+
+Conclude with `⟨h1, h2, h3⟩`.
+-/
 theorem cell_rmul {x b : Frame X.Ψ r} (hx : x ∈ X.dom) (hΔ : D.Δ x ≠ 0) (hb : b ∈ Bor X.Ψ r) :
     D.Δ (rmul x b) ≠ 0 ∧ D.zOf (rmul x b) = D.zOf x ∧ D.bOf (rmul x b) = rmul (D.bOf x) b := by
   obtain ⟨hz, hbx, hxe⟩ := D.split x hx hΔ
@@ -135,12 +191,18 @@ theorem cell_rmul {x b : Frame X.Ψ r} (hx : x ∈ X.dom) (hΔ : D.Δ x ≠ 0) (
   rw [e]
   exact ⟨h1, h2, h3⟩
 
+/- English proof (translation)
+Establish `hxb : rmul x b ∈ X.dom` using `OrthogonalFrameDomain.rmul_mem_dom (X := X) hx hb`. Establish `h` using `(cell_rmul D hxb hΔ (invF_mem X hb)).1`. Rewrite `h` using `[rmul_assoc X, rmul_invF X hb, rmul_oneF X]`. Then use the resulting hypothesis.
+-/
 theorem cell_of_rmul {x b : Frame X.Ψ r} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ r)
     (hΔ : D.Δ (rmul x b) ≠ 0) : D.Δ x ≠ 0 := by
   have hxb : rmul x b ∈ X.dom := OrthogonalFrameDomain.rmul_mem_dom (X := X) hx hb
   have h := (cell_rmul D hxb hΔ (invF_mem X hb)).1
   rwa [rmul_assoc X, rmul_invF X hb, rmul_oneF X] at h
 
+/- English proof (translation)
+Establish `h` using `D.uniq z hz (oneF X) (oneF_mem X)`. Rewrite `h` using `[rmul_oneF X]`. Then use the resulting hypothesis.
+-/
 theorem cpt_cell {z : V (nd X)} (hz : z ∈ OmF X x0) :
     D.Δ (cpt X x0 z) ≠ 0 ∧ D.zOf (cpt X x0 z) = z ∧ D.bOf (cpt X x0 z) = oneF X := by
   have h := D.uniq z hz (oneF X) (oneF_mem X)
@@ -151,6 +213,9 @@ open Classical in
 def P0 (la : Wt X.Ψ r) (F : V (nd X) → ℂ) (x : Frame X.Ψ r) : ℂ :=
   if x ∈ X.dom ∧ D.Δ x ≠ 0 then bchar la (D.bOf x) * F (D.zOf x) else 0
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `cpt_cell D hz`. Establish `hd : cpt X x0 z ∈ X.dom` using `hz`. Unfold `P0`. Rewrite using `[if_pos ⟨hd, h1⟩, h2, h3, bchar_oneF X, one_mul]`.
+-/
 theorem poincareLift_on_chart (la : Wt X.Ψ r) (F : V (nd X) → ℂ) {z : V (nd X)} (hz : z ∈ OmF X x0) :
     P0 D la F (cpt X x0 z) = F z := by
   obtain ⟨h1, h2, h3⟩ := cpt_cell D hz
@@ -158,6 +223,13 @@ theorem poincareLift_on_chart (la : Wt X.Ψ r) (F : V (nd X) → ℂ) {z : V (nd
   unfold P0
   rw [if_pos ⟨hd, h1⟩, h2, h3, bchar_oneF X, one_mul]
 
+/- English proof (translation)
+Establish `hxb : rmul x b ∈ X.dom` using `OrthogonalFrameDomain.rmul_mem_dom (X := X) hx hb`. Unfold `P0`. Distinguish the cases in `hΔ : D.Δ x = 0`. Establish `hΔ' : D.Δ (rmul x b) = 0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `cell_of_rmul D hx hb h hΔ`. Rewrite using `[if_neg (fun h => h.2 hΔ'), if_neg (fun h => h.2 hΔ), mul_zero]`. Take `⟨h1, h2, h3⟩` from `cell_rmul D hx hΔ hb`. Take `⟨-, hbx, -⟩` from `D.split x hx hΔ`. Rewrite using `[if_pos ⟨hxb, h1⟩, if_pos ⟨hx, hΔ⟩, h2, h3, bchar_mul X la hbx hb]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem poincareLift_borel_equivariant (la : Wt X.Ψ r) (F : V (nd X) → ℂ) {x b : Frame X.Ψ r} (hx : x ∈ X.dom)
     (hb : b ∈ Bor X.Ψ r) : P0 D la F (rmul x b) = bchar la b * P0 D la F x := by
   have hxb : rmul x b ∈ X.dom := OrthogonalFrameDomain.rmul_mem_dom (X := X) hx hb
@@ -172,6 +244,11 @@ theorem poincareLift_borel_equivariant (la : Wt X.Ψ r) (F : V (nd X) → ℂ) {
     rw [if_pos ⟨hxb, h1⟩, if_pos ⟨hx, hΔ⟩, h2, h3, bchar_mul X la hbx hb]
     ring
 
+/- English proof (translation)
+Unfold `dmin lminor`. Apply `Continuous.matrix_det` to reduce the goal to its premises. Apply `Continuous.matrix_submatrix` to reduce the goal to its premises. Use `continuous_pi (fun a => continuous_pi (fun c => ?_))` and prove the remaining obligations. Simplify using `only [gram, Matrix.of_apply, hermC, col, mat]`.
+
+Use `fun_prop`.
+-/
 private lemma continuous_dmin' {Ψ : Finset (E →+* ℂ)} (G : Matrix (Fin r) (Fin r) E) (τ : Ψ) (i : Fin (r + 1)) :
     Continuous (fun x : Frame Ψ r => dmin G x τ i) := by
   unfold dmin lminor
@@ -181,6 +258,9 @@ private lemma continuous_dmin' {Ψ : Finset (E →+* ℂ)} (G : Matrix (Fin r) (
   simp only [gram, Matrix.of_apply, hermC, col, mat]
   fun_prop
 
+/- English proof (translation)
+Use `show IsOpen {x : Frame X.Ψ r | ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re}`. Simplify using `only [Set.setOf_forall, Set.setOf_and]`. Use `isOpen_iInter_of_finite (fun τ => IsOpen.inter ?_ (isOpen_iInter_of_finite (fun i => ?_)))` and prove the remaining obligations. Conclude with `isOpen_ne_fun (by unfold mat; fun_prop) continuous_const`. Conclude with `isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (continuous_dmin' X.Gm τ i)))`.
+-/
 private lemma isOpen_dom_upper_bounds : IsOpen X.dom := by
   show IsOpen {x : Frame X.Ψ r | ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧
     ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re}
@@ -189,10 +269,18 @@ private lemma isOpen_dom_upper_bounds : IsOpen X.dom := by
   · exact isOpen_ne_fun (by unfold mat; fun_prop) continuous_const
   · exact isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (continuous_dmin' X.Gm τ i)))
 
+/- English proof (translation)
+Use `show IsOpen (X.dom ∩ {x | D.Δ x ≠ 0})`. Conclude with `(isOpen_dom_upper_bounds (X := X)).inter (isOpen_ne_fun D.hΔ.continuous continuous_const)`.
+-/
 theorem isOpen_cell : IsOpen (cell D) := by
   show IsOpen (X.dom ∩ {x | D.Δ x ≠ 0})
   exact (isOpen_dom_upper_bounds (X := X)).inter (isOpen_ne_fun D.hΔ.continuous continuous_const)
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on u (fun _ => ?_) (fun a u ha ih h => ?_)` and prove the remaining obligations. Simplify using `only [Finset.prod_empty]`. Conclude with `differentiableOn_const 1`. Simplify using `only [Finset.prod_insert ha]`.
+
+Conclude with `(h a (Finset.mem_insert_self a u)).mul (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+-/
 theorem diffOn_prod {ι : Type*} (u : Finset ι) {g : ι → Frame X.Ψ r → ℂ} {s : Set (Frame X.Ψ r)}
     (h : ∀ i ∈ u, DifferentiableOn ℂ (g i) s) : DifferentiableOn ℂ (fun x => ∏ i ∈ u, g i x) s := by
   classical
@@ -203,6 +291,15 @@ theorem diffOn_prod {ι : Type*} (u : Finset ι) {g : ι → Frame X.Ψ r → �
   · simp only [Finset.prod_insert ha]
     exact (h a (Finset.mem_insert_self a u)).mul (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
+/- English proof (translation)
+Establish `hsub : ∀ x ∈ cell D, D.zOf x ∈ OmF X x0 ∧ D.bOf x ∈ Bor X.Ψ r`. Introduce `x hx`. Establish `hx' : x ∈ X.dom ∧ D.Δ x ≠ 0` using `hx`. Establish `h` using `D.split x hx'.1 hx'.2`. Conclude with `⟨h.1, h.2.1⟩`.
+
+Establish `hbc : DifferentiableOn ℂ (fun x => bchar la (D.bOf x)) (cell D)`. Unfold `bchar`. Use `diffOn_prod (g := fun τ x => ∏ i, D.bOf x τ i i ^ la τ i) Finset.univ (fun τ _ => ?_)` and prove the remaining obligations. Use `diffOn_prod (g := fun i x => D.bOf x τ i i ^ la τ i) Finset.univ (fun i _ => ?_)` and prove the remaining obligations. Use `DifferentiableOn.zpow ?_ (Or.inl (fun x hx => FrameDegreeData.bdiag_ne (X := X) (hsub x hx).2 τ i))` and prove the remaining obligations.
+
+Establish `h1` using `(differentiableOn_pi.1 D.hb) τ`. Establish `h2` using `(differentiableOn_pi.1 h1) i`. Conclude with `(differentiableOn_pi.1 h2) i`. Establish `hFz : DifferentiableOn ℂ (fun x => F (D.zOf x)) (cell D)` using `hF.comp D.hz (fun x hx => (hsub x hx).1)`. Use `(hbc.mul hFz).congr (fun x hx => ?_)` and prove the remaining obligations.
+
+Establish `hx' : x ∈ X.dom ∧ D.Δ x ≠ 0` using `hx`. Unfold `P0`. Rewrite using `[if_pos hx']`. Both sides reduce to the same expression.
+-/
 theorem poincareLift_differentiableOn (la : Wt X.Ψ r) (F : V (nd X) → ℂ) (hF : DifferentiableOn ℂ F (OmF X x0)) :
     DifferentiableOn ℂ (P0 D la F) (cell D) := by
   have hsub : ∀ x ∈ cell D, D.zOf x ∈ OmF X x0 ∧ D.bOf x ∈ Bor X.Ψ r := by

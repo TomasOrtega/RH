@@ -5,6 +5,11 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 
 open NumberField
 
+/- English proof (translation)
+Unfold `ratio`. Establish `hex : ∃ a' : Ω, f = a' • g` using `⟨a, h⟩`. Rewrite using `[dif_pos hex]`. Establish `hs : a • g = hex.choose • g`. Rewrite using `[← h]`.
+
+Conclude with `hex.choose_spec`. Conclude with `(smul_left_injective Ω hg hs).symm`.
+-/
 theorem ratio_eq_of_eq_smul {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V] {f g : V} {a : Ω}
     (hg : g ≠ 0) (h : f = a • g) : ratio f g = a := by
   unfold ratio
@@ -15,9 +20,15 @@ theorem ratio_eq_of_eq_smul {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module �
     exact hex.choose_spec
   exact (smul_left_injective Ω hg hs).symm
 
+/- English proof (translation)
+The claim follows from `ratio_eq_of_eq_smul hf (one_smul Ω f).symm`.
+-/
 theorem ratio_self_height {Ω V : Type*} [Field Ω] [AddCommGroup V] [Module Ω V] {f : V}
     (hf : f ≠ 0) : ratio (Ω := Ω) f f = 1 := ratio_eq_of_eq_smul hf (one_smul Ω f).symm
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `top => simp`. Consider the case `coe a => simpa using hx`.
+-/
 theorem untopD_nonneg {x : WithTop ℤ} (hx : 0 ≤ x) : 0 ≤ WithTop.untopD 0 x := by
   induction x with
   | top => simp
@@ -34,6 +45,11 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Establish `h1` using `hd.finrank_one c G`. Establish `hg' : (⟨g, hg⟩ : 𝒜 c G) ≠ 0` using `fun h => hg0 (by simpa using congrArg Subtype.val h)`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ hg').1 h1 ⟨f, hf⟩`. Establish `hfa : f = a • g`. Use `congrArg Subtype.val ha` as an intermediate fact.
+
+Simplify using `using this.symm`. Rewrite using `[ratio_eq_of_eq_smul hg0 hfa]`. Conclude with `hfa`.
+-/
 theorem eq_ratio_smul_on_line {hd : d.AxH 𝒜} {c : ι} {G : WT} {f g : A c} (hf : f ∈ 𝒜 c G) (hg : g ∈ 𝒜 c G)
     (hg0 : g ≠ 0) : f = ratio (Ω := Ω c) f g • g := by
   have h1 := hd.finrank_one c G
@@ -45,6 +61,13 @@ theorem eq_ratio_smul_on_line {hd : d.AxH 𝒜} {c : ι} {G : WT} {f g : A c} (h
   rw [ratio_eq_of_eq_smul hg0 hfa]
   exact hfa
 
+/- English proof (translation)
+Establish `hjc` using `hd.w_base c`. Establish `hmul : ∀ j, ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c) = ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c) * ratio (Ω := Ω c) (d.w j c) (d.w j0 c) := by`. Introduce `j`. Establish `h1` using `eq_ratio_smul_on_line d (hd := hd) (hd.w_mem j c) (hd.w_mem j0 c) hj0`. Establish `h2` using `eq_ratio_smul_on_line d (hd := hd) (hd.w_mem j0 c) (hd.w_mem (d.jc c) c) hjc`.
+
+Apply `ratio_eq_of_eq_smul hjc` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h2]`. Use `_ = _ := by rw [smul_smul, mul_comm]`. Unfold `rationalBaseRow`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hmul j, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ratio_line_expansion (hd : d.AxH 𝒜) (c : ι) (j0 : Fin (d.N + 1)) (hj0 : d.w j0 c ≠ 0) :
     d.rationalBaseRow c = algebraMap (Ω c) (OmS (Ω c) d.D d.N) (ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c)) *
       ∑ j, d.sH c (MvPolynomial.X (0, j)) *
@@ -66,6 +89,13 @@ theorem ratio_line_expansion (hd : d.AxH 𝒜) (c : ι) (j0 : Fin (d.N + 1)) (hj
   rw [hmul j, map_mul]
   ring
 
+/- English proof (translation)
+Establish `hr1 : ratio (Ω` using `Ω c) (d.w (d.jc c) c) (d.w (d.jc c) c) = 1 := ratio_self_height (hd.w_base c)`. Establish `e : d.rationalBaseRow c = algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) (MvPolynomial.X (Sum.inl ()) + ∑ k, MvPolynomial.X (Sum.inr ((0 : Fin (d.D + 1)), k)) * MvPolynomial.C (ratio (Ω` using `Ω c) (d.w ((d.jc c).succAbove k) c) (d.w (d.jc c) c))) := by`. Unfold `rationalBaseRow sH sHom`. Rewrite using `[Fin.sum_univ_succAbove _ (d.jc c)]`. Simplify using `only [MvPolynomial.aeval_X, sImg, Fin.succAbove_cases_eq_insertNth, Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove, if_true, hr1, map_one, mul_one, map_add, map_sum, map_mul]`.
+
+Use `congr 1`. Rewrite using `[e]`. Introduce `h0`. Establish `hinj` using `IsFractionRing.injective (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N)`. Rewrite `h0` using `[← map_zero (algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N))]`.
+
+Establish `h1` using `congrArg (MvPolynomial.coeff (Finsupp.single (Sum.inl ()) 1)) (hinj h0)`. Simplify using `[MvPolynomial.coeff_X', MvPolynomial.coeff_sum, MvPolynomial.coeff_X_mul', Finsupp.single_eq_single_iff] at h1`.
+-/
 theorem lineRatio_ne_zero (hd : d.AxH 𝒜) (c : ι) : d.rationalBaseRow c ≠ 0 := by
   have hr1 : ratio (Ω := Ω c) (d.w (d.jc c) c) (d.w (d.jc c) c) = 1 := ratio_self_height (hd.w_base c)
   have e : d.rationalBaseRow c = algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N)
@@ -102,6 +132,13 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Unfold `rationalBaseRow`. Use `AddValuation.map_le_sum w fun j _ => ?_` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul]`. Establish `h1 : 0 ≤ w (d.sH c (MvPolynomial.X (0, j)))` using `(hw.2 _).1`. Establish `h2 : 0 ≤ w (algebraMap (Ω c) (OmS (Ω c) d.D d.N) (ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c))) := by`.
+
+Distinguish the cases in `ha : ratio (Ω := Ω c) (d.w j c) (d.w (d.jc c) c) = 0`. Rewrite using `[ha, map_zero, AddValuation.map_zero]`. Conclude with `le_top`. Establish `h3` using `htriv _ ha`. Unfold `Wres at h3`.
+
+Conclude with `le_of_eq h3.symm`. Conclude with `add_nonneg h1 h2`.
+-/
 theorem lineRatio_val_nonneg (c : ι) (p : Ideal (KTp K d.D d.N))
     (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (hw : w ∈ d.OverP c p)
     (htriv : ∀ a : Ω c, a ≠ 0 → d.Wres c w a = 0) : 0 ≤ w (d.rationalBaseRow c) := by
@@ -118,6 +155,27 @@ theorem lineRatio_val_nonneg (c : ι) (p : Ideal (KTp K d.D d.N))
       exact le_of_eq h3.symm
   exact add_nonneg h1 h2
 
+/- English proof (translation)
+Take `⟨hwO, a, ha, hwa⟩` from `hw`. Break down `d.PlaceTrivialOrPositive hd h c p hp w hwO with htriv | ⟨hAdm, -, j0, hj0, hmin, hY⟩` into its components or cases. Conclude with `absurd (htriv a ha) hwa`. Establish `hjc` using `hd.w_base c`. Establish `hsm : ∀ j, d.w j c ≠ 0 → ((d.ord c (d.Wres c w) d.wL (d.w j c) : ℤ) : WithTop ℤ) = d.Wres c w (ratio (Ω` using `Ω c) (d.w j c) (d.w j0 c)) + (d.ord c (d.Wres c w) d.wL (d.w j0 c) : WithTop ℤ) := by`.
+
+Introduce `j hj`. Establish `hl` using `eq_ratio_smul_on_line d (hd := hd) (hd.w_mem j c) (hd.w_mem j0 c) hj0`. Establish `hr0 : ratio (Ω` using `Ω c) (d.w j c) (d.w j0 c) ≠ 0 := by`. Introduce `h0`. Rewrite `hl` using `[h0, zero_smul]`.
+
+Conclude with `hj hl`. Use `conv_lhs => rw [hl]`. Conclude with `hd.ord_smul c _ hAdm _ (hd.w_mem j0 c) hj0 hr0`. Establish `hge : ∀ j, d.w j c ≠ 0 → d.ord c (d.Wres c w) d.wL (d.w j0 c) ≤ d.ord c (d.Wres c w) d.wL (d.w j c)`. Introduce `j hj`.
+
+Establish `h1 : ((d.ord c (d.Wres c w) d.wL (d.w j0 c) : ℤ) : WithTop ℤ) ≤ (d.ord c (d.Wres c w) d.wL (d.w j c) : WithTop ℤ)`. Rewrite using `[hsm j hj]`. Conclude with `le_add_of_nonneg_left (hmin j)`. Conclude with `h1` after adjusting the coercions. Establish `hinf : (⨅ j : {j // d.w j c ≠ 0}, d.ord c (d.Wres c w) d.wL (d.w j c)) = d.ord c (d.Wres c w) d.wL (d.w j0 c)` using `by haveI : Nonempty {j // d.w j c ≠ 0} := ⟨(⟨j0, hj0⟩ : {j // d.w j c ≠ 0})⟩`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `ciInf_le (Set.finite_range _).bddBelow (⟨j0, hj0⟩ : {j // d.w j c ≠ 0})`. Conclude with `le_ciInf fun j => hge j.1 j.2`. Establish `hl1` using `eq_ratio_smul_on_line d (hd := hd) (hd.w_mem j0 c) (hd.w_mem (d.jc c) c) hjc`. Establish `hl2` using `eq_ratio_smul_on_line d (hd := hd) (hd.w_mem (d.jc c) c) (hd.w_mem j0 c) hj0`.
+
+Establish `hprod : ratio (Ω` using `Ω c) (d.w j0 c) (d.w (d.jc c) c) * ratio (Ω := Ω c) (d.w (d.jc c) c) (d.w j0 c) = 1 := by`. Establish `e : d.w j0 c = (ratio (Ω` using `Ω c) (d.w j0 c) (d.w (d.jc c) c) * ratio (Ω := Ω c) (d.w (d.jc c) c) (d.w j0 c)) • d.w j0 c := by`. Rewrite using `[← smul_smul, ← hl2, ← hl1]`. Rewrite using `[← ratio_eq_of_eq_smul (Ω := Ω c) hj0 e, ratio_self_height (Ω := Ω c) hj0]`. Establish `hr1ne : ratio (Ω` using `Ω c) (d.w j0 c) (d.w (d.jc c) c) ≠ 0 := fun h0 => by rw [h0, zero_smul] at hl1; exact hj0 hl1`.
+
+Establish `hr2ne : ratio (Ω` using `Ω c) (d.w (d.jc c) c) (d.w j0 c) ≠ 0 := fun h0 => by rw [h0, zero_smul] at hl2; exact hjc hl2`. Take `⟨m1, hm1⟩` from `WithTop.ne_top_iff_exists.1 (show d.Wres c w (ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c)) ≠ ⊤ from fun h0 => hr1ne ((AddValuation.top_iff _).1 h0))`. Take `⟨m2, hm2⟩` from `WithTop.ne_top_iff_exists.1 (show d.Wres c w (ratio (Ω := Ω c) (d.w (d.jc c) c) (d.w j0 c)) ≠ ⊤ from fun h0 => hr2ne ((AddValuation.top_iff _).1 h0))`. Establish `hsum : ((m1 + m2 : ℤ) : WithTop ℤ) = 0`. Rewrite using `[WithTop.coe_add, hm1, hm2, ← AddValuation.map_mul, hprod, AddValuation.map_one]`.
+
+Establish `hsum' : m1 + m2 = 0` using `by exact_mod_cast hsum`. Establish `hjcv` using `hsm (d.jc c) hjc`. Rewrite `hjcv` using `[← hm2]`. Establish `hjcv' : d.ord c (d.Wres c w) d.wL (d.w (d.jc c) c) = m2 + d.ord c (d.Wres c w) d.wL (d.w j0 c)`. Conclude with `hjcv` after adjusting the coercions.
+
+Rewrite using `[d.ratio_line_expansion hd c j0 hj0, AddValuation.map_mul, hY, add_zero]`. Express the relevant statement in the definitionally equal form `WithTop.untopD 0 (d.Wres c w (ratio (Ω := Ω c) (d.w j0 c) (d.w (d.jc c) c))) + d.ordMM c (d.Wres c w) (d.w (d.jc c) c) = 0`. Rewrite using `[← hm1, WithTop.untopD_coe]`. Unfold `ordMM`. Rewrite using `[hinf, hjcv']`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem good_valuation_balance (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (p : Ideal (KTp K d.D d.N)) (hp : p ∈ d.HtOne)
     (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (hw : w ∈ d.GoodP c p) :
     WithTop.untopD 0 (w (d.rationalBaseRow c)) + d.ordMM c (d.Wres c w) (d.w (d.jc c) c) = 0 := by
@@ -191,6 +249,11 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Introduce `h0`. Establish `e` using `d.gen_span hp`. Rewrite `e` using `[h0, Ideal.span_singleton_eq_bot.2 rfl]`. Establish `h1` using `hp.2`. Rewrite `h1` using `[e, Ideal.height_bot]`.
+
+Conclude with `zero_ne_one h1`.
+-/
 theorem generator_ne_zero_of_height (p : Ideal (KTp K d.D d.N)) (hp : p ∈ d.HtOne) : d.gen p ≠ 0 := by
   intro h0
   have e := d.gen_span hp
@@ -199,6 +262,33 @@ theorem generator_ne_zero_of_height (p : Ideal (KTp K d.D d.N)) (hp : p ∈ d.Ht
   rw [e, Ideal.height_bot] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Establish `hy : d.rationalBaseRow c ≠ 0` using `d.lineRatio_ne_zero hd c`. Take `⟨hfin, hnb⟩` from `d.norm_by_places hd h c`. Take `⟨hT, κ, hκ, hN⟩` from `hnb (d.rationalBaseRow c) hy`. Take `⟨e1, he1⟩ : ∃ e1 : Ideal (KTp K d.D d.N) → ℤ, ∀ p, e1 p = ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.OverP c p), (d.fze h c w : ℤ) * WithTop.untopD 0 (w (d.rationalBaseRow c))` from `⟨_, fun _ => rfl⟩`. Simplify using `only [← he1] at hN`.
+
+Establish `hg0 : ∀ p ∈ d.HtOne, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ≠ 0` using `fun p hp => (map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 (d.generator_ne_zero_of_height p hp)`. Establish `hzero : ∀ p ∈ d.HtOne, p ∉ {p | p ∈ d.HtOne ∧ ∃ w ∈ d.OverP c p, w (d.rationalBaseRow c) ≠ 0} → e1 p = 0 ∧ d.nPMM h c (d.w (d.jc c) c) p = 0`. Introduce `p hp hpT`. Establish `hw0 : ∀ w ∈ d.OverP c p, w (d.rationalBaseRow c) = 0` using `fun w hw => by`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hpT ⟨hp, w, hw, hne⟩`. Prove the components needed by the constructor for the conclusion. Rewrite using `[he1, finsum_mem_congr rfl (fun w hw => (show (d.fze h c w : ℤ) * WithTop.untopD 0 (w (d.rationalBaseRow c)) = 0 by`. Rewrite using `[hw0 w hw]`. Use the proof step `simp)), finsum_mem_zero _]`.
+
+Unfold `nPMM`. Use `(finsum_mem_congr rfl (fun w hw => ?_)).trans (finsum_mem_zero _)` and prove the remaining obligations. Establish `h1` using `d.good_valuation_balance hd h c p hp w hw`. Rewrite `h1` using `[hw0 w hw.1]`. Simplify using `at h1`.
+
+Use `show (d.fze h c w : ℤ) * d.ordMM c (d.Wres c w) (d.w (d.jc c) c) = 0`. Rewrite using `[h1, mul_zero]`. Establish `hnn : ∀ p ∈ d.HtOne, 0 ≤ e1 p + d.nPMM h c (d.w (d.jc c) c) p`. Introduce `p hp`. Establish `hOf` using `(hfin p hp)`.
+
+Establish `hGsub : d.GoodP c p ⊆ d.OverP c p` using `fun w hw => hw.1`. Establish `hGf : (d.GoodP c p).Finite` using `hOf.subset hGsub`. Establish `hRf : (d.OverP c p \ d.GoodP c p).Finite` using `hOf.diff`. Rewrite using `[he1, ← Set.union_diff_cancel hGsub, finsum_mem_union Set.disjoint_sdiff_right hGf hRf]`. Unfold `nPMM`.
+
+Rewrite using `[add_right_comm, ← finsum_mem_add_distrib hGf]`. Establish `hG0 : ∑ᶠ (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (_ : w ∈ d.GoodP c p), ((d.fze h c w : ℤ) * WithTop.untopD 0 (w (d.rationalBaseRow c)) + (d.fze h c w : ℤ) * d.ordMM c (d.Wres c w) (d.w (d.jc c) c)) = 0`. Rewrite using `[finsum_mem_congr rfl (fun w hw => by rw [← mul_add, d.good_valuation_balance hd h c p hp w hw, mul_zero]), finsum_mem_zero _]`. Rewrite using `[hG0, zero_add, finsum_mem_eq_finite_toFinset_sum _ hRf]`. Use `Finset.sum_nonneg fun w hw => ?_` and prove the remaining obligations.
+
+Rewrite `hw` using `[Set.Finite.mem_toFinset]`. Establish `htriv : ∀ a : Ω c, a ≠ 0 → d.Wres c w a = 0`. Introduce `a ha`. Assume the negation of the conclusion as `hne`. Conclude with `hw.2 ⟨hw.1, a, ha, hne⟩`.
+
+Conclude with `mul_nonneg (Nat.cast_nonneg _) (untopD_nonneg (d.lineRatio_val_nonneg c p w hw.1 htriv))`. Establish `hms1 : (d.HtOne ∩ Function.mulSupport fun p => algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ e1 p).Finite`. Use `hT.subset fun p ⟨hp, hne⟩ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hpT`. Conclude with `hne (by simp only [(hzero p hp hpT).1, zpow_zero])`.
+
+Establish `hms2 : (d.HtOne ∩ Function.mulSupport fun p => algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p) ^ d.nPMM h c (d.w (d.jc c) c) p).Finite`. Use `hT.subset fun p ⟨hp, hne⟩ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hpT`. Conclude with `hne (by simp only [(hzero p hp hpT).2, zpow_zero])`. Establish `hms3 : (d.HtOne ∩ Function.mulSupport fun p => d.gen p ^ (e1 p + d.nPMM h c (d.w (d.jc c) c) p).toNat).Finite`.
+
+Use `hT.subset fun p ⟨hp, hne⟩ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hpT`. Take `⟨h1, h2⟩` from `hzero p hp hpT`. Conclude with `hne (by simp only [h1, h2, add_zero, Int.toNat_zero, pow_zero])`. Use `⟨MvPolynomial.C κ * ∏ᶠ (p) (_ : p ∈ d.HtOne), d.gen p ^ (e1 p + d.nPMM h c (d.w (d.jc c) c) p).toNat, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hmap : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (∏ᶠ (p) (_ : p ∈ d.HtOne), d.gen p ^ (e1 p + d.nPMM h c (d.w (d.jc c) c) p).toNat) = ∏ᶠ (p) (_ : p ∈ d.HtOne), algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.gen p ^ (e1 p + d.nPMM h c (d.w (d.jc c) c) p).toNat)` using `MonoidHom.map_finprod_mem' (algebraMap (KTp K d.D d.N) (KTf K d.D d.N)).toMonoidHom hms3`. Rewrite using `[map_mul, hmap]`. Unfold `fZ`. Rewrite using `[hN, mul_assoc, ← finprod_mem_mul_distrib' hms1 hms2, show algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (MvPolynomial.C κ) = algebraMap K (KTf K d.D d.N) κ from (IsScalarTower.algebraMap_apply K (KTp K d.D d.N) (KTf K d.D d.N) κ).symm]`. Use `congr 1`.
+
+Use `finprod_mem_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← zpow_natCast, Int.toNat_of_nonneg (hnn p hp), zpow_add₀ (hg0 p hp)]`. Use `mul_ne_zero (by simpa using hκ) ?_` and prove the remaining obligations. Conclude with `finprod_mem_induction (fun x => x ≠ 0) one_ne_zero (fun x y hx hy => mul_ne_zero hx hy) fun p hp => pow_ne_zero _ (d.generator_ne_zero_of_height p hp)`.
+-/
 theorem componentForm_poly (hd : d.AxH 𝒜) (h : d.S1) (c : ι) :
     ∃ F : KTp K d.D d.N, algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F = d.fZ h c ∧ F ≠ 0 := by
   classical

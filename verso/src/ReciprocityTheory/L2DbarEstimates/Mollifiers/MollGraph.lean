@@ -6,6 +6,9 @@ namespace ReciprocityTheory.L2DbarEstimates.B
 open MeasureTheory Filter Topology Set Metric
 open scoped Convolution ContDiff ENNReal Pointwise
 
+/- English proof (translation)
+Introduce `l K hK m c v g w hw hg hw2`. Use `⟨fun k => moll_l2Tendsto E μ ι l K hK (g k) (hg k), ?_⟩` and prove the remaining obligations. Use `(moll_l2Tendsto E μ ι l K hK w hw2).congr ?_` and prove the remaining obligations. Introduce `i`. Rewrite using `[moll_weakComm E μ m c v g w hw (K i)]`.
+-/
 theorem moll_graph (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] (ι : Type*) : GraphSt E μ ι := by
   intro l K hK m c v g w hw hg hw2

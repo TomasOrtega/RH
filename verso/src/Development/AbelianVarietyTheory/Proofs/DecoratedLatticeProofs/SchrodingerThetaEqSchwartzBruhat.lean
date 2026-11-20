@@ -19,6 +19,11 @@ open GlobalTheory.Core.Rk.SW
 
 namespace GlobalTheory.SchSchwartzAll
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `h1` using `(dblDec A).integrableOn_mixS hψ hν hf x 0`. Establish `h2` using `(dblDec A).integrableOn_mixS hψ hν hf' x 0`. Use `Eq.trans ?_ (integral_sub h1 h2)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations.
+
+Simplify using `only [HypDec.integrandS_eq, Pi.sub_apply, mul_sub]`.
+-/
 theorem sch_sub {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {A B : HSp D} {ν : Measure (WO A B)}
     {𝓨 : Set (WO A B)} (hν : IsCovolOne (ratL B A) ν 𝓨) {f f' : WO (dblSp A) B → ℂ}
     (hf : IsThetaFunO ψ (dblSp A) B f) (hf' : IsThetaFunO ψ (dblSp A) B f') :
@@ -30,6 +35,9 @@ theorem sch_sub {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) 
   refine integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)
   simp only [HypDec.integrandS_eq, Pi.sub_apply, mul_sub]
 
+/- English proof (translation)
+Introduce `D ψ hψ θ hθ A B ν 𝓨 hν`. Use `⟨fun f hf => (GlobalTheory.T.isSchwartzBruhat_iff_mem_adelicMatrixSchwartzSpace D θ hθ _ _ _).1 (GlobalTheory.T.isSchwartzBruhat_doubledPairSchrodingerFunction D ψ hψ A B ν 𝓨 hν f hf), fun φ hφ => GlobalTheory.T.exists_thetaFunction_schrodingerFunction_eq D ψ hψ A B ν 𝓨 hν φ ((Gl …` and prove the remaining obligations. Use `sub_eq_zero.1 (GlobalTheory.T.doubledPairThetaFunction_eq_zero_of_schrodinger_eq_zero D ψ hψ A B ν 𝓨 hν (f - f') (GlobalTheory.OrientedHeis.theta_sub hf hf') ?_)` and prove the remaining obligations. Rewrite using `[sch_sub hψ.1.1 hν hf hf', h, sub_self]`.
+-/
 theorem schSchwartz : ∀ D : D7, SchSchwartz D := by
   intro D ψ hψ θ hθ A B ν 𝓨 hν
   refine ⟨fun f hf => (GlobalTheory.T.isSchwartzBruhat_iff_mem_adelicMatrixSchwartzSpace D θ hθ _ _ _).1 (GlobalTheory.T.isSchwartzBruhat_doubledPairSchrodingerFunction D ψ hψ A B ν 𝓨 hν f hf),

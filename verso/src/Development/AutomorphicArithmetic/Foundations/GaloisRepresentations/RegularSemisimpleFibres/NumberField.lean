@@ -26,8 +26,14 @@ def JD (θ : AlgebraicClosure F →* ℂ) (D L : List (ℕ × ℕ)) : (n : ℕ) 
   List.rec (motive := fun _ => (n : ℕ) → GL (Fin n) F → ℂ) (J θ L)
     (fun p D ih n => hc p.1 (deg D + deg L) (detc θ p.1 p.2) (ih (deg D + deg L)) n) D
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem JD_nil (θ : AlgebraicClosure F →* ℂ) (L : List (ℕ × ℕ)) : JD θ [] L = J θ L := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem JD_cons (θ : AlgebraicClosure F →* ℂ) (p : ℕ × ℕ) (D L : List (ℕ × ℕ)) (n : ℕ) :
     JD θ (p :: D) L n = hc p.1 (deg D + deg L) (detc θ p.1 p.2) (JD θ D L (deg D + deg L)) n := rfl
 

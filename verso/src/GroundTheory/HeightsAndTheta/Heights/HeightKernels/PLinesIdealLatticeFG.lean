@@ -9,18 +9,33 @@ open scoped nonZeroDivisors
 
 namespace KLinesIdealLatticeFG
 
+/- English proof (translation)
+The claim follows from `(Submodule.iSup_map_single).symm`.
+-/
 theorem idealLattice_eq_iSup (K : Type) [Field K] [NumberField K] {n : ℕ}
     (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) :
     idealLattice a = ⨆ x, Submodule.map (LinearMap.single (𝓞 K) (fun _ : Fin n => K) x)
       (a x : Submodule (𝓞 K) K) :=
   (Submodule.iSup_map_single).symm
 
+/- English proof (translation)
+Rewrite using `[idealLattice_eq_iSup]`. Conclude with `Submodule.fg_iSup _ fun x => ((a x).fg_of_isNoetherianRing le_rfl).map _`.
+-/
 theorem fg (K : Type) [Field K] [NumberField K] {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) :
     (idealLattice a).FG := by
   rw [idealLattice_eq_iSup]
   exact Submodule.fg_iSup _ fun x =>
     ((a x).fg_of_isNoetherianRing le_rfl).map _
 
+/- English proof (translation)
+Establish `hbot : (a x : Submodule (𝓞 K) K) ≠ ⊥`. Rewrite using `[Ne, FractionalIdeal.coeToSubmodule_eq_bot]` and apply the resulting hypothesis. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hbot`. Establish `hmem : (Pi.single x y : Fin n → K) ∈ idealLattice a`. Rewrite using `[idealLattice, Submodule.mem_pi]`.
+
+Introduce `i _`. Distinguish the cases in `h : i = x`. Substitute `h` using the available equality. Simplify using `using hy`. Simplify using `[h]`.
+
+Establish `heq : (Pi.single x 1 : Fin n → K) = y⁻¹ • (Pi.single x y : Fin n → K)`. Use extensionality with `i`. Distinguish the cases in `h : i = x`. Substitute `h` using the available equality. Simplify using `[hy0]`.
+
+Simplify using `[h]`. Rewrite using `[heq]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+-/
 theorem single_mem_span (K : Type) [Field K] [NumberField K] {n : ℕ}
     (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (x : Fin n) (hx : a x ≠ 0) :
     (Pi.single x 1 : Fin n → K) ∈ Submodule.span K (idealLattice a : Set (Fin n → K)) := by
@@ -45,6 +60,11 @@ end KLinesIdealLatticeFG
 
 open KLinesIdealLatticeFG in
 
+/- English proof (translation)
+Introduce `K _ _ n a ha`. Use `⟨fg K a, ?_⟩` and prove the remaining obligations. Use `eq_top_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[← (Pi.basisFun K (Fin n)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Rewrite using `[Pi.basisFun_apply]`. Conclude with `single_mem_span K a x (ha x)`.
+-/
 theorem LinesIdealLatticeFG.proof : LinesIdealLatticeFG.Statement := by
   intro K _ _ n a ha
   refine ⟨fg K a, ?_⟩

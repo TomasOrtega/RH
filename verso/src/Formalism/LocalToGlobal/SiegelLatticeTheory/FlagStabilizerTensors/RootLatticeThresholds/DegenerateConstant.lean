@@ -57,6 +57,11 @@ def UAdm (U : UC) : Prop :=
   ∀ Cpr : ℝ, 0 ≤ U.ChF Cpr ∧ 0 ≤ U.CaF Cpr ∧ ∀ δ > 0, OwnEv Fm fun C' Cl x i =>
     VanishingOnXAndXPlus.AmplitudeBoundsConjunction (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 A C1 Cpr (U.CaF Cpr) (U.secondOrderBound Cpr) (U.ChF Cpr) δ
 
+/- English proof (translation)
+Introduce `c hc`. Take `⟨_, h27, _⟩` from `hU`. Use `OwnEv.mono ?_ h27` and prove the remaining obligations. Introduce `C' Cl x i h hx u u' hH`. Establish `hc1 : 1 ≤ c` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hc`.
+
+Establish `hCT : CT ≤ c` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hc`. Establish `hcH : |U.cH| + 2 ≤ c` using `le_trans (le_max_right _ _) hc`. Conclude with `rows_KBound_of (Y x hx i u u') hH (rows_stHH_mono (by linarith [le_abs_self U.cH]) (by linarith [neg_abs_le U.cH]) (h u u')) hc1 hCT`.
+-/
 theorem rowsKBU (U : UC) (hU : UAdm Fm C1 X Y Cg cb Cu cT CT C0 A U) :
     ∀ c ≥ max (max 1 CT) (|U.cH| + 2), OwnEv Fm fun C' Cl x i => ∀ (hx : Fm.x1 < x) u u',
       Cnt.Hyp (Fm.D x i) (Fm.L x i) u u' C' Cl Cg cb Cu cT CT C0 A → rows_KBound (Y x hx i u u') c := by
@@ -70,6 +75,39 @@ theorem rowsKBU (U : UC) (hU : UAdm Fm C1 X Y Cg cb Cu cT CT C0 A U) :
   exact rows_KBound_of (Y x hx i u u') hH (rows_stHH_mono (by linarith [le_abs_self U.cH])
     (by linarith [neg_abs_le U.cH]) (h u u')) hc1 hCT
 
+/- English proof (translation)
+Introduce `C hC`. Simplify using `only [c0ND] at hC`. Take `⟨_, _, _, _, _, _, _, h10a, _, _, _, h14, _, _, _, _, hall⟩` from `hAdm`. Take `⟨_, _, _, _, _, _, _, _, h6, _, h8, _, h10b, _, _, h20, _, _, h27, hVol⟩` from `hall Cg cb Cu cT CT C0 A`. Use `set c3 := U.c3 with hc3def`.
+
+Establish `LocalHeightDeterminant` using `hU.1`. Use `set cH := U.cH with hcHdef`. Take `⟨x27, H27⟩` from `hU.2.1`. Use `set cV := U.cV with hcVdef`. Take `⟨xV, HV⟩` from `hU.2.2.1`.
+
+Use `set c : ℝ := max (max c3 1) (max (|cH| + 2) (|cV| + 2)) with hcdef`. Establish `k1 : c3 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_left _ _) (le_max_left _ _)`. Establish `k2 : 1 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `k3 : |cH| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_left _ _) (le_max_right _ _)`. Establish `k4 : |cV| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_right _ _) (le_max_right _ _)`.
+
+Take `⟨x20, H20x⟩` from `LocalHeightDeterminant c k1`. Take `⟨hCh, _, HA⟩` from `hU.2.2.2.2.2 (9 * c + 3)`. Use `set Ca := U.CaF (9 * c + 3) with hCadef`. Use `set C2 := U.secondOrderBound (9 * c + 3) with hC2def`. Use `set Ch := U.ChF (9 * c + 3) with hChdef`.
+
+Take `⟨xA, HAx⟩` from `HA 1 one_pos`. Take `⟨x6, H6⟩` from `h6 1 one_pos`. Take `⟨x8, H8⟩` from `h8`. Take `⟨x10, H10⟩` from `h10b`. Take `⟨xk, _, Hk⟩` from `ev_kLow Fm |C2|`.
+
+Use `ownEv_intro Fm (max (max (max x20 x27) (max xV xA)) (max (max x6 x8) (max x10 xk))) fun x hx _ i hx1 u u' hH => ?_` and prove the remaining obligations. Establish `g20 : x20 ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_left _ _)) hx`. Establish `g27 : x27 ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_left _ _)) hx`. Establish `gV : xV ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_left _ _)) hx`. Establish `gA : xA ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_left _ _)) hx`.
+
+Establish `g6 : x6 ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_right _ _)) hx`. Establish `g8 : x8 ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_right _ _)) hx`. Establish `g10 : x10 ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hx`. Establish `gk : xk ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hx`. Establish `hc0 : 0 ≤ c` using `by linarith`.
+
+Establish `hcC : c ≤ C` using `le_trans (le_max_left _ _) hC`. Establish `hC1 : 1 ≤ C` using `k2.trans hcC`. Establish `hCsq : 4 + (c ^ 2 + 2 * max (Ch - c) 0) * (6 * c + 2) ≤ C ^ 2`. Use `le_trans (le_max_right _ _) hC` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hr0 : (0 : ℝ) ≤ (Fm.D x i).R.rS` using `by positivity`. Establish `hm2 : (2 : ℝ) ≤ (Fm.D x i).R.m` using `by rw [rows_m_cast]; linarith`. Establish `hf1 : (1 : ℝ) ≤ (Fm.D x i).R.f` using `by exact_mod_cast rows_f_pos (Fm.D x i)`. Establish `hL1` using `d_one_le_L (Fm.D x i) (Fm.L x i)`. Establish `hkm : ((Fm.D x i).R.m : ℝ) + 3 ≤ (Fm.D x i).R.k` using `by exact_mod_cast (Fm.D x i).R.m_add_three_le_k`.
+
+Establish `ha2 : |C2| * ((Fm.D x i).R.m : ℝ) ^ 2 ≤ (Fm.D x i).R.k`. Use `le_trans ?_ (Hk x gk i)` and prove the remaining obligations. Establish `e1 : ((Fm.D x i).R.m : ℝ) ^ 2 ≤ ((Fm.D x i).R.m : ℝ) ^ 5` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `e2 : ((Fm.D x i).R.m : ℝ) ^ 5 ≤ ((Fm.D x i).R.m : ℝ) ^ 5 * (Fm.D x i).R.f * (Fm.L x i).sc.L`. Establish `h5 : 0 ≤ ((Fm.D x i).R.m : ℝ) ^ 5` using `by positivity`.
+
+Use polynomial arithmetic with `[mul_nonneg h5 (by linarith : 0 ≤ ((Fm.D x i).R.f : ℝ) - 1), mul_nonneg (mul_nonneg h5 (by linarith : 0 ≤ ((Fm.D x i).R.f : ℝ))) (by linarith : 0 ≤ (Fm.L x i).sc.L - 1)]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨a, hadef⟩ : ∃ a : ℝ, a = 4 * (c * (Fm.D x i).R.k) + 4 * pairCountExponent (Fm.D x i) c (Fm.D x i).R.k + 4 * (c * ((Fm.D x i).R.rS : ℝ) ^ 2) + |C2| * ((Fm.D x i).R.m : ℝ) ^ 2 / 2 + 12 * (((Fm.D x i).R.rS : ℝ) + 1) ^ 2` from `⟨_, rfl⟩`. Establish `ha0 : 0 ≤ a`. Rewrite using `[hadef]`.
+
+Use `pairCountExponent_nonneg (Fm.D x i) hc0 (Fm.D x i).R.k` as an intermediate fact. Check the signs of the components of the expression. Establish `hqb` using `rows_q_bound (m := (Fm.D x i).R.m) (k := (Fm.D x i).R.k) (r := (Fm.D x i).R.rS) (c := c) (cf := cF (Fm.D x i).R.f) (a2 := |C2| * ((Fm.D x i).R.m : ℝ) ^ 2) (rows_m_cast _) hr0 hkm hc0 (rows_cF_le hH) ha2`. Establish `hqb' : (((Fm.D x i).R.rS : ℝ) + 1) * a + 1 ≤ (9 * c + 3) * (Fm.D x i).R.k * ((Fm.D x i).R.m : ℝ) ^ 2`. Rewrite using `[hadef]`.
+
+Unfold `pairCountExponent`. Conclude with `hqb`. Establish `hra0 : 0 ≤ (((Fm.D x i).R.rS : ℝ) + 1) * a` using `by positivity`. Establish `hyp : rows_Hyps (Y x hx1 i u u') (sC' Fm) (sCl Fm) Cg cb Cu cT CT C0 A c (9 * c + 3) Ca C2 Ch 1 1 ⌈(((Fm.D x i).R.rS : ℝ) + 1) * a⌉₊` using `{ hH := hH hC3 := H20x x g20 i u u' hHH := rows_stHH_mono (by linarith [le_abs_self cH]) (by linarith [neg_abs_le cH]) (H27 x g27 i u u') hV := rows_stVol_mono _ (by linarith [le_abs_self cV]) (by linarith [neg_abs_le cV]) (HV x gV i hx1 u u') hDEC := (HAx x gA i).2.2.2.2.2.2.2 h …`. Use `rows_RowsND_record _ hyp le_rfl hcC hC1 hCsq ?_` and prove the remaining obligations.
+
+Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `h1` using `Nat.le_ceil ((((Fm.D x i).R.rS : ℝ) + 1) * a)`. Establish `h2 : C2 * ((Fm.D x i).R.m : ℝ) ^ 2 / 2 ≤ |C2| * ((Fm.D x i).R.m : ℝ) ^ 2 / 2`. Use `le_abs_self C2` as an intermediate fact. Use `gcongr`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[hadef]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (((Fm.D x i).R.rS : ℝ) + 1) * a := by ring`.
+
+Use `_ ≤ _ := h1`.
+-/
 theorem rowsNDU (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) (hT : rows_TiesF Fm C1 X Y) (U : UC)
     (hU : UAdm Fm C1 X Y Cg cb Cu cT CT C0 A U) :
     ∀ C ≥ c0ND CT A C0 U, OwnEv Fm fun C' Cl x i => ∀ (hx : Fm.x1 < x) u u',
@@ -174,6 +212,41 @@ theorem rowsNDU (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) (hT : rows_TiesF Fm
     _ = (((Fm.D x i).R.rS : ℝ) + 1) * a := by ring
     _ ≤ _ := h1
 
+/- English proof (translation)
+Introduce `C hC`. Simplify using `only [degenerateConstant] at hC`. Take `⟨_, _, _, _, _, _, _, h10a, _, _, _, h14, _, _, _, _, hall⟩` from `hAdm`. Take `⟨_, _, _, _, _, _, _, _, h6, _, h8, _, h10b, _, _, h20, _, _, h27, hVol⟩` from `hall Cg cb Cu cT CT C0 A`. Use `set c3 := U.c3 with hc3def`.
+
+Establish `LocalHeightDeterminant` using `hU.1`. Use `set cH := U.cH with hcHdef`. Take `⟨x27, H27⟩` from `hU.2.1`. Use `set cV := U.cV with hcVdef`. Take `⟨xV, HV⟩` from `hU.2.2.1`.
+
+Use `set cK := max (max 1 CT) (|cH| + 2) with hcKdef`. Establish `HK` using `rowsKBU Fm C1 X Y Cg cb Cu cT CT C0 A U hU`. Use `set c : ℝ := max (max (max c3 cK) 1) (max (|cH| + 2) (|cV| + 2)) with hcdef`. Establish `k1 : c3 ≤ c` using `by rw [hcdef]; exact le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_left _ _)`. Establish `k5 : cK ≤ c` using `by rw [hcdef]; exact le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_left _ _)`.
+
+Establish `k2 : 1 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `k3 : |cH| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_left _ _) (le_max_right _ _)`. Establish `k4 : |cV| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_right _ _) (le_max_right _ _)`. Take `⟨x20, H20x⟩` from `LocalHeightDeterminant c k1`. Take `⟨xK, HKx⟩` from `HK c k5`.
+
+Take `⟨hCh, _, HA⟩` from `hU.2.2.2.2.2 (9 * c + 3)`. Use `set Ca := U.CaF (9 * c + 3) with hCadef`. Use `set C2 := U.secondOrderBound (9 * c + 3) with hC2def`. Use `set Ch := U.ChF (9 * c + 3) with hChdef`. Take `⟨xA, HAx⟩` from `HA 1 one_pos`.
+
+Take `⟨x6, H6⟩` from `h6 1 one_pos`. Take `⟨x8, H8⟩` from `h8`. Take `⟨x10, H10⟩` from `h10b`. Take `⟨xk, _, Hk⟩` from `ev_kLow Fm (3 * |C2|)`. Use `ownEv_intro Fm (max (max (max (max x20 xK) x27) (max xV xA)) (max (max x6 x8) (max x10 xk))) fun x hx _ i hx1 u u' hH => ?_` and prove the remaining obligations.
+
+Establish `g20 : x20 ≤ x` using `le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_left _ _)) (le_max_left _ _)) hx`. Establish `gK : xK ≤ x` using `le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_left _ _)) (le_max_left _ _)) hx`. Establish `g27 : x27 ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_left _ _)) hx`. Establish `gV : xV ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_left _ _)) hx`. Establish `gA : xA ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_left _ _)) hx`.
+
+Establish `g6 : x6 ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) (le_max_right _ _)) hx`. Establish `g8 : x8 ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) (le_max_right _ _)) hx`. Establish `g10 : x10 ≤ x` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hx`. Establish `gk : xk ≤ x` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hx`. Establish `hc0 : 0 ≤ c` using `by linarith`.
+
+Establish `hcC : c ≤ C` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hC`. Establish `hC1 : 1 ≤ C` using `k2.trans hcC`. Establish `hCsq : 4 + (c ^ 2 + 2 * max (Ch - c) 0) * (6 * c + 2) ≤ C ^ 2`. Use `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hC` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hC2 : 2 * C2 ≤ C` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC`. Establish `hCa : |Ca| ≤ C` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC`. Establish `hr0 : (0 : ℝ) ≤ (Fm.D x i).R.rS` using `by positivity`. Establish `hm2 : (2 : ℝ) ≤ (Fm.D x i).R.m` using `by rw [rows_m_cast]; linarith`. Establish `hf1 : (1 : ℝ) ≤ (Fm.D x i).R.f` using `by exact_mod_cast rows_f_pos (Fm.D x i)`.
+
+Establish `hL1` using `d_one_le_L (Fm.D x i) (Fm.L x i)`. Establish `hkm : ((Fm.D x i).R.m : ℝ) + 3 ≤ (Fm.D x i).R.k` using `by exact_mod_cast (Fm.D x i).R.m_add_three_le_k`. Establish `ha2 : |C2| * ((Fm.D x i).R.m : ℝ) ^ 2 + |C2| * ((Fm.D x i).R.m : ℝ) ^ 4 * 2 ≤ (Fm.D x i).R.k`. Use `le_trans ?_ (Hk x gk i)` and prove the remaining obligations. Establish `e1 : ((Fm.D x i).R.m : ℝ) ^ 2 ≤ ((Fm.D x i).R.m : ℝ) ^ 5` using `pow_le_pow_right₀ (by linarith) (by norm_num)`.
+
+Establish `e4 : ((Fm.D x i).R.m : ℝ) ^ 4 ≤ ((Fm.D x i).R.m : ℝ) ^ 5` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `e2 : ((Fm.D x i).R.m : ℝ) ^ 5 ≤ ((Fm.D x i).R.m : ℝ) ^ 5 * (Fm.D x i).R.f * (Fm.L x i).sc.L`. Establish `h5 : 0 ≤ ((Fm.D x i).R.m : ℝ) ^ 5` using `by positivity`. Use polynomial arithmetic with `[mul_nonneg h5 (by linarith : 0 ≤ ((Fm.D x i).R.f : ℝ) - 1), mul_nonneg (mul_nonneg h5 (by linarith : 0 ≤ ((Fm.D x i).R.f : ℝ))) (by linarith : 0 ≤ (Fm.L x i).sc.L - 1)]`. Establish `hab` using `abs_nonneg C2`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨a, hadef⟩ : ∃ a : ℝ, a = 4 * (c * (Fm.D x i).R.k) + 4 * pairCountExponent (Fm.D x i) c (Fm.D x i).R.k + 4 * (c * ((Fm.D x i).R.rS : ℝ) ^ 2) + (|C2| * ((Fm.D x i).R.m : ℝ) ^ 2 + |C2| * ((Fm.D x i).R.m : ℝ) ^ 4 * 2) / 2 + 12 * (((Fm.D x i).R.rS : ℝ) + 1) ^ 2` from `⟨_, rfl⟩`. Establish `ha0 : 0 ≤ a`. Rewrite using `[hadef]`. Use `pairCountExponent_nonneg (Fm.D x i) hc0 (Fm.D x i).R.k` as an intermediate fact.
+
+Check the signs of the components of the expression. Establish `hqb` using `rows_q_bound (m := (Fm.D x i).R.m) (k := (Fm.D x i).R.k) (r := (Fm.D x i).R.rS) (c := c) (cf := cF (Fm.D x i).R.f) (a2 := |C2| * ((Fm.D x i).R.m : ℝ) ^ 2 + |C2| * ((Fm.D x i).R.m : ℝ) ^ 4 * 2) (rows_m_cast _) hr0 hkm hc0 (rows_cF_le hH) ha2`. Establish `hqb' : (((Fm.D x i).R.rS : ℝ) + 1) * a + 1 ≤ (9 * c + 3) * (Fm.D x i).R.k * ((Fm.D x i).R.m : ℝ) ^ 2`. Rewrite using `[hadef]`. Unfold `pairCountExponent`.
+
+Conclude with `hqb`. Establish `hra0 : 0 ≤ (((Fm.D x i).R.rS : ℝ) + 1) * a` using `by positivity`. Establish `hyp : rows_Hyps (Y x hx1 i u u') (sC' Fm) (sCl Fm) Cg cb Cu cT CT C0 A c (9 * c + 3) Ca C2 Ch 1 1 ⌈(((Fm.D x i).R.rS : ℝ) + 1) * a⌉₊` using `{ hH := hH hC3 := H20x x g20 i u u' hHH := rows_stHH_mono (by linarith [le_abs_self cH]) (by linarith [neg_abs_le cH]) (H27 x g27 i u u') hV := rows_stVol_mono _ (by linarith [le_abs_self cV]) (by linarith [neg_abs_le cV]) (HV x gV i hx1 u u') hDEC := (HAx x gA i).2.2.2.2.2.2.2 h …`. Use `rows_RowsDeg_record _ hyp (HKx x gK i hx1 u u' hH) k2 hcC hC1 hCsq hC2 hCa ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (by positivity)]`.
+
+Establish `h1` using `Nat.le_ceil ((((Fm.D x i).R.rS : ℝ) + 1) * a)`. Establish `h2 : (C2 * ((Fm.D x i).R.m : ℝ) ^ 2 + C2 * ((Fm.D x i).R.m : ℝ) ^ 4 * 2) / 2 ≤ (|C2| * ((Fm.D x i).R.m : ℝ) ^ 2 + |C2| * ((Fm.D x i).R.m : ℝ) ^ 4 * 2) / 2`. Use `le_abs_self C2` as an intermediate fact. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[hadef]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (((Fm.D x i).R.rS : ℝ) + 1) * a := by ring`. Use `_ ≤ _ := h1`.
+-/
 theorem rowsDegU (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) (hT : rows_TiesF Fm C1 X Y) (U : UC)
     (hU : UAdm Fm C1 X Y Cg cb Cu cT CT C0 A U) :
     ∀ C ≥ degenerateConstant CT U, OwnEv Fm fun C' Cl x i => ∀ (hx : Fm.x1 < x) u u',
@@ -294,6 +367,45 @@ theorem rowsDegU (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) (hT : rows_TiesF F
     _ = (((Fm.D x i).R.rS : ℝ) + 1) * a := by ring
     _ ≤ _ := h1
 
+/- English proof (translation)
+Introduce `C hC`. Simplify using `only [corankOneConstant] at hC`. Take `⟨_, _, _, _, _, _, _, h10a, _, _, _, h14, _, _, _, _, hall⟩` from `hAdm`. Take `⟨_, _, _, _, _, _, _, h4, h6, h7, h8, _, h10b, _, _, h20, h21, _, h27, hVol⟩` from `hall Cg cb Cu cT CT C0 A`. Use `set c3 := U.c3 with hc3def`.
+
+Establish `LocalHeightDeterminant` using `hU.1`. Use `set cH := U.cH with hcHdef`. Take `⟨x27, H27⟩` from `hU.2.1`. Use `set cV := U.cV with hcVdef`. Take `⟨xV, HV⟩` from `hU.2.2.1`.
+
+Use `set cS := U.cS with hcSdef`. Take `⟨x4, H4⟩` from `hU.2.2.2.1`. Use `set c4 := U.c4 with hc4def`. Take `⟨x21, H21⟩` from `hU.2.2.2.2.1`. Use `set c : ℝ := max (max c3 1) (max (max (|cH| + 2) (|cV| + 2)) (max (|cS| + 2) (|c4| + 2))) with hcdef`.
+
+Establish `k1 : c3 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_left _ _) (le_max_left _ _)`. Establish `k2 : 1 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `k3 : |cH| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_four _ _ _ _).1 (le_max_right _ _)`. Establish `k4 : |cV| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_four _ _ _ _).2.1 (le_max_right _ _)`. Establish `k5 : |cS| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_four _ _ _ _).2.2.1 (le_max_right _ _)`.
+
+Establish `k6 : |c4| + 2 ≤ c` using `by rw [hcdef]; exact le_trans (le_max_four _ _ _ _).2.2.2 (le_max_right _ _)`. Take `⟨x20, H20x⟩` from `LocalHeightDeterminant c k1`. Take `⟨hCh, hCa, HA⟩` from `hU.2.2.2.2.2 (9 * c + 3)`. Use `set Ca := U.CaF (9 * c + 3) with hCadef`. Use `set C2 := U.secondOrderBound (9 * c + 3) with hC2def`.
+
+Use `set Ch := U.ChF (9 * c + 3) with hChdef`. Take `⟨xA, HAx⟩` from `HA (1 / 4) (by norm_num)`. Take `⟨x6, H6⟩` from `h6 (1 / 2) (by norm_num)`. Take `⟨x7, H7⟩` from `h7`. Take `⟨x8, H8⟩` from `h8`.
+
+Take `⟨x10, H10⟩` from `h10b`. Take `⟨xk, _, Hk⟩` from `ev_kLow Fm |C2|`. Take `⟨xc, _, Hc⟩` from `ev_k Fm ((max Ca 1) ^ 3)`. Use `clear hc3def hcHdef hcVdef hcSdef hc4def hCadef hC2def hChdef hU`. Use `ownEv_intro Fm (max (max (max (max x20 x27) (max xV xA)) (max (max x6 x8) (max x10 xk))) (max (max x4 x21) (max x7 xc))) fun x hx _ i hx1 u u' hH => ?_` and prove the remaining obligations.
+
+Establish `hM1 : max (max x20 x27) (max xV xA) ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hM2 : max (max x6 x8) (max x10 xk) ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `hM3 : max (max x4 x21) (max x7 xc) ≤ x` using `le_trans (le_max_right _ _) hx`. Establish `g20 : x20 ≤ x` using `le_trans (le_max_four _ _ _ _).1 hM1`. Establish `g27 : x27 ≤ x` using `le_trans (le_max_four _ _ _ _).2.1 hM1`.
+
+Establish `gV : xV ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.1 hM1`. Establish `gA : xA ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.2 hM1`. Establish `g6 : x6 ≤ x` using `le_trans (le_max_four _ _ _ _).1 hM2`. Establish `g8 : x8 ≤ x` using `le_trans (le_max_four _ _ _ _).2.1 hM2`. Establish `g10 : x10 ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.1 hM2`.
+
+Establish `gk : xk ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.2 hM2`. Establish `g4 : x4 ≤ x` using `le_trans (le_max_four _ _ _ _).1 hM3`. Establish `g21 : x21 ≤ x` using `le_trans (le_max_four _ _ _ _).2.1 hM3`. Establish `g7 : x7 ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.1 hM3`. Establish `gc : xc ≤ x` using `le_trans (le_max_four _ _ _ _).2.2.2 hM3`.
+
+Establish `hc0 : 0 ≤ c` using `by linarith`. Establish `q1 : 4 * Real.sqrt A ≤ C` using `le_trans (le_max_four _ _ _ _).1 hC`. Establish `q2 : 2 * Real.sqrt (2 * C0) * c ≤ C` using `le_trans (le_max_four _ _ _ _).2.1 hC`. Establish `q3 : Fm.CGam + C2 ≤ C` using `le_trans (le_max_four _ _ _ _).2.2.1 hC`. Establish `q4 : 4 + 2 * (c ^ 2 + 2 * max (Ch - c) 0) * (c + 1) ≤ C` using `le_trans (le_max_four _ _ _ _).2.2.2 hC`.
+
+Establish `hCsq : 4 + 2 * (c ^ 2 + 2 * max (Ch - c) 0) * (c + 1) ≤ C ^ 2`. Establish `h0 : 0 ≤ 2 * (c ^ 2 + 2 * max (Ch - c) 0) * (c + 1)`. Use `le_max_right (Ch - c) 0` as an intermediate fact. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hr0 : (0 : ℝ) ≤ (Fm.D x i).R.rS` using `by positivity`. Establish `hm2 : (2 : ℝ) ≤ (Fm.D x i).R.m` using `by rw [rows_m_cast]; linarith`. Establish `hf1 : (1 : ℝ) ≤ (Fm.D x i).R.f` using `by exact_mod_cast rows_f_pos (Fm.D x i)`. Establish `hL1` using `d_one_le_L (Fm.D x i) (Fm.L x i)`. Establish `hkm : ((Fm.D x i).R.m : ℝ) + 3 ≤ (Fm.D x i).R.k` using `by exact_mod_cast (Fm.D x i).R.m_add_three_le_k`.
+
+Establish `ha5 : |C2| * ((Fm.D x i).R.m : ℝ) ^ 5 ≤ (Fm.D x i).R.k`. Use `le_trans ?_ (Hk x gk i)` and prove the remaining obligations. Establish `e2 : ((Fm.D x i).R.m : ℝ) ^ 5 ≤ ((Fm.D x i).R.m : ℝ) ^ 5 * (Fm.D x i).R.f * (Fm.L x i).sc.L`. Establish `h5 : 0 ≤ ((Fm.D x i).R.m : ℝ) ^ 5` using `by positivity`. Use polynomial arithmetic with `[mul_nonneg h5 (by linarith : 0 ≤ ((Fm.D x i).R.f : ℝ) - 1), mul_nonneg (mul_nonneg h5 (by linarith : 0 ≤ ((Fm.D x i).R.f : ℝ))) (by linarith : 0 ≤ (Fm.L x i).sc.L - 1)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨a, hadef⟩ : ∃ a : ℝ, a = 12 * (c * ((Fm.D x i).R.rS : ℝ) ^ 2) + |C2| * ((Fm.D x i).R.m : ℝ) ^ 2 / 2 + |C2| * ((Fm.D x i).R.m : ℝ) ^ 4 + 12 * (((Fm.D x i).R.rS : ℝ) + 1) ^ 2` from `⟨_, rfl⟩`. Establish `ha0 : 0 ≤ a` using `by rw [hadef]; positivity`. Establish `hqb` using `decay_length_sufficient (m := (Fm.D x i).R.m) (k := (Fm.D x i).R.k) (r := (Fm.D x i).R.rS) (c := c) (B := |C2|) (rows_m_cast _) hr0 hkm hc0 (abs_nonneg _) ha5`. Establish `hqb' : (((Fm.D x i).R.rS : ℝ) + 1) * a + 1 ≤ (9 * c + 3) * (Fm.D x i).R.k * ((Fm.D x i).R.m : ℝ) ^ 2`.
+
+Rewrite using `[hadef]`. Conclude with `hqb`. Establish `hra0 : 0 ≤ (((Fm.D x i).R.rS : ℝ) + 1) * a` using `by positivity`. Establish `hyp : rows_Hyps (Y x hx1 i u u') (sC' Fm) (sCl Fm) Cg cb Cu cT CT C0 A c (9 * c + 3) Ca C2 Ch (1 / 2) (1 / 4) ⌈(((Fm.D x i).R.rS : ℝ) + 1) * a⌉₊` using `{ hH := hH hC3 := H20x x g20 i u u' hHH := rows_stHH_mono (by linarith [le_abs_self cH]) (by linarith [neg_abs_le cH]) (H27 x g27 i u u') hV := rows_stVol_mono _ (by linarith [le_abs_self cV]) (by linarith [neg_abs_le cV]) (HV x gV i hx1 u u') hDEC := (HAx x gA i).2.2.2.2.2.2.2 h …`. Use `corank_one_bound_of_injective_terms _ hyp (switch_bound_mono_constant k5 (H4 x g4 i u u')) (partner_count_bound_mono_constant k6 (H21 x g21 i u u')) (hTI x hx1 i u u') (hBL x i u u') (H7 x g7 i) le_rfl (by norm_num) le_rfl hCa (Hc x gc i) ?_ q1 q2 (by rw [Fm.CGam_eq]; exact q3) h …` and prove the remaining obligations.
+
+Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `h1` using `Nat.le_ceil ((((Fm.D x i).R.rS : ℝ) + 1) * a)`. Establish `h2 : C2 * ((Fm.D x i).R.m : ℝ) ^ 2 / 2 ≤ |C2| * ((Fm.D x i).R.m : ℝ) ^ 2 / 2`. Use `le_abs_self C2` as an intermediate fact. Use `gcongr`.
+
+Establish `h3 : |C2 * ((Fm.D x i).R.m : ℝ) ^ 4| = |C2| * ((Fm.D x i).R.m : ℝ) ^ 4`. Rewrite using `[abs_mul, abs_of_nonneg (by positivity : (0 : ℝ) ≤ ((Fm.D x i).R.m : ℝ) ^ 4)]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[hadef, h3]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (((Fm.D x i).R.rS : ℝ) + 1) * a := by ring`. Use `_ ≤ _ := h1`.
+-/
 theorem rowsOneU (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) (hT : rows_TiesF Fm C1 X Y)
     (hTI : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word), wordPairTermInjective (X x hx i) (Y x hx i u u'))
     (hBL : ∀ x (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word), wordPairBetaLattice (Fm.D x i) u u') (U : UC)
@@ -422,6 +534,11 @@ theorem rowsOneU (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) (hT : rows_TiesF F
 
 def c0U (CT A C0 CGam : ℝ) (U : UC) : ℝ := max (c0ND CT A C0 U) (max (degenerateConstant CT U) (corankOneConstant CT A C0 CGam U))
 
+/- English proof (translation)
+Introduce `C hC`. Establish `h1` using `rowsNDU Fm C1 X Y Cg cb Cu cT CT C0 A hAdm hT U hU C (le_trans (le_max_left _ _) hC)`. Establish `h2` using `rowsDegU Fm C1 X Y Cg cb Cu cT CT C0 A hAdm hT U hU C (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC)`. Establish `h3` using `rowsOneU Fm C1 X Y Cg cb Cu cT CT C0 A hAdm hT hTI hBL U hU C (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC)`. Use `OwnEv.mono ?_ ((h1.and h2).and h3)` and prove the remaining obligations.
+
+Introduce and unpack `C' Cl x i ⟨⟨a, b⟩, c⟩ hx u u' hH`. Conclude with `⟨a hx u u' hH, b hx u u' hH, c hx u u' hH⟩`.
+-/
 theorem rowsFU (hAdm : VanishingOnXAndXPlus.AdmF Fm C1 X Y) (hT : rows_TiesF Fm C1 X Y)
     (hTI : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word), wordPairTermInjective (X x hx i) (Y x hx i u u'))
     (hBL : ∀ x (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word), wordPairBetaLattice (Fm.D x i) u u') (U : UC)

@@ -18,6 +18,9 @@ variable {D : D7}
 def diagGL {κ : Type} [CommRing κ] {r : ℕ} (d : Fin r → κˣ) : GL (Fin r) κ :=
   Units.map (Matrix.diagonalRingHom (Fin r) κ).toMonoidHom (MulEquiv.piUnits.symm d)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diagGL_val {κ : Type} [CommRing κ] {r : ℕ} (d : Fin r → κˣ) :
     ((diagGL d : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) = Matrix.diagonal fun i => (d i : κ) := rfl
 
@@ -66,16 +69,27 @@ end GlobalTheory.SeeConjRead
 
 namespace GlobalTheory.SeeConjRead
 
+/- English proof (translation)
+Unfold `diagGL`. Rewrite using `[← map_inv, ← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem diagGL_inv {κ : Type} [CommRing κ] {r : ℕ} (d : Fin r → κˣ) : (diagGL d)⁻¹ = diagGL (fun i => (d i)⁻¹) := by
   unfold diagGL
   rw [← map_inv, ← map_inv]
   rfl
 
+/- English proof (translation)
+Rewrite using `[diagGL_inv, Units.val_mul, Units.val_mul, diagGL_val, diagGL_val, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+-/
 theorem diagGL_conj_apply {κ : Type} [CommRing κ] {r : ℕ} (d : Fin r → κˣ) (u : GL (Fin r) κ) (i j : Fin r) :
     (((diagGL d)⁻¹ * u * diagGL d : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) i j =
       (((d i)⁻¹ : κˣ) : κ) * (u : Matrix (Fin r) (Fin r) κ) i j * (d j : κ) := by
   rw [diagGL_inv, Units.val_mul, Units.val_mul, diagGL_val, diagGL_val, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
+/- English proof (translation)
+Take `⟨⟨h1, h2⟩, h3⟩` from `hu`. Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j a b c => ?_⟩` and prove the remaining obligations. Use `show (((diagGL d)⁻¹ * u * diagGL d : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) i j = 0`. Rewrite using `[diagGL_conj_apply, h1 hij, mul_zero, zero_mul]`. Rewrite using `[diagGL_conj_apply, h2, mul_one, Units.inv_mul]`.
+
+Rewrite using `[diagGL_conj_apply, h3 i j a b c, mul_zero, zero_mul]`.
+-/
 theorem unipSym_conj_of {κ : Type} [CommRing κ] {r : ℕ} (ρ k : ℕ) (d : Fin r → κˣ) {u : GL (Fin r) κ}
     (hu : u ∈ unipSym κ r ρ k) : (diagGL d)⁻¹ * u * diagGL d ∈ unipSym κ r ρ k := by
   obtain ⟨⟨h1, h2⟩, h3⟩ := hu
@@ -85,6 +99,9 @@ theorem unipSym_conj_of {κ : Type} [CommRing κ] {r : ℕ} (ρ k : ℕ) (d : Fi
   · rw [diagGL_conj_apply, h2, mul_one, Units.inv_mul]
   · rw [diagGL_conj_apply, h3 i j a b c, mul_zero, zero_mul]
 
+/- English proof (translation)
+Use `⟨unipSym_conj_of ρ k d, fun h => ?_⟩` and prove the remaining obligations. Establish `h'` using `unipSym_conj_of ρ k (fun i => (d i)⁻¹) h`. Rewrite `h'` using `[← diagGL_inv, inv_inv]`. Simplify `h'` using `[mul_assoc]`.
+-/
 theorem unipSym_conj_iff {κ : Type} [CommRing κ] {r : ℕ} (ρ k : ℕ) (d : Fin r → κˣ) (u : GL (Fin r) κ) :
     u ∈ unipSym κ r ρ k ↔ (diagGL d)⁻¹ * u * diagGL d ∈ unipSym κ r ρ k := by
   refine ⟨unipSym_conj_of ρ k d, fun h => ?_⟩

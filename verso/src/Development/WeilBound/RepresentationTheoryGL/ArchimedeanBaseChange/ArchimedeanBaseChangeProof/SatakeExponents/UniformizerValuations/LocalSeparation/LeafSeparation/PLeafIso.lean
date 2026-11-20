@@ -11,6 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace PositivityTheory.Rg.BcB.F.RS.Leaf
 
+/- English proof (translation)
+Introduce `E _ _ _ N V w σ hV hσ`. Conclude with `(PositivityTheory.Rg.Rs.SatakeVectors.SatakeVectorEventually.iSup_range_eq hV w σ hσ).ge`.
+-/
 theorem leafIso_of : LeafIso := by
   intro E _ _ _ N V w σ hV hσ
   exact (PositivityTheory.Rg.Rs.SatakeVectors.SatakeVectorEventually.iSup_range_eq hV w σ hσ).ge

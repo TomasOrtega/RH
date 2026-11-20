@@ -35,6 +35,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open GlobalTheory.Mem.Col2.MemChart
 attribute [local instance] GlobalTheory.Mem.Col2.starE
 
+/- English proof (translation)
+Establish `hPr` using `(base_fields_primes_ok B X).2.1`. Take `⟨b, hb⟩` from `(ColIn.mem_SQ (I := I)).1 hP`. Establish `hT` using `GlobalTheory.Mem.Col2.ChEx.T_notMem_qv I hI hPr u b ⟨P, hb⟩`. Conclude with `GlobalTheory.Mem.Col2.TopPtModel.adAt_of_prV P ((kStd_spec hPr u n).2.1 _ hT)`.
+-/
 theorem kStd_at_SQ {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (u : B.Word) (n : ℕ) (P : HeightOneSpectrum (𝓞 B.host.E))
     (hP : P ∈ I.SQ) : (kStd X u n).1.map (adAt B.host.F P) = 1 := by
   have hPr := (base_fields_primes_ok B X).2.1
@@ -49,6 +52,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open GlobalTheory.Mem.Col2.MemChart
 attribute [local instance] GlobalTheory.Mem.Col2.starE
 
+/- English proof (translation)
+Establish `hPr` using `(base_fields_primes_ok B X).2.1`. Use `haveI : NeZero (B.R.N i) := ⟨(B.R.N_pos i).ne'⟩`. Take `⟨⟨p, hp, -⟩, -, -⟩` from `kStd_spec hPr u (B.R.N i)`. Use `GlobalTheory.Mem.Col2.RatFrPt.exists_isPtOf_of_rat B.sp.cm _ _ _ _ hp.uni fun P hP => ⟨1, fun r s => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (kStd_at_SQ I hI u (B.R.N i) P (ColIn.Q_subset_SQ (I := I) a hP)) r) s`.
+
+Rewrite `h` using `[Matrix.map_apply]`. Rewrite using `[h, Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem kStd_pt {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (u : B.Word) (a : I.ι) (i : ℕ) :
     ∃ q : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u i, TC.PtOf (kStd X u (B.R.N i)) q := by
   have hPr := (base_fields_primes_ok B X).2.1
@@ -89,6 +97,21 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hPr` using `l.pr`. Establish `hX` using `GlobalTheory.Mem.FieldsLaws.fields_ok B`. Establish `hi : 0 ≤ B.R.m` using `Nat.zero_le _`. Take `⟨hg, -, hl⟩` from `(GlobalTheory.T.trueColumn_spaces_standard_in_frameCoords I hI hP l Z).2.2.2 0 hi`. Establish `hf : B.fields.f = B.R.f` using `(hPr.vT_card u).symm.trans (l.lev u I.mu0).card_ST`.
+
+Establish `hL` using `hI.idx_ok a`. Set `chOf : (I.stp u a 0).Cl → Unit` to `fun _ => ()`. Take `⟨lev, Y, SI, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `chart_exists (F := B.host.F) (E := B.host.E) B.sp.cm (B.R.N 0) (fun w => (colLev I.Ch 0 w).H) (f := B.R.f) (basePi_of_ok hX hPr u) (hPr.piT_norm u) (rls_vT_iff hX hPr u) (fun P hP => (hPr.vT_norm u P hP : Ideal.absNorm P.asIdeal = B.T u)) (rls_T_notUnder hPr u) (hf ▸ colBase_inde …`. Take `⟨k1, k2, k3⟩` from `kStd_spec hPr u (B.R.N 0)`. Use `letI := StepZero.idxUnique hL`.
+
+Take `⟨q₀, -⟩` from `exists_ptAt (R := B.R) I.sel (I.tup a) (I.cst a) (u := u) (j := 0) (DecoF.base _ _ _ _ _)`. Establish `hm` using `B.R.two_le_m`. Use `⟨Unit, inferInstance, badG (I.rec7 l Z), chOf, fun _ _ => ⟨lev, Y, h1, h2, SI, h3, h4⟩, fun _ => kStd X u (B.R.N 0), fun _ => ⟨fun c c' => ⟨fun _ => ⟨Subsingleton.elim _ _, cos0 I _ _⟩, fun _ => rfl⟩, fun _ => ⟨(I.stp u a 0).cl default q₀, rfl⟩, fun β x => ?_, fun _ => k1, fun _ …` and prove the remaining obligations. Conclude with `(h5 ▸ Iff.rfl : x ∈ lev.Lb ↔ x ∈ baseLb B.fields.E (B.R.N 0) ((B.primes X).vT u)).trans (mem_baseLb hPr u _ x)`. Establish `e` using `h8 ⟨c, rfl⟩ show PtOf ((Y ⟨c, rfl⟩).1 * kStd X u (B.R.N 0)) _`.
+
+Rewrite using `[e]`. Conclude with `yT_spec I hI u a c`. Establish `e` using `h8 ⟨c, rfl⟩ replace h : PtOf (yT I u a c * x * kStd X u (B.R.N 0)) q := e ▸ h`. Conclude with `(h6 ▸ Iff.rfl : x ∈ lev.U ↔ x ∈ levU (F := B.host.F) B.sp.cm (B.R.N 0) ((B.primes X).vT u) (B.primes X).vGs (colLev I.Ch 0).grp).trans (lev0 I hI hPr u a c x q h)`. Establish `e` using `h8 ⟨c, rfl⟩`.
+
+Establish `hx : (id x.1 : GA B (B.R.N 0)) ∈ levU (F` using `B.host.F) B.sp.cm (B.R.N 0) ((B.primes X).vT u) (B.primes X).vGs (colLev I.Ch 0).grp := h6 ▸ x.2`. Use `(congrArg Units.val (h7 x hx)).trans ?_` and prove the remaining obligations. Conclude with `chr0 I hI hPr u a c x.1 hx κ hκ (e ▸ h)`. Take `⟨m, hm, hc⟩` from `GlobalTheory.Mem.Col2.TopCh.levFam_chr_exp (colLev I.Ch 0)`. Use `⟨m, hm, fun κ => ?_⟩` and prove the remaining obligations.
+
+Use `show lev.chi κ ^ m = 1`. Establish `hx : (id κ.1 : GA B (B.R.N 0)) ∈ levU (F` using `B.host.F) B.sp.cm (B.R.N 0) ((B.primes X).vT u) (B.primes X).vGs (colLev I.Ch 0).grp := h6 ▸ κ.2`. Establish `e1 : ∀ z, (((Units.map B.embLL.toMonoidHom).comp (colLev I.Ch 0).chr) z) ^ m = 1` using `fun z => by`. Rewrite using `[← map_pow]`. Use `show Units.map B.embLL.toMonoidHom ((colLev I.Ch 0).chr (z ^ m)) = 1`.
+
+Rewrite using `[map_pow, hc, map_one]`. Rewrite using `[h7 κ hx, levTyp, MonoidHom.inv_apply, inv_pow, levChr, MonoidHom.comp_apply]`. Conclude with `(congrArg (fun t => t⁻¹) (e1 _)).trans inv_one`.
+-/
 theorem stepCh_zero {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) : StepCh I l Z u a 0 := by
   have hPr := l.pr
@@ -148,6 +171,9 @@ theorem stepCh_zero {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP :
 
 end S0
 
+/- English proof (translation)
+Conclude with `GlobalTheory.T.lastStepChartBasePoint_carries_stdPoint I hI hP l Z u a chOf Lb U chi y st k hR htop β`.
+-/
 theorem topBaseOk {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) {C : Type} (chOf : (I.stp u a B.R.m).Cl → C) (Lb : C → Submodule (𝓞 B.host.E) (Fin (B.R.N B.R.m) → B.host.E))
     (U : C → Subgroup (TC.GA B (B.R.N B.R.m))) (chi : ∀ β, U β →* ℂˣ) (y : (I.stp u a B.R.m).Cl → TC.GA B (B.R.N B.R.m))
@@ -162,6 +188,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hPr` using `l.pr`. Set `Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))` to `(I.Q a).image (fun P => P.under (𝓞 B.host.F))`. Establish `hQ : ∀ v, v ∈ Q ↔ I.UnderQ a v` using `fun v => Finset.mem_image`. Take `⟨k1, k2, k3⟩` from `kStd_spec hPr u (B.R.N i)`. Establish `hk : GlobalTheory.Mem.Col2.TC.ChTw.AdmK I u a i (fun _ : GlobalTheory.Mem.Col2.TC.ChTw.Chart I u a i => kStd X u (B.R.N i))` using `⟨fun _ => k1, fun _ v hv _ _ => k2 v hv, fun _ => k3⟩`.
+
+Take `⟨K, hK, hfin⟩` from `GlobalTheory.Mem.Col2.ChExM.exists_charts I hI hP l Z u a Q i h2.le h1 h2 hQ _ hk`. Use `haveI := GlobalTheory.Mem.Col2.TC.ChTw.finite_chart I l u a i`. Conclude with `⟨GlobalTheory.Mem.Col2.TC.ChTw.Chart I u a i, Fintype.ofFinite _, badQ (I.rec7 l Z) Q, GlobalTheory.Mem.Col2.TC.ChTw.chartOf I u a i, fun _ => K, fun _ => kStd X u (B.R.N i), fun _ => hK, fun _ => hfin, fun _ _ => ⟨kStd_pt I hI u a i, fun P hP _ => kStd_at_SQ I hI u _ P hP⟩, fun …`.
+-/
 theorem stepCh_mid {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) (i : ℕ) (h1 : 1 ≤ i) (h2 : i < B.R.m) : StepCh I l Z u a i := by
   classical
@@ -180,6 +211,11 @@ theorem stepCh_mid {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Set `Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))` to `(I.Q a).image (fun P => P.under (𝓞 B.host.F))`. Establish `hQ : ∀ v, v ∈ Q ↔ I.UnderQ a v` using `fun v => Finset.mem_image`. Take `⟨Ch0, _, chOf0, K0, h1, -, h3⟩` from `GlobalTheory.Mem.Col2.MemChart.exists_charts I hI hP l Z u B.R.m le_rfl`. Set `β0 : Ch0` to `(h3 (Or.inr rfl)).some.default`. Establish `hβ0 : ∀ c, chOf0 c = β0` using `fun c => (h3 (Or.inr rfl)).some.uniq _`.
+
+Take `⟨K1, ⟨k, hk, htop⟩, -, -, hfin, -⟩` from `GlobalTheory.Mem.Col2.TC.chart_twm I hI hP l Z u a Q (GlobalTheory.Mem.FormSym.clsOfChart β0 hβ0 (K0 β0)) hQ (GlobalTheory.Mem.FormSym.readsK_one I l Z h1 β0 hβ0)`. Establish `hm` using `B.R.two_le_m`. Conclude with `⟨Unit, inferInstance, badQ (I.rec7 l Z) Q, fun _ => (), fun _ => K1, k, fun _ => hk, fun _ _ => hfin, fun _ β => topBaseOk I hI hP l Z u a _ _ _ _ _ _ k hk htop β, fun _ v hv => hv.imp id (hQ v).1, fun _ => ⟨inferInstance⟩, fun h β => by show I.TopPt l Z u a (k β)`. Conclude with `htop β, fun h => absurd h (lt_irrefl _)⟩`.
+-/
 theorem stepCh_top {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) : StepCh I l Z u a B.R.m := by
   classical
@@ -198,6 +234,9 @@ theorem stepCh_top {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : 
       show I.TopPt l Z u a (k β)
       exact htop β, fun h => absurd h (lt_irrefl _)⟩
 
+/- English proof (translation)
+Establish `h` using `(l.ch u a).step i`. Use `haveI : Finite (I.stp u a i).Cl := @Finite.instSigma _ _ inferInstance h.fin_orb`. Conclude with `⟨(I.stp u a i).Cl, Fintype.ofFinite _, ∅, id, fun h' => absurd h' (by omega), fun _ => 1, fun h' => absurd h' (by omega), fun h' => absurd h' (by omega), fun h' => absurd h' (by omega), fun h' => absurd h' (by omega), fun h' => absurd h' (by omega), fun h' => absurd h' (by omega) …`.
+-/
 theorem stepCh_above {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) (i : ℕ) (hi : B.R.m < i) : StepCh I l Z u a i := by
   classical
@@ -207,6 +246,11 @@ theorem stepCh_above {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z 
     fun h' => absurd h' (by omega), fun h' => absurd h' (by omega), fun h' => absurd h' (by omega),
     fun h' => absurd h' (by omega), fun h' => absurd h' (by omega), fun h' => absurd h' (by omega), fun h' => absurd h' (by omega)⟩
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos i with rfl | hpos` into its components or cases. Conclude with `stepCh_zero I hI hP l Z u a`. Break down `lt_trichotomy i B.R.m with h | rfl | h` into its components or cases. Conclude with `stepCh_mid I hI hP l Z u a i hpos h`. Conclude with `stepCh_top I hI hP l Z u a`.
+
+Conclude with `stepCh_above I l Z u a i h`.
+-/
 theorem stepCh_all {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) (i : ℕ) : StepCh I l Z u a i := by
   rcases Nat.eq_zero_or_pos i with rfl | hpos
@@ -218,12 +262,18 @@ theorem stepCh_all {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : 
 
 end SMid
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_adelicUnitaryLift_of_chartBasePoint I hI hP l Z i hi k hk`.
+-/
 theorem liftKA {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (i : ℕ) (hi : i ≤ B.R.m) (k : TC.GA B (B.R.N i))
     (hk : ∃ p : Formalism.L2.Col.DecoF B.fields.E (B.R.N i) ∅ ∅ ∅, TC.PtOf k p ∧ p.deco.1.N = Formalism.L2.Col.stdLat B.fields.E (B.R.N i)) :
     ∃ kA : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X i), kA ∈ GfC _ ∧ finM _ (rankN (I.rec7 l Z) i hi) kA = k.1 :=
   GlobalTheory.T.exists_adelicUnitaryLift_of_chartBasePoint I hI hP l Z i hi k hk
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.chartLevelCharacterReps_on_adelicUnitaryPoints I l Z i hi K`.
+-/
 theorem levData {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (i : ℕ) (hi : i ≤ B.R.m)
     {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 B.host.F))} {cl : Type} {stab : cl → Type} [∀ c, Group (stab c)]
     {lat : cl → Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)} (K : LevelChart (I.rec7 l Z) T bad i hi stab lat) :
@@ -233,6 +283,9 @@ theorem levData {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.
       (∀ c, h c ∈ GfC _ ∧ finM _ (rankN (I.rec7 l Z) i hi) (h c) = (K.y c).1.1) :=
   GlobalTheory.T.chartLevelCharacterReps_on_adelicUnitaryPoints I l Z i hi K
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_stepPoint_of_chartBasePoint I hI hP u a i hi chOf Lb U chi y st k hR β hb.1 hb.2`.
+-/
 theorem pointOf {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ)
     (hi : i ≤ B.R.m) {C : Type} (chOf : (I.stp u a i).Cl → C) (Lb : C → Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E))
     (U : C → Subgroup (TC.GA B (B.R.N i))) (chi : ∀ β, U β →* ℂˣ) (y : (I.stp u a i).Cl → TC.GA B (B.R.N i))
@@ -245,6 +298,9 @@ theorem pointOf {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `choose kA hkA using fun β => liftKA I hI hP l Z i hi (k β) (hR.k_std β)`. Use `choose xr hxr using fun β => GlobalTheory.RecDict.exists_isDetRoot (I.rec7 l Z) _ (kA β)`. Use `choose b0 p0 hp1 hp2 hp3 using fun β => pointOf I hI hP l u a i hi chOf _ _ _ _ _ k hR β (hb β)`. Use `choose U chi h hU hchi hh using fun β => levData I l Z i hi (K β)`. Conclude with `⟨kA, xr, b0, p0, U, chi, h, fun β => ⟨(hkA β).1, (hkA β).2, hxr β⟩, fun β => ⟨hp1 β, hp2 β⟩, fun c => hp3 (chOf c) c rfl, hU, hchi, hh⟩`.
+-/
 theorem comp {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) {C : Type} {bad : Set (HeightOneSpectrum (𝓞 B.host.F))} (chOf : (I.stp u a i).Cl → C)
     (K : ∀ β : C, LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf c = β} => (I.chain l u a).stab i c.1)
@@ -285,6 +341,11 @@ def FullStep {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Lat
       (∀ β, ∃ n : ℕ, 0 < n ∧ ∀ κ, (K hi β).lev.chi κ ^ n = 1) ∧ (∀ v ∈ bad, v ∈ Formalism.L2.Forms.badG (I.rec7 l Z) ∨ I.UnderQ a v)) ∧
     (i = B.R.m → Nonempty (Unique C)) ∧ (∀ e : i = B.R.m, ∀ β, I.TopPt l Z u a (e ▸ k β)) ∧ (i < B.R.m → ∀ β, k β = TC.kStd X u (B.R.N i))
 
+/- English proof (translation)
+Distinguish the cases in `hi : i ≤ B.R.m`. Take `⟨C, hC, bad, chOf, K, k, hR, hF, hBO, hB, hU, hT, hS⟩` from `stepCh_all I hI hP l Z u a i`. Take `⟨kA, xr, b0, p0, U, chi, h, c1, c2, c3, c4, c5, c6⟩` from `comp I hI hP l Z u a i hi chOf (K hi) k (hR hi) (hBO hi)`. Conclude with `⟨C, hC, bad, chOf, K, k, kA, xr, b0, p0, U, chi, h, fun hi' => ⟨hR hi', c1, c2, c3, c4, c5, c6, hF hi', hB hi'⟩, hU, hT, hS⟩`. Establish `h'` using `(l.ch u a).step i haveI : Finite (I.stp u a i).Cl := @Finite.instSigma _ _ inferInstance h'.fin_orb`.
+
+Conclude with `⟨(I.stp u a i).Cl, Fintype.ofFinite _, ∅, id, fun h' => absurd h' hi, fun _ => 1, fun _ => 1, fun _ => 1, fun c => c.1, fun c => (I.stp u a i).rep c, fun _ => ⊥, fun _ => 1, fun _ _ => 1, fun h' => absurd h' hi, fun h' => absurd h' (by omega), fun h' => absurd h' (by omega), fun …`.
+-/
 theorem fullStep {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) (i : ℕ) : FullStep I l Z u a i := by
   classical
@@ -298,6 +359,11 @@ theorem fullStep {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC
       fun c => (I.stp u a i).rep c, fun _ => ⊥, fun _ => 1, fun _ _ => 1, fun h' => absurd h' hi, fun h' => absurd h' (by omega),
       fun h' => absurd h' (by omega), fun h' => absurd h' (by omega)⟩
 
+/- English proof (translation)
+Establish `hc : ∀ j : ℕ, ∃ c : (AE (I.rec7 l Z))ˣ →* Circle, ∀ h : j - 1 < B.R.m, 1 ≤ j → ChrEq c (I.C.mu0 ⟨j - 1, h⟩ * I.xi a)`. Introduce `j`. Distinguish the cases in `h : j - 1 < B.R.m`. Take `⟨c, hc⟩` from `GlobalTheory.CharTransport.exists_chrEq (I.rec7 l Z) (I.C.mu0 ⟨j - 1, h⟩ * I.xi a) ((I.C.isMu0 _).unitary.mul (GlobalTheory.Mem.Col2.ColIn.Ok.xi_unitary hI a))`. Conclude with `⟨c, fun _ _ => hc⟩`.
+
+Conclude with `⟨1, fun h' => absurd h' h⟩`. Use `choose chr hchr using hc`. Conclude with `⟨chr, fun j => hchr ((j : ℕ) + 1) (by simp) (by omega)⟩`.
+-/
 theorem exists_chr {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι) :
     ∃ chr : ℕ → ((AE (I.rec7 l Z))ˣ →* Circle), ∀ j : Fin B.R.m, ChrEq (chr ((j : ℕ) + 1)) (I.C.mu0 j * I.xi a) := by
   have hc : ∀ j : ℕ, ∃ c : (AE (I.rec7 l Z))ˣ →* Circle, ∀ h : j - 1 < B.R.m, 1 ≤ j → ChrEq c (I.C.mu0 ⟨j - 1, h⟩ * I.xi a) := by
@@ -310,6 +376,11 @@ theorem exists_chr {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I
   choose chr hchr using hc
   exact ⟨chr, fun j => hchr ((j : ℕ) + 1) (by simp) (by omega)⟩
 
+/- English proof (translation)
+Take `⟨hX, hPr, -⟩` from `GlobalTheory.Mem.Col2.base_fields_primes_ok B X`. Establish `bad` using `GlobalTheory.ThetaMove.BadPrimes.bad_primes B.fields (B.primes X) I.sel I.S (I.tup a) u hX hPr hI.sel_ok (hI.T_mem u) hI.g_mem`. Use `GlobalTheory.MuLift.exists_idemSum _ fun Q hQ Q' hQ' hc => ?_` and prove the remaining obligations. Establish `h1 : Q' = Formalism.DivisionValues.conjPl Q` using `GlobalTheory.GoodPrimes.isConjPl_iff.1 hc`. Establish `h2` using `(bad Q hQ).1`.
+
+Establish `h3 : Formalism.L2.Col.conjPrime₂ Q = Q'` using `(GlobalTheory.PlaceDict.conjP_eq_conjPl (I.rec7 l Z) Q).trans h1.symm`. Establish `h4 : @Formalism.L2.Col.conjPrime₂ B.fields.E B.fields.fieldE _ B.fields.starE Q = Q'` using `h3`. Conclude with `h2 (h4 ▸ hQ')`.
+-/
 theorem exists_idem {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) :
     ∃ e : AE (I.rec7 l Z), IsIdemSum e (Formalism.L2.Col.Sall (Pr := B.primes X) I.sel (I.tup a) u) := by
   obtain ⟨hX, hPr, -⟩ := GlobalTheory.Mem.Col2.base_fields_primes_ok B X
@@ -326,6 +397,9 @@ end GlobalTheory.AdForm.TupEx
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a`. Use `choose C hC bad chOf K k kA xr b0 p0 U chi h hS hU hT hStd using fun i => GlobalTheory.AdForm.TupEx.fullStep I hI hP l Z u a i`. Take `⟨chr, hchr⟩` from `GlobalTheory.AdForm.TupEx.exists_chr I hI l Z a`. Take `⟨e, he⟩` from `GlobalTheory.AdForm.TupEx.exists_idem I hI l Z u a`. Use `⟨C, hC, ⟨bad, chOf, K, k, kA, xr, b0, p0, U, chi, h, chr, e⟩, ⟨fun i hi => (hS i hi).1, fun β => hT B.R.m rfl β, fun i hi β => (hS i hi).2.1 β, fun i hi β => (hS i hi).2.2.1 β, fun i hi c => (hS i hi).2.2.2.1 c, fun i hi β g => (hS i hi).2.2.2.2.1 β g, fun i hi β g κ hκ => (hS i …` and prove the remaining obligations.
+-/
 theorem GlobalTheory.AdForm.exists_twDat : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι), ∃ (Ch : ℕ → Type) (_ : ∀ i, Fintype (Ch i)) (A : TwDat I l Z u a Ch), A.Is ∧ Nonempty (Unique (Ch B.R.m)) ∧ ∀ i, i < B.R.m → ∀ β, A.kb i β = TC.kStd X u (B.R.N i) := by
   intro B X I hI hP l Z u a
   choose C hC bad chOf K k kA xr b0 p0 U chi h hS hU hT hStd using fun i => GlobalTheory.AdForm.TupEx.fullStep I hI hP l Z u a i

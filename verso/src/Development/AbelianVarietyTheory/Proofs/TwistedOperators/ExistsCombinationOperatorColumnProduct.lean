@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.LocAsm
 
+/- English proof (translation)
+Establish `hfun : (fun x => a (Function.update u j x) (Function.update u j x j) * R (Function.update u j x)) = R u • a u`. Use function extensionality and compare the values at `x`. Rewrite using `[ha, hR, Function.update_self, Pi.smul_apply, smul_eq_mul, mul_comm]`. Rewrite using `[hfun, map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+-/
 private theorem B_update_mul_eq_mul {X : ℕ → Type} (B : ∀ j, (X j → ℂ) →ₗ[ℂ] (X j → ℂ)) (j : ℕ)
     (a : (∀ i, X i) → X j → ℂ) (R : (∀ i, X i) → ℂ)
     (ha : ∀ u x, a (Function.update u j x) = a u) (hR : ∀ u x, R (Function.update u j x) = R u)
@@ -26,6 +29,31 @@ private theorem B_update_mul_eq_mul {X : ℕ → Type} (B : ∀ j, (X j → ℂ)
     rw [ha, hR, Function.update_self, Pi.smul_apply, smul_eq_mul, mul_comm]
   rw [hfun, map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Set `op : ∀ j, ((∀ i, X i) → ℂ) →ₗ[ℂ] ((∀ i, X i) → ℂ)` to `fun j => { toFun := fun F u => A j (fun x => F (Function.update u j x)) (u j) map_add' := fun F G => by`. Use function extensionality and compare the values at `u`. Establish `e : (fun x => (F + G) (Function.update u j x)) = (fun x => F (Function.update u j x)) + (fun x => G (Function.update u j x))` using `rfl`. Rewrite using `[e, map_add]`. Both sides reduce to the same expression.
+
+Use the proof step `map_smul' := fun c F => by`. Use function extensionality and compare the values at `u`. Establish `e : (fun x => (c • F) (Function.update u j x)) = c • (fun x => F (Function.update u j x))` using `rfl`. Rewrite using `[e, map_smul]`. Use `rfl }`.
+
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨LinearMap.id, fun C g _ => by simp⟩`. Consider the case `succ n ih`. Take `⟨T, hT⟩` from `ih`. Use `⟨T ∘ₗ op (2 * n) ∘ₗ op (2 * n + 1), fun C g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨R, hRR⟩ : ∃ R : (∀ j, X j) → ℂ, R = fun u => (∏ k ∈ Finset.range n, C (2 * k) (u (2 * k)) (u (2 * k + 1))) * g u` from `⟨_, rfl⟩`. Establish `hR : ∀ j, 2 * n ≤ j → j < 2 * n + 2 → ∀ (u : ∀ i, X i) x, R (Function.update u j x) = R u`. Introduce `j hj1 hj2 u x`. Substitute `hRR` using the available equality. Simplify using `only`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk'` using `Finset.mem_range.mp hk`. Rewrite using `[Function.update_of_ne (by omega), Function.update_of_ne (by omega)]`. Conclude with `hg _ _ fun i hi => Function.update_of_ne (by omega) _ _`.
+
+Take `⟨g', hgG⟩ : ∃ g' : (∀ j, X j) → ℂ, g' = fun u => A (2 * n) (fun x => A (2 * n + 1) (C (2 * n) x) (u (2 * n + 1))) (u (2 * n)) * g u` from `⟨_, rfl⟩`. Establish `hg' : ∀ u u' : ∀ j, X j, (∀ j, 2 * n ≤ j → u j = u' j) → g' u = g' u'`. Introduce `u u' h`. Substitute `hgG` using the available equality. Simplify using `only`.
+
+Rewrite using `[h (2 * n) le_rfl, h (2 * n + 1) (by omega), hg u u' fun j hj => h j (by omega)]`. Establish `h1 : op (2 * n + 1) (fun u => (∏ k ∈ Finset.range (n + 1), C (2 * k) (u (2 * k)) (u (2 * k + 1))) * g u) = fun u => A (2 * n + 1) (C (2 * n) (u (2 * n))) (u (2 * n + 1)) * R u`. Establish `hF : (fun u => (∏ k ∈ Finset.range (n + 1), C (2 * k) (u (2 * k)) (u (2 * k + 1))) * g u) = fun u => (fun w : ∀ j, X j => C (2 * n) (w (2 * n))) u (u (2 * n + 1)) * R u`. Use function extensionality and compare the values at `u`. Substitute `hRR` using the available equality.
+
+Simplify using `only [Finset.prod_range_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hF]`. Use function extensionality and compare the values at `v`. Use `B_update_mul_eq_mul A (2 * n + 1) (fun w => C (2 * n) (w (2 * n))) R ?_ (hR _ (by omega) (by omega)) v` and prove the remaining obligations.
+
+Introduce `w x`. Use `show C (2 * n) (Function.update w (2 * n + 1) x (2 * n)) = C (2 * n) (w (2 * n))`. Rewrite using `[Function.update_of_ne (by omega)]`. Establish `h2 : op (2 * n) (fun u => A (2 * n + 1) (C (2 * n) (u (2 * n))) (u (2 * n + 1)) * R u) = fun u => (∏ k ∈ Finset.range n, C (2 * k) (u (2 * k)) (u (2 * k + 1))) * g' u`. Use function extensionality and compare the values at `v`.
+
+Establish `e` using `B_update_mul_eq_mul A (2 * n) (fun w x => A (2 * n + 1) (C (2 * n) x) (w (2 * n + 1))) R (fun w y => by`. Use function extensionality and compare the values at `x`. Use `show A (2 * n + 1) (C (2 * n) x) (Function.update w (2 * n) y (2 * n + 1)) = A (2 * n + 1) (C (2 * n) x) (w (2 * n + 1))`. Rewrite using `[Function.update_of_ne (by omega)])`. Use the proof step `(hR _ le_rfl (by omega)) v`.
+
+Use `e.trans ?_` and prove the remaining obligations. Substitute `hRR hgG` using the available equality. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, h1, h2, ← hT C g' hg']`.
+
+Use function extensionality and compare the values at `u`. Substitute `hgG` using the available equality. Simplify using `only [Finset.prod_range_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_prod_op {X : ℕ → Type} (A : ∀ j, (X j → ℂ) →ₗ[ℂ] (X j → ℂ)) (n : ℕ) :
     ∃ Tc : ((∀ j, X j) → ℂ) →ₗ[ℂ] ((∀ j, X j) → ℂ), ∀ (C : ∀ j, X j → X (j + 1) → ℂ) (g : (∀ j, X j) → ℂ),
       (∀ u u' : ∀ j, X j, (∀ j, 2 * n ≤ j → u j = u' j) → g u = g u') →
@@ -120,6 +148,9 @@ noncomputable def combLin {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D
     simp only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, fun D _ _ _ Γ _ _ Pl0 T A Ks _ _ _ R _ _ ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `c`. Take `⟨Tc, hTc⟩` from `exists_prod_op (X := fun j => WO (ch.G.V (.top j)) (ch.G.V (.top (j + 1)))) (fun j => combLin ch.W.ψ _ _ (c.1 j)) (D.R.m / 2)`. Use `⟨Tc, fun C => ?_⟩` and prove the remaining obligations. Conclude with `hTc C (fun _ => ∏ i, (1 : SchRow ch.G) i ((0 : RowPt ch.G) i)) fun _ _ _ => rfl`.
+-/
 theorem exists_comb_op : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ c : Combs ch.G, ∃ Tc : (ColPt ch.G → ℂ) →ₗ[ℂ] (ColPt ch.G → ℂ), ∀ C : BiFam ch.G, (fun u => evT (combC ch.W c C) 1 u 0) = Tc (fun u => evT C 1 u 0) := by
   refine ⟨0, fun _ _ _ => ⟨0, fun D _ _ _ Γ _ _ Pl0 T A Ks _ _ _ R _ _ ch _ _ => ?_⟩⟩
   intro c

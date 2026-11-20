@@ -16,6 +16,9 @@ def ClosureEtaleAt (A R D : Type) [CommRing A] [CommRing R] [Algebra A R] [CommR
   Algebra.Etale (Localization.AtPrime P)
     (TensorProduct R (Localization.AtPrime P) (GlobalTheory.KeyOriginNoeth.closure A R D))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem good_iff_etaleAt (A R D : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing D]
     [Algebra (GlobalTheory.LocAcyc.GenFib A R) D] (ρ : R →+* A) :
     GlobalTheory.KeyOriginNoeth.Good A R D ρ ↔

@@ -15,6 +15,11 @@ open PositivityTheory.Rg.BcB.SpectralAccumulation PositivityTheory.Rg.BcB.E
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `GlobalTheory.DiscSMO.mem_Sm_of_one fun x => ?_` and prove the remaining obligations. Establish `h0 : oneL E N ∈ invSet E N`. Use `val_mem_invSet (E := E) (1 : GL (Fin N) (Cinf E))` as an intermediate fact. Rewrite `this` using `[Units.val_one]`. Then use the resulting hypothesis. Use `((contDiffAt_chart hf x h0).mul (contDiffAt_chart hg x h0)).congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [isOpen_invSet.mem_nhds h0] with y hy`. Take `⟨u, hu⟩` from `hy`. Establish `hy' : y = toL (u : GL (Fin N) (Cinf E)).val` using `by rw [hu]; rfl`. Rewrite using `[hy', chart_val, chart_val, chart_val]`.
+-/
 theorem mul_mem_Sm' {N : ℕ} {f g : GA E N → ℂ} (hf : f ∈ Sm E N) (hg : g ∈ Sm E N) :
     (fun x => f x * g x) ∈ Sm E N := by
   refine GlobalTheory.DiscSMO.mem_Sm_of_one fun x => ?_
@@ -27,24 +32,41 @@ theorem mul_mem_Sm' {N : ℕ} {f g : GA E N → ℂ} (hf : f ∈ Sm E N) (hg : g
   have hy' : y = toL (u : GL (Fin N) (Cinf E)).val := by rw [hu]; rfl
   rw [hy', chart_val, chart_val, chart_val]
 
+/- English proof (translation)
+Proceed by induction on `b generalizing γ with`. Consider the case `leaf V z => exact GlobalTheory.T.flat_absolute_character _ _`. Consider the case `node t₁ t₂ ih₁ ih₂ => exact GlobalTheory.T.flat_node_function _ _ (ih₁ _) (ih₂ _)`.
+-/
 theorem mult_flat {N : ℕ} (b : Tr E N) (γ : ℕ → ℂ) : GlobalTheory.CompanionTheory.LimV.FlatFn (mult b γ) := by
   induction b generalizing γ with
   | leaf V z => exact GlobalTheory.T.flat_absolute_character _ _
   | node t₁ t₂ ih₁ ih₂ => exact GlobalTheory.T.flat_node_function _ _ (ih₁ _) (ih₂ _)
 
+/- English proof (translation)
+The claim follows from `(mult_flat b γ).rinv x k c hc`.
+-/
 theorem mult_rinv {N : ℕ} (b : Tr E N) (γ : ℕ → ℂ) (x : GA E N) (k : Kinf E N) {c : GL (Fin N) (Af E)}
     (hc : c ∈ Cint E N) : mult b γ (x * InducedTensorMap.cf N k c) = mult b γ x :=
   (mult_flat b γ).rinv x k c hc
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.node_function_levi_decomposition _ _ (mult_flat _ _) (mult_flat _ _) u m k c hc`.
+-/
 theorem mult_node {r s : ℕ} (t₁ : Tr E r) (t₂ : Tr E s) (γ : ℕ → ℂ) (u : BlockIx (r + s) r → Ad E)
     (m : GA E r × GA E s) (k : Kinf E (r + s)) {c : GL (Fin (r + s)) (Af E)} (hc : c ∈ Cint E (r + s)) :
     mult (Tr.node t₁ t₂) γ (unip u * lev (Ad E) r s m * InducedTensorMap.cf (r + s) k c) =
       mult t₁ γ m.1 * mult t₂ (fun i => γ (i + t₁.twists.length)) m.2 :=
   GlobalTheory.T.node_function_levi_decomposition _ _ (mult_flat _ _) (mult_flat _ _) u m k c hc
 
+/- English proof (translation)
+The claim follows from `(mult_flat b γ).ne x`.
+-/
 theorem mult_ne {N : ℕ} (b : Tr E N) (γ : ℕ → ℂ) (x : GA E N) : mult b γ x ≠ 0 :=
   (mult_flat b γ).ne x
 
+/- English proof (translation)
+Proceed by induction on `b generalizing γ with`. Consider the case `leaf V z => exact GlobalTheory.T.tendsto_absolute_character_one _ x (fun k => γ k 0) (hγ 0)`. Consider the case `node t₁ t₂ ih₁ ih₂`. Establish `h` using `(ih₁ γ hγ (GlobalTheory.CompanionTheory.LimV.leviOf x).1).mul (ih₂ (fun k i => γ k (i + t₁.twists.length)) (fun i => hγ _) (GlobalTheory.CompanionTheory.LimV.leviOf x).2)`. Rewrite `h` using `[one_mul]`.
+
+Conclude with `h`.
+-/
 theorem mult_tendsto {N : ℕ} (b : Tr E N) (γ : ℕ → ℕ → ℂ) (hγ : ∀ i, Tendsto (fun k => γ k i) atTop (𝓝 0))
     (x : GA E N) : Tendsto (fun k => mult b (γ k) x) atTop (𝓝 1) := by
   induction b generalizing γ with
@@ -55,6 +77,9 @@ theorem mult_tendsto {N : ℕ} (b : Tr E N) (γ : ℕ → ℕ → ℂ) (hγ : �
     rw [one_mul] at h
     exact h
 
+/- English proof (translation)
+The claim follows from `(mult_flat b γ).sm`.
+-/
 theorem mult_mem_Sm {N : ℕ} (b : Tr E N) (γ : ℕ → ℂ) : mult b γ ∈ Sm E N :=
   (mult_flat b γ).sm
 

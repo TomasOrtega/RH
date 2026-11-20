@@ -13,11 +13,23 @@ namespace LocalIsomorphism
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finRep_eq_act (h : GL (Fin N) (Af E)) (φ : Sm E N) : finRep E N h φ = act (.fin h) φ := by
   rfl
 
 end LocalIsomorphism
 
+/- English proof (translation)
+Introduce `E _ _ _ N V V' hV w σ hσ`. Take `⟨f, hf0, hfV, hfeq⟩` from `hσ`. Take `⟨T, hT⟩` from `hV`. Use `⟨(Submodule.subtype V').comp ((T : V →ₗ[ℂ] V').comp (f.codRestrict V hfV)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun h0 v`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply, Submodule.coe_subtype, ZeroMemClass.coe_eq_zero, LinearEquiv.coe_coe] at h1`. Establish `h2 : f.codRestrict V hfV v = 0`.
+
+Simplify using `using (T.map_eq_zero_iff).1 h1`. Simplify `congrArg Subtype.val h2` using `[LinearMap.codRestrict]`. Introduce `v`. Conclude with `(T _).2`. Introduce `g v`.
+
+Establish `key` using `hT (.fin (locGL E N w g)) (f.codRestrict V hfV v) (f.codRestrict V hfV (σ.ρ g v)) (by simp only [LinearMap.codRestrict_apply]; rw [hfeq, LocalIsomorphism.finRep_eq_act])`. Simplify using `only [LinearMap.comp_apply, Submodule.coe_subtype, LinearEquiv.coe_coe]`. Rewrite using `[key, LocalIsomorphism.finRep_eq_act]`.
+-/
 theorem LocIso_holds : LocIso := by
   intro E _ _ _ N V V' hV w σ hσ
   obtain ⟨f, hf0, hfV, hfeq⟩ := hσ

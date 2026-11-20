@@ -31,6 +31,13 @@ noncomputable def UpperTheory.Reformulated.B.Qk20.kap :
     fun {k r : ℕ} (Y : UpperTheory.Reformulated.B.Qk20.Mat k r) ↦
       ((1 : UpperTheory.Reformulated.B.Qk20.Mat k r) + Y) * ((1 : UpperTheory.Reformulated.B.Qk20.Mat k r) - Y)⁻¹
 
+/- English proof (translation)
+Establish `key : (1 + Y).conjTranspose * H * (1 + Y) = (1 - Y).conjTranspose * H * (1 - Y)`. Establish `h' : Y.conjTranspose * H = -(H * Y)` using `eq_neg_of_add_eq_zero_left h`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_sub, Matrix.conjTranspose_one, add_mul, sub_mul, one_mul, h']`. Use `noncomm_ring`. Establish `hinv : (1 - Y) * (1 - Y)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ((1 - Y) * (1 - Y)⁻¹).conjTranspose * H * ((1 - Y) * (1 - Y)⁻¹) := by`. Rewrite using `[key, Matrix.conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [hinv, Matrix.conjTranspose_one, one_mul, mul_one]`.
+-/
 private theorem UpperTheory.Reformulated.B.Qk20.cayley_transform_preserves_form {n : Type} [Fintype n] [DecidableEq n]
     (H Y : Matrix n n ℂ) (h : Y.conjTranspose * H + H * Y = 0) (hu : IsUnit (1 - Y).det) :
     ((1 + Y) * (1 - Y)⁻¹).conjTranspose * H * ((1 + Y) * (1 - Y)⁻¹) = H := by
@@ -47,6 +54,9 @@ private theorem UpperTheory.Reformulated.B.Qk20.cayley_transform_preserves_form 
         rw [key, Matrix.conjTranspose_mul]; simp only [Matrix.mul_assoc]
     _ = H := by rw [hinv, Matrix.conjTranspose_one, one_mul, mul_one]
 
+/- English proof (translation)
+Introduce `k r Y h hu`. Conclude with `UpperTheory.Reformulated.B.Qk20.cayley_transform_preserves_form (UpperTheory.Reformulated.B.Qk20.Hpk k r) Y h hu`.
+-/
 theorem UpperTheory.Reformulated.B.Qk20.kap_mem :
     ∀ {k r : ℕ} {Y : UpperTheory.Reformulated.B.Qk20.Mat k r},
       UpperTheory.Reformulated.B.Qk20.inLie k r Y →

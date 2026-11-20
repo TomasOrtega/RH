@@ -18,6 +18,9 @@ variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing 
 abbrev mkW (l : ℕ) [Fact l.Prime] (k : Type) [Field k] (m : ℕ) : WittVector l k →+* Wc.Wm l k m :=
   Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ m})
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ = (⊥ : Ideal T.obj.B) ⊔ _`. Rewrite using `[bot_sup_eq]`. Both sides reduce to the same expression.
+-/
 theorem span_eq (m : ℕ) (𝒱 : Set X.Opens) (c : WittVector l k) (T : (stF q ρ m 𝒱).FullSubcategory) :
     ((IdF.span (sV q ρ m 𝒱).A c).S T : Ideal T.obj.B) = (stdI (stF q ρ m 𝒱) none (mkW l k m c)).S T := by
   change _ = (⊥ : Ideal T.obj.B) ⊔ _
@@ -46,6 +49,11 @@ def scQ (m : ℕ) (𝒱 : Set X.Opens) (c : WittVector l k) :
     refine Subtype.ext ?_
     rfl
 
+/- English proof (translation)
+Use `idM_bij (scQ q ρ m 𝒱 c).τ (scQ q ρ m 𝒱 c).nat (fun T => ⟨?_, ?_⟩) j` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩ ⟨y, hy⟩ h`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `e : Ideal.Quotient.mk ((stdI (stF q ρ m 𝒱) none (mkW l k m c)).S T) (show T.obj.B from a) = Ideal.Quotient.mk _ (show T.obj.B from b)` using `congrArg Subtype.val h`.
+
+Conclude with `Subtype.ext (Ideal.Quotient.eq.2 ((span_eq q ρ m 𝒱 c T).ge (Ideal.Quotient.eq.1 e)))`. Introduce and unpack `⟨z, hz⟩`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `⟨⟨Ideal.Quotient.mk _ a, Ideal.mem_map_of_mem _ trivial⟩, Subtype.ext rfl⟩`.
+-/
 theorem scQ_bij (m : ℕ) (𝒱 : Set X.Opens) (c : WittVector l k) (j : ℕ) :
     Function.Bijective ((scQ q ρ m 𝒱 c).pull j) := by
   refine idM_bij (scQ q ρ m 𝒱 c).τ (scQ q ρ m 𝒱 c).nat (fun T => ⟨?_, ?_⟩) j
@@ -59,9 +67,21 @@ theorem scQ_bij (m : ℕ) (𝒱 : Set X.Opens) (c : WittVector l k) (j : ℕ) :
     obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective z
     exact ⟨⟨Ideal.Quotient.mk _ a, Ideal.mem_map_of_mem _ trivial⟩, Subtype.ext rfl⟩
 
+/- English proof (translation)
+Introduce `T hT` and use `⟨hT.1, ⊤, rfl, inU_top T⟩`.
+-/
 theorem st_le_top (m : ℕ) (𝒱 : Set X.Opens) : stF q ρ m 𝒱 ≤ stF q ρ m {⊤} :=
   fun T hT => ⟨hT.1, ⊤, rfl, inU_top T⟩
 
+/- English proof (translation)
+Establish `hle` using `st_le_top q ρ m 𝒱`. Establish `hz` using `(GlobalTheory.CompanionTheory.ZarCosieve.main (γ := Wc.pd l k m) (p := l) (q := q) (κ := (Wc.res l k m).comp ρ) FlatT (Or.inr ⟨(Fact.out : l.Prime).ne_zero, Or.inr rfl⟩) 𝒱 (stF q ρ m {⊤}) hle (fun T hT => ⟨hT.1, _, rfl, by rw [hU]; exact inU_top T⟩) (fun _ T' _ _ hT' => ⟨hT', ⊤, …`. Establish `t0` using `sqLe_bij (b := stdI (stF q ρ m {⊤}) none c) (b' := stdI (stF q ρ m {⊤}) none c) (std0 (stF q ρ m {⊤})) (fun _ => rfl) j`. Establish `t1` using `sqLe_bij (b := stdI (stF q ρ m 𝒱) none c) (b' := stdI (stF q ρ m 𝒱) none c) (std0 (stF q ρ m 𝒱)) (fun _ => rfl) j`. Use `(Function.Bijective.of_comp_iff' t1 _).1 ?_` and prove the remaining obligations.
+
+Establish `e : ⇑((sqLe (a` using `IdF.top (sP (stF q ρ m 𝒱)).A) (b := stdI (stF q ρ m 𝒱) none c) (a' := stdI (stF q ρ m 𝒱) (some 0) 0) (b' := stdI (stF q ρ m 𝒱) none c) (fun T => (std0 (stF q ρ m 𝒱) T).le) (fun _ => le_rfl)).pull j) ∘ ⇑((resO hle c).pull j) = ⇑(((incl hle).sq (incl_std hle (some 0) 0) (incl_std h …`. Use function extensionality and compare the values at `x`. Use `((CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id (Wc.Wm l k m)) (resO hle c) (sqLe (a := IdF.top (sP (stF q ρ m 𝒱)).A) (b := stdI (stF q ρ m 𝒱) none c) (a' := stdI (stF q ρ m 𝒱) (some 0) 0) (b' := stdI (stF q ρ m 𝒱) none c) (fun T => (std0 (stF q ρ m 𝒱) T).le) (fu …` and prove the remaining obligations. Use `CrystallineSemistableComparison.P.prism (σ := RingHom.id (Wc.Wm l k m)) _ _ (𝟙 _) (fun T y => ?_) j x` and prove the remaining obligations. Take `⟨y, hy⟩` from `y`.
+
+Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `first`. Consider the case `rfl`. Consider the case `(simp only [NatTrans.id_app, CategoryTheory.Functor.map_id]; rfl)`. Rewrite using `[e]`.
+
+Conclude with `hz.comp t0`.
+-/
 theorem top_F (m : ℕ) (𝒱 : Set X.Opens) (hU : sSup 𝒱 = ⊤) (c : Wc.Wm l k m) (j : ℕ) :
     Function.Bijective ((resO (st_le_top q ρ m 𝒱) c).pull j) := by
   have hle := st_le_top q ρ m 𝒱
@@ -95,6 +115,9 @@ def adjF (m : ℕ) : ιS q ρ m {⊤} ⊣ backF q ρ m :=
     (NatIso.ofComponents (fun _ => Iso.refl _) (fun _ => (Category.comp_id _).trans (Category.id_comp _).symm))
     (NatIso.ofComponents (fun _ => Iso.refl _) (fun _ => (Category.comp_id _).trans (Category.id_comp _).symm))).toAdjunction
 
+/- English proof (translation)
+The claim follows from `CrystallineSemistableComparison.P.adj (sq (IdF.top (sW l (B.schFn q) ρ m).A) (IdF.span (sW l (B.schFn q) ρ m).A c)) (ιS q ρ m {⊤}) (backF q ρ m) (adjF q ρ m) j`.
+-/
 theorem top_res (m : ℕ) (c : WittVector l k) (j : ℕ) : Function.Bijective ((resVq q ρ m {⊤} c).pull j) :=
   CrystallineSemistableComparison.P.adj (sq (IdF.top (sW l (B.schFn q) ρ m).A) (IdF.span (sW l (B.schFn q) ρ m).A c)) (ιS q ρ m {⊤}) (backF q ρ m) (adjF q ρ m) j
 
@@ -102,6 +125,15 @@ end Main
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `l _ k _ _ _ O _ X q ρ m 𝒱 c hU j`. Establish `hle` using `st_le_top q ρ m 𝒱`. Use `(Function.Bijective.of_comp_iff' (scQ_bij q ρ m 𝒱 c j) _).1 ?_` and prove the remaining obligations. Establish `e : ⇑((scQ q ρ m 𝒱 c).pull j) ∘ ⇑((resVq q ρ m 𝒱 c).pull j) = ⇑((resO hle (mkW l k m c)).pull j) ∘ ⇑((scQ q ρ m {⊤} c).pull j) ∘ ⇑((resVq q ρ m {⊤} c).pull j)`. Use function extensionality and compare the values at `x`.
+
+Establish `h1` using `(CrystallineSemistableComparison.P.pull_comp (σ'' := mkW l k m) (resVq q ρ m {⊤} c) (scQ q ρ m {⊤} c) j x).1`. Establish `h2` using `(CrystallineSemistableComparison.P.pull_comp (σ'' := mkW l k m) (CH.Mor.comp (σ'' := mkW l k m) (resVq q ρ m {⊤} c) (scQ q ρ m {⊤} c)) (resO hle (mkW l k m c)) j x).1`. Use `((CrystallineSemistableComparison.P.pull_comp (σ'' := mkW l k m) (resVq q ρ m 𝒱 c) (scQ q ρ m 𝒱 c) j x).1).symm.trans (Eq.trans ?_ (h2.trans (congrArg _ h1)))` and prove the remaining obligations. Use `CrystallineSemistableComparison.P.prism (σ := mkW l k m) (CH.Mor.comp (σ'' := mkW l k m) (resVq q ρ m 𝒱 c) (scQ q ρ m 𝒱 c)) (CH.Mor.comp (σ'' := mkW l k m) (CH.Mor.comp (σ'' := mkW l k m) (resVq q ρ m {⊤} c) (scQ q ρ m {⊤} c)) (resO hle (mkW l k m c))) (𝟙 _) (fun T y => ?_) j x` and prove the remaining obligations. Take `⟨y, hy⟩` from `y`.
+
+Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `first`. Consider the case `rfl`. Consider the case `(simp only [NatTrans.id_app, CategoryTheory.Functor.map_id]; rfl)`. Rewrite using `[e]`.
+
+Conclude with `(top_F q ρ m 𝒱 hU _ j).comp ((scQ_bij q ρ m {⊤} c j).comp (top_res q ρ m c j))`.
+-/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing k l] {O : Type} [CommRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (ρ : O →+* k) (m : ℕ) (𝒱 : Set X.Opens) (c : WittVector l k), sSup 𝒱 = ⊤ → ∀ j, Function.Bijective ((resVq q ρ m 𝒱 c).pull j) := by
   intro l _ k _ _ _ O _ X q ρ m 𝒱 c hU j
   have hle := st_le_top q ρ m 𝒱

@@ -27,10 +27,18 @@ def IsFrameConst (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (v
     (th : WO S T → ℂ) (c : ℂ) : Prop :=
   th ≠ 0 ∧ frameVec om vac g = c • th
 
+/- English proof (translation)
+The claim follows from `smul_left_injective ℂ h.1 (h.2.symm.trans h'.2)`.
+-/
 theorem IsFrameConst.unique {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {vac : WO S T → ℂ} {g : GA D T}
     {th : WO S T → ℂ} {c c' : ℂ} (h : IsFrameConst om vac g th c) (h' : IsFrameConst om vac g th c') : c = c' :=
   smul_left_injective ℂ h.1 (h.2.symm.trans h'.2)
 
+/- English proof (translation)
+Introduce `h`. Apply `hv` to reduce the goal to its premises. Establish `h1 : om (1, g⁻¹) (om (1, g) vac) = vac`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `[← Prod.one_eq_mk]`.
+
+Rewrite using `[← h1]`. Unfold `frameVec at h`. Rewrite using `[h, map_zero]`.
+-/
 theorem frameVec_ne_zero (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) {vac : WO S T → ℂ} (hv : vac ≠ 0)
     (g : GA D T) : frameVec om vac g ≠ 0 := by
   intro h
@@ -42,10 +50,18 @@ theorem frameVec_ne_zero (om : GA D S × GA D T →* Module.End ℂ (WO S T → 
   unfold frameVec at h
   rw [h, map_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨frameVec_ne_zero om hv g, (one_smul _ _).symm⟩`.
+-/
 theorem isFrameConst_self (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) {vac : WO S T → ℂ} (hv : vac ≠ 0)
     (g : GA D T) : IsFrameConst om vac g (frameVec om vac g) 1 :=
   ⟨frameVec_ne_zero om hv g, (one_smul _ _).symm⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using (h _ _ (isFrameConst_self om hv g)).2`. Introduce and unpack `h th c ⟨h0, hc⟩`. Use `⟨h0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h, hc, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem const_iff_frame (om om' : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) {vac : WO S T → ℂ} (hv : vac ≠ 0)
     (g : GA D T) (z a : ℂ) :
     (∀ th c, IsFrameConst om vac g th c → IsFrameConst om' vac g th (z * c * a)) ↔

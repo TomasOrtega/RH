@@ -9,6 +9,9 @@ namespace UpperTheory.Gal.KunnethLefschetz
 
 variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k]
 
+/- English proof (translation)
+Simplify using `only [ext2]`. Rewrite using `[R.assoc _ a b n m t w h1 h2 h3 h4, ← R.nat (pullback.snd p p) b n t h3 v x]`.
+-/
 private theorem exterior_product_cup_snd (R : Ring l) {X : Scheme.{0}} (p : X ⟶ S k) {a b n m t w : ℤ}
     (h1 : a + b = m) (h2 : m + n = w) (h3 : b + n = t) (h4 : a + t = w)
     (u : V l X a) (v : V l X b) (x : V l X n) :
@@ -17,6 +20,9 @@ private theorem exterior_product_cup_snd (R : Ring l) {X : Scheme.{0}} (p : X �
   simp only [ext2]
   rw [R.assoc _ a b n m t w h1 h2 h3 h4, ← R.nat (pullback.snd p p) b n t h3 v x]
 
+/- English proof (translation)
+Simplify using `only [ext2]`. Rewrite using `[← R.assoc _ n a b t m w h3 h4 h1 h2, ← R.nat (pullback.fst p p) n a t h3 x u]`.
+-/
 private theorem cup_fst_exterior_product (R : Ring l) {X : Scheme.{0}} (p : X ⟶ S k) {a b n m t w : ℤ}
     (h1 : a + b = m) (h2 : n + m = w) (h3 : n + a = t) (h4 : t + b = w)
     (x : V l X n) (u : V l X a) (v : V l X b) :
@@ -25,6 +31,13 @@ private theorem cup_fst_exterior_product (R : Ring l) {X : Scheme.{0}} (p : X �
   simp only [ext2]
   rw [← R.assoc _ n a b t m w h3 h4 h1 h2, ← R.nat (pullback.fst p p) n a t h3 x u]
 
+/- English proof (translation)
+Establish `key : Λ ∘ₗ (cupV l (pullback p p) h).flip (pb l (pullback.snd p p) n x) = ((cupV l X (zero_add n)).flip x) ∘ₗ Λ0`. Apply `LinearMap.ext_on (K.span (2 * d))` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, b, hab, u, v, rfl⟩`. Simplify using `only [LinearMap.comp_apply, LinearMap.flip_apply]`. Distinguish the cases in `hb : b = 0`.
+
+Substitute `hb` using the available equality. Establish `ha : a = 2 * d` using `by omega`. Substitute `ha` using the available equality. Rewrite using `[exterior_product_cup_snd R p hab h (zero_add n) h u v x, hΛ.1, h0.1, map_smul, LinearMap.smul_apply]`. Rewrite using `[exterior_product_cup_snd R p hab h rfl (by omega : a + (b + n) = w) u v x, hΛ.2 a (b + n) _ (by omega) u _, h0.2 a b hab hb u v, map_zero, LinearMap.zero_apply]`.
+
+Conclude with `LinearMap.congr_fun key y`.
+-/
 private theorem int_cup_snd (R : Ring l) {d : ℕ} {X : Scheme.{0}} {p : X ⟶ S k} (K : Kun l k d p)
     {lam : V l X (2 * d) →ₗ[ℚ_[l]] ℚ_[l]} {n w : ℤ} (h : 2 * d + n = w)
     {Λ : V l (pullback p p) w →ₗ[ℚ_[l]] V l X n} (hΛ : IsInt l p lam h Λ)
@@ -45,6 +58,11 @@ private theorem int_cup_snd (R : Ring l) {d : ℕ} {X : Scheme.{0}} {p : X ⟶ S
         hΛ.2 a (b + n) _ (by omega) u _, h0.2 a b hab hb u v, map_zero, LinearMap.zero_apply]
   exact LinearMap.congr_fun key y
 
+/- English proof (translation)
+Distinguish the cases in `hb : b = n`. Substitute `b` using the available equality. Establish `ht : n + a = 2 * d` using `by omega`. Rewrite using `[cup_fst_exterior_product R p h1 h2 ht h, hΛ.1, hx ht, zero_smul]`. Rewrite using `[cup_fst_exterior_product R p h1 h2 rfl (by omega : n + a + b = w)]`.
+
+Conclude with `hΛ.2 _ b _ hb _ _`.
+-/
 private theorem int_fst_cup {d : ℕ} (R : Ring l) {X : Scheme.{0}} {p : X ⟶ S k}
     {lam : V l X (2 * d) →ₗ[ℚ_[l]] ℚ_[l]} {n w a b : ℤ} (h : 2 * d + n = w) (h2 : n + 2 * d = w)
     (h1 : a + b = 2 * d) {Λ : V l (pullback p p) w →ₗ[ℚ_[l]] V l X n} (hΛ : IsInt l p lam h Λ)
@@ -58,6 +76,17 @@ private theorem int_fst_cup {d : ℕ} (R : Ring l) {X : Scheme.{0}} {p : X ⟶ S
   · rw [cup_fst_exterior_product R p h1 h2 rfl (by omega : n + a + b = w)]
     exact hΛ.2 _ b _ hb _ _
 
+/- English proof (translation)
+Introduce `l _ k _ _ hl d X p hSP R K lam δ hswap hΛ0`. Take `⟨Λ0, h0⟩` from `K.int lam 0 (2 * d) (add_zero _)`. Establish `hone` using `hΛ0 Λ0 h0`. Establish `hunit : IsUnit ((l : Γ(X, ⊤)))`. Establish `h1 : IsUnit ((l : k))` using `isUnit_iff_ne_zero.mpr hl`.
+
+Establish `h2` using `(h1.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom).map p.appTop.hom`. Simplify `h2` using `[map_natCast]`. Establish `hδ : δ ∈ Submodule.span ℚ_[l] {w | ∃ a b, ∃ (h : a + b = 2 * (d : ℤ)), ∃ u v, w = ext2 l p h u v}`. Rewrite using `[K.span]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨N, f, g, hsum⟩` from `Submodule.mem_span_set'.mp hδ`. Establish `hg : ∀ t, ∃ a b, ∃ h : a + b = 2 * (d : ℤ), ∃ u v, (g t : V l (pullback p p) (2 * d)) = ext2 l p h u v` using `fun t => (g t).2`. Use `choose A B hAB U W hUW using hg`. Use `⟨N, A, U, fun n x hx => ?_⟩` and prove the remaining obligations. Take `⟨Λ, hΛ⟩` from `K.int lam n (2 * d + n) rfl`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hswap n _ (by ring) rfl x]`. Use `_ = 0 := by`. Rewrite using `[← hsum, map_sum, map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `t _`. Rewrite using `[map_smul, map_smul, hUW t, int_fst_cup R rfl (by ring) (hAB t) hΛ x (U t) (W t) (hx t), smul_zero]`.
+-/
 theorem detectL_holds : DetectL := by
   intro l _ k _ _ hl d X p hSP R K lam δ hswap hΛ0
   obtain ⟨Λ0, h0⟩ := K.int lam 0 (2 * d) (add_zero _)

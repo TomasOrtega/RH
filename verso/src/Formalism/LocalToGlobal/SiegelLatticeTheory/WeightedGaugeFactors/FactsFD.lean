@@ -12,6 +12,9 @@ namespace Formalism.L2.SG.OwnFacts.FD
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `A hA`. Rewrite using `[hT.cdScale_tie _ (epsSH D.R) _ _ (Formalism.BasicNotions.Examples₂.CD.e0 (epsSH D.R)) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inl (epsSH D.R)) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inr (epsSH D.R)) A hA]`. Rewrite using `[ReciprocityTheory.ChartRestriction.DS.muCD_eq_cd_vol D.cd (Formalism.BasicNotions.Examples₂.CD.e0 (epsSH D.R)) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inl (epsSH D.R)) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inr (epsSH D.R)) A hA]`.
+-/
 theorem cdScale_eq_muCD (hT : Ties D) :
     ((D.s.cdScale _ (epsSH D.R) : ENNReal) • Formalism.REAL.muG (epsSH D.R)) = ReciprocityTheory.ChartRestriction.DS.muCD (epsSH D.R) := by
   ext A hA
@@ -20,6 +23,19 @@ theorem cdScale_eq_muCD (hT : Ties D) :
   rw [ReciprocityTheory.ChartRestriction.DS.muCD_eq_cd_vol D.cd (Formalism.BasicNotions.Examples₂.CD.e0 (epsSH D.R)) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inl (epsSH D.R))
     (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inr (epsSH D.R)) A hA]
 
+/- English proof (translation)
+Establish `e : ReciprocityTheory.ChartRestriction.DS.thrStar (epsSH D.R) = Formalism.MainNotions.GapDS.thrE (epsSH D.R)`. Unfold `ReciprocityTheory.ChartRestriction.DS.thrStar Formalism.MainNotions.GapDS.thrE Formalism.MainNotions.GapDS.thrDS ReciprocityTheory.ChartRestriction.DS.S7.q0`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `hn` using `Formalism.MainNotions.nS_cast D`.
+
+Establish `h6` using `Formalism.MainNotions.six_le_n D`. Rewrite `h6`, the goal using `[← hn]`. Use `set n : ℝ := ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) with hnd`. Establish `e2 : Formalism.MainNotions.GapDS.thrE (epsSH D.R) ≤ 4 * n ^ 3` using `Formalism.MainNotions.GapDS.thrE_le (epsSH D.R) (by linarith)`. Establish `hf : (1 : ℝ) ≤ (D.R.f : ℝ)`.
+
+Establish `hmf : D.R.m ^ 4 ≤ D.R.f` using `by unfold StandingHypotheses at hH; exact hH.2.2.1`. Establish `h2` using `D.R.two_le_m`. Establish `: 1 ≤ D.R.m ^ 4` using `Nat.one_le_pow _ _ (by omega)`. Conclude with `le_trans this hmf` after adjusting the coercions. Establish `hf5 : (1 : ℝ) ≤ (D.R.f : ℝ) ^ 5` using `one_le_pow₀ hf`.
+
+Establish `hn19 : 4 * n ^ 3 + 1 < n ^ 19`. Establish `e3 : n ^ 19 = n ^ 3 * n ^ 16` using `by ring`. Establish `e4 : (5 : ℝ) < n ^ 16`. Establish `: (6 : ℝ) ^ 16 ≤ n ^ 16` using `pow_le_pow_left₀ (by norm_num) h6 16`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `e5 : 1 ≤ n ^ 3` using `one_le_pow₀ (by linarith)`. Rewrite using `[e3]`. Use the polynomial consequences of the given equalities and inequalities. Establish `e6 : n ^ 19 ≤ n ^ 19 * (D.R.f : ℝ) ^ 5` using `le_mul_of_one_le_right (by positivity) hf5`. Establish `e7 : n ^ 19 * (D.R.f : ℝ) ^ 5 ≤ (Cl * large₂.sc.L) * (n ^ 19 * (D.R.f : ℝ) ^ 5)` using `le_mul_of_one_le_left (by positivity) hCL`.
+
+Establish `e8 : Cl * n ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L = (Cl * large₂.sc.L) * (n ^ 19 * (D.R.f : ℝ) ^ 5)` using `by ring`. Rewrite using `[e8]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem thr_lt {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (hCL : 1 ≤ Cl * large₂.sc.L) :
     ReciprocityTheory.ChartRestriction.DS.thrStar (epsSH D.R) + 1 < Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L := by
@@ -51,6 +67,23 @@ theorem thr_lt {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (hH : Sta
   have e8 : Cl * n ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L = (Cl * large₂.sc.L) * (n ^ 19 * (D.R.f : ℝ) ^ 5) := by ring
   rw [e8]; linarith
 
+/- English proof (translation)
+Establish `hg` using `Formalism.MainNotions.BridgeLemma.szh_gap hH τ`. Establish `hth` using `thr_lt hH hCL`. Establish `hlam` using `Formalism.MainNotions.BridgeLemma.szh_hc hH τ`. Establish `hpq` using `Formalism.MainNotions.S.Pv.DegI.minpq_pos D`. Establish `hp : 1 ≤ ReciprocityTheory.ChartRestriction.DS.pOf (epsSH D.R)` using `le_trans hpq (min_le_left _ _)`.
+
+Establish `hq : 1 ≤ ReciprocityTheory.ChartRestriction.DS.qOf (epsSH D.R)` using `le_trans hpq (min_le_right _ _)`. Establish `hthE : Formalism.MainNotions.GapDS.thrE (epsSH D.R) < Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L`. Establish `e : ReciprocityTheory.ChartRestriction.DS.thrStar (epsSH D.R) = Formalism.MainNotions.GapDS.thrE (epsSH D.R)`. Unfold `ReciprocityTheory.ChartRestriction.DS.thrStar Formalism.MainNotions.GapDS.thrE Formalism.MainNotions.GapDS.thrDS ReciprocityTheory.ChartRestriction.DS.S7.q0`. Both sides reduce to the same expression.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨H, i1, i2, σ, hσ⟩` from `Formalism.MainNotions.BesselDiscreteSeries.discrete_series_exists_of_fact _ (epsSH D.R) _ hlam _ hg hthE`. Establish `: CompleteSpace H` using `hσ.1`. Establish `: Nontrivial H` using `hσ.2.1`. Take `⟨v, hv⟩` from `exists_ne (0 : H)`.
+
+Take `⟨d, hd⟩` from `ReciprocityTheory.ChartRestriction.DS.fdcGood_of_isDS hσ`. Establish `hd' : IsFdeg ((D.s.cdScale _ (epsSH D.R) : ENNReal) • Formalism.REAL.muG (epsSH D.R)) σ d`. Rewrite using `[cdScale_eq_muCD hT]`. Conclude with `hd`. Establish `hdd : d = D.dsig τ` using `hT.dsig_tie τ H σ d hσ hd'`.
+
+Use `set h : ℝ := Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L with hhdef`. Establish `hq0 : 1 ≤ ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R)` using `le_min hp hq`. Establish `h8 : 8 * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) * ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) < h`. Establish `h1` using `le_max_right (((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) * (ReciprocityTheory.ChartRestriction.DS.pOf (epsSH D.R) : ℝ) * (ReciprocityTheory.ChartRestriction.DS.qOf (epsSH D.R) : ℝ) + 1) (16 * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) * (ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) : …`. Establish `h2 : 0 ≤ 8 * Real.sqrt (2 * (ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) : ℝ))` using `by positivity`.
+
+Establish `h3 : 0 ≤ ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) * (ReciprocityTheory.ChartRestriction.DS.S7.q0 (epsSH D.R) : ℝ)` using `by positivity`. Establish `hh` using `hth`. Unfold `ReciprocityTheory.ChartRestriction.DS.thrStar at hh`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hΨ : ∀ μ : Fin (2 * D.R.rS + D.R.k + 1) → ℝ, ReciprocityTheory.ChartRestriction.DS.S7.IsHCParam μ → ReciprocityTheory.ChartRestriction.DS.GapAtLeast (epsSH D.R) μ h → ∃ (T : ReciprocityTheory.ChartRestriction.DS.S7.KType (epsSH D.R) (ReciprocityTheory.ChartRestriction.DS.lowK (ep …`.
+
+Introduce `μ hμ hgμ`. Take `⟨T⟩` from `ReciprocityTheory.ChartRestriction.DS.HW.kType_exists (epsSH D.R) μ hμ`. Take `⟨m, hm⟩` from `ReciprocityTheory.ChartRestriction.DS.Lap.LemK.exists_isMu hμ`. Conclude with `⟨T, _, (ReciprocityTheory.ChartRestriction.DS.Lap.Base.psiFor _ _ μ h T m hμ hm hgμ hq0 h8).1⟩`. Establish `key` using `ReciprocityTheory.ChartRestriction.DS.fdCons_cd hp hq hlam hg hth hΨ hσ hv`.
+
+Rewrite `key` using `[ReciprocityTheory.ChartRestriction.DS.fdegOf_of_isFdeg' hd hv]`. Rewrite using `[← hdd, key]`.
+-/
 theorem dsig_eq {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (hT : Ties D) (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (hCL : 1 ≤ Cl * large₂.sc.L) (τ : D.what₂.Tau) :
     D.dsig τ = ReciprocityTheory.ChartRestriction.DS.dimVlam (lamSH D.R (D.hc τ)) := by

@@ -13,6 +13,13 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
 
 namespace J
 
+/- English proof (translation)
+Establish `h1 : (B.map f).relIndex (A.map f) = (B ⊔ (A ⊓ f.ker)).relIndex A`. Rewrite using `[AddSubgroup.relIndex_map_map]`. Establish `e1 : A ⊔ f.ker = A ⊔ (B ⊔ f.ker)`. Rewrite using `[← sup_assoc, sup_eq_left.2 hBA]`. Rewrite using `[e1, AddSubgroup.relIndex_sup_right, ← AddSubgroup.inf_relIndex_right]`.
+
+Use `congr 1`. Rewrite using `[inf_comm A, sup_inf_assoc_of_le _ hBA]`. Establish `h2 : (B ⊓ f.ker).relIndex (A ⊓ f.ker) = B.relIndex (B ⊔ (A ⊓ f.ker))`. Establish `e2 : B ⊓ f.ker = B ⊓ (A ⊓ f.ker)` using `by rw [← inf_assoc, inf_eq_left.2 hBA]`. Rewrite using `[sup_comm, AddSubgroup.relIndex_sup_right, e2, AddSubgroup.inf_relIndex_right]`.
+
+Rewrite using `[h1, h2, mul_comm]`. Conclude with `(AddSubgroup.relIndex_mul_relIndex _ _ _ le_sup_left (sup_le hBA inf_le_left)).symm`.
+-/
 theorem relIndex_eq_map_mul_ker {G G' : Type*} [AddCommGroup G] [AddCommGroup G'] (f : G →+ G')
     {A B : AddSubgroup G} (hBA : B ≤ A) :
     B.relIndex A = (B.map f).relIndex (A.map f) * (B ⊓ f.ker).relIndex (A ⊓ f.ker) := by
@@ -34,6 +41,9 @@ def adjF (s : V →ₗ⋆[K] V →ₗ[K] K) : V →ₗ⋆[K] V →ₗ[K] K :=
     (fun x x' y => by simp) (fun c x y => by simp [starRingEnd_apply]) (fun x y y' => by simp)
     (fun c x y => by simp [starRingEnd_apply])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adjF_apply (s : V →ₗ⋆[K] V →ₗ[K] K) (x y : V) : adjF s x y = star (s y x) := rfl
 
 def symF : (V →ₗ⋆[K] V →ₗ[K] K) →+ (V →ₗ⋆[K] V →ₗ[K] K) where
@@ -46,8 +56,30 @@ def symF : (V →ₗ⋆[K] V →ₗ[K] K) →+ (V →ₗ⋆[K] V →ₗ[K] K) wh
     simp only [LinearMap.add_apply, adjF_apply, star_add]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem symF_apply (s : V →ₗ⋆[K] V →ₗ[K] K) (x y : V) : symF s x y = s x y + star (s y x) := rfl
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `idealPowerSpanBounds.exists_theta hK hF h𝔭`. Use `set d : 𝓞 K := θ - conjO K θ with hd`. Establish `hcd : conjO K d = -d`. Rewrite using `[hd, map_sub, conjO_conjO, neg_sub]`. Take `⟨n, hn⟩` from `(conjO_eq_iff_mem_range hF (d * conjO K d)).1 (by`.
+
+Rewrite using `[map_mul, conjO_conjO, mul_comm])`. Establish `hone : (1 : 𝓞 K) ∉ extP K 𝔭`. Introduce `h1`. Establish `h3` using `(idealPowerSpanBounds.mem_pow_iff (K := K) 𝔭 1 1).1 (by rwa [map_one, pow_one])`. Rewrite `h3` using `[pow_one]`.
+
+Conclude with `h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h3)`. Establish `hn𝔭 : n ∉ 𝔭`. Introduce `hmem`. Establish `h1 : d * conjO K d ∈ extP K 𝔭 ^ 1`. Rewrite using `[← hn, pow_one]`.
+
+Conclude with `Ideal.mem_map_of_mem _ hmem`. Establish `h2` using `idealPowerSpanBounds.mem_of_unit_mul_mem hθ h1`. Establish `h3 : d * 1 ∈ extP K 𝔭 ^ 1`. Rewrite `h2` using `[hcd]`. Simplify using `using h2`.
+
+Establish `h4` using `idealPowerSpanBounds.mem_of_unit_mul_mem hθ h3`. Rewrite `h4` using `[pow_one]`. Conclude with `hone h4`. Establish `hd0 : d ≠ 0`. Introduce `h0`.
+
+Apply `hn𝔭` to reduce the goal to its premises. Establish `: algebraMap (𝓞 F) (𝓞 K) n = algebraMap (𝓞 F) (𝓞 K) 0` using `by rw [hn, h0]; simp`. Rewrite using `[idealPowerSpanBounds.ι_inj this]`. Conclude with `𝔭.zero_mem`. Establish `hdK : ((d : 𝓞 K) : K) ≠ 0`.
+
+Introduce `h0`. Conclude with `hd0 (RingOfIntegers.ext (h0.trans (map_zero (algebraMap (𝓞 K) K)).symm))`. Use `⟨(d : K), ?_, hdK, algebraMap_mem_pK 𝔭 d, ?_⟩` and prove the remaining obligations. Rewrite using `[← conjO_coe, hcd]`. Conclude with `map_neg (algebraMap (𝓞 K) K) _`.
+
+Use `(mem_pK h𝔭).2 ⟨n, hn𝔭, conjO K d, by simp, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap F K (n : F) = (d : K) * ((conjO K d : 𝓞 K) : K)`. Use `congrArg (algebraMap (𝓞 K) K) hn` as an intermediate fact. Rewrite `this` using `[map_mul]`. Rewrite using `[← this]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_skew_unit (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) :
     ∃ δ : K, star δ = -δ ∧ δ ≠ 0 ∧ δ ∈ pK K 𝔭 0 ∧ δ⁻¹ ∈ pK K 𝔭 0 := by
@@ -95,6 +127,17 @@ theorem exists_skew_unit (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (h
     rw [e]
     field_simp
 
+/- English proof (translation)
+Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, rfl⟩`. Use `⟨fun x y => ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[symF_apply, symF_apply, star_add, star_star, add_comm]`.
+
+Rewrite using `[symF_apply]`. Conclude with `(pK K 𝔭 k).add_mem (hs x hx y hy) (star_mem_pK hF h𝔭 (hs y hy x hx))`. Introduce and unpack `⟨ht, ht'⟩`. Take `⟨θ, hθ⟩` from `exists_add_conj_eq hK hF (1 : 𝓞 F)`. Establish `hθK : (θ : K) + star (θ : K) = 1`.
+
+Use `congrArg (algebraMap (𝓞 K) K) hθ` as an intermediate fact. Rewrite `this` using `[map_add, map_one, map_one]`. Conclude with `this`. Use `⟨(θ : K) • t, fun x hx y hy => ?_, ?_⟩` and prove the remaining obligations. Use `(pK K 𝔭 k).smul_mem θ (ht' x hx y hy)` as an intermediate fact.
+
+Rewrite `this` using `[Algebra.smul_def]`. Conclude with `this`. Use extensionality with `x y`. Rewrite using `[symF_apply]`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, star_mul', ht y x]`.
+
+Rewrite using `[← add_mul, hθK, one_mul]`.
+-/
 theorem map_symF_sesqL (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (A : Submodule (𝓞 K) V)
     {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     (sesqL A 𝔭 k).map symF = hermL A 𝔭 k := by
@@ -120,6 +163,19 @@ theorem map_symF_sesqL (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
       simp only [LinearMap.smul_apply, smul_eq_mul, star_mul', ht y x]
       rw [← add_mul, hθK, one_mul]
 
+/- English proof (translation)
+Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ⟨ht, ht'⟩, rfl⟩`. Use `⟨fun x hx y hy => ?_, ?_⟩` and prove the remaining obligations. Use `mul_mem_pK h𝔭 hδ1 (ht' x hx y hy)` as an intermediate fact.
+
+Rewrite `this` using `[zero_add]`. Simplify using `using this`. Use `show symF _ = 0`. Use extensionality with `x y`. Rewrite using `[symF_apply]`.
+
+Simplify using `only [DistribSMul.toAddMonoidHom_apply, LinearMap.smul_apply, smul_eq_mul, star_mul', ht y x, hδ, LinearMap.zero_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨hs, hs'⟩ replace hs' : symF s = 0 := hs'`. Establish `hsk : ∀ x y, star (s x y) = - s y x` using `fun x y => by`. Use `congrArg (fun u => u y x) hs'` as an intermediate fact.
+
+Simplify using `only [symF_apply, LinearMap.zero_apply] at this`. Conclude with `(neg_eq_of_add_eq_zero_right this).symm`. Use `⟨δ⁻¹ • s, ⟨fun x y => ?_, fun x hx y hy => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, star_mul', star_inv₀, hδ, hsk x y]`. Rewrite using `[inv_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `mul_mem_pK h𝔭 hδ2 (hs x hx y hy)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Simplify using `using this`. Simplify using `only [DistribSMul.toAddMonoidHom_apply]`.
+
+Rewrite using `[smul_smul, mul_inv_cancel₀ hδ0, one_smul]`.
+-/
 theorem map_smul_hermL (A : Submodule (𝓞 K) V)
     {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) {δ : K} (hδ : star δ = -δ) (hδ0 : δ ≠ 0)
     (hδ1 : δ ∈ pK K 𝔭 0) (hδ2 : δ⁻¹ ∈ pK K 𝔭 0) :
@@ -154,18 +210,30 @@ theorem map_smul_hermL (A : Submodule (𝓞 K) V)
     · simp only [DistribSMul.toAddMonoidHom_apply]
       rw [smul_smul, mul_inv_cancel₀ hδ0, one_smul]
 
+/- English proof (translation)
+Simplify using `using algebraMap_mem_pK (K := K) 𝔭 1`.
+-/
 theorem one_mem_pK (𝔭 : Ideal (𝓞 F)) : (1 : K) ∈ pK K 𝔭 0 := by
   simpa using algebraMap_mem_pK (K := K) 𝔭 1
 
+/- English proof (translation)
+Use `mul_mem_pK h𝔭 hx hy` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem mul_mem_pK_zero {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {x y : K} (hx : x ∈ pK K 𝔭 0)
     (hy : y ∈ pK K 𝔭 0) : x * y ∈ pK K 𝔭 0 :=
 by
   have := mul_mem_pK h𝔭 hx hy
   rwa [add_zero] at this
 
+/- English proof (translation)
+The claim follows from `nO_unit h𝔭 (one_mem_pK 𝔭) (by simpa using one_mem_pK (K := K) 𝔭) one_ne_zero`.
+-/
 theorem nO_one {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) : nO 𝔭 (1 : K) = 1 :=
   nO_unit h𝔭 (one_mem_pK 𝔭) (by simpa using one_mem_pK (K := K) 𝔭) one_ne_zero
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ⟨one_mem_pK (K := K) 𝔭, nO_one (K := K) h𝔭⟩`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `⟨mul_mem_pK_zero h𝔭 (hz i).1 ih.1, by rw [nO_mul h𝔭 (hz i).1 (hz i).2 ih.1, ih.2]⟩`.
+-/
 theorem nO_prod {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {ι : Type} (s : Finset ι) (z : ι → K)
     (hz : ∀ i, z i ∈ pK K 𝔭 0 ∧ z i ≠ 0) :
     (∏ i ∈ s, z i) ∈ pK K 𝔭 0 ∧ nO 𝔭 (∏ i ∈ s, z i) = ∏ i ∈ s, nO 𝔭 (z i) := by
@@ -176,10 +244,16 @@ theorem nO_prod {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {ι : Type} (s 
     rw [Finset.prod_insert hi, Finset.prod_insert hi]
     exact ⟨mul_mem_pK_zero h𝔭 (hz i).1 ih.1, by rw [nO_mul h𝔭 (hz i).1 (hz i).2 ih.1, ih.2]⟩
 
+/- English proof (translation)
+Simplify using `using nO_prod h𝔭 (Finset.range n) (fun _ => z) (fun _ => ⟨hz, hz0⟩)`.
+-/
 theorem nO_pow {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {z : K} (hz : z ∈ pK K 𝔭 0) (hz0 : z ≠ 0)
     (n : ℕ) : z ^ n ∈ pK K 𝔭 0 ∧ nO 𝔭 (z ^ n) = nO 𝔭 z ^ n := by
   simpa using nO_prod h𝔭 (Finset.range n) (fun _ => z) (fun _ => ⟨hz, hz0⟩)
 
+/- English proof (translation)
+Establish `h1 : s (γ • x') (γ • y') = s (u • x) (v • y)` using `by rw [hx, hy]`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply] at h1`. Take the linear combination `h1`.
+-/
 theorem form_rel (s : V →ₗ⋆[K] V →ₗ[K] K) {x y x' y' : V} {γ u v : K} (hx : γ • x' = u • x)
     (hy : γ • y' = v • y) : star γ * γ * s x' y' = star u * v * s x y := by
   have h1 : s (γ • x') (γ • y') = s (u • x) (v • y) := by rw [hx, hy]
@@ -187,6 +261,11 @@ theorem form_rel (s : V →ₗ⋆[K] V →ₗ[K] K) {x y x' y' : V} {γ u v : K}
     at h1
   linear_combination h1
 
+/- English proof (translation)
+Establish `h1 : (star γ * γ) • (Matrix.of fun i j => h (b i) (b j)) = Matrix.diagonal (fun i => star (e i)) * (Matrix.of fun i j => h (a i) (a j)) * Matrix.diagonal e`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[form_rel h (hab i) (hab j)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_smul, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, Fintype.card_fin]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_rel (h : V →ₗ⋆[K] V →ₗ[K] K) {m : ℕ} (a b : Fin m → V) (e : Fin m → K) (γ : K)
     (hab : ∀ i, γ • b i = e i • a i) :
     (star γ * γ) ^ m * (Matrix.of fun i j => h (b i) (b j)).det =
@@ -207,6 +286,9 @@ theorem gram_rel (h : V →ₗ⋆[K] V →ₗ[K] K) {m : ℕ} (a b : Fin m → V
 
 end J
 
+/- English proof (translation)
+Take `⟨δ, hδ, hδ0, hδ1, hδ2⟩` from `J.exists_skew_unit hK hF h𝔭`. Rewrite using `[J.relIndex_eq_map_mul_ker J.symF hle, J.map_symF_sesqL hK hF _ h𝔭, J.map_symF_sesqL hK hF _ h𝔭, ← J.map_smul_hermL _ h𝔭 k' hδ hδ0 hδ1 hδ2, ← J.map_smul_hermL _ h𝔭 k hδ hδ0 hδ1 hδ2, AddSubgroup.relIndex_map_map_of_injective, sq]`. Introduce `s t hst`. Use `congrArg (fun u => δ⁻¹ • u) hst` as an intermediate fact. Simplify `this` using `[smul_smul, inv_mul_cancel₀ hδ0]`.
+-/
 theorem relIndex_sesqL_eq_sq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (A₀ B₀ : Submodule (𝓞 K) V)
     {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {k k' : ℕ}
     (hle : sesqL (locF 𝔭 B₀) 𝔭 k' ≤ sesqL (locF 𝔭 A₀) 𝔭 k) :
@@ -220,6 +302,35 @@ theorem relIndex_sesqL_eq_sq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K
   have := congrArg (fun u => δ⁻¹ • u) hst
   simpa [smul_smul, inv_mul_cancel₀ hδ0] using this
 
+/- English proof (translation)
+Take `⟨a, b, e, γ, hγ, he, hA, hB, hab⟩` from `exists_smith hA₀ hB₀ h𝔭`. Establish `habK : ∀ i, (γ : K) • b i = (e i : K) • a i` using `fun i => by`. Rewrite using `[algebraMap_smul, algebraMap_smul]`. Conclude with `hab i`. Establish `hγK : (γ : K) ≠ 0` using `fun h0 => hγ (RingOfIntegers.ext (h0.trans (map_zero (algebraMap (𝓞 K) K)).symm))`.
+
+Establish `heK : ∀ i, (e i : K) ≠ 0` using `fun i h0 => he i (RingOfIntegers.ext (h0.trans (map_zero (algebraMap (𝓞 K) K)).symm))`. Establish `hγm : (γ : K) ∈ pK K 𝔭 0` using `algebraMap_mem_pK 𝔭 γ`. Establish `hem : ∀ i, (e i : K) ∈ pK K 𝔭 0` using `fun i => algebraMap_mem_pK 𝔭 (e i)`. Establish `hγγ : star (γ : K) * γ ∈ pK K 𝔭 0 ∧ star (γ : K) * γ ≠ 0` using `⟨J.mul_mem_pK_zero h𝔭 (star_mem_pK hF h𝔭 hγm) hγm, mul_ne_zero (star_ne_zero.2 hγK) hγK⟩`. Set `Φ : (V →ₗ⋆[K] V →ₗ[K] K) →+ Matrix (Fin (finrank K V)) (Fin (finrank K V)) K` to `(LinearMap.toMatrix₂ a a).toLinearMap.toAddMonoidHom`.
+
+Establish `hΦ : ∀ s i j, Φ s i j = s (a i) (a j)` using `fun s i j => LinearMap.toMatrix₂_apply a a s i j`. Establish `hΦs : Function.Surjective Φ` using `(LinearMap.toMatrix₂ a a).surjective`. Set `f : Fin (finrank K V) → Fin (finrank K V) → K` to `fun i j => star (e i : K) * (e j : K)`. Set `g : Fin (finrank K V) → Fin (finrank K V) → K` to `fun _ _ => star (γ : K) * γ`. Establish `hSA : sesqL (locF 𝔭 A₀) 𝔭 k = (matL 𝔭 k (fun _ _ => 1) (fun _ _ => 1)).comap Φ`.
+
+Use extensionality with `s`. Rewrite using `[← hA, mem_sesqL_iff hF a h𝔭]`. Prove the components needed by the constructor for the conclusion. Introduce `H i j`. Conclude with `⟨_, H i j, by rw [hΦ]⟩`.
+
+Introduce `H i j`. Take `⟨w, hw, e⟩` from `H i j`. Rewrite `e` using `[one_mul, one_mul, hΦ]`. Rewrite using `[e]` and apply the resulting hypothesis. Establish `hSB : sesqL (locF 𝔭 B₀) 𝔭 (k + c) = (matL 𝔭 (k + c) f g).comap Φ`.
+
+Use extensionality with `s`. Rewrite using `[← hB, mem_sesqL_iff hF b h𝔭]`. Prove the components needed by the constructor for the conclusion. Introduce `H i j`. Conclude with `⟨_, H i j, by rw [hΦ]; exact (J.form_rel s (habK i) (habK j)).symm⟩`.
+
+Introduce `H i j`. Take `⟨w, hw, e⟩` from `H i j`. Rewrite `e` using `[hΦ]`. Establish `e2 : star (γ : K) * γ * s (b i) (b j) = star (γ : K) * γ * w` using `(J.form_rel s (habK i) (habK j)).trans e`. Rewrite using `[mul_left_cancel₀ hγγ.2 e2]` and apply the resulting hypothesis.
+
+Establish `hle' : matL 𝔭 (k + c) f g ≤ matL 𝔭 k (fun _ _ => 1) (fun _ _ => 1)`. Rewrite `hle` using `[hSA, hSB]`. Conclude with `(AddSubgroup.comap_le_comap_of_surjective hΦs).1 hle`. Establish `hf : ∀ i j, f i j ∈ pK K 𝔭 0 ∧ f i j ≠ 0` using `fun i j => ⟨J.mul_mem_pK_zero h𝔭 (star_mem_pK hF h𝔭 (hem i)) (hem j), mul_ne_zero (star_ne_zero.2 (heK i)) (heK j)⟩`. Establish `H1` using `relIndex_matL hK hF h𝔭 f g hf (fun _ _ => hγγ) k c hle'`.
+
+Establish `hidx : (sesqL (locF 𝔭 B₀) 𝔭 (k + c)).relIndex (sesqL (locF 𝔭 A₀) 𝔭 k) = (matL 𝔭 (k + c) f g).relIndex (matL 𝔭 k (fun _ _ => 1) (fun _ _ => 1))`. Rewrite using `[hSA, hSB, AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective hΦs]`. Rewrite `H1` using `[← hidx]`. Take `⟨hDa, hDa0, hDan⟩` from `nO_gram hK hF hs hd hA₀ hA₀i h𝔭 a hA`. Take `⟨hDb, hDb0, hDbn⟩` from `nO_gram hK hF hs hd hB₀ hB₀i h𝔭 b hB`.
+
+Establish `hnf : ∀ i j, nO 𝔭 (f i j) = nO 𝔭 (e i : K) * nO 𝔭 (e j : K)` using `fun i j => by`. Rewrite using `[nO_mul h𝔭 (star_mem_pK hF h𝔭 (hem i)) (star_ne_zero.2 (heK i)) (hem j), nO_star hF h𝔭]`. Establish `hng : nO 𝔭 (star (γ : K) * γ) = nO 𝔭 (γ : K) * nO 𝔭 (γ : K)`. Rewrite using `[nO_mul h𝔭 (star_mem_pK hF h𝔭 hγm) (star_ne_zero.2 hγK) hγm, nO_star hF h𝔭]`. Establish `H2` using `congrArg (nO 𝔭) (J.gram_rel h a b (fun i => (e i : K)) γ habK)`.
+
+Establish `hp1` using `J.nO_prod h𝔭 Finset.univ (fun i => star (e i : K)) (fun i => ⟨star_mem_pK hF h𝔭 (hem i), star_ne_zero.2 (heK i)⟩)`. Establish `hp2` using `J.nO_prod h𝔭 Finset.univ (fun i => (e i : K)) (fun i => ⟨hem i, heK i⟩)`. Establish `hp3` using `J.nO_pow h𝔭 hγγ.1 hγγ.2 (finrank K V)`. Rewrite `H2` using `[nO_mul h𝔭 hp3.1 (pow_ne_zero _ hγγ.2) hDb, hp3.2, hng, hDbn, nO_mul h𝔭 (J.mul_mem_pK_zero h𝔭 hp1.1 hp2.1) (mul_ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => star_ne_zero.2 (heK i)) (Finset.prod_ne_zero_iff.2 fun i _ => heK i)) hDa, nO_mul h𝔭 hp1.1 (Finset.prod_ne_zero_iff.2 fun …`. Simplify using `only [nO_star hF h𝔭] at H2`.
+
+Simplify using `only [hnf, g, hng, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_pow] at H1`. Establish `hE0 : (∏ i, nO 𝔭 (e i : K)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => nO_ne_zero hK hF h𝔭 (hem i) (heK i)`. Generalize the expression as in `(∏ i, nO 𝔭 (e i : K)) = E at H1 H2 hE0`. Generalize the expression as in `nO 𝔭 (γ : K) = G at H1 H2`. Generalize the expression as in `(sesqL (locF 𝔭 B₀) 𝔭 (k + c)).relIndex (sesqL (locF 𝔭 A₀) 𝔭 k) = X at H1 ⊢`.
+
+Generalize the expression as in `Ideal.absNorm 𝔭 = q at H1 H2 ⊢`. Generalize the expression as in `vd h (locF 𝔭 A₀) 𝔭 = vA at H2 ⊢`. Generalize the expression as in `vd h (locF 𝔭 B₀) 𝔭 = vB at H2 ⊢`. Generalize the expression as in `finrank K V = m at H1 H2 ⊢`. Apply `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero (mul_ne_zero (pow_ne_zero m hE0) (pow_ne_zero m hE0)))` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem relIndex_sesqL (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hA₀i : Formalism.HermitianLatticesTheory.IsIntegralLat h A₀) {B₀ : Submodule (𝓞 K) V}
@@ -316,6 +427,11 @@ theorem relIndex_sesqL (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF 
     _ = (E * E * q ^ (2 * vA)) ^ m * q ^ (2 * m ^ 2 * c) := by rw [H2]
     _ = q ^ (2 * (m ^ 2 * c + m * vA)) * (E ^ m * E ^ m) := by ring
 
+/- English proof (translation)
+Establish `h1` using `relIndex_sesqL hK hF hs hd hA₀ hA₀i hB₀ hB₀i h𝔭 hle`. Rewrite `h1` using `[relIndex_sesqL_eq_sq hK hF A₀ B₀ h𝔭 hle]`. Apply `Nat.pow_left_injective (n := 2) (by norm_num)` to reduce the goal to its premises. Use `show _ ^ 2 = _ ^ 2`. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, mul_comm _ 2, mul_comm _ 2]`.
+
+Conclude with `h1`.
+-/
 theorem relIndex_hermL (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hA₀i : Formalism.HermitianLatticesTheory.IsIntegralLat h A₀) {B₀ : Submodule (𝓞 K) V}

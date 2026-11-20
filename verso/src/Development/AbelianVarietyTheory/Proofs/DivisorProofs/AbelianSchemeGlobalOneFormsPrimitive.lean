@@ -14,6 +14,19 @@ noncomputable section
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Take `⟨-, -, hAA, hsAA⟩` from `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hs`. Establish `hax` using `(GlobalTheory.T.grpObj_pullback_axes_cohomology_projections R A).2.1`. Establish `hM : FP R (GlobForm A.hom × GlobForm A.hom) (g + g)` using `(GlobalTheory.T.fgProjectiveConstantRank_extension_and_prod).2 R _ _ g g (GlobalTheory.T.abelianScheme_global_oneForms_projective_rank R A g hA hs) (GlobalTheory.T.abelianScheme_global_oneForms_projective_rank R A g hA hs)`. Establish `hN : FP R (GlobForm (A ⊗ A).hom) (g + g)` using `GlobalTheory.T.abelianScheme_global_oneForms_projective_rank R (A ⊗ A) (g + g) hAA hsAA`. Set `i₁ : A ⟶ A ⊗ A` to `lift (𝟙 A) (toUnit A ≫ η[A])`.
+
+Set `i₂ : A ⟶ A ⊗ A` to `lift (toUnit A ≫ η[A]) (𝟙 A)`. Set `f : (GlobForm A.hom × GlobForm A.hom) →ₗ[R] GlobForm (A ⊗ A).hom` to `(pF (fst A A)).coprod (pF (snd A A))`. Set `r : GlobForm (A ⊗ A).hom →ₗ[R] (GlobForm A.hom × GlobForm A.hom)` to `(pF i₁).prod (pF i₂)`. Establish `hr : ∀ y, r y = (pF i₁ y, pF i₂ y)` using `fun y ↦ by simp [r, LinearMap.prod_apply, Function.prod]`. Establish `hrf : ∀ x, r (f x) = x`.
+
+Introduce and unpack `⟨a, b⟩`. Take `⟨h1, h2, -, h4, h5, -⟩` from `hax a`. Take `⟨k1, k2, -, k4, k5, -⟩` from `hax b`. Establish `hf : f (a, b) = pF (fst A A) a + pF (snd A A) b` using `by simp [f]`. Rewrite using `[hr, hf, map_add, map_add, h1, k2, h4, k5, add_zero, zero_add]`.
+
+Establish `hbij` using `GlobalTheory.T.bijective_of_split_injective_fgProjectiveConstantRank R _ _ (g + g) hM hN f r hrf`. Establish `hrinj : Function.Injective r`. Introduce `y y' h`. Take `⟨x, rfl⟩` from `hbij.2 y`. Take `⟨x', rfl⟩` from `hbij.2 y'`.
+
+Rewrite `h` using `[hrf, hrf]`. Rewrite using `[h]`. Introduce `x`. Take `⟨-, -, h3, -, -, h6⟩` from `hax x`. Establish `e1 : r (pF μ[A] x) = (x, x)` using `(hr _).trans (Prod.ext h3 h6)`.
+
+Conclude with `(hrinj (e1.trans (hrf (x, x)).symm)).trans (LinearMap.coprod_apply _ _ _)`.
+-/
 theorem primF_of_abelian (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
     (hs : SmoothOfRelativeDimension g A.hom) : PrimF A := by
   obtain ⟨-, -, hAA, hsAA⟩ := GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hs

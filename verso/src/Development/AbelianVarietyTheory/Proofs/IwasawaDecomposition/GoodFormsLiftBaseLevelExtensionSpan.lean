@@ -27,6 +27,13 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.Rw
 
+/- English proof (translation)
+Introduce `p1 p2 p3 p4 p5 p6 p7`. Establish `H` using `StepW.and (StepW.and (GlobalTheory.T.finiteGroupAction_coordinatewise_fieldEmbedding p1 p2 p3 p4 p5 p6 p7) (GlobalTheory.T.finiteGroupCharactersOnLiftForms_extendedData p1 p2 p3 p4 p5 p6 p7)) (StepW.and (GlobalTheory.T.baseLevels_extendedData_correspond_fieldEmbedding p1 p2 p3 p4 …`. Use `StepW.trans H (StepW.of_all fun K B' f' T' w' _ _ hq => ?_)` and prove the remaining obligations. Introduce `B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' hEx j j' hj φ hφ`. Establish `S1` using `hq.1.1 B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' hEx j j' hj φ hφ`.
+
+Establish `S2` using `hq.1.2 B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' hEx j j' hj φ hφ`. Establish `S3` using `hq.2.1 B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' hEx j j' hj φ hφ`. Establish `S4` using `hq.2.2 B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV z' hF' hEx j j' hj φ hφ`. Take `⟨e, he⟩` from `GlobalTheory.Mem.R3.GoodBC.gc_iso B B' hE.1 w.px w'.px hpx`. Establish `hm : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m` using `congrArg (fun P : Pre => P.R.m) hE.1`.
+
+Establish `hn : z.R.nW j = z'.R.nW j'` using `(GlobalTheory.Mem.R3.GoodBC.nat_heq_app hm _ _ hEx.nW j j' hj).symm`. Unfold `RealDat.WL`. Use `GlobalTheory.Mem.R3.GoodBC.wgood_bc_rel hn (z.R.toRealDat.FW j) (z'.R.toRealDat.FW j') φ e _ _ _ _ _ _ (fun g x x' hx k k' hk => S1 g (e g) (he g) x x' hx k k' hk) (fun g => S2 g (e g) (he g)) (fun g => (S3 g (e g) (he g)).1) (fun g hg hg' => ?_) (fun g => S4 g (e g) (he g))` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, (S3 g (e g) (he g)).2 hg hg']`.
+-/
 theorem goodForms_lift_bc : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

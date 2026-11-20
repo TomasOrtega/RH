@@ -23,6 +23,11 @@ namespace GlobalTheory.Mem.KerSpan
 
 variable {K : Type} [Field K] {σ : K →+* ℂ}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Finset.univ_sum_single v]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smulₛₗ]`. Use `congr 1`.
+
+Use extensionality with `k`. Distinguish the cases in `h : k = l`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem semi_expand {W : Type} [AddCommGroup W] [Module ℂ W] {m : ℕ} (f : (Fin m → K) →ₛₗ[σ] W) (v : Fin m → K) :
     f v = ∑ l, σ (v l) • f (Pi.single l 1) := by
   conv_lhs => rw [← Finset.univ_sum_single v]
@@ -35,6 +40,9 @@ theorem semi_expand {W : Type} [AddCommGroup W] [Module ℂ W] {m : ℕ} (f : (F
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.mulVecLin Θ) (LinearMap.ker_eq_bot'.2 fun a ha => hΘ a ha)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg LinearMap.toMatrix' hg`. Rewrite `h` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+-/
 theorem left_inv_of_inj {m d : ℕ} (Θ : Matrix (Fin m) (Fin d) K) (hΘ : ∀ a, Θ *ᵥ a = 0 → a = 0) :
     ∃ L : Matrix (Fin d) (Fin m) K, L * Θ = 1 := by
   obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective (Matrix.mulVecLin Θ)
@@ -43,6 +51,9 @@ theorem left_inv_of_inj {m d : ℕ} (Θ : Matrix (Fin m) (Fin d) K) (hΘ : ∀ a
   have h := congrArg LinearMap.toMatrix' hg
   rwa [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin'] at h
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `left_inv_of_inj Θ hΘ`. Establish `h1 : (L.map σ) * (Θ.map σ) = 1`. Rewrite using `[← Matrix.map_mul, hL, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem map_mulVec_inj {m d : ℕ} (Θ : Matrix (Fin m) (Fin d) K) (hΘ : ∀ a, Θ *ᵥ a = 0 → a = 0)
     (c : Fin d → ℂ) (hc : (Θ.map σ) *ᵥ c = 0) : c = 0 := by
   obtain ⟨L, hL⟩ := left_inv_of_inj Θ hΘ
@@ -51,6 +62,39 @@ theorem map_mulVec_inj {m d : ℕ} (Θ : Matrix (Fin m) (Fin d) K) (hΘ : ∀ a,
   calc c = ((L.map σ) * (Θ.map σ)) *ᵥ c := by rw [h1, Matrix.one_mulVec]
     _ = 0 := by rw [← Matrix.mulVec_mulVec, hc, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Use `set U := Submodule.span ℂ (Set.range fun a => j (Z *ᵥ a)) with hU`. Use `set r : (Fin n → K) → V := fun x => j (x - Z *ᵥ (Pr *ᵥ x)) with hr`. Use `set R := Submodule.span ℂ (Set.range r) with hR`. Establish `hPZ : ∀ a, Pr *ᵥ (Z *ᵥ a) = a` using `fun a => by rw [Matrix.mulVec_mulVec, hp.1, Matrix.one_mulVec]`. Establish `hθr : ∀ x, θ (r x) = 0` using `fun x => by`.
+
+Simplify using `only [hr]`. Rewrite using `[hθ, Matrix.mulVec_sub, hPZ, sub_self, Matrix.mulVec_zero, map_zero]`. Establish `horth : ∀ a x, inner ℂ (j (Z *ᵥ a)) (r x) = 0` using `fun a x => by`. Simplify using `only [hr]`. Rewrite using `[hinner, map_sub, GlobalTheory.Mem.LiftForms.hform_orth hp, sub_self, map_zero]`.
+
+Establish `hRk : R ≤ LinearMap.ker θ` using `Submodule.span_le.2 (by rintro _ ⟨x, rfl⟩; exact hθr x)`. Establish `hUR : U ≤ Rᗮ`. Establish `h : U ⟂ R` using `Submodule.isOrtho_span.2 (by rintro _ ⟨a, rfl⟩ _ ⟨x, rfl⟩; exact horth a x)`. Conclude with `h`. Establish `htop : ∀ y : V, ∃ a ∈ U, ∃ b ∈ R, y = a + b`.
+
+Introduce `y`. Establish `hle : (⊤ : Submodule ℂ V) ≤ U ⊔ R`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `e : j (Pi.single k 1) = j (Z *ᵥ (Pr *ᵥ Pi.single k 1)) + r (Pi.single k 1)`.
+
+Simplify using `only [hr]`. Rewrite using `[map_sub, add_sub_cancel]`. Rewrite using `[SetLike.mem_coe]`. Simplify using `only`. Rewrite using `[e]`.
+
+Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨_, rfl⟩) (Submodule.subset_span ⟨_, rfl⟩)`. Take `⟨a, ha, b, hb, e⟩` from `Submodule.mem_sup.1 (hle Submodule.mem_top)`. Conclude with `⟨a, ha, b, hb, e.symm⟩`. Establish `hinj : ∀ y ∈ U, θ y = 0 → y = 0`. Introduce `y hy h0`.
+
+Establish `hsub : U ≤ Submodule.span ℂ (Set.range fun k => j (Z *ᵥ Pi.single k 1))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[SetLike.mem_coe]`. Simplify using `only`.
+
+Rewrite using `[show j (Z *ᵥ a) = (j.comp (Matrix.mulVecLin Z)) a from rfl, semi_expand]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hsub hy)`. Establish `hc : (Θ.map σ) *ᵥ c = 0`. Rewrite `h0` using `[map_sum]`.
+
+Simplify using `only [map_smul, hθ, hPZ] at h0`. Establish `e : ∀ k, jW (Θ *ᵥ Pi.single k 1) = ∑ l, σ (Θ l k) • jW (Pi.single l 1)` using `fun k => by`. Rewrite using `[semi_expand jW]`. Simplify using the standard rewrite rules. Establish `h1 : ∑ k, c k • jW (Θ *ᵥ Pi.single k 1) = ∑ l, ((Θ.map σ) *ᵥ c) l • jW (Pi.single l 1)`.
+
+Simplify using `only [e, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Rewrite `h0` using `[h1]`. Conclude with `funext (Fintype.linearIndependent_iff.1 hli _ h0)`. Establish `hc0` using `map_mulVec_inj Θ hΘ c hc`.
+
+Substitute `hc0` using the available equality. Simplify using the standard rewrite rules. Establish `hker : LinearMap.ker θ = R`. Use `le_antisymm (fun y hy => ?_) hRk` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `htop y`.
+
+Establish `hb0 : θ b = 0` using `hRk hb`. Establish `ha0 : θ a = 0`. Rewrite `hy` using `[LinearMap.mem_ker, map_add, hb0, add_zero]`. Conclude with `hy`. Rewrite using `[hinj a ha ha0, zero_add]`.
+
+Conclude with `hb`. Rewrite using `[hker]`. Use `le_antisymm (fun y hy => ?_) hUR` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `htop y`. Establish `hb' : b ∈ Rᗮ`.
+
+Establish `h` using `Rᗮ.sub_mem hy (hUR ha)`. Rewrite `h` using `[add_sub_cancel_left]`. Then use the resulting hypothesis. Establish `hb0 : b = 0`. Establish `h : b ∈ R ⊓ Rᗮ` using `Submodule.mem_inf.2 ⟨hb, hb'⟩`. Rewrite `h` using `[Submodule.inf_orthogonal_eq_bot]`.
+
+Conclude with `(Submodule.mem_bot ℂ).1 h`. Rewrite using `[hb0, add_zero]`. Conclude with `ha`.
+-/
 theorem orth_ker_eq_span [NumberField K] [StarRing K] {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [AddCommGroup W] [Module ℂ W]
     {n d m : ℕ} (j : (Fin n → K) →ₛₗ[σ] V) (H : Matrix (Fin n) (Fin n) K)
     (hinner : ∀ x y, inner ℂ (j x) (j y) = σ (Formalism.DivisionValues.hform H x y))
@@ -136,6 +180,15 @@ theorem orth_ker_eq_span [NumberField K] [StarRing K] {V W : Type} [NormedAddCom
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH i t`. Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim`. Establish `hOk` using `hH.ok.ok2`. Establish `hT` using `GlobalTheory.T.liftCuspFormSpace_thetaMap_eq_data D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH`. Establish `hp : Formalism.DivisionValues.IsOrthProj (lH D A3.A F.P0 F.ψ0 i t) (lZ0 D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) i t) (lPrj D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) i t)` using `BlockDat.lf_l_proj ⟨hOk.conj, hOk.irr, hOk.lifts i t⟩`.
+
+Establish `hΘ : ∀ a, ((A3.indefDown (s0Of R F)).θ i t) *ᵥ a = 0 → a = 0`. Introduce `a ha`. Establish `h2` using `GlobalTheory.Mem.LiftTheta.liftMatrix_computes_lift_rational (R.toCx3 F) F.cr false hR.lifts0.1 hR.ratTh i t a`. Establish `h6` using `CxData.tC_cpt_eq (R.toCx3 F) F.cr false i t a`. Establish `ha' : (R.toCx3 F).liftMat F.cr false i t *ᵥ a = 0` using `ha`.
+
+Establish `h7 : (R.toCx3 F).tC F.cr false i t (cpt A3.fam3.base3.v0.embedding a) = (R.toCx3 F).tC F.cr false i t (cpt A3.fam3.base3.v0.embedding 0)`. Rewrite using `[h6, ← h2, ha']`. Establish `hz : ∀ {k : ℕ}, cpt A3.fam3.base3.v0.embedding (0 : Fin k → D.what₂.LL) = 0` using `fun {k} => by`. Use function extensionality and compare the values at `l`. Simplify using `[cpt]`.
+
+Simplify using `only [hz, map_zero]`. Conclude with `cpt_injective _ ((hR.lifts0.1 i t).1 h7)`. Conclude with `GlobalTheory.Mem.KerSpan.orth_ker_eq_span _ _ (Y.formsL i t).inner (Y.formsL i t).span _ _ hp (D.what₂.thetaP (Y.tup t) ((i : ℕ) + 1)) (Z.jW i) (hT.1.li i) _ hΘ (fun x => hT.2 i t x)`.
+-/
 theorem orth_ker_thetaP : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → ∀ (i : Fin D.R.m) (t : T), (LinearMap.ker (D.what₂.thetaP (Y.tup t) ((i : ℕ) + 1)))ᗮ = Submodule.span ℂ (Set.range fun a => D.what₂.jMt (Y.tup t) ((i : ℕ) + 1) (Y.eMt i t (lZ0 D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) i t *ᵥ a))) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH i t
   have hR := complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim

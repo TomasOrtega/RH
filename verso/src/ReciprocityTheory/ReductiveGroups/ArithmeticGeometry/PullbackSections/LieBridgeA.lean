@@ -15,6 +15,9 @@ variable {X0 : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (G : Over 
 
 def tanSub : Subgroup (overAt x0 (DualNumber S) ⟶ G) := (smHom (G := G) x0 0).ker
 
+/- English proof (translation)
+The claim follows from `MonoidHom.mem_ker`.
+-/
 theorem mem_tanSub {v : overAt x0 (DualNumber S) ⟶ G} : v ∈ tanSub x0 G ↔ smT x0 0 v = 1 := MonoidHom.mem_ker
 
 abbrev TanM : Type := Additive (tanSub x0 G)
@@ -23,22 +26,43 @@ variable {x0 G}
 
 def tv (v : TanM x0 G) : overAt x0 (DualNumber S) ⟶ G := ((Additive.toMul v : tanSub x0 G) : overAt x0 (DualNumber S) ⟶ G)
 
+/- English proof (translation)
+The claim follows from `(mem_tanSub x0 G).1 (Additive.toMul v).2`.
+-/
 theorem tv_mem (v : TanM x0 G) : smT x0 0 (tv v) = 1 := (mem_tanSub x0 G).1 (Additive.toMul v).2
 
+/- English proof (translation)
+The claim follows from `Additive.toMul.injective (Subtype.ext h)`.
+-/
 theorem tanM_ext {u v : TanM x0 G} (h : tv u = tv v) : u = v := Additive.toMul.injective (Subtype.ext h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_add (u v : TanM x0 G) : tv (u + v) = tv u * tv v := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_zero : tv (0 : TanM x0 G) = 1 := rfl
 
 def mkT (v : overAt x0 (DualNumber S) ⟶ G) (h : smT x0 0 v = 1) : TanM x0 G := Additive.ofMul ⟨v, (mem_tanSub x0 G).2 h⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_mkT (v : overAt x0 (DualNumber S) ⟶ G) (h : smT x0 0 v = 1) : tv (mkT v h) = v := rfl
 
+/- English proof (translation)
+Rewrite using `[smT_smT, zero_mul, tv_mem]`.
+-/
 theorem smT_mem (a : S) (v : TanM x0 G) : smT x0 0 (smT x0 a (tv v)) = 1 := by
   rw [smT_smT, zero_mul, tv_mem]
 
 instance : SMul S (TanM x0 G) := ⟨fun a v => mkT (smT x0 a (tv v)) (smT_mem a v)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_smul (a : S) (v : TanM x0 G) : tv (a • v) = smT x0 a (tv v) := rfl
 
 instance : Module S (TanM x0 G) where
@@ -54,8 +78,14 @@ def actL (φ : G ⟶ G) [IsMonHom φ] : TanM x0 G →ₗ[S] TanM x0 G where
   map_add' u v := tanM_ext (MonObj.mul_comp (tv u) (tv v) φ)
   map_smul' a v := tanM_ext (smT_post x0 a (tv v) φ).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_actL (φ : G ⟶ G) [IsMonHom φ] (v : TanM x0 G) : tv (actL φ v) = tv v ≫ φ := rfl
 
+/- English proof (translation)
+Establish `h` using `A.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+-/
 theorem oact_zero {O : Type} [CommRing O] (A : OAct O G) : A.act 0 = 1 := by
   have h := A.add 0 0
   rw [add_zero] at h
@@ -76,6 +106,9 @@ def actR {O : Type} [CommRing O] (A : OAct O G) : O →+* Module.End S (TanM x0 
     show tv v ≫ A.act (a + b) = (tv v ≫ A.act a) * (tv v ≫ A.act b)
     rw [A.add, MonObj.comp_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_actR {O : Type} [CommRing O] (A : OAct O G) (a : O) (v : TanM x0 G) :
     tv (actR A a v) = tv v ≫ A.act a := rfl
 

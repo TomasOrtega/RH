@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsOpenGraph
 open GlobalTheory.PrimLift
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_global_of_isCoveringMap_etale | exact GlobalTheory.exists_global_of_isCoveringMap_etale | (intros; apply GlobalTheory.exists_global_of_isCoveringMap_etale <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.etale_lift_global_primitive : ∀ {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] [LocallyPathConnectedSpace X]
     (P : Set X → (X → ℂ) → Prop),
     (∀ O f, P O f → IsOpen O) →

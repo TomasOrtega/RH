@@ -19,6 +19,13 @@ namespace GlobalTheory.DownLift.TypeLaw
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hmp : MeasurePreserving (fun g : G => g * k) μ μ` using `⟨measurable_mul_const k, hk⟩`. Establish `hemb : MeasurableEmbedding (fun g : G => g * k)` using `measurableEmbedding_mulRight k`. Establish `h2 : IsFundamentalDomain Γ ((fun g : G => g * k) ⁻¹' 𝓕) μ`. Use `h𝓕.preimage_of_equiv hmp.quasiMeasurePreserving (e := id) Function.bijective_id ?_` and prove the remaining obligations. Introduce `γ g`.
+
+Simplify using `only [id, Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Establish `hinv : ∀ (γ : Γ) (g : G), (fun g : G => f (g * k)) (γ • g) = (fun g : G => f (g * k)) g`. Introduce `γ g`. Simplify using `only [Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Conclude with `hf γ γ.2 _`.
+
+Rewrite using `[h𝓕.setIntegral_eq h2 hinv]`. Conclude with `hmp.setIntegral_preimage_emb hemb f 𝓕`.
+-/
 theorem setIntegral_mul_right_of_fd {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
     (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant] (𝓕 : Set G) (h𝓕 : IsFundamentalDomain Γ 𝓕 μ)
     (k : G) (hk : Measure.map (fun g => g * k) μ = μ) (f : G → ℂ) (hf : ∀ γ ∈ Γ, ∀ g, f (γ * g) = f g) :
@@ -36,12 +43,18 @@ theorem setIntegral_mul_right_of_fd {G : Type} [Group G] [MeasurableSpace G] [Me
   rw [h𝓕.setIntegral_eq h2 hinv]
   exact hmp.setIntegral_preimage_emb hemb f 𝓕
 
+/- English proof (translation)
+Consider the cases of `L`. Simplify using `only at hL`. Substitute `hL` using the available equality. Both sides reduce to the same expression.
+-/
 theorem flagOneLevel_eq_self_of_trivial {n : ℕ} (L : LevDat D.host.E ℂ n) (hL : L.P = LevelP.triv L.Pg L.r ℂ) : flag1L L = L := by
   cases L
   simp only at hL
   subst hL
   rfl
 
+/- English proof (translation)
+Establish `h1` using `hF 1 x k`. Rewrite `h1` using `[map_one, one_mul, map_one, Module.End.one_apply]`. Conclude with `h1`.
+-/
 theorem adForms_right {G Γ W : Type} [Group G] [Group Γ] (ι : Γ →* G) [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) (F : G → W)
     (hF : F ∈ Formalism.IndefR.Bridge.AdForms ι ρ J χ) (x : G) (k : J) : F (x * k) = (χ k : ℂ) • F x := by
@@ -49,6 +62,11 @@ theorem adForms_right {G Γ W : Type} [Group G] [Group Γ] (ι : Γ →* G) [Nor
   rw [map_one, one_mul, map_one, Module.End.one_apply] at h1
   exact h1
 
+/- English proof (translation)
+Establish `hmem : (finHom V).rangeRestrict κ ∈ (levEnv V β L).J` using `by show finE V κ ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β (flag1L L)`. Conclude with `hκ.2`. Establish `h1` using `adForms_right (W := c.W) (Formalism.IndefR.Bridge.ratF V) c.coef.ρ (levEnv V β L).J (levEnv V β L).χ F hF x ⟨_, hmem⟩`. Establish `hχ : (((levEnv V β L).χ ⟨_, hmem⟩ : ℂˣ) : ℂ) = levChi V β (flag1L L) κ` using `rfl`. Rewrite `h1` using `[hχ]`.
+
+Conclude with `h1`.
+-/
 theorem adForm_type (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (c : CoefA V)
     (F : Formalism.IndefR.Bridge.Gf V → c.W)
     (hF : F ∈ Formalism.IndefR.Bridge.AdForms (Formalism.IndefR.Bridge.ratF V) c.coef.ρ (levEnv V β L).J (levEnv V β L).χ)
@@ -66,6 +84,9 @@ end GlobalTheory.DownLift.TypeLaw
 
 namespace GlobalTheory.DownLift.TypeLaw
 
+/- English proof (translation)
+Simplify using `[LevCh.datVt, datY, LevelP.conj, LevelP.triv]`. Both sides reduce to the same expression.
+-/
 theorem datVt_P {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) :
     (R.datVt i t).P = LevelP.triv (R.datVt i t).Pg (R.datVt i t).r ℂ := by
@@ -79,6 +100,13 @@ namespace GlobalTheory.DownLift.TypeLaw
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `hL : flag1L (R.datVt i t) = R.datVt i t` using `flagOneLevel_eq_self_of_trivial _ (datVt_P R i t)`. Establish `hκ1 : κ ∈ levG (Vc D i) (R.βV i) (flag1L (R.datVt i t))` using `by rw [hL]; exact hκ`. Establish `hc0 : levChi (Vc D i) (R.βV i) (R.datVt i t) κ ≠ 0` using `levChi_ne_zero _ κ`. Establish `hchi : levChi (Vc D i) (R.βV i) (flag1L (R.datVt i t)) κ = levChi (Vc D i) (R.βV i) (R.datVt i t) κ` using `by rw [hL]`. Establish `hyA : (R.HV i t).e y ∈ Formalism.IndefR.Bridge.AdForms (Formalism.IndefR.Bridge.ratF (Vc D i)) (R.cV i).coef.ρ (levEnv (Vc D i) (R.βV i) (R.datVt i t)).J (levEnv (Vc D i) (R.βV i) (R.datVt i t)).χ` using `(hM.HV i t).2.1.le ⟨y, rfl⟩`.
+
+Establish `hty : ∀ x, (R.HV i t).e y x = (levChi (Vc D i) (R.βV i) (R.datVt i t) κ)⁻¹ • (R.HV i t).e y (x * (finHom (Vc D i)).rangeRestrict κ)`. Introduce `x`. Establish `h1` using `adForm_type (Vc D i) (R.βV i) (R.datVt i t) (R.cV i) ((R.HV i t).e y) hyA κ hκ1 x`. Establish `h2 : (R.HV i t).e y (x * (finHom (Vc D i)).rangeRestrict κ) = levChi (Vc D i) (R.βV i) (R.datVt i t) κ • (R.HV i t).e y x` using `h1.trans (congrArg (· • (R.HV i t).e y x) hchi)`. Conclude with `(inv_smul_smul₀ hc0 _).symm.trans (congrArg ((levChi (Vc D i) (R.βV i) (R.datVt i t) κ)⁻¹ • ·) h2.symm)`.
+
+Establish `e1` using `GlobalTheory.ThetaProjEquiv.ext_shift (R.cV i) (hM.cV i) κ hκ.1 _ hc0 ((R.HV i t).e y) ((R.HV i t).e y) hty h`. Establish `hx : ∀ z, R.extV i t y z = (R.cV i).ext ((R.HV i t).e y) z` using `fun z => rfl`. Establish `e2 : (R.cV i).ext (levChi (Vc D i) (R.βV i) (R.datVt i t) κ • (R.HV i t).e y) h = levChi (Vc D i) (R.βV i) (R.datVt i t) κ • (R.cV i).ext ((R.HV i t).e y) h`. Conclude with `congrFun (LinearMap.map_smul (R.cV i).ext _ ((R.HV i t).e y)) h`. Conclude with `(hx (h * κ)).trans (e1.symm.trans (e2.trans (congrArg (levChi (Vc D i) (R.βV i) (R.datVt i t) κ • ·) (hx h).symm)))`.
+-/
 theorem extV_type (R : RealDat D A Ks) (hM : R.IsModels) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (κ : GA D (Vc D i))
     (hκ : κ ∈ levG (Vc D i) (R.βV i) (R.datVt i t)) (h : GA D (Vc D i)) :
     R.extV i t y (h * κ) = levChi (Vc D i) (R.βV i) (R.datVt i t) κ • R.extV i t y h := by
@@ -108,9 +136,27 @@ end GlobalTheory.DownLift.TypeLaw
 
 namespace GlobalTheory.DownLift.TypeLaw
 
+/- English proof (translation)
+Rewrite using `[hab, hd, mul_left_comm b c d, inv_mul_cancel_left₀ hc]`.
+-/
 theorem alg_step {a b c d d' : ℂ} (hc : c ≠ 0) (hab : a = b) (hd : d' = c * d) : a * d = c⁻¹ * (b * d') := by
   rw [hab, hd, mul_left_comm b c d, inv_mul_cancel_left₀ hc]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t y f hf κ hκ l g`. Establish `hM` using `hG.core.models`. Establish `hc0 : levChi (Vc D i) (R.βV i) (R.datVt i t) κ ≠ 0` using `levChi_ne_zero _ κ`. Establish `hFn : ∀ h, l (R.extV i t y (h * κ)) = levChi (Vc D i) (R.βV i) (R.datVt i t) κ * l (R.extV i t y h)`. Introduce `h`.
+
+Conclude with `(congrArg l (extV_type R hM i t y κ hκ h)).trans (l.map_smul _ _)`. Establish `hth : ∀ h, thetaKO (R.ωP i t) h g (R.ωP i t (κ, 1) f) = thetaKO (R.ωP i t) (h * κ) g f`. Introduce `h`. Establish `hm : ((h, g) : GA D (Vc D i) × GA D (Wc D i)) * (κ, 1) = (h * κ, g)`. Rewrite using `[Prod.mk_mul_mk, mul_one]`.
+
+Use `show R.ωP i t (h, g) (R.ωP i t (κ, 1) f) 0 = R.ωP i t (h * κ, g) f 0`. Rewrite using `[← hm, map_mul, Module.End.mul_apply]`. Set `Φ : GA D (Vc D i) → ℂ` to `fun h => thetaKO (R.ωP i t) h g f * l (R.extV i t y h)`. Establish `hΦ : ∀ γ ∈ GQ (Vc D i), ∀ h, Φ (γ * h) = Φ h`. Introduce `γ hγ h`.
+
+Establish `ht : thetaKO (R.ωP i t) (γ * h) g f = thetaKO (R.ωP i t) h g f`. Establish `hm : ((γ, 1) : GA D (Vc D i) × GA D (Wc D i)) * (h, g) = (γ * h, g)`. Rewrite using `[Prod.mk_mul_mk, one_mul]`. Use `show R.ωP i t (γ * h, g) f 0 = R.ωP i t (h, g) f 0`. Rewrite using `[← hm, map_mul, Module.End.mul_apply]`.
+
+Conclude with `(hP i t).datum.om_aut γ hγ 1 (GQ (Wc D i)).one_mem _ ((hP i t).datum.om_pres _ _ hf)`. Establish `hl : l (R.extV i t y (γ * h)) = l (R.extV i t y h)` using `congrArg l (GlobalTheory.ThetaProjEquiv.extV_left R hM.HV i t y γ hγ h)`. Conclude with `congrArg₂ (· * ·) ht hl`. Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable (Vc D i)`. Establish `: IsTopologicalGroup (GA D (Vc D i))` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig (Vc D i).gram))`.
+
+Establish `hH : (R.νV i t).IsHaarMeasure` using `(hM.νV i t).1.1`. Establish `hmap` using `GlobalTheory.haar_map_mul_right_of_mem_compact_subgroup (R.νV i t) _ (GlobalTheory.ParahoricCompact.isCompact_levG (Vc D i) (R.βV i) (R.datVt i t)) κ hκ`. Establish `hint` using `setIntegral_mul_right_of_fd (GQ (Vc D i)) (R.νV i t) (R.fdV i t) (hM.νV i t).2 κ hmap Φ hΦ`. Establish `hfun : (fun h => thetaKO (R.ωP i t) h g (R.ωP i t (κ, 1) f) * l (R.extV i t y h)) = fun h => (levChi (Vc D i) (R.βV i) (R.datVt i t) κ)⁻¹ * Φ (h * κ)`. Use function extensionality and compare the values at `h`.
+
+Conclude with `alg_step hc0 (hth h) (hFn h)`. Conclude with `(congrArg (fun φ : GA D (Vc D i) → ℂ => ∫ h in R.fdV i t, φ h ∂(R.νV i t)) hfun).trans ((integral_const_mul _ _).trans (congrArg ((levChi (Vc D i) (R.βV i) (R.datVt i t) κ)⁻¹ * ·) hint))`.
+-/
 theorem downInt_level : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (f : WO (Vc D i) (Wc D i) → ℂ), IsThetaFunO R.ψ (Vc D i) (Wc D i) f → ∀ κ ∈ levG (Vc D i) (R.βV i) (R.datVt i t), ∀ (l : (R.cV i).W →ₗ[ℂ] ℂ) (g : GA D (Wc D i)), downInt R i t y (R.ωP i t (κ, 1) f) l g = (levChi (Vc D i) (R.βV i) (R.datVt i t) κ)⁻¹ * downInt R i t y f l g := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t y f hf κ hκ l g
   have hM := hG.core.models

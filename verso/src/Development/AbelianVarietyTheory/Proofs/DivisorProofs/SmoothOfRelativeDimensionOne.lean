@@ -20,6 +20,11 @@ open GlobalTheory.QCoh GlobalTheory.CechPic
 
 namespace GlobalTheory.NefCurveTest
 
+/- English proof (translation)
+Take `⟨n, hn⟩ : ∃ n, SmoothOfRelativeDimension n s` from `exists_dim_of_preconnected s (genericPoint C)`. Take `⟨x, hx⟩` from `ProperCurve.exists_ne_genericPoint hd`. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := x) trivial`. Establish `e` using `(ProperCurve.ringKrullDim_eq_one hd hU hxU hx).symm.trans (SmoothDim.ringKrullDim_affineOpen k _ _ _ hn U hU ⟨x, hxU⟩)`. Take `rfl : 1 = n` from `by exact_mod_cast e`.
+
+Conclude with `hn`.
+-/
 theorem smoothOfRelativeDimension_one {k : Type} [Field k] {C : Scheme.{0}} [IsIntegral C] (s : C ⟶ Sp k) [Smooth s]
     (hd : topologicalKrullDim C = 1) : SmoothOfRelativeDimension 1 s := by
   obtain ⟨n, hn⟩ : ∃ n, SmoothOfRelativeDimension n s := exists_dim_of_preconnected s (genericPoint C)
@@ -30,6 +35,19 @@ theorem smoothOfRelativeDimension_one {k : Type} [Field k] {C : Scheme.{0}} [IsI
   obtain rfl : 1 = n := by exact_mod_cast e
   exact hn
 
+/- English proof (translation)
+Set `f` to `D.fromSpecResidueField (genericPoint D)`. Set `c` to `f.fromNormalization`. Use `haveI : IsFinite c := NormCurve.isFinite_fromNormalization f s`. Establish `htr : letI` using `(NormCurve.constHom (f ≫ s) ⊤).toAlgebra Algebra.trdeg k Γ(Spec (D.residueField (genericPoint D)), ⊤) ≤ 1 := by`. Take `⟨x, hx⟩` from `ProperCurve.exists_ne_genericPoint hd`.
+
+Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := x) trivial`. Establish `e : ⊤ ≤ f ⁻¹ᵁ U` using `fun z _ => by`. Express the relevant statement in the definitionally equal form `f z ∈ U`. Rewrite using `[Scheme.fromSpecResidueField_apply]`. Conclude with `VB.genericPoint_mem hxU`.
+
+Use `letI := (NormCurve.constHom s U).toAlgebra`. Use `haveI : Algebra.FiniteType k Γ(D, U) := NormCurve.finiteType_constHom s hU`. Use `haveI : Nonempty (⊤ : (Spec (D.residueField (genericPoint D))).Opens) := ⟨⟨Nonempty.some inferInstance, trivial⟩⟩`. Use `letI := (NormCurve.isField_sections (⊤ : (Spec (D.residueField (genericPoint D))).Opens)).toField`. Use `letI := (NormCurve.constHom (f ≫ s) ⊤).toAlgebra`.
+
+Use `letI := (f.appLE U ⊤ e).hom.toAlgebra`. Use `haveI : IsScalarTower k Γ(D, U) Γ(Spec (D.residueField (genericPoint D)), ⊤) := .of_algebraMap_eq' (NormCurve.appLE_comp_constHom s f U ⊤ e).symm`. Conclude with `(NormCurve.finite_integralClosure k (NormCurve.surjectiveOnStalks_appLE f hU ⊤ e)).2 ((ringKrullDim_quotient_le _).trans (ProperCurve.ringKrullDim_eq_one hd hU hxU hx).le)`. Establish `hξ : genericPoint D ∈ Set.range c`. Use `⟨f.toNormalization (Nonempty.some inferInstance), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.comp_apply, f.toNormalization_fromNormalization, Scheme.fromSpecResidueField_apply]`. Establish `hs : Function.Surjective c` using `fun y => (genericPoint_specializes y).mem_closed c.isClosedMap.isClosed_range hξ`. Establish `hη : c (genericPoint _) = genericPoint D`. Take `⟨y, hy⟩` from `hξ`. Use `((genericPoint_specializes _).antisymm ?_).eq.symm` and prove the remaining obligations.
+
+Conclude with `((genericPoint_specializes y).map c.continuous).trans (specializes_of_eq hy)`. Conclude with `⟨f.normalization, inferInstance, c, inferInstance, hη, ((Published.dim_le_of_isIntegralHom c).antisymm (PosBaseChange.dim_le_of_isClosedMap c.isClosedMap hs)).trans hd, CurveThrough.smooth_of_dedekind_charts k _ _ (NormCurve.isDedekindDomain_sections f s htr)⟩`.
+-/
 theorem exists_smooth_finite {k : Type} [Field k] [IsAlgClosed k] {D : Scheme.{0}} [IsIntegral D] (s : D ⟶ Sp k)
     [IsProper s] (hd : topologicalKrullDim D = 1) :
     ∃ (C : Scheme.{0}) (_ : IsIntegral C) (f : C ⟶ D), IsFinite f ∧ f (genericPoint C) = genericPoint D ∧
@@ -73,6 +91,9 @@ def CurveTest (K : Type) [Field K] {X : Scheme.{0}} (L : LB X) : Prop :=
   ∀ (C : Scheme.{0}) [Algebra K Γ(C, ⊤)], SmoothOfRelativeDimension 1 (strHom K C) → IsProjOver (strHom K C) →
     GeometricallyConnected (strHom K C) → ∀ g : C ⟶ X, 0 ≤ interNum K (structureModule C) ![L.pull g]
 
+/- English proof (translation)
+Introduce `C _ hs hp hc g` and use `by refine (h C hs hp hc (g ≫ π)).trans_eq (interNum_congr_cls K _ (isLB_vecOne (LB.isLB_pull hL _)) (isLB_vecOne (LB.isLB_pull (LB.isLB_pull hL _) _)) fun j => ?_) fin_cases j exact pull_comp g π (cls L hL)`.
+-/
 theorem CurveTest.pull {K : Type} [Field K] {X Y : Scheme.{0}} {L : LB X} (h : CurveTest K L) (hL : L.IsLB)
     (π : Y ⟶ X) : CurveTest K (L.pull π) := fun C _ hs hp hc g => by
   refine (h C hs hp hc (g ≫ π)).trans_eq (interNum_congr_cls K _ (isLB_vecOne (LB.isLB_pull hL _))
@@ -80,6 +101,17 @@ theorem CurveTest.pull {K : Type} [Field K] {X Y : Scheme.{0}} {L : LB X} (h : C
   fin_cases j
   exact pull_comp g π (cls L hL)
 
+/- English proof (translation)
+Use `isNef_iff_isClosedImmersion.2 ⟨hL, fun D i _ _ hd hp => ?_⟩` and prove the remaining obligations. Use `letI := algebraΓAlong K i`. Establish `hi` using `appTop_algebraMap_along K i`. Rewrite `hp` using `[comp_strHom hi]`. Take `⟨C, _, f, _, hη, hdC, hs⟩` from `exists_smooth_finite (strHom K D) hd`.
+
+Use `letI := algebraΓAlong K f`. Establish `hf` using `appTop_algebraMap_along K f`. Establish `hpC : IsProper (f ≫ strHom K D)` using `inferInstance`. Rewrite `hs`, `hpC` using `[comp_strHom hf]`. Establish `hM` using `LB.isLB_pull hL i`.
+
+Establish `h₀` using `h.pull hL i C (smoothOfRelativeDimension_one _ hdC) (ProperCurve.isProjOver_of_isProper _ hdC) (geometricallyConnected_of_isAlgClosed _) f`. Establish `e₁` using `ProjFin.interNumOn_eq_residueDegree_mul K D C f (ProperCurve.isProjOver_of_isProper _ hd) hd hη _ hM`. Rewrite `e₁` using `[interNumOn_eq_interNum_pull hf (isLB_vecOne hM)]`. Rewrite using `[interNumOn_eq_interNum_pull hi (isLB_vecOne hL)]`. Establish `hdeg : 0 < f.residueDegree (genericPoint C)` using `Nat.pos_of_ne_zero ((PullbackFinitePoint.residueDegree_ne_zero_iff_finite f _).2 (residueFieldMap_finite_of_locallyQuasiFinite f _))`.
+
+Establish `e₂ : (fun j => ((![L.pull i] : Fin 1 → LB D) j).pull f) = ![(L.pull i).pull f]`. Use function extensionality and compare the values at `fun j => by fin_cases j; rfl`. Establish `e₃ : (fun j => ((![L] : Fin 1 → LB X) j).pull i) = ![L.pull i]` using `funext fun j => by fin_cases j; rfl`. Rewrite `e₁` using `[e₂]`. Rewrite using `[e₃]`.
+
+Rewrite `h₀` using `[e₁]`. Conclude with `nonneg_of_mul_nonneg_right h₀ (by exact_mod_cast hdeg)`.
+-/
 theorem CurveTest.isNef_of_isAlgClosed {K : Type} [Field K] [IsAlgClosed K] {X : Scheme.{0}} [Algebra K Γ(X, ⊤)]
     {L : LB X} (h : CurveTest K L) (hL : L.IsLB) : IsNef K L := by
   refine isNef_iff_isClosedImmersion.2 ⟨hL, fun D i _ _ hd hp => ?_⟩
@@ -107,6 +139,11 @@ theorem CurveTest.isNef_of_isAlgClosed {K : Type} [Field K] [IsAlgClosed K] {X :
   rw [e₁] at h₀
   exact nonneg_of_mul_nonneg_right h₀ (by exact_mod_cast hdeg)
 
+/- English proof (translation)
+Use `isNef_iff_isClosedImmersion.2 ⟨hL, fun D i _ _ hd hp => ?_⟩` and prove the remaining obligations. Use `letI := algebraΓAlong k i`. Establish `hi` using `appTop_algebraMap_along k i`. Rewrite `hp` using `[comp_strHom hi]`. Establish `hM` using `LB.isLB_pull hL i`.
+
+Take `⟨D', _, π, hp', hd', -, -, he⟩` from `Published.exists_algClosed_baseChange (ProperCurve.isProjOver_of_isProper (strHom k D) hd)`. Rewrite using `[interNumOn_eq_interNum_pull hi (isLB_vecOne hL), ← he 1 _ fun j => LB.isLB_pull (isLB_vecOne hL j) i]`. Use `hN _ D' 1 hp' (hd'.trans hd) _ fun j => ?_` and prove the remaining obligations. Use `fin_cases j`. Conclude with `((h.pull hL i).pull hM π).isNef_of_isAlgClosed (LB.isLB_pull hM π)`.
+-/
 theorem CurveTest.isNef (hN : Published.NefProductNonneg) {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)]
     {L : LB X} (h : CurveTest (AlgebraicClosure k) L) (hL : L.IsLB) : IsNef k L := by
   refine isNef_iff_isClosedImmersion.2 ⟨hL, fun D i _ _ hd hp => ?_⟩

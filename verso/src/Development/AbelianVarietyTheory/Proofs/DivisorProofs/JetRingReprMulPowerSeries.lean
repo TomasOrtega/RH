@@ -5,6 +5,11 @@ open scoped Classical
 
 namespace GlobalTheory.JetMul
 
+/- English proof (translation)
+Use `Finite.of_injective (fun ν : Idx I n => fun i => (⟨ν.1 i, ?_⟩ : Fin (n + 2))) ?_` and prove the remaining obligations. Establish `h1 : ν.1 i ≤ ∑ j, ν.1 j` using `Finset.single_le_sum (fun j _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `h2` using `ν.2`. Use linear arithmetic over natural numbers and integers. Introduce `a b h`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact. Simplify using `using congrArg Fin.val this`.
+-/
 theorem finite_jet_index {I : Type} [Fintype I] {n : ℕ} : Finite (Idx I n) := by
   refine Finite.of_injective (fun ν : Idx I n => fun i => (⟨ν.1 i, ?_⟩ : Fin (n + 2))) ?_
   · have h1 : ν.1 i ≤ ∑ j, ν.1 j := Finset.single_le_sum (fun j _ => Nat.zero_le _) (Finset.mem_univ i)
@@ -16,6 +21,33 @@ theorem finite_jet_index {I : Type} [Fintype I] {n : ℕ} : Finite (Idx I n) := 
     have := congrFun h i
     simpa using congrArg Fin.val this
 
+/- English proof (translation)
+Use `haveI : Finite (Idx I n) := finite_jet_index`. Use `haveI : Fintype (Idx I n) := Fintype.ofFinite _`. Establish `hb : ∀ ν ν' : Idx I n, J.b.repr (J.b ν * J.b ν') μ = if ν.1 + ν'.1 = μ.1 then ((∏ i, (ν.1 i + ν'.1 i).choose (ν.1 i) : ℕ) : ℂ) else 0`. Introduce `ν ν'`. Rewrite using `[J.mul]`.
+
+Use `split_ifs with h1 h2 h2`. Rewrite using `[map_nsmul, Finsupp.smul_apply, Module.Basis.repr_self, Finsupp.single_apply, if_pos (Subtype.ext h2)]`. Simplify using `[nsmul_eq_mul]`. Rewrite using `[map_nsmul, Finsupp.smul_apply, Module.Basis.repr_self, Finsupp.single_apply, if_neg (fun h => h2 (congrArg Subtype.val h))]`. Simplify using the standard rewrite rules.
+
+Conclude with `absurd (by rw [h2]; exact μ.2) h1`. Simplify using the standard rewrite rules. Establish `hxy : x * y = ∑ ν, ∑ ν', (J.b.repr x ν * J.b.repr y ν') • (J.b ν * J.b ν')` using `by conv_lhs => rw [← J.b.sum_repr x, ← J.b.sum_repr y]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ν' _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm]`. Rewrite using `[hxy, map_sum, Finsupp.finset_sum_apply]`. Repeatedly rewrite using `[map_sum, Finsupp.finset_sum_apply, map_smul, Finsupp.smul_apply, smul_eq_mul, hb, hx, hy]`.
+
+Establish `hfac : ∀ ν ν' : Idx I n, ν.1 + ν'.1 = μ.1 → (∏ i, (ν.1 i).factorial) * (∏ i, (ν'.1 i).factorial) * (∏ i, (ν.1 i + ν'.1 i).choose (ν.1 i)) = ∏ i, (μ.1 i).factorial`. Introduce `ν ν' h`. Rewrite using `[← h, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, ← Nat.add_choose_mul_factorial_mul_factorial (ν.1 i) (ν'.1 i), Nat.choose_symm_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ ν ν' : Idx I n, ((∏ i, (ν.1 i).factorial : ℕ) : ℂ) * MvPowerSeries.coeff (Finsupp.equivFunOnFinite.symm ν.1) F * (((∏ i, (ν'.1 i).factorial : ℕ) : ℂ) * MvPowerSeries.coeff (Finsupp.equivFunOnFinite.symm ν'.1) G) * (if ν.1 + ν'.1 = μ.1 then ((∏ i, (ν.1 i + ν'.1 i).choose …`. Introduce `ν ν'`. Use `split_ifs with h`. Rewrite using `[← hfac ν ν' h]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Repeatedly rewrite using `[hterm]`. Rewrite using `[MvPowerSeries.coeff_mul, Finset.mul_sum, ← Finset.sum_product' (f := fun ν ν' : Idx I n => if ν.1 + ν'.1 = μ.1 then ((∏ i, (μ.1 i).factorial : ℕ) : ℂ) * (MvPowerSeries.coeff (Finsupp.equivFunOnFinite.symm ν.1) F * MvPowerSeries.coeff (Finsupp.equivFunOnFinite.symm ν'.1) G) else …`.
+
+Establish `hle : ∀ p : (I →₀ ℕ) × (I →₀ ℕ), p ∈ Finset.HasAntidiagonal.antidiagonal (Finsupp.equivFunOnFinite.symm μ.1) → (∑ i, p.1 i ≤ n + 1) ∧ (∑ i, p.2 i ≤ n + 1)`. Introduce `p hp`. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hμ` using `μ.2`. Establish `e : ∀ i, p.1 i + p.2 i = μ.1 i` using `fun i => by`.
+
+Use `DFunLike.congr_fun hp i` as an intermediate fact. Simplify using `using this`. Establish `s : ∑ i, p.1 i + ∑ i, p.2 i = ∑ i, μ.1 i`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => e i`.
+
+Use linear arithmetic over natural numbers and integers. Use `Finset.sum_bij' (fun a _ => (Finsupp.equivFunOnFinite.symm a.1.1, Finsupp.equivFunOnFinite.symm a.2.1)) (fun p hp => (⟨p.1, (hle p hp).1⟩, ⟨p.2, (hle p hp).2⟩)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_filter]`. Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+
+Use extensionality with `i`. Simplify using `[← ha.2]`. Introduce `p hp`. Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_product.2 ⟨Finset.mem_univ _, Finset.mem_univ _⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Use function extensionality and compare the values at `i`. Use `DFunLike.congr_fun hp i` as an intermediate fact. Simplify using `using this`. Introduce `a ha`.
+
+Both sides reduce to the same expression. Introduce `p hp`. Apply the tactic sequence `ext i <;> simp`. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_filter]`.
+-/
 theorem reprMul {I : Type} [Fintype I] {n : ℕ} (J : JetRing ℂ I n) (F G : MvPowerSeries I ℂ) (x y : J.B)
     (hx : ∀ ν : Idx I n, J.b.repr x ν = ((∏ i, (ν.1 i).factorial : ℕ) : ℂ) * MvPowerSeries.coeff (Finsupp.equivFunOnFinite.symm ν.1) F)
     (hy : ∀ ν : Idx I n, J.b.repr y ν = ((∏ i, (ν.1 i).factorial : ℕ) : ℂ) * MvPowerSeries.coeff (Finsupp.equivFunOnFinite.symm ν.1) G)

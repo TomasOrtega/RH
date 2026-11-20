@@ -42,6 +42,11 @@ def IdCellFrame (E K : Type) [Field E] [NumberField E] [StarRing E] [Field K] [A
     (ζ : 𝓞 E) - 1 ∈ P.asIdeal →
     T = T' ∧ ∀ i : Fin (r + 1), c i = 1
 
+/- English proof (translation)
+Introduce `S r T T' F F' c ζ g P hstar htr hT hT' hsame hc hrel hg hg3 hgP hgP2 hζ`. Take `⟨hTT, n, hn, hζn⟩` from `hN S r T T' F F' c ζ hstar hT hT' hsame hc`. Establish `hζ1 : (ζ : 𝓞 E) = 1` using `hM g P ζ hg hg3 hgP hgP2 ⟨n, hn, by rw [← Units.val_pow_eq_pow_val, hζn, Units.val_one]⟩ hζ`. Use `⟨hTT, fun i => ?_⟩` and prove the remaining obligations. Establish `hT0 : ((T : ℕ) : E) ≠ 0` using `by exact_mod_cast hT.ne'`.
+
+Establish `hT0' : ((T' : ℕ) : E) ≠ 0` using `by exact_mod_cast hT'.ne'`. Rewrite using `[hR S r (T : E) (T' : E) F F' c htr hT0 hT0' hsame hrel i, hc, hζ1]`. Simplify using the standard rewrite rules.
+-/
 theorem idCellFrame_of {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] [Algebra K E]
     (hR : RelevScalar E K) (hN : NormRoot E) (hM : RootModP E) : IdCellFrame E K := by
   intro S r T T' F F' c ζ g P hstar htr hT hT' hsame hc hrel hg hg3 hgP hgP2 hζ

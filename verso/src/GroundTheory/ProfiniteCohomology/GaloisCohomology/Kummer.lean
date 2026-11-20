@@ -18,6 +18,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)), ShortComplex.moduleCat_exact_iff]`. Conclude with `h`.
+-/
 theorem shortComplex_exact_of_forall_exists (S : ShortComplex (Rep.{u} k G))
     (h : ∀ x₂ : S.X₂, S.g.hom x₂ = 0 → ∃ x₁ : S.X₁, S.f.hom x₁ = x₂) : S.Exact := by
   rw [← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)),
@@ -26,6 +29,9 @@ theorem shortComplex_exact_of_forall_exists (S : ShortComplex (Rep.{u} k G))
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [succ_nsmul, Rep.add_hom, Representation.IntertwiningMap.coe_add, Pi.add_apply, ih, succ_nsmul]`. Both sides reduce to the same expression. Use the proof step `@[reassoc]`.
+-/
 theorem nsmul_id_hom_apply (A : Rep.{u} k G) (m : ℕ) (x : A) : (m • 𝟙 A).hom x = m • x := by
   induction m with
   | zero => simp
@@ -33,25 +39,42 @@ theorem nsmul_id_hom_apply (A : Rep.{u} k G) (m : ℕ) (x : A) : (m • 𝟙 A).
       Pi.add_apply, ih, succ_nsmul]; rfl
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[cocyclesIso₀, KernelFork.mapIsoOfIsLimit_hom]`. Conclude with `(KernelFork.mapOfIsLimit_ι _ _ _).trans (Category.comp_id _)`.
+-/
 theorem cocyclesIso₀_hom_comp_f (A : Rep.{u} k G) [IsDiscreteRep A] :
     (cocyclesIso₀ A).hom ≫ (shortComplexH0 A).f = (cochainsComplex A).iCycles 0 := by
   rw [cocyclesIso₀, KernelFork.mapIsoOfIsLimit_hom]
   exact (KernelFork.mapOfIsLimit_ι _ _ _).trans (Category.comp_id _)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom ((cochainsComplex A).isoHomologyπ₀.inv.hom y)) (cocyclesIso₀_hom_comp_f A)`.
+-/
 theorem shortComplexH0_f_H0Iso_hom (A : Rep.{u} k G) [IsDiscreteRep A] (y : cohomology A 0) :
     (shortComplexH0 A).f.hom ((H0Iso A).hom.hom y) =
       ((cochainsComplex A).iCycles 0).hom ((cochainsComplex A).isoHomologyπ₀.inv.hom y) :=
   congrArg (fun φ => φ.hom ((cochainsComplex A).isoHomologyπ₀.inv.hom y))
     (cocyclesIso₀_hom_comp_f A)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom y) (H0Iso A).hom_inv_id`.
+-/
 theorem H0Iso_inv_hom_apply (A : Rep.{u} k G) [IsDiscreteRep A] (y : cohomology A 0) :
     (H0Iso A).inv.hom ((H0Iso A).hom.hom y) = y :=
   congrArg (fun φ => φ.hom y) (H0Iso A).hom_inv_id
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom v) (H0Iso A).inv_hom_id`.
+-/
 theorem H0Iso_hom_inv_apply (A : Rep.{u} k G) [IsDiscreteRep A] (v : A.ρ.invariants) :
     (H0Iso A).hom.hom ((H0Iso A).inv.hom v) = v :=
   congrArg (fun φ => φ.hom v) (H0Iso A).inv_hom_id
 
+/- English proof (translation)
+Use `ModuleCat.hom_ext (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Apply `(ModuleCat.mono_iff_injective (shortComplexH0 B).f).1 inferInstance` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(shortComplexH0 B).f.hom ((H0Iso B).hom.hom ((cohomologyMap f 0).hom x)) = (shortComplexH0 B).f.hom (((Rep.invariantsFunctor k G).map f).hom ((H0Iso A).hom.hom x))`. Rewrite using `[shortComplexH0_f_H0Iso_hom]`. Establish `e1` using `congrArg (fun φ => φ.hom x) (CochainComplex.isoHomologyπ₀_inv_naturality (cochainsMap f))`.
+
+Establish `e2` using `congrArg (fun φ => φ.hom ((cochainsComplex A).isoHomologyπ₀.inv.hom x)) (HomologicalComplex.cyclesMap_i (cochainsMap f) 0)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at e1 e2`. Express the relevant statement in the definitionally equal form `((cochainsComplex B).iCycles 0).hom ((cochainsComplex B).isoHomologyπ₀.inv.hom ((HomologicalComplex.homologyMap (cochainsMap f) 0).hom x)) = _`. Conclude with `(congrArg ((cochainsComplex B).iCycles 0).hom e1).trans (e2.trans (congrArg ((cochainsMap f).f 0).hom (shortComplexH0_f_H0Iso_hom A x).symm))`.
+-/
 theorem cohomologyMap_zero_comp_H0Iso_hom {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
     (f : A ⟶ B) :
     cohomologyMap f 0 ≫ (H0Iso B).hom = (H0Iso A).hom ≫ (Rep.invariantsFunctor k G).map f := by
@@ -70,6 +93,9 @@ theorem cohomologyMap_zero_comp_H0Iso_hom {A B : Rep.{u} k G} [IsDiscreteRep A] 
   exact (congrArg ((cochainsComplex B).iCycles 0).hom e1).trans (e2.trans
     (congrArg ((cochainsMap f).f 0).hom (shortComplexH0_f_H0Iso_hom A x).symm))
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ => φ.hom ((H0Iso A).inv.hom v)) (cohomologyMap_zero_comp_H0Iso_hom f)`. Express the relevant statement in the definitionally equal form `(H0Iso B).hom.hom ((cohomologyMap f 0).hom ((H0Iso A).inv.hom v)) = ((Rep.invariantsFunctor k G).map f).hom ((H0Iso A).hom.hom ((H0Iso A).inv.hom v)) at h`. Rewrite `h` using `[H0Iso_hom_inv_apply]`. Rewrite using `[← h, H0Iso_inv_hom_apply]`.
+-/
 theorem cohomologyMap_zero_H0Iso_inv {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
     (f : A ⟶ B) (v : A.ρ.invariants) :
     (cohomologyMap f 0).hom ((H0Iso A).inv.hom v) =
@@ -86,6 +112,9 @@ section LongExact
 variable {S : ShortComplex (Rep.{u} k G)} [IsDiscreteRep S.X₁] [IsDiscreteRep S.X₂]
   [IsDiscreteRep S.X₃] (hS : S.ShortExact)
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hS 0 1 rfl) x (h1.elim _ _)`. Conclude with `⟨(H0Iso S.X₃).hom.hom y, (congrArg (δ hS 0 1 rfl).hom (H0Iso_inv_hom_apply S.X₃ y)).trans hy⟩`.
+-/
 theorem exists_δ_H0Iso_inv_eq (h1 : Subsingleton (cohomology S.X₂ 1)) (x : cohomology S.X₁ 1) :
     ∃ v : S.X₃.ρ.invariants, (δ hS 0 1 rfl).hom ((H0Iso S.X₃).inv.hom v) = x := by
   obtain ⟨y, hy⟩ := (ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hS 0 1 rfl) x
@@ -93,6 +122,13 @@ theorem exists_δ_H0Iso_inv_eq (h1 : Subsingleton (cohomology S.X₂ 1)) (x : co
   exact ⟨(H0Iso S.X₃).hom.hom y,
     (congrArg (δ hS 0 1 rfl).hom (H0Iso_inv_hom_apply S.X₃ y)).trans hy⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨z, hz⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₃ hS 0 1 rfl) _ h`. Use `⟨(H0Iso S.X₂).hom.hom z, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun φ => φ.hom z) (cohomologyMap_zero_comp_H0Iso_hom S.g)`.
+
+Express the relevant statement in the definitionally equal form `(H0Iso S.X₃).hom.hom ((cohomologyMap S.g 0).hom z) = ((Rep.invariantsFunctor k G).map S.g).hom ((H0Iso S.X₂).hom.hom z) at e`. Rewrite using `[← e]`. Conclude with `(congrArg (H0Iso S.X₃).hom.hom hz).trans (H0Iso_hom_inv_apply S.X₃ v)`. Introduce and unpack `⟨w, rfl⟩`. Rewrite using `[← cohomologyMap_zero_H0Iso_inv]`.
+
+Conclude with `congrArg (fun φ => φ.hom ((H0Iso S.X₂).inv.hom w)) (comp_δ hS 0 1 rfl)`.
+-/
 theorem δ_H0Iso_inv_eq_zero_iff (v : S.X₃.ρ.invariants) :
     (δ hS 0 1 rfl).hom ((H0Iso S.X₃).inv.hom v) = 0 ↔
       ∃ w : S.X₂.ρ.invariants, ((Rep.invariantsFunctor k G).map S.g).hom w = v := by
@@ -111,6 +147,9 @@ theorem δ_H0Iso_inv_eq_zero_iff (v : S.X₃.ρ.invariants) :
 
 include hS in
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hS i (i + 1) rfl) x hx`. Rewrite using `[← hy, Subsingleton.elim y 0]`. Conclude with `map_zero _`.
+-/
 theorem cohomologyMap_f_injective_of_subsingleton (i : ℕ)
     (h : Subsingleton (cohomology S.X₃ i)) : Function.Injective (cohomologyMap S.f (i + 1)).hom := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
@@ -121,10 +160,16 @@ theorem cohomologyMap_f_injective_of_subsingleton (i : ℕ)
 
 include hS in
 
+/- English proof (translation)
+The claim follows from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₂ hS i) y hy`.
+-/
 theorem exists_cohomologyMap_f_eq (i : ℕ) (y : cohomology S.X₂ i)
     (hy : (cohomologyMap S.g i).hom y = 0) : ∃ x, (cohomologyMap S.f i).hom x = y :=
   (ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₂ hS i) y hy
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom x) (cohomologyMap_f_comp_g (S := S) i)`.
+-/
 theorem cohomologyMap_g_cohomologyMap_f_apply (i : ℕ) (x : cohomology S.X₁ i) :
     (cohomologyMap S.g i).hom ((cohomologyMap S.f i).hom x) = 0 :=
   congrArg (fun φ => φ.hom x) (cohomologyMap_f_comp_g (S := S) i)
@@ -144,11 +189,17 @@ def unitsToInvariants : Additive Kˣ →+ (galUnits.{u} K L).ρ.invariants where
   map_add' _ _ := Subtype.ext (Additive.toMul.injective (Units.ext (map_mul _ _ _)))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsToInvariants_apply (a : Additive Kˣ) :
     ((Additive.toMul (α := Lˣ) (unitsToInvariants K L a).1 : Lˣ) : L) =
       algebraMap K L (Additive.toMul a : Kˣ) :=
   rfl
 
+/- English proof (translation)
+Introduce `a b h`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(algebraMap K L).injective (congrArg (fun v : (galUnits.{u} K L).ρ.invariants => ((Additive.toMul (α := Lˣ) v.1 : Lˣ) : L)) h)`.
+-/
 theorem unitsToInvariants_injective : Function.Injective (unitsToInvariants K L) := by
   intro a b h
   apply Additive.toMul.injective
@@ -156,6 +207,11 @@ theorem unitsToInvariants_injective : Function.Injective (unitsToInvariants K L)
   exact (algebraMap K L).injective (congrArg (fun v : (galUnits.{u} K L).ρ.invariants =>
     ((Additive.toMul (α := Lˣ) v.1 : Lˣ) : L)) h)
 
+/- English proof (translation)
+Introduce `v`. Take `⟨a, ha⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed ((Additive.toMul (α := Lˣ) v.1 : Lˣ) : L)).2 fun σ => congrArg (fun w : Additive Lˣ => ((Additive.toMul w : Lˣ) : L)) (v.2 σ)`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero]`.
+
+Conclude with `(Additive.toMul (α := Lˣ) v.1).ne_zero ha.symm`. Conclude with `⟨Additive.ofMul (Units.mk0 a ha0), Subtype.ext (Additive.toMul.injective (Units.ext ha))⟩`.
+-/
 theorem unitsToInvariants_surjective [IsGalois K L] :
     Function.Surjective (unitsToInvariants K L) := by
   intro v
@@ -175,10 +231,16 @@ noncomputable def unitsInvariantsEquiv [IsGalois K L] :
     ⟨unitsToInvariants_injective K L, unitsToInvariants_surjective K L⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitsInvariantsEquiv_apply [IsGalois K L] (a : Additive Kˣ) :
     unitsInvariantsEquiv K L a = unitsToInvariants K L a :=
   rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(n • 𝟙 (galUnits.{u} K L)).hom (unitsToInvariants K L a).1 = _`. Rewrite using `[nsmul_id_hom_apply, map_nsmul]`. Both sides reduce to the same expression.
+-/
 theorem invariantsFunctor_map_nsmul_unitsToInvariants (n : ℕ) (a : Additive Kˣ) :
     ((Rep.invariantsFunctor (ULift.{u} ℤ) Gal(L/K)).map (n • 𝟙 (galUnits.{u} K L))).hom
         (unitsToInvariants K L a) = unitsToInvariants K L (n • a) := by
@@ -193,6 +255,9 @@ section Sequence
 
 variable {K L} (n : ℕ)
 
+/- English proof (translation)
+Use `shortComplex_exact_of_forall_exists _ fun x hx => ?_` and prove the remaining obligations. Establish `hx' : n • (x : Additive Lˣ) = 0` using `(nsmul_id_hom_apply (galUnits.{u} K L) n x).symm.trans hx`. Establish `h : (Additive.toMul (α` using `Lˣ) x) ^ n = 1 := congrArg Additive.toMul hx'`. Conclude with `⟨(Additive.ofMul (⟨Additive.toMul (α := Lˣ) x, (mem_rootsOfUnity n _).2 h⟩ : rootsOfUnity n L) : Additive (rootsOfUnity n L)), rfl⟩`.
+-/
 theorem kummerSequence_exact : (kummerSequence K L n).Exact := by
   refine shortComplex_exact_of_forall_exists _ fun x hx => ?_
   have hx' : n • (x : Additive Lˣ) = 0 := (nsmul_id_hom_apply (galUnits.{u} K L) n x).symm.trans hx
@@ -200,10 +265,22 @@ theorem kummerSequence_exact : (kummerSequence K L n).Exact := by
   exact ⟨(Additive.ofMul (⟨Additive.toMul (α := Lˣ) x, (mem_rootsOfUnity n _).2 h⟩ :
     rootsOfUnity n L) : Additive (rootsOfUnity n L)), rfl⟩
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Additive.toMul.injective (Subtype.ext (congrArg (Additive.toMul (α := Lˣ)) h))`.
+-/
 theorem rootsOfUnityToUnits_injective :
     Function.Injective (rootsOfUnityToUnits K L n).hom := fun _ _ h =>
   Additive.toMul.injective (Subtype.ext (congrArg (Additive.toMul (α := Lˣ)) h))
 
+/- English proof (translation)
+Establish `: NeZero (n : L)` using `⟨hn⟩`. Introduce `y`. Take `⟨z, hz⟩` from `IsSepClosed.exists_pow_nat_eq ((Additive.toMul (α := Lˣ) y : Lˣ) : L) n`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hn Nat.cast_zero`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hn0]`. Conclude with `(Additive.toMul (α := Lˣ) y).ne_zero hz.symm`.
+
+Use `⟨(Additive.ofMul (Units.mk0 z hz0) : Additive Lˣ), ?_⟩` and prove the remaining obligations. Use `(nsmul_id_hom_apply (galUnits.{u} K L) n _).trans ?_` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((Units.mk0 z hz0 ^ n : Lˣ) : L) = _`.
+
+Rewrite using `[Units.val_pow_eq_pow_val, Units.val_mk0]`. Conclude with `hz`.
+-/
 theorem nsmul_id_galUnits_surjective [IsSepClosed L] (hn : (n : L) ≠ 0) :
     Function.Surjective (n • 𝟙 (galUnits.{u} K L)).hom := by
   have : NeZero (n : L) := ⟨hn⟩
@@ -224,12 +301,18 @@ theorem nsmul_id_galUnits_surjective [IsSepClosed L] (hn : (n : L) ≠ 0) :
   rw [Units.val_pow_eq_pow_val, Units.val_mk0]
   exact hz
 
+/- English proof (translation)
+The claim follows from `kummerSequence_exact n mono_f := (Rep.mono_iff_injective _).2 (rootsOfUnityToUnits_injective n) epi_g := (Rep.epi_iff_surjective _).2 (nsmul_id_galUnits_surjective n hn)`.
+-/
 theorem kummerSequence_shortExact_of_ne_zero [IsSepClosed L] (hn : (n : L) ≠ 0) :
     (kummerSequence K L n).ShortExact where
   exact := kummerSequence_exact n
   mono_f := (Rep.mono_iff_injective _).2 (rootsOfUnityToUnits_injective n)
   epi_g := (Rep.epi_iff_surjective _).2 (nsmul_id_galUnits_surjective n hn)
 
+/- English proof (translation)
+Establish `: IsSepClosed L` using `IsSepClosure.sep_closed K`. Use `kummerSequence_shortExact_of_ne_zero n ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap K L)]`. Conclude with `(map_ne_zero (algebraMap K L)).2 hn`.
+-/
 theorem kummerSequence_shortExact [IsSepClosure K L] (hn : (n : K) ≠ 0) :
     (kummerSequence K L n).ShortExact := by
   have : IsSepClosed L := IsSepClosure.sep_closed K
@@ -259,6 +342,9 @@ noncomputable def kummerH1Hom : Additive Kˣ →+ cohomology (galRootsOfUnity.{u
     (H0Iso (kummerSequence K L n).X₃).inv.hom.toAddMonoidHom).comp (unitsToInvariants K L)
 
 include hn in
+/- English proof (translation)
+Introduce `x`. Take `⟨v, hv⟩` from `exists_δ_H0Iso_inv_eq (kummerSequence_shortExact (L := L) n hn) (subsingleton_cohomology_one_galUnits (K := K) (L := L)) x`. Take `⟨a, ha⟩` from `unitsToInvariants_surjective K L v`. Conclude with `⟨a, (congrArg (fun w => (δ (kummerSequence_shortExact (L := L) n hn) 0 1 rfl).hom ((H0Iso (kummerSequence K L n).X₃).inv.hom w)) ha).trans hv⟩`.
+-/
 theorem kummerH1Hom_surjective : Function.Surjective (kummerH1Hom (L := L) hn) := by
   intro x
   obtain ⟨v, hv⟩ := exists_δ_H0Iso_inv_eq (kummerSequence_shortExact (L := L) n hn)
@@ -268,6 +354,13 @@ theorem kummerH1Hom_surjective : Function.Surjective (kummerH1Hom (L := L) hn) :
     ((H0Iso (kummerSequence K L n).X₃).inv.hom w)) ha).trans hv⟩
 
 include hn in
+/- English proof (translation)
+Use `(δ_H0Iso_inv_eq_zero_iff (kummerSequence_shortExact (L := L) n hn) (unitsToInvariants K L a)).trans ?_` and prove the remaining obligations. Rewrite using `[mem_unitsPow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`. Take `⟨b, hb⟩` from `unitsToInvariants_surjective K L w`.
+
+Establish `h : unitsToInvariants K L (n • b) = unitsToInvariants K L a` using `(invariantsFunctor_map_nsmul_unitsToInvariants K L n b).symm.trans ((congrArg (fun w => ((Rep.invariantsFunctor (ULift.{u} ℤ) Gal(L/K)).map (n • 𝟙 (galUnits.{u} K L))).hom w) hb).trans hw)`. Conclude with `⟨Additive.toMul b, congrArg Additive.toMul (unitsToInvariants_injective K L h)⟩`. Introduce and unpack `⟨b, hb⟩`. Use `⟨unitsToInvariants K L (Additive.ofMul b), ?_⟩` and prove the remaining obligations. Use `(invariantsFunctor_map_nsmul_unitsToInvariants K L n _).trans ?_` and prove the remaining obligations.
+
+Use `congr 1`.
+-/
 theorem kummerH1Hom_eq_zero_iff (a : Additive Kˣ) :
     kummerH1Hom (L := L) hn a = 0 ↔ Additive.toMul a ∈ unitsPow K n := by
   refine (δ_H0Iso_inv_eq_zero_iff (kummerSequence_shortExact (L := L) n hn)
@@ -293,6 +386,11 @@ noncomputable def kummerH1QuotHom : UnitsModPow K n →* Multiplicative
       ((kummerH1Hom_eq_zero_iff hn (Additive.ofMul a)).2 ha))
 
 include hn in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_one _).2 fun q hq => ?_` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H a`. Establish `h : kummerH1Hom (L` using `L) hn (Additive.ofMul a) = 0 := congrArg Multiplicative.toAdd hq`.
+
+Conclude with `(QuotientGroup.eq_one_iff a).2 ((kummerH1Hom_eq_zero_iff hn _).1 h)`. Introduce `y`. Take `⟨a, ha⟩` from `kummerH1Hom_surjective (L := L) hn (Multiplicative.toAdd y)`. Conclude with `⟨(Additive.toMul a : Kˣ), congrArg Multiplicative.ofAdd ha⟩`.
+-/
 theorem kummerH1QuotHom_bijective : Function.Bijective (kummerH1QuotHom (L := L) hn) := by
   constructor
   · refine (injective_iff_map_eq_one _).2 fun q hq => ?_
@@ -317,6 +415,9 @@ variable {K L} [IsGalois K L]
 noncomputable def galoisBrauerGroupTorsion (n : ℕ) : AddSubgroup (galoisBrauerGroup K L) :=
   (nsmulAddMonoidHom (α := galoisBrauerGroup K L) n).ker
 
+/- English proof (translation)
+The claim follows from `cohomologyMap_nsmul_id_apply (galUnits.{u} K L) n i y`.
+-/
 theorem cohomologyMap_kummerSequence_g_apply (n i : ℕ) (y : cohomology (galUnits.{u} K L) i) :
     (cohomologyMap (kummerSequence K L n).g i).hom y = n • y :=
   cohomologyMap_nsmul_id_apply (galUnits.{u} K L) n i y
@@ -330,6 +431,11 @@ noncomputable def kummerH2Hom :
       (cohomologyMap_g_cohomologyMap_f_apply 2 x)
 
 include hn in
+/- English proof (translation)
+Establish `hS` using `kummerSequence_shortExact (L := L) n hn`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Conclude with `cohomologyMap_f_injective_of_subsingleton hS 1 (subsingleton_cohomology_one_galUnits (K := K) (L := L)) (congrArg Subtype.val h)`. Introduce and unpack `⟨y, hy⟩`.
+
+Take `⟨x, hx⟩` from `exists_cohomologyMap_f_eq hS 2 y ((cohomologyMap_kummerSequence_g_apply n 2 y).trans hy)`. Conclude with `⟨x, Subtype.ext hx⟩`.
+-/
 theorem kummerH2Hom_bijective : Function.Bijective (kummerH2Hom (K := K) (L := L) (n := n)) := by
   have hS := kummerSequence_shortExact (L := L) n hn
   constructor

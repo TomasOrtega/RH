@@ -13,6 +13,23 @@ namespace GlobalTheory.AdmTame
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `D h0 hG hA hL`. Take `⟨hLP, hAut, -⟩` from `h0`. Establish `hW : GlobalTheory.TypeLeaf.WildOne D` using `hL`. Establish `hGal : GlobalTheory.TypeLeaf.GalAway D`. Introduce `i a ha π hc hr`.
+
+Take `⟨ρ, hρc, -, hρw, -⟩` from `(hG i).1 a ha π hc hr`. Conclude with `⟨ρ, hρc, fun w hw => (hρw w hw).1⟩`. Establish `hF : GlobalTheory.TypeLeaf.FrobDense D`. Introduce `T hT`. Rewrite using `[dense_iff_closure_eq]`.
+
+Conclude with `hA.2.2.1 T hT`. Establish `hCL : GlobalTheory.TypeLeaf.CharLaws D`. Introduce `w a χ χ' hχ hχ'`. Take `⟨-, -, -, h4, h5, -⟩` from `hLP w a a χ χ' 0 hχ hχ'`. Conclude with `⟨h4, h5⟩`.
+
+Establish `hM : GlobalTheory.TypeLeaf.MultOne D`. Introduce `a π π' ha h`. Establish `hp` using `hA.1 [⟨a, π, 1⟩] [⟨a, π', 1⟩] (by simp [ha]) (by simp [ha]) (Filter.Eventually.of_forall fun w => by simp [isoLoc, spehLoc, h w])`. Rewrite `hp` using `[List.singleton_perm_singleton]`. Simplify using `only [Formalism.BasicNotions.Part.mk.injEq, heq_eq_eq, true_and] at hp`.
+
+Conclude with `hp.1`. Establish `hT : GlobalTheory.TypeLeaf.TwistInv D` using `GlobalTheory.TypeLeaf.twistInv_of_charLaws_multOne D hCL hM`. Establish `hz : ∀ τ : D.host.E →+* ℂ, ∀ z ∈ D.naut.infG D.naut.etaTinv τ, ∃ k : ℤ, z + ((-(D.R.t : ℝ) / 2 : ℝ) : ℂ) = (k : ℂ)`. Introduce `τ z hz`. Take `⟨m, hm⟩` from `D.R.t_odd`.
+
+Take `⟨h1, h2⟩` from `hAut.2.1 τ`. Rewrite `hz` using `[h2]`. Apply the tactic sequence `rcases h1 with h1 | h1 <;> rw [h1] at hz <;> simp at hz <;> subst hz`. Use `⟨-(m : ℤ) - 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨-(m : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hP : GlobalTheory.TypeLeaf.PointPar D` using `GlobalTheory.TypeLeaf.pointPar_of_twist D hT hAut.1.1 hz`. Conclude with `GlobalTheory.TypeLeaf.tameSum_of_inputs D hW (GlobalTheory.T.firstCharacter_trivial_wildInertia_typePrime D) hGal hF hP`.
+-/
 theorem main : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm2 D → SumRepresentations.adm5 D → GlobalTheory.RowTie.LabTame D.nd D.naut → AdmissibleThreePrime.LabelDegreeHypotheses D := by
   intro D h0 hG hA hL
   obtain ⟨hLP, hAut, -⟩ := h0

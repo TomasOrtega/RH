@@ -16,6 +16,11 @@ section Record
 
 variable (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
 
+/- English proof (translation)
+Establish `hpl : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hFD : FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `hH` using `hU.a2.2.2.2.2.2.1 l K 1 LL hG`. Establish `hTr` using `hU.a2.2.2.2.2.2.2.1 l K 1 LL hG`. Establish `hP9` using `hU.p9 l K 1 LL hG`.
+
+Use `⟨arc_section_map _ Subtype.val_injective (fun x hx => ⟨⟨x, ((D.loc l).v_O LL x).1 hx⟩, rfl⟩) hP9 hH hTr (fun hp5 => (hU.a12 l K LL hG hK (hpl ▸ hp5)).1), horizontal_frame_structure _ hH hP9, arc_filtration_low _⟩` and prove the remaining obligations.
+-/
 theorem arc_structures_three_hold {CR CA CB CK : ℝ} (hU : AdmBoundsB D HW F Cm CR CA CB CK)
     (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL) (hK : CaseA K LL) :
     Formalism.MainNotions.N.FrobeniusPowerSeries.ArcSecMapCore ((HW l).W K 1 LL hG) ∧
@@ -29,6 +34,9 @@ theorem arc_structures_three_hold {CR CA CB CK : ℝ} (hU : AdmBoundsB D HW F Cm
     (fun x hx => ⟨⟨x, ((D.loc l).v_O LL x).1 hx⟩, rfl⟩) hP9 hH hTr
     (fun hp5 => (hU.a12 l K LL hG hK (hpl ▸ hp5)).1), horizontal_frame_structure _ hH hP9, arc_filtration_low _⟩
 
+/- English proof (translation)
+The claim follows from `have h3 := arc_structures_three_hold D HW F Cm hU l K LL hG hK ⟨h3.1, arc_gamma_lift_at D HW F Cm hU l K LL hG hK h3.2.2, h3.2.1, h3.2.2⟩`.
+-/
 theorem arc_structures_hold_at {CR CA CB CK : ℝ} (hU : AdmBoundsB D HW F Cm CR CA CB CK) (hJ : UsedJ D HW F)
     (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL) (hK : CaseA K LL) :
     Formalism.MainNotions.N.FrobeniusPowerSeries.ArcSecMapCore ((HW l).W K 1 LL hG) ∧ Formalism.MainNotions.N.FrobeniusPowerSeries.ArcGamLiftCore ((HW l).W K 1 LL hG) ∧

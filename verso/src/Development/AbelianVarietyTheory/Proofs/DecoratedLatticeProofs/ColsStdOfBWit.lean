@@ -6,6 +6,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Fam
 
+/- English proof (translation)
+Establish `hs` using `h.recPin.s`. Use `⟨q.w.ok, ⟨q.w.pins⟩, q.x.pin.isTw, ⟨?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : b.R.T.cols = q.x.col.C` using `hs.cols`. Rewrite using `[e]`. Conclude with `q.x.col.std`.
+
+Take `⟨he, hstd⟩` from `hs.tw`. Conclude with `⟨q.w.l0, _, he, (eqRec_heq _ _).symm, hstd⟩`.
+-/
 theorem colsStd_of_bWit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : Bundle (q.w.D q.Z) q.O c) (h : Bl.BWit q b) :
     q.w.I.Ok ∧ Nonempty (GlobalTheory.Mem.Col2.TC.Pins q.B q.w.px) ∧ GlobalTheory.Mem.Col2.TC.IsTw q.w.I ∧

@@ -12,6 +12,9 @@ noncomputable def conjK : D.host.K →+* D.host.K :=
   haveI := Formalism.MainNotions.UnusedSlot33.HK.isGalK D.host
   (AlgEquiv.restrictNormal D.host.conj D.host.K : D.host.K →+* D.host.K)
 
+/- English proof (translation)
+Use `haveI := Formalism.MainNotions.UnusedSlot33.HK.isGalK D.host`. Conclude with `AlgEquiv.restrictNormal_commutes D.host.conj D.host.K x`.
+-/
 theorem conjK_coe (x : D.host.K) : ((conjK D x : D.host.K) : D.host.E) = D.host.conj (x : D.host.E) := by
   haveI := Formalism.MainNotions.UnusedSlot33.HK.isGalK D.host
   exact AlgEquiv.restrictNormal_commutes D.host.conj D.host.K x
@@ -19,6 +22,9 @@ theorem conjK_coe (x : D.host.K) : ((conjK D x : D.host.K) : D.host.E) = D.host.
 noncomputable def tauKp : D.host.K →+* ℂ_[p] :=
   lam.comp ((D.host.φ₀.comp (algebraMap D.host.K D.host.E)).codRestrict Qbar.toSubring (fun _ => test_vector_mem_schwartz_bruhat D _))
 
+/- English proof (translation)
+Unfold `tauKp lamC`. Use `first`. Consider the case `rfl`. Consider the case `(simp [test_vector_mem_schwartz_bruhat]; done)`. Consider the case `(rw [dif_pos (test_vector_mem_schwartz_bruhat D _)]; rfl)`.
+-/
 theorem tauKp_apply (x : D.host.K) : tauKp D lam x = lamC lam (D.host.φ₀ (x : D.host.E)) := by
   unfold tauKp lamC
   first
@@ -26,6 +32,15 @@ theorem tauKp_apply (x : D.host.K) : tauKp D lam x = lamC lam (D.host.φ₀ (x :
   | (simp [test_vector_mem_schwartz_bruhat]; done)
   | (rw [dif_pos (test_vector_mem_schwartz_bruhat D _)]; rfl)
 
+/- English proof (translation)
+Establish `hd : 0 < D.host.d`. Use `D.host.qd_big.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨⟨D.host.sqd, IntermediateField.mem_adjoin_simple_self ℚ D.host.sqd⟩, ?_⟩` and prove the remaining obligations. Introduce `h`.
+
+Establish `h1` using `congrArg (fun y : D.host.K => (y : D.host.E)) h`. Simplify using `only at h1`. Rewrite `h1` using `[conjK_coe]`. Express the relevant statement in the definitionally equal form `D.host.conj D.host.sqd = D.host.sqd at h1`. Rewrite `h1` using `[Formalism.HC.HostRaw.conj_sqd]`.
+
+Establish `h2 : (2 : D.host.E) * D.host.sqd = 0` using `by linear_combination -h1`. Establish `hs : D.host.sqd = 0` using `(mul_eq_zero.mp h2).resolve_left two_ne_zero`. Establish `h3` using `D.host.sqd_sq`. Rewrite `h3` using `[hs]`. Establish `h4 : (D.host.d : D.host.E) = 0` using `by linear_combination h3`.
+
+Establish `h5 : D.host.d = 0` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem conjK_ne : ∃ x, conjK D x ≠ x := by
   have hd : 0 < D.host.d := by
     have := D.host.qd_big.2
@@ -45,6 +60,11 @@ theorem conjK_ne : ∃ x, conjK D x ≠ x := by
   have h5 : D.host.d = 0 := by exact_mod_cast h4
   omega
 
+/- English proof (translation)
+Unfold `OKp`. Use `congr 2`. Use function extensionality and compare the values at `a`. Simplify using `only [tauKp_apply, conjK_coe]`. Use `first`.
+
+Consider the case `rfl`. Consider the case `(unfold tauK tauKc; rfl)`. Consider the case `(simp only [tauK, tauKc]; done)`. Consider the case `(simp [tauK, tauKc]; done)`.
+-/
 theorem okp_eq : OKp D lam = closure (Set.range fun a : 𝓞 D.host.K => (tauKp D lam (a : D.host.K), tauKp D lam (conjK D (a : D.host.K)))) := by
   unfold OKp
   congr 2
@@ -56,6 +76,9 @@ theorem okp_eq : OKp D lam = closure (Set.range fun a : 𝓞 D.host.K => (tauKp 
   | (simp only [tauK, tauKc]; done)
   | (simp [tauK, tauKc]; done)
 
+/- English proof (translation)
+Use `⟨⟨D.host.sqd, IntermediateField.mem_adjoin_simple_self ℚ D.host.sqd⟩, ?_⟩` and prove the remaining obligations. Apply `(algebraMap D.host.K D.host.E).injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_neg, map_natCast]`. Conclude with `D.host.sqd_sq`.
+-/
 theorem exists_sqrt_K : ∃ b : D.host.K, b ^ 2 = -(D.host.d : D.host.K) := by
   refine ⟨⟨D.host.sqd, IntermediateField.mem_adjoin_simple_self ℚ D.host.sqd⟩, ?_⟩
   apply (algebraMap D.host.K D.host.E).injective

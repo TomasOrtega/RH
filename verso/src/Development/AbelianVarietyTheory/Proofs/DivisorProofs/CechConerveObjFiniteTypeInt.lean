@@ -3,6 +3,25 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hB.out`. Use `set W := widePushout A (fun _ : J => B) (fun _ => g) with hW`. Set `T : Set W` to `⋃ j : J, (WidePushout.ι (fun _ : J => g) j).hom '' (s : Set B)`. Establish `hTfin : T.Finite` using `Set.finite_iUnion fun j => s.finite_toSet.image _`. Set `S : Subring W` to `Subring.closure T`.
+
+Establish `hB' : ∀ b : B, b ∈ Subring.closure (s : Set B)`. Introduce `b`. Establish `hb : b ∈ Algebra.adjoin ℤ (s : Set B)` using `hs ▸ Algebra.mem_top`. Rewrite `hb` using `[Algebra.adjoin_int]`. Conclude with `hb`.
+
+Establish `hmem : ∀ (j : J) (b : B), (WidePushout.ι (fun _ : J => g) j).hom b ∈ S`. Introduce `j b`. Establish `hle : (Subring.closure (s : Set B)).map (WidePushout.ι (fun _ : J => g) j).hom ≤ S`. Rewrite using `[RingHom.map_closure]`. Conclude with `Subring.closure_mono (Set.subset_iUnion (fun j => (WidePushout.ι (fun _ : J => g) j).hom '' (s : Set B)) j)`.
+
+Conclude with `hle ⟨b, hB' b, rfl⟩`. Set `ιS : J → (B ⟶ CommRingCat.of S)` to `fun j => CommRingCat.ofHom ((WidePushout.ι (fun _ : J => g) j).hom.codRestrict S (hmem j))`. Set `j₀ : J` to `Classical.arbitrary J`. Establish `hw : ∀ j : J, g ≫ ιS j = g ≫ ιS j₀`. Introduce `j`.
+
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `(g ≫ WidePushout.ι (fun _ : J => g) j) a = (g ≫ WidePushout.ι (fun _ : J => g) j₀) a`. Rewrite using `[WidePushout.arrow_ι (fun _ : J => g) j, WidePushout.arrow_ι (fun _ : J => g) j₀]`. Set `d : W ⟶ CommRingCat.of S` to `WidePushout.desc (g ≫ ιS j₀) ιS hw`. Set `incl : CommRingCat.of S ⟶ W` to `CommRingCat.ofHom S.subtype`.
+
+Establish `hid : d ≫ incl = 𝟙 W`. Apply `WidePushout.hom_ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[← Category.assoc, WidePushout.ι_desc]`. Apply the tactic sequence `ext b <;> rfl`.
+
+Rewrite using `[← Category.assoc, WidePushout.head_desc, ← WidePushout.arrow_ι (fun _ : J => g) j₀]`. Apply the tactic sequence `ext a <;> rfl`. Establish `htop : ∀ w : W, w ∈ S`. Introduce `w`. Establish `: (d ≫ incl) w = w` using `by rw [hid]; rfl`.
+
+Rewrite using `[← this]`. Conclude with `(d w).2`. Use `⟨⟨hTfin.toFinset, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset, Algebra.adjoin_int]`. Use extensionality with `w`.
+
+Simplify using `only [Algebra.mem_top, iff_true]`. Conclude with `htop w`.
+-/
 theorem widePushout_finiteType_int {J : Type} [Finite J] [Nonempty J] (A B : CommRingCat.{0})
     (g : A ⟶ B) (hB : Algebra.FiniteType ℤ B) :
     Algebra.FiniteType ℤ ((widePushout A (fun _ : J => B) (fun _ => g) : CommRingCat.{0})) := by
@@ -53,6 +72,9 @@ theorem widePushout_finiteType_int {J : Type} [Finite J] [Nonempty J] (A B : Com
 
 end GlobalTheory
 
+/- English proof (translation)
+Introduce `A B g hB k`. Conclude with `GlobalTheory.widePushout_finiteType_int (J := Fin (k.len + 1)) A B g hB`.
+-/
 theorem GlobalTheory.cechConerve_obj_finiteType_int : ∀ (A B : CommRingCat.{0}) (g : A ⟶ B), Algebra.FiniteType ℤ B →
     ∀ k : SimplexCategory, Algebra.FiniteType ℤ ((Arrow.mk g).cechConerve.obj k) := by
   intro A B g hB k

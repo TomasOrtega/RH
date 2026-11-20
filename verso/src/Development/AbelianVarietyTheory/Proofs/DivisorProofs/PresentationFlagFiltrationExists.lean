@@ -16,6 +16,15 @@ namespace GlobalTheory.MixedLocalChains.FlagFilt
 
 open GlobalTheory.VB TopologicalSpace
 
+/- English proof (translation)
+Use `haveI := h₁.epi_g`. Use `haveI := h₂.mono_f`. Use `haveI := h₂.epi_g`. Set `D : ShortComplex.SnakeInput C` to `{ L₀ := kernel v, L₁ := L₁, L₂ := L₂, L₃ := cokernel v v₀₁ := kernel.ι v, v₁₂ := v, v₂₃ := cokernel.π v h₀ := kernelIsKernel v h₃ := cokernelIsCokernel v L₁_exact := h₁.exact, epi_L₁_g := inferInstance L₂_exact := h₂.exact, mono_L₂_f := inferInstance }`. Establish `hz : IsZero D.L₀.X₃`.
+
+Establish `h0 : D.v₀₁.τ₃ = 0`. Rewrite using `[← cancel_mono v.τ₃, zero_comp]`. Conclude with `D.w₀₂_τ₃`. Use `haveI := D.mono_v₀₁_τ₃`. Conclude with `IsZero.of_mono_eq_zero _ h0`.
+
+Establish `hm : Mono D.L₃.f` using `D.L₂'_exact.mono_g (hz.eq_of_src _ _)`. Use `haveI : Epi D.L₂.g := h₂.epi_g`. Establish `he : Epi D.L₃.g` using `@ShortComplex.SnakeInput.epi_L₃_g _ _ _ D h₂.epi_g`. Use `⟨D.L₃, { exact := D.L₃_exact, mono_f := hm, epi_g := he }, ⟨?_⟩, ⟨?_⟩, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `IsColimit.coconePointUniqueUpToIso D.h₃τ₁ (colimit.isColimit _)`.
+
+Conclude with `IsColimit.coconePointUniqueUpToIso D.h₃τ₂ (colimit.isColimit _)`. Conclude with `IsColimit.coconePointUniqueUpToIso D.h₃τ₃ (colimit.isColimit _)`.
+-/
 theorem exists_shortExact_cokernel {C : Type*} [Category C] [Abelian C] {L₁ L₂ : ShortComplex C}
     (h₁ : L₁.ShortExact) (h₂ : L₂.ShortExact) (v : L₁ ⟶ L₂) [Mono v.τ₃] :
     ∃ S : ShortComplex C, S.ShortExact ∧ Nonempty (S.X₁ ≅ cokernel v.τ₁) ∧
@@ -44,6 +53,15 @@ theorem exists_shortExact_cokernel {C : Type*} [Category C] [Abelian C] {L₁ L�
   · exact IsColimit.coconePointUniqueUpToIso D.h₃τ₂ (colimit.isColimit _)
   · exact IsColimit.coconePointUniqueUpToIso D.h₃τ₃ (colimit.isColimit _)
 
+/- English proof (translation)
+Establish `hr : (Scheme.Modules.restrictFunctor U.ι).map f = 0`. Rewrite using `[← cancel_mono ((Scheme.Modules.restrictFunctorIsoPullback U.ι).hom.app G), zero_comp, (Scheme.Modules.restrictFunctorIsoPullback U.ι).hom.naturality f, hf, comp_zero]`. Use `Scheme.Modules.hom_ext _ _ fun W => ?_` and prove the remaining obligations. Use extensionality with `s`. Express the relevant statement in the definitionally equal form `f.app W s = 0`.
+
+Use `GlobalTheory.Twist.sec_ext_of_cover (ι := W) (fun _ => W) (fun _ => le_rfl) (fun x hx => Opens.mem_iSup.2 ⟨⟨x, hx⟩, hx⟩) fun k => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Twist.resM_self, GlobalTheory.Twist.resM_self]`. Establish `hη : genericPoint X ∈ W` using `genericPoint_mem k.2`. Establish `hle : U.ι ''ᵁ (U.ι ⁻¹ᵁ W) ≤ W` using `U.ι.image_preimage_le W`. Establish `hη' : genericPoint X ∈ U.ι ''ᵁ (U.ι ⁻¹ᵁ W)` using `⟨⟨_, hU⟩, hη, rfl⟩`.
+
+Establish `e0 : f.app (U.ι ''ᵁ (U.ι ⁻¹ᵁ W)) = 0` using `congrArg (fun φ => Scheme.Modules.Hom.app φ (U.ι ⁻¹ᵁ W)) hr`. Use `h W hη _ ?_` and prove the remaining obligations. Rewrite using `[← G.presheaf.germ_res_apply (homOfLE hle) _ hη' (f.app W s)]`. Establish `e1 : G.presheaf.map (homOfLE hle).op (f.app W s) = 0`. Use `(GlobalTheory.Twist.app_resM f hle s).symm` as an intermediate fact.
+
+Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[e0]`. Both sides reduce to the same expression. Rewrite using `[e1, map_zero]`.
+-/
 theorem eq_zero_of_pullback_ι {X : Scheme.{0}} [IsIntegral X] {F G : X.Modules}
     (h : IsTorsionFree G) (f : F ⟶ G) (U : X.Opens) (hU : genericPoint X ∈ U)
     (hf : (Scheme.Modules.pullback U.ι).map f = 0) : f = 0 := by
@@ -70,6 +88,9 @@ theorem eq_zero_of_pullback_ι {X : Scheme.{0}} [IsIntegral X] {F G : X.Modules}
     rfl
   rw [e1, map_zero]
 
+/- English proof (translation)
+Use extensionality with `U x`. Simplify using `[Scheme.Modules.Hom.app_smul]`.
+-/
 theorem comp_smulHom' {X : Scheme.{0}} {G H : X.Modules} (φ : G ⟶ H) (r : Γ(X, ⊤)) :
     φ ≫ smulHom H r = smulHom G r ≫ φ := by
   ext U x
@@ -79,16 +100,25 @@ section Kills
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O}
 
+/- English proof (translation)
+Unfold `Kills at *`. Rewrite using `[← cancel_mono m, zero_comp, ← comp_smulHom', h, comp_zero]`.
+-/
 theorem kills_of_mono {g : Γ(B.X, ⊤)} {F G : B.X.Modules} (m : F ⟶ G) [Mono m] (h : Kills g G) :
     Kills g F := by
   unfold Kills at *
   rw [← cancel_mono m, zero_comp, ← comp_smulHom', h, comp_zero]
 
+/- English proof (translation)
+Unfold `Kills at *`. Rewrite using `[← cancel_epi e, comp_zero, comp_smulHom', h, zero_comp]`.
+-/
 theorem kills_of_epi {g : Γ(B.X, ⊤)} {F G : B.X.Modules} (e : F ⟶ G) [Epi e] (h : Kills g F) :
     Kills g G := by
   unfold Kills at *
   rw [← cancel_epi e, comp_zero, comp_smulHom', h, zero_comp]
 
+/- English proof (translation)
+Take `⟨S, hS, ⟨e₁⟩, ⟨e₂⟩, ⟨e₃⟩⟩` from `hE`. Use `haveI := hS.mono_f`. Use `haveI := hS.epi_g`. Establish `h2 : Kills g S.X₂` using `kills_of_mono e₂.hom h`. Conclude with `⟨kills_of_mono (e₁.inv ≫ S.f) h2, kills_of_epi (S.g ≫ e₃.hom) h2⟩`.
+-/
 theorem kills_of_isExt {g : Γ(B.X, ⊤)} {F₁ F₂ F₃ : B.X.Modules} (hE : IsExt F₁ F₂ F₃)
     (h : Kills g F₂) : Kills g F₁ ∧ Kills g F₃ := by
   obtain ⟨S, hS, ⟨e₁⟩, ⟨e₂⟩, ⟨e₃⟩⟩ := hE
@@ -111,12 +141,18 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : V
   {P : Pres B} [IsIso (B.genRes.map P.ψ)]
   (FP : Vert.Model.FlagPair (Vert.Model.GenIso.ofHom P.ψ) P.r)
 
+/- English proof (translation)
+Establish `h` using `FP.gen_ι i`. Rewrite using `[Functor.map_comp, Iso.eq_inv_comp, ← Category.assoc, h]`. Simplify using `[Vert.Model.GenIso.ofHom]`.
+-/
 theorem genRes_ι_ψ (i : Fin (P.r + 1)) :
     B.genRes.map (FP.fl'.ι i ≫ P.ψ) = (FP.gen i).inv ≫ B.genRes.map (FP.fl.ι i) := by
   have h := FP.gen_ι i
   rw [Functor.map_comp, Iso.eq_inv_comp, ← Category.assoc, h]
   simp [Vert.Model.GenIso.ofHom]
 
+/- English proof (translation)
+Use `eq_zero_of_pullback_ι (FP.fl.isVB_cokernel i).isTorsionFree _ B.gen B.genericPoint_mem_gen ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `B.genRes.map _ = 0`. Rewrite using `[← Category.assoc, Functor.map_comp, genRes_ι_ψ, Category.assoc, ← Functor.map_comp, cokernel.condition, Functor.map_zero, comp_zero]`.
+-/
 theorem comp_π_eq_zero (i : Fin (P.r + 1)) :
     FP.fl'.ι i ≫ P.ψ ≫ cokernel.π (FP.fl.ι i) = 0 := by
   refine eq_zero_of_pullback_ι (FP.fl.isVB_cokernel i).isTorsionFree _ B.gen
@@ -130,9 +166,15 @@ def stepψ (i : Fin (P.r + 1)) : FP.fl'.F i ⟶ FP.fl.F i :=
     ((Category.assoc _ _ _).trans (comp_π_eq_zero FP i))
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `(ShortComplex.exact_cokernel (FP.fl.ι i)).lift_f _ _`.
+-/
 theorem stepψ_ι (i : Fin (P.r + 1)) : stepψ FP i ≫ FP.fl.ι i = FP.fl'.ι i ≫ P.ψ :=
   (ShortComplex.exact_cokernel (FP.fl.ι i)).lift_f _ _
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (B.genRes.map (FP.fl.ι i)), ← Functor.map_comp, stepψ_ι, genRes_ι_ψ]`.
+-/
 theorem genRes_stepψ (i : Fin (P.r + 1)) : B.genRes.map (stepψ FP i) = (FP.gen i).inv := by
   rw [← cancel_mono (B.genRes.map (FP.fl.ι i)), ← Functor.map_comp, stepψ_ι, genRes_ι_ψ]
 
@@ -145,6 +187,9 @@ def stepPres (i : Fin (P.r + 1)) : Pres B where
   ψ := stepψ FP i
   iso := by rw [genRes_stepψ]; infer_instance
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (FP.fl.ι i.succ), Category.assoc, stepψ_ι, Category.assoc, Vert.Flag.step_ι, stepψ_ι, Vert.Flag.step_ι_assoc]`.
+-/
 theorem step_stepψ (i : Fin P.r) :
     FP.fl'.step i ≫ stepψ FP i.succ = stepψ FP i.castSucc ≫ FP.fl.step i := by
   rw [← cancel_mono (FP.fl.ι i.succ), Category.assoc, stepψ_ι, Category.assoc, Vert.Flag.step_ι,
@@ -155,9 +200,15 @@ def grψ (i : Fin P.r) : FP.fl'.gr i ⟶ FP.fl.gr i :=
     (step_stepψ FP i)
 
 @[reassoc]
+/- English proof (translation)
+Simplify using `[grψ, Vert.Flag.π]`.
+-/
 theorem π_grψ (i : Fin P.r) : FP.fl'.π i ≫ grψ FP i = stepψ FP i.succ ≫ FP.fl.π i := by
   simp [grψ, Vert.Flag.π]
 
+/- English proof (translation)
+Rewrite using `[← Iso.comp_hom_eq_id, ← cancel_epi (B.genRes.map (FP.fl'.π i)), ← Functor.map_comp_assoc, π_grψ, Functor.map_comp, Category.assoc, Vert.Model.FlagPair.π_grIso_hom, genRes_stepψ, Iso.inv_hom_id_assoc, Category.comp_id]`.
+-/
 theorem genRes_grψ (i : Fin P.r) : B.genRes.map (grψ FP i) = (FP.grIso i).inv := by
   rw [← Iso.comp_hom_eq_id, ← cancel_epi (B.genRes.map (FP.fl'.π i)), ← Functor.map_comp_assoc,
     π_grψ, Functor.map_comp, Category.assoc, Vert.Model.FlagPair.π_grIso_hom, genRes_stepψ,
@@ -172,6 +223,9 @@ def grPres (i : Fin P.r) : Pres B where
   ψ := grψ FP i
   iso := by rw [genRes_grψ]; infer_instance
 
+/- English proof (translation)
+Establish `hZ : IsZero (FP.fl.F 0)` using `VB.isVB_zero_iff.1 (by simpa using FP.fl.isVB 0)`. Conclude with `IsZero.of_epi_eq_zero (cokernel.π (stepψ FP 0)) (hZ.eq_of_src _ _)`.
+-/
 theorem isZero_stepPres_zero : IsZero (stepPres FP 0).mod := by
   have hZ : IsZero (FP.fl.F 0) := VB.isVB_zero_iff.1 (by simpa using FP.fl.isVB 0)
   exact IsZero.of_epi_eq_zero (cokernel.π (stepψ FP 0)) (hZ.eq_of_src _ _)
@@ -180,6 +234,11 @@ def stepPresLastIso : (stepPres FP (Fin.last P.r)).mod ≅ P.mod :=
   cokernel.mapIso (stepψ FP (Fin.last P.r)) P.ψ (asIso (FP.fl'.ι (Fin.last P.r)))
     (asIso (FP.fl.ι (Fin.last P.r))) (stepψ_ι FP _)
 
+/- English proof (translation)
+Set `L₁ : ShortComplex B.X.Modules` to `ShortComplex.mk (FP.fl'.step i) (cokernel.π (FP.fl'.step i)) (cokernel.condition _)`. Set `L₂ : ShortComplex B.X.Modules` to `ShortComplex.mk (FP.fl.step i) (cokernel.π (FP.fl.step i)) (cokernel.condition _)`. Establish `h₁ : L₁.ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Establish `h₂ : L₂.ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Set `v : L₁ ⟶ L₂` to `{ τ₁ := stepψ FP i.castSucc τ₂ := stepψ FP i.succ τ₃ := grψ FP i comm₁₂ := (step_stepψ FP i).symm comm₂₃ := (π_grψ FP i).symm }`.
+
+Use `haveI : Mono v.τ₃ := Pres.mono_ψ O B (grPres FP i)`. Take `⟨S, hS, e₁, e₂, e₃⟩` from `exists_shortExact_cokernel h₁ h₂ v`. Conclude with `⟨S, hS, e₁, e₂, e₃⟩`.
+-/
 theorem isExt_step (i : Fin P.r) :
     IsExt (stepPres FP i.castSucc).mod (stepPres FP i.succ).mod (grPres FP i).mod := by
   let L₁ : ShortComplex B.X.Modules :=
@@ -204,6 +263,9 @@ end GlobalTheory.MixedLocalChains.FlagFilt
 
 namespace GlobalTheory.MixedLocalChains.FlagFilt
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B _ P g hg hFP`. Use `haveI := P.iso`. Take `⟨FP⟩` from `hFP`. Establish `hK : ∀ i, Kills g (stepPres FP i).mod` using `fun i => Fin.reverseInduction (motive := fun i => Kills g (stepPres FP i).mod) (kills_of_mono (stepPresLastIso FP).hom hg) (fun j h => (kills_of_isExt (isExt_step FP j) h).1) i`. Conclude with `⟨stepPres FP, grPres FP, isZero_stepPres_zero FP, ⟨stepPresLastIso FP⟩, fun _ => rfl, hK, fun i => (kills_of_isExt (isExt_step FP i) (hK i.succ)).2, isExt_step FP⟩`.
+-/
 theorem exists_filtration : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O),
     GlobalTheory.IsNormalScheme B.X → ∀ (P : Pres B) (g : Γ(B.X, ⊤)), Kills g P.mod →

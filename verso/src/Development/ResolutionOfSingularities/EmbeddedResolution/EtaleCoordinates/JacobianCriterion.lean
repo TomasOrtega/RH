@@ -20,6 +20,9 @@ variable (k : Type*) [CommRing k] (ι : Type*) (S : Type*) [CommRing S]
 variable [Algebra k S] [Algebra (MvPolynomial ι k) S] [IsScalarTower k (MvPolynomial ι k) S]
 
 omit [Algebra k S] [IsScalarTower k (MvPolynomial ι k) S] in
+/- English proof (translation)
+Establish `hfun : (fun i : ι => (1 : S) ⊗ₜ[MvPolynomial ι k] (KaehlerDifferential.D k (MvPolynomial ι k) (MvPolynomial.X i))) = ⇑(Algebra.TensorProduct.basis S (KaehlerDifferential.mvPolynomialBasis k ι))`. Use function extensionality and compare the values at `i`. Rewrite using `[Algebra.TensorProduct.basis_apply, KaehlerDifferential.mvPolynomialBasis_apply]`. Rewrite using `[hfun]`. Conclude with `(Algebra.TensorProduct.basis S (KaehlerDifferential.mvPolynomialBasis k ι)).linearIndependent`.
+-/
 private theorem linearIndependent_one_tmul_D_X :
     LinearIndependent S fun i : ι =>
       (1 : S) ⊗ₜ[MvPolynomial ι k]
@@ -33,6 +36,11 @@ private theorem linearIndependent_one_tmul_D_X :
   exact (Algebra.TensorProduct.basis S
     (KaehlerDifferential.mvPolynomialBasis k ι)).linearIndependent
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on`. Name the introduced variables `a`. Rewrite using `[← MvPolynomial.algebraMap_eq, Derivation.map_algebraMap]`. Conclude with `Submodule.zero_mem _`. Name the introduced variables `p q hp hq`.
+
+Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hp hq`. Name the introduced variables `p i hp`. Rewrite using `[Derivation.leibniz]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)) (Submodule.smul_mem _ _ hp)`.
+-/
 private theorem D_mem_span_range_D_X (K : Type*) [CommRing K] (σ : Type*)
     (f : MvPolynomial σ K) :
     KaehlerDifferential.D K (MvPolynomial σ K) f ∈
@@ -52,6 +60,9 @@ private theorem D_mem_span_range_D_X (K : Type*) [CommRing K] (σ : Type*)
       (Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))
       (Submodule.smul_mem _ _ hp)
 
+/- English proof (translation)
+Use `eq_top_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[← KaehlerDifferential.span_range_derivation, Submodule.span_le]`. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `D_mem_span_range_D_X K σ f`.
+-/
 private theorem span_range_D_X_eq_top (K : Type*) [CommRing K] (σ : Type*) :
     Submodule.span (MvPolynomial σ K)
         (Set.range fun i : σ =>
@@ -61,6 +72,9 @@ private theorem span_range_D_X_eq_top (K : Type*) [CommRing K] (σ : Type*) :
   rintro _ ⟨f, rfl⟩
   exact D_mem_span_range_D_X K σ f
 
+/- English proof (translation)
+Establish `h2 : a • (1 : A) = a` using `by rw [smul_eq_mul, mul_one]`. Establish `h1 : ((a • (1 : A)) ⊗ₜ[R] m : A ⊗[R] M) = a • ((1 : A) ⊗ₜ[R] m)`. Rewrite using `[TensorProduct.smul_tmul']`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+-/
 private theorem smul_one_tmul
     (R : Type*) [CommRing R] (A : Type*) [CommRing A] [Algebra R A]
     (M : Type*) [AddCommGroup M] [Module R M] (a : A) (m : M) :
@@ -71,6 +85,19 @@ private theorem smul_one_tmul
   rw [h2] at h1
   exact h1.symm
 
+/- English proof (translation)
+Establish `key : ∀ m : M, ∀ a : A, a ⊗ₜ[R] m ∈ Submodule.span A (Set.range fun i : τ => (1 : A) ⊗ₜ[R] g i)`. Introduce `m`. Establish `hm : m ∈ Submodule.span R (Set.range g)`. Rewrite using `[hs]`. Conclude with `Submodule.mem_top`.
+
+Use `Submodule.span_induction ?_ ?_ ?_ ?_ hm` and prove the remaining obligations. Introduce and unpack `x ⟨i, rfl⟩ a`. Rewrite using `[← smul_one_tmul R A M a (g i)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce `a`.
+
+Rewrite using `[TensorProduct.tmul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `x y _ _ hx hy a`. Rewrite using `[TensorProduct.tmul_add]`. Conclude with `Submodule.add_mem _ (hx a) (hy a)`.
+
+Introduce `r x _ hx a`. Establish `e : a ⊗ₜ[R] (r • x) = (r • a) ⊗ₜ[R] x`. Rewrite using `[TensorProduct.smul_tmul]`. Rewrite using `[e]`. Conclude with `hx (r • a)`.
+
+Introduce `w _`. Use `TensorProduct.induction_on w ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Submodule.zero_mem _`. Introduce `a m`. Conclude with `key m a`.
+
+Introduce `u v hu hv`. Conclude with `Submodule.add_mem _ hu hv`.
+-/
 private theorem top_le_span_range_one_tmul
     (R : Type*) [CommRing R] (A : Type*) [CommRing A] [Algebra R A]
     (M : Type*) [AddCommGroup M] [Module R M]
@@ -106,6 +133,9 @@ private theorem top_le_span_range_one_tmul
     exact Submodule.add_mem _ hu hv
 
 omit [Algebra k S] [IsScalarTower k (MvPolynomial ι k) S] in
+/- English proof (translation)
+The claim follows from `top_le_span_range_one_tmul (MvPolynomial ι k) S (KaehlerDifferential k (MvPolynomial ι k)) ι (fun i : ι => KaehlerDifferential.D k (MvPolynomial ι k) (MvPolynomial.X i)) (span_range_D_X_eq_top k ι)`.
+-/
 private theorem top_le_span_one_tmul_D_X :
     ⊤ ≤ Submodule.span S (Set.range fun i : ι =>
         (1 : S) ⊗ₜ[MvPolynomial ι k]
@@ -119,6 +149,9 @@ noncomputable def tensorKaehlerBasis :
   Module.Basis.mk (linearIndependent_one_tmul_D_X k ι S) (top_le_span_one_tmul_D_X k ι S)
 
 @[simp]
+/- English proof (translation)
+Establish `h : tensorKaehlerBasis k ι S i = (1 : S) ⊗ₜ[MvPolynomial ι k] (KaehlerDifferential.D k (MvPolynomial ι k) (MvPolynomial.X i))` using `Module.Basis.mk_apply (linearIndependent_one_tmul_D_X k ι S) (top_le_span_one_tmul_D_X k ι S) i`. Establish `h2 : coord k ι S i = algebraMap (MvPolynomial ι k) S (MvPolynomial.X i)` using `rfl`. Rewrite using `[h, KaehlerDifferential.mapBaseChange_tmul, one_smul, KaehlerDifferential.map_D, h2]`.
+-/
 theorem tensorKaehlerBasis_mapBaseChange (i : ι) :
     KaehlerDifferential.mapBaseChange k (MvPolynomial ι k) S (tensorKaehlerBasis k ι S i) =
       KaehlerDifferential.D k S (coord k ι S i) := by
@@ -129,6 +162,15 @@ theorem tensorKaehlerBasis_mapBaseChange (i : ι) :
   have h2 : coord k ι S i = algebraMap (MvPolynomial ι k) S (MvPolynomial.X i) := rfl
   rw [h, KaehlerDifferential.mapBaseChange_tmul, one_smul, KaehlerDifferential.map_D, h2]
 
+/- English proof (translation)
+Establish `hexact` using `KaehlerDifferential.exact_mapBaseChange_map k (MvPolynomial ι k) S`. Establish `hD : ∀ s : S, KaehlerDifferential.D (MvPolynomial ι k) S s = 0`. Introduce `s`. Take `⟨y, hy⟩` from `h (KaehlerDifferential.D k S s)`. Establish `h2` using `hexact.apply_apply_eq_zero y`.
+
+Rewrite `h2` using `[hy, KaehlerDifferential.map_D]`. Simplify using `using h2`. Establish `key : ∀ x : KaehlerDifferential (MvPolynomial ι k) S, x = 0`. Introduce `x`. Establish `hx : x ∈ Submodule.span S (Set.range (KaehlerDifferential.D (MvPolynomial ι k) S))`.
+
+Rewrite using `[KaehlerDifferential.span_range_derivation]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨s, rfl⟩` from `hy`.
+
+Conclude with `hD s`. Consider the case `zero => rfl`. Consider the case `add a b _ _ ha hb => rw [ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [ha, smul_zero]`. Conclude with `Algebra.FormallyUnramified.mk ⟨fun a b => by rw [key a, key b]⟩`.
+-/
 theorem formallyUnramified_of_mapBaseChange_surjective
     (h : Function.Surjective (KaehlerDifferential.mapBaseChange k (MvPolynomial ι k) S)) :
     Algebra.FormallyUnramified (MvPolynomial ι k) S := by
@@ -154,6 +196,13 @@ theorem formallyUnramified_of_mapBaseChange_surjective
     | smul c a _ ha => rw [ha, smul_zero]
   exact Algebra.FormallyUnramified.mk ⟨fun a b => by rw [key a, key b]⟩
 
+/- English proof (translation)
+Establish `h : (KaehlerDifferential.mapBaseChange k (MvPolynomial ι k) S) = (((tensorKaehlerBasis k ι S).equiv b (Equiv.refl ι)) : (S ⊗[MvPolynomial ι k] KaehlerDifferential k (MvPolynomial ι k)) →ₗ[S] KaehlerDifferential k S)`. Use `(tensorKaehlerBasis k ι S).ext fun i => ?_` and prove the remaining obligations. Rewrite using `[tensorKaehlerBasis_mapBaseChange]`. Simplify using `[hb i]`. Establish `hx : ∀ x, KaehlerDifferential.mapBaseChange k (MvPolynomial ι k) S x = ((tensorKaehlerBasis k ι S).equiv b (Equiv.refl ι)) x`.
+
+Introduce `x`. Establish `h2` using `congrArg (fun f : (S ⊗[MvPolynomial ι k] KaehlerDifferential k (MvPolynomial ι k)) →ₗ[S] KaehlerDifferential k S => f x) h`. Simplify using `using h2`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`.
+
+Apply `((tensorKaehlerBasis k ι S).equiv b (Equiv.refl ι)).injective` to reduce the goal to its premises. Rewrite using `[← hx, ← hx, hxy]`. Introduce `y`. Take `⟨x, hxe⟩` from `((tensorKaehlerBasis k ι S).equiv b (Equiv.refl ι)).surjective y`. Conclude with `⟨x, (hx x).trans hxe⟩`.
+-/
 theorem mapBaseChange_bijective_of_basis
     (b : Module.Basis ι S (KaehlerDifferential k S))
     (hb : ∀ i : ι, b i = KaehlerDifferential.D k S (coord k ι S i)) :
@@ -180,6 +229,13 @@ theorem mapBaseChange_bijective_of_basis
     obtain ⟨x, hxe⟩ := ((tensorKaehlerBasis k ι S).equiv b (Equiv.refl ι)).surjective y
     exact ⟨x, (hx x).trans hxe⟩
 
+/- English proof (translation)
+Establish `hbij` using `mapBaseChange_bijective_of_basis k ι S b hb`. Establish `hfu : Algebra.FormallyUnramified (MvPolynomial ι k) S` using `formallyUnramified_of_mapBaseChange_surjective k ι S hbij.2`. Establish `hh1 : Subsingleton (Algebra.H1Cotangent (MvPolynomial ι k) S)`. Establish `key : ∀ z : Algebra.H1Cotangent (MvPolynomial ι k) S, z = 0`. Introduce `z`.
+
+Establish `hz : Algebra.H1Cotangent.δ k (MvPolynomial ι k) S z = 0`. Establish `h0` using `(Algebra.H1Cotangent.exact_δ_mapBaseChange k (MvPolynomial ι k) S).apply_apply_eq_zero z`. Use `hbij.1 ?_` and prove the remaining obligations. Rewrite using `[h0, map_zero]`. Take `⟨w, hw⟩` from `(Algebra.H1Cotangent.exact_map_δ k (MvPolynomial ι k) S z).mp hz`.
+
+Rewrite using `[← hw, Subsingleton.elim w 0, map_zero]`. Conclude with `⟨fun x y => by rw [key x, key y]⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `infer_instance`. Use `infer_instance`.
+-/
 theorem formallyEtale_of_basis [Algebra.FormallySmooth k S]
     (b : Module.Basis ι S (KaehlerDifferential k S))
     (hb : ∀ i : ι, b i = KaehlerDifferential.D k S (coord k ι S i)) :
@@ -211,12 +267,18 @@ variable (S : Type*) [CommRing S]
 variable [Algebra k S] [Algebra (MvPolynomial ι k) S] [IsScalarTower k (MvPolynomial ι k) S]
 
 omit [IsScalarTower k (MvPolynomial ι k) S] in
+/- English proof (translation)
+The claim follows from `(b.is_basis_iff_det.mpr h).1`.
+-/
 private theorem linearIndependent_D_coord_of_isUnit_det (b : Module.Basis ι S (KaehlerDifferential k S))
     (h : IsUnit (b.det fun i : ι => KaehlerDifferential.D k S (coord k ι S i))) :
     LinearIndependent S fun i : ι => KaehlerDifferential.D k S (coord k ι S i) :=
   (b.is_basis_iff_det.mpr h).1
 
 omit [IsScalarTower k (MvPolynomial ι k) S] in
+/- English proof (translation)
+Establish `hb` using `b.is_basis_iff_det.mpr h`. Establish `h2 : Submodule.span S (Set.range fun i : ι => KaehlerDifferential.D k S (coord k ι S i)) = ⊤` using `hb.2`. Conclude with `h2.ge`.
+-/
 private theorem top_le_span_D_coord_of_isUnit_det (b : Module.Basis ι S (KaehlerDifferential k S))
     (h : IsUnit (b.det fun i : ι => KaehlerDifferential.D k S (coord k ι S i))) :
     ⊤ ≤ Submodule.span S
@@ -233,11 +295,17 @@ noncomputable def coordBasis (b : Module.Basis ι S (KaehlerDifferential k S))
 
 omit [IsScalarTower k (MvPolynomial ι k) S] in
 @[simp]
+/- English proof (translation)
+The claim follows from `Module.Basis.mk_apply (linearIndependent_D_coord_of_isUnit_det k ι S b h) (top_le_span_D_coord_of_isUnit_det k ι S b h) i`.
+-/
 theorem coordBasis_apply (b : Module.Basis ι S (KaehlerDifferential k S))
     (h : IsUnit (b.det fun i : ι => KaehlerDifferential.D k S (coord k ι S i))) (i : ι) :
     coordBasis k ι S b h i = KaehlerDifferential.D k S (coord k ι S i) :=
   Module.Basis.mk_apply (linearIndependent_D_coord_of_isUnit_det k ι S b h) (top_le_span_D_coord_of_isUnit_det k ι S b h) i
 
+/- English proof (translation)
+The claim follows from `formallyEtale_of_basis k ι S (coordBasis k ι S b h) (coordBasis_apply k ι S b h)`.
+-/
 theorem formallyEtale_of_isUnit_det [Algebra.FormallySmooth k S]
     (b : Module.Basis ι S (KaehlerDifferential k S))
     (h : IsUnit (b.det fun i : ι => KaehlerDifferential.D k S (coord k ι S i))) :
@@ -252,6 +320,11 @@ variable (k : Type*) [CommRing k] (ι : Type*) (S : Type*) [CommRing S] [Algebra
 variable (S' : Type*) [CommRing S'] [Algebra k S'] [Algebra S S'] [IsScalarTower k S S']
 variable [Algebra.FormallyEtale S S']
 
+/- English proof (translation)
+Establish `hbc` using `KaehlerDifferential.isBaseChange_of_formallyEtale k S S'`. Establish `hfun : (fun i : ι => KaehlerDifferential.map k k S S' (b i)) = ⇑((Algebra.TensorProduct.basis S' b).map hbc.equiv)`. Use function extensionality and compare the values at `i`. Rewrite using `[Module.Basis.map_apply, Algebra.TensorProduct.basis_apply, hbc.equiv_tmul, one_smul]`. Rewrite using `[hfun]`.
+
+Conclude with `((Algebra.TensorProduct.basis S' b).map hbc.equiv).linearIndependent`.
+-/
 private theorem linearIndependent_kaehlerMap_basis
     (b : Module.Basis ι S (KaehlerDifferential k S)) :
     LinearIndependent S' fun i : ι => KaehlerDifferential.map k k S S' (b i) := by
@@ -263,6 +336,15 @@ private theorem linearIndependent_kaehlerMap_basis
   rw [hfun]
   exact ((Algebra.TensorProduct.basis S' b).map hbc.equiv).linearIndependent
 
+/- English proof (translation)
+Establish `hsub : Subsingleton (KaehlerDifferential S S')` using `Algebra.FormallyUnramified.subsingleton_kaehlerDifferential`. Establish `hexact` using `KaehlerDifferential.exact_mapBaseChange_map k S S'`. Establish `hsurj : Function.Surjective (KaehlerDifferential.mapBaseChange k S S')`. Introduce `x`. Take `⟨y, hy⟩` from `(hexact x).mp (Subsingleton.elim _ _)`.
+
+Conclude with `⟨y, hy⟩`. Establish `hspan : ⊤ ≤ Submodule.span S' (Set.range fun i : ι => (1 : S') ⊗ₜ[S] b i)` using `top_le_span_range_one_tmul S S' (KaehlerDifferential k S) ι (⇑b) b.span_eq`. Establish `hle : Submodule.span S' (Set.range fun i : ι => (1 : S') ⊗ₜ[S] b i) ≤ Submodule.comap (KaehlerDifferential.mapBaseChange k S S') (Submodule.span S' (Set.range fun i : ι => KaehlerDifferential.map k k S S' (b i)))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Establish `h1 : KaehlerDifferential.mapBaseChange k S S' ((1 : S') ⊗ₜ[S] b i) ∈ Submodule.span S' (Set.range fun j : ι => KaehlerDifferential.map k k S S' (b j))`. Rewrite using `[KaehlerDifferential.mapBaseChange_tmul, one_smul]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Conclude with `h1`. Introduce `x _`.
+
+Take `⟨y, rfl⟩` from `hsurj x`. Conclude with `hle (hspan Submodule.mem_top)`.
+-/
 private theorem top_le_span_kaehlerMap_basis (b : Module.Basis ι S (KaehlerDifferential k S)) :
     ⊤ ≤ Submodule.span S'
         (Set.range fun i : ι => KaehlerDifferential.map k k S S' (b i)) := by
@@ -296,11 +378,17 @@ noncomputable def inducedBasis (b : Module.Basis ι S (KaehlerDifferential k S))
   Module.Basis.mk (linearIndependent_kaehlerMap_basis k ι S S' b) (top_le_span_kaehlerMap_basis k ι S S' b)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `Module.Basis.mk_apply (linearIndependent_kaehlerMap_basis k ι S S' b) (top_le_span_kaehlerMap_basis k ι S S' b) i`.
+-/
 theorem inducedBasis_apply (b : Module.Basis ι S (KaehlerDifferential k S)) (i : ι) :
     inducedBasis k ι S S' b i = KaehlerDifferential.map k k S S' (b i) :=
   Module.Basis.mk_apply (linearIndependent_kaehlerMap_basis k ι S S' b)
     (top_le_span_kaehlerMap_basis k ι S S' b) i
 
+/- English proof (translation)
+Rewrite using `[inducedBasis_apply, hx i, KaehlerDifferential.map_D]`.
+-/
 theorem inducedBasis_apply_D (b : Module.Basis ι S (KaehlerDifferential k S)) (x : ι → S)
     (hx : ∀ i : ι, b i = KaehlerDifferential.D k S (x i)) (i : ι) :
     inducedBasis k ι S S' b i = KaehlerDifferential.D k S' (algebraMap S S' (x i)) := by

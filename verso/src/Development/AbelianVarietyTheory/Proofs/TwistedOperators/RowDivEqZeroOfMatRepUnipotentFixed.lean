@@ -10,6 +10,13 @@ open scoped DirectSum TensorProduct Kronecker Matrix
 
 namespace GlobalTheory.GLDuality
 
+/- English proof (translation)
+Establish `key : (Polynomial.evalRingHom (C t : MvPolynomial (Fin n' × Fin n) ℂ)).comp (rowGen ℂ (n` using `n) a b).toRingHom = (rowAct ℂ (n := n) (Matrix.transvection a b t)ᵀ).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[rowGen, rowAct]`. Introduce and unpack `⟨i, s⟩`.
+
+Distinguish the cases in `h : i = b`. Substitute `h` using the available equality. Simplify using `[rowGen, rowAct, Matrix.transvection, Matrix.single, Matrix.one_apply, add_mul, Finset.sum_add_distrib, ite_and, add_comm]`. Rewrite using `[Finset.sum_eq_single a (fun x _ hx => by simp [Ne.symm hx]) (by simp), if_pos rfl, mul_comm]`. Simplify using `[rowGen, rowAct, Matrix.transvection, Matrix.single, Matrix.one_apply, add_mul, Finset.sum_add_distrib, h, Ne.symm h]`.
+
+Conclude with `RingHom.congr_fun key f`.
+-/
 private theorem rowGen_eval_C_eq_rowAct_transvection {n n' : ℕ} (a b : Fin n') (t : ℂ)
     (f : MvPolynomial (Fin n' × Fin n) ℂ) :
     (rowGen ℂ a b f).eval (C t) = rowAct ℂ (Matrix.transvection a b t)ᵀ f := by
@@ -28,6 +35,21 @@ private theorem rowGen_eval_C_eq_rowAct_transvection {n n' : ℕ} (a b : Fin n')
           Finset.sum_add_distrib, h, Ne.symm h]
   exact RingHom.congr_fun key f
 
+/- English proof (translation)
+Introduce `n n' v hv a b hab k hk`. Establish `hroot : ∀ t : ℂ, (rowGen ℂ a b v).eval (C t) = v`. Introduce `t`. Rewrite using `[rowGen_eval_C_eq_rowAct_transvection]`. Establish `hdet : IsUnit (Matrix.transvection a b t).det`.
+
+Rewrite using `[Matrix.det_transvection_of_ne _ _ (ne_of_lt hab)]`. Conclude with `isUnit_one`. Set `g : GL (Fin n') ℂ` to `Matrix.nonsingInvUnit _ hdet`. Establish `hgv : (g : Matrix (Fin n') (Fin n') ℂ) = Matrix.transvection a b t` using `rfl`. Establish `hbt : (g : Matrix (Fin n') (Fin n') ℂ).BlockTriangular id`.
+
+Introduce `i j hij`. Establish `hne : i ≠ j` using `fun h => by simp [h] at hij`. Establish `hne' : ¬(a = i ∧ b = j)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd (lt_trans hab hij) (lt_irrefl _)`.
+
+Simplify using `[hgv, Matrix.transvection, Matrix.single, hne, hne']`. Establish `hdiag : ∀ i, (g : Matrix (Fin n') (Fin n') ℂ) i i = 1`. Introduce `i`. Establish `hne' : ¬(a = i ∧ b = i)`. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Conclude with `lt_irrefl _ hab`. Simplify using `[hgv, Matrix.transvection, Matrix.single, hne']`. Establish `hg` using `hv g hbt hdiag`. Rewrite `hg` using `[matRep_one_left, hgv]`. Conclude with `hg`.
+
+Establish `hconst : rowGen ℂ a b v = Polynomial.C v`. Rewrite using `[← sub_eq_zero]`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono ?_ (Set.infinite_range_of_injective (MvPolynomial.C_injective (Fin n' × Fin n) ℂ))` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`.
+
+Simplify using `[Polynomial.IsRoot, hroot t]`. Use `show (rowGen ℂ a b v).coeff k = 0`. Rewrite using `[hconst, Polynomial.coeff_C, if_neg (by omega)]`.
+-/
 theorem rowDiv_eq_zero_of_matRep_unipotent_fixed : ∀ (n n' : ℕ) (v : MvPolynomial (Fin n' × Fin n) ℂ), (∀ g : GL (Fin n') ℂ, (g : Matrix (Fin n') (Fin n') ℂ).BlockTriangular id → (∀ a, (g : Matrix (Fin n') (Fin n') ℂ) a a = 1) → matRep n n' (1, g) v = v) → ∀ a b : Fin n', a < b → ∀ k : ℕ, 1 ≤ k → rowDiv ℂ a b k v = 0 := by
   intro n n' v hv a b hab k hk
   have hroot : ∀ t : ℂ, (rowGen ℂ a b v).eval (C t) = v := by

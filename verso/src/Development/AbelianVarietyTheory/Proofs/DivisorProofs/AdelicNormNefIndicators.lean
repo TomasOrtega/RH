@@ -31,6 +31,19 @@ open Formalism.L2.Pj GlobalTheory.HTLat GlobalTheory.AllWt GlobalTheory.FlatLine
 
 namespace GlobalTheory.DetHT
 
+/- English proof (translation)
+Introduce `la p _`. Take `⟨ρ, hρ⟩` from `h la`. Take `⟨K, hK⟩` from `hP E H Dw τ p`. Use `⟨ρ * Real.log ((Valued.v : Valuation ℂ_[p] ℝ≥0) (p : ℂ_[p])) / (vLa la (p : c.F) : ℝ) + K, fun hla P hA hZ => ?_⟩` and prove the remaining obligations. Take `⟨yb, hyb⟩` from `hT E H Dw l Xo c Z p P hA`.
+
+Take `⟨y, hy, hyP, Q, π, ψ, z, hQ, hz⟩` from `hX E H Dw l Xo c hpq Z Zc la p hla P yb hyb hZ`. Establish `h1 : val_vw la p (Valued.v : Valuation ℂ_[p] ℝ≥0) (evR Xo c f y) = (ρ : EReal)` using `hρ _ hy`. Establish `h0 : evR Xo c f y ≠ 0` using `fun e => by`. Rewrite `h1` using `[e, val_vw_zero]`. Conclude with `EReal.coe_ne_top ρ h1.symm`.
+
+Take `⟨h2, h3⟩` from `hK l Xo c Z f hf P y z yb hyP Q π ψ hQ hz h0`. Use `⟨h2, h3.trans (congrArg (· + K) ?_)⟩` and prove the remaining obligations. Rewrite `h1` using `[val_vw_of_ne la p _ h0, EReal.coe_eq_coe_iff, coe_valued, coe_valued]`. Establish `hp0 : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hp1 : ‖(p : ℂ_[p])‖ < 1`.
+
+Rewrite using `[← coe_valued]`. Conclude with `lt_one_of_not_isUnit (PadicComplexInt.integers p) (PadicComplexHost.not_isUnit_p p)` after adjusting the coercions. Establish `hl : Real.log ‖(p : ℂ_[p])‖ ≠ 0` using `(Real.log_neg (norm_pos_iff.2 hp0) hp1).ne`. Establish `hv : (vLa la (p : c.F) : ℝ) ≠ 0`. Establish `hc : (p : c.F) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`.
+
+Establish `hne : la.valuation c.F (p : c.F) ≠ 1` using `fun e => by`. Use `(hla (p : c.F)⁻¹).2 (by rw [map_inv₀, e, inv_one])` as an intermediate fact. Rewrite `this` using `[map_inv₀, map_natCast, norm_inv]`. Conclude with `absurd (one_lt_inv₀ (norm_pos_iff.2 hp0) |>.2 hp1) this.not_gt`. Establish `h0' : la.valuation c.F (p : c.F) ≠ 0` using `(Valuation.ne_zero_iff _).2 hc`.
+
+Rewrite using `[Int.cast_ne_zero, vLa, neg_ne_zero]`. Introduce `e`. Conclude with `hne (by rw [← WithZero.exp_log h0', e, WithZero.exp_zero])`. Rewrite using `[coe_valued, ← h1]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem detConst_of (hT : TestPtSt) (hX : ExFrameSt) (hP : PointSt) {E : Type} [Field E] [NumberField E] [IsCMField E]
     [IsGalois ℚ E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
     (hpq : 1 ≤ Dw.p + Dw.q) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (Zc : Formalism.L2.Pj.Comp Xo c)
@@ -77,22 +90,48 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Semi 
 
 namespace GlobalTheory.DetHT
 
+/- English proof (translation)
+Establish `h : GlobalTheory.Cartier.RegAt (below y) (algebraMap _ Z.functionField a)` using `⟨a, rfl⟩`. Rewrite using `[GlobalTheory.TrueGeo.valAt, dif_pos h, IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField h.choose_spec]`.
+-/
 theorem valAt_stalk {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z) (a : Z.presheaf.stalk (below y)) :
     valAt y (algebraMap _ Z.functionField a) = (Scheme.stalkClosedPointTo y).hom a := by
   have h : GlobalTheory.Cartier.RegAt (below y) (algebraMap _ Z.functionField a) := ⟨a, rfl⟩
   rw [GlobalTheory.TrueGeo.valAt, dif_pos h, IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField h.choose_spec]
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `h`. Take `⟨u, rfl⟩` from `ha`. Rewrite using `[← map_units_inv, valAt_stalk, valAt_stalk, map_units_inv]`.
+-/
 theorem valAt_inv_of_unit {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z) {g : Z.functionField}
     (h : GlobalTheory.Cartier.UnitAt (below y) g) : valAt y g⁻¹ = (valAt y g)⁻¹ := by
   obtain ⟨a, ha, rfl⟩ := h
   obtain ⟨u, rfl⟩ := ha
   rw [← map_units_inv, valAt_stalk, valAt_stalk, map_units_inv]
 
+/- English proof (translation)
+Rewrite using `[valAt_inv_of_unit y.1 h, map_inv₀, Real.log_inv]`.
+-/
 theorem log_w_valAt_inv {F : Type} [Field F] [NumberField F] {Y : Var F} {v : HeightOneSpectrum (𝓞 F)} (e : Ext v)
     (y : AlgPt Y) {g : Y.Fn} (h : GlobalTheory.Cartier.UnitAt (below y.1) g) :
     Real.log (e.w (valAt y.1 g⁻¹)) = -Real.log (e.w (valAt y.1 g)) := by
   rw [valAt_inv_of_unit y.1 h, map_inv₀, Real.log_inv]
 
+/- English proof (translation)
+Introduce `D O _ _ _ _ _ _ c Q l hlQ hl V M hM τ`. Use `haveI : IsGalois ℚ D.host.E := D.host.hostE_isGalois`. Establish `hpq : 1 ≤ O.S.Dw.p + O.S.Dw.q` using `(one_le_two.trans O.S.two_le).trans O.S.rank_eq.ge`. Take `⟨q, hq⟩` from `GlobalTheory.T.flag_components_biject_moduli_components D O.A O.N O.j O.S O.κ O.s O.Φ`. Set `τ' : Psi O.A.H` to `⟨DV.tauEmb D τ, O.A.cm τ⟩`.
+
+Take `⟨f, hf, hc⟩` from `hA _ O.A.H O.S.Dw O.κ.l O.s.Xo O.κ.c hpq O.κ.good (GlobalTheory.RankOneDatum.exists_datum_of_rt D O.A.H O.A.rt_eq O.A.cmHost_rootComplex_eq_pm_sqrt) O.κ.curve (q c) τ'`. Establish `hD` using `detConst_of hT hX hP hpq O.s.T.Z (q c) τ' hf hc`. Establish `key` using `hF _ O.A.H O.S.Dw O.κ.l O.s.Xo O.κ.c O.s.T.Z _ O.κ.e (O.Φ.C c) (q c) τ' f hf (hq c) hD O.N O.S.rank_eq (GlobalTheory.ShFam.Pad.ArIn.ind Q) none`. Set `W : (O.var c).X.Opens` to `(O.Φ.C c).π ⁻¹ᵁ (GlobalTheory.Toroidal.genBd O.s.T.Z).compl`. Establish `hW : (W : Set (O.var c).X).Nonempty`.
+
+Use `letI := (GlobalTheory.ShFam.constF O.κ.e (O.Φ.C c).Y).toAlgebra`. Use `⟨genericPoint _, fun h => h ⟨GlobalTheory.AllWt.ptF (O.Φ.C c).y0 (IsLocalRing.closedPoint _), ?_⟩⟩` and prove the remaining obligations. Use `congrArg (fun g : Sp (O.var c).Fn ⟶ _ => g (IsLocalRing.closedPoint (O.var c).Fn)) (O.Φ.C c).y0_x` as an intermediate fact. Simplify using `only [Scheme.Hom.comp_apply] at this`. Use `this.trans (congrArg (O.Φ.C c).π ?_)` and prove the remaining obligations.
+
+Conclude with `Scheme.fromSpecStalk_closedPoint`. Establish `hv : ∀ v : HeightOneSpectrum (𝓞 D.what₂.LL), (l : 𝓞 D.what₂.LL) ∈ v.asIdeal → GlobalTheory.ShFam.Pad.ArIn.ind Q (resP v) = true` using `fun v hv => by`. Simplify using `[GlobalTheory.ShFam.Pad.ArIn.ind, (GlobalTheory.PlaceSum.residueCharacteristic_eq_iff v hl).2 hv, hlQ]`. Establish `e₁ (n : ℤ) (z : (O.var c).X) : ∏ x : DV.Rt D.what₂.Tau O.N, genAt (O.root0 c Q x).D z ^ (if x.1 = τ then n else 0) = (∏ i : Fin O.N, genAt (divOf (O.Φ.C c) (expo O.S.Dw (rootSym O.S.Dw (GlobalTheory.ShFam.Pad.ArIn.ind Q) none τ'.1 i))) z) ^ n`. Rewrite using `[Fintype.prod_prod_type, Finset.prod_eq_single τ (fun σ _ hσ => by simp [hσ]) (by simp), ← Finset.prod_zpow]`.
+
+Simplify using `only [if_true]`. Both sides reduce to the same expression. Establish `e₂ (n : ℤ) (v e y) : ∑ x : DV.Rt D.what₂.Tau O.N, ((if x.1 = τ then n else 0 : ℤ) : ℝ) * (O.root0 c Q x).lg v e y = n * ∑ i : Fin O.N, lgOf (O.Φ.C c) (rootSym O.S.Dw (GlobalTheory.ShFam.Pad.ArIn.ind Q) none τ'.1 i) v e y`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single τ (fun σ _ hσ => by simp [hσ]) (by simp), Finset.mul_sum]`. Simplify using `only [if_true]`.
+
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Use `hG _ _ V _ _ _ _ (norms_comb hM _) ((O.Φ.C c).val f) W hW l hl fun v h => ?_` and prove the remaining obligations. Take `⟨ρ, hρ⟩` from `key v (hv v h)`. Use `⟨ρ, fun e y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e₁, e₂, zpow_one, Int.cast_one, one_mul]`. Conclude with `hρ e y hy`. Use `hG _ _ V _ _ _ _ (norms_comb hM _) ((O.Φ.C c).val f)⁻¹ W hW l hl fun v h => ?_` and prove the remaining obligations. Take `⟨ρ, hρ⟩` from `key v (hv v h)`. Use `⟨-ρ, fun e y hy => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h₁, h₂⟩` from `hρ e y hy`. Rewrite using `[e₁, e₂, zpow_neg_one, inv_div_inv, ← inv_div, Int.cast_neg, Int.cast_one, neg_one_mul]`. Use `⟨h₁.inv, ?_⟩` and prove the remaining obligations. Rewrite using `[log_w_valAt_inv e y h₁]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nefOver_det_of (hG : GeoSt) (hA : AnyLevSt) (hT : TestPtSt) (hX : ExFrameSt) (hP : PointSt) (hF : FlagSt) :
     OnObj fun D O _ _ _ _ => ∀ (c : O.s.Comp) (Q : Finset ℕ) (l : ℕ), l ∈ Q → l.Prime → ∀ (V : Cover (O.var c)) (M : DV.Rt D.what₂.Tau O.N → HermLB V.p), (∀ x, Norms V (M x) (fun z => genAt (O.root0 c Q x).D z) (fun σ y => lnAdl (O.root0 c Q x) σ y) (fun v e y => (O.root0 c Q x).lg v e y)) → ∀ τ : D.what₂.Tau, NefOver (ArInt.comb M fun x => if x.1 = τ then 1 else 0) l ∧ NefOver (ArInt.comb M fun x => if x.1 = τ then -1 else 0) l := by
   intro D O _ _ _ _ _ _ c Q l hlQ hl V M hM τ
@@ -141,6 +180,9 @@ theorem nefOver_det_of (hG : GeoSt) (hA : AnyLevSt) (hT : TestPtSt) (hX : ExFram
     rw [log_w_valAt_inv e y h₁]
     linarith
 
+/- English proof (translation)
+Introduce `hP _` and use `nefOver_det_of (GlobalTheory.T.regular_local_implies_geometric GlobalTheory.T.RegularLocalStatement) (GlobalTheory.T.anyLevSt_of_covering hP) GlobalTheory.T.TestPointStatement GlobalTheory.T.ExistsFrameStatement (GlobalTheory.T.point_count_of_eigen_covolume_hypotheses GlobalTheor …`.
+-/
 theorem nefOver_det :
     Hypotheses2 → HypothesesH → OnObj fun D O _ _ _ _ => ∀ (c : O.s.Comp) (Q : Finset ℕ) (l : ℕ), l ∈ Q → l.Prime → ∀ (V : Cover (O.var c)) (M : DV.Rt D.what₂.Tau O.N → HermLB V.p), (∀ x, Norms V (M x) (fun z => genAt (O.root0 c Q x).D z) (fun σ y => lnAdl (O.root0 c Q x) σ y) (fun v e y => (O.root0 c Q x).lg v e y)) → ∀ τ : D.what₂.Tau, NefOver (ArInt.comb M fun x => if x.1 = τ then 1 else 0) l ∧ NefOver (ArInt.comb M fun x => if x.1 = τ then -1 else 0) l :=
   fun hP _ => nefOver_det_of (GlobalTheory.T.regular_local_implies_geometric GlobalTheory.T.RegularLocalStatement) (GlobalTheory.T.anyLevSt_of_covering hP) GlobalTheory.T.TestPointStatement GlobalTheory.T.ExistsFrameStatement

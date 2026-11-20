@@ -13,6 +13,9 @@ open NumberField MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheor
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.sum_absNorm_rpow_fractionalIdeal_le_le | exact GlobalTheory.sum_absNorm_rpow_fractionalIdeal_le_le | (intros; apply GlobalTheory.sum_absNorm_rpow_fractionalIdeal_le_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.subideal_norm_power_series_bound : ∀ (K : Type) [Field K] [NumberField K] (t : ℝ), 1 < t → ∃ Z : ℝ,
     ∀ I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K, I ≠ 0 →
       ∑' J : {J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K // J ≠ 0 ∧ J ≤ I},

@@ -11,5 +11,8 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doubling GlobalTheory.Cont GlobalTheory.MixModel
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SwUnf.unfold | exact GlobalTheory.CompanionTheory.SwUnf.unfold | (intros; apply GlobalTheory.CompanionTheory.SwUnf.unfold <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unfolding_holds : PositivityTheory.PfSWUS.Unfold := by
   first | exact @GlobalTheory.CompanionTheory.SwUnf.unfold | exact GlobalTheory.CompanionTheory.SwUnf.unfold | (intros; apply GlobalTheory.CompanionTheory.SwUnf.unfold <;> assumption)

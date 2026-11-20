@@ -16,13 +16,24 @@ open GlobalTheory.CompanionTheory.Ar.RootHt
 def ev {S : Scheme.{0}} (U : S.Opens) (z : Sp ℂ ⟶ S) (hz : centre z ∈ U) : Γ(S, U) →+* ℂ :=
   (S.presheaf.germ U (centre z) hz ≫ Scheme.stalkClosedPointTo z).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_apply {S : Scheme.{0}} (U : S.Opens) (z : Sp ℂ ⟶ S) (hz : centre z ∈ U) (t : Γ(S, U)) :
     ev U z hz t = (Scheme.stalkClosedPointTo z).hom (S.presheaf.germ U (centre z) hz t) := rfl
 
+/- English proof (translation)
+Rewrite using `[ev_apply, ev_apply, TopCat.Presheaf.germ_res_apply]`.
+-/
 theorem ev_res {S : Scheme.{0}} {U V : S.Opens} (h : V ≤ U) (z : Sp ℂ ⟶ S) (hz : centre z ∈ V) (t : Γ(S, U)) :
     ev V z hz (S.presheaf.map (homOfLE h).op t) = ev U z (h hz) t := by
   rw [ev_apply, ev_apply, TopCat.Presheaf.germ_res_apply]
 
+/- English proof (translation)
+Establish `e1` using `ArchC.germ_closedPoint (R := .of ℂ) z V hz`. Establish `e2` using `ArchC.germ_closedPoint (R := .of ℂ) (z ≫ g) U hz'`. Establish `e3 : g.appLE U V h ≫ (T.presheaf.germ V (centre z) hz ≫ Scheme.stalkClosedPointTo z) = S.presheaf.germ U (centre (z ≫ g)) hz' ≫ Scheme.stalkClosedPointTo (z ≫ g)`. Use `(congrArg (fun q => g.appLE U V h ≫ q) e1).trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Rewrite using `[← Category.assoc, Scheme.Hom.appLE_comp_appLE]`.
+
+Conclude with `congrArg (fun q => q.hom t) e3`.
+-/
 theorem ev_appLE {S T : Scheme.{0}} (g : T ⟶ S) {U : S.Opens} {V : T.Opens} (h : V ≤ g ⁻¹ᵁ U) (z : Sp ℂ ⟶ T)
     (hz : centre z ∈ V) (hz' : centre (z ≫ g) ∈ U) (t : Γ(S, U)) :
     ev V z hz (g.appLE U V h t) = ev U (z ≫ g) hz' t := by
@@ -34,6 +45,9 @@ theorem ev_appLE {S T : Scheme.{0}} (g : T ⟶ S) {U : S.Opens} {V : T.Opens} (h
     rw [← Category.assoc, Scheme.Hom.appLE_comp_appLE]
   exact congrArg (fun q => q.hom t) e3
 
+/- English proof (translation)
+Rewrite using `[Scheme.mem_basicOpen S g (centre z) hz, ev_apply, ← isUnit_iff_ne_zero]`. Conclude with `⟨fun h => h.map _, fun h => (Scheme.isLocalHom_stalkClosedPointTo' z).map_nonunit _ h⟩`.
+-/
 theorem mem_basicOpen_iff {S : Scheme.{0}} {U : S.Opens} (z : Sp ℂ ⟶ S) (hz : centre z ∈ U) (g : Γ(S, U)) :
     centre z ∈ S.basicOpen g ↔ ev U z hz g ≠ 0 := by
   rw [Scheme.mem_basicOpen S g (centre z) hz, ev_apply, ← isUnit_iff_ne_zero]
@@ -62,9 +76,15 @@ def bdd {S : Scheme.{0}} {β : Type} (F : Filter β) (p : β → (Sp ℂ ⟶ S))
     rw [map_neg, norm_neg]
     exact h1 h
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_bdd {S : Scheme.{0}} {β : Type} {F : Filter β} {p : β → (Sp ℂ ⟶ S)} {U : S.Opens} {t : Γ(S, U)} :
     t ∈ bdd F p U ↔ ∃ C : ℝ, ∀ᶠ i in F, ∀ h : centre (p i) ∈ U, ‖ev U (p i) h t‖ ≤ C := Iff.rfl
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `ht`. Use `⟨C, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hC] with i hi hV`. Rewrite using `[ev_appLE g h (p i) hV (h hV)]`. Conclude with `hi _`.
+-/
 theorem bdd_appLE {S T : Scheme.{0}} (g : T ⟶ S) {U : S.Opens} {V : T.Opens} (h : V ≤ g ⁻¹ᵁ U)
     {β : Type} {F : Filter β} {p : β → (Sp ℂ ⟶ T)} {t : Γ(S, U)} (ht : t ∈ bdd F (fun i => p i ≫ g) U) :
     g.appLE U V h t ∈ bdd F p V := by
@@ -74,6 +94,15 @@ theorem bdd_appLE {S T : Scheme.{0}} (g : T ⟶ S) {U : S.Opens} {V : T.Opens} (
   rw [ev_appLE g h (p i) hV (h hV)]
   exact hi _
 
+/- English proof (translation)
+Take `⟨P, hP, h0⟩` from `ht`. Use `choose C hC using fun r => mem_bdd.1 (hφ r)`. Use `⟨∑ k ∈ Finset.range P.natDegree, |C (P.coeff k)| + 1, ?_⟩` and prove the remaining obligations. Establish `hall : ∀ᶠ i in F, ∀ k ∈ Finset.range P.natDegree, ∀ h : centre (p i) ∈ U, ‖ev U (p i) h (φ (P.coeff k))‖ ≤ C (P.coeff k)` using `(eventually_all_finset _).2 fun k _ => hC _`. Use `filter_upwards [hall] with i hi h`.
+
+Use `set ψ := (ev U (p i) h).comp φ with hψ`. Establish `hm : (P.map ψ).Monic` using `hP.map ψ`. Establish `hr : (P.map ψ).IsRoot (ev U (p i) h t)`. Rewrite using `[Polynomial.IsRoot.def, Polynomial.eval_map, hψ, ← Polynomial.hom_eval₂, h0, map_zero]`. Establish `hb` using `Polynomial.IsRoot.norm_lt_cauchyBound hm.ne_zero hr`.
+
+Rewrite `hb` using `[Polynomial.cauchyBound, hm.leadingCoeff, nnnorm_one, div_one, hP.natDegree_map]`. Establish `hnn : 0 ≤ ∑ k ∈ Finset.range P.natDegree, |C (P.coeff k)|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hs : (Finset.range P.natDegree).sup (fun k => ‖(P.map ψ).coeff k‖₊) ≤ (⟨∑ k ∈ Finset.range P.natDegree, |C (P.coeff k)|, hnn⟩ : NNReal)`. Use `Finset.sup_le fun k hk => ?_` and prove the remaining obligations. Use `NNReal.coe_le_coe.1 ?_` and prove the remaining obligations.
+
+Rewrite using `[coe_nnnorm, Polynomial.coeff_map]`. Conclude with `((hi k hk h).trans (le_abs_self _)).trans (Finset.single_le_sum (f := fun k => |C (P.coeff k)|) (fun _ _ => abs_nonneg _) hk)`. Use `hb.le.trans (add_le_add hs le_rfl)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem bdd_of_integral {S : Scheme.{0}} {β : Type} {F : Filter β} {p : β → (Sp ℂ ⟶ S)} {U : S.Opens}
     {R : Type} [CommRing R] (φ : R →+* Γ(S, U)) (hφ : ∀ r, φ r ∈ bdd F p U) {t : Γ(S, U)}
     (ht : φ.IsIntegralElem t) : t ∈ bdd F p U := by
@@ -101,6 +130,11 @@ theorem bdd_of_integral {S : Scheme.{0}} {β : Type} {F : Filter β} {p : β →
   have := hb.le.trans (add_le_add hs le_rfl)
   exact_mod_cast this
 
+/- English proof (translation)
+Set `e` to `(Scheme.ΓSpecIso (.of ℚ)).commRingCatIsoToRingEquiv`. Use `⟨‖((e t : ℚ) : ℂ)‖, Eventually.of_forall fun i h => le_of_eq ?_⟩` and prove the remaining obligations. Use `congr 1`. Use `eq_ratCast ((ev ⊤ (p i) h).comp (e.symm.toRingHom : ℚ →+* Γ(Sp ℚ, ⊤))) (e t)` as an intermediate fact. Rewrite using `[← this]`.
+
+Conclude with `congrArg (ev ⊤ (p i) h) (e.symm_apply_apply t).symm`.
+-/
 theorem bdd_rat {β : Type} {F : Filter β} {p : β → (Sp ℂ ⟶ Sp ℚ)} (t : Γ(Sp ℚ, ⊤)) : t ∈ bdd F p ⊤ := by
   let e := (Scheme.ΓSpecIso (.of ℚ)).commRingCatIsoToRingEquiv
   refine ⟨‖((e t : ℚ) : ℂ)‖, Eventually.of_forall fun i h => le_of_eq ?_⟩
@@ -109,6 +143,11 @@ theorem bdd_rat {β : Type} {F : Filter β} {p : β → (Sp ℂ ⟶ Sp ℚ)} (t 
   rw [← this]
   exact congrArg (ev ⊤ (p i) h) (e.symm_apply_apply t).symm
 
+/- English proof (translation)
+Establish `H : IsPullback (XQ.fst X) (XQ.snd X) (toZ X) (toZ (Sp ℚ))` using `IsPullback.of_hasPullback _ _`. Establish `hI` using `isIso_pushoutSection_of_isAffineOpen H (US := ⊤) (UT := ⊤) (UX := U) (UY := XQ.fst X ⁻¹ᵁ U) le_top le_top (by simp) (isAffineOpen_top _) (isAffineOpen_top _) hU`. Establish `hP` using `(isIso_pushoutSection_iff H _ _ _).1 hI`. Establish `hc` using `CommRingCat.closure_range_union_range_eq_top_of_isPushout hP`. Establish `: (⊤ : Subring _) ≤ bdd F p (XQ.fst X ⁻¹ᵁ U)`.
+
+Rewrite using `[← hc, Subring.closure_le]`. Introduce and unpack `_ (⟨s, rfl⟩ | ⟨s, rfl⟩)`. Conclude with `bdd_appLE _ _ (h s)`. Conclude with `bdd_appLE _ _ (bdd_rat s)`. Conclude with `this trivial`.
+-/
 theorem bdd_XQ {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {β : Type} {F : Filter β}
     {p : β → (Sp ℂ ⟶ XQ X)} (h : ∀ t, t ∈ bdd F (fun i => p i ≫ XQ.fst X) U) (t : Γ(XQ X, XQ.fst X ⁻¹ᵁ U)) :
     t ∈ bdd F p (XQ.fst X ⁻¹ᵁ U) := by
@@ -124,6 +163,29 @@ theorem bdd_XQ {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {β : Type} 
     · exact bdd_appLE _ _ (bdd_rat s)
   exact this trivial
 
+/- English proof (translation)
+Set `val : Γ(S, W) → (Sp ℂ ⟶ S) → ℂ` to `fun t z => if h : centre z ∈ W then ev W z h t else 0`. Establish `hval : ∀ t z (h : centre z ∈ W), val t z = ev W z h t` using `fun t z h => dif_pos h`. Establish `hconv : ∀ t, ∃ a, Tendsto (val t) F (𝓝 a)`. Introduce `t`. Take `⟨C, hC⟩` from `hb t`.
+
+Take `⟨a, -, ha⟩` from `(isCompact_closedBall (0 : ℂ) C).ultrafilter_le_nhds (F.map (val t)) (by`. Rewrite using `[le_principal_iff, Ultrafilter.coe_map, mem_map]`. Use `filter_upwards [hC, hF] with z h1 h2`. Rewrite using `[Set.mem_preimage, mem_closedBall_zero_iff, hval t z h2]`. Conclude with `h1 h2)`.
+
+Conclude with `⟨a, ha⟩`. Use `choose a ha using hconv`. Set `g : Γ(S, W) →+* ℂ` to `{ toFun := a map_one' := tendsto_nhds_unique (ha 1) (tendsto_const_nhds.congr' (by filter_upwards [hF] with z h`. Rewrite using `[hval _ z h, map_one]))`. Use the proof step `map_zero' := tendsto_nhds_unique (ha 0) (tendsto_const_nhds.congr' (by filter_upwards [hF] with z h`.
+
+Rewrite using `[hval _ z h, map_zero]))`. Use the proof step `map_mul' := fun s t => tendsto_nhds_unique (ha (s * t)) (((ha s).mul (ha t)).congr' (by filter_upwards [hF] with z h`. Rewrite using `[hval _ z h, hval _ z h, hval _ z h, map_mul]))`. Use the proof step `map_add' := fun s t => tendsto_nhds_unique (ha (s + t)) (((ha s).add (ha t)).congr' (by filter_upwards [hF] with z h`. Rewrite using `[hval _ z h, hval _ z h, hval _ z h, map_add])) }`.
+
+Take `⟨hc, hg⟩` from `ArchC.point_of_ringHom hW g`. Use `set z₀ : Sp ℂ ⟶ S := Spec.map (CommRingCat.ofHom g) ≫ hW.fromSpec with hz₀`. Establish `hg' : ∀ t, ev W z₀ hc t = a t` using `hg`. Use `⟨z₀, ?_⟩` and prove the remaining obligations. Use `(TopologicalSpace.tendsto_nhds_generateFrom_iff (m := id)).2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨U, f, V, hV, rfl⟩ ⟨hU, hf⟩`. Take `⟨d, hdU, hd⟩` from `hW.exists_basicOpen_le (V := U) ⟨centre z₀, hU⟩ hc`. Establish `hloc` using `hW.isLocalization_basicOpen d`. Take `⟨⟨b, ⟨_, n, rfl⟩⟩, hbn⟩` from `IsLocalization.surj (Submonoid.powers d) (S.presheaf.map (homOfLE hdU).op f : Γ(S, S.basicOpen d))`. Establish `key : ∀ (z : Sp ℂ ⟶ S) (h : centre z ∈ W), ev W z h d ≠ 0 → ∃ hz : centre z ∈ U, evalAt U f z hz = ev W z h b / ev W z h d ^ n`.
+
+Introduce `z h hne`. Establish `hz` using `(mem_basicOpen_iff z h d).2 hne`. Use `⟨hdU hz, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (ev _ z hz) hbn`. Establish `r : ∀ s : Γ(S, W), ev _ z hz (algebraMap Γ(S, W) Γ(S, S.basicOpen d) s) = ev W z h s` using `fun s => ev_res (S.basicOpen_le d) z hz s`.
+
+Rewrite `e` using `[map_mul, r, r, ev_res, map_pow]`. Rewrite using `[eq_div_iff (pow_ne_zero n hne)]`. Conclude with `e`. Establish `hne : a d ≠ 0`. Rewrite using `[← hg']`.
+
+Conclude with `(mem_basicOpen_iff z₀ hc d).1 hd`. Take `⟨_, e0⟩` from `key z₀ hc (by rwa [hg'])`. Rewrite `hf` using `[e0, hg', hg']`. Establish `ht` using `((ha b).div ((ha d).pow n) (pow_ne_zero n hne)).eventually (hV.mem_nhds hf)`. Establish `ht2` using `(ha d).eventually_ne hne`.
+
+Use `filter_upwards [ht, ht2, hF] with z h1 h2 h`. Rewrite `h2` using `[hval _ z h]`. Take `⟨hz, e⟩` from `key z h h2`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Use `show evalAt U f z hz ∈ V`.
+
+Rewrite using `[e, ← hval _ z h, ← hval _ z h]`. Conclude with `h1`.
+-/
 theorem limit {S : Scheme.{0}} {W : S.Opens} (hW : IsAffineOpen W) (F : Ultrafilter (Sp ℂ ⟶ S))
     (hF : ∀ᶠ z in (F : Filter (Sp ℂ ⟶ S)), centre z ∈ W) (hb : ∀ t, t ∈ bdd (F : Filter _) id W) :
     ∃ z, (F : Filter _) ≤ @nhds _ (anTop S) z := by
@@ -197,6 +259,15 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {κ : Type} 
 def Best (ξ : Sp Ω ⟶ X) (x : κ → Ω) (c : κ) (z : Sp ℂ ⟶ X) : Prop :=
   x c ≠ 0 ∧ ∀ j, ∃ r : ℂ, ValAt ξ z (x j / x c) r ∧ ‖r‖ ≤ 1
 
+/- English proof (translation)
+Take `⟨c₀, h0, hreg⟩` from `tie.cover ⟨centre z, hall _⟩`. Use `choose r hr using fun j => ArchB.val_exists (z := z) (hreg j)`. Establish `: Nonempty κ` using `⟨c₀⟩`. Take `⟨c, hc⟩` from `Finite.exists_max fun j => ‖r j‖`. Establish `h1 : r c₀ = 1`.
+
+Use `hr c₀` as an intermediate fact. Rewrite `this` using `[div_self h0]`. Conclude with `ArchB.val_unique tie.gen this (ArchB.val_one (hall _))`. Establish `hpos : 0 < ‖r c‖`. Use `hc c₀` as an intermediate fact.
+
+Rewrite `this` using `[h1, norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : r c ≠ 0` using `norm_pos_iff.1 hpos`. Establish `hx : x c ≠ 0` using `(div_ne_zero_iff.1 (ArchB.val_ne_zero tie.gen (r := Units.mk0 _ hne) (hr c))).1`. Use `⟨c, hx, fun j => ⟨r j * (r c)⁻¹, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h` using `ArchB.val_mul (hr j) (ArchB.val_inv₀ hne (hr c))`. Use `h using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Rewrite using `[norm_mul, norm_inv, ← div_eq_mul_inv, div_le_one hpos]`. Conclude with `hc j`.
+-/
 theorem exists_best [Finite κ] (hall : ∀ q : X, genPt ξ ⤳ q) (tie : CoordTie ℤ ξ x) (z : Sp ℂ ⟶ X) :
     ∃ c, Best ξ x c z := by
   obtain ⟨c₀, h0, hreg⟩ := tie.cover ⟨centre z, hall _⟩
@@ -220,6 +291,17 @@ theorem exists_best [Finite κ] (hall : ∀ q : X, genPt ξ ⤳ q) (tie : CoordT
   · rw [norm_mul, norm_inv, ← div_eq_mul_inv, div_le_one hpos]
     exact hc j
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha`. Take `⟨j, rfl⟩` from `ha`. Conclude with `⟨1, fun z hz => hz.2 j⟩`. Consider the case `algebraMap n => exact ⟨‖(n : ℂ)‖, fun z _ => ⟨n, by simpa using ArchC.val_int (hall _) n, le_rfl⟩⟩`.
+
+Consider the case `add a b _ _ iha ihb`. Take `⟨A, hA⟩` from `iha`. Take `⟨B, hB⟩` from `ihb`. Use `⟨A + B, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hr'⟩` from `hA z hz`.
+
+Take `⟨s, hs, hs'⟩` from `hB z hz`. Conclude with `⟨r + s, ArchB.val_add hr hs, (norm_add_le _ _).trans (add_le_add hr' hs')⟩`. Consider the case `mul a b _ _ iha ihb`. Take `⟨A, hA⟩` from `iha`. Take `⟨B, hB⟩` from `ihb`.
+
+Use `⟨A * B, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hr'⟩` from `hA z hz`. Take `⟨s, hs, hs'⟩` from `hB z hz`. Use `⟨r * s, ArchB.val_mul hr hs, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul hr' hs' (norm_nonneg _) ((norm_nonneg _).trans hr')`.
+-/
 theorem best_bound (hall : ∀ q : X, genPt ξ ⤳ q) (c : κ) (a : Ω)
     (ha : a ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c)) :
     ∃ C : ℝ, ∀ z, Best ξ x c z → ∃ r : ℂ, ValAt ξ z a r ∧ ‖r‖ ≤ C := by
@@ -245,6 +327,17 @@ theorem best_bound (hall : ∀ q : X, genPt ξ ⤳ q) (c : κ) (a : Ω)
     rw [norm_mul]
     exact mul_le_mul hr' hs' (norm_nonneg _) ((norm_nonneg _).trans hr')
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Ultrafilter.eventually_exists_iff.1 (Eventually.of_forall (f := (F : Filter β)) fun i => exists_best hall tie (p i))`. Take `⟨i₀, hi₀⟩` from `hc.exists`. Establish `hx` using `hi₀.1`. Take `⟨U, hU, hmem⟩` from `tie.affine c hx`. Establish `hin : ∀ z, Best ξ x c z → centre z ∈ U`.
+
+Introduce `z hz`. Use `(hmem _).2 ⟨hall _, hx, fun j => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, -⟩` from `hz.2 j`. Conclude with `(ArchB.val_spec hr).2`. Use `⟨U, hU, hc.mono fun i hi => hin _ hi, fun t => ?_⟩` and prove the remaining obligations.
+
+Establish `hp₀` using `hin _ hi₀`. Set `e : Ω` to `genMap ξ ⟨centre (p i₀), hall _⟩ (X.presheaf.germ U _ hp₀ t)`. Establish `he : ∀ {q : X} (hq : q ∈ U), genMap ξ ⟨q, hall q⟩ (X.presheaf.germ U q hq t) = e`. Introduce `q hq`. Use `show _ = genMap ξ ⟨centre (p i₀), hall _⟩ (X.presheaf.germ U _ hp₀ t)`.
+
+Rewrite using `[ArchC.genMap_germ U (hall q) hq t, ArchC.genMap_germ U (hall _) hp₀ t]`. Establish `hA : e ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c)` using `(tie.ring c hx e).2 fun q hq => ⟨X.presheaf.germ U q.1 ((hmem q.1).2 ⟨q.2, hq⟩) t, he _⟩`. Take `⟨C, hC⟩` from `best_bound hall c e hA`. Use `⟨C, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hc] with i hi h`.
+
+Take `⟨r, hr, hr'⟩` from `hC _ hi`. Establish `hv : ValAt ξ (p i) e (ev U (p i) h t)` using `⟨hall _, _, he h, rfl⟩`. Rewrite using `[ArchB.val_unique tie.gen hv hr]`. Conclude with `hr'`.
+-/
 theorem chart [Finite κ] (hall : ∀ q : X, genPt ξ ⤳ q) (tie : CoordTie ℤ ξ x) {β : Type} (F : Ultrafilter β)
     (p : β → (Sp ℂ ⟶ X)) : ∃ U : X.Opens, IsAffineOpen U ∧ (∀ᶠ i in (F : Filter β), centre (p i) ∈ U) ∧
       ∀ t, t ∈ bdd (F : Filter β) p U := by
@@ -281,6 +374,13 @@ end PositivityTheory.Xgn.TorusUniformizationCompact
 
 end
 
+/- English proof (translation)
+Introduce `X Ω _ K _ J _ y ξ hall tie Z' f hf`. Set `_` to `anTop Z'`. Use `⟨isCompact_iff_ultrafilter_le_nhds.2 fun F _ => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hFU, hb⟩` from `PositivityTheory.Xgn.TorusUniformizationCompact.chart hall tie F (fun z => (z ≫ f) ≫ XQ.fst X)`. Establish `haff : IsAffineHom (XQ.fst X)` using `(isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback (toZ X) (toZ (Sp ℚ))).flip inferInstance :)`.
+
+Establish `hW : IsAffineOpen (XQ.fst X ⁻¹ᵁ U)` using `hU.preimage _`. Establish `hW' : IsAffineOpen (f ⁻¹ᵁ (XQ.fst X ⁻¹ᵁ U))` using `hW.preimage _`. Establish `h1` using `PositivityTheory.Xgn.TorusUniformizationCompact.bdd_XQ hU (p := fun z => z ≫ f) hb`. Take `⟨z, hz⟩` from `PositivityTheory.Xgn.TorusUniformizationCompact.limit hW' F hFU (fun t => PositivityTheory.Xgn.TorusUniformizationCompact.bdd_of_integral (f.app _).hom (fun r => by`. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+
+Conclude with `PositivityTheory.Xgn.TorusUniformizationCompact.bdd_appLE f le_rfl (h1 r))`. Use the proof step `((IsFinite.finite_app f _ hW).to_isIntegral t))`. Conclude with `⟨z, Set.mem_univ _, hz⟩`.
+-/
 theorem PositivityTheory.Xgn.torus_uniformization_compact : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)]
     (y : (Σ k, J k) → Ω) (ξ : Sp Ω ⟶ X), (∀ q : X, genPt ξ ⤳ q) →
     CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → ∀ (Z' : Scheme.{0}) (f : Z' ⟶ XQ X), IsFinite f →

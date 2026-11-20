@@ -21,5 +21,8 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.DownLift
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LieSpanConj.span_conj_lieAt_eq_top | exact GlobalTheory.LieSpanConj.span_conj_lieAt_eq_top | (intros; apply GlobalTheory.LieSpanConj.span_conj_lieAt_eq_top <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.span_conj_unitaryLieAlgebra_realPlace_eq_top : ∀ (D : D7) (V : HSp D) (τ : D.what₂.Tau) (Fm : Matrix (Fin V.rank) (Fin V.rank) ℂ), IsUnit Fm → Submodule.span ℂ {Z : Matrix (Fin V.rank) (Fin V.rank) ℂ | ∃ Y ∈ lieAt V τ, Z = Fm * Y * Fm⁻¹} = ⊤ := by
   first | exact @GlobalTheory.LieSpanConj.span_conj_lieAt_eq_top | exact GlobalTheory.LieSpanConj.span_conj_lieAt_eq_top | (intros; apply GlobalTheory.LieSpanConj.span_conj_lieAt_eq_top <;> assumption)

@@ -12,8 +12,16 @@ variable {l : Type} [Fintype l]
 
 def weylAlg (l : Type) [Fintype l] : Subalgebra ℂ (Sch l →L[ℂ] Sch l) := Algebra.adjoin ℂ (Set.range dRho)
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨w, rfl⟩`.
+-/
 theorem dRho_mem_weylAlg (w : l ⊕ l → ℝ) : dRho w ∈ weylAlg l := Algebra.subset_adjoin ⟨w, rfl⟩
 
+/- English proof (translation)
+Establish `h : A ∈ Submodule.span ℂ (Submonoid.closure (Set.range (dRho (l` using `l))) : Set (Sch l →L[ℂ] Sch l)) := by`. Rewrite using `[← Algebra.adjoin_eq_span]`. Conclude with `hA`. Use `Submodule.span_induction (p := fun A _ => P A) (fun B hB => ?_) h0 (fun A B _ _ => hadd A B) (fun c A _ => hsmul c A) h` and prove the remaining obligations. Use `Submonoid.closure_induction_right (motive := fun A _ => P A) h1 ?_ hB` and prove the remaining obligations.
+
+Introduce and unpack `A _ _ ⟨w, rfl⟩ hA`. Conclude with `hmul A w hA`.
+-/
 theorem weylAlg_induction {P : (Sch l →L[ℂ] Sch l) → Prop} (h1 : P 1)
     (hmul : ∀ A w, P A → P (A * dRho w)) (h0 : P 0) (hadd : ∀ A B, P A → P B → P (A + B))
     (hsmul : ∀ (c : ℂ) A, P A → P (c • A)) {A : Sch l →L[ℂ] Sch l} (hA : A ∈ weylAlg l) : P A := by
@@ -25,6 +33,11 @@ theorem weylAlg_induction {P : (Sch l →L[ℂ] Sch l) → Prop} (h1 : P 1)
   rintro A _ _ ⟨w, rfl⟩ hA
   exact hmul A w hA
 
+/- English proof (translation)
+Establish `: lineDerivOpCLM ℂ (Sch l) v = dRho (Sum.elim (fun i => v i) 0)`. Use extensionality with `f x`. Establish `h1 : pPart (Sum.elim (fun i => v i) 0 : l ⊕ l → ℝ) = v` using `rfl`. Establish `h2 : qPart (Sum.elim (fun i => v i) 0 : l ⊕ l → ℝ) = 0` using `rfl`. Simplify using `[dRho_apply, h1, h2, lineDerivOp_apply_eq_fderiv]`.
+
+Rewrite using `[this]`. Conclude with `dRho_mem_weylAlg _`.
+-/
 theorem lineDeriv_mem_weylAlg (v : EuclideanSpace ℝ l) : lineDerivOpCLM ℂ (Sch l) v ∈ weylAlg l := by
   have : lineDerivOpCLM ℂ (Sch l) v = dRho (Sum.elim (fun i => v i) 0) := by
     ext f x
@@ -33,6 +46,11 @@ theorem lineDeriv_mem_weylAlg (v : EuclideanSpace ℝ l) : lineDerivOpCLM ℂ (S
     simp [dRho_apply, h1, h2, lineDerivOp_apply_eq_fderiv]
   rw [this]; exact dRho_mem_weylAlg _
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `: iteratedLineDerivOpCLM ℂ (Sch l) m = 1` using `by ext1 f; simp`. Rewrite using `[this]`. Conclude with `one_mem _`.
+
+Consider the case `succ n ih`. Establish `: iteratedLineDerivOpCLM ℂ (Sch l) m = lineDerivOpCLM ℂ (Sch l) (m 0) * iteratedLineDerivOpCLM ℂ (Sch l) (Fin.tail m)` using `by ext1 f; simp [iteratedLineDerivOp_succ_left]`. Rewrite using `[this]`. Conclude with `mul_mem (lineDeriv_mem_weylAlg _) (ih _)`.
+-/
 theorem iteratedLineDeriv_mem_weylAlg {n : ℕ} (m : Fin n → EuclideanSpace ℝ l) :
     iteratedLineDerivOpCLM ℂ (Sch l) m ∈ weylAlg l := by
   induction n with
@@ -54,12 +72,23 @@ def weightOp (l : Type) [Fintype l] [DecidableEq l] : Sch l →L[ℂ] Sch l :=
 def besselOp (l : Type) [Fintype l] [DecidableEq l] : Sch l →L[ℂ] Sch l :=
   1 - ((4 * π ^ 2 : ℝ) : ℂ)⁻¹ • ∑ j : l, dRho (Pi.single (Sum.inl j) 1) * dRho (Pi.single (Sum.inl j) 1)
 
+/- English proof (translation)
+The claim follows from `sub_mem (one_mem _) (Subalgebra.smul_mem _ (sum_mem fun _ _ => mul_mem (dRho_mem_weylAlg _) (dRho_mem_weylAlg _)) _)`.
+-/
 theorem weightOp_mem : weightOp l ∈ weylAlg l :=
   sub_mem (one_mem _) (Subalgebra.smul_mem _ (sum_mem fun _ _ => mul_mem (dRho_mem_weylAlg _) (dRho_mem_weylAlg _)) _)
 
+/- English proof (translation)
+The claim follows from `sub_mem (one_mem _) (Subalgebra.smul_mem _ (sum_mem fun _ _ => mul_mem (dRho_mem_weylAlg _) (dRho_mem_weylAlg _)) _)`.
+-/
 theorem besselOp_mem : besselOp l ∈ weylAlg l :=
   sub_mem (one_mem _) (Subalgebra.smul_mem _ (sum_mem fun _ _ => mul_mem (dRho_mem_weylAlg _) (dRho_mem_weylAlg _)) _)
 
+/- English proof (translation)
+Establish `hπ : (π : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`. Simplify using `only [weightOp, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.mul_apply, ContinuousLinearMap.one_apply, SchwartzMap.sub_apply, SchwartzMap.smul_apply, SchwartzMap.sum_apply, dRho_single_inr, smul_eq_mul, Euclidea …`. Use `push_cast`. Rewrite using `[add_mul, one_mul, Finset.mul_sum, Finset.sum_mul, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weightOp_apply (f : Sch l) (x : EuclideanSpace ℝ l) :
     weightOp l f x = ((1 + ‖x‖ ^ 2 : ℝ) : ℂ) * f x := by
   have hπ : (π : ℂ) ≠ 0 := by simp [Real.pi_ne_zero]
@@ -74,6 +103,11 @@ theorem weightOp_apply (f : Sch l) (x : EuclideanSpace ℝ l) :
   rw [I_sq]
   ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', ContinuousLinearMap.mul_apply, weightOp_apply, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weightOp_pow_apply (k : ℕ) (f : Sch l) (x : EuclideanSpace ℝ l) :
     (weightOp l ^ k) f x = (((1 + ‖x‖ ^ 2) ^ k : ℝ) : ℂ) * f x := by
   induction k with
@@ -83,10 +117,16 @@ theorem weightOp_pow_apply (k : ℕ) (f : Sch l) (x : EuclideanSpace ℝ l) :
     push_cast
     ring
 
+/- English proof (translation)
+Rewrite using `[weightOp_pow_apply, norm_mul, norm_real, Real.norm_of_nonneg (by positivity)]`.
+-/
 theorem norm_weightOp_pow_apply (k : ℕ) (f : Sch l) (x : EuclideanSpace ℝ l) :
     ‖(weightOp l ^ k) f x‖ = (1 + ‖x‖ ^ 2) ^ k * ‖f x‖ := by
   rw [weightOp_pow_apply, norm_mul, norm_real, Real.norm_of_nonneg (by positivity)]
 
+/- English proof (translation)
+Rewrite using `[dRho_single_inl, fourierInv_lineDerivOp_eq]`. Use extensionality with `x`. Establish `: (fun y : EuclideanSpace ℝ l => y j).HasTemperateGrowth` using `(EuclideanSpace.proj (𝕜 := ℝ) j).hasTemperateGrowth`. Simplify using `[dRho_single_inr, EuclideanSpace.inner_single_right, this, mul_assoc]`.
+-/
 theorem fourierInv_dRho_inl (j : l) (f : Sch l) :
     𝓕⁻ (dRho (Pi.single (Sum.inl j) 1) f) = -dRho (Pi.single (Sum.inr j) 1) (𝓕⁻ f) := by
   rw [dRho_single_inl, fourierInv_lineDerivOp_eq]
@@ -95,6 +135,9 @@ theorem fourierInv_dRho_inl (j : l) (f : Sch l) :
     (EuclideanSpace.proj (𝕜 := ℝ) j).hasTemperateGrowth
   simp [dRho_single_inr, EuclideanSpace.inner_single_right, this, mul_assoc]
 
+/- English proof (translation)
+Set `F : Sch l →L[ℂ] Sch l` to `FourierTransform.fourierInvCLM ℂ (Sch l)`. Establish `hF : ∀ g : Sch l, 𝓕⁻ g = F g` using `fun _ => rfl`. Establish `h` using `fourierInv_dRho_inl (l := l)`. Simplify using `only [hF] at h ⊢`. Simplify using `only [besselOp, weightOp, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.mul_apply, ContinuousLinearMap.one_apply, map_sub, map_smul, map_sum, h, map_neg, neg_neg]`.
+-/
 theorem fourierInv_besselOp (f : Sch l) : 𝓕⁻ (besselOp l f) = weightOp l (𝓕⁻ f) := by
   let F : Sch l →L[ℂ] Sch l := FourierTransform.fourierInvCLM ℂ (Sch l)
   have hF : ∀ g : Sch l, 𝓕⁻ g = F g := fun _ => rfl
@@ -104,12 +147,24 @@ theorem fourierInv_besselOp (f : Sch l) : 𝓕⁻ (besselOp l f) = weightOp l (�
     ContinuousLinearMap.sum_apply, ContinuousLinearMap.mul_apply, ContinuousLinearMap.one_apply, map_sub, map_smul,
     map_sum, h, map_neg, neg_neg]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_succ', ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, fourierInv_besselOp, ih]`.
+-/
 theorem fourierInv_besselOp_pow (k : ℕ) (f : Sch l) : 𝓕⁻ ((besselOp l ^ k) f) = (weightOp l ^ k) (𝓕⁻ f) := by
   induction k with
   | zero => simp
   | succ k ih =>
     rw [pow_succ', pow_succ', ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, fourierInv_besselOp, ih]
 
+/- English proof (translation)
+Use `set N := Module.finrank ℝ (EuclideanSpace ℝ l) + 1 with hN`. Set `u : EuclideanSpace ℝ l → ℂ` to `fun x => ((((1 + ‖x‖ ^ 2) ^ N)⁻¹ : ℝ) : ℂ)`. Establish `hun : ∀ x, ‖u x‖ = ((1 + ‖x‖ ^ 2) ^ N)⁻¹` using `fun x => by`. Simplify using `only [u]`. Rewrite using `[norm_real, Real.norm_of_nonneg (by positivity)]`.
+
+Establish `hc : Continuous u`. Use `continuous_ofReal.comp (Continuous.inv₀ (by fun_prop) fun x => by positivity)` and prove the remaining obligations. Establish `hu : MemLp u (ENNReal.ofReal 2) volume`. Rewrite using `[show ENNReal.ofReal 2 = 2 by simp, memLp_two_iff_integrable_sq_norm hc.aestronglyMeasurable]`. Use `integrable_rpow_neg_one_add_norm_sq (E := EuclideanSpace ℝ l) (μ := volume) (r := 4 * N) (by rw [hN]; push_cast; have := Nat.cast_nonneg (α := ℝ) (Module.finrank ℝ (EuclideanSpace ℝ l)); linarith)` as an intermediate fact.
+
+Use `this.congr (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hun]`. Rewrite using `[show -(4 * (N : ℝ)) / 2 = -((N * 2 : ℕ) : ℝ) by push_cast; ring, Real.rpow_neg (by positivity), Real.rpow_natCast, pow_mul, inv_pow]`. Use `⟨N, (∫ x, ‖u x‖ ^ (2 : ℝ)) ^ (1 / 2 : ℝ), Real.rpow_nonneg (integral_nonneg fun x => by positivity) _, fun f => ?_⟩` and prove the remaining obligations. Use `integral_mul_norm_le_Lp_mul_Lq Real.HolderConjugate.two_two hu (((weightOp l ^ N) f).memLp _ volume)` as an intermediate fact.
+
+Rewrite using `[norm_toLp_one, norm_toLp' (by simp) (by simp)]`. Use `le_trans (le_of_eq ?_) (this.trans (le_of_eq (by simp)))` and prove the remaining obligations. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hun, norm_weightOp_pow_apply]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_norm_toLp_one_le :
     ∃ (N : ℕ) (C : ℝ), 0 ≤ C ∧ ∀ f : Sch l, ‖f.toLp 1 volume‖ ≤ C * ‖((weightOp l ^ N) f).toLp 2 volume‖ := by
   set N := Module.finrank ℝ (EuclideanSpace ℝ l) + 1 with hN
@@ -136,6 +191,11 @@ theorem exists_norm_toLp_one_le :
   simp only [hun, norm_weightOp_pow_apply]
   field_simp
 
+/- English proof (translation)
+Take `⟨N, C, hC, h⟩` from `exists_norm_toLp_one_le (l := l)`. Use `⟨(C : ℂ) • besselOp l ^ N, Subalgebra.smul_mem _ (pow_mem besselOp_mem _) _, fun f x => ?_⟩` and prove the remaining obligations. Establish `h1` using `norm_fourier_apply_le_toLp_one (𝓕⁻ f) x`. Rewrite `h1` using `[FourierTransform.fourier_fourierInv_eq]`. Use `h1.trans ((h _).trans (le_of_eq ?_))` and prove the remaining obligations.
+
+Rewrite using `[← fourierInv_besselOp_pow, ← norm_fourier_toL2_eq, FourierTransform.fourier_fourierInv_eq, ContinuousLinearMap.smul_apply, ← toLpCLM_apply (𝕜 := ℂ), ← toLpCLM_apply (𝕜 := ℂ), map_smul, norm_smul, norm_real, Real.norm_of_nonneg hC]`.
+-/
 theorem exists_norm_apply_le :
     ∃ A ∈ weylAlg l, ∀ (f : Sch l) (x : EuclideanSpace ℝ l), ‖f x‖ ≤ ‖(A f).toLp 2 volume‖ := by
   obtain ⟨N, C, hC, h⟩ := exists_norm_toLp_one_le (l := l)
@@ -147,6 +207,13 @@ theorem exists_norm_apply_le :
     ContinuousLinearMap.smul_apply, ← toLpCLM_apply (𝕜 := ℂ), ← toLpCLM_apply (𝕜 := ℂ), map_smul, norm_smul,
     norm_real, Real.norm_of_nonneg hC]
 
+/- English proof (translation)
+Use `m.opNorm_le_bound (by positivity) fun v => ?_` and prove the remaining obligations. Establish `: v = fun i => ∑ j, v i j • (EuclideanSpace.single j 1 : EuclideanSpace ℝ l)`. Use function extensionality and compare the values at `i`. Use extensionality with `k`. Simplify using `[Pi.single_apply]`.
+
+Use `conv_lhs => rw [this, m.map_sum]`. Rewrite using `[Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun r _ => ?_)` and prove the remaining obligations. Rewrite using `[m.map_smul_univ, norm_smul, mul_comm, norm_prod]`. Use `gcongr with i`.
+
+Conclude with `PiLp.norm_apply_le _ _`.
+-/
 theorem norm_multilinear_le {n : ℕ} (m : ContinuousMultilinearMap ℝ (fun _ : Fin n => EuclideanSpace ℝ l) ℂ) :
     ‖m‖ ≤ ∑ r : Fin n → l, ‖m fun i => EuclideanSpace.single (r i) 1‖ := by
   refine m.opNorm_le_bound (by positivity) fun v => ?_
@@ -161,6 +228,11 @@ theorem norm_multilinear_le {n : ℕ} (m : ContinuousMultilinearMap ℝ (fun _ :
   gcongr with i
   exact PiLp.norm_apply_le _ _
 
+/- English proof (translation)
+Take `⟨A, hA, h⟩` from `exists_norm_apply_le (l := l)`. Use `⟨fun r => A * weightOp l ^ k * iteratedLineDerivOpCLM ℂ (Sch l) fun i => EuclideanSpace.single (r i) 1, fun r => mul_mem (mul_mem hA (pow_mem weightOp_mem _)) (iteratedLineDeriv_mem_weylAlg _), fun f => ?_⟩` and prove the remaining obligations. Use `seminorm_le_bound ℂ k n f (by positivity) fun x => ?_` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_left (norm_multilinear_le _) (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_le_sum fun r _ => le_trans ?_ (h _ x)` and prove the remaining obligations. Use `le_trans ?_ (norm_weightOp_pow_apply k (iteratedLineDerivOpCLM ℂ (Sch l) (fun i => EuclideanSpace.single (r i) 1) f) x).ge` and prove the remaining obligations. Rewrite using `[iteratedLineDerivOpCLM_apply, iteratedLineDerivOp_eq_iteratedFDeriv]`. Use `gcongr`. Use polynomial arithmetic with `[sq_nonneg (‖x‖ - 1), norm_nonneg x]`.
+-/
 theorem exists_seminorm_le (k n : ℕ) :
     ∃ A : (Fin n → l) → (Sch l →L[ℂ] Sch l), (∀ r, A r ∈ weylAlg l) ∧
       ∀ f : Sch l, SchwartzMap.seminorm ℂ k n f ≤ ∑ r, ‖(A r f).toLp 2 volume‖ := by
@@ -177,6 +249,15 @@ theorem exists_seminorm_le (k n : ℕ) :
   gcongr
   nlinarith [sq_nonneg (‖x‖ - 1), norm_nonneg x]
 
+/- English proof (translation)
+Establish `hker : LinearMap.ker T ≤ LinearMap.ker lam` using `fun f hf => by`. Use `hb f` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker.1 hf, norm_zero, mul_zero]`. Conclude with `norm_le_zero_iff.1 this`. Set `φ : LinearMap.range T →ₗ[ℂ] ℂ` to `((LinearMap.ker T).liftQ lam hker) ∘ₗ T.quotKerEquivRange.symm.toLinearMap`.
+
+Establish `hφ : ∀ f, φ ⟨T f, f, rfl⟩ = lam f` using `fun f => by`. Express the relevant statement in the definitionally equal form `(LinearMap.ker T).liftQ lam hker (T.quotKerEquivRange.symm ⟨T f, LinearMap.mem_range_self T f⟩) = _`. Rewrite using `[LinearMap.quotKerEquivRange_symm_apply_image]`. Both sides reduce to the same expression. Take `⟨Λ, hΛ, -⟩` from `exists_extension_norm_eq (LinearMap.range T) (φ.mkContinuous C (by`.
+
+Introduce and unpack `⟨_, f, rfl⟩`. Rewrite using `[hφ]`. Conclude with `hb f))`. Use `⟨Λ, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ]`.
+
+Conclude with `(hΛ ⟨T f, f, rfl⟩).symm`.
+-/
 theorem exists_extension_of_bound {V E : Type} [AddCommGroup V] [Module ℂ V] [NormedAddCommGroup E]
     [NormedSpace ℂ E] (T : V →ₗ[ℂ] E) (lam : V →ₗ[ℂ] ℂ) (C : ℝ) (hb : ∀ f, ‖lam f‖ ≤ C * ‖T f‖) :
     ∃ Λ : E →L[ℂ] ℂ, ∀ f, lam f = Λ (T f) := by
@@ -200,8 +281,18 @@ theorem exists_extension_of_bound {V E : Type} [AddCommGroup V] [Module ℂ V] [
 def schwartzToL2 (l : Type) [Fintype l] : Sch l →L[ℂ] L2 l := toLpCLM ℂ ℂ 2 volume
 
 omit [DecidableEq l] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem schwartzToL2_apply (f : Sch l) : schwartzToL2 l f = f.toLp 2 volume := rfl
 
+/- English proof (translation)
+Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ (EuclideanSpace ℝ l) ℂ) ((normSeminorm ℂ ℂ).comp lam.toLinearMap) (continuous_norm.comp lam.continuous)`. Establish `hC' : ∀ f, ‖lam f‖ ≤ C * s.sup (schwartzSeminormFamily ℂ (EuclideanSpace ℝ l) ℂ) f` using `fun f => hC f`. Use `clear hC`. Use `choose A hA hA' using exists_seminorm_le (l := l)`. Simplify using `only [← schwartzToL2_apply] at hA'`.
+
+Use `⟨Σ p : s, (Fin p.1.2 → l), inferInstance, fun i => A i.1.1.1 i.1.1.2 i.2, C, C.2, fun i => hA _ _ _, fun f => (hC' f).trans (mul_le_mul_of_nonneg_left ?_ C.2)⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma]`. Use `Seminorm.finset_sup_apply_le (Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) fun p hp => ?_` and prove the remaining obligations. Rewrite using `[schwartzSeminormFamily_apply]`. Use `(hA' p.1 p.2 f).trans ?_` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun q : s => ∑ r, ‖schwartzToL2 l (A q.1.1 q.1.2 r f)‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ (⟨p, hp⟩ : s))`.
+-/
 theorem exists_norm_le_sum (lam : Sch l →L[ℂ] ℂ) :
     ∃ (ι : Type) (_ : Fintype ι) (A : ι → (Sch l →L[ℂ] Sch l)) (C : ℝ), 0 ≤ C ∧
       (∀ i, A i ∈ weylAlg l) ∧ ∀ f, ‖lam f‖ ≤ C * ∑ i, ‖schwartzToL2 l (A i f)‖ := by
@@ -221,6 +312,15 @@ theorem exists_norm_le_sum (lam : Sch l →L[ℂ] ℂ) :
   exact Finset.single_le_sum (f := fun q : s => ∑ r, ‖schwartzToL2 l (A q.1.1 q.1.2 r f)‖)
     (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ (⟨p, hp⟩ : s))
 
+/- English proof (translation)
+Take `⟨ι, _, A, C, hC, hA, h⟩` from `exists_norm_le_sum lam`. Set `T : Sch l →ₗ[ℂ] (ι → L2 l)` to `LinearMap.pi fun i => (schwartzToL2 l).toLinearMap ∘ₗ (A i).toLinearMap`. Establish `hT : ∀ f, T f = fun i => schwartzToL2 l (A i f)` using `fun f => by`. Use function extensionality and compare the values at `i`. Simplify using `[T]`.
+
+Use `clear_value T`. Take `⟨Λ, hΛ⟩` from `exists_extension_of_bound T lam.toLinearMap (C * Fintype.card ι) fun f => by`. Use `(h f).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hC` and prove the remaining obligations.
+
+Establish `h1 : ∀ i, ‖schwartzToL2 l (A i f)‖ ≤ ‖T f‖` using `fun i => by`. Use `norm_le_pi_norm (T f) i` as an intermediate fact. Rewrite `this` using `[congrFun (hT f) i]`. Then use the resulting hypothesis. Use `(Finset.sum_le_sum fun i _ => h1 i).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Use `⟨ι, inferInstance, A, Λ, hA, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← hT]`. Conclude with `hΛ f`.
+-/
 theorem exists_factor (lam : Sch l →L[ℂ] ℂ) :
     ∃ (ι : Type) (_ : Fintype ι) (A : ι → (Sch l →L[ℂ] Sch l)) (Λ : (ι → L2 l) →L[ℂ] ℂ),
       (∀ i, A i ∈ weylAlg l) ∧ ∀ f, lam f = Λ fun i => schwartzToL2 l (A i f) := by
@@ -244,6 +344,13 @@ theorem exists_factor (lam : Sch l →L[ℂ] ℂ) :
   exact hΛ f
 
 omit [DecidableEq l] in
+/- English proof (translation)
+Establish `h1` using `((hasDerivAt_rhoFun w f (x + pPart (t • w))).const_mul (phase (t • w) x))`. Establish `h2 : HasDerivAt (fun s : ℝ => s - t) 1 t` using `(hasDerivAt_id t).sub_const t`. Establish `h3` using `HasDerivAt.scomp_of_eq (𝕜 := ℝ) (𝕜' := ℝ) t h1 h2 (by simp)`. Rewrite `h3` using `[one_smul]`. Use `h3.congr_of_eventuallyEq (.of_forall fun s => ?_)` and prove the remaining obligations.
+
+Establish `h4` using `congrFun (rhoFun_rhoFun (t • w) ((s - t) • w) f) x`. Establish `h5 : sympl (t • w) ((s - t) • w) = 0`. Simplify using `only [sympl, pPart_smul, qPart_smul, real_inner_smul_left, real_inner_smul_right, real_inner_comm (pPart w) (qPart w)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h4` using `[h5, ← add_smul, add_sub_cancel]`.
+
+Simplify `h4.symm` using `[rhoFun]`.
+-/
 theorem hasDerivAt_rhoFun_at (w : l ⊕ l → ℝ) (f : Sch l) (x : EuclideanSpace ℝ l) (t : ℝ) :
     HasDerivAt (fun t : ℝ => rhoFun (t • w) f x) (rhoFun (t • w) (dRho w f) x) t := by
   have h1 := ((hasDerivAt_rhoFun w f (x + pPart (t • w))).const_mul (phase (t • w) x))
@@ -260,6 +367,9 @@ theorem hasDerivAt_rhoFun_at (w : l ⊕ l → ℝ) (f : Sch l) (x : EuclideanSpa
   simpa [rhoFun] using h4.symm
 
 omit [DecidableEq l] in
+/- English proof (translation)
+Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [φ.coeFn_toLp 2 volume, (coeFn_rho w (f.toLp 2 volume)).trans (rhoFun_congr w (f.coeFn_toLp 2 volume))] with x h1 h2`. Rewrite using `[h1, h2]`.
+-/
 theorem inner_toLp_rho (w : l ⊕ l → ℝ) (φ f : Sch l) :
     inner ℂ (φ.toLp 2 volume) (rho w (f.toLp 2 volume)) = ∫ x, inner ℂ (φ x) (rhoFun w f x) := by
   apply integral_congr_ae
@@ -269,6 +379,11 @@ theorem inner_toLp_rho (w : l ⊕ l → ℝ) (φ f : Sch l) :
 
 omit [DecidableEq l] in
 
+/- English proof (translation)
+Establish `hc : ∀ (u : l ⊕ l → ℝ) (g : Sch l), Continuous fun x => inner ℂ (φ x) (rhoFun u g x)` using `fun u g => φ.continuous.inner ((continuous_phase u).mul (g.continuous.comp (continuous_add_const _)))`. Establish `hb : ∀ (u : l ⊕ l → ℝ) (g : Sch l) (x), ‖inner ℂ (φ x) (rhoFun u g x)‖ ≤ ‖φ x‖ * SchwartzMap.seminorm ℝ 0 0 g` using `fun u g x => by`. Use `(norm_inner_le_norm _ _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Rewrite using `[rhoFun, norm_mul, norm_phase, one_mul]`. Conclude with `norm_le_seminorm ℝ g _`.
+
+Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := volume) (s := Set.univ) (x₀ := (0 : ℝ)) (F := fun t x => inner ℂ (φ x) (rhoFun (t • w) f x)) (F' := fun t x => inner ℂ (φ x) (rhoFun (t • w) (dRho w f) x)) (bound := fun x => ‖φ x‖ * SchwartzMap.seminorm ℝ 0 0 (dRho w f)) Fi …` as an intermediate fact. Simplify using `only [inner_toLp_rho, inner_toL2_toL2_eq]`. Simplify `this` using `only [zero_smul, rhoFun_zero]`.
+-/
 theorem hasDerivAt_inner_rho (w : l ⊕ l → ℝ) (φ f : Sch l) :
     HasDerivAt (fun t : ℝ => inner ℂ (φ.toLp 2 volume) (rho (t • w) (f.toLp 2 volume)))
       (inner ℂ (φ.toLp 2 volume) ((dRho w f).toLp 2 volume)) 0 := by
@@ -296,6 +411,13 @@ section Metaplectic
 variable {G : Type} [Group G] {pr : G →* Matrix.symplecticGroup l ℝ} {om : G →* (L2 l ≃ₗᵢ[ℂ] L2 l)}
   {omS : G →* (Sch l →L[ℂ] Sch l)}
 
+/- English proof (translation)
+Establish `key : ∀ φ : Sch l, inner ℂ (φ.toLp 2 volume) ((omS g (dRho w f)).toLp 2 volume) = inner ℂ (φ.toLp 2 volume) ((dRho ((pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) (omS g f)).toLp 2 volume)` using `fun φ => by`. Establish `e : ∀ v : L2 l, inner ℂ ((omS g⁻¹ φ).toLp 2 volume) v = inner ℂ (φ.toLp 2 volume) (om g v)` using `fun v => by`. Rewrite using `[← (om g).inner_map_map, h4, ← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one, ContinuousLinearMap.one_apply]`. Establish `d1` using `hasDerivAt_inner_rho w (omS g⁻¹ φ) f`. Establish `d2` using `hasDerivAt_inner_rho ((pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) φ (omS g f)`.
+
+Simplify using `only [e, h3, h4, mulVec_smul] at d1`. Conclude with `d1.unique d2`. Apply `injective_toLp 2 volume` to reduce the goal to its premises. Use `key (omS g (dRho w f) - dRho ((pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) (omS g f))` as an intermediate fact. Rewrite `this` using `[← sub_eq_zero, ← inner_sub_right, ← toLpCLM_apply (𝕜 := ℂ), map_sub]`.
+
+Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 this)`.
+-/
 theorem omS_dRho
     (h3 : ∀ (g : G) (w : l ⊕ l → ℝ) (f : L2 l),
       om g (rho w f) = rho ((pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) (om g f))
@@ -315,6 +437,9 @@ theorem omS_dRho
   rw [← sub_eq_zero, ← inner_sub_right, ← toLpCLM_apply (𝕜 := ℂ), map_sub] at this
   exact sub_eq_zero.1 (inner_self_eq_zero.1 this)
 
+/- English proof (translation)
+Establish `h1 : (pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ ((-(Matrix.J l ℝ * (pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ)ᵀ * Matrix.J l ℝ)) *ᵥ w) = w`. Rewrite using `[mulVec_mulVec, mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, SymplecticGroup.mem_iff.1 (pr g).2, J_squared, neg_neg, one_mulVec]`. Rewrite using `[ContinuousLinearMap.mul_apply]`. Use `conv_lhs => rw [← h1, ← omS_dRho h3 h4, dRho_eq_sum]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul]`.
+-/
 theorem toLp_dRho_omS
     (h3 : ∀ (g : G) (w : l ⊕ l → ℝ) (f : L2 l),
       om g (rho w f) = rho ((pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) (om g f))
@@ -331,6 +456,15 @@ theorem toLp_dRho_omS
   conv_lhs => rw [← h1, ← omS_dRho h3 h4, dRho_eq_sum]
   simp only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul]
 
+/- English proof (translation)
+Use `revert f`. Use `weylAlg_induction (P := fun A => ∀ f, ContDiff ℝ ∞ fun t => schwartzToL2 l (A (omS (γ t) f))) ?_ ?_ ?_ ?_ ?_ hA` and prove the remaining obligations. Introduce `f`. Simplify `h5 f` using `only [h4, ContinuousLinearMap.one_apply, schwartzToL2_apply]`. Introduce `A w ih f`.
+
+Simplify using `only [toLp_dRho_omS h3 h4, coe_smul]`. Use `ContDiff.sum fun a _ => ContDiff.fun_smul ?_ (ih _)` and prove the remaining obligations. Simplify using `only [mulVec, dotProduct, Matrix.neg_apply, Matrix.mul_apply, transpose_apply]`. Conclude with `ContDiff.sum fun b _ => ContDiff.mul (ContDiff.neg (ContDiff.sum fun c _ => ContDiff.mul (ContDiff.sum fun d _ => contDiff_const.mul (hγ _ _)) contDiff_const)) contDiff_const`. Introduce `f`.
+
+Simplify using `only [ContinuousLinearMap.zero_apply]`. Conclude with `contDiff_const`. Introduce `A B hA hB f`. Simplify using `only [ContinuousLinearMap.add_apply, map_add]`. Conclude with `(hA f).add (hB f)`.
+
+Introduce `c A hA f`. Simplify using `only [ContinuousLinearMap.smul_apply, map_smul]`. Conclude with `(hA f).const_smul c`.
+-/
 theorem contDiff_toLp_omS
     (h3 : ∀ (g : G) (w : l ⊕ l → ℝ) (f : L2 l),
       om g (rho w f) = rho ((pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) (om g f))
@@ -359,6 +493,9 @@ theorem contDiff_toLp_omS
     simp only [ContinuousLinearMap.smul_apply, map_smul]
     exact (hA f).const_smul c
 
+/- English proof (translation)
+Use `letI := Matrix.linftyOpNormedRing (n := l ⊕ l) (α := ℝ)`. Use `letI := Matrix.linftyOpNormedAlgebra (n := l ⊕ l) (R := ℝ) (α := ℝ)`. Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Rewrite `h` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℝ a b)).hasFDerivAt.comp_hasDerivAt 0 h`.
+-/
 theorem hasDerivAt_exp_apply (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) (a b : l ⊕ l) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X) a b) (X a b) 0 := by
   letI := Matrix.linftyOpNormedRing (n := l ⊕ l) (α := ℝ)
@@ -367,6 +504,21 @@ theorem hasDerivAt_exp_apply (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) (a b : l ⊕ l
   rw [zero_smul, NormedSpace.exp_zero, one_mul] at h
   exact (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℝ a b)).hasFDerivAt.comp_hasDerivAt 0 h
 
+/- English proof (translation)
+Use `revert f`. Use `weylAlg_induction (P := fun A => ∀ f, HasDerivAt (fun t => schwartzToL2 l (A (omS (γ t) f))) (schwartzToL2 l (A (quad X f))) 0) ?_ ?_ ?_ ?_ ?_ hA` and prove the remaining obligations. Introduce `f`. Simplify `h6 f` using `only [h4, ContinuousLinearMap.one_apply, schwartzToL2_apply]`. Introduce `A w ih f`.
+
+Simplify using `only [toLp_dRho_omS h3 h4, hγ, coe_smul]`. Establish `hJ : Matrix.J l ℝ * Xᵀ * Matrix.J l ℝ = X`. Establish `h` using `mul_J_symm hX`. Rewrite `h` using `[transpose_mul, J_transpose, neg_mul, neg_eq_iff_eq_neg]`. Rewrite using `[h, neg_mul, Matrix.mul_assoc, J_squared]`.
+
+Simplify using the standard rewrite rules. Establish `hd : ∀ a, HasDerivAt (fun t : ℝ => ((-(Matrix.J l ℝ * (NormedSpace.exp (t • X))ᵀ * Matrix.J l ℝ)) *ᵥ w) a) (-(X *ᵥ w) a) 0`. Introduce `a`. Use `conv => enter [2]`. Rewrite using `[← hJ]`.
+
+Simplify using `only [mulVec, dotProduct, Matrix.neg_apply, Matrix.mul_apply, transpose_apply, ← Finset.sum_neg_distrib, ← neg_mul]`. Conclude with `HasDerivAt.fun_sum fun b _ => HasDerivAt.mul_const (HasDerivAt.fun_sum fun c _ => HasDerivAt.mul_const (HasDerivAt.fun_sum fun d _ => (hasDerivAt_exp_apply X _ _).const_mul _) _) _`. Use `(HasDerivAt.fun_sum fun a _ => (hd a).fun_smul (ih (dRho (Pi.single a 1) f))).congr_deriv ?_` and prove the remaining obligations. Establish `e : dRho w * quad X = quad X * dRho w - dRho (X *ᵥ w)`. Rewrite using `[← quad_comm hX, sub_sub_cancel]`.
+
+Rewrite using `[ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply (dRho w), e, dRho_eq_sum w, dRho_eq_sum (X *ᵥ w)]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul, ofReal_neg, ofReal_zero, zero_smul, NormedSpace.exp_zero, transpose_one, mul_one, J_squared, neg_neg, one_mulVec, h0, map_one, ContinuousLinearMap.one_apply, ContinuousLinearMap.sub_apply, Con …`. Simplify using `only [coe_smul]`. Both sides reduce to the same expression. Introduce `f`.
+
+Simplify using `only [ContinuousLinearMap.zero_apply, map_zero]`. Conclude with `hasDerivAt_const _ _`. Introduce `A B hA hB f`. Simplify using `only [ContinuousLinearMap.add_apply, map_add]`. Conclude with `(hA f).add (hB f)`.
+
+Introduce `c A hA f`. Simplify using `only [ContinuousLinearMap.smul_apply, map_smul]`. Conclude with `(hA f).const_smul c`.
+-/
 theorem hasDerivAt_toLp_omS
     (h3 : ∀ (g : G) (w : l ⊕ l → ℝ) (f : L2 l),
       om g (rho w f) = rho ((pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) (om g f))
@@ -417,6 +569,11 @@ theorem hasDerivAt_toLp_omS
     simp only [ContinuousLinearMap.smul_apply, map_smul]
     exact (hA f).const_smul c
 
+/- English proof (translation)
+Use `⟨omS_dRho h3 h4, fun lam k γ hc hγ f => ?_, fun lam X hX γ h0 hγ h6 f => ?_⟩` and prove the remaining obligations. Take `⟨ι, _, A, Λ, hA, h⟩` from `exists_factor lam`. Simplify using `only [h]`. Conclude with `(Λ.restrictScalars ℝ).contDiff.comp (contDiff_pi.2 fun i => contDiff_toLp_omS h3 h4 hγ (h5 k γ hc hγ) (hA i) f)`. Take `⟨ι, _, A, Λ, hA, h⟩` from `exists_factor lam`.
+
+Simplify using `only [h]`. Conclude with `(Λ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 (hasDerivAt_pi.2 fun i => hasDerivAt_toLp_omS h3 h4 hX h0 hγ h6 (hA i) f)`.
+-/
 theorem metaplectic_schwartz_smooth [TopologicalSpace G]
     (h3 : ∀ (g : G) (w : l ⊕ l → ℝ) (f : L2 l),
       om g (rho w f) = rho ((pr g : Matrix (l ⊕ l) (l ⊕ l) ℝ) *ᵥ w) (om g f))

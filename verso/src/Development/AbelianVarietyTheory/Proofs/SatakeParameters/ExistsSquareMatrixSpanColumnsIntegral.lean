@@ -6,6 +6,17 @@ open Matrix
 
 namespace GlobalTheory.Hk3.HoweG
 
+/- English proof (translation)
+Establish `: Module.Finite O N` using `Module.Finite.iff_fg.mpr hN`. Establish `: Module.Flat O N` using `Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2 (Submodule.isTorsionFree_iff_torsion_eq_bot.1 inferInstance)`. Establish `: Module.Free O N` using `Module.free_of_flat_of_isLocalRing`. Set `k` to `Module.finrank O N`. Set `B : Module.Basis (Fin k) O N` to `Module.finBasis O N`.
+
+Establish `hli : LinearIndependent O (fun i => (B i : Fin n → L))` using `B.linearIndependent.map' N.subtype (Submodule.ker_subtype N)`. Establish `hliL : LinearIndependent L (fun i => (B i : Fin n → L))` using `(LinearIndependent.iff_fractionRing O L).1 hli`. Establish `hk : k ≤ n` using `by simpa using hliL.fintype_card_le_finrank`. Use `⟨fun j => if h : (j : ℕ) < k then (B ⟨j, h⟩ : Fin n → L) else 0, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Establish `hsp : N = Submodule.span O (Set.range fun i => (B i : Fin n → L))`.
+
+Establish `h1` using `congrArg (Submodule.map N.subtype) B.span_eq`. Rewrite `h1` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`. Conclude with `h1.symm`. Use `hsp.le.trans (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `⟨⟨i, lt_of_lt_of_le i.2 hk⟩, by simp⟩`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Distinguish the cases in `h : (j : ℕ) < k`. Simplify using `[h]`.
+
+Simplify using `[h]`.
+-/
 theorem exists_span_fin_of_fg {L : Type} [Field L] (O : ValuationSubring L) (n : ℕ) (N : Submodule O (Fin n → L))
     (hN : N.FG) : ∃ c : Fin n → Fin n → L, N = Submodule.span O (Set.range c) := by
   classical
@@ -34,6 +45,13 @@ theorem exists_span_fin_of_fg {L : Type} [Field L] (O : ValuationSubring L) (n :
     · simp [h]
     · simp [h]
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Use `⟨fun j => c j, fun j => (c j).2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨fun j => ⟨u j, hu j⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+-/
 theorem mem_span_cols_iff {L : Type} [Field L] (O : ValuationSubring L) {n : ℕ} {ι : Type} [Fintype ι]
     (M : Matrix (Fin n) ι L) (v : Fin n → L) :
     v ∈ Submodule.span O (Set.range fun j i => M i j) ↔ ∃ u : ι → L, (∀ i, u i ∈ O) ∧ v = M *ᵥ u := by
@@ -50,6 +68,11 @@ theorem mem_span_cols_iff {L : Type} [Field L] (O : ValuationSubring L) {n : ℕ
     simp only [Finset.sum_apply, Pi.smul_apply, Matrix.mulVec, dotProduct]
     exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
+/- English proof (translation)
+Introduce `L _ _ n ι _ _ M`. Set `O : ValuationSubring L` to `(Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring`. Take `⟨c, hc⟩` from `exists_span_fin_of_fg O n (Submodule.span O (Set.range fun j i => M i j)) (Submodule.fg_span (Set.finite_range _))`. Use `⟨Matrix.of fun i j => c j i, fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `mem_span_cols_iff O M v`.
+
+Establish `h2` using `mem_span_cols_iff O (Matrix.of fun i j => c j i) v`. Rewrite `h1` using `[hc]`. Conclude with `h1.symm.trans h2`.
+-/
 theorem exists_square_span_cols : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
     (M : Matrix (Fin n) ι L), ∃ b : Matrix (Fin n) (Fin n) L, ∀ v : Fin n → L,
       (∃ u : ι → L, (∀ i, u i ∈ Formalism.UG.intL L) ∧ v = M *ᵥ u) ↔ ∃ t : Fin n → L, (∀ i, t i ∈ Formalism.UG.intL L) ∧ v = b *ᵥ t := by

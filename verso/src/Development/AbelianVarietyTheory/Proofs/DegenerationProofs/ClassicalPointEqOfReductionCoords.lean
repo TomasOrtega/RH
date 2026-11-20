@@ -12,6 +12,21 @@ open GlobalTheory.ZJ
 noncomputable section
 namespace GlobalTheory.ZJ
 
+/- English proof (translation)
+Establish `h0 : ∀ b : S, ε (ψ b) = 0 → ψ b ∈ Ideal.span (Set.range fun i => ψ (v i))`. Introduce `b hb`. Establish `hbm : b ∈ IsLocalRing.maximalIdeal S`. Introduce `hub`. Conclude with `((hub.map ψ).map ε).ne_zero hb`.
+
+Establish `hle : IsLocalRing.maximalIdeal S ≤ (Ideal.span (Set.range fun i => ψ (v i))).comap ψ`. Rewrite using `[hm]`. Use `sup_le (Ideal.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`.
+
+Introduce and unpack `x ⟨n, hn⟩`. Establish `: IsNilpotent (ψ x)` using `⟨n, by rw [← map_pow]; exact hJ _ hn⟩`. Rewrite using `[Ideal.mem_comap, this.eq_zero]`. Conclude with `Ideal.zero_mem _`. Conclude with `hle hbm`.
+
+Distinguish the cases in `ha : ε (ψ a) = 0`. Rewrite using `[ha, map_zero, sub_zero]`. Conclude with `h0 a ha`. Take `⟨n, hn, hn'⟩` from `hk _ ha`. Establish `hfin : IsOfFinOrder (ε (ψ a))` using `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, hn'⟩`.
+
+Establish `hpos` using `hfin.orderOf_pos`. Establish `hprim` using `IsPrimitiveRoot.orderOf (ε (ψ a))`. Establish `h1` using `pow_orderOf_eq_one (ε (ψ a))`. Generalize the expression as in `orderOf (ε (ψ a)) = m at hpos hprim h1`. Establish `: NeZero m` using `⟨hpos.ne'⟩`.
+
+Establish `hm0 : (m : k) ≠ 0` using `hprim.neZero'.ne`. Establish `h2` using `h0 (a ^ m - 1) (by simp [h1])`. Establish `h3` using `Commute.mul_geom_sum₂ (Commute.all (ψ a) (κ (ε (ψ a)))) m`. Establish `h4 : IsUnit (∑ i ∈ Finset.range m, ψ a ^ i * κ (ε (ψ a)) ^ (m - 1 - i))`. Apply `hu` to reduce the goal to its premises.
+
+Simplify using `only [map_sum, map_mul, map_pow, hεκ]`. Rewrite using `[geom_sum₂_self]`. Conclude with `mul_ne_zero hm0 (pow_ne_zero _ ha)`. Rewrite using `[← Ideal.mul_unit_mem_iff_mem _ h4, h3, ← map_pow κ, h1]`. Simplify using `using h2`.
+-/
 theorem sub_const_mem_span {S L k : Type} [CommRing S] [IsLocalRing S] [CommRing L] [_root_.IsReduced L]
     [Field k] (hk : ∀ x : k, x ≠ 0 → ∃ n : ℕ, 1 ≤ n ∧ x ^ n = 1)
     (κ : k →+* L) (ε : L →+* k) (hεκ : ∀ x, ε (κ x) = x) (hu : ∀ x, ε x ≠ 0 → IsUnit x)
@@ -54,6 +69,27 @@ theorem sub_const_mem_span {S L k : Type} [CommRing S] [IsLocalRing S] [CommRing
   rw [← Ideal.mul_unit_mem_iff_mem _ h4, h3, ← map_pow κ, h1]
   simpa using h2
 
+/- English proof (translation)
+Set `M : Ideal B` to `(IsLocalRing.maximalIdeal O).map (algebraMap O B)`. Set `D` to `B ⧸ M`. Establish `hD : _root_.IsReduced D`. Establish `: _root_.IsReduced (TensorProduct O (IsLocalRing.ResidueField O) B)` using `GlobalTheory.isReduced_algebra_of_smooth_of_isReduced (IsLocalRing.ResidueField O) _`. Establish `e` using `Algebra.TensorProduct.quotIdealMapEquivTensorQuot B (IsLocalRing.maximalIdeal O)`.
+
+Establish `e'` using `Algebra.TensorProduct.comm O B (IsLocalRing.ResidueField O)`. Conclude with `isReduced_of_injective (e.toRingEquiv.trans e'.toRingEquiv) (RingEquiv.injective _)`. Set `ε₀ : D →+* IsLocalRing.ResidueField O` to `Ideal.Quotient.lift M ((IsLocalRing.residue O).comp s) (by`. Introduce `b hb`. Establish `: M ≤ RingHom.ker ((IsLocalRing.residue O).comp (s : B →+* O))`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Simplify `hx` using `[RingHom.mem_ker, IsLocalRing.residue_eq_zero_iff]`. Conclude with `this hb)`. Set `q : Ideal D` to `RingHom.ker ε₀`.
+
+Establish `hq : q.IsPrime` using `RingHom.ker_isPrime _`. Set `L` to `Localization.AtPrime q`. Establish `hε : ∀ y : q.primeCompl, IsUnit (ε₀ y)` using `fun y => Ne.isUnit y.2`. Set `ε : L →+* IsLocalRing.ResidueField O` to `IsLocalization.lift hε`. Set `κ₀ : IsLocalRing.ResidueField O →+* D` to `Ideal.quotientMap M (algebraMap O B) Ideal.le_comap_map`.
+
+Use `⟨L, inferInstance, inferInstance, inferInstance, (algebraMap D L).comp (Ideal.Quotient.mk M), (algebraMap D L).comp κ₀, ε, rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `b`. Simplify using `only [ε, RingHom.comp_apply, IsLocalization.lift_eq]`. Both sides reduce to the same expression. Introduce `x`.
+
+Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective x`. Establish `: κ₀ (IsLocalRing.residue O x) = Ideal.Quotient.mk M (algebraMap O B x)` using `rfl`. Simplify using `only [ε, RingHom.comp_apply, IsLocalization.lift_eq, this]`. Conclude with `congrArg (IsLocalRing.residue O) (s.commutes x)`. Introduce `x hx`.
+
+Take `⟨⟨d, t⟩, rfl⟩` from `IsLocalization.mk'_surjective q.primeCompl x`. Rewrite using `[IsLocalization.AtPrime.isUnit_mk'_iff L q]`. Introduce `hd`. Apply `hx` to reduce the goal to its premises. Simplify using `only [ε]`.
+
+Rewrite using `[IsLocalization.lift_mk'_spec]`. Rewrite using `[mul_zero]`. Conclude with `hd`. Introduce `I b hb`. Rewrite `hb` using `[← Ideal.map_map, RingHom.comp_apply, IsLocalization.algebraMap_mem_map_algebraMap_iff q.primeCompl]`.
+
+Take `⟨t, ht, hb⟩` from `hb`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Use `⟨t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`. Conclude with `ht`.
+
+Rewrite `hb` using `[← map_mul, ← Ideal.mem_comap, Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective]`. Simplify `hb` using `[← RingHom.ker_eq_comap_bot]`.
+-/
 theorem exists_reduced_fibre_localRing {O B : Type} [CommRing O] [IsLocalRing O] [CommRing B] [Algebra O B]
     [Algebra.Smooth O B] (s : B →ₐ[O] O) :
     ∃ (L : Type) (_ : CommRing L) (_ : IsLocalRing L) (_ : _root_.IsReduced L) (π : B →+* L)
@@ -118,15 +154,26 @@ theorem exists_reduced_fibre_localRing {O B : Type} [CommRing O] [IsLocalRing O]
 def ptVal {X : Scheme.{0}} (W : X.Opens) {L : CommRingCat.{0}} (m : Spec L ⟶ W.toScheme) : Γ(X, W) ⟶ L :=
   W.topIso.inv ≫ m.appTop ≫ (Scheme.ΓSpecIso L).hom
 
+/- English proof (translation)
+Simplify using `only [ptVal, Scheme.Hom.comp_appTop, Category.assoc, Scheme.ΓSpecIso_naturality]`.
+-/
 theorem ptVal_comp {X : Scheme.{0}} (W : X.Opens) {L L' : CommRingCat.{0}} (m : Spec L ⟶ W.toScheme)
     (φ : L ⟶ L') : ptVal W (Spec.map φ ≫ m) = ptVal W m ≫ φ := by
   simp only [ptVal, Scheme.Hom.comp_appTop, Category.assoc, Scheme.ΓSpecIso_naturality]
 
+/- English proof (translation)
+Rewrite using `[Scheme.Opens.toSpecΓ, Scheme.toSpecΓ_naturality_assoc, ← SpecMap_ΓSpecIso_hom, ptVal, Spec.map_comp, Spec.map_comp, Category.assoc]`.
+-/
 theorem comp_toSpecΓ_eq {X : Scheme.{0}} (W : X.Opens) {L : CommRingCat.{0}} (m : Spec L ⟶ W.toScheme) :
     m ≫ W.toSpecΓ = Spec.map (ptVal W m) := by
   rw [Scheme.Opens.toSpecΓ, Scheme.toSpecΓ_naturality_assoc, ← SpecMap_ΓSpecIso_hom, ptVal,
     Spec.map_comp, Spec.map_comp, Category.assoc]
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Establish `h` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (m ≫ W.ι)`. Use `⟨Scheme.stalkClosedPointTo (m ≫ W.ι), inferInstance, h, ?_⟩` and prove the remaining obligations. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← comp_toSpecΓ_eq, Spec.map_comp, ← Scheme.Opens.fromSpecStalkOfMem_toSpecΓ, ← Category.assoc]`.
+
+Use `congr 1`. Rewrite using `[← cancel_mono W.ι, Category.assoc, Scheme.Opens.fromSpecStalkOfMem_ι, h]`.
+-/
 theorem exists_stalk_hom {X : Scheme.{0}} (W : X.Opens) (w : X) (hw : w ∈ W) {L : CommRingCat.{0}}
     [IsLocalRing L] (m : Spec L ⟶ W.toScheme) (hm : (m ≫ W.ι) (IsLocalRing.closedPoint L) = w) :
     ∃ ψ : X.presheaf.stalk w ⟶ L, IsLocalHom ψ.hom ∧ Spec.map ψ ≫ X.fromSpecStalk w = m ≫ W.ι ∧
@@ -139,6 +186,19 @@ theorem exists_stalk_hom {X : Scheme.{0}} (W : X.Opens) (w : X) (hw : w ∈ W) {
   congr 1
   rw [← cancel_mono W.ι, Category.assoc, Scheme.Opens.fromSpecStalkOfMem_ι, h]
 
+/- English proof (translation)
+Take `⟨ψ, hψ, h1, h2⟩` from `exists_stalk_hom W w hw (L := .of L) m hm`. Establish `hκε : spMap ε ≫ spMap κ = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `x`.
+
+Conclude with `hεκ x`. Establish `h3 : q.stalkMap w ≫ ψ = q.stalkMap w ≫ ψ ≫ CommRingCat.ofHom ε ≫ CommRingCat.ofHom κ`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (Z.fromSpecStalk (q w))]`. Simplify using `only [Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk]`.
+
+Rewrite using `[reassoc_of% h1, ht, reassoc_of% hκε]`. Establish `h4 : ∀ x ∈ (IsLocalRing.maximalIdeal (Z.presheaf.stalk (q w))).map (q.stalkMap w).hom, ψ.hom x = 0`. Introduce `x hx`. Establish `: (IsLocalRing.maximalIdeal (Z.presheaf.stalk (q w))).map (q.stalkMap w).hom ≤ RingHom.ker ψ.hom`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `r hr`. Establish `e : ψ.hom ((q.stalkMap w).hom r) = κ (ε (ψ.hom ((q.stalkMap w).hom r)))` using `congr(($h3).hom r)`. Express the relevant statement in the definitionally equal form `ψ.hom ((q.stalkMap w).hom r) = 0`. Distinguish the cases in `h0 : ε (ψ.hom ((q.stalkMap w).hom r)) = 0`. Rewrite using `[e, h0, map_zero]`.
+
+Conclude with `absurd (IsUnit.of_map _ _ (IsUnit.of_map _ _ (hu _ h0))) hr`. Conclude with `this hx`. Establish `h5` using `sub_const_mem_span hk κ ε hεκ hu ψ.hom _ _ h4 hc`. Rewrite using `[← h1]`. Simplify using `only [← Category.assoc, ← Spec.map_comp]`.
+
+Use `congr 2`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk I (ψ.hom a) = Ideal.Quotient.mk I (κ (ε (ψ.hom a)))`. Rewrite using `[Ideal.Quotient.eq, hI, ← h2]`. Conclude with `h5 a`.
+-/
 theorem const_mod_coord {G Z : Scheme.{0}} (q : G ⟶ Z) (W : G.Opens) (w : G) (hw : w ∈ W) {g : ℕ}
     (u : Fin g → Γ(G, W))
     (hc : IsLocalRing.maximalIdeal (G.presheaf.stalk w) =
@@ -186,12 +246,64 @@ theorem const_mod_coord {G Z : Scheme.{0}} (q : G ⟶ Z) (W : G.Opens) (w : G) (
   rw [Ideal.Quotient.eq, hI, ← h2]
   exact h5 a
 
+/- English proof (translation)
+The claim follows from `(Scheme.Hom.comp_apply _ _ _).trans (congrArg d (Spec_closedPoint (R := .of R) (S := .of S) (f := CommRingCat.ofHom φ)))`.
+-/
 theorem spMap_comp_closedPoint {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] [IsLocalRing S]
     (φ : R →+* S) [IsLocalHom φ] {X : Scheme.{0}} (d : Sp R ⟶ X) :
     (spMap φ ≫ d) (IsLocalRing.closedPoint S) = d (IsLocalRing.closedPoint R) :=
   (Scheme.Hom.comp_apply _ _ _).trans
     (congrArg d (Spec_closedPoint (R := .of R) (S := .of S) (f := CommRingCat.ofHom φ)))
 
+/- English proof (translation)
+Establish `hcr : spMap (IsLocalRing.residue O) ≫ c = spMap (IsLocalRing.residue O) ≫ c'` using `hmono _ _ _ (𝟙 _) (by simp [hcx]) (by simp [hcx']) (by simp only [Category.assoc, ha, ha', reassoc_of% hr])`. Establish `hpt : ∀ d : Sp O ⟶ X, d (IsLocalRing.closedPoint O) = (spMap (IsLocalRing.residue O) ≫ d) (IsLocalRing.closedPoint (IsLocalRing.ResidueField O))` using `fun d => (spMap_comp_closedPoint _ d).symm`. Establish `hcc : c' (IsLocalRing.closedPoint O) = c (IsLocalRing.closedPoint O)`. Rewrite using `[hpt, hpt, hcr]`. Take `⟨B, jj, _, hjj, hjjW⟩` from `Scheme.exists_affine_mem_range_and_range_subset (x := c (IsLocalRing.closedPoint O)) (U := F ⁻¹ᵁ W) (by`.
+
+Express the relevant statement in the definitionally equal form `F (c _) ∈ W`. Establish `e : F (c (IsLocalRing.closedPoint O)) = w` using `(Scheme.Hom.comp_apply _ _ _).symm.trans (by rw [ha]; exact hw')`. Conclude with `e ▸ hw)`. Establish `hrange : ∀ d : Sp O ⟶ X, d (IsLocalRing.closedPoint O) ∈ Set.range jj → Set.range d ⊆ Set.range jj`. Introduce and unpack `d hd _ ⟨z, rfl⟩`.
+
+Use `Scheme.preimage_eq_top_of_closedPoint_mem (R := .of O) d (U := jj.opensRange) hd` as an intermediate fact. Establish `hz : z ∈ d ⁻¹ᵁ jj.opensRange` using `by rw [this]; trivial`. Conclude with `hz`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (jj ≫ x)`. Take `⟨σ, hσ⟩` from `Spec.map_surjective (IsOpenImmersion.lift jj c (hrange c hjj))`.
+
+Take `⟨σ', hσ'⟩` from `Spec.map_surjective (IsOpenImmersion.lift jj c' (hrange c' (hcc ▸ hjj)))`. Use `replace hσ : Spec.map σ ≫ jj = c := by rw [hσ, IsOpenImmersion.lift_fac]`. Use `replace hσ' : Spec.map σ' ≫ jj = c' := by rw [hσ', IsOpenImmersion.lift_fac]`. Set `n : Spec B ⟶ W.toScheme` to `IsOpenImmersion.lift W.ι (jj ≫ F) (by`. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hjjW ⟨z, rfl⟩)`. Establish `hn : n ≫ W.ι = jj ≫ F` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hna : Spec.map σ ≫ n = a`. Rewrite using `[← cancel_mono W.ι, Category.assoc, hn, reassoc_of% hσ, ha]`.
+
+Establish `hna' : Spec.map σ' ≫ n = a'`. Rewrite using `[← cancel_mono W.ι, Category.assoc, hn, reassoc_of% hσ', ha']`. Set `_ : Algebra O B` to `φ.hom.toAlgebra`. Establish `hsm : Algebra.Smooth O B`. Establish `: Smooth (Spec.map φ)` using `by rw [hφ]; infer_instance`.
+
+Conclude with `(HasRingHomProperty.Spec_iff (P := @Smooth)).1 this`. Establish `hsec : ∀ (τ : B ⟶ CommRingCat.of O) (d : Sp O ⟶ X), Spec.map τ ≫ jj = d → d ≫ x = 𝟙 _ → ∀ r : O, τ.hom (φ.hom r) = r`. Introduce `τ d h1 h2 r`. Establish `: φ ≫ τ = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises.
+
+Rewrite using `[Spec.map_comp, hφ, reassoc_of% h1, h2, Spec.map_id]`. Conclude with `congr(($this).hom r)`. Set `s : B →ₐ[O] O` to `⟨σ.hom, hsec σ c hσ hcx⟩`. Set `s' : B →ₐ[O] O` to `⟨σ'.hom, hsec σ' c' hσ' hcx'⟩`. Take `⟨L, _, _, _, π, κ, ε, h1, h2, h3, h4, h5⟩` from `exists_reduced_fibre_localRing s`.
+
+Establish `e1 : Spec.map (CommRingCat.ofHom π : B ⟶ .of L) ≫ Spec.map φ = spMap κ ≫ spMap (IsLocalRing.residue O)`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg (fun t => Spec.map (CommRingCat.ofHom t)) h1`. Establish `e2 : spMap ε ≫ Spec.map (CommRingCat.ofHom π : B ⟶ .of L) = spMap (IsLocalRing.residue O) ≫ Spec.map σ`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+
+Conclude with `congrArg (fun t => Spec.map (CommRingCat.ofHom t)) h2`. Establish `e3 : spMap ε ≫ spMap κ = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `x`.
+
+Conclude with `h3 x`. Establish `hεloc : IsLocalHom ε` using `⟨fun z hz => h4 z hz.ne_zero⟩`. Establish `hm : ((Spec.map (CommRingCat.ofHom π : B ⟶ .of L) ≫ n) ≫ W.ι) (IsLocalRing.closedPoint L) = w`. Use `(spMap_comp_closedPoint ε _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, reassoc_of% e2, reassoc_of% hna]`.
+
+Conclude with `(spMap_comp_closedPoint _ _).trans hw'`. Set `uB : Fin g → B` to `fun i => (ptVal W n).hom (u i)`. Establish `hI : (Ideal.span (Set.range uB)).map π = Ideal.span (Set.range fun i => (ptVal W (Spec.map (CommRingCat.ofHom π : B ⟶ .of L) ≫ n)).hom (u i))`. Rewrite using `[Ideal.map_span, ← Set.range_comp, ptVal_comp]`. Both sides reduce to the same expression.
+
+Establish `key` using `const_mod_coord q W w hw u hc hk κ ε h3 h4 _ hm (spMap (IsLocalRing.residue O) ≫ y) (by rw [Category.assoc, reassoc_of% hn, hF, reassoc_of% hφ.symm, reassoc_of% e1]) _ hI`. Generalize the expression as in `hI' : (Ideal.span (Set.range uB)).map π = I at key`. Establish `key2 : spMap (Ideal.Quotient.mk I) ≫ Spec.map (CommRingCat.ofHom π : B ⟶ .of L) = spMap (Ideal.Quotient.mk I) ≫ spMap κ ≫ spMap ε ≫ Spec.map (CommRingCat.ofHom π : B ⟶ .of L)`. Rewrite using `[← cancel_mono jj]`. Use `hmono _ _ _ (spMap (Ideal.Quotient.mk I) ≫ spMap κ) ?_ ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [Category.assoc, ← hφ, e1]`. Simplify using `only [Category.assoc, ← hφ, e1, reassoc_of% e3]`. Simplify `key` using `only [Category.assoc, hn]`. Establish `key3 : ∀ b : B, π b - κ (ε (π b)) ∈ I`. Introduce `b`.
+
+Simplify using `only [← Spec.map_comp] at key2`. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `congr(($(Spec.map_injective key2)).hom b)`. Establish `hsu : ∀ i, s (uB i) ∈ IsLocalRing.maximalIdeal O`. Introduce `i`.
+
+Take `⟨ψ, hψ, -, h⟩` from `exists_stalk_hom W w hw (L := .of O) a hw'`. Establish `e : s (uB i) = ψ.hom ((G.presheaf.germ W w hw).hom (u i))`. Use `ptVal_comp W n σ` as an intermediate fact. Rewrite `this` using `[hna, ← h]`. Conclude with `(congr(($this).hom (u i))).symm`.
+
+Rewrite using `[e]`. Use `map_nonunit ψ.hom _ ?_` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `Ideal.mem_sup_left (Ideal.subset_span ⟨i, rfl⟩)`. Establish `hss : s = s'`.
+
+Use `GlobalTheory.algHom_eq_of_reduction_eq_of_coords_eq O B s s' g uB ?_ ?_ ?_` and prove the remaining obligations. Introduce `b`. Establish `: σ ≫ CommRingCat.ofHom (IsLocalRing.residue O) = σ' ≫ CommRingCat.ofHom (IsLocalRing.residue O)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono jj]`.
+
+Simplify using `only [Spec.map_comp, Category.assoc, hσ, hσ', hcr]`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, sub_eq_zero]`. Conclude with `congr(($this).hom b)`. Introduce `i`. Use `hu i` as an intermediate fact.
+
+Rewrite `this` using `[← hna, ← hna', ptVal_comp, ptVal_comp]`. Conclude with `this`. Introduce `b hb`. Establish `hb' : ε (π b) = 0`. Establish `: ε (π b) = IsLocalRing.residue O (s b)` using `congr($h2 b)`.
+
+Rewrite using `[this, hb, map_zero]`. Use `key3 b` as an intermediate fact. Rewrite `this` using `[hb', map_zero, sub_zero, ← hI']`. Take `⟨t, ht, htb⟩` from `h5 _ _ this`. Use `⟨t, ht, SetLike.le_def.1 ?_ htb⟩` and prove the remaining obligations.
+
+Use `sup_le (Ideal.span_le.2 ?_) le_sup_right` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `: uB i = (uB i - algebraMap O B (s (uB i))) + algebraMap O B (s (uB i))` using `by ring`. Rewrite using `[SetLike.mem_coe, this]`. Use `Ideal.add_mem _ (Ideal.mem_sup_left (Ideal.subset_span ⟨i, ?_⟩)) (Ideal.mem_sup_right (Ideal.mem_map_of_mem _ ?_))` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using `using hsu i`. Establish `: σ = σ'`. Use extensionality with `b`. Conclude with `congr($hss b)`.
+
+Rewrite using `[← hσ, ← hσ', this]`.
+-/
 theorem section_eq_of_coord {G Z X : Scheme.{0}} (q : G ⟶ Z) (W : G.Opens) (w : G) (hw : w ∈ W) {g : ℕ}
     (u : Fin g → Γ(G, W))
     (hc : IsLocalRing.maximalIdeal (G.presheaf.stalk w) =
@@ -337,6 +449,19 @@ theorem section_eq_of_coord {G Z X : Scheme.{0}} (q : G ⟶ Z) (W : G.Opens) (w 
     exact congr($hss b)
   rw [← hσ, ← hσ', this]
 
+/- English proof (translation)
+Introduce `C hT _ w W hw u hC p _ a a' hcl hy hx hr hu`. Take `⟨τ⟩` from `hT p _ hcl`. Take `⟨c, hc1, hc2⟩` from `τ.lift (a ≫ W.ι) (Category.assoc _ _ _)`. Take `⟨c', hc1', hc2'⟩` from `τ.lift (a' ≫ W.ι) ((Category.assoc _ _ _).trans hy.symm)`. Use `τ.smooth` as an intermediate fact.
+
+Establish `: Smooth τ.H.hom` using `SmoothOfRelativeDimension.smooth C.g _`. Establish `hfac` using `τ.fac`. Establish `hfo` using `τ.f_over`. Establish `himm` using `τ.imm`. Establish `key` using `section_eq_of_coord C.GG.hom W w hw u hC (GlobalTheory.ZJ.kb_isAlgClosed_and_conj p).2.1 (pullback.snd τ.H.hom (spMap τ.j)) (pullback.fst _ _ ≫ τ.f) (a ≫ W.ι ≫ C.GG.hom) (by rw [Category.assoc, hfo, pullback.condition_assoc, hfac]) ?_ (pullback.lift c (𝟙 _) (by simp [hc1])) (pull …`.
+
+Establish `: c = c'` using `by simpa only [pullback.lift_fst] using congr($key ≫ pullback.fst _ _)`. Rewrite using `[← cancel_mono W.ι, ← hc2, ← hc2', this]`. Introduce `T α β r hα hβ hF`. Set `h : pullback τ.H.hom (rPt p ≫ spMap τ.j) ⟶ pullback C.GG.hom (rPt p ≫ a ≫ W.ι ≫ C.GG.hom)` to `pullback.lift (pullback.fst _ _ ≫ τ.f) (pullback.snd _ _) (by`. Rewrite using `[Category.assoc, hfo, pullback.condition_assoc, Category.assoc, hfac])`.
+
+Establish `h1 : h ≫ pullback.fst _ _ = pullback.fst _ _ ≫ τ.f` using `pullback.lift_fst _ _ _`. Establish `h2 : h ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Use `himm h h1 h2` as an intermediate fact. Establish `e : pullback.lift (f` using `τ.H.hom) (g := rPt p ≫ spMap τ.j) (α ≫ pullback.fst _ _) r (by rw [Category.assoc, pullback.condition, reassoc_of% hα]) = pullback.lift (β ≫ pullback.fst _ _) r (by rw [Category.assoc, pullback.condition, reassoc_of% hβ]) := by`. Rewrite using `[← cancel_mono h]`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, h1, pullback.lift_fst_assoc, hF]`. Simplify using `only [Category.assoc, h2, pullback.lift_snd]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify `congr($e ≫ pullback.fst _ _)` using `only [pullback.lift_fst]`.
+
+Rewrite using `[hα, hβ]`.
+-/
 theorem classical_eq_of_coord : ∀ C : Core, C.HasTests → C.Fib → ∀ (w : C.G.toScheme) (W : C.G.toScheme.Opens) (hw : w ∈ W) (u : Fin C.g → Γ(C.G.toScheme, W)), C.Coord w W hw u → ∀ (p : ℕ) [Fact p.Prime] (a a' : Sp (OO p) ⟶ W.toScheme), C.Cl (a ≫ W.ι ≫ C.GG.hom) → a ≫ W.ι ≫ C.GG.hom = a' ≫ W.ι ≫ C.GG.hom → a (cPt p) = ⟨w, hw⟩ → rPt p ≫ a = rPt p ≫ a' → (∀ i, a.appTop.hom (W.topIso.inv.hom (u i)) = a'.appTop.hom (W.topIso.inv.hom (u i))) → a = a' := by
   intro C hT _ w W hw u hC p _ a a' hcl hy hx hr hu
   obtain ⟨τ⟩ := hT p _ hcl

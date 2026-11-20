@@ -16,6 +16,9 @@ def PiCont : Prop :=
     [InnerProductSpace ℂ Vp] (π : Mat k r → (Vp →L[ℂ] Vp)), inWb k r z → 0 < Tz k r z →
     IsHCTypeW k r z u π → ∀ ξ : Vp, ContinuousOn (fun h => π h ξ) (UWset k r z)
 
+/- English proof (translation)
+Unfold `ellA`. Use `split_ifs with h`. Conclude with `(continuous_apply _).comp (continuous_apply _)`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `continuous_finset_sum _ fun j _ => (continuous_id.matrix_elem _ j).mul continuous_const`.
+-/
 theorem ellA_cont (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     Continuous (fun g : Mat k r => ellA k r z g a) := by
   unfold ellA
@@ -24,12 +27,18 @@ theorem ellA_cont (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
   · simp only [Matrix.mulVec, dotProduct]
     exact continuous_finset_sum _ fun j _ => (continuous_id.matrix_elem _ j).mul continuous_const
 
+/- English proof (translation)
+Unfold `psiGen`. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_finset_sum _ fun a _ => continuous_const.mul (ellA_cont z a)))))`.
+-/
 theorem psiGen_cont (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) :
     Continuous (psiGen k r z c) := by
   unfold psiGen
   exact Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp
     (Complex.continuous_re.comp (continuous_finset_sum _ fun a _ => continuous_const.mul (ellA_cont z a)))))
 
+/- English proof (translation)
+Unfold `Gr`. Establish `key : ∀ h ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), h⁻¹ = (h.det)⁻¹ • h.adjugate` using `fun h _ => by`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Use `ContinuousOn.congr ?_ key` and prove the remaining obligations. Conclude with `((continuous_id.matrix_det.continuousOn).inv₀ (fun h hh => (Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hh).ne_zero)).smul continuous_id.matrix_adjugate.continuousOn`.
+-/
 theorem inv_contOn : ContinuousOn (fun h : Mat k r => h⁻¹) (Gr k r) := by
   unfold Gr
   have key : ∀ h ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), h⁻¹ = (h.det)⁻¹ • h.adjugate := fun h _ => by
@@ -38,6 +47,13 @@ theorem inv_contOn : ContinuousOn (fun h : Mat k r => h⁻¹) (Gr k r) := by
   exact ((continuous_id.matrix_det.continuousOn).inv₀
     (fun h hh => (Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hh).ne_zero)).smul continuous_id.matrix_adjugate.continuousOn
 
+/- English proof (translation)
+Establish `h1 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z`. Rewrite using `[ae_iff]`. Establish `e : {p : Mt k r × Mt k r | ¬ Matrix.of p.1 ∈ UWset k r z} = {x | Matrix.of x ∉ UWset k r z} ×ˢ Set.univ`. Use extensionality with `p`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, Measure.prod_prod, hW, zero_mul]`. Establish `h2 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ Nset k r`. Rewrite using `[ae_iff]`. Establish `e : {p : Mt k r × Mt k r | ¬ Matrix.of p.2 ∈ Nset k r} = Set.univ ×ˢ {x | Matrix.of x ∉ Nset k r}`. Use extensionality with `p`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, Measure.prod_prod, hN, mul_zero]`. Use `filter_upwards [h1, h2] with p hp1 hp2`. Conclude with `⟨⟨hp1, hp2⟩, hp1, Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (hUWG hp1) (hNG hp2)⟩`.
+-/
 theorem ae_product_mem_unipotent_and_nilradical {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)} [SFinite μW] [SFinite μN]
     (hW : μW {x | Matrix.of x ∉ UWset k r z} = 0) (hN : μN {x | Matrix.of x ∉ Nset k r} = 0)
     (hUWG : UWset k r z ⊆ Gr k r) (hNG : Nset k r ⊆ Gr k r) :
@@ -64,6 +80,13 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSp
   {Vp : Type} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp]
   {σ : Mat k r → (H →L[ℂ] H)} {π : Mat k r → (Vp →L[ℂ] Vp)}
 
+/- English proof (translation)
+Use `set T : Set (Mt k r × Mt k r) := {p | Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.1 * Matrix.of p.2 ∈ Gr k r} with hTdef`. Establish `hfst : Continuous fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r)` using `continuous_fst`. Establish `hsnd : Continuous fun p : Mt k r × Mt k r => (Matrix.of p.2 : Mat k r)` using `continuous_snd`. Establish `hmul : Continuous fun p : Mt k r × Mt k r => Matrix.of p.1 * Matrix.of p.2` using `hfst.matrix_mul hsnd`. Establish `hTc : IsClosed T` using `(hUWc.preimage hfst).inter (gr_isClosed.preimage hmul)`.
+
+Establish `h1 : ContinuousOn (fun p : Mt k r × Mt k r => σ (Matrix.of p.1 * Matrix.of p.2) v) T` using `(hσ.2.2 v).comp hmul.continuousOn (fun p hp => hp.2)`. Establish `hi : ContinuousOn (fun p : Mt k r × Mt k r => (Matrix.of p.1)⁻¹) T` using `inv_contOn.comp hfst.continuousOn (fun p hp => hUWG hp.1)`. Establish `h2 : ContinuousOn (fun p : Mt k r × Mt k r => π (Matrix.of p.1)⁻¹ ξ) T` using `(hπc ξ).comp hi (fun p hp => hUWinv _ hp.1)`. Establish `h3 : Continuous fun p : Mt k r × Mt k r => star (psiGen k r z c (Matrix.of p.2))` using `continuous_star.comp ((psiGen_cont z c).comp hsnd)`. Establish `hcont : ContinuousOn (bInt z c σ π w' ξ v) T` using `((continuousOn_const.inner h1).mul h3.continuousOn).smul h2`.
+
+Use `hcont.aestronglyMeasurable (μ := μW.prod μN) hTc.measurableSet` as an intermediate fact. Establish `hae' : ∀ᵐ p ∂(μW.prod μN), p ∈ T` using `hae`. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem hae']`. Then use the resulting hypothesis.
+-/
 theorem bInt_aesm (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (hσ : IsURepOn (Gr k r) σ)
     {μW μN : Measure (Mt k r)}
     (hUWc : IsClosed (UWset k r z)) (hUWG : UWset k r z ⊆ Gr k r)
@@ -94,6 +117,13 @@ theorem bInt_aesm (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (hσ : I
 
 end Meas
 
+/- English proof (translation)
+Introduce `k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hH hR hC x₀ hx₀ ξ g hg`. Take `⟨C, _, hCb⟩` from `aBound_of hSG hD hRG hS hPi hNI hU k r z c u v b H σ Vp π w μG μS ν μW μN hH hR hC x₀ hx₀ ξ`. Take `⟨hSet, hDS, hHC, _, _, _, _, hμW, hμN, _, _⟩` from `hH`. Establish `hz` using `hSet.2.2.1`. Establish `hT` using `hSet.2.2.2.1`.
+
+Establish `hσ : IsURepOn (Gr k r) σ` using `hSG k r _ _ H σ hDS`. Take `⟨hUWG, hNG, hUW, _, _⟩` from `hS k r z c hz hT`. Use `hμW.1` as an intermediate fact. Use `hμN.1` as an intermediate fact. Establish `hae` using `ae_product_mem_unipotent_and_nilradical hμW.2.2.1 hμN.2.2.1 hUWG hNG`.
+
+Use `⟨bInt_aesm z c hσ (hU k r z hz hT).isClosed hUWG (fun h hh => (hUW h hh h hh).2.1) (hPC k r z u Vp π hz hT hHC) (hae.mono fun p hp => hp.2) _ _ _, ?_⟩` and prove the remaining obligations. Conclude with `(hCb g hg).trans_lt ENNReal.ofReal_lt_top`.
+-/
 theorem aInt_of (hSG : SigmaG) (hD : Decay) (hRG : ReprodG) (hS : SGrp) (hPi : PiUnit)
     (hNI : NIntDecay) (hU : UWComp) (hPC : PiCont) : AInt := by
   intro k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hH hR hC x₀ hx₀ ξ g hg
@@ -111,6 +141,25 @@ theorem aInt_of (hSG : SigmaG) (hD : Decay) (hRG : ReprodG) (hS : SGrp) (hPi : P
     (hPC k r z u Vp π hz hT hHC) (hae.mono fun p hp => hp.2) _ _ _, ?_⟩
   exact (hCb g hg).trans_lt ENNReal.ofReal_lt_top
 
+/- English proof (translation)
+Introduce `k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hH hR hC x₀ hx₀ ξ g₀ hg₀`. Establish `: FirstCountableTopology (Mat k r)` using `inferInstanceAs (FirstCountableTopology (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ))`. Take `⟨Cφ, hCφ0, hCφ⟩` from `ptDecay_of hSG hD hRG k r z c u v b H σ Vp π w μG μS ν μW μN hH hR hC x₀ hx₀`. Take `⟨hSet, hDS, hHC, _, _, _, _, hμW, hμN, hWfin, hNc⟩` from `hH`. Establish `hz` using `hSet.2.2.1`.
+
+Establish `hT` using `hSet.2.2.2.1`. Establish `hσ : IsURepOn (Gr k r) σ` using `hSG k r _ _ H σ hDS`. Take `⟨hUWG, hNG, hUW, _, _⟩` from `hS k r z c hz hT`. Establish `hPU` using `(hPi k r z u Vp π hz hT hHC).2`. Take `⟨Kw, hKw⟩` from `(hU k r z hz hT).exists_bound_of_continuousOn (opn_continuous (k := k) (r := r)).continuousOn`.
+
+Establish `hKw0 : 0 ≤ max Kw 0` using `le_max_right _ _`. Establish `hinvb : ∀ h ∈ UWset k r z, opn h⁻¹ ≤ max Kw 0` using `fun h hh => le_max_of_le_left ((Real.le_norm_self _).trans (hKw _ (hUW h hh h hh).2.1))`. Use `hμW.1` as an intermediate fact. Use `hμN.1` as an intermediate fact. Establish `hN` using `nilradical_half_sum_nonneg (k := k) (r := r)`.
+
+Establish `hae` using `ae_product_mem_unipotent_and_nilradical hμW.2.2.1 hμN.2.2.1 hUWG hNG`. Establish `hH2 : 0 ≤ opn (Hpk k r) * opn (Hpk k r)` using `mul_nonneg (opn_nonneg _) (opn_nonneg _)`. Use `set K0 := Cφ * (max Kw 0 * (opn (Hpk k r) * opn (Hpk k r) * (opn g₀ + 1))) ^ N1H k r * ‖ξ‖ with hK0d`. Establish `hK0 : 0 ≤ K0` using `mul_nonneg (mul_nonneg hCφ0 (Real.rpow_nonneg (mul_nonneg hKw0 (mul_nonneg hH2 (by linarith [opn_nonneg g₀]))) _)) (norm_nonneg _)`. Establish `hmeas : Measurable fun m : Mt k r => opn (Matrix.of m) ^ (-N1H k r)` using `(show Continuous fun m : Mt k r => opn (Matrix.of m) from opn_continuous).measurable.pow_const _`.
+
+Establish `hgi : Integrable (fun m : Mt k r => opn (Matrix.of m) ^ (-N1H k r)) μN`. Use `⟨hmeas.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun m => Real.rpow_nonneg (opn_nonneg _) _)]`. Conclude with `hNI k r μN hμN hNc`. Establish `hbi : Integrable (fun p : Mt k r × Mt k r => K0 * opn (Matrix.of p.2) ^ (-N1H k r)) (μW.prod μN)`.
+
+Use `(integrable_const (1 : ℝ) (μ := μW)).mul_prod hgi` as an intermediate fact. Simplify using `using this.const_mul K0`. Use `show ContinuousWithinAt (fun g => ∫ p, bInt z c σ π (σ x₀ w) ξ (σ g w) p ∂(μW.prod μN)) (Gr k r) g₀`. Apply `continuousWithinAt_of_dominated (bound := fun p : Mt k r × Mt k r => K0 * opn (Matrix.of p.2) ^ (-N1H k r))` to reduce the goal to its premises. Conclude with `Filter.Eventually.of_forall fun g => bInt_aesm z c hσ (hU k r z hz hT).isClosed hUWG (fun h hh => (hUW h hh h hh).2.1) (hPC k r z u Vp π hz hT hHC) (hae.mono fun p hp => hp.2) _ _ _`.
+
+Establish `hev1 : ∀ᶠ g in 𝓝[Gr k r] g₀, g ∈ Gr k r` using `self_mem_nhdsWithin`. Establish `hev2 : ∀ᶠ g in 𝓝[Gr k r] g₀, opn g < opn g₀ + 1` using `eventually_nhdsWithin_of_eventually_nhds ((opn_continuous (k := k) (r := r)).continuousAt.eventually (gt_mem_nhds (lt_add_one _)))`. Use `filter_upwards [hev1, hev2] with g hg hlt`. Use `filter_upwards [hae] with p hp`. Use `(bInt_bound z c hσ (π := π) hCφ hKw0 ξ p (hUWG hp.1.1) (hinvb _ hp.1.1) (hPU _ (hUW _ hp.1.1 _ hp.1.1).2.1 ξ) (hNG hp.1.2) hg).trans ?_` and prove the remaining obligations.
+
+Establish `hle : (max Kw 0 * (opn (Hpk k r) * opn (Hpk k r) * opn g)) ^ N1H k r ≤ (max Kw 0 * (opn (Hpk k r) * opn (Hpk k r) * (opn g₀ + 1))) ^ N1H k r` using `Real.rpow_le_rpow (mul_nonneg hKw0 (mul_nonneg hH2 (opn_nonneg _))) (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hlt.le hH2) hKw0) hN`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hle hCφ0) (norm_nonneg _)) (Real.rpow_nonneg (opn_nonneg _) _)`. Conclude with `hbi`. Use `Filter.Eventually.of_forall fun p => ?_` and prove the remaining obligations. Establish `h1 : ContinuousWithinAt (fun g => σ (Matrix.of p.1 * Matrix.of p.2) (σ g w)) (Gr k r) g₀` using `(σ _).continuous.continuousAt.comp_continuousWithinAt (hσ.2.2 w g₀ hg₀)`.
+
+Conclude with `((continuousWithinAt_const.inner h1).mul continuousWithinAt_const).smul continuousWithinAt_const`.
+-/
 theorem aCont_of (hSG : SigmaG) (hD : Decay) (hRG : ReprodG) (hS : SGrp) (hPi : PiUnit)
     (hNI : NIntDecay) (hU : UWComp) (hPC : PiCont) : ACont := by
   intro k r z c u v b H _ _ _ σ Vp _ _ _ π w μG μS ν μW μN hH hR hC x₀ hx₀ ξ g₀ hg₀

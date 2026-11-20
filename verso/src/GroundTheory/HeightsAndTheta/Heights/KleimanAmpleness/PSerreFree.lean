@@ -20,6 +20,15 @@ variable {M' : Type w} [AddCommGroup M'] [Module (Poly S N) M'] [Module S M']
 
 omit [IsScalarTower S (Poly S N) M] in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `p ∈ weightedHomogeneousSubmodule S (fun _ => (1 : ℤ)) a at hp`. Rewrite `hp` using `[mem_weightedHomogeneousSubmodule]`. Break down `le_or_gt 0 a with ha | ha` into its components or cases. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le ha`. Use `𝓜.smul_mem n c p m ?_ hm` and prove the remaining obligations.
+
+Introduce `μ hμ`. Establish `h` using `hp hμ`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Pi.one_apply, smul_eq_mul, mul_one, nsmul_eq_mul] at h ⊢`. Conclude with `h` after adjusting the coercions. Establish `hp0 : p = 0`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨μ, hμ⟩` from `MvPolynomial.ne_zero_iff.mp hne`. Establish `h` using `hp hμ`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, nsmul_eq_mul, mul_one] at h`. Establish `: (0 : ℤ) ≤ ∑ i ∈ μ.support, (μ i : ℤ)` using `Finset.sum_nonneg fun i _ => Int.natCast_nonneg _`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hp0, zero_smul]`. Conclude with `zero_mem _`.
+-/
 theorem smul_mem_of_mem_polyGraded (𝓜 : GradedPMod S N M) {a c : ℤ} {p : Poly S N} {m : M}
     (hp : p ∈ (polyGraded S N).piece a) (hm : m ∈ 𝓜.piece c) : p • m ∈ 𝓜.piece (c + a) := by
   change p ∈ weightedHomogeneousSubmodule S (fun _ => (1 : ℤ)) a at hp
@@ -42,6 +51,9 @@ theorem smul_mem_of_mem_polyGraded (𝓜 : GradedPMod S N M) {a c : ℤ} {p : Po
     rw [hp0, zero_smul]
     exact zero_mem _
 
+/- English proof (translation)
+Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m s`. Express the relevant statement in the definitionally equal form `locMap f J.1 (locRes h _) = locRes h (locMap f I.1 _)`. Rewrite using `[locRes_mk, locMap_mk, locMap_mk, locRes_mk]`.
+-/
 theorem locMap_locResS (f : M →ₗ[Poly S N] M') (I J : StdCell N) (h : I.1 ⊆ J.1)
     (x : LocMod S N M I.1) :
     (locMap f J.1).restrictScalars S (locResS I J h x) =
@@ -51,6 +63,11 @@ theorem locMap_locResS (f : M →ₗ[Poly S N] M') (I J : StdCell N) (h : I.1 �
     change locMap f J.1 (locRes h _) = locRes h (locMap f I.1 _)
     rw [locRes_mk, locMap_mk, locMap_mk, locRes_mk]
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun x _ => (locMap f I.1).restrictScalars S x ∈ degLoc 𝓜' c' I) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, hm, hs, hae, rfl⟩`. Use `Submodule.subset_span ⟨f m, s, a + t, e, hf a m hm, hs, by omega, ?_⟩` and prove the remaining obligations. Conclude with `locMap_mk f I.1 m s`. Simplify using the standard rewrite rules.
+
+Introduce `x y _ _ hx hy`. Simplify using `using add_mem hx hy`. Introduce `r x _ hx`. Simplify using `using Submodule.smul_mem _ r hx`.
+-/
 theorem locMap_mem_degLoc {𝓜 : GradedPMod S N M} {𝓜' : GradedPMod S N M'} (f : M →ₗ[Poly S N] M')
     (t : ℤ) (hf : ∀ (a : ℤ) (m : M), m ∈ 𝓜.piece a → f m ∈ 𝓜'.piece (a + t)) {c c' : ℤ}
     (hc : c' = c + t) (I : StdCell N) (x : LocMod S N M I.1) (hx : x ∈ degLoc 𝓜 c I) :
@@ -74,6 +91,17 @@ variable (𝓜 : GradedPMod S N M) {r : ℕ} (b : Module.Basis (Fin r) (Poly S N
 
 omit [IsScalarTower S (Poly S N) M] in
 
+/- English proof (translation)
+Set `_` to `𝓜.isInternal.chooseDecomposition`. Set `_` to `(polyGraded S N).isInternal.chooseDecomposition`. Establish `key : ∀ (k : Fin r) (p : Poly S N), (DirectSum.decompose 𝓜.piece (p • b k) a : M) = (DirectSum.decompose (polyGraded S N).piece p (a - d k) : Poly S N) • b k`. Introduce `k p`. Proceed by induction on `p using DirectSum.Decomposition.inductionOn (ℳ := (polyGraded S N).piece) with`.
+
+Consider the case `zero => simp`. Consider the case `@homogeneous e p`. Establish `hpk : (p : Poly S N) • b k ∈ 𝓜.piece (d k + e)` using `smul_mem_of_mem_polyGraded 𝓜 p.2 (hb k)`. Distinguish the cases in `he : d k + e = a`. Substitute `he` using the available equality.
+
+Rewrite using `[DirectSum.decompose_of_mem_same _ hpk, show d k + e - d k = e by omega, DirectSum.decompose_of_mem_same _ p.2]`. Rewrite using `[DirectSum.decompose_of_mem_ne _ hpk he, DirectSum.decompose_of_mem_ne _ p.2 (show e ≠ a - d k by omega), zero_smul]`. Consider the case `add p q hp hq`. Rewrite using `[add_smul, DirectSum.decompose_add, DirectSum.decompose_add, DirectSum.add_apply, DirectSum.add_apply, Submodule.coe_add, Submodule.coe_add, add_smul, hp, hq]`. Establish `hsum : m = ∑ k, (DirectSum.decompose (polyGraded S N).piece (b.coord k m) (a - d k) : Poly S N) • b k` using `by conv_lhs => rw [← DirectSum.decompose_of_mem_same 𝓜.piece hm, ← b.sum_repr m]`.
+
+Rewrite using `[DirectSum.decompose_sum, DFinsupp.finsetSum_apply, Submodule.coe_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => key k _`. Establish `hj : b.coord j m = (DirectSum.decompose (polyGraded S N).piece (b.coord j m) (a - d j) : Poly S N)` using `by conv_lhs => rw [hsum]`. Rewrite using `[Module.Basis.coord_apply, ← Module.Basis.equivFun_symm_apply, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[hj]`.
+
+Conclude with `Submodule.coe_mem _`.
+-/
 theorem coord_mem_piece (hb : ∀ j, b j ∈ 𝓜.piece (d j)) {a : ℤ} {m : M} (hm : m ∈ 𝓜.piece a)
     (j : Fin r) : b.coord j m ∈ (polyGraded S N).piece (a - d j) := by
   classical
@@ -111,6 +139,9 @@ theorem coord_mem_piece (hb : ∀ j, b j ∈ 𝓜.piece (d j)) {a : ℤ} {m : M}
   rw [hj]
   exact Submodule.coe_mem _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, rfl, fun _ => rfl⟩`.
+-/
 theorem cohomMapShift_mk {𝓜 : GradedPMod S N M} {𝓜' : GradedPMod S N M'} (f : M →ₗ[Poly S N] M')
     (t : ℤ) (hf : ∀ (a : ℤ) (m : M), m ∈ 𝓜.piece a → f m ∈ 𝓜'.piece (a + t)) (i : ℕ) {c c' : ℤ}
     (hc : c' = c + t) (z : Cech.cocyDeg (locSys S N M) (degLoc 𝓜 c) locResS i) :
@@ -121,6 +152,13 @@ theorem cohomMapShift_mk {𝓜 : GradedPMod S N M} {𝓜' : GradedPMod S N M'} (
 
 omit [Module S M] [IsScalarTower S (Poly S N) M] in
 
+/- English proof (translation)
+Establish `h1 : ∀ j, locMap (LinearMap.toSpanSingleton (Poly S N) M (b j)) I (locMap (b.coord j) I y) = locMap ((LinearMap.toSpanSingleton (Poly S N) M (b j)).comp (b.coord j)) I y` using `fun j => by`. Simplify using `only [locMap]`. Rewrite using `[IsLocalizedModule.map_comp' (monos (S := S) I) (LocalizedModule.mkLinearMap (monos (S := S) I) M) (LocalizedModule.mkLinearMap (monos (S := S) I) (Poly S N)) (LocalizedModule.mkLinearMap (monos (S := S) I) M)]`. Both sides reduce to the same expression. Establish `h2 : ∑ j, (LinearMap.toSpanSingleton (Poly S N) M (b j)).comp (b.coord j) = LinearMap.id`.
+
+Use extensionality with `m`. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.toSpanSingleton_apply, Module.Basis.coord_apply, LinearMap.id_apply]`. Conclude with `b.sum_repr m`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [locMap, map_sum]`.
+
+Conclude with `(LinearMap.sum_apply Finset.univ _ y).symm`. Use `_ = y := by`. Rewrite using `[h2]`. Simplify using `only [locMap, IsLocalizedModule.map_id]`. Both sides reduce to the same expression.
+-/
 theorem sum_locMap_basis (I : Finset (Fin (N + 1))) (y : LocMod S N M I) :
     ∑ j, locMap (LinearMap.toSpanSingleton (Poly S N) M (b j)) I (locMap (b.coord j) I y) = y := by
   have h1 : ∀ j, locMap (LinearMap.toSpanSingleton (Poly S N) M (b j)) I (locMap (b.coord j) I y) =
@@ -159,6 +197,15 @@ def freeCoord (i : ℕ) (c : ℤ) (j : Fin r) : cohom 𝓜 i c →ₗ[S] cohom (
   cohomMapShift (b.coord j) (-d j)
     (fun _ _ hm => by rw [← sub_eq_add_neg]; exact coord_mem_piece 𝓜 b d hb hm j) i (by ring)
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Establish `e : ∀ j, ∃ w : Cech.cocyDeg (locSys S N M) (degLoc 𝓜 c) locResS i, freeIncl 𝓜 b d hb i c j (freeCoord 𝓜 b d hb i c j (Submodule.Quotient.mk z)) = (Submodule.Quotient.mk w : cohom 𝓜 i c) ∧ ∀ I, w.1 I = locMap (LinearMap.toSpanSingleton (Poly S N) M (b j)) I.1.1 (locMap (b.coord j) …`. Introduce `j`. Take `⟨z1, h1, h1'⟩` from `cohomMapShift_mk (𝓜 := 𝓜) (𝓜' := polyGraded S N) (b.coord j) (-d j) (fun _ _ hm => by rw [← sub_eq_add_neg]; exact coord_mem_piece 𝓜 b d hb hm j) i (show c - d j = c + -d j by ring) z`.
+
+Take `⟨z2, h2, h2'⟩` from `cohomMapShift_mk (𝓜 := polyGraded S N) (𝓜' := 𝓜) (LinearMap.toSpanSingleton (Poly S N) M (b j)) (d j) (fun _ _ hp => by`. Rewrite using `[LinearMap.toSpanSingleton_apply, add_comm]`. Conclude with `smul_mem_of_mem_polyGraded 𝓜 hp (hb j)) i (show c = c - d j + d j by ring) z1`. Use `⟨z2, ?_, fun I => by rw [h2', h1']⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cohomMapShift _ _ _ i _ (cohomMapShift _ _ _ i _ _) = _`.
+
+Rewrite using `[h1, h2]`. Use `choose w hw hw' using e`. Establish `hz : ∑ j, w j = z`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `I`.
+
+Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Simplify using `only [hw']`. Conclude with `sum_locMap_basis b I.1.1 (z.1 I)`. Use `(Finset.sum_congr rfl fun j _ => hw j).trans ?_` and prove the remaining obligations. Conclude with `(map_sum (Submodule.mkQ _) w Finset.univ).symm.trans (congrArg _ hz)`.
+-/
 theorem sum_freeIncl_freeCoord (i : ℕ) (c : ℤ) (x : cohom 𝓜 i c) :
     ∑ j, freeIncl 𝓜 b d hb i c j (freeCoord 𝓜 b d hb i c j x) = x := by
   induction x using Submodule.Quotient.induction_on with
@@ -192,11 +239,19 @@ theorem sum_freeIncl_freeCoord (i : ℕ) (c : ℤ) (x : cohom 𝓜 i c) :
 
 omit [IsScalarTower S (Poly S N) M] in
 
+/- English proof (translation)
+Establish `h` using `smul_mem_of_mem_polyGraded 𝓜 p.2 (hb j)`. Rewrite `h` using `[show d j + (c - d j) = c by ring]`. Then use the resulting hypothesis.
+-/
 theorem smul_basis_mem (c : ℤ) (j : Fin r) (p : (polyGraded S N).piece (c - d j)) :
     (p : Poly S N) • b j ∈ 𝓜.piece c := by
   have h := smul_mem_of_mem_polyGraded 𝓜 p.2 (hb j)
   rwa [show d j + (c - d j) = c by ring] at h
 
+/- English proof (translation)
+Take `⟨w, hw, hw'⟩` from `cohomMapShift_mk (𝓜 := polyGraded S N) (𝓜' := 𝓜) (LinearMap.toSpanSingleton (Poly S N) M (b j)) (d j) (fun _ _ hp => by`. Rewrite using `[LinearMap.toSpanSingleton_apply, add_comm]`. Conclude with `smul_mem_of_mem_polyGraded 𝓜 hp (hb j)) 0 (show c = c - d j + d j by ring)`. Use the proof step `⟨constCochain (p : Poly S N), constCochain_mem _ _ _ p.2⟩`. Use `hw.trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun I => (hw' I).trans (locMap_mk _ _ _ _)))`.
+-/
 theorem freeInclusion_toH0 (c : ℤ) (j : Fin r) (p : (polyGraded S N).piece (c - d j)) :
     freeIncl 𝓜 b d hb 0 c j (toH0 (polyGraded S N) (c - d j) p) =
       toH0 𝓜 c ⟨(p : Poly S N) • b j, smul_basis_mem 𝓜 b d hb c j p⟩ := by
@@ -209,6 +264,9 @@ theorem freeInclusion_toH0 (c : ℤ) (j : Fin r) (p : (polyGraded S N).piece (c 
   refine hw.trans ?_
   exact congrArg Submodule.Quotient.mk (Subtype.ext (funext fun I => (hw' I).trans (locMap_mk _ _ _ _)))
 
+/- English proof (translation)
+Take `⟨w, hw, hw'⟩` from `cohomMapShift_mk (𝓜 := 𝓜) (𝓜' := polyGraded S N) (b.coord j) (-d j) (fun _ _ hm => by rw [← sub_eq_add_neg]; exact coord_mem_piece 𝓜 b d hb hm j) 0 (show c - d j = c + -d j by ring) ⟨constCochain (m : M), constCochain_mem _ _ _ m.2⟩`. Use `hw.trans ?_` and prove the remaining obligations. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun I => (hw' I).trans (locMap_mk _ _ _ _)))`.
+-/
 theorem freeCoordinate_toH0 (c : ℤ) (j : Fin r) (m : 𝓜.piece c) :
     freeCoord 𝓜 b d hb 0 c j (toH0 𝓜 c m) =
       toH0 (polyGraded S N) (c - d j) ⟨b.coord j m, coord_mem_piece 𝓜 b d hb m.2 j⟩ := by
@@ -220,6 +278,19 @@ theorem freeCoordinate_toH0 (c : ℤ) (j : Fin r) (m : 𝓜.piece c) :
 
 end FreeGraded
 
+/- English proof (translation)
+Introduce `S _ _ N M _ _ _ _ 𝓜 r b d hb`. Take `⟨hfin, hpos⟩` from `hP S N`. Use `⟨fun i c => ?_, fun c hc => ⟨fun i hi => ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `: ∀ j, Module.Finite S (cohom (polyGraded S N) i (c - d j))` using `fun j => hfin i _`. Set `Φ : ((j : Fin r) → cohom (polyGraded S N) i (c - d j)) →ₗ[S] cohom 𝓜 i c` to `∑ j, (freeIncl 𝓜 b d hb i c j).comp (LinearMap.proj j)`.
+
+Use `Module.Finite.of_surjective Φ fun x => ⟨fun j => freeCoord 𝓜 b d hb i c j x, ?_⟩` and prove the remaining obligations. Simplify using `only [Φ, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Conclude with `sum_freeIncl_freeCoord 𝓜 b d hb i c x`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← sum_freeIncl_freeCoord 𝓜 b d hb i c x, ← sum_freeIncl_freeCoord 𝓜 b d hb i c y]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: Subsingleton (cohom (polyGraded S N) i (c - d j))` using `(hpos (c - d j) (by linarith [hc j])).1 i hi`. Rewrite using `[Subsingleton.elim (freeCoord 𝓜 b d hb i c j x) (freeCoord 𝓜 b d hb i c j y)]`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `m hm`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_zero, ← b.sum_repr m]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `h0` using `freeCoordinate_toH0 𝓜 b d hb c j m`. Rewrite `h0` using `[hm, map_zero]`.
+
+Establish `hinj` using `(hpos (c - d j) (by linarith [hc j])).2.1`. Establish `: (⟨b.coord j m, coord_mem_piece 𝓜 b d hb m.2 j⟩ : (polyGraded S N).piece (c - d j)) = 0` using `hinj (h0.symm.trans (map_zero _).symm)`. Rewrite using `[← Module.Basis.coord_apply, show b.coord j m = 0 from congrArg Subtype.val this, zero_smul]`. Introduce `y`. Establish `hsurj` using `fun j => (hpos (c - d j) (by linarith [hc j])).2.2`.
+
+Use `choose p hp using fun j => hsurj j (freeCoord 𝓜 b d hb 0 c j y)`. Use `⟨∑ j, ⟨(p j : Poly S N) • b j, smul_basis_mem 𝓜 b d hb c j (p j)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, ← sum_freeIncl_freeCoord 𝓜 b d hb 0 c y]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hp j, freeInclusion_toH0]`.
+-/
 theorem SerreFree.proof (hP : SerrePoly.Statement.{u}) : SerreFree.Statement.{u, v} := by
   intro S _ _ N M _ _ _ _ 𝓜 r b d hb
   obtain ⟨hfin, hpos⟩ := hP S N

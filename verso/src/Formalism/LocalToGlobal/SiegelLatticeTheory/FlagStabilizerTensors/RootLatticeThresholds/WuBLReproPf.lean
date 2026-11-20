@@ -30,12 +30,26 @@ def conjH (a b a' b' : Formalism.FourierDecayAlt.B.Mat k r) (hab : a' * a = 1) (
     simp only [Matrix.mul_apply, Matrix.of_apply, Matrix.of_symm_apply]
     fun_prop
 
+/- English proof (translation)
+Apply `Continuous.measurable` to reduce the goal to its premises. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Formalism.FourierDecayAlt.B.rmulF, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem meas_rmul (a : Formalism.FourierDecayAlt.B.Mat k r) : Measurable (Formalism.FourierDecayAlt.B.rmulF a : Mt k r → Mt k r) := by
   apply Continuous.measurable
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [Formalism.FourierDecayAlt.B.rmulF, Matrix.mul_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Distinguish the cases in `hm : r ≤ i.val ∧ i.val ≤ r + k`. Rewrite using `[Finset.sum_eq_single i]`. Apply the tactic sequence `simp only [Hpk] split_ifs <;> (try simp only [Fin.ext_iff, ne_eq, Fin.val_mk, and_true, true_and, not_true_eq_false, not_false_eq_true] at *) <;> first | omega | (norm_num; done) | (exfalso; omega)`.
+
+Introduce `l _ hl`. Establish `h0 : Hpk k r i l = 0`. Simplify using `only [Hpk]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, ne_eq, Fin.val_mk, and_true, true_and, not_true_eq_false, not_false_eq_true] at *) <;>`. Apply the tactic sequence `first | omega | (norm_num; done) | (exfalso; omega)`.
+
+Rewrite using `[h0, zero_mul]`. Simplify using the standard rewrite rules. Establish `hlt : 2 * r + k - i.val < 2 * r + k + 1` using `by omega`. Rewrite using `[Finset.sum_eq_single ⟨2 * r + k - i.val, hlt⟩]`. Apply the tactic sequence `simp only [Hpk] split_ifs <;> (try simp only [Fin.ext_iff, ne_eq, Fin.val_mk, and_true, true_and, not_true_eq_false, not_false_eq_true] at *) <;> first | omega | (norm_num; done) | (exfalso; omega)`.
+
+Introduce `l _ hl`. Establish `h0 : Hpk k r i l = 0`. Simplify using `only [Hpk]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff, ne_eq, Fin.val_mk, and_true, true_and, not_true_eq_false, not_false_eq_true] at *) <;>`. Apply the tactic sequence `first | omega | (norm_num; done) | (exfalso; omega)`.
+
+Rewrite using `[h0, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem hpk_sq_lemma {k r : ℕ} : Hpk k r * Hpk k r = 1 := by
   ext i j
   rw [Matrix.mul_apply, Matrix.one_apply]
@@ -64,6 +78,37 @@ private theorem hpk_sq_lemma {k r : ℕ} : Hpk k r * Hpk k r = 1 := by
       rw [h0, zero_mul]
     · simp
 
+/- English proof (translation)
+Introduce `k r μG hμ H _ _ σ hσ hiso Vp _ _ W w y hy hrep x hx`. Establish `hmulU : ∀ a ∈ UH (Hpk k r), ∀ b ∈ UH (Hpk k r), a * b ∈ UH (Hpk k r)`. Introduce `a ha b hb`. Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hb' : bᴴ * Hpk k r * b = Hpk k r` using `hb`.
+
+Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [ha', hb']`.
+
+Take `⟨yi, hyi⟩ : ∃ yi : Formalism.FourierDecayAlt.B.Mat k r, yi = Hpk k r * yᴴ * Hpk k r` from `⟨_, rfl⟩`. Establish `hy' : yᴴ * Hpk k r * y = Hpk k r` using `hy`. Establish `hyiy : yi * y = 1`. Rewrite using `[hyi, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc yᴴ, hy', hpk_sq_lemma]`. Establish `hyyi : y * yi = 1` using `mul_eq_one_comm.1 hyiy`.
+
+Establish `hyiU : yi ∈ UH (Hpk k r)` using `by show yiᴴ * Hpk k r * yi = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hyyi, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Establish `hcU : ∀ g ∈ UH (Hpk k r), yi * g * y ∈ UH (Hpk k r)` using `fun g hg => hmulU _ (hmulU _ hyiU _ hg) _ hy`. Establish `hinner : ∀ g ∈ UH (Hpk k r), ∀ u v : H, ⟪σ g u, σ g v⟫_ℂ = ⟪u, v⟫_ℂ`. Introduce `g hg u v`. Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ g : H →ₗ[ℂ] H), fun z => hiso g hg z⟩`. Conclude with `L.inner_map_map u v`.
+
+Establish `hinnerc : ∀ g ∈ UH (Hpk k r), ⟪σ y w, σ g (σ y w)⟫_ℂ = ⟪w, σ (yi * g * y) w⟫_ℂ`. Introduce `g hg`. Establish `e1 : g * y = y * (yi * g * y)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hyyi, Matrix.one_mul]`. Establish `h1 : σ g (σ y w) = σ y (σ (yi * g * y) w)`.
+
+Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.2 g hg y hy, e1, hσ.2 y hy _ (hcU g hg), ContinuousLinearMap.comp_apply]`. Rewrite using `[h1, hinner y hy]`. Establish `hmL : Measurable (lmulM (k` using `k) (r := r) yi) := by`. Apply `Continuous.measurable` to reduce the goal to its premises. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+
+Simplify using `only [lmulM, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Take `⟨Φ, hΦdef⟩ : ∃ Φ : Mt k r ≃ₜ Mt k r, Φ = conjH yi y y yi hyyi hyyi hyiy hyiy` from `⟨_, rfl⟩`. Establish `hΦg : ∀ g : Mt k r, Matrix.of (Φ g) = yi * Matrix.of g * y`. Introduce `g`.
+
+Apply the tactic sequence `rw [hΦdef] <;> rfl`. Establish `hΦ : MeasurePreserving Φ μG μG`. Rewrite using `[hΦdef]`. Conclude with `(⟨meas_rmul y, hμ.right y hy⟩ : MeasurePreserving (Formalism.FourierDecayAlt.B.rmulF y) μG μG).comp ⟨hmL, hμ.left yi hyiU⟩`. Establish `hae : ∀ᵐ z ∂μG, Matrix.of z ∈ UH (Hpk k r)`.
+
+Establish `h0 : μG (UH (Hpk k r))ᶜ = 0` using `hμ.conc`. Use `filter_upwards [compl_mem_ae_iff.2 h0] with z hz`. Assume the negation of the conclusion as `hc`. Conclude with `hz hc`. Establish `hfdeg : fdegH μG σ (σ y w) = fdegH μG σ w`.
+
+Unfold `fdegH`. Rewrite using `[hiso y hy w]`. Use `congr 1`. Establish `hint : (fun z : Mt k r => ‖⟪σ y w, σ (Matrix.of z) (σ y w)⟫_ℂ‖ ^ 2) =ᵐ[μG] (fun z => ‖⟪w, σ (Matrix.of (Φ z)) w⟫_ℂ‖ ^ 2)` using `by filter_upwards [hae] with z hz`. Rewrite using `[hinnerc _ hz, hΦg]`.
+
+Rewrite using `[integral_congr_ae hint]`. Conclude with `hΦ.integral_comp Φ.measurableEmbedding (fun h => ‖⟪w, σ (Matrix.of h) w⟫_ℂ‖ ^ 2)`. Establish `heF : ∀ g : Mt k r, Matrix.of g ∈ UH (Hpk k r) → eFun μG σ (σ y w) (Matrix.of g) = eFun μG σ w (Matrix.of (Φ g))`. Introduce `g hg`. Unfold `eFun`.
+
+Rewrite using `[hfdeg, hinnerc _ hg, hΦg]`. Establish `e2 : ∀ g : Mt k r, x * Matrix.of g * y = x * y * Matrix.of (Φ g)`. Introduce `g`. Rewrite using `[hΦg]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc y yi, hyyi, Matrix.one_mul]`. Establish `hpt : (fun g : Mt k r => eFun μG σ (σ y w) (Matrix.of g) • W (x * Matrix.of g * y)) =ᵐ[μG] (fun g => eFun μG σ w (Matrix.of (Φ g)) • W (x * y * Matrix.of (Φ g)))` using `by filter_upwards [hae] with g hg`. Rewrite using `[heF g hg, e2 g]`. Take `⟨hI, hR⟩` from `hrep (x * y) (hmulU _ hx _ hy)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : Integrable (fun g => eFun μG σ w (Matrix.of (Φ g)) • W (x * y * Matrix.of (Φ g))) μG` using `(hΦ.integrable_comp_emb Φ.measurableEmbedding).2 hI`. Conclude with `h2.congr hpt.symm`. Unfold `rconv at hR ⊢`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem reproduction_translation : ReproTr := by
   intro k r μG hμ H _ _ σ hσ hiso Vp _ _ W w y hy hrep x hx
   have hmulU : ∀ a ∈ UH (Hpk k r), ∀ b ∈ UH (Hpk k r), a * b ∈ UH (Hpk k r) := by

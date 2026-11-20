@@ -11,6 +11,17 @@ namespace TorsionFreeQuotientLength
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Set `f : (Fin t → R) →ₗ[R] (Fin t → R ⧸ Ideal.span {a})` to `LinearMap.pi fun i => (Ideal.span {a}).mkQ ∘ₗ LinearMap.proj i`. Establish `hf : Function.Surjective f`. Introduce `y`. Use `choose g hg using fun i => Ideal.Quotient.mk_surjective (y i)`. Conclude with `⟨g, funext fun i => by simp [f, hg i]⟩`.
+
+Establish `hker : LinearMap.ker f = a • ⊤`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, Submodule.mem_smul_pointwise_iff_exists, Submodule.mem_top, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `hx : ∀ i, x i ∈ Ideal.span {a}` using `fun i => by`. Use `congrFun h i` as an intermediate fact. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp (by simpa [f] using this)`. Use `choose c hc using fun i => Ideal.mem_span_singleton'.mp (hx i)`. Conclude with `⟨c, funext fun i => by simp [← hc i, mul_comm]⟩`.
+
+Introduce and unpack `⟨b, rfl⟩`. Use function extensionality and compare the values at `i`. Simplify using `only [f, LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, Pi.smul_apply, LinearMap.coe_proj, Function.eval, mkQ_apply, Pi.zero_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self a))`. Rewrite using `[← hker, (f.quotKerEquivOfSurjective hf).length_eq, Module.length_pi]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem length_pi_quot_smul_top (t : ℕ) (a : R) :
     Module.length R ((Fin t → R) ⧸ (a • ⊤ : Submodule R (Fin t → R))) =
       t * Module.length R (R ⧸ Ideal.span {a}) := by
@@ -40,6 +51,15 @@ theorem length_pi_quot_smul_top (t : ℕ) (a : R) :
   rw [← hker, (f.quotKerEquivOfSurjective hf).length_eq, Module.length_pi]
   simp
 
+/- English proof (translation)
+Establish `htors : Module.IsTorsion R Q` using `fun q => by`. Take `⟨c, hc, hcq⟩` from `hQ q`. Conclude with `⟨⟨c, mem_nonZeroDivisors_of_ne_zero hc⟩, hcq⟩`. Take `⟨c, hc1, hc2⟩` from `Submodule.annihilator_top_inter_nonZeroDivisors htors`. Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' R Q`.
+
+Establish `hle : (c • ⊤ : Submodule R (Fin n → R)) ≤ LinearMap.ker f`. Introduce `x hx`. Take `⟨y, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp hx`. Rewrite using `[LinearMap.mem_ker, map_smul]`. Conclude with `(Submodule.mem_annihilator.mp hc1) _ Submodule.mem_top`.
+
+Establish `hs : Function.Surjective ((c • ⊤ : Submodule R (Fin n → R)).liftQ f hle)`. Introduce `q`. Take `⟨x, rfl⟩` from `hf q`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Rewrite using `[← Module.length_ne_top_iff]`.
+
+Use `ne_top_of_le_ne_top ?_ (Module.length_le_of_surjective _ hs)` and prove the remaining obligations. Rewrite using `[length_pi_quot_smul_top]`. Conclude with `WithTop.mul_ne_top (ENat.natCast_ne_top _) (Module.length_ne_top_iff.mpr (isFiniteLength_quotient_span_singleton R hc2))`.
+-/
 theorem isFiniteLength_of_torsion [IsDomain R] [IsNoetherianRing R] [Ring.KrullDimLE 1 R]
     (Q : Type*) [AddCommGroup Q] [Module R Q] [Module.Finite R Q]
     (hQ : ∀ q : Q, ∃ c : R, c ≠ 0 ∧ c • q = 0) : IsFiniteLength R Q := by
@@ -63,6 +83,33 @@ theorem isFiniteLength_of_torsion [IsDomain R] [IsNoetherianRing R] [Ring.KrullD
   exact WithTop.mul_ne_top (ENat.natCast_ne_top _)
     (Module.length_ne_top_iff.mpr (isFiniteLength_quotient_span_singleton R hc2))
 
+/- English proof (translation)
+Use `set P := LinearMap.range φ`. Establish `hPa : a • P ≤ a • ⊤` using `fun x hx => by`. Take `⟨p, -, rfl⟩` from `(mem_smul_pointwise_iff_exists _ _ _).mp hx`. Conclude with `smul_mem_pointwise_smul p a ⊤ mem_top`. Establish `hPP : a • P ≤ P` using `fun x hx => by`.
+
+Take `⟨p, hp, rfl⟩` from `(mem_smul_pointwise_iff_exists _ _ _).mp hx`. Conclude with `P.smul_mem a hp`. Set `f1 : (N ⧸ P) →ₗ[R] (N ⧸ a • P)` to `P.mapQ (a • P) (a • LinearMap.id) (fun x hx => by simpa using smul_mem_pointwise_smul x a P hx)`. Set `g1 : (N ⧸ a • P) →ₗ[R] (N ⧸ (a • ⊤ : Submodule R N))` to `Submodule.factor hPa`. Set `f2 : (F₀ ⧸ (a • ⊤ : Submodule R F₀)) →ₗ[R] (N ⧸ a • P)` to `(a • ⊤ : Submodule R F₀).mapQ (a • P) φ (fun x hx => by`.
+
+Take `⟨y, -, rfl⟩` from `(mem_smul_pointwise_iff_exists _ _ _).mp hx`. Simplify using `using smul_mem_pointwise_smul (φ y) a P (LinearMap.mem_range_self φ y))`. Set `g2 : (N ⧸ a • P) →ₗ[R] (N ⧸ P)` to `Submodule.factor hPP`. Establish `hf1 : Function.Injective f1`. Use `(injective_iff_map_eq_zero _).mpr fun q hq => ?_` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Simplify using `only [f1, mapQ_apply, LinearMap.smul_apply, LinearMap.id_apply, Quotient.mk_eq_zero, mem_smul_pointwise_iff_exists] at hq ⊢`. Take `⟨p, hp, hpx⟩` from `hq`. Rewrite using `[← hreg hpx]` and apply the resulting hypothesis. Establish `hg1 : Function.Surjective g1` using `fun y => by`.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Establish `hex1 : Function.Exact f1 g1` using `fun y => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `: x ∈ (a • ⊤ : Submodule R N)` using `(Quotient.mk_eq_zero _).mp h`. Take `⟨b, -, rfl⟩` from `(mem_smul_pointwise_iff_exists _ _ _).mp this`. Conclude with `⟨Submodule.Quotient.mk b, rfl⟩`. Introduce and unpack `⟨q, hq⟩`.
+
+Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hb : a • b - x ∈ a • P` using `(Submodule.Quotient.eq _).mp hq`. Use `(Quotient.mk_eq_zero _).mpr ?_` and prove the remaining obligations. Establish `h1 : a • b ∈ (a • ⊤ : Submodule R N)` using `smul_mem_pointwise_smul b a ⊤ mem_top`. Simplify using `using sub_mem h1 (hPa hb)`.
+
+Establish `hf2 : Function.Injective f2`. Use `(injective_iff_map_eq_zero _).mpr fun q hq => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Simplify using `only [f2, mapQ_apply, Quotient.mk_eq_zero, mem_smul_pointwise_iff_exists] at hq ⊢`. Take `⟨p, ⟨z, rfl⟩, hp⟩` from `hq`.
+
+Use `⟨z, mem_top, hφ ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hp]`. Establish `hg2 : Function.Surjective g2` using `fun y => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`.
+
+Establish `hex2 : Function.Exact f2 g2` using `fun y => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨z, rfl⟩ : x ∈ P` from `(Quotient.mk_eq_zero _).mp h`.
+
+Conclude with `⟨Submodule.Quotient.mk z, rfl⟩`. Introduce and unpack `⟨q, hq⟩`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hb : φ z - x ∈ a • P` using `(Submodule.Quotient.eq _).mp hq`. Use `(Quotient.mk_eq_zero _).mpr ?_` and prove the remaining obligations.
+
+Use `sub_mem (LinearMap.mem_range_self φ z) (hPP hb)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `e1` using `Module.length_eq_add_of_exact f1 g1 hf1 hg1 hex1`. Establish `e2` using `Module.length_eq_add_of_exact f2 g2 hf2 hg2 hex2`. Rewrite `e2` using `[e1, add_comm (Module.length R (F₀ ⧸ _))]`.
+
+Conclude with `WithTop.add_left_cancel (Module.length_ne_top_iff.mpr hfin) e2`.
+-/
 theorem length_quot_smul_eq {N F₀ : Type*} [AddCommGroup N] [Module R N]
     [AddCommGroup F₀] [Module R F₀] (φ : F₀ →ₗ[R] N) (hφ : Function.Injective φ) {a : R}
     (hreg : Function.Injective fun x : N => a • x)
@@ -136,6 +183,39 @@ theorem length_quot_smul_eq {N F₀ : Type*} [AddCommGroup N] [Module R N]
 
 end TorsionFreeQuotientLength
 
+/- English proof (translation)
+Introduce `R _ _ _ hdim M _ _ _ r hr a ha`. Establish `: Ring.KrullDimLE 1 R` using `Ring.krullDimLE_iff.mpr (by rw [hdim]; rfl)`. Rewrite using `[Submodule.ideal_span_singleton_smul, ← TorsionFreeQuotientLength.length_pi_quot_smul_top]`. Take `⟨s, hs, hli⟩` from `exists_set_linearIndependent_of_isDomain R M`. Rewrite `hs` using `[hr]`.
+
+Take `⟨e⟩` from `Cardinal.mk_eq_nat_iff.mp hs`. Set `v : Fin r → M` to `fun i => (e.symm i : M)`. Establish `hv : LinearIndependent R v` using `hli.comp e.symm e.symm.injective`. Set `φ : (Fin r → R) →ₗ[R] M` to `Finsupp.linearCombination R v ∘ₗ (Finsupp.linearEquivFunOnFinite R R (Fin r)).symm.toLinearMap`. Establish `hφ : Function.Injective φ` using `(show Function.Injective (Finsupp.linearCombination R v) from hv).comp (Finsupp.linearEquivFunOnFinite R R (Fin r)).symm.injective`.
+
+Establish `hrange : LinearMap.range φ = span R (Set.range v)`. Rewrite using `[LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Finsupp.range_linearCombination]`. Establish `htor : ∀ x : M, ∃ c : R, c ≠ 0 ∧ c • x ∈ LinearMap.range φ`. Establish `h1` using `rank_quotient_add_rank_of_isDomain (span R (Set.range v))`. Rewrite `h1` using `[rank_span hv, Cardinal.mk_range_eq v hv.injective, Cardinal.mk_fin, hr]`.
+
+Establish `h0 : Module.rank R (M ⧸ span R (Set.range v)) = 0`. Assume the negation of the conclusion as `h`. Establish `h2` using `add_le_add_right (Cardinal.one_le_iff_ne_zero.mpr h) (r : Cardinal)`. Rewrite `h2` using `[add_comm (r : Cardinal) (Module.rank _ _), h1]`. Conclude with `absurd h2 (by exact_mod_cast Nat.not_succ_le_self r)`.
+
+Introduce `x`. Take `⟨c, hc, hcx⟩` from `rank_eq_zero_iff.mp h0 (Submodule.Quotient.mk x)`. Conclude with `⟨c, hc, hrange ▸ (Quotient.mk_eq_zero _).mp (by rwa [← Quotient.mk_smul] at hcx)⟩`. Establish `hLtop : Module.length R ((Fin r → R) ⧸ (a • ⊤ : Submodule R (Fin r → R))) ≠ ⊤`. Rewrite using `[TorsionFreeQuotientLength.length_pi_quot_smul_top]`.
+
+Conclude with `WithTop.mul_ne_top (ENat.natCast_ne_top _) (Module.length_ne_top_iff.mpr (isFiniteLength_quotient_span_singleton R (mem_nonZeroDivisors_of_ne_zero ha)))`. Set `T : Submodule R M` to `a • ⊤`. Establish `hfg : ∀ N : Submodule R M, N.FG → LinearMap.range φ ≤ N → Module.length R (N.map T.mkQ) ≤ Module.length R ((Fin r → R) ⧸ (a • ⊤ : Submodule R (Fin r → R)))`. Introduce `N hN hφN`. Establish `: Module.Finite R N` using `Module.Finite.iff_fg.mpr hN`.
+
+Set `φN : (Fin r → R) →ₗ[R] N` to `φ.codRestrict N fun y => hφN (LinearMap.mem_range_self φ y)`. Establish `hφN' : Function.Injective φN` using `fun y z h => hφ (congrArg Subtype.val h)`. Establish `hreg : Function.Injective fun x : N => a • x` using `fun x y h => Subtype.ext (smul_right_injective M ha (congrArg Subtype.val h))`. Establish `hfin : IsFiniteLength R (N ⧸ LinearMap.range φN)`. Use `TorsionFreeQuotientLength.isFiniteLength_of_torsion _ fun q => ?_` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨c, hc, y, hy⟩` from `htor x`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← Quotient.mk_smul, Quotient.mk_eq_zero]`. Conclude with `⟨y, Subtype.ext hy⟩`.
+
+Establish `hle : (a • ⊤ : Submodule R N) ≤ LinearMap.ker (T.mkQ ∘ₗ N.subtype)` using `fun x hx => by`. Take `⟨b, -, rfl⟩` from `(mem_smul_pointwise_iff_exists _ _ _).mp hx`. Simplify using `only [LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, mkQ_apply, Quotient.mk_eq_zero, Submodule.coe_smul, Submodule.subtype_apply]`. Conclude with `smul_mem_pointwise_smul _ a ⊤ mem_top`. Establish `hmap : N.map T.mkQ = LinearMap.range ((a • ⊤ : Submodule R N).liftQ _ hle)`.
+
+Rewrite using `[range_liftQ, LinearMap.range_comp, range_subtype]`. Rewrite using `[hmap, ← TorsionFreeQuotientLength.length_quot_smul_eq φN hφN' hreg hfin]`. Conclude with `Module.length_le_of_surjective _ (LinearMap.surjective_rangeRestrict _)`. Set `S : Set ℕ` to `{n | ∃ N : Submodule R M, N.FG ∧ LinearMap.range φ ≤ N ∧ Module.length R (N.map T.mkQ) = n}`. Establish `hSb : BddAbove S` using `⟨(Module.length R ((Fin r → R) ⧸ (a • ⊤ : Submodule R (Fin r → R)))).toNat, by`.
+
+Introduce and unpack `n ⟨N, hN, hφN, hn⟩`. Use `hfg N hN hφN` as an intermediate fact. Rewrite `this` using `[hn]`. Simplify using `using ENat.toNat_le_toNat this hLtop⟩`. Establish `hφfg : (LinearMap.range φ).FG`.
+
+Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map φ`. Establish `hne0 : Module.length R ((LinearMap.range φ).map T.mkQ) ≠ ⊤` using `ne_top_of_le_ne_top hLtop (hfg _ hφfg le_rfl)`. Establish `hSne : S.Nonempty` using `⟨_, LinearMap.range φ, hφfg, le_rfl, (ENat.natCast_toNat hne0).symm⟩`. Take `⟨N₀, hN₀, hφN₀, hm⟩` from `Nat.sSup_mem hSne hSb`.
+
+Establish `htop : N₀.map T.mkQ = ⊤`. Use `eq_top_iff.mpr fun q _ => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Assume the negation of the conclusion as `hx`. Establish `hN₁ : (N₀ ⊔ span R {x}).FG` using `hN₀.sup (fg_span_singleton x)`.
+
+Establish `hx1 : Submodule.Quotient.mk x ∈ (N₀ ⊔ span R {x}).map T.mkQ` using `mem_map_of_mem (mem_sup_right (mem_span_singleton_self x))`. Establish `hlt : N₀.map T.mkQ < (N₀ ⊔ span R {x}).map T.mkQ` using `lt_of_le_of_ne (map_mono le_sup_left) fun h => hx (by rw [h]; exact hx1)`. Establish `hne : Module.length R ((N₀ ⊔ span R {x}).map T.mkQ) ≠ ⊤` using `ne_top_of_le_ne_top hLtop (hfg _ hN₁ (hφN₀.trans le_sup_left))`. Establish `h1` using `le_csSup hSb ⟨_, hN₁, hφN₀.trans le_sup_left, (ENat.natCast_toNat hne).symm⟩`. Establish `h2 : Module.length R (N₀.map T.mkQ) < Module.length R ((N₀ ⊔ span R {x}).map T.mkQ)`.
+
+Rewrite using `[Module.length_submodule, Module.length_submodule]`. Use `Order.height_strictMono hlt ?_` and prove the remaining obligations. Rewrite using `[← Module.length_submodule, hm]`. Conclude with `ENat.natCast_lt_top _`. Rewrite `h2` using `[hm, ← ENat.natCast_toNat hne]`.
+
+Conclude with `absurd (ENat.natCast_lt_natCast.mp h2) (not_lt.mpr h1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[htop, Module.length_top]`. Use `_ ≤ Module.length R ((Fin r → R) ⧸ (a • ⊤ : Submodule R (Fin r → R))) := hfg N₀ hN₀ hφN₀`.
+-/
 theorem TorsionFreeQuotientLength.proof : TorsionFreeQuotientLength.Statement := by
   intro R _ _ _ hdim M _ _ _ r hr a ha
   have : Ring.KrullDimLE 1 R := Ring.krullDimLE_iff.mpr (by rw [hdim]; rfl)

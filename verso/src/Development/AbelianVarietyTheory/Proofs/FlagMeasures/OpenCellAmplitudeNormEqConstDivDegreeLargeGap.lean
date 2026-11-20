@@ -24,6 +24,13 @@ namespace GlobalTheory.Amp.OpenCellNormGap
 
 open GlobalTheory.Amp.OpenCellNorm
 
+/- English proof (translation)
+Take `⟨t, ht, hN, hz, -⟩` from `GlobalTheory.T.exists_unitaryTorus_scale_besselCharacter k r c hc`. Take `⟨-, hW, hψ⟩` from `hz z hS.1`. Take `⟨hS', hm⟩` from `GlobalTheory.T.isBesselMap_conj_iff_and_besselFn_eq_rankOne hH k r Wp z π u c μW μN μG νq t ht hN hW hψ hS`. Establish `hRG : R.IsDG ε mu` using `⟨hR.1, hR.2, ⟨h, hg, hok⟩⟩`. Take `⟨l₁, hl⟩` from `Gp91.GlobalTheory.T.bessel_gap_exists_functional hH.1 k r ε mu h R Wp _ _ _ _ _ _ _ hRG hg hok hS'`.
+
+Take `⟨h1, h2⟩` from `hm R hU`. Use `⟨fun v => l₁ (R.σ t⁻¹ v), (h1 _).2 ?_, h2 l₁ hl⟩` and prove the remaining obligations. Establish `e : (fun v => l₁ (R.σ t⁻¹ (R.σ t v))) = l₁`. Use function extensionality and compare the values at `v`. Establish `h3` using `hU.1.2 _ (PI.HwUniqW.inv_mem_UH ht) _ ht`.
+
+Rewrite `h3` using `[show t⁻¹ * t = 1 from PI.HwUniqW.inv_mul_UH' ht, hU.1.1]`. Conclude with `congrArg l₁ (congrArg (fun T : R.H →L[ℂ] R.H => T v) h3).symm`. Use `show IsBes R z π (fun v => l₁ (R.σ t⁻¹ (R.σ t v)))`. Rewrite using `[e]`. Conclude with `hl.1`.
+-/
 theorem exists_bessel_scale_gap (hH : GlobalTheory.GapIn.Hyp) {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] {z : Fin (2 * r + k + 1) → ℂ}
     {π : MatKR k r → (Wp →L[ℂ] Wp)} {u : ℕ → ℝ} {c : ℂ} {μW μN μG νq : Measure (Mt k r)} (hc : c ≠ 0)
@@ -48,6 +55,35 @@ theorem exists_bessel_scale_gap (hH : GlobalTheory.GapIn.Hyp) {k r : ℕ} {Wp : 
   rw [e]
   exact hl.1
 
+/- English proof (translation)
+Introduce `hH hKF hCC Cg cb Cu cT CT C0 C1 Cn`. Use `⟨Cn, fun D large₂ C' Cl hCl hBig hcd hZ τ w w' hTT θ hθw W hW μsec hsec => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hex : ∃ (lam : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (A : LocS W), GoodS D lam A`. Use `swap`. Conclude with `⟨1, one_pos, fun lam' _ A hA => absurd ⟨lam', A, hA⟩ hex⟩`.
+
+Take `⟨lam₀, A₀, hA₀⟩` from `hex`. Use `haveI := FiniteDimensional.complete ℂ W.Wp`. Use `haveI := FiniteDimensional.complete ℂ W.Wq`. Establish `hθ : 0 < θ` using `lt_of_lt_of_le (Real.rpow_pos_of_pos (Real.exp_pos _) _) hθw.1`. Establish `hv1 : 1 ≤ D.host.v` using `hZ.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+
+Establish `hv : 0 < D.host.v` using `by linarith`. Establish `hka : 0 < D.host.ka` using `div_pos Real.pi_pos hv`. Establish `hg0 : (0 : ℝ) < D.host.g 0` using `by exact_mod_cast (D.host.g_prime 0).pos`. Establish `hg1 : (0 : ℝ) < D.host.g 1` using `by exact_mod_cast (D.host.g_prime 1).pos`. Establish `hkg : 0 < D.host.ka / gg D` using `div_pos hka (mul_pos hg0 hg1)`.
+
+Establish `hc : ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (by positivity)`. Establish `hT : 0 < Tr D w` using `by unfold Tr; exact_mod_cast hTT.1.pos`. Establish `hT' : 0 < Tr D w'` using `by unfold Tr; exact_mod_cast hTT.2.1.pos`. Establish `hk : 2 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hκN : kapN D θ ≠ 0` using `(ENNReal.ofReal_pos.2 (by positivity)).ne'`.
+
+Take `⟨-, -, -, o1, o2⟩` from `GlobalTheory.T.local_data_both_amplitude_sides D τ w w' θ W lam₀ A₀ hθ hv hTT hW hA₀`. Establish `n1' : 0 < Module.finrank ℂ W.Wp` using `by haveI := o1.2.2.1; exact Module.finrank_pos`. Establish `n2' : 0 < Module.finrank ℂ W.Wq` using `by haveI := o2.2.2.1; exact Module.finrank_pos`. Establish `hNH : IsHaarOn (Nset D.R.k D.R.rS) W.μN` using `o1.2.2.2.2.2.2.2.2.1`. Take `⟨κ, hκ, hdeg⟩` from `GlobalTheory.T.datumDegree_eq_mul_formalDegree_gap hH D τ w w' θ W hcd hW`.
+
+Take `⟨c, hc0, hnorm⟩` from `GlobalTheory.T.lintegral_amplitudeNormSq_bigCell_gap hH hKF hCC _ _ (toBessel D τ w w' θ W lam₀ A₀ hW hA₀ hT hT') W.μG μsec hk hc hκN ENNReal.ofReal_ne_top hW.2.2.2.2.2.2.1 hsec`. Establish `hW'` using `hW`. Take `⟨c1, c2, z1, z2, t1, t2, hG, w1, -, w2, -, hN, q1, q2⟩` from `hW'`. Set `sq : (Fin D.R.k → ℝ) → ℕ → ℝ` to `fun u n => if h : n - 1 < D.R.k then u ⟨n - 1, h⟩ else 0`. Establish `hsq : ∀ u (i : Fin D.R.k), sq u (i.val + 1) = u i` using `fun u i => by simp [sq]`.
+
+Establish `s1 : SideG D.R.k D.R.rS W.z W.π (sq (uS D w τ)) W.μW W.μN W.μG W.νS` using `⟨z1, t1 ▸ hT, ⟨_, c1⟩, GlobalTheory.ThA.capParam_of_isHCTypeW _ _ _ _ _ _ _ z1 (t1 ▸ hT) c1 (hsq _), w1, hNH, hG, q1⟩`. Establish `s2 : SideG D.R.k D.R.rS W.z' W.π' (sq (uS D w' τ)) W.μW' W.μN W.μG W.νS'` using `⟨z2, t2 ▸ hT', ⟨_, c2⟩, GlobalTheory.ThA.capParam_of_isHCTypeW _ _ _ _ _ _ _ z2 (t2 ▸ hT') c2 (hsq _), w2, hNH, hG, q2⟩`. Take `⟨hNum, hcell, heps⟩` from `GlobalTheory.T.momentPieriNumerics_of_sizeHyps D large₂ C' Cl Cg cb Cu cT CT C0 hZ hCl τ w _ (hsq _)`. Take `⟨⟨-, -, -, -, hok⟩, hν⟩` from `GlobalTheory.NumFam.num_fam _ _ _ _ _ _ _ _ _ hNum`. Use `⟨c * κ * (Module.finrank ℂ W.Wp * Module.finrank ℂ W.Wq), by positivity, fun lam' hl A hA => ?_⟩` and prove the remaining obligations.
+
+Take `⟨ν, hlam, hn1, -⟩` from `GlobalTheory.hcParam_sub_integral _ (lamD D τ) lam' hNum.2.1 hA.1`. Establish `hq : n1 ν ≤ D.R.k * D.R.m ^ 5`. Establish `hm : (1 : ℝ) ≤ D.R.m` using `by have := D.R.two_le_m; exact_mod_cast (by omega : 1 ≤ D.R.m)`. Establish `h1 : Cn ≤ (D.R.m : ℝ) ^ 2` using `by have := hBig.2.2; nlinarith`. Establish `h2 : ((n1 ν : ℕ) : ℝ) ≤ D.R.k * (D.R.m : ℝ) ^ 5`.
+
+Rewrite using `[hn1]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h2` after adjusting the coercions. Establish `hgap : GapAtLeast (epsSH D.R) lam' ((D.R.r : ℝ) ^ 19 / 2)`. Rewrite using `[hlam, ← heps]`.
+
+Conclude with `(hν ν hq).2.2.1`. Establish `hDS : (⟨A.H, A.σ⟩ : Rep D.R.k D.R.rS).IsDS (epsSH D.R) lam'` using `⟨hA.1, hA.2.1⟩`. Establish `hU` using `(GlobalTheory.T.local_data_both_amplitude_sides D τ w w' θ W lam' A hθ hv hTT hW hA).1`. Take `⟨l, b1, e1⟩` from `exists_bessel_scale_gap hH hc s1 ⟨A.H, A.σ⟩ hDS hU hgap hok`. Take `⟨l', b2, e2⟩` from `exists_bessel_scale_gap hH hc s2 ⟨A.H, A.σ⟩ hDS hU hgap hok`.
+
+Take `⟨k1, k2, w0, η, hw0, hη, hJ⟩` from `GlobalTheory.T.amplitude_eq_smul_normalisedAmplitude_largeGap hH D τ w w' θ W lam' A _ l l' hθ hkg hT hT' hW hA hgap hok b1 b2 e1 e2`. Establish `hw0' : w0 ≠ 0`. Take `⟨P, -, h1, -⟩` from `hw0`. Introduce and unpack `rfl`. Simplify using `at h1`.
+
+Take `⟨d1, d2⟩` from `hdeg lam' A hA ⟨_, hgap, hok⟩ w0 hw0'`. Establish `hd : 0 < PI.BesselPeriodGGP.fdegH W.μG A.σ w0`. Rewrite `d2` using `[d1]`. Conclude with `(mul_pos_iff_of_pos_left hκ).1 d2`. Rewrite `e1`, `e2` using `[hN]`.
+
+Establish `key` using `hnorm ⟨A.H, A.σ⟩ lam' _ l l' w0 hDS hgap hok hcell e1 e2 k1 k2 hw0`. Establish `h5` using `lintegral_weight_smul hk hsec (J := A.J W.μG) (J' := amp (⟨A.H, A.σ⟩ : Rep D.R.k D.R.rS) l l' w0 W.μG) (η := η) fun γ hγ => hJ W.μG γ hγ hG.2.2.1`. Unfold `MMv`. Rewrite using `[← t1, ← t2, h5]`. Use `(congrArg _ key).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← ENNReal.ofReal_mul (sq_nonneg _), hη, mul_pow, Real.sq_sqrt (by positivity), d1]`. Use `congr 1`. Use `show _ * (c / PI.BesselPeriodGGP.fdegH W.μG A.σ w0 ^ 3) = _`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem norm_eq_const_div_deg_gap : GlobalTheory.GapIn.Hyp → GlobalTheory.GapIn.AmpKF0 → CellConv → ∀ Cg cb Cu cT CT C0 C1 Cn : ℝ, ∃ m₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl : ℝ), 1000 ≤ Cl → Big D large₂ Cl m₀ → cdScaleTie D → HypZ D large₂ C' Cl Cg cb Cu cT CT C0 → ∀ τ w w', HypTT D w w' → ∀ θ, normWin D large₂ C1 θ → ∀ W, GoodW D τ w w' θ W → ∀ μsec, IsSection D.R.k D.R.rS W.z W.z' μsec → ∃ K : ℝ, 0 < K ∧ ∀ lam', l1dist lam' (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3 → ∀ A : LocS W, GoodS D lam' A → MMv D w w' A μsec = ENNReal.ofReal (K / A.deg) := by
   intro hH hKF hCC Cg cb Cu cT CT C0 C1 Cn
   refine ⟨Cn, fun D large₂ C' Cl hCl hBig hcd hZ τ w w' hTT θ hθw W hW μsec hsec => ?_⟩

@@ -33,6 +33,13 @@ def ClosePart {M : Man e} (F : An M ι N) : Prop := InSPart M fun u s l C σ => 
   (M.r σ x ≤ l → F.phS u s σ x ≤ F.ph u σ x + C * ‖u‖ * Real.exp (-l / 3) + C * ‖u‖ * (Real.log l / l)) ∧
     F.phS u s σ x ≤ F.ph u σ x + C * ‖u‖ * Real.exp (-l / 3) + C * ‖u‖ * (Real.log l / l) * M.r σ x
 
+/- English proof (translation)
+Take `⟨s₁, hs₁, C₁, h₁⟩` from `h₁`. Take `⟨s₂, hs₂, C₂, h₂⟩` from `h₂`. Take `⟨s₃, hs₃, C₃, h₃⟩` from `h₃`. Use `⟨min (min s₁ s₂) s₃, lt_min (lt_min hs₁ hs₂) hs₃, max (max C₁ C₂) C₃, fun u hu s hs hs' l hl σ => ?_⟩` and prove the remaining obligations. Establish `a₁ : s ≤ s₁` using `hs'.trans ((min_le_left _ _).trans (min_le_left _ _))`.
+
+Establish `a₂ : s ≤ s₂` using `hs'.trans ((min_le_left _ _).trans (min_le_right _ _))`. Establish `a₃ : s ≤ s₃` using `hs'.trans (min_le_right _ _)`. Establish `b₁ : C₁ ≤ max (max C₁ C₂) C₃` using `(le_max_left _ _).trans (le_max_left _ _)`. Establish `b₂ : C₂ ≤ max (max C₁ C₂) C₃` using `(le_max_right _ _).trans (le_max_left _ _)`. Establish `b₃ : C₃ ≤ max (max C₁ C₂) C₃` using `le_max_right _ _`.
+
+Take `⟨k₁, k₂⟩` from `h₁ _ b₁ u hu s hs a₁ l hl σ`. Use `⟨k₁, k₂, fun x => ⟨(h₂ _ b₂ u hu s hs a₂ l hl σ x).1, fun hx => ⟨(h₂ _ b₂ u hu s hs a₂ l hl σ x).2 hx, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `h₃ _ b₃ u hu s hs a₃ l hl σ x hx`.
+-/
 theorem inS_of_parts {M : Man e} (F : An M ι N) (h₁ : CurvPart F) (h₂ : BdPart F) (h₃ : ClosePart F) : F.InS := by
   obtain ⟨s₁, hs₁, C₁, h₁⟩ := h₁
   obtain ⟨s₂, hs₂, C₂, h₂⟩ := h₂

@@ -11,6 +11,15 @@ open NumberField NumberField.Units NumberField.Units.dirichletUnitTheorem Global
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Cones
 
+/- English proof (translation)
+Introduce `F _ _ 𝔣 h𝔣`. Use `haveI : Finite (𝓞 F ⧸ 𝔣) := Ideal.finiteQuotientOfFreeOfNeBot 𝔣 h𝔣`. Establish `hpos : 0 < Nat.card (𝓞 F ⧸ 𝔣)ˣ` using `Nat.card_pos`. Use `⟨2 * Nat.card (𝓞 F ⧸ 𝔣)ˣ, by omega, fun u => ⟨?_, fun σ => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (Units.map (Ideal.Quotient.mk 𝔣 : 𝓞 F →* 𝓞 F ⧸ 𝔣) u) ^ (2 * Nat.card (𝓞 F ⧸ 𝔣)ˣ) = 1`.
+
+Rewrite using `[mul_comm, pow_mul, pow_card_eq_one', one_pow]`. Establish `h2 : Ideal.Quotient.mk 𝔣 ((u ^ (2 * Nat.card (𝓞 F ⧸ 𝔣)ˣ) : (𝓞 F)ˣ) : 𝓞 F) = Ideal.Quotient.mk 𝔣 1`. Establish `h3` using `congrArg (fun z : (𝓞 F ⧸ 𝔣)ˣ => (z : 𝓞 F ⧸ 𝔣)) h1`. Simplify using `using h3`. Conclude with `Ideal.Quotient.eq.mp h2`.
+
+Establish `hne : σ (((u : 𝓞 F)) : F) ≠ 0`. Rewrite using `[Ne, map_eq_zero]`. Simplify using the standard rewrite rules. Establish `h : (((u ^ (2 * Nat.card (𝓞 F ⧸ 𝔣)ˣ) : (𝓞 F)ˣ) : 𝓞 F) : F) = (((u : 𝓞 F)) : F) ^ (2 * Nat.card (𝓞 F ⧸ 𝔣)ˣ)`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h, map_pow, pow_mul]`. Conclude with `pow_pos (by positivity) _`.
+-/
 theorem exists_pow_mem_congUnits : ∀ (F : Type) [Field F] [NumberField F] (𝔣 : Ideal (𝓞 F)), 𝔣 ≠ ⊥ →
     ∃ e : ℕ, 0 < e ∧ ∀ u : (𝓞 F)ˣ, u ^ e ∈ congUnits 𝔣 := by
   intro F _ _ 𝔣 h𝔣

@@ -11,6 +11,15 @@ noncomputable section
 
 namespace GlobalTheory.PureStabOne
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT v g hg h hh f φ hSB hvac`. Establish `hpair` using `GlobalTheory.ThK.Inhab.pairV' hT`. Take `⟨φ₁, ⟨hφ₁SB, hAct⟩, -⟩` from `((GlobalTheory.T.theta_action_exists hP) F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hpair v).1 g hg h hh (φ v) (hSB v)`. Establish `hstd : ∀ᶠ w in Filter.cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `by filter_upwards [hvac, hT.geo.hM'.std] with w h1 h2`. Rewrite using `[h1, h2]`.
+
+Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hstd`. Use `⟨Function.update φ v φ₁, fun w => ?_, fun w hw => Function.update_of_ne hw _ _, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`.
+
+Conclude with `hφ₁SB`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hSB w`. Rewrite using `[Function.update_self]`. Conclude with `hAct`.
+
+Establish `e1 : pure f φ = tens (evFin F v) (φ v) r` using `by rw [hrt, Function.update_eq_self]`. Establish `hRest : Rest (evFin F v) (φ v) r` using `⟨hr, by rw [← e1]; exact GlobalTheory.TensUniq.pure_mem_schA f φ hSB hstd⟩`. Rewrite using `[e1, hAct r hRest, hrt]`.
+-/
 theorem pure_stab_one : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), ∀ g ∈ UAt σ G.V' (evFin F v), ∀ h ∈ UAt σ G.W (evFin F v),

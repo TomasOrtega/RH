@@ -9,6 +9,9 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
 open ReciprocityTheory.ChartRestriction.G.Geo MvPolynomial TensorProduct
 
+/- English proof (translation)
+Use `haveI : Algebra.FormallyUnramified ℚ E := Algebra.FormallyUnramified.of_isSeparable ℚ E`. Use `haveI : IsReduced (Ω ⊗[ℚ] E) := Algebra.FormallyUnramified.isReduced_of_field Ω (Ω ⊗[ℚ] E)`. Conclude with `isReduced_of_injective (Algebra.TensorProduct.comm ℚ E Ω).toRingHom (Algebra.TensorProduct.comm ℚ E Ω).injective`.
+-/
 theorem isReduced_tensor_finite (Ω E : Type*) [Field Ω] [CharZero Ω] [Field E] [Algebra ℚ E]
     [FiniteDimensional ℚ E] : IsReduced (E ⊗[ℚ] Ω) := by
   haveI : Algebra.FormallyUnramified ℚ E := Algebra.FormallyUnramified.of_isSeparable ℚ E
@@ -16,6 +19,15 @@ theorem isReduced_tensor_finite (Ω E : Type*) [Field Ω] [CharZero Ω] [Field E
   exact isReduced_of_injective (Algebra.TensorProduct.comm ℚ E Ω).toRingHom
     (Algebra.TensorProduct.comm ℚ E Ω).injective
 
+/- English proof (translation)
+Set `W` to `Submodule.span ℚ (Set.range s)`. Set `𝒞 : Module.Basis (Fin r) ℚ W` to `Module.Basis.span hs`. Establish `hinj : Function.Injective (LinearMap.lTensor E W.subtype)` using `Module.Flat.lTensor_preserves_injective_linearMap W.subtype Subtype.val_injective`. Establish `h0 : (∑ k, e k ⊗ₜ[ℚ] 𝒞 k : E ⊗[ℚ] W) = 0`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[map_sum, map_zero]`. Establish `hc : ∀ k, ((𝒞 k : W) : Ω) = s k` using `fun k => by show ((Module.Basis.span hs k : W) : Ω) = s k`. Rewrite using `[Module.Basis.span_apply]`. Simplify using `only [LinearMap.lTensor_tmul, Submodule.subtype_apply, hc]`. Conclude with `h`.
+
+Establish `hb` using `TensorProduct.sum_tmul_basis_right_eq_zero 𝒞 (Finsupp.equivFunOnFinite.symm e) (by`. Rewrite using `[Finsupp.sum_fintype _ _ (by intros; simp)]`. Simplify using `using h0)`. Use function extensionality and compare the values at `k`. Establish `hk` using `congrArg (fun b => b k) hb`.
+
+Simplify using `using hk`.
+-/
 theorem eq_zero_of_sum_tmul {Ω E : Type*} [Field Ω] [CharZero Ω] [Field E] [Algebra ℚ E] {r : ℕ}
     {s : Fin r → Ω} (hs : LinearIndependent ℚ s) {e : Fin r → E}
     (h : ∑ k, e k ⊗ₜ[ℚ] s k = 0) : e = 0 := by
@@ -39,6 +51,25 @@ theorem eq_zero_of_sum_tmul {Ω E : Type*} [Field Ω] [CharZero Ω] [Field E] [A
   have hk := congrArg (fun b => b k) hb
   simpa using hk
 
+/- English proof (translation)
+Set `A : Subalgebra ℚ ℂ` to `Algebra.adjoin ℚ ((Finset.univ.image c : Finset ℂ) : Set ℂ)`. Use `haveI : Algebra.FiniteType ℚ A := (Subalgebra.fg_iff_finiteType A).1 (Subalgebra.fg_adjoin_finset _)`. Use `haveI : IsJacobsonRing A := isJacobsonRing_of_finiteType (A := ℚ) (B := A)`. Establish `hcA : ∀ k, c k ∈ A` using `fun k => Algebra.subset_adjoin (by simp)`. Set `cA : Fin r → A` to `fun k => ⟨c k, hcA k⟩`.
+
+Set `tA : A ⊗[ℚ] Ω` to `∑ k, cA k ⊗ₜ[ℚ] s k`. Set `ι : A ⊗[ℚ] Ω →ₐ[ℚ] ℂ ⊗[ℚ] Ω` to `Algebra.TensorProduct.map A.val (AlgHom.id ℚ Ω)`. Establish `hι : Function.Injective ι`. Establish `hinj` using `Module.Flat.rTensor_preserves_injective_linearMap (M := Ω) (A.val.toLinearMap) Subtype.val_injective`. Establish `heq : ∀ x, ι x = LinearMap.rTensor Ω A.val.toLinearMap x`.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [ι, Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+
+Introduce `x y hxy`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← heq, ← heq, hxy]`. Establish `hιt : ι tA = ∑ k, c k ⊗ₜ[ℚ] s k`. Simplify using `[tA, ι, map_sum, Algebra.TensorProduct.map_tmul, cA]`.
+
+Establish `hnA : IsNilpotent tA`. Take `⟨m, hm⟩` from `h`. Use `⟨m, hι ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hιt, hm, map_zero]`. Establish `key : ∀ (E : Type) [Field E] [Algebra ℚ E] [FiniteDimensional ℚ E] (φ : A →ₐ[ℚ] E), ∀ k, φ (cA k) = 0`.
+
+Introduce `E _ _ _ φ`. Set `π : A ⊗[ℚ] Ω →ₐ[ℚ] E ⊗[ℚ] Ω` to `Algebra.TensorProduct.map φ (AlgHom.id ℚ Ω)`. Use `haveI : IsReduced (E ⊗[ℚ] Ω) := isReduced_tensor_finite Ω E`. Establish `h0 : π tA = 0` using `(hnA.map π).eq_zero`. Establish `h1 : ∑ k, φ (cA k) ⊗ₜ[ℚ] s k = 0`.
+
+Rewrite using `[← h0]`. Simplify using `[tA, π, map_sum, Algebra.TensorProduct.map_tmul]`. Conclude with `congrFun (eq_zero_of_sum_tmul hs h1)`. Establish `hmax : ∀ M : Ideal A, M.IsMaximal → ∀ k, cA k ∈ M`. Introduce `M hM k`.
+
+Use `letI hF : Field (A ⧸ M) := Ideal.Quotient.field M`. Use `haveI : Algebra.FiniteType ℚ (A ⧸ M) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℚ M) Ideal.Quotient.mk_surjective`. Use `haveI : Module.Finite ℚ (A ⧸ M) := finite_of_finite_type_of_isJacobsonRing ℚ (A ⧸ M)`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (key (A ⧸ M) (Ideal.Quotient.mkₐ ℚ M) k)`. Establish `hjac : (⊥ : Ideal A).jacobson = ⊥` using `IsJacobsonRing.out inferInstance Ideal.bot_prime.isRadical`.
+
+Use function extensionality and compare the values at `k`. Establish `hk : cA k ∈ (⊥ : Ideal A).jacobson` using `Ideal.mem_sInf.2 (fun J hJ => hmax J hJ.2 k)`. Rewrite `hk` using `[hjac]`. Establish `h0 : cA k = 0` using `(Submodule.mem_bot _).1 hk`. Conclude with `congrArg Subtype.val h0`.
+-/
 theorem nilp_coeff_eq_zero {Ω : Type} [Field Ω] [CharZero Ω] {r : ℕ} {s : Fin r → Ω}
     (hs : LinearIndependent ℚ s) {c : Fin r → ℂ}
     (h : IsNilpotent (∑ k, c k ⊗ₜ[ℚ] s k : ℂ ⊗[ℚ] Ω)) : c = 0 := by
@@ -96,6 +127,9 @@ section Poly
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] {J : Type} [Fintype J]
 
+/- English proof (translation)
+Establish `h0 : (aeval fun i => Polynomial.C (x i) * Polynomial.X : MvPolynomial J ℤ →ₐ[ℤ] Polynomial Ω) f = 0` using `RingHom.mem_ker.1 hf`. Establish `h1` using `MvPolynomial.comp_aeval_apply (fun i => Polynomial.C (x i) * Polynomial.X) ((Polynomial.aeval (1 : Ω)).restrictScalars ℤ) f`. Rewrite `h1` using `[h0, map_zero]`. Simplify using `using h1.symm`.
+-/
 theorem aeval_eq_zero_of_mem_coordIdeal {x : J → Ω} {f : MvPolynomial J ℤ}
     (hf : f ∈ coordIdeal ℤ x) : aeval x f = 0 := by
   have h0 : (aeval fun i => Polynomial.C (x i) * Polynomial.X : MvPolynomial J ℤ →ₐ[ℤ] Polynomial Ω) f = 0 :=
@@ -108,6 +142,9 @@ theorem aeval_eq_zero_of_mem_coordIdeal {x : J → Ω} {f : MvPolynomial J ℤ}
 def evalT (x : J → Ω) : MvPolynomial J ℂ →ₐ[ℂ] ℂ ⊗[ℚ] Ω :=
   aeval fun j => (1 : ℂ) ⊗ₜ[ℚ] x j
 
+/- English proof (translation)
+Unfold `evalT`. Rewrite using `[MvPolynomial.aeval_map_algebraMap]`. Establish `h` using `MvPolynomial.comp_aeval_apply x (Algebra.TensorProduct.includeRight : Ω →ₐ[ℚ] ℂ ⊗[ℚ] Ω) b`. Simplify `h.symm` using `[Algebra.TensorProduct.includeRight_apply]`.
+-/
 theorem evalT_map_rat (x : J → Ω) (b : MvPolynomial J ℚ) :
     evalT x (map (algebraMap ℚ ℂ) b) = (1 : ℂ) ⊗ₜ[ℚ] aeval x b := by
   unfold evalT
@@ -115,6 +152,9 @@ theorem evalT_map_rat (x : J → Ω) (b : MvPolynomial J ℚ) :
   have h := MvPolynomial.comp_aeval_apply x (Algebra.TensorProduct.includeRight : Ω →ₐ[ℚ] ℂ ⊗[ℚ] Ω) b
   simpa [Algebra.TensorProduct.includeRight_apply] using h.symm
 
+/- English proof (translation)
+Unfold `evalT`. Rewrite using `[← algebraMap_int_eq, MvPolynomial.aeval_map_algebraMap]`. Establish `h` using `MvPolynomial.comp_aeval_apply x ((Algebra.TensorProduct.includeRight : Ω →ₐ[ℚ] ℂ ⊗[ℚ] Ω).restrictScalars ℤ) f`. Simplify `h.symm` using `[Algebra.TensorProduct.includeRight_apply]`.
+-/
 theorem evalT_map_int (x : J → Ω) (f : MvPolynomial J ℤ) :
     evalT x (map (Int.castRingHom ℂ) f) = (1 : ℂ) ⊗ₜ[ℚ] aeval x f := by
   unfold evalT
@@ -123,6 +163,21 @@ theorem evalT_map_int (x : J → Ω) (f : MvPolynomial J ℤ) :
     ((Algebra.TensorProduct.includeRight : Ω →ₐ[ℚ] ℂ ⊗[ℚ] Ω).restrictScalars ℤ) f
   simpa [Algebra.TensorProduct.includeRight_apply] using h.symm
 
+/- English proof (translation)
+Use `set I : Ideal (MvPolynomial J ℂ) := Ideal.map (MvPolynomial.map (Int.castRingHom ℂ)) (coordIdeal ℤ x) with hI`. Use `set P : MvPolynomial J ℂ := ∑ k, MvPolynomial.C (c k) * MvPolynomial.map (algebraMap ℚ ℂ) (b k) with hP`. Establish `hPmem : P ∈ MvPolynomial.vanishingIdeal ℂ (MvPolynomial.zeroLocus ℂ I)`. Rewrite using `[MvPolynomial.mem_vanishingIdeal_iff]`. Introduce `z hz`.
+
+Rewrite `hz` using `[MvPolynomial.mem_zeroLocus_iff]`. Establish `hz' : ∀ f ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) f) = 0`. Introduce `f hf`. Establish `hf'` using `hz _ (Ideal.mem_map_of_mem _ hf)`. Conclude with `hf'`.
+
+Establish `hsum` using `h z hz'`. Express the relevant statement in the definitionally equal form `eval z P = 0`. Rewrite using `[hP, map_sum]`. Simplify `hsum` using `[secFun]`. Rewrite `hPmem` using `[MvPolynomial.vanishingIdeal_zeroLocus_eq_radical]`.
+
+Take `⟨n, hn⟩` from `hPmem`. Establish `hker : I ≤ RingHom.ker (evalT x : MvPolynomial J ℂ →+* ℂ ⊗[ℚ] Ω)`. Rewrite using `[hI, Ideal.map_le_iff_le_comap]`. Introduce `f hf`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`.
+
+Express the relevant statement in the definitionally equal form `evalT x (map (Int.castRingHom ℂ) f) = 0`. Rewrite using `[evalT_map_int, aeval_eq_zero_of_mem_coordIdeal hf, TensorProduct.tmul_zero]`. Establish `hnil : IsNilpotent (evalT x P)` using `⟨n, by`. Rewrite using `[← map_pow]`. Conclude with `hker hn⟩`.
+
+Establish `hev : evalT x P = ∑ k, c k ⊗ₜ[ℚ] aeval x (b k)`. Rewrite using `[hP, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, evalT_map_rat, ← MvPolynomial.algebraMap_eq, AlgHom.commutes, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Simplify using the standard rewrite rules.
+
+Rewrite `hnil` using `[hev]`. Conclude with `nilp_coeff_eq_zero hs hnil`.
+-/
 theorem coeff_eq_zero_of_vanish {x : J → Ω} {r : ℕ} {b : Fin r → MvPolynomial J ℚ}
     (hs : LinearIndependent ℚ fun k => aeval x (b k)) {c : Fin r → ℂ}
     (h : ∀ z : J → ℂ, (∀ f ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) f) = 0) →

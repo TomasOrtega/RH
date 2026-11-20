@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, map_mul]`. Establish `hk : A.valuation (k : Ω) ≤ 1`. Simplify using `using A.valuation_le_one (k : A)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem val_dvd {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m n : ℕ} (h : m ∣ n)
     (hA : A.valuation (m : Ω) < 1) : A.valuation (n : Ω) < 1 := by
   obtain ⟨k, rfl⟩ := h
@@ -13,6 +16,11 @@ private theorem val_dvd {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m n : 
   calc A.valuation (m : Ω) * A.valuation (k : Ω) ≤ A.valuation (m : Ω) * 1 := mul_le_mul' le_rfl hk
     _ < 1 := by rwa [mul_one]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp at hA`. Consider the case `insert a S ha ih`. Rewrite `hA` using `[Finset.prod_insert ha, Nat.cast_mul, map_mul]`. Distinguish the cases in `hp : A.valuation (a : Ω) < 1`.
+
+Conclude with `⟨a, Finset.mem_insert_self a S, hp⟩`. Establish `h1 : A.valuation (a : Ω) = 1` using `le_antisymm (by simpa using A.valuation_le_one (a : A)) (not_lt.mp hp)`. Rewrite `hA` using `[h1, one_mul]`. Take `⟨p, hpS, hp'⟩` from `ih hA`. Conclude with `⟨p, Finset.mem_insert_of_mem hpS, hp'⟩`.
+-/
 private theorem val_prod {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (S : Finset ℕ)
     (hA : A.valuation ((∏ p ∈ S, p : ℕ) : Ω) < 1) : ∃ p ∈ S, A.valuation (p : Ω) < 1 := by
   classical
@@ -28,6 +36,29 @@ private theorem val_prod {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (S : F
       obtain ⟨p, hpS, hp'⟩ := ih hA
       exact ⟨p, Finset.mem_insert_of_mem hpS, hp'⟩
 
+/- English proof (translation)
+Use `haveI := c.dvr`. Use `haveI := c.fin`. Establish `hcls` using `Chr.clsFacts ℚ Ω N`. Establish `hker : (Chr.cls ℚ Ω N).ker ≤ (Chr.dirG ℚ Ω ψ).ker`. Introduce `g hg`.
+
+Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`. Simplify using `[Chr.dirG, hg]`. Establish `hopen : IsOpen ((Chr.dirG ℚ Ω ψ).ker : Set (G ℚ Ω))` using `Subgroup.isOpen_mono hker hcls.1`. Establish `hpow : Chr.dirG ℚ Ω ψ ^ (Fintype.card (ZMod N)ˣ) = 1`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations.
+
+Rewrite using `[MonoidHom.pow_apply, MonoidHom.one_apply, Chr.dirG, MonoidHom.comp_apply, ← map_pow, pow_card_eq_one, map_one]`. Establish `hint : ∀ (A : ValuationSubring Ω) (x : Ω) (z : ℤ), A.valuation x < 1 → A.valuation (x * (z : Ω)) < 1`. Introduce `A x z hx`. Rewrite using `[map_mul]`. Establish `hz : A.valuation (z : Ω) ≤ 1` using `by simpa using A.valuation_le_one (z : A)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `show Chr.VS l (l * N) e (Chr.dirG ℚ Ω ψ) ≤ Chr.VS l (∏ p ∈ S, p) e (Chr.dirG ℚ Ω ψ)`. Unfold `Chr.VS`. Use `Module.length_le_of_injective (Submodule.inclusion ?_) (Submodule.inclusion_injective _)` and prove the remaining obligations. Introduce `x hx`.
+
+Simplify using `only [Base.ShaU, Base.mem_locSel] at hx ⊢`. Introduce `D hD`. Break down `hD with ⟨A, hAS, rfl⟩ | ⟨A, rfl⟩` into its components or cases. Take `⟨p, hpS, hp⟩` from `val_prod A S hAS`. Distinguish the cases in `hdvd : p ∣ l * N`.
+
+Conclude with `hx (Dec A) (Or.inl ⟨A, val_dvd A hdvd hp, rfl⟩)`. Establish `pp` using `hS p hpS`. Establish `hpl : p ≠ l`. Introduce and unpack `rfl`. Conclude with `hdvd (dvd_mul_right p N)`.
+
+Establish `hpN : ¬ p ∣ N` using `fun h' => hdvd (dvd_mul_of_dvd_right h' l)`. Establish `hN : ¬ A.valuation (N : Ω) < 1`. Introduce `hN`. Establish `hcop : Nat.gcd p N = 1` using `((Nat.Prime.coprime_iff_not_dvd pp).2 hpN)`. Establish `hb` using `Nat.gcd_eq_gcd_ab p N`.
+
+Rewrite `hb` using `[hcop]`. Establish `h1 : (1 : Ω) = (p : Ω) * (Nat.gcdA p N : Ω) + (N : Ω) * (Nat.gcdB p N : Ω)`. Use `congrArg (fun z : ℤ => (z : Ω)) hb` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+
+Establish `hsum` using `Valuation.map_add_lt A.valuation (hint A _ (Nat.gcdA p N) hp) (hint A _ (Nat.gcdB p N) hN)`. Rewrite `hsum` using `[← h1, map_one]`. Conclude with `lt_irrefl _ hsum`. Establish `hIne : Ine A ≤ (Chr.dirG ℚ Ω ψ).ker` using `le_trans (hcls.2.2.2.2 A hN) hker`. Establish `hU : (⊤ : Subgroup (G ℚ Ω)) ⊓ Ine A ≤ ⊤ ⊓ Dec A` using `inf_le_inf_left _ (Ine_le_Dec A)`.
+
+Establish `hinj` using `(Chr.locUnr Ω l c.O e (Fintype.card (ZMod N)ˣ) (Chr.dirG ℚ Ω ψ) he Fintype.card_ne_zero hopen hpow p A pp hpl hp (⊤ ⊓ Ine A) (⊤ ⊓ Dec A) hU (top_inf_eq _) (top_inf_eq _)).2 (inf_le_right.trans hIne)`. Establish `h0` using `hx (Ine A) (Or.inr ⟨A, rfl⟩)`. Establish `h2 : Base.resU (Chr.rho l e (Chr.dirG ℚ Ω ψ)) hU (Base.resU (Chr.rho l e (Chr.dirG ℚ Ω ψ)) (inf_le_left : ⊤ ⊓ Dec A ≤ ⊤) x) = 0`. Rewrite using `[Base.resU_resU]`. Conclude with `h0`.
+
+Conclude with `hinj (h2.trans (map_zero _).symm)`. Conclude with `hx (Ine A) (Or.inr ⟨A, rfl⟩)`.
+-/
 private theorem vlen_le (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (c : Coef l)
     (N : ℕ) [NeZero N] (e : ℕ) (he : e ≠ 0) (ψ : DirichletCharacter c.O N) (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
     Vlen Ω c e ψ ≤ Chr.VS l (∏ p ∈ S, p) e (Chr.dirG ℚ Ω ψ) := by
@@ -92,6 +123,11 @@ private theorem vlen_le (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
       exact hinj (h2.trans (map_zero _).symm)
   · exact hx (Ine A) (Or.inr ⟨A, rfl⟩)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ h t _ l _ c e _ he _ ψ _ D hD hA`. Establish `key : ∀ {n' p₁ m₀ : ℕ}, Aut.OfChar D e ψ n' p₁ m₀ → Vlen Ω c e ψ ≤ D.sha`. Introduce `n' p₁ m₀ hc`. Unfold `Raw.sha`. Rewrite using `[hc.e_eq, hc.psi]`.
+
+Conclude with `vlen_le Ω l c h.N e he.ne' ψ D.S hD.S_prime`. Break down `hA with ⟨_, hc⟩ | ⟨_, hc⟩` into its components or cases. Conclude with `key hc`. Conclude with `key hc`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.shaEq :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (h : Host) (t : ℕ), h.Big t → ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (e : ℕ), l ≠ 2 → 0 < e → e < t → ∀ ψ ∈ h.X c e, ∀ D : Raw Ω c, D.Good → Aut.OfCase D h e ψ → Vlen Ω c e ψ ≤ D.sha := by
   intro Ω _ _ _ h t _ l _ c e _ he _ ψ _ D hD hA

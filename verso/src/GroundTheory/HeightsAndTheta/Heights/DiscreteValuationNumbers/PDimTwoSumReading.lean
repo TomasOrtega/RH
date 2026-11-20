@@ -14,6 +14,11 @@ namespace DimTwoSumReading
 
 variable {A : Type*} [CommRing A]
 
+/- English proof (translation)
+Establish `h` using `length_localizedModule_quot_eq (T := Localization.AtPrime W) W.primeCompl ⊥ a (fun s hs => IsLocalization.map_units _ (⟨s, hs⟩ : W.primeCompl)) (fun y => by`. Take `⟨⟨r, s⟩, hy⟩` from `IsLocalization.surj W.primeCompl y`. Conclude with `⟨r, s, s.2, hy.symm⟩)`. Use the proof step `(fun r hr => by`. Take `⟨s, hs⟩` from `(IsLocalization.map_eq_zero_iff W.primeCompl _ r).mp hr`.
+
+Conclude with `⟨s, s.2, (Ideal.mem_bot).mpr hs⟩)`. Use the proof step `(fun v hv => by rw [(Ideal.mem_bot).mp hv, map_zero])`. Rewrite `h` using `[bot_sup_eq]`. Conclude with `h`.
+-/
 theorem length_loc_eq_ordLoc (W : Ideal A) [hW : W.IsPrime] (a : A) :
     Module.length (Localization.AtPrime W) (LocalizedModule W.primeCompl (A ⧸ Ideal.span {a})) =
       ordLoc ⟨W, hW⟩ a := by
@@ -29,6 +34,11 @@ theorem length_loc_eq_ordLoc (W : Ideal A) [hW : W.IsPrime] (a : A) :
   rw [bot_sup_eq] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `length_localizedModule_quot_eq (T := A ⧸ W) (maximalIdeal A).primeCompl W b (fun s hs => (notMem_maximalIdeal.mp hs).map _) (fun y => by`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨r, 1, (maximalIdeal A).primeCompl.one_mem, by simp⟩)`. Use the proof step `(fun r hr => ⟨1, (maximalIdeal A).primeCompl.one_mem, by`. Rewrite using `[one_mul]`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp hr⟩)`. Use the proof step `(fun v hv => Ideal.Quotient.eq_zero_iff_mem.mpr hv)`. Rewrite using `[h, ordMod, Ring.ord, Ideal.Quotient.algebraMap_eq]`.
+-/
 theorem length_max_eq_ordMod [IsLocalRing A] (W : Ideal A) [hW : W.IsPrime] (b : A) :
     Module.length (Localization.AtPrime (maximalIdeal A))
         (LocalizedModule (maximalIdeal A).primeCompl (A ⧸ (W ⊔ Ideal.span {b}))) =
@@ -45,6 +55,15 @@ theorem length_max_eq_ordMod [IsLocalRing A] (W : Ideal A) [hW : W.IsPrime] (b :
 
 variable [IsDomain A] [IsNoetherianRing A]
 
+/- English proof (translation)
+Establish `: (⊥ : Ideal A).IsPrime` using `Ideal.isPrime_bot`. Prove the components needed by the constructor for the conclusion. Introduce `hW`. Establish `haW : a ∈ W` using `hW.1.2 (Ideal.subset_span rfl)`. Establish `h1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes (Ideal.span {a}) W hW`.
+
+Establish `h0 : W.height ≠ 0` using `fun h => ha ((Ideal.mem_bot).mp (Ideal.height_eq_zero_iff_eq_bot.mp h ▸ haW))`. Conclude with `⟨le_antisymm h1 (Order.one_le_iff_ne_zero.mpr h0), haW⟩`. Introduce and unpack `⟨h1, haW⟩`. Take `⟨Q, hQ, hQW⟩` from `Ideal.exists_minimalPrimes_le (I := Ideal.span {a}) (J := W) ((Ideal.span_singleton_le_iff_mem W).mpr haW)`. Break down `hQW.lt_or_eq with hlt | rfl` into its components or cases.
+
+Use `hQ.1.1` as an intermediate fact. Establish `haQ : a ∈ Q` using `hQ.1.2 (Ideal.subset_span rfl)`. Establish `hbQ : ⊥ < Q` using `bot_lt_iff_ne_bot.mpr fun h => ha ((Ideal.mem_bot).mp (h ▸ haQ))`. Establish `e1` using `Ideal.height_add_one_le_of_lt_of_isPrime hbQ`. Establish `e2` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`.
+
+Rewrite `e1` using `[Ideal.height_bot, zero_add]`. Rewrite `e2` using `[h1]`. Establish `: (1 : ℕ∞) + 1 ≤ 1` using `le_trans (add_le_add e1 le_rfl) e2`. Conclude with `absurd this (by decide)`. Conclude with `hQ`.
+-/
 theorem mem_minimalPrimes_iff {a : A} (ha : a ≠ 0) (W : Ideal A) [W.IsPrime] :
     W ∈ (Ideal.span {a}).minimalPrimes ↔ W.height = 1 ∧ a ∈ W := by
   have : (⊥ : Ideal A).IsPrime := Ideal.isPrime_bot
@@ -71,6 +90,13 @@ theorem mem_minimalPrimes_iff {a : A} (ha : a ≠ 0) (W : Ideal A) [W.IsPrime] :
 
 omit [IsDomain A] [IsNoetherianRing A] in
 
+/- English proof (translation)
+Establish `hle : W ⊔ Ideal.span {b} ≤ maximalIdeal A` using `sup_le (le_maximalIdeal hW.ne_top) ((Ideal.span_singleton_le_iff_mem _).mpr hbm)`. Use `⟨⟨(maximalIdeal.isMaximal A).isPrime, hle⟩, fun Q hQ hQm => ?_⟩` and prove the remaining obligations. Use `hQ.1` as an intermediate fact. Assume the negation of the conclusion as `hne`. Establish `hlt : Q < maximalIdeal A` using `lt_of_le_of_ne hQm fun h => hne (h ▸ le_rfl)`.
+
+Establish `hWQ : W < Q` using `lt_of_le_of_ne (le_sup_left.trans hQ.2) fun h => hbW (h ▸ hQ.2 (Ideal.mem_sup_right (Ideal.subset_span rfl)))`. Establish `e1` using `Ideal.height_add_one_le_of_lt_of_isPrime hWQ`. Establish `e2` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`. Establish `hm` using `maximalIdeal_height_eq_ringKrullDim (R := A)`. Rewrite `hm` using `[h2, show (2 : WithBot ℕ∞) = ((2 : ℕ∞) : WithBot ℕ∞) from rfl]`.
+
+Rewrite `e2` using `[WithBot.coe_injective hm]`. Rewrite `e1` using `[h1]`. Establish `: (1 : ℕ∞) + 1 + 1 ≤ 2` using `le_trans (add_le_add e1 le_rfl) e2`. Conclude with `absurd this (by decide)`.
+-/
 theorem max_mem_minimalPrimes [IsLocalRing A] (h2 : ringKrullDim A = 2) (W : Ideal A) [hW : W.IsPrime]
     (h1 : W.height = 1) {b : A} (hbW : b ∉ W) (hbm : b ∈ maximalIdeal A) :
     maximalIdeal A ∈ (W ⊔ Ideal.span {b}).minimalPrimes := by
@@ -95,6 +121,27 @@ end DimTwoSumReading
 
 open DimTwoSumReading in
 
+/- English proof (translation)
+Introduce `A _ _ _ _ h2 a b ha hab`. Establish `hT : {p : PrimeSpectrum A | p.asIdeal.height = 1 ∧ a ∈ p.asIdeal}.Finite` using `((Ideal.finite_minimalPrimes_of_isNoetherianRing A (Ideal.span {a})).preimage (fun p _ q _ h => PrimeSpectrum.ext h)).subset (fun p hp => (mem_minimalPrimes_iff ha p.asIdeal).mpr hp)`. Establish `key : ∀ p : PrimeSpectrum A, p.asIdeal.height = 1 ∧ a ∈ p.asIdeal → (locCycle (Ideal.span {a}) p.asIdeal = ((ordLoc p a).toNat : ℤ) ∧ ordLoc p a ≠ ⊤) ∧ (locCycle (p.asIdeal ⊔ Ideal.span {b}) (maximalIdeal A) = ((ordMod p b).toNat : ℤ) ∧ ordMod p b ≠ ⊤)`. Introduce `p hp`. Establish `hmin` using `(mem_minimalPrimes_iff ha p.asIdeal).mpr hp`.
+
+Establish `hlA` using `length_loc_eq_ordLoc p.asIdeal a`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `locCycle`. Rewrite using `[dif_pos hmin]`. Conclude with `congrArg (fun x : ℕ∞ => (x.toNat : ℤ)) hlA`.
+
+Rewrite using `[← hlA]`. Conclude with `ReciprocityTheory.ChartRestriction.G.AI.I1.locLen_ne_top hmin`. Distinguish the cases in `hbm : b ∈ maximalIdeal A`. Establish `hmm` using `max_mem_minimalPrimes h2 p.asIdeal hp.1 (hab _ p.isPrime hp.1 hp.2) hbm`. Establish `hlB` using `length_max_eq_ordMod p.asIdeal b`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `locCycle`. Rewrite using `[dif_pos hmm]`. Conclude with `congrArg (fun x : ℕ∞ => (x.toNat : ℤ)) hlB`. Rewrite using `[← hlB]`.
+
+Conclude with `ReciprocityTheory.ChartRestriction.G.AI.I1.locLen_ne_top hmm`. Establish `h0 : ordMod p b = 0` using `Ring.ord_of_isUnit ((notMem_maximalIdeal.mp hbm).map _)`. Establish `hnm : maximalIdeal A ∉ (p.asIdeal ⊔ Ideal.span {b}).minimalPrimes` using `fun h => hbm (h.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl)))`. Rewrite using `[h0]`. Use `⟨?_, ENat.zero_ne_top⟩` and prove the remaining obligations.
+
+Unfold `locCycle`. Rewrite using `[dif_neg hnm]`. Both sides reduce to the same expression. Establish `hsupp : Function.support (fun W : Ideal A => locCycle (Ideal.span {a}) W * locCycle (W ⊔ Ideal.span {b}) (maximalIdeal A)) ⊆ (hT.toFinset.map ⟨PrimeSpectrum.asIdeal, by intro p q h; exact PrimeSpectrum.ext h⟩ : Finset (Ideal A))`. Introduce `W hW`.
+
+Establish `hne : locCycle (Ideal.span {a}) W ≠ 0` using `left_ne_zero_of_mul hW`. Establish `hmin : W ∈ (Ideal.span {a}).minimalPrimes`. Assume the negation of the conclusion as `h`. Conclude with `hne (by unfold locCycle; rw [dif_neg h])`. Use `hmin.1.1` as an intermediate fact.
+
+Rewrite using `[Finset.coe_map, Set.Finite.coe_toFinset]`. Conclude with `⟨⟨W, hmin.1.1⟩, (mem_minimalPrimes_iff ha W).mp hmin, rfl⟩`. Use `⟨∑ p ∈ hT.toFinset, (ordLoc p a).toNat * (ordMod p b).toNat, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_map]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hk` using `key p (hT.mem_toFinset.mp hp)`. Use `show locCycle (Ideal.span {a}) p.asIdeal * locCycle (p.asIdeal ⊔ Ideal.span {b}) (maximalIdeal A) = _`. Rewrite using `[hk.1.1, hk.2.1]`. Use `(finsum_mem_eq_finite_toFinset_sum (fun p => ordLoc p a * ordMod p b) hT).trans ?_` and prove the remaining obligations.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hk` using `key p (hT.mem_toFinset.mp hp)`. Rewrite using `[ENat.natCast_toNat hk.1.2, ENat.natCast_toNat hk.2.2]`.
+-/
 theorem DimTwoSumReading.proof : DimTwoSumReading.Statement := by
   intro A _ _ _ _ h2 a b ha hab
   classical

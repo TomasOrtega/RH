@@ -13,9 +13,15 @@ variable {LL D ι : Type} [Field LL] [AddCommGroup D] [Module LL D] [Fintype ι]
 def evK (i : ι) : (ι → LL) ⊗[LL] D →ₗ[LL] D :=
   (TensorProduct.lid LL D).toLinearMap ∘ₗ LinearMap.rTensor D (LinearMap.proj i)
 
+/- English proof (translation)
+Simplify using `[evK]`.
+-/
 theorem evaluation_tmul (i : ι) (b : ι → LL) (d : D) : evK i (b ⊗ₜ[LL] d) = b i • d := by
   simp [evK]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b d`. Rewrite using `[TensorProduct.smul_tmul', evaluation_tmul, evaluation_tmul, smul_eq_mul, Pi.mul_apply, mul_smul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`.
+-/
 theorem evaluation_smul (i : ι) (a : ι → LL) (z : (ι → LL) ⊗[LL] D) :
     evK i (a • z) = a i • evK i z := by
   induction z using TensorProduct.induction_on with
@@ -25,6 +31,11 @@ theorem evaluation_smul (i : ι) (a : ι → LL) (z : (ι → LL) ⊗[LL] D) :
       mul_smul]
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b d`. Establish `hb : ∑ i, b i • (Pi.single i (1 : LL) : ι → LL) = b`. Use extensionality with `j`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Repeatedly rewrite using `[evaluation_tmul, ← TensorProduct.smul_tmul, ← TensorProduct.sum_tmul, hb]`. Consider the case `add x y hx hy => conv_lhs => rw [hx, hy]`. Simplify using `only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib]`.
+-/
 theorem tensor_sum_single_eval (z : (ι → LL) ⊗[LL] D) :
     z = ∑ i, (Pi.single i (1 : LL) : ι → LL) ⊗ₜ[LL] evK i z := by
   induction z using TensorProduct.induction_on with
@@ -38,6 +49,15 @@ theorem tensor_sum_single_eval (z : (ι → LL) ⊗[LL] D) :
     conv_lhs => rw [hx, hy]
     simp only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `h' : z ∈ Submodule.span (ι → LL) ((X.map (TensorProduct.mk LL (ι → LL) D 1) : Submodule LL _) : Set ((ι → LL) ⊗[LL] D))`. Rewrite using `[← Submodule.baseChange_eq_span]`. Conclude with `h`.
+
+Use `clear h`. Proceed by induction on `h' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, hm, rfl⟩` from `hx`. Simplify `hm` using `[evaluation_tmul]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `X.add_mem hx hy`. Consider the case `smul a x _ hx => rw [evaluation_smul]`. Conclude with `X.smul_mem _ hx`.
+
+Introduce `h`. Rewrite using `[tensor_sum_single_eval z]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.tmul_mem_baseChange_of_mem _ (h i)`.
+-/
 theorem mem_baseChange_iff (X : Submodule LL D) (z : (ι → LL) ⊗[LL] D) :
     z ∈ X.baseChange (ι → LL) ↔ ∀ i, evK i z ∈ X := by
   constructor
@@ -57,12 +77,20 @@ theorem mem_baseChange_iff (X : Submodule LL D) (z : (ι → LL) ⊗[LL] D) :
     rw [tensor_sum_single_eval z]
     exact Submodule.sum_mem _ fun i _ => Submodule.tmul_mem_baseChange_of_mem _ (h i)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∀ k, cf f k ∈ (X k).baseChange (ι → LL)) ↔ _`. Simplify using `only [mem_baseChange_iff]`. Conclude with `forall_comm`.
+-/
 theorem xi_iff (X : ℤ → Submodule LL D) (f : Amb LL (ι → LL) D) :
     f ∈ Xi (ι → LL) X ↔ ∀ i k, evK i (cf f k) ∈ X k := by
   change (∀ k, cf f k ∈ (X k).baseChange (ι → LL)) ↔ _
   simp only [mem_baseChange_iff]
   exact forall_comm
 
+/- English proof (translation)
+Rewrite using `[mul_smul, ← xi_shift_holds LL (ι → LL) D X g f]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `xi_module_structure LL (ι → LL) D X hX b _ h`. Rewrite `h2` using `[← mul_smul, ← map_mul, show b * a = 1 by rw [mul_comm]; exact hab, map_one, one_smul]`. Then use the resulting hypothesis.
+
+Introduce `h`. Conclude with `xi_module_structure LL (ι → LL) D X hX a _ h`.
+-/
 theorem xi_unit_tp (X : ℤ → Submodule LL D) (hX : Monotone X) (a b : PowerSeries (ι → LL)) (hab : a * b = 1)
     (g : ℤ) (f : Amb LL (ι → LL) D) :
     (HahnSeries.ofPowerSeries ℤ (ι → LL) a * tp (ι → LL) g) • f ∈ Xi (ι → LL) X ↔

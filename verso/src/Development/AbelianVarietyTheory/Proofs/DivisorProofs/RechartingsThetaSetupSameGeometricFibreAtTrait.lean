@@ -12,12 +12,22 @@ open GlobalTheory.Poinc
 open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `haveI := M.lft`. Use `haveI : IsLocallyNoetherian M.Z := LocallyOfFiniteType.isLocallyNoetherian M.s`. Conclude with `isNoetherianRing_of_ringEquiv _ (M.stalkEquiv z)`.
+-/
 theorem GlobalTheory.Poinc.Spread.noeth (o Ω : Type) [CommRing o] [IsNoetherianRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
     (z : M.Z) : IsNoetherianRing (M.O z) := by
   haveI := M.lft
   haveI : IsLocallyNoetherian M.Z := LocallyOfFiniteType.isLocallyNoetherian M.s
   exact isNoetherianRing_of_ringEquiv _ (M.stalkEquiv z)
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `Spec.map_surjective σ`. Rewrite `h` using `[← Spec.map_comp]`. Establish `h'` using `Spec.map_injective h`. Establish `hs : ∀ r, s.hom (f r) = f r` using `fun r => congrArg (fun g => g.hom r) h'`. Establish `: s = 𝟙 _`.
+
+Use extensionality with `o`. Take `⟨a, b, hb, e⟩` from `hf o`. Establish `e2` using `congrArg s.hom e`. Rewrite `e2` using `[map_mul, hs, hs, ← e]`. Conclude with `mul_left_cancel₀ hb e2`.
+
+Rewrite using `[this, Spec.map_id]`.
+-/
 theorem GlobalTheory.Poinc.Spread.endo_id {R O : Type} [CommRing R] [CommRing O] [IsDomain O] (f : R →+* O)
     (hf : ∀ o : O, ∃ a b : R, f b ≠ 0 ∧ f b * o = f a) (σ : Sp O ⟶ Sp O) (h : σ ≫ spMap f = spMap f) : σ = 𝟙 _ := by
   obtain ⟨s, rfl⟩ := Spec.map_surjective σ
@@ -32,6 +42,11 @@ theorem GlobalTheory.Poinc.Spread.endo_id {R O : Type} [CommRing R] [CommRing O]
     exact mul_left_cancel₀ hb e2
   rw [this, Spec.map_id]
 
+/- English proof (translation)
+Take `⟨P, b₁, b₂, h₁, h₂, l₁, l₂, he, ht⟩` from `h`. Use `⟨P, b₁, b₂, h₁, h₂, l₁, l₂, he, fun x => ?_⟩` and prove the remaining obligations. Take `⟨w, w₁, w₂⟩` from `ht x`. Use `⟨w, GlobalTheory.Poinc.Spread.endo_id f₁ hf _ ?_, w₁, w₂⟩` and prove the remaining obligations. Use `Over.w (t₁ x)` as an intermediate fact.
+
+Rewrite using `[Category.assoc, ← h₁.1.w, ← Category.assoc, w₁, Category.assoc, this]`. Conclude with `Category.comp_id _`.
+-/
 theorem GlobalTheory.Poinc.Spread.sec {R₁ R₂ O M Γ : Type} [CommRing R₁] [CommRing R₂] [CommRing O] [IsDomain O] {P₁ : PolAV (Sp R₁)} {P₂ : PolAV (Sp R₂)} {f₁ : R₁ →+* O} {f₂ : R₂ →+* O} {e₁ : M → (P₁.A ⟶ P₁.A)} {e₂ : M → (P₂.A ⟶ P₂.A)} {t₁ : Γ → (baseOver (Sp R₁) ⟶ P₁.A)} {t₂ : Γ → (baseOver (Sp R₂) ⟶ P₂.A)}
     (hf : ∀ o : O, ∃ a b : R₁, f₁ b ≠ 0 ∧ f₁ b * o = f₁ a) (h : SameAt P₁ P₂ f₁ f₂ e₁ e₂ t₁ t₂) :
     ∃ (P : PolAV (Sp O)) (b₁ : P.A.left ⟶ P₁.A.left) (b₂ : P.A.left ⟶ P₂.A.left), IsGrpPullback P.A P₁.A (spMap f₁) b₁ ∧ IsGrpPullback P.A P₂.A (spMap f₂) b₂ ∧ LBIso P.L (P₁.L.pull b₁) ∧ LBIso P.L (P₂.L.pull b₂) ∧ (∀ E, ∃ e : P.A ⟶ P.A, e.left ≫ b₁ = b₁ ≫ (e₁ E).left ∧ e.left ≫ b₂ = b₂ ≫ (e₂ E).left) ∧ ∀ x, ∃ w : Sp O ⟶ P.A.left, w ≫ P.A.hom = 𝟙 _ ∧ w ≫ b₁ = spMap f₁ ≫ (t₁ x).left ∧ w ≫ b₂ = spMap f₂ ≫ (t₂ x).left := by
@@ -43,6 +58,21 @@ theorem GlobalTheory.Poinc.Spread.sec {R₁ R₂ O M Γ : Type} [CommRing R₁] 
   rw [Category.assoc, ← h₁.1.w, ← Category.assoc, w₁, Category.assoc, this]
   exact Category.comp_id _
 
+/- English proof (translation)
+Introduce `g n F W Z i X ε p _ z c c₀ hc R' fg frac hth hev ρ' ε' hS' hR' y₀ hy₀ c₁ hc₁ R'' fg₁ frac₁ hth₁ hev₁ ρ'' ε'' hS'' hR'' y₁ hy₁ u u'`. Use `set z' := (gPt p ≫ c.y) (closedPoint (PadicAlgCl p)) with hz'`. Use `haveI : IsDedekindDomain X.o₁ := ArithBase.ded (Ω := X.Ω₁)`. Use `haveI : IsNoetherianRing (X.M.O z') := GlobalTheory.Poinc.Spread.noeth X.o₁ X.Ω₁ X.M z'`. Use `haveI : IsIntegrallyClosed (X.M.Z.presheaf.stalk z') := X.normal.isIntegrallyClosed_stalk z'`.
+
+Use `haveI : IsIntegrallyClosed (X.M.O z') := IsIntegrallyClosed.of_equiv (X.M.stalkEquiv z')`. Set `ι' : R' →+* X.M.O z'` to `(Subalgebra.inclusion hR').toRingHom`. Set `ι'' : R'' →+* X.M.O z'` to `(Subalgebra.inclusion hR'').toRingHom`. Establish `h0` using `GlobalTheory.Poinc.SameComb.combine _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hS' hS''`. Establish `h1` using `GlobalTheory.Poinc.sameAt_of_generic (X.M.O z') X.Ω₁ _ _ _ _ _ _ ι' ι'' _ _ _ _ h0`.
+
+Establish `hfr : ∀ o : X.M.O z', ∃ a b : R', ι' b ≠ 0 ∧ ι' b * o = ι' a`. Introduce `o`. Take `⟨a, ha, b, hb, e⟩` from `frac (o : X.Ω₁)`. Distinguish the cases in `hb0 : b = 0`. Use `⟨0, 1, by simp, ?_⟩` and prove the remaining obligations.
+
+Establish `: o = 0` using `Subtype.ext (by simpa [hb0] using e)`. Simplify using `[this]`. Use `⟨⟨a, ha⟩, ⟨b, hb⟩, fun h => hb0 (congrArg Subtype.val h), Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b * (o : X.Ω₁) = a`. Rewrite using `[e]`.
+
+Clear the denominators using the available nonvanishing facts. Set `v : X.M.O z' →+* PadicAlgCl p` to `RatModel.valHom (gPt p ≫ c.y) z' (RatModel.range_eq_singleton _ _)`. Establish `e₀ : v.comp ι' = y₀` using `RingHom.ext fun a => (hy₀ a).symm`. Establish `e₁ : v.comp ι'' = y₁` using `RingHom.ext fun a => (hy₁ a).symm`. Take `⟨P₀, a, a', ha, ha', hL, hL', ht, hε⟩` from `GlobalTheory.Poinc.Special.main _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.Poinc.Spread.sec hfr h1) v u.yK u'.yK (u.fac.trans e₀.symm) (u'.fac.trans e₁.symm) u.A u'.A u.φ u'.φ u.cart u'.cart u.lb u'.lb`.
+
+Use `⟨P₀, a, a', ha, ha', hL, hL', fun b => ?_, fun E w w₂ hw hw₂ h => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, h₁, h₂⟩` from `ht b`. Establish `q₁ : (w ≫ a) ≫ u.A.A.hom = jFK (R` using `u.V) (PadicAlgCl p) := by`. Rewrite using `[Category.assoc, ha.1.w, ← Category.assoc, hw, Category.id_comp]`. Establish `q₂ : (w ≫ a') ≫ u'.A.A.hom = jFK (R` using `u'.V) (PadicAlgCl p) := by`.
+
+Rewrite using `[Category.assoc, ha'.1.w, ← Category.assoc, hw, Category.id_comp]`. Use `⟨w, Over.homMk (w ≫ a) q₁, Over.homMk (w ≫ a') q₂, hw, rfl, rfl, ?_, ?_⟩` and prove the remaining obligations. Simplify `h₁` using `[e₀]`. Simplify `h₂` using `[e₁]`. Conclude with `hε E w w₂ hw hw₂ h`.
+-/
 theorem GlobalTheory.Poinc.Spread.main : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X : Setup F W i) (ε : Matrix (Fin 8) (Fin 8) ℤ → (X.ρ.P.A ⟶ X.ρ.P.A)) (p : ℕ) [Fact p.Prime] (z : X.M.Z) (c : CTrait X p z) (c₀ : X.Ω₁) (hc : c₀ ≠ 0) (R' : Subalgebra X.o₁ X.Ω₁) (fg : R'.FG) (frac : ∀ x : X.Ω₁, ∃ a ∈ R', ∃ b ∈ R', x = a / b) (hth : ∀ x, c₀ * X.S.th x ∈ R') (hev : ∀ x k, c₀ * X.S.ev x k ∈ R') (ρ' : (X.S.rechart c₀ hc R' fg frac hth hev).Real) (ε' : Matrix (Fin 8) (Fin 8) ℤ → (ρ'.P.A ⟶ ρ'.P.A)), Same X.ρ ε ρ' ε' (fun x => x) (RingHom.id _) → R' ≤ X.M.O ((gPt p ≫ c.y) (closedPoint (PadicAlgCl p))) → ∀ (y₀ : R' →+* PadicAlgCl p), (∀ a : R', y₀ a = X.M.val (gPt p ≫ c.y) a) → ∀ (c₁ : X.Ω₁) (hc₁ : c₁ ≠ 0) (R'' : Subalgebra X.o₁ X.Ω₁) (fg₁ : R''.FG) (frac₁ : ∀ x : X.Ω₁, ∃ a ∈ R'', ∃ b ∈ R'', x = a / b) (hth₁ : ∀ x, c₁ * X.S.th x ∈ R'') (hev₁ : ∀ x k, c₁ * X.S.ev x k ∈ R'') (ρ'' : (X.S.rechart c₁ hc₁ R'' fg₁ frac₁ hth₁ hev₁).Real) (ε'' : Matrix (Fin 8) (Fin 8) ℤ → (ρ''.P.A ⟶ ρ''.P.A)), Same X.ρ ε ρ'' ε'' (fun x => x) (RingHom.id _) → R'' ≤ X.M.O ((gPt p ≫ c.y) (closedPoint (PadicAlgCl p))) → ∀ (y₁ : R'' →+* PadicAlgCl p), (∀ a : R'', y₁ a = X.M.val (gPt p ≫ c.y) a) → ∀ (u : ρ'.UTest p y₀) (u' : ρ''.UTest p y₁), ∃ (P₀ : PolAV (Sp (PadicAlgCl p))) (a : P₀.A.left ⟶ u.A.A.left) (a' : P₀.A.left ⟶ u'.A.A.left), IsGrpPullback P₀.A u.A.A (spMap (algebraMap (FractionRing u.V) (PadicAlgCl p))) a ∧ IsGrpPullback P₀.A u'.A.A (spMap (algebraMap (FractionRing u'.V) (PadicAlgCl p))) a' ∧ LBIso P₀.L (u.A.L.pull a) ∧ LBIso P₀.L (u'.A.L.pull a') ∧ (∀ b : X.S.Gam, ∃ (w : Sp (PadicAlgCl p) ⟶ P₀.A.left) (x : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A) (x' : TFK (R := u'.V) (PadicAlgCl p) ⟶ u'.A.A), w ≫ P₀.A.hom = 𝟙 _ ∧ w ≫ a = x.left ∧ w ≫ a' = x'.left ∧ x.left ≫ u.φ = spMap y₀ ≫ (ρ'.pt b).left ∧ x'.left ≫ u'.φ = spMap y₁ ≫ (ρ''.pt b).left) ∧ ∀ (E : Matrix (Fin 8) (Fin 8) ℤ) (w w₂ : Sp (PadicAlgCl p) ⟶ P₀.A.left), w ≫ P₀.A.hom = 𝟙 _ → w₂ ≫ P₀.A.hom = 𝟙 _ → w₂ ≫ a ≫ u.φ = w ≫ a ≫ u.φ ≫ (ε' E).left → w₂ ≫ a' ≫ u'.φ = w ≫ a' ≫ u'.φ ≫ (ε'' E).left := by
   intro g n F W Z i X ε p _ z c c₀ hc R' fg frac hth hev ρ' ε' hS' hR' y₀ hy₀ c₁ hc₁ R'' fg₁ frac₁ hth₁ hev₁ ρ'' ε'' hS'' hR'' y₁ hy₁ u u'
   set z' := (gPt p ≫ c.y) (closedPoint (PadicAlgCl p)) with hz'

@@ -8,6 +8,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LeviHC.exists_complexLinear_bracket_ext | exact GlobalTheory.LeviHC.exists_complexLinear_bracket_ext | (intros; apply GlobalTheory.LeviHC.exists_complexLinear_bracket_ext <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lie_algebra_rep_derivation_matrix : ∀ (n : ℕ) (A : Matrix (Fin n) (Fin n) ℂ), Aᴴ = A → IsUnit A.det → ∀ (B : Type) [Ring B] [Algebra ℂ B]
     (ρ : Matrix (Fin n) (Fin n) ℂ → B),
     (∀ X X', Xᴴ * A + A * X = 0 → X'ᴴ * A + A * X' = 0 → ρ (X + X') = ρ X + ρ X') →

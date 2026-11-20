@@ -53,9 +53,15 @@ end Generic
 
 variable {D : Datum H} {l : Level H}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_chi (c : Coeff l) (τ : E →+* ℂ) {R : Type} [CommRing R] (j : c.F →+* R) :
     j.comp (HermitianCompactForm.chi c τ) = FramedFlatCoordinates.chr c τ j := rfl
 
+/- English proof (translation)
+Use `RingHom.ext fun a => congrArg j (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `τ ((H.bar a : 𝓞 E) : E) = starRingEnd ℂ (τ (a : E))`. Rewrite using `[H.bar_eq]`. Conclude with `IsCMField.complexEmbedding_complexConj E τ _`.
+-/
 theorem comp_chi_bar (c : Coeff l) (τ : E →+* ℂ) {R : Type} [CommRing R] (j : c.F →+* R) :
     j.comp ((HermitianCompactForm.chi c τ).comp (H.bar : 𝓞 E →+* 𝓞 E)) = FramedFlatCoordinates.chr c (conjEmb τ) j := by
   refine RingHom.ext fun a => congrArg j (Subtype.ext ?_)
@@ -68,6 +74,11 @@ section Laws
 variable {S X : Scheme.{0}} {c : Coeff l} {t : SAB H S} {π : X ⟶ S} {s : X ⟶ Sp c.F} {V : Set X} {τ : E →+* ℂ}
   {p q : ℕ} {R R' : Type} [CommRing R] [CommRing R']
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `e : x' ≫ π = spMap g ≫ x ≫ π` using `by rw [hx, Category.assoc]`. Rewrite `h4` using `[comp_chi_bar]`. Take `⟨v', a, a'⟩` from `DetExtendZero.exists_basis (FlatRow.eigStable t c) g e (τ := τ) h3`. Take `⟨w', b, b'⟩` from `DetExtendZero.exists_basis (FlatRow.eigStable t c) g e (τ := conjEmb τ) h4`.
+
+Use `⟨v', w', ⟨?_, ?_, a, by rw [comp_chi_bar]; exact b⟩, a', b'⟩` and prove the remaining obligations. Rewrite using `[hx, Category.assoc, h1, DetExtendZero.spMap_comp]`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[hx, Scheme.Hom.comp_apply]`. Conclude with `h2 ⟨_, rfl⟩`.
+-/
 theorem exists_pull (g : R →+* R') {j : c.F →+* R} {x : Sp R ⟶ X} {v : Fin p → (epsAt (x ≫ π) ⟶ t.G)}
     {w : Fin q → (epsAt (x ≫ π) ⟶ t.G)} (h : IsFrame t π s V (HermitianCompactForm.chi c τ) j x v w) {x' : Sp R' ⟶ X}
     (hx : x' = spMap g ≫ x) :
@@ -86,6 +97,13 @@ theorem exists_pull (g : R →+* R') {j : c.F →+* R} {x : Sp R ⟶ X} {v : Fin
     rw [hx, Scheme.Hom.comp_apply]
     exact h2 ⟨_, rfl⟩
 
+/- English proof (translation)
+Take `⟨v₁, w₁, h₁, a, b⟩` from `exists_pull g h hx`. Establish `hj : j' = g.comp j`. Use `h'.1.symm.trans h₁.1` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective this)`. Substitute `hj` using the available equality.
+
+Use `choose M hM using fun i => (h₁.2.2.1.2 _ (h'.2.2.1.1 i)).exists`. Use `choose N hN using fun i => (h₁.2.2.2.2 _ (h'.2.2.2.1 i)).exists`. Use `⟨rfl, Matrix.of M, Matrix.of N, hx, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [← a]`. Conclude with `hM i`.
+
+Simplify using `only [← b]`. Conclude with `hN i`.
+-/
 theorem exists_chg (g : R →+* R') {j : c.F →+* R} {j' : c.F →+* R'} {x : Sp R ⟶ X}
     {v : Fin p → (epsAt (x ≫ π) ⟶ t.G)} {w : Fin q → (epsAt (x ≫ π) ⟶ t.G)} {x' : Sp R' ⟶ X}
     {v' : Fin p → (epsAt (x' ≫ π) ⟶ t.G)} {w' : Fin q → (epsAt (x' ≫ π) ⟶ t.G)}
@@ -102,6 +120,11 @@ theorem exists_chg (g : R →+* R') {j : c.F →+* R} {j' : c.F →+* R'} {x : S
   · simp only [← a]; exact hM i
   · simp only [← b]; exact hN i
 
+/- English proof (translation)
+Take `⟨v₁, w₁, h₁, a, b⟩` from `exists_pull g h hc.1`. Take `rfl` from `(exists_chg g h h' hc.1).1`. Apply the tactic sequence `rw [← hσ.1 R R' g (Chart.dualMapR g) j _ x x' v w v₁ w₁ (fun a => by ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]) (by ext <;> simp [Chart.dualMapR]) h h₁ hc.1 a b]`. Use `hσ.2 R' _ x' v₁ w₁ v' w' M N h₁ h' (fun i => ?_) fun i => ?_` and prove the remaining obligations. Use `hc.2.1 i` as an intermediate fact.
+
+Simplify using `only [← a] at this`. Conclude with `this`. Use `hc.2.2 i` as an intermediate fact. Simplify using `only [← b] at this`. Conclude with `this`.
+-/
 theorem sec_chg {σ : Rule t π p q} (hσ : IsSection t π s V (HermitianCompactForm.chi c τ) σ) {g : R →+* R'} {j : c.F →+* R}
     {j' : c.F →+* R'} {x : Sp R ⟶ X} {v : Fin p → (epsAt (x ≫ π) ⟶ t.G)} {w : Fin q → (epsAt (x ≫ π) ⟶ t.G)}
     {x' : Sp R' ⟶ X} {v' : Fin p → (epsAt (x' ≫ π) ⟶ t.G)} {w' : Fin q → (epsAt (x' ≫ π) ⟶ t.G)}
@@ -119,6 +142,15 @@ theorem sec_chg {σ : Rule t π p q} (hσ : IsSection t π s V (HermitianCompact
     simp only [← b] at this
     exact this
 
+/- English proof (translation)
+Use `⟨fun R R' _ _ g gε j j' x x' v w v' w' h1 h2 h h' hx a b => ?_, fun R _ j x v w v' w' M N h h' a b => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : gε = Chart.dualMapR g := by`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Establish `e : z = algebraMap R _ z.fst + algebraMap R _ z.snd * DualNumber.eps`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Rewrite using `[e, map_add, map_mul, h1, h1, h2]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Use `hσ R R' g j j' x v w x' v' w' 1 1 h h' ⟨hx, fun i => ?_, fun i => ?_⟩` as an intermediate fact. Simplify using `using this.symm`. Simplify using `only [← a]`.
+
+Conclude with `DetExtendZero.comb_one (fun k => (h'.2.2.1.1 k).1) i`. Simplify using `only [← b]`. Conclude with `DetExtendZero.comb_one (fun k => (h'.2.2.2.1 k).1) i`. Use `hσ R R (RingHom.id R) j j x v w x v' w' M N h h' ⟨by rw [DetExtendZero.spMap_id, Category.id_comp], fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [DetExtendZero.dual_id, Category.id_comp]`.
+
+Conclude with `a i`. Simplify using `only [DetExtendZero.dual_id, Category.id_comp]`. Conclude with `b i`.
+-/
 theorem isSection_of_chg {σ : Rule t π p q}
     (hσ : ∀ (R R' : Type) [CommRing R] [CommRing R'] (g : R →+* R') (j : c.F →+* R) (j' : c.F →+* R') x v w x' v' w' M N,
       IsFrame t π s V (HermitianCompactForm.chi c τ) j x v w → IsFrame t π s V (HermitianCompactForm.chi c τ) j' x' v' w' → IsChg t π g x v w x' v' w' M N →

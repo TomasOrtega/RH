@@ -18,6 +18,15 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
+/- English proof (translation)
+Establish `h1 : spMap (RingHom.id k) = 𝟙 _` using `Spec.map_id _`. Establish `h3 : spMap (dualMap (RingHom.id k)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`.
+
+Take `⟨rfl, rfl, h⟩` from `h`. Take `⟨e1, e2, h'⟩` from `h'`. Rewrite `e1` using `[h1, Category.id_comp]`. Substitute `e1` using the available equality. Use `⟨rfl, e2, fun τ i => ?_⟩` and prove the remaining obligations.
+
+Use `choose a a1 a2 a3 using h τ`. Take `⟨cf, b1, b2, b3⟩` from `h' τ i`. Simplify using `only [h3, Category.id_comp] at b3`. Set `A : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) k` to `fun j i => a i j`. Establish `hA : A.BlockTriangular id` using `fun j k hk => a2 k j hk`.
+
+Take `⟨c1, c2⟩` from `Guard.tri_mulVec hA b2`. Use `⟨A.mulVec cf, ?_, c1, tanLinG _ (fun j => GlobalTheory.FactorDepth.isTanAtG_map _ ψ (f.tan τ j)) _ A cf _ a3 b3⟩` and prove the remaining obligations. Rewrite using `[c2, b1, show A i i = t τ i from a1 i, Units.val_mul]`.
+-/
 theorem tri_trans {R k : Type} [CommRing R] [Field k] {φ : c.F →+* R} {φ' φ'' : c.F →+* k} {x : Sp R ⟶ Z.X}
     {x' x'' : Sp k ⟶ Z.X} {f : EigFrame Z φ x} {ψ : R →+* k} {g : EigFrame Z φ' x'} {g' : EigFrame Z φ'' x''}
     {t d : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → kˣ} (h : f.Tri ψ g t) (h' : g.Tri (RingHom.id k) g' d) :

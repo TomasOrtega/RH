@@ -8,6 +8,15 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 
 namespace GlobalTheory.CompanionTheory.GE.KerSeq
 
+/- English proof (translation)
+Use `haveI : ∀ n, (M n).IsQuasicoherent := fun n => (h.coherent n).1`. Use `haveI : (KerSeq.sumN M k d e).IsQuasicoherent := by`. Unfold `KerSeq.sumN`. Conclude with `GlobalTheory.QCoh.isQuasicoherent_biproduct _`. Rewrite using `[GlobalTheory.QCoh.epi_iff_forall_affine]`.
+
+Introduce `U hU`. Establish `hg` using `h.gen (d + e) (Nat.le_add_right d e) ⟨U, hU⟩`. Establish `hr : (GlobalTheory.QCoh.appLinear (KerSeq.sumMap T d e) U).range = ⊤`. Rewrite using `[eq_top_iff, ← hg, Submodule.span_le]`. Introduce `y hy`.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_range] at hy`. Take `⟨i, x, rfl⟩` from `hy`. Use `⟨(biproduct.ι (fun _ : Fin k => M (d + e)) i).app U x, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.QCoh.appLinear_apply, GlobalTheory.QCoh.app_app]`. Simplify using `[KerSeq.sumMap]`.
+
+Rewrite using `[← GlobalTheory.QCoh.coe_appLinear]`. Conclude with `LinearMap.range_eq_top.1 hr`.
+-/
 theorem epi_sumMap_of_opSeq {X : Scheme.{0}} {k : ℕ} {M : ℕ → X.Modules}
     {T : Fin k → ∀ e, M e ⟶ M (e + 1)} {d : ℕ} (h : OpSeq k M T d) (e : ℕ) :
     Epi (KerSeq.sumMap T d e) := by

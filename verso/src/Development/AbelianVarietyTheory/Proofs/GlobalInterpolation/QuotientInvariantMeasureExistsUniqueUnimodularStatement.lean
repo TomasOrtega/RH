@@ -4,5 +4,8 @@ import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.InvariantRad
 open MeasureTheory GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Proof.quotientInvariantMeasure_exists_unique_unimodular.invariantMeasureClause | exact GlobalTheory.Proof.quotientInvariantMeasure_exists_unique_unimodular.invariantMeasureClause | (intros; apply GlobalTheory.Proof.quotientInvariantMeasure_exists_uniqu …`.
+-/
 theorem _root_.GlobalTheory.T.quotientInvariantMeasure_exists_unique_unimodular : InvariantMeasureClause := by
   first | exact @GlobalTheory.Proof.quotientInvariantMeasure_exists_unique_unimodular.invariantMeasureClause | exact GlobalTheory.Proof.quotientInvariantMeasure_exists_unique_unimodular.invariantMeasureClause | (intros; apply GlobalTheory.Proof.quotientInvariantMeasure_exists_unique_unimodular.invariantMeasureClause <;> assumption)

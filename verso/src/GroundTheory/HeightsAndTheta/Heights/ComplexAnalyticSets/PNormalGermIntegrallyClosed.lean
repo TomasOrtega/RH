@@ -13,6 +13,13 @@ noncomputable section
 
 namespace NormalGermIntegrallyClosed
 
+/- English proof (translation)
+Set `L : (Fin (Fintype.card σ) → ℂ) ≃L[ℂ] (σ → ℂ)` to `(LinearEquiv.funCongrLeft ℂ ℂ (Fintype.equivFin σ)).toContinuousLinearEquiv`. Establish `hO : IsOpen (L ⁻¹' N)` using `hN.preimage L.continuous`. Establish `hg : DifferentiableOn ℂ (f ∘ L) (L ⁻¹' N)` using `hf.comp L.differentiable.differentiableOn fun x hx => hx`. Establish `hA : AnalyticOnNhd ℂ (f ∘ L) (L ⁻¹' N)`. Use `analyticOnNhd_of_continuousOn_of_separately hO hg.continuousOn fun x hx i => ?_` and prove the remaining obligations.
+
+Establish `h1 : DifferentiableAt ℂ (f ∘ L) (Function.update x i (x i))`. Rewrite using `[Function.update_eq_self]`. Conclude with `hg.differentiableAt (hO.mem_nhds hx)`. Conclude with `h1.comp (x i) (hasFDerivAt_update x (x i)).differentiableAt`. Establish `hz' : L.symm z ∈ L ⁻¹' N` using `by simpa using hz`.
+
+Establish `h2` using `(hA _ hz').comp ((L.symm : (σ → ℂ) →L[ℂ] (Fin (Fintype.card σ) → ℂ)).analyticAt z)`. Simplify `h2` using `[Function.comp_def]`.
+-/
 theorem analyticAt_of_differentiableOn {σ : Type} [Fintype σ] {N : Set (σ → ℂ)} {f : (σ → ℂ) → ℂ}
     (hN : IsOpen N) (hf : DifferentiableOn ℂ f N) {z : σ → ℂ} (hz : z ∈ N) : AnalyticAt ℂ f z := by
   let L : (Fin (Fintype.card σ) → ℂ) ≃L[ℂ] (σ → ℂ) :=
@@ -41,15 +48,30 @@ def anFun {σ : Type} [Fintype σ] (w : σ → ℂ) : Subring ((σ → ℂ) → 
 def toGerm {σ : Type} [Fintype σ] (w : σ → ℂ) : anFun w →+* holGerms w :=
   ((Germ.coeRingHom (𝓝 w)).comp (anFun w).subtype).codRestrict (holGerms w) fun u => ⟨u.1, u.2, rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨φ, f, hf, rfl⟩`. Conclude with `⟨⟨f, hf⟩, rfl⟩`.
+-/
 theorem toGerm_surjective {σ : Type} [Fintype σ] (w : σ → ℂ) : Function.Surjective (toGerm w) := by
   rintro ⟨φ, f, hf, rfl⟩
   exact ⟨⟨f, hf⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Subtype.ext_iff]`. Conclude with `Germ.coe_eq`.
+-/
 theorem toGerm_eq_iff {σ : Type} [Fintype σ] {w : σ → ℂ} {u v : anFun w} :
     toGerm w u = toGerm w v ↔ (u : (σ → ℂ) → ℂ) =ᶠ[𝓝 w] v := by
   rw [Subtype.ext_iff]
   exact Germ.coe_eq
 
+/- English proof (translation)
+Establish `key : ∀ x, x ∈ Submodule.span (holGerms w) (polyGerm w '' (I : Set (MvPolynomial σ ℂ))) → ∃ v : anFun w, toGerm w v = x ∧ ∀ᶠ z in 𝓝[zeroSetIn I] w, (v : (σ → ℂ) → ℂ) z = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨q, hq, rfl⟩` from `hx`.
+
+Conclude with `⟨⟨fun z => eval z q, analyticAt_eval_polynomial w q⟩, rfl, eventually_nhdsWithin_of_forall fun z hz => hz q hq⟩`. Consider the case `zero => exact ⟨0, map_zero _, Eventually.of_forall fun z => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨u, rfl, hu⟩` from `hx`. Take `⟨v, rfl, hv⟩` from `hy`.
+
+Conclude with `⟨u + v, map_add _ _ _, by filter_upwards [hu, hv] with z h1 h2; simp [h1, h2]⟩`. Consider the case `smul c x _ hx`. Take `⟨v, rfl, hv⟩` from `hx`. Take `⟨b, rfl⟩` from `toGerm_surjective w c`. Conclude with `⟨b * v, by rw [map_mul, smul_eq_mul], by filter_upwards [hv] with z h; simp [h]⟩`.
+
+Take `⟨v, hv, hv0⟩` from `key _ hu`. Establish `he : (u : (σ → ℂ) → ℂ) =ᶠ[𝓝 w] v` using `toGerm_eq_iff.1 hv.symm`. Use `filter_upwards [nhdsWithin_le_nhds he, hv0] with z h1 h2`. Rewrite using `[h1, h2]`.
+-/
 theorem vanish_of_mem_map {σ : Type} [Fintype σ] {I : Ideal (MvPolynomial σ ℂ)} {w : σ → ℂ} {u : anFun w}
     (hu : toGerm w u ∈ I.map (polyGerm w)) :
     ∀ᶠ z in 𝓝[zeroSetIn I] w, (u : (σ → ℂ) → ℂ) z = 0 := by
@@ -75,6 +97,17 @@ theorem vanish_of_mem_map {σ : Type} [Fintype σ] {I : Ideal (MvPolynomial σ �
   filter_upwards [nhdsWithin_le_nhds he, hv0] with z h1 h2
   rw [h1, h2]
 
+/- English proof (translation)
+Set `K` to `FractionRing S`. Establish `hinj : Function.Injective (algebraMap S K)` using `IsFractionRing.injective S K`. Establish `hrelK : algebraMap S K f ^ d + ∑ j, algebraMap S K (a j) * algebraMap S K f ^ (j : ℕ) * algebraMap S K g ^ (d - (j : ℕ)) = 0`. Establish `h2` using `congrArg (algebraMap S K) hrel`. Simplify using `only [map_add, map_sum, map_mul, map_pow, map_zero] at h2`.
+
+Conclude with `h2`. Establish `hg0 : algebraMap S K g ≠ 0` using `fun h0 => hg (hinj (by rw [h0, map_zero]))`. Generalize the expression as in `hfK : algebraMap S K f = fK at hrelK`. Generalize the expression as in `hgK : algebraMap S K g = gK at hrelK hg0`. Establish `hint : IsIntegral S (fK / gK)`.
+
+Use `⟨Polynomial.X ^ d + ∑ j : Fin d, Polynomial.C (a j) * Polynomial.X ^ (j : ℕ), Polynomial.monic_X_pow_add (Polynomial.degree_sum_fin_lt _), ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ j : Fin d, algebraMap S K (a j) * (fK / gK) ^ (j : ℕ) = algebraMap S K (a j) * fK ^ (j : ℕ) * gK ^ (d - (j : ℕ)) / gK ^ d`. Introduce `j`. Rewrite using `[eq_div_iff (pow_ne_zero _ hg0), div_pow, show gK ^ d = gK ^ (j : ℕ) * gK ^ (d - (j : ℕ)) by rw [← pow_add, Nat.add_sub_cancel' j.2.le]]`. Establish `hj : gK ^ (j : ℕ) ≠ 0` using `pow_ne_zero _ hg0`.
+
+Rewrite using `[show algebraMap S K (a j) * (fK ^ (j : ℕ) / gK ^ (j : ℕ)) * (gK ^ (j : ℕ) * gK ^ (d - (j : ℕ))) = algebraMap S K (a j) * fK ^ (j : ℕ) * gK ^ (d - (j : ℕ)) * (gK ^ (j : ℕ) / gK ^ (j : ℕ)) by ring, div_self hj, mul_one]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_finsetSum, Polynomial.eval₂_mul, Polynomial.eval₂_C]`. Rewrite using `[Finset.sum_congr rfl fun j _ => hterm j, div_pow, ← Finset.sum_div, ← add_div, hrelK, zero_div]`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨y, hinj ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hy, hfK, hgK, mul_div_assoc', eq_div_iff hg0, mul_comm]`.
+-/
 theorem exists_eq_mul_of_integral_relation {S : Type*} [CommRing S] [IsDomain S] [IsIntegrallyClosed S]
     {d : ℕ} (f g : S) (a : Fin d → S) (hg : g ≠ 0)
     (hrel : f ^ d + ∑ j, a j * f ^ (j : ℕ) * g ^ (d - (j : ℕ)) = 0) : ∃ y, f = g * y := by
@@ -107,6 +140,33 @@ theorem exists_eq_mul_of_integral_relation {S : Type*} [CommRing S] [IsDomain S]
   refine ⟨y, hinj ?_⟩
   rw [map_mul, hy, hfK, hgK, mul_div_assoc', eq_div_iff hg0, mul_comm]
 
+/- English proof (translation)
+Introduce `σ _ I w N F G d a hI hIc hw hN hwN hF hG ha hGnz hrel`. Establish `hFa : AnalyticAt ℂ F w` using `analyticAt_of_differentiableOn hN hF hwN`. Establish `hGa : AnalyticAt ℂ G w` using `analyticAt_of_differentiableOn hN hG hwN`. Establish `haa : ∀ j, AnalyticAt ℂ (a j) w` using `fun j => analyticAt_of_differentiableOn hN (ha j) hwN`. Take `⟨k, p, hp⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian I)`.
+
+Establish `hpI : ∀ i, p i ∈ I` using `fun i => hp ▸ Submodule.subset_span ⟨i, rfl⟩`. Establish `hZp : ∀ z, (∀ i, eval z (p i) = 0) → z ∈ zeroSetIn I`. Introduce `z hz q hq`. Establish `hle : I ≤ RingHom.ker (eval z)`. Rewrite using `[← hp]`.
+
+Conclude with `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hz i)`. Conclude with `RingHom.mem_ker.1 (hle hq)`. Take `⟨hJ, hJc⟩` from `hZariski σ I w hI hIc hw`. Set `J` to `I.map (polyGerm w)`. Establish `: J.IsPrime` using `hJ`.
+
+Set `S` to `holGerms w ⧸ J`. Establish `: IsIntegrallyClosed S` using `hJc`. Set `π : anFun w →+* S` to `(Ideal.Quotient.mk J).comp (toGerm w)`. Establish `hπ0 : ∀ u : anFun w, π u = 0 → ∀ᶠ z in 𝓝[zeroSetIn I] w, (u : (σ → ℂ) → ℂ) z = 0` using `fun u hu => vanish_of_mem_map (Ideal.Quotient.eq_zero_iff_mem.1 hu)`. Establish `hπpoly : ∀ q ∈ I, π ⟨fun z => eval z q, analyticAt_eval_polynomial w q⟩ = 0` using `fun q hq => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ hq)`.
+
+Establish `hπeq : ∀ u v : anFun w, (u : (σ → ℂ) → ℂ) =ᶠ[𝓝 w] v → π u = π v` using `fun u v h => by`. Simplify using `only [π, RingHom.comp_apply, toGerm_eq_iff.2 h]`. Set `FA : anFun w` to `⟨F, hFa⟩`. Set `GA : anFun w` to `⟨G, hGa⟩`. Set `aA : Fin d → anFun w` to `fun j => ⟨a j, haa j⟩`.
+
+Set `PA : anFun w` to `FA ^ d + ∑ j, aA j * FA ^ (j : ℕ) * GA ^ (d - (j : ℕ))`. Establish `hPA : ∀ z, (PA : (σ → ℂ) → ℂ) z = F z ^ d + ∑ j, a j z * F z ^ (j : ℕ) * G z ^ (d - (j : ℕ))`. Introduce `z`. Simplify using `[PA, FA, GA, aA, Finset.sum_apply]`. Establish `hGS : π GA ≠ 0`.
+
+Introduce `h`. Conclude with `hGnz (eventually_nhdsWithin_iff.1 (hπ0 GA h))`. Establish `hvan : ∀ᶠ z in 𝓝 w, (∀ i, eval z (p i) = 0) → (PA : (σ → ℂ) → ℂ) z * G z = 0` using `by filter_upwards [hN.mem_nhds hwN] with z hzN hz`. Distinguish the cases in `hG0 : G z = 0`. Rewrite using `[hG0, mul_zero]`.
+
+Rewrite using `[hPA, hrel z ⟨⟨hZp z hz, hzN⟩, hG0⟩, zero_mul]`. Take `⟨m, h, hm, hh, hgm⟩` from `hRueckert σ w k (fun i z => eval z (p i)) (fun z => (PA : (σ → ℂ) → ℂ) z * G z) (fun i => analyticAt_eval_polynomial w (p i)) (PA.2.mul hGa) hvan`. Set `hA : Fin k → anFun w` to `fun i => ⟨h i, hh i⟩`. Set `pA : Fin k → anFun w` to `fun i => ⟨fun z => eval z (p i), analyticAt_eval_polynomial w (p i)⟩`. Establish `hprod : π ((PA * GA) ^ m) = π (∑ i, hA i * pA i)`.
+
+Apply `hπeq` to reduce the goal to its premises. Use `filter_upwards [hgm] with z hz`. Simplify `hz` using `[hA, pA, GA, Finset.sum_apply, mul_pow]`. Establish `hPS : π PA = 0`. Establish `h1 : (π PA * π GA) ^ m = 0`.
+
+Rewrite using `[← map_mul, ← map_pow, hprod, map_sum]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [map_mul, hπpoly _ (hpI i), mul_zero]`. Conclude with `(mul_eq_zero.1 ((pow_eq_zero_iff (Nat.pos_iff_ne_zero.1 hm)).1 h1)).resolve_right hGS`. Establish `: IsDomain S` using `Ideal.Quotient.isDomain J`. Take `⟨y, hy⟩` from `exists_eq_mul_of_integral_relation (π FA) (π GA) (fun j => π (aA j)) hGS (by`.
+
+Rewrite using `[← hPS]`. Simplify using `only [PA, map_add, map_sum, map_mul, map_pow])`. Take `⟨φ, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨HA, rfl⟩` from `toGerm_surjective w φ`. Establish `hdiff : π (FA - GA * HA) = 0`.
+
+Rewrite using `[map_sub, map_mul, hy]`. Conclude with `sub_self _`. Establish `hv` using `eventually_nhdsWithin_iff.1 (hπ0 _ hdiff)`. Take `⟨V, hV, hVo, hwV⟩` from `eventually_nhds_iff.1 (hv.and HA.2.eventually_analyticAt)`. Use `⟨V, hVo, hwV, HA, fun z hz => (hV z hz).2.differentiableAt.differentiableWithinAt, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `z ⟨hzZ, hzV⟩`. Establish `h3` using `(hV z hzV).1 hzZ`. Express the relevant statement in the definitionally equal form `F z - G z * (HA : (σ → ℂ) → ℂ) z = 0 at h3`. Conclude with `sub_eq_zero.1 h3`.
+-/
 theorem proof (hRueckert : RueckertNullstellensatz.Statement)
     (hZariski : ZariskiAnalyticNormality.Statement) : NormalGermIntegrallyClosed.Statement := by
   intro σ _ I w N F G d a hI hIc hw hN hwN hF hG ha hGnz hrel

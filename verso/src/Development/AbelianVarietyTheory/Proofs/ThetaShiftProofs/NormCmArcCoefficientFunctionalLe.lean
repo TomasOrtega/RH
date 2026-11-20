@@ -19,6 +19,15 @@ noncomputable section
 
 namespace GlobalTheory.ArchCM
 
+/- English proof (translation)
+Establish `h0 : ∀ z, 0 ≤ (hermForm Hm z z).re` using `fun z => by`. Distinguish the cases in `hz : z = 0`. Simplify using `[hz, hermForm]`. Conclude with `(hpos z hz).le`. Establish `h1 : ∀ i j, (hermForm Hm (w i) (w j)).re + (hermForm Hm (w j) (w i)).re ≤ 2 * b` using `fun i j => by`.
+
+Use `h0 (w i - w j)` as an intermediate fact. Establish `e1` using `hw i`. Establish `e2` using `hw j`. Simplify using `only [hermForm, star_sub, Matrix.mulVec_sub, sub_dotProduct, dotProduct_sub, Complex.sub_re] at *`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2 : (hermForm Hm (∑ k, w k) (∑ k, w k)).re = ∑ i, ∑ j, (hermForm Hm (w i) (w j)).re`. Simplify using `only [hermForm, star_sum, Matrix.mulVec_sum, sum_dotProduct, dotProduct_sum, Complex.re_sum]`. Conclude with `Finset.sum_comm`. Establish `h3 : 2 * (hermForm Hm (∑ k, w k) (∑ k, w k)).re = ∑ i, ∑ j, ((hermForm Hm (w i) (w j)).re + (hermForm Hm (w j) (w i)).re)`. Simplify using `only [Finset.sum_add_distrib]`.
+
+Rewrite using `[Finset.sum_comm (f := fun i j => (hermForm Hm (w j) (w i)).re), ← h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ∑ i, ∑ j, ((hermForm Hm (w i) (w j)).re + (hermForm Hm (w j) (w i)).re) ≤ ∑ _i : Fin m, ∑ _j : Fin m, 2 * b` using `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => h1 i j`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h4`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem herm_sum_le {g m : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ}
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) (w : Fin m → (Fin g → ℂ)) {b : ℝ}
     (hw : ∀ k, (hermForm Hm (w k) (w k)).re ≤ b) :
@@ -46,18 +55,41 @@ theorem herm_sum_le {g m : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ}
   simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h4
   nlinarith
 
+/- English proof (translation)
+Simplify using `only [hermForm, smul_dotProduct, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul, Complex.star_def]`. Rewrite using `[← _root_.mul_assoc, mul_comm _ a, Complex.mul_conj, Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq]`.
+-/
 theorem herm_smul {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a : ℂ) (z : Fin g → ℂ) :
     (hermForm Hm (a • z) (a • z)).re = ‖a‖ ^ 2 * (hermForm Hm z z).re := by
   simp only [hermForm, smul_dotProduct, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul,
     Complex.star_def]
   rw [← _root_.mul_assoc, mul_comm _ a, Complex.mul_conj, Complex.re_ofReal_mul, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Simplify using `[hermForm, ← Pi.single_star]`.
+-/
 theorem herm_single {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (j : Fin g) :
     hermForm Hm (Pi.single j 1) (Pi.single j 1) = Hm j j := by
   simp [hermForm, ← Pi.single_star]
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Set `y : ArcLt Dw → ℂ` to `fun v => Matrix.diagonal (fun k => (ρ v.1 k : ℂ)) v.2.1 v.2.2`. Establish `hy : ∀ v, ‖y v‖ ≤ ρ v.1 v.2.2` using `fun v => by`. Simplify using `only [y, Matrix.diagonal_apply]`. Use `split_ifs with hv`. Rewrite using `[hv, Complex.norm_real, Real.norm_of_nonneg (hρ _ _).le]`.
+
+Simplify using `using (hρ _ _).le`. Set `Q : ∀ τ : E →+* ℂ, Polynomial ℂ` to `fun τ => (Matrix.of fun i k : Fin (Dw.mult τ) => Polynomial.C (x ⟨τ, (i, k)⟩) + Polynomial.X * Polynomial.C (y ⟨τ, (i, k)⟩ - x ⟨τ, (i, k)⟩)).det`. Establish `hQ : ∀ τ (t : ℂ), (Q τ).eval t = (Matrix.of fun i k : Fin (Dw.mult τ) => x ⟨τ, (i, k)⟩ + t * (y ⟨τ, (i, k)⟩ - x ⟨τ, (i, k)⟩)).det` using `fun τ t => by`. Rewrite using `[← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `i k`. Simplify using `[mul_comm]`. Establish `hQ0 : ∀ τ, Q τ ≠ 0` using `fun τ h0 => by`. Use `hQ τ 1` as an intermediate fact. Rewrite `this` using `[h0, Polynomial.eval_zero]`.
+
+Establish `e : (Matrix.of fun i k : Fin (Dw.mult τ) => x ⟨τ, (i, k)⟩ + 1 * (y ⟨τ, (i, k)⟩ - x ⟨τ, (i, k)⟩)) = Matrix.diagonal fun k => (ρ τ k : ℂ)`. Use extensionality with `i k`. Simplify using `[y]`. Rewrite `this` using `[e, Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun k _ => Complex.ofReal_ne_zero.2 (hρ τ k).ne') this.symm`.
+
+Establish `hc : Continuous fun t : ℝ => f fun v => x v + (t : ℂ) * (y v - x v)` using `hf.comp (by fun_prop)`. Establish `ht` using `(hc.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))`. Simplify using `only [Complex.ofReal_zero, zero_mul, add_zero] at ht`. Use `le_of_tendsto ht ?_` and prove the remaining obligations. Establish `e1 : ∀ᶠ t : ℝ in nhdsWithin 0 (Set.Ioi 0), ∀ τ, (Q τ).eval (t : ℂ) ≠ 0`.
+
+Use `Filter.eventually_all.2 fun τ => ?_` and prove the remaining obligations. Establish `hfin : {t : ℝ | (Q τ).IsRoot (t : ℂ)}.Finite` using `(Polynomial.finite_setOf_isRoot (hQ0 τ)).preimage Complex.ofReal_injective.injOn`. Conclude with `((nhdsGT_le_nhdsNE 0).trans (nhdsNE_le_cofinite 0)) hfin.compl_mem_cofinite`. Use `filter_upwards [e1, Ioo_mem_nhdsGT (zero_lt_one (α := ℝ))] with t h1 h2`. Use `h _ (fun τ => ?_) fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hQ]`. Conclude with `h1 τ`. Establish `e : x v + (t : ℂ) * (y v - x v) = ((1 - t : ℝ) : ℂ) * x v + (t : ℂ) * y v` using `by push_cast; ring`. Rewrite using `[e]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg (sub_nonneg.2 h2.2.le), Real.norm_of_nonneg h2.1.le]`. Use polynomial arithmetic with `[hx v, hy v, h2.1, h2.2]`.
+-/
 theorem le_of_invBl {f : (ArcLt Dw → ℂ) → ℝ} (hf : Continuous f) (ρ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → ℝ)
     (hρ : ∀ τ k, 0 < ρ τ k) {B : ℝ} (h : ∀ x, InvBl x → (∀ v, ‖x v‖ ≤ ρ v.1 v.2.2) → f x ≤ B)
     (x : ArcLt Dw → ℂ) (hx : ∀ v, ‖x v‖ ≤ ρ v.1 v.2.2) : f x ≤ B := by
@@ -106,6 +138,13 @@ theorem le_of_invBl {f : (ArcLt Dw → ℂ) → ℝ} (hf : Continuous f) (ρ : �
 
 variable {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Use `set P := arcNum (evR Xo c F d.yF) with hP`. Set `G : MvPolynomial (ArcLt Dw) ℂ` to `∑ m ∈ P.support, MvPolynomial.monomial m (em ((P.coeff m).coeff d.jj))`. Establish `hG : ∀ x, MvPolynomial.eval x G = ajAt d em F x` using `fun x => by`. Simplify using `only [G, map_sum, MvPolynomial.eval_monomial, ajAt, Finsupp.prod, hP]`. Establish `hc : G.coeff d.μ = em (cfOf d.yF d.μ d.jj F)`.
+
+Simplify using `only [G, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, Finset.sum_ite_eq', cfOf, ← hP]`. Use `split_ifs with hm`. Both sides reduce to the same expression. Rewrite using `[MvPolynomial.notMem_support_iff.1 hm]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← hc]`. Use `coeff_cauchy_bound _ G (fun v => ρ v.1 v.2.2) B d.μ (fun v => hρ _ _) fun z hz => ?_` and prove the remaining obligations. Conclude with `le_of_invBl (f := fun x => ‖MvPolynomial.eval x G‖) (MvPolynomial.continuous_eval G).norm ρ hρ (fun x h1 h2 => by rw [hG]; exact h x h1 h2) z hz`.
+-/
 theorem cfOf_le {K₁ : Type} [Field K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (em : K₁ →+* ℂ) (F : Rul Xo c)
     (ρ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → ℝ) (hρ : ∀ τ k, 0 < ρ τ k) {B : ℝ}
     (h : ∀ x, InvBl x → (∀ v, ‖x v‖ ≤ ρ v.1 v.2.2) → ‖ajAt d em F x‖ ≤ B) :
@@ -126,12 +165,20 @@ theorem cfOf_le {K₁ : Type} [Field K₁] [Algebra c.F K₁] (d : ArcDatum Xo c
     (fun x h1 h2 => by rw [hG]; exact h x h1 h2) z hz
 
 omit [IsCMField E] in
+/- English proof (translation)
+Use `Real.one_le_rpow ?_ (by positivity)` and prove the remaining obligations. Use `Int.one_le_abs (NumberField.discr_ne_zero E)` as an intermediate fact. Unfold `dE`. Conclude with `this` after adjusting the coercions.
+-/
 theorem one_le_rdE : 1 ≤ rdE E := by
   refine Real.one_le_rpow ?_ (by positivity)
   have := Int.one_le_abs (NumberField.discr_ne_zero E)
   unfold dE
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `h` using `IsoTime.trace_cm X 1`. Establish `h2 : Algebra.trace ℚ E 1 = Module.finrank ℚ E`. Simplify using `using Algebra.trace_algebraMap (R := ℚ) (S := E) (x := 1)`. Rewrite `h` using `[h2]`. Simplify using `only [map_one, Complex.one_re, Finset.sum_const, Finset.card_univ, QuadraticCoefficientForms.card_Psi, nsmul_eq_mul] at h`.
+
+Establish `: ((2 * fdeg E : ℕ) : ℝ) = (Module.finrank ℚ E : ℕ)` using `by push_cast at h ⊢; linarith`. Conclude with `this` after adjusting the coercions.
+-/
 theorem two_mul_fdeg {r : ℕ} (X : Data E r) : 2 * fdeg E = Module.finrank ℚ E := by
   have h := IsoTime.trace_cm X 1
   have h2 : Algebra.trace ℚ E 1 = Module.finrank ℚ E := by
@@ -141,6 +188,11 @@ theorem two_mul_fdeg {r : ℕ} (X : Data E r) : 2 * fdeg E = Module.finrank ℚ 
   have : ((2 * fdeg E : ℕ) : ℝ) = (Module.finrank ℚ E : ℕ) := by push_cast at h ⊢; linarith
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `h` using `two_mul_fdeg X`. Establish `hp : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Rewrite using `[rdE, dE, ← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _), Real.sqrt_eq_rpow]`. Use `congr 1`. Rewrite `hp`, the goal using `[← h]`.
+
+Move the coercions through the operations in `at hp ⊢`. Establish `: (fdeg E : ℝ) ≠ 0` using `by intro h0; rw [h0] at hp; simp at hp`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sqrt_discr {r : ℕ} (X : Data E r) : Real.sqrt |((NumberField.discr E : ℤ) : ℝ)| = rdE E ^ fdeg E := by
   have h := two_mul_fdeg X
   have hp : (0 : ℝ) < Module.finrank ℚ E := by exact_mod_cast Module.finrank_pos
@@ -151,6 +203,25 @@ theorem sqrt_discr {r : ℕ} (X : Data E r) : Real.sqrt |((NumberField.discr E :
   have : (fdeg E : ℝ) ≠ 0 := by intro h0; rw [h0] at hp; simp at hp
   field_simp
 
+/- English proof (translation)
+Establish `hM : 1 ≤ max 1 c₁` using `le_max_left _ _`. Establish `hrd` using `one_le_rdE (E := E)`. Establish `l1` using `Real.log_nonneg hM`. Establish `l2` using `Real.log_nonneg hLa`. Establish `l3` using `Real.log_nonneg hrd`.
+
+Establish `l4` using `Real.log_natCast_nonneg r`. Use `set e := Real.exp (archP E r La c₁) with he`. Establish `he0 : 0 < e` using `Real.exp_pos _`. Establish `hsq : ∀ (u v : ℝ) (k : ℕ), 0 ≤ u → 0 ≤ v → u ≤ v ^ 2 → u ^ ((k : ℝ) / 2) ≤ v ^ k` using `fun u v k hu hv huv => by`. Use `(Real.rpow_le_rpow hu huv (by positivity)).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Real.rpow_natCast v 2, ← Real.rpow_mul hv, ← Real.rpow_natCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : r * (La * Real.sqrt (max 1 c₁)) ≤ e`.
+
+Establish `a1 : Real.sqrt (max 1 c₁) = Real.exp (Real.log (max 1 c₁) / 2)`. Rewrite using `[Real.sqrt_eq_rpow, Real.rpow_def_of_pos (by linarith)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[a1]`. Apply the tactic sequence `gcongr <;> exact Real.le_exp_log _`. Use `_ ≤ e := by`. Rewrite using `[← Real.exp_add, ← Real.exp_add, he, archP]`. Conclude with `Real.exp_le_exp.2 (by linarith)`.
+
+Establish `e2 : rdE E * max 1 c₁ ≤ e ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_add, he, ← Real.exp_nat_mul, archP]`. Conclude with `Real.exp_le_exp.2 (by push_cast; linarith)`. Establish `b1 : (C * (max 1 c₁) ^ fdeg E) ^ ((n : ℝ) / 2) ≤ (T * e ^ fdeg E) ^ n`.
+
+Use `hsq _ _ _ (by positivity) (by positivity) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `b2 : ∏ τ : E →+* ℂ, ∏ i : Fin (Dw.mult τ), h τ i ^ ((a (τ, (i : ℕ)) : ℝ) / 2) ≤ e ^ absA Dw a`. Rewrite using `[absA, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun τ _ => Finset.prod_nonneg fun i _ => Real.rpow_nonneg (h0 τ i) _) fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun i _ => Real.rpow_nonneg (h0 τ i) _) fun i _ => ?_` and prove the remaining obligations. Conclude with `hsq _ _ _ (h0 τ i) he0.le ((hh τ i).trans (by gcongr))`. Use `(mul_le_mul b1 b2 (Finset.prod_nonneg fun τ _ => Finset.prod_nonneg fun i _ => Real.rpow_nonneg (h0 τ i) _) (by positivity)).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `: archP E r La c₁ * ((absA Dw a : ℝ) + (fdeg E : ℝ) * n) = ((absA Dw a + fdeg E * n : ℕ) : ℝ) * archP E r La c₁` using `by push_cast; ring`.
+
+Rewrite using `[this, Real.exp_nat_mul, ← he]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem const_le (r : ℕ) {La c₁ T C : ℝ} (hLa : 1 ≤ La) (hT : 0 < T) (hC : 0 < C) (hCT : C ≤ T ^ 2 * rdE E ^ fdeg E)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (h : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → ℝ) (h0 : ∀ τ i, 0 ≤ h τ i)
     (hh : ∀ τ i, h τ i ≤ (r * (La * Real.sqrt (max 1 c₁))) ^ 2) :
@@ -206,6 +277,9 @@ theorem const_le (r : ℕ) {La c₁ T C : ℝ} (hLa : 1 ≤ La) (hT : 0 < T) (hC
   rw [this, Real.exp_nat_mul, ← he]
   ring
 
+/- English proof (translation)
+Establish `h1 : A = K * (e * J)` using `mul_right_cancel₀ hu (by rw [hid]; ring)`. Establish `he'` using `he0.trans he`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem num_le {A u K e e' J S Lf N B : ℝ} (hid : A * u = K * (e * u * J)) (hu : u ≠ 0) (hJ : J ≤ S / Lf / N)
     (hK : K / (Lf * N) ≤ B) (he : e ≤ e') (he0 : 0 ≤ e) (hK0 : 0 ≤ K) (hJ0 : 0 ≤ J) (hS : 0 ≤ S) : A ≤ S * e' * B := by
   have h1 : A = K * (e * J) := mul_right_cancel₀ hu (by rw [hid]; ring)
@@ -215,6 +289,13 @@ theorem num_le {A u K e e' J S Lf N B : ℝ} (hid : A * u = K * (e * u * J)) (hu
     _ = S * e' * (K / (Lf * N)) := by rw [div_div]; ring
     _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, h1, h2, h3, -⟩` from `s.good`. Use `⟨h3.2 em, fun τ k => ?_⟩` and prove the remaining obligations. Unfold `CMIn.line`. Consider the cases of `s.kind τ k with`. Consider the case `none => exact zero_lt_one`.
+
+Consider the case `some m`. Establish `h` using `s.L_good.2.2.2 m`. Simplify using `only [Option.elim]`. Use `split at h`. Rewrite using `[h]`.
+
+Conclude with `(h1 _).1.2 em`. Rewrite using `[h]`. Conclude with `(h2 _).1.2 em`.
+-/
 theorem line_pos {K₁ : Type} [Field K₁] [NumberField K₁] [Algebra c.F K₁]
     {a : ArcIn Dw l (RingHom.id c.F) K₁ (algebraMap c.F K₁)}
     {e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K₁)} {th : a.D₀.P.L.Sec} {jj : ℤ} {n' : ℕ} {La c₁ : ℝ}
@@ -232,6 +313,47 @@ theorem line_pos {K₁ : Type} [Field K₁] [NumberField K₁] [Algebra c.F K₁
     · rw [h]; exact (h1 _).1.2 em
     · rw [h]; exact (h2 _).1.2 em
 
+/- English proof (translation)
+Introduce `hK E _ _ _ H Dw l Xo c K₁ _ _ _ d n' La c₁ s em r U xi S a' n ⟨hover, ⟨y₀, hy₀, hc⟩, hpush⟩ hLa hgood hunf hxi hdom htv F hF hS0 hS`. Establish `h1` using `hK.laws`. Establish `h2` using `hK.laws2`. Establish `hev` using `hK.ev E H Dw l Xo c`. Use `letI : Algebra (FractionRing ℂ) ℂ := FractionRing.liftAlgebra ℂ ℂ`.
+
+Use `haveI : IsScalarTower ℂ (FractionRing ℂ) ℂ := FractionRing.isScalarTower_liftAlgebra ℂ ℂ`. Use `letI : Algebra c.F ℂ⸨X⸩ := (ArcId.cstL.comp (em.comp (algebraMap c.F K₁))).toAlgebra`. Take `⟨Uw⟩` from `GlobalTheory.T.nonempty_unifWitnessData_of_isUnf E H Dw l Xo c _ r U hunf`. Establish `hth : ThNZ d.th` using `s.th_nz`. Take `⟨⟨a₁, p, hp⟩, hbc⟩` from `GlobalTheory.ArcQBC.baseChanges h1 h2 hK.ubc hK.laws5 E H Dw l Xo c _ _ d.Y K₁ ℂ _ (d.a.restrict (c.V d.Wp).subtype) em em.injective ((em.comp (algebraMap c.F K₁)).comp (c.V d.Wp).subtype) rfl`.
+
+Take `⟨hW, hlet, htan, hthx, hnz⟩` from `hbc a₁ p hp`. Take `⟨W₁, hW₁⟩` from `hW d.χ d.W`. Use `choose e₁ he₁ using fun τ k => (hlet (d.e τ k)).exists`. Take `⟨th₁, hth₁⟩` from `(hthx d.th).exists`. Establish `hover₁ : (spMap (PowerSeries.map em) ≫ d.χ) ≫ d.Y.s = spMap (PowerSeries.C (R` using `ℂ)) ≫ spMap ((em.comp (algebraMap c.F K₁)).comp (c.V d.Wp).subtype) := by`.
+
+Rewrite using `[Category.assoc, hover, ArcId.sp_comp, ArcId.sp_comp, ArcId.sp_comp]`. Use `congr 1`. Conclude with `RingHom.ext fun x => PowerSeries.map_C _ _`. Take `⟨Ha⟩` from `hK.n5 E H Dw l Xo c _ _ d.Y (em.comp (algebraMap c.F K₁)) a₁ _ W₁ Uw.g _ Uw.F hgood ((GlobalTheory.Relab.relab_good E H l c _ hgood).2.2.2 Dw Uw.g Uw.e) (GlobalTheory.ArcInTest.exists_values c d.Wp) hover₁ (ArcId.generic_mem d em)`. Set `f : a₁.D₀.X ≃ₗ[𝓞 E] d.a.D₀.X` to `{ p.xe with map_smul' := hp.2.1 }`.
+
+Establish `hrk` using `f.finrank_eq.trans s.rk`. Establish `hξ : s.ξ.comp (f.toLinearMap.restrictScalars ℤ) ≠ 0` using `fun h => s.ξ_ne (LinearMap.ext fun y => by`. Take `⟨y, rfl⟩` from `f.surjective y`. Conclude with `LinearMap.congr_fun h y)`. Establish `hβ` using `ArcId.betaAt_comp f s.ξ hp.2.2.1 s.beta`.
+
+Establish `hw : Ha.T < (((Ha.T + 1 : ℝ) : ℂ) * Complex.I).im` using `by simp`. Generalize the expression as in `((Ha.T + 1 : ℝ) : ℂ) * Complex.I = w at hw`. Take `⟨k, ξ', sE, C, hiso, hsE, -, -, hC, hCle, hmain⟩` from `GlobalTheory.T.laurentCoeff_sectionValue_arc_eq_fourierJacobi h1 h2 E H Dw l Xo c _ r U Uw _ _ d.Y a₁ _ W₁ Ha th₁ _ s.ν₀ d.jj a' n hev hgood hunf (fun _ => rfl) hover₁ (mono_spMap_subtype _) hpush (hnz _ _ hth₁ hth) hrk hξ hβ hdom htv w hw`. Take `⟨v₁, v₂, -, v₄⟩` from `GlobalTheory.T.torusExt_exponential_derivative_bijective_tangent h1.globalFns E H Dw l Xo c _ _ _ d.Y a₁ _ W₁ _ _ Uw.F Ha`. Use `choose z₁ hz₁ using fun τ i => (v₁ (e₁ τ i) (htan _ _ (he₁ τ i) (s.tan τ i))).exists`.
+
+Establish `hN : NormOne Ha` using `GlobalTheory.T.normalisedTrivialisation_normOne_complexReading hK E H Dw l Xo c _ _ _ d.Y a₁ _ W₁ _ _ Uw.F Ha n' s.n_pos ((GlobalTheory.T.isTauCanonical_iff_of_isPullDeg_tauBimult hK K₁ ℂ em _ _ p n' em.injective d.a.bimult a₁.bimult).1 s.tau)`. Establish `hCT` using `hCle _ (((GlobalTheory.T.cm_metrised_line_lengths_eq_section_lie_norms hK E H Dw l c K₁ d.a d.e d.th d.jj n' La c₁ s em).2.2.2 _ p).1 th₁ hth₁)`. Rewrite `hCT` using `[sqrt_discr (U.X k)]`. Take `⟨hT, hl⟩` from `line_pos s em`. Establish `hL` using `lieFac_pos Dw xi a'`.
+
+Establish `hM : 0 < max 1 c₁` using `lt_max_of_lt_left zero_lt_one`. Establish `hep : 0 < (max 1 c₁)⁻¹` using `inv_pos.2 hM`. Establish `hS' : ∀ y ∈ (U.X k).dom, (U.X k).pnorm (laU U a' n k) (rdU U F k) y ≤ S / lieFac Dw xi a'` using `fun y hy => (le_div_iff₀' hL).2 (hS k y hy)`. Establish `hb : (U.X k).IsBddSec (laU U a' n k) (rdU U F k)` using `⟨hunf.2.2.2.2.1 a' n hdom F hF k, _, hS'⟩`. Establish `htr : (max 1 c₁)⁻¹ * ∑ τ : (U.X k).Ψ, (τ.1 s.ν₀).re ≤ 1`.
+
+Establish `e1` using `IsoTime.trace_cm (U.X k) s.ν₀`. Establish `e2` using `s.tr`. Rewrite `e1` using `[← Finset.mul_sum]`. Rewrite using `[inv_mul_le_iff₀ hM]`. Use `le_max_right 1 c₁` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hjj : 2 * ∑ τ : (U.X k).Ψ, (τ.1 s.ν₀).re * (τ.1 sE).re = d.jj`. Rewrite using `[ArcCoeff.two_sum_eq_trace (U.X k) hβ.1 hsE.1, (hβ.2 sE hsE).1, Rat.cast_intCast]`. Establish `key` using `cfOf_le d em F (fun τ i => ((s.line τ i).n em)⁻¹) (fun τ i => inv_pos.2 (hl τ i)) (B := S * Real.exp (4 * Real.pi) * (s.Tl.n em ^ n * Real.exp (archP E r La c₁ * ((absA Dw a' : ℝ) + (fdeg E : ℝ) * n)))) fun x hx hxρ => by choose e₂ he₂ using fun (τ : E →+* ℂ) (i : Fin (Dw.mult τ) …`. Take `⟨-, y, hy, hval⟩` from `ArcId.exists_frPt_at h1 h2 hev d em (fun _ => rfl) hy₀ hc hth hp hW₁ he₁ hth₁ (hnz _ _ hth₁ hth) hx (fun τ i => (v₄ _ _ _ _ _ (hz₁ τ)).2 (he₂ τ i)) a' n`.
+
+Take `⟨fr, κ, L, gm, hLgm, hEgm, hLz, ht, hκ, hFj⟩` from `hmain e₂ _ y hy he₂`. Establish `htt` using `IsoTime.tt_eq_im_mul E H Dw l Xo c _ r U Uw _ _ d.Y a₁ _ W₁ Ha k _ ξ' sE w fr L gm hgood hunf hN hw hrk hξ hsE hLgm hEgm ht`. Take `⟨hx'', htep, hfl, hbd⟩` from `arch_bound_flow E H Dw l Xo c _ r U Uw k ξ' fr C _ xi κ a' n hgood hunf hiso hC hep hdom.2 (hxi k) hκ`. Take `⟨-, -, -, -, Hm, hH⟩` from `Uw.period k ⟨_, hx''⟩`. Establish `hH' : IsRiem Uw.F (Uw.ik k) (Uw.Pm k ⟨_, hx''⟩) Hm` using `hH`.
+
+Establish `hlen` using `fun τ i => GlobalTheory.T.letter_squaredLength_le_flow_height hK E H Dw l Xo c K₁ d.a d.e d.th d.jj n' La c₁ s em _ r U Uw _ _ d.Y a₁ p _ W₁ Ha k ξ' fr ⟨_, hx''⟩ _ w L gm _ Hm rfl hgood hunf hp hLa hep hiso hw hLgm hEgm ht rfl htep hH' τ i _ _ (he₁ τ i) (hz₁ τ i)`. Rewrite `hlen` using `[inv_inv, max_eq_right (le_max_left 1 c₁)]`. Establish `hdiag : ∀ τ (i : Fin (Dw.mult τ)), Real.pi * (Hm (Uw.e.symm ⟨τ, i⟩) (Uw.e.symm ⟨τ, i⟩)).re ≤ (r * (La * Real.sqrt (max 1 c₁))) ^ 2` using `fun τ i => by`. Establish `hm : (Dw.mult τ : ℝ) ≤ r`. Establish `: Dw.mult τ ≤ r`.
+
+Rewrite using `[hunf.1]`. Unfold `Datum.mult`. Apply the tactic sequence `split_ifs <;> omega`. Conclude with `this` after adjusting the coercions. Rewrite using `[← herm_single Hm, ← hLz, map_sum]`.
+
+Use `herm_sum_le hH'.2.1 (fun j => L (x ⟨τ, (i, j)⟩ • z₁ τ j)) (b := (La * Real.sqrt (max 1 c₁)) ^ 2 / Real.pi) fun j => by` as an intermediate fact. Rewrite using `[le_div_iff₀' Real.pi_pos, map_smul, herm_smul, mul_left_comm]`. Establish `e1 : ‖x ⟨τ, (i, j)⟩‖ ≤ ((s.line τ j).n em)⁻¹` using `hxρ ⟨τ, (i, j)⟩`. Establish `e2` using `(hl τ j).ne'`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `this` using `[← mul_div_assoc, le_div_iff₀' Real.pi_pos]`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[mul_pow (r : ℝ)]`. Use `gcongr`. Establish `hκb` using `hbd Hm hH'`.
+
+Rewrite `hκb` using `[inv_inv, ← Fintype.card_coe, QuadraticCoefficientForms.card_Psi]`. Use `replace hκb := hκb.trans (const_le r hLa hT hC hCT a' n _ (fun τ i => mul_nonneg Real.pi_pos.le (by`. Rewrite using `[← herm_single Hm]`. Conclude with `(hH'.2.1 _ (by simp)).le)) hdiag)`. Establish `hcau` using `FlowCoefficientBounds.fj_bound (U.X k) _ _ _ hS' hiso (fun τ => (τ.1 s.ν₀).re) hx''`.
+
+Establish `hnf` using `FlowCoefficientBounds.nfac_pos (U.X k) hx'' (laU U a' n k)`. Establish `hid` using `congrArg norm (hFj F hF hb)`. Rewrite `hid` using `[norm_mul, norm_mul, hfl _ _ hb]`. Establish `hexp : Real.exp (4 * Real.pi * ∑ τ : (U.X k).Ψ, (τ.1 s.ν₀).re * ((max 1 c₁)⁻¹ - (U.X k).tt ξ' fr.1 τ)) = Real.exp (4 * Real.pi * ((max 1 c₁)⁻¹ * ∑ τ : (U.X k).Ψ, (τ.1 s.ν₀).re)) * ‖eTwoPi w ^ d.jj‖`. Rewrite using `[norm_zpow, eTwoPi, Complex.norm_exp, ← Real.rpow_intCast, ← Real.exp_mul, ← Real.exp_add, ← hjj]`.
+
+Use `congr 1`. Simplify using `only [htt, mul_sub, Finset.sum_sub_distrib, Finset.mul_sum, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im, Complex.re_ofNat, Complex.im_ofNat, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun τ _ => by ring`. Establish `hne : ‖eTwoPi w ^ d.jj‖ ≠ 0` using `norm_ne_zero_iff.2 (zpow_ne_zero _ (Complex.exp_ne_zero _))`. Establish `hE : Real.exp (4 * Real.pi * ((max 1 c₁)⁻¹ * ∑ τ : (U.X k).Ψ, (τ.1 s.ν₀).re)) ≤ Real.exp (4 * Real.pi)` using `Real.exp_le_exp.2 (mul_le_of_le_one_right (by positivity) htr)`.
+
+Rewrite using `[hval F hF, map_one, one_pow, _root_.one_mul]`. Rewrite `hid` using `[hexp]`. Conclude with `num_le hid hne ((le_div_iff₀ hnf).2 hcau) hκb hE (Real.exp_pos _).le (norm_nonneg _) (norm_nonneg _) hS0`. Use `le_of_eq_of_le ?_ ((div_le_div_of_nonneg_right key (pow_pos hT n).le).trans (le_of_eq ?_))` and prove the remaining obligations. Simplify using `only [CMIn.valLine, MLine.tensor, MLine.dual, MLine.pow, MLine.prodPow, inv_pow, Finset.prod_inv_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Real.exp_add]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem norm_cfOf_le : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (n' : ℕ) (La c₁ : ℝ) (s : CMIn d.a d.e d.th d.jj n' La c₁) (em : K₁ →+* ℂ) (r : ℕ) (U : Unf Xo c (em.comp (algebraMap c.F K₁)) r) (xi S : ℝ) (a' : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Std d → 1 ≤ La → GoodEmb c (em.comp (algebraMap c.F K₁)) → IsUnf U → (∀ k (τ : E →+* ℂ), ‖τ (U.X k).ξ0‖ = xi) → Dom a' n → (∀ k, TransvIn (U.X k) l.M' (laU U a' n k)) → ∀ F ∈ sec Xo c a' n, 0 ≤ S → (∀ k, ∀ y ∈ (U.X k).dom, lieFac Dw xi a' * (U.X k).pnorm (laU U a' n k) (rdU U F k) y ≤ S) → ‖em (cfOf d.yF d.μ d.jj F)‖ * (s.valLine d.μ n).n em ≤ S * Real.exp (4 * Real.pi + GlobalTheory.ArcCM.archP E r La c₁ * ((absA Dw a' : ℝ) + (fdeg E : ℝ) * n)) := by
   intro hK E _ _ _ H Dw l Xo c K₁ _ _ _ d n' La c₁ s em r U xi S a' n ⟨hover, ⟨y₀, hy₀, hc⟩, hpush⟩ hLa hgood hunf
     hxi hdom htv F hF hS0 hS

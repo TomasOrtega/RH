@@ -29,19 +29,37 @@ private def blockInv (a : ι) : Subalgebra ℝ (MvPolynomial (Σ a, Fin (r a)) �
     AlgHom.equalizer (mid (⟨a, i⟩ : Σ a, Fin (r a)) ⟨a, i'⟩) (AlgHom.id ℝ _) ⊓
       AlgHom.equalizer (rename (Equiv.swap (⟨a, i⟩ : Σ a, Fin (r a)) ⟨a, i'⟩)) (AlgHom.id ℝ _)
 
+/- English proof (translation)
+Simplify using `only [blockInv, Algebra.mem_iInf, Algebra.mem_inf, AlgHom.mem_equalizer, AlgHom.id_apply]`.
+-/
 private theorem mem_blockInv {a : ι} {Q : MvPolynomial (Σ a, Fin (r a)) ℝ} : Q ∈ blockInv r a ↔
     ∀ i i' : Fin (r a), (i' : ℕ) = i + 1 → mid (⟨a, i⟩ : Σ a, Fin (r a)) ⟨a, i'⟩ Q = Q ∧
       rename (Equiv.swap (⟨a, i⟩ : Σ a, Fin (r a)) ⟨a, i'⟩) Q = Q := by
   simp only [blockInv, Algebra.mem_iInf, Algebra.mem_inf, AlgHom.mem_equalizer, AlgHom.id_apply]
 
+/- English proof (translation)
+Establish `hn (i : Fin (r a)) : (⟨b, j⟩ : Σ a, Fin (r a)) ≠ ⟨a, i⟩` using `fun e => h (congrArg Sigma.fst e)`. Use `(mem_blockInv r).2 fun i i' _ => ⟨mid_X_of_ne (hn i) (hn i'), ?_⟩` and prove the remaining obligations. Rewrite using `[rename_X, Equiv.swap_apply_of_ne_of_ne (hn i) (hn i')]`.
+-/
 private theorem X_mem_blockInv {a b : ι} (h : b ≠ a) (j : Fin (r b)) : X (⟨b, j⟩ : Σ a, Fin (r a)) ∈ blockInv r a := by
   have hn (i : Fin (r a)) : (⟨b, j⟩ : Σ a, Fin (r a)) ≠ ⟨a, i⟩ := fun e => h (congrArg Sigma.fst e)
   refine (mem_blockInv r).2 fun i i' _ => ⟨mid_X_of_ne (hn i) (hn i'), ?_⟩
   rw [rename_X, Equiv.swap_apply_of_ne_of_ne (hn i) (hn i')]
 
+/- English proof (translation)
+The claim follows from `(blockInv r a).algebraMap_mem c`.
+-/
 private theorem C_mem_blockInv (a : ι) (c : ℝ) : (C c : MvPolynomial (Σ a, Fin (r a)) ℝ) ∈ blockInv r a :=
   (blockInv r a).algebraMap_mem c
 
+/- English proof (translation)
+Distinguish the cases in `h : b = a`. Use `swap`. Conclude with `Subalgebra.sum_mem _ fun j _ => X_mem_blockInv r h j`. Substitute `h` using the available equality. Establish `hinj : Function.Injective (@Sigma.mk ι (fun a => Fin (r a)) b)` using `sigma_mk_injective`.
+
+Use `(mem_blockInv r).2 fun i i' hi => ⟨?_, ?_⟩` and prove the remaining obligations. Establish `hne : i ≠ i'` using `fun e => by rw [e] at hi; omega`. Establish `key (f : Fin (r b) → MvPolynomial (Σ a, Fin (r a)) ℝ) : ∑ z, f z = f i + f i' + ∑ z ∈ (Finset.univ.erase i).erase i', f z`. Rewrite using `[add_assoc, Finset.add_sum_erase _ _ (Finset.mem_erase.2 ⟨hne.symm, Finset.mem_univ _⟩), Finset.add_sum_erase _ _ (Finset.mem_univ _)]`. Rewrite using `[eSum, map_sum, key, key fun j => X ⟨b, j⟩]`.
+
+Simplify using `only [mid_X_left, mid_X_right]`. Rewrite using `[Finset.sum_congr rfl fun z hz => mid_X_of_ne (hinj.ne (Finset.mem_erase.1 (Finset.mem_erase.1 hz).2).1) (hinj.ne (Finset.mem_erase.1 hz).1)]`. Establish `h2 : (2 : MvPolynomial (Σ a, Fin (r a)) ℝ) * C (1 / 2) = 1`. Rewrite using `[← map_ofNat C 2, ← map_mul]`. Simplify using the standard rewrite rules.
+
+Take the linear combination `(X ⟨b, i⟩ + X ⟨b, i'⟩) * h2`. Rewrite using `[eSum, map_sum]`. Simplify using `only [rename_X, hinj.swap_apply]`. Conclude with `Equiv.sum_comp (Equiv.swap i i') fun j => (X ⟨b, j⟩ : MvPolynomial (Σ a, Fin (r a)) ℝ)`.
+-/
 private theorem eSum_mem_blockInv (a b : ι) : eSum r b ∈ blockInv r a := by
   by_cases h : b = a
   swap
@@ -65,16 +83,28 @@ private theorem eSum_mem_blockInv (a b : ι) : eSum r b ∈ blockInv r a := by
     simp only [rename_X, hinj.swap_apply]
     exact Equiv.sum_comp (Equiv.swap i i') fun j => (X ⟨b, j⟩ : MvPolynomial (Σ a, Fin (r a)) ℝ)
 
+/- English proof (translation)
+The claim follows from `Subalgebra.prod_mem _ fun j _ => Subalgebra.pow_mem _ (Subalgebra.neg_mem _ (X_mem_blockInv r h j)) _`.
+-/
 private theorem monPt_mem_blockInv {a b : ι} (h : b ≠ a) : monPt r b ∈ blockInv r a :=
   Subalgebra.prod_mem _ fun j _ => Subalgebra.pow_mem _ (Subalgebra.neg_mem _ (X_mem_blockInv r h j)) _
 
+/- English proof (translation)
+The claim follows from `Subalgebra.mul_mem _ (C_mem_blockInv r a _) (Subalgebra.prod_mem _ fun j _ => Subalgebra.prod_mem _ fun j' _ => Subalgebra.sub_mem _ (X_mem_blockInv r h j') (X_mem_blockInv r h j))`.
+-/
 private theorem vdm_mem_blockInv {a b : ι} (h : b ≠ a) : C ((r b).factorial : ℝ)⁻¹ * vdm r b ∈ blockInv r a :=
   Subalgebra.mul_mem _ (C_mem_blockInv r a _) (Subalgebra.prod_mem _ fun j _ => Subalgebra.prod_mem _ fun j' _ =>
     Subalgebra.sub_mem _ (X_mem_blockInv r h j') (X_mem_blockInv r h j))
 
+/- English proof (translation)
+The claim follows from `Subalgebra.sum_mem _ fun b _ => Subalgebra.mul_mem _ (C_mem_blockInv r a _) (eSum_mem_blockInv r a b)`.
+-/
 private theorem linE_mem_blockInv [Fintype ι] (a : ι) (s : ι → ℝ) : linE r s ∈ blockInv r a :=
   Subalgebra.sum_mem _ fun b _ => Subalgebra.mul_mem _ (C_mem_blockInv r a _) (eSum_mem_blockInv r a b)
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (@Sigma.mk ι (fun a => Fin (r a)) a)` using `sigma_mk_injective`. Rewrite using `[← hΨ i i' hi, map_mul (rename _), hS i i' hi, rename_rename, rename_rename]`. Use `congr 4`. Use function extensionality and compare the values at `z`. Conclude with `(hinj.swap_apply i i' z).symm`.
+-/
 private theorem restrict_swap (Ψ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ) (a : ι)
     (hΨ : ∀ i i' : Fin (r a), (i' : ℕ) = i + 1 → ∀ P,
       Ψ (rename (Equiv.swap (⟨a, i⟩ : Σ a, Fin (r a)) ⟨a, i'⟩) P) = -Ψ P) (S : MvPolynomial (Σ a, Fin (r a)) ℝ)
@@ -88,17 +118,33 @@ private theorem restrict_swap (Ψ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[�
   funext z
   exact (hinj.swap_apply i i' z).symm
 
+/- English proof (translation)
+Simplify using `only [map_prod, map_pow, map_neg, rename_X, monPt]`.
+-/
 private theorem rename_monPt (a : ι) : rename (@Sigma.mk ι (fun a => Fin (r a)) a) (∏ i : Fin (r a), (-X i) ^ (r a - 1 - (i : ℕ))) =
     monPt r a := by
   simp only [map_prod, map_pow, map_neg, rename_X, monPt]
 
+/- English proof (translation)
+Simplify using `only [map_prod, map_sub, rename_X, vdm]`.
+-/
 private theorem rename_vdm (a : ι) : rename (@Sigma.mk ι (fun a => Fin (r a)) a)
     (∏ i : Fin (r a), ∏ i' ∈ Finset.Ioi i, (X i' - X i)) = vdm r a := by
   simp only [map_prod, map_sub, rename_X, vdm]
 
+/- English proof (translation)
+Simplify using `only [map_sum, rename_X, eSum]`.
+-/
 private theorem rename_eSum (a : ι) : rename (@Sigma.mk ι (fun a => Fin (r a)) a) (∑ i : Fin (r a), X i) = eSum r a := by
   simp only [map_sum, rename_X, eSum]
 
+/- English proof (translation)
+Set `ρ : MvPolynomial (Fin (r a)) ℝ →ₐ[ℝ] MvPolynomial (Σ a, Fin (r a)) ℝ` to `rename (@Sigma.mk ι (fun a => Fin (r a)) a)`. Set `ψ : MvPolynomial (Fin (r a)) ℝ →ₗ[ℝ] ℝ` to `Ψ ∘ₗ LinearMap.mulLeft ℝ Q ∘ₗ ρ.toLinearMap`. Establish `hF (P) : ψ P = Ψ (Q * rename (@Sigma.mk ι (fun a => Fin (r a)) a) P)` using `rfl`. Establish `halt` using `alt_of_adj' ψ fun i i' hi P => restrict_swap r Ψ a hΨ Q (fun i i' hi => ((mem_blockInv r).1 hQ i i' hi).2) i i' hi P`. Establish `h₁ : Ψ (Q * vdm r a) = (r a).factorial * Ψ (Q * monPt r a)`.
+
+Rewrite using `[← rename_vdm, ← rename_monPt, ← hF, ← hF, GlobalTheory.prod_Ioi_sub_eq_antisymm_monomial, map_sum]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => ψ (∏ i : Fin (r a), (-X i) ^ (r a - 1 - (i : ℕ)))) fun σ _ => ?_]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]`. Establish `s2 : ((Equiv.Perm.sign σ : ℤ) : ℝ) * ((Equiv.Perm.sign σ : ℤ) : ℝ) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[map_smul, halt, smul_eq_mul, ← mul_assoc, s2, one_mul]`. Establish `h₀ : ((r a).factorial : ℝ) ≠ 0` using `by positivity`. Rewrite using `[mul_left_comm, ← smul_eq_C_mul, map_smul, h₁, smul_eq_mul, inv_mul_cancel_left₀ h₀]`.
+-/
 private theorem alt_vdm (Ψ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ) (a : ι)
     (hΨ : ∀ i i' : Fin (r a), (i' : ℕ) = i + 1 → ∀ P,
       Ψ (rename (Equiv.swap (⟨a, i⟩ : Σ a, Fin (r a)) ⟨a, i'⟩) P) = -Ψ P) (Q : MvPolynomial (Σ a, Fin (r a)) ℝ)
@@ -119,6 +165,23 @@ private theorem alt_vdm (Ψ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ
 
 variable [Fintype ι]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (@Sigma.mk ι (fun a => Fin (r a)) a)` using `sigma_mk_injective`. Set `ρ : MvPolynomial (Fin (r a)) ℝ →ₐ[ℝ] MvPolynomial (Σ a, Fin (r a)) ℝ` to `rename (@Sigma.mk ι (fun a => Fin (r a)) a)`. Set `F (Θ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ) (S : MvPolynomial (Σ a, Fin (r a)) ℝ) : MvPolynomial (Fin (r a)) ℝ →ₗ[ℝ] ℝ` to `Θ ∘ₗ LinearMap.mulLeft ℝ S ∘ₗ ρ.toLinearMap`. Establish `hF (Θ S P) : F Θ S P = Θ (S * rename (@Sigma.mk ι (fun a => Fin (r a)) a) P)` using `rfl`. Establish `hQs (i i' : Fin (r a)) (hi : (i' : ℕ) = i + 1)` using `((mem_blockInv r).1 hQ i i' hi).2`.
+
+Establish `hps (i i' : Fin (r a)) (hi : (i' : ℕ) = i + 1) : rename (Equiv.swap (⟨a, i⟩ : Σ a, Fin (r a)) ⟨a, i'⟩) (sq2 r * Q) = sq2 r * Q`. Rewrite using `[map_mul (rename _), hQs i i' hi, sq2, map_sum (rename _)]`. Simplify using `only [map_pow, rename_X]`. Rewrite using `[Equiv.sum_comp (Equiv.swap (⟨a, i⟩ : Σ a, Fin (r a)) ⟨a, i'⟩) fun z => (X z ^ 2 : MvPolynomial _ ℝ)]`. Establish `key` using `block_algebra (r a) (F Φ (sq2 r * Q)) (F Ψ Q) (restrict_swap r Ψ a hΨ Q hQs) fun i i' hi k d M hM hd => by`.
+
+Establish `hne : (⟨a, i⟩ : Σ a, Fin (r a)) ≠ ⟨a, i'⟩` using `hinj.ne fun e => by rw [e] at hi; omega`. Establish `hlow : oddHarm k * F Ψ (sq2 r * Q) ((X i' - X i) ^ (2 * k - 1) * mid i i' M) = 0`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using the standard rewrite rules. Establish `hh` using `(((isHomogeneous_X ℝ i').sub (isHomogeneous_X ℝ i)).pow (2 * k - 1)).mul (isHomogeneous_mid i i' hM)`.
+
+Rewrite using `[GlobalTheory.T.alternating_functional_low_degree _ _ (alt_of_adj' (F Ψ (sq2 r * Q)) (restrict_swap r Ψ a hΨ _ hps)) _ _ hh (by omega), mul_zero]`. Establish `hu (m : ℕ) : rename (@Sigma.mk ι (fun a => Fin (r a)) a) ((X i' - X i) ^ m * mid i i' M) = (X ⟨a, i'⟩ - X ⟨a, i⟩) ^ m * mid ⟨a, i⟩ ⟨a, i'⟩ (rename (@Sigma.mk ι (fun a => Fin (r a)) a) M)`. Rewrite using `[map_mul, map_pow, map_sub, rename_X, rename_X, rename_mid hinj]`. Rewrite `hlow` using `[hF, hu]`. Rewrite using `[hF, hF, hu, hu]`.
+
+Conclude with `powerSum_step hne Φ Ψ (hΦ i i' hi) Q _ ((mem_blockInv r).1 hQ i i' hi).1 k hlow`. Rewrite `key` using `[hF, hF, hF, map_mul (rename _), rename_monPt, rename_vdm, rename_eSum]`. Establish `h₀ : ((r a).factorial : ℝ) ≠ 0` using `by positivity`. Rewrite using `[mul_sub, map_sub, mul_left_comm, ← smul_eq_C_mul, map_smul, smul_eq_mul]`. Establish `e : Φ (sq2 r * Q * vdm r a) = (r a).factorial * Φ (sq2 r * Q * monPt r a) + ((r a : ℝ) - 1) * ((r a - 1).factorial : ℝ) * Ψ (Q * (eSum r a * monPt r a))` using `by linear_combination -key`.
+
+Rewrite using `[e]`. Break down `Nat.eq_zero_or_pos (r a) with h | h` into its components or cases. Establish `: IsEmpty (Fin (r a))` using `by rw [h]; infer_instance`. Establish `z : eSum r a = 0` using `Finset.sum_of_isEmpty _`. Rewrite using `[z, zero_mul, mul_zero, map_zero]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h₁ : (r a : ℝ) ≠ 0` using `by positivity`. Establish `h₂ : ((r a - 1).factorial : ℝ) ≠ 0` using `by positivity`. Rewrite using `[← Nat.mul_factorial_pred h.ne']`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem block_square_telescoping_harmonic (Φ Ψ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ) (a : ι)
     (hΨ : ∀ i i' : Fin (r a), (i' : ℕ) = i + 1 → ∀ P,
       Ψ (rename (Equiv.swap (⟨a, i⟩ : Σ a, Fin (r a)) ⟨a, i'⟩) P) = -Ψ P)
@@ -173,6 +236,11 @@ private theorem block_square_telescoping_harmonic (Φ Ψ : MvPolynomial (Σ a, F
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on generalizing W with`. Consider the case `empty => simp`. Consider the case `insert a S ha ih`. Establish `hne (b) (hb : b ∈ S) : a ≠ b` using `fun e => ha (e ▸ hb)`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, ← mul_assoc, ih _ fun b hb => Subalgebra.mul_mem _ (hW b (Finset.mem_insert_of_mem hb)) (vdm_mem_blockInv r (hne b hb)), mul_right_comm, hΨ a _ (Subalgebra.mul_mem _ (hW a (Finset.mem_insert_self _ _)) (Subalgebra.prod_mem _ fun b hb …`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem alt_prod (Ψ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ)
     (hΨ : ∀ a Q, Q ∈ blockInv r a → Ψ (Q * (C ((r a).factorial : ℝ)⁻¹ * vdm r a)) = Ψ (Q * monPt r a)) (S : Finset ι)
     (W : MvPolynomial (Σ a, Fin (r a)) ℝ) (hW : ∀ a ∈ S, W ∈ blockInv r a) :
@@ -188,6 +256,15 @@ private theorem alt_prod (Ψ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] �
     congr 1
     ring
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on generalizing W with`. Consider the case `empty => simp`. Consider the case `insert a S ha ih`. Establish `hne (b) (hb : b ∈ S) : a ≠ b` using `fun e => ha (e ▸ hb)`. Establish `hWF (b) (hb : b ∈ S) : W * monPt r a ∈ blockInv r b` using `Subalgebra.mul_mem _ (hW b (Finset.mem_insert_of_mem hb)) (monPt_mem_blockInv r (hne b hb))`.
+
+Establish `e₁` using `ih _ hWF`. Establish `e₂` using `hΦ a _ (Subalgebra.mul_mem _ (hW a (Finset.mem_insert_self _ _)) (Subalgebra.prod_mem _ fun b hb => vdm_mem_blockInv r (hne b hb).symm))`. Establish `e₃` using `alt_prod r Ψ hΨ S (eSum r a * (W * monPt r a)) fun b hb => Subalgebra.mul_mem _ (eSum_mem_blockInv r b a) (hWF b hb)`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, Finset.sum_insert ha]`. Generalize the expression as in `∏ a ∈ S, (C ((r a).factorial : ℝ)⁻¹ * vdm r a) = G at *`.
+
+Generalize the expression as in `∏ a ∈ S, monPt r a = F at *`. Generalize the expression as in `C ((r a).factorial : ℝ)⁻¹ * vdm r a = g at *`. Rewrite `e₂` using `[show W * G * (eSum r a * monPt r a) = eSum r a * (W * monPt r a) * G by ring, e₃]`. Rewrite using `[show sq2 r * W * (monPt r a * F - g * G) = sq2 r * (W * monPt r a) * (F - G) + sq2 r * (W * G) * (monPt r a - g) by ring, map_add, e₁, e₂]`. Simplify using `only [mul_assoc]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem telescope (Φ Ψ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ)
     (hΨ : ∀ a Q, Q ∈ blockInv r a → Ψ (Q * (C ((r a).factorial : ℝ)⁻¹ * vdm r a)) = Ψ (Q * monPt r a))
     (hΦ : ∀ a Q, Q ∈ blockInv r a → Φ (sq2 r * Q * (monPt r a - C ((r a).factorial : ℝ)⁻¹ * vdm r a)) =
@@ -218,6 +295,11 @@ private theorem telescope (Φ Ψ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ
 
 end Algebra
 
+/- English proof (translation)
+Introduce `hP _ HR k _ B Y _ _ q p d D hB hY π w ι _ E r h H fl hfl Φ Ψ hΦ hΨ s m`. Establish `HA : ArCalc` using `hP.p4`. Establish `hS : SwapFl swapG` using `GlobalTheory.CovTest.SwapFlProof.swapFl_of_swap2 HA _ homog_swapG (GlobalTheory.CovTest.swap2_of_swapRegular HA HR GlobalTheory.T.generic_degree_pullback_formula _ (GlobalTheory.T.arith_calc_swap_regular HA))`. Establish `hG` using `GlobalTheory.CovTest.GeoSwap.geo_swap HA HR k B Y q p d D hB hY π w ι E r h H fl hfl Ψ hΨ`. Use `telescope r Φ Ψ (fun a => alt_vdm r Ψ a (hG a)) (fun a => block_square_telescoping_harmonic r Φ Ψ a (hG a) fun i i' hi => GlobalTheory.T.swap_polynomial_identity _ _ _ (sigma_mk_injective.ne fun e => by rw [e] at hi; omega) D Φ Ψ hΦ.2 hΨ.2 ?_) Finset.univ _ fun a _ => Subalgebra. …` and prove the remaining obligations.
+
+Introduce `n`. Use `hS k B Y q p d D hB hY π w ι E r h H fl hfl Φ Ψ hΦ hΨ a i i' hi n` and compare the differences between its conclusion and the goal.
+-/
 theorem _root_.GlobalTheory.T.flag_bundle_family_pullback_product : Hypotheses2 → HypothesesH → RegularAlteration → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B]
     [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d D : ℕ), IsArithVar q d → IsArithVar p D → ∀ (π : Y ⟶ B)
     (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (h : ∀ a, VMetric q (E a) (r a))

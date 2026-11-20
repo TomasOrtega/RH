@@ -21,9 +21,17 @@ section Valuation
 
 variable {v : HeightOneSpectrum (𝓞 K)}
 
+/- English proof (translation)
+The claim follows from `natCard_residueField_adicCompletion v`.
+-/
 theorem residueCard_adicCompletion : residueCard (v.adicCompletion K) = Ideal.absNorm v.asIdeal :=
   natCard_residueField_adicCompletion v
 
+/- English proof (translation)
+Establish `h1` using `norm_eq_absNorm_zpow_neg_ord v hx`. Establish `h2` using `normalizedAbv_eq_zpow v hx`. Rewrite `h2` using `[normalizedAbv_apply]`. Establish `hN : (1 : ℝ) < Ideal.absNorm v.asIdeal`. Rewrite using `[← residueCard_adicCompletion]`.
+
+Conclude with `one_lt_residueCard (K := v.adicCompletion K)` after adjusting the coercions. Establish `h` using `zpow_right_injective₀ (a := (Ideal.absNorm v.asIdeal : ℝ)) (by linarith) hN.ne' (h2.symm.trans h1)`. Rewrite using `[← exp_log ((Valued.v).ne_zero_iff.2 hx)]`. Conclude with `congrArg exp h`.
+-/
 theorem valued_eq_exp_neg_ord {x : v.adicCompletion K} (hx : x ≠ 0) :
     Valued.v x = exp (-ord x) := by
   have h1 := norm_eq_absNorm_zpow_neg_ord v hx
@@ -37,6 +45,11 @@ theorem valued_eq_exp_neg_ord {x : v.adicCompletion K} (hx : x ≠ 0) :
   rw [← exp_log ((Valued.v).ne_zero_iff.2 hx)]
   exact congrArg exp h
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `only [map_zero, zero_le, iff_true]`. Conclude with `zero_mem _`. Rewrite using `[mem_valBall_iff_le_ord hx, valued_eq_exp_neg_ord hx, exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_valBall_iff_valued {n : ℤ} {x : v.adicCompletion K} :
     x ∈ valBall (v.adicCompletion K) n ↔ Valued.v x ≤ exp (-n) := by
   by_cases hx : x = 0
@@ -46,6 +59,9 @@ theorem mem_valBall_iff_valued {n : ℤ} {x : v.adicCompletion K} :
   · rw [mem_valBall_iff_le_ord hx, valued_eq_exp_neg_ord hx, exp_le_exp]
     omega
 
+/- English proof (translation)
+Rewrite using `[valued_eq_exp_neg_ord hx, ← exp_zero, exp_inj]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem valued_eq_one_iff_ord {x : v.adicCompletion K} (hx : x ≠ 0) :
     Valued.v x = 1 ↔ ord x = 0 := by
   rw [valued_eq_exp_neg_ord hx, ← exp_zero, exp_inj]
@@ -57,6 +73,17 @@ section AddChar
 
 variable (v : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Establish `hM : ∀ a ∈ v.adicCompletionIntegers K, ∀ x ∈ valBall (v.adicCompletion K) n, a * x ∈ valBall (v.adicCompletion K) n`. Introduce `a ha x hx`. Rewrite `hx`, the goal using `[mem_valBall_iff_valued]`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `(mem_adicCompletionIntegers _ _ _).1 ha`. Use `_ = Valued.v x := one_mul _`. Use `_ ≤ exp (-n) := hx`. Express the relevant statement in the definitionally equal form `(∀ x ∈ valBall (v.adicCompletion K) n, localAdelicChar K v x = 1) ↔ _`. Rewrite using `[forall_localAdelicChar_eq_one_iff_le v _ hM]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hx : ((unifUnit (v.adicCompletion K) ^ n : (v.adicCompletion K)ˣ) : v.adicCompletion K) ∈ valBall (v.adicCompletion K) n`.
+
+Rewrite using `[mem_valBall_iff_le_ord (Units.ne_zero _), ord_unifUnit_zpow]`. Establish `h2` using `(mem_localInvDifferent_iff_valued v _).1 (h hx)`. Rewrite `h2` using `[valued_eq_exp_neg_ord (Units.ne_zero _), ord_unifUnit_zpow, exp_le_exp]`. Express the relevant statement in the definitionally equal form `-n ≤ differentExp v at h2`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h x hx`. Rewrite using `[mem_localInvDifferent_iff_valued]`. Conclude with `((mem_valBall_iff_valued).1 hx).trans (exp_le_exp.2 (by change -n ≤ differentExp v; omega))`.
+-/
 theorem isTrivialOn_localAdelicChar_iff (n : ℤ) :
     IsTrivialOn (localAdelicChar K v) n ↔ -differentExp v ≤ n := by
   have hM : ∀ a ∈ v.adicCompletionIntegers K, ∀ x ∈ valBall (v.adicCompletion K) n,
@@ -86,6 +113,11 @@ theorem isTrivialOn_localAdelicChar_iff (n : ℤ) :
     rw [mem_localInvDifferent_iff_valued]
     exact ((mem_valBall_iff_valued).1 hx).trans (exp_le_exp.2 (by change -n ≤ differentExp v; omega))
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : IsTrivialOn (localAdelicChar K v) (-differentExp v - 1)` using `fun x _ ↦ by`. Rewrite using `[h]`. Both sides reduce to the same expression. Use `(isTrivialOn_localAdelicChar_iff v _).1 h1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem localAdelicChar_ne_one : localAdelicChar K v ≠ 1 := by
   intro h
   have h1 : IsTrivialOn (localAdelicChar K v) (-differentExp v - 1) := fun x _ ↦ by
@@ -94,6 +126,9 @@ theorem localAdelicChar_ne_one : localAdelicChar K v ≠ 1 := by
   have := (isTrivialOn_localAdelicChar_iff v _).1 h1
   omega
 
+/- English proof (translation)
+Establish `hc` using `continuous_localAdelicChar v`. Establish `hne` using `localAdelicChar_ne_one v`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(isTrivialOn_iff hc hne _).1 ((isTrivialOn_localAdelicChar_iff v _).2 le_rfl)`. Conclude with `(isTrivialOn_localAdelicChar_iff v _).1 (isTrivialOn_addCharConductor hc hne)`.
+-/
 theorem addCharConductor_localAdelicChar :
     addCharConductor (localAdelicChar K v) = -differentExp v := by
   have hc := continuous_localAdelicChar v
@@ -108,12 +143,20 @@ namespace HeckeCharacter
 
 variable (χ : HeckeCharacter K) (v : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker, ← Units.val_eq_one, coe_localChar]`. Conclude with `Circle.coe_eq_one`.
+-/
 theorem ker_localChar :
     (localChar χ v).ker = (χ.localComponent v : (v.adicCompletion K)ˣ →* Circle).ker := by
   ext a
   rw [MonoidHom.mem_ker, MonoidHom.mem_ker, ← Units.val_eq_one, coe_localChar]
   exact Circle.coe_eq_one
 
+/- English proof (translation)
+Establish `hloc : ((χ.toIdele.comp ofFinite).comp (finiteUnitsSingle v)) = (χ.localComponent v : (v.adicCompletion K)ˣ →* Circle)`. Use extensionality with `a`. Simplify using `only [MonoidHom.comp_apply, ofFinite_finiteUnitsSingle]`. Both sides reduce to the same expression. Establish `hcont : Continuous ((χ.toIdele.comp ofFinite).comp (finiteUnitsSingle v))` using `(χ.continuous_toIdele.comp continuous_ofFinite).comp (continuous_finiteUnitsSingle v)`.
+
+Rewrite using `[unitFiltrationUnits_eq_unitsLevel, ker_localChar, ← hloc, unitsLevel_le_ker_iff v Circle.noSmallSubgroups _ hcont]`. Express the relevant statement in the definitionally equal form `conductorExponentAt (χ.toIdele.comp ofFinite) v ≤ n ↔ _`. Rewrite using `[← χ.multiplicity_conductor]`.
+-/
 theorem unitFiltrationUnits_le_ker_localChar_iff (n : ℕ) :
     unitFiltrationUnits (v.adicCompletion K) n ≤ (localChar χ v).ker ↔
       multiplicity v.asIdeal χ.conductor ≤ n := by
@@ -129,6 +172,9 @@ theorem unitFiltrationUnits_le_ker_localChar_iff (n : ℕ) :
   change conductorExponentAt (χ.toIdele.comp ofFinite) v ≤ n ↔ _
   rw [← χ.multiplicity_conductor]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Nat.sInf_le ((χ.unitFiltrationUnits_le_ker_localChar_iff v _).2 le_rfl)`. Conclude with `(χ.unitFiltrationUnits_le_ker_localChar_iff v _).1 (unitFiltrationUnits_quasiCharConductor_le_ker (continuous_localChar χ v))`.
+-/
 theorem quasiCharConductor_localChar :
     quasiCharConductor (localChar χ v) = multiplicity v.asIdeal χ.conductor := by
   apply le_antisymm
@@ -136,11 +182,19 @@ theorem quasiCharConductor_localChar :
   · exact (χ.unitFiltrationUnits_le_ker_localChar_iff v _).1
       (unitFiltrationUnits_quasiCharConductor_le_ker (continuous_localChar χ v))
 
+/- English proof (translation)
+Rewrite using `[IsUnramifiedChar, χ.unitFiltrationUnits_le_ker_localChar_iff v 0, Nat.le_zero, multiplicity_eq_zero]`.
+-/
 theorem isUnramifiedChar_localChar_iff :
     IsUnramifiedChar (localChar χ v) ↔ ¬ v.asIdeal ∣ χ.conductor := by
   rw [IsUnramifiedChar, χ.unitFiltrationUnits_le_ker_localChar_iff v 0, Nat.le_zero,
     multiplicity_eq_zero]
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x₀ ↦ ?_` and prove the remaining obligations. Use `set m : ℤ := (multiplicity v.asIdeal χ.conductor : ℤ)`. Establish `hW : {x : v.adicCompletion K | x - x₀ ∈ valBall (v.adicCompletion K) m} ∈ nhds x₀` using `((isOpen_valBall m).preimage (continuous_id.sub continuous_const)).mem_nhds (show x₀ - x₀ ∈ valBall (v.adicCompletion K) m by rw [sub_self]; exact zero_mem _)`. Use `filter_upwards [hW] with x hx`. Use `χ.finiteTest_add x₀ (h := x - x₀) ((mem_valBall_iff_valued).1 hx)` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem isLocallyConstant_finiteTest : IsLocallyConstant (χ.finiteTest v) := by
   refine (IsLocallyConstant.iff_eventually_eq _).2 fun x₀ ↦ ?_
   set m : ℤ := (multiplicity v.asIdeal χ.conductor : ℤ)
@@ -151,15 +205,24 @@ theorem isLocallyConstant_finiteTest : IsLocallyConstant (χ.finiteTest v) := by
   have := χ.finiteTest_add x₀ (h := x - x₀) ((mem_valBall_iff_valued).1 hx)
   rwa [add_sub_cancel] at this
 
+/- English proof (translation)
+The claim follows from `(χ.isLocallyConstant_finiteTest v).continuous`.
+-/
 theorem continuous_finiteTest : Continuous (χ.finiteTest v) :=
   (χ.isLocallyConstant_finiteTest v).continuous
 
+/- English proof (translation)
+Use `HasCompactSupport.intro (isCompact_adicCompletionIntegers v) fun y hy ↦ ?_` and prove the remaining obligations. Rewrite `hy` using `[SetLike.mem_coe, mem_adicCompletionIntegers, not_le]`. Rewrite using `[χ.finiteTest_eq_zero hy, zero_mul]`.
+-/
 theorem hasCompactSupport_finiteTest_mul (g : v.adicCompletion K → ℂ) :
     HasCompactSupport fun y ↦ χ.finiteTest v y * g y := by
   refine HasCompactSupport.intro (isCompact_adicCompletionIntegers v) fun y hy ↦ ?_
   rw [SetLike.mem_coe, mem_adicCompletionIntegers, not_le] at hy
   rw [χ.finiteTest_eq_zero hy, zero_mul]
 
+/- English proof (translation)
+The claim follows from `((χ.continuous_finiteTest v).mul (continuous_subtype_val.comp ((continuous_localAdelicChar v).comp (continuous_const_mul b)))).integrable_of_hasCompactSupport (χ.hasCompactSupport_finiteTest_mul v _)`.
+-/
 theorem integrable_finiteTest_mul_localAdelicChar (b : v.adicCompletion K) :
     Integrable (fun y ↦ χ.finiteTest v y * (localAdelicChar K v (b * y) : ℂ))
       (haarIntegers (v.adicCompletion K)) :=
@@ -167,6 +230,9 @@ theorem integrable_finiteTest_mul_localAdelicChar (b : v.adicCompletion K) :
     ((continuous_localAdelicChar v).comp (continuous_const_mul b)))).integrable_of_hasCompactSupport
     (χ.hasCompactSupport_finiteTest_mul v _)
 
+/- English proof (translation)
+Establish `hu` using `(χ.isUnramifiedChar_localChar_iff v).2 hv`. Rewrite using `[localEpsilon_of_isUnramified hu, addCharConductor_localAdelicChar, sub_self, mul_zero, Complex.cpow_zero, mul_one, ← coe_localChar, quasiChar_apply_of_isUnramified hu a, ha, neg_neg, Units.val_zpow_eq_zpow_val]`.
+-/
 theorem localEpsilon_half_of_not_dvd (hv : ¬ v.asIdeal ∣ χ.conductor) (a : (v.adicCompletion K)ˣ)
     (ha : ord (a : v.adicCompletion K) = differentExp v) :
     localEpsilon (localChar χ v) (localAdelicChar K v) (1 / 2) = (χ.localComponent v a : ℂ) := by
@@ -175,6 +241,35 @@ theorem localEpsilon_half_of_not_dvd (hv : ¬ v.asIdeal ∣ χ.conductor) (a : (
     Complex.cpow_zero, mul_one, ← coe_localChar, quasiChar_apply_of_isUnramified hu a, ha, neg_neg,
     Units.val_zpow_eq_zpow_val]
 
+/- English proof (translation)
+Establish `hr : ¬ IsUnramifiedChar (localChar χ v)` using `fun h ↦ ((χ.isUnramifiedChar_localChar_iff v).1 h) hv`. Establish `hn` using `addCharConductor_localAdelicChar v`. Establish `hc` using `χ.quasiCharConductor_localChar v`. Establish `hf : χ.condExp v = (multiplicity v.asIdeal χ.conductor : ℤ)` using `χ.condExp_eq v`. Use `set m := multiplicity v.asIdeal χ.conductor with hm`.
+
+Use `set d := differentExp v with hd`. Establish `ha0 : (a : v.adicCompletion K) ≠ 0` using `a.ne_zero`. Establish `hai : (a : v.adicCompletion K)⁻¹ ≠ 0` using `inv_ne_zero ha0`. Rewrite using `[localEpsilon_of_not_isUnramified hr, hn, hc]`. Use `set A : Set (v.adicCompletion K) := (valBall (v.adicCompletion K) (-d - (m : ℤ)) : Set (v.adicCompletion K)) \ valBall (v.adicCompletion K) (-d - (m : ℤ) + 1) with hAdef`.
+
+Establish `hA : MeasurableSet A` using `(measurableSet_valBall _).diff (measurableSet_valBall _)`. Use `set F : v.adicCompletion K → ℂ := fun x ↦ quasiCharExt (localChar χ v)⁻¹ x * ((modulus x : ℝ) : ℂ) ^ (-(1 / 2 : ℂ)) * (localAdelicChar K v x : ℂ) with hFdef`. Use `set M : ℝ := (modulus ((a : v.adicCompletion K)⁻¹) : ℝ) with hMdef`. Establish `hM0 : 0 < M` using `NNReal.coe_pos.2 (modulus_pos hai)`. Rewrite using `[← integral_indicator hA]`.
+
+Unfold `LocalField.selfDualMeasure`. Rewrite using `[hn, integral_smul_nnreal_measure]`. Establish `hsub : ∫ x, A.indicator F x ∂haarIntegers (v.adicCompletion K) = M • ∫ y, A.indicator F ((a : v.adicCompletion K)⁻¹ * y) ∂haarIntegers (v.adicCompletion K)`. Rewrite using `[integral_comp_mul_left (haarIntegers (v.adicCompletion K)) hai, smul_smul, mul_inv_cancel₀ hM0.ne', one_smul]`. Establish `hpt : ∀ y, A.indicator F ((a : v.adicCompletion K)⁻¹ * y) = (χ.localComponent v a : ℂ) * ((M : ℂ) ^ (-(1 / 2 : ℂ))) * (χ.finiteTest v y * (localAdelicChar K v ((a : v.adicCompletion K)⁻¹ * y) : ℂ))`.
+
+Introduce `y`. Distinguish the cases in `hy : Valued.v y = 1`. Establish `hy0 : y ≠ 0` using `fun h ↦ by simp [h] at hy set u : (v.adicCompletion K)ˣ := Units.mk0 y hy0`. Establish `hu : ((a⁻¹ * u : (v.adicCompletion K)ˣ) : v.adicCompletion K) = (a : v.adicCompletion K)⁻¹ * y`. Simplify using `[u]`.
+
+Establish `hyo : ord y = 0` using `(valued_eq_one_iff_ord hy0).1 hy`. Establish `hmem : (a : v.adicCompletion K)⁻¹ * y ∈ A`. Rewrite using `[hAdef, mem_shellSet_iff (mul_ne_zero hai hy0), ord_mul hai hy0, ord_inv ha0, hyo, ha, hf]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_mem hmem, hFdef]`.
+
+Simplify using `only`. Rewrite using `[← hu, quasiCharExt_units, MonoidHom.inv_apply, map_mul, map_inv, Units.val_inv_eq_inv_val, Units.val_mul, Units.val_inv_eq_inv_val, coe_localChar, coe_localChar, hu, modulus_mul, modulus_of_ne_zero hy0, hyo, neg_zero, zpow_zero, mul_one]`. Establish `hft : χ.finiteTest v y = ((χ.localComponent v u : ℂ))⁻¹` using `χ.finiteTest_of_dvd hv u hy`. Rewrite using `[← hMdef, hft]`. Simplify using `only [mul_inv, inv_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hnot : (a : v.adicCompletion K)⁻¹ * y ∉ A`. Distinguish the cases in `hy0 : y = 0`. Rewrite using `[hy0, mul_zero]`. Conclude with `zero_notMem_shellSet _`.
+
+Rewrite using `[hAdef, mem_shellSet_iff (mul_ne_zero hai hy0), ord_mul hai hy0, ord_inv ha0, ha, hf]`. Introduce `h`. Conclude with `hy ((valued_eq_one_iff_ord hy0).2 (by linarith))`. Rewrite using `[Set.indicator_of_notMem hnot, χ.finiteTest_eq_zero_of_dvd hv hy, zero_mul, mul_zero]`. Rewrite using `[hsub, integral_congr_ae (Filter.Eventually.of_forall hpt), integral_const_mul]`.
+
+Establish `hq : (residueCard (v.adicCompletion K) : ℝ) = (Ideal.absNorm v.asIdeal : ℝ)`. Rewrite using `[residueCard_adicCompletion]`. Establish `hN : (0 : ℝ) < Ideal.absNorm v.asIdeal`. Rewrite using `[← hq]`. Conclude with `(zero_lt_one.trans (one_lt_residueCard (K := v.adicCompletion K)))` after adjusting the coercions.
+
+Establish `hMe : M = (Ideal.absNorm v.asIdeal : ℝ) ^ ((m : ℝ) + d)`. Rewrite using `[hMdef, modulus_of_ne_zero hai, NNReal.coe_zpow, NNReal.coe_natCast, hq, ord_inv ha0, neg_neg, ha, hf, ← Real.rpow_intCast]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `hkey : (((residueCard (v.adicCompletion K) : ℝ≥0) ^ (((-d : ℤ) : ℝ) / 2) : ℝ≥0) : ℝ) * M * M ^ (-(1 / 2 : ℝ)) = Real.sqrt ((Ideal.absNorm v.asIdeal ^ m : ℕ) : ℝ)`.
+
+Rewrite using `[NNReal.coe_rpow, NNReal.coe_natCast, hq, hMe, ← Real.rpow_mul hN.le, Real.sqrt_eq_rpow, Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_mul hN.le, ← Real.rpow_add hN, ← Real.rpow_add hN]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hMc : (M : ℂ) ^ (-(1 / 2 : ℂ)) = ((M ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ)`.
+
+Rewrite using `[Complex.ofReal_cpow hM0.le]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[hMc, NNReal.smul_def, Complex.real_smul, Complex.real_smul, ← hkey]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem localEpsilon_half_of_dvd (hv : v.asIdeal ∣ χ.conductor) (a : (v.adicCompletion K)ˣ)
     (ha : ord (a : v.adicCompletion K) = χ.condExp v + differentExp v) :
     localEpsilon (localChar χ v) (localAdelicChar K v) (1 / 2) =

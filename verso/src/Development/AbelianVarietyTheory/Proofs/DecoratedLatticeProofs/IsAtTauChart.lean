@@ -26,11 +26,17 @@ open GlobalTheory.StdUnn
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `hT.map f` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_det_map {n : ℕ} {R : Type} [CommRing R] (f : D.host.E →+* R) {T : Matrix (Fin n) (Fin n) D.host.E}
     (hT : IsUnit T.det) : IsUnit (T.map f).det := by
   have := hT.map f
   rwa [RingHom.map_det] at this
 
+/- English proof (translation)
+Establish `: h ∈ GinfC V ↔ (mt V h).map (finPart D) = 1`. Rewrite using `[GinfC, MonoidHom.mem_ker, Units.ext_iff]`. Both sides reduce to the same expression. Rewrite using `[IsAtTau, this]`. Conclude with `⟨fun ⟨a, b, c⟩ => ⟨b, c, a⟩, fun ⟨b, c, a⟩ => ⟨a, b, c⟩⟩`.
+-/
 theorem isAtTau_iff (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau) (x : Matrix (Fin V.rank) (Fin V.rank) ℂ) (h : GA D V) :
     IsAtTau θ V τ x h ↔ compAt θ τ (mt V h) = x ∧ (∀ τ', τ' ≠ τ → compAt θ τ' (mt V h) = 1) ∧
       (mt V h).map (finPart D) = 1 := by

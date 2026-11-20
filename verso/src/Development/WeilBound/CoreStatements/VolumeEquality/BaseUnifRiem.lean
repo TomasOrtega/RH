@@ -22,8 +22,14 @@ def imB (M : Matrix (Fin g) (Fin g) ℂ) : (Fin g → ℂ) →ₗ[ℝ] (Fin g �
         simp
       rw [h, mulVec_smul, dotProduct_smul, smul_eq_mul, Complex.im_ofReal_mul, smul_eq_mul])
 
+/- English proof (translation)
+The claim follows from `R.im x y`.
+-/
 theorem imB_P (R : RiemLat E g Λ) (x y : Λ) : imB R.Hm (R.P x) (R.P y) = R.form x y := R.im x y
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => R.unimod.1 ?_` and prove the remaining obligations. Use extensionality with `y`. Establish `h` using `imB_P R x y`. Rewrite `h` using `[hx]`. Simplify using `using h.symm`.
+-/
 theorem inj (R : RiemLat E g Λ) : Function.Injective R.P := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => R.unimod.1 ?_
   ext y
@@ -31,6 +37,15 @@ theorem inj (R : RiemLat E g Λ) : Function.Injective R.P := by
   rw [hx] at h
   simpa using h.symm
 
+/- English proof (translation)
+Use `R.free` as an intermediate fact. Use `R.fin` as an intermediate fact. Set `b : Module.Basis (Fin (2 * g)) ℤ Λ` to `Module.finBasisOfFinrankEq ℤ Λ R.rank`. Establish `hli : LinearIndependent ℝ fun k => R.P (b k)`. Use `Fintype.linearIndependent_iff.2 fun r hr l => ?_` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `R.unimod.2 (b.coord l)`. Establish `h` using `congrArg (imB R.Hm (R.P y)) hr`. Simplify using `only [map_sum, map_smul, map_zero, imB_P, hy, Module.Basis.coord_apply, Module.Basis.repr_self, smul_eq_mul] at h`. Rewrite `h` using `[Finset.sum_eq_single l (fun k _ hk => by simp [Finsupp.single_apply, hk]) (by simp)]`. Simplify using `using h`.
+
+Establish `hcard : Fintype.card (Fin (2 * g)) = Module.finrank ℝ (Fin g → ℂ)`. Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]`. Establish `h` using `hli.span_eq_top_of_card_eq_finrank' hcard`. Rewrite using `[eq_top_iff, ← h]`. Conclude with `Submodule.span_mono (by`.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨b k, rfl⟩)`.
+-/
 theorem span_top (R : RiemLat E g Λ) : Submodule.span ℝ (Set.range R.P) = ⊤ := by
   classical
   have := R.free
@@ -53,6 +68,17 @@ theorem span_top (R : RiemLat E g Λ) : Submodule.span ℝ (Set.range R.P) = ⊤
     exact ⟨b k, rfl⟩)
 
 omit [IsCMField E] in
+/- English proof (translation)
+Use `choose cs hcs using exists_coeff (E := E)`. Establish `hsum : ∑ s, combo (cs s) = 1`. Apply `evalHom_injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_one]`. Simplify using `only [hcs]`.
+
+Use function extensionality and compare the values at `s'`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hmul : ∀ (s : E →+* ℂ) (b : 𝓞 E), ((1 : ℂ) ⊗ₜ[ℤ] b) * combo (cs s) = s (algebraMap (𝓞 E) E b) • combo (cs s)`. Introduce `s b`. Apply `evalHom_injective` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, map_smul, hcs]`. Use function extensionality and compare the values at `s'`. Distinguish the cases in `h : s' = s`. Substitute `h` using the available equality. Simplify using `[evalHom_tmul]`.
+
+Simplify using `[evalHom_tmul, h]`. Use `⟨fun s => actHom ρ (combo (cs s)) x, fun s => mem_eigSp_iff.2 fun b => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (actHom ρ) (hmul s b)`. Rewrite `h` using `[map_mul, map_smul, actHom_tmul, one_smul]`. Conclude with `LinearMap.congr_fun h x`.
+
+Establish `h` using `congrArg (actHom ρ) hsum`. Rewrite `h` using `[map_sum, map_one]`. Establish `h2` using `LinearMap.congr_fun h x`. Simplify `h2` using `[LinearMap.sum_apply]`.
+-/
 theorem exists_decomp {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : 𝓞 E →+* Module.End ℂ V) (x : V) :
     ∃ y : (E →+* ℂ) → V, (∀ s, y s ∈ eigSp ρ (s.comp (algebraMap (𝓞 E) E))) ∧ ∑ s, y s = x := by
   classical
@@ -83,6 +109,11 @@ theorem exists_decomp {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : 𝓞 E �
     simpa [LinearMap.sum_apply] using h2
 
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨c, hc⟩` from `eigComp_eq_combination E s`. Take `⟨h₁, h₂, h₃⟩` from `hc V ρ`. Establish `e : ∀ x, eigComp ρ s x = (∑ a ∈ c.support, c a • ρ a : V →ₗ[ℂ] V) x` using `fun x => by`. Rewrite using `[h₁]`. Simplify using `[LinearMap.sum_apply]`.
+
+Use `⟨_, e, fun x => e x ▸ h₂ x, fun x hx => e x ▸ h₃ x hx, fun a x => ?_⟩` and prove the remaining obligations. Rewrite using `[← e, ← e, ← mem_eigSp_iff.1 (h₂ x) a, h₁, h₁, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]`.
+-/
 theorem exists_proj {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : 𝓞 E →+* Module.End ℂ V) (s : 𝓞 E →+* ℂ) :
     ∃ p : V →ₗ[ℂ] V, (∀ x, eigComp ρ s x = p x) ∧ (∀ x, p x ∈ eigSp ρ s) ∧ (∀ x ∈ eigSp ρ s, p x = x) ∧
       ∀ a x, p (ρ a x) = s a • p x := by
@@ -97,6 +128,11 @@ theorem exists_proj {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : 𝓞 E →+
   rw [map_smul, ← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]
 
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨y, hy, hs⟩` from `exists_decomp ρ x`. Use `conv_rhs => rw [← hs]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Take `⟨p, h₁, -, h₃, h₄⟩` from `exists_proj ρ (s.comp (algebraMap (𝓞 E) E))`. Rewrite using `[h₁, ← hs, map_sum, Finset.sum_eq_single s (fun s' _ hne => ?_) (by simp), h₃ _ (hy s)]`.
+
+Assume the negation of the conclusion as `h0`. Use `hne (comp_injective (RingHom.ext fun a => ?_))` and prove the remaining obligations. Establish `e` using `h₄ a (y s')`. Rewrite `e` using `[mem_eigSp_iff.1 (hy s') a, map_smul]`. Conclude with `smul_left_injective ℂ h0 e`.
+-/
 theorem sum_eigComp {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : 𝓞 E →+* Module.End ℂ V) (x : V) :
     ∑ s : E →+* ℂ, eigComp ρ (s.comp (algebraMap (𝓞 E) E)) x = x := by
   classical
@@ -111,6 +147,13 @@ theorem sum_eigComp {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : 𝓞 E →+
   rw [mem_eigSp_iff.1 (hy s') a, map_smul] at e
   exact smul_left_injective ℂ h0 e
 
+/- English proof (translation)
+Establish `h : (imB R.Hm).comp ((R.B a).restrictScalars ℝ) = (imB R.Hm).compl₂ ((R.B a').restrictScalars ℝ)`. Use `LinearMap.ext_on (span_top R) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `LinearMap.ext_on (span_top R) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Use `show imB R.Hm (R.B a (R.P x)) (R.P y) = imB R.Hm (R.P x) (R.B a' (R.P y))`. Rewrite using `[← R.act, ← R.act, imB_P, imB_P, R.adj a a' ha]`. Establish `him : ∀ z, (R.B a z ⬝ᵥ R.Hm *ᵥ star w).im = (z ⬝ᵥ R.Hm *ᵥ star (R.B a' w)).im` using `fun z => LinearMap.congr_fun₂ h z w`. Use `Complex.ext ?_ (him z)` and prove the remaining obligations. Establish `h2` using `him (Complex.I • z)`.
+
+Rewrite `h2` using `[map_smul, smul_dotProduct, smul_dotProduct]`. Simplify using `using h2`.
+-/
 theorem adj_herm (R : RiemLat E g Λ) (a a' : 𝓞 E) (ha : (a' : E) = IsCMField.complexConj E (a : E)) (z w : Fin g → ℂ) :
     R.B a z ⬝ᵥ R.Hm *ᵥ star w = z ⬝ᵥ R.Hm *ᵥ star (R.B a' w) := by
   have h : (imB R.Hm).comp ((R.B a).restrictScalars ℝ) = (imB R.Hm).compl₂ ((R.B a').restrictScalars ℝ) := by
@@ -127,6 +170,13 @@ theorem adj_herm (R : RiemLat E g Λ) (a a' : 𝓞 E) (ha : (a' : E) = IsCMField
   rw [map_smul, smul_dotProduct, smul_dotProduct] at h2
   simpa using h2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Use `hne (RingHom.ext fun a => ?_)` and prove the remaining obligations. Set `a' : 𝓞 E` to `IsCMField.ringOfIntegersComplexConj E a`. Establish `ha : (a' : E) = IsCMField.complexConj E (a : E)` using `rfl`. Establish `e` using `adj_herm R a a' ha y x`.
+
+Rewrite `e` using `[mem_eigSp_iff.1 hy a, mem_eigSp_iff.1 hx a', star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul]`. Establish `e2 : s a' = starRingEnd ℂ (s a)`. Rewrite using `[← extEmb_apply s a', ← extEmb_apply s a]`. Use `show extEmb s (a' : E) = starRingEnd ℂ (extEmb s (a : E))`. Rewrite using `[ha, IsCMField.complexEmbedding_complexConj]`.
+
+Establish `e3 : star (s a') = s a` using `by rw [e2]; exact Complex.conj_conj _`. Rewrite `e` using `[e3]`. Conclude with `(mul_right_cancel₀ h0 e).symm`.
+-/
 theorem orth (R : RiemLat E g Λ) (s s' : 𝓞 E →+* ℂ) (hne : s ≠ s') (x : Fin g → ℂ) (hx : x ∈ eigSp R.B s)
     (y : Fin g → ℂ) (hy : y ∈ eigSp R.B s') : R.ip x y = 0 := by
   by_contra h0
@@ -147,6 +197,9 @@ end SheetDecomposition.Riem
 
 namespace SheetDecomposition
 
+/- English proof (translation)
+Introduce `E _ _ _ g Λ _ _ Ψ _ R`. Use `⟨Riem.inj R, Riem.span_top R, fun s => ?_, Riem.sum_eigComp R.B, Riem.orth R⟩` and prove the remaining obligations. Take `⟨p, h₁, h₂, h₃, h₄⟩` from `Riem.exists_proj R.B s`. Simplify using `only [h₁]`. Conclude with `⟨h₂, h₃, fun c x y => by rw [map_add, map_smul], h₄⟩`.
+-/
 theorem riemBasic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (R : RiemLat E g Λ), Function.Injective R.P ∧ Submodule.span ℝ (Set.range R.P) = ⊤ ∧ (∀ s : 𝓞 E →+* ℂ, (∀ x, eigComp R.B s x ∈ eigSp R.B s) ∧ (∀ x ∈ eigSp R.B s, eigComp R.B s x = x) ∧ (∀ (c : ℂ) x y, eigComp R.B s (c • x + y) = c • eigComp R.B s x + eigComp R.B s y) ∧ ∀ a x, eigComp R.B s (R.B a x) = s a • eigComp R.B s x) ∧ (∀ x, ∑ s : E →+* ℂ, eigComp R.B (s.comp (algebraMap (𝓞 E) E)) x = x) ∧ ∀ s s' : 𝓞 E →+* ℂ, s ≠ s' → ∀ x ∈ eigSp R.B s, ∀ y ∈ eigSp R.B s', R.ip x y = 0 := by
   intro E _ _ _ g Λ _ _ Ψ _ R
   refine ⟨Riem.inj R, Riem.span_top R, fun s => ?_, Riem.sum_eigComp R.B, Riem.orth R⟩

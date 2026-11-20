@@ -14,6 +14,13 @@ namespace GlobalTheory.LatDRFree
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Establish `hu : ∀ b : ↥(intO C), ‖(b : C)‖ = 1 → IsUnit b` using `fun b hb => by`. Establish `h0 : (b : C) ≠ 0` using `fun h => by simp [h] at hb`. Establish `hi : (b : C)⁻¹ ∈ intO C` using `by show ‖(b : C)⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, hb, inv_one]`.
+
+Conclude with `IsUnit.of_mul_eq_one ⟨_, hi⟩ (Subtype.ext (mul_inv_cancel₀ h0))`. Establish `ha : ‖(a : C)‖ ≤ 1` using `a.2`. Break down `ha.eq_or_lt with h | h` into its components or cases. Conclude with `Or.inl (hu a h)`. Use `Or.inr (hu _ ?_)` and prove the remaining obligations.
+
+Establish `: ‖(1 : C) + (-(a : C))‖ = max ‖(1 : C)‖ ‖-(a : C)‖` using `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_neg, norm_one]; exact h.ne')`. Rewrite `this` using `[norm_neg, norm_one, max_eq_left h.le, ← sub_eq_add_neg]`. Conclude with `this`.
+-/
 theorem intO_isLocalRing (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] : IsLocalRing ↥(intO C) := by
   refine IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_
   have hu : ∀ b : ↥(intO C), ‖(b : C)‖ = 1 → IsUnit b := fun b hb => by
@@ -35,6 +42,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   (t : SAB H X)
 
 open MonObj in
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `h`. Set `δ : tEpsG (spMap φ ≫ x) ⟶ tEpsG x` to `Over.homMk (spMap (dualMap φ)) (by show spMap (dualMap φ) ≫ spMap (algebraMap S (DualNumber S)) ≫ x = spMap (algebraMap S' (DualNumber S')) ≫ spMap φ ≫ x`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', dualMap_comp_alg])`. Use `⟨fun i => δ ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Over.comp_left, δ, Over.homMk_left]`.
+
+Rewrite using `[hu i, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', dualMap_comp_epsMul]`. Rewrite using `[List.prod_ofFn, List.prod_ofFn, ← comp_prodT]`. Both sides reduce to the same expression.
+-/
 theorem comb_map {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') {x : Sp S ⟶ X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} {cf : Fin m → S} {w : Sp (DualNumber S) ⟶ t.G.left}
     (h : IsCombAtG t x v cf w) :
@@ -50,6 +62,19 @@ theorem comb_map {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') {x :
   · rw [List.prod_ofFn, List.prod_ofFn, ← comp_prodT]
     rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t C _ _ xO huniq`. Use `intO_isLocalRing C` as an intermediate fact. Take `⟨n, D, hD, hDb⟩` from `GlobalTheory.LieLocBasis.exists_lie_basis_stable E H X t (↥(intO C)) xO`. Establish `h1 : spMap (RingHom.id ↥(intO C)) = 𝟙 _` using `Spec.map_id _`. Establish `h2 : dualMap (RingHom.id ↥(intO C)) = RingHom.id _`.
+
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`. Establish `h3 : spMap (dualMap (RingHom.id ↥(intO C))) = 𝟙 _` using `by rw [h2]; exact Spec.map_id _`. Establish `hD0 : ∀ w, IsTanAtG t xO w → ∃! a : Fin n → ↥(intO C), IsCombAtG t xO D a w`. Establish `h` using `hDb _ (RingHom.id ↥(intO C))`.
+
+Simplify using `only [h1, h3, Category.id_comp] at h`. Conclude with `h`. Establish `hDk` using `fun j => isTanAtG_map t (intO C).subtype (hD j)`. Use `⟨n, fun e => spMap (dualMap (intO C).subtype) ≫ D e, hDk, hDb C _, fun cf w hw => ⟨?_, fun hc => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨xO', hx, vO, hv, rfl⟩`.
+
+Take `rfl` from `huniq xO' hx`. Take `⟨a, ha, -⟩` from `hD0 vO hv`. Establish `e` using `(hDb C _ _ (isTanAtG_map t (intO C).subtype hv)).unique hw (comb_map t (intO C).subtype ha)`. Introduce `i`. Rewrite using `[e]`.
+
+Conclude with `(a i).2`. Set `a : Fin n → ↥(intO C)` to `fun i => ⟨cf i, hc i⟩`. Establish `ha : IsCombAtG t xO D a (combT xO (fun j => ovT (hD j)) a).left` using `(isCombAtG_iff t xO (fun j => ovT (hD j)) a _).2 rfl`. Use `⟨xO, rfl, _, isTanAtG_of _ (combT_tan _ (fun j => ovT (hD j)) (fun j => smT_zero_ovT _) a), ?_⟩` and prove the remaining obligations. Establish `hb` using `comb_map t (intO C).subtype ha`.
+
+Conclude with `((isCombAtG_iff t _ (fun j => ovT (hDk j)) _ _).1 hb).symm.trans ((isCombAtG_iff t _ (fun j => ovT (hDk j)) _ _).1 hw)`.
+-/
 theorem latDR_free : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (xO : Sp ↥(intO C) ⟶ X), (∀ xO' : Sp ↥(intO C) ⟶ X, spMap (intO C).subtype ≫ xO' = spMap (intO C).subtype ≫ xO → xO' = xO) → ∃ (g : ℕ) (v : Fin g → (Sp (DualNumber C) ⟶ t.G.left)), (∀ i, IsTanAtG t (spMap (intO C).subtype ≫ xO) (v i)) ∧ (∀ w, IsTanAtG t (spMap (intO C).subtype ≫ xO) w → ∃! cf : Fin g → C, IsCombAtG t (spMap (intO C).subtype ≫ xO) v cf w) ∧ ∀ (cf : Fin g → C) w, IsCombAtG t (spMap (intO C).subtype ≫ xO) v cf w → (w ∈ latDR t (spMap (intO C).subtype ≫ xO) ↔ ∀ i, ‖cf i‖ ≤ 1) := by
   intro E _ _ _ H X t C _ _ xO huniq
   have := intO_isLocalRing C

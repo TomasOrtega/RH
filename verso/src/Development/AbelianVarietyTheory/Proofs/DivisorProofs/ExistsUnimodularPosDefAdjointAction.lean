@@ -8,6 +8,15 @@ namespace GlobalTheory
 section
 variable {n q : Type} [Fintype n] [DecidableEq n] [Fintype q] [DecidableEq q]
 
+/- English proof (translation)
+Establish `hdet : IsUnit B.det` using `hB.det_pos.ne'.isUnit`. Establish `hK : (B ⊗ₖ (1 : Matrix q q ℝ)).PosDef` using `hB.kronecker PosDef.one`. Establish `hKi : (B⁻¹ ⊗ₖ (1 : Matrix q q ℝ)).PosDef` using `hB.inv.kronecker PosDef.one`. Use `letI := hK.isUnit.invertible`. Establish `hinv : (B ⊗ₖ (1 : Matrix q q ℝ))⁻¹ = B⁻¹ ⊗ₖ (1 : Matrix q q ℝ)`.
+
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← mul_kronecker_mul, Matrix.nonsing_inv_mul _ hdet, Matrix.mul_one, one_kronecker_one]`. Establish `hS : A ⊗ₖ (1 : Matrix q q ℝ) - ((1 : Matrix n n ℝ) ⊗ₖ xᵀ) * (B ⊗ₖ (1 : Matrix q q ℝ))⁻¹ * ((1 : Matrix n n ℝ) ⊗ₖ x) = B⁻¹ ⊗ₖ (1 : Matrix q q ℝ)`. Rewrite using `[hinv, ← mul_kronecker_mul, ← mul_kronecker_mul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_one, hx, hA, kronecker_smul, smul_kronecker, add_smul, one_smul, add_sub_cancel_right]`. Establish `hT : ((1 : Matrix n n ℝ) ⊗ₖ xᵀ)ᴴ = (1 : Matrix n n ℝ) ⊗ₖ x`.
+
+Rewrite using `[conjTranspose_eq_transpose_of_trivial, ← kroneckerMap_transpose, transpose_one, transpose_transpose]`. Establish `hd : (fromBlocks (A ⊗ₖ (1 : Matrix q q ℝ)) ((1 : Matrix n n ℝ) ⊗ₖ xᵀ) ((1 : Matrix n n ℝ) ⊗ₖ x) (B ⊗ₖ (1 : Matrix q q ℝ))).det = 1`. Rewrite using `[det_fromBlocks₂₂, invOf_eq_nonsing_inv, hS, ← det_mul, ← mul_kronecker_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one, one_kronecker_one, det_one]`. Use `⟨?_, hd⟩` and prove the remaining obligations. Establish `hps : (fromBlocks (A ⊗ₖ (1 : Matrix q q ℝ)) ((1 : Matrix n n ℝ) ⊗ₖ xᵀ) ((1 : Matrix n n ℝ) ⊗ₖ x) (B ⊗ₖ (1 : Matrix q q ℝ))).PosSemidef`.
+
+Use `(PosDef.fromBlocks₂₂ (A ⊗ₖ (1 : Matrix q q ℝ)) ((1 : Matrix n n ℝ) ⊗ₖ xᵀ) hK).mpr (by rw [hT, hS]; exact hKi.posSemidef)` as an intermediate fact. Rewrite `this` using `[hT]`. Then use the resulting hypothesis. Conclude with `hps.posDef_iff_isUnit.mpr ((isUnit_iff_isUnit_det _).mpr (by rw [hd]; exact isUnit_one))`.
+-/
 theorem zarhinBlock_real_posDef_det (B A : Matrix n n ℝ) (x : Matrix q q ℝ) (s : ℝ)
     (hB : B.PosDef) (hA : A = (1 + s) • B⁻¹) (hx : xᵀ * x = s • (1 : Matrix q q ℝ)) :
     (fromBlocks (A ⊗ₖ (1 : Matrix q q ℝ)) ((1 : Matrix n n ℝ) ⊗ₖ xᵀ) ((1 : Matrix n n ℝ) ⊗ₖ x)
@@ -53,6 +62,9 @@ def zarhinAction {R : Type} [CommRing R] (σ : R →+* R) (ρ0 : R →+* Matrix 
   map_add' a b := by
     simp [fromBlocks_add, add_kronecker, transpose_add]
 
+/- English proof (translation)
+Simplify using `only [zarhinAction, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, fromBlocks_transpose, fromBlocks_multiply, ← kroneckerMap_transpose, transpose_transpose, transpose_one, transpose_zero, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, hσ]`. Simplify using `only [← mul_kronecker_mul, Matrix.one_mul, Matrix.mul_one, hA, hB]`.
+-/
 theorem zarhinAction_adjoint {R : Type} [CommRing R] (σ : R →+* R) (hσ : ∀ a, σ (σ a) = a)
     (ρ0 : R →+* Matrix n n ℤ) (B A : Matrix n n ℤ) (x : Matrix q q ℤ)
     (hB : ∀ a, (ρ0 a)ᵀ * B = B * ρ0 (σ a)) (hA : ∀ a, ρ0 (σ a) * A = A * (ρ0 a)ᵀ) (a : R) :
@@ -66,6 +78,9 @@ theorem zarhinAction_adjoint {R : Type} [CommRing R] (σ : R →+* R) (hσ : ∀
     transpose_zero, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, hσ]
   simp only [← mul_kronecker_mul, Matrix.one_mul, Matrix.mul_one, hA, hB]
 
+/- English proof (translation)
+Establish `h1 : B.adjugate * (P * B) * B.adjugate = B.adjugate * (B * Q) * B.adjugate` using `by rw [h]`. Rewrite `h1` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc _ B, mul_adjugate, adjugate_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul]`. Conclude with `(smul_right_injective _ hd h1).symm`.
+-/
 theorem mul_adjugate_eq_adjugate_mul_of_adjoint (B P Q : Matrix n n ℤ) (hd : B.det ≠ 0)
     (h : P * B = B * Q) : Q * B.adjugate = B.adjugate * P := by
   have h1 : B.adjugate * (P * B) * B.adjugate = B.adjugate * (B * Q) * B.adjugate := by rw [h]
@@ -75,6 +90,25 @@ theorem mul_adjugate_eq_adjugate_mul_of_adjoint (B P Q : Matrix n n ℤ) (hd : B
 
 end
 
+/- English proof (translation)
+Establish `hcast : ∀ {k : Type} [Fintype k] [DecidableEq k] (M : Matrix k k ℤ), (M.map (Int.cast : ℤ → ℝ)).det = (M.det : ℝ)` using `fun M => by`. Simplify using `using ((Int.castRingHom ℝ).map_det M).symm`. Establish `hDR : (0 : ℝ) < (B0.det : ℝ)` using `hcast B0 ▸ hp.det_pos`. Establish `hD : 0 < B0.det` using `by exact_mod_cast hDR`. Take `⟨s, hsD⟩ : ∃ s : ℕ, B0.det = 1 + s` from `⟨(B0.det - 1).toNat, by omega⟩`.
+
+Take `⟨x, hx, -⟩` from `exists_int_matrix_transpose_mul_eq_smul_one s`. Use `set b := fromBlocks (B0.adjugate ⊗ₖ (1 : Matrix (Fin 4) (Fin 4) ℤ)) ((1 : Matrix (Fin m) (Fin m) ℤ) ⊗ₖ xᵀ) ((1 : Matrix (Fin m) (Fin m) ℤ) ⊗ₖ x) (B0 ⊗ₖ (1 : Matrix (Fin 4) (Fin 4) ℤ)) with hb`. Establish `hsym : bᵀ = b`. Simplify using `only [hb, fromBlocks_transpose, ← kroneckerMap_transpose, transpose_transpose, transpose_one, adjugate_transpose, hs]`. Establish `hk : ∀ (M : Matrix (Fin m) (Fin m) ℤ) (N : Matrix (Fin 4) (Fin 4) ℤ), (M ⊗ₖ N).map (Int.cast : ℤ → ℝ) = M.map (Int.cast : ℤ → ℝ) ⊗ₖ N.map (Int.cast : ℤ → ℝ)`.
+
+Introduce `M N`. Use extensionality with `i j`. Simplify using `[kroneckerMap_apply]`. Establish `hxR : (x.map (Int.cast : ℤ → ℝ))ᵀ * x.map (Int.cast : ℤ → ℝ) = (s : ℝ) • 1`. Use `congrArg (fun M => (Int.castRingHom ℝ).mapMatrix M) hx` as an intermediate fact.
+
+Simplify using `only [map_mul, map_zsmul, map_one] at this`. Rewrite `this` using `[← Int.cast_smul_eq_zsmul ℝ]`. Simplify `this` using `[transpose_map]`. Establish `hAR : (B0.adjugate).map (Int.cast : ℤ → ℝ) = (1 + (s : ℝ)) • (B0.map (Int.cast : ℤ → ℝ))⁻¹`. Establish `h1 : (B0.adjugate).map (Int.cast : ℤ → ℝ) = (B0.map (Int.cast : ℤ → ℝ)).adjugate`.
+
+Simplify using `using (Int.castRingHom ℝ).map_adjugate B0`. Establish `h2 : (1 + (s : ℝ)) = (B0.det : ℝ)` using `by rw [hsD]; push_cast; rfl`. Rewrite using `[h1, h2, Matrix.inv_def, hcast, smul_smul, Ring.inverse_eq_inv', mul_inv_cancel₀ hDR.ne', one_smul]`. Establish `hreal` using `zarhinBlock_real_posDef_det _ _ _ _ hp hAR hxR`. Establish `hbR : b.map (Int.cast : ℤ → ℝ) = fromBlocks (B0.adjugate.map (Int.cast : ℤ → ℝ) ⊗ₖ (1 : Matrix (Fin 4) (Fin 4) ℝ)) ((1 : Matrix (Fin m) (Fin m) ℝ) ⊗ₖ (x.map (Int.cast : ℤ → ℝ))ᵀ) ((1 : Matrix (Fin m) (Fin m) ℝ) ⊗ₖ x.map (Int.cast : ℤ → ℝ)) (B0.map (Int.cast : ℤ → ℝ) ⊗ₖ (1 : Matri …`.
+
+Rewrite using `[hb, fromBlocks_map, hk, hk, hk, hk, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.map_one _ Int.cast_zero Int.cast_one, transpose_map]`. Rewrite `hreal` using `[← hbR, hcast]`. Establish `hdet : b.det = 1` using `by exact_mod_cast hreal.2`. Establish `hact` using `zarhinAction_adjoint σ hσ ρ0 B0 B0.adjugate x hadj (fun a => mul_adjugate_eq_adjugate_mul_of_adjoint _ _ _ hD.ne' (hadj a))`. Rewrite `hact` using `[← hb]`.
+
+Set `e` to `Fintype.equivFin ((Fin m × Fin 4) ⊕ (Fin m × Fin 4))`. Use `⟨_, reindex e e b, ((reindexAlgEquiv ℤ ℤ e).toRingEquiv.toRingHom).comp (zarhinAction σ ρ0), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[transpose_reindex, hsym]`.
+
+Conclude with `hreal.1.submatrix e.symm.injective`. Rewrite using `[det_reindex_self, hdet]`. Conclude with `isUnit_one`. Introduce `a`. Express the relevant statement in the definitionally equal form `(reindex e e (zarhinAction σ ρ0 a))ᵀ * _ = _ * reindex e e (zarhinAction σ ρ0 (σ a))`.
+
+Simplify using `only [reindex_apply, transpose_submatrix, submatrix_mul_equiv, hact]`.
+-/
 theorem exists_unimodular_posDef_adjoint_action (R : Type) [CommRing R] (σ : R →+* R)
     (hσ : ∀ a, σ (σ a) = a) (m : ℕ) (B0 : Matrix (Fin m) (Fin m) ℤ)
     (ρ0 : R →+* Matrix (Fin m) (Fin m) ℤ) (hm : 1 ≤ m) (hs : B0.transpose = B0)

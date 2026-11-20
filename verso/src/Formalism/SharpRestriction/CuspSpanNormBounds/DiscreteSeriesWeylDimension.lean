@@ -22,6 +22,9 @@ def HasTypeU (k : ℕ) (u : Fin k → ℝ) : Prop :=
 
 def HighestWeightExists : Prop := ∀ (k : ℕ) (u : Fin k → ℝ), Formalism.QuantumDeterminants.IsHCParam u → HasTypeU k u
 
+/- English proof (translation)
+Take `⟨H, i1, i2, π, hπ⟩` from `hE`. Establish `hmem : dimPiU k u ∈ {d | ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H) (π : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H)), IsHCTypeU k u π ∧ Module.finrank ℂ H = d}` using `Nat.sInf_mem ⟨_, H, i1, i2, π, hπ, rfl⟩`. Take `⟨H', j1, j2, π', hπ', hd⟩` from `hmem`. Rewrite using `[← hd]`. Conclude with `@hW k u H' j1 j2 π' hu hπ'`.
+-/
 theorem dimPiU_eq (hW : LocalBesselAndTopKernel.AdmittedWeylDimension) {k : ℕ} {u : Fin k → ℝ} (hu : StrictAnti u) (hE : HasTypeU k u) :
     (dimPiU k u : ℝ) = vand u / ∏ i ∈ Finset.range k, (i.factorial : ℝ) := by
   obtain ⟨H, i1, i2, π, hπ⟩ := hE
@@ -32,6 +35,13 @@ theorem dimPiU_eq (hW : LocalBesselAndTopKernel.AdmittedWeylDimension) {k : ℕ}
   rw [← hd]
   exact @hW k u H' j1 j2 π' hu hπ'
 
+/- English proof (translation)
+Establish `step : ∀ (n : ℕ) (h : n + 1 < D.R.k), (D.hcW u τ).u ⟨n + 1, h⟩ < (D.hcW u τ).u ⟨n, by omega⟩`. Introduce `n h`. Establish `h1` using `(D.hcW u τ).v_gt_u ⟨n, by omega⟩`. Establish `h2` using `(D.hcW u τ).u_gt_v ⟨n, by omega⟩`. Conclude with `h1.trans h2`.
+
+Introduce `⟨i, hi⟩ ⟨j, hj⟩ hij`. Establish `hij' : i + 1 ≤ j` using `hij`. Use `clear hij`. Unfold `uS`. Simplify using `only [Rat.cast_lt]`.
+
+Proceed by induction on `j, hij' using Nat.le_induction with`. Consider the case `base => exact step i hj`. Consider the case `succ j hij2 ih => exact (step j hj).trans (ih (by omega))`.
+-/
 theorem uS_anti (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : StrictAnti (uS D u τ) := by
   have step : ∀ (n : ℕ) (h : n + 1 < D.R.k),
       (D.hcW u τ).u ⟨n + 1, h⟩ < (D.hcW u τ).u ⟨n, by omega⟩ := by
@@ -52,6 +62,11 @@ section Family
 
 variable {eps : ℝ} (Fm : FamP eps)
 
+/- English proof (translation)
+Use `⟨uS_anti D w τ, fun a => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `(D.hcW w τ).u_half a`. Take `⟨r, hr⟩` from `D.R.k_even`. Establish `hk : (D.R.k : ℝ) = r + r` using `by exact_mod_cast hr`. Use `⟨z + 1 - r, ?_⟩` and prove the remaining obligations.
+
+Use `show ((D.hcW w τ).u a : ℝ) - ((D.R.k : ℝ) - 1) / 2 = ((z + 1 - r : ℤ) : ℝ)`. Rewrite using `[hz, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem isHCParam_uS' (D : D7) (w : D.what₂.Word) (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.IsHCParam (uS D w τ) := by
   refine ⟨uS_anti D w τ, fun a => ?_⟩
@@ -64,12 +79,18 @@ private theorem isHCParam_uS' (D : D7) (w : D.what₂.Word) (τ : D.what₂.Tau)
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `AdmissibleBoundsFromSource.FamilyWeylDimension OwnEv`. Use `⟨0, fun x _ i => ?_⟩` and prove the remaining obligations. Introduce `_ u τ`. Conclude with `dimPiU_eq weylLawBound (uS_anti _ u τ) (hE _ _ (isHCParam_uS' _ u τ))`.
+-/
 theorem weyl_dimension_of_highest_weight (weylLawBound : LocalBesselAndTopKernel.FirstSizeStatement) (hE : HighestWeightExists) (gc : AdmissibleBoundsFromSource.GivC) : AdmissibleBoundsFromSource.FamilyWeylDimension Fm gc := by
   unfold AdmissibleBoundsFromSource.FamilyWeylDimension OwnEv
   refine ⟨0, fun x _ i => ?_⟩
   intro _ u τ
   exact dimPiU_eq weylLawBound (uS_anti _ u τ) (hE _ _ (isHCParam_uS' _ u τ))
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0`. Unfold `VanishingOnXAndXPlus.FamilyWeylDimensionVandermondeQuotient OwnEv`. Use `⟨0, fun x _ i => ?_⟩` and prove the remaining obligations. Introduce `_ w τ`. Conclude with `dimPiU_eq weylLawBound (uS_anti _ w τ) (hE _ _ (isHCParam_uS' _ w τ))`.
+-/
 theorem lWeylU_of_open (weylLawBound : LocalBesselAndTopKernel.FirstSizeStatement) (hE : HighestWeightExists) :
     ∀ Cg cb Cu cT CT C0, VanishingOnXAndXPlus.FamilyWeylDimensionVandermondeQuotient Fm Cg cb Cu cT CT C0 := by
   intro Cg cb Cu cT CT C0
@@ -86,6 +107,11 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 end SmallRank
 
+/- English proof (translation)
+Take `⟨hd, hI⟩` from `h`. Establish `hd0 : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `hc0 : ((c : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Use `⟨div_pos hd (by exact_mod_cast hc), fun v w v' w' => ⟨(hI v w v' w').1.smul_measure ENNReal.coe_ne_top, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[integral_smul_measure, (hI v w v' w').2, ENNReal.coe_toReal, Complex.real_smul, Complex.ofReal_div]`.
+
+Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`.
+-/
 theorem isFdeg_smul {n : ℕ} {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {μ : Measure (Formalism.REAL.UJ ε)} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {d : ℝ} (c : NNReal) (hc : 0 < c)
     (h : IsFdeg μ σ d) : IsFdeg ((c : ENNReal) • μ) σ (d / c) := by
@@ -110,12 +136,20 @@ variable {eps : ℝ} (Fm : FamP eps)
 
 end FamilyDS
 
+/- English proof (translation)
+Take `⟨⟨h1, hm⟩, hn, hc⟩` from `hU`. Conclude with `⟨⟨h1, fun a ha b hb => hm a (h ha) b (h hb)⟩, fun g hg => hn g (h hg), fun v => (hc v).mono h⟩`.
+-/
 theorem isURepOn_mono {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {G G' : Set (Matrix (Fin n) (Fin n) ℂ)} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h : G' ⊆ G)
     (hU : IsURepOn G σ) : IsURepOn G' σ := by
   obtain ⟨⟨h1, hm⟩, hn, hc⟩ := hU
   exact ⟨⟨h1, fun a ha b hb => hm a (h ha) b (h hb)⟩, fun g hg => hn g (h hg), fun v => (hc v).mono h⟩
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨hu, hc⟩` from `hg`. Use `show gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε`. Establish `hgg : gᴴ * g = 1`. Establish `h'` using `Matrix.mem_unitaryGroup_iff'.mp hu`.
+
+Simplify `h'` using `[Matrix.star_eq_conjTranspose]`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, hgg, Matrix.one_mul]`.
+-/
 theorem kset_subset {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Kset ε ⊆ UJset ε := by
   intro g hg
   obtain ⟨hu, hc⟩ := hg
@@ -139,6 +173,13 @@ def LowKMultOne : Prop :=
     (σ : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)), Formalism.QuantumDeterminants.IsHCParam lam → IsDS ε lam σ →
     ∀ S S' : Submodule ℂ H, IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S → IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S' → S = S'
 
+/- English proof (translation)
+Establish `hN : (univ.filter fun c => a < c ∧ ε c ≠ ε a).card + (univ.filter fun c => c < b ∧ ε c ≠ ε a).card = (univ.filter fun c => b < c ∧ ε c ≠ ε a).card + (univ.filter fun c => c < a ∧ ε c ≠ ε a).card + 2 * (univ.filter fun c => a < c ∧ c < b ∧ ε c ≠ ε a).card`. Simplify using `only [Finset.card_filter, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : ε c = ε a`. Simplify using `[hc]`.
+
+Establish `hca : (c : ℕ) ≠ a` using `fun h => hc (by rw [Fin.ext h])`. Establish `hcb : (c : ℕ) ≠ b` using `fun h => hc (by rw [Fin.ext h, he])`. Establish `hab' : (a : ℕ) < b` using `hab`. Simplify using `only [hc, ne_eq, not_false_eq_true, and_true]`. Apply the tactic sequence `split_ifs <;> simp only [Fin.lt_def] at * <;> omega`.
+
+Establish `hR : ((univ.filter fun c => a < c ∧ ε c ≠ ε a).card : ℝ) + ((univ.filter fun c => c < b ∧ ε c ≠ ε a).card : ℝ) = ((univ.filter fun c => b < c ∧ ε c ≠ ε a).card : ℝ) + ((univ.filter fun c => c < a ∧ ε c ≠ ε a).card : ℝ) + 2 * ((univ.filter fun c => a < c ∧ c < b ∧ ε c ≠ ε a).card …`. Conclude with `hN` after adjusting the coercions. Simplify using `only [Formalism.QuantumDeterminants.lowK, Formalism.REAL.rhoN, Pi.add_apply, Pi.sub_apply, ← he]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lowK_add_rhoC_sub {N : ℕ} (ε : Fin N → Bool) (lam : Fin N → ℝ) {a b : Fin N} (hab : a < b) (he : ε a = ε b) :
     (Formalism.QuantumDeterminants.lowK ε lam + Formalism.REAL.rhoC ε) a - (Formalism.QuantumDeterminants.lowK ε lam + Formalism.REAL.rhoC ε) b =
       lam a - lam b + ((Finset.univ.filter (fun c => a < c ∧ c < b ∧ ε c ≠ ε a)).card : ℝ) := by
@@ -163,6 +204,9 @@ theorem lowK_add_rhoC_sub {N : ℕ} (ε : Fin N → Bool) (lam : Fin N → ℝ) 
   simp only [Formalism.QuantumDeterminants.lowK, Formalism.REAL.rhoN, Pi.add_apply, Pi.sub_apply, ← he]
   linarith
 
+/- English proof (translation)
+Unfold `LocalBesselAndTopKernel.dTauF`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Take `⟨hab, he⟩` from `(Finset.mem_filter.mp hb).2`. Conclude with `(lowK_add_rhoC_sub ε lam hab he).symm`.
+-/
 theorem dTauF_eq {N : ℕ} (ε : Fin N → Bool) (lam : Fin N → ℝ) :
     LocalBesselAndTopKernel.dTauF ε lam =
       (∏ a : Fin N, ∏ b ∈ Finset.univ.filter (fun b => a < b ∧ ε a = ε b),
@@ -174,6 +218,13 @@ theorem dTauF_eq {N : ℕ} (ε : Fin N → Bool) (lam : Fin N → ℝ) :
   obtain ⟨hab, he⟩ := (Finset.mem_filter.mp hb).2
   exact (lowK_add_rhoC_sub ε lam hab he).symm
 
+/- English proof (translation)
+Unfold `LocalBesselAndTopKernel.FamilyMassTheoremTwo LocalBesselAndTopKernel.FamilyMassLastLine`. Introduce `N ε lam H _ _ σ hlam hDS`. Take `⟨_, _, hU, _, _, ⟨S, hS⟩, _⟩` from `id hDS`. Establish `hset : {S' | IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S'} = {S}`. Use extensionality with `S'`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Conclude with `⟨fun h => hM N ε lam H σ hlam hDS S' S h hS, fun h => h ▸ hS⟩`. Establish `hsup : lowKSub ε lam σ = S`. Unfold `lowKSub`. Rewrite using `[hset, sSup_singleton]`.
+
+Rewrite using `[hsup, dTauF_eq]`. Conclude with `hW N ε _ H σ S (isURepOn_mono (kset_subset ε) hU) hS`.
+-/
 theorem lDTau_of_open (hW : WeylForK) (hM : LowKMultOne) : LocalBesselAndTopKernel.FamilyMassTheoremTwo := by
   unfold LocalBesselAndTopKernel.FamilyMassTheoremTwo LocalBesselAndTopKernel.FamilyMassLastLine
   intro N ε lam H _ _ σ hlam hDS
@@ -188,6 +239,17 @@ theorem lDTau_of_open (hW : WeylForK) (hM : LowKMultOne) : LocalBesselAndTopKern
   rw [hsup, dTauF_eq]
   exact hW N ε _ H σ S (isURepOn_mono (kset_subset ε) hU) hS
 
+/- English proof (translation)
+Unfold `StandardLattice.FamilyMassLastLine`. Introduce `n ε lam hlam H _ _ _ σ hDS`. Take `⟨_, _, hU, _, _, ⟨S, hS⟩, _⟩` from `id hDS`. Establish `hset : {S' | IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S'} = {S}`. Use extensionality with `S'`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Conclude with `⟨fun h => hM n ε lam H σ hlam hDS S' S h hS, fun h => h ▸ hS⟩`. Establish `hsup : lowKSub ε lam σ = S`. Unfold `lowKSub`. Rewrite using `[hset, sSup_singleton]`.
+
+Use `⟨hsup ▸ hS, ?_⟩` and prove the remaining obligations. Establish `e` using `lDTau_of_open hW hM n ε lam H σ hlam hDS`. Rewrite using `[e]`. Unfold `StandardLattice.dTau LocalBesselAndTopKernel.dTauF`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Take `⟨hab, he⟩` from `(Finset.mem_filter.mp hb).2`. Establish `h` using `lowK_add_rhoC_sub ε lam hab he`. Simplify using `only [Formalism.QuantumDeterminants.lowK, Pi.add_apply, Pi.sub_apply] at h`. Establish `ha : StandardLattice.rhoN ε a = Formalism.REAL.rhoN ε a` using `rfl`.
+
+Establish `hb' : StandardLattice.rhoN ε b = Formalism.REAL.rhoN ε b` using `rfl`. Rewrite using `[ha, hb']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lowest_K_type_count_of_weyl (D : D7) (hW : WeylForK) (hM : LowKMultOne) : StandardLattice.FamilyMassLastLine D := by
   unfold StandardLattice.FamilyMassLastLine
   intro n ε lam hlam H _ _ _ σ hDS
@@ -274,6 +336,11 @@ structure UnramAt (ϖ : R) (p : ℕ) : Prop where
   unram : ∃ u : R, ¬ ϖ ∣ u ∧ (p : R) = u * ϖ
   other : ∀ l : ℕ, l.Prime → l ≠ p → ¬ ϖ ∣ (l : R)
 
+/- English proof (translation)
+Take `⟨X, rfl⟩` from `h1`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ m ih`. Take `⟨Y, hY⟩` from `ih`.
+
+Use `⟨Y + X + ϖ • (Y * X), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, hY]`. Simplify using `only [add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pow_congr_one {ϖ : R} {β : Matrix N N R} (h1 : ∃ X : Matrix N N R, β = 1 + ϖ • X) (m : ℕ) :
     ∃ X : Matrix N N R, β ^ m = 1 + ϖ • X := by
   obtain ⟨X, rfl⟩ := h1

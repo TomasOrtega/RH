@@ -18,9 +18,15 @@ noncomputable def monomialUnitHom (A : Type*) [CommRing A] (X : Type*) [AddCommG
       map_one' := rfl
       map_mul' := fun p q => by simp [single_mul_single] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_monomialUnitHom (p : Aˣ × Multiplicative X) :
     (monomialUnitHom A X p : A[X]) = single p.2.toAdd (p.1 : A) := rfl
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_one _).2 fun p hp => ?_` and prove the remaining obligations. Establish `h : (Finsupp.single p.2.toAdd (p.1 : A)) = Finsupp.single 0 1` using `congrArg (fun u : (A[X])ˣ => (u : A[X]).coeff) hp`. Break down `(Finsupp.single_eq_single_iff _ _ _ _).1 h with ⟨h1, h2⟩ | ⟨-, h2⟩` into its components or cases. Conclude with `Prod.ext (Units.ext h2) h1`. Conclude with `absurd h2 one_ne_zero`.
+-/
 theorem monomialUnitHom_injective [Nontrivial A] : Function.Injective (monomialUnitHom A X) := by
   classical
   refine (injective_iff_map_eq_one _).2 fun p hp => ?_
@@ -32,6 +38,9 @@ theorem monomialUnitHom_injective [Nontrivial A] : Function.Injective (monomialU
 
 variable [IsDomain A]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, c, ⟨a, rfl⟩, e⟩` from `ReciprocityTheory.ChartRestriction.G.Semi.Rosenlicht.isUnit_eq_single h`. Conclude with `⟨x, a, e⟩`. Introduce and unpack `⟨x, a, rfl⟩`. Conclude with `(monomialUnitHom A X (a, .ofAdd x)).isUnit`.
+-/
 theorem isUnit_addMonoidAlgebra_iff_of_twoUniqueSums [TwoUniqueSums X] (f : A[X]) :
     IsUnit f ↔ ∃ (x : X) (a : Aˣ), f = single x (a : A) := by
   refine ⟨fun h => ?_, ?_⟩
@@ -42,10 +51,16 @@ theorem isUnit_addMonoidAlgebra_iff_of_twoUniqueSums [TwoUniqueSums X] (f : A[X]
 
 variable [Module.Free ℤ X]
 
+/- English proof (translation)
+The claim follows from `isUnit_addMonoidAlgebra_iff_of_twoUniqueSums f`.
+-/
 theorem isUnit_addMonoidAlgebra_iff (f : A[X]) :
     IsUnit f ↔ ∃ (x : X) (a : Aˣ), f = single x (a : A) :=
   isUnit_addMonoidAlgebra_iff_of_twoUniqueSums f
 
+/- English proof (translation)
+Use `⟨monomialUnitHom_injective, fun u => ?_⟩` and prove the remaining obligations. Take `⟨x, a, e⟩` from `(isUnit_addMonoidAlgebra_iff (u : A[X])).1 u.isUnit`. Conclude with `⟨(a, .ofAdd x), Units.ext e.symm⟩`.
+-/
 theorem monomialUnitHom_bijective : Function.Bijective (monomialUnitHom A X) := by
   refine ⟨monomialUnitHom_injective, fun u => ?_⟩
   obtain ⟨x, a, e⟩ := (isUnit_addMonoidAlgebra_iff (u : A[X])).1 u.isUnit
@@ -56,6 +71,9 @@ variable (A X) in
 noncomputable def unitsAddMonoidAlgebraEquiv : Aˣ × Multiplicative X ≃* (A[X])ˣ :=
   MulEquiv.ofBijective (monomialUnitHom A X) monomialUnitHom_bijective
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_unitsAddMonoidAlgebraEquiv (p : Aˣ × Multiplicative X) :
     (unitsAddMonoidAlgebraEquiv A X p : A[X]) = single p.2.toAdd (p.1 : A) := rfl
 
@@ -65,6 +83,13 @@ section Coordinates
 
 variable {X : Type*} [Zero X] {N : Type*} [AddCommGroup N]
 
+/- English proof (translation)
+Proceed by induction on `g using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Simplify using `only [Finsupp.mapDomain_add, Finsupp.add_apply, Finsupp.sub_apply] at hf hg ⊢`. Rewrite using `[← hf, ← hg]`.
+
+Normalize the expressions using the abelian group laws. Consider the case `single y m`. Simplify using `only [Finsupp.mapDomain_single, Finsupp.add_apply, Finsupp.sub_apply, Finsupp.single_apply, Prod.mk.injEq]`. Distinguish the cases in `h : y = 0`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem coboundary_apply_zero_left (g : X →₀ N) (x : X) :
     (g.mapDomain (fun y => ((0 : X), y)) - g.mapDomain (fun y => (y, y)) +
       g.mapDomain (fun y => (y, (0 : X))) : X × X →₀ N) (0, x) = g x := by
@@ -81,6 +106,19 @@ theorem coboundary_apply_zero_left (g : X →₀ N) (x : X) :
     · subst h; simp
     · simp [h]
 
+/- English proof (translation)
+Set `s : (X × X →₀ N) →+ (X →₀ N)` to `Finsupp.comapDomain.addMonoidHom (f := fun x => ((0 : X), x)) (Prod.mk_right_injective 0)`. Establish `hs : ∀ f x, s f x = f (0, x)` using `fun _ _ => rfl`. Establish `key : ∀ (f : X × X →₀ N) (q : X × X), (f.mapDomain (fun p => ((0 : X), p.1, p.2)) - f.mapDomain (fun p => (p.1, p.1, p.2)) + f.mapDomain (fun p => (p.1, p.2, p.2)) - f.mapDomain (fun p => (p.1, p.2, (0 : X))) : X × X × X →₀ N) (0, q) + ((s f).mapDomain (fun y => ((0 : X), y)) - ( …`. Introduce `f q`. Proceed by induction on `f using Finsupp.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add f g hf hg`. Simplify using `only [map_add, Finsupp.mapDomain_add, Finsupp.add_apply, Finsupp.sub_apply] at hf hg ⊢`. Rewrite using `[← hf, ← hg]`. Normalize the expressions using the abelian group laws.
+
+Consider the case `single p m`. Take `⟨y, z⟩` from `p`. Distinguish the cases in `h : y = 0`. Substitute `h` using the available equality. Establish `: s (Finsupp.single (0, z) m) = Finsupp.single z m`.
+
+Use extensionality with `x`. Simplify using `[hs, Finsupp.single_apply]`. Simplify using `[this, Finsupp.single_apply]`. Establish `: s (Finsupp.single (y, z) m) = 0`. Use extensionality with `x`.
+
+Simplify using `[hs, h]`. Simplify using `[this, Finsupp.single_apply, h]`. Establish `e : g = s f` using `Finsupp.ext hg`. Use extensionality with `q`. Rewrite using `[← key f q, hf, e]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem finsupp_two_cocycle_eq_coboundary (f : X × X →₀ N)
     (hf : f.mapDomain (fun p => ((0 : X), p.1, p.2)) - f.mapDomain (fun p => (p.1, p.1, p.2)) +
       f.mapDomain (fun p => (p.1, p.2, p.2)) - f.mapDomain (fun p => (p.1, p.2, (0 : X))) = 0)
@@ -124,6 +162,9 @@ section Ring
 
 variable {X : Type*} [Zero X] {A : Type*} [Ring A]
 
+/- English proof (translation)
+Use `⟨fun h x => ?_, fun h => coeff_injective (finsupp_two_cocycle_eq_coboundary f.coeff (congrArg coeff hf) g.coeff h)⟩` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `(coboundary_apply_zero_left g.coeff x).symm`.
+-/
 theorem addMonoidAlgebra_coboundary_eq_iff (f : A[X × X])
     (hf : mapDomain (fun p => ((0 : X), p.1, p.2)) f - mapDomain (fun p => (p.1, p.1, p.2)) f +
       mapDomain (fun p => (p.1, p.2, p.2)) f - mapDomain (fun p => (p.1, p.2, (0 : X))) f = 0)
@@ -135,6 +176,9 @@ theorem addMonoidAlgebra_coboundary_eq_iff (f : A[X × X])
   rw [← h]
   exact (coboundary_apply_zero_left g.coeff x).symm
 
+/- English proof (translation)
+Simplify using `only [addMonoidAlgebra_coboundary_eq_iff f hf]`. Conclude with `⟨ofCoeff (f.coeff.comapDomain (fun x => ((0 : X), x)) (Prod.mk_right_injective 0).injOn), fun _ => rfl, fun g hg => coeff_injective (Finsupp.ext hg)⟩`.
+-/
 theorem addMonoidAlgebra_existsUnique_coboundary (f : A[X × X])
     (hf : mapDomain (fun p => ((0 : X), p.1, p.2)) f - mapDomain (fun p => (p.1, p.1, p.2)) f +
       mapDomain (fun p => (p.1, p.2, p.2)) f - mapDomain (fun p => (p.1, p.2, (0 : X))) f = 0) :
@@ -169,16 +213,28 @@ variable (R H M) in
 
 noncomputable def trivialCoaction : M →ₗ[R] M ⊗[R] H := (TensorProduct.mk R M H).flip 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem trivialCoaction_apply (m : M) : trivialCoaction R H M m = m ⊗ₜ 1 := rfl
 
+/- English proof (translation)
+The claim follows from `sub_self _`.
+-/
 @[simp] theorem hochschildD₀_trivialCoaction : hochschildD₀ (trivialCoaction R H M) = 0 :=
   sub_self _
 
+/- English proof (translation)
+Use extensionality with `m h`. Simplify using `[hochschildD₁]`.
+-/
 theorem hochschildD₁_trivialCoaction : hochschildD₁ (trivialCoaction R H M) =
     (TensorProduct.mk R H H 1).lTensor M - (comul (R := R)).lTensor M +
       ((TensorProduct.mk R H H).flip 1).lTensor M := by
   ext m h; simp [hochschildD₁]
 
+/- English proof (translation)
+Use extensionality with `m h k`. Simplify using `[hochschildD₂]`.
+-/
 theorem hochschildD₂_trivialCoaction : hochschildD₂ (trivialCoaction R H M) =
     (TensorProduct.mk R H (H ⊗[R] H) 1).lTensor M -
       ((TensorProduct.assoc R H H H).toLinearMap ∘ₗ (comul (R := R)).rTensor H).lTensor M +
@@ -188,6 +244,17 @@ theorem hochschildD₂_trivialCoaction : hochschildD₂ (trivialCoaction R H M) 
 
 variable {X : Type*} [AddMonoid X]
 
+/- English proof (translation)
+Proceed by induction on `f with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add]`. Rewrite using `[add_sub_add_comm, ha, hb]`. Consider the case `tmul m p`.
+
+Establish `h : ∀ (t : M ⊗[R] R[X]) (p : R[X]), (tensorCoeff R R[X] (0 : X)).lTensor M (TensorProduct.assoc R M R[X] R[X] (t ⊗ₜ p)) = p.coeff 0 • t`. Introduce `t p`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [add_tmul, map_add, ha, hb, smul_add]`.
+
+Consider the case `tmul m q => simp`. Proceed by induction on `p using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [tmul_add, map_add]`. Rewrite using `[add_sub_add_comm, ha, hb]`.
+
+Consider the case `single y r`. Simplify using `only [hochschildD₁, hochschildD₀, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.rTensor_tmul, map_add, map_sub, h]`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using `[one_def, ← tmul_smul]`.
+
+Simplify using `[one_def, hy]`.
+-/
 theorem hochschild_homotopy_one (ρ : M →ₗ[R] M ⊗[R] R[X]) (f : M ⊗[R] R[X]) :
     (tensorCoeff R R[X] (0 : X)).lTensor M (hochschildD₁ ρ f) -
       hochschildD₀ ρ (tensorCoeff R M 0 f) = f := by
@@ -213,6 +280,21 @@ theorem hochschild_homotopy_one (ρ : M →ₗ[R] M ⊗[R] R[X]) (f : M ⊗[R] R
       · subst hy; simp [one_def, ← tmul_smul]
       · simp [one_def, hy]
 
+/- English proof (translation)
+Proceed by induction on `f with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add]`. Rewrite using `[add_sub_add_comm, ha, hb]`. Consider the case `tmul m u`.
+
+Establish `h : ∀ (t : M ⊗[R] R[X]) (u : R[X] ⊗[R] R[X]), ((tensorCoeff R R[X] (0 : X)).lTensor R[X]).lTensor M (TensorProduct.assoc R M R[X] (R[X] ⊗[R] R[X]) (t ⊗ₜ u)) = TensorProduct.assoc R M R[X] R[X] (t ⊗ₜ tensorCoeff R R[X] (0 : X) u)`. Introduce `t u`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [add_tmul, map_add, ha, hb]`.
+
+Consider the case `tmul m q => simp`. Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [tmul_add, map_add]`. Rewrite using `[add_sub_add_comm, ha, hb]`.
+
+Consider the case `tmul p q`. Proceed by induction on `p using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [add_tmul, tmul_add, map_add]`. Rewrite using `[add_sub_add_comm, ha, hb]`.
+
+Consider the case `single x c`. Proceed by induction on `q using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [tmul_add, map_add]`. Rewrite using `[add_sub_add_comm, ha, hb]`.
+
+Consider the case `single y r`. Simplify using `only [hochschildD₁, hochschildD₂, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, map_add, map_sub, h]`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Establish `e : (single x (r * c) : R[X]) ⊗ₜ[R] (single 0 1 : R[X]) = single x c ⊗ₜ[R] single 0 r`.
+
+Rewrite using `[← smul_eq_mul, ← smul_single, smul_tmul, smul_single, smul_eq_mul, _root_.mul_one]`. Simplify using `[one_def, e]`. Simplify using `[one_def, hy]`.
+-/
 theorem hochschild_homotopy_two (ρ : M →ₗ[R] M ⊗[R] R[X]) (f : M ⊗[R] (R[X] ⊗[R] R[X])) :
     hochschildD₁ ρ ((tensorCoeff R R[X] (0 : X)).lTensor M f) -
       ((tensorCoeff R R[X] (0 : X)).lTensor R[X]).lTensor M (hochschildD₂ ρ f) = f := by
@@ -253,6 +335,11 @@ theorem hochschild_homotopy_two (ρ : M →ₗ[R] M ⊗[R] R[X]) (f : M ⊗[R] (
             simp [one_def, e]
           · simp [one_def, hy]
 
+/- English proof (translation)
+Introduce `f`. Use `⟨fun hf => ⟨-tensorCoeff R M 0 f, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify `hochschild_homotopy_one ρ f` using `[hf]`. Introduce and unpack `⟨m, rfl⟩`. Set `` to `h.decomposition`.
+
+Proceed by induction on `m using DirectSum.Decomposition.inductionOn (torusWeightSpace ρ) with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_zero]`. Consider the case `homogeneous m`. Simplify using `[hochschildD₀, hochschildD₁, mem_coactionWeightSpace.1 m.2, one_def]`.
+-/
 theorem IsCoaction.exact_hochschildD₀_hochschildD₁ {ρ : M →ₗ[R] M ⊗[R] R[X]} (h : IsCoaction ρ) :
     Function.Exact (hochschildD₀ ρ) (hochschildD₁ ρ) := by
   classical
@@ -267,6 +354,17 @@ theorem IsCoaction.exact_hochschildD₀_hochschildD₁ {ρ : M →ₗ[R] M ⊗[R
     | homogeneous m =>
       simp [hochschildD₀, hochschildD₁, mem_coactionWeightSpace.1 m.2, one_def]
 
+/- English proof (translation)
+Introduce `f`. Use `⟨fun hf => ⟨(tensorCoeff R R[X] (0 : X)).lTensor M f, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify `hochschild_homotopy_two ρ f` using `[hf]`. Introduce and unpack `⟨g, rfl⟩`. Set `` to `h.decomposition`.
+
+Proceed by induction on `g with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_zero]`. Consider the case `tmul m p`. Proceed by induction on `m using DirectSum.Decomposition.inductionOn (torusWeightSpace ρ) with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [add_tmul, map_add, ha, hb, add_zero]`. Consider the case `homogeneous m`. Proceed by induction on `p using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp only [tmul_add, map_add, ha, hb, add_zero]`. Consider the case `single y r`. Rewrite using `[← _root_.mul_one r, ← smul_eq_mul, ← smul_single, tmul_smul, map_smul, map_smul]`. Use `smul_eq_zero_of_right _ ?_` and prove the remaining obligations. Simplify using `[hochschildD₂, hochschildD₁, mem_coactionWeightSpace.1 m.2, one_def]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem IsCoaction.exact_hochschildD₁_hochschildD₂ {ρ : M →ₗ[R] M ⊗[R] R[X]} (h : IsCoaction ρ) :
     Function.Exact (hochschildD₁ ρ) (hochschildD₂ ρ) := by
   classical
@@ -294,6 +392,9 @@ theorem IsCoaction.exact_hochschildD₁_hochschildD₂ {ρ : M →ₗ[R] M ⊗[R
 
 variable (R M X) in
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun f hf => ?_` and prove the remaining obligations. Simplify `(hochschild_homotopy_one (trivialCoaction R R[X] M) f).symm` using `[hf]`.
+-/
 theorem hochschildD₁_trivialCoaction_injective :
     Function.Injective (hochschildD₁ (trivialCoaction R R[X] M)) := by
   refine (injective_iff_map_eq_zero _).2 fun f hf => ?_

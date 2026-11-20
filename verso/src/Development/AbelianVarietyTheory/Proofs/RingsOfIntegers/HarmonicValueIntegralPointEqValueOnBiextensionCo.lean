@@ -22,6 +22,13 @@ def letterEquiv {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} 
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Establish `key : ∀ b : Fin n, evV (n` using `n) ![pt V d b] (f b) = MvPowerSeries.rename (fun p : Fin 1 × Fin d => ((b, p.2) : Fin n × Fin d)) (f b) := by`. Introduce `b`. Establish `hX : ∀ j : Fin 1 × Fin d, MvPowerSeries.rename (fun p : Fin 1 × Fin d => ((b, p.2) : Fin n × Fin d)) (MvPowerSeries.X j : MvPowerSeries (Fin 1 × Fin d) V) = (fun p : Fin 1 × Fin d => (![pt V d b] : Fin 1 → Pt V n d) p.1 p.2) j`. Introduce and unpack `⟨i, j⟩`. Rewrite using `[Fin.fin_one_eq_zero i, MvPowerSeries.rename_X]`.
+
+Simplify using `[pt]`. Use `show evC _ (f b) = _`. Conclude with `evC_eq_algHom _ (fun j => by`. Establish `h` using `(hX j).symm`. Simplify using `only at h`.
+
+Rewrite using `[h, MvPowerSeries.rename_X]`. Use the proof step `simp) _ hX (f b)`. Simplify using `only [FB.toK, key, map_prod, GlobalTheory.PowGerm.boxSer, MvPowerSeries.rename_map]`.
+-/
 theorem toK_prod_evV (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [IsAdicComplete (maximalIdeal V) V] [CharZero V] (K : Type) [CommRing K] [Algebra V K] {d n : ℕ}
     (f : Fin n → PS V 1 d) :
@@ -45,6 +52,15 @@ theorem toK_prod_evV (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRi
       simp) _ hX (f b)
   simp only [FB.toK, key, map_prod, GlobalTheory.PowGerm.boxSer, MvPowerSeries.rename_map]
 
+/- English proof (translation)
+Establish `hcc : MvPowerSeries.constantCoeff C.h = 0` using `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.Nab.cc_h C.11`. Establish `hcol : ∀ (m : LtN Dw n →₀ ℕ) (b : Fin n), ReciprocityTheory.ChartRestriction.G.TB.colM (Finsupp.mapDomain (letterEquiv Dw n).symm m) b = colOf m b`. Introduce `m b`. Unfold `ReciprocityTheory.ChartRestriction.G.TB.colM colOf`. Use `congr 1`.
+
+Use function extensionality and compare the values at `ℓ`. Establish `hℓ : ((ℓ, b) : Lt1 Dw × Fin n) = (letterEquiv Dw n).symm ⟨ℓ.1, (ℓ.2, b)⟩` using `rfl`. Rewrite using `[hℓ, Finsupp.mapDomain_apply (letterEquiv Dw n).symm.injective]`. Establish `hP : MvPolynomial.map (algebraMap c.F S) P = MvPolynomial.rename (letterEquiv Dw n) (MvPolynomial.rename (letterEquiv Dw n).symm (MvPolynomial.map (algebraMap c.F S) P))`. Rewrite using `[MvPolynomial.rename_rename, Equiv.self_comp_symm, MvPolynomial.rename_id_apply]`.
+
+Rewrite using `[hP, GlobalTheory.nabValN_boxSer S C.d (𝓞 E) C.B S C.h H.w0 hcc k n g (Lt1 Dw) (LtN Dw n) (letterEquiv Dw n) (fun ℓ => ℓ.2.2) C.uvec (fun ℓ => C.uvec ⟨ℓ.1, ℓ.2.1⟩) (fun _ => rfl) (fun _ => rfl), GlobalTheory.NabCol.sum_support_rename]`. Unfold `chartVal`. Rewrite using `[MvPolynomial.support_map_of_injective _ (algebraMap c.F S).injective]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map]`.
+
+Simplify using `only [hcol]`.
+-/
 theorem nabValN_boxSer_eq_chartVal {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)] {S : Type} [Field S] [Algebra c.F S] [Algebra ℚ S]
     {y : FrPt Xo c S} (C : ChartAt Xo c y) (k : ℕ) {n : ℕ} (g : Fin n → PS S 1 C.d)
@@ -73,6 +89,15 @@ theorem nabValN_boxSer_eq_chartVal {E : Type} [Field E] [NumberField E] [IsCMFie
   rw [MvPolynomial.coeff_map]
   simp only [hcol]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ hstar T io y C nab hnab B hB k n F f hF w P hP`. Use `letI := io.toAlgebra`. Take `⟨hG, hAct, -⟩` from `hB`. Establish `hgen` using `C.gen.1`. Establish `hFK : B.FK T.Fr = C.ch.B.FK T.Fr`.
+
+Unfold `FB.FK FGLaw.mapF`. Use function extensionality and compare the values at `i`. Simplify using `[hG, hgen.1 i]`. Establish `hAK : ∀ a, B.actK T.Fr a = C.ch.B.actK T.Fr a`. Introduce `a`.
+
+Unfold `FB.actK`. Use function extensionality and compare the values at `i`. Simplify using `[hAct, hgen.2.1 a i]`. Establish `h1` using `GlobalTheory.T.harmonicValue_eq_chart_value E H Dw l Xo c hstar nab hnab T.Fr y.1 C.ch k n F (fun b => MvPowerSeries.map (algebraMap T.V T.Fr) (f b)) (fun b => hF b) w P hP`. Rewrite using `[h1, nabValN_boxSer_eq_chartVal C.ch k _ P, ← toK_prod_evV T.V T.Fr f]`.
+
+Conclude with `GlobalTheory.ChartCmp.nabValN_congr_FK C.ch.B B T.Fr hFK hAK _ _ _ _ _ _ _`.
+-/
 theorem hv_eq_nabValN : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), ∀ nab : NabV Xo c, IsNab Xo c nab → ∀ B : FB T.V (chD C.ch) (𝓞 E), IsBT C B → ∀ (k n : ℕ) (F : Fin n → SecN Xo (xOf y) k) (f : Fin n → PS T.V 1 (chD C.ch)), (∀ b, GermIs C k (F b) (f b)) → ∀ (w : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HH c w n → letI := io.toAlgebra; hv Xo c nab y.1 k F P = nabValN B T.Fr (gaugeOf C) H.w0 k (FB.toK T.Fr (∏ b, evV (n := n) ![pt T.V (chD C.ch) b] (f b))) (fun ℓ : LtN Dw n => ℓ.2.2) (fun ℓ => C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩) (MvPolynomial.map io P) := by
   intro E _ _ _ H Dw l Xo c _ hstar T io y C nab hnab B hB k n F f hF w P hP
   letI := io.toAlgebra

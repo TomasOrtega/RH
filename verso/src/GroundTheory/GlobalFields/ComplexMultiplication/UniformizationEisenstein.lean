@@ -25,20 +25,37 @@ section Recursion
 
 variable {R S : Type*} [CommRing R] [Algebra ℚ R] [CommRing S] [Algebra ℚ S]
 
+/- English proof (translation)
+Rewrite using `[weierstrassCoeff]`.
+-/
 @[simp] lemma weierstrassCoeff_zero (a b : R) : weierstrassCoeff a b 0 = 0 := by
   rw [weierstrassCoeff]
 
+/- English proof (translation)
+Rewrite using `[weierstrassCoeff]`.
+-/
 @[simp] lemma weierstrassCoeff_one (a b : R) : weierstrassCoeff a b 1 = (1 / 20 : ℚ) • a := by
   rw [weierstrassCoeff]
 
+/- English proof (translation)
+Rewrite using `[weierstrassCoeff]`.
+-/
 @[simp] lemma weierstrassCoeff_two (a b : R) : weierstrassCoeff a b 2 = (1 / 28 : ℚ) • b := by
   rw [weierstrassCoeff]
 
+/- English proof (translation)
+Rewrite using `[weierstrassCoeff]`.
+-/
 lemma weierstrassCoeff_add_three (a b : R) (n : ℕ) :
     weierstrassCoeff a b (n + 3) = (3 / ((2 * ((n : ℚ) + 3) + 3) * ((n : ℚ) + 1)) : ℚ) •
       ∑ i : Fin (n + 1), weierstrassCoeff a b (i + 1) * weierstrassCoeff a b (n + 1 - i) := by
   rw [weierstrassCoeff]
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih => match n, ih with`. Consider the case `0, _ => simp`. Consider the case `1, _ => simp [map_smul]`. Consider the case `2, _ => simp [map_smul]`.
+
+Consider the case `n + 3, ih`. Rewrite using `[weierstrassCoeff_add_three, weierstrassCoeff_add_three, map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_mul, ih _ (by have := i.isLt; omega), ih _ (by omega)]`.
+-/
 theorem weierstrassCoeff_map (f : R →ₐ[ℚ] S) (a b : R) (n : ℕ) :
     f (weierstrassCoeff a b n) = weierstrassCoeff (f a) (f b) n := by
   induction n using Nat.strong_induction_on with
@@ -53,6 +70,15 @@ theorem weierstrassCoeff_map (f : R →ₐ[ℚ] S) (a b : R) (n : ℕ) :
       refine Finset.sum_congr rfl fun i _ ↦ ?_
       rw [map_mul, ih _ (by have := i.isLt; omega), ih _ (by omega)]
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih => match n, ih with`. Consider the case `0, _ => simp`. Consider the case `1, _ => simp`. Consider the case `2, _ => simp`.
+
+Consider the case `n + 3, ih`. Rewrite using `[weierstrassCoeff_add_three, weierstrassCoeff_add_three, mul_smul_comm, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Establish `hi` using `i.isLt`.
+
+Rewrite using `[ih _ (by omega), ih _ (by omega)]`. Establish `: t ^ (2 * (n + 3) + 2) = t ^ (2 * ((i : ℕ) + 1) + 2) * t ^ (2 * (n + 1 - i) + 2)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weierstrassCoeff_scale (t a b : R) (n : ℕ) :
     weierstrassCoeff (t ^ 4 * a) (t ^ 6 * b) n = t ^ (2 * n + 2) * weierstrassCoeff a b n := by
   induction n using Nat.strong_induction_on with
@@ -79,6 +105,9 @@ end Recursion
 def eisensteinPoly (n : ℕ) : MvPolynomial (Fin 2) ℚ :=
   (1 / (2 * (n : ℚ) + 1)) • weierstrassCoeff (MvPolynomial.X 0) (MvPolynomial.X 1) n
 
+/- English proof (translation)
+Rewrite using `[eisensteinPoly, map_smul, weierstrassCoeff_map, MvPolynomial.aeval_X, MvPolynomial.aeval_X, Rat.smul_def]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma aeval_eisensteinPoly (x : Fin 2 → ℂ) (n : ℕ) :
     MvPolynomial.aeval x (eisensteinPoly n) =
       weierstrassCoeff (x 0) (x 1) n / (2 * n + 1) := by
@@ -93,9 +122,17 @@ variable (L) in
 
 def weierstrassLaurentCoeff (j : ℕ) : ℂ := if j = 0 then 0 else (j + 1) * L.G (j + 2)
 
+/- English proof (translation)
+Rewrite using `[weierstrassLaurentCoeff, if_neg (by omega), L.G_eq_zero_of_odd _ ⟨i + 1, by ring⟩, mul_zero]`.
+-/
 lemma weierstrassLaurentCoeff_odd (i : ℕ) : weierstrassLaurentCoeff L (2 * i + 1) = 0 := by
   rw [weierstrassLaurentCoeff, if_neg (by omega), L.G_eq_zero_of_odd _ ⟨i + 1, by ring⟩, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[L.iteratedDeriv_weierstrassPExcept_self 0, weierstrassLaurentCoeff]`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Rewrite using `[L.sumInvPow_zero, Nat.factorial_succ]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma iteratedDeriv_weierstrassPExcept_zero (j : ℕ) :
     iteratedDeriv j ℘[L - (0 : ℂ)] 0 = j ! * weierstrassLaurentCoeff L j := by
   rw [L.iteratedDeriv_weierstrassPExcept_self 0, weierstrassLaurentCoeff]
@@ -105,6 +142,15 @@ lemma iteratedDeriv_weierstrassPExcept_zero (j : ℕ) :
     push_cast
     ring
 
+/- English proof (translation)
+Establish `hVo : IsOpen (↑L.lattice \ {(0 : ℂ)})ᶜ` using `L.isOpen_compl_lattice_sdiff`. Use `filter_upwards [L.compl_lattice_sdiff_singleton_mem_nhds 0] with z hz`. Distinguish the cases in `hz0 : z = 0`. Substitute `hz0` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hzL : z ∉ L.lattice` using `fun h ↦ hz ⟨h, hz0⟩`. Establish `h1 : deriv ℘[L - (0 : ℂ)] =ᶠ[𝓝 z] ℘'[L - (0 : ℂ)]` using `by filter_upwards [hVo.mem_nhds hz] with u hu`. Conclude with `L.eqOn_deriv_weierstrassPExcept_derivWeierstrassPExcept 0 hu`. Rewrite using `[h1.deriv_eq]`. Establish `hP'a : DifferentiableAt ℂ ℘'[L - (0 : ℂ)] z` using `(L.analyticOnNhd_derivWeierstrassPExcept 0 z hz).differentiableAt`.
+
+Establish `hq : HasDerivAt (fun u ↦ ℘'[L - (0 : ℂ)] u - 2 / u ^ 3) (deriv ℘'[L - (0 : ℂ)] z + 6 / z ^ 4) z` using `(hP'a.hasDerivAt.sub ((hasDerivAt_const z (2 : ℂ)).div (hasDerivAt_pow 3 z) (pow_ne_zero 3 hz0))).congr_deriv (by field_simp; ring)`. Establish `heq : ℘'[L] = fun u ↦ ℘'[L - (0 : ℂ)] u - 2 / u ^ 3`. Use function extensionality and compare the values at `derivWeierstrassP_eq_except_zero`. Establish `hval` using `deriv_derivWeierstrassP hzL`. Rewrite `hval` using `[heq, hq.deriv, weierstrassP_eq_except_zero z]`.
+
+Establish `hd : deriv ℘'[L - (0 : ℂ)] z = 6 * (℘[L - (0 : ℂ)] z + 1 / z ^ 2) ^ 2 - L.g₂ / 2 - 6 / z ^ 4`. Take the linear combination `hval`. Rewrite using `[hd]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma laurent_ode :
     (fun z ↦ z ^ 2 * (deriv (deriv ℘[L - (0 : ℂ)]) z -
       6 * (℘[L - (0 : ℂ)] z * ℘[L - (0 : ℂ)] z) + L.g₂ / 2)) =ᶠ[𝓝 0]
@@ -136,12 +182,22 @@ lemma laurent_ode :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `: (k + 2).choose 2 * 2 = (k + 2) * (k + 1)`. Rewrite using `[Nat.choose_two_right, show k + 2 - 1 = k + 1 by omega]`. Conclude with `Nat.div_mul_cancel (by rw [mul_comm]; exact (Nat.even_mul_succ_self (k + 1)).two_dvd)`. Conclude with `this` after adjusting the coercions.
+-/
 lemma choose_two_mul (k : ℕ) : (((k + 2).choose 2 : ℕ) : ℂ) * 2 = (k + 2) * (k + 1) := by
   have : (k + 2).choose 2 * 2 = (k + 2) * (k + 1) := by
     rw [Nat.choose_two_right, show k + 2 - 1 = k + 1 by omega]
     exact Nat.div_mul_cancel (by rw [mul_comm]; exact (Nat.even_mul_succ_self (k + 1)).two_dvd)
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `hP : AnalyticAt ℂ ℘[L - (0 : ℂ)] 0` using `L.analyticAt_weierstrassPExcept 0`. Establish `hPP : AnalyticAt ℂ (fun z ↦ ℘[L - (0 : ℂ)] z * ℘[L - (0 : ℂ)] z) 0` using `hP.mul hP`. Establish `hQ : AnalyticAt ℂ (deriv (deriv ℘[L - (0 : ℂ)])) 0` using `hP.deriv.deriv`. Establish `h6 : AnalyticAt ℂ (fun z ↦ 6 * (℘[L - (0 : ℂ)] z * ℘[L - (0 : ℂ)] z)) 0` using `analyticAt_const.mul hPP`. Establish `hA : AnalyticAt ℂ (fun z ↦ deriv (deriv ℘[L - (0 : ℂ)]) z - 6 * (℘[L - (0 : ℂ)] z * ℘[L - (0 : ℂ)] z)) 0` using `hQ.sub h6`.
+
+Establish `hW : AnalyticAt ℂ (fun z ↦ deriv (deriv ℘[L - (0 : ℂ)]) z - 6 * (℘[L - (0 : ℂ)] z * ℘[L - (0 : ℂ)] z) + L.g₂ / 2) 0` using `hA.add analyticAt_const`. Establish `hsq : AnalyticAt ℂ (fun z : ℂ ↦ z ^ 2) 0` using `by fun_prop`. Establish `e` using `(laurent_ode (L := L)).iteratedDeriv_eq (k + 2)`. Rewrite `e` using `[iteratedDeriv_fun_mul hsq.contDiffAt hW.contDiffAt, iteratedDeriv_const_mul_field]`. Rewrite `e` using `[Finset.sum_eq_single 2 (fun i _ hi ↦ by rw [iteratedDeriv_fun_pow_zero, if_neg hi]; simp) (fun h ↦ absurd (Finset.mem_range.2 (by omega)) h)]`.
+
+Rewrite `e` using `[iteratedDeriv_fun_add hA.contDiffAt analyticAt_const.contDiffAt, iteratedDeriv_fun_sub hQ.contDiffAt h6.contDiffAt, iteratedDeriv_const_mul_field, iteratedDeriv_fun_mul hP.contDiffAt hP.contDiffAt, iteratedDeriv_const, ← iteratedDeriv_succ', ← iteratedDeriv_succ', iteratedDeriv_ …`. Simplify using `only [if_true, Nat.factorial_two, Nat.cast_ofNat] at e`. Rewrite using `[← e, ← choose_two_mul k]`.
+-/
 lemma laurent_ode_coeff (k : ℕ) :
     ((k + 2 : ℂ) * (k + 1)) * (iteratedDeriv (k + 2) ℘[L - (0 : ℂ)] 0 -
       6 * ∑ j ∈ Finset.range (k + 1), (k.choose j : ℂ) * iteratedDeriv j ℘[L - (0 : ℂ)] 0 *
@@ -170,6 +226,9 @@ lemma laurent_ode_coeff (k : ℕ) :
   simp only [if_true, Nat.factorial_two, Nat.cast_ofNat] at e
   rw [← e, ← choose_two_mul k]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[show 2 * (N + 1) + 1 = 2 * N + 1 + 1 + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ, ih, hf, add_zero, Finset.sum_range_succ (n := N + 1)]`. Rewrite using `[show 2 * N + 1 + 1 = 2 * (N + 1) by ring]`.
+-/
 lemma sum_range_of_odd_eq_zero {f : ℕ → ℂ} (hf : ∀ i, f (2 * i + 1) = 0) (N : ℕ) :
     ∑ j ∈ Finset.range (2 * N + 1), f j = ∑ i ∈ Finset.range (N + 1), f (2 * i) := by
   induction N with
@@ -179,6 +238,21 @@ lemma sum_range_of_odd_eq_zero {f : ℕ → ℂ} (hf : ∀ i, f (2 * i + 1) = 0)
       Finset.sum_range_succ, ih, hf, add_zero, Finset.sum_range_succ (n := N + 1)]
     rw [show 2 * N + 1 + 1 = 2 * (N + 1) by ring]
 
+/- English proof (translation)
+Establish `e` using `laurent_ode_coeff (L := L) (2 * n + 4)`. Simplify using `only [iteratedDeriv_weierstrassPExcept_zero] at e`. Rewrite `e` using `[if_neg (by omega)]`. Establish `hsum : ∑ j ∈ Finset.range (2 * n + 4 + 1), ((2 * n + 4).choose j : ℂ) * ((j ! : ℂ) * weierstrassLaurentCoeff L j) * (((2 * n + 4 - j) ! : ℂ) * weierstrassLaurentCoeff L (2 * n + 4 - j)) = ((2 * n + 4) ! : ℂ) * ∑ j ∈ Finset.range (2 * n + 4 + 1), weierstrassLaurentCoeff L j * weie …`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j hj ↦ ?_` and prove the remaining obligations. Establish `hj' : j ≤ 2 * n + 4` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)`. Use `Nat.choose_mul_factorial_mul_factorial hj'` as an intermediate fact. Establish `h' : ((2 * n + 4).choose j : ℂ) * j ! * (2 * n + 4 - j) ! = (2 * n + 4) !`. Conclude with `this` after adjusting the coercions.
+
+Rewrite using `[← h']`. Expand and normalize the polynomial expressions, which then agree. Establish `heven : ∑ j ∈ Finset.range (2 * n + 4 + 1), weierstrassLaurentCoeff L j * weierstrassLaurentCoeff L (2 * n + 4 - j) = ∑ i : Fin (n + 1), weierstrassLaurentCoeff L (2 * ((i : ℕ) + 1)) * weierstrassLaurentCoeff L (2 * (n + 1 - i))`. Rewrite using `[show 2 * n + 4 + 1 = 2 * (n + 2) + 1 by ring, sum_range_of_odd_eq_zero (f := fun j ↦ weierstrassLaurentCoeff L j * weierstrassLaurentCoeff L (2 * n + 4 - j)) (fun i ↦ by simp only [weierstrassLaurentCoeff_odd, zero_mul]), Finset.sum_range_succ', Finset.sum_range_succ]`. Simplify using `only [show weierstrassLaurentCoeff L (2 * 0) = 0 by simp [weierstrassLaurentCoeff], zero_mul, add_zero, show 2 * n + 4 - 2 * (n + 1 + 1) = 0 by omega, show weierstrassLaurentCoeff L 0 = 0 by simp [weierstrassLaurentCoeff], mul_zero]`.
+
+Rewrite using `[← Finset.sum_range (fun i ↦ weierstrassLaurentCoeff L (2 * (i + 1)) * weierstrassLaurentCoeff L (2 * (n + 1 - i)))]`. Use `Finset.sum_congr rfl fun i hi ↦ ?_` and prove the remaining obligations. Establish `: i < n + 1` using `Finset.mem_range.1 hi`. Rewrite using `[show 2 * n + 4 - 2 * (i + 1) = 2 * (n + 1 - i) by omega]`. Rewrite `e` using `[hsum, heven]`.
+
+Establish `hf : ((2 * n + 4) ! : ℂ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `hfac : (((2 * n + 4 + 2) ! : ℕ) : ℂ) = (2 * n + 6) * (2 * n + 5) * (2 * n + 4) !`. Rewrite using `[show 2 * n + 4 + 2 = (2 * n + 4 + 1) + 1 by ring, Nat.factorial_succ, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `e` using `[hfac, show 2 * n + 4 + 2 = 2 * n + 6 by omega]`. Move the coercions through the operations in `at e`. Establish `hK : ((2 * n + 6 : ℂ) * (2 * n + 5)) ≠ 0`. Establish `: ((2 * n + 6) * (2 * n + 5) : ℕ) ≠ 0` using `by positivity`. Conclude with `this` after adjusting the coercions.
+
+Apply `mul_left_cancel₀ (mul_ne_zero hK hf)` to reduce the goal to its premises. Take the linear combination `e`.
+-/
 lemma weierstrassLaurentCoeff_recursion (n : ℕ) :
     (((2 * n + 6 : ℂ) * (2 * n + 5)) - 12) * weierstrassLaurentCoeff L (2 * n + 6) =
       6 * ∑ i : Fin (n + 1), weierstrassLaurentCoeff L (2 * ((i : ℕ) + 1)) * weierstrassLaurentCoeff L (2 * (n + 1 - i)) := by
@@ -224,6 +298,11 @@ lemma weierstrassLaurentCoeff_recursion (n : ℕ) :
   apply mul_left_cancel₀ (mul_ne_zero hK hf)
   linear_combination e
 
+/- English proof (translation)
+Establish `h` using `L.weierstrassPExceptSeries_hasSum 0 z 0 (fun l hl ↦ by simpa using hz l hl)`. Rewrite using `[weierstrassP_eq_except_zero z, add_sub_cancel_right]`. Use `h using 2 with j` and compare the differences between its conclusion and the goal. Rewrite using `[sub_zero, PeriodPair.weierstrassPExceptSeries, FormalMultilinearSeries.coeff_ofScalars, weierstrassLaurentCoeff]`. Break down `eq_or_ne j 0 with rfl | hj` into its components or cases.
+
+Simplify using the standard rewrite rules. Simplify using `[hj, L.lattice.zero_mem, L.sumInvPow_zero]`.
+-/
 theorem hasSum_weierstrassP_laurent {z : ℂ} (hz : ∀ l : L.lattice, (l : ℂ) ≠ 0 → ‖z‖ < ‖(l : ℂ)‖) :
     HasSum (fun j ↦ weierstrassLaurentCoeff L j * z ^ j) (℘[L] z - 1 / z ^ 2) := by
   have h := L.weierstrassPExceptSeries_hasSum 0 z 0 (fun l hl ↦ by simpa using hz l hl)
@@ -235,12 +314,30 @@ theorem hasSum_weierstrassP_laurent {z : ℂ} (hz : ∀ l : L.lattice, (l : ℂ)
   · simp
   · simp [hj, L.lattice.zero_mem, L.sumInvPow_zero]
 
+/- English proof (translation)
+Rewrite using `[weierstrassLaurentCoeff, if_neg (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma weierstrassLaurentCoeff_two_mul {n : ℕ} (hn : n ≠ 0) :
     weierstrassLaurentCoeff L (2 * n) = (2 * n + 1) * L.G (2 * n + 2) := by
   rw [weierstrassLaurentCoeff, if_neg (by omega)]
   push_cast
   ring
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih => match n, ih, hn with`. Consider the case `1, _, _`. Rewrite using `[weierstrassLaurentCoeff_two_mul one_ne_zero, weierstrassCoeff_one, Rat.smul_def, PeriodPair.g₂]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `2, _, _`. Rewrite using `[weierstrassLaurentCoeff_two_mul two_ne_zero, weierstrassCoeff_two, Rat.smul_def, PeriodPair.g₃]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `n + 3, ih, _`. Establish `hrec` using `weierstrassLaurentCoeff_recursion (L := L) n`. Establish `hsum : ∑ i : Fin (n + 1), weierstrassLaurentCoeff L (2 * ((i : ℕ) + 1)) * weierstrassLaurentCoeff L (2 * (n + 1 - i)) = ∑ i : Fin (n + 1), weierstrassCoeff L.g₂ L.g₃ ((i : ℕ) + 1) * weierstrassCoeff L.g₂ L.g₃ (n + 1 - i)` using `Finset.sum_congr rfl fun i _ ↦ by`. Use `i.isLt` as an intermediate fact. Rewrite using `[ih _ (by omega) (by omega), ih _ (by omega) (by omega)]`.
+
+Rewrite `hrec` using `[hsum]`. Rewrite using `[weierstrassCoeff_add_three, Rat.smul_def, show 2 * (n + 3) = 2 * n + 6 by ring]`. Establish `hK : ((2 * n + 6 : ℂ) * (2 * n + 5) - 12) ≠ 0`. Establish `: ((2 * n + 6 : ℂ) * (2 * n + 5) - 12) = 2 * (2 * n + 9) * (n + 1)` using `by ring`. Rewrite using `[this]`.
+
+Establish `: ((2 * (2 * n + 9) * (n + 1) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by positivity)`. Conclude with `this` after adjusting the coercions. Apply `mul_left_cancel₀ hK` to reduce the goal to its premises. Rewrite using `[hrec]`. Establish `h1 : (2 * ((n : ℂ) + 3) + 3) ≠ 0`.
+
+Establish `: ((2 * (n + 3) + 3 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Conclude with `this` after adjusting the coercions. Establish `h2 : ((n : ℂ) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero n`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weierstrassLaurentCoeff_eq (n : ℕ) (hn : n ≠ 0) :
     weierstrassLaurentCoeff L (2 * n) = weierstrassCoeff L.g₂ L.g₃ n := by
   induction n using Nat.strong_induction_on with
@@ -282,10 +379,16 @@ theorem weierstrassLaurentCoeff_eq (n : ℕ) (hn : n ≠ 0) :
       field_simp
       ring
 
+/- English proof (translation)
+Rewrite using `[← weierstrassLaurentCoeff_two_mul hn, weierstrassLaurentCoeff_eq n hn]`.
+-/
 theorem mul_G_eq_weierstrassCoeff {n : ℕ} (hn : n ≠ 0) :
     (2 * n + 1) * L.G (2 * n + 2) = weierstrassCoeff L.g₂ L.g₃ n := by
   rw [← weierstrassLaurentCoeff_two_mul hn, weierstrassLaurentCoeff_eq n hn]
 
+/- English proof (translation)
+Establish `h : (2 * (n : ℂ) + 1) ≠ 0`. Establish `: ((2 * n + 1 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Conclude with `this` after adjusting the coercions. Rewrite using `[← mul_G_eq_weierstrassCoeff hn, mul_div_cancel_left₀ _ h]`.
+-/
 theorem G_eq_weierstrassCoeff_div {n : ℕ} (hn : n ≠ 0) :
     L.G (2 * n + 2) = weierstrassCoeff L.g₂ L.g₃ n / (2 * n + 1) := by
   have h : (2 * (n : ℂ) + 1) ≠ 0 := by
@@ -293,11 +396,17 @@ theorem G_eq_weierstrassCoeff_div {n : ℕ} (hn : n ≠ 0) :
     exact_mod_cast this
   rw [← mul_G_eq_weierstrassCoeff hn, mul_div_cancel_left₀ _ h]
 
+/- English proof (translation)
+Rewrite using `[aeval_eisensteinPoly, G_eq_weierstrassCoeff_div hn]`. Both sides reduce to the same expression.
+-/
 theorem G_eq_aeval_eisensteinPoly {n : ℕ} (hn : n ≠ 0) :
     L.G (2 * n + 2) = MvPolynomial.aeval ![L.g₂, L.g₃] (eisensteinPoly n) := by
   rw [aeval_eisensteinPoly, G_eq_weierstrassCoeff_div hn]
   rfl
 
+/- English proof (translation)
+Use `⟨eisensteinPoly (k - 1), fun L ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[show 2 * k = 2 * (k - 1) + 2 by omega]`. Conclude with `G_eq_aeval_eisensteinPoly (by omega)`.
+-/
 theorem exists_G_eq_aeval {k : ℕ} (hk : 2 ≤ k) :
     ∃ P : MvPolynomial (Fin 2) ℚ, ∀ L : PeriodPair,
       L.G (2 * k) = MvPolynomial.aeval ![L.g₂, L.g₃] P := by
@@ -305,6 +414,9 @@ theorem exists_G_eq_aeval {k : ℕ} (hk : 2 ≤ k) :
   rw [show 2 * k = 2 * (k - 1) + 2 by omega]
   exact G_eq_aeval_eisensteinPoly (by omega)
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Establish `hn : n ≠ 0` using `by omega`. Rewrite using `[show 2 * (n + 1) = 2 * n + 2 by ring, G_eq_weierstrassCoeff_div hn, G_eq_weierstrassCoeff_div hn, h₂, h₃, weierstrassCoeff_scale]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem G_eq_of_g₂_g₃ {L' : PeriodPair} {t : ℂ} (h₂ : L'.g₂ = t ^ 4 * L.g₂)
     (h₃ : L'.g₃ = t ^ 6 * L.g₃) {k : ℕ} (hk : 2 ≤ k) :
     L'.G (2 * k) = t ^ (2 * k) * L.G (2 * k) := by

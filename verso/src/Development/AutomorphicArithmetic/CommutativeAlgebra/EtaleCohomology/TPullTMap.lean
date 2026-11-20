@@ -31,11 +31,19 @@ def tPull {Q P : C ⥤ Type} (u : Q ⟶ P) (F : Coef C) (j : ℕ) : TH P F j →
 def tMap (P : C ⥤ Type) {F G : Coef C} (α : F ⟶ G) (j : ℕ) : TH P F j →+ TH P G j :=
   ((elCoef P (zmMap α)).pull j).toAddMonoidHom
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx (elF P (zm F))) j).1 x`. Both sides reduce to the same expression.
+-/
 theorem tPull_tMap {Q P : C ⥤ Type} (u : Q ⟶ P) {F G : Coef C} (α : F ⟶ G) (j : ℕ) (x : TH P F j) :
     tPull u G j (tMap P α j x) = tMap Q α j (tPull u F j x) := by
   obtain ⟨a, ha, rfl⟩ := (CrystallineSemistableComparison.P.cls_surj (cx (elF P (zm F))) j).1 x
   rfl
 
+/- English proof (translation)
+Use `h.mono_f` as an intermediate fact. Use `h.epi_g` as an intermediate fact. Use `⟨fun A => ?_, fun A => ?_, fun A => ?_⟩` and prove the remaining obligations. Conclude with `(AddCommGrpCat.mono_iff_injective _).1 ((NatTrans.mono_iff_mono_app _).1 inferInstance A)`. Use `(h.map_of_exact ((evaluation C AddCommGrpCat.{1}).obj A)).exact` as an intermediate fact.
+
+Conclude with `(ShortComplex.ab_exact_iff_function_exact _).1 this`. Conclude with `(AddCommGrpCat.epi_iff_surjective _).1 ((NatTrans.epi_iff_epi_app _).1 inferInstance A)`.
+-/
 theorem ses_app (S : ShortComplex (Coef C)) (h : S.ShortExact) :
     (∀ A, Function.Injective (S.f.app A).hom) ∧ (∀ A, Function.Exact (S.f.app A).hom (S.g.app A).hom) ∧
       ∀ A, Function.Surjective (S.g.app A).hom := by
@@ -47,6 +55,9 @@ theorem ses_app (S : ShortComplex (Coef C)) (h : S.ShortExact) :
     exact (ShortComplex.ab_exact_iff_function_exact _).1 this
   · exact (AddCommGrpCat.epi_iff_surjective _).1 ((NatTrans.epi_iff_epi_app _).1 inferInstance A)
 
+/- English proof (translation)
+Take `⟨hi, he, hs⟩` from `ses_app S h`. Take `⟨h1, h2, h3⟩` from `CrystallineSemistableComparison.P.ses_cochains (Functor.whiskerLeft (CategoryOfElements.π P) (zmMap S.f)) (Functor.whiskerLeft (CategoryOfElements.π P) (zmMap S.g)) (fun T => hi T.1) (fun T => he T.1) (fun T => hs T.1)`. Conclude with `CrystallineSemistableComparison.P.les _ _ h1 h2 h3`.
+-/
 theorem les_ex (P : C ⥤ Type) (S : ShortComplex (Coef C)) (h : S.ShortExact) :
     ∃ δ : ∀ n, TH P S.X₃ n →ₗ[ℤ] TH P S.X₁ (n + 1),
       (∀ n (y : (cx (elF P (zm S.X₂))).X n) (x : (cx (elF P (zm S.X₁))).X (n + 1)) hz hx,
@@ -65,20 +76,40 @@ theorem les_ex (P : C ⥤ Type) (S : ShortComplex (Coef C)) (h : S.ShortExact) :
 def tδ (P : C ⥤ Type) (S : ShortComplex (Coef C)) (h : S.ShortExact) (j : ℕ) : TH P S.X₃ j →+ TH P S.X₁ (j + 1) :=
   (Classical.choose (les_ex P S h) j).toAddMonoidHom
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (les_ex P S h)).1 n y x hz hx e`.
+-/
 theorem tδ_spec (P : C ⥤ Type) (S : ShortComplex (Coef C)) (h : S.ShortExact) (n : ℕ)
     (y : (cx (elF P (zm S.X₂))).X n) (x : (cx (elF P (zm S.X₁))).X (n + 1)) (hz) (hx)
     (e : (elCoef P (zmMap S.f)).hom.f (n + 1) x = (cx (elF P (zm S.X₂))).d n y) :
     tδ P S h n ((cx (elF P (zm S.X₃))).cls ((elCoef P (zmMap S.g)).hom.f n y) hz) = (cx (elF P (zm S.X₁))).cls x hx :=
   (Classical.choose_spec (les_ex P S h)).1 n y x hz hx e
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (les_ex P S h)).2.2.2.1 j`.
+-/
 theorem ex₃ (P : C ⥤ Type) (S : ShortComplex (Coef C)) (h : S.ShortExact) (j : ℕ) :
     Function.Exact (tMap P S.g j) (tδ P S h j) :=
   (Classical.choose_spec (les_ex P S h)).2.2.2.1 j
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (les_ex P S h)).2.2.2.2 j`.
+-/
 theorem ex₁ (P : C ⥤ Type) (S : ShortComplex (Coef C)) (h : S.ShortExact) (j : ℕ) :
     Function.Exact (tδ P S h j) (tMap P S.f (j + 1)) :=
   (Classical.choose_spec (les_ex P S h)).2.2.2.2 j
 
+/- English proof (translation)
+Take `⟨hi, he, hs⟩` from `ses_app S h`. Take `⟨c, hc, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (cx (elF P (zm S.X₃))) j).1 x`. Take `⟨h1, h2, h3⟩` from `CrystallineSemistableComparison.P.ses_cochains (Functor.whiskerLeft (CategoryOfElements.π P) (zmMap S.f)) (Functor.whiskerLeft (CategoryOfElements.π P) (zmMap S.g)) (fun T => hi T.1) (fun T => he T.1) (fun T => hs T.1)`. Take `⟨y, rfl⟩` from `h3 j c`. Establish `hdy : (Mor.ofNatTrans (Functor.whiskerLeft (CategoryOfElements.π P) (zmMap S.g))).hom.f (j + 1) ((cx (elF P (zm S.X₂))).d j y) = 0`.
+
+Rewrite using `[← Cx.Hom.comm]`. Conclude with `hc`. Take `⟨x, hx⟩` from `((h2 (j + 1)) _).1 hdy`. Establish `hxz : (cx (elF P (zm S.X₁))).d (j + 1) x = 0`. Apply `h1 (j + 1 + 1)` to reduce the goal to its premises.
+
+Rewrite using `[map_zero, ← Cx.Hom.comm, hx]`. Conclude with `(cx (elF P (zm S.X₂))).dd j y`. Establish `e1 : tPull u S.X₃ j ((cx (elF P (zm S.X₃))).cls ((elCoef P (zmMap S.g)).hom.f j y) hc) = (cx (elF Q (zm S.X₃))).cls ((elCoef Q (zmMap S.g)).hom.f j ((elMor u (zm S.X₂)).hom.f j y)) (by`. Conclude with `((elMor u (zm S.X₃)).hom.comm j ((elCoef P (zmMap S.g)).hom.f j y)).trans ((congrArg _ hc).trans (map_zero _))) := rfl`. Establish `e2 : tPull u S.X₁ (j + 1) ((cx (elF P (zm S.X₁))).cls x hxz) = (cx (elF Q (zm S.X₁))).cls ((elMor u (zm S.X₁)).hom.f (j + 1) x) (by`.
+
+Rewrite using `[Cx.Hom.comm, hxz, map_zero]) := rfl`. Use `(congrArg (tPull u S.X₁ (j + 1)) (tδ_spec P S h j y x hc hxz hx)).trans ?_` and prove the remaining obligations. Use `e2.trans (Eq.trans ?_ (congrArg (tδ Q S h j) e1).symm)` and prove the remaining obligations. Use `(tδ_spec Q S h j _ _ _ _ ?_).symm` and prove the remaining obligations. Use `Eq.trans ?_ ((elMor u (zm S.X₂)).hom.comm j y).symm` and prove the remaining obligations.
+
+Conclude with `congrArg ((elMor u (zm S.X₂)).hom.f (j + 1)) hx`.
+-/
 theorem tPull_tδ {Q P : C ⥤ Type} (u : Q ⟶ P) (S : ShortComplex (Coef C)) (h : S.ShortExact) (j : ℕ) (x : TH P S.X₃ j) :
     tPull u S.X₁ (j + 1) (tδ P S h j x) = tδ Q S h j (tPull u S.X₃ j x) := by
   obtain ⟨hi, he, hs⟩ := ses_app S h

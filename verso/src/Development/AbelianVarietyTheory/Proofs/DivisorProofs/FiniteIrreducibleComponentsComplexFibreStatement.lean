@@ -14,5 +14,8 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.HorComp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HorComp.finite_irreducibleComponents_cxFib | exact GlobalTheory.HorComp.finite_irreducibleComponents_cxFib | (intros; apply GlobalTheory.HorComp.finite_irreducibleComponents_cxFib <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_irreducible_components_complex_fibre : ∀ (k F : Type) [CommRing k] [CommRing F] (β : k →+* F) (Y : Scheme.{0}) (q : Y ⟶ Sp k) (σ : F →+* ℂ) (n : ℕ), IsArithVar q n → (irreducibleComponents (cxFib β q σ)).Finite := by
   first | exact @GlobalTheory.HorComp.finite_irreducibleComponents_cxFib | exact GlobalTheory.HorComp.finite_irreducibleComponents_cxFib | (intros; apply GlobalTheory.HorComp.finite_irreducibleComponents_cxFib <;> assumption)

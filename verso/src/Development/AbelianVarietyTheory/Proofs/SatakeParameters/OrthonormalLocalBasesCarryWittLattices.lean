@@ -18,12 +18,22 @@ noncomputable section
 
 namespace GlobalTheory.TwV.FrameLat
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.G.colSpan`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 2`.
+-/
 theorem colSpan_mul' (R : Type) {K : Type} [CommRing R] [Field K] [Algebra R K] {k : ℕ} (M g : Matrix (Fin k) (Fin k) K) :
     Formalism.MainNotions.G.colSpan R (M * g) = (Formalism.MainNotions.G.colSpan R g).map ((M.mulVecLin).restrictScalars R) := by
   unfold Formalism.MainNotions.G.colSpan
   rw [Submodule.map_span, ← Set.range_comp]
   congr 2
 
+/- English proof (translation)
+Take `⟨s, hs, hB'⟩` from `hB`. Prove the components needed by the constructor for the conclusion. Introduce `c`. Rewrite using `[hG']`. Use `locSp_maps_of_unit_smul R K ρ L L' B s (hu s hs) hB' _ ?_` and prove the remaining obligations.
+
+Rewrite using `[← hG]`. Conclude with `Submodule.subset_span ⟨c, rfl⟩`. Introduce `c`. Establish `e : (B.map (fun y => ρ (D.host.conj y)))ᵀ = ((B.map D.host.conj)ᵀ).map ρ`. Use extensionality with `a b`.
+
+Both sides reduce to the same expression. Rewrite using `[e, hG]`. Use `locSp_maps_of_unit_smul R K ρ L' L _ s (hu s hs) (adj_maps_sd D L L' B s hL hL' hB') _ ?_` and prove the remaining obligations. Rewrite using `[← hG']`. Conclude with `Submodule.subset_span ⟨c, rfl⟩`.
+-/
 theorem latMap_pair' (D : D7) {p : ℕ} (R : Type) {K : Type} [CommRing R] [Field K] [Algebra R K] (ρ : D.host.E →+* K)
     (hu : ∀ s : ℕ, Nat.Coprime s p → IsUnit (s : R)) {N N' : ℕ}
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
@@ -53,6 +63,13 @@ end GlobalTheory.TwV.FrameLat
 
 open GlobalTheory.TwV.FrameLat in
 
+/- English proof (translation)
+Introduce `p _ X _ hfin D fd ρ hA hT`. Introduce `j hj L0 hL0 La' hLa' φ r b hb _ i v`. Establish `hL0' : (X.Pj j).IsLatTup L0.2` using `Formalism.L2.G.Pend.repOf_lat X.Lv hfin j L0 hL0`. Take `⟨hAd, hK⟩` from `hT j hj L0 La' hL0' hLa'`. Take `⟨hK1, hK2⟩` from `hK v`.
+
+Use `latMap_pair' D (X.G.P.W v) (ρ v) (natCast_isUnit_localRing X v) (Formalism.L2.KerInert.RepFrame.Gm X fd.frM φ v) (Formalism.L2.KerInert.RepFrame.Gp X fd.frM φ v) ?_ ?_ (b i) (GlobalTheory.TwV.YYMaps.locBasis_maps D p hA _ _ b hb i) hAd.2.2.1 hAd.2.2.2` and prove the remaining obligations. Rewrite using `[hK1]`. Unfold `Formalism.L2.KerInert.RepFrame.Gm`. Rewrite using `[colSpan_mul', ← φ.hg v]`. Rewrite using `[hK2]`.
+
+Unfold `Formalism.L2.KerInert.RepFrame.Gp`. Rewrite using `[colSpan_mul', ← φ.hg' v]`.
+-/
 theorem GlobalTheory.TwV.frameLatMapLt_of_ties : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7) (fd : FData X D) (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v), (∀ a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E), ∃ s : ℕ, Nat.Coprime s p ∧ (s : D.host.E) * a ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) → (∀ j < X.mm, ∀ (La : X.Lt j) (La' : X.Lt (j + 1)), (X.Pj j).IsLatTup La.2 → (X.Pj (j + 1)).IsLatTup La'.2 → TaylorLogMetric.admitted D _ _ (fd.kerN j La) (fd.kerN (j + 1) La') ∧ ∀ v, locSp (X.G.P.W v) (ρ v) (fd.kerN j La) = (X.latAt v j La.2).map (((fd.frM j La v).mulVecLin).restrictScalars (X.G.P.W v)) ∧ locSp (X.G.P.W v) (ρ v) (fd.kerN (j + 1) La') = (X.latAt v (j + 1) La'.2).map (((fd.frM (j + 1) La' v).mulVecLin).restrictScalars (X.G.P.W v))) → Lt.FrameLatMapLt X fd.frM hfin D (fun j La _ => fd.kerN j La) (fun j _ La' => fd.kerN (j + 1) La') ρ := by
   intro p _ X _ hfin D fd ρ hA hT
   intro j hj L0 hL0 La' hLa' φ r b hb _ i v

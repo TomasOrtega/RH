@@ -10,6 +10,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Take `⟨x0, h0⟩` from `GlobalTheory.log_add_rpow_mul_log_pow_le_rpow (eps / 3) eps c 1 1 0 (by positivity) (by linarith) one_pos`. Take `⟨x1, h1⟩` from `GlobalTheory.log_add_rpow_mul_log_pow_le_rpow 0 (eps / 3) 10 0 1 0 le_rfl (by linarith) one_pos`. Use `⟨max x0 x1, fun s hs hx => ?_⟩` and prove the remaining obligations. Establish `hx1 : 1 ≤ s.x` using `s.one_lt_alt.le`. Establish `hx0 : 0 < s.x` using `by linarith`.
+
+Establish `h2` using `h0 s.x ((le_max_left _ _).trans hx)`. Establish `h3` using `h1 s.x ((le_max_right _ _).trans hx)`. Rewrite `h2`, `h3` using `[← hs]`. Simplify using `only [pow_zero, one_mul, mul_one, zero_mul, add_zero] at h2 h3`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[Real.rpow_def_of_pos hx0, Scale.X', Scale.b, Scale.L, ← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Establish `e : s.x ^ 10 = Real.exp (10 * Real.log s.x)`. Rewrite using `[show (10 : ℝ) = ((10 : ℕ) : ℝ) by norm_num, Real.exp_nat_mul, Real.exp_log hx0]`. Rewrite using `[e, Scale.X']`.
+
+Conclude with `Real.exp_le_exp.2 h3`.
+-/
 theorem rpow_mul_X'_le_b (eps c : ℝ) (he : 0 < eps) : ∃ x0 : ℝ, ∀ s : Scale, s.eps = eps → x0 ≤ s.x →
     s.x ^ c * s.X' ≤ s.b ∧ s.x ^ 10 ≤ s.X' := by
   obtain ⟨x0, h0⟩ := GlobalTheory.log_add_rpow_mul_log_pow_le_rpow (eps / 3) eps c 1 1 0 (by positivity)
@@ -31,6 +40,59 @@ theorem rpow_mul_X'_le_b (eps c : ℝ) (he : 0 < eps) : ∃ x0 : ℝ, ∀ s : Sc
     rw [e, Scale.X']
     exact Real.exp_le_exp.2 h3
 
+/- English proof (translation)
+Introduce `eps he he' C hC`. Take `⟨CN, x1, hLa⟩` from `GlobalTheory.topCount_and_lambda_bounds eps he he'`. Take `⟨x2, hx2'⟩` from `GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow eps 1 (2 * C.GK.La * CN ^ 2) 2 (by linarith)`. Establish `hK : 1 ≤ C.GK.La` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 _ (by simp [FC.cMid])`. Use `⟨0, fun cD _ => ⟨0, fun ch hch => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨x0, hx0⟩` from `rpow_mul_X'_le_b eps (ch + 9) he`. Use `⟨max (max x0 x1) (max x2 2), fun D L hs hx hV => ?_⟩` and prove the remaining obligations. Establish `hxa : x0 ≤ L.sc.x` using `((le_max_left _ _).trans (le_max_left _ _)).trans hx`. Establish `hxb : x1 ≤ L.sc.x` using `((le_max_right _ _).trans (le_max_left _ _)).trans hx`. Establish `hxc : x2 ≤ L.sc.x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hx`.
+
+Establish `hx2 : 2 ≤ L.sc.x` using `((le_max_right _ _).trans (le_max_right _ _)).trans hx`. Establish `hx1 : 1 ≤ L.sc.x` using `by linarith`. Establish `hxp : 0 < L.sc.x` using `by linarith`. Take `⟨⟨hn0, hn⟩, hm, -⟩` from `rankVal_crude L.sc D.R hx2 hV.ranks`. Take `⟨hb, hX⟩` from `hx0 L.sc hs hxa`.
+
+Establish `hLa1 : L.LaG ≤ L.sc.x`. Establish `h1` using `((hLa L.sc hs hxb).2.2 C.GK hK).2`. Establish `h2` using `hx2' L.sc.x hxc`. Rewrite `h2` using `[Real.rpow_one, ← hs]`. Rewrite using `[hV.La_eq]`.
+
+Use `h1.trans (le_trans (le_of_eq ?_) h2)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hn1 : (1 : ℝ) ≤ D.R.n`. Establish `: 0 < D.R.n` using `by exact_mod_cast hn0`. Conclude with `this` after adjusting the coercions.
+
+Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `le_trans (Real.one_le_rpow hx1 (by have := L.sc.eps_pos; linarith)) hV.ranks.2.2.1.1`. Establish `hX0 : 0 < L.sc.X'` using `Real.exp_pos _`. Establish `hb0 : 0 < L.sc.b` using `Real.exp_pos _`. Establish `eb' : L.sc.b' = L.sc.x * (L.sc.b / L.sc.X')` using `by rw [Scale.b', Scale.a]; ring`. Establish `ew : L.sc.w'' D.R.n = (L.sc.b / L.sc.X') / D.R.n`.
+
+Rewrite using `[Scale.w'', Scale.b', Scale.a]`. Clear the denominators using the available nonvanishing facts. Establish `hq0 : 0 < L.sc.b / L.sc.X'` using `div_pos hb0 hX0`. Establish `hb'0 : 0 < L.sc.b'` using `by rw [eb']; positivity`. Establish `hw0 : 0 < L.sc.w'' D.R.n` using `by rw [ew]; positivity`.
+
+Establish `hwb' : L.sc.w'' D.R.n ≤ L.sc.b'`. Rewrite using `[ew, eb']`. Conclude with `(div_le_self hq0.le hn1).trans (le_mul_of_one_le_left hq0.le hx1)`. Establish `h8 : (8 : ℝ) ≤ L.sc.x ^ 3`. Establish `: (2 : ℝ) ^ 3 ≤ L.sc.x ^ 3` using `by gcongr`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6 : (1 : ℝ) ≤ L.sc.x ^ 6` using `one_le_pow₀ hx1`. Establish `hb'b : 8 * (L.sc.x ^ 6 * L.sc.b') ≤ L.sc.b`. Establish `h1 : L.sc.x ^ 10 * (L.sc.b / L.sc.X') ≤ L.sc.X' * (L.sc.b / L.sc.X')` using `by gcongr`. Establish `h2 : L.sc.X' * (L.sc.b / L.sc.X') = L.sc.b` using `by field_simp`.
+
+Rewrite using `[eb']`. Combine the equalities or inequalities in the displayed calculation. Establish `hb'6 : L.sc.b' ≤ L.sc.x ^ 6 * L.sc.b'` using `le_mul_of_one_le_left hb'0.le h6`. Establish `heta : L.etaSz + 1 ≤ L.sc.w'' D.R.n`. Establish `hy : 1 ≤ L.sc.x ^ ch` using `Real.one_le_rpow hx1 hch`.
+
+Establish `h1 : (⌈L.sc.x ^ ch⌉₊ : ℝ) ≤ 2 * L.sc.x ^ ch`. Use `(Nat.ceil_lt_add_one (a := L.sc.x ^ ch) (by linarith)).le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : L.etaSz ≤ L.sc.x ^ 2 * (2 * (2 * L.sc.x ^ ch))`. Rewrite using `[hV.eta_eq, h0v]`.
+
+Use `push_cast`. Use `gcongr`. Establish `h3 : 1 ≤ L.sc.x ^ 2 * L.sc.x ^ ch` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hx1) hy`. Establish `h4 : L.sc.x ^ (ch + 9) = L.sc.x ^ 3 * (L.sc.x ^ 2 * L.sc.x ^ ch) * L.sc.x ^ 4`. Rewrite using `[Real.rpow_add hxp, show (9 : ℝ) = ((9 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]; ring`.
+
+Rewrite using `[ew, le_div_iff₀ hn0, le_div_iff₀ hX0]`. Use `le_trans ?_ hb` and prove the remaining obligations. Rewrite using `[h4]`. Establish `h5 : L.etaSz + 1 ≤ 8 * (L.sc.x ^ 2 * L.sc.x ^ ch)` using `by linarith`. Establish `h7 : 8 * (L.sc.x ^ 2 * L.sc.x ^ ch) ≤ L.sc.x ^ 3 * (L.sc.x ^ 2 * L.sc.x ^ ch)` using `by gcongr`.
+
+Establish `h9` using `h5.trans h7`. Use `L.etaSz_pos` as an intermediate fact. Use `gcongr`. Establish `hbT : ∀ t, (L.bT t : ℝ) ≤ L.sc.b' + 2 * (L.sc.x ^ 6 * L.sc.b')`. Introduce `t`.
+
+Use `(hV.bT_le t).trans ?_` and prove the remaining obligations. Establish `d1 : L.sc.delta1 ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hx1 (by have := L.sc.eps_pos; linarith)`. Establish `d0 : 0 ≤ L.sc.delta1` using `Real.rpow_nonneg hxp.le _`. Establish `e1 : L.sc.x ^ L.sc.eps ≤ L.sc.x`. Use `Real.rpow_le_rpow_of_exponent_le hx1 (show L.sc.eps ≤ 1 by have := L.sc.eps_lt; linarith)` as an intermediate fact.
+
+Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `e0 : 0 ≤ L.sc.x ^ L.sc.eps` using `Real.rpow_nonneg hxp.le _`. Establish `h1 : 2 * (D.R.n : ℝ) * L.sc.delta1 * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b' / (D.R.k : ℝ) ≤ 2 * (D.R.n : ℝ) * L.sc.delta1 * L.sc.x ^ L.sc.eps * L.sc.x * L.sc.b' / (D.R.k : ℝ)` using `by gcongr`. Establish `h2 : 2 * (D.R.n : ℝ) * L.sc.delta1 * L.sc.x ^ L.sc.eps * L.sc.x * L.sc.b' / (D.R.k : ℝ) ≤ 2 * (D.R.n : ℝ) * L.sc.delta1 * L.sc.x ^ L.sc.eps * L.sc.x * L.sc.b'` using `div_le_self (by positivity) hk1`. Establish `h3 : 2 * (D.R.n : ℝ) * L.sc.delta1 * L.sc.x ^ L.sc.eps * L.sc.x * L.sc.b' ≤ 2 * L.sc.x ^ 4 * 1 * L.sc.x * L.sc.x * L.sc.b'` using `by gcongr`.
+
+Establish `h4 : 2 * L.sc.x ^ 4 * 1 * L.sc.x * L.sc.x * L.sc.b' = 2 * (L.sc.x ^ 6 * L.sc.b')` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd0 : 0 ≤ L.sc.b' / L.sc.x` using `by positivity`. Establish `hd1 : L.sc.b' / L.sc.x ≤ L.sc.b'` using `div_le_self hb'0.le hx1`. Establish `hwin : ∀ j τ, 1 ≤ j → j ≤ D.R.m → L.sc.w'' D.R.n ≤ wj D j τ ∧ wj D j τ ≤ 2 * L.sc.b`.
+
+Introduce `j τ hj hj'`. Distinguish the cases in `h1 : (D.eTau τ : D.R.GG) ∈ D.host.topPlaces`. Unfold `Host.topPlaces at h1`. Take `⟨t, htT, hteq⟩` from `Finset.mem_image.1 h1`. Take `⟨a1, a2⟩` from `L.win_top j hj hj' τ ⟨t, htT⟩ hteq.symm`.
+
+Establish `h2` using `L.bT_ge ⟨t, htT⟩`. Establish `h3` using `hbT ⟨t, htT⟩`. Apply the tactic sequence `constructor <;> linarith`. Distinguish the cases in `h2 : (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces`. Take `⟨a1, a2⟩` from `L.win_thick j hj hj' τ h2`.
+
+Apply the tactic sequence `constructor <;> linarith`. Take `⟨a1, a2⟩` from `L.win_thin j hj hj' τ ⟨(D.eTau τ).2, h1, h2⟩`. Apply the tactic sequence `constructor <;> linarith`. Use `⟨fun j j' τ τ' a1 a2 a3 a4 => ?_, fun τ hm0 => ?_⟩` and prove the remaining obligations. Establish `hXX : L.sc.X'' D.R.n * L.sc.w'' D.R.n = L.sc.x * L.sc.b`.
+
+Rewrite using `[Scale.X'', div_mul_cancel₀ _ hw0.ne', Scale.a]`. Establish `hXX0 : 0 ≤ L.sc.X'' D.R.n`. Rewrite using `[Scale.X'', Scale.a]`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨-, -, ⟨b1, hbj, htop, hthick, hthin⟩, -⟩` from `hV.hc`. Establish `hb1 : L.sc.w'' D.R.n ≤ (b1 τ : ℝ)`. Distinguish the cases in `h1 : (D.eTau τ : D.R.GG) ∈ D.host.topPlaces`. Unfold `Host.topPlaces at h1`. Take `⟨t, htT, hteq⟩` from `Finset.mem_image.1 h1`.
+
+Rewrite using `[htop τ ⟨t, htT⟩ hteq.symm]`. Establish `h2` using `L.bT_ge ⟨t, htT⟩`. Establish `h3 : (0 : ℝ) ≤ (⌊L.sc.b' / L.sc.x⌋ : ℤ)`. Conclude with `Int.floor_nonneg.2 hd0` after adjusting the coercions. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h2 : (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces`. Establish `h3` using `Int.le_ceil L.sc.b`. Establish `h4 : ((⌈L.sc.b⌉ : ℤ) : ℝ) ≤ (b1 τ : ℝ)` using `by exact_mod_cast (hthick τ h2).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[hthin τ ⟨(D.eTau τ).2, h1, h2⟩]`. Conclude with `Int.le_ceil _`. Establish `h1 : ((D.R.m - 1 : ℕ) : ℝ) * (h0v L.sc ch : ℝ) ≤ L.etaSz`. Rewrite using `[hV.eta_eq]`. Use `gcongr`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[(hbj τ _).1, (hbj τ _).1, ← Rat.cast_le (K := ℝ)]`. Simplify using `only [Rat.cast_add, Rat.cast_mul, Rat.cast_intCast, Rat.cast_natCast, Rat.cast_ofNat, Nat.cast_zero, zero_mul, add_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem szRow_size_ratio : SzRow (fun C D L => (∀ j j' τ τ', 1 ≤ j → j ≤ D.R.m → 1 ≤ j' → j' ≤ D.R.m → wj D j τ ≤ L.sc.X'' D.R.n * wj D j' τ') ∧ (∀ τ (hm : 0 < D.R.m), (D.hc τ).b ⟨D.R.m - 1, by omega⟩ ≤ 2 * (D.hc τ).b ⟨0, hm⟩)) := by
   intro eps he he' C hC
   obtain ⟨CN, x1, hLa⟩ := GlobalTheory.topCount_and_lambda_bounds eps he he'

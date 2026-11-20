@@ -15,6 +15,15 @@ set_option maxHeartbeats 1000000
 
 namespace GlobalTheory.FlatLift
 
+/- English proof (translation)
+Introduce `D S T βS βT ϖ hϖ`. Set `I : Ideal (𝓞 D.host.E)` to `Ideal.span {ϖ}`. Establish `hI : I ≠ ⊥` using `by simpa [I, Ideal.span_singleton_eq_bot] using hϖ`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem I)`. Use `⟨Ideal.absNorm I, Nat.pos_of_ne_zero (fun h => hI (Ideal.absNorm_eq_zero_iff.1 h)), fun u hu => ?_⟩` and prove the remaining obligations.
+
+Establish `hk : ((Ideal.absNorm I : ℕ) : D.host.E) = (c : D.host.E) * (ϖ : D.host.E)`. Use `congrArg (fun z : 𝓞 D.host.E => (z : D.host.E)) hc` as an intermediate fact. Simplify using `using this.symm`. Establish `hm : (((Ideal.absNorm I) • u : WO S T) : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (Formalism.IndefR.Datum.toEAf D) = Formalism.IndefR.Datum.eToEAf D (c : D.host.E) • ((u.map fun w => incA D (ϖ : D.host.E) * w : WO S T) : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (Formalism …`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, nsmul_eq_mul]`. Rewrite using `[map_natCast]`. Establish `h1 : Formalism.IndefR.Datum.toEAf D (incA D (ϖ : D.host.E)) = Formalism.IndefR.Datum.eToEAf D (ϖ : D.host.E)` using `rfl`. Rewrite using `[h1, ← mul_assoc, ← map_mul, ← hk, map_natCast]`. Introduce `i j`.
+
+Establish `he : frMapO S T βS βT ((Ideal.absNorm I) • u) = Formalism.IndefR.Datum.eToEAf D (c : D.host.E) • frMapO S T βS βT (u.map fun w => incA D (ϖ : D.host.E) * w)`. Simplify using `only [frMapO]`. Rewrite using `[hm, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[he, Matrix.smul_apply, smul_eq_mul]`. Conclude with `(Formalism.L2.Herm.intAf D.host.F D.host.E).mul_mem (Subring.subset_closure (Or.inl ⟨⟨((c : 𝓞 D.host.E) : D.host.E), ⟨c, rfl⟩⟩, rfl⟩)) (hu i j)`.
+-/
 theorem kmul_int : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (ϖ : 𝓞 D.host.E), ϖ ≠ 0 → ∃ k : ℕ, 0 < k ∧ ∀ u : WO S T, IsIntM (frMapO S T βS βT (u.map fun w => incA D (ϖ : D.host.E) * w)) → IsIntM (frMapO S T βS βT (k • u)) := by
   intro D S T βS βT ϖ hϖ
   let I : Ideal (𝓞 D.host.E) := Ideal.span {ϖ}

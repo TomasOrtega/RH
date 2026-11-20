@@ -12,6 +12,17 @@ namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 open GlobalTheory.Spread GlobalTheory.SpreadSep in
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian P` using `LocallyOfFiniteType.isLocallyNoetherian q`. Establish `: CompactSpace ↥P` using `QuasiCompact.compactSpace_of_compactSpace q`. Establish `: IsNoetherian P` using `{}`. Establish `: QuasiSeparated q` using `(quasiSeparated_iff_quasiSeparatedSpace q).mpr inferInstance`. Take `⟨U, Z, hU, hZ, eΔ⟩` from `j.isLocallyClosed_range`.
+
+Set `s : (Finset V)ᵒᵖ` to `.op ∅`. Set `π : (bcDiagram q V).obj s ⟶ P` to `pullback.fst q _`. Establish `: QuasiCompact π` using `inferInstanceAs (QuasiCompact (pullback.fst q _))`. Set `O : P.Opens` to `⟨U, hU⟩`. Set `O' : P.Opens` to `⟨Zᶜ, hZ.isOpen_compl⟩`.
+
+Establish `key : ((π ⁻¹ᵁ O : Set _) \ (π ⁻¹ᵁ O' : Set _)) = π ⁻¹' Set.range j`. Rewrite using `[eΔ]`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `π x ∈ U ∧ ¬ π x ∉ Z ↔ π x ∈ U ∧ π x ∈ Z`. Rewrite using `[not_not]`.
+
+Take `⟨i, f, hi⟩` from `exists_isClosed_preimage_diff (bcDiagram q V) (bcCone q V) (isLimitBcCone q V) (π ⁻¹ᵁ O) (π ⁻¹ᵁ O') (QuasiCompact.isCompact_preimage (f := π) _ O.2 (TopologicalSpace.NoetherianSpace.isCompact _)) (QuasiCompact.isCompact_preimage (f := π) _ O'.2 (TopologicalSpace.NoetherianSpace.i …`. Establish `e : (bcCone q V).π.app s ≫ π = pullback.fst q _` using `bcMap_fst _ _`. Rewrite using `[key, ← Set.preimage_comp, ← TopCat.coe_comp, ← Scheme.Hom.comp_base, e]`. Conclude with `h)`. Use `⟨Algebra.adjoin k (i.unop : Set V), Subalgebra.fg_adjoin_finset _, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (bcDiagram q V).map f ≫ π = pullback.fst q _` using `bcMap_fst _ _`. Rewrite `hi` using `[key, ← Set.preimage_comp, ← TopCat.coe_comp, ← Scheme.Hom.comp_base, e]`. Conclude with `hi`.
+-/
 theorem exists_fg_isClosed_preimage_range (k V : Type) [CommRing k] [IsNoetherianRing k] [CommRing V]
     [Algebra k V] (X P : Scheme.{0}) (j : X ⟶ P) (q : P ⟶ Sp k) (hj : IsImmersion j)
     (h₁ : LocallyOfFiniteType q) (h₂ : QuasiCompact q)

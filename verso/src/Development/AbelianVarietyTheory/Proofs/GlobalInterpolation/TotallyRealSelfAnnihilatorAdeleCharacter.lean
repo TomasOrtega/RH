@@ -10,10 +10,16 @@ namespace GlobalTheory.SWQ.Annihilator
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `Prod.ext h1 h2`.
+-/
 private theorem ext_lemma {x y : AF F} (h1 : fstA F x = fstA F y) (h2 : sndA F x = sndA F y) :
     x = y :=
   Prod.ext h1 h2
 
+/- English proof (translation)
+Apply `ext_lemma` to reduce the goal to its premises. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Rewrite using `[map_mul] show sndA F x * 0 = 0`. Conclude with `mul_zero _`.
+-/
 private theorem mul_pairA_zero (x : AF F) (z : Ainf F) :
     x * pairA F z 0 = pairA F (fstA F x * z) 0 := by
   apply ext_lemma
@@ -23,6 +29,11 @@ private theorem mul_pairA_zero (x : AF F) (z : Ainf F) :
     show sndA F x * 0 = 0
     exact mul_zero _
 
+/- English proof (translation)
+Apply `ext_lemma` to reduce the goal to its premises. Rewrite using `[map_mul] show fstA F x * 0 = 0`. Conclude with `mul_zero _`. Rewrite using `[map_mul] show sndA F x * singleV F v t = singleV F v (sndA F x v * t)`. Unfold `singleV`.
+
+Conclude with `(RestrictedProduct.mul_single _ v t (sndA F x)).symm`.
+-/
 private theorem mul_pairA_singleV (x : AF F) (v : HeightOneSpectrum (𝓞 F)) (t : Fv F v) :
     x * pairA F 0 (singleV F v t) = pairA F 0 (singleV F v (sndA F x v * t)) := by
   apply ext_lemma
@@ -35,6 +46,15 @@ private theorem mul_pairA_singleV (x : AF F) (v : HeightOneSpectrum (𝓞 F)) (t
     classical
     exact (RestrictedProduct.mul_single _ v t (sndA F x)).symm
 
+/- English proof (translation)
+Take `⟨hloc, -, hinf⟩` from `GlobalTheory.GaugeEx.CharLoc.char_local F ψ hψ`. Apply `ext_lemma` to reduce the goal to its premises. Establish `h0 : fstA F x = 0` using `hinf _ fun y => by`. Establish `h` using `hx (pairA F y 0)`. Rewrite `h` using `[mul_pairA_zero]`.
+
+Conclude with `h`. Rewrite using `[h0, map_zero]`. Establish `key : ∀ v, sndA F x v = 0`. Introduce `v`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨s, hs⟩` from `hloc v`. Apply `hs` to reduce the goal to its premises. Establish `h` using `hx (pairA F 0 (singleV F v ((sndA F x v)⁻¹ * s)))`. Rewrite `h` using `[mul_pairA_singleV, mul_inv_cancel_left₀ hne]`. Conclude with `h`.
+
+Rewrite using `[map_zero]`. Conclude with `DFunLike.ext _ _ fun v => (key v).trans rfl`.
+-/
 theorem eq_zero_of_forall [IsTotallyReal F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (x : AF F)
     (hx : ∀ y, ψ (x * y) = 1) : x = 0 := by
   obtain ⟨hloc, -, hinf⟩ := GlobalTheory.GaugeEx.CharLoc.char_local F ψ hψ
@@ -57,6 +77,13 @@ theorem eq_zero_of_forall [IsTotallyReal F] {ψ : AddChar (AF F) ℂ} (hψ : IsC
     rw [map_zero]
     exact DFunLike.ext _ _ fun v => (key v).trans rfl
 
+/- English proof (translation)
+Distinguish the cases in `htriv : ∀ y, ψ (x * y) = 1`. Conclude with `⟨0, by rw [map_zero]; exact eq_zero_of_forall hψ x htriv⟩`. Use `push_neg at htriv`. Take `⟨hc, hn, -, -⟩` from `id hψ`. Establish `hχ : IsCharAF F (ψ.compAddMonoidHom (AddMonoidHom.mulLeft x))`.
+
+Unfold `IsCharAF`. Conclude with `⟨hc.comp (continuous_const.mul continuous_id), fun y => hn _, hx, htriv⟩`. Take `⟨a, -, ha⟩` from `GlobalTheory.AdeleCharTwist.exists_mul_eq F ψ _ hψ hχ`. Use `⟨a, sub_eq_zero.mp (eq_zero_of_forall hψ _ fun y => ?_)⟩` and prove the remaining obligations. Establish `h1 : ψ (x * y) = ψ (algebraMap F (AF F) a * y)` using `ha y`.
+
+Rewrite using `[sub_mul, sub_eq_add_neg, AddChar.map_add_eq_mul, h1, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`.
+-/
 theorem exists_eq_of_forall [IsTotallyReal F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (x : AF F)
     (hx : ∀ ξ : F, ψ (x * algebraMap F (AF F) ξ) = 1) : ∃ ξ : F, x = algebraMap F (AF F) ξ := by
   by_cases htriv : ∀ y, ψ (x * y) = 1
@@ -73,6 +100,9 @@ theorem exists_eq_of_forall [IsTotallyReal F] {ψ : AddChar (AF F) ℂ} (hψ : I
     rw [sub_mul, sub_eq_add_neg, AddChar.map_add_eq_mul, h1, ← AddChar.map_add_eq_mul,
       add_neg_cancel, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Introduce `F _ _ hF ψ hψ`. Use `haveI := hF`. Conclude with `⟨fun x hx => eq_zero_of_forall hψ x hx, fun x hx => exists_eq_of_forall hψ x hx⟩`.
+-/
 theorem self_annihilator : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → (∀ x : AF F, (∀ y, ψ (x * y) = 1) → x = 0) ∧ ∀ x : AF F, (∀ ξ : F, ψ (x * algebraMap F (AF F) ξ) = 1) → ∃ ξ : F, x = algebraMap F (AF F) ξ := by
   intro F _ _ hF ψ hψ
   haveI := hF

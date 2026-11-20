@@ -12,6 +12,13 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AsmMultMain
 
 namespace PositivityTheory.RgBcC
 
+/- English proof (translation)
+Establish `hL : LgFacts` using `GlobalTheory.T.length_function_facts_hold`. Establish `hU : Unimod` using `GlobalTheory.T.general_linear_group_unimodular`. Establish `hS : SobG` using `GlobalTheory.T.sobolev_inequality_on_group`. Establish `hR : RCalc` using `GlobalTheory.T.right_derivative_calculus_holds`. Establish `hKU : KerUniq` using `GlobalTheory.T.wave_kernel_uniqueness`.
+
+Establish `hA : AlgEst` using `GlobalTheory.T.algebra_estimate_for_regularity`. Establish `hsp : WaveSpeed` using `GlobalTheory.T.finite_propagation_speed_holds hL hU hR`. Establish `hcpt : WaveCpt` using `Fc.asmCpt hL hU hR hS`. Establish `hex : WaveEx` using `GlobalTheory.T.wave_solution_existence hL hR hsp hcpt`. Establish `hk1 : KerOne` using `Fc.asmKerOne hL hU hR hS hA hsp`.
+
+Conclude with `⟨hex, hsp, GlobalTheory.T.wave_kernel_existence hL hR hsp hex hKU hk1, GlobalTheory.CompanionTheory.WaveMult.asmMult_main hL hU hR hsp hex hKU hk1⟩`.
+-/
 theorem wave_existence_speed_multiplicity : WaveEx ∧ WaveSpeed ∧ KerEx ∧ MultAlg := by
   have hL : LgFacts := GlobalTheory.T.length_function_facts_hold
   have hU : Unimod := GlobalTheory.T.general_linear_group_unimodular

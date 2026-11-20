@@ -4,6 +4,11 @@ open NumberField IsDedekindDomain ReciprocityTheory.Aut Formalism.AUTREP Formali
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := F) v ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F)).2 (Ideal.absNorm_mem _)`. Rewrite `h` using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Use `h using 2` and compare the differences between its conclusion and the goal. Establish `: ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion F) = algebraMap F (v.adicCompletion F) (((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F) : F)` using `by simp`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem valued_absNorm_lt_one_adicCompletion (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) :
     Valued.v ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion F) < 1 := by
@@ -16,6 +21,15 @@ theorem valued_absNorm_lt_one_adicCompletion (F : Type) [Field F] [NumberField F
   rw [this]
   rfl
 
+/- English proof (translation)
+Introduce `F _ _ v n K hK`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `set q : ℕ := Ideal.absNorm v.asIdeal with hq`. Establish `hq0 : 0 < q` using `lt_trans zero_lt_one (HeightOneSpectrum.one_lt_absNorm v)`.
+
+Use `choose g hg1 hg2 hg3 using fun k : ℕ => hcon (q ^ k) (pow_pos hq0 k)`. Establish `hlt : ‖(q : v.adicCompletion F)‖ < 1` using `Valued.toNormedField.norm_lt_one_iff.2 (valued_absNorm_lt_one_adicCompletion F v)`. Establish `hpow : Filter.Tendsto (fun k : ℕ => ‖((q ^ k : ℕ) : v.adicCompletion F)‖) Filter.atTop (nhds 0)`. Simplify using `using tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hlt`. Establish `key : ∀ A : ℕ → Matrix (Fin n) (Fin n) (v.adicCompletion F), (∀ k i j, Valued.v (A k i j - (1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j) ≤ Valued.v ((q ^ k : ℕ) : v.adicCompletion F)) → Filter.Tendsto A Filter.atTop (nhds 1)`.
+
+Introduce `A hA`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Conclude with `squeeze_zero (fun _ => norm_nonneg _) (fun k => Valued.toNormedField.norm_le_iff.2 (hA k i j)) hpow`. Establish `hlim : Filter.Tendsto g Filter.atTop (nhds 1)`.
+
+Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Use `Filter.Tendsto.prodMk_nhds (key _ hg1) ?_` and prove the remaining obligations. Conclude with `(MulOpposite.continuous_op.tendsto _).comp (key _ hg2)`. Take `⟨k, hk⟩` from `(hlim.eventually (hK.mem_nhds K.one_mem)).exists`. Conclude with `hg3 k hk`.
+-/
 theorem exists_nat_congruence_le_open_subgroup_GL :
     ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n : ℕ)
     (K : Subgroup (GL (Fin n) (v.adicCompletion F))), IsOpen (K : Set (GL (Fin n) (v.adicCompletion F))) →

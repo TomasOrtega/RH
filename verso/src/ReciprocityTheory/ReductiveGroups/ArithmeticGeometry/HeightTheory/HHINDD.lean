@@ -16,6 +16,29 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Use `set U := ⋃ c, ({la : HeightOneSpectrum (𝓞 K) | ∃ w ∈ d.PlOver la c, O c (d.Wres c w) (ta c) ≠ 0} ∪ {la : HeightOneSpectrum (𝓞 K) | ∃ w ∈ d.PlOver la c, O c (d.Wres c w) (a c • ta c) ≠ 0}) with hUdef`. Establish `hU : U.Finite` using `Set.finite_iUnion fun c => (d.la_fin hd h c (fun v => O c v (ta c)) (hOf c)).union (d.la_fin hd h c (fun v => O c v (a c • ta c)) (hOf' c))`. Establish `e1 : ∑ᶠ la, d.aNla h O ta la * logNorm la = ∑ la ∈ hU.toFinset, d.aNla h O ta la * logNorm la`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `la hla`.
+
+Rewrite using `[Set.Finite.coe_toFinset]`. Take `⟨c, hc⟩` from `Set.mem_iUnion.1 (d.aNla_supp hd h O ta (Function.support_mul_subset_left _ _ hla))`. Conclude with `Set.mem_iUnion.2 ⟨c, Or.inl hc⟩`. Establish `e2 : ∑ᶠ la, d.aNla h O (fun c => a c • ta c) la * logNorm la = ∑ la ∈ hU.toFinset, d.aNla h O (fun c => a c • ta c) la * logNorm la`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises.
+
+Introduce `la hla`. Rewrite using `[Set.Finite.coe_toFinset]`. Take `⟨c, hc⟩` from `Set.mem_iUnion.1 (d.aNla_supp hd h O (fun c => a c • ta c) (Function.support_mul_subset_left _ _ hla))`. Conclude with `Set.mem_iUnion.2 ⟨c, Or.inr hc⟩`. Establish `e3 : ∀ c, ∑ᶠ la, (d.nLa h c la (algebraMap (Ω c) (OmS (Ω c) d.D d.N) (a c)) : ℝ) * logNorm la = ∑ la ∈ hU.toFinset, (d.nLa h c la (algebraMap (Ω c) (OmS (Ω c) d.D d.N) (a c)) : ℝ) * logNorm la`.
+
+Introduce `c`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `la hla`. Rewrite using `[Set.Finite.coe_toFinset]`. Establish `hla' : la ∈ Function.support (fun la => d.nLa h c la (algebraMap (Ω c) (OmS (Ω c) d.D d.N) (a c)))`.
+
+Introduce `h0`. Apply `hla` to reduce the goal to its premises. Simplify using `only at h0 ⊢`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+
+Conclude with `Set.mem_iUnion.2 ⟨c, d.nLa_supp hd h O c (ta c) (a c) (ha c) (hOs c) hla'⟩`. Establish `hla : ∑ᶠ la, d.aNla h O (fun c => a c • ta c) la * logNorm la = ∑ᶠ la, d.aNla h O ta la * logNorm la + ∑ c, ∑ᶠ la, (d.nLa h c la (algebraMap (Ω c) (OmS (Ω c) d.D d.N) (a c)) : ℝ) * logNorm la`. Rewrite using `[e1, e2, Finset.sum_congr rfl fun c _ => e3 c, Finset.sum_comm, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `la _`.
+
+Rewrite using `[d.aNla_smul hd h O ta a ha hOs la, add_mul, Finset.sum_mul]`. Establish `hP : ∀ c, ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), (d.anP h O c (a c • ta c) p : ℝ) * h0 (d.gen p) = ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), (d.anP h O c (ta c) p : ℝ) * h0 (d.gen p) + ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), (d.nPa h c p (a c) : ℝ) * …`. Introduce `c`. Rewrite using `[finsum_mem_congr rfl (fun p hp => by`. Rewrite using `[d.usage₆ hd h O c (ta c) (a c) (ha c) (hOs c) hp, Int.cast_add, add_mul])]`.
+
+Apply `finsum_mem_add_distrib'` to reduce the goal to its premises. Use `(hPf c).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hp0⟩`. Conclude with `⟨hp, fun h0' => hp0 (by simp only; rw [h0']; simp)⟩`. Use `(d.nPa_support hd h c (a c) (ha c)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `p ⟨hp, hp0⟩`. Conclude with `⟨hp, fun h0' => hp0 (by simp only; rw [h0']; simp)⟩`. Establish `hS : (fun sg => ∑ c, ∫ z, (∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (d.tOf z)), -Real.log (Nr c (a c • ta c) P)) ∂(blockSphereProb d.D (d.N + 1))) = fun sg => (∑ c, ∫ z, (∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (d.tOf z)), -Real.log (Nr c (ta c) P)) ∂(blockSphereProb d.D (d.N + 1))) - …`. Use function extensionality and compare the values at `sg`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => d.nsg_smul hd h Nr c (ta c) (a c) (ha c) (hNs c) (hN0 c) sg (hI c sg) (hI' c sg)`. Establish `hpf` using `fun c => d.pf hd h c (a c) (ha c)`. Unfold `AH`. Rewrite using `[hla, hS, meanK_sub, Finset.sum_congr rfl fun c _ => hP c, Finset.sum_add_distrib]`. Simplify using `only [meanK_sum]`.
+
+Rewrite using `[← Finset.sum_congr rfl fun c _ => hpf c, Finset.sum_add_distrib, add_div, Finset.sum_div]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem AH_smul (hd : d.AxH 𝒜) (h : d.S1) (O : ∀ c, AddValuation (Ω c) (WithTop ℤ) → A c → ℤ)
     (Nr : ∀ c, A c → (Ω c →+* ℂ) → ℝ) (ta : ∀ c, A c) (a : ∀ c, Ω c) (ha : ∀ c, a c ≠ 0)
     (hOs : ∀ c v, d.admitted c v →
@@ -116,12 +139,20 @@ variable (d : Data K ι Ω WT A)
 def IntOK (G : WT) (ta : ∀ c, A c) : Prop :=
   ∀ c sg, Integrable (d.aI (fun c f P => d.nrm c G f P) c (ta c) sg) (blockSphereProb d.D (d.N + 1))
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp only [meanK, Finset.sum_add_distrib, add_div])`. Consider the case `(unfold meanK; rw [Finset.sum_add_distrib, add_div])`. Consider the case `(simp [meanK, Finset.sum_add_distrib, add_div])`.
+-/
 theorem meanK_add (F G : (K →+* ℂ) → ℝ) : meanK (fun sg => F sg + G sg) = meanK F + meanK G := by
   first
     | (simp only [meanK, Finset.sum_add_distrib, add_div])
     | (unfold meanK; rw [Finset.sum_add_distrib, add_div])
     | (simp [meanK, Finset.sum_add_distrib, add_div])
 
+/- English proof (translation)
+Use `filter_upwards [d.norm_at_sg hd h c sg] with z hz`. Unfold `aI`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hz.1, finsum_mem_eq_finite_toFinset_sum _ hz.1, finsum_mem_eq_finite_toFinset_sum _ hz.1, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `P _`.
+
+Simplify using `only`. Rewrite using `[hd.nrm_mul c P hf hg hf0 hg0, Real.log_mul (hd.nrm_pos c P hf hf0).ne' (hd.nrm_pos c P hg hg0).ne']`.
+-/
 theorem aI_mul_ae (hd : d.AxH 𝒜) (h : d.S1) {G G' : WT} (c : ι) {f g : A c}
     (hf : f ∈ 𝒜 c G) (hg : g ∈ 𝒜 c G') (hf0 : f ≠ 0) (hg0 : g ≠ 0) (sg : K →+* ℂ) :
     d.aI (fun c f P => d.nrm c (G + G') f P) c (f * g) sg =ᵐ[blockSphereProb d.D (d.N + 1)]
@@ -135,6 +166,33 @@ theorem aI_mul_ae (hd : d.AxH 𝒜) (h : d.S1) {G G' : WT} (c : ι) {f g : A c}
   dsimp only
   rw [hd.nrm_mul c P hf hg hf0 hg0, Real.log_mul (hd.nrm_pos c P hf hf0).ne' (hd.nrm_pos c P hg hg0).ne']
 
+/- English proof (translation)
+Establish `hae` using `fun c sg => d.aI_mul_ae hd h c (hf c).1 (hg c).1 (hf c).2 (hg c).2 sg`. Establish `hI : d.IntOK (G + G') (f * g)` using `fun c sg => ((hIf c sg).add (hIg c sg)).congr (hae c sg).symm`. Use `⟨hI, ?_⟩` and prove the remaining obligations. Establish `hOf` using `fun c => hd.a3' c (hf c).1 (hf c).2`. Establish `hOg` using `fun c => hd.a3' c (hg c).1 (hg c).2`.
+
+Establish `hla : ∀ la, d.aNla h (fun c v x => d.ord c v (G + G') x) (f * g) la = d.aNla h (fun c v x => d.ord c v G x) f la + d.aNla h (fun c v x => d.ord c v G' x) g la`. Introduce `la`. Unfold `aNla`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `c _`. Establish `hfin` using `(d.places_over_la hd h la c).1`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w hw`.
+
+Rewrite `hw` using `[Set.Finite.mem_toFinset]`. Establish `hv` using `(d.admissible_over_prime hd h la c w hw).1`. Rewrite using `[Pi.mul_apply]`. Simplify using `only`. Rewrite using `[hd.ord_mul c _ hv (hf c).1 (hg c).1 (hf c).2 (hg c).2]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsf : (Function.support fun la => d.aNla h (fun c v x => d.ord c v G x) f la * logNorm la).Finite` using `(Set.finite_iUnion fun c => d.la_fin hd h c (fun v => d.ord c v G (f c)) (hOf c)).subset ((Function.support_mul_subset_left _ _).trans (d.aNla_supp hd h (fun c v x => d.ord c v G x) f))`. Establish `hsg : (Function.support fun la => d.aNla h (fun c v x => d.ord c v G' x) g la * logNorm la).Finite` using `(Set.finite_iUnion fun c => d.la_fin hd h c (fun v => d.ord c v G' (g c)) (hOg c)).subset ((Function.support_mul_subset_left (fun la => d.aNla h (fun c v x => d.ord c v G' x) g la) logNorm).trans (d.aNla_supp hd h (fun c v x => d.ord c v G' x) g))`. Establish `hN : ∑ᶠ la, d.aNla h (fun c v x => d.ord c v (G + G') x) (f * g) la * logNorm la = ∑ᶠ la, d.aNla h (fun c v x => d.ord c v G x) f la * logNorm la + ∑ᶠ la, d.aNla h (fun c v x => d.ord c v G' x) g la * logNorm la`.
+
+Rewrite using `[← finsum_add_distrib hsf hsg]`. Conclude with `finsum_congr fun la => by rw [hla, add_mul]`. Establish `hS : ∀ sg c, ∫ z, (∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (d.tOf z)), -Real.log (d.nrm c (G + G') ((f * g) c) P)) ∂(blockSphereProb d.D (d.N + 1)) = ∫ z, (∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (d.tOf z)), -Real.log (d.nrm c G (f c) P)) ∂(blockSphereProb d.D (d.N + 1)) + ∫ z, (∑ᶠ ( …`. Introduce `sg c`. Establish `e1` using `d.neg_aI (fun c f P => d.nrm c (G + G') f P) c ((f * g) c) sg`.
+
+Establish `e2` using `d.neg_aI (fun c f P => d.nrm c G f P) c (f c) sg`. Establish `e3` using `d.neg_aI (fun c f P => d.nrm c G' f P) c (g c) sg`. Repeatedly rewrite using `[e1, e2, e3]`. Rewrite using `[integral_neg, integral_neg, integral_neg, Pi.mul_apply, integral_congr_ae (hae c sg), integral_add (hIf c sg) (hIg c sg)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hP : ∀ c, ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), (d.anP h (fun c v x => d.ord c v (G + G') x) c ((f * g) c) p : ℝ) * h0 (d.gen p) = ∑ᶠ (p : Ideal (KTp K d.D d.N)) (_ : p ∈ d.HtOne), (d.anP h (fun c v x => d.ord c v G x) c (f c) p : ℝ) * h0 (d.gen p) + ∑ᶠ (p : Ideal (KT …`. Introduce `c`. Rewrite using `[finsum_mem_congr rfl (fun p hp => by`. Rewrite using `[show d.anP h (fun c v x => d.ord c v (G + G') x) c ((f * g) c) p = d.anP h (fun c v x => d.ord c v G x) c (f c) p + d.anP h (fun c v x => d.ord c v G' x) c (g c) p from by`. Establish `hfin` using `d.goodP_finite' hd h c hp`.
+
+Unfold `anP`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w hw`. Rewrite `hw` using `[Set.Finite.mem_toFinset]`.
+
+Rewrite using `[Pi.mul_apply]`. Simplify using `only`. Rewrite using `[hd.ord_mul c _ (d.admissible_of_good_valuation hd h c hp hw) (hf c).1 (hg c).1 (hf c).2 (hg c).2]`. Use the proof step `ring, Int.cast_add, add_mul])]`. Apply `finsum_mem_add_distrib'` to reduce the goal to its premises.
+
+Use `((d.good_primes_properties hd h c).2.2.1 G (f c) (hf c).1 (hf c).2).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hp0⟩`. Conclude with `⟨hp, fun h0' => hp0 (by simp only; rw [show d.anP h _ c (f c) p = d.nP h c G (f c) p from rfl, h0']; simp)⟩`. Use `((d.good_primes_properties hd h c).2.2.1 G' (g c) (hg c).1 (hg c).2).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hp0⟩`.
+
+Conclude with `⟨hp, fun h0' => hp0 (by simp only; rw [show d.anP h _ c (g c) p = d.nP h c G' (g c) p from rfl, h0']; simp)⟩`. Rewrite using `[d.Hgt_eq_AH, d.Hgt_eq_AH, d.Hgt_eq_AH]`. Unfold `AH`. Rewrite using `[hN]`. Simplify using `only [hS, Finset.sum_add_distrib, meanK_add, hP]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Hgt_mul (hd : d.AxH 𝒜) (h : d.S1) (G G' : WT) (f g : ∀ c, A c)
     (hf : ∀ c, f c ∈ 𝒜 c G ∧ f c ≠ 0) (hg : ∀ c, g c ∈ 𝒜 c G' ∧ g c ≠ 0)
     (hIf : d.IntOK G f) (hIg : d.IntOK G' g) :

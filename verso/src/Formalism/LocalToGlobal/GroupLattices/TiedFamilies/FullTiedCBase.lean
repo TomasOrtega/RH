@@ -21,11 +21,17 @@ def levTieOf {L L' : ColLevel R F E sp gp C A clsLat} (h : L' = L) (t : Formalis
     Formalism.L2.Herm.GLevTie L' G :=
   h ▸ t
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem levTieOf_fr {L L' : ColLevel R F E sp gp C A clsLat} (h : L' = L) (t : Formalism.L2.Herm.GLevTie L G) :
     (levTieOf h t).fr = t.fr := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem levTieOf_spl {L L' : ColLevel R F E sp gp C A clsLat} (h : L' = L) (t : Formalism.L2.Herm.GLevTie L G) :
     (levTieOf h t).spl = t.spl := by
   subst h
@@ -55,6 +61,9 @@ abbrev gatTiesC : GatTies (recC D sc Ce Lc I ψ hd) := gatTiesG D sc Ce Lc (pack
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Unfold `RingCompatibleAt`. Conclude with `⟨RingEquiv.refl (((recC D sc Ce Lc I ψ hd).gat u w hg).P.W v), RingEquiv.refl (((recC D sc Ce Lc I ψ hd).gat u w hg).P.Qq v), RingEquiv.refl ((recC D sc Ce Lc I ψ hd).gat u w hg).O, RingEquiv.refl ((recC D sc Ce Lc I ψ hd).gat u w hg).Kf, fun _ => rfl, fun _ => rfl, fun _ => rfl, …`.
+-/
 theorem ringTied_recC (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (v : Fin ((recC D sc Ce Lc I ψ hd).gat u w hg).P.nV) : RingCompatibleAt (recC D sc Ce Lc I ψ hd) u w hg v := by
   unfold RingCompatibleAt
@@ -67,9 +76,15 @@ def hermitianLevelZeroOfRecursion (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc
     Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd) :=
   { H0 with g := fun u w hg => levTieOf (hL u) (levTieG D sc Ce Lc (packC D Lc I ψ) hd u w hg) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fullTiedC_base (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u) :
     (hermitianLevelZeroOfRecursion D sc Ce Lc I ψ hd H0 hL).lev0 = H0.lev0 := rfl
 
+/- English proof (translation)
+Conclude with `gatIs_recG D sc Ce Lc (packC D Lc I ψ) hd _ hL hH u w hg`.
+-/
 theorem gatIs_recC (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (hH : ∀ u w h, Cmp.HypAtP (I u w h)) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
@@ -78,6 +93,9 @@ theorem gatIs_recC (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `w' h`. Simplify using `only [hermitianLevelZeroOfRecursion]`. Use `erw [levTieOf_fr (hL u) (levTieG D sc Ce Lc (packC D Lc I ψ) hd u w hg), levTieOf_spl (hL u) (levTieG D sc Ce Lc (packC D Lc I ψ) hd u w hg)]`. Conclude with `hB u w hg w' h`.
+-/
 theorem frRat_C (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (B : GL (Fin D.R.k) D.host.E)
     (hB : ∀ u w hg (w' : HeightOneSpectrum (𝓞 D.host.F)) (h : ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∈ w'.asIdeal),

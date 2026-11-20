@@ -33,6 +33,9 @@ structure IsEtTower (cK : k →+* K) (R : Subring K) (cL : k →+* L) (T : Subri
 
   etale : (MvPolynomial.eval₂Hom ι τ).FormallyEtale
 
+/- English proof (translation)
+The claim follows from `h normal := h' top := h const _ := rfl retr _ := rfl zero i := i.elim0 etale := by have hb : Function.Bijective (MvPolynomial.eval₂Hom (RingHom.id R) (Fin.elim0 : Fin 0 → R)) := by refine ⟨fun P Q e => ?_, fun a => ⟨MvPolynomial.C a, by simp⟩⟩ rw [MvPolynomial.eq_C_of_isEmpty P, …`.
+-/
 theorem IsEtTower.refl {c : k →+* K} {R : Subring K} (h : IsLocModel c R)
     (h' : IsIntegrallyClosed R) :
     IsEtTower c R c R (RingHom.id R) (RingHom.id R) (Fin.elim0 : Fin 0 → R) where
@@ -54,6 +57,15 @@ theorem IsEtTower.refl {c : k →+* K} {R : Subring K} (h : IsLocModel c R)
 set_option autoImplicit false in
 variable {k K L : Type} [Field k] [Field K] [Field L] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h0 | hinv⟩ hu`. Establish `hf : f = 0` using `Subtype.ext (by simpa using h0)`. Conclude with `not_isUnit_zero (hf ▸ hu)`. Take `⟨u, rfl⟩` from `hu`.
+
+Establish `hmul : ((u : R) : K) * ((u⁻¹ : Rˣ) : R) = 1`. Rewrite using `[← Subring.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression. Rewrite `hinv` using `[inv_eq_of_mul_eq_one_right hmul]`. Conclude with `hinv (u⁻¹ : Rˣ).1.2`.
+
+Introduce `hnu`. Use `⟨f.2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hnu` to reduce the goal to its premises.
+
+Conclude with `IsUnit.of_mul_eq_one (b := (⟨_, h.2⟩ : R)) (Subtype.ext (by simp [h.1]))`.
+-/
 theorem _root_.GlobalTheory.FieldPair.nonUnit_iff {R : Subring K} (f : R) :
     _root_.GlobalTheory.FieldPair.NonUnit R f ↔ ¬ IsUnit f := by
   constructor
@@ -76,23 +88,35 @@ theorem _root_.GlobalTheory.FieldPair.nonUnit_iff {R : Subring K} (f : R) :
 set_option autoImplicit false in
 variable {k K L : Type} [Field k] [Field K] [Field L] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨R.zero_mem, Or.inl rfl⟩`.
+-/
 theorem _root_.GlobalTheory.FieldPair.nonUnit_zero (R : Subring K) : _root_.GlobalTheory.FieldPair.NonUnit R 0 :=
   ⟨R.zero_mem, Or.inl rfl⟩
 
 set_option autoImplicit false in
 variable {k K L : Type} [Field k] [Field K] [Field L] in
 
+/- English proof (translation)
+Introduce and unpack `⟨-, h | h⟩`. Conclude with `one_ne_zero h`. Conclude with `h (by rw [inv_one]; exact R.one_mem)`.
+-/
 theorem _root_.GlobalTheory.FieldPair.not_nonUnit_one (R : Subring K) : ¬ _root_.GlobalTheory.FieldPair.NonUnit R 1 := by
   rintro ⟨-, h | h⟩
   · exact one_ne_zero h
   · exact h (by rw [inv_one]; exact R.one_mem)
 
+/- English proof (translation)
+Introduce `_ hf` and use `⟨hf, id⟩`.
+-/
 theorem Dominates.refl (R : Subring K) : Dominates (RingHom.id K) R R :=
   fun _ hf => ⟨hf, id⟩
 
 set_option autoImplicit false in
 variable {k K L : Type} [Field k] [Field K] [Field L] in
 
+/- English proof (translation)
+Introduce `f hf`. Take `⟨h1, h2⟩` from `h f hf`. Take `⟨h3, h4⟩` from `h' (ρ f) h1`. Conclude with `⟨h3, fun hn => h4 (h2 hn)⟩`.
+-/
 theorem _root_.GlobalTheory.FieldPair.Dominates.trans {M : Type} [Field M] {ρ : K →+* L} {σ : L →+* M}
     {O : Subring K} {B : Subring L} {C : Subring M} (h : _root_.GlobalTheory.FieldPair.Dominates ρ B O)
     (h' : _root_.GlobalTheory.FieldPair.Dominates σ C B) :
@@ -105,6 +129,9 @@ theorem _root_.GlobalTheory.FieldPair.Dominates.trans {M : Type} [Field M] {ρ :
 set_option autoImplicit false in
 variable {k K L : Type} [Field k] [Field K] [Field L] in
 
+/- English proof (translation)
+Introduce `r _`. Conclude with `⟨r, by rw [RingHom.id_apply, sub_self]; exact _root_.GlobalTheory.FieldPair.nonUnit_zero ⊤⟩`.
+-/
 theorem _root_.GlobalTheory.FieldPair.ratRes_self : _root_.GlobalTheory.FieldPair.RatRes (RingHom.id k) ⊤ := by
   intro r _
   exact ⟨r, by rw [RingHom.id_apply, sub_self]; exact _root_.GlobalTheory.FieldPair.nonUnit_zero ⊤⟩

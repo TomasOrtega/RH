@@ -7,6 +7,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.QuotP
 
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `l _ Y _ _ _ _ _ H _ hH hphi`. Take `⟨hPn, hPc, hPH, -, -, -⟩` from `pl_props l Y H hH`. Use `⟨PL l H, hPn, ?_, ?_⟩` and prove the remaining obligations. Set `P` to `PL l H`. Set `m : Y →* Y ⧸ P` to `QuotientGroup.mk' P`.
+
+Establish `hmc : Continuous m` using `continuous_quot_mk`. Establish `hms : Function.Surjective m` using `QuotientGroup.mk'_surjective P`. Use `haveI : TotallyDisconnectedSpace (Y ⧸ P) := (totallyDisconnected_quot Y P hPc).1`. Set `H' : Subgroup (Y ⧸ P)` to `H.map m`. Use `haveI : H'.Normal := Subgroup.Normal.map inferInstance m hms`.
+
+Establish `hcm : H'.comap m = H`. Rewrite using `[Subgroup.comap_map_eq, QuotientGroup.ker_mk']`. Conclude with `sup_eq_left.mpr hPH`. Establish `hH'open : IsOpen (H' : Set (Y ⧸ P))`. Establish `: (H' : Set (Y ⧸ P)) = m '' (H : Set Y)` using `by simp [H']`.
+
+Rewrite using `[this]`. Conclude with `QuotientGroup.isOpenMap_coe _ hH`. Establish `hPL' : PL l H' = ⊥`. Rewrite using `[← pl_map l Y (Y ⧸ P) m H' hH'open hmc hms, hcm]`. Rewrite using `[Subgroup.map_eq_bot_iff, QuotientGroup.ker_mk']`.
+
+Establish `hfin : Finite (HomL l (H'.comap m))`. Rewrite using `[hcm]`. Conclude with `hphi H hH`. Conclude with `(pl_gen l (Y ⧸ P) H' hH'open hPL' (homl_desc l Y (Y ⧸ P) m H' hmc hms hfin).1).1`. Introduce `Z _ _ _ _ _ f H' hf hPL hle g hg`.
+
+Rewrite using `[MonoidHom.mem_ker]`. Establish `hmem : f g ∈ PL l H'`. Simplify using `only [PL, Subgroup.mem_iInf] at hg ⊢`. Introduce `U hU`. Set `V : OpenNormalSubgroup Y` to `{ toOpenSubgroup := U.toOpenSubgroup.comap f hf isNormal' := Subgroup.Normal.comap U.isNormal' f }`.
+
+Establish `hV : ∀ y : Y, y ∈ V ↔ f y ∈ U` using `fun y => Iff.rfl`. Use `hg V (by` as an intermediate fact. Introduce `h hh`. Take `⟨e, he⟩` from `hU (f h) (hle hh)`. Conclude with `⟨e, (hV _).mpr (by simpa using he)⟩)`.
+
+Conclude with `(hV g).mp this`. Rewrite `hmem` using `[hPL]`. Conclude with `(Subgroup.mem_bot).mp hmem`.
+-/
 theorem UpperTheory.V.Pa.loc_fin :
     ∀ (l : ℕ) [Fact l.Prime] (Y : Type) [Group Y] [TopologicalSpace Y] [IsTopologicalGroup Y] [CompactSpace Y] [TotallyDisconnectedSpace Y] (H : Subgroup Y) [H.Normal], IsOpen (H : Set Y) → PhiCond Y l → ∃ (P : Subgroup Y) (_ : P.Normal), TopFG (Y ⧸ P) ∧ ∀ (Z : Type) [Group Z] [TopologicalSpace Z] [IsTopologicalGroup Z] [CompactSpace Z] [TotallyDisconnectedSpace Z] (f : Y →* Z) (H' : Subgroup Z), Continuous f → PL l H' = ⊥ → H ≤ H'.comap f → P ≤ f.ker := by
   intro l _ Y _ _ _ _ _ H _ hH hphi

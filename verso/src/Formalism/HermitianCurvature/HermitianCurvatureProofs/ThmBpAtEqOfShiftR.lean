@@ -40,6 +40,9 @@ structure ShiftAtR {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProd
 
 attribute [instance] ShiftAtR.iNp ShiftAtR.iIp ShiftAtR.iFp ShiftAtR.iNm ShiftAtR.iIm ShiftAtR.iFm
 
+/- English proof (translation)
+Take `⟨C₄, c₃, Cc, Cc', h⟩` from `thmBpAt_eq hA hN Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Use `⟨C₄, c₃, Cc, Cc', ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq _ _ _ _ _ _ p f b n₀ S Λ A₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ hK hKN hχ hnnp hnnm hDDp hDDm hf hfA hth1 hth2 hth3 hexp hWGp hLGp hWGm hLGm hI5p hI5m hDp hDm hBdp hBdm`. Conclude with `h P Wp Wq S.Wqp S.Wqm S.up S.up' S.um S.um' p S.pp S.pm f S.Ap S.Am S.ApPt S.AmPt b Λ (A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - ((n₀ * (P.r + 1) : ℕ) : ℝ)) n₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ S.hzp S.hzp' S.hzm S.hzm' hK hKN hχ hnnp hnnm hDDp hDDm hf (ckOn_of_polyOp S.pol …`.
+-/
 theorem thmBpAt_eq_of_shiftR (hA : P5.ThmPActual) (hN : NormAtShOfAmaps) (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃)
     (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :
     ∃ C₄ c₃ Cc Cc' : ℝ, ∀ (P : M.Par) (Wp Wq : Type)
@@ -135,6 +138,11 @@ def CellIdSh : Prop :=
     ∀ γ : C.LPt, D.IsLocPt γ (P.r + 1) → 0 < Gp p γ →
       q.V (fun g => (f g).comp (A g)) γ = (p.V f γ).comp (A (ptRep p γ))
 
+/- English proof (translation)
+Establish `hex : ∃ g ∈ B.GV P.k P.r, Zhat P.k P.r p.T.base.z p.T.base.z' g = D.ptMatN γ (P.r + 1) ∧ D.IsDFrame p.T.base p.ν' p.m₀ g` using `Formalism.FourierDecayAlt.P.Dx2.dFrameExists P.k P.r Wp Wq p.T.base p.ν' p.m₀ γ p.hF hγ hG`. Establish `hrep : ptRep p γ = hex.choose`. Unfold `ptRep`. Rewrite using `[dif_pos hex]`. Take `⟨hmem, hz, _⟩` from `hex.choose_spec`.
+
+Use `⟨by rw [hrep]; exact hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[hrep, Formalism.FourierDecayAlt.P.TBBx2.Gf_of_Zhat _ _ _ γ hz]`. Both sides reduce to the same expression.
+-/
 theorem ptRep_spec {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [FiniteDimensional ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     (p : KB.Pl P Wp Wq) {γ : C.LPt} (hγ : D.IsLocPt γ (P.r + 1)) (hG : 0 < Gp p γ) :
@@ -150,6 +158,15 @@ theorem ptRep_spec {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProd
   rw [hrep, Formalism.FourierDecayAlt.P.TBBx2.Gf_of_Zhat _ _ _ γ hz]
   rfl
 
+/- English proof (translation)
+Take `⟨c₃, hC⟩` from `hC`. Use `⟨c₃, ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq Wqp Wqm _ _ _ _ _ _ _ _ _ _ _ _ p f b n₀ A₀ up up' um um' pp pm Ap Am htp htm hep hem hpp hpm hup hum hlo hA₀ hf`. Use `⟨⟨up, up', um, um', Wqp, Wqm, pp, pm, Ap, Am, fun γ => Ap (ptRep p γ), fun γ => Am (ptRep p γ), htp.1, htp.2.1, htm.1, htm.2.1, hpp, hpm, ?_⟩, rfl, rfl, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations. Use `⟨fun γ hγ hG => hC P Wp Wq Wqp up up' p pp f Ap A₀ htp hep hA₀ hf γ hγ hG, fun γ hγ hG => hC P Wp Wq Wqm um um' p pm f Am A₀ htm hem hA₀ hf γ hγ hG, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `γ hγ hG v`. Take `⟨hmem, hGf⟩` from `ptRep_spec p hγ hG`. Establish `h` using `hlo _ hmem (by rw [hGf]; exact hG) v`. Rewrite `h` using `[hGf]`. Conclude with `h`.
+
+Introduce `γ hγ hG`. Take `⟨hmem, hGf⟩` from `ptRep_spec p hγ hG`. Establish `h` using `hup _ hmem`. Rewrite `h` using `[hGf]`. Conclude with `h`.
+
+Introduce `γ hγ hG`. Take `⟨hmem, hGf⟩` from `ptRep_spec p hγ hG`. Establish `h` using `hum _ hmem`. Rewrite `h` using `[hGf]`. Conclude with `h`.
+-/
 theorem shiftAtR_of_parts (hC : CellIdSh) : ∃ c₃ : ℝ, ∀ (P : M.Par) (Wp Wq Wqp Wqm : Type)
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]

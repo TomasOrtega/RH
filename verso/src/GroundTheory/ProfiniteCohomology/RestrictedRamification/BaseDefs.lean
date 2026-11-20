@@ -25,6 +25,11 @@ variable {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Gro
   [IsDiscreteRep B] {C : Rep.{0} ℤ H} [IsDiscreteRep C] [IsDiscreteRep (Rep.res φ A)]
   [IsDiscreteRep (uliftIntToIntRep (Rep.res φ A))]
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `cohomologyπ_surjective A m x`. Rewrite using `[cohomologyMapAlong_cohomologyπ, cohomologyULiftIntAddEquiv_cohomologyπ', cohomologyMap_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyULiftIntAddEquiv_cohomologyπ', cohomologyMapAlong_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cocyclesULiftInt, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesULiftInt, cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cyclesMap]`.
+
+Use function extensionality and compare the values at `h`. Conclude with `hf _`.
+-/
 theorem cohomologyMap_uliftInt_cohomologyMapAlong {A' : Rep.{0} (ULift.{0} ℤ) G} [IsDiscreteRep A']
     (g₁ : A ⟶ A') (g₂ : A' ⟶ B)
     (f₁ : uliftIntToIntRep (Rep.res φ A) ⟶ C) (f₂ : Rep.res φ (uliftIntToIntRep B) ⟶ C)
@@ -57,6 +62,9 @@ noncomputable def descendAlong (f : G →ₗ[R] Q) (hf : Function.Surjective f) 
   (QuotientAddGroup.lift _ φ h).comp
     (QuotientAddGroup.quotientKerEquivOfSurjective f.toAddMonoidHom hf).symm.toAddMonoidHom
 
+/- English proof (translation)
+Establish `e : (QuotientAddGroup.quotientKerEquivOfSurjective f.toAddMonoidHom hf).symm (f g) = (g : G ⧸ f.toAddMonoidHom.ker)` using `(AddEquiv.symm_apply_eq _).2 rfl`. Express the relevant statement in the definitionally equal form `QuotientAddGroup.lift _ φ h ((QuotientAddGroup.quotientKerEquivOfSurjective f.toAddMonoidHom hf).symm (f g)) = φ g`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem descendAlong_apply (f : G →ₗ[R] Q) (hf : Function.Surjective f) (φ : G →+ M)
     (h : f.toAddMonoidHom.ker ≤ φ.ker) (g : G) : descendAlong f hf φ h (f g) = φ g := by
   have e : (QuotientAddGroup.quotientKerEquivOfSurjective f.toAddMonoidHom hf).symm (f g) =
@@ -101,6 +109,9 @@ def rootsLocalMorZ (v : S) :
           maxUnramifiedOutside K.1 ℚ̄ S)))⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rootsLocalMorZ_hom_apply (v : S) (ζ : Additive (rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S))) :
     ((Additive.toMul ((rootsLocalMorZ S ιs n v).hom ζ) :
         (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))ˣ) :
@@ -115,12 +126,18 @@ def gsLocalInvRootsQZ (v : S) :
     ((cohomologyMap (rootsLocalMorZ S ιs n v) 2).hom.toAddMonoidHom.comp
       (cohomologyULiftIntAddEquiv _ 2).toAddMonoidHom)
 
+/- English proof (translation)
+Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((Additive.toMul ζ : rootsOfUnity n _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) ^ n = 1`. Conclude with `(mem_rootsOfUnity n _).1 (Additive.toMul ζ).2`.
+-/
 theorem nsmul_gsRoots (ζ : gsRoots S n) : n • ζ = 0 := by
   apply Additive.toMul.injective
   apply Subtype.ext
   change ((Additive.toMul ζ : rootsOfUnity n _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) ^ n = 1
   exact (mem_rootsOfUnity n _).1 (Additive.toMul ζ).2
 
+/- English proof (translation)
+Establish `h : n • y = 0` using `nsmul_cohomology_eq_zero (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) (fun ζ => nsmul_gsRoots S n ζ) 2 y`. Conclude with `(map_nsmul (gsLocalInvRootsQZ S ιs n v) n y).symm.trans ((congrArg (gsLocalInvRootsQZ S ιs n v) h).trans (map_zero _))`.
+-/
 theorem nsmul_gsLocalInvRootsQZ (v : S)
     (y : cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 2) :
     n • gsLocalInvRootsQZ S ιs n v y = 0 := by
@@ -135,6 +152,9 @@ def gsLocalInvRoots (v : S) :
     cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 2 →+ ZMod n :=
   zmodOfQZ (gsLocalInvRootsQZ S ιs n v) (nsmul_gsLocalInvRootsQZ S ιs n v)
 
+/- English proof (translation)
+The claim follows from `zmodToQZ_zmodOfQZ _ _ y`.
+-/
 theorem zmodToQZ_gsLocalInvRoots (v : S)
     (y : cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 2) :
     zmodToQZ n (gsLocalInvRoots S ιs n v y) = gsLocalInvRootsQZ S ιs n v y :=
@@ -149,12 +169,18 @@ def gsSumInvRoots :
   map_zero' := Finset.sum_eq_zero fun _ _ => map_zero _
   map_add' _ _ := (Finset.sum_congr rfl fun _ _ => map_add _ _ _).trans Finset.sum_add_distrib
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gsSumInvRoots_apply
     (ξ : ∀ v : S, cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 2) :
     gsSumInvRoots S ιs n ξ = ∑ v : S, gsLocalInvRoots S ιs n v (ξ v) := by
   rfl
 
 omit [Fintype S] [NeZero n] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gsLocalInvRootsQZ_eq (v : S) :
     gsLocalInvRootsQZ S ιs n v =
       (brauerInvZOfIsSepClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)
@@ -165,6 +191,9 @@ theorem gsLocalInvRootsQZ_eq (v : S) :
 
 omit [Fintype S] in
 
+/- English proof (translation)
+Use `(DFunLike.congr_fun (gsLocalInvRootsQZ_eq S ιs n v) _).trans ?_` and prove the remaining obligations. Use `(AddMonoidHom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Use `congrArg (brauerInvZOfIsSepClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) ?_` and prove the remaining obligations. Use `(AddMonoidHom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Conclude with `cohomologyMap_uliftInt_cohomologyMapAlong (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (rootsOfUnityToSUnits S (maxUnramifiedOutside K.1 ℚ̄ S) n) (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) (rootsLocalMorZ S ιs n v) (embUnitsMorZ S (ιs v)) (fun _ => rfl) 2 x`.
+-/
 theorem gsLocalInvRootsQZ_cohomologyMapAlong (v : S) (x : cohomology (gsRoots S n) 2) :
     gsLocalInvRootsQZ S ιs n v ((cohomologyMapAlong (gsFinFamily S ιs v).toMonoidHom
         (continuous_toMonoidHom _) (𝟙 _) 2).hom x) =
@@ -183,6 +212,13 @@ theorem gsLocalInvRootsQZ_cohomologyMapAlong (v : S) (x : cohomology (gsRoots S 
 
 omit [Fintype S] [NeZero n] in
 
+/- English proof (translation)
+Break down `hn with ⟨m, rfl⟩ | hc` into its components or cases. Establish `h2 : 2 • y = 0`. Apply `placeInv_injective (K := K) (.inl v)` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero]`. Distinguish the cases in `hy0 : y = 0`.
+
+Rewrite using `[hy0, map_zero, smul_zero]`. Express the relevant statement in the definitionally equal form `2 • quadraticInvFun v.Completion (AlgebraicClosure v.Completion) y = 0`. Rewrite using `[quadraticInvFun_of_ne_zero _ _ hy0, two_nsmul, QZ.mk_half_add_mk_half]`. Establish `hy' : y = (2 * m + 1) • y - m • (2 • y)`. Rewrite using `[← mul_nsmul', add_nsmul, one_nsmul, mul_comm m 2]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[hy', hy, h2, smul_zero, sub_zero, map_zero]`. Use `subsingleton_cohomology_two_of_isComplex v (hc.isComplex v)` as an intermediate fact. Rewrite using `[show y = 0 from Subsingleton.elim (α := cohomology (galUnitsZ v.Completion (AlgebraicClosure v.Completion)) 2) y 0, map_zero]`.
+-/
 theorem placeInv_inl_eq_zero (hn : Odd n ∨ IsTotallyComplex K.1) (v : InfinitePlace K.1)
     (y : localGaloisCohomology K 2 (.inl v)) (hy : n • y = 0) : placeInv (.inl v) y = 0 := by
   rcases hn with ⟨m, rfl⟩ | hc
@@ -203,6 +239,11 @@ theorem placeInv_inl_eq_zero (hn : Odd n ∨ IsTotallyComplex K.1) (v : Infinite
 
 omit [Fintype S] in
 
+/- English proof (translation)
+Use `conv_lhs => rw [← DirectSum.sum_support_of y]`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[sumPlaceInv_of]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[DFinsupp.notMem_support_iff.1 hw, map_zero]`.
+
+Use `_ = ∑ w ∈ T, placeInv w (y w) := (Finset.sum_subset Finset.subset_union_right fun w _ hw => hT w hw).symm`.
+-/
 theorem sumPlaceInv_eq_sum_of_placeInv (T : Finset (Place K.1)) (y : ⨁ w : Place K.1, localGaloisCohomology K 2 w)
     (hT : ∀ w ∉ T, placeInv w (y w) = 0) : sumPlaceInv K y = ∑ w ∈ T, placeInv w (y w) := by
   classical
@@ -218,6 +259,9 @@ theorem sumPlaceInv_eq_sum_of_placeInv (T : Finset (Place K.1)) (y : ⨁ w : Pla
 
 omit [Fintype S] [NeZero n] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem placeInv_inr_apply (v : HeightOneSpectrum (𝓞 K.1)) (y : localGaloisCohomology K 2 (.inr v)) :
     placeInv (.inr v) y = brauerInvZOfIsSepClosure (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) y :=
   rfl
@@ -229,17 +273,26 @@ def gsLocalEmbeddings : LocalEmbeddings K where
   inf v := (nonempty_localEmbeddings K).some.inf v
 
 omit [Fintype S] [NeZero n] in
+/- English proof (translation)
+The claim follows from `dif_pos v.2`.
+-/
 theorem gsLocalEmbeddings_fin (v : S) : (gsLocalEmbeddings S ιs).fin v = ιs v :=
   dif_pos v.2
 
 omit [Fintype S] in
 
+/- English proof (translation)
+The claim follows from `zmodToQZ_injective (by rw [map_sum, map_zero, ← h]; exact Finset.sum_congr rfl fun v _ => hFG v)`.
+-/
 theorem sum_eq_zero_of_zmodToQZ {ι : Type*} [Fintype ι] (F : ι → ZMod n) (G : ι → QZ)
     (hFG : ∀ v, zmodToQZ n (F v) = G v) (h : ∑ v, G v = 0) : ∑ v, F v = 0 :=
   zmodToQZ_injective (by rw [map_sum, map_zero, ← h]; exact Finset.sum_congr rfl fun v _ => hFG v)
 
 omit [NeZero n] in
 
+/- English proof (translation)
+Use `(AddMonoidHom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[sumPlaceInv_eq_sum_of_placeInv (Finset.univ.image fun v : S => (Sum.inr (v : HeightOneSpectrum (𝓞 K.1)) : Place K.1)) _ fun w hw => hz w fun v hv => hw (Finset.mem_image.2 ⟨v, Finset.mem_univ _, hv.symm⟩), Finset.sum_image (fun v _ w _ h => Subtype.ext (Sum.inr_injective h))]`.
+-/
 theorem brauerSumInv_eq_sum_of (ι : LocalEmbeddings K) (z : cohomology (unitsLimitRep K) 2)
     (hz : ∀ w : Place K.1, (∀ v : S, w ≠ .inr (v : HeightOneSpectrum (𝓞 K.1))) →
       placeInv w (brauerLocal ι z w) = 0) :
@@ -253,6 +306,13 @@ theorem brauerSumInv_eq_sum_of (ι : LocalEmbeddings K) (z : cohomology (unitsLi
 
 omit [NeZero n] in
 
+/- English proof (translation)
+Establish `h1` using `brauerSumInv_eq_sum_of S (gsLocalEmbeddings S ιs) (sUnitsBrauer K S y) ?_`. Use `(Finset.sum_congr rfl fun v _ => ?_).trans (h1.symm.trans (brauerSumInv_eq_zero (gsLocalEmbeddings S ιs) (sUnitsBrauer K S y)))` and prove the remaining obligations. Use `Eq.symm ?_` and prove the remaining obligations. Use `(congrArg (fun z => placeInv (K := K) (.inr (v : HeightOneSpectrum (𝓞 K.1))) (brauerLocal (gsLocalEmbeddings S ιs) z (.inr (v : HeightOneSpectrum (𝓞 K.1))))) (sUnitsBrauer_apply K S y)).trans ?_` and prove the remaining obligations. Use `(congrArg (placeInv (K := K) (.inr (v : HeightOneSpectrum (𝓞 K.1)))) (brauerLocal_gsBrauerInfl_inr K S _ _ _)).trans ?_` and prove the remaining obligations.
+
+Use `(placeInv_inr_apply _ _).trans ?_` and prove the remaining obligations. Simplify using `only [gsLocalEmbeddings_fin]`. Introduce `w hw`. Break down `w with w | w` into its components or cases. Use `placeInv_inl_eq_zero n hn w _ ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hwS : w ∉ S` using `fun h => hw ⟨w, h⟩ rfl`. Rewrite using `[brauerLocal_sUnitsBrauer_inr K S (gsLocalEmbeddings S ιs) y w hwS, map_zero]`.
+-/
 theorem sum_brauerInvZ_gsLocalRes_sUnits (hn : Odd n ∨ IsTotallyComplex K.1)
     (y : cohomology (galSUnitsMax K.1 ℚ̄ S) 2) (hy : n • y = 0) :
     ∑ v : S, brauerInvZOfIsSepClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)
@@ -281,6 +341,9 @@ theorem sum_brauerInvZ_gsLocalRes_sUnits (hn : Odd n ∨ IsTotallyComplex K.1)
     · have hwS : w ∉ S := fun h => hw ⟨w, h⟩ rfl
       rw [brauerLocal_sUnitsBrauer_inr K S (gsLocalEmbeddings S ιs) y w hwS, map_zero]
 
+/- English proof (translation)
+Use `(gsSumInvRoots_apply S ιs n _).trans (sum_eq_zero_of_zmodToQZ n _ _ (fun v => (zmodToQZ_gsLocalInvRoots S ιs n v _).trans (gsLocalInvRootsQZ_cohomologyMapAlong S ιs n v x)) (sum_brauerInvZ_gsLocalRes_sUnits S ιs n hn _ ?_))` and prove the remaining obligations. Rewrite using `[← map_nsmul, nsmul_cohomology_eq_zero _ (fun ζ => nsmul_gsRoots S n ζ) 2 x, map_zero]`.
+-/
 theorem gsSumInvRoots_globalToLocal (hn : Odd n ∨ IsTotallyComplex K.1) (x : cohomology (gsRoots S n) 2) :
     gsSumInvRoots S ιs n ((globalToLocal (gsFinFamily S ιs) (gsRoots S n) _ (fun _ => 𝟙 _) 2).hom x) = 0 := by
   refine (gsSumInvRoots_apply S ιs n _).trans (sum_eq_zero_of_zmodToQZ n _ _ (fun v =>
@@ -290,12 +353,18 @@ theorem gsSumInvRoots_globalToLocal (hn : Odd n ∨ IsTotallyComplex K.1) (x : c
 
 omit [Fintype S] [NeZero n] in
 
+/- English proof (translation)
+Introduce `_` and use `(ShortComplex.moduleCat_exact_iff_ker_sub_range _).1 (compactCohomology_exact_compact (gsFinFamily S ιs) (gsRoots S n) _ (fun _ => 𝟙 _) 2) (Subsingleton.elim (α := cohomology (gsRoots S n) 3) _ _)`.
+-/
 theorem localToCompact_two_surjective (h3 : Subsingleton (cohomology (gsRoots S n) 3)) :
     Function.Surjective (localToCompact (gsFinFamily S ιs) (gsRoots S n) _ (fun _ => 𝟙 _) 2).hom := fun _ =>
   (ShortComplex.moduleCat_exact_iff_ker_sub_range _).1
     (compactCohomology_exact_compact (gsFinFamily S ιs) (gsRoots S n) _ (fun _ => 𝟙 _) 2)
     (Subsingleton.elim (α := cohomology (gsRoots S n) 3) _ _)
 
+/- English proof (translation)
+Introduce `ξ hξ` and use `by have h := (ShortComplex.moduleCat_exact_iff_ker_sub_range _).1 (compactCohomology_exact_local (gsFinFamily S ιs) (gsRoots S n) _ (fun _ => 𝟙 _) 2) hξ obtain ⟨x, hx⟩ := h exact hx ▸ gsSumInvRoots_globalToLocal S ιs n hn x`.
+-/
 theorem ker_localToCompact_le (hn : Odd n ∨ IsTotallyComplex K.1) :
     (localToCompact (gsFinFamily S ιs) (gsRoots S n) _ (fun _ => 𝟙 _) 2).hom.toAddMonoidHom.ker ≤
       (gsSumInvRoots S ιs n).ker := fun ξ hξ => by
@@ -311,6 +380,9 @@ noncomputable def gsCompactInv (hn : Odd n ∨ IsTotallyComplex K.1) (h3 : Subsi
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+The claim follows from `descendAlong_apply (localToCompact (gsFinFamily S ιs) (gsRoots S n) _ (fun _ => 𝟙 _) 2).hom (localToCompact_two_surjective S ιs n h3) (gsSumInvRoots S ιs n) (ker_localToCompact_le S ιs n hn) ξ`.
+-/
 theorem gsCompactInv_localToCompact (hn : Odd n ∨ IsTotallyComplex K.1)
     (h3 : Subsingleton (cohomology (gsRoots S n) 3))
     (ξ : ∀ v : S, cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 2) :

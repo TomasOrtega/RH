@@ -28,16 +28,33 @@ def resMap {E : Type} [Field E] [NumberField E] (p : ℕ) (PP : Pl E) (h : (p : 
 def idx {Pg : Finset (Pl D.host.E)} (h : IsRecPlaces D Pg) (PP : ↥Pg) : (Σ k : Fin 2, D.nd.PlG k) :=
   ((h PP.1).1 PP.2).choose
 
+/- English proof (translation)
+The claim follows from `((h PP.1).1 PP.2).choose_spec`.
+-/
 theorem idx_spec {Pg : Finset (Pl D.host.E)} (h : IsRecPlaces D Pg) (PP : ↥Pg) :
     D.naut.plGw (idx h PP).1 (idx h PP).2 = PP.1 :=
   ((h PP.1).1 PP.2).choose_spec
 
+/- English proof (translation)
+Establish `h1` using `D.naut.plGw_over (idx h PP).1 (idx h PP).2`. Rewrite `h1` using `[idx_spec h PP]`. Conclude with `h1`.
+-/
 theorem idx_mem {Pg : Finset (Pl D.host.E)} (h : IsRecPlaces D Pg) (PP : ↥Pg) :
     ((D.host.g (idx h PP).1 : ℕ) : 𝓞 D.host.E) ∈ PP.1.asIdeal := by
   have h1 := D.naut.plGw_over (idx h PP).1 (idx h PP).2
   rw [idx_spec h PP] at h1
   exact h1
 
+/- English proof (translation)
+Establish `h1` using `idx_mem h PP`. Establish `h2 : ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ PP.1.asIdeal`. Use `D.naut.plGw_over kv.1 kv.2` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+
+Establish `h3` using `idx_spec h PP`. Generalize the expression as in `idx h PP = a at h1 h3`. Take `⟨k, v⟩` from `a`. Take `⟨k', v'⟩` from `kv`. Establish `hk : k = k'`.
+
+Assume the negation of the conclusion as `hne`. Establish `hg : D.host.g k ≠ D.host.g k'`. Use `D.host.g_ne` as an intermediate fact. Apply the tactic sequence `fin_cases k <;> fin_cases k' <;> first | exact absurd rfl hne | exact this | exact this.symm`. Establish `hc : IsCoprime ((D.host.g k : ℕ) : 𝓞 D.host.E) ((D.host.g k' : ℕ) : 𝓞 D.host.E)` using `Nat.Coprime.cast ((Nat.coprime_primes (D.host.g_prime k) (D.host.g_prime k')).2 hg)`.
+
+Take `⟨a, b, hab⟩` from `hc`. Use `PP.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← hab]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`. Substitute `hk` using the available equality.
+
+Establish `hv : v = v'` using `D.naut.plGw_inj k (h3.trans e.symm)`. Rewrite using `[hv]`.
+-/
 theorem idx_eq {Pg : Finset (Pl D.host.E)} (h : IsRecPlaces D Pg) (PP : ↥Pg) (kv : Σ k : Fin 2, D.nd.PlG k)
     (e : D.naut.plGw kv.1 kv.2 = PP.1) : idx h PP = kv := by
   have h1 := idx_mem h PP
@@ -94,6 +111,9 @@ def eLin (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ
     · simp only [Pi.smul_apply, smul_eq_mul]; ring
     · simp
 
+/- English proof (translation)
+Rewrite using `[D.sp.Y_rank 0 (Nat.zero_le _)]`. Simplify using `[Ranks.rankY]`.
+-/
 theorem rank_zeroth_component_eq (D : D7) : (D.sp.Y 0).rank = D.R.r := by
   rw [D.sp.Y_rank 0 (Nat.zero_le _)]; simp [Ranks.rankY]
 
@@ -156,14 +176,23 @@ def DimPartsThree : Prop :=
       IsGenericPsi Pg ψ → DimPartsAt h (LevelP.triv Pg D.R.r ℂ) ∧ DimPartsAt h (P0 Pg D.R.r ψ) ∧
         DimPartsAt h (PsharpSym Pg D.R.r D.R.rS D.R.k ψ)
 
+/- English proof (translation)
+Introduce `D h1 h2 Pg hP ψ hψ` and use `(h D h1 h2 Pg hP ψ hψ).2.1`.
+-/
 theorem DimPartsThree.dimParts (h : DimPartsThree) : DimParts :=
   fun D h1 h2 Pg hP ψ hψ => (h D h1 h2 Pg hP ψ hψ).2.1
 
+/- English proof (translation)
+Use `letI := D.nd.finPlG`. Conclude with `⟨Finset.univ.image fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.naut.plGw kv.1 kv.2, fun PP => by simp⟩`.
+-/
 theorem exists_isRecPlaces (D : D7) : ∃ Pg, IsRecPlaces D Pg := by
   classical
   letI := D.nd.finPlG
   exact ⟨Finset.univ.image fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.naut.plGw kv.1 kv.2, fun PP => by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (Pg : Finset (Pl D.host.E)) (P : LevelP Pg D.R.r ℂ) :
     (datE D Pg P).P = P ∧ (datWj D j h1 h2 Pg P).P = P.conj := ⟨rfl, rfl⟩
 

@@ -16,14 +16,27 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+The claim follows from `le_sup_left.trans hW.1.1.2`.
+-/
 theorem le_of_mem_divSupp {P W : Ideal (MRing ι)} {s : MRing ι} (hW : W ∈ divSupp P s) : P ≤ W :=
   le_sup_left.trans hW.1.1.2
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Introduce `_ hz` and use `⟨hz.1, fun f hf => hz.2 f (h hf)⟩`.
+-/
 theorem mcPts_mono {P W : Ideal (MRing ι)} (h : P ≤ W) : mcPts W ⊆ mcPts P :=
   fun _ hz => ⟨hz.1, fun f hf => hz.2 f (h hf)⟩
 
+/- English proof (translation)
+Establish `hdeg : (fun j => (L j).a) = (fun j => (L' j).a)` using `funext ha`. Unfold `recR`. Use `congr 1`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Distinguish the cases in `hhor : IsHorizontal W`.
+
+Rewrite using `[if_pos hhor, if_pos hhor, hI W hW hhor]`. Rewrite using `[if_neg hhor, if_neg hhor, hdeg]`. Unfold `arInt`. Use `(ReciprocityTheory.ChartRestriction.G.Geo.ptsLocal K ι P m 0 _ _ _ _ (fun j z hz => ?_) (fun z hz => ?_)).2` and prove the remaining obligations. Simplify using `only [hh j z hz]`.
+
+Simplify using `only [logNorm, hC z hz]`.
+-/
 theorem recR_congr_metric (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ)
     (P : Ideal (MRing ι)) {m : ℕ} (L L' : Fin m → HermLine ι) (C C' : HermLine ι) (s : MRing ι)
     (hI : ∀ W ∈ divSupp P s, IsHorizontal W → I W m L = I W m L')
@@ -43,6 +56,21 @@ theorem recR_congr_metric (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → Her
     · simp only [hh j z hz]
     · simp only [logNorm, hC z hz]
 
+/- English proof (translation)
+Establish `hPp : P.IsPrime` using `hP.2.1.1`. Use `choose c hc using hP.2.1.2.2`. Set `b : K → ℕ` to `fun k => (-A.a k).toNat`. Set `e : K → ℕ` to `fun k => (A.a k + (b k : ℤ)).toNat`. Set `B : HermLine ι` to `HermLine.sqMetric b`.
+
+Establish `hB : IsSmoothHerm B` using `isSmoothHerm_sqMetric b`. Establish `hBa : ∀ k, B.a k = (b k : ℤ)` using `fun k => rfl`. Set `sB : MRing ι` to `∏ k, (X ⟨k, c k⟩ : MRing ι) ^ b k`. Set `sC : MRing ι` to `∏ k, (X ⟨k, c k⟩ : MRing ι) ^ e k`. Establish `hsB : IsMultiHomog sB b` using `Inter.ThmIUnique.isMultiHomog_coordMonomial c b`.
+
+Establish `hsC : IsMultiHomog sC e` using `Inter.ThmIUnique.isMultiHomog_coordMonomial c e`. Establish `hsBP : sB ∉ P` using `Inter.ThmIUnique.coordMonomial_not_mem hPp c hc b`. Establish `hsCP : sC ∉ P` using `Inter.ThmIUnique.coordMonomial_not_mem hPp c hc e`. Establish `hCa : ∀ D : HermLine ι, D.a = A.a → ∀ k, (D.tensor B).a k = (e k : ℤ)`. Introduce `D hD k`.
+
+Establish `h0 : (0 : ℤ) ≤ A.a k + ((-A.a k).toNat : ℤ)`. Rewrite using `[Int.toNat_eq_max]`. Use linear arithmetic over natural numbers and integers. Use `show D.a k + B.a k = _`. Rewrite using `[hD, hBa]`.
+
+Conclude with `(Int.toNat_of_nonneg h0).symm`. Establish `diff : ∀ (M : Fin m → HermLine ι) (D : HermLine ι), (∀ j, IsSmoothHerm (M j)) → IsSmoothHerm D → D.a = A.a → I P (m + 1) (Fin.snoc M D) = recR I P M (D.tensor B) sC - recR I P M B sB`. Introduce `M D hM hD hDa`. Establish `h1` using `hI.1 P m M D B hP hM hD hB`. Rewrite `h1` using `[hI.2 P m M (D.tensor B) sC e hP hM (isSmoothHerm_tensor hD hB) (hCa D hDa) hsC hsCP, hI.2 P m M B sB b hP hM hB hBa hsB hsBP]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hor : ∀ (X' : HermLine ι) (s : MRing ι), IsSectionOn P X' s → ∀ W ∈ divSupp P s, IsHorizontal W → I W m L = I W m L'` using `fun X' s hs W hW hhor => hlow W ((divSuppArith K ι P m X' s W hP hs hW).1 hhor) (le_of_mem_divSupp hW)`. Rewrite using `[diff L A hL hA rfl, diff L' A' hL' hA' haA.symm]`. Use `congr 1`. Conclude with `recR_congr_metric I P L L' _ _ sC (hor _ sC ⟨e, hCa A rfl, hsC, hsCP⟩) ha hh fun z hz => by show A.h z * B.h z = A'.h z * B.h z; rw [hhA z hz]`.
+
+Conclude with `recR_congr_metric I P L L' B B sB (hor _ sB ⟨b, hBa, hsB, hsBP⟩) ha hh fun _ _ => rfl`.
+-/
 theorem step {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} (hI : IsRFamily I)
     {P : Ideal (MRing ι)} {m : ℕ} (L L' : Fin m → HermLine ι) (A A' : HermLine ι)
     (hP : IsArithVar P (m + 1)) (hL : ∀ j, IsSmoothHerm (L j)) (hL' : ∀ j, IsSmoothHerm (L' j))
@@ -92,6 +120,13 @@ theorem step {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) →
 
 end MetricLocal
 
+/- English proof (translation)
+Introduce `K _ ι _ I hI`. Establish `hR : IsRFamily I` using `IsIntersectionFamily.isRFamily hI`. Establish `key : ∀ (n : ℕ) (P : Ideal (MRing ι)) (L L' : Fin n → HermLine ι), IsArithVar P n → (∀ j, IsSmoothHerm (L j)) → (∀ j, IsSmoothHerm (L' j)) → (∀ j, (L j).a = (L' j).a) → (∀ j, ∀ z ∈ mcPts P, (L j).h z = (L' j).h z) → I P n L = I P n L'`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Introduce `P L L' _ _ _ _ _`. Establish `: L = L'` using `funext fun j => j.elim0`. Rewrite using `[this]`. Consider the case `succ m ih`.
+
+Introduce `P L L' hP hL hL' ha hh`. Rewrite using `[← Fin.snoc_init_self L, ← Fin.snoc_init_self L']`. Conclude with `MetricLocal.step hR _ _ _ _ hP (fun j => hL j.castSucc) (fun j => hL' j.castSucc) (hL _) (hL' _) (fun j => ha j.castSucc) (funext fun k => by rw [ha]) (fun j => hh j.castSucc) (hh _) fun W hW hPW => ih W _ _ hW (fun j => hL j.castSucc) (fun j => hL' j.castSucc) (fun j => ha j.cas …`. Introduce `P n L L' hP hL hL' ha hh`. Conclude with `key n P L L' hP hL hL' ha hh`.
+-/
 theorem MetricLocal.full : MetricLocalStatement := by
   intro K _ ι _ I hI
   have hR : IsRFamily I := IsIntersectionFamily.isRFamily hI

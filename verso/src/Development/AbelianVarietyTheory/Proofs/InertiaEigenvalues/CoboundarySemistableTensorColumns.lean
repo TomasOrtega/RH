@@ -7,6 +7,19 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PMonCob
 
+/- English proof (translation)
+Introduce `h`. Set `Φ : (ι → ℚ_[l]) ⊗[ℚ_[l]] Bst P →ₗ[ℚ_[l]] (ι → Bst P)` to `TensorProduct.lift (LinearMap.mk₂ ℚ_[l] (fun (v : ι → ℚ_[l]) (a : Bst P) (x : ι) => v x • a) (fun v w a => by funext x; simp [add_smul]) (fun c v a => by funext x; simp [mul_smul]) (fun v a a' => by funext x; simp [smul_add]) (fun c v a => by funext x; simp [smul_comm c]))`. Establish `hΦ : ∀ (v : ι → ℚ_[l]) (a : Bst P), Φ (v ⊗ₜ a) = fun x => v x • a` using `fun v a => by`. Simplify using `[Φ]`. Establish `hst : ∀ (g : ↥(GK K)) (y : (ι → ℚ_[l]) ⊗[ℚ_[l]] Bst P), Φ (stRep P (repOf ρ₀) g y) = ((ρ₀ g : Matrix ι ι ℚ_[l]).map (algebraMap ℚ_[l] (Bst P))).mulVec (fun x => actSt P (g : GQ l) (Φ y x))`.
+
+Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => funext x`. Simplify using `[Matrix.mulVec, dotProduct]`. Consider the case `tmul v a`.
+
+Rewrite using `[stRep_tmul, repOf_apply, hΦ, hΦ]`. Use function extensionality and compare the values at `x`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_smul, map_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, smul_smul]`.
+
+Consider the case `add y z hy hz`. Rewrite using `[map_add, map_add, hy, hz, ← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+
+Use `⟨Φ b, fun g => ?_⟩` and prove the remaining obligations. Use `congrArg Φ (h g)` as an intermediate fact. Rewrite `this` using `[map_sub, hst, hΦ]`. Rewrite using `[← this]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem coboundary_cols (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (ι : Type) [Fintype ι] [DecidableEq ι]
     (ρ₀ : ↥(GK K) →* GL ι ℚ_[l]) (c₀ : ↥(GK K) → ι → ℚ_[l]) (b : (ι → ℚ_[l]) ⊗[ℚ_[l]] Bst P) :
     (∀ g, c₀ g ⊗ₜ[ℚ_[l]] (1 : Bst P) = stRep P (repOf ρ₀) g b - b) →

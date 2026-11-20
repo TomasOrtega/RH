@@ -48,12 +48,25 @@ def iF (F : Type) [Field F] [NumberField F] : Af F →ₗ[F] AF F where
         | (show (0 : Ainf F) = (algebraMap F (AF F) c * ((0, x) : AF F)).1; show (0 : Ainf F) = (algebraMap F (AF F) c).1 * 0; simp)
     · show c • x = (c • ((0, x) : AF F)).2
       rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (F : Type) [Field F] [NumberField F] (x : Ainf F) : fstA F (iI F x) = x := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (F : Type) [Field F] [NumberField F] (x : Ainf F) : sndA F (iI F x) = 0 := rfl
 
 def jI (D : D7) : Ainf D.host.F ⊗[D.host.F] D.host.E →ₗ[D.host.F] AE D := TensorProduct.map (iI D.host.F) LinearMap.id
 def jF (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E →ₗ[D.host.F] AE D := TensorProduct.map (iF D.host.F) LinearMap.id
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p q => show iI D.host.F (fstA D.host.F p) ⊗ₜ q + iF D.host.F (sndA D.host.F p) ⊗ₜ q = p ⊗ₜ q`. Rewrite using `[← TensorProduct.add_tmul]`. Use `congr 1`.
+
+Use `show ((p.1, 0) : Ainf D.host.F × Af D.host.F) + ((0, p.2) : Ainf D.host.F × Af D.host.F) = p`. Rewrite using `[Prod.mk_add_mk, add_zero, zero_add]`. Both sides reduce to the same expression. Consider the case `add p q hp hq`. Rewrite using `[RingHom.map_add, RingHom.map_add, LinearMap.map_add, LinearMap.map_add]`.
+
+Use `conv_rhs => rw [← hp, ← hq]`. Normalize the expressions using the abelian group laws.
+-/
 theorem recon (x : AE D) : jI D (infPart D x) + jF D (finPart D x) = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -69,12 +82,18 @@ theorem recon (x : AE D) : jI D (infPart D x) + jF D (finPart D x) = x := by
     conv_rhs => rw [← hp, ← hq]
     abel
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p q => rfl`. Consider the case `add p q hp hq => rw [LinearMap.map_add, RingHom.map_add, hp, hq]`.
+-/
 theorem infPart_jI (a : Ainf D.host.F ⊗[D.host.F] D.host.E) : infPart D (jI D a) = a := by
   induction a using TensorProduct.induction_on with
   | zero => simp
   | tmul p q => rfl
   | add p q hp hq => rw [LinearMap.map_add, RingHom.map_add, hp, hq]
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p q => show (sndA D.host.F (iI D.host.F p)) ⊗ₜ[D.host.F] q = 0 show (0 : Af D.host.F) ⊗ₜ[D.host.F] q = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Consider the case `add p q hp hq => rw [LinearMap.map_add, RingHom.map_add, hp, hq, add_zero]`.
+-/
 theorem finPart_jI (a : Ainf D.host.F ⊗[D.host.F] D.host.E) : finPart D (jI D a) = 0 := by
   induction a using TensorProduct.induction_on with
   | zero => simp
@@ -84,6 +103,9 @@ theorem finPart_jI (a : Ainf D.host.F ⊗[D.host.F] D.host.E) : finPart D (jI D 
     exact TensorProduct.zero_tmul _ _
   | add p q hp hq => rw [LinearMap.map_add, RingHom.map_add, hp, hq, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p q => show (fstA D.host.F (iF D.host.F p)) ⊗ₜ[D.host.F] q = 0 show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] q = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Consider the case `add p q hp hq => rw [LinearMap.map_add, RingHom.map_add, hp, hq, add_zero]`.
+-/
 theorem infPart_jF (b : Af D.host.F ⊗[D.host.F] D.host.E) : infPart D (jF D b) = 0 := by
   induction b using TensorProduct.induction_on with
   | zero => simp
@@ -93,15 +115,26 @@ theorem infPart_jF (b : Af D.host.F ⊗[D.host.F] D.host.E) : infPart D (jF D b)
     exact TensorProduct.zero_tmul _ _
   | add p q hp hq => rw [LinearMap.map_add, RingHom.map_add, hp, hq, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p q => rfl`. Consider the case `add p q hp hq => rw [LinearMap.map_add, RingHom.map_add, hp, hq]`.
+-/
 theorem finPart_jF (b : Af D.host.F ⊗[D.host.F] D.host.E) : finPart D (jF D b) = b := by
   induction b using TensorProduct.induction_on with
   | zero => simp
   | tmul p q => rfl
   | add p q hp hq => rw [LinearMap.map_add, RingHom.map_add, hp, hq]
 
+/- English proof (translation)
+Rewrite using `[← recon a, ← recon b, h1, h2]`.
+-/
 theorem ext_parts {a b : AE D} (h1 : infPart D a = infPart D b) (h2 : finPart D a = finPart D b) : a = b := by
   rw [← recon a, ← recon b, h1, h2]
 
+/- English proof (translation)
+Establish `hI : ∀ a' b', infPart D (jI D a' + jF D b') = a'` using `fun a' b' => by`. Rewrite using `[RingHom.map_add, infPart_jI, infPart_jF, add_zero]`. Establish `hF : ∀ a' b', finPart D (jI D a' + jF D b') = b'` using `fun a' b' => by`. Rewrite using `[RingHom.map_add, finPart_jI, finPart_jF, zero_add]`. Establish `h1 : (jI D (a : _) + jF D (b : _)) * (jI D ((a⁻¹ : (Ainf D.host.F ⊗[D.host.F] D.host.E)ˣ) : _) + jF D ((b⁻¹ : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : _)) = 1`.
+
+Apply `ext_parts` to reduce the goal to its premises. Rewrite using `[RingHom.map_mul, hI, hI, Units.mul_inv, RingHom.map_one]`. Rewrite using `[RingHom.map_mul, hF, hF, Units.mul_inv, RingHom.map_one]`. Conclude with `⟨⟨_, _, h1, by rw [mul_comm]; exact h1⟩, hI _ _, hF _ _⟩`.
+-/
 theorem exists_unit_parts (a : (Ainf D.host.F ⊗[D.host.F] D.host.E)ˣ) (b : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) :
     ∃ Y : (AE D)ˣ, infPart D (Y : AE D) = a ∧ finPart D (Y : AE D) = b := by
   have hI : ∀ a' b', infPart D (jI D a' + jF D b') = a' := fun a' b' => by
@@ -120,6 +153,9 @@ end GlobalTheory.TwistRat.Right
 namespace GlobalTheory.TwistRat.Right
 variable {D : D7}
 
+/- English proof (translation)
+Establish `key` using `GlobalTheory.HeckeFinTrivial.eq_one_of_trivial_on_finite D (c ^ n) ⟨h.1.1.pow n, fun x => by rw [MonoidHom.pow_apply, h.1.2 x, one_pow]⟩ (GlobalTheory.CharOrderFin.char_pow_eq_one_of_orderDvd D c χ h n ho)`. Take `⟨y, rfl⟩` from `GlobalTheory.IdeleDiv.exists_pow_eq_of_finPart_eq_one D n hn x hx`. Rewrite using `[map_pow]`. Conclude with `key y`.
+-/
 theorem char_arch_one {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HChar D.host.E} (h : ChrEq c χ) {n : ℕ} (hn : 0 < n)
     (ho : χ.OrderDvd n) (x : (AE D)ˣ) (hx : finPart D (x : AE D) = 1) : c x = 1 := by
   have key := GlobalTheory.HeckeFinTrivial.eq_one_of_trivial_on_finite D (c ^ n)
@@ -129,6 +165,9 @@ theorem char_arch_one {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HChar D
   rw [map_pow]
   exact key y
 
+/- English proof (translation)
+Unfold `IsDetRoot at *`. Rewrite using `[map_mul, Units.val_mul, Units.val_mul, Matrix.det_mul, RingHom.map_mul]`. Use `conv_lhs => rw [h, h']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isDetRoot_mul {V : HSp D} {g g' : GA D V} {x x' : (AE D)ˣ} (h : IsDetRoot V g x) (h' : IsDetRoot V g' x') :
     IsDetRoot V (g * g') (x * x') := by
   unfold IsDetRoot at *
@@ -140,25 +179,43 @@ end GlobalTheory.TwistRat.Right
 
 namespace GlobalTheory.TwistRat.Right
 variable {D : D7}
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p q => rfl`. Consider the case `add p q hp hq => rw [RingHom.map_add, RingHom.map_add, hp, hq, RingHom.map_add, RingHom.map_add]`.
+-/
 theorem infPart_sigR (x : AE D) : infPart D (sigR (AF D.host.F) D.sp.cm.sig x) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D x) := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul p q => rfl
   | add p q hp hq => rw [RingHom.map_add, RingHom.map_add, hp, hq, RingHom.map_add, RingHom.map_add]
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p q => rfl`. Consider the case `add p q hp hq => rw [RingHom.map_add, RingHom.map_add, hp, hq, RingHom.map_add, RingHom.map_add]`.
+-/
 theorem finPart_sigR (x : AE D) : finPart D (sigR (AF D.host.F) D.sp.cm.sig x) = sigR (Af D.host.F) D.sp.cm.sig (finPart D x) := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul p q => rfl
   | add p q hp hq => rw [RingHom.map_add, RingHom.map_add, hp, hq, RingHom.map_add, RingHom.map_add]
+/- English proof (translation)
+Use `show b ⊗ₜ[D.host.F] D.sp.cm.sig 1 = _`. Rewrite using `[map_one]`.
+-/
 theorem sigR_tmul_one (b : Af D.host.F) : sigR (Af D.host.F) D.sp.cm.sig (b ⊗ₜ[D.host.F] (1 : D.host.E)) = b ⊗ₜ[D.host.F] (1 : D.host.E) := by
   show b ⊗ₜ[D.host.F] D.sp.cm.sig 1 = _
   rw [map_one]
+/- English proof (translation)
+Use `(AddSubgroup.closure_le _).2 ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, _, ⟨r, rfl⟩, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, r, rfl⟩`.
+-/
 theorem adelicCompletion_integers_le_intAE (w) (hw : w ∈ GlobalTheory.AdLat.hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E))) : w ∈ intAE D := by
   refine (AddSubgroup.closure_le _).2 ?_ hw
   rintro _ ⟨a, ha, _, ⟨r, rfl⟩, rfl⟩
   exact AddSubgroup.subset_closure ⟨a, ha, r, rfl⟩
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, fun v => by simp [evalV], 1, by simp; rfl⟩`.
+-/
 theorem one_mem_intAE : (1 : Af D.host.F ⊗[D.host.F] D.host.E) ∈ intAE D :=
   AddSubgroup.subset_closure ⟨1, fun v => by simp [evalV], 1, by simp; rfl⟩
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem finPart_det (V : HSp D) (u : GA D V) :
     finPart D (matHom V u).1.det = (finHom V u).1.det := by
   rw [RingHom.map_det]
@@ -169,6 +226,27 @@ namespace GlobalTheory.TwistRat.Right
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨hc, ⟨n, hn, ho⟩, -, ht, hunr, -⟩` from `hT`. Establish `hpd : pd ≠ 0` using `fun h => by simpa [h] using hA.1`. Establish `hu' : GlobalTheory.Member.FinCong V pd u` using `fun z hz => by`. Take `⟨y, hy, e⟩` from `hu z hz`. Conclude with `⟨M • y, AddSubgroup.nsmul_mem _ hy M, by rw [e, mul_comm, mul_nsmul]; exact smul_comm M pd y⟩`.
+
+Take `⟨w, hw, hzw⟩` from `GlobalTheory.DetFibre.det_cong_of_finCong V pd hpd u hu'`. Establish `hw'` using `adelicCompletion_integers_le_intAE w hw`. Take `⟨zf, hzf⟩ : ∃ zf : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ, (zf : Af D.host.F ⊗[D.host.F] D.host.E) = (finHom V u).1.det` from `⟨Units.map (finPart D).toMonoidHom (Matrix.GeneralLinearGroup.det (matHom V u)), finPart_det V u⟩`. Establish `hcong : (zf : Af D.host.F ⊗[D.host.F] D.host.E) - 1 = pd • w` using `by rw [hzf]; exact hzw`. Establish `hzint : (zf : Af D.host.F ⊗[D.host.F] D.host.E) ∈ intAE D`.
+
+Rewrite using `[← sub_add_cancel (zf : Af D.host.F ⊗[D.host.F] D.host.E) 1, hcong]`. Conclude with `add_mem (AddSubgroup.nsmul_mem _ hw' pd) one_mem_intAE`. Establish `hroot : (Units.map (finPart D).toMonoidHom y₀ : Af D.host.F ⊗[D.host.F] D.host.E) = zf * sigR (Af D.host.F) D.sp.cm.sig (Units.map (finPart D).toMonoidHom y₀ : Af D.host.F ⊗[D.host.F] D.host.E)` using `by show finPart D (y₀ : AE D) = _ * sigR (Af D.host.F) D.sp.cm.sig (finPart D (y₀ : AE D))`. Rewrite using `[hzf, ← finPart_det, ← finPart_sigR, ← RingHom.map_mul]`. Conclude with `congrArg (finPart D) hy₀`.
+
+Take `⟨y₁, hy₁, hy₁', hy₁r⟩` from `GlobalTheory.IntegralHilbertNinety.exists_int_unit_root D zf hzint ⟨_, hroot⟩`. Take `⟨b, y₂, hy₂, hy₂i, hy₂i', w₂, hw₂, hy₂c⟩` from `GlobalTheory.UnitRootCong.exists_adele_unit_congr_one D pd hA.1 zf y₁ hy₁ hy₁' hy₁r ⟨w, hw', hcong⟩`. Take `⟨Yf, hYf1, hYf2⟩` from `exists_unit_parts (D := D) 1 y₂`. Take `⟨Yi, hYi1, hYi2⟩` from `exists_unit_parts (D := D) (Units.map (infPart D).toMonoidHom y₀) 1`. Establish `hYI : infPart D ((Yf * Yi : (AE D)ˣ) : AE D) = infPart D (y₀ : AE D)`.
+
+Simplify using `only [Units.val_mul, RingHom.map_mul, hYf1, hYi1, Units.val_one, one_mul]`. Both sides reduce to the same expression. Establish `hYF : finPart D ((Yf * Yi : (AE D)ˣ) : AE D) = (y₂ : Af D.host.F ⊗[D.host.F] D.host.E)`. Simplify using `only [Units.val_mul, RingHom.map_mul, hYf2, hYi2, Units.val_one, mul_one]`. Use `⟨Yf * Yi, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `IsDetRoot`. Generalize the expression as in `((Yf * Yi : (AE D)ˣ) : AE D) = Y at hYI hYF ⊢`. Apply `ext_parts` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (y₂ : Af D.host.F ⊗[D.host.F] D.host.E) = zf * sigR (Af D.host.F) D.sp.cm.sig (y₂ : Af D.host.F ⊗[D.host.F] D.host.E)`.
+
+Rewrite using `[hy₂, (sigR (Af D.host.F) D.sp.cm.sig).map_mul, sigR_tmul_one, ← mul_assoc, ← hy₁r]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hzf, ← finPart_det, hYF]`. Use `_ = finPart D (matHom V u).1.det * finPart D (sigR (AF D.host.F) D.sp.cm.sig Y) := congrArg (finPart D (matHom V u).1.det * ·) (finPart_sigR _).symm`. Use `_ = finPart D ((matHom V u).1.det * sigR (AF D.host.F) D.sp.cm.sig Y) := ((finPart D).map_mul _ _).symm`.
+
+Establish `h1 : δc Yf = 1`. Use `GlobalTheory.tame_heckeChar_eq_one_of_finUnit D δc δ hc ht pd hunr Yf ⟨?_, ?_, ?_⟩ ⟨w₂, hw₂, by rw [hYf2]; exact hy₂c⟩` and prove the remaining obligations. Rewrite using `[hYf1]`. Both sides reduce to the same expression. Rewrite using `[hYf2]`.
+
+Conclude with `hy₂i`. Establish `hU : Units.map (finPart D).toMonoidHom Yf = y₂` using `Units.ext hYf2`. Establish `e : finPart D ((Yf⁻¹ : (AE D)ˣ) : AE D) = ((y₂⁻¹ : (Af D.host.F ⊗[D.host.F] D.host.E)ˣ) : _)`. Rewrite using `[← hU, ← MonoidHom.map_inv]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `hy₂i'`. Establish `h2 : δc Yi = 1` using `char_arch_one hc hn ho Yi (by rw [hYi2]; rfl)`. Rewrite using `[map_mul, h1, h2, mul_one]`.
+-/
 theorem exists_root_one {D : D7} {V : HSp D} {M pd : ℕ} {k : Type} [Field k] {σ : k →+* ℂ}
     {δ : Formalism.L2.Host.HChar D.host.E} {δc : (AE D)ˣ →* Circle} (hA : IsAuxiliarySplitSquarefreeLevel D M pd) (hT : IsTwist pd σ δ δc)
     {u : GA D V} (hu : GlobalTheory.Member.FinCong V (M * pd) u) (y₀ : (AE D)ˣ) (hy₀ : IsDetRoot V u y₀) :
@@ -235,6 +313,11 @@ theorem exists_root_one {D : D7} {V : HSp D} {M pd : ℕ} {k : Type} [Field k] {
     have h2 : δc Yi = 1 := char_arch_one hc hn ho Yi (by rw [hYi2]; rfl)
     rw [map_mul, h1, h2, mul_one]
 
+/- English proof (translation)
+Introduce `D V M pd k _ σ δ δc hA hT dd hdd u _ hu h`. Establish `main : ∀ χ : (AE D)ˣ →* Circle, MuVal V χ dd → (∀ y, δc y = 1 → χ y = 1) → dd (h * u) = dd h`. Introduce `χ hχ hχδ`. Take `⟨x, hx⟩` from `hχ.1 h`. Take `⟨y₀, hy₀⟩` from `hχ.1 u`.
+
+Take `⟨y, hy, hy1⟩` from `exists_root_one hA hT hu y₀ hy₀`. Rewrite using `[hχ.2 _ _ (isDetRoot_mul hx hy), hχ.2 h x hx, map_mul, hχδ y hy1, mul_one]`. Break down `hdd with hd | hd` into its components or cases. Conclude with `main δc hd fun y hy => hy`. Conclude with `main δc⁻¹ hd fun y hy => by rw [MonoidHom.inv_apply, hy, inv_one]`.
+-/
 theorem dd_mul_right : ∀ (D : D7) (V : HSp D) (M pd : ℕ) (k : Type) [Field k] (σ : k →+* ℂ) (δ : Formalism.L2.Host.HChar D.host.E) (δc : (AE D)ˣ →* Circle), IsAuxiliarySplitSquarefreeLevel D M pd → IsTwist pd σ δ δc → ∀ dd : GA D V → ℂ, (MuVal V δc dd ∨ MuVal V δc⁻¹ dd) → ∀ u : GA D V, Formalism.L2.Pj.gLat V u = ↑(Formalism.L2.Pj.latHat V) → GlobalTheory.Member.FinCong V (M * pd) u → ∀ h : GA D V, dd (h * u) = dd h := by
   intro D V M pd k _ σ δ δc hA hT dd hdd u _ hu h
   have main : ∀ χ : (AE D)ˣ →* Circle, MuVal V χ dd → (∀ y, δc y = 1 → χ y = 1) → dd (h * u) = dd h := by

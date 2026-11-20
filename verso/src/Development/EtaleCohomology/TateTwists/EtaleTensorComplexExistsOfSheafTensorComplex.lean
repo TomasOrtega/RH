@@ -24,6 +24,17 @@ def EtaleSheafTensorComplexExists : Prop :=
     (∀ (U : Scheme.{0}) (w : ℤ) (y : Sec (K.X w) U), Loc U fun V g => ∃ x, φ V w x = Sec.res g y) ∧
     (∀ (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w), φ U w x = 0 → Loc U fun _ g => Tens.res g w x = 0)
 
+/- English proof (translation)
+Introduce `R _ I J`. Take `⟨K, φ, hnat, hd, hsurj, hinj⟩` from `hS R I J`. Set `μ : Pair I J K` to `{ mul := fun U s t w h => (TensorProduct.mk (ULift.{1} R) _ _).compr₂ ((φ U w).comp (DirectSum.lof (ULift.{1} R) {p : ℤ × ℤ // p.1 + p.2 = w} (fun p => Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) ⟨(s, t), h⟩)) nat := by`. Introduce `V U g s t w h a b`. Use `hnat g w (tensPure s t w h a b)` as an intermediate fact.
+
+Simplify `this` using `[tensPure, Tens.res, DirectSum.lmap_lof]`. Use `leibniz := by`. Introduce `U s t w h a b`. Simplify `hd U s t w h a b }` using `[tensPure]`. Establish `hlift : ∀ U w, μ.lift U w = φ U w`.
+
+Introduce `U w`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+
+Simplify using `[Pair.lift, μ]`. Use `⟨K, μ, ?_, ?_⟩` and prove the remaining obligations. Introduce `U w y`. Simplify `hsurj U w y` using `[hlift]`. Introduce `U w x hx`.
+
+Conclude with `hinj U w x (by simpa [hlift] using hx)`.
+-/
 theorem etale_tensor_complex_exists_of_sheaf_tensor_complex (hS : EtaleSheafTensorComplexExists) : EtaleComplexTensorPairingExists := by
   intro R _ I J
   obtain ⟨K, φ, hnat, hd, hsurj, hinj⟩ := hS R I J

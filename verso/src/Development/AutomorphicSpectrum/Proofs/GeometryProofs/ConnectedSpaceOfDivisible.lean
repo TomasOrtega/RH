@@ -11,6 +11,15 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
+/- English proof (translation)
+Set `H : Subgroup P` to `{ carrier := {a | c a = c 1} one_mem' := rfl mul_mem' := fun {a b} ha hb => by`. Use `hc a 1 b ha` as an intermediate fact. Rewrite `this` using `[_root_.one_mul]`. Conclude with `this.trans hb`. Use the proof step `inv_mem' := fun {a} ha => by`.
+
+Use `hc a 1 a⁻¹ ha` as an intermediate fact. Rewrite `this` using `[_root_.mul_inv_cancel, _root_.one_mul]`. Conclude with `this.symm }`. Establish `hinj : Function.Injective (fun q : P ⧸ H => c q.out)`. Introduce `q r hqr`.
+
+Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' r, QuotientGroup.eq]`. Use `hc _ _ (q.out)⁻¹ hqr` as an intermediate fact. Simplify using `only [mul_inv_cancel] at this`. Express the relevant statement in the definitionally equal form `c _ = c 1`. Rewrite using `[mul_comm, this.symm]`.
+
+Establish `: Finite (P ⧸ H)` using `Finite.of_injective _ hinj`. Establish `hi : H.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Take `⟨y, rfl⟩` from `hd _ hi x`. Conclude with `Subgroup.pow_index_mem H y`.
+-/
 theorem eq_one_of_divisible {P Q : Type*} [CommGroup P] [Finite Q] (c : P → Q)
     (hc : ∀ a b t : P, c a = c b → c (a * t) = c (b * t))
     (hd : ∀ n : ℕ, n ≠ 0 → ∀ x : P, ∃ y : P, y ^ n = x) (x : P) : c x = c 1 := by
@@ -37,6 +46,21 @@ theorem eq_one_of_divisible {P Q : Type*} [CommGroup P] [Finite Q] (c : P → Q)
   obtain ⟨y, rfl⟩ := hd _ hi x
   exact Subgroup.pow_index_mem H y
 
+/- English proof (translation)
+Introduce `K _ _ G _ _ hl hq hd`. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`. Establish `: IsNoetherian G.left` using `{}`. Use `LocallyOfFiniteType.jacobsonSpace G.hom` as an intermediate fact.
+
+Set `pt : (𝟙_ (Over (Sp K))).left` to `IsLocalRing.closedPoint K`. Set `F : (𝟙_ (Over (Sp K)) ⟶ G) → G.left` to `fun x => x.left pt`. Establish `hopen : ∀ x : G.left, IsOpen (connectedComponent x)` using `fun x => isOpen_connectedComponent_of_noetherianSpace x`. Establish `: DiscreteTopology (_root_.ConnectedComponents G.left)` using `ConnectedComponents.discreteTopology_iff.2 hopen`. Establish `: Finite (_root_.ConnectedComponents G.left)` using `finite_of_compact_of_discrete`.
+
+Set `c : (𝟙_ (Over (Sp K)) ⟶ G) → _root_.ConnectedComponents G.left` to `fun x => F x`. Establish `htr : ∀ a t : 𝟙_ (Over (Sp K)) ⟶ G, F (a * t) = (GrpObj.mulRight t).hom.left (F a)`. Introduce `a t`. Establish `h : a ≫ (GrpObj.mulRight t).hom = a * t`. Simplify using `[comp_lift_assoc, Hom.mul_def]`.
+
+Simplify using `only [F, ← h, Over.comp_left, Scheme.Hom.comp_apply]`. Establish `hc : ∀ a b t, c a = c b → c (a * t) = c (b * t)`. Introduce `a b t hab`. Use `congrArg (Continuous.connectedComponentsMap (GrpObj.mulRight t).hom.left.continuous) hab` as an intermediate fact. Simplify `this` using `[c, htr]`.
+
+Establish `hall` using `eq_one_of_divisible c hc hd`. Establish `hsurj : ∀ x : G.left, IsClosed {x} → ∃ a, F a = x`. Introduce `x hx`. Use `⟨Over.homMk (pointOfClosedPoint G.hom x hx) (pointOfClosedPoint_comp G.hom x hx), ?_⟩` and prove the remaining obligations. Conclude with `pointOfClosedPoint_apply G.hom x hx _`.
+
+Establish `huniv : connectedComponent (F 1) = Set.univ`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx, hcl⟩` from `nonempty_inter_closedPoints (Set.nonempty_compl.2 hne) (IsOpen.isLocallyClosed isClosed_connectedComponent.isOpen_compl)`. Take `⟨a, rfl⟩` from `hsurj x hcl`. Apply `hx` to reduce the goal to its premises.
+
+Establish `h1 : connectedComponent (F a) = connectedComponent (F 1)` using `ConnectedComponents.coe_eq_coe.1 (hall a)`. Rewrite using `[← h1]`. Conclude with `mem_connectedComponent`. Conclude with `connectedSpace_iff_connectedComponent.2 ⟨F 1, huniv⟩`.
+-/
 theorem connectedSpace_of_divisible : ∀ (K : Type) [Field K] [IsAlgClosed K] (G : Over (Sp K)) [GrpObj G] [IsCommMonObj G], LocallyOfFiniteType G.hom → QuasiCompact G.hom → (∀ n : ℕ, n ≠ 0 → ∀ x : 𝟙_ (Over (Sp K)) ⟶ G, ∃ y : 𝟙_ (Over (Sp K)) ⟶ G, y ^ n = x) → ConnectedSpace G.left := by
   intro K _ _ G _ _ hl hq hd
   have : IsLocallyNoetherian G.left := LocallyOfFiniteType.isLocallyNoetherian G.hom

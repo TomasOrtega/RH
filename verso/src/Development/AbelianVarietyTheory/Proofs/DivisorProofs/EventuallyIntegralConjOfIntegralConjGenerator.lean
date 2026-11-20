@@ -13,14 +13,23 @@ section Coords
 
 variable (v : HeightOneSpectrum ℤ) {M : Type} [AddCommGroup M] [Module ℚ M] {κ : Type} (b : Module.Basis κ ℚ M)
 
+/- English proof (translation)
+Introduce `i` and use `by rw [map_add, Finsupp.add_apply]; exact add_mem (hx i) (hy i)`.
+-/
 theorem isIntB_add {x y : v.adicCompletion ℚ ⊗[ℚ] M} (hx : IsIntB v b x) (hy : IsIntB v b y) :
     IsIntB v b (x + y) := fun i => by
   rw [map_add, Finsupp.add_apply]; exact add_mem (hx i) (hy i)
 
+/- English proof (translation)
+Introduce `i` and use `by rw [map_smul, Finsupp.smul_apply, smul_eq_mul]; exact mul_mem ha (hx i)`.
+-/
 theorem isIntB_smul {a : v.adicCompletion ℚ} (ha : a ∈ v.adicCompletionIntegers ℚ)
     {x : v.adicCompletion ℚ ⊗[ℚ] M} (hx : IsIntB v b x) : IsIntB v b (a • x) := fun i => by
   rw [map_smul, Finsupp.smul_apply, smul_eq_mul]; exact mul_mem ha (hx i)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isIntB_zero v b`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `isIntB_add v b (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem isIntB_sum {ι : Type} (s : Finset ι) (f : ι → v.adicCompletion ℚ ⊗[ℚ] M)
     (h : ∀ i ∈ s, IsIntB v b (f i)) : IsIntB v b (∑ i ∈ s, f i) := by
   induction s using Finset.induction_on with
@@ -29,11 +38,17 @@ theorem isIntB_sum {ι : Type} (s : Finset ι) (f : ι → v.adicCompletion ℚ 
     rw [Finset.sum_insert ha]
     exact isIntB_add v b (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Unfold `IsIntB`. Simplify using `only [Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`.
+-/
 theorem isIntB_tmul_iff (c : M) : IsIntB v b ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] c) ↔
     ∀ i, algebraMap ℚ (v.adicCompletion ℚ) (b.repr c i) ∈ v.adicCompletionIntegers ℚ := by
   unfold IsIntB
   simp only [Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]
 
+/- English proof (translation)
+Establish `h : ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite, ∀ i, algebraMap ℚ (v.adicCompletion ℚ) (b.repr c i) ∈ v.adicCompletionIntegers ℚ` using `Filter.eventually_all.2 fun i => (algebraMap ℚ (FiniteAdeleRing ℤ ℚ) (b.repr c i)).2`. Conclude with `h.mono fun v hv => (isIntB_tmul_iff v b c).2 hv`.
+-/
 theorem eventually_isIntB_tmul [Finite κ] (c : M) :
     ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite, IsIntB v b ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] c) := by
   have h : ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite, ∀ i,
@@ -41,6 +56,9 @@ theorem eventually_isIntB_tmul [Finite κ] (c : M) :
     Filter.eventually_all.2 fun i => (algebraMap ℚ (FiniteAdeleRing ℤ ℚ) (b.repr c i)).2
   exact h.mono fun v hv => (isIntB_tmul_iff v b c).2 hv
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (Algebra.TensorProduct.basis (v.adicCompletion ℚ) b).sum_repr x]`. Simplify using `only [Algebra.TensorProduct.basis_apply]`.
+-/
 theorem eq_sum_basis [Fintype κ] (x : v.adicCompletion ℚ ⊗[ℚ] M) :
     x = ∑ i, (Algebra.TensorProduct.basis (v.adicCompletion ℚ) b).repr x i •
       ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] b i) := by
@@ -53,6 +71,11 @@ section Alg
 
 variable (v : HeightOneSpectrum ℤ) {A : Type} [Ring A] [Algebra ℚ A] {κ : Type} (b : Module.Basis κ ℚ A)
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite κ`. Rewrite using `[eq_sum_basis v b x, eq_sum_basis v b y, Finset.sum_mul]`. Use `isIntB_sum v b _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `isIntB_sum v b _ _ fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_mul_smul_comm, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Conclude with `isIntB_smul v b (mul_mem (hx i) (hy j)) (hb i j)`.
+-/
 theorem isIntB_mul [Finite κ] (hb : ∀ i j, IsIntB v b ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (b i * b j)))
     {x y : v.adicCompletion ℚ ⊗[ℚ] A} (hx : IsIntB v b x) (hy : IsIntB v b y) : IsIntB v b (x * y) := by
   haveI := Fintype.ofFinite κ
@@ -63,6 +86,9 @@ theorem isIntB_mul [Finite κ] (hb : ∀ i j, IsIntB v b ((1 : v.adicCompletion 
   rw [smul_mul_smul_comm, Algebra.TensorProduct.tmul_mul_tmul, one_mul]
   exact isIntB_smul v b (mul_mem (hx i) (hy j)) (hb i j)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `h1`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `isIntB_mul v b hb ih hx`.
+-/
 theorem isIntB_pow [Finite κ] (hb : ∀ i j, IsIntB v b ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (b i * b j)))
     (h1 : IsIntB v b ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (1 : A)))
     {x : v.adicCompletion ℚ ⊗[ℚ] A} (hx : IsIntB v b x) (k : ℕ) : IsIntB v b (x ^ k) := by
@@ -70,6 +96,9 @@ theorem isIntB_pow [Finite κ] (hb : ∀ i j, IsIntB v b ((1 : v.adicCompletion 
   | zero => rw [pow_zero]; exact h1
   | succ k ih => rw [pow_succ]; exact isIntB_mul v b hb ih hx
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c => simp [Algebra.TensorProduct.tmul_mul_tmul, hz c]`. Consider the case `add x y hx hy => rw [mul_add, add_mul, hx, hy]`.
+-/
 theorem tmul_central_comm {R : Type} [CommRing R] [Algebra ℚ R] (z : A) (hz : ∀ c, z * c = c * z)
     (y : R ⊗[ℚ] A) : ((1 : R) ⊗ₜ[ℚ] z) * y = y * ((1 : R) ⊗ₜ[ℚ] z) := by
   induction y using TensorProduct.induction_on with
@@ -85,6 +114,23 @@ namespace GlobalTheory.ConjInt
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use `set B := Algebra.adjoin G.F ({γ} : Set G.C) with hB`. Establish `hBc : B ≤ Subalgebra.centralizer G.F ({γ} : Set G.C)`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Rewrite using `[Set.singleton_subset_iff, SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce `g hg`.
+
+Rewrite `hg` using `[Set.mem_singleton_iff]`. Rewrite using `[hg]`. Establish `hof : ∀ x : B, ∃ w, ι w = (x : G.C)`. Introduce `x`. Establish `hx` using `hBc x.2`.
+
+Rewrite `hx` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(hc x).1 (hx γ (Set.mem_singleton γ)).symm`. Use `haveI : NoZeroDivisors B := by`. Use `⟨fun {x y} hxy => ?_⟩` and prove the remaining obligations. Take `⟨wx, hwx⟩` from `hof x`.
+
+Take `⟨wy, hwy⟩` from `hof y`. Establish `h0 : ι (wx * wy) = 0`. Rewrite using `[map_mul, hwx, hwy]`. Conclude with `congrArg Subtype.val hxy`. Break down `mul_eq_zero.1 (hι (h0.trans (map_zero ι).symm)) with h | h` into its components or cases.
+
+Use `left`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hwx, h, map_zero]`. Both sides reduce to the same expression. Use `right`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hwy, h, map_zero]`. Both sides reduce to the same expression. Use `haveI : IsDomain B := NoZeroDivisors.to_isDomain B`. Establish `hγB : γ ∈ B` using `Algebra.self_mem_adjoin_singleton G.F γ`.
+
+Establish `hint : IsIntegral G.F (⟨γ, hγB⟩ : B)` using `Algebra.IsIntegral.isIntegral _`. Establish `hirr : Irreducible (minpoly G.F γ)`. Establish `e` using `minpoly.algHom_eq B.val Subtype.val_injective ⟨γ, hγB⟩`. Rewrite `e` using `[show B.val ⟨γ, hγB⟩ = γ from rfl]`. Rewrite using `[e]`.
+
+Conclude with `minpoly.irreducible hint`. Establish `hcom : Commute (ι w) γ` using `(hc (ι w)).2 ⟨w, rfl⟩`. Conclude with `(GlobalTheory.CentIrr.commute_iff_mem_adjoin G.F G.C G.n G.n_pos G.rankC γ hirr hdeg (ι w)).1 hcom`.
+-/
 theorem mem_adjoin_of_centralizer (G : HTGroup p) (γ : G.C) (hdeg : (minpoly G.F γ).natDegree = G.n)
     (L : Type) [Field L] (ι : L →+* G.C) (hι : Function.Injective ι)
     (hc : ∀ z : G.C, z * γ = γ * z ↔ ∃ w, ι w = z) (w : L) :
@@ -124,6 +170,9 @@ namespace GlobalTheory.ConjInt
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hz : ∀ y : G.C, algebraMap G.F G.C c * y = y * algebraMap G.F G.C c` using `fun y => Algebra.commutes c y`. Rewrite using `[Units.conj_pow, Algebra.smul_def, ← one_mul (1 : R), ← Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.TensorProduct.tmul_pow, one_pow, ← mul_assoc, ← mul_assoc, ← tmul_central_comm _ hz (X : R ⊗[ℚ] G.C)]`. Simplify using `only [mul_assoc]`.
+-/
 theorem conj_tmul_smul_pow (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R] (X : (R ⊗[ℚ] G.C)ˣ)
     (c : G.F) (γ : G.C) (k : ℕ) :
     (X : R ⊗[ℚ] G.C) * ((1 : R) ⊗ₜ[ℚ] (c • γ ^ k)) * ↑X⁻¹ =
@@ -134,6 +183,19 @@ theorem conj_tmul_smul_pow (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ 
     ← tmul_central_comm _ hz (X : R ⊗[ℚ] G.C)]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Introduce `p _ G γ hdeg L _ _ ι hι hc κ b κ' ℓ`. Use `haveI : Finite κ := Module.Finite.finite_basis b`. Use `haveI : Finite κ' := Module.Finite.finite_basis ℓ`. Use `haveI := Fintype.ofFinite κ'`. Establish `hq : ∀ a, ∃ q : Polynomial G.F, Polynomial.aeval (γ : G.C) q = ι (ℓ a)`.
+
+Introduce `a`. Establish `h` using `mem_adjoin_of_centralizer G (γ : G.C) hdeg L ι.toRingHom hι hc (ℓ a)`. Rewrite `h` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Conclude with `h`. Use `choose q hq using hq`.
+
+Establish `hev : ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite, (∀ i j, IsIntB v b ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (b i * b j))) ∧ IsIntB v b ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (1 : G.C)) ∧ ∀ a, ∀ k ∈ Finset.range ((q a).natDegree + 1), IsIntB v b ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] algebraMap G.F …` using `(Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => eventually_isIntB_tmul b _).and ((eventually_isIntB_tmul b _).and (Filter.eventually_all.2 fun a => (Filter.eventually_all_finset _).2 fun k _ => eventually_isIntB_tmul b _))`. Use `⟨(Filter.eventually_cofinite.1 hev).toFinset, fun v hv X hX ρ hρ => ?_⟩` and prove the remaining obligations. Establish `hP` using `hv`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not] at hP`. Take `⟨hb, h1, hcoef⟩` from `hP`.
+
+Use `set ιv := Algebra.TensorProduct.map (AlgHom.id ℚ (v.adicCompletion ℚ)) ι`. Establish `hmap : ∀ (r : v.adicCompletion ℚ) (m : L), ιv (r • ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] m)) = r • ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] ι m)`. Introduce `r m`. Rewrite using `[TensorProduct.smul_tmul', Algebra.TensorProduct.map_tmul, TensorProduct.smul_tmul']`. Both sides reduce to the same expression.
+
+Establish `hterm : ∀ a, IsIntB v b (↑X * ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] ι (ℓ a)) * ↑X⁻¹)`. Introduce `a`. Rewrite using `[← hq a, Polynomial.aeval_eq_sum_range, TensorProduct.tmul_sum, Finset.mul_sum, Finset.sum_mul]`. Use `isIntB_sum v b _ _ fun k hk => ?_` and prove the remaining obligations. Rewrite using `[conj_tmul_smul_pow]`.
+
+Conclude with `isIntB_mul v b hb (hcoef a k hk) (isIntB_pow v b hb h1 hX k)`. Rewrite using `[eq_sum_basis v ℓ ρ, map_sum, Finset.mul_sum, Finset.sum_mul]`. Use `isIntB_sum v b _ _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hmap, mul_smul_comm, smul_mul_assoc]`. Conclude with `isIntB_smul v b (hρ a) (hterm a)`.
+-/
 theorem isIntB_conj_map_of_isIntB_conj : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (γ : G.Cˣ), (minpoly G.F (γ : G.C)).natDegree = G.n →
     ∀ (L : Type) [Field L] [NumberField L] (ι : L →ₐ[ℚ] G.C), Function.Injective ι →
     (∀ z : G.C, z * γ = γ * z ↔ ∃ w, ι w = z) → ∀ (κ : Type) (b : Module.Basis κ ℚ G.C)
@@ -184,6 +246,9 @@ theorem isIntB_conj_map_of_isIntB_conj : ∀ (p : ℕ) [Fact p.Prime] (G : HTGro
 
 end GlobalTheory.ConjInt
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ConjInt.isIntB_conj_map_of_isIntB_conj`.
+-/
 example : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (γ : G.Cˣ), (minpoly G.F (γ : G.C)).natDegree = G.n →
     ∀ (L : Type) [Field L] [NumberField L] (ι : L →ₐ[ℚ] G.C), Function.Injective ι →
     (∀ z : G.C, z * γ = γ * z ↔ ∃ w, ι w = z) → ∀ (κ : Type) (b : Module.Basis κ ℚ G.C)

@@ -17,11 +17,20 @@ def uni (S : Matrix n n A) : GL ι A :=
   ⟨(fromBlocks 1 S 0 1).submatrix e.symm e.symm, (fromBlocks 1 (-S) 0 1).submatrix e.symm e.symm,
     by simp [submatrix_mul_equiv, fromBlocks_multiply], by simp [submatrix_mul_equiv, fromBlocks_multiply]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_uni (S : Matrix n n A) : (uni e S).1 = (fromBlocks 1 S 0 1).submatrix e.symm e.symm := rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (by simp [val_uni, submatrix_mul_equiv, fromBlocks_multiply, add_comm])`.
+-/
 theorem uni_add (S T : Matrix n n A) : uni e (S + T) = uni e S * uni e T :=
   Units.ext (by simp [val_uni, submatrix_mul_equiv, fromBlocks_multiply, add_comm])
 
+/- English proof (translation)
+The claim follows from `Units.ext (by simp [val_uni, blkMat, submatrix_mul_equiv, fromBlocks_multiply, Matrix.mul_assoc])`.
+-/
 theorem blk_mul_uni (a d : GL n A) (S : Matrix n n A) :
     blkGL e (a, d) * uni e S = uni e (a.1 * S * d⁻¹.1) * blkGL e (a, d) :=
   Units.ext (by simp [val_uni, blkMat, submatrix_mul_equiv, fromBlocks_multiply, Matrix.mul_assoc])
@@ -31,10 +40,18 @@ def cti (σ : A →+* A) : GL n A →* GL n A where
   map_one' := Units.ext (by simp [cT_one])
   map_mul' g h := Units.ext (by simp [cT_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_cti (σ : A →+* A) (g : GL n A) : (cti σ g).1 = cT σ g⁻¹.1 := rfl
 
 variable [Invertible (2 : A)]
 
+/- English proof (translation)
+Use `mem_stabGL_diagSub.2 (keepsDiag_of_mulVec fun w hw => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(mem_diagSub e).1 hw`. Use `(mem_diagSub e).2 ⟨⅟(2 : A) • ((x.1.submatrix e e).toBlocks₁₁ *ᵥ (y + y)), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, ← mulVec_mulVec, ← mulVec_mulVec, cayley_mulVec, mulVec_pairVec e x.1, h]`. Use `(congrArg (fun z => (cayley e)⁻¹.1 *ᵥ z) ?_).trans (by rw [mulVec_mulVec, Units.inv_mul, one_mulVec] : (cayley e)⁻¹.1 *ᵥ ((cayley e).1 *ᵥ _) = _)` and prove the remaining obligations.
+
+Rewrite using `[cayley_mulVec, ← add_smul, invOf_two_add_invOf_two]`. Simplify using the standard rewrite rules.
+-/
 theorem conj_mem (x : GL ι A) (h : (x.1.submatrix e e).toBlocks₂₁ = 0) :
     (cayley e)⁻¹ * x * cayley e ∈ stabGL (diagSub A e) := by
   refine mem_stabGL_diagSub.2 (keepsDiag_of_mulVec fun w hw => ?_)
@@ -48,13 +65,43 @@ theorem conj_mem (x : GL ι A) (h : (x.1.submatrix e e).toBlocks₂₁ = 0) :
 
 def upper : Subgroup (GL ι A) := (stabGL (diagSub A e)).comap (MulAut.conj (cayley (A := A) e)⁻¹).toMonoidHom
 
+/- English proof (translation)
+Simplify using `[upper]`.
+-/
 theorem mem_upper {x : GL ι A} : x ∈ upper e ↔ (cayley e)⁻¹ * x * cayley e ∈ stabGL (diagSub A e) := by
   simp [upper]
 
+/- English proof (translation)
+The claim follows from `(mem_upper e).2 (conj_mem e _ (by simp [val_uni]))`.
+-/
 theorem uni_mem (S : Matrix n n A) : uni e S ∈ upper e := (mem_upper e).2 (conj_mem e _ (by simp [val_uni]))
 
+/- English proof (translation)
+The claim follows from `(mem_upper e).2 (conj_mem e _ (by simp [blkMat]))`.
+-/
 theorem blk_mem (a d : GL n A) : blkGL e (a, d) ∈ upper e := (mem_upper e).2 (conj_mem e _ (by simp [blkMat]))
 
+/- English proof (translation)
+Establish `hc : ∀ X : Matrix n n A, cT σ (cT σ X) = X` using `fun X => by ext i j; exact hσ _`. Establish `hu : IsUnit (quotMat e p.1)`. Use `(isUnit_iff_isUnit_det _).1 p.isUnit` as an intermediate fact. Rewrite `this` using `[hk.det_eq]`. Conclude with `(isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_right this)`.
+
+Take `⟨b₀, hb₀⟩` from `hu`. Establish `h0` using `quot_levi e hp hk`. Establish `hl : leviMat e p.1 = (cti σ (U * b₀) * U).1`. Establish `h0' : cT σ (U * b₀).1 * leviMat e p.1 = U.1` using `by rw [Units.val_mul, cT_mul, hU, hb₀]; exact h0`. Use `Eq.trans ?_ (congrArg (cT σ (U * b₀)⁻¹.1 * ·) h0')` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.mul_assoc, ← cT_mul, Units.mul_inv, cT_one, Matrix.one_mul]`. Establish `h1 : cT σ (p.1.submatrix e e) * fromBlocks U.1 0 0 (-U.1) * p.1.submatrix e e = fromBlocks U.1 0 0 (-U.1)`. Rewrite using `[← submatrix_blkMat e, show cT σ (p.1.submatrix e e) = (cT σ p.1).submatrix e e from rfl, submatrix_mul_equiv, submatrix_mul_equiv]`. Conclude with `congrArg (fun X => X.submatrix e e) hp`. Establish `hp' : p.1 = (fromBlocks (p.1.submatrix e e).toBlocks₁₁ (p.1.submatrix e e).toBlocks₁₂ (p.1.submatrix e e).toBlocks₂₁ (p.1.submatrix e e).toBlocks₂₂).submatrix e.symm e.symm`.
+
+Simplify using `[fromBlocks_toBlocks]`. Rewrite `h1` using `[← fromBlocks_toBlocks (p.1.submatrix e e)]`. Unfold `KeepsDiag at hk`. Unfold `leviMat at hk hl ⊢`. Unfold `quotMat at hb₀`.
+
+Generalize the expression as in `(p.1.submatrix e e).toBlocks₁₁ = a at *`. Generalize the expression as in `(p.1.submatrix e e).toBlocks₁₂ = b at *`. Generalize the expression as in `(p.1.submatrix e e).toBlocks₂₁ = c at *`. Generalize the expression as in `(p.1.submatrix e e).toBlocks₂₂ = d at *`. Take `rfl : d = a + b - c` from `by rw [← hk]; abel`.
+
+Establish `hs : ∀ X Y : Matrix n n A, cT σ (X - Y) = cT σ X - cT σ Y` using `fun X Y => by ext; simp [cT]`. Establish `ha : ∀ X Y : Matrix n n A, cT σ (X + Y) = cT σ X + cT σ Y` using `fun X Y => by ext; simp [cT]`. Establish `hf : cT σ (fromBlocks a b c (a + b - c)) = fromBlocks (cT σ a) (cT σ c) (cT σ b) (cT σ a + cT σ b - cT σ c)`. Rewrite using `[← ha, ← hs]`. Simplify using `[cT, fromBlocks_map, fromBlocks_transpose]`.
+
+Simplify using `only [hf, fromBlocks_multiply, Matrix.mul_zero, add_zero, zero_add, fromBlocks_inj] at h1`. Establish `h2 : cT σ (c - b) * (U * b₀).1 + cT σ (U * b₀).1 * (c - b) = 0`. Establish `h3 : (2 : A) • (cT σ (c - b) * (U * b₀).1 + cT σ (U * b₀).1 * (c - b)) = 0`. Rewrite using `[Units.val_mul, cT_mul, hU, hb₀, hs, hs, two_smul]`. Use `Eq.trans ?_ ((congrArg₂ (· + ·) (congrArg₂ (· - ·) h1.1 h1.2.1) (congrArg₂ (· - ·) h1.2.2.2 h1.2.2.1)).trans (by simp))` and prove the remaining obligations.
+
+Use `noncomm_ring`. Simplify `congrArg (⅟(2 : A) • ·) h3` using `[smul_smul]`. Use `⟨U * b₀, (c - b) * (U * b₀)⁻¹.1, ?_, hl, Units.ext ?_⟩` and prove the remaining obligations. Use `congrArg (fun X => cT σ (U * b₀)⁻¹.1 * X * (U * b₀)⁻¹.1) h2` as an intermediate fact. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_zero, Matrix.zero_mul] at this`.
+
+Rewrite `this` using `[Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, ← cT_mul, ← cT_mul, Units.mul_inv, cT_one, Matrix.one_mul]`. Conclude with `eq_neg_of_add_eq_zero_left this`. Establish `h4 : (c - b) * (U * b₀)⁻¹.1 * (U * b₀).1 = c - b` using `by rw [Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Simplify using `only [Units.val_mul (uni e _ * _), Units.val_mul (uni e _), Units.val_mul (blkGL e _ * _), Units.val_mul (blkGL e _), val_blkGL, val_uni, blkMat, ← hl]`. Rewrite using `[hp']`.
+
+Simplify using `only [cayley, submatrix_mul_equiv, fromBlocks_multiply, h4, Matrix.mul_zero, add_zero, zero_add, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_one, Units.val_one, Matrix.mul_neg]`. Use `congr 1`. Rewrite using `[Units.val_mul, hb₀, fromBlocks_inj]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> noncomm_ring`.
+-/
 theorem exists_decomp {σ : A →+* A} (hσ : ∀ x, σ (σ x) = x) {U : GL n A} (hU : cT σ U.1 = U.1) {p : GL ι A}
     (hp : p ∈ UJ σ (dblGram e U.1)) (hk : KeepsDiag e p.1) : ∃ (β : GL n A) (S : Matrix n n A), cT σ S = -S ∧
       leviMat e p.1 = (cti σ β * U).1 ∧
@@ -122,30 +169,54 @@ variable {Q X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
 def Bdd (f : Q → X) : Prop := ∃ K, IsCompact K ∧ ∀ q, f q ∈ K
 
+/- English proof (translation)
+The claim follows from `let ⟨K, hK, h⟩ := h; ⟨g '' K, hK.image hg, fun q => ⟨_, h q, rfl⟩⟩`.
+-/
 theorem Bdd.map {f : Q → X} (h : Bdd f) {g : X → Y} (hg : Continuous g) : Bdd fun q => g (f q) :=
   let ⟨K, hK, h⟩ := h; ⟨g '' K, hK.image hg, fun q => ⟨_, h q, rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨K, hK, h⟩ := h; let ⟨L, hL, h'⟩ := h'; ⟨K ×ˢ L, hK.prod hL, fun q => ⟨h q, h' q⟩⟩`.
+-/
 theorem Bdd.prod {f : Q → X} {g : Q → Y} (h : Bdd f) (h' : Bdd g) : Bdd fun q => (f q, g q) :=
   let ⟨K, hK, h⟩ := h; let ⟨L, hL, h'⟩ := h'; ⟨K ×ˢ L, hK.prod hL, fun q => ⟨h q, h' q⟩⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨K, hK, h⟩ := h; ⟨K, hK, fun _ => h _⟩`.
+-/
 theorem Bdd.comp {f : Q → X} (h : Bdd f) {Q' : Type} (r : Q' → Q) : Bdd fun q => f (r q) :=
   let ⟨K, hK, h⟩ := h; ⟨K, hK, fun _ => h _⟩
 
+/- English proof (translation)
+The claim follows from `(h.prod h').map (g := fun x => x.1 * x.2) continuous_mul`.
+-/
 theorem Bdd.mul [Mul X] [ContinuousMul X] {f g : Q → X} (h : Bdd f) (h' : Bdd g) : Bdd fun q => f q * g q :=
   (h.prod h').map (g := fun x => x.1 * x.2) continuous_mul
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{x}, isCompact_singleton, fun _ => rfl⟩`.
+-/
 theorem Bdd.const (x : X) : Bdd fun _ : Q => x := ⟨{x}, isCompact_singleton, fun _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => K, isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hK, fun q i _ j _ => h q i j⟩`.
+-/
 theorem bdd_matrix {m n : Type} {f : Q → Matrix m n X} {K : Set X} (hK : IsCompact K) (h : ∀ q i j, f q i j ∈ K) :
     Bdd f := ⟨Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => K,
       isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hK, fun q i _ j _ => h q i j⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨K, hK, h⟩ := h ⟨⋃ i, ⋃ j, (fun M : Matrix m n X => M i j) '' K, isCompact_iUnion fun i => isCompact_iUnion fun j => hK.image (continuous_id.matrix_elem i j), fun q i j => Set.mem_iUnion₂.2 ⟨i, j, _, h q, rfl⟩⟩`.
+-/
 theorem Bdd.entries {m n : Type} [Finite m] [Finite n] {f : Q → Matrix m n X} (h : Bdd f) :
     ∃ K, IsCompact K ∧ ∀ q i j, f q i j ∈ K :=
   let ⟨K, hK, h⟩ := h
   ⟨⋃ i, ⋃ j, (fun M : Matrix m n X => M i j) '' K, isCompact_iUnion fun i => isCompact_iUnion fun j =>
     hK.image (continuous_id.matrix_elem i j), fun q i j => Set.mem_iUnion₂.2 ⟨i, j, _, h q, rfl⟩⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨K, hK, h⟩ := h.prod (h'.map MulOpposite.continuous_op) ⟨_, Units.isClosedEmbedding_embedProduct.isCompact_preimage hK, h⟩`.
+-/
 theorem bdd_units [Monoid X] [T1Space X] [ContinuousMul X] {f : Q → Xˣ} (h : Bdd fun q => (f q).1)
     (h' : Bdd fun q => (f q)⁻¹.1) : Bdd f :=
   let ⟨K, hK, h⟩ := h.prod (h'.map MulOpposite.continuous_op)
@@ -158,6 +229,11 @@ section Count
 variable {E A : Type} [Field E] [CommRing A] [Nontrivial A] (j : E →+* A) {n ι : Type} [Fintype n] [DecidableEq n]
   [Fintype ι] [DecidableEq ι] (e : n ⊕ n ≃ ι)
 
+/- English proof (translation)
+Use `⟨by rintro ⟨x, rfl⟩ a b; exact ⟨_, rfl⟩, fun h => ?_⟩` and prove the remaining obligations. Use `choose x hx using h`. Establish `h1 : (of x).map j = g.1` using `by ext a b; exact hx a b`. Establish `h2 : (of x).det ≠ 0` using `fun h => by`. Use `(isUnit_iff_isUnit_det _).1 g.isUnit` as an intermediate fact.
+
+Rewrite `this` using `[← h1, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h, map_zero]`. Conclude with `not_isUnit_zero this`. Conclude with `⟨GeneralLinearGroup.mkOfDetNeZero _ h2, Units.ext h1⟩`.
+-/
 theorem mem_rat {g : GL ι A} : g ∈ (bc j).range ↔ ∀ a b, g.1 a b ∈ j.range := by
   refine ⟨by rintro ⟨x, rfl⟩ a b; exact ⟨_, rfl⟩, fun h => ?_⟩
   choose x hx using h
@@ -168,28 +244,53 @@ theorem mem_rat {g : GL ι A} : g ∈ (bc j).range ↔ ∀ a b, g.1 a b ∈ j.ra
     exact not_isUnit_zero this
   exact ⟨GeneralLinearGroup.mkOfDetNeZero _ h2, Units.ext h1⟩
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨x | x, rfl⟩ := e.surjective x <;> obtain ⟨y | y, rfl⟩ := e.surjective y <;> simp [*]`.
+-/
 theorem blocks_mem {R : Subring A} {a b c d : Matrix n n A} (ha : ∀ i k, a i k ∈ R) (hb : ∀ i k, b i k ∈ R)
     (hc : ∀ i k, c i k ∈ R) (hd : ∀ i k, d i k ∈ R) (x y : ι) : (fromBlocks a b c d).submatrix e.symm e.symm x y ∈ R := by
   obtain ⟨x | x, rfl⟩ := e.surjective x <;> obtain ⟨y | y, rfl⟩ := e.surjective y <;> simp [*]
 
+/- English proof (translation)
+Rewrite using `[one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+-/
 theorem one_mem_entries (R : Subring A) (i k : n) : (1 : Matrix n n A) i k ∈ R := by
   rw [one_apply]; split_ifs; exacts [one_mem _, zero_mem _]
 
+/- English proof (translation)
+The claim follows from `(mem_rat j).2 (blocks_mem e (one_mem_entries _) (fun _ _ => ⟨_, rfl⟩) (fun _ _ => zero_mem _) (one_mem_entries _))`.
+-/
 theorem uni_rat (S : Matrix n n E) : uni e (S.map j) ∈ (bc j).range :=
   (mem_rat j).2 (blocks_mem e (one_mem_entries _) (fun _ _ => ⟨_, rfl⟩) (fun _ _ => zero_mem _) (one_mem_entries _))
 
+/- English proof (translation)
+The claim follows from `(mem_rat j).2 (blocks_mem e ((mem_rat j).1 ha) (fun _ _ => zero_mem _) (fun _ _ => zero_mem _) ((mem_rat j).1 hd))`.
+-/
 theorem blk_rat {a d : GL n A} (ha : a ∈ (bc j).range) (hd : d ∈ (bc j).range) : blkGL e (a, d) ∈ (bc j).range :=
   (mem_rat j).2 (blocks_mem e ((mem_rat j).1 ha) (fun _ _ => zero_mem _) (fun _ _ => zero_mem _) ((mem_rat j).1 hd))
 
+/- English proof (translation)
+The claim follows from `(mem_rat j).2 (blocks_mem e (one_mem_entries _) (one_mem_entries _) (one_mem_entries _) fun _ _ => neg_mem (one_mem_entries _ _ _))`.
+-/
 theorem cayley_rat [Invertible (2 : A)] : cayley e ∈ (bc j).range :=
   (mem_rat j).2 (blocks_mem e (one_mem_entries _) (one_mem_entries _) (one_mem_entries _)
     fun _ _ => neg_mem (one_mem_entries _ _ _))
 
+/- English proof (translation)
+The claim follows from `(mem_rat j).2 fun x y => hσ _ ((mem_rat j).1 (inv_mem ha) y x)`.
+-/
 theorem cti_rat {σ : A →+* A} (hσ : ∀ x ∈ j.range, σ x ∈ j.range) {a : GL n A} (ha : a ∈ (bc j).range) :
     cti σ a ∈ (bc j).range := (mem_rat j).2 fun x y => hσ _ ((mem_rat j).1 (inv_mem ha) y x)
 
 variable [TopologicalSpace A] [IsTopologicalRing A]
 
+/- English proof (translation)
+Take `⟨Ω, hΩ, h⟩` from `((((hw.comp Prod.fst).map continuous_inv).mul (hw.comp Prod.snd)).map Units.continuous_val).entries`. Establish `h1 : {g : GL ι A | ∀ a b, g.1 a b ∈ j '' {x : E | j x ∈ Ω}}.Finite` using `(Set.Finite.pi' fun _ => Set.Finite.pi' fun _ => (hF Ω hΩ).image j).preimage (f := fun g : GL ι A => (g.1 : ι → ι → A)) fun _ _ _ _ h => Units.ext h`. Use `⟨h1.toFinset.card, fun z T hT => ?_⟩` and prove the remaining obligations. Break down `T.eq_empty_or_nonempty with rfl | ⟨q₀, h₀⟩` into its components or cases. Simplify using the standard rewrite rules.
+
+Use `Finset.card_le_card_of_injOn (fun q => (Z q₀)⁻¹ * Z q) (fun q hq => ?_) fun q _ q' _ h => hi (mul_left_cancel h)` and prove the remaining obligations. Use `h1.mem_toFinset.2 fun a b => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `(mem_rat j).1 (mul_mem (inv_mem (hZ q₀)) (hZ q)) a b`. Use `⟨x, ?_, hx⟩` and prove the remaining obligations. Rewrite using `[Set.mem_setOf_eq, hx, hT q hq, hT q₀ h₀, show (z * w q₀)⁻¹ * (z * w q) = (w q₀)⁻¹ * w q by group]`.
+
+Conclude with `h (q₀, q) a b`.
+-/
 theorem exists_card_le (hF : ∀ Ω : Set A, IsCompact Ω → {x : E | j x ∈ Ω}.Finite) {Q : Type} {Z w : Q → GL ι A}
     (hZ : ∀ q, Z q ∈ (bc j).range) (hi : Function.Injective Z) (hw : Bdd w) :
     ∃ N : ℕ, ∀ (z : GL ι A) (T : Finset Q), (∀ q ∈ T, Z q = z * w q) → T.card ≤ N := by
@@ -209,12 +310,18 @@ theorem exists_card_le (hF : ∀ Ω : Set A, IsCompact Ω → {x : E | j x ∈ �
   exact h (q₀, q) a b
 
 omit [Nontrivial A] in
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨(continuous_const.matrix_fromBlocks continuous_id continuous_const continuous_const).matrix_submatrix _ _, (continuous_const.matrix_fromBlocks continuous_neg continuous_const continuous_const).matrix_submatrix _ _⟩`.
+-/
 theorem continuous_uni : Continuous (uni (A := A) e) :=
   Units.continuous_iff.2 ⟨(continuous_const.matrix_fromBlocks continuous_id continuous_const
     continuous_const).matrix_submatrix _ _, (continuous_const.matrix_fromBlocks continuous_neg continuous_const
     continuous_const).matrix_submatrix _ _⟩
 
 omit [Nontrivial A] in
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨(Units.continuous_coe_inv.matrix_map hσ).matrix_transpose, (Units.continuous_val.matrix_map hσ).matrix_transpose⟩`.
+-/
 theorem continuous_cti {σ : A →+* A} (hσ : Continuous σ) : Continuous (cti (n := n) σ) :=
   Units.continuous_iff.2 ⟨(Units.continuous_coe_inv.matrix_map hσ).matrix_transpose,
     (Units.continuous_val.matrix_map hσ).matrix_transpose⟩
@@ -228,6 +335,11 @@ variable {E A : Type} [Field E] [CommRing A] {n ι : Type} [Fintype n] [Decidabl
 def dg (s : Aˣ) (l : n → ℤ) : GL n A :=
   ⟨diagonal fun i => (s ^ l i).1, diagonal fun i => (s ^ l i)⁻¹.1, by simp, by simp⟩
 
+/- English proof (translation)
+Establish `h : Units.map σ.toMonoidHom s = s` using `Units.ext hs`. Establish `h1 : ∀ i, σ (s ^ l i)⁻¹.1 = (s ^ l i)⁻¹.1` using `fun i => by`. Use `congrArg Units.val (map_inv (Units.map σ.toMonoidHom) (s ^ l i))` as an intermediate fact. Rewrite `this` using `[map_zpow, h]`. Then use the resulting hypothesis. Use `Units.ext ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((diagonal fun i => (s ^ l i)⁻¹.1).map σ)ᵀ = diagonal fun i => (s ^ l i)⁻¹.1`. Rewrite using `[diagonal_map (map_zero σ), diagonal_transpose]`. Conclude with `congrArg diagonal (funext h1)`.
+-/
 theorem cti_dg {σ : A →+* A} {s : Aˣ} (hs : σ s.1 = s.1) (l : n → ℤ) : cti σ (dg s l) = (dg s l)⁻¹ := by
   have h : Units.map σ.toMonoidHom s = s := Units.ext hs
   have h1 : ∀ i, σ (s ^ l i)⁻¹.1 = (s ^ l i)⁻¹.1 := fun i => by
@@ -238,15 +350,58 @@ theorem cti_dg {σ : A →+* A} {s : Aˣ} (hs : σ s.1 = s.1) (l : n → ℤ) : 
   rw [diagonal_map (map_zero σ), diagonal_transpose]
   exact congrArg diagonal (funext h1)
 
+/- English proof (translation)
+The claim follows from `Units.ext (by simp [dg])`.
+-/
 theorem det_dg (s : Aˣ) (l : n → ℤ) : GeneralLinearGroup.det (dg s l) = ∏ i, s ^ l i :=
   Units.ext (by simp [dg])
 
+/- English proof (translation)
+The claim follows from `Units.ext ((det_transpose _).trans (σ.map_det _).symm)`.
+-/
 theorem det_cti (σ : A →+* A) (g : GL n A) :
     GeneralLinearGroup.det (cti σ g) = Units.map σ.toMonoidHom (GeneralLinearGroup.det g⁻¹) :=
   Units.ext ((det_transpose _).trans (σ.map_det _).symm)
 
 variable [Nontrivial A] [TopologicalSpace A] [IsTopologicalRing A] [T2Space A] [Invertible (2 : A)]
 
+/- English proof (translation)
+Establish `hcc : ∀ X : Matrix n n A, cT σ (cT σ X) = X` using `fun X => by ext i j; exact hσ _`. Use `choose β S hS hα hdec using fun q => exists_decomp e hσ hU (hp q) (hp' q)`. Take `⟨Ω₁, hΩ₁, hR⟩` from `hR`. Use `choose δ l c hc hred using fun q => hR (β q)`. Use `replace hred : ∀ q, bc j (δ q) * β q = dg s (l q) * c q := fun q => Units.ext (hred q)`.
+
+Establish `hcb : Bdd c` using `bdd_units (bdd_matrix hΩ₁ fun q i k => (hc q i k).1) (bdd_matrix hΩ₁ fun q i k => (hc q i k).2)`. Use `set w₁ : Q → GL ι A := fun q => blkGL e (cti σ (c q) * U, c q) * cayley e * k q with hw₁`. Establish `hw₁b : Bdd w₁` using `(((((hcb.map (continuous_cti hσc)).mul (Bdd.const U)).prod hcb).map (continuous_blkGL e)).mul (Bdd.const _)).mul hk`. Use `set L : Q → GL ι A := fun q => blkGL e (cti σ (bc j (δ q)), bc j (δ q)) * blkGL e (1, U) with hL`. Establish `hLj : ∀ q, L q * cayley e * (p q * k q) ∈ (bc j).range` using `fun q => mul_mem (mul_mem (mul_mem (blk_rat j e (cti_rat j hσj ⟨_, rfl⟩) ⟨_, rfl⟩) (blk_rat j e (one_mem _) hUj)) (cayley_rat j e)) (hγ q)`.
+
+Use `set S' : Q → Matrix n n A := fun q => (cti σ (bc j (δ q))).1 * S q * (bc j (δ q))⁻¹.1 with hS'`. Establish `hS'' : ∀ q, cT σ (S' q) = -S' q` using `fun q => by`. Simplify using `only [hS', val_cti, cT_mul, hcc, hS, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Establish `h1 : ∀ q, L q * cayley e * (p q * k q) = uni e (S' q) * blkGL e ((dg s (l q))⁻¹, dg s (l q)) * w₁ q` using `fun q => by`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [hL, mul_assoc]`. Use `_ = uni e (S' q) * (blkGL e (cti σ (bc j (δ q)), bc j (δ q)) * blkGL e (cti σ (β q) * U, β q)) * cayley e * k q := by`. Rewrite using `[hdec, ← mul_assoc, ← mul_assoc, blk_mul_uni, mul_assoc (uni e _)]`. Use `_ = _ := by`. Rewrite using `[← map_mul, Prod.mk_mul_mk, ← mul_assoc (cti σ _), ← map_mul, hred, map_mul (cti σ), cti_dg hs, mul_assoc _ (cti σ _), ← Prod.mk_mul_mk, map_mul]`.
+
+Simplify using `only [hw₁, mul_assoc]`. Use `clear_value w₁ S'`. Take `⟨Ω₂, hΩ₂, hw₂⟩` from `(hw₁b.map Units.continuous_val).entries`. Take `⟨m₀, hm₀⟩` from `(hD Ω₂ hΩ₂).2`. Establish `hl : ∀ q i, l q i ≤ m₀` using `fun q i => by by_contra! hlt`.
+
+Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le (a := l q i) (by omega)`. Establish `h2 : ∀ x, (L q * cayley e * (p q * k q)).1 (e (.inr i)) x = 0` using `fun x => by`. Take `⟨y, hy⟩` from `(mem_rat j).1 (hLj q) (e (.inr i)) x`. Establish `h3 : j y = s.1 ^ m * (w₁ q).1 (e (.inr i)) x`. Rewrite using `[hy, h1, Units.val_mul, Units.val_mul, val_uni, val_blkGL, blkMat, submatrix_mul_equiv, fromBlocks_multiply, mul_apply, ← e.sum_comp]`.
+
+Simplify using `[dg, diagonal_apply, hm]`. Rewrite using `[← hy, hm₀ m (by omega) _ (hw₂ q _ _) y h3, map_zero]`. Use `(isUnit_iff_isUnit_det _).1 (L q * cayley e * (p q * k q)).isUnit` as an intermediate fact. Rewrite `this` using `[det_eq_zero_of_row_eq_zero _ h2]`. Conclude with `not_isUnit_zero this`.
+
+Use `set m : Q → n → ℕ := fun q i => (m₀ - l q i).toNat with hm`. Establish `hlm : ∀ q i, l q i = m₀ - m q i` using `fun q i => by have := hl q i; simp only [hm]; omega`. Take `⟨Ω₃, C, hΩ₃, hC⟩` from `hC`. Use `choose Y hY hC using hC`. Use `choose S₀ y hy ω hω hcov using fun q => hC (m q) (S' q) (hS'' q)`.
+
+Use `set w : Q → GL ι A := fun q => uni e ((s.1 ^ m₀ * s.1 ^ m₀) • ω q) * w₁ q with hw`. Establish `hwb : Bdd w` using `(((bdd_matrix hΩ₃ hω).map (continuous_const_smul _)).map (continuous_uni e)).mul hw₁b`. Use `set Z : Q → GL ι A := fun q => uni e ((-S₀ q).map j) * (L q * cayley e * (p q * k q)) with hZ`. Establish `h4 : ∀ q, Z q = uni e (y q) * blkGL e ((dg s fun i => m₀ - m q i)⁻¹, dg s fun i => m₀ - m q i) * w q` using `fun q => by`. Establish `h5 : ∀ i, (s ^ ((m₀ : ℤ) - m q i))⁻¹.1 * s.1 ^ m₀ = s.1 ^ m q i` using `fun i => by`.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_neg, ← _root_.zpow_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hZ, hw]`. Rewrite using `[h1, ← mul_assoc, ← mul_assoc, ← uni_add, ← mul_assoc, mul_assoc (uni e (y q)), blk_mul_uni, ← mul_assoc, ← uni_add, show l q = fun i => (m₀ : ℤ) - m q i from funext (hlm q), hcov]`.
+
+Use `congr 3`. Use extensionality with `i k`. Express the relevant statement in the definitionally equal form `_ = y q i k + (diagonal (fun i => (s ^ ((m₀ : ℤ) - m q i))⁻¹.1) * ((s.1 ^ m₀ * s.1 ^ m₀) • ω q) * diagonal (fun i => (s ^ ((m₀ : ℤ) - m q i))⁻¹.1)) i k`. Simplify using `only [Matrix.add_apply, map_apply, Matrix.neg_apply, map_neg, mul_diagonal, diagonal_mul, Matrix.smul_apply, smul_eq_mul, ← h5]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hZi : Function.Injective Z` using `fun q q' h => by`. Establish `h6 : ∀ q, uni e ((-S₀ q).map j) * L q ∈ upper e` using `fun q => mul_mem (uni_mem e _) (mul_mem (blk_mem e _ _) (blk_mem e _ _))`. Use `hi q q' ?_` and prove the remaining obligations. Use `(mem_upper e).1 (mul_mem (inv_mem (h6 q')) (h6 q)) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [hZ] at h`.
+
+Generalize the expression as in `p q * k q = g at *`. Generalize the expression as in `p q' * k q' = g' at *`. Rewrite using `[mul_inv_eq_iff_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨N, hN⟩` from `exists_card_le j (fun Ω h => (hD Ω h).1) (Z := Z) (fun q => mul_mem (uni_rat j e _) (hLj q)) hZi hwb`.
+
+Establish `hdet : Continuous (GeneralLinearGroup.det : GL n A → Aˣ)` using `Units.continuous_iff.2 ⟨Units.continuous_val.matrix_det, Units.continuous_coe_inv.matrix_det⟩`. Take `⟨K, hK, hcK⟩` from `(((hcb.map continuous_inv).map hdet).map hν).map NNReal.continuous_coe`. Take `⟨B, hB⟩` from `hK.bddAbove`. Establish `hνd : ∀ g ∈ (bc (n` using `n) j).range, ν (GeneralLinearGroup.det g) = 1 := by`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `hνj _ ⟨x.1.det, j.map_det _⟩`. Use `⟨max (B * b ^ (m₀ * Fintype.card n)) (N * C), m, fun q x hx => ?_, fun μ T hT => ?_⟩` and prove the remaining obligations. Establish `h7 : x = GeneralLinearGroup.det (cti σ (β q) * U)` using `Units.ext (by rw [hx, hα]; rfl)`. Establish `h8 : β q = (bc j (δ q))⁻¹ * (dg s (l q) * c q)` using `by rw [← hred, inv_mul_cancel_left]`. Establish `h9 : (ν x : ℝ) = ν (GeneralLinearGroup.det (c q)⁻¹) * ∏ i, b ^ l q i`.
+
+Rewrite using `[h7, map_mul, map_mul, hνd U hUj, mul_one, det_cti, hνσ, h8]`. Simplify using `only [_root_.mul_inv_rev, map_mul, map_inv, inv_inv, hνd _ ⟨δ q, rfl⟩, mul_one, det_dg, map_prod, map_zpow₀, map_zpow]`. Use `push_cast`. Simplify using `only [hνs, _root_.inv_zpow, Finset.prod_inv_distrib, inv_inv]`. Use `le_trans ?_ (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))` and prove the remaining obligations.
+
+Rewrite using `[h9, mul_assoc]`. Use `mul_le_mul (hB (hcK q)) (le_of_eq ?_) (by positivity) ((NNReal.coe_nonneg _).trans (hB (hcK q)))` and prove the remaining obligations. Simplify using `only [hlm, zpow_sub₀ hb.ne', zpow_natCast, div_eq_mul_inv, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, pow_mul]`. Use `le_trans ?_ (mul_le_mul_of_nonneg_right (le_max_right _ _) (by positivity))` and prove the remaining obligations. Establish `h10 : T.card ≤ N * (Y μ).card` using `Finset.card_le_mul_card_image_of_maps_to (fun q hq => hT q hq ▸ hy q) N fun z _ => hN (uni e z * blkGL e ((dg s fun i => m₀ - μ i)⁻¹, dg s fun i => m₀ - μ i)) _ fun q hq => by rw [h4, (Finset.mem_filter.1 hq).2, hT q (Finset.mem_filter.1 hq).1]`.
+
+Rewrite using `[mul_assoc]`. Conclude with `(Nat.cast_le.2 h10).trans (by push_cast; exact mul_le_mul_of_nonneg_left (hY μ) (Nat.cast_nonneg _))`.
+-/
 theorem core (j : E →+* A) (e : n ⊕ n ≃ ι) {σ : A →+* A} (hσc : Continuous σ) (hσ : ∀ x, σ (σ x) = x)
     (hσj : ∀ x ∈ j.range, σ x ∈ j.range) {s : Aˣ} (hs : σ s.1 = s.1) {ν : Aˣ →* ℝ≥0} (hν : Continuous ν)
     (hνσ : ∀ x, ν (Units.map σ.toMonoidHom x) = ν x) (hνj : ∀ x : Aˣ, x.1 ∈ j.range → ν x = 1) {b : ℝ} (hb : 0 < b)

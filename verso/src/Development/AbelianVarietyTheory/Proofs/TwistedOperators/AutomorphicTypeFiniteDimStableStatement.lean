@@ -18,6 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FiniteGKSum.finite_sum_of_gkMaps | exact GlobalTheory.FiniteGKSum.finite_sum_of_gkMaps | (intros; apply GlobalTheory.FiniteGKSum.finite_sum_of_gkMaps <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.automorphic_type_finite_dim_stable : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
     (V : HSp D) (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
     ∀ (τ : D.what₂.Tau) (φ : GA D V → ℂ), IsAutFunSm θ V φ → IsTypeAt θ V τ (S τ) φ →

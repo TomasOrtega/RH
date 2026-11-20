@@ -43,6 +43,9 @@ def datBd (K : Type) [Field K] [NumberField K] [StarRing K] (k r : ℕ) (Del Db 
   (Del / x) ^ ((k : ℝ) / 2) *
     (8 ^ (r + 1) * (Formalism.HermitianLatticesTheory.fDeg K : ℝ) ^ 2 * Del ^ (3 * cf K + 6) * NT ^ 2 * (Db * Del * NT) ^ (10000 * (r + 1) ^ 3))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, fun a => by simp, fun a => by simp⟩`.
+-/
 theorem adapt_self (N : NF H r) : Adapt N.F N.F' N.𝔡 N :=
   ⟨rfl, fun a => by simp, fun a => by simp⟩
 end GlobalTheory.DegAsm

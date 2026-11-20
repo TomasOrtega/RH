@@ -21,6 +21,11 @@ def normU (v : HeightOneSpectrum (𝓞 K)) (u : HeightOneSpectrum (𝓞 L)) [u.a
   letI : Algebra (v.adicCompletion K) (u.adicCompletion L) := (GroundTheory.Global.adicCompletionMap v u).toAlgebra
   Units.map (Algebra.norm (v.adicCompletion K) : u.adicCompletion L →* v.adicCompletion K)
 
+/- English proof (translation)
+Use `letI : Algebra (v.adicCompletion K) (u.adicCompletion L) := (GroundTheory.Global.adicCompletionMap v u).toAlgebra`. Establish `: ContinuousSMul (v.adicCompletion K) (u.adicCompletion L)` using `continuousSMul_of_algebraMap _ _ (GroundTheory.Global.continuous_adicCompletionMap v u)`. Establish `: IsScalarTower K (v.adicCompletion K) (u.adicCompletion L)` using `.of_algebraMap_eq fun x => by show _ = GroundTheory.Global.adicCompletionMap v u _`. Rewrite using `[GroundTheory.Global.adicCompletionMap_algebraMap, IsScalarTower.algebraMap_apply K L (u.adicCompletion L)]`. Establish `hfd : FiniteDimensional (v.adicCompletion K) (u.adicCompletion L)` using `GroundTheory.Global.finite_adicCompletion v u`.
+
+Establish `hc` using `(GlobalTheory.adicCompletion_trace_norm_continuous K L v u _ (GroundTheory.Global.continuous_adicCompletionMap v u) hfd).2`. Unfold `IsSmoothChar at hχ ⊢`. Rewrite using `[← MonoidHom.comap_ker]`. Conclude with `hχ.preimage (Continuous.units_map _ hc)`.
+-/
 theorem isSmoothChar_comp_normU (v : HeightOneSpectrum (𝓞 K)) (u : HeightOneSpectrum (𝓞 L))
     [u.asIdeal.LiesOver v.asIdeal] {χ : (v.adicCompletion K)ˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     IsSmoothChar (χ.comp (normU v u)) := by

@@ -7,6 +7,9 @@ open TensorProduct
 
 namespace GlobalTheory.EtaleCoker
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.PurityDisc.discr_ne_zero_of_etale (ResidueField S) (ResidueField S ⊗[S] A) (Algebra.TensorProduct.basis (ResidueField S) b)`. Rewrite `h` using `[GlobalTheory.PurityDisc.discr_baseChange]`. Assume the negation of the conclusion as `hn`. Conclude with `h ((residue_eq_zero_iff _).mpr ((mem_maximalIdeal _).mpr hn))`.
+-/
 theorem discr_isUnit (S A : Type) [CommRing S] [IsLocalRing S] [CommRing A] [Algebra S A]
     [Algebra.Etale S A] {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι S A) :
     IsUnit (Algebra.discr S b) := by

@@ -56,6 +56,9 @@ end Central
 variable {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
+/- English proof (translation)
+Establish `hE : IsGlRep (smE ε (rreg ε))` using `(isDerivedOn_smE (rreg_isURepOn ε)).glRep`. Use `icx_genSub_eigen (smE ε (rreg ε)) (datumV ε Ψ v₀) (Formalism.REAL.qdet (smE ε (rreg ε)) (Y + ((n : ℂ) - 1) / 2)) (Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y) (fun a b => Formalism.REAL.qDetCentral (Module.End ℂ (smD ε (rreg ε))) n (smE ε (rreg ε)) hE _ a b) ?_ x …` and prove the remaining obligations. Introduce `y hy`. Take `⟨v, hv⟩` from `(mem_datumV_iff hP v₀ y).1 hy`. Conclude with `icx_val (icxGood_qdet (icx_good_datum hP hv) _) hv _ fun g hg => hcap Y g hg`.
+-/
 theorem capelli_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (hcap : ∀ (Y : ℂ) (g : Matrix (Fin n) (Fin n) ℂ), inUJ ε g →
       Formalism.QuantumDeterminants.capelli ε (Y + ((n : ℂ) - 1) / 2) Ψ g = Formalism.QuantumDeterminants.capP (fun s => (lam s : ℂ)) Y • Ψ g)

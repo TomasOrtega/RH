@@ -17,6 +17,9 @@ open IsDedekindDomain
 open scoped nonZeroDivisors
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatLine.smul_one_tmul_mem_latLoc | exact GlobalTheory.LatLine.smul_one_tmul_mem_latLoc | (intros; apply GlobalTheory.LatLine.smul_one_tmul_mem_latLoc <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.content_ideal_local_valuation_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (L : Submodule (𝓞 E) (Fin n → E)), Submodule.IsLattice E L → ∀ u : Fin n → E, u ≠ 0 →
     ∀ I : FractionalIdeal (𝓞 E)⁰ E, I ≠ 0 → (∀ c : E, c ∈ I ↔ c • u ∈ L) →

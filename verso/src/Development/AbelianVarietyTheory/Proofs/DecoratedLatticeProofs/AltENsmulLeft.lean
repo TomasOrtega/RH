@@ -13,12 +13,21 @@ open Formalism.L2.Col Formalism.HermitianLatticesTheory Formalism.L2.Th1.H
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {ι : Type} [Fintype ι] {a b : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hv_apply' (sc : ℝ) (z w : VV ι a b) :
     HV sc z w = (sc : ℂ) * ∑ τ, ∑ i, ∑ j, z τ i j * (starRingEnd ℂ) (w τ i j) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embH_apply' (emb : ι → E →+* ℂ) (δ : ℂ) (x : HomE E a b) (τ : ι) (i : Fin b) (j : Fin a) :
     embH emb δ x τ i j = δ * emb τ (x (Pi.single j 1) i) := rfl
 
+/- English proof (translation)
+Rewrite using `[hv_apply', hv_apply']`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [embH_apply', LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul, hst, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hv_smul_emb (emb : ι → E →+* ℂ) (δ : ℂ) (sc : ℝ)
     (hst : ∀ (τ : ι) (x : E), emb τ (star x) = starRingEnd ℂ (emb τ x)) (r : E) (x y : HomE E a b) :
     HV sc (embH emb δ (r • x)) (embH emb δ y) = HV sc (embH emb δ x) (embH emb δ (star r • y)) := by
@@ -28,6 +37,11 @@ theorem hv_smul_emb (emb : ι → E →+* ℂ) (δ : ℂ) (sc : ℝ)
   simp only [embH_apply', LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul, hst, Complex.conj_conj]
   ring
 
+/- English proof (translation)
+Introduce `x y h`. Take `⟨τ⟩` from `‹Nonempty ι›`. Use `LinearMap.pi_ext' fun j => LinearMap.ext_ring ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `congrFun (congrFun (congrFun h τ) i) j` as an intermediate fact.
+
+Rewrite `this` using `[embH_apply', embH_apply']`. Simplify using `using (emb τ).injective (mul_left_cancel₀ hδ this)`.
+-/
 theorem embH_injective' [Nonempty ι] (emb : ι → E →+* ℂ) {δ : ℂ} (hδ : δ ≠ 0) :
     Function.Injective (embH emb δ : HomE E a b → VV ι a b) := by
   intro x y h
@@ -38,6 +52,9 @@ theorem embH_injective' [Nonempty ι] (emb : ι → E →+* ℂ) {δ : ℂ} (hδ
   rw [embH_apply', embH_apply'] at this
   simpa using (emb τ).injective (mul_left_cancel₀ hδ this)
 
+/- English proof (translation)
+Simplify using `only [altE, map_nsmul, LinearMap.smul_apply]`.
+-/
 theorem altE_nsmul_left {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (n : ℕ) (v w : V) :
     altE H (n • v) w = altE H v (n • w) := by
   simp only [altE, map_nsmul, LinearMap.smul_apply]
@@ -46,11 +63,17 @@ section Mod
 
 variable {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using hy`. Consider the case `succ n ih => rw [pow_succ', mul_smul]`. Conclude with `nat_smul_mem L c ih`.
+-/
 theorem npow_smul_mem (L : Submodule (𝓞 E) W) (c n : ℕ) {y : W} (hy : y ∈ L) : ((c : E) ^ n) • y ∈ L := by
   induction n with
   | zero => simpa using hy
   | succ n ih => rw [pow_succ', mul_smul]; exact nat_smul_mem L c ih
 
+/- English proof (translation)
+Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hk`. Rewrite using `[zpow_natCast]`. Conclude with `npow_smul_mem L c n hy`.
+-/
 theorem zpow_smul_mem (L : Submodule (𝓞 E) W) (c : ℕ) {k : ℤ} (hk : 0 ≤ k) {y : W} (hy : y ∈ L) :
     ((c : E) ^ k) • y ∈ L := by
   obtain ⟨n, rfl⟩ := Int.eq_ofNat_of_zero_le hk
@@ -58,6 +81,41 @@ theorem zpow_smul_mem (L : Submodule (𝓞 E) W) (c : ℕ) {k : ℤ} (hk : 0 ≤
 
 end Mod
 
+/- English proof (translation)
+Introduce `E _ _ _ ι _ _ a b emb δ d sc M c e hδ hst hc he her hSD hSC`. Establish `hcE : (c : E) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `hstk : ∀ k : ℤ, star ((c : E) ^ k) = (c : E) ^ k` using `fun k => by rw [star_zpow₀, star_natCast]`. Establish `hSD' : dualLat (HV sc) (laV emb δ M) = laV emb δ M` using `hSD`. Establish `hdualM : ∀ z : HomE E a b, (∀ y ∈ M, ∃ m : ℤ, altE (HV sc) (embH emb δ z) (embH emb δ y) = m) → z ∈ M`.
+
+Introduce `z hz`. Establish `h1 : embH emb δ z ∈ dualLat (HV sc) (laV emb δ M)`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hz y hy`. Rewrite `h1` using `[hSD']`.
+
+Take `⟨z', hz', e'⟩` from `h1`. Rewrite using `[← embH_injective' emb hδ e']` and apply the resulting hypothesis. Establish `hcM : ∀ y ∈ M, (c : E) • y ∈ twist₂ M c e`. Introduce `y hy`. Rewrite using `[mem_twO]`.
+
+Introduce `Q`. Apply `le_locP'` to reduce the goal to its premises. Rewrite using `[smul_smul, ← zpow_neg, ← zpow_add_one₀ hcE]`. Apply `zpow_smul_mem M c _ hy` to reduce the goal to its premises. Apply the tactic sequence `rcases her Q with h | h | h <;> rw [h] <;> norm_num`.
+
+Use `show dualLat (HV sc) (laV emb δ (twist₂ M c e)) = laV emb δ (twist₂ M c e)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `v hv`. Establish `hcv : c • v ∈ dualLat (HV sc) (laV emb δ M)`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Rewrite using `[altE_nsmul_left, ← map_nsmul]`. Apply `hv` to reduce the goal to its premises. Use `⟨c • y, ?_, rfl⟩` and prove the remaining obligations. Use `show c • y ∈ twist₂ M c e`. Rewrite using `[← Nat.cast_smul_eq_nsmul E]`.
+
+Conclude with `hcM y hy`. Rewrite `hcv` using `[hSD']`. Take `⟨m, hm, hmv⟩` from `hcv`. Use `set x : HomE E a b := ((c : E)⁻¹) • m with hxdef`. Establish `hxm : (c : E) • x = m` using `by rw [hxdef, smul_smul, mul_inv_cancel₀ hcE, one_smul]`.
+
+Establish `hxv : embH emb δ x = v`. Establish `h1 : c • embH emb δ x = c • v`. Rewrite using `[← map_nsmul, ← Nat.cast_smul_eq_nsmul E, hxm]`. Conclude with `hmv`. Establish `hcC : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`.
+
+Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `smul_right_injective _ hcC h1`. Use `⟨x, ?_, hxv⟩` and prove the remaining obligations. Use `show x ∈ twist₂ M c e`. Rewrite using `[mem_twO]`.
+
+Introduce `Q`. Establish `hc2 : ((c : 𝓞 E) ^ 2) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hc.ne')`. Take `⟨t, ht, hwt⟩` from `GlobalTheory.exists_not_mem_dvd_locally_away E (conjPrime₂ Q) _ hc2`. Establish `hT : ∀ y ∈ M, (algebraMap (𝓞 E) E t * ((c : E) ^ e Q)⁻¹) • y ∈ twist₂ M c e`. Introduce `y hy`.
+
+Rewrite using `[mem_twO]`. Introduce `Q'`. Rewrite using `[smul_smul]`. Distinguish the cases in `hQ' : Q' = conjPrime₂ Q`. Substitute `hQ'` using the available equality.
+
+Rewrite using `[he Q, zpow_neg, inv_inv]`. Establish `h1 : (c : E) ^ e Q * (algebraMap (𝓞 E) E t * ((c : E) ^ e Q)⁻¹) = algebraMap (𝓞 E) E t`. Establish `: (c : E) ^ e Q ≠ 0` using `zpow_ne_zero _ hcE`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, IsScalarTower.algebraMap_smul]`.
+
+Conclude with `le_locP' M _ (M.smul_mem t hy)`. Take `⟨w, hw, z, hz⟩` from `hwt Q' hQ'`. Establish `hz' : algebraMap (𝓞 E) E w * algebraMap (𝓞 E) E t = (c : E) ^ 2 * algebraMap (𝓞 E) E z`. Use `congrArg (algebraMap (𝓞 E) E) hz` as an intermediate fact. Simplify using `using this`.
+
+Apply the tactic sequence `have hn : (((2 - e Q' - e Q).toNat : ℕ) : ℤ) = 2 - e Q' - e Q := Int.toNat_of_nonneg (by rcases her Q with h | h | h <;> rcases her Q' with h' | h' | h' <;> omega)`. Use `loc_of_scal M Q' hw (ρ := (c : 𝓞 E) ^ (2 - e Q' - e Q).toNat * z) ?_ hy` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_natCast, ← zpow_natCast, hn, zpow_sub₀ hcE, zpow_sub₀ hcE, zpow_ofNat]`. Take the linear combination `(((c : E) ^ e Q')⁻¹ * ((c : E) ^ e Q)⁻¹) * hz'`. Use `⟨cO E t, fun h => ht ((mem_conjP Q t).2 h), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← IsScalarTower.algebraMap_smul E (cO E t), smul_smul]`. Apply `hdualM` to reduce the goal to its premises. Introduce `y hy`. Unfold `altE`. Rewrite using `[hv_smul_emb emb δ sc hst, star_mul', algebraMap_cO, star_star, star_inv₀, hstk, hxv]`.
+
+Conclude with `hv _ ⟨_, hT y hy, rfl⟩`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Use `(GlobalTheory.T.hermitian_cocycle_integral_of_local E ι a b emb δ d sc M hδ hst hSD hSC x y fun Q => ⟨(c : E) ^ e Q, zpow_ne_zero _ hcE, (mem_twO _ _ _ _).1 hx Q, ?_⟩).1` and prove the remaining obligations. Rewrite using `[hstk]`. Use `(mem_twO _ _ _ _).1 hy (conjPrime₂ Q)` as an intermediate fact.
+
+Rewrite `this` using `[he Q, zpow_neg, inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem twO_selfDual : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (ι : Type) [Fintype ι] [Nonempty ι] (a b : ℕ) (emb : ι → E →+* ℂ) (δ : ℂ) (d : ℕ) (sc : ℝ) (M : Submodule (𝓞 E) (Formalism.L2.Col.HomE E a b)) (c : ℕ) (e : HeightOneSpectrum (𝓞 E) → ℤ), δ ≠ 0 → (∀ (τ : ι) (x : E), emb τ (star x) = starRingEnd ℂ (emb τ x)) → 0 < c → (∀ Q, e (Formalism.L2.Col.conjPrime₂ Q) = -e Q) → (∀ Q, e Q = 1 ∨ e Q = 0 ∨ e Q = -1) → Formalism.L2.Th1.H.IsSelfDual (HV sc) (laV emb δ M) → Formalism.L2.Th1.H.IsSemiChar (HV sc) (laV emb δ M) (alV d sc) → Formalism.L2.Th1.H.IsSelfDual (HV sc) (laV emb δ (twist₂ M c e)) := by
   intro E _ _ _ ι _ _ a b emb δ d sc M c e hδ hst hc he her hSD hSC
   have hcE : (c : E) ≠ 0 := by exact_mod_cast hc.ne'

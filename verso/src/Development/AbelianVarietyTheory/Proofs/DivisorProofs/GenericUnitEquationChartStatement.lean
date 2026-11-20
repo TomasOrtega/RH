@@ -16,6 +16,9 @@ open GlobalTheory.HodgeLocGeo
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Mean4O GlobalTheory.Mean4 ReciprocityTheory.AnForm GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.ProjVar GlobalTheory GlobalTheory.CxPts
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HodgeLocGeo.RootModel.hodge_root_norm_model | exact GlobalTheory.HodgeLocGeo.RootModel.hodge_root_norm_model | (intros; apply GlobalTheory.HodgeLocGeo.RootModel.hodge_root_norm_model <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generic_unit_equation_chart : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (Φ : s.Flag)
     (k : s.Comp) (σ : D.what₂.LL →+* ℂ) (e : ℕ) (c' : AlgChart (Φ.C k).Y.str σ e) (p0 : (Φ.C k).Y.pts σ),
     p0 ∈ c'.finChart.source → (Φ.C k).π (under p0) ∉ genBd s.T.Z →

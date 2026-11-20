@@ -10,6 +10,11 @@ noncomputable section
 
 namespace LevelTowerAlt
 
+/- English proof (translation)
+Introduce `E _ _ _ g Λ _ _ Ψ _ R σ I hσ hI hne`. Use `R.free` as an intermediate fact. Use `R.fin` as an intermediate fact. Use `⟨exists_family hne, fun r v hv => ⟨nz_eq R hσ hv, ?_, family_rank hv⟩⟩` and prove the remaining obligations. Rewrite using `[nz_eq R hσ hv]`.
+
+Conclude with `nzOf_pos R σ hI hv`.
+-/
 theorem isotropic_submodule_nonzero_family : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (R : RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (I : Submodule (𝓞 E) Λ), IsCMFam σ → IsIsoSub R.form I → I ≠ ⊥ → (∃ r v, IsNzFamily I r v) ∧ ∀ r v, IsNzFamily I r v → R.nz σ I = R.nzOf σ I v ∧ 0 < R.nz σ I ∧ r = Module.finrank (𝓞 E) I := by
   intro E _ _ _ g Λ _ _ Ψ _ R σ I hσ hI hne
   have := R.free

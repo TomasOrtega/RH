@@ -23,6 +23,15 @@ def compLmul (ℓ : Lie E a →L[ℝ] ℂ) : Lie E a →L[ℝ] (Lie E a →L[ℝ
         rw [Matrix.smul_mul]
         exact map_smul ℓ c (toL (Matrix.of M * Matrix.of v)) }
 
+/- English proof (translation)
+Establish `hdet : IsUnit (Matrix.of z).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hz`. Establish `h1 : ContDiffAt ℝ ∞ (fun x : Lie E a => Ring.inverse (Matrix.of x).det) z`. Establish `h` using `contDiffAt_ringInverse ℝ (n := ∞) hdet.unit`. Rewrite `h` using `[IsUnit.unit_spec]`. Conclude with `h.comp z (contDiff_det (E := E)).contDiffAt`.
+
+Use `contDiffAt_pi.2 fun i => contDiffAt_pi.2 fun j => ?_` and prove the remaining obligations. Establish `h2 : ContDiff ℝ ∞ fun x : Lie E a => Matrix.adjugate (Matrix.of x) i j`. Simplify using `only [Matrix.adjugate_apply, Matrix.det_apply']`. Use `ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun k _ => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.updateRow_apply]`.
+
+Use `split_ifs`. Conclude with `contDiff_const`. Conclude with `(contDiff_apply ℝ _ k).comp (contDiff_apply ℝ _ (σ k))`. Establish `e : (fun x : Lie E a => toL (Matrix.of x)⁻¹ i j) = fun x => Ring.inverse (Matrix.of x).det * Matrix.adjugate (Matrix.of x) i j`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[Matrix.inv_def]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h1.mul h2.contDiffAt`.
+-/
 theorem contDiffAt_inv {z : Lie E a} (hz : z ∈ invSet E a) :
     ContDiffAt ℝ ∞ (fun x : Lie E a => toL (Matrix.of x)⁻¹) z := by
   have hdet : IsUnit (Matrix.of z).det := (Matrix.isUnit_iff_isUnit_det _).1 hz
@@ -46,6 +55,15 @@ theorem contDiffAt_inv {z : Lie E a} (hz : z ∈ invSet E a) :
   rw [e]
   exact h1.mul h2.contDiffAt
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hz`. Take `rfl : z = toL y.val` from `hy.symm`. Establish `e : chart f g = chart f (g * infGL E a y) ∘ lmul (toL (y⁻¹).val)`. Rewrite using `[← chart_mul, mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Establish `e1 : lmul (toL (y⁻¹).val) (toL y.val) = oneL E a` using `y.inv_mul`.
+
+Establish `h` using `hd (g * infGL E a y)`. Rewrite `h` using `[← e1]`. Establish `h2` using `h.comp (toL y.val) (lmul (toL (y⁻¹).val)).hasFDerivAt`. Rewrite `h2` using `[← e]`. Use `h2.congr_fderiv ?_` and prove the remaining obligations.
+
+Establish `ei : toL (Matrix.of (toL y.val))⁻¹ = toL (y⁻¹).val`. Express the relevant statement in the definitionally equal form `toL (y.val)⁻¹ = toL (y⁻¹).val`. Rewrite using `[Matrix.coe_units_inv]`. Rewrite using `[ei]`. Use extensionality with `v`.
+
+Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[chart_val]`. Both sides reduce to the same expression.
+-/
 theorem hasFDerivAt_chart {f : GA E a → ℂ} {ι : Type} [Fintype ι] {fs : ι → GA E a → ℂ}
     {ℓ : ι → (Lie E a →L[ℝ] ℂ)} (hd : ∀ g, HasFDerivAt (chart f g) (∑ i, fs i g • ℓ i) (oneL E a))
     (g : GA E a) {z : Lie E a} (hz : z ∈ invSet E a) :
@@ -70,6 +88,15 @@ theorem hasFDerivAt_chart {f : GA E a → ℂ} {ι : Type} [Fintype ι] {fs : ι
   rw [chart_val]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ a K hK`. Establish `key : ∀ n : ℕ, ∀ f ∈ K, ∀ g, ∀ z ∈ invSet E a, ContDiffAt ℝ n (chart f g) z`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `f hf g z hz`. Take `⟨ι, _, fs, ℓ, -, hd⟩` from `hK f hf`. Conclude with `contDiffAt_zero.2 ⟨invSet E a, isOpen_invSet.mem_nhds hz, fun x hx => (hasFDerivAt_chart hd g hx).continuousAt.continuousWithinAt⟩`. Consider the case `succ n ih`. Introduce `f hf g z hz`.
+
+Take `⟨ι, _, fs, ℓ, hfs, hd⟩` from `hK f hf`. Rewrite using `[Nat.cast_succ]`. Use `contDiffAt_succ_iff_hasFDerivAt.2 ⟨_, ⟨invSet E a, isOpen_invSet.mem_nhds hz, fun x hx => hasFDerivAt_chart hd g hx⟩, ?_⟩` and prove the remaining obligations. Use `ContDiffAt.sum fun i _ => (ih (fs i) (hfs i) g z hz).smul ?_` and prove the remaining obligations. Conclude with `(compLmul (ℓ i)).contDiff.contDiffAt.comp z (contDiffAt_infty.1 (contDiffAt_inv hz) n)`.
+
+Introduce `f hf g z hz`. Conclude with `(contDiffAt_infty.2 fun n => key n f hf g z hz).contDiffWithinAt`.
+-/
 theorem mem_Sm_of_hasFDerivAt : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (K : Set (GA E a → ℂ)),
     (∀ f ∈ K, ∃ (ι : Type) (_ : Fintype ι) (fs : ι → GA E a → ℂ) (ℓ : ι → (Lie E a →L[ℝ] ℂ)), (∀ i, fs i ∈ K) ∧
       ∀ g, HasFDerivAt (chart f g) (∑ i, fs i g • ℓ i) (oneL E a)) → ∀ f ∈ K, f ∈ Sm E a := by

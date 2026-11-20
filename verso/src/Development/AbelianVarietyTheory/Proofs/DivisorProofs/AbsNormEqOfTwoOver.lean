@@ -15,6 +15,17 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 namespace GlobalTheory.ModulusNorm
 
+/- English proof (translation)
+Use `set p := (w.under (𝓞 F)).asIdeal with hp`. Establish `l1 : w.asIdeal.LiesOver p` using `⟨rfl⟩`. Establish `l2 : w'.asIdeal.LiesOver p` using `⟨by rw [hp, ← h]; rfl⟩`. Establish `f1` using `Ideal.absNorm_pow_inertiaDeg p w.asIdeal`. Establish `f2` using `Ideal.absNorm_pow_inertiaDeg p w'.asIdeal`.
+
+Establish `c1` using `w.asIdeal.inertiaDeg_pos (𝓞 F)`. Establish `c2` using `w'.asIdeal.inertiaDeg_pos (𝓞 F)`. Establish `m1 : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) p ≤ w.asIdeal` using `Ideal.map_le_iff_le_comap.2 (le_of_eq l1.over)`. Establish `m2 : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) p ≤ w'.asIdeal` using `Ideal.map_le_iff_le_comap.2 (le_of_eq l2.over)`. Establish `cop : w.asIdeal ⊔ w'.asIdeal = ⊤` using `Ideal.IsMaximal.coprime_of_ne w.isMaximal w'.isMaximal fun e => hne (HeightOneSpectrum.ext e)`.
+
+Establish `hle : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) p ≤ w.asIdeal * w'.asIdeal`. Rewrite using `[Ideal.mul_eq_inf_of_coprime cop]`. Conclude with `le_inf m1 m2`. Establish `hd` using `map_dvd Ideal.absNorm (Ideal.dvd_iff_le.2 hle)`. Rewrite `hd` using `[map_mul, Ideal.absNorm_algebraMap, ← f1, ← f2, ← pow_add, ← Algebra.IsAlgebraic.finrank_of_isFractionRing (𝓞 F) F (𝓞 E) E, h2]`.
+
+Establish `hq : 1 < Ideal.absNorm p`. Break down `Nat.lt_or_ge 1 (Ideal.absNorm p) with h' | h'` into its components or cases. Conclude with `h'`. Use `exfalso interval_cases hh : Ideal.absNorm p`. Conclude with `(w.under (𝓞 F)).ne_bot (Ideal.absNorm_eq_zero_iff.1 hh)`.
+
+Conclude with `(w.under (𝓞 F)).isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 hh)`. Use `(Nat.pow_dvd_pow_iff_le_right hq).1 hd` as an intermediate fact. Establish `e1 : w.asIdeal.inertiaDeg (𝓞 F) = 1` using `by omega`. Rewrite using `[← f1, e1, pow_one]`.
+-/
 theorem absNorm_eq_of_two_over {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h2 : Module.finrank F E = 2) {w w' : HeightOneSpectrum (𝓞 E)} (hne : w ≠ w')
     (h : w'.under (𝓞 F) = w.under (𝓞 F)) :
@@ -48,17 +59,26 @@ theorem absNorm_eq_of_two_over {F E : Type} [Field F] [NumberField F] [Field E] 
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FunObj.conjPl_eq_cP]`. Conclude with `GlobalTheory.FunObj.conjPrime_ne_of_isIdempotentAt he`.
+-/
 theorem conjPl_ne_of_isIdemAt {w : HeightOneSpectrum (𝓞 D.host.E)} {e : Formalism.L2.Theta.AE D}
     (he : Formalism.L2.NTheta.IsIdemAt e w) : Formalism.DivisionValues.conjPl w ≠ w := by
   rw [GlobalTheory.FunObj.conjPl_eq_cP]
   exact GlobalTheory.FunObj.conjPrime_ne_of_isIdempotentAt he
 
+/- English proof (translation)
+The claim follows from `absNorm_eq_of_two_over D.sp.cm.deg2 (conjPl_ne_of_isIdemAt he).symm (GlobalTheory.ChainTw.ParInv.under_conjPl w)`.
+-/
 theorem absNorm_of_isIdemAt {w : HeightOneSpectrum (𝓞 D.host.E)} {e : Formalism.L2.Theta.AE D} (he : Formalism.L2.NTheta.IsIdemAt e w) :
     Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 D.host.F)).asIdeal :=
   absNorm_eq_of_two_over D.sp.cm.deg2 (conjPl_ne_of_isIdemAt he).symm (GlobalTheory.ChainTw.ParInv.under_conjPl w)
 
 variable {T : Type} {L : LevCh D T}
 
+/- English proof (translation)
+Unfold `GlobalTheory.FunObj.SqNum.condE GlobalTheory.FunObj.SqNum.levQ`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `P.w_split v hv`. Rewrite using `[map_pow, absNorm_of_isIdemAt he, P.under_w hv]`.
+-/
 theorem absNorm_condE (P : Places L) : Ideal.absNorm (GlobalTheory.FunObj.SqNum.condE P) = GlobalTheory.FunObj.SqNum.levQ P := by
   unfold GlobalTheory.FunObj.SqNum.condE GlobalTheory.FunObj.SqNum.levQ
   rw [map_prod]

@@ -18,8 +18,14 @@ def trO : OOf B i ≃+* B.Oc j w := by obtain ⟨rfl, rfl⟩ := h; exact RingEqu
 
 def trK : FractionRing (OOf B i) ≃+* FractionRing (B.Oc j w) := by obtain ⟨rfl, rfl⟩ := h; exact RingEquiv.refl _
 
+/- English proof (translation)
+Take `⟨rfl, rfl⟩` from `h`. Both sides reduce to the same expression.
+-/
 theorem trK_alg (z : OOf B i) : trK h (algebraMap _ _ z) = algebraMap _ _ (trO h z) := by obtain ⟨rfl, rfl⟩ := h; rfl
 
+/- English proof (translation)
+Take `⟨rfl, rfl⟩` from `h`. Both sides reduce to the same expression.
+-/
 theorem trK_ec (x : what₂.LL) : trK h (B.ec _ _ x) = B.ec j w x := by obtain ⟨rfl, rfl⟩ := h; rfl
 
 variable (hC : PartCompl B) (hL : MtLoc B hC)
@@ -28,13 +34,22 @@ def trPsi : TensorProduct (OOf B i) (FractionRing (OOf B i)) (MtSub B hC i) →�
   obtain ⟨rfl, rfl⟩ := h
   exact { toFun := PsiC B hC hL i, map_add' := map_add _, map_smul' := fun c z => map_smul (PsiC B hC hL i) c z }
 
+/- English proof (translation)
+Take `⟨rfl, rfl⟩` from `h`. Conclude with `PsiC_inj B hC hL i`.
+-/
 theorem trPsi_inj : Function.Injective (trPsi h hC hL) := by obtain ⟨rfl, rfl⟩ := h; exact PsiC_inj B hC hL i
 
+/- English proof (translation)
+Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[mxC_self]`. Conclude with `PsiC_range B hC hL i y`.
+-/
 theorem trPsi_range (y : B.V j w) : y ∈ NCov.part (heckeAlg0 B j w) (mxC B j w i) ↔ ∃ z, trPsi h hC hL z = y := by
   obtain ⟨rfl, rfl⟩ := h
   rw [mxC_self]
   exact PsiC_range B hC hL i y
 
+/- English proof (translation)
+Take `⟨rfl, rfl⟩` from `h`. Take `rfl` from `eq_of_heq hx`. Rewrite using `[mxC_self]`. Conclude with `PsiC_pr B hC hL i _`.
+-/
 theorem trPsi_pr (x : what₂.MtL (what₂.muTw (wOf B i)) (jOf B i)) (x' : what₂.MtL (what₂.muTw w) j) (hx : HEq x' x) :
     trPsi h hC hL (prMtC B hC hL i x) - B.iV j w x' ∈ NCov.off (heckeAlg0 B j w) (mxC B j w i) := by
   obtain ⟨rfl, rfl⟩ := h
@@ -48,11 +63,17 @@ def trX : XOf B i ≃ {ψ : heckeAlg0 B j w →ₐ[B.Oc j w] B.Oc j w //
   exact ⟨fun x => ⟨x.1, x.2.1.trans (mxC_self B i).symm, x.2.2⟩, fun x => ⟨x.1, x.2.1.trans (mxC_self B i), x.2.2⟩,
     fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨rfl, rfl⟩` from `h`. Conclude with `ptX_val B i v k hvk x`.
+-/
 theorem trX_hT (x : XOf B i) (v : PlE H) (k : ℕ) (hvk : GenAt0 H (what₂.places.resChar w) (B.Qw w) v k) :
     trO h ((hTOf B i v k : XOf B i → OOf B i) x) = (trX h x).1 ⟨B.hK j w v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩ := by
   obtain ⟨rfl, rfl⟩ := h
   exact ptX_val B i v k hvk x
 
+/- English proof (translation)
+Take `⟨rfl, rfl⟩` from `h`. Conclude with `hA i v k hvk z`.
+-/
 theorem trPsi_act (hs : HeckeStd0 B) (hd : FinDimV B) (hL : MtLoc B (partCompl_of hs hd)) (hAct : ActEx B (partCompl_of hs hd))
     (hA : ActHK B hs hd hL hAct) (v : PlE H) (k : ℕ) (hvk : GenAt0 H (what₂.places.resChar w) (B.Qw w) v k) (z) :
     trPsi h _ hL (((actC B (partCompl_of hs hd) hAct i) (hTOf B i v k)).baseChange (FractionRing (OOf B i)) z) =
@@ -61,6 +82,9 @@ theorem trPsi_act (hs : HeckeStd0 B) (hd : FinDimV B) (hL : MtLoc B (partCompl_o
   exact hA i v k hvk z
 
 include h in
+/- English proof (translation)
+Take `⟨rfl, rfl⟩` from `h`. Conclude with `mxC_max B i`.
+-/
 theorem tr_max : (mxC B j w i).IsMaximal := by obtain ⟨rfl, rfl⟩ := h; exact mxC_max B i
 
 end Transport
@@ -112,6 +136,9 @@ attribute [local instance] LocBase0.algOc
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ iq i := iq (jOf B0 i) (wOf B0 i) iq_alg i := hiA _ _ iq_LL i := hiL _ _ iq_big i := hBig _ _ B := recBase M B0 hdef hO hc Q_eq j w i h := congrArg B0.Qw ((locsC_mem B0 (locsFin_of hs hd) j w i).1 h).2 mx := mxC B0 mx_max j w i h := tr_max ((locsC_mem B0 (locsFin_of hs hd) j w …`.
+-/
 theorem nonempty_spec
     (hTwE : ∀ (a : LocT B0) (x : D.LL0) (y : D.ntw.O0 (C.twI (wOf B0 a))),
       algebraMap (D.ntw.O0 (C.twI (wOf B0 a))) (FractionRing (D.ntw.O0 (C.twI (wOf B0 a)))) y =

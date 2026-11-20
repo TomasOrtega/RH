@@ -11,6 +11,25 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 universe u in
+/- English proof (translation)
+Substitute `hI` using the available equality. Establish `hk` using `UpperTheory.V.Th.AnnihilatorQuotientFinite.kerSp Y0 Y e hi hle hY χ sp hadd hsmul hind`. Establish `key : ∃ φ : Module.End K W, (∀ f : Y, sp ((t : Module.End A Y) f : Y) = φ (sp f)) ∧ ∀ j, ∃ μ : K, ∀ F ∈ Z j, φ F = μ • F` using `by clear h`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+
+Take `⟨i, rfl⟩` from `hx`. Conclude with `⟨opC (s i), fun f => hop _ _ (hle f.2), fun j => hZ j i⟩`. Consider the case `algebraMap r`. Use `⟨algebraMap K _ (χ (algebraMap R A r)), fun f => ?_, fun j => ⟨_, fun F _ => rfl⟩⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply R A (heckeAlg Y op)]`.
+
+Conclude with `hsmul _ (hle f.2) _`. Consider the case `add a b _ _ ha hb`. Take `⟨φ, h1, h2⟩` from `ha`. Take `⟨ψ, h3, h4⟩` from `hb`. Use `⟨φ + ψ, fun f => ?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.add_apply, ← h1, ← h3]`. Conclude with `hadd _ (hle (Subtype.prop _)) _ (hle (Subtype.prop _))`. Take `⟨μ, hμ⟩` from `h2 j`. Take `⟨ν, hν⟩` from `h4 j`. Conclude with `⟨μ + ν, fun F hF => by rw [LinearMap.add_apply, hμ F hF, hν F hF, add_smul]⟩`.
+
+Consider the case `mul a b _ _ ha hb`. Take `⟨φ, h1, h2⟩` from `ha`. Take `⟨ψ, h3, h4⟩` from `hb`. Use `⟨φ * ψ, fun f => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, ← h3, ← h1]`.
+
+Both sides reduce to the same expression. Take `⟨μ, hμ⟩` from `h2 j`. Take `⟨ν, hν⟩` from `h4 j`. Conclude with `⟨ν * μ, fun F hF => by rw [Module.End.mul_apply, hν F hF, map_smul, hμ F hF, smul_smul]⟩`. Take `⟨φ, h1, h2⟩` from `key`.
+
+Establish `hp : ∀ (m : ℕ) (f : Y), sp (((t ^ m : heckeAlg Y op) : Module.End A Y) f : Y) = (φ ^ m) (sp f)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro f`. Rewrite using `[pow_zero, pow_zero]`.
+
+Both sides reduce to the same expression. Consider the case `succ m ih`. Introduce `f`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, ← h1, ← ih]`. Both sides reduce to the same expression.
+
+Rewrite using `[← hk, h1]`. Use `UpperTheory.V.Th.AnnihilatorQuotientFinite.eigKill φ k _ ?_ (by rw [← hp]; exact (hk _).2 (h y))` and prove the remaining obligations. Use `(iSup_le fun j => ?_ : ⨆ j, Z j ≤ _) (hOZ _ (hle y.2))` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `h2 j`. Conclude with `fun F hF => Submodule.mem_iSup_of_mem μ (Module.End.mem_eigenspace_iff.2 (hμ F hF))`.
+-/
 private theorem sr_abs {R A K M W ι ι' : Type} [CommRing R] [CommRing A] [Algebra R A] [Field K]
     [AddCommGroup M] [Module A M] [Module R M] [IsScalarTower R A M]
     [AddCommGroup W] [Module K W] {J : Type u} (Y0 Y : Submodule A M) [Module.Free A Y0] (hle : Y ≤ Y0)
@@ -72,6 +91,13 @@ private theorem sr_abs {R A K M W ι ι' : Type} [CommRing R] [CommRing A] [Alge
 attribute [local instance 2000] UpperTheory.V.W.coefLocal
 attribute [-instance] GlobalTheory.AdmLoc.modFun
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ l _ n c H hH A _ _ _ θ hθ ι P hP x lam hlam har a K _ t ht k h y`. Use `haveI : Finite (ResidueField c.O) := (UpperTheory.V.abelian₂.dvr_finite l c.O).2.1`. Use `haveI : IsCNL A := IsCNL.ofCO c.O A`. Take `⟨h0, hfin, hfree, -⟩` from `hiComm L Ω l n c H hH A θ hθ K`. Take `⟨e, -, hi, hY, -⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.locIdem A _ _ _ (H.op A) (fun i => algebraMap c.O A (a i)) h0`.
+
+Take `⟨d, ξ, c0, sp, hsp⟩` from `spec L Ω l n c H hH A θ hθ ι x lam har`. Establish `hO` using `(_root_.UpperTheory.V.Hi.clParts_alt L Ω l n c H hH A θ hθ ι P hP x lam d ξ c0 sp hsp hlam K c0 le_rfl).2`. Establish `hOZ : ∀ f ∈ H.X.Ord (H.τA A) θ (H.lev K), sp f ∈ ⨆ Y : {Y : H.PartAltAlt ι lam ξ // P lam Y.r}, Y.1.Y` using `fun f hf => by`. Establish `h1 : sp f ∈ H.OrdAt θ ι x.toRingHom lam ξ K c0` using `hsp.span K c0 le_rfl ▸ Submodule.subset_span ⟨f, hf, rfl⟩`. Conclude with `(hO.le.trans (iSup_mono fun _ => inf_le_left)) h1`.
+
+Establish `hI : RingHom.ker x = RingHom.ker (ι.toRingHom.comp x.toRingHom)`. Use extensionality with `b`. Simplify using `[RingHom.mem_ker]`. Conclude with `sr_abs (R := c.O) (H.X.Ord (H.τA A) θ (H.lev K)) (H.MK θ a K) inf_le_left (H.op A) Sum.inl e hi hY (ι.toRingHom.comp x.toRingHom) sp (hsp.add K) (hsp.smul K) (hsp.indep K) (H.opC ι lam d) (hsp.op K) (fun Y : {Y : H.PartAltAlt ι lam ξ // P lam Y.r} => Y.1.Y) (fun Y i => ⟨_, Y.1.sp …`.
+-/
 theorem UpperTheory.V.Th.AnnihilatorQuotientFinite.sphRed_alt :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →
     ∀ (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ), H.IsWt θ →

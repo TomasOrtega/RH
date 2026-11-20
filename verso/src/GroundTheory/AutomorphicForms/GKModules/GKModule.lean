@@ -25,6 +25,9 @@ def kHom (τ : Representation ℂ K W) (σ : Representation ℂ K V) : Submodule
     simp only [mem_setOf_eq] at *
     rw [LinearMap.smul_comp, LinearMap.comp_smul, hT k]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_kHom {τ : Representation ℂ K W} {σ : Representation ℂ K V} {T : W →ₗ[ℂ] V} :
     T ∈ kHom τ σ ↔ ∀ k : K, T ∘ₗ τ k = σ k ∘ₗ T := Iff.rfl
 
@@ -73,6 +76,9 @@ noncomputable def toRepresentation (π : BanachRep K' E) : Representation ℂ K'
   map_one' := by ext v; simp
   map_mul' k k' := by ext v; simp [map_mul_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toRepresentation_apply (π : BanachRep K' E) (k : K') (v : E) :
     π.toRepresentation k v = π k v := rfl
 
@@ -80,6 +86,9 @@ noncomputable def restrict (π : BanachRep K' E) (K : Subgroup K') : BanachRep K
   toHom := π.toHom.comp K.subtype
   continuous_orbit' v := (π.continuous_orbit v).comp continuous_subtype_val
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restrict_apply (π : BanachRep K' E) (K : Subgroup K') (k : K) :
     π.restrict K k = π k := rfl
 
@@ -94,12 +103,23 @@ def kSpan (v : E) : Submodule ℂ E := Submodule.span ℂ (range fun k : K => π
 
 def IsKFinite (v : E) : Prop := FiniteDimensional ℂ (π.kSpan K v)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, by simp⟩`.
+-/
 theorem mem_kSpan_self (v : E) : v ∈ π.kSpan K v :=
   Submodule.subset_span ⟨1, by simp⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨k, rfl⟩`.
+-/
 theorem map_mem_kSpan (v : E) (k : K) : π k v ∈ π.kSpan K v :=
   Submodule.subset_span ⟨k, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k', rfl⟩` from `hx`. Rewrite using `[← map_mul_apply]`. Conclude with `Submodule.subset_span ⟨k * k', by simp⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem map_mem_kSpan_of_mem {v w : E} (hw : w ∈ π.kSpan K v) (k : K) : π k w ∈ π.kSpan K v := by
   induction hw using Submodule.span_induction with
   | mem x hx =>
@@ -110,16 +130,25 @@ theorem map_mem_kSpan_of_mem {v w : E} (hw : w ∈ π.kSpan K v) (k : K) : π k 
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Rewrite using `[kSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `π.map_mem_kSpan_of_mem K hw k`.
+-/
 theorem kSpan_le_of_mem {v w : E} (hw : w ∈ π.kSpan K v) : π.kSpan K w ≤ π.kSpan K v := by
   rw [kSpan, Submodule.span_le]
   rintro _ ⟨k, rfl⟩
   exact π.map_mem_kSpan_of_mem K hw k
 
+/- English proof (translation)
+The claim follows from `haveI : FiniteDimensional ℂ (π.kSpan K v) := hv Submodule.finiteDimensional_of_le (π.kSpan_le_of_mem K hw)`.
+-/
 theorem isKFinite_of_mem {v w : E} (hv : π.IsKFinite K v) (hw : w ∈ π.kSpan K v) :
     π.IsKFinite K w :=
   haveI : FiniteDimensional ℂ (π.kSpan K v) := hv
   Submodule.finiteDimensional_of_le (π.kSpan_le_of_mem K hw)
 
+/- English proof (translation)
+The claim follows from `π.isKFinite_of_mem K hv (π.map_mem_kSpan K v k)`.
+-/
 theorem isKFinite_map {v : E} (hv : π.IsKFinite K v) (k : K) : π.IsKFinite K (π k v) :=
   π.isKFinite_of_mem K hv (π.map_mem_kSpan K v k)
 
@@ -153,6 +182,9 @@ def kFiniteVectors : Submodule ℂ E where
     rw [map_smul]
     exact Submodule.smul_mem _ c (π.map_mem_kSpan K v k)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_kFiniteVectors {v : E} : v ∈ π.kFiniteVectors K ↔ π.IsKFinite K v := Iff.rfl
 
 end BanachRep
@@ -167,6 +199,19 @@ noncomputable def derivEndL : 𝔤 →ₗ[ℝ] Module.End ℂ (h.smoothVectors �
   map_add' X Y := by ext v; exact h.derivOp_add_left π _ _ _
   map_smul' r X := by ext v; exact h.derivOp_smul_left π r _ _
 
+/- English proof (translation)
+Use `set M := h.smoothVectors π`. Use `set v' : M := ⟨v, hv⟩`. Use `set S : Submodule ℂ M := Submodule.span ℂ (range fun k : K => h.smoothOp π k v')`. Establish `hSmap : S.map M.subtype = π.kSpan K v`. Rewrite using `[Submodule.map_span, BanachRep.kSpan, ← range_comp]`.
+
+Both sides reduce to the same expression. Use `haveI : FiniteDimensional ℂ (S.map M.subtype) := by rw [hSmap]; exact hK`. Use `haveI : FiniteDimensional ℂ S := (Submodule.equivMapOfInjective M.subtype M.injective_subtype S).symm.finiteDimensional`. Set `b` to `Module.finBasis ℝ 𝔤`. Use `set S' : Submodule ℂ M := ⨆ i, S.map (h.derivEnd π (b i))`.
+
+Establish `hmem : ∀ (Y : 𝔤) (w : M), w ∈ S → h.derivEnd π Y w ∈ S'`. Introduce `Y w hw`. Establish `e : h.derivEnd π Y = ∑ i, b.repr Y i • h.derivEnd π (b i)` using `by conv_lhs => rw [← b.sum_repr Y] show h.derivEndL π (∑ i, b.repr Y i • b i) = _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply]`. Conclude with `Submodule.smul_of_tower_mem _ _ ((le_iSup (fun i => S.map (h.derivEnd π (b i))) i) (Submodule.mem_map_of_mem hw))`.
+
+Establish `hle : π.kSpan K (h.derivOp π X v) ≤ S'.map M.subtype`. Rewrite using `[BanachRep.kSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `e : h.smoothOp π k (h.derivEnd π X v') = h.derivEnd π (h.Ad k X) (h.smoothOp π k v')` using `(LinearMap.congr_fun (h.derivEnd_smoothOp π k X) v').symm`. Establish `hk : h.smoothOp π k (h.derivEnd π X v') ∈ S'`.
+
+Rewrite using `[e]`. Conclude with `hmem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Conclude with `⟨_, hk, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem isKFinite_derivOp {v : E} (hv : h.IsSmoothVector π v) (hK : π.IsKFinite K v) (X : 𝔤) :
     π.IsKFinite K (h.derivOp π X v) := by
   set M := h.smoothVectors π
@@ -205,17 +250,29 @@ theorem isKFinite_derivOp {v : E} (hv : h.IsSmoothVector π v) (hK : π.IsKFinit
 
 def gkVectors : Submodule ℂ E := h.smoothVectors π ⊓ π.kFiniteVectors K
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_gkVectors {v : E} :
     v ∈ h.gkVectors π K ↔ h.IsSmoothVector π v ∧ π.IsKFinite K v := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.isSmoothVector_map π hv.1 k, π.isKFinite_map K hv.2 k⟩`.
+-/
 theorem map_mem_gkVectors {v : E} (hv : v ∈ h.gkVectors π K) (k : K) :
     π k v ∈ h.gkVectors π K :=
   ⟨h.isSmoothVector_map π hv.1 k, π.isKFinite_map K hv.2 k⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.isSmoothVector_derivOp π hv.1 X, h.isKFinite_derivOp π K hv.1 hv.2 X⟩`.
+-/
 theorem derivOp_mem_gkVectors {v : E} (hv : v ∈ h.gkVectors π K) (X : 𝔤) :
     h.derivOp π X v ∈ h.gkVectors π K :=
   ⟨h.isSmoothVector_derivOp π hv.1 X, h.isKFinite_derivOp π K hv.1 hv.2 X⟩
 
+/- English proof (translation)
+Rewrite using `[BanachRep.kSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `h.map_mem_gkVectors π K hv k`.
+-/
 theorem kSpan_le_gkVectors {v : E} (hv : v ∈ h.gkVectors π K) :
     π.kSpan K v ≤ h.gkVectors π K := by
   rw [BanachRep.kSpan, Submodule.span_le]
@@ -227,6 +284,9 @@ noncomputable def derivGK (X : 𝔤) : Module.End ℂ (h.gkVectors π K) where
   map_add' v w := by ext; exact h.derivOp_add π v.2.1 w.2.1 X
   map_smul' c v := by ext; exact h.derivOp_smul π v.2.1 c X
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_derivGK (X : 𝔤) (v : h.gkVectors π K) :
     ((h.derivGK π K X v : h.gkVectors π K) : E) = h.derivOp π X v := rfl
 
@@ -238,9 +298,17 @@ noncomputable def kRepGK : Representation ℂ K (h.gkVectors π K) where
   map_one' := by ext v; simp
   map_mul' k k' := by ext v; simp [BanachRep.map_mul_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_kRepGK (k : K) (v : h.gkVectors π K) :
     ((h.kRepGK π K k v : h.gkVectors π K) : E) = π k v := rfl
 
+/- English proof (translation)
+Use `set W := π.kSpan K (v : E)`. Use `haveI : FiniteDimensional ℂ W := v.2.2`. Set `ψ : W →ₗ[ℂ] ℂ` to `φ ∘ₗ Submodule.inclusion (h.kSpan_le_gkVectors π K v.2)`. Set `ψc : StrongDual ℂ W` to `⟨ψ, ψ.continuous_of_finiteDimensional⟩`. Take `⟨Φ, hΦ, -⟩` from `exists_extension_norm_eq W ψc`.
+
+Conclude with `⟨Φ, fun w hw => hΦ ⟨w, hw⟩⟩`.
+-/
 theorem exists_strongDual_eq [CompleteSpace E] (φ : Module.Dual ℂ (h.gkVectors π K))
     (v : h.gkVectors π K) :
     ∃ Φ : E →L[ℂ] ℂ, ∀ (w : E) (hw : w ∈ π.kSpan K v),
@@ -252,6 +320,11 @@ theorem exists_strongDual_eq [CompleteSpace E] (φ : Module.Dual ℂ (h.gkVector
   obtain ⟨Φ, hΦ, -⟩ := exists_extension_norm_eq W ψc
   exact ⟨Φ, fun w hw => hΦ ⟨w, hw⟩⟩
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℂ (π.kSpan K v) := hK`. Establish `hcl : IsClosed (π.kSpan K v : Set E)` using `Submodule.closed_of_finiteDimensional _`. Establish `hlim` using `hasDerivAt_iff_tendsto_slope.1 (h.hasDerivAt_derivOp π hv X)`. Use `hcl.mem_of_tendsto hlim (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module]`.
+
+Use `Submodule.smul_of_tower_mem _ _ (Submodule.sub_mem _ ?_ ?_)` and prove the remaining obligations. Conclude with `π.map_mem_kSpan K v ⟨h.expG (t • X), hX t⟩`. Simplify using `only [zero_smul, expG_zero, BanachRep.map_one_apply]`. Conclude with `π.mem_kSpan_self K v`.
+-/
 theorem derivOp_mem_kSpan [CompleteSpace E] {v : E} (hv : h.IsSmoothVector π v)
     (hK : π.IsKFinite K v) (X : 𝔤) (hX : ∀ t : ℝ, h.expG (t • X) ∈ K) :
     h.derivOp π X v ∈ π.kSpan K v := by
@@ -308,12 +381,25 @@ noncomputable def gkModule [CompleteSpace E] : h.GKModule K (h.gkVectors π K) w
     ext
     exact (h.derivOp_map π v.2.1 k X).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem gkModule_σ_apply [CompleteSpace E] (k : K) (v : h.gkVectors π K) :
     (((h.gkModule π K).σ k v : h.gkVectors π K) : E) = π k v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem gkModule_ρ_apply [CompleteSpace E] (X : h.lieSubalgebra) (v : h.gkVectors π K) :
     (((h.gkModule π K).ρ X v : h.gkVectors π K) : E) = h.derivOp π (h.ofLie X) v := rfl
 
+/- English proof (translation)
+Introduce `W _ _ _ τ hirr hcont`. Use `haveI := hπ W τ hirr hcont`. Set `f : kHom τ (h.gkModule π K).σ →ₗ[ℂ] kHom τ (π.restrict K).toRepresentation` to `{ toFun := fun T => ⟨(h.gkVectors π K).subtype ∘ₗ T.1, fun k => by`. Use extensionality with `w`. Use `congrArg Subtype.val (LinearMap.congr_fun (T.2 k) w)` as an intermediate fact.
+
+Simplify using `using this⟩`. Use the proof step `map_add' := fun S T => by ext; simp`. Use the proof step `map_smul' := fun c T => by ext; simp }`. Use `Module.Finite.of_injective f fun S T hST => ?_` and prove the remaining obligations. Use extensionality with `w`.
+
+Use `LinearMap.congr_fun (congrArg Subtype.val hST) w` as an intermediate fact. Simplify `this` using `[f]`.
+-/
 theorem isAdmissible_gkModule [CompleteSpace E] (hπ : π.IsAdmissible K) :
     (h.gkModule π K).IsAdmissible := by
   intro W _ _ _ τ hirr hcont

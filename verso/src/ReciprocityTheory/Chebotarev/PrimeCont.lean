@@ -5,6 +5,11 @@ open NumberField Filter Topology
 
 namespace ReciprocityTheory.Cheb
 
+/- English proof (translation)
+Establish `hN : 0 < Nrm q` using `lt_of_lt_of_le (by norm_num) (two_le_Nrm q)`. Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos hN]`. Establish `h1` using `χ.norm_le_one ((Nrm q : ℕ) : ZMod l)`. Establish `h2 : (0:ℝ) ≤ ((Nrm q : ℕ) : ℝ) ^ (-(s:ℂ)).re` using `Real.rpow_nonneg (by positivity) _`. Simplify using `only [Complex.neg_re, Complex.ofReal_re] at h2 ⊢`.
+
+Use polynomial arithmetic with `[norm_nonneg (χ ((Nrm q : ℕ) : ZMod l))]`.
+-/
 theorem norm_chiNrm_cpow_le {E : Type} [Field E] [NumberField E] {l : ℕ} (χ : DirichletCharacter ℂ l)
     (q : Prm E) (s : ℝ) :
     ‖χ ((Nrm q : ℕ) : ZMod l) * ((Nrm q : ℕ) : ℂ) ^ (-(s : ℂ))‖ ≤ ((Nrm q : ℕ) : ℝ) ^ (-s) := by
@@ -15,6 +20,9 @@ theorem norm_chiNrm_cpow_le {E : Type} [Field E] [NumberField E] {l : ℕ} (χ :
   simp only [Complex.neg_re, Complex.ofReal_re] at h2 ⊢
   nlinarith [norm_nonneg (χ ((Nrm q : ℕ) : ZMod l))]
 
+/- English proof (translation)
+Establish `h2 : (2:ℝ) ≤ ((Nrm q : ℕ) : ℝ)` using `by exact_mod_cast two_le_Nrm q`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nrm_rpow_neg_le_half {E : Type} [Field E] [NumberField E] (q : Prm E) {s : ℝ} (hs : 1 ≤ s) :
     ((Nrm q : ℕ) : ℝ) ^ (-s) ≤ 1 / 2 := by
   have h2 : (2:ℝ) ≤ ((Nrm q : ℕ) : ℝ) := by exact_mod_cast two_le_Nrm q
@@ -23,6 +31,23 @@ theorem nrm_rpow_neg_le_half {E : Type} [Field E] [NumberField E] (q : Prm E) {s
     _ = (((Nrm q : ℕ) : ℝ))⁻¹ := Real.rpow_neg_one _
     _ ≤ 1 / 2 := by rw [one_div]; exact inv_anti₀ (by norm_num) h2
 
+/- English proof (translation)
+Introduce `E _ _ l _ χ s0 hs0`. Establish `hs0' : (1:ℝ) < s0` using `hs0`. Use `set a : ℝ := (1 + s0) / 2 with ha_def`. Establish `ha1 : 1 < a` using `by rw [ha_def]; linarith`. Establish `has0 : a < s0` using `by rw [ha_def]; linarith`.
+
+Establish `hcont : ContinuousOn (fun s : ℝ => abelian₂ E χ s) (Set.Ioi a)`. Unfold `abelian₂`. Use `continuousOn_tsum (u := fun q : Prm E => (3 / 2) * ((Nrm q : ℕ) : ℝ) ^ (-a)) ?_ ((summable_prm_rpow E ha1).mul_left _) ?_` and prove the remaining obligations. Introduce `q`. Establish `hN : (Nrm q : ℕ) ≠ 0` using `by have := two_le_Nrm q; omega`.
+
+Establish `hc : Continuous (fun s : ℝ => χ ((Nrm q : ℕ) : ZMod l) * ((Nrm q : ℕ) : ℂ) ^ (-(s : ℂ)))` using `continuous_const.mul (Continuous.const_cpow (Complex.continuous_ofReal.neg) (Or.inl (by exact_mod_cast hN)))`. Use `ContinuousOn.neg (ContinuousOn.clog (continuous_const.sub hc).continuousOn ?_)` and prove the remaining obligations. Introduce `s hs`. Establish `hs' : a < s` using `hs`. Establish `hz` using `(norm_chiNrm_cpow_le χ q s).trans (nrm_rpow_neg_le_half q (by linarith))`.
+
+Rewrite using `[Complex.mem_slitPlane_iff]`. Use `left`. Establish `hre` using `Complex.abs_re_le_norm (χ ((Nrm q : ℕ) : ZMod l) * ((Nrm q : ℕ) : ℂ) ^ (-(s : ℂ)))`. Rewrite using `[Complex.sub_re, Complex.one_re]`. Use `(abs_le.mp (hre.trans hz)).2` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `q s hs`. Establish `hs' : a < s` using `hs`. Establish `hz1` using `norm_chiNrm_cpow_le χ q s`. Establish `hz` using `hz1.trans (nrm_rpow_neg_le_half q (by linarith))`.
+
+Rewrite using `[norm_neg, sub_eq_add_neg]`. Establish `hz' : ‖-(χ ((Nrm q : ℕ) : ZMod l) * ((Nrm q : ℕ) : ℂ) ^ (-(s : ℂ)))‖ ≤ 1 / 2`. Rewrite using `[norm_neg]`. Conclude with `hz`. Use `(Complex.norm_log_one_add_half_le_self hz').trans ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_neg]`. Establish `hmono : ((Nrm q : ℕ) : ℝ) ^ (-s) ≤ ((Nrm q : ℕ) : ℝ) ^ (-a)`. Establish `h2 : (2:ℝ) ≤ ((Nrm q : ℕ) : ℝ)` using `by exact_mod_cast two_le_Nrm q`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Conclude with `(hcont.continuousAt (Ioi_mem_nhds has0)).continuousWithinAt`.
+-/
 theorem smoothMap_seminorm_bound' : SmoothMapSeminormBound := by
   intro E _ _ l _ χ s0 hs0
   have hs0' : (1:ℝ) < s0 := hs0

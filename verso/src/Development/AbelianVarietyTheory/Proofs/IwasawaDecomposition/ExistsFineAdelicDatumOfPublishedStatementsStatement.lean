@@ -17,5 +17,8 @@ open scoped TensorProduct InnerProductSpace ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.IndefR.principalLevelFrame.instCMHostI
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.Mem.R3.Tr
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.R3.Rw.datExS_of_harishChandra_casselmanWallach | exact GlobalTheory.Mem.R3.Rw.datExS_of_harishChandra_casselmanWallach | (intros; apply GlobalTheory.Mem.R3.Rw.datExS_of_harishChandra_casselmanWallach <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_fineAdelicDatum_of_hypotheses : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → DatExS := by
   first | exact @GlobalTheory.Mem.R3.Rw.datExS_of_harishChandra_casselmanWallach | exact GlobalTheory.Mem.R3.Rw.datExS_of_harishChandra_casselmanWallach | (intros; apply GlobalTheory.Mem.R3.Rw.datExS_of_harishChandra_casselmanWallach <;> assumption)

@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteOfLocalizatio
 import Mathlib
 open TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.module_finite_of_localization_of_completion | exact GlobalTheory.module_finite_of_localization_of_completion | (intros; apply GlobalTheory.module_finite_of_localization_of_completion <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_of_localization_and_completion : ∀ (A : Type) [CommRing A] (f : A),
   (∀ (Q : Type) [AddCommGroup Q] [Module A Q], (∀ q : Q, ∃ k : ℕ, f ^ k • q = 0) →
     Subsingleton (TensorProduct A (AdicCompletion (Ideal.span {f}) A) Q) → Subsingleton Q) →

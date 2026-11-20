@@ -43,14 +43,33 @@ def postcomp {S : Scheme.{0}} {T G H : Over S} [GrpObj G] [GrpObj H] (f : G ⟶ 
   map_one' := by simp
   map_mul' a b := by simp [MonObj.mul_comp]
 
+/- English proof (translation)
+The claim follows from `(map_list_prod (postcomp (T := T) f) l)`.
+-/
 theorem prod_comp {S : Scheme.{0}} {T G H : Over S} [GrpObj G] [GrpObj H] (f : G ⟶ H) [IsMonHom f]
     (l : List (T ⟶ G)) : l.prod ≫ f = (l.map (· ≫ f)).prod :=
   (map_list_prod (postcomp (T := T) f) l)
 
+/- English proof (translation)
+The claim follows from `map_zpow (postcomp (T := T) f) g n`.
+-/
 theorem zpow_comp' {S : Scheme.{0}} {T G H : Over S} [GrpObj G] [GrpObj H] (f : G ⟶ H) [IsMonHom f]
     (g : T ⟶ G) (n : ℤ) : (g ^ n) ≫ f = (g ≫ f) ^ n :=
   map_zpow (postcomp (T := T) f) g n
 
+/- English proof (translation)
+Take `⟨c, ⟨φc, φ₂, hc, hsq, ⟨w, hw⟩, -⟩, pr, hpr, huniv, hL, hε⟩` from `hD`. Take `⟨e, he, hee⟩` from `grpPullback_iso hc T.cart`. Set `p : IsPowGrp P.A T.A.A 8` to `{ pr := fun a => pr a ≫ e.hom hom := fun a => by have := hpr a; infer_instance lim := Fan.IsLimit.mk _ (fun s => (huniv s.pt fun a => s.proj a ≫ e.inv).choose) (fun s a => by`. Establish `h` using `(huniv s.pt fun a => s.proj a ≫ e.inv).choose_spec.1 a`. Express the relevant statement in the definitionally equal form `_ ≫ pr a ≫ e.hom = _`.
+
+Rewrite using `[← Category.assoc, h, Category.assoc, e.inv_hom_id, Category.comp_id])`. Use the proof step `(fun s m hm => (huniv s.pt fun a => s.proj a ≫ e.inv).choose_spec.2 m fun a => by`. Establish `h : m ≫ pr a ≫ e.hom = s.proj a` using `hm a`. Rewrite using `[← h, Category.assoc, Category.assoc, e.hom_inv_id, Category.comp_id]) }`. Take `⟨φ, hφ, hφp⟩` from `GlobalTheory.PowerExamples.pow_unique p pA.toIsPowGrp`.
+
+Establish `hφp' : ∀ a, φ.hom ≫ pA.pr a = pr a ≫ e.hom` using `hφp`. Use `⟨φ, hφ, ?_, ?_⟩` and prove the remaining obligations. Establish `hpt : ∀ a, (pr a).left ≫ φc = (φ.hom ≫ pA.pr a).left ≫ T.α` using `fun a => by`. Rewrite using `[hφp' a, Over.comp_left, Category.assoc, hee]`. Establish `hΛ : (abelian₂ T.A.A T.A.L).IsLB` using `LB.isLB_linComb T.A.isLB _ _`.
+
+Take `⟨w', hw'⟩` from `T.lb`. Establish `i₁` using `iso_linComb ((isGen_iff w).1 hw) (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)`. Establish `i₂` using `iso_linComb ((isGen_iff w').1 hw') (K := Fin 8 × Fin 8) (fun ab => (lift (φ.hom ≫ pA.pr ab.1) (φ.hom ≫ pA.pr ab.2)).left) (fun ab => W ab.1 ab.2)`. Establish `hm : (fun ab : Fin 8 × Fin 8 => (lift (pr ab.1) (pr ab.2)).left ≫ φ₂) = fun ab => (lift (φ.hom ≫ pA.pr ab.1) (φ.hom ≫ pA.pr ab.2)).left ≫ T.α₂`. Use function extensionality and compare the values at `fun ab => GlobalTheory.Poinc.SharpIdent.lift_comp_square hsq T.sq _ _ _ _ (hpt ab.1) (hpt ab.2)`.
+
+Rewrite `i₁` using `[hm]`. Conclude with `LBIso.trans P.isLB (LB.isLB_linComb c.isLB _ _) (LB.isLB_linComb hΛ _ _) hL (LBIso.trans (LB.isLB_linComb c.isLB _ _) (LB.isLB_linComb F.univ.isLB _ _) (LB.isLB_linComb hΛ _ _) i₁ i₂.symm)`. Introduce `E a haveI := he`. Rewrite using `[hφp' a, ← Category.assoc, hε E a, prod_comp, List.map_map]`. Use `congr 1`.
+
+Use `List.map_congr_left fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hφp' b]`. Conclude with `zpow_comp' e.hom (pr b) (E a b)`.
+-/
 theorem ident_pow {g n : ℕ} (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (T : Trait F)
     (P : PolAV (Sp (FractionRing T.V))) (ε : Matrix (Fin 8) (Fin 8) ℤ → (P.A ⟶ P.A)) (hD : IsDiagEnd F W P T.y ε)
     (A8 : PolAV (Sp (FractionRing T.V))) (pA : IsPowPolAV A8 T.A 8) :
@@ -96,6 +115,11 @@ theorem ident_pow {g n : ℕ} (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (F
     simp only [Function.comp_apply, hφp' b]
     exact zpow_comp' e.hom (pr b) (E a b)
 
+/- English proof (translation)
+Take `⟨A8, pA, -⟩` from `GlobalTheory.exists_powPolAV _ T.A 8`. Take `⟨φ, hφ, hL, hε⟩` from `ident_pow F W T P ε hD A8 pA`. Use `⟨fun a => φ.hom ≫ pA.pr a, fun a => by have := pA.hom a; infer_instance, fun T' y => ?_, hL, fun E a => by rw [List.ofFn_eq_map]; exact hε E a⟩` and prove the remaining obligations. Use `⟨pA.lim.lift (Fan.mk T' y) ≫ φ.inv, fun a => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, φ.inv_hom_id_assoc]`.
+
+Conclude with `pA.lim.fac (Fan.mk T' y) ⟨a⟩`. Rewrite using `[Iso.eq_comp_inv]`. Conclude with `pA.lim.uniq (Fan.mk T' y) _ fun a => (Category.assoc _ _ _).trans (hz a.as)`.
+-/
 theorem exists_proj {g n : ℕ} (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (T : Trait F)
     (P : PolAV (Sp (FractionRing T.V))) (ε : Matrix (Fin 8) (Fin 8) ℤ → (P.A ⟶ P.A)) (hD : IsDiagEnd F W P T.y ε) :
     ∃ pr : Fin 8 → (P.A ⟶ T.A.A), (∀ a, IsMonHom (pr a)) ∧
@@ -113,6 +137,15 @@ theorem exists_proj {g n : ℕ} (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) 
   · rw [Iso.eq_comp_inv]
     exact pA.lim.uniq (Fan.mk T' y) _ fun a => (Category.assoc _ _ _).trans (hz a.as)
 
+/- English proof (translation)
+Take `⟨x₁, h₁⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.exists_isPsiCoord T.D.toPre (a + b')`. Take `⟨x₂, h₂⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.exists_isPsiCoord T.D.toPre a`. Take `⟨x₃, h₃⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.exists_isPsiCoord T.D.toPre b'`. Take `⟨u₀, hu₀⟩` from `GlobalTheory.TauCoordQuot.main T.V T.D.toPre a b' x x₁ x₂ x₃ hx h₁ h₂ h₃`. Take `⟨r₁, c₁, e₁⟩` from `GlobalTheory.PeriodFormCompare.exists_psiCoord_of_isPsiCoord (GlobalTheory.PeriodFormCompare.psiIn_top T.D _) h₁`.
+
+Take `⟨r₂, c₂, e₂⟩` from `GlobalTheory.PeriodFormCompare.exists_psiCoord_of_isPsiCoord (GlobalTheory.PeriodFormCompare.psiIn_top T.D _) h₂`. Take `⟨r₃, c₃, e₃⟩` from `GlobalTheory.PeriodFormCompare.exists_psiCoord_of_isPsiCoord (GlobalTheory.PeriodFormCompare.psiIn_top T.D _) h₃`. Take `⟨u, hu⟩` from `T.mono.tau (fun i y z => by fin_cases i; exact T.symm y z) (Fin.forall_fin_one.2 T.irr.ne_zero) c₂ c₃ c₁`. Simplify using `only [Fin.prod_univ_one, Matrix.cons_val_zero] at hu`. Use `⟨u₀ * u, ?_⟩` and prove the remaining obligations.
+
+Establish `key : algebraMap T.V (FractionRing T.V) (u₀ : T.V) * algebraMap T.V (FractionRing T.V) r₁ * (algebraMap T.V (FractionRing T.V) r₂)⁻¹ * (algebraMap T.V (FractionRing T.V) r₃)⁻¹ = algebraMap T.V (FractionRing T.V) (u₀ : T.V) * (algebraMap T.V (FractionRing T.V) r₁ / (algebraMap T.V …`. Rewrite using `[div_eq_mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hu₀, e₁, e₂, e₃, key, hu]`. Simplify using `only [Units.val_mul, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tau_coord {g n : ℕ} {o : Type} [CommRing o] {ζ : o} {F : SFam g n ζ} (T : Trait F) (a b' : T.D.toPre.X)
     (x : (FractionRing T.V)ˣ) (hx : GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.IsTauCoord T.D.toPre a b' x) :
     ∃ u : T.Vˣ, (x : FractionRing T.V) =
@@ -140,6 +173,17 @@ theorem tau_coord {g n : ℕ} {o : Type} [CommRing o] {ζ : o} {F : SFam g n ζ}
   simp only [Units.val_mul, map_mul]
   ring
 
+/- English proof (translation)
+Introduce `g n F W hW T P ε hD`. Establish `hCN : GlobalTheory.TorRef.IsCN T.V` using `⟨inferInstance, inferInstance, T.complete, T.char⟩`. Establish `hB : GlobalTheory.Mum.Base T.V` using `⟨⟨inferInstance, inferInstance, inferInstance, T.complete⟩, T.char⟩`. Establish `hS : SharpOver F W P T.y`. Take `⟨c, hc, pr, h₁, h₂, h₃, -⟩` from `hD`.
+
+Conclude with `⟨c, hc, pr, h₁, h₂, h₃⟩`. Use `haveI : IsCommMonObj (powObj T.G 8) := GlobalTheory.PowerExamples.comm_of_pow (powIsPowGrp T.G 8)`. Establish `hG' : IsSemiAbelian (powObj T.G 8)` using `GlobalTheory.PowGrp.isSemiAbelian_pow _ _ T.G 8 (powIsPowGrp T.G 8) T.semi`. Take `⟨D', ⟨U'⟩⟩` from `GlobalTheory.PowE8.exists_unif_pow8 g n _ _ F W hW T.V hCN T.D T.G T.A T.U T.y T.α T.α₂ T.semi T.cart T.sq T.lb P hS`. Take `⟨pr, hpr, huniv, hL, hε⟩` from `exists_proj F W T P ε hD`.
+
+Take `⟨pG, c, e, hpG, hgen, hc, he⟩` from `GlobalTheory.T.eighthPower_projections_extend_uniformisedGroups T.V hB T.dvr T.G T.semi T.D T.A T.U _ hG' D' P U' W hW pr hpr huniv hL`. Establish `hnn : ∀ a, 0 ≤ T.β a a` using `fun a => by`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Conclude with `(GlobalTheory.Poinc.Trait.beta_pos g n _ _ F T a ha).le`.
+
+Use `⟨powObj T.G 8, inferInstance, inferInstance, hG', D', U', e, fun y => ?_, ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `(GlobalTheory.PeriodFormCompare.exists_psiCoord_iff _ y).2 (GlobalTheory.PeriodFormCompare.psiIn_top D' y)`. Take `⟨-, h⟩` from `GlobalTheory.T.eighthPower_psiOrders_projectionLatticeCoordinates T.V hB T.dvr T.G T.semi T.D T.A T.U _ hG' D' P U' W hW pr hpr huniv hL pG hpG hgen c hc e he T.ϖ T.β T.symm hnn (tau_coord T) y r hr`. Take `⟨v, hv⟩` from `h.symm`. Conclude with `⟨v, by rw [mul_comm, hv]; exact hr⟩`.
+
+Introduce and unpack `K _ _ _ m pk pk' x x' E hm h h' rfl`. Conclude with `GlobalTheory.T.matrix_acts_on_torsion_labels_alt T.V hB T.dvr T.G T.semi T.D T.A T.U _ hG' D' P U' W hW pr hpr huniv hL pG hpG hgen c hc e he E (ε E) (hε E) K m pk pk' x hm h h'`.
+-/
 theorem main : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (T : Trait F) (P : PolAV (Sp (FractionRing T.V))) (ε : Matrix (Fin 8) (Fin 8) ℤ → (P.A ⟶ P.A)), IsDiagEnd F W P T.y ε → ∃ (G' : Over (Sp T.V)) (_ : GrpObj G') (_ : IsCommMonObj G'), IsSemiAbelian G' ∧ ∃ (D' : DegData T.V (maximalIdeal T.V)) (U' : Unif (maximalIdeal T.V) D' P G') (j : D'.toPre.X ≃+ (Fin 8 → T.D.toPre.X)), (∀ y, ∃ v : T.Vˣ, PsiCoord D'.toPre y (v * T.ϖ ^ (qW W T.β (j y)).toNat)) ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra (FractionRing T.V) K] (m : ℕ) (pk pk' : QkPt D'.toPre K m) (x x' : TFK (R := T.V) K ⟶ P.A) (E : Matrix (Fin 8) (Fin 8) ℤ), 1 ≤ m → QkToAkU U'.toUnifPre K m pk x → QkToAkU U'.toUnifPre K m pk' x' → x' = x ≫ ε E → CongMod m (j pk'.y) (fun a => ∑ b, E a b • j pk.y b) := by
   intro g n F W hW T P ε hD
   have hCN : GlobalTheory.TorRef.IsCN T.V := ⟨inferInstance, inferInstance, T.complete, T.char⟩

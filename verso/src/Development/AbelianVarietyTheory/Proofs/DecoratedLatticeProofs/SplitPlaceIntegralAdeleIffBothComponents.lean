@@ -15,6 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.SplitInt
 
+/- English proof (translation)
+Establish `he` using `GlobalTheory.UpMem.finPart_e_int q`. Rewrite using `[q.int_iff, q.int_iff, q.sec_pr, q.sec_pr, map_mul, map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Conclude with `⟨GlobalTheory.FinPl.FrameLat.mul_mem_intAE he h, GlobalTheory.FinPl.FrameLat.mul_mem_intAE he (GlobalTheory.IdemSupport.finPart_cA_mem h)⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨ha, ?_⟩` and prove the remaining obligations. Establish `hsum : a = q.e * a + cA D (q.e * cA D a)`. Rewrite using `[map_mul, Formalism.L2.Theta.cA_cA, ← add_mul]`. Conclude with `((GlobalTheory.FinPl.FrameLat.idem_iff q a).1 ha).symm`.
+
+Establish `h3 : finPart D (cA D (q.e * cA D a)) ∈ intAE D`. Apply `GlobalTheory.IdemSupport.finPart_cA_mem` to reduce the goal to its premises. Rewrite using `[map_mul]`. Conclude with `h2`. Rewrite using `[hsum, (finPart D).map_add, (finPart D).map_mul]`.
+
+Conclude with `add_mem h1 h3`.
+-/
 theorem intAt_iff_pr (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) (a : AE D) (ha : a ∈ GlobalTheory.FinPl.idAt D (· = q.v)) :
     (a ∈ GlobalTheory.FinPl.intAt D (· = q.v) ↔ q.pr a ∈ 𝒪[k] ∧ q.pr (cA D a) ∈ 𝒪[k]) := by

@@ -21,6 +21,25 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 namespace GlobalTheory.LatVac
 
+/- English proof (translation)
+Introduce `F _ _ v W _ _ B κ _ co ψ γ f χ hγ hA r hr x₀ hx₀ ξ`. Establish `hx1 : ∀ k, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) ((co.e γ).1 k)` using `fun k u hu => by`. Establish `h` using `congrArg (fun w => (co.e w).1 k) (hγ u hu)`. Simplify `h` using `[LinearEquiv.map_smul]`. Establish `hy1 : ∀ k, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) ((co.e γ).2 k)` using `fun k u hu => by`.
+
+Establish `h` using `congrArg (fun w => (co.e w).2 k) (hγ u hu)`. Simplify `h` using `[LinearEquiv.map_smul]`. Use `set z : κ → AF F := fun k => GlobalTheory.LatVac.liftV v (ξ k - evFin F v (x₀ k)) with hz`. Establish `hzat : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z` using `GlobalTheory.VacIndic.at_pi fun k => GlobalTheory.LatVac.at_liftV v _`. Use `set x : κ → AF F := x₀ + z with hx`.
+
+Establish `hevx : (fun i => evFin F v (x i)) = ξ`. Use function extensionality and compare the values at `i`. Simplify using `[hx, hz, GlobalTheory.LatVac.evFin_liftV]`. Establish `hrx : r x = r x₀` using `hr.1 x₀ z hzat`. Establish `hrx1 : r (x + (co.e γ).1) = r x` using `hr.1 x _ (GlobalTheory.VacIndic.at_pi hx1)`.
+
+Establish `key` using `congrFun (hA r hr) x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens] at key`. Establish `hAt : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) (x ⬝ᵥ (co.e γ).2 + ⅟(2 : AF F) * ((co.e γ).1 ⬝ᵥ (co.e γ).2))`. Use `GlobalTheory.VacIndic.at_add ?_ (GlobalTheory.VacIndic.at_mul_left ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.VacIndic.at_sum _ _ fun i => GlobalTheory.VacIndic.at_mul_left (hy1 i)`.
+
+Conclude with `GlobalTheory.VacIndic.at_sum _ _ fun i => GlobalTheory.VacIndic.at_mul_left (hy1 i)`. Rewrite `key` using `[GlobalTheory.VacIndic.psi_of_at ψ hAt, hrx1]`. Establish `hhalf : evFin F v (⅟(2 : AF F)) = (2 : Fv F v)⁻¹`. Rewrite using `[GlobalTheory.VacIndic.invOf_two_eq, GlobalTheory.VacIndic.evFin_algebraMap]`. Simplify using `[map_ofNat]`.
+
+Establish `hdot : ∀ a b : κ → AF F, evFin F v (a ⬝ᵥ b) = (fun i => evFin F v (a i)) ⬝ᵥ (fun i => evFin F v (b i))`. Introduce `a b`. Simplify using `[dotProduct, map_sum, map_mul]`. Establish `hsum : (fun i => evFin F v ((x + (co.e γ).1) i)) = ξ + (GlobalTheory.LatVac.locCo co v γ).1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[← hevx]`. Simplify using `[GlobalTheory.LatVac.locCo]`. Rewrite `key` using `[map_add, map_mul, hhalf, hdot, hdot, hevx, hsum]`. Establish `hr0 : r x ≠ 0` using `hrx ▸ hx₀`. Rewrite using `[GlobalTheory.LatVac.psiAt_apply]`.
+
+Use `key` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Apply `mul_right_cancel₀ hr0` to reduce the goal to its premises. Rewrite using `[← this]`. Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heis_at_local_identity : ∀ {F : Type} [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {W : Type} [AddCommGroup W]
     [Module (AF F) W] {B : W → W → AF F} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar (AF F) ℂ)
     (γ : W) (f : (κ → Fv F v) → ℂ) (χ : ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) γ →

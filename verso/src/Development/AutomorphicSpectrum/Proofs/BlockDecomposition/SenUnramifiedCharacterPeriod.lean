@@ -11,6 +11,31 @@ namespace GlobalTheory.CompanionTheory.LTPer
 
 open GroundTheory.LocalField GroundTheory.PAdicHodge GroundTheory.PAdicHodge.EigenWitt GroundTheory.PAdicHodge.EigenChar
 
+/- English proof (translation)
+Use `isSepClosure_padicAlgCl (p := l) (L := E)` as an intermediate fact. Take `⟨σ₀, hσ₀⟩` from `unramifiedDegree_surjective (K := E) (Ω := PadicAlgCl l) (Multiplicative.ofAdd 1)`. Use `set w : ℤ_[l]ˣ := ψ σ₀ with hwdef`. Take `⟨f, hf, hq⟩` from `exists_card_residueField_eq_pow (p := l) (L := E)`. Take `⟨b, hb, hbσ⟩` from `exists_unit_aInf_eigen (K := E) w`.
+
+Use `set cA := wittToAInf (b : WittVector l (Fpbar l)) with hcA`. Establish `hcu : IsUnit cA` using `b.isUnit.map _`. Use `set θ := WittVector.fontaineTheta (normInteger ℂ_[l]) l`. Use `set xc : ℂ_[l] := ((θ cA : normInteger ℂ_[l]) : ℂ_[l]) with hxcdef`. Establish `hxc : xc ≠ 0`.
+
+Establish `h1 : θ cA ≠ 0` using `(hcu.map θ).ne_zero`. Conclude with `fun h => h1 (Subtype.ext h)`. Use `choose z hz using hbσ`. Establish `hxcσ : ∀ σ, σ • xc = algebraMap ℚ_[l] ℂ_[l] (z σ) * xc` using `fun σ => by`. Rewrite using `[hxcdef, ← AInf.fontaineTheta_gal_smul, hz σ, map_mul, Subring.coe_mul, fontaineTheta_padicIntToWitt]`.
+
+Establish `hz₀ : (z σ₀ : ℚ_[l]) = ((w : ℤ_[l]) : ℚ_[l]) ^ f`. Establish `h1` using `gal_smul_twist_of_degree_one hb hq hσ₀`. Rewrite `h1` using `[← hcA, hz σ₀]`. Establish `h2` using `hcu.mul_left_inj.1 h1`. Establish `h3` using `congrArg (fun y => ((θ y : normInteger ℂ_[l]) : ℂ_[l])) h2`.
+
+Simplify using `only [θ, fontaineTheta_padicIntToWitt] at h3`. Rewrite using `[← PadicInt.coe_pow]`. Conclude with `algebraMap_padic_cp_injective h3`. Establish `hzI : ∀ σ, unramifiedDegree E (PadicAlgCl l) σ = 1 → (z σ : ℚ_[l]) = 1` using `fun σ hσ => by`. Establish `h1` using `gal_smul_twist_of_inertia (b : WittVector l (Fpbar l)) hσ`.
+
+Rewrite `h1` using `[← hcA, hz σ]`. Establish `h2 : IsPerfectoidField.padicIntToWitt l (z σ) * cA = IsPerfectoidField.padicIntToWitt l 1 * cA`. Rewrite using `[h1, map_one, one_mul]`. Establish `h3` using `congrArg (fun y => ((θ y : normInteger ℂ_[l]) : ℂ_[l])) (hcu.mul_left_inj.1 h2)`. Simplify using `only [θ, fontaineTheta_padicIntToWitt] at h3`.
+
+Use `algebraMap_padic_cp_injective h3` as an intermediate fact. Rewrite using `[this, PadicInt.coe_one]`. Take `⟨χ, hχc, hχ⟩` from `exists_eigenChar hxc (fun σ => ⟨_, hxcσ σ⟩)`. Establish `hχeq : ∀ σ, ((χ σ : ℚ_[l]ˣ) : ℚ_[l]) = (z σ : ℚ_[l])` using `fun σ => eq_of_mul_eq hxc ((hχ σ).symm.trans (hxcσ σ))`. Establish `hψne : ∀ σ, ((((ψ σ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])) ≠ 0` using `fun σ => by`.
+
+Introduce `h`. Conclude with `(ψ σ).ne_zero (Subtype.ext (h.trans PadicInt.coe_zero.symm))`. Set `ρC : Gal(PadicAlgCl l/E) →* ℂ_[l]` to `{ toFun := fun σ => algebraMap ℚ_[l] ℂ_[l] ((((ψ σ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) ^ f * ((χ σ⁻¹ : ℚ_[l]ˣ) : ℚ_[l])) map_one' := by simp map_mul' := fun a c => by`. Simplify using `only [mul_inv_rev, map_mul, Units.val_mul, PadicInt.coe_mul, mul_pow]`. Use `ring }`.
+
+Establish `hρC : Continuous ρC`. Establish `hc1 : Continuous fun σ : Gal(PadicAlgCl l/E) => (((ψ σ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])`. Establish `hu : Continuous fun σ : Gal(PadicAlgCl l/E) => ((ψ σ : ℤ_[l]ˣ) : ℤ_[l])` using `(Units.continuous_val (M := ℤ_[l])).comp hψ`. Conclude with `(continuous_subtype_val : Continuous (fun y : ℤ_[l] => (y : ℚ_[l]))).comp hu`. Establish `hc2 : Continuous fun σ : Gal(PadicAlgCl l/E) => ((χ σ⁻¹ : ℚ_[l]ˣ) : ℚ_[l])` using `Units.continuous_val.comp (hχc.comp continuous_inv)`.
+
+Conclude with `isometry_algebraMap_padic_cp.continuous.comp ((hc1.pow f).mul hc2)`. Establish `hρval : ∀ σ, ρC σ = algebraMap ℚ_[l] ℂ_[l] ((((ψ σ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) ^ f * (z σ : ℚ_[l])⁻¹)` using `fun σ => by`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] ℂ_[l] _ = _`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val, hχeq]`. Establish `hall` using `eq_one_of_degree_one ρC hρC hσ₀ (by rw [hρval, hz₀, ← hwdef, mul_inv_cancel₀ (pow_ne_zero _ (hψne σ₀)), map_one]) (fun σ hσ => by rw [hρval, hzI σ hσ, hI σ hσ, Units.val_one, PadicInt.coe_one, one_pow, inv_one, mul_one, map_one])`.
+
+Use `⟨f, hf, xc, hxc, fun σ => ?_⟩` and prove the remaining obligations. Establish `h1 : (((ψ σ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) ^ f * (z σ : ℚ_[l])⁻¹ = 1` using `algebraMap_padic_cp_injective (by rw [map_one, ← hρval]; exact hall σ)`. Establish `hz0 : (z σ : ℚ_[l]) ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, inv_zero, mul_zero]`.
+
+Conclude with `zero_ne_one h1`. Rewrite using `[hxcσ σ, (mul_inv_eq_one₀ hz0).1 h1]`.
+-/
 theorem exists_pow_eigenvector_of_unramified_units {l : ℕ} [Fact l.Prime]
     (E : IntermediateField ℚ_[l] (Om l)) [FiniteDimensional ℚ_[l] ↥E]
     (ψ : Gal(Om l/↥E) →* ℤ_[l]ˣ) (hψ : Continuous ψ)

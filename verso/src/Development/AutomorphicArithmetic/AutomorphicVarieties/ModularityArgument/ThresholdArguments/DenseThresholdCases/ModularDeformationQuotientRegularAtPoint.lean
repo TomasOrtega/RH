@@ -22,6 +22,17 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 attribute [local instance high] DivisionSemiring.to_moduleIsTorsionFree
+/- English proof (translation)
+Introduce `_ Ω _ _ _ l _ c D T hF hD c' h K X B Λ ι J₀ hM φ hφ J hJ k _ _ _ y hy hyJ hU hI q hq hqy`. Establish `hQ` using `P1.psPair D T c' h X k y hy`. Use `haveI : IsLocalHom (algebraMap c'.O k) := ⟨fun a ha => by`. Assume the negation of the conclusion as `hn`. Conclude with `ha.ne_zero (hQ.loc a hn)⟩`.
+
+Use `letI : Algebra (ResidueField c'.O) k := (ResidueField.lift (algebraMap c'.O k)).toAlgebra`. Use `haveI : IsScalarTower c'.O (ResidueField c'.O) k := IsScalarTower.of_algebraMap_eq fun a => rfl`. Take `⟨hfin, hchar, -⟩` from `P1.coefRes c'`. Take `⟨ρ, hρ, hρc⟩` from `P1.rhoEx D T c' h K (PowerSeries k) _ (maximalIdeal _) (fun a ha => by`. Rewrite using `[PowerSeries.algebraMap_apply, hQ.loc a ha, map_zero]`.
+
+Conclude with `zero_mem _) hQ.pair hQ.cont`. Take `⟨P, hP, hform⟩` from `P1.formEx D T hF hD c' h K _ _ ρ hQ.pair hρ`. Take `⟨ψ, hψ, hflag⟩` from `P1.psiEx D T c' h K _ _ ρ hQ.pair hρ`. Take `⟨hψr, hψc⟩` from `P1.redPsi D T c' h K k _ hQ ψ hψ`. Set `x : W.Point K.r` to `{ K := k, ρ := ρ, cont := hρc, P := P, symm := hP, form := hform, red := P1.redDet D T c' h K k _ hQ ρ hρ ine := P1.ineTriv D T c' h K _ _ ρ hQ.pair hρ, ψ := ψ, ψ_red := hψr, flag := fun v => hflag _ _ v }`.
+
+Take `⟨hne, hA⟩` from `P1.condA D T hF hD c' h K _ _ ψ hψ (fun v i j hij => by`. Take `⟨s, hs, hne⟩` from `hU v i j hij`. Establish `e` using `(sxPdMap (Φ := T.fr ∅) ((algebraMap c'.O X.A).comp (inc h)) (y : X.A →+* PowerSeries k) X.P).1`. Conclude with `⟨s, hs, fun hh => hne ((e v i s).symm.trans (hh.trans (e v j s)))⟩)`. Take `⟨n1, n2, n3⟩` from `h4 l K.s.odd K.V.frame c'.O K.r x hne hψc hA (P1.irrL D T c' h K x _ hQ hρ hI) (P1.condC D T hF hD c' h K) (P1.condD D T hF hD c' h K)`.
+
+Set `f : B.B →ₐ[c'.O] x.A` to `(y.comp (IsScalarTower.toAlgHom c'.O X.B X.A)).comp φ`. Establish `hf : B.IsPt x f` using `P1.mapsPt D T c' h K X B φ hφ _ y ρ ψ hρ hψ`. Establish `key` using `hM.p1 x f ⟨n1, n2, n3, P1.n4V0 l _ _ 4 K.r K.v0 x⟩ hf (fun b hb => hyJ _ (hJ ▸ Ideal.mem_map_of_mem φ hb)) ⟨q.comap φ, hq.comap φ⟩ (fun b hb => hqy _ hb)`. Rewrite using `[hJ]`. Conclude with `Ideal.map_le_iff_le_comap.2 key`.
+-/
 theorem UpperTheory.V.Ws.modular_deformation_quotient_regular_at_point_alt :
     _root_.UpperTheory.V.Ws.UnramifiedInputs → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → T.Deep → ∀ (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (B : W.UniversalOrdinaryDeterminantRing K.r) (Λ : W.LamObj K.r) (ι : PadicAlgCl l ≃+* ℂ) (J₀ : Ideal B.B), B.ModularAlt ι J₀ Λ → ∀ φ : B.B →ₐ[c'.O] X.B, K.IsPhi X 0 B φ → ∀ J : Ideal X.B, J = J₀.map φ → ∀ (k : Type) [Field k] [Finite k] [Algebra c'.O k] (y : X.A →ₐ[c'.O] PowerSeries k),
         (∀ b ∈ maximalIdeal X.B, PowerSeries.constantCoeff (y (algebraMap X.B X.A b)) = 0) →

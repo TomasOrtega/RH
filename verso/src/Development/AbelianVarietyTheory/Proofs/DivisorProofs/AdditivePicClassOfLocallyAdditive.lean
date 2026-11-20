@@ -14,6 +14,9 @@ namespace GlobalTheory.PicGlue
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[Over.comp_left, pull_comp]`.
+-/
 theorem pull_pull_over {X Y Z : Over S} (u : Z ⟶ Y) (v : Y ⟶ X) (c : Pic X.left) :
     CechPic.pull u.left (CechPic.pull v.left c) = CechPic.pull (u ≫ v).left c := by
   rw [Over.comp_left, pull_comp]
@@ -23,6 +26,9 @@ def addDefect (A T : Over S) [GrpObj A] (c : Pic (A ⊗ T).left) : Pic (A ⊗ (A
     CechPic.pull (lift (fst A (A ⊗ T)) (snd A (A ⊗ T) ≫ snd A T)).left c -
     CechPic.pull (lift (snd A (A ⊗ T) ≫ fst A T) (snd A (A ⊗ T) ≫ snd A T)).left c
 
+/- English proof (translation)
+Simplify using `only [addDefect, map_sub, pull_pull_over, comp_lift, MonObj.comp_mul]`.
+-/
 theorem pull_addDefect (A T : Over S) [GrpObj A] (c : Pic (A ⊗ T).left) {Z : Over S} (u : Z ⟶ A ⊗ (A ⊗ T)) :
     CechPic.pull u.left (addDefect A T c) =
       CechPic.pull (lift ((u ≫ fst _ _) * (u ≫ snd _ _ ≫ fst _ _)) (u ≫ snd _ _ ≫ snd _ _)).left c -
@@ -30,6 +36,17 @@ theorem pull_addDefect (A T : Over S) [GrpObj A] (c : Pic (A ⊗ T).left) {Z : O
       CechPic.pull (lift (u ≫ snd _ _ ≫ fst _ _) (u ≫ snd _ _ ≫ snd _ _)).left c := by
   simp only [addDefect, map_sub, pull_pull_over, comp_lift, MonObj.comp_mul]
 
+/- English proof (translation)
+Introduce `S A T _ hA c h0 hloc`. Establish `hd : addDefect A T c = 0`. Use `GlobalTheory.T.rigidified_picard_class_zero_of_locally_zero S A (A ⊗ T) hA _ ?_ fun p ↦ ?_` and prove the remaining obligations. Rewrite using `[pull_addDefect]`. Establish `h1 : lift (1 : A ⊗ T ⟶ A) (snd A T) = snd A T ≫ lift (1 : T ⟶ A) (𝟙 T)`.
+
+Rewrite using `[comp_lift, MonObj.comp_one, Category.comp_id]`. Simplify using `only [lift_fst, lift_snd_assoc, Category.id_comp, _root_.one_mul]`. Rewrite using `[h1, ← pull_pull_over, h0, map_zero, sub_zero, sub_self]`. Take `⟨Z, z, hz, hp, hadd⟩` from `hloc ((snd A T).left p)`. Take `⟨ho, hr⟩` from `GlobalTheory.whiskerLeft_isOpenImmersion_range S A T Z z hz`.
+
+Use `⟨A ⊗ Z, A ◁ z, ho, (hr p).2 hp, ?_⟩` and prove the remaining obligations. Establish `h2` using `hadd (A ⊗ (A ⊗ Z)) (fst _ _) (snd _ _ ≫ fst _ _) (snd _ _ ≫ snd _ _)`. Simplify using `only [pull_pull_over, lift_whiskerLeft, Category.assoc] at h2`. Rewrite using `[pull_addDefect]`. Simplify using `only [whiskerLeft_fst, whiskerLeft_snd_assoc, whiskerLeft_snd]`.
+
+Rewrite using `[h2]`. Normalize the expressions using the abelian group laws. Introduce `Z a a' t`. Establish `h3` using `pull_addDefect A T c (lift a (lift a' t))`. Rewrite `h3` using `[hd, map_zero]`.
+
+Simplify using `only [lift_fst, lift_snd_assoc, lift_snd] at h3`. Rewrite `h3` using `[sub_sub]`. Conclude with `sub_eq_zero.1 h3.symm`.
+-/
 theorem addCls_of_locally : ∀ (S : Scheme.{0}) (A T : Over S) [GrpObj A], IsAbelianScheme A →
     ∀ c : Pic (A ⊗ T).left, GlobalTheory.CechPic.pull (lift (1 : T ⟶ A) (𝟙 T)).left c = 0 →
     (∀ p : T.left, ∃ (Z : Over S) (z : Z ⟶ T), IsOpenImmersion z.left ∧ p ∈ Set.range z.left ∧

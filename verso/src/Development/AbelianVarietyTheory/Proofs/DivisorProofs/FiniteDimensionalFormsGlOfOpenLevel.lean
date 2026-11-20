@@ -24,9 +24,17 @@ namespace GlobalTheory.GLSlice
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a b : ℕ}
 
+/- English proof (translation)
+Rewrite using `[cap, sub_add_cancel]`.
+-/
 theorem qdet_eq_cap (τ : E →+* ℂ) (u : ℂ) : qdet (Eop (a := a) τ) u = cap τ (u - ((a : ℂ) - 1) / 2) := by
   rw [cap, sub_add_cancel]
 
+/- English proof (translation)
+Establish `h1 : Commute (qdet (Eop (a` using `a) τ) u) (rt E a h) := by`. Rewrite using `[qdet_eq_cap, ← infGL_mul_finGL h, map_mul]`. Conclude with `(GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ _ _).mul_right (commute_cap_finRep τ _ _)`. Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`.
+
+Conclude with `hp.add_left hq`. Consider the case `monomial n c`. Rewrite using `[aeval_monomial]`. Conclude with `(Algebra.commute_algebraMap_left _ _).mul_left (h1.pow_left n)`.
+-/
 theorem commute_aeval_rt (τ : E →+* ℂ) (u : ℂ) (P : ℂ[X]) (h : GA E a) :
     Commute (aeval (qdet (Eop (a := a) τ) u) P) (rt E a h) := by
   have h1 : Commute (qdet (Eop (a := a) τ) u) (rt E a h) := by
@@ -38,16 +46,33 @@ theorem commute_aeval_rt (τ : E →+* ℂ) (u : ℂ) (P : ℂ[X]) (h : GA E a) 
     rw [aeval_monomial]
     exact (Algebra.commute_algebraMap_left _ _).mul_left (h1.pow_left n)
 
+/- English proof (translation)
+The claim follows from `isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (hL.mem_nhds L.one_mem) h)`.
+-/
 theorem isOpen_stab {L : Subgroup (GL (Fin a) (Af E))} (hL : IsOpen (L : Set (GL (Fin a) (Af E)))) {φ : Sm E a}
     (h : ∀ k ∈ L, finRep E a k φ = φ) : IsOpen {k | finRep E a k φ = φ} :=
   isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (hL.mem_nhds L.one_mem) h)
 
+/- English proof (translation)
+Establish `e : chart φ.1 (n * g) = chart φ.1 g`. Use function extensionality and compare the values at `x`. Simplify using `only [chart, mul_assoc, h]`. Rewrite using `[lie_apply, lie_apply, lieD, lieD, e]`.
+-/
 theorem lie_left {φ : Sm E a} {n : GA E a} (h : ∀ g, φ.1 (n * g) = φ.1 g) (X : Lie E a) (g : GA E a) :
     (lie E a X φ).1 (n * g) = (lie E a X φ).1 g := by
   have e : chart φ.1 (n * g) = chart φ.1 g := by
     funext x; simp only [chart, mul_assoc, h]
   rw [lie_apply, lie_apply, lieD, lieD, e]
 
+/- English proof (translation)
+Use `⟨fun τ u => ∏ χ ∈ hX.toFinset, (Polynomial.X - C (χ (qdet (Eop τ) u))) ^ N, fun τ u => Finset.prod_ne_zero_iff.2 fun χ _ => pow_ne_zero _ (X_sub_C_ne_zero _), fun φ hφ => ?_⟩` and prove the remaining obligations. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ hφ`. Take `⟨h1, h2, -, χ, hχ, h3⟩` from `hφ`. Use `⟨h1.left, h2, h1.growth, fun τ u => ?_⟩` and prove the remaining obligations.
+
+Use `beta_reduce`. Generalize the expression as in `hz : qdet (Eop (a := a) τ) u = z`. Establish `hzZ : z ∈ Zalg E a`. Rewrite using `[← hz, qdet_eq_cap]`. Conclude with `Algebra.subset_adjoin ⟨τ, _, rfl⟩`.
+
+Establish `key : ∀ n : ℕ, (List.replicate n z).foldr (fun z f => z f - χ z • f) φ = aeval z ((Polynomial.X - C (χ z)) ^ n) φ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Rewrite using `[List.replicate_succ, List.foldr_cons, ih, pow_succ', map_mul, map_sub, aeval_X, aeval_C]`. Both sides reduce to the same expression. Establish `h4` using `h3 (List.replicate N z) List.length_replicate fun y hy => (List.eq_of_mem_replicate hy) ▸ hzZ`. Take `⟨R, hR⟩` from `Finset.dvd_prod_of_mem (fun χ : Module.End ℂ (Sm E a) → ℂ => (Polynomial.X - C (χ z)) ^ N) (hX.mem_toFinset.2 hχ)`. Rewrite using `[hR, mul_comm, map_mul, Module.End.mul_apply, ← key, h4, map_zero]`.
+
+Consider the case `zero => exact ⟨fun _ _ => rfl, fun _ _ => map_zero _, zero_mem _, fun _ _ => map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨fun γ g => congrArg₂ (· + ·) (hx.1 γ g) (hy.1 γ g), fun k hk => by rw [map_add, hx.2.1 k hk, hy.2.1 k hk], add_mem hx.2.2.1 hy.2.2.1, fun τ u => by rw [map_add, hx.2.2.2, hy.2.2.2, add_zero]⟩`. Consider the case `smul c x _ hx`. Conclude with `⟨fun γ g => congrArg (c * ·) (hx.1 γ g), fun k hk => by rw [map_smul, hx.2.1 k hk], Submodule.smul_mem _ c hx.2.2.1, fun τ u => by rw [map_smul, hx.2.2.2, smul_zero]⟩`.
+-/
 theorem span_props (L : Subgroup (GL (Fin a) (Af E))) (W : Submodule ℂ (Kinf E a → ℂ))
     {X : Set (Module.End ℂ (Sm E a) → ℂ)} (hX : X.Finite) (N : ℕ) :
     ∃ Q : (E →+* ℂ) → ℂ → ℂ[X], (∀ τ u, Q τ u ≠ 0) ∧ ∀ φ ∈ Submodule.span ℂ (GlobalTheory.HCF.formsGL E a L W X N),
@@ -83,6 +108,13 @@ theorem span_props (L : Subgroup (GL (Fin a) (Af E))) (W : Submodule ℂ (Kinf E
     exact ⟨fun γ g => congrArg (c * ·) (hx.1 γ g), fun k hk => by rw [map_smul, hx.2.1 k hk],
       Submodule.smul_mem _ c hx.2.2.1, fun τ u => by rw [map_smul, hx.2.2.2, smul_zero]⟩
 
+/- English proof (translation)
+Set `Γ : Submodule ℂ (Sm E a × Sm E a)` to `{ carrier := {x | (∀ γ g, x.1.1 (ratGL E a γ * g) = x.1.1 g) ∧ (∀ k ∈ L, finRep E a k x.1 = x.1) ∧ ∀ g, x.2.1 g = ∫ y in 𝓕, x.1.1 (unip y * g) ∂μ} zero_mem' := ⟨fun _ _ => rfl, fun _ _ => map_zero _, fun _ => (integral_zero _ _).symm⟩ add_mem' := fun {x y} hx hy => ⟨fun γ g => co …`. Establish `hlie : ∀ X, ∀ x ∈ Γ, (lie E a X x.1, lie E a X x.2) ∈ Γ` using `fun X x hx => by`. Use `⟨fun γ g => lie_left (hx.1 γ) X g, fun k hk => ?_, fun g => ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (lie_rt_fin X k) x.1).symm.trans (congrArg (lie E a X) (hx.2.1 k hk))`. Express the relevant statement in the definitionally equal form `lieD X x.2.1 g = _`.
+
+Rewrite using `[funext hx.2.2]`. Conclude with `(GlobalTheory.T.constant_term_automorphic_form_integral E a r μ 𝓕 hμ h𝓕 h1 x.1 hx.1 (isOpen_stab hL hx.2.1)).2 X g`. Use `⟨⟨_, (GlobalTheory.T.constant_term_automorphic_form_integral E a r μ 𝓕 hμ h𝓕 h1 φ hl (isOpen_stab hL hf)).1⟩, fun _ => rfl, fun τ u P hP => ?_⟩` and prove the remaining obligations. Establish `h` using `rel_aeval_qdet Γ (Eop τ) (Eop τ) (fun i j x hx => Γ.smul_mem (1 / 2 : ℂ) (Γ.sub_mem (hlie _ x hx) (Γ.smul_mem Complex.I (hlie _ x hx)))) u P (φ, ⟨_, (GlobalTheory.T.constant_term_automorphic_form_integral E a r μ 𝓕 hμ h𝓕 h1 φ hl (isOpen_stab hL hf)).1⟩) ⟨hl, hf, fun _ => rfl⟩`. Use `Subtype.ext (funext fun g => (h.2.2 g).trans ?_)` and prove the remaining obligations.
+
+Simplify using `only [hP]`. Conclude with `integral_zero _ _`.
+-/
 theorem exists_constTerm {L : Subgroup (GL (Fin a) (Af E))} (hL : IsOpen (L : Set (GL (Fin a) (Af E)))) {r : ℕ}
     [MeasurableSpace (BlockIx a r → Ad E)] [BorelSpace (BlockIx a r → Ad E)] {μ : Measure (BlockIx a r → Ad E)}
     {𝓕 : Set (BlockIx a r → Ad E)} (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratN E a r) 𝓕 μ)
@@ -115,6 +147,9 @@ theorem exists_constTerm {L : Subgroup (GL (Fin a) (Af E))} (hL : IsOpen (L : Se
   simp only [hP]
   exact integral_zero _ _
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) (Ad E)) i j - sInf E ((1 : Matrix (Fin a) (Fin a) (Cinf E)) i j) + sInf E ((1 : Matrix (Fin a) (Fin a) (Cinf E)) i j + nilM x i j) = (1 : Matrix (Fin a) (Fin a) (Ad E)) i j + nilM (fun p => sInf E (x p)) i j`. Rewrite using `[map_add, ← add_assoc, sub_add_cancel]`. Simplify using `only [nilM, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem infGL_unip {r : ℕ} (x : BlockIx a r → Cinf E) : infGL E a (unip x) = unip fun p => sInf E (x p) := by
   ext i j
   change (1 : Matrix (Fin a) (Fin a) (Ad E)) i j - sInf E ((1 : Matrix (Fin a) (Fin a) (Cinf E)) i j) +
@@ -124,6 +159,17 @@ theorem infGL_unip {r : ℕ} (x : BlockIx a r → Cinf E) : infGL E a (unip x) =
   simp only [nilM, Matrix.of_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Set `x : BlockIx a r → Cinf E` to `Pi.single ⟨(i, j), hi, hj⟩ z`. Establish `e : ∀ t : ℝ, toL (unip (t • x)).val = oneL E a + t • toL (Matrix.single i j z)` using `fun t => by`. Use extensionality with `i' j' : 2`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) (Cinf E)) i' j' + nilM (t • x) i' j' = (1 : Matrix (Fin a) (Fin a) (Cinf E)) i' j' + t • Matrix.single i j z i' j'`. Use `congr 1`.
+
+Simplify using `only [nilM, Matrix.of_apply, Matrix.single_apply, x, Pi.smul_apply, Pi.single_apply, Subtype.mk.injEq, Prod.mk.injEq]`. Distinguish the cases in `hh : i = i' ∧ j = j'`. Take `⟨rfl, rfl⟩` from `hh`. Simplify using `[hi, hj]`. Rewrite using `[if_neg hh, smul_zero] split_ifs with h1 h2`.
+
+Conclude with `absurd ⟨h2.1.symm, h2.2.symm⟩ hh`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish `hd` using `hasDerivAt_curve ψ (blkGL hr p) (fun t => unip (t • x)) (toL (Matrix.single i j z)) (Units.ext (by simpa using e 0)) (by`. Simplify using `only [e]`.
+
+Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const (toL (Matrix.single i j z))).const_add (oneL E a))`. Establish `e2 : (fun t : ℝ => ψ.1 (blkGL hr p * infGL E a (unip (t • x)))) = fun _ => ψ.1 (blkGL hr p)`. Use function extensionality and compare the values at `t`. Take `⟨y', hy'⟩` from `blkGL_mul_unip hr p fun q => sInf E ((t • x) q)`. Rewrite using `[infGL_unip, hy', h]`.
+
+Rewrite `hd` using `[e2]`. Conclude with `hd.unique (hasDerivAt_const _ _)`.
+-/
 theorem lieS_upper {r : ℕ} (hr : r ≤ a) {ψ : Sm E a} (h : ∀ (y : BlockIx a r → Ad E) g, ψ.1 (unip y * g) = ψ.1 g)
     {i j : Fin a} (hi : (i : ℕ) < r) (hj : r ≤ (j : ℕ)) (z : Cinf E) (p : GA E r × GA E (a - r)) :
     (lieS E a i j z ψ).1 (blkGL hr p) = 0 := by
@@ -155,6 +201,17 @@ theorem lieS_upper {r : ℕ} (hr : r ≤ a) {ψ : Sm E a} (h : ∀ (y : BlockIx 
   rw [e2] at hd
   exact hd.unique (hasDerivAt_const _ _)
 
+/- English proof (translation)
+Set `M' : Submodule ℂ (Sm E a)` to `{ carrier := {ψ | ∀ (y : BlockIx a r → Ad E) g, ψ.1 (unip y * g) = ψ.1 g} zero_mem' := fun _ _ => rfl add_mem' := fun hx hy y g => congrArg₂ (· + ·) (hx y g) (hy y g) smul_mem' := fun c _ hx y g => congrArg (c * ·) (hx y g) }`. Set `K : Submodule ℂ (Sm E a)` to `{ carrier := {ψ | ∀ p : GA E r × GA E (a - r), ψ.1 (blkGL hr p) = 0} zero_mem' := fun _ => rfl add_mem' := fun hx hy p => (congrArg₂ (· + ·) (hx p) (hy p)).trans (add_zero _) smul_mem' := fun c _ hx p => (congrArg (c * ·) (hx p)).trans (mul_zero _) }`. Establish `hM : ∀ X, ∀ ψ ∈ M', lie E a X ψ ∈ M'` using `fun X ψ hψ y g => lie_left (hψ y) X g`. Establish `key` using `fun τ : E →+* ℂ => GlobalTheory.T.harishChandra_capelli_uniform_diagonalBlocks (Sm E a) a r hr (Eop τ) (glRel_Eop τ) M' K (fun i j x hx => M'.smul_mem (1 / 2 : ℂ) (M'.sub_mem (hM _ x hx) (M'.smul_mem Complex.I (hM _ x hx)))) (fun i j hi hj x hx => K.smul_mem (1 / 2 : ℂ) (K.sub_me …`. Take `⟨i, rfl⟩` from `(blkEquiv hr).surjective i`.
+
+Take `⟨j, rfl⟩` from `(blkEquiv hr).surjective j`. Take `⟨m₁, m₂⟩` from `p`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Establish `h0 : slice (fstIx hr) (blkGL hr (1, m₂)) x = 0` using `Subtype.ext (funext fun m => by rw [slice_apply, ← blkGL_eq_fst]; exact hx _)`. Establish `h1` using `Eop_slice (fstIx hr) (blkGL hr (1, m₂)) x τ i j`.
+
+Rewrite `h1` using `[h0, map_zero]`. Rewrite using `[blkGL_eq_fst]`. Conclude with `(congrFun (congrArg Subtype.val h1) m₁).symm`. Simplify using `at hij`. Simplify using `at hij`.
+
+Establish `h0 : slice (sndIx hr) (blkGL hr (m₁, 1)) x = 0` using `Subtype.ext (funext fun m => by rw [slice_apply, ← blkGL_eq_snd]; exact hx _)`. Establish `h1` using `Eop_slice (sndIx hr) (blkGL hr (m₁, 1)) x τ i j`. Rewrite `h1` using `[h0, map_zero]`. Rewrite using `[blkGL_eq_snd]`. Conclude with `(congrFun (congrArg Subtype.val h1) m₂).symm) (Q τ) (hQ τ)`.
+
+Use `choose q hq0 hq using key`. Conclude with `⟨q, hq0, fun ψ h1 h2 τ u p => ⟨(hq τ ψ h1 (h2 τ) u).1 p, (hq τ ψ h1 (h2 τ) u).2 p⟩⟩`.
+-/
 theorem exists_block_poly {r : ℕ} (hr : r ≤ a) (Q : (E →+* ℂ) → ℂ → ℂ[X]) (hQ : ∀ τ u, Q τ u ≠ 0) :
     ∃ q : (E →+* ℂ) → ℂ → ℂ[X], (∀ τ u, q τ u ≠ 0) ∧ ∀ ψ : Sm E a,
       (∀ (y : BlockIx a r → Ad E) g, ψ.1 (unip y * g) = ψ.1 g) →
@@ -199,6 +256,25 @@ theorem exists_block_poly {r : ℕ} (hr : r ≤ a) (Q : (E →+* ℂ) → ℂ �
   choose q hq0 hq using key
   exact ⟨q, hq0, fun ψ h1 h2 τ u p => ⟨(hq τ ψ h1 (h2 τ) u).1 p, (hq τ ψ h1 (h2 τ) u).2 p⟩⟩
 
+/- English proof (translation)
+Take `⟨Q, hQ0, hQ⟩` from `span_props L W hX N`. Take `⟨q, hq0, hq⟩` from `exists_block_poly hr Q hQ0`. Use `⟨L.comap (MulAut.conj t⁻¹).toMonoidHom, W.map (LinearMap.funLeft ℂ ℂ fun k => κ⁻¹ * k * κ), q, hL.preimage (f := fun k => t⁻¹ * k * t⁻¹⁻¹) ((continuous_const.mul continuous_id).mul continuous_const), inferInstance, hq0, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨hl, hf, hg, hz⟩` from `hQ φ hφ`. Take `⟨c, hc, hcz⟩` from `exists_constTerm hL hμ h𝓕 h1 φ hl hf`.
+
+Set `ψ : Sm E a` to `rt E a (finGL E a t * infGL E a (Unitary.toUnits κ)) c`. Establish `hψ : ∀ g, ψ.1 g = c.1 (g * (finGL E a t * infGL E a (Unitary.toUnits κ)))` using `fun _ => rfl`. Use `⟨ψ, fun g => by rw [hψ, hc, mul_assoc g], fun γ g => ?_, fun k hk => ?_, fun g => ?_, ?_, hq ψ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, hψ, hc, hc, mul_assoc]`. Conclude with `GlobalTheory.T.constant_term_integral_left_invariant E a r hr μ 𝓕 hμ h𝓕 h1 φ.1 hl γ _`.
+
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `hk' : t⁻¹ * k * t⁻¹⁻¹ ∈ L` using `hk`. Establish `e : g * finGL E a k * (finGL E a t * infGL E a (Unitary.toUnits κ)) = g * (finGL E a t * infGL E a (Unitary.toUnits κ)) * finGL E a (t⁻¹ * k * t⁻¹⁻¹)`. Establish `e' : k * t = t * (t⁻¹ * k * t⁻¹⁻¹)` using `by group`. Rewrite using `[mul_assoc g, mul_assoc g, mul_assoc (finGL E a t), infGL_comm, ← mul_assoc (finGL E a k), ← mul_assoc (finGL E a t), ← map_mul, ← map_mul, e']`.
+
+Express the relevant statement in the definitionally equal form `ψ.1 (g * finGL E a k) = _`. Rewrite using `[hψ, hψ, hc, hc, e]`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← mul_assoc]`.
+
+Conclude with `congrFun (congrArg Subtype.val (hf _ hk')) _`. Use `⟨_, GlobalTheory.HCFct.constTerm_cptTranslate_mem E a L W hW X N r μ 𝓕 hμ h𝓕 h1 φ hφ (g * (finGL E a t * infGL E a (Unitary.toUnits κ))), funext fun k => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ψ.1 (g * infGL E a (Unitary.toUnits k))`. Establish `e : g * infGL E a (Unitary.toUnits k) * (finGL E a t * infGL E a (Unitary.toUnits κ)) = g * (finGL E a t * infGL E a (Unitary.toUnits κ)) * infGL E a (Unitary.toUnits (κ⁻¹ * k * κ))`. Establish `e' : k * κ = κ * (κ⁻¹ * k * κ)` using `by group`.
+
+Rewrite using `[mul_assoc g, mul_assoc g, ← mul_assoc (infGL E a _), infGL_comm, mul_assoc (finGL E a t), mul_assoc (finGL E a t), ← map_mul, ← map_mul, ← map_mul, ← map_mul, e']`. Rewrite using `[hψ, hc, e]`. Both sides reduce to the same expression. Establish `g1 : c.1 ∈ growth E a` using `fun g => by`. Simplify using `only [hc]`.
+
+Conclude with `GlobalTheory.T.constant_term_moderate_growth E a r μ 𝓕 hμ h𝓕 h1 φ hl (isOpen_stab hL hf) hg g`. Establish `g2` using `SmoothFinite.growth_cptRep g1 κ`. Introduce `g`. Take `⟨C, n, h⟩` from `g2 (g * finGL E a t)`. Use `⟨C, n, fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hψ, ← mul_assoc, mul_assoc g, infGL_comm, ← mul_assoc]`. Conclude with `h y`. Introduce `y g`. Rewrite using `[hψ, hψ, hc, hc, mul_assoc]`. Conclude with `constTerm_unip_invariant E a r μ 𝓕 hμ h𝓕 φ.1 hl y _`.
+
+Introduce `τ u`. Rewrite using `[← Module.End.mul_apply, (commute_aeval_rt τ u _ _).eq, Module.End.mul_apply, hcz τ u _ (hz τ u), map_zero]`.
+-/
 theorem exists_translated {L : Subgroup (GL (Fin a) (Af E))} (hL : IsOpen (L : Set (GL (Fin a) (Af E))))
     {W : Submodule ℂ (Kinf E a → ℂ)} (hW : FiniteDimensional ℂ W) {X : Set (Module.End ℂ (Sm E a) → ℂ)} (hX : X.Finite)
     (N : ℕ) {r : ℕ} (hr : r ≤ a) [MeasurableSpace (BlockIx a r → Ad E)] [BorelSpace (BlockIx a r → Ad E)]
@@ -263,6 +339,13 @@ theorem exists_translated {L : Subgroup (GL (Fin a) (Af E))} (hL : IsOpen (L : S
   · intro τ u
     rw [← Module.End.mul_apply, (commute_aeval_rt τ u _ _).eq, Module.End.mul_apply, hcz τ u _ (hz τ u), map_zero]
 
+/- English proof (translation)
+Take `⟨V, hV, h⟩` from `GlobalTheory.T.finiteDimensional_slowlyIncreasing_killed_capelliPolynomials E b hb (L.comap (embGL f)) (hL.preimage (continuous_embGL f)) (W.map (LinearMap.funLeft ℂ ℂ (embK f))) inferInstance (fun τ u => q τ (u + ((b : ℂ) - 1) / 2)) fun τ u => hq τ _`. Use `⟨V.map (Sm E b).subtype, inferInstance, fun ψ g h1 h2 h3 h4 h5 => ⟨slice f g ψ, h _ h1 (fun k hk => ?_) (fun m => ?_) (growth_slice f g ψ h4) fun τ u => ?_, rfl⟩⟩` and prove the remaining obligations. Use `Subtype.ext (funext fun m => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ.1 (g * embGL f (m * finGL E b k)) = ψ.1 (g * embGL f m)`. Rewrite using `[map_mul, embGL_finGL, ← mul_assoc]`.
+
+Conclude with `congrFun (congrArg Subtype.val (h2 _ hk)) _`. Use `⟨_, h3 (g * embGL f m), funext fun k => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ.1 (g * embGL f m * infGL E a (Unitary.toUnits (embK f k))) = ψ.1 (g * embGL f (m * infGL E b (Unitary.toUnits k)))`. Rewrite using `[map_mul, embGL_infGL, toUnits_embK, mul_assoc]`. Rewrite using `[cap, aeval_qdet_slice]`.
+
+Conclude with `Subtype.ext (funext fun m => h5 τ _ m)`.
+-/
 theorem exists_slice_space (f : Fin b ↪ Fin a)
     (hb : ∀ (L : Subgroup (GL (Fin b) (Af E))), IsOpen (L : Set (GL (Fin b) (Af E))) →
       ∀ W : Submodule ℂ (Kinf E b → ℂ), FiniteDimensional ℂ W → ∀ X : Set (Module.End ℂ (Sm E b) → ℂ), X.Finite →
@@ -290,10 +373,18 @@ theorem exists_slice_space (f : Fin b ↪ Fin a)
     exact Subtype.ext (funext fun m => h5 τ _ m)
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `map_blkGL hr (algebraMap E (Ad E)) γ`.
+-/
 theorem ratGL_blkGL {r : ℕ} (hr : r ≤ a) (γ : GL (Fin r) E × GL (Fin (a - r)) E) :
     ratGL E a (blkGL hr γ) = blkGL hr (ratGL E r γ.1, ratGL E (a - r) γ.2) :=
   map_blkGL hr (algebraMap E (Ad E)) γ
 
+/- English proof (translation)
+Introduce `E _ _ _ a hind L hL W hW X hX N r _ hr _ _ μ 𝓕 hμ h𝓕 h1 t κ`. Take `⟨L', W', q, hL', hW', hq, h⟩` from `exists_translated hL hW hX N hr.le hμ h𝓕 h1 t κ`. Take `⟨V, hV, hs⟩` from `exists_slice_space (fstIx hr.le) (hind r hr) hL' hW' q hq`. Use `⟨V, hV, fun φ hφ m₂ => ?_⟩` and prove the remaining obligations. Take `⟨ψ, e, h2, h3, h4, h5, h6⟩` from `h φ hφ`.
+
+Use `hs ψ (blkGL hr.le (1, m₂)) (fun γ m => by` as an intermediate fact. Rewrite using `[← blkGL_eq_fst, ← blkGL_eq_fst, ← h2 (γ, 1) (blkGL hr.le (m, m₂)), ratGL_blkGL, ← map_mul]`. Use the proof step `simp) h3 h4 h5 fun τ u m => by rw [← blkGL_eq_fst]; exact (h6 τ u _).1`. Simplify `this` using `only [← blkGL_eq_fst, e]`.
+-/
 theorem slice_fst : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), (∀ a' : ℕ, a' < a → ∀ (L' : Subgroup (GL (Fin a') (Af E))), IsOpen (L' : Set (GL (Fin a') (Af E))) → ∀ W' : Submodule ℂ (Kinf E a' → ℂ), FiniteDimensional ℂ W' → ∀ X' : Set (Module.End ℂ (Sm E a') → ℂ), X'.Finite → ∀ N' : ℕ, FiniteDimensional ℂ (Submodule.span ℂ (GlobalTheory.HCF.formsGL E a' L' W' X' N'))) → ∀ (L : Subgroup (GL (Fin a) (Af E))), IsOpen (L : Set (GL (Fin a) (Af E))) → ∀ W : Submodule ℂ (Kinf E a → ℂ), FiniteDimensional ℂ W → ∀ X : Set (Module.End ℂ (Sm E a) → ℂ), X.Finite → ∀ N : ℕ, ∀ (r : ℕ), 0 < r → ∀ (hr : r < a), ∀ [MeasurableSpace (BlockIx a r → Ad E)] [BorelSpace (BlockIx a r → Ad E)] (μ : Measure (BlockIx a r → Ad E)) (𝓕 : Set (BlockIx a r → Ad E)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratN E a r) 𝓕 μ → μ 𝓕 = 1 → ∀ (t : GL (Fin a) (Af E)) (κ : Kinf E a), ∃ V₁ : Submodule ℂ (GA E r → ℂ), FiniteDimensional ℂ V₁ ∧ ∀ φ ∈ Submodule.span ℂ (GlobalTheory.HCF.formsGL E a L W X N), ∀ m₂ : GA E (a - r), (fun m₁ : GA E r => ∫ x in 𝓕, φ.1 (unip x * (GlobalTheory.LeviGA.blkGL hr.le (m₁, m₂) * finGL E a t * infGL E a (Unitary.toUnits κ))) ∂μ) ∈ V₁ := by
   intro E _ _ _ a hind L hL W hW X hX N r _ hr _ _ μ 𝓕 hμ h𝓕 h1 t κ
   obtain ⟨L', W', q, hL', hW', hq, h⟩ := exists_translated hL hW hX N hr.le hμ h𝓕 h1 t κ

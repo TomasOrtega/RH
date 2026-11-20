@@ -8,6 +8,19 @@ open scoped TensorProduct
 
 namespace UpperTheory.Gal.G1
 
+/- English proof (translation)
+Establish `hW : X'⁻¹ * X' = 1` using `Matrix.nonsing_inv_mul _ hX'`. Establish `hW' : (X'.map σ)ᵀ * ((X'⁻¹).map σ)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, hW]`. Simplify using the standard rewrite rules. Establish `hWd : IsUnit (X'⁻¹).det`.
+
+Establish `: (X'⁻¹).det * X'.det = 1` using `by rw [← Matrix.det_mul, hW, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one _ this`. Establish `hzX : (z • X).map σ = σ z • X.map σ`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Use `⟨(X'⁻¹ * (z • X))ᵀ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_transpose, Matrix.det_mul, Matrix.det_smul]`. Conclude with `hWd.mul ((hz.pow _).mul hX)`. Establish `hP : ((X'⁻¹ * (z • X))ᵀ).map σ = σ z • ((X.map σ)ᵀ * ((X'⁻¹).map σ)ᵀ)`. Establish `e : (X'⁻¹ * (z • X)).map σ = (X'⁻¹).map σ * (σ z • X.map σ)`.
+
+Rewrite using `[Matrix.map_mul, hzX]`. Rewrite using `[Matrix.transpose_map, e, Matrix.transpose_mul, Matrix.transpose_smul, Matrix.smul_mul]`. Rewrite using `[Matrix.transpose_transpose, hP]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hW, hW', Matrix.one_mul, Matrix.mul_one]`.
+
+Use `_ = X'⁻¹ * (X' * N'b * (X'.map σ)ᵀ) * ((X'⁻¹).map σ)ᵀ := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = X'⁻¹ * ((s * (z * σ z)) • (X * Nb * (X.map σ)ᵀ)) * ((X'⁻¹).map σ)ᵀ := by`. Rewrite using `[h', h, hτ, smul_smul]`. Use `congr 3`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = X'⁻¹ * (z • X) * (s • Nb) * (σ z • ((X.map σ)ᵀ * ((X'⁻¹).map σ)ᵀ)) := by`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem congr_core {n : ℕ} {B : Type*} [CommRing B] (σ : B →+* B)
     (Nb N'b Mb X X' : Matrix (Fin n) (Fin n) B) (τ τ' s z : B)
     (hz : IsUnit z) (hX : IsUnit X.det) (hX' : IsUnit X'.det)
@@ -46,6 +59,27 @@ private theorem congr_core {n : ℕ} {B : Type*} [CommRing B] (σ : B →+* B)
           congr 1
           ring
 
+/- English proof (translation)
+Introduce `E _ _ _ n M N N' K _ _ θ D hθ hD t t' a b s ht' ht X X' hX hX' h h'`. Set `F` to `maximalRealSubfield E`. Set `B` to `K ⊗[F] E`. Set `σ` to `GlobalTheory.HermGlobal.baseConj (IsCMField.complexConj E) K`. Set `cB : K →+* B` to `algebraMap K B`.
+
+Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap F K).injective`. Establish `hmul : ∀ x y : E, inE K (x * y) = inE K x * inE K y` using `fun x y => by`. Simplify using `[inE, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `hrat : ∀ q : ℚ, inE K (q : E) = cB (q : K)` using `fun q => by`. Establish `e : ((Algebra.TensorProduct.includeRight : E →ₐ[F] B) : E →+* B).comp (Rat.castHom E) = cB.comp (Rat.castHom K)` using `RingHom.ext_rat _ _`.
+
+Conclude with `congrArg (fun f : ℚ →+* B => f q) e`. Establish `hint : inE K (D : E) = cB (D : K)`. Use `hrat (D : ℚ)` as an intermediate fact. Simplify using `using this`. Use `set z : B := cB a + cB b * inE K θ with hzdef`.
+
+Establish `hσθ : σ (inE K θ) = -inE K θ` using `by show (1 : K) ⊗ₜ[F] (IsCMField.complexConj E θ) = _`. Rewrite using `[hθ, TensorProduct.tmul_neg]`. Establish `hσc : ∀ x : K, σ (cB x) = cB x` using `fun x => σ.commutes x`. Establish `hσz : σ z = cB a - cB b * inE K θ`. Rewrite using `[hzdef, map_add, map_mul, hσc, hσc, hσθ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hθθ : inE K θ * inE K θ = cB (D : K)`. Rewrite using `[← hmul, ← pow_two, hD, hint]`. Establish `hnorm : z * σ z = cB (a ^ 2 - D * b ^ 2)`. Rewrite using `[hσz, hzdef, map_sub, map_mul, map_pow, map_pow]`.
+
+Take the linear combination `(-(cB b) ^ 2) * hθθ`. Establish `hu : (a ^ 2 - D * b ^ 2) ≠ 0` using `fun h0 => ht' (by rw [ht, h0, mul_zero])`. Establish `hzu : IsUnit z`. Establish `: IsUnit (z * σ z)`. Rewrite using `[hnorm]`.
+
+Conclude with `(IsUnit.mk0 _ hu).map cB`. Conclude with `isUnit_of_mul_isUnit_left this`. Establish `hsm : ∀ (c : K) (A : Matrix (Fin n) (Fin n) B), c • A = cB c • A` using `fun c A => by`. Use extensionality with `i j`. Simplify using `[Algebra.smul_def, cB]`.
+
+Take `⟨P, hP, hE⟩` from `congr_core (σ : B →+* B) (N.map (inE K)) (N'.map (inE K)) (M.map (inE K)) X X' (cB t) (cB t') (inE K (s : E)) z hzu hX hX' (by`. Establish `hn2 : z * (σ : B →+* B) z = cB (a ^ 2 - D * b ^ 2)` using `hnorm`. Rewrite using `[hn2, hrat, ht, map_mul, map_mul])`. Use the proof step `(by rw [← hsm]; exact h) (by rw [← hsm]; exact h')`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations.
+
+Establish `hN : ((s : E) • N).map (fun x => (1 : K) ⊗ₜ[F] x) = inE K (s : E) • N.map (inE K)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `hmul _ _`. Rewrite using `[hN]`.
+
+Conclude with `hE`.
+-/
 theorem pCongrScale : CongrScale := by
   intro E _ _ _ n M N N' K _ _ θ D hθ hD t t' a b s ht' ht X X' hX hX' h h'
   let F := maximalRealSubfield E

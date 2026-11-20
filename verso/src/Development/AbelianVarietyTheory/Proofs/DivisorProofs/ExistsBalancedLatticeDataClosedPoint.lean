@@ -26,6 +26,11 @@ noncomputable section
 
 namespace GlobalTheory.UPoinc.ClosedPt
 
+/- English proof (translation)
+Introduce `o' Ω _ _ _ hA M x hic R _ _ _ j hC`. Take `⟨e, -⟩` from `hC`. Establish `hinjΩ` using `M.stalkHom_injective x`. Use `haveI : IsDomain (M.Z.presheaf.stalk x) := hinjΩ.isDomain`. Use `haveI : CharZero Ω := hA.char`.
+
+Use `haveI : CharZero (M.Z.presheaf.stalk x) := (RingHom.charZero_iff hinjΩ).2 inferInstance`. Use `haveI := hic`. Use `haveI : Algebra.EssFiniteType ℤ (M.Z.presheaf.stalk x) := GlobalTheory.Poinc.CompletedStalk.essFiniteType_int_stalk M x`. Take `⟨hRd, hRi⟩` from `GlobalTheory.AnalyticNormality.completion_isDomain_and_isIntegrallyClosed (M.Z.presheaf.stalk x)`. Conclude with `IsIntegrallyClosed.of_equiv e`.
+-/
 theorem cpl_isIntegrallyClosed : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (M : RatModel o' Ω) (x : M.Z), IsIntegrallyClosed (M.Z.presheaf.stalk x) → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (j : M.Z.presheaf.stalk x →+* R), IsCpl j → IsIntegrallyClosed R := by
   intro o' Ω _ _ _ hA M x hic R _ _ _ j hC
   obtain ⟨e, -⟩ := hC
@@ -38,6 +43,9 @@ theorem cpl_isIntegrallyClosed : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Al
   obtain ⟨hRd, hRi⟩ := GlobalTheory.AnalyticNormality.completion_isDomain_and_isIntegrallyClosed (M.Z.presheaf.stalk x)
   exact IsIntegrallyClosed.of_equiv e
 
+/- English proof (translation)
+Establish `: ∀ i, ∃ k : ℤ, v i = w i + N * k` using `fun i => by`. Take `⟨k, hk⟩` from `(ZMod.intCast_eq_intCast_iff_dvd_sub (w i) (v i) N).1 (h i).symm`. Conclude with `⟨k, by linarith⟩`. Use `choose k hk using this`. Conclude with `⟨k, funext fun i => by simp [hk i, nsmul_eq_mul]⟩`.
+-/
 theorem exists_cong_of_cast {N n : ℕ} (v w : Fin n → ℤ) (h : ∀ i, ((v i : ℤ) : ZMod N) = ((w i : ℤ) : ZMod N)) :
     ∃ k : Fin n → ℤ, v = w + N • k := by
   have : ∀ i, ∃ k : ℤ, v i = w i + N * k := fun i => by
@@ -46,6 +54,11 @@ theorem exists_cong_of_cast {N n : ℕ} (v w : Fin n → ℤ) (h : ∀ i, ((v i 
   choose k hk using this
   exact ⟨k, funext fun i => by simp [hk i, nsmul_eq_mul]⟩
 
+/- English proof (translation)
+Establish `h0 : g' r ^ 2 ∣ g' s ^ 2` using `pow_dvd_pow_of_dvd (map_dvd g' hrs) 2`. Establish `h1 : w ^ (be a a).toNat ∣ w ^ (be b b).toNat` using `(ha.2.dvd_iff_dvd_left).1 ((hb.2.dvd_iff_dvd_right).1 h0)`. Establish `h2` using `(pow_dvd_pow_iff hw.ne_zero hw.not_isUnit).1 h1`. Use `Int.toNat_of_nonneg ha.1` as an intermediate fact. Use `Int.toNat_of_nonneg hb.1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem be_le_of_dvd {R V' X : Type} [CommRing R] [CommRing V'] [IsDomain V'] [AddCommGroup X] (g' : R →+* V') {w : V'}
     (hw : Irreducible w) (be : LinearMap.BilinForm ℤ X) {a b : X} {r s : R}
     (ha : 0 ≤ be a a ∧ Associated (g' r ^ 2) (w ^ (be a a).toNat))
@@ -58,6 +71,37 @@ theorem be_le_of_dvd {R V' X : Type} [CommRing R] [CommRing V'] [IsDomain V'] [A
   have := Int.toNat_of_nonneg hb.1
   omega
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c C X₁ M U₀ EE out hAdm hEE x hx`. Take `⟨R, _, _, _, j, G, _, _, gm, D, A, U, hB, hC, hpb, hL, hPsi⟩` from `GlobalTheory.Poinc.CompletedStalk.exists_completion_unif X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ X₁.big M U₀ EE out hAdm hEE x hx`. Take `⟨f, hfm, hfT⟩` from `GlobalTheory.T.integerAction_semiAbelian_along_traits_open E H Dw l Xo c C X₁ M U₀ EE out hAdm`. Establish `hR` using `fun a => GlobalTheory.T.exists_completedLocalRing_endomorphism_character_action X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ M U₀ EE out x R j hB G gm hpb D A U (f a) (hfm a)`. Use `choose fR m hfR using hR`.
+
+Take `⟨T₀, ξ₀, hT₀, hξ₀⟩` from `GlobalTheory.T.exists_unitaryTrait_centred_closedPoint E H Dw l Xo c C X₁ M U₀ EE out hAdm x hx`. Establish `tr` using `GlobalTheory.T.exists_trait_lattice_map_at_closedPoint E H Dw l Xo c C X₁ M U₀ EE out hAdm f hfm hfT x hx R j hB hC G gm hpb D A U hL hPsi m (fun a => ⟨fR a, hfR a⟩)`. Take `⟨V₀, _, _, _, h₀, g₀, ρ₀, -, hirr₀, hsq₀, hsurj₀, hco₀, hlin₀⟩` from `tr T₀ ξ₀ hT₀ (by rw [hξ₀])`. Use `haveI : CharZero R := hB.2`. Use `haveI : IsIntegrallyClosed R := cpl_isIntegrallyClosed X₁.o₁ X₁.Ω₁ M x (hAdm.1.normal x).2 R j hC`.
+
+Establish `hco : ∀ y, ∃ r, PsiCoord D.toPre y r ∧ (y ≠ 0 → r ∈ maximalIdeal R)` using `fun y => by`. Take `⟨r, h1, -, h3, -⟩` from `(GlobalTheory.PsiCoordLocal.main R D inferInstance y).1`. Conclude with `⟨r, h1, h3⟩`. Take `⟨hdvr₀, -, -⟩` from `T₀.cdvr`. Use `haveI := hdvr₀`.
+
+Use `haveI : IsLocalHom g₀ := GlobalTheory.T.isLocalHom_completedStalk_to_dvr_over_trait X₁.o₁ X₁.Ω₁ M x R j hC T₀.V T₀.ϖ V₀ h₀ g₀ ξ₀ hirr₀ hξ₀ hsq₀`. Establish `hinj : Function.Injective ρ₀`. Use `(injective_iff_map_eq_zero ρ₀).2 fun y h0 => by_contra fun hy => ?_` and prove the remaining obligations. Take `⟨r, hr, hrm⟩` from `hco y`. Take `⟨-, has⟩` from `hco₀ y r hr`.
+
+Simplify using `only [h0, map_zero, LinearMap.zero_apply, Int.toNat_zero, pow_zero] at has`. Establish `hu : IsUnit (g₀ r)` using `(isUnit_pow_iff two_ne_zero).1 (has.isUnit_iff.2 isUnit_one)`. Conclude with `(mem_maximalIdeal r |>.1 (hrm hy)) ((isUnit_map_iff g₀ r).1 hu)`. Set `e₀ : D.toPre.X ≃+ T₀.P.D.toPre.X` to `AddEquiv.ofBijective ρ₀ ⟨hinj, hsurj₀⟩`. Establish `he₀ : ∀ y, e₀ y = ρ₀ y` using `fun _ => rfl`.
+
+Take `⟨hbal, hposdef, hfin, hproj, n, ⟨eb⟩⟩` from `GlobalTheory.T.balanced_posDef_finite_projective_lattice E H Dw l Xo c T₀`. Set `ℓ : ZMod X₁.S.N → ℤ` to `Function.surjInv ZMod.intCast_surjective`. Establish `hℓ : ∀ z, ((ℓ z : ℤ) : ZMod X₁.S.N) = z` using `Function.surjInv_eq _`. Set `α₀ : (Fin n → ZMod X₁.S.N) → D.toPre.X` to `fun cl => e₀.symm (eb.symm (fun i => ℓ (cl i)))`. Establish `hq` using `fun cl => GlobalTheory.T.exists_minimal_psiCoordinate_associated_fourierPower X₁.o₁ X₁.Ω₁ X₁.S X₁.ρ X₁.big M U₀ EE out hAdm hEE x hx R j hB hC G gm hpb D A U hL hPsi (α₀ cl)`.
+
+Use `choose mu hmu1 hmu2 e a he hFF hae hja using hq`. Establish `hcong : ∀ cl (α : T₀.P.D.toPre.X), (∀ i, ((eb α i : ℤ) : ZMod X₁.S.N) = cl i) → CongMod X₁.S.N (e₀.symm α) (α₀ cl)`. Introduce `cl α hα`. Take `⟨k, hk⟩` from `exists_cong_of_cast (N := X₁.S.N) (eb α) (fun i => ℓ (cl i)) (fun i => by rw [hα, hℓ])`. Use `⟨e₀.symm (eb.symm k), e₀.injective (eb.injective ?_)⟩` and prove the remaining obligations.
+
+Simplify using `only [α₀, map_add, map_nsmul, AddEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `hk`. Use `⟨T₀.P.D.toPre.X, inferInstance, inferInstance, hfin, hproj, n, eb, T₀.be, fun cl => ρ₀ (mu cl), e, UTrait.finrank_le_min E H Dw l Xo c T₀, hbal, hposdef, ?_, ?_, fun cl => ⟨he cl, hFF cl⟩, ?_⟩` and prove the remaining obligations. Introduce `cl i`. Take `⟨w, hw⟩` from `hmu1 cl`.
+
+Use `show ((eb (ρ₀ (mu cl)) i : ℤ) : ZMod X₁.S.N) = cl i`. Rewrite using `[← he₀, hw, map_add, map_nsmul, AddEquiv.apply_symm_apply, map_add, map_nsmul, LinearEquiv.apply_symm_apply]`. Simplify using `[hℓ, nsmul_eq_mul]`. Introduce `cl α hα`. Take `⟨r, hr, -⟩` from `hco (mu cl)`.
+
+Take `⟨s, hs, -⟩` from `hco (e₀.symm α)`. Use `be_le_of_dvd g₀ hirr₀ T₀.be (hco₀ _ r hr) (hco₀ _ s hs) (hmu2 cl _ (hcong cl α hα) r s hr hs)` as an intermediate fact. Rewrite `this` using `[← he₀ (e₀.symm α), AddEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `T ξ hT hsp`. Take `⟨V', _, _, _, h, g', ρT, hh, hirr, hsq, hsurjT, hcoT, hlinT⟩` from `tr T ξ hT hsp`.
+
+Establish `hsm : ∀ (c' : 𝓞 E) (z : T₀.P.D.toPre.X), ρT (e₀.symm (c' • z)) = c' • ρT (e₀.symm z)`. Introduce `c' z`. Take `⟨a', rfl⟩` from `H.bar.surjective c'`. Establish `hz : H.bar a' • z = e₀ (m a' (e₀.symm z))`. Rewrite using `[he₀, hlin₀, ← he₀, AddEquiv.apply_symm_apply]`.
+
+Rewrite using `[hz, AddEquiv.symm_apply_apply, hlinT]`. Set `π : T₀.P.D.toPre.X →ₗ[𝓞 E] T.P.D.toPre.X` to `{ toFun := fun z => ρT (e₀.symm z) map_add' := fun y z => by simp only [map_add] map_smul' := fun c' z => hsm c' z }`. Establish `hπ : ∀ y, π (ρ₀ y) = ρT y` using `fun y => by show ρT (e₀.symm (ρ₀ y)) = ρT y`. Rewrite using `[← he₀, AddEquiv.symm_apply_apply]`. Use `⟨π, fun z => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `hsurjT z`. Conclude with `⟨ρ₀ y, hπ y⟩`. Introduce `cl α hα`. Take `⟨r, hr, -⟩` from `hco (mu cl)`. Take `⟨s, hs, -⟩` from `hco (e₀.symm α)`.
+
+Use `be_le_of_dvd g' hirr T.be (hcoT _ r hr) (hcoT _ s hs) (hmu2 cl _ (hcong cl α hα) r s hr hs)` as an intermediate fact. Rewrite using `[hπ, show π α = ρT (e₀.symm α) from rfl]` and apply the resulting hypothesis. Introduce `cl`. Take `⟨r, hr, -⟩` from `hco (mu cl)`. Take `⟨-, has⟩` from `hcoT (mu cl) r hr`.
+
+Rewrite using `[hπ]`. Establish `hord` using `GlobalTheory.T.uniformiserOrder_eq_of_associated_stalkImage E H Dw l Xo c X₁.o₁ X₁.Ω₁ M x T ξ hsp R j V' h g' hh hirr hsq (a cl ^ 2) _ (by rw [map_pow, map_pow]; exact (((hja cl r hr).map g').pow_pow (n := 2)).trans has)`. Rewrite `hord` using `[map_pow, hae cl, ← pow_mul, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem exists_lattice_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (M : RatModel X₁.o₁ X₁.Ω₁) (U₀ : M.Z.Opens) (EE : M.Lat X₁.S.J) (out : ZHOut X₁.ρ M U₀ EE), X₁.S.admitted M U₀ → X₁.S.IsEE M U₀ EE → ∀ x : M.Z, IsClosed ({x} : Set M.Z) → ∃ (X : Type) (_ : AddCommGroup X) (_ : Module (𝓞 E) X) (_ : Module.Finite (𝓞 E) X) (_ : Module.Projective (𝓞 E) X) (n : ℕ) (eb : X ≃ₗ[ℤ] (Fin n → ℤ)) (b₀ : LinearMap.BilinForm ℤ X) (μ : (Fin n → ZMod X₁.S.N) → X) (e : (Fin n → ZMod X₁.S.N) → X₁.Ω₁), Module.finrank (𝓞 E) X ≤ min Dw.p Dw.q ∧ b₀ ∈ balForms H.bar X ∧ (∀ y, y ≠ 0 → 0 < b₀ y y) ∧ (∀ cl i, ((eb (μ cl) i : ℤ) : ZMod X₁.S.N) = cl i) ∧ (∀ cl (α : X), (∀ i, ((eb α i : ℤ) : ZMod X₁.S.N) = cl i) → b₀ (μ cl) (μ cl) ≤ b₀ α α) ∧ (∀ cl, e cl ≠ 0 ∧ ∃ (T₀ : AddSubgroup X₁.S.Gam) (c' : T₀ →+ ZMod X₁.S.N) (κ : X₁.S.J × (T₀ → ZMod ((X₁.S.r * X₁.S.N) ^ 2))) (x₀ : X₁.S.Gam), X₁.S.IsoFree T₀ ∧ e cl = X₁.S.FF T₀ c' κ / X₁.S.th x₀) ∧ ∀ (T : UTrait Xo c) (ξ : Sp T.V ⟶ M.Z), (∃ ξ₀ : Sp (FractionRing T.V) ⟶ U₀.toScheme, ξ₀ ≫ U₀.ι = jK T.V ≫ ξ ∧ X₁.Lies (ξ₀ ≫ out.u₀) T.y) → ξ (IsLocalRing.closedPoint T.V) ⤳ x → ∃ π : X →ₗ[𝓞 E] T.P.D.toPre.X, Function.Surjective π ∧ (∀ cl (α : X), (∀ i, ((eb α i : ℤ) : ZMod X₁.S.N) = cl i) → T.be (π (μ cl)) (π (μ cl)) ≤ T.be (π α) (π α)) ∧ ∀ cl, UOrdEq M T ξ (e cl ^ (2 * X₁.S.N)) (T.be (π (μ cl)) (π (μ cl))).toNat := by
   intro E _ _ _ H Dw l Xo c C X₁ M U₀ EE out hAdm hEE x hx
   obtain ⟨R, _, _, _, j, G, _, _, gm, D, A, U, hB, hC, hpb, hL, hPsi⟩ :=

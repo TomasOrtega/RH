@@ -8,6 +8,23 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.PiSpanV
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Establish `hex : ∃ n, ∃ s : Finset ι, s.card = n ∧ K = K0 ⊔ Ideal.span (Set.range fun u : s => f u)`. Use `⟨_, Finset.univ, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Use `congr 2`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Take `⟨s, hs, hK⟩` from `Nat.find_spec hex`. Use `⟨s, hK, fun c hc u => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Establish `hun : IsUnit (c u)`.
+
+Assume the negation of the conclusion as `h'`. Conclude with `hu h'`. Take `⟨v, hv⟩` from `hun`. Use `Nat.find_min hex (m := (s.erase u).card) (by rw [← hs]; exact Finset.card_erase_lt_of_mem u.2) ⟨s.erase u, rfl, ?_⟩` and prove the remaining obligations. Use `set N : Ideal A := K0 ⊔ Ideal.span (Set.range fun w : s.erase u => f w) with hN`.
+
+Establish `hmem : ∀ w : s, w ≠ u → f w ∈ N` using `fun w hw => Ideal.mem_sup_right (Ideal.subset_span ⟨⟨w, Finset.mem_erase.2 ⟨fun e => hw (Subtype.ext e), w.2⟩⟩, rfl⟩)`. Establish `hNK : N ≤ K`. Rewrite using `[hK]`. Use `sup_le_sup_left (Ideal.span_mono ?_) _` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Conclude with `⟨⟨w, Finset.mem_of_mem_erase w.2⟩, rfl⟩`. Use `le_antisymm ?_ hNK` and prove the remaining obligations. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal A) (IsNoetherian.noetherian K) (maximalIdeal_le_jacobson _) ?_` and prove the remaining obligations. Establish `h1 : f u ∈ N ⊔ maximalIdeal A • K`. Establish `h2 : ∑ w, c w * f w ∈ N ⊔ maximalIdeal A • K` using `(sup_le_sup_right (le_sup_left : K0 ≤ N) (maximalIdeal A * K)) hc`.
+
+Rewrite `h2` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ u)]`. Establish `h3 : ∑ w ∈ Finset.univ.erase u, c w * f w ∈ N ⊔ maximalIdeal A • K` using `Ideal.mem_sup_left (Ideal.sum_mem _ fun w hw => Ideal.mul_mem_left _ _ (hmem w (Finset.mem_erase.1 hw).1))`. Establish `h4` using `Ideal.mul_mem_left _ (↑v⁻¹ : A) (sub_mem h2 h3)`. Rewrite `h4` using `[add_sub_cancel_right, ← hv, Units.inv_mul_cancel_left]`. Then use the resulting hypothesis. Use `conv_lhs => rw [hK]`.
+
+Use `sup_le (le_sup_of_le_left le_sup_left) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Distinguish the cases in `hw : w = u`. Substitute `hw` using the available equality. Conclude with `h1`.
+
+Conclude with `Ideal.mem_sup_left (hmem w hw)`.
+-/
 private theorem rel_pres_min {A ι : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [Fintype ι]
     (K K0 : Ideal A) (f : ι → A) (h : K = K0 ⊔ Ideal.span (Set.range f)) :
     ∃ s : Finset ι, K = K0 ⊔ Ideal.span (Set.range fun u : s => f u) ∧
@@ -55,11 +72,23 @@ private theorem rel_pres_min {A ι : Type} [CommRing A] [IsLocalRing A] [IsNoeth
   · subst hw; exact h1
   · exact Ideal.mem_sup_left (hmem w hw)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X s`.
+-/
 private theorem rel_pres_span_X {O σ : Type} [CommRing O] (s : Finset σ) :
     ∀ f : MvPowerSeries σ O, (∀ n : σ →₀ ℕ, (∀ i ∈ s, n i = 0) → coeff n f = 0) →
       f ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ O)) :=
   _root_.UpperTheory.Reformulated.B.PowerSeriesMemSpanAllVariables.pi_span_X s
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨f, rfl⟩` from `W.surj x`. Establish `h1` using `rel_pres_span_X Finset.univ (f - algebraMap O _ (constantCoeff f)) (fun n hn => by`. Establish `: n = 0` using `Finsupp.ext fun i => hn i (Finset.mem_univ i)`. Substitute `this` using the available equality.
+
+Simplify using `[MvPowerSeries.algebraMap_apply])`. Establish `h2 : ∀ I : Ideal R, (∀ s, W.z s ∈ I) → W.π f - algebraMap O R (constantCoeff f) ∈ I`. Introduce `I hI`. Establish `hle : Ideal.span (Set.range (MvPowerSeries.X : W.σ → MvPowerSeries W.σ O)) ≤ I.comap W.π`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `hI s`. Use `hle h1` as an intermediate fact. Rewrite `this` using `[Ideal.mem_comap, map_sub, AlgHom.commutes]`. Then use the resulting hypothesis. Establish `h3 : algebraMap O R (constantCoeff f) ∈ maximalIdeal R`.
+
+Simplify using `using sub_mem hx (h2 _ hz)`. Establish `h4 : constantCoeff f ∈ maximalIdeal O` using `fun hu => h3 (hu.map _)`. Establish `h5` using `h2 (Ideal.span (Set.range W.z)) fun s => Ideal.subset_span ⟨s, rfl⟩`. Simplify using `using add_mem (Ideal.mem_sup_left h5) (Ideal.mem_sup_right (Ideal.mem_map_of_mem (algebraMap O R) h4))`.
+-/
 private theorem rel_pres_max_le {O : Type} [CommRing O] [IsLocalRing O] {X : Type} [AddCommGroup X] {R : Type}
     [CommRing R] [Algebra O R] [IsCO O R] (W : WPres O X R) (hz : ∀ s, W.z s ∈ maximalIdeal R) :
     maximalIdeal R ≤ Ideal.span (Set.range W.z) ⊔ (maximalIdeal O).map (algebraMap O R) := by
@@ -84,6 +113,25 @@ private theorem rel_pres_max_le {O : Type} [CommRing O] [IsLocalRing O] {X : Typ
   simpa using add_mem (Ideal.mem_sup_left h5)
     (Ideal.mem_sup_right (Ideal.mem_map_of_mem (algebraMap O R) h4))
 
+/- English proof (translation)
+Introduce `O _ _ _ _ X _ _ _ B _ _ _ R _ _ _ WB W₀ i hB h0 hi τ _ z wt hz hgen`. Establish `him : ∀ s, i (WB.z s) ∈ maximalIdeal R` using `fun s => by`. Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`. Conclude with `hB s`. Establish `hz' : ∀ s : WB.σ ⊕ τ, Sum.elim (fun s => i (WB.z s)) z s ∈ maximalIdeal R ∧ Sum.elim (fun s => i (WB.z s)) z s ∈ W₀.part (Sum.elim WB.wt wt s)`.
+
+Introduce and unpack `(s | t)`. Conclude with `⟨him s, hi s⟩`. Conclude with `hz t`. Take `⟨W, e, he⟩` from `pres_new O X R W₀ h0 (WB.σ ⊕ τ) (Sum.elim WB.wt wt) (Sum.elim (fun s => i (WB.z s)) z) hz' (hgen.trans (sup_le_sup_right (sup_le (le_sup_of_le_left (Ideal.span_mono (by`. Introduce and unpack `_ ⟨t, rfl⟩`.
+
+Conclude with `⟨.inr t, rfl⟩))) (by`. Use `(Ideal.map_mono (rel_pres_max_le WB hB)).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_sup]`. Use `sup_le_sup ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_span]`.
+
+Use `Ideal.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨s, rfl⟩, rfl⟩`. Conclude with `⟨.inl s, rfl⟩`. Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.map_le_iff_le_comap]`. Introduce `c hc`.
+
+Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, AlgHom.commutes]`. Conclude with `Ideal.mem_map_of_mem _ hc)) _))`. Establish `hW : ∀ s, W.z s ∈ maximalIdeal R ∧ W.z s ∈ W₀.part (W.wt s)` using `fun s => by`. Take `⟨s, rfl⟩` from `e.surjective s`. Rewrite using `[(he s).1, (he s).2]`.
+
+Conclude with `hz' s`. Establish `hpart` using `pres_indep O X R W₀ h0 W (fun s => (hW s).1) fun s => (hW s).2`. Establish `hcomm : W.π.comp (MvPowerSeries.rename fun s => e (.inl s)) = i.comp WB.π`. Use `(co_ev O O R WB.σ (Algebra.ofId _ _) _ him).unique ⟨fun x => ?_, fun s => ?_⟩ ⟨fun x => ?_, fun s => rfl⟩` and prove the remaining obligations. Conclude with `AlgHom.commutes _ x`.
+
+Rewrite using `[AlgHom.comp_apply, rename_X]`. Conclude with `(he (.inl s)).1`. Conclude with `AlgHom.commutes _ x`. Establish `hcomm' : ∀ x, W.π (MvPowerSeries.rename (fun s => e (.inl s)) x) = i (WB.π x)` using `fun x => AlgHom.congr_fun hcomm x`. Use `haveI : IsCO O (MvPowerSeries W.σ O) := co_mvps O O W.σ`.
+
+Take `⟨n, g, c, hg, hK⟩` from `ker_gen O X W.σ W.wt _ W.homog`. Establish `hle : (RingHom.ker WB.π).map (MvPowerSeries.rename fun s => e (.inl s)) ≤ RingHom.ker W.π`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hcomm', (RingHom.mem_ker).1 hx, map_zero]`.
+
+Take `⟨s, hs, hmin⟩` from `rel_pres_min (RingHom.ker W.π) ((RingHom.ker WB.π).map (MvPowerSeries.rename fun s => e (.inl s))) g (by rw [← hK, sup_eq_right.2 hle])`. Use `⟨W, s, inferInstance, e, fun u => g u, fun u => c u, ⟨fun s => (he (.inl s)).2, hcomm', fun u => hg u, hs⟩, fun t => he (.inr t), hpart, fun a ha u hu => ?_⟩` and prove the remaining obligations. Use `hmin (fun u => algebraMap O _ (a u)) ?_ u (hu.map _)` and prove the remaining obligations. Simplify `ha` using `only [Algebra.smul_def]`.
+-/
 theorem UpperTheory.V.Alg.rel_pres :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (WB : WPres O X B) (W₀ : WPres O X R) (i : B →ₐ[O] R), (∀ s, WB.z s ∈ maximalIdeal B) → (∀ s, W₀.z s ∈ maximalIdeal R) → (∀ s, i (WB.z s) ∈ W₀.part (WB.wt s)) →
       ∀ (τ : Type) [Fintype τ] (z : τ → R) (wt : τ → X), (∀ t, z t ∈ maximalIdeal R ∧ z t ∈ W₀.part (wt t)) →

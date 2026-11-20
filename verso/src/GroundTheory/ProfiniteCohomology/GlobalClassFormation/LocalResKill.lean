@@ -21,6 +21,13 @@ def brauerResZ : cohomology (galUnitsZ Kv Ω) 2 ⟶ cohomology (galUnitsZ L Ω) 
   cohomologyMapAlong (AlgEquiv.restrictScalarsHom Kv) (continuous_restrictScalarsHom_of_tower Kv L Ω)
     (galUnitsZResScalars Kv Ω L) 2
 
+/- English proof (translation)
+Set `` to `algebraicValuativeRel Kv Ω`. Set `` to `algebraicTopology Kv Ω`. Use `algebraicTopology_isValuativeTopology Kv Ω` as an intermediate fact. Use `algebraicValuativeRel_valuativeExtension Kv Ω` as an intermediate fact. Take `⟨x, rfl⟩` from `(cohomologyULiftIntAddEquiv (galUnits.{0} Kv Ω) 2).surjective y`.
+
+Establish `e` using `cohomologyULiftIntAddEquiv_cohomologyMapAlong (galUnits.{0} Kv Ω) (AlgEquiv.restrictScalarsHom Kv) (continuous_restrictScalarsHom_of_tower Kv L Ω) (galUnitsResScalars Kv L Ω) (galUnitsZResScalars Kv Ω L) (fun _ => rfl) 2 x`. Establish `h0 : brauerInvZOfIsSepClosure Kv Ω (cohomologyULiftIntAddEquiv (galUnits.{0} Kv Ω) 2 x) = brauerInv Kv Ω x` using `brauerInvZ_cohomologyULiftIntAddEquiv Kv Ω x`. Establish `h1 : brauerInv L Ω ((brauerRes Kv L Ω).hom x) = 0`. Rewrite using `[brauerInv_brauerRes, ← h0]`. Conclude with `hy`.
+
+Establish `h2 : (brauerRes Kv L Ω).hom x = 0` using `(brauerInv_bijective L Ω).1 (h1.trans (map_zero _).symm)`. Establish `h3 : cohomologyULiftIntAddEquiv (galUnits.{0} L Ω) 2 ((brauerRes Kv L Ω).hom x) = 0`. Rewrite using `[h2, map_zero]`. Rewrite `h3` using `[brauerRes_eq]`. Conclude with `e.symm.trans h3`.
+-/
 theorem brauerResZ_eq_zero_of_finrank_smul [FiniteDimensional Kv L] (y : cohomology (galUnitsZ Kv Ω) 2)
     (hy : Module.finrank Kv L • brauerInvZOfIsSepClosure Kv Ω y = 0) : (brauerResZ Kv Ω L).hom y = 0 := by
   let := algebraicValuativeRel Kv Ω

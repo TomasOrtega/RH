@@ -15,6 +15,11 @@ namespace GlobalTheory.VacMoveLow
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, 1, one_pos, fun u hu hu' x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hx (if_neg fun h' => h h'.2)`. Rewrite using `[one_smul]`. Establish `h1 : IsHalf e (x + u) ↔ IsHalf e x` using `forall₂_congr fun i j => by`.
+
+Rewrite using `[Matrix.add_apply, mul_add, hu' i j, add_left_inj]`. Conclude with `halfInd_congr (and_congr (AddSubgroup.add_mem_cancel_right _ hu) h1)`. Rewrite using `[one_smul]`. Assume the negation of the conclusion as `h`. Conclude with `hx (if_neg fun h' => h h'.1)`.
+-/
 theorem halfInd_isSBHalf {S T : HSp D} (e : AE D) (Λ : AddSubgroup (WO S T)) : IsSBHalf e Λ (halfInd e Λ) := by
   refine ⟨fun x hx => ?_, 1, one_pos, fun u hu hu' x => ?_, fun x hx => ?_⟩
   · by_contra h; exact hx (if_neg fun h' => h h'.2)
@@ -24,6 +29,11 @@ theorem halfInd_isSBHalf {S T : HSp D} (e : AE D) (Λ : AddSubgroup (WO S T)) : 
     exact halfInd_congr (and_congr (AddSubgroup.add_mem_cancel_right _ hu) h1)
   · rw [one_smul]; by_contra h; exact hx (if_neg fun h' => h h'.1)
 
+/- English proof (translation)
+Establish `he' : e * e = e` using `(GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he).idem`. Establish `key` using `GlobalTheory.SplitLinear.splitLinearModel D ψ S T χS χT om hW ΛS ΛT hS hT P e he f₀ hf hv 1 one_ne_zero Tm hTm 1 h (GlobalTheory.SplitLinear.suppAt_one e S) hh _ _ (GlobalTheory.VecInv.isDetAt_detAt e he' S 1) (GlobalTheory.VecInv.isDetAt_detAt e he' T h) _ (halfInd_isSBHalf e _)`. Establish `h0 : Tm (halfInd e (latO S T ΛS ΛT fun _ => True)) = f₀` using `by simpa using hTm.vac`. Rewrite `key` using `[h0]`. Use `⟨(splitFacO χS χT (GlobalTheory.VecInv.detAt e he' S 1) (GlobalTheory.VecInv.detAt e he' T h) : ℂ) * (GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.modFac S T (GlobalTheory.VecInv.detAt e he' S 1) (GlobalTheory.VecInv.detAt e he' T h) : ℂ), key.trans ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_smul]`. Both sides reduce to the same expression.
+-/
 theorem om_base_law {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om)
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
@@ -50,6 +60,11 @@ namespace GlobalTheory.VacMoveLow
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : Formalism.UG.bc (infPart D) (matHom V h) = 1` using `(GlobalTheory.UnitaryIdemCut.mem_GfC_iff V h).1 hh`. Establish `h2` using `congrArg Units.val h1`. Use extensionality with `i j`. Establish `h3` using `congrFun (congrFun h2 i) j`. Simplify using `only [compAt, Matrix.map_apply]`.
+
+Establish `h4 : infPart D (Formalism.L2.Theta.mt V h i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) _) i j` using `h3`. Rewrite using `[h4, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem compAt_fin {θ : InfFam D} {V : HSp D} {h : GA D V} (hh : h ∈ GfC V) (τ : D.what₂.Tau) :
     compAt θ τ (Formalism.L2.Theta.mt V h) = 1 := by
   have h1 : Formalism.UG.bc (infPart D) (matHom V h) = 1 := (GlobalTheory.UnitaryIdemCut.mem_GfC_iff V h).1 hh
@@ -61,9 +76,15 @@ theorem compAt_fin {θ : InfFam D} {V : HSp D} {h : GA D V} (hh : h ∈ GfC V) (
   rw [h4, Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[actO, GlobalTheory.AdelicLatMove.mt_one]`.
+-/
 theorem actO_one_one {S T : HSp D} (u : WO S T) : actO S T 1 1 u = u := by
   simp [actO, GlobalTheory.AdelicLatMove.mt_one]
 
+/- English proof (translation)
+Establish `hf'` using `GlobalTheory.WeilVacMove.isVacO_om D ψ θ S T χS χT om hW hθ sS sS sT sT _ _ _ _ 1 h (fun τ => by rw [compAt_fin (one_mem _) τ, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [compAt_fin hh τ, Matrix.mul_one, Matrix.one_mul]) (fun u => ⟨fun hu => ⟨actO S T 1 h⁻¹ u, (hk _).2 (by …`. Take `⟨c, -, hc⟩` from `GlobalTheory.VacUnique.vacUniqueO D ψ θ hf.1 hθ S T sS sT kS kT cS cT ΛS ΛT hS hT f _ hf hf'`. Conclude with `⟨c, hc⟩`.
+-/
 theorem om_keep_vac {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ)
     (kS : S.SigOK) (kT : T.SigOK) {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ}
@@ -91,6 +112,9 @@ namespace GlobalTheory.VacMoveLow
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨κ, hκ⟩` from `GlobalTheory.UnitaryIdemCut.exists_cutHA (AF D.host.F) D.sp.cm.sig V.gram r hb`. Use `⟨κ, fun g => ?_⟩` and prove the remaining obligations. Use `congrArg Units.val (hκ g)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.UnitaryIdemCut.cutGL_val]`. Conclude with `this`.
+-/
 theorem exists_cut_hom (V : HSp D) (r : AF D.host.F)
     (hb : algebraMap (AF D.host.F) (AE D) r * algebraMap (AF D.host.F) (AE D) r = algebraMap (AF D.host.F) (AE D) r) :
     ∃ κ : GA D V →* GA D V, ∀ g, Formalism.L2.Theta.mt V (κ g) = algebraMap (AF D.host.F) (AE D) r • Formalism.L2.Theta.mt V g +
@@ -101,6 +125,11 @@ theorem exists_cut_hom (V : HSp D) (r : AF D.host.F)
   rw [GlobalTheory.UnitaryIdemCut.cutGL_val] at this
   exact this
 
+/- English proof (translation)
+Establish `hby : ∀ i j, b * y i j = 0` using `fun i j => by rw [← hy i j, ← mul_assoc, hbe, zero_mul]`. Establish `h1 : actO S T 1 g y = (HMul.hMul (Formalism.L2.Theta.mt T g) (y : Matrix (Fin T.rank) (Fin S.rank) (AE D)) : Matrix (Fin T.rank) (Fin S.rank) (AE D))`. Simplify using `[actO, GlobalTheory.AdelicLatMove.mt_one]`. Rewrite using `[h1, hg, Matrix.add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul]`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, Matrix.mul_apply, Finset.mul_sum, Finset.sum_eq_zero fun k _ => by rw [mul_left_comm, hby, mul_zero], zero_add, sub_mul, one_mul, hby, sub_zero]`.
+-/
 theorem actO_cut_half {S T : HSp D} {b e : AE D} (hbe : b * e = 0) {g : GA D T}
     {M : Matrix (Fin T.rank) (Fin T.rank) (AE D)}
     (hg : Formalism.L2.Theta.mt T g = b • M + (1 - b) • (1 : Matrix (Fin T.rank) (Fin T.rank) (AE D))) {y : WO S T}
@@ -121,6 +150,11 @@ namespace GlobalTheory.VacMoveLow
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h0 : a * (1 - a) = 0` using `by rw [mul_sub, mul_one, ha, sub_self]`. Establish `h0' : (1 - a) * a = 0` using `by rw [mul_comm, h0]`. Establish `h1 : (1 - a) * (1 - a) = 1 - a` using `by rw [sub_mul, one_mul, h0, sub_zero]`. Rewrite using `[sub_sub_cancel]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one]`.
+
+Simplify using `only [smul_add, smul_smul, h0, h0', ha, h1, zero_smul, zero_add, add_zero]`. Rewrite using `[← add_smul, sub_add_cancel, one_smul]`.
+-/
 theorem cut_mul_cut {n : Type} [Fintype n] [DecidableEq n] {a : AE D} (ha : a * a = a) (M : Matrix n n (AE D)) :
     (a • M + (1 - a) • (1 : Matrix n n (AE D))) * ((1 - a) • M + (1 - (1 - a)) • (1 : Matrix n n (AE D))) = M := by
   have h0 : a * (1 - a) = 0 := by rw [mul_sub, mul_one, ha, sub_self]
@@ -139,6 +173,19 @@ variable {D : D7}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hce : cA D e * cA D e = cA D e` using `by rw [← map_mul, he]`. Establish `hec : cA D e * e = 0` using `by rw [mul_comm]; exact hc`. Take `⟨r, hr⟩` from `GlobalTheory.PlaceModelSum.exists_add_conj e`. Establish `hr1 : algebraMap (AF D.host.F) (AE D) (1 - r) = 1 - algebraMap (AF D.host.F) (AE D) r`. Simplify using `only [map_sub, map_one]`.
+
+Establish `hrr : algebraMap (AF D.host.F) (AE D) r * algebraMap (AF D.host.F) (AE D) r = algebraMap (AF D.host.F) (AE D) r`. Rewrite using `[hr, add_mul, mul_add, mul_add, he, hce, hc, hec, add_zero, zero_add]`. Establish `hrr' : algebraMap (AF D.host.F) (AE D) (1 - r) * algebraMap (AF D.host.F) (AE D) (1 - r) = algebraMap (AF D.host.F) (AE D) (1 - r)`. Rewrite using `[hr1, sub_mul, mul_sub, mul_sub, hrr, mul_one, one_mul, mul_one, sub_self, sub_zero]`. Establish `hbe0 : algebraMap (AF D.host.F) (AE D) (1 - r) * e = 0`.
+
+Rewrite using `[map_sub, map_one, hr, sub_mul, add_mul, he, hec, one_mul, add_zero, sub_self]`. Establish `hbe : (1 - algebraMap (AF D.host.F) (AE D) r) * e = 0` using `by rw [← hr1]; exact hbe0`. Take `⟨κe, hκe⟩` from `exists_cut_hom V r hrr`. Take `⟨κo, hκo⟩` from `exists_cut_hom V (1 - r) hrr'`. Rewrite `hκo` using `[hr1]`.
+
+Establish `hκo' : ∀ g, Formalism.L2.Theta.mt V (κo g) = (1 - (e + cA D e)) • Formalism.L2.Theta.mt V g + (e + cA D e) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))` using `fun g => by`. Rewrite using `[hκo, ← hr, sub_sub_cancel]`. Use `⟨κe, κo, fun g => ?_, fun g i j => ?_, fun g hg => ?_, hκo', fun S g y hy => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.L2.Theta.mt V g = Formalism.L2.Theta.mt V (κe g * κo g)`.
+
+Rewrite using `[GlobalTheory.AdelicLatMove.mt_mul, hκe, hκo, cut_mul_cut hrr]`. Establish `e1 : Formalism.L2.Theta.mt V (κe g) - 1 = algebraMap (AF D.host.F) (AE D) r • (Formalism.L2.Theta.mt V g - 1)`. Rewrite using `[hκe, smul_sub, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, ← hr, hrr]`.
+
+Establish `e1 : matHom V (κo g) = GlobalTheory.UnitaryIdemCut.cutGL _ hrr' (matHom V g)` using `Units.ext (by rw [GlobalTheory.UnitaryIdemCut.cutGL_val, hr1]; exact hκo g)`. Rewrite using `[GlobalTheory.UnitaryIdemCut.mem_GfC_iff, e1]`. Conclude with `GlobalTheory.UnitaryIdemCut.bc_cutGL_eq_one _ _ _ ((GlobalTheory.UnitaryIdemCut.mem_GfC_iff _ _).1 hg)`. Conclude with `actO_cut_half hbe (hκo g) hy`.
+-/
 theorem exists_cut_pair (V : HSp D) {e : AE D} (he : e * e = e) (hc : e * cA D e = 0) :
     ∃ κe κo : GA D V →* GA D V, (∀ g, g = κe g * κo g) ∧ (∀ g, SuppAt e V (κe g)) ∧ (∀ g ∈ GfC V, κo g ∈ GfC V) ∧
       (∀ g, Formalism.L2.Theta.mt V (κo g) = (1 - (e + cA D e)) • Formalism.L2.Theta.mt V g +
@@ -177,6 +224,13 @@ theorem exists_cut_pair (V : HSp D) {e : AE D} (he : e * e = e) (hc : e * cA D e
     exact GlobalTheory.UnitaryIdemCut.bc_cutGL_eq_one _ _ _ ((GlobalTheory.UnitaryIdemCut.mem_GfC_iff _ _).1 hg)
   · exact actO_cut_half hbe (hκo g) hy
 
+/- English proof (translation)
+Apply `halfInd_congr` to reduce the goal to its premises. Establish `e0 : actO S T 1⁻¹ (ho⁻¹ * he⁻¹) x = actO S T 1 ho⁻¹ (actO S T 1⁻¹ he⁻¹ x)`. Rewrite using `[← GlobalTheory.SplitLinear.actO_mul, one_mul]`. Rewrite using `[hs, mul_inv_rev, e0]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[hfix' _ h2]`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `e2` using `hfix _ h2`.
+
+Rewrite `e2` using `[← GlobalTheory.SplitLinear.actO_mul, mul_one, mul_inv_cancel, actO_one_one]`. Rewrite `h1`, `h2` using `[← e2]`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem halfInd_move {S T : HSp D} {e : AE D} (Λ : AddSubgroup (WO S T)) {h he ho : GA D T} (hs : h = he * ho)
     (hfix : ∀ w, IsHalf e w → actO S T 1 ho w = w) (hfix' : ∀ w, IsHalf e w → actO S T 1 ho⁻¹ w = w) (x : WO S T) :
     halfInd e Λ (actO S T 1⁻¹ he⁻¹ x) = halfInd e Λ (actO S T 1⁻¹ h⁻¹ x) := by
@@ -198,6 +252,17 @@ end GlobalTheory.VacMoveLow
 
 namespace GlobalTheory.ExpansionInvariance
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t htU Φ β j hj k hk e he Tm hTm`. Establish `hIn : (Pair.top t j : Pair T).InRange D.R.m` using `by show j + 1 ≤ D.R.m`. Use linear arithmetic over natural numbers and integers. Establish `hDef : GlobalTheory.FunObj.DefPair D.R.m (Pair.top t j : Pair T)` using `by show j + 1 ≤ D.R.m`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hW` using `W.om_is _ hIn`. Establish `hvac` using `S.Z.vac_is _ hDef`. Establish `hSd : IsSelfDualC (G.pS (.top t j : Pair T)) (S.N.latS (.top t j))` using `S.N.selfDual (X := .top j) (show j ≤ D.R.m by omega)`. Establish `hTd : IsSelfDualC (G.pT (.top t j : Pair T)) (S.N.latT (.top t j))` using `S.N.selfDual (X := .top (j + 1)) (show j + 1 ≤ D.R.m by omega)`. Establish `kS : (G.pS (.top t j : Pair T)).SigOK` using `(G.isV (X := .top j) (show j ≤ D.R.m by omega) (by simp)).sigOK`.
+
+Establish `kT : (G.pT (.top t j : Pair T)).SigOK` using `(G.isV (X := .top (j + 1)) (show j + 1 ≤ D.R.m by omega) (by simp)).sigOK`. Establish `he' : e * e = e` using `(GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he).idem`. Take `⟨κe, κo, hsplit, hSupp, hFin, hmt, hfix⟩` from `GlobalTheory.VacMoveLow.exists_cut_pair (G.V (.top (j + 1))) he' he.2`. Use `set h : GA D (G.V (.top (j + 1))) := (((S.N.u (.top (j + 1)))⁻¹ * k * S.N.u (.top (j + 1)) : FinPt G (.top (j + 1))) : GA D (G.V (.top (j + 1)))) with hh_def`. Establish `hoLat` using `GlobalTheory.CutStdLat.keep_stdLatO S htU j hj k hk e he (κo h) (hmt h)`.
+
+Take `⟨c₁, hc₁⟩` from `GlobalTheory.VacMoveLow.om_keep_vac hW W.θ_is kS kT (fun τ => W.cart_is (.top j) (show j ≤ D.R.m by omega) τ) (fun τ => W.cart_is (.top (j + 1)) (show j + 1 ≤ D.R.m by omega) τ) hSd hTd hvac (hFin h ((S.N.u (.top (j + 1)))⁻¹ * k * S.N.u (.top (j + 1))).2) hoLat`. Take `⟨c₂, hc₂⟩` from `GlobalTheory.VacMoveLow.om_base_law hW hSd hTd he hvac.2.theta hvac.2.lat hTm (hSupp h)`. Use `⟨c₁ * c₂, ?_⟩` and prove the remaining obligations. Rewrite using `[show ((1 : GA D (G.pS (.top t j : Pair T))), h) = ((1 : GA D (G.pS (.top t j : Pair T))), κe h) * (1, κo h) by`. Rewrite using `[Prod.mk_mul_mk, mul_one, ← hsplit], map_mul, Module.End.mul_apply, hc₁, map_smul, hc₂, smul_smul]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `x`. Use `GlobalTheory.VacMoveLow.halfInd_move _ (hsplit h) (fun w hw => hfix _ h w hw) (fun w hw => ?_) x` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `hfix _ h⁻¹ w hw`.
+-/
 theorem vac_move_low : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T},
     t ∈ U → ∀ {Φ : G.Datum} {β : CosFam G t} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.top (j + 1))),
     finG (G.V (.top (j + 1))) k ∈ S.levTop t Φ β (j + 1) hj → ∀ e : AE D, IsIdemSum e (locPl G t) →

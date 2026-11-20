@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Establish `hb : ((N : ℤ) * Nat.gcdA N X.B.g + (X.B.g : ℤ) * Nat.gcdB N X.B.g) = 1`. Rewrite using `[← Nat.gcd_eq_gcd_ab, hN.gcd_eq_one]`. Both sides reduce to the same expression. Establish `e : v = ((Nat.gcdA N X.B.g : ℤ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • v) + ((Nat.gcdB N X.B.g : ℤ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • v)`. Rewrite using `[smul_smul, smul_smul, ← add_smul]`.
+
+Use `congrArg (fun z : ℤ => (z : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)) hb` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[show ((Nat.gcdA N X.B.g : ℤ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) + ((Nat.gcdB N X.B.g : ℤ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) = 1 by`. Take the linear combination `this, one_smul]`. Rewrite using `[e]`.
+
+Establish `sm : ∀ (z : ℤ) (w : VA X.B.I), w ∈ Mo X.B.I X.B.g (Set.range X.e0) → ((z : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)) • w ∈ Mo X.B.I X.B.g (Set.range X.e0)` using `fun z w hw => by`. Establish `: ((z : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)) • w = (⟨_, intCast_mem _ z⟩ : IntAf X.B.I.F X.B.I.E) • w` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hw`. Conclude with `add_mem (sm _ _ h) (sm _ _ (mL_Mo X.B.I (smul_mem_mL X.B.I hv)))`.
+-/
 theorem bezoutMo {v : VA X.B.I} (hv : v ∈ X.B.I.Lf) {N : ℕ} (hN : Nat.Coprime N X.B.g)
     (h : (N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • v ∈ Mo X.B.I X.B.g (Set.range X.e0)) :
     v ∈ Mo X.B.I X.B.g (Set.range X.e0) := by
@@ -33,6 +40,13 @@ theorem bezoutMo {v : VA X.B.I} (hv : v ∈ X.B.I.Lf) {N : ℕ} (hN : Nat.Coprim
     rw [this]; exact Submodule.smul_mem _ _ hw
   exact add_mem (sm _ _ h) (sm _ _ (mL_Mo X.B.I (smul_mem_mL X.B.I hv)))
 
+/- English proof (translation)
+Take `⟨c, hc, hcm⟩` from `(X.basisApprox a).1`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hmL : mL X.B.I X.B.g ≤ X.B.I.Lf` using `(Mo_le_Lf X).trans' (mL_Mo X.B.I)`. Establish `e : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.crd (X.eX a)) = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.e0 a - (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.e0 a - incl X.B.I (X.crd (X.eX a)))`. Rewrite using `[smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `sub_mem ?_ (hmL hcm)` and prove the remaining obligations. Establish `: (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.e0 a = (⟨_, natCast_mem _ c⟩ : IntAf X.B.I.F X.B.I.E) • X.e0 a` using `rfl`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (X.vectorsInLattice.1 a).1`.
+-/
 theorem cE_mem (a : Fin D.R.rS) : ∃ c : ℕ, Nat.Coprime c X.B.g ∧
     (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.crd (X.eX a)) ∈ X.B.I.Lf := by
   obtain ⟨c, hc, hcm⟩ := (X.basisApprox a).1
@@ -46,6 +60,13 @@ theorem cE_mem (a : Fin D.R.rS) : ∃ c : ℕ, Nat.Coprime c X.B.g ∧
   have : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.e0 a = (⟨_, natCast_mem _ c⟩ : IntAf X.B.I.F X.B.I.E) • X.e0 a := rfl
   rw [this]; exact Submodule.smul_mem _ _ (X.vectorsInLattice.1 a).1
 
+/- English proof (translation)
+Take `⟨c, hc, hcm⟩` from `(X.basisApprox a).2`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hmL : mL X.B.I X.B.g ≤ X.B.I.Lf` using `(Mo_le_Lf X).trans' (mL_Mo X.B.I)`. Establish `e : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.crd (X.fY a)) = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.f0 a - (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.f0 a - incl X.B.I (X.crd (X.fY a)))`. Rewrite using `[smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `sub_mem ?_ (hmL hcm)` and prove the remaining obligations. Establish `: (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.f0 a = (⟨_, natCast_mem _ c⟩ : IntAf X.B.I.F X.B.I.E) • X.f0 a` using `rfl`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (X.vectorsInLattice.1 a).2`.
+-/
 theorem cF_mem (a : Fin D.R.rS) : ∃ c : ℕ, Nat.Coprime c X.B.g ∧
     (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I (X.crd (X.fY a)) ∈ X.B.I.Lf := by
   obtain ⟨c, hc, hcm⟩ := (X.basisApprox a).2
@@ -59,6 +80,27 @@ theorem cF_mem (a : Fin D.R.rS) : ∃ c : ℕ, Nat.Coprime c X.B.g ∧
   have : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.f0 a = (⟨_, natCast_mem _ c⟩ : IntAf X.B.I.F X.B.I.E) • X.f0 a := rfl
   rw [this]; exact Submodule.smul_mem _ _ (X.vectorsInLattice.1 a).2
 
+/- English proof (translation)
+Establish `hM` using `PIW.AdelClassFin.lattice_m_generation X.B.I A w hw`. Use `set S : Set (VA X.B.I) := Set.range fun v : PIW.AdelClassFin.abelian₂ X.B.I A => PIW.AdelClassFin.iv X.B.I (v : Fin X.B.I.n → X.B.I.E) with hS`. Establish `hiv_smul : ∀ (a : 𝓞 X.B.I.E) (v : Fin X.B.I.n → X.B.I.E), PIW.AdelClassFin.iv X.B.I (a • v) = Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (a : X.B.I.E) • PIW.AdelClassFin.iv X.B.I v := by`. Introduce `a v`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[PIW.AdelClassFin.iv, Algebra.smul_def, map_mul]`. Establish `claim : ∀ z ∈ Submodule.span (IntAf X.B.I.F X.B.I.E) S, ∃ v ∈ PIW.AdelClassFin.abelian₂ X.B.I A, ∃ z' ∈ Submodule.span (IntAf X.B.I.F X.B.I.E) S, z = PIW.AdelClassFin.iv X.B.I v + (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • z'`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Take `⟨v, rfl⟩` from `hz`. Conclude with `⟨v, v.2, 0, zero_mem _, by simp⟩`. Consider the case `zero => exact ⟨0, zero_mem _, 0, zero_mem _, by funext i; simp [PIW.AdelClassFin.iv]⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨v, hv, z', hz', rfl⟩` from `ha`.
+
+Take `⟨v', hv', z'', hz'', rfl⟩` from `hb`. Use `⟨v + v', add_mem hv hv', z' + z'', add_mem hz' hz'', ?_⟩` and prove the remaining obligations. Establish `: PIW.AdelClassFin.iv X.B.I (v + v') = PIW.AdelClassFin.iv X.B.I v + PIW.AdelClassFin.iv X.B.I v'`. Use function extensionality and compare the values at `i`. Simplify using `[PIW.AdelClassFin.iv]`.
+
+Rewrite using `[this, smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `smul o z _ hz`. Take `⟨v, hv, z', hz', rfl⟩` from `hz`. Take `⟨a, r, hr, ho⟩` from `PIW.AdelClassFin.dual_dense X.B.I.F X.B.I.E X.B.g (Nat.pos_of_ne_zero (Formalism.L2.SG.Pf.ChiNMul.gB_ne_zero X)) (o : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) o.2`.
+
+Use `⟨a • v, Submodule.smul_mem _ a hv, (⟨r, hr⟩ : IntAf X.B.I.F X.B.I.E) • PIW.AdelClassFin.iv X.B.I v + o • z', add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨v, hv⟩, rfl⟩)) (Submodule.smul_mem _ _ hz'), ?_⟩` and prove the remaining obligations. Rewrite using `[hiv_smul, Subring.smul_def, Subring.smul_def, Subring.smul_def, ho]`. Simplify using `only [mul_add, add_mul, add_smul, smul_add, smul_smul, mul_comm, mul_assoc, mul_left_comm]`. Normalize the expressions using the abelian group laws. Take `⟨v, hv, z', hz', he⟩` from `claim _ hM`.
+
+Establish `hz'L : X.B.I.fmat A⁻¹ *ᵥ z' ∈ X.B.I.Lf`. Establish `hle : Submodule.span (IntAf X.B.I.F X.B.I.E) S ≤ X.B.I.Lf.comap (mvO X.B.I (X.B.I.fmat A⁻¹))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `v.2`.
+
+Conclude with `hle hz'`. Use `⟨Formalism.L2.SG.Pf.LatDictK.vOf X v, ?_, X.B.I.fmat A⁻¹ *ᵥ z', hz'L, ?_⟩` and prove the remaining obligations. Rewrite using `[hlat]`. Unfold `hat`. Rewrite using `[Formalism.L2.SG.Pf.LatDictK.crd_vOf]`.
+
+Conclude with `hv`. Establish `e1 : w = X.B.I.fmat A⁻¹ *ᵥ (X.B.I.fmat A *ᵥ w)`. Rewrite using `[Matrix.mulVec_mulVec, NormCut.fmat_inv_mul, Matrix.one_mulVec]`. Rewrite using `[e1, he, Matrix.mulVec_add, Matrix.mulVec_smul]`. Unfold `hat`.
+
+Rewrite using `[Formalism.L2.SG.Pf.LatDictK.crd_vOf]`. Both sides reduce to the same expression.
+-/
 theorem dense_hat (A : X.B.I.Gf) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hlat : ∀ y, y ∈ Λ ↔ hat X A y ∈ X.B.I.Lf) {w : VA X.B.I} (hw : w ∈ X.B.I.Lf) :
     ∃ y ∈ Λ, ∃ ℓ ∈ X.B.I.Lf, w = hat X A y + (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ℓ := by
@@ -115,6 +157,33 @@ theorem dense_hat (A : X.B.I.Gf) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     rw [Formalism.L2.SG.Pf.LatDictK.crd_vOf]
     rfl
 
+/- English proof (translation)
+Establish `hgS : ((gS D : ℕ) : D.host.E) = ((X.B.g : ℕ) : D.host.E)` using `by rw [X.g_eq]; rfl`. Establish `hP : ∀ p ∈ Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ, hat X A p ∈ Mo X.B.I X.B.g (Set.range X.e0)`. Introduce `p hp`. Use `Submodule.smul_induction_on hp (fun r hr m hm => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Take `⟨o, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`.
+
+Establish `e : hat X A ((o * ((gS D : ℕ) : 𝓞 D.host.E)) • m) = (⟨_, inclE_int X o⟩ : IntAf X.B.I.F X.B.I.E) • ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • hat X A m)`. Rewrite using `[← algebraMap_smul D.host.E, hat_smul, Subring.smul_def, smul_smul]`. Use `congr 1`. Simplify using `only [map_mul, map_natCast, hgS]`. Rewrite using `[e]`.
+
+Conclude with `mL_Mo X.B.I (Submodule.smul_mem _ _ (smul_mem_mL X.B.I ((hlat m).1 hm)))`. Rewrite using `[hat_add]`. Conclude with `add_mem hx hy`. Establish `hQ : ∀ q ∈ XLam Λ (lf D (X.Fu u)), hat X A q ∈ Mo X.B.I X.B.g (Set.range X.e0)`. Introduce `q hq`.
+
+Establish `hqΛ : q ∈ Λ` using `hq.1`. Establish `hqL : hat X A q ∈ X.B.I.Lf` using `(hlat q).1 hqΛ`. Establish `hqX : q ∈ Xsp (lf D (X.Fu u))` using `hq.2`. Establish `hspan : q ∈ Submodule.span D.host.E (Set.range X.eX)`. Establish `e : Xsp (lf D (X.Fu u)) = Submodule.span D.host.E (Set.range X.eX)` using `by show Submodule.span D.host.E (Set.range (X.Fu u).e) = _`.
+
+Rewrite using `[X.Fu_e u]`. Rewrite using `[← e]`. Conclude with `hqX`. Take `⟨s, hs⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 hspan`. Establish `hcoef : ∀ b, (VS D).hT (X.fY b) q = s b`.
+
+Introduce `b`. Rewrite using `[← hs, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, Formalism.L2.SG.Pf.hT_f_e X, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `choose c hc hcF using fun b => cF_mem X b`. Use `set N1 : ℕ := ∏ b, c b with hN1`.
+
+Establish `hN1c : Nat.Coprime N1 X.B.g` using `Nat.Coprime.prod_left fun b _ => hc b`. Use `set t : Fin D.R.rS → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F := fun a => Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm (s a)) with ht`. Establish `hct : ∀ a, (c a : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t a ∈ IntAf X.B.I.F X.B.I.E`. Introduce `a`. Establish `h1` using `hA_int X.B.I (hcF a) hqL`.
+
+Rewrite `h1` using `[hA_smul_left, map_natCast, ← hfixF a, hA_hat, hcoef a]`. Conclude with `h1`. Establish `hot : ∀ a, (N1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t a ∈ IntAf X.B.I.F X.B.I.E`. Introduce `a`. Establish `e : (N1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) = ((∏ b ∈ Finset.univ.erase a, c b : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (c a : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)`.
+
+Rewrite using `[hN1, ← Nat.cast_mul, Finset.prod_erase_mul _ _ (Finset.mem_univ a)]`. Rewrite using `[e, mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) (hct a)`. Establish `hhq : hat X A q = ∑ a, t a • incl X.B.I (X.crd (X.eX a))`. Rewrite using `[← hs, hat_sum]`.
+
+Simplify using `only [hat_smul, hfixE, ht]`. Establish `hsmall : InAt X.B.I X.B.g X.B.g (∑ a, ((N1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t a) • (X.e0 a - incl X.B.I (X.crd (X.eX a))))` using `InAt_sum X _ _ fun a _ => InAt_smul X (hot a) (X.basisApprox a).1`. Take `⟨c2, hc2, hc2m⟩` from `hsmall`. Use `bezoutMo X hqL (N := c2 * N1) (Nat.Coprime.mul_left hc2 hN1c) ?_` and prove the remaining obligations. Establish `e2 : ((c2 * N1 : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • hat X A q = (∑ a, ((c2 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * ((N1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t a)) • X.e0 a) - (c2 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (∑ a, ((N1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t a) • (X.e0 a - incl X. …`.
+
+Rewrite using `[hhq, Finset.smul_sum, Finset.smul_sum]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Simplify using `only [smul_sub, smul_smul, mul_assoc]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e2]`. Use `sub_mem (sum_mem fun a _ => ?_) (mL_Mo X.B.I hc2m)` and prove the remaining obligations. Establish `: ((c2 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * ((N1 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t a)) • X.e0 a = (⟨_, mul_mem (natCast_mem _ c2) (hot a)⟩ : IntAf X.B.I.F X.B.I.E) • X.e0 a` using `rfl`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (sub_Mo X.B.I ⟨a, rfl⟩)`. Take `⟨pq, hpq, q2, hq2, rfl⟩` from `Submodule.mem_sup.1 hz`. Take `⟨p, hp, q1, hq1, rfl⟩` from `Submodule.mem_sup.1 hpq`. Rewrite using `[hat_add, hat_add]`. Conclude with `add_mem (add_mem (hP p hp) (hQ q1 hq1)) (hQ q2 hq2)`.
+-/
 theorem hat_NgX (A : X.B.I.Gf) {u : D.what₂.Word} {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hlat : ∀ y, y ∈ Λ ↔ hat X A y ∈ X.B.I.Lf)
     (hfixE : ∀ a, hat X A (X.eX a) = incl X.B.I (X.crd (X.eX a)))
@@ -198,6 +267,13 @@ theorem hat_NgX (A : X.B.I.Gf) {u : D.what₂.Word} {Λ : Submodule (𝓞 D.host
   rw [hat_add, hat_add]
   exact add_mem (add_mem (hP p hp) (hQ q1 hq1)) (hQ q2 hq2)
 
+/- English proof (translation)
+Establish `e : Xsp (lf D (X.Fu u)) = Submodule.span D.host.E (Set.range X.eX)` using `by show Submodule.span D.host.E (Set.range (X.Fu u).e) = _`. Rewrite using `[X.Fu_e u]`. Rewrite using `[e]`. Use `(Submodule.mem_iInf _).2 fun v => (Submodule.mem_iInf _).2 fun hv => ?_` and prove the remaining obligations. Use `show (VS D).hT v x = 0`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => obtain ⟨a, rfl⟩ := hv`. Conclude with `h a`. Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw => simp [hv, hw]`.
+
+Consider the case `smul c v _ hv => simp [hv]`.
+-/
 theorem orth_of_eX {x : (VS D).V} {u : D.what₂.Word} (h : ∀ a, (VS D).hT (X.eX a) x = 0) :
     x ∈ orth (VS D) (Xsp (lf D (X.Fu u))) := by
   have e : Xsp (lf D (X.Fu u)) = Submodule.span D.host.E (Set.range X.eX) := by
@@ -220,6 +296,43 @@ open Formalism.L2.SG.Pf.BridgeRA
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D X Y u Λ hΛ β b hb hK hN hRT j`. Use `set A : X.B.I.Gf := ((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u with hAdef`. Use `set δ : X.B.I.Gf := A⁻¹ * b.2 * A with hδ`. Establish `hbl : (Y.cs u).lamOf ((Y.cs u).base Λ) = Λ` using `(Y.cs u).base_lam Λ hΛ`. Establish `hlat : ∀ y, y ∈ Λ ↔ hat X A y ∈ X.B.I.Lf` using `fun y => by`.
+
+Use `(Y.cs u).lat_eq ((Y.cs u).base Λ) y` as an intermediate fact. Rewrite `this` using `[hbl]`. Conclude with `this`. Establish `hfixE : ∀ a, hat X A (X.eX a) = incl X.B.I (X.crd (X.eX a))` using `fun a => by`. Unfold `hat`.
+
+Conclude with `fixes_inv X (fixes_mul X (((Y.cs u).h ((Y.cs u).base Λ)).2 _ (Or.inl (Or.inl ⟨a, rfl⟩))) ((X.xu_fix u a).1))`. Establish `hfixF : ∀ a, hat X A (X.fY a) = incl X.B.I (X.crd (X.fY a))` using `fun a => by`. Unfold `hat`. Conclude with `fixes_inv X (fixes_mul X (((Y.cs u).h ((Y.cs u).base Λ)).2 _ (Or.inl (Or.inr ⟨a, rfl⟩))) ((X.xu_fix u a).2))`. Establish `hTF : ∀ a, (X.Fu u).e a = X.eX a` using `(Formalism.L2.SG.Full.Full.frameTie (X := X) u u).1`.
+
+Establish `hbwL : X.bw j ∈ X.B.I.Lf` using `(X.vectorsInLattice.2.2 j).1`. Take `⟨y, hyΛ, ℓ, hℓ, hw⟩` from `dense_hat X A hlat hbwL`. Establish `hyL : hat X A y ∈ X.B.I.Lf` using `(hlat y).1 hyΛ`. Use `set s : Fin D.R.rS → D.host.E := fun a => (VS D).hT (X.eX a) y with hs`. Use `set t : Fin D.R.rS → X.B.I.E ⊗[X.B.I.F] Af X.B.I.F := fun a => Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm (s a)) with ht`.
+
+Establish `hsmall : ∀ a, ∃ c : ℕ, Nat.Coprime c X.B.g ∧ ZMod' X.B.I X.B.g ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t a)`. Introduce `a`. Take `⟨c, hc, hcm⟩` from `(X.basisApprox a).1`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `ht' : t a = hA X.B.I (incl X.B.I (X.crd (X.eX a))) (hat X A y)`.
+
+Rewrite using `[← hfixE a, hA_hat]`. Establish `e : (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t a = (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hA X.B.I (X.e0 a) (X.bw j) - (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hA X.B.I (X.e0 a) ℓ) - hA X.B.I ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.e0 a - inc …`. Rewrite using `[ht', hA_smul_left, map_natCast, hA_sub_left]`. Establish `hy' : hat X A y = X.bw j - (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ℓ` using `by rw [hw]; abel`. Rewrite using `[hy']`.
+
+Simplify using `only [hA_sub_right, hA_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Z_sub X.B.I X.B.g (Z_sub X.B.I X.B.g (Z_smul X.B.I X.B.g (natCast_mem _ c) ((X.weightVectorsIntegral j).2.2 a).1) ⟨_, mul_mem (natCast_mem _ c) (hA_int X.B.I (X.vectorsInLattice.1 a).1 hℓ), rfl⟩) ?_` and prove the remaining obligations. Conclude with `Z_hA_mL X hcm hyL`.
+
+Use `choose c hc hcZ using hsmall`. Use `choose c' hc' hcF using fun a => cF_mem X a`. Use `set N : ℕ := ∏ a, (c a * c' a) with hNdef`. Establish `hNc : Nat.Coprime N X.B.g` using `Nat.Coprime.prod_left fun a _ => Nat.Coprime.mul_left (hc a) (hc' a)`. Use `set x : (VS D).V := (N : D.host.E) • y - ∑ a, ((N : D.host.E) * s a) • X.fY a with hx`.
+
+Establish `hcorr : ∀ a, ((N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t a) • incl X.B.I (X.crd (X.fY a)) ∈ mL X.B.I X.B.g`. Introduce `a`. Take `⟨τ, hτ, hτe⟩` from `hcZ a`. Establish `e : (N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) = ((∏ b ∈ Finset.univ.erase a, (c b * c' b) : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * ((c a : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (c' a : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F))`. Rewrite using `[hNdef, ← Nat.cast_mul, ← Nat.cast_mul, Finset.prod_erase_mul _ _ (Finset.mem_univ a)]`.
+
+Establish `e2 : ((N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t a) • incl X.B.I (X.crd (X.fY a)) = (⟨_, mul_mem (natCast_mem _ (∏ b ∈ Finset.univ.erase a, (c b * c' b))) hτ⟩ : IntAf X.B.I.F X.B.I.E) • ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((c' a : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • incl X.B.I ( …`. Rewrite using `[Subring.smul_def, smul_smul, smul_smul, e]`. Use `congr 1`. Take the linear combination `((∏ b ∈ Finset.univ.erase a, (c b * c' b) : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (c' a : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * hτe`. Rewrite using `[e2]`.
+
+Conclude with `Submodule.smul_mem _ _ (smul_mem_mL X.B.I (hcF a))`. Establish `hhatx : hat X A x = (N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • hat X A y - ∑ a, ((N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t a) • incl X.B.I (X.crd (X.fY a))`. Rewrite using `[hx, hat_sub, hat_smul, hat_sum]`. Simplify using `only [hat_smul, hfixF, map_mul, map_natCast, ht]`. Establish `hmx : (N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • hat X A y - hat X A x ∈ mL X.B.I X.B.g`.
+
+Rewrite using `[hhatx, sub_sub_cancel]`. Conclude with `sum_mem fun a _ => hcorr a`. Establish `hxΛ : x ∈ Λ`. Rewrite using `[hlat]`. Establish `hmL : mL X.B.I X.B.g ≤ X.B.I.Lf` using `(Mo_le_Lf X).trans' (mL_Mo X.B.I)`.
+
+Establish `: hat X A x = (N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • hat X A y - ((N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • hat X A y - hat X A x)` using `by abel`. Rewrite using `[this]`. Use `sub_mem ?_ (hmL hmx)` and prove the remaining obligations. Establish `: (N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • hat X A y = (⟨_, natCast_mem _ N⟩ : IntAf X.B.I.F X.B.I.E) • hat X A y` using `rfl`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ hyL`. Establish `hxo : ∀ a, (VS D).hT (X.eX a) x = 0`. Introduce `a`. Rewrite using `[hx, map_sub, map_smul, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, X.ef, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, hs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hxL : x ∈ Lrep Λ (lf D (X.Fu u))` using `⟨hxΛ, orth_of_eX X hxo⟩`. Establish `hβx` using `hat_NgX X A hlat hfixE hfixF hTF (hRT x hxL)`. Rewrite `hβx` using `[hat_sub, hat_ratLink X A hb]`. Establish `hδbw : (X.B.I.fmat δ - 1) *ᵥ X.bw j ∈ X.B.I.Lf` using `K_sub_mv X.B.I hK hbwL`.
+
+Use `bezoutMo X hδbw hNc ?_` and prove the remaining obligations. Establish `e3 : (N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.I.fmat δ - 1) *ᵥ X.bw j) = (X.B.I.fmat δ *ᵥ hat X A x - hat X A x) + (X.B.I.fmat δ - 1) *ᵥ (((N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • hat X A y - hat X A x) + (N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I …`. Rewrite using `[hw, ← Matrix.mulVec_smul, smul_add]`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_add, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e3]`. Use `add_mem hβx (mL_Mo X.B.I ?_)` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Establish `hm2 : ((N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • hat X A y - hat X A x) + (N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ℓ) ∈ mL X.B.I X.B.g`. Use `add_mem hmx ?_` and prove the remaining obligations.
+
+Establish `: (N : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ℓ) = (⟨_, natCast_mem _ N⟩ : IntAf X.B.I.F X.B.I.E) • ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ℓ)` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (smul_mem_mL X.B.I hℓ)`. Conclude with `sub_mem (mem_mL_of_Kset X hK _ hm2) hm2`.
+-/
 theorem iotaBridgeRAC_holds : IotaBridgeRAC := by
   intro D X Y u Λ hΛ β b hb hK hN hRT j
   set A : X.B.I.Gf := ((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u with hAdef

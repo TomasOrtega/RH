@@ -16,6 +16,9 @@ namespace GlobalTheory.FinTrace
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hm` using `hff.tensorFin_mem`. Rewrite using `[show finFn V ff = tensorFin D.sp.cm.sig V.gram ff ∘ (finPtsEquiv D.sp.cm.sig V.gram).symm from`. Use function extensionality and compare the values at `fun y => GlobalTheory.TrConv.finFn_eq_tensorFin V ff y]`. Conclude with `⟨hm.1.comp_continuous (finPtsEquiv D.sp.cm.sig V.gram).symm.continuous, hm.2.comp_homeomorph (finPtsEquiv D.sp.cm.sig V.gram).symm.toHomeomorph⟩`.
+-/
 theorem finFn_mem_SB (V : HSp D) {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ}
     (hff : IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff) : finFn V ff ∈ GlobalTheory.SplitWeil.SB (GfC V) := by
   have hm := hff.tensorFin_mem
@@ -24,6 +27,15 @@ theorem finFn_mem_SB (V : HSp D) {ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ}
   exact ⟨hm.1.comp_continuous (finPtsEquiv D.sp.cm.sig V.gram).symm.continuous,
     hm.2.comp_homeomorph (finPtsEquiv D.sp.cm.sig V.gram).symm.toHomeomorph⟩
 
+/- English proof (translation)
+Introduce `D V ν _ ff hff W _ _ σ hσ`. Take `⟨hlc, hcs⟩` from `finFn_mem_SB V hff`. Establish `hA : GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν σ (finFn V ff) (smoothOp σ ν (finFn V ff))`. Introduce `v l`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `GlobalTheory.OpTrace.integrable_map (μ := ν) (hσ.1.smoothOp_integrand hlc hcs v).1 (hσ.1.smoothOp_integrand hlc hcs v).2 l l.map_zero`. Simplify `h` using `only [map_smul, smul_eq_mul]`. Rewrite using `[hσ.1.map_smoothOp hlc hcs l v]`. Simplify using `only [smul_eq_mul]`. Take `⟨K₀, ho, hc⟩` from `GlobalTheory.CuspDec.exists_compact_open V`.
+
+Establish `hfd` using `hσ.finiteDimensional_range_smoothOp (μ := ν) hlc hcs ho hc`. Use `⟨⟨_, _, hA, hfd, rfl⟩, fun K _ _ hK hne => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, smoothOp σ ν (finFn V ff) v ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hne (by convert hA using 1; exact (LinearMap.ext h).symm)`. Conclude with `⟨_, hv, GlobalTheory.OpTrace.mem_fixed.1 (hσ.1.smoothOp_mem_fixed hlc hcs hK v)⟩`.
+-/
 theorem hasTrace_finFn : ∀ (D : D7) (V : HSp D) (ν : Measure (GfC V)) [ν.IsHaarMeasure] (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), IsAdmissible σ → (∃ c, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace ν σ (finFn V ff) c) ∧ ∀ K : Subgroup (GfC V), IsOpen (K : Set (GfC V)) → IsCompact (K : Set (GfC V)) → (∀ k ∈ K, ∀ g, finFn V ff (k * g) = finFn V ff g) → ¬ GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.IsIntegralOp ν σ (finFn V ff) 0 → ∃ x : W, x ≠ 0 ∧ ∀ k ∈ K, σ k x = x := by
   intro D V ν _ ff hff W _ _ σ hσ
   obtain ⟨hlc, hcs⟩ := finFn_mem_SB V hff

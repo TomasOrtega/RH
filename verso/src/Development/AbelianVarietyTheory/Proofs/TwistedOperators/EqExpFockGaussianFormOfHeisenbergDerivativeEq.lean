@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.FockFamily
 
+/- English proof (translation)
+Establish `h` using `heq (0, Ring.inverse (blockB J) y) x`. Establish `h1 : (J (0, Ring.inverse (blockB J) y)).1 = y`. Rewrite using `[← blockB_apply, ← ContinuousLinearMap.mul_apply, Ring.mul_inverse_cancel _ hB]`. Both sides reduce to the same expression. Establish `h2 : (J (0, Ring.inverse (blockB J) y)).2 = blockD J (Ring.inverse (blockB J) y)` using `rfl`.
+
+Simplify using `only [GlobalTheory.GaussLine.dHeis, h1, h2, map_zero, zero_sub] at h`. Rewrite using `[fockForm_apply]`. Use `push_cast`. Take the linear combination `h - 2 * Real.pi * (β x (Ring.inverse (blockB J) y) : ℂ) * g x * Complex.I_sq`.
+-/
 theorem fderiv_eq_of_dHeis {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (J : (V × V) →ₗ[ℝ] (V × V)) (hB : IsUnit (blockB J)) (g : V → ℂ)
     (heq : ∀ w x, GlobalTheory.GaussLine.dHeis β (J w) g x = Complex.I * GlobalTheory.GaussLine.dHeis β w g x) (x y : V) :
@@ -20,6 +25,17 @@ theorem fderiv_eq_of_dHeis {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
   push_cast
   linear_combination h - 2 * Real.pi * (β x (Ring.inverse (blockB J) y) : ℂ) * g x * Complex.I_sq
 
+/- English proof (translation)
+Use `set c : ℂ := fockForm β J x x with hc`. Set `h : ℝ → ℂ` to `fun s => g (s • x) * Complex.exp (-(((s ^ 2 : ℝ)) : ℂ) * c)`. Establish `hd : ∀ s : ℝ, HasDerivAt h 0 s`. Introduce `s`. Establish `e1 : HasDerivAt (fun t : ℝ => g (t • x)) (fderiv ℝ g (s • x) x) s`.
+
+Use `(hg (s • x)).hasFDerivAt.comp_hasDerivAt s ((hasDerivAt_id s).smul_const x)` as an intermediate fact. Simplify using `only [one_smul] at this`. Conclude with `this`. Establish `e2 : HasDerivAt (fun t : ℝ => Complex.exp (-(((t ^ 2 : ℝ)) : ℂ) * c)) (Complex.exp (-(((s ^ 2 : ℝ)) : ℂ) * c) * (-((((2 : ℕ) : ℝ) * s ^ (2 - 1) * 1 : ℝ) : ℂ) * c)) s`. Conclude with `((((hasDerivAt_id s).pow 2).ofReal_comp).neg.mul_const c).cexp`.
+
+Establish `hf : fderiv ℝ g (s • x) x = 2 * ((s : ℂ) * c) * g (s • x)`. Rewrite using `[fderiv_eq_of_dHeis β J hB g heq, map_smul, LinearMap.smul_apply, Complex.real_smul]`. Use `show HasDerivAt (fun t : ℝ => g (t • x) * Complex.exp (-(((t ^ 2 : ℝ)) : ℂ) * c)) 0 s`. Use `(e1.mul e2).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[hf]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hconst : ∀ a b : ℝ, h a = h b` using `fun a b => is_const_of_deriv_eq_zero (fun s => (hd s).differentiableAt) (fun s => (hd s).deriv) a b`. Use `hconst 1 0` as an intermediate fact. Simplify using `only [h, one_smul, zero_smul, one_pow, Complex.ofReal_one, neg_mul, one_mul, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Complex.ofReal_zero, zero_mul, neg_zero, Complex.exp_zero, mul_one] at this`.
+
+Rewrite using `[← this, mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+-/
 theorem solution_eq_gauss {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (J : (V × V) →ₗ[ℝ] (V × V)) (hB : IsUnit (blockB J)) (g : V → ℂ)
     (hg : Differentiable ℝ g)

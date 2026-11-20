@@ -37,6 +37,9 @@ def invSub (p q : ℕ) (R : DSRep T₂) : Submodule ℂ (Pairing p q R) where
 
 variable (R : DSRep T₂)
 
+/- English proof (translation)
+Establish `hc` using `(GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.2.2 Z W`. Simplify using `using LinearMap.congr_fun hc P`.
+-/
 theorem fock_comm (Z : Mat p q) (W : Mat r s) (P : Pol p q r s) :
     fockAct1 p q r s Z (fockAct2 p q r s W P) = fockAct2 p q r s W (fockAct1 p q r s Z P) := by
   have hc := (GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.2.2 Z W
@@ -53,17 +56,29 @@ def pre1 (Z : Mat p q) : invSub p q R →ₗ[ℂ] invSub p q R where
   map_add' a b := by apply Subtype.ext; ext P y; simp
   map_smul' c b := by apply Subtype.ext; ext P y; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem invariantFockPairingPrecompAction_coe (Z : Mat p q) (b : invSub p q R) :
     ((pre1 R Z b : invSub p q R) : Pairing p q R) = b.1 ∘ₗ fockAct1 p q r s Z := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `P y`. Simplify using the standard rewrite rules.
+-/
 theorem invariantFockPairingPrecompAction_add (Z W : Mat p q) (b : invSub p q R) :
     pre1 R (Z + W) b = pre1 R Z b + pre1 R W b := by
   apply Subtype.ext; ext P y; simp
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `P y`. Simplify using the standard rewrite rules.
+-/
 theorem invariantFockPairingPrecompAction_smul (c : ℂ) (Z : Mat p q) (b : invSub p q R) :
     pre1 R (c • Z) b = c • pre1 R Z b := by
   apply Subtype.ext; ext P y; simp
 
+/- English proof (translation)
+Establish `hl` using `(GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.1 Z W`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `P y`. Simplify using `[hl]`.
+-/
 theorem invariantFockPairingPrecompAction_commutator (Z W : Mat p q) (b : invSub p q R) :
     pre1 R (Z * W - W * Z) b = pre1 R W (pre1 R Z b) - pre1 R Z (pre1 R W b) := by
   have hl := (GlobalTheory.FockAlg.fock_lie_and_commute p q r s).2.1 Z W
@@ -75,9 +90,15 @@ def evalB (P : Pol p q r s) (y : R.HK.V) : Module.Dual ℂ (invSub p q R) where
   map_add' _ _ := by simp
   map_smul' _ _ := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem evalB_apply (P : Pol p q r s) (y : R.HK.V) (b : invSub p q R) :
     evalB R P y b = b.1 P y := rfl
 
+/- English proof (translation)
+Use extensionality with `b`. Both sides reduce to the same expression.
+-/
 theorem dualMap_evalB (Z : Mat p q) (P : Pol p q r s) (y : R.HK.V) :
     (pre1 R Z).dualMap (evalB R P y) = evalB R (fockAct1 p q r s Z P) y := by
   ext b; rfl
@@ -85,9 +106,17 @@ theorem dualMap_evalB (Z : Mat p q) (P : Pol p q r s) (y : R.HK.V) :
 def MM (p q : ℕ) : Submodule ℂ (Module.Dual ℂ (invSub p q R)) :=
   Submodule.span ℂ (Set.range fun x : Pol p q r s × R.HK.V => evalB R x.1 x.2)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨(P, y), rfl⟩`.
+-/
 theorem evalB_mem (P : Pol p q r s) (y : R.HK.V) : evalB R P y ∈ MM R p q :=
   Submodule.subset_span ⟨(P, y), rfl⟩
 
+/- English proof (translation)
+Introduce `φ hφ`. Establish `: MM R p q ≤ (MM R p q).comap (pre1 R Z).dualMap`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨P, y⟩, rfl⟩`. Use `show (pre1 R Z).dualMap (evalB R P y) ∈ MM R p q`.
+
+Rewrite using `[dualMap_evalB]`. Conclude with `evalB_mem R _ _`. Conclude with `this hφ`.
+-/
 theorem dualMap_mem (Z : Mat p q) : ∀ φ ∈ MM R p q, (pre1 R Z).dualMap φ ∈ MM R p q := by
   intro φ hφ
   have : MM R p q ≤ (MM R p q).comap (pre1 R Z).dualMap := by
@@ -107,6 +136,9 @@ def MMact : Mat p q →ₗ[ℂ] Module.End ℂ (MM R p q) where
     ext φ b
     simp [LinearMap.restrict_apply, LinearMap.dualMap_apply, invariantFockPairingPrecompAction_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem MMact_coe (Z : Mat p q) (φ : MM R p q) (b : invSub p q R) :
     ((MMact R Z φ : MM R p q) : Module.Dual ℂ (invSub p q R)) b = (φ : Module.Dual ℂ _) (pre1 R Z b) := rfl
 
@@ -115,19 +147,39 @@ def Ly (y : R.HK.V) : Pol p q r s →ₗ[ℂ] MM R p q where
   map_add' _ _ := by apply Subtype.ext; ext b; simp
   map_smul' _ _ := by apply Subtype.ext; ext b; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Ly_coe (y : R.HK.V) (P : Pol p q r s) :
     ((Ly R y P : MM R p q) : Module.Dual ℂ (invSub p q R)) = evalB R P y := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `b`. Both sides reduce to the same expression.
+-/
 theorem MMact_Ly (Z : Mat p q) (y : R.HK.V) (P : Pol p q r s) :
     MMact R Z (Ly R y P) = Ly R y (fockAct1 p q r s Z P) := by
   apply Subtype.ext; ext b; rfl
 
+/- English proof (translation)
+Introduce `Z W`. Use extensionality with `φ b`. Rewrite using `[MMact_coe, invariantFockPairingPrecompAction_commutator]`. Simplify using the standard rewrite rules.
+-/
 theorem lie_MMact : IsLieAct (MMact R (p := p) (q := q)) := by
   intro Z W
   ext φ b
   rw [MMact_coe, invariantFockPairingPrecompAction_commutator]
   simp
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `v`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨P, y⟩, rfl⟩` from `hx`. Take `⟨W₀, hfin, hP, hK⟩` from `((GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 P).1`.
+
+Use `⟨W₀.map (Ly R y), inferInstance, ⟨P, hP, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Z hZ _ ⟨P', hP', rfl⟩`. Conclude with `⟨_, hK Z hZ P' hP', (MMact_Ly R Z y P').symm⟩`. Consider the case `zero => exact ⟨⊥, inferInstance, Submodule.zero_mem _, fun Z _ w hw => by`. Rewrite `hw`, the goal using `[Submodule.mem_bot]`.
+
+Rewrite using `[hw, map_zero]⟩`. Consider the case `add x y hx hy ihx ihy`. Take `⟨W₁, f₁, m₁, k₁⟩` from `ihx`. Take `⟨W₂, f₂, m₂, k₂⟩` from `ihy`. Use `⟨W₁ ⊔ W₂, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Submodule.add_mem_sup m₁ m₂`. Introduce `Z hZ w hw`. Take `⟨a, ha, c, hc, rfl⟩` from `Submodule.mem_sup.1 hw`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (k₁ Z hZ a ha) (k₂ Z hZ c hc)`.
+
+Consider the case `smul c x hx ih`. Take `⟨W₁, f₁, m₁, k₁⟩` from `ih`. Conclude with `⟨W₁, f₁, W₁.smul_mem c m₁, k₁⟩`.
+-/
 theorem kfin_MMact (v : MM R p q) :
     ∃ W : Submodule ℂ (MM R p q), FiniteDimensional ℂ W ∧ v ∈ W ∧ KStable (MMact R) W := by
   obtain ⟨v, hv⟩ := v
@@ -153,6 +205,11 @@ theorem kfin_MMact (v : MM R p q) :
     obtain ⟨W₁, f₁, m₁, k₁⟩ := ih
     exact ⟨W₁, f₁, W₁.smul_mem c m₁, k₁⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨P, hP, rfl⟩`. Simplify using `only [SetLike.mem_coe, wtSub, Submodule.mem_iInf, LinearMap.mem_ker] at hP ⊢`. Introduce `a`. Use `hP a` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at this ⊢`.
+
+Rewrite using `[MMact_Ly, ← map_smul, ← map_sub, this, map_zero]`.
+-/
 theorem Ly_wt (y : R.HK.V) (μ : Ix p q → ℚ) :
     (wtSub (fockAct1 p q r s) μ).map (Ly R y) ≤ wtSub (MMact R) μ := by
   rintro _ ⟨P, hP, rfl⟩
@@ -162,6 +219,13 @@ theorem Ly_wt (y : R.HK.V) (μ : Ix p q → ℚ) :
   simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at this ⊢
   rw [MMact_Ly, ← map_smul, ← map_sub, this, map_zero]
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `v`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨P, y⟩, rfl⟩` from `hx`. Establish `hP` using `((GlobalTheory.FockPolGK.pol_locFin_weights p q r s).1 P).2`.
+
+Establish `h1 : Ly R y P ∈ (⨆ μ : Ix p q → ℚ, wtSub (fockAct1 p q r s) μ).map (Ly R y)` using `⟨P, hP, rfl⟩`. Rewrite `h1` using `[Submodule.map_iSup]`. Conclude with `(iSup_mono fun μ => Ly_wt R y μ) h1`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y hx hy ihx ihy => exact Submodule.add_mem _ ihx ihy`.
+
+Consider the case `smul c x hx ih => exact Submodule.smul_mem _ c ih`.
+-/
 theorem wts_MMact (v : MM R p q) : v ∈ ⨆ μ : Ix p q → ℚ, wtSub (MMact R) μ := by
   obtain ⟨v, hv⟩ := v
   induction hv using Submodule.span_induction with
@@ -190,8 +254,18 @@ def BB : Pol p q r s →ₗ[ℂ] R.HK.V →ₛₗ[starRingEnd ℂ] MM R p q :=
     (fun _ _ _ => by apply Subtype.ext; ext b; simp)
     (fun _ _ _ => by apply Subtype.ext; ext b; simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem BB_apply (P : Pol p q r s) (y : R.HK.V) : BB R P y = Ly R y P := rfl
 
+/- English proof (translation)
+Establish `hinv : ∀ Z ∈ upq r s, ∀ (P : Pol p q r s) (y : R.HK.V), BB R (fockAct2 p q r s Z P) y + BB R P (R.HK.act Z y) = 0`. Introduce `Z hZ P y`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `c`. Establish `hc : IsInvPairing R c.1` using `c.2`.
+
+Simplify using `using hc Z hZ P y`. Take `⟨f, h2, hB, hc⟩` from `GlobalTheory.InvPairingTensor.exists_tensor_map p q r s T₂ R hadm (MM R p q) (BB R) hinv`. Establish `h1 : ∀ Z, f ∘ₗ fockAct1 p q r s Z = TensorProduct.map (MMact R Z) LinearMap.id ∘ₗ f` using `fun Z => hc _ _ fun P y => by simp [MMact_Ly]`. Establish `hf : f = 0` using `hno (MMgk R p q) f h1 h2`. Use `LinearMap.ext fun P => LinearMap.ext fun y => ?_` and prove the remaining obligations.
+
+Establish `h` using `hB P y`. Rewrite `h` using `[hf]`. Simplify using `only [LinearMap.zero_apply, map_zero, BB_apply] at h`. Establish `h'` using `congrArg (fun φ : MM R p q => (φ : Module.Dual ℂ (invSub p q R)) ⟨b, hb⟩) h`. Simplify using `using h'`.
+-/
 theorem eq_zero_of_noIntw (hadm : AdmGK R.HK)
     (hno : ∀ (M : GKMod p q) (f : Pol p q r s →ₗ[ℂ] TensorProduct ℂ M.V R.HK.V),
       (∀ Z, f ∘ₗ fockAct1 p q r s Z = TensorProduct.map (M.act Z) LinearMap.id ∘ₗ f) →
@@ -215,6 +289,9 @@ theorem eq_zero_of_noIntw (hadm : AdmGK R.HK)
   have h' := congrArg (fun φ : MM R p q => (φ : Module.Dual ℂ (invSub p q R)) ⟨b, hb⟩) h
   simpa using h'
 
+/- English proof (translation)
+The claim follows from `eq_zero_of_noIntw R hadm (fun M f h1 h2 => hno M f ⟨h1, h2⟩) b hb`.
+-/
 theorem eq_zero_of_noIntw' {T₀ : GrpData (p * r + q * s) (p * s + q * r)} {T₁ : GrpData p q}
     (F : FockData T₀ T₁ T₂) (hadm : AdmGK R.HK)
     (hno : ∀ (M : GKMod p q) (f : Pol p q r s →ₗ[ℂ] TensorProduct ℂ M.V R.HK.V),
@@ -222,11 +299,23 @@ theorem eq_zero_of_noIntw' {T₀ : GrpData (p * r + q * s) (p * s + q * r)} {T�
     (b : Pairing p q R) (hb : IsInvPairing R b) : b = 0 :=
   eq_zero_of_noIntw R hadm (fun M f h1 h2 => hno M f ⟨h1, h2⟩) b hb
 
+/- English proof (translation)
+The claim follows from `(((hUnit r s h).1 (X.ds r s lam').U ⟨(X.ds r s lam').nontriv, (X.ds r s lam').irred⟩).2.2 _ (X.ds r s lam').ι ⟨(X.ds r s lam').ι_inj, (X.ds r s lam').ι_range, (X.ds r s lam').der⟩).1`.
+-/
 theorem admissible_discreteSeries_harishChandraModule (X : ProvA) (hUnit : admQ5 X) (r s : ℕ) (h : 1 ≤ r + s) (lam' : Ix r s → ℚ) :
     AdmGK (X.ds r s lam').HK :=
   (((hUnit r s h).1 (X.ds r s lam').U ⟨(X.ds r s lam').nontriv, (X.ds r s lam').irred⟩).2.2 _
     (X.ds r s lam').ι ⟨(X.ds r s lam').ι_inj, (X.ds r s lam').ι_range, (X.ds r s lam').der⟩).1
 
+/- English proof (translation)
+Consider the cases of `a with`. Consider the case `inl i`. Establish `hi : (i : ℕ) < (al ++ be).length` using `by simp`. Establish `hm : (al ++ be).getD i 0 ∈ al ++ be`. Rewrite using `[List.getD_eq_getElem _ _ hi]`.
+
+Conclude with `List.getElem_mem hi`. Simplify using `only [lamA, ofBlocks]`. Simplify using `only [List.mem_append] at hm ⊢`. The claim follows by propositional logic. Consider the case `inr j`.
+
+Establish `hj : (j : ℕ) < (ga ++ de).length` using `by simp`. Establish `hm : (ga ++ de).getD j 0 ∈ ga ++ de`. Rewrite using `[List.getD_eq_getElem _ _ hj]`. Conclude with `List.getElem_mem hj`. Simplify using `only [lamA, ofBlocks]`.
+
+Simplify using `only [List.mem_append] at hm ⊢`. The claim follows by propositional logic.
+-/
 theorem lamA_mem (al be ga de : List ℚ) (a : Ix (al.length + be.length) (ga.length + de.length)) :
     lamA al be ga de a ∈ al ++ be ++ ga ++ de := by
   cases a with
@@ -245,6 +334,13 @@ theorem lamA_mem (al be ga de : List ℚ) (a : Ix (al.length + be.length) (ga.le
     simp only [List.mem_append] at hm ⊢
     tauto
 
+/- English proof (translation)
+Introduce `X hUnit hAR5 t al be ga de hD hbig i hi1 hip hiq b hb`. Establish `ht : 1 ≤ t` using `hD.1.1`. Establish `hadm` using `admissible_discreteSeries_harishChandraModule X hUnit _ _ (by omega) (lamA' t al be ga de)`. Establish `hv` using `hAR5.1 t al be ga de hD`. Use `eq_zero_of_noIntw' (X.ds _ _ (lamA' t al be ga de)) (X.fock _ _ _ _) hadm ?_ b hb` and prove the remaining obligations.
+
+Introduce `M f hf`. Use `hv (Or.inl ?_) i hi1 hip hiq M f hf` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`. Establish `h` using `hbig _ (lamA_mem al be ga de a)`. Rewrite `h` using `[ha]`.
+
+Establish `hpos : (0 : ℚ) ≤ ((t : ℚ) + 1) / 2` using `by positivity`. Rewrite `h` using `[abs_of_nonneg hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem no_pairing_smaller_source : ∀ X : ProvA, admQ5 X → ArchimedeanRallisFifth X → ∀ (t : ℕ) (al be ga de : List ℚ), DataAR t al be ga de → (∀ e ∈ al ++ be ++ ga ++ de, ((t : ℚ) + 3) / 2 ≤ |e|) → ∀ i : ℕ, 1 ≤ i → i ≤ al.length + be.length → i ≤ ga.length + de.length → ∀ b : Pol (al.length + be.length - i) (ga.length + de.length - i) _ _ →ₗ[ℂ] (X.ds _ _ (lamA' t al be ga de)).HK.V →ₛₗ[starRingEnd ℂ] ℂ, (∀ Z ∈ upq _ _, ∀ P y, b (fockAct2 _ _ _ _ Z P) y + b P ((X.ds _ _ (lamA' t al be ga de)).HK.act Z y) = 0) → b = 0 := by
   intro X hUnit hAR5 t al be ga de hD hbig i hi1 hip hiq b hb
   have ht : 1 ≤ t := hD.1.1

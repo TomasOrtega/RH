@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsSubqu
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.VanishAt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMidJacAt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DetEqv.BlockForm.eq_zero_of_vanishAt | exact GlobalTheory.DetEqv.BlockForm.eq_zero_of_vanishAt | (intros; apply GlobalTheory.DetEqv.BlockForm.eq_zero_of_vanishAt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.split_weil_equivariant_functional_block : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (x m n : ℕ), GlobalTheory.DetEqv.VanishAt k n → n < m → ∀ μ : kˣ →* ℂˣ, (∀ t : ℝ, μ ≠ GlobalTheory.SmGL.absPow k (t : ℂ)) →
     ∀ L : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin (x + m)) k) →ₗ[ℂ] ℂ,
       (∀ (g : GL (Fin (![x, m] 1)) k) (Φ Φ' : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin (x + m)) k)),

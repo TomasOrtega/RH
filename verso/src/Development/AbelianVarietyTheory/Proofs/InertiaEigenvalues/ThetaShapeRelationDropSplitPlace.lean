@@ -18,52 +18,82 @@ namespace GlobalTheory.DownLift.SplitRel
 open GlobalTheory.SplitScalar
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `AddChar.map_zero_eq_one ψ`. Rewrite `h1` using `[← add_neg_cancel z, AddChar.map_add_eq_mul, h, zero_mul]`. Conclude with `zero_ne_one h1`.
+-/
 theorem psi_ne_zero (ψ : AddChar (AF D.host.F) ℂ) (z : AF D.host.F) : ψ z ≠ 0 := by
   intro h
   have h1 := AddChar.map_zero_eq_one ψ
   rw [← add_neg_cancel z, AddChar.map_add_eq_mul, h, zero_mul] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `ha`. Establish `h3 : cA D a * cA D a = cA D a` using `by rw [← map_mul, h1]`. Establish `h4 : cA D a * a = 0` using `by rw [mul_comm, h2]`. Rewrite using `[← hE]`. Take the linear combination `h1 + h3 + h2 + h4`.
+-/
 theorem idem_E {a E : AE D} (ha : IsSplitIdem D a) (hE : a + cA D a = E) : E * E = E := by
   obtain ⟨h1, h2, -⟩ := ha
   have h3 : cA D a * cA D a = cA D a := by rw [← map_mul, h1]
   have h4 : cA D a * a = 0 := by rw [mul_comm, h2]
   rw [← hE]; linear_combination h1 + h3 + h2 + h4
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `ha`. Rewrite using `[← hE]`. Take the linear combination `(-1 : AE D) * h1 - h2`.
+-/
 theorem one_sub_mul_self {a E : AE D} (ha : IsSplitIdem D a) (hE : a + cA D a = E) : (1 - E) * a = 0 := by
   obtain ⟨h1, h2, -⟩ := ha
   rw [← hE]; linear_combination (-1 : AE D) * h1 - h2
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `ha`. Establish `h3 : cA D a * cA D a = cA D a` using `by rw [← map_mul, h1]`. Rewrite using `[← hE]`. Take the linear combination `(-1 : AE D) * h3 - h2`.
+-/
 theorem one_sub_mul_conj {a E : AE D} (ha : IsSplitIdem D a) (hE : a + cA D a = E) : (1 - E) * cA D a = 0 := by
   obtain ⟨h1, h2, -⟩ := ha
   have h3 : cA D a * cA D a = cA D a := by rw [← map_mul, h1]
   rw [← hE]; linear_combination (-1 : AE D) * h3 - h2
 
+/- English proof (translation)
+Rewrite using `[← hE, map_add, GlobalTheory.DualPairCheck.cA_cA, add_comm]`.
+-/
 theorem cA_E {a E : AE D} (hE : a + cA D a = E) : cA D E = E := by
   rw [← hE, map_add, GlobalTheory.DualPairCheck.cA_cA, add_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show (1 - E) * y i j = 0`. Rewrite using `[← hy i j, ← mul_assoc, h, zero_mul]`.
+-/
 theorem smul_half_zero {m n : ℕ} {a E : AE D} (h : (1 - E) * a = 0) {y : Mx D m n} (hy : IsHalf a y) :
     (1 - E) • y = 0 := by
   ext i j
   show (1 - E) * y i j = 0
   rw [← hy i j, ← mul_assoc, h, zero_mul]
 
+/- English proof (translation)
+Introduce `i j`. Use `show cA D a * (cA D a * u i j) = cA D a * u i j`. Rewrite using `[← mul_assoc, ← map_mul, ha.1]`.
+-/
 theorem half_conj {m n : ℕ} {a : AE D} (ha : IsSplitIdem D a) (u : Mx D m n) : IsHalf (cA D a) (cA D a • u) := by
   intro i j
   show cA D a * (cA D a * u i j) = cA D a * u i j
   rw [← mul_assoc, ← map_mul, ha.1]
 
+/- English proof (translation)
+Introduce `i j`. Use `show a * (x i j + a * u i j) = x i j + a * u i j`. Rewrite using `[mul_add, hx i j, ← mul_assoc, ha.1]`.
+-/
 theorem half_add {m n : ℕ} {a : AE D} (ha : IsSplitIdem D a) {x : Mx D m n} (hx : IsHalf a x) (u : Mx D m n) :
     IsHalf a (x + a • u) := by
   intro i j
   show a * (x i j + a * u i j) = x i j + a * u i j
   rw [mul_add, hx i j, ← mul_assoc, ha.1]
 
+/- English proof (translation)
+Rewrite using `[heisO_comm, symplO_smul, map_sub, map_one, hcE, hy, symplO_zero_right, AddChar.map_zero_eq_one, one_smul]`.
+-/
 theorem heisO_off_comm (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} {E : AE D} (hcE : cA D E = E) (u y : WO S T)
     (hy : (1 - E) • y = 0) (f : WO S T → ℂ) :
     heisO ψ S T ((1 - E) • u) (heisO ψ S T y f) = heisO ψ S T y (heisO ψ S T ((1 - E) • u) f) := by
   rw [heisO_comm, symplO_smul, map_sub, map_one, hcE, hy, symplO_zero_right, AddChar.map_zero_eq_one, one_smul]
 
+/- English proof (translation)
+Introduce `w hw f hf`. Simplify using `only [LinearMap.comp_apply, heisL_apply]`. Rewrite using `[heisO_off_comm ψ (cA_E hE) u w (smul_half_zero (one_sub_mul_conj ha hE) hw)]`. Conclude with `hℓ w hw _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf _)`.
+-/
 theorem invForm_comp {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {a E : AE D}
     (ha : IsSplitIdem D a) (hE : a + cA D a = E) {ℓ : (WO S T → ℂ) →ₗ[ℂ] ℂ} (hℓ : InvForm ψ S T a ℓ) (u : WO S T) :
     InvForm ψ S T a (ℓ ∘ₗ heisL ψ S T ((1 - E) • u)) := by
@@ -72,6 +102,9 @@ theorem invForm_comp {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)
   rw [heisO_off_comm ψ (cA_E hE) u w (smul_half_zero (one_sub_mul_conj ha hE) hw)]
   exact hℓ w hw _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf _)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hs ℓ hℓ`. Rewrite using `[hc y hy, hc x₀ hx₀]`. Establish `: (Φ x₀)⁻¹ * Φ x₀ = 1` using `inv_mul_cancel₀ h0`. Take the linear combination `(-(c * Φ y)) * this`.
+-/
 theorem shape_ratio {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {a : AE D} {Φ g : WO S T → ℂ}
     (hs : HasShape ψ S T a Φ g) {x₀ : WO S T} (hx₀ : IsHalf a x₀) (h0 : Φ x₀ ≠ 0) {ℓ : (WO S T → ℂ) →ₗ[ℂ] ℂ}
     (hℓ : InvForm ψ S T a ℓ) {y : WO S T} (hy : IsHalf a y) :
@@ -81,6 +114,9 @@ theorem shape_ratio {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {a : AE D} {�
   have : (Φ x₀)⁻¹ * Φ x₀ = 1 := inv_mul_cancel₀ h0
   linear_combination (-(c * Φ y)) * this
 
+/- English proof (translation)
+Establish `h1` using `shape_ratio hs hx₀ h0 (invForm_comp hψ ha hE hℓ u) hy`. Simplify using `only [LinearMap.comp_apply, heisL_apply] at h1`. Rewrite using `[← heisO_off_comm ψ (cA_E hE) u y (smul_half_zero (one_sub_mul_self ha hE) hy), ← heisO_off_comm ψ (cA_E hE) u x₀ (smul_half_zero (one_sub_mul_self ha hE) hx₀)]`. Conclude with `h1`.
+-/
 theorem shape_off {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {a E : AE D}
     (ha : IsSplitIdem D a) (hE : a + cA D a = E) {Φ g : WO S T → ℂ} (hs : HasShape ψ S T a Φ g) {x₀ : WO S T}
     (hx₀ : IsHalf a x₀) (h0 : Φ x₀ ≠ 0) {ℓ : (WO S T → ℂ) →ₗ[ℂ] ℂ} (hℓ : InvForm ψ S T a ℓ) (u : WO S T)
@@ -93,6 +129,11 @@ theorem shape_off {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {
     ← heisO_off_comm ψ (cA_E hE) u x₀ (smul_half_zero (one_sub_mul_self ha hE) hx₀)]
   exact h1
 
+/- English proof (translation)
+Establish `hsum : cA D a • u + ((x + a • u) + (1 - E) • u) = x + u`. Rewrite using `[← hE]`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Choose the witnesses or unpack the hypotheses as in `⟨q, hq0, hq⟩ : ∃ q : ℂ, q ≠ 0 ∧ ∀ g, heisO ψ S T (cA D a • u) (heisO ψ S T (x + a • u) (heisO ψ S T ((1 - E) • u) g)) = q • heisO ψ S T (x + u) g := by`. Use `⟨ψ (symplOH S T (x + a • u) ((1 - E) • u)) * ψ (symplOH S T (cA D a • u) ((x + a • u) + (1 - E) • u)), mul_ne_zero (psi_ne_zero _ _) (psi_ne_zero _ _), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[heisO_heisO ψ S T (x + a • u), heisO_smul, heisO_heisO, hsum, smul_smul]`. Use `⟨ψ (symplOH S T x u) * q⁻¹, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hq, smul_smul, inv_mul_cancel_right₀ hq0, heisO_heisO]`.
+-/
 theorem heisO_factor (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {a E : AE D} (hE : a + cA D a = E) (x u : WO S T) :
     ∃ p : ℂ, ∀ g, heisO ψ S T x (heisO ψ S T u g) =
       p • heisO ψ S T (cA D a • u) (heisO ψ S T (x + a • u) (heisO ψ S T ((1 - E) • u) g)) := by
@@ -106,12 +147,18 @@ theorem heisO_factor (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {a E : AE D}
   refine ⟨ψ (symplOH S T x u) * q⁻¹, fun g => ?_⟩
   rw [hq, smul_smul, inv_mul_cancel_right₀ hq0, heisO_heisO]
 
+/- English proof (translation)
+Rewrite using `[← heisL_apply, map_finsuppSum, map_finsuppSum]`. Both sides reduce to the same expression.
+-/
 theorem form_sum (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (ℓ : (WO S T → ℂ) →ₗ[ℂ] ℂ) (y : WO S T)
     (c : WO S T →₀ ℂ) (F : WO S T → ℂ → (WO S T → ℂ)) :
     ℓ (heisO ψ S T y (c.sum F)) = c.sum fun u z => ℓ (heisO ψ S T y (F u z)) := by
   rw [← heisL_apply, map_finsuppSum, map_finsuppSum]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Finsupp.sum_sum_index (h := fun u z => z • heisO ψ S T u g) (fun _ => zero_smul ℂ _) (fun _ _ _ => add_smul _ _ _)]`. Conclude with `Finsupp.sum_congr fun u _ => Finsupp.sum_single_index (zero_smul ℂ _)`.
+-/
 theorem sum_map_single (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (c : WO S T →₀ ℂ) (k : WO S T → ℂ)
     (τ : WO S T → WO S T) (g : WO S T → ℂ) :
     ((c.sum fun u z => Finsupp.single (τ u) (z * k u)).sum fun u z => z • heisO ψ S T u g) =
@@ -119,12 +166,34 @@ theorem sum_map_single (ψ : AddChar (AF D.host.F) ℂ) {S T : HSp D} (c : WO S 
   rw [Finsupp.sum_sum_index (h := fun u z => z • heisO ψ S T u g) (fun _ => zero_smul ℂ _) (fun _ _ _ => add_smul _ _ _)]
   exact Finsupp.sum_congr fun u _ => Finsupp.sum_single_index (zero_smul ℂ _)
 
+/- English proof (translation)
+Take `⟨u₀, h₀, h⟩` from `Finset.mem_biUnion.1 (Finsupp.support_sum hu)`. Conclude with `⟨u₀, h₀, Finset.mem_singleton.1 (Finsupp.support_single_subset h)⟩`.
+-/
 theorem mem_support_sum_single {X : Type} (c : X →₀ ℂ) (k : X → ℂ) (τ : X → X) {u : X}
     (hu : u ∈ (c.sum fun u z => Finsupp.single (τ u) (z * k u)).support) : ∃ u₀ ∈ c.support, u = τ u₀ := by
   classical
   obtain ⟨u₀, h₀, h⟩ := Finset.mem_biUnion.1 (Finsupp.support_sum hu)
   exact ⟨u₀, h₀, Finset.mem_singleton.1 (Finsupp.support_single_subset h)⟩
 
+/- English proof (translation)
+Establish `hsep` using `GlobalTheory.T.splitPlace_invariantForms_separate_thetaFunctions D ψ S T hψ a ha`. Establish `hz : ∀ x, heisO ψ S T x (0 : WO S T → ℂ) = 0` using `fun x => (heisL ψ S T x).map_zero`. Establish `hlc : ∀ (k : WO S T → ℂ) (τ : WO S T → WO S T) (g : WO S T → ℂ), IsThetaFunO ψ S T g → IsThetaFunO ψ S T (c.sum fun u z => (z * k u) • heisO ψ S T (τ u) g)` using `fun k τ g hg => theta_sum c.support _ g hg fun u _ => theta_smul _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg _)`. Establish `hlc0 : ∀ g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (c.sum fun u z => z • heisO ψ S T u g)` using `fun g hg => theta_sum c.support _ g hg fun u _ => theta_smul _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg _)`. Distinguish the cases in `hΦ : ∀ x, IsHalf a x → Φ x = 0`.
+
+Establish `hg2 : g₂ = 0` using `hsep g₂ ht₂ fun ℓ hℓ x hx => by`. Take `⟨k, hk⟩` from `hs₂ ℓ hℓ`. Rewrite using `[hk x hx, hΦ x hx, mul_zero]`. Substitute `hg2` using the available equality. Unfold `Finsupp.sum`.
+
+Use `Finset.sum_eq_zero fun u _ => ?_` and prove the remaining obligations. Use `show c u • heisO ψ S T u 0 = 0`. Rewrite using `[hz, smul_zero]`. Use `push_neg at hΦ`. Take `⟨x₀, hx₀, h0⟩` from `hΦ`.
+
+Use `choose p hp using fun x u => heisO_factor ψ S T hE x u`. Establish `key : ∀ g, IsThetaFunO ψ S T g → HasShape ψ S T a Φ g → ∀ ℓ, InvForm ψ S T a ℓ → ∀ x, IsHalf a x → ℓ (heisO ψ S T x (c.sum fun u z => z • heisO ψ S T u g)) = ℓ (heisO ψ S T x₀ (c.sum fun u z => (z * (p x u * Φ (x + a • u) * (Φ x₀)⁻¹)) • heisO ψ S T ((1 - E) • u) g))`. Introduce `g hg hsg ℓ hℓ x hx`. Rewrite using `[form_sum, form_sum]`. Use `Finsupp.sum_congr fun u _ => ?_` and prove the remaining obligations.
+
+Establish `ht : IsThetaFunO ψ S T (heisO ψ S T (x + a • u) (heisO ψ S T ((1 - E) • u) g))` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg _) _`. Rewrite using `[heisO_smul, heisO_smul, map_smul, map_smul, smul_eq_mul, smul_eq_mul, hp x u g, map_smul, smul_eq_mul, hℓ _ (half_conj ha u) _ ht, shape_off hψ ha hE hsg hx₀ h0 hℓ u (half_add ha hx u)]`. Expand and normalize the polynomial expressions, which then agree. Establish `shp : ∀ g, HasShape ψ S T a Φ g → ∀ ℓ, InvForm ψ S T a ℓ → ∀ (k : WO S T → ℂ) y, IsHalf a y → ℓ (heisO ψ S T y (c.sum fun u z => (z * k u) • heisO ψ S T ((1 - E) • u) g)) = Φ y * (Φ x₀)⁻¹ * ℓ (heisO ψ S T x₀ (c.sum fun u z => (z * k u) • heisO ψ S T ((1 - E) • u) g))`. Introduce `g hsg ℓ hℓ k y hy`.
+
+Rewrite using `[form_sum, form_sum, Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun u _ => ?_` and prove the remaining obligations. Rewrite using `[heisO_smul, heisO_smul, map_smul, map_smul, smul_eq_mul, smul_eq_mul, shape_off hψ ha hE hsg hx₀ h0 hℓ u hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : ∀ x, IsHalf a x → (c.sum fun u z => (z * (p x u * Φ (x + a • u) * (Φ x₀)⁻¹)) • heisO ψ S T ((1 - E) • u) g₁) = 0`.
+
+Introduce `x hx`. Use `hsep _ (hlc _ _ g₁ ht₁) fun ℓ hℓ y hy => ?_` and prove the remaining obligations. Rewrite using `[shp g₁ hs₁ ℓ hℓ _ y hy, ← key g₁ ht₁ hs₁ ℓ hℓ x hx, h1, hz, map_zero, mul_zero]`. Establish `hB : ∀ x, IsHalf a x → (c.sum fun u z => (z * (p x u * Φ (x + a • u) * (Φ x₀)⁻¹)) • heisO ψ S T ((1 - E) • u) g₂) = 0`. Introduce `x hx`.
+
+Establish `h` using `hrel (c.sum fun u z => Finsupp.single ((1 - E) • u) (z * (p x u * Φ (x + a • u) * (Φ x₀)⁻¹))) (fun u hu => by`. Take `⟨u₀, h₀, rfl⟩` from `mem_support_sum_single c _ (fun u => (1 - E) • u) hu`. Conclude with `hQ u₀ (hc u₀ h₀))`. Use the proof step `(by rw [sum_map_single]; exact hA x hx)`. Rewrite `h` using `[sum_map_single]`. Then use the resulting hypothesis.
+
+Conclude with `hsep _ (hlc0 g₂ ht₂) fun ℓ hℓ x hx => by rw [key g₂ ht₂ hs₂ ℓ hℓ x hx, hB x hx, hz, map_zero]`.
+-/
 theorem rel_extend {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {a E : AE D}
     (ha : IsSplitIdem D a) (hE : a + cA D a = E) {Φ g₁ g₂ : WO S T → ℂ}
     (ht₁ : IsThetaFunO ψ S T g₁) (ht₂ : IsThetaFunO ψ S T g₂)
@@ -190,6 +259,13 @@ theorem rel_extend {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
     rwa [sum_map_single] at h
   exact hsep _ (hlc0 g₂ ht₂) fun ℓ hℓ x hx => by rw [key g₂ ht₂ hs₂ ℓ hℓ x hx, hB x hx, hz, map_zero]
 
+/- English proof (translation)
+Take `⟨hinf, hpl⟩` from `hu`. Use `⟨?_, fun w hw ε' hε' i j => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hinf i) j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at h ⊢`.
+
+Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, h, mul_zero]`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Distinguish the cases in `hwv : w = v`. Rewrite `hε'` using `[hwv]`. Rewrite using `[GlobalTheory.PlaceDatum.placeIdem_eq hε' hε, ← mul_assoc, mul_sub, mul_one, idem_E ha hE, sub_self, zero_mul]`.
+
+Establish `h` using `hpl w (by classical unfold dropPl; convert Finset.mem_erase.2 ⟨hwv, hw⟩) ε' hε' i j`. Rewrite using `[mul_left_comm, h, mul_zero]`.
+-/
 theorem offPl_step {S T' : HSp D} {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))} {v : HeightOneSpectrum (𝓞 D.host.F)}
     {ε : AF D.host.F} {a : AE D} (ha : IsSplitIdem D a) (hε : IsPlaceIdem D v ε)
     (hE : a + cA D a = algebraMap (AF D.host.F) (AE D) ε) (u : WO S T') (hu : OffPl (dropPl Sb v) u) :
@@ -207,6 +283,9 @@ theorem offPl_step {S T' : HSp D} {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F
     · have h := hpl w (by classical unfold dropPl; convert Finset.mem_erase.2 ⟨hwv, hw⟩) ε' hε' i j
       rw [mul_left_comm, h, mul_zero]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R hψ i t Sb v ε a ha hε hE hvP Φ f hsP hsf hL`. Conclude with `⟨hL.1, fun c hc h1 => rel_extend hψ ha hE hvP hL.1 hsP hsf (OffPl Sb) (OffPl (dropPl Sb v)) (fun u hu => offPl_step ha hε hE u hu) hL.2 c hc h1⟩`.
+-/
 theorem likeOff_dropPl : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), IsStdChar D R.ψ (-1) → ∀ (i : Fin D.R.m) (t : T) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (v : HeightOneSpectrum (𝓞 D.host.F)) (ε : AF D.host.F) (a : AE D), IsSplitIdem D a → IsPlaceIdem D v ε → a + cA D a = algebraMap (AF D.host.F) (AE D) ε → IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t) → ∀ Φ f : WO (Vc D i) (Wc D i) → ℂ, HasShape R.ψ (Vc D i) (Wc D i) a Φ (R.vP i t) → HasShape R.ψ (Vc D i) (Wc D i) a Φ f → LikeOff R i t Sb f → LikeOff R i t (dropPl Sb v) f := by
   intro D G _ _ Pl0 T A Ks _ _ _ R hψ i t Sb v ε a ha hε hE hvP Φ f hsP hsf hL
   exact ⟨hL.1, fun c hc h1 => rel_extend hψ ha hE hvP hL.1 hsP hsf (OffPl Sb) (OffPl (dropPl Sb v))

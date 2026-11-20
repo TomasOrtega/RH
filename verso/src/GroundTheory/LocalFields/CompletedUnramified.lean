@@ -14,6 +14,11 @@ variable {R : Type*} [CommRing R] {I : Ideal R}
 
 variable (I) in
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `AdicCompletion.mk_surjective I R x`. Simplify using `only [AdicCompletion.evalₐ_mk, Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk]`. Rewrite using `[Ideal.Quotient.eq]`. Establish `h` using `x.2 hle`. Rewrite `h` using `[SModEq.sub_mem]`.
+
+Establish `hI : (I ^ k • ⊤ : Submodule R R) = I ^ k` using `by ext; simp`. Rewrite using `[← neg_sub]`. Conclude with `neg_mem (hI ▸ h)`.
+-/
 theorem factorPow_evalₐ {k n : ℕ} (hle : k ≤ n) (x : AdicCompletion I R) :
     Ideal.Quotient.factorPow I hle (AdicCompletion.evalₐ I n x) = AdicCompletion.evalₐ I k x := by
   obtain ⟨x, rfl⟩ := AdicCompletion.mk_surjective I R x
@@ -25,6 +30,9 @@ theorem factorPow_evalₐ {k n : ℕ} (hle : k ≤ n) (x : AdicCompletion I R) :
   rw [← neg_sub]
   exact neg_mem (hI ▸ h)
 
+/- English proof (translation)
+The claim follows from `Ideal.map_le_iff_le_comap.mp (by rw [Ideal.map_pow] exact Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr hθ) n)`.
+-/
 theorem pow_le_comap_pow {θ : R →+* R} (hθ : I ≤ I.comap θ) (n : ℕ) : I ^ n ≤ (I ^ n).comap θ :=
   Ideal.map_le_iff_le_comap.mp (by
     rw [Ideal.map_pow]
@@ -35,6 +43,11 @@ def adicCompletionQuotientMap (θ : R →+* R) (hθ : I ≤ I.comap θ) (n : ℕ
   (Ideal.quotientMap (I ^ n) θ (pow_le_comap_pow hθ n)).comp
     (AdicCompletion.evalₐ I n : AdicCompletion I R →+* R ⧸ I ^ n)
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`. Establish `hk : AdicCompletion.evalₐ I k x = Ideal.Quotient.mk (I ^ k) r`. Rewrite using `[← factorPow_evalₐ I hle, ← hr]`. Both sides reduce to the same expression.
+
+Simplify using `only [adicCompletionQuotientMap, RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[← hr, hk, Ideal.quotientMap_mk, Ideal.quotientMap_mk]`. Both sides reduce to the same expression.
+-/
 theorem factorPow_comp_adicCompletionQuotientMap (θ : R →+* R) (hθ : I ≤ I.comap θ) {k n : ℕ}
     (hle : k ≤ n) :
     (Ideal.Quotient.factorPow I hle).comp (adicCompletionQuotientMap θ hθ n) =
@@ -53,6 +66,9 @@ def adicCompletionMap (θ : R →+* R) (hθ : I ≤ I.comap θ) :
   AdicCompletion.liftRingHom I (adicCompletionQuotientMap θ hθ)
     (factorPow_comp_adicCompletionQuotientMap θ hθ)
 
+/- English proof (translation)
+The claim follows from `AdicCompletion.evalₐ_liftRingHom I _ (factorPow_comp_adicCompletionQuotientMap θ hθ) n x @[simp]`.
+-/
 theorem evalₐ_adicCompletionMap (θ : R →+* R) (hθ : I ≤ I.comap θ) (n : ℕ)
     (x : AdicCompletion I R) :
     AdicCompletion.evalₐ I n (adicCompletionMap θ hθ x) =
@@ -60,12 +76,18 @@ theorem evalₐ_adicCompletionMap (θ : R →+* R) (hθ : I ≤ I.comap θ) (n :
   AdicCompletion.evalₐ_liftRingHom I _ (factorPow_comp_adicCompletionQuotientMap θ hθ) n x
 
 @[simp]
+/- English proof (translation)
+Use `AdicCompletion.ext_evalₐ fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[evalₐ_adicCompletionMap, AdicCompletion.evalₐ_of, AdicCompletion.evalₐ_of, Ideal.quotientMap_mk]`.
+-/
 theorem adicCompletionMap_of (θ : R →+* R) (hθ : I ≤ I.comap θ) (r : R) :
     adicCompletionMap θ hθ (AdicCompletion.of I R r) = AdicCompletion.of I R (θ r) := by
   refine AdicCompletion.ext_evalₐ fun n ↦ ?_
   rw [evalₐ_adicCompletionMap, AdicCompletion.evalₐ_of, AdicCompletion.evalₐ_of,
     Ideal.quotientMap_mk]
 
+/- English proof (translation)
+Use `ext1 x`. Use `AdicCompletion.ext_evalₐ fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[evalₐ_adicCompletionMap, RingHom.id_apply]`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`. Rewrite using `[← hr, Ideal.quotientMap_mk, RingHom.id_apply]`.
+-/
 theorem adicCompletionMap_id :
     adicCompletionMap (RingHom.id R) (Ideal.comap_id I).ge = RingHom.id (AdicCompletion I R) := by
   ext1 x
@@ -74,6 +96,9 @@ theorem adicCompletionMap_id :
   obtain ⟨r, hr⟩ := Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)
   rw [← hr, Ideal.quotientMap_mk, RingHom.id_apply]
 
+/- English proof (translation)
+Use `ext1 x`. Use `AdicCompletion.ext_evalₐ fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, evalₐ_adicCompletionMap, evalₐ_adicCompletionMap, evalₐ_adicCompletionMap]`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ I n x)`. Rewrite using `[← hr, Ideal.quotientMap_mk, Ideal.quotientMap_mk, Ideal.quotientMap_mk, RingHom.comp_apply]`.
+-/
 theorem adicCompletionMap_comp (θ₁ θ₂ : R →+* R) (h₁ : I ≤ I.comap θ₁) (h₂ : I ≤ I.comap θ₂) :
     (adicCompletionMap θ₁ h₁).comp (adicCompletionMap θ₂ h₂) =
       adicCompletionMap (θ₁.comp θ₂)
@@ -95,22 +120,37 @@ local notation "𝔅" => AdicCompletion (maximalIdeal R) R
 
 variable (R) in
 
+/- English proof (translation)
+The claim follows from `AdicCompletion.of_injective _ _`.
+-/
 theorem algebraMap_adicCompletion_injective : Function.Injective (algebraMap R 𝔅) :=
   AdicCompletion.of_injective _ _
 
+/- English proof (translation)
+Rewrite using `[AdicCompletion.maximalIdeal_eq_map, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`.
+-/
 theorem maximalIdeal_adicCompletion_eq_span {ϖ : R} (hϖ : Irreducible ϖ) :
     maximalIdeal 𝔅 = Ideal.span {algebraMap R 𝔅 ϖ} := by
   rw [AdicCompletion.maximalIdeal_eq_map, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]
 
+/- English proof (translation)
+The claim follows from `IsHausdorff.haus' (I := maximalIdeal 𝔅) x fun n ↦ by simpa only [SModEq.zero, smul_eq_mul, Ideal.mul_top] using h n`.
+-/
 theorem eq_zero_of_forall_mem_maximalIdeal_pow {x : 𝔅} (h : ∀ n, x ∈ maximalIdeal 𝔅 ^ n) :
     x = 0 :=
   IsHausdorff.haus' (I := maximalIdeal 𝔅) x fun n ↦ by
     simpa only [SModEq.zero, smul_eq_mul, Ideal.mul_top] using h n
 
+/- English proof (translation)
+The claim follows from `_root_.GroundTheory.Variant₂.N1.exists_eq_unit_mul_pow_adicCompletion hϖ hx`.
+-/
 theorem exists_eq_unit_mul_pow_adicCompletion {ϖ : R} (hϖ : Irreducible ϖ) {x : 𝔅} (hx : x ≠ 0) :
     ∃ (n : ℕ) (u : 𝔅ˣ), x = u * algebraMap R 𝔅 ϖ ^ n :=
   _root_.GroundTheory.Variant₂.N1.exists_eq_unit_mul_pow_adicCompletion hϖ hx
 
+/- English proof (translation)
+Rewrite using `[← map_pow, Ne, ← map_zero (algebraMap R 𝔅), (algebraMap_adicCompletion_injective R).eq_iff]`. Conclude with `pow_ne_zero n hϖ.ne_zero`.
+-/
 theorem algebraMap_pow_ne_zero {ϖ : R} (hϖ : Irreducible ϖ) (n : ℕ) :
     algebraMap R 𝔅 ϖ ^ n ≠ 0 := by
   rw [← map_pow, Ne, ← map_zero (algebraMap R 𝔅), (algebraMap_adicCompletion_injective R).eq_iff]
@@ -130,6 +170,9 @@ instance isDomain_adicCompletion : IsDomain 𝔅 := by
     exact (Units.mul_right_eq_zero _).mp this⟩
   exact NoZeroDivisors.to_isDomain _
 
+/- English proof (translation)
+The claim follows from `IsDiscreteValuationRing.irreducible_of_span_eq_maximalIdeal _ (by simpa using algebraMap_pow_ne_zero hϖ 1) (maximalIdeal_adicCompletion_eq_span hϖ)`.
+-/
 theorem irreducible_algebraMap_adicCompletion {ϖ : R} (hϖ : Irreducible ϖ) :
     Irreducible (algebraMap R 𝔅 ϖ) :=
   IsDiscreteValuationRing.irreducible_of_span_eq_maximalIdeal _
@@ -142,6 +185,17 @@ instance isDiscreteValuationRing_adicCompletion : IsDiscreteValuationRing 𝔅 :
       obtain ⟨n, u, hu⟩ := exists_eq_unit_mul_pow_adicCompletion hϖ hx
       exact ⟨n, u, by rw [hu, mul_comm]⟩⟩
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `hm` using `maximalIdeal_adicCompletion_eq_span hϖ`. Establish `hres : ∀ y : 𝔅, ∃ s : R, y - algebraMap R 𝔅 s ∈ maximalIdeal 𝔅`. Introduce `y`. Take `⟨t, ht⟩` from `(AdicCompletion.residueField_map_bijective R).2 (residue 𝔅 y)`.
+
+Take `⟨s, rfl⟩` from `residue_surjective t`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← residue_eq_zero_iff, map_sub, ← ht, ResidueField.map_residue, sub_self]`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `succ n ih`. Take `⟨r, hr⟩` from `ih`. Rewrite `hr` using `[hm, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hr`. Take `⟨s, hs⟩` from `hres c`.
+
+Rewrite `hs` using `[hm, Ideal.mem_span_singleton']`. Take `⟨d, hd⟩` from `hs`. Use `⟨r + ϖ ^ n * s, ?_⟩` and prove the remaining obligations. Rewrite using `[hm, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Use `⟨d, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_mul, map_pow]`. Take the linear combination `(algebraMap R 𝔅 ϖ) ^ n * hd + hc`.
+-/
 theorem exists_sub_algebraMap_mem_pow (x : 𝔅) (n : ℕ) :
     ∃ r : R, x - algebraMap R 𝔅 r ∈ maximalIdeal 𝔅 ^ n := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible R
@@ -167,6 +221,13 @@ theorem exists_sub_algebraMap_mem_pow (x : 𝔅) (n : ℕ) :
     rw [map_add, map_mul, map_pow]
     linear_combination (algebraMap R 𝔅 ϖ) ^ n * hd + hc
 
+/- English proof (translation)
+Establish `hm` using `maximalIdeal_adicCompletion_eq_span hϖ`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_forall_mem_maximalIdeal_pow fun n ↦ ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `exists_sub_algebraMap_mem_pow x n`.
+
+Rewrite `hr` using `[hm, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hr`. Establish `hx : x = algebraMap R 𝔅 r + c * algebraMap R 𝔅 ϖ ^ n` using `by rw [hc]; ring`. Rewrite using `[hx, map_add, map_add, map_mul, map_mul, map_pow, map_pow, h r, ← h ϖ]`. Establish `: τ₁ (algebraMap R 𝔅 ϖ) ^ n ∈ maximalIdeal 𝔅 ^ n` using `Ideal.pow_mem_pow hmem n`.
+
+Use `Ideal.mul_mem_left _ (τ₁ c - τ₂ c) this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ringHom_ext_adicCompletion {ϖ : R} (hϖ : Irreducible ϖ) {τ₁ τ₂ : 𝔅 →+* 𝔅}
     (h : ∀ r, τ₁ (algebraMap R 𝔅 r) = τ₂ (algebraMap R 𝔅 r))
     (hmem : τ₁ (algebraMap R 𝔅 ϖ) ∈ maximalIdeal 𝔅) : τ₁ = τ₂ := by
@@ -191,6 +252,11 @@ variable {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 
 local notation "𝔅" => AdicCompletion (maximalIdeal R) R
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[Ideal.mem_comap]`. Rewrite `hx`, the goal using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Apply `hx` to reduce the goal to its premises.
+
+Simplify using `using hu.map θ.symm`.
+-/
 theorem maximalIdeal_le_comap_ringEquiv (θ : R ≃+* R) :
     maximalIdeal R ≤ (maximalIdeal R).comap (θ : R →+* R) := by
   intro x hx
@@ -200,12 +266,18 @@ theorem maximalIdeal_le_comap_ringEquiv (θ : R ≃+* R) :
   apply hx
   simpa using hu.map θ.symm
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem adicCompletionMap_congr {θ₁ θ₂ : R →+* R} (h : θ₁ = θ₂)
     (h₁ : maximalIdeal R ≤ (maximalIdeal R).comap θ₁) (h₂ : maximalIdeal R ≤ (maximalIdeal R).comap θ₂) :
     adicCompletionMap θ₁ h₁ = adicCompletionMap θ₂ h₂ := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `adicCompletionMap_id`.
+-/
 theorem adicCompletionMap_eq_id {θ : R →+* R} (hθ : maximalIdeal R ≤ (maximalIdeal R).comap θ)
     (h : θ = RingHom.id R) : adicCompletionMap θ hθ = RingHom.id 𝔅 := by
   subst h
@@ -222,6 +294,9 @@ def adicCompletionRingEquiv (θ : R ≃+* R) : 𝔅 ≃+* 𝔅 :=
       rw [adicCompletionMap_comp]
       exact adicCompletionMap_eq_id _ (by ext; simp))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adicCompletionRingEquiv_apply (θ : R ≃+* R) (x : 𝔅) :
     adicCompletionRingEquiv θ x =
       adicCompletionMap (θ : R →+* R) (maximalIdeal_le_comap_ringEquiv θ) x :=
@@ -248,10 +323,18 @@ def adicCompletionAlgEquiv : (R ≃ₐ[S] R) →* (𝔅 ≃ₐ[S] 𝔅) where
     exact congrArg (fun f : 𝔅 →+* 𝔅 ↦ f x) (adicCompletionMap_congr (by ext; simp) _ _)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `show adicCompletionMap _ _ (AdicCompletion.of _ R r) = _ from adicCompletionMap_of _ _ r`.
+-/
 theorem adicCompletionAlgEquiv_algebraMap (θ : R ≃ₐ[S] R) (r : R) :
     adicCompletionAlgEquiv θ (algebraMap R 𝔅 r) = algebraMap R 𝔅 (θ r) :=
   show adicCompletionMap _ _ (AdicCompletion.of _ R r) = _ from adicCompletionMap_of _ _ r
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Use `ringHom_ext_adicCompletion hϖ (fun r ↦ ?_) ?_` and prove the remaining obligations. Rewrite using `[hτ]`. Conclude with `(adicCompletionAlgEquiv_algebraMap θ r).symm`. Rewrite using `[hτ, AdicCompletion.maximalIdeal_eq_map]`.
+
+Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Conclude with `maximalIdeal_le_comap_ringEquiv θ.toRingEquiv (hϖ.maximalIdeal_eq ▸ Ideal.mem_span_singleton_self ϖ)`.
+-/
 theorem eq_adicCompletionAlgEquiv (θ : R ≃ₐ[S] R) {τ : 𝔅 →+* 𝔅}
     (hτ : ∀ r, τ (algebraMap R 𝔅 r) = algebraMap R 𝔅 (θ r)) :
     τ = (adicCompletionAlgEquiv θ : 𝔅 →+* 𝔅) := by
@@ -270,6 +353,11 @@ section FixedRing
 
 open Polynomial
 
+/- English proof (translation)
+Use `Fintype.ofFinite F` as an intermediate fact. Establish `hq : 1 < Fintype.card F` using `Fintype.one_lt_card`. Rewrite `hy` using `[Nat.card_eq_fintype_card]`. Establish `hs : Splits (X ^ Fintype.card F - X : F[X])`. Rewrite using `[splits_iff_card_roots, FiniteField.roots_X_pow_card_sub_X, FiniteField.X_pow_card_sub_X_natDegree_eq F hq]`.
+
+Conclude with `Finset.card_univ`. Use `hs.mem_range_of_isRoot (FiniteField.X_pow_card_sub_X_ne_zero F hq) ?_` and prove the remaining obligations. Simplify using `only [Polynomial.map_sub, Polynomial.map_pow, map_X, IsRoot.def, eval_sub, eval_pow, eval_X, hy, sub_self]`.
+-/
 theorem mem_range_of_pow_card_eq_self {F k : Type*} [Field F] [Finite F] [Field k] [Algebra F k]
     {y : k} (hy : y ^ Nat.card F = y) : y ∈ (algebraMap F k).range := by
   classical
@@ -287,6 +375,11 @@ theorem mem_range_of_pow_card_eq_self {F k : Type*} [Field F] [Finite F] [Field 
 variable {A B : Type*} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
   [CommRing B] [IsDomain B] [IsDiscreteValuationRing B] [Algebra A B]
 
+/- English proof (translation)
+Use `⟨fun a ha ↦ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `hm : a ∈ maximalIdeal A` using `(mem_maximalIdeal a).2 h`. Use `Ideal.mem_map_of_mem (algebraMap A B) hm` as an intermediate fact. Rewrite `this` using `[hunr]`.
+
+Conclude with `(mem_maximalIdeal _).1 this ha`.
+-/
 theorem isLocalHom_algebraMap_of_map_maximalIdeal
     (hunr : (maximalIdeal A).map (algebraMap A B) = maximalIdeal B) :
     IsLocalHom (algebraMap A B) := by
@@ -304,6 +397,11 @@ include hunr hσ
 
 omit [IsAdicComplete (maximalIdeal A) A] in
 
+/- English proof (translation)
+Use `isLocalHom_algebraMap_of_map_maximalIdeal hunr` as an intermediate fact. Establish `hy : residue B c ^ Nat.card (ResidueField A) = residue B c` using `by rw [← hσ, hc]`. Take `⟨t, ht⟩` from `mem_range_of_pow_card_eq_self hy`. Take `⟨d, rfl⟩` from `residue_surjective t`. Use `⟨d, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← residue_eq_zero_iff, map_sub, ← ht, ResidueField.algebraMap_residue, sub_self]`.
+-/
 theorem exists_sub_algebraMap_mem_of_fixed {c : B} (hc : σ c = c) :
     ∃ d : A, c - algebraMap A B d ∈ maximalIdeal B := by
   have := isLocalHom_algebraMap_of_map_maximalIdeal hunr
@@ -313,6 +411,31 @@ theorem exists_sub_algebraMap_mem_of_fixed {c : B} (hc : σ c = c) :
   refine ⟨d, ?_⟩
   rw [← residue_eq_zero_iff, map_sub, ← ht, ResidueField.algebraMap_residue, sub_self]
 
+/- English proof (translation)
+Use `⟨fun ⟨a, ha⟩ ↦ by rw [← ha, σ.commutes], fun hb ↦ ?_⟩` and prove the remaining obligations. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Use `set ϖ := algebraMap A B π with hϖdef`. Establish `hmB : maximalIdeal B = Ideal.span {ϖ}`. Rewrite using `[← hunr, hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`.
+
+Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`. Apply `IsDiscreteValuationRing.not_a_field B` to reduce the goal to its premises. Rewrite using `[hmB, h0, Ideal.span_singleton_eq_bot]`. Establish `hϖm : ϖ ∈ maximalIdeal B` using `hmB ▸ Ideal.mem_span_singleton_self ϖ`.
+
+Establish `hπm : π ∈ maximalIdeal A` using `hπ.maximalIdeal_eq ▸ Ideal.mem_span_singleton_self π`. Establish `hσϖ : σ ϖ = ϖ` using `σ.commutes π`. Establish `step : ∀ c : B, σ c = c → ∃ d : A, ∃ c' : B, σ c' = c' ∧ c = algebraMap A B d + ϖ * c'`. Introduce `c hc`. Take `⟨d, hd⟩` from `exists_sub_algebraMap_mem_of_fixed hunr σ hσ hc`.
+
+Rewrite `hd` using `[hmB, Ideal.mem_span_singleton']`. Take `⟨c', hc'⟩` from `hd`. Use `⟨d, c', ?_, by rw [mul_comm, hc']; ring⟩` and prove the remaining obligations. Establish `h1` using `congrArg σ hc'`. Rewrite `h1` using `[map_mul, hσϖ, map_sub, hc, σ.commutes, ← hc']`.
+
+Conclude with `mul_right_cancel₀ hϖ0 h1`. Use `choose D N hN hDN using step`. Set `c : ℕ → {x : B // σ x = x}` to `fun n ↦ Nat.rec ⟨b, hb⟩ (fun _ x ↦ ⟨N x.1 x.2, hN x.1 x.2⟩) n`. Establish `hc_succ : ∀ n, (c (n + 1)).1 = N (c n).1 (c n).2` using `fun _ ↦ rfl`. Set `d : ℕ → A` to `fun n ↦ D (c n).1 (c n).2`.
+
+Set `s : ℕ → A` to `fun n ↦ ∑ i ∈ Finset.range n, π ^ i * d i`. Establish `hs : ∀ n, b = algebraMap A B (s n) + ϖ ^ n * (c n).1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [s, c]`.
+
+Consider the case `succ n ih`. Establish `h` using `hDN (c n).1 (c n).2`. Rewrite `h` using `[← hc_succ]`. Rewrite using `[ih, h]`. Simplify using `only [s, d, Finset.sum_range_succ, map_add, map_mul, map_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hcauchy : ∀ {m n : ℕ}, m ≤ n → s m ≡ s n [SMOD (maximalIdeal A ^ m • ⊤ : Submodule A A)]`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, ← neg_sub, neg_mem_iff]`. Simplify using `only [s]`.
+
+Rewrite using `[← Finset.sum_Ico_eq_sub _ hmn]`. Use `Ideal.sum_mem _ fun i hi ↦ ?_` and prove the remaining obligations. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Conclude with `Ideal.pow_le_pow_right (Finset.mem_Ico.mp hi).1 (Ideal.pow_mem_pow hπm i)`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := maximalIdeal A) s hcauchy`.
+
+Use `⟨L, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus' (I := maximalIdeal B) _ fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Establish `hLn` using `hL n`.
+
+Rewrite `hLn` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Establish `h1 : algebraMap A B (s n - L) ∈ maximalIdeal B ^ n`. Rewrite using `[← hunr, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ hLn`. Establish `h2 : ϖ ^ n * (c n).1 ∈ maximalIdeal B ^ n` using `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hϖm n)`.
+
+Establish `: algebraMap A B L - b = -(algebraMap A B (s n - L) + ϖ ^ n * (c n).1)`. Rewrite using `[hs n, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, neg_mem_iff]`. Conclude with `add_mem h1 h2`.
+-/
 theorem mem_range_algebraMap_iff_fixed (b : B) : b ∈ (algebraMap A B).range ↔ σ b = b := by
   refine ⟨fun ⟨a, ha⟩ ↦ by rw [← ha, σ.commutes], fun hb ↦ ?_⟩
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible A
@@ -392,24 +515,39 @@ abbrev CompletedUnramifiedIntegers : Type _ :=
 
 local notation "𝔹" => CompletedUnramifiedIntegers K Ω
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsDiscreteValuationRing 𝔹 := inferInstance
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem isAdicComplete_completedUnramifiedIntegers : IsAdicComplete (maximalIdeal 𝔹) 𝔹 :=
   inferInstance
 
 instance isScalarTower_completedUnramifiedIntegers : IsScalarTower 𝒪[K] 𝒪[𝔼] 𝔹 :=
   IsScalarTower.of_algebraMap_eq fun _ ↦ rfl
 
+/- English proof (translation)
+The claim follows from `algebraMap_adicCompletion_injective _`.
+-/
 theorem algebraMap_integer_completedUnramifiedIntegers_injective :
     Function.Injective (algebraMap 𝒪[𝔼] 𝔹) :=
   algebraMap_adicCompletion_injective _
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_eq 𝒪[K] 𝒪[𝔼] 𝔹]`. Conclude with `(algebraMap_integer_completedUnramifiedIntegers_injective K Ω).comp (algebraMap_integer_injective K 𝔼)`.
+-/
 theorem algebraMap_completedUnramifiedIntegers_injective :
     Function.Injective (algebraMap 𝒪[K] 𝔹) := by
   rw [IsScalarTower.algebraMap_eq 𝒪[K] 𝒪[𝔼] 𝔹]
   exact (algebraMap_integer_completedUnramifiedIntegers_injective K Ω).comp
     (algebraMap_integer_injective K 𝔼)
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_eq 𝒪[K] 𝒪[𝔼] 𝔹, ← Ideal.map_map, map_maximalIdeal_integer, AdicCompletion.maximalIdeal_eq_map]`.
+-/
 theorem map_maximalIdeal_completedUnramifiedIntegers :
     (maximalIdeal 𝒪[K]).map (algebraMap 𝒪[K] 𝔹) = maximalIdeal 𝔹 := by
   rw [IsScalarTower.algebraMap_eq 𝒪[K] 𝒪[𝔼] 𝔹, ← Ideal.map_map, map_maximalIdeal_integer,
@@ -418,6 +556,11 @@ theorem map_maximalIdeal_completedUnramifiedIntegers :
 instance isLocalHom_algebraMap_completedUnramifiedIntegers : IsLocalHom (algebraMap 𝒪[K] 𝔹) :=
   isLocalHom_algebraMap_of_map_maximalIdeal (map_maximalIdeal_completedUnramifiedIntegers K Ω)
 
+/- English proof (translation)
+Use `⟨fun h ↦ ?_, fun h ↦ ?_⟩` and prove the remaining obligations. Use `irreducible_iff.mpr ⟨fun hu ↦ h.not_isUnit (hu.map _), fun a b hab ↦ ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hab, map_mul]`. Conclude with `(h.isUnit_or_isUnit rfl).imp (isUnit_of_map_unit _ _) (isUnit_of_map_unit _ _)`. Rewrite using `[IsScalarTower.algebraMap_apply 𝒪[K] 𝒪[𝔼] 𝔹]`.
+
+Conclude with `irreducible_algebraMap_adicCompletion (irreducible_algebraMap_uniformizer h)`.
+-/
 theorem irreducible_algebraMap_completedUnramifiedIntegers_iff (π : 𝒪[K]) :
     Irreducible (algebraMap 𝒪[K] 𝔹 π) ↔ Irreducible π := by
   refine ⟨fun h ↦ ?_, fun h ↦ ?_⟩
@@ -470,11 +613,17 @@ def completedUnramifiedAlgEquiv : (𝔼 ≃ₐ[K] 𝔼) →* (𝔹 ≃ₐ[𝒪[K
 variable {K Ω}
 
 @[simp]
+/- English proof (translation)
+The claim follows from `adicCompletionAlgEquiv_algebraMap _ x`.
+-/
 theorem completedUnramifiedAlgEquiv_algebraMap (ρ : 𝔼 ≃ₐ[K] 𝔼) (x : 𝒪[𝔼]) :
     completedUnramifiedAlgEquiv K Ω ρ (algebraMap 𝒪[𝔼] 𝔹 x) =
       algebraMap 𝒪[𝔼] 𝔹 (integerAlgEquivOfIsAlgebraic K 𝔼 ρ x) :=
   adicCompletionAlgEquiv_algebraMap _ x
 
+/- English proof (translation)
+The claim follows from `eq_adicCompletionAlgEquiv _ hτ`.
+-/
 theorem eq_completedUnramifiedAlgEquiv (ρ : 𝔼 ≃ₐ[K] 𝔼) {τ : 𝔹 →+* 𝔹}
     (hτ : ∀ x : 𝒪[𝔼], τ (algebraMap 𝒪[𝔼] 𝔹 x) =
       algebraMap 𝒪[𝔼] 𝔹 (integerAlgEquivOfIsAlgebraic K 𝔼 ρ x)) :
@@ -488,17 +637,30 @@ variable (K Ω) in
 def completedFrobenius : 𝔹 ≃ₐ[𝒪[K]] 𝔹 :=
   completedUnramifiedAlgEquiv K Ω (maximalUnramifiedExtensionFrobenius K Ω)
 
+/- English proof (translation)
+The claim follows from `completedUnramifiedAlgEquiv_algebraMap _ x`.
+-/
 theorem completedFrobenius_algebraMap (x : 𝒪[𝔼]) :
     completedFrobenius K Ω (algebraMap 𝒪[𝔼] 𝔹 x) = algebraMap 𝒪[𝔼] 𝔹
       (integerAlgEquivOfIsAlgebraic K 𝔼 (maximalUnramifiedExtensionFrobenius K Ω) x) :=
   completedUnramifiedAlgEquiv_algebraMap _ x
 
+/- English proof (translation)
+The claim follows from `eq_completedUnramifiedAlgEquiv _ hτ`.
+-/
 theorem eq_completedFrobenius {τ : 𝔹 →+* 𝔹}
     (hτ : ∀ x : 𝒪[𝔼], τ (algebraMap 𝒪[𝔼] 𝔹 x) = algebraMap 𝒪[𝔼] 𝔹
       (integerAlgEquivOfIsAlgebraic K 𝔼 (maximalUnramifiedExtensionFrobenius K Ω) x)) :
     τ = (completedFrobenius K Ω : 𝔹 →+* 𝔹) :=
   eq_completedUnramifiedAlgEquiv _ hτ
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `exists_sub_algebraMap_mem_pow x 1`. Rewrite `hr` using `[pow_one]`. Use `set σ := completedFrobenius K Ω`. Establish `h1 : residue 𝔹 x = residue 𝔹 (algebraMap 𝒪[𝔼] 𝔹 r)`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`.
+
+Conclude with `hr`. Establish `h2 : residue 𝔹 (σ x) = residue 𝔹 (σ (algebraMap 𝒪[𝔼] 𝔹 r))`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff, ← map_sub]`. Rewrite `hr`, the goal using `[mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu ↦ hr (by simpa using hu.map σ.symm)`.
+
+Rewrite using `[h2, h1, completedFrobenius_algebraMap, ← map_pow, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, ← map_pow, ← map_sub, AdicCompletion.maximalIdeal_eq_map]`. Conclude with `Ideal.mem_map_of_mem _ (frobenius_integer_sub_pow_mem_maximalIdeal r)`.
+-/
 theorem residue_completedFrobenius (x : 𝔹) :
     residue 𝔹 (completedFrobenius K Ω x) = residue 𝔹 x ^ Nat.card 𝓀[K] := by
   obtain ⟨r, hr⟩ := exists_sub_algebraMap_mem_pow x 1
@@ -515,6 +677,9 @@ theorem residue_completedFrobenius (x : 𝔹) :
     residue_eq_zero_iff, ← map_pow, ← map_sub, AdicCompletion.maximalIdeal_eq_map]
   exact Ideal.mem_map_of_mem _ (frobenius_integer_sub_pow_mem_maximalIdeal r)
 
+/- English proof (translation)
+The claim follows from `have := isAdicComplete_integer K mem_range_algebraMap_iff_fixed (map_maximalIdeal_completedUnramifiedIntegers K Ω) (completedFrobenius K Ω).toAlgHom (residue_completedFrobenius) b`.
+-/
 theorem mem_range_algebraMap_iff_completedFrobenius (b : 𝔹) :
     b ∈ (algebraMap 𝒪[K] 𝔹).range ↔ completedFrobenius K Ω b = b :=
   have := isAdicComplete_integer K
@@ -523,6 +688,9 @@ theorem mem_range_algebraMap_iff_completedFrobenius (b : 𝔹) :
 
 variable (K Ω) in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, algebraMap_completedUnramifiedIntegers_injective K Ω, map_maximalIdeal_completedUnramifiedIntegers K Ω, irreducible_algebraMap_completedUnramifiedIntegers_iff K Ω, inferInstance, inferInstance, residue_completedFrobenius, fun b ↦ (mem_range_algebraM …`.
+-/
 theorem completedUnramifiedIntegers_spec :
     IsDiscreteValuationRing 𝔹 ∧ IsAdicComplete (maximalIdeal 𝔹) 𝔹 ∧
       Function.Injective (algebraMap 𝒪[K] 𝔹) ∧
@@ -554,19 +722,31 @@ def integerToCompleted {L : IntermediateField K Ω} (h : L ≤ 𝔼) : 𝒪[L] �
 variable {K Ω}
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem integerToCompleted_apply {L : IntermediateField K Ω} (h : L ≤ 𝔼) (x : 𝒪[L]) :
     integerToCompleted K Ω h x = algebraMap 𝒪[𝔼] 𝔹 (integerInclusion h x) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `(algebraMap_integer_completedUnramifiedIntegers_injective K Ω).comp (integerInclusion_injective h)`.
+-/
 theorem integerToCompleted_injective {L : IntermediateField K Ω} (h : L ≤ 𝔼) :
     Function.Injective (integerToCompleted K Ω h) :=
   (algebraMap_integer_completedUnramifiedIntegers_injective K Ω).comp (integerInclusion_injective h)
 
+/- English proof (translation)
+The claim follows from `AlgHom.ext fun _ ↦ rfl`.
+-/
 theorem integerToCompleted_comp_integerInclusion {L L' : IntermediateField K Ω} (h : L ≤ L')
     (h' : L' ≤ 𝔼) :
     (integerToCompleted K Ω h').comp (integerInclusion h) = integerToCompleted K Ω (h.trans h') :=
   AlgHom.ext fun _ ↦ rfl
 
+/- English proof (translation)
+The claim follows from `integerToCompleted_injective _`.
+-/
 theorem IsUnramifiedSubextension.injective_integerToCompleted {L : IntermediateField K Ω}
     (hL : IsUnramifiedSubextension L) :
     Function.Injective (integerToCompleted K Ω hL.le_maximalUnramifiedExtension) :=
@@ -585,6 +765,15 @@ local notation "𝔼" => maximalUnramifiedExtension K Ω
 
 local notation "𝔹" => CompletedUnramifiedIntegers K Ω
 
+/- English proof (translation)
+Use `hL.1` as an intermediate fact. Establish `h` using `hL.ramificationIndex_eq_one`. Establish `hle` using `hL.le_maximalUnramifiedExtension`. Take `⟨ξ, hξ, htop⟩` from `exists_isPrimitiveRoot_adjoin_eq_top_of_unramified K L h`. Establish `hn : Module.finrank K L ≠ 0` using `Module.finrank_pos.ne'`.
+
+Rewrite `hξ` using `[card_residueField_of_unramified K L h]`. Establish `hm` using `natCast_card_pow_sub_one_ne_zero (K := K) hn`. Establish `key : (maximalUnramifiedExtension K Ω).val.comp ((maximalUnramifiedExtensionFrobenius K Ω).toAlgHom.comp (IntermediateField.inclusion hle)) = L.val.comp (frobenius K L h).toAlgHom`. Use `AlgHom.ext_of_adjoin_eq_top (algebra_adjoin_eq_top_of_adjoin_eq_top htop) ?_` and prove the remaining obligations. Introduce `z hz`.
+
+Rewrite `hz` using `[Set.mem_singleton_iff]`. Rewrite using `[hz]`. Establish `h1 : (IntermediateField.inclusion hle ξ) ^ (Nat.card 𝓀[K] ^ Module.finrank K L - 1) = 1`. Rewrite using `[← map_pow, hξ.pow_eq_one, map_one]`. Simplify using `only [AlgHom.comp_apply, IntermediateField.coe_val, AlgEquiv.coe_toAlgHom]`.
+
+Rewrite using `[maximalUnramifiedExtensionFrobenius_apply_of_pow_eq_one hm h1, frobenius_apply_of_pow_eq_one h hm hξ.pow_eq_one]`. Simplify using the standard rewrite rules. Establish `hk` using `congrArg (fun f : L →ₐ[K] Ω ↦ f y) key`. Simplify `hk` using `only [AlgHom.comp_apply, IntermediateField.coe_val, AlgEquiv.coe_toAlgHom]`.
+-/
 theorem maximalUnramifiedExtensionFrobenius_inclusion {L : IntermediateField K Ω}
     (hL : IsUnramifiedSubextension L) (y : L) :
     letI := hL.1
@@ -614,6 +803,9 @@ theorem maximalUnramifiedExtensionFrobenius_inclusion {L : IntermediateField K �
   have hk := congrArg (fun f : L →ₐ[K] Ω ↦ f y) key
   simpa only [AlgHom.comp_apply, IntermediateField.coe_val, AlgEquiv.coe_toAlgHom] using hk
 
+/- English proof (translation)
+Use `hL.1` as an intermediate fact. Rewrite using `[integerToCompleted_apply, integerToCompleted_apply, completedFrobenius_algebraMap]`. Use `congr 1`. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `maximalUnramifiedExtensionFrobenius_inclusion hL (x : L)`.
+-/
 theorem completedFrobenius_integerToCompleted {L : IntermediateField K Ω}
     (hL : IsUnramifiedSubextension L) (x : 𝒪[L]) :
     letI := hL.1
@@ -632,15 +824,24 @@ section Check
 
 variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsAdicComplete (maximalIdeal (CompletedUnramifiedIntegers K (SeparableClosure K)))
     (CompletedUnramifiedIntegers K (SeparableClosure K)) :=
   inferInstance
 
+/- English proof (translation)
+The claim follows from `(completedUnramifiedIntegers_spec K (SeparableClosure K)).2.2.2.2.2.2.2.2 b`.
+-/
 example (b : CompletedUnramifiedIntegers K (SeparableClosure K)) :
     completedFrobenius K (SeparableClosure K) b = b ↔
       b ∈ (algebraMap 𝒪[K] (CompletedUnramifiedIntegers K (SeparableClosure K))).range :=
   (completedUnramifiedIntegers_spec K (SeparableClosure K)).2.2.2.2.2.2.2.2 b
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, (irreducible_algebraMap_completedUnramifiedIntegers_iff K (SeparableClosure K) π).mpr hπ, inferInstance, residue_completedFrobenius⟩`.
+-/
 example (π : 𝒪[K]) (hπ : Irreducible π) :
     IsDomain (CompletedUnramifiedIntegers K (SeparableClosure K)) ∧
       IsDiscreteValuationRing (CompletedUnramifiedIntegers K (SeparableClosure K)) ∧

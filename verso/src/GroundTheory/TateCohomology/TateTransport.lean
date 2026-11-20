@@ -22,11 +22,21 @@ noncomputable def transportChainsMor (B : Rep.{u} k K) :
     simp⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma transportChainsMor_hom_apply (B : Rep.{u} k K) (b : B) :
     (transportChainsMor e B).hom b = b := rfl
 
 variable [Fintype H] [Fintype K]
 
+/- English proof (translation)
+Use `ModuleCat.hom_ext (Finsupp.lhom_ext fun v b => ?_)` and prove the remaining obligations. Use `funext fun w => ?_` and prove the remaining obligations. Establish `e1 : ((tateComplexConnectData B).d₀).hom (Finsupp.single v b) = fun _ => B.ρ.norm b`. Simplify using `[Rep.tateNorm_eq]`. Both sides reduce to the same expression.
+
+Establish `e2 : ((tateComplexConnectData (res (e : H →* K) B)).d₀).hom (((chainsMap (e.symm : K →* H) (transportChainsMor e B)).f 0).hom (Finsupp.single v b)) = fun _ => (res (e : H →* K) B).ρ.norm b`. Rewrite using `[chainsMap_f_single]`. Simplify using `[Rep.tateNorm_eq]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((tateComplexConnectData (res (e : H →* K) B)).d₀).hom (((chainsMap (e.symm : K →* H) (transportChainsMor e B)).f 0).hom (Finsupp.single v b)) w = ((cochainsMap (e : H →* K) (𝟙 _)).f 0).hom (((tateComplexConnectData B).d₀).hom (Finsupp.single v b)) w`.
+
+Rewrite using `[e1, e2, norm_res_of_bijective (e : H →* K) e.bijective]`. Both sides reduce to the same expression.
+-/
 lemma transport_comm_zero (B : Rep.{u} k K) :
     (chainsMap (e.symm : K →* H) (transportChainsMor e B)).f 0 ≫
         (tateComplexConnectData (res (e : H →* K) B)).d₀ =
@@ -54,6 +64,11 @@ noncomputable def tateTransportComplex (B : Rep.{u} k K) :
   CochainComplex.ConnectData.map _ _ (chainsMap (e.symm : K →* H) (transportChainsMor e B))
     (cochainsMap (e : H →* K) (𝟙 _)) (transport_comm_zero e B)
 
+/- English proof (translation)
+Use extensionality with `(m | m) : 1`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(chainsMap (e.symm : K →* H) (transportChainsMor e B) ≫ chainsMap (MonoidHom.id H) ((resFunctor (e : H →* K)).map φ)).f m = (chainsMap (MonoidHom.id K) φ ≫ chainsMap (e.symm : K →* H) (transportChainsMor e B')).f m`. Rewrite using `[← chainsMap_comp, ← chainsMap_comp]`. Use `congr 1`.
+
+Use the proof step `@[simps]`.
+-/
 lemma tateTransportComplex_naturality {B B' : Rep.{u} k K} (φ : B ⟶ B') :
     tateTransportComplex e B ≫ tateComplex.map ((resFunctor (e : H →* K)).map φ) =
       tateComplex.map φ ≫ tateTransportComplex e B' := by
@@ -82,6 +97,9 @@ noncomputable def tateTransport (n : ℤ) :
       resFunctor (e : H →* K) ⋙ tateCohomologyFunctor (R := k) (G := H) n :=
   Functor.whiskerRight (tateTransportComplexNatTrans e) (HomologicalComplex.homologyFunctor _ _ n)
 
+/- English proof (translation)
+The claim follows from `rfl @[simps]`.
+-/
 lemma tateTransport_app (n : ℤ) (B : Rep.{u} k K) :
     (tateTransport e n).app B = HomologicalComplex.homologyMap (tateTransportComplex e B) n := rfl
 
@@ -97,10 +115,16 @@ noncomputable def tateTransportShortComplex (X : ShortComplex (Rep.{u} k K)) :
 
 omit [Fintype H] [Fintype K] in
 
+/- English proof (translation)
+The claim follows from `(Rep.shortExact_res (e : H →* K)).2 hX`.
+-/
 lemma shortExact_map_resFunctor_equiv {X : ShortComplex (Rep.{u} k K)} (hX : X.ShortExact) :
     (X.map (resFunctor (e : H →* K))).ShortExact :=
   (Rep.shortExact_res (e : H →* K)).2 hX
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.HomologySequence.δ_naturality (tateTransportShortComplex e X) (TateCohomology.map_tateComplexFunctor_shortExact hX) (TateCohomology.map_tateComplexFunctor_shortExact (shortExact_map_resFunctor_equiv e hX)) n (n + 1) rfl`.
+-/
 theorem tateTransport_δ {X : ShortComplex (Rep.{u} k K)} (hX : X.ShortExact) (n : ℤ) :
     TateCohomology.δ hX n ≫ (tateTransport e (n + 1)).app X.X₁ =
       (tateTransport e n).app X.X₃ ≫
@@ -118,9 +142,15 @@ def invariantsTransport {B : Rep.{u} k K} (x : B.ρ.invariants) :
 
 omit [Fintype H] [Fintype K] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma coe_invariantsTransport {B : Rep.{u} k K} (x : B.ρ.invariants) :
     (invariantsTransport e x : B) = x := rfl
 
+/- English proof (translation)
+The claim follows from `homologyMap_tateZeroClass _ x _ (funext fun _ => rfl)`.
+-/
 theorem tateTransport_tateZeroClass (B : Rep.{u} k K) (x : B.ρ.invariants) :
     ((tateTransport e 0).app B).hom (tateZeroClass B x) =
       tateZeroClass (res (e : H →* K) B) (invariantsTransport e x) :=

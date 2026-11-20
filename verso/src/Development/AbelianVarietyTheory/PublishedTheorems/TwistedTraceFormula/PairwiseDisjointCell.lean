@@ -29,11 +29,17 @@ def sphSection (s : ℂ) (h : GL (n ⊕ n) k) : ℂ :=
 
 variable {k n}
 
+/- English proof (translation)
+Simplify using `[absRatio, nabs]`.
+-/
 theorem coe_absRatio (p : siegel k n) : (absRatio k n p : ℝ) =
     nabs k (GeneralLinearGroup.det (leviGL (Equiv.refl (n ⊕ n)) p)) ^ 2 /
       nabs k (GeneralLinearGroup.det (p : GL (n ⊕ n) k)) := by
   simp [absRatio, nabs]
 
+/- English proof (translation)
+Establish `h1 : GeneralLinearGroup.det (leviGL (Equiv.refl (n ⊕ n)) p) = a` using `Units.ext ha.symm`. Establish `h2 : GeneralLinearGroup.det (p : GL (n ⊕ n) k) = a * d` using `Units.ext (by rw [Units.val_mul, ha, hd]; exact (mem_stabGL_diagSub.1 p.2).det_eq)`. Use `(nabs_pos' k a).ne'` as an intermediate fact. Rewrite using `[coe_absRatio, h1, h2, nabs_mul']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem absRatio_eq (p : siegel k n) {a d : kˣ} (ha : (a : k) = (leviMat (Equiv.refl (n ⊕ n)) p.1.1).det)
     (hd : (d : k) = (quotMat (Equiv.refl (n ⊕ n)) p.1.1).det) : (absRatio k n p : ℝ) = nabs k a / nabs k d := by
   have h1 : GeneralLinearGroup.det (leviGL (Equiv.refl (n ⊕ n)) p) = a := Units.ext ha.symm
@@ -43,6 +49,9 @@ theorem absRatio_eq (p : siegel k n) {a d : kˣ} (ha : (a : k) = (leviMat (Equiv
   rw [coe_absRatio, h1, h2, nabs_mul']
   field_simp
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `hg`. Apply `nabs_eq_one` to reduce the goal to its premises. Establish `h1 : ((GeneralLinearGroup.det (GeneralLinearGroup.map (algebraMap 𝒪[k] k) g) : kˣ) : k) = algebraMap 𝒪[k] k (GeneralLinearGroup.det g : 𝒪[k]ˣ)` using `((algebraMap 𝒪[k] k).map_det _).symm`. Rewrite using `[h1]`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit (Units.isUnit _)`.
+-/
 theorem nabs_det_of_mem_KO {m : Type} [Fintype m] [DecidableEq m] {g : GL m k} (hg : g ∈ KO k m) :
     nabs k (GeneralLinearGroup.det g) = 1 := by
   obtain ⟨g, rfl⟩ := hg
@@ -54,11 +63,17 @@ theorem nabs_det_of_mem_KO {m : Type} [Fintype m] [DecidableEq m] {g : GL m k} (
   exact (Valuation.integer.integers (valuation k)).one_of_isUnit (Units.isUnit _)
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [*]`.
+-/
 theorem fromBlocks_int {A B C D : Matrix n n k} (hA : ∀ i j, A i j ∈ 𝒪[k]) (hB : ∀ i j, B i j ∈ 𝒪[k])
     (hC : ∀ i j, C i j ∈ 𝒪[k]) (hD : ∀ i j, D i j ∈ 𝒪[k]) (i j) : fromBlocks A B C D i j ∈ 𝒪[k] := by
   rcases i with i | i <;> rcases j with j | j <;> simp [*]
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype n] in
+/- English proof (translation)
+Rewrite using `[one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+-/
 theorem one_int (i j : n) : (1 : Matrix n n k) i j ∈ 𝒪[k] := by
   rw [one_apply]; split_ifs
   exacts [one_mem _, zero_mem _]
@@ -67,17 +82,34 @@ def shear (B C : Matrix n n k) (h : B * C = 0) (h' : C * B = 0) : GL (n ⊕ n) k
   ⟨fromBlocks 1 B C 1, fromBlocks 1 (-B) (-C) 1, by simp [fromBlocks_multiply, h, h'],
     by simp [fromBlocks_multiply, h, h']⟩
 
+/- English proof (translation)
+The claim follows from `(SplitFlip.mem_KO_iff _).2 ⟨fromBlocks_int one_int hB hC one_int, fromBlocks_int one_int (fun i j => neg_mem (hB i j)) (fun i j => neg_mem (hC i j)) one_int⟩`.
+-/
 theorem shear_mem {B C : Matrix n n k} (h : B * C = 0) (h' : C * B = 0) (hB : ∀ i j, B i j ∈ 𝒪[k])
     (hC : ∀ i j, C i j ∈ 𝒪[k]) : shear B C h h' ∈ KO k (n ⊕ n) :=
   (SplitFlip.mem_KO_iff _).2 ⟨fromBlocks_int one_int hB hC one_int,
     fromBlocks_int one_int (fun i j => neg_mem (hB i j)) (fun i j => neg_mem (hC i j)) one_int⟩
 
+/- English proof (translation)
+Rewrite `hx`, `hy`, the goal using `[SplitFlip.mem_KO_iff]`. Rewrite using `[← map_inv]`. Conclude with `⟨fromBlocks_int hx.1 (fun _ _ => zero_mem _) (fun _ _ => zero_mem _) hy.1, fromBlocks_int hx.2 (fun _ _ => zero_mem _) (fun _ _ => zero_mem _) hy.2⟩`.
+-/
 theorem io_mem_KO {x y : GL n k} (hx : x ∈ KO k n) (hy : y ∈ KO k n) : io k n (x, y) ∈ KO k (n ⊕ n) := by
   rw [SplitFlip.mem_KO_iff] at hx hy ⊢
   rw [← map_inv]
   exact ⟨fromBlocks_int hx.1 (fun _ _ => zero_mem _) (fun _ _ => zero_mem _) hy.1,
     fromBlocks_int hx.2 (fun _ _ => zero_mem _) (fun _ _ => zero_mem _) hy.2⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `g`. Set `δ : GL (n ⊕ n) k` to `shear 0 1 (by simp) (by simp)`. Establish `hδ : δ ∈ KO k (n ⊕ n)` using `shear_mem _ _ (fun _ _ => zero_mem _) one_int`. Take `⟨b, hb, w, hw, e⟩` from `iwasawa_blockTriangular k (n ⊕ n) (Sum.elim (fun _ => 0) fun _ => 1) (δ⁻¹ * g)`.
+
+Establish `h21 : b.1.toBlocks₂₁ = 0`. Use extensionality with `i j`. Conclude with `hb (by simp)`. Use `⟨⟨δ * b * δ⁻¹, mem_stabGL_diagSub.2 ?_⟩, δ * w, mul_mem hδ hw, ?_⟩` and prove the remaining obligations. Establish `: (δ * b * δ⁻¹).1 = fromBlocks 1 0 1 1 * b.1 * fromBlocks 1 (-0) (-1) 1` using `rfl`.
+
+Rewrite using `[this, ← fromBlocks_toBlocks b.1, h21]`. Simplify using `[KeepsDiag, leviMat, fromBlocks_multiply]`. Normalize the expressions using the abelian group laws. Use `show g = δ * b * δ⁻¹ * (δ * w)`. Rewrite `e` using `[inv_mul_eq_iff_eq_mul]`.
+
+Rewrite using `[e]`. Use `group`. Introduce `p hp`. Establish `key : ∀ q : siegel k n, (q : GL (n ⊕ n) k) ∈ KO k (n ⊕ n) → ∀ i j, (leviGL (Equiv.refl (n ⊕ n)) q).1 i j ∈ 𝒪[k]` using `fun q hq i j => add_mem (((SplitFlip.mem_KO_iff _).1 hq).1 _ _) (((SplitFlip.mem_KO_iff _).1 hq).1 _ _)`. Establish `h1 : leviGL (Equiv.refl (n ⊕ n)) p ∈ KO k n` using `(SplitFlip.mem_KO_iff _).2 ⟨key p hp, by rw [← map_inv]; exact key _ (inv_mem hp)⟩`.
+
+Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[coe_absRatio, nabs_det_of_mem_KO h1, nabs_det_of_mem_KO hp]`. Simplify using the standard rewrite rules.
+-/
 theorem isIwasawa : IsIwasawa (absRatio k n) (KO k (n ⊕ n)) := by
   constructor
   · intro g
@@ -105,23 +137,38 @@ theorem isIwasawa : IsIwasawa (absRatio k n) (KO k (n ⊕ n)) := by
     rw [coe_absRatio, nabs_det_of_mem_KO h1, nabs_det_of_mem_KO hp]
     simp
 
+/- English proof (translation)
+Rewrite using `[sphSection, isIwasawa.iwAbs_left, npow_mul, sphSection]`.
+-/
 theorem sphSection_left (s : ℂ) (p : siegel k n) (h : GL (n ⊕ n) k) :
     sphSection k n s (p * h) = npow (absRatio k n p) (s + (Fintype.card n : ℂ) / 2) * sphSection k n s h := by
   rw [sphSection, isIwasawa.iwAbs_left, npow_mul, sphSection]
 
+/- English proof (translation)
+Rewrite using `[sphSection, isIwasawa.iwAbs_right _ hκ, sphSection]`.
+-/
 theorem sphSection_right (s : ℂ) (h : GL (n ⊕ n) k) {κ : GL (n ⊕ n) k} (hκ : κ ∈ KO k (n ⊕ n)) :
     sphSection k n s (h * κ) = sphSection k n s h := by
   rw [sphSection, isIwasawa.iwAbs_right _ hκ, sphSection]
 
+/- English proof (translation)
+Rewrite using `[sphSection, isIwasawa.iwAbs_of_mem (one_mem _), one_npow]`.
+-/
 theorem sphSection_one (s : ℂ) : sphSection k n s 1 = 1 := by
   rw [sphSection, isIwasawa.iwAbs_of_mem (one_mem _), one_npow]
 
+/- English proof (translation)
+The claim follows from `funext fun g => by obtain ⟨p, κ, hκ, rfl⟩ := isIwasawa.1 g rw [hr _ _ hκ, sphSection_right _ _ hκ, ← mul_one (p : GL (n ⊕ n) k), hl, sphSection_left, h1, sphSection_one]`.
+-/
 theorem eq_sphSection {s : ℂ} {Φ : GL (n ⊕ n) k → ℂ} (h1 : Φ 1 = 1)
     (hl : ∀ (p : siegel k n) h, Φ (p * h) = npow (absRatio k n p) (s + (Fintype.card n : ℂ) / 2) * Φ h)
     (hr : ∀ h, ∀ κ ∈ KO k (n ⊕ n), Φ (h * κ) = Φ h) : Φ = sphSection k n s := funext fun g => by
   obtain ⟨p, κ, hκ, rfl⟩ := isIwasawa.1 g
   rw [hr _ _ hκ, sphSection_right _ _ hκ, ← mul_one (p : GL (n ⊕ n) k), hl, sphSection_left, h1, sphSection_one]
 
+/- English proof (translation)
+Set `p : siegel k n` to `⟨io k n (x, x), mem_stabGL_diagSub.2 ((keepsDiag_blkMat _).2 rfl)⟩`. Establish `e : io k n (x * g * y, 1) = p * (io k n (g, 1) * io k n (y, x⁻¹))` using `by show _ = io k n (x, x) * _`. Rewrite using `[← map_mul, ← map_mul]`. Simplify using `[mul_assoc]`. Rewrite using `[e, sphSection_left, sphSection_right _ _ (io_mem_KO hy (inv_mem hx)), isIwasawa.2 p (io_mem_KO hx hx), one_npow, one_mul]`.
+-/
 theorem sphSection_io_biinv (s : ℂ) (g : GL n k) {x y : GL n k} (hx : x ∈ KO k n) (hy : y ∈ KO k n) :
     sphSection k n s (io k n (x * g * y, 1)) = sphSection k n s (io k n (g, 1)) := by
   let p : siegel k n := ⟨io k n (x, x), mem_stabGL_diagSub.2 ((keepsDiag_blkMat _).2 rfl)⟩
@@ -132,6 +179,11 @@ theorem sphSection_io_biinv (s : ℂ) (g : GL n k) {x y : GL n k} (hx : x ∈ KO
   rw [e, sphSection_left, sphSection_right _ _ (io_mem_KO hy (inv_mem hx)), isIwasawa.2 p (io_mem_KO hx hx),
     one_npow, one_mul]
 
+/- English proof (translation)
+Establish `hlt : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Use `(nabs_properties k).2.2.2.2.1 ⟨ϖ, hlt.le⟩ ϖ ?_ rfl` and prove the remaining obligations. Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer]`. Use extensionality with `z`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one, Ideal.mem_span_singleton, (Valuation.integer.integers (valuation k)).dvd_iff_le, ← le_uniformizer_iff, ← hϖ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem nabs_unif {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) : nabs k ϖ = (resCard k : ℝ)⁻¹ := by
   have hlt : valuation k (ϖ : k) < 1 := hϖ ▸ uniformizer_lt_one
   refine (nabs_properties k).2.2.2.2.1 ⟨ϖ, hlt.le⟩ ϖ ?_ rfl
@@ -146,9 +198,17 @@ variable (k n) in
 def torusElt (ϖ : kˣ) (e : n → ℤ) : GL n k := diagT k n fun i => ϖ ^ e i
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `[torusElt, val_diagT]`.
+-/
 theorem val_torusElt (ϖ : kˣ) (e : n → ℤ) : (torusElt k n ϖ e).1 = diagonal fun i => (ϖ : k) ^ e i := by
   simp [torusElt, val_diagT]
 
+/- English proof (translation)
+Establish `h1 : GeneralLinearGroup.det (torusElt k n ϖ e) = ϖ ^ ∑ i, e i`. Use `ext`. Rewrite using `[GeneralLinearGroup.val_det_apply, val_torusElt, det_diagonal, Units.val_zpow_eq_zpow_val]`. Proceed by induction on `(Finset.univ : Finset n) using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert i t hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ ϖ.ne_zero, ih]`. Establish `h2` using `nabs_unif hϖ`. Unfold `nabs at h2 ⊢`. Rewrite using `[h1, map_zpow, NNReal.coe_zpow, h2, _root_.inv_zpow']`.
+-/
 theorem nabs_det_torusElt {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (e : n → ℤ) :
     nabs k (GeneralLinearGroup.det (torusElt k n ϖ e)) = (resCard k : ℝ) ^ (-∑ i, e i) := by
   have h1 : GeneralLinearGroup.det (torusElt k n ϖ e) = ϖ ^ ∑ i, e i := by
@@ -161,6 +221,27 @@ theorem nabs_det_torusElt {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k
   unfold nabs at h2 ⊢
   rw [h1, map_zpow, NNReal.coe_zpow, h2, _root_.inv_zpow']
 
+/- English proof (translation)
+Establish `hlt : valuation k (ϖ : k) < 1` using `hϖ ▸ uniformizer_lt_one`. Set `B : Matrix n n k` to `diagonal fun i => (ϖ : k) ^ max (-e i) 0 - 1`. Set `C : Matrix n n k` to `diagonal fun i => (ϖ : k) ^ max (e i) 0 - 1`. Establish `hBC : ∀ i, ((ϖ : k) ^ max (-e i) 0 - 1) * ((ϖ : k) ^ max (e i) 0 - 1) = 0` using `fun i => by`. Apply the tactic sequence `rcases le_total (e i) 0 with h | h <;> simp [h]`.
+
+Establish `h : B * C = 0` using `by simp only [B, C, diagonal_mul_diagonal, hBC, diagonal_zero]`. Establish `h' : C * B = 0` using `by simp only [B, C, diagonal_mul_diagonal, mul_comm ((ϖ : k) ^ max (e _) 0 - 1), hBC, diagonal_zero]`. Establish `hint : ∀ f : n → ℤ, ∀ i j, (diagonal fun i => (ϖ : k) ^ max (f i) 0 - 1) i j ∈ 𝒪[k]` using `fun f i j => by`. Rewrite using `[diagonal_apply]`. Use `split_ifs`.
+
+Use `sub_mem ?_ (one_mem _) show valuation k _ ≤ 1` and prove the remaining obligations. Rewrite using `[map_zpow₀]`. Conclude with `zpow_le_one₀ (zero_lt_iff.2 (by simp)) hlt.le (le_max_right _ _)`. Conclude with `zero_mem _`. Establish `hκ : shear B C h h' ∈ KO k (n ⊕ n)` using `shear_mem h h' (hint fun i => -e i) (hint e)`.
+
+Establish `hv : (io k n (torusElt k n ϖ e, 1) * shear B C h h').1 = fromBlocks (torusElt k n ϖ e).1 ((torusElt k n ϖ e).1 * B) C 1` using `by show fromBlocks (torusElt k n ϖ e).1 0 0 1 * fromBlocks 1 B C 1 = _`. Simplify using `[fromBlocks_multiply]`. Establish `hL : (torusElt k n ϖ e).1 + (torusElt k n ϖ e).1 * B = (torusElt k n ϖ fun i => max (e i) 0).1`. Simplify using `only [val_torusElt, B, diagonal_mul_diagonal, diagonal_add]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[mul_sub, mul_one, add_sub_cancel, ← zpow_add₀ ϖ.ne_zero]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Set `p : siegel k n` to `⟨io k n (torusElt k n ϖ e, 1) * shear B C h h', mem_stabGL_diagSub.2 (by`.
+
+Rewrite using `[hv]`. Simplify using `only [KeepsDiag, leviMat, Equiv.coe_refl, submatrix_id_id, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, hL]`. Simplify using `only [val_torusElt, C, ← diagonal_one, diagonal_add, sub_add_cancel])⟩`. Establish `h1 : leviGL (Equiv.refl (n ⊕ n)) p = torusElt k n ϖ fun i => max (e i) 0` using `by ext1`. Rewrite using `[val_leviGL, ← hL]`.
+
+Use `show leviMat _ (io k n (torusElt k n ϖ e, 1) * shear B C h h').1 = _`. Rewrite using `[hv]`. Simplify using `[leviMat]`. Establish `h2 : nabs k (GeneralLinearGroup.det (p : GL (n ⊕ n) k)) = nabs k (GeneralLinearGroup.det (torusElt k n ϖ e))` using `by show nabs k (GeneralLinearGroup.det (io k n (torusElt k n ϖ e, 1) * shear B C h h')) = _`. Rewrite using `[map_mul, nabs_mul', nabs_det_of_mem_KO hκ, mul_one]`.
+
+Use `congr 1`. Use `ext`. Conclude with `(det_blkMat _ _ _).trans (by simp)`. Establish `hq : (0 : ℝ) < resCard k` using `by exact_mod_cast (zero_lt_one.trans (one_lt_resCard k))`. Establish `h3 : (absRatio k n p : ℝ) = (resCard k : ℝ) ^ (-∑ i, |e i|)`.
+
+Rewrite using `[coe_absRatio, h1, h2, nabs_det_torusElt hϖ, nabs_det_torusElt hϖ, sq, ← zpow_add₀ hq.ne', ← zpow_sub₀ hq.ne']`. Use `congr 1`. Simplify using `only [← Finset.sum_neg_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[abs_eq_max_neg]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[← sphSection_right s _ hκ, sphSection, show io k n (torusElt k n ϖ e, 1) * shear B C h h' = p from rfl, isIwasawa.iwAbs_coe, npow, h3, ← Real.rpow_intCast, ← Complex.cpow_mul_ofReal_nonneg hq.le]`. Rewrite using `[Complex.ofReal_intCast, Complex.ofReal_natCast, Int.cast_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sphSection_torusElt {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) (s : ℂ) (e : n → ℤ) :
     sphSection k n s (io k n (torusElt k n ϖ e, 1)) =
       (resCard k : ℂ) ^ (-((Fintype.card n : ℂ) / 2 + s) * ((∑ i, |e i| : ℤ) : ℂ)) := by
@@ -227,11 +308,26 @@ variable (k n) in
 def cell (ϖ : kˣ) (e : n → ℤ) : Set (GL n k) :=
   DoubleCoset.doubleCoset (torusElt k n ϖ e) (KO k n) (KO k n)
 
+/- English proof (translation)
+The claim follows from `SplitFlip.isOpen_KO.mul_left`.
+-/
 theorem isOpen_cell (ϖ : kˣ) (e : n → ℤ) : IsOpen (cell k n ϖ e) := SplitFlip.isOpen_KO.mul_left
 
+/- English proof (translation)
+The claim follows from `(SplitFlip.isCompact_KO.mul isCompact_singleton).mul SplitFlip.isCompact_KO`.
+-/
 theorem isCompact_cell (ϖ : kˣ) (e : n → ℤ) : IsCompact (cell k n ϖ e) :=
   (SplitFlip.isCompact_KO.mul isCompact_singleton).mul SplitFlip.isCompact_KO
 
+/- English proof (translation)
+Use `Set.eq_univ_of_forall fun g => ?_` and prove the remaining obligations. Take `⟨c, hc0, hc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors 𝒪[k]) (fun ij : Fin N × Fin N => g.1 ij.1 ij.2) |>.imp (fun c hc => And.intro (nonZeroDivisors.coe_ne_zero c) hc)`. Use `choose G hG using hc`. Take `⟨a, ha, k₁, h₁, k₂, h₂, e⟩` from `Formalism.UG.P.cartan_decomp_gen 𝒪[k] (valuation k) (fun _ => Iff.rfl) (ϖ : k) ϖ.ne_zero (fun x hx => ⟨ord k (Units.mk0 x hx), by`. Establish `h1 : ∀ m : ℤ, ord k (ϖ ^ m) = m` using `fun m => by`.
+
+Set `o : kˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by`. Rewrite using `[ord_mul, ofAdd_add]`. Use `map_zpow o ϖ m` as an intermediate fact. Rewrite `this` using `[show o ϖ = .ofAdd 1 from congrArg Multiplicative.ofAdd (ord_eq_one hϖ), ← ofAdd_zsmul, smul_eq_mul, mul_one]`. Conclude with `this`.
+
+Establish `h2` using `ord_eq_zero_iff.1 (show ord k (Units.mk0 x hx * ϖ ^ (-ord k (Units.mk0 x hx))) = 0 by`. Rewrite using `[ord_mul, h1, add_neg_cancel])`. Rewrite `h2` using `[Units.val_mul, map_mul, Units.val_zpow_eq_zpow_val, map_zpow₀, _root_.zpow_neg, mul_inv_eq_one₀ (zpow_ne_zero _ (by simp))]`. Conclude with `h2⟩)`. Use `g (c : 𝒪[k]) hc0 ⟨Matrix.of fun i j => G (i, j), by`.
+
+Use extensionality with `i j`. Conclude with `hG (i, j)⟩`. Conclude with `Set.mem_iUnion.2 ⟨⟨a, ha⟩, DoubleCoset.mem_doubleCoset.2 ⟨k₁, h₁, k₂, h₂, Units.ext (by rw [e, Units.val_mul, Units.val_mul, val_torusElt])⟩⟩`.
+-/
 theorem iUnion_cell {N : ℕ} {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) :
     ⋃ e : {e : Fin N → ℤ // Antitone e}, cell k (Fin N) ϖ e = Set.univ := by
   refine Set.eq_univ_of_forall fun g => ?_
@@ -260,6 +356,11 @@ theorem iUnion_cell {N : ℕ} {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformiz
   exact Set.mem_iUnion.2 ⟨⟨a, ha⟩, DoubleCoset.mem_doubleCoset.2 ⟨k₁, h₁, k₂, h₂,
     Units.ext (by rw [e, Units.val_mul, Units.val_mul, val_torusElt])⟩⟩
 
+/- English proof (translation)
+Introduce `a b hab`. Use `Set.disjoint_left.2 fun g ha hb => hab (Subtype.ext ?_)` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 ha`. Take `⟨x', hx', y', hy', e⟩` from `DoubleCoset.mem_doubleCoset.1 hb`. Establish `e' : x'⁻¹ * x * torusElt k _ ϖ a * (y * y'⁻¹) = torusElt k _ ϖ b`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Formalism.UG.P.cartan_unique_gen 𝒪[k] (valuation k) (fun _ => Iff.rfl) (ϖ : k) ϖ.ne_zero (hϖ ▸ uniformizer_lt_one) a.1 b.1 a.2 b.2 (x'⁻¹ * x) (mul_mem (inv_mem hx') hx) (y * y'⁻¹) (mul_mem hy (inv_mem hy')) ?_` and prove the remaining obligations. Rewrite using `[← val_torusElt, ← val_torusElt, ← e', Units.val_mul (x'⁻¹ * x * _), Units.val_mul (x'⁻¹ * x)]`.
+-/
 theorem pairwise_disjoint_cell {N : ℕ} {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) :
     Pairwise (Function.onFun Disjoint fun e : {e : Fin N → ℤ // Antitone e} => cell k (Fin N) ϖ e) := by
   intro a b hab
@@ -274,6 +375,11 @@ theorem pairwise_disjoint_cell {N : ℕ} {ϖ : kˣ} (hϖ : valuation k (ϖ : k) 
     (mul_mem hy (inv_mem hy')) ?_
   rw [← val_torusElt, ← val_torusElt, ← e', Units.val_mul (x'⁻¹ * x * _), Units.val_mul (x'⁻¹ * x)]
 
+/- English proof (translation)
+Use `hasSum_integral_iUnion (μ := μ) (f := f) (s := fun e : {e : Fin N → ℤ // Antitone e} => cell k (Fin N) ϖ e) (fun e => (isOpen_cell ϖ e.1).measurableSet) (pairwise_disjoint_cell hϖ) hf.integrableOn` as an intermediate fact. Rewrite `this` using `[iUnion_cell hϖ, Measure.restrict_univ]`. Use `(funext fun e => ?_ : (fun e : {e : Fin N → ℤ // Antitone e} => (μ.real (cell k (Fin N) ϖ e) : ℂ) * f (torusElt k (Fin N) ϖ e)) = _) ▸ this` and prove the remaining obligations. Rewrite using `[setIntegral_congr_fun (isOpen_cell ϖ e.1).measurableSet (g := fun _ => f (torusElt k (Fin N) ϖ e)) fun g hg => by`. Take `⟨x, hx, y, hy, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hg`.
+
+Conclude with `hb _ x hx y hy]`. Simplify using the standard rewrite rules.
+-/
 theorem hasSum_cell {N : ℕ} [MeasurableSpace (GL (Fin N) k)] [BorelSpace (GL (Fin N) k)]
     (μ : Measure (GL (Fin N) k)) {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) {f : GL (Fin N) k → ℂ}
     (hf : Integrable f μ) (hb : ∀ g, ∀ x ∈ KO k (Fin N), ∀ y ∈ KO k (Fin N), f (x * g * y) = f g) :
@@ -291,6 +397,11 @@ theorem hasSum_cell {N : ℕ} [MeasurableSpace (GL (Fin N) k)] [BorelSpace (GL (
       exact hb _ x hx y hy]
   simp
 
+/- English proof (translation)
+Take `⟨v, hv, l, hl, -, e⟩` from `h`. Establish `h1 : π y v = v` using `by simpa using hv ⟨y, hy⟩`. Establish `h2 : π.dual x⁻¹ l = l` using `by simpa using hl ⟨x⁻¹, inv_mem hx⟩`. Rewrite using `[e, e, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h1]`. Use `conv_rhs => rw [← h2]`.
+
+Simplify using `[Module.Dual.transpose_apply]`.
+-/
 theorem zonal_biinv {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {π : Representation ℂ G V}
     {K : Subgroup G} {ω : G → ℂ} (h : IsZonal π K ω) (g : G) {x y : G} (hx : x ∈ K) (hy : y ∈ K) :
     ω (x * g * y) = ω g := by
@@ -323,6 +434,11 @@ def UnramifiedDoublingGL : Prop :=
           lFactor (resCard k) α (s + 1 / 2) * lFactor (resCard k) α⁻¹ (s + 1 / 2) *
             invNormFactor (resCard k) n s
 
+/- English proof (translation)
+Take `⟨s₀, h⟩` from `H k n μ hμ V π α hπ ω hω`. Use `⟨s₀, fun s hs => ?_⟩` and prove the remaining obligations. Use `hasSum_cell μ hϖ (h s hs).1 fun g x hx y hy => by` as an intermediate fact. Rewrite using `[sphSection_io_biinv s g hx hy, zonal_biinv hω g hx hy]`. Simplify using `only [sphSection_torusElt hϖ, Fintype.card_fin] at this`.
+
+Rewrite `this` using `[(h s hs).2]`. Then use the resulting hypothesis.
+-/
 theorem UnramifiedDoublingGL.hasSum (H : UnramifiedDoublingGL)
     (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     (n : ℕ) [MeasurableSpace (GL (Fin n) k)] [BorelSpace (GL (Fin n) k)]
@@ -342,6 +458,9 @@ theorem UnramifiedDoublingGL.hasSum (H : UnramifiedDoublingGL)
   simp only [sphSection_torusElt hϖ, Fintype.card_fin] at this
   rwa [(h s hs).2] at this
 
+/- English proof (translation)
+Establish `key : ∀ g ∈ KO k (Fin n), χ (GeneralLinearGroup.det g) = 1` using `fun g hg => h _ ((nabs_eq_one_iff _).1 (nabs_det_of_mem_KO hg))`. Use `⟨_, hasSatake_detRep h hϖ, 1, fun g => ?_, LinearMap.id, fun g => ?_, rfl, fun g => by simp [detRep]⟩` and prove the remaining obligations. Simplify using `[detRep, key _ g.2]`. Use `ext`. Simplify using `[detRep, Module.Dual.transpose_apply, key _ g.2]`.
+-/
 example {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     {χ : kˣ →* ℂˣ} (h : IsUnram χ) {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) :
     ∃ α, HasSatake (detRep (Fin n) χ) α ∧

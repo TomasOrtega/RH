@@ -14,9 +14,15 @@ def SegreLiftRelDim.Statement : Prop :=
     [∀ k, Fintype (ι k)] (W : Ideal (MRing ι F)), IsMultiProjPrime W →
       relDim (segreLift ι F W) = relDim W
 
+/- English proof (translation)
+The claim follows from `NumbersDVR.isMultiProjPrime_bot`.
+-/
 theorem SegreLiftRelDim.hyps : IsMultiProjPrime (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ)) :=
   NumbersDVR.isMultiProjPrime_bot
 
+/- English proof (translation)
+The claim follows from `h ℚ Unit (fun _ => Fin 2) ⊥ SegreLiftRelDim.hyps`.
+-/
 example (h : SegreLiftRelDim.Statement) := h ℚ Unit (fun _ => Fin 2) ⊥ SegreLiftRelDim.hyps
 
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

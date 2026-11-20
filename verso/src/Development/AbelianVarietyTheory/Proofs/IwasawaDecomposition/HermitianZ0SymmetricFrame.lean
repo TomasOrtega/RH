@@ -9,12 +9,26 @@ open Formalism.L2.SG.Pf
 namespace GlobalTheory.Mem.SymChar.ZPair
 open GlobalTheory.Mem.SymFrame
 
+/- English proof (translation)
+Unfold `Ranks.r Ranks.rS`. Take `⟨t, ht⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_eq' (D : D7) : D.R.r = D.R.k + 2 * D.R.rS + 1 := by
   unfold Ranks.r Ranks.rS
   obtain ⟨t, ht⟩ := D.R.m_even
   have := D.R.two_le_m
   omega
 
+/- English proof (translation)
+Establish `hr` using `rank_eq' D`. Establish `hj` using `j.2`. Unfold `symVec GlobalTheory.SeeConjRead.flagV epsW`. Use `split_ifs`. It suffices to derive a contradiction.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[sub_zero, unitaryCongruence.hA_symm]`. Conclude with `unitaryCongruence.Z_sig _ _ (X.formsAtZero.2 _).1`. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[sub_zero]`. Conclude with `(X.weightVectorsIntegral _).1`. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. Rewrite using `[sub_zero]`.
+
+Conclude with `(X.weightVectorsIntegral _).2.1`. Rewrite using `[sub_neg_eq_add]`. Conclude with `X.formsAtZero.1`. Rewrite using `[sub_zero, unitaryCongruence.hA_symm]`. Conclude with `unitaryCongruence.Z_sig _ _ (X.formsAtZero.2 _).2`.
+
+It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers.
+-/
 theorem zmod_hA_z0_symVec (D : D7) (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) (j : Fin D.R.r) :
     ZMod' X.B.I X.B.g (hA X.B.I X.z0 (symVec X w j) - (if j.val = D.R.rS + D.R.k then -1 else 0)) := by
   have hr := rank_eq' D
@@ -31,6 +45,9 @@ theorem zmod_hA_z0_symVec (D : D7) (X : HidaSetting D) (w : HeightOneSpectrum (�
   · rw [sub_zero, unitaryCongruence.hA_symm]; exact unitaryCongruence.Z_sig _ _ (X.formsAtZero.2 _).2
   · exfalso; omega
 
+/- English proof (translation)
+Introduce `D X kv hg j`. Conclude with `GlobalTheory.Mem.SymChar.wInt_of_zmod X kv.1 hg (zmod_hA_z0_symVec D X _ j)`.
+-/
 theorem hA_z0_symVec : ∀ (D : D7) (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal → ∀ (j : Fin D.R.r), hA X.B.I X.z0 (GlobalTheory.Mem.SymFrame.symVec X (D.naut.plGw kv.1 kv.2) j) - (if j.val = D.R.rS + D.R.k then -1 else 0) ∈ GlobalTheory.Mem.SymChar.wInt X (D.naut.plGw kv.1 kv.2) := by
   intro D X kv hg j
   exact GlobalTheory.Mem.SymChar.wInt_of_zmod X kv.1 hg (zmod_hA_z0_symVec D X _ j)

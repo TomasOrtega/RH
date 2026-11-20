@@ -19,17 +19,26 @@ universe w u v
 
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R)
 
+/- English proof (translation)
+Rewrite using `[CrystallineSemistableComparison.P.prism (resU F h) (CH.Mor.id (P.ι ⋙ F)) { app := fun T => 𝟙 _ } (fun T y => by`. Simplify using `[resU, CH.Mor.id]) n x]`. Conclude with `(CrystallineSemistableComparison.P.pull_comp (CH.Mor.id (P.ι ⋙ F)) (CH.Mor.id (P.ι ⋙ F)) n x).2`.
+-/
 theorem resU_pull_self {P : ObjectProperty C} (h : P ≤ P) (n : ℕ) (x : HU F P n) : (resU F h).pull n x = x := by
   rw [CrystallineSemistableComparison.P.prism (resU F h) (CH.Mor.id (P.ι ⋙ F)) { app := fun T => 𝟙 _ } (fun T y => by
     simp [resU, CH.Mor.id]) n x]
   exact (CrystallineSemistableComparison.P.pull_comp (CH.Mor.id (P.ι ⋙ F)) (CH.Mor.id (P.ι ⋙ F)) n x).2
 
+/- English proof (translation)
+Rewrite using `[← (CrystallineSemistableComparison.P.pull_comp (resU F h₁₂) (resU F h₂₃) n x).1]`. Conclude with `CrystallineSemistableComparison.P.prism (resU F h₁₃) ((resU F h₁₂).comp (resU F h₂₃)) { app := fun T => 𝟙 _ } (fun T y => by`. Simplify using `[resU, CH.Mor.comp]) n x`.
+-/
 theorem resU_pull_trans {P₁ P₂ P₃ : ObjectProperty C} (h₁₂ : P₂ ≤ P₁) (h₂₃ : P₃ ≤ P₂) (h₁₃ : P₃ ≤ P₁) (n : ℕ)
     (x : HU F P₁ n) : (resU F h₁₃).pull n x = (resU F h₂₃).pull n ((resU F h₁₂).pull n x) := by
   rw [← (CrystallineSemistableComparison.P.pull_comp (resU F h₁₂) (resU F h₂₃) n x).1]
   exact CrystallineSemistableComparison.P.prism (resU F h₁₃) ((resU F h₁₂).comp (resU F h₂₃)) { app := fun T => 𝟙 _ } (fun T y => by
     simp [resU, CH.Mor.comp]) n x
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨(resU F h').pull n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← resU_pull_trans F h h' le_rfl, resU_pull_self]`. Rewrite using `[← resU_pull_trans F h' h le_rfl, resU_pull_self]`.
+-/
 theorem resU_bij_of_le {P P' : ObjectProperty C} (h : P' ≤ P) (h' : P ≤ P') (n : ℕ) :
     Function.Bijective ((resU F h).pull n) := by
   refine Function.bijective_iff_has_inverse.2 ⟨(resU F h').pull n, fun x => ?_, fun x => ?_⟩
@@ -40,6 +49,11 @@ end General
 
 variable {K : Type} [CommRing K] {Z : Scheme.{0}}
 
+/- English proof (translation)
+Set `m0` to `(incl h).sq (incl_fil h (a : ℤ)) (incl_fil h ((a : ℤ) + 1))`. Set `m : CH.Mor (Q.ι ⋙ G q a) (Q'.ι ⋙ G q a) (RingHom.id K)` to `m0`. Use `CrystallineSemistableComparison.P.prism m (resU (G q a) h) (𝟙 _) (fun T y => ?_) n x` and prove the remaining obligations. Take `⟨y, hy⟩` from `y`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+
+Simplify using `only [resU, NatTrans.id_app]`. Both sides reduce to the same expression.
+-/
 theorem sq_pull_eq_resU (q : Z ⟶ Spec (CommRingCat.of K)) {Q Q' : ObjectProperty (Thick (smFun Z q))} (h : Q' ≤ Q)
     (a n : ℕ) (x : HU (G q a) Q n) :
     ((incl h).sq (incl_fil h (a : ℤ)) (incl_fil h ((a : ℤ) + 1))).pull n x = (resU (G q a) h).pull n x := by
@@ -51,6 +65,9 @@ theorem sq_pull_eq_resU (q : Z ⟶ Spec (CommRingCat.of K)) {Q Q' : ObjectProper
   simp only [resU, NatTrans.id_app]
   rfl
 
+/- English proof (translation)
+Use `⟨fun x y hxy => hb.1 ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[sq_pull_eq_resU q h a n x, sq_pull_eq_resU q h a n y]`. Conclude with `hxy`. Take `⟨x, hx⟩` from `hb.2 y`. Conclude with `⟨x, (sq_pull_eq_resU q h a n x).symm.trans hx⟩`.
+-/
 theorem bij_resU_of_sq (q : Z ⟶ Spec (CommRingCat.of K)) {Q Q' : ObjectProperty (Thick (smFun Z q))} (h : Q' ≤ Q)
     (a n : ℕ) (hb : Function.Bijective (((incl h).sq (incl_fil h (a : ℤ)) (incl_fil h ((a : ℤ) + 1))).pull n)) :
     Function.Bijective ((resU (G q a) h).pull n) := by
@@ -66,32 +83,63 @@ abbrev StT (q : Z ⟶ Spec (CommRingCat.of K)) (s : ℕ) (𝒱 : Set Z.Opens) : 
 abbrev StA (q : Z ⟶ Spec (CommRingCat.of K)) (𝒱 : Set Z.Opens) : ObjectProperty (Thick (smFun Z q)) :=
   St (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) ⊤ 𝒱
 
+/- English proof (translation)
+Introduce `_ hT` and use `⟨trivial, hT.2⟩`.
+-/
 theorem stT_le_stA (q : Z ⟶ Spec (CommRingCat.of K)) (s : ℕ) (𝒱 : Set Z.Opens) : StT q s 𝒱 ≤ StA q 𝒱 :=
   fun _ hT => ⟨trivial, hT.2⟩
 
+/- English proof (translation)
+The claim follows from `bij_resU_of_sq q _ a n (Pb.refl ⊤ 1 (a + 1) (Or.inl ⟨rfl, rfl⟩) 𝒱 (stT_le_stA q (a + 1) 𝒱) (a : ℤ) ((a : ℤ) + 1) (by push_cast; exact le_rfl) n)`.
+-/
 theorem bij_trunc (q : Z ⟶ Spec (CommRingCat.of K)) (a n : ℕ) (𝒱 : Set Z.Opens) :
     Function.Bijective ((resU (G q a) (stT_le_stA q (a + 1) 𝒱)).pull n) :=
   bij_resU_of_sq q _ a n (Pb.refl ⊤ 1 (a + 1) (Or.inl ⟨rfl, rfl⟩) 𝒱 (stT_le_stA q (a + 1) 𝒱) (a : ℤ) ((a : ℤ) + 1)
     (by push_cast; exact le_rfl) n)
 
+/- English proof (translation)
+Introduce `_ hT` and use `⟨trivial, V, rfl, hT⟩`.
+-/
 theorem inU_le_stA (q : Z ⟶ Spec (CommRingCat.of K)) (V : Z.Opens) : inU q V ≤ StA q {V} :=
   fun _ hT => ⟨trivial, V, rfl, hT⟩
 
+/- English proof (translation)
+Introduce and unpack `T ⟨-, W, hW, hT⟩`. Rewrite `hW` using `[Set.mem_singleton_iff]`. Substitute `hW` using the available equality. Conclude with `hT`.
+-/
 theorem stA_le_inU (q : Z ⟶ Spec (CommRingCat.of K)) (V : Z.Opens) : StA q {V} ≤ inU q V := by
   rintro T ⟨-, W, hW, hT⟩
   rw [Set.mem_singleton_iff] at hW
   subst hW
   exact hT
 
+/- English proof (translation)
+Introduce `_ ⟨α, hT⟩` and use `⟨trivial, U α, ⟨α, rfl⟩, hT⟩`.
+-/
 theorem cov_le_stA (q : Z ⟶ Spec (CommRingCat.of K)) {ι : Type} (U : ι → Z.Opens) :
     (fun T => ∃ α, inU q (U α) T) ≤ StA q (Set.range U) :=
   fun _ ⟨α, hT⟩ => ⟨trivial, U α, ⟨α, rfl⟩, hT⟩
 
+/- English proof (translation)
+Introduce and unpack `T ⟨-, W, ⟨α, rfl⟩, hT⟩`. Conclude with `⟨α, hT⟩`.
+-/
 theorem stA_le_cov (q : Z ⟶ Spec (CommRingCat.of K)) {ι : Type} (U : ι → Z.Opens) :
     StA q (Set.range U) ≤ fun T => ∃ α, inU q (U α) T := by
   rintro T ⟨-, W, ⟨α, rfl⟩, hT⟩
   exact ⟨α, hT⟩
 
+/- English proof (translation)
+Introduce `K _ Z q ι V U hU h a n`. Establish `hTU : StT q (a + 1) (Set.range U) ≤ StT q (a + 1) {V}`. Introduce and unpack `T ⟨hT, W, ⟨α, rfl⟩, hW⟩`. Conclude with `⟨hT, V, rfl, h T ⟨α, hW⟩⟩`. Establish `hc : ∀ W ∈ ({V} : Set Z.Opens), W ≤ sSup (Set.range U)`.
+
+Introduce `W hW`. Rewrite `hW` using `[Set.mem_singleton_iff]`. Substitute `hW` using the available equality. Rewrite using `[← hU, sSup_range]`. Establish `hZ : Function.Bijective ((resU (G q a) hTU).pull n)` using `bij_resU_of_sq q hTU a n ((Pb.zar (TF 1 (a + 1)) (Or.inl ⟨rfl, 1, a + 1, rfl⟩) (Set.range U) {V} hTU hc n).1 (a : ℤ) ((a : ℤ) + 1))`.
+
+Establish `hPV : (StT q (a + 1) {V}) ≤ inU q V` using `(stT_le_stA q (a + 1) {V}).trans (stA_le_inU q V)`. Establish `hPVb : Function.Bijective ((resU (G q a) hPV).pull n)`. Establish `e : ∀ x, (resU (G q a) hPV).pull n x = (resU (G q a) (stT_le_stA q (a + 1) {V})).pull n ((resU (G q a) (stA_le_inU q V)).pull n x)` using `resU_pull_trans (G q a) _ _ _ n`. Establish `hb` using `(bij_trunc q a n {V}).comp (resU_bij_of_le (G q a) (stA_le_inU q V) (inU_le_stA q V) n)`. Conclude with `(funext e : ⇑((resU (G q a) hPV).pull n) = _) ▸ hb`.
+
+Establish `hPU : (StT q (a + 1) (Set.range U)) ≤ fun T => ∃ α, inU q (U α) T` using `(stT_le_stA q (a + 1) (Set.range U)).trans (stA_le_cov q U)`. Establish `hPUb : Function.Bijective ((resU (G q a) hPU).pull n)`. Establish `e : ∀ x, (resU (G q a) hPU).pull n x = (resU (G q a) (stT_le_stA q (a + 1) (Set.range U))).pull n ((resU (G q a) (stA_le_cov q U)).pull n x)` using `resU_pull_trans (G q a) _ _ _ n`. Establish `hb` using `(bij_trunc q a n (Set.range U)).comp (resU_bij_of_le (G q a) (stA_le_cov q U) (cov_le_stA q U) n)`. Conclude with `(funext e : ⇑((resU (G q a) hPU).pull n) = _) ▸ hb`.
+
+Establish `hsq : ⇑((resU (G q a) hPU).pull n) ∘ ⇑((resU (G q a) h).pull n) = ⇑((resU (G q a) hTU).pull n) ∘ ⇑((resU (G q a) hPV).pull n)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← resU_pull_trans (G q a) h hPU (hTU.trans hPV), ← resU_pull_trans (G q a) hPV hTU (hTU.trans hPV)]`. Establish `hcomp : Function.Bijective (⇑((resU (G q a) hPU).pull n) ∘ ⇑((resU (G q a) h).pull n))`.
+
+Rewrite using `[hsq]`. Conclude with `hZ.comp hPVb`. Conclude with `(Function.Bijective.of_comp_iff' hPUb _).1 hcomp`.
+-/
 theorem zarAbs_pf : ZarAbs := by
   intro K _ Z q ι V U hU h a n
 

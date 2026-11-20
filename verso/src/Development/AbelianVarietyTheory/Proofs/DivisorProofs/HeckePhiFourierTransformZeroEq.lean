@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.HeckeTwo
 
+/- English proof (translation)
+Unfold `phi`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, Complex.ofReal_mul, mul_cpow_ofReal_nonneg (abs_nonneg y) (norm_nonneg w)]`. Establish `h : ((y : ℂ))⁻¹ ^ 2 = ((|y| : ℝ) : ℂ)⁻¹ ^ 2`. Rewrite using `[inv_pow, inv_pow, ← ofReal_pow, ← ofReal_pow, sq_abs]`. Rewrite using `[mul_inv, mul_pow, h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_ofReal_mul (σ : ℂ) (y : ℝ) (w : ℂ) :
     phi σ ((y : ℂ) * w) = (((|y| : ℝ) : ℂ)⁻¹ ^ 2 * ((|y| : ℝ) : ℂ) ^ (-2 * σ)) * phi σ w := by
   unfold phi
@@ -20,6 +25,15 @@ theorem phi_ofReal_mul (σ : ℂ) (y : ℝ) (w : ℂ) :
   rw [mul_inv, mul_pow, h]
   ring
 
+/- English proof (translation)
+Establish `h0 : hTrans σ 0 y = ∫ t : ℝ, phi σ ((t : ℂ) + (y : ℂ) * I)` using `by simp [hTrans]`. Establish `h1 : cConst σ = ∫ t : ℝ, phi σ ((t : ℂ) + I)` using `by simp [cConst, hTrans]`. Establish `hsub` using `MeasureTheory.Measure.integral_comp_mul_left (fun t : ℝ => phi σ ((t : ℂ) + (y : ℂ) * I)) y`. Establish `h2 : (∫ u : ℝ, phi σ (((y * u : ℝ) : ℂ) + (y : ℂ) * I)) = (((|y| : ℝ) : ℂ)⁻¹ ^ 2 * ((|y| : ℝ) : ℂ) ^ (-2 * σ)) * ∫ u : ℝ, phi σ ((u : ℂ) + I)`. Rewrite using `[← MeasureTheory.integral_const_mul]`.
+
+Use `congr 1`. Use extensionality with `u`. Rewrite using `[← phi_ofReal_mul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hsub` using `[h2]`. Establish `hya : (|y| : ℝ) ≠ 0` using `abs_ne_zero.mpr hy`. Establish `hyc : ((|y| : ℝ) : ℂ) ≠ 0` using `ofReal_ne_zero.mpr hya`. Establish `h3 : (∫ t : ℝ, phi σ ((t : ℂ) + (y : ℂ) * I)) = ((|y| : ℝ) : ℂ) * ((((|y| : ℝ) : ℂ)⁻¹ ^ 2 * ((|y| : ℝ) : ℂ) ^ (-2 * σ)) * ∫ u : ℝ, phi σ ((u : ℂ) + I))`.
+
+Rewrite using `[hsub, abs_inv, Complex.real_smul, ← mul_assoc, ofReal_inv, mul_inv_cancel₀ hyc, one_mul]`. Establish `hc : ((|y| : ℝ) : ℂ) ^ (-1 - 2 * σ) = ((|y| : ℝ) : ℂ)⁻¹ * ((|y| : ℝ) : ℂ) ^ (-2 * σ)`. Rewrite using `[show (-1 - 2 * σ) = -1 + -2 * σ by ring, cpow_add _ _ hyc, cpow_neg_one]`. Rewrite using `[h0, h3, ← h1, hc]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem hTrans_zero_eq (σ : ℂ) (y : ℝ) (hy : y ≠ 0) :
     hTrans σ 0 y = cConst σ * ((|y| : ℝ) : ℂ) ^ (-1 - 2 * σ) := by
   have h0 : hTrans σ 0 y = ∫ t : ℝ, phi σ ((t : ℂ) + (y : ℂ) * I) := by simp [hTrans]

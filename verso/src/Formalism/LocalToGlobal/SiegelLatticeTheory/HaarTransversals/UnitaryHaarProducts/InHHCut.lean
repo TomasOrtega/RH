@@ -10,6 +10,9 @@ open Matrix
 
 namespace Formalism.L2.SG.PoincareInHH.Cut
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.AutInst.muA Formalism.REAL.muG`. Use `infer_instance`.
+-/
 theorem muA_isHaar' (I : AutInst) (μf : Measure I.Gf) [SigmaFinite μf] [μf.IsHaarMeasure] :
     (I.muA μf).IsHaarMeasure := by
   unfold Formalism.MainNotions.S.AutInst.muA Formalism.REAL.muG
@@ -19,6 +22,13 @@ section Abs
 
 variable {G : Type*} [Group G]
 
+/- English proof (translation)
+Establish `back : ∀ (E E' : Set G), FoldBound.IsRightTransversal Γ S E → FoldBound.IsRightTransversal Γ S E' → ∀ δ : E, ∃ p : S × E', ((p.1 : G) * (p.2 : G)) = δ` using `fun E E' hE hE' δ => (hE'.2 δ (hE.1 δ.2)).exists`. Establish `inv : ∀ (E E' : Set G) (hE : FoldBound.IsRightTransversal Γ S E) (hE' : FoldBound.IsRightTransversal Γ S E') (δ : E), (back E' E hE' hE (back E E' hE hE' δ).choose.2).choose.2 = δ`. Introduce `E E' hE hE' δ`. Establish `hp : (((back E E' hE hE' δ).choose.1 : G) * ((back E E' hE hE' δ).choose.2 : G)) = δ` using `(back E E' hE hE' δ).choose_spec`. Establish `hq : (((back E' E hE' hE (back E E' hE hE' δ).choose.2).choose.1 : G) * ((back E' E hE' hE (back E E' hE hE' δ).choose.2).choose.2 : G)) = ((back E E' hE hE' δ).choose.2 : G)` using `(back E' E hE' hE (back E E' hE hE' δ).choose.2).choose_spec`.
+
+Establish `h1 : (((((back E E' hE hE' δ).choose.1 * (back E' E hE' hE (back E E' hE hE' δ).choose.2).choose.1 : S)) : G) * ((back E' E hE' hE (back E E' hE hE' δ).choose.2).choose.2 : G)) = δ`. Rewrite using `[Subgroup.coe_mul, mul_assoc, hq, hp]`. Establish `h2 : (((1 : S) : G) * ((δ : E) : G)) = δ` using `by simp`. Use `(hE.2 δ (hE.1 δ.2)).unique (y₁ := (_, _)) (y₂ := ((1 : S), δ)) h1 h2` as an intermediate fact. Conclude with `congrArg Prod.snd this`.
+
+Use `⟨⟨fun δ => (back D D' hD hD' δ).choose.2, fun δ => (back D' D hD' hD δ).choose.2, fun δ => inv D D' hD hD' δ, fun δ => inv D' D hD' hD δ⟩, fun δ => ?_⟩` and prove the remaining obligations. Conclude with `⟨_, ((back D D' hD hD' δ).choose.1).2, ((back D D' hD hD' δ).choose_spec).symm⟩`.
+-/
 theorem transversal_bij (Γ S : Subgroup G) (D D' : Set G)
     (hD : FoldBound.IsRightTransversal Γ S D) (hD' : FoldBound.IsRightTransversal Γ S D') :
     ∃ e : D ≃ D', ∀ δ : D, ∃ s ∈ S, (δ : G) = s * (e δ : G) := by
@@ -47,6 +57,11 @@ theorem transversal_bij (Γ S : Subgroup G) (D D' : Set G)
     fun δ => inv D D' hD hD' δ, fun δ => inv D' D hD' hD δ⟩, fun δ => ?_⟩
   exact ⟨_, ((back D D' hD hD' δ).choose.1).2, ((back D D' hD hD' δ).choose_spec).symm⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Take `⟨e, he⟩` from `transversal_bij Γ S D D' hD hD'`. Unfold `PoincareSeriesSquareIntegrable.poinc`. Rewrite using `[← e.tsum_eq]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `δ`. Take `⟨s, hs, hδ⟩` from `he δ`. Rewrite using `[hδ, mul_assoc, hinv s hs]`.
+-/
 theorem poinc_indep (Γ S : Subgroup G) (D D' : Set G)
     (hD : FoldBound.IsRightTransversal Γ S D) (hD' : FoldBound.IsRightTransversal Γ S D')
     (Ph : G → ℂ) (hinv : ∀ s ∈ S, ∀ y, Ph (s * y) = Ph y) :
@@ -60,6 +75,17 @@ theorem poinc_indep (Γ S : Subgroup G) (D D' : Set G)
   obtain ⟨s, hs, hδ⟩ := he δ
   rw [hδ, mul_assoc, hinv s hs]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨d, hd, rfl⟩`. Conclude with `Γ.mul_mem (hD.1 hd) hγ`. Introduce `γ' hγ'`. Take `⟨⟨s, d⟩, hsd, huniq⟩` from `hD.2 (γ' * γ⁻¹) (Γ.mul_mem hγ' (Γ.inv_mem hγ))`.
+
+Simplify using `only at hsd`. Use `⟨⟨s, ⟨(d : G) * γ, ⟨d, d.2, rfl⟩⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show (s : G) * ((d : G) * γ) = γ'`. Rewrite using `[← mul_assoc, hsd, inv_mul_cancel_right]`. Introduce and unpack `⟨s', ⟨x, ⟨d', hd', rfl⟩⟩⟩ h`.
+
+Establish `h0 : (s' : G) * (d' * γ) = γ'` using `h`. Establish `h' : ((s', (⟨d', hd'⟩ : D)).1 : G) * ((s', (⟨d', hd'⟩ : D)).2 : G) = γ' * γ⁻¹` using `by show (s' : G) * d' = γ' * γ⁻¹`. Rewrite using `[← h0]`. Use `group`. Establish `e0` using `huniq (s', ⟨d', hd'⟩) h'`.
+
+Establish `e1 : s' = s` using `congrArg Prod.fst e0`. Establish `e2 : d' = (d : G)` using `congrArg (fun p : S × D => (p.2 : G)) e0`. Substitute `e1` using the available equality. Use `Prod.ext rfl (Subtype.ext ?_)` and prove the remaining obligations. Use `show d' * γ = (d : G) * γ`.
+
+Rewrite using `[e2]`.
+-/
 theorem transversal_mul (Γ S : Subgroup G) (D : Set G) (hD : FoldBound.IsRightTransversal Γ S D)
     (γ : G) (hγ : γ ∈ Γ) : FoldBound.IsRightTransversal Γ S ((fun d => d * γ) '' D) := by
   classical
@@ -86,6 +112,11 @@ theorem transversal_mul (Γ S : Subgroup G) (D : Set G) (hD : FoldBound.IsRightT
       show d' * γ = (d : G) * γ
       rw [e2]
 
+/- English proof (translation)
+Establish `h1` using `congrFun (poinc_indep Γ S _ D (transversal_mul Γ S D hD γ hγ) hD Ph hinv) x`. Rewrite using `[← h1]`. Unfold `PoincareSeriesSquareIntegrable.poinc`. Rewrite using `[← (Equiv.Set.image (fun d => d * γ) D (mul_left_injective γ)).tsum_eq]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `δ`. Use `show Ph ((δ : G) * (γ * x)) = Ph ((δ : G) * γ * x)`. Rewrite using `[mul_assoc]`.
+-/
 theorem poinc_left_inv (Γ S : Subgroup G) (D : Set G) (hD : FoldBound.IsRightTransversal Γ S D)
     (Ph : G → ℂ) (hinv : ∀ s ∈ S, ∀ y, Ph (s * y) = Ph y) (γ : G) (hγ : γ ∈ Γ) (x : G) :
     PoincareSeriesSquareIntegrable.poinc D Ph (γ * x) = PoincareSeriesSquareIntegrable.poinc D Ph x := by
@@ -119,6 +150,9 @@ def LevelDec : Prop :=
       X.chi2 ((X.xu u)⁻¹ * (n * (h : X.B.I.Gf)) * X.xu u) =
         X.psiFinU u n * X.chi2 ((X.xu u)⁻¹ * (h : X.B.I.Gf) * X.xu u)
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `T.2`. Take `⟨-, h3⟩` from `h1 ξ`. Use `h3 (1, h) κ` as an intermediate fact. Rewrite `this` using `[Prod.mk_mul_mk, mul_one]`. Conclude with `this`.
+-/
 theorem col_equiv (hK : X.LevelSubgroupCharacter) (T : Cu X u hK) (ξ : X.Vpi u) (h : Hfin X u) (κ : Ku X u hK) :
     (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) ξ (1, h * (κ : Hfin X u)) =
       X.chi2 ((X.xu u)⁻¹ * ((κ : Hfin X u) : X.B.I.Gf) * X.xu u) *
@@ -129,6 +163,21 @@ theorem col_equiv (hK : X.LevelSubgroupCharacter) (T : Cu X u hK) (ξ : X.Vpi u)
   rw [Prod.mk_mul_mk, mul_one] at this
   exact this
 
+/- English proof (translation)
+Introduce `T yinf yf n n' k k' h h' hd hd'`. Take `⟨hn, hk, hy⟩` from `hd`. Take `⟨hn', hk', hy'⟩` from `hd'`. Establish `hn'i : n'⁻¹ ∈ X.NfinU u` using `hN.2 n' hn'`. Establish `hq : n'⁻¹ * n ∈ X.NfinU u` using `(hN.1 _ hn'i _ hn).1`.
+
+Establish `hpq : X.psiFinU u (n'⁻¹ * n) = X.psiFinU u n'⁻¹ * X.psiFinU u n` using `(hN.1 _ hn'i _ hn).2`. Establish `hp1 : X.psiFinU u (n' * n'⁻¹) = X.psiFinU u n' * X.psiFinU u n'⁻¹` using `(hN.1 _ hn' _ hn'i).2`. Establish `hone : (1 : X.B.I.Gf) ∈ X.NfinU u` using `by simpa using (hN.1 _ hn _ (hN.2 n hn)).1`. Establish `hpn : X.psiFinU u (n * 1) = X.psiFinU u n * X.psiFinU u 1` using `(hN.1 _ hn _ hone).2`. Rewrite `hp1` using `[mul_inv_cancel]`.
+
+Rewrite `hpn` using `[mul_one]`. Establish `hc` using `hC h'⁻¹ (n'⁻¹ * n) hq`. Establish `key : (X.xu u)⁻¹ * (((h'⁻¹ : Hfin X u) : X.B.I.Gf) * (n'⁻¹ * n) * ((h'⁻¹ : Hfin X u) : X.B.I.Gf)⁻¹ * ((h'⁻¹ * h : Hfin X u) : X.B.I.Gf)) * X.xu u = k' * k⁻¹`. Establish `e : n * (h : X.B.I.Gf) * X.xu u * k = n' * (h' : X.B.I.Gf) * X.xu u * k'` using `hy.symm.trans hy'`. Establish `e2 : n = n' * (h' : X.B.I.Gf) * X.xu u * k' * k⁻¹ * (X.xu u)⁻¹ * (h : X.B.I.Gf)⁻¹`.
+
+Rewrite using `[← e]`. Use `group`. Simplify using `only [Subgroup.coe_inv, Subgroup.coe_mul, inv_inv]`. Rewrite using `[e2]`. Use `group`.
+
+Establish `hl` using `hL _ hc.1 (h'⁻¹ * h) (by rw [key]; exact hK.2.1 _ hk' _ (hK.2.2.1 _ hk))`. Establish `h2 : X.chi2 (k' * k⁻¹) = X.psiFinU u n'⁻¹ * X.psiFinU u n * X.chi2 ((X.xu u)⁻¹ * ((h'⁻¹ * h : Hfin X u) : X.B.I.Gf) * X.xu u)`. Rewrite using `[← key, hl.2, hc.2, hpq]`. Establish `hce : (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) (X.Wu u yinf) (1, h) = X.chi2 ((X.xu u)⁻¹ * ((h'⁻¹ * h : Hfin X u) : X.B.I.Gf) * X.xu u) * (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) (X.Wu u yinf) (1, h')`. Use `col_equiv X u hK T (X.Wu u yinf) h' ⟨h'⁻¹ * h, hl.1⟩` as an intermediate fact.
+
+Rewrite `this` using `[show h' * ((⟨h'⁻¹ * h, hl.1⟩ : Ku X u hK) : Hfin X u) = h from mul_inv_cancel_left h' h]`. Conclude with `this`. Establish `hk2 : X.chi2 k' = X.chi2 (k' * k⁻¹) * X.chi2 k`. Rewrite using `[← hK.2.2.2.1 _ (hK.2.1 _ hk' _ (hK.2.2.1 _ hk)) _ hk, inv_mul_cancel_right]`. Establish `hs : X.psiFinU u n * X.chi2 k * X.chi2 ((X.xu u)⁻¹ * ((h'⁻¹ * h : Hfin X u) : X.B.I.Gf) * X.xu u) = X.psiFinU u n' * X.chi2 k'`.
+
+Rewrite using `[hk2, h2]`. Take the linear combination `(X.chi2 k * X.chi2 ((X.xu u)⁻¹ * ((h'⁻¹ * h : Hfin X u) : X.B.I.Gf) * X.xu u)) * hpn + (X.psiFinU u n * X.chi2 ((X.xu u)⁻¹ * ((h'⁻¹ * h : Hfin X u) : X.B.I.Gf) * X.xu u) * X.chi2 k) * hp1`. Simplify using `only [phVal]`. Rewrite using `[hce, ← hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phWellDef_of (hK : X.LevelSubgroupCharacter) (hN : NfinGroup X u) (hC : NfinConj X u) (hL : LevelDec X u) :
     PhWellDef X u hK := by
   intro T yinf yf n n' k k' h h' hd hd'
@@ -174,6 +223,9 @@ theorem phWellDef_of (hK : X.LevelSubgroupCharacter) (hN : NfinGroup X u) (hC : 
   rw [hce, ← hs]
   ring
 
+/- English proof (translation)
+Establish `hex : ∃ n h k, IsDec X u y.2 n h k` using `⟨n, h, k, hd⟩`. Rewrite using `[Ph, dif_pos hex]`. Conclude with `hWD T y.1 y.2 _ n _ k _ h hex.choose_spec.choose_spec.choose_spec hd`.
+-/
 theorem ph_eq (hK : X.LevelSubgroupCharacter) (hWD : PhWellDef X u hK) (T : Cu X u hK) (y : X.B.I.GA) (n : X.B.I.Gf)
     (h : Hfin X u) (k : X.B.I.Gf) (hd : IsDec X u y.2 n h k) :
     Ph X u hK T y = phVal X u hK T y.1 n h k := by
@@ -181,10 +233,20 @@ theorem ph_eq (hK : X.LevelSubgroupCharacter) (hWD : PhWellDef X u hK) (T : Cu X
   rw [Ph, dif_pos hex]
   exact hWD T y.1 y.2 _ n _ k _ h hex.choose_spec.choose_spec.choose_spec hd
 
+/- English proof (translation)
+Rewrite using `[Ph, dif_neg hnd]`.
+-/
 theorem ph_eq_zero (hK : X.LevelSubgroupCharacter) (T : Cu X u hK) (y : X.B.I.GA)
     (hnd : ¬ ∃ n h k, IsDec X u y.2 n h k) : Ph X u hK T y = 0 := by
   rw [Ph, dif_neg hnd]
 
+/- English proof (translation)
+Distinguish the cases in `hd : ∃ n h k, IsDec X u y.2 n h k`. Take `⟨n, h, k, hn, hk, hy⟩` from `hd`. Establish `hd1 : IsDec X u (y * (1, κ)).2 n h (k * κ)` using `⟨hn, hK.2.1 _ hk _ hκ, by simp only [Prod.snd_mul, hy, mul_assoc]⟩`. Rewrite using `[ph_eq X u hK hWD T _ n h _ hd1, ph_eq X u hK hWD T y n h k ⟨hn, hk, hy⟩]`. Simplify using `only [phVal, Prod.fst_mul, mul_one, hK.2.2.2.1 _ hk _ hκ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hnd : ¬ ∃ n h k, IsDec X u (y * (1, κ)).2 n h k`. Introduce and unpack `⟨n, h, k, hn, hk, hy⟩`. Apply `hd` to reduce the goal to its premises. Use `⟨n, h, k * κ⁻¹, hn, hK.2.1 _ hk _ (hK.2.2.1 _ hκ), ?_⟩` and prove the remaining obligations.
+
+Establish `e : y.2 = (y * (1, κ)).2 * κ⁻¹` using `by simp`. Rewrite using `[e, hy]`. Simplify using `only [mul_assoc]`. Rewrite using `[ph_eq_zero X u hK T _ hnd, ph_eq_zero X u hK T y hd, mul_zero]`.
+-/
 theorem ph_right_K (hK : X.LevelSubgroupCharacter) (hWD : PhWellDef X u hK) (T : Cu X u hK) (y : X.B.I.GA)
     (κ : X.B.I.Gf) (hκ : κ ∈ X.K2) : Ph X u hK T (y * (1, κ)) = X.chi2 κ * Ph X u hK T y := by
   by_cases hd : ∃ n h k, IsDec X u y.2 n h k
@@ -213,6 +275,9 @@ def WuRph : Prop :=
   ∀ x, Integrable (fun y => X.ph y • X.Wu u (x * y)) (Formalism.L2.SG.ProjRows.muInf X.B.I) ∧
     ∫ y, X.ph y • X.Wu u (x * y) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) = X.Wu u x
 
+/- English proof (translation)
+The claim follows from `(X.Wu_spec u).2.1`.
+-/
 theorem wuRph_of_spec : WuRph X u := (X.Wu_spec u).2.1
 
 def PhMeas (hK : X.LevelSubgroupCharacter) : Prop := ∀ T : Cu X u hK, Measurable (Ph X u hK T)
@@ -224,9 +289,23 @@ def evL (hK : X.LevelSubgroupCharacter) (T : Cu X u hK) (h : Hfin X u) : X.Vpi u
   LinearMap.toContinuousLinearMap
     ((LinearMap.proj ((1 : Hinf X u), h)).comp (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evL_apply (hK : X.LevelSubgroupCharacter) (T : Cu X u hK) (h : Hfin X u) (ξ : X.Vpi u) :
     evL X u hK T h ξ = (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) ξ (1, h) := rfl
 
+/- English proof (translation)
+Distinguish the cases in `hd : ∃ n h k, IsDec X u y.2 n h k`. Take `⟨n, h, k, hdec⟩` from `hd`. Establish `hz : ∀ z, Ph X u hK T (y * (z, 1)) = (X.psiFinU u n * X.chi2 k) * evL X u hK T h (X.Wu u (y.1 * z))`. Introduce `z`. Establish `hdz : IsDec X u (y * (z, 1)).2 n h k` using `by simpa using hdec`.
+
+Rewrite using `[ph_eq X u hK hWD T _ n h k hdz, evL_apply]`. Simplify using `only [phVal, Prod.fst_mul]`. Establish `hfun : (fun z => X.ph z * Ph X u hK T (y * (z, 1))) = fun z => (X.psiFinU u n * X.chi2 k) * evL X u hK T h (X.ph z • X.Wu u (y.1 * z))`. Use function extensionality and compare the values at `z`. Rewrite using `[hz, map_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨hint, heq⟩` from `hW y.1`. Rewrite using `[hfun]`. Use `⟨((evL X u hK T h).integrable_comp hint).const_mul _, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_const_mul, (evL X u hK T h).integral_comp_comm hint, heq, ph_eq X u hK hWD T y n h k hdec, evL_apply]`.
+
+Both sides reduce to the same expression. Establish `hz0 : ∀ z, Ph X u hK T (y * (z, 1)) = 0`. Introduce `z`. Use `ph_eq_zero X u hK T _ ?_` and prove the remaining obligations. Simplify using `using hd`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[hz0]`. Simplify using `[hz0, ph_eq_zero X u hK T y hd]`.
+-/
 theorem ph_Rph (hK : X.LevelSubgroupCharacter) (hWD : PhWellDef X u hK) (hW : WuRph X u) (T : Cu X u hK)
     (y : X.B.I.GA) :
     Integrable (fun z => X.ph z * Ph X u hK T (y * (z, 1))) (Formalism.L2.SG.ProjRows.muInf X.B.I) ∧
@@ -258,6 +337,9 @@ theorem ph_Rph (hK : X.LevelSubgroupCharacter) (hWD : PhWellDef X u hK) (hW : Wu
     · simp [hz0]
     · simp [hz0, ph_eq_zero X u hK T y hd]
 
+/- English proof (translation)
+Introduce `T` and use `⟨hM T, hI T, fun y κ hκ => ph_right_K X u hK hWD T y κ hκ, fun y => ph_Rph X u hK hWD hW T y⟩`.
+-/
 theorem phProps_of (hK : X.LevelSubgroupCharacter) (hWD : PhWellDef X u hK) (hM : PhMeas X u hK)
     (hI : PhLeftInv X u hK) (hW : WuRph X u) : PhProps X u hK := fun T => ⟨hM T, hI T, fun y κ hκ => ph_right_K X u hK hWD T y κ hκ,
     fun y => ph_Rph X u hK hWD hW T y⟩
@@ -268,6 +350,9 @@ section Lin
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
+/- English proof (translation)
+Simplify using `only [Ph]`. Use `split_ifs with hd`. Simplify using `only [phVal, Submodule.coe_add, LinearMap.add_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem ph_add (hK : X.LevelSubgroupCharacter) (T T' : Cu X u hK) (y : X.B.I.GA) :
     Ph X u hK (T + T') y = Ph X u hK T y + Ph X u hK T' y := by
   simp only [Ph]
@@ -276,6 +361,9 @@ theorem ph_add (hK : X.LevelSubgroupCharacter) (T T' : Cu X u hK) (y : X.B.I.GA)
     ring
   · simp
 
+/- English proof (translation)
+Simplify using `only [Ph]`. Use `split_ifs with hd`. Simplify using `only [phVal, Submodule.coe_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem ph_smul (hK : X.LevelSubgroupCharacter) (c : ℂ) (T : Cu X u hK) (y : X.B.I.GA) :
     Ph X u hK (c • T) y = c * Ph X u hK T y := by
   simp only [Ph]
@@ -284,6 +372,15 @@ theorem ph_smul (hK : X.LevelSubgroupCharacter) (c : ℂ) (T : Cu X u hK) (y : X
     ring
   · simp
 
+/- English proof (translation)
+Introduce `hD hH`. Establish `hsum : ∀ T : Cu X u hK, ∀ x, Summable fun δ : Dt => Ph X u hK T ((δ : X.B.I.GA) * x)` using `fun T x => ((hH T Dt hD).1 x).of_norm`. Establish `hmem : ∀ T : Cu X u hK, MemLp (Pser X u hK Dt T) 2 ((X.B.I.muA X.B.μf).restrict X.B.fund)` using `fun T => (hH T Dt hD).2.2.1`. Establish `hpu : ∀ T : Cu X u hK, PuFun X u hK Dt T = (hmem T).toLp _` using `fun T => by`. Rewrite using `[PuFun, dif_pos (hmem T)]`.
+
+Use `⟨fun T T' => ?_, fun c T => ?_⟩` and prove the remaining obligations. Establish `he : Pser X u hK Dt (T + T') = Pser X u hK Dt T + Pser X u hK Dt T'`. Use function extensionality and compare the values at `x`. Simplify using `only [Pser, PoincareSeriesSquareIntegrable.poinc, Pi.add_apply, ph_add]`. Conclude with `(hsum T x).tsum_add (hsum T' x)`.
+
+Rewrite using `[hpu, hpu, hpu, ← MemLp.toLp_add]`. Conclude with `MemLp.toLp_congr _ _ (ae_of_all _ fun x => congrFun he x)`. Establish `he : Pser X u hK Dt (c • T) = c • Pser X u hK Dt T`. Use function extensionality and compare the values at `x`. Simplify using `only [Pser, PoincareSeriesSquareIntegrable.poinc, Pi.smul_apply, smul_eq_mul, ph_smul]`.
+
+Conclude with `tsum_mul_left`. Rewrite using `[hpu, hpu, ← MemLp.toLp_const_smul]`. Conclude with `MemLp.toLp_congr _ _ (ae_of_all _ fun x => congrFun he x)`.
+-/
 theorem puLinear_holds (hK : X.LevelSubgroupCharacter) (Dt : Set X.B.I.GA) : PuLinear X u hK Dt := by
   intro hD hH
   have hsum : ∀ T : Cu X u hK, ∀ x, Summable fun δ : Dt => Ph X u hK T ((δ : X.B.I.GA) * x) :=
@@ -325,6 +422,9 @@ def IUnfold (hK : X.LevelSubgroupCharacter) : Prop :=
       IsFundamentalDomain (Srat X u) Fs (X.B.I.muA X.B.μf) →
         PoincareSeriesSquareIntegrable.multiplicityLIntegral (X.B.I.muA X.B.μf) (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) Ω Fs (Ph X u hK T) < ⊤
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hF, hU hM hW hWD⟩`.
+-/
 theorem iFinite_of (hK : X.LevelSubgroupCharacter) (hF : SratFund X u) (hM : MultPoly X) (hW : WuDecay.WuDecay X)
     (hWD : PhWellDef X u hK) (hU : IUnfold X u hK) : IFinite X u hK := ⟨hF, hU hM hW hWD⟩
 
@@ -332,6 +432,9 @@ def PhReprod (hK : X.LevelSubgroupCharacter) : Prop :=
   ∃ (Ω₀ : Set X.B.I.GA) (a : ℝ≥0), IsCompact Ω₀ ∧ (1 : X.B.I.GA) ∈ Ω₀ ∧ ∀ (T : Cu X u hK) (y : X.B.I.GA),
     ‖Ph X u hK T y‖ₑ ≤ (a : ℝ≥0∞) * ∫⁻ ω in Ω₀, ‖Ph X u hK T (y * ω)‖ₑ ∂(X.B.I.muA X.B.μf)
 
+/- English proof (translation)
+Take `⟨Ω₀, a, hc, h1, hb⟩` from `hR`. Use `⟨hI.1, Ω₀, a, hc, h1, fun T => ⟨fun Ω _ hsub => ⟨(hP T).1, (hP T).2.1, fun y => ?_⟩, hI.2 T⟩⟩` and prove the remaining obligations. Conclude with `(hb T y).trans (mul_le_mul' le_rfl (lintegral_mono_set hsub))`.
+-/
 theorem foldOK_of (hK : X.LevelSubgroupCharacter) (hP : PhProps X u hK) (hI : IFinite X u hK) (hR : PhReprod X u hK) :
     WuDecay.FoldOK X u hK := by
   obtain ⟨Ω₀, a, hc, h1, hb⟩ := hR
@@ -369,6 +472,9 @@ def PserRph (hK : X.LevelSubgroupCharacter) : Prop :=
     ∀ᵐ y ∂(X.B.I.muA X.B.μf),
       ∫ z, X.ph z * Pser X u hK Dt T (y * (z, 1)) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) = Pser X u hK Dt T y
 
+/- English proof (translation)
+Simplify using `only [Pser, PoincareSeriesSquareIntegrable.poinc]`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `δ`. Rewrite using `[← mul_assoc, ph_right_K X u hK hWD T _ κ hκ]`.
+-/
 theorem pser_right_K (hK : X.LevelSubgroupCharacter) (hWD : PhWellDef X u hK) (T : Cu X u hK) (Dt : Set X.B.I.GA)
     (y : X.B.I.GA) (κ : X.B.I.Gf) (hκ : κ ∈ X.K2) :
     Pser X u hK Dt T (y * (1, κ)) = X.chi2 κ * Pser X u hK Dt T y := by
@@ -378,6 +484,15 @@ theorem pser_right_K (hK : X.LevelSubgroupCharacter) (hWD : PhWellDef X u hK) (T
   funext δ
   rw [← mul_assoc, ph_right_K X u hK hWD T _ κ hκ]
 
+/- English proof (translation)
+Establish `hvol : (X.B.μf X.K2).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨hKL.2.2.1.ne', hKL.2.2.2.ne⟩`. Establish `hfun : (fun g => X.B.e g * Pser X u hK Dt T (y * (1, g))) = X.K2.indicator (fun _ => Pser X u hK Dt T y / ((X.B.μf X.K2).toReal : ℂ))`. Use function extensionality and compare the values at `g`. Rewrite using `[X.e_eq g]`. Distinguish the cases in `hg : g ∈ X.K2`.
+
+Establish `hg' : g ∈ K2set X.B.I X.B.g X.e0 X.z0 X.bw` using `hg`. Rewrite using `[if_pos hg', Set.indicator_of_mem hg, pser_right_K X u hK hWD T Dt y g hg]`. Establish `hn : ‖X.chi2 g‖ = 1` using `hK.2.2.2.2 g hg`. Establish `hc : star (X.chi2 g) * X.chi2 g = 1`. Rewrite using `[RCLike.star_def, RCLike.conj_mul, hn]`.
+
+Simplify using the standard rewrite rules. Use `show star (X.chi2 g) / ((X.B.μf X.K2).toReal : ℂ) * (X.chi2 g * Pser X u hK Dt T y) = Pser X u hK Dt T y / ((X.B.μf X.K2).toReal : ℂ)`. Rewrite using `[div_mul_eq_mul_div, ← mul_assoc, hc, one_mul]`. Establish `hg' : g ∉ K2set X.B.I X.B.g X.e0 X.z0 X.bw` using `hg`. Rewrite using `[if_neg hg', Set.indicator_of_notMem hg, zero_mul]`.
+
+Rewrite using `[hfun, integral_indicator hKM, setIntegral_const]`. Simplify using `only [measureReal_def, Complex.real_smul]`. Establish `hC : ((X.B.μf X.K2).toReal : ℂ) ≠ 0` using `by exact_mod_cast hvol`. Rewrite using `[mul_div_assoc', mul_div_cancel_left₀ _ hC]`.
+-/
 theorem pser_Re (hK : X.LevelSubgroupCharacter) (hWD : PhWellDef X u hK) (hKL : X.LevelSubgroupNormalized) (hKM : MeasurableSet X.K2)
     (T : Cu X u hK) (Dt : Set X.B.I.GA) (y : X.B.I.GA) :
     ∫ g, X.B.e g * Pser X u hK Dt T (y * (1, g)) ∂X.B.μf = Pser X u hK Dt T y := by
@@ -402,6 +517,15 @@ theorem pser_Re (hK : X.LevelSubgroupCharacter) (hWD : PhWellDef X u hK) (hKL : 
   have hC : ((X.B.μf X.K2).toReal : ℂ) ≠ 0 := by exact_mod_cast hvol
   rw [mul_div_assoc', mul_div_cancel_left₀ _ hC]
 
+/- English proof (translation)
+Take `⟨⟨Fs, hFs⟩, Ω₀, a, hc, h1, hT⟩` from `id hOK`. Introduce `T Dt hD`. Establish `hdat` using `(hT T).1 Ω₀ hc subset_rfl`. Establish `hmult` using `(hT T).2 Ω₀ hc Fs hFs`. Establish `hle : Srat X u ≤ Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I` using `inf_le_left`.
+
+Establish `hsum : ∀ x, Summable fun δ : Dt => ‖Ph X u hK T ((δ : X.B.I.GA) * x)‖`. Introduce `x`. Establish `hfin` using `ha _ _ hR.2.2.2.2 hle Ω₀ hc h1 a _ hdat Fs hFs hmult Dt hD x`. Establish `hne : (∑' δ : Dt, (‖Ph X u hK T ((δ : X.B.I.GA) * x)‖₊ : ℝ≥0∞)) ≠ ⊤`. Simplify `hfin.ne` using `only [enorm_eq_nnnorm]`.
+
+Conclude with `NNReal.summable_coe.2 (ENNReal.tsum_coe_ne_top_iff_summable.1 hne)`. Establish `hmem : MemLp (Pser X u hK Dt T) 2 ((X.B.I.muA X.B.μf).restrict X.B.fund)` using `(hb _ _ hR.2.2.2.2 hle Ω₀ hc h1 a _ hdat Fs hFs hmult Dt hD _ hFB).1`. Use `⟨hsum, fun Dt' hD' => poinc_indep _ _ Dt' Dt hD' hD _ (hPP T).2.1, hmem, ?_⟩` and prove the remaining obligations. Establish `hpu : PuFun X u hK Dt T = hmem.toLp _` using `by rw [PuFun, dif_pos hmem]`. Establish `hmeas : Measurable (Pser X u hK Dt T)` using `hPM (fun T => (hPP T).1) T Dt hD hsum`.
+
+Establish `hinv : ∀ γ ∈ X.B.I.GFset, ∀ y, Pser X u hK Dt T (γ * y) = Pser X u hK Dt T y` using `fun γ hγ y => poinc_left_inv _ _ Dt hD _ (hPP T).2.1 γ hγ y`. Establish `h1'` using `hRF _ hmeas hinv hmem hPI (hRph hOK hPI hPP T Dt hD)`. Establish `h2'` using `hEF _ hmeas hinv hmem (ae_of_all _ fun y => pser_Re X u hK hWD hKL hKM T Dt y)`. Rewrite using `[hpu, h1', h2']`.
+-/
 theorem inHH_of (hK : X.LevelSubgroupCharacter) (hR : FoldReadyX X)
     (ha : @PoincareSeriesSquareIntegrable.PoincareSeriesFinite X.B.I.GA _ _ _ hR.1 hR.2.1 hR.2.2.1 _ hR.2.2.2.1 (X.B.I.muA X.B.μf)
       (@muA_isHaar' X.B.I X.B.μf X.B.sf X.B.haar))

@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 
 namespace LateralTheory.CohomologicalPurity
 
+/- English proof (translation)
+Rewrite using `[← Functor.map_comp, ← Functor.map_comp, dbl.inr_map]`.
+-/
 theorem chainsInrSq (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) :
     (chains (ZMod q)).map (dbl.inr P') ≫ (chains (ZMod q)).map (dbl.map φ) =
       (chains (ZMod q)).map φ.right ≫ (chains (ZMod q)).map (dbl.inr P) := by
@@ -14,6 +17,9 @@ abbrev cokC (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) :=
   cokernel.map ((chains (ZMod q)).map (dbl.inr P')) ((chains (ZMod q)).map (dbl.inr P))
     ((chains (ZMod q)).map φ.right) ((chains (ZMod q)).map (dbl.map φ)) (chainsInrSq q φ)
 
+/- English proof (translation)
+Break down `x.mk_surjective with ⟨z, rfl⟩` into its components or cases. Simplify using `only [HK.pull, HK.pre, cpre_mk]`. Use `congr 1`. Use `ext1`. Simplify using `[zcomp, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+-/
 theorem HK.pull_comp' (R : Type) [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : ℤ)
     (x : HK R M F n) : HK.pull R (f ≫ g) F n x = HK.pull R f F n (HK.pull R g F n x) := by
   rcases x.mk_surjective with ⟨z, rfl⟩
@@ -22,6 +28,9 @@ theorem HK.pull_comp' (R : Type) [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : 
   ext1
   simp [zcomp, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]
 
+/- English proof (translation)
+Break down `x.mk_surjective with ⟨z, rfl⟩` into its components or cases. Simplify using `only [HK.pull, HK.pre, cpre_mk]`. Use `congr 1`. Use `ext1`. Simplify using `[zcomp]`.
+-/
 theorem HK.pull_id' (R : Type) [CommRing R] (K : Cx R) (F : Shv R) (n : ℤ) (x : HK R K F n) :
     HK.pull R (𝟙 K) F n x = x := by
   rcases x.mk_surjective with ⟨z, rfl⟩
@@ -30,6 +39,9 @@ theorem HK.pull_id' (R : Type) [CommRing R] (K : Cx R) (F : Shv R) (n : ℤ) (x 
   ext1
   simp [zcomp]
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨HK.pull R (inv f) F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← HK.pull_comp', IsIso.inv_hom_id, HK.pull_id']`. Rewrite using `[← HK.pull_comp', IsIso.hom_inv_id, HK.pull_id']`.
+-/
 theorem HK.pull_bij (R : Type) [CommRing R] {K L : Cx R} (f : K ⟶ L) [IsIso f] (F : Shv R) (n : ℤ) :
     Function.Bijective (HK.pull R f F n) := by
   refine Function.bijective_iff_has_inverse.2 ⟨HK.pull R (inv f) F n, fun x => ?_, fun x => ?_⟩
@@ -43,6 +55,11 @@ def LeafExcIdent : Prop := ∀ (q : ℕ) (n i : ℤ), ∃ e : ∀ P : Arrow Spc,
 
 def LeafExcCx : Prop := ∀ (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P), IsIso (cokC q φ) → Exc q φ
 
+/- English proof (translation)
+Introduce `q P' P φ hφ n i`. Take `⟨e, he⟩` from `hI q n i`. Establish `hfun : ⇑(Hs.pull q φ n i) = ⇑(e P') ∘ ⇑(HK.pull (ZMod q) (cokC q φ) (tw q i) n) ∘ ⇑(e P).symm`. Use function extensionality and compare the values at `y`. Take `⟨x, rfl⟩` from `(e P).surjective y`.
+
+Simplify using `[he]`. Rewrite using `[hfun]`. Conclude with `(e P').bijective.comp ((HK.pull_bij _ _ _ _).comp (e P).symm.bijective)`.
+-/
 theorem LeafExcCx_of (hI : LeafExcIdent) : LeafExcCx := by
   intro q P' P φ hφ n i
   obtain ⟨e, he⟩ := hI q n i
@@ -57,6 +74,9 @@ def LeafExcDeg : Prop := ∀ (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P),
   (∀ p : SimplexCategoryᵒᵖ, IsIso (cokernel.map ((free (ZMod q)).map (P'.hom.app p)) ((free (ZMod q)).map (P.hom.app p))
     ((free (ZMod q)).map (φ.left.app p)) ((free (ZMod q)).map (φ.right.app p)) (freeSq _ φ p))) → IsIso (cokC q φ)
 
+/- English proof (translation)
+Introduce `q P' P φ h`. Conclude with `LeafExcCx_of hI q φ (hD q φ h)`.
+-/
 theorem LeafExcFormal_of (hI : LeafExcIdent) (hD : LeafExcDeg) : LeafExcFormal := by
   intro q P' P φ h
   exact LeafExcCx_of hI q φ (hD q φ h)

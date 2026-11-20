@@ -33,6 +33,9 @@ def projFun (F : X.Modules) (k : ℤ) (V : (projectiveSpace A n).Opens) (m : Γ(
 
 variable (F : X.Modules) (k : ℤ) (V : (projectiveSpace A n).Opens)
 
+/- English proof (translation)
+Unfold `projFun`. Rewrite using `[show secX F _ (m + m') = secX F _ m + secX F _ m' from rfl, TensorProduct.add_tmul]`. Conclude with `map_add _ _ _`.
+-/
 lemma projFun_add_left (m m' : Γ(F, i ⁻¹ᵁ V))
     (s : Γ(SchemeCoh.twistingSheaf (ProjSpace.grading A n) k, V)) :
     projFun i F k V (m + m') s = projFun i F k V m s + projFun i F k V m' s := by
@@ -40,6 +43,9 @@ lemma projFun_add_left (m m' : Γ(F, i ⁻¹ᵁ V))
   rw [show secX F _ (m + m') = secX F _ m + secX F _ m' from rfl, TensorProduct.add_tmul]
   exact map_add _ _ _
 
+/- English proof (translation)
+Unfold `projFun`. Rewrite using `[map_add, show secX (twistingSheaf i k) _ (pullbackUnitApp i _ V s + pullbackUnitApp i _ V s') = secX (twistingSheaf i k) _ (pullbackUnitApp i _ V s) + secX (twistingSheaf i k) _ (pullbackUnitApp i _ V s') from rfl, TensorProduct.tmul_add]`. Conclude with `map_add _ _ _`.
+-/
 lemma projFun_add_right (m : Γ(F, i ⁻¹ᵁ V))
     (s s' : Γ(SchemeCoh.twistingSheaf (ProjSpace.grading A n) k, V)) :
     projFun i F k V m (s + s') = projFun i F k V m s + projFun i F k V m s' := by
@@ -49,6 +55,9 @@ lemma projFun_add_right (m : Γ(F, i ⁻¹ᵁ V))
       secX (twistingSheaf i k) _ (pullbackUnitApp i _ V s') from rfl, TensorProduct.tmul_add]
   exact map_add _ _ _
 
+/- English proof (translation)
+Unfold `projFun`. Rewrite using `[show secX F _ (secΓ F _ (appR i V r • secX F _ m)) = appR i V r • secX F _ m from rfl, ← TensorProduct.smul_tmul']`. Conclude with `map_smul _ _ _`.
+-/
 lemma projFun_smul_left (r : ringOn _ V) (m : Γ(F, i ⁻¹ᵁ V))
     (s : Γ(SchemeCoh.twistingSheaf (ProjSpace.grading A n) k, V)) :
     projFun i F k V (secΓ F _ (appR i V r • secX F _ m)) s =
@@ -58,6 +67,9 @@ lemma projFun_smul_left (r : ringOn _ V) (m : Γ(F, i ⁻¹ᵁ V))
     appR i V r • secX F _ m from rfl, ← TensorProduct.smul_tmul']
   exact map_smul _ _ _
 
+/- English proof (translation)
+Unfold `projFun`. Rewrite using `[show secX (twistingSheaf i k) _ (pullbackUnitApp i _ V (secΓ (SchemeCoh.twistingSheaf (ProjSpace.grading A n) k) _ (r • secX (SchemeCoh.twistingSheaf (ProjSpace.grading A n) k) _ s))) = appR i V r • secX (twistingSheaf i k) _ (pullbackUnitApp i _ V s) from pullbackUnitApp_smul i …`. Conclude with `map_smul _ _ _`.
+-/
 lemma projFun_smul_right (r : ringOn _ V) (m : Γ(F, i ⁻¹ᵁ V))
     (s : Γ(SchemeCoh.twistingSheaf (ProjSpace.grading A n) k, V)) :
     projFun i F k V m (secΓ (SchemeCoh.twistingSheaf (ProjSpace.grading A n) k) _
@@ -109,6 +121,11 @@ def projectionMap :
       (Scheme.Modules.pushforward i).obj (twist i F k) :=
   tensorLift (projPre i F k)
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ => (PresheafOfModules.Hom.app φ (op V)).hom ((show ((preMod _).obj ((Scheme.Modules.pushforward i).obj F)).obj (op V) from m) ⊗ₜ resM ((preMod _).obj (SchemeCoh.twistingSheaf (ProjSpace.grading A n) k)) hV (ProjTwist.upow (ProjSpace.grading A n) (ProjSpace.X_mem j …`. Use `h.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `projFun i F k V m (resM _ hV (ProjTwist.upow (ProjSpace.grading A n) (ProjSpace.X_mem j) k)) = _`. Unfold `projFun`. Establish `e` using `pullbackUnitApp_res i (SchemeCoh.twistingSheaf (ProjSpace.grading A n) k) (homOfLE hV) (ProjTwist.upow (ProjSpace.grading A n) (ProjSpace.X_mem j) k)`.
+
+Conclude with `congrArg (fun y => (tensorToSheaf F (twistingSheaf i k)).app (op (i ⁻¹ᵁ V)) (secX F _ m ⊗ₜ secX (twistingSheaf i k) _ y)) e`.
+-/
 lemma projectionMap_tensorBasisMap (j : Fin (n + 1)) {V : (projectiveSpace A n).Opens}
     (hV : V ≤ ProjSpace.stdOpen A n j) (m : Γ((Scheme.Modules.pushforward i).obj F, V)) :
     (projectionMap i F k).app V (tensorBasisMap ((Scheme.Modules.pushforward i).obj F)

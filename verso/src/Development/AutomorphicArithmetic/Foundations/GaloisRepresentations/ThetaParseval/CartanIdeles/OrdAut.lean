@@ -13,6 +13,11 @@ end
 
 end UpperTheory.Gal.TP.Skew
 
+/- English proof (translation)
+Establish `hgJ : g • J ≠ 0` using `fun h => hJ ((smul_eq_zero_iff_eq g).mp h)`. Rewrite using `[FractionalIdeal.count_coe E P hJ, FractionalIdeal.count_coe E (g • P) hgJ, Nat.cast_le, ← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.mpr hgJ) (g • P).associates_irreducible]`. Establish `h1` using `(Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.mpr hJ) P.associates_irreducible).mpr le_rfl`. Rewrite `h1`, the goal using `[← Associates.mk_pow, Associates.mk_le_mk_iff_dvd]`. Take `⟨c, hc⟩` from `h1`.
+
+Use `⟨g • c, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g • J = (g • P.asIdeal) ^ _ * g • c`. Use `conv_lhs => rw [hc]`. Rewrite using `[smul_mul', smul_pow']`.
+-/
 private theorem count_le_count_galois_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (g : Gal(E/F)) (P : HeightOneSpectrum (𝓞 E)) (J : Ideal (𝓞 E)) (hJ : J ≠ 0) :
     FractionalIdeal.count E P (J : FractionalIdeal (𝓞 E)⁰ E) ≤
@@ -31,6 +36,9 @@ private theorem count_le_count_galois_smul {F E : Type} [Field F] [NumberField F
   conv_lhs => rw [hc]
   rw [smul_mul', smul_pow']
 
+/- English proof (translation)
+Use `le_antisymm ?_ (count_le_count_galois_smul g P J hJ)` and prove the remaining obligations. Establish `h` using `count_le_count_galois_smul g⁻¹ (g • P) (g • J) (fun h => hJ ((smul_eq_zero_iff_eq g).mp h))`. Rewrite `h` using `[inv_smul_smul, inv_smul_smul]`. Then use the resulting hypothesis.
+-/
 private theorem count_galois_smul_eq_count {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (g : Gal(E/F)) (P : HeightOneSpectrum (𝓞 E)) (J : Ideal (𝓞 E)) (hJ : J ≠ 0) :
     FractionalIdeal.count E (g • P) ((g • J : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) =
@@ -39,6 +47,19 @@ private theorem count_galois_smul_eq_count {F E : Type} [Field F] [NumberField F
   have h := count_le_count_galois_smul g⁻¹ (g • P) (g • J) (fun h => hJ ((smul_eq_zero_iff_eq g).mp h))
   rwa [inv_smul_smul, inv_smul_smul] at h
 
+/- English proof (translation)
+Take `⟨b, J, hb, hbJ⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul I`. Establish `hJ : J ≠ 0` using `FractionalIdeal.ideal_factor_ne_zero hI hbJ`. Establish `hb' : Ideal.span {b} ≠ 0` using `FractionalIdeal.constant_factor_ne_zero hI hbJ`. Establish `hspan : g • Ideal.span {b} = Ideal.span {g • b}`. Rewrite using `[Ideal.pointwise_smul_def, Ideal.map_span, Set.image_singleton]`.
+
+Both sides reduce to the same expression. Establish `hinv : ∀ y : E, (g⁻¹ : Gal(E/F)) (g y) = y` using `fun y => by simp`. Establish `hI' : I' = FractionalIdeal.spanSingleton (𝓞 E)⁰ (algebraMap (𝓞 E) E (g • b))⁻¹ * ((g • J : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E)`. Use extensionality with `x`. Rewrite using `[h, hbJ, FractionalIdeal.mem_singleton_mul, FractionalIdeal.mem_singleton_mul]`.
+
+Simplify using `only [FractionalIdeal.mem_coeIdeal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨j, hj, rfl⟩, hx⟩`. Establish `hgj : g • j ∈ g • J`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_smul_smul]`.
+
+Conclude with `hj`. Use `⟨_, ⟨g • j, hgj, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hx' : x = g ((g⁻¹ : Gal(E/F)) x)` using `by simp`. Rewrite using `[hx', hx, map_mul, map_inv₀]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨_, ⟨j, hj, rfl⟩, hx⟩`. Use `⟨_, ⟨g⁻¹ • j, Ideal.mem_pointwise_smul_iff_inv_smul_mem.mp hj, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, map_mul, map_inv₀]`. Conclude with `congrArg₂ (· * ·) (congrArg Inv.inv (hinv (algebraMap (𝓞 E) E b))) rfl`. Establish `hgJ : g • J ≠ 0` using `fun h => hJ ((smul_eq_zero_iff_eq g).mp h)`.
+
+Establish `hgb : g • Ideal.span {b} ≠ 0` using `fun h => hb' ((smul_eq_zero_iff_eq g).mp h)`. Rewrite using `[hI', hbJ, ← FractionalIdeal.spanSingleton_inv, ← FractionalIdeal.spanSingleton_inv, ← FractionalIdeal.coeIdeal_span_singleton, ← FractionalIdeal.coeIdeal_span_singleton, ← hspan, FractionalIdeal.count_mul E (g • w) (inv_ne_zero (FractionalIdeal.coeIdeal_ne_zero.mpr hgb)) (Fracti …`.
+-/
 private theorem count_smul_eq_of_mem_iff_inv_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (g : Gal(E/F)) (w : HeightOneSpectrum (𝓞 E))
     (I I' : FractionalIdeal (𝓞 E)⁰ E) (hI : I ≠ 0) (h : ∀ x : E, x ∈ I' ↔ (g⁻¹ : Gal(E/F)) x ∈ I) :
@@ -78,6 +99,15 @@ private theorem count_smul_eq_of_mem_iff_inv_mem {F E : Type} [Field F] [NumberF
       (FractionalIdeal.coeIdeal_ne_zero.mpr hJ),
     FractionalIdeal.count_inv, FractionalIdeal.count_inv, count_galois_smul_eq_count g w _ hb', count_galois_smul_eq_count g w J hJ]
 
+/- English proof (translation)
+Establish `hinv : ∀ y : E, (h⁻¹ : Gal(E/F)) (h y) = y` using `fun y => by simp`. Establish `h1 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0`. Rewrite using `[← FractionalIdeal.coeIdeal_top]`. Conclude with `FractionalIdeal.coeIdeal_ne_zero.mpr top_ne_bot`. Rewrite `hy`, the goal using `[FractionalIdeal.mem_dual h1]`.
+
+Introduce `a ha`. Take `⟨z, rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp ha`. Establish `hz` using `hy (algebraMap (𝓞 E) E (h⁻¹ • z)) ((FractionalIdeal.mem_one_iff _).mpr ⟨_, rfl⟩)`. Rewrite `hz`, the goal using `[Algebra.traceForm_apply]`. Establish `e : Algebra.trace ℚ E (h y * algebraMap (𝓞 E) E z) = Algebra.trace ℚ E (y * algebraMap (𝓞 E) E (h⁻¹ • z))`.
+
+Rewrite using `[← Algebra.trace_eq_of_algEquiv ((h⁻¹ : Gal(E/F)).restrictScalars ℚ) (h y * algebraMap (𝓞 E) E z)]`. Express the relevant statement in the definitionally equal form `Algebra.trace ℚ E ((h⁻¹ : Gal(E/F)) (h y * algebraMap (𝓞 E) E z)) = _`. Rewrite using `[map_mul, hinv]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `hz`.
+-/
 private theorem galois_apply_mem_dual_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (h : Gal(E/F)) (y : E)
     (hy : y ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)) :
@@ -101,6 +131,21 @@ private theorem galois_apply_mem_dual_one {F E : Type} [Field F] [NumberField F]
   rw [e]
   exact hz
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ g w`. Establish `hinv : ∀ y : E, (g⁻¹ : Gal(E/F)) (g y) = y` using `fun y => by simp`. Establish `hinv2 : ∀ y : E, g ((g⁻¹ : Gal(E/F)) y) = y` using `fun y => by simp`. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `FractionalIdeal.count E (g • w) (FractionalIdeal.spanSingleton (𝓞 E)⁰ (g x)) = FractionalIdeal.count E w (FractionalIdeal.spanSingleton (𝓞 E)⁰ x)`.
+
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `[FractionalIdeal.count_zero]`. Apply `count_smul_eq_of_mem_iff_inv_mem g w` to reduce the goal to its premises. Conclude with `FractionalIdeal.spanSingleton_eq_zero_iff.not.mpr hx`.
+
+Introduce `y`. Simplify using `only [FractionalIdeal.mem_spanSingleton, Algebra.smul_def]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Use `⟨g⁻¹ • z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hinv]`. Both sides reduce to the same expression. Introduce and unpack `⟨z, hz⟩`. Use `⟨g • z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hinv2 y, ← hz, map_mul]`.
+
+Both sides reduce to the same expression. Apply `count_smul_eq_of_mem_iff_inv_mem g w` to reduce the goal to its premises. Use `FractionalIdeal.dual_ne_zero ℤ ℚ ?_` and prove the remaining obligations. Rewrite using `[← FractionalIdeal.coeIdeal_top]`. Conclude with `FractionalIdeal.coeIdeal_ne_zero.mpr top_ne_bot`.
+
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Conclude with `galois_apply_mem_dual_one g⁻¹ y`. Introduce `hy`. Use `galois_apply_mem_dual_one g _ hy` as an intermediate fact.
+
+Rewrite `this` using `[hinv2]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Gal.TP.Skew.ordAut :
     UpperTheory.Gal.TP.Skew.OrdAut := by
   intro F E _ _ _ _ _ g w

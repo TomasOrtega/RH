@@ -10,6 +10,19 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
+/- English proof (translation)
+Set `W` to `(LinearMap.range i).topologicalClosure`. Set `L : G → H →ₗᵢ[ℂ] H` to `fun g => ⟨ρ g, hρ g⟩`. Apply the tactic sequence `have hW : ∀ g, ∀ v ∈ W, ρ g v ∈ W := fun g v hv => map_mem_closure (L g).continuous hv fun z ⟨y, hy⟩ => ⟨τ g y, by rw [hi, hy]; try rfl⟩`. Establish `hP : ∀ g v, W.starProjection (ρ g v) = ρ g (W.starProjection v)` using `fun g v => by`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hW g _ (W.starProjection_apply_mem v)) fun w hw => ?_` and prove the remaining obligations.
+
+Establish `e : w = ρ g (ρ g⁻¹ w)` using `by rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]; rfl`. Rewrite using `[← map_sub, e]`. Conclude with `((L g).inner_map_map _ _).trans (W.starProjection_inner_eq_zero v _ (hW _ _ hw))`. Use `⟨W.starProjection.toLinearMap ∘ₗ f, fun e => h0 ?_, fun g x => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : W.starProjection (f x₀) = 0` using `LinearMap.congr_fun e x₀`.
+
+Establish `h2` using `W.starProjection_inner_eq_zero (f x₀) (i y₀) (Submodule.le_topologicalClosure _ ⟨y₀, rfl⟩)`. Rewrite `h2` using `[h1, sub_zero]`. Conclude with `inner_eq_zero_symm.1 h2`. Conclude with `(congrArg W.starProjection (hf g x)).trans (hP g _)`. Take `⟨U, hc, ho, hU⟩` from `hσ x`.
+
+Set `ρ' : Representation ℂ G W` to `(⟨W, fun g _ hv => hW g _ hv⟩ : Subrepresentation ρ).toRepresentation`. Set `J : Y →ₗ[ℂ] W` to `i.codRestrict W fun y => Submodule.le_topologicalClosure _ ⟨y, rfl⟩`. Establish `hd : DenseRange J` using `fun v => by`. Rewrite using `[closure_subtype]`. Use `closure_mono ?_ v.2` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨J y, ⟨y, rfl⟩, rfl⟩`. Establish `h1` using `fixedDense G W Y ρ' τ J U hc (fun g v => hρ g v) hτ.1 (fun g y => Subtype.ext (hi g y)) hd ⟨_, W.starProjection_apply_mem (f x)⟩ fun u hu => Subtype.ext (by show ρ u (W.starProjection (f x)) = W.starProjection (f x)`. Rewrite using `[← hP, ← hf, hU u hu])`. Use `hτ.2 U hc ho` as an intermediate fact.
+
+Establish `h2 : IsClosed (((fixedVectors τ U).map J : Submodule ℂ W) : Set W)` using `Submodule.closed_of_finiteDimensional _`. Take `⟨y, -, hy⟩` from `closure_minimal (t := (((fixedVectors τ U).map J : Submodule ℂ W) : Set W)) (by rintro _ ⟨y, hy, rfl⟩; exact Submodule.mem_map_of_mem (mem_fixedVectors.2 hy)) h2 h1`. Conclude with `⟨y, congrArg Subtype.val hy⟩`.
+-/
 private theorem proj_range {G H X Y : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
     (ρ : Representation ℂ G H) (σ : Representation ℂ G X) (τ : Representation ℂ G Y) (hρ : ∀ g v, ‖ρ g v‖ = ‖v‖)
@@ -52,6 +65,35 @@ private theorem proj_range {G H X Y : Type} [Group G] [TopologicalSpace G] [IsTo
 
 set_option maxHeartbeats 800000 in
 open PositivityTheory.Rg.Rs.C3.Fl in
+/- English proof (translation)
+Introduce `E _ _ _ n μ _ π V h w σ`. Take `⟨J, hi, -, -, hJ'⟩` from `UpperTheory.ConvolutionTheory.Dp.locEmb E n μ π V h`. Establish `hJ` using `hJ' w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, h0, hf⟩`.
+
+Conclude with `⟨J ∘ₗ f, fun e => h0 (LinearMap.ext fun x => hi ((LinearMap.congr_fun e x).trans (map_zero J).symm)), fun g x => (congrArg J (hf g x)).trans (hJ g _)⟩`. Introduce and unpack `⟨f, h0, hf⟩`. Take `⟨D⟩` from `nonempty_adelicDecomposition _ (Cm.isIrreducible_toModule π) (Cm.isAdmissible_toModule π)`. Take `⟨j, hj0, hj⟩` from `(locFlath E n π D w { V := D.finite.W w, ρ := D.finite.π w, smooth := (D.finite.isAdmissible w).1, irred := D.finite.isIrreducible w }).2 ⟨Representation.Equiv.refl _⟩`. Establish `hm : ∀ a b v, RG μ (a * b) v = RG μ a (RG μ b v)` using `fun a b v => by`.
+
+Simplify using `only [RG]`. Rewrite using `[retractOne_mul, UnitaryRep.map_mul]`. Both sides reduce to the same expression. Establish `h1 : ∀ v, RG μ 1 v = v` using `fun v => by`. Establish `e : retractOne (1 : AdelicGLn.AdelicGL E n) = 1` using `retractOne_coe 1`.
+
+Simplify using `only [RG, e, UnitaryRep.map_one]`. Both sides reduce to the same expression. Establish `hn : ∀ a v, ‖RG μ a v‖ = ‖v‖` using `fun a v => UnitaryRep.norm_map _ _ _`. Establish `hin : ∀ a u v, inner ℂ (RG μ a u) v = inner ℂ u (RG μ a⁻¹ v)` using `fun a u v => by`. Establish `e : v = RG μ a (RG μ a⁻¹ v)` using `by rw [← hm, mul_inv_cancel, h1]`.
+
+Use `conv_lhs => rw [e]`. Conclude with `(⟨(RG μ a).toLinearMap, hn a⟩ : LL μ →ₗᵢ[ℂ] LL μ).inner_map_map _ _`. Set `i : D.finite.W w →ₗ[ℂ] LL μ` to `V.subtype ∘ₗ J ∘ₗ j`. Establish `hi' : ∀ g y, i (D.finite.π w g y) = RG μ (iota n w g) (i y)` using `fun g y => congrArg Subtype.val ((congrArg J (hj g y)).trans (hJ g _))`. Establish `hex : ∃ a, wPart n w a = 1 ∧ ∃ y x, inner ℂ (RG μ a (i y)) (f x).1 ≠ 0`.
+
+Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Set `S : Submodule ℂ (LL μ)` to `Submodule.span ℂ {v | ∃ a y, wPart n w a = 1 ∧ v = RG μ a (i y)}`. Establish `hS : ∀ v, v ∈ Sᗮ ↔ ∀ a y, wPart n w a = 1 → inner ℂ (RG μ a (i y)) v = 0` using `fun v => by`. Use `⟨fun hv a y ha => hv _ (Submodule.subset_span ⟨a, y, ha, rfl⟩), fun hv u hu => ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu => obtain ⟨a, y, ha, rfl⟩ := hu`. Conclude with `hv a y ha`. Consider the case `zero => simp`. Consider the case `add u u' _ _ h1 h2 => rw [inner_add_left, h1, h2, add_zero]`.
+
+Consider the case `smul c u _ h1 => rw [inner_smul_left, h1, mul_zero]`. Break down `h.summand.irred (V ⊓ Sᗮ) inf_le_left (h.summand.closed.inter S.isClosed_orthogonal) (fun g v hv => ⟨h.summand.inv g v hv.1, (hS _).2 fun a y ha => by` into its components or cases. Establish `e : rightRegularRep (rationalGLOne E n) μ g v = RG μ (g⁻¹.1)⁻¹ v`. Simplify using `only [RG, Subgroup.coe_inv, inv_inv, retractOne_coe]`. Rewrite using `[e, ← hin, ← hm, ← awayPart_mul_iota_wPart (w := w) (g⁻¹.1 * a), hm, ← hi']`.
+
+Conclude with `(hS v).1 hv.2 _ _ (wPart_awayPart _)⟩) with hb | hb`. Use `h0 (LinearMap.ext fun x => Subtype.ext ?_)` and prove the remaining obligations. Establish `: (f x).1 ∈ V ⊓ Sᗮ` using `⟨(f x).2, (hS _).2 fun a y ha => hno a ha y x⟩`. Rewrite `this` using `[hb]`. Then use the resulting hypothesis. Use `hj0 (LinearMap.ext fun y => hi (Subtype.ext ?_))` and prove the remaining obligations.
+
+Establish `h2 : i y ∈ V ⊓ Sᗮ` using `hb.ge (J (j y)).2`. Establish `h3` using `(hS _).1 h2.2 1 y (map_one _)`. Rewrite `h3` using `[h1]`. Establish `h4 : i y = 0` using `inner_self_eq_zero.1 h3`. Conclude with `h4.trans (congrArg Subtype.val (map_zero J)).symm`.
+
+Take `⟨a, ha, y, x, hne⟩` from `hex`. Rewrite `hne` using `[hin]`. Take `⟨f', h2, h3, h4⟩` from `proj_range (localRepresentationL2 μ w) σ.ρ (D.finite.π w) (fun g v => hn _ v) (fun x => (isSmooth_iff_forall_exists σ.ρ).1 σ.smooth x) (D.finite.isAdmissible w) i ((RG μ a⁻¹).toLinearMap ∘ₗ V.subtype ∘ₗ f) hi' (fun g x => by show RG μ a⁻¹ (f (σ.ρ g x)).1 = RG μ (iota n w g) (RG μ …`. Rewrite using `[hf, ← hm, ← commute_iota (by rw [map_inv, ha, inv_one]), hm]`. Use the proof step `rfl) hne`.
+
+Establish `hk : Function.Injective (V.subtype ∘ₗ J)` using `V.injective_subtype.comp hi`. Establish `h5 : ∀ x, f' x ∈ LinearMap.range (V.subtype ∘ₗ J)` using `fun x => (h4 x).elim fun y e => ⟨j y, e⟩`. Set `t` to `LinearEquiv.ofInjective _ hk`. Establish `ht : ∀ x, (J (t.symm ⟨f' x, h5 x⟩)).1 = f' x` using `fun x => congrArg Subtype.val (t.apply_symm_apply ⟨f' x, h5 x⟩)`. Use `⟨t.symm.toLinearMap ∘ₗ f'.codRestrict _ h5, fun e => h2 (LinearMap.ext fun x => ?_), fun g x => hi (Subtype.ext ?_)⟩` and prove the remaining obligations.
+
+Establish `e1 : t.symm ⟨f' x, h5 x⟩ = 0` using `LinearMap.congr_fun e x`. Rewrite using `[← ht, e1, map_zero]`. Both sides reduce to the same expression. Use `(ht _).trans ((h3 g x).trans ?_)` and prove the remaining obligations. Rewrite using `[← ht x]`.
+
+Conclude with `(congrArg Subtype.val (hJ g _)).symm`.
+-/
 theorem UpperTheory.ConvolutionTheory.Dp.locIff :
     UpperTheory.ConvolutionTheory.Dp.LocIff := by
   intro E _ _ _ n μ _ π V h w σ

@@ -8,37 +8,74 @@ open Classical
 
 namespace GlobalTheory.PositionData
 
+/- English proof (translation)
+The claim follows from `Finset.min'_le _ _ (Finset.mem_insert_self _ _)`.
+-/
 theorem mnLo_le_zero' (Fl : Finset ℤ) : mnLo Fl ≤ 0 :=
   Finset.min'_le _ _ (Finset.mem_insert_self _ _)
 
+/- English proof (translation)
+The claim follows from `Finset.min'_le _ _ (Finset.mem_insert_of_mem hz)`.
+-/
 theorem mnLo_le' (Fl : Finset ℤ) {z : ℤ} (hz : z ∈ Fl) : mnLo Fl ≤ z :=
   Finset.min'_le _ _ (Finset.mem_insert_of_mem hz)
 
+/- English proof (translation)
+The claim follows from `Finset.le_max' _ _ (Finset.mem_insert_self _ _)`.
+-/
 theorem le_mxLo' (t : ℕ) (Fl : Finset ℤ) : (t : ℤ) - 1 ≤ mxLo t Fl :=
   Finset.le_max' _ _ (Finset.mem_insert_self _ _)
 
+/- English proof (translation)
+The claim follows from `Finset.le_max' _ _ (Finset.mem_insert_of_mem hz)`.
+-/
 theorem le_mxLo_of_mem (t : ℕ) (Fl : Finset ℤ) {z : ℤ} (hz : z ∈ Fl) : z ≤ mxLo t Fl :=
   Finset.le_max' _ _ (Finset.mem_insert_of_mem hz)
 
+/- English proof (translation)
+The claim follows from `Finset.mem_insert.mp (Finset.max'_mem _ _)`.
+-/
 theorem mxLo_cases (t : ℕ) (Fl : Finset ℤ) : mxLo t Fl = (t : ℤ) - 1 ∨ mxLo t Fl ∈ Fl :=
   Finset.mem_insert.mp (Finset.max'_mem _ _)
 
+/- English proof (translation)
+The claim follows from `Finset.mem_insert.mp (Finset.min'_mem _ _)`.
+-/
 theorem mnLo_cases (Fl : Finset ℤ) : mnLo Fl = 0 ∨ mnLo Fl ∈ Fl :=
   Finset.mem_insert.mp (Finset.min'_mem _ _)
 
+/- English proof (translation)
+The claim follows from `Finset.min'_le _ _ (Finset.mem_insert_self _ _)`.
+-/
 theorem mnAll_le_zero' (Fl Fc : Finset ℤ) : mnAll Fl Fc ≤ 0 :=
   Finset.min'_le _ _ (Finset.mem_insert_self _ _)
 
+/- English proof (translation)
+The claim follows from `Finset.min'_le _ _ (Finset.mem_insert_of_mem hz)`.
+-/
 theorem mnAll_le' (Fl Fc : Finset ℤ) {z : ℤ} (hz : z ∈ Fl ∪ Fc) : mnAll Fl Fc ≤ z :=
   Finset.min'_le _ _ (Finset.mem_insert_of_mem hz)
 
+/- English proof (translation)
+The claim follows from `Finset.le_max' _ _ (Finset.mem_insert_self _ _)`.
+-/
 theorem le_mxAll' (t : ℕ) (Fl Fc : Finset ℤ) : (t : ℤ) - 1 ≤ mxAll t Fl Fc :=
   Finset.le_max' _ _ (Finset.mem_insert_self _ _)
 
+/- English proof (translation)
+The claim follows from `Finset.le_max' _ _ (Finset.mem_insert_of_mem hz)`.
+-/
 theorem le_mxAll_of_mem (t : ℕ) (Fl Fc : Finset ℤ) {z : ℤ} (hz : z ∈ Fl ∪ Fc) :
     z ≤ mxAll t Fl Fc :=
   Finset.le_max' _ _ (Finset.mem_insert_of_mem hz)
 
+/- English proof (translation)
+Establish `hc0' : (0 : ℝ) ≤ c` using `by exact_mod_cast hc0`. Establish `hc1' : (c : ℝ) ≤ (t : ℝ) - 1` using `by exact_mod_cast hc1`. Establish `key : (σ : ℝ) + 2 < |(z : ℝ) - c|`. Break down `le_abs'.mp hz with h | h` into its components or cases. Rewrite using `[lt_abs]`.
+
+Use `right`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[lt_abs]`. Use `left`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `key` after adjusting the coercions.
+-/
 theorem far_from_block (z c σ : ℤ) (t : ℕ) (B : ℝ) (hc0 : 0 ≤ c) (hc1 : c ≤ (t : ℤ) - 1)
     (hσ : (σ : ℝ) ≤ 2 * B) (hz : 2 * B + (t : ℝ) / 2 + 3 ≤ |(z : ℝ) - ((t : ℝ) - 1) / 2|) :
     σ + 2 < |z - c| := by
@@ -54,6 +91,73 @@ end GlobalTheory.PositionData
 
 namespace GlobalTheory.PositionData
 
+/- English proof (translation)
+Introduce `l t up Fl Fc η S B W0 sgP σ ht htη hB hS0 hFl hFc hW0 hn hσB hσs hl`. Establish `ht' : (1 : ℝ) ≤ t` using `by exact_mod_cast ht`. Establish `hσs' : (σ : ℝ) ≤ sgP` using `by exact_mod_cast hσs`. Establish `hmx0` using `le_mxLo' t Fl`. Establish `hmn0` using `mnLo_le_zero' Fl`.
+
+Establish `hmx : (mxLo t Fl : ℝ) ≤ ((t : ℝ) - 1) / 2 + η`. Break down `mxLo_cases t Fl with h | h` into its components or cases. Rewrite using `[h]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `(hFl _ h).1` as an intermediate fact. Rewrite `this` using `[abs_le]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmn : ((t : ℝ) - 1) / 2 - η ≤ (mnLo Fl : ℝ)`. Break down `mnLo_cases Fl with h | h` into its components or cases.
+
+Rewrite using `[h]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(hFl _ h).1` as an intermediate fact. Rewrite `this` using `[abs_le]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hηS : (etaS t Fl : ℤ) = mxLo t Fl - mnLo Fl + 1`. Unfold `etaS`. Rewrite using `[Int.toNat_of_nonneg]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hfar : ∀ z ∈ Fl ∪ Fc, 2 * B + (t : ℝ) / 2 + 3 ≤ |(z : ℝ) - ((t : ℝ) - 1) / 2|`. Introduce `z hz`. Break down `Finset.mem_union.mp hz with h | h` into its components or cases. Conclude with `(hFl z h).2`. Use `(hFc z h).1` as an intermediate fact.
+
+Consider the cases of `up`. Simplify using `only [Bool.false_eq_true, if_false] at this`. Rewrite using `[abs_sub_comm]`. Conclude with `le_trans hW0 (le_trans this (le_abs_self _))`. Simplify using `only [if_true] at this`.
+
+Conclude with `le_trans hW0 (le_trans this (le_abs_self _))`. Establish `hT1 : (etaS t Fl : ℤ) + 4 * σ + 6 < l`. Establish `: ((etaS t Fl : ℤ) : ℝ) + 4 * σ + 6 < l`. Rewrite using `[hηS]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Establish `hT2 : ∀ x ∈ US up Fl Fc, ∀ y ∈ Formalism.WachCohomologyFacts.Top.GlobalTheory (wS up Fl Fc) t, σ + 2 < |x - y|`. Introduce `x hx y hy`. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.mp hx`.
+
+Rewrite `hy` using `[Formalism.WachCohomologyFacts.Top.GlobalTheory, Finset.mem_Icc]`. Use `far_from_block z (y - wS up Fl Fc) σ t B (by omega) (by omega) hσB (hfar z (Finset.mem_val.mp hz))` as an intermediate fact. Establish `e : z + (wS up Fl Fc : ℤ) - y = z - (y - wS up Fl Fc)` using `by ring`. Rewrite using `[e]`. Conclude with `this`.
+
+Establish `hT2' : ∀ x ∈ Formalism.MainNotions.tableLineDegreeTwo.lows up (hS up t Fl Fc) (etaS t Fl) (US up Fl Fc), ∀ y ∈ Formalism.WachCohomologyFacts.Top.GlobalTheory (wS up Fl Fc) t, σ + 2 < |x - y|`. Introduce `x hx`. Conclude with `hT2 x (Multiset.mem_filter.mp hx).1`. Consider the cases of `up`. Establish `hmA0` using `mnAll_le_zero' Fl Fc`.
+
+Establish `hw : (wS false Fl Fc : ℤ) = 1 - mnAll Fl Fc`. Simplify using `only [wS, Bool.false_eq_true, if_false]`. Rewrite using `[Int.toNat_of_nonneg]`. Use linear arithmetic over natural numbers and integers. Establish `hh : (hS false t Fl Fc : ℤ) = mxLo t Fl + (1 - mnAll Fl Fc) + 1`.
+
+Apply the tactic sequence `simp only [hS, Bool.false_eq_true, if_false]; rw [Int.toNat_of_nonneg] <;> omega`. Establish `hcl : ∀ z ∈ Fc, ((z : ℝ)) ≤ ((t : ℝ) - 1) / 2 - W0 ∧ ((t : ℝ) - 1) / 2 - (W0 + S + η + 1) ≤ z`. Introduce `z hz`. Use `hFc z hz` as an intermediate fact. Simplify using `only [Bool.false_eq_true, if_false] at this`.
+
+Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Use `⟨?_, by omega, by omega, by simp, fun _ => by omega, hT1, hT2', ?_⟩` and prove the remaining obligations. Introduce `u hu`. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.mp hu`. Establish `hz'` using `Finset.mem_val.mp hz`.
+
+Establish `h1` using `mnAll_le' Fl Fc hz'`. Establish `h2 : z ≤ mxLo t Fl`. Break down `Finset.mem_union.mp hz' with h | h` into its components or cases. Conclude with `le_mxLo_of_mem t Fl h`. Use `(hcl z h).1` as an intermediate fact.
+
+Establish `: (z : ℝ) < ((t : ℤ) - 1 : ℤ)` using `by push_cast; linarith`. Establish `: z < (t : ℤ) - 1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Introduce `x hx m hm1 hm2`.
+
+Break down `Multiset.mem_filter.mp hx with ⟨hxU, hxW⟩` into its components or cases. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.mp hxU`. Establish `hz'` using `Finset.mem_val.mp hz`. Simplify using `only [Formalism.WachCohomologyFacts.V2.InWinN, Bool.false_eq_true, if_false] at hxW`. Establish `hzc : z ∈ Fc`.
+
+Break down `Finset.mem_union.mp hz' with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hxW` to reduce the goal to its premises. Use `mnLo_le' Fl h` as an intermediate fact. Use `le_mxLo_of_mem t Fl h` as an intermediate fact.
+
+Apply the tactic sequence `constructor <;> omega`. Conclude with `h`. Simplify using `only [Bool.false_eq_true, if_false]`. Introduce `heq`. Establish `hd` using `(ZMod.intCast_eq_intCast_iff_dvd_sub m _ l).mp heq.symm`.
+
+Rewrite `hm2` using `[hηS]`. Establish `e : (hS false t Fl Fc : ℤ) - (z + (wS false Fl Fc : ℤ)) = mxLo t Fl + 1 - z`. Rewrite using `[hh, hw]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hd` using `[e]`.
+
+Establish `hm1r : (-2 * σ - 2 : ℝ) ≤ m` using `by exact_mod_cast hm1`. Establish `hm2r : (m : ℝ) ≤ (mxLo t Fl : ℝ) - mnLo Fl + 1 + 2 * σ + 3` using `by exact_mod_cast hm2`. Establish `hzc'` using `hcl z hzc`. Apply `hn (mxLo t Fl + 1 - z - m)` to reduce the goal to its premises. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hd`. Establish `hw : (wS true Fl Fc : ℤ) = 1 - mnLo Fl`.
+
+Simplify using `only [wS, if_true]`. Rewrite using `[Int.toNat_of_nonneg]`. Use linear arithmetic over natural numbers and integers. Establish `hmA` using `le_mxAll' t Fl Fc`. Establish `hh : (hS true t Fl Fc : ℤ) = mxAll t Fl Fc + (1 - mnLo Fl) + 1`.
+
+Simplify using `only [hS, if_true]`. Rewrite using `[hw, Int.toNat_of_nonneg]`. Use linear arithmetic over natural numbers and integers. Establish `hcl : ∀ z ∈ Fc, ((t : ℝ) - 1) / 2 + W0 ≤ z ∧ (z : ℝ) ≤ ((t : ℝ) - 1) / 2 + (W0 + S + η + 1)`. Introduce `z hz`.
+
+Use `hFc z hz` as an intermediate fact. Simplify using `only [if_true] at this`. Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Use `⟨?_, by omega, by omega, fun _ => by omega, by simp, hT1, hT2', ?_⟩` and prove the remaining obligations. Introduce `u hu`.
+
+Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.mp hu`. Establish `hz'` using `Finset.mem_val.mp hz`. Establish `h2` using `le_mxAll_of_mem t Fl Fc hz'`. Establish `h1 : mnLo Fl ≤ z`. Break down `Finset.mem_union.mp hz' with h | h` into its components or cases.
+
+Conclude with `mnLo_le' Fl h`. Use `(hcl z h).1` as an intermediate fact. Establish `: (0 : ℝ) < z` using `by linarith`. Establish `: 0 < z` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers. Introduce `x hx m hm1 hm2`. Break down `Multiset.mem_filter.mp hx with ⟨hxU, hxW⟩` into its components or cases. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.mp hxU`. Establish `hz'` using `Finset.mem_val.mp hz`.
+
+Simplify using `only [Formalism.WachCohomologyFacts.V2.InWinN, if_true] at hxW`. Establish `hzc : z ∈ Fc`. Break down `Finset.mem_union.mp hz' with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hxW` to reduce the goal to its premises.
+
+Use `mnLo_le' Fl h` as an intermediate fact. Use `le_mxLo_of_mem t Fl h` as an intermediate fact. Apply the tactic sequence `constructor <;> omega`. Conclude with `h`. Simplify using `only [if_true]`.
+
+Introduce `heq`. Establish `hd` using `(ZMod.intCast_eq_intCast_iff_dvd_sub m _ l).mp heq.symm`. Rewrite `hm2` using `[hηS]`. Rewrite `hd` using `[hw]`. Establish `hm1r : (-2 * σ - 2 : ℝ) ≤ m` using `by exact_mod_cast hm1`.
+
+Establish `hm2r : (m : ℝ) ≤ (mxLo t Fl : ℝ) - mnLo Fl + 1 + 2 * σ + 3` using `by exact_mod_cast hm2`. Establish `hzc'` using `hcl z hzc`. Apply `hn (z + (1 - mnLo Fl) - m)` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hd`.
+-/
 theorem position_conditions : ∀ (l t : ℕ) (up : Bool) (Fl Fc : Finset ℤ) (η S B W0 : ℝ) (sgP σ : ℤ),
     1 ≤ t → (t : ℝ) ≤ η → 0 ≤ B → 0 ≤ S →
     (∀ z ∈ Fl, |(z : ℝ) - ((t : ℝ) - 1) / 2| ≤ η ∧ 2 * B + (t : ℝ) / 2 + 3 ≤ |(z : ℝ) - ((t : ℝ) - 1) / 2|) →

@@ -13,6 +13,11 @@ noncomputable section
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ} {P : ArithVariety n}
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Use `Eq.trans ?_ (map_intCast (mConeMap (AddBlockData.ofObjects D).yPlus) r).symm` and prove the remaining obligations. Simplify using `[Heights.AddBlockData.extMap]`. Introduce `v`.
+
+Use `Eq.trans ?_ (MvPolynomial.aeval_X (R := ℤ) (fun p : Coord D.extSizes ↦ C ((AddBlockData.ofObjects D).yPlus p) * X p.1) v).symm` and prove the remaining obligations. Break down `v with ⟨_ | k, i⟩` into its components or cases. Simplify using `[Heights.AddBlockData.extMap, Heights.AddBlockData.extVal, AddBlockData.yPlus, AddBlockData.ofObjects]`. Simplify using `[Heights.AddBlockData.extMap, Heights.AddBlockData.extVal, AddBlockData.yPlus, funFieldEquiv_mkF_X]`.
+-/
 theorem map_comp_extMap (D : Heights.AddBlockData P) :
     (MvPolynomial.map (funFieldEquiv P : P.FunField →+* FunField P)).comp D.extMap =
       (mConeMap (AddBlockData.ofObjects D).yPlus).toRingHom := by
@@ -29,6 +34,11 @@ theorem map_comp_extMap (D : Heights.AddBlockData P) :
     · simp [Heights.AddBlockData.extMap, Heights.AddBlockData.extVal, AddBlockData.yPlus,
         funFieldEquiv_mkF_X]
 
+/- English proof (translation)
+Use extensionality with `f`. Use `show mConeMap (AddBlockData.ofObjects D).yPlus f = 0 ↔ D.extMap f = 0`. Establish `h : MvPolynomial.map (funFieldEquiv P : P.FunField →+* FunField P) (D.extMap f) = mConeMap (AddBlockData.ofObjects D).yPlus f` using `RingHom.congr_fun (map_comp_extMap D) f`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+
+Apply `MvPolynomial.map_injective _ (funFieldEquiv P).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h.trans h0`. Introduce `h0`. Conclude with `h.symm.trans (by rw [h0, map_zero])`.
+-/
 theorem ext_ofObjects (D : Heights.AddBlockData P) :
     (AddBlockData.ofObjects D).ext = D.extIdeal := by
   ext f
@@ -44,6 +54,11 @@ theorem ext_ofObjects (D : Heights.AddBlockData P) :
   · intro h0
     exact h.symm.trans (by rw [h0, map_zero])
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h ι _ _ n P D`. Take `⟨E, rfl⟩ : ∃ E, AddBlockData.ofObjects E = D` from `⟨AddBlockData.toObjects D, AddBlockData.ofObjects_toObjects D⟩`. Rewrite using `[ext_ofObjects]`. Conclude with `h ι n P E`.
+
+Introduce `h ι _ _ n P D`. Use `h ι n P (AddBlockData.ofObjects D)` as an intermediate fact. Rewrite `this` using `[ext_ofObjects]`. Conclude with `this`.
+-/
 theorem ExtensionDimension.equiv :
     GroundTheory.Heights₂.Heights.ExtensionDimension.Statement ↔ GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.ExtensionDimension.Statement := by
   constructor

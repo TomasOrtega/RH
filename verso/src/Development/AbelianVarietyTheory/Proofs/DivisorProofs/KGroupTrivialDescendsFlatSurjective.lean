@@ -23,6 +23,11 @@ noncomputable section
 
 namespace GlobalTheory.KTrivFlatDescent
 
+/- English proof (translation)
+Introduce `S S' S'' G _ L g f _ _ _ h T a ha x hx`. Set `u` to `pullback.fst a f`. Establish `hu : Epi u` using `Flat.epi_of_flat_of_surjective _`. Set `T' : Over S` to `Over.mk (u ≫ T.hom)`. Set `U : T' ⟶ T` to `Over.homMk u rfl`.
+
+Establish `hs : pullback.snd a f ≫ f ≫ g = T'.hom` using `by show pullback.snd a f ≫ f ≫ g = u ≫ T.hom`. Rewrite using `[← Category.assoc, ← pullback.condition, Category.assoc, ha]`. Establish `e₁ : U ≫ x = 1` using `h T' (pullback.snd a f) hs (U ≫ x) (hx.comp U)`. Establish `e₂ : U ≫ x = U ≫ (1 : T ⟶ G)` using `by rw [e₁, MonObj.comp_one]`. Conclude with `Over.OverMorphism.ext ((cancel_epi u).1 (congrArg (fun q => q.left) e₂))`.
+-/
 theorem trivAlong_of_flat_surjective : ∀ {S S' S'' : Scheme.{0}} (G : Over S) [GrpObj G] (L : LB G.left) (g : S' ⟶ S) (f : S'' ⟶ S') [Flat f] [Surjective f], L.IsLB → GlobalTheory.KTrivSpread.TrivAlong G L (f ≫ g) → GlobalTheory.KTrivSpread.TrivAlong G L g := by
   intro S S' S'' G _ L g f _ _ _ h T a ha x hx
   let u := pullback.fst a f

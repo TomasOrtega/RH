@@ -27,12 +27,22 @@ noncomputable section
 
 namespace GlobalTheory.MovedDict
 
+/- English proof (translation)
+Establish `e : matHom (negSp V) (negGA V g) = matHom V g` using `Units.ext (mt_negGA V g)`. Simplify using `only [GfC, MonoidHom.mem_ker, infHom, MonoidHom.comp_apply] at hg ⊢`. Rewrite using `[e]`. Conclude with `hg`.
+-/
 theorem negGA_mem_GfC' {D : D7} (V : HSp D) {g : Formalism.L2.Theta.GA D V} (hg : g ∈ GfC V) : negGA V g ∈ GfC (negSp V) := by
   have e : matHom (negSp V) (negGA V g) = matHom V g := Units.ext (mt_negGA V g)
   simp only [GfC, MonoidHom.mem_ker, infHom, MonoidHom.comp_apply] at hg ⊢
   rw [e]
   exact hg
 
+/- English proof (translation)
+Introduce `D T L sc G W B p hp f hf w x y mon`. Establish `hn` using `DefPair.nodes hp`. Apply the tactic sequence `have hom := W.om_is p (by cases p <;> simp only [DefPair, DefNode] at hp hn <;> simp only [Pair.InRange, Node.InRange] <;> omega)`. Establish `mem : (G.toPair p x y).1 ∈ GfC (G.pS p) ∧ (G.toPair p x y).2 ∈ GfC (G.pT p)`. Consider the cases of `p with`.
+
+Consider the case `chi i j => exact ⟨negGA_mem_GfC' _ y.2, x.2⟩`. Consider the case `mu t i j => exact ⟨x.2, y.2⟩`. Consider the case `core i => exact ⟨negGA_mem_GfC' _ y.2, x.2⟩`. Consider the case `top t j => exact ⟨x.2, y.2⟩`. Establish `hth` using `GlobalTheory.ThetaClosed.isThetaFunO_heisO_all W.ψ_std hf w`.
+
+Establish `e` using `GlobalTheory.OrientedHeis.om_fin_pureTensorO W.ψ _ _ _ _ (W.om p) hom W.θ W.θ_is _ mem.1 _ mem.2 (G.cartS W.cart p) (G.onT W.cart p) (G.onS B p) (G.onT B p) _ (MvPolynomial.monomial (mon.mapDomain (fvar G p)) 1) hth`. Rewrite `e` using `[hom.om_heis _ _ w f hf]`. Simplify using `only [jetTab, GlobalTheory.FunObj.kerFin, GridData.Weil.ker, thetaKO, fockIn]`. Rewrite using `[e]`.
+-/
 theorem jetTab_heisO : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc}
     (W : G.Weil) (B : VertexFrames G) (p : GlobalTheory.ChiGrid.Pair T), DefPair D.R.m p → ∀ f : WO (G.pS p) (G.pT p) → ℂ,
     IsThetaFunO W.ψ _ _ f → ∀ w : WO (G.pS p) (G.pT p), ∀ (x : FinPt G p.small) (y : FinPt G p.big)
@@ -55,6 +65,9 @@ theorem jetTab_heisO : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheor
   simp only [jetTab, GlobalTheory.FunObj.kerFin, GridData.Weil.ker, thetaKO, fockIn]
   rw [e]
 
+/- English proof (translation)
+Unfold `actO`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [succ_nsmul, succ_nsmul, Matrix.mul_add, Matrix.add_mul, ih]`.
+-/
 theorem actO_nsmul {D : D7} (S T : HSp D) (g : Formalism.L2.Theta.GA D S) (h : Formalism.L2.Theta.GA D T) (n : ℕ) (w : WO S T) :
     actO S T g h (n • w) = n • actO S T g h w := by
   unfold actO
@@ -62,6 +75,13 @@ theorem actO_nsmul {D : D7} (S T : HSp D) (g : Formalism.L2.Theta.GA D S) (h : F
   | zero => simp
   | succ n ih => rw [succ_nsmul, succ_nsmul, Matrix.mul_add, Matrix.add_mul, ih]
 
+/- English proof (translation)
+Introduce `hPr hInp`. Take `⟨CF0, h2⟩` from `GlobalTheory.T.exists_lattices_entire_intertwining hPr hInp`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `h2 ε CF hCF`. Use `⟨x₀, fun D large₂ hε hx₀ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs hAt => ?_⟩` and prove the remaining obligations.
+
+Introduce `p hp x y`. Take `⟨Ls, Lt, κ, hSs, hSt, hκ, hd, hq, hvac, hmov, hjet⟩` from `hx D large₂ hε hx₀ Γ Pl0 T A Ks R F hS ch hIs hAt p hp x y`. Use `⟨Ls, Lt, κ, hSs, hSt, hκ, hd, hq, fun n hn w hw => ?_⟩` and prove the remaining obligations. Take `⟨ζ, s, hζ, hs, hj⟩` from `GlobalTheory.T.finiteHeisenbergTranslate_selfDualVacuum_fockJets ch.S.toGridChoice p hp Ls Lt κ _ hSs hSt hd hvac hjet n hn _ (by rw [← actO_nsmul]; exact hmov _ hw)`. Use `⟨ζ, s, hζ, hs, fun mon => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[jetTab_heisO ch.W ch.S.N.frC p hp _ (ch.S.Z.vac_is p hp).2.theta w _ _ mon]`. Conclude with `hj _`.
+-/
 theorem jets_moved : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (p : Pair _), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big), ∃ (Ls : Submodule (𝓞 D.host.E) (Fin (ch.G.pS p).rank → D.host.E)) (Lt : Submodule (𝓞 D.host.E) (Fin (ch.G.pT p).rank → D.host.E)) (κ : ℂ), SD D Ls ∧ SD D Lt ∧ Mod1All κ ∧ Differentiable ℂ (Iop D (tor0 D D.host.ccK ch.S.Z.δ) (La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) Ls Lt) (ch.S.Z.e0 p)) ∧ (∀ (q : ℕ) [Fact q.Prime], EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice p.small x) (stdL D _) → EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice p.big y) (stdL D _) → EqAt D q Ls (stdL D _) ∧ EqAt D q Lt (stdL D _) ∧ ∀ lam : Qbar →+* ℂ_[q], ‖lamC lam κ‖ = 1) ∧ ∀ (k : ℕ), 0 < k → ∀ w : WO (ch.G.pS p) (ch.G.pT p), k • w ∈ latO (ch.G.pS p) (ch.G.pT p) (ch.S.N.latS p : Set _) (ch.S.N.latT p : Set _) (fun _ => True) → ∃ (ζ : Qbar) (s : VC D (ch.G.pS p).rank (ch.G.pT p).rank), (∃ m : ℕ, 0 < m ∧ ζ ^ m = 1) ∧ k • s ∈ Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) Ls Lt ∧ ∀ mon, jetTab ch.W ch.S.N.frC p (heisO ch.W.ψ (ch.G.pS p) (ch.G.pT p) w (ch.S.Z.vac p)) (x * ch.S.N.u _) (y * ch.S.N.u _) mon = ch.S.Z.c0 p * opp p (((mon.mapDomain (fvar ch.G p)).prod fun v e => period ch.S.Z.δ v.1 ^ e) * Formalism.MainNotions.GL3Theta.applyAt0 D (MvPolynomial.monomial (mon.mapDomain (fvar ch.G p)) 1) fun z => κ * ((ζ : ℂ) * Formalism.MainNotions.TaylorLogMetric.U D (tor0 D D.host.ccK ch.S.Z.δ) s (Iop D (tor0 D D.host.ccK ch.S.Z.δ) (La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) Ls Lt) (ch.S.Z.e0 p)) z)) := by
   intro hPr hInp
   obtain ⟨CF0, h2⟩ := GlobalTheory.T.exists_lattices_entire_intertwining hPr hInp

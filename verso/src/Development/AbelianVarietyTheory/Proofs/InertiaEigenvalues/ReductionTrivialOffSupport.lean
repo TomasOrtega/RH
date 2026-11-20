@@ -11,6 +11,9 @@ set_option maxHeartbeats 800000
 
 namespace GlobalTheory.ExportSeries
 
+/- English proof (translation)
+Rewrite using `[mul_add, idem, map_sum, Finset.mul_sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_eq_zero fun q hq => hP.mul_eq_zero hPP (hQ hq) (fun e => hPQ (e ▸ hq)), Finset.sum_eq_zero fun q hq => hP.mul_conj hPP (hQ hq), add_zero]`.
+-/
 theorem idemAt_mul_idem_add_conj {D : D7} {P Q' : Finset (Pl D.host.E)} (hP : SplitSet P) (hQ : Q' ⊆ P)
     {PP : Pl D.host.E} (hPP : PP ∈ P) (hPQ : PP ∉ Q') : idemAt PP * (idem Q' + cA D (idem Q')) = 0 := by
   rw [mul_add, idem, map_sum, Finset.mul_sum, Finset.mul_sum]
@@ -19,6 +22,23 @@ theorem idemAt_mul_idem_add_conj {D : D7} {P Q' : Finset (Pl D.host.E)} (hP : Sp
 
 set_option maxHeartbeats 6000000 in
 
+/- English proof (translation)
+Introduce `D V β P Q' hP hQ PP hPP hPQ κ hS hSupp`. Take `⟨y, hy⟩` from `hS`. Take `⟨hint, h1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D (idemAt PP) PP (hP.isIdemAt hPP)`. Establish `h0` using `idemAt_mul_idem_add_conj hP hQ hPP hPQ`. Establish `hk : ∀ i j, idemAt PP * (Formalism.L2.Theta.mt V κ - 1) i j = 0` using `fun i j => by`.
+
+Rewrite using `[← hSupp i j, ← mul_assoc, h0, zero_mul]`. Establish `hval : (Lev.finE V κ).val = (Formalism.L2.Theta.mt V κ).map (toEAf D)` using `rfl`. Establish `hA : toEAf D (idemAt PP) • ((Lev.finE V κ).val - 1) = 0`. Use extensionality with `i j`. Use `congrArg (toEAf D) (hk i j)` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.map_mul, RingHom.map_zero, Matrix.sub_apply, RingHom.map_sub]`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Matrix.sub_apply, hval, Matrix.map_apply, Matrix.zero_apply]`. Use `this using 3` and compare the differences between its conclusion and the goal. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hY : toEAf D (idemAt PP) • ((intGL D.host.F D.host.E _ y).val - 1) = 0`. Establish `hg : intGL D.host.F D.host.E _ y = β⁻¹ * Lev.finE V κ * β`. Rewrite using `[← hy]`. Simplify using `[frGL, MulAut.conj_apply, mul_assoc]`. Establish `e1 : (intGL D.host.F D.host.E _ y).val - 1 = (β⁻¹).val * ((Lev.finE V κ).val - 1) * β.val`.
+
+Rewrite using `[hg, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, ← Units.val_mul β⁻¹ β, inv_mul_cancel, Units.val_one, Units.val_mul, Units.val_mul]`. Rewrite using `[e1, ← Matrix.smul_mul, ← Matrix.mul_smul, hA, Matrix.mul_zero, Matrix.zero_mul]`. Rewrite using `[← hy, redFn_frGL]`. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hY i) j`.
+
+Establish `hsub : (⟨toEAf D (idemAt PP), hint⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) * y.val i j = (⟨toEAf D (idemAt PP), hint⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) * (1 : Matrix (Fin V.rank) (Fin V.rank) _) i j`. Establish `hij' : toEAf D (idemAt PP) * ((intGL D.host.F D.host.E _ y).val i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D)) i j) = 0`. Simplify `hij` using `only [Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, Matrix.zero_apply]`. Establish `h1ij : ((1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)) i j : Lev.EAf D) = (1 : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D)) i j`. Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[MulMemClass.coe_mul, MulMemClass.coe_mul, h1ij, ← sub_eq_zero, ← mul_sub]`. Conclude with `hij'`. Use `congrArg (resS D.host.F PP) hsub` as an intermediate fact. Rewrite `this` using `[RingHom.map_mul, RingHom.map_mul, h1, one_mul, one_mul]`.
+
+Express the relevant statement in the definitionally equal form `(resS D.host.F PP) (y.val i j) = _`. Rewrite using `[this, Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem redFn_eq_one_of_suppAt : ∀ {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Lev.EAf D)) {P Q' : Finset (Pl D.host.E)}, SplitSet P → Q' ⊆ P → ∀ {PP : Pl D.host.E}, PP ∈ P → PP ∉ Q' → ∀ {κ : GA D V}, Lev.finE V κ ∈ St β → SuppAt (idem Q') V κ → redFn β PP (Lev.finE V κ) = 1 := by
   intro D V β P Q' hP hQ PP hPP hPQ κ hS hSupp
   obtain ⟨y, hy⟩ := hS

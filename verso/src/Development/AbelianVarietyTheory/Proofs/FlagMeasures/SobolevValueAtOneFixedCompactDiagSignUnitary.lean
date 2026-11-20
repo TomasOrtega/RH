@@ -6,6 +6,9 @@ open scoped ENNReal
 
 namespace GlobalTheory.SobolevHaar
 
+/- English proof (translation)
+Proceed by induction on `S with`. Consider the case `nil => simp`. Consider the case `cons a S ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Conclude with `ENNReal.ofReal_add_le.trans (add_le_add le_rfl ih)`.
+-/
 theorem ofReal_list_sum_le {α : Type} (S : List α) (f : α → ℝ) :
     ENNReal.ofReal (S.map f).sum ≤ (S.map fun a => ENNReal.ofReal (f a)).sum := by
   induction S with
@@ -14,6 +17,9 @@ theorem ofReal_list_sum_le {α : Type} (S : List α) (f : α → ℝ) :
     simp only [List.map_cons, List.sum_cons]
     exact ENNReal.ofReal_add_le.trans (add_le_add le_rfl ih)
 
+/- English proof (translation)
+Distinguish the cases in `hi : Integrable f μ`. Conclude with `(ofReal_integral_eq_lintegral_ofReal hi (Filter.Eventually.of_forall hf)).le`. Rewrite using `[integral_undef hi]`. Simplify using the standard rewrite rules.
+-/
 private theorem ofReal_integral_le_lintegral_ofReal {X : Type} [MeasurableSpace X] (μ : Measure X) (f : X → ℝ)
     (hf : ∀ x, 0 ≤ f x) : ENNReal.ofReal (∫ x, f x ∂μ) ≤ ∫⁻ x, ENNReal.ofReal (f x) ∂μ := by
   by_cases hi : Integrable f μ
@@ -21,6 +27,39 @@ private theorem ofReal_integral_le_lintegral_ofReal {X : Type} [MeasurableSpace 
   · rw [integral_undef hi]
     simp
 
+/- English proof (translation)
+Introduce `n ε`. Take `⟨E, hE, hON, -⟩` from `GlobalTheory.LieONB.exists_orthonormal_basis n ε`. Take `⟨s, hs, hsmall⟩` from `exists_small n`. Take `⟨c, -, hc, -⟩` from `GlobalTheory.GaugeConst.exists_unique_isGauge n ε`. Establish `hEl : ∀ i, E i ∈ GlobalTheory.GaugeConst.lieJ ε` using `fun i => GlobalTheory.GaugeConst.mem_lieJ.2 (hE i).1`.
+
+Establish `hsm : ∀ (t : ℝ) (X : Matrix (Fin n) (Fin n) ℂ), (t : ℂ) • X = t • X`. Introduce `t X`. Use extensionality with `a b`. Simplify using `[Complex.real_smul]`. Choose the witnesses or unpack the hypotheses as in `⟨cu, hcuM, hcuc⟩ : ∃ cu : Fin (n ^ 2) → ℝ → Formalism.REAL.UJ ε, (∀ i t, umat (cu i t) = NormedSpace.exp ((t : ℂ) • E i)) ∧ ∀ i, Continuous (cu i) := by`.
+
+Use `⟨fun i t => GlobalTheory.GaugeConst.expJ ε (t • ⟨E i, hEl i⟩), fun i t => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hsm]`. Conclude with `GlobalTheory.GaugeConst.uMat_expJ ε (t • ⟨E i, hEl i⟩)`. Conclude with `(GlobalTheory.GaugeConst.continuous_expJ ε).comp (continuous_id.smul continuous_const)`. Establish `hu1 : umat (1 : Formalism.REAL.UJ ε) = 1` using `rfl`.
+
+Establish `humul : ∀ x y : Formalism.REAL.UJ ε, umat (x * y) = umat x * umat y` using `fun _ _ => rfl`. Establish `hinj : Function.Injective (fun x : Formalism.REAL.UJ ε => umat x)` using `GlobalTheory.GaugeConst.uMat_injective ε`. Establish `hcu0 : ∀ i, cu i 0 = 1`. Introduce `i`. Apply `hinj` to reduce the goal to its premises.
+
+Use `show umat (cu i 0) = umat 1`. Rewrite using `[hcuM, hu1]`. Simplify using the standard rewrite rules. Establish `hcuadd : ∀ i a b, cu i (a + b) = cu i a * cu i b`. Introduce `i a b`.
+
+Apply `hinj` to reduce the goal to its premises. Use `show umat (cu i (a + b)) = umat (cu i a * cu i b)`. Rewrite using `[humul, hcuM, hcuM, hcuM, Complex.ofReal_add, add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl (E i)).smul_left _).smul_right _)`. Establish `hlist : ∀ l : List (Formalism.REAL.UJ ε), umat l.prod = (l.map fun x => umat x).prod`.
+
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => rw [List.prod_cons, humul, ih, List.map_cons, List.prod_cons]`. Establish `hΘ : ∀ t : Fin (n ^ 2) → ℝ, umat ((List.ofFn fun i => cu i (t i)).prod) = (List.ofFn fun i => NormedSpace.exp ((t i : ℂ) • E i)).prod`.
+
+Introduce `t`. Rewrite using `[hlist, List.map_ofFn]`. Simplify using `only [Function.comp_def, hcuM]`. Establish `hΘc : Continuous fun t : Fin (n ^ 2) → ℝ => (List.ofFn fun i => cu i (t i)).prod` using `GlobalTheory.continuous_prod_ofFn_curves (n ^ 2) cu hcuc`. Take `⟨K, hchart⟩ : ∃ K : ℝ, ∀ Φ : Formalism.REAL.UJ ε → ENNReal, Measurable Φ → ∫⁻ t in Set.pi Set.univ (fun _ : Fin (n ^ 2) => Set.Icc (0 : ℝ) s), Φ ((List.ofFn fun i => cu i (t i)).prod) ≤ ENNReal.ofReal K * ∫⁻ y in (fun t : Fin (n ^ 2) → ℝ => (List.ofFn fun i => cu i (t i)).prod) ' …` from `⟨_, GlobalTheory.ProductChart.lintegral_chart_le n ε c s E (fun t => (List.ofFn fun i => cu i (t i)).prod) hc (fun i => (hE i).1) hON hs hsmall hΘ⟩`.
+
+Establish `hD : ∀ i, ∀ v ∈ {l : List (Matrix (Fin n) (Fin n) ℂ) | ∀ Y ∈ l, Formalism.REAL.inG ε Y}, E i :: v ∈ {l : List (Matrix (Fin n) (Fin n) ℂ) | ∀ Y ∈ l, Formalism.REAL.inG ε Y}`. Introduce `i v hv`. Simplify using `only [Set.mem_ofPred_eq] at hv ⊢`. Introduce `Y hY`. Break down `List.mem_cons.1 hY with rfl | hY` into its components or cases.
+
+Conclude with `(hE i).1`. Conclude with `hv Y hY`. Take `⟨S, C0, hSA, hC0, hbound⟩` from `cube_sum {l : List (Matrix (Fin n) (Fin n) ℂ) | ∀ Y ∈ l, Formalism.REAL.inG ε Y} [] (by simp) s hs (n ^ 2) cu (fun i v => E i :: v) (fun i => ⟨hcuc i, hcu0 i, hcuadd i⟩) hD`. Use `⟨S, C0 * max K 0, (fun t : Fin (n ^ 2) → ℝ => (List.ofFn fun i => cu i (t i)).prod) '' Set.pi Set.univ (fun _ : Fin (n ^ 2) => Set.Icc (0 : ℝ) s), (isCompact_univ_pi fun _ => isCompact_Icc).image hΘc, fun l hl => (hSA l hl : ∀ Y ∈ l, Formalism.REAL.inG ε Y), mul_nonneg hC0 (le_ma …` and prove the remaining obligations. Introduce `F hFc hFd`.
+
+Establish `hmem : ∀ x : Formalism.REAL.UJ ε, umat x ∈ UJset ε` using `fun x => x.2`. Establish `hFrc : ∀ v : List (Matrix (Fin n) (Fin n) ℂ), (∀ Y ∈ v, Formalism.REAL.inG ε Y) → Continuous fun x : Formalism.REAL.UJ ε => F v (umat x)` using `fun v hv => (hFc v hv).comp_continuous (GlobalTheory.GaugeConst.continuous_uMat ε) hmem`. Establish `hFrd : ∀ v : List (Matrix (Fin n) (Fin n) ℂ), (∀ Y ∈ v, Formalism.REAL.inG ε Y) → ∀ (i : Fin (n ^ 2)) (x : Formalism.REAL.UJ ε), HasDerivAt (fun t => F v (umat (x * cu i t))) (F (E i :: v) (umat x)) 0`. Introduce `v hv i x`. Establish `h` using `hFd v hv (E i) (hE i).1 (umat x) (hmem x)`.
+
+Establish `he : (fun t : ℝ => F v (umat (x * cu i t))) = fun t : ℝ => F v (umat x * NormedSpace.exp ((t : ℂ) • E i))`. Use function extensionality and compare the values at `t`. Rewrite using `[humul, hcuM]`. Rewrite using `[he]`. Conclude with `h`.
+
+Establish `hb : ‖F [] 1‖ ^ 2 ≤ C0 * (S.map fun v => ∫ t in Set.pi Set.univ (fun _ : Fin (n ^ 2) => Set.Icc (0 : ℝ) s), ‖F v (umat ((List.ofFn fun i => cu i (t i)).prod))‖ ^ 2).sum` using `hbound (fun v x => F v (umat x)) hFrc hFrd`. Establish `hpt : ∀ v ∈ S, ENNReal.ofReal (∫ t in Set.pi Set.univ (fun _ : Fin (n ^ 2) => Set.Icc (0 : ℝ) s), ‖F v (umat ((List.ofFn fun i => cu i (t i)).prod))‖ ^ 2) ≤ ENNReal.ofReal K * ∫⁻ y in (fun t : Fin (n ^ 2) → ℝ => (List.ofFn fun i => cu i (t i)).prod) '' Set.pi Set.univ (fun _ : Fi …`. Introduce `v hv`. Establish `hcont` using `hFrc v (hSA v hv)`. Establish `hmeas : Measurable fun y : Formalism.REAL.UJ ε => ENNReal.ofReal (‖F v (umat y)‖ ^ 2)` using `(ENNReal.continuous_ofReal.comp (hcont.norm.pow 2)).measurable`.
+
+Establish `h1` using `ofReal_integral_le_lintegral_ofReal (volume.restrict (Set.pi Set.univ (fun _ : Fin (n ^ 2) => Set.Icc (0 : ℝ) s))) (fun t => ‖F v (umat ((List.ofFn fun i => cu i (t i)).prod))‖ ^ 2) (fun t => sq_nonneg _)`. Establish `h2` using `hchart (fun y => ENNReal.ofReal (‖F v (umat y)‖ ^ 2)) hmeas`. Conclude with `h1.trans h2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(ofReal_list_sum_le _ _).trans (List.sum_le_sum hpt)`.
+
+Use `_ = ENNReal.ofReal C0 * ENNReal.ofReal K * (S.map fun v => ∫⁻ y in (fun t : Fin (n ^ 2) → ℝ => (List.ofFn fun i => cu i (t i)).prod) '' Set.pi Set.univ (fun _ : Fin (n ^ 2) => Set.Icc (0 : ℝ) s), ENNReal.ofReal (‖F v (umat y)‖ ^ 2) ∂(Formalism.REAL.muG ε)).sum := by`. Rewrite using `[List.sum_map_mul_left, mul_assoc]`. Use `_ ≤ ENNReal.ofReal (C0 * max K 0) * (S.map fun v => ∫⁻ y in (fun t : Fin (n ^ 2) → ℝ => (List.ofFn fun i => cu i (t i)).prod) '' Set.pi Set.univ (fun _ : Fin (n ^ 2) => Set.Icc (0 : ℝ) s), ENNReal.ofReal (‖F v (umat y)‖ ^ 2) ∂(Formalism.REAL.muG ε)).sum := by`. Rewrite using `[ENNReal.ofReal_mul hC0]`. Use `gcongr`.
+
+Conclude with `le_max_left _ _`.
+-/
 theorem sobolev_at_one_compact : ∀ (n : ℕ) (ε : Fin n → Bool), ∃ (S : List (List (Matrix (Fin n) (Fin n) ℂ))) (C : ℝ) (Q : Set (Formalism.REAL.UJ ε)), IsCompact Q ∧ (∀ l ∈ S, ∀ X ∈ l, Formalism.REAL.inG ε X) ∧ 0 ≤ C ∧ ∀ F : List (Matrix (Fin n) (Fin n) ℂ) → Matrix (Fin n) (Fin n) ℂ → ℂ, (∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ Y ∈ l, Formalism.REAL.inG ε Y) → ContinuousOn (F l) (UJset ε)) → (∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ Y ∈ l, Formalism.REAL.inG ε Y) → ∀ X, Formalism.REAL.inG ε X → ∀ g ∈ UJset ε, HasDerivAt (fun t : ℝ => F l (g * NormedSpace.exp ((t : ℂ) • X))) (F (X :: l) g) 0) → ENNReal.ofReal (‖F [] 1‖ ^ 2) ≤ ENNReal.ofReal C * (S.map fun l => ∫⁻ y in Q, ENNReal.ofReal (‖F l (umat y)‖ ^ 2) ∂(Formalism.REAL.muG ε)).sum := by
   intro n ε
 

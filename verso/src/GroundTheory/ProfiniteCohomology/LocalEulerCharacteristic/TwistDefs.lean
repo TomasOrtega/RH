@@ -16,6 +16,9 @@ section Smul
 
 variable {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
 
+/- English proof (translation)
+Use extensionality with `n x : 3`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Both sides reduce to the same expression.
+-/
 theorem cochainsMap_smul (c : k) (f : A ⟶ B) : cochainsMap (c • f) = c • cochainsMap f := by
   ext n x : 3
   apply Subtype.ext
@@ -24,6 +27,9 @@ theorem cochainsMap_smul (c : k) (f : A ⟶ B) : cochainsMap (c • f) = c • c
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Rewrite using `[cohomologyMap, cochainsMap_smul]`. Simplify using `[HomologicalComplex.homologyMap, cohomologyMap]`. Rewrite using `[← ShortComplex.homologyMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem cohomologyMap_smul (c : k) (f : A ⟶ B) (n : ℕ) :
     cohomologyMap (c • f) n = c • cohomologyMap f n := by
   rw [cohomologyMap, cochainsMap_smul]
@@ -46,6 +52,9 @@ noncomputable def tensorRightMor (m : M) (hm : ∀ g : G, M.ρ g m = m) : T ⟶ 
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorRightMor_hom_apply (m : M) (hm : ∀ g : G, M.ρ g m = m) (t : T) :
     (tensorRightMor T m hm).hom t = t ⊗ₜ[k] m :=
   rfl
@@ -60,6 +69,9 @@ noncomputable def tensorFormMor (f : M →ₗ[k] k) (hf : ∀ (g : G) (m : M), f
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 @[simp]
+/- English proof (translation)
+Simplify using `[tensorFormMor]`.
+-/
 theorem tensorFormMor_hom_tmul (f : M →ₗ[k] k) (hf : ∀ (g : G) (m : M), f (M.ρ g m) = f m)
     (t : T) (m : M) : (tensorFormMor T f hf).hom (t ⊗ₜ[k] m) = f m • t := by
   simp [tensorFormMor]
@@ -72,6 +84,9 @@ variable (T : Rep.{u} k G) [IsDiscreteRep T] {M : Rep.{u} k G} [IsDiscreteRep M]
   (hM : ∀ (g : G) (m : M), M.ρ g m = m)
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep T] [IsDiscreteRep M] in
+/- English proof (translation)
+Use extensionality with `t`. Express the relevant statement in the definitionally equal form `t ⊗ₜ[k] (m + m') = t ⊗ₜ[k] m + t ⊗ₜ[k] m'`. Conclude with `TensorProduct.tmul_add _ _ _`.
+-/
 theorem tensorRightMor_add (m m' : M) :
     tensorRightMor T (m + m') (fun g => hM g _) =
       tensorRightMor T m (fun g => hM g m) + tensorRightMor T m' (fun g => hM g m') := by
@@ -80,6 +95,9 @@ theorem tensorRightMor_add (m m' : M) :
   exact TensorProduct.tmul_add _ _ _
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep T] [IsDiscreteRep M] in
+/- English proof (translation)
+Use extensionality with `t`. Express the relevant statement in the definitionally equal form `t ⊗ₜ[k] (c • m) = c • t ⊗ₜ[k] m`. Conclude with `TensorProduct.tmul_smul _ _ _`.
+-/
 theorem tensorRightMor_smul (c : k) (m : M) :
     tensorRightMor T (c • m) (fun g => hM g _) = c • tensorRightMor T m (fun g => hM g m) := by
   ext t
@@ -104,6 +122,9 @@ noncomputable def twistMap (n : ℕ) :
         ext m
         simp }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistMap_tmul (n : ℕ) (x : cohomology T n) (m : M) :
     twistMap T hM n (x ⊗ₜ[k] m) = (cohomologyMap (tensorRightMor T m (fun g => hM g m)) n).hom x :=
   rfl
@@ -122,6 +143,9 @@ noncomputable def twistResMap (n : ℕ) :
   (cohomologyMap (resTensorIso N.subtype T M).inv n).hom ∘ₗ
     twistMap (M := Rep.res N.subtype M) (Rep.res N.subtype T) hM n
 
+/- English proof (translation)
+Rewrite using `[cohomologyMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem twistResMap_tmul (n : ℕ) (x : cohomology (Rep.res N.subtype T) n) (m : M) :
     twistResMap N T M hM n (x ⊗ₜ[k] m) =
       (cohomologyMap (tensorRightMor (M := Rep.res N.subtype M) (Rep.res N.subtype T) m

@@ -11,6 +11,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LevRange
 
+/- English proof (translation)
+Establish `hs : ∀ (p : P) (g : G), E g = χ p * E (p * g)`. Introduce `p g`. Distinguish the cases in `hg : g ∈ P`. Establish `e1` using `h1 ⟨g, hg⟩`. Establish `e2` using `h1 (p * ⟨g, hg⟩)`.
+
+Rewrite `e2` using `[hm]`. Establish `hne : χ ⟨g, hg⟩ ≠ 0`. Introduce `h`. Rewrite `e1` using `[h, mul_zero]`. Conclude with `hk e1.symm`.
+
+Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul] at e1 e2`. Rewrite using `[e1, ← e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `: (p : G) * g ∉ P` using `fun h => hg ((P.mul_mem_cancel_left p.2).1 h)`.
+
+Rewrite using `[h0 g hg, h0 _ this, mul_zero]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[mem_eig]`. Introduce `p`.
+
+Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.smul_sum]`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft (p : G)) (fun g => χ p • E g • ρ g y)]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[hs p g, Equiv.coe_mulLeft, map_mul, Module.End.mul_apply, mul_smul]`. Introduce `x hx`.
+
+Rewrite `hx` using `[mem_eig]`. Establish `hT : (∑ g, E g • ρ g) x = (∑ g : G, if g ∈ P then k else 0) • x`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ P`.
+
+Rewrite using `[if_pos hg, ← h1 ⟨g, hg⟩, mul_smul, ← hx ⟨g, hg⟩]`. Rewrite using `[if_neg hg, h0 g hg, zero_smul, zero_smul]`. Establish `hne : (∑ g : G, if g ∈ P then k else 0) ≠ 0`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Use `mul_ne_zero ?_ hk` and prove the remaining obligations.
+
+Establish `: (Finset.univ.filter fun g : G => g ∈ P).Nonempty` using `⟨1, by simp⟩`. Conclude with `this.card_pos.ne'` after adjusting the coercions. Use `⟨(∑ g : G, if g ∈ P then k else 0)⁻¹ • x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hT, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+-/
 theorem range_sum_eq_eig {G M : Type} [Group G] [Fintype G] [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ G M)
     (P : Subgroup G) (χ : P → ℂ) (E : G → ℂ) (k : ℂ) (hk : k ≠ 0) (h0 : ∀ g, g ∉ P → E g = 0)
     (h1 : ∀ g : P, E g * χ g = k) (hm : ∀ a b : P, χ (a * b) = χ a * χ b) :
@@ -53,6 +70,11 @@ theorem range_sum_eq_eig {G M : Type} [Group G] [Fintype G] [AddCommGroup M] [Mo
     refine ⟨(∑ g : G, if g ∈ P then k else 0)⁻¹ • x, ?_⟩
     rw [map_smul, hT, smul_smul, inv_mul_cancel₀ hne, one_smul]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`. Use `⟨⟨C y, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Both sides reduce to the same expression.
+
+Establish `: C (C (T y)) = C (T y)` using `by rw [← Module.End.mul_apply, hC]`. Simplify using `[this]`. Introduce and unpack `_ ⟨⟨y, rfl⟩, h⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Simplify `h` using `[sub_eq_zero]`.
+-/
 theorem range_mul_eq_inf {M : Type} [AddCommGroup M] [Module ℂ M] (C T : Module.End ℂ M) (hC : C * C = C)
     (hc : C * T = T * C) : LinearMap.range (C * T) = LinearMap.range T ⊓ LinearMap.ker (C - LinearMap.id) := by
   apply le_antisymm
@@ -65,6 +87,9 @@ theorem range_mul_eq_inf {M : Type} [AddCommGroup M] [Module ℂ M] (C T : Modul
     refine ⟨y, ?_⟩
     simpa [sub_eq_zero] using h
 
+/- English proof (translation)
+Unfold `GlobalTheory.BadShare.op`. Rewrite using `[← Equiv.sum_comp Φ.toEquiv]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem op_comp {G H M : Type} [Group G] [Fintype G] [Group H] [Fintype H] [AddCommGroup M] [Module ℂ M]
     (Φ : G ≃* H) (ρ : Representation ℂ G M) (e : H → ℂ) :
     GlobalTheory.BadShare.op (M := M) (ρ.comp Φ.symm.toMonoidHom) e = ∑ g, e (Φ g) • ρ g := by
@@ -73,6 +98,11 @@ theorem op_comp {G H M : Type} [Group G] [Fintype G] [Group H] [Fintype H] [AddC
   refine Finset.sum_congr rfl fun g _ => ?_
   simp
 
+/- English proof (translation)
+Unfold `GlobalTheory.BadShare.tens`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `GlobalTheory.BadShare.Basic.chi_ne (L v) (γ v)` as an intermediate fact. Simplify using `only [GlobalTheory.BadShare.Lev.e, GlobalTheory.BadShare.eps, if_pos (h v)]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem tens_e_mul {g N : ℕ} [Fact g.Prime] {ι : Type} [Fintype ι] (L : ι → GlobalTheory.BadShare.Lev g N)
     (γ : ι → GlobalTheory.BadShare.GG g N) (h : ∀ v, (L v).Mem (γ v)) :
     GlobalTheory.BadShare.tens (fun v => (L v).e) γ * ∏ v, (L v).chi (γ v) = ∏ v, (Nat.card {u // (L v).Mem u} : ℂ)⁻¹ := by
@@ -83,18 +113,37 @@ theorem tens_e_mul {g N : ℕ} [Fact g.Prime] {ι : Type} [Fintype ι] (L : ι �
   simp only [GlobalTheory.BadShare.Lev.e, GlobalTheory.BadShare.eps, if_pos (h v)]
   field_simp
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `not_forall.1 h`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (by simp only [GlobalTheory.BadShare.Lev.e, GlobalTheory.BadShare.eps, if_neg hv])`.
+-/
 theorem tens_e_zero {g N : ℕ} [Fact g.Prime] {ι : Type} [Fintype ι] (L : ι → GlobalTheory.BadShare.Lev g N)
     (γ : ι → GlobalTheory.BadShare.GG g N) (h : ¬ ∀ v, (L v).Mem (γ v)) :
     GlobalTheory.BadShare.tens (fun v => (L v).e) γ = 0 := by
   obtain ⟨v, hv⟩ := not_forall.1 h
   exact Finset.prod_eq_zero (Finset.mem_univ v) (by simp only [GlobalTheory.BadShare.Lev.e, GlobalTheory.BadShare.eps, if_neg hv])
 
+/- English proof (translation)
+Use `Finset.prod_ne_zero_iff.2 fun v _ => inv_ne_zero ?_` and prove the remaining obligations. Use `haveI : Nonempty {u // (L v).Mem u} := ⟨⟨1, GlobalTheory.BadShare.Basic.mem_one (L v)⟩⟩`. Conclude with `Nat.card_pos.ne'` after adjusting the coercions.
+-/
 theorem prod_card_ne {g N : ℕ} [Fact g.Prime] {ι : Type} [Fintype ι] (L : ι → GlobalTheory.BadShare.Lev g N) :
     (∏ v, (Nat.card {u // (L v).Mem u} : ℂ)⁻¹) ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun v _ => inv_ne_zero ?_
   haveI : Nonempty {u // (L v).Mem u} := ⟨⟨1, GlobalTheory.BadShare.Basic.mem_one (L v)⟩⟩
   exact_mod_cast Nat.card_pos.ne'
 
+/- English proof (translation)
+Introduce `g₁ g₂ N _ _ ι₁ ι₂ G M _ _ _ _ _ _ _ _ Φ L₁ L₂ P χ ρ _ c hP hχ hcc hc`. Establish `key : LinearMap.range (GlobalTheory.BadShare.op (M` using `M) (ρ.comp Φ.symm.toMonoidHom) (GlobalTheory.BadShare.tens2 (GlobalTheory.BadShare.tens fun v => (L₁ v).e) (GlobalTheory.BadShare.tens fun v => (L₂ v).e))) = eig ρ P χ := by`. Rewrite using `[op_comp]`. Use `range_sum_eq_eig ρ P χ _ _ (mul_ne_zero (prod_card_ne L₁) (prod_card_ne L₂)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `g hg`.
+
+Rewrite `hg` using `[hP, not_and_or]`. Unfold `GlobalTheory.BadShare.tens2`. Break down `hg with h | h` into its components or cases. Rewrite using `[tens_e_zero _ _ h, zero_mul]`. Rewrite using `[tens_e_zero L₂ _ h, mul_zero]`.
+
+Introduce `g`. Take `⟨h1, h2⟩` from `(hP g).1 g.2`. Rewrite using `[hχ, ← tens_e_mul L₁ _ h1, ← tens_e_mul L₂ _ h2]`. Unfold `GlobalTheory.BadShare.tens2`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `a b`. Take `⟨a1, a2⟩` from `(hP a).1 a.2`. Take `⟨b1, b2⟩` from `(hP b).1 b.2`. Rewrite using `[hχ, hχ, hχ]`. Simplify using `only [Subgroup.coe_mul, map_mul, Prod.fst_mul, Prod.snd_mul, Pi.mul_apply]`.
+
+Simplify using `only [fun v => GlobalTheory.BadShare.Basic.chi_mul (L₁ v) (a1 v) (b1 v), fun v => GlobalTheory.BadShare.Basic.chi_mul (L₂ v) (a2 v) (b2 v), Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨key, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.BadShare.Basic.op_conv, range_mul_eq_inf, key, op_comp]`. Rewrite using `[← GlobalTheory.BadShare.Basic.op_conv, hcc]`.
+
+Rewrite using `[← GlobalTheory.BadShare.Basic.op_conv, hc, GlobalTheory.BadShare.Basic.op_conv]`.
+-/
 theorem ranges : ∀ (g₁ g₂ N : ℕ) [Fact g₁.Prime] [Fact g₂.Prime] (ι₁ ι₂ G M : Type) [Fintype ι₁] [Fintype ι₂] [DecidableEq ι₁] [DecidableEq ι₂] [Group G] [Fintype G] [AddCommGroup M] [Module ℂ M] (Φ : G ≃* (ι₁ → GlobalTheory.BadShare.GG g₁ N) × (ι₂ → GlobalTheory.BadShare.GG g₂ N)) (L₁ : ι₁ → GlobalTheory.BadShare.Lev g₁ N) (L₂ : ι₂ → GlobalTheory.BadShare.Lev g₂ N) (P : Subgroup G) (χ : P → ℂ) (ρ : Representation ℂ G M) [Fintype ((ι₁ → GlobalTheory.BadShare.GG g₁ N) × (ι₂ → GlobalTheory.BadShare.GG g₂ N))] (c : (ι₁ → GlobalTheory.BadShare.GG g₁ N) × (ι₂ → GlobalTheory.BadShare.GG g₂ N) → ℂ), (∀ g : G, g ∈ P ↔ (∀ v, (L₁ v).Mem ((Φ g).1 v)) ∧ ∀ v, (L₂ v).Mem ((Φ g).2 v)) → (∀ g : P, χ g = (∏ v, (L₁ v).chi ((Φ g).1 v)) * ∏ v, (L₂ v).chi ((Φ g).2 v)) → GlobalTheory.BadShare.conv c c = c → (∀ a, GlobalTheory.BadShare.conv c a = GlobalTheory.BadShare.conv a c) → LinearMap.range (GlobalTheory.BadShare.op (M := M) (ρ.comp Φ.symm.toMonoidHom) (GlobalTheory.BadShare.tens2 (GlobalTheory.BadShare.tens fun v => (L₁ v).e) (GlobalTheory.BadShare.tens fun v => (L₂ v).e))) = eig ρ P χ ∧ LinearMap.range (GlobalTheory.BadShare.op (M := M) (ρ.comp Φ.symm.toMonoidHom) (GlobalTheory.BadShare.conv c (GlobalTheory.BadShare.tens2 (GlobalTheory.BadShare.tens fun v => (L₁ v).e) (GlobalTheory.BadShare.tens fun v => (L₂ v).e)))) = eig ρ P χ ⊓ LinearMap.ker ((∑ g : G, c (Φ g) • ρ g) - LinearMap.id) := by
   intro g₁ g₂ N _ _ ι₁ ι₂ G M _ _ _ _ _ _ _ _ Φ L₁ L₂ P χ ρ _ c hP hχ hcc hc
   have key : LinearMap.range (GlobalTheory.BadShare.op (M := M) (ρ.comp Φ.symm.toMonoidHom) (GlobalTheory.BadShare.tens2 (GlobalTheory.BadShare.tens fun v => (L₁ v).e) (GlobalTheory.BadShare.tens fun v => (L₂ v).e))) = eig ρ P χ := by

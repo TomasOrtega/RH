@@ -20,6 +20,17 @@ namespace GlobalTheory.HolTorsionAny
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left}
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `GlobalTheory.CubeTop.cubeTheorem S G hA L hL T 1 1 c`. Simplify using `only [_root_.one_mul] at h`. Take `⟨t, ht⟩` from `h`.
+
+Take `⟨u, hu, -⟩` from `exists_gen hL (φ' := ![((a ^ 0) * c).left, c.left, (a ^ 0).left, (1 : T ⟶ G).left, (a * c).left, a.left]) (ε' := ![1, ((0 : ℕ) : ℤ) - 1, -1, 1 - ((0 : ℕ) : ℤ), -((0 : ℕ) : ℤ), ((0 : ℕ) : ℤ)]) (fun U _ h => by`. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, pow_zero, _root_.one_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_one]`. Use `push_cast`.
+
+Use the proof step `module) t ht`. Conclude with `⟨u, hu⟩`. Consider the case `succ n ih`. Take `⟨t, ht⟩` from `ih`. Establish `h` using `GlobalTheory.CubeTop.cubeTheorem S G hA L hL T a (a ^ n) c`.
+
+Rewrite `h` using `[← pow_succ']`. Take `⟨q, hq⟩` from `h`. Take `⟨u, hu, -⟩` from `exists_gen hL (φ' := ![(a ^ (n + 1) * c).left, c.left, (a ^ (n + 1)).left, (1 : T ⟶ G).left, (a * c).left, a.left]) (ε' := ![1, ((n + 1 : ℕ) : ℤ) - 1, -1, 1 - ((n + 1 : ℕ) : ℤ), -((n + 1 : ℕ) : ℤ), ((n + 1 : ℕ) : ℤ)]) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_one]`. Use `push_cast`. Use the proof step `module) (LB.mulGen L _ _ _ _ t q) (DVR.mulGen_isGen _ _ _ _ _ _ _ ht hq)`. Conclude with `⟨u, hu⟩`.
+-/
 theorem triv_step (hA : IsAbelianScheme G) (hL : L.IsLB) {T : Over S} (a c : T ⟶ G) (n : ℕ) :
     GlobalTheory.AbLaw.Triv (LB.LinComb L (K := Fin 6)
       ![(a ^ n * c).left, c.left, (a ^ n).left, (1 : T ⟶ G).left, (a * c).left, a.left]
@@ -57,6 +68,19 @@ theorem triv_step (hA : IsAbelianScheme G) (hL : L.IsLB) {T : Over S} (a c : T �
         module) (LB.mulGen L _ _ _ _ t q) (DVR.mulGen_isGen _ _ _ _ _ _ _ ht hq)
     exact ⟨u, hu⟩
 
+/- English proof (translation)
+Take `⟨V, hV, w, hw⟩` from `exists_local_gen hL (Y := T.left) ![(1 : T ⟶ G).left, x.left] ![(k : ℤ), -(k : ℤ)] p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Set `xV : Out.overRes V ⟶ G` to `Out.overResι V ≫ x`. Set `a : Out.overRes V ⊗ G ⟶ G` to `fst (Out.overRes V) G ≫ xV`. Set `c : Out.overRes V ⊗ G ⟶ G` to `snd (Out.overRes V) G`.
+
+Establish `ha : a ^ k = 1` using `by show (fst (Out.overRes V) G ≫ Out.overResι V ≫ x) ^ k = 1`. Rewrite using `[← MonObj.comp_pow, ← MonObj.comp_pow, hx, MonObj.comp_one, MonObj.comp_one]`. Establish `hP` using `triv_step hA hL a c k`. Rewrite `hP` using `[ha, _root_.one_mul]`. Take `⟨t, ht⟩` from `hP`.
+
+Establish `e₁ : (fst (Out.overRes V) G).left ≫ V.ι ≫ (1 : T ⟶ G).left = (1 : Out.overRes V ⊗ G ⟶ G).left`. Establish `: (fst (Out.overRes V) G ≫ Out.overResι V ≫ (1 : T ⟶ G)) = 1`. Rewrite using `[MonObj.comp_one, MonObj.comp_one]`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+
+Establish `e₂ : (fst (Out.overRes V) G).left ≫ V.ι ≫ x.left = a.left` using `rfl`. Take `⟨u, hu, -⟩` from `exists_gen hL (φ' := ![(snd (Out.overRes V) G).left, (Out.translPt G xV).left]) (ε' := ![(k : ℤ), -(k : ℤ)]) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val, e₁, e₂]`. Rewrite using `[translPt_eq]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_one]`. Use the proof step `module)`. Use the proof step `(LB.mulGen L _ _ _ _ t (LB.pullGen L _ _ w (fst (Out.overRes V) G).left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.pullGen_isGen _ _ _ _ hw _))`.
+
+Conclude with `⟨⟨xV, u, hu⟩, rfl⟩`.
+-/
 theorem exists_theta_local (hA : IsAbelianScheme G) (hL : L.IsLB) {k : ℕ} {T : Over S} (x : T ⟶ G) (hx : x ^ k = 1)
     (p : T.left) : ∃ V : T.left.Opens, p ∈ V ∧
       ∃ θ : Out.ThetaGrp G L (k : ℤ) (Out.overRes V), θ.pt = Out.overResι V ≫ x := by
@@ -91,6 +115,13 @@ theorem exists_theta_local (hA : IsAbelianScheme G) (hL : L.IsLB) {k : ℕ} {T :
     (DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.pullGen_isGen _ _ _ _ hw _))
   exact ⟨⟨xV, u, hu⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Take `⟨e, he⟩` from `GlobalTheory.CommutatorPairing.exists_weilIs (k := (k : ℤ)) hG hA hL (fun p => exists_theta_local hA hL x hx p) (fun p => exists_theta_local hA hL y hy p)`. Establish `pw : ∀ m : ℕ, Out.WeilIs G L (k : ℤ) (x ^ (m + 1)) y (e ^ (m + 1))` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => simpa only [zero_add, pow_one] using he`.
+
+Consider the case `succ m ih`. Rewrite using `[pow_succ x (m + 1), pow_succ e (m + 1)]`. Conclude with `GlobalTheory.DiagPairing.weilIs_mul_left hG hA hL ih he`. Establish `hk` using `pw k`. Rewrite `hk` using `[pow_succ x k, hx, _root_.one_mul]`.
+
+Use `GlobalTheory.CommutatorPairing.weilIs_unique hG hA hL hk he` as an intermediate fact. Rewrite `this` using `[pow_succ, mul_eq_right]`. Conclude with `⟨e, this, he⟩`.
+-/
 theorem exists_weilIs_pow_eq_one (hA : IsAbelianScheme G) (hL : L.IsLB) {k : ℕ} {T : Over S} {x y : T ⟶ G}
     (hx : x ^ k = 1) (hy : y ^ k = 1) : ∃ e : Γ(T.left, ⊤)ˣ, e ^ k = 1 ∧ Out.WeilIs G L (k : ℤ) x y e := by
   have hG : Out.GlobalFnsSt := GlobalTheory.globalFns_holds
@@ -114,6 +145,35 @@ namespace GlobalTheory
 
 open HolTorsion HolTorsionAny in
 
+/- English proof (translation)
+Introduce `X s G _ _ L _ hA hLB m k B y x x' c b₀ hk _ hB hb₀ _ hx hx' htor`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hku : IsUnit (k : Γ(X, ⊤))`. Establish `h₁ : IsUnit ((k : ℂ))` using `isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hk.ne')`. Establish `h₂` using `(h₁.map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom).map s.appTop.hom`.
+
+Simplify `h₂` using `only [map_natCast]`. Use `haveI : FormallyUnramified (Out.mulA G k).left := GlobalTheory.formallyUnramified_mulA X G k hku`. Use `haveI : Smooth G.hom := hA.smooth`. Use `haveI : IsProper G.hom := hA.proper`. Use `haveI : LocallyOfFiniteType ((Out.mulA G k).left ≫ G.hom) := by rw [Over.w]; infer_instance`.
+
+Use `haveI : LocallyOfFiniteType (Out.mulA G k).left := locallyOfFiniteType_of_comp _ G.hom`. Use `haveI : IsSeparated ((Out.mulA G k).left ≫ G.hom) := by rw [Over.w]; infer_instance`. Use `haveI : IsSeparated (Out.mulA G k).left := IsSeparated.of_comp _ G.hom`. Set `o : X ⟶ G.left` to `(η[G] : 𝟙_ (Over X) ⟶ G).left`. Establish `ho : o ≫ G.hom = 𝟙 X` using `Over.w (η[G] : 𝟙_ (Over X) ⟶ G)`.
+
+Establish `hkill : ∀ (T : Over X) (u : T ⟶ G), u ^ k = 1 ↔ u.left ≫ (Out.mulA G k).left = T.hom ≫ o`. Introduce `T u`. Establish `e₁ : u.left ≫ (Out.mulA G k).left = (u ^ k).left`. Rewrite using `[← Over.comp_left, Out.mulA, MonObj.comp_pow, Category.comp_id]`. Establish `e₂ : T.hom ≫ o = (1 : T ⟶ G).left`.
+
+Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Rewrite using `[e₁, e₂]`. Conclude with `⟨fun h => by rw [h], fun h => Over.OverMorphism.ext h⟩`. Set `p` to `pullback.fst (Out.mulA G k).left o`. Set `q` to `pullback.snd (Out.mulA G k).left o`.
+
+Establish `H : IsPullback p q (Out.mulA G k).left o` using `IsPullback.of_hasPullback _ _`. Use `haveI : FormallyUnramified q := MorphismProperty.of_isPullback (P := @FormallyUnramified) H ‹_›`. Use `haveI : LocallyOfFiniteType q := MorphismProperty.of_isPullback (P := @LocallyOfFiniteType) H ‹_›`. Use `haveI : IsSeparated q := MorphismProperty.of_isPullback (P := @IsSeparated) H ‹_›`. Establish `hpq : p ≫ G.hom = q`.
+
+Rewrite using `[← Over.w (Out.mulA G k), ← Category.assoc, H.w, Category.assoc, ho, Category.comp_id]`. Establish `hy : IsHolTo B y` using `isHolTo_congr (isHolTo_comp hx G.hom) fun b _ => (Over.w (x b)).symm`. Take `⟨a, ha, hab⟩` from `exists_isHolTo_lift H hx hy (fun b hb => (hkill _ _).1 (htor b hb).1) hb₀`. Take `⟨a', ha', hab'⟩` from `exists_isHolTo_lift H hx' hy (fun b hb => (hkill _ _).1 (htor b hb).2) hb₀`. Take `⟨z, hz, hzb⟩` from `exists_isHolTo_lift (IsPullback.of_hasPullback q q) ha ha' (fun b hb => (hab b hb).2.trans (hab' b hb).2.symm) hb₀`.
+
+Use `⟨fun h₀ b hb => ?_, fun h₀ b hb => ?_⟩` and prove the remaining obligations. Establish `e₀ : a b₀ = a' b₀` using `H.hom_ext (by rw [(hab b₀ hb₀).1, (hab' b₀ hb₀).1, h₀]) (by rw [(hab b₀ hb₀).2, (hab' b₀ hb₀).2])`. Establish `e` using `comp_eq_of_unramified q hz hB hb₀ hb (by rw [(hzb b₀ hb₀).1, (hzb b₀ hb₀).2, e₀])`. Rewrite `e` using `[(hzb b hb).1, (hzb b hb).2]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[← (hab b hb).1, ← (hab' b hb).1, e]`. Set `T : Over X` to `Over.mk (pullback.fst q q ≫ q)`. Set `u : T ⟶ G` to `Over.homMk (pullback.fst q q ≫ p) (by show (pullback.fst q q ≫ p) ≫ G.hom = pullback.fst q q ≫ q`. Rewrite using `[Category.assoc, hpq])`. Set `v : T ⟶ G` to `Over.homMk (pullback.snd q q ≫ p) (by show (pullback.snd q q ≫ p) ≫ G.hom = pullback.fst q q ≫ q`.
+
+Rewrite using `[Category.assoc, hpq, pullback.condition])`. Establish `hu : u ^ k = 1` using `(hkill T u).2 (by show (pullback.fst q q ≫ p) ≫ _ = (pullback.fst q q ≫ q) ≫ o`. Rewrite using `[Category.assoc, H.w, Category.assoc])`. Establish `hv : v ^ k = 1` using `(hkill T v).2 (by show (pullback.snd q q ≫ p) ≫ _ = (pullback.fst q q ≫ q) ≫ o`. Rewrite using `[Category.assoc, H.w, pullback.condition, Category.assoc])`.
+
+Take `⟨e, hek', he⟩` from `exists_weilIs_pow_eq_one hA hLB hu hv`. Establish `hek : e.val ^ k = 1` using `congrArg Units.val hek'`. Establish `hpull : ∀ w ∈ B, Out.WeilIs G L k (x w) (x' w) (Units.map (z w).appTop.hom.toMonoidHom e)`. Introduce `w hw`. Set `h : Over.mk (y w) ⟶ T` to `Over.homMk (z w) (by show z w ≫ pullback.fst q q ≫ q = y w`.
+
+Rewrite using `[← Category.assoc, (hzb w hw).1, (hab w hw).2])`. Establish `e₁ : h ≫ u = x w` using `Over.OverMorphism.ext (by show z w ≫ pullback.fst q q ≫ p = _`. Rewrite using `[← Category.assoc, (hzb w hw).1, (hab w hw).1])`. Establish `e₂ : h ≫ v = x' w` using `Over.OverMorphism.ext (by show z w ≫ pullback.snd q q ≫ p = _`. Rewrite using `[← Category.assoc, (hzb w hw).2, (hab' w hw).1])`.
+
+Use `GlobalTheory.CommPairing.weilIs_pull hG hA hLB h he` as an intermediate fact. Rewrite `this` using `[e₁, e₂]`. Conclude with `this`. Establish `e₀ : Units.map (z b₀).appTop.hom.toMonoidHom e = unitOn c` using `GlobalTheory.CommutatorPairing.weilIs_unique hG hA hLB (hpull b₀ hb₀) h₀`. Establish `e₁ : Units.map (z b).appTop.hom.toMonoidHom e = Units.map (z b₀).appTop.hom.toMonoidHom e` using `Units.ext ((val_map_appTop (z b) e.val).trans ((congrArg _ (valAt'_eq_of_pow_eq_one hz hB hk hek hb₀ hb)).trans (val_map_appTop (z b₀) e.val).symm))`.
+
+Use `hpull b hb` as an intermediate fact. Rewrite `this` using `[e₁, e₀]`. Conclude with `this`.
+-/
 theorem torsion_eq_and_weilIs_of_isHolTo_anyLB : ∀ (X : Scheme.{0}) (s : X ⟶ Sp ℂ) (G : Over X) [GrpObj G] [IsCommMonObj G] (L : LB G.left), LocallyOfFiniteType s → IsAbelianScheme G → L.IsLB → ∀ (m k : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)) (x x' : ∀ b, Over.mk (y b) ⟶ G) (c : ℂˣ) (b₀ : Fin m → ℂ), 0 < k → IsOpen B → IsPreconnected B → b₀ ∈ B → (∀ b ∈ B, y b ≫ s = spMap (RingHom.id ℂ)) → IsHolTo B (fun b => (x b).left) → IsHolTo B (fun b => (x' b).left) → (∀ b ∈ B, x b ^ k = 1 ∧ x' b ^ k = 1) → ((x b₀ = x' b₀ → ∀ b ∈ B, x b = x' b) ∧ (Out.WeilIs G L k (x b₀) (x' b₀) (unitOn c) → ∀ b ∈ B, Out.WeilIs G L k (x b) (x' b) (unitOn c))) := by
   intro X s G _ _ L _ hA hLB m k B y x x' c b₀ hk _ hB hb₀ _ hx hx' htor
   have hG : Out.GlobalFnsSt := GlobalTheory.globalFns_holds

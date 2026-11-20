@@ -9,6 +9,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.SncBase
 
+/- English proof (translation)
+Introduce `X Ω _ ξ o _ _ κ x h p q e`. Take `⟨c, hc⟩` from `h.cover p`. Establish `hq : InChart ξ x c q` using `⟨hc.1, fun c' => e ▸ hc.2 c'⟩`. Use `haveI hloc : IsLocalRing (regAt ξ p) := (regAt_isLocalRing_isFractionRing_stalk X Ω ξ h.gen p).1`. Establish `hmem : ∀ s : Algebra.adjoin o (Set.range fun j => x j / x c), (s : Ω) ∈ regAt ξ p` using `fun s => (h.ring c hc.1 s).1 s.2 p hc`.
+
+Set `f : Algebra.adjoin o (Set.range fun j => x j / x c) →+* regAt ξ p` to `((Algebra.adjoin o (Set.range fun j => x j / x c)).val : Algebra.adjoin o (Set.range fun j => x j / x c) →+* Ω).codRestrict (regAt ξ p) hmem`. Establish `hI : (Ideal.comap f (IsLocalRing.maximalIdeal (regAt ξ p))).IsPrime` using `inferInstance`. Establish `hp' : ∀ s : Algebra.adjoin o (Set.range fun j => x j / x c), s ∉ Ideal.comap f (IsLocalRing.maximalIdeal (regAt ξ p)) ↔ unitAt ξ p (s : Ω)`. Introduce `s`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hu`. Take `⟨b, hb⟩` from `hu.exists_right_inv`. Establish `e1 : (s : Ω) * (b : Ω) = 1` using `congrArg Subtype.val hb`. Establish `h0 : (s : Ω) ≠ 0` using `fun h0 => by simp [h0] at e1`.
+
+Use `⟨h0, hmem s, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right e1]`. Conclude with `b.2`. Introduce and unpack `⟨h0, -, hinv⟩`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩`.
+
+Establish `hq' : ∀ s : Algebra.adjoin o (Set.range fun j => x j / x c), s ∉ Ideal.comap f (IsLocalRing.maximalIdeal (regAt ξ p)) ↔ unitAt ξ q (s : Ω)`. Introduce `s`. Rewrite using `[hp' s]`. Simplify using `only [unitAt, e]`. Conclude with `(GlobalTheory.T.prime_chart_existsUnique_point X Ω ξ o κ x h c hc.1 _ hI).unique ⟨hc, hp'⟩ ⟨hq, hq'⟩`.
+-/
 theorem eq_of_regAt_eq_of_coordTie :
     ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (o : Type) [CommRing o] [Algebra o Ω] (κ : Type) (x : κ → Ω),
       CoordTie o ξ x → ∀ p q : Cpt ξ, regAt ξ p = regAt ξ q → p = q := by

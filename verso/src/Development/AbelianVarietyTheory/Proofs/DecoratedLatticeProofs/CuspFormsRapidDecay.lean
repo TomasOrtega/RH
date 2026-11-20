@@ -7,5 +7,8 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Grow.cuspRapidDecay_of_bound GlobalTheory.T.cuspidal_moderateGrowth_rapidDecay`.
+-/
 theorem GlobalTheory.RapidDecay.cuspRapidDecay : GlobalTheory.Published.CuspRapidDecay :=
   GlobalTheory.Grow.cuspRapidDecay_of_bound GlobalTheory.T.cuspidal_moderateGrowth_rapidDecay

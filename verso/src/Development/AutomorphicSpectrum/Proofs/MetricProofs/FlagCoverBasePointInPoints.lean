@@ -22,6 +22,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
   {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k}
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp`. Simplify using `only [map_mul, hp, rename_X]`.
+
+Use `congr 1`. Simplify using `[mConeMap, hv.2.2.1 n]`.
+-/
 theorem mConeMap_rename {Ω : Type} [Field Ω] (hv : IsBlockMap κ v) (y : (Σ k, ι' k) → Ω) (g : MRing ι) :
     mConeMap y (rename v g) = rename κ (mConeMap (y ∘ v) g) := by
   induction g using MvPolynomial.induction_on with
@@ -32,12 +37,20 @@ theorem mConeMap_rename {Ω : Type} [Field Ω] (hv : IsBlockMap κ v) (y : (Σ k
     congr 1
     simp [mConeMap, hv.2.2.1 n]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `mConeMap y (rename v g) = 0 ↔ mConeMap (y ∘ v) g = 0`. Rewrite using `[mConeMap_rename hv]`. Conclude with `map_eq_zero_iff _ (rename_injective κ hv.1)`.
+-/
 theorem rename_mem_iff {Ω : Type} [Field Ω] (hv : IsBlockMap κ v) (y : (Σ k, ι' k) → Ω) (g : MRing ι) :
     rename v g ∈ mCoordIdeal y ↔ g ∈ mCoordIdeal (y ∘ v) := by
   change mConeMap y (rename v g) = 0 ↔ mConeMap (y ∘ v) g = 0
   rw [mConeMap_rename hv]
   exact map_eq_zero_iff _ (rename_injective κ hv.1)
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp`. Simplify using `only [map_mul, hp]`.
+
+Use `congr 1`. Simplify using `[mConeMap]`.
+-/
 theorem mConeMap_comp {Ω Ω' : Type} [Field Ω] [Field Ω'] (φ : Ω →+* Ω') (x : (Σ k, ι k) → Ω) (g : MRing ι) :
     mConeMap (φ ∘ x) g = map φ (mConeMap x g) := by
   induction g using MvPolynomial.induction_on with
@@ -48,6 +61,9 @@ theorem mConeMap_comp {Ω Ω' : Type} [Field Ω] [Field Ω'] (φ : Ω →+* Ω')
     congr 1
     simp [mConeMap]
 
+/- English proof (translation)
+Use extensionality with `g`. Express the relevant statement in the definitionally equal form `mConeMap (φ ∘ x) g = 0 ↔ mConeMap x g = 0`. Rewrite using `[mConeMap_comp]`. Conclude with `map_eq_zero_iff _ (map_injective φ φ.injective)`.
+-/
 theorem mCoordIdeal_comp {Ω Ω' : Type} [Field Ω] [Field Ω'] (φ : Ω →+* Ω') (x : (Σ k, ι k) → Ω) :
     mCoordIdeal (φ ∘ x) = mCoordIdeal x := by
   ext g
@@ -55,10 +71,24 @@ theorem mCoordIdeal_comp {Ω Ω' : Type} [Field Ω] [Field Ω'] (φ : Ω →+* �
   rw [mConeMap_comp]
   exact map_eq_zero_iff _ (map_injective φ φ.injective)
 
+/- English proof (translation)
+Rewrite using `[map_rename, eval_rename]`.
+-/
 theorem eval_rename_eq (z : (Σ k, ι' k) → ℂ) (g : MRing ι) :
     eval z (map (Int.castRingHom ℂ) (rename v g)) = eval (z ∘ v) (map (Int.castRingHom ℂ) g) := by
   rw [map_rename, eval_rename]
 
+/- English proof (translation)
+Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Rewrite using `[Finsupp.mapDomain_add]`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, hf, hg]`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `single p n`. Establish `hR : (∑ q : Σ k, ι k, if κ q.1 = k' then (Finsupp.single p n) q else 0) = if κ p.1 = k' then n else 0`.
+
+Rewrite using `[Finset.sum_eq_single p]`. Simplify using the standard rewrite rules. Introduce `q _ hq`. Simplify using `[Finsupp.single_apply, Ne.symm hq]`. Simplify using the standard rewrite rules.
+
+Establish `hL : ∀ q : Σ k, ι' k, ∑ i, (Finsupp.single q n) ⟨k', i⟩ = if q.1 = k' then n else 0`. Introduce and unpack `⟨kq, iq⟩`. Distinguish the cases in `h : kq = k'`. Substitute `h` using the available equality. Simplify using `[Finsupp.single_apply]`.
+
+Simplify using `[Finsupp.single_apply, h]`. Rewrite using `[Finsupp.mapDomain_single, hL, hR, hv]`.
+-/
 theorem sum_mapDomain_block (hv : ∀ p, (v p).1 = κ p.1) [DecidableEq K'] (m : (Σ k, ι k) →₀ ℕ) (k' : K') :
     ∑ i, (Finsupp.mapDomain v m) ⟨k', i⟩ = ∑ p : Σ k, ι k, if κ p.1 = k' then m p else 0 := by
   classical
@@ -86,6 +116,13 @@ theorem sum_mapDomain_block (hv : ∀ p, (v p).1 = κ p.1) [DecidableEq K'] (m :
       · simp [Finsupp.single_apply, h]
     rw [Finsupp.mapDomain_single, hL, hR, hv]
 
+/- English proof (translation)
+Introduce `m hm k'`. Rewrite `hm` using `[support_rename_of_injective hb.2.1, Finset.mem_image]`. Take `⟨m₀, hm₀, rfl⟩` from `hm`. Rewrite using `[sum_mapDomain_block hb.2.2.1, Fintype.sum_sigma]`. Distinguish the cases in `hk : ∃ k, κ k = k'`.
+
+Take `⟨k, rfl⟩` from `hk`. Rewrite using `[hb.1.extend_apply, Finset.sum_eq_single k]`. Simplify using `using hf m₀ hm₀ k`. Introduce `k₂ _ hne`. Conclude with `Finset.sum_eq_zero fun i _ => if_neg (hb.1.ne hne)`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Function.extend_apply' _ _ _ hk]`. Conclude with `Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun i _ => if_neg fun h => hk ⟨k, h⟩`.
+-/
 theorem isMultiHomog_rename_block (hb : IsBlockMap κ v) {f : MRing ι} {b : K → ℕ} (hf : IsMultiHomog f b) :
     IsMultiHomog (rename v f) (Function.extend κ b 0) := by
   classical
@@ -103,6 +140,13 @@ theorem isMultiHomog_rename_block (hb : IsBlockMap κ v) {f : MRing ι} {b : K �
   · rw [Function.extend_apply' _ _ _ hk]
     exact Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun i _ => if_neg fun h => hk ⟨k, h⟩
 
+/- English proof (translation)
+Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i', hi'⟩` from `hz.1 (κ k)`. Take `⟨⟨k₀, i⟩, hp⟩` from `hv.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `hk : k₀ = k` using `hv.1 ((hv.2.2.1 ⟨k₀, i⟩).symm.trans (congrArg Sigma.fst hp))`. Substitute `hk` using the available equality.
+
+Conclude with `⟨i, by simpa [hp] using hi'⟩`. Establish `h1 : rename v f ∈ mCoordIdeal x'`. Rewrite using `[rename_mem_iff hv, show x' ∘ v = φ ∘ x from funext hx, mCoordIdeal_comp]`. Conclude with `hf`. Rewrite using `[← eval_rename_eq]`.
+
+Conclude with `hz.2 _ h1`.
+-/
 theorem comp_mem_mcPts {Ω Ω' : Type} [Field Ω] [Field Ω'] (hv : IsBlockMap κ v)
     {x : (Σ k, ι k) → Ω} {x' : (Σ k, ι' k) → Ω'} (φ : Ω →+* Ω') (hx : ∀ q, x' (v q) = φ (x q))
     {z : (Σ k, ι' k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal x')) : z ∘ v ∈ mcPts (mCoordIdeal x) := by
@@ -118,12 +162,18 @@ theorem comp_mem_mcPts {Ω Ω' : Type} [Field Ω] [Field Ω'] (hv : IsBlockMap �
     rw [← eval_rename_eq]
     exact hz.2 _ h1
 
+/- English proof (translation)
+Rewrite using `[aeval_rename, show x' ∘ v = φ ∘ x from funext hx, aeval_def, aeval_def, algebraMap_int_eq, algebraMap_int_eq, eval₂_comp_left φ, RingHom.ext_int (φ.comp (Int.castRingHom Ω)) (Int.castRingHom Ω')]`.
+-/
 theorem aeval_rename_pull {Ω Ω' : Type} [Field Ω] [Field Ω'] {x : (Σ k, ι k) → Ω} {x' : (Σ k, ι' k) → Ω'}
     (φ : Ω →+* Ω') (hx : ∀ q, x' (v q) = φ (x q)) (f : MRing ι) :
     aeval x' (rename v f) = φ (aeval x f) := by
   rw [aeval_rename, show x' ∘ v = φ ∘ x from funext hx, aeval_def, aeval_def, algebraMap_int_eq,
     algebraMap_int_eq, eval₂_comp_left φ, RingHom.ext_int (φ.comp (Int.castRingHom Ω)) (Int.castRingHom Ω')]
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, hn, heq⟩` from `hs`. Use `⟨_, rename v g, rename v h, isMultiHomog_rename_block hv hg, isMultiHomog_rename_block hv hh, fun hm => hn ((rename_mem_iff hv z h).1 hm), ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_rename_pull φ hx, aeval_rename_pull φ hx, heq, map_mul]`.
+-/
 theorem regAt_pull {Ω Ω' : Type} [Field Ω] [Field Ω'] (hv : IsBlockMap κ v)
     {x : (Σ k, ι k) → Ω} {x' : (Σ k, ι' k) → Ω'} (φ : Ω →+* Ω') (hx : ∀ q, x' (v q) = φ (x q))
     {z : (Σ k, ι' k) → ℂ} {s : Ω} (hs : RegAt x (mCoordIdeal (z ∘ v)) s) :
@@ -133,6 +183,11 @@ theorem regAt_pull {Ω Ω' : Type} [Field Ω] [Field Ω'] (hv : IsBlockMap κ v)
     fun hm => hn ((rename_mem_iff hv z h).1 hm), ?_⟩
   rw [aeval_rename_pull φ hx, aeval_rename_pull φ hx, heq, map_mul]
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, hy, heq, h0, rfl⟩` from `hs`. Establish `hpull` using `aeval_rename_pull (v := v) φ hx`. Use `⟨_, rename v g, rename v h, isMultiHomog_rename_block hv hg, isMultiHomog_rename_block hv hh, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpull]`. Conclude with `(map_ne_zero φ).2 hy`.
+
+Rewrite using `[hpull, hpull, heq, map_mul]`. Rewrite using `[eval_rename_eq]` and apply the resulting hypothesis. Rewrite using `[eval_rename_eq, eval_rename_eq]`.
+-/
 theorem isValueAt_pull {Ω Ω' : Type} [Field Ω] [Field Ω'] (hv : IsBlockMap κ v)
     {x : (Σ k, ι k) → Ω} {x' : (Σ k, ι' k) → Ω'} (φ : Ω →+* Ω') (hx : ∀ q, x' (v q) = φ (x q))
     {z : (Σ k, ι' k) → ℂ} {s : Ω} {w : ℂ} (hs : IsValueAt x s (z ∘ v) w) : IsValueAt x' (φ s) z w := by
@@ -146,6 +201,11 @@ theorem isValueAt_pull {Ω Ω' : Type} [Field Ω] [Field Ω'] (hv : IsBlockMap �
 
 end General
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv zb hzb`. Establish `hz` using `comp_mem_mcPts Cv.block Cv.φ Cv.x_eq hzb`. Use `⟨hz, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `ValRing.exists_isValueAt hz hs`. Establish `hw'` using `isValueAt_pull Cv.block Cv.φ Cv.x_eq hw`.
+
+Conclude with `⟨regAt_pull Cv.block Cv.φ Cv.x_eq hs, by rw [valAt_eq hzb hw', valAt_eq hz hw]⟩`.
+-/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (zb : (Σ k, baseIdx ι' M'.blk k) → ℂ), zb ∈ mcPts (mCoordIdeal M'.x) → zb ∘ Cv.v ∈ mcPts (mCoordIdeal M.x) ∧ ∀ s : M.Ω, RegAt M.x (mCoordIdeal (zb ∘ Cv.v)) s → RegAt M'.x (mCoordIdeal zb) (Cv.φ s) ∧ valAt M'.x (Cv.φ s) zb = valAt M.x s (zb ∘ Cv.v) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv zb hzb
   have hz := comp_mem_mcPts Cv.block Cv.φ Cv.x_eq hzb

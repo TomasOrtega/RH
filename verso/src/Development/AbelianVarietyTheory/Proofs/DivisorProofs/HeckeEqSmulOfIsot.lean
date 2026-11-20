@@ -31,6 +31,13 @@ variable {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module �
 def avg (ρ : G →* Module.End ℂ A) : Module.End ℂ A :=
   ((Fintype.card (G ⧸ S) : ℂ)⁻¹) • ∑ q : G ⧸ S, ρ q.out
 
+/- English proof (translation)
+Establish `key : ∀ q : G ⧸ S, ρ k (ρ q.out x) = ρ ((k • q).out) x`. Introduce `q`. Establish `hmem : ((k • q).out)⁻¹ * (k * q.out) ∈ S`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Establish `e0 : (QuotientGroup.mk (k * q.out) : G ⧸ S) = k • (QuotientGroup.mk q.out : G ⧸ S)` using `rfl`.
+
+Rewrite using `[e0, QuotientGroup.out_eq']`. Establish `e : k * q.out = (k • q).out * (((k • q).out)⁻¹ * (k * q.out))` using `by group`. Establish `e2 : ρ k (ρ q.out x) = ρ (k * q.out) x` using `by rw [map_mul]; rfl`. Rewrite using `[e2, e, map_mul, Module.End.mul_apply, hx _ hmem]`. Simplify using `only [avg, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum, key]`.
+
+Use `congr 1`. Conclude with `Equiv.sum_comp (MulAction.toPerm k) (fun q : G ⧸ S => ρ q.out x)`.
+-/
 theorem avg_fixed (ρ : G →* Module.End ℂ A) {x : A} (hx : ∀ s ∈ S, ρ s x = x) (k : G) :
     ρ k (avg S ρ x) = avg S ρ x := by
   have key : ∀ q : G ⧸ S, ρ k (ρ q.out x) = ρ ((k • q).out) x := by
@@ -46,11 +53,17 @@ theorem avg_fixed (ρ : G →* Module.End ℂ A) {x : A} (hx : ∀ s ∈ S, ρ s
   congr 1
   exact Equiv.sum_comp (MulAction.toPerm k) (fun q : G ⧸ S => ρ q.out x)
 
+/- English proof (translation)
+Establish `hc : (Fintype.card (G ⧸ S) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Simplify using `only [avg, LinearMap.smul_apply, LinearMap.sum_apply, hy, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+-/
 theorem avg_of_fixed (ρ : G →* Module.End ℂ A) {y : A} (hy : ∀ k, ρ k y = y) : avg S ρ y = y := by
   have hc : (Fintype.card (G ⧸ S) : ℂ) ≠ 0 := Nat.cast_ne_zero.2 Fintype.card_ne_zero
   simp only [avg, LinearMap.smul_apply, LinearMap.sum_apply, hy, Finset.sum_const, Finset.card_univ]
   rw [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hc, one_smul]
 
+/- English proof (translation)
+Simplify using `only [avg, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum, h]`.
+-/
 theorem avg_map (ρ : G →* Module.End ℂ A) (ρ' : G →* Module.End ℂ B) (Φ : A →ₗ[ℂ] B)
     (h : ∀ g a, Φ (ρ g a) = ρ' g (Φ a)) (a : A) : Φ (avg S ρ a) = avg S ρ' (Φ a) := by
   simp only [avg, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum, h]
@@ -68,15 +81,40 @@ local notation3 "L⁺" => NumberField.maximalRealSubfield L
 def incO : 𝓞 L →+* AL L :=
   (Algebra.TensorProduct.includeLeftRingHom (R := L⁺) (A := L) (B := AFplus L)).comp (algebraMap (𝓞 L) L)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incO_apply (t : 𝓞 L) : incO t = (t : L) ⊗ₜ[L⁺] (1 : AFplus L) := rfl
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inl ⟨t, rfl⟩)`.
+-/
 theorem incO_mem (t : 𝓞 L) : incO t ∈ ALint L := Subring.subset_closure (Or.inl ⟨t, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inr ⟨b, hb, rfl⟩)`.
+-/
 theorem one_tmul_mem {b : AFplus L} (hb : ∀ v, b v ∈ v.adicCompletionIntegers L⁺) :
     (1 : L) ⊗ₜ[L⁺] b ∈ ALint L := Subring.subset_closure (Or.inr ⟨b, hb, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `natCast_mem _ N`.
+-/
 theorem natCast_mem_ALint (N : ℕ) : (N : AL L) ∈ ALint L := natCast_mem _ N
 
+/- English proof (translation)
+Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨t, rfl⟩ | ⟨a, ha, rfl⟩` into its components or cases. Conclude with `⟨t, 0, zero_mem _, by simp [incO_apply]⟩`. Take `⟨r, b, hb, e⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat L⁺ N hN).2 a ha`.
+
+Use `⟨algebraMap (𝓞 L⁺) (𝓞 L) r, (1 : L) ⊗ₜ[L⁺] b, one_tmul_mem hb, ?_⟩` and prove the remaining obligations. Establish `h1 : ((algebraMap (𝓞 L⁺) (𝓞 L) r : 𝓞 L) : L) = algebraMap L⁺ L (r : L⁺)` using `by show algebraMap (𝓞 L) L _ = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[incO_apply, h1, e, TensorProduct.tmul_add, nsmul_eq_mul]`. Use `congr 1`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Establish `: (N : AL L) = (1 : L) ⊗ₜ[L⁺] (N : AFplus L)`. Conclude with `(map_natCast (Algebra.TensorProduct.includeRight (R := L⁺) (A := L) (B := AFplus L)) N).symm`. Rewrite using `[this, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => exact ⟨0, 0, zero_mem _, by simp⟩`.
+
+Consider the case `one => exact ⟨1, 0, zero_mem _, by simp⟩`. Consider the case `add x x' _ _ h h'`. Take `⟨t, y, hy, rfl⟩` from `h`. Take `⟨t', y', hy', rfl⟩` from `h'`. Conclude with `⟨t + t', y + y', add_mem hy hy', by rw [map_add]; ring⟩`.
+
+Consider the case `neg x _ h`. Take `⟨t, y, hy, rfl⟩` from `h`. Conclude with `⟨-t, -y, neg_mem hy, by rw [map_neg]; ring⟩`. Consider the case `mul x x' _ _ h h'`. Take `⟨t, y, hy, rfl⟩` from `h`.
+
+Take `⟨t', y', hy', rfl⟩` from `h'`. Use `⟨t * t', incO t * y' + y * incO t' + (N : AL L) * y * y', add_mem (add_mem (mul_mem (incO_mem _) hy') (mul_mem hy (incO_mem _))) (mul_mem (mul_mem (natCast_mem_ALint N) hy) hy'), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_approx (N : ℕ) (hN : 0 < N) {x : AL L} (hx : x ∈ ALint L) :
     ∃ t : 𝓞 L, ∃ y ∈ ALint L, x = incO t + (N : AL L) * y := by
   induction hx using Subring.closure_induction with
@@ -113,6 +151,13 @@ theorem exists_approx (N : ℕ) (hN : 0 < N) {x : AL L} (hx : x ∈ ALint L) :
     rw [map_mul]
     ring
 
+/- English proof (translation)
+Use `⟨mul_mem (inv_mem hh) hh', fun i j => ?_⟩` and prove the remaining obligations. Use `choose z hz1 hz2 using hz`. Establish `hinv : ∀ i j, ((h⁻¹ : Formalism.AUTREP.GAf L n).1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L` using `inv_mem hh`. Use `⟨∑ k, ((h⁻¹ : Formalism.AUTREP.GAf L n).1 : Matrix (Fin n) (Fin n) (AL L)) i k * z k j, Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hinv i k) (hz1 k j), ?_⟩` and prove the remaining obligations. Establish `h1 : ((h⁻¹ : Formalism.AUTREP.GAf L n).1 : Matrix (Fin n) (Fin n) (AL L)) * (h.1 : Matrix (Fin n) (Fin n) (AL L)) = 1`.
+
+Establish `: ((h⁻¹ * h : Formalism.AUTREP.GAf L n).1 : Matrix (Fin n) (Fin n) (AL L)) = 1` using `by simp`. Conclude with `this`. Establish `e : (((h⁻¹ * h' : Formalism.AUTREP.GAf L n)).1 : Matrix (Fin n) (Fin n) (AL L)) = ((h⁻¹ : Formalism.AUTREP.GAf L n).1 : Matrix (Fin n) (Fin n) (AL L)) * (h'.1 : Matrix (Fin n) (Fin n) (AL L))` using `rfl`. Rewrite using `[e, ← h1, Matrix.mul_apply, Matrix.mul_apply, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_sub, hz2 k j]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cong_inv_mul {n N : ℕ} {h h' : Formalism.AUTREP.GAf L n} (hh : h ∈ Umax L n) (hh' : h' ∈ Umax L n)
     (hz : ∀ i j, ∃ z ∈ ALint L, (h'.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (h.1 : Matrix (Fin n) (Fin n) (AL L)) i j =
       (N : AL L) * z) : Formalism.L2.NG.Cong L n N (h⁻¹ * h') := by
@@ -131,6 +176,17 @@ theorem cong_inv_mul {n N : ℕ} {h h' : Formalism.AUTREP.GAf L n} (hh : h ∈ U
   rw [← mul_sub, hz2 k j]
   ring
 
+/- English proof (translation)
+Establish `hNz : (N : 𝓞 L) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hI : Ideal.span {(N : 𝓞 L)} ≠ ⊥` using `by simpa using hNz`. Establish `hfin : Finite (𝓞 L ⧸ Ideal.span {(N : 𝓞 L)})` using `Ideal.finiteQuotientOfFreeOfNeBot _ hI`. Establish `hap : ∀ (h : H) (i j : Fin n), ∃ t : 𝓞 L, ∃ y ∈ ALint L, (((h : Formalism.AUTREP.GAf L n)).1 : Matrix (Fin n) (Fin n) (AL L)) i j = incO t + (N : AL L) * y` using `fun h i j => exists_approx N hN (hH h.2 i j)`. Use `choose t y hy e using hap`.
+
+Set `f : H → Fin n → Fin n → 𝓞 L ⧸ Ideal.span {(N : 𝓞 L)}` to `fun h i j => Ideal.Quotient.mk _ (t h i j)`. Establish `hf : ∀ h h' : H, f h = f h' → h⁻¹ * h' ∈ S`. Introduce `h h' hff`. Apply `hS` to reduce the goal to its premises. Use `cong_inv_mul (hH h.2) (hH h'.2) fun i j => ?_` and prove the remaining obligations.
+
+Establish `h2 : Ideal.Quotient.mk (Ideal.span {(N : 𝓞 L)}) (t h' i j) = Ideal.Quotient.mk _ (t h i j)` using `(congrFun (congrFun hff i) j).symm`. Rewrite `h2` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨s, hs⟩` from `h2`. Use `⟨incO s + y h' i j - y h i j, sub_mem (add_mem (incO_mem s) (hy h' i j)) (hy h i j), ?_⟩` and prove the remaining obligations. Establish `h3 : incO (t h' i j) - incO (t h i j) = incO s * (N : AL L)`.
+
+Rewrite using `[← map_sub, ← hs, map_mul, map_natCast]`. Rewrite using `[e h' i j, e h i j]`. Take the linear combination `h3`. Set `g : Set.range f → H ⧸ S` to `fun c => QuotientGroup.mk c.2.choose`. Use `Finite.of_surjective g fun q => ?_` and prove the remaining obligations.
+
+Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H h`. Use `⟨⟨f h, h, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hc : f (Exists.choose (⟨h, rfl⟩ : ∃ x, f x = f h)) = f h` using `Exists.choose_spec (⟨h, rfl⟩ : ∃ x, f x = f h)`. Conclude with `QuotientGroup.eq.2 (hf _ _ hc)`.
+-/
 theorem finite_quot {n : ℕ} (H : Subgroup (Formalism.AUTREP.GAf L n)) (hH : H ≤ Umax L n) {N : ℕ} (hN : 0 < N)
     (S : Subgroup H) (hS : ∀ s : H, Formalism.L2.NG.Cong L n N (s : Formalism.AUTREP.GAf L n) → s ∈ S) : Finite (H ⧸ S) := by
   have hNz : (N : 𝓞 L) ≠ 0 := Nat.cast_ne_zero.2 hN.ne'
@@ -179,6 +235,9 @@ def piRep (π : Formalism.L2.NG.FinTyp L n) : Formalism.AUTREP.GAf L n →* Modu
     ext f x
     simp [LinearMap.restrict_apply, rt_apply, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piRep_coe (π : Formalism.L2.NG.FinTyp L n) (h : Formalism.AUTREP.GAf L n) (f : π.S) :
     ((piRep π h f : π.S) : Formalism.AUTREP.GAf L n → ℂ) = Formalism.L2.NG.rt L n h f := rfl
 
@@ -194,6 +253,43 @@ def stabN (π : Formalism.L2.NG.FinTyp L n) (H : Subgroup (Formalism.AUTREP.GAf 
     rw [← Module.End.mul_apply, ← map_mul]
     simp
 
+/- English proof (translation)
+Introduce `D V n hF Q hQ Sp θ M π Pr d B a hB ha U hU hfix`. Establish `hBG : ∀ γ ∈ B, Q.ψ (principalLevelFrame.pre Q γ) = γ`. Take `⟨e, f, ϖ, α, _, _, _, _, _, _, _, _, _, _, hc⟩` from `hB`. Introduce `γ hγ`. Take `⟨h, hh⟩` from `Q.onto γ (hc.1 γ hγ).1`.
+
+Establish `hex : ∃ x, Q.ψ x = γ` using `⟨h, hh⟩`. Unfold `principalLevelFrame.pre`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Establish `hOn : ∀ T : MMap M, heckeOn M B T = ∑ γ ∈ B, principalLevelFrame.actM Q M (principalLevelFrame.pre Q γ) T`.
+
+Introduce `T`. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use function extensionality and compare the values at `g`. Rewrite using `[MultilinearMap.sum_apply, Finset.sum_apply]`.
+
+Use `show ∑ γ ∈ B, T v (g * γ) = _`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Rewrite using `[principalLevelFrame.actM_apply, hBG γ hγ]`. Establish `hΦ : ∀ Φ : π.S →ₗ[ℂ] MMap M, principalLevelFrame.IsEqvA (principalLevelFrame.actM Q M) π Φ → ∀ x : π.S, (∀ κ, Q.ψ κ ∈ hyp V Pr → Formalism.L2.NG.rt D.host.E n κ (x : Formalism.AUTREP.GAf D.host.E n → ℂ) = x) → heckeOn M B (Φ x) = a • Φ x`. Introduce `Φ hE x hx`.
+
+Establish `h1` using `ha x x.2 hx`. Establish `h2 : (∑ γ ∈ B, piRep π (principalLevelFrame.pre Q γ) x) = a • x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Simplify `h1` using `[principalLevelFrame.Hecke₃, principalLevelFrame.heckeG, LinearMap.sum_apply, piRep_coe]`.
+
+Rewrite using `[hOn, ← map_smul, ← h2, map_sum]`. Conclude with `Finset.sum_congr rfl fun γ _ => (hE _ x).symm`. Set `W : Submodule ℂ (MMap M)` to `Submodule.span ℂ {T | ∃ Φ : π.S →ₗ[ℂ] MMap M, principalLevelFrame.IsEqvA (principalLevelFrame.actM Q M) π Φ ∧ ∃ x : π.S, (∀ κ, Q.ψ κ ∈ hyp V Pr → Formalism.L2.NG.rt D.host.E n κ (x : Formalism.AUTREP.GAf D.host.E n → ℂ) = x) ∧ T = Φ x}`. Establish `hWe : ∀ T ∈ W, heckeOn M B T = a • T`. Introduce `T hT`.
+
+Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT`. Take `⟨Φ, hE, x, hx, rfl⟩` from `hT`. Conclude with `hΦ Φ hE x hx`. Consider the case `zero => simp`.
+
+Consider the case `add T T' _ _ h h' => rw [map_add, h, h', smul_add]`. Consider the case `smul c T _ h => rw [map_smul, h, smul_comm]`. Set `H : Subgroup (Formalism.AUTREP.GAf D.host.E n)` to `Subgroup.closure {κ | Q.ψ κ ∈ hyp V Pr}`. Establish `hH : H ≤ ReciprocityTheory.Aut.Umax D.host.E n` using `(Subgroup.closure_le _).2 fun κ hκ => (hQ.2 κ).2 hκ.1`. Establish `hfixH : ∀ h ∈ H, principalLevelFrame.actM Q M h U = U`.
+
+Introduce `h hh`. Proceed by induction on `hh using Subgroup.closure_induction with`. Consider the case `mem κ hκ => exact hfix _ hκ`. Consider the case `one => simp`. Consider the case `mul x y _ _ hx hy => rw [map_mul, Module.End.mul_apply, hy, hx]`.
+
+Consider the case `inv x _ hx => conv_lhs => rw [← hx]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Set `G : ℕ → Set (MMap M)` to `fun N => {T | ∃ Φ : π.S →ₗ[ℂ] MMap M, principalLevelFrame.IsEqvA (principalLevelFrame.actM Q M) π Φ ∧ ∃ x : π.S, (∀ κ, Formalism.L2.NG.Cong D.host.E n N κ → piRep π κ x = x) ∧ T = Φ x}`. Establish `hmono : ∀ N N' : ℕ, (∀ κ, Formalism.L2.NG.Cong D.host.E n N' κ → Formalism.L2.NG.Cong D.host.E n N κ) → Submodule.span ℂ (G N) ≤ Submodule.span ℂ (G N')`.
+
+Introduce `N N' hc`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `T ⟨Φ, hE, x, hx, rfl⟩`. Conclude with `⟨Φ, hE, x, fun κ hκ => hx κ (hc κ hκ), rfl⟩`. Set `Pn : Submodule ℂ (MMap M)` to `{ carrier := {T | ∃ N, 0 < N ∧ T ∈ Submodule.span ℂ (G N)} add_mem' := by`.
+
+Introduce and unpack `T T' ⟨N, hN, h⟩ ⟨N', hN', h'⟩`. Conclude with `⟨N * N', Nat.mul_pos hN hN', add_mem (hmono _ _ (fun κ => Formalism.L2.NG.Cong.of_mul_left _ _) h) (hmono _ _ (fun κ => Formalism.L2.NG.Cong.of_mul_right _ _) h')⟩`. Use the proof step `zero_mem' := ⟨1, one_pos, zero_mem _⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c T ⟨N, hN, h⟩`.
+
+Conclude with `⟨N, hN, Submodule.smul_mem _ c h⟩ }`. Establish `hle : principalLevelFrame.isotIn (principalLevelFrame.actM Q M) (principalLevelFrame.Minf θ Q M) π ≤ Pn`. Unfold `principalLevelFrame.isotIn`. Use `iSup₂_le fun Φ hE => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Take `⟨N, hN, hx⟩` from `π.smooth x x.2`. Conclude with `⟨N, hN, Submodule.subset_span ⟨Φ, hE.1, x, fun κ hκ => Subtype.ext (hx κ hκ), rfl⟩⟩`. Take `⟨N, hN, hUN⟩` from `hle hU`. Establish `hfinq` using `finite_quot H hH hN (stabN π H N) (fun s hs x hx => hx _ hs)`. Use `letI : Fintype (H ⧸ stabN π H N) := Fintype.ofFinite _`.
+
+Set `ρ1 : H →* Module.End ℂ π.S` to `(piRep π).comp H.subtype`. Set `ρ2 : H →* Module.End ℂ (MMap M)` to `(principalLevelFrame.actM Q M).comp H.subtype`. Establish `hAU : avg (stabN π H N) ρ2 U = U` using `avg_of_fixed _ ρ2 fun k => hfixH k k.2`. Establish `hAW : ∀ T ∈ Submodule.span ℂ (G N), avg (stabN π H N) ρ2 T ∈ W`. Introduce `T hT`.
+
+Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT`. Take `⟨Φ, hE, x, hx, rfl⟩` from `hT`. Rewrite using `[← avg_map (stabN π H N) ρ1 ρ2 Φ (fun g b => hE g b)]`. Use `Submodule.subset_span ⟨Φ, hE, avg (stabN π H N) ρ1 x, fun κ hκ => ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `hf` using `avg_fixed (stabN π H N) ρ1 (x := x) (fun s hs => hs x hx) ⟨κ, Subgroup.subset_closure hκ⟩`. Conclude with `congrArg Subtype.val hf`. Consider the case `zero => simp`. Consider the case `add T T' _ _ h h' => rw [map_add]`. Conclude with `add_mem h h'`.
+
+Consider the case `smul c T _ h => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c h`. Use `hWe _ (hAW U hUN)` as an intermediate fact. Rewrite `this` using `[hAU]`. Then use the resulting hypothesis.
+-/
 theorem hecke_eq_smul_of_isot : ∀ {D : D7} {V : HSp D} {n : ℕ} (hF : D.host.F = maximalRealSubfield D.host.E) (Q : principalLevelFrame.RowPsi V n), StdPsi hF Q → ∀ {Sp : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V Sp) (π : Formalism.L2.NG.FinTyp D.host.E n) Pr d B (a : ℂ), SphOp V Pr d B → (∀ x ∈ π.S, (∀ κ, Q.ψ κ ∈ hyp V Pr → Formalism.L2.NG.rt D.host.E n κ x = x) → principalLevelFrame.Hecke₃ Q B x = a • x) → ∀ U ∈ principalLevelFrame.isotIn (principalLevelFrame.actM Q M) (principalLevelFrame.Minf θ Q M) π, (∀ k ∈ hyp V Pr, postOn M (principalLevelFrame.rtA k) U = U) → heckeOn M B U = a • U := by
   intro D V n hF Q hQ Sp θ M π Pr d B a hB ha U hU hfix
   have hBG : ∀ γ ∈ B, Q.ψ (principalLevelFrame.pre Q γ) = γ := by

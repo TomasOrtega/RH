@@ -11,6 +11,9 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HalfGeo.gram_basis | exact GlobalTheory.HalfGeo.gram_basis | (intros; apply GlobalTheory.HalfGeo.gram_basis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.toroidal_split_torus_basis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β)
     (K : Type) [Field K] [CharZero K] (ξ₀ : Sp K ⟶ Xo.XF c) (q : ℕ), q ≠ 0 → (∃ ζ : K, IsPrimitiveRoot ζ q) →

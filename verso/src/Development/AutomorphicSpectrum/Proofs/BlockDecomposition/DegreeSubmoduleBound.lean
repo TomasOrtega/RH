@@ -9,6 +9,11 @@ open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D1
 
 namespace GlobalTheory.CompanionTheory.DegreeSubmod
 
+/- English proof (translation)
+Establish `hinj : Function.Injective M.mulVecLin`. Establish `: Function.Injective M.mulVec` using `Matrix.mulVec_injective_iff.2 h`. Conclude with `this`. Take `⟨g, hg⟩` from `M.mulVecLin.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : LinearMap.toMatrix' (g ∘ₗ M.mulVecLin) = LinearMap.toMatrix' g * M`. Rewrite using `[LinearMap.toMatrix'_comp, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Rewrite using `[← h2, hg]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_leftInv {K ι κ : Type} [Field K] [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     (M : Matrix ι κ K) (h : LinearIndependent K Mᵀ) : ∃ Y : Matrix κ ι K, Y * M = 1 := by
   have hinj : Function.Injective M.mulVecLin := by
@@ -21,10 +26,16 @@ theorem exists_leftInv {K ι κ : Type} [Field K] [Fintype ι] [DecidableEq ι] 
   rw [← h2, hg]
   simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext i (j | j) <;> rfl`.
+-/
 theorem map_fromCols {R S ι κ κ' : Type} (f : R → S) (P : Matrix ι κ R) (Q : Matrix ι κ' R) :
     (fromCols P Q).map f = fromCols (P.map f) (Q.map f) := by
   ext i (j | j) <;> rfl
 
+/- English proof (translation)
+Establish `p0` using `lt_of_le_of_ne (hN.nonneg _ (fromCols B (fromCols A C))) h0.symm`. Establish `p1` using `lt_of_le_of_ne (hN.nonneg _ B) h1.symm`. Rewrite using `[← Real.log_mul h0 h1, ← Real.log_mul h2 h3]`. Conclude with `Real.log_le_log (mul_pos p0 p1) (hS K ι N hN _ _ _ B A C)`.
+-/
 theorem log_ineq {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (N : Fam K ι) (hN : IsWedge N) (hS : WedgeSub)
     {κ₀ κ₁ κ₂ : Type} [Fintype κ₀] [DecidableEq κ₀] [Fintype κ₁] [DecidableEq κ₁] [Fintype κ₂] [DecidableEq κ₂]
     (B : Matrix ι κ₀ K) (A : Matrix ι κ₁ K) (C : Matrix ι κ₂ K)
@@ -39,6 +50,11 @@ theorem log_ineq {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (N : Fam 
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨Y, hY⟩` from `exists_leftInv M h`. Use `⟨Y.map (algebraMap E (Ad E)) * x.val, ?_⟩` and prove the remaining obligations. Establish `hx : x.val * (x⁻¹ : GA E n).val = 1` using `Units.mul_inv x`. Establish `hm : Y.map (algebraMap E (Ad E)) * M.map (algebraMap E (Ad E)) = 1`. Rewrite using `[← Matrix.map_mul, hY, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hx, Matrix.mul_one, hm]`.
+-/
 theorem frame_leftInv {κ : Type} [Fintype κ] [DecidableEq κ] (x : GA E n) (M : Matrix (Fin n) κ E)
     (h : LinearIndependent E Mᵀ) :
     ∃ Y : Matrix κ (Fin n) (Ad E), Y * ((x⁻¹ : GA E n).val * M.map (algebraMap E (Ad E))) = 1 := by
@@ -52,12 +68,30 @@ theorem frame_leftInv {κ : Type} [Fintype κ] [DecidableEq κ] (x : GA E n) (M 
         simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hx, Matrix.mul_one, hm]
 
+/- English proof (translation)
+Rewrite using `[map_fromCols, Matrix.mul_fromCols]`.
+-/
 theorem frame_fromCols {κ κ' : Type} [Fintype κ] [Fintype κ'] (x : GA E n) (P : Matrix (Fin n) κ E)
     (Q : Matrix (Fin n) κ' E) :
     (x⁻¹ : GA E n).val * (fromCols P Q).map (algebraMap E (Ad E)) =
       fromCols ((x⁻¹ : GA E n).val * P.map (algebraMap E (Ad E))) ((x⁻¹ : GA E n).val * Q.map (algebraMap E (Ad E))) := by
   rw [map_fromCols, Matrix.mul_fromCols]
 
+/- English proof (translation)
+Take `⟨i₀, f₀, s₀⟩` from `hFS E _ _ _ Y₀ h₀`. Take `⟨i₁, f₁, s₁⟩` from `hFS E _ _ _ Y₁ h₁`. Take `⟨i₂, f₂, s₂⟩` from `hFS E _ _ _ Y₂ h₂`. Take `⟨i₃, f₃, s₃⟩` from `hFS E _ _ _ Y₃ h₃`. Establish `fin : ∀ {κ : Type} [Fintype κ] [DecidableEq κ] (T : Matrix (Fin n) κ (Ad E)), {w | nF (T.map (cW w)) ≠ 1}.Finite → (Function.support fun w => Real.log (nF (T.map (cW w)))).Finite`.
+
+Introduce `κ _ _ T hT`. Use `hT.subset fun w hw h1 => hw ?_` and prove the remaining obligations. Simplify using `only [Function.mem_support] at hw`. Conclude with `absurd (by rw [h1, Real.log_one]) hw`. Establish `inf : ∑ v, Real.log (nI ((fromCols P (fromCols Q R)).map (cV v))) + ∑ v, Real.log (nI (P.map (cV v))) ≤ ∑ v, Real.log (nI ((fromCols P Q).map (cV v))) + ∑ v, Real.log (nI ((fromCols P R).map (cV v)))`.
+
+Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Establish `a₀` using `i₀ v`. Establish `a₂` using `i₂ v`. Establish `a₃` using `i₃ v`.
+
+Rewrite `a₂`, `a₃` using `[map_fromCols]`. Rewrite `a₀` using `[map_fromCols, map_fromCols]`. Rewrite using `[map_fromCols, map_fromCols, map_fromCols, map_fromCols]`. Conclude with `log_ineq (fun _ _ _ A => nI A) (hI _) hS _ _ _ a₀ (i₁ v) a₂ a₃`. Establish `finp : ∑ᶠ w, Real.log (nF ((fromCols P (fromCols Q R)).map (cW w))) + ∑ᶠ w, Real.log (nF (P.map (cW w))) ≤ ∑ᶠ w, Real.log (nF ((fromCols P Q).map (cW w))) + ∑ᶠ w, Real.log (nF ((fromCols P R).map (cW w)))`.
+
+Rewrite using `[← finsum_add_distrib (fin _ s₀) (fin _ s₁), ← finsum_add_distrib (fin _ s₂) (fin _ s₃)]`. Use `finsum_le_finsum' ((fin _ s₀).union (fin _ s₁) |>.subset (Function.support_add _ _)) ((fin _ s₂).union (fin _ s₃) |>.subset (Function.support_add _ _)) fun w => ?_` and prove the remaining obligations. Establish `a₀` using `f₀ w`. Establish `a₂` using `f₂ w`. Establish `a₃` using `f₃ w`.
+
+Rewrite `a₂`, `a₃` using `[map_fromCols]`. Rewrite `a₀` using `[map_fromCols, map_fromCols]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[map_fromCols, map_fromCols, map_fromCols, map_fromCols]`. Conclude with `log_ineq (fun _ _ _ A => nF A) (hF _ _) hS _ _ _ a₀ (f₁ w) a₂ a₃`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_ineq (hF : WedgeF) (hI : WedgeI) (hS : WedgeSub) (hFS : FinSupp)
     {κ₀ κ₁ κ₂ : Type} [Fintype κ₀] [DecidableEq κ₀] [Fintype κ₁] [DecidableEq κ₁] [Fintype κ₂] [DecidableEq κ₂]
     (P : Matrix (Fin n) κ₀ (Ad E)) (Q : Matrix (Fin n) κ₁ (Ad E)) (R : Matrix (Fin n) κ₂ (Ad E))
@@ -107,6 +141,11 @@ theorem sum_ineq (hF : WedgeF) (hI : WedgeI) (hS : WedgeSub) (hFS : FinSupp)
     exact log_ineq (fun _ _ _ A => nF A) (hF _ _) hS _ _ _ a₀ (f₁ w) a₂ a₃
   linarith
 
+/- English proof (translation)
+Take `⟨Y₀, h₀⟩` from `frame_leftInv x _ l₀`. Take `⟨Y₁, h₁⟩` from `frame_leftInv x _ l₁`. Take `⟨Y₂, h₂⟩` from `frame_leftInv x _ l₂`. Take `⟨Y₃, h₃⟩` from `frame_leftInv x _ l₃`. Rewrite `h₀` using `[frame_fromCols, frame_fromCols]`.
+
+Rewrite `h₂`, `h₃` using `[frame_fromCols]`. Establish `key` using `sum_ineq hF hI hS hFS _ _ _ h₀ h₁ h₂ h₃`. Simplify using `only [degG, frame_fromCols]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem degG_ineq (hF : WedgeF) (hI : WedgeI) (hS : WedgeSub) (hFS : FinSupp) (x : GA E n)
     {κ₀ κ₁ κ₂ : Type} [Fintype κ₀] [DecidableEq κ₀] [Fintype κ₁] [DecidableEq κ₁] [Fintype κ₂] [DecidableEq κ₂]
     (B : Matrix (Fin n) κ₀ E) (A : Matrix (Fin n) κ₁ E) (C : Matrix (Fin n) κ₂ E)
@@ -123,6 +162,19 @@ theorem degG_ineq (hF : WedgeF) (hI : WedgeI) (hS : WedgeSub) (hFS : FinSupp) (x
   simp only [degG, frame_fromCols]
   linarith
 
+/- English proof (translation)
+Introduce `E _ _ _ n x W W'`. Take `⟨a, b, c, B, A, C, l₀, e₁, e₂, e₃, e₄⟩` from `hT E n W W'`. Establish `l₂ : LinearIndependent E (fromCols B A)ᵀ`. Establish `: (fromCols B A)ᵀ = (fromCols B (fromCols A C))ᵀ ∘ Sum.map id Sum.inl`. Apply the tactic sequence `funext j; rcases j with j | j <;> rfl`.
+
+Rewrite using `[this]`. Conclude with `l₀.comp _ (Sum.map_injective.2 ⟨Function.injective_id, Sum.inl_injective⟩)`. Establish `l₃ : LinearIndependent E (fromCols B C)ᵀ`. Establish `: (fromCols B C)ᵀ = (fromCols B (fromCols A C))ᵀ ∘ Sum.map id Sum.inr`. Apply the tactic sequence `funext j; rcases j with j | j <;> rfl`.
+
+Rewrite using `[this]`. Conclude with `l₀.comp _ (Sum.map_injective.2 ⟨Function.injective_id, Sum.inr_injective⟩)`. Establish `l₁ : LinearIndependent E Bᵀ`. Establish `: Bᵀ = (fromCols B (fromCols A C))ᵀ ∘ Sum.inl`. Use function extensionality and compare the values at `j`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `l₀.comp _ Sum.inl_injective`. Establish `d₀` using `hB E n _ x _ l₀`. Establish `d₁` using `hB E n _ x _ l₁`.
+
+Establish `d₂` using `hB E n _ x _ l₂`. Establish `d₃` using `hB E n _ x _ l₃`. Rewrite `d₀` using `[e₄]`. Rewrite `d₁` using `[e₁]`. Rewrite `d₂` using `[e₂]`.
+
+Rewrite `d₃` using `[e₃]`. Rewrite using `[← d₀, ← d₁, ← d₂, ← d₃]`. Conclude with `degG_ineq hF hI hS hFS x B A C l₀ l₁ l₂ l₃`.
+-/
 theorem degSubmod_of (hF : WedgeF) (hI : WedgeI) (hS : WedgeSub) (hFS : FinSupp) (hB : DegBasisG) (hT : TwoBases) :
     DegSubmod := by
   intro E _ _ _ n x W W'

@@ -14,6 +14,9 @@ instance MonoDeg.finite (ι : Type*) [Finite ι] (a : ℕ) : Finite (MonoDeg ι 
 noncomputable instance MonoDeg.fintype (ι : Type*) [Finite ι] (a : ℕ) : Fintype (MonoDeg ι a) :=
   Fintype.ofFinite _
 
+/- English proof (translation)
+Use `symm`. Use `Finset.sum_subtype _ (fun α => ?_) g` and prove the remaining obligations. Simplify using `[Finsupp.degree_eq_sum]`.
+-/
 theorem MonoDeg.sum_eq_sum_finsuppAntidiag {ι N : Type*} [Fintype ι] [DecidableEq ι]
     [AddCommMonoid N] (a : ℕ) (g : (ι →₀ ℕ) → N) :
     ∑ α : MonoDeg ι a, g α.1 = ∑ α ∈ Finset.finsuppAntidiag Finset.univ a, g α := by
@@ -21,6 +24,9 @@ theorem MonoDeg.sum_eq_sum_finsuppAntidiag {ι N : Type*} [Fintype ι] [Decidabl
   refine Finset.sum_subtype _ (fun α => ?_) g
   simp [Finsupp.degree_eq_sum]
 
+/- English proof (translation)
+Use `MonoDeg.sum_eq_sum_finsuppAntidiag (ι := ι) a (fun _ => (1 : ℕ))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem MonoDeg.card_eq_card_finsuppAntidiag (ι : Type*) [Fintype ι] [DecidableEq ι] (a : ℕ) :
     Fintype.card (MonoDeg ι a) = (Finset.finsuppAntidiag (Finset.univ : Finset ι) a).card := by
   have := MonoDeg.sum_eq_sum_finsuppAntidiag (ι := ι) a (fun _ => (1 : ℕ))
@@ -34,53 +40,93 @@ variable {R : Type*} {ι : Type*}
 
 def monoVal [CommMonoid R] (f : ι → R) (α : ι →₀ ℕ) : R := α.prod fun i k => f i ^ k
 
+/- English proof (translation)
+The claim follows from `Finsupp.prod_fintype _ _ (by simp)`.
+-/
 theorem monoVal_eq_prod [CommMonoid R] [Fintype ι] (f : ι → R) (α : ι →₀ ℕ) :
     monoVal f α = ∏ i, f i ^ α i :=
   Finsupp.prod_fintype _ _ (by simp)
 
+/- English proof (translation)
+Simplify using `[monoVal]`.
+-/
 @[simp] theorem monoVal_zero [CommMonoid R] (f : ι → R) : monoVal f 0 = 1 := by
   simp [monoVal]
 
+/- English proof (translation)
+Simplify using `[monoVal]`.
+-/
 @[simp] theorem monoVal_single [CommMonoid R] (f : ι → R) (i : ι) (k : ℕ) :
     monoVal f (Finsupp.single i k) = f i ^ k := by
   simp [monoVal]
 
+/- English proof (translation)
+The claim follows from `Finsupp.prod_add_index' (by simp) (fun _ _ _ => pow_add _ _ _)`.
+-/
 theorem monoVal_add [CommMonoid R] (f : ι → R) (α β : ι →₀ ℕ) :
     monoVal f (α + β) = monoVal f α * monoVal f β :=
   Finsupp.prod_add_index' (by simp) (fun _ _ _ => pow_add _ _ _)
 
+/- English proof (translation)
+Simplify using `[monoVal, mul_pow, Finsupp.prod_mul]`.
+-/
 theorem monoVal_mul [CommMonoid R] (f g : ι → R) (α : ι →₀ ℕ) :
     monoVal (fun i => f i * g i) α = monoVal f α * monoVal g α := by
   simp [monoVal, mul_pow, Finsupp.prod_mul]
 
+/- English proof (translation)
+Simplify using `[monoVal, Finsupp.prod, map_prod]`.
+-/
 theorem map_monoVal [CommMonoid R] {S F : Type*} [CommMonoid S] [FunLike F R S]
     [MonoidHomClass F R S] (φ : F) (f : ι → R) (α : ι →₀ ℕ) :
     φ (monoVal f α) = monoVal (fun i => φ (f i)) α := by
   simp [monoVal, Finsupp.prod, map_prod]
 
+/- English proof (translation)
+The claim follows from `IsUnit.prod_iff.mpr fun i _ => (hu i).pow _`.
+-/
 theorem isUnit_monoVal [CommMonoid R] {u : ι → R} (hu : ∀ i, IsUnit (u i)) (α : ι →₀ ℕ) :
     IsUnit (monoVal u α) :=
   IsUnit.prod_iff.mpr fun i _ => (hu i).pow _
 
+/- English proof (translation)
+Simplify using `[monoVal, MvPolynomial.eval_monomial]`.
+-/
 theorem monoVal_eq_eval [CommSemiring R] (f : ι → R) (α : ι →₀ ℕ) :
     monoVal f α = MvPolynomial.eval f (MvPolynomial.monomial α 1) := by
   simp [monoVal, MvPolynomial.eval_monomial]
 
+/- English proof (translation)
+Simplify using `[monoVal, MvPolynomial.monomial_eq]`.
+-/
 theorem monoVal_X [CommSemiring R] (α : ι →₀ ℕ) :
     monoVal (MvPolynomial.X : ι → MvPolynomial ι R) α = MvPolynomial.monomial α 1 := by
   simp [monoVal, MvPolynomial.monomial_eq]
 
+/- English proof (translation)
+Simplify using `[monoVal, MonoDeg.congr, Finsupp.prod_equivMapDomain]`.
+-/
 theorem monoVal_congr [CommMonoid R] {κ : Type*} (e : ι ≃ κ) (f : κ → R) (a : ℕ)
     (α : MonoDeg ι a) : monoVal f (MonoDeg.congr e a α).1 = monoVal (f ∘ e) α.1 := by
   simp [monoVal, MonoDeg.congr, Finsupp.prod_equivMapDomain]
 
 variable [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[Ideal.mem_span_pow_iff_exists_isHomogeneous]`. Conclude with `⟨_, MvPolynomial.isHomogeneous_monomial 1 α.2, (monoVal_eq_eval f α.1).symm⟩`.
+-/
 theorem monoVal_mem_pow (f : ι → R) {a : ℕ} (α : MonoDeg ι a) :
     monoVal f α.1 ∈ Ideal.span (Set.range f) ^ a := by
   rw [Ideal.mem_span_pow_iff_exists_isHomogeneous]
   exact ⟨_, MvPolynomial.isHomogeneous_monomial 1 α.2, (monoVal_eq_eval f α.1).symm⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨p, hp, rfl⟩` from `(Ideal.mem_span_pow_iff_exists_isHomogeneous f y).mp hy`. Rewrite using `[MvPolynomial.eval_eq]`. Use `Ideal.sum_mem _ fun d hd => Ideal.mul_mem_left _ _ (Ideal.subset_span ?_)` and prove the remaining obligations.
+
+Use `⟨⟨d, ?_⟩, rfl⟩` and prove the remaining obligations. Use `hp (MvPolynomial.mem_support_iff.mp hd)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]` and apply the resulting hypothesis. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨α, rfl⟩`.
+
+Conclude with `monoVal_mem_pow f α`.
+-/
 theorem span_range_pow_eq_span_monoVal (f : ι → R) (a : ℕ) :
     Ideal.span (Set.range f) ^ a =
       Ideal.span (Set.range fun α : MonoDeg ι a => monoVal f α.1) := by
@@ -98,6 +144,13 @@ theorem span_range_pow_eq_span_monoVal (f : ι → R) (a : ℕ) :
 
 variable [Finite ι] {M : Type*} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `r hr m _`. Rewrite `hr` using `[span_range_pow_eq_span_monoVal, Ideal.mem_span_range_iff_exists_fun]`.
+
+Take `⟨b, rfl⟩` from `hr`. Conclude with `⟨fun α => b α • m, by simp [Finset.sum_smul, mul_comm, smul_smul]⟩`. Introduce and unpack `_ _ ⟨c, rfl⟩ ⟨d, rfl⟩`. Conclude with `⟨c + d, by simp [Finset.sum_add_distrib]⟩`. Introduce and unpack `⟨c, rfl⟩`.
+
+Conclude with `Submodule.sum_mem _ fun α _ => Submodule.smul_mem_smul (monoVal_mem_pow f α) trivial`.
+-/
 theorem mem_pow_smul_top_iff (f : ι → R) (a : ℕ) (x : M) :
     x ∈ (Ideal.span (Set.range f) ^ a • ⊤ : Submodule R M) ↔
       ∃ c : MonoDeg ι a → M, ∑ α, monoVal f α.1 • c α = x := by
@@ -129,23 +182,38 @@ variable (I : Ideal R) (M : Type*) [AddCommGroup M] [Module R M] (a : ℕ)
 
 def mk : ↥(I ^ a • ⊤ : Submodule R M) →ₗ[R] powGr I M a := Submodule.mkQ _
 
+/- English proof (translation)
+The claim follows from `Submodule.mkQ_surjective _`.
+-/
 theorem mk_surjective : Function.Surjective (mk I M a) := Submodule.mkQ_surjective _
 
 variable {I M a} in
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+-/
 theorem mk_eq_zero (x : ↥(I ^ a • ⊤ : Submodule R M)) :
     mk I M a x = 0 ↔ (x : M) ∈ (I ^ (a + 1) • ⊤ : Submodule R M) :=
   Submodule.Quotient.mk_eq_zero _
 
 variable {I M a} in
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.eq _`.
+-/
 theorem mk_eq_mk (x y : ↥(I ^ a • ⊤ : Submodule R M)) :
     mk I M a x = mk I M a y ↔ (x : M) - y ∈ (I ^ (a + 1) • ⊤ : Submodule R M) :=
   Submodule.Quotient.eq _
 
+/- English proof (translation)
+The claim follows from `Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_succ a))`.
+-/
 theorem pow_succ_smul_le : (I ^ (a + 1) • ⊤ : Submodule R M) ≤ I ^ a • ⊤ :=
   Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_succ a))
 
+/- English proof (translation)
+Introduce and unpack `x ⟨r, hr⟩`. Take `⟨x, rfl⟩` from `mk_surjective I M a x`. Express the relevant statement in the definitionally equal form `r • mk I M a x = 0`. Rewrite using `[← map_smul, mk_eq_zero, pow_succ', mul_smul]`. Conclude with `Submodule.smul_mem_smul hr x.2`.
+-/
 theorem isTorsionBySet : Module.IsTorsionBySet R (powGr I M a) I := by
   rintro x ⟨r, hr⟩
   obtain ⟨x, rfl⟩ := mk_surjective I M a x
@@ -157,6 +225,9 @@ instance module : Module (R ⧸ I) (powGr I M a) := (isTorsionBySet I M a).modul
 
 variable {I M a} in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mk_smul (r : R) (x : powGr I M a) : Ideal.Quotient.mk I r • x = r • x := rfl
 
 instance isScalarTower {A : Type*} [Semiring A] [SMul A R] [IsScalarTower A R R] [Module A M]
@@ -176,11 +247,17 @@ def map {N : Type*} [AddCommGroup N] [Module R N] (g : M →ₗ[R] N) :
 
 variable {I M a} in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_mk {N : Type*} [AddCommGroup N] [Module R N] (g : M →ₗ[R] N)
     (x : ↥(I ^ a • ⊤ : Submodule R M)) :
     map I a g (mk I M a x) =
       mk I N a ⟨g x, Submodule.smul_top_le_comap_smul_top (I ^ a) g x.2⟩ := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `mk_surjective I M a x`. Both sides reduce to the same expression.
+-/
 @[simp] theorem map_id : map I a (LinearMap.id : M →ₗ[R] M) = LinearMap.id := by
   refine LinearMap.ext fun x => ?_
   obtain ⟨x, rfl⟩ := mk_surjective I M a x
@@ -188,6 +265,9 @@ theorem map_mk {N : Type*} [AddCommGroup N] [Module R N] (g : M →ₗ[R] N)
 
 variable {M} in
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `mk_surjective I M a x`. Both sides reduce to the same expression.
+-/
 theorem map_comp {N P : Type*} [AddCommGroup N] [Module R N] [AddCommGroup P] [Module R P]
     (g : M →ₗ[R] N) (h : N →ₗ[R] P) : map I a (h ∘ₗ g) = map I a h ∘ₗ map I a g := by
   refine LinearMap.ext fun x => ?_
@@ -199,15 +279,26 @@ def toQuot : powGr I M a →ₗ[R] M ⧸ (I ^ (a + 1) • ⊤ : Submodule R M) :
 
 variable {I M a} in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toQuot_mk (x : ↥(I ^ a • ⊤ : Submodule R M)) :
     toQuot I M a (mk I M a x) = Submodule.Quotient.mk (x : M) := rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨x, rfl⟩` from `mk_surjective I M a x`. Rewrite `hx` using `[toQuot_mk, Submodule.Quotient.mk_eq_zero, ← mk_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem toQuot_injective : Function.Injective (toQuot I M a) := by
   rw [injective_iff_map_eq_zero]
   intro x hx
   obtain ⟨x, rfl⟩ := mk_surjective I M a x
   rwa [toQuot_mk, Submodule.Quotient.mk_eq_zero, ← mk_eq_zero] at hx
 
+/- English proof (translation)
+Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨mk I M a ⟨y, (Submodule.Quotient.mk_eq_zero _).mp h⟩, rfl⟩`.
+
+Introduce and unpack `⟨x, hx⟩`. Take `⟨x, rfl⟩` from `mk_surjective I M a x`. Rewrite using `[← hx]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr x.2`.
+-/
 theorem exact_toQuot_factor :
     Function.Exact (toQuot I M a) (Submodule.factor (pow_succ_smul_le I M a)) := by
   intro y
@@ -233,6 +324,9 @@ def mulElem (r : R) (hr : r ∈ I ^ a) : (M ⧸ (I • ⊤ : Submodule R M)) →
 
 variable {I M a} in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulElem_mk (r : R) (hr : r ∈ I ^ a) (x : M) :
     mulElem M r hr (Submodule.Quotient.mk x) =
       mk I M a ⟨r • x, Submodule.smul_mem_smul hr trivial⟩ := rfl
@@ -259,11 +353,19 @@ noncomputable def monoToPowGr (f : ι → R) (a : ℕ) :
 
 variable {M}
 
+/- English proof (translation)
+Simplify using `only [monoToPowGr, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`.
+-/
 theorem monoToPowGr_apply (f : ι → R) (a : ℕ)
     (c : MonoDeg ι a → M ⧸ (Ideal.span (Set.range f) • ⊤ : Submodule R M)) :
     monoToPowGr M f a c = ∑ α, powGr.mulElem M (monoVal f α.1) (monoVal_mem_pow f α) (c α) := by
   simp only [monoToPowGr, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]
 
+/- English proof (translation)
+Rewrite using `[monoToPowGr_apply]`. Simplify using `only [powGr.mulElem_mk]`. Rewrite using `[← map_sum]`. Use `congr 1`. Use `ext`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem monoToPowGr_mk (f : ι → R) (a : ℕ) (c : MonoDeg ι a → M) :
     monoToPowGr M f a (fun α => Submodule.Quotient.mk (c α)) =
       powGr.mk _ M a ⟨∑ α, monoVal f α.1 • c α, (mem_pow_smul_top_iff f a _).mpr ⟨c, rfl⟩⟩ := by
@@ -274,6 +376,9 @@ theorem monoToPowGr_mk (f : ι → R) (a : ℕ) (c : MonoDeg ι a → M) :
   ext
   simp
 
+/- English proof (translation)
+Rewrite using `[monoToPowGr_apply, Finset.sum_eq_single α]`. Rewrite using `[Pi.single_eq_same]`. Introduce `β _ h`. Rewrite using `[Pi.single_eq_of_ne h, map_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem monoToPowGr_single [DecidableEq ι] (f : ι → R) (a : ℕ) (α : MonoDeg ι a)
     (x : M ⧸ (Ideal.span (Set.range f) • ⊤ : Submodule R M)) :
     monoToPowGr M f a (Pi.single α x) =
@@ -286,12 +391,20 @@ theorem monoToPowGr_single [DecidableEq ι] (f : ι → R) (a : ℕ) (α : MonoD
 
 variable (M) in
 
+/- English proof (translation)
+Introduce `x`. Take `⟨⟨x, hx⟩, rfl⟩` from `powGr.mk_surjective _ M a x`. Take `⟨c, rfl⟩` from `(mem_pow_smul_top_iff f a x).mp hx`. Conclude with `⟨_, monoToPowGr_mk f a c⟩`.
+-/
 theorem monoToPowGr_surjective (f : ι → R) (a : ℕ) : Function.Surjective (monoToPowGr M f a) := by
   intro x
   obtain ⟨⟨x, hx⟩, rfl⟩ := powGr.mk_surjective _ M a x
   obtain ⟨c, rfl⟩ := (mem_pow_smul_top_iff f a x).mp hx
   exact ⟨_, monoToPowGr_mk f a c⟩
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h c hc α`. Use `h _ ((monoToPowGr_mk f a c).trans ((powGr.mk_eq_zero _).mpr hc))` as an intermediate fact. Conclude with `(Submodule.Quotient.mk_eq_zero _).mp (congrFun this α)`.
+
+Introduce `h c hc choose d hd using fun α => Submodule.Quotient.mk_surjective _ (c α)`. Take `rfl : c = fun α => Submodule.Quotient.mk (d α)` from `funext fun α => (hd α).symm`. Rewrite `hc` using `[monoToPowGr_mk, powGr.mk_eq_zero]`. Conclude with `funext fun α => (Submodule.Quotient.mk_eq_zero _).mpr (h d hc α)`.
+-/
 theorem monoToPowGr_injective_iff (f : ι → R) (a : ℕ) :
     Function.Injective (monoToPowGr M f a) ↔ ∀ c : MonoDeg ι a → M,
       ∑ α, monoVal f α.1 • c α ∈ (Ideal.span (Set.range f) ^ (a + 1) • ⊤ : Submodule R M) →
@@ -307,15 +420,26 @@ theorem monoToPowGr_injective_iff (f : ι → R) (a : ℕ) :
     rw [monoToPowGr_mk, powGr.mk_eq_zero] at hc
     exact funext fun α => (Submodule.Quotient.mk_eq_zero _).mpr (h d hc α)
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun a => (monoToPowGr_injective_iff f a).symm`.
+-/
 theorem isQuasiRegularSeq_iff_injective (f : ι → R) :
     IsQuasiRegularSeq M f ↔ ∀ a, Function.Injective (monoToPowGr M f a) :=
   forall_congr' fun a => (monoToPowGr_injective_iff f a).symm
 
+/- English proof (translation)
+The claim follows from `(isQuasiRegularSeq_iff_injective f).trans <| forall_congr' fun a => ⟨fun h => ⟨h, monoToPowGr_surjective M f a⟩, fun h => h.1⟩`.
+-/
 theorem isQuasiRegularSeq_iff_bijective (f : ι → R) :
     IsQuasiRegularSeq M f ↔ ∀ a, Function.Bijective (monoToPowGr M f a) :=
   (isQuasiRegularSeq_iff_injective f).trans <| forall_congr' fun a =>
     ⟨fun h => ⟨h, monoToPowGr_surjective M f a⟩, fun h => h.1⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a c hc α hα`. Rewrite `hc` using `[← MonoDeg.sum_eq_sum_finsuppAntidiag a fun α => monoVal f α • c α]`. Conclude with `h a (fun α => c α.1) hc ⟨α, hα⟩`. Introduce `h a c hc α`.
+
+Use `h a (fun β => if hβ : β.degree = a then c ⟨β, hβ⟩ else 0) (by` as an intermediate fact. Rewrite using `[← MonoDeg.sum_eq_sum_finsuppAntidiag a fun β => monoVal f β • if hβ : β.degree = a then c ⟨β, hβ⟩ else 0]`. Use `hc using 3 with β` and compare the differences between its conclusion and the goal. Rewrite using `[dif_pos β.2]) α.1 α.2`. Rewrite `this` using `[dif_pos α.2]`. Then use the resulting hypothesis.
+-/
 theorem isQuasiRegularSeq_iff_finsuppAntidiag {ι : Type*} [Fintype ι] [DecidableEq ι] (f : ι → R) :
     IsQuasiRegularSeq M f ↔ ∀ (a : ℕ) (c : (ι →₀ ℕ) → M),
       ∑ α ∈ Finset.finsuppAntidiag Finset.univ a, monoVal f α • c α ∈
@@ -333,6 +457,19 @@ theorem isQuasiRegularSeq_iff_finsuppAntidiag {ι : Type*} [Fintype ι] [Decidab
       rw [dif_pos β.2]) α.1 α.2
     rwa [dif_pos α.2] at this
 
+/- English proof (translation)
+Establish `key : ∀ (a : ℕ) (p : MvPolynomial ι R), p.IsHomogeneous a → MvPolynomial.eval f p = ∑ α : MonoDeg ι a, monoVal f α.1 • p.coeff α.1`. Introduce `a p hp`. Establish `hs` using `Finset.sum_subtype (p := fun α : ι →₀ ℕ => α.degree = a) (F := MonoDeg.fintype ι a) (Finsupp.finite_of_degree_eq (σ := ι) a).toFinset (by simp) (fun α => monoVal f α • p.coeff α)`. Rewrite using `[← hs, MvPolynomial.eval_eq]`. Rewrite using `[Finset.sum_subset (s₂ := (Finsupp.finite_of_degree_eq (σ := ι) a).toFinset)]`.
+
+Conclude with `Finset.sum_congr rfl fun α _ => mul_comm _ _`. Introduce `d hd`. Use `hp (MvPolynomial.mem_support_iff.mp hd)` as an intermediate fact. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Rewrite using `[Finsupp.degree_eq_weight_one]` and apply the resulting hypothesis.
+
+Introduce `d _ hd`. Simplify using `[MvPolynomial.notMem_support_iff.mp hd]`. Simplify using `only [IsQuasiRegularSeq, smul_eq_mul, Ideal.mul_top] at key ⊢`. Prove the components needed by the constructor for the conclusion. Introduce `h a p hp hf α`.
+
+Distinguish the cases in `hα : α.degree = a`. Conclude with `h a (fun β => p.coeff β.1) (key a p hp ▸ hf) ⟨α, hα⟩`. Rewrite using `[hp.coeff_eq_zero hα]`. Conclude with `zero_mem _`. Introduce `h a c hc α`.
+
+Establish `hco : ∀ β : MonoDeg ι a, (∑ γ : MonoDeg ι a, MvPolynomial.monomial γ.1 (c γ)).coeff β.1 = c β`. Introduce `β`. Simplify using `[MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, Subtype.val_inj]`. Establish `hp : (∑ γ : MonoDeg ι a, MvPolynomial.monomial γ.1 (c γ)).IsHomogeneous a` using `MvPolynomial.IsHomogeneous.sum _ _ _ fun γ _ => MvPolynomial.isHomogeneous_monomial _ γ.2`. Rewrite using `[← hco α]`.
+
+Use `h a _ hp ?_ _` and prove the remaining obligations. Rewrite using `[key a _ hp]`. Simplify `hc` using `only [hco]`.
+-/
 theorem isQuasiRegularSeq_self_iff (f : ι → R) :
     IsQuasiRegularSeq R f ↔ ∀ (a : ℕ) (p : MvPolynomial ι R), p.IsHomogeneous a →
       MvPolynomial.eval f p ∈ Ideal.span (Set.range f) ^ (a + 1) →
@@ -379,10 +516,18 @@ noncomputable def powGrEquiv {f : ι → R} (h : IsQuasiRegularSeq M f) (a : ℕ
       Ideal.span (Set.range f)] powGr (Ideal.span (Set.range f)) M a :=
   LinearEquiv.ofBijective (monoToPowGr M f a) ((isQuasiRegularSeq_iff_bijective f).mp h a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem powGrEquiv_apply {f : ι → R} (h : IsQuasiRegularSeq M f) (a : ℕ)
     (c : MonoDeg ι a → M ⧸ (Ideal.span (Set.range f) • ⊤ : Submodule R M)) :
     h.powGrEquiv a c = monoToPowGr M f a c := rfl
 
+/- English proof (translation)
+Introduce `a c hc α`. Rewrite `hc`, the goal using `[e.surjective.range_comp]`. Use `h a (fun β => c ((MonoDeg.congr e a).symm β)) (by` as an intermediate fact. Rewrite using `[← (MonoDeg.congr e a).sum_comp]`. Simplify `hc) (MonoDeg.congr e a α)` using `only [monoVal_congr, Equiv.symm_apply_apply]`.
+
+Simplify using `using this`.
+-/
 theorem comp_equiv {κ : Type*} [Finite κ] {f : ι → R} (h : IsQuasiRegularSeq M f) (e : κ ≃ ι) :
     IsQuasiRegularSeq M (f ∘ e) := by
   intro a c hc α
@@ -392,6 +537,11 @@ theorem comp_equiv {κ : Type*} [Finite κ] {f : ι → R} (h : IsQuasiRegularSe
     simpa only [monoVal_congr, Equiv.symm_apply_apply] using hc) (MonoDeg.congr e a α)
   simpa using this
 
+/- English proof (translation)
+Establish `hI : Ideal.span (Set.range fun i => u i * f i) = Ideal.span (Set.range f)`. Apply the tactic sequence `apply le_antisymm <;> rw [Ideal.span_le] <;> rintro _ ⟨i, rfl⟩`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ (hu i)).mp (Ideal.subset_span ⟨i, rfl⟩)`. Introduce `a c hc α`.
+
+Rewrite `hc`, the goal using `[hI]`. Use `h a (fun β => monoVal u β.1 • c β) (by` as an intermediate fact. Simplify `hc) α` using `only [monoVal_mul, smul_smul, mul_comm]`. Conclude with `(Submodule.smul_mem_iff_of_isUnit _ (isUnit_monoVal hu α.1)).mp this`.
+-/
 theorem unit_mul {f : ι → R} (h : IsQuasiRegularSeq M f) {u : ι → R} (hu : ∀ i, IsUnit (u i)) :
     IsQuasiRegularSeq M fun i => u i * f i := by
   have hI : Ideal.span (Set.range fun i => u i * f i) = Ideal.span (Set.range f) := by
@@ -404,12 +554,18 @@ theorem unit_mul {f : ι → R} (h : IsQuasiRegularSeq M f) {u : ι → R} (hu :
     simpa only [monoVal_mul, smul_smul, mul_comm] using hc) α
   exact (Submodule.smul_mem_iff_of_isUnit _ (isUnit_monoVal hu α.1)).mp this
 
+/- English proof (translation)
+Use `choose u hu using hfg`. Take `rfl : g = fun i => (u i : R) * f i` from `funext fun i => by rw [← hu i, mul_comm]`. Conclude with `h.unit_mul fun i => (u i).isUnit`.
+-/
 theorem of_associated {f g : ι → R} (h : IsQuasiRegularSeq M f) (hfg : ∀ i, Associated (f i) (g i)) :
     IsQuasiRegularSeq M g := by
   choose u hu using hfg
   obtain rfl : g = fun i => (u i : R) * f i := funext fun i => by rw [← hu i, mul_comm]
   exact h.unit_mul fun i => (u i).isUnit
 
+/- English proof (translation)
+Introduce `a c hc α`. Use `h a (fun β => e.symm (c β)) (by` as an intermediate fact. Use `Submodule.smul_top_le_comap_smul_top _ e.symm.toLinearMap hc` as an intermediate fact. Simplify using `using this) α`. Simplify using `using Submodule.smul_top_le_comap_smul_top _ e.toLinearMap this`.
+-/
 theorem of_linearEquiv {N : Type*} [AddCommGroup N] [Module R N] {f : ι → R}
     (h : IsQuasiRegularSeq M f) (e : M ≃ₗ[R] N) : IsQuasiRegularSeq N f := by
   intro a c hc α
@@ -420,22 +576,39 @@ theorem of_linearEquiv {N : Type*} [AddCommGroup N] [Module R N] {f : ι → R}
 
 end IsQuasiRegularSeq
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by simpa [Function.comp_assoc] using h.comp_equiv e.symm, fun h => h.comp_equiv e⟩`.
+-/
 theorem isQuasiRegularSeq_comp_equiv_iff {κ : Type*} [Finite κ] (f : ι → R) (e : κ ≃ ι) :
     IsQuasiRegularSeq M (f ∘ e) ↔ IsQuasiRegularSeq M f :=
   ⟨fun h => by simpa [Function.comp_assoc] using h.comp_equiv e.symm, fun h => h.comp_equiv e⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.of_associated fun i => associated_unit_mul_left _ _ (hu i), fun h => h.unit_mul hu⟩`.
+-/
 theorem isQuasiRegularSeq_unit_mul_iff (f : ι → R) {u : ι → R} (hu : ∀ i, IsUnit (u i)) :
     (IsQuasiRegularSeq M fun i => u i * f i) ↔ IsQuasiRegularSeq M f :=
   ⟨fun h => h.of_associated fun i => associated_unit_mul_left _ _ (hu i), fun h => h.unit_mul hu⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.of_linearEquiv e, fun h => h.of_linearEquiv e.symm⟩`.
+-/
 theorem isQuasiRegularSeq_congr {N : Type*} [AddCommGroup N] [Module R N] (f : ι → R)
     (e : M ≃ₗ[R] N) : IsQuasiRegularSeq M f ↔ IsQuasiRegularSeq N f :=
   ⟨fun h => h.of_linearEquiv e, fun h => h.of_linearEquiv e.symm⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `by rw [h]; trivial`.
+-/
 theorem isQuasiRegularSeq_of_smul_top_eq_top {f : ι → R}
     (h : (Ideal.span (Set.range f) • ⊤ : Submodule R M) = ⊤) : IsQuasiRegularSeq M f :=
   fun _ _ _ _ => by rw [h]; trivial
 
+/- English proof (translation)
+Establish `hI : Ideal.span (Set.range fun i => algebraMap R S (f i)) = (Ideal.span (Set.range f)).map (algebraMap R S)`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hm : ∀ (J : Ideal R) (x : M), x ∈ (J.map (algebraMap R S) • ⊤ : Submodule S M) ↔ x ∈ (J • ⊤ : Submodule R M)`. Introduce `J x`.
+
+Rewrite using `[← Submodule.restrictScalars_mem R, Ideal.smul_restrictScalars, Submodule.restrictScalars_top]`. Simplify using `only [IsQuasiRegularSeq, hI, ← Ideal.map_pow, hm, ← map_monoVal, algebraMap_smul]`.
+-/
 theorem isQuasiRegularSeq_algebraMap_iff (S : Type*) [CommRing S] [Algebra R S] [Module S M]
     [IsScalarTower R S M] (f : ι → R) :
     IsQuasiRegularSeq M (fun i => algebraMap R S (f i)) ↔ IsQuasiRegularSeq M f := by
@@ -466,6 +639,13 @@ noncomputable def IsQuasiRegularSeq.powGrBasis {f : ι → R} (h : IsQuasiRegula
   Module.Basis.ofEquivFun <| (h.powGrEquiv a).symm ≪≫ₗ
     LinearEquiv.piCongrRight fun _ => quotSMulTopEquivQuot _
 
+/- English proof (translation)
+Establish `h1 : (LinearEquiv.piCongrRight fun _ : MonoDeg ι a => quotSMulTopEquivQuot (Ideal.span (Set.range f))).symm (Pi.single α 1) = Pi.single α (Submodule.Quotient.mk 1)`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use function extensionality and compare the values at `β`. Rewrite using `[LinearEquiv.piCongrRight_apply]`. Distinguish the cases in `hβ : β = α`.
+
+Substitute `hβ` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same]`. Both sides reduce to the same expression. Rewrite using `[Pi.single_eq_of_ne hβ, Pi.single_eq_of_ne hβ, map_zero]`. Rewrite using `[IsQuasiRegularSeq.powGrBasis, Module.Basis.coe_ofEquivFun]`.
+
+Use `beta_reduce`. Rewrite using `[LinearEquiv.trans_symm, LinearEquiv.trans_apply, LinearEquiv.symm_symm, h1, IsQuasiRegularSeq.powGrEquiv_apply, monoToPowGr_single, powGr.mulElem_mk]`. Use `congr 2`. Conclude with `mul_one _`.
+-/
 theorem IsQuasiRegularSeq.powGrBasis_apply {f : ι → R} (h : IsQuasiRegularSeq R f) (a : ℕ)
     (α : MonoDeg ι a) : h.powGrBasis a α = powGr.mk _ R a
       ⟨monoVal f α.1, by simpa using monoVal_mem_pow f α⟩ := by
@@ -488,6 +668,9 @@ theorem IsQuasiRegularSeq.powGrBasis_apply {f : ι → R} (h : IsQuasiRegularSeq
   congr 2
   exact mul_one _
 
+/- English proof (translation)
+The claim follows from `Module.Free.of_equiv (h.powGrEquiv a)`.
+-/
 theorem IsQuasiRegularSeq.free_powGr {M : Type*} [AddCommGroup M] [Module R M] {f : ι → R}
     (h : IsQuasiRegularSeq M f) (a : ℕ)
     [Module.Free (R ⧸ Ideal.span (Set.range f))
@@ -495,6 +678,9 @@ theorem IsQuasiRegularSeq.free_powGr {M : Type*} [AddCommGroup M] [Module R M] {
     Module.Free (R ⧸ Ideal.span (Set.range f)) (powGr (Ideal.span (Set.range f)) M a) :=
   Module.Free.of_equiv (h.powGrEquiv a)
 
+/- English proof (translation)
+The claim follows from `have : Module.Finite (R ⧸ Ideal.span (Set.range f)) (M ⧸ (Ideal.span (Set.range f) • ⊤ : Submodule R M)) := Module.Finite.of_restrictScalars_finite R _ _ Module.Finite.of_surjective _ (monoToPowGr_surjective M f a)`.
+-/
 theorem finite_powGr {M : Type*} [AddCommGroup M] [Module R M] [Module.Finite R M] (f : ι → R)
     (a : ℕ) :
     Module.Finite (R ⧸ Ideal.span (Set.range f)) (powGr (Ideal.span (Set.range f)) M a) :=
@@ -518,6 +704,9 @@ noncomputable def monoToQuotPow (f : ι → R) (a : ℕ) :
         rw [pow_succ]
         exact Ideal.mul_mem_mul (monoVal_mem_pow f α) hx) ∘ₗ LinearMap.proj α
 
+/- English proof (translation)
+Rewrite using `[monoToQuotPow, LinearMap.sum_apply, map_sum]`. Both sides reduce to the same expression.
+-/
 theorem monoToQuotPow_mk (f : ι → R) (a : ℕ) (c : MonoDeg ι a → R) :
     monoToQuotPow f a (fun α => Ideal.Quotient.mk _ (c α)) =
       Ideal.Quotient.mk _ (∑ α, monoVal f α.1 * c α) := by
@@ -526,6 +715,15 @@ theorem monoToQuotPow_mk (f : ι → R) (a : ℕ) (c : MonoDeg ι a → R) :
 
 variable {M : Type*} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Use `set I := Ideal.span (Set.range f) with hI`. Set `e₁ : M ⊗[R] (MonoDeg ι a → R ⧸ I) ≃ₗ[R] (MonoDeg ι a → M ⧸ (I • ⊤ : Submodule R M))` to `TensorProduct.piRight R R M _ ≪≫ₗ LinearEquiv.piCongrRight fun _ => TensorProduct.tensorQuotEquivQuotSMul M I`. Set `e₂` to `TensorProduct.tensorQuotEquivQuotSMul M (I ^ (a + 1))`. Establish `hsq : e₂.toLinearMap ∘ₗ (monoToQuotPow f a).lTensor M = (powGr.toQuot I M a ∘ₗ (monoToPowGr M f a).restrictScalars R) ∘ₗ e₁.toLinearMap`. Use `TensorProduct.ext' fun m c => ?_` and prove the remaining obligations.
+
+Use `choose d hd using fun α => Ideal.Quotient.mk_surjective (c α)`. Take `rfl : c = fun α => Ideal.Quotient.mk I (d α)` from `funext fun α => (hd α).symm`. Establish `h1 : e₁ (m ⊗ₜ fun α => Ideal.Quotient.mk I (d α)) = fun α => Submodule.Quotient.mk (d α • m)`. Use function extensionality and compare the values at `α`. Conclude with `TensorProduct.tensorQuotEquivQuotSMul_tmul_mk I m (d α)`.
+
+Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, h1, LinearMap.lTensor_tmul, LinearMap.restrictScalars_apply]`. Rewrite using `[monoToQuotPow_mk, monoToPowGr_mk, powGr.toQuot_mk]`. Use `(TensorProduct.tensorQuotEquivQuotSMul_tmul_mk _ m _).trans ?_` and prove the remaining obligations. Simplify using `[Finset.sum_smul, mul_smul]`. Establish `hfun : e₂ ∘ (monoToQuotPow f a).lTensor M = (powGr.toQuot I M a ∘ monoToPowGr M f a) ∘ e₁` using `congrArg DFunLike.coe hsq`.
+
+Rewrite using `[← e₂.injective.of_comp_iff, hfun, Function.Injective.of_comp_iff' _ e₁.bijective, (powGr.toQuot_injective I M a).of_comp_iff]`.
+-/
 theorem monoToPowGr_injective_iff_lTensor (f : ι → R) (a : ℕ) :
     Function.Injective (monoToPowGr M f a) ↔
       Function.Injective ((monoToQuotPow f a).lTensor M) := by
@@ -554,11 +752,17 @@ theorem monoToPowGr_injective_iff_lTensor (f : ι → R) (a : ℕ) :
   rw [← e₂.injective.of_comp_iff, hfun, Function.Injective.of_comp_iff' _ e₁.bijective,
     (powGr.toQuot_injective I M a).of_comp_iff]
 
+/- English proof (translation)
+The claim follows from `(isQuasiRegularSeq_iff_injective f).trans <| forall_congr' fun a => monoToPowGr_injective_iff_lTensor f a`.
+-/
 theorem isQuasiRegularSeq_iff_lTensor (f : ι → R) :
     IsQuasiRegularSeq M f ↔ ∀ a, Function.Injective ((monoToQuotPow f a).lTensor M) :=
   (isQuasiRegularSeq_iff_injective f).trans <| forall_congr' fun a =>
     monoToPowGr_injective_iff_lTensor f a
 
+/- English proof (translation)
+Rewrite using `[LinearMap.lTensor_tensor, LinearMap.coe_comp, LinearMap.coe_comp, LinearEquiv.coe_coe, LinearEquiv.coe_coe, (TensorProduct.assoc R N M Q).symm.injective.of_comp_iff, Function.Injective.of_comp_iff' _ (TensorProduct.assoc R N M P).bijective]`.
+-/
 private theorem injective_lTensor_tensor_iff (N : Type*) [AddCommGroup N] [Module R N]
     {P Q : Type*} [AddCommGroup P] [Module R P] [AddCommGroup Q] [Module R Q] (g : P →ₗ[R] Q) :
     Function.Injective (g.lTensor (N ⊗[R] M)) ↔ Function.Injective ((g.lTensor M).lTensor N) := by
@@ -566,58 +770,93 @@ private theorem injective_lTensor_tensor_iff (N : Type*) [AddCommGroup N] [Modul
     LinearEquiv.coe_coe, (TensorProduct.assoc R N M Q).symm.injective.of_comp_iff,
     Function.Injective.of_comp_iff' _ (TensorProduct.assoc R N M P).bijective]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[isQuasiRegularSeq_iff_lTensor]`. Conclude with `fun a => (injective_lTensor_tensor_iff N _).mpr (Module.Flat.lTensor_preserves_injective_linearMap _ (h a))`.
+-/
 theorem IsQuasiRegularSeq.tensor {f : ι → R} (h : IsQuasiRegularSeq M f) (N : Type*)
     [AddCommGroup N] [Module R N] [Module.Flat R N] : IsQuasiRegularSeq (N ⊗[R] M) f := by
   rw [isQuasiRegularSeq_iff_lTensor] at h ⊢
   exact fun a => (injective_lTensor_tensor_iff N _).mpr
     (Module.Flat.lTensor_preserves_injective_linearMap _ (h a))
 
+/- English proof (translation)
+Simplify using `only [isQuasiRegularSeq_iff_lTensor, injective_lTensor_tensor_iff, Module.FaithfullyFlat.lTensor_injective_iff_injective]`.
+-/
 theorem isQuasiRegularSeq_tensor_iff (f : ι → R) (N : Type*) [AddCommGroup N] [Module R N]
     [Module.FaithfullyFlat R N] : IsQuasiRegularSeq (N ⊗[R] M) f ↔ IsQuasiRegularSeq M f := by
   simp only [isQuasiRegularSeq_iff_lTensor, injective_lTensor_tensor_iff,
     Module.FaithfullyFlat.lTensor_injective_iff_injective]
 
+/- English proof (translation)
+The claim follows from `(h.tensor N).of_linearEquiv (TensorProduct.rid R N)`.
+-/
 theorem IsQuasiRegularSeq.of_flat_module {f : ι → R} (h : IsQuasiRegularSeq R f) (N : Type*)
     [AddCommGroup N] [Module R N] [Module.Flat R N] : IsQuasiRegularSeq N f :=
   (h.tensor N).of_linearEquiv (TensorProduct.rid R N)
 
 variable (S : Type*) [CommRing S] [Algebra R S]
 
+/- English proof (translation)
+The claim follows from `(isQuasiRegularSeq_algebraMap_iff S f).mpr (h.tensor S)`.
+-/
 theorem IsQuasiRegularSeq.baseChange [Module.Flat R S] {f : ι → R} (h : IsQuasiRegularSeq M f) :
     IsQuasiRegularSeq (S ⊗[R] M) fun i => algebraMap R S (f i) :=
   (isQuasiRegularSeq_algebraMap_iff S f).mpr (h.tensor S)
 
+/- English proof (translation)
+The claim follows from `(isQuasiRegularSeq_algebraMap_iff S f).mpr (h.of_flat_module S)`.
+-/
 theorem IsQuasiRegularSeq.of_flat [Module.Flat R S] {f : ι → R} (h : IsQuasiRegularSeq R f) :
     IsQuasiRegularSeq S fun i => algebraMap R S (f i) :=
   (isQuasiRegularSeq_algebraMap_iff S f).mpr (h.of_flat_module S)
 
+/- English proof (translation)
+The claim follows from `(isQuasiRegularSeq_algebraMap_iff S f).trans (isQuasiRegularSeq_tensor_iff f S)`.
+-/
 theorem isQuasiRegularSeq_baseChange_iff [Module.FaithfullyFlat R S] (f : ι → R) :
     (IsQuasiRegularSeq (S ⊗[R] M) fun i => algebraMap R S (f i)) ↔ IsQuasiRegularSeq M f :=
   (isQuasiRegularSeq_algebraMap_iff S f).trans (isQuasiRegularSeq_tensor_iff f S)
 
 variable {N : Type*} [AddCommGroup N] [Module R N]
 
+/- English proof (translation)
+The claim follows from `(h.baseChange S).of_linearEquiv hg.equiv`.
+-/
 theorem IsQuasiRegularSeq.of_flat_of_isBaseChange [Module S N] [IsScalarTower R S N]
     [Module.Flat R S] {g : M →ₗ[R] N} (hg : IsBaseChange S g) {f : ι → R}
     (h : IsQuasiRegularSeq M f) : IsQuasiRegularSeq N fun i => algebraMap R S (f i) :=
   (h.baseChange S).of_linearEquiv hg.equiv
 
+/- English proof (translation)
+The claim follows from `have : Module.Flat R S := IsLocalization.flat S T h.of_flat_of_isBaseChange S (IsLocalizedModule.isBaseChange T S g)`.
+-/
 theorem IsQuasiRegularSeq.of_isLocalizedModule [Module S N] [IsScalarTower R S N]
     (T : Submonoid R) [IsLocalization T S] (g : M →ₗ[R] N) [IsLocalizedModule T g] {f : ι → R}
     (h : IsQuasiRegularSeq M f) : IsQuasiRegularSeq N fun i => algebraMap R S (f i) :=
   have : Module.Flat R S := IsLocalization.flat S T
   h.of_flat_of_isBaseChange S (IsLocalizedModule.isBaseChange T S g)
 
+/- English proof (translation)
+The claim follows from `((isQuasiRegularSeq_algebraMap_iff (Localization T) f).mp (h.of_isLocalizedModule (Localization T) T (LocalizedModule.mkLinearMap T M))).of_linearEquiv (IsLocalizedModule.iso T g)`.
+-/
 theorem IsQuasiRegularSeq.of_isLocalizedModule' (T : Submonoid R) (g : M →ₗ[R] N)
     [IsLocalizedModule T g] {f : ι → R} (h : IsQuasiRegularSeq M f) : IsQuasiRegularSeq N f :=
   ((isQuasiRegularSeq_algebraMap_iff (Localization T) f).mp
     (h.of_isLocalizedModule (Localization T) T (LocalizedModule.mkLinearMap T M))).of_linearEquiv
     (IsLocalizedModule.iso T g)
 
+/- English proof (translation)
+The claim follows from `h.of_isLocalizedModule S T (Algebra.linearMap R S)`.
+-/
 theorem IsQuasiRegularSeq.of_isLocalization (T : Submonoid R) [IsLocalization T S] {f : ι → R}
     (h : IsQuasiRegularSeq R f) : IsQuasiRegularSeq S fun i => algebraMap R S (f i) :=
   h.of_isLocalizedModule S T (Algebra.linearMap R S)
 
+/- English proof (translation)
+Rewrite `hx` using `[← Submodule.localized₀_top T g, ← Submodule.localized₀_smul]`. Take `⟨m, hm, s, hs⟩` from `hx`. Rewrite `hs` using `[IsLocalizedModule.mk'_eq_iff, ← LinearMap.map_smul_of_tower, IsLocalizedModule.eq_iff_exists T g]`. Take `⟨t, ht⟩` from `hs`. Use `⟨(t * s : T), (t * s).2, ?_⟩` and prove the remaining obligations.
+
+Establish `: ((t * s : T) : R) • x = (t : R) • m`. Rewrite using `[Submonoid.coe_mul, mul_smul]`. Conclude with `ht.symm`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hm`.
+-/
 theorem exists_smul_mem_smul_top_of_isLocalizedModule (T : Submonoid R) (g : M →ₗ[R] N)
     [IsLocalizedModule T g] (J : Ideal R) {x : M} (hx : g x ∈ (J • ⊤ : Submodule R N)) :
     ∃ s ∈ T, s • x ∈ (J • ⊤ : Submodule R M) := by
@@ -633,6 +872,11 @@ theorem exists_smul_mem_smul_top_of_isLocalizedModule (T : Submonoid R) (g : M �
   rw [this]
   exact Submodule.smul_mem _ _ hm
 
+/- English proof (translation)
+Introduce `a c hc α`. Assume the negation of the conclusion as `hα`. Set `J : Ideal R` to `(Ideal.span (Set.range f) • ⊤ : Submodule R M).comap (LinearMap.toSpanSingleton R M (c α))`. Establish `hJ : J ≠ ⊤` using `fun hJ => hα (by simpa [J] using (Ideal.eq_top_iff_one J).mp hJ)`. Take `⟨P, hP, hJP⟩` from `Ideal.exists_le_maximal J hJ`.
+
+Establish `hIJ : Ideal.span (Set.range f) ≤ J` using `fun r hr => Submodule.smul_mem_smul hr trivial`. Use `h P (hIJ.trans hJP) a (fun β => g P (c β)) (by` as an intermediate fact. Simplify using `using Submodule.smul_top_le_comap_smul_top _ (g P) hc) α`. Take `⟨s, hs, hsx⟩` from `exists_smul_mem_smul_top_of_isLocalizedModule P.primeCompl (g P) _ this`. Conclude with `hs (hJP hsx)`.
+-/
 theorem IsQuasiRegularSeq.of_isLocalizedModule_maximal {f : ι → R}
     (Mₚ : ∀ (P : Ideal R) [P.IsMaximal], Type*)
     [∀ (P : Ideal R) [P.IsMaximal], AddCommGroup (Mₚ P)]
@@ -653,6 +897,9 @@ theorem IsQuasiRegularSeq.of_isLocalizedModule_maximal {f : ι → R}
   obtain ⟨s, hs, hsx⟩ := exists_smul_mem_smul_top_of_isLocalizedModule P.primeCompl (g P) _ this
   exact hs (hJP hsx)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h P _ _ => h.of_isLocalizedModule _ P.primeCompl (LocalizedModule.mkLinearMap _ M), fun h => .of_isLocalizedModule_maximal (fun P _ => LocalizedModule P.primeCompl M) (fun P _ => LocalizedModule.mkLinearMap P.primeCompl M) fun P _ hP => (isQuasiRegularSeq_algebraMap_iff _ f) …`.
+-/
 theorem isQuasiRegularSeq_iff_localization_maximal (f : ι → R) :
     IsQuasiRegularSeq M f ↔ ∀ (P : Ideal R) [P.IsMaximal], Ideal.span (Set.range f) ≤ P →
       IsQuasiRegularSeq (LocalizedModule P.primeCompl M)
@@ -662,6 +909,9 @@ theorem isQuasiRegularSeq_iff_localization_maximal (f : ι → R) :
       (fun P _ => LocalizedModule.mkLinearMap P.primeCompl M)
       fun P _ hP => (isQuasiRegularSeq_algebraMap_iff _ f).mp (h P hP)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h P _ _ => h.of_isLocalization _ P.primeCompl, fun h => .of_isLocalizedModule_maximal (fun P _ => Localization.AtPrime P) (fun P _ => Algebra.linearMap R (Localization.AtPrime P)) fun P _ hP => (isQuasiRegularSeq_algebraMap_iff _ f).mp (h P hP)⟩`.
+-/
 theorem isQuasiRegularSeq_self_iff_localization_maximal (f : ι → R) :
     IsQuasiRegularSeq R f ↔ ∀ (P : Ideal R) [P.IsMaximal], Ideal.span (Set.range f) ≤ P →
       IsQuasiRegularSeq (Localization.AtPrime P)
@@ -677,6 +927,15 @@ section Examples
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Introduce `a c hc α`. Simplify using `only [smul_eq_mul, Ideal.mul_top, monoVal_X] at hc ⊢`. Establish `h1` using `(MvPolynomial.mem_pow_idealOfVars_iff' _ _).mp hc α.1 (by simp [α.2])`. Rewrite `h1` using `[MvPolynomial.coeff_sum, Finset.sum_eq_single α]`. Rewrite using `[← pow_one (Ideal.span _)]`.
+
+Use `(MvPolynomial.mem_pow_idealOfVars_iff' _ _).mpr fun x hx => ?_` and prove the remaining obligations. Take `rfl : x = 0` from `(Finsupp.degree_eq_zero_iff x).mp (by omega)`. Simplify `h1` using `[MvPolynomial.coeff_monomial_mul']`. Introduce `β _ hβ`. Rewrite using `[MvPolynomial.coeff_monomial_mul', if_neg]`.
+
+Introduce `hle`. Take `⟨γ, hγ⟩` from `exists_add_of_le hle`. Establish `hd` using `congrArg Finsupp.degree hγ`. Rewrite `hd` using `[map_add, α.2, β.2]`. Take `rfl : γ = 0` from `(Finsupp.degree_eq_zero_iff γ).mp (by omega)`.
+
+Conclude with `hβ (Subtype.ext (by simpa using hγ.symm))`. Simplify using the standard rewrite rules.
+-/
 theorem isQuasiRegularSeq_X (ι : Type*) [Finite ι] :
     IsQuasiRegularSeq (MvPolynomial ι R) (MvPolynomial.X : ι → MvPolynomial ι R) := by
   classical
@@ -705,6 +964,11 @@ noncomputable instance MonoDeg.unique (ι : Type*) [Unique ι] (a : ℕ) : Uniqu
     ext
     simp [Finsupp.degree_eq_sum]
 
+/- English proof (translation)
+Establish `hI : Ideal.span (Set.range ![x]) = Ideal.span {x}` using `by simp`. Establish `hm : ∀ (y : R) (m : M), m ∈ (Ideal.span {y} • ⊤ : Submodule R M) ↔ ∃ m', m = y • m'`. Introduce `y m`. Simplify using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists, eq_comm]`. Establish `hv : ∀ a, monoVal ![x] (default : MonoDeg (Fin 1) a).1 = x ^ a` using `fun a => monoVal_single _ _ _`.
+
+Simplify using `only [IsQuasiRegularSeq, hI, Ideal.span_singleton_pow, hm, Fintype.sum_unique, hv, Unique.forall_iff]`. Conclude with `⟨fun h a m m' hm => h a (fun _ => m) ⟨m', hm⟩, fun h a c ⟨m', hm⟩ => h a _ m' hm⟩`.
+-/
 theorem isQuasiRegularSeq_singleton_iff {M : Type*} [AddCommGroup M] [Module R M] (x : R) :
     IsQuasiRegularSeq M ![x] ↔
       ∀ (a : ℕ) (m m' : M), x ^ a • m = x ^ (a + 1) • m' → ∃ m'', m = x • m'' := by
@@ -718,25 +982,43 @@ theorem isQuasiRegularSeq_singleton_iff {M : Type*} [AddCommGroup M] [Module R M
     Unique.forall_iff]
   exact ⟨fun h a m m' hm => h a (fun _ => m) ⟨m', hm⟩, fun h a c ⟨m', hm⟩ => h a _ m' hm⟩
 
+/- English proof (translation)
+The claim follows from `(isQuasiRegularSeq_singleton_iff x).mpr fun a _ m' h => ⟨m', hx.pow a (by simpa only [pow_succ, mul_smul] using h)⟩`.
+-/
 theorem isQuasiRegularSeq_singleton {M : Type*} [AddCommGroup M] [Module R M] {x : R}
     (hx : IsSMulRegular M x) : IsQuasiRegularSeq M ![x] :=
   (isQuasiRegularSeq_singleton_iff x).mpr fun a _ m' h =>
     ⟨m', hx.pow a (by simpa only [pow_succ, mul_smul] using h)⟩
 
+/- English proof (translation)
+The claim follows from `isQuasiRegularSeq_singleton (IsSMulRegular.of_ne_zero two_ne_zero)`.
+-/
 example : IsQuasiRegularSeq ℤ ![(2 : ℤ)] :=
   isQuasiRegularSeq_singleton (IsSMulRegular.of_ne_zero two_ne_zero)
 
+/- English proof (translation)
+Introduce `h` and use `by simpa using (isQuasiRegularSeq_singleton_iff _).mp h 1 1 0 (by simp)`.
+-/
 example : ¬ IsQuasiRegularSeq ℤ ![(0 : ℤ)] := fun h => by
   simpa using (isQuasiRegularSeq_singleton_iff _).mp h 1 1 0 (by simp)
 
+/- English proof (translation)
+Introduce `h` and use `by have := (isQuasiRegularSeq_singleton_iff _).mp h 2 1 0 (by decide) revert this decide`.
+-/
 example : ¬ IsQuasiRegularSeq (ZMod 4) ![(2 : ℤ)] := fun h => by
   have := (isQuasiRegularSeq_singleton_iff _).mp h 2 1 0 (by decide)
   revert this
   decide
 
+/- English proof (translation)
+Simplify using `[monoVal_add]`.
+-/
 example : monoVal ![(2 : ℤ), 3] (Finsupp.single 0 2 + Finsupp.single 1 1) = 12 := by
   simp [monoVal_add]
 
+/- English proof (translation)
+Establish `hI : MvPolynomial.idealOfVars (Fin 2) ℚ ≠ ⊤` using `fun h => by`. Use `(MvPolynomial.C_mem_pow_idealOfVars_iff (σ := Fin 2) 1 (1 : ℚ)).mp (by simp [h])` as an intermediate fact. Simplify using `at this`. Use `Ideal.Quotient.nontrivial_iff.mpr hI` as an intermediate fact. Conclude with `nontrivial_of_ne _ _ (((isQuasiRegularSeq_X (R := ℚ) (Fin 2)).powGrBasis a).ne_zero ⟨Finsupp.single 0 a, by simp⟩)`.
+-/
 example (a : ℕ) : Nontrivial (powGr (MvPolynomial.idealOfVars (Fin 2) ℚ)
     (MvPolynomial (Fin 2) ℚ) a) := by
   have hI : MvPolynomial.idealOfVars (Fin 2) ℚ ≠ ⊤ := fun h => by

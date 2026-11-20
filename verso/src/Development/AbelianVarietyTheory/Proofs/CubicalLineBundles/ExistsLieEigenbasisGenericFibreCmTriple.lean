@@ -18,6 +18,31 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 namespace GlobalTheory.LamF
 
+/- English proof (translation)
+Introduce `hT hL E _ _ _ _ H K _ _ T oa S lab ρ hoa hlab hρ hS hty`. Take `⟨-, -, h3⟩` from `GlobalTheory.CM.splits_basic E`. Take `⟨hs1, hs2, -⟩` from `h3 K`. Establish `hsp : Splits E K` using `hs1.2 (by`. Rewrite using `[← Nat.card_eq_of_bijective lab hlab, Nat.card_eq_fintype_card, NumberField.Embeddings.card])`.
+
+Establish `hpos : 1 ≤ Module.finrank ℚ E / 2`. Establish `h1` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `h1` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`. Establish `h2 : 0 < Module.finrank ℚ (maximalRealSubfield E)` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨F₀⟩` from `GlobalTheory.CM.GenFib.nonempty_of_baseChange hL.polBaseChange K T.pol`. Establish `hg : T.g = Module.finrank ℚ E / 2`. Simplify using `using (GlobalTheory.T.lieAlgebra_eigenDecomposition_CM_signature E H K ρ T F₀ 1 0 hsp hty hρ).2.2.2.1`. Take `⟨y, ψ, w, hyg, hψ, hw⟩` from `GlobalTheory.KeyPow.exists_keyIn_pullback hT (algebraMap (𝓞 K) K) T.pol (hpos.trans_eq hg.symm)`. Establish `hfib : IsFibreOf T.pol y (spMap (algebraMap (𝓞 K) K)) ψ` using `⟨hψ, w, (isGen_iff _).2 hw⟩`.
+
+Set `F : GenFib T.pol` to `⟨y.P, ψ, (isFibreOf_iff_isPolFibre _ _ _ _ _ _).1 hfib, y.v, y.basis⟩`. Take `⟨hrk, hind, -, -, hcard, -⟩` from `GlobalTheory.T.lieAlgebra_eigenDecomposition_CM_signature E H K ρ T F 1 0 hsp hty hρ`. Take `⟨r, hr, hr'⟩` from `GlobalTheory.T.exists_lieRepresentation_eigenLattices K T.pol F (𝓞 E) T.t.act`. Set `res : S → (𝓞 E →+* 𝓞 K)` to `fun t => RingOfIntegers.mapRingHom (lab t)`. Establish `hres : ∀ t (a : 𝓞 E), ((res t a : 𝓞 K) : K) = lab t (a : E)` using `fun t a => rfl`.
+
+Establish `hinj : Function.Injective res` using `fun s t h => Subtype.ext (hlab.1 ((hs2 (res t)).unique (fun a => by rw [← h, hres]) (fun a => by rw [hres])))`. Establish `hrt : ∀ t, res t H.rt = ρ` using `fun t => RingOfIntegers.ext ((hres t _).trans ((hS t).1 t.2))`. Establish `hcS : Nat.card S = Module.finrank ℚ E / 2`. Rewrite using `[← hcard]`. Use `Nat.card_eq_of_bijective (fun t => ⟨res t, hrt t⟩) ⟨fun s t h => hinj (congrArg Subtype.val h), fun τ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨τ', hτ', -⟩` from `hs2 τ.1`. Take `⟨t, rfl⟩` from `hlab.2 τ'`. Use `⟨⟨t, (hS t).2 (by rw [hτ', τ.2])⟩, Subtype.ext (RingHom.ext fun a => RingOfIntegers.ext ?_)⟩` and prove the remaining obligations. Conclude with `(hres _ _).trans (hτ' a)`. Establish `hb : ∀ t : S, ∃ b ∈ Submodule.span K (F.eigLat T.t.act (res t) : Set (Fin F.P₀.g → K)), b ≠ 0` using `fun t => by`.
+
+Apply `Submodule.exists_mem_ne_zero_of_ne_bot` to reduce the goal to its premises. Introduce `h`. Use `hrk (res t)` as an intermediate fact. Rewrite `this` using `[latRank, h, if_pos (hrt t), finrank_bot]`. Conclude with `zero_ne_one this`.
+
+Use `choose b hb hb0 using hb`. Establish `hli : LinearIndependent K b` using `(hind.comp hinj).linearIndependent _ hb hb0`. Establish `hyg' : y.P.g = Module.finrank ℚ E / 2` using `hyg.trans hg`. Set `e : Fin y.P.g ≃ S` to `(Finite.equivFinOfCardEq (hcS.trans hyg'.symm)).symm`. Set `M : Matrix (Fin y.P.g) (Fin y.P.g) K` to `fun i => b (e i)`.
+
+Establish `hM : IsUnit M.det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_rows_iff_isUnit.1 (hli.comp e e.injective))`. Use `y.P.isAb.comm` as an intermediate fact. Take `⟨hex, htan, hcomp, -, hbas⟩` from `LieComb.lieComb_algebra K y.P.A _ y.v y.basis.1`. Use `choose v' hv' _ using fun i => hex (M i)`. Establish `hv'b : IsLieBasis v'` using `(hbas M v' y.basis hv').2 hM`.
+
+Use `⟨⟨y.P, y.g_pos, y.rig, y.rig_gen, y.th, y.th_ne, v', hv'b⟩, ψ, e, hfib, hyg', fun a i => ?_⟩` and prove the remaining obligations. Take `⟨-, f₀, -, hf₀, hd⟩` from `GlobalTheory.T.existsUnique_differential_monHom_lieBasis K T.pol F T.pol F (T.t.act.act a) (T.t.act.hom a)`. Establish `h1 : IsLieComb (r a (M i)) y.v (v' i ≫ f₀)` using `hd _ (hr a) _ _ (hv' i)`. Take `⟨w', hw', -⟩` from `(LieComb.lieComb_algebra K y.P.A _ v' hv'b.1).1 (Pi.single i (lab (e i) (a : E)))`. Establish `h2` using `hcomp _ M v' _ w' hv' hw'`.
+
+Establish `h3 : r a (M i) = ∑ j, (Pi.single i (lab (e i) (a : E)) : Fin y.P.g → K) j • M j`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, zero_smul]) (by simp), Pi.single_eq_same]`. Conclude with `((hr' (res (e i)) _).2.1 (hb (e i)) a).trans rfl`. Rewrite `h1` using `[h3]`. Use `⟨w', hw', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← (hex _).unique h1 h2, hoa]`. Conclude with `(congrArg ((v' i).left ≫ ·) hf₀.symm).trans (Category.assoc _ _ _).symm`.
+-/
 theorem exists_eigenbasis_fibre : Out.SecTwistSt → Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] (H : Host E) (K : Type) [Field K] [NumberField K] (T : PAT H (Sp (𝓞 K))) (oa : T.pol.OAct (𝓞 E)) (S : Set (E →+* ℂ)) (lab : (E →+* ℂ) → (E →+* K)) (ρ : 𝓞 K), oa.act = T.t.act.act → Function.Bijective lab → ρ ^ 2 = -(H.d : 𝓞 K) → (∀ t, t ∈ S ↔ lab t (H.rt : E) = (ρ : K)) → HasType H T.t.act ρ 1 0 → ∃ (x : KeyIn K) (φ : x.P.A.left ⟶ T.pol.A.left) (τ : Fin x.P.g ≃ S), IsFibreOf T.pol x (gmap K) φ ∧ x.P.g = Module.finrank ℚ E / 2 ∧ IsLieType T.pol oa x φ τ lab := by
   intro hT hL E _ _ _ _ H K _ _ T oa S lab ρ hoa hlab hρ hS hty
   classical

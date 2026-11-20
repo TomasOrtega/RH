@@ -7,6 +7,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 
 namespace UpperTheory.Gal.KunnethLefschetz
 
+/- English proof (translation)
+Establish `hmem : Sieve.generate (Presieve.singleton f) ∈ Scheme.etaleTopology (S k)`. Rewrite using `[GlobalTheory.etale_mem_iff_points]`. Introduce `u`. Take `⟨y, rfl⟩` from `hs.surj u`. Conclude with `⟨Y, f, y, hf, rfl, ⟨Y, 𝟙 Y, f, Presieve.singleton.mk, Category.id_comp f⟩⟩`.
+
+Take `⟨Z, h, g, hg, hcomp⟩` from `PtCover_of k _ hmem`. Consider the cases of `hg`. Conclude with `⟨h, hcomp⟩`.
+-/
 private theorem sec_of {k : Type} [Field k] [IsAlgClosed k] {Y : Scheme.{0}} (f : Y ⟶ S k) (hf : Etale f)
     (hs : Surjective f) : ∃ s : S k ⟶ Y, s ≫ f = 𝟙 _ := by
   have hmem : Sieve.generate (Presieve.singleton f) ∈ Scheme.etaleTopology (S k) := by
@@ -18,6 +23,11 @@ private theorem sec_of {k : Type} [Field k] [IsAlgClosed k] {Y : Scheme.{0}} (f 
   cases hg
   exact ⟨h, hcomp⟩
 
+/- English proof (translation)
+Introduce `hIn k _ _ q n i hn`. Establish `hzero : ∀ x : Ht q (sch.obj (S k)) n i, x = 0`. Introduce `x`. Take `⟨Y, f, hf, hs, hx⟩` from `hIn.a5 (ZMod q) (S k) (tw q i) n hn x`. Take `⟨s, hsf⟩` from `sec_of f hf hs`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← CategoryTheory.Functor.map_comp, hsf, CategoryTheory.Functor.map_id]`. Use `_ = pull (ZMod q) (sch.map s) (tw q i) n (pull (ZMod q) (sch.map f) (tw q i) n x) := pull_comp _ _ _ _ _ x`. Use `_ = 0 := by rw [hx, map_zero]`. Conclude with `⟨fun a b => by rw [hzero a, hzero b]⟩`.
+-/
 theorem ptVanT_holds : PtVanT := by
   intro hIn k _ _ q n i hn
   have hzero : ∀ x : Ht q (sch.obj (S k)) n i, x = 0 := by

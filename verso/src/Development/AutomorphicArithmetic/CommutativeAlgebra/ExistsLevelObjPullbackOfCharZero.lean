@@ -27,10 +27,16 @@ private def pullAct (a : OActN O A) : OActN O ((Over.pullback f).obj A) where
     rw [map_mul]
     simp only [push_map, a.add, MonObj.comp_mul]
 
+/- English proof (translation)
+The claim follows from `map_left_pφ f A (a.act c)`.
+-/
 private theorem pullAct_sq (a : OActN O A) (c : O) :
     ((pullAct f a).act c).left ≫ pφ f A = pφ f A ≫ (a.act c).left :=
   map_left_pφ f A (a.act c)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(u ≫ (pullAct f a).act c).left ≫ pφ f A = (u.left ≫ pφ f A) ≫ (a.act c).left`. Simplify using `[pullAct_sq]`.
+-/
 private theorem push_pullAct (a : OActN O A) {T : Over S'} (u : T ⟶ (Over.pullback f).obj A) (c : O) :
     pushHom (isGrpPullback f A) T (u ≫ (pullAct f a).act c) = pushHom (isGrpPullback f A) T u ≫ a.act c := by
   apply Over.OverMorphism.ext
@@ -43,6 +49,19 @@ section Tan
 
 variable {S S' : Scheme.{0}} (f : S' ⟶ S) {O : Type} [Ring O] {A : Over S} [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+Establish `cart` using `isGrpPullback f A`. Take `⟨e₀, he₀⟩` from `GlobalTheory.LiePull.exists_pushEquiv cart (Over.mk x) (x ≫ f) rfl`. Establish `unit : (1 : Over.mk (x ≫ f) ⟶ A).left = (1 : Over.mk x ⟶ (Over.pullback f).obj A).left ≫ pφ f A`. Rewrite using `[← he₀, map_one]`. Establish `retr : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (algebraMap R' (DualNumber R')) = 𝟙 _`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Establish `scale : spMap (epsScaleR r) ≫ spMap (algebraMap R' (DualNumber R')) = spMap (algebraMap R' (DualNumber R'))`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`.
+
+Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `down : e (v ≫ (pullAct f a).act c) = e v ≫ a.act c`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, he, Category.assoc, pullAct_sq]`. Establish `wv : v.left ≫ ((Over.pullback f).obj A).hom = spMap (algebraMap R' (DualNumber R')) ≫ x` using `Over.w v`.
+
+Establish `wc : (v ≫ (pullAct f a).act c).left ≫ ((Over.pullback f).obj A).hom = spMap (algebraMap R' (DualNumber R')) ≫ x` using `Over.w _`. Establish `w1 : (1 : Over.mk x ⟶ (Over.pullback f).obj A).left ≫ ((Over.pullback f).obj A).hom = x` using `Over.w _`. Unfold `IsTanScal`. Rewrite using `[← down, he, he, unit]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h₁, h₂⟩`. Conclude with `⟨by rw [← Category.assoc, h₁], by rw [h₂, Category.assoc]⟩`. Introduce and unpack `⟨h₁, h₂⟩`. Use `⟨cart.1.hom_ext (by simpa using h₁) ?_, cart.1.hom_ext (by simpa using h₂) ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, wv, w1, ← Category.assoc, retr, Category.id_comp]`.
+
+Rewrite using `[wc, Category.assoc, wv, ← Category.assoc, scale]`.
+-/
 private theorem tanScal_iff (a : OActN O A) {R' : Type} [CommRing R'] (x : Sp R' ⟶ S')
     (e : (epsPtR x ⟶ (Over.pullback f).obj A) ≃* (epsPtR (x ≫ f) ⟶ A))
     (he : ∀ v, (e v).left = v.left ≫ pφ f A) (c : O) (r : R') (v : epsPtR x ⟶ (Over.pullback f).obj A) :
@@ -82,6 +101,9 @@ section Tate
 
 variable {G : GDatum}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ ζ := I.ζ ζ_prim := I.ζ_prim ζ_pow := I.ζ_pow ev := fun n x => r (I.ev n x) add := fun n x y => by rw [I.add, map_mul] lin := fun n c x => by rw [I.lin, hact] ker := fun n hn x => by rw [map_eq_one_iff r r.injective, I.ker n hn] onto := fun n hn q => by have : q ^ n = 1 ↔ (r.sy …`.
+-/
 private theorem tate_along {k : Type} [Field k] {Q Q' : Type} [Group Q] [Group Q']
     {act : G.O → Q → Q} {act' : G.O → Q' → Q'} {e : ℕ → Q → Q → kˣ → Prop} {e' : ℕ → Q' → Q' → kˣ → Prop}
     (I : GTateIso G k Q act e) (r : Q ≃* Q') (hact : ∀ c q, r (act c q) = act' c (r q))
@@ -109,6 +131,15 @@ section Obj
 variable {S S' : Scheme.{0}} (f : S' ⟶ S) {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {gb : GBase G R}
   {N : ℕ} {s : S ⟶ Sp R}
 
+/- English proof (translation)
+Establish `cart` using `isGrpPullback f o.A`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv cart (Over.mk x) (x ≫ f) rfl`. Take `⟨I, hI⟩` from `o.geom k (x ≫ f) β (by rw [Category.assoc, hs, hx])`. Establish `back : ∀ q, (e.symm q).left ≫ pφ f o.A = q.left` using `fun q => by rw [← he, e.apply_symm_apply]`. Establish `hact : ∀ c q, e.symm (q ≫ o.act.act c) = e.symm q ≫ (pullAct f o.act).act c`.
+
+Introduce `c q`. Rewrite using `[MulEquiv.symm_apply_eq]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[he, Over.comp_left, Over.comp_left, Category.assoc, pullAct_sq, ← Category.assoc, back]`. Establish `hisom : ∀ n : ℕ, 0 < n → ∀ a a', Out.WeilIs ((Over.pullback f).obj o.A) ((o.P.pull (pφ₂ f o.A)).pull (lift (𝟙 ((Over.pullback f).obj o.A)) (𝟙 _)).left) (n : ℤ) (e.symm (I.ev n a)) (e.symm (I.ev n a')) (unitOn (I.ζ n ^ (2 * G.EF a a')))` using `fun n hn a a' => (GlobalTheory.weilIs_grpPullback_of_comm S S' o.A _ f (pφ f o.A) _ _ (pull_isLB o.isLB _) (pull_isLB (pull_isLB o.isLB _) _) cart (GlobalTheory.SiegelPull.diag_iso (isSquare f o.A) (gen_refl _ (pull_isLB o.isLB _))) (Over.mk x) n _ _ (I.ev n a) (I.ev n a') _ (bac …`.
+
+Take `⟨I', hI'⟩` from `tate_along (Q' := Over.mk x ⟶ (Over.pullback f).obj o.A) (act' := fun c g => g ≫ (pullAct f o.act).act c) (e' := fun n g g' z => Out.WeilIs ((Over.pullback f).obj o.A) ((o.P.pull (pφ₂ f o.A)).pull (lift (𝟙 ((Over.pullback f).obj o.A)) (𝟙 _)).left) n g g' (unitOn z)) I e.symm hact …`. Use `⟨I', fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hI', MulEquiv.eq_symm_apply, ← hI y]`. Use `Eq.trans ?_ (GlobalTheory.SiegelPull.push_secPull cart (o.eta y) (Over.mk x))` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[he]`. Both sides reduce to the same expression.
+-/
 private theorem geom_of_pull (o : GObj gb N s) (s' : S' ⟶ Sp R) (hs : f ≫ s = s') (k : Type) [Field k]
     [IsAlgClosed k] (x : Sp k ⟶ S') (β : R →+* k) (hx : x ≫ s' = spMap β) :
     ∃ I : GTateIso G k (Over.mk x ⟶ (Over.pullback f).obj o.A) (fun c g => g ≫ (pullAct f o.act).act c)
@@ -222,6 +253,9 @@ end Obj
 
 end UpperTheory.LevPull
 
+/- English proof (translation)
+Introduce `s' f hs o` and use `⟨_, ⟨UpperTheory.LevPull.baseChangeMap f o s' hs⟩⟩`.
+-/
 theorem UpperTheory.exists_levelObj_pullback_of_charZero :
     ∀ {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {gb : GBase G R} {N : ℕ} {S S' : Scheme.{0}} {s : S ⟶ Sp R}
         (s' : S' ⟶ Sp R) (f : S' ⟶ S), f ≫ s = s' → ∀ o : GObj gb N s, ∃ o' : GObj gb N s', Nonempty (GObjMap o' o f) :=

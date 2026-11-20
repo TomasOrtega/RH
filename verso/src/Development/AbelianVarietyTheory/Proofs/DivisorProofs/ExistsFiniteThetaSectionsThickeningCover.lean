@@ -25,6 +25,9 @@ noncomputable section
 
 namespace GlobalTheory.Mum.ClosedGen
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cst_eq_baseRingHom {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of R)) (W : X.Opens) :
     (GlobalTheory.QCoh.Qcqs.baseRingHom f W).hom = GlobalTheory.AbLaw.cst f W := by
   rfl
@@ -33,6 +36,29 @@ end GlobalTheory.Mum.ClosedGen
 
 open GlobalTheory.Mum.ClosedGen in
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D A G _ _ hG U`. Take `⟨Y⟩ : Nonempty (Ext D.toPre)` from `inferInstance`. Take `⟨S, k₁, hk₁⟩` from `GlobalTheory.T.exists_theta_immersion_torus_extension_projective R hB D Y`. Use `choose k₀f hk₀f using (GlobalTheory.T.exists_integralThetaFamily_prescribed_leadingTerm R hB D).1`. Use `⟨max 3 (max k₁ (S.sup k₀f)), le_max_left _ _, ?_⟩` and prove the remaining obligations.
+
+Introduce `k hk`. Establish `hk3 : 3 ≤ k` using `le_trans (le_max_left _ _) hk`. Establish `hkk₁ : k₁ ≤ k` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hk`. Establish `hkS : S.sup k₀f ≤ k` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hk`. Take `⟨N, α, b, τ, hτ, hαb, himm⟩` from `hk₁ k hkk₁`.
+
+Establish `hF : ∀ j, ∃ F : IntFam (maximalIdeal R) D.toPre k, F.Lead (α j) (b j)` using `fun j => hk₀f (α j) k (le_trans (Finset.le_sup (hαb j).1) hkS) (b j)`. Use `choose F hF using hF`. Establish `hs : ∀ j, ∃ σ : H0 U.LG.L k, ∀ e, U.ExpandsAt e k σ (F j).f` using `fun j => IntFam.exists_expandsAt R hB D A G U hG k (by omega) (F j)`. Use `choose s hs using hs`. Set `T : Over (Sp R)` to `Over.mk ((thickObj R (maximalIdeal R) 0 G).hom ≫ thick R (maximalIdeal R) 0)`.
+
+Take `⟨ξ, hξ⟩` from `GlobalTheory.TorusCoord.exists_isPointOf (U.gt 0) (T := T) (𝟙 (thickObj R (maximalIdeal R) 0 G).left) (Category.id_comp _)`. Set `ψ : T ⟶ Y.H` to `(Y.Φ T).symm ξ`. Establish `hψ : GlobalTheory.TorusCoord.IsPointOf (U.gt 0) (𝟙 (thickObj R (maximalIdeal R) 0 G).left) (Y.Φ T ψ)`. Simplify using `only [ψ, Equiv.apply_symm_apply]`. Conclude with `hξ`.
+
+Use `haveI hψi : IsImmersion ψ.left := GlobalTheory.T.closedFibre_torusCoordinates_isImmersion R D A G U.toUnifPre Y ψ hψ`. Use `set p₀ := (fstG (maximalIdeal R) 0 G).left with hp₀`. Set `φ` to `ψ.left ≫ GlobalTheory.ProjSpace.toProj Y.H.hom τ hτ`. Use `haveI : IsImmersion φ := IsImmersion.comp _ _`. Establish `hpre : ∀ j, φ ⁻¹ᵁ GlobalTheory.ProjSpace.chart R N j = ψ.left ⁻¹ᵁ nonzeroLocus (τ j)` using `fun j => by`.
+
+Simplify using `only [φ, Scheme.Hom.comp_preimage, GlobalTheory.ProjSpace.toProj_preimage_chart]`. Establish `hstr : φ ≫ PSpace.str R N = p₀ ≫ G.hom`. Simplify using `only [φ, Category.assoc, GlobalTheory.ProjSpace.toProj_str]`. Rewrite using `[Over.w ψ]`. Conclude with `(pullback.condition).symm`.
+
+Use `⟨N + 1, s, fun w => ?_⟩` and prove the remaining obligations. Establish `hw : ψ.left w ∈ ⨆ i, nonzeroLocus (τ i)` using `by rw [hτ]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hw`. Take `⟨J, hJ⟩` from `GlobalTheory.TorusCoord.exists_good' U.LG.isLB w`. Set `i : Fin 1 → U.LG.L.ι` to `fun _ => J (p₀ ≫ 𝟙 G.left)`.
+
+Establish `hi : p₀ w ∈ secChart U.LG.L i` using `hJ.mem (fun _ : Fin 1 => 𝟙 G.left) p₀`. Establish `hφw : φ w ∈ GlobalTheory.ProjSpace.chart R N j` using `by show w ∈ φ ⁻¹ᵁ GlobalTheory.ProjSpace.chart R N j`. Rewrite using `[hpre]`. Conclude with `hj`. Take `⟨W, hW, hwW, hWV, hWa, hgen⟩` from `GlobalTheory.T.exists_affineOpen_fractions_projSpace_immersion R N _ φ inferInstance w (p₀ ⁻¹ᵁ secChart U.LG.L i) j hi hφw`.
+
+Establish `hWψ : W ≤ ψ.left ⁻¹ᵁ nonzeroLocus (τ j)` using `hW.trans (hpre j).le`. Establish `hr : ∀ l, GlobalTheory.ProjSpace.pullRatio φ W j hW l = (ψ.left.appLE (nonzeroLocus (τ j)) W hWψ).hom (GlobalTheory.ProjSpace.secRatio (τ j) (τ l))`. Introduce `l`. Rewrite using `[← GlobalTheory.ProjSpace.pullRatio_toProj Y.H.hom τ hτ j l, GlobalTheory.ProjSpace.appLE_pullRatio]`. Use `⟨j, i, W, GlobalTheory.ProjSpace.pullRatio φ W j hW, hwW, hWa, hWV, fun y hy => ?_, fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `hyψ : ψ.left y ∈ nonzeroLocus (τ j)` using `hWψ hy`. Take `⟨hu, hl⟩` from `GlobalTheory.T.closedFibre_thetaSectionGerm_eq_fourierRatio_mul R D A G U.toUnifPre Y ψ hψ k (N + 1) α b τ F s (fun j => (hαb j).2) hF (fun j => hs j 0) y j i hyψ (hWV hy)`. Use `⟨hu, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[hl l, hr l, gs_appLE _ _ _ _ (𝟙 _) y hy, Category.id_comp]`. Take `⟨P, Q, hQ, hPQ⟩` from `hgen g`.
+
+Establish `hc : (GlobalTheory.QCoh.Qcqs.baseRingHom (φ ≫ PSpace.str R N) W).hom = GlobalTheory.AbLaw.cst (p₀ ≫ G.hom) W`. Rewrite using `[hstr]`. Conclude with `cst_eq_baseRingHom _ _`. Rewrite `hQ`, `hPQ` using `[hc]`. Conclude with `⟨P, Q, hQ, hPQ⟩`.
+-/
 theorem GlobalTheory.Mum.exists_ratio_gen_closed : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∃ k₀ : ℕ, 3 ≤ k₀ ∧ ∀ k : ℕ, k₀ ≤ k → ∃ (n : ℕ) (τ : Fin n → H0 U.LG.L k), ∀ w : (thickObj R (maximalIdeal R) 0 G).left, ∃ (j : Fin n) (i : Fin 1 → U.LG.L.ι) (N : (thickObj R (maximalIdeal R) 0 G).left.Opens) (r : Fin n → Γ((thickObj R (maximalIdeal R) 0 G).left, N)), w ∈ N ∧ IsAffineOpen N ∧ N ≤ (fstG (maximalIdeal R) 0 G).left ⁻¹ᵁ secChart U.LG.L i ∧ (∀ y ∈ N, IsUnit (secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y (τ j) i) ∧ ∀ l, secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y (τ l) i = gs (𝟙 _) y N (r l) * secGerm (Y := (thickObj R (maximalIdeal R) 0 G).left) (fstG (maximalIdeal R) 0 G).left y (τ j) i) ∧ ∀ g : Γ((thickObj R (maximalIdeal R) 0 G).left, N), ∃ P Q : MvPolynomial (Fin n) R, IsUnit (MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r Q) ∧ g * MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r Q = MvPolynomial.eval₂ (GlobalTheory.AbLaw.cst (X := (thickObj R (maximalIdeal R) 0 G).left) ((fstG (maximalIdeal R) 0 G).left ≫ G.hom) N) r P := by
   intro R _ _ _ hB D A G _ _ hG U
   obtain ⟨Y⟩ : Nonempty (Ext D.toPre) := inferInstance

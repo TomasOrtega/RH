@@ -15,6 +15,9 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Simplify using `only [evalCone]`. Rewrite using `[MvPolynomial.eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+-/
 theorem evalCone_conj (z : Cone n ℂ) (f : MvPolynomial (Coord n) ℤ) :
     evalCone (fun k i ↦ starRingEnd ℂ (z k i)) f = starRingEnd ℂ (evalCone z f) := by
   simp only [evalCone]
@@ -22,6 +25,11 @@ theorem evalCone_conj (z : Cone n ℂ) (f : MvPolynomial (Coord n) ℤ) :
   congr 1
   exact RingHom.ext_int _ _
 
+/- English proof (translation)
+Simplify using `only [den, evalCone_conj, Complex.norm_conj]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[show (fun j ↦ starRingEnd ℂ (z k j)) = fun j ↦ starRingEnd ℂ (z k j) from rfl, vectorL2Norm_conj]`.
+-/
 theorem den_conj {P : ArithVariety n} {D : AddBlockData P} (G : ChartForms D) (Γ : GenSystem P)
     (z : Cone n ℂ) : den G Γ (fun k i ↦ starRingEnd ℂ (z k i)) = den G Γ z := by
   simp only [den, evalCone_conj, Complex.norm_conj]
@@ -31,6 +39,9 @@ theorem den_conj {P : ArithVariety n} {D : AddBlockData P} (G : ChartForms D) (�
   refine Finset.prod_congr rfl fun k _ ↦ ?_
   rw [show (fun j ↦ starRingEnd ℂ (z k j)) = fun j ↦ starRingEnd ℂ (z k j) from rfl, vectorL2Norm_conj]
 
+/- English proof (translation)
+Establish `hz : BlockNonzero (basePart₂ w)` using `fun k ↦ hw (some k)`. Use `show N.metric (fun k i ↦ starRingEnd ℂ (basePart₂ w k i)) * l2Norm (fun i ↦ starRingEnd ℂ (newPart w i)) * Real.sqrt ((∑ c, ‖evalCone (fun k i ↦ starRingEnd ℂ (basePart₂ w k i)) (chartMonomial c G.d)‖ ^ 2) / den G Γ (fun k i ↦ starRingEnd ℂ (basePart₂ w k i))) = hPlus G Γ N w`. Rewrite using `[hN _ hz, vectorL2Norm_conj, den_conj]`. Simplify using `only [evalCone_conj, Complex.norm_conj]`. Both sides reduce to the same expression.
+-/
 theorem hPlus_conj {P : ArithVariety n} {D : AddBlockData P} (G : ChartForms D) (Γ : GenSystem P)
     (N : HermLine n) (hN : N.ConjInvariant) (w : Cone D.dims ℂ) (hw : BlockNonzero w) :
     hPlus G Γ N (fun o i ↦ starRingEnd ℂ (w o i)) = hPlus G Γ N w := by
@@ -43,6 +54,21 @@ theorem hPlus_conj {P : ArithVariety n} {D : AddBlockData P} (G : ChartForms D) 
   simp only [evalCone_conj, Complex.norm_conj]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hA ι _ _ n P D G Γ N hN`. Take `⟨⟨H, hdeg, hmet, -⟩, hpts⟩` from `hA ι n P (toObjects D) N hN G.d G.g G.isFormSystem Γ.r Γ.f Γ.δ Γ.isHomogGenerators`. Establish `hmet' : ∀ w : Cone D.dims ℂ, BlockNonzero w → H.metric w = hPlus G Γ N w` using `hmet`. Use `⟨⟨⟨H.deg, hPlus G Γ N, ?_, ?_, ?_⟩, hdeg, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `w hw`. Rewrite using `[← hmet' w hw]`. Conclude with `H.metric_pos w hw`. Introduce `c w hc hw`. Establish `hw' : BlockNonzero (fun k i ↦ c k * w k i)`.
+
+Introduce `k hk`. Apply `hw k` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun hk i` as an intermediate fact. Simplify `this` using `[hc k]`.
+
+Rewrite using `[← hmet' _ hw', ← hmet' _ hw]`. Conclude with `H.metric_smul c w hc hw`. Conclude with `H.metric_smooth.congr fun w hw ↦ (hmet' w hw).symm`. Introduce `w hw la c hc hj`. Establish `hw' : w ∈ (toObjects D).extPoints`.
+
+Establish `e : (toObjects D).extPoints = conePoints D.ext ℂ` using `AddBlockEq.addBlockEquiv_symm_conePoints D`. Rewrite using `[e]`. Conclude with `hw`. Conclude with `hpts w hw' c la hc hj`. Introduce `hB ι _ _ n P D N hN d g hg r f δ hf`.
+
+Take `⟨⟨A, hdeg, hmet⟩, hpts⟩` from `hB ι n P (ofObjects D) (ChartForms.ofFormSystem hg) (GenSystem.ofIsHomogGenerators hf) N hN`. Use `⟨⟨A, hdeg, fun w _ ↦ congrFun hmet w, fun hN' w hw ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(congrFun hmet _).trans ((hPlus_conj (ChartForms.ofFormSystem hg) (GenSystem.ofIsHomogGenerators hf) N hN' w hw).trans (congrFun hmet w).symm)`. Introduce `w hw c la hc hj`. Establish `hw' : w ∈ conePoints (ofObjects D).ext ℂ`.
+
+Establish `e : D.extPoints = conePoints (AddBlockEq.toIndefiniteRowSideFullHecke D).ext ℂ` using `AddBlockEq.extPoints_eq D`. Rewrite `hw` using `[e]`. Conclude with `hw`. Conclude with `hpts w hw' la c hc hj`.
+-/
 theorem ChartMetric.equiv :
     GroundTheory.Heights₂.Heights.ChartMetric.Statement ↔ GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.ChartMetric.Statement := by
   constructor

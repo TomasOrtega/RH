@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.CohomologicalPurity.TubeCut
 
+/- English proof (translation)
+Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ (PrimeSpectrum.zeroLocus _)ᶜ at hx`. Express the relevant statement in the definitionally equal form `PrimeSpectrum.comap φ x ∈ (PrimeSpectrum.zeroLocus (J : Set A))ᶜ`. Introduce `h`. Apply `hx` to reduce the goal to its premises.
+
+Rewrite `h` using `[PrimeSpectrum.mem_zeroLocus]`. Conclude with `(Ideal.map_le_iff_le_comap.2 h : J.map φ ≤ _)`.
+-/
 theorem off_map_le {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (J : Ideal A) :
     off B (J.map φ) ≤ Spec.map (CommRingCat.ofHom φ) ⁻¹ᵁ off A J := by
   intro x hx
@@ -14,6 +19,11 @@ theorem off_map_le {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (J : 
   rw [PrimeSpectrum.mem_zeroLocus] at h
   exact (Ideal.map_le_iff_le_comap.2 h : J.map φ ≤ _)
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Apply `Arrow.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sch.map (Scheme.Hom.resLE (g ≫ f) U U'' h) = sch.map (Scheme.Hom.resLE g U' U'' h1) ≫ sch.map (Scheme.Hom.resLE f U U' h2)`. Rewrite using `[← Functor.map_comp, Scheme.Hom.resLE_comp_resLE]`. Express the relevant statement in the definitionally equal form `sch.map (g ≫ f) = sch.map g ≫ sch.map f`.
+
+Conclude with `Functor.map_comp _ _ _`.
+-/
 theorem opnMap_comp' {X'' X' X : Scheme.{0}} (k : X'' ⟶ X) (g : X'' ⟶ X') (f : X' ⟶ X) (hk : k = g ≫ f)
     (U'' : X''.Opens) (U' : X'.Opens) (U : X.Opens) (h1 : U'' ≤ g ⁻¹ᵁ U') (h2 : U' ≤ f ⁻¹ᵁ U)
     (h : U'' ≤ k ⁻¹ᵁ U) : opnMap k U'' U h = opnMap g U'' U' h1 ≫ opnMap f U' U h2 := by
@@ -25,6 +35,17 @@ theorem opnMap_comp' {X'' X' X : Scheme.{0}} (k : X'' ⟶ X) (g : X'' ⟶ X') (f
   · change sch.map (g ≫ f) = sch.map g ≫ sch.map f
     exact Functor.map_comp _ _ _
 
+/- English proof (translation)
+Introduce `hyp hIE d q _ R B C _ _ _ ψ η hq hψ I K hη hK hI`. Establish `hJI : (Ideal.span (Set.range (MvPolynomial.X : Fin d → MvPolynomial (Fin d) R))).map ψ = I`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Conclude with `hI`. Substitute `hJI` using the available equality.
+
+Substitute `hK` using the available equality. Establish `hJfg : (Ideal.span (Set.range (MvPolynomial.X : Fin d → MvPolynomial (Fin d) R))).FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hIfg` using `hJfg.map ψ`. Establish `hqP : IsUnit (q : MvPolynomial (Fin d) R)`. Simplify using `using hq.map (MvPolynomial.C : R →+* MvPolynomial (Fin d) R)`.
+
+Establish `hqB : IsUnit (q : B)` using `by simpa using hqP.map ψ`. Establish `e1` using `hIE hyp.1 hyp.2.2.2.1 hyp.2.2.2.2.2.2.2.2.1 q ψ _ hJfg (indNbhd_of_nbhd ψ _ hψ) hqP (off_map_le ψ _)`. Establish `e2` using `hIE hyp.1 hyp.2.2.2.1 hyp.2.2.2.2.2.2.2.2.1 q η _ hIfg hη hqB (off_map_le η _)`. Establish `hle : off C ((Ideal.span (Set.range (MvPolynomial.X : Fin d → MvPolynomial (Fin d) R))).map ψ |>.map η) ≤ Spec.map (CommRingCat.ofHom (η.comp ψ)) ⁻¹ᵁ off _ (Ideal.span (Set.range MvPolynomial.X))`. Rewrite using `[Ideal.map_map]`.
+
+Conclude with `off_map_le _ _`. Use `⟨hle, ?_⟩` and prove the remaining obligations. Establish `hs : Spec.map (CommRingCat.ofHom (η.comp ψ)) = Spec.map (CommRingCat.ofHom η) ≫ Spec.map (CommRingCat.ofHom ψ)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[opnMap_comp' _ _ _ hs _ _ _ (off_map_le η _) (off_map_le ψ _)]`. Conclude with `exc_comp q e2 e1`.
+-/
 theorem leafExcAff_pf : LeafExcAff := by
   intro hyp hIE d q _ R B C _ _ _ ψ η hq hψ I K hη hK hI
   have hJI : (Ideal.span (Set.range (MvPolynomial.X : Fin d → MvPolynomial (Fin d) R))).map ψ = I := by

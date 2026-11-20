@@ -12,10 +12,42 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {κ β : Type} [Fintype κ] [Fintype β] {m n : ℕ}
 
+/- English proof (translation)
+Introduce `c hc` and use `by simpa using congrFun (congrFun (hu c hc) i) j`.
+-/
 theorem at_entry' {α β : Type} {u : Matrix α β (AE F E)} (hu : At (evI F) u) (i : α) (j : β) :
     At (evI F) (u i j) := fun c hc => by
   simpa using congrFun (congrFun (hu c hc) i) j
 
+/- English proof (translation)
+Set `s : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F) → Matrix α β (AE F E)` to `fun p => e.symm (fun i => lift (p.1 i), fun i => lift (p.2 i))`. Establish `es : ∀ p, e (s p) = (fun i => lift (p.1 i), fun i => lift (p.2 i))` using `fun p => e.apply_symm_apply _`. Establish `sAdd : ∀ p q, s (p + q) = s p + s q` using `fun p q => by show e.symm _ = e.symm _ + e.symm _`. Rewrite using `[← map_add]`. Use `congr 1`.
+
+Use `Prod.ext (funext fun i => lift_add _ _) (funext fun i => lift_add _ _)` and prove the remaining obligations. Establish `sSmul : ∀ (t : ℝ) p, s (t • p) = realAd F t • s p` using `fun t p => by show e.symm _ = realAd F t • e.symm _`. Rewrite using `[← map_smul]`. Use `congr 1`. Use `Prod.ext (funext fun i => lift_smul _ _) (funext fun i => lift_smul _ _)` and prove the remaining obligations.
+
+Establish `sAt : ∀ p, At (evI F) (s p)` using `fun p c hc => by show c • e.symm _ = 0`. Rewrite using `[← map_smul]`. Establish `: c • ((fun i => lift (p.1 i), fun i => lift (p.2 i)) : (κ → AF F) × (κ → AF F)) = 0` using `Prod.ext (funext fun i => at_lift _ c hc) (funext fun i => at_lift _ c hc)`. Rewrite using `[this, map_zero]`. Set `Ψ : ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) →ₗ[ℝ] (InfinitePlace F → Matrix α β ℂ)` to `{ toFun := fun p w => (s p).map (piInf (emb w)) map_add' := fun p q => by`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[sAdd]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun t p => by`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[sSmul]`. Use extensionality with `i j`. Simplify using `[GlobalTheory.CompanionTheory.RealAdeleComponent.piInf_realAd_smul] }`. Establish `hΨ : ∀ p w, Ψ p w = (s p).map (piInf (emb w))` using `fun _ _ => rfl`.
+
+Establish `inj : Function.Injective Ψ`. Use `(injective_iff_map_eq_zero Ψ).2 fun p hp => ?_` and prove the remaining obligations. Establish `s0 : s p = 0`. Use extensionality with `i j`. Use `GlobalTheory.CompanionTheory.CMAdele.eq_zero_of_piInf σ h emb _ (at_entry' (sAt p) i j) fun w => ?_` and prove the remaining obligations.
+
+Use `congrFun (congrFun (congrFun hp w) i) j` as an intermediate fact. Simplify `this` using `[hΨ]`. Establish `e0` using `es p`. Rewrite `e0` using `[s0, map_zero]`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations.
+
+Use `congrFun (congrArg Prod.fst e0) i` as an intermediate fact. Use `congrArg (evI F) this` as an intermediate fact. Rewrite `this` using `[evI_lift]`. Simplify `this.symm` using `[evI_zero]`. Use `congrFun (congrArg Prod.snd e0) i` as an intermediate fact.
+
+Use `congrArg (evI F) this` as an intermediate fact. Rewrite `this` using `[evI_lift]`. Simplify `this.symm` using `[evI_zero]`. Establish `surj : Function.Surjective Ψ` using `fun Z => by choose x hxA hxZ using fun (ij : α × β) => GlobalTheory.CompanionTheory.RealPlaceAdele.exists_adele_piInf σ h emb (fun w => Z w ij.1 ij.2)`. Set `u : Matrix α β (AE F E)` to `Matrix.of fun i j => x (i, j)`.
+
+Establish `uAt : At (evI F) u` using `fun c hc => by`. Use extensionality with `i j`. Conclude with `hxA (i, j) c hc`. Establish `hAt2 : ∀ c : AF F, evI F c = 0 → c • e u = 0` using `fun c hc => by`. Rewrite using `[← map_smul, uAt c hc, map_zero]`.
+
+Use `⟨(fun i => evI F ((e u).1 i), fun i => evI F ((e u).2 i)), ?_⟩` and prove the remaining obligations. Establish `su : s (fun i => evI F ((e u).1 i), fun i => evI F ((e u).2 i)) = u` using `by show e.symm _ = u`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use `Prod.ext (funext fun i => lift_evI fun c hc => ?_) (funext fun i => lift_evI fun c hc => ?_)` and prove the remaining obligations. Conclude with `congrFun (congrArg Prod.fst (hAt2 c hc)) i`.
+
+Conclude with `congrFun (congrArg Prod.snd (hAt2 c hc)) i`. Use function extensionality and compare the values at `w`. Rewrite using `[hΨ, su]`. Use extensionality with `i j`. Conclude with `hxZ (i, j) w`.
+
+Set `Ψe` to `LinearEquiv.ofBijective Ψ ⟨inj, surj⟩`. Set `Cp : (InfinitePlace F → Matrix α β ℂ) →ₗ[ℝ] (InfinitePlace F → Matrix α β ℂ)` to `LinearMap.pi fun w => C w ∘ₗ LinearMap.proj w`. Use `⟨s, Ψe.symm.toLinearMap ∘ₗ Cp ∘ₗ Ψ, sAt, fun p => ?_, fun p w => ?_⟩` and prove the remaining obligations. Rewrite using `[es]`. Conclude with `⟨funext fun i => evI_lift _, funext fun i => evI_lift _⟩`.
+
+Establish `: Ψ ((Ψe.symm.toLinearMap ∘ₗ Cp ∘ₗ Ψ) p) = Cp (Ψ p)` using `Ψe.apply_symm_apply _`. Conclude with `congrFun this w`.
+-/
 theorem exists_real_structure' (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (emb : ∀ w : InfinitePlace F, EmbOver E w)
     {α β : Type} {κ : Type} [Fintype κ]
     (e : Matrix α β (AE F E) ≃ₗ[AF F] (κ → AF F) × (κ → AF F))
@@ -122,6 +154,13 @@ variable {e : Matrix (Fin m) β (AE F E) ≃ₗ[AF F] (κ → AF F) × (κ → A
   {ε ε' : InfinitePlace F → ℤˣ} {θ : InfinitePlace F → Matrix (Fin m) (Fin m) ℂ} {θ' : InfinitePlace F → Matrix β β ℂ}
   {f f' : SInf F κ}
 
+/- English proof (translation)
+Set `C : InfinitePlace F → Matrix (Fin m) β ℂ →ₗ[ℝ] Matrix (Fin m) β ℂ` to `fun w => { toFun := fun x => (((ε w : ℤ) : ℂ) * Complex.I) • (θ w * x * (θ' w)ᵀ) map_add' := fun x y => by rw [Matrix.mul_add, Matrix.add_mul, smul_add] map_smul' := fun t x => by`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply]`. Rewrite using `[smul_comm] }`. Take `⟨S, J, sAt, sev, sJ⟩` from `exists_real_structure' σ h τ e C`. Set `T : (κ → mixedEmbedding.mixedSpace F) →ₗ[ℝ] (κ → mixedEmbedding.mixedSpace F) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun y b => linForm b y) (fun y y' b => map_add _ y y') (fun t y b => map_smul _ t y) (fun y b b' => by simp only [linForm_apply, Pi.add_apply, mul_add, Finset.sum_add_distrib, map_add]) (fun t y b => by simp only [linForm_apply, Pi.smul_apply, mul_smul_comm, ← Fi …`.
+
+Take `⟨k, hk⟩` from `GlobalTheory.CompanionTheory.Twist.FockLogDeriv.main T (fun b hb => funext fun i => trace_mul_eq_zero _ fun y => by`. Establish `: linForm b (Pi.single i y) = 0` using `hb _`. Rewrite `this` using `[linForm_apply, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same, mul_comm]`. Conclude with `this) J f h0 fun p y => by`. Use `congrArg (fun g : SInf F κ => g y) (hf (S p) (S (J p)) (sAt _) (sAt _) fun w => sJ p w)` as an intermediate fact.
+
+Establish `e1 : ∀ q, nf (e (S q)).1 = q.1` using `fun q => (sev q).1`. Establish `e2 : ∀ q, nf (e (S q)).2 = q.2` using `fun q => (sev q).2`. Simplify using `only [dd0, SchwartzMap.smul_apply, smul_eq_mul, dop_apply, e1, e2] at this`. Conclude with `this`. Conclude with `⟨k, gau_of h0 hk⟩`.
+-/
 theorem Gs.gau (h : IsCMExt F E σ) (hf : Gs e τ ε θ θ' f) (h0 : f ≠ 0) : ∃ k, Gau f k := by
   let C : InfinitePlace F → Matrix (Fin m) β ℂ →ₗ[ℝ] Matrix (Fin m) β ℂ := fun w =>
     { toFun := fun x => (((ε w : ℤ) : ℂ) * Complex.I) • (θ w * x * (θ' w)ᵀ)
@@ -145,12 +184,24 @@ theorem Gs.gau (h : IsCMExt F E σ) (hf : Gs e τ ε θ θ' f) (h0 : f ≠ 0) : 
     exact this
   exact ⟨k, gau_of h0 hk⟩
 
+/- English proof (translation)
+Use `choose x hx hz using fun i j => GlobalTheory.CompanionTheory.RealPlaceAdele.exists_adele_piInf σ h τ fun w => ((((ε w : ℤ) : ℂ) * Complex.I) • (θ w * u.map (piInf (τ w)) * (θ' w)ᵀ)) i j`. Conclude with `⟨Matrix.of x, fun c hc => Matrix.ext fun i j => hx i j c hc, fun w => Matrix.ext fun i j => hz i j w⟩`.
+-/
 theorem exists_rel (h : IsCMExt F E σ) (ε : InfinitePlace F → ℤˣ) (u : Matrix (Fin m) β (AE F E)) :
     ∃ u', At (evI F) u' ∧ Rel τ ε θ θ' u u' := by
   choose x hx hz using fun i j => GlobalTheory.CompanionTheory.RealPlaceAdele.exists_adele_piInf σ h τ fun w =>
     ((((ε w : ℤ) : ℂ) * Complex.I) • (θ w * u.map (piInf (τ w)) * (θ' w)ᵀ)) i j
   exact ⟨Matrix.of x, fun c hc => Matrix.ext fun i j => hx i j c hc, fun w => Matrix.ext fun i j => hz i j w⟩
 
+/- English proof (translation)
+Introduce `u u' hu hu' hr`. Take `⟨k, g⟩` from `hf.gau h h0`. Take `⟨k', g'⟩` from `hf'.gau h h0'`. Take `⟨u'', hu'', hr'⟩` from `exists_rel (τ := τ) (θ := θ) (θ' := θ') h ε' u`. Establish `hv : At (evI F) (u' - u'')` using `fun c hc => by rw [smul_sub, hu' c hc, hu'' c hc, sub_zero]`.
+
+Take `⟨v', hv', hs⟩` from `exists_rel (τ := τ) (θ := θ) (θ' := θ') h ε (u' - u'')`. Establish `hs' : Rel τ ε' θ θ' (u' - u'') (-v')` using `fun w => by`. Rewrite using `[Matrix.map_neg _ (map_neg _), hs w, Matrix.map_sub _ (map_sub _), hr w, hr' w, ← sub_smul]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, ← neg_smul]`. Use `congr 1`.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or (ε w) with a | a <;> rcases Int.units_eq_one_or (ε' w) with b | b <;> simp [a, b]`. Establish `h2` using `hf' _ _ hv (fun c hc => by rw [smul_neg, hv' c hc, neg_zero]) hs'`. Establish `en : ∀ z : κ → AF F, nf (-z) = -nf z` using `fun z => funext fun i => map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace F) (z i).1`. Establish `el : ∀ b : κ → mixedEmbedding.mixedSpace F, linForm (-b) = -linForm b` using `fun b => by`. Conclude with `ContinuousLinearMap.ext fun y => by`.
+
+Simplify using `only [linForm_apply, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib, map_neg, ContinuousLinearMap.neg_apply]`. Rewrite `h2` using `[map_neg, dd0, Prod.fst_neg, Prod.snd_neg, en, en, el]`. Take `⟨a0, l0⟩` from `opp g g' (hf _ _ hv hv' hs) h2`. Rewrite using `[← hf' u u'' hu hu'' hr', ← sub_add_cancel u' u'', map_add, dd0, Prod.fst_add, Prod.snd_add, nf_add, nf_add, linForm_add, a0, l0, zero_add, zero_add, dd0]`.
+-/
 theorem Gs.same (h : IsCMExt F E σ) (hf : Gs e τ ε θ θ' f) (hf' : Gs e τ ε' θ θ' f') (h0 : f ≠ 0) (h0' : f' ≠ 0) :
     Gs e τ ε θ θ' f' := by
   intro u u' hu hu' hr

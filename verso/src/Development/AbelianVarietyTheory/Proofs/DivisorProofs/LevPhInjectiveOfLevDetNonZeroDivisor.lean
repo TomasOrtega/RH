@@ -11,6 +11,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c S hpq hA χ u hu hdet f hf hph`. Establish `hact` using `GlobalTheory.LevDesc.isRightAct_pullSecOn (Xo := Xo) (c := c) (S := S) hpq hA`. Establish `hdet' : (Matrix.of fun h g : S => GlobalTheory.LevDesc.pullSecOn Xo c S hpq hA (h * g) ⟨u, hu⟩).det ∈ nonZeroDivisors (secRing Xo c)`. Establish `h1` using `GlobalTheory.LevDesc.coe_det_pullSecOn (Xo := Xo) (c := c) (S := S) hpq hA ⟨u, hu⟩`. Establish `hl : ∀ x : secRing Xo c, (Matrix.of fun h g : S => GlobalTheory.LevDesc.pullSecOn Xo c S hpq hA (h * g) ⟨u, hu⟩).det * x = 0 → x = 0`.
+
+Introduce `x hx`. Establish `h2` using `congrArg Subtype.val hx`. Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_zero] at h2`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hdet x x.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[← h1]`. Conclude with `h2`. Rewrite using `[mem_nonZeroDivisors_iff]`. Conclude with `⟨hl, fun x hx => hl x (by rw [mul_comm]; exact hx)⟩`. Establish `key` using `(GlobalTheory.twistedTrace_equivariant_and_injective_of_groupDet S c.F (secRing Xo c) (GlobalTheory.LevDesc.pullSecOn Xo c S hpq hA) hact.1 hact.2 χ ⟨u, hu⟩ hdet').2.1 ⟨f, hf⟩ (fun h => by`.
+
+Establish `h3` using `GlobalTheory.LevDesc.coe_tr_pullSecOn (Xo := Xo) (c := c) (S := S) hpq hA χ (⟨f, hf⟩ * GlobalTheory.LevDesc.pullSecOn Xo c S hpq hA h ⟨u, hu⟩)`. Rewrite `h3` using `[GlobalTheory.LevDesc.tr_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h3]`. Conclude with `hph h)`.
+
+Conclude with `congrArg Subtype.val key`.
+-/
 theorem levPh_injective_of_levDet_nonZeroDivisor : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) (S : Subgroup (LevelAut Dw l)), 1 ≤ Dw.p + Dw.q → l.A.Coprime l.M → ∀ (χ : S →* (c.F)ˣ) (u : Rul Xo c), u ∈ secRing Xo c → (∀ f ∈ secRing Xo c, levDet Xo c S u * f = 0 → f = 0) → ∀ f ∈ secRing Xo c, (∀ h : S, GlobalTheory.LevDesc.levPh Xo c S χ u f h = 0) → f = 0 := by
   classical
   intro E _ _ _ H Dw l Xo c S hpq hA χ u hu hdet f hf hph

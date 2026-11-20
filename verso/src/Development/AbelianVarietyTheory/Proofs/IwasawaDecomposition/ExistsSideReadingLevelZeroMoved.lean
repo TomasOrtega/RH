@@ -45,10 +45,16 @@ def locMeet {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Mo
     obtain ⟨a, ha, hax⟩ := hx w
     exact ⟨a, ha, by rw [smul_comm]; exact (S w).smul_mem c hax⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locMeet {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module (𝓞 K) V] {ι : Type}
     (P : ι → HeightOneSpectrum (𝓞 K)) (S : ι → Submodule (𝓞 K) V) (x : V) :
     x ∈ locMeet P S ↔ ∀ w, ∃ d : 𝓞 K, d ∉ (P w).asIdeal ∧ d • x ∈ S w := Iff.rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord]`. Rewrite using `[hM]`. Both sides reduce to the same expression.
+-/
 theorem majAt_cast {K : Type} [Field K] [NumberField K] [StarRing K] {a b : ℕ} (h : a = b)
     (M : InfinitePlace K → Matrix (Fin b) (Fin b) ℂ) (M' : InfinitePlace K → Matrix (Fin a) (Fin a) ℂ) (v : InfinitePlace K)
     (hM : M' v = (M v).submatrix (Fin.cast h) (Fin.cast h)) (x y : Fin b → K) :
@@ -65,6 +71,13 @@ namespace GlobalTheory.Mem.R3.Rw.GoodSideLattices
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨jW, hjW⟩` from `GlobalTheory.Mem.CoordW.exists_jW D G Pl0 I0 T A3 Ks R F cG hP hH Y.mj`. Take `⟨rfl, a1, b1⟩` from `h1`. Take `⟨rfl, a0, b0⟩` from `h0`. Use `⟨⟨ε1.symm, ε0.symm, fun x => ?_, fun x => ?_, fun v hv x x' => ?_, fun v hv x x' => ?_, rr, rr0, jW, hjW⟩⟩` and prove the remaining obligations. Establish `h` using `j1 (ε1.symm x)`.
+
+Rewrite `h` using `[ε1.apply_symm_apply]`. Conclude with `(eq_of_heq h).trans (a1 x)`. Establish `h` using `j0 (ε0.symm x)`. Rewrite `h` using `[ε0.apply_symm_apply]`. Conclude with `(eq_of_heq h).trans (a0 x)`.
+
+Rewrite using `[m1 v hv, ε1.apply_symm_apply, ε1.apply_symm_apply]`. Conclude with `majAt_cast rfl _ Xo1 v (b1 v).1 x x'`. Rewrite using `[m0 v hv, ε0.apply_symm_apply, ε0.apply_symm_apply]`. Conclude with `majAt_cast rfl _ Xo0 v (b0 v).1 x x'`.
+-/
 theorem reading_level_zero_of_side_data {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3)
     (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (hP : Pins R F cG) (hH : Holds R F) (X0 : BaseLevelRowSide D)
@@ -97,6 +110,13 @@ theorem reading_level_zero_of_side_data {D : D7} {G : Type} [Group G] [Fintype G
   · rw [m0 v hv, ε0.apply_symm_apply, ε0.apply_symm_apply]
     exact majAt_cast rfl _ Xo0 v (b0 v).1 x x'
 
+/- English proof (translation)
+Take `⟨Xf, hXf, hXfn⟩` from `GlobalTheory.exists_frames_normAt_eq_norm K e W n c ⊤`. Set `X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ` to `fun v => if v = InfinitePlace.mk e then Xf v else Xo v`. Use `⟨{ V := Fin n → K, ι := Fin n, b := Pi.basisFun K (Fin n), X := X, L := locMeet P fun u => Submodule.span (𝓞 K) {z | GlobalTheory.Mem.coordForm e c z ∈ S u} }, GlobalTheory.Mem.coordForm e c, LinearEquiv.refl _ _, fun v => ?_, ?_, fun x => ?_, fun _ => rfl, fun v hv x x' => ?_, f …` and prove the remaining obligations. Use `show IsUnit (if v = InfinitePlace.mk e then Xf v else Xo v).det split_ifs exacts [hXf v, hXo v]`. Establish `: (fun i => GlobalTheory.Mem.coordForm e c (Pi.basisFun K (Fin n) i)) = c` using `funext (GlobalTheory.Mem.coordForm_basisFun e c) show LinearIndependent ℂ (fun i => GlobalTheory.Mem.coordForm e c (Pi.basisFun K (Fin n) i)) ∧ Submodule.span ℂ (Set.range (fun i => GlobalTheory.Mem.coordForm e c (Pi.basisFun K (Fin n) i))) = ⊤`.
+
+Rewrite using `[this]`. Conclude with `⟨c.linearIndependent, c.span_eq⟩`. Use `Eq.trans ?_ (hXfn x) show Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)) X _ x = _` and prove the remaining obligations. Simplify using `only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.fcoord, X, if_true]`. Use `show Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) X v x x' = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin n)) Xo v x x'`.
+
+Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, X, if_neg hv]`.
+-/
 theorem exists_hlat {K : Type} [Field K] [NumberField K] [StarRing K] (e : K →+* ℂ) {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {n : ℕ} (c : Module.Basis (Fin n) ℂ W) (Xo : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)
     (hXo : ∀ v, IsUnit (Xo v).det) {ι : Type} (P : ι → HeightOneSpectrum (𝓞 K)) (S : ι → Set W) :
@@ -139,6 +159,11 @@ namespace GlobalTheory.Mem.R3.Rw.GoodSideLattices
     (nm : ∀ x : RR.V, Formalism.HermitianLatticesTheory.normAt RR.b RR.X (InfinitePlace.mk D.what₂.embLL) x = ‖j x‖) : RowSide D EE :=
   { S with cen := cen, eOp_tie := tie, RR := RR, RR_frames := fr, jEE := j, jEE_basis := bs, jEE_norm := nm }
 
+/- English proof (translation)
+Establish `h : ∀ k, (reRow S cen tie RR fr j bs nm).downTo μ k = S.downTo μ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => exact congrArg (fun φ => φ.comp (S.io μ k)) ih`.
+
+Establish `hi : (reRow S cen tie RR fr j bs nm).iota μ = S.iota μ` using `congrArg (fun φ => (S.multZero μ).toLinearEquiv.toLinearMap ∘ₗ φ ∘ₗ (S.multTop μ).symm.toLinearEquiv.toLinearMap) (h D.R.m)`. Conclude with `congrArg (fun φ : S.Amb μ →ₗ[ℂ] EE => φ '' ((fun x => (S.V0 μ ⊓ (S.V0 μ ⊓ LinearMap.ker φ)ᗮ).starProjection x) '' ((S.Mtilde μ).carrier ∩ (S.V0 μ : Set (S.Amb μ))))) hi`.
+-/
 theorem RRset_reRow {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (S : RowSide D EE)
     (cen tie RR fr j bs nm) (μ : D.what₂.Tup) : (reRow S cen tie RR fr j bs nm).RRset μ = S.RRset μ := by
   have h : ∀ k, (reRow S cen tie RR fr j bs nm).downTo μ k = S.downTo μ k := by
@@ -155,11 +180,17 @@ variable {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z₀ : w.Lt
   {z₀ : Dat (w.st Z₀) w.I hX T Wt} {q : RowPk w z₀} {o : q.Over}
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `RRset_reRow s'.p0.s s.cen s.tie s.RR s.frames s.jEE s.basis s.norm μ`.
+-/
 theorem RRset_side (s s' : Side0 o) (μ : (w.D o.Z).what₂.Tup) : s.p0.s.RRset μ = s'.p0.s.RRset μ :=
   RRset_reRow s'.p0.s s.cen s.tie s.RR s.frames s.jEE s.basis s.norm μ
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨plg, iso, h1, h2⟩` from `hR`. Take `⟨plg₀, iso₀, k1, -, -, k2⟩` from `m.z.pins.keep.grp`. Use `MulEquiv.ext fun g => funext fun kv => ?_` and prove the remaining obligations. Conclude with `(Bare.read_unique g (m.z.R.eG g) (m.z.idG g) (plg kv) (plg₀ kv) ((h1 kv).trans (k1 kv).symm) (iso kv) (iso₀ kv) (h2 g kv) (k2 g kv)).symm`.
+-/
 theorem eq_of_stdIso (m : Moved o) (eR : Gc B w.px ≃* G0g (w.D o.Z).nd) (hR : StdIso (w.st o.Z) w.px eR) :
     m.z.R.eG.trans m.z.cG = eR := by
   obtain ⟨plg, iso, h1, h2⟩ := hR
@@ -170,6 +201,11 @@ theorem eq_of_stdIso (m : Moved o) (eR : Gc B w.px ≃* G0g (w.D o.Z).nd) (hR : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨RR, j, ε, h1, h2, h3, h4⟩` from `exists_hlat B.embLL c Xo hXo P S`. Set `eR₀ : Gc B w.px ≃* G0g (w.D o.Z).nd` to `m.z.R.eG.trans m.z.cG`. Establish `hc : (w.D o.Z).ntypes.e0 ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g (w.D o.Z).nd))` using `hF.grpAt.cen`. Use `⟨⟨fun μ => (q.p.sA false μ).act.comp (Bare.cenPull eR₀), fun μ => ?_, fun eR hR μ a a' ha x => ?_, RR, h1, j, h2, h3⟩, ε, h4⟩` and prove the remaining obligations. Rewrite using `[dif_pos hc]`.
+
+Conclude with `Bare.e_eq_act (m.t.tA false μ) (m.t.lawsA false μ) (Bare.cenPull eR₀ ⟨_, hc⟩) fun g => (m.z.good.2 g).trans (Bare.coeff_cenPull eR₀ ⟨_, hc⟩ g).symm`. Establish `he : eR₀ = eR` using `eq_of_stdIso m eR hR`. Substitute `he` using the available equality. Conclude with `congrArg (fun z => (q.p.sA false μ).act z x) (Bare.cenPull_eq _ ha)`.
+-/
 theorem exists_side (hF : o.Fits) (m : Moved o) {n : ℕ} (c : Module.Basis (Fin n) ℂ (q.p.ch false).EE.T)
     (Xo : InfinitePlace B.LL → Matrix (Fin n) (Fin n) ℂ) (hXo : ∀ v, IsUnit (Xo v).det) {ι : Type}
     (P : ι → HeightOneSpectrum (𝓞 B.LL)) (S : ι → Set (q.p.ch false).EE.T) :
@@ -203,6 +239,11 @@ def Good (m : Moved o) (s : Side0 o) : Prop :=
         Formalism.HermitianLatticesTheory.majAt (Pi.basisFun B.LL (Fin n)) Xo v (ε x) (ε x')) ∧ s.p0.s.RRDef
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨n, c, Xo, h⟩` from `rrT_exists (w.st o.Z).toD7 (Gc B w.px) (PlS B w.px) (PlI B w.px) (TupU w.I (usedOf w.I T Wt)) (famR (w.st o.Z) w.I hX (usedOf w.I T Wt) m.z.Xg m.z.tr) m.z.core.Q.c.F m.z.R m.z.F m.z.cG m.z.pins m.intersectionNumber_baseChange m.y false (q.p.ch false).EE (m.t.ch false).jE (m.t.ch …`. Establish `hXo : ∀ v, IsUnit (Xo v).det` using `h.elim fun _ h' v => (h'.2 v).2`. Take `⟨s', -⟩` from `exists_side hF m c Xo hXo (fun u => (w.D o.Z).plEq u) fun _ => ∅`. Take `⟨s, ε, h1, h2, h3⟩` from `exists_side hF m c Xo hXo (fun u => (w.D o.Z).plEq u) fun u => s'.p0.s.RRset ((w.D o.Z).what₂.muAt u)`. Use `⟨s, n, c, Xo, ε, h, h1, h2, fun x => (h3 x).trans (forall_congr' fun u => ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[RRset_side s s']`. Conclude with `Iff.rfl`.
+-/
 theorem exists_good (hF : o.Fits) (m : Moved o) : ∃ s : Side0 o, Good m s := by
   obtain ⟨n, c, Xo, h⟩ := rrT_exists (w.st o.Z).toD7 (Gc B w.px) (PlS B w.px) (PlI B w.px) (TupU w.I (usedOf w.I T Wt))
     (famR (w.st o.Z) w.I hX (usedOf w.I T Wt) m.z.Xg m.z.tr) m.z.core.Q.c.F m.z.R m.z.F m.z.cG m.z.pins m.intersectionNumber_baseChange m.y false
@@ -216,6 +257,9 @@ theorem exists_good (hF : o.Fits) (m : Moved o) : ∃ s : Side0 o, Good m s := b
   exact Iff.rfl
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `hs.elim fun n hs => hs.elim fun c hs => hs.elim fun Xo hs => hs.elim fun ε0 hs => hF.div.1.elim fun ε hε => reading_level_zero_of_side_data m.z.R m.z.F m.z.cG m.z.pins m.intersectionNumber_baseChange s.p0 Y m.y (m.t.ch true).jE q.p.nR q.p.cR q.p.Xo m.t.rr ε (fun x => (hIsh _).tra …`.
+-/
 theorem read_of_good (hF : o.Fits) (m : Moved o) (s : Side0 o) (hs : Good m s) (Y : Read m.z.R.toRealDat m.z.F.lv2 s.p0)
     (hIsh : ∀ x, HEq (Y.Ish.jE x).1 ((m.t.ch true).jE x)) (hIz : ∀ x, HEq (Y.Iz.jE x).1 ((m.t.ch false).jE x)) :
     Nonempty (RationalReadingWithoutCongruence m.z.R m.z.F s.p0 Y) :=
@@ -232,6 +276,9 @@ namespace GlobalTheory.Mem.R3.Rw
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ hF m` and use `(GoodSideLattices.exists_good hF m).imp fun s hs Y _ h1 h2 _ => GoodSideLattices.read_of_good hF m s hs Y h1 h2`.
+-/
 theorem exists_side_reading_level_zero : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z₀ : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z₀ : Dat (w.st Z₀) w.I hX T Wt), ∀ (q : RowPk w z₀) (o : q.Over), Inputs (w.D o.Z) → o.Fits → ∀ m : Moved o, ∃ s : Side0 o, ∀ Y : Read m.z.R.toRealDat m.z.F.lv2 s.p0, Y.tupT = m.y.tupT → (∀ x, HEq (Y.Ish.jE x).1 ((m.t.ch true).jE x)) → (∀ x, HEq (Y.Iz.jE x).1 ((m.t.ch false).jE x)) → (∀ i x, HEq (Y.mj.eW i x) (m.t.lf.eW i x)) → Nonempty (RationalReadingWithoutCongruence m.z.R m.z.F s.p0 Y) :=
   fun _ _ _ _ _ _ _ _ _ _ _ hF m =>
     (GoodSideLattices.exists_good hF m).imp fun s hs Y _ h1 h2 _ => GoodSideLattices.read_of_good hF m s hs Y h1 h2

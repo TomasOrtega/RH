@@ -12,6 +12,11 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory.QuadSymbol
 
+/- English proof (translation)
+Establish `hiff : a ∈ normGroup K L A ↔ b ∈ normGroup K L A`. Use `(normGroup K L A).mul_mem_cancel_left (x := a / b) (y := b) h` as an intermediate fact. Rewrite `this` using `[div_mul_cancel]`. Then use the resulting hypothesis. Distinguish the cases in `hb : b ∈ normGroup K L A`. Rewrite using `[eta_eq_one_iff.2 hb, eta_eq_one_iff.2 (hiff.2 hb)]`.
+
+Rewrite using `[eta_eq_neg_one_iff.2 hb, eta_eq_neg_one_iff.2 (fun ha => hb (hiff.1 ha))]`.
+-/
 theorem eta_eq_of_div_mem {K L : Type} [Field K] [Field L] [Algebra K L] {A : Type} [CommRing A]
     [Algebra K A] {a b : Aˣ} (h : a / b ∈ normGroup K L A) : eta K L A a = eta K L A b := by
   have hiff : a ∈ normGroup K L A ↔ b ∈ normGroup K L A := by
@@ -21,6 +26,9 @@ theorem eta_eq_of_div_mem {K L : Type} [Field K] [Field L] [Algebra K L] {A : Ty
   · rw [eta_eq_one_iff.2 hb, eta_eq_one_iff.2 (hiff.2 hb)]
   · rw [eta_eq_neg_one_iff.2 hb, eta_eq_neg_one_iff.2 (fun ha => hb (hiff.1 ha))]
 
+/- English proof (translation)
+Unfold `etaProd`. Use `congr 1`. Conclude with `finprod_congr fun v => eta_eq_of_div_mem (h.1 v)`. Conclude with `Finset.prod_congr rfl fun w _ => eta_eq_of_div_mem (h.2 w)`.
+-/
 theorem etaProd_eq_of_everywhereNorm_div {K L : Type} [Field K] [NumberField K] [Field L] [Algebra K L]
     {x x' : FinFam K} {y y' : InfFam K} (h : EverywhereNorm K L (x / x') (y / y')) :
     etaProd K L x y = etaProd K L x' y' := by
@@ -29,6 +37,9 @@ theorem etaProd_eq_of_everywhereNorm_div {K L : Type} [Field K] [NumberField K] 
   · exact finprod_congr fun v => eta_eq_of_div_mem (h.1 v)
   · exact Finset.prod_congr rfl fun w _ => eta_eq_of_div_mem (h.2 w)
 
+/- English proof (translation)
+Use `⟨almostNorm_finDiag K L, fun t => (normTheorem K L t).symm, fun x y hx => ⟨?_, ?_⟩, exists_almostNorm_etaProd_eq_neg_one K L⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩`. Rewrite using `[etaProd_eq_of_everywhereNorm_div ht]`. Conclude with `(productFormula K L t).2`. Conclude with `exists_everywhereNorm_div_of_etaProd_eq_one K L x y hx`.
+-/
 theorem exactSequence (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     [Algebra.IsQuadraticExtension K L] : ExactSequence K L := by
   refine ⟨almostNorm_finDiag K L, fun t => (normTheorem K L t).symm, fun x y hx => ⟨?_, ?_⟩,
@@ -44,6 +55,9 @@ namespace GlobalTheory.Published
 
 open GlobalTheory.QuadSymbol
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun K L _ _ _ _ _ _ => ⟨localCharacters K L, normTheorem K L, exactSequence K L, productFormula K L⟩, fun F E K L _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ h => baseChange F E K L h⟩`.
+-/
 theorem quadraticClassFieldTheory_holds : QuadraticClassFieldTheory :=
   ⟨fun K L _ _ _ _ _ _ =>
     ⟨localCharacters K L, normTheorem K L, exactSequence K L, productFormula K L⟩,

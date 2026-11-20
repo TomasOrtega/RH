@@ -8,6 +8,11 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 
 namespace GlobalTheory.Cut.QuadN
 
+/- English proof (translation)
+Take `⟨-, h1, h2, -, -, -, -, -, -, ⟨hp, -⟩, -⟩` from `hS`. Establish `hg : InR' D.nd r S fun x' => rO D.nd i r (S.p x') g` using `⟨1, fun _ => 1, fun _ => g, fun _ => one_mem _, by funext x; simp⟩`. Establish `a1` using `h1 g (S.e.symm (0, fun _ => 1))`. Establish `a2` using `h2 _ hg (S.e.symm (0, fun _ => 1))`. Simplify using `only [hp] at a2`.
+
+Establish `a3` using `congrFun (congrArg Prod.snd (a2.symm.trans a1)) c`. Simplify using `only [LinearEquiv.apply_symm_apply, mul_one] at a3`. Conclude with `IsFractionRing.injective _ _ a3`.
+-/
 theorem psiChi_group {D : D7} {i : D.nd.Loc} {r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))}
     {ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))} {π : D.nd.X i} {S : IdempotentChoiceData D.nd i}
     (hS : Formalism.MainNotions.IdempotentChoiceDepthZero.IsOrthogonalIdempotentDecomposition D.nd r ρ π S) (c : Fin D.R.t) (g : GE D.nd) :
@@ -22,6 +27,19 @@ theorem psiChi_group {D : D7} {i : D.nd.Loc} {r : D.nd.X i → (GE D.nd →* GL 
   simp only [LinearEquiv.apply_symm_apply, mul_one] at a3
   exact IsFractionRing.injective _ _ a3
 
+/- English proof (translation)
+Introduce `D i r ρ π Xs S hr hS hπ v hv hq c`. Establish `hl` using `D.nd.SQ_l i v hv`. Establish `hchi : ∀ γ ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 v), chiU D.nd i ((c : ℕ) + 1) γ = chiU D.nd i 1 γ := fun γ hγ => (GlobalTheory.T.cyclotomicChar_unramified_away_from_ell D i v hl γ hγ).2 _ (by omega) c.2`. Establish `hγ0` using `D.nd.locNd_chebotarevPlace_mem i v`. Establish `htor : ∀ f ∈ cocChi i r S Xs c, (D.nd.zeta i v - 1) • f (D.nd.gam0 i v) = 0`.
+
+Introduce `f hf`. Use `Check.cocW_quad i r S Xs _ hq hf _ hγ0` as an intermediate fact. Rewrite `this` using `[Check.matKO_smul_one, psiChi_group hS, hchi _ hγ0]`. Rewrite using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `this`.
+
+Establish `hdet : ∀ f ∈ cocChi i r S Xs c, f (D.nd.gam0 i v) = 0 → ∀ σ ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 v), f σ = 0 := by`. Introduce `f hf h0`. Take `⟨hc, hz⟩` from `(GlobalTheory.Cut.CocN.main D i r ρ π Xs S hr hS hπ).2 c hf`. Establish `: DiscreteTopology (KOG (D.nd.O i) 1)` using `⟨rfl⟩`. Establish `hlc : IsLocallyConstant f` using `(IsLocallyConstant.iff_continuous f).2 hc`.
+
+Establish `hadd : ∀ a ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 v), ∀ b ∈ Ine (F := D.host.E) (D.nd.plOm.1 v), f (a * b) = f a + f b := by`. Introduce `a ha b _`. Establish `e : chiRatO D.nd i ((c : ℕ) + 1) a = (1 : D.nd.O i) • 1`. Express the relevant statement in the definitionally equal form `(((chiU D.nd i ((c : ℕ) + 1) a * (chiU D.nd i 1 a)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)) • (1 : Matrix (Fin 1) (Fin 1) (D.nd.O i)) = _`. Rewrite using `[hchi a ha, mul_inv_cancel, Units.val_one]`.
+
+Rewrite using `[hz, Check.WKG_eq_matKO, e, Check.matKO_smul_one, one_smul]`. Conclude with `GlobalTheory.Cut.Quad.eq_zero_of_tameGen (D.nd.restN_tameGenerator_generates i v hv) f hlc hadd (GlobalTheory.T.wildInertia_killed_by_additive_locallyConstant D i v hl f hlc hadd) h0`. Use `le_trans ?_ (GlobalTheory.Cut.Quad.length_torsionBy_le (D.nd.zeta i v - 1))` and prove the remaining obligations. Use `Module.length_le_of_injective (LinearMap.restrict (LinearMap.proj (⟨D.nd.gam0 i v, hγ0⟩ : Ine (F := D.host.E) (D.nd.plOm.1 v))) ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+
+Conclude with `htor f hf`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨_, f, hf, rfl⟩ h0`. Use `Subtype.ext (funext fun σ => ?_)` and prove the remaining obligations. Conclude with `hdet f hf (congrArg Subtype.val h0) σ.1 σ.2`.
+-/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (Xs : Set (D.nd.X i)) (S : IdempotentChoiceData D.nd i), GoodR D.nd i r → Formalism.MainNotions.IdempotentChoiceDepthZero.IsOrthogonalIdempotentDecomposition D.nd r ρ π S → π ∈ Xs → ∀ v, v ∈ D.nd.S i ∨ v ∈ D.nd.Q i → QuadAt i r Xs v → ∀ c : Fin D.R.t, Module.length (D.nd.O i) ↥(resIne i (cocChi i r S Xs c) v) ≤ lenQ i (D.nd.zeta i v - 1) := by
   intro D i r ρ π Xs S hr hS hπ v hv hq c
   have hl := D.nd.SQ_l i v hv

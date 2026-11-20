@@ -23,6 +23,9 @@ def tensCoordH : R ⊗[F] E ≃ₜ (Fin d → R) :=
     continuous_invFun :=
       IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.basis R b).equivFun.symm.toLinearMap }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensCoordH_apply (y : R ⊗[F] E) (k : Fin d) :
     tensCoordH b R y k = (Algebra.TensorProduct.basis R b).repr y k := rfl
 

@@ -27,10 +27,18 @@ def thJ (g : ℕ) : Fl g → Pt (symMat g) g → ℂ :=
 def thH (g : ℕ) : Pt (symMat g) g → ℝ := fun P => Real.exp (-2 * Real.pi *
   ((fun i => (P.2 i).im) ⬝ᵥ ((((tauU P.1).map Complex.im)⁻¹) *ᵥ fun i => (P.2 i).im)))
 
+/- English proof (translation)
+Unfold `IsLat stdLat`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem isLat_stdLat (g : ℕ) : IsLat (stdLat g) := by
   unfold IsLat stdLat
   exact ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Establish `hint : ∀ l ∈ stdLat g, ∀ i, ∃ k : ℤ, l i = k`. Introduce `l hl i`. Take `⟨k, hk⟩` from `((Pi.basisFun ℝ (Fin g ⊕ Fin g)).mem_span_iff_repr_mem ℤ l).1 hl i`. Conclude with `⟨k, by simpa using hk.symm⟩`. Introduce `l hl l' hl'`.
+
+Use `choose a ha using hint l hl`. Use `choose b hb using hint l' hl'`. Use `⟨∑ i, (a (Sum.inr i) * b (Sum.inl i) - a (Sum.inl i) * b (Sum.inr i)), ?_⟩` and prove the remaining obligations. Simplify using `[riem, ha, hb]`.
+-/
 theorem riem_int (g : ℕ) : ∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∃ k : ℤ, riem l l' = k := by
   have hint : ∀ l ∈ stdLat g, ∀ i, ∃ k : ℤ, l i = k := by
     intro l hl i
@@ -42,12 +50,20 @@ theorem riem_int (g : ℕ) : ∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∃ k : �
   refine ⟨∑ i, (a (Sum.inr i) * b (Sum.inl i) - a (Sum.inl i) * b (Sum.inr i)), ?_⟩
   simp [riem, ha, hb]
 
+/- English proof (translation)
+Establish `hτ` using `(GlobalTheory.SiegelOpen.isPeriodMap_tauU_and_simplyConnected g).1`. Take `⟨hm, hc⟩` from `GlobalTheory.ThetaMet.isMetric_chernIsFlat hτ`. Conclude with `⟨⟨hτ, isLat_stdLat g, (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.theta_factor hτ).1, hm⟩, hc⟩`.
+-/
 theorem isDatum_theta (g : ℕ) :
     IsDatum (siegel g) tauU (stdLat g) (thJ g) (thH g) ∧ ChernIsFlat (siegel g) tauU (thH g) := by
   have hτ := (GlobalTheory.SiegelOpen.isPeriodMap_tauU_and_simplyConnected g).1
   obtain ⟨hm, hc⟩ := GlobalTheory.ThetaMet.isMetric_chernIsFlat hτ
   exact ⟨⟨hτ, isLat_stdLat g, (GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.theta_factor hτ).1, hm⟩, hc⟩
 
+/- English proof (translation)
+Use `⟨fun l hl => ⟨(hj.1 l hl).1.comp (GlobalTheory.FlatRigidity.differentiableOn_transl hτ x) fun P hP => GlobalTheory.FlatRigidity.transl_mem τ x hP, fun P hP => (hj.1 l hl).2 _ (GlobalTheory.FlatRigidity.transl_mem τ x hP)⟩, fun l hl l' hl' P hP => ?_⟩` and prove the remaining obligations. Simplify using `only [translPullFactor]`. Establish `hc : transl τ x (transl τ l' P) = transl τ l' (transl τ x P)`. Rewrite using `[GlobalTheory.FlatRigidity.transl_transl, GlobalTheory.FlatRigidity.transl_transl, add_comm]`. Rewrite using `[hc]`.
+
+Conclude with `hj.2 l hl l' hl' _ (GlobalTheory.FlatRigidity.transl_mem τ x hP)`.
+-/
 theorem isFactor_transl {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} (hτ : IsPeriodMap B τ) {M : Submodule ℤ (Fl g)}
     {j : Fl g → Pt E g → ℂ} (hj : IsFactor B τ M j) (x : Fl g) :
@@ -61,6 +77,9 @@ theorem isFactor_transl {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace
   rw [hc]
   exact hj.2 l hl l' hl' _ (GlobalTheory.FlatRigidity.transl_mem τ x hP)
 
+/- English proof (translation)
+Use `revert I`. Evaluate the decidable proposition.
+-/
 theorem finset_fin_two_eq_cases (I : Finset (Fin (1 + 1))) : I = ∅ ∨ I = {0} ∨ I = {1} ∨ I = Finset.univ := by
   revert I; decide
 
@@ -68,6 +87,35 @@ end GlobalTheory.UnivTorsion
 
 namespace GlobalTheory.UnivTorsion
 
+/- English proof (translation)
+Introduce `hBK hN g`. Take `⟨_, hOne, hIso, hTr, _, _, hAc⟩` from `hN`. Establish `hτ` using `(GlobalTheory.SiegelOpen.isPeriodMap_tauU_and_simplyConnected g).1`. Establish `hsc` using `(GlobalTheory.SiegelOpen.isPeriodMap_tauU_and_simplyConnected g).2`. Take `⟨hD, hC⟩` from `isDatum_theta g`.
+
+Establish `hA` using `hAc (symMat g) g (siegel g) tauU (stdLat g) (thJ g) (thH g) hD hC`. Use `set n := Module.finrank ℂ (symMat g) with hn`. Use `set bs := Module.finBasis ℂ (symMat g) with hbs`. Take `⟨T, hTs, hT⟩` from `hBK (symMat g) g n (siegel g) tauU (stdLat g) (thJ g) (thH g) hD hA bs`. Use `set F : symMat g → symMat g → Ext (1 + 1) := fun s v I => if I = ∅ then T s ∅ else if I = Finset.univ then ∑ i, ∑ k, bs.repr v i * star (bs.repr v k) * T s {i.castAdd n, k.natAdd n} else 0 with hF`.
+
+Establish `key : ∀ s ∈ siegel g, ∀ v, IsTorsionForm tauU (stdLat g) (thJ g) (thH g) ![v] s (F s v)`. Introduce `s hs v`. Take `⟨T', hT'1, hT'0, hT'u⟩` from `hOne (symMat g) g n (siegel g) tauU (stdLat g) (thJ g) (thH g) hD bs (bs.repr v) s hs (T s) (((hT s hs).1 (T s)).2 rfl)`. Rewrite `hT'1` using `[bs.sum_repr]`. Take `⟨T1, -, hT1⟩` from `hBK (symMat g) g 1 (siegel g) tauU (stdLat g) (thJ g) (thH g) hD hA ![v]`.
+
+Take `⟨hu, hz, -, -⟩` from `hT1 s hs`. Establish `h1 : T' = T1 s` using `(hu T').1 hT'1`. Establish `e : T' = F s v`. Use function extensionality and compare the values at `I`. Break down `finset_fin_two_eq_cases I with rfl | rfl | rfl | rfl` into its components or cases.
+
+Simplify `hT'0` using `[hF]`. Rewrite using `[h1, hz {0} (by decide)]; simp [hF]`. Rewrite using `[h1, hz {1} (by decide)]; simp [hF]`. Rewrite using `[hT'u, hF]`. Simplify using `only`.
+
+Rewrite using `[if_neg Finset.univ_nonempty.ne_empty, if_true]`. Rewrite using `[← e]`. Conclude with `hT'1`. Use `⟨F, ?_, fun s hs v T' => ⟨fun ⟨j, m, hjm, hcm, htor⟩ => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Use `⟨?_, fun s hs => ⟨⟨(T s ∅).re, fun v => ?_⟩, fun v w => -Complex.I * ∑ i, ∑ k, bs.repr v i * star (bs.repr w k) * T s {i.castAdd n, k.natAdd n}, fun a v v' w => ?_, fun v w => ?_, fun v => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hTc : ContinuousOn (fun x : symMat g × symMat g => T x.1) (siegel g ×ˢ Set.univ)` using `hTs.continuousOn.comp continuousOn_fst fun x hx => hx.1`. Establish `hr : ∀ i, Continuous fun x : symMat g × symMat g => bs.repr x.2 i` using `fun i => ((bs.coord i).continuous_of_finiteDimensional).comp continuous_snd`. Use `continuousOn_pi.2 fun I => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : I = ∅`. Simplify using `only [hF, h0, if_true]`.
+
+Conclude with `(continuous_apply (∅ : Finset (Fin (n + n)))).comp_continuousOn hTc`. Distinguish the cases in `h1 : I = Finset.univ`. Simplify using `only [hF, h0, h1, if_false, if_true]`. Use `continuousOn_finset_sum _ fun i _ => continuousOn_finset_sum _ fun k _ => ?_` and prove the remaining obligations. Conclude with `(((hr i).mul (hr k).star).continuousOn).mul ((continuous_apply _).comp_continuousOn hTc)`.
+
+Simplify using `only [hF, h0, h1, if_false]`. Conclude with `continuousOn_const`. Establish `him` using `(hT s hs).2.2.1`. Simplify using `only [hF, if_true]`. Conclude with `Complex.ext (by simp) (by simp [him])`.
+
+Simplify using `only [map_add, map_smul, Finsupp.add_apply, Finsupp.smul_apply, smul_eq_mul]`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hh` using `(hT s hs).2.2.2`.
+
+Establish `hs' : ∀ i k : Fin n, star (T s {i.castAdd n, k.natAdd n}) = -T s {k.castAdd n, i.natAdd n}` using `fun i k => by rw [hh i k, neg_neg]`. Simplify using `only [star_mul', star_neg, star_sum, star_star, hs']`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Complex.star_def, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hF, if_neg Finset.univ_nonempty.ne_empty, if_true]`. Rewrite using `[← mul_assoc, mul_neg, Complex.I_mul_I, neg_neg, one_mul]`. Take `⟨x, φ, hφi, hφm⟩` from `GlobalTheory.FlatRigidity.rigidity hτ hsc (stdLat g) (isLat_stdLat g) (riem_int g) (thJ g) j (thH g) m hD.2.2.1 hD.2.2.2 hC hjm.2.2.1 hjm.2.2.2 hcm`.
+
+Take `⟨hmx, hcx⟩` from `GlobalTheory.FlatTransl.translate_isMetric_chernIsFlat hτ (stdLat g) (thJ g) (thH g) hD.2.2.2 hC x`. Establish `hDx : IsDatum (siegel g) tauU (stdLat g) (translPullFactor tauU x (thJ g)) (fun P => thH g (transl tauU x P))` using `⟨hτ, isLat_stdLat g, isFactor_transl hτ hD.2.2.1 x, hmx⟩`. Establish `h1` using `hIso (symMat g) g 1 (siegel g) tauU (stdLat g) j _ m _ φ hjm hDx hφi hφm ![v] s hs T' htor`. Establish `h2` using `hTr (symMat g) g 1 (siegel g) tauU (stdLat g) (thJ g) (thH g) hD x ![v] s hs _ (key s hs v)`. Take `⟨T1, -, hT1⟩` from `hBK (symMat g) g 1 (siegel g) tauU (stdLat g) _ _ hDx (hAc _ g _ _ _ _ _ hDx hcx) ![v]`.
+
+Conclude with `(((hT1 s hs).1 T').1 h1).trans (((hT1 s hs).1 _).1 h2).symm`. Substitute `h` using the available equality. Conclude with `⟨thJ g, thH g, hD, hC, key s hs v⟩`.
+-/
 theorem univTorsion_hermFun : GlobalTheory.Published.BismutKoehlerTorsion → Naturality → ∀ g : ℕ,
     ∃ F : symMat g → symMat g → Ext (1 + 1), IsHermFun g F ∧ ∀ s ∈ siegel g, ∀ (v : symMat g)
       (T : Ext (1 + 1)), IsUnivTorsion g s v T ↔ T = F s v := by

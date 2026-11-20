@@ -3,5 +3,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MackeyFormulaAl
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll
 open ReciprocityTheory.Ty.Fin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TyFin.mackeyAll | exact GlobalTheory.CompanionTheory.TyFin.mackeyAll | (intros; apply GlobalTheory.CompanionTheory.TyFin.mackeyAll <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mackey_formula_all : ReciprocityTheory.Ty.Fin.St.MackeyAll := by
   first | exact @GlobalTheory.CompanionTheory.TyFin.mackeyAll | exact GlobalTheory.CompanionTheory.TyFin.mackeyAll | (intros; apply GlobalTheory.CompanionTheory.TyFin.mackeyAll <;> assumption)

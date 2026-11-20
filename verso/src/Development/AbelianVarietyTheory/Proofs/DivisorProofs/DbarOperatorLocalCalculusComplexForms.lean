@@ -11,6 +11,9 @@ open GlobalTheory GlobalTheory.CxForm
 
 namespace GlobalTheory.CxForm
 
+/- English proof (translation)
+Introduce `n v`. Take `⟨-, hsmul, hsum, hgerm, hconst⟩` from `GlobalTheory.CxForm.delAt_dbarAt_linear_local n v`. Conclude with `⟨fun α β h => (hgerm α β h).2, fun J s α h => (hsum J s α h).2, fun c α h => (hsmul α c h).2, fun γ => (hconst γ).2, fun w β hw hβ => (FormMul.leibniz_of_comm n (fun x => (w x : Alt n)) β v (w v : Alt n) hw hβ).2 fun a => Subalgebra.mem_center_iff.1 (w v).2 (dzb a)⟩`.
+-/
 theorem dbarAt_local_calculus : ∀ (n : ℕ) (v : V n),
     (∀ α β : V n → Alt n, α =ᶠ[𝓝 v] β → dbarAt α v = dbarAt β v) ∧
     (∀ (J : Type) (s : Finset J) (α : J → V n → Alt n),

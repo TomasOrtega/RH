@@ -6,20 +6,32 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ContinuousIdeleC
 open PositivityTheory.RgJS UpperTheory.V.Z.Tf.GOne UpperTheory.V.Z.Tf.SR
 open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.L2.Host GlobalTheory.BCT GlobalTheory.UnitaryBC
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [HChar.val, HChar.locK, HChar.loc]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, HChar.val_mul, ih]`.
+-/
 private theorem val_pow' {F : Type} [Field F] [NumberField F] (ω : HChar F) (w : HeightOneSpectrum (𝓞 F)) (k : ℕ) :
     (ω ^ k).val w = ω.val w ^ k := by
   induction k with
   | zero => simp [HChar.val, HChar.locK, HChar.loc]
   | succ k ih => rw [pow_succ, pow_succ, HChar.val_mul, ih]
 
+/- English proof (translation)
+The claim follows from `h _`.
+-/
 private theorem norm_val_one {F : Type} [Field F] [NumberField F] (ω : HChar F) (h : ω.IsUnitary)
     (w : HeightOneSpectrum (𝓞 F)) : ‖((ω.val w : ℂˣ) : ℂ)‖ = 1 := h _
 
+/- English proof (translation)
+Introduce `x` and use `by have e : (ω ^ k).1 x = ω.1 x ^ k := MonoidHom.pow_apply ω.1 k x rw [e, Units.val_pow_eq_pow_val, norm_pow, h x, one_pow]`.
+-/
 private theorem unitary_pow {F : Type} [Field F] [NumberField F] (ω : HChar F) (h : ω.IsUnitary) (k : ℕ) :
     (ω ^ k).IsUnitary := fun x => by
   have e : (ω ^ k).1 x = ω.1 x ^ k := MonoidHom.pow_apply ω.1 k x
   rw [e, Units.val_pow_eq_pow_val, norm_pow, h x, one_pow]
 
+/- English proof (translation)
+Take `⟨ω, hω, hc⟩` from `h`. Use `⟨ω * χ ^ n, fun x => ?_, hc.twist χ⟩` and prove the remaining obligations. Establish `e : (ω * χ ^ n).1 x = ω.1 x * (χ ^ n).1 x` using `rfl`. Rewrite using `[e, Units.val_mul, norm_mul, hω x, unitary_pow χ hχ n x, one_mul]`.
+-/
 private theorem unitary_twist {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} {π : CG E n}
     (h : π.IsUnitary) {χ : HChar E} (hχ : χ.IsUnitary) : (π.twist χ).IsUnitary := by
   obtain ⟨ω, hω, hc⟩ := h
@@ -27,6 +39,19 @@ private theorem unitary_twist {E : Type} [Field E] [NumberField E] [IsTotallyCom
   have e : (ω * χ ^ n).1 x = ω.1 x * (χ ^ n).1 x := rfl
   rw [e, Units.val_mul, norm_mul, hω x, unitary_pow χ hχ n x, one_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ hU`. Take `⟨μ, e, hμ⟩` from `PositivityTheory.Rg.BcB.F.Fok.Mu3.muExists E hU`. Take `⟨hv, hinf⟩` from `UpperTheory.V.Z.Tf.GaloisFromTraceFormula.muInf E μ e hμ`. Establish `hu : (μ ^ 2).IsUnitary` using `unitary_pow μ hμ.1 2`. Use `⟨μ ^ 2, ?_, fun n π hn hπ => ⟨fun i => unitary_twist hπ (unitary_pow _ hu i), fun i j hij => ?_⟩⟩` and prove the remaining obligations.
+
+Use `filter_upwards [GlobalTheory.HeckeSplit.eventually_unrAt (μ ^ 2).1 (μ ^ 2).2.1] with w hw`. Use `⟨hw, norm_val_one _ hu w, fun hs => ?_⟩` and prove the remaining obligations. Rewrite using `[val_pow', hv w hs]`. Simplify using the standard rewrite rules. Establish `hij' : π.twist (μ ^ (2 * i)) = π.twist (μ ^ (2 * j))`.
+
+Simplify `hij` using `only [pow_mul]`. Set `v : InfinitePlace E` to `Classical.arbitrary _`. Establish `h` using `congrArg (fun P : CG E n => (P.infChar v.embedding).sum) hij'`. Simplify using `only [(hinf n _ π v).1, Multiset.sum_map_add, Multiset.map_const', Multiset.sum_replicate, Multiset.map_id', Multiset.card_map, CG.card_infChar, nsmul_eq_mul] at h`. Establish `hn0 : (n : ℂ) ≠ 0` using `by exact_mod_cast (by omega : n ≠ 0)`.
+
+Establish `he0 : (e v : ℂ) ≠ 0`. Establish `: e v ≠ 0` using `fun h0 => by`. Use `hμ.2.2.2.1 v` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `absurd this (by decide)`.
+
+Conclude with `this` after adjusting the coercions. Establish `h2 : (i : ℂ) = j`. Establish `h3` using `add_left_cancel h`. Establish `h4` using `mul_left_cancel₀ hn0 h3`. Move the coercions through the operations in `at h4`.
+
+Clear denominators, using `at h4` for the nonvanishing conditions. Simplify using `using h4`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem UpperTheory.V.Z.Tf.SR.antiTw :
     AntiTw := by
   intro E _ _ _ hU

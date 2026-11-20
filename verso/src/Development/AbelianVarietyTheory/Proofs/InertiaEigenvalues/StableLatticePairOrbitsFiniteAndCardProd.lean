@@ -12,6 +12,13 @@ section PairOrbits
 variable (O E A₁ A₂ : Type) [CommRing O] [Field E] [CommRing A₁] [CommRing A₂] [Algebra O A₁] [Algebra O A₂]
   [Algebra E A₁] [Algebra E A₂] (g₁ : A₁) (g₂ : A₂)
 
+/- English proof (translation)
+Simplify using `only [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨⟨_, rfl⟩, ⟨_, rfl⟩⟩`. Introduce and unpack `⟨⟨t₁, h₁⟩, ⟨t₂, h₂⟩⟩`.
+
+Use `⟨MulEquiv.prodUnits.symm (t₁, t₂), ?_⟩` and prove the remaining obligations. Rewrite using `[latPair_smul]`. Establish `e₁ : Units.map (MonoidHom.fst A₁ A₂) (MulEquiv.prodUnits.symm (t₁, t₂)) = t₁` using `congrArg Prod.fst (MulEquiv.prodUnits.apply_symm_apply (t₁, t₂))`. Establish `e₂ : Units.map (MonoidHom.snd A₁ A₂) (MulEquiv.prodUnits.symm (t₁, t₂)) = t₂` using `congrArg Prod.snd (MulEquiv.prodUnits.apply_symm_apply (t₁, t₂))`. Rewrite using `[e₁, e₂, h₁, h₂]`.
+
+Both sides reduce to the same expression.
+-/
 theorem latPair_orbitRel_iff (p q : LatPair O E g₁ g₂) :
     (MulAction.orbitRel (A₁ × A₂)ˣ (LatPair O E g₁ g₂)) p q ↔
       (MulAction.orbitRel A₁ˣ (stLat O E g₁)) p.1 q.1 ∧ (MulAction.orbitRel A₂ˣ (stLat O E g₂)) p.2 q.2 := by
@@ -52,6 +59,21 @@ def latPairOrbitEquiv :
 
 end PairOrbits
 
+/- English proof (translation)
+Introduce `O E A₁ A₂ _ _ _ _ _ _ _ _ g₁ g₂ h₁ h₂`. Set `e` to `latPairOrbitEquiv O E A₁ A₂ g₁ g₂`. Use `haveI hfin : Finite (MulAction.orbitRel.Quotient (A₁ × A₂)ˣ (LatPair O E g₁ g₂)) := Finite.of_equiv _ e.symm`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Introduce `f₁ f₂ hf₁ hf₂`.
+
+Establish `inv₁ : ∀ a b : stLat O E g₁, (MulAction.orbitRel A₁ˣ (stLat O E g₁)) a b → f₁ a = f₁ b`. Introduce `a b h`. Take `⟨t, rfl⟩` from `MulAction.mem_orbit_iff.1 (MulAction.orbitRel_apply.1 h)`. Conclude with `hf₁ t b`. Establish `inv₂ : ∀ a b : stLat O E g₂, (MulAction.orbitRel A₂ˣ (stLat O E g₂)) a b → f₂ a = f₂ b`.
+
+Introduce `a b h`. Take `⟨t, rfl⟩` from `MulAction.mem_orbit_iff.1 (MulAction.orbitRel_apply.1 h)`. Conclude with `hf₂ t b`. Establish `key : ∀ x : MulAction.orbitRel.Quotient A₁ˣ (stLat O E g₁) × MulAction.orbitRel.Quotient A₂ˣ (stLat O E g₂), f₁ (Quotient.out (e.symm x)).1 * f₂ (Quotient.out (e.symm x)).2 = f₁ (Quotient.out x.1) * f₂ (Quotient.out x.2)`. Introduce `x`.
+
+Establish `hx : e (e.symm x) = x` using `e.apply_symm_apply x`. Use `set o := e.symm x`. Establish `h1 : (Quotient.mk _ (Quotient.out o).1 : MulAction.orbitRel.Quotient A₁ˣ (stLat O E g₁)) = x.1`. Rewrite using `[← hx]`. Use `conv_rhs => rw [← Quotient.out_eq o]`.
+
+Both sides reduce to the same expression. Establish `h2 : (Quotient.mk _ (Quotient.out o).2 : MulAction.orbitRel.Quotient A₂ˣ (stLat O E g₂)) = x.2`. Rewrite using `[← hx]`. Use `conv_rhs => rw [← Quotient.out_eq o]`. Both sides reduce to the same expression.
+
+Rewrite using `[inv₁ _ _ (Quotient.exact (h1.trans (Quotient.out_eq x.1).symm)), inv₂ _ _ (Quotient.exact (h2.trans (Quotient.out_eq x.2).symm))]`. Use `haveI := Fintype.ofFinite (MulAction.orbitRel.Quotient A₁ˣ (stLat O E g₁))`. Use `haveI := Fintype.ofFinite (MulAction.orbitRel.Quotient A₂ˣ (stLat O E g₂))`. Rewrite using `[← finsum_comp_equiv e.symm]`. Repeatedly rewrite using `[key]`.
+
+Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Fintype.sum_prod_type, Finset.sum_mul_sum]`.
+-/
 theorem latPair_orbit_finite_and_sum : ∀ (O E A₁ A₂ : Type) [CommRing O] [Field E] [CommRing A₁] [CommRing A₂] [Algebra O A₁] [Algebra O A₂] [Algebra E A₁] [Algebra E A₂] (g₁ : A₁) (g₂ : A₂), Finite (MulAction.orbitRel.Quotient A₁ˣ (stLat O E g₁)) → Finite (MulAction.orbitRel.Quotient A₂ˣ (stLat O E g₂)) → Finite (MulAction.orbitRel.Quotient (A₁ × A₂)ˣ (LatPair O E g₁ g₂)) ∧ ∀ (f₁ : stLat O E g₁ → ℚ) (f₂ : stLat O E g₂ → ℚ), (∀ (t : A₁ˣ) (y : stLat O E g₁), f₁ (t • y) = f₁ y) → (∀ (t : A₂ˣ) (y : stLat O E g₂), f₂ (t • y) = f₂ y) → ∑ᶠ o : MulAction.orbitRel.Quotient (A₁ × A₂)ˣ (LatPair O E g₁ g₂), f₁ (Quotient.out o).1 * f₂ (Quotient.out o).2 = (∑ᶠ o : MulAction.orbitRel.Quotient A₁ˣ (stLat O E g₁), f₁ (Quotient.out o)) * (∑ᶠ o : MulAction.orbitRel.Quotient A₂ˣ (stLat O E g₂), f₂ (Quotient.out o)) := by
   intro O E A₁ A₂ _ _ _ _ _ _ _ _ g₁ g₂ h₁ h₂
   let e := latPairOrbitEquiv O E A₁ A₂ g₁ g₂

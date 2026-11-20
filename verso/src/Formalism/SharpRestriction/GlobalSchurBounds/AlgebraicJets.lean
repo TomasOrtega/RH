@@ -23,11 +23,23 @@ def EntIn (i : ℕ) (S : Set ℂ) : Prop :=
   ∀ a, ∃ t : (M.lat (i + 1)).ι → ℂ, (∀ b, t b ∈ S) ∧
     C.K i (M.emb i ((M.lat i).b a)) = ∑ b, t b • M.emb (i + 1) ((M.lat (i + 1)).b b)
 
+/- English proof (translation)
+Introduce `a`. Take `⟨t, ht, he⟩` from `h a`. Conclude with `⟨t, fun b => hS (ht b), he⟩`.
+-/
 theorem EntIn.mono {i : ℕ} {S S' : Set ℂ} (h : EntIn M i S) (hS : S ⊆ S') : EntIn M i S' := by
   intro a
   obtain ⟨t, ht, he⟩ := h a
   exact ⟨t, fun b => hS (ht b), he⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a`. Take `⟨y, hy⟩` from `h ((M.lat i).b a)`. Use `⟨fun b => D.what₂.embLL ((M.lat (i + 1)).b.repr y b), fun b => ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`.
+
+Use `conv_lhs => rw [← (M.lat (i + 1)).b.sum_repr y]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [LinearMap.map_smulₛₗ]`. Introduce `h x choose t ht hK using h choose s hs using ht`. Use `⟨∑ a, (M.lat i).b.repr x a • ∑ b, s a b • (M.lat (i + 1)).b b, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : C.K i (M.emb i x) = C.Klin i (M.emb i x)` using `rfl`. Rewrite using `[h1]`. Use `conv_rhs => rw [← (M.lat i).b.sum_repr x]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, map_smul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Establish `h2 : C.Klin i (M.emb i ((M.lat i).b a)) = C.K i (M.emb i ((M.lat i).b a))` using `rfl`. Rewrite using `[h2, hK a]`. Simplify using `only [hs]`.
+-/
 theorem kRat_iff_entIn (i : ℕ) : M.KRat i ↔ EntIn M i (Set.range D.what₂.embLL) := by
   constructor
   · intro h a
@@ -50,11 +62,17 @@ theorem kRat_iff_entIn (i : ℕ) : M.KRat i ↔ EntIn M i (Set.range D.what₂.e
     rw [h2, hK a]
     simp only [hs]
 
+/- English proof (translation)
+Use `haveI := D.nfLL`. Introduce and unpack `z ⟨x, rfl⟩`. Conclude with `mem_algebraicClosure_iff'.mpr ((Algebra.IsIntegral.isIntegral x).map D.what₂.embLL.toRatAlgHom)`.
+-/
 theorem range_embLL_subset (D : D7) : Set.range D.what₂.embLL ⊆ (Qbar : Set ℂ) := by
   haveI := D.nfLL
   rintro z ⟨x, rfl⟩
   exact mem_algebraicClosure_iff'.mpr ((Algebra.IsIntegral.isIntegral x).map D.what₂.embLL.toRatAlgHom)
 
+/- English proof (translation)
+The claim follows from `EntIn.mono M ((kRat_iff_entIn M i).1 h) (range_embLL_subset D)`.
+-/
 theorem entAlg_of_kRat {i : ℕ} (h : M.KRat i) : EntIn M i (Qbar : Set ℂ) :=
   EntIn.mono M ((kRat_iff_entIn M i).1 h) (range_embLL_subset D)
 
@@ -66,6 +84,11 @@ def LLKer (D : D7) (Tw : TwForms D) : Prop :=
   (∀ u, ∀ i < D.R.m, EntIn (D.fm u) i (Set.range D.what₂.embLL)) ∧
     ∀ u w, ∀ i < D.R.m, EntIn (Tw.fm u (D.what₂.muAt w)) i (Set.range D.what₂.embLL)
 
+/- English proof (translation)
+Unfold `LLKer kRatTw StandardLatticesGL3.kRat`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun u i hi => (kRat_iff_entIn _ i).2 (h1 u i hi), fun u w i hi => (kRat_iff_entIn _ i).2 (h2 u w i hi)⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨fun u i hi => (kRat_iff_entIn _ i).1 (h1 u i hi), fun u w i hi => (kRat_iff_entIn _ i).1 (h2 u w i hi)⟩`.
+-/
 theorem llKer_iff (D : D7) (Tw : TwForms D) : LLKer D Tw ↔ kRat D ∧ kRatTw D Tw := by
   unfold LLKer kRatTw StandardLatticesGL3.kRat
   constructor
@@ -74,6 +97,11 @@ theorem llKer_iff (D : D7) (Tw : TwForms D) : LLKer D Tw ↔ kRat D ∧ kRatTw D
   · rintro ⟨h1, h2⟩
     exact ⟨fun u i hi => (kRat_iff_entIn _ i).1 (h1 u i hi), fun u w i hi => (kRat_iff_entIn _ i).1 (h2 u w i hi)⟩
 
+/- English proof (translation)
+Introduce `c c'`. Take `⟨n, r, t, hr, -, ht', hΘ⟩` from `hK c c'`. Take `⟨⟨t0, ht0⟩, -⟩` from `h0 cc δ hc`. Establish `hA : admitted D (D.R.N i) (D.R.N (i + 1)) (O.lat i c).1 (O.lat (i + 1) c').1` using `⟨hN, hN', (O.lat i c).2, (O.lat (i + 1) c').2⟩`. Rewrite using `[hΘ]`.
+
+Conclude with `(ha cc δ hc t0 ht0 _ _ _ _ (admissible_self_dual_even hA).1 (admissible_self_dual_even hA).2.1 (admissible_self_dual_even hA).2.2 _ (ht t0 ht0 _ _ _ _ hA)).2.2.1 n r t hr fun k => by`. Take `⟨a, ha0, -, hat⟩` from `ht' k`. Conclude with `⟨a, ha0, hat⟩`.
+-/
 theorem ker_alg (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) (hc : Crv D cc δ) (h0 : t0Ex D) (ha : useAlg D)
     (ht : natTie D cc δ e) {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} (O : GL3Theta.LiftObj D C) (i : ℕ)
     (hN : Even (D.R.N i)) (hN' : Even (D.R.N (i + 1)))
@@ -89,6 +117,9 @@ theorem ker_alg (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) (h
       obtain ⟨a, ha0, -, hat⟩ := ht' k
       exact ⟨a, ha0, hat⟩
 
+/- English proof (translation)
+Unfold `GL3Theta.applyAt0`. Use `sum_mem fun α _ => mul_mem (mul_mem (hP α) ?_) (hG α)` and prove the remaining obligations. Conclude with `prod_mem fun i _ => natCast_mem _ _`.
+-/
 theorem jet_alg (D : D7) {N N' : ℕ} (G : VC D N N' → ℂ) (hG : CoefIn D G Qbar) (P : MvPolynomial (GL3Theta.Idx D N N') ℂ)
     (hP : ∀ α, MvPolynomial.coeff α P ∈ Qbar) : GL3Theta.applyAt0 D P G ∈ Qbar := by
   unfold GL3Theta.applyAt0
@@ -127,10 +158,16 @@ def StatementJetEntriesAlgebraic (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : Fa
 
 end Alg
 
+/- English proof (translation)
+Use `show Even (R.k + j * (R.t + 1))`. Conclude with `R.k_even.add (Even.mul_left R.t_odd.add_one j)`.
+-/
 theorem evenN (R : Ranks) (j : ℕ) : Even (R.N j) := by
   show Even (R.k + j * (R.t + 1))
   exact R.k_even.add (Even.mul_left R.t_odd.add_one j)
 
+/- English proof (translation)
+Use `⟨∑ α ∈ Q.support, MvPolynomial.monomial α (⟨MvPolynomial.coeff α Q, h α⟩ : F), ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [Q.as_sum]`. Simplify using `only [map_sum, MvPolynomial.map_monomial]`. Both sides reduce to the same expression.
+-/
 theorem exists_map_eq {σ : Type} (F : IntermediateField ℚ ℂ) (Q : MvPolynomial σ ℂ) (h : ∀ α, MvPolynomial.coeff α Q ∈ F) :
     ∃ Q₀ : MvPolynomial σ F, MvPolynomial.map (algebraMap F ℂ) Q₀ = Q := by
   refine ⟨∑ α ∈ Q.support, MvPolynomial.monomial α (⟨MvPolynomial.coeff α Q, h α⟩ : F), ?_⟩
@@ -138,6 +175,9 @@ theorem exists_map_eq {σ : Type} (F : IntermediateField ℚ ℂ) (Q : MvPolynom
   simp only [map_sum, MvPolynomial.map_monomial]
   rfl
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.coeff_map]`. Conclude with `(MvPolynomial.coeff α Q₀).2`.
+-/
 theorem coeff_map_mem {σ : Type} (F : IntermediateField ℚ ℂ) (Q₀ : MvPolynomial σ F) (α : σ →₀ ℕ) :
     MvPolynomial.coeff α (MvPolynomial.map (algebraMap F ℂ) Q₀) ∈ F := by
   rw [MvPolynomial.coeff_map]
@@ -147,6 +187,9 @@ def evF (D : D7) (F : IntermediateField ℚ ℂ) {N : ℕ} (f : D.what₂.Tau �
     MvPolynomial (GL3Theta.FrV D N) F →+* ℂ :=
   MvPolynomial.eval₂Hom (algebraMap F ℂ) (fun k : GL3Theta.FrV D N => f k.1 k.2.1 k.2.2)
 
+/- English proof (translation)
+Simplify using `only [GL3Theta.evFr, evF, MvPolynomial.eval_map, MvPolynomial.coe_eval₂Hom]`.
+-/
 theorem evFr_map (D : D7) (F : IntermediateField ℚ ℂ) {N : ℕ} (f : D.what₂.Tau → Matrix (Fin N) (Fin N) ℂ)
     (R : MvPolynomial (GL3Theta.FrV D N) F) : GL3Theta.evFr D (MvPolynomial.map (algebraMap F ℂ) R) f = evF D F f R := by
   simp only [GL3Theta.evFr, evF, MvPolynomial.eval_map, MvPolynomial.coe_eval₂Hom]
@@ -157,6 +200,13 @@ def polG (D : D7) (F : IntermediateField ℚ ℂ) {N N' : ℕ} (s : D.what₂.Ta
     MvPolynomial.C (MvPolynomial.C (s k.1) * (if h : (k.2.2 : ℕ) < N' then MvPolynomial.X ((k.1, b, ⟨k.2.2, h⟩) : GL3Theta.FrV D N') else 0)) *
       MvPolynomial.X ((k.1, b, k.2.1) : GL3Theta.Idx D N N'))
 
+/- English proof (translation)
+Unfold `GL3Theta.polD`. Proceed by induction on `Q₀ using MvPolynomial.induction_on`. Use `next a =>`. Simplify using `[polG, evF]`. Use `next p q hp hq =>`.
+
+Simplify using `only [map_add, hp, hq]`. Use `next p n hp =>`. Simplify using `only [map_mul] at hp ⊢`. Rewrite using `[hp]`. Use `congrArg₂ (· * ·) rfl ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hn : (n.2.2 : ℕ) < N'`. Simplify using `[polG, evF, hn]`. Simplify using `[polG, evF, hn]`.
+-/
 theorem polD_eq (D : D7) (F : IntermediateField ℚ ℂ) {N N' : ℕ} (s : D.what₂.Tau → F) (Q₀ : MvPolynomial (GL3Theta.FrV D N) F)
     (f : D.what₂.Tau → Matrix (Fin N') (Fin N') ℂ) :
     GL3Theta.polD D (fun τ => (s τ : ℂ)) (MvPolynomial.map (algebraMap F ℂ) Q₀) f = MvPolynomial.map (evF D F f) (polG D F s Q₀) := by
@@ -174,6 +224,13 @@ theorem polD_eq (D : D7) (F : IntermediateField ℚ ℂ) {N N' : ℕ} (s : D.wha
     · simp [polG, evF, hn]
     · simp [polG, evF, hn]
 
+/- English proof (translation)
+Establish `hc : ∀ α : GL3Theta.Idx D N N' →₀ ℕ, (α.prod fun _ n => (n.factorial : ℂ)) * taylor D G α ∈ F` using `fun α => mul_mem (prod_mem fun i _ => natCast_mem _ _) (hG α)`. Use `⟨∑ α ∈ (polG D F s Q₀).support, MvPolynomial.coeff α (polG D F s Q₀) * MvPolynomial.C (⟨_, hc α⟩ : F), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[polD_eq]`. Unfold `GL3Theta.applyAt0`. Rewrite using `[Finset.sum_subset (MvPolynomial.support_map_subset _ _) ?hz]`.
+
+Simplify using `only [map_sum, map_mul, MvPolynomial.coeff_map]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `congrArg₂ (· * ·) rfl (MvPolynomial.eval₂Hom_C _ _ _)`. Introduce `α _ hα`.
+
+Establish `h0 : MvPolynomial.coeff α (MvPolynomial.map (evF D F f) (polG D F s Q₀)) = 0`. Simplify `hα` using `[MvPolynomial.mem_support_iff]`. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_jetPoly (D : D7) (F : IntermediateField ℚ ℂ) {N N' : ℕ} (s : D.what₂.Tau → F) (Q₀ : MvPolynomial (GL3Theta.FrV D N) F)
     (G : VC D N N' → ℂ) (hG : CoefIn D G F) :
     ∃ R : MvPolynomial (GL3Theta.FrV D N') F, ∀ f : D.what₂.Tau → Matrix (Fin N') (Fin N') ℂ,
@@ -199,6 +256,9 @@ theorem exists_jetPoly (D : D7) (F : IntermediateField ℚ ℂ) {N N' : ℕ} (s 
 def detP (D : D7) (F : IntermediateField ℚ ℂ) (N : ℕ) (τ : D.what₂.Tau) : MvPolynomial (GL3Theta.FrV D N) F :=
   Matrix.det (Matrix.of fun a b : Fin N => (MvPolynomial.X ((τ, a, b) : GL3Theta.FrV D N) : MvPolynomial (GL3Theta.FrV D N) F))
 
+/- English proof (translation)
+Unfold `detP`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[evF, RingHom.mapMatrix_apply]`.
+-/
 theorem evF_detP (D : D7) (F : IntermediateField ℚ ℂ) {N : ℕ} (f : D.what₂.Tau → Matrix (Fin N) (Fin N) ℂ) (τ : D.what₂.Tau) :
     evF D F f (detP D F N τ) = (f τ).det := by
   unfold detP
@@ -207,6 +267,9 @@ theorem evF_detP (D : D7) (F : IntermediateField ℚ ℂ) {N : ℕ} (f : D.what�
   ext a b
   simp [evF, RingHom.mapMatrix_apply]
 
+/- English proof (translation)
+Take `⟨M, hM, _, hs⟩` from `O.dgen_gen`. Use `haveI := hM`. Take `⟨s, hs1, _⟩` from `hs τ`. Rewrite using `[← hs1]`. Conclude with `mem_algebraicClosure_iff'.mpr ((Algebra.IsIntegral.isIntegral s).map M.val)`.
+-/
 theorem dgen_alg {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} (O : GL3Theta.LiftObj D C) (τ : D.what₂.Tau) :
     O.dgen τ ∈ Qbar := by
   obtain ⟨M, hM, _, hs⟩ := O.dgen_gen
@@ -215,6 +278,21 @@ theorem dgen_alg {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Ta
   rw [← hs1]
   exact mem_algebraicClosure_iff'.mpr ((Algebra.IsIntegral.isIntegral s).map M.val)
 
+/- English proof (translation)
+Introduce and unpack `hc h0 ha ht hi ⟨dg, hKer, hL, hρ, hS, hT, hF⟩ a`. Establish `hΘ` using `ker_alg D cc δ e hc h0 ha ht O i (evenN D.R i) (evenN D.R (i + 1)) hKer`. Establish `hmem : M.emb i ((M.lat i).b a) ∈ M.Fi i`. Rewrite using `[← (M.emb_basis i).2]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
+
+Use `hT Qbar (range_embLL_subset D) _ (hF _ hmem) fun c' => ?_` and prove the remaining obligations. Use `choose Q hQL hQH hQ using hS a`. Use `choose Q₀ hQ₀ using fun c => exists_map_eq Qbar (Q c) (fun α => range_embLL_subset D (hQL c α))`. Use `choose R hR using fun c => exists_jetPoly D Qbar (fun τ => ⟨O.dgen τ, dgen_alg O τ⟩) (Q₀ c) (O.Th i c c') (hΘ c c')`. Use `⟨fun τ => (C.sDiv i τ).toNat, MvPolynomial.map (algebraMap Qbar ℂ) ((∏ τ, detP D Qbar _ τ ^ (-(C.sDiv i τ)).toNat) * ∑ c, MvPolynomial.C ((((Nat.card (C.stab i c) : ℕ) : Qbar))⁻¹ * (⟨C.rhoDet i c, hρ.1 c⟩ * ⟨C.rhoDet' i c', hρ.2 c'⟩)) * R c), fun α => coeff_map_mem _ _ _, fun y' …` and prove the remaining obligations.
+
+Rewrite using `[evFr_map, map_mul, map_prod, map_sum]`. Establish `hK : C.K i (M.emb i ((M.lat i).b a)) c' y' = (∏ τ, C.de (i + 1) y' τ ^ C.sDiv i τ)⁻¹ * ∑ c, (((Nat.card (C.stab i c) : ℕ) : ℂ))⁻¹ * (C.rhoDet i c * C.rhoDet' i c') * evF D Qbar (O.frm (i + 1) y') (R c)`. Simplify using `only [ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM, ColumnChain.wt, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ColumnChain.Kmap, LinearMap.smul_apply, LinearMap.comp_apply, ColumnChain.divDe, mulFun, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hQ c, hL c c' (Q c) (hQH c) y', hR c, hQ₀ c]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hK, ← mul_assoc]`. Use `congr 1`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, evF_detP, ← O.frm_de (i + 1) hi y' τ]`. Establish `hne : C.de (i + 1) y' τ ≠ 0` using `C.de_ne (i + 1) y' τ`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ hne]`. Use `congr 1`.
+
+Use `beta_reduce`. Use linear arithmetic over natural numbers and integers. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `congr 1`.
+
+Simplify using `[evF]`.
+-/
 theorem stmt_entAlg {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C} {P : PeriodMap D.R C}
     (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P) (O : GL3Theta.LiftObj D C)
     (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) (i : ℕ) : StatementJetEntriesAlgebraic M O cc δ e i := by
@@ -253,6 +331,9 @@ theorem stmt_entAlg {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂
     congr 1
     simp [evF]
 
+/- English proof (translation)
+Use `⟨h.1, ?_⟩` and prove the remaining obligations. Introduce `c c' Qp _ y'`. Conclude with `h.2 c c' Qp y'`.
+-/
 theorem ties_of_liftTie {D : D7} {T : Tor D} {e : FamE D} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)}
     {O : GL3Theta.LiftObj D C} {i : ℕ} (h : GL3Theta.liftTie D T e O i) (dg : D.what₂.Tau → ℕ) :
     (∀ c c', GL3Theta.IsKer D T e O.S (O.lat i c).1 (O.lat (i + 1) c').1 (O.Th i c c')) ∧ GL3Columns.liftTieH D O i dg := by
@@ -260,6 +341,9 @@ theorem ties_of_liftTie {D : D7} {T : Tor D} {e : FamE D} {u : D.what₂.Word} {
   intro c c' Qp _ y'
   exact h.2 c c' Qp y'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(hp.1.2.2.2.2.1 u C O i A hr).2.2 ht, hp.liftTieH hi A hr c0 h0 hd ht⟩`.
+-/
 theorem ties_of_KJ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {Q : GL3Columns.DtAd D} (hp : GL3Columns.aux₃ D cc δ e Q)
     {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {O : GL3Theta.LiftObj D C} {i : ℕ} (hi : i < D.R.m)
     (A : GL3Columns.AdLift D cc δ e Q O i) (hr : GL3Columns.RankOK D i) (c0 : ℂ) (h0 : A.Θ.IsResidueClassZero c0) (hd : A.IsDef c0) (ht : A.ThIs) :
@@ -269,6 +353,11 @@ theorem ties_of_KJ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D}
 def entAlgAll (D : D7) (Tw : TwForms D) : Prop :=
   (∀ u, ∀ i < D.R.m, EntIn (D.fm u) i (Qbar : Set ℂ)) ∧ ∀ u w, ∀ i < D.R.m, EntIn (Tw.fm u (D.what₂.muAt w)) i (Qbar : Set ℂ)
 
+/- English proof (translation)
+Use `haveI := D.nfLL`. Use `haveI : Finite S := hS.to_subtype`. Use `haveI h1 : FiniteDimensional ℚ D.what₂.embLL.toRatAlgHom.fieldRange := LinearEquiv.finiteDimensional (AlgEquiv.ofInjectiveField D.what₂.embLL.toRatAlgHom).toLinearEquiv`. Use `haveI h2 : FiniteDimensional ℚ (IntermediateField.adjoin ℚ S) := IntermediateField.finiteDimensional_adjoin fun x hx => mem_algebraicClosure_iff'.mp (hA hx)`. Use `⟨D.what₂.embLL.toRatAlgHom.fieldRange ⊔ IntermediateField.adjoin ℚ S, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `z ⟨y, rfl⟩`. Conclude with `(le_sup_left : D.what₂.embLL.toRatAlgHom.fieldRange ≤ _) (AlgHom.mem_fieldRange.mpr ⟨y, rfl⟩)`. Introduce `z hz`. Conclude with `(le_sup_right : IntermediateField.adjoin ℚ S ≤ _) (IntermediateField.subset_adjoin ℚ S hz)`.
+-/
 theorem exists_field (D : D7) (S : Set ℂ) (hS : S.Finite) (hA : S ⊆ (Qbar : Set ℂ)) :
     ∃ F : IntermediateField ℚ ℂ, FiniteDimensional ℚ F ∧ Set.range D.what₂.embLL ⊆ (F : Set ℂ) ∧ S ⊆ (F : Set ℂ) := by
   classical
@@ -286,6 +375,19 @@ theorem exists_field (D : D7) (S : Set ℂ) (hS : S.Finite) (hA : S ⊆ (Qbar : 
 
 def muFin (D : D7) : Prop := (Set.range D.what₂.muAt).Finite
 
+/- English proof (translation)
+Use `haveI := D.wordFin`. Take `⟨h1, h2⟩` from `h`. Unfold `EntIn at h1 h2`. Use `choose t1 ht1 he1 using h1`. Use `choose t2 ht2 he2 using h2`.
+
+Use `haveI := hfin.to_subtype`. Establish `hrep : ∀ μ : Set.range D.what₂.muAt, ∃ w, D.what₂.muAt w = μ.1` using `fun μ => μ.2`. Use `choose wr hwr using hrep`. Set `S : Set ℂ` to `(⋃ (u : D.what₂.Word) (i : Fin D.R.m) (a) (b), {t1 u i i.2 a b}) ∪ ⋃ (u : D.what₂.Word) (μ : Set.range D.what₂.muAt) (i : Fin D.R.m) (a) (b), {t2 u (wr μ) i i.2 a b}`. Establish `hSfin : S.Finite` using `(Set.finite_iUnion fun u => Set.finite_iUnion fun i => Set.finite_iUnion fun a => Set.finite_iUnion fun b => Set.finite_singleton _).union (Set.finite_iUnion fun u => Set.finite_iUnion fun μ => Set.finite_iUnion fun i => Set.finite_iUnion fun a => Set.finite_iUnion fun b => Set.f …`.
+
+Establish `hSA : S ⊆ (Qbar : Set ℂ)`. Introduce `z hz`. Simplify using `only [S, Set.mem_union, Set.mem_iUnion, Set.mem_singleton_iff] at hz`. Break down `hz with ⟨u, i, a, b, rfl⟩ | ⟨u, μ, i, a, b, rfl⟩` into its components or cases. Conclude with `ht1 u i i.2 a b`.
+
+Conclude with `ht2 u (wr μ) i i.2 a b`. Take `⟨F, hF, hLL, hSF⟩` from `exists_field D S hSfin hSA`. Use `⟨F, hF, hLL, ?_, ?_⟩` and prove the remaining obligations. Introduce `u i hi a`. Use `⟨t1 u i hi a, fun b => hSF ?_, he1 u i hi a⟩` and prove the remaining obligations.
+
+Simplify using `only [S, Set.mem_union, Set.mem_iUnion, Set.mem_singleton_iff]`. Conclude with `Or.inl ⟨u, ⟨i, hi⟩, a, b, rfl⟩`. Introduce `u w i hi`. Set `μ : Set.range D.what₂.muAt` to `⟨D.what₂.muAt w, w, rfl⟩`. Establish `e : D.what₂.muAt (wr μ) = D.what₂.muAt w` using `hwr μ`.
+
+Rewrite using `[← e]`. Introduce `a`. Use `⟨t2 u (wr μ) i hi a, fun b => hSF ?_, he2 u (wr μ) i hi a⟩` and prove the remaining obligations. Simplify using `only [S, Set.mem_union, Set.mem_iUnion, Set.mem_singleton_iff]`. Conclude with `Or.inr ⟨u, μ, ⟨i, hi⟩, a, b, rfl⟩`.
+-/
 theorem exists_LL (D : D7) (Tw : TwForms D) (hfin : muFin D) (h : entAlgAll D Tw) :
     ∃ F : IntermediateField ℚ ℂ, FiniteDimensional ℚ F ∧ Set.range D.what₂.embLL ⊆ (F : Set ℂ) ∧
       (∀ u, ∀ i < D.R.m, EntIn (D.fm u) i (F : Set ℂ)) ∧ ∀ u w, ∀ i < D.R.m, EntIn (Tw.fm u (D.what₂.muAt w)) i (F : Set ℂ) := by
@@ -326,6 +428,11 @@ theorem exists_LL (D : D7) (Tw : TwForms D) (hfin : muFin D) (h : entAlgAll D Tw
     simp only [S, Set.mem_union, Set.mem_iUnion, Set.mem_singleton_iff]
     exact Or.inr ⟨u, μ, ⟨i, hi⟩, a, b, rfl⟩
 
+/- English proof (translation)
+Use `⟨fun c => ?_, fun c' => ?_⟩` and prove the remaining obligations. Rewrite using `[(O.c13 i hi).1 c]`. Take `⟨h, z, hz⟩` from `hp (O.dt i c)`. Take `⟨hx, -⟩` from `((h3 i hi).1 _ h z hz).1`. Conclude with `hx`.
+
+Rewrite using `[(O.c13 i hi).2 c']`. Take `⟨h, z, hz⟩` from `hp (O.dt (i + 1) c')`. Take `⟨hx, -⟩` from `((h3 i hi).1 _ h z hz).2`. Conclude with `hx`.
+-/
 theorem rhoAlg_of {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} (O : GL3Theta.LiftObj D C)
     (h3 : GL3Theta.rhoThreeOf D C O.mt) (hp : GL3Theta.PowRatAll D) {i : ℕ} (hi : i < D.R.m) : RhoAlg C i := by
   refine ⟨fun c => ?_, fun c' => ?_⟩
@@ -344,6 +451,9 @@ def TiesMem (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) : Prop
 def TiesTw (D : D7) (Tw : TwForms D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) : Prop :=
   ∀ u w, ∃ O : GL3Theta.LiftObj D (D.chTw u (D.what₂.muAt w)), ∀ i < D.R.m, Ties (Tw.fm u (D.what₂.muAt w)) O cc δ e i
 
+/- English proof (translation)
+Use `⟨fun u i hi => ?_, fun u w i hi => ?_⟩` and prove the remaining obligations. Take `⟨O, _, hO⟩` from `h1 u`. Conclude with `stmt_entAlg (D.fm u) O cc δ e i hc h0 ha ht hi (hO i hi)`. Take `⟨O, hO⟩` from `h2 u w`. Conclude with `stmt_entAlg (Tw.fm u (D.what₂.muAt w)) O cc δ e i hc h0 ha ht hi (hO i hi)`.
+-/
 theorem entAlgAll_of (D : D7) (Tw : TwForms D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) (hc : Crv D cc δ) (h0 : t0Ex D)
     (ha : useAlg D) (ht : natTie D cc δ e) (h1 : TiesMem D cc δ e) (h2 : TiesTw D Tw cc δ e) :
     entAlgAll D Tw := by
@@ -353,6 +463,9 @@ theorem entAlgAll_of (D : D7) (Tw : TwForms D) (cc : Ideal (𝓞 D.host.K)) (δ 
   · obtain ⟨O, hO⟩ := h2 u w
     exact stmt_entAlg (Tw.fm u (D.what₂.muAt w)) O cc δ e i hc h0 ha ht hi (hO i hi)
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, h0, -, ha, -⟩` from `hg`. Conclude with `exists_LL D Tw hfin (entAlgAll_of D Tw cc δ e hc h0 ha ht h1 h2)`.
+-/
 theorem choice_possible (D : D7) (Tw : TwForms D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) (hc : Crv D cc δ)
     (hg : GaloisThetaProperties D) (ht : natTie D cc δ e) (h1 : TiesMem D cc δ e) (h2 : TiesTw D Tw cc δ e) (hfin : muFin D) :
     ∃ F : IntermediateField ℚ ℂ, FiniteDimensional ℚ F ∧ Set.range D.what₂.embLL ⊆ (F : Set ℂ) ∧
@@ -366,6 +479,11 @@ def kRatTwF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Tw : ∀ x (i : F
 def LLKerF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Tw : ∀ x (i : Fm.Ix x), TwForms (Fm.D x i)) : Prop :=
   ∀ x (i : Fm.Ix x), LLKer (Fm.D x i) (Tw x i)
 
+/- English proof (translation)
+Unfold `LLKerF kRatTwF StandardLatticesGL3.kRatF GL3Theta.Fam`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun x i => ((llKer_iff _ _).1 (h x i)).1, fun x i => ((llKer_iff _ _).1 (h x i)).2⟩`. Introduce and unpack `⟨h1, h2⟩ x i`.
+
+Conclude with `(llKer_iff _ _).2 ⟨h1 x i, h2 x i⟩`.
+-/
 theorem llKerF_iff {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Tw : ∀ x (i : Fm.Ix x), TwForms (Fm.D x i)) :
     LLKerF Fm Tw ↔ kRatF Fm ∧ kRatTwF Fm Tw := by
   unfold LLKerF kRatTwF StandardLatticesGL3.kRatF GL3Theta.Fam

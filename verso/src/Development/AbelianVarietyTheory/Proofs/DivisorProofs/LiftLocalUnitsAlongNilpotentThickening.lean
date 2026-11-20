@@ -8,6 +8,31 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.FormalAlg
 
+/- English proof (translation)
+Introduce `R _ J X X₀ f γ q hpb hsurj L hL D hD u hu`. Establish `hLp` using `LB.isLB_pull hL γ`. Set `O : L.ι → X₀.Opens` to `fun m => γ ⁻¹ᵁ (D ⊓ L.U m)`. Establish `hO : ∀ m, O m ≤ γ ⁻¹ᵁ D` using `fun m => γ.preimage_mono inf_le_left`. Establish `hc : γ ⁻¹ᵁ D ≤ ⨆ m, O m`.
+
+Introduce `z hz`. Take `⟨m, hm⟩` from `exists_chart hL (γ z)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨m, show γ z ∈ D ⊓ L.U m from ⟨hz, hm⟩⟩`. Establish `hU : ∀ m, O m ≤ (L.pull γ).U (fun _ => m)` using `fun m z hz => mem_pull.2 hz.2`. Establish `hg : ∀ z a b, γ z ∈ L.U a → γ z ∈ L.U b → gm (𝟙 X₀) z ((L.pull γ).U (fun _ => a) ⊓ (L.pull γ).U (fun _ => b)) ((L.pull γ).g (fun _ => a) (fun _ => b)) = gm γ z _ (L.g a b)`.
+
+Introduce `z a b ha hb`. Establish `hp : (𝟙 X₀) z ∈ (L.pull γ).U (fun _ => a) ⊓ (L.pull γ).U (fun _ => b)` using `⟨mem_pull.2 ha, mem_pull.2 hb⟩`. Use `show gm (𝟙 X₀) z _ (∏ _k : PUnit, (res _ (pullU γ _ (L.g a b))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Use `(gm_res (𝟙 X₀) z _ hp _).trans ((gm_pull (𝟙 X₀) γ z (L.U a ⊓ L.U b) ⟨ha, hb⟩ _).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp]`. Establish `hcomp : ∀ a b, rs X₀ (inf_le_left : O a ⊓ O b ≤ O a) (u a).val = rs X₀ (inf_le_inf (hU a) (hU b)) ((L.pull γ).g (fun _ => a) (fun _ => b)).val * rs X₀ (inf_le_right : O a ⊓ O b ≤ O b) (u b).val`. Introduce `a b`. Establish `e : res (inf_le_left : O a ⊓ O b ≤ O a) (u a) = res (inf_le_inf (hU a) (hU b)) ((L.pull γ).g (fun _ => a) (fun _ => b)) * res (inf_le_right : O a ⊓ O b ≤ O b) (u b)`. Apply `unit_ext` to reduce the goal to its premises.
+
+Introduce `z hz`. Establish `hz' : (𝟙 X₀) z ∈ O a ⊓ O b` using `hz`. Rewrite using `[map_mul, gm_res _ z _ hz', gm_res _ z _ hz', gm_res _ z _ hz', hg z a b hz.1.2 hz.2.2]`. Conclude with `hu z a b hz.1 hz.2`. Establish `e'` using `congrArg Units.val e`.
+
+Simplify using `only [Units.val_mul, GlobalTheory.LB.val_res] at e'`. Conclude with `e'`. Take `⟨t, ht, -⟩` from `SecOn.existsUnique_of_local hLp O hO hc (fun m _ => m) hU (fun m => (u m).val) hcomp`. Take `⟨s, hs⟩` from `secOn_pull_surjective_of_surjective R (R ⧸ J) (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective X X₀ f q γ hpb L hL D hD t`. Establish `hcoord : ∀ m, (γ.app (D ⊓ L.U m)).hom (GlobalTheory.LB.coord s m) = (u m).val`.
+
+Introduce `m`. Establish `e` using `ht m`. Rewrite `e` using `[← hs]`. Use `erw [SecOn.coord_pull γ s (fun _ => m), GlobalTheory.LB.resG_appLE] at e`. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+
+Conclude with `e`. Establish `hunit : ∀ m, IsUnit (GlobalTheory.LB.coord s m)`. Introduce `m`. Apply `X.toRingedSpace.isUnit_of_isUnit_germ` to reduce the goal to its premises. Introduce `x hx`.
+
+Take `⟨z, rfl⟩` from `γ.surjective x`. Apply `isUnit_of_map_unit (γ.stalkMap z).hom` to reduce the goal to its premises. Use `erw [Scheme.Hom.germ_stalkMap_apply γ (D ⊓ L.U m) z hx, hcoord m]`. Conclude with `(u m).isUnit.map _`. Use `⟨fun m => (hunit m).unit, fun m => hcoord m, ?_⟩` and prove the remaining obligations.
+
+Introduce `x m m' hx hx'`. Establish `hi : D ⊓ L.U m ⊓ L.U m' ≤ D ⊓ L.U m` using `inf_le_left`. Establish `hj : D ⊓ L.U m ⊓ L.U m' ≤ D ⊓ L.U m'` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Establish `hij : D ⊓ L.U m ⊓ L.U m' ≤ L.U m ⊓ L.U m'` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `e : res hi (hunit m).unit = res hij (L.g m m') * res hj (hunit m').unit`.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, GlobalTheory.LB.val_res, IsUnit.unit_spec]`. Conclude with `SecOn.compat s m m' hi hj hij`. Establish `hxx : (𝟙 X) x ∈ D ⊓ L.U m ⊓ L.U m'` using `⟨hx, hx'.2⟩`. Establish `e'` using `congrArg (gm (𝟙 X) x _) e`.
+
+Rewrite `e'` using `[map_mul, gm_res _ x _ hxx, gm_res _ x _ hxx, gm_res _ x _ hxx]`. Conclude with `e'`.
+-/
 theorem lift_localUnits_of_thickening :
     ∀ (R : Type) [CommRing R] (J : Ideal R) (X X₀ : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (γ : X₀ ⟶ X) (q : X₀ ⟶ Spec (CommRingCat.of (R ⧸ J))), IsPullback γ q f (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))) → Surjective γ → ∀ (L : LB X), L.IsLB → ∀ D : X.Opens, IsAffineOpen D → ∀ u : ∀ m : L.ι, Γ(X₀, γ ⁻¹ᵁ (D ⊓ L.U m))ˣ, (∀ z m m', γ z ∈ D ⊓ L.U m → γ z ∈ D ⊓ L.U m' → gm (𝟙 X₀) z _ (u m) = gm γ z _ (L.g m m') * gm (𝟙 X₀) z _ (u m')) → ∃ τ : ∀ m : L.ι, Γ(X, D ⊓ L.U m)ˣ, (∀ m, (γ.app (D ⊓ L.U m)).hom (τ m).val = (u m).val) ∧ ∀ x m m', x ∈ D ⊓ L.U m → x ∈ D ⊓ L.U m' → gm (𝟙 X) x _ (τ m) = gm (𝟙 X) x _ (L.g m m') * gm (𝟙 X) x _ (τ m') := by
   intro R _ J X X₀ f γ q hpb hsurj L hL D hD u hu

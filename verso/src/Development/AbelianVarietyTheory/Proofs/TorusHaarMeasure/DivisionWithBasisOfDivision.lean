@@ -41,6 +41,15 @@ open MeasureTheory Topology Asymptotics Filter Metric in
 open scoped ENNReal in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 variable {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
+/- English proof (translation)
+Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.dmin_cpt_orth X hx0, _root_.ReciprocityTheory.ChartRestriction.G.FD.lminor_last]`. Establish `hN : (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nmat X w) τ).det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nmat, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat]`.
+
+Introduce `a b hab`. Establish `h' : a < b` using `hab`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nmat, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat, not_lt.2 h'.le, h'.ne]`. Establish `h0` using `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.norm_lminor_zero X τ (Fin.last r)`. Rewrite `h0` using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.lminor_last, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.Gw_zero]`.
+
+Establish `hmap : ((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nmat X w) τ).map (starRingEnd ℂ)).det = 1`. Establish `h` using `RingHom.map_det (starRingEnd ℂ) (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nmat X w) τ)`. Rewrite `h` using `[hN, map_one]`. Conclude with `h.symm`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.Gw`.
+
+Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hN, hmap, one_mul, mul_one, h0]`.
+-/
 private lemma norm_dmin_cpt_last_eq_one {x0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r} (hx0 : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x0)
     (w : _root_.ReciprocityTheory.L2DbarEstimates.V (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X)) (τ : X.Ψ) :
     ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 w) τ (Fin.last r)‖ = 1 := by
@@ -66,6 +75,11 @@ open MeasureTheory Topology Asymptotics Filter Metric in
 open scoped ENNReal in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 variable {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Finset.sum_range_succ, ih, Finset.sum_range_succ]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma sum_range_odd_mul_sub_eq (L : ℕ → ℝ) (r : ℕ) :
     ∑ i ∈ Finset.range r, (2 * (i : ℝ) + 1) * (L (i + 1) - L i) =
       (2 * (r : ℝ) - 1) * L r + L 0 - 2 * ∑ i ∈ Finset.range r, L i := by
@@ -81,6 +95,11 @@ open MeasureTheory Topology Asymptotics Filter Metric in
 open scoped ENNReal in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 variable {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
+/- English proof (translation)
+Establish `h1` using `sum_range_odd_mul_sub_eq L r`. Establish `h2 : ∑ i ∈ Finset.range r, (L (i + 1) - L i) = L r - L 0` using `Finset.sum_range_sub L r`. Establish `h3 : ∑ i ∈ Finset.range r, (2 * (i : ℝ) - ((r : ℝ) - 1)) * (L (i + 1) - L i) = ∑ i ∈ Finset.range r, (2 * (i : ℝ) + 1) * (L (i + 1) - L i) - (r : ℝ) * ∑ i ∈ Finset.range r, (L (i + 1) - L i)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+
+Rewrite using `[h3, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma sum_range_centered_mul_sub_eq (L : ℕ → ℝ) (r : ℕ) :
     ∑ i ∈ Finset.range r, (2 * (i : ℝ) - ((r : ℝ) - 1)) * (L (i + 1) - L i) =
       -2 * ∑ i ∈ Finset.range r, L i + ((r : ℝ) - 1) * L r + ((r : ℝ) + 1) * L 0 := by
@@ -99,6 +118,23 @@ open MeasureTheory Topology Asymptotics Filter Metric in
 open scoped ENNReal in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 variable {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
+/- English proof (translation)
+Establish `hne : ∀ τ i, _root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 w) τ i ≠ 0` using `fun τ i => _root_.ReciprocityTheory.ChartRestriction.G.FD.FlowCoefficientBounds.dmin_ne X hw τ i`. Establish `hpos : ∀ τ i, 0 < ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 w) τ i‖` using `fun τ i => norm_pos_iff.2 (hne τ i)`. Establish `hzero : ∀ τ, _root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 w) τ 0 = 1` using `fun τ => by`. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.FrameDegreeData.dmin_prod X hw]`. Conclude with `Finset.prod_eq_one fun j _ => absurd j.isLt (by simp)`.
+
+Set `L : X.Ψ → ℕ → ℝ` to `fun τ k => if h : k < r + 1 then Real.log ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 w) τ ⟨k, h⟩‖ else 0`. Establish `hL : ∀ τ (i : Fin (r + 1)), Real.log ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 w) τ i‖ = L τ i`. Introduce `τ i`. Simplify using `only [L, dif_pos i.isLt, Fin.eta]`. Establish `hL0 : ∀ τ, L τ 0 = 0` using `fun τ => by`.
+
+Simplify using `[L, hzero]`. Establish `hLr : ∀ τ, L τ r = 0` using `fun τ => by`. Use `norm_dmin_cpt_last_eq_one hx0 w τ` as an intermediate fact. Simplify using `only [L, lt_add_one, dite_true]`. Rewrite using `[show (⟨r, lt_add_one r⟩ : Fin (r + 1)) = Fin.last r from rfl, this, Real.log_one]`.
+
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.phla _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.nfac _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.densF _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.kapW`. Rewrite using `[Real.log_prod (fun τ _ => (Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (by rw [norm_div]; exact div_pos (hpos _ _) (hpos _ _)) _).ne'), Real.log_prod (fun τ _ => (Finset.prod_pos fun i _ => zpow_pos (hpos _ _) _).ne')]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_prod (fun i _ => (Real.rpow_pos_of_pos (by rw [norm_div]; exact div_pos (hpos _ _) (hpos _ _)) _).ne'), Real.log_prod (fun i _ => (zpow_pos (hpos _ _) _).ne')]`.
+
+Simplify using `only [Real.log_zpow, norm_div]`. Rewrite using `[Finset.mul_sum]`. Establish `hterm : ∀ i : Fin r, -2 * Real.log ((‖_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 w) τ i.succ‖ / ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.AR.In …`. Introduce `i`. Rewrite using `[Real.log_rpow (div_pos (hpos _ _) (hpos _ _)), Real.log_div (hpos _ _).ne' (hpos _ _).ne', hL, hL]`.
+
+Simplify using `only [Fin.val_succ, Fin.coe_castSucc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun i _ => hterm i]`. Establish `hterm2 : ∀ i : Fin r, ((-2 : ℤ) : ℝ) * Real.log ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 w) τ i.castSucc‖ = -2 * L τ (i : ℕ)`.
+
+Introduce `i`. Rewrite using `[hL]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun i _ => hterm2 i]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => (2 * (i : ℝ) - ((r : ℝ) - 1)) * (L τ (i + 1) - L τ i)), Fin.sum_univ_eq_sum_range (fun i => -2 * L τ i), sum_range_centered_mul_sub_eq, hL0, hLr, ← Finset.mul_sum]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma phla_kapW_cpt_eq_log_densF {x0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r}
     (hx0 : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x0) {w : _root_.ReciprocityTheory.L2DbarEstimates.V (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X)} (hw : _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 w ∈ X.dom) :
     _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.phla X (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.kapW X) (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x0 w) = Real.log (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.densF X x0 w) := by
@@ -158,6 +194,13 @@ open MeasureTheory Topology Asymptotics Filter Metric in
 open scoped ENNReal in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 variable {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
+/- English proof (translation)
+Establish `hlin` using `_root_.GlobalTheory.FrameThetaCompare.curv_lin X (x0 := x0) (z := z) hz 1 (-1) la (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.kapW X) ξ`. Rewrite `hlin` using `[one_smul, neg_one_smul, ← sub_eq_add_neg]`. Rewrite using `[hlin]`. Establish `h1 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CurvatureFamilyNorm.curv X x0 la z ξ = _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.leviO X x0 (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.phla X la) z ξ` using `rfl`. Establish `h2 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CurvatureFamilyNorm.curv X x0 (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.kapW X) z ξ = _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.leviDens X x0 z ξ`.
+
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.CurvatureFamilyNorm.curv _root_.GlobalTheory.IndefiniteRowSideFullHecke.CurvatureFamilyNorm.lev _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.leviDens`. Use `congr 1`. Use `_root_.ReciprocityTheory.L2DbarEstimates.leviV_congr ?_ ξ` and prove the remaining obligations. Use `filter_upwards [(_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OntoB.isOpen_OmF X x0).mem_nhds hz] with y hy`. Rewrite using `[phla_kapW_cpt_eq_log_densF hx0 hy]`.
+
+Rewrite using `[h1, h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma leviWeight_sub_leviDensity_eq_lemma {x0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r}
     (hx0 : _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x0) (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) {z : _root_.ReciprocityTheory.L2DbarEstimates.V (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X)} (hz : z ∈ _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OmF X x0)
     (ξ : Fin (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X) → ℂ) :
@@ -182,6 +225,11 @@ open MeasureTheory Topology Asymptotics Filter Metric in
 open scoped ENNReal in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 variable {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single e]`. Simplify using `[_root_.GlobalTheory.DivisionVolume.unitVec]`. Introduce `b _ hb`. Simplify using `[_root_.GlobalTheory.DivisionVolume.unitVec, hb]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ e) h`.
+-/
 private lemma sum_mul_norm_unitVec_sq_eq (c : _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.Ent X → ℝ) (e : _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.Ent X) :
     ∑ e', c e' * ‖_root_.GlobalTheory.DivisionVolume.unitVec e ((Fintype.equivFin (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.Ent X)) e')‖ ^ 2 = c e := by
   classical
@@ -198,6 +246,31 @@ open scoped ENNReal in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 variable {X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r} in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H τ`. Establish `hx0` using `_root_.GlobalTheory.OrthNear.isOrth_x0F X`. Establish `h0mem : (0 : _root_.ReciprocityTheory.L2DbarEstimates.V (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X)) ∈ _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OmF X (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.x0F X)`. Take `⟨R, hR, hb⟩` from `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.good_ball X la`.
+
+Use `hb 0 (Metric.mem_ball_self hR)` as an intermediate fact. Conclude with `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.cpt_mem_dom X (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PoinPf.orth_mem_dom X hx0) hx0 this.1 this.2.1`. Establish `key : ∀ e : _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.Ent X, m * (_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 ↑(↑e.2 : Fin r × Fin r).1 * _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 ↑(↑e.2 : Fin r × Fin r).2 * ((_root_.GlobalTheory.CurvMargin.blo …`. Introduce `e`. Establish `h` using `H _ hx0 0 h0mem (_root_.GlobalTheory.DivisionVolume.unitVec e)`.
+
+Rewrite `h` using `[leviWeight_sub_leviDensity_eq_lemma hx0 la h0mem, _root_.GlobalTheory.CurvMargin.leviRh_eq X _ hx0 h0mem]`. Establish `hR : _root_.GlobalTheory.IndefiniteRowSideFullHecke.CurvatureFamilyNorm.curv X (_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.x0F X) (la - _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.kapW X) 0 (_root_.GlobalTheory.DivisionVolume.unitVec e) = _root_.ReciprocityTheory.C …`. Both sides reduce to the same expression. Rewrite `h` using `[hR, _root_.GlobalTheory.LeviZero.leviZero r X _ _ hx0, _root_.GlobalTheory.LeviZero.leviZero r X _ _ hx0]`. Simplify using `only [sum_mul_norm_unitVec_sq_eq] at h`.
+
+Conclude with `h`. Use `⟨fun i j hij hjp => ?_, fun i0 i1 hi0 hi1 => ?_⟩` and prove the remaining obligations. Establish `hlt : i < j` using `Fin.lt_iff_val_lt_val.2 (by omega)`. Establish `h` using `key (τ, ⟨(j, i), hlt⟩)`. Use `clear key H hx0 h0mem`.
+
+Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn, _root_.GlobalTheory.CurvMargin.blockWt, Pi.sub_apply] at h`. Distinguish the cases in `hi : (i : ℕ) < X.p0`. Establish `hj : (j : ℕ) < X.p0` using `by omega`. Simplify using `only [hi, hj, if_true] at h`. Evaluate the numerical expressions using `at h`.
+
+Simplify using `only [Pi.sub_apply]`. Establish `h' : ((la τ j - _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.kapW X τ j : ℤ) : ℝ) ≤ ((la τ i - _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.kapW X τ i : ℤ) : ℝ)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h'` after adjusting the coercions.
+
+Establish `hj : ¬ (j : ℕ) < X.p0` using `by omega`. Simplify using `only [hi, hj, if_false] at h`. Evaluate the numerical expressions using `at h`. Simplify using `only [Pi.sub_apply]`. Establish `h' : ((la τ j - _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.kapW X τ j : ℤ) : ℝ) ≤ ((la τ i - _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.kapW X τ i : ℤ) : ℝ)`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h'` after adjusting the coercions. Establish `hlt : i0 < i1` using `Fin.lt_iff_val_lt_val.2 (by omega)`. Establish `h` using `key (τ, ⟨(i1, i0), hlt⟩)`.
+
+Use `clear key H hx0 h0mem`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn, _root_.GlobalTheory.CurvMargin.blockWt, Pi.sub_apply] at h`. Establish `hi0' : (i0 : ℕ) < X.p0` using `by omega`. Establish `hi1' : ¬ (i1 : ℕ) < X.p0` using `by omega`. Simplify using `only [hi0', hi1', if_true, if_false] at h`.
+
+Evaluate the numerical expressions using `at h`. Simplify using `only [Pi.sub_apply, Int.cast_sub]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hG x0 hx0 z hz ξ`. Rewrite using `[leviWeight_sub_leviDensity_eq_lemma hx0 la hz ξ]`.
+
+Use `_root_.GlobalTheory.FrameThetaCompare.margin_of_gaps X h0 (la - _root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.kapW X) m ?_ ?_ hx0 hz ξ` and prove the remaining obligations. Introduce `τ a b hab`. Conclude with `(hG τ).1 a b hab.1 hab.2`. Introduce `τ a b ha hb`. Establish `h` using `(hG τ).2 a b ha (by omega)`.
+
+Move the coercions through the operations in `at h`. Conclude with `h`.
+-/
 theorem _root_.GlobalTheory.DivisionVolume.margin_iff (h0 : 0 < X.p0) (h1 : X.p0 < r)
     (la : _root_.ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (m : ℝ) :
     (∀ x0, _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x0 → ∀ z ∈ _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.OmF X x0, ∀ ξ : Fin (_root_.ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X) → ℂ,

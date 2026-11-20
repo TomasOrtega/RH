@@ -38,6 +38,9 @@ namespace GlobalTheory.SymExtend
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Use extensionality with `a`. Establish `e` using `Scheme.Hom.germ_stalkMap_apply f.left ⊤ x trivial (G.hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a))`. Use `e.trans ?_` and prove the remaining obligations. Use `conv_rhs => rw [← Over.w f]`. Both sides reduce to the same expression.
+-/
 theorem stalkMap_comp_base {R : Type} [CommRing R] {G : Over (Sp R)} (f : G ⟶ G) (x : G.left) :
     (f.left.stalkMap x).hom.comp ((G.left.presheaf.germ ⊤ (f.left x) trivial).hom.comp ((G.hom.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)) =
       (G.left.presheaf.germ ⊤ x trivial).hom.comp ((G.hom.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom) := by
@@ -48,6 +51,25 @@ theorem stalkMap_comp_base {R : Type} [CommRing R] {G : Over (Sp R)} (f : G ⟶ 
   conv_rhs => rw [← Over.w f]
   rfl
 
+/- English proof (translation)
+Establish `hfl` using `(GlobalTheory.SemiAbMulFlat.flat_and_locallyQuasiFinite_pow _ G hG 2 two_ne_zero).1`. Establish `hsu` using `GlobalTheory.SemiAbSurj.surjective_pow _ G hG 2 two_ne_zero`. Generalize the expression as in `((𝟙 G) ^ 2 : G ⟶ G) = f at hs hfl hsu`. Take `⟨x', rfl⟩` from `f.left.surjective x`. Establish `hx' : G.hom x' = closedPoint R`.
+
+Rewrite using `[← hx, ← Scheme.Hom.comp_apply, Over.w f]`. Take `⟨hD, hN, hIC⟩` from `GlobalTheory.SquareNear.stalk_props R hA G hG (f.left x')`. Take `⟨hD', hN', hIC'⟩` from `GlobalTheory.SquareNear.stalk_props R hA G hG x'`. Take `⟨k, hk⟩` from `exists_chart h2 (f.left x')`. Take `⟨hne, u, g, hug⟩` from `hs x' k hk`.
+
+Rewrite `hne`, `hug` using `[gs_stalkMap _ _ _ hk, gs_eq (𝟙 G.left) (f.left x') _ hk]`. Set `_` to `(f.left.stalkMap x').hom.toAlgebra`. Establish `: Module.Flat (G.left.presheaf.stalk (f.left x')) (G.left.presheaf.stalk x')` using `Flat.stalkMap f.left x'`. Establish `: IsLocalHom (algebraMap (G.left.presheaf.stalk (f.left x')) (G.left.presheaf.stalk x'))` using `inferInstanceAs (IsLocalHom (f.left.stalkMap x').hom)`. Establish `: Module.FaithfullyFlat (G.left.presheaf.stalk (f.left x')) (G.left.presheaf.stalk x')` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`.
+
+Establish `hne₀ : (G.left.presheaf.germ (L2.U k) (f.left x') hk).hom (h.f k) ≠ 0` using `fun e => hne ((congrArg (f.left.stalkMap x').hom e).trans (map_zero _))`. Establish `hsq : ∃ (u : (G.left.presheaf.stalk x')ˣ) (g : G.left.presheaf.stalk x'), algebraMap (G.left.presheaf.stalk (f.left x')) (G.left.presheaf.stalk x') ((G.left.presheaf.germ (L2.U k) (f.left x') hk).hom (h.f k)) = u * g ^ 2` using `⟨u, g, hug⟩`. Establish `hinj` using `GlobalTheory.Mum.LocalInj.base_to_stalk_injective R hA G hG (f.left x')`. Establish `hpr` using `GlobalTheory.Mum.ideal_map_stalk_isPrime_of_closedPoint R hA G hG (f.left x') hx`. Establish `hpr'` using `GlobalTheory.Mum.ideal_map_stalk_isPrime_of_closedPoint R hA G hG x' hx'`.
+
+Establish `hhor` using `GlobalTheory.SqHorizontal.horizontal R hA G hG L2 h Lθ hθ θ hc (f.left x') k hk`. Rewrite `hpr'` using `[← stalkMap_comp_base f x']`. Generalize the expression as in `((G.left.presheaf.germ ⊤ (f.left x') trivial).hom.comp ((G.hom.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)) = σ at hinj hpr hpr' hhor`. Establish `Hp : ∀ p : Ideal (G.left.presheaf.stalk (f.left x')), p.IsPrime → p.height = 1 → ∃ a b c : G.left.presheaf.stalk (f.left x'), b ∉ p ∧ c ∉ p ∧ b * (G.left.presheaf.germ (L2.U k) (f.left x') hk).hom (h.f k) = c * a ^ 2`. Introduce `p hp h1`.
+
+Distinguish the cases in `hq : Ideal.comap σ p = ⊥`. Conclude with `hhor p hp hq`. Establish `hqp : (Ideal.comap σ p).IsPrime` using `Ideal.comap_isPrime _ p`. Establish `hP` using `hpr _ hqp`. Establish `heq : Ideal.map σ (Ideal.comap σ p) = p`.
+
+Assume the negation of the conclusion as `hne'`. Establish `hlt` using `lt_of_le_of_ne (Ideal.map_comap_le (f := σ) (K := p)) hne'`. Establish `h1' : (Ideal.map σ (Ideal.comap σ p)).height < 1` using `(Ideal.height_strict_mono_of_isPrime hlt).trans_le h1.le`. Rewrite `h1'` using `[ENat.lt_one_iff_eq_zero, Ideal.height_eq_zero_iff_eq_bot]`. Conclude with `hq ((Ideal.map_eq_bot_iff_of_injective hinj).1 h1')`.
+
+Use `GlobalTheory.T.exists_mul_eq_mul_sq_of_faithfullyFlat_height_one _ _ _ hne₀ hsq p hp h1 ?_` and prove the remaining obligations. Use `hpr' _ hqp` as an intermediate fact. Rewrite `this` using `[← Ideal.map_map, heq]`. Then use the resulting hypothesis. Take `⟨u₀, a, hua⟩` from `isUnit_mul_sq_of_faithfullyFlat _ (G.left.presheaf.stalk x') _ hne₀ hsq Hp`. Establish `ha : a ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hne₀` to reduce the goal to its premises. Rewrite using `[hua]`. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.Mum.unit_mul_sq_spread G.left L2 h (f.left x') k hk u₀ a ha hua`.
+-/
 theorem exists_open_unit_mul_sq (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hA : AdmBase R (maximalIdeal R))
     (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G) (L2 : LB G.left) (h2 : L2.IsLB) (h : L2.Sec)
     (Lθ : LB (pullback G.hom (jK R))) (hθ : Lθ.IsLB) (θ : Lθ.Sec) (hc : (∀ j i, ∃ w : Γ(pullback G.hom (jK R), pullback.fst G.hom (jK R) ⁻¹ᵁ L2.U j ⊓ Lθ.U i)ˣ, ((pullback G.hom (jK R)).presheaf.map (homOfLE inf_le_right).op).hom (θ.f i) ^ 2 = (w : Γ(pullback G.hom (jK R), pullback.fst G.hom (jK R) ⁻¹ᵁ L2.U j ⊓ Lθ.U i)) * ((pullback G.hom (jK R)).presheaf.map (homOfLE inf_le_left).op).hom (((pullback.fst G.hom (jK R)).app (L2.U j)).hom (h.f j)))) (hs : (∀ (x' : G.left) (k : L2.ι), ((𝟙 G) ^ 2 : G ⟶ G).left x' ∈ L2.U k → gs ((𝟙 G) ^ 2 : G ⟶ G).left x' (L2.U k) (h.f k) ≠ 0 ∧ ∃ (u : (G.left.presheaf.stalk x')ˣ) (g : G.left.presheaf.stalk x'), gs ((𝟙 G) ^ 2 : G ⟶ G).left x' (L2.U k) (h.f k) = u * g ^ 2))
@@ -107,6 +129,13 @@ theorem exists_open_unit_mul_sq (R : Type) [CommRing R] [IsDomain R] [IsLocalRin
     simp
   exact GlobalTheory.Mum.unit_mul_sq_spread G.left L2 h (f.left x') k hk u₀ a ha hua
 
+/- English proof (translation)
+Distinguish the cases in `hW : Nonempty W`. Establish `ht` using `ht hW`. Establish `h1 : t ∣ s` using `(IsIntegrallyClosed.pow_dvd_pow_iff two_ne_zero).1 ⟨c, by rw [h, mul_comm]⟩`. Establish `h2 : s ∣ t` using `(IsIntegrallyClosed.pow_dvd_pow_iff two_ne_zero).1 ⟨(c⁻¹ : Γ(X, W)ˣ), by rw [h, mul_right_comm, Units.mul_inv, _root_.one_mul]⟩`. Take `⟨w, hw⟩` from `associated_of_dvd_dvd h1 h2`.
+
+Conclude with `⟨w, by rw [← hw, mul_comm]⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : W = ⊥ := by`. Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hx => hW ⟨⟨x, hx⟩⟩`.
+
+Conclude with `⟨1, Subsingleton.elim _ _⟩`.
+-/
 theorem exists_unit_mul_of_sq_sec {X : Scheme.{0}} [IsIntegral X] [GlobalTheory.IsNormalScheme X] (W : X.Opens)
     {s t : Γ(X, W)} (c : Γ(X, W)ˣ) (ht : Nonempty W → t ≠ 0) (h : s ^ 2 = c * t ^ 2) :
     ∃ w : Γ(X, W)ˣ, s = w * t := by
@@ -123,10 +152,18 @@ theorem exists_unit_mul_of_sq_sec {X : Scheme.{0}} [IsIntegral X] [GlobalTheory.
       exact fun hx => hW ⟨⟨x, hx⟩⟩
     exact ⟨1, Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Introduce `h0` and use `ha (map_injective_of_isIntegral X (homOfLE hW) (h0.trans (map_zero _).symm))`.
+-/
 theorem res_ne_zero {X : Scheme.{0}} [IsIntegral X] {V W : X.Opens} (hW : W ≤ V) {a : Γ(X, V)} (ha : a ≠ 0)
     [Nonempty W] : (X.presheaf.map (homOfLE hW).op).hom a ≠ 0 := fun h0 =>
   ha (map_injective_of_isIntegral X (homOfLE hW) (h0.trans (map_zero _).symm))
 
+/- English proof (translation)
+Distinguish the cases in `hn : Nonempty W`. Conclude with `mem_nonZeroDivisors_of_ne_zero (res_ne_zero hW ha)`. Choose the witnesses or unpack the hypotheses as in `rfl : W = ⊥ := by`. Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`.
+
+Conclude with `fun hx => hn ⟨⟨x, hx⟩⟩`. Rewrite using `[Subsingleton.elim ((X.presheaf.map (homOfLE hW).op).hom a) 1]`. Conclude with `Submonoid.one_mem _`.
+-/
 theorem res_mem_nonZeroDivisors {X : Scheme.{0}} [IsIntegral X] {V W : X.Opens} (hW : W ≤ V) {a : Γ(X, V)}
     (ha : a ≠ 0) : (X.presheaf.map (homOfLE hW).op).hom a ∈ nonZeroDivisors Γ(X, W) := by
   by_cases hn : Nonempty W
@@ -138,6 +175,15 @@ theorem res_mem_nonZeroDivisors {X : Scheme.{0}} [IsIntegral X] {V W : X.Opens} 
     rw [Subsingleton.elim ((X.presheaf.map (homOfLE hW).op).hom a) 1]
     exact Submonoid.one_mem _
 
+/- English proof (translation)
+Establish `hY` using `fun (x : {x : G.left // G.hom x = closedPoint R}) => exists_open_unit_mul_sq R hA G hG L2 h2 h Lθ hθ θ hc hs x.1 x.2`. Use `choose V hxV a ha hu using hY`. Take `⟨hsq, hθa⟩` from `GlobalTheory.SqGlue.main R hA G hG L2 h2 h _ θ hc _ V a ha hu`. Use `haveI : IsIntegrallyClosed R := hA.2.2.1`. Use `haveI : IsNoetherianRing R := hA.1`.
+
+Use `haveI : Smooth G.hom := hG.smooth`. Use `haveI : GeometricallyConnected G.hom := hG.geomConnected`. Use `haveI : IsIntegral G.left := GlobalTheory.isIntegral_left_of_isSemiAbelian G`. Use `haveI : GlobalTheory.IsNormalScheme G.left := GlobalTheory.isNormalScheme_of_smooth G.hom`. Use `haveI : IsIntegral (pullback G.hom (jK R)) := GlobalTheory.isIntegral_pullback_of_smooth G.hom (jK R)`.
+
+Use `haveI : GlobalTheory.IsNormalScheme (pullback G.hom (jK R)) := GlobalTheory.isNormalScheme_of_smooth (pullback.snd G.hom (jK R))`. Establish `hgen : ∀ k, ((pullback.fst G.hom (jK R)).app (V k)).hom (a k) ≠ 0` using `fun k h0 => ha k (GlobalTheory.ExpInt.generic_app_injective G (V k) (h0.trans (map_zero _).symm))`. Take `⟨O, N, hO, hN, hiso⟩` from `GlobalTheory.LocalEqGlue.exists_lb_of_localEq G.left _ (pullback.fst G.hom (jK R)) Lθ θ _ V a (fun k W hW => res_mem_nonZeroDivisors hW (ha k)) (fun k W hW => res_mem_nonZeroDivisors hW (hgen k)) (fun k l => by`. Take `⟨c, hc⟩` from `hsq k l`. Conclude with `exists_unit_mul_of_sq_sec _ c (fun _ => res_ne_zero _ (ha l)) hc)`.
+
+Use the proof step `(fun k i => by`. Take `⟨w, hw⟩` from `hθa k i`. Conclude with `exists_unit_mul_of_sq_sec _ w (fun _ => res_ne_zero _ (hgen k)) hw)`. Conclude with `⟨O, N, fun g hg => hO ⟨g, hg⟩ (hxV ⟨g, hg⟩), hN, hiso⟩`.
+-/
 theorem extends_near (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hA : AdmBase R (maximalIdeal R))
     (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G) (L2 : LB G.left) (h2 : L2.IsLB) (h : L2.Sec)
     (Lθ : LB (pullback G.hom (jK R))) (hθ : Lθ.IsLB) (θ : Lθ.Sec) (hc : (∀ j i, ∃ w : Γ(pullback G.hom (jK R), pullback.fst G.hom (jK R) ⁻¹ᵁ L2.U j ⊓ Lθ.U i)ˣ, ((pullback G.hom (jK R)).presheaf.map (homOfLE inf_le_right).op).hom (θ.f i) ^ 2 = (w : Γ(pullback G.hom (jK R), pullback.fst G.hom (jK R) ⁻¹ᵁ L2.U j ⊓ Lθ.U i)) * ((pullback G.hom (jK R)).presheaf.map (homOfLE inf_le_left).op).hom (((pullback.fst G.hom (jK R)).app (L2.U j)).hom (h.f j)))) (hs : (∀ (x' : G.left) (k : L2.ι), ((𝟙 G) ^ 2 : G ⟶ G).left x' ∈ L2.U k → gs ((𝟙 G) ^ 2 : G ⟶ G).left x' (L2.U k) (h.f k) ≠ 0 ∧ ∃ (u : (G.left.presheaf.stalk x')ˣ) (g : G.left.presheaf.stalk x'), gs ((𝟙 G) ^ 2 : G ⟶ G).left x' (L2.U k) (h.f k) = u * g ^ 2)) :
@@ -167,6 +213,11 @@ theorem extends_near (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hA : 
       exact exists_unit_mul_of_sq_sec _ w (fun _ => res_ne_zero _ (hgen k)) hw)
   exact ⟨O, N, fun g hg => hO ⟨g, hg⟩ (hxV ⟨g, hg⟩), hN, hiso⟩
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `Filter.eventually_atTop.1 (GlobalTheory.CutOutSections.eventually_isGenerated_lbPow hL)`. Take `⟨θ, hθ⟩` from `(ht (2 * t + 1) (by omega)).exists_mem (Classical.arbitrary X)`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hθ`. Use `⟨t, θ, i, fun e => ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[e, Scheme.basicOpen_zero]`.
+
+Conclude with `hi`.
+-/
 theorem exists_odd_sec {X : Scheme.{0}} [Nonempty X] {L : LB X} (hL : GlobalTheory.IsAmpleLB L) :
     ∃ (t : ℕ) (θ : (lbPow L (2 * t + 1)).Sec) (i : (lbPow L (2 * t + 1)).ι), θ.f i ≠ 0 := by
   obtain ⟨t, ht⟩ := Filter.eventually_atTop.1 (GlobalTheory.CutOutSections.eventually_isGenerated_lbPow hL)
@@ -176,6 +227,21 @@ theorem exists_odd_sec {X : Scheme.{0}} [Nonempty X] {L : LB X} (hL : GlobalTheo
   rw [e, Scheme.basicOpen_zero] at hi
   exact hi
 
+/- English proof (translation)
+Introduce `R _ _ _ hA G _ _ hG A gen hgen PP hext`. Establish `hL : (A.L.pull gen.hom.left).IsLB` using `LB.isLB_pull A.isLB _`. Establish `hP : (PP.pull (lift (𝟙 G) (𝟙 G) : G ⟶ G2 G).left).IsLB` using `LB.isLB_pull hext.1 _`. Take `⟨h2c, φ, hφ, h4c⟩` from `GlobalTheory.T.two_smul_polarisation_class_generic_diagonal_doubling R G A gen hgen PP hext _ _ hL hP rfl rfl`. Use `haveI : Smooth G.hom := hG.smooth`.
+
+Use `haveI : GeometricallyConnected G.hom := hG.geomConnected`. Use `haveI : IsIntegral (pullback G.hom (jK R)) := GlobalTheory.isIntegral_pullback_of_smooth G.hom (jK R)`. Use `haveI : IsIso gen.hom.left := inferInstanceAs (IsIso ((Over.forget _).map gen.hom))`. Establish `hamp : GlobalTheory.IsAmpleLB (X` using `pullback G.hom (jK R)) (A.L.pull gen.hom.left) := (GlobalTheory.isAmpleLB_of_relAmple_of_isAffine A.A A.isLB A.ample).pull_of_isAffineHom gen.hom.left`. Establish `hK : Function.Surjective (pullback.snd G.hom (jK R)).appTop.hom`.
+
+Establish `e : pullback.snd G.hom (jK R) = gen.hom.left ≫ A.A.hom` using `(Over.w gen.hom).symm`. Use `haveI : IsIso gen.hom.left.appTop := inferInstanceAs (IsIso (gen.hom.left.app ⊤))`. Rewrite using `[e, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.coe_comp]`. Conclude with `(ConcreteCategory.bijective_of_isIso gen.hom.left.appTop).2.comp (GlobalTheory.ExpansionTotal.globalFns _ A.A A.isAb).2`. Take `⟨t, θ, hθ⟩` from `exists_odd_sec hamp`.
+
+Generalize the expression as in `(PP.pull (lift (𝟙 G) (𝟙 G) : G ⟶ G2 G).left) = P at hP h2c`. Establish `hLθ` using `GlobalTheory.isLB_lbPow hL (2 * t + 1)`. Establish `hL2` using `GlobalTheory.isLB_lbPow hP (2 * t + 1)`. Establish `eθ` using `cls_lbPow hL (2 * t + 1) hLθ`. Take `⟨h, hc, hs⟩` from `exists_sec_sq_of_double R hA G hG hK _ hLθ θ hθ _ hL2 (by rw [cls_lbPow hP, map_nsmul, ← h2c, smul_comm]; exact congrArg (2 • ·) eθ) φ hφ (by`.
+
+Use `(congrArg (pull φ) eθ).trans (Eq.trans ?_ (congrArg (4 • ·) eθ).symm)` and prove the remaining obligations. Rewrite using `[map_nsmul, smul_comm]`. Conclude with `congrArg ((2 * t + 1) • ·) h4c)`. Take `⟨O, N, hO, hN, hiso⟩` from `extends_near R hA G hG _ hL2 h _ hLθ θ hc hs`. Take `⟨N', hN', eN'⟩` from `cls_surj (cls N hN - t • pull O.ι (cls P hP))`.
+
+Establish `e₁` using `(cls_eq_iff (LB.isLB_pull hN _) (LB.isLB_pull hLθ _)).2 hiso`. Rewrite `e₁` using `[cls_pull hN, cls_pull hLθ]`. Take `⟨L', hL', hI⟩` from `GlobalTheory.Mum.lb_extends_of_extLam R hA G hG _ PP hL hext O hO N' hN' ((cls_eq_iff (LB.isLB_pull hN' _) (LB.isLB_pull hL _)).1 (by`. Rewrite using `[cls_pull hN', eN', map_sub, e₁, map_nsmul, ← pull_comp, pullback.condition, pull_comp, ← h2c]`. Use `Eq.trans ?_ (cls_pull hL _ _).symm` and prove the remaining obligations.
+
+Use `(congrArg (fun z => pull (pullback.snd O.ι (pullback.fst G.hom (jK R))) z - _) eθ).trans ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, map_nsmul, smul_smul, add_smul, one_smul, mul_comm t 2, add_sub_cancel_left]))`. Conclude with `⟨L', hL', hI.symm⟩`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (A : PolAV (Sp (FractionRing R))) (gen : ((Over.pullback (jK R)).obj G) ≅ A.A), IsMonHom gen.hom → ∀ PP : LB (G2 G).left, ExtLam G (A.L.pull gen.hom.left) PP → ∃ L₁ : LB G.left, L₁.IsLB ∧ LBIso (L₁.pull (pullback.fst G.hom (jK R))) (A.L.pull gen.hom.left) := by
   intro R _ _ _ hA G _ _ hG A gen hgen PP hext
   have hL : (A.L.pull gen.hom.left).IsLB := LB.isLB_pull A.isLB _

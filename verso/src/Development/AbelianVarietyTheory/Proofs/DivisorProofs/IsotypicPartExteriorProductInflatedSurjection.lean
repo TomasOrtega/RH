@@ -7,6 +7,25 @@ open scoped Classical
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Introduce `P G₁ G₂ _ _ _ _ π hπ φ₁ Y₁ φ₂ Y₂ hY₁ hY₂ h₁ h₂`. Use `haveI : Finite G₁ := Finite.of_surjective (fun p => (π p).1) (fun g => by`. Take `⟨p, hp⟩` from `hπ (g, 1); exact ⟨p, by simp [hp]⟩)`. Use `haveI : Finite G₂ := Finite.of_surjective (fun p => (π p).2) (fun g => by`. Take `⟨p, hp⟩` from `hπ (1, g); exact ⟨p, by simp [hp]⟩)`.
+
+Use `haveI := Fintype.ofFinite P`. Use `haveI := Fintype.ofFinite G₁`. Use `haveI := Fintype.ofFinite G₂`. Establish `hY : IsChar ℂ ℂ (fun p => Y₁ (π p).1 * Y₂ (π p).2)`. Take `⟨n, ρ, hρ⟩` from `hY₁`.
+
+Take `⟨m, σ, hσ⟩` from `hY₂`. Conclude with `isChar_mul_complex (a := fun p => Y₁ (π p).1) (b := fun p => Y₂ (π p).2) ⟨n, ρ.comp ((MonoidHom.fst G₁ G₂).comp π), fun p => hρ _⟩ ⟨m, σ.comp ((MonoidHom.snd G₁ G₂).comp π), fun p => hσ _⟩`. Take `⟨k₁, hk₁⟩` from `(GlobalTheory.T.isInCharacterIsotypicPart_iff_convolution G₁ φ₁ Y₁ hY₁).1 h₁`. Take `⟨k₂, hk₂⟩` from `(GlobalTheory.T.isInCharacterIsotypicPart_iff_convolution G₂ φ₂ Y₂ hY₂).1 h₂`. Apply `(GlobalTheory.T.isInCharacterIsotypicPart_iff_convolution P _ _ hY).2` to reduce the goal to its premises.
+
+Use `set c : ℕ := (Finset.univ.filter fun q : P => π q = 1).card with hcdef`. Establish `hc : (c : ℂ) ≠ 0`. Rewrite using `[Nat.cast_ne_zero]`. Apply `Finset.card_ne_zero_of_mem (a := (1 : P))` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Use `⟨fun p => k₁ (π p).1 * k₂ (π p).2 / c, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hk₁, hk₂]`. Simplify using `only [finsum_eq_sum_of_fintype]`. Use `set F : G₁ × G₂ → ℂ := fun g => Y₁ g.1 * Y₂ g.2 * (k₁ (g.1⁻¹ * (π x).1) * k₂ (g.2⁻¹ * (π x).2)) with hF`. Establish `hR : ∀ q : P, Y₁ (π q).1 * Y₂ (π q).2 * (k₁ (π (q⁻¹ * x)).1 * k₂ (π (q⁻¹ * x)).2 / c) = F (π q) / c`.
+
+Introduce `q`. Simplify using `only [hF, map_mul, map_inv, Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hR]`. Rewrite using `[← Finset.sum_div]`.
+
+Establish `hfib : ∑ q : P, F (π q) = ∑ g : G₁ × G₂, (c : ℂ) * F g`. Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun q => π q) (fun q => F (π q))]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Establish `e : ∀ q ∈ Finset.univ.filter (fun q : P => π q = g), F (π q) = F g`. Introduce `q hq`.
+
+Rewrite using `[(Finset.mem_filter.1 hq).2]`. Rewrite using `[Finset.sum_congr rfl e, Finset.sum_const, nsmul_eq_mul, hcdef, MonoidHom.card_fiber_eq_of_mem_range π (hπ g) (hπ 1)]`. Rewrite using `[hfib, ← Finset.mul_sum, mul_div_cancel_left₀ _ hc, Fintype.sum_prod_type, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [hF]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kills_prod_comp_surj : ∀ (P G₁ G₂ : Type) [Group P] [Finite P] [Group G₁] [Group G₂] (π : P →* G₁ × G₂), Function.Surjective π → ∀ (φ₁ Y₁ : G₁ → ℂ) (φ₂ Y₂ : G₂ → ℂ), IsChar ℂ ℂ Y₁ → IsChar ℂ ℂ Y₂ → Kills φ₁ Y₁ → Kills φ₂ Y₂ → Kills (fun p => φ₁ (π p).1 * φ₂ (π p).2) (fun p => Y₁ (π p).1 * Y₂ (π p).2) := by
   intro P G₁ G₂ _ _ _ _ π hπ φ₁ Y₁ φ₂ Y₂ hY₁ hY₂ h₁ h₂
   haveI : Finite G₁ := Finite.of_surjective (fun p => (π p).1) (fun g => by

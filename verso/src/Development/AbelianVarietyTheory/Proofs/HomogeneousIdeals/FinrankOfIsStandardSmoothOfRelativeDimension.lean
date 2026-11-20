@@ -20,8 +20,14 @@ def projKer : A →ₗ[R] RingHom.ker ε :=
     (LinearMap.id - (Algebra.linearMap R A) ∘ₗ ε.toLinearMap)
     (fun a => by simp [RingHom.mem_ker])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma coe_projKer (a : A) : (projKer ε a : A) = a - algebraMap R A (ε a) := rfl
 
+/- English proof (translation)
+Establish `hx : ε x = 0` using `x.2`. Use `ext`. Simplify using `[hx]`.
+-/
 @[simp] lemma projKer_coe (x : RingHom.ker ε) : projKer ε x = x := by
   have hx : ε x = 0 := x.2
   ext; simp [hx]
@@ -29,33 +35,62 @@ def projKer : A →ₗ[R] RingHom.ker ε :=
 def d : A →ₗ[R] AugCot ε :=
   ((RingHom.ker ε).toCotangent.restrictScalars R) ∘ₗ projKer ε
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma d_apply (a : A) : d ε a = (RingHom.ker ε).toCotangent (projKer ε a) := rfl
 
+/- English proof (translation)
+Rewrite using `[d_apply, projKer_coe]`.
+-/
 @[simp] lemma d_coe (x : RingHom.ker ε) : d ε x = (RingHom.ker ε).toCotangent x := by
   rw [d_apply, projKer_coe]
 
+/- English proof (translation)
+The claim follows from `d_coe ε ⟨a, ha⟩`.
+-/
 lemma d_of_mem {a : A} (ha : a ∈ RingHom.ker ε) :
     d ε a = (RingHom.ker ε).toCotangent ⟨a, ha⟩ := d_coe ε ⟨a, ha⟩
 
+/- English proof (translation)
+Introduce `x`. Take `⟨x, rfl⟩` from `(RingHom.ker ε).toCotangent_surjective x`. Conclude with `⟨x, d_coe ε x⟩`.
+-/
 lemma d_surjective : Function.Surjective (d ε) := by
   intro x
   obtain ⟨x, rfl⟩ := (RingHom.ker ε).toCotangent_surjective x
   exact ⟨x, d_coe ε x⟩
 
+/- English proof (translation)
+Rewrite using `[d_apply, Ideal.toCotangent_eq_zero, coe_projKer]`.
+-/
 lemma d_eq_zero_iff (a : A) : d ε a = 0 ↔ a - algebraMap R A (ε a) ∈ RingHom.ker ε ^ 2 := by
   rw [d_apply, Ideal.toCotangent_eq_zero, coe_projKer]
 
+/- English proof (translation)
+Simplify using `[d_eq_zero_iff]`.
+-/
 @[simp] lemma d_algebraMap (r : R) : d ε (algebraMap R A r) = 0 := by
   simp [d_eq_zero_iff]
 
+/- English proof (translation)
+Simplify using `[d_eq_zero_iff]`.
+-/
 @[simp] lemma d_one : d ε 1 = 0 := by
   simp [d_eq_zero_iff]
 
+/- English proof (translation)
+Establish `h` using `Ideal.Cotangent.smul_eq_zero_of_mem (projKer ε a).2 x`. Rewrite `h` using `[coe_projKer, sub_smul, algebraMap_smul, sub_eq_zero]`. Conclude with `h`.
+-/
 lemma smul_eq (a : A) (x : AugCot ε) : a • x = ε a • x := by
   have h := Ideal.Cotangent.smul_eq_zero_of_mem (projKer ε a).2 x
   rw [coe_projKer, sub_smul, algebraMap_smul, sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[← smul_eq, ← smul_eq, d_apply, d_apply, d_apply, ← LinearMap.map_smul (RingHom.ker ε).toCotangent, ← LinearMap.map_smul (RingHom.ker ε).toCotangent, ← map_add, Ideal.toCotangent_eq]`. Establish `: ((projKer ε (a * b) : A) - ((a • projKer ε b + b • projKer ε a : RingHom.ker ε) : A)) = -((projKer ε a : A) * (projKer ε b : A))`. Simplify using `only [coe_projKer, map_mul, Submodule.coe_add, SetLike.val_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, pow_two]`.
+
+Conclude with `neg_mem (Ideal.mul_mem_mul (projKer ε a).2 (projKer ε b).2)`.
+-/
 lemma d_mul (a b : A) : d ε (a * b) = ε a • d ε b + ε b • d ε a := by
   rw [← smul_eq, ← smul_eq, d_apply, d_apply, d_apply, ← LinearMap.map_smul (RingHom.ker ε).toCotangent,
     ← LinearMap.map_smul (RingHom.ker ε).toCotangent, ← map_add,
@@ -71,6 +106,9 @@ variable {N : Type*} [AddCommGroup N] [Module R N]
 
 variable {ε} in
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨a, rfl⟩` from `d_surjective ε x`. Conclude with `h a`.
+-/
 lemma hom_ext {f g : AugCot ε →ₗ[R] N} (h : ∀ a, f (d ε a) = g (d ε a)) : f = g := by
   ext x
   obtain ⟨a, rfl⟩ := d_surjective ε x
@@ -87,10 +125,16 @@ def pointDer : Submodule R (A →ₗ[R] N) where
     simp only [LinearMap.smul_apply, hD a b, smul_add, smul_comm c]
 
 variable {ε} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_pointDer {D : A →ₗ[R] N} :
     D ∈ pointDer ε N ↔ ∀ a b, D (a * b) = ε a • D b + ε b • D a := Iff.rfl
 
 variable {ε} in
+/- English proof (translation)
+Establish `h1 : D 1 = 0`. Use `hD 1 1` as an intermediate fact. Simplify using `using this`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, h1, smul_zero]`.
+-/
 lemma pointDer_algebraMap {D : A →ₗ[R] N} (hD : ∀ a b, D (a * b) = ε a • D b + ε b • D a)
     (r : R) : D (algebraMap R A r) = 0 := by
   have h1 : D 1 = 0 := by
@@ -105,9 +149,15 @@ def lift (D : A →ₗ[R] N) (hD : ∀ a b, D (a * b) = ε a • D b + ε b • 
     change D ((x : A) * (y : A)) = 0
     rw [hD, hx, hy, zero_smul, zero_smul, add_zero])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma lift_toCotangent (D : A →ₗ[R] N) (hD : ∀ a b, D (a * b) = ε a • D b + ε b • D a)
     (x : RingHom.ker ε) : lift ε D hD ((RingHom.ker ε).toCotangent x) = D x := rfl
 
+/- English proof (translation)
+Rewrite using `[d_apply, lift_toCotangent, coe_projKer, map_sub, pointDer_algebraMap hD, sub_zero]`.
+-/
 @[simp] lemma lift_d (D : A →ₗ[R] N) (hD : ∀ a b, D (a * b) = ε a • D b + ε b • D a) (a : A) :
     lift ε D hD (d ε a) = D a := by
   rw [d_apply, lift_toCotangent, coe_projKer, map_sub, pointDer_algebraMap hD, sub_zero]
@@ -122,9 +172,15 @@ def pointDerEquiv : pointDer ε N ≃ₗ[R] (AugCot ε →ₗ[R] N) where
   left_inv D := by ext a; simp
   right_inv f := hom_ext fun a => by simp
 
+/- English proof (translation)
+The claim follows from `lift_d ε D.1 D.2 a`.
+-/
 @[simp] lemma pointDerEquiv_d (D : pointDer ε N) (a : A) :
     pointDerEquiv ε N D (d ε a) = D.1 a := lift_d ε D.1 D.2 a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma pointDerEquiv_symm_apply (f : AugCot ε →ₗ[R] N) (a : A) :
     ((pointDerEquiv ε N).symm f).1 a = f (d ε a) := rfl
 
@@ -137,14 +193,23 @@ def derivationEquiv [Module A N] [IsScalarTower R A N] (h : ∀ (a : A) (n : N),
   left_inv D := by ext a; simp
   right_inv f := hom_ext fun a => by simp
 
+/- English proof (translation)
+The claim follows from `lift_d ε D.toLinearMap (fun a b => by simp [h]) a`.
+-/
 @[simp] lemma derivationEquiv_d [Module A N] [IsScalarTower R A N]
     (h : ∀ (a : A) (n : N), a • n = ε a • n) (D : Derivation R A N) (a : A) :
     derivationEquiv ε h D (d ε a) = D a := lift_d ε D.toLinearMap (fun a b => by simp [h]) a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma derivationEquiv_symm_apply [Module A N] [IsScalarTower R A N]
     (h : ∀ (a : A) (n : N), a • n = ε a • n) (f : AugCot ε →ₗ[R] N) (a : A) :
     (derivationEquiv ε h).symm f a = f (d ε a) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun r a n => by rw [h, h, map_smul, smul_assoc]⟩`.
+-/
 lemma isScalarTower_of_smul_eq [Module A N] (h : ∀ (a : A) (n : N), a • n = ε a • n) :
     IsScalarTower R A N :=
   ⟨fun r a n => by rw [h, h, map_smul, smul_assoc]⟩
@@ -152,6 +217,9 @@ lemma isScalarTower_of_smul_eq [Module A N] (h : ∀ (a : A) (n : N), a • n = 
 def derivation : Derivation R A (AugCot ε) :=
   Derivation.mk' (d ε) (fun a b => by rw [d_mul, smul_eq, smul_eq])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma derivation_apply (a : A) : derivation ε a = d ε a := rfl
 
 section Kaehler
@@ -159,10 +227,16 @@ section Kaehler
 variable [Algebra A R] (h : ∀ a, algebraMap A R a = ε a)
 
 include h in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a r x => by rw [Algebra.smul_def, mul_smul, h, smul_eq]⟩`.
+-/
 lemma isScalarTower_of_algebraMap_eq : IsScalarTower A R (AugCot ε) :=
   ⟨fun a r x => by rw [Algebra.smul_def, mul_smul, h, smul_eq]⟩
 
 include h in
+/- English proof (translation)
+The claim follows from `IsScalarTower.of_algebraMap_eq fun r => by simp [h]`.
+-/
 lemma isScalarTower_base : IsScalarTower R A R :=
   IsScalarTower.of_algebraMap_eq fun r => by simp [h]
 
@@ -172,15 +246,28 @@ def toKaehler : AugCot ε →ₗ[R] R ⊗[A] Ω[A⁄R] :=
     (KaehlerDifferential.D R A).toLinearMap) (fun a b => by
       simp [tmul_add, tmul_smul, smul_tmul', Algebra.smul_def, h])
 
+/- English proof (translation)
+The claim follows from `lift_d ε _ _ a`.
+-/
 @[simp] lemma toKaehler_d (a : A) :
     toKaehler ε h (d ε a) = 1 ⊗ₜ KaehlerDifferential.D R A a := lift_d ε _ _ a
 
 def ofKaehler : Ω[A⁄R] →ₗ[A] AugCot ε := (derivation ε).liftKaehlerDifferential
 
 omit [Algebra A R] in
+/- English proof (translation)
+The claim follows from `Derivation.liftKaehlerDifferential_comp_D _ a`.
+-/
 @[simp] lemma ofKaehler_D (a : A) : ofKaehler ε (KaehlerDifferential.D R A a) = d ε a :=
   Derivation.liftKaehlerDifferential_comp_D _ a
 
+/- English proof (translation)
+Establish `hm : m ∈ Submodule.span A (Set.range (KaehlerDifferential.D R A))`. Rewrite using `[KaehlerDifferential.span_range_derivation]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`.
+
+Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy, tmul_add]`. Consider the case `smul a x _ hx`. Rewrite using `[map_smul, smul_eq, map_smul, hx, tmul_smul, smul_tmul', smul_tmul', Algebra.smul_def, Algebra.smul_def a, h]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma toKaehler_ofKaehler (m : Ω[A⁄R]) : toKaehler ε h (ofKaehler ε m) = 1 ⊗ₜ m := by
   have hm : m ∈ Submodule.span A (Set.range (KaehlerDifferential.D R A)) := by
     rw [KaehlerDifferential.span_range_derivation]; trivial
@@ -204,15 +291,24 @@ def kaehlerEquiv : AugCot ε ≃ₗ[R] R ⊗[A] Ω[A⁄R] :=
       | tmul r m => simp [toKaehler_ofKaehler, smul_tmul'])
     (hom_ext fun a => by simp)
 
+/- English proof (translation)
+The claim follows from `toKaehler_d ε h a`.
+-/
 @[simp] lemma kaehlerEquiv_d (a : A) :
     kaehlerEquiv ε h (d ε a) = 1 ⊗ₜ KaehlerDifferential.D R A a := toKaehler_d ε h a
 
+/- English proof (translation)
+Rewrite using `[LinearEquiv.symm_apply_eq, map_smul]`. Express the relevant statement in the definitionally equal form `_ = r • toKaehler ε h _`. Rewrite using `[toKaehler_ofKaehler, smul_tmul', smul_eq_mul, mul_one]`.
+-/
 @[simp] lemma kaehlerEquiv_symm_tmul (r : R) (m : Ω[A⁄R]) :
     (kaehlerEquiv ε h).symm (r ⊗ₜ m) = r • ofKaehler ε m := by
   rw [LinearEquiv.symm_apply_eq, map_smul]
   change _ = r • toKaehler ε h _
   rw [toKaehler_ofKaehler, smul_tmul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+The claim follows from `isScalarTower_of_algebraMap_eq ε h IsBaseChange R (ofKaehler ε) := haveI := isScalarTower_of_algebraMap_eq ε h IsBaseChange.of_equiv (kaehlerEquiv ε h).symm (fun m => by simp)`.
+-/
 lemma isBaseChange_ofKaehler :
     haveI := isScalarTower_of_algebraMap_eq ε h
     IsBaseChange R (ofKaehler ε) :=
@@ -232,9 +328,15 @@ def toSqZero (f : AugCot ε →ₗ[R] N) : A →ₐ[R] TrivSqZeroExt R N :=
     (by ext <;> simp)
     (fun a b => by ext <;> simp [d_mul])
 
+/- English proof (translation)
+Simplify using `[toSqZero]`.
+-/
 @[simp] lemma fst_toSqZero (f : AugCot ε →ₗ[R] N) (a : A) : (toSqZero ε f a).fst = ε a := by
   simp [toSqZero]
 
+/- English proof (translation)
+Simplify using `[toSqZero]`.
+-/
 @[simp] lemma snd_toSqZero (f : AugCot ε →ₗ[R] N) (a : A) :
     (toSqZero ε f a).snd = f (d ε a) := by
   simp [toSqZero]
@@ -242,6 +344,9 @@ def toSqZero (f : AugCot ε →ₗ[R] N) : A →ₐ[R] TrivSqZeroExt R N :=
 def ofSqZero (φ : A →ₐ[R] TrivSqZeroExt R N) (hφ : ∀ a, (φ a).fst = ε a) : AugCot ε →ₗ[R] N :=
   lift ε (TrivSqZeroExt.sndHom R N ∘ₗ φ.toLinearMap) (fun a b => by simp [hφ])
 
+/- English proof (translation)
+The claim follows from `lift_d ε _ _ a`.
+-/
 @[simp] lemma ofSqZero_d (φ : A →ₐ[R] TrivSqZeroExt R N) (hφ : ∀ a, (φ a).fst = ε a) (a : A) :
     ofSqZero ε φ hφ (d ε a) = (φ a).snd := lift_d ε _ _ a
 
@@ -260,11 +365,17 @@ def sqZeroEquiv :
   right_inv f := hom_ext fun a =>
     (ofSqZero_d ε _ (fst_toSqZero ε f) a).trans (snd_toSqZero ε f a)
 
+/- English proof (translation)
+The claim follows from `ofSqZero_d ε φ.1 (fun a => AlgHom.congr_fun φ.2 a) a`.
+-/
 @[simp] lemma sqZeroEquiv_d
     (φ : {φ : A →ₐ[R] TrivSqZeroExt R N // (TrivSqZeroExt.fstHom R R N).comp φ = ε}) (a : A) :
     sqZeroEquiv ε N φ (d ε a) = (φ.1 a).snd :=
   ofSqZero_d ε φ.1 (fun a => AlgHom.congr_fun φ.2 a) a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma sqZeroEquiv_symm_apply (f : AugCot ε →ₗ[R] N) :
     ((sqZeroEquiv ε N).symm f).1 = toSqZero ε f := rfl
 
@@ -277,6 +388,9 @@ section Map
 variable {R A B C : Type*} [CommRing R] [CommRing A] [Algebra R A] [CommRing B] [Algebra R B]
   [CommRing C] [Algebra R C] {εA : A →ₐ[R] R} {εB : B →ₐ[R] R} {εC : C →ₐ[R] R}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use extensionality with `a`. Simplify using `[RingHom.mem_ker]`.
+-/
 lemma ker_eq_comap (φ : A →ₐ[R] B) (h : εB.comp φ = εA) :
     RingHom.ker εA = (RingHom.ker εB).comap φ := by
   subst h; ext a; simp [RingHom.mem_ker]
@@ -284,10 +398,16 @@ lemma ker_eq_comap (φ : A →ₐ[R] B) (h : εB.comp φ = εA) :
 def map (φ : A →ₐ[R] B) (h : εB.comp φ = εA) : AugCot εA →ₗ[R] AugCot εB :=
   Ideal.mapCotangent _ _ φ (ker_eq_comap φ h).le
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma map_toCotangent (φ : A →ₐ[R] B) (h : εB.comp φ = εA) (x : RingHom.ker εA) :
     map φ h ((RingHom.ker εA).toCotangent x) =
       (RingHom.ker εB).toCotangent ⟨φ x, (ker_eq_comap φ h).le x.2⟩ := rfl
 
+/- English proof (translation)
+Rewrite using `[d_apply, d_apply, map_toCotangent]`. Use `congr 1`. Use `ext`. Simplify using `[← h]`.
+-/
 @[simp] lemma map_d (φ : A →ₐ[R] B) (h : εB.comp φ = εA) (a : A) :
     map φ h (d εA a) = d εB (φ a) := by
   rw [d_apply, d_apply, map_toCotangent]
@@ -295,9 +415,15 @@ def map (φ : A →ₐ[R] B) (h : εB.comp φ = εA) : AugCot εA →ₗ[R] AugC
   ext
   simp [← h]
 
+/- English proof (translation)
+The claim follows from `hom_ext fun a => by simp`.
+-/
 @[simp] lemma map_id : map (AlgHom.id R A) (AlgHom.comp_id εA) = LinearMap.id :=
   hom_ext fun a => by simp
 
+/- English proof (translation)
+The claim follows from `hom_ext fun a => by simp`.
+-/
 lemma map_comp (φ : A →ₐ[R] B) (ψ : B →ₐ[R] C) (h : εB.comp φ = εA) (h' : εC.comp ψ = εB)
     (h'' : εC.comp (ψ.comp φ) = εA := by rw [← AlgHom.comp_assoc, h', h]) :
     map (ψ.comp φ) h'' = map ψ h' ∘ₗ map φ h :=
@@ -308,13 +434,26 @@ def congr (e : A ≃ₐ[R] B) (h : εB.comp e = εA) : AugCot εA ≃ₗ[R] AugC
     (map (e.symm : B →ₐ[R] A) (by subst h; ext b; simp))
     (hom_ext fun a => by simp) (hom_ext fun a => by simp)
 
+/- English proof (translation)
+The claim follows from `map_d (e : A →ₐ[R] B) h a`.
+-/
 @[simp] lemma congr_d (e : A ≃ₐ[R] B) (h : εB.comp e = εA) (a : A) :
     congr e h (d εA a) = d εB (e a) := map_d (e : A →ₐ[R] B) h a
 
+/- English proof (translation)
+Rewrite using `[LinearEquiv.symm_apply_eq, congr_d, e.apply_symm_apply]`.
+-/
 @[simp] lemma congr_symm_d (e : A ≃ₐ[R] B) (h : εB.comp e = εA) (b : B) :
     (congr e h).symm (d εB b) = d εA (e.symm b) := by
   rw [LinearEquiv.symm_apply_eq, congr_d, e.apply_symm_apply]
 
+/- English proof (translation)
+Establish `hm : m ∈ Submodule.span A (Set.range (KaehlerDifferential.D R A))`. Rewrite using `[KaehlerDifferential.span_range_derivation]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`.
+
+Simplify using `[KaehlerDifferential.map_D]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [map_add, hx, hy]`. Consider the case `smul a x _ hx`. Rewrite using `[map_smul, smul_eq, map_smul, hx, map_smul, ← algebraMap_smul B a, map_smul, smul_eq, ← h]`.
+
+Both sides reduce to the same expression.
+-/
 lemma map_ofKaehler [Algebra A B] [IsScalarTower R A B]
     (h : εB.comp (IsScalarTower.toAlgHom R A B) = εA) (m : Ω[A⁄R]) :
     map _ h (ofKaehler εA m) = ofKaehler εB (KaehlerDifferential.map R R A B m) := by
@@ -328,6 +467,9 @@ lemma map_ofKaehler [Algebra A B] [IsScalarTower R A B]
     rw [map_smul, smul_eq, map_smul, hx, map_smul, ← algebraMap_smul B a, map_smul, smul_eq, ← h]
     rfl
 
+/- English proof (translation)
+Introduce `x`. Take `⟨b, rfl⟩` from `d_surjective εB x`. Take `⟨a, rfl⟩` from `hφ b`. Conclude with `⟨d εA a, map_d φ h a⟩`.
+-/
 lemma map_surjective (φ : A →ₐ[R] B) (h : εB.comp φ = εA) (hφ : Function.Surjective φ) :
     Function.Surjective (map φ h) := by
   intro x
@@ -335,6 +477,9 @@ lemma map_surjective (φ : A →ₐ[R] B) (h : εB.comp φ = εA) (hφ : Functio
   obtain ⟨a, rfl⟩ := hφ b
   exact ⟨d εA a, map_d φ h a⟩
 
+/- English proof (translation)
+Introduce `a ha`. Rewrite `ha`, the goal using `[RingHom.mem_ker]`. Rewrite using `[← h, AlgHom.comp_apply, ha, map_zero]`.
+-/
 lemma ker_le (φ : A →ₐ[R] B) (h : εB.comp φ = εA) : RingHom.ker φ ≤ RingHom.ker εA := by
   intro a ha
   rw [RingHom.mem_ker] at ha ⊢
@@ -343,9 +488,21 @@ lemma ker_le (φ : A →ₐ[R] B) (h : εB.comp φ = εA) : RingHom.ker φ ≤ R
 def kerMap (φ : A →ₐ[R] B) (h : εB.comp φ = εA) : RingHom.ker φ →ₗ[R] AugCot εA :=
   ((RingHom.ker εA).toCotangent ∘ₗ Submodule.inclusion (ker_le φ h)).restrictScalars R
 
+/- English proof (translation)
+The claim follows from `(d_of_mem εA (ker_le φ h x.2)).symm`.
+-/
 @[simp] lemma kerMap_apply (φ : A →ₐ[R] B) (h : εB.comp φ = εA) (x : RingHom.ker φ) :
     kerMap φ h x = d εA x := (d_of_mem εA (ker_le φ h x.2)).symm
 
+/- English proof (translation)
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨x, rfl⟩` from `(RingHom.ker εA).toCotangent_surjective x`. Rewrite `hx` using `[map_toCotangent, Ideal.toCotangent_eq_zero]`.
+
+Establish `hI : RingHom.ker εB = (RingHom.ker εA).map φ`. Rewrite using `[ker_eq_comap φ h, Ideal.map_comap_of_surjective _ hφ]`. Establish `hx' : φ x ∈ (RingHom.ker εA ^ 2).map φ`. Rewrite using `[Ideal.map_pow, ← hI]`. Conclude with `hx`.
+
+Take `⟨y, hy, hxy⟩` from `(Ideal.mem_map_iff_of_surjective _ hφ).1 hx'`. Use `⟨⟨x - y, by simp [RingHom.mem_ker, hxy]⟩, ?_⟩` and prove the remaining obligations. Establish `hy' : y ∈ RingHom.ker εA` using `Ideal.pow_le_self two_ne_zero hy`. Establish `: d εA y = 0` using `by rw [d_of_mem εA hy', Ideal.toCotangent_eq_zero]; exact hy`. Simplify using `[this]`.
+
+Introduce and unpack `⟨x, rfl⟩`. Establish `: φ x = 0` using `x.2`. Simplify using `[this]`.
+-/
 lemma exact_kerMap_map (φ : A →ₐ[R] B) (h : εB.comp φ = εA) (hφ : Function.Surjective φ) :
     Function.Exact (kerMap φ h) (map φ h) := by
   intro x
@@ -366,6 +523,11 @@ lemma exact_kerMap_map (φ : A →ₐ[R] B) (h : εB.comp φ = εA) (hφ : Funct
     have : φ x = 0 := x.2
     simp [this]
 
+/- English proof (translation)
+Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Establish `hx : x.fst = 0` using `hx`. Establish `hy : y.fst = 0` using `hy`.
+
+Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hx, hy]`.
+-/
 lemma isNilpotent_ker_fst (N : Type*) [AddCommGroup N] [Module R N] [Module Rᵐᵒᵖ N]
     [IsCentralScalar R N] :
     IsNilpotent (RingHom.ker (TrivSqZeroExt.fstHom R R N : TrivSqZeroExt R N →+* R)) := by
@@ -377,6 +539,15 @@ lemma isNilpotent_ker_fst (N : Type*) [AddCommGroup N] [Module R N] [Module Rᵐ
   rw [Ideal.mem_bot]
   ext <;> simp [hx, hy]
 
+/- English proof (translation)
+Use `letI : Module Rᵐᵒᵖ (AugCot εA) := Module.compHom _ ((RingHom.id R).fromOpposite mul_comm)`. Use `haveI : IsCentralScalar R (AugCot εA) := ⟨fun _ _ => rfl⟩`. Use `letI : Algebra A B := (φ : A →+* B).toAlgebra`. Use `haveI : Algebra.FormallySmooth A B := hφ`. Use `letI : Algebra A R := (εA : A →+* R).toAlgebra`.
+
+Set `ψ` to `toSqZero εA (LinearMap.id (M := AugCot εA))`. Use `letI : Algebra A (TrivSqZeroExt R (AugCot εA)) := (ψ : A →+* _).toAlgebra`. Set `f : B →ₐ[A] R` to `{ (εB : B →+* R) with commutes' := fun a => AlgHom.congr_fun h a }`. Set `g : TrivSqZeroExt R (AugCot εA) →ₐ[A] R` to `{ (TrivSqZeroExt.fstHom R R (AugCot εA) : TrivSqZeroExt R (AugCot εA) →+* R) with commutes' := fun a => fst_toSqZero εA _ a }`. Establish `hg : Function.Surjective g` using `fun r => ⟨TrivSqZeroExt.inl r, rfl⟩`.
+
+Set `l` to `Algebra.FormallySmooth.liftOfSurjective f g hg (isNilpotent_ker_fst _)`. Establish `hl : ∀ a, l (φ a) = ψ a` using `fun a => l.commutes a`. Set `l' : B →ₐ[R] TrivSqZeroExt R (AugCot εA)` to `{ (l : B →+* TrivSqZeroExt R (AugCot εA)) with commutes' := fun r => by`. Use `hl (algebraMap R A r)` as an intermediate fact. Rewrite `this` using `[φ.commutes, ψ.commutes]`.
+
+Conclude with `this }`. Establish `hl' : ∀ b, (l' b).fst = εB b` using `fun b => Algebra.FormallySmooth.liftOfSurjective_apply f g hg (isNilpotent_ker_fst _) b`. Use `⟨ofSqZero εB l' hl', hom_ext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, map_d, ofSqZero_d]`. Conclude with `(congrArg TrivSqZeroExt.snd (hl a)).trans (snd_toSqZero εA _ a)`.
+-/
 lemma exists_leftInverse_map (φ : A →ₐ[R] B) (h : εB.comp φ = εA)
     (hφ : (φ : A →+* B).FormallySmooth) :
     ∃ s : AugCot εB →ₗ[R] AugCot εA, s ∘ₗ map φ h = LinearMap.id := by
@@ -407,11 +578,25 @@ lemma exists_leftInverse_map (φ : A →ₐ[R] B) (h : εB.comp φ = εA)
   rw [LinearMap.comp_apply, map_d, ofSqZero_d]
   exact (congrArg TrivSqZeroExt.snd (hl a)).trans (snd_toSqZero εA _ a)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_leftInverse_map φ h hφ`. Conclude with `Function.LeftInverse.injective (g := s) (LinearMap.congr_fun hs)`.
+-/
 lemma map_injective_of_formallySmooth (φ : A →ₐ[R] B) (h : εB.comp φ = εA)
     (hφ : (φ : A →+* B).FormallySmooth) : Function.Injective (map φ h) := by
   obtain ⟨s, hs⟩ := exists_leftInverse_map φ h hφ
   exact Function.LeftInverse.injective (g := s) (LinearMap.congr_fun hs)
 
+/- English proof (translation)
+Set `N` to `AugCot εB ⧸ LinearMap.range (map φ h)`. Use `letI : Module Rᵐᵒᵖ N := Module.compHom _ ((RingHom.id R).fromOpposite mul_comm)`. Use `haveI : IsCentralScalar R N := ⟨fun _ _ => rfl⟩`. Use `letI : Algebra A B := (φ : A →+* B).toAlgebra`. Use `haveI : Algebra.FormallyUnramified A B := hφ`.
+
+Set `q : AugCot εB →ₗ[R] N` to `(LinearMap.range (map φ h)).mkQ`. Set `ψ` to `toSqZero εA (0 : AugCot εA →ₗ[R] N)`. Use `letI : Algebra A (TrivSqZeroExt R N) := (ψ : A →+* _).toAlgebra`. Establish `hε : ∀ a, εB (φ a) = εA a` using `fun a => AlgHom.congr_fun h a`. Set `g₁ : B →ₐ[A] TrivSqZeroExt R N` to `{ (toSqZero εB q : B →+* TrivSqZeroExt R N) with commutes' := fun a => by`.
+
+Express the relevant statement in the definitionally equal form `toSqZero εB q (φ a) = ψ a`. Use `ext`. Simplify using `[ψ, hε]`. Simplify using `only [ψ, snd_toSqZero, LinearMap.zero_apply, ← map_d φ h]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨_, rfl⟩ }`.
+
+Set `g₂ : B →ₐ[A] TrivSqZeroExt R N` to `{ (toSqZero εB (0 : AugCot εB →ₗ[R] N) : B →+* TrivSqZeroExt R N) with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `toSqZero εB 0 (φ a) = ψ a`. Apply the tactic sequence `ext <;> simp [ψ, hε] }`. Use `Algebra.FormallyUnramified.ext' (TrivSqZeroExt.fstHom R R N : TrivSqZeroExt R N →+* R) (isNilpotent_ker_fst _) g₁ g₂ (fun b => (fst_toSqZero εB q b).trans (fst_toSqZero εB 0 b).symm)` as an intermediate fact. Introduce `x`.
+
+Take `⟨b, rfl⟩` from `d_surjective εB x`. Establish `hb : toSqZero εB q b = toSqZero εB (0 : AugCot εB →ₗ[R] N) b` using `AlgHom.congr_fun this b`. Establish `hb'` using `congrArg TrivSqZeroExt.snd hb`. Rewrite `hb'` using `[snd_toSqZero, snd_toSqZero, LinearMap.zero_apply]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 hb'`.
+-/
 lemma map_surjective_of_formallyUnramified (φ : A →ₐ[R] B) (h : εB.comp φ = εA)
     (hφ : (φ : A →+* B).FormallyUnramified) : Function.Surjective (map φ h) := by
   let N := AugCot εB ⧸ LinearMap.range (map φ h)
@@ -446,6 +631,9 @@ lemma map_surjective_of_formallyUnramified (φ : A →ₐ[R] B) (h : εB.comp φ
   rw [snd_toSqZero, snd_toSqZero, LinearMap.zero_apply] at hb'
   exact (Submodule.Quotient.mk_eq_zero _).1 hb'
 
+/- English proof (translation)
+Use `letI : Algebra A B := (φ : A →+* B).toAlgebra`. Use `haveI : Algebra.FormallyEtale A B := hφ`. Conclude with `⟨map_injective_of_formallySmooth φ h (inferInstanceAs (Algebra.FormallySmooth A B)), map_surjective_of_formallyUnramified φ h (inferInstanceAs (Algebra.FormallyUnramified A B))⟩`.
+-/
 lemma map_bijective_of_formallyEtale (φ : A →ₐ[R] B) (h : εB.comp φ = εA)
     (hφ : (φ : A →+* B).FormallyEtale) : Function.Bijective (map φ h) := by
   letI : Algebra A B := (φ : A →+* B).toAlgebra
@@ -454,6 +642,9 @@ lemma map_bijective_of_formallyEtale (φ : A →ₐ[R] B) (h : εB.comp φ = εA
     map_surjective_of_formallyUnramified φ h
       (inferInstanceAs (Algebra.FormallyUnramified A B))⟩
 
+/- English proof (translation)
+Use `letI : Algebra A B := (φ : A →+* B).toAlgebra`. Use `haveI : Algebra.Etale A B := hφ`. Conclude with `map_bijective_of_formallyEtale φ h (inferInstanceAs (Algebra.FormallyEtale A B))`.
+-/
 lemma map_bijective_of_etale (φ : A →ₐ[R] B) (h : εB.comp φ = εA)
     (hφ : (φ : A →+* B).Etale) : Function.Bijective (map φ h) := by
   letI : Algebra A B := (φ : A →+* B).toAlgebra
@@ -464,6 +655,9 @@ section Tower
 
 variable [Algebra A B] [IsScalarTower R A B]
 
+/- English proof (translation)
+The claim follows from `map_bijective_of_formallyEtale _ h (RingHom.formallyEtale_algebraMap.2 inferInstance)`.
+-/
 lemma map_bijective [Algebra.FormallyEtale A B]
     (h : εB.comp (IsScalarTower.toAlgHom R A B) = εA) : Function.Bijective (map _ h) :=
   map_bijective_of_formallyEtale _ h (RingHom.formallyEtale_algebraMap.2 inferInstance)
@@ -471,10 +665,16 @@ lemma map_bijective [Algebra.FormallyEtale A B]
 def etaleEquiv [Algebra.FormallyEtale A B] (h : εB.comp (IsScalarTower.toAlgHom R A B) = εA) :
     AugCot εA ≃ₗ[R] AugCot εB := LinearEquiv.ofBijective (map _ h) (map_bijective h)
 
+/- English proof (translation)
+The claim follows from `map_d _ h a`.
+-/
 @[simp] lemma etaleEquiv_d [Algebra.FormallyEtale A B]
     (h : εB.comp (IsScalarTower.toAlgHom R A B) = εA) (a : A) :
     etaleEquiv h (d εA a) = d εB (algebraMap A B a) := map_d _ h a
 
+/- English proof (translation)
+The claim follows from `haveI := Algebra.FormallyEtale.of_isLocalization (Rₘ := B) M map_bijective h`.
+-/
 lemma map_bijective_of_isLocalization (M : Submonoid A) [IsLocalization M B]
     (h : εB.comp (IsScalarTower.toAlgHom R A B) = εA) : Function.Bijective (map _ h) :=
   haveI := Algebra.FormallyEtale.of_isLocalization (Rₘ := B) M
@@ -485,6 +685,9 @@ variable (εA B) in
 def locAug (M : Submonoid A) [IsLocalization M B] (hM : ∀ m : M, IsUnit (εA m)) : B →ₐ[R] R :=
   IsLocalization.liftAlgHom (M := M) (f := εA) hM
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[locAug]`.
+-/
 lemma locAug_comp (M : Submonoid A) [IsLocalization M B] (hM : ∀ m : M, IsUnit (εA m)) :
     (locAug B εA M hM).comp (IsScalarTower.toAlgHom R A B) = εA := by
   ext a; simp [locAug]
@@ -495,6 +698,9 @@ def locEquiv (M : Submonoid A) [IsLocalization M B] (hM : ∀ m : M, IsUnit (εA
     AugCot εA ≃ₗ[R] AugCot (locAug B εA M hM) :=
   LinearEquiv.ofBijective (map _ (locAug_comp M hM)) (map_bijective_of_isLocalization M _)
 
+/- English proof (translation)
+The claim follows from `map_d _ (locAug_comp M hM) a`.
+-/
 @[simp] lemma locEquiv_d (M : Submonoid A) [IsLocalization M B] (hM : ∀ m : M, IsUnit (εA m))
     (a : A) : locEquiv B εA M hM (d εA a) = d _ (algebraMap A B a) :=
   map_d _ (locAug_comp M hM) a
@@ -504,6 +710,9 @@ variable (εA B) in
 def awayAug (f : A) [IsLocalization.Away f B] (hf : IsUnit (εA f)) : B →ₐ[R] R :=
   locAug B εA (Submonoid.powers f) (by rintro ⟨_, n, rfl⟩; simpa using hf.pow n)
 
+/- English proof (translation)
+The claim follows from `locAug_comp _ _`.
+-/
 lemma awayAug_comp (f : A) [IsLocalization.Away f B] (hf : IsUnit (εA f)) :
     (awayAug B εA f hf).comp (IsScalarTower.toAlgHom R A B) = εA := locAug_comp _ _
 
@@ -512,6 +721,9 @@ variable (εA B) in
 def awayEquiv (f : A) [IsLocalization.Away f B] (hf : IsUnit (εA f)) :
     AugCot εA ≃ₗ[R] AugCot (awayAug B εA f hf) := locEquiv B εA _ _
 
+/- English proof (translation)
+The claim follows from `map_d _ (awayAug_comp f hf) a`.
+-/
 @[simp] lemma awayEquiv_d (f : A) [IsLocalization.Away f B] (hf : IsUnit (εA f)) (a : A) :
     awayEquiv B εA f hf (d εA a) = d _ (algebraMap A B a) := map_d _ (awayAug_comp f hf) a
 
@@ -521,14 +733,23 @@ variable (εA εB) in
 
 abbrev tensorAug : A ⊗[R] B →ₐ[R] R := Algebra.TensorProduct.productMap εA εB
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.productMap_left _ _`.
+-/
 lemma tensorAug_comp_includeLeft :
     (tensorAug εA εB).comp Algebra.TensorProduct.includeLeft = εA :=
   Algebra.TensorProduct.productMap_left _ _
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.productMap_right _ _`.
+-/
 lemma tensorAug_comp_includeRight :
     (tensorAug εA εB).comp Algebra.TensorProduct.includeRight = εB :=
   Algebra.TensorProduct.productMap_right _ _
 
+/- English proof (translation)
+Establish `: a ⊗ₜ[R] b = (a ⊗ₜ[R] (1 : B)) * ((1 : A) ⊗ₜ[R] b)` using `by simp`. Rewrite using `[this, d_mul, add_comm]`. Simplify using the standard rewrite rules.
+-/
 lemma d_tmul (a : A) (b : B) : d (tensorAug εA εB) (a ⊗ₜ b) =
     εB b • d (tensorAug εA εB) (a ⊗ₜ 1) + εA a • d (tensorAug εA εB) (1 ⊗ₜ b) := by
   have : a ⊗ₜ[R] b = (a ⊗ₜ[R] (1 : B)) * ((1 : A) ⊗ₜ[R] b) := by simp
@@ -553,10 +774,16 @@ def tensorEquiv : AugCot (tensorAug εA εB) ≃ₗ[R] AugCot εA × AugCot εB 
       | add x y hx hy => simp only [map_add, hx, hy]
       | tmul a b => simp [d_mul, d_tmul a b])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma tensorEquiv_symm_apply (x : AugCot εA) (y : AugCot εB) :
     (tensorEquiv εA εB).symm (x, y) =
       map _ tensorAug_comp_includeLeft x + map _ tensorAug_comp_includeRight y := rfl
 
+/- English proof (translation)
+Rewrite using `[← LinearEquiv.eq_symm_apply, tensorEquiv_symm_apply, d_tmul]`. Simplify using the standard rewrite rules.
+-/
 @[simp] lemma tensorEquiv_d_tmul (a : A) (b : B) :
     tensorEquiv εA εB (d _ (a ⊗ₜ b)) = (εB b • d εA a, εA a • d εB b) := by
   rw [← LinearEquiv.eq_symm_apply, tensorEquiv_symm_apply, d_tmul]
@@ -574,9 +801,27 @@ def mapBase (φ : A →ₐ[R] A') (h : ∀ a, ε' (φ a) = algebraMap R R' (ε a
     AugCot ε →ₗ[R] AugCot ε' :=
   lift ε ((d ε').restrictScalars R ∘ₗ φ.toLinearMap) (fun a b => by simp [d_mul, h])
 
+/- English proof (translation)
+The claim follows from `lift_d ε _ _ a`.
+-/
 @[simp] lemma mapBase_d (φ : A →ₐ[R] A') (h : ∀ a, ε' (φ a) = algebraMap R R' (ε a)) (a : A) :
     mapBase φ h (d ε a) = d ε' (φ a) := lift_d ε _ _ a
 
+/- English proof (translation)
+Set `D : A' →ₗ[R'] R' ⊗[R] AugCot ε` to `hφ.lift (TensorProduct.mk R R' (AugCot ε) 1 ∘ₗ d ε)`. Establish `hD : ∀ a, D (φ a) = 1 ⊗ₜ d ε a` using `fun a => hφ.lift_eq _ a`. Establish `hmul : ∀ x y, D (x * y) = ε' x • D y + ε' y • D x`. Introduce `x y`. Proceed by induction on `x using hφ.inductionOn with`.
+
+Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [add_mul, map_add, hx, hx', add_smul, smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `smul s x hx`. Rewrite using `[smul_mul_assoc, map_smul, hx, map_smul, map_smul, smul_add, smul_assoc, smul_comm s (ε' y)]`.
+
+Consider the case `tmul a`. Proceed by induction on `y using hφ.inductionOn with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [mul_add, map_add, hx, hx', add_smul, smul_add]`. Normalize the expressions using the abelian group laws.
+
+Consider the case `smul s x hx`. Rewrite using `[mul_smul_comm, map_smul, hx, map_smul, map_smul, smul_add, smul_assoc, smul_comm s]`. Consider the case `tmul b`. Simplify using `only [AlgHom.toLinearMap_apply, ← map_mul, hD, h, d_mul, tmul_add, tmul_smul, algebraMap_smul]`. Use `IsBaseChange.of_equiv (LinearEquiv.ofLinear (LinearMap.liftBaseChange R' (mapBase φ h)) (lift ε' D hmul) (hom_ext fun x => ?_) (LinearMap.ext fun x => ?_)) (fun x => by simp)` and prove the remaining obligations.
+
+Proceed by induction on `x using hφ.inductionOn with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, hx, hx']`. Consider the case `smul s x hx => simp only [map_smul, hx]`. Consider the case `tmul a => simp [hD]`.
+
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, hx, hx']`. Consider the case `tmul s x`. Take `⟨a, rfl⟩` from `d_surjective ε x`.
+
+Simplify using `[hD, smul_tmul']`.
+-/
 lemma isBaseChange_mapBase (φ : A →ₐ[R] A') (h : ∀ a, ε' (φ a) = algebraMap R R' (ε a))
     (hφ : IsBaseChange R' φ.toLinearMap) : IsBaseChange R' (mapBase φ h) := by
   let D : A' →ₗ[R'] R' ⊗[R] AugCot ε := hφ.lift (TensorProduct.mk R R' (AugCot ε) 1 ∘ₗ d ε)
@@ -613,6 +858,9 @@ lemma isBaseChange_mapBase (φ : A →ₐ[R] A') (h : ∀ a, ε' (φ a) = algebr
       obtain ⟨a, rfl⟩ := d_surjective ε x
       simp [hD, smul_tmul']
 
+/- English proof (translation)
+The claim follows from `isBaseChange_mapBase _ h hP.out`.
+-/
 lemma isBaseChange_of_isPushout [Algebra A A'] [IsScalarTower R A A']
     [hP : Algebra.IsPushout R R' A A']
     (h : ∀ a, ε' (IsScalarTower.toAlgHom R A A' a) = algebraMap R R' (ε a)) :
@@ -625,11 +873,17 @@ def baseChangeAug : R' ⊗[R] A →ₐ[R'] R' :=
   Algebra.TensorProduct.lift (AlgHom.id R' R') ((Algebra.ofId R R').comp ε)
     (fun _ _ => Commute.all _ _)
 
+/- English proof (translation)
+Simplify using `[baseChangeAug]`.
+-/
 @[simp] lemma baseChangeAug_tmul (r : R') (a : A) :
     baseChangeAug R' ε (r ⊗ₜ a) = r * algebraMap R R' (ε a) := by
   simp [baseChangeAug]
 
 variable (R' ε) in
+/- English proof (translation)
+The claim follows from `isBaseChange_mapBase _ _ (TensorProduct.isBaseChange R A R')`.
+-/
 lemma isBaseChange_baseChangeAug :
     IsBaseChange R' (mapBase (ε := ε) (ε' := baseChangeAug R' ε)
       Algebra.TensorProduct.includeRight (fun a => by simp)) :=
@@ -640,6 +894,9 @@ variable (R' ε) in
 def baseChangeEquiv : R' ⊗[R] AugCot ε ≃ₗ[R'] AugCot (baseChangeAug R' ε) :=
   (isBaseChange_baseChangeAug R' ε).equiv
 
+/- English proof (translation)
+Simplify using `[baseChangeEquiv, IsBaseChange.equiv_tmul]`.
+-/
 @[simp] lemma baseChangeEquiv_tmul_d (r : R') (a : A) :
     baseChangeEquiv R' ε (r ⊗ₜ d ε a) = r • d _ (1 ⊗ₜ a) := by
   simp [baseChangeEquiv, IsBaseChange.equiv_tmul]
@@ -650,18 +907,30 @@ section Smooth
 
 variable {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (ε : A →ₐ[R] R)
 
+/- English proof (translation)
+Use `letI : Algebra A R := (ε : A →+* R).toAlgebra`. Conclude with `Module.Finite.equiv (kaehlerEquiv ε (fun _ => rfl)).symm`.
+-/
 lemma finite_of_kaehler [Module.Finite A Ω[A⁄R]] : Module.Finite R (AugCot ε) := by
   letI : Algebra A R := (ε : A →+* R).toAlgebra
   exact Module.Finite.equiv (kaehlerEquiv ε (fun _ => rfl)).symm
 
+/- English proof (translation)
+Use `letI : Algebra A R := (ε : A →+* R).toAlgebra`. Conclude with `Module.Projective.of_equiv (kaehlerEquiv ε (fun _ => rfl)).symm`.
+-/
 lemma projective_of_kaehler [Module.Projective A Ω[A⁄R]] : Module.Projective R (AugCot ε) := by
   letI : Algebra A R := (ε : A →+* R).toAlgebra
   exact Module.Projective.of_equiv (kaehlerEquiv ε (fun _ => rfl)).symm
 
+/- English proof (translation)
+Use `letI : Algebra A R := (ε : A →+* R).toAlgebra`. Conclude with `Module.Free.of_equiv (kaehlerEquiv ε (fun _ => rfl)).symm`.
+-/
 lemma free_of_kaehler [Module.Free A Ω[A⁄R]] : Module.Free R (AugCot ε) := by
   letI : Algebra A R := (ε : A →+* R).toAlgebra
   exact Module.Free.of_equiv (kaehlerEquiv ε (fun _ => rfl)).symm
 
+/- English proof (translation)
+Use `letI : Algebra A R := (ε : A →+* R).toAlgebra`. Use `haveI : Nontrivial A := (ε : A →+* R).domain_nontrivial`. Rewrite using `[(kaehlerEquiv ε (fun _ => rfl)).finrank_eq, Module.finrank_baseChange]`.
+-/
 lemma finrank_eq_of_free [Nontrivial R] [Module.Free A Ω[A⁄R]] :
     Module.finrank R (AugCot ε) = Module.finrank A Ω[A⁄R] := by
   letI : Algebra A R := (ε : A →+* R).toAlgebra
@@ -673,6 +942,9 @@ instance finite [Algebra.EssFiniteType R A] : Module.Finite R (AugCot ε) := fin
 instance projective [Algebra.FormallySmooth R A] : Module.Projective R (AugCot ε) :=
   projective_of_kaehler ε
 
+/- English proof (translation)
+Use `letI : Algebra A R := (ε : A →+* R).toAlgebra`. Rewrite using `[Module.rankAtStalk_eq_of_equiv (kaehlerEquiv ε (fun _ => rfl)), Module.rankAtStalk_baseChange]`. Both sides reduce to the same expression.
+-/
 lemma rankAtStalk_eq [Module.Finite A Ω[A⁄R]] [Module.Flat A Ω[A⁄R]] (p : PrimeSpectrum R) :
     Module.rankAtStalk (AugCot ε) p = Module.rankAtStalk Ω[A⁄R] (p.comap (ε : A →+* R)) := by
   letI : Algebra A R := (ε : A →+* R).toAlgebra
@@ -687,17 +959,26 @@ instance free_of_isLocalRing [IsLocalRing R] [Algebra.FormallySmooth R A]
 instance free_of_isStandardSmooth [Algebra.IsStandardSmooth R A] : Module.Free R (AugCot ε) :=
   free_of_kaehler ε
 
+/- English proof (translation)
+Rewrite using `[Module.finrank, Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential n]`. Simplify using the standard rewrite rules.
+-/
 lemma finrank_kaehler_of_isStandardSmoothOfRelativeDimension [Nontrivial A] (n : ℕ)
     [Algebra.IsStandardSmoothOfRelativeDimension n R A] : Module.finrank A Ω[A⁄R] = n := by
   rw [Module.finrank, Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential n]
   simp
 
+/- English proof (translation)
+Use `haveI := Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth n (R := R) (S := A)`. Use `haveI : Nontrivial A := (ε : A →+* R).domain_nontrivial`. Rewrite using `[finrank_eq_of_free, finrank_kaehler_of_isStandardSmoothOfRelativeDimension n]`.
+-/
 lemma finrank_of_isStandardSmoothOfRelativeDimension [Nontrivial R] (n : ℕ)
     [Algebra.IsStandardSmoothOfRelativeDimension n R A] : Module.finrank R (AugCot ε) = n := by
   haveI := Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth n (R := R) (S := A)
   haveI : Nontrivial A := (ε : A →+* R).domain_nontrivial
   rw [finrank_eq_of_free, finrank_kaehler_of_isStandardSmoothOfRelativeDimension n]
 
+/- English proof (translation)
+Use `haveI := Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth n (R := R) (S := A)`. Consider the cases of `subsingleton_or_nontrivial R`. Use `haveI := Module.subsingleton R (AugCot ε)`. Conclude with `⟨⟨LinearEquiv.ofSubsingleton _ _⟩⟩`. Conclude with `⟨Module.finBasisOfFinrankEq _ _ (finrank_of_isStandardSmoothOfRelativeDimension ε n)⟩`.
+-/
 lemma nonempty_basis_of_isStandardSmoothOfRelativeDimension (n : ℕ)
     [Algebra.IsStandardSmoothOfRelativeDimension n R A] :
     Nonempty (Module.Basis (Fin n) R (AugCot ε)) := by
@@ -715,6 +996,9 @@ universe u
 
 variable {R A : Type u} [CommRing R] [CommRing A] [Algebra R A] (ε : A →ₐ[R] R) {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← RingHom.smooth_algebraMap, RingHom.smooth_iff_locally_isStandardSmooth]`. Conclude with `RingHom.locally_of_locally (fun hf => RingHom.IsStandardSmoothOfRelativeDimension.isStandardSmooth n _ hf) h`.
+-/
 lemma smooth_of_locally
     (h : RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension n) (algebraMap R A)) :
     Algebra.Smooth R A := by
@@ -722,6 +1006,13 @@ lemma smooth_of_locally
   exact RingHom.locally_of_locally
     (fun hf => RingHom.IsStandardSmoothOfRelativeDimension.isStandardSmooth n _ hf) h
 
+/- English proof (translation)
+Use `haveI := smooth_of_locally h`. Take `⟨s, hs, H⟩` from `h`. Take `⟨t, hts, htq⟩ : ∃ t ∈ s, t ∉ q.asIdeal` from `by by_contra! hc`. Conclude with `q.2.ne_top (top_le_iff.1 (hs ▸ Ideal.span_le.2 hc))`. Establish `hq : q ∈ Set.range (PrimeSpectrum.comap (algebraMap A (Localization.Away t)))`.
+
+Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away t) t]`. Conclude with `htq`. Take `⟨q', rfl⟩` from `hq`. Establish `Ht` using `H t hts`. Rewrite `Ht` using `[← IsScalarTower.algebraMap_eq, RingHom.isStandardSmoothOfRelativeDimension_algebraMap]`.
+
+Use `haveI := Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth n (R := R) (S := Localization.Away t)`. Use `haveI : Nontrivial (Localization.Away t) := q'.nontrivial`. Use `haveI := Algebra.FormallyEtale.of_isLocalization (Rₘ := Localization.Away t) (Submonoid.powers t)`. Rewrite using `[← Module.rankAtStalk_baseChange, Module.rankAtStalk_eq_of_equiv (KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale R A (Localization.Away t)), Module.rankAtStalk_eq_finrank_of_free, finrank_kaehler_of_isStandardSmoothOfRelativeDimension n]`. Both sides reduce to the same expression.
+-/
 lemma rankAtStalk_kaehler_of_locally
     (h : RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension n) (algebraMap R A))
     (q : PrimeSpectrum A) : Module.rankAtStalk Ω[A⁄R] q = n := by
@@ -746,12 +1037,18 @@ lemma rankAtStalk_kaehler_of_locally
     finrank_kaehler_of_isStandardSmoothOfRelativeDimension n]
   rfl
 
+/- English proof (translation)
+Use `haveI := smooth_of_locally h`. Rewrite using `[rankAtStalk_eq, rankAtStalk_kaehler_of_locally h]`.
+-/
 lemma rankAtStalk_of_locally
     (h : RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension n) (algebraMap R A))
     (p : PrimeSpectrum R) : Module.rankAtStalk (AugCot ε) p = n := by
   haveI := smooth_of_locally h
   rw [rankAtStalk_eq, rankAtStalk_kaehler_of_locally h]
 
+/- English proof (translation)
+Use `haveI := smooth_of_locally h`. Use `rankAtStalk_of_locally ε h (IsLocalRing.closedPoint R)` as an intermediate fact. Rewrite `this` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis.
+-/
 lemma finrank_of_locally [IsLocalRing R]
     (h : RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension n) (algebraMap R A)) :
     Module.finrank R (AugCot ε) = n := by
@@ -759,6 +1056,9 @@ lemma finrank_of_locally [IsLocalRing R]
   have := rankAtStalk_of_locally ε h (IsLocalRing.closedPoint R)
   rwa [Module.rankAtStalk_eq_finrank_of_free] at this
 
+/- English proof (translation)
+The claim follows from `haveI := smooth_of_locally h ⟨Module.finBasisOfFinrankEq _ _ (finrank_of_locally ε h)⟩`.
+-/
 lemma nonempty_basis_of_locally [IsLocalRing R]
     (h : RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension n) (algebraMap R A)) :
     Nonempty (Module.Basis (Fin n) R (AugCot ε)) :=
@@ -767,6 +1067,9 @@ lemma nonempty_basis_of_locally [IsLocalRing R]
 
 open AlgebraicGeometry in
 
+/- English proof (translation)
+The claim follows from `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension n) (φ := CommRingCat.ofHom (algebraMap R A))).symm`.
+-/
 lemma locally_iff_smoothOfRelativeDimension :
     RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension n) (algebraMap R A) ↔
       SmoothOfRelativeDimension n (Spec.map (CommRingCat.ofHom (algebraMap R A))) :=
@@ -787,6 +1090,9 @@ def mvPolynomialBasis : Module.Basis σ R (AugCot (aeval x : MvPolynomial σ R �
   ((KaehlerDifferential.mvPolynomialBasis R σ).baseChange R).map
     (kaehlerEquiv (aeval x : MvPolynomial σ R →ₐ[R] R) (fun _ => rfl)).symm
 
+/- English proof (translation)
+Use `letI : Algebra (MvPolynomial σ R) R := ((aeval x : MvPolynomial σ R →ₐ[R] R) : MvPolynomial σ R →+* R).toAlgebra`. Simplify using `only [mvPolynomialBasis, Module.Basis.map_apply, Module.Basis.baseChange_apply, KaehlerDifferential.mvPolynomialBasis_apply]`. Conclude with `(LinearEquiv.symm_apply_eq _).2 (kaehlerEquiv_d _ _ _).symm`.
+-/
 @[simp] lemma mvPolynomialBasis_apply (i : σ) :
     mvPolynomialBasis x i = d (aeval x : MvPolynomial σ R →ₐ[R] R) (X i) := by
   letI : Algebra (MvPolynomial σ R) R :=
@@ -801,6 +1107,11 @@ end AugCot
 
 open AugCot in
 
+/- English proof (translation)
+Use `⟨fun a => rfl, ?_, fun N _ _ => ?_, fun N _ _ _ _ => ⟨sqZeroEquiv ε N, sqZeroEquiv_d ε⟩, fun R' _ _ => ⟨baseChangeAug_tmul, baseChangeEquiv R' ε, baseChangeEquiv_tmul_d⟩, map_id, fun B _ _ εB φ h => ⟨map_d φ h, fun C _ _ εC ψ h' h'' => map_comp φ ψ h h' h'', map_bijective_of_etal …` and prove the remaining obligations. Use `letI : Algebra A R := (ε : A →+* R).toAlgebra`. Conclude with `⟨kaehlerEquiv ε fun _ => rfl, kaehlerEquiv_d ε _⟩`. Use `letI : Module A N := Module.compHom N (ε : A →+* R) haveI : IsScalarTower R A N := isScalarTower_of_smul_eq ε fun _ _ => rfl`. Conclude with `⟨derivationEquiv ε fun _ _ => rfl, derivationEquiv_d ε _⟩`.
+
+Establish `h` using `locally_iff_smoothOfRelativeDimension.2 hn`. Conclude with `⟨smooth_of_locally h, rankAtStalk_of_locally ε h, fun _ => nonempty_basis_of_locally ε h⟩`.
+-/
 theorem augCot_properties.{u} {R A : Type u} [CommRing R] [CommRing A] [Algebra R A]
     (ε : A →ₐ[R] R) :
 

@@ -25,16 +25,25 @@ open GlobalTheory.SplitScalar GlobalTheory.HeisOrtho GlobalTheory.Mem.CoefInv
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[inv_one, GlobalTheory.AdelicLatMove.mt_one, GlobalTheory.AdelicLatMove.mt_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem actO_one_one (S T : HSp D) (x : WO S T) : actO S T 1 1 x = x := by
   unfold actO
   rw [inv_one, GlobalTheory.AdelicLatMove.mt_one, GlobalTheory.AdelicLatMove.mt_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[inv_one, GlobalTheory.AdelicLatMove.mt_one, GlobalTheory.AdelicLatMove.mt_mul, Matrix.mul_one, Matrix.mul_one, Matrix.mul_one, Matrix.mul_assoc]`.
+-/
 theorem actO_one_mul (S T : HSp D) (k k' : GA D T) (x : WO S T) :
     actO S T 1 (k * k') x = actO S T 1 k (actO S T 1 k' x) := by
   unfold actO
   rw [inv_one, GlobalTheory.AdelicLatMove.mt_one, GlobalTheory.AdelicLatMove.mt_mul, Matrix.mul_one, Matrix.mul_one,
     Matrix.mul_one, Matrix.mul_assoc]
 
+/- English proof (translation)
+The claim follows from `map_nsmul (GlobalTheory.LatLevel.actHom S T g h) c x`.
+-/
 theorem actO_nsmul (S T : HSp D) (g : GA D S) (h : GA D T) (c : ℕ) (x : WO S T) :
     actO S T g h (c • x) = c • actO S T g h x :=
   map_nsmul (GlobalTheory.LatLevel.actHom S T g h) c x
@@ -42,9 +51,17 @@ theorem actO_nsmul (S T : HSp D) (g : GA D S) (h : GA D T) (c : ℕ) (x : WO S T
 def MovesMod (S T : HSp D) (L : AddSubgroup (WO S T)) (c : ℕ) (k : GA D T) : Prop :=
   ∀ x ∈ L, ∃ l ∈ L, actO S T 1 k x = x + c • l
 
+/- English proof (translation)
+Introduce `x _` and use `⟨0, zero_mem _, by rw [actO_one_one, smul_zero, add_zero]⟩`.
+-/
 theorem movesMod_one (S T : HSp D) (L : AddSubgroup (WO S T)) (c : ℕ) : MovesMod S T L c 1 :=
   fun x _ => ⟨0, zero_mem _, by rw [actO_one_one, smul_zero, add_zero]⟩
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨l', hl', e'⟩` from `hk' x hx`. Take `⟨l, hl, e⟩` from `hk x hx`. Take `⟨l'', hl'', e''⟩` from `hk l' hl'`. Use `⟨l + (l' + c • l''), add_mem hl (add_mem hl' (AddSubgroup.nsmul_mem _ hl'' c)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[actO_one_mul, e', GlobalTheory.LatNhds.actO_add, actO_nsmul, e, e'']`. Simplify using `only [smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem movesMod_mul {S T : HSp D} {L : AddSubgroup (WO S T)} {c : ℕ} {k k' : GA D T}
     (hk : MovesMod S T L c k) (hk' : MovesMod S T L c k') : MovesMod S T L c (k * k') := by
   intro x hx
@@ -62,6 +79,13 @@ def stabK (S T : HSp D) (L : AddSubgroup (WO S T)) (c : ℕ) : Subgroup (GA D T)
   mul_mem' := fun ha hb => ⟨movesMod_mul ha.1 hb.1, by rw [_root_.mul_inv_rev]; exact movesMod_mul hb.2 ha.2⟩
   inv_mem' := fun ha => ⟨ha.2, by rw [inv_inv]; exact ha.1⟩
 
+/- English proof (translation)
+Establish `h` using `eventually_mod ΛS ΛT hS hT c hc`. Establish `ht : Filter.Tendsto (fun k : GA D T => ((1 : GA D S), k)) (𝓝 1) (𝓝 1)`. Use `((continuous_const (y := (1 : GA D S))).prodMk continuous_id).tendsto (1 : GA D T)` as an intermediate fact. Conclude with `this`. Establish `ti : Filter.Tendsto (fun k : GA D T => k⁻¹) (𝓝 1) (𝓝 1)`.
+
+Use `(continuous_inv (G := GA D T)).tendsto 1` as an intermediate fact. Rewrite `this` using `[inv_one]`. Then use the resulting hypothesis. Establish `h1` using `ht.eventually h`. Establish `h2` using `ti.eventually h1`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations.
+
+Use `filter_upwards [h1, h2] with k hk hk'`. Conclude with `⟨hk, hk'⟩`.
+-/
 theorem isOpen_stabK (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
     (c : ℕ) (hc : 0 < c) :
@@ -80,6 +104,27 @@ theorem isOpen_stabK (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank 
   filter_upwards [h1, h2] with k hk hk'
   exact ⟨hk, hk'⟩
 
+/- English proof (translation)
+Use `set L := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True with hLdef`. Take `⟨n, hn, hnU⟩` from `(GlobalTheory.LatLevel.level_of_generators D S T ΛS ΛT hS hT (GlobalTheory.LatFinGen.latO_finitely_generated D S T ΛS ΛT hS hT)).1 U hU`. Take `⟨hdual, happrox, -⟩` from `GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hS hT`. Use `⟨L.map (nsmulAddMonoidHom n), stabK S T L (2 * n * n), ?_, isOpen_stabK S T ΛS ΛT hS hT (2 * n * n) (by positivity), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`.
+
+Conclude with `hnU u hu`. Introduce `x`. Take `⟨ρ, hρ, u, hu, hf⟩` from `happrox (x - realIdem D • x) (fin_part x)`. Use `⟨ρ, hρ, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩ -`.
+
+Establish `hnl : n • l ∈ L` using `AddSubgroup.nsmul_mem _ hl n`. Establish `e : x - ρ = (realIdem D • x + (x - realIdem D • x - ρ - u)) + u` using `by abel`. Use `show ψ (symplO S T (x - ρ) (n • l)) = 1`. Rewrite using `[e, GlobalTheory.PlaceModel.symplO_add_left, GlobalTheory.PlaceModel.symplO_add_left, symplO_real_fin S T (real_part x) (latO_fin hnl), symplO_real_fin S T hf (latO_fin hnl), zero_add, zero_add]`. Conclude with `(hdual u (latO_fin hu)).1 hu _ hnl`.
+
+Introduce and unpack `k ⟨hk, -⟩ - _ ⟨l, hl, rfl⟩ -`. Take `⟨l', hl', e⟩` from `hk l hl`. Establish `hm : l + (2 * n * n) • l' ∈ L` using `add_mem hl (AddSubgroup.nsmul_mem _ hl' _)`. Establish `e2 : actO S T 1 k (n • l) = n • (l + (2 * n * n) • l')` using `by rw [actO_nsmul, e]`. Use `⟨⟨_, hm, e2.symm⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show (actO S T 1 k (n • l)).map (infPart D) = 0`. Rewrite using `[e2]`. Conclude with `latO_fin (AddSubgroup.nsmul_mem _ hm n)`. Introduce and unpack `k ⟨hk, -⟩ hkf w hw`. Establish `hw' : ∀ l ∈ L, ψ (symplO S T (n • w) l) = 1` using `fun l hl => by`.
+
+Rewrite using `[symplO_nsmul]`. Conclude with `hw _ ⟨l, hl, rfl⟩ (latO_fin (AddSubgroup.nsmul_mem _ hl n))`. Establish `hff : (n • w - realIdem D • (n • w)).map (infPart D) = 0` using `fin_part _`. Establish `hfL : n • w - realIdem D • (n • w) ∈ L` using `GlobalTheory.LatVac.mem_of_char hψ hS hT hff fun u hu => by`. Rewrite using `[GlobalTheory.SplitScalar.symplO_sub_left, symplO_real_fin S T (real_part _) (latO_fin hu), sub_zero]`.
+
+Conclude with `hw' u hu`. Take `⟨l, hl, e⟩` from `hk _ hfL`. Establish `hreal` using `actO_real (one_mem (GfC S)) hkf (real_part (n • w))`. Establish `e1 : actO S T 1 k w = w + 2 • (n • l)`. Use `nsmul_cancel hn ?_` and prove the remaining obligations.
+
+Rewrite using `[← actO_nsmul, show n • w = realIdem D • (n • w) + (n • w - realIdem D • (n • w)) by abel, GlobalTheory.LatNhds.actO_add, hreal, e, ← add_assoc, ← show n • w = realIdem D • (n • w) + (n • w - realIdem D • (n • w)) by abel]`. Rewrite using `[smul_add, smul_smul, smul_smul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : actO S T 1 k w - w = 2 • (n • l)` using `by rw [e1, add_sub_cancel_left]`.
+
+Use `⟨⟨2 • l, AddSubgroup.nsmul_mem _ hl 2, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`. Conclude with `smul_comm n 2 l`. Rewrite using `[hd]`. Conclude with `latO_fin (AddSubgroup.nsmul_mem _ (AddSubgroup.nsmul_mem _ hl n) 2)`.
+
+Rewrite using `[hd, two_nsmul, symplOH_add_right, symplOH_add_self]`. Conclude with `hw _ ⟨l, hl, rfl⟩ (latO_fin (AddSubgroup.nsmul_mem _ hl n))`.
+-/
 theorem exists_level_stab_of_selfDual (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (hψ : IsStdChar D ψ (-1))
     (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E))
     (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) (U : AddSubgroup (WO S T)) (hU : IsOpen (U : Set (WO S T))) :
@@ -142,6 +187,9 @@ theorem exists_level_stab_of_selfDual (ψ : AddChar (AF D.host.F) ℂ) (S T : HS
     · rw [hd, two_nsmul, symplOH_add_right, symplOH_add_self]
       exact hw _ ⟨l, hl, rfl⟩ (latO_fin (AddSubgroup.nsmul_mem _ hl n))
 
+/- English proof (translation)
+Introduce `D ψ S T hψ U hU`. Conclude with `exists_level_stab_of_selfDual ψ S T hψ _ _ (GlobalTheory.PlaceModel.isSelfDualC_latFrame S) (GlobalTheory.PlaceModel.isSelfDualC_latFrame T) U hU`.
+-/
 theorem exists_level_stab : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∃ (N : AddSubgroup (WO S T)) (K : Subgroup (GA D T)), N ≤ U ∧ IsOpen (K : Set (GA D T)) ∧ (∀ x : WO S T, ∃ γ ∈ ratL T S, ∀ l ∈ N, l.map (infPart D) = 0 → ψ (symplO S T (x - γ) l) = 1) ∧ (∀ k ∈ K, k ∈ GfC T → ∀ u ∈ N, u.map (infPart D) = 0 → actO S T 1 k u ∈ N ∧ (actO S T 1 k u).map (infPart D) = 0) ∧ (∀ k ∈ K, k ∈ GfC T → ∀ w : WO S T, (∀ l ∈ N, l.map (infPart D) = 0 → ψ (symplO S T w l) = 1) → actO S T 1 k w - w ∈ N ∧ (actO S T 1 k w - w).map (infPart D) = 0 ∧ ψ (symplOH S T w (actO S T 1 k w - w)) = 1) := by
   intro D ψ S T hψ U hU
   exact exists_level_stab_of_selfDual ψ S T hψ _ _ (GlobalTheory.PlaceModel.isSelfDualC_latFrame S)

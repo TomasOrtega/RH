@@ -8,12 +8,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open QuadraticAlgebra Matrix UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE]`.
+-/
 private theorem ofE_mul {K : Type} [Field K] {Δ τ : K} (x y : Etau K τ) : ofE Δ (x * y) = ofE Δ x * ofE Δ y := by
   ext <;> simp [ofE]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+-/
 private theorem ofE_one {K : Type} [Field K] {Δ τ : K} : ofE Δ (1 : Etau K τ) = 1 := by
   ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
+/- English proof (translation)
+Establish `e : star (sigL (ofE Δ (star u) * y)) = ofE Δ u * star (sigL y)`. Apply the tactic sequence `ext <;> simp [ofE, sigL] <;> ring`. Simplify using `only [herm, e, star_zero, mul_zero, zero_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem herm_adj {K : Type} [Field K] {Δ τ : K} (c : K) (m : EL Δ τ) (u : Etau K τ) (x : Sp Δ τ) (y : EL Δ τ) :
     herm c m x (0, ofE Δ (star u) * y) = herm c m (0, ofE Δ u * x.2) (0, y) := by
   have e : star (sigL (ofE Δ (star u) * y)) = ofE Δ u * star (sigL y) := by
@@ -24,6 +33,33 @@ private theorem herm_adj {K : Type} [Field K] {Δ τ : K} (c : K) (m : EL Δ τ)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ Δ τ hl hu c d m hd`. Use `haveI := hl.frac`. Take `⟨hτ, h2, -, hint⟩` from `One.intE O K Δ τ hl hu`. Take `⟨ε, s₀, hs₀, hΔ⟩` from `hl.even`. Take `⟨y₀, hy⟩` from `One.snd O K Δ τ hl hu c d m hd s₀⁻¹ ε (by rw [hΔ]; field_simp)`.
+
+Establish `hsp` using `One.splitS O K Δ τ hl hτ h2 c d m hd`. Establish `hmul : ∀ S, IsFix O c d m S → ∀ v : Etau K τ, IsIntegral O v → ∀ x ∈ S, ((0, ofE Δ v * x.2) : Sp Δ τ) ∈ S` using `fun S hS v hv x hx => (hsp S hS).2.2.2 x hx v ((hint v).1 hv).1 ((hint v).1 hv).2`. Establish `hsnd : ∀ S, IsFix O c d m S → ∀ x ∈ S, ((0, x.2) : Sp Δ τ) ∈ S` using `fun S hS x hx => by`. Simplify `hmul S hS 1 isIntegral_one x hx` using `[ofE_one]`. Establish `hpr : ∀ S, IsFix O c d m S → ∃ u : (Etau K τ)ˣ, ∀ a, ((0, (y₀ : EL Δ τ) * ofE Δ a) : Sp Δ τ) ∈ S ↔ IsIntegral O (((u⁻¹ : (Etau K τ)ˣ) : Etau K τ) * a)` using `fun S hS => by`.
+
+Use `One.princ O K Δ τ hl hu _ (One.lat O K Δ τ hl c d m S hS y₀) fun a ha => ?_` and prove the remaining obligations. Establish `hω : IsIntegral O (ω : Etau K τ)` using `(hint _).2 ⟨by simp, by simp⟩`. Use `hmul S hS ω hω _ ha` as an intermediate fact. Express the relevant statement in the definitionally equal form `((0, (y₀ : EL Δ τ) * ofE Δ (ω * a)) : Sp Δ τ) ∈ S`. Rewrite using `[ofE_mul, mul_left_comm]`.
+
+Conclude with `this`. Establish `half : ∀ S S', IsFix O c d m S → IsFix O c d m S' → ∀ u u' : (Etau K τ)ˣ, (∀ a, ((0, (y₀ : EL Δ τ) * ofE Δ a) : Sp Δ τ) ∈ S ↔ IsIntegral O (((u⁻¹ : (Etau K τ)ˣ) : Etau K τ) * a)) → (∀ a, ((0, (y₀ : EL Δ τ) * ofE Δ a) : Sp Δ τ) ∈ S' ↔ IsIntegral O (((u'⁻¹ : (Etau K τ)ˣ) : Etau K τ …`. Introduce `S S' hS hS' u u' h h'`. Establish `k : ∀ a, ((0, (y₀ : EL Δ τ) * ofE Δ a) : Sp Δ τ) ∈ S → ((0, (y₀ : EL Δ τ) * ofE Δ (((u' * u⁻¹ : (Etau K τ)ˣ) : Etau K τ) * a)) : Sp Δ τ) ∈ S'` using `fun a ha => by`. Rewrite using `[h', Units.val_mul, mul_assoc, Units.inv_mul_cancel_left]`.
+
+Conclude with `(h a).1 ha`. Establish `f : ∀ x ∈ S, ((0, ofE Δ ((u' * u⁻¹ : (Etau K τ)ˣ) : Etau K τ) * x.2) : Sp Δ τ) ∈ S'` using `fun x hx => by`. Take `⟨a, b, e, ha, hb⟩` from `(hy S hS x.2).1 (hsnd S hS x hx)`. Use `(hy S' hS' _).2 ⟨_, _, ?_, k a ha, k b hb⟩` and prove the remaining obligations. Rewrite using `[e, ofE_mul, ofE_mul, ← mul_smul_comm]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨f, ?_⟩` and prove the remaining obligations. Generalize the expression as in `((u' * u⁻¹ : (Etau K τ)ˣ) : Etau K τ) = t at f`. Establish `g : ∀ y, ((0, y) : Sp Δ τ) ∈ S' → ((0, ofE Δ (star t) * y) : Sp Δ τ) ∈ S` using `fun y hy' => (hS.dual _).2 fun x hx => by`. Rewrite using `[herm_adj]`.
+
+Conclude with `(hS'.dual _).1 hy' _ (f x hx)`. Establish `h1 : ((0, (y₀ : EL Δ τ) * ofE Δ (u : Etau K τ)) : Sp Δ τ) ∈ S`. Rewrite using `[h, Units.inv_mul]`. Conclude with `isIntegral_one`. Establish `h3` using `g _ (f _ h1)`.
+
+Establish `e : ofE Δ (star t) * (ofE Δ t * ((y₀ : EL Δ τ) * ofE Δ (u : Etau K τ))) = (y₀ : EL Δ τ) * ofE Δ ((u : Etau K τ) * (t * star t))`. Rewrite using `[ofE_mul, ofE_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only at h3`. Rewrite `h3` using `[e, h, Units.inv_mul_cancel_left, ← algebraMap_norm_eq_mul_star]`.
+
+Simplify using `using ((hint _).1 h3).1`. Introduce `S₀ S₁ h₀ h₁`. Take `⟨u₀, hu₀⟩` from `hpr S₀ h₀`. Take `⟨u₁, hu₁⟩` from `hpr S₁ h₁`. Take `⟨f₀, n₀, hn₀⟩` from `half S₀ S₁ h₀ h₁ u₀ u₁ hu₀ hu₁`.
+
+Take `⟨f₁, n₁, hn₁⟩` from `half S₁ S₀ h₁ h₀ u₁ u₀ hu₁ hu₀`. Establish `hinv : u₀ * u₁⁻¹ = (u₁ * u₀⁻¹)⁻¹` using `by simp`. Rewrite `f₁`, `hn₁` using `[hinv]`. Generalize the expression as in `u₁ * u₀⁻¹ = u at f₀ f₁ hn₀ hn₁`. Establish `hn : n₀ * n₁ = 1` using `IsFractionRing.injective O K (by`.
+
+Rewrite using `[map_mul, hn₀, hn₁, ← map_mul, Units.mul_inv, map_one, map_one])`. Take `⟨z, v, hv, hv', e⟩` from `One.eUnit O K Δ τ hl hu u ⟨Units.mkOfMulEqOne n₀ n₁ hn, hn₀.symm⟩`. Use `⟨z, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Establish `a` using `One.fst O K Δ τ hl hτ h2 c d m hd S₀ S₁ h₀ h₁ _ ((hsp S₀ h₀).2.2.1 x hx)`. Establish `b` using `f₀ _ (hmul S₀ h₀ _ hv' x hx)`.
+
+Use `(hsp S₁ h₁).1 _ a _ b` as an intermediate fact. Rewrite `this` using `[e, ← mul_assoc, ← ofE_mul, Units.mul_inv_cancel_right]`. Simplify `this` using `[tor]`. Establish `a` using `One.fst O K Δ τ hl hτ h2 c d m hd S₁ S₀ h₁ h₀ _ ((hsp S₁ h₁).2.2.1 _ hx)`. Establish `b` using `f₁ _ (hmul S₁ h₁ _ hv _ hx)`.
+
+Use `(hsp S₀ h₀).1 _ a _ b` as an intermediate fact. Establish `e' : ofE Δ ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ) * (ofE Δ (v : Etau K τ) * (ofE Δ (quo z) * x.2)) = x.2`. Rewrite using `[← mul_assoc (ofE Δ (v : Etau K τ)), ← ofE_mul, mul_comm (v : Etau K τ), ← e, ← mul_assoc, ← ofE_mul, Units.inv_mul, ofE_one, one_mul]`. Simplify using `only [tor, e'] at this`. Simplify using `using this`.
+-/
 theorem UpperTheory.V.Z.Sym.Loc.One.uniq :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ →
     (∃ u : Oˣ, algebraMap O K u = τ ^ 2 - 4) → ∀ (c : K) (d m : EL Δ τ), IsDat c d m → ∀ S₀ S₁ : Set (Sp Δ τ), IsFix O c d m S₀ → IsFix O c d m S₁ →

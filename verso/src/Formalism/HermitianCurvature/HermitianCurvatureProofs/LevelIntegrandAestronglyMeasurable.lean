@@ -37,19 +37,35 @@ def coordinateSplit (l : Fin r) : Cf r l.castSucc ≃ᵐ ℂ × Cf r l.succ :=
     (MeasurableEquiv.prodCongr (MeasurableEquiv.piUnique _)
       (MeasurableEquiv.piCongrLeft (fun _ => ℂ) (coordinateRestEquiv l)))
 
+/- English proof (translation)
+Unfold `coordinateSplit`. Use `MeasurePreserving.trans (volume_preserving_piEquivPiSubtypeProd _ _) ?_` and prove the remaining obligations. Conclude with `MeasurePreserving.prod (measurePreserving_piUnique _) (volume_measurePreserving_piCongrLeft (fun _ => ℂ) (coordinateRestEquiv l))`.
+-/
 theorem coordinate_split_measurePreserving (l : Fin r) : MeasurePreserving (coordinateSplit l) volume volume := by
   unfold coordinateSplit
   refine MeasurePreserving.trans (volume_preserving_piEquivPiSubtypeProd _ _) ?_
   exact MeasurePreserving.prod (measurePreserving_piUnique _)
     (volume_measurePreserving_piCongrLeft (fun _ => ℂ) (coordinateRestEquiv l))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordinate_split_fst (l : Fin r) (a : Cf r l.castSucc) : (coordinateSplit l a).1 = a ⟨l, by simp⟩ := by
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordinate_split_snd (l : Fin r) (a : Cf r l.castSucc) (j : {j : Fin r // l.succ.val ≤ j.val}) :
     (coordinateSplit l a).2 j = a ⟨j.1, by have := j.2; simp only [Fin.coe_castSucc, Fin.val_succ] at *; omega⟩ := by
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[coordinate_split_fst]`. Unfold `glue`. Break down `lt_trichotomy j.val l.val with h | h | h` into its components or cases. Establish `h1 : ¬ (l.castSucc.val ≤ j.val)` using `by simp only [Fin.val_castSucc]; omega`.
+
+Establish `h2 : ¬ (l.succ.val ≤ j.val)` using `by simp only [Fin.val_succ]; omega`. Establish `h3 : j ≠ l` using `fun e => by rw [e] at h; omega`. Rewrite using `[dif_neg h1, dif_neg h2, Function.update_of_ne h3]`. Establish `hj : j = l` using `Fin.ext h`. Substitute `hj` using the available equality.
+
+Establish `h2 : ¬ (j.succ.val ≤ j.val)` using `by simp`. Rewrite using `[dif_pos (by simp), dif_neg h2, Function.update_self]`. Establish `h1 : l.castSucc.val ≤ j.val` using `by simp only [Fin.val_castSucc]; omega`. Establish `h2 : l.succ.val ≤ j.val` using `by simp only [Fin.val_succ]; omega`. Rewrite using `[dif_pos h1, dif_pos h2, coordinate_split_snd]`.
+-/
 theorem glue_coordinate_split (l : Fin r) (c : Fin r → ℂ) (a : Cf r l.castSucc) :
     glue l.castSucc c a = glue l.succ (Function.update c l (coordinateSplit l a).1) (coordinateSplit l a).2 := by
   funext j
@@ -68,6 +84,11 @@ theorem glue_coordinate_split (l : Fin r) (c : Fin r → ℂ) (a : Cf r l.castSu
     have h2 : l.succ.val ≤ j.val := by simp only [Fin.val_succ]; omega
     rw [dif_pos h1, dif_pos h2, coordinate_split_snd]
 
+/- English proof (translation)
+Rewrite using `[← Fintype.prod_subtype_mul_prod_subtype (fun j : {j : Fin r // l.castSucc.val ≤ j.val} => j.1 = l)]`. Use `congr 1`. Rewrite using `[Fintype.prod_unique, coordinate_split_fst]`. Both sides reduce to the same expression. Rewrite using `[← (coordinateRestEquiv l).prod_comp]`.
+
+Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coordinate_split_snd]`. Both sides reduce to the same expression.
+-/
 theorem weight_coordinate_split (l : Fin r) (a : Cf r l.castSucc) :
     (∏ j, ‖a j‖ ^ (-2 : ℤ)) = ‖(coordinateSplit l a).1‖ ^ (-2 : ℤ) * ∏ j, ‖(coordinateSplit l a).2 j‖ ^ (-2 : ℤ) := by
   rw [← Fintype.prod_subtype_mul_prod_subtype (fun j : {j : Fin r // l.castSucc.val ≤ j.val} => j.1 = l)]
@@ -79,16 +100,27 @@ theorem weight_coordinate_split (l : Fin r) (a : Cf r l.castSucc) :
 
 def coordinateExtension (i : Fin (r + 1)) (c : Fin r → ℂ) (a : Cf r i) : Cf r 0 := fun j => glue i c a j.1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[glue, coordinateExtension]`.
+-/
 theorem coordinate_extension_glue (i : Fin (r + 1)) (c : Fin r → ℂ) (a : Cf r i) : glue 0 c (coordinateExtension i c a) = glue i c a := by
   funext j
   simp [glue, coordinateExtension]
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : i.val ≤ j.1.val`. Simplify using `only [coordinateExtension, glue, dif_pos h]`. Conclude with `measurable_pi_apply _`. Simplify using `only [coordinateExtension, glue, dif_neg h]`.
+
+Conclude with `measurable_const`.
+-/
 theorem coordinate_extension_measurable (i : Fin (r + 1)) (c : Fin r → ℂ) : Measurable (coordinateExtension i c) := by
   refine measurable_pi_lambda _ fun j => ?_
   by_cases h : i.val ≤ j.1.val
   · simp only [coordinateExtension, glue, dif_pos h]; exact measurable_pi_apply _
   · simp only [coordinateExtension, glue, dif_neg h]; exact measurable_const
 
+/- English proof (translation)
+Use `fun_prop`.
+-/
 theorem level_weight_measurable {β : Type} [MeasurableSpace β] (i : Fin (r + 1)) :
     Measurable (fun q : Cf r i × β => ((∏ l, ‖q.1 l‖ ^ (-2 : ℤ) : ℝ) : ℂ)) := by
   fun_prop
@@ -104,6 +136,9 @@ instance isEmptyCoordinatesFromLastLevel : IsEmpty {l : Fin r // (Fin.last r).va
 
 def lastLevelPoint (r : ℕ) : Cf r (Fin.last r) := isEmptyElim
 
+/- English proof (translation)
+Establish `hv : (volume : Measure (Cf r (Fin.last r))) = Measure.dirac (lastLevelPoint r)`. Rewrite using `[volume_pi]`. Conclude with `Measure.pi_of_empty _ _`. Rewrite using `[hv, Measure.dirac_prod]`. Conclude with `⟨(measurableEmbedding_prodMk_left _).integrable_map_iff, (measurableEmbedding_prodMk_left _).integral_map _⟩`.
+-/
 theorem integral_top_level_point {β E : Type} [MeasurableSpace β] [NormedAddCommGroup E] [NormedSpace ℝ E] (ν : Measure β) [SFinite ν]
     (f : Cf r (Fin.last r) × β → E) :
     (Integrable f (volume.prod ν) ↔ Integrable (fun g => f (lastLevelPoint r, g)) ν) ∧
@@ -114,15 +149,24 @@ theorem integral_top_level_point {β E : Type} [MeasurableSpace β] [NormedAddCo
   exact ⟨(measurableEmbedding_prodMk_left _).integrable_map_iff,
     (measurableEmbedding_prodMk_left _).integral_map _⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j; have := j.isLt; simp only [glue, Fin.val_last]; rw [dif_neg (by omega)]`.
+-/
 theorem glue_last_level (c : Fin r → ℂ) (a : Cf r (Fin.last r)) : glue (Fin.last r) c a = c := by
   funext j; have := j.isLt; simp only [glue, Fin.val_last]; rw [dif_neg (by omega)]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_of_isEmpty _`.
+-/
 theorem weight_last_level (a : Cf r (Fin.last r)) : (∏ l, ‖a l‖ ^ (-2 : ℤ)) = 1 := Finset.prod_of_isEmpty _
 
 end Top
 
 section Dens
 
+/- English proof (translation)
+Simplify using `only [hl, hr, map_one, map_neg, Complex.conj_I, neg_neg]`. Take the linear combination `(2 * β x y - 2 * β y x) * Complex.I_mul_I`.
+-/
 theorem sesquilinear_polarization {V : Type} [AddCommGroup V] [Module ℂ V] (β : V → V → ℂ)
     (hl : ∀ (x x' y : V) (a : ℂ), β (x + a • x') y = β x y + a * β x' y)
     (hr : ∀ (x y y' : V) (a : ℂ), β x (y + a • y') = β x y + conj a * β x y') (x y : V) :
@@ -131,6 +175,11 @@ theorem sesquilinear_polarization {V : Type} [AddCommGroup V] [Module ℂ V] (β
   simp only [hl, hr, map_one, map_neg, Complex.conj_I, neg_neg]
   linear_combination (2 * β x y - 2 * β y x) * Complex.I_mul_I
 
+/- English proof (translation)
+Establish `h` using `sesquilinear_polarization β hl hr x y`. Establish `h4 : ‖(4 : ℂ) * β x y‖ = 4 * ‖β x y‖` using `by simp`. Establish `: ‖(4 : ℂ) * β x y‖ ≤ ‖β (x + (1 : ℂ) • y) (x + (1 : ℂ) • y)‖ + ‖β (x + Complex.I • y) (x + Complex.I • y)‖ + ‖β (x + (-1 : ℂ) • y) (x + (-1 : ℂ) • y)‖ + ‖β (x + (-Complex.I) • y) (x + (-Complex.I) • y)‖`. Rewrite using `[h]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations.
+
+Use `add_le_add ((norm_sub_le _ _).trans (add_le_add ((norm_add_le _ _).trans (add_le_add le_rfl ?_)) le_rfl)) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sesquilinear_polarization_norm {V : Type} [AddCommGroup V] [Module ℂ V] (β : V → V → ℂ)
     (hl : ∀ (x x' y : V) (a : ℂ), β (x + a • x') y = β x y + a * β x' y)
     (hr : ∀ (x y y' : V) (a : ℂ), β x (y + a • y') = β x y + conj a * β x y') (x y : V) :
@@ -153,16 +202,27 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start (Pr (RadSp k r z z' π π')))
   (w : List (Letter ℂ S))
 
+/- English proof (translation)
+Simplify using `only [topDens, act_add_smul, Pi.add_apply, Pi.smul_apply, Submodule.coe_add, Submodule.coe_smul, hsInner_add_smul_left, Finset.sum_add_distrib, Finset.mul_sum]`.
+-/
 theorem top_density_add_left (x x' y : Ix S → RadSp k r z z' π π') (a : ℂ) (c : Fin r → ℂ) (g : Mx k r) :
     topDens L st w (x + a • x') y c g = topDens L st w x y c g + a * topDens L st w x' y c g := by
   simp only [topDens, act_add_smul, Pi.add_apply, Pi.smul_apply, Submodule.coe_add, Submodule.coe_smul,
     hsInner_add_smul_left, Finset.sum_add_distrib, Finset.mul_sum]
 
+/- English proof (translation)
+Simplify using `only [topDens, act_add_smul, Pi.add_apply, Pi.smul_apply, Submodule.coe_add, Submodule.coe_smul, hsInner_add_smul_right, Finset.sum_add_distrib, Finset.mul_sum]`.
+-/
 theorem top_density_add_right (x y y' : Ix S → RadSp k r z z' π π') (a : ℂ) (c : Fin r → ℂ) (g : Mx k r) :
     topDens L st w x (y + a • y') c g = topDens L st w x y c g + conj a * topDens L st w x y' c g := by
   simp only [topDens, act_add_smul, Pi.add_apply, Pi.smul_apply, Submodule.coe_add, Submodule.coe_smul,
     hsInner_add_smul_right, Finset.sum_add_distrib, Finset.mul_sum]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [act, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+
+Introduce `b _ hb`. Rewrite using `[if_neg (Ne.symm hb)]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem act_one_hermitian_curvature (x : Ix S → RadSp k r z z' π π') : act (1 : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) x = x := by
   funext a
   simp only [act, Matrix.one_apply]
@@ -182,6 +242,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r} {st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))}
   {K : Fin (P.r + 1) → Submodule ℂ (RadSp P.k P.r z z' π π')}
 
+/- English proof (translation)
+Establish `h0` using `hM w x y hx hy c`. Establish `e : (fun q : Cf P.r i × Mt P.k P.r => topDens L st w x y (glue i c q.1) (Matrix.of q.2)) = (fun q : Cf P.r 0 × Mt P.k P.r => topDens L st w x y (glue 0 c q.1) (Matrix.of q.2)) ∘ Prod.map (coordinateExtension i c) id`. Use function extensionality and compare the values at `q`. Simplify using `only [Function.comp, Prod.map, coordinate_extension_glue]`. Both sides reduce to the same expression.
+
+Establish `h1 : StronglyMeasurable (fun q : Cf P.r i × Mt P.k P.r => topDens L st w x y (glue i c q.1) (Matrix.of q.2))`. Rewrite using `[e]`. Conclude with `h0.comp_measurable ((coordinate_extension_measurable i c).prodMap measurable_id)`. Conclude with `(level_weight_measurable i).aestronglyMeasurable.mul h1.aestronglyMeasurable`.
+-/
 theorem level_integrand_aestronglyMeasurable (hM : TopDensMeas S P z z' π π' μ L st K) (w : List (Letter ℂ S))
     (x y : Ix S → RadSp P.k P.r z z' π π') (hx : InK (K (Fin.last P.r)) x) (hy : InK (K (Fin.last P.r)) y)
     (i : Fin (P.r + 1)) (c : Fin P.r → ℂ) :

@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory.FiniteGenIntegerScalar
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hM`. Use `choose f hf0 hfL using h`. Use `⟨∏ s ∈ S, f s, Finset.prod_ne_zero_iff.mpr fun s _ => hf0 s, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Set `P : Submodule (NumberField.RingOfIntegers E) V` to `{ carrier := {y | (∏ s ∈ S, f s) • y ∈ L} add_mem' := fun {a b} ha hb => by show _ ∈ L`.
+
+Rewrite using `[smul_add]`. Conclude with `L.add_mem ha hb`. Use the proof step `zero_mem' := by show _ ∈ L`. Rewrite using `[smul_zero]`. Conclude with `L.zero_mem`.
+
+Use the proof step `smul_mem' := fun c y hy => by show _ ∈ L`. Rewrite using `[smul_comm (∏ s ∈ S, f s) c y]`. Conclude with `L.smul_mem c hy }`. Establish `hle : Submodule.span _ (S : Set V) ≤ P`. Rewrite using `[Submodule.span_le]`.
+
+Introduce `s hs`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem f hs`. Use `show (∏ s ∈ S, f s) • s ∈ L`. Rewrite using `[hk, mul_comm, mul_smul]`. Conclude with `zsmul_mem (hfL s) k`.
+
+Conclude with `hle hx`.
+-/
 theorem exists_int_smul_mem_of_fg {E : Type} [Field E] {V : Type} [AddCommGroup V]
     [Module (NumberField.RingOfIntegers E) V]
     {L M : Submodule (NumberField.RingOfIntegers E) V}

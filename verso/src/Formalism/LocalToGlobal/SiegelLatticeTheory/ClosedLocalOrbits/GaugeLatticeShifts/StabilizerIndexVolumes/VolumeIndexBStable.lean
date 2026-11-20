@@ -18,6 +18,11 @@ section Frames
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `F.z_orth a`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`.
+-/
 theorem hT_span_zero {T : E} (F : FlagG S r T) (y : S.V) (hy : y ∈ Submodule.span E (Set.range F.e)) :
     S.hT y F.z = 0 := by
   induction hy using Submodule.span_induction with
@@ -28,6 +33,9 @@ theorem hT_span_zero {T : E} (F : FlagG S r T) (y : S.V) (hy : y ∈ Submodule.s
   | add x y _ _ hx hy => simp [hx, hy]
   | smul c x _ hx => simp [hx]
 
+/- English proof (translation)
+Rewrite using `[FlagG.fvec, linearIndependent_fin_snoc]`. Use `⟨F.e_indep, fun hz => hT ?_⟩` and prove the remaining obligations. Establish `h` using `hT_span_zero F F.z hz`. Rewrite `h` using `[F.z_norm]`. Conclude with `neg_eq_zero.mp h`.
+-/
 theorem frame_indep {T : E} (F : FlagG S r T) (hT : T ≠ 0) : LinearIndependent E F.fvec := by
   rw [FlagG.fvec, linearIndependent_fin_snoc]
   refine ⟨F.e_indep, fun hz => hT ?_⟩
@@ -35,11 +43,35 @@ theorem frame_indep {T : E} (F : FlagG S r T) (hT : T ≠ 0) : LinearIndependent
   rw [F.z_norm] at h
   exact neg_eq_zero.mp h
 
+/- English proof (translation)
+Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Conclude with `hT_span_zero F x hx`.
+-/
 theorem z_mem_orth {T : E} (F : FlagG S r T) : F.z ∈ orth S F.X := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
   intro x hx
   exact hT_span_zero F x hx
 
+/- English proof (translation)
+Establish `hcol : ∀ a : Fin r, ∃ l : Fin r → E, (∀ i : Fin r, ¬ i.val < a.val → l i = 0) ∧ s (F.e a) - F.e a = ∑ i, l i • F.e i`. Introduce `a`. Establish `hmem : F.e a ∈ F.Xa (a.val + 1)` using `Submodule.subset_span (Set.mem_image_of_mem F.e (show a ∈ {i : Fin r | i.1 < a.1 + 1} from Nat.lt_succ_self _))`. Establish `h` using `h1 a.val (F.e a) hmem`. Rewrite `h` using `[FlagG.Xa, Finsupp.mem_span_image_iff_linearCombination]`.
+
+Take `⟨l, hl, hlx⟩` from `h`. Use `⟨fun i => l i, fun i hi => (Finsupp.mem_supported' E l).1 hl i hi, ?_⟩` and prove the remaining obligations. Rewrite using `[← hlx, Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Use `choose l hl0 hlsum using hcol`. Establish `hz : ∃ c : Fin r → E, s F.z - F.z = ∑ i, c i • F.e i`.
+
+Establish `h` using `h2 F.z (z_mem_orth F)`. Rewrite `h` using `[FlagG.X, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `h`. Conclude with `⟨c, hc.symm⟩`. Take `⟨cz, hcz⟩` from `hz`.
+
+Use `⟨fun c b => Fin.lastCases (Fin.lastCases 1 (fun i => cz i) c) (fun a => Fin.lastCases 0 (fun i => l a i + if i = a then 1 else 0) c) b, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `i using Fin.lastCases with`.
+
+Consider the case `last => simp`. Consider the case `cast i`. Conclude with `⟨fun h => absurd h (lt_asymm (Fin.castSucc_lt_last i)), fun h => absurd h (Fin.castSucc_lt_last i).ne⟩`. Consider the case `cast a`. Proceed by induction on `i using Fin.lastCases with`.
+
+Consider the case `last`. Use `⟨fun _ => by simp, fun h => absurd h.symm (Fin.castSucc_lt_last a).ne⟩` and prove the remaining obligations. Consider the case `cast i`. Simplify using `only [Fin.lastCases_castSucc]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
+
+Establish `h' : a.val < i.val` using `h`. Rewrite using `[hl0 a i (by omega), if_neg (by rintro rfl; omega)]`. Simplify using the standard rewrite rules. Establish `h' : i = a` using `Fin.castSucc_injective _ h`. Substitute `h'` using the available equality.
+
+Rewrite using `[hl0 i i (lt_irrefl _), if_pos rfl]`. Simplify using the standard rewrite rules. Introduce `b`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`.
+
+Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.lastCases_last, Fin.lastCases_castSucc, FlagG.fvec, Fin.snoc_castSucc, Fin.snoc_last, one_smul]`. Rewrite using `[← hcz]`. Normalize the expressions using the abelian group laws. Consider the case `cast a`.
+
+Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.lastCases_last, Fin.lastCases_castSucc, FlagG.fvec, Fin.snoc_castSucc, Fin.snoc_last, zero_smul, add_zero, add_smul, Finset.sum_add_distrib, ite_smul, one_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← hlsum a]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tri_exists {T : E} (F : FlagG S r T) (s : S.V ≃ₗ[E] S.V)
     (h1 : ∀ j, ∀ x ∈ F.Xa (j + 1), s x - x ∈ F.Xa j) (h2 : ∀ x ∈ orth S F.X, s x - x ∈ F.X) :
     ∃ uu : Matrix (Fin (r + 1)) (Fin (r + 1)) E, IsUpUni uu ∧ ∀ b, s (F.fvec b) = ∑ c, uu c b • F.fvec c := by
@@ -99,6 +131,9 @@ theorem tri_exists {T : E} (F : FlagG S r T) (s : S.V ≃ₗ[E] S.V)
       rw [← hlsum a]
       abel
 
+/- English proof (translation)
+Use extensionality with `c b`. Establish `h : ∑ c, (A c b - B c b) • f c = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← hA b, ← hB b, sub_self]`. Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hf _ h c)`.
+-/
 theorem coef_unique {n : ℕ} {f : Fin n → S.V} (hf : LinearIndependent E f) (v : Fin n → S.V)
     (A B : Matrix (Fin n) (Fin n) E) (hA : ∀ b, v b = ∑ c, A c b • f c) (hB : ∀ b, v b = ∑ c, B c b • f c) :
     A = B := by
@@ -108,6 +143,11 @@ theorem coef_unique {n : ℕ} {f : Fin n → S.V} (hf : LinearIndependent E f) (
     rw [← hA b, ← hB b, sub_self]
   exact sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hf _ h c)
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `key : S.hT (F.fvec a) (F'.fvec b) = S.hT (s (F.fvec a)) (s (F'.fvec b))` using `(hs _ _).symm`. Simplify using `only [Zhat, brS, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[key, hu a, hu' b]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, map_smul, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, Finset.mul_sum, Finset.sum_mul]`.
+
+Use `first`. Consider the case `exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Consider the case `(rw [Finset.sum_comm]; exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`.
+-/
 theorem zhat_conj {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (s : S.V ≃ₗ[E] S.V)
     (hs : ∀ x y, S.hT (s x) (s y) = S.hT x y) (uu uu' : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (hu : ∀ b, s (F.fvec b) = ∑ c, uu c b • F.fvec c) (hu' : ∀ b, s (F'.fvec b) = ∑ c, uu' c b • F'.fvec c) :
@@ -130,10 +170,16 @@ variable {K : Type*} [Field K] {r : ℕ}
 
 def sgnM (r : ℕ) : Matrix (Fin (r + 1)) (Fin (r + 1)) K := Matrix.diagonal fun b => (-1 : K) ^ (r - b.val)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[ZhatOM, sgnM, Matrix.mul_diagonal, mul_comm]`.
+-/
 theorem zhatOM_eq (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) : ZhatOM Z = Z * sgnM r := by
   ext a b
   simp [ZhatOM, sgnM, Matrix.mul_diagonal, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[sgnM, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem sgnM_sq : (sgnM r : Matrix (Fin (r + 1)) (Fin (r + 1)) K) * sgnM r = 1 := by
   rw [sgnM, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
@@ -141,6 +187,11 @@ theorem sgnM_sq : (sgnM r : Matrix (Fin (r + 1)) (Fin (r + 1)) K) * sgnM r = 1 :
   rw [← mul_pow]
   simp
 
+/- English proof (translation)
+Introduce `i j`. Establish `hs : ∀ b : Fin (r + 1), ((-1 : K) ^ (r - b.val)) * (-1) ^ (r - b.val) = 1` using `fun b => by`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules. Simplify using `only [sgnM, Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+
+Use `⟨fun hij => by rw [(h i j).1 hij]; simp, fun hij => ?_⟩` and prove the remaining obligations. Substitute `hij` using the available equality. Rewrite using `[(h i i).2 rfl, mul_one, hs]`.
+-/
 theorem up_sgn {M : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (h : IsUpUni M) :
     IsUpUni (sgnM r * M * sgnM r) := by
   intro i j
@@ -153,6 +204,9 @@ theorem up_sgn {M : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (h : IsUpUni M) :
 
 end Mat
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [Matrix.conjTranspose_apply]`. Use `⟨fun hij => by rw [(h j i).1 hij, star_zero], fun hij => ?_⟩` and prove the remaining obligations. Substitute `hij` using the available equality. Rewrite using `[(h i i).2 rfl, star_one]`.
+-/
 theorem lo_conjT {E : Type} [Field E] [StarRing E] {n : ℕ} {M : Matrix (Fin n) (Fin n) E}
     (h : IsUpUni M) : IsLoUni M.conjTranspose := by
   intro i j
@@ -163,6 +217,31 @@ theorem lo_conjT {E : Type} [Field E] [StarRing E] {n : ℕ} {M : Matrix (Fin n)
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `hSt _hyps _hag t w F' L U _hrel _hgen hN hG`. Take `⟨_, _, hL, hU, hZ⟩` from `hN`. Rewrite `hZ` using `[zhatOM_eq]`. Express the relevant statement in the definitionally equal form `Zhat F0 F'.fl * sgnM D.R.rS = L * ptMat w * U at hZ`. Take `⟨h1, hmul, hinv⟩` from `hSt D.host.E (D.R.rS + 1) (ptMat w)`.
+
+Establish `hLu : IsUnit L.det` using `by rw [lo_det hL]; exact isUnit_one`. Establish `hUu : IsUnit U.det` using `by rw [up_det hU]; exact isUnit_one`. Establish `hind : LinearIndependent D.host.E F0.fvec`. Distinguish the cases in `hT : ((Tu D u : ℕ) : D.host.E) = 0`. Establish `hG' : Gflag F0 F'.fl ≠ 0` using `hG`.
+
+Unfold `Gflag at hG'`. Simplify using `only [hT, zero_mul, sub_zero] at hG'`. Establish `hD : (Zhat F0 F'.fl).det ≠ 0`. Introduce `h0`. Apply `hG'` to reduce the goal to its premises.
+
+Establish `e : Dl F0 F'.fl (D.R.rS + 1) = 0`. Unfold `Dl leadMinorE`. Rewrite using `[dif_pos le_rfl]`. Conclude with `h0`. Rewrite using `[e, zero_mul]`.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Assume the negation of the conclusion as `hgi`. Apply `hD` to reduce the goal to its premises. Rewrite using `[← Matrix.exists_vecMul_eq_zero_iff]`.
+
+Use `⟨fun a => star (g a), fun h => hgi (by simpa using congrFun h i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Use `congrArg (fun v => (VS D).hT v (F'.fl.fvec b)) hg` as an intermediate fact. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, map_zero, LinearMap.zero_apply] at this`. Simplify `this` using `[Matrix.vecMul, dotProduct, Zhat, brS]`.
+
+Conclude with `frame_indep F0 hT`. Introduce `x hx`. Establish `hx' : x ∈ Subgroup.closure (stabAutSet D u u' F0 what₂ t F' L)` using `hx`. Use `clear hx`. Proceed by induction on `hx' using Subgroup.closure_induction with`.
+
+Consider the case `mem a ha`. Take `⟨s, ⟨hs0, hs1⟩, uu, hu, hau⟩` from `ha`. Take `⟨hiso, hf1, hf2⟩` from `hs0`. Take `⟨_, g1, g2⟩` from `hs1`. Take `⟨uu0, huu0, hu0⟩` from `tri_exists F0 s hf1 hf2`.
+
+Establish `heq : uu = uu0` using `coef_unique hind (fun b => s (F0.fvec b)) uu uu0 hu hu0`. Substitute `heq` using the available equality. Take `⟨vv, hvv, hv⟩` from `tri_exists F'.fl s g1 g2`. Establish `hZc` using `zhat_conj F0 F'.fl s (fun x y => hiso.1 x y) uu vv hu hv`. Establish `hW : ptMat w = L⁻¹ * (Zhat F0 F'.fl * sgnM D.R.rS) * U⁻¹`.
+
+Rewrite using `[hZ]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hLu, Matrix.mul_nonsing_inv _ hUu, Matrix.mul_one]`. Use `⟨?_, U * (sgnM D.R.rS * vv * sgnM D.R.rS) * U⁻¹, up_mul (up_mul hU (up_sgn hvv)) (up_inv hU), ?_⟩` and prove the remaining obligations. Rewrite using `[hau]`.
+
+Conclude with `lo_mul (lo_mul (lo_inv hL) (lo_conjT huu0)) hL`. Rewrite using `[hau, hW]`. Establish `hS` using `sgnM_sq (K := D.host.E) (r := D.R.rS)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hLu, Matrix.nonsing_inv_mul_cancel_left _ _ hUu, ← Matrix.mul_assoc (sgnM D.R.rS) (sgnM D.R.rS), hS, Matrix.one_mul, ← Matrix.mul_assoc (Zhat F0 F'.fl) vv, ← Matrix.mul_assoc uu.conjTranspose (Zhat F0 F'.fl * vv), ← Matrix.mul_assoc uu.conj …`.
+
+Consider the case `one => exact h1`. Consider the case `mul a b _ _ ha hb => exact hmul a ha b hb`. Consider the case `inv a _ ha => exact hinv a ha`.
+-/
 theorem volume_index_b_stable (D : D7) (u u' : D.what₂.Word)
     (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))

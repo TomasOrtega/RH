@@ -14,6 +14,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FiniteSurjDim
 
+/- English proof (translation)
+Establish `: Nonempty Y` using `⟨f (Classical.arbitrary X)⟩`. Establish `h1` using `GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth (f ≫ p) a ha`. Establish `h2` using `GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth p b hb`. Establish `c1 : topologicalKrullDim Y ≤ topologicalKrullDim X` using `GlobalTheory.PosBaseChange.dim_le_of_isClosedMap f.isClosedMap f.surjective`. Establish `c2 : topologicalKrullDim X ≤ topologicalKrullDim Y` using `GlobalTheory.PosBaseChange.dim_le_of_isDiscrete f.continuous fun y => f.isDiscrete_preimage_singleton y`.
+
+Rewrite `c1`, `c2` using `[h1, h2]`. Conclude with `le_antisymm c2 c1` after adjusting the coercions.
+-/
 theorem eq_of_finite_surjective {k : Type} [Field k] {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] [Surjective f]
     (p : Y ⟶ Spec (CommRingCat.of k)) [Nonempty X] {a b : ℕ} (ha : SmoothOfRelativeDimension a (f ≫ p))
     (hb : SmoothOfRelativeDimension b p) : a = b := by

@@ -15,6 +15,9 @@ variable {G M W W' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 def coFun (s : M →* G) (χ : M →* ℂˣ) (c : W →ₗ[ℂ] W') (f : G → W) (x : M) : W' :=
   (χ x : ℂ) • c (f (s x))
 
+/- English proof (translation)
+Introduce `p x`. Establish `h1 : f.1 (s p * s x) = σ ⟨s p, hQH p p.2⟩ (f.1 (s x))` using `f.2 ⟨s p, hQH p p.2⟩ (s x)`. Use `show ((χ ((p : M) * x) : ℂˣ) : ℂ) • c (f.1 (s ((p : M) * x))) = σ' p (((χ x : ℂˣ) : ℂ) • c (f.1 (s x)))`. Rewrite using `[map_mul, map_mul, h1, map_smul, ← hcomp, Units.val_mul, mul_comm, mul_smul]`.
+-/
 theorem coFun_mem {H : Subgroup G} {Q : Subgroup M} (s : M →* G) (hQH : ∀ p ∈ Q, s p ∈ H) (χ : M →* ℂˣ)
     (σ : Representation ℂ H W) (σ' : Representation ℂ Q W') (c : W →ₗ[ℂ] W')
     (hcomp : ∀ (p : Q) (w : W), (χ p : ℂ) • c (σ ⟨s p, hQH p p.2⟩ w) = σ' p (c w)) (f : indSpace H σ) :
@@ -24,6 +27,13 @@ theorem coFun_mem {H : Subgroup G} {Q : Subgroup M} (s : M →* G) (hQH : ∀ p 
   show ((χ ((p : M) * x) : ℂˣ) : ℂ) • c (f.1 (s ((p : M) * x))) = σ' p (((χ x : ℂˣ) : ℂ) • c (f.1 (s x)))
   rw [map_mul, map_mul, h1, map_smul, ← hcomp, Units.val_mul, mul_comm, mul_smul]
 
+/- English proof (translation)
+Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (((IsOpen.preimage hs f.2).inter hχ).mem_nhds ?_) ?_)` and prove the remaining obligations. Use `⟨?_, one_mem _⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce and unpack `x ⟨h1, h2⟩`. Establish `h1' : ind H σ (s x) f.1 = f.1` using `h1`.
+
+Establish `h2' : χ x = 1` using `h2`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `show ((χ (y * x) : ℂˣ) : ℂ) • c (f.1.1 (s (y * x))) = ((χ y : ℂˣ) : ℂ) • c (f.1.1 (s y))`. Establish `h3 : f.1.1 (s y * s x) = f.1.1 (s y)` using `congrFun (congrArg Subtype.val h1') (s y)`.
+
+Rewrite using `[map_mul, map_mul, h2', mul_one, h3]`.
+-/
 theorem coFun_smooth {H : Subgroup G} {Q : Subgroup M} (s : M →* G) (hs : Continuous s) (hQH : ∀ p ∈ Q, s p ∈ H)
     (χ : M →* ℂˣ) (hχ : IsOpen (χ.ker : Set M))
     (σ : Representation ℂ H W) (σ' : Representation ℂ Q W') (c : W →ₗ[ℂ] W')
@@ -69,6 +79,57 @@ def coMap {H : Subgroup G} {Q : Subgroup M} (s : M →* G) (hs : Continuous s) (
     show ((χ x : ℂˣ) : ℂ) • c (r • a.1.1.1 (s x)) = r • (((χ x : ℂˣ) : ℂ) • c (a.1.1.1 (s x)))
     rw [map_smul, smul_comm]
 
+/- English proof (translation)
+Use `haveI hUn : U.Normal := by`. Establish `: U = q.ker`. Use extensionality with `g`. Rewrite using `[MonoidHom.mem_ker, hker]`. Rewrite using `[this]`.
+
+Use `infer_instance`. Establish `hcu : ∀ (u : G) (hu : u ∈ U) (w : W), c (σ ⟨u, hUH hu⟩ w) = c w`. Introduce `u hu w`. Establish `: σ ⟨u, hUH hu⟩ w - w ∈ twKer σ (U.subgroupOf H) 1` using `Submodule.subset_span ⟨⟨⟨u, hUH hu⟩, hu⟩, w, by simp⟩`. Establish `h2` using `(hck _).2 this`.
+
+Rewrite `h2` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hdec : ∀ g : G, g * (s (q g))⁻¹ ∈ U`. Introduce `g`. Rewrite using `[← hker, map_mul, map_inv, hqs, mul_inv_cancel]`. Use `set Φ := coMap s hs hQH χ hχ σ σ' c hcomp with hΦ`.
+
+Establish `hkill : twKer (cInd H σ) U 1 ≤ LinearMap.ker Φ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, f, rfl⟩`. Use `show Φ _ = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `hn : s x * u * (s x)⁻¹ ∈ U` using `hUn.conj_mem _ u.2 _`. Establish `e : (cInd H σ (u : G) f).1.1.1 (s x) = σ ⟨_, hUH hn⟩ (f.1.1.1 (s x))`. Use `f.1.1.2 ⟨_, hUH hn⟩ (s x)` as an intermediate fact.
+
+Rewrite using `[← this]`. Use `show f.1.1.1 (s x * u) = f.1.1.1 (s x * u * (s x)⁻¹ * s x)`. Use `congr 1`. Use `group`. Use `show ((χ x : ℂˣ) : ℂ) • c ((cInd H σ (u : G) f - ((1 : U →* ℂˣ) u : ℂ) • f).1.1.1 (s x)) = 0`.
+
+Establish `e2 : (cInd H σ (u : G) f - ((1 : U →* ℂˣ) u : ℂ) • f).1.1.1 (s x) = (cInd H σ (u : G) f).1.1.1 (s x) - f.1.1.1 (s x)`. Simplify using the standard rewrite rules. Rewrite using `[e2, e, map_sub, hcu _ hn, sub_self, smul_zero]`. Establish `hinj : ∀ f : cIndSpace H σ, Φ f = 0 → f ∈ twKer (cInd H σ) U 1`. Introduce `f hf`.
+
+Use `hK f fun g => ?_` and prove the remaining obligations. Rewrite using `[← hck]`. Establish `h1 : ∀ x, c (f.1.1.1 (s x)) = 0`. Introduce `x`. Establish `h2 : ((χ x : ℂˣ) : ℂ) • c (f.1.1.1 (s x)) = 0`.
+
+Use `congrArg (fun F : smoothPart (ind Q σ') => F.1.1 x) hf` as an intermediate fact. Conclude with `this`. Conclude with `(smul_eq_zero.1 h2).resolve_left (Units.ne_zero _)`. Establish `h3 : f.1.1.1 g = σ ⟨_, hUH (hdec g)⟩ (f.1.1.1 (s (q g)))`. Rewrite using `[← f.1.1.2 ⟨_, hUH (hdec g)⟩ (s (q g))]`.
+
+Use `congr 1`. Use `group`. Rewrite using `[h3, hcu _ (hdec g), h1]`. Establish `hmemH : ∀ g, q g ∈ Q → g ∈ H`. Introduce `g hg`.
+
+Establish `: g = (g * (s (q g))⁻¹) * s (q g)` using `by group`. Rewrite using `[this]`. Conclude with `mul_mem (hUH (hdec g)) (hQH _ hg)`. Set `qH : H →* Q` to `(q.comp H.subtype).codRestrict Q fun h => hHQ h h.2`. Set `σb : Representation ℂ H W'` to `twist (σ'.comp qH) (χ.comp (q.comp H.subtype))⁻¹`.
+
+Establish `hσb : ∀ (h : H) (w : W'), σb h w = (((χ (q h))⁻¹ : ℂˣ) : ℂ) • σ' (qH h) w` using `fun h w => rfl`. Establish `hcb : ∀ (h : H) (w : W), c (σ h w) = σb h (c w)`. Introduce `h w`. Establish `hp : q h ∈ Q` using `hHQ h h.2`. Establish `e : h = ⟨_, hUH (hdec h)⟩ * ⟨s (q h), hQH _ hp⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (h : G) = (h : G) * (s (q h))⁻¹ * s (q h)`. Use `group`. Establish `e1 : c (σ h w) = c (σ ⟨s (q h), hQH _ hp⟩ w)` using `by conv_lhs => rw [e, map_mul, Module.End.mul_apply]`. Rewrite using `[hcu _ (hdec h)]`.
+
+Rewrite using `[e1, hσb]`. Use `hcomp ⟨q h, hp⟩ w` as an intermediate fact. Use `show _ = (((χ (q h))⁻¹ : ℂˣ) : ℂ) • σ' ⟨q h, hp⟩ (c w)`. Rewrite using `[← this, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Establish `hsurj : ∀ φ : smoothPart (ind Q σ'), ∃ f, Φ f = φ`.
+
+Introduce `φ`. Set `b : G → W'` to `fun g => (((χ (q g))⁻¹ : ℂˣ) : ℂ) • φ.1.1 (q g)`. Establish `hb : b ∈ indSpace H σb`. Introduce `h g`. Establish `h1 : φ.1.1 (q h * q g) = σ' (qH h) (φ.1.1 (q g))` using `φ.1.2 (qH h) (q g)`.
+
+Use `show (((χ (q ((h : G) * g)))⁻¹ : ℂˣ) : ℂ) • φ.1.1 (q ((h : G) * g)) = σb h ((((χ (q g))⁻¹ : ℂˣ) : ℂ) • φ.1.1 (q g))`. Rewrite using `[map_mul, h1, map_smul, hσb, map_mul, mul_inv, Units.val_mul, smul_smul, mul_comm]`. Establish `hbs : (⟨b, hb⟩ : indSpace H σb) ∈ smoothPart (ind H σb)`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (((IsOpen.preimage hq φ.2).inter (IsOpen.preimage hq hχ)).mem_nhds ?_) ?_)` and prove the remaining obligations. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce and unpack `x ⟨h1, h2⟩`. Establish `h1' : ind Q σ' (q x) φ.1 = φ.1` using `h1`. Establish `h2' : χ (q x) = 1` using `h2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `show (((χ (q (y * x)))⁻¹ : ℂˣ) : ℂ) • φ.1.1 (q (y * x)) = (((χ (q y))⁻¹ : ℂˣ) : ℂ) • φ.1.1 (q y)`. Establish `h3 : φ.1.1 (q y * q x) = φ.1.1 (q y)` using `congrFun (congrArg Subtype.val h1') (q y)`. Rewrite using `[map_mul, map_mul, h2', mul_one, h3]`.
+
+Establish `hbc : (⟨⟨b, hb⟩, hbs⟩ : smoothPart (ind H σb)) ∈ cIndSpace H σb`. Use `⟨s '' C, hC.image hs, fun g _ => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, y, hy, e⟩` from `hMC (q g)`. Use `⟨g * (s y)⁻¹, hmemH _ ?_, s y, ⟨y, hy, rfl⟩, by group⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, hqs, e]`.
+
+Simplify using `using hp`. Take `⟨F, hF⟩` from `GlobalTheory.CompanionTheory.BZMirOnto.cInd_lift H hH hbasis σ σb c hc hcb (fun w _ => by`. Set `S : Subgroup H` to `{ carrier := {h | σ h w = w} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hb, ha]`.
+
+Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Conclude with `⟨S, hσ w, fun t ht _ => ht⟩) ⟨⟨⟨b, hb⟩, hbs⟩, hbc⟩`.
+
+Use `⟨F, Subtype.ext (Subtype.ext (funext fun x => ?_))⟩` and prove the remaining obligations. Use `show ((χ x : ℂˣ) : ℂ) • c (F.1.1.1 (s x)) = φ.1.1 x`. Rewrite using `[hF]`. Use `show ((χ x : ℂˣ) : ℂ) • ((((χ (q (s x)))⁻¹ : ℂˣ) : ℂ) • φ.1.1 (q (s x))) = φ.1.1 x`. Rewrite using `[hqs, smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]`.
+
+Set `L` to `(twKer (cInd H σ) U 1).liftQ Φ hkill`. Establish `hL : Function.Bijective L`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `x hx`.
+
+Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (hinj f hx)`. Introduce `φ`. Take `⟨f, hf⟩` from `hsurj φ`. Conclude with `⟨Submodule.Quotient.mk f, hf⟩`.
+
+Conclude with `⟨LinearEquiv.ofBijective L hL, fun f x => rfl⟩`.
+-/
 theorem coinv_equiv (H U : Subgroup G) (Q : Subgroup M) (s : M →* G) (q : G →* M)
     (hH : IsClosed (H : Set G))
     (hbasis : ∀ O : Set G, O ∈ nhds (1 : G) → ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ O)

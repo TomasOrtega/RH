@@ -29,6 +29,9 @@ namespace GlobalTheory.TrSplit
 
 open MeasureTheory
 
+/- English proof (translation)
+Break down `eq_or_ne i w with rfl | h` into its components or cases. Rewrite using `[Function.update_self]`. Use `infer_instance`. Rewrite using `[Function.update_of_ne h]`. Use `infer_instance`.
+-/
 theorem sigmaFinite_update {ι : Type*} [DecidableEq ι] {α : ι → Type*} [∀ i, MeasurableSpace (α i)]
     (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] (w : ι) (c : α w) (i : ι) :
     SigmaFinite (Function.update μ w (Measure.dirac c) i) := by
@@ -36,6 +39,17 @@ theorem sigmaFinite_update {ι : Type*} [DecidableEq ι] {α : ι → Type*} [�
   · rw [Function.update_self]; infer_instance
   · rw [Function.update_of_ne h]; infer_instance
 
+/- English proof (translation)
+Establish `hm : Measurable fun p : α w × (∀ i, α i) => Function.update p.2 w p.1` using `(measurable_update' (a := w)).comp measurable_swap`. Use `symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs)]`. Establish `e : (fun p : α w × (∀ i, α i) => Function.update p.2 w p.1) ⁻¹' Set.univ.pi s = s w ×ˢ Set.univ.pi (Function.update s w Set.univ)`.
+
+Use extensionality with `⟨x, a⟩`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi, Set.mem_prod]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨by simpa using h w, fun i => ?_⟩` and prove the remaining obligations.
+
+Break down `eq_or_ne i w with rfl | hi` into its components or cases. Simplify using the standard rewrite rules. Simplify `h i` using `[Function.update_of_ne hi]`. Introduce and unpack `⟨h1, h2⟩ i`. Break down `eq_or_ne i w with rfl | hi` into its components or cases.
+
+Simplify using `using h1`. Simplify `h2 i` using `[Function.update_of_ne hi]`. Rewrite using `[e, Measure.prod_prod, Measure.pi_pi, Fintype.prod_eq_mul_prod_compl w, Fintype.prod_eq_mul_prod_compl w (fun i => μ i (s i))]`. Simplify using `only [Function.update_self, Measure.dirac_apply_of_mem (Set.mem_univ c), one_mul]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≠ w` using `by simpa using hi`. Simplify using `[Function.update_of_ne hi']`.
+-/
 theorem map_update_prod_pi {ι : Type*} [Fintype ι] [DecidableEq ι] {α : ι → Type*} [∀ i, MeasurableSpace (α i)]
     (μ : ∀ i, Measure (α i)) [∀ i, SigmaFinite (μ i)] (w : ι) (c : α w)
     [∀ i, SigmaFinite (Function.update μ w (Measure.dirac c) i)] :
@@ -79,14 +93,23 @@ open MeasureTheory GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb Nu
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+The claim follows from `congrFun (congrArg Prod.fst ((archFinEquiv σ J).apply_symm_apply p)) u`.
+-/
 theorem projArch_archFinEquiv_symm (u : InfinitePlace F) (p : (∀ u, GArch σ J u) × GFin σ J) :
     projArch σ J u ((archFinEquiv σ J).symm p) = p.1 u :=
   congrFun (congrArg Prod.fst ((archFinEquiv σ J).apply_symm_apply p)) u
 
+/- English proof (translation)
+The claim follows from `congrArg Prod.snd ((archFinEquiv σ J).apply_symm_apply p)`.
+-/
 theorem projFin_archFinEquiv_symm (p : (∀ u, GArch σ J u) × GFin σ J) :
     projFin σ J ((archFinEquiv σ J).symm p) = p.2 :=
   congrArg Prod.snd ((archFinEquiv σ J).apply_symm_apply p)
 
+/- English proof (translation)
+Rewrite using `[← projFinLoc_projFin, projFin_archFinEquiv_symm]`.
+-/
 theorem proj_archFinEquiv_symm (v : HeightOneSpectrum (𝓞 F)) (p : (∀ u, GArch σ J u) × GFin σ J) :
     proj σ J v ((archFinEquiv σ J).symm p) = projFinLoc σ J v p.2 := by
   rw [← projFinLoc_projFin, projFin_archFinEquiv_symm]
@@ -106,13 +129,24 @@ def killAt [DecidableEq (InfinitePlace F)] (w : InfinitePlace F) :
           · simp [Function.update_of_ne h] }
       (MonoidHom.id _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem killAt_apply [DecidableEq (InfinitePlace F)] (w : InfinitePlace F) (z : (∀ u, GArch σ J u) × GFin σ J) :
     killAt σ J w z = (archFinEquiv σ J).symm (Function.update z.1 w 1, z.2) := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Continuous fun z : (∀ u, GArch σ J u) × GFin σ J => (archFinEquiv σ J).symm (Function.update z.1 w 1, z.2)`. Conclude with `(archFinEquiv σ J).symm.continuous.comp ((continuous_fst.update w continuous_const).prodMk continuous_snd)`.
+-/
 theorem continuous_killAt [DecidableEq (InfinitePlace F)] (w : InfinitePlace F) : Continuous (killAt σ J w) := by
   change Continuous fun z : (∀ u, GArch σ J u) × GFin σ J => (archFinEquiv σ J).symm (Function.update z.1 w 1, z.2)
   exact (archFinEquiv σ J).symm.continuous.comp ((continuous_fst.update w continuous_const).prodMk continuous_snd)
 
+/- English proof (translation)
+Use `GAd_ext σ J (fun u => ?_) fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, killAt_apply, projArch_archFinEquiv_symm, projArch_archFinEquiv_symm]`. Break down `eq_or_ne u w with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h, projArch_embArch_ne σ J h]`.
+
+Rewrite using `[map_mul, killAt_apply, proj_archFinEquiv_symm, proj_archFinEquiv_symm, proj_embArch, one_mul]`.
+-/
 theorem embArch_mul_killAt [DecidableEq (InfinitePlace F)] (w : InfinitePlace F) (x : GArch σ J w)
     (a : ∀ u, GArch σ J u) (b : GFin σ J) :
     embArch σ J w x * killAt σ J w (a, b) = (archFinEquiv σ J).symm (Function.update a w x, b) := by
@@ -123,6 +157,11 @@ theorem embArch_mul_killAt [DecidableEq (InfinitePlace F)] (w : InfinitePlace F)
     · simp [Function.update_of_ne h, projArch_embArch_ne σ J h]
   · rw [map_mul, killAt_apply, proj_archFinEquiv_symm, proj_archFinEquiv_symm, proj_embArch, one_mul]
 
+/- English proof (translation)
+Use `GAd_ext σ J (fun u => ?_) fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, killAt_apply, projArch_archFinEquiv_symm]`. Break down `eq_or_ne u w with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h, projArch_embArch_ne σ J h]`.
+
+Rewrite using `[map_mul, map_mul, proj_embArch, one_mul, mul_one]`.
+-/
 theorem commute_embArch_killAt [DecidableEq (InfinitePlace F)] (w : InfinitePlace F) (x : GArch σ J w)
     (z : (∀ u, GArch σ J u) × GFin σ J) :
     embArch σ J w x * killAt σ J w z = killAt σ J w z * embArch σ J w x := by
@@ -142,6 +181,43 @@ open MeasureTheory GlobalTheory.AdelicU GlobalTheory.OpTrace GlobalTheory.Orb Nu
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Use `hμ.haar_arch` as an intermediate fact. Use `hμ.haar_loc` as an intermediate fact. Use `hμ.haar` as an intermediate fact. Take `⟨ν, hν⟩` from `(existsUnique_isRestrictedProdFin σ J L μf hμ.eventually_eq_one).exists`. Use `haveI : ν.IsHaarMeasure := (isRestrictedProdFin_iff.1 hν).2.1`.
+
+Establish `hmap` using `hμ.map_archFin hν`. Set `μa'` to `Function.update μa w (Measure.dirac 1)`. Use `haveI : ∀ u, SigmaFinite (μa' u) := sigmaFinite_update μa w 1`. Set `ρ` to `(Measure.pi μa').prod ν`. Set `fa' : ∀ u, GArch σ J u → ℂ` to `Function.update fa w (fun _ => 1)`.
+
+Set `Ψ : (∀ u, GArch σ J u) × GFin σ J → ℂ` to `fun z => (∏ u, fa' u (z.1 u)) * tensorFin σ J ff z.2`. Set `π'` to `π.comp (killAt σ J w)`. Establish `hπ' : IsUnitaryRep π'` using `⟨fun g v => hπ.norm_apply _ v, fun v => (hπ.continuous_apply v).comp (continuous_killAt w)⟩`. Establish `hπw : IsUnitaryRep (π.comp (embArch σ J w))` using `⟨fun g v => hπ.norm_apply _ v, fun v => (hπ.continuous_apply v).comp (continuous_embArch σ J w)⟩`. Establish `hcfa : ∀ u, Continuous (fa u)` using `fun u => continuous_of_mem_ccSmooth (continuous_archCoord σ J u) (hfa u)`.
+
+Establish `h1 : Integrable (fun a : ∀ u, GArch σ J u => ∏ u, fa' u (a u)) (Measure.pi μa')` using `Integrable.fintype_prod_dep (f := fa') (μ := μa') fun u => by`. Break down `eq_or_ne u w with rfl | h` into its components or cases. Simplify using `[fa', μa']`. Rewrite using `[show fa' u = fa u from Function.update_of_ne h _ _, show μa' u = μa u from Function.update_of_ne h _ _]`. Conclude with `(hcfa u).integrable_of_hasCompactSupport (hfa u).1`.
+
+Establish `h2 : Integrable (tensorFin σ J ff) ν` using `hff.tensorFin_mem.1.continuous.integrable_of_hasCompactSupport hff.tensorFin_mem.2`. Establish `hΨint : Integrable Ψ ρ` using `h1.mul_prod h2`. Establish `hQ` using `hπ'.isRepOp_of_integrable hΨint (fun v => hΨint.aestronglyMeasurable.smul (hπ'.continuous_apply v).aestronglyMeasurable)`. Use `⟨repOp π' ρ Ψ, fun x => ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `v`.
+
+Simplify using `only [ContinuousLinearMap.mul_apply]`. Rewrite using `[(hQ _).2, (hQ v).2, ← ContinuousLinearMap.integral_comp_comm _ (hQ v).1]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [map_smul, π', MonoidHom.comp_apply]`.
+
+Rewrite using `[← ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply, ← map_mul, ← map_mul, commute_embArch_killAt]`. Establish `hfc` using `continuous_of_mem_ccAd (tensor_mem_ccAd hfa hff) set f := tensor σ J fa ff with hfdef`. Set `e` to `archFinEquiv σ J`. Use extensionality with `v`. Rewrite using `[ContinuousLinearMap.mul_apply, hπ.repOp_apply hfc.1 hfc.2, hπw.repOp_apply (hcfa w) (hfa w).1, (hQ v).2]`.
+
+Set `Fn : (∀ u, GArch σ J u) × GFin σ J → H` to `fun y => f (e.symm y) • π (e.symm y) v`. Establish `hFc : Continuous Fn` using `(hfc.1.comp e.symm.continuous).smul ((hπ.continuous_apply v).comp e.symm.continuous)`. Establish `hFint : Integrable Fn ((Measure.pi μa).prod ν)`. Rewrite using `[← hmap]`. Establish `: Integrable (fun g => f g • π g v) μ` using `(hfc.1.smul (hπ.continuous_apply v)).integrable_of_hasCompactSupport hfc.2.smul_right`.
+
+Use `(integrable_map_equiv e.toHomeomorph.toMeasurableEquiv Fn).2 ?_` and prove the remaining obligations. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `f (e.symm (e g)) • π (e.symm (e g)) v = _`. Rewrite using `[e.symm_apply_apply]`.
+
+Establish `h1 : ∫ g, f g • π g v ∂μ = ∫ y, Fn y ∂((Measure.pi μa).prod ν)`. Rewrite using `[← hmap]`. Rewrite using `[show (e : GAd σ J → _) = e.toHomeomorph.toMeasurableEquiv from rfl, integral_map_equiv]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Express the relevant statement in the definitionally equal form `_ = f (e.symm (e g)) • π (e.symm (e g)) v`. Rewrite using `[e.symm_apply_apply]`. Set `T : GArch σ J w × ((∀ u, GArch σ J u) × GFin σ J) → (∀ u, GArch σ J u) × GFin σ J` to `fun p => (Function.update p.2.1 w p.1, p.2.2)`. Establish `hU : Measurable fun p : GArch σ J w × (∀ u, GArch σ J u) => Function.update p.2 w p.1` using `(measurable_update' (a := w)).comp measurable_swap`. Establish `hTm : Measurable T` using `((measurable_update' (a := w)).comp ((measurable_fst.comp measurable_snd).prodMk measurable_fst)).prodMk (measurable_snd.comp measurable_snd)`.
+
+Establish `hT : MeasurePreserving T ((μa w).prod ρ) ((Measure.pi μa).prod ν)`. Use `⟨hTm, ?_⟩` and prove the remaining obligations. Establish `hA` using `map_update_prod_pi μa w (1 : GArch σ J w)`. Establish `hassoc` using `(measurePreserving_prodAssoc (μa w) (Measure.pi μa') ν).map_eq`. Use `show Measure.map T ((μa w).prod ((Measure.pi μa').prod ν)) = _`.
+
+Rewrite using `[← hassoc, Measure.map_map hTm MeasurableEquiv.prodAssoc.measurable]`. Establish `e1 : T ∘ MeasurableEquiv.prodAssoc = Prod.map (fun p : GArch σ J w × (∀ u, GArch σ J u) => Function.update p.2 w p.1) id`. Use function extensionality and compare the values at `⟨⟨x, a⟩, b⟩`. Both sides reduce to the same expression. Rewrite using `[e1, ← Measure.map_prod_map _ _ hU measurable_id, hA, Measure.map_id]`.
+
+Establish `hpt : ∀ x (z : (∀ u, GArch σ J u) × GFin σ J), Fn (T (x, z)) = fa w x • π (embArch σ J w x) (Ψ z • π' z v)`. Introduce and unpack `x ⟨a, b⟩`. Establish `hg : e.symm (Function.update a w x, b) = embArch σ J w x * killAt σ J w (a, b)` using `(embArch_mul_killAt w x a b).symm`. Establish `hf : f (e.symm (Function.update a w x, b)) = fa w x * Ψ (a, b)`. Simplify using `only [hfdef, e, tensor, projArch_archFinEquiv_symm, proj_archFinEquiv_symm, Ψ, fa', tensorFin]`.
+
+Rewrite using `[Fintype.prod_eq_mul_prod_compl w, Fintype.prod_eq_mul_prod_compl w (fun u => Function.update fa w (fun _ => (1 : ℂ)) u (a u))]`. Simplify using `only [Function.update_self, one_mul]`. Rewrite using `[Finset.prod_congr rfl fun u hu => (show fa u (Function.update a w x u) = Function.update fa w (fun _ => (1 : ℂ)) u (a u) by`. Establish `hu' : u ≠ w` using `by simpa using hu`. Simplify using `[Function.update_of_ne hu'])]`.
+
+Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `f (e.symm (Function.update a w x, b)) • π (e.symm (Function.update a w x, b)) v = _`. Rewrite using `[hf, hg, map_mul, mul_smul, ContinuousLinearMap.mul_apply, map_smul]`. Both sides reduce to the same expression. Rewrite using `[h1, ← hT.map_eq, integral_map hT.measurable.aemeasurable (hT.map_eq ▸ hFc.aestronglyMeasurable), integral_prod _ (by`.
+
+Use `(hT.map_eq ▸ hFint : Integrable Fn (((μa w).prod ρ).map T))` as an intermediate fact. Conclude with `this.comp_aemeasurable hT.measurable.aemeasurable)]`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hpt]`. Rewrite using `[integral_smul, ContinuousLinearMap.integral_comp_comm _ (hQ v).1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_repOp_tensor_eq_mul {L : Submodule (𝓞 E) (Fin n → E)} [Submodule.IsLattice E L]
     {μa : ∀ w, Measure (GArch σ J w)} {μf : ∀ v, Measure (GLoc σ J v)} {μ : Measure (GAd σ J)}
     (hμ : IsRestrictedProd σ J L μa μf μ) {fa : ∀ w, GArch σ J w → ℂ} {ff : ∀ v, GLoc σ J v → ℂ}
@@ -261,6 +337,9 @@ end GlobalTheory.TrSplit
 
 namespace GlobalTheory.TrSplit
 
+/- English proof (translation)
+Introduce `D V μa μf μ hμ fa ff hfa hff H _ _ _ π hπ w`. Conclude with `exists_repOp_tensor_eq_mul hμ hfa hff hπ w`.
+-/
 theorem repOp_tensor_split : ∀ (D : D7) (V : HSp D) (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)) (μ : Measure (GA D V)), IsRestrictedProd D.sp.cm.sig V.gram (frameLat V) μa μf μ → ∀ (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), (∀ w, fa w ∈ CcArch D.sp.cm.sig V.gram w) → IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff → ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : GA D V →* (H →L[ℂ] H)), IsUnitaryRep π → ∀ w, ∃ Q : H →L[ℂ] H, (∀ g, Q * π (embArch D.sp.cm.sig V.gram w g) = π (embArch D.sp.cm.sig V.gram w g) * Q) ∧ repOp π μ (tensor D.sp.cm.sig V.gram fa ff) = repOp (π.comp (embArch D.sp.cm.sig V.gram w)) (μa w) (fa w) * Q := by
   intro D V μa μf μ hμ fa ff hfa hff H _ _ _ π hπ w
   exact exists_repOp_tensor_eq_mul hμ hfa hff hπ w

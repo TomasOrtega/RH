@@ -4,11 +4,25 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisO
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacquetRallisBorderedMatrixNormalFormInvariantsStatement
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
+/- English proof (translation)
+The claim follows from `hf.1.continuous.integrable_of_hasCompactSupport hf.2`.
+-/
 theorem GlobalTheory.JR.MatchAdd.integrable_of_isTest {X : Type} [TopologicalSpace X] [MeasurableSpace X]
     [OpensMeasurableSpace X] (μ : Measure X) [IsFiniteMeasureOnCompacts μ] {f : X → ℂ} (hf : IsTest f) :
     Integrable f μ :=
   hf.1.continuous.integrable_of_hasCompactSupport hf.2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ r M f₁' f₂' f₁ f₂ h₁' h₂' h₁ h₂ m₁ m₂ a ha`. Take `⟨hG, hU⟩` from `GlobalTheory.T.jacquetRallis_orbitalIntegrand_isLocallyConstantCompactSupport F E r M`. Take `⟨-, hsec, -⟩` from `GlobalTheory.T.jacquetRallis_borderedMatrix_normalForm_invariants F r`. Establish `ha' : Delta (inv (sec a)) ≠ 0` using `by rw [hsec]; exact ha`. Establish `eG : orbG M (f₁' + f₂') (sec a) = orbG M f₁' (sec a) + orbG M f₂' (sec a)`.
+
+Use `letI := M.mG`. Use `haveI := M.bG`. Use `haveI := M.haarG`. Unfold `orbG`. Simplify using `only [Pi.add_apply, add_mul]`.
+
+Conclude with `integral_add (MatchAdd.integrable_of_isTest _ (hG _ h₁' _ ha')) (MatchAdd.integrable_of_isTest _ (hG _ h₂' _ ha'))`. Establish `eU : ∀ X : Hn r F E, HasInv X a → orbU M (f₁ + f₂) X = orbU M f₁ X + orbU M f₂ X`. Introduce `X hX`. Use `letI := M.mU`. Use `haveI := M.bU`.
+
+Use `haveI := M.haarU`. Unfold `orbU`. Simplify using `only [Pi.add_apply]`. Conclude with `integral_add (MatchAdd.integrable_of_isTest _ (hU _ h₁ a X ha hX)) (MatchAdd.integrable_of_isTest _ (hU _ h₂ a X ha hX))`. Use `⟨fun X hX => ?_, fun hn => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eG, eU X hX, (m₁ a ha).1 X hX, (m₂ a ha).1 X hX]`. Rewrite using `[eG, (m₁ a ha).2 hn, (m₂ a ha).2 hn, add_zero]`.
+-/
 theorem GlobalTheory.JR.match_add : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (f₁' f₂' : Gl r F → ℂ) (f₁ f₂ : Hn r F E → ℂ), IsTest f₁' → IsTest f₂' → IsTest f₁ → IsTest f₂ → Match M f₁' f₁ → Match M f₂' f₂ → Match M (f₁' + f₂') (f₁ + f₂) := by
   intro F E _ _ _ _ _ r M f₁' f₂' f₁ f₂ h₁' h₂' h₁ h₂ m₁ m₂ a ha
   obtain ⟨hG, hU⟩ := GlobalTheory.T.jacquetRallis_orbitalIntegrand_isLocallyConstantCompactSupport F E r M

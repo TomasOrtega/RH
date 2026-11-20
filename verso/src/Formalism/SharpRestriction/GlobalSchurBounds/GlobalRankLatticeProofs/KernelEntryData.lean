@@ -65,6 +65,9 @@ end
 section
 variable {p : ℕ} {Kc : Type} [Field Kc] {Oc : Subring Kc}
 
+/- English proof (translation)
+Rewrite using `[Finsupp.degree_eq_sum, Fin.sum_univ_two]`.
+-/
 theorem deg2 (n : Fin 2 →₀ ℕ) : n.degree = n 0 + n 1 := by
   rw [Finsupp.degree_eq_sum, Fin.sum_univ_two]
 

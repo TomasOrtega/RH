@@ -12,6 +12,25 @@ open NumberField GlobalTheory.DegCnt
 
 namespace GlobalTheory.OrthoLattice
 
+/- English proof (translation)
+Set `φ : K →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`. Establish `hmem : ∀ x : K, star x = x → x ∈ maximalRealSubfield K` using `fun x hx ψ => by`. Use `hst ψ x` as an intermediate fact. Rewrite `this` using `[hx]`. Conclude with `this.symm`.
+
+Establish `hfix : ∀ x : maximalRealSubfield K, star (x : K) = x` using `fun x => φ.injective (by rw [hst]; exact x.2 φ)`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : K, star a ≠ a := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `IsTotallyComplex.complexEmbedding_not_isReal φ` to reduce the goal to its premises.
+
+Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hst, h]`. Use `set d : K := a - star a with hd`. Establish `hd0 : d ≠ 0` using `sub_ne_zero.2 ha.symm`.
+
+Establish `hds : star d = -d` using `by simp [hd]`. Establish `hli : LinearIndependent (maximalRealSubfield K) ![(1 : K), d]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t h`. Establish `h1 : (s : K) + (t : K) * d = 0` using `by simpa [Subfield.smul_def] using h`.
+
+Establish `h2` using `congrArg star h1`. Rewrite `h2` using `[star_add, star_mul, hfix, hfix, hds, star_zero]`. Establish `h3 : (s : K) = 0` using `by linear_combination (h1 + h2) / 2`. Establish `h4 : (t : K) * d = 0` using `by linear_combination h1 - h3`. Conclude with `⟨Subtype.ext h3, Subtype.ext ((mul_eq_zero.1 h4).resolve_right hd0)⟩`.
+
+Establish `hsp : ⊤ ≤ Submodule.span (maximalRealSubfield K) (Set.range ![(1 : K), d])`. Introduce `x _`. Establish `h1 : star ((x + star x) / 2) = (x + star x) / 2`. Rewrite using `[star_div₀, star_add, star_star, star_ofNat, add_comm]`. Establish `h2 : star ((x - star x) / (2 * d)) = (x - star x) / (2 * d)`.
+
+Rewrite using `[star_div₀, star_sub, star_star, star_mul, star_ofNat, hds]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : x = (⟨_, hmem _ h1⟩ : maximalRealSubfield K) • (1 : K) + (⟨_, hmem _ h2⟩ : maximalRealSubfield K) • d`. Simplify using `only [Subfield.smul_def, smul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩))`. Establish `: Algebra.IsQuadraticExtension (maximalRealSubfield K) K` using `{ finrank_eq_two' := by simpa using Module.finrank_eq_card_basis (Module.Basis.mk hli hsp) }`.
+
+Conclude with `⟨⟩`.
+-/
 theorem isCMField_of_star (K : Type) [Field K] [NumberField K] [StarRing K] (htc : IsTotallyComplex K)
     (hst : ∀ (φ : K →+* ℂ) (a : K), φ (star a) = starRingEnd ℂ (φ a)) : IsCMField K := by
   let φ : K →+* ℂ := Classical.choice (inferInstance : Nonempty _)
@@ -60,6 +79,17 @@ theorem isCMField_of_star (K : Type) [Field K] [NumberField K] [StarRing K] (htc
     { finrank_eq_two' := by simpa using Module.finrank_eq_card_basis (Module.Basis.mk hli hsp) }
   exact ⟨⟩
 
+/- English proof (translation)
+Introduce `K _ _ st hc`. Use `isCMField_of_star K hc.1 hc.2.1` as an intermediate fact. Establish `hs : st = IsCMField.starRing K`. Set `φ : K →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`. Establish `h : ∀ x, st.star x = IsCMField.complexConj K x` using `fun x => φ.injective (by rw [IsCMField.complexEmbedding_complexConj]; exact hc.2.1 φ x)`.
+
+Take `@⟨@⟨@⟨@⟨f⟩, _⟩, _⟩, _⟩` from `st`. Take `rfl : f = IsCMField.complexConj K` from `funext h`. Both sides reduce to the same expression. Substitute `hs` using the available equality. Set `` to `IsCMField.starRing K`.
+
+Introduce `W _ _ _ _ _ k hk hp ⟨L, hL, hU⟩`. Set `φ : K →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`. Establish `hnd : k.Nondegenerate`. Apply the tactic sequence `refine ⟨fun x hx => ?_, fun x hx => ?_⟩ <;>`. Assume the negation of the conclusion as `h0`.
+
+Use `hp φ x h0` as an intermediate fact. Rewrite `this` using `[hx x]`. Simplify using `at this`. Set `S : Formalism.BasicNotions.HSpace K` to `Formalism.BasicNotions.HSpace.mk W k hk hnd (Module.finrank K W) rfl (Module.finBasis K W) (fun _ => (Module.finrank K W, 0)) L hL hU`. Establish `hsig : S.SigOK` using `fun τ => GlobalTheory.Proof.GenusMassSignature.hasSignature_of_posDef ((GlobalTheory.Proof.GenusMassSignature.pos_iff_posDef hc.1 hc.2.1 S τ).1 (hp τ))`.
+
+Take `⟨b, hb, ho⟩` from `GlobalTheory.DefiniteOrthonormal.exists_orthonormal hc S hsig fun _ => rfl`. Conclude with `⟨_, b, hb, hb.span_eq_top_of_card_eq_finrank' (Fintype.card_fin _), rfl, ho⟩`.
+-/
 theorem hasOrtho : ∀ (K : Type) [Field K] [NumberField K] [StarRing K],
     Formalism.HermitianLatticesTheory.IsCMUnram K → HasOrtho K := by
   intro K _ _ st hc

@@ -19,6 +19,9 @@ namespace GlobalTheory.CuspCompLin
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Take `⟨w, τ, Z, -, h⟩` from `hγ`. Take `⟨y, hy, -⟩` from `h t`. Rewrite using `[hy]`. Conclude with `commute_embArch σ J y (projArch_emb σ J w v x)`.
+-/
 theorem commute_line {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) {v : HeightOneSpectrum (𝓞 F)} (x : GLoc σ J v)
     (t : ℝ) : Commute (γ t) (emb σ J v x) := by
   obtain ⟨w, τ, Z, -, h⟩ := hγ
@@ -26,10 +29,18 @@ theorem commute_line {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) {v : Hei
   rw [hy]
   exact commute_embArch σ J y (projArch_emb σ J w v x)
 
+/- English proof (translation)
+The claim follows from `(commute_emb σ J x (mem_infPts_iff_forall.1 hk v)).symm`.
+-/
 theorem commute_infPts {k : GAd σ J} (hk : k ∈ infPts σ J) {v : HeightOneSpectrum (𝓞 F)} (x : GLoc σ J v) :
     Commute k (emb σ J v x) :=
   (commute_emb σ J x (mem_infPts_iff_forall.1 hk v)).symm
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons γ l ih`. Rewrite using `[List.foldr_cons, ih (fun γ' h => hl γ' (List.mem_cons_of_mem _ h)), List.foldr_cons]`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [lineDer]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, (hl γ List.mem_cons_self t).eq, ← mul_assoc]`.
+-/
 theorem foldr_transl {e : GAd σ J} (l : List (ℝ → GAd σ J)) (hl : ∀ γ ∈ l, ∀ t, Commute (γ t) e)
     (f : GAd σ J → ℂ) : l.foldr lineDer (fun y => f (y * e)) = fun y => l.foldr lineDer f (y * e) := by
   induction l with
@@ -42,6 +53,9 @@ theorem foldr_transl {e : GAd σ J} (l : List (ℝ → GAd σ J)) (hl : ∀ γ �
     funext t
     rw [mul_assoc, (hl γ List.mem_cons_self t).eq, ← mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [dop, Finsupp.sum]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[foldr_transl l (fun γ h t => commute_line (hz.1 l hl γ h) x t)]`.
+-/
 theorem dop_transl {z : List (ℝ → GAd σ J) →₀ ℂ} (hz : IsCentral σ J z) {v : HeightOneSpectrum (𝓞 F)}
     (x : GLoc σ J v) (f : GAd σ J → ℂ) :
     dop z (fun y => f (y * emb σ J v x)) = fun y => dop z f (y * emb σ J v x) := by
@@ -52,6 +66,29 @@ theorem dop_transl {z : List (ℝ → GAd σ J) →₀ ℂ} (hz : IsCentral σ J
 
 variable {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E} {S : Finset (Fin r)} {K : Subgroup (GAd σ J)}
 
+/- English proof (translation)
+Use `set e := emb σ J v x with he`. Establish `efin : e ∈ finPts σ J` using `mem_finPts.2 (projInf_emb _ _ v x)`. Establish `hR : ∀ f : GAd σ J → ℂ, (fun y => f (y * e)) = LinearMap.funLeft ℂ ℂ (fun y => y * e) f` using `fun f => rfl`. Use `⟨fun u hu g => ?_, fun γ hγ hγ' g => ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+
+Conclude with `h.leftN u hu _`. Simplify using `only [mul_assoc]`. Conclude with `h.leftM γ hγ hγ' _`. Take `⟨U, hU, hUφ⟩` from `h.level`. Use `⟨U.comap (MulAut.conj e⁻¹).toMonoidHom, ?_, fun k hk hkf g => ?_⟩` and prove the remaining obligations.
+
+Establish `: ((U.comap (MulAut.conj e⁻¹).toMonoidHom : Subgroup (GAd σ J)) : Set (GAd σ J)) = (fun k => e⁻¹ * k * e⁻¹⁻¹) ⁻¹' (U : Set (GAd σ J))` using `rfl`. Rewrite using `[this]`. Conclude with `hU.preimage (by fun_prop)`. Establish `hk' : e⁻¹ * k * e ∈ U` using `by simpa using hk`. Establish `hf' : e⁻¹ * k * e ∈ finPts σ J` using `mul_mem (mul_mem (inv_mem efin) hkf) efin`.
+
+Use `hUφ _ hk' hf' (g * e)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Conclude with `h.cont.comp (continuous_id.mul continuous_const)`. Introduce `k γ hγ g`. Establish `e1 : (fun t : Fin k → ℝ => φ (g * (List.ofFn fun i => γ i (t i)).prod * e)) = fun t : Fin k → ℝ => φ (g * e * (List.ofFn fun i => γ i (t i)).prod)`.
+
+Use function extensionality and compare the values at `t`. Establish `hc : Commute (List.ofFn fun i => γ i (t i)).prod e` using `Commute.list_prod_left _ _ fun a ha => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 ha`. Conclude with `commute_line (hγ i) x _`. Rewrite using `[mul_assoc, hc.eq, ← mul_assoc]`.
+
+Use `show ContDiff ℝ _ fun t : Fin k → ℝ => φ (g * (List.ofFn fun i => γ i (t i)).prod * e)`. Rewrite using `[e1]`. Conclude with `h.smooth k γ hγ (g * e)`. Take `⟨N, hN⟩` from `h.growth`. Use `⟨N, fun l hl => ?_⟩` and prove the remaining obligations.
+
+Take `⟨C, hC⟩` from `hN l hl`. Use `⟨max C 0 * (height σ J e : ℝ) ^ N, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[foldr_transl l (fun γ h t => commute_line (hl γ h) x t)]`. Establish `hh : (height σ J (g * e) : ℝ) ≤ (height σ J g : ℝ) * (height σ J e : ℝ)`. Use `heightGL_mul_le F (matHom _ σ J g) (matHom _ σ J e)` as an intermediate fact.
+
+Rewrite `this` using `[← map_mul]`. Conclude with `this` after adjusting the coercions. Establish `h0 : (0 : ℝ) ≤ (height σ J (g * e) : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `h.kfin` as an intermediate fact.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k : K => fun g => φ (g * k))).map (LinearMap.funLeft ℂ ℂ (fun y : GAd σ J => y * e))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, hk⟩, rfl⟩`. Use `⟨fun g => φ (g * k), Submodule.subset_span ⟨⟨k, hk⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [LinearMap.funLeft_apply, Function.comp]`.
+
+Rewrite using `[mul_assoc, mul_assoc, (commute_infPts (hK hk) x).eq]`. Use `h.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ {f | ∃ z, IsCentral σ J z ∧ f = dop z φ}).map (LinearMap.funLeft ℂ ℂ (fun y : GAd σ J => y * e))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `⟨dop z φ, Submodule.subset_span ⟨z, hz, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[dop_transl hz x]`. Both sides reduce to the same expression.
+-/
 theorem isAutOn_transl (hK : K ≤ infPts σ J) {φ : GAd σ J → ℂ} (h : GlobalTheory.StdPar.IsAutOn σ J X Y S K φ)
     {v : HeightOneSpectrum (𝓞 F)} (x : GLoc σ J v) :
     GlobalTheory.StdPar.IsAutOn σ J X Y S K (fun y => φ (y * emb σ J v x)) := by
@@ -130,6 +167,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E} {S : Finset (Fin r)}
   {K : Subgroup (GAd σ J)}
 
+/- English proof (translation)
+Take `⟨⟨hA, hC⟩, c, hc, hs⟩` from `h`. Use `⟨⟨isAutOn_transl hK hA x, fun S' hS' μ 𝓕 h1 h2 h3 g => ?_⟩, fun y => c (y * emb σ J v x), fun μ 𝓕 h1 h2 h3 g => ?_, fun ψ hψ μ 𝓕 h1 h2 g g' => ?_⟩` and prove the remaining obligations. Use `hC S' hS' μ 𝓕 h1 h2 h3 (g * emb σ J v x)` as an intermediate fact. Simplify `this` using `only [mul_assoc, Pi.zero_apply]`. Use `hc μ 𝓕 h1 h2 h3 (g * emb σ J v x)` as an intermediate fact.
+
+Simplify `this` using `only [mul_assoc]`. Use `hs ψ hψ μ 𝓕 h1 h2 (g * emb σ J v x) g'` as an intermediate fact. Simplify `this` using `only [mul_assoc]`.
+-/
 theorem isCuspComp_transl (hK : K ≤ infPts σ J) {φ φc : GAd σ J → ℂ} (h : IsCuspComp σ J X Y S K φ φc)
     {v : HeightOneSpectrum (𝓞 F)} (x : GLoc σ J v) :
     IsCuspComp σ J X Y S K (fun y => φ (y * emb σ J v x)) (fun y => φc (y * emb σ J v x)) := by
@@ -143,6 +185,17 @@ theorem isCuspComp_transl (hK : K ≤ infPts σ J) {φ φc : GAd σ J → ℂ} (
   · have := hs ψ hψ μ 𝓕 h1 h2 (g * emb σ J v x) g'
     simpa only [mul_assoc] using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM n J hJ r Xf Yf hW K hK S φ ψ φc ψc hφ hψ h1 h2`. Use `⟨fun a b => ?_, fun v x => isCuspComp_transl hK.prop.1 h1 x⟩` and prove the remaining obligations. Establish `aφ : IsAutOn σ J Xf Yf ∅ K φ` using `isAutOn_empty.2 hφ`. Establish `aψ : IsAutOn σ J Xf Yf ∅ K ψ` using `isAutOn_empty.2 hψ`. Establish `a0 : IsAutOn σ J Xf Yf ∅ K (fun _ => 0)` using `isAutOn_const σ J Xf Yf ∅ K 0`.
+
+Establish `T` using `GlobalTheory.T.automorphic_linear_combination_const F E σ hCM n J hJ r Xf Yf hW K S`. Establish `z0 : IsCuspComp σ J Xf Yf S K (fun _ => 0) (fun _ => 0)`. Use `T φ φ φc φc 1 aφ aφ h1 h1` as an intermediate fact. Simplify using `using this`. Establish `e1 : ∀ (a : ℂ) (f : GAd σ J → ℂ), a • f = fun g => (fun _ => (0 : ℂ)) g - (-a) * f g` using `fun a f => by`.
+
+Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Establish `za : IsCuspComp σ J Xf Yf S K (a • φ) (a • φc)`. Rewrite using `[e1 a φ, e1 a φc]`. Conclude with `T _ φ _ φc (-a) a0 aφ z0 h1`.
+
+Establish `aaφ : IsAutOn σ J Xf Yf ∅ K (a • φ)`. Rewrite using `[e1 a φ]`. Conclude with `AutLin.isAutOn_sub_smul F E σ n J r Xf Yf ∅ K _ φ (-a) a0 aφ`. Establish `e2 : ∀ f f' : GAd σ J → ℂ, a • f + b • f' = fun g => (a • f) g - (-b) * f' g` using `fun f f' => by`. Use function extensionality and compare the values at `g`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e2 φ ψ, e2 φc ψc]`. Conclude with `T _ ψ _ ψc (-b) aaφ aψ za h2`.
+-/
 theorem isCuspComp_linear_transl : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E), IsWittFrame σ J Xf Yf →

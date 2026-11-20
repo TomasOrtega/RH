@@ -11,10 +11,16 @@ variable {K : Type*} {L : Type u} [Field K] [Field L] [Algebra K L]
 
 section FixingSubgroup
 
+/- English proof (translation)
+The claim follows from `fixingSubgroup_isOpen E.toIntermediateField`.
+-/
 theorem isOpen_fixingSubgroup_finiteGalois (E : FiniteGaloisIntermediateField K L) :
     IsOpen (E.fixingSubgroup : Set Gal(L/K)) :=
   fixingSubgroup_isOpen E.toIntermediateField
 
+/- English proof (translation)
+The claim follows from `(normal_iff_isGalois E.toIntermediateField).2 E.isGalois`.
+-/
 theorem normal_fixingSubgroup_finiteGalois [IsGalois K L] (E : FiniteGaloisIntermediateField K L) :
     E.fixingSubgroup.Normal :=
   (normal_iff_isGalois E.toIntermediateField).2 E.isGalois
@@ -28,6 +34,9 @@ def fixingOpenNormalSubgroup (E : FiniteGaloisIntermediateField K L) :
   isNormal' := normal_fixingSubgroup_finiteGalois E
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_fixingOpenNormalSubgroup
     (E : FiniteGaloisIntermediateField K L) :
     (fixingOpenNormalSubgroup E : Subgroup Gal(L/K)) = E.fixingSubgroup :=
@@ -46,6 +55,9 @@ instance : (openNormalToClosed U).Normal :=
   U.isNormal'
 
 @[simp]
+/- English proof (translation)
+The claim follows from `fixingSubgroup_fixedField (openNormalToClosed U)`.
+-/
 theorem fixingSubgroup_fixedField_openNormalSubgroup :
     (fixedField (U : Subgroup Gal(L/K))).fixingSubgroup = U :=
   fixingSubgroup_fixedField (openNormalToClosed U)
@@ -66,6 +78,9 @@ noncomputable def fixedFiniteGalois : FiniteGaloisIntermediateField K L where
   toIntermediateField := fixedField (U : Subgroup Gal(L/K))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fixedFiniteGalois_toIntermediateField :
     (fixedFiniteGalois U).toIntermediateField = fixedField (U : Subgroup Gal(L/K)) :=
   rfl
@@ -75,12 +90,18 @@ noncomputable def quotientEquivGal :
   normalAutEquivQuotient (openNormalToClosed U)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `AlgEquiv.restrictNormal_commutes σ _ x`.
+-/
 theorem quotientEquivGal_mk_apply (σ : Gal(L/K)) (x : fixedField (U : Subgroup Gal(L/K))) :
     ((quotientEquivGal U (σ : Gal(L/K) ⧸ (U : Subgroup Gal(L/K))) x : _) : L) = σ x :=
   AlgEquiv.restrictNormal_commutes σ _ x
 
 omit [IsGalois K L] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h σ => h σ, fun h σ => h σ⟩`.
+-/
 theorem mem_invariants_galAdd_iff (x : L) :
     x ∈ Representation.invariants ((galAdd K L).ρ.comp (U : Subgroup Gal(L/K)).subtype) ↔
       x ∈ fixedField (U : Subgroup Gal(L/K)) :=
@@ -98,6 +119,9 @@ def invariantsGalAddEquiv :
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H σ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[quotientEquivGal_mk_apply]`. Both sides reduce to the same expression.
+-/
 theorem invariantsGalAddEquiv_quotientToInvariants (q : Gal(L/K) ⧸ (U : Subgroup Gal(L/K)))
     (x : Representation.invariants ((galAdd K L).ρ.comp (U : Subgroup Gal(L/K)).subtype)) :
     invariantsGalAddEquiv U (((galAdd K L).quotientToInvariants (U : Subgroup Gal(L/K))).ρ q x) =
@@ -115,6 +139,9 @@ section Correspondence
 variable [IsGalois K L]
 
 @[simp]
+/- English proof (translation)
+Use extensionality with `σ`. Express the relevant statement in the definitionally equal form `σ ∈ (fixedField (U : Subgroup Gal(L/K))).fixingSubgroup ↔ σ ∈ (U : Subgroup Gal(L/K))`. Rewrite using `[fixingSubgroup_fixedField_openNormalSubgroup]`. Use the proof step `@[simp]`.
+-/
 theorem fixingOpenNormalSubgroup_fixedFiniteGalois
     (U : OpenNormalSubgroup Gal(L/K)) : fixingOpenNormalSubgroup (fixedFiniteGalois U) = U := by
   ext σ
@@ -122,6 +149,9 @@ theorem fixingOpenNormalSubgroup_fixedFiniteGalois
   rw [fixingSubgroup_fixedField_openNormalSubgroup]
 
 @[simp]
+/- English proof (translation)
+The claim follows from `FiniteGaloisIntermediateField.val_injective (fixedField_fixingSubgroup E.toIntermediateField)`.
+-/
 theorem fixedFiniteGalois_fixingOpenNormalSubgroup
     (E : FiniteGaloisIntermediateField K L) : fixedFiniteGalois (fixingOpenNormalSubgroup E) = E :=
   FiniteGaloisIntermediateField.val_injective (fixedField_fixingSubgroup E.toIntermediateField)
@@ -138,12 +168,18 @@ noncomputable def openNormalSubgroupEquiv :
     exact Iff.rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem openNormalSubgroupEquiv_apply (U : OpenNormalSubgroup Gal(L/K)) :
     (OrderDual.ofDual (openNormalSubgroupEquiv U)).toIntermediateField =
       fixedField (U : Subgroup Gal(L/K)) :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_openNormalSubgroupEquiv_symm_apply (E : FiniteGaloisIntermediateField K L) :
     ((openNormalSubgroupEquiv.symm (OrderDual.toDual E) : OpenNormalSubgroup Gal(L/K)) :
       Subgroup Gal(L/K)) = E.fixingSubgroup :=
@@ -155,12 +191,18 @@ section Cofinal
 
 variable [IsGalois K L]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ toIntermediateField := normalClosure K E L finiteDimensional := normalClosure.is_finiteDimensional K E L isGalois := IsGalois.normalClosure K E L }, le_normalClosure E⟩`.
+-/
 theorem exists_finiteGalois_le (E : IntermediateField K L) [FiniteDimensional K E] :
     ∃ F : FiniteGaloisIntermediateField K L, E ≤ F.toIntermediateField :=
   ⟨{ toIntermediateField := normalClosure K E L
      finiteDimensional := normalClosure.is_finiteDimensional K E L
      isGalois := IsGalois.normalClosure K E L }, le_normalClosure E⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨FiniteGaloisIntermediateField.adjoin K {x}, FiniteGaloisIntermediateField.subset_adjoin K {x} (Set.mem_singleton x)⟩`.
+-/
 theorem exists_finiteGalois_mem (x : L) :
     ∃ F : FiniteGaloisIntermediateField K L, x ∈ F.toIntermediateField :=
   ⟨FiniteGaloisIntermediateField.adjoin K {x},

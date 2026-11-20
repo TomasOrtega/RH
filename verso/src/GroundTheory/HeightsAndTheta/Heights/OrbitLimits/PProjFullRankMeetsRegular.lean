@@ -11,6 +11,11 @@ namespace GroundTheory.Heights₂.Heights.Targets
 
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.AnForm.M
 
+/- English proof (translation)
+Introduce `K _ ι _ P J n R Ψ V BV hH hC hΨ x hx`. Take `⟨y, hyc, hy⟩` from `hT K ι P J n R Ψ V BV hH hC hΨ x hx`. Take `⟨y', hyc', hy', h0⟩` from `hM K ι P J n R Ψ V BV hH y hy`. Use `⟨y', ?_, hR K ι P J n R Ψ V BV hH y' hy' h0⟩` and prove the remaining obligations. Rewrite using `[connectedComponent_eq hyc]`.
+
+Conclude with `hyc'`.
+-/
 theorem ProjFullRankMeetsRegular.of_found (hT : ProjRankTransfer.Statement)
     (hM : ProjMaxRankMeetsPsi0.Statement) (hR : ProjMaxRankRegular.Statement) :
     ProjFullRankMeetsRegular.Statement := by

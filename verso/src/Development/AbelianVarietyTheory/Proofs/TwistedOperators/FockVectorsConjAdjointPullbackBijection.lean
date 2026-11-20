@@ -22,6 +22,13 @@ variable {D : D7}
 def cdag (S T : HSp D) (τ : D.what₂.Tau) (w : Matrix (Fin S.rank) (Fin T.rank) ℂ) : Matrix (Fin T.rank) (Fin S.rank) ℂ :=
   (gramAt D T τ)⁻¹ * wᴴ * gramAt D S τ
 
+/- English proof (translation)
+Establish `e : ∀ {a b : ℕ} (x : Matrix (Fin a) (Fin b) (AE D)), compAt θ τ x = x.map ((θ τ).comp (infPart D))` using `fun _ => rfl`. Establish `hi : ∀ x, ((θ τ).comp (infPart D)) (incA D x) = tauE D τ x` using `GlobalTheory.FockCompare.comp_incA hθ τ`. Establish `hc : ∀ z, ((θ τ).comp (infPart D)) (cA D z) = starRingEnd ℂ (((θ τ).comp (infPart D)) z)` using `GlobalTheory.FockCompare.comp_cA hθ τ`. Establish `h1 : ((T.gram⁻¹).map (incA D)).map ((θ τ).comp (infPart D)) = (T.gram⁻¹).map (tauE D τ)`. Use extensionality with `a b`.
+
+Conclude with `hi _`. Establish `h2 : (((y : Matrix (Fin S.rank) (Fin T.rank) (AE D)).map (cA D)).transpose).map ((θ τ).comp (infPart D)) = (y.map ((θ τ).comp (infPart D)))ᴴ`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply]`. Rewrite using `[hc]`.
+
+Both sides reduce to the same expression. Establish `h3 : (S.gram.map (incA D)).map ((θ τ).comp (infPart D)) = S.gram.map (tauE D τ)`. Use extensionality with `a b`. Conclude with `hi _`. Rewrite using `[e, e, adjO, Matrix.map_mul, Matrix.map_mul, h1, h2, h3, cdag, gramAt, gramAt, GlobalTheory.OrientedChar.map_inv_field _ _ (Formalism.L2.Theta.gram_det_ne T)]`.
+-/
 theorem compAt_adjO {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) (τ : D.what₂.Tau) (y : WO T S) :
     compAt θ τ (adjO S T y) = cdag S T τ (compAt θ τ y) := by
   have e : ∀ {a b : ℕ} (x : Matrix (Fin a) (Fin b) (AE D)), compAt θ τ x = x.map ((θ τ).comp (infPart D)) :=
@@ -39,6 +46,9 @@ theorem compAt_adjO {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) (τ : D.wh
   rw [e, e, adjO, Matrix.map_mul, Matrix.map_mul, h1, h2, h3, cdag, gramAt, gramAt,
     GlobalTheory.OrientedChar.map_inv_field _ _ (Formalism.L2.Theta.gram_det_ne T)]
 
+/- English proof (translation)
+Establish `h0 : (((y : Matrix (Fin S.rank) (Fin T.rank) (AE D)).map (cA D)).transpose).map (finPart D) = 0`. Use extensionality with `a b`. Establish `: finPart D (y b a) = 0` using `congrFun (congrFun hy b) a`. Simplify using `[GlobalTheory.OrientedChar.finPart_cA_eq_zero this]`. Rewrite using `[adjO, Matrix.map_mul, Matrix.map_mul, h0, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem finPart_adjO (S T : HSp D) (y : WO T S) (hy : y.map (finPart D) = 0) :
     (adjO S T y).map (finPart D) = 0 := by
   have h0 : (((y : Matrix (Fin S.rank) (Fin T.rank) (AE D)).map (cA D)).transpose).map (finPart D) = 0 := by
@@ -53,13 +63,26 @@ namespace GlobalTheory.FockAdjoint
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
+/- English proof (translation)
+Simplify using `[cdag, Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem cdag_smul_real (τ : D.what₂.Tau) (t : ℝ) (w : Matrix (Fin S.rank) (Fin T.rank) ℂ) :
     cdag S T τ ((t : ℂ) • w) = (t : ℂ) • cdag S T τ w := by
   simp [cdag, Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Simplify using `[cdag]`.
+-/
 theorem cdag_zero (τ : D.what₂.Tau) : cdag S T τ (0 : Matrix (Fin S.rank) (Fin T.rank) ℂ) = 0 := by
   simp [cdag]
 
+/- English proof (translation)
+Establish `hw` using `GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ w`. Set `L' : ℝ →+ WO S T` to `(AddMonoidHom.mk' (adjO S T) L.add).comp (lineAt θ τ w)`. Establish `hL' : IsLineAt θ τ (cdag S T τ w) L'`. Use `⟨L.cont.comp hw.1, fun t => finPart_adjO S T _ (hw.2.1 t), fun t τ' => ?_⟩` and prove the remaining obligations. Use `show compAt θ τ' (adjO S T (lineAt θ τ w t)) = _`.
+
+Rewrite using `[compAt_adjO hθ, hw.2.2 t τ']`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `cdag_smul_real _ _ _`. Conclude with `cdag_zero _`.
+
+Use `GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ hL' (GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ _)` as an intermediate fact. Conclude with `DFunLike.congr_fun this t`.
+-/
 theorem lineAt_adjO (hθ : IsInfFam θ) (L : AdjLaw ψ S T) (τ : D.what₂.Tau) (w : Matrix (Fin S.rank) (Fin T.rank) ℂ)
     (t : ℝ) : adjO S T (lineAt θ τ w t) = lineAt θ τ (cdag S T τ w) t := by
   have hw := GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ w
@@ -74,6 +97,11 @@ theorem lineAt_adjO (hθ : IsInfFam θ) (L : AdjLaw ψ S T) (τ : D.what₂.Tau)
   have := GlobalTheory.RealLineAt.lineAt_unique D θ hθ _ _ τ _ _ _ hL' (GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ _)
   exact DFunLike.congr_fun this t
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `show deriv (fun t : ℝ => heisO ψ T S (lineAt θ τ w t) (dag S T g) x) 0 = starRingEnd ℂ (deriv (fun t : ℝ => heisO ψ S T (lineAt θ τ (cdag S T τ w) t) g (adjO S T x)) 0)`. Establish `e : (fun t : ℝ => heisO ψ T S (lineAt θ τ w t) (dag S T g) x) = fun t => star (heisO ψ S T (lineAt θ τ (cdag S T τ w) t) g (adjO S T x))`. Use function extensionality and compare the values at `t`. Rewrite using `[L.Heisenberg₂, dag, lineAt_adjO hθ L]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, deriv.star]`. Both sides reduce to the same expression.
+-/
 theorem dRho_dag (hθ : IsInfFam θ) (L : AdjLaw ψ S T) (τ : D.what₂.Tau) (w : Matrix (Fin S.rank) (Fin T.rank) ℂ)
     (g : WO S T → ℂ) :
     dRho (heisO ψ T S) θ τ w (dag S T g) = dag S T (dRho (heisO ψ S T) θ τ (cdag S T τ w) g) := by
@@ -94,13 +122,26 @@ namespace GlobalTheory.FockAdjoint
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
+/- English proof (translation)
+Rewrite using `[gramAt, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 (Formalism.L2.Theta.gram_det_ne V)`.
+-/
 theorem gramAt_det_ne (V : HSp D) (τ : D.what₂.Tau) : (gramAt D V τ).det ≠ 0 := by
   rw [gramAt, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
   exact (map_ne_zero _).2 (Formalism.L2.Theta.gram_det_ne V)
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_one (sᴴ * G), ← h.1, ← Matrix.mul_assoc, h.2.1]`.
+-/
 theorem cart_adj {n : ℕ} {G s : Matrix (Fin n) (Fin n) ℂ} (h : IsCartanInv G s) : sᴴ * G = G * s := by
   rw [← Matrix.mul_one (sᴴ * G), ← h.1, ← Matrix.mul_assoc, h.2.1]
 
+/- English proof (translation)
+Establish `hu : IsUnit (gramAt D T τ).det` using `isUnit_iff_ne_zero.2 (gramAt_det_ne T τ)`. Establish `k1 : aSᴴ * gramAt D S τ = gramAt D S τ * aS` using `cart_adj hS`. Establish `k2 : (gramAt D T τ)⁻¹ * bTᴴ = bT * (gramAt D T τ)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`.
+
+Use `_ = (gramAt D T τ)⁻¹ * gramAt D T τ * bT * (gramAt D T τ)⁻¹ := by`. Rewrite using `[cart_adj hT]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]`. Establish `key : (gramAt D T τ)⁻¹ * (bTᴴ * wᴴ * aSᴴ) * gramAt D S τ = bT * ((gramAt D T τ)⁻¹ * wᴴ * gramAt D S τ) * aS`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cdag, cdag, cplxO, cplxO, Matrix.conjTranspose_smul, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, ← Matrix.mul_assoc, Matrix.mul_smul, Matrix.smul_mul, key, Complex.star_def, Complex.conj_I, neg_smul]`.
+-/
 theorem cdag_cplx {aS : Matrix (Fin S.rank) (Fin S.rank) ℂ} {bT : Matrix (Fin T.rank) (Fin T.rank) ℂ} (τ : D.what₂.Tau)
     (hS : IsCartanInv (gramAt D S τ) aS) (hT : IsCartanInv (gramAt D T τ) bT)
     (w : Matrix (Fin S.rank) (Fin T.rank) ℂ) :
@@ -121,12 +162,18 @@ theorem cdag_cplx {aS : Matrix (Fin S.rank) (Fin S.rank) ℂ} {bT : Matrix (Fin 
   rw [cdag, cdag, cplxO, cplxO, Matrix.conjTranspose_smul, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul,
     ← Matrix.mul_assoc, Matrix.mul_smul, Matrix.smul_mul, key, Complex.star_def, Complex.conj_I, neg_smul]
 
+/- English proof (translation)
+Use `(GlobalTheory.FockSubst.dRho_laws hψ hθ hg τ z).2.2.2.1 (-1)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem dRho_neg' (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g)
     (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     dRho (heisO ψ S T) θ τ (-z) g = -dRho (heisO ψ S T) θ τ z g := by
   have := (GlobalTheory.FockSubst.dRho_laws hψ hθ hg τ z).2.2.2.1 (-1)
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FockSubst.aPlus_eq, GlobalTheory.FockSubst.aPlus_eq, dRho_dag hθ L, dRho_dag hθ L, cdag_cplx τ hS hT, dRho_neg' hψ hθ hg]`. Use function extensionality and compare the values at `x`. Simplify using `only [dag, Pi.smul_apply, Pi.add_apply, Pi.neg_apply, smul_eq_mul, map_mul, map_add, map_neg, map_inv₀, Complex.conj_ofReal, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aPlus_dag (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (L : AdjLaw ψ S T)
     {aS : Matrix (Fin S.rank) (Fin S.rank) ℂ} {bT : Matrix (Fin T.rank) (Fin T.rank) ℂ} (τ : D.what₂.Tau)
     (hS : IsCartanInv (gramAt D S τ) aS) (hT : IsCartanInv (gramAt D T τ) bT)
@@ -140,6 +187,13 @@ theorem aPlus_dag (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (L : AdjLaw ψ
     Complex.conj_ofReal, Complex.conj_I]
   ring
 
+/- English proof (translation)
+Introduce `w`. Establish `h0` using `hv (cdag S T τ w)`. Unfold `annih at h0 ⊢`. Rewrite using `[dRho_dag hθ L, dRho_dag hθ L, cdag_cplx τ hS hT, dRho_neg' hψ hθ hf]`. Use function extensionality and compare the values at `x`.
+
+Use `congrFun h0 (adjO S T x)` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Simplify using `only [dag, Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, Pi.zero_apply]`. Establish `e` using `congrArg (starRingEnd ℂ) this`. Simplify using `only [map_add, map_mul, Complex.conj_I, map_zero] at e`.
+
+Rewrite using `[map_neg]`. Take the linear combination `e`.
+-/
 theorem vac_dag (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (L : AdjLaw ψ S T)
     {aS : Matrix (Fin S.rank) (Fin S.rank) ℂ} {bT : Matrix (Fin T.rank) (Fin T.rank) ℂ} (τ : D.what₂.Tau)
     (hS : IsCartanInv (gramAt D S τ) aS) (hT : IsCartanInv (gramAt D T τ) bT) {f : WO S T → ℂ}
@@ -166,8 +220,14 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
 def sg (b : Bool) : ℝ := if b then 1 else -1
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> norm_num [sg]`.
+-/
 theorem sg_mul_self (b : Bool) : sg b * sg b = 1 := by cases b <;> norm_num [sg]
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a <;> simp [h]`.
+-/
 theorem Jm_mul_self' {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -175,6 +235,11 @@ theorem Jm_mul_self' {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Fo
   funext a
   by_cases h : ε a <;> simp [h]
 
+/- English proof (translation)
+Use extensionality with `k l`. Simplify using `only [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Distinguish the cases in `hk : i = k`. Distinguish the cases in `hl : j = l`. Substitute `hk hl` using the available equality.
+
+Apply the tactic sequence `cases εm i <;> cases εn j <;> simp [sg]`. Simplify using `[hl]`. Simplify using `[hk]`.
+-/
 theorem Jm_single_Jm {m n : ℕ} (εm : Fin m → Bool) (εn : Fin n → Bool) (i : Fin m) (j : Fin n) :
     Formalism.REAL.Jm εm * Matrix.single i j (1 : ℂ) * Formalism.REAL.Jm εn =
       ((sg (εm i) * sg (εn j) : ℝ) : ℂ) • Matrix.single i j (1 : ℂ) := by
@@ -188,6 +253,17 @@ theorem Jm_single_Jm {m n : ℕ} (εm : Fin m → Bool) (εn : Fin n → Bool) (
     · simp [hl]
   · simp [hk]
 
+/- English proof (translation)
+Establish `ha : IsUnit (A.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ)`. Establish `hb : IsUnit (B.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (B.fr_unit τ)`. Establish `hu : IsUnit (gramAt D T τ).det` using `isUnit_iff_ne_zero.2 (gramAt_det_ne T τ)`. Establish `e1 : (gramAt D T τ)⁻¹ * (B.fr τ)ᴴ = (B.fr τ)⁻¹ * Formalism.REAL.Jm (B.ε τ)`. Establish `h : (B.fr τ)ᴴ = gramAt D T τ * ((B.fr τ)⁻¹ * Formalism.REAL.Jm (B.ε τ))`.
+
+Rewrite using `[← B.fr_gram τ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hb, Matrix.mul_one, Jm_mul_self', Matrix.mul_one]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Rewrite using `[h, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]`.
+
+Establish `e2 : ((A.fr τ)⁻¹)ᴴ * gramAt D S τ = Formalism.REAL.Jm (A.ε τ) * A.fr τ`. Rewrite using `[← A.fr_gram τ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ ha, Matrix.conjTranspose_one, Matrix.one_mul]`. Establish `e3 : (Matrix.single j i (1 : ℂ))ᴴ = Matrix.single i j (1 : ℂ)`. Use extensionality with `k l`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.single_apply]`.
+
+Apply the tactic sequence `by_cases h1 : i = k <;> by_cases h2 : j = l <;> simp [h1, h2, eq_comm]`. Simplify using `only [unitMap, Fr.onb, Matrix.nonsing_inv_nonsing_inv _ ha, Matrix.nonsing_inv_nonsing_inv _ hb, cdag]`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, e3]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = (B.fr τ)⁻¹ * (Formalism.REAL.Jm (B.ε τ) * Matrix.single i j (1 : ℂ) * Formalism.REAL.Jm (A.ε τ)) * A.fr τ := by`. Rewrite using `[e1, e2]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [Jm_single_Jm, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem cdag_unitMap (A : Fr S) (B : Fr T) (τ : D.what₂.Tau) (i : Fin T.rank) (j : Fin S.rank) :
     cdag S T τ (unitMap (B.onb τ) (A.onb τ) j i) =
       ((sg (B.ε τ i) * sg (A.ε τ j) : ℝ) : ℂ) • unitMap (A.onb τ) (B.onb τ) i j := by
@@ -217,6 +293,9 @@ theorem cdag_unitMap (A : Fr S) (B : Fr T) (τ : D.what₂.Tau) (i : Fin T.rank)
         rw [e1, e2]; simp only [Matrix.mul_assoc]
     _ = _ := by rw [Jm_single_Jm, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Establish `hJ : cplxO sS sT ((t : ℂ) • z) = (t : ℂ) • cplxO sS sT z`. Simplify using `only [cplxO, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[smul_comm]`. Rewrite using `[GlobalTheory.FockSubst.aPlus_eq, GlobalTheory.FockSubst.aPlus_eq, hJ, (GlobalTheory.FockSubst.dRho_laws hψ hθ hg τ z).2.2.2.1 t, (GlobalTheory.FockSubst.dRho_laws hψ hθ hg τ _).2.2.2.1 t]`. Rewrite using `[smul_comm (-Complex.I) (t : ℂ), ← smul_add, smul_comm]`.
+-/
 theorem aPlus_real_smul (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g)
     (τ : D.what₂.Tau) (sS : Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : Matrix (Fin T.rank) (Fin T.rank) ℂ) (t : ℝ)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
@@ -230,12 +309,20 @@ theorem aPlus_real_smul (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {g : WO 
 
 variable {V W : HSp D}
 
+/- English proof (translation)
+Unfold `ptF pureTensorO`. Conclude with `GlobalTheory.Ker.FockAlg.pure_mem (P := IsThetaFunO ψ V W) (fun _ _ h h' => GlobalTheory.OrientedHeis.theta_add h h') (fun a _ h => GlobalTheory.OrientedHeis.theta_smul a h) (fun _ _ h => GlobalTheory.FockSubst.aPlus_th hψ hθ _ _ _ h) hg Q`.
+-/
 theorem ptF_theta (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr V) (B : Fr W) {g : WO V W → ℂ}
     (hg : IsThetaFunO ψ V W g) (Q : PolF D W.rank V.rank) : IsThetaFunO ψ V W (ptF ψ θ A B g Q) := by
   unfold ptF pureTensorO
   exact GlobalTheory.Ker.FockAlg.pure_mem (P := IsThetaFunO ψ V W) (fun _ _ h h' => GlobalTheory.OrientedHeis.theta_add h h')
     (fun a _ h => GlobalTheory.OrientedHeis.theta_smul a h) (fun _ _ h => GlobalTheory.FockSubst.aPlus_th hψ hθ _ _ _ h) hg Q
 
+/- English proof (translation)
+Unfold `ptF pureTensorO`. Use `GlobalTheory.Ker.FockAlg.pure_X_mul (P := IsThetaFunO ψ V W) (fun _ _ h h' => GlobalTheory.OrientedHeis.theta_add h h') (fun a _ h => GlobalTheory.OrientedHeis.theta_smul a h) (fun i _ h => ?_) (fun i j _ h => ?_) (fun i _ _ h h' => ?_) (fun i a _ h => ?_) hg Q v` and prove the remaining obligations. Apply the tactic sequence `all_goals unfold aPlusAll`. Conclude with `GlobalTheory.FockSubst.aPlus_th hψ hθ _ _ _ h`. Conclude with `GlobalTheory.FockSubst.aPlus_comm hψ hθ i.1 _ (GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv A) (GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv B) j.1 _ h`.
+
+Conclude with `GlobalTheory.FockSubst.aPlus_add hψ hθ _ _ _ h h'`. Conclude with `GlobalTheory.FockSubst.aPlus_smul hψ hθ _ _ _ a h`.
+-/
 theorem ptF_X_mul (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr V) (B : Fr W) {g : WO V W → ℂ}
     (hg : IsThetaFunO ψ V W g) (Q : PolF D W.rank V.rank) (v : FVar D W.rank V.rank) :
     ptF ψ θ A B g (MvPolynomial.X v * Q) =
@@ -252,16 +339,25 @@ theorem ptF_X_mul (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr V) (B 
   · exact GlobalTheory.FockSubst.aPlus_add hψ hθ _ _ _ h h'
   · exact GlobalTheory.FockSubst.aPlus_smul hψ hθ _ _ _ a h
 
+/- English proof (translation)
+Unfold `ptF`. Rewrite using `[MvPolynomial.C_mul', map_smul]`.
+-/
 theorem ptF_C (A : Fr V) (B : Fr W) (g : WO V W → ℂ) (x : ℂ) (Q : PolF D W.rank V.rank) :
     ptF ψ θ A B g (MvPolynomial.C x * Q) = x • ptF ψ θ A B g Q := by
   unfold ptF
   rw [MvPolynomial.C_mul', map_smul]
 
+/- English proof (translation)
+Unfold `ptF`. Rewrite using `[map_add]`.
+-/
 theorem ptF_add (A : Fr V) (B : Fr W) (g : WO V W → ℂ) (p q : PolF D W.rank V.rank) :
     ptF ψ θ A B g (p + q) = ptF ψ θ A B g p + ptF ψ θ A B g q := by
   unfold ptF
   rw [map_add]
 
+/- English proof (translation)
+Unfold `ptF pureTensorO`. Conclude with `GlobalTheory.Ker.FockAlg.pure_one g`.
+-/
 theorem ptF_one (A : Fr V) (B : Fr W) (g : WO V W → ℂ) : ptF ψ θ A B g 1 = g := by
   unfold ptF pureTensorO
   exact GlobalTheory.Ker.FockAlg.pure_one g
@@ -275,11 +371,17 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 def sgv (A : Fr S) (B : Fr T) (τ : D.what₂.Tau) (i : Fin T.rank) (j : Fin S.rank) : ℂ :=
   ((sg (B.ε τ i) * sg (A.ε τ j) : ℝ) : ℂ)
 
+/- English proof (translation)
+Unfold `sgv`. Rewrite using `[← Complex.ofReal_mul, mul_mul_mul_comm, sg_mul_self, sg_mul_self, one_mul, Complex.ofReal_one]`.
+-/
 theorem sgv_mul_self (A : Fr S) (B : Fr T) (τ : D.what₂.Tau) (i : Fin T.rank) (j : Fin S.rank) :
     sgv A B τ i j * sgv A B τ i j = 1 := by
   unfold sgv
   rw [← Complex.ofReal_mul, mul_mul_mul_comm, sg_mul_self, sg_mul_self, one_mul, Complex.ofReal_one]
 
+/- English proof (translation)
+The claim follows from `Complex.conj_ofReal _`.
+-/
 theorem conj_sgv (A : Fr S) (B : Fr T) (τ : D.what₂.Tau) (i : Fin T.rank) (j : Fin S.rank) :
     starRingEnd ℂ (sgv A B τ i j) = sgv A B τ i j := Complex.conj_ofReal _
 
@@ -291,13 +393,22 @@ def jInv (A : Fr S) (B : Fr T) : PolF D S.rank T.rank →+* PolF D T.rank S.rank
   MvPolynomial.eval₂Hom (MvPolynomial.C.comp (starRingEnd ℂ))
     fun v => MvPolynomial.C (sgv A B v.1 v.2.2 v.2.1) * MvPolynomial.X (v.1, v.2.2, v.2.1)
 
+/- English proof (translation)
+Simplify using `[jHom]`.
+-/
 theorem jHom_C (A : Fr S) (B : Fr T) (c : ℂ) : jHom A B (MvPolynomial.C c) = MvPolynomial.C (starRingEnd ℂ c) := by
   simp [jHom]
 
+/- English proof (translation)
+Simplify using `[jHom]`.
+-/
 theorem jHom_X (A : Fr S) (B : Fr T) (v : FVar D T.rank S.rank) :
     jHom A B (MvPolynomial.X v) = MvPolynomial.C (sgv A B v.1 v.2.1 v.2.2) * MvPolynomial.X (v.1, v.2.2, v.2.1) := by
   simp [jHom]
 
+/- English proof (translation)
+Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun v => ?_)` and prove the remaining obligations. Simplify using `[jHom, jInv]`. Simplify using `only [RingHom.comp_apply, jHom_X, map_mul, RingHom.id_apply]`. Simplify using `only [jInv, MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_X', RingHom.comp_apply, conj_sgv]`. Rewrite using `[← mul_assoc, ← map_mul, sgv_mul_self, map_one, one_mul]`.
+-/
 theorem jInv_jHom (A : Fr S) (B : Fr T) : (jInv A B).comp (jHom A B) = RingHom.id _ := by
   refine MvPolynomial.ringHom_ext (fun r => ?_) (fun v => ?_)
   · simp [jHom, jInv]
@@ -305,6 +416,9 @@ theorem jInv_jHom (A : Fr S) (B : Fr T) : (jInv A B).comp (jHom A B) = RingHom.i
     simp only [jInv, MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_X', RingHom.comp_apply, conj_sgv]
     rw [← mul_assoc, ← map_mul, sgv_mul_self, map_one, one_mul]
 
+/- English proof (translation)
+Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun v => ?_)` and prove the remaining obligations. Simplify using `[jHom, jInv]`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply, jInv, MvPolynomial.eval₂Hom_X', map_mul, RingHom.comp_apply]`. Rewrite using `[jHom_C, jHom_X, conj_sgv, ← mul_assoc, ← map_mul, sgv_mul_self, map_one, one_mul]`.
+-/
 theorem jHom_jInv (A : Fr S) (B : Fr T) : (jHom A B).comp (jInv A B) = RingHom.id _ := by
   refine MvPolynomial.ringHom_ext (fun r => ?_) (fun v => ?_)
   · simp [jHom, jInv]
@@ -314,9 +428,15 @@ theorem jHom_jInv (A : Fr S) (B : Fr T) : (jHom A B).comp (jInv A B) = RingHom.i
 def jEquiv (A : Fr S) (B : Fr T) : PolF D T.rank S.rank ≃+* PolF D S.rank T.rank :=
   RingEquiv.ofRingHom (jHom A B) (jInv A B) (jHom_jInv A B) (jInv_jHom A B)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[dag]`.
+-/
 theorem dag_add (f g : WO S T → ℂ) : dag S T (f + g) = dag S T f + dag S T g := by
   funext x; simp [dag]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[dag]`.
+-/
 theorem dag_smul' (c : ℂ) (f : WO S T → ℂ) : dag S T (c • f) = starRingEnd ℂ c • dag S T f := by
   funext x; simp [dag]
 
@@ -324,6 +444,15 @@ end GlobalTheory.FockAdjoint
 
 open GlobalTheory.FockAdjoint in
 
+/- English proof (translation)
+Introduce `D ψ θ hψ hθ S T A B`. Establish `L` using `GlobalTheory.T.hermitianAdjoint_laws_standardCharacter D ψ hψ S T`. Establish `cA` using `GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv A`. Establish `cB` using `GlobalTheory.ArchRec.LieAtPlace.cart_isCartanInv B`. Use `⟨(jEquiv A B).toAddEquiv, fun c P => ?_, fun f hf => ⟨⟨L.theta f hf.1, fun τ => vac_dag hψ hθ L τ (cA τ) (cB τ) hf.1 (hf.2 τ)⟩, fun P => ?_⟩⟩` and prove the remaining obligations.
+
+Use `show jHom A B (c • P) = starRingEnd ℂ c • jHom A B P`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, jHom_C, MvPolynomial.smul_eq_C_mul]`. Establish `hd` using `L.theta f hf.1 show ptF ψ θ B A (dag S T f) (jHom A B P) = dag S T (ptF ψ θ A B f P)`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`.
+
+Rewrite using `[jHom_C, ← mul_one (MvPolynomial.C _), ptF_C, ptF_one, ← mul_one (MvPolynomial.C a), ptF_C, ptF_one, dag_smul']`. Consider the case `add p q hp hq => rw [map_add, ptF_add, ptF_add, hp, hq, dag_add]`. Consider the case `mul_X p v hp`. Take `⟨τ, i, j⟩` from `v`. Rewrite using `[map_mul, jHom_X, mul_comm (jHom A B p), mul_assoc, ptF_C, ptF_X_mul hψ hθ B A hd, hp, mul_comm p, ptF_X_mul hψ hθ A B hf.1]`.
+
+Simplify using `only`. Rewrite using `[aPlus_dag hψ hθ L τ (cA τ) (cB τ) _ (ptF_theta hψ hθ A B hf.1 p), cdag_unitMap, aPlus_real_smul hψ hθ (ptF_theta hψ hθ A B hf.1 p), dag_smul', Complex.conj_ofReal, smul_smul]`. Rewrite using `[show ((sg (B.ε τ i) * sg (A.ε τ j) : ℝ) : ℂ) = sgv A B τ i j from rfl, sgv_mul_self, one_smul]`.
+-/
 theorem GlobalTheory.FockAdjoint.fock_dag : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) →
     IsInfFam θ → ∀ (S T : HSp D) (A : Fr S) (B : Fr T), ∃ j : PolF D T.rank S.rank ≃+ PolF D S.rank T.rank,
       (∀ (c : ℂ) P, j (c • P) = starRingEnd ℂ c • j P) ∧ ∀ f, IsVacF ψ θ A B f → IsVacF ψ θ B A (dag S T f) ∧

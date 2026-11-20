@@ -28,6 +28,9 @@ namespace GlobalTheory.TypeSum.CoefRep
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Mx n → (H →L[ℂ] H)}
 
+/- English proof (translation)
+The claim follows from `| [] => by simp | u :: L => by simp only [List.map_cons, List.sum_cons, map_add, map_smul, smul_eq_mul, Finset.sum_add_distrib, ← Finset.mul_sum] refine (norm_add_le _ _).trans (add_le_add (le_of_eq (norm_mul _ _)) (norm_sum_list_le ℓ x y L))`.
+-/
 theorem norm_sum_list_le {p : ℕ} (ℓ : Fin p → (H →ₗ[ℂ] ℂ)) (x : Fin p → H) (y : Mx n) :
     ∀ L : List (ℂ × List (Mx n)),
       ‖∑ j, ℓ j (σ y ((L.map fun u => u.1 • Dw σ u.2 (x j)).sum))‖ ≤
@@ -38,6 +41,43 @@ theorem norm_sum_list_le {p : ℕ} (ℓ : Fin p → (H →ₗ[ℂ] ℂ)) (x : Fi
       ← Finset.mul_sum]
     refine (norm_add_le _ _).trans (add_le_add (le_of_eq (norm_mul _ _)) (norm_sum_list_le ℓ x y L))
 
+/- English proof (translation)
+Introduce `_hHC hCW n ε H _ _ _ σ hstd N`. Establish `hσ` using `hstd.1`. Establish `hcb : CoefBound ε σ` using `GlobalTheory.TypeSum.coefBound_of_casselmanWallach hCW n ε H σ hstd`. Take `⟨S, C, hS, hC, hM2⟩` from `GlobalTheory.TypeSum.coefBound_two_finSum n ε H σ hstd hcb N`. Take `⟨d, X, hX, hL1⟩` from `GlobalTheory.TypeSum.TraceBound.trace_bound n ε H σ hstd`.
+
+Establish `hL1' : ∀ T : List (List (Mx n)), ∃ (r : ℕ) (A : ℝ), Words (lieSet ε) T → ∀ (q : ℕ) (e : Fin q → H) (μ : Fin q → ℝ), Orthonormal ℂ e → (∀ i, IsKFin ε σ (e i)) → (∀ i, 1 ≤ μ i) → (∀ i, onePlusCas σ X (e i) = (μ i : ℂ) • e i) → ∑ i, sobNorm σ T (e i) ^ 2 / μ i ^ r ≤ A`. Introduce `T`. Distinguish the cases in `hT : Words (lieSet ε) T`. Take `⟨r, A, h⟩` from `hL1 T hT`. Conclude with `⟨r, A, fun _ => h⟩`.
+
+Conclude with `⟨0, 0, fun h => absurd h hT⟩`. Use `choose r A hrA using hL1'`. Establish `hXl : ∀ i, X i ∈ lieSet ε` using `fun i => (hX i).1`. Use `⟨S, hS, fun S' => 2 * r (S ++ S'), fun S' => C * (1 + (d : ℝ)) ^ r (S ++ S') * max 0 (A (S ++ S')), ?_⟩` and prove the remaining obligations. Introduce `p ℓ x hℓ hx B hB`.
+
+Establish `hB0 : ∀ k, 0 ≤ B k` using `fun k => by`. Establish `h` using `hB k [] (Nat.zero_le _) (by simp) 1 (one_mem_UJ ε)`. Establish `hp : (0 : ℝ) < (1 + hs (1 : Mx n)) ^ N` using `pow_pos (by linarith [hs_nonneg (1 : Mx n)]) _`. Conclude with `(mul_nonneg_iff_of_pos_right hp).1 ((norm_nonneg _).trans h)`. Take `⟨q, e, μ, he, heK, hμ, heig, hexp⟩` from `GlobalTheory.TypeSum.EigenSpan.exists_orthonormal_eigen n ε H σ hstd d X (fun i => ⟨(hX i).1, (hX i).2.1⟩) p x hx`.
+
+Establish `heS : ∀ i, Sm ε σ (e i)` using `fun i => hstd.2.2.1 _ (heK i)`. Establish `hxS : ∀ j, Sm ε σ (x j)` using `fun j => hstd.2.2.1 _ (hx j)`. Establish `hμ0 : ∀ i (t : ℕ), 0 < μ i ^ t` using `fun i t => pow_pos (by linarith [hμ i]) t`. Establish `hd0 : (0 : ℝ) ≤ 1 + (d : ℝ)` using `by positivity`. Establish `key : ∀ (t : ℕ) (i : Fin q) (w : H), Sm ε σ w → ‖∑ j, ⟪e i, x j⟫_ℂ * ℓ j w‖ ≤ C * ((1 + (d : ℝ)) ^ t * B (2 * t)) * sobNorm σ S (e i) * sobNorm σ S w / μ i ^ t`.
+
+Introduce `t i w hw`. Take `⟨L, hL1, hL2, hL3⟩` from `GlobalTheory.TypeSum.caspow_expand n ε H σ hσ d X hXl t`. Establish `hxt : ∀ j, Sm ε σ ((onePlusCas σ X)^[t] (x j))` using `fun j => sm_iterate_onePlusCas hσ hXl (hxS j) t`. Establish `hM : 0 ≤ (1 + (d : ℝ)) ^ t * B (2 * t)` using `mul_nonneg (pow_nonneg hd0 _) (hB0 _)`. Establish `hgrow : ∀ y ∈ UJset ε, ‖∑ j, ℓ j (σ y ((onePlusCas σ X)^[t] (x j)))‖ ≤ (1 + (d : ℝ)) ^ t * B (2 * t) * (1 + hs y) ^ N`.
+
+Introduce `y hy`. Establish `e1 : ∀ j, (onePlusCas σ X)^[t] (x j) = (L.map fun u => u.1 • Dw σ u.2 (x j)).sum` using `fun j => hL3 _ (hxS j)`. Simplify using `only [e1]`. Use `(norm_sum_list_le ℓ x y L).trans ?_` and prove the remaining obligations. Establish `hw0 : 0 ≤ B (2 * t) * (1 + hs y) ^ N` using `mul_nonneg (hB0 _) (pow_nonneg (by linarith [hs_nonneg y]) _)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `List.sum_le_sum fun u hu => mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Use `hB (2 * t) u.2 (hL1 u hu).1 (fun Y hY => ?_) y hy` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(hL1 u hu).2 Y hY`. Conclude with `hX i`.
+
+Use `_ = (L.map fun u => ‖u.1‖).sum * (B (2 * t) * (1 + hs y) ^ N) := List.sum_map_mul_right _ _ _`. Use `_ ≤ (1 + (d : ℝ)) ^ t * (B (2 * t) * (1 + hs y) ^ N) := mul_le_mul_of_nonneg_right hL2 hw0`. Use `_ = _ := by ring`. Establish `h2` using `hM2 p ℓ _ hℓ hxt _ hM hgrow (e i) w (heS i) hw`. Establish `e2 : ∀ j, ⟪e i, (onePlusCas σ X)^[t] (x j)⟫_ℂ = ((μ i : ℂ) ^ t) * ⟪e i, x j⟫_ℂ` using `fun j => by`.
+
+Rewrite using `[inner_iterate_onePlusCas hσ hXl (heS i) (hxS j), iterate_onePlusCas_of_eq hσ hXl (heS i) (heig i), inner_smul_left]`. Use `congr 1`. Rewrite using `[← Complex.ofReal_pow, Complex.conj_ofReal]`. Simplify using `only [e2, mul_assoc, ← Finset.mul_sum] at h2`. Rewrite `h2` using `[norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg (by linarith [hμ i])]`.
+
+Rewrite using `[le_div_iff₀ (hμ0 i t)]`. Establish `hc` using `mul_comm (‖∑ j, ⟪e i, x j⟫_ℂ * ℓ j w‖) (μ i ^ t)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hterm : ∀ (i : Fin q) (t : ℕ), 0 ≤ C * ((1 + (d : ℝ)) ^ t * B (2 * t)) * sobNorm σ S (e i) / μ i ^ t` using `fun i t => div_nonneg (mul_nonneg (mul_nonneg hC (mul_nonneg (pow_nonneg hd0 _) (hB0 _))) (sobNorm_nonneg σ S _)) (hμ0 i t).le`. Establish `hbdd : ∀ i : Fin q, BddBelow (Set.range fun t : ℕ => C * ((1 + (d : ℝ)) ^ t * B (2 * t)) * sobNorm σ S (e i) / μ i ^ t)` using `fun i => ⟨0, by rintro _ ⟨t, rfl⟩; exact hterm i t⟩`.
+
+Use `⟨q, fun i => ∑ j, ⟪e i, x j⟫_ℂ • ℓ j, e, fun i => ⨅ t : ℕ, C * ((1 + (d : ℝ)) ^ t * B (2 * t)) * sobNorm σ S (e i) / μ i ^ t, heS, fun i => le_ciInf fun t => hterm i t, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i w hw`. Establish `e3 : (∑ j, ⟪e i, x j⟫_ℂ • ℓ j) w = ∑ j, ⟪e i, x j⟫_ℂ * ℓ j w`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[e3, mul_comm, Real.mul_iInf_of_nonneg (sobNorm_nonneg σ S w)]`.
+
+Use `le_ciInf fun t => (key t i w hw).trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce `S' hS'`. Establish `hW : Words (lieSet ε) (S ++ S')` using `words_append hS hS'`. Establish `hA` using `hrA (S ++ S') hW q e μ he heK hμ heig`.
+
+Use `set r₀ := r (S ++ S')`. Establish `hK0 : 0 ≤ C * ((1 + (d : ℝ)) ^ r₀ * B (2 * r₀))` using `mul_nonneg hC (mul_nonneg (pow_nonneg hd0 _) (hB0 _))`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `a0` using `sobNorm_nonneg σ S (e i)`.
+
+Establish `b0` using `sobNorm_nonneg σ S' (e i)`. Establish `hab : sobNorm σ S (e i) * sobNorm σ S' (e i) ≤ sobNorm σ (S ++ S') (e i) ^ 2`. Rewrite using `[sobNorm_append]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hm` using `hμ0 i r₀`.
+
+Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := mul_le_mul_of_nonneg_left (div_le_div_of_nonneg_right hab hm.le) hK0`. Use `_ = C * ((1 + (d : ℝ)) ^ r₀ * B (2 * r₀)) * ∑ i, sobNorm σ (S ++ S') (e i) ^ 2 / μ i ^ r₀ := by`. Rewrite using `[Finset.mul_sum]`.
+
+Use `_ ≤ C * ((1 + (d : ℝ)) ^ r₀ * B (2 * r₀)) * max 0 (A (S ++ S')) := mul_le_mul_of_nonneg_left (hA.trans (le_max_right _ _)) hK0`. Use `_ = C * (1 + (d : ℝ)) ^ r (S ++ S') * max 0 (A (S ++ S')) * B (2 * r (S ++ S')) := by ring`. Introduce `y _`. Establish `h1 : ∀ j, ℓ j (σ y (x j)) = ∑ i, ⟪e i, x j⟫_ℂ * ℓ j (σ y (e i))` using `fun j => by conv_lhs => rw [hexp j]`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`.
+
+Simplify using `only [h1, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem exists_rewrite : GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach →
     ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ N : ℕ,

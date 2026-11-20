@@ -24,6 +24,13 @@ open ReciprocityTheory.ChartRestriction.G.FD
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : FD.Data E r) (x : FD.Frame X.Ψ r)
 
+/- English proof (translation)
+Establish `he : ∀ ρ : E →+* ℂ, Data.emb ρ (v + w) = Data.emb ρ v + Data.emb ρ w`. Introduce `ρ`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Unfold `Formalism.L2.Pj.perFr`.
+
+Rewrite using `[he, he]`. Use `split_ifs`. Simplify using `[Matrix.mulVec_add]`. Simplify using the standard rewrite rules. Simplify using `only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem perFr_add (v w : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     Formalism.L2.Pj.perFr X x (v + w) τ i = Formalism.L2.Pj.perFr X x v τ i + Formalism.L2.Pj.perFr X x w τ i := by
   have he : ∀ ρ : E →+* ℂ, Data.emb ρ (v + w) = Data.emb ρ v + Data.emb ρ w := by
@@ -39,6 +46,15 @@ theorem perFr_add (v w : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
   · simp
   · simp
 
+/- English proof (translation)
+Establish `he : ∀ ρ : E →+* ℂ, Data.emb ρ (α • v) = ρ α • Data.emb ρ v`. Introduce `ρ`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Establish `hc : (starRingEnd ℂ) ((conjEmb τ) α) = τ α`.
+
+Simplify using `[conjEmb]`. Unfold `Formalism.L2.Pj.perFr`. Rewrite using `[he, he]`. Use `split_ifs`. Simplify using `[Matrix.mulVec_smul]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [hermC, Pi.smul_apply, smul_eq_mul, map_mul, hc, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem perFr_smul (α : E) (v : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     Formalism.L2.Pj.perFr X x (α • v) τ i = τ α * Formalism.L2.Pj.perFr X x v τ i := by
   have he : ∀ ρ : E →+* ℂ, Data.emb ρ (α • v) = ρ α • Data.emb ρ v := by
@@ -58,12 +74,78 @@ theorem perFr_smul (α : E) (v : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
   · simp
   · simp
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_sq_eq]`. Simplify using `only [I2.Hf, Complex.mul_conj, Complex.re_sum, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+-/
 theorem norm_sq_eq_Hf {J : Type} [Fintype J] (v : EuclideanSpace ℂ J) : ‖v‖ ^ 2 = (I2.Hf v v).re := by
   rw [EuclideanSpace.norm_sq_eq]
   simp only [I2.Hf, Complex.mul_conj, Complex.re_sum, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U k x W Wu T ψ hg hu ho ht`. Establish `hU` using `hu`. Unfold `Formalism.L2.Pj.IsUnf at hU`. Take `⟨hr, hPsi, -⟩` from `hU`. Take `⟨hp0, hΨ⟩` from `hPsi k`.
+
+Take `⟨hbij0, hrt0, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hg`. Establish `hrel : Formalism.L2.PjFree.relab c σ = relab c σ` using `funext fun τ => rfl`. Establish `hbij : Function.Bijective (relab c σ)`. Rewrite using `[← hrel]`. Conclude with `hbij0`.
+
+Establish `hrt : ∀ τ : E →+* ℂ, relab c σ τ (H.rt : E) = H.rt0 ↔ τ (H.rt : E) = H.rt0`. Introduce `τ`. Rewrite using `[← hrel]`. Conclude with `hrt0 τ`. Unfold `GlobalTheory.EtaAn.IsTorusOf at ht`.
+
+Take `⟨hTr, -, hHf, hL, hact, -⟩` from `ht`. Establish `hsig` using `W.F.sig (W.ik k)`. Establish `hle` using `(U.X k).p0_le`. Establish `hcc : ∀ ρ : E →+* ℂ, NumberField.ComplexEmbedding.conjugate (conjEmb ρ) = ρ`. Introduce `ρ`.
+
+Use extensionality with `y`. Simplify using `[conjEmb, NumberField.ComplexEmbedding.conjugate_coe_eq]`. Establish `hcc2 : ∀ ρ : E →+* ℂ, conjEmb (conjEmb ρ) = ρ`. Introduce `ρ`. Use extensionality with `y`.
+
+Simplify using `[conjEmb]`. Establish `hconjMem : ∀ ρ : E →+* ℂ, ρ ∉ (U.X k).Ψ → conjEmb ρ ∈ (U.X k).Ψ`. Introduce `ρ hρ`. Rewrite using `[(U.X k).cmType, hcc]`. Conclude with `hρ`.
+
+Establish `hmultP : ∀ τ' : E →+* ℂ, relab c σ τ' ∈ (U.X k).Ψ → Dw.mult τ' = Dw.p`. Introduce `τ' h`. Establish `h' : τ' (H.rt : E) = H.rt0` using `(hrt τ').1 ((hΨ _).1 h)`. Simplify using `[Datum.mult, h']`. Establish `hmultN : ∀ τ' : E →+* ℂ, relab c σ τ' ∉ (U.X k).Ψ → Dw.mult τ' = Dw.q`.
+
+Introduce `τ' h`. Establish `h' : ¬ τ' (H.rt : E) = H.rt0` using `fun h'' => h ((hΨ _).2 ((hrt τ').2 h''))`. Simplify using `[Datum.mult, h']`. Set `fwd : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) → (U.X k).Ψ × Fin r` to `fun s => if h : relab c σ s.1 ∈ (U.X k).Ψ then (⟨relab c σ s.1, h⟩, ⟨(U.X k).p0 + s.2, by have := s.2.isLt; have := hmultP _ h; omega⟩) else (⟨conjEmb (relab c σ s.1), hconjMem _ h⟩, ⟨(U.X k).p0 - 1 - s.2, by have := s.2.isLt; have := hmultN _ h; omega⟩)`. Establish `hfwd : Function.Bijective fwd`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ1, i1⟩ ⟨τ2, i2⟩ heq`. Establish `hi1` using `i1.isLt`. Establish `hi2` using `i2.isLt`. Apply the tactic sequence `by_cases h1 : relab c σ τ1 ∈ (U.X k).Ψ <;> by_cases h2 : relab c σ τ2 ∈ (U.X k).Ψ`.
+
+Simplify using `only [fwd, dif_pos h1, dif_pos h2, Prod.mk.injEq, Subtype.mk.injEq, Fin.mk.injEq] at heq`. Take `⟨he1, he2⟩` from `heq`. Take `rfl` from `hbij.1 he1`. Take `rfl : i1 = i2` from `Fin.ext (by omega)`. Both sides reduce to the same expression.
+
+Simplify using `only [fwd, dif_pos h1, dif_neg h2, Prod.mk.injEq, Fin.mk.injEq] at heq`. Use `hmultN _ h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [fwd, dif_neg h1, dif_pos h2, Prod.mk.injEq, Fin.mk.injEq] at heq`. Use `hmultN _ h1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [fwd, dif_neg h1, dif_neg h2, Prod.mk.injEq, Subtype.mk.injEq, Fin.mk.injEq] at heq`. Take `⟨he1, he2⟩` from `heq`. Establish `hρ : relab c σ τ1 = relab c σ τ2`. Establish `h3` using `congrArg conjEmb he1`.
+
+Rewrite `h3` using `[hcc2, hcc2]`. Then use the resulting hypothesis. Take `rfl` from `hbij.1 hρ`. Use `hmultN _ h1` as an intermediate fact. Take `rfl : i1 = i2` from `Fin.ext (by omega)`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨⟨ρ, hρ⟩, t⟩`. Take `⟨τ', rfl⟩` from `hbij.2 ρ`. Distinguish the cases in `ht0 : (U.X k).p0 ≤ (t : ℕ)`. Use `⟨⟨τ', ⟨t - (U.X k).p0, by have := hmultP _ hρ; have := t.isLt; omega⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [fwd, dif_pos hρ]`.
+
+Use `Prod.ext (Subtype.ext rfl) (Fin.ext ?_)` and prove the remaining obligations. Use `show (U.X k).p0 + ((t : ℕ) - (U.X k).p0) = t`. Use linear arithmetic over natural numbers and integers. Take `⟨τ'', hτ''⟩` from `hbij.2 (conjEmb (relab c σ τ'))`. Establish `hn : relab c σ τ'' ∉ (U.X k).Ψ`.
+
+Rewrite using `[hτ'']`. Introduce `hm`. Rewrite `hm` using `[(U.X k).cmType, hcc]`. Conclude with `hm hρ`. Use `⟨⟨τ'', ⟨(U.X k).p0 - 1 - t, by have := hmultN _ hn; omega⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [fwd, dif_neg hn]`. Use `Prod.ext (Subtype.ext ?_) (Fin.ext ?_)` and prove the remaining obligations. Use `show conjEmb (relab c σ τ'') = relab c σ τ'`. Rewrite using `[hτ'', hcc2]`. Use `show (U.X k).p0 - 1 - ((U.X k).p0 - 1 - (t : ℕ)) = t`.
+
+Use linear arithmetic over natural numbers and integers. Set `idx : Fin W.g ≃ (U.X k).Ψ × Fin r` to `W.e.trans (Equiv.ofBijective fwd hfwd)`. Establish `hP : ∀ a j, W.Pm a j = GlobalTheory.RiemMaj.pc (U.X k) x.1 (W.φ k a : Fin r → E) (idx j)`. Introduce `a j`. Rewrite using `[W.pm_eq a j]`.
+
+Use `show _ = GlobalTheory.RiemMaj.pc (U.X k) x.1 _ (fwd (W.e j))`. Generalize the expression as in `W.e j = s`. Take `⟨τ', i⟩` from `s`. Establish `hi` using `i.isLt`. Distinguish the cases in `h : relab c σ τ' ∈ (U.X k).Ψ`.
+
+Use `hmultP _ h` as an intermediate fact. Establish `hlt : (U.X k).p0 + (i : ℕ) < r` using `by omega`. Establish `hnlt : ¬ (U.X k).p0 + (i : ℕ) < (U.X k).p0` using `by omega`. Simplify using `only [fwd, dif_pos h]`. Unfold `Formalism.L2.Pj.perFr GlobalTheory.RiemMaj.pc`.
+
+Simplify using `only [dif_pos h, dif_pos hlt, hnlt, if_false]`. Use `hmultN _ h` as an intermediate fact. Establish `hc` using `hconjMem _ h`. Establish `hlt : (U.X k).p0 - 1 - (i : ℕ) < r` using `by omega`. Establish `hlt' : (U.X k).p0 - 1 - (i : ℕ) < (U.X k).p0` using `by omega`.
+
+Simplify using `only [fwd, dif_neg h]`. Unfold `Formalism.L2.Pj.perFr GlobalTheory.RiemMaj.pc`. Simplify using `only [dif_neg h, dif_pos hc, dif_pos hlt, hlt', if_true]`. Establish `him : ∀ a b, (hermForm Wu.Hm (W.Pm a) (W.Pm b)).im = ((Algebra.trace ℚ E (-(U.X k).ξ0 * ReciprocityTheory.ChartRestriction.G.FD.herm (U.X k).Gm (W.φ k a : Fin r → E) (W.φ k b)) : ℚ) : ℝ)`. Introduce `a b`.
+
+Rewrite using `[Wu.c1 a b]`. Conclude with `W.isom k a b` after adjusting the coercions. Establish `hcore` using `GlobalTheory.RiemMaj.core (U.X k) x.2 idx (fun a => (W.φ k a : Fin r → E)) W.Pm hP W.per.2.2.2.1 Wu.Hm Wu.pos him`. Set `per : (Fin r → E) → Fin W.g → ℂ` to `fun v j => Formalism.L2.Pj.perFr (U.X k) x.1 v (relab c σ (W.e j).1) (W.e j).2`. Establish `per_add : ∀ v w, per (v + w) = per v + per w` using `fun v w =>`.
+
+Use function extensionality and compare the values at `fun j => perFr_add (U.X k) x.1 v w _ _`. Set `φ : (Fin r → E) →+ I2.Vsp T.dim` to `AddMonoidHom.mk' (fun v => ψ (per v)) (by`. Introduce `v w`. Use `show ψ (per (v + w)) = ψ (per v) + ψ (per w)`. Rewrite using `[per_add, map_add])`.
+
+Establish `hφa : ∀ a, φ (W.φ k a : Fin r → E) = ψ (W.Pm a)`. Introduce `a`. Use `show ψ (per _) = _`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Conclude with `(W.pm_eq a j).symm`. Establish `hmem : ∀ v ∈ (U.X k).Λ, ∃ a, (W.φ k a : Fin r → E) = v` using `fun v hv => ⟨(W.φ k).symm ⟨v, hv⟩, by simp⟩`. Establish `hTA : I2.IsTorusAt (U.X k) x.1 T`. Use `⟨φ, -1, Or.inr rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+
+Rewrite using `[hL y]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨_, (W.φ k a).2, hφa a⟩`. Introduce and unpack `⟨v, hv, rfl⟩`.
+
+Take `⟨a, rfl⟩` from `hmem v hv`. Conclude with `⟨a, (hφa a).symm⟩`. Introduce `α v show ψ (per _) = I2.act α (ψ (per v))`. Rewrite using `[← hact α (per v)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Conclude with `perFr_smul (U.X k) x.1 (α : E) v _ _`. Introduce `v hv`. Take `⟨a, rfl⟩` from `hmem v hv`. Rewrite using `[hφa, norm_sq_eq_Hf, hHf]`.
+
+Conclude with `hcore.1 a`. Introduce `u hu' v hv`. Take `⟨a, rfl⟩` from `hmem u hu'`. Take `⟨b, rfl⟩` from `hmem v hv`. Rewrite using `[hφa, hφa, hHf, him a b, neg_mul, map_neg]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hTA, ?_, fun th => (ReciprocityTheory.ChartRestriction.G.I2.TorusAtPf.torusAtLa1_holds E r (U.X k) x.1 x.2 T hTA).2 th⟩` and prove the remaining obligations. Rewrite using `[hTr, hsig.1, hsig.2]`. Conclude with `hr.symm`.
+-/
 theorem isTorusAt_of_isTorusOf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (k : U.Comp) (x : (U.X k).dom) (W : UnfAt U k x) (Wu : UnitAt W) (T : I2.PT E) (ψ : (Fin W.g → ℂ) ≃ₗ[ℂ] I2.Vsp T.dim), GoodEmb c σ → IsUnf U → (U.X k).IsOrtho x.1 → IsTorusOf (W.F.Di (W.ik k)) (fun j => relab c σ (W.e j).1) W.Pm Wu.Hm T ψ → I2.IsTorusAt (U.X k) x.1 T ∧ T.r = r ∧ ∀ th, T.ph th = I2.phiFD (U.X k) th x.1 := by
   intro E _ _ _ H Dw l Xo c σ r U k x W Wu T ψ hg hu ho ht
   classical

@@ -30,6 +30,11 @@ def StepA : Prop :=
     Formalism.MainNotions.SizesAt L →
       L.sc.b' ≤ L.sc.b ∧ 0 ≤ Rt L K ∧ L.sc.X'' D.R.n * Rt L K ≤ L.sc.b ∧ 1 < L.sc.X'' D.R.n ∧ 1 ≤ Real.log (L.sc.X'' D.R.n)
 
+/- English proof (translation)
+Establish `hsub : S ⊆ Finset.Icc 1 ⌊Y⌋₊`. Introduce `p hp`. Take `⟨h1, h2⟩` from `h p hp`. Conclude with `Finset.mem_Icc.mpr ⟨h1, Nat.le_floor h2⟩`. Establish `hc : S.card ≤ ⌊Y⌋₊`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_le_of_le (S : Finset ℕ) (Y : ℝ) (hY : 0 ≤ Y) (h : ∀ p ∈ S, 1 ≤ p ∧ (p : ℝ) ≤ Y) :
     (S.card : ℝ) ≤ Y := by
   have hsub : S ⊆ Finset.Icc 1 ⌊Y⌋₊ := by

@@ -19,6 +19,9 @@ section Real
 
 variable {r k : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> simp only [LsNc5.reim, Bool.false_eq_true, if_false, if_true] <;> first | exact Complex.continuous_re | exact Complex.continuous_im | fun_prop`.
+-/
 theorem reim_cont (b : Bool) : Continuous fun c : ℂ => LsNc5.reim c b := by
   cases b <;> simp only [LsNc5.reim, Bool.false_eq_true, if_false, if_true] <;>
     first | exact Complex.continuous_re | exact Complex.continuous_im | fun_prop
@@ -66,10 +69,18 @@ def Rc (t : (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) (i : LsNc5.CIdx r k) 
   | Sum.inl (c, b) => LsNc5.reim (t.1 c) b
   | Sum.inr a => t.2 a
 
+/- English proof (translation)
+Rewrite using `[Rc, Equiv.symm_apply_apply]`.
+-/
 theorem Rc_idx (t : (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) (j : WlocSk.NB.CI k r × Bool ⊕ Fin r) :
     Rc t (eIdx j) = (match j with | Sum.inl (c, b) => LsNc5.reim (t.1 c) b | Sum.inr a => t.2 a) := by
   rw [Rc, Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Take `⟨j, rfl⟩` from `eIdx.surjective i`. Break down `j with ⟨c, b⟩ | a` into its components or cases. Simplify using `only [Rc_idx]`. Conclude with `(reim_cont b).comp ((continuous_apply c).comp continuous_fst)`.
+
+Simplify using `only [Rc_idx]`. Conclude with `(continuous_apply a).comp continuous_snd`.
+-/
 theorem Rc_cont : Continuous (Rc (k := k) (r := r)) := by
   refine continuous_pi fun i => ?_
   obtain ⟨j, rfl⟩ := eIdx.surjective i
@@ -79,6 +90,9 @@ theorem Rc_cont : Continuous (Rc (k := k) (r := r)) := by
   · simp only [Rc_idx]
     exact (continuous_apply a).comp continuous_snd
 
+/- English proof (translation)
+Establish `h : {z : ℂ | LsNc5.reim z false ∈ P ∧ LsNc5.reim z true ∈ Q} = Complex.measurableEquivRealProd ⁻¹' (P ×ˢ Q)`. Use extensionality with `z`. Conclude with `Iff.rfl`. Rewrite using `[h, Complex.volume_preserving_equiv_real_prod.measure_preimage_equiv, Measure.volume_eq_prod, Measure.prod_prod]`.
+-/
 theorem volume_reim (P Q : Set ℝ) (hP : MeasurableSet P) (hQ : MeasurableSet Q) :
     (volume : Measure ℂ) {z | LsNc5.reim z false ∈ P ∧ LsNc5.reim z true ∈ Q} = volume P * volume Q := by
   have h : {z : ℂ | LsNc5.reim z false ∈ P ∧ LsNc5.reim z true ∈ Q} =
@@ -88,6 +102,17 @@ theorem volume_reim (P Q : Set ℝ) (hP : MeasurableSet P) (hQ : MeasurableSet Q
   rw [h, Complex.volume_preserving_equiv_real_prod.measure_preimage_equiv, Measure.volume_eq_prod,
     Measure.prod_prod]
 
+/- English proof (translation)
+Use `show Measure.map Rc (volume : Measure ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))) = Measure.pi fun _ => volume`. Use `(Measure.pi_eq fun s hs => ?_).symm` and prove the remaining obligations. Establish `hpre : Rc ⁻¹' Set.univ.pi s = (Set.univ.pi fun c => {z : ℂ | LsNc5.reim z false ∈ s (eIdx (Sum.inl (c, false))) ∧ LsNc5.reim z true ∈ s (eIdx (Sum.inl (c, true)))}) ×ˢ (Set.univ.pi fun a => s (eIdx (Sum.inr a)))`. Use extensionality with `t`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi, Set.mem_prod, Set.mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun c => ⟨?_, ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Simplify `h (eIdx (Sum.inl (c, false)))` using `only [Rc_idx]`. Simplify `h (eIdx (Sum.inl (c, true)))` using `only [Rc_idx]`.
+
+Simplify `h (eIdx (Sum.inr a))` using `only [Rc_idx]`. Introduce and unpack `⟨h1, h2⟩ i`. Take `⟨j, rfl⟩` from `eIdx.surjective i`. Break down `j with ⟨c, b⟩ | a` into its components or cases. Rewrite using `[Rc_idx]`.
+
+Consider the cases of `b`. Conclude with `(h1 c).1`. Conclude with `(h1 c).2`. Rewrite using `[Rc_idx]`. Conclude with `h2 a`.
+
+Rewrite using `[Measure.map_apply Rc_cont.measurable (MeasurableSet.univ_pi hs), hpre, Measure.volume_eq_prod, Measure.prod_prod, volume_pi_pi, volume_pi_pi]`. Simplify using `only [volume_reim _ _ (hs _) (hs _)]`. Use `conv_rhs => rw [← eIdx.prod_comp, Fintype.prod_sum_type, Fintype.prod_prod_type]`. Simplify using `only [Fintype.prod_bool, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_Rc : (volume : Measure ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))).map Rc = volume := by
   show Measure.map Rc (volume : Measure ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))) =
     Measure.pi fun _ => volume
@@ -159,6 +184,13 @@ def Kc (T : ℝ) (m : Mt k r) : LsNc5.CIdx r k → ℝ := fun i =>
   | Sum.inr (Sum.inr (Sum.inl (p, t))) => LsNc5.reim (WlocSk.NB.kof m p.1.1 p.1.2) t
   | Sum.inr (Sum.inr (Sum.inr a)) => (WlocSk.NB.mof m a a).im
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Establish `hE : ∀ a b, Continuous fun m : Mt k r => m a b` using `fun a b => (continuous_apply b).comp (continuous_apply a)`. Establish `hM : ∀ a b, Continuous fun m : Mt k r => WlocSk.NB.mof m a b`. Introduce `a b`. Simplify using `only [WlocSk.NB.mof, WlocSk.NB.bF, WlocSk.NB.bC, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+
+Conclude with `continuous_finset_sum _ fun c _ => ((hE _ _).star).mul (hE _ _)`. Break down `i with ((⟨p, u⟩ | ⟨a, u⟩) | (⟨a, j, u⟩ | (⟨p, u⟩ | a)))` into its components or cases. Conclude with `(reim_cont u).comp (hE _ _)`. Conclude with `(reim_cont u).comp (continuous_const.mul (hE _ _))`. Conclude with `(reim_cont u).comp (hE _ _)`.
+
+Conclude with `(reim_cont u).comp (((hM _ _).sub (hM _ _).star).div_const 2)`. Conclude with `Complex.continuous_im.comp (hM a a)`.
+-/
 theorem Kc_cont (T : ℝ) : Continuous (Kc (k := k) (r := r) T) := by
   refine continuous_pi fun i => ?_
   have hE : ∀ a b, Continuous fun m : Mt k r => m a b := fun a b =>
@@ -178,9 +210,19 @@ def dY (T : ℝ) : LsNc5.CIdx r k → ℝ
   | Sum.inl (Sum.inr _) => Real.sqrt T
   | _ => 1
 
+/- English proof (translation)
+Apply the tactic sequence `cases t <;> simp [LsNc5.reim]`.
+-/
 theorem reim_ofReal_mul (c : ℝ) (z : ℂ) (t : Bool) : LsNc5.reim ((c : ℂ) * z) t = c * LsNc5.reim z t := by
   cases t <;> simp [LsNc5.reim]
 
+/- English proof (translation)
+Take `⟨x, s⟩` from `t`. Establish `h` using `WlocSk.NB.nilpotent_chart_right_inverse x s`. Apply the tactic sequence `rcases i with ((⟨p, u⟩ | ⟨a, u⟩) | (⟨a, j, u⟩ | (⟨p, u⟩ | a))) <;> dsimp only [Kc, dY, Rc, eIdx, Equiv.coe_fn_symm_mk, idxC']`. Rewrite using `[one_mul, show x (Sum.inl p) = WlocSk.NB.psiC (WlocSk.NB.phi0 x s) (Sum.inl p) by rw [h.1]]`. Both sides reduce to the same expression.
+
+Rewrite using `[reim_ofReal_mul, show x (Sum.inr (Sum.inl (a, Fin.last k))) = WlocSk.NB.psiC (WlocSk.NB.phi0 x s) (Sum.inr (Sum.inl (a, Fin.last k))) by rw [h.1]]`. Both sides reduce to the same expression. Rewrite using `[one_mul, show x (Sum.inr (Sum.inl (a, Fin.castSucc j))) = WlocSk.NB.psiC (WlocSk.NB.phi0 x s) (Sum.inr (Sum.inl (a, Fin.castSucc j))) by rw [h.1]]`. Both sides reduce to the same expression. Rewrite using `[one_mul, show x (Sum.inr (Sum.inr p)) = WlocSk.NB.psiC (WlocSk.NB.phi0 x s) (Sum.inr (Sum.inr p)) by rw [h.1]]`.
+
+Both sides reduce to the same expression. Rewrite using `[one_mul, show s a = WlocSk.NB.psiR (WlocSk.NB.phi0 x s) a by rw [h.2]]`. Both sides reduce to the same expression.
+-/
 theorem chart_kappa_coordinates (T : ℝ) (t : (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)) (i : LsNc5.CIdx r k) :
     Kc T (WlocSk.NB.phi0 t.1 t.2) i = dY T i * Rc t i := by
   obtain ⟨x, s⟩ := t
@@ -205,9 +247,15 @@ instance instDecEqCIdx : DecidableEq (LsNc5.CIdx r k) := Classical.decEq _
 
 def LyM (T : ℝ) : (LsNc5.CIdx r k → ℝ) →ₗ[ℝ] (LsNc5.CIdx r k → ℝ) := Matrix.toLin' (Matrix.diagonal (dY T))
 
+/- English proof (translation)
+Simplify using `[LyM, Matrix.toLin'_apply, Matrix.mulVec_diagonal]`.
+-/
 theorem LyM_apply (T : ℝ) (v : LsNc5.CIdx r k → ℝ) (i : LsNc5.CIdx r k) : LyM T v i = dY T i * v i := by
   simp [LyM, Matrix.toLin'_apply, Matrix.mulVec_diagonal]
 
+/- English proof (translation)
+Rewrite using `[LyM, LinearMap.det_toLin', Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.mpr fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases i with ((_ | _) | (_ | _)) <;> simp [dY, Real.sqrt_ne_zero', hT]`.
+-/
 theorem det_LyM_ne {T : ℝ} (hT : 0 < T) : LinearMap.det (LyM (k := k) (r := r) T) ≠ 0 := by
   rw [LyM, LinearMap.det_toLin', Matrix.det_diagonal]
   refine Finset.prod_ne_zero_iff.mpr fun i _ => ?_
@@ -220,11 +268,19 @@ section LocFrame
 variable {r k : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
   {w : Fin k → Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+Rewrite using `[(Qi_mulVec_eI (ε := ε) (e := e) (f := f) (wf := w) (z0 := z0) _ b).symm, Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem hJ_f_col {z0 : Fin (2 * r + k + 1) → ℂ} (g : Formalism.REAL.UJ ε) (b : Fin r) (j : Fin (2 * r + k + 1)) :
     hJ ε (f b) (uMat g *ᵥ colQ e f w z0 j) = (Qi ε e f w z0 * uMat g * Qm e f w z0) (eI k r b) j := by
   rw [(Qi_mulVec_eI (ε := ε) (e := e) (f := f) (wf := w) (z0 := z0) _ b).symm, Matrix.mulVec_mulVec]
   rfl
 
+/- English proof (translation)
+Unfold `WlocSk.UnitaryGroupBasics.col`. Introduce `i j hj hor`. Distinguish the cases in `hjr : (j : ℕ) < r`. Establish `he : eI k r ⟨j, hjr⟩ = j` using `Fin.ext rfl`. Use `h1 ⟨j, hjr⟩ i (by show (j : ℕ) ≤ i; omega)` as an intermediate fact.
+
+Rewrite `this` using `[he]`. Then use the resulting hypothesis. Conclude with `h2 i j (by omega) hj (by omega)`.
+-/
 private theorem col_of_unipotent_entries {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (h1 : ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), (a : ℕ) ≤ i →
       m i (eI k r a) = if i = eI k r a then 1 else 0)
@@ -239,6 +295,31 @@ private theorem col_of_unipotent_entries {m : Matrix (Fin (2 * r + k + 1)) (Fin 
     rwa [he] at this
   · exact h2 i j (by omega) hj (by omega)
 
+/- English proof (translation)
+Simplify using `only [cM]`. Use `set M := Qi ε e f w (z0v T z) * uMat g * Qm e f w (z0v T z) with hMdef`. Establish `hcol : ∀ (b : Fin r) (j : Fin (2 * r + k + 1)), hJ ε (f b) (uMat g *ᵥ colQ e f w (z0v T z) j) = M (eI k r b) j` using `fun b j => hJ_f_col g b j`. Establish `cE : ∀ a : Fin r, colQ e f w (z0v T z) (eI k r a) = e a`. Introduce `a`.
+
+Establish `hv : (eI k r a).val = a.val` using `rfl`. Unfold `colQ`. Rewrite using `[dif_pos (by omega)]`. Apply the tactic sequence `all_goals rfl`. Establish `cF : ∀ a : Fin r, colQ e f w (z0v T z) (esI k r a) = f a`.
+
+Introduce `a`. Establish `ha` using `a.isLt`. Establish `hv : (esI k r a).val = 2 * r + k - a.val` using `rfl`. Unfold `colQ`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_neg (by omega)]`.
+
+Use `congr 1`. Apply the tactic sequence `all_goals (apply Fin.ext; show 2 * r + k - (esI k r a).val = a.val; omega)`. Establish `cW : ∀ j : Fin k, colQ e f w (z0v T z) (wI k r (Fin.castSucc j)) = w j`. Introduce `j`. Establish `hj` using `j.isLt`.
+
+Establish `hv : (wI k r (Fin.castSucc j)).val = r + j.val` using `rfl`. Unfold `colQ`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Use `congr 1`. Apply the tactic sequence `all_goals (apply Fin.ext; show (wI k r (Fin.castSucc j)).val - r = j.val; omega)`.
+
+Establish `cZ : colQ e f w (z0v T z) (wI k r (Fin.last k)) = z0v T z`. Establish `hv : (wI k r (Fin.last k)).val = r + k` using `rfl`. Unfold `colQ`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_pos hv]`. Establish `hX : xL ε e f g = WlocSk.NB.bA M`.
+
+Use function extensionality and compare the values at `b a`. Use `show hJ ε (f b) (uMat g *ᵥ e a) = M (eI k r b) (eI k r a)`. Rewrite using `[← cE a]`. Conclude with `hcol b _`. Establish `hA : aL ε f g = WlocSk.NB.bC M`.
+
+Use function extensionality and compare the values at `b a`. Use `show hJ ε (f b) (uMat g *ᵥ f a) = M (eI k r b) (esI k r a)`. Rewrite using `[← cF a]`. Conclude with `hcol b _`. Establish `hg'` using `hg`.
+
+Simplify using `only [Nset, Set.mem_setOf_eq] at hg'`. Take `⟨hU, h1, h2⟩` from `hg'`. Establish `hCB : WlocSk.NB.ColB M` using `WlocSk.NB.colB_of (col_of_unipotent_entries h1 h2)`. Establish `hMm : mL ε e f g = WlocSk.NB.mof M`. Apply the tactic sequence `rw [mL, hX, hA, Matrix.inv_eq_left_inv (WlocSk.NB.rel_F hCB hU)] <;> rfl`.
+
+Establish `hs : ((Real.sqrt T : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.mpr hT).ne'`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with ((⟨p, t⟩ | ⟨b, t⟩) | (⟨b, j, t⟩ | (⟨p, t⟩ | a))) <;> dsimp only [kapL, Kc]`. Apply the tactic sequence `rw [hX] <;> rfl`. Use `congr 1`.
+
+Rewrite using `[← hcol, cZ]`. Simplify using `only [z0v, Matrix.mulVec_smul, hJ, dotProduct_smul, smul_eq_mul, Complex.real_smul, Complex.ofReal_inv]`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hs, one_mul]`. Use `congr 1`. Rewrite using `[← cW j]`.
+
+Conclude with `hcol b _`. Apply the tactic sequence `rw [hMm] <;> rfl`. Apply the tactic sequence `rw [hMm] <;> rfl`.
+-/
 theorem kapL_eq {z : Fin (2 * r + k + 1) → ℂ} {T : ℝ} (hF : IsFrameJ ε e f w (z0v T z)) (hT : 0 < T)
     (g : Formalism.REAL.UJ ε) (hg : Qi ε e f w (z0v T z) * uMat g * Qm e f w (z0v T z) ∈ Nset k r) :
     kapL ε e f w z g = Kc T (cM (ε := ε) (Qi ε e f w (z0v T z)) (Qm e f w (z0v T z)) g) := by
@@ -305,6 +386,47 @@ theorem kapL_eq {z : Fin (2 * r + k + 1) → ℂ} {T : ℝ} (hF : IsFrameJ ε e 
 
 end LocFrame
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hFJ` using `isFrameJ_of hT hee hff hef hww hew hfw hez hfz hzz hzw`. Establish `emb` using `embQ hFJ`. Establish `hQz : Qm e f w (z0v T z) *ᵥ zBv k r T = z` using `Qm_zB hT z`. Use `set Ψ := cM (ε := ε) (Qi ε e f w (z0v T z)) (Qm e f w (z0v T z)) with hΨ`.
+
+Set `Φ : (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ) → Mt k r` to `fun t => WlocSk.NB.phi0 t.1 t.2`. Establish `hΦc : Continuous Φ` using `WlocSk.NB.continuous_nilpotent_chart`. Set `ψ : Mt k r → (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ)` to `fun x => (WlocSk.NB.psiC x, WlocSk.NB.psiR x)`. Establish `hψc : Continuous ψ` using `WlocSk.NB.continuous_psiC.prodMk WlocSk.NB.continuous_psiR`. Establish `hleft : Function.LeftInverse ψ Φ` using `fun t => by`.
+
+Take `⟨h1, h2⟩` from `WlocSk.NB.nilpotent_chart_right_inverse t.1 t.2`. Use `show (WlocSk.NB.psiC (WlocSk.NB.phi0 t.1 t.2), WlocSk.NB.psiR (WlocSk.NB.phi0 t.1 t.2)) = t`. Rewrite using `[h1, h2]`. Establish `hΦe : MeasurableEmbedding Φ`. Use `MeasurableEmbedding.of_measurable_inverse hΦc.measurable ?_ hψc.measurable hleft` and prove the remaining obligations.
+
+Establish `hr : Set.range Φ = {x | Φ (ψ x) = x}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩ show Φ (ψ (Φ t)) = Φ t`. Rewrite using `[hleft t]`.
+
+Introduce `hx`. Conclude with `⟨ψ x, hx⟩`. Rewrite using `[hr]`. Conclude with `(isClosed_eq (hΦc.comp hψc) continuous_id).measurableSet`. Establish `hΦN : ∀ t : (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ), WlocSk.NB.phi0 t.1 t.2 ∈ Nset k r` using `fun t => WlocSk.NB.test_vector_mem_schwartz_bruhat t.1 t.2`.
+
+Use `set ν := (volume : Measure ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))).map Φ with hν`. Use `haveI : SigmaFinite ν := hΦe.sigmaFinite_map`. Establish `hν0 : ν ≠ 0`. Introduce `h0`. Rewrite `h0` using `[hν, Measure.map_eq_zero_iff hΦe.measurable.aemeasurable]`.
+
+Conclude with `isOpen_univ.measure_ne_zero (volume : Measure ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))) Set.univ_nonempty (by rw [h0, Measure.coe_zero, Pi.zero_apply])`. Establish `hrange : ∀ t, ∃ g : Formalism.REAL.UJ ε, Ψ g = Φ t` using `fun t => by`. Use `⟨toUJ _ (conjQ_UJ hFJ (hΦN t).1), ?_⟩` and prove the remaining obligations. Use `show (Qi ε e f w (z0v T z) * uMat (toUJ _ (conjQ_UJ hFJ (hΦN t).1)) * Qm e f w (z0v T z) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = WlocSk.NB.phi0 t.1 t.2`. Rewrite using `[uMat_toUJ, Qi_Qm_conj hFJ]`.
+
+Use `set lam0 := Measure.comap Ψ ν with hlam0`. Establish `hmap : lam0.map Ψ = ν`. Rewrite using `[hlam0, emb.map_comap]`. Use `Measure.restrict_eq_self_of_ae_mem ?_` and prove the remaining obligations. Rewrite using `[ae_iff, hν, hΦe.map_apply]`.
+
+Use `measure_empty (μ := (volume : Measure ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))))` and compare the differences between its conclusion and the goal. Use extensionality with `t`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_not]`. Take `⟨g, hg⟩` from `hrange t`. Conclude with `⟨g, hg⟩`.
+
+Use `haveI : SigmaFinite lam0 := SigmaFinite.of_map _ emb.measurable.aemeasurable (by rw [hmap]; infer_instance)`. Establish `hNz : NLoc ε e (Qm e f w (z0v T z) *ᵥ zBv k r T) = NLoc ε e z` using `by rw [hQz]`. Establish `hz0 : ∃ t : ℂ, z0v T z = t • (Qm e f w (z0v T z) *ᵥ zBv k r T)` using `⟨(((Real.sqrt T)⁻¹ : ℝ) : ℂ), by rw [hQz]; rfl⟩`. Establish `hHaar : IsHaarLoc (NLoc ε e z) lam0`. Use `⟨inferInstance, fun h0 => hν0 (by rw [← hmap, h0, Measure.map_zero]), ?_, fun s hs => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hlam0, emb.comap_apply, hν, hΦe.map_apply]`. Use `measure_empty (μ := (volume : Measure ((WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ))))` and compare the differences between its conclusion and the goal. Use extensionality with `t`. Simplify using `only [Set.mem_preimage, Set.mem_image, Set.mem_compl_iff, Set.mem_empty_iff_false, iff_false, not_exists, not_and]`. Introduce `g hg hgt`.
+
+Apply `hg` to reduce the goal to its premises. Rewrite using `[← hNz]`. Use `inN_of_conj hFJ (inWb_zB T) ?_` and prove the remaining obligations. Establish `: (Qi ε e f w (z0v T z) * uMat g * Qm e f w (z0v T z) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = WlocSk.NB.phi0 t.1 t.2` using `hgt`. Rewrite using `[this]`.
+
+Conclude with `hΦN t`. Establish `hs' : InN ε e (Qm e f w (z0v T z) *ᵥ zBv k r T) (uMat s)`. Establish `h1 : s ∈ NLoc ε e (Qm e f w (z0v T z) *ᵥ zBv k r T)` using `by rw [hNz]; exact hs`. Conclude with `h1`. Establish `h0 : Qi ε e f w (z0v T z) * uMat s * Qm e f w (z0v T z) ∈ Nset k r` using `conj_mem_Nset hFJ hz0 (uMat_mem s) hs'`.
+
+Use `set m0 := Qi ε e f w (z0v T z) * uMat s * Qm e f w (z0v T z) with hm0`. Establish `hfun : Ψ ∘ (fun x => s * x) = lmulM m0 ∘ Ψ`. Use function extensionality and compare the values at `x`. Use `show (Qi ε e f w (z0v T z) * uMat (s * x) * Qm e f w (z0v T z) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = m0 * (Qi ε e f w (z0v T z) * uMat x * Qm e f w (z0v T z))`. Rewrite using `[uMat_mul, hm0]`.
+
+Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc (Qi ε e f w (z0v T z) * uMat s) (Qm e f w (z0v T z)) (Qi ε e f w (z0v T z)), Qm_mul_Qi hFJ, Matrix.mul_one]`. Establish `hsh : lmulM m0 ∘ Φ = Φ ∘ (fun t : (WlocSk.NB.CI k r → ℂ) × (Fin r → ℝ) => (t.1 + WlocSk.NB.shG m0 t.1, t.2 + WlocSk.NB.shH m0 t.1))`. Use function extensionality and compare the values at `t`. Take `⟨h1, h2⟩` from `WlocSk.NB.lmul_coord h0 t.1 t.2`.
+
+Establish `hmem` using `WlocSk.UnitaryGroupBasics.mem_n_mul h0 (WlocSk.NB.test_vector_mem_schwartz_bruhat t.1 t.2)`. Use `show m0 * WlocSk.NB.phi0 t.1 t.2 = WlocSk.NB.phi0 (t.1 + WlocSk.NB.shG m0 t.1) (t.2 + WlocSk.NB.shH m0 t.1)`. Rewrite using `[← h1, ← h2]`. Conclude with `(WlocSk.NB.nilpotent_chart_left_inverse hmem).symm`. Establish `hmp` using `WlocSk.NB.shear_mp (d := r) WlocSk.NB.rk (WlocSk.NB.shG m0) (WlocSk.NB.shH m0) (fun i => (WlocSk.NB.continuous_shG m0 i).measurable) (fun i x y h => WlocSk.NB.shG_dep m0 i x y h) (WlocSk.NB.continuous_shH m0).measurable`.
+
+Establish `key : (lam0.map (fun x => s * x)).map Ψ = lam0.map Ψ`. Rewrite using `[Measure.map_map emb.measurable (measurable_const_mul s), hfun, ← Measure.map_map (measurable_lmulM m0) emb.measurable, hmap, hν, Measure.map_map (measurable_lmulM m0) hΦe.measurable, hsh, ← Measure.map_map hΦe.measurable hmp.measurable, hmp.map_eq]`. Rewrite using `[← emb.comap_map (lam0.map (fun x => s * x)), key, emb.comap_map]`. Establish `hkc : ∀ᵐ g ∂lam0, kapL ε e f w z g = (Kc T ∘ Ψ) g` using `by filter_upwards [(ae_iff.2 hHaar.2.2.1 : ∀ᵐ g ∂lam0, g ∈ NLoc ε e z)] with g hg`. Establish `hg' : InN ε e (Qm e f w (z0v T z) *ᵥ zBv k r T) (uMat g)`.
+
+Establish `h1 : g ∈ NLoc ε e (Qm e f w (z0v T z) *ᵥ zBv k r T)` using `by rw [hNz]; exact hg`. Conclude with `h1`. Conclude with `kapL_eq hFJ hT g (conj_mem_Nset hFJ hz0 (uMat_mem g) hg')`. Establish `hdet` using `det_LyM_ne (k := k) (r := r) hT`. Use `set c : ℝ≥0∞ := ENNReal.ofReal |(LinearMap.det (LyM (k := k) (r := r) T))⁻¹| with hc`.
+
+Establish `hc0 : c ≠ 0` using `by rw [hc]; exact (ENNReal.ofReal_pos.2 (abs_pos.2 (inv_ne_zero hdet))).ne'`. Establish `hcT : c ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hmeasK : AEMeasurable (kapL ε e f w z) lam0` using `((Kc_cont T).measurable.comp emb.measurable).aemeasurable.congr (Filter.EventuallyEq.symm hkc)`. Use `⟨c⁻¹ • lam0, isHaarLoc_smul hHaar (ENNReal.inv_ne_zero.2 hcT) (ENNReal.inv_ne_top.2 hc0), hmeasK.smul_measure _, ?_⟩` and prove the remaining obligations. Establish `hcomp : Kc T ∘ Φ = LyM (k` using `k) (r := r) T ∘ Rc := by`.
+
+Use function extensionality and compare the values at `t`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, Function.comp_apply, LyM_apply]`. Conclude with `chart_kappa_coordinates T t i`. Rewrite using `[Measure.map_smul, Measure.map_congr hkc, ← Measure.map_map (Kc_cont T).measurable emb.measurable, hmap, hν, Measure.map_map (Kc_cont T).measurable hΦe.measurable, hcomp, ← Measure.map_map (LyM (k := k) (r := r) T).continuous_of_finiteDimensional.measurable Rc_cont.measurable, ma …`.
+-/
 theorem lebLoc {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ)
     (w : Fin k → Fin n → ℂ) (z : Fin n → ℂ) {T : ℝ} (hT : 0 < T)
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hff : ∀ a b, hJ ε (f a) (f b) = 0)
@@ -440,6 +562,11 @@ theorem lebLoc {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool) (e f
     map_Rc, Measure.map_linearMap_addHaar_eq_smul_addHaar _ hdet, ← hc, smul_smul, ENNReal.inv_mul_cancel hc0 hcT,
     one_smul]
 
+/- English proof (translation)
+Establish `hm : Measurable (fun F : ι → κ → ℝ => fun p : ι × κ => F p.1 p.2)` using `measurable_pi_lambda _ fun p => (measurable_pi_apply p.2).comp (measurable_pi_apply p.1)`. Use `show _ = Measure.pi fun _ : ι × κ => (volume : Measure ℝ)`. Use `(Measure.pi_eq fun s hs => ?_).symm` and prove the remaining obligations. Establish `hpre : (fun F : ι → κ → ℝ => fun p : ι × κ => F p.1 p.2) ⁻¹' Set.univ.pi s = Set.univ.pi fun i => Set.univ.pi fun j => s (i, j)`. Use extensionality with `F`.
+
+Simplify using `[Set.mem_univ_pi, Prod.forall]`. Rewrite using `[Measure.map_apply hm (MeasurableSet.univ_pi hs), hpre, Measure.pi_pi, Fintype.prod_prod_type]`. Simplify using `only [volume_pi_pi]`.
+-/
 theorem map_uncurry_volume {ι κ : Type*} [Fintype ι] [Fintype κ] :
     (Measure.pi fun _ : ι => (volume : Measure (κ → ℝ))).map
       (fun F : ι → κ → ℝ => fun p : ι × κ => F p.1 p.2) = volume := by
@@ -458,6 +585,9 @@ section Glob
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with ((⟨p, t⟩ | ⟨b, t⟩) | (⟨b, j, t⟩ | (⟨p, t⟩ | a))) <;> rfl`.
+-/
 theorem kapV_eq (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) (s : X.B.I.Ginf) :
     (fun i => LsNc5.kapV X u v s i) =
       kapL (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (s v) := by
@@ -466,6 +596,19 @@ theorem kapV_eq (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) (s : X.B.I.Ginf
 
 end Glob
 
+/- English proof (translation)
+Introduce `D X u`. Establish `hloc` using `fun v : InfinitePlace X.B.I.F => lebLoc (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (ProductExactness.Tw_pos u) (fX_ee X v) (fX_ff X v) (fX_ef X v) (fX_ww X u v) (fX_ew X u v) (fX_fw X u v) (fX_ez X u v) (fX_fz X u v) (frame_real_ …`. Use `choose lam hH hM hmap using hloc`. Use `haveI : ∀ v, SigmaFinite (lam v) := fun v => (hH v).1`. Establish `hco : X.NinfU u = (ProductExactness.NinfG X u : Set X.B.I.Ginf)` using `(ProductExactness.NinfG_coe X u).symm`.
+
+Use `⟨Measure.pi lam, ⟨inferInstance, ProductExactness.PiM.pi_ne_zero _ fun v => (hH v).2.1, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hco, ProductExactness.NinfG, Subgroup.coe_pi]`. Conclude with `ProductExactness.PiM.pi_conc _ _ fun v => (hH v).2.2.1`. Introduce `g hg`. Rewrite `hg` using `[hco]`.
+
+Conclude with `ProductExactness.PiM.pi_map_mul_left _ g fun v => (hH v).2.2.2 (g v) (hg v (Set.mem_univ v))`. Establish `hK' : (fun (s : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) => kapL (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (s v)) = (MeasurableEquiv.curry (InfinitePlace X.B.I.F) (LsNc5.CIdx D.R.rS D.R.k) ℝ) ∘ LsNc5.kap X u`. Use function extensionality and compare the values at `s v i`. Conclude with `(congrFun (kapV_eq X u v s) i).symm`. Establish `hK'm : Measurable (fun (s : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) => kapL (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v) (s v))`.
+
+Rewrite using `[hK']`. Conclude with `(MeasurableEquiv.curry _ _ ℝ).measurable.comp (LsNc5.kap_measurable X u)`. Establish `hkap : LsNc5.kap X u = (fun F : InfinitePlace X.B.I.F → LsNc5.CIdx D.R.rS D.R.k → ℝ => fun p : InfinitePlace X.B.I.F × LsNc5.CIdx D.R.rS D.R.k => F p.1 p.2) ∘ (fun (s : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) => kapL (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (Pro …`. Use function extensionality and compare the values at `s p`. Conclude with `congrFun (kapV_eq X u p.1 s) p.2`.
+
+Establish `hunc : Measurable (fun F : InfinitePlace X.B.I.F → LsNc5.CIdx D.R.rS D.R.k → ℝ => fun p : InfinitePlace X.B.I.F × LsNc5.CIdx D.R.rS D.R.k => F p.1 p.2)` using `measurable_pi_lambda _ fun p : InfinitePlace X.B.I.F × LsNc5.CIdx D.R.rS D.R.k => (measurable_pi_apply p.2).comp (measurable_pi_apply p.1)`. Use `haveI : ∀ v, SigmaFinite ((lam v).map (kapL (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v) (ProductExactness.zV X u v))) := fun v => by`. Rewrite using `[hmap v]`. Use `infer_instance`. Rewrite using `[hkap, ← Measure.map_map hunc hK'm, Measure.pi_map_pi (fun v => hM v)]`.
+
+Repeatedly rewrite using `[hmap]`. Conclude with `map_uncurry_volume`.
+-/
 theorem lebHaar_holds : LsNc5.LebHaar := by
   intro D X u
   have hloc := fun v : InfinitePlace X.B.I.F => lebLoc (nX X) (X.B.I.ε v) (eV X v) (ProductExactness.pV X v) (X.wfr u v)
@@ -505,6 +648,9 @@ theorem lebHaar_holds : LsNc5.LebHaar := by
     simp_rw [hmap]
     exact map_uncurry_volume
 
+/- English proof (translation)
+Conclude with `LsNc5.covolN_of_four LsNc5.kapInj haarUnique_holds lebHaar_holds hC`.
+-/
 theorem covolN_of_coordCovol (hC : LsNc5.CoordCovol) : LsNc5.CovolN := by
   exact LsNc5.covolN_of_four LsNc5.kapInj haarUnique_holds lebHaar_holds hC
 

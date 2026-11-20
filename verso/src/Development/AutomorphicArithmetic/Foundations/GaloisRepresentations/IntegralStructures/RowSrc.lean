@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Integ
 
 namespace UpperTheory.Gal.Int
 
+/- English proof (translation)
+The claim follows from `galoisRepresentations_of_thetaLift UpperTheory.TP.K.tLiftK`.
+-/
 theorem galoisLocalGlobalStrong_recParameter : UpperTheory.GalStar.Row0b recT := galoisRepresentations_of_thetaLift UpperTheory.TP.K.tLiftK
 
 end UpperTheory.Gal.Int

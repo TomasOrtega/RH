@@ -16,6 +16,15 @@ open GlobalTheory.SS GlobalTheory.FieldModel
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `hB.proper` as an intermediate fact. Take `⟨s₀, hs₀⟩` from `hasModel B`. Set `k₀` to `Subfield.closure (s₀ : Set K)`. Take `⟨B₀, φ₀, H₀⟩` from `hs₀ k₀ k₀.subtype fun x hx => ⟨⟨x, Subfield.subset_closure hx⟩, rfl⟩`. Establish `lB : LocallyOfFiniteType B.hom` using `inferInstance`.
+
+Establish `pBB : IsProper (B ⊗ B).hom` using `inferInstanceAs (IsProper (pullback.fst B.hom B.hom ≫ B.hom))`. Take `⟨sm, hm⟩` from `GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K _ _ _ _ _ _ _ (isPullback_sq H₀) H₀ inferInstance inferInstance lB μ[B]`. Take `⟨si, hi⟩` from `GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K _ _ _ _ _ _ _ H₀ H₀ inferInstance inferInstance lB ι[B]`. Take `⟨se, he⟩` from `GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K _ _ _ _ _ _ _ (isPullback_unit _) H₀ (inferInstanceAs (QuasiCompact (𝟙 (Sp K)))) (inferInstanceAs (QuasiSeparated (𝟙 (Sp K)))) lB η[B]`. Use `⟨s₀ ∪ (sm ∪ (si ∪ se)), by simp, fun k₁ _ β hs => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.union_subset_iff] at hs`. Take `⟨b₀, bm, bi, be⟩` from `hs`. Take `⟨ρ, hρ⟩` from `exists_factor β (s₀ : Set K) b₀`. Take `⟨φ₁, eφ, H₁⟩` from `exists_baseChange (spMap_comp hρ) H₀`. Establish `P₁ : IsPullback (pullback.fst B₀.hom (spMap ρ)) ((Over.pullback (spMap ρ)).obj B₀).hom B₀.hom (spMap ρ)` using `.of_hasPullback _ _`.
+
+Take `⟨m₁, hm₁⟩` from `hm k₁ ρ β hρ bm _ _ (sq H₁.w) _ φ₁ _ (isPullback_sq P₁) P₁ (sq_comp eφ _ _ _) eφ (isPullback_sq H₁).w H₁.w`. Take `⟨i₁, hi₁⟩` from `hi k₁ ρ β hρ bi _ _ φ₁ _ φ₁ _ P₁ P₁ eφ eφ H₁.w H₁.w`. Take `⟨e₁, he₁⟩` from `he k₁ ρ β hρ be (𝟙_ _) _ (spMap β) _ φ₁ _ (isPullback_unit (spMap ρ)) P₁ (spMap_comp hρ) eφ (isPullback_unit (spMap β)).w H₁.w`. Take `⟨gB, ab, gpB⟩` from `GlobalTheory.T.group_structure_descends_along_pullback k₁ K β B _ φ₁ hB H₁ m₁ i₁ e₁ _ (sq_fst _) (sq_snd _) hm₁ hi₁ he₁`. Conclude with `⟨_, gB, φ₁, ab, gpB⟩`.
+-/
 theorem exists_finite_isAbelianScheme_range {K : Type} [Field K] (B : Over (Sp K)) [GrpObj B]
     (hB : IsAbelianScheme B) :
     ∃ s : Set K, s.Finite ∧ ∀ (k₁ : Type) [Field k₁] (β : k₁ →+* K), s ⊆ Set.range β →
@@ -46,6 +55,11 @@ theorem exists_finite_isAbelianScheme_range {K : Type} [Field K] (B : Over (Sp K
   obtain ⟨gB, ab, gpB⟩ := GlobalTheory.T.group_structure_descends_along_pullback k₁ K β B _ φ₁ hB H₁ m₁ i₁ e₁ _ (sq_fst _) (sq_snd _) hm₁ hi₁ he₁
   exact ⟨_, gB, φ₁, ab, gpB⟩
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ B _ hB`. Take `⟨s, hs, h⟩` from `exists_finite_isAbelianScheme_range B hB`. Use `hs.to_subtype` as an intermediate fact. Establish `: Algebra.IsAlgebraic K Ω` using `IsAlgClosure.isAlgebraic`. Take `⟨B₁, g, φ, ab, gp⟩` from `h _ (algebraMap (IntermediateField.adjoin K s) Ω) fun x hx => ⟨⟨x, IntermediateField.subset_adjoin K s hx⟩, rfl⟩`.
+
+Take `⟨e, he, -⟩` from `grpPullback_iso (isGrpPullback_pullback B₁ _) gp`. Conclude with `⟨IntermediateField.adjoin K s, IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral, B₁, g, e, ab, he⟩`.
+-/
 theorem exists_finite_isAbelianScheme_descends : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (B : Over (Sp Ω)) [GrpObj B], IsAbelianScheme B → ∃ (L : IntermediateField K Ω) (_ : FiniteDimensional K L) (B₁ : Over (Sp L)) (_ : GrpObj B₁) (e : (Over.pullback (spMap (algebraMap L Ω))).obj B₁ ≅ B), IsAbelianScheme B₁ ∧ IsMonHom e.hom := by
   intro K Ω _ _ _ _ B _ hB
   obtain ⟨s, hs, h⟩ := exists_finite_isAbelianScheme_range B hB

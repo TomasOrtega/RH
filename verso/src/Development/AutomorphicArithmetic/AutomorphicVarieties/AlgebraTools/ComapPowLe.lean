@@ -2,6 +2,11 @@ import Mathlib
 
 open Polynomial Matrix IsLocalRing TensorProduct
 
+/- English proof (translation)
+Introduce `A M M' _ _ _ _ _ _ _ I f`. Take `⟨k, hk⟩` from `Ideal.exists_pow_inf_eq_pow_smul I (LinearMap.range f)`. Use `⟨k, fun m x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : f x ∈ I ^ (m + k) • (⊤ : Submodule A M') ⊓ LinearMap.range f` using `⟨hx, LinearMap.mem_range_self f x⟩`. Rewrite `h1` using `[hk (m + k) (Nat.le_add_left k m), Nat.add_sub_cancel]`.
+
+Establish `h2 : f x ∈ I ^ m • LinearMap.range f` using `Submodule.smul_mono le_rfl inf_le_right h1`. Rewrite `h2` using `[LinearMap.range_eq_map, ← Submodule.map_smul'']`. Establish `h3 : x ∈ ((I ^ m • (⊤ : Submodule A M)).map f).comap f` using `h2`. Rewrite `h3` using `[Submodule.comap_map_eq, sup_comm]`. Conclude with `h3`.
+-/
 theorem UpperTheory.V.AlgebraTools.comap_pow_le :
     ∀ {A M M' : Type} [CommRing A] [IsNoetherianRing A] [AddCommGroup M] [Module A M] [AddCommGroup M'] [Module A M'] [Module.Finite A M'] (I : Ideal A) (f : M →ₗ[A] M'), ∃ c : ℕ, ∀ m : ℕ, (I ^ (m + c) • (⊤ : Submodule A M')).comap f ≤ LinearMap.ker f ⊔ I ^ m • (⊤ : Submodule A M) := by
   intro A M M' _ _ _ _ _ _ _ I f

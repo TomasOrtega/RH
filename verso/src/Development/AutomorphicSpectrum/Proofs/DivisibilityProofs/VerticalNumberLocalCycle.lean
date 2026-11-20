@@ -16,6 +16,9 @@ attribute [local instance] MvPolynomial.algebraMvPolynomial
 
 variable {K : Type} {ι : K → Type}
 
+/- English proof (translation)
+Use `haveI hmax : (Ideal.span {((p : ℕ) : ℤ)}).IsMaximal := Ideal.IsPrime.isMaximal inferInstance (by rw [Ne, Ideal.span_singleton_eq_bot]; exact_mod_cast p.2.ne_zero)`. Conclude with `⟨(Int.quotientSpanNatEquivZMod (p : ℕ)).symm.trans (IsLocalization.AtPrime.equivQuotMaximalIdeal (Ideal.span {((p : ℕ) : ℤ)}) (ZP p))⟩`.
+-/
 theorem nonempty_residue_equiv (p : Nat.Primes) [Fact (p : ℕ).Prime] :
     Nonempty (ZMod (p : ℕ) ≃+* IsLocalRing.ResidueField (ZP p)) := by
   haveI hmax : (Ideal.span {((p : ℕ) : ℤ)}).IsMaximal :=
@@ -24,6 +27,11 @@ theorem nonempty_residue_equiv (p : Nat.Primes) [Fact (p : ℕ).Prime] :
   exact ⟨(Int.quotientSpanNatEquivZMod (p : ℕ)).symm.trans
     (IsLocalization.AtPrime.equivQuotMaximalIdeal (Ideal.span {((p : ℕ) : ℤ)}) (ZP p))⟩
 
+/- English proof (translation)
+Unfold `extTo`. Rewrite using `[Ideal.map_map]`. Use `congr 1`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem map_extTo {R S : Type} [CommRing R] [CommRing S] (g : R →+* S) (Q : Ideal (MRing ι ℤ)) :
     (extTo R Q).map (MvPolynomial.map g) = extTo S Q := by
   unfold extTo
@@ -33,6 +41,11 @@ theorem map_extTo {R S : Type} [CommRing R] [CommRing S] (g : R →+* S) (Q : Id
   · simp
   · simp
 
+/- English proof (translation)
+Take `⟨e⟩` from `nonempty_residue_equiv p`. Establish `h : specialIdeal (extTo (ZP p) Q) = (extTo (ZMod (p : ℕ)) Q).map (MvPolynomial.map (e : ZMod (p : ℕ) →+* _))`. Unfold `specialIdeal`. Rewrite using `[map_extTo, map_extTo]`. Establish `h2` using `intNumL_map_ringEquiv K ι (ZMod (p : ℕ)) (IsLocalRing.ResidueField (ZP p)) e (extTo (ZMod (p : ℕ)) Q) l`.
+
+Rewrite using `[← h2, ← h]`. Both sides reduce to the same expression.
+-/
 theorem vNumL_extTo [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] (p : Nat.Primes)
     [Fact (p : ℕ).Prime] (Q : Ideal (MRing ι ℤ)) (l : List (K → ℤ)) :
     vNumL (extTo (ZP p) Q) l = intNumL (ZMod (p : ℕ)) (extTo (ZMod (p : ℕ)) Q) l := by
@@ -46,6 +59,9 @@ theorem vNumL_extTo [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] (p : Nat
   rw [← h2, ← h]
   rfl
 
+/- English proof (translation)
+Establish `h` using `divCycle_map_localisation K ι ℤ (ZP p) (Ideal.span {((p : ℕ) : ℤ)}).primeCompl P f W' hW'`. Establish `e : algebraMap ℤ (ZP p) = Int.castRingHom (ZP p)` using `RingHom.ext_int _ _`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem divCycle_extTo [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] (p : Nat.Primes)
     (P : Ideal (MRing ι ℤ)) (f : MRing ι ℤ) (W' : Ideal (MRing ι (ZP p))) (hW' : W'.IsPrime) :
     divCycle (extTo (ZP p) P) (MvPolynomial.map (Int.castRingHom (ZP p)) f) W' =
@@ -55,6 +71,9 @@ theorem divCycle_extTo [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] (p : 
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Unfold `divCycle at h`. Use `split_ifs at h with hc`. Conclude with `hc.1.1.1`. Conclude with `absurd rfl h`.
+-/
 theorem isPrime_of_ne {R : Type} [CommRing R] {P : Ideal (MRing ι R)} {f : MRing ι R}
     {W : Ideal (MRing ι R)} (h : divCycle P f W ≠ 0) : W.IsPrime := by
   unfold divCycle at h
@@ -62,6 +81,11 @@ theorem isPrime_of_ne {R : Type} [CommRing R] {P : Ideal (MRing ι R)} {f : MRin
   · exact hc.1.1.1
   · exact absurd rfl h
 
+/- English proof (translation)
+Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩ hmem`. Establish `hs' : s ∉ Ideal.span {((p : ℕ) : ℤ)}` using `hs`. Establish `hdvd : ¬ ((p : ℕ) : ℤ) ∣ s` using `fun h => hs' (Ideal.mem_span_singleton.2 h)`. Take `⟨u, v, huv⟩` from `(Nat.prime_iff_prime_int.1 p.2).irreducible.coprime_iff_not_dvd.2 hdvd`.
+
+Establish `h1 : (C (u * ((p : ℕ) : ℤ) + v * s) : MRing ι ℤ) ∈ W`. Rewrite using `[C_add, C_mul, C_mul]`. Conclude with `W.add_mem (W.mul_mem_left _ hp) (W.mul_mem_left _ hmem)`. Rewrite `h1` using `[huv, C_1]`. Conclude with `hW.ne_top ((Ideal.eq_top_iff_one W).2 h1)`.
+-/
 theorem disjoint_consts_of_mem (p : Nat.Primes) {W : Ideal (MRing ι ℤ)} (hW : W.IsPrime)
     (hp : (C ((p : ℕ) : ℤ) : MRing ι ℤ) ∈ W) :
     Disjoint (ZpModel.consts ι p : Set (MRing ι ℤ)) (W : Set (MRing ι ℤ)) := by
@@ -76,18 +100,37 @@ theorem disjoint_consts_of_mem (p : Nat.Primes) {W : Ideal (MRing ι ℤ)} (hW :
   rw [huv, C_1] at h1
   exact hW.ne_top ((Ideal.eq_top_iff_one W).2 h1)
 
+/- English proof (translation)
+Rewrite using `[← finsum_mem_univ g]`. Use `finsum_mem_inter_support_eq g _ _ ?_` and prove the remaining obligations. Rewrite using `[Set.univ_inter, Set.inter_eq_right.2 h]`.
+-/
 theorem finsum_eq_mem {α : Type*} (g : α → ℤ) (t : Set α) (h : Function.support g ⊆ t) :
     ∑ᶠ x, g x = ∑ᶠ x ∈ t, g x := by
   rw [← finsum_mem_univ g]
   refine finsum_mem_inter_support_eq g _ _ ?_
   rw [Set.univ_inter, Set.inter_eq_right.2 h]
 
+/- English proof (translation)
+Use `haveI := ZpModel.isLocalization_consts ι p`. Rewrite using `[ZpModel.extTo_eq, ← ZpModel.algebraMap_eq]`. Conclude with `IsLocalization.map_comap (ZpModel.consts ι p) (MRing ι (ZP p)) W'`.
+-/
 theorem extTo_comap (p : Nat.Primes) (W' : Ideal (MRing ι (ZP p))) :
     extTo (ZP p) (W'.comap (MvPolynomial.map (Int.castRingHom (ZP p)))) = W' := by
   haveI := ZpModel.isLocalization_consts ι p
   rw [ZpModel.extTo_eq, ← ZpModel.algebraMap_eq]
   exact IsLocalization.map_comap (ZpModel.consts ι p) (MRing ι (ZP p)) W'
 
+/- English proof (translation)
+Establish `hCmap : MvPolynomial.map (Int.castRingHom (ZP p)) (C ((p : ℕ) : ℤ) : MRing ι ℤ) = (C ((p : ℕ) : ZP p) : MRing ι (ZP p))`. Rewrite using `[map_C]`. Simplify using the standard rewrite rules. Use `haveI := ZpModel.isLocalization_consts ι p`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `W' ⟨hW', hp⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← divCycle_extTo p P f W' (isPrime_of_ne hW')]`. Conclude with `hW'`. Use `show MvPolynomial.map (Int.castRingHom (ZP p)) (C ((p : ℕ) : ℤ) : MRing ι ℤ) ∈ W'`.
+
+Rewrite using `[hCmap]` and apply the resulting hypothesis. Introduce and unpack `W₁ - W₂ - h`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `W ⟨hW, hp⟩`. Establish `hWp : W.IsPrime` using `isPrime_of_ne hW`.
+
+Establish `hd` using `disjoint_consts_of_mem p hWp hp`. Establish `hprime : (extTo (ZP p) W).IsPrime`. Rewrite using `[ZpModel.extTo_eq]`. Conclude with `IsLocalization.isPrime_of_isPrime_disjoint (ZpModel.consts ι p) _ W hWp hd`. Establish `hcomap : (extTo (ZP p) W).comap (MvPolynomial.map (Int.castRingHom (ZP p))) = W`.
+
+Establish `h` using `IsLocalization.under_map_of_isPrime_disjoint (ZpModel.consts ι p) (MRing ι (ZP p)) hWp hd`. Rewrite using `[ZpModel.extTo_eq, ← ZpModel.algebraMap_eq]`. Conclude with `h`. Use `⟨extTo (ZP p) W, ⟨?_, ?_⟩, hcomap⟩` and prove the remaining obligations. Rewrite using `[divCycle_extTo p P f _ hprime, hcomap]`.
+
+Conclude with `hW`. Rewrite using `[← hCmap]`. Conclude with `Ideal.mem_map_of_mem _ hp`.
+-/
 theorem bijOn_comap [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] (p : Nat.Primes)
     (P : Ideal (MRing ι ℤ)) (f : MRing ι ℤ) :
     Set.BijOn (fun W' : Ideal (MRing ι (ZP p)) => W'.comap (MvPolynomial.map (Int.castRingHom (ZP p))))
@@ -132,6 +175,21 @@ end GlobalTheory.CompanionTheory.Ar.Num.ZpVert
 
 open GlobalTheory.CompanionTheory.Ar.Num.ZpVert in
 
+/- English proof (translation)
+Introduce `K _ _ ι _ P D hP p a f hf hfP l hl`. Use `haveI : Fact (p : ℕ).Prime := ⟨p.2⟩`. Take `⟨hirr, hmodel, -⟩` from `zp_model K ι P D hP p`. Establish `hfP' : MvPolynomial.map (Int.castRingHom (ZP p)) f ∉ extTo (ZP p) P` using `fun h => hfP (ZpModel.mem_of_map_mem p hP.2.1.1 hP.2.2.1 h)`. Establish `hf' : IsMultiHomog (MvPolynomial.map (Int.castRingHom (ZP p)) f) a`.
+
+Introduce `d hd`. Use `hf fun h0 => hd ?_` and prove the remaining obligations. Rewrite using `[coeff_map, h0, map_zero]`. Unfold `vertAt cycList cycEval`. Rewrite using `[finsum_eq_mem _ {W | divCycle P f W ≠ 0 ∧ (C ((p : ℕ) : ℤ) : MRing ι ℤ) ∈ W}, finsum_eq_mem _ {W' | divCycle (extTo (ZP p) P) (MvPolynomial.map (Int.castRingHom (ZP p)) f) W' ≠ 0 ∧ (C ((p : ℕ) : ZP p) : MRing ι (ZP p)) ∈ W'}]`.
+
+Use `symm`. Use `finsum_mem_eq_of_bijOn _ (bijOn_comap p P f) ?_` and prove the remaining obligations. Introduce and unpack `W' ⟨hW', hp⟩`. Establish `hWp : W'.IsPrime` using `isPrime_of_ne hW'`. Establish `hQp : (C ((p : ℕ) : ℤ) : MRing ι ℤ) ∈ W'.comap (MvPolynomial.map (Int.castRingHom (ZP p)))` using `by show MvPolynomial.map (Int.castRingHom (ZP p)) (C ((p : ℕ) : ℤ) : MRing ι ℤ) ∈ W'`.
+
+Rewrite using `[map_C]`. Simplify using `using hp`. Rewrite using `[divCycle_extTo p P f W' hWp]`. Use `beta_reduce`. Rewrite using `[if_pos hQp]`.
+
+Use `congr 1`. Establish `h` using `vNumL_extTo p (W'.comap (MvPolynomial.map (Int.castRingHom (ZP p)))) l`. Rewrite `h` using `[extTo_comap]`. Conclude with `h`. Introduce `W' hW'`.
+
+Establish `h1` using `left_ne_zero_of_mul hW'`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hp`. Establish `h0` using `GlobalTheory.T.vertical_number_zero_of_horizontal (ZP p) ((p : ℕ) : ZP p) hirr K ι (extTo (ZP p) P) D hmodel a _ hf' hfP' W' h1 hp l hl`. Conclude with `right_ne_zero_of_mul hW' h0`.
+
+Introduce `W hW`. Establish `h1` using `left_ne_zero_of_mul hW`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hp`. Conclude with `right_ne_zero_of_mul hW (if_neg hp)`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Num.vertAt_eq_cycList : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι ℤ)) (D : ℕ), IsArithVar P (D + 1) → ∀ (p : Nat.Primes) (a : K → ℕ) (f : MRing ι ℤ), IsMultiHomog f a → f ∉ P → ∀ l : List (K → ℤ), l.length = D → vertAt p P f l = cycList (divCycle (extTo (ZP p) P) (MvPolynomial.map (Int.castRingHom (ZP p)) f)) l := by
   intro K _ _ ι _ P D hP p a f hf hfP l hl
   classical

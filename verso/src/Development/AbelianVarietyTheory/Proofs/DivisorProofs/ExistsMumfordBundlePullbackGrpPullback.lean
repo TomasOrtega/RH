@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `S S' f G _ _ G₁ _ _ β hpb`. Set `U : Over.mk ((G2 G₁).hom ≫ f) ⟶ G2 G` to `lift (pushPt hpb.1.w (fst G₁ G₁)) (pushPt hpb.1.w (snd G₁ G₁))`. Establish `hU1 : U ≫ fst G G = pushPt hpb.1.w (fst G₁ G₁)` using `lift_fst _ _`. Establish `hU2 : U ≫ snd G G = pushPt hpb.1.w (snd G₁ G₁)` using `lift_snd _ _`. Use `⟨U.left, ⟨congrArg (fun z => z.left) hU1, congrArg (fun z => z.left) hU2⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `L N X Q h hL hN hQ hNL hLam`. Establish `hx : ∀ i, pushPt hpb.1.w (x2 G₁ i) = U ≫ x2 G i`. Introduce `i`. Use `fin_cases i`. Conclude with `hU1.symm`.
+
+Conclude with `hU2.symm`. Establish `e₁ : LBIso ((abelian₂ G L).pull U.left) (abelian₂ G₁ N)` using `GlobalTheory.CM.TripleModel.lbIso_cube_pull hpb hL hN hNL.symm (x2 G₁) (x2 G) U hx`. Establish `hLamL : (abelian₂ G L).IsLB` using `DVR.linComb_isLB _ hL _ _`. Establish `e₂ : LBIso ((abelian₂ G L).pull U.left) (Q.pull (U.left ≫ h))` using `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (abelian₂ G L) U.left U.left rfl) (chartPullSame Q (fun _ => U.left ≫ h) (fun _ => h) (fun _ => 1) U.left fun _ => rfl) hLam`. Conclude with `LBIso.trans (DVR.linComb_isLB _ hN _ _) (pull_isLB hLamL _) (pull_isLB hQ _) e₁.symm e₂`.
+-/
 theorem lbIso_lam_pull_of_isGrpPullback : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G] (G₁ : Over S') [GrpObj G₁] [IsCommMonObj G₁] (β : G₁.left ⟶ G.left), IsGrpPullback G₁ G f β → ∃ β₂ : (G2 G₁).left ⟶ (G2 G).left, Geo.Tor.IsSquare β β₂ ∧ ∀ (L : LB G.left) (N : LB G₁.left) (X : Scheme.{0}) (Q : LB X) (h : (G2 G).left ⟶ X), L.IsLB → N.IsLB → Q.IsLB → LBIso N (L.pull β) → LBIso (abelian₂ G L) (Q.pull h) → LBIso (abelian₂ G₁ N) (Q.pull (β₂ ≫ h)) := by
   intro S S' f G _ _ G₁ _ _ β hpb
   let U : Over.mk ((G2 G₁).hom ≫ f) ⟶ G2 G := lift (pushPt hpb.1.w (fst G₁ G₁)) (pushPt hpb.1.w (snd G₁ G₁))

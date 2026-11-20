@@ -11,6 +11,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Forma
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `𝒜 sel hduty`. Establish `hRec : ∀ {eps : ℝ} (Fm : FamP eps), 𝒜 Fm → Formalism.L2.LayerTwoFamilyClass Fm` using `fun Fm hc => class_of_record_of_choice (sel Fm hc) (class_duties_of_choice (sel Fm hc) (hduty Fm hc))`. Establish `hG2 : Closed (D3 3 𝒜) fun Fm _ => Formalism.MainNotions.G.Adm2F Fm` using `Closed.of_class fun Fm _ hc => admissible_tops_mertens Fm (topsF_of_chosenE Fm hc.2.1.choose_spec)`. Establish `hGt : Closed (D3 3 𝒜) fun Fm _ => Formalism.L2.G.GroupCompatibilityFamily Fm` using `Closed.of_class fun Fm _ hc => Formalism.L2.gTiedF_of_C2Rec Fm (hRec Fm (d3_a hc))`. Establish `lG` using `Formalism.L2.G.linkG_concrete5 (D3 3 𝒜) hGt hG2`.
+
+Conclude with `lG`.
+-/
 theorem GlobalTheory.Top.link_g : ∀ (𝒜 : FamClass)
     (sel : Formalism.L2.TSel 𝒜)
     (hduty : ∀ {eps : ℝ} (Fm : FamP eps), 𝒜 Fm → Duty Fm), Closed (D3 3 𝒜) fun Fm _ => LinkG Fm := by

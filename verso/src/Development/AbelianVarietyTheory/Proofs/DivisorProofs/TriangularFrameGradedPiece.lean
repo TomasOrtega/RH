@@ -11,12 +11,18 @@ set_option autoImplicit false
 
 namespace GlobalTheory.TriFrame
 
+/- English proof (translation)
+Use `congrArg (fun φ => (Scheme.Modules.Hom.app φ V) x) (fl.step_ι i)` as an intermediate fact. Simplify `this` using `only [Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply]`.
+-/
 theorem flag_inclusion_comp_eq {X : Scheme.{0}} {F : X.Modules} {r : ℕ} (fl : Vert.Flag F r) (i : Fin r) (V : X.Opens)
     (x : Γ(fl.F i.castSucc, V)) :
     (fl.ι i.succ).app V ((fl.step i).app V x) = (fl.ι i.castSucc).app V x := by
   have := congrArg (fun φ => (Scheme.Modules.Hom.app φ V) x) (fl.step_ι i)
   simpa only [Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply] using this
 
+/- English proof (translation)
+Establish `h : fl.step i ≫ fl.π i = 0` using `cokernel.condition _`. Use `congrArg (fun φ => (Scheme.Modules.Hom.app φ V) x) h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem flag_projection_of_inclusion_eq_zero {X : Scheme.{0}} {F : X.Modules} {r : ℕ} (fl : Vert.Flag F r) (i : Fin r) (V : X.Opens)
     (x : Γ(fl.F i.castSucc, V)) :
     (fl.π i).app V ((fl.step i).app V x) = 0 := by
@@ -28,6 +34,27 @@ end GlobalTheory.TriFrame
 
 namespace GlobalTheory.TriFrame
 
+/- English proof (translation)
+Introduce `X A F r s hs L ρ fl hT hSp i t ht`. Establish `hσ : IsFrame fun _ : Fin 1 => (fl.π i).app A t` using `GlobalTheory.T.graded_piece_frame_of_flag X F r fl A s (hSp A s hs (isTri_self hs)) i t ht`. Use `⟨hσ, fun x => ?_⟩` and prove the remaining obligations. Take `⟨V, e, k, hk, hx, he, htri, hdiag⟩` from `hT x`. Establish `hSpV` using `hSp V e he htri`.
+
+Take `⟨u', -, hu'⟩` from `hSpV i.succ`. Take `⟨u, -, hu⟩` from `hSp A s hs (isTri_self hs) i.castSucc`. Set `te : Γ(fl.F i.succ, V)` to `u' ⟨i, by simp⟩`. Establish `hte : (fl.ι i.succ).app V te = e i`. Use `(hu' _).trans (congrArg e (Fin.ext rfl))` and prove the remaining obligations.
+
+Establish `hσe` using `GlobalTheory.T.graded_piece_frame_of_flag X F r fl V e hSpV i te hte`. Set `W : X.Opens` to `V ⊓ A`. Set `c : Fin r → Γ(X, W)` to `coordIn hs e i`. Set `y : Fin r → Γ(fl.F i.succ, W)` to `fun l => if h : l < i then resM _ inf_le_right ((fl.step i).app A (u ⟨l, h⟩)) else resM _ inf_le_right t`. Establish `hy : ∀ l, c l • (fl.ι i.succ).app W (y l) = c l • resM F inf_le_right (s l)`.
+
+Introduce `l`. Distinguish the cases in `h : l < i`. Simplify using `only [y, dif_pos h]`. Rewrite using `[Twist.app_resM, flag_inclusion_comp_eq, hu]`. Both sides reduce to the same expression.
+
+Simplify using `only [y, dif_neg h]`. Rewrite using `[Twist.app_resM, ht]`. Break down `(not_lt.1 h).lt_or_eq with h' | h'` into its components or cases. Simplify using `[c, htri i l h']`. Rewrite using `[h']`.
+
+Establish `hsum : resM _ inf_le_left te = ∑ l, c l • y l`. Apply `QCoh.app_injective_of_mono (fl.ι i.succ) W` to reduce the goal to its premises. Rewrite using `[Twist.app_resM, hte]`. Establish `h1` using `((hs.basis (inf_le_right : W ≤ A)).sum_repr (resM F inf_le_left (e i))).symm`. Simplify using `only [IsFrame.basis_apply] at h1`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[← QCoh.appLinear_apply, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, QCoh.appLinear_apply, hy]`. Both sides reduce to the same expression.
+
+Establish `hπ : resM _ inf_le_left ((fl.π i).app V te) = c i • resM _ inf_le_right ((fl.π i).app A t)`. Rewrite using `[← Twist.app_resM, hsum, ← QCoh.appLinear_apply, map_sum, Finset.sum_eq_single i]`. Rewrite using `[map_smul, QCoh.appLinear_apply]`. Simplify using `only [y, lt_irrefl, dif_neg, not_false_eq_true, Twist.app_resM]`. Introduce `l _ hl`.
+
+Rewrite using `[map_smul, QCoh.appLinear_apply]`. Distinguish the cases in `h : l < i`. Simplify using `only [y, dif_pos h, Twist.app_resM, flag_projection_of_inclusion_eq_zero, map_zero, smul_zero]`. Simplify using `[c, htri i l (lt_of_le_of_ne (not_lt.1 h) (Ne.symm hl))]`. Simplify using the standard rewrite rules.
+
+Use `⟨V, fun _ => (fl.π i).app V te, fun _ => k i, fun _ => hk i, hx, hσe, fun a b hab => absurd hab (by rw [Subsingleton.elim a b]; exact lt_irrefl b), fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[coordIn, hπ, ← hσ.basis_apply (inf_le_right : W ≤ A) j, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul, mul_one]`. Conclude with `hdiag i`.
+-/
 theorem grTri : ∀ (X : Scheme.{0}) (A : X.Opens) (F : X.Modules) (r : ℕ) (s : Fin r → Γ(F, A)) (hs : IsFrame s)
     (L : Fin r → LB X) (ρ : ∀ i k, Γ(X, A ⊓ (L i).U k)) (fl : Vert.Flag F r), Tri hs L ρ →
     (∀ (V : X.Opens) (e : Fin r → Γ(F, V)), IsFrame e → IsTri hs e → Spans fl V e) →

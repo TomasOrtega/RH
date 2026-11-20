@@ -45,6 +45,17 @@ open Formalism.MainNotions.TaylorLogMetric Formalism.BasicNotions NumberField
 
 namespace Formalism.MainNotions.Ext
 
+/- English proof (translation)
+Take `⟨-, hdp, -, hd16, -⟩` from `H.hyp`. Establish `hm : H.sqd ∈ H.K` using `IntermediateField.mem_adjoin_simple_self ℚ H.sqd`. Establish `hx : (⟨H.sqd, hm⟩ : H.K) ^ 2 = ((-(H.d : ℤ) : ℤ) : H.K)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`.
+
+Conclude with `H.sqd_sq`. Use `Formalism.HF.P.quadDiscr_ne_one H.K (-(H.d : ℤ)) _ hx ?_ ?_ ?_ ?_` and prove the remaining obligations. Establish `key : @IntermediateField.adjoin ℚ _ H.K _ H.K.algebra' {⟨H.sqd, hm⟩} = ⊤`. Apply `IntermediateField.map_injective (IntermediateField.val H.K)` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_map, ← AlgHom.fieldRange_eq_map, IntermediateField.fieldRange_val, Set.image_singleton]`.
+
+Use `first`. Consider the case `rfl`. Consider the case `(simp only [IntermediateField.val_mk]; rfl)`. Consider the case `simp [Formalism.HC.HostRaw.K]`. Use `key` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `all_goals first`. Consider the case `exact Subsingleton.elim _ _`. Consider the case `(apply Algebra.algebra_ext; intro r; simp [Algebra.algebraMap_eq_smul_one])`. Conclude with `Int.squarefree_natAbs.mp (by simpa using hdp.prime.squarefree)`. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem discr_K {R : Ranks} (H : Host R) : discr H.K = -(H.d : ℤ) := by
   obtain ⟨-, hdp, -, hd16, -⟩ := H.hyp
   have hm : H.sqd ∈ H.K := IntermediateField.mem_adjoin_simple_self ℚ H.sqd

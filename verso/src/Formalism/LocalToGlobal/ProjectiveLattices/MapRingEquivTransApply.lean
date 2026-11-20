@@ -13,6 +13,13 @@ section Ext
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨d, _, _, rt, _, w0, tw, bar, be, _, rt0, _⟩` from `H`. Take `⟨d', _, _, rt', _, w0', tw', bar', be', _, rt0', _⟩` from `H'`. Simplify using `only at hd hrt hrt0`. Substitute `hd hrt hrt0` using the available equality. Establish `hw : w0 = w0'`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `h2` using `congrArg (fun x : 𝓞 E => (x : E)) (tw.trans tw'.symm)`. Simplify using `only [map_mul, map_ofNat] at h2`. Conclude with `mul_left_cancel₀ two_ne_zero h2`. Establish `hb : bar = bar'` using `RingEquiv.ext fun a => RingOfIntegers.ext ((be a).trans (be' a).symm)`.
+
+Substitute `hw hb` using the available equality. Both sides reduce to the same expression.
+-/
 theorem host_ext {H H' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (hd : H.d = H'.d) (hrt : H.rt = H'.rt)
     (hrt0 : H.rt0 = H'.rt0) : H = H' := by
   obtain ⟨d, _, _, rt, _, w0, tw, bar, be, _, rt0, _⟩ := H
@@ -28,6 +35,9 @@ theorem host_ext {H H' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (h
   subst hw hb
   rfl
 
+/- English proof (translation)
+Take `⟨M, _, _, Mb, _, _, _, A, _⟩` from `l`. Take `⟨M', _, _, Mb', _, _, _, A', _⟩` from `l'`. Simplify using `only at hM hMb hA`. Substitute `hM hMb hA` using the available equality. Both sides reduce to the same expression.
+-/
 theorem level_ext {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l l' : Level H} (hM : l.M = l'.M) (hMb : l.Mb = l'.Mb)
     (hA : l.A = l'.A) : l = l' := by
   obtain ⟨M, _, _, Mb, _, _, _, A, _⟩ := l
@@ -36,6 +46,9 @@ theorem level_ext {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l l
   subst hM hMb hA
   rfl
 
+/- English proof (translation)
+Take `⟨F, _, _, _, _⟩` from `c`. Take `⟨F', _, _, _, _⟩` from `c'`. Simplify using `only at h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem coeff_ext {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {l : Level H} {c c' : Coeff l} (h : c.F = c'.F) : c = c' := by
   obtain ⟨F, _, _, _, _⟩ := c
   obtain ⟨F', _, _, _, _⟩ := c'
@@ -49,6 +62,9 @@ variable {D : D7}
 
 namespace Par
 
+/- English proof (translation)
+Establish `e1` using `h a`. Establish `e2` using `h' (Q'.eO.symm (Q.eO a))`. Rewrite `e2` using `[RingEquiv.apply_symm_apply]`. Rewrite using `[← e1, e2]`. Conclude with `SetLike.coe_mem _`.
+-/
 theorem coe_mem_of_pinField {Q Q' : Par D} (h : Q.PinField) (h' : Q'.PinField) (a : 𝓞 Q.c.F) :
     ((a : Q.c.F) : ℂ) ∈ Q'.c.F := by
   have e1 := h a
@@ -57,6 +73,11 @@ theorem coe_mem_of_pinField {Q Q' : Par D} (h : Q.PinField) (h' : Q'.PinField) (
   rw [← e1, e2]
   exact SetLike.coe_mem _
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨a, b, _, hab⟩` from `IsFractionRing.div_surjective (A := 𝓞 Q.c.F) (⟨x, hx⟩ : Q.c.F)`. Establish `hx' : x = ((algebraMap (𝓞 Q.c.F) Q.c.F a : Q.c.F) : ℂ) / ((algebraMap (𝓞 Q.c.F) Q.c.F b : Q.c.F) : ℂ)`. Rewrite using `[← IntermediateField.coe_div, hab]`. Rewrite using `[hx']`.
+
+Conclude with `div_mem (coe_mem_of_pinField h h' a) (coe_mem_of_pinField h h' b)`.
+-/
 theorem F_le {Q Q' : Par D} (h : Q.PinField) (h' : Q'.PinField) : Q.c.F ≤ Q'.c.F := by
   intro x hx
   obtain ⟨a, b, _, hab⟩ := IsFractionRing.div_surjective (A := 𝓞 Q.c.F) (⟨x, hx⟩ : Q.c.F)
@@ -65,6 +86,9 @@ theorem F_le {Q Q' : Par D} (h : Q.PinField) (h' : Q'.PinField) : Q.c.F ≤ Q'.c
   rw [hx']
   exact div_mem (coe_mem_of_pinField h h' a) (coe_mem_of_pinField h h' b)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (F_le h h') (F_le h' h)`.
+-/
 theorem F_eq {Q Q' : Par D} (h : Q.PinField) (h' : Q'.PinField) : Q.c.F = Q'.c.F :=
   le_antisymm (F_le h h') (F_le h' h)
 
@@ -93,21 +117,36 @@ structure IsCoreIso {T T' : Core D} (h : LawsM T) (h' : LawsM T') (j : ℕ) (fe 
   l2 : ∀ (w : WeightFamilies.Wt D j) (σ : T'.Q.c.F →+* ℂ) (f : T.R j), f ∈ T.C j w →
     NlM h' j w σ (Φ f) = NlM h j w (σ.comp fe.toRingHom) f
 
+/- English proof (translation)
+The claim follows from `RingOfIntegers.ext rfl`.
+-/
 theorem mapRingEquiv_refl_apply {K : Type} [Field K] (x : 𝓞 K) : RingOfIntegers.mapRingEquiv (RingEquiv.refl K) x = x :=
   RingOfIntegers.ext rfl
 
+/- English proof (translation)
+The claim follows from `RingOfIntegers.ext rfl`.
+-/
 theorem mapRingEquiv_trans_apply {K K' K'' : Type} [Field K] [Field K'] [Field K''] (e : K ≃+* K') (e' : K' ≃+* K'')
     (x : 𝓞 K) :
     RingOfIntegers.mapRingEquiv (e.trans e') x = RingOfIntegers.mapRingEquiv e' (RingOfIntegers.mapRingEquiv e x) :=
   RingOfIntegers.ext rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem comp_refl_eq {K : Type} [Field K] (σ : K →+* ℂ) : σ.comp (RingEquiv.refl K).toRingHom = σ :=
   RingHom.ext fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem comp_trans_eq {K K' K'' : Type} [Field K] [Field K'] [Field K''] (e : K ≃+* K') (e' : K' ≃+* K'')
     (σ : K'' →+* ℂ) : (σ.comp e'.toRingHom).comp e.toRingHom = σ.comp (e.trans e').toRingHom :=
   RingHom.ext fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `(B.fe_coe _).trans (A.fe_coe x) smul a f := by rw [RingEquiv.trans_apply, RingEquiv.trans_apply, A.smul, B.smul] rfl eO x := by rw [mapRingEquiv_trans_apply, B.eO, A.eO] pl_bij := B.pl_bij.comp A.pl_bij pl_mem la x := by rw [A.pl_mem, B.pl_mem, mapRingEquiv_trans_apply]; rfl pl_n …`.
+-/
 theorem IsCoreIso.trans {T T' T'' : Core D} {h : LawsM T} {h' : LawsM T'} {h'' : LawsM T''} {j : ℕ}
     {fe : T.Q.c.F ≃+* T'.Q.c.F} {Φ : T.R j ≃+* T'.R j}
     {pl : HeightOneSpectrum (𝓞 T.Q.c.F) → HeightOneSpectrum (𝓞 T'.Q.c.F)}
@@ -150,6 +189,9 @@ def CxIndep (D : D7) : Prop :=
         T.Ns j w σ f = Core.Ns { T with U := U, V := V, dict := dict, mu := mu, Kf := Kf } j w σ f ∧
         NlM h j w σ f = NlM h' j w σ f
 
+/- English proof (translation)
+The claim follows from `rfl smul _ _ := rfl eO x := by rw [mapRingEquiv_refl_apply] pl_bij := Function.bijective_id pl_mem la x := by rw [mapRingEquiv_refl_apply]; rfl pl_norm _ := rfl cusp w f := by rw [(hc T U V dict mu Kf h h' j hj w).1]; rfl vals _ _ := Iff.rfl sup w σ f hf := by rw [comp_refl_eq]; …`.
+-/
 theorem isCoreIso_of_cx (hc : CxIndep D) (T : Core D) (U : ∀ j (σ : T.Q.c.F →+* ℂ), Unf (T.Q.Xo j) T.Q.c σ D.R.r)
     (V : ℕ → (T.Q.c.F →+* ℂ) → HSp D) (dict : ∀ j σ, GA D (V j σ) → Σ k, Frame ((U j σ).X k).Ψ D.R.r)
     (mu : ∀ j σ, GA D (V j σ) → ℂ) (Kf : ∀ j σ, Subgroup (GA D (V j σ))) (h : LawsM T)
@@ -181,6 +223,9 @@ def INV (D : D7) : Prop :=
     ∃ (fe : T.Q.c.F ≃+* T'.Q.c.F) (Φ : T.R j ≃+* T'.R j)
       (pl : HeightOneSpectrum (𝓞 T.Q.c.F) → HeightOneSpectrum (𝓞 T'.Q.c.F)), IsCoreIso h.toLawsM h'.toLawsM j fe Φ pl
 
+/- English proof (translation)
+Introduce `T T' h h' j hj`. Take `⟨U, V, dict, mu, Kf, h'', fe, Φ, pl, A⟩` from `hp T T' h h' j hj`. Conclude with `⟨_, _, _, A.trans (isCoreIso_of_cx hc { T' with U := U, V := V, dict := dict, mu := mu, Kf := Kf } T'.U T'.V T'.dict T'.mu T'.Kf h''.toLawsM h'.toLawsM j hj)⟩`.
+-/
 theorem inv_of (hp : ParTr D) (hc : CxIndep D) : INV D := by
   intro T T' h h' j hj
   obtain ⟨U, V, dict, mu, Kf, h'', fe, Φ, pl, A⟩ := hp T T' h h' j hj

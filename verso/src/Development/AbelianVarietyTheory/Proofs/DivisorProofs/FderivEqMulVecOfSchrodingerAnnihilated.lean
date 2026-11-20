@@ -6,6 +6,11 @@ open scoped Real SchwartzMap ComplexConjugate
 
 namespace GlobalTheory.RealWeil
 
+/- English proof (translation)
+Rewrite using `[dRho_apply]`. Establish `h1 : pPart w = ∑ b, w (.inl b) • EuclideanSpace.single b (1 : ℝ)`. Use extensionality with `i`. Simplify using `[pPart, EuclideanSpace.single_apply, Pi.single_apply]`. Establish `h2 : inner ℝ (qPart w) x = ∑ b, w (.inr b) * x b`.
+
+Simplify using `[qPart, PiLp.inner_apply, mul_comm]`. Rewrite using `[h1, map_sum, h2]`. Simplify using `[Complex.real_smul, ofReal_sum]`.
+-/
 theorem dRho_apply_basis {l : Type} [Fintype l] [DecidableEq l] (w : l ⊕ l → ℝ) (f : Sch l)
     (x : EuclideanSpace ℝ l) :
     dRho w f x = ∑ b, (w (.inl b) : ℂ) * fderiv ℝ f x (EuclideanSpace.single b 1) +
@@ -19,6 +24,17 @@ theorem dRho_apply_basis {l : Type} [Fintype l] [DecidableEq l] (w : l ⊕ l →
   rw [h1, map_sum, h2]
   simp [Complex.real_smul, ofReal_sum]
 
+/- English proof (translation)
+Introduce `l _ _ s P Q hP hQ hdet f hf a x`. Use `set u : l → ℂ := fun b => fderiv ℝ f x (EuclideanSpace.single b 1) with hu`. Use `set xC : l → ℂ := fun i => (x i : ℂ) with hxC`. Establish `hj : ∀ j, ∑ b, P b j * u b + 2 * π * I * (∑ b, Q b j * xC b) * f x = 0`. Introduce `j`.
+
+Establish `e` using `congrArg (fun g : Sch l => g x) (hf j)`. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul, dRho_apply_basis] at e`. Simplify using `only [mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq] at e`. Simplify using `only [hP, hQ, sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum]`. Simplify using `only [hu, hxC]`.
+
+Take the linear combination `e`. Establish `hv : Pᵀ *ᵥ u = -(2 * π * I * f x) • (Qᵀ *ᵥ xC)`. Use function extensionality and compare the values at `j`. Simplify using `only [mulVec, dotProduct, transpose_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `hj j`.
+
+Establish `hunit : IsUnit Pᵀ.det` using `by rw [det_transpose]; exact isUnit_iff_ne_zero.mpr hdet`. Establish `hu' : u = (Pᵀ)⁻¹ *ᵥ (Pᵀ *ᵥ u)` using `by rw [mulVec_mulVec, nonsing_inv_mul _ hunit, one_mulVec]`. Establish `key : u a = ((Pᵀ)⁻¹ *ᵥ (-(2 * π * I * f x) • (Qᵀ *ᵥ xC))) a` using `by rw [← hv, ← hu']`. Express the relevant statement in the definitionally equal form `u a = _`. Rewrite using `[key, mulVec_smul, mulVec_mulVec, ← transpose_nonsing_inv, ← transpose_mul, Matrix.transpose_neg, Matrix.neg_mulVec]`.
+
+Simplify using `only [Pi.smul_apply, Pi.neg_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fderiv_eq_of_annihilated : ∀ (l : Type) [Fintype l] [DecidableEq l] (s : Matrix (l ⊕ l) (l ⊕ l) ℝ)
     (P Q : Matrix l l ℂ), (∀ a b, P a b = (s (.inl a) (.inl b) : ℂ) - I * (s (.inl a) (.inr b) : ℂ)) →
     (∀ a b, Q a b = (s (.inr a) (.inl b) : ℂ) - I * (s (.inr a) (.inr b) : ℂ)) → P.det ≠ 0 →

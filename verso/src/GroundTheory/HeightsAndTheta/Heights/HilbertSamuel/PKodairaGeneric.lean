@@ -10,6 +10,21 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y D a hD hV hB hN hg`. Take `⟨C₁, h₁⟩` from `hR K ι Ω y D a hD hV hB hN`. Take `⟨C₂, h₂⟩` from `hE K ι Ω y D a hD hV hB`. Use `set G : ℝ := (genDeg (mCoordIdeal y) D a : ℝ) / (D.factorial : ℝ) with hGdef`. Establish `hG : 0 < G` using `div_pos (by exact_mod_cast hg) (by exact_mod_cast D.factorial_pos)`.
+
+Take `⟨n, hn₁, hn₂, hn₃, hn₄⟩` from `(h₁.and (h₂.and ((tendsto_natCast_atTop_atTop.eventually_gt_atTop ((|C₁| + |C₂|) / G)).and (eventually_ge_atTop (1 : ℕ))))).exists`. Use `set f : ℝ := (Module.finrank ℚ (chartLatQ y ((n : ℤ) • a) 1) : ℝ)`. Use `set g : ℝ := (Module.finrank ℚ (chartLatQ y ((n : ℤ) • a - 1) 1) : ℝ)`. Establish `hlow : (genDeg (mCoordIdeal y) D a : ℝ) * (n : ℝ) ^ D / (D.factorial : ℝ) - C₁ * (n : ℝ) ^ (D - 1) ≤ f`. Use `(abs_le.mp hn₁).1` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : (n : ℝ) ^ D = (n : ℝ) * (n : ℝ) ^ (D - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hq : 0 < (n : ℝ) ^ (D - 1)` using `pow_pos (by exact_mod_cast (show 0 < n by omega)) _`. Establish `hnG : |C₁| + |C₂| < G * n` using `by rw [div_lt_iff₀ hG] at hn₃; linarith`. Establish `hmain : (|C₁| + |C₂|) * (n : ℝ) ^ (D - 1) < G * n * (n : ℝ) ^ (D - 1)` using `mul_lt_mul_of_pos_right hnG hq`. Establish `hGn : (genDeg (mCoordIdeal y) D a : ℝ) * (n : ℝ) ^ D / (D.factorial : ℝ) = G * n * (n : ℝ) ^ (D - 1)`. Rewrite using `[hGdef, hpow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hC : (C₁ + C₂) * (n : ℝ) ^ (D - 1) ≤ (|C₁| + |C₂|) * (n : ℝ) ^ (D - 1)` using `mul_le_mul_of_nonneg_right (add_le_add (le_abs_self _) (le_abs_self _)) hq.le`. Establish `hgpos : 0 < g` using `by nlinarith`. Establish `hne : chartLatQ y ((n : ℤ) • a - 1) 1 ≠ ⊥`. Introduce `hbot`.
+
+Establish `h0' : Module.finrank ℚ (chartLatQ y ((n : ℤ) • a - 1) 1) = 0`. Rewrite using `[hbot]`. Conclude with `finrank_bot ℚ Ω`. Establish `h0 : g = 0` using `by simp only [g, h0', Nat.cast_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨e, he, he0⟩` from `(Submodule.ne_bot_iff _).mp hne`. Conclude with `⟨n, e, hn₄, he0, he⟩`.
+-/
 theorem KodairaGeneric.proof (hR : NefSectionGrowth.Statement) (hE : HyperplaneSectionBound.Statement) :
     KodairaGeneric.Statement := by
   intro K _ ι _ Ω _ _ y D a hD hV hB hN hg

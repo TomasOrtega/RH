@@ -21,6 +21,21 @@ section Factor
 
 variable {R : Ranks} (H : Formalism.BasicNotions.Host R) (SQ : Finset (HeightOneSpectrum (𝓞 H.E)))
 
+/- English proof (translation)
+Use `(KDq_le_iff H SQ).2 ⟨fun a ha => ?_, fun v k => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.Mem.LocTriv.eq_one_of_local H.E χ.1 χ.2.1 (finPartI H.E a) ha.1 (fun _ => rfl) fun v x hx => ?_` and prove the remaining obligations. Establish `hx' : (x : v.adicCompletion H.E) = (a : AdeleRing (𝓞 H.E) H.E).2 v` using `hx`. Establish `hunit : IsUnitAt v x`. Unfold `IsUnitAt`.
+
+Rewrite using `[hx']`. Conclude with `ha.1 v`. Distinguish the cases in `h : (∃ k, OverP H (H.g k) v) ∨ AtQ H SQ v`. Establish `hlt : Valued.v ((x : v.adicCompletion H.E) - 1) < 1`. Rewrite using `[hx']`.
+
+Break down `h with ⟨k, hk⟩ | h` into its components or cases. Use `exacts [ha.2.1 k v hk, ha.2.2 v h]`. Use `ht v x hunit ?_` and prove the remaining obligations. Distinguish the cases in `h0 : Valued.v ((x : v.adicCompletion H.E) - 1) = 0`. Rewrite using `[h0]`.
+
+Conclude with `zero_le`. Rewrite `hlt`, the goal using `[← WithZero.exp_log h0]`. Rewrite `hlt` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `h` using `[not_or, not_exists]`. Conclude with `hu v h.1 h.2 x hunit`. Establish `e : finPartI H.E (locF H.F v k) = locF H.F v k`. Unfold `locF`. Rewrite using `[map_prod]`.
+
+Conclude with `Finset.prod_congr rfl fun Q _ => finPartI_eq_self fun _ => rfl`. Use `show χ.1 (finPartI H.E (locF H.F v k)) = 1`. Rewrite using `[e, ← hF.1 v k]`. Unfold `locF HChar.resFin`. Rewrite using `[map_prod, MonoidHom.finset_prod_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem KDq_le_ker {χ : HChar H.E} (hF : χ.TrivOn H.F) (ht : ∀ v, χ.TameAt v)
     (hu : ∀ v, (∀ k, ¬ OverP H (H.g k) v) → ¬ AtQ H SQ v → χ.UnrAt v) :
     KDq H SQ ≤ (χ.1.comp (finPartI H.E)).ker := by
@@ -55,26 +70,41 @@ theorem KDq_le_ker {χ : HChar H.E} (hF : χ.TrivOn H.F) (ht : ∀ v, χ.TameAt 
     rw [map_prod, MonoidHom.finset_prod_apply]
     rfl
 
+/- English proof (translation)
+The claim follows from `tildeQ_mk H SQ (KDq_le_ker H SQ hF ht hu) a`.
+-/
 theorem tildeQ_mk_of_tame {χ : HChar H.E} (hF : χ.TrivOn H.F) (ht : ∀ v, χ.TameAt v)
     (hu : ∀ v, (∀ k, ¬ OverP H (H.g k) v) → ¬ AtQ H SQ v → χ.UnrAt v) (a : Ideles H.E) :
     tildeQ H SQ χ (QuotientGroup.mk a) = χ.1 (finPartI H.E a) :=
   tildeQ_mk H SQ (KDq_le_ker H SQ hF ht hu) a
 
+/- English proof (translation)
+The claim follows from `KDq_empty H ▸ KDq_le_ker H ∅ hF ht fun v h _ => hu v h`.
+-/
 theorem KD_le_ker {χ : HChar H.E} (hF : χ.TrivOn H.F) (ht : ∀ v, χ.TameAt v)
     (hu : ∀ v, (∀ k, ¬ OverP H (H.g k) v) → χ.UnrAt v) : KD H ≤ (χ.1.comp (finPartI H.E)).ker :=
   KDq_empty H ▸ KDq_le_ker H ∅ hF ht fun v h _ => hu v h
 
 variable {H} in
 
+/- English proof (translation)
+The claim follows from `KD_le_ker H h.triv (fun v x hx _ => h.unr v x hx) fun v _ => h.unr v`.
+-/
 theorem KD_le_ker_of_isChiPsi {χ : HChar H.E} (h : IsChiPsi H χ) : KD H ≤ (χ.1.comp (finPartI H.E)).ker :=
   KD_le_ker H h.triv (fun v x hx _ => h.unr v x hx) fun v _ => h.unr v
 
 variable {H} in
 
+/- English proof (translation)
+The claim follows from `KD_le_ker H h.triv h.tame h.unr`.
+-/
 theorem KD_le_ker_of_isMu0 {P : PiBar H} {W : Omg H} {e : R.Psi → ℚ} {j : ℕ} {χ : HChar H.E} (h : IsMu0 P W e j χ) :
     KD H ≤ (χ.1.comp (finPartI H.E)).ker :=
   KD_le_ker H h.triv h.tame h.unr
 
+/- English proof (translation)
+Unfold `muTilQ`. Use `split_ifs`. Conclude with `norm_tildeQ H SQ (hu _) x`. Simplify using the standard rewrite rules.
+-/
 theorem norm_muTilQ {mu : Fin R.m → HChar H.E} (hu : ∀ j, (mu j).IsUnitary) (j : ℕ) (x : DtQ H SQ) :
     ‖((muTilQ H SQ mu j x : ℂˣ) : ℂ)‖ = 1 := by
   unfold muTilQ
@@ -112,13 +142,22 @@ def trueDtPackQ (C : HFrame H e) : DtPack H :=
       rw [toDtTMod_relDetQ, toDtTMod_mk, toDtT_e1Q]
       exact (GlobalTheory.T.relativeLatticeDeterminantClass_laws R H N).2.2 L L' γ h) }
 
+/- English proof (translation)
+Introduce `_ _ _` and use `rfl`.
+-/
 theorem trueDtPackQ_relDet (C : HFrame H e) : letI := H.cmStar
     ∀ (N : ℕ) (L L' : SDLat H.E N), (trueDtPackQ SQ C).relDet N L L' = relDetQ H SQ N L.1 L'.1 :=
   fun _ _ _ => rfl
 
+/- English proof (translation)
+The claim follows from `norm_muTilQ H SQ (fun j => (C.isMu0 j).unitary) j x`.
+-/
 theorem norm_muTilQ_frame (C : HFrame H e) (j : ℕ) (x : DtQ H SQ) : ‖((muTilQ H SQ C.mu0 j x : ℂˣ) : ℂ)‖ = 1 :=
   norm_muTilQ H SQ (fun j => (C.isMu0 j).unitary) j x
 
+/- English proof (translation)
+The claim follows from `norm_tildeQ H SQ C.isChi.unitary x`.
+-/
 theorem norm_tildeQ_chiPsi (C : HFrame H e) (x : DtQ H SQ) : ‖((tildeQ H SQ C.chiPsi x : ℂˣ) : ℂ)‖ = 1 :=
   norm_tildeQ H SQ C.isChi.unitary x
 
@@ -165,6 +204,11 @@ open Formalism.L2.DIV Formalism.UG Formalism.UG.P GlobalTheory.AdeleBaseChange
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `(GlobalTheory.AdLat.integral_finiteAdele_complete_separated E).1 _ fun N hN => ?_` and prove the remaining obligations. Take `⟨k, a, ha, rfl⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat F N hN).1 b`. Establish `hi : (1 : E) ⊗ₜ[F] a ∈ RInt F E` using `by simpa using levelaf_tmul_mem (F := F) (1 : 𝓞 E) ha`. Use `⟨ι (1 ⊗ₜ[F] a) - adMap F E a, sub_mem (h2 _ hi) (adMap_int ha), ?_⟩` and prove the remaining obligations.
+
+Establish `e : (1 : E) ⊗ₜ[F] (algebraMap F (FiniteAdeleRing (𝓞 F) F) k) = algebraMap F E k ⊗ₜ[F] 1`. Rewrite using `[Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[TensorProduct.tmul_add, map_add, map_add, e, h1, adMap_algebraMap, TensorProduct.tmul_smul, map_nsmul, map_nsmul, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem map_one_tmul {ι : AfE F E →+* FiniteAdeleRing (𝓞 E) E} (h1 : ∀ x : E, ι (x ⊗ₜ[F] 1) = algebraMap E _ x)
     (h2 : ∀ z ∈ RInt F E, ι z ∈ intAd E) (b : FiniteAdeleRing (𝓞 F) F) : ι (1 ⊗ₜ[F] b) = adMap F E b := by
   rw [← sub_eq_zero]
@@ -178,6 +222,13 @@ theorem map_one_tmul {ι : AfE F E →+* FiniteAdeleRing (𝓞 E) E} (h1 : ∀ x
     smul_sub]
   abel
 
+/- English proof (translation)
+Establish `h : ∀ y : AfE F E, ∃ b, y + sigR σ (FiniteAdeleRing (𝓞 F) F) y = 1 ⊗ₜ[F] b` using `fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y y' hy hy'`. Take `⟨b, hb⟩` from `hy`.
+
+Take `⟨b', hb'⟩` from `hy'`. Conclude with `⟨b + b', by rw [map_add, TensorProduct.tmul_add, ← hb, ← hb']; abel⟩`. Consider the case `tmul x a`. Take `⟨t, ht⟩` from `hσ x`. Use `⟨t • a, ?_⟩` and prove the remaining obligations.
+
+Establish `e : sigR σ (FiniteAdeleRing (𝓞 F) F) (x ⊗ₜ[F] a) = σ x ⊗ₜ[F] a` using `by simp [sigR]`. Rewrite using `[e, ← TensorProduct.add_tmul, ← ht, ← TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`. Take `⟨b, hb⟩` from `h z`. Use `⟨(2 : F)⁻¹ • b, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, ← hb, hz, ← two_smul F z, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]`.
+-/
 theorem exists_eq_one_tmul {σ : E →ₐ[F] E} (hσ : ∀ x, ∃ t : F, algebraMap F E t = x + σ x) {z : AfE F E}
     (hz : sigR σ (FiniteAdeleRing (𝓞 F) F) z = z) : ∃ b, z = 1 ⊗ₜ[F] b := by
   have h : ∀ y : AfE F E, ∃ b, y + sigR σ (FiniteAdeleRing (𝓞 F) F) y = 1 ⊗ₜ[F] b := fun y => by
@@ -196,6 +247,11 @@ theorem exists_eq_one_tmul {σ : E →ₐ[F] E} (hσ : ∀ x, ∃ t : F, algebra
   refine ⟨(2 : F)⁻¹ • b, ?_⟩
   rw [TensorProduct.tmul_smul, ← hb, hz, ← two_smul F z, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]
 
+/- English proof (translation)
+Establish `hc : Continuous fun y : v.adicCompletion F => y * b - 1` using `(continuous_mul_const b).sub continuous_const`. Establish `ho : IsOpen {y : v.adicCompletion F | Valued.v (y * b - 1) ≤ WithZero.exp (-((1 : ℕ) : ℤ))}` using `(GlobalTheory.Idele.isOpen_valued_le (K := F) v (-((1 : ℕ) : ℤ))).preimage hc`. Take `⟨k, hk⟩` from `(HeightOneSpectrum.denseRange_algebraMap (K := F) v).exists_mem_open ho ⟨b⁻¹, by simp [inv_mul_cancel₀ hb]⟩`. Establish `h0 : k ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `only [map_zero, Set.mem_setOf_eq, zero_mul, zero_sub, Valuation.map_neg, map_one] at hk`. Rewrite `hk` using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨Units.mk0 k h0, hk⟩`.
+-/
 theorem exists_mul_congr_one (v : HeightOneSpectrum (𝓞 F)) {b : v.adicCompletion F} (hb : b ≠ 0) :
     ∃ k : Fˣ, Valued.v (algebraMap F (v.adicCompletion F) k * b - 1) ≤ WithZero.exp (-((1 : ℕ) : ℤ)) := by
   have hc : Continuous fun y : v.adicCompletion F => y * b - 1 := (continuous_mul_const b).sub continuous_const
@@ -210,6 +266,23 @@ theorem exists_mul_congr_one (v : HeightOneSpectrum (𝓞 F)) {b : v.adicComplet
     omega
   exact ⟨Units.mk0 k h0, hk⟩
 
+/- English proof (translation)
+Establish `hk : ∀ v : HeightOneSpectrum (𝓞 F), ∃ k : Fˣ, b v ≠ 0 → Valued.v (algebraMap F (v.adicCompletion F) k * b v - 1) ≤ WithZero.exp (-((1 : ℕ) : ℤ))` using `fun v => by`. Distinguish the cases in `h : b v = 0`. Conclude with `⟨1, fun h' => absurd h h'⟩`. Take `⟨k, hk⟩` from `exists_mul_congr_one v h`. Conclude with `⟨k, fun _ => hk⟩`.
+
+Use `choose k hk using hk`. Establish `hfin` using `hT.union (IdlFact.finite_valAt_ne_one a)`. Use `set S := hfin.toFinset.image fun w => w.under (𝓞 F) with hS`. Use `set P := ∏ v ∈ S, locF (L := E) F v (k v) with hP`. Establish `hc : ∀ w, compAt w P = if w.under (𝓞 F) ∈ S then compAt w (diagUnits E (upF F (k (w.under (𝓞 F))))) else 1` using `fun w => by`.
+
+Rewrite using `[hP, map_prod, Finset.prod_congr rfl fun v _ => compAt_locF F w v (k v), Finset.prod_ite_eq]`. Establish `ha : ∀ w, compAt w a = locMap F w (b (w.under (𝓞 F)))` using `fun w => by`. Rewrite using `[← adMap_apply, ← hab]`. Both sides reduce to the same expression. Establish `hlt : WithZero.exp (-((1 : ℕ) : ℤ)) < (1 : WithZero (Multiplicative ℤ))`.
+
+Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `h1 : ∀ w, w.under (𝓞 F) ∈ S → Valued.v (compAt w (P * a) - 1) < 1` using `fun w hw => by`. Establish `hb : b (w.under (𝓞 F)) ≠ 0` using `fun h0 => by`. Establish `hu : IsUnit (compAt w a)` using `(Group.isUnit a).map (compAt w)`.
+
+Rewrite `hu` using `[ha, h0, map_zero]`. Conclude with `not_isUnit_zero hu`. Establish `e : compAt w (diagUnits E (upF F (k (w.under (𝓞 F))))) = locMap F w (algebraMap F _ (k (w.under (𝓞 F)) : F))`. Rewrite using `[locMap_algebraMap]`. Both sides reduce to the same expression.
+
+Rewrite using `[map_mul, hc, if_pos hw, e, ha, ← map_mul, ← map_one (locMap F w), ← map_sub]`. Conclude with `(locMap_valued w 1 _ (hk _ hb)).trans_lt hlt`. Establish `hmem : ∀ w, w ∈ T ∪ {v | IdlFact.valAt v a ≠ 1} → w.under (𝓞 F) ∈ S` using `fun w hw => Finset.mem_image_of_mem _ (hfin.mem_toFinset.2 hw)`. Use `⟨S, k, fun w => ?_, fun w hw => h1 w (hmem w (Or.inl hw))⟩` and prove the remaining obligations. Use `show Valued.v (compAt w (P * a)) = 1`.
+
+Distinguish the cases in `hw : w.under (𝓞 F) ∈ S`. Establish `h` using `Valuation.map_eq_of_sub_lt (Valued.v) (x := (1 : w.adicCompletion E)) (y := compAt w (P * a)) (by rw [map_one]; exact h1 w hw)`. Rewrite using `[h, map_one]`. Rewrite using `[map_mul, hc, if_neg hw, one_mul]`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hw (hmem w (Or.inr hne))`.
+-/
 theorem exists_locF_mul {a : Ideles E} {b : FiniteAdeleRing (𝓞 F) F} (hab : (a : AdeleRing (𝓞 E) E).2 = adMap F E b)
     {T : Set (HeightOneSpectrum (𝓞 E))} (hT : T.Finite) :
     ∃ (S : Finset (HeightOneSpectrum (𝓞 F))) (k : HeightOneSpectrum (𝓞 F) → Fˣ),
@@ -268,6 +341,11 @@ open Formalism.L2.DIV Formalism.UG
 
 variable {R : Ranks} (H : Formalism.BasicNotions.Host R) (SQ : Finset (HeightOneSpectrum (𝓞 H.E)))
 
+/- English proof (translation)
+Establish `e : ∀ w, compAt w (a⁻¹ * a') = 1` using `fun w => by`. Establish `e' : compAt w a' = compAt w a` using `congrArg (fun z : FiniteAdeleRing (𝓞 H.E) H.E => z w) h.symm`. Rewrite using `[map_mul, e', ← map_mul, inv_mul_cancel, map_one]`. Use `QuotientGroup.eq.2 (mem_KDq_of_congQ H SQ (mem_congQ_of_eq_one H SQ (fun w => ?_) fun w _ => e w))` and prove the remaining obligations. Use `show Valued.v (compAt w (a⁻¹ * a')) = 1`.
+
+Rewrite using `[e, map_one]`.
+-/
 theorem mk_eq_of_snd_eq {a a' : Ideles H.E} (h : (a : AdeleRing (𝓞 H.E) H.E).2 = (a' : AdeleRing (𝓞 H.E) H.E).2) :
     (QuotientGroup.mk a : DtQ H SQ) = QuotientGroup.mk a' := by
   have e : ∀ w, compAt w (a⁻¹ * a') = 1 := fun w => by
@@ -277,6 +355,9 @@ theorem mk_eq_of_snd_eq {a a' : Ideles H.E} (h : (a : AdeleRing (𝓞 H.E) H.E).
   show Valued.v (compAt w (a⁻¹ * a')) = 1
   rw [e, map_one]
 
+/- English proof (translation)
+Take `⟨S, k, hu, h1⟩` from `exists_locF_mul hab (finite_level H SQ)`. Conclude with `(Subgroup.mul_mem_cancel_left _ (prod_mem fun v _ => locF_mem_KDq H SQ v (k v))).1 (mem_KDq_of_congQ H SQ ⟨hu, fun j v hv => h1 v (Or.inl ⟨j, hv⟩), fun v hv => h1 v (Or.inr hv)⟩)`.
+-/
 theorem mem_KDq_of_adMap {a : Ideles H.E} {b : FiniteAdeleRing (𝓞 H.F) H.F}
     (hab : (a : AdeleRing (𝓞 H.E) H.E).2 = GlobalTheory.AdeleBaseChange.adMap H.F H.E b) : a ∈ KDq H SQ := by
   obtain ⟨S, k, hu, h1⟩ := exists_locF_mul hab (finite_level H SQ)
@@ -289,6 +370,11 @@ variable (σ : H.E →ₐ[H.F] H.E) (hσ : ∀ x, σ x = H.conj x) (ι : AfE H.F
 
 include hσ h1 h2 in
 
+/- English proof (translation)
+Establish `hcm : IsCMField H.E` using `H.isCMField_hostE`. Establish `hc : ∀ x, IsCMField.complexConj H.E x = H.conj x` using `fun x => bridge_star_holds R H x`. Establish `ht : ∀ y : H.E, ∃ t : H.F, algebraMap H.F H.E t = y + σ y` using `fun y => ⟨⟨y + σ y, (IsCMField.complexConj_eq_self_iff H.E _).1 (by`. Rewrite using `[hσ, ← hc, map_add, IsCMField.complexConj_apply_apply, add_comm])⟩, rfl⟩`. Establish `hfix : conjId σ x = x` using `(div_eq_one.1 hx).symm`.
+
+Take `⟨b, hb⟩` from `exists_eq_one_tmul ht (z := (x : AfE H.F H.E)) (congrArg Units.val hfix)`. Use `mem_KDq_of_adMap H SQ (b := b) ?_` and prove the remaining obligations. Use `show ι (x : AfE H.F H.E) = _`. Rewrite using `[hb]`. Conclude with `map_one_tmul (ι := ι.toRingHom) h1 (fun z hz => (h2 z).1 hz) b`.
+-/
 theorem finIdele_mem_KDq {x : (AfE H.F H.E)ˣ} (hx : h90 σ x = 1) : finIdele ι x ∈ KDq H SQ := by
   have hcm : IsCMField H.E := H.isCMField_hostE
   have hc : ∀ x, IsCMField.complexConj H.E x = H.conj x := fun x => bridge_star_holds R H x
@@ -305,6 +391,9 @@ theorem finIdele_mem_KDq {x : (AfE H.F H.E)ˣ} (hx : h90 σ x = 1) : finIdele ι
 def h90U : (AfE H.F H.E)ˣ →* U1 σ :=
   (h90 σ).codRestrict (U1 σ) fun x => (GlobalTheory.Mem.DetClass.exists_detClass R H σ hσ ι h1 h2).1 ▸ ⟨x, rfl⟩
 
+/- English proof (translation)
+Introduce `y` and use `by obtain ⟨x, hx⟩ : (y : (AfE H.F H.E)ˣ) ∈ (h90 σ).range := (GlobalTheory.Mem.DetClass.exists_detClass R H σ hσ ι h1 h2).1.ge y.2 exact ⟨x, Subtype.ext hx⟩`.
+-/
 theorem h90U_surjective : Function.Surjective (h90U H σ hσ ι h1 h2) := fun y => by
   obtain ⟨x, hx⟩ : (y : (AfE H.F H.E)ˣ) ∈ (h90 σ).range := (GlobalTheory.Mem.DetClass.exists_detClass R H σ hσ ι h1 h2).1.ge y.2
   exact ⟨x, Subtype.ext hx⟩
@@ -314,17 +403,26 @@ def normOneIdeleToFinerDeterminantClass : U1 σ →* DtQ H SQ :=
     ⟨(QuotientGroup.mk' (KDq H SQ)).comp (finIdele ι), fun _ hx =>
       (QuotientGroup.eq_one_iff _).2 (finIdele_mem_KDq H SQ σ hσ ι h1 h2 (congrArg Subtype.val hx))⟩
 
+/- English proof (translation)
+The claim follows from `(MonoidHom.liftOfRightInverse_comp_apply (h90U H σ hσ ι h1 h2) _ _ _ x).trans (mk_eq_of_snd_eq H SQ ha.symm)`.
+-/
 theorem normOneIdeleToFinerDeterminantClass_eq_mk (x : (AfE H.F H.E)ˣ) (h : h90 σ x ∈ U1 σ) (a : Ideles H.E)
     (ha : (a : AdeleRing (𝓞 H.E) H.E).2 = ι (x : AfE H.F H.E)) :
     normOneIdeleToFinerDeterminantClass H SQ σ hσ ι h1 h2 ⟨_, h⟩ = QuotientGroup.mk a :=
   (MonoidHom.liftOfRightInverse_comp_apply (h90U H σ hσ ι h1 h2) _ _ _ x).trans (mk_eq_of_snd_eq H SQ ha.symm)
 
+/- English proof (translation)
+Introduce `y` and use `by obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective y let x : (AfE H.F H.E)ˣ := Units.map (ι.symm.toRingHom.toMonoidHom.comp (MonoidHom.snd (InfiniteAdeleRing H.E) (FiniteAdeleRing (𝓞 H.E) H.E))) a exact ⟨h90U H σ hσ ι h1 h2 x, normOneIdeleToFinerDeterminantClass_eq_mk H SQ σ hσ ι …`.
+-/
 theorem u1ToDtQ_surjective : Function.Surjective (normOneIdeleToFinerDeterminantClass H SQ σ hσ ι h1 h2) := fun y => by
   obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective y
   let x : (AfE H.F H.E)ˣ := Units.map (ι.symm.toRingHom.toMonoidHom.comp
     (MonoidHom.snd (InfiniteAdeleRing H.E) (FiniteAdeleRing (𝓞 H.E) H.E))) a
   exact ⟨h90U H σ hσ ι h1 h2 x, normOneIdeleToFinerDeterminantClass_eq_mk H SQ σ hσ ι h1 h2 x _ a (ι.apply_symm_apply _).symm⟩
 
+/- English proof (translation)
+Use `MonoidHom.ext fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `h90U_surjective H σ hσ ι h1 h2 y`. Conclude with `(hf x _ (finIdele ι x) rfl).trans (normOneIdeleToFinerDeterminantClass_eq_mk H SQ σ hσ ι h1 h2 x _ (finIdele ι x) rfl).symm`.
+-/
 theorem eq_u1ToDtQ {f : U1 σ →* DtQ H SQ} (hf : ∀ (x : (AfE H.F H.E)ˣ) (h : h90 σ x ∈ U1 σ) (a : Ideles H.E),
     (a : AdeleRing (𝓞 H.E) H.E).2 = ι (x : AfE H.F H.E) → f ⟨_, h⟩ = QuotientGroup.mk a) :
     f = normOneIdeleToFinerDeterminantClass H SQ σ hσ ι h1 h2 := by
@@ -332,12 +430,18 @@ theorem eq_u1ToDtQ {f : U1 σ →* DtQ H SQ} (hf : ∀ (x : (AfE H.F H.E)ˣ) (h 
   obtain ⟨x, rfl⟩ := h90U_surjective H σ hσ ι h1 h2 y
   exact (hf x _ (finIdele ι x) rfl).trans (normOneIdeleToFinerDeterminantClass_eq_mk H SQ σ hσ ι h1 h2 x _ (finIdele ι x) rfl).symm
 
+/- English proof (translation)
+Rewrite using `[normOneIdeleToFinerDeterminantClass_eq_mk H SQ σ hσ ι h1 h2 x h (finIdele ι x) rfl, tildeQ_mk H SQ hχ, finPartI_eq_self fun _ => rfl]`.
+-/
 theorem tildeQ_u1ToDtQ {χ : HChar H.E} (hχ : KDq H SQ ≤ (χ.1.comp (finPartI H.E)).ker) (x : (AfE H.F H.E)ˣ)
     (h : h90 σ x ∈ U1 σ) : tildeQ H SQ χ (normOneIdeleToFinerDeterminantClass H SQ σ hσ ι h1 h2 ⟨_, h⟩) = χ.1 (finIdele ι x) := by
   rw [normOneIdeleToFinerDeterminantClass_eq_mk H SQ σ hσ ι h1 h2 x h (finIdele ι x) rfl, tildeQ_mk H SQ hχ, finPartI_eq_self fun _ => rfl]
 
 end NormOne
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ SQ _ C => ⟨trueDtPackQ SQ C, rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩, fun _ H SQ σ hσ ι h1 h2 => ⟨normOneIdeleToFinerDeterminantClass H SQ σ hσ ι h1 h2, u1ToDtQ_surjective H SQ σ hσ ι h1 h2, normOneIdeleToFinerDeterminantClass_eq_mk H SQ σ hσ ι h1 h2⟩, …`.
+-/
 theorem dtQ_main :
     (∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (SQ : Finset (HeightOneSpectrum (𝓞 H.E))) (e : Fin R.m → R.Psi → ℚ)
       (C : HFrame H e), ∃ X : DtPack H, X.Dt = DtQ H SQ ∧ HEq X.instDt (inferInstance : CommGroup (DtQ H SQ)) ∧

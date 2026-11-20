@@ -24,6 +24,23 @@ namespace GlobalTheory.TripleAssembly
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm τ Y hY γ hγ hγt Φ hΦ Φ' hΦ' hD`. Establish `hg` using `hm.triple.geo`. Establish `hψ' : Bs.ψ = ψ` using `h.ψ`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hψ' ▸ hm.triple.base.std`. Establish `hG : Γ.M.IsGood ψ` using `hψ' ▸ hg.hM`.
+
+Take `⟨Ψ, hΨ, rfl⟩` from `(GlobalTheory.T.seesaw_weil_triple_norm hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm).1 Φ hΦ`. Take `⟨n, c, g, hsum⟩` from `Submodule.mem_span_set'.1 hΨ`. Use `choose f0 φ hf0 hφ hvac hpure using fun i => (g i).2`. Set `f : Fin n → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin W.rank × Fin (W.rank + W₁.rank))` to `fun i => c i • f0 i`. Establish `hΨeq : Ψ = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)`.
+
+Rewrite using `[← hsum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hpure i]`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, f, SchwartzMap.smul_apply, smul_eq_mul, mul_assoc]`.
+
+Substitute `hΨeq` using the available equality. Establish `hfP : ∀ i, f i ∈ Γ.M.Pol Bs.ψ Bs.emb` using `fun i => Submodule.smul_mem _ _ (hf0 i)`. Take `⟨δ, hδ⟩` from `GlobalTheory.DerPol.pairDer hP Γ.M Bs.ψ Bs.emb Xc.β (Xc.β / Xc.α) om hm.triple.base.cm hm.triple.base.std hm.triple.weil γ hγ`. Use `⟨n, f, fun i => δ (f i), φ, fun i => ⟨hfP i, hφ i, hvac i, (hδ _ (hfP i)).2⟩, Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨δ (f i), φ i, (hδ _ (hfP i)).1, hφ i, hvac i, rfl⟩, rfl, ?_⟩` and prove the remaining obligations. Establish `hstdi : ∀ i, ∀ᶠ v in Filter.cofinite, φ i v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers D.host.F} 1`.
+
+Introduce `i`. Use `filter_upwards [hg.hM.std, hvac i] with v hv hv'`. Rewrite using `[hv', hv]`. Establish `hrest : ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (⇑(f i)) (GlobalTheory.EvZeroInf.finPart (φ i))` using `fun i => ⟨fun x z hz => GlobalTheory.EvZeroInf.finPart_add _ x z hz, by`. Rewrite using `[← GlobalTheory.EvZeroInf.pure_eq_tens]`.
+
+Conclude with `GlobalTheory.TensUniq.pure_mem_schA _ _ (hφ i) (hstdi i)⟩`. Establish `hsum' : ∀ k : Fin n → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin W.rank × Fin (W.rank + W₁.rank)), ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (k i) (φ i) = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens …` using `fun k => Finset.sum_congr rfl fun i _ => GlobalTheory.EvZeroInf.pure_eq_tens _ _`. Establish `hmem : ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i) ∈ GlobalTheory.WeilM.schA D.host.F _` using `Submodule.sum_mem _ fun i _ => GlobalTheory.TensUniq.pure_mem_schA _ _ (hφ i) (hstdi i)`. Establish `hone : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 h.JW 1 = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU]`. Use function extensionality and compare the values at `x`. Establish `h1 : HasDerivAt (fun t : ℝ => GlobalTheory.WeilM.thetaSum D.host.F (Γ.M.co.rho ψ (GlobalTheory.TripleRead.ptO (sgn true W).gram e x) (om (1, γ (Multiplicative.ofAdd t)) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i))))) (Φ' x) 0`. Use `(hD x).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `h3` using `tA _ hmem 1 (oneP θ X τ Y t)`.
+
+Rewrite `h3` using `[hone, ← hγt t]`. Conclude with `congrFun h3 x`. Establish `h4` using `GlobalTheory.T.restriction_line_operator_sum hP Bs Γ Xc om om' hm.triple γ hγ n f (fun i => δ (f i)) (fun i => GlobalTheory.EvZeroInf.finPart (φ i)) hrest (fun i => (hδ _ (hfP i)).2) (GlobalTheory.TripleRead.ptO (sgn true W).gram e x)`. Rewrite `h4` using `[← hsum', ← hsum', hψ']`. Conclude with `(h4.unique h1).symm`.
+-/
 theorem exists_pure_lieDer_left : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

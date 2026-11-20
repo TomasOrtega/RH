@@ -11,6 +11,9 @@ open GlobalTheory GlobalTheory.AbLaw
 
 namespace GlobalTheory.AbLaw
 
+/- English proof (translation)
+Introduce `R _ Y f M κ _ _ D hc`. Conclude with `⟨((CochainComplex.isoHomologyπ₀ _).symm ≪≫ cochainCyclesIsoKer (cechLB f M D) 0 ((cechLB f M D).d 0 1).hom rfl).toLinearEquiv ≪≫ₗ (CechOne.kerEquiv M f (fun _ => le_top) hc.ge).symm⟩`.
+-/
 theorem cechLB_homology_zero_equiv_sections :
     ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (M : LB Y)
       (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens), ⨆ i, D i = ⊤ →

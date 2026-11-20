@@ -31,6 +31,9 @@ variable {D : D7}
 def volOf {A B : HSp D} (ν : Measure (WO A B)) (𝓨 : Set (WO A B)) (h : IsCovolOne (ratL B A) ν 𝓨) :
     GlobalTheory.Unf.VolM D B.rank A.rank := ⟨ν, 𝓨, h⟩
 
+/- English proof (translation)
+Use `letI ti : TopologicalSpace (Ainf D.host.F ⊗[D.host.F] D.host.E) := moduleTopology (Ainf D.host.F) (Ainf D.host.F ⊗[D.host.F] D.host.E)`. Take `⟨e, he, hec, -⟩ : ∃ e : AE D ≃+* (Ainf D.host.F ⊗[D.host.F] D.host.E) × (Af D.host.F ⊗[D.host.F] D.host.E), (∀ z, (e z).1 = infPart D z ∧ (e z).2 = finPart D z) ∧ Continuous e ∧ Continuous e.symm` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `: (finPart D : AE D → _) = fun z => (e z).2` using `funext fun z => (he z).2.symm`. Rewrite using `[this]`. Conclude with `continuous_snd.comp hec`.
+-/
 theorem continuous_finPart' : Continuous (finPart D) := by
   letI ti : TopologicalSpace (Ainf D.host.F ⊗[D.host.F] D.host.E) :=
     moduleTopology (Ainf D.host.F) (Ainf D.host.F ⊗[D.host.F] D.host.E)
@@ -46,6 +49,11 @@ variable {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {A B : HSp
 
 include hψ hν hf
 
+/- English proof (translation)
+Take `⟨U, hUo, hU⟩` from `hf.level`. Use `⟨U.comap ((dblDec A).extX B), ?_, ?_⟩` and prove the remaining obligations. Establish `hX : Continuous ((dblDec A).extX B)` using `continuous_id.matrix_mul continuous_const`. Conclude with `hUo.preimage hX`. Introduce `u hu h0 x`.
+
+Establish `h0' : ((dblDec A).extX B u).map (infPart D) = 0`. Rewrite using `[HypDec.extX_apply, Matrix.map_mul, h0, Matrix.zero_mul]`. Establish `h` using `(GlobalTheory.HeisMixSource.heis_mixS D ψ hψ (dblSp A) (zeroSp D) B A.rank (dblDec A) (volOf ν 𝓨 hν) f hf).1 x u`. Rewrite `h` using `[hU _ hu h0']`. Conclude with `(congrFun h 0).symm`.
+-/
 theorem sch_level : ∃ U : AddSubgroup (Mx D B.rank A.rank), IsOpen (U : Set (Mx D B.rank A.rank)) ∧
     ∀ u ∈ U, u.map (infPart D) = 0 → ∀ x, sch ψ A B ν 𝓨 f (x + u) = sch ψ A B ν 𝓨 f x := by
   obtain ⟨U, hUo, hU⟩ := hf.level
@@ -59,6 +67,11 @@ theorem sch_level : ∃ U : AddSubgroup (Mx D B.rank A.rank), IsOpen (U : Set (M
     rw [hU _ hu h0'] at h
     exact (congrFun h 0).symm
 
+/- English proof (translation)
+Take `⟨U, hUo, hU⟩` from `hf.level`. Take `⟨K, hK, hsupp⟩` from `GlobalTheory.Unf.mixS_support_inBox D ψ hψ (dblSp A) (zeroSp D) B A.rank (dblDec A) (volOf ν 𝓨 hν) U hUo`. Use `⟨(fun k : Mx D B.rank A.rank => k.map (finPart D)) '' K, hK.image (continuous_id.matrix_map continuous_finPart'), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hmem : f ∈ GlobalTheory.Size.thetaLevel ψ (dblSp A) B U` using `⟨hf, hU⟩`.
+
+Take `⟨k, hk, hxk⟩` from `hsupp f hmem x 0 hx`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Establish `hs : (x - k).map (finPart D) = x.map (finPart D) - k.map (finPart D)` using `Matrix.map_sub _ (fun a b => (finPart D).map_sub a b) x k`. Rewrite `hxk` using `[hs, sub_eq_zero]`. Conclude with `hxk.symm`.
+-/
 theorem sch_supp : ∃ K : Set (Matrix (Fin B.rank) (Fin A.rank) (Af D.host.F ⊗[D.host.F] D.host.E)), IsCompact K ∧
     ∀ x, sch ψ A B ν 𝓨 f x ≠ 0 → x.map (finPart D) ∈ K := by
   obtain ⟨U, hUo, hU⟩ := hf.level
@@ -75,6 +88,27 @@ theorem sch_supp : ∃ K : Set (Matrix (Fin B.rank) (Fin A.rank) (Af D.host.F �
   rw [hs, sub_eq_zero] at hxk
   exact hxk.symm
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `GlobalTheory.DualPairCompare.exists_infFam D`. Set `V : Set ((Fin k → ℝ) → ℂ)` to `{φ | ∃ f', IsThetaFunO ψ (dblSp A) B f' ∧ φ = fun t => sch ψ A B ν 𝓨 f' (x + L t)}`. Establish `hcont : ∀ φ ∈ V, Continuous φ`. Introduce and unpack `φ ⟨f', hf', rfl⟩`. Conclude with `(GlobalTheory.T.doubledPairSchrodingerFunction_continuous_integrable D ψ hψ A B ν 𝓨 hν f' hf').1.comp (continuous_const.add hL.1)`.
+
+Establish `hder : ∀ φ ∈ V, ∀ i : Fin k, ∃ φ' ∈ V, ∀ t : Fin k → ℝ, HasDerivAt (fun s : ℝ => φ (t + s • (Pi.single i (1 : ℝ) : Fin k → ℝ))) (φ' t) 0`. Introduce and unpack `φ ⟨f', hf', rfl⟩ i`. Set `M : ℝ →+ Mx D B.rank A.rank` to `{ toFun := fun s => L (s • (Pi.single i (1 : ℝ) : Fin k → ℝ)) map_zero' := by rw [zero_smul, map_zero] map_add' := fun a b => by rw [add_smul, map_add] }`. Establish `hMc : Continuous M` using `hL.1.comp (continuous_id.smul continuous_const)`. Establish `hMf : ∀ s, (M s).map (finPart D) = 0` using `fun s => hL.2 _`.
+
+Take `⟨f'', hf'', hd⟩` from `GlobalTheory.T.schroedingerFunction_hasDerivAt_real_line_doubledPair D ψ hψ A B ν 𝓨 hν f' hf' M hMc hMf`. Use `⟨fun t => sch ψ A B ν 𝓨 f'' (x + L t), ⟨f'', hf'', rfl⟩, fun t => ?_⟩` and prove the remaining obligations. Establish `h` using `hd (x + L t)`. Establish `he : (fun s : ℝ => sch ψ A B ν 𝓨 f' (x + L (t + s • (Pi.single i (1 : ℝ) : Fin k → ℝ)))) = fun s : ℝ => sch ψ A B ν 𝓨 f' (x + L t + M s)`. Use function extensionality and compare the values at `s`.
+
+Simplify using `only [map_add, add_assoc]`. Both sides reduce to the same expression. Simplify using `only at h ⊢`. Rewrite using `[he]`. Conclude with `h`.
+
+Establish `hdecay : ∀ φ ∈ V, ∀ N : ℕ, ∃ C : ℝ, ∀ t, ‖t‖ ^ N * ‖φ t‖ ≤ C`. Introduce and unpack `φ ⟨f', hf', rfl⟩ N`. Take `⟨C₁, hC₁⟩` from `(GlobalTheory.T.adelicMatrixRealSize_bounds_along_real_parametrisation D θ hθ B.rank A.rank k L hL).2 hinj`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.Unf.mixS_decay D ψ hψ θ hθ (dblSp A) (zeroSp D) B A.rank (dblDec A) (volOf ν 𝓨 hν) N`. Establish `hfin` using `(GlobalTheory.Unf.SupFin.supSob_laws D ψ hψ θ hθ (dblSp A) B).1 N f' hf'`.
+
+Establish `hne : (C₂ : ℝ≥0∞) * GlobalTheory.Unf.supSob ψ θ N f' ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.coe_ne_top hfin`. Use `set c : ℝ := |C₁| * (1 + GlobalTheory.Unf.realSize θ x) with hc`. Establish `hc0 : 0 ≤ c` using `mul_nonneg (abs_nonneg _) (by linarith [GlobalTheory.Unf.realSize_nonneg θ x])`. Use `clear_value c`. Use `⟨c ^ N * ((C₂ : ℝ≥0∞) * GlobalTheory.Unf.supSob ψ θ N f').toReal, fun t => ?_⟩` and prove the remaining obligations.
+
+Establish `hy0` using `GlobalTheory.Unf.realSize_nonneg θ (x + L t)`. Establish `hx0` using `GlobalTheory.Unf.realSize_nonneg θ x`. Establish `h1 : ‖t‖ ≤ c * (1 + GlobalTheory.Unf.realSize θ (x + L t))`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖sch ψ A B ν 𝓨 f' (x + L t)‖ * (1 + GlobalTheory.Unf.realSize θ (x + L t)) ^ N ≤ ((C₂ : ℝ≥0∞) * GlobalTheory.Unf.supSob ψ θ N f').toReal`.
+
+Establish `h` using `hC₂ f' hf' (x + L t) 0`. Express the relevant statement in the definitionally equal form `‖sch ψ A B ν 𝓨 f' (x + L t)‖ₑ * _ ≤ _ at h`. Rewrite `h` using `[← ofReal_norm, ← ENNReal.ofReal_mul (norm_nonneg _)]`. Conclude with `(ENNReal.ofReal_le_iff_le_toReal hne).1 h`. Combine the equalities or inequalities in the displayed calculation.
+
+Generalize the expression as in `‖sch ψ A B ν 𝓨 f' (x + L t)‖ = a`. Generalize the expression as in `GlobalTheory.Unf.realSize θ (x + L t) = s`. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ c ^ N * ((C₂ : ℝ≥0∞) * GlobalTheory.Unf.supSob ψ θ N f').toReal := mul_le_mul_of_nonneg_left h2 (pow_nonneg hc0 N)`.
+
+Establish `hS` using `(GlobalTheory.T.derivativeClosedFunctionClass_smooth_and_schwartz k V hcont hder).2 hdecay _ ⟨f, hf, rfl⟩`. Conclude with `hS`.
+-/
 theorem sch_schwartz (k : ℕ) (L : (Fin k → ℝ) →+ Mx D B.rank A.rank) (hL : GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsRealParam L)
     (hinj : Function.Injective L) (x : Mx D B.rank A.rank) :
     ∃ g : SchwartzMap (Fin k → ℝ) ℂ, ∀ t, g t = sch ψ A B ν 𝓨 f (x + L t) := by
@@ -144,6 +178,9 @@ theorem sch_schwartz (k : ℕ) (L : (Fin k → ℝ) →+ Mx D B.rank A.rank) (hL
 
 omit hψ hν hf in
 
+/- English proof (translation)
+Introduce `D ψ hψ A B ν 𝓨 hν f hf`. Conclude with `⟨sch_level hψ hν hf, sch_supp hψ hν hf, fun k L hL hinj x => sch_schwartz hψ hν hf k L hL hinj x⟩`.
+-/
 theorem isSchwartzBruhat_sch : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 →
     ∀ f, IsThetaFunO ψ (dblSp A) B f → GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat (sch ψ A B ν 𝓨 f) := by

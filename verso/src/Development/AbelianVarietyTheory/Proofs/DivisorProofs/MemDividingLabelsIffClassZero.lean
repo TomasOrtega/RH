@@ -18,6 +18,11 @@ namespace GlobalTheory.GSep.IntLabel
 section
 variable {G X : Type} [AddCommGroup G] [AddCommGroup X] {N : ℕ} {Y : G → X → Prop}
 
+/- English proof (translation)
+Take `⟨mu, hmu⟩` from `h1 0`. Establish `h2` using `h4 0 0 mu mu hmu hmu`. Rewrite `h2` using `[add_zero]`. Establish `hc` using `(h3 0 mu (mu + mu) hmu).1 h2`. Use `(h3 0 mu 0 hmu).2 ?_` and prove the remaining obligations.
+
+Take `⟨w, hw⟩` from `hc`. Establish `e : mu = N • w` using `add_left_cancel (a := mu) (by simpa using hw)`. Conclude with `⟨-w, by simp [e]⟩`.
+-/
 theorem yy_zero (h1 : ∀ a, ∃ mu, Y a mu) (h3 : ∀ a mu mu', Y a mu → (Y a mu' ↔ CongMod N mu' mu))
     (h4 : ∀ a a' mu mu', Y a mu → Y a' mu' → Y (a + a') (mu + mu')) : Y 0 0 := by
   obtain ⟨mu, hmu⟩ := h1 0
@@ -29,6 +34,11 @@ theorem yy_zero (h1 : ∀ a, ∃ mu, Y a mu) (h3 : ∀ a mu mu', Y a mu → (Y a
   have e : mu = N • w := add_left_cancel (a := mu) (by simpa using hw)
   exact ⟨-w, by simp [e]⟩
 
+/- English proof (translation)
+Take `⟨mu', h'⟩` from `h1 (-a)`. Establish `h0` using `h4 a (-a) mu mu' ha h'`. Rewrite `h0` using `[add_neg_cancel]`. Establish `hc` using `(h3 0 0 (mu + mu') (yy_zero h1 h3 h4)).1 h0`. Use `(h3 (-a) mu' (-mu) h').2 ?_` and prove the remaining obligations.
+
+Take `⟨w, hw⟩` from `hc`. Rewrite `hw` using `[zero_add]`. Use `⟨-w, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, ← hw]`. Normalize the expressions using the abelian group laws.
+-/
 theorem yy_neg (h1 : ∀ a, ∃ mu, Y a mu) (h3 : ∀ a mu mu', Y a mu → (Y a mu' ↔ CongMod N mu' mu))
     (h4 : ∀ a a' mu mu', Y a mu → Y a' mu' → Y (a + a') (mu + mu')) {a : G} {mu : X} (ha : Y a mu) :
     Y (-a) (-mu) := by
@@ -43,12 +53,18 @@ theorem yy_neg (h1 : ∀ a, ∃ mu, Y a mu) (h3 : ∀ a mu mu', Y a mu → (Y a 
   rw [smul_neg, ← hw]
   abel
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, sub_eq_add_neg]`. Conclude with `h4 _ _ _ _ ha (yy_neg h1 h3 h4 hb)`.
+-/
 theorem yy_sub (h1 : ∀ a, ∃ mu, Y a mu) (h3 : ∀ a mu mu', Y a mu → (Y a mu' ↔ CongMod N mu' mu))
     (h4 : ∀ a a' mu mu', Y a mu → Y a' mu' → Y (a + a') (mu + mu')) {a b : G} {mu nu : X} (ha : Y a mu)
     (hb : Y b nu) : Y (a - b) (mu - nu) := by
   rw [sub_eq_add_neg, sub_eq_add_neg]
   exact h4 _ _ _ _ ha (yy_neg h1 h3 h4 hb)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using yy_zero h1 h3 h4`. Consider the case `succ k ih => rw [succ_nsmul, succ_nsmul]`. Conclude with `h4 _ _ _ _ ih ha`.
+-/
 theorem yy_nsmul (h1 : ∀ a, ∃ mu, Y a mu) (h3 : ∀ a mu mu', Y a mu → (Y a mu' ↔ CongMod N mu' mu))
     (h4 : ∀ a a' mu mu', Y a mu → Y a' mu' → Y (a + a') (mu + mu')) (k : ℕ) {a : G} {mu : X} (ha : Y a mu) :
     Y (k • a) (k • mu) := by
@@ -56,6 +72,23 @@ theorem yy_nsmul (h1 : ∀ a, ∃ mu, Y a mu) (h3 : ∀ a mu mu', Y a mu → (Y 
   | zero => simpa using yy_zero h1 h3 h4
   | succ k ih => rw [succ_nsmul, succ_nsmul]; exact h4 _ _ _ _ ih ha
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ha`. Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero => exact yy_zero h1 h3 h4`.
+
+Consider the case `add x y _ _ hx hy => simpa using h4 x y 0 0 hx hy`. Consider the case `neg x _ hx => simpa using yy_neg h1 h3 h4 hx`. Introduce `ha`. Take `⟨b, hb, hab⟩` from `hT a ha`. Establish `hYb : Y b 0` using `by simpa using yy_sub h1 h3 h4 (hS _ hab) ha`.
+
+Take `⟨c, rfl⟩` from `htor b hb`. Take `⟨muc, hc⟩` from `h1 c`. Establish `hcong` using `(h3 _ _ _ (yy_nsmul h1 h3 h4 (p ^ (J - 1)) hc)).1 hYb`. Establish `hw : ∃ w : X, muc = p • w`. Take `⟨w, hw⟩` from `hcong`.
+
+Use `⟨-w, ?_⟩` and prove the remaining obligations. Establish `e : p ^ (J - 1) • (muc + p • w) = 0`. Rewrite using `[smul_add, smul_smul, ← pow_succ, Nat.sub_add_cancel (by omega), ← hN]`. Conclude with `hw.symm`. Rewrite using `[smul_neg, eq_neg_iff_add_eq_zero]`.
+
+Conclude with `htf _ e`. Take `⟨w, hmu⟩` from `hw`. Take `⟨c', hc'⟩` from `h2 w`. Establish `hk : Y (c - p • c') 0`. Use `yy_sub h1 h3 h4 hc (yy_nsmul h1 h3 h4 p hc')` as an intermediate fact.
+
+Rewrite `this` using `[← hmu, sub_self]`. Then use the resulting hypothesis. Take `⟨bk, hbk, hkS⟩` from `hT _ hk`. Establish `hbk0 : p ^ (J - 1) • bk = 0`. Take `⟨e, he⟩ : ∃ e, J - 1 = e + 1` from `⟨J - 2, by omega⟩`. Rewrite using `[he, pow_succ, mul_smul, hbk, smul_zero]`.
+
+Establish `key : p ^ (J - 1) • c = p ^ (J - 1) • ((c - p • c') + bk)`. Rewrite using `[smul_add, hbk0, add_zero, smul_sub, smul_smul, ← pow_succ, Nat.sub_add_cancel (by omega), ← hN, hG, sub_zero]`. Establish `hbcl : p ^ (J - 1) • c ∈ AddSubgroup.closure S`. Rewrite using `[key]`. Conclude with `nsmul_mem (AddSubgroup.subset_closure hkS) _`.
+
+Establish `e : a = (a + p ^ (J - 1) • c) - p ^ (J - 1) • c` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem (AddSubgroup.subset_closure hab) hbcl`.
+-/
 theorem mem_closure_iff (p J : ℕ) (hJ : 2 ≤ J) (hN : N = p ^ J) (hG : ∀ a : G, N • a = 0)
     (htor : ∀ b : G, p • b = 0 → ∃ c, b = p ^ (J - 1) • c) (htf : ∀ x : X, p ^ (J - 1) • x = 0 → x = 0)
     (h1 : ∀ a, ∃ mu, Y a mu) (h2 : ∀ mu, ∃ a, Y a mu)
@@ -100,6 +133,15 @@ theorem mem_closure_iff (p J : ℕ) (hJ : 2 ≤ J) (hN : N = p ^ J) (hG : ∀ a 
     rw [e]
     exact sub_mem (AddSubgroup.subset_closure hab) hbcl
 
+/- English proof (translation)
+Substitute `hM` using the available equality. Use `haveI : NeZero (p ^ J) := ⟨pow_ne_zero _ hp.ne'⟩`. Establish `h1 : p ^ J ∣ p * x.val`. Rewrite using `[← CharP.cast_eq_zero_iff (ZMod (p ^ J)) (p ^ J)]`. Use `push_cast`.
+
+Rewrite using `[ZMod.natCast_zmod_val]`. Rewrite `hx` using `[nsmul_eq_mul]`. Then use the resulting hypothesis. Establish `h2 : p ^ (J - 1) ∣ x.val`. Establish `e : p ^ J = p * p ^ (J - 1)` using `by rw [← pow_succ']; congr 1; omega`. Establish `h1' : p * p ^ (J - 1) ∣ p * x.val` using `by rw [← e]; exact h1`.
+
+Conclude with `Nat.dvd_of_mul_dvd_mul_left hp h1'`. Take `⟨q, hq⟩` from `h2`. Use `⟨(q : ZMod (p ^ J)), ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← ZMod.natCast_zmod_val x]`. Rewrite using `[hq, nsmul_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zmod_tors {p J M : ℕ} (hp : 0 < p) (hJ : 1 ≤ J) (hM : M = p ^ J) (x : ZMod M) (hx : p • x = 0) :
     ∃ y : ZMod M, x = p ^ (J - 1) • y := by
   subst hM
@@ -127,6 +169,17 @@ namespace GlobalTheory.GSep
 
 open GlobalTheory.GSep.IntLabel in
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act x₀ hx₀ V _ _ _ ev X _ t δ 𝔪 a`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.thetaLabels_surjective_hom_lattice_mod_level I X₁ z₁ act V ev X t δ 𝔪`. Take `⟨j, hj, hr⟩` from `X₁.ρ.r_eq`. Establish `hp : 0 < X₁.ρ.n` using `X₁.ρ.n_prime.pos`. Establish `hk` using `X₁.ρ.two_le`.
+
+Establish `hN : X₁.S.r * X₁.S.N = X₁.ρ.n ^ (j + X₁.ρ.k * 2)` using `by rw [hr, X₁.ρ.N_eq, pow_add, pow_mul]`. Establish `hJ : 2 ≤ j + X₁.ρ.k * 2` using `by omega`. Establish `hG : ∀ b : X₁.S.Gam, (X₁.S.r * X₁.S.N) • b = 0` using `fun b => by`. Use function extensionality and compare the values at `v`. Simplify using `[nsmul_eq_mul]`.
+
+Establish `htor : ∀ b : X₁.S.Gam, X₁.ρ.n • b = 0 → ∃ c : X₁.S.Gam, b = X₁.ρ.n ^ (j + X₁.ρ.k * 2 - 1) • c`. Introduce `b hb`. Establish `hv : ∀ v, ∃ y : ZMod (X₁.S.r * X₁.S.N), b v = X₁.ρ.n ^ (j + X₁.ρ.k * 2 - 1) • y` using `fun v => zmod_tors hp (by omega) hN (b v) (by simpa using congrFun hb v)`. Use `choose c hc using hv`. Conclude with `⟨c, funext fun v => by simpa using hc v⟩`.
+
+Establish `htf : ∀ x : X, X₁.ρ.n ^ (j + X₁.ρ.k * 2 - 1) • x = 0 → x = 0`. Introduce `x hx`. Establish `hq : X₁.ρ.n ^ (j + X₁.ρ.k * 2 - 1) ≠ 0` using `pow_ne_zero _ hp.ne'`. Establish `he : ((X₁.ρ.n ^ (j + X₁.ρ.k * 2 - 1) : ℕ) : ℤ) • 𝔪.e₈ x = 0`. Rewrite using `[natCast_zsmul, ← map_nsmul, hx, map_zero]`.
+
+Establish `h0 : 𝔪.e₈ x = 0` using `(smul_eq_zero.1 he).resolve_left (by exact_mod_cast hq)`. Conclude with `𝔪.e₈.injective (h0.trans (map_zero _).symm)`. Rewrite using `[ThetaSys.HH]`. Conclude with `mem_closure_iff (X₁.ρ.n) (j + X₁.ρ.k * 2) hJ hN hG htor htf h1 h2 h3 h4 _ (fun b hb => GlobalTheory.T.thetaMember_dividing_label_class_zero I X₁ z₁ act V ev X t δ 𝔪 b hb) (fun b hb => GlobalTheory.T.exists_torsionTranslate_of_classZero_dividing I X₁ z₁ act V ev X t δ 𝔪 x₀ hx₀ b h …`.
+-/
 theorem mem_HH_iff_yy_zero : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) (a : X₁.S.Gam), a ∈ X₁.S.HH X₁.M z₁ ↔ 𝔪.YY a 0 := by
   intro I X₁ z₁ act x₀ hx₀ V _ _ _ ev X _ t δ 𝔪 a
   obtain ⟨h1, h2, h3, h4⟩ := GlobalTheory.T.thetaLabels_surjective_hom_lattice_mod_level I X₁ z₁ act V ev X t δ 𝔪

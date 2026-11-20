@@ -29,22 +29,40 @@ def liftWord (p : ℕ) {q : ℕ} (ω : List (Fin q × Fin q × ℕ)) : List (Fin
 section
 variable (R : Type*) [CommRing R] (p q : ℕ)
 
+/- English proof (translation)
+Simplify using `[resVar]`.
+-/
 theorem lrb_var_ll (a s : Fin p) :
     resVar R p q (Fin.castAdd q a, Fin.castAdd q s) = if a = s then 1 else 0 := by
   simp [resVar]
 
+/- English proof (translation)
+Simplify using `[resVar]`.
+-/
 theorem lrb_var_lr (a : Fin p) (t : Fin q) : resVar R p q (Fin.castAdd q a, Fin.natAdd p t) = 0 := by
   simp [resVar]
 
+/- English proof (translation)
+Simplify using `[resVar]`.
+-/
 theorem lrb_var_rl (b : Fin q) (s : Fin p) : resVar R p q (Fin.natAdd p b, Fin.castAdd q s) = 0 := by
   simp [resVar]
 
+/- English proof (translation)
+Simplify using `[resVar]`.
+-/
 theorem lrb_var_rr (b t : Fin q) : resVar R p q (Fin.natAdd p b, Fin.natAdd p t) = X (b, t) := by
   simp [resVar]
 
+/- English proof (translation)
+Simplify using `[res]`.
+-/
 theorem lrb_res_X (v : Fin (p + q) × Fin (p + q)) : res R p q (X v) = resVar R p q v := by
   simp [res]
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd] at this`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lrb_cast_ne_nat (a : Fin p) (b : Fin q) : Fin.castAdd q a ≠ Fin.natAdd p b := by
   intro h
   have := congrArg Fin.val h
@@ -52,14 +70,29 @@ theorem lrb_cast_ne_nat (a : Fin p) (b : Fin q) : Fin.castAdd q a ≠ Fin.natAdd
   have := a.isLt
   omega
 
+/- English proof (translation)
+Rewrite using `[Polynomial.coe_mapAlgHom, Polynomial.map_C]`. Conclude with `congrArg _ (lrb_res_X R p q v)`.
+-/
 theorem lrb_mapC (v : Fin (p + q) × Fin (p + q)) :
     Polynomial.mapAlgHom (res R p q) (Polynomial.C (X v)) = Polynomial.C (resVar R p q v) := by
   rw [Polynomial.coe_mapAlgHom, Polynomial.map_C]
   exact congrArg _ (lrb_res_X R p q v)
 
+/- English proof (translation)
+Rewrite using `[Polynomial.coe_mapAlgHom, Polynomial.map_X]`.
+-/
 theorem lrb_mapX : Polynomial.mapAlgHom (res R p q) Polynomial.X = Polynomial.X := by
   rw [Polynomial.coe_mapAlgHom, Polynomial.map_X]
 
+/- English proof (translation)
+Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Take `⟨x, s⟩` from `v`. Simplify using `only [AlgHom.comp_apply, lrb_res_X]`. Rewrite using `[rowGen, aeval_X]`. Use `Fin.addCases (fun a => ?_) (fun c => ?_) x` and prove the remaining obligations.
+
+Rewrite using `[if_neg (lrb_cast_ne_nat p q a b'), add_zero, lrb_mapC]`. Use `Fin.addCases (fun s' => ?_) (fun t => ?_) s` and prove the remaining obligations. Apply the tactic sequence `rw [lrb_var_ll] split_ifs <;> simp`. Rewrite using `[lrb_var_lr]`. Simplify using the standard rewrite rules.
+
+Use `Fin.addCases (fun s' => ?_) (fun t => ?_) s` and prove the remaining obligations. Rewrite using `[map_add, lrb_mapC, lrb_var_rl] split_ifs`. Rewrite using `[map_mul, lrb_mapC, lrb_var_rl]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Rewrite using `[map_add, lrb_mapC, lrb_var_rr, rowGen, aeval_X]`. Simplify using `only [Fin.natAdd_inj]`. Use `split_ifs`. Rewrite using `[map_mul, lrb_mapC, lrb_mapX, lrb_var_rr]`. Simplify using the standard rewrite rules.
+-/
 theorem lrb_rowGen (b b' : Fin q) :
     (Polynomial.mapAlgHom (res R p q)).comp (rowGen R (Fin.natAdd p b) (Fin.natAdd p b')) =
       (rowGen R b b').comp (res R p q) := by
@@ -86,12 +119,18 @@ theorem lrb_rowGen (b b' : Fin q) :
       · rw [map_mul, lrb_mapC, lrb_mapX, lrb_var_rr]
       · simp
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ => (φ f).coeff k) (lrb_rowGen R p q b b')`. Simplify using `only [AlgHom.comp_apply, Polynomial.coeff_mapAlgHom_apply] at h`. Conclude with `h`.
+-/
 theorem res_rowDiv (b b' : Fin q) (k : ℕ) (f : MvPolynomial (Fin (p + q) × Fin (p + q)) R) :
     res R p q (rowDiv R (Fin.natAdd p b) (Fin.natAdd p b') k f) = rowDiv R b b' k (res R p q f) := by
   have h := congrArg (fun φ => (φ f).coeff k) (lrb_rowGen R p q b b')
   simp only [AlgHom.comp_apply, Polynomial.coeff_mapAlgHom_apply] at h
   exact h
 
+/- English proof (translation)
+Proceed by induction on `ω with`. Consider the case `nil => rfl`. Consider the case `cons x ω ih`. Express the relevant statement in the definitionally equal form `res R p q (rowDiv R _ _ _ (applyWord R (liftWord p ω) f)) = rowDiv R _ _ _ (applyWord R ω (res R p q f))`. Rewrite using `[res_rowDiv, ih]`.
+-/
 theorem res_applyWord (ω : List (Fin q × Fin q × ℕ)) (f : MvPolynomial (Fin (p + q) × Fin (p + q)) R) :
     res R p q (applyWord R (liftWord p ω) f) = applyWord R ω (res R p q f) := by
   induction ω with
@@ -100,6 +139,15 @@ theorem res_applyWord (ω : List (Fin q × Fin q × ℕ)) (f : MvPolynomial (Fin
     change res R p q (rowDiv R _ _ _ (applyWord R (liftWord p ω) f)) = rowDiv R _ _ _ (applyWord R ω (res R p q f))
     rw [res_rowDiv, ih]
 
+/- English proof (translation)
+Establish `h : ((aeval (idFrame R q q) : MvPolynomial (Fin q × Fin q) R →ₐ[R] R).comp (res R p q)) = (aeval (idFrame R (p + q) (p + q)) : MvPolynomial (Fin (p + q) × Fin (p + q)) R →ₐ[R] R)`. Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Take `⟨x, s⟩` from `v`. Simplify using `only [AlgHom.comp_apply, lrb_res_X, aeval_X]`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun c => ?_) x <;> refine Fin.addCases (fun s' => ?_) (fun t => ?_) s`.
+
+Rewrite using `[lrb_var_ll]`. Simplify using `only [idFrame, Fin.val_castAdd, Fin.val_inj]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[lrb_var_lr]`. Use `a.isLt` as an intermediate fact.
+
+Simplify using `only [idFrame, Fin.val_castAdd, Fin.val_natAdd, map_zero]`. Rewrite using `[if_neg (by omega)]`. Rewrite using `[lrb_var_rl]`. Use `s'.isLt` as an intermediate fact. Simplify using `only [idFrame, Fin.val_castAdd, Fin.val_natAdd, map_zero]`.
+
+Rewrite using `[if_neg (by omega)]`. Rewrite using `[lrb_var_rr, aeval_X]`. Simplify using `only [idFrame, Fin.val_natAdd, add_right_inj]`. Establish `h2` using `congrArg (fun φ => φ f) h`. Simplify `h2` using `[AlgHom.comp_apply, aeval_eq_eval]`.
+-/
 theorem res_eval_id (f : MvPolynomial (Fin (p + q) × Fin (p + q)) R) :
     eval (idFrame R q q) (res R p q f) = eval (idFrame R (p + q) (p + q)) f := by
   have h : ((aeval (idFrame R q q) : MvPolynomial (Fin q × Fin q) R →ₐ[R] R).comp (res R p q)) =
@@ -129,6 +177,11 @@ end
 section
 variable (R : Type*) [CommRing R] (p q : ℕ)
 
+/- English proof (translation)
+Use `conv => enter [2, 2]`. Rewrite using `[x.as_sum]`. Rewrite using `[map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, ← hx (mem_support_iff.mp hd), Finsupp.weight_apply, MvPolynomial.algebraMap_eq]`.
+
+Use `IsWeightedHomogeneous.C_mul ?_ _` and prove the remaining obligations. Unfold `Finsupp.prod Finsupp.sum`. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun v _ => (hφ v).pow _`.
+-/
 theorem lrb_aeval_hom {σ τ Mo : Type*} [AddCommMonoid Mo] (w : τ → Mo) (φ : σ → MvPolynomial τ R) (ω : σ → Mo)
     (hφ : ∀ v, IsWeightedHomogeneous w (φ v) (ω v)) (x : MvPolynomial σ R) (κ : Mo)
     (hx : IsWeightedHomogeneous ω x κ) : IsWeightedHomogeneous w (aeval φ x) κ := by
@@ -140,6 +193,9 @@ theorem lrb_aeval_hom {σ τ Mo : Type*} [AddCommMonoid Mo] (w : τ → Mo) (φ 
   unfold Finsupp.prod Finsupp.sum
   exact IsWeightedHomogeneous.prod _ _ _ fun v _ => (hφ v).pow _
 
+/- English proof (translation)
+Introduce `d hd`. Rewrite using `[← hx hd, Finsupp.weight_apply, Finsupp.weight_apply, map_finsuppSum]`. Use `Finsupp.sum_congr fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul]`.
+-/
 theorem lrb_proj {σ M M' : Type*} [AddCommMonoid M] [AddCommMonoid M'] (π : M →+ M') (w : σ → M)
     (x : MvPolynomial σ R) (κ : M) (hx : IsWeightedHomogeneous w x κ) :
     IsWeightedHomogeneous (fun v => π (w v)) x (π κ) := by
@@ -153,11 +209,19 @@ def lrbPi : (Fin (p + q) → ℕ) →+ (Fin q → ℕ) where
   map_zero' := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `(Pi.single (Fin.castAdd q a) 1 : Fin (p + q) → ℕ) (Fin.natAdd p t) = 0`. Rewrite using `[Pi.single_eq_of_ne (lrb_cast_ne_nat p q a t).symm]`.
+-/
 theorem lrb_pi_single_cast (a : Fin p) : lrbPi p q (Pi.single (Fin.castAdd q a) 1) = 0 := by
   funext t
   change (Pi.single (Fin.castAdd q a) 1 : Fin (p + q) → ℕ) (Fin.natAdd p t) = 0
   rw [Pi.single_eq_of_ne (lrb_cast_ne_nat p q a t).symm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `(Pi.single (Fin.natAdd p c) 1 : Fin (p + q) → ℕ) (Fin.natAdd p t) = _`. Distinguish the cases in `h : t = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Pi.single_eq_of_ne h, Pi.single_eq_of_ne (fun h' => h (by simpa using h'))]`.
+-/
 theorem lrb_pi_single_nat (c : Fin q) : lrbPi p q (Pi.single (Fin.natAdd p c) 1) = Pi.single c 1 := by
   funext t
   change (Pi.single (Fin.natAdd p c) 1 : Fin (p + q) → ℕ) (Fin.natAdd p t) = _
@@ -166,6 +230,15 @@ theorem lrb_pi_single_nat (c : Fin q) : lrbPi p q (Pi.single (Fin.natAdd p c) 1)
     simp
   · rw [Pi.single_eq_of_ne h, Pi.single_eq_of_ne (fun h' => h (by simpa using h'))]
 
+/- English proof (translation)
+Take `⟨x, s⟩` from `v`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun c => ?_) x <;> refine Fin.addCases (fun s' => ?_) (fun t => ?_) s`. Rewrite using `[lrb_var_ll]`. Express the relevant statement in the definitionally equal form `IsWeightedHomogeneous _ _ (lrbPi p q (Pi.single (Fin.castAdd q s') 1))`. Rewrite using `[lrb_pi_single_cast]`.
+
+Use `split_ifs`. Conclude with `isWeightedHomogeneous_one _ _`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Rewrite using `[lrb_var_lr]`. Conclude with `isWeightedHomogeneous_zero _ _ _`.
+
+Rewrite using `[lrb_var_rl]`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Rewrite using `[lrb_var_rr]`. Express the relevant statement in the definitionally equal form `IsWeightedHomogeneous _ _ (lrbPi p q (Pi.single (Fin.natAdd p t) 1))`. Rewrite using `[lrb_pi_single_nat]`.
+
+Conclude with `isWeightedHomogeneous_X _ _ _`.
+-/
 theorem lrb_var_col (v : Fin (p + q) × Fin (p + q)) :
     IsWeightedHomogeneous (colW q q) (resVar R p q v) (lrbPi p q (colW (p + q) (p + q) v)) := by
   obtain ⟨x, s⟩ := v
@@ -185,6 +258,15 @@ theorem lrb_var_col (v : Fin (p + q) × Fin (p + q)) :
     rw [lrb_pi_single_nat]
     exact isWeightedHomogeneous_X _ _ _
 
+/- English proof (translation)
+Take `⟨x, s⟩` from `v`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun c => ?_) x <;> refine Fin.addCases (fun s' => ?_) (fun t => ?_) s`. Rewrite using `[lrb_var_ll]`. Express the relevant statement in the definitionally equal form `IsWeightedHomogeneous _ _ (lrbPi p q (Pi.single (Fin.castAdd q a) 1))`. Rewrite using `[lrb_pi_single_cast]`.
+
+Use `split_ifs`. Conclude with `isWeightedHomogeneous_one _ _`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Rewrite using `[lrb_var_lr]`. Conclude with `isWeightedHomogeneous_zero _ _ _`.
+
+Rewrite using `[lrb_var_rl]`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Rewrite using `[lrb_var_rr]`. Express the relevant statement in the definitionally equal form `IsWeightedHomogeneous _ _ (lrbPi p q (Pi.single (Fin.natAdd p c) 1))`. Rewrite using `[lrb_pi_single_nat]`.
+
+Conclude with `isWeightedHomogeneous_X _ _ _`.
+-/
 theorem lrb_var_row (v : Fin (p + q) × Fin (p + q)) :
     IsWeightedHomogeneous (rowW q q) (resVar R p q v) (lrbPi p q (rowW (p + q) (p + q) v)) := by
   obtain ⟨x, s⟩ := v
@@ -204,11 +286,17 @@ theorem lrb_var_row (v : Fin (p + q) × Fin (p + q)) :
     rw [lrb_pi_single_nat]
     exact isWeightedHomogeneous_X _ _ _
 
+/- English proof (translation)
+The claim follows from `lrb_aeval_hom R (rowW q q) (resVar R p q) _ (lrb_var_row R p q) f _ (lrb_proj R (lrbPi p q) _ f μ hf)`.
+-/
 theorem res_rowHom (μ : Fin (p + q) → ℕ) (f : MvPolynomial (Fin (p + q) × Fin (p + q)) R)
     (hf : IsWeightedHomogeneous (rowW (p + q) (p + q)) f μ) :
     IsWeightedHomogeneous (rowW q q) (res R p q f) (fun b => μ (Fin.natAdd p b)) :=
   lrb_aeval_hom R (rowW q q) (resVar R p q) _ (lrb_var_row R p q) f _ (lrb_proj R (lrbPi p q) _ f μ hf)
 
+/- English proof (translation)
+The claim follows from `lrb_aeval_hom R (colW q q) (resVar R p q) _ (lrb_var_col R p q) f _ (lrb_proj R (lrbPi p q) _ f μ hf)`.
+-/
 theorem res_colHom (μ : Fin (p + q) → ℕ) (f : MvPolynomial (Fin (p + q) × Fin (p + q)) R)
     (hf : IsWeightedHomogeneous (colW (p + q) (p + q)) f μ) :
     IsWeightedHomogeneous (colW q q) (res R p q f) (fun b => μ (Fin.natAdd p b)) :=
@@ -217,18 +305,36 @@ theorem res_colHom (μ : Fin (p + q) → ℕ) (f : MvPolynomial (Fin (p + q) × 
 def lrbResO : MvPolynomial (Option (Fin (p + q) × Fin (p + q))) R →ₐ[R] MvPolynomial (Option (Fin q × Fin q)) R :=
   aeval fun o => o.elim (X none) fun v => rename some (resVar R p q v)
 
+/- English proof (translation)
+Simplify using `[lrbResO]`.
+-/
 theorem lrb_resO_some (v : Fin (p + q) × Fin (p + q)) :
     lrbResO R p q (X (some v)) = rename some (resVar R p q v) := by
   simp [lrbResO]
 
+/- English proof (translation)
+Simplify using `[lrbResO]`.
+-/
 theorem lrb_resO_none : lrbResO R p q (X none) = X none := by
   simp [lrbResO]
 
+/- English proof (translation)
+Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, rename_X, lrb_resO_some, lrb_res_X]`.
+-/
 theorem lrb_resO_rename :
     (lrbResO R p q).comp (rename some) = (rename some).comp (res R p q) := by
   refine MvPolynomial.algHom_ext fun v => ?_
   simp only [AlgHom.comp_apply, rename_X, lrb_resO_some, lrb_res_X]
 
+/- English proof (translation)
+Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Take `⟨x, s⟩` from `v`. Simplify using `only [AlgHom.comp_apply, lrb_res_X]`. Rewrite using `[colAddGen, aeval_X]`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun c => ?_) x <;> refine Fin.addCases (fun s' => ?_) (fun t => ?_) s`.
+
+Apply the tactic sequence `rw [if_neg (lrb_cast_ne_nat p q s' j), lrb_resO_some, lrb_var_ll] split_ifs <;> simp`. Simplify using `only [Fin.natAdd_inj] split_ifs`. Rewrite using `[map_add, map_mul, lrb_resO_some, lrb_resO_some, lrb_var_lr, lrb_var_lr]`. Simplify using the standard rewrite rules. Rewrite using `[lrb_resO_some, lrb_var_lr]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg (lrb_cast_ne_nat p q s' j), lrb_resO_some, lrb_var_rl]`. Simplify using the standard rewrite rules. Simplify using `only [Fin.natAdd_inj]`. Rewrite using `[lrb_var_rr, colAddGen, aeval_X]`.
+
+Simplify using `only`. Use `split_ifs`. Rewrite using `[map_add, map_mul, lrb_resO_some, lrb_resO_some, lrb_resO_none, lrb_var_rr, lrb_var_rr, rename_X, rename_X]`. Rewrite using `[lrb_resO_some, lrb_var_rr, rename_X]`.
+-/
 theorem lrb_resO_colAdd (l j : Fin q) :
     (lrbResO R p q).comp (colAddGen R (Fin.natAdd p l) (Fin.natAdd p j)) = (colAddGen R l j).comp (res R p q) := by
   refine MvPolynomial.algHom_ext fun v => ?_
@@ -253,6 +359,13 @@ theorem lrb_resO_colAdd (l j : Fin q) :
     · rw [map_add, map_mul, lrb_resO_some, lrb_resO_some, lrb_resO_none, lrb_var_rr, lrb_var_rr, rename_X, rename_X]
     · rw [lrb_resO_some, lrb_var_rr, rename_X]
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[rowst_mem_dualWeyl_iff]`. Use `⟨?_, fun l j hlj => ?_⟩` and prove the remaining obligations. Establish `h` using `res_colHom R p q _ f hf.1`. Establish `e : (fun b => LD.blockWt p q w lam2 (Fin.natAdd p b)) = lam2`. Use function extensionality and compare the values at `b`.
+
+Conclude with `Fin.append_right _ _ b`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `h` using `hf.2 (Fin.natAdd p l) (Fin.natAdd p j) (by`. Rewrite `hlj`, the goal using `[Fin.lt_def]`. Simplify using `using hlj)`.
+
+Establish `h1` using `congrArg (fun φ => φ f) (lrb_resO_colAdd R p q l j)`. Establish `h2` using `congrArg (fun φ => φ f) (lrb_resO_rename R p q)`. Simplify using `only [AlgHom.comp_apply] at h1 h2`. Rewrite using `[← h1, h, h2]`.
+-/
 theorem res_mem (w : ℕ) (lam2 : Fin q → ℕ) (f : MvPolynomial (Fin (p + q) × Fin (p + q)) R)
     (hf : f ∈ dualWeyl R (p + q) (p + q) (LD.blockWt p q w lam2)) : res R p q f ∈ dualWeyl R q q lam2 := by
   rw [rowst_mem_dualWeyl_iff] at hf ⊢
@@ -272,6 +385,11 @@ theorem res_mem (w : ℕ) (lam2 : Fin q → ℕ) (f : MvPolynomial (Fin (p + q) 
 
 end
 
+/- English proof (translation)
+Establish `hA` using `LD.ld_blockWt_anti p q w lam2 ha hb`. Establish `hm` using `res_mem ℚ p q w lam2 _ (hwMem ℚ (p + q) (p + q) le_rfl _ hA)`. Take `⟨c, hc⟩` from `hwLine ℚ q q le_rfl lam2 ha _ hm (fun a b hab k hk => by`. Rewrite using `[← res_rowDiv, hwRaise ℚ (p + q) (p + q) le_rfl _ (Fin.natAdd p a) (Fin.natAdd p b) k (by`. Rewrite `hab`, the goal using `[Fin.lt_def]`.
+
+Simplify using `using hab) hk, map_zero])`. Establish `h1` using `res_eval_id ℚ p q (hw ℚ le_rfl (LD.blockWt p q w lam2))`. Rewrite `h1` using `[lehw_eval_idFrame_hw, hc, smul_eval, lehw_eval_idFrame_hw, mul_one]`. Rewrite using `[hc, h1, one_smul]`.
+-/
 theorem res_hw (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, lam2 b ≤ w) :
     res ℚ p q (hw ℚ le_rfl (LD.blockWt p q w lam2)) = hw ℚ le_rfl lam2 := by
   have hA := LD.ld_blockWt_anti p q w lam2 ha hb

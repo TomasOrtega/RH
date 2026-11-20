@@ -11,6 +11,15 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.CompanionTheory.CochainBC
 
+/- English proof (translation)
+Introduce `R R' _ _ _ C _ _ _ F F' m`. Take `⟨E₀, hE₀⟩` from `GlobalTheory.CompanionTheory.PerfExt.ext0 m`. Take `⟨E₁, hE₁⟩` from `GlobalTheory.CompanionTheory.PerfExt.ext1 m`. Take `⟨E₂, hE₂⟩` from `GlobalTheory.CompanionTheory.PerfExt.ext2 m`. Use `⟨E₀, E₁, E₂, hE₀, hE₁, hE₂, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `GlobalTheory.CompanionTheory.PerfExt.bc_ext (E₁.toLinearMap ∘ₗ (d0 F).baseChange R') ((d0 F') ∘ₗ E₀.toLinearMap) (by`. Introduce `n`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.baseChange_tmul, hE₁, LinearMap.comp_apply, LinearEquiv.coe_coe, hE₀]`. Use function extensionality and compare the values at `T T' φ`. Simplify using `only`.
+
+Rewrite using `[amitsur_d0_apply, amitsur_d0_apply, map_sub, m.naturality])`. Conclude with `LinearMap.congr_fun h x`. Establish `h` using `GlobalTheory.CompanionTheory.PerfExt.bc_ext (E₂.toLinearMap ∘ₗ (d1 F).baseChange R') ((d1 F') ∘ₗ E₁.toLinearMap) (by`. Introduce `n`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.baseChange_tmul, hE₂, LinearMap.comp_apply, LinearEquiv.coe_coe, hE₁]`.
+
+Use function extensionality and compare the values at `T T' T'' φ ψ`. Simplify using `only`. Rewrite using `[d1_apply, d1_apply, map_add, map_sub, m.naturality])`. Conclude with `LinearMap.congr_fun h x`.
+-/
 theorem main : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (C : Type) [Category.{0} C] [Finite C]
     [∀ T T' : C, Finite (T ⟶ T')] (F : C ⥤ CommAlgCat.{0} R) (F' : C ⥤ CommAlgCat.{0} R') (m : BC F F'),
     ∃ (E₀ : R' ⊗[R] C0 F ≃ₗ[R'] C0 F') (E₁ : R' ⊗[R] C1 F ≃ₗ[R'] C1 F') (E₂ : R' ⊗[R] C2 F ≃ₗ[R'] C2 F'),

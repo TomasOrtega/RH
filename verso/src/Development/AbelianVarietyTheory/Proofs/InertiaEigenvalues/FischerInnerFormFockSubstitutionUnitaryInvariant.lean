@@ -28,6 +28,15 @@ def fockMat (p : D.what₂.Tau → ℕ) (U : GlobalTheory.ExportSeries.GLR D n) 
     Matrix (Fin (Fintype.card (FVar D m n))) (Fin (Fintype.card (FVar D m n))) ℂ :=
   (blockDiagonal (fockBlock (m := m) p U)).submatrix (flatRegroup D m n) (flatRegroup D m n)
 
+/- English proof (translation)
+Establish `key : (rename (flat (FVar D m n))).comp (GlobalTheory.ExportSeries.fockSubst p U) = (ReciprocityTheory.PGsh.rowSubst (fockMat p U)).comp (rename (flat (FVar D m n)))`. Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, GlobalTheory.ExportSeries.fockSubst, aeval_X, rename_X, ReciprocityTheory.PGsh.rowSubst_X, ← (flatRegroup D m n).symm.sum_comp, Fintype.sum_prod_type_right, Finset.sum_eq_single (v.1, v.2.1)]`. Establish `hv : flatRegroup D m n (flat (FVar D m n) v).1 = (v.2.2, (v.1, v.2.1))`. Express the relevant statement in the definitionally equal form `fvarRegroup D m n ((flat (FVar D m n)).symm ((flat (FVar D m n) v).1, PUnit.unit)) = _`.
+
+Rewrite using `[show ((flat (FVar D m n) v).1, PUnit.unit) = flat (FVar D m n) v from rfl, Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Establish `hx : ∀ b : Fin n, ((flatRegroup D m n).symm (b, (v.1, v.2.1)), (flat (FVar D m n) v).2) = flat (FVar D m n) (v.1, v.2.1, b)` using `fun b => by`. Simplify using `[flatRegroup, fvarRegroup]`. Simplify using `only [fockMat, submatrix_apply, Equiv.apply_symm_apply, hv, blockDiagonal_apply_eq, hx]`.
+
+Apply the tactic sequence `split_ifs with h <;> simp [fockBlock, h, map_sum, rename_X]`. Introduce `k _ hk`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Establish `hv : flatRegroup D m n (flat (FVar D m n) v).1 = (v.2.2, (v.1, v.2.1))`. Express the relevant statement in the definitionally equal form `fvarRegroup D m n ((flat (FVar D m n)).symm ((flat (FVar D m n) v).1, PUnit.unit)) = _`.
+
+Rewrite using `[show ((flat (FVar D m n) v).1, PUnit.unit) = flat (FVar D m n) v from rfl, Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Simplify using `[fockMat, hv, blockDiagonal_apply_ne _ _ _ hk]`. Simplify using the standard rewrite rules. Conclude with `congrArg (fun f => f P) key`.
+-/
 theorem rename_fockSubst (p : D.what₂.Tau → ℕ) (U : GlobalTheory.ExportSeries.GLR D n) (P : PolF D m n) :
     rename (flat (FVar D m n)) (GlobalTheory.ExportSeries.fockSubst p U P) =
       ReciprocityTheory.PGsh.rowSubst (fockMat p U) (rename (flat (FVar D m n)) P) := by
@@ -56,6 +65,15 @@ theorem rename_fockSubst (p : D.what₂.Tau → ℕ) (U : GlobalTheory.ExportSer
     · simp
   exact congrArg (fun f => f P) key
 
+/- English proof (translation)
+Establish `hu` using `hU k.1`. Rewrite `hu` using `[Matrix.mem_unitaryGroup_iff]`. Establish `hu'` using `hU k.1`. Rewrite `hu'` using `[Matrix.mem_unitaryGroup_iff']`. Unfold `fockBlock`.
+
+Use `split_ifs`. Establish `hinv : (((U k.1)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = star (U k.1).val` using `Units.inv_eq_of_mul_eq_one_right hu`. Rewrite using `[hinv]`. Use extensionality with `i j`. Use `congrArg (starRingEnd ℂ) (congrFun (congrFun hu' i) j)` as an intermediate fact.
+
+Simplify using `only [Matrix.mul_apply, Matrix.star_apply, map_sum, map_mul, Complex.conj_conj, RCLike.star_def] at this`. Establish `h1 : ((star (U k.1).val)ᵀᴴ * (star (U k.1).val)ᵀ) i j = ∑ x, (U k.1).val x i * starRingEnd ℂ ((U k.1).val x j)`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.transpose_apply, Matrix.star_apply, RCLike.star_def, Complex.conj_conj]`. Rewrite using `[h1, this, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Simplify `hu'` using `[Matrix.star_eq_conjTranspose]`.
+-/
 theorem fockBlock_conjTranspose_mul (p : D.what₂.Tau → ℕ) (U : GlobalTheory.ExportSeries.GLR D n)
     (hU : ∀ τ, (U τ).val ∈ Matrix.unitaryGroup (Fin n) ℂ) (k : D.what₂.Tau × Fin m) :
     (fockBlock p U k)ᴴ * fockBlock p U k = 1 := by
@@ -79,6 +97,9 @@ theorem fockBlock_conjTranspose_mul (p : D.what₂.Tau → ℕ) (U : GlobalTheor
     split_ifs <;> simp
   · simpa [Matrix.star_eq_conjTranspose] using hu'
 
+/- English proof (translation)
+Rewrite using `[fockMat, conjTranspose_submatrix, submatrix_mul_equiv, blockDiagonal_conjTranspose, ← blockDiagonal_mul]`. Simplify using `only [fockBlock_conjTranspose_mul p U hU]`. Rewrite using `[show (fun _ => (1 : Matrix (Fin n) (Fin n) ℂ)) = (1 : D.what₂.Tau × Fin m → Matrix (Fin n) (Fin n) ℂ) from rfl, blockDiagonal_one, submatrix_one_equiv]`.
+-/
 theorem fockMat_conjTranspose_mul (p : D.what₂.Tau → ℕ) (U : GlobalTheory.ExportSeries.GLR D n)
     (hU : ∀ τ, (U τ).val ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     (fockMat (m := m) p U)ᴴ * fockMat p U = 1 := by
@@ -87,6 +108,9 @@ theorem fockMat_conjTranspose_mul (p : D.what₂.Tau → ℕ) (U : GlobalTheory.
   rw [show (fun _ => (1 : Matrix (Fin n) (Fin n) ℂ)) = (1 : D.what₂.Tau × Fin m → Matrix (Fin n) (Fin n) ℂ) from rfl,
     blockDiagonal_one, submatrix_one_equiv]
 
+/- English proof (translation)
+Unfold `fis`. Rewrite using `[rename_fockSubst, rename_fockSubst, ReciprocityTheory.PGsh.fischer_rowSubst, ReciprocityTheory.PGsh.rowSubst_mul, fockMat_conjTranspose_mul p U hU, ReciprocityTheory.PGsh.rowSubst_one]`.
+-/
 theorem fis_fockSubst_of_unitary (D : D7) (m n : ℕ) (p : D.what₂.Tau → ℕ) (U : GlobalTheory.ExportSeries.GLR D n)
     (hU : ∀ τ, (U τ).val ∈ Matrix.unitaryGroup (Fin n) ℂ) (P Q : PolF D m n) :
     fis (GlobalTheory.ExportSeries.fockSubst p U P) (GlobalTheory.ExportSeries.fockSubst p U Q) = fis P Q := by

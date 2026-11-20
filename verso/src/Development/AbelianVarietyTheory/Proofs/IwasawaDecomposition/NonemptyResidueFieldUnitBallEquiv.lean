@@ -13,6 +13,11 @@ namespace GlobalTheory.HeightCounting
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.L2.Host NumberField IsDedekindDomain Polynomial
 open IsLocalRing
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `h1` using `h x⁻¹`. Establish `hv : 0 < v.valuation K x` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr hx)`. Establish `hn : 0 < ‖a x‖` using `norm_pos_iff.mpr ((map_ne_zero a).mpr hx)`.
+
+Rewrite `h1` using `[map_inv₀, map_inv₀, norm_inv, inv_lt_one₀ hv, inv_lt_one₀ hn]`. Rewrite using `[← not_lt, ← not_lt, h1]`.
+-/
 theorem valuation_le_one_iff_of_lt_iff {K F : Type} [Field K] [NumberField K] [NormedField F]
     (v : HeightOneSpectrum (𝓞 K)) (a : K →+* F)
     (h : ∀ x : K, v.valuation K x < 1 ↔ ‖a x‖ < 1) (x : K) :
@@ -25,6 +30,19 @@ theorem valuation_le_one_iff_of_lt_iff {K F : Type} [Field K] [NumberField K] [N
   rw [map_inv₀, map_inv₀, norm_inv, inv_lt_one₀ hv, inv_lt_one₀ hn] at h1
   rw [← not_lt, ← not_lt, h1]
 
+/- English proof (translation)
+Set `a₀ : K →+* PadicAlgCl l` to `(IsAlgClosed.lift (R := ℚ) (S := K) (M := PadicAlgCl l)).toRingHom`. Take `⟨w₀, hw₀⟩` from `GlobalTheory.LadicPlace.exists_place_of_embedding K l a₀`. Establish `hlw : ((l : ℕ) : 𝓞 K) ∈ w₀.asIdeal`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := K), hw₀]`. Establish `hfin : ‖a₀ ((l : ℕ) : K)‖ < 1`.
+
+Rewrite using `[map_natCast]`. Establish `h1 : ((l : ℕ) : PadicAlgCl l) = ((l : ℚ_[l]) : PadicAlgCl l)` using `by simp`. Rewrite using `[h1, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`. Use `hfin using 3` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `first | exact map_natCast _ _ | simp`. Use `v.isPrime` as an intermediate fact. Use `w₀.isPrime` as an intermediate fact. Use `haveI := Formalism.BasicNotions.Examples₂.PlOver.liesOver_of_mem v.asIdeal hl`. Use `haveI := Formalism.BasicNotions.Examples₂.PlOver.liesOver_of_mem w₀.asIdeal hlw`.
+
+Take `⟨σ, hσ⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(l : ℤ)}) v.asIdeal w₀.asIdeal (K ≃ₐ[ℚ] K)`. Set `a : K →+* PadicAlgCl l` to `a₀.comp (σ : K →+* K)`. Take `⟨v', hv'⟩` from `GlobalTheory.LadicPlace.exists_place_of_embedding K l a`. Establish `hvv : v' = v`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises.
+
+Use extensionality with `y`. Establish `h2 : (σ • y) ∈ w₀.asIdeal ↔ y ∈ v.asIdeal`. Rewrite using `[← hσ]`. Conclude with `Ideal.smul_mem_pointwise_smul_iff`. Rewrite using `[← h2, ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := K), hv', ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := K), hw₀]`.
+
+Both sides reduce to the same expression. Substitute `hvv` using the available equality. Conclude with `⟨a, hv'⟩`.
+-/
 theorem exists_embedding_inducing_place (K : Type) [Field K] [NumberField K] [IsGalois ℚ K]
     (l : ℕ) [Fact l.Prime] (v : HeightOneSpectrum (𝓞 K)) (hl : ((l : ℕ) : 𝓞 K) ∈ v.asIdeal) :
     ∃ a : K →+* PadicAlgCl l, ∀ x : K, v.valuation K x < 1 ↔ ‖a x‖ < 1 := by
@@ -59,6 +77,11 @@ theorem exists_embedding_inducing_place (K : Type) [Field K] [NumberField K] [Is
   subst hvv
   exact ⟨a, hv'⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.AlgebraMapToZMod.algebraMap_toZMod_eq`. Consider the case `exact _root_.GlobalTheory.AlgebraMapToZMod.algebraMap_toZMod_eq`. Consider the case `(apply _root_.GlobalTheory.AlgebraMapToZMod.algebraMap_toZMod_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AlgebraMapToZMod.algebraMap_toZMod_eq <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.AlgebraMapToZMod.algebraMap_toZMod_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AlgebraMapToZMod.algebraMap_toZMod_eq ..)`.
+-/
 theorem algebraMap_toZMod_eq {l : ℕ} [Fact l.Prime] {R : Type} [Field R] [Algebra (ZMod l) R]
     (f : ℤ_[l] →+* R) (hf : f (l : ℤ_[l]) = 0) (x : ℤ_[l]) :
     algebraMap (ZMod l) R (PadicInt.toZMod x) = f x := by
@@ -70,6 +93,15 @@ theorem algebraMap_toZMod_eq {l : ℕ} [Fact l.Prime] {R : Type} [Field R] [Alge
   | (intros; apply @_root_.GlobalTheory.AlgebraMapToZMod.algebraMap_toZMod_eq <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.AlgebraMapToZMod.algebraMap_toZMod_eq ..)
 
+/- English proof (translation)
+Establish `hl : (residue B).comp c (l : ℤ_[l]) = 0` using `(residue_eq_zero_iff _).mpr hcl`. Establish `hcomp : (algebraMap (ZMod l) (ResidueField B)).comp PadicInt.toZMod = (residue B).comp c` using `RingHom.ext fun x => algebraMap_toZMod_eq _ hl x`. Use `⟨fun y => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `residue_surjective y`. Take `⟨p, hp, hb⟩` from `halg b`.
+
+Use `⟨p.map PadicInt.toZMod, fun h => ?_, ?_⟩` and prove the remaining obligations. Establish `hdvd : Polynomial.C (l : ℤ_[l]) ∣ p`. Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`. Establish `h1 : PadicInt.toZMod (p.coeff i) = 0`.
+
+Use `congrArg (fun q => q.coeff i) h` as an intermediate fact. Simplify using `using this`. Establish `h2 : p.coeff i ∈ RingHom.ker (PadicInt.toZMod (p` using `l)) := h1`. Rewrite `h2` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton.mp h2`.
+
+Establish `hu` using `hp _ hdvd`. Conclude with `PadicInt.prime_p.not_unit hu`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map, hcomp, ← Polynomial.hom_eval₂, hb, map_zero]`.
+-/
 theorem isAlgebraic_residueField {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B] [IsLocalRing B]
     [Algebra (ZMod l) (ResidueField B)] (c : ℤ_[l] →+* B)
     (hcl : c (l : ℤ_[l]) ∈ maximalIdeal B)
@@ -95,6 +127,11 @@ theorem isAlgebraic_residueField {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B
     exact PadicInt.prime_p.not_unit hu
   · rw [Polynomial.aeval_def, Polynomial.eval₂_map, hcomp, ← Polynomial.hom_eval₂, hb, map_zero]
 
+/- English proof (translation)
+Establish `hmap : algebraMap ℤ_[l] (PadicAlgCl l) = (algebraMap ℚ_[l] (PadicAlgCl l)).comp PadicInt.Coe.ringHom` using `IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)`. Use `haveI : FaithfulSMul ℤ_[l] (PadicAlgCl l) := (faithfulSMul_iff_algebraMap_injective _ _).mpr (by`. Rewrite using `[hmap]`. Conclude with `(algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp fun a b h => Subtype.ext h)`. Use `letI : NormalizedGCDMonoid ℤ_[l] := Classical.arbitrary _`.
+
+Establish `hx : IsAlgebraic ℤ_[l] x` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] (PadicAlgCl l)).mpr (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨p, hp0, hp⟩` from `hx`. Use `⟨p.primPart, p.isPrimitive_primPart, ?_⟩` and prove the remaining obligations. Rewrite using `[← hmap]`. Conclude with `Polynomial.aeval_primPart_eq_zero hp0 hp`.
+-/
 theorem exists_isPrimitive_eval₂_eq_zero {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) :
     ∃ p : ℤ_[l][X], p.IsPrimitive ∧
       p.eval₂ ((algebraMap ℚ_[l] (PadicAlgCl l)).comp PadicInt.Coe.ringHom) x = 0 := by
@@ -118,12 +155,36 @@ theorem exists_isPrimitive_eval₂_eq_zero {l : ℕ} [Fact l.Prime] (x : PadicAl
 def unitBall {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) : ValuationSubring ℂ :=
   (PadicAlgCl.valued l).v.valuationSubring.comap (ι.symm : ℂ →+* PadicAlgCl l)
 
+/- English proof (translation)
+Rewrite using `[unitBall, ValuationSubring.mem_comap, Valuation.mem_valuationSubring_iff, ← NNReal.coe_le_coe]`. Both sides reduce to the same expression.
+-/
 theorem mem_unitBall_iff {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) (z : ℂ) :
     z ∈ unitBall ι ↔ ‖ι.symm z‖ ≤ 1 := by
   rw [unitBall, ValuationSubring.mem_comap, Valuation.mem_valuationSubring_iff,
     ← NNReal.coe_le_coe]
   rfl
 
+/- English proof (translation)
+Use `set B := unitBall ι with hB`. Set `inc : ℤ_[l] →+* PadicAlgCl l` to `(algebraMap ℚ_[l] (PadicAlgCl l)).comp PadicInt.Coe.ringHom`. Establish `hinc : ∀ x : ℤ_[l], ‖inc x‖ = ‖x‖` using `fun x => by`. Express the relevant statement in the definitionally equal form `‖((x : ℚ_[l]) : PadicAlgCl l)‖ = ‖x‖`. Rewrite using `[PadicAlgCl.norm_extends]`.
+
+Both sides reduce to the same expression. Set `c : ℤ_[l] →+* B` to `(ι.toRingHom.comp inc).codRestrict B.toSubring fun x => by`. Express the relevant statement in the definitionally equal form `ι (inc x) ∈ B`. Rewrite using `[hB, mem_unitBall_iff, RingEquiv.symm_apply_apply, hinc]`. Conclude with `PadicInt.norm_le_one x`.
+
+Establish `hcl : c (l : ℤ_[l]) ∈ maximalIdeal B`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨⟨y, hy⟩, hxy⟩` from `hu.exists_right_inv`. Establish `h1 : ι (inc (l : ℤ_[l])) * y = 1` using `congrArg Subtype.val hxy`.
+
+Establish `h2 : inc (l : ℤ_[l]) * ι.symm y = 1`. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, h1, map_one]`. Establish `h3` using `congrArg norm h2`. Establish `h4 : ‖ι.symm y‖ ≤ 1` using `(mem_unitBall_iff ι y).mp hy`.
+
+Rewrite `h3` using `[norm_mul, hinc, norm_one]`. Establish `h5 : ‖(l : ℤ_[l])‖ < 1`. Rewrite using `[PadicInt.norm_p]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Use polynomial arithmetic with `[norm_nonneg (ι.symm y), norm_nonneg (l : ℤ_[l])]`.
+
+Establish `halg : ∀ b : B, ∃ p : ℤ_[l][X], p.IsPrimitive ∧ p.eval₂ c b = 0`. Introduce `b`. Take `⟨p, hp, h0⟩` from `exists_isPrimitive_eval₂_eq_zero (ι.symm (b : ℂ))`. Use `⟨p, hp, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h1` using `Polynomial.hom_eval₂ p c B.subtype b`.
+
+Establish `h2` using `Polynomial.hom_eval₂ p inc ι.toRingHom (ι.symm (b : ℂ))`. Establish `h3 : B.subtype.comp c = ι.toRingHom.comp inc` using `RingHom.ext fun _ => rfl`. Establish `h4 : ι.toRingHom (ι.symm (b : ℂ)) = B.subtype b` using `ι.apply_symm_apply _`. Rewrite `h1` using `[h3, ← h4, ← h2]`. Establish `h5 : p.eval₂ inc (ι.symm (b : ℂ)) = 0` using `h0`.
+
+Rewrite `h1` using `[h5, map_zero]`. Conclude with `h1`. Establish `hlR : ((l : ℕ) : ResidueField B) = 0`. Use `(residue_eq_zero_iff _).mpr hcl` as an intermediate fact. Simplify using `using this`.
+
+Use `haveI : CharP (ResidueField B) l := (CharP.charP_iff_prime_eq_zero Fact.out).mpr hlR`. Use `letI : Algebra (ZMod l) (ResidueField B) := ZMod.algebra _ l`. Use `haveI : Algebra.IsAlgebraic (ZMod l) (ResidueField B) := isAlgebraic_residueField c hcl halg`. Use `haveI : IsAlgClosed (ResidueField B) := GlobalTheory.isAlgClosed_residueField_of_valuationRing_of_isAlgClosed B ℂ`. Use `haveI : IsAlgClosure (ZMod l) (ResidueField B) := ⟨inferInstance, inferInstance⟩`.
+
+Conclude with `⟨(IsAlgClosure.equiv (ZMod l) (ResidueField B) (AlgebraicClosure (ZMod l))).toRingEquiv⟩`.
+-/
 theorem nonempty_residueField_unitBall_equiv {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) :
     Nonempty (ResidueField (unitBall ι) ≃+* Formalism.CyclotomicNorms.Fbar l) := by
   classical
@@ -174,6 +235,13 @@ theorem nonempty_residueField_unitBall_equiv {l : ℕ} [Fact l.Prime] (ι : Padi
   haveI : IsAlgClosure (ZMod l) (ResidueField B) := ⟨inferInstance, inferInstance⟩
   exact ⟨(IsAlgClosure.equiv (ZMod l) (ResidueField B) (AlgebraicClosure (ZMod l))).toRingEquiv⟩
 
+/- English proof (translation)
+Use `haveI := D.nfLL`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Rewrite using `[D.val_eq lam x hx]`. Establish `h0 : (D.plEq lam).valuation D.what₂.LL x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`.
+
+Establish `h1` using `WithZero.log_le_log (x := (D.plEq lam).valuation D.what₂.LL x) (y := 1) h0 one_ne_zero`. Rewrite `h1` using `[WithZero.log_one]`. Rewrite using `[← h1]`. Unfold `vAdd`. Use `norm_cast`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem val_nonneg_iff (D : D7) (lam : D.what₂.places.Pl) (x : D.what₂.LL) :
     0 ≤ D.what₂.places.val lam x ↔ (D.plEq lam).valuation D.what₂.LL x ≤ 1 := by
   haveI := D.nfLL
@@ -188,6 +256,13 @@ theorem val_nonneg_iff (D : D7) (lam : D.what₂.places.Pl) (x : D.what₂.LL) :
   norm_cast
   omega
 
+/- English proof (translation)
+Introduce `D`. Use `haveI := D.nfLL`. Use `haveI := D.galLL`. Establish `key : ∀ lam : D.what₂.places.Pl, ∃ ι : Qbar (D.what₂.places.resChar lam) ≃+* ℂ, ∀ x : D.what₂.LL, 0 ≤ D.what₂.places.val lam x ↔ ‖ι.symm (D.what₂.embLL x)‖ ≤ 1`. Introduce `lam`.
+
+Take `⟨a, ha⟩` from `exists_embedding_inducing_place D.what₂.LL (D.what₂.places.resChar lam) (D.plEq lam) (Formalism.BasicNotions.Examples₂.PlOver.resChar_mem D lam)`. Take `⟨ι, hι⟩` from `GlobalTheory.exists_padicAlgCl_ringEquiv_complex_comp_eq (D.what₂.places.resChar lam) D.what₂.LL a D.what₂.embLL`. Use `⟨ι, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : ι.symm (D.what₂.embLL x) = a x`. Rewrite using `[← hι]`.
+
+Conclude with `ι.symm_apply_apply _`. Rewrite using `[h1, val_nonneg_iff, valuation_le_one_iff_of_lt_iff _ a ha]`. Use `choose ι hι using key`. Conclude with `⟨⟨ι, hι, fun lam => unitBall (ι lam), fun lam z => mem_unitBall_iff (ι lam) z, fun lam => Classical.choice (nonempty_residueField_unitBall_equiv (ι lam))⟩⟩`.
+-/
 theorem nonempty_plSide : ∀ D : D7, Nonempty (PlSide D) := by
   intro D
   haveI := D.nfLL

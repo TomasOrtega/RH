@@ -8,6 +8,9 @@ namespace GroundTheory.Heights₂.Heights.RestTerms.YoungDiagramCombinatorics
 
 open MvPolynomial Finset
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `Nat.card_congr { toFun := fun T => ⟨e.symm.toEquiv.trans T.1, fun a b hab => T.2 (e.symm.monotone hab)⟩ invFun := fun T => ⟨e.toEquiv.trans T.1, fun a b hab => T.2 (e.monotone hab)⟩ left_inv := fun T => by ext x; simp right_inv := fun T => by ext x; simp }`.
+-/
 theorem card_monotone_equiv_congr {α β : Type*} [Preorder α] [Preorder β] (e : α ≃o β)
     {n n' : ℕ} (h : n = n') :
     Nat.card {T : α ≃ Fin n // Monotone T} = Nat.card {T : β ≃ Fin n' // Monotone T} := by
@@ -18,6 +21,11 @@ theorem card_monotone_equiv_congr {α β : Type*} [Preorder α] [Preorder β] (e
       left_inv := fun T => by ext x; simp
       right_inv := fun T => by ext x; simp }
 
+/- English proof (translation)
+Unfold `RestTerms.youngCells`. Simplify using `only [mem_filter, mem_product, mem_univ, mem_range, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`. Conclude with `h`.
+
+Introduce `h`. Conclude with `⟨lt_of_lt_of_le h (Finset.single_le_sum (fun i _ => Nat.zero_le (lam i)) (mem_univ x.1)), h⟩`.
+-/
 theorem mem_youngCells {m : ℕ} (lam : Fin m → ℕ) (x : Fin m × ℕ) :
     x ∈ RestTerms.youngCells lam ↔ x.2 < lam x.1 := by
   unfold RestTerms.youngCells
@@ -29,6 +37,11 @@ theorem mem_youngCells {m : ℕ} (lam : Fin m → ℕ) (x : Fin m × ℕ) :
     exact ⟨lt_of_lt_of_le h (Finset.single_le_sum (fun i _ => Nat.zero_le (lam i))
       (mem_univ x.1)), h⟩
 
+/- English proof (translation)
+Unfold `IndefiniteRowSideFullHecke.RestTerms.shapeCells`. Simplify using `only [mem_biUnion, mem_univ, true_and, mem_image, mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, hb, rfl⟩`. Conclude with `⟨a.2, hb⟩`.
+
+Introduce and unpack `⟨h, hx⟩`. Conclude with `⟨⟨x.1, h⟩, x.2, hx, rfl⟩`.
+-/
 theorem mem_shapeCells {r : ℕ} (la : Fin r → ℕ) (x : ℕ × ℕ) :
     x ∈ IndefiniteRowSideFullHecke.RestTerms.shapeCells la ↔ ∃ h : x.1 < r, x.2 < la ⟨x.1, h⟩ := by
   unfold IndefiniteRowSideFullHecke.RestTerms.shapeCells
@@ -51,6 +64,11 @@ def cellIso {r : ℕ} (la : Fin r → ℕ) :
     rintro ⟨⟨a, b⟩, hp⟩ ⟨⟨c, d⟩, hq⟩
     simp only [Equiv.coe_fn_mk, Subtype.mk_le_mk, Prod.mk_le_mk, Fin.le_def]
 
+/- English proof (translation)
+Unfold `RestTerms.numStandardTable`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun T => ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h p q hpq`. Establish `h'` using `Prod.le_def.1 (Subtype.coe_le_coe.2 hpq)`.
+
+Conclude with `h p q h'.1 h'.2`. Introduce `h p q h1 h2`. Conclude with `h (Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨h1, h2⟩))`.
+-/
 theorem numStandardTable_eq_card_monotone {m : ℕ} (lam : Fin m → ℕ) :
     RestTerms.numStandardTable lam =
       Nat.card {T : RestTerms.youngCells lam ≃ Fin (RestTerms.youngCells lam).card //
@@ -64,6 +82,9 @@ theorem numStandardTable_eq_card_monotone {m : ℕ} (lam : Fin m → ℕ) :
   · intro h p q h1 h2
     exact h (Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨h1, h2⟩))
 
+/- English proof (translation)
+Rewrite using `[numStandardTable_eq_card_monotone]`. Unfold `IndefiniteRowSideFullHecke.RestTerms.numSYT`. Use `(card_monotone_equiv_congr (cellIso la) ?_).symm` and prove the remaining obligations. Rewrite using `[← Fintype.card_coe, ← Fintype.card_coe]`. Conclude with `Fintype.card_congr (cellIso la).toEquiv`.
+-/
 theorem numSYT_eq {r : ℕ} (la : Fin r → ℕ) :
     IndefiniteRowSideFullHecke.RestTerms.numSYT la = RestTerms.numStandardTable la := by
   rw [numStandardTable_eq_card_monotone]
@@ -72,6 +93,13 @@ theorem numSYT_eq {r : ℕ} (la : Fin r → ℕ) :
   rw [← Fintype.card_coe, ← Fintype.card_coe]
   exact Fintype.card_congr (cellIso la).toEquiv
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_shapeCells, mem_shapeCells]`. Simplify using `only [RestTerms.hookShape, IndefiniteRowSideFullHecke.RestTerms.hookShape]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hx⟩`.
+
+Use `⟨by omega, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `split_ifs at hx ⊢ <;> omega`. Introduce and unpack `⟨h, hx⟩`. Establish `h' : x.1 < b + 1`. Assume the negation of the conclusion as `hc`.
+
+Apply the tactic sequence `split_ifs at hx <;> omega`. Use `⟨h', ?_⟩` and prove the remaining obligations. Apply the tactic sequence `split_ifs at hx ⊢ <;> omega`.
+-/
 theorem shapeCells_hookShape (r k b : ℕ) (hb : b < r) :
     IndefiniteRowSideFullHecke.RestTerms.shapeCells (IndefiniteRowSideFullHecke.RestTerms.hookShape k b) =
       IndefiniteRowSideFullHecke.RestTerms.shapeCells (RestTerms.hookShape r k b) := by
@@ -89,6 +117,9 @@ theorem shapeCells_hookShape (r k b : ℕ) (hb : b < r) :
     refine ⟨h', ?_⟩
     split_ifs at hx ⊢ <;> omega
 
+/- English proof (translation)
+Rewrite using `[← numSYT_eq]`. Unfold `IndefiniteRowSideFullHecke.RestTerms.numSYT`. Rewrite using `[shapeCells_hookShape r k b hb]`.
+-/
 theorem numSYT_hookShape (r k b : ℕ) (hb : b < r) :
     IndefiniteRowSideFullHecke.RestTerms.numSYT (IndefiniteRowSideFullHecke.RestTerms.hookShape k b) =
       RestTerms.numStandardTable (RestTerms.hookShape r k b) := by

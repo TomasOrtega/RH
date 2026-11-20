@@ -25,6 +25,13 @@ def DesignChoices (𝒞 : FamClass) (C0 : ℝ) (cT : ℝ → ℝ → ℝ) : Prop
       ChosenCode Fm C0 CH ∧ BoxesF Fm ∧ QDRowsF Fm ∧ DGamDvdF Fm ∧ cT eps Fm.CYL ≤ Fm.CTu ∧
       TameDistinctF Fm ∧ Fm.CF = CH ∧ CodeUpF Fm C0 CH ∧ Fm.CYL ≤ 9
 
+/- English proof (translation)
+Establish `hy : (2 : ℝ) ≤ (R.f : ℝ) * R.N R.m` using `by exact_mod_cast R.two_le_fN`. Establish `h1` using `log_minkM_le_two (2 * R.f * R.N R.m)`. Establish `e : ((2 * R.f * R.N R.m : ℕ) : ℝ) = 2 * ((R.f : ℝ) * R.N R.m)` using `by push_cast; ring`. Rewrite `h1` using `[e]`. Establish `e2 : (2 : ℝ) * (2 * ((R.f : ℝ) * R.N R.m)) = 2 * 2 * ((R.f : ℝ) * R.N R.m)` using `by ring`.
+
+Establish `h2 : Real.log (2 * (2 * ((R.f : ℝ) * R.N R.m))) = Real.log 2 + Real.log 2 + Real.log ((R.f : ℝ) * R.N R.m)`. Rewrite using `[e2, Real.log_mul (by norm_num) (by linarith), Real.log_mul (by norm_num) (by norm_num)]`. Establish `h3 : Real.log 2 ≤ Real.log ((R.f : ℝ) * R.N R.m)` using `Real.log_le_log (by norm_num) hy`. Rewrite `h1` using `[h2]`. Establish `h4 : 2 * (2 * ((R.f : ℝ) * R.N R.m)) * (Real.log 2 + Real.log 2 + Real.log ((R.f : ℝ) * R.N R.m)) ≤ 2 * (2 * ((R.f : ℝ) * R.N R.m)) * (3 * Real.log ((R.f : ℝ) * R.N R.m))` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem log_minkM_fN (R : Ranks) :
     Real.log (minkM (2 * R.f * R.N R.m) : ℝ) ≤ 12 * R.f * R.N R.m * Real.log ((R.f : ℝ) * R.N R.m) := by
   have hy : (2 : ℝ) ≤ (R.f : ℝ) * R.N R.m := by exact_mod_cast R.two_le_fN
@@ -43,6 +50,11 @@ theorem log_minkM_fN (R : Ranks) :
   calc _ ≤ 2 * (2 * ((R.f : ℝ) * R.N R.m)) * (3 * Real.log ((R.f : ℝ) * R.N R.m)) := h1.trans h4
     _ = _ := by ring
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Use `⟨12, x0, fun x hx i u => le_trans ?_ (log_minkM_fN _)⟩` and prove the remaining obligations. Establish `hp` using `minkM_pos (2 * (Fm.D x i).R.f * (Fm.D x i).R.N (Fm.D x i).R.m)`. Establish `hd` using `h x hx i u`. Establish `h0 : 0 < ((Fm.D x i).mem u).C.DGam` using `Nat.pos_of_dvd_of_pos hd hp`.
+
+Conclude with `Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast Nat.le_of_dvd hp hd)`.
+-/
 theorem dGamSize_of_dvd {eps : ℝ} (Fm : FamP eps) (h : DGamDvdF Fm) : DGamSize Fm := by
   obtain ⟨x0, h⟩ := h
   refine ⟨12, x0, fun x hx i u => le_trans ?_ (log_minkM_fN _)⟩
@@ -51,6 +63,11 @@ theorem dGamSize_of_dvd {eps : ℝ} (Fm : FamP eps) (h : DGamDvdF Fm) : DGamSize
   have h0 : 0 < ((Fm.D x i).mem u).C.DGam := Nat.pos_of_dvd_of_pos hd hp
   exact Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast Nat.le_of_dvd hp hd)
 
+/- English proof (translation)
+Take `⟨ε0, h0, hEx⟩` from `hEx`. Take `⟨ε1, h1, hA⟩` from `hTu.and (hProv.and hThin)`. Use `⟨min ε0 ε1, lt_min h0 h1, fun e he hle K => ?_⟩` and prove the remaining obligations. Take `⟨K', hK'⟩` from `hA e he (hle.trans (min_le_right _ _))`. Take `⟨Fm, CH, C5, Cb, hc, hCH, hL, h5, hb, a1, a2, a3, a4, a5, a6, a7, a8, a9, -⟩` from `hEx e he (hle.trans (min_le_left _ _)) (K.sup K')`.
+
+Take `⟨hL1, hL2⟩` from `(Fm.large_sup K K' CH).1 hL`. Take `⟨b1, b2, b3⟩` from `hK' Fm CH hc hL2`. Take `⟨c6, h6, b3⟩` from `b3 a6 a7 ⟨C5, h5, a4⟩`. Conclude with `⟨Fm, CH, hc, hCH, hL1, ⟨C5, c6, Cb, h5, h6, hb, a1, a2, a3, a4, b3, b2, a5⟩, b1 a9, dGamSize_of_dvd Fm a8⟩`.
+-/
 theorem designExists_of_choices {𝒞 : FamClass} {C0 : ℝ} {cT : ℝ → ℝ → ℝ} (hEx : DesignChoices 𝒞 C0 cT)
     (hTu : Closed 𝒞 fun {eps} Fm _ => cT eps Fm.CYL ≤ Fm.CTu → TuSize Fm)
     (hProv : Closed 𝒞 fun Fm _ => ChosenProviso Fm C0)

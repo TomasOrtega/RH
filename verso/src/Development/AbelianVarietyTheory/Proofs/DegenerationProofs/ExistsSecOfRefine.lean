@@ -11,6 +11,9 @@ attribute [local instance] SplitExt.free SplitExt.finite
 noncomputable section
 namespace GlobalTheory.ZH.UFib
 
+/- English proof (translation)
+Establish `hm : r z ∈ M.U l ⊓ M.U l'` using `⟨hl, hl'⟩`. Conclude with `(gs_res r z _ hm _).symm.trans ((congrArg (gs r z _) (φ.compat l l')).trans ((gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit r z _ hm _) (gs_res r z _ hm _))))`.
+-/
 theorem gs_sec_compat {Y Z : Scheme.{0}} {M : LB Y} (φ : M.Sec) (r : Z ⟶ Y) (z : Z) {l l' : M.ι}
     (hl : r z ∈ M.U l) (hl' : r z ∈ M.U l') :
     gs r z (M.U l) (φ.f l) = (gm r z (M.U l ⊓ M.U l') (M.g l l')).val * gs r z (M.U l') (φ.f l') := by
@@ -18,6 +21,17 @@ theorem gs_sec_compat {Y Z : Scheme.{0}} {M : LB Y} (φ : M.Sec) (r : Z ⟶ Y) (
   exact (gs_res r z _ hm _).symm.trans ((congrArg (gs r z _) (φ.compat l l')).trans ((gs_mul r z _ hm _ _).trans
     (congrArg₂ (· * ·) (gs_unit r z _ hm _) (gs_res r z _ hm _))))
 
+/- English proof (translation)
+Introduce `Y M A hM hA c φ`. Establish `cle : ∀ l (y : Y), y ∈ M.U l → y ∈ A.U (c.idx l)` using `fun l y hy => c.le l hy`. Establish `glue : ∀ i : A.ι, ∃ a : Γ(Y, A.U i), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (l : M.ι), r z ∈ A.U i → r z ∈ M.U l → gs r z _ a = (gm r z (A.U i ⊓ A.U (c.idx l)) (A.g i (c.idx l))).val * gs r z (M.U l) (φ.f l)`. Introduce `i`. Set `W : M.ι → Y.Opens` to `fun l => A.U i ⊓ M.U l`.
+
+Establish `hW : ∀ l, W l ≤ A.U i ⊓ A.U (c.idx l)` using `fun l y hy => ⟨hy.1, cle l y hy.2⟩`. Take `⟨u, hu⟩ : ∃ u : ∀ l, Γ(Y, W l), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) l, r z ∈ W l → gs r z (W l) (u l) = (gm r z (A.U i ⊓ A.U (c.idx l)) (A.g i (c.idx l))).val * gs r z (M.U l) (φ.f l)` from `⟨fun l => (Y.presheaf.map (homOfLE (hW l)).op).hom (A.g i (c.idx l)).val * (Y.presheaf.map (homOfLE (inf_le_right : W l ≤ M.U l)).op).hom (φ.f l), fun Z r z l hz => (gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) ((gs_res r z _ hz _).trans (gs_unit r z _ (hW l hz) _)) (gs_res r z …`. Take `⟨a, ha, -⟩` from `Y.sheaf.existsUnique_gluing' W (A.U i) (fun l => homOfLE inf_le_left) (fun y hy => by`. Take `⟨l, hl⟩` from `exists_chart hM y`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨l, hy, hl⟩) u`.
+
+Use the proof step `(fun l l' => fn_ext (V := W l ⊓ W l') fun y hy => by`. Use `(gs_res (𝟙 Y) y inf_le_left hy _).trans (Eq.trans ?_ (gs_res (𝟙 Y) y inf_le_right hy _).symm)` and prove the remaining obligations. Rewrite using `[hu _ _ y l hy.1, hu _ _ y l' hy.2, gs_sec_compat φ (𝟙 Y) y hy.1.2 hy.2.2, c.g y l l' hy.1.2 hy.2.2, ← _root_.mul_assoc, ← Units.val_mul, gm_cocycle hA (𝟙 Y) y hy.1.1 (cle l y hy.1.2) (cle l' y hy.2.2)])`. Use `⟨a, fun Z r z l h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hz : r z ∈ W l` using `⟨h₁, h₂⟩`.
+
+Conclude with `(gs_res r z inf_le_left hz a).symm.trans ((congrArg (gs r z (W l)) (ha l)).trans (hu Z r z l hz))`. Use `choose a ha using glue`. Use `⟨⟨a, fun j j' => fn_ext fun y hy => ?_⟩, fun l Z r z hl => ?_⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `exists_chart hM y`. Use `(gs_res (𝟙 Y) y _ hy _).trans (Eq.trans ?_ ((gs_mul (𝟙 Y) y _ hy _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 Y) y _ hy _) (gs_res (𝟙 Y) y _ hy _))).symm)` and prove the remaining obligations.
+
+Rewrite using `[ha j _ (𝟙 Y) y l hy.1 hl, ha j' _ (𝟙 Y) y l hy.2 hl, ← gm_cocycle hA (𝟙 Y) y hy.1 hy.2 (cle l y hl), Units.val_mul, _root_.mul_assoc]`. Establish `m` using `cle l _ hl`. Use `Eq.symm ((ha _ Z r z l m hl).trans ?_)` and prove the remaining obligations. Rewrite using `[gm_self hA r z m, Units.val_one, _root_.one_mul]`.
+-/
 theorem exists_sec_of_refine : ∀ (Y : Scheme.{0}) (M A : LB Y), M.IsLB → A.IsLB →
     ∀ (c : ChartPull M A (𝟙 Y)) (φ : M.Sec), ∃ s : A.Sec, ∀ (l : M.ι) (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z),
       r z ∈ M.U l → gs r z (M.U l) (φ.f l) = gs r z (A.U (c.idx l)) (s.f (c.idx l)) := by

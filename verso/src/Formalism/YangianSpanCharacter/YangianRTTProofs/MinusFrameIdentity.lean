@@ -8,6 +8,25 @@ open Matrix Formalism.YangianSpanCharacter.T Formalism.YangianSpanCharacter.Y Fo
 
 set_option linter.unusedSimpArgs false
 
+/- English proof (translation)
+Introduce `𝕜 A _ _ _ t τinv q S H Y Ya hY hYa hD hD1 D tn l M N G Ginv`. Establish `hD' : D ≠ 0` using `hD`. Establish `hne : Y ≠ Ya` using `sub_ne_zero.mp hD`. Establish `hτl : t Y 1 1 * l = t Y 1 0` using `by show t Y 1 1 * (τinv Y * t Y 1 0) = t Y 1 0`. Rewrite using `[← mul_assoc, (H.2.2.2.1 Y hY).1, one_mul]`.
+
+Establish `hη : D • eta t τinv Y Ya = l - lf t τinv Ya`. Unfold `eta`. Conclude with `smul_inv_smul₀ hD _`. Establish `Y1 : t Y 1 1 * lf t τinv Ya - lf t τinv Ya * t Y 1 1 = -(t Y 1 1 * eta t τinv Y Ya)` using `commutator_of_modular_relation H hY hYa hne`. Establish `Y2 : l * lf t τinv Ya - lf t τinv Ya * l = eta t τinv Y Ya * l - eta t τinv Y Ya * lf t τinv Ya` using `by rw [commutator_eq_eta_mul_sub H hY hYa hne, mul_sub]`.
+
+Establish `hτη : D • (t Y 1 1 * eta t τinv Y Ya) = t Y 1 1 * l - t Y 1 1 * lf t τinv Ya`. Rewrite using `[← mul_smul_comm, hη, mul_sub]`. Establish `f1 : D • (l * eta t τinv Y Ya) = l * l - l * lf t τinv Ya`. Rewrite using `[← mul_smul_comm, hη, mul_sub]`. Establish `f2 : D • (lf t τinv Ya * eta t τinv Y Ya) = lf t τinv Ya * l - lf t τinv Ya * lf t τinv Ya`.
+
+Rewrite using `[← mul_smul_comm, hη, mul_sub]`. Establish `f3 : D • (eta t τinv Y Ya * l) = l * l - lf t τinv Ya * l`. Rewrite using `[← smul_mul_assoc, hη, sub_mul]`. Establish `f4 : D • (eta t τinv Y Ya * lf t τinv Ya) = l * lf t τinv Ya - lf t τinv Ya * lf t τinv Ya`. Rewrite using `[← smul_mul_assoc, hη, sub_mul]`.
+
+Establish `hDD : D * D⁻¹ = 1` using `mul_inv_cancel₀ hD'`. Establish `hηe : eta t τinv Y Ya = D⁻¹ • (l - lf t τinv Ya)` using `rfl`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext k l' fin_cases k <;> fin_cases l' <;>`. Simplify using `[tn, M, blk, sc, E1, Pf, Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.smul_apply, Matrix.sub_apply, Matrix.one_apply, Matrix.diagonal, Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, one_mul, sub_mul, mul_sub, add_mul, mul_add, neg_mul …`.
+
+Apply the tactic sequence `all_goals module`. Apply the tactic sequence `ext k l' fin_cases k <;> fin_cases l' <;>`. Simplify using `[tn, N, blk, sc, E1, Pf, Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.smul_apply, Matrix.sub_apply, Matrix.one_apply, Matrix.diagonal, Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, one_mul, sub_mul, mul_sub, add_mul, mul_add, neg_mul …`. Apply the tactic sequence `all_goals module`. Apply the tactic sequence `ext k l' fin_cases k <;> fin_cases l' <;> simp [G, Ginv]`.
+
+Apply the tactic sequence `ext k l' fin_cases k <;> fin_cases l' <;>`. Simplify using `[G, M, sc, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal, Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, one_mul, sub_mul, mul_sub, add_mul, mul_add, neg_mul, mul_neg]`. Take the linear combination `(norm := module) (-D) • Y1 + hτη`. Apply the tactic sequence `ext k l' fin_cases k <;> fin_cases l' <;>`. Simplify using `[N, M, Ginv, Matrix.mul_apply, Fin.sum_univ_two, Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, one_mul, sub_mul, mul_sub, add_mul, mul_add, neg_mul, mul_neg]`.
+
+Take the linear combination `(norm := module) hη`. Rewrite using `[smul_smul, inv_mul_cancel₀ hD', one_smul]`. Apply `smul_cancel hD'` to reduce the goal to its premises. Take the linear combination `(norm := module) (-1 : 𝕜) • f1 - (D - 1) • f2 - ((D - 1) * D) • Y2 - (D - 1) • f3 + (D - 1) • f4`. Rewrite using `[hηe]`.
+
+Take the linear combination `(norm := module) -(hDD • l)`.
+-/
 theorem plus_frame_identity : Formalism.YangianSpanCharacter.F.PlusFrame := by
   intro 𝕜 A _ _ _ t τinv q S H Y Ya hY hYa hD hD1 D tn l M N G Ginv
   have hD' : D ≠ 0 := hD
@@ -61,6 +80,25 @@ theorem plus_frame_identity : Formalism.YangianSpanCharacter.F.PlusFrame := by
     · rw [hηe]
       linear_combination (norm := module) -(hDD • l)
 
+/- English proof (translation)
+Introduce `𝕜 A _ _ _ t τinv q S H Y Yb hY hY1 hYb hYb1 hYbm hd hd1 d tn τn Ln Gb`. Establish `hd1' : d - 1 ≠ 0` using `hd1`. Establish `hne : Y ≠ Yb` using `fun h => hd (by rw [h, sub_self])`. Establish `i0` using `H.2.2.2.1 Y hY`. Establish `hτl : t Y 1 1 * lf t τinv Y = t Y 1 0`.
+
+Unfold `lf`. Rewrite using `[← mul_assoc, i0.1, one_mul]`. Establish `hτm : t Y 1 1 * mf t τinv Y = t Y 0 1`. Unfold `mf`. Rewrite using `[← mul_assoc, i0.1, one_mul]`.
+
+Establish `QD : t Y 0 0 - t Y 0 1 * lf t τinv Y = q Y • τinv (Y + 1)`. Use `qdet_mod H hY hY1` as an intermediate fact. Unfold `lf`. Rewrite using `[← mul_assoc]`. Conclude with `this`.
+
+Establish `hτh : t Y 1 1 * hf τinv q Y = q Y • τinv (Y + 1)`. Unfold `hf`. Rewrite using `[mul_smul_comm, ← mul_assoc, i0.1, one_mul]`. Establish `Y1' : t Y 1 1 * mf t τinv Yb - mf t τinv Yb * t Y 1 1 = t Y 1 1 * mu t τinv Y Yb` using `y1'_mod H hY hYb hne`. Establish `hμ0 : (Y - Yb) • mu t τinv Y Yb = mf t τinv Y - mf t τinv Yb`.
+
+Unfold `mu`. Conclude with `smul_inv_smul₀ (sub_ne_zero.mpr hne) _`. Establish `hτμ : d • (t Y 1 1 * mu t τinv Y Yb) = t Y 1 1 * mf t τinv Yb - t Y 0 1` using `by show (Yb - Y) • (t Y 1 1 * mu t τinv Y Yb) = _`. Rewrite using `[show Yb - Y = -(Y - Yb) by ring, neg_smul, ← mul_smul_comm, hμ0, mul_sub, hτm, neg_sub]`. Establish `Y3 : (d - 1) • (mf t τinv Yb * lf t τinv Y - lf t τinv Y * mf t τinv Yb) = hf τinv q Y - hf τinv q (Yb - 1)` using `yangian_relation_three_holds 𝕜 A t τinv q S H Yb Y hYb hYb1 hYbm hY hY1 (Ne.symm hne)`.
+
+Establish `Y3' : mf t τinv Yb * lf t τinv Y - lf t τinv Y * mf t τinv Yb = (d - 1)⁻¹ • (hf τinv q Y - hf τinv q (Yb - 1))`. Rewrite using `[← Y3, inv_smul_smul₀ hd1']`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext k l' fin_cases k <;> fin_cases l' <;>`. Simplify using `[tn, τn, blk, pt1, E1, Pf, Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.smul_apply, Matrix.sub_apply, Matrix.one_apply, Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, one_mul, sub_mul, mul_sub, add_mul, mul_add, neg_mul, mul_neg]`.
+
+Apply the tactic sequence `all_goals module`. Apply the tactic sequence `ext k l' fin_cases k <;> fin_cases l' <;>`. Simplify using `[tn, blk, pt1, E1, Pf, Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, Matrix.smul_apply, Matrix.sub_apply, Matrix.one_apply, Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, one_mul, sub_mul, mul_sub, add_mul, mul_add, neg_mul, mul_neg]`. Apply the tactic sequence `all_goals module`. Apply the tactic sequence `ext k l' fin_cases k <;> fin_cases l' <;>`.
+
+Simplify using `[τn, Ln, Matrix.mul_apply, Fin.sum_univ_two, Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, one_mul, sub_mul, mul_sub, add_mul, mul_add, neg_mul, mul_neg, hτl]`. Rewrite using `[inv_smul_smul₀ hd1', hτh]`. Take the linear combination `(norm := module) QD`. Apply the tactic sequence `ext k l' fin_cases k <;> fin_cases l' <;>`. Simplify using `[τn, Gb, Matrix.mul_apply, Fin.sum_univ_two, Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, one_mul, sub_mul, mul_sub, add_mul, mul_add, neg_mul, mul_neg]`.
+
+Take the linear combination `(norm := module) (-d) • Y1' - hτμ`. Apply the tactic sequence `ext k l' fin_cases k <;> fin_cases l' <;>`. Simplify using `[Ln, Gb, Matrix.mul_apply, Fin.sum_univ_two, Algebra.algebraMap_eq_smul_one, mul_smul_comm, smul_mul_assoc, mul_one, one_mul, sub_mul, mul_sub, add_mul, mul_add, neg_mul, mul_neg]`. Take the linear combination `(norm := module) Y3'`.
+-/
 theorem minus_frame_identity : Formalism.YangianSpanCharacter.F.MinusFrame := by
   intro 𝕜 A _ _ _ t τinv q S H Y Yb hY hY1 hYb hYb1 hYbm hd hd1 d tn τn Ln Gb
   have hd1' : d - 1 ≠ 0 := hd1

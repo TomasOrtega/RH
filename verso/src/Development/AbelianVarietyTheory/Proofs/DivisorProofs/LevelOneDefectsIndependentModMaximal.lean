@@ -21,11 +21,17 @@ namespace GlobalTheory.LevelOneIndep
 variable {B Q O C : Type} [CommRing B] [CommRing Q] [CommRing O] [CommRing C] [Algebra B Q] [Algebra O C]
   {d : ℕ}
 
+/- English proof (translation)
+Use extensionality with `α`. Simplify using `[coeff_map, hΘ]`.
+-/
 theorem map_up (θ : B →+* O) (Θ : Q →+* C) (hΘ : ∀ b, Θ (algebraMap B Q b) = algebraMap O C (θ b))
     {τ : Type} (u : MvPowerSeries τ B) :
     map Θ (map (algebraMap B Q) u) = map (algebraMap O C) (map θ u) := by
   ext α; simp [coeff_map, hΘ]
 
+/- English proof (translation)
+Rewrite using `[← ExtCoeff.map_formalGroupLawCoboundaryOne_eq Θ (up Q μ) f (fun i => by simp [up, hμ])]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [up]`. Rewrite using `[map_up θ Θ hΘ, hν]`.
+-/
 theorem map_formalGroupLawCoboundaryOne_square (θ : B →+* O) (Θ : Q →+* C) (hΘ : ∀ b, Θ (algebraMap B Q b) = algebraMap O C (θ b))
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B) (ν : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O)
     (hμ : ∀ i, constantCoeff (μ i) = 0) (hν : ∀ i, map θ (μ i) = ν i) (f : MvPowerSeries (Fin d) Q) :
@@ -36,6 +42,13 @@ theorem map_formalGroupLawCoboundaryOne_square (θ : B →+* O) (Θ : Q →+* C)
   simp only [up]
   rw [map_up θ Θ hΘ, hν]
 
+/- English proof (translation)
+Establish `hs : HasSubst (up Q (nmul μ n))` using `hasSubst_of_constantCoeff_zero fun i => by simp [up, MapNMul.cc_nmul μ hμ]`. Unfold `defect`. Rewrite using `[map_sub, map_subst hs]`. Use `congr 1`. Use extensionality with `α`.
+
+Simplify using `[coeff_map]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [up]`. Rewrite using `[map_up θ Θ hΘ, MapNMul.map_nmul B O θ d μ hμ]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `hν j`.
+-/
 theorem map_defect (θ : B →+* O) (Θ : Q →+* C) (hΘ : ∀ b, Θ (algebraMap B Q b) = algebraMap O C (θ b))
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B) (ν : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O)
     (hμ : ∀ i, constantCoeff (μ i) = 0) (hν : ∀ i, map θ (μ i) = ν i) (n : ℕ)
@@ -55,6 +68,9 @@ theorem map_defect (θ : B →+* O) (Θ : Q →+* C) (hΘ : ∀ b, Θ (algebraMa
     funext j
     exact hν j
 
+/- English proof (translation)
+Simplify using `only [cob1, inL, inR, map_sub]`. Rewrite using `[GlobalTheory.T.constantCoeff_subst_of_forall_constantCoeff_zero R _ _ _ hμ, GlobalTheory.T.constantCoeff_subst_of_forall_constantCoeff_zero R _ _ _ (fun _ => constantCoeff_X _), GlobalTheory.T.constantCoeff_subst_of_forall_constantCoeff_zero R _ _ _ (fun _ => constantCoeff_X _)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem constantCoeff_formalGroupLawCoboundaryOne {R : Type} [CommRing R] (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     (hμ : ∀ i, constantCoeff (μ i) = 0) (g : MvPowerSeries (Fin d) R) :
     constantCoeff (cob1 μ g) = - constantCoeff g := by
@@ -63,6 +79,9 @@ theorem constantCoeff_formalGroupLawCoboundaryOne {R : Type} [CommRing R] (μ : 
     GlobalTheory.T.constantCoeff_subst_of_forall_constantCoeff_zero R _ _ _ (fun _ => constantCoeff_X _)]
   ring
 
+/- English proof (translation)
+Establish `hs : HasSubst (up C (nmul ν n))` using `hasSubst_of_constantCoeff_zero fun i => by simp [up, MapNMul.cc_nmul ν hν]`. Unfold `defect`. Rewrite using `[subst_add hs, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem defect_add (ν : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hν : ∀ i, constantCoeff (ν i) = 0)
     (n : ℕ) (f g : MvPowerSeries (Fin d) C) :
     defect ν n (f + g) = defect ν n f + defect ν n g := by
@@ -72,6 +91,13 @@ theorem defect_add (ν : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hν : ∀
   rw [subst_add hs, smul_add]
   abel
 
+/- English proof (translation)
+Establish `hνC : ∀ i, constantCoeff (up C ν i) = 0` using `fun i => by simp [up, hν]`. Establish `hc : constantCoeff g = 0`. Use `constantCoeff_formalGroupLawCoboundaryOne (up C ν) hνC g` as an intermediate fact. Rewrite `this` using `[hg, map_zero]`. Conclude with `neg_eq_zero.1 this.symm`.
+
+Unfold `defect`. Rewrite using `[GlobalTheory.T.mapPowerSeriesFamilyToFractions_formalGroupLawNatMultiple O C d ν hν n, GlobalTheory.T.subst_formalGroupLawNatMultiple_eq_coboundary_sum C d (up C ν) hνC g n, hg, hc]`. Establish `h0 : ∀ k, (at2 (0 : MvPowerSeries (Fin d ⊕ Fin d) C) (nmul (up C ν) k) fun i => X i) = 0`. Introduce `k`. Apply the tactic sequence `have ha : HasSubst (Sum.elim (nmul (up C ν) k) fun i => (X i : MvPowerSeries (Fin d) C)) := hasSubst_of_constantCoeff_zero fun s => by cases s <;> simp [MapNMul.cc_nmul _ hνC]`.
+
+Unfold `at2`. Rewrite using `[← coe_substAlgHom ha, map_zero]`. Simplify using `[h0]`.
+-/
 theorem defect_log (ν : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hν : ∀ i, constantCoeff (ν i) = 0)
     (n : ℕ) (g : MvPowerSeries (Fin d) C) (hg : cob1 (up C ν) g = 0) : defect ν n g = 0 := by
   have hνC : ∀ i, constantCoeff (up C ν i) = 0 := fun i => by simp [up, hν]
@@ -93,10 +119,18 @@ end GlobalTheory.LevelOneIndep
 
 namespace GlobalTheory.LevelOneIndep
 
+/- English proof (translation)
+Use extensionality with `α`. Simplify using `[coeff_map]`.
+-/
 theorem map_smul' {Q C : Type} [CommRing Q] [CommRing C] (Θ : Q →+* C) {τ : Type} (r : Q)
     (g : MvPowerSeries τ Q) : map Θ (r • g) = Θ r • map Θ g := by
   ext α; simp [coeff_map]
 
+/- English proof (translation)
+Use `⟨?_, fun i => ?_, fun α => ?_⟩` and prove the remaining obligations. Rewrite using `[constantCoeff_map, hf.1, map_zero]`. Take `⟨b, -, hb⟩` from `hf.2.1 i`. Use `⟨θ b, trivial, ?_⟩` and prove the remaining obligations. Simplify using `only [lin] at hb ⊢`.
+
+Rewrite using `[coeff_map, hb, hΘ]`. Take `⟨b, -, hb⟩` from `hf.2.2 α`. Use `⟨θ b, trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_formalGroupLawCoboundaryOne_square θ Θ hΘ μ ν hμ hν, coeff_map, hb, hΘ]`.
+-/
 theorem QL_map {B Q O C : Type} [CommRing B] [CommRing Q] [CommRing O] [CommRing C] [Algebra B Q]
     [Algebra O C] {d : ℕ} (θ : B →+* O) (Θ : Q →+* C)
     (hΘ : ∀ b, Θ (algebraMap B Q b) = algebraMap O C (θ b))
@@ -113,6 +147,13 @@ theorem QL_map {B Q O C : Type} [CommRing B] [CommRing Q] [CommRing O] [CommRing
     refine ⟨θ b, trivial, ?_⟩
     rw [← map_formalGroupLawCoboundaryOne_square θ Θ hΘ μ ν hμ hν, coeff_map, hb, hΘ]
 
+/- English proof (translation)
+Establish `hμE : ∀ i, constantCoeff (up E μ i) = 0` using `fun i => by simp [up, hμ]`. Use `⟨?_, fun i => ?_, fun α => ?_⟩` and prove the remaining obligations. Simplify using `[hf.1, hg.1]`. Take `⟨x, -, hx⟩` from `hf.2.1 i`. Take `⟨y, -, hy⟩` from `hg.2.1 i`.
+
+Use `⟨x + a * y, trivial, ?_⟩` and prove the remaining obligations. Simplify using `only [lin] at hx hy ⊢`. Rewrite using `[map_add, coeff_smul, hx, hy, map_add, map_mul]`. Take `⟨x, -, hx⟩` from `hf.2.2 α`. Take `⟨y, -, hy⟩` from `hg.2.2 α`.
+
+Use `⟨x + a * y, trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[formalCoboundary_add hμE, formalCoboundary_smul hμE, map_add, coeff_smul, hx, hy, map_add, map_mul]`.
+-/
 theorem QL_comb' (O E : Type) [CommRing O] [CommRing E] [Algebra O E] (d : ℕ)
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hμ : ∀ i, constantCoeff (μ i) = 0)
     (f g : MvPowerSeries (Fin d) E) (a : O) (hf : QL μ ⊤ f) (hg : QL μ ⊤ g) :
@@ -130,6 +171,23 @@ theorem QL_comb' (O E : Type) [CommRing O] [CommRing E] [Algebra O E] (d : ℕ)
     refine ⟨x + a * y, trivial, ?_⟩
     rw [formalCoboundary_add hμE, formalCoboundary_smul hμE, map_add, coeff_smul, hx, hy, map_add, map_mul]
 
+/- English proof (translation)
+Establish `hμ : ∀ i, constantCoeff (c.μ i) = 0` using `c.isLaw.const`. Establish `lin : ∀ (f g : MvPowerSeries (Fin d) E) (l l' : G.dual.Lie) (a : O), c.IsLie f l → c.IsLie g l' → QL c.μ ⊤ f → QL c.μ ⊤ g → c.IsLie (f + algebraMap O E a • g) (l + a • l')` using `fun f g l l' a hf hg => (GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c E hF f g l l' a hf hg).1`. Establish `hQL0 : QL c.μ ⊤ (0 : MvPowerSeries (Fin d) E)`. Use `⟨by simp, fun i => ⟨0, trivial, by simp [Katz.lin]⟩, fun α => ⟨0, trivial, ?_⟩⟩` and prove the remaining obligations. Use `formalCoboundary_smul (fun i => by simp [up, hμ] : ∀ i, constantCoeff (up E c.μ i) = 0) 0 (0 : MvPowerSeries (Fin d) E)` as an intermediate fact.
+
+Rewrite `this` using `[zero_smul, zero_smul]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `h00 : c.IsLie (0 : MvPowerSeries (Fin d) E) 0`. Establish `hd : ∀ n : ℕ, defect c.μ (p ^ n) (0 : MvPowerSeries (Fin d) E) = 0`.
+
+Introduce `n`. Establish `ha : HasSubst (up E (nmul c.μ (p ^ n)))` using `hasSubst_of_constantCoeff_zero fun i => by simp [up, MapNMul.cc_nmul c.μ hμ]`. Unfold `defect`. Rewrite using `[← coe_substAlgHom ha, map_zero, smul_zero, sub_zero]`. Use `⟨fun n α => ⟨0, trivial, by rw [hd]; simp⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `n w φ s _ hs`. Establish `hs0 : s = 0`. Rewrite `hs` using `[hd]`. Use extensionality with `α`. Use `congrArg (coeff α) hs` as an intermediate fact.
+
+Rewrite `this` using `[coeff_map, map_zero]`. Apply `hF.inj` to reduce the goal to its premises. Rewrite using `[this]`. Simplify using the standard rewrite rules. Substitute `hs0` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hsum : ∀ S : Finset (Fin k), QL c.μ ⊤ (∑ i ∈ S, algebraMap O E (b i) • e (Sum.inr i)) ∧ c.IsLie (∑ i ∈ S, algebraMap O E (b i) • e (Sum.inr i)) (∑ i ∈ S, b i • lb i)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`.
+
+Conclude with `⟨by simpa using hQL0, by simpa using h00⟩`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, add_comm, add_comm (b a • lb a)]`. Conclude with `⟨QL_comb' O E d c.μ hμ _ _ (b a) ih.1 (hQL _), lin _ _ _ _ (b a) ih.2 (hLie a) ih.1 (hQL _)⟩`. Establish `hf_eq : comb (Sum.elim 0 b) e = ∑ i, algebraMap O E (b i) • e (Sum.inr i)`.
+
+Simplify using `[comb, Fintype.sum_sum_type]`. Rewrite using `[hf_eq]`. Conclude with `(hsum Finset.univ).2`.
+-/
 theorem isLie_comb (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O] (hv : v.Integers O) (G : PDivGroup p O)
@@ -180,6 +238,11 @@ theorem isLie_comb (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
   rw [hf_eq]
   exact (hsum Finset.univ).2
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨o, ho, rfl⟩` from `hy`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem_smul (hS o ho) trivial`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `smul a y _ hy`. Rewrite using `[smul_eq_mul]`. Conclude with `Submodule.smul_induction_on (p := fun t => a * t ∈ I • (⊤ : Submodule O A)) hy (fun r hr t _ => by rw [mul_smul_comm]; exact Submodule.smul_mem_smul hr trivial) (fun u w hu hw => by rw [mul_add]; exact add_mem hu hw)`.
+-/
 theorem span_le_smul {O : Type} [CommRing O] (A : Type) [CommRing A] [Algebra O A] (I : Ideal O)
     (S : Set O) (hS : ∀ o ∈ S, o ∈ I) (x : A) (hx : x ∈ Ideal.span (algebraMap O A '' S)) :
     x ∈ I • (⊤ : Submodule O A) := by
@@ -200,6 +263,35 @@ end GlobalTheory.LevelOneIndep
 
 namespace GlobalTheory.LevelOneIndep
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hlift hmap k e hbasis hadapt w a ha hev j`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Establish `hmem : ∀ o : O, o ∈ IsLocalRing.maximalIdeal O ↔ ¬IsUnit o` using `fun o => IsLocalRing.mem_maximalIdeal o`. Establish `hpm : (p : O) ∈ IsLocalRing.maximalIdeal O` using `(hmem _).2 Fact.out`. Establish `hE` using `GlobalTheory.FrameIntegers.isFrame_integers p C v O hv`.
+
+Take `⟨Θ, hΘ⟩` from `GlobalTheory.QLog.frame_fraction_map p F.B O F.Q F.θ F.frame C hE`. Establish `hμ' : ∀ i, constantCoeff (μ' i) = 0` using `hlift.const`. Establish `hμ : ∀ i, constantCoeff (c.μ i) = 0` using `c.isLaw.const`. Establish `hμC : ∀ i, constantCoeff (up C c.μ i) = 0` using `fun i => by simp [up, hμ]`. Use `set e' : Fin d ⊕ Fin k → MvPowerSeries (Fin d) C := fun l => map Θ (e l) with he'`.
+
+Establish `hQL : ∀ l, QL c.μ ⊤ (e' l)` using `fun l => QL_map F.θ Θ hΘ μ' c.μ hμ' hmap _ (hbasis.1 l)`. Establish `hlog : ∀ i, cob1 (up C c.μ) (e' (Sum.inl i)) = 0`. Introduce `i`. Use extensionality with `α`. Take `⟨b, hb, hbα⟩` from `(hadapt i).1 α`.
+
+Rewrite using `[he', ← map_formalGroupLawCoboundaryOne_square F.θ Θ hΘ μ' c.μ hμ' hmap, coeff_map, hbα, hΘ, RingHom.mem_ker.1 hb, map_zero, map_zero]`. Take `⟨lb, hlb⟩` from `GlobalTheory.T.quasiLogarithm_tangentVectors_basis_dual_lie p C v O hv G d c C hE k e' (GlobalTheory.T.isQuasiLogarithmBasis_reduction_thickening p C v O hv ε hε F G d c μ' hlift hmap k e hbasis Θ hΘ) hlog`. Use `set b : Fin k → O := fun j => F.θ (w (Sum.inr j)) with hb`. Use `set f := comb (Sum.elim 0 b) e' with hf`. Use `set L : G.dual.Lie := ∑ j, b j • lb j with hL`.
+
+Establish `hfl : c.IsLie f L` using `isLie_comb p C v O hv G d c C hE k e' lb hQL hlb b`. Establish `hlogcomb : cob1 (up C c.μ) (comb (Sum.elim (fun i => F.θ (w (Sum.inl i))) 0) e') = 0`. Set `Φ : MvPowerSeries (Fin d) C →+ MvPowerSeries (Fin d ⊕ Fin d) C` to `AddMonoidHom.mk' (cob1 (up C c.μ)) (formalCoboundary_add hμC)`. Express the relevant statement in the definitionally equal form `Φ (comb _ e') = 0`. Unfold `comb`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cob1 (up C c.μ) _ = 0`. Rewrite using `[formalCoboundary_smul hμC]`. Consider the cases of `l with`.
+
+Consider the case `inl i => rw [hlog, smul_zero]`. Consider the case `inr j => simp`. Establish `hsplit : map Θ (comb w e) = comb (Sum.elim (fun i => F.θ (w (Sum.inl i))) 0) e' + f`. Establish `h1 : map Θ (comb w e) = ∑ l, algebraMap O C (F.θ (w l)) • e' l`. Unfold `comb`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul', hΘ]`. Rewrite using `[h1, hf]`. Unfold `comb`.
+
+Rewrite using `[Fintype.sum_sum_type, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Simplify using `[hb]`. Establish `hs : map (algebraMap O C) (map F.θ a) = defect c.μ (p ^ 1) f`. Rewrite using `[← map_up F.θ Θ hΘ, ha, map_defect F.θ Θ hΘ μ' c.μ hμ' hmap, pow_one, hsplit, defect_add _ hμ, defect_log _ hμ _ _ hlogcomb, zero_add]`. Establish `key : ∀ w0 : G.dual.omega, L w0 ∈ IsLocalRing.maximalIdeal O`.
+
+Introduce `w0`. Take `⟨φ₀, hφ₀⟩` from `AugCot.d_surjective _ (w0.1 1)`. Use `set φ : CartierDual O (G.A 1) := φ₀ - algebraMap O _ (Coalgebra.counit (R := O) φ₀) with hφdef`. Establish `hφd : PDiv.dUnit O φ = w0.1 1`. Rewrite using `[hφdef, PDiv.dUnit, map_sub, AugCot.d_algebraMap, sub_zero]`.
+
+Conclude with `hφ₀`. Take `⟨q, hq⟩` from `hfl.2 1 w0 φ (map F.θ a) hφd hs`. Establish `hx` using `span_le_smul (G.A 1) (IsLocalRing.maximalIdeal O) {o | ¬IsUnit o} (fun o ho => (hmem o).2 ho) _ hev`. Establish `hle : IsLocalRing.maximalIdeal O • (⊤ : Submodule O (G.A 1)) ≤ Submodule.comap φ.ofConv (IsLocalRing.maximalIdeal O)` using `Submodule.smul_le.2 fun r hr x _ => by`. Rewrite using `[Submodule.mem_comap, map_smul, smul_eq_mul]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hr`. Establish `hφm : φ (c.ev 1 (map F.θ a)) ∈ IsLocalRing.maximalIdeal O` using `hle hx`. Establish `: L w0 = (p : O) ^ 1 * q + φ (c.ev 1 (map F.θ a))` using `by rw [← hq]; ring`. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ (by simpa using hpm)) hφm`.
+
+Take `⟨hfin, hproj⟩` from `GlobalTheory.PDiv.omega_finite_projective p C v O hv G.dual`. Establish `h6` using `GlobalTheory.T.dualBasis_coord_mem_maximalIdeal_of_forall_apply O G.dual.omega k lb L key j`. Establish `hrep : lb.repr L j = b j`. Establish `: L = lb.equivFun.symm b` using `by rw [Module.Basis.equivFun_symm_apply]`. Rewrite using `[← Module.Basis.equivFun_apply, this, LinearEquiv.apply_symm_apply]`.
+
+Rewrite `h6` using `[hrep]`. Conclude with `(hmem _).1 h6`.
+-/
 theorem defect_level_one_nonunit : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B), IsLift F.θ μ' → (∀ i, map F.θ (μ' i) = c.μ i) → ∀ (k : ℕ) (e : Fin d ⊕ Fin k → MvPowerSeries (Fin d) F.Q), IsBasis μ' e → IsAdapted F.θ μ' e → ∀ (w : Fin d ⊕ Fin k → F.B) (a : MvPowerSeries (Fin d) F.B), map (algebraMap F.B F.Q) a = defect μ' p (comb w e) → c.ev 1 (map F.θ a) ∈ Ideal.span (algebraMap O (G.A 1) '' {o | ¬IsUnit o}) → ∀ j, ¬IsUnit (F.θ (w (Sum.inr j))) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hlift hmap k e hbasis hadapt w a ha hev j
   haveI : ValuationRing O := ValuationRing.of_integers v hv

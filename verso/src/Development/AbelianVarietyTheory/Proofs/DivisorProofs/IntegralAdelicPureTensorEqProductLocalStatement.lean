@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ActFromBlocks
 open scoped Matrix GlobalTheory.VacAny
 open NumberField IsDedekindDomain MeasureTheory Filter Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RatWeilOp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AdelicHaarPure.integral_pure_haar | exact GlobalTheory.AdelicHaarPure.integral_pure_haar | (intros; apply GlobalTheory.AdelicHaarPure.integral_pure_haar <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_adelic_pureTensor_eq_product_local : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → AF F)] [BorelSpace (κ → AF F)]
     [MeasurableSpace (κ → mixedEmbedding.mixedSpace F)] [BorelSpace (κ → mixedEmbedding.mixedSpace F)]
     [∀ v : Pl F, MeasurableSpace (κ → Fv F v)] [∀ v : Pl F, BorelSpace (κ → Fv F v)]

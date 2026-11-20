@@ -5,6 +5,15 @@ open Matrix GlobalTheory.WeilM GlobalTheory.CompanionTheory.SiegelChar
 
 namespace GlobalTheory.CompanionTheory.Ar.RT.Siegel
 
+/- English proof (translation)
+Establish `hm : ∀ m : MaximalSpectrum E, {t : F | p.eval (algebraMap F E t) ∈ m.asIdeal}.Finite`. Introduce `m`. Use `haveI := m.isMaximal`. Establish `hq : p.map (Ideal.Quotient.mk m.asIdeal) ≠ 0`. Introduce `h0`.
+
+Use `congrArg (Polynomial.eval (Ideal.Quotient.mk m.asIdeal τ)) h0` as an intermediate fact. Rewrite `this` using `[Polynomial.eval_map_apply, Polynomial.eval_zero]`. Conclude with `(h.map (Ideal.Quotient.mk m.asIdeal)).ne_zero this`. Use `((Polynomial.finite_setOf_isRoot hq).preimage (f := ((Ideal.Quotient.mk m.asIdeal).comp (algebraMap F E))) (RingHom.injective _).injOn).subset ?_` and prove the remaining obligations. Introduce `t ht`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Polynomial.IsRoot, RingHom.comp_apply, Polynomial.eval_map_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr ht`. Use `(Set.finite_iUnion hm).subset ?_` and prove the remaining obligations. Introduce `t ht`. Take `⟨m, hm1, hm2⟩` from `exists_max_ideal_of_mem_nonunits ht`.
+
+Conclude with `Set.mem_iUnion.mpr ⟨⟨m, hm1⟩, hm2⟩`.
+-/
 theorem finite_nonunit {F : Type} [Field F] {E : Type} [CommRing E] [Algebra F E] [IsArtinianRing E]
     (p : Polynomial E) (τ : E) (h : IsUnit (p.eval τ)) : {t : F | ¬ IsUnit (p.eval (algebraMap F E t))}.Finite := by
   have hm : ∀ m : MaximalSpectrum E, {t : F | p.eval (algebraMap F E t) ∈ m.asIdeal}.Finite := by
@@ -25,6 +34,11 @@ theorem finite_nonunit {F : Type} [Field F] {E : Type} [CommRing E] [Algebra F E
   obtain ⟨m, hm1, hm2⟩ := exists_max_ideal_of_mem_nonunits ht
   exact Set.mem_iUnion.mpr ⟨⟨m, hm1⟩, hm2⟩
 
+/- English proof (translation)
+Establish `key : ∀ z : E, ((A.map Polynomial.C + (Polynomial.X : Polynomial E) • B.map Polynomial.C + ((Polynomial.X : Polynomial E) * Polynomial.X) • D.map Polynomial.C).det).eval z = (A + z • B + (z * z) • D).det`. Introduce `z`. Rewrite using `[← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.isUnit_iff_isUnit_det, ← key] at h ⊢`. Conclude with `finite_nonunit _ τ h`.
+-/
 theorem finite_nonunit_matrix {F : Type} [Field F] {E : Type} [CommRing E] [Algebra F E] [IsArtinianRing E]
     {β : Type} [Fintype β] [DecidableEq β] (A B D : Matrix β β E) (τ : E) (h : IsUnit (A + τ • B + (τ * τ) • D)) :
     {t : F | ¬ IsUnit (A + algebraMap F E t • B + (algebraMap F E t * algebraMap F E t) • D)}.Finite := by
@@ -40,6 +54,39 @@ theorem finite_nonunit_matrix {F : Type} [Field F] {E : Type} [CommRing E] [Alge
   simp only [Matrix.isUnit_iff_isUnit_det, ← key] at h ⊢
   exact finite_nonunit _ τ h
 
+/- English proof (translation)
+Establish `hk1 : φ g⁻¹ * φ g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `hk2 : φ g * φ g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `hσh : σ (φ g) = φ g⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hσk : σ (φ g⁻¹) = φ g`.
+
+Combine the equalities or inequalities in the displayed calculation. Generalize the expression as in `hkd : φ g⁻¹ = k at hk1 hk2 hσh hσk`. Generalize the expression as in `hhd : φ g = h at hk1 hk2 hσh hσk`. Establish `hunit : ∀ a b : E, IsUnit a → IsUnit b → IsUnit (a • e + b • f)`. Introduce and unpack `_ _ ⟨a, rfl⟩ ⟨b, rfl⟩`.
+
+Use `IsUnit.of_mul_eq_one (((a⁻¹ : Eˣ) : E) • e + ((b⁻¹ : Eˣ) : E) • f) ?_` and prove the remaining obligations. Simplify using `only [add_mul, mul_add, smul_mul_smul_comm, hee, hff, hef0, hfe0, smul_zero, Units.mul_inv, one_smul, zero_add, add_zero, hef]`. Set `y : E → Matrix β β E` to `fun t => (t * t + t * ξ) • h + (t - ξ) • 1`. Set `y' : E → Matrix β β E` to `fun t => (t * t - t * ξ) • k + (t + ξ) • 1`. Establish `e1 : ∀ t, y' t = ξ • 1 + t • (1 - ξ • k) + (t * t) • k`.
+
+Introduce `t`. Simplify using `only [y']`. Use `module`. Establish `e2 : ∀ (t : E) (z : Matrix β β E), y t * e + y' t * z = ((-ξ) • e + ξ • z) + t • (ξ • (h * e) + e - ξ • (k * z) + z) + (t * t) • (h * e + k * z)`. Introduce `t z`.
+
+Simplify using `only [y, y', add_mul, smul_mul_assoc, one_mul]`. Use `module`. Establish `f1 : {t : F | ¬ IsUnit (y' (algebraMap F E t))}.Finite`. Simplify using `only [e1]`. Use `finite_nonunit_matrix _ _ _ 0 ?_` and prove the remaining obligations.
+
+Rewrite using `[← e1]`. Simplify using `only [y', mul_zero, zero_mul, sub_zero, zero_smul, zero_add]`. Rewrite using `[← hef, smul_add]`. Conclude with `hunit _ _ hξ hξ`. Establish `f2 : {t : F | ¬ IsUnit (y (algebraMap F E t) * e + y' (algebraMap F E t) * f)}.Finite`.
+
+Simplify using `only [e2]`. Use `finite_nonunit_matrix _ _ _ 0 ?_` and prove the remaining obligations. Simplify using `only [mul_zero, zero_smul, add_zero]`. Conclude with `hunit _ _ hξ.neg hξ`. Establish `f3 : {t : F | ¬ IsUnit (y (algebraMap F E t) * e + y' (algebraMap F E t) * (h * f))}.Finite`.
+
+Simplify using `only [e2]`. Use `finite_nonunit_matrix _ _ _ ξ ?_` and prove the remaining obligations. Rewrite using `[← e2]`. Establish `: y ξ * e + y' ξ * (h * f) = h * ((2 * ξ * ξ) • e + (2 * ξ) • f)`. Simplify using `only [y, y', add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, sub_self, zero_smul, zero_mul]`.
+
+Use `module`. Rewrite using `[this]`. Conclude with `(IsUnit.of_mul_eq_one _ hk2).mul (hunit _ _ ((h2.mul hξ).mul hξ) (h2.mul hξ))`. Take `⟨t, ht⟩` from `((f1.union f2).union f3).infinite_compl.nonempty`. Simplify using `only [Set.mem_compl_iff, Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at ht`.
+
+Take `⟨⟨⟨W, hW⟩, u2⟩, u3⟩` from `ht`. Establish `s1 : σ (y (algebraMap F E t)) = y' (algebraMap F E t)`. Simplify using `only [y, y', map_add, hsm, hσh, h1, map_mul, map_sub, c.commutes, hc]`. Use `module`. Establish `s2 : σ (y' (algebraMap F E t)) = y (algebraMap F E t)`.
+
+Simplify using `only [y, y', map_add, hsm, hσk, h1, map_mul, map_sub, c.commutes, hc]`. Use `module`. Establish `cm : y (algebraMap F E t) * y' (algebraMap F E t) = y' (algebraMap F E t) * y (algebraMap F E t)`. Simplify using `only [y, y', add_mul, mul_add, smul_mul_smul_comm, hk1, hk2, one_mul, mul_one]`. Use `module`.
+
+Establish `w1 : y' (algebraMap F E t) * (↑W⁻¹ : Matrix β β E) = 1` using `by rw [← hW, Units.mul_inv]`. Establish `w2 : (↑W⁻¹ : Matrix β β E) * y' (algebraMap F E t) = 1` using `by rw [← hW, Units.inv_mul]`. Establish `wu : IsUnit (↑W⁻¹ : Matrix β β E)` using `Units.isUnit _`. Generalize the expression as in `(↑W⁻¹ : Matrix β β E) = w at w1 w2 wu`. Generalize the expression as in `y (algebraMap F E t) = Y at s1 s2 cm u2 u3`.
+
+Generalize the expression as in `y' (algebraMap F E t) = Y' at s1 s2 cm u2 u3 w1 w2`. Establish `cw : w * Y = Y * w`. Combine the equalities or inequalities in the displayed calculation. Take `⟨x, hx⟩` from `hsurj (w * Y) (by`. Establish `: σ w * Y = 1` using `by rw [← s2, ← hmul, w1, h1]`.
+
+Rewrite using `[hmul, s1, cw, mul_assoc, ← mul_assoc (σ w), this, one_mul, w1])`. Establish `l1 : lam x = 1` using `hcell x (by`. Establish `: φ x * e + f = w * (Y * e + Y' * f)` using `by rw [hx, mul_add, ← mul_assoc w Y', w2, one_mul, mul_assoc]`. Rewrite using `[this]`. Conclude with `wu.mul u2)`.
+
+Establish `l2 : lam (g⁻¹ * x) = 1` using `hcell _ (by`. Establish `: φ (g⁻¹ * x) * e + f = k * (w * (Y * e + Y' * (h * f)))`. Rewrite using `[map_mul, hkd, hx, mul_add, ← mul_assoc w Y', w2, one_mul, mul_add, ← mul_assoc k h, hk1, one_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[this]`.
+
+Conclude with `(IsUnit.of_mul_eq_one _ hk1).mul (wu.mul u3))`. Rewrite `l2` using `[map_mul, l1, mul_one, map_inv, inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem triv_of_cell {F : Type} [Field F] [Infinite F] {E : Type} [CommRing E] [Algebra F E] [IsArtinianRing E]
     {β : Type} [Fintype β] [DecidableEq β] {c : E →ₐ[F] E} {ξ : E} (hξ : IsUnit ξ) (h2 : IsUnit (2 : E))
     (hc : c ξ = -ξ) {σ : Matrix β β E →+ Matrix β β E} {G : Type} [Group G] {φ : G →* Matrix β β E}
@@ -120,6 +167,39 @@ theorem triv_of_cell {F : Type} [Field F] [Infinite F] {E : Type} [CommRing E] [
     rw [this]; exact (IsUnit.of_mul_eq_one _ hk1).mul (wu.mul u3))
   rwa [map_mul, l1, mul_one, map_inv, inv_eq_one] at l2
 
+/- English proof (translation)
+Introduce `F _ _ E _ _ _ c ξ β ν _ _ _ _ J Cy hξ hanti hinvol hJ hL lam hlam`. Take `⟨hy, Cx, M, hx, hM1, hM2⟩` from `hL`. Establish `cmul : ∀ {l m n : Type} [Fintype m] (a : Matrix l m E) (b : Matrix m n E), (a * b).map c = a.map c * b.map c` using `fun a b => Matrix.map_mul (f := c.toRingHom)`. Establish `cone : (1 : Matrix β β E).map c = 1` using `Matrix.map_one _ (map_zero c) (map_one c)`. Establish `cc : ∀ a : Matrix β β E, (a.map c).map c = a` using `fun a => by ext i j; exact hinvol _`.
+
+Establish `J1 : J * J⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hJ`. Establish `J2 : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul _ hJ`. Set `σ : Matrix β β E →+ Matrix β β E` to `AddMonoidHom.mk' (fun x => (J⁻¹ * xᵀ * J).map c) (fun a b => by`. Rewrite using `[transpose_add, mul_add, add_mul, Matrix.map_add _ (map_add c)])`. Establish `hσ : ∀ x, σ x = (J⁻¹ * xᵀ * J).map c` using `fun _ => rfl`.
+
+Establish `hsm : ∀ (a : E) x, σ (a • x) = c a • σ x` using `fun a x => by`. Rewrite using `[hσ, hσ, transpose_smul, mul_smul_comm, smul_mul_assoc]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Establish `hmul : ∀ x y, σ (x * y) = σ y * σ x` using `fun x y => by`.
+
+Rewrite using `[hσ, hσ, hσ, ← cmul, transpose_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : σ 1 = 1` using `by rw [hσ, transpose_one, mul_one, J2, cone]`. Establish `hform : ∀ x y, σ x * y = (J⁻¹ * (xᵀ * J * y.map c)).map c` using `fun x y => by`.
+
+Rewrite using `[hσ, ← mul_assoc, ← mul_assoc, cmul _ (y.map c), cc]`. Set `φ : UG c J →* Matrix β β E` to `(Units.coeHom _).comp (UG c J).subtype`. Establish `hφ : ∀ g, φ g = ((g : GL β E) : Matrix β β E)` using `fun _ => rfl`. Establish `hinj : Function.Injective φ` using `fun a b h => Subtype.ext (Units.ext h)`. Establish `hu : ∀ g, σ (φ g) * φ g = 1` using `fun g => by`.
+
+Rewrite using `[hform, show (φ g)ᵀ * J * (φ g).map c = J from g.2, J2, cone]`. Establish `hsurj : ∀ x, σ x * x = 1 → ∃ g, φ g = x` using `fun x h => by`. Use `⟨⟨⟨x, σ x, mul_eq_one_comm.mp h, h⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `xᵀ * J * x.map c = J`. Use `congrArg (fun z : Matrix β β E => J * z.map c) h` as an intermediate fact.
+
+Simplify using `only [hform, cc, cone] at this`. Rewrite `this` using `[← mul_assoc, J1, one_mul, mul_one]`. Then use the resulting hypothesis. Rewrite `hM1`, `hM2` using `[← Matrix.fromRows_toRows M]`. Generalize the expression as in `M.toRows₁ = M1 at hM1 hM2`. Generalize the expression as in `M.toRows₂ = M2 at hM1 hM2`.
+
+Rewrite `hM1` using `[fromCols_mul_fromRows]`. Rewrite `hM2` using `[fromRows_mul_fromCols, ← fromBlocks_one, fromBlocks_inj]`. Take `⟨m11, m12, m21, m22⟩` from `hM2`. Establish `hee : (Cy * M1) * (Cy * M1) = Cy * M1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc M1, m11, Matrix.one_mul]`.
+
+Establish `hff : (Cx * M2) * (Cx * M2) = Cx * M2`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc M2, m22, Matrix.one_mul]`. Establish `hef0 : (Cy * M1) * (Cx * M2) = 0`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc M1, m12, Matrix.zero_mul, Matrix.mul_zero]`. Establish `hfe0 : (Cx * M2) * (Cy * M1) = 0`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc M2, m21, Matrix.zero_mul, Matrix.mul_zero]`. Establish `iso : ∀ (C : Matrix β ν E) (N : Matrix ν β E), Cᵀ * J * C.map c = 0 → σ (C * N) * (C * N) = 0` using `fun C N h => by`. Rewrite using `[hform, transpose_mul, cmul C N]`. Establish `: Nᵀ * Cᵀ * J * (C.map c * N.map c) = Nᵀ * (Cᵀ * J * C.map c) * N.map c` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, h, Matrix.mul_zero, Matrix.zero_mul, mul_zero, Matrix.map_zero _ (map_zero c)]`.
+
+Establish `ie` using `iso Cy M1 hy`. Establish `if'` using `iso Cx M2 hx`. Establish `hP : ∀ g, (Cx * M2) * φ g * (Cy * M1) = 0 → lam g = 1` using `fun g h => by`. Establish `a : φ g * Cy = Cy * (M1 * φ g * Cy)`. Establish `h' : (Cx * M2) * φ g * Cy = 0`.
+
+Use `congrArg (· * Cy) h` as an intermediate fact. Simplify using `only [Matrix.mul_assoc, m11, Matrix.mul_one, Matrix.zero_mul] at this ⊢`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation. Establish `b : (M1 * φ g⁻¹ * Cy) * (M1 * φ g * Cy) = 1`.
+
+Rewrite using `[Matrix.mul_assoc, ← a, Matrix.mul_assoc, ← Matrix.mul_assoc (φ g⁻¹), ← map_mul, inv_mul_cancel, map_one, Matrix.one_mul, m11]`. Conclude with `hlam g ⟨_, _, mul_eq_one_comm.mp b, b⟩ a`. Generalize the expression as in `Cy * M1 = e at *`. Generalize the expression as in `Cx * M2 = f at *`. Establish `hsum : σ e + σ f = 1` using `by rw [← map_add, hM1, h1]`.
+
+Establish `hse : σ e = f`. Combine the equalities or inequalities in the displayed calculation. Establish `hsf : σ f = e`. Rewrite `hsum` using `[hse, ← hM1, add_comm e]`. Conclude with `add_left_cancel hsum`.
+
+Establish `h2 : (2 : E) * algebraMap F E 2⁻¹ = 1`. Rewrite using `[← map_ofNat (algebraMap F E) 2, ← map_mul, mul_inv_cancel₀ (by norm_num), map_one]`. Establish `h3 : (3 : E) * algebraMap F E 3⁻¹ = 1`. Rewrite using `[← map_ofNat (algebraMap F E) 3, ← map_mul, mul_inv_cancel₀ (by norm_num), map_one]`. Use extensionality with `g`.
+
+Rewrite using `[triv_of_cell hξ (IsUnit.of_mul_eq_one _ h2) hanti hsm hmul h1 hu hsurj hM1 hee hff hef0 hfe0 lam (cell_triv hmul h1 hu hM1 hee hff hef0 hfe0 hse hsf lam (lower_triv hsm h1 h2 h3 (map_ofNat c 2) (c.commutes _) (c.commutes _) hinj hsurj hM1 hee hff hef0 hfe0 hse hsf lam) hP) g]`. Both sides reduce to the same expression.
+-/
 theorem char_trivial_artinian : ∀ (F : Type) [Field F] [CharZero F] (E : Type) [CommRing E] [IsArtinianRing E] [Algebra F E] (c : E →ₐ[F] E) (ξ : E) (β ν : Type) [Fintype β] [DecidableEq β] [Fintype ν] [DecidableEq ν] (J : Matrix β β E) (Cy : Matrix β ν E), IsUnit ξ → c ξ = -ξ → (∀ x, c (c x) = x) → IsUnit J.det → IsLagr c J Cy → ∀ lam : UG c J →* ℂˣ, (∀ (p : UG c J) (t : GL ν E), ((p : GL β E) : Matrix β β E) * Cy = Cy * (t : Matrix ν ν E) → lam p = 1) → lam = 1 := by
   intro F _ _ E _ _ _ c ξ β ν _ _ _ _ J Cy hξ hanti hinvol hJ hL lam hlam
   obtain ⟨hy, Cx, M, hx, hM1, hM2⟩ := hL

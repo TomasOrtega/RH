@@ -16,23 +16,44 @@ set_option backward.isDefEq.respectTransparency false
 variable {C : Type u} [Category.{v} C] [Preadditive C] [HasFiniteCoproducts C]
   (Y : SimplicialObject (SimplicialObject C))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.dD_comp_awO_eq_sum_awO_comp_dT`.
+-/
 theorem awop' : ∀ (n a b : ℕ), a + b = n → dD (n + 1) n ≫ awO n a b = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal (n + 1), awO (n + 1) x.1 x.2 ≫ dT x.1 x.2 a b := GlobalTheory.T.dD_comp_awO_eq_sum_awO_comp_dT
+/- English proof (translation)
+The claim follows from `@GlobalTheory.T.diagonal_differential_eval`.
+-/
 theorem evd' : ∀ {C : Type u} [Category.{v} C] [Preadditive C] (Y : SimplicialObject (SimplicialObject C)) (n : ℕ), (ev Y).map (dD (n + 1) n) = (diagCx Y).d (n + 1) n := @GlobalTheory.T.diagonal_differential_eval
+/- English proof (translation)
+The claim follows from `@GlobalTheory.T.total_differential_eval`.
+-/
 theorem totd' : ∀ {C : Type u} [Category.{v} C] [Preadditive C] [HasFiniteCoproducts C] (Y : SimplicialObject (SimplicialObject C)) (a b k : ℕ) (h : a + b = k + 1), (dbl Y).ιTotal (ComplexShape.down ℕ) a b (k + 1) (by simpa only [ComplexShape.π_def] using h) ≫ (tot Y).d (k + 1) k = ∑ x ∈ (Finset.HasAntidiagonal.antidiagonal k).attach, (ev Y).map (dT a b x.1.1 x.1.2) ≫ (dbl Y).ιTotal (ComplexShape.down ℕ) x.1.1 x.1.2 k (by simpa only [ComplexShape.π_def] using Finset.HasAntidiagonal.mem_antidiagonal.1 x.2) := @GlobalTheory.T.total_differential_eval
 
 abbrev ιz (a b n : ℕ) : ((dbl Y).X a).X b ⟶ (tot Y).X n := (dbl Y).ιTotalOrZero (ComplexShape.down ℕ) a b n
 
+/- English proof (translation)
+The claim follows from `(dbl Y).ιTotalOrZero_eq _ _ _ _ _`.
+-/
 theorem ιz_eq (a b n : ℕ) (h : a + b = n) :
     ιz Y a b n = (dbl Y).ιTotal (ComplexShape.down ℕ) a b n (by simpa only [ComplexShape.π_def] using h) :=
   (dbl Y).ιTotalOrZero_eq _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `(dbl Y).ιTotalOrZero_eq_zero _ _ _ _ (by simpa only [ComplexShape.π_def] using h)`.
+-/
 theorem ιz_ne (a b n : ℕ) (h : a + b ≠ n) : ιz Y a b n = 0 :=
   (dbl Y).ιTotalOrZero_eq_zero _ _ _ _ (by simpa only [ComplexShape.π_def] using h)
 
+/- English proof (translation)
+Unfold `dT dH dV`. Rewrite using `[if_neg (by omega), if_neg (by omega), smul_zero, add_zero]`.
+-/
 theorem dT_eq_zero (a b a' b' : ℕ) (h : a + b ≠ a' + b' + 1) : dT a b a' b' = 0 := by
   unfold dT dH dV
   rw [if_neg (by omega), if_neg (by omega), smul_zero, add_zero]
 
+/- English proof (translation)
+Rewrite using `[Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, ← Fin.sum_univ_eq_sum_range]`. Unfold `awF`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[ιz_eq Y _ _ _ (by omega)]`.
+-/
 theorem awF_eq (n : ℕ) :
     awF Y n = ∑ x ∈ antidiagonal n, (ev Y).map (awO n x.1 x.2) ≫ ιz Y x.1 x.2 n := by
   rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, ← Fin.sum_univ_eq_sum_range]
@@ -40,6 +61,11 @@ theorem awF_eq (n : ℕ) :
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [ιz_eq Y _ _ _ (by omega)]
 
+/- English proof (translation)
+Distinguish the cases in `h : a + b = k + 1`. Rewrite using `[ιz_eq Y _ _ _ h, totd' Y a b k h, ← Finset.sum_attach (antidiagonal k)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[ιz_eq Y _ _ _ (Finset.HasAntidiagonal.mem_antidiagonal.1 x.2)]`. Rewrite using `[ιz_ne Y _ _ _ h, zero_comp]`.
+
+Use `(Finset.sum_eq_zero fun x hx => ?_).symm` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[dT_eq_zero _ _ _ _ (by omega), Functor.map_zero, zero_comp]`.
+-/
 theorem ιz_d (a b k : ℕ) :
     ιz Y a b (k + 1) ≫ (tot Y).d (k + 1) k =
       ∑ x ∈ antidiagonal k, (ev Y).map (dT a b x.1 x.2) ≫ ιz Y x.1 x.2 k := by
@@ -55,10 +81,16 @@ theorem ιz_d (a b k : ℕ) :
 def shufF (G : ∀ a b n : ℕ, bo a b ⟶ bo n n) (n : ℕ) : (tot Y).X n ⟶ (diagCx Y).X n :=
   (dbl Y).totalDesc (c₁₂ := ComplexShape.down ℕ) (fun a b _ => (ev Y).map (G a b n))
 
+/- English proof (translation)
+Rewrite using `[ιz_eq Y _ _ _ h, shufF, ι_totalDesc]`.
+-/
 theorem ιz_shufF (G : ∀ a b n : ℕ, bo a b ⟶ bo n n) (a b n : ℕ) (h : a + b = n) :
     ιz Y a b n ≫ shufF Y G n = (ev Y).map (G a b n) := by
   rw [ιz_eq Y _ _ _ h, shufF, ι_totalDesc]
 
+/- English proof (translation)
+Use `total.hom_ext (K := dbl Y) (c₁₂ := ComplexShape.down ℕ) (fun a b h => ?_)` and prove the remaining obligations. Simplify using `only [ComplexShape.π_def] at h`. Rewrite using `[← ιz_eq Y _ _ _ h, ← Category.assoc, ιz_d, Preadditive.sum_comp, ← Category.assoc, ιz_shufF Y G _ _ _ h, ← evd', ← Functor.map_comp, hG a b n h, Functor.map_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ιz_shufF Y G _ _ _ (Finset.HasAntidiagonal.mem_antidiagonal.1 hx), Functor.map_comp]`.
+-/
 theorem shufF_comm (G : ∀ a b n : ℕ, bo a b ⟶ bo n n)
     (hG : ∀ a b n : ℕ, a + b = n + 1 → G a b (n + 1) ≫ dD (n + 1) n =
       ∑ x ∈ Finset.HasAntidiagonal.antidiagonal n, dT a b x.1 x.2 ≫ G x.1 x.2 n) (n : ℕ) :
@@ -82,6 +114,11 @@ set_option backward.isDefEq.respectTransparency false
 variable {C : Type u} [Category.{v} C] [Preadditive C] [HasFiniteCoproducts C]
   (Y : SimplicialObject (SimplicialObject C))
 
+/- English proof (translation)
+Rewrite using `[awF_eq, awF_eq, Preadditive.sum_comp, Preadditive.comp_sum, ← evd']`. Repeatedly rewrite using `[Category.assoc, ιz_d, Preadditive.comp_sum]`. Repeatedly rewrite using `[← Category.assoc, ← Functor.map_comp]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[awop' n y.1 y.2 (Finset.HasAntidiagonal.mem_antidiagonal.1 hy), Functor.map_sum, Preadditive.sum_comp]`.
+-/
 theorem awF_comm (n : ℕ) : awF Y (n + 1) ≫ (tot Y).d (n + 1) n = (diagCx Y).d (n + 1) n ≫ awF Y n := by
   rw [awF_eq, awF_eq, Preadditive.sum_comp, Preadditive.comp_sum, ← evd']
   simp_rw [Category.assoc, ιz_d, Preadditive.comp_sum]
@@ -90,22 +127,36 @@ theorem awF_comm (n : ℕ) : awF Y (n + 1) ≫ (tot Y).d (n + 1) n = (diagCx Y).
   refine Finset.sum_congr rfl fun y hy => ?_
   rw [awop' n y.1 y.2 (Finset.HasAntidiagonal.mem_antidiagonal.1 hy), Functor.map_sum, Preadditive.sum_comp]
 
+/- English proof (translation)
+Rewrite using `[awF_eq, Preadditive.sum_comp, Functor.map_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ιz_shufF Y G _ _ _ (Finset.HasAntidiagonal.mem_antidiagonal.1 hx), Functor.map_comp]`.
+-/
 theorem awF_shufF (G : ∀ a b n : ℕ, bo a b ⟶ bo n n) (n : ℕ) :
     awF Y n ≫ shufF Y G n = (ev Y).map (∑ x ∈ antidiagonal n, awO n x.1 x.2 ≫ G x.1 x.2 n) := by
   rw [awF_eq, Preadditive.sum_comp, Functor.map_sum]
   refine Finset.sum_congr rfl fun x hx => ?_
   rw [Category.assoc, ιz_shufF Y G _ _ _ (Finset.HasAntidiagonal.mem_antidiagonal.1 hx), Functor.map_comp]
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `[idc, clampHom]`. Conclude with `Nat.le_of_lt_succ j.2`.
+-/
 theorem idc_self (n : ℕ) : idc n n = 𝟙 _ := by
   ext j
   simp [idc, clampHom]
   exact Nat.le_of_lt_succ j.2
 
+/- English proof (translation)
+Rewrite using `[idO, if_pos ⟨rfl, rfl⟩, ev_map_bop, idc_self, idc_self]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem ev_idO_self (a b : ℕ) : (ev Y).map (idO a b a b) = 𝟙 _ := by
   rw [idO, if_pos ⟨rfl, rfl⟩, ev_map_bop, idc_self, idc_self]
   simp
   rfl
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single (a, b)]`. Rewrite using `[ev_idO_self, Category.id_comp]`. Introduce `y _ hy`. Rewrite using `[idO, if_neg (fun h' => hy (Prod.ext h'.1.symm h'.2.symm)), Functor.map_zero, zero_comp]`. Introduce `hy`.
+
+Conclude with `absurd (Finset.HasAntidiagonal.mem_antidiagonal.2 h) hy`.
+-/
 theorem sum_idO (a b n : ℕ) (h : a + b = n) :
     ∑ y ∈ antidiagonal n, (ev Y).map (idO a b y.1 y.2) ≫ ιz Y y.1 y.2 n = ιz Y a b n := by
   rw [Finset.sum_eq_single (a, b)]
@@ -124,11 +175,21 @@ def homT (K : ∀ a b a' b' : ℕ, bo a b ⟶ bo a' b') (i j : ℕ) : (tot Y).X 
       (fun a b _ => ∑ x ∈ antidiagonal j, (ev Y).map (K a b x.1 x.2) ≫ ιz Y x.1 x.2 j)
   else 0
 
+/- English proof (translation)
+Rewrite using `[homT, if_pos rfl, ιz_eq Y _ _ _ h, ι_totalDesc]`.
+-/
 theorem ιz_homT (K : ∀ a b a' b' : ℕ, bo a b ⟶ bo a' b') (a b n : ℕ) (h : a + b = n) :
     ιz Y a b n ≫ homT Y K n (n + 1) =
       ∑ x ∈ antidiagonal (n + 1), (ev Y).map (K a b x.1 x.2) ≫ ιz Y x.1 x.2 (n + 1) := by
   rw [homT, if_pos rfl, ιz_eq Y _ _ _ h, ι_totalDesc]
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Rewrite using `[Homotopy.dNext_zero_chainComplex, Limits.comp_zero]`. Use `(Finset.sum_eq_zero fun x _ => Finset.sum_eq_zero fun j hj => ?_).symm` and prove the remaining obligations. Rewrite `hj` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+
+Rewrite using `[dT_eq_zero _ _ _ _ (by omega), Limits.zero_comp, Functor.map_zero, Limits.zero_comp]`. Consider the case `succ m`. Rewrite using `[Homotopy.dNext_succ_chainComplex, ← Category.assoc, ιz_d, Preadditive.sum_comp, Nat.add_sub_cancel]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, ιz_homT Y K _ _ _ (Finset.HasAntidiagonal.mem_antidiagonal.1 hj), Preadditive.comp_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Functor.map_comp]`.
+-/
 theorem ιz_dNext (K : ∀ a b a' b' : ℕ, bo a b ⟶ bo a' b') (a b n : ℕ) (h : a + b = n) :
     ιz Y a b n ≫ dNext n (homT Y K) =
       ∑ x ∈ antidiagonal n, ∑ j ∈ antidiagonal (n - 1),
@@ -236,6 +297,9 @@ namespace GlobalTheory.EZ
 
 open GlobalTheory.EZ.AWEq
 
+/- English proof (translation)
+Introduce `C _ _ _ Y G H K _ hG hH hK`. Conclude with `⟨HomotopyEquiv.mk (awC Y) (shufC Y G hG) (htpyD Y G hG H hH) (htpyT Y G hG K hK), fun _ => rfl⟩`.
+-/
 theorem awHomotopyEquiv : ∀ {C : Type u} [Category.{v} C] [Preadditive C] [HasFiniteCoproducts C] (Y : SimplicialObject (SimplicialObject C)) (G : ∀ a b n : ℕ, bo a b ⟶ bo n n) (H : ∀ n m : ℕ, bo n n ⟶ bo m m) (K : ∀ a b a' b' : ℕ, bo a b ⟶ bo a' b'), G 0 0 0 = 𝟙 (bo 0 0) → (∀ a b n : ℕ, a + b = n + 1 → G a b (n + 1) ≫ dD (n + 1) n = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal n, dT a b x.1 x.2 ≫ G x.1 x.2 n) → (∀ n : ℕ, ∑ x ∈ Finset.HasAntidiagonal.antidiagonal n, awO n x.1 x.2 ≫ G x.1 x.2 n = 𝟙 (bo n n) + H n (n + 1) ≫ dD (n + 1) n + dD n (n - 1) ≫ H (n - 1) n) → (∀ a b a' b' : ℕ, a' + b' = a + b → G a b (a + b) ≫ awO (a + b) a' b' = idO a b a' b' + ∑ x ∈ Finset.HasAntidiagonal.antidiagonal (a + b + 1), K a b x.1 x.2 ≫ dT x.1 x.2 a' b' + ∑ x ∈ Finset.HasAntidiagonal.antidiagonal (a + b - 1), dT a b x.1 x.2 ≫ K x.1 x.2 a' b') → ∃ e : HomotopyEquiv (diagCx Y) (tot Y), ∀ n : ℕ, e.hom.f n = awF Y n := by
   intro C _ _ _ Y G H K _ hG hH hK
   exact ⟨HomotopyEquiv.mk (awC Y) (shufC Y G hG) (htpyD Y G hG H hH) (htpyT Y G hG K hK), fun _ => rfl⟩

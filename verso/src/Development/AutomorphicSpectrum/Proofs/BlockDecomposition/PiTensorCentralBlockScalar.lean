@@ -4,6 +4,13 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.JCScalar
 
+/- English proof (translation)
+Introduce `k _ _ _ _ h x t c hc j v`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Rewrite using `[map_smul, smul_comm, piTensor_tprod]`. Use `congr 1`.
+
+Establish `hf : ∀ a, (x a).rep (Zl.JC.zj (fun a => (x a).1) t j a) (f a) = (if a ≤ j then c a else 1) • f a`. Introduce `a`. Distinguish the cases in `ha : a ≤ j`. Simplify using `only [Zl.JC.zj, if_pos ha]`. Conclude with `hc a (f a)`.
+
+Simplify using `[Zl.JC.zj, if_neg ha]`. Simplify using `only [hf]`. Rewrite using `[MultilinearMap.map_smul_univ, Finset.prod_filter]`. Consider the case `add a b ha hb => rw [map_add, ha, hb, smul_add]`.
+-/
 theorem piTensor_zj : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ∀ {h : ℕ} (x : Fin h → IrrGL k) (t : kˣ) (c : Fin h → ℂ), (∀ i, Zl.ScalarBy (x i) t (c i)) → ∀ (j : Fin h) (v : PiTensorProduct ℂ (fun a => (x a).2.rep.V)), piTensor (fun a => (x a).rep) (Zl.JC.zj (fun a => (x a).1) t j) v = (∏ i ∈ Finset.univ.filter (· ≤ j), c i) • v := by
   intro k _ _ _ _ h x t c hc j v
   induction v using PiTensorProduct.induction_on with

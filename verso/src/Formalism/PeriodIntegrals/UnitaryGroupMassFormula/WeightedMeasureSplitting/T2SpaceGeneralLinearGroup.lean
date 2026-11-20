@@ -18,6 +18,11 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
   [LocallyCompactSpace R] [T2Space R] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Establish `: (uniFlag R σ J Y : Set (HA R σ J)) = ⋂ b, (fun g => lin R σ J g (ratV (F` using `F) R (Y b)) - ratV (F := F) R (Y b)) ⁻¹' (spanR (F := F) R Y {a | a < b} : Set (Fin n → R ⊗[F] E)) := by`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `isClosed_iInter fun b => (PI.VolSemiDirect.W.isClosed_spanR _ _).preimage ((PI.VolSemiDirect.W.continuous_lin R σ J _).sub continuous_const)`.
+-/
 theorem isClosed_uniFlag {m : ℕ} (Y : Fin m → Fin n → E) :
     IsClosed (uniFlag R σ J Y : Set (HA R σ J)) := by
   have : (uniFlag R σ J Y : Set (HA R σ J)) =
@@ -31,9 +36,17 @@ theorem isClosed_uniFlag {m : ℕ} (Y : Fin m → Fin n → E) :
     (PI.VolSemiDirect.W.isClosed_spanR _ _).preimage
       ((PI.VolSemiDirect.W.continuous_lin R σ J _).sub continuous_const)
 
+/- English proof (translation)
+The claim follows from `PI.VolSemiDirect.W.isClosed_stabT (R := R) (σ := σ) (J := J) _`.
+-/
 theorem isClosed_Hsub {r : ℕ} (P : Frame E n r) : IsClosed (Hsub R σ J P : Set (HA R σ J)) :=
   PI.VolSemiDirect.W.isClosed_stabT (R := R) (σ := σ) (J := J) _
 
+/- English proof (translation)
+Establish `hset : (Nsub R σ J P : Set (HA R σ J)) = (uniFlag R σ J P.e : Set (HA R σ J)) ∩ ⋂ v ∈ {v : Fin n → R ⊗[F] E | InXperp R σ J P v}, (fun g : HA R σ J => lin R σ J g v - v) ⁻¹' (spanR (F` using `F) R P.e Set.univ : Set (Fin n → R ⊗[F] E)) := by`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, Set.mem_setOf_eq, SetLike.mem_coe]`. Both sides reduce to the same expression. Rewrite using `[hset]`.
+
+Use `(isClosed_uniFlag R σ J P.e).inter (isClosed_biInter fun v _ => ?_)` and prove the remaining obligations. Conclude with `(PI.VolSemiDirect.W.isClosed_spanR (R := R) P.e _).preimage ((PI.VolSemiDirect.W.continuous_lin (R := R) (σ := σ) (J := J) v).sub continuous_const)`.
+-/
 theorem isClosed_Nsub {r : ℕ} (P : Frame E n r) : IsClosed (Nsub R σ J P : Set (HA R σ J)) := by
   have hset : (Nsub R σ J P : Set (HA R σ J)) = (uniFlag R σ J P.e : Set (HA R σ J)) ∩
       ⋂ v ∈ {v : Fin n → R ⊗[F] E | InXperp R σ J P v},
@@ -47,6 +60,9 @@ theorem isClosed_Nsub {r : ℕ} (P : Frame E n r) : IsClosed (Nsub R σ J P : Se
   exact (PI.VolSemiDirect.W.isClosed_spanR (R := R) P.e _).preimage
     ((PI.VolSemiDirect.W.continuous_lin (R := R) (σ := σ) (J := J) v).sub continuous_const)
 
+/- English proof (translation)
+The claim follows from `isClosed_uniFlag R σ J (F0 P)`.
+-/
 theorem isClosed_Ssub {r : ℕ} (P : Frame E n r) : IsClosed (Ssub R σ J P : Set (HA R σ J)) :=
   isClosed_uniFlag R σ J (F0 P)
 
@@ -82,6 +98,9 @@ instance sc_HAinf : SecondCountableTopology (HA (Ainf F) σ J) :=
 instance sc_HAf : SecondCountableTopology (HA (Af F) σ J) :=
   PI.VolStabSW.TopoAF.secondCountable_HA_of (Af F) σ J
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (v : HeightOneSpectrum (𝓞 F)) {r : ℕ} (P : Frame E n r) :
     LocallyCompactSpace (Ssub (Fv F v) σ J P) := inferInstance
 
@@ -91,7 +110,13 @@ instance sc_subInf (K : Subgroup (HA (Ainf F) σ J)) : SecondCountableTopology K
 instance sc_subF (K : Subgroup (HA (Af F) σ J)) : SecondCountableTopology K :=
   TopologicalSpace.Subtype.secondCountableTopology _
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example {r : ℕ} (P : Frame E n r) : SigmaCompactSpace (Hsub (Ainf F) σ J P) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example {r : ℕ} (P : Frame E n r) : SigmaCompactSpace (Nsub (Af F) σ J P) := inferInstance
 
 end NF

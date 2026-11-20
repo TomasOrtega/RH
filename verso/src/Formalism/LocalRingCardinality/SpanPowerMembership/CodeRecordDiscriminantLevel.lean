@@ -109,10 +109,16 @@ section Record
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Conclude with `hT.out.ne_zero (by exact_mod_cast (zero_mul _).symm.trans h |>.symm)`.
+-/
 theorem pz_ne {T : ℕ} [hT : Fact T.Prime] {z : H.E} (h : z * H.conj z = (T : H.E)) : z ≠ 0 := by
   rintro rfl
   exact hT.out.ne_zero (by exact_mod_cast (zero_mul _).symm.trans h |>.symm)
 
+/- English proof (translation)
+Establish `h1` using `pz_ne H h'`. Establish `h2 : H.conj z' ≠ 0` using `(map_ne_zero H.conj).mpr h1`. Rewrite using `[map_div₀, ← h, ← h']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem norm_quotient_mul_conj {T T' : ℕ} [Fact T'.Prime] {z z' : H.E} (h : z * H.conj z = (T : H.E))
     (h' : z' * H.conj z' = (T' : H.E)) : z / z' * H.conj (z / z') * (T' : H.E) = (T : H.E) := by
   have h1 := pz_ne H h'
@@ -127,6 +133,9 @@ abbrev codeLevelData (W : Type) (Dst : ℝ)
   primaryLevelData W H.E H.φ₀ (@placesOf H.E _ _ H.cmStar) (Tau2 R) (card_realPlaces_eq_degree R) Dst (shaExample H)
     (shaExample_nonneg H) (exampleClassGroupCard H) (exampleClassGroupCard_pos H) kb ks tw htw
 
+/- English proof (translation)
+Introduce `p _ e _ _` and use `shaExample_eq H p e hcard := rfl hg := hg`.
+-/
 theorem nHyp5 (W : Type) (Dst : ℝ)
     (kb : ∀ j, Tau2 R → Fin (R.sigW j).1 → ℤ) (ks : ∀ j, Tau2 R → Fin (R.sigW j).2 → ℤ)
     (tw : (@placesOf H.E _ _ H.cmStar).Pl → Bool)
@@ -367,29 +376,68 @@ def codeRecord : D7 :=
     gat_d := fun _ _ _ => (gAtPExample_d _).trans (finrank_bot ℂ _).symm
     Y_sigval := spaces_signature_eq R _ _ _ _ _ _ _ }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_ranks :
     (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).R = R := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_wordType :
     (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Word = W := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_weight_sign :
     (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).hcW = hcW := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_letter :
     (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).s.letter = lt := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_delta :
     (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).s.Del = Del := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_height :
     (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).div.h = hv := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_dimensionBound :
     (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Dstar = Dst := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_twistAt :
     (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.muAt = tw := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_volume :
     (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).vol = vol := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_dsig :
     (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).dsig = dsg := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_cdScale :
     (codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).s.cdScale = cdS := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_mem_A_T (u) : ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).A.T = T u := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codeRecord_discriminantLevel (u) : ((codeRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).A.duStar = du u := rfl
 
 end Record
@@ -404,12 +452,18 @@ variable {R : Ranks} (h : HCParam R) (n : ℕ)
   (hlet : ∀ (l : ℕ) (hl : l < R.k - 2), h.u ⟨l + 1, by omega⟩ = h.v ⟨l, by omega⟩ - 1 / 2)
   (hn : 0 < n) (a : Fin (R.k - 2) → Bool)
 
+/- English proof (translation)
+Unfold `hcLet`. Rewrite using `[dif_pos ⟨by simp, by simpa using hl⟩]`. Both sides reduce to the same expression.
+-/
 theorem hcLet_mid (l : ℕ) (hl : l < R.k - 2) :
     hcLet h n a ⟨l + 1, by omega⟩ = h.u ⟨l + 1, by omega⟩ - (if a ⟨l, hl⟩ then (n : ℚ) else 0) := by
   unfold hcLet
   rw [dif_pos ⟨by simp, by simpa using hl⟩]
   rfl
 
+/- English proof (translation)
+Unfold `hcLet`. Rewrite using `[dif_neg (by omega)]`.
+-/
 theorem hcLet_end (i : Fin R.k) (hi : i.1 = 0 ∨ R.k - 2 ≤ i.1 - 1) : hcLet h n a i = h.u i := by
   unfold hcLet
   rw [dif_neg (by omega)]
@@ -442,6 +496,9 @@ def hcWord : HCParam R :=
       · exact ⟨z, by rw [hz]; ring⟩
       · exact ⟨z, hz⟩ }
 
+/- English proof (translation)
+Use `show hcLet h n a ⟨l + 1, _⟩ = h.v ⟨l, _⟩ - 1 / 2 - _`. Rewrite using `[hcLet_mid h n a l hl, hlet l hl]`.
+-/
 theorem hcWord_letter (l : ℕ) (hl : l < R.k - 2) :
     (hcWord h n hgap hlet hn a).u ⟨l + 1, by omega⟩ =
       (hcWord h n hgap hlet hn a).v ⟨l, by omega⟩ - 1 / 2 - (if a ⟨l, hl⟩ then (n : ℚ) else 0) := by
@@ -450,9 +507,15 @@ theorem hcWord_letter (l : ℕ) (hl : l < R.k - 2) :
 
 end Words
 
+/- English proof (translation)
+Simplify using `using Fintype.card_le_of_injective _ D.s.letter_inj`.
+-/
 theorem card_word_le (D : D7) : Fintype.card D.what₂.Word ≤ 2 ^ (D.R.k - 2) := by
   simpa using Fintype.card_le_of_injective _ D.s.letter_inj
 
+/- English proof (translation)
+Establish `h1` using `D.s.u_letter u τ l.1 l.2`. Take `⟨a, ha⟩` from `(D.hcW u τ).u_half ⟨l.1 + 1, by omega⟩`. Take `⟨b, hb⟩` from `(D.hcW u τ).v_int ⟨l.1, by omega⟩`. Rewrite `h1` using `[ha, hb, show D.s.letter u ⟨l.1, l.2⟩ = true from h, if_pos rfl]`. Conclude with `⟨b - a - 1, by push_cast; linarith⟩`.
+-/
 theorem del_int_of_low (D : D7) (u : D.what₂.Word) (l : Fin (D.R.k - 2)) (h : D.s.letter u l = true)
     (τ : D.what₂.Tau) : ∃ z : ℤ, D.s.Del = z := by
   have h1 := D.s.u_letter u τ l.1 l.2

@@ -10,6 +10,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace UpperTheory.FullyFaithfulLift
 
+/- English proof (translation)
+Establish `hob : ∀ j, c.obj j = c'.obj j` using `fun j => hobj (congrArg (fun G => G.obj j) h)`. Use `CategoryTheory.Functor.ext hob ?_` and prove the remaining obligations. Introduce `X Y f`. Apply `F.map_injective` to reduce the goal to its premises. Establish `e` using `CategoryTheory.Functor.congr_hom h f`.
+
+Simplify using `only [CategoryTheory.Functor.comp_map] at e`. Rewrite using `[e]`. Simplify using `[eqToHom_map]`.
+-/
 private theorem cancel_comp {J C D : Type} [Category J] [Category C] [Category D] (F : C ⥤ D)
     (hobj : Function.Injective F.obj) [F.Faithful] (c c' : J ⥤ C) (h : c ⋙ F = c' ⋙ F) : c = c' := by
   have hob : ∀ j, c.obj j = c'.obj j := fun j => hobj (congrArg (fun G => G.obj j) h)
@@ -21,6 +26,9 @@ private theorem cancel_comp {J C D : Type} [Category J] [Category C] [Category D
   rw [e]
   simp [eqToHom_map]
 
+/- English proof (translation)
+Use `⟨{ obj := l map := fun {i j} f => F.preimage (eqToHom (hl i) ≫ c.map f ≫ eqToHom (hl j).symm) map_id := fun i => F.map_injective (by simp) map_comp := fun f g => F.map_injective (by simp) }, ?_⟩` and prove the remaining obligations. Use `CategoryTheory.Functor.ext hl (fun i j f => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 private theorem lift_comp {J C D : Type} [Category J] [Category C] [Category D] (F : C ⥤ D)
     [F.Full] [F.Faithful] (c : J ⥤ D) (l : J → C) (hl : ∀ j, F.obj (l j) = c.obj j) :
     ∃ c' : J ⥤ C, c' ⋙ F = c := by
@@ -31,9 +39,17 @@ private theorem lift_comp {J C D : Type} [Category J] [Category C] [Category D] 
   refine CategoryTheory.Functor.ext hl (fun i j f => ?_)
   simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem sp_map_eq {E : Spc} {a b : Act} (φ : Act.Hom a b) {k : ℕ} {T : Scheme.{0}} (x : Sx (Sp E a) k T) :
     Sx.map (Sp.map E φ) x = ((x.1, Sx.map (spcMap φ) x.2) : Sx (Sp E b) k T) := rfl
 
+/- English proof (translation)
+Introduce `x y h`. Establish `e : φ.d.app A x.pt = φ.d.app A y.pt` using `congrArg Ob.pt h`. Consider the cases of `x`. Consider the cases of `y`. Reduce the equality to equality of the corresponding arguments.
+
+Conclude with `hi A e`.
+-/
 private theorem fn_obj_inj {a b : Act} (φ : Act.Hom a b) (hi : ∀ A, Function.Injective (fun x : a.D.obj A => φ.d.app A x))
     (A : CommRingCat.{0}) : Function.Injective (φ.fn A).obj := by
   intro x y h
@@ -43,10 +59,20 @@ private theorem fn_obj_inj {a b : Act} (φ : Act.Hom a b) (hi : ∀ A, Function.
   congr
   exact hi A e
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun {_ _} _ _ h => Subtype.ext ((hb A).1 (congrArg Subtype.val h))⟩`.
+-/
 private theorem fn_faithful {a b : Act} (φ : Act.Hom a b) (hb : ∀ A, Function.Bijective (fun g : a.G.obj A => φ.g.app A g))
     (A : CommRingCat.{0}) : (φ.fn A).Faithful :=
   ⟨fun {_ _} _ _ h => Subtype.ext ((hb A).1 (congrArg Subtype.val h))⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y u`. Take `⟨g, hg⟩` from `(hb A).2 u.1`. Use `⟨⟨g, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `hi A` to reduce the goal to its premises.
+
+Establish `e` using `φ.eq A g y.pt`. Establish `hg' : φ.g.app A g = u.1` using `hg`. Rewrite `e` using `[hg']`. Conclude with `u.2.trans e.symm`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `hg`.
+-/
 private theorem fn_full {a b : Act} (φ : Act.Hom a b) (hi : ∀ A, Function.Injective (fun x : a.D.obj A => φ.d.app A x))
     (hb : ∀ A, Function.Bijective (fun g : a.G.obj A => φ.g.app A g)) (A : CommRingCat.{0}) : (φ.fn A).Full := by
   constructor
@@ -61,6 +87,11 @@ private theorem fn_full {a b : Act} (φ : Act.Hom a b) (hi : ∀ A, Function.Inj
   · apply Subtype.ext
     exact hg
 
+/- English proof (translation)
+Apply `UpperTheory.mono_of_injective_on_simplices` to reduce the goal to its premises. Introduce `k T x y h`. Simplify using `only [sp_map_eq] at h`. Take `⟨h1, h2⟩` from `Prod.mk.inj h`. Use `haveI := fn_faithful φ hb Γ(T, ⊤)`.
+
+Establish `h2' : (show ComposableArrows (Ob a Γ(T, ⊤)) k from x.2) ⋙ φ.fn Γ(T, ⊤) = (show ComposableArrows (Ob a Γ(T, ⊤)) k from y.2) ⋙ φ.fn Γ(T, ⊤)` using `h2`. Conclude with `Prod.ext h1 (cancel_comp (φ.fn Γ(T, ⊤)) (fn_obj_inj φ hi _) _ _ h2')`.
+-/
 private theorem mono_sp (E : Spc) {a b : Act} (φ : Act.Hom a b) (hi : ∀ A, Function.Injective (fun x : a.D.obj A => φ.d.app A x))
     (hb : ∀ A, Function.Bijective (fun g : a.G.obj A => φ.g.app A g)) : Mono (Sp.map E φ) := by
   apply UpperTheory.mono_of_injective_on_simplices
@@ -72,6 +103,15 @@ private theorem mono_sp (E : Spc) {a b : Act} (φ : Act.Hom a b) (hi : ∀ A, Fu
       (show ComposableArrows (Ob a Γ(T, ⊤)) k from y.2) ⋙ φ.fn Γ(T, ⊤) := h2
   exact Prod.ext h1 (cancel_comp (φ.fn Γ(T, ⊤)) (fn_obj_inj φ hi _) _ _ h2')
 
+/- English proof (translation)
+Use `set c : ComposableArrows (Ob a Γ(W, ⊤)) k := y.2 with hc`. Establish `hl : ∀ j : Fin (k + 1), ∃ o : Ob a₁ Γ(W, ⊤), (φ.fn Γ(W, ⊤)).obj o = c.obj j`. Introduce `j`. Establish `hle : (0 : Fin (k + 1)) ≤ j` using `Fin.zero_le _`. Take `⟨u, hu⟩` from `c.map (homOfLE hle)`.
+
+Take `⟨g, hg⟩` from `(hb Γ(W, ⊤)).2 u⁻¹`. Use `⟨⟨a₁.smul _ g y₀⟩, ?_⟩` and prove the remaining obligations. Establish `e` using `φ.eq Γ(W, ⊤) g y₀`. Establish `hg' : φ.g.app Γ(W, ⊤) g = u⁻¹` using `hg`. Establish `h0' : φ.d.app Γ(W, ⊤) y₀ = (c.obj 0).pt` using `h0`.
+
+Establish `key : (c.obj j).pt = φ.d.app Γ(W, ⊤) (a₁.smul _ g y₀)` using `by erw [e, hg', h0', hu, ← a.mul_smul, inv_mul_cancel, a.one_smul]`. Conclude with `congrArg Ob.mk key.symm`. Use `choose l hl' using hl`. Use `haveI := fn_full φ hi hb Γ(W, ⊤)`. Use `haveI := fn_faithful φ hb Γ(W, ⊤)`.
+
+Take `⟨c', hc'⟩` from `lift_comp (φ.fn Γ(W, ⊤)) c l hl'`. Use `⟨((y.1, show Sx (spc a₁) k W from c') : Sx (Sp E a₁) k W), ?_⟩` and prove the remaining obligations. Use `(sp_map_eq φ _).trans ?_` and prove the remaining obligations. Conclude with `Prod.ext rfl hc'`.
+-/
 private theorem lift_sp (E : Spc) {a₁ a : Act} (φ : Act.Hom a₁ a) (hi : ∀ A, Function.Injective (fun x : a₁.D.obj A => φ.d.app A x))
     (hb : ∀ A, Function.Bijective (fun g : a₁.G.obj A => φ.g.app A g)) {k : ℕ} {W : Scheme.{0}} (y : Sx (Sp E a) k W)
     (y₀ : a₁.D.obj Γ(W, ⊤))
@@ -101,6 +141,11 @@ private theorem lift_sp (E : Spc) {a₁ a : Act} (φ : Act.Hom a₁ a) (hi : ∀
 
 end UpperTheory.FullyFaithfulLift
 
+/- English proof (translation)
+Introduce `R _ E a₁ a₂ a φ₁ φ₂ i₁ i₂ b₁ b₂ hl`. Use `UpperTheory.mayerVietorisCover_of_mono_of_zariskiLocal R _ _ (UpperTheory.FullyFaithfulLift.mono_sp E φ₁ i₁ b₁) (UpperTheory.FullyFaithfulLift.mono_sp E φ₂ i₂ b₂) (fun k T y => ?_)` and prove the remaining obligations. Take `⟨S, hS, hP⟩` from `hl T ((show ComposableArrows (Ob a Γ(T, ⊤)) k from y.2).obj 0).pt`. Use `⟨S, hS, fun W h hh => ?_⟩` and prove the remaining obligations. Break down `hP W h hh with ⟨y₀, e⟩ | ⟨y₀, e⟩` into its components or cases.
+
+Conclude with `Or.inl (UpperTheory.FullyFaithfulLift.lift_sp E φ₁ i₁ b₁ (y.res h) y₀ e)`. Conclude with `Or.inr (UpperTheory.FullyFaithfulLift.lift_sp E φ₂ i₂ b₂ (y.res h) y₀ e)`.
+-/
 theorem UpperTheory.mayerVietoris_stackProduct_of_injective_of_locally_covered :
     ∀ (R : Type) [CommRing R] (E : Spc) {a₁ a₂ a : Act} (φ₁ : Act.Hom a₁ a) (φ₂ : Act.Hom a₂ a),
         (∀ A, Function.Injective (fun x : a₁.D.obj A => φ₁.d.app A x)) → (∀ A, Function.Injective (fun x : a₂.D.obj A => φ₂.d.app A x)) →

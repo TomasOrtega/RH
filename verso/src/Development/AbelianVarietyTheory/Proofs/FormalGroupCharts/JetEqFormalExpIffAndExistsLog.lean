@@ -13,6 +13,11 @@ open GlobalTheory.ChartCmp
 
 namespace GlobalTheory.ChartCmp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro e _`. Rewrite using `[pow_zero, pow_zero]`. Consider the case `succ n ih`. Introduce `e he`.
+
+Rewrite using `[pow_succ, pow_succ, MvPowerSeries.coeff_mul, MvPowerSeries.coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hd : p.1.degree + p.2.degree = e.degree` using `by rw [← map_add, hp]`. Rewrite using `[ih p.1 (by omega), h p.2 (by omega)]`.
+-/
 theorem jeq_pow_congr {R σ : Type} [CommRing R] {m : ℕ} {a b : MvPowerSeries σ R} (h : JEq m a b) (n : ℕ) :
     JEq m (a ^ n) (b ^ n) := by
   classical
@@ -26,6 +31,9 @@ theorem jeq_pow_congr {R σ : Type} [CommRing R] {m : ℕ} {a b : MvPowerSeries 
     have hd : p.1.degree + p.2.degree = e.degree := by rw [← map_add, hp]
     rw [ih p.1 (by omega), h p.2 (by omega)]
 
+/- English proof (translation)
+Introduce `e he`. Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero ha), PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero hb)]`. Use `finsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[jeq_pow_congr h n e he]`.
+-/
 theorem jeq_psubst_congr {R σ : Type} [CommRing R] {m : ℕ} {a b : MvPowerSeries σ R}
     (ha : MvPowerSeries.constantCoeff a = 0) (hb : MvPowerSeries.constantCoeff b = 0) (h : JEq m a b)
     (F : PowerSeries R) : JEq m (PowerSeries.subst a F) (PowerSeries.subst b F) := by
@@ -35,6 +43,11 @@ theorem jeq_psubst_congr {R σ : Type} [CommRing R] {m : ℕ} {a b : MvPowerSeri
   refine finsum_congr fun n => ?_
   rw [jeq_pow_congr h n e he]
 
+/- English proof (translation)
+Introduce `k _ _ n d m`. Use `⟨fun f g hf hg => ⟨fun h => jeq_psubst_congr hf hg h _, fun h => ?_⟩, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1 : JEq m (PowerSeries.subst f (PowerSeries.exp k) - 1) (PowerSeries.subst g (PowerSeries.exp k) - 1)`. Introduce `e he`. Rewrite using `[map_sub, map_sub]`.
+
+Conclude with `congrArg (· - _) (h e he)`. Establish `h2` using `jeq_psubst_congr (by simp [TB.WickVanishing.constantCoeff_exp hf]) (by simp [TB.WickVanishing.constantCoeff_exp hg]) h1 (PowerSeries.log k)`. Rewrite `h2` using `[TB.WickVanishing.log_exp hf, TB.WickVanishing.log_exp hg]`. Then use the resulting hypothesis. Conclude with `⟨_, TB.WickVanishing.constantCoeff_logS hu, TB.WickVanishing.exp_log hu⟩`.
+-/
 theorem jeq_expS_iff_and_exists_log : ∀ (k : Type) [CommRing k] [Algebra ℚ k] (n d m : ℕ), (∀ f g : PS k n d, MvPowerSeries.constantCoeff f = 0 → MvPowerSeries.constantCoeff g = 0 → (JEq m f g ↔ JEq m (FB.expS k f) (FB.expS k g))) ∧ ∀ u : PS k n d, MvPowerSeries.constantCoeff u = 1 → ∃ lam : PS k n d, MvPowerSeries.constantCoeff lam = 0 ∧ FB.expS k lam = u := by
   intro k _ _ n d m
   refine ⟨fun f g hf hg => ⟨fun h => jeq_psubst_congr hf hg h _, fun h => ?_⟩, fun u hu => ?_⟩

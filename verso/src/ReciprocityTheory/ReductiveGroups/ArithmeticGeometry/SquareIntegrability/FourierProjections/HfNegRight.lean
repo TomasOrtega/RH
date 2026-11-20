@@ -11,19 +11,36 @@ variable {ι : Type} [Fintype ι]
 
 open Classical
 
+/- English proof (translation)
+Simplify using `only [Hf, PiLp.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem Hf_add_left (x y z : EuclideanSpace ℂ ι) : Hf (x + y) z = Hf x z + Hf y z := by
   simp only [Hf, PiLp.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [Hf, PiLp.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem Hf_add_right (x y z : EuclideanSpace ℂ ι) : Hf z (x + y) = Hf z x + Hf z y := by
   simp only [Hf, PiLp.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [Hf, PiLp.neg_apply, neg_mul, Finset.sum_neg_distrib]`.
+-/
 theorem Hf_neg_left (x z : EuclideanSpace ℂ ι) : Hf (-x) z = -Hf x z := by
   simp only [Hf, PiLp.neg_apply, neg_mul, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `only [Hf, map_sum, map_mul, Complex.conj_conj]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem Hf_conj (x y : EuclideanSpace ℂ ι) : (starRingEnd ℂ) (Hf x y) = Hf y x := by
   simp only [Hf, map_sum, map_mul, Complex.conj_conj]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/- English proof (translation)
+Rewrite using `[← Complex.ofReal_pow, EuclideanSpace.norm_sq_eq]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem Hf_self (x : EuclideanSpace ℂ ι) : Hf x x = ((‖x‖ : ℝ) : ℂ) ^ 2 := by
   rw [← Complex.ofReal_pow, EuclideanSpace.norm_sq_eq]
   push_cast
@@ -32,6 +49,9 @@ theorem Hf_self (x : EuclideanSpace ℂ ι) : Hf x x = ((‖x‖ : ℝ) : ℂ) ^
   push_cast
   rfl
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_eq_sub (z : ℂ) : (starRingEnd ℂ) z = z - 2 * (z.im : ℂ) * I := by
   apply Complex.ext <;> simp
   ring
@@ -40,6 +60,11 @@ def Coc (Y : GT ι) (q : ℕ) : Prop :=
   ∀ γ ∈ lat Y.b, ∀ γ' ∈ lat Y.b,
     Y.ka (γ + γ') = Y.ka γ * Y.ka γ' * cexp (-(Real.pi * q * (Hf γ γ').im) * I)
 
+/- English proof (translation)
+Establish `h` using `hC 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _)`. Establish `hz : Hf (0 : EuclideanSpace ℂ ι) 0 = 0` using `by simp [Hf]`. Simplify using `only [add_zero, hz, Complex.zero_im, mul_zero, neg_zero, Complex.ofReal_zero, zero_mul, Complex.exp_zero, mul_one] at h`. Establish `hne : Y.ka 0 ≠ 0`. Introduce `h0`.
+
+Establish `h1` using `Y.ka_abs 0 (Submodule.zero_mem _)`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`. Conclude with `mul_left_cancel₀ hne (h.symm.trans (mul_one _).symm)`.
+-/
 theorem ka_zero {Y : GT ι} {q : ℕ} (hC : Coc Y q) : Y.ka 0 = 1 := by
   have h := hC 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _)
   have hz : Hf (0 : EuclideanSpace ℂ ι) 0 = 0 := by simp [Hf]
@@ -52,6 +77,15 @@ theorem ka_zero {Y : GT ι} {q : ℕ} (hC : Coc Y q) : Y.ka 0 = 1 := by
     exact zero_ne_one h1
   exact mul_left_cancel₀ hne (h.symm.trans (mul_one _).symm)
 
+/- English proof (translation)
+Simplify using `only [paTh]`. Rewrite using `[← (Equiv.addLeft (⟨γ, hγ⟩ : lat Y.b)).tsum_eq, ← tsum_mul_left]`. Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_addLeft, Submodule.coe_add, paU]`. Rewrite using `[hC γ hγ δ δ.2]`.
+
+Establish `hF : v + γ - (γ + (δ : EuclideanSpace ℂ ι)) = v - δ` using `by abel`. Rewrite using `[hF]`. Establish `hexp : cexp (-(Real.pi * q * (Hf γ (δ : EuclideanSpace ℂ ι)).im) * I) * cexp (q * Real.pi * Hf (v + γ) (γ + (δ : EuclideanSpace ℂ ι)) - q * Real.pi * Hf (γ + (δ : EuclideanSpace ℂ ι)) (γ + (δ : EuclideanSpace ℂ ι)) / 2) = cexp (q * Real.pi * Hf v γ + q * Real.pi * Hf γ γ / 2) * c …`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`.
+
+Rewrite using `[Hf_add_left, Hf_add_right, Hf_add_right, Hf_add_left, Hf_add_right, Hf_add_right]`. Establish `hc` using `conj_eq_sub (Hf γ (δ : EuclideanSpace ℂ ι))`. Rewrite `hc` using `[Hf_conj]`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take the linear combination `(Y.ka γ * Y.ka δ * F (v - δ)) * hexp`.
+-/
 theorem paTh_add {Y : GT ι} {q : ℕ} (hC : Coc Y q) (F : EuclideanSpace ℂ ι → ℂ)
     {γ : EuclideanSpace ℂ ι} (hγ : γ ∈ lat Y.b) (v : EuclideanSpace ℂ ι) :
     paTh Y q F (v + γ) = Y.ka γ * cexp (q * Real.pi * Hf v γ + q * Real.pi * Hf γ γ / 2) * paTh Y q F v := by

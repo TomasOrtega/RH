@@ -11,6 +11,15 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ h`. Take `⟨f', hf', φ', hφ', y₀, k, -, hφk, -, hred⟩` from `redLift F E D W M π f hf φ hφ h`. Take `⟨σ, τ, hσ, hτ, hdec⟩` from `dec F E D`. Take `⟨ω, hω, hωf⟩` from `cen F π`. Establish `hN` using `(omGrowth F E D).1`.
+
+Establish `hEq` using `(equiv F E D W M π f' hf' φ').2 ω (fun s g => hωf f' hf' s g)`. Establish `hOne` using `contOne F E D W M π f' hf' φ' hφ'`. Establish `hmain : Continuous fun y => lift W M f'.1 φ' (infGL E 2 y)`. Establish `h1 : ∀ y, lift W M f'.1 φ' (infGL E 2 y) = ((ω (ideleNorm F E (infId E (σ y))) : ℂˣ) : ℂ) * lift W M f'.1 φ' (infGL E 2 (τ y))`. Introduce `y`.
+
+Rewrite using `[(hdec y).1, hEq]`. Establish `h2 : Continuous fun y => lift W M f'.1 φ' (infGL E 2 (τ y))` using `hOne.comp_continuous hτ fun y => (hdec y).2.1`. Establish `h3 : Continuous fun y => ((ω (ideleNorm F E (infId E (σ y))) : ℂˣ) : ℂ)` using `Units.continuous_val.comp (hω.comp (hN.comp hσ))`. Conclude with `(h3.mul h2).congr fun y => (h1 y).symm`. Establish `hfun : (fun y => lift W M f.1 φ (h * infGL E 2 y)) = fun y => lift W M f'.1 φ' (infGL E 2 (y₀ * y))`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[hred φ y, hφk]`. Rewrite using `[hfun]`. Conclude with `hmain.comp (continuous_const.mul continuous_id)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.liftCont :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), LiftCont W M π := by
   intro F E _ _ _ _ _ _ _ D W M π f hf φ hφ h

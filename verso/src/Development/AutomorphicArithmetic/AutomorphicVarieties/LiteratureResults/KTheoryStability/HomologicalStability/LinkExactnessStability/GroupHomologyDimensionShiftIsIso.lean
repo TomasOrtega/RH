@@ -5,6 +5,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
 namespace GlobalTheory.HomStab
 
+/- English proof (translation)
+Introduce `k G H _ _ _ φ X Y hX hY u₁ u₂ u₃ h12 h23 n hX2 hY2 hb hc`. Establish `c12 : groupHomology.chainsMap φ u₁ ≫ (groupHomology.chainsFunctor k G).map Y.f = (groupHomology.chainsFunctor k H).map X.f ≫ groupHomology.chainsMap φ u₂` using `by show groupHomology.chainsMap φ u₁ ≫ groupHomology.chainsMap (MonoidHom.id G) Y.f = groupHomology.chainsMap (MonoidHom.id H) X.f ≫ groupHomology.chainsMap φ u₂`. Rewrite using `[← groupHomology.chainsMap_comp, ← groupHomology.chainsMap_comp]`. Conclude with `groupHomology.chainsMap_congr (by ext; rfl) (by ext a; simpa using (h12 a).symm)`. Establish `c23 : groupHomology.chainsMap φ u₂ ≫ (groupHomology.chainsFunctor k G).map Y.g = (groupHomology.chainsFunctor k H).map X.g ≫ groupHomology.chainsMap φ u₃` using `by show groupHomology.chainsMap φ u₂ ≫ groupHomology.chainsMap (MonoidHom.id G) Y.g = groupHomology.chainsMap (MonoidHom.id H) X.g ≫ groupHomology.chainsMap φ u₃`.
+
+Rewrite using `[← groupHomology.chainsMap_comp, ← groupHomology.chainsMap_comp]`. Conclude with `groupHomology.chainsMap_congr (by ext; rfl) (by ext a; simpa using (h23 a).symm)`. Set `Φ : X.map (groupHomology.chainsFunctor k H) ⟶ Y.map (groupHomology.chainsFunctor k G)` to `{ τ₁ := groupHomology.chainsMap φ u₁ τ₂ := groupHomology.chainsMap φ u₂ τ₃ := groupHomology.chainsMap φ u₃ comm₁₂ := c12 comm₂₃ := c23 }`. Establish `sX` using `groupHomology.map_chainsFunctor_shortExact hX`. Establish `sY` using `groupHomology.map_chainsFunctor_shortExact hY`.
+
+Establish `hnat` using `HomologicalComplex.HomologySequence.δ_naturality Φ sX sY (n + 1) n rfl`. Establish `hf : groupHomology.map φ u₁ n ≫ HomologicalComplex.homologyMap ((groupHomology.chainsFunctor k G).map Y.f) n = HomologicalComplex.homologyMap ((groupHomology.chainsFunctor k H).map X.f) n ≫ groupHomology.map φ u₂ n`. Establish `h` using `congrArg (HomologicalComplex.homologyFunctor (ModuleCat k) (ComplexShape.down ℕ) n).map c12`. Conclude with `((HomologicalComplex.homologyFunctor (ModuleCat k) (ComplexShape.down ℕ) n).map_comp (groupHomology.chainsMap φ u₁) ((groupHomology.chainsFunctor k G).map Y.f)).symm.trans (h.trans ((HomologicalComplex.homologyFunctor (ModuleCat k) (ComplexShape.down ℕ) n).map_comp ((groupHomolog …`. Establish `hz` using `sY.δ_comp (n + 1) n rfl`.
+
+Establish `monoX` using `groupHomology.mono_δ_of_isZero hX n hX2`. Establish `monoY` using `groupHomology.mono_δ_of_isZero hY n hY2`. Establish `exX` using `(ShortComplex.moduleCat_exact_iff _).mp (sX.homology_exact₁ (n + 1) n rfl)`. Rewrite `monoX`, `monoY` using `[ModuleCat.mono_iff_injective]`. Rewrite `hb`, `hc`, the goal using `[ConcreteCategory.isIso_iff_bijective]`.
+
+Establish `e1 : ∀ x, ConcreteCategory.hom (groupHomology.map φ u₁ n) (ConcreteCategory.hom (groupHomology.δ hX (n + 1) n rfl) x) = ConcreteCategory.hom (groupHomology.δ hY (n + 1) n rfl) (ConcreteCategory.hom (groupHomology.map φ u₃ (n + 1)) x)`. Introduce `x`. Establish `h` using `ConcreteCategory.congr_hom hnat x`. Conclude with `h`. Establish `e2 : ∀ x, ConcreteCategory.hom (HomologicalComplex.homologyMap ((groupHomology.chainsFunctor k G).map Y.f) n) (ConcreteCategory.hom (groupHomology.map φ u₁ n) x) = ConcreteCategory.hom (groupHomology.map φ u₂ n) (ConcreteCategory.hom (HomologicalComplex.homologyMap ((groupHomolog …`.
+
+Introduce `x`. Establish `h` using `ConcreteCategory.congr_hom hf x`. Conclude with `h`. Establish `e3 : ∀ y, ConcreteCategory.hom (HomologicalComplex.homologyMap ((groupHomology.chainsFunctor k G).map Y.f) n) (ConcreteCategory.hom (groupHomology.δ hY (n + 1) n rfl) y) = 0`. Introduce `y`.
+
+Establish `h` using `ConcreteCategory.congr_hom hz y`. Conclude with `h.trans rfl`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Apply `monoX` to reduce the goal to its premises.
+
+Apply `hb.1` to reduce the goal to its premises. Rewrite using `[e1, e1, hab]`. Introduce `y`. Take `⟨x1, hx1⟩` from `hb.2 (ConcreteCategory.hom (groupHomology.δ hY (n + 1) n rfl) y)`. Establish `h0 : ConcreteCategory.hom (HomologicalComplex.homologyMap ((groupHomology.chainsFunctor k H).map X.f) n) x1 = 0`.
+
+Apply `hc.1` to reduce the goal to its premises. Rewrite using `[← e2, hx1, e3]`. Conclude with `(map_zero _).symm`. Take `⟨x3, hx3⟩` from `exX x1 h0`. Use `⟨x3, monoY ?_⟩` and prove the remaining obligations.
+
+Conclude with `(e1 x3).symm.trans ((congrArg _ hx3).trans hx1)`.
+-/
 theorem isIso_map_succ_of_shortExact : ∀ (k G H : Type) [CommRing k] [Group G] [Group H] (φ : H →* G) (X : ShortComplex (Rep k H)) (Y : ShortComplex (Rep k G)), X.ShortExact → Y.ShortExact → ∀ (u₁ : X.X₁ ⟶ Rep.res φ Y.X₁) (u₂ : X.X₂ ⟶ Rep.res φ Y.X₂) (u₃ : X.X₃ ⟶ Rep.res φ Y.X₃), (∀ a, u₂.hom (X.f.hom a) = Y.f.hom (u₁.hom a)) → (∀ a, u₃.hom (X.g.hom a) = Y.g.hom (u₂.hom a)) → ∀ n : ℕ, IsZero (groupHomology X.X₂ (n + 1)) → IsZero (groupHomology Y.X₂ (n + 1)) → IsIso (groupHomology.map φ u₁ n) → IsIso (groupHomology.map φ u₂ n) → IsIso (groupHomology.map φ u₃ (n + 1)) := by
   intro k G H _ _ _ φ X Y hX hY u₁ u₂ u₃ h12 h23 n hX2 hY2 hb hc
   have c12 : groupHomology.chainsMap φ u₁ ≫ (groupHomology.chainsFunctor k G).map Y.f =
@@ -85,6 +106,9 @@ end GlobalTheory.HomStab
 
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.HomStab.isIso_map_succ_of_shortExact`.
+-/
 theorem _root_.GlobalTheory.T.groupHomology_dimension_shift_isIso : ∀ (k G H : Type) [CommRing k] [Group G] [Group H] (φ : H →* G) (X : ShortComplex (Rep k H)) (Y : ShortComplex (Rep k G)), X.ShortExact → Y.ShortExact → ∀ (u₁ : X.X₁ ⟶ Rep.res φ Y.X₁) (u₂ : X.X₂ ⟶ Rep.res φ Y.X₂) (u₃ : X.X₃ ⟶ Rep.res φ Y.X₃), (∀ a, u₂.hom (X.f.hom a) = Y.f.hom (u₁.hom a)) → (∀ a, u₃.hom (X.g.hom a) = Y.g.hom (u₂.hom a)) → ∀ n : ℕ, IsZero (groupHomology X.X₂ (n + 1)) → IsZero (groupHomology Y.X₂ (n + 1)) → IsIso (groupHomology.map φ u₁ n) → IsIso (groupHomology.map φ u₂ n) → IsIso (groupHomology.map φ u₃ (n + 1)) := by
   first
   | exact @GlobalTheory.HomStab.isIso_map_succ_of_shortExact

@@ -7,6 +7,15 @@ namespace GlobalTheory.CompanionTheory.Ar.LieEx
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 
+/- English proof (translation)
+Establish `hbase : f.base = g.base`. Use extensionality with `y`. Take `⟨x0, rfl⟩` from `hp y`. Establish `h0` using `congrArg (fun k => k.base x0) h`. Simplify using `using h0`.
+
+Use `Scheme.Hom.ext hbase (fun U => ?_)` and prove the remaining obligations. Use `haveI : Mono (p.app (g ⁻¹ᵁ U)) := ConcreteCategory.mono_of_injective _ (p.app_injective _)`. Rewrite using `[← cancel_mono (p.app (g ⁻¹ᵁ U))]`. Establish `h1` using `Scheme.Hom.congr_app h U`. Rewrite `h1` using `[Scheme.Hom.comp_app, Scheme.Hom.comp_app]`.
+
+Rewrite using `[Category.assoc, p.naturality, ← Category.assoc, h1]`. Establish `key : ∀ {V W : X.Opens} (e : V = W) (e2 : X.presheaf.obj (Opposite.op V) = X.presheaf.obj (Opposite.op W)), X.presheaf.map (eqToHom e).op ≫ eqToHom e2 = 𝟙 _`. Introduce `V W e e2`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[eqToHom_map, eqToHom_op]`. Use `erw [key, Category.comp_id]`.
+-/
 theorem epi_of_surj {X Y Z : Scheme.{0}} (p : X ⟶ Y) [IsSchemeTheoreticallyDominant p] [QuasiCompact p]
     (hp : Function.Surjective p) (f g : Y ⟶ Z) (h : p ≫ f = p ≫ g) : f = g := by
   have hbase : f.base = g.base := by
@@ -28,6 +37,11 @@ theorem epi_of_surj {X Y Z : Scheme.{0}} (p : X ⟶ Y) [IsSchemeTheoreticallyDom
   simp [eqToHom_map, eqToHom_op]
   erw [key, Category.comp_id]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Scheme.ker_of_isAffine]`. Establish `e : (Spec.map φ).appTop = (Scheme.ΓSpecIso A).hom ≫ φ ≫ (Scheme.ΓSpecIso B).inv`. Rewrite using `[← Scheme.ΓSpecIso_naturality_assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `hinj : Function.Injective (Spec.map φ).appTop.hom`.
+
+Rewrite using `[e]`. Conclude with `((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso B).inv).1.comp h).comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso A).hom).1`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 hinj]`. Use extensionality with `U s`. Simplify using the standard rewrite rules.
+-/
 theorem std_of_inj {A B : CommRingCat.{0}} (φ : A ⟶ B) (h : Function.Injective φ) :
     IsSchemeTheoreticallyDominant (Spec.map φ) := by
   constructor
@@ -42,6 +56,17 @@ theorem std_of_inj {A B : CommRingCat.{0}} (φ : A ⟶ B) (h : Function.Injectiv
   ext U s
   simp
 
+/- English proof (translation)
+Establish `e1 : Spec.map (CommRingCat.ofHom (RingHom.fst A B)) ≫ Spec.map (CommRingCat.ofHom (φ.prod ψ)) = Spec.map (CommRingCat.ofHom φ)`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Establish `e2 : Spec.map (CommRingCat.ofHom (RingHom.snd A B)) ≫ Spec.map (CommRingCat.ofHom (φ.prod ψ)) = Spec.map (CommRingCat.ofHom ψ)`. Rewrite using `[← Spec.map_comp]`.
+
+Use `congr 1`. Establish `hp : Function.Surjective (Spec.map (CommRingCat.ofHom (φ.prod ψ)))`. Introduce `y`. Take `⟨a, ha⟩` from `hs y`. Use `⟨Spec.map (CommRingCat.ofHom (RingHom.fst A B)) a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ha, ← e1]`. Both sides reduce to the same expression. Establish `hcov : Spec.map (CommRingCat.ofHom (φ.prod ψ)) ≫ f = Spec.map (CommRingCat.ofHom (φ.prod ψ)) ≫ g`. Rewrite using `[← cancel_epi (coprodSpec A B)]`. Apply `coprod.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [← Category.assoc, coprodSpec_inl]`. Rewrite using `[e1]`. Conclude with `h₁`. Simplify using `only [← Category.assoc, coprodSpec_inr]`. Rewrite using `[e2]`.
+
+Conclude with `h₂`. Use `haveI := std_of_inj (CommRingCat.ofHom (φ.prod ψ)) hi`. Conclude with `epi_of_surj (Spec.map (CommRingCat.ofHom (φ.prod ψ))) hp f g hcov`.
+-/
 theorem joint_epi {D A B : Type} [CommRing D] [CommRing A] [CommRing B] (φ : D →+* A) (ψ : D →+* B)
     (hi : Function.Injective (φ.prod ψ)) (hs : Function.Surjective (Spec.map (CommRingCat.ofHom φ)))
     {Z : Scheme.{0}} (f g : Spec (CommRingCat.of D) ⟶ Z)
@@ -90,6 +115,11 @@ def hom (f : M →ₗ[R] N) : ob x N ⟶ ob x M :=
     ext r : 2
     exact (TrivSqZeroExt.map f).commutes r)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (TrivSqZeroExt.map g).toRingHom) ≫ Spec.map (CommRingCat.ofHom (TrivSqZeroExt.map f).toRingHom) = Spec.map (CommRingCat.ofHom (TrivSqZeroExt.map (g ∘ₗ f)).toRingHom)`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+
+Apply `RingHom.ext` to reduce the goal to its premises. Introduce `z`. Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp`.
+-/
 theorem hom_comp (f : M →ₗ[R] N) (g : N →ₗ[R] P) : hom x g ≫ hom x f = hom x (g ∘ₗ f) := by
   apply Over.OverMorphism.ext
   change Spec.map (CommRingCat.ofHom (TrivSqZeroExt.map g).toRingHom) ≫
@@ -102,6 +132,11 @@ theorem hom_comp (f : M →ₗ[R] N) (g : N →ₗ[R] P) : hom x g ≫ hom x f =
   intro z
   apply TrivSqZeroExt.ext <;> simp
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h : CommRingCat.ofHom (TrivSqZeroExt.map (LinearMap.id : M →ₗ[R] M)).toRingHom = 𝟙 _`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `z`.
+
+Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (TrivSqZeroExt.map (LinearMap.id : M →ₗ[R] M)).toRingHom) = 𝟙 _`. Rewrite using `[h, Spec.map_id]`.
+-/
 theorem hom_id : hom x (LinearMap.id : M →ₗ[R] M) = 𝟙 _ := by
   apply Over.OverMorphism.ext
   have h : CommRingCat.ofHom (TrivSqZeroExt.map (LinearMap.id : M →ₗ[R] M)).toRingHom = 𝟙 _ := by
@@ -125,6 +160,11 @@ def zsec : Over.mk x ⟶ ob x M :=
 def proj : ob x M ⟶ Over.mk x :=
   Over.homMk (Spec.map (CommRingCat.ofHom (algebraMap R (TrivSqZeroExt R M)))) rfl
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R N).toRingHom) ≫ Spec.map (CommRingCat.ofHom (TrivSqZeroExt.map f).toRingHom) = Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R M).toRingHom)`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+
+Apply `RingHom.ext` to reduce the goal to its premises. Introduce `z`. Simplify using the standard rewrite rules.
+-/
 theorem zsec_hom (f : M →ₗ[R] N) : zsec x ≫ hom x f = zsec x := by
   apply Over.OverMorphism.ext
   change Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R N).toRingHom) ≫
@@ -137,6 +177,11 @@ theorem zsec_hom (f : M →ₗ[R] N) : zsec x ≫ hom x f = zsec x := by
   intro z
   simp
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (TrivSqZeroExt.map (0 : M →ₗ[R] N)).toRingHom) = Spec.map (CommRingCat.ofHom (algebraMap R (TrivSqZeroExt R N))) ≫ Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R M).toRingHom)`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+
+Apply `RingHom.ext` to reduce the goal to its premises. Introduce `z`. Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem hom_zero : hom x (0 : M →ₗ[R] N) = proj x ≫ zsec x := by
   apply Over.OverMorphism.ext
   change Spec.map (CommRingCat.ofHom (TrivSqZeroExt.map (0 : M →ₗ[R] N)).toRingHom) =
@@ -149,6 +194,17 @@ theorem hom_zero : hom x (0 : M →ₗ[R] N) = proj x ≫ zsec x := by
   intro z
   apply TrivSqZeroExt.ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `joint_epi (TrivSqZeroExt.map (LinearMap.fst R R R)).toRingHom (TrivSqZeroExt.map (LinearMap.snd R R R)).toRingHom ?_ ?_ f.left g.left (congrArg CommaMorphism.left h₁) (congrArg CommaMorphism.left h₂)` and prove the remaining obligations. Introduce `a b hab`. Establish `h1` using `congrArg Prod.fst hab`. Establish `h2` using `congrArg Prod.snd hab`.
+
+Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Simplify using `using congrArg TrivSqZeroExt.fst h1`. Apply `Prod.ext` to reduce the goal to its premises. Simplify using `using congrArg TrivSqZeroExt.snd h1`. Simplify using `using congrArg TrivSqZeroExt.snd h2`.
+
+Use `(PrimeSpectrum.isHomeomorph_comap _ (fun y => ⟨1, one_pos, ?_⟩) ?_).surjective` and prove the remaining obligations. Use `⟨TrivSqZeroExt.inl y.fst + TrivSqZeroExt.inr (y.snd, 0), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`. Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp`. Introduce `z hz`.
+
+Rewrite `hz` using `[RingHom.mem_ker]`. Establish `hz1 : z.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hz`. Rewrite using `[mem_nilradical]`. Use `⟨2, ?_⟩` and prove the remaining obligations. Establish `hz2 : z = TrivSqZeroExt.inr z.snd` using `TrivSqZeroExt.ext (by simp [hz1]) (by simp)`.
+
+Rewrite using `[hz2, pow_two, TrivSqZeroExt.inr_mul_inr]`.
+-/
 theorem ext_pair {Z : Over S} (f g : ob x (R × R) ⟶ Z)
     (h₁ : hom x (LinearMap.fst R R R) ≫ f = hom x (LinearMap.fst R R R) ≫ g)
     (h₂ : hom x (LinearMap.snd R R R) ≫ f = hom x (LinearMap.snd R R R) ≫ g) : f = g := by
@@ -178,6 +234,9 @@ theorem ext_pair {Z : Over S} (f g : ob x (R × R) ⟶ Z)
 
 variable (G : Over S) [GrpObj G]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Over.OverMorphism.ext h`. Introduce `h`. Conclude with `congrArg CommaMorphism.left h`.
+-/
 theorem isTanAt_iff (v : epsAt x ⟶ G) : IsTanAt G x v ↔ (zsec x : _ ⟶ ob x R) ≫ v = 1 := by
   constructor
   · intro h
@@ -185,6 +244,15 @@ theorem isTanAt_iff (v : epsAt x ⟶ G) : IsTanAt G x v ↔ (zsec x : _ ⟶ ob x
   · intro h
     exact congrArg CommaMorphism.left h
 
+/- English proof (translation)
+Establish `key : hom x (LinearMap.prod LinearMap.id LinearMap.id : R →ₗ[R] R × R) ≫ v = (hom x (LinearMap.inl R R R) ≫ v) * (hom x (LinearMap.inr R R R) ≫ v)`. Apply `ext_pair x` to reduce the goal to its premises. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← Category.assoc, hom_comp, hom_comp, hom_comp]`. Establish `e1 : (LinearMap.fst R R R) ∘ₗ (LinearMap.prod LinearMap.id LinearMap.id) = (LinearMap.id : R →ₗ[R] R)` using `LinearMap.ext fun _ => rfl`. Establish `e2 : (LinearMap.fst R R R) ∘ₗ (LinearMap.inl R R R) = (LinearMap.id : R →ₗ[R] R)` using `LinearMap.ext fun _ => rfl`.
+
+Establish `e3 : (LinearMap.fst R R R) ∘ₗ (LinearMap.inr R R R) = (0 : R →ₗ[R] R)` using `LinearMap.ext fun _ => rfl`. Rewrite using `[e1, e2, e3, hom_id, hom_zero, Category.id_comp, Category.assoc, hv, MonObj.comp_one, _root_.mul_one]`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, ← Category.assoc, ← Category.assoc, hom_comp, hom_comp, hom_comp]`. Establish `e1 : (LinearMap.snd R R R) ∘ₗ (LinearMap.prod LinearMap.id LinearMap.id) = (LinearMap.id : R →ₗ[R] R)` using `LinearMap.ext fun _ => rfl`. Establish `e2 : (LinearMap.snd R R R) ∘ₗ (LinearMap.inl R R R) = (0 : R →ₗ[R] R)` using `LinearMap.ext fun _ => rfl`.
+
+Establish `e3 : (LinearMap.snd R R R) ∘ₗ (LinearMap.inr R R R) = (LinearMap.id : R →ₗ[R] R)` using `LinearMap.ext fun _ => rfl`. Rewrite using `[e1, e2, e3, hom_id, hom_zero, Category.id_comp, Category.assoc, hv, MonObj.comp_one, _root_.one_mul]`. Establish `hf : f = (LinearMap.coprod f g) ∘ₗ (LinearMap.inl R R R)` using `LinearMap.ext fun r => by simp`. Establish `hg : g = (LinearMap.coprod f g) ∘ₗ (LinearMap.inr R R R)` using `LinearMap.ext fun r => by simp`. Establish `hfg : f + g = (LinearMap.coprod f g) ∘ₗ (LinearMap.prod LinearMap.id LinearMap.id)` using `LinearMap.ext fun r => by simp`.
+
+Rewrite using `[hfg, ← hom_comp, Category.assoc, key, MonObj.comp_mul, ← Category.assoc, ← Category.assoc, hom_comp, hom_comp, ← hf, ← hg]`.
+-/
 theorem hom_add (v : ob x R ⟶ G) (hv : zsec x ≫ v = 1) (f g : R →ₗ[R] M) :
     hom x (f + g) ≫ v = (hom x f ≫ v) * (hom x g ≫ v) := by
   have key : hom x (LinearMap.prod LinearMap.id LinearMap.id : R →ₗ[R] R × R) ≫ v =
@@ -252,6 +320,11 @@ namespace GlobalTheory.CompanionTheory.Ar
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 
+/- English proof (translation)
+Use `letI := LieEx.tanModule x G`. Use `⟨Additive (LieEx.tanSub x G), inferInstance, LieEx.tanModule x G, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `{ pt := fun e => e.toMul.1 tan := fun e => (LieEx.isTanAt_iff x G _).2 e.toMul.2 inj := fun e e' h => by`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Conclude with `Subtype.ext h`.
+
+Use `onto := fun v hv => ⟨Additive.ofMul ⟨v, (LieEx.isTanAt_iff x G v).1 hv⟩, rfl⟩`. Use `add := fun _ _ => rfl`. Use `smul := fun _ _ => rfl }`.
+-/
 theorem lieModel_exists (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (R : Type) [CommRing R]
     (x : Spec (CommRingCat.of R) ⟶ S) :
     ∃ (E : Type) (_ : AddCommGroup E) (_ : Module R E), Nonempty (LieModel G x E) := by

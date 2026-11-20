@@ -13,6 +13,15 @@ namespace GlobalTheory.CompanionTheory.LevelOne
 
 universe w w'
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h0 : φ.mapZ n z ∈ (L.B n).submoduleOf (L.Z n)` using `(Submodule.Quotient.mk_eq_zero _).1 hx`. Establish `h1 : φ.f n z.1 ∈ L.B n` using `h0`.
+
+Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z.1 ∈ K.B n`. Consider the cases of `n with`. Consider the case `zero`. Establish `h2 : φ.f 0 z.1 = 0` using `h1`.
+
+Conclude with `hi 0 (h2.trans (map_zero _).symm)`. Consider the case `succ n`. Take `⟨w, hw⟩` from `h1`. Take `⟨w', rfl⟩` from `hs n w`. Rewrite `hw` using `[φ.comm]`.
+
+Conclude with `⟨w', hi _ hw⟩`.
+-/
 theorem mapH_injective {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {K : Cx.{w} R} {L : Cx.{w'} R'}
     (φ : Cx.Hom K L σ) (hi : ∀ n, Function.Injective (φ.f n)) (hs : ∀ n, Function.Surjective (φ.f n)) (n : ℕ) :
     Function.Injective (φ.mapH n) := by
@@ -33,6 +42,11 @@ theorem mapH_injective {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'
     rw [φ.comm] at hw
     exact ⟨w', hi _ hw⟩
 
+/- English proof (translation)
+Set `f : Submodule R M →o Submodule S M` to `{ toFun := fun N => { carrier := N add_mem' := N.add_mem zero_mem' := N.zero_mem smul_mem' := fun c x hx => by`. Take `⟨r, rfl⟩` from `h c`. Rewrite using `[algebraMap_smul]`. Conclude with `N.smul_mem r hx }`. Use the proof step `monotone' := fun _ _ h => h }`.
+
+Establish `hf : StrictMono f` using `Monotone.strictMono_of_injective f.monotone fun N N' e => by`. Use extensionality with `x`. Conclude with `iff_of_eq (congrArg (fun P : Submodule S M => x ∈ P) e)`. Rewrite using `[isNoetherian_iff']`. Conclude with `hf.wellFoundedGT`.
+-/
 theorem isNoetherian_of_surj {R S M : Type*} [CommRing R] [CommRing S] [Algebra R S] [AddCommGroup M] [Module R M] [Module S M]
     [IsScalarTower R S M] (h : Function.Surjective (algebraMap R S)) [IsNoetherian S M] : IsNoetherian R M := by
   let f : Submodule R M →o Submodule S M :=
@@ -55,6 +69,9 @@ section Witt
 
 variable (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] [PerfectRing k l]
 
+/- English proof (translation)
+Establish `e : Ideal.span {(l : WittVector l k) ^ 1} = RingHom.ker (WittVector.constantCoeff (p` using `l) (R := k)) := by`. Use extensionality with `x`. Rewrite using `[pow_one, WittVector.mem_span_p_iff_coeff_zero_eq_zero, RingHom.mem_ker, WittVector.constantCoeff_apply]`. Rewrite using `[e]`. Conclude with `RingHom.ker_isMaximal_of_surjective _ (WittVector.constantCoeff_surjective l)`.
+-/
 theorem span_l_isMaximal : (Ideal.span {(l : WittVector l k) ^ 1}).IsMaximal := by
   have e : Ideal.span {(l : WittVector l k) ^ 1} = RingHom.ker (WittVector.constantCoeff (p := l) (R := k)) := by
     ext x
@@ -62,6 +79,9 @@ theorem span_l_isMaximal : (Ideal.span {(l : WittVector l k) ^ 1}).IsMaximal := 
   rw [e]
   exact RingHom.ker_isMaximal_of_surjective _ (WittVector.constantCoeff_surjective l)
 
+/- English proof (translation)
+Use `haveI := span_l_isMaximal l k`. Use `letI := Ideal.Quotient.field (Ideal.span {(l : WittVector l k) ^ 1})`. Use `infer_instance`.
+-/
 theorem wm_artinian : IsArtinianRing (Wc.Wm l k 1) := by
   haveI := span_l_isMaximal l k
   letI := Ideal.Quotient.field (Ideal.span {(l : WittVector l k) ^ 1})
@@ -77,6 +97,9 @@ variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing 
 abbrev QAll : ObjectProperty (Thick (nlFun (Wc.pd l k 1) l X q ((Wc.res l k 1).comp ρ))) :=
   St (γ := Wc.pd l k 1) (p := l) (q := q) (κ := (Wc.res l k 1).comp ρ) ⊤ {⊤}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨trivial, ⊤, rfl, fun _ _ => trivial⟩`.
+-/
 theorem qAll_all (T : Thick (nlFun (Wc.pd l k 1) l X q ((Wc.res l k 1).comp ρ))) : QAll q ρ T :=
   ⟨trivial, ⊤, rfl, fun _ _ => trivial⟩
 
@@ -85,20 +108,36 @@ def toAll : CH.Mor (Wc.OM l (B.schFn q) ρ 1) (CH.modF (sP (QAll q ρ)).A) (Idea
   τ T := { toFun := fun z => z, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }
   nat _ _ := rfl
 
+/- English proof (translation)
+Introduce `f f' h`. Use function extensionality and compare the values at `s`. Conclude with `congrFun h (s ⋙ (QAll q ρ).lift (𝟭 _) (qAll_all q ρ))`.
+-/
 theorem toAll_inj (n : ℕ) : Function.Injective ((toAll q ρ).hom.f n) := by
   intro f f' h
   funext s
   exact congrFun h (s ⋙ (QAll q ρ).lift (𝟭 _) (qAll_all q ρ))
 
+/- English proof (translation)
+Introduce `g`. Conclude with `⟨fun s => g (s ⋙ (QAll q ρ).lift (𝟭 _) (qAll_all q ρ)), rfl⟩`.
+-/
 theorem toAll_surj (n : ℕ) : Function.Surjective ((toAll q ρ).hom.f n) := by
   intro g
   exact ⟨fun s => g (s ⋙ (QAll q ρ).lift (𝟭 _) (qAll_all q ρ)), rfl⟩
 
+/- English proof (translation)
+The claim follows from `mapH_injective _ (toAll_inj q ρ) (toAll_surj q ρ) j`.
+-/
 theorem toAll_pull_inj (j : ℕ) : Function.Injective ((toAll q ρ).pull j) :=
   mapH_injective _ (toAll_inj q ρ) (toAll_surj q ρ) j
 
 end Site
 
+/- English proof (translation)
+Introduce `l _ k _ _ _ O _ X q ρ j hfin`. Use `haveI := wm_artinian l k`. Use `letI : Module (WittVector l k) (HO (QAll q ρ) j) := Module.compHom _ (algebraMap (WittVector l k) (Wc.Wm l k 1))`. Use `haveI : IsScalarTower (WittVector l k) (Wc.Wm l k 1) (HO (QAll q ρ) j) := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Establish `hsurj : Function.Surjective (algebraMap (WittVector l k) (Wc.Wm l k 1))` using `Ideal.Quotient.mk_surjective`.
+
+Use `haveI : IsNoetherian (Wc.Wm l k 1) (HO (QAll q ρ) j) := inferInstance`. Use `haveI : IsArtinian (Wc.Wm l k 1) (HO (QAll q ρ) j) := inferInstance`. Use `haveI : IsNoetherian (WittVector l k) (HO (QAll q ρ) j) := isNoetherian_of_surj hsurj`. Use `haveI : IsArtinian (WittVector l k) (HO (QAll q ρ) j) := isArtinian_of_surjective_algebraMap hsurj`. Set `f : CH.H (Wc.OM l (B.schFn q) ρ 1) j →ₗ[WittVector l k] HO (QAll q ρ) j` to `{ toFun := (toAll q ρ).pull j map_add' := map_add _ map_smul' := fun r x => ((toAll q ρ).pull j).map_smulₛₗ r x }`.
+
+Establish `hf : Function.Injective f` using `toAll_pull_inj q ρ j`. Conclude with `isFiniteLength_iff_isNoetherian_isArtinian.2 ⟨isNoetherian_of_injective f hf, isArtinian_of_injective f hf⟩`.
+-/
 theorem finiteLength_level_one : ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing k l] {O : Type} [CommRing O] {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (ρ : O →+* k) (j : ℕ),
     Module.Finite (Wc.Wm l k 1) (HO (St (γ := Wc.pd l k 1) (p := l) (q := q) (κ := (Wc.res l k 1).comp ρ) ⊤ {⊤}) j) →

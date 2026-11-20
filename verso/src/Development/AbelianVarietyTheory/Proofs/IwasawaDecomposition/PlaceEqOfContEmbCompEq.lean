@@ -6,6 +6,15 @@ namespace GlobalTheory.HeckeGal
 
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Use `set x := algebraMap E (v.adicCompletion E) (algebraMap (𝓞 E) E a) with hx`. Establish `hx1 : ‖x‖ < 1`. Rewrite using `[hx, Valued.toNormedField.norm_lt_one_iff]`. Establish `h` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := E) v a`. Use `erw [h]`.
+
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_lt_one_iff_mem]`. Conclude with `ha`. Establish `hlim : Filter.Tendsto (fun n : ℕ => j x ^ n) Filter.atTop (nhds 0)`. Establish `h0` using `(hj.tendsto 0).comp (tendsto_pow_atTop_nhds_zero_of_norm_lt_one hx1)`. Simplify `h0` using `[Function.comp_def, map_pow]`.
+
+Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Establish `hball : ∀ᶠ n : ℕ in Filter.atTop, ‖j x ^ n‖ < 1` using `(tendsto_norm_zero.comp hlim).eventually (gt_mem_nhds zero_lt_one)`. Take `⟨n, hn⟩` from `hball.exists`. Rewrite `hn` using `[norm_pow]`.
+
+Conclude with `absurd hn (not_lt.mpr (one_le_pow₀ hge))`.
+-/
 theorem _root_.GlobalTheory.HeckeGal.norm_lt_one_of_contEmb {E : Type} [Field E] [NumberField E]
     {l : ℕ} [Fact l.Prime]
     (v : HeightOneSpectrum (𝓞 E)) (j : v.adicCompletion E →+* _root_.Formalism.ConjugateSelfDual.Qbar l) (hj : Continuous j)
@@ -31,6 +40,13 @@ theorem _root_.GlobalTheory.HeckeGal.norm_lt_one_of_contEmb {E : Type} [Field E]
 
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Introduce `E _ _ l _ v v' j j' hj hj' hcomp`. Assume the negation of the conclusion as `hne`. Establish `hideal : v.asIdeal ≠ v'.asIdeal` using `fun h => hne (HeightOneSpectrum.ext h)`. Establish `htop : v.asIdeal ⊔ v'.asIdeal = ⊤` using `v.isMaximal.coprime_of_ne v'.isMaximal hideal`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp (htop ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ _)`.
+
+Establish `hna` using `_root_.GlobalTheory.HeckeGal.norm_lt_one_of_contEmb v j hj a ha`. Establish `hnb` using `_root_.GlobalTheory.HeckeGal.norm_lt_one_of_contEmb v' j' hj' b hb`. Establish `hb' : j (algebraMap E (v.adicCompletion E) (algebraMap (𝓞 E) E b)) = j' (algebraMap E (v'.adicCompletion E) (algebraMap (𝓞 E) E b))` using `RingHom.congr_fun hcomp _`. Rewrite `hnb` using `[← hb']`. Establish `hsum : j (algebraMap E (v.adicCompletion E) (algebraMap (𝓞 E) E a)) + j (algebraMap E (v.adicCompletion E) (algebraMap (𝓞 E) E b)) = 1`.
+
+Rewrite using `[← map_add, ← map_add, ← map_add, hab, map_one, map_one, map_one]`. Establish `hle` using `IsUltrametricDist.norm_add_le_max (j (algebraMap E (v.adicCompletion E) (algebraMap (𝓞 E) E a))) (j (algebraMap E (v.adicCompletion E) (algebraMap (𝓞 E) E b)))`. Rewrite `hle` using `[hsum, norm_one]`. Conclude with `absurd (hle.trans_lt (max_lt hna hnb)) (lt_irrefl 1)`.
+-/
 theorem _root_.GlobalTheory.HeckeGal.place_eq_of_contEmb_comp_eq :
     ∀ (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] (v v' : HeightOneSpectrum (𝓞 E))
       (j : v.adicCompletion E →+* _root_.Formalism.ConjugateSelfDual.Qbar l) (j' : v'.adicCompletion E →+* _root_.Formalism.ConjugateSelfDual.Qbar l),

@@ -10,6 +10,23 @@ open GlobalTheory GlobalTheory.AbLaw
 
 namespace GlobalTheory.AbLaw
 
+/- English proof (translation)
+Set `O : κ → Y.Opens` to `fun a => ⨅ i ∈ ({a} : Finset κ), D i`. Establish `hOD (a : κ) : O a = D a` using `by simp [O]`. Establish `hO (a : κ) : O a ≤ ⨅ i ∈ (∅ : Finset κ), D i` using `iInf_le_iInf_of_subset D (Finset.empty_subset _)`. Establish `hc : (⨅ i ∈ (∅ : Finset κ), D i) ≤ ⨆ a, O a`. Simplify using `only [hOD, hD, le_top]`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[cubeComplex_exactAt_zero_iff]`. Introduce `s t h`. Conclude with `SecOnR.ext_of_cover f O hO hc fun a => congrFun h ⟨{a}, Finset.card_singleton a⟩`. Rewrite using `[cubeComplex_exactAt_one_iff]`.
+
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `key (a b : κ) (hab : a < b) {W : Y.Opens} (ha : W ≤ O a) (hb : W ≤ O b) : SecOnR.restrict f M ha (x ⟨{a}, Finset.card_singleton a⟩) = SecOnR.restrict f M hb (x ⟨{b}, Finset.card_singleton b⟩)`. Establish `e` using `Cube.d_one_apply_pair (secCube f M D) x hab`.
+
+Rewrite `e` using `[hx]`. Establish `e'` using `(sub_eq_zero.1 e.symm).symm`. Establish `hW : W ≤ ⨅ i ∈ ({a, b} : Finset κ), D i`. Rewrite `ha`, `hb` using `[hOD]`. Rewrite using `[Finset.iInf_insert, Finset.iInf_singleton]`.
+
+Conclude with `le_inf ha hb`. Establish `e''` using `congrArg (SecOnR.restrict f M hW) e'`. Conclude with `(SecOnR.restrict_restrict f _ _ _).symm.trans (e''.trans (SecOnR.restrict_restrict f _ _ _))`. Take `⟨t, ht, -⟩` from `SecOnR.existsUnique_glue f O hO hc (fun a => x ⟨{a}, Finset.card_singleton a⟩) fun a b => by`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases.
+
+Conclude with `key a b h _ _`. Both sides reduce to the same expression. Conclude with `(key b a h _ _).symm`. Use `⟨t, funext ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, hs⟩`.
+
+Take `⟨a, rfl⟩` from `Finset.card_eq_one.1 hs`. Conclude with `ht a`. Introduce and unpack `⟨t, rfl⟩`. Use `Cube.d_zero_apply (secCube f M D) ((Cube.termZeroEquiv _).symm t)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`.
+
+Rewrite using `[← this]`. Conclude with `Cube.d_d _ 0 _`.
+-/
 theorem secCube_exactAt_zero_and_one (R : Type) [CommRing R] (Y : Scheme.{0})
     (f : Y ⟶ Spec (CommRingCat.of R)) (M : LB Y) (κ : Type) [LinearOrder κ] [Fintype κ]
     (D : κ → Y.Opens) (hD : ⨆ i, D i = ⊤) :

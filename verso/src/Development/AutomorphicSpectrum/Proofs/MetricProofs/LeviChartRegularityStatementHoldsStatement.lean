@@ -3,5 +3,8 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.LeviChartRegularitySt
 import Mathlib
 import GroundTheory.HeightsAndTheta.Heights.ElementarySymmetric.StNbarLeviChartReg
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Giv.nbarLeviChartReg | exact GlobalTheory.CompanionTheory.Ar.Giv.nbarLeviChartReg | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.nbarLeviChartReg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.levi_chart_regularity_statement_holds : GroundTheory.Heights₂.Heights.NineStatements.NbarLeviChartReg.Statement := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Giv.nbarLeviChartReg | exact GlobalTheory.CompanionTheory.Ar.Giv.nbarLeviChartReg | (intros; apply GlobalTheory.CompanionTheory.Ar.Giv.nbarLeviChartReg <;> assumption)

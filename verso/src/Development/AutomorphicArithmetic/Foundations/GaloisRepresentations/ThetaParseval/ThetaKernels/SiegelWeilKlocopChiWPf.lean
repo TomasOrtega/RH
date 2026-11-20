@@ -18,27 +18,51 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace KC
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
 def sec_k : (InfinitePlace F → ℂ) → AE F E := (Place.exists_sec d.cm d.B.emb).choose
+/- English proof (translation)
+The claim follows from `(Place.exists_sec d.cm d.B.emb).choose_spec`.
+-/
 theorem sec_spec_k : Continuous (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d) ∧ (∀ x w, piInf (d.B.emb w) (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d x) = x w) ∧ (∀ x, finOne F • _root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d x = 0) ∧
     (∀ x y, _root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d (x + y) = _root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d x + _root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d y) ∧ (∀ x y, _root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d (x * y) = _root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d x * _root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d y) :=
   (Place.exists_sec d.cm d.B.emb).choose_spec
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uW_eq_k (w : InfinitePlace F) (z : ℂ) :
     d.uW w z = _root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d (Function.update (fun _ => 1) w z) + finOne F • (1 : AE F E) := rfl
+/- English proof (translation)
+Rewrite using `[mul_smul_comm, mul_one, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.2.1]`.
+-/
 theorem sec_mul_e_k (x : InfinitePlace F → ℂ) : _root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d x * (finOne F • (1 : AE F E)) = 0 := by
   rw [mul_smul_comm, mul_one, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.2.1]
+/- English proof (translation)
+Rewrite using `[smul_mul_assoc, one_mul, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.2.1]`.
+-/
 theorem e_mul_sec_k (x : InfinitePlace F → ℂ) : (finOne F • (1 : AE F E)) * _root_.PositivityTheory.SiegelWeilFormula.KC.sec_k d x = 0 := by
   rw [smul_mul_assoc, one_mul, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.2.1]
+/- English proof (translation)
+Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, _root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, _root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, update_mul, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.2.2.2, add_mul, mul_add, mul_add, _root_.Po …`. Normalize the expressions using the abelian group laws.
+-/
 theorem uW_mul_k (w : InfinitePlace F) (z z' : ℂ) : d.uW w (z * z') = d.uW w z * d.uW w z' := by
   rw [_root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, _root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, _root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, update_mul, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.2.2.2, add_mul, mul_add, mul_add, _root_.PositivityTheory.SiegelWeilFormula.KC.sec_mul_e_k, _root_.PositivityTheory.SiegelWeilFormula.KC.e_mul_sec_k, e_mul_e]
   abel
+/- English proof (translation)
+Apply `d.ae_ext` to reduce the goal to its premises. Introduce `w'`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, map_add, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.1, Place.piInf_finOne, map_one]`. Simplify using `[Function.update_apply]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, smul_add, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.2.1, smul_smul, finOne_mul_self, zero_add]`.
+-/
 theorem uW_one_k (w : InfinitePlace F) : d.uW w 1 = 1 := by
   apply d.ae_ext
   · intro w'
     rw [_root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, map_add, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.1, Place.piInf_finOne, map_one]
     simp [Function.update_apply]
   · rw [_root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, smul_add, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.2.1, smul_smul, finOne_mul_self, zero_add]
+/- English proof (translation)
+Establish `h : d.uW w z * d.uW w z⁻¹ = 1` using `by rw [← _root_.PositivityTheory.SiegelWeilFormula.KC.uW_mul_k, mul_inv_cancel₀ hz, _root_.PositivityTheory.SiegelWeilFormula.KC.uW_one_k]`. Conclude with `⟨⟨d.uW w z, d.uW w z⁻¹, h, by rw [mul_comm]; exact h⟩, rfl⟩`.
+-/
 theorem uW_isUnit_k (w : InfinitePlace F) {z : ℂ} (hz : z ≠ 0) : IsUnit (d.uW w z) := by
   have h : d.uW w z * d.uW w z⁻¹ = 1 := by rw [← _root_.PositivityTheory.SiegelWeilFormula.KC.uW_mul_k, mul_inv_cancel₀ hz, _root_.PositivityTheory.SiegelWeilFormula.KC.uW_one_k]
   exact ⟨⟨d.uW w z, d.uW w z⁻¹, h, by rw [mul_comm]; exact h⟩, rfl⟩
+/- English proof (translation)
+Establish `h : Continuous fun z : ℂ => Function.update (fun _ : InfinitePlace F => (1 : ℂ)) w z` using `continuous_const.update w continuous_id`. Conclude with `((_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).1.comp h).add continuous_const`.
+-/
 theorem uW_cont_k (w : InfinitePlace F) : Continuous (d.uW w) := by
   have h : Continuous fun z : ℂ => Function.update (fun _ : InfinitePlace F => (1 : ℂ)) w z :=
     continuous_const.update w continuous_id
@@ -46,6 +70,11 @@ theorem uW_cont_k (w : InfinitePlace F) : Continuous (d.uW w) := by
 end KC
 namespace SD
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
+/- English proof (translation)
+Introduce `z z' hz hz'`. Establish `h1` using `_root_.PositivityTheory.SiegelWeilFormula.KC.uW_isUnit_k d w hz`. Establish `h2` using `_root_.PositivityTheory.SiegelWeilFormula.KC.uW_isUnit_k d w hz'`. Establish `h3` using `_root_.PositivityTheory.SiegelWeilFormula.KC.uW_isUnit_k d w (mul_ne_zero hz hz')`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW`.
+
+Rewrite using `[dif_pos h3, dif_pos h1, dif_pos h2]`. Establish `: h3.unit = h1.unit * h2.unit` using `Units.ext (by simp [_root_.PositivityTheory.SiegelWeilFormula.KC.uW_mul_k])`. Rewrite using `[this, map_mul, Circle.coe_mul]`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW_mul_pf (w : InfinitePlace F) : ∀ z z' : ℂ, z ≠ 0 → z' ≠ 0 →
     d.chiW w (z * z') = d.chiW w z * d.chiW w z' := by
   intro z z' hz hz'
@@ -56,6 +85,15 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW_mul_pf (w : Infinite
   rw [dif_pos h3, dif_pos h1, dif_pos h2]
   have : h3.unit = h1.unit * h2.unit := Units.ext (by simp [_root_.PositivityTheory.SiegelWeilFormula.KC.uW_mul_k])
   rw [this, map_mul, Circle.coe_mul]
+/- English proof (translation)
+Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Set `U : {z : ℂ // z ≠ 0} → (AE F E)ˣ` to `fun z => (_root_.PositivityTheory.SiegelWeilFormula.KC.uW_isUnit_k d w z.2).unit`. Establish `hU : Continuous U`. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `(_root_.PositivityTheory.SiegelWeilFormula.KC.uW_cont_k d w).comp continuous_subtype_val`. Establish `e : ∀ z : {z : ℂ // z ≠ 0}, ((U z)⁻¹ : (AE F E)ˣ).1 = d.uW w (z.1)⁻¹` using `fun z => Units.inv_eq_of_mul_eq_one_right (by show d.uW w z.1 * d.uW w (z.1)⁻¹ = 1`. Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.KC.uW_mul_k, mul_inv_cancel₀ z.2, _root_.PositivityTheory.SiegelWeilFormula.KC.uW_one_k])`. Simplify using `only [e]`. Conclude with `(_root_.PositivityTheory.SiegelWeilFormula.KC.uW_cont_k d w).comp (continuous_subtype_val.inv₀ fun z => z.2)`.
+
+Establish `e : Set.domRestrict {z : ℂ | z ≠ 0} (d.chiW w) = fun z => ((d.χ (U z) : Circle) : ℂ)`. Use function extensionality and compare the values at `z`. Rewrite using `[Set.domRestrict_apply]`. Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW`. Rewrite using `[dif_pos (_root_.PositivityTheory.SiegelWeilFormula.KC.uW_isUnit_k d w z.2)]`.
+
+Rewrite using `[e]`. Conclude with `continuous_subtype_val.comp (d.ok.hecke.1.comp hU)`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW_cont_pf (w : InfinitePlace F) : ContinuousOn (d.chiW w) {z : ℂ | z ≠ 0} := by
   rw [continuousOn_iff_continuous_domRestrict]
   let U : {z : ℂ // z ≠ 0} → (AE F E)ˣ := fun z => (_root_.PositivityTheory.SiegelWeilFormula.KC.uW_isUnit_k d w z.2).unit
@@ -76,6 +114,19 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW_cont_pf (w : Infinit
     rw [dif_pos (_root_.PositivityTheory.SiegelWeilFormula.KC.uW_isUnit_k d w z.2)]
   rw [e]
   exact continuous_subtype_val.comp (d.ok.hecke.1.comp hU)
+/- English proof (translation)
+Introduce `r hr`. Use `set t := Real.sqrt r with ht`. Establish `ht0 : (t : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero]`. Conclude with `(Real.sqrt_pos.mpr hr).ne'`.
+
+Establish `hr0 : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Establish `hc : cA σ (d.uW w t) = d.uW w t`. Apply `d.ae_ext` to reduce the goal to its premises. Introduce `w'`. Rewrite using `[Place.piInf_cA d.cm, _root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, map_add, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.1, Place.piInf_finOne, add_zero]`.
+
+Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_apply, h]`. Rewrite using `[← map_smul, _root_.PositivityTheory.SiegelWeilFormula.KC.uW_eq_k, smul_add, (_root_.PositivityTheory.SiegelWeilFormula.KC.sec_spec_k d).2.2.1, zero_add, smul_smul, KC.finOne_mul_self, map_smul, map_one]`.
+
+Establish `huw : d.uW w (r : ℂ) = d.uW w t * cA σ (d.uW w t)`. Rewrite using `[hc, ← _root_.PositivityTheory.SiegelWeilFormula.KC.uW_mul_k, ← Complex.ofReal_mul, ht, Real.mul_self_sqrt hr.le]`. Take `⟨ξ, hξ⟩` from `GlobalTheory.SplitIdele.exists_isQuad d.cm`. Establish `hn` using `hξ.algebraMap_norm (d.uW w t)`. Set `u` to `(_root_.PositivityTheory.SiegelWeilFormula.KC.uW_isUnit_k d w ht0).unit`.
+
+Set `a : (AF F)ˣ` to `Units.map (Algebra.norm (AF F) : AE F E →* AF F) u`. Establish `ha : Units.map (algebraMap (AF F) (AE F E) : AF F →* AE F E) a = (_root_.PositivityTheory.SiegelWeilFormula.KC.uW_isUnit_k d w hr0).unit` using `Units.ext (by show algebraMap (AF F) (AE F E) (Algebra.norm (AF F) (d.uW w t)) = d.uW w (r : ℂ)`. Rewrite using `[hn, huw])`. Establish `hres` using `d.ok.res a`. Rewrite `hres` using `[if_pos (Subgroup.mem_sup_right (MonoidHom.mem_range.mpr ⟨u, rfl⟩))]`.
+
+Unfold `_root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW`. Rewrite using `[dif_pos (_root_.PositivityTheory.SiegelWeilFormula.KC.uW_isUnit_k d w hr0), ← ha]`. Conclude with `hres`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.SD_k.chiW_pos_pf (w : InfinitePlace F) : ∀ r : ℝ, 0 < r → d.chiW w (r : ℂ) = 1 := by
   intro r hr
   set t := Real.sqrt r with ht

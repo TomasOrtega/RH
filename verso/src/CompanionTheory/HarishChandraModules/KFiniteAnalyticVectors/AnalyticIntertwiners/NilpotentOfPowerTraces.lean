@@ -12,6 +12,13 @@ open ReciprocityTheory.ChartRestriction.DS Module.End
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Establish `hJh : (Jm ε)ᴴ = Jm ε` using `Jm_conjTranspose_self`. Establish `hZh : Zᴴ * Jm ε = Jm ε * Zᴴ`. Establish `h` using `congrArg Matrix.conjTranspose hZ`. Simplify using `only [Matrix.conjTranspose_mul, hJh] at h`. Conclude with `h.symm`.
+
+Establish `hc : (Jm ε * Zᴴ * Jm ε) * Jm ε = Jm ε * (Jm ε * Zᴴ * Jm ε)`. Simplify using `only [Matrix.mul_assoc, hZh]`. Use `⟨⟨SmDerA.inG_cpart1 ε Z, ?_⟩, ⟨SmDerA.inG_cpart2 ε Z, ?_⟩⟩` and prove the remaining obligations. Unfold `S7.cpart1`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, hZ, hc]`.
+
+Unfold `S7.cpart2`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, hZ, hc]`.
+-/
 theorem cpart_inK_A {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : Z * Jm ε = Jm ε * Z) :
     inK ε (S7.cpart1 ε Z) ∧ inK ε (S7.cpart2 ε Z) := by
   have hJh : (Jm ε)ᴴ = Jm ε := Jm_conjTranspose_self
@@ -27,12 +34,24 @@ theorem cpart_inK_A {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : Z * Jm ε = Jm ε * Z
   · unfold S7.cpart2
     rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, hZ, hc]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.single_apply]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all`.
+-/
 theorem single_comm_A {a b : Fin n} (hab : ε a = ε b) :
     Matrix.single a b (1 : ℂ) * Jm ε = Jm ε * Matrix.single a b (1 : ℂ) := by
   ext i j
   simp only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.single_apply]
   split_ifs with h1 h2 h2 <;> simp_all
 
+/- English proof (translation)
+Establish `hd` using `hasDerivAt_dS hσ hZ.1 ((mem_smD_iff ε σ s).1 hsm)`. Establish `ht` using `hd.tendsto_slope_zero`. Establish `hcl : IsClosed (S : Set H)` using `Submodule.closed_of_finiteDimensional S`. Use `hcl.mem_of_tendsto ht (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hZt : inK ε (((t : ℝ) : ℂ) • Z)`.
+
+Take `⟨h1, h2⟩` from `hZ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `inG at h1 ⊢`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, Complex.star_def, Complex.conj_ofReal, ← smul_add, h1, smul_zero]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, h2]`.
+
+Establish `h1 : σ (NormedSpace.exp (((0 + t : ℝ) : ℂ) • Z)) s ∈ S`. Rewrite using `[zero_add]`. Conclude with `hK _ (exp_mem_Kset hZt) s hs`. Establish `h0 : σ (NormedSpace.exp (((0 : ℝ) : ℂ) • Z)) s = s`. Rewrite using `[exp_zero_smul, hσ.1.1]`.
+
+Both sides reduce to the same expression. Simplify using `only [zero_add] at h1`. Use `show (t⁻¹ : ℝ) • (σ (NormedSpace.exp (((0 + t : ℝ) : ℂ) • Z)) s - σ (NormedSpace.exp (((0 : ℝ) : ℂ) • Z)) s) ∈ S`. Rewrite using `[zero_add, h0]`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.sub_mem _ h1 hs)`.
+-/
 theorem dS_mem_of_inK_A (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {S : Submodule ℂ H}
     [FiniteDimensional ℂ S] (hK : Formalism.MainNotions.S.IsKStableOn ε σ S) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inK ε Z)
     {s : H} (hs : s ∈ S) (hsm : s ∈ smD ε σ) : dS σ Z s ∈ S := by
@@ -56,6 +75,9 @@ theorem dS_mem_of_inK_A (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainN
   rw [zero_add, h0]
   exact Submodule.smul_of_tower_mem _ _ (Submodule.sub_mem _ h1 hs)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `cpart_inK_A (single_comm_A hab)`. Rewrite using `[smE_apply hσ]`. Conclude with `Submodule.add_mem _ (dS_mem_of_inK_A hσ hK h1 hx x.2) (Submodule.smul_mem _ _ (dS_mem_of_inK_A hσ hK h2 hx x.2))`.
+-/
 theorem smE_mem_of_compact_A (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) {S : Submodule ℂ H}
     [FiniteDimensional ℂ S] (hK : Formalism.MainNotions.S.IsKStableOn ε σ S) {a b : Fin n} (hab : ε a = ε b) (x : smD ε σ)
     (hx : (x : H) ∈ S) : ((smE ε σ a b x : smD ε σ) : H) ∈ S := by
@@ -63,6 +85,11 @@ theorem smE_mem_of_compact_A (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.
   rw [smE_apply hσ]
   exact Submodule.add_mem _ (dS_mem_of_inK_A hσ hK h1 hx x.2) (Submodule.smul_mem _ _ (dS_mem_of_inK_A hσ hK h2 hx x.2))
 
+/- English proof (translation)
+Rewrite using `[show ((2 * Real.pi : ℝ) : ℂ) • (Complex.I • Matrix.single a a (1 : ℂ)) = Matrix.diagonal (Pi.single a (2 * Real.pi * Complex.I)) by`. Rewrite using `[smul_smul, Matrix.diagonal_single, Matrix.smul_single]`. Use the proof step `simp]`. Rewrite using `[Matrix.exp_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using `[← Complex.exp_eq_exp_ℂ]`. Simplify using `[h]`.
+-/
 theorem exp_two_pi_A (a : Fin n) :
     NormedSpace.exp (((2 * Real.pi : ℝ) : ℂ) • (Complex.I • Matrix.single a a (1 : ℂ))) = 1 := by
   rw [show ((2 * Real.pi : ℝ) : ℂ) • (Complex.I • Matrix.single a a (1 : ℂ)) =
@@ -75,12 +102,32 @@ theorem exp_two_pi_A (a : Fin n) :
   · subst h; simp [← Complex.exp_eq_exp_ℂ]
   · simp [h]
 
+/- English proof (translation)
+Unfold `inG`. Establish `hc` using `single_comm_A (ε := ε) (a := a) (b := a) rfl`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_single, star_one, Matrix.smul_mul, Matrix.mul_smul, hc]`. Simplify using the standard rewrite rules.
+-/
 theorem inG_diag_A (a : Fin n) : inG ε (Complex.I • Matrix.single a a (1 : ℂ)) := by
   unfold inG
   have hc := single_comm_A (ε := ε) (a := a) (b := a) rfl
   rw [Matrix.conjTranspose_smul, Matrix.conjTranspose_single, star_one, Matrix.smul_mul, Matrix.mul_smul, hc]
   simp
 
+/- English proof (translation)
+Establish `hD` using `isDerivedOn_smE hσ`. Use `set X : Matrix (Fin n) (Fin n) ℂ := Complex.I • Matrix.single a a (1 : ℂ)`. Establish `hX : inG ε X` using `inG_diag_A a`. Establish `hXw : actM (smE ε σ) X w = (Complex.I * c) • w`. Rewrite using `[SmDerA.actM_smul, SmDerA.actM_single, LinearMap.smul_apply, hc, smul_smul]`.
+
+Use `set f : ℝ → H := fun t => σ (NormedSpace.exp ((t : ℂ) • X)) (w : H)`. Establish `hf : ∀ t, HasDerivAt f ((Complex.I * c) • f t) t` using `fun t => by`. Use `hasDerivAt_orbit hσ hD hX w t` as an intermediate fact. Rewrite `this` using `[hXw, Submodule.coe_smul, map_smul]`. Conclude with `this`.
+
+Use `set g : ℝ → H := fun t => Complex.exp (-(Complex.I * c) * t) • f t`. Establish `hg : ∀ t, HasDerivAt g 0 t` using `fun t => by`. Establish `h1 : HasDerivAt (fun t : ℝ => Complex.exp (-(Complex.I * c) * t)) (Complex.exp (-(Complex.I * c) * t) * (-(Complex.I * c))) t`. Use `((hasDerivAt_id (t : ℂ)).const_mul (-(Complex.I * c))).cexp` as an intermediate fact. Establish `h2` using `this.comp_ofReal (z := t)`.
+
+Simplify using `using h2`. Use `(h1.smul (hf t)).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← add_smul, mul_neg, add_neg_cancel, zero_smul]`. Establish `hconst` using `is_const_of_deriv_eq_zero (fun t => (hg t).differentiableAt) (fun t => (hg t).deriv) (2 * Real.pi) 0`. Establish `h2pi : f (2 * Real.pi) = (w : H)` using `by show σ (NormedSpace.exp (((2 * Real.pi : ℝ) : ℂ) • X)) (w : H) = (w : H)`.
+
+Rewrite using `[exp_two_pi_A, hσ.1.1]`. Both sides reduce to the same expression. Establish `h0 : f 0 = (w : H)` using `by show σ (NormedSpace.exp (((0 : ℝ) : ℂ) • X)) (w : H) = (w : H)`. Rewrite using `[exp_zero_smul, hσ.1.1]`. Both sides reduce to the same expression.
+
+Simplify using `only [g, h2pi, h0, Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_smul] at hconst`. Establish `hw' : (w : H) ≠ 0` using `fun h => hw (Subtype.ext h)`. Establish `he : Complex.exp (-(Complex.I * c) * ((2 * Real.pi : ℝ) : ℂ)) = 1`. Assume the negation of the conclusion as `hne`. Establish `: (Complex.exp (-(Complex.I * c) * ((2 * Real.pi : ℝ) : ℂ)) - 1) • (w : H) = 0`.
+
+Rewrite using `[sub_smul, hconst, one_smul, sub_self]`. Conclude with `hw' ((smul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne))`. Take `⟨m, hm⟩` from `Complex.exp_eq_one_iff.1 he`. Use `⟨-m, ?_⟩` and prove the remaining obligations. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`.
+
+Establish `: -(Complex.I * c) * ((2 * Real.pi : ℝ) : ℂ) = m * (2 * Real.pi * Complex.I)` using `hm`. Move the coercions through the operations in `at this ⊢`. Establish `hI : Complex.I ≠ 0` using `Complex.I_ne_zero`. Apply `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero two_ne_zero hpi) hI)` to reduce the goal to its premises. Take the linear combination `(-1 : ℂ) * this`.
+-/
 theorem eig_int_A (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ) (a : Fin n) {w : smD ε σ} (hw : w ≠ 0) {c : ℂ}
     (hc : smE ε σ a a w = c • w) : ∃ m : ℤ, c = m := by
   have hD := isDerivedOn_smE hσ
@@ -126,6 +173,23 @@ theorem eig_int_A (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions
   apply mul_left_cancel₀ (mul_ne_zero (mul_ne_zero two_ne_zero hpi) hI)
   linear_combination (-1 : ℂ) * this
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ hσ hirr v hv`. Take `⟨S, hSf, hvS, hSK⟩` from `hv`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ (isDerivedOn_smE hσ)`. Establish `hE` using `(isDerivedOn_smE hσ).glRep`. Set `S₀ : Submodule ℂ (smD ε σ)` to `S.comap (smD ε σ).subtype`.
+
+Establish `hS₀f : FiniteDimensional ℂ S₀` using `Module.Finite.of_injective (((smD ε σ).subtype.comp S₀.subtype).codRestrict S fun x => x.2) (fun x y h => Subtype.ext (Subtype.ext (congrArg (fun z : S => (z : H)) h)))`. Establish `hst : ∀ a, ∀ x ∈ S₀, smE ε σ a a x ∈ S₀` using `fun a x hx => smE_mem_of_compact_A hσ hSK rfl x hx`. Set `T : Fin n → (S₀ →ₗ[ℂ] S₀)` to `fun a => (smE ε σ a a).restrict (hst a)`. Establish `hT : ∀ a, (T a).IsSymmetric` using `fun a x y => by show ⟪((smE ε σ a a (x : smD ε σ) : smD ε σ)), (y : smD ε σ)⟫_ℂ = ⟪(x : smD ε σ), smE ε σ a a y⟫_ℂ`. Rewrite using `[hU a a]`.
+
+Simplify using `[adjSign]`. Establish `hC : Pairwise (Function.onFun Commute T)` using `fun a b _ => by`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Use `show smE ε σ a a (smE ε σ b b x) = smE ε σ b b (smE ε σ a a x)`. Establish `h` using `congrArg (fun f => f (x : smD ε σ)) (hE a a b b)`.
+
+Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Both sides reduce to the same expression. Rewrite `h` using `[if_neg hab, if_neg (Ne.symm hab), sub_self]`.
+
+Conclude with `sub_eq_zero.1 h`. Establish `htop` using `LinearMap.IsSymmetric.iSup_iInf_eq_top_of_commute hT hC`. Use `set G : Set (smD ε σ) := {w | w ∈ KF ε σ ∧ ∃ μ : Fin n → ℤ, ∀ a, smE ε σ a a w = (μ a : ℂ) • w}`. Establish `hle : (⊤ : Submodule ℂ S₀) ≤ (Submodule.span ℂ G).comap S₀.subtype`. Rewrite using `[← htop]`.
+
+Use `iSup_le fun χ => fun x hx => ?_` and prove the remaining obligations. Use `show (x : smD ε σ) ∈ Submodule.span ℂ G`. Distinguish the cases in `hx0 : x = 0`. Rewrite using `[hx0]`. Conclude with `Submodule.zero_mem _`.
+
+Use `Submodule.subset_span ⟨⟨S, hSf, x.2, hSK⟩, ?_⟩` and prove the remaining obligations. Establish `hxa : ∀ a, smE ε σ a a x = χ a • (x : smD ε σ)` using `fun a => by`. Use `(Submodule.mem_iInf _).1 hx a` as an intermediate fact. Rewrite `this` using `[Module.End.mem_eigenspace_iff]`. Conclude with `congrArg Subtype.val this`.
+
+Establish `hx0' : (x : smD ε σ) ≠ 0` using `fun h => hx0 (Subtype.ext h)`. Use `choose μ hμ using fun a => eig_int_A hσ a hx0' (hxa a)`. Conclude with `⟨μ, fun a => by rw [hxa a, hμ a]⟩`. Conclude with `hle (Submodule.mem_top (x := ⟨v, hvS⟩))`.
+-/
 theorem integral_weights : IntWts := by
   intro n ε H _ _ _ σ hσ hirr v hv
   obtain ⟨S, hSf, hvS, hSK⟩ := hv

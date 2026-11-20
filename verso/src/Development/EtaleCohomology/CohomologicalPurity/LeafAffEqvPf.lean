@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.CohomologicalPurity.Thom
 
+/- English proof (translation)
+Apply `Scheme.zariskiTopology_le_etaleTopology` to reduce the goal to its premises. Use `GrothendieckTopology.superset_covering _ ?_ (Scheme.Cover.mem_grothendieckTopology U.affineCover)` and prove the remaining obligations. Introduce and unpack `_ _ ⟨_, k, _, ⟨i⟩, rfl⟩`. Conclude with `S.downward_closed (h _ (U.affineCover.f i)) k`.
+-/
 theorem affSieve_mem (U : Scheme.{0}) (S : Sieve U)
     (h : ∀ (A : Type) [CommRing A] (f : Spec (CommRingCat.of A) ⟶ U), S f) : S ∈ Scheme.etaleTopology U := by
   apply Scheme.zariskiTopology_le_etaleTopology
@@ -12,6 +15,11 @@ theorem affSieve_mem (U : Scheme.{0}) (S : Sieve U)
   rintro _ _ ⟨_, k, _, ⟨i⟩, rfl⟩
   exact S.downward_closed (h _ (U.affineCover.f i)) k
 
+/- English proof (translation)
+Establish `hb : ∀ (A : Type) [CommRing A], Function.Bijective (φ.app (op (Spec (CommRingCat.of A))))` using `fun A _ => ConcreteCategory.bijective_of_isIso _`. Use `⟨⟨fun {X} x y hxy => ?_⟩, ⟨fun {U} s => ?_⟩⟩` and prove the remaining obligations. Use `affSieve_mem _ _ fun A _ f => ?_` and prove the remaining obligations. Apply `(hb A).1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ.app _ (F.map f.op x) = φ.app _ (F.map f.op y)`.
+
+Rewrite using `[NatTrans.naturality_apply, NatTrans.naturality_apply, hxy]`. Use `affSieve_mem _ _ fun A _ f => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `(hb A).2 (G.map f.op s)`. Conclude with `⟨t, ht⟩`.
+-/
 theorem locBij {R : Type} [CommRing R] {F G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (φ : F ⟶ G)
     (h : ∀ (A : Type) [CommRing A], IsIso (φ.app (op (Spec (CommRingCat.of A))))) :
     Presheaf.IsLocallyInjective Scheme.etaleTopology φ ∧ Presheaf.IsLocallySurjective Scheme.etaleTopology φ := by
@@ -26,6 +34,11 @@ theorem locBij {R : Type} [CommRing R] {F G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1}
     obtain ⟨t, ht⟩ := (hb A).2 (G.map f.op s)
     exact ⟨t, ht⟩
 
+/- English proof (translation)
+Establish `h2 : ∀ (A : Type) [CommRing A], IsIso (((freeP R).map g).app (op (Spec (CommRingCat.of A))))`. Introduce `A _`. Establish `: IsIso (g.app (op (Spec (CommRingCat.of A))))` using `(isIso_iff_bijective _).2 (h A)`. Express the relevant statement in the definitionally equal form `IsIso ((uliftFunctor.{1} ⋙ ModuleCat.free (ULift.{1} R)).map (g.app (op (Spec (CommRingCat.of A)))))`. Use `infer_instance`.
+
+Take `⟨h3, h4⟩` from `locBij _ h2`. Establish `hW : Scheme.etaleTopology.W ((freeP R).map g)`. Rewrite using `[GrothendieckTopology.W_iff_isLocallyBijective]`. Conclude with `⟨h3, h4⟩`. Conclude with `(GrothendieckTopology.W_iff _ _).1 hW`.
+-/
 theorem freeIso (R : Type) [CommRing R] {P Q : PSh} (g : P ⟶ Q)
     (h : ∀ (A : Type) [CommRing A], Function.Bijective (g.app (op (Spec (CommRingCat.of A))))) :
     IsIso ((free R).map g) := by
@@ -39,6 +52,11 @@ theorem freeIso (R : Type) [CommRing R] {P Q : PSh} (g : P ⟶ Q)
     rw [GrothendieckTopology.W_iff_isLocallyBijective]; exact ⟨h3, h4⟩
   exact (GrothendieckTopology.W_iff _ _).1 hW
 
+/- English proof (translation)
+Establish `: IsIso (((SimplicialObject.whiskering _ _).obj (free R)).map e)`. Establish `hh : ∀ n, IsIso ((((SimplicialObject.whiskering _ _).obj (free R)).map e).app n)`. Introduce `n`. Proceed by induction on `n using Opposite.rec with | op n => ?_`. Proceed by induction on `n using SimplexCategory.rec with | _ n => ?_`.
+
+Conclude with `freeIso R _ (h n)`. Conclude with `NatIso.isIso_of_isIso_app _`. Express the relevant statement in the definitionally equal form `IsIso ((ComplexShape.embeddingDownNat.extendFunctor (Shv R)).map ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (((SimplicialObject.whiskering _ _).obj (free R)).map e)))`. Use `infer_instance`.
+-/
 theorem chainsIso (R : Type) [CommRing R] {E E' : Spc} (e : E ⟶ E')
     (h : ∀ (n : ℕ) (A : Type) [CommRing A], Function.Bijective
       (fun x : Sx E n (Spec (CommRingCat.of A)) => (e.app (op (SimplexCategory.mk n))).app (op (Spec (CommRingCat.of A))) x)) :
@@ -54,6 +72,9 @@ theorem chainsIso (R : Type) [CommRing R] {E E' : Spc} (e : E ⟶ E')
     ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).map (((SimplicialObject.whiskering _ _).obj (free R)).map e)))
   infer_instance
 
+/- English proof (translation)
+Introduce `hA1 q _ E E' e h i n`. Use `chainsIso (ZMod q) e h` as an intermediate fact. Conclude with `hA1 (ZMod q) ((chains (ZMod q)).map e) (tw q i) n`.
+-/
 theorem LeafAffEqv_of : LeafAffEqv := by
   intro hA1 q _ E E' e h i n
   have := chainsIso (ZMod q) e h

@@ -4,6 +4,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace LateralTheory.EtaleFoundations
 
+/- English proof (translation)
+Take `⟨S, hS, hSP⟩` from `hP`. Use `⟨Sieve.bind S.arrows (fun V g hg => Classical.choose (h V g (hSP V g hg))), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.etaleTopology).bind_covering hS (fun V g hg => (Classical.choose_spec (h V g (hSP V g hg))).1)`. Introduce and unpack `W f ⟨V, k, g, hg, hk, rfl⟩`. Conclude with `(Classical.choose_spec (h V g (hSP V g hg))).2 W k hk`.
+-/
 theorem stair_loc_bind (U : Scheme.{0}) (P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop) (hP : Loc U P)
     (h : ∀ (V : Scheme.{0}) (g : V ⟶ U), P V g → Loc V fun W k => Q W (k ≫ g)) : Loc U Q := by
   classical
@@ -13,16 +16,25 @@ theorem stair_loc_bind (U : Scheme.{0}) (P Q : ∀ V : Scheme.{0}, (V ⟶ U) →
   · rintro W f ⟨V, k, g, hg, hk, rfl⟩
     exact (Classical.choose_spec (h V g (hSP V g hg))).2 W k hk
 
+/- English proof (translation)
+Take `⟨S, hS, hSP⟩` from `hP`. Conclude with `⟨S, hS, fun V g hg => h V g (hSP V g hg)⟩`.
+-/
 theorem stair_loc_mono (U : Scheme.{0}) (P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop) (hP : Loc U P)
     (h : ∀ (V : Scheme.{0}) (g : V ⟶ U), P V g → Q V g) : Loc U Q := by
   obtain ⟨S, hS, hSP⟩ := hP
   exact ⟨S, hS, fun V g hg => h V g (hSP V g hg)⟩
 
+/- English proof (translation)
+Use `congrArg (fun m => (ModuleCat.Hom.hom m) y) (φ.hom.naturality g.op)` as an intermediate fact. Simplify using `using this.symm`.
+-/
 theorem stair_map_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (y : Sec F U) :
     Sec.map φ (Sec.res g y) = Sec.res g (Sec.map φ y) := by
   have := congrArg (fun m => (ModuleCat.Hom.hom m) y) (φ.hom.naturality g.op)
   simpa using this.symm
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem stair_res_res {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (y : Sec F U) :
     Sec.res k (Sec.res g y) = Sec.res (k ≫ g) y := by
   simp [Sec.res]
@@ -35,6 +47,13 @@ def EtaleTensorCyclesLocallyLiftOfFlatBounded : Prop :=
     ∀ (w : ℤ) (U : Scheme.{0}) (x : Tens C J U w), Sec.map (T.sc w).g (τ.lift U w x) = 0 →
       Loc U fun V g => ∃ z : Sec (T.sc w).X₁ V, Sec.map (T.sc w).f z = Sec.res g (τ.lift U w x)
 
+/- English proof (translation)
+Introduce `R _ C J T a b _ _ τ hτ hJ hC w U y hy`. Use `stair_loc_bind U _ _ (hτ.1 U w y) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨x, hx⟩`. Establish `hcyc : Sec.map (T.sc w).g (τ.lift V w x) = 0`. Establish `h1` using `stair_map_res (T.sc w).g g y`.
+
+Establish `h2 : Sec.map (T.sc w).g (τ.lift V w x) = Sec.map (T.sc w).g (Sec.res g y)` using `congrArg _ hx`. Use `h2.trans (h1.trans ?_)` and prove the remaining obligations. Rewrite using `[hy]`. Simplify using the standard rewrite rules. Use `stair_loc_mono V _ _ (hL R a b τ hτ hJ hC w V x hcyc) ?_` and prove the remaining obligations.
+
+Introduce and unpack `W k ⟨z, hz⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Conclude with `hz.trans ((congrArg (Sec.res k) hx).trans (stair_res_res k g y))`.
+-/
 theorem etale_tensor_complex_locally_exact_of_lifted_sections (hL : EtaleTensorCyclesLocallyLiftOfFlatBounded) : EtaleTensorComplexLocallyExactOfFlatBounded := by
   intro R _ C J T a b _ _ τ hτ hJ hC w U y hy
   refine stair_loc_bind U _ _ (hτ.1 U w y) ?_

@@ -10,11 +10,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FinPl.FrameBack
 
+/- English proof (translation)
+Simplify using `only [idAt, Submodule.mem_inf, Submodule.mem_iInf] at h ⊢`. Conclude with `⟨h.1, fun w => h.2 ⟨w.1, fun hw => w.2 (hw ▸ hv)⟩⟩`.
+-/
 theorem idAt_of_place {D : D7} (P : Pl D → Prop) (v : Pl D) (hv : P v) {a : AE D} (h : a ∈ idAt D (· = v)) :
     a ∈ idAt D P := by
   simp only [idAt, Submodule.mem_inf, Submodule.mem_iInf] at h ⊢
   exact ⟨h.1, fun w => h.2 ⟨w.1, fun hw => w.2 (hw ▸ hv)⟩⟩
 
+/- English proof (translation)
+Establish `hT` using `((GlobalTheory.FinPl.localComponents D P).2 S).2.2.2 L y hL`. Establish `hV` using `((GlobalTheory.FinPl.localComponents D (· = v)).2 S).2.2.2 L y hL`. Rewrite using `[hT, hV]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`.
+
+Conclude with `⟨hy, fun w hw e he => h w (hw ▸ hv) e he⟩`. Introduce and unpack `⟨_, h⟩`. Use `⟨fun i => idAt_of_place P v hv (hy i), fun w _ e he => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwv : w = v`. Conclude with `h w hwv e he`.
+
+Take `⟨ε, -, -, -, hAt, hOff⟩` from `(GlobalTheory.FinPl.localComponents D (· = w)).1`. Establish `hzero : e • y = 0`. Use function extensionality and compare the values at `i`. Establish `hyi : y i ∈ idOff D (· = w)`. Establish `h'` using `hy i`.
+
+Simplify using `only [idAt, Submodule.mem_inf, Submodule.mem_iInf] at h'`. Simplify using `only [idOff, Submodule.mem_iInf]`. Introduce `u`. Use `h'.2 ⟨u.1, by rw [u.2]; exact hwv⟩` as an intermediate fact. Conclude with `this`.
+
+Establish `h1 : ε * e = e` using `(hAt e).1 he.1`. Establish `h2 : ε * y i = 0` using `(hOff (y i)).1 hyi`. Use `show e * y i = 0`. Rewrite using `[← h1, mul_comm ε e, mul_assoc, h2, mul_zero]`. Rewrite using `[hzero]`.
+
+Conclude with `(latV S L (· = w)).zero_mem`.
+-/
 theorem mem_latV_iff {D : D7} (S : HSp D) (L : Lat S) (hL : Submodule.IsLattice D.host.E L) (P : Pl D → Prop)
     (v : Pl D) (hv : P v) (y : Fin S.rank → AE D) (hy : ∀ i, y i ∈ idAt D (· = v)) :
     y ∈ latV S L P ↔ y ∈ latV S L (· = v) := by
@@ -45,6 +61,9 @@ theorem mem_latV_iff {D : D7} (S : HSp D) (L : Lat S) (hL : Submodule.IsLattice 
       rw [hzero]
       exact (latV S L (· = w)).zero_mem
 
+/- English proof (translation)
+Establish `h : q.e * q.sec x = q.sec x` using `by rw [← q.sec_pr, q.pr_sec]`. Establish `h2` using `q.sec_pr (a * q.sec x)`. Rewrite `h2` using `[map_mul, q.pr_sec, mul_left_comm, h]`. Conclude with `h2.symm`.
+-/
 theorem mul_sec {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : SplitPt D k) (a : AE D) (x : k) : a * q.sec x = q.sec (q.pr a * x) := by
   have h : q.e * q.sec x = q.sec x := by rw [← q.sec_pr, q.pr_sec]
@@ -52,6 +71,11 @@ theorem mul_sec {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   rw [map_mul, q.pr_sec, mul_left_comm, h] at h2
   exact h2.symm
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q V g L N P hP hL hN hM Y _ β β' hβ hb y`. Establish `hmv : Formalism.L2.Theta.mt V g *ᵥ (fun i => q.sec ((β' *ᵥ y) i)) = fun i => q.sec ((β *ᵥ y) i)`. Use function extensionality and compare the values at `i`. Rewrite using `[hβ, ← Matrix.mulVec_mulVec]`. Generalize the expression as in `β' *ᵥ y = z`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, mul_sec]`. Establish `hu : ∀ i, (fun i => q.sec ((β' *ᵥ y) i)) i ∈ idAt D (· = q.v)` using `fun i => q.sec_mem_idAt _`. Establish `hu' : ∀ i, (fun i => q.sec ((β *ᵥ y) i)) i ∈ idAt D (· = q.v)` using `fun i => q.sec_mem_idAt _`. Rewrite using `[hb y, ← mem_latV_iff V N hN.1 P q.v hP _ hu', ← mem_latV_iff V L hL.1 P q.v hP _ hu, hM _ (fun i => idAt_of_place P q.v hP (hu i)), hmv]`.
+-/
 theorem frame_back : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (V : HSp D) (g : GA D V) (L N : GlobalTheory.FinPl.Lat V) (P : GlobalTheory.FinPl.Pl D → Prop), P q.v → IsSelfDualC V L → IsSelfDualC V N → GlobalTheory.FinPl.Moves V g L N P → ∀ (Y : Type) [Fintype Y] (β β' : Matrix (Fin V.rank) Y k), β = (Formalism.L2.Theta.mt V g).map q.pr * β' → (∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV V N (· = q.v)) → ∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((β' *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV V L (· = q.v) := by
   intro D k _ _ _ _ q V g L N P hP hL hN hM Y _ β β' hβ hb y
   have hmv : Formalism.L2.Theta.mt V g *ᵥ (fun i => q.sec ((β' *ᵥ y) i)) = fun i => q.sec ((β *ᵥ y) i) := by

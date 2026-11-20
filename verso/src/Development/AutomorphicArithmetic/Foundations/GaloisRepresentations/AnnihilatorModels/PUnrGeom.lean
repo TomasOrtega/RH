@@ -5,6 +5,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h x y hx hy g hg hxy`. Take `⟨n, c, rfl⟩` from `Unram.exists_diag hx`. Take `⟨m, d, rfl⟩` from `Unram.exists_diag hy`. Rewrite `hxy` using `[WD.charPol_mk, WD.charPol_mk, WDRep.diag_ρ, WDRep.diag_ρ, charpoly_diagEnd, charpoly_diagEnd, hg]`. Establish `key` using `congrArg Polynomial.roots hxy`.
+
+Simplify using `only [Finset.prod_eq_multiset_prod] at key`. Establish `R : ∀ {k : ℕ} (e : Fin k → ℂˣ), (Multiset.map (fun i => Polynomial.X - Polynomial.C (((e i : ℂˣ) : ℂ) ^ (-1 : ℤ))) Finset.univ.val).prod.roots = Finset.univ.val.map fun i => ((e i : ℂˣ) : ℂ) ^ (-1 : ℤ)`. Introduce `k e`. Use `Polynomial.roots_multiset_prod_X_sub_C (Finset.univ.val.map fun i => ((e i : ℂˣ) : ℂ) ^ (-1 : ℤ))` as an intermediate fact. Rewrite `this` using `[Multiset.map_map]`. Then use the resulting hypothesis.
+
+Rewrite `key` using `[R, R]`. Apply `Unram.diag_eq_diag` to reduce the goal to its premises. Use `congrArg (Multiset.map fun z : ℂ => z⁻¹) key` as an intermediate fact. Simplify `this` using `[Multiset.map_map, Function.comp_def, zpow_neg_one, inv_inv]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.unrGeom_of :
     UnrOfGeom := by
   classical

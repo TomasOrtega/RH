@@ -13,6 +13,11 @@ section Helpers
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
   {S : Scheme.{0}} {s : S ⟶ Sp R}
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [pow_zero, Hom.one_def]`. Rewrite using `[← Category.assoc, toUnit_unique (f ≫ toUnit T) (toUnit T')]`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ, pow_succ, ← ih, Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]`.
+-/
 private theorem cpow {A T T' : Over S} [GrpObj A] (f : T' ⟶ T) (h : T ⟶ A) (n : ℕ) :
     f ≫ (h ^ n) = (f ≫ h) ^ n := by
   induction n with
@@ -22,6 +27,9 @@ private theorem cpow {A T T' : Over S} [GrpObj A] (f : T' ⟶ T) (h : T ⟶ A) (
   | succ n ih =>
     rw [pow_succ, pow_succ, ← ih, Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]
 
+/- English proof (translation)
+Conclude with `map_pow (IsMonHom.monoidHom f T) h n`.
+-/
 private theorem powc {A B T : Over S} [GrpObj A] [GrpObj B] (h : T ⟶ A) (f : A ⟶ B) [IsMonHom f] (n : ℕ) :
     (h ^ n) ≫ f = (h ≫ f) ^ n := by
   exact map_pow (IsMonHom.monoidHom f T) h n
@@ -30,31 +38,49 @@ private abbrev sc (o : Obj b N s) (x : 𝓞 D.F) : o.A ⟶ o.A := o.act.act (alg
 
 private instance sc_hom (o : Obj b N s) (x : 𝓞 D.F) : IsMonHom (sc o x) := o.act.hom _
 
+/- English proof (translation)
+Use `show o.act.act (algebraMap (𝓞 D.F) D.O (x + y)) = _`. Rewrite using `[map_add]`. Conclude with `o.act.add _ _`.
+-/
 private theorem sc_add (o : Obj b N s) (x y : 𝓞 D.F) : sc o (x + y) = sc o x * sc o y := by
   show o.act.act (algebraMap (𝓞 D.F) D.O (x + y)) = _
   rw [map_add]
   exact o.act.add _ _
 
+/- English proof (translation)
+Use `show o.act.act (algebraMap (𝓞 D.F) D.O (x * y)) = _`. Rewrite using `[map_mul]`. Conclude with `o.act.mul _ _`.
+-/
 private theorem sc_mul (o : Obj b N s) (x y : 𝓞 D.F) : sc o (x * y) = sc o y ≫ sc o x := by
   show o.act.act (algebraMap (𝓞 D.F) D.O (x * y)) = _
   rw [map_mul]
   exact o.act.mul _ _
 
+/- English proof (translation)
+Use `show o.act.act (algebraMap (𝓞 D.F) D.O 1) = _`. Rewrite using `[map_one]`. Conclude with `o.act.one`.
+-/
 private theorem sc_one (o : Obj b N s) : sc o 1 = 𝟙 o.A := by
   show o.act.act (algebraMap (𝓞 D.F) D.O 1) = _
   rw [map_one]
   exact o.act.one
 
+/- English proof (translation)
+Establish `h` using `sc_add o 0 0`. Rewrite `h` using `[add_zero]`. Use `open GrpObj in exact mul_eq_left.mp h.symm`.
+-/
 private theorem sc_zero (o : Obj b N s) : sc o 0 = 1 := by
   have h := sc_add o 0 0
   rw [add_zero] at h
   open GrpObj in exact mul_eq_left.mp h.symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, sc_zero, pow_zero]`. Consider the case `succ n ih => rw [Nat.cast_succ, sc_add, ih, sc_one, pow_succ]`.
+-/
 private theorem sc_nat (o : Obj b N s) (n : ℕ) : sc o (n : 𝓞 D.F) = (𝟙 o.A) ^ n := by
   induction n with
   | zero => rw [Nat.cast_zero, sc_zero, pow_zero]
   | succ n ih => rw [Nat.cast_succ, sc_add, ih, sc_one, pow_succ]
 
+/- English proof (translation)
+Rewrite using `[sc_mul, sc_nat, ← Category.assoc, cpow, Category.comp_id, hz]`. Establish `h` using `powc z (sc o t) 0`. Rewrite `h` using `[pow_zero, pow_zero]`. Then use the resulting hypothesis.
+-/
 private theorem sc_killed (o : Obj b N s) {T : Over S} (z : T ⟶ o.A) {c : ℕ} (hz : z ^ c = 1) (t : 𝓞 D.F) :
     z ≫ sc o (t * (c : 𝓞 D.F)) = 1 := by
   rw [sc_mul, sc_nat, ← Category.assoc, cpow, Category.comp_id, hz]
@@ -63,27 +89,69 @@ private theorem sc_killed (o : Obj b N s) {T : Over S} (z : T ⟶ o.A) {c : ℕ}
 
 end Helpers
 
+/- English proof (translation)
+Rewrite using `[RingOfIntegers.ext_iff, D.bar_eq, D.bar_eq, IsCMField.complexConj_apply_apply]`.
+-/
 private theorem bar_bar {p : ℕ} [Fact p.Prime] (D : Datum p) (a : 𝓞 D.F) : D.bar (D.bar a) = a := by
   rw [RingOfIntegers.ext_iff, D.bar_eq, D.bar_eq, IsCMField.complexConj_apply_apply]
 
+/- English proof (translation)
+Establish `h` using `powc (1 : T ⟶ A) f 0`. Rewrite `h` using `[pow_zero, pow_zero]`. Then use the resulting hypothesis.
+-/
 private theorem one_comp_monHom' {S : Scheme.{0}} {T A B : Over S} [GrpObj A] [GrpObj B] (f : A ⟶ B)
     [IsMonHom f] : (1 : T ⟶ A) ≫ f = 1 := by
   have h := powc (1 : T ⟶ A) f 0
   rwa [pow_zero, pow_zero] at h
 
+/- English proof (translation)
+Establish `h` using `cpow f (1 : T ⟶ A) 0`. Rewrite `h` using `[pow_zero, pow_zero]`. Then use the resulting hypothesis.
+-/
 private theorem comp_one_grpObj {S : Scheme.{0}} {X T A : Over S} [GrpObj A] (f : X ⟶ T) :
     f ≫ (1 : T ⟶ A) = 1 := by
   have h := cpow f (1 : T ⟶ A) 0
   rwa [pow_zero, pow_zero] at h
 
+/- English proof (translation)
+Rewrite using `[Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]`.
+-/
 private theorem comp_mul_grpObj {S : Scheme.{0}} {T A B : Over S} [GrpObj B] (f : T ⟶ A)
     (h₁ h₂ : A ⟶ B) : f ≫ (h₁ * h₂) = (f ≫ h₁) * (f ≫ h₂) := by
   rw [Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]
 
+/- English proof (translation)
+Rewrite using `[cpow, Category.comp_id]`.
+-/
 private theorem comp_id_pow_eq_pow {S : Scheme.{0}} {T A : Over S} [GrpObj A] (f : T ⟶ A) (n : ℕ) :
     f ≫ (𝟙 A ^ n) = f ^ n := by
   rw [cpow, Category.comp_id]
 
+/- English proof (translation)
+Introduce `hU hP hA hD p _ D R _ b N r w hw hle k _ s c o o₁ o₂ ψ₁ ψ₂ h1 h2 hiff T g hg`. Establish `cpos` using `h1.pos`. Take `⟨⟨e, rfl⟩, hm1, hl1, -, -, ψ₁', hm1', hψ₁a, hψ₁b⟩` from `id h1`. Take `⟨-, hm2, hl2, -, -, ψ₂', hm2', hψ₂a, hψ₂b⟩` from `id h2`. Use `haveI := hm1`.
+
+Use `haveI := hm1'`. Use `haveI := hm2`. Use `haveI := hm2'`. Take `⟨α, hα1, hα2, -⟩` from `hU p D r w hw hle e`. Establish `kill : ∀ {T' : Over (Sp k)} (u : T' ⟶ o.A), u ^ (p ^ e) = 1 → ∀ t : 𝓞 D.F, t ∈ Ideal.span {(p : 𝓞 D.F) ^ e} → u ≫ sc o t = 1`.
+
+Introduce `T' u hu t ht`. Take `⟨t', rfl⟩` from `Ideal.mem_span_singleton'.mp ht`. Rewrite using `[← Nat.cast_pow]`. Conclude with `sc_killed o u hu t'`. Establish `uk : ∀ (o' : Obj b N s) (ψ : o.A ⟶ o'.A) [IsMonHom ψ], (∀ c', o.act.act c' ≫ ψ = ψ ≫ o'.act.act c') → ∀ (T' : Over (Sp k)) (u : T' ⟶ o.A), u ≫ ψ = 1 → u ^ (p ^ e) = 1 → UKer r o ψ T' (u ≫ sc o α)`.
+
+Introduce `o' ψ _ hl T' u hu hpu`. Use `⟨?_, e, ?_⟩` and prove the remaining obligations. Establish `hl' : sc o α ≫ ψ = ψ ≫ sc o' α` using `hl _`. Rewrite using `[Category.assoc, hl', ← Category.assoc, hu, one_comp_monHom']`. Introduce `a ha show (u ≫ sc o α) ≫ sc o a = 1`.
+
+Rewrite using `[Category.assoc, ← sc_mul]`. Conclude with `kill u hpu _ (hα1 a ha)`. Establish `gpow : g ^ (p ^ e) = 1`. Rewrite using `[← comp_id_pow_eq_pow g (p ^ e), ← hψ₁a, ← Category.assoc, hg, one_comp_monHom']`. Establish `dec : g = (g ≫ sc o α) * (g ≫ sc o (D.bar α))`.
+
+Rewrite using `[← comp_mul_grpObj, ← sc_add]`. Take `⟨t', ht'⟩` from `Ideal.mem_span_singleton'.mp hα2`. Establish `hsum : α + D.bar α = 1 + t' * ((p ^ e : ℕ) : 𝓞 D.F)`. Rewrite using `[Nat.cast_pow, ht']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsum, sc_add, comp_mul_grpObj, sc_one, Category.comp_id, sc_killed o g gpow t', _root_.mul_one]`. Establish `hA1 : (g ≫ sc o α) ≫ ψ₂ = 1` using `((hiff T _).1 (uk o₁ ψ₁ hl1 T g hg gpow)).1`. Take `⟨ν, hν, hνc⟩` from `(hD (Sp k) o₂.A o₁.A o₂.ab (p ^ e) cpos).1 (ψ₂' ≫ sc o α ≫ ψ₁) inferInstance (by`. Introduce `T' t ht`. Establish `hu2 : (t ≫ ψ₂') ≫ ψ₂ = 1`.
+
+Rewrite using `[Category.assoc, hψ₂b, comp_id_pow_eq_pow, ht]`. Establish `hu3 : (t ≫ ψ₂') ^ (p ^ e) = 1`. Rewrite using `[← powc, ht, one_comp_monHom']`. Establish `h'` using `((hiff T' _).2 (uk o₂ ψ₂ hl2 T' _ hu2 hu3)).1`. Simplify `h')` using `only [Category.assoc]`.
+
+Use `haveI := hν`. Establish `hfac : ν ≫ ψ₁' = ψ₂' ≫ sc o α`. Use `(hD (Sp k) o₂.A o.A o₂.ab (p ^ e) cpos).2 _ _ inferInstance inferInstance ?_` and prove the remaining obligations. Rewrite using `[← powc, hνc]`. Simplify using `only [Category.assoc, hψ₁a]`.
+
+Rewrite using `[← Category.assoc, comp_id_pow_eq_pow]`. Establish `h3 : ∀ (T' : Over (Sp k)) (x y : T' ⟶ o.A) (a : 𝓞 D.F), evc o.isLB (x ≫ sc o a) y = evc o.isLB x (y ≫ sc o (D.bar a))` using `(hP p D R b N (Sp k) s o).2.2.1`. Establish `hB : (g ≫ sc o (D.bar α)) ≫ ψ₂ = 1`. Take `⟨e', hcop, hnd⟩` from `(hP p D R b N (Sp k) s o₂).2.2.2.1`. Establish `zc : ((g ≫ sc o (D.bar α)) ≫ ψ₂) ^ (p ^ e) = 1`.
+
+Rewrite using `[Category.assoc, ← powc, gpow, one_comp_monHom']`. Establish `ze : ((g ≫ sc o (D.bar α)) ≫ ψ₂) ^ e' = 1`. Apply `hnd` to reduce the goal to its premises. Establish `ad2` using `(hA p D R b N k s (p ^ e) o o₂ ψ₂ ψ₂' h2 hm2' hψ₂b (o₂.A ⊗ T) (snd o₂.A T ≫ g ≫ sc o (D.bar α)) (fst o₂.A T)).1`. Simplify using `only [Category.assoc] at ad2 ⊢`.
+
+Rewrite using `[ad2, ← Category.assoc, h3, bar_bar, Category.assoc, ← hfac, ← Category.assoc]`. Establish `ad1` using `(hA p D R b N k s (p ^ e) o o₁ ψ₁ ψ₁' h1 hm1' hψ₁b (o₂.A ⊗ T) (snd o₂.A T ≫ g) (fst o₂.A T ≫ ν)).1`. Rewrite using `[← ad1, Category.assoc, hg, comp_one_grpObj]`. Conclude with `GlobalTheory.AbDual.IsAdditive.evc_one o₁.isLB (hP p D R b N (Sp k) s o₁).1 _`. Establish `hgcd` using `pow_gcd_eq_one.2 ⟨ze, zc⟩`.
+
+Rewrite `hgcd` using `[Nat.Coprime.gcd_eq_one (Nat.Coprime.pow_right e hcop), pow_one]`. Then use the resulting hypothesis. Establish `mm : ∀ a a' : T ⟶ o.A, (a * a') ≫ ψ₂ = (a ≫ ψ₂) * (a' ≫ ψ₂)` using `fun a a' => (IsMonHom.monoidHom ψ₂ T).map_mul a a'`. Rewrite using `[dec, mm, hA1, hB, _root_.one_mul]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.kerFromU_of :
     UElt → PairCalc → Adjoint → DivC → KerFromU := by
   intro hU hP hA hD p _ D R _ b N r w hw hle k _ s c o o₁ o₂ ψ₁ ψ₂ h1 h2 hiff T g hg

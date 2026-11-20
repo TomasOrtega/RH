@@ -5,6 +5,23 @@ open scoped ENNReal
 
 namespace GlobalTheory.Twist.ClassSumReindex
 
+/- English proof (translation)
+Use `set C := Γ.subgroupOf (cent γ)`. Set `R` to `GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass Γ γ`. Set `s : R → H` to `fun δ => Classical.choose δ.2`. Establish `hs : ∀ δ : R, s δ ∈ Γ ∧ (δ : H) = (s δ)⁻¹ * γ * s δ` using `fun δ => Classical.choose_spec δ.2`. Establish `hcomm : ∀ h : C, ((h : cent γ) : H) * γ = γ * ((h : cent γ) : H)` using `fun h => (Subgroup.mem_centralizer_singleton_iff).1 (h : cent γ).2`.
+
+Establish `hΓ : ∀ h : C, ((h : cent γ) : H) ∈ Γ` using `fun h => Subgroup.mem_subgroupOf.1 h.2`. Establish `hconj : ∀ (h : C) (δ : R), (((h : cent γ) : H) * s δ)⁻¹ * γ * (((h : cent γ) : H) * s δ) = δ`. Introduce `h δ`. Rewrite using `[(hs δ).2]`. Use `hcomm h` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Set `p : Γ → R` to `fun g => ⟨(g : H)⁻¹ * γ * g, g, g.2, rfl⟩`. Establish `hq : ∀ g : Γ, (g : H) * (s (p g))⁻¹ ∈ cent γ`. Introduce `g`. Establish `h1` using `(hs (p g)).2`.
+
+Express the relevant statement in the definitionally equal form `(g : H)⁻¹ * γ * g = (s (p g))⁻¹ * γ * s (p g) at h1`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`. Establish `h2 : γ = (g : H) * ((s (p g))⁻¹ * γ * s (p g)) * (g : H)⁻¹` using `by rw [← h1]; group`. Combine the equalities or inequalities in the displayed calculation. Set `e : Γ ≃ R × C` to `{ toFun := fun g => (p g, ⟨⟨(g : H) * (s (p g))⁻¹, hq g⟩, Subgroup.mem_subgroupOf.2 (mul_mem g.2 (inv_mem (hs (p g)).1))⟩) invFun := fun q => ⟨((q.2 : cent γ) : H) * s q.1, mul_mem (hΓ q.2) (hs q.1).1⟩ left_inv := fun g => Subtype.ext (by simp) right_inv := fun q => by`.
+
+Take `⟨δ, h⟩` from `q`. Establish `hp : p ⟨((h : cent γ) : H) * s δ, mul_mem (hΓ h) (hs δ).1⟩ = δ` using `Subtype.ext (hconj h δ)`. Use `Prod.ext hp (Subtype.ext (Subtype.ext ?_))` and prove the remaining obligations. Simplify using `only [hp]`. Use `group }`.
+
+Rewrite using `[← e.symm.tsum_eq]`. Use `Eq.trans ?_ (ENNReal.tsum_prod (f := fun (δ : R) (h : C) => α (((e.symm (δ, h) : Γ) : H) * x) * G ((((e.symm (δ, h) : Γ) : H) * x)⁻¹ * γ * (((e.symm (δ, h) : Γ) : H) * x)))).symm` and prove the remaining obligations. Use `tsum_congr fun δ => ?_` and prove the remaining obligations. Establish `key : ∀ h : C, α (((e.symm (δ, h) : Γ) : H) * x) * G ((((e.symm (δ, h) : Γ) : H) * x)⁻¹ * γ * (((e.symm (δ, h) : Γ) : H) * x)) = α (((h : cent γ) : H) * (s δ * x)) * G (x⁻¹ * δ * x)`. Introduce `h`.
+
+Express the relevant statement in the definitionally equal form `α (((h : cent γ) : H) * s δ * x) * G ((((h : cent γ) : H) * s δ * x)⁻¹ * γ * (((h : cent γ) : H) * s δ * x)) = _`. Rewrite using `[mul_assoc ((h : cent γ) : H) (s δ) x]`. Use `congr 1`. Use `congr 1`. Rewrite using `[← hconj h δ]`.
+
+Use `group`. Rewrite using `[tsum_congr key, ENNReal.tsum_mul_right, hα, one_mul]`.
+-/
 theorem tsum_ratClass_eq_tsum_weighted (H : Type) [Group H] (Γ : Subgroup H) (γ : H) (_hγ : γ ∈ Γ)
     (α : H → ℝ≥0∞) (hα : ∀ y, ∑' h : Γ.subgroupOf (cent γ), α (((h : cent γ) : H) * y) = 1)
     (G : H → ℝ≥0∞) (x : H) :

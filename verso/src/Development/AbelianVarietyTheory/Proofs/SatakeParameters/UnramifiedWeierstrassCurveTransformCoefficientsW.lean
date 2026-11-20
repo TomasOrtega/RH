@@ -15,6 +15,13 @@ open Formalism.MainNotions.GL3Theta
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use `first`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `@_root_.GlobalTheory.WittRootsOfUnity.inWf_of_mem_Kur`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `_root_.GlobalTheory.WittRootsOfUnity.inWf_of_mem_Kur`.
+
+Consider the case `exact @_root_.GlobalTheory.WittRootsOfUnity.inWf_of_mem_Kur`. Consider the case `exact _root_.GlobalTheory.WittRootsOfUnity.inWf_of_mem_Kur`. Consider the case `(apply _root_.GlobalTheory.WittRootsOfUnity.inWf_of_mem_Kur <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.WittRootsOfUnity.inWf_of_mem_Kur <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.WittRootsOfUnity.inWf_of_mem_Kur <;> first | assumption | infer_instance)`.
+
+Consider the case `(intros; exact _root_.GlobalTheory.WittRootsOfUnity.inWf_of_mem_Kur ..)`.
+-/
 theorem inWf_of_kur {x : ℂ_[p]} (hx : x ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p) : InWf x := by
   first
   | (run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll])); exact @_root_.GlobalTheory.WittRootsOfUnity.inWf_of_mem_Kur
@@ -26,6 +33,13 @@ theorem inWf_of_kur {x : ℂ_[p]} (hx : x ∈ Formalism.L2.Th1.CM.MaximalUnramif
   | (intros; apply @_root_.GlobalTheory.WittRootsOfUnity.inWf_of_mem_Kur <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.WittRootsOfUnity.inWf_of_mem_Kur ..)
 
+/- English proof (translation)
+Set `K` to `Formalism.L2.Th1.CM.MaximalUnramifiedExtension p`. Set `W' : WeierstrassCurve K` to `⟨⟨W.a₁, h1⟩, ⟨W.a₂, h2⟩, ⟨W.a₃, h3⟩, ⟨W.a₄, h4⟩, ⟨W.a₆, h6⟩⟩`. Establish `hWW : W'.map K.subtype = W` using `rfl`. Take `⟨hl, -, hwp, -, -⟩` from `Formalism.L2.Th1.A.zMap K ℂ_[p] K.subtype W'`. Take `⟨h0, h1', -, -⟩` from `Formalism.L2.Th1.A.logSpec K W'`.
+
+Establish `hB` using `(Formalism.L2.Th1.B.baseChange K ℂ_[p] K.subtype ⟨s2, hs⟩ 0 0 (Formalism.L2.Th1.A.wpReg W') 0 (Formalism.L2.Th1.A.logSer W') 0 h0 h1' (by simp)).2.2.2.2.1`. Establish `e : Formalism.L2.Th1.B.phW W s2 = PowerSeries.map K.subtype (Formalism.L2.Th1.B.phO ⟨s2, hs⟩ (Formalism.L2.Th1.A.wpReg W') (Formalism.L2.Th1.A.logSer W'))`. Rewrite using `[hB, hl, hwp, hWW]`. Both sides reduce to the same expression. Introduce `n`.
+
+Rewrite using `[e]`. Use `inWf_of_kur ?_` and prove the remaining obligations. Rewrite using `[show MvPowerSeries.coeff n (PowerSeries.map K.subtype (Formalism.L2.Th1.B.phO ⟨s2, hs⟩ (Formalism.L2.Th1.A.wpReg W') (Formalism.L2.Th1.A.logSer W')) : MvPowerSeries Unit ℂ_[p]) = K.subtype (MvPowerSeries.coeff n (Formalism.L2.Th1.B.phO ⟨s2, hs⟩ (Formalism.L2.Th1.A.wpReg W') (For …`. Conclude with `(MvPowerSeries.coeff n _ : K).2`.
+-/
 theorem coefWf_phW_of_kur (W : WeierstrassCurve ℂ_[p]) (h1 : W.a₁ ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p)
     (h2 : W.a₂ ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p) (h3 : W.a₃ ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p) (h4 : W.a₄ ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p)
     (h6 : W.a₆ ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p) {s2 : ℂ_[p]} (hs : s2 ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p) :
@@ -50,6 +64,9 @@ theorem coefWf_phW_of_kur (W : WeierstrassCurve ℂ_[p]) (h1 : W.a₁ ∈ Formal
         (Formalism.L2.Th1.A.logSer W') : MvPowerSeries Unit K)) from MvPowerSeries.coeff_map _ _ _]
   exact (MvPowerSeries.coeff n _ : K).2
 
+/- English proof (translation)
+Introduce `_ _ W h1 h2 h3 h4 h6 _ hs` and use `coefWf_phW_of_kur W h1 h2 h3 h4 h6 hs`.
+-/
 theorem coefWf_phW : ∀ (p : ℕ) [Fact p.Prime] (W : WeierstrassCurve ℂ_[p]), W.a₁ ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p → W.a₂ ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p → W.a₃ ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p → W.a₄ ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p → W.a₆ ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p → ∀ s2 : ℂ_[p], s2 ∈ Formalism.L2.Th1.CM.MaximalUnramifiedExtension p → Formalism.MainNotions.GL3Theta.CoefWf (Formalism.L2.Th1.B.phW W s2 : MvPowerSeries Unit ℂ_[p]) :=
   fun _ _ W h1 h2 h3 h4 h6 _ hs => coefWf_phW_of_kur W h1 h2 h3 h4 h6 hs
 

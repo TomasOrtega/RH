@@ -11,6 +11,13 @@ namespace GlobalTheory
 
 namespace CuspCompact
 
+/- English proof (translation)
+Establish `ht : Filter.Tendsto (fun s : ℝ => ∑ k, C k * Real.exp (-2 * Real.pi * c k / s)) (𝓝[>] 0) (𝓝 (∑ k : Fin N, C k * 0))`. Use `tendsto_finsetSum _ fun k _ => Filter.Tendsto.const_mul _ ?_` and prove the remaining obligations. Use `Real.tendsto_exp_atBot.comp ?_` and prove the remaining obligations. Establish `hneg : -2 * Real.pi * c k < 0`. Use `mul_pos Real.pi_pos (hc k)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(Filter.Tendsto.const_mul_atTop_of_neg hneg (tendsto_inv_nhdsGT_zero (𝕜 := ℝ))).congr fun s => (div_eq_mul_inv _ _).symm`. Simplify using `only [mul_zero, Finset.sum_const_zero] at ht`. Establish `hev` using `ht.eventually (gt_mem_nhds h0)`. Take `⟨δ, hδ, hsub⟩` from `(mem_nhdsGT_iff_exists_Ioo_subset).1 hev`.
+
+Conclude with `⟨δ, hδ, fun s hs hsδ => hsub ⟨hs, hsδ⟩⟩`.
+-/
 theorem exists_sum_exp_lt {N : ℕ} (C c : Fin N → ℝ) (hc : ∀ k, 0 < c k) (c0 : ℝ) (h0 : 0 < c0) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ s : ℝ, 0 < s → s < δ →
       ∑ k, C k * Real.exp (-2 * Real.pi * c k / s) < c0 := by
@@ -30,6 +37,15 @@ theorem exists_sum_exp_lt {N : ℕ} (C c : Fin N → ℝ) (hc : ∀ k, 0 < c k) 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `hLa hM2 r X Xa c0 h0`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Use `⟨X.dom, Set.subsingleton_of_subsingleton.isCompact, subset_rfl, fun x hx _ => ?_⟩` and prove the remaining obligations. Use `⟨1, X.Γ.one_mem, x, fun τ => ⟨by simp, fun a => a.elim0⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (lact 1 (rmul x x)) x]` and apply the resulting hypothesis.
+
+Establish `hpos` using `(hLa r X hr).2.2`. Use `choose c hc hcw using fun k => spectralGap_holds r X Xa.L (Xa.w k) (Xa.w_van k).1`. Use `choose C hC using fun k => cuspidalDecay_holds r X Xa.L (Xa.w k) (c k) (hc k).le (hcw k)`. Take `⟨δ, hδ, hlt⟩` from `exists_sum_exp_lt C c hc c0 h0`. Take `⟨K, hK, hKd, hKx⟩` from `hM2 r X (Real.sqrt δ) (Real.sqrt_pos.2 hδ)`.
+
+Use `⟨K, hK, hKd, fun x hx hle => hKx x hx ?_⟩` and prove the remaining obligations. Establish `hs : 0 < X.firstMinimumSq x` using `Real.sqrt_pos.1 (hpos x hx)`. Use `Real.sqrt_le_sqrt (not_lt.1 fun h => ?_)` and prove the remaining obligations. Establish `h1` using `hlt _ hs h`. Establish `h2 : ∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2 ≤ ∑ k, C k * Real.exp (-2 * Real.pi * c k / X.firstMinimumSq x)` using `Finset.sum_le_sum fun k _ => hC k x hx`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_compact_of_le_sum_pnorm_sq :
     LineBundleFirstBoundGlobalGeneration (E := E) → MahlerCompactnessCriterion (E := E) →
     ∀ (r : ℕ) (X : Data E r) (Xa : ArchInM X) (c0 : ℝ), 0 < c0 →

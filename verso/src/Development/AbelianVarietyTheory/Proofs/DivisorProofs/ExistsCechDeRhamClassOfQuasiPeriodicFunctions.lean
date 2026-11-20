@@ -14,6 +14,27 @@ set_option autoImplicit false
 
 namespace GlobalTheory.CechPer
 
+/- English proof (translation)
+Introduce `A _ g L u hA k q hk hreg hder hper`. Take `⟨hopen, hdiff, -, -, -, hmono, -, -, hres, hev, -, -⟩` from `GlobalTheory.CechPer.pre_val_rules A g L u`. Establish `hf : ∀ (U V : A.left.affineOpens) (_ : Opposite.op U ⟶ Opposite.op V), ∃ b : Sec (str A) V.1, ∀ z ∈ pre u.ex V.1, (k V - k U) z = val u.ex V.1 b z` using `fun U V a => hreg U V (leOfHom a.unop)`. Use `choose f hf using hf`. Establish `hω : ∀ U : A.left.affineOpens, ∃ ξ : Ω[Sec (str A) U.1⁄ℂ], dOne ℂ _ ξ = 0 ∧ ∀ z ∈ pre u.ex U.1, fderiv ℂ (k U) z = evForm u.ex U.1 z ξ` using `fun U => GlobalTheory.T.exists_closed_algebraic_form_fderiv_uniformised A g L u hA U (k U) (hk U) (hder U)`.
+
+Use `choose ω hωc hωe using hω`. Establish `hsub : ∀ (U : A.left.Opens) (b b' : Sec (str A) U), ∀ z ∈ pre u.ex U, val u.ex U (b - b') z = val u.ex U b z - val u.ex U b' z`. Introduce `U b b' z hz`. Take `⟨e, he⟩` from `hev U z hz`. Conclude with `(he _).trans ((map_sub e b b').trans (congrArg₂ (· - ·) (he b).symm (he b').symm))`.
+
+Establish `hadd : ∀ (U : A.left.Opens) (b b' : Sec (str A) U), ∀ z ∈ pre u.ex U, val u.ex U (b + b') z = val u.ex U b z + val u.ex U b' z`. Introduce `U b b' z hz`. Take `⟨e, he⟩` from `hev U z hz`. Conclude with `(he _).trans ((map_add e b b').trans (congrArg₂ (· + ·) (he b).symm (he b').symm))`. Establish `hfun : ∀ (U V W : A.left.affineOpens) (φ : Opposite.op U ⟶ Opposite.op V) (ψ : Opposite.op V ⟶ Opposite.op W), f U W (φ ≫ ψ) = Sec.res (str A) (show W.1 ≤ V.1 from leOfHom ψ.unop) (f U V φ) + f V W ψ`.
+
+Introduce `U V W φ ψ`. Establish `hle : W.1 ≤ V.1` using `leOfHom ψ.unop`. Use `sub_eq_zero.1 (GlobalTheory.T.eq_zero_of_val_eq_zero_abelian A g L u hA W.1 (f U W (φ ≫ ψ) - (Sec.res (str A) hle (f U V φ) + f V W ψ) : Sec (str A) W.1) fun z hz => ?_)` and prove the remaining obligations. Establish `e1` using `hsub W.1 (f U W (φ ≫ ψ)) (Sec.res (str A) hle (f U V φ) + f V W ψ) z hz`. Establish `e2` using `hadd W.1 (Sec.res (str A) hle (f U V φ)) (f V W ψ) z hz`.
+
+Establish `e3` using `hres V.1 W.1 hle (f U V φ) z hz`. Establish `e4` using `hf U W (φ ≫ ψ) z hz`. Establish `e5` using `hf U V φ z (hmono _ _ hle hz)`. Establish `e6` using `hf V W ψ z hz`. Simplify using `only [Pi.sub_apply] at e4 e5 e6`.
+
+Take the linear combination `e1 - e2 - e3 - e4 + e5 + e6`. Establish `hform : ∀ (U V : A.left.affineOpens) (φ : Opposite.op U ⟶ Opposite.op V), ω V = p1 (OAff (str A)) φ (ω U) + KaehlerDifferential.D ℂ (Sec (str A) V.1) (f U V φ)`. Introduce `U V φ`. Use `sub_eq_zero.1 (GlobalTheory.T.kaehlerOneForm_eq_zero_of_uniformised_values A g L u hA V _ fun z hz => ?_)` and prove the remaining obligations. Establish `hle : V.1 ≤ U.1` using `leOfHom φ.unop`.
+
+Establish `hz' : z ∈ pre u.ex U.1` using `hmono _ _ hle hz`. Establish `e1` using `GlobalTheory.T.evForm_restriction_eq A g L u U V φ (ω U) z hz`. Establish `e2` using `(GlobalTheory.T.uniformisedOneFormEvaluation_rules A g L u V.1 z hz).2.2 (f U V φ)`. Establish `heq : k V =ᶠ[nhds z] k U + val u.ex V.1 (f U V φ)` using `by filter_upwards [(hopen _).mem_nhds hz] with w hw`. Use `hf U V φ w hw` as an intermediate fact.
+
+Simplify using `only [Pi.sub_apply] at this`. Simplify using `only [Pi.add_apply]`. Take the linear combination `this`. Establish `e3 : fderiv ℂ (k V) z = fderiv ℂ (k U) z + fderiv ℂ (val u.ex V.1 (f U V φ)) z` using `heq.fderiv_eq.trans (fderiv_add ((hk _).differentiableAt ((hopen _).mem_nhds hz')) ((hdiff _ _).differentiableAt ((hopen _).mem_nhds hz)))`. Use `(map_sub (evForm u.ex V.1 z) _ _).trans (sub_eq_zero.2 ?_)` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (map_add (evForm u.ex V.1 z) _ _).symm` and prove the remaining obligations. Conclude with `(hωe V z hz).symm.trans (e3.trans (congrArg₂ (· + ·) ((hωe U z hz').trans e1.symm) e2.symm))`. Set `c0 : Tot1 (OAff (str A))` to `(fun U V a => f U.unop V.unop a, fun U => ω U.unop)`. Establish `hc : c0 ∈ cechDeRhamTotalCocyclesOne (OAff (str A))` using `mem_cechDeRhamTotalCocyclesOne_iff.2 ⟨fun T T' T'' φ ψ => hfun T.unop T'.unop T''.unop φ ψ, fun T T' φ => hform T.unop T'.unop φ, fun T => hωc T.unop⟩`. Use `⟨Hyp1.mk _ ⟨c0, hc⟩, ⟨c0, hc⟩, k, rfl, ⟨hk, fun U V a z hz => ?_, fun U z hz => hωe U z hz⟩, hper⟩` and prove the remaining obligations.
+
+Use `hf U V a z hz` as an intermediate fact. Simplify using `only [Pi.sub_apply] at this`. Express the relevant statement in the definitionally equal form `k V z = k U z + val u.ex V.1 (f U V a) z`. Take the linear combination `this`.
+-/
 theorem exists_isPer_of_quasiPeriodic : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∀ (k : A.left.affineOpens → (Fin g → ℂ) → ℂ) (q : u.Λ → ℂ), (∀ U, DifferentiableOn ℂ (k U) (pre u.ex U.1)) → (∀ U V : A.left.affineOpens, V ≤ U → IsReg u.ex V.1 (k V - k U)) → (∀ U a, IsReg u.ex U.1 fun z => fderiv ℂ (k U) z (Pi.single a 1)) → (∀ U (l : u.Λ), ∀ z ∈ pre u.ex U.1, k U (z + l) = k U z + q l) → ∃ x, IsPer u.ex u.Λ x q := by
   intro A _ g L u hA k q hk hreg hder hper
   obtain ⟨hopen, hdiff, -, -, -, hmono, -, -, hres, hev, -, -⟩ := GlobalTheory.CechPer.pre_val_rules A g L u

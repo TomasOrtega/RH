@@ -5,6 +5,9 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.HerrFull
 
+/- English proof (translation)
+Introduce `D HW F` and use `herr_a_and_natural D HW F`.
+-/
 theorem herr_part_a_every_record :
     ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW),
       Formalism.MainNotions.LocalSituation.ClassMapInjectiveBijectiveNorms D HW F :=

@@ -28,6 +28,9 @@ variable {V : Type*} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalar
 
 omit [NumberField K] in
 
+/- English proof (translation)
+The claim follows from `Module.IsTorsionFree.of_smul_eq_zero fun a x hax ↦ by by_cases ha : a = 0 · exact Or.inl ha · right have ha' : (a : K) ≠ 0 := by exact_mod_cast ha have : (a : K) • x = 0 := by rw [← hax]; exact algebraMap_smul K a x exact (smul_eq_zero.mp this).resolve_left ha'`.
+-/
 theorem isTorsionFree_of_vectorSpace : Module.IsTorsionFree (𝓞 K) V :=
   Module.IsTorsionFree.of_smul_eq_zero fun a x hax ↦ by
     by_cases ha : a = 0
@@ -72,6 +75,9 @@ def IsLocalLattice (N : Submodule (v.adicCompletionIntegers K) (v.adicCompletion
     Prop :=
   N.FG ∧ Submodule.span (v.adicCompletion K) (N : Set (v.adicCompletion K ⊗[K] V)) = ⊤
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul K a x, map_smul, ← algebraMap_smul (v.adicCompletion K) (algebraMap (𝓞 K) (v.adicCompletionIntegers K) a) (toLocal v x), ← algebraMap_smul (v.adicCompletion K) (algebraMap (𝓞 K) K a) (toLocal v x)]`. Use `congr 1`.
+-/
 theorem toLocal_smul (a : 𝓞 K) (x : V) :
     toLocal v (a • x) = algebraMap (𝓞 K) (v.adicCompletionIntegers K) a • toLocal v x := by
   rw [← algebraMap_smul K a x, map_smul, ← algebraMap_smul (v.adicCompletion K)

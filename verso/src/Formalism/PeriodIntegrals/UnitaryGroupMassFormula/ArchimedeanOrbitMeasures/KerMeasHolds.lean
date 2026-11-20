@@ -13,6 +13,21 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 variable {X : Type} [MulAction G X] [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X]
 
+/- English proof (translation)
+Establish `hcl : IsClosed ((MulAction.stabilizer G x0 : Subgroup G) : Set G)` using `isClosed_singleton.preimage hc`. Use `haveI : IsClosed ((MulAction.stabilizer G x0 : Subgroup G) : Set G) := hcl`. Use `haveI : PolishSpace G := PI.AprimeInfA.polish_of_lcsc G`. Use `haveI : PolishSpace (G ⧸ MulAction.stabilizer G x0) := PI.AprimeInfA.polish_of_lcsc _`. Use `haveI : BorelSpace (G ⧸ MulAction.stabilizer G x0) := CosetSpace.borelSpace`.
+
+Use `set ι : G ⧸ MulAction.stabilizer G x0 → X := fun q => q.out • x0 with hιdef`. Establish `hemb : MeasurableEmbedding ι` using `(PI.AprimeInfA.orb_cont x0 hc).measurableEmbedding (PI.AprimeInfA.orb_inj x0)`. Establish `hmv : ∀ t : G, Measurable (fun h : MulAction.stabilizer G x0 => t * (h : G))` using `fun t => (continuous_const_mul t |>.comp continuous_subtype_val).measurable`. Use `Measure.measurable_of_measurable_coe _ fun A hA => ?_` and prove the remaining obligations. Establish `hf : Measurable (A.indicator (1 : G → ℝ≥0∞))` using `measurable_const.indicator hA`.
+
+Establish `eq : (fun y => Measure.map (fun h : MulAction.stabilizer G x0 => s y * (h : G)) ν A) = Function.extend ι (fun q : G ⧸ MulAction.stabilizer G x0 => ∫⁻ h, A.indicator (1 : G → ℝ≥0∞) (q.out * (h : G)) ∂ν) (fun _ => ∫⁻ h, A.indicator (1 : G → ℝ≥0∞) (h : G) ∂ν)`. Use function extensionality and compare the values at `y`. Establish `e0 : Measure.map (fun h : MulAction.stabilizer G x0 => s y * (h : G)) ν A = ∫⁻ h, A.indicator (1 : G → ℝ≥0∞) (s y * (h : G)) ∂ν`. Rewrite using `[Measure.map_apply (hmv _) hA, ← lintegral_indicator_one ((hmv _) hA)]`. Both sides reduce to the same expression.
+
+Rewrite using `[e0]`. Distinguish the cases in `hy : ∃ q, ι q = y`. Take `⟨q, rfl⟩` from `hy`. Rewrite using `[hemb.injective.extend_apply]`. Establish `hsq : s (ι q) • x0 = q.out • x0` using `hs (ι q) ⟨q.out, rfl⟩`.
+
+Establish `hk : q.out⁻¹ * s (ι q) ∈ MulAction.stabilizer G x0`. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, hsq, inv_smul_smul]`. Establish `hsk : s (ι q) = q.out * (q.out⁻¹ * s (ι q))` using `by group`. Rewrite using `[hsk]`. Conclude with `PI.AprimeInfA.avg_mul_mem (MulAction.stabilizer G x0) ν _ q.out ⟨_, hk⟩`.
+
+Rewrite using `[Function.extend_apply' _ _ _ (by simpa using hy)]`. Establish `hno : ¬ ∃ g : G, g • x0 = y`. Introduce and unpack `⟨g, rfl⟩`. Conclude with `hy ⟨(g : G ⧸ MulAction.stabilizer G x0), PI.AprimeInfA.orb_mk x0 g⟩`. Rewrite using `[h1 y hno]`.
+
+Simplify using `only [one_mul]`. Rewrite using `[eq]`. Conclude with `hemb.measurable_extend (PI.AprimeInfA.meas_avg_q (MulAction.stabilizer G x0) ν hf) measurable_const`.
+-/
 theorem ker_meas (x0 : X) (hc : Continuous fun g : G => g • x0)
     (ν : Measure (MulAction.stabilizer G x0)) [ν.IsMulLeftInvariant] [SFinite ν] (s : X → G)
     (hs : ∀ y, (∃ g : G, g • x0 = y) → s y • x0 = y) (h1 : ∀ y, ¬ (∃ g : G, g • x0 = y) → s y = 1) :
@@ -64,6 +79,15 @@ open MeasureTheory Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.
   Formalism.L2.SG.TypedSets Formalism.L2.SG.Pf.NcReal
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI : SecondCountableTopology (GI X) := PI.AprimeInfT.secondCountable_HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J`. Use `haveI : BorelSpace (TupI X) := PI.AprimeInfT.borelSpace_tup (F := X.B.I.F) (E := X.B.I.E) (Ainf X.B.I.F) (D.R.rS + 1 + D.R.rS)`. Use `set x0 := ratTup (F := X.B.I.F) (Ainf X.B.I.F) (tupH (frameOf X u')) with hx0`.
+
+Establish `hc : Continuous fun g : GI X => g • x0` using `PI.AprimeInfT.continuous_orbit (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J _`. Establish `hcl : IsClosed ((MulAction.stabilizer (GI X) x0 : Subgroup (GI X)) : Set (GI X))` using `isClosed_singleton.preimage hc`. Use `haveI : LocallyCompactSpace (MulAction.stabilizer (GI X) x0) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Set `ν : Measure (MulAction.stabilizer (GI X) x0)` to `(X.measW u').μHinf`. Use `haveI hH : ν.IsHaarMeasure := (X.measW_norm u').2.1`.
+
+Use `haveI : SecondCountableTopology (MulAction.stabilizer (GI X) x0) := Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Use `haveI : SigmaCompactSpace (MulAction.stabilizer (GI X) x0) := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`. Establish `hs : ∀ y, (∃ g : GI X, g • x0 = y) → sect X u' y • x0 = y` using `fun y hy => sect_spec X u' y hy`. Establish `h1 : ∀ y, ¬ (∃ g : GI X, g • x0 = y) → sect X u' y = 1`.
+
+Introduce `y hy`. Unfold `sect`. Conclude with `dif_neg hy`. Conclude with `PI.AprimeInfK.ker_meas (G := GI X) x0 hc ν (sect X u') hs h1`.
+-/
 theorem kerMeas_holds : KerMeas := by
   intro D X u' ψ hT μinf νinf fibInf hP
   classical

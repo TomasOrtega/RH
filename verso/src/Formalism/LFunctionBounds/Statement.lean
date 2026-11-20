@@ -109,8 +109,17 @@ def FixedLW3 : Prop :=
         chebyshevWeightedAverage m x (fun y => AS l S y + 2 * Al l y) ≤ chebyshevWeightedAverage m x (tripleMainTerm l S) + C * x ^ (θ + ε)) →
   ∀ s : ℂ, θ < s.re → riemannZeta s ≠ 0
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : triples 3 = {(1, 1, 1)} := by decide
+/- English proof (translation)
+Evaluate the numerical expressions using `[saw]`.
+-/
 example : saw (1 / 2) = 0 := by norm_num [saw]
+/- English proof (translation)
+Simplify using `[saw]`.
+-/
 example (y : ℝ) : saw (y + 1) = saw y := by simp [saw]
 
 def Theorem7 : Prop :=

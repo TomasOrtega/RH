@@ -14,6 +14,9 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RootEqn.unitAt_genAt_root | exact GlobalTheory.RootEqn.unitAt_genAt_root | (intros; apply GlobalTheory.RootEqn.unitAt_genAt_root <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generic_fibre_rational_function_rank : ∀ (D : D7) (O : Setup D) (B R : ℝ) (c : O.s.Comp) (G : Scheme.{0}) [IsIntegral G] (πG : G ⟶ (O.var c).X)
     (φ : (O.var c).Fn →+* G.functionField)
     (φs : G.fromSpecStalk (genericPoint G) ≫ πG = spMap φ ≫ (O.var c).X.fromSpecStalk (genericPoint (O.var c).X))

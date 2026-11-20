@@ -24,9 +24,27 @@ def HasChars (G : LogFGL v d) (u : Fin i → Fin d → C) (r : EReal) : Prop :=
   ∃ l : Fin i → Fin d → C, (∀ b, IsCharLog G (l b)) ∧
     ∀ w : Fin i → Fin d → C, IsFrameOf v u w → toE (v (pairDet l w)) ≤ r
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hu, fun a => Submodule.subset_span ⟨a, rfl⟩⟩`.
+-/
 theorem isFrameOf_self {u : Fin i → Fin d → C} (hu : IsSatFrame v u) : IsFrameOf v u u :=
   ⟨hu, fun a => Submodule.subset_span ⟨a, rfl⟩⟩
 
+/- English proof (translation)
+Use `choose M hM using fun a => (Submodule.mem_span_range_iff_exists_fun C).1 (hw.2 a)`. Establish `hwe : ∀ a e, w a e = ∑ k, M a k * u k e` using `fun a e => by`. Rewrite using `[← hM a]`. Simplify using `[Finset.sum_apply]`. Establish `hmin : ∀ r : Fin i → Fin d, (Matrix.of fun a b => w a (r b)).det = (Matrix.of M).det * (Matrix.of fun a b => u a (r b)).det` using `fun r => by`.
+
+Rewrite using `[← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, hwe]`. Establish `hint : ∀ (x : Fin i → Fin d → C), (∀ a e, IsIntV v (x a e)) → ∀ r : Fin i → Fin d, 0 ≤ v (Matrix.of fun a b => x a (r b)).det` using `fun x hx r => by`.
+
+Rewrite using `[Matrix.det_apply']`. Use `AddValuation.map_le_sum v fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul]`. Use `add_nonneg ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+
+Use `Finset.prod_induction _ (fun z => 0 ≤ v z) (fun a b ha hb => ?_) (by simp) fun k _ => hx _ _` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul]`. Conclude with `add_nonneg ha hb`. Take `⟨r, hr⟩` from `hu.2`. Take `⟨r', hr'⟩` from `hw.1.2`.
+
+Establish `h1 : 0 ≤ v (Matrix.of M).det`. Use `hint w hw.1.1 r` as an intermediate fact. Rewrite `this` using `[hmin, AddValuation.map_mul, hr, add_zero]`. Then use the resulting hypothesis. Establish `h2 : v (Matrix.of M).det ≤ 0`. Rewrite `hr'` using `[hmin, AddValuation.map_mul]`.
+
+Conclude with `hr' ▸ le_add_of_nonneg_right (hint u hu.1 r')`. Establish `h3 : pairDet l w = (Matrix.of M).det * pairDet l u`. Unfold `pairDet`. Rewrite using `[← Matrix.det_mul]`. Use `congr 1`.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, hwe, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun e _ => by ring`. Rewrite using `[h3, AddValuation.map_mul, le_antisymm h2 h1, zero_add]`.
+-/
 theorem v_pairDet_eq {u w : Fin i → Fin d → C} (hu : IsSatFrame v u) (hw : IsFrameOf v u w)
     (l : Fin i → Fin d → C) : v (pairDet l w) = v (pairDet l u) := by
   choose M hM using fun a => (Submodule.mem_span_range_iff_exists_fun C).1 (hw.2 a)
@@ -60,6 +78,9 @@ theorem v_pairDet_eq {u w : Fin i → Fin d → C} (hu : IsSatFrame v u) (hw : I
     exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun e _ => by ring
   rw [h3, AddValuation.map_mul, le_antisymm h2 h1, zero_add]
 
+/- English proof (translation)
+The claim follows from `exists_congr fun l => and_congr_right fun _ => ⟨fun h => h u (isFrameOf_self hu), fun h w hw => by rwa [v_pairDet_eq hu hw]⟩`.
+-/
 theorem hasChars_iff {G : LogFGL v d} {u : Fin i → Fin d → C} (hu : IsSatFrame v u) (r : EReal) :
     HasChars G u r ↔ ∃ l : Fin i → Fin d → C, (∀ b, IsCharLog G (l b)) ∧ toE (v (pairDet l u)) ≤ r :=
   exists_congr fun l => and_congr_right fun _ =>
@@ -103,16 +124,25 @@ def BigBlockChars : Prop :=
           (min (((rk f : ℝ) / ((p : ℝ) - 1) : ℝ) : EReal)
             (((Dw.q : ℝ) : EReal) * ((((1 : ℝ) / ((p : ℝ) - 1) : ℝ) : EReal) + vd_vp c io X f.1))))
 
+/- English proof (translation)
+The claim follows from `isFrameOf_self (isSatFrame_frame Ch X f)`.
+-/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)] {p : ℕ} [Fact p.Prime] {T : CDVR} {io : c.F →+* T.Fr}
     {y : IntFr Xo c T io} (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p) (f : Lt1 Dw) :
     IsFrameOf (vX_vp X) (frame Ch X f) (frame Ch X f) :=
   isFrameOf_self (isSatFrame_frame Ch X f)
 
+/- English proof (translation)
+Simplify using `[Datum.mult, h]`.
+-/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H) (τ : E →+* ℂ)
     (h : τ (H.rt : E) = H.rt0) : Dw.mult τ + Dw.q = Dw.p + Dw.q := by
   simp [Datum.mult, h]
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : ¬ IsSquare (-((7 : ℕ) : ZMod 3)) ∧ IsSquare (-((7 : ℕ) : ZMod 11)) := by decide
 
 end GlobalTheory.IndefiniteRowSideFullHecke.BigBlockCharacters

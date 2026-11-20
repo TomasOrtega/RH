@@ -14,6 +14,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.An
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Core
 open scoped TensorProduct
 
+/- English proof (translation)
+Take `⟨s, hsd⟩` from `h`. Use `⟨s.image p, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `b _`. Take `⟨a, rfl⟩` from `hs b`.
+
+Establish `ha : a ∈ closure ((Subgroup.closure (s : Set A) : Subgroup A) : Set A)`. Rewrite using `[← Subgroup.topologicalClosure_coe, hsd]`. Discharge the goal by the elementary cases of `trivial`. Rewrite using `[← SetLike.mem_coe, Subgroup.topologicalClosure_coe, Finset.coe_image, ← MonoidHom.map_closure, Subgroup.coe_map]`. Conclude with `image_closure_subset_closure_image hc ⟨a, ha, rfl⟩`.
+-/
 private theorem fg_image {A B : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [Group B]
     [TopologicalSpace B] [IsTopologicalGroup B] (p : A →* B) (hc : Continuous p) (hs : Function.Surjective p)
     (h : ∃ s : Finset A, (Subgroup.closure (s : Set A)).topologicalClosure = ⊤) :
@@ -32,6 +37,21 @@ private theorem fg_image {A B : Type} [Group A] [TopologicalSpace A] [IsTopologi
   exact image_closure_subset_closure_image hc ⟨a, ha, rfl⟩
 
 set_option maxHeartbeats 200000 in
+/- English proof (translation)
+Use `haveI := IsCO.toIsLocalRing O (R := R)`. Use `haveI := IsCO.toIsLocalRing O (R := R')`. Use `haveI : IsLocalHom (algebraMap O R') := IsCO.isLocalHom`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`.
+
+Assume the negation of the conclusion as `hnx`. Take `⟨c, hc⟩` from `IsCO.res_surj (O := O) (f x)`. Establish `hcu : IsUnit c`. Assume the negation of the conclusion as `hcn`. Establish `h1 : algebraMap O R' c ∈ maximalIdeal R'`.
+
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun h => hcn (isUnit_of_map_unit (algebraMap O R') c h)`. Establish `h2` using `Ideal.add_mem _ hc h1`. Rewrite `h2` using `[sub_add_cancel, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `h2 hx`.
+
+Establish `hu : IsUnit (x - algebraMap O R c)`. Establish `hxm : x ∈ maximalIdeal R`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hnx`. Establish `hcu' : IsUnit (algebraMap O R c)` using `hcu.map _`.
+
+Assume the negation of the conclusion as `hn`. Establish `h2 : x - algebraMap O R c ∈ maximalIdeal R`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hn`. Establish `h3` using `Ideal.sub_mem _ hxm h2`.
+
+Rewrite `h3` using `[sub_sub_cancel, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `h3 hcu'`. Establish `hfu` using `hu.map f`. Rewrite `hfu` using `[map_sub, AlgHom.commutes]`. Rewrite `hc` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+
+Conclude with `hc hfu`.
+-/
 private theorem co_local {O R R' : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
     [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') : IsLocalHom f.toRingHom := by
   haveI := IsCO.toIsLocalRing O (R := R)
@@ -66,6 +86,17 @@ private theorem co_local {O R R' : Type} [CommRing O] [IsLocalRing O] [CommRing 
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff] at hc
   exact hc hfu
 
+/- English proof (translation)
+Introduce `l _ L G0 T Λ n O _ _ _ hO _ r B _ _ _ u J D A W m _ o πb hπ hT hA hn Bh _ φ Q P hQ hP hQP hN`. Use `haveI : Finite (ResidueField O) := hO.finite`. Use `haveI : CharP (ResidueField O) l := hO.char`. Take `⟨⟨hco, hfr, hfin, -⟩, -⟩` from `spoCo l L G0 T Λ n O r B u J D A hA`. Use `haveI : IsLocalRing (Spo A) := hco.toIsLocalRing`.
+
+Use `haveI : IsNoetherianRing (Spo A) := hco.toIsNoetherian`. Use `haveI : IsAdicComplete (maximalIdeal B) B := IsCO.complete (O := O)`. Use `haveI : IsLocalHom (algebraMap B (Spo A)) := Algebra.IsIntegral.isLocalHom B (Spo A)`. Use `haveI : IsLocalHom πb.toRingHom := co_local πb`. Take `⟨hfB, ⟨χ, h, hχ, hm⟩, hsp⟩` from `BC.pair_mf l G0.frame O n r B u (BC.phi0 l L G0 T hT)`.
+
+Take `⟨-, -, hsp'⟩` from `BC.pair_mf l Λ.G.frame O n o.r' (W.R ⧸ ii W) o.p (phi_fg Λ.G.frame (fg_image Λ.πo Λ.πo_cont Λ.πo_surj Λ.fg))`. Establish `h1 : NonSS (augmentationIdealKernel u) (algebraMap B (Spo A)) P`. Use `BC.nonSS_field B B (Spo A) _ _ _ _ _ P hP (Ideal.comap_id _).symm ?_ hN` and prove the remaining obligations. Take `⟨s, hs⟩` from `hsp (pairGens u)`. Conclude with `⟨s, fun y => (hs y).imp fun c hc => TwoSidedIdeal.subset_span hc⟩`.
+
+Establish `h2 : NonSS (ooKer o) πb.toRingHom P`. Use `BC.nonSS_mono B (W.R ⧸ ii W) (Spo A) G0.G₀ Λ.G.G₀ Λ.h.p₀ _ _ _ _ P Λ.h.p₀_surj (fun z hz => ?_) h1` and prove the remaining obligations. Establish `hD : o.p.D.map πb.toRingHom = (u.D.map (algebraMap B (Spo A))).comap Λ.h.p₀` using `(ooMaps l L G0 T Λ n O r B u J D A W m o πb hπ).1.trans (GDet.ext fun _ _ _ _ => rfl)`. Establish `h3` using `chBarPush n (W.R ⧸ ii W) (Spo A) Λ.G.G₀ G0.G₀ πb.toRingHom Λ.h.p₀ o.p.D (u.D.map (algebraMap B (Spo A))) _ Λ.h.p₀_cont hD z hz`. Use `BC.closure_bc n h B (Spo A) G0.G₀ u.D χ u.cont hχ hm (algebraMap B (Spo A)) (pairGens u) _ ?_ _ h3` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `gensImg l L G0 T Λ n O r B u J D A W m o πb hπ hT hA hn y hy`. Use `BC.nonSS_field (W.R ⧸ ii W) (Spo A) Bh _ _ _ φ P Q hQ hQP ?_ h2` and prove the remaining obligations. Take `⟨s, hs⟩` from `hsp' (pairGens o.p ∪ qGens (O := O) (F := Λ.G.frame) Λ.ph Λ.ta (fun j i => Ideal.Quotient.mk (ii W) (W.t.U j i)) fun j i => Ideal.Quotient.mk (ii W) (W.t.y j i))`. Conclude with `⟨s, fun y => (hs y).imp fun c hc => TwoSidedIdeal.subset_span hc⟩`.
+-/
 theorem UpperTheory.V.Pa.Core.nonssT :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) (m : RMaps W) [IsCO O (W.R ⧸ ii W)] (o : OoPair W) (πb : (W.R ⧸ ii W) →ₐ[O] Spo A), (∀ a, πb (Ideal.Quotient.mk (ii W) a) = m.π a) → T.ProL → Adapted T (r := r) → 1 ≤ n → ∀ (Bh : Type) [CommRing Bh] (φ : (W.R ⧸ ii W) →+* Bh) (Q : Ideal Bh) (P : Ideal (Spo A)), Q.IsPrime → P.IsPrime → Q.comap φ = P.comap πb → NonSS (augmentationIdealKernel u) (RingHom.id B) (P.comap (algebraMap B (Spo A))) → NonSS (ooKer o) φ Q := by
   intro l _ L G0 T Λ n O _ _ _ hO _ r B _ _ _ u J D A W m _ o πb hπ hT hA hn Bh _ φ Q P hQ hP hQP hN

@@ -13,8 +13,14 @@ section Ops
 
 variable {F : Type*} [Field F] {N m k : ℕ} (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma glOps_eq_E (a b : Fin m) : glOps F m LL S a b = glOpsE F LL S (id : Fin m → Fin m) a b := rfl
 
+/- English proof (translation)
+Simplify using `only [glOpsE, LinearMap.sum_apply]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Apply the tactic sequence `split_ifs <;> simp [Derivation.leibniz] <;> ring`.
+-/
 lemma glOpsE_mul (a b : Fin m) (f g : MvPolynomial (Fin N × Fin k) F) :
     glOpsE F LL S e a b (f * g) = f * glOpsE F LL S e a b g + g * glOpsE F LL S e a b f := by
   simp only [glOpsE, LinearMap.sum_apply]
@@ -23,6 +29,9 @@ lemma glOpsE_mul (a b : Fin m) (f g : MvPolynomial (Fin N × Fin k) F) :
   intro l _
   split_ifs <;> simp [Derivation.leibniz] <;> ring
 
+/- English proof (translation)
+Simplify using `only [glOpsE, LinearMap.sum_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma glOpsE_C (a b : Fin m) (c : F) : glOpsE F LL S e a b (C c) = 0 := by
   simp only [glOpsE, LinearMap.sum_apply]
   apply Finset.sum_eq_zero
@@ -30,6 +39,13 @@ lemma glOpsE_C (a b : Fin m) (c : F) : glOpsE F LL S e a b (C c) = 0 := by
   split_ifs <;> simp
 
 open Classical in
+/- English proof (translation)
+Simplify using `only [glOpsE, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_eq_single v.1]`. Take `⟨l, c⟩` from `v`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> simp_all [pderiv_X]`.
+
+Introduce `l _ hl`. Take `⟨l', c⟩` from `v`. Simplify using `only at hl`. Apply the tactic sequence `split_ifs <;> simp [pderiv_X, Ne.symm hl]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 lemma glOpsE_X (a b : Fin m) (v : Fin N × Fin k) :
     glOpsE F LL S e a b (X v) =
       if v.1 ∈ S then (if LL.vec v.1 then (if v.2 = e b then X (v.1, e a) else 0)
@@ -51,6 +67,13 @@ section Inter
 
 variable {n : ℕ} {K V W : Type*} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
 
+/- English proof (translation)
+Unfold `Umon at hu`. Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem u hu`. Take `⟨ab, rfl⟩` from `hu`. Conclude with `⟨E' ab.1 ab.2, Submonoid.subset_closure ⟨ab, rfl⟩, hT _ _⟩`.
+
+Consider the case `one => exact ⟨1, Submonoid.one_mem _, fun x => rfl⟩`. Consider the case `mul u1 u2 _ _ h1 h2`. Take `⟨v1, hv1, e1⟩` from `h1`. Take `⟨v2, hv2, e2⟩` from `h2`. Conclude with `⟨v1 * v2, Submonoid.mul_mem _ hv1 hv2, fun x => by`.
+
+Rewrite using `[Module.End.mul_apply, e1, e2, Module.End.mul_apply]⟩`.
+-/
 lemma inter_umon (E : GLOps n K V) (E' : GLOps n K W) (T : V →ₗ[K] W) (hT : ∀ a b x, T (E a b x) = E' a b (T x))
     (u : Module.End K V) (hu : u ∈ Umon E) : ∃ u' ∈ Umon E', ∀ x, T (u x) = u' (T x) := by
   unfold Umon at hu
@@ -65,6 +88,17 @@ lemma inter_umon (E : GLOps n K V) (E' : GLOps n K W) (T : V →ₗ[K] W) (hT : 
     exact ⟨v1 * v2, Submonoid.mul_mem _ hv1 hv2, fun x => by
       rw [Module.End.mul_apply, e1, e2, Module.End.mul_apply]⟩
 
+/- English proof (translation)
+Unfold `isoSub at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, v, hv, rfl⟩` from `hx`. Take `⟨u', hu', e1⟩` from `inter_umon E E' T hT u hu`.
+
+Rewrite using `[e1]`. Distinguish the cases in `h0 : T v = 0`. Rewrite using `[h0, map_zero]`. Conclude with `Submodule.zero_mem _`. Use `Submodule.subset_span ⟨u', hu', T v, ⟨h0, ?_, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Establish `h2` using `hv.2.1`. Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at h2 ⊢`. Introduce `a`. Rewrite using `[← hT, ← map_smul, ← map_sub, h2 a, map_zero]`. Introduce `a b hab`.
+
+Rewrite using `[← hT, hv.2.2 a b hab, map_zero]`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ h1 h2 => rw [map_add]`. Conclude with `Submodule.add_mem _ h1 h2`.
+
+Consider the case `smul c x _ h => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ h`.
+-/
 lemma inter_iso (E : GLOps n K V) (E' : GLOps n K W) (T : V →ₗ[K] W) (hT : ∀ a b x, T (E a b x) = E' a b (T x))
     (lam : Fin n → ℤ) (x : V) (hx : x ∈ isoSub E lam) : T x ∈ isoSub E' lam := by
   unfold isoSub at hx
@@ -93,6 +127,9 @@ section Deg
 
 variable {F : Type*} [Field F] {N m k : ℕ} (LL : Letters (Fin N)) (S : Set (Fin N)) (e : Fin m → Fin k)
 
+/- English proof (translation)
+Rewrite using `[coeff_X_mul']`. Distinguish the cases in `h : mm i = 0`. Rewrite using `[if_neg (by simpa using h), if_pos h]`. Rewrite using `[if_pos (by simpa using h), if_neg h, coeff_pderiv]`.
+-/
 lemma coeff_XD {σ : Type*} (i j : σ) (f : MvPolynomial σ F) (mm : σ →₀ ℕ) :
     coeff mm (X i * pderiv j f) =
       if mm i = 0 then 0 else
@@ -103,6 +140,13 @@ lemma coeff_XD {σ : Type*} (i j : σ) (f : MvPolynomial σ F) (mm : σ →₀ �
   · rw [if_neg (by simpa using h), if_pos h]
   · rw [if_pos (by simpa using h), if_neg h, coeff_pderiv]
 
+/- English proof (translation)
+Rewrite using `[coeff_XD]`. Distinguish the cases in `h : mm i = 0`. Rewrite using `[if_pos h, h]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`.
+
+Establish `h1 : Finsupp.single i 1 ≤ mm` using `Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h)`. Rewrite using `[tsub_add_cancel_of_le h1]`. Establish `h2 : ((mm - Finsupp.single i 1 : σ →₀ ℕ) i : ℕ) + 1 = mm i`. Simplify using `only [Finsupp.coe_tsub, Pi.sub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h3 : (((mm - Finsupp.single i 1 : σ →₀ ℕ) i : ℕ) + 1 : F) = (mm i : F)`. Rewrite using `[← h2, Nat.cast_add, Nat.cast_one]`. Rewrite using `[h3, mul_comm]`.
+-/
 lemma coeff_XDii {σ : Type*} (i : σ) (f : MvPolynomial σ F) (mm : σ →₀ ℕ) :
     coeff mm (X i * pderiv i f) = (mm i : F) * coeff mm f := by
   rw [coeff_XD]
@@ -125,6 +169,11 @@ def wtA (mm : Fin N × Fin k →₀ ℕ) (a : Fin m) : ℤ :=
 
 def tot (mm : Fin N × Fin k →₀ ℕ) : ℤ := ∑ a, wtA LL S e mm a
 
+/- English proof (translation)
+Simplify using `only [glOpsE, LinearMap.sum_apply, coeff_sum, wtA]`. Use `push_cast`. Rewrite using `[Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`.
+
+Use `split_ifs`. Simplify using `[coeff_XDii]`. Simplify using `[coeff_XDii]`. Simplify using the standard rewrite rules.
+-/
 lemma coeff_Eaa (a : Fin m) (f : MvPolynomial (Fin N × Fin k) F) (mm : Fin N × Fin k →₀ ℕ) :
     coeff mm (glOpsE F LL S e a a f) = (wtA LL S e mm a : F) * coeff mm f := by
   simp only [glOpsE, LinearMap.sum_apply, coeff_sum, wtA]
@@ -137,6 +186,11 @@ lemma coeff_Eaa (a : Fin m) (f : MvPolynomial (Fin N × Fin k) F) (mm : Fin N ×
   · simp [coeff_XDii]
   · simp
 
+/- English proof (translation)
+Simplify using `only [tot, wtA]`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+-/
 lemma tot_add (m1 m2 : Fin N × Fin k →₀ ℕ) : tot LL S e (m1 + m2) = tot LL S e m1 + tot LL S e m2 := by
   simp only [tot, wtA]
   rw [← Finset.sum_add_distrib]
@@ -148,6 +202,17 @@ lemma tot_add (m1 m2 : Fin N × Fin k →₀ ℕ) : tot LL S e (m1 + m2) = tot L
   split_ifs <;> simp <;> ring
 
 open Classical in
+/- English proof (translation)
+Simplify using `only [tot, wtA]`. Rewrite using `[Finset.sum_eq_single c, Finset.sum_eq_single l]`. Simplify using the standard rewrite rules. Introduce `l' _ hl'`. Establish `: (Finsupp.single (l, e c) 1 : Fin N × Fin k →₀ ℕ) (l', e c) = 0`.
+
+Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hl' (congrArg Prod.fst h).symm`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `a _ ha`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l' _`.
+
+Establish `: (Finsupp.single (l, e c) 1 : Fin N × Fin k →₀ ℕ) (l', e a) = 0`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `ha (he (congrArg Prod.snd h)).symm`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 lemma tot_single (he : Function.Injective e) (l : Fin N) (c : Fin m) :
     tot LL S e (Finsupp.single (l, e c) 1) = if l ∈ S then (if LL.vec l then 1 else -1) else 0 := by
   simp only [tot, wtA]
@@ -170,6 +235,13 @@ def TotSub (F : Type*) [Field F] {N m k : ℕ} (LL : Letters (Fin N)) (S : Set (
     Submodule F (MvPolynomial (Fin N × Fin k) F) :=
   MvPolynomial.restrictSupport F {mm | tot LL S e mm = s}
 
+/- English proof (translation)
+Unfold `TotSub at hf ⊢`. Rewrite `hf`, the goal using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `mm hmm`. Rewrite `hmm` using `[Finset.mem_coe, mem_support_iff, coeff_XD]`. Distinguish the cases in `h : mm (l, e c) = 0`.
+
+Rewrite `hmm` using `[if_pos h]`. Conclude with `absurd rfl hmm`. Rewrite `hmm` using `[if_neg h]`. Establish `h0 : coeff (mm - Finsupp.single (l, e c) 1 + Finsupp.single (l, e d) 1) f ≠ 0` using `left_ne_zero_of_mul hmm`. Establish `h1` using `hf (Finset.mem_coe.2 (mem_support_iff.2 h0))`.
+
+Establish `h2 : Finsupp.single (l, e c) 1 ≤ mm` using `Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h)`. Simplify using `only [Set.mem_ofPred_eq] at h1 ⊢`. Rewrite `h1` using `[tot_add, tot_single LL S e he]`. Rewrite using `[← tsub_add_cancel_of_le h2, tot_add, tot_single LL S e he]`. Conclude with `h1`.
+-/
 lemma XD_mem (he : Function.Injective e) (s : ℤ) (l : Fin N) (c d : Fin m) (f : MvPolynomial (Fin N × Fin k) F)
     (hf : f ∈ TotSub F LL S e s) : X (l, e c) * pderiv (l, e d) f ∈ TotSub F LL S e s := by
   unfold TotSub at hf ⊢
@@ -187,6 +259,11 @@ lemma XD_mem (he : Function.Injective e) (s : ℤ) (l : Fin N) (c d : Fin m) (f 
     rw [← tsub_add_cancel_of_le h2, tot_add, tot_single LL S e he]
     exact h1
 
+/- English proof (translation)
+Simplify using `only [glOpsE, LinearMap.sum_apply]`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `l _`. Use `split_ifs`. Conclude with `XD_mem LL S e he s l c d f hf`.
+
+Simplify using `only [LinearMap.neg_apply]`. Conclude with `Submodule.neg_mem _ (XD_mem LL S e he s l d c f hf)`. Conclude with `Submodule.zero_mem _`.
+-/
 lemma E_mem (he : Function.Injective e) (s : ℤ) (c d : Fin m) (f : MvPolynomial (Fin N × Fin k) F)
     (hf : f ∈ TotSub F LL S e s) : glOpsE F LL S e c d f ∈ TotSub F LL S e s := by
   simp only [glOpsE, LinearMap.sum_apply]
@@ -198,6 +275,11 @@ lemma E_mem (he : Function.Injective e) (s : ℤ) (c d : Fin m) (f : MvPolynomia
     exact Submodule.neg_mem _ (XD_mem LL S e he s l d c f hf)
   · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Unfold `Umon at hu`. Proceed by induction on `hu using Submonoid.closure_induction generalizing f with`. Consider the case `mem u hu`. Take `⟨ab, rfl⟩` from `hu`. Conclude with `E_mem LL S e he s _ _ f hf`.
+
+Consider the case `one => exact hf`. Consider the case `mul u1 u2 _ _ h1 h2 => exact h1 _ (h2 _ hf)`.
+-/
 lemma U_mem (he : Function.Injective e) (s : ℤ) (u : Module.End F (MvPolynomial (Fin N × Fin k) F))
     (hu : u ∈ Umon (glOpsE F LL S e)) (f : MvPolynomial (Fin N × Fin k) F)
     (hf : f ∈ TotSub F LL S e s) : u f ∈ TotSub F LL S e s := by
@@ -209,6 +291,13 @@ lemma U_mem (he : Function.Injective e) (s : ℤ) (u : Module.End F (MvPolynomia
   | one => exact hf
   | mul u1 u2 _ _ h1 h2 => exact h1 _ (h2 _ hf)
 
+/- English proof (translation)
+Unfold `TotSub`. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `mm hmm`. Rewrite `hmm` using `[Finset.mem_coe, mem_support_iff]`. Simplify using `only [Set.mem_ofPred_eq, tot]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at hv`. Establish `h1` using `congrArg (coeff mm) (hv a)`. Rewrite `h1` using `[coeff_sub, coeff_Eaa, coeff_smul, coeff_zero, smul_eq_mul, ← sub_mul]`.
+
+Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h` after adjusting the coercions. Conclude with `absurd h hmm`.
+-/
 lemma hwv_mem [CharZero F] (lam : Fin m → ℤ) (v : MvPolynomial (Fin N × Fin k) F)
     (hv : v ∈ weightSp (glOpsE F LL S e) lam) : v ∈ TotSub F LL S e (∑ a, lam a) := by
   unfold TotSub
@@ -226,6 +315,9 @@ lemma hwv_mem [CharZero F] (lam : Fin m → ℤ) (v : MvPolynomial (Fin N × Fin
   · exact_mod_cast sub_eq_zero.1 h
   · exact absurd h hmm
 
+/- English proof (translation)
+Unfold `isoSub`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨u, hu, v, hv, rfl⟩`. Conclude with `U_mem LL S e he _ u hu v (hwv_mem LL S e lam v hv.2.1)`.
+-/
 lemma iso_le_tot [CharZero F] (he : Function.Injective e) (lam : Fin m → ℤ) :
     isoSub (glOpsE F LL S e) lam ≤ TotSub F LL S e (∑ a, lam a) := by
   unfold isoSub
@@ -233,6 +325,11 @@ lemma iso_le_tot [CharZero F] (he : Function.Injective e) (lam : Fin m → ℤ) 
   rintro x ⟨u, hu, v, hv, rfl⟩
   exact U_mem LL S e he _ u hu v (hwv_mem LL S e lam v hv.2.1)
 
+/- English proof (translation)
+Establish `h : ∀ j : Fin N, (if j ∈ {j : Fin N | j.val < l.succ.val} then g j else 0) = (if j ∈ {j : Fin N | j.val < l.castSucc.val} then g j else 0) + (if j = l then g j else 0)`. Introduce `j`. Simplify using `only [Set.mem_ofPred_eq, Fin.val_succ, Fin.val_castSucc, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`. Rewrite using `[Finset.sum_congr rfl fun j _ => h j, Finset.sum_add_distrib, Finset.sum_ite_eq' univ l g]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma sum_lt_succ (g : Fin N → ℤ) (l : Fin N) [DecidablePred (· ∈ {j : Fin N | j.val < l.succ.val})]
     [DecidablePred (· ∈ {j : Fin N | j.val < l.castSucc.val})] :
     (∑ j : Fin N, if j ∈ {j : Fin N | j.val < l.succ.val} then g j else 0) =
@@ -245,6 +342,13 @@ lemma sum_lt_succ (g : Fin N → ℤ) (l : Fin N) [DecidablePred (· ∈ {j : Fi
   rw [Finset.sum_congr rfl fun j _ => h j, Finset.sum_add_distrib, Finset.sum_ite_eq' univ l g]
   simp
 
+/- English proof (translation)
+Establish `h : ∀ i : Fin (N + 1), tot LL {j | j.val < i.val} e mm = ∑ a, lam i a`. Introduce `i`. Use `iso_le_tot LL {j | j.val < i.val} e he (lam i) (hx i)` as an intermediate fact. Unfold `TotSub at this`. Rewrite `this` using `[MvPolynomial.mem_restrictSupport_iff]`.
+
+Conclude with `this (Finset.mem_coe.2 hmm)`. Rewrite using `[← h l.succ, ← h l.castSucc]`. Simplify using `only [tot, wtA]`. Rewrite using `[← Finset.sum_sub_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `a _`. Establish `h5` using `@sum_lt_succ N (fun j => if LL.vec j then (mm (j, e a) : ℤ) else -(mm (j, e a) : ℤ)) l (fun _ => Classical.propDecidable _) (fun _ => Classical.propDecidable _)`. Conclude with `eq_sub_of_add_eq ((add_comm _ _).trans h5.symm)`.
+-/
 lemma deg_of_iso [CharZero F] (he : Function.Injective e) (lam : Fin (N + 1) → Fin m → ℤ)
     (x : MvPolynomial (Fin N × Fin k) F)
     (hx : ∀ i : Fin (N + 1), x ∈ isoSub (glOpsE F LL {j | j.val < i.val} e) (lam i))
@@ -266,6 +370,13 @@ lemma deg_of_iso [CharZero F] (he : Function.Injective e) (lam : Fin (N + 1) →
     (fun _ => Classical.propDecidable _) (fun _ => Classical.propDecidable _)
   exact eq_sub_of_add_eq ((add_comm _ _).trans h5.symm)
 
+/- English proof (translation)
+Establish `h1` using `deg_of_iso LL e he P.mu x hx mm hmm l`. Establish `h2` using `size_of_path P l`. Establish `h3 : ((∑ a, mm (l, e a) : ℕ) : ℤ) = (b l : ℤ)`. Use `push_cast`. Distinguish the cases in `hv : LL.vec l`.
+
+Simplify using `only [hv, if_true] at h1 h2`. Rewrite using `[h1, h2]`. Simplify using `only [hv, if_false, Bool.false_eq_true, Finset.sum_neg_distrib] at h1 h2`. Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `h3` after adjusting the coercions.
+-/
 lemma deg_of_iso_path [CharZero F] (he : Function.Injective e) (b : Fin N → ℕ) (P : PPath m N LL b)
     (x : MvPolynomial (Fin N × Fin k) F)
     (hx : ∀ i : Fin (N + 1), x ∈ isoSub (glOpsE F LL {j | j.val < i.val} e) (P.mu i))
@@ -283,6 +394,11 @@ lemma deg_of_iso_path [CharZero F] (he : Function.Injective e) (b : Fin N → �
 
 end Deg
 
+/- English proof (translation)
+Introduce `F _ _ N r K _ _ LL B nu ka hP x hx`. Take `⟨b', b'', hb, ⟨P1, rfl⟩, ⟨P2, rfl⟩⟩` from `hP`. Simplify using `only [jointType, Submodule.mem_iInf, Submodule.mem_inf] at hx`. Unfold `Pol`. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`.
+
+Introduce `mm hmm l`. Establish `h1` using `deg_of_iso_path LL (Fin.castAdd K) (Fin.castAdd_injective r K) b' P1 x (fun i => (hx i).1) mm hmm l`. Establish `h2` using `deg_of_iso_path LL (Fin.natAdd r) (Fin.natAdd_injective K r) b'' P2 x (fun i => (hx i).2) mm hmm l`. Unfold `multideg`. Rewrite using `[Fin.sum_univ_add, h1, h2, hb]`.
+-/
 theorem hjb_pf (D : Formalism.BasicNotions.D7) : HJb D := by
   intro F _ _ N r K _ _ LL B nu ka hP x hx
   obtain ⟨b', b'', hb, ⟨P1, rfl⟩, ⟨P2, rfl⟩⟩ := hP
@@ -302,13 +418,28 @@ variable {F : Type*} [Field F] {N m k : ℕ} (LL : Letters (Fin N)) (e : Fin m �
 def Tev (y : Fin N × Fin k → F) : MvPolynomial (Fin N × Fin k) F →ₐ[F] MvPolynomial (Fin N × Fin m) F :=
   aeval fun v => (dcd v.2).elim (C (y v)) (fun a => X (v.1, a))
 
+/- English proof (translation)
+Unfold `Tev`. Rewrite using `[aeval_X]`.
+-/
 lemma Tev_X (y : Fin N × Fin k → F) (v : Fin N × Fin k) :
     Tev dcd y (X v) = (dcd v.2).elim (C (y v)) (fun a => X (v.1, a)) := by
   unfold Tev; rw [aeval_X]
 
+/- English proof (translation)
+Unfold `Tev`. Rewrite using `[aeval_C]`. Both sides reduce to the same expression.
+-/
 lemma Tev_C (y : Fin N × Fin k → F) (c : F) : Tev dcd y (C c) = C c := by
   unfold Tev; rw [aeval_C]; rfl
 
+/- English proof (translation)
+Establish `he : Function.Injective e` using `fun a b h => by`. Use `hd1 a` as an intermediate fact. Rewrite `this` using `[h, hd1]`. Conclude with `(Option.some.inj this).symm`. Take `⟨l, c⟩` from `v`.
+
+Rewrite using `[Tev_X, glOpsE_X]`. Simplify using `only`. Consider the cases of `h : dcd c with`. Consider the case `none`. Establish `h1 : ∀ a', c ≠ e a'` using `fun a' hc => by rw [hc, hd1] at h; exact absurd h (by simp)`.
+
+Simplify using `[h1 a, h1 b, glOpsE_C]`. Consider the case `some c'`. Establish `hc : c = e c'` using `hd2 _ _ h`. Substitute `hc` using the available equality. Simplify using `only [Option.elim]`.
+
+Rewrite using `[glOpsE_X]`. Simplify using `only [he.eq_iff, id]`. Apply the tactic sequence `split_ifs <;> simp [Tev_X, hd1]`.
+-/
 lemma Tev_gen (hd1 : ∀ a, dcd (e a) = some a) (hd2 : ∀ c a, dcd c = some a → c = e a) (S : Set (Fin N))
     (y : Fin N × Fin k → F) (a b : Fin m) (v : Fin N × Fin k) :
     Tev dcd y (glOpsE F LL S e a b (X v)) = glOpsE F LL S (id : Fin m → Fin m) a b (Tev dcd y (X v)) := by
@@ -330,6 +461,9 @@ lemma Tev_gen (hd1 : ∀ a, dcd (e a) = some a) (hd2 : ∀ c a, dcd c = some a �
     simp only [he.eq_iff, id]
     split_ifs <;> simp [Tev_X, hd1]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => rw [glOpsE_C, map_zero, Tev_C, glOpsE_C]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p v ih`. Rewrite using `[glOpsE_mul, map_add, map_mul, map_mul, map_mul, glOpsE_mul, ih, Tev_gen LL e dcd hd1 hd2]`.
+-/
 lemma Tev_inter (hd1 : ∀ a, dcd (e a) = some a) (hd2 : ∀ c a, dcd c = some a → c = e a) (S : Set (Fin N))
     (y : Fin N × Fin k → F) (a b : Fin m) (f : MvPolynomial (Fin N × Fin k) F) :
     Tev dcd y (glOpsE F LL S e a b f) = glOpsE F LL S (id : Fin m → Fin m) a b (Tev dcd y f) := by
@@ -339,6 +473,13 @@ lemma Tev_inter (hd1 : ∀ a, dcd (e a) = some a) (hd2 : ∀ c a, dcd c = some a
   | mul_X p v ih =>
     rw [glOpsE_mul, map_add, map_mul, map_mul, map_mul, glOpsE_mul, ih, Tev_gen LL e dcd hd1 hd2]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => rw [Tev_C, eval_C, eval_C]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p v ih`. Rewrite using `[map_mul, map_mul, map_mul, ih, Tev_X, eval_X]`.
+
+Use `congr 1`. Take `⟨l, c⟩` from `v`. Simplify using `only`. Consider the cases of `h : dcd c with`. Consider the case `none => simp only [Option.elim, eval_C]`.
+
+Consider the case `some a => simp only [Option.elim, eval_X]`. Rewrite using `[← hd2 c a h]`.
+-/
 lemma eval_Tev (hd2 : ∀ c a, dcd c = some a → c = e a) (z : Fin N × Fin k → F)
     (f : MvPolynomial (Fin N × Fin k) F) :
     eval (fun v' : Fin N × Fin m => z (v'.1, e v'.2)) (Tev dcd z f) = eval z f := by
@@ -354,6 +495,11 @@ lemma eval_Tev (hd2 : ∀ c a, dcd c = some a → c = e a) (z : Fin N × Fin k �
     | none => simp only [Option.elim, eval_C]
     | some a => simp only [Option.elim, eval_X]; rw [← hd2 c a h]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hx` to reduce the goal to its premises. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`.
+
+Rewrite using `[← eval_Tev e dcd hd2 z x, hcon z, map_zero, map_zero]`.
+-/
 lemma exists_Tev_ne [Infinite F] (hd2 : ∀ c a, dcd c = some a → c = e a) (x : MvPolynomial (Fin N × Fin k) F)
     (hx : x ≠ 0) : ∃ y, Tev dcd y x ≠ 0 := by
   by_contra hcon
@@ -368,6 +514,17 @@ end Ev
 def dOf {N m : ℕ} (LL : Letters (Fin N)) (lam : Fin (N + 1) → Fin m → ℤ) : Fin N → ℕ := fun l =>
   (if LL.vec l then ∑ a, lam l.succ a - ∑ a, lam l.castSucc a else ∑ a, lam l.castSucc a - ∑ a, lam l.succ a).toNat
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `exists_Tev_ne e dcd hd2 x hx0`. Establish `h1 : ∀ i : Fin (N + 1), Tev dcd y x ∈ isoSub (glOpsE F LL {j | j.val < i.val} (id : Fin m → Fin m)) (lam i)` using `fun i => inter_iso _ _ (Tev dcd y).toLinearMap (fun a b f => Tev_inter LL e dcd hd1 hd2 _ y a b f) (lam i) x (hx i)`. Use `⟨dOf LL lam, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hno`. Establish `h2` using `(h14 F N m LL (dOf LL lam) lam).2 hno`.
+
+Establish `h3 : Tev dcd y x ∈ Pol F m (dOf LL lam) ⊓ ⨅ i : Fin (N + 1), isoSub (glOps F m LL {l | l.val < i.val}) (lam i)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `Pol`. Rewrite using `[SetLike.mem_coe, MvPolynomial.mem_restrictSupport_iff]`. Introduce `mm hmm l`.
+
+Establish `h5` using `deg_of_iso LL (id : Fin m → Fin m) Function.injective_id lam _ h1 mm hmm l`. Establish `h4 : ((multideg mm l : ℕ) : ℤ) = (if LL.vec l then ∑ a, lam l.succ a - ∑ a, lam l.castSucc a else ∑ a, lam l.castSucc a - ∑ a, lam l.succ a)`. Unfold `multideg`. Use `push_cast`. Distinguish the cases in `hv : LL.vec l`.
+
+Simplify using `only [hv, if_true, id] at h5 ⊢`. Conclude with `h5`. Simplify using `only [hv, Bool.false_eq_true, if_false, Finset.sum_neg_distrib, id] at h5 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `dOf`.
+
+Rewrite using `[← h4, Int.toNat_natCast]`. Rewrite using `[SetLike.mem_coe, Submodule.mem_iInf]`. Conclude with `h1`. Rewrite `h3` using `[h2]`. Conclude with `hy ((Submodule.mem_bot F).1 h3)`.
+-/
 theorem path_of_iso (D : Formalism.BasicNotions.D7) (h14 : JointComponentsPaths D) {F : Type} [Field F] [CharZero F] {N m k : ℕ}
     (LL : Letters (Fin N)) (e : Fin m → Fin k) (dcd : Fin k → Option (Fin m))
     (hd1 : ∀ a, dcd (e a) = some a) (hd2 : ∀ c a, dcd c = some a → c = e a)
@@ -409,11 +566,19 @@ def dcdPl (r K : ℕ) : Fin (r + K) → Option (Fin r) := fun c => if h : c.val 
 def dcdTan (r K : ℕ) : Fin (r + K) → Option (Fin K) := fun c =>
   if h : r ≤ c.val then some ⟨c.val - r, by have := c.isLt; omega⟩ else none
 
+/- English proof (translation)
+Unfold `dcdPl`. Rewrite using `[dif_pos (show (Fin.castAdd K a).val < r from a.2)]`. Both sides reduce to the same expression.
+-/
 lemma dcdPl_1 (r K : ℕ) (a : Fin r) : dcdPl r K (Fin.castAdd K a) = some a := by
   unfold dcdPl
   rw [dif_pos (show (Fin.castAdd K a).val < r from a.2)]
   rfl
 
+/- English proof (translation)
+Unfold `dcdPl at h`. Distinguish the cases in `hc : c.val < r`. Rewrite `h` using `[dif_pos hc]`. Rewrite using `[← Option.some.inj h]`. Use `ext`.
+
+Both sides reduce to the same expression. Rewrite `h` using `[dif_neg hc]`. Conclude with `absurd h (by simp)`.
+-/
 lemma dcdPl_2 (r K : ℕ) (c : Fin (r + K)) (a : Fin r) (h : dcdPl r K c = some a) : c = Fin.castAdd K a := by
   unfold dcdPl at h
   by_cases hc : c.val < r
@@ -423,12 +588,20 @@ lemma dcdPl_2 (r K : ℕ) (c : Fin (r + K)) (a : Fin r) (h : dcdPl r K c = some 
   · rw [dif_neg hc] at h
     exact absurd h (by simp)
 
+/- English proof (translation)
+Unfold `dcdTan`. Rewrite using `[dif_pos (show r ≤ (Fin.natAdd r a).val by simp)]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+-/
 lemma dcdTan_1 (r K : ℕ) (a : Fin K) : dcdTan r K (Fin.natAdd r a) = some a := by
   unfold dcdTan
   rw [dif_pos (show r ≤ (Fin.natAdd r a).val by simp)]
   congr 1
   ext; simp
 
+/- English proof (translation)
+Unfold `dcdTan at h`. Distinguish the cases in `hc : r ≤ c.val`. Rewrite `h` using `[dif_pos hc]`. Rewrite using `[← Option.some.inj h]`. Use `ext`.
+
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[dif_neg hc]`. Conclude with `absurd h (by simp)`.
+-/
 lemma dcdTan_2 (r K : ℕ) (c : Fin (r + K)) (a : Fin K) (h : dcdTan r K c = some a) : c = Fin.natAdd r a := by
   unfold dcdTan at h
   by_cases hc : r ≤ c.val
@@ -438,6 +611,11 @@ lemma dcdTan_2 (r K : ℕ) (c : Fin (r + K)) (a : Fin K) (h : dcdTan r K c = som
   · rw [dif_neg hc] at h
     exact absurd h (by simp)
 
+/- English proof (translation)
+Introduce `F _ _ N r K _ _ LL nu ka hne`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Simplify using `only [jointType, Submodule.mem_iInf, Submodule.mem_inf] at hx`. Take `⟨b', hb'⟩` from `path_of_iso D h14 LL (Fin.castAdd K) (dcdPl r K) (dcdPl_1 r K) (dcdPl_2 r K) nu x hx0 (fun i => (hx i).1)`. Take `⟨b'', hb''⟩` from `path_of_iso D h14 LL (Fin.natAdd r) (dcdTan r K) (dcdTan_1 r K) (dcdTan_2 r K) ka x hx0 (fun i => (hx i).2)`.
+
+Conclude with `⟨b', b'', hb', hb''⟩`.
+-/
 theorem hjc_pf (D : Formalism.BasicNotions.D7) (h14 : JointComponentsPaths D) : HJc D := by
   intro F _ _ N r K _ _ LL nu ka hne
   obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne
@@ -448,6 +626,9 @@ theorem hjc_pf (D : Formalism.BasicNotions.D7) (h14 : JointComponentsPaths D) : 
     (fun i => (hx i).2)
   exact ⟨b', b'', hb', hb''⟩
 
+/- English proof (translation)
+The claim follows from `integral_joint_type_sum_of_parts D h16 (hjb_pf D) (hjc_pf D h14)`.
+-/
 theorem integral_joint_type_sum (D : Formalism.BasicNotions.D7) (h14 : JointComponentsPaths D) (h16 : PairedPathIndependence D) : IntegralJointTypeSum D :=
   integral_joint_type_sum_of_parts D h16 (hjb_pf D) (hjc_pf D h14)
 

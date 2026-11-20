@@ -20,6 +20,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.LocAsm
 
+/- English proof (translation)
+Establish `hkey : ∀ l, ∃ (s : Finset (X l)) (E : X l → X l → ℂ), (∀ x, E x ∈ (⊤ : Submodule ℂ (X l → ℂ))) ∧ ∀ u ∈ S.image (fun i => g i l), u = ∑ x ∈ s, u x • E x` using `fun l => GlobalTheory.finset_functions_recovered_from_values ⊤ _ (fun _ _ => Submodule.mem_top)`. Use `choose s E _ hE using hkey`. Establish `h1 : ∀ i ∈ S, ∏ l, T l (g i l) (y l) = ∑ ξ ∈ Fintype.piFinset s, (∏ l, g i l (ξ l)) * ∏ l, T l (E l (ξ l)) (y l)`. Introduce `i hi`. Establish `h2 : ∀ l, T l (g i l) (y l) = ∑ x ∈ s l, g i l x * T l (E l x) (y l)`.
+
+Introduce `l`. Use `conv_lhs => rw [hE l (g i l) (Finset.mem_image_of_mem _ hi)]`. Simplify using `[map_sum, Finset.sum_apply]`. Simplify using `only [h2]`. Rewrite using `[Finset.prod_univ_sum]`.
+
+Use `Finset.sum_congr rfl fun ξ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`. Rewrite using `[Finset.sum_congr rfl fun i hi => by rw [h1 i hi, Finset.mul_sum], Finset.sum_comm]`. Use `Finset.sum_eq_zero fun ξ _ => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc]`.
+
+Rewrite using `[← Finset.sum_mul, h ξ, zero_mul]`.
+-/
 theorem prodRel_map {ι I : Type} [Fintype ι] {X Y : ι → Type} (S : Finset I) (x : I → ℂ) (g : I → ∀ l, X l → ℂ)
     (T : ∀ l, (X l → ℂ) →ₗ[ℂ] (Y l → ℂ)) (h : ∀ z : ∀ l, X l, ∑ i ∈ S, x i * ∏ l, g i l (z l) = 0) (y : ∀ l, Y l) :
     ∑ i ∈ S, x i * ∏ l, T l (g i l) (y l) = 0 := by
@@ -43,6 +52,11 @@ theorem prodRel_map {ι I : Type} [Fintype ι] {X Y : ι → Type} (S : Finset I
   simp only [← mul_assoc]
   rw [← Finset.sum_mul, h ξ, zero_mul]
 
+/- English proof (translation)
+Break down `S.eq_empty_or_nonempty with rfl | ⟨i₀, hi₀⟩` into its components or cases. Simplify using the standard rewrite rules. Use `choose T hT using fun l => (hf i₀ hi₀ l).1`. Rewrite using `[← prodRel_map S x g T h y]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Simplify using `only [fun l => (hf i hi l).2 _ (hT l)]`.
+-/
 theorem prodRel_allSome {ι I : Type} [Fintype ι] {X Y : ι → Type} (S : Finset I) (x : I → ℂ) (g : I → ∀ l, X l → ℂ)
     (f : I → ∀ l, Y l → ℂ) (Q : ∀ l, ((X l → ℂ) →ₗ[ℂ] (Y l → ℂ)) → Prop)
     (hf : ∀ i ∈ S, ∀ l, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AllSome (Q l) fun T => f i l = T (g i l))
@@ -55,6 +69,11 @@ theorem prodRel_allSome {ι I : Type} [Fintype ι] {X Y : ι → Type} (S : Fins
   refine Finset.sum_congr rfl fun i hi => ?_
   simp only [fun l => (hf i hi l).2 _ (hT l)]
 
+/- English proof (translation)
+Simplify using `only [← mul_assoc]`. Use `prodRel_allSome S (fun i => x i * ∏ l, f i l (y l)) g' f' Q' hf' (fun z' => ?_) y'` and prove the remaining obligations. Use `prodRel_allSome S (fun i => x i * ∏ l, g' i l (z' l)) g f Q hf (fun z => by` as an intermediate fact. Rewrite using `[← h z z']`. Conclude with `Finset.sum_congr rfl fun i _ => by ring) y`.
+
+Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem prodRel_allSome₂ {ι κ I : Type} [Fintype ι] [Fintype κ] {X Y : ι → Type} {X' Y' : κ → Type} (S : Finset I) (x : I → ℂ)
     (g : I → ∀ l, X l → ℂ) (f : I → ∀ l, Y l → ℂ) (Q : ∀ l, ((X l → ℂ) →ₗ[ℂ] (Y l → ℂ)) → Prop)
     (g' : I → ∀ l, X' l → ℂ) (f' : I → ∀ l, Y' l → ℂ) (Q' : ∀ l, ((X' l → ℂ) →ₗ[ℂ] (Y' l → ℂ)) → Prop)
@@ -71,6 +90,17 @@ theorem prodRel_allSome₂ {ι κ I : Type} [Fintype ι] [Fintype κ] {X Y : ι 
   rw [← this]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R Fc _ ch _ _ hcon t e _ τ φ hτ α SA xA F Gd fr fd hA hloc M hM P h u y`. Establish `key` using `hcon t M hM P h ((SchRow ch.G × SchDown ch.G t) ⊕ α) (τ.support.disjSum SA) (Sum.elim (fun d => τ d) fun a => -xA a) (Sum.elim (fun d => d.1) fr) (Sum.elim (fun d => d.2) fd) ?_ ?_ u y`. Rewrite `key` using `[Finset.sum_disjSum]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib] at key`.
+
+Conclude with `add_neg_eq_zero.mp key`. Introduce `i hi j`. Establish `hv` using `(ch.rm.vT_is t D.R.m j le_rfl j.2).2.theta`. Break down `i with d | a` into its components or cases. Conclude with `GlobalTheory.VecTheta.isThetaFunO_of_thetaAt ch.W.ψ_std ch.W.θ_is ((hτ d (by simpa using hi)).2 j).2 hv`.
+
+Conclude with `GlobalTheory.VecTheta.isThetaFunO_of_thetaAt ch.W.ψ_std ch.W.θ_is ((hA a (by simpa using hi)).2 j).2 hv`. Introduce `y v`. Use `prodRel_allSome₂ (τ.support.disjSum SA) (Sum.elim (fun d => τ d) fun a => -xA a) (Sum.elim (fun d => (φ d).1) F) (Sum.elim (fun d => d.1) fr) (fun i => IsPlaceModel ch.W.ψ (symplO _ _) (heisO ch.W.ψ _ _) e (latO (ch.G.pS (.chi i D.R.m : Pair T)) (ch.G.pT (.chi i D.R.m : Pair T)) …` and prove the remaining obligations. Introduce `i hi l`. Break down `i with d | a` into its components or cases.
+
+Conclude with `((hτ d (by simpa using hi)).1 l).2`. Conclude with `((hA a (by simpa using hi)).1 l).2`. Introduce `i hi l`. Break down `i with d | a` into its components or cases. Conclude with `((hτ d (by simpa using hi)).2 l).2`.
+
+Conclude with `((hA a (by simpa using hi)).2 l).2`. Introduce `z z'`. Rewrite using `[Finset.sum_disjSum]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib, ← mul_assoc]`. Conclude with `add_neg_eq_zero.mpr (hloc z z')`.
+-/
 theorem unfolded_eq_of_local_eq : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ConLin ch → ∀ (t : T) (e : AE D), IsIdemSum e (locPl ch.G t) → ∀ (τ : SchRow ch.G × SchDown ch.G t →₀ ℂ) (φ : SchRow ch.G × SchDown ch.G t → SchRow ch.G × SchDown ch.G t), (∀ d ∈ τ.support, (∀ i : Fin D.R.m, IsLocVec ch.W (.chi i D.R.m) e (ch.rm.vX i D.R.m) ((φ d).1 i) (d.1 i)) ∧ ∀ j : Fin D.R.m, IsLocVec ch.W (.mu t D.R.m j) e (ch.rm.vT D.R.m j) ((φ d).2 j) (d.2 j)) → ∀ (α : Type) (SA : Finset α) (xA : α → ℂ) (F : α → ∀ i : Fin D.R.m, WO (ch.G.pS (.chi i D.R.m : Pair T)) (ch.G.pT (.chi i D.R.m : Pair T)) → ℂ) (Gd : α → ∀ j : Fin D.R.m, WO (ch.G.pS (.mu t D.R.m j : Pair T)) (ch.G.pT (.mu t D.R.m j : Pair T)) → ℂ) (fr : α → SchRow ch.G) (fd : α → SchDown ch.G t), (∀ a ∈ SA, (∀ i : Fin D.R.m, IsLocVec ch.W (.chi i D.R.m) e (ch.rm.vX i D.R.m) (F a i) (fr a i)) ∧ ∀ j : Fin D.R.m, IsLocVec ch.W (.mu t D.R.m j) e (ch.rm.vT D.R.m j) (Gd a j) (fd a j)) → (∀ (x : RowPt ch.G) (y : ∀ j : Fin D.R.m, WO (ch.G.pS (.mu t D.R.m j : Pair T)) (ch.G.pT (.mu t D.R.m j : Pair T))), (τ.sum fun d c => c * (∏ i, (φ d).1 i (x i)) * ∏ j, (φ d).2 j (y j)) = ∑ a ∈ SA, xA a * (∏ i, F a i (x i)) * ∏ j, Gd a j (y j)) → ∀ (M : Vol ch.G) (hM : M.Is t) (P : PolDown ch.G) (h : Pts ch.G) (u : ColPt ch.G) (y : RowPt ch.G), (τ.sum fun d x => x * evT (conAt ch.W hM (fockD ch.W t d.2 P) h) d.1 u y) = ∑ a ∈ SA, xA a * evT (conAt ch.W hM (fockD ch.W t (fd a) P) h) (fr a) u y := by
   refine ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩
   intro D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R Fc _ ch _ _ hcon t e _ τ φ hτ α SA xA F Gd fr fd hA hloc M hM P h u y

@@ -17,6 +17,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.SelFun
 
+/- English proof (translation)
+Introduce `_ hPT hCD _ hLF hLT hLE hGF hGE _ hadm D N X bkP`. Use `GlobalTheory.T.selmer_theorem_of_local_components GlobalTheory.T.torsion_left_exact_functor_kernel_square_matrix D N X bkP ?_` and prove the remaining obligations. Introduce `i s Λ _ _ _ κ Q hS`. Establish `hN` using `GlobalTheory.T.noGaloisInvariantsTorsionCoeff_of_selmerSetup D N X bkP i s Λ κ Q hS`. Establish `hU` using `GlobalTheory.T.localConditionAboveLSaturated_of_selmerSetup hLF hLT hLE hadm D N X bkP i s Λ κ Q hS`.
+
+Establish `hC` using `GlobalTheory.T.local_count_of_setup hLF hLT hLE hadm D N X bkP i s Λ κ Q hS`. Conclude with `⟨GlobalTheory.SelFun.selMaps D N X bkP i s Λ κ Q, GlobalTheory.T.selmer_functor_left_exact_torsion_coefficients D N X bkP i s Λ κ Q hS hN hU, GlobalTheory.SelFun.Colim.selColim D N X bkP i s Λ κ Q hS hN hU, GlobalTheory.T.selmerObstruction_le_residualSelmer_simpleExtension hPT hC …`.
+-/
 theorem oneMatrix_of_galoisCohomology :
     Cheb → PoitouTateTotallyComplex → CohDimTwo → TameLocal → LocalFiniteness →
     LocalTateDuality → LocalEulerChar → GlobalFiniteness → GlobalEulerChar →

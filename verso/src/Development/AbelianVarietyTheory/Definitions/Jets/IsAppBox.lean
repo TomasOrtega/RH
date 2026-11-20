@@ -13,6 +13,9 @@ def IsApp {R : Type} [CommRing R] [IsDomain R] {D D₂ D' : DegPre R} {n₁ n₂
     (∀ j, IsBoxFam pD₂ F k (S₂ j) (u j)) ∧ (∀ j, IsBoxFam pD F k (S' j) (Fin.append a (u j))) ∧
       sb = ∑ j, c j • S₂ j ∧ S = ∑ j, c j • S' j
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun _ => 1, fun _ => u, fun _ => sb, fun _ => S, fun _ => h₂, fun _ => h, by simp, by simp⟩`.
+-/
 theorem isApp_box {R : Type} [CommRing R] [IsDomain R] {D D₂ D' : DegPre R} {n₁ n₂ : ℕ} (pD₂ : IsPowDeg D₂ D n₂)
     (pD : IsPowDeg D' D (n₁ + n₂)) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ)
     (a : Fin n₁ → Fam D F k) (u : Fin n₂ → Fam D F k) (sb : Fam D₂ F k) (S : Fam D' F k)

@@ -18,6 +18,15 @@ noncomputable section
 
 namespace GlobalTheory.StdRealLift
 
+/- English proof (translation)
+Introduce `D S T C v hv`. Take `⟨L, hL, -⟩` from `GlobalTheory.RealLift.exists_real_lift D C.θ S C.inf`. Establish `hu : v ∈ HolDict.UG (gramAt D S)`. Introduce `τ`. Establish `hg : gramAt D S τ = 1`.
+
+Unfold `gramAt`. Rewrite using `[C.m.gS]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Use `show (v τ)ᴴ * gramAt D S τ * v τ = gramAt D S τ`. Rewrite using `[hg, Matrix.mul_one]`.
+
+Conclude with `hv τ`. Use `⟨L v, (hL v hu).1, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← (hL v hu).2 τ]`. Use `clear hL hu hv`. Unfold `compAt archM`.
+
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem exists_real_point : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (v : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ), (∀ τ, (v τ)ᴴ * v τ = 1) → ∃ h ∈ GinfC S, ∀ τ, compAt C.θ τ (mt S h) = v τ := by
   intro D S T C v hv
   obtain ⟨L, hL, -⟩ := GlobalTheory.RealLift.exists_real_lift D C.θ S C.inf

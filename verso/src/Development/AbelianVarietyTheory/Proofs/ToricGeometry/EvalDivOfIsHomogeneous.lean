@@ -15,6 +15,11 @@ namespace GlobalTheory
 
 namespace ThetaQuotient
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_eq, MvPolynomial.eval_eq, Finset.sum_div]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : ∑ i ∈ m.support, m i = d`. Use `hF (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact. Rewrite using `[← this, Finsupp.weight_apply, Finsupp.sum]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [div_pow, Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum, hd, mul_div_assoc]`.
+-/
 theorem eval_div_of_isHomogeneous {σ : Type*} {F : MvPolynomial σ ℂ} {d : ℕ} (hF : F.IsHomogeneous d) (v : σ → ℂ)
     (t : ℂ) : MvPolynomial.eval (fun i => v i / t) F = MvPolynomial.eval v F / t ^ d := by
   classical
@@ -26,6 +31,11 @@ theorem eval_div_of_isHomogeneous {σ : Type*} {F : MvPolynomial σ ℂ} {d : �
     simp
   simp only [div_pow, Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum, hd, mul_div_assoc]
 
+/- English proof (translation)
+Establish `hx : x.left ≫ X.hom = 𝟙 _` using `Over.w x`. Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.eval₂_C, MvPolynomial.eval_C]`. Conclude with `valAt'_constFn x.left X.hom hx U a h`.
+
+Consider the case `add p q hp hq => rw [MvPolynomial.eval₂_add, map_add, valAt'_add, hp, hq]`. Consider the case `mul_X p i hp => rw [MvPolynomial.eval₂_mul, map_mul, valAt'_mul, hp, MvPolynomial.eval₂_X, MvPolynomial.eval_X]`.
+-/
 theorem valAt'_eval₂ {σ : Type*} {X : Over (Sp ℂ)} (x : 𝟙_ (Over (Sp ℂ)) ⟶ X) {U : X.left.Opens}
     (h : ⊤ ≤ x.left ⁻¹ᵁ U) (r : σ → Γ(X.left, U)) (F : MvPolynomial σ ℂ) :
     valAt' x.left U (MvPolynomial.eval₂ (RingHom.comp (X.hom.appLE ⊤ U le_top).hom
@@ -38,6 +48,13 @@ theorem valAt'_eval₂ {σ : Type*} {X : Over (Sp ℂ)} (x : 𝟙_ (Over (Sp ℂ
   | add p q hp hq => rw [MvPolynomial.eval₂_add, map_add, valAt'_add, hp, hq]
   | mul_X p i hp => rw [MvPolynomial.eval₂_mul, map_mul, valAt'_mul, hp, MvPolynomial.eval₂_X, MvPolynomial.eval_X]
 
+/- English proof (translation)
+Take `⟨φ, hφ, -⟩` from `X.left.sheaf.existsUnique_gluing V s (by`. Introduce `i j`. Use `hext _ _ _ fun x hx => ?_` and prove the remaining obligations. Take `⟨hi, hj⟩` from `(top_le_preimage_inf x.left _ _).1 hx`. Use `(valAt'_map x.left _ (s i) hx).trans (Eq.trans ?_ (valAt'_map x.left _ (s j) hx).symm)` and prove the remaining obligations.
+
+Rewrite using `[hs i x hi, hs j x hj])`. Use `⟨φ, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 ((top_le_preimage_iff_mem x.left _).1 hx)`. Establish `hi'` using `(top_le_preimage_iff_mem x.left _).2 hi`. Rewrite using `[← hs i x hi', ← hφ i]`.
+
+Conclude with `(valAt'_map x.left _ φ hi').symm`.
+-/
 theorem exists_glue_of_values {X : Over (Sp ℂ)}
     (hext : ∀ (U : X.left.Opens) (f f' : Γ(X.left, U)),
       (∀ x : (𝟙_ (Over (Sp ℂ)) ⟶ X), ⊤ ≤ (x).left ⁻¹ᵁ U → valAt' x.left U f = valAt' x.left U f') → f = f')
@@ -57,6 +74,11 @@ theorem exists_glue_of_values {X : Over (Sp ℂ)}
   rw [← hs i x hi', ← hφ i]
   exact (valAt'_map x.left _ φ hi').symm
 
+/- English proof (translation)
+Establish `hunit : IsUnit ((X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom g)` using `X.toRingedSpace.isUnit_res_basicOpen g`. Take `⟨u, hu⟩` from `hunit`. Use `⟨(X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom f * (u⁻¹).val, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : valAt' x (X.basicOpen g) u.val = valAt' x U g`. Rewrite using `[hu]`.
+
+Conclude with `valAt'_map x _ g hx`. Rewrite using `[valAt'_mul, valAt'_map x _ f hx, div_eq_mul_inv, ← h1]`. Use `congr 1`. Conclude with `valAt'_units_inv x hx u`.
+-/
 theorem exists_div_basicOpen {X : Scheme.{0}} {U : X.Opens} (f g : Γ(X, U)) :
     ∃ s : Γ(X, X.basicOpen g), ∀ x : Sp ℂ ⟶ X, ⊤ ≤ x ⁻¹ᵁ X.basicOpen g →
       valAt' x (X.basicOpen g) s = valAt' x U f / valAt' x U g := by
@@ -75,6 +97,31 @@ end ThetaQuotient
 
 open ThetaQuotient in
 
+/- English proof (translation)
+Introduce `hext g τ _ N _ hpoly X ex D ⟨hint, hprop, hsurj, _, _, hD, hcov⟩ d p q hp hq`. Establish `hext'` using `hext X inferInstance inferInstance`. Take `⟨P, hP, hPv⟩` from `hpoly d p hp`. Take `⟨Q, hQ, hQv⟩` from `hpoly d q hq`. Generalize the expression as in `hθ : (fun (c : Fin g → Fin N) (z : Fin g → ℂ) => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) = θ`.
+
+Establish `hθ' : ∀ c z, theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) = θ c z` using `fun c z => congrFun (congrFun hθ c) z`. Simplify using `only [hθ'] at hD hPv hQv`. Establish `hmem : ∀ c z, ⊤ ≤ (ex z).left ⁻¹ᵁ D c ↔ θ c z ≠ 0` using `fun c => (hD c).2.2.1`. Use `choose r hr using fun c => (hD c).2.2.2`. Establish `hφ : ∀ (F : MvPolynomial (Fin g → Fin N) ℂ), F.IsHomogeneous d → ∀ c, ∃ φ : Γ(X.left, D c), ∀ z, θ c z ≠ 0 → valAt' (ex z).left (D c) φ = MvPolynomial.eval (fun c' => θ c' z) F / θ c z ^ d`.
+
+Introduce `F hF c`. Use `⟨_, fun z hz => (valAt'_eval₂ (ex z) ((hmem c z).2 hz) (r c) F).trans ?_⟩` and prove the remaining obligations. Rewrite using `[← eval_div_of_isHomogeneous hF]`. Use `congr 2`. Use function extensionality and compare the values at `c'`.
+
+Conclude with `(hr c).1 c' z hz`. Use `choose φp hφp using hφ P hP`. Use `choose φq hφq using hφ Q hQ`. Simplify using `only [← hPv, ← hQv] at hφp hφq`. Use `choose s hs using fun c => exists_div_basicOpen (φp c) (φq c)`.
+
+Establish `hV : ∀ c z, ⊤ ≤ (ex z).left ⁻¹ᵁ X.left.basicOpen (φq c) ↔ θ c z ≠ 0 ∧ q z ≠ 0`. Introduce `c z`. Rewrite using `[top_le_preimage_basicOpen_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h1` using `(hmem c z).1 (top_le_preimage_of_valAt'_ne_zero _ h)`. Rewrite `h` using `[hφq c z h1]`. Conclude with `⟨h1, fun h0 => h (by rw [h0, zero_div])⟩`. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[hφq c z h1]`.
+
+Conclude with `div_ne_zero h2 (pow_ne_zero _ h1)`. Establish `hsv : ∀ c z, ⊤ ≤ (ex z).left ⁻¹ᵁ X.left.basicOpen (φq c) → valAt' (ex z).left _ (s c) = p z / q z`. Introduce `c z h`. Take `⟨h1, _⟩` from `(hV c z).1 h`. Rewrite using `[hs c _ h, hφp c z h1, hφq c z h1, div_div_div_cancel_right₀ (pow_ne_zero _ h1)]`.
+
+Use `choose σ hσ using hsurj`. Take `⟨φ, hφ⟩` from `exists_glue_of_values hext' (fun c => X.left.basicOpen (φq c)) s (fun x => p (σ x) / q (σ x)) (fun c x hx => by`. Use `hsv c (σ x) (by rw [hσ]; exact hx)` as an intermediate fact. Rewrite using `[hσ] at this)` and apply the resulting hypothesis. Establish `hU : ∀ z, ⊤ ≤ (ex z).left ⁻¹ᵁ (⨆ c, X.left.basicOpen (φq c)) ↔ ∃ c, ⊤ ≤ (ex z).left ⁻¹ᵁ X.left.basicOpen (φq c)`.
+
+Introduce `z`. Use `(top_le_preimage_iff_mem _ _).trans (TopologicalSpace.Opens.mem_iSup.trans (exists_congr fun c => ?_))` and prove the remaining obligations. Conclude with `(top_le_preimage_iff_mem _ _).symm`. Establish `hU' : ∀ z, q z ≠ 0 → ∃ c, ⊤ ≤ (ex z).left ⁻¹ᵁ X.left.basicOpen (φq c)`. Introduce `z hz`.
+
+Establish `: (ex z).left (default : PrimeSpectrum ℂ) ∈ ⨆ c, D c` using `by rw [hcov]; trivial`. Take `⟨c, hc⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `⟨c, (hV c z).2 ⟨(hmem c z).1 ((top_le_preimage_iff_mem _ _).2 hc), hz⟩⟩`. Use `⟨_, φ, fun z => ⟨⟨fun h => ?_, fun h => (hU z).2 (hU' z h)⟩, fun h => ?_⟩⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `(hU z).1 h`.
+
+Conclude with `((hV c z).1 hc).2`. Take `⟨c, hc⟩` from `hU' z h`. Rewrite using `[hφ _ ((hU z).2 ⟨c, hc⟩), ← hsv c z hc]`. Use `hsv c (σ (ex z)) (by rw [hσ]; exact hc)` as an intermediate fact. Rewrite `this` using `[hσ]`.
+
+Conclude with `this.symm`.
+-/
 theorem theta_quotient_regular : (∀ (X : Over (Sp ℂ)), IsReduced X.left → LocallyOfFiniteType X.hom → ∀ (U : X.left.Opens) (f f' : Γ(X.left, U)), (∀ x : (𝟙_ (Over (Sp ℂ)) ⟶ X), ⊤ ≤ (x).left ⁻¹ᵁ U → valAt' x.left U f = valAt' x.left U f') → f = f') → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∀ N : ℕ, 3 ≤ N → (∀ (d : ℕ) (f : (Fin g → ℂ) → ℂ), (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-((N * d : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z) → ∃ F : MvPolynomial (Fin g → Fin N) ℂ, F.IsHomogeneous d ∧ ∀ z, f z = MvPolynomial.eval (fun c => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) F) → ∀ (X : Over (Sp ℂ)) (ex : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (D : (Fin g → Fin N) → X.left.Opens), (IsIntegral X.left ∧ IsProper X.hom ∧ Function.Surjective ex ∧ (∀ z z', ex z = ex z' ↔ z - z' ∈ periodLattice τ) ∧ (∀ (U : (X).left.Opens) (f : Γ((X).left, U)), IsOpen {w | w ∈ (Set.univ : Set (Fin g → ℂ)) ∧ ⊤ ≤ (ex w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (ex w).left U f) {w | w ∈ (Set.univ : Set (Fin g → ℂ)) ∧ ⊤ ≤ (ex w).left ⁻¹ᵁ U}) ∧ (∀ c, IsAffineOpen (D c) ∧ ringKrullDim Γ(X.left, D c) ≤ g ∧ (∀ z, ⊤ ≤ (ex z).left ⁻¹ᵁ D c ↔ theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) ≠ 0) ∧ ∃ r : (Fin g → Fin N) → Γ(X.left, D c), (∀ c' z, theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) ≠ 0 → valAt' (ex z).left (D c) (r c') = theta (fun i => ((c' i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) / theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) ∧ ∀ f : Γ(X.left, D c), ∃ F : MvPolynomial (Fin g → Fin N) ℂ, f = MvPolynomial.eval₂ (RingHom.comp (X.hom.appLE ⊤ _ le_top).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom) r F) ∧ (⨆ c, D c = ⊤)) → (∀ (d : ℕ) (p q : (Fin g → ℂ) → ℂ), (Differentiable ℂ p ∧ ∀ (n n' : Fin g → ℤ) z, p (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-((N * d : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * p z) → (Differentiable ℂ q ∧ ∀ (n n' : Fin g → ℤ) z, q (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-((N * d : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * q z) → ∃ (U : X.left.Opens) (φ : Γ(X.left, U)), ∀ z, (⊤ ≤ (ex z).left ⁻¹ᵁ U ↔ q z ≠ 0) ∧ (q z ≠ 0 → valAt' (ex z).left U φ = p z / q z))) := by
   intro hext g τ _ N _ hpoly X ex D ⟨hint, hprop, hsurj, _, _, hD, hcov⟩ d p q hp hq
   have hext' := hext X inferInstance inferInstance

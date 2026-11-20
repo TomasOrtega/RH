@@ -20,6 +20,9 @@ section Fixed
 
 variable {k G : Type*} [CommRing k] [Group G] [TopologicalSpace G]
 
+/- English proof (translation)
+Set `F : Subgroup G` to `⨅ a : A, stabilizer A.ρ a`. Establish `hF : IsOpen (F : Set G)`. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_stabilizer A a`. Conclude with `⟨⟨F, hF⟩, fun g hg a => (mem_stabilizer _ _ _).1 (Subgroup.mem_iInf.1 hg a)⟩`.
+-/
 theorem exists_openSubgroup_forall_fixed (A : Rep k G) [IsDiscreteRep A] [Finite A] :
     ∃ W : OpenSubgroup G, ∀ g ∈ W, ∀ a : A, A.ρ g a = a := by
   let F : Subgroup G := ⨅ a : A, stabilizer A.ρ a
@@ -44,6 +47,13 @@ def uliftLinearOfAddHom {M N : Type*} [AddCommGroup M] [AddCommGroup N] {iM : Mo
     have e : ((m : ℤ) : ULift.{0} ℤ) = ULift.up m := rfl
     rw [RingHom.id_apply, ← e, h1, h2, map_zsmul]
 
+/- English proof (translation)
+Set `f : A ⟶ B` to `Rep.ofHom ⟨uliftLinearOfAddHom e.toAddMonoidHom, fun g => LinearMap.ext fun a => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hA]`. Conclude with `(hB g _).symm⟩`. Set `f' : B ⟶ A` to `Rep.ofHom ⟨uliftLinearOfAddHom e.symm.toAddMonoidHom, fun g => LinearMap.ext fun a => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hB]`.
+
+Conclude with `(hA g _).symm⟩`. Establish `hff' : f ≫ f' = 𝟙 A`. Use extensionality with `a`. Conclude with `e.symm_apply_apply a`. Use `Finite.of_injective (cohomologyMap f r).hom fun x y hxy => ?_` and prove the remaining obligations.
+
+Establish `h` using `congrArg (cohomologyMap f' r).hom hxy`. Rewrite `h` using `[← ModuleCat.comp_apply, ← ModuleCat.comp_apply, ← cohomologyMap_comp, hff', cohomologyMap_id]`. Conclude with `h`.
+-/
 theorem finite_cohomology_of_addEquiv_of_trivial {H : Type} [Group H] [TopologicalSpace H]
     [IsTopologicalGroup H] (A B : Rep.{0} (ULift.{0} ℤ) H) [IsDiscreteRep A] [IsDiscreteRep B]
     (hA : ∀ (g : H) (a : A), A.ρ g a = a) (hB : ∀ (g : H) (b : B), B.ρ g b = b) (e : A ≃+ B) (r : ℕ)
@@ -64,6 +74,9 @@ theorem finite_cohomology_of_addEquiv_of_trivial {H : Type} [Group H] [Topologic
     cohomologyMap_id] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Gua5.finite_cohomology_of_trivial_of_cyclic n r hcyc A htriv hA`.
+-/
 theorem finite_cohomology_of_trivial_of_cyclic {H : Type} [Group H] [TopologicalSpace H]
     [IsTopologicalGroup H] (n r : ℕ)
     (hcyc : ∀ (C : Rep.{0} (ULift.{0} ℤ) H) [IsDiscreteRep C] [Finite C] [IsAddCyclic C],
@@ -73,6 +86,11 @@ theorem finite_cohomology_of_trivial_of_cyclic {H : Type} [Group H] [Topological
     Finite (cohomology A r) :=
   _root_.UpperTheory.Reformulated.B.Gua5.finite_cohomology_of_trivial_of_cyclic n r hcyc A htriv hA
 
+/- English proof (translation)
+Set `e : ((⊤ : OpenSubgroup H) : Subgroup H) ≃* H` to `{ toFun := Subtype.val invFun := fun g => ⟨g, OpenSubgroup.mem_top g⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_mul' := fun _ _ => rfl }`. Establish `he : Continuous e.toMonoidHom` using `continuous_subtype_val`. Establish `he' : Continuous e.symm.toMonoidHom` using `continuous_id.subtype_mk _`. Establish `: IsDiscreteRep (Rep.res ((⊤ : OpenSubgroup H) : Subgroup H).subtype A)` using `isDiscreteRep_res_subtype A _`. Set `f : Rep.res e.toMonoidHom A ⟶ Rep.res ((⊤ : OpenSubgroup H) : Subgroup H).subtype A` to `Rep.ofHom ⟨LinearMap.id, fun _ => LinearMap.ext fun _ => rfl⟩`.
+
+Use `isIso_cohomologyMapAlong_of_mulEquiv e he he' f Function.bijective_id r` as an intermediate fact. Conclude with `Finite.of_equiv _ (asIso (cohomologyMapAlong e.toMonoidHom he f r)).toLinearEquiv.toEquiv.symm`.
+-/
 theorem finite_cohomology_of_res_top {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     (A : Rep.{0} (ULift.{0} ℤ) H) [IsDiscreteRep A] (r : ℕ)
     [Finite (cohomology (Rep.res ((⊤ : OpenSubgroup H) : Subgroup H).subtype A) r)] :
@@ -96,6 +114,9 @@ end ULiftLinear
 
 variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
 
+/- English proof (translation)
+Establish `: NeZero d` using `⟨hd0⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℚ̄ d`. Use `⟨⟨ζ, mem_maxUnramifiedOutside_of_pow_eq_one S hd0 hdS hζ.pow_eq_one⟩, ?_⟩` and prove the remaining obligations. Conclude with `IsPrimitiveRoot.of_map_of_injective (f := (maxUnramifiedOutside K.1 ℚ̄ S).val) hζ Subtype.val_injective`.
+-/
 theorem exists_isPrimitiveRoot_maxUnramifiedOutside (d : ℕ) (hd0 : d ≠ 0)
     (hdS : ∀ v ∉ S, ((d : ℕ) : 𝓞 K.1) ∉ v.asIdeal) :
     ∃ ζ : maxUnramifiedOutside K.1 ℚ̄ S, IsPrimitiveRoot ζ d := by
@@ -105,6 +126,11 @@ theorem exists_isPrimitiveRoot_maxUnramifiedOutside (d : ℕ) (hd0 : d ≠ 0)
   exact IsPrimitiveRoot.of_map_of_injective (f := (maxUnramifiedOutside K.1 ℚ̄ S).val) hζ
     Subtype.val_injective
 
+/- English proof (translation)
+Establish `: NeZero d` using `⟨hd0⟩`. Take `⟨ζ, hζ⟩` from `exists_isPrimitiveRoot_maxUnramifiedOutside K S d hd0 hdS`. Establish `hu : IsUnit ζ` using `hζ.isUnit hd0`. Use `IsPrimitiveRoot.card_rootsOfUnity' (ζ := hu.unit) ?_` and prove the remaining obligations. Rewrite using `[← IsPrimitiveRoot.coe_units_iff, IsUnit.unit_spec]`.
+
+Conclude with `hζ`.
+-/
 theorem card_rootsOfUnity_maxUnramifiedOutside (d : ℕ) (hd0 : d ≠ 0)
     (hdS : ∀ v ∉ S, ((d : ℕ) : 𝓞 K.1) ∉ v.asIdeal) :
     Nat.card (rootsOfUnity d (maxUnramifiedOutside K.1 ℚ̄ S)) = d := by
@@ -122,6 +148,21 @@ variable [Finite S] (n : ℕ) (hn0 : n ≠ 0)
 
 include hS
 
+/- English proof (translation)
+Take `⟨L, hKL, hL, rfl⟩` from `exists_gsOpenSubgroup_eq K S V`. Take `⟨d, hd⟩ : ∃ d, Nat.card C = d` from `⟨_, rfl⟩`. Establish `hd0 : d ≠ 0` using `hd ▸ Nat.card_pos.ne'`. Establish `hdn : d ∣ n`. Take `⟨g, hg⟩` from `IsAddCyclic.exists_generator (α := C)`.
+
+Rewrite using `[← hd, ← addOrderOf_eq_card_of_forall_mem_zmultiples hg]`. Conclude with `addOrderOf_dvd_of_nsmul_eq_zero (hC g)`. Establish `hdS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((d : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S` using `mem_of_dvd_of_mem K S hdn hS`. Establish `hdS' : ∀ v ∉ S, ((d : ℕ) : 𝓞 K.1) ∉ v.asIdeal` using `fun v hv h => hv (hdS v h)`. Establish `: NeZero d` using `⟨hd0⟩`.
+
+Set `μ` to `Rep.res (gsSubtype S hL) (galRootsOfUnity.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S) d)`. Establish `hμ : ∀ (g : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) (x : μ), μ.ρ g x = x`. Introduce `g x`. Express the relevant statement in the definitionally equal form `(galRootsOfUnity.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S) d).ρ (g : galUnramifiedOutside K.1 ℚ̄ S) x = x`. Rewrite using `[galRootsOfUnity_ρ_apply]`.
+
+Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[toMul_ofMul, coe_galRootsOfUnityHom_apply]`. Use `hW₀ _ (hV g.2) _ ?_` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `hdn`. Rewrite using `[hc, pow_mul]`. Conclude with `(congrArg (· ^ c) ((mem_rootsOfUnity _ _).1 (Additive.toMul x).2)).trans (one_pow c)`. Establish `hcard : Nat.card C = Nat.card μ`. Express the relevant statement in the definitionally equal form `Nat.card C = Nat.card (Additive (rootsOfUnity d (maxUnramifiedOutside K.1 ℚ̄ S)))`.
+
+Rewrite using `[hd, Nat.card_congr Additive.toMul, card_rootsOfUnity_maxUnramifiedOutside K S d hd0 hdS']`. Establish `: IsAddCyclic μ` using `inferInstanceAs (IsAddCyclic (Additive (rootsOfUnity d (maxUnramifiedOutside K.1 ℚ̄ S))))`. Set `e : C ≃+ μ` to `addEquivOfAddCyclicCardEq hcard`. Establish `hLS : (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))).Finite` using `placesOver_finite (Set.toFinite S)`. Establish `: Finite (placesOver S : Set (HeightOneSpectrum (𝓞 L.1)))` using `hLS.to_subtype`.
+
+Establish `hfin : Finite (cohomology μ r)`. Establish `h` using `finite_cohomology_rootsOfUnity L (placesOver S) d hd0 (fun w hw => mem_placesOver_of_natCast_mem hdS hw) r hr`. Conclude with `Finite.of_equiv _ (gsRootsOfUnityCohomologyIso S hL d r).toLinearEquiv.toEquiv`. Conclude with `finite_cohomology_of_addEquiv_of_trivial C μ htriv hμ e r`.
+-/
 theorem finite_cohomology_of_isAddCyclic_gs (W₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S))
     (hW₀ : ∀ σ ∈ W₀, ∀ ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ, ζ ^ n = 1 →
       σ (ζ : maxUnramifiedOutside K.1 ℚ̄ S) = ζ)
@@ -171,6 +212,9 @@ theorem finite_cohomology_of_isAddCyclic_gs (W₀ : OpenSubgroup (galUnramifiedO
     exact Finite.of_equiv _ (gsRootsOfUnityCohomologyIso S hL d r).toLinearEquiv.toEquiv
   exact finite_cohomology_of_addEquiv_of_trivial C μ htriv hμ e r
 
+/- English proof (translation)
+The claim follows from `finite_cohomology_of_trivial_of_cyclic n r (fun C _ _ _ hC1 hC2 => finite_cohomology_of_isAddCyclic_gs K S n hS W₀ hW₀ V hV C hC1 hC2 r hr) A htriv hA`.
+-/
 theorem finite_cohomology_of_trivial_gs (W₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S))
     (hW₀ : ∀ σ ∈ W₀, ∀ ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ, ζ ^ n = 1 →
       σ (ζ : maxUnramifiedOutside K.1 ℚ̄ S) = ζ)
@@ -184,6 +228,9 @@ theorem finite_cohomology_of_trivial_gs (W₀ : OpenSubgroup (galUnramifiedOutsi
 
 end Trivial
 
+/- English proof (translation)
+Establish `: NeZero n` using `⟨hn0⟩`. Take `⟨W₀, hW⟩` from `exists_openSubgroup_forall_fixed (galRootsOfUnity.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S) n)`. Use `⟨W₀, fun σ hσ ζ hζ => ?_⟩` and prove the remaining obligations. Establish `h` using `hW σ hσ (Additive.ofMul ⟨ζ, (mem_rootsOfUnity n ζ).2 hζ⟩)`. Conclude with `congrArg (fun y : Additive (rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S)) => (((Additive.toMul y : rootsOfUnity n _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S)) h`.
+-/
 theorem exists_openSubgroup_fixing_rootsOfUnity (n : ℕ) (hn0 : n ≠ 0) :
     ∃ W₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S), ∀ σ ∈ W₀,
       ∀ ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ, ζ ^ n = 1 → σ (ζ : maxUnramifiedOutside K.1 ℚ̄ S) = ζ := by
@@ -198,6 +245,9 @@ theorem exists_openSubgroup_fixing_rootsOfUnity (n : ℕ) (hn0 : n ≠ 0) :
 
 variable [Finite S]
 
+/- English proof (translation)
+Establish `hn0 : Nat.card M ≠ 0` using `Nat.card_pos.ne'`. Take `⟨W₀, hW₀⟩` from `exists_openSubgroup_fixing_rootsOfUnity K S (Nat.card M) hn0`. Conclude with `finite_cohomology_of_forall_trivial (Nat.card M) 2 W₀ (fun V hV A _ _ htriv hA r hr => finite_cohomology_of_trivial_gs K S (Nat.card M) hS W₀ hW₀ V hV A htriv hA r hr) U M (fun m => card_nsmul_eq_zero') r hr`.
+-/
 theorem finite_cohomology_openSubgroup (U : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S))
     (M : Rep.{0} (ULift.{0} ℤ) (U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) [IsDiscreteRep M]
     [Finite M]
@@ -210,6 +260,9 @@ theorem finite_cohomology_openSubgroup (U : OpenSubgroup (galUnramifiedOutside K
       finite_cohomology_of_trivial_gs K S (Nat.card M) hS W₀ hW₀ V hV A htriv hA r hr)
     U M (fun m => card_nsmul_eq_zero') r hr
 
+/- English proof (translation)
+Set `M'` to `Rep.res ((⊤ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S)) : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype M`. Establish `: IsDiscreteRep M'` using `isDiscreteRep_res_subtype M _`. Establish `: Finite M'` using `inferInstanceAs (Finite M)`. Establish `: Finite (cohomology M' r)` using `finite_cohomology_openSubgroup K S ⊤ M' hS r hr`. Conclude with `finite_cohomology_of_res_top M r`.
+-/
 theorem finite_cohomology_gs (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S))
     [IsDiscreteRep M] [Finite M]
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((Nat.card M : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)

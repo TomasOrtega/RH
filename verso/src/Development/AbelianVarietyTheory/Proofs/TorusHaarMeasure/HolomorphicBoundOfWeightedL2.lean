@@ -8,6 +8,31 @@ open scoped ContDiff ENNReal Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n g ρ b hρ hb hg hI`. Use `set I := ∫⁻ z in Metric.ball (0 : V n) ρ, ENNReal.ofReal (‖g z‖ ^ 2 * (‖z‖ ^ 2) ^ (-(b + (n : ℝ)))) with hIdef`. Use `set v := volume (Metric.ball (0 : V n) 1) with hv`. Establish `hv0 : v ≠ 0` using `(Metric.measure_ball_pos volume _ one_pos).ne'`. Establish `hvt : v ≠ ⊤` using `measure_ball_lt_top.ne`.
+
+Establish `hvr : 0 < v.toReal` using `ENNReal.toReal_pos hv0 hvt`. Establish `hdim : Module.finrank ℝ (V n) = 2 * n`. Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace_fin]`. Use `set K : ℝ := (4 : ℝ) ^ b * 16 ^ n * I.toReal / v.toReal with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`.
+
+Use `⟨Real.sqrt K, ρ / 2, by positivity, fun z hz hzρ => ?_⟩` and prove the remaining obligations. Use `set t := ‖z‖ with ht`. Establish `ht0 : 0 < t` using `norm_pos_iff.2 hz`. Establish `hsub : Metric.ball z (t / 2) ⊆ Metric.ball (0 : V n) ρ`. Apply `Metric.ball_subset_ball'` to reduce the goal to its premises.
+
+Rewrite using `[dist_zero_right]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmv` using `ReciprocityTheory.L2DbarEstimates.C.mv n z (t / 2) g (fun _ => 1) (hg.mono hsub) measurable_const`. Simplify using `only [mul_one, lintegral_const, Measure.restrict_apply_univ, one_mul] at hmv`. Rewrite `hmv` using `[Measure.addHaar_ball_of_pos volume z (half_pos ht0), hdim, ← hv]`.
+
+Establish `hs : 0 ≤ b + (n : ℝ)` using `by positivity`. Establish `hbound : ∫⁻ w in Metric.ball z (t / 2), ‖g w‖ₑ ^ 2 ≤ ENNReal.ofReal (((2 * t) ^ 2) ^ (b + (n : ℝ))) * I`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' Metric.isOpen_ball.measurableSet fun w hw => ?_` and prove the remaining obligations. Establish `hw' : ‖w - z‖ < t / 2` using `by rwa [Metric.mem_ball, dist_eq_norm] at hw`.
+
+Establish `h1 : ‖w‖ ≤ 2 * t`. Use `norm_sub_norm_le w z` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : 0 < ‖w‖`. Use `norm_sub_norm_le z w` as an intermediate fact.
+
+Rewrite `this` using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `h3 : (‖w‖ ^ 2) ^ (b + (n : ℝ)) ≤ ((2 * t) ^ 2) ^ (b + (n : ℝ))` using `Real.rpow_le_rpow (by positivity) (pow_le_pow_left₀ h2.le h1 2) hs`.
+
+Establish `h4 : 0 < (‖w‖ ^ 2) ^ (b + (n : ℝ))` using `by positivity`. Rewrite using `[Real.rpow_neg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = ENNReal.ofReal (((2 * t) ^ 2) ^ (b + (n : ℝ))) * ∫⁻ w in Metric.ball z (t / 2), ENNReal.ofReal (‖g w‖ ^ 2 * (‖w‖ ^ 2) ^ (-(b + (n : ℝ)))) := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Use `_ ≤ _ := by gcongr`.
+
+Conclude with `lintegral_mono_set hsub`. Establish `hfin` using `hmv.trans hbound`. Establish `hr` using `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hI.ne) hfin`. Rewrite `hr` using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_pow, toReal_enorm, ENNReal.toReal_ofReal (by positivity), ENNReal.toReal_ofReal (by positivity)]`. Establish `hid : ((2 * t) ^ 2) ^ (b + (n : ℝ)) = (4 : ℝ) ^ b * (t ^ b) ^ 2 * (16 ^ n * (t / 2) ^ (2 * n))`.
+
+Rewrite using `[Real.rpow_add (by positivity), Real.rpow_natCast]`. Use `congr 1`. Rewrite using `[show (2 * t) ^ 2 = 4 * (t * t) by ring, Real.mul_rpow (by positivity) (by positivity), Real.mul_rpow ht0.le ht0.le, sq]`. Rewrite using `[pow_mul, ← mul_pow]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hr` using `[hid]`. Establish `hp : 0 < (t / 2) ^ (2 * n)` using `by positivity`. Establish `hsq : ‖g z‖ ^ 2 ≤ K * (t ^ b) ^ 2`. Establish `hc : 0 < (t / 2) ^ (2 * n) * v.toReal` using `by positivity`.
+
+Use `le_of_mul_le_mul_right (hr.trans (le_of_eq ?_)) hc` and prove the remaining obligations. Rewrite using `[hK]`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_mul hK0, Real.sqrt_sq (by positivity)]`.
+-/
 theorem norm_le_rpow_of_weighted_sq_integrable :
     ∀ (n : ℕ) (g : V n → ℂ) (ρ b : ℝ), 0 < ρ → 0 ≤ b → DifferentiableOn ℂ g (Metric.ball 0 ρ) →
       ∫⁻ z in Metric.ball (0 : V n) ρ,

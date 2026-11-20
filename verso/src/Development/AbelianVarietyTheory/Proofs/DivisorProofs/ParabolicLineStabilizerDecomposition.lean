@@ -11,6 +11,9 @@ open GlobalTheory.IwasawaKAvgInt
 
 namespace GlobalTheory.IwasawaInf
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b X X₁ H i₀ i₁ r s hB hX hH K hK g hg`. Take `⟨p, ⟨l, hl⟩, k, hk, e⟩` from `GlobalTheory.IwLine.iwasawa B hB hX hH g`. Use `⟨GlobalTheory.KAvg.prH σ X.J (GlobalTheory.KAvg.idem_realAd F) p, GlobalTheory.KAvg.prH_mem p, ⟨_, GlobalTheory.KAvg.prH_mulVec _ hl⟩, GlobalTheory.KAvg.prH σ X.J (GlobalTheory.KAvg.idem_realAd F) k, GlobalTheory.KAvg.prH_mem_KAt hK ((hK k).2 hk), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← e, GlobalTheory.KAvg.prH_of_mem hg]`.
+-/
 theorem exists_stab_mul_KAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n₁ : ℕ) (X : Spc F E (n₁ + 2)) (X₁ : Spc F E n₁) (H : Plane E (n₁ + 2) n₁) (i₀ i₁ r s : ℕ),
     B.IsGood σ → X.IsHerm σ B r s → H.IsAdapted σ B X X₁ i₀ i₁ → ∀ K : Subgroup (UA σ X.J), IsStab B K →

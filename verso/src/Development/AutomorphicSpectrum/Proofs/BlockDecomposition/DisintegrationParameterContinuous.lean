@@ -10,6 +10,39 @@ namespace GlobalTheory.CompanionTheory.WeilSiegel.FibParam
 
 open Set Filter
 
+/- English proof (translation)
+Introduce `V H Y P _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν f ι q U fam hU hq hι hf h ψ hψ hψc hψU`. Establish `hCc : IsCompact (tsupport ψ)` using `hψc`. Establish `hC₂c : IsCompact (Prod.snd '' tsupport ψ)` using `hCc.image continuous_snd`. Establish `hC₂U : Prod.snd '' tsupport ψ ⊆ U`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `hψU x hx`. Take `⟨ρ, hρ1, hρc, hρs, hρ01⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen hC₂c hU hC₂U`. Establish `hzero : ∀ p v, v ∉ Prod.snd '' tsupport ψ → ψ (p, v) = 0` using `fun p v hv => image_eq_zero_of_notMem_tsupport (fun hh => hv ⟨_, hh, rfl⟩)`. Establish `hsec : ∀ p, (∀ b, Integrable (fun v => ψ (p, v)) (fam b)) ∧ Continuous (fun b => ∫ v, ψ (p, v) ∂(fam b))`. Introduce `p`.
+
+Establish `hgc : Continuous (fun v => ψ (p, v))` using `hψ.comp (continuous_const.prodMk continuous_id)`. Establish `hsub : Function.support (fun v => ψ (p, v)) ⊆ Prod.snd '' tsupport ψ` using `fun v hv => by_contra fun hn => hv (hzero p v hn)`. Establish `hts : tsupport (fun v => ψ (p, v)) ⊆ Prod.snd '' tsupport ψ` using `closure_minimal hsub hC₂c.isClosed`. Establish `hcs : HasCompactSupport (fun v => ψ (p, v))` using `hC₂c.of_isClosed_subset (isClosed_tsupport _) hts`. Take `⟨i, c⟩` from `h.2.2 _ hgc hcs (hts.trans hC₂U)`.
+
+Conclude with `⟨fun b => i b (mem_univ b), continuousOn_univ.1 c⟩`. Take `⟨iρ, cρ⟩` from `h.2.2 ρ ρ.continuous hρc hρs`. Establish `hRc : Continuous (fun b => ∫ v, ρ v ∂(fam b))` using `continuousOn_univ.1 cρ`. Establish `hR0 : ∀ b, 0 ≤ ∫ v, ρ v ∂(fam b)` using `fun b => integral_nonneg fun v => (hρ01 v).1`. Establish `hdiff : ∀ (p p' : P) (e : ℝ) (b : H), 0 ≤ e → (∀ v ∈ Prod.snd '' tsupport ψ, |ψ (p, v) - ψ (p', v)| ≤ e) → |(∫ v, ψ (p, v) ∂(fam b)) - ∫ v, ψ (p', v) ∂(fam b)| ≤ e * ∫ v, ρ v ∂(fam b)`.
+
+Introduce `p p' e b he hb`. Rewrite using `[← integral_sub ((hsec p).1 b) ((hsec p').1 b), ← integral_const_mul, ← Real.norm_eq_abs]`. Use `norm_integral_le_of_norm_le ((iρ b (mem_univ b)).const_mul e) (ae_of_all _ fun v => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Distinguish the cases in `hv : v ∈ Prod.snd '' tsupport ψ`.
+
+Rewrite using `[hρ1 hv]`. Simplify using `using hb v hv`. Rewrite using `[hzero p v hv, hzero p' v hv]`. Simplify using `using mul_nonneg he (hρ01 v).1`. Establish `hcont : Continuous (fun z : P × H => ∫ v, ψ (z.1, v) ∂(fam z.2))`.
+
+Use `continuous_iff_continuousAt.2 ?_` and prove the remaining obligations. Introduce and unpack `⟨p₀, b₀⟩`. Use `Metric.continuousAt_iff'.2 fun ε hε => ?_` and prove the remaining obligations. Use `set M : ℝ := (∫ v, ρ v ∂(fam b₀)) + 1 with hMdef`. Establish `hM : 0 < M` using `by linarith [hR0 b₀]`.
+
+Use `set e : ℝ := ε / (2 * M) with hedef`. Establish `he : 0 < e` using `by positivity`. Establish `ev1 : ∀ᶠ b in 𝓝 b₀, (∫ v, ρ v ∂(fam b)) < M` using `(isOpen_lt hRc continuous_const).mem_nhds (by simp [hMdef])`. Establish `ev2 : ∀ᶠ b in 𝓝 b₀, dist (∫ v, ψ (p₀, v) ∂(fam b)) (∫ v, ψ (p₀, v) ∂(fam b₀)) < ε / 2` using `Metric.continuousAt_iff'.1 (hsec p₀).2.continuousAt (ε / 2) (by positivity)`. Establish `hK` using `(ContinuousMap.tendsto_iff_forall_isCompact_tendstoUniformlyOn.1 ((ContinuousMap.curry (⟨ψ, hψ⟩ : C(P × V, ℝ))).continuous.tendsto p₀)) _ hC₂c`.
+
+Establish `ev3` using `Metric.tendstoUniformlyOn_iff.1 hK e he`. Use `filter_upwards [ev3.prod_nhds (ev1.and ev2)] with z hz`. Take `⟨hz3, hz1, hz2⟩` from `hz`. Establish `hd` using `hdiff z.1 p₀ e z.2 he.le fun v hv => by`. Use `hz3 v hv` as an intermediate fact.
+
+Establish `h' : dist (ψ (p₀, v)) (ψ (z.1, v)) < e` using `this`. Rewrite `h'` using `[Real.dist_eq, abs_sub_comm]`. Conclude with `h'.le`. Establish `hbound : e * (∫ v, ρ v ∂(fam z.2)) ≤ ε / 2`. Establish `h1 : e * M = ε / 2`.
+
+Rewrite using `[hedef]`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation. Rewrite `hz2`, the goal using `[Real.dist_eq]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := abs_add_le _ _`. Use `_ < ε := by linarith`. Establish `hsupp : ∀ z : P × H, (∫ v, ψ (z.1, v) ∂(fam z.2)) ≠ 0 → ∃ v, ψ (z.1, v) ≠ 0 ∧ q v = z.2`.
+
+Introduce `z hz`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Apply `hz` to reduce the goal to its premises. Establish `h1 : f ⁻¹' {ι z.2} ∩ U ∈ ae (fam z.2)` using `mem_ae_iff.2 (h.1 z.2)`.
+
+Establish `h2 : (fun v => ψ (z.1, v)) =ᵐ[fam z.2] 0` using `by filter_upwards [h1] with v hv`. Establish `hqv : q v = z.2` using `hι ((hf v).symm.trans hv.1)`. Assume the negation of the conclusion as `h0`. Conclude with `hn v h0 hqv`. Conclude with `(integral_congr_ae h2).trans (by simp)`.
+
+Establish `hSc : IsCompact ((fun x : P × V => (x.1, q x.2)) '' tsupport ψ)` using `hCc.image (continuous_fst.prodMk (hq.comp continuous_snd))`. Establish `hts : tsupport (fun z : P × H => ∫ v, ψ (z.1, v) ∂(fam z.2)) ⊆ (fun x : P × V => (x.1, q x.2)) '' tsupport ψ`. Use `closure_minimal (fun z hz => ?_) hSc.isClosed` and prove the remaining obligations. Take `⟨v, hv, hqv⟩` from `hsupp z hz`. Conclude with `⟨(z.1, v), subset_tsupport _ hv, Prod.ext rfl hqv⟩`.
+
+Use `⟨hcont, hSc.of_isClosed_subset (isClosed_tsupport _) hts, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hts hz`. Conclude with `⟨x.2, hx, rfl⟩`.
+-/
 theorem fibre_param_continuous : ∀ (V H Y P : Type) [TopologicalSpace V] [T2Space V] [LocallyCompactSpace V] [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V] [TopologicalSpace H] [T2Space H] [LocallyCompactSpace H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] [TopologicalSpace P] [T2Space P] [LocallyCompactSpace P] (μ : Measure V) (ν : Measure H) (f : V → Y) (ι : H → Y) (q : V → H) (U : Set V) (fam : H → Measure V), IsOpen U → Continuous q → Function.Injective ι → (∀ v, f v = ι (q v)) → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ f ι U ν Set.univ fam → ∀ ψ : P × V → ℝ, Continuous ψ → HasCompactSupport ψ → (∀ p ∈ tsupport ψ, p.2 ∈ U) → Continuous (fun z : P × H => ∫ v, ψ (z.1, v) ∂(fam z.2)) ∧ HasCompactSupport (fun z : P × H => ∫ v, ψ (z.1, v) ∂(fam z.2)) ∧ ∀ z ∈ tsupport (fun z : P × H => ∫ v, ψ (z.1, v) ∂(fam z.2)), ∃ v, (z.1, v) ∈ tsupport ψ ∧ q v = z.2 := by
   intro V H Y P _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν f ι q U fam hU hq hι hf h ψ hψ hψc hψU
   have hCc : IsCompact (tsupport ψ) := hψc

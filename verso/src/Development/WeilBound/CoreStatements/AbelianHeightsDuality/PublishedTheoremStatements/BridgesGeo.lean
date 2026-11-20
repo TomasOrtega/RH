@@ -13,6 +13,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianDualCrystalO
 
 namespace PositivityTheory.Prw
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.projectionFormulaAndChernDegree_of_heightProjection h₁ h₂`.
+-/
 theorem arDegree_of (h₁ : GlobalTheory.Published.HeightProjection) (h₂ : GlobalTheory.Published.ChernDegreeComplex) : GlobalTheory.Published.ArDegree :=
   GlobalTheory.T.projectionFormulaAndChernDegree_of_heightProjection h₁ h₂
 

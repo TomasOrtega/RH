@@ -16,6 +16,11 @@ noncomputable section
 namespace GlobalTheory.NormScaleHaar
 open Formalism.UG GlobalTheory.AdelicU
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.Global.IdeleGroup.ideleModule_eq, GlobalTheory.Doubling.absE_apply, NNReal.coe_mul, NNReal.coe_prod]`. Establish `h` using `NNReal.toRealHom.toMonoidHom.map_finprod (GlobalTheory.Doubling.finite_mulSupport_absEv t)`. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun w _ => ?_) (Eq.trans ?_ h.symm)` and prove the remaining obligations. Rewrite using `[GlobalTheory.Doubling.absEw_unitInf, NNReal.coe_pow, coe_nnnorm]`. Both sides reduce to the same expression.
+
+Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Doubling.absEv_unitFin]`. Both sides reduce to the same expression.
+-/
 theorem ideleModule_norm (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (t : (AE F E)ˣ) :
     ((GroundTheory.Global.IdeleGroup.ideleModule F (Units.map (Algebra.norm (AF F)) t) : ℝ)) = (absE F E t : ℝ) := by

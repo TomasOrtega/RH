@@ -14,6 +14,9 @@ section Alg
 
 variable {U V C : Type*} [CommGroup U] [CommGroup V] [AddCommGroup C]
 
+/- English proof (translation)
+Set `F : U →* Multiplicative C` to `MonoidHom.mk' (fun a => Multiplicative.ofAdd (f a)) fun a a' => by`. Rewrite using `[hf, ofAdd_add]`. Establish `e : ∀ a, f a = Multiplicative.toAdd (F a)` using `fun _ => rfl`. Simplify using `only [e, map_prod, map_mul, map_zpow, toAdd_prod, toAdd_mul, toAdd_zpow]`.
+-/
 theorem add_prod {f : U → C} (hf : ∀ a a', f (a * a') = f a + f a') (g k : Fin 4 → U) (n m : Fin 4 → ℤ) :
     f (∏ j, (g j ^ n j * k j ^ m j)) = ∑ j, (n j • f (g j) + m j • f (k j)) := by
   let F : U →* Multiplicative C := MonoidHom.mk' (fun a => Multiplicative.ofAdd (f a)) fun a a' => by
@@ -26,6 +29,9 @@ def zf (q : U → V → C) (l : U → V) (m : V → U) (x : Matrix (Fin 4) (Fin 
   (∑ i, q (u i) (l (u' i))) + (∑ i, ∑ j, x j i • q (u i) (v' j)) + (∑ i, ∑ j, x j i • q (u' i) (v j)) +
     ∑ j, q (m (v' j)) (v j)
 
+/- English proof (translation)
+Unfold `zf`. Rewrite using `[Finset.sum_congr rfl fun i _ => hp (u i) (u' i), Finset.sum_congr rfl fun i _ => hm (v' i) (v i)]`. Normalize the expressions using the abelian group laws.
+-/
 theorem zf_symm {q : U → V → C} {l : U → V} {m : V → U} (hp : ∀ a a', q a (l a') = q a' (l a))
     (hm : ∀ b b', q (m b) b' = q (m b') b) (x : Matrix (Fin 4) (Fin 4) ℤ) (u : Fin 4 → U) (v : Fin 4 → V)
     (u' : Fin 4 → U) (v' : Fin 4 → V) : zf q l m x u v u' v' = zf q l m x u' v' u v := by
@@ -33,6 +39,9 @@ theorem zf_symm {q : U → V → C} {l : U → V} {m : V → U} (hp : ∀ a a', 
   rw [Finset.sum_congr rfl fun i _ => hp (u i) (u' i), Finset.sum_congr rfl fun i _ => hm (v' i) (v i)]
   abel
 
+/- English proof (translation)
+Unfold `zf`. Simplify using `only [fun b => add_prod (f := fun a => q a b) (fun a a' => h₁ a a' b), fun a => add_prod (f := q a) (h₂ a), hd, fun i j => hp (u' i) (u j), fun i j => hm (v' i) (v j)]`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, Fin.sum_univ_four]`. Use `module`.
+-/
 theorem zf_expand {q : U → V → C} {l : U → V} {m : V → U} {d : ℕ}
     (h₁ : ∀ a a' b, q (a * a') b = q a b + q a' b) (h₂ : ∀ a b b', q a (b * b') = q a b + q a b')
     (hp : ∀ a a', q a (l a') = q a' (l a)) (hm : ∀ b b', q (m b) b' = q (m b') b)
@@ -48,6 +57,9 @@ theorem zf_expand {q : U → V → C} {l : U → V} {m : V → U} {d : ℕ}
     Fin.sum_univ_four]
   module
 
+/- English proof (translation)
+Rewrite using `[zf_symm hp hm x u v, zf_expand h₁ h₂ hp hm hd, zf_expand h₁ h₂ hp hm hd, e₁, e₂, e₃, e₄, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply]`. Rewrite using `[hp (u' j) (u k), hm (v' j) (v k)]`. Normalize the expressions using the abelian group laws.
+-/
 theorem zf_adj {q : U → V → C} {l : U → V} {m : V → U} {d : ℕ}
     (h₁ : ∀ a a' b, q (a * a') b = q a b + q a' b) (h₂ : ∀ a b b', q a (b * b') = q a b + q a b')
     (hp : ∀ a a', q a (l a') = q a' (l a)) (hm : ∀ b b', q (m b) b' = q (m b') b)
@@ -77,6 +89,13 @@ def bB (d : ℕ) (N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) : Matrix (
 def bC (N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) : Matrix (Fin 4) (Fin 4) ℤ := fun j i => N (.inl j) (.inr i)
 def bE (N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) : Matrix (Fin 4) (Fin 4) ℤ := fun j i => N (.inr j) (.inr i)
 
+/- English proof (translation)
+Establish `hb : (d : ℤ) • bB d N = N.toBlocks₂₁`. Use extensionality with `j i`. Simplify using `[bB, toBlocks₂₁, Int.mul_ediv_cancel' (hN j i)]`. Establish `e : N = fromBlocks (bA N) (bC N) ((d : ℤ) • bB d N) (bE N)`. Rewrite using `[hb]`.
+
+Conclude with `(fromBlocks_toBlocks N).symm`. Use `conv_lhs => rw [e]`. Rewrite using `[form, fromBlocks_multiply]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Simplify using `only [Matrix.mul_smul, Matrix.mul_one]`. Simplify using `[Matrix.smul_mul]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, smul_add]`.
+-/
 theorem mul_form_eq {d : ℕ} {N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ} (hN : N ∈ ord d) :
     N * form d = fromBlocks (bA N + bC N * quat d) (bA N * (quat d)ᵀ + (d : ℤ) • bC N)
       ((d : ℤ) • bB d N + bE N * quat d) ((d : ℤ) • (bB d N * (quat d)ᵀ + bE N)) := by
@@ -93,6 +112,11 @@ theorem mul_form_eq {d : ℕ} {N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) �
   · simp [Matrix.smul_mul]
   · simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, smul_add]
 
+/- English proof (translation)
+Establish `key : (bar d N : Matrix _ _ ℤ) * form d = ((N : Matrix _ _ ℤ) * form d)ᵀ`. Rewrite using `[bar_coe, Matrix.mul_assoc, formInv_mul_form hd, Matrix.mul_one, Matrix.transpose_mul, form_transpose]`. Rewrite `key` using `[mul_form_eq (bar d N).2, mul_form_eq N.2, fromBlocks_transpose, fromBlocks_inj]`. Take `⟨k₁, k₂, k₃, k₄⟩` from `key`. Use `⟨k₁, k₂, k₃, ?_⟩` and prove the remaining obligations.
+
+Rewrite `k₄` using `[Matrix.transpose_smul]`. Conclude with `smul_right_injective _ (by exact_mod_cast hd.ne') k₄`.
+-/
 theorem blocks_bar {d : ℕ} (hd : 0 < d) (N : ord d) :
     bA (bar d N : Matrix _ _ ℤ) + bC (bar d N : Matrix _ _ ℤ) * quat d = (bA N + bC N * quat d)ᵀ ∧
     bA (bar d N : Matrix _ _ ℤ) * (quat d)ᵀ + (d : ℤ) • bC (bar d N : Matrix _ _ ℤ) =
@@ -117,6 +141,9 @@ variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj A] 
 def pre {Y X : Over S} {G : Over S} [GrpObj G] (y : Y ⟶ X) : (X ⟶ G) →* (Y ⟶ G) :=
   MonoidHom.mk' (fun f => y ≫ f) fun f g => MonObj.comp_mul y f g
 
+/- English proof (translation)
+Use `map_prod (pre (G := G) y) (fun j => g j ^ n j * k j ^ m j) Finset.univ` as an intermediate fact. Simplify using `only [map_mul, map_zpow] at this`. Conclude with `this`.
+-/
 theorem comp_prod {Y X G : Over S} [GrpObj G] [IsCommMonObj G] (y : Y ⟶ X) (g : Fin 4 → (X ⟶ G))
     (k : Fin 4 → (X ⟶ G)) (n m : Fin 4 → ℤ) :
     y ≫ ∏ j, (g j ^ n j * k j ^ m j) = ∏ j, ((y ≫ g j) ^ n j * (y ≫ k j) ^ m j) := by
@@ -124,16 +151,25 @@ theorem comp_prod {Y X G : Over S} [GrpObj G] [IsCommMonObj G] (y : Y ⟶ X) (g 
   simp only [map_mul, map_zpow] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[mkZ, pa, lift_fst_assoc]`. Conclude with `(Out.powIsLimit A 4).fac (Fan.mk T u) ⟨i⟩`.
+-/
 theorem mkZ_pa {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (i : Fin 4) :
     mkZ A B u v ≫ pa A B i = u i := by
   rw [mkZ, pa, lift_fst_assoc]
   exact (Out.powIsLimit A 4).fac (Fan.mk T u) ⟨i⟩
 
+/- English proof (translation)
+Rewrite using `[mkZ, pb, lift_snd_assoc]`. Conclude with `(Out.powIsLimit B 4).fac (Fan.mk T v) ⟨j⟩`.
+-/
 theorem mkZ_pb {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (j : Fin 4) :
     mkZ A B u v ≫ pb A B j = v j := by
   rw [mkZ, pb, lift_snd_assoc]
   exact (Out.powIsLimit B 4).fac (Fan.mk T v) ⟨j⟩
 
+/- English proof (translation)
+Rewrite using `[actZ, mkZ_pa, comp_prod]`. Simplify using `only [Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem actZ_pa {Y : Over S} (w : Y ⟶ Zob A B) (d : ℕ) (la : A ⟶ B) (mu : B ⟶ A) (N : ord d) (i : Fin 4) :
     w ≫ actZ A B d la mu N ≫ pa A B i = ∏ j, ((w ≫ pa A B j) ^ bA (N : Matrix _ _ ℤ) j i *
       ((w ≫ pb A B j) ≫ mu) ^ bB d (N : Matrix _ _ ℤ) j i) := by
@@ -141,6 +177,9 @@ theorem actZ_pa {Y : Over S} (w : Y ⟶ Zob A B) (d : ℕ) (la : A ⟶ B) (mu : 
   simp only [Category.assoc]
   rfl
 
+/- English proof (translation)
+Rewrite using `[actZ, mkZ_pb, comp_prod]`. Simplify using `only [Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem actZ_pb {Y : Over S} (w : Y ⟶ Zob A B) (d : ℕ) (la : A ⟶ B) (mu : B ⟶ A) (N : ord d) (i : Fin 4) :
     w ≫ actZ A B d la mu N ≫ pb A B i = ∏ j, (((w ≫ pa A B j) ≫ la) ^ bC (N : Matrix _ _ ℤ) j i *
       (w ≫ pb A B j) ^ bE (N : Matrix _ _ ℤ) j i) := by
@@ -148,6 +187,9 @@ theorem actZ_pb {Y : Over S} (w : Y ⟶ Zob A B) (d : ℕ) (la : A ⟶ B) (mu : 
   simp only [Category.assoc]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zCls_eq {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q : LB (A ⊗ B).left} (hQ : Q.IsLB) (d : ℕ) (mu : B ⟶ A) :
     zCls A B hP hQ d mu =
       (∑ i, evc hP (fst (Zob A B) (Zob A B) ≫ pa A B i) (snd (Zob A B) (Zob A B) ≫ pa A B i)) +
@@ -155,6 +197,9 @@ theorem zCls_eq {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q : LB (A ⊗ B).left} (h
       (∑ i, ∑ j, quat d j i • evc hQ (snd (Zob A B) (Zob A B) ≫ pa A B i) (fst (Zob A B) (Zob A B) ≫ pb A B j)) +
       ∑ j, evc hQ (snd (Zob A B) (Zob A B) ≫ pb A B j ≫ mu) (fst (Zob A B) (Zob A B) ≫ pb A B j) := rfl
 
+/- English proof (translation)
+Rewrite using `[zCls_eq]`. Simplify using `only [map_add, map_sum, map_zsmul, pull_evc, lift_fst_assoc, lift_snd_assoc, hPQ, zf, Category.assoc]`.
+-/
 theorem pull_zCls {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q : LB (A ⊗ B).left} (hQ : Q.IsLB) (d : ℕ) (la : A ⟶ B)
     (mu : B ⟶ A) (hPQ : ∀ (Y : Over S) (a a' : Y ⟶ A), evc hP a a' = evc hQ a (a' ≫ la))
     {Y : Over S} (w w' : Y ⟶ Zob A B) :
@@ -164,6 +209,9 @@ theorem pull_zCls {P : LB (A ⊗ A).left} (hP : P.IsLB) {Q : LB (A ⊗ B).left} 
   rw [zCls_eq]
   simp only [map_add, map_sum, map_zsmul, pull_evc, lift_fst_assoc, lift_snd_assoc, hPQ, zf, Category.assoc]
 
+/- English proof (translation)
+Use `map_pow (pre (G := G) y) (𝟙 G) n` as an intermediate fact. Simplify using `only [pre, MonoidHom.mk'_apply, Category.comp_id] at this`. Conclude with `this`.
+-/
 theorem comp_one_pow {Y : Over S} {G : Over S} [GrpObj G] (y : Y ⟶ G) (n : ℕ) : y ≫ (𝟙 G ^ n) = y ^ n := by
   have := map_pow (pre (G := G) y) (𝟙 G) n
   simp only [pre, MonoidHom.mk'_apply, Category.comp_id] at this
@@ -173,6 +221,43 @@ end Geo
 
 section Main
 
+/- English proof (translation)
+Introduce `h M d S t c B _ _ Q la mu hZ _ _ _ hd _ hdu _`. Take `⟨hB, hD1, hD2, hla, hmu, hlm, hml, hPiso⟩` from `id hZ`. Establish `hQ : Q.IsLB` using `hD1.isLB`. Establish `hs : (swap Q).IsLB` using `hD2.isLB`. Establish `h1 : ∀ (Y : Over S) (a a' : Y ⟶ c.A) (b : Y ⟶ B), evc hQ (a * a') b = evc hQ a b + evc hQ a' b` using `fun Y a a' b => (isAdditive_iff hQ).1 hD1.additive Y a a' b`.
+
+Establish `h2 : ∀ (Y : Over S) (a : Y ⟶ c.A) (b b' : Y ⟶ B), evc hQ a (b * b') = evc hQ a b + evc hQ a b'`. Introduce `Y a b b'`. Establish `e` using `(isAdditive_iff hs).1 hD2.additive Y b b' a`. Rewrite `e` using `[evc_swap hQ hs, evc_swap hQ hs, evc_swap hQ hs]`. Then use the resulting hypothesis. Establish `hPQ : ∀ (Y : Over S) (a a' : Y ⟶ c.A), evc c.isLB a a' = evc hQ a (a' ≫ la)`.
+
+Establish `e : cls c.P c.isLB = evc hQ (fst c.A c.A) (snd c.A c.A ≫ la)` using `(cls_eq_iff c.isLB (pull_isLB hQ _)).2 hPiso`. Introduce `Y a a'`. Use `show CechPic.pull (lift a a').left (cls c.P c.isLB) = _`. Rewrite using `[e, pull_evc, lift_fst, lift_snd_assoc]`. Establish `hPs : ∀ (Y : Over S) (a a' : Y ⟶ c.A), evc c.isLB a a' = evc c.isLB a' a`.
+
+Establish `e : cls c.P c.isLB = evc c.isLB (snd c.A c.A) (fst c.A c.A)` using `(cls_eq_iff c.isLB (pull_isLB c.isLB _)).2 c.symm`. Introduce `Y a a'`. Use `show CechPic.pull (lift a a').left (cls c.P c.isLB) = _`. Rewrite using `[e, pull_evc, lift_fst, lift_snd]`. Establish `hp : ∀ (Y : Over S) (a a' : Y ⟶ c.A), evc hQ a (a' ≫ la) = evc hQ a' (a ≫ la)`.
+
+Introduce `Y a a'`. Rewrite using `[← hPQ, ← hPQ, hPs]`. Establish `hpow : ∀ (Y : Over S) (a : Y ⟶ c.A) (b : Y ⟶ B) (n : ℕ), evc hQ a (b ^ n) = (n : ℤ) • evc hQ a b`. Introduce `Y a b n`. Proceed by induction on `n with`.
+
+Consider the case `zero => rw [pow_zero, evc_one_right hQ hD1.zero a]`. Simplify using the standard rewrite rules. Consider the case `succ n ih => rw [pow_succ, h2, ih]`. Use `push_cast`. Rewrite using `[add_smul, one_smul]`.
+
+Establish `hpowL : ∀ (Y : Over S) (a : Y ⟶ c.A) (b : Y ⟶ B) (n : ℕ), evc hQ (a ^ n) b = (n : ℤ) • evc hQ a b`. Introduce `Y a b n`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, hD1.additive.evc_one hQ b]`. Simplify using the standard rewrite rules.
+
+Consider the case `succ n ih => rw [pow_succ, h1, ih]`. Use `push_cast`. Rewrite using `[add_smul, one_smul]`. Establish `hdd : ∀ (Y : Over S) (a : Y ⟶ c.A) (b : Y ⟶ B), evc hQ (b ≫ mu) (a ≫ la) = (d : ℤ) • evc hQ a b`. Introduce `Y a b`.
+
+Rewrite using `[← hp _ a (b ≫ mu), Category.assoc, hml, comp_one_pow, hpow]`. Establish `hmulmu : ∀ (Y : Over S) (b b' : Y ⟶ B), (b * b') ≫ mu = (b ≫ mu) * (b' ≫ mu)` using `fun Y b b' => MonObj.mul_comp b b' mu`. Establish `hmulla : ∀ (Y : Over S) (a a' : Y ⟶ c.A), (a * a') ≫ la = (a ≫ la) * (a' ≫ la)` using `fun Y a a' => MonObj.mul_comp a a' la`. Establish `hM1 : (ev Q (fst B B ≫ mu) (snd B B)).IsLB` using `pull_isLB hQ _`. Establish `add1 : IsAdditive (ev Q (fst B B ≫ mu) (snd B B))`.
+
+Use `(isAdditive_iff hM1).2 fun Y b b' u => ?_` and prove the remaining obligations. Simplify using `only [evc_ev hQ, lift_fst_assoc, lift_snd, hmulmu, h1]`. Take `⟨x1, hx1, -⟩` from `hD2.univ B _ hM1 add1`. Establish `hx1pt : ∀ (Y : Over S) (b u : Y ⟶ B), evc hQ (b ≫ mu) u = evc hQ (u ≫ x1) b`. Establish `e` using `(cls_eq_iff hM1 (pull_isLB hs _)).2 hx1`.
+
+Rewrite `e` using `[cls_ev hQ, cls_ev hs]`. Introduce `Y b u`. Establish `e'` using `congrArg (CechPic.pull (lift b u).left) e`. Rewrite `e'` using `[pull_evc, pull_evc, lift_fst_assoc, lift_snd, lift_fst, lift_snd_assoc, evc_swap hQ hs]`. Then use the resulting hypothesis. Establish `hM2 : (ev Q (fst B c.A ≫ mu) (snd B c.A ≫ la)).IsLB` using `pull_isLB hQ _`.
+
+Establish `add2 : IsAdditive (ev Q (fst B c.A ≫ mu) (snd B c.A ≫ la))`. Use `(isAdditive_iff hM2).2 fun Y b b' u => ?_` and prove the remaining obligations. Simplify using `only [evc_ev hQ, lift_fst_assoc, lift_snd_assoc, hmulmu, h1]`. Take `⟨y, -, huniq⟩` from `hD2.univ c.A _ hM2 add2`. Establish `hiso : ∀ z : c.A ⟶ c.A, (∀ (Y : Over S) (b : Y ⟶ B) (a : Y ⟶ c.A), evc hQ (b ≫ mu) (a ≫ la) = evc hQ (a ≫ z) b) → LBIso (ev Q (fst B c.A ≫ mu) (snd B c.A ≫ la)) (ev (swap Q) (fst B c.A) (snd B c.A ≫ z))`.
+
+Introduce `z hz`. Use `(cls_eq_iff hM2 (pull_isLB hs _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_ev hQ, cls_ev hs, evc_swap hQ hs, hz]`. Establish `e1 : la ≫ x1 = y` using `huniq _ (hiso _ fun Y b a => by rw [hx1pt, Category.assoc])`. Establish `e2 : la ≫ mu = y` using `huniq _ (hiso _ fun Y b a => by`.
+
+Rewrite using `[hdd, hlm, comp_one_pow, hpowL])`. Take `⟨-, -, het, hsurj⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective S B d hB hdu`. Use `haveI : Flat (𝟙 B ^ d).left := inferInstance`. Use `haveI : Epi (𝟙 B ^ d).left := Flat.epi_of_flat_of_surjective _`. Use `haveI : Epi (𝟙 B ^ d) := (Over.forget S).epi_of_epi_map this`.
+
+Use `haveI : Epi (mu ≫ la) := by rw [hml]; infer_instance`. Use `haveI : Epi la := epi_of_epi mu la`. Establish `hx : x1 = mu` using `(cancel_epi la).1 (e1.trans e2.symm)`. Establish `hm : ∀ (Y : Over S) (b b' : Y ⟶ B), evc hQ (b ≫ mu) b' = evc hQ (b' ≫ mu) b`. Introduce `Y b b'`.
+
+Rewrite using `[hx1pt, hx]`. Introduce `N`. Establish `hz` using `zarhinBundle_isLineBundle c.A B c.isLB hQ d mu`. Use `(cls_eq_iff (pull_isLB hz _) (pull_isLB hz _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hz, cls_pull hz, cls_zP, pull_zCls c.isLB hQ d la mu hPQ, pull_zCls c.isLB hQ d la mu hPQ]`.
+
+Establish `ea : ∀ (N : ord d) (i : Fin 4), (fst (Zob c.A B) (Zob c.A B) ≫ actZ c.A B d la mu N) ≫ pa c.A B i = _` using `fun N i => (Category.assoc _ _ _).trans (actZ_pa _ d la mu N i)`. Establish `eb : ∀ (N : ord d) (i : Fin 4), (fst (Zob c.A B) (Zob c.A B) ≫ actZ c.A B d la mu N) ≫ pb c.A B i = _` using `fun N i => (Category.assoc _ _ _).trans (actZ_pb _ d la mu N i)`. Establish `ea' : ∀ (N : ord d) (i : Fin 4), (snd (Zob c.A B) (Zob c.A B) ≫ actZ c.A B d la mu N) ≫ pa c.A B i = _` using `fun N i => (Category.assoc _ _ _).trans (actZ_pa _ d la mu N i)`. Establish `eb' : ∀ (N : ord d) (i : Fin 4), (snd (Zob c.A B) (Zob c.A B) ≫ actZ c.A B d la mu N) ≫ pb c.A B i = _` using `fun N i => (Category.assoc _ _ _).trans (actZ_pb _ d la mu N i)`. Simplify using `only [ea, eb, ea', eb']`.
+
+Take `⟨k₁, k₂, k₃, k₄⟩` from `blocks_bar hd N`. Conclude with `zf_adj (q := fun a b => evc hQ a b) (l := fun a => a ≫ la) (m := fun b => b ≫ mu) (d := d) (h1 _) (h2 _) (hp _) (hm _) (fun a b => hdd _ a b) _ _ _ _ _ _ _ _ _ k₁ k₂ k₃ k₄ _ _ _ _`.
+-/
 theorem adj_actZ : ∀ (h M d : ℕ) (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) t) (B : Over S)
     [GrpObj B] [IsCommMonObj B] (Q : LB (c.A ⊗ B).left) (la : c.A ⟶ B) (mu : B ⟶ c.A)
     (hZ : GlobalTheory.ZarhinFam.ZData c d B Q la mu), 1 ≤ h → 3 ≤ M → Odd M → 0 < d → M.Coprime d →

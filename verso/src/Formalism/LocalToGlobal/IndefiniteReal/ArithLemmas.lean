@@ -25,6 +25,11 @@ def NormTie (pos : (D.what₂.LL →+* ℂ) → Prop) (c : ℝ) {j : ℕ} {w : W
     (ι : P.Cusp j w →ₗ[P.KO] WL) : Prop :=
   ∀ σ, pos σ → ∀ F, A.nrmAt σ (ι F) = c * P.l2NormAlt j w (σ.comp P.kL) F
 
+/- English proof (translation)
+Establish `h1` using `h σ hσ F`. Establish `h2` using `h' σ hσ F`. Rewrite `h2` using `[map_smulₛₗ, norm_smul]`. Unfold `FormsL.nrmAt at h1`. Establish `h3 : c * P.l2NormAlt j w (σ.comp P.kL) F ≠ 0` using `mul_ne_zero hc.ne' fun e => hF ((P.l2Norm_eq_zero_iff _ _ _ _).1 e)`.
+
+Rewrite `h2` using `[h1]`. Conclude with `mul_right_cancel₀ h3 (h2.trans (one_mul _).symm)`.
+-/
 theorem NormTie.rigid {pos : (D.what₂.LL →+* ℂ) → Prop} {c : ℝ} (hc : 0 < c) {j : ℕ} {w : WeightFamilies.Wt D j}
     {A : FormsL D.what₂.LL P.KO WL W G0} {ι : P.Cusp j w →ₗ[P.KO] WL} (h : NormTie P pos c A ι) {a : D.what₂.LL}
     (h' : ∀ σ, pos σ → ∀ F, ‖A.j σ (a • ι F)‖ = c * P.l2NormAlt j w (σ.comp P.kL) F)

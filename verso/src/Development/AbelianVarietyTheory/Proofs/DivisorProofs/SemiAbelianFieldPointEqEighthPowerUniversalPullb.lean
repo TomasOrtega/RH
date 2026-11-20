@@ -26,6 +26,19 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Eq8.FieldPt
 
+/- English proof (translation)
+Substitute `ht` using the available equality. Establish `hB' : IsGrpPullback B FinalForm.G (t' ≫ (ξ ≫ V.ι)) φB` using `hB.congr (Category.assoc _ _ _) rfl`. Establish `hφ` using `ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor (ξ ≫ V.ι) t' hB'`. Establish `hφ'f : pullback.lift φB (B.hom ≫ t') (by rw [hB'.1.w, Category.assoc]) ≫ pullback.fst FinalForm.G.hom (ξ ≫ V.ι) = φB` using `pullback.lift_fst _ _ _`. Establish `hφ's : pullback.lift φB (B.hom ≫ t') (by rw [hB'.1.w, Category.assoc]) ≫ pullback.snd FinalForm.G.hom (ξ ≫ V.ι) = B.hom ≫ t'` using `pullback.lift_snd _ _ _`.
+
+Generalize the expression as in `pullback.lift φB (B.hom ≫ t') (by rw [hB'.1.w, Category.assoc]) = φ' at hφ hφ'f hφ's`. Establish `hid : spMap (RingHom.id o) = 𝟙 (Sp o)` using `Spec.map_id _`. Take `⟨c', hc'⟩` from `(GlobalTheory.SiegelRingChange.siegPre_pull_ringChange g n o o ζ ζ (RingHom.id o) _ (Sp K) ((ξ ≫ v) ≫ F.s) (((t' ≫ ξ) ≫ v) ≫ F.s) t' rfl (by rw [hid, Category.comp_id]; simp only [Category.assoc])).1 cO`. Establish `hcomp` using `GlobalTheory.SiegelPullComp.pb_comp hpbO hc'`. Rewrite `hcomp` using `[← Category.assoc]`.
+
+Take `⟨χ, χ₂, hχ, hsq, hP, -⟩` from `hc'`. Take `⟨pr', hpr', hmon', huniv'⟩` from `GlobalTheory.GrpPullPow.pr_pull prO hφ hχ hmonO hunivO`. Use `⟨c', pr', hcomp, hmon', huniv', ?_, ?_⟩` and prove the remaining obligations. Introduce `L' hL' hiso`. Establish `hL` using `FinalForm.L.isLB`.
+
+Establish `e1 : LBIso (FinalForm.L.L.pull φB) ((FinalForm.L.L.pull (pullback.fst FinalForm.G.hom (ξ ≫ V.ι))).pull φ')`. Rewrite using `[← hφ'f]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.Tor.LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame FinalForm.L.L _ _ _ φ' fun _ => rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (FinalForm.L.L.pull (pullback.fst FinalForm.G.hom (ξ ≫ V.ι))) …`. Establish `e2` using `LBIso.trans hL' (pull_isLB hL _) (pull_isLB (pull_isLB hL _) _) hiso e1`. Conclude with `GlobalTheory.Poinc.Eq8.lbIso_eighth_pull cO.P c'.P _ L' prO pr' W cO.isLB c'.isLB (pull_isLB hL _) hL' hsq hP hpr' e2 hLO`.
+
+Introduce `a b f fB hf hfB`. Use `GlobalTheory.MatEndPull.matEnd_pull prO pr' a b _ fB hφ hχ hpr' ?_ (hmatO a b f hf)` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `e : ((Over.pullback (ξ ≫ V.ι)).map f).left ≫ pullback.fst FinalForm.G.hom (ξ ≫ V.ι) = pullback.fst FinalForm.G.hom (ξ ≫ V.ι) ≫ f.left` using `pullback.lift_fst _ _ _`. Rewrite using `[Category.assoc, Category.assoc, hφ'f, e, ← Category.assoc, hφ'f, hfB]`.
+
+Establish `w1 : ((Over.pullback (ξ ≫ V.ι)).map f).left ≫ pullback.snd FinalForm.G.hom (ξ ≫ V.ι) = pullback.snd FinalForm.G.hom (ξ ≫ V.ι)` using `pullback.lift_snd _ _ _`. Rewrite using `[Category.assoc, Category.assoc, hφ's, w1, hφ's, ← Category.assoc, Over.w fB]`.
+-/
 theorem of_factor {g n : ℕ} {o : Type} [CommRing o] {ζ : o} (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ)
     {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra o' Ω] {S : ThetaSys o' Ω} {ρ : S.Real} {M : RatModel o' Ω}
     {U₀ : M.Z.Opens} {EE : M.Lat S.J} (FinalForm : ZHOut ρ M U₀ EE) {C : Over (Sp S.R)} [GrpObj C] (pr : Fin 8 → (ρ.P.A ⟶ C))
@@ -81,6 +94,9 @@ theorem of_factor {g n : ℕ} {o : Type} [CommRing o] {ζ : o} (F : SFam g n ζ)
           pullback.snd FinalForm.G.hom (ξ ≫ V.ι) := pullback.lift_snd _ _ _
       rw [Category.assoc, Category.assoc, hφ's, w1, hφ's, ← Category.assoc, Over.w fB]
 
+/- English proof (translation)
+Introduce `g n o _ ζ F W o' Ω _ _ _ _ S ρ u c pr hS M U₀ EE FinalForm hO V v hv K _ t B _ φB hB`. Take `⟨cO, prO, hpbO, hmonO, hunivO, hLO, hmatO⟩` from `GlobalTheory.T.eighth_power_universal_object_at_model_stalk g n o ζ F W o' Ω S ρ u c pr hS M U₀ EE FinalForm hO V v hv (t (IsLocalRing.closedPoint K))`. Conclude with `of_factor F W FinalForm pr V v _ cO prO hpbO hmonO hunivO hLO hmatO t _ (Scheme.Spec_stalkClosedPointTo_fromSpecStalk t) B φB hB`.
+-/
 theorem main : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ), ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real) (u : Sp S.R ⟶ F.X) c pr, SharpBy F W ρ.P u c pr → ∀ (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.Over₀ M U₀ → ∀ (V : M.Z.Opens) (v : V.toScheme ⟶ F.X), (∀ x : Sp Ω ⟶ V.toScheme, x ≫ V.ι = M.pt → x ≫ v = spMap S.R.val.toRingHom ≫ u) → ∀ (K : Type) [Field K] (t : Sp K ⟶ V.toScheme) (B : Over (Sp K)) [GrpObj B] (φB : B.left ⟶ FinalForm.G.left), IsGrpPullback B FinalForm.G (t ≫ V.ι) φB → ∃ (c' : SiegPre g n ζ ((t ≫ v) ≫ F.s)) (pr' : Fin 8 → (B ⟶ c'.A)), SiegPB c' F.univ (t ≫ v) ∧ (∀ a, IsMonHom (pr' a)) ∧ (∀ (T' : Over (Sp K)) (y : Fin 8 → (T' ⟶ c'.A)), ∃! x : T' ⟶ B, ∀ a, x ≫ pr' a = y a) ∧ (∀ L' : LB B.left, L'.IsLB → LBIso L' (FinalForm.L.L.pull φB) → LBIso L' (LB.LinComb c'.P (K := Fin 8 × Fin 8) (fun ab => (lift (pr' ab.1) (pr' ab.2)).left) (fun ab => W ab.1 ab.2))) ∧ ∀ (a b : Fin 8) (f : FinalForm.G ⟶ FinalForm.G) (fB : B ⟶ B), MatOn FinalForm pr a b f → fB.left ≫ φB = φB ≫ f.left → MatEnd pr' a b fB := by
   intro g n o _ ζ F W o' Ω _ _ _ _ S ρ u c pr hS M U₀ EE FinalForm hO V v hv K _ t B _ φB hB
   obtain ⟨cO, prO, hpbO, hmonO, hunivO, hLO, hmatO⟩ := GlobalTheory.T.eighth_power_universal_object_at_model_stalk g n o ζ F W o' Ω S ρ u c pr hS M U₀ EE FinalForm hO V v hv

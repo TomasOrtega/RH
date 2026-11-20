@@ -17,6 +17,15 @@ variable (g N : ℕ) [Fact g.Prime] [NeZero g] (P : Matrix (Fin N) (Fin N) (ZMod
 
 end Dat
 
+/- English proof (translation)
+Unfold `entN`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single (⟨x, h.1⟩ : Fin N), Finset.sum_eq_single (⟨y, h.2⟩ : Fin N)]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+
+Establish `: (j : ℕ) ≠ y` using `fun e => hj (Fin.ext e)`. Simplify using `[this]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Establish `: (i : ℕ) ≠ x` using `fun e => hi (Fin.ext e)`.
+
+Simplify using `[this]`. Simplify using the standard rewrite rules. Use `symm`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `: ¬ ((i : ℕ) = x ∧ (j : ℕ) = y)`.
+
+Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h ⟨i.2, j.2⟩`. Simplify using `[this]`.
+-/
 theorem entN_eq {A : Type} [Semiring A] {N : ℕ} (M : Matrix (Fin N) (Fin N) A) (x y : ℕ) :
     entN M x y = ∑ i : Fin N, ∑ j : Fin N, (if (i : ℕ) = x ∧ (j : ℕ) = y then (1 : A) else 0) * M i j := by
   unfold entN

@@ -10,5 +10,8 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MixTargetProof.mixedTarget | exact GlobalTheory.MixTargetProof.mixedTarget | (intros; apply GlobalTheory.MixTargetProof.mixedTarget <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mixedModelFormulas_wittTarget : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedTarget D := by
   first | exact @GlobalTheory.MixTargetProof.mixedTarget | exact GlobalTheory.MixTargetProof.mixedTarget | (intros; apply GlobalTheory.MixTargetProof.mixedTarget <;> assumption)

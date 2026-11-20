@@ -179,6 +179,15 @@ def SecondMomentBadEventsBound (D : D7) : Prop :=
         ∑ p ∈ P, ω p * ((T.filter (fun t => BAD (hp p) t T)).card : ℝ) ≤
           4 * β * δ * D.R.n * ∑ p ∈ P, ω p
 
+/- English proof (translation)
+Introduce `δ h0 h1 h16 β BAD _ hb P hp ω hP hω`. Distinguish the cases in `hβ : 0 ≤ β`. Take `⟨T, a, b, c⟩` from `h δ h0 h1 h16 β hβ {h | sc.x ^ (sc.eps / 4) ≤ (addOrderOf h : ℝ)} BAD (fun h hh t => hb h hh t) P hp ω hP hω`. Use `⟨T, a, le_trans b ?_, c⟩` and prove the remaining obligations. Establish `: 0 ≤ δ * D.R.n` using `by linarith`.
+
+Use the polynomial consequences of the given equalities and inequalities. Break down `P.eq_empty_or_nonempty with rfl | ⟨p, hp'⟩` into its components or cases. Take `⟨T, a, b, _⟩` from `h δ h0 h1 h16 0 le_rfl ∅ BAD (fun h hh => absurd hh (by simp)) ∅ hp ω (by simp) (by simp)`. Use `⟨T, a, le_trans b ?_, by simp⟩` and prove the remaining obligations. Establish `: 0 ≤ δ * D.R.n` using `by linarith`.
+
+Use the polynomial consequences of the given equalities and inequalities. It suffices to derive a contradiction. Establish `h2` using `hb (hp p) (hP p hp') 0`. Establish `h3 : 0 ≤ ∑ T : Finset (HH D), if (0 : HH D) ∈ T ∧ BAD (hp p) 0 T then bern δ T else 0`. Use `Finset.sum_nonneg fun T _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `mul_nonneg (pow_nonneg h0.le _) (pow_nonneg (by linarith) _)`. Conclude with `le_rfl`. Establish `: β * δ < 0` using `mul_neg_of_neg_of_pos (not_le.mp hβ) h0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem classMap_estimate_of_partial (D : D7) (sc : Scale) (h : SecondMomentBadEventsBound D) : Conclusion6 D sc := by
   classical
   intro δ h0 h1 h16 β BAD _ hb P hp ω hP hω

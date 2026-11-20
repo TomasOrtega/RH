@@ -9,6 +9,21 @@ namespace GlobalTheory.FrameRelCheck
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨x, xo, u, tn, e, b, s, g⟩` from `y`. Take `⟨x', xo', u', tn', e', b', s', g'⟩` from `y'`. Take `⟨hx, hu, pm, hs, hf, ha⟩` from `h`. Take `⟨-, hu', pm', hs', hf', ha'⟩` from `h'`. Simplify using `only at hx hu hu' pm pm' hs hf ha hs' hf' ha'`.
+
+Substitute `hx` using the available equality. Establish `h1 : pm = 𝟙 _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `hf.trans (Category.id_comp _).symm`. Conclude with `hs.trans (Category.id_comp _).symm`.
+
+Establish `h2 : pm' = 𝟙 _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `hf'.trans (Category.id_comp _).symm`. Conclude with `hs'.trans (Category.id_comp _).symm`. Substitute `h1` using the available equality.
+
+Substitute `h2` using the available equality. Establish `eid : ∀ i (h : (PPx x').U i ≤ (𝟙 (Gx x')) ⁻¹ᵁ (PPx x').U i), Scheme.Hom.appLE (𝟙 (Gx x')) ((PPx x').U i) ((PPx x').U i) h = 𝟙 _`. Introduce `i h`. Rewrite using `[Scheme.Hom.appLE, Scheme.Hom.id_app]`. Use `(Category.id_comp _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← (Gx x').presheaf.map_id]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `k`. Apply `Units.ext` to reduce the goal to its premises. Consider the cases of `k with`.
+
+Consider the case `none`. Use `(g s').unique (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Conclude with `(ha i le_rfl).symm.trans (congrArg (fun m => CommRingCat.Hom.hom m _) (eid i le_rfl))`. Conclude with `(ha' i le_rfl).symm.trans (congrArg (fun m => CommRingCat.Hom.hom m _) (eid i le_rfl))`. Consider the case `some k`.
+
+Take `⟨τ, i⟩` from `k`. Take `⟨cf, h1, -, h3⟩` from `hu τ i`. Take `⟨cf', h1', -, h3'⟩` from `hu' τ i`. Use `(b τ (u' τ i) (tn' τ i) (e' τ i)).unique h3 h3'` as an intermediate fact. Rewrite using `[← h1, ← h1', this]`.
+-/
 theorem frBor_diag_unique {S : Type} [CommRing S] [Algebra c.F S] (t t' : Ix Dw → Sˣ) (y y' : FrPt Xo c S)
     (h : FrBor t y y') (h' : FrBor t' y y') : t = t' := by
   obtain ⟨x, xo, u, tn, e, b, s, g⟩ := y

@@ -13,6 +13,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexThetaMeas.measurable_fL | exact GlobalTheory.CompanionTheory.FexThetaMeas.measurable_fL | (intros; apply GlobalTheory.CompanionTheory.FexThetaMeas.measurable_fL <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.measurable_local_theta_coefficient : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → ∀ (g : GL (Fin 2) (Qv v)) (ξ : K), Measurable (fL L g ξ) := by
   first | exact @GlobalTheory.CompanionTheory.FexThetaMeas.measurable_fL | exact GlobalTheory.CompanionTheory.FexThetaMeas.measurable_fL | (intros; apply GlobalTheory.CompanionTheory.FexThetaMeas.measurable_fL <;> assumption)

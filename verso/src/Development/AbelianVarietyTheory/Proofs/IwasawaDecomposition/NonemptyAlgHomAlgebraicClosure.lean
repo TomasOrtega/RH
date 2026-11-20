@@ -4,10 +4,20 @@ namespace GlobalTheory.PointFunction
 
 open IsLocalRing
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsAlgClosed.lift⟩`.
+-/
 theorem nonempty_algHom_algebraicClosure (F k : Type) [Field F] [Field k] [IsAlgClosed k]
     [Algebra F k] : Nonempty (AlgebraicClosure F →ₐ[F] k) :=
   ⟨IsAlgClosed.lift⟩
 
+/- English proof (translation)
+Use `letI : Algebra A k := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K A k := .of_algebraMap_eq fun x => (φ.commutes x).symm`. Set `g : q.ResidueField →ₐ[A] k` to `Ideal.ResidueField.liftₐ q (Algebra.ofId A k) (fun a ha => (hφ a).2 ha) (fun a ha => by`. Establish `: φ a ≠ 0` using `fun h => ha ((hφ a).1 h)`. Conclude with `isUnit_iff_ne_zero.2 this)`.
+
+Use `letI : Algebra q.ResidueField k := g.toRingHom.toAlgebra`. Use `haveI : IsScalarTower A q.ResidueField k := .of_algebraMap_eq fun x => (g.commutes x).symm`. Take `⟨χ⟩` from `nonempty_algHom_algebraicClosure q.ResidueField k`. Use `⟨(χ.restrictScalars A).restrictScalars K, ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
+
+Conclude with `(χ.restrictScalars A).commutes a`.
+-/
 theorem exists_common_factor (K : Type) [Field K] (A : Type) [CommRing A] [Algebra K A]
     (q : Ideal A) [q.IsPrime] (k : Type) [Field k] [IsAlgClosed k] [Algebra K k] (φ : A →ₐ[K] k)
     (hφ : ∀ a, φ a = 0 ↔ a ∈ q) :
@@ -26,6 +36,15 @@ theorem exists_common_factor (K : Type) [Field K] (A : Type) [CommRing A] [Algeb
   ext a
   exact (χ.restrictScalars A).commutes a
 
+/- English proof (translation)
+Set `j : A →+* V` to `ι.toRingHom.codRestrict V.toSubring h`. Use `letI : Algebra K V := (j.comp (algebraMap K A)).toAlgebra`. Set `jA : A →ₐ[K] V` to `{ j with commutes' := fun _ => rfl }`. Set `s : V →ₐ[K] Ω` to `{ V.subtype with commutes' := fun x => ι.commutes x }`. Establish `hs : s.comp jA = ι` using `by ext a; rfl`.
+
+Establish `hcl : IsAlgClosed (FractionRing V)` using `IsAlgClosed.of_ringEquiv Ω _ (FractionRing.algEquiv V Ω).symm.toRingEquiv`. Take `⟨v, hv⟩` from `h2 V hcl jA`. Establish `hw : W Ω ι = v` using `by rw [← hs, hv]; rfl`. Use `⟨hw ▸ v.2, ?_⟩` and prove the remaining obligations. Set `ρ : V →+* AlgebraicClosure (ResidueField V)` to `(algebraMap (ResidueField V) _).comp (residue V)`.
+
+Use `letI alg : Algebra K (AlgebraicClosure (ResidueField V)) := (ρ.comp (algebraMap K V)).toAlgebra`. Set `ρA : V →ₐ[K] AlgebraicClosure (ResidueField V)` to `{ ρ with commutes' := fun _ => rfl }`. Use `⟨alg, ρA.comp jA, fun a => ?_, fun r hr => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (ResidueField V) (AlgebraicClosure (ResidueField V)) (residue V ⟨ι a, h a⟩) = 0 ↔ _`. Rewrite using `[map_eq_zero, residue_eq_zero_iff]`.
+
+Rewrite using `[hv]`. Establish `: v = jA r` using `Subtype.ext (by rw [← hw, ← hr]; rfl)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem valuationSubring_step (K : Type) [Field K] (A : Type) [CommRing A] [Algebra K A]
     (W : ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra K k], (A →ₐ[K] k) → k)
     (h2 : ∀ (V : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Algebra K V],
@@ -59,6 +78,27 @@ theorem valuationSubring_step (K : Type) [Field K] (A : Type) [CommRing A] [Alge
     have : v = jA r := Subtype.ext (by rw [← hw, ← hr]; rfl)
     rw [this]; rfl
 
+/- English proof (translation)
+Set `L` to `FractionRing A`. Set `Ω` to `AlgebraicClosure L`. Set `ι : A →ₐ[K] Ω` to `IsScalarTower.toAlgHom K A Ω`. Use `haveI : CharZero L := charZero_of_injective_algebraMap (algebraMap K L).injective`. Use `haveI : IsGalois L Ω := inferInstance`.
+
+Establish `hinj : Function.Injective (algebraMap A Ω)`. Rewrite using `[IsScalarTower.algebraMap_eq A L Ω]`. Conclude with `(algebraMap L Ω).injective.comp (IsFractionRing.injective A L)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : W Ω ι ∈ Set.range (algebraMap L Ω) := by`. Use `(InfiniteGalois.mem_range_algebraMap_iff_fixed (k := L) (W Ω ι)).2 fun σ => ?_` and prove the remaining obligations.
+
+Establish `e : ((σ : Ω →ₐ[L] Ω).restrictScalars K).comp ι = ι`. Use extensionality with `a`. Conclude with `((σ : Ω →ₐ[L] Ω).restrictScalars A).commutes a`. Use `h1 Ω Ω ι ((σ : Ω →ₐ[L] Ω).restrictScalars K)` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Conclude with `this.symm`. Establish `hint : IsIntegral A (W Ω ι)`. Assume the negation of the conclusion as `hn`. Use `haveI : IsIntegrallyClosedIn (integralClosure A Ω).toSubring Ω := inferInstanceAs (IsIntegrallyClosedIn (integralClosure A Ω) Ω)`. Take `⟨V, hV, hxV⟩` from `Subring.exists_le_valuationSubring_of_isIntegrallyClosedIn (R := (integralClosure A Ω).toSubring) (x := W Ω ι) hn`.
+
+Conclude with `hxV (valuationSubring_step K A W h2 Ω ι V fun a => hV ((integralClosure A Ω).algebraMap_mem a)).1`. Establish `hint' : IsIntegral A x`. Rewrite `hint` using `[← hx]`. Conclude with `(isIntegral_algebraMap_iff (algebraMap L Ω).injective).1 hint`. Take `⟨r, hr⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint'`.
+
+Establish `hrw : ι r = W Ω ι`. Rewrite using `[← hx, ← hr]`. Conclude with `IsScalarTower.algebraMap_apply A L Ω r`. Use `⟨r, fun k _ _ _ φ => ?_⟩` and prove the remaining obligations. Set `q : Ideal A` to `RingHom.ker φ`.
+
+Use `haveI : q.IsPrime := RingHom.ker_isPrime φ`. Set `f : Localization.AtPrime q →+* Ω` to `IsLocalization.lift (M := q.primeCompl) (g := algebraMap A Ω) fun y => by`. Use `isUnit_iff_ne_zero.2 fun h0 => y.2 ?_` and prove the remaining obligations. Establish `: (y : A) = 0` using `hinj (by rw [h0, map_zero])`. Rewrite using `[this]`.
+
+Conclude with `q.zero_mem`. Establish `hf : ∀ a, f (algebraMap A _ a) = ι a` using `fun a => IsLocalization.lift_eq _ a`. Take `⟨V, hV, hloc⟩` from `IsLocalRing.exists_factor_valuationRing f`. Establish `hmem : ∀ a, ι a ∈ V` using `fun a => hf a ▸ hV _`. Take `⟨-, alg, ψ, hψ, hψr⟩` from `valuationSubring_step K A W h2 Ω ι V hmem`.
+
+Establish `hψq : ∀ a, ψ a = 0 ↔ a ∈ q` using `fun a => by`. Rewrite using `[hψ, ← IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime q) q a, mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, ← isUnit_map_iff (f.codRestrict V.toSubring hV)]`. Establish `: f.codRestrict V.toSubring hV (algebraMap A _ a) = ⟨ι a, hmem a⟩` using `Subtype.ext (hf a)`. Rewrite using `[this]`. Take `⟨χ, hχ⟩` from `exists_common_factor K A q k φ fun a => Iff.rfl`.
+
+Take `⟨χ', hχ'⟩` from `exists_common_factor K A q _ ψ hψq`. Establish `e` using `hψr r hrw`. Rewrite `e` using `[← hχ', h1]`. Rewrite using `[← hχ, h1, χ'.toRingHom.injective e]`. Both sides reduce to the same expression.
+-/
 theorem exists_eq_eval (K : Type) [Field K] [CharZero K] (A : Type) [CommRing A] [IsDomain A]
     [IsIntegrallyClosed A] [Algebra K A]
     (W : ∀ (k : Type) [Field k] [IsAlgClosed k] [Algebra K k], (A →ₐ[K] k) → k)

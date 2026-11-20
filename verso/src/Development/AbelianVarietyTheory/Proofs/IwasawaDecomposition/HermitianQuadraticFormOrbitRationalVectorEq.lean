@@ -13,11 +13,19 @@ section Form
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Unfold `Formalism.UG.hform`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hform_eq_dot {A : Type} [CommRing A] (s : A →+* A) (G : Matrix (Fin M) (Fin M) A)
     (x y : Fin M → A) : Formalism.UG.hform s G x y = (fun i => s (x i)) ⬝ᵥ G *ᵥ y := by
   unfold Formalism.UG.hform
   simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Establish `hc : Formalism.UG.cT s g = (g.map s)ᵀ`. Unfold `Formalism.UG.cT`. Use `first`. Consider the case `rfl`. Consider the case `(ext i j; simp)`.
+
+Rewrite `hg` using `[hc]`. Establish `hs : (fun i => s ((g *ᵥ x) i)) = (g.map s) *ᵥ (fun i => s (x i))`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec s g x i`. Rewrite using `[hform_eq_dot, hform_eq_dot, hs, Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose (g.map s) (fun i => s (x i)), ← Matrix.dotProduct_mulVec (fun i => s (x i)) (g.map s)ᵀ ((G * g) *ᵥ y), Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hg]`.
+-/
 private theorem hform_mulVec_mulVec_of_cT_mul_mul_eq {A : Type} [CommRing A] (s : A →+* A)
     (G g : Matrix (Fin M) (Fin M) A) (hg : Formalism.UG.cT s g * G * g = G) (x y : Fin M → A) :
     Formalism.UG.hform s G (g *ᵥ x) (g *ᵥ y) = Formalism.UG.hform s G x y := by
@@ -35,6 +43,9 @@ private theorem hform_mulVec_mulVec_of_cT_mul_mul_eq {A : Type} [CommRing A] (s 
     ← Matrix.dotProduct_mulVec (fun i => s (x i)) (g.map s)ᵀ ((G * g) *ᵥ y),
     Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hg]
 
+/- English proof (translation)
+Establish `hk : HA.mat R σ J k ∈ HR R σ J` using `(k : HR R σ J).2`. Unfold `HR Formalism.UG.UJ at hk`. Establish `hk' : Formalism.UG.cT (sigR R σ) (HA.mat R σ J k).1 * JR R J * (HA.mat R σ J k).1 = JR R J` using `hk`. Unfold `hR`. Conclude with `hform_mulVec_mulVec_of_cT_mul_mul_eq (sigR R σ) (JR R J) _ hk' x y`.
+-/
 theorem hR_act (k : HA R σ J) (x y : Fin M → R ⊗[F] E) :
     hR R σ J ((HA.mat R σ J k).1 *ᵥ x) ((HA.mat R σ J k).1 *ᵥ y) = hR R σ J x y := by
   have hk : HA.mat R σ J k ∈ HR R σ J := (k : HR R σ J).2
@@ -43,6 +54,11 @@ theorem hR_act (k : HA R σ J) (x y : Fin M → R ⊗[F] E) :
   unfold hR
   exact hform_mulVec_mulVec_of_cT_mul_mul_eq (sigR R σ) (JR R J) _ hk' x y
 
+/- English proof (translation)
+Unfold `hR hE JR`. Rewrite using `[hform_eq_dot, hform_eq_dot]`. Use `show _ = inclR R _`. Rewrite using `[RingHom.map_dotProduct]`. Use `congr 1`.
+
+Apply the tactic sequence `all_goals funext i`. Apply the tactic sequence `all_goals first`. Consider the case `exact (RingHom.map_mulVec (inclR R) J z i).symm`. Consider the case `simp [sigR, inclR]`.
+-/
 theorem hR_rat (x z : Fin M → E) :
     hR R σ J (fun i => inclR R (x i)) (fun i => inclR R (z i)) = (1 : R) ⊗ₜ[F] hE σ J x z := by
   unfold hR hE JR
@@ -57,6 +73,13 @@ theorem hR_rat (x z : Fin M → E) :
 
 end Form
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm R _ _ M J x a hx g`. Establish `hfin : FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hcm.2.2.1]; norm_num)`. Establish `hact : (g • ratTup (F` using `F) R x) 0 = (HA.mat R σ J g).1 *ᵥ (fun i => inclR R (x 0 i)) := rfl`. Rewrite using `[hact]`. Unfold `qR`.
+
+Rewrite using `[hR_act R σ J g, hR_rat R σ J (x 0) (x 0), hx]`. Establish `h2 : (1 : R) ⊗ₜ[F] algebraMap F E a = algebraMap R (R ⊗[F] E) (algebraMap F R a)`. Rewrite using `[← IsScalarTower.algebraMap_apply F R (R ⊗[F] E)]`. Conclude with `(Algebra.TensorProduct.includeRight (R := F) (A := R) (B := E)).commutes a`. Rewrite using `[h2, Algebra.trace_algebraMap_of_basis (Algebra.TensorProduct.basis R (Module.finBasis F E)) (algebraMap F R a), Fintype.card_fin, hcm.2.2.1, nsmul_eq_mul, ← mul_assoc]`.
+
+Establish `h3 : algebraMap F R (1 / 2) * ((2 : ℕ) : R) = 1`. Rewrite using `[← map_natCast (algebraMap F R) 2, ← map_mul]`. Evaluate the numerical expressions. Rewrite using `[h3, one_mul]`.
+-/
 theorem qR_orbit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (x : Fin 1 → Fin M → E) (a : F), hE σ J (x 0) (x 0) = algebraMap F E a → ∀ g : HA R σ J, qR R σ J ((g • ratTup (F := F) R x) 0) = algebraMap F R a := by
   intro F E _ _ _ _ _ σ hcm R _ _ M J x a hx g
   have hfin : FiniteDimensional F E :=

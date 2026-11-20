@@ -17,6 +17,9 @@ section Alg
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul r e => simp [sigR, hinv]`.
+-/
 theorem sigR_sigR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x)
     (x : R ⊗[F] E) : sigR R σ (sigR R σ x) = x := by
   induction x with
@@ -51,6 +54,15 @@ def tGL (σ : E →ₐ[F] E) (M : ℕ) (u : (R ⊗[F] E)ˣ) : GL (Fin (M + 2)) (
       rw [← map_mul, Units.mul_inv, map_one]
     · simp [tVec]
 
+/- English proof (translation)
+Use `show cT (sigR R σ) (tGL R σ M u).1 * JR R (hypOne J) * (tGL R σ M u).1 = JR R (hypOne J)`. Use `set t := tVec (M := M) (u : R ⊗[F] E) (sigR R σ ((u⁻¹ : (R ⊗[F] E)ˣ) : R ⊗[F] E)) with ht`. Establish `hv : (tGL R σ M u).1 = Matrix.diagonal t` using `rfl`. Establish `hd : cT (sigR R σ) (Matrix.diagonal t) = Matrix.diagonal fun i => sigR R σ (t i)`. Use extensionality with `i j`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[cT]`. Establish `h' : j ≠ i` using `fun e => h e.symm`. Simplify using `[cT, Matrix.diagonal_apply_ne _ h, Matrix.diagonal_apply_ne _ h']`.
+
+Rewrite using `[hv, hd]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `h1 : sigR R σ (u : R ⊗[F] E) * sigR R σ ((u⁻¹ : (R ⊗[F] E)ˣ) : R ⊗[F] E) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+
+Establish `h2 : sigR R σ (sigR R σ ((u⁻¹ : (R ⊗[F] E)ˣ) : R ⊗[F] E)) * (u : R ⊗[F] E) = 1`. Rewrite using `[sigR_sigR R σ hinv, Units.inv_mul]`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => Fin.cases ?_ (fun i => ?_) i) i <;>`. Use `Fin.cases ?_ (fun j => Fin.cases ?_ (fun j => ?_) j) j` and prove the remaining obligations. Apply the tactic sequence `all_goals simp [ht, tVec, JR, hypOne, h1, h2, inclR, Matrix.of_apply, ← Algebra.TensorProduct.one_def]`.
+-/
 theorem tGL_mem (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (u : (R ⊗[F] E)ˣ) : tGL R σ M u ∈ HR R σ (hypOne J) := by
   show cT (sigR R σ) (tGL R σ M u).1 * JR R (hypOne J) * (tGL R σ M u).1 = JR R (hypOne J)
@@ -74,12 +86,18 @@ theorem tGL_mem (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x) {M : ℕ} (J 
     refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun j => ?_) j) j
   all_goals simp [ht, tVec, JR, hypOne, h1, h2, inclR, Matrix.of_apply, ← Algebra.TensorProduct.one_def]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Use `show ((HA.mat R σ J k).1 * (HA.mat R σ J t).1).mulVec (X a) = (HA.mat R σ J k).1.mulVec ((HA.mat R σ J t).1.mulVec (X a))`. Rewrite using `[Matrix.mulVec_mulVec]`.
+-/
 theorem actW_mul (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (k t : HA R σ J)
     (X : Fin n → Fin M → R ⊗[F] E) : actW R σ J (k * t) X = actW R σ J k (actW R σ J t X) := by
   funext a
   show ((HA.mat R σ J k).1 * (HA.mat R σ J t).1).mulVec (X a) = (HA.mat R σ J k).1.mulVec ((HA.mat R σ J t).1.mulVec (X a))
   rw [Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Use `show (HA.mat R σ J k).1.mulVec (c • X a) = c • (HA.mat R σ J k).1.mulVec (X a)`. Rewrite using `[Matrix.mulVec_smul]`.
+-/
 theorem actW_scalT (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (k : HA R σ J) (c : R ⊗[F] E)
     (X : Fin n → Fin M → R ⊗[F] E) : actW R σ J k (scalT c X) = scalT c (actW R σ J k X) := by
   funext a
@@ -89,6 +107,9 @@ theorem actW_scalT (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) 
 def tHA (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (u : (R ⊗[F] E)ˣ) : HA R σ (hypOne J) := ⟨tGL R σ M u, tGL_mem R σ hinv J u⟩
 
+/- English proof (translation)
+Use `show (Matrix.diagonal _).mulVec (X p) i = _`. Rewrite using `[Matrix.mulVec_diagonal]`.
+-/
 theorem actW_tHA (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (u : (R ⊗[F] E)ˣ) (X : Fin n → Fin (M + 2) → R ⊗[F] E) (p : Fin n) (i : Fin (M + 2)) :
     actW R σ (hypOne J) (tHA R σ hinv J u) X p i =
@@ -96,6 +117,9 @@ theorem actW_tHA (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x) {M n : ℕ} 
   show (Matrix.diagonal _).mulVec (X p) i = _
   rw [Matrix.mulVec_diagonal]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p i`. Rewrite using `[actW_tHA]`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => Fin.cases ?_ (fun i => ?_) i) i <;> simp [tVec, e0, scalT]`.
+-/
 theorem actW_tHA_e0 (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (u : (R ⊗[F] E)ˣ) :
     actW R σ (hypOne J) (tHA R σ hinv J u) (e0 _ M) = scalT (u : R ⊗[F] E) (e0 _ M) := by
@@ -109,11 +133,17 @@ section Lat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h p _ i k => h p i k, fun h p i k => h p 0 i k⟩`.
+-/
 theorem mem_latV_iff_col {d M n : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (X : Fin n → Fin M → Fv F v ⊗[F] E) :
     X ∈ latV b v ↔ ∀ p, (fun _ : Fin 1 => X p) ∈ latV b v :=
   ⟨fun h p _ i k => h p i k, fun h p i k => h p 0 i k⟩
 
+/- English proof (translation)
+Rewrite using `[mem_latV_iff_col, mem_latV_iff_col (X := X)]`. Conclude with `forall_congr' fun p => hk fun _ => X p`.
+-/
 theorem latStab_tuple (σ : E →ₐ[F] E) {d M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) {k : HA (Fv F v) σ J}
     (hk : latStab σ J b v k) (X : Fin n → Fin M → Fv F v ⊗[F] E) :
@@ -121,10 +151,24 @@ theorem latStab_tuple (σ : E →ₐ[F] E) {d M n : ℕ} (J : Matrix (Fin M) (Fi
   rw [mem_latV_iff_col, mem_latV_iff_col (X := X)]
   exact forall_congr' fun p => hk fun _ => X p
 
+/- English proof (translation)
+Introduce `k` and use `by simpa using (v.adicCompletionIntegers F).zero_mem`.
+-/
 theorem repr_zero_mem {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) :
     (0 : Fv F v ⊗[F] E) ∈ intK b v := fun k => by
   simpa using (v.adicCompletionIntegers F).zero_mem
 
+/- English proof (translation)
+Establish `h0` using `repr_zero_mem b v`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun j k => ?_, fun j i k => ?_⟩` and prove the remaining obligations. Use `h j.succ 0 k` as an intermediate fact.
+
+Rewrite `this` using `[actW_tHA]`. Simplify `this` using `[tVec, consA]`. Use `h j.succ i.succ.succ k` as an intermediate fact. Rewrite `this` using `[actW_tHA]`. Simplify `this` using `[tVec, consA]`.
+
+Introduce and unpack `⟨h1, h2⟩ p i k`. Rewrite using `[actW_tHA]`. Use `Fin.cases ?_ (fun j => ?_) p` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => Fin.cases ?_ (fun i => ?_) i) i` and prove the remaining obligations. Simplify `hc k` using `[tVec, consA]`.
+
+Simplify `h0 k` using `[tVec, consA]`. Simplify `h0 k` using `[tVec, consA]`. Use `Fin.cases ?_ (fun i => Fin.cases ?_ (fun i => ?_) i) i` and prove the remaining obligations. Simplify `h1 j k` using `[tVec, consA]`. Simplify `h0 k` using `[tVec, consA]`.
+
+Simplify `h2 j i k` using `[tVec, consA]`.
+-/
 theorem tHA_consA_mem (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x) {d M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (u : (Fv F v ⊗[F] E)ˣ)
     (hc : (u : Fv F v ⊗[F] E) ∈ intK b v) (a : Fin 1 → Fin n → Fv F v ⊗[F] E)
@@ -159,6 +203,17 @@ section Meas
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨t1, t2, t3, t4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨i1, i2, i3, i4, -, -, hK, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI := hlam.1`.
+
+Use `haveI hS : SigmaFinite (coordK (Fv F v) b lam) := GlobalTheory.CompanionTheory.SW.WBox.sigmaFinite_coordK (Fv F v) (hK d b) lam`. Take `⟨-, hO, -, hm⟩` from `GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hσ d b 1 1 v`. Establish `hpre : intK b v = (fun (x : Fv F v ⊗[F] E) (_ : Fin 1) (_ : Fin 1) => x) ⁻¹' latV b v`. Use extensionality with `x`. Conclude with `⟨fun h _ _ k => h k, fun h k => h 0 0 k⟩`.
+
+Establish `hcont : Continuous (fun (x : Fv F v ⊗[F] E) (_ : Fin 1) (_ : Fin 1) => x)` using `continuous_pi fun _ => continuous_pi fun _ => continuous_id`. Use `⟨?_, hS, ?_⟩` and prove the remaining obligations. Rewrite using `[hpre]`. Conclude with `(hO.preimage hcont).measurableSet`. Establish `hbox : (latV b v : Set (Fin 1 → Fin 1 → Fv F v ⊗[F] E)) = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => intK b v`.
+
+Use extensionality with `X`. Simplify using `only [Set.mem_pi, Set.mem_univ, forall_true_left]`. Conclude with `⟨fun h p i k => h p i k, fun h p i k => h p i k⟩`. Use `hm lam hlam` as an intermediate fact. Rewrite `this` using `[hbox, coordW, Measure.pi_pi]`.
+
+Simplify `this` using `[Measure.pi_pi]`.
+-/
 theorem intK_facts (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {d : ℕ} (b : Module.Basis (Fin d) F E)
     (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)) (hlam : IsStdV v lam) :
     MeasurableSet (intK b v) ∧ SigmaFinite (coordK (Fv F v) b lam) ∧ coordK (Fv F v) b lam (intK b v) = 1 := by
@@ -186,6 +241,15 @@ theorem intK_facts (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {d : ℕ} (b : Mo
     rw [hbox, coordW, Measure.pi_pi] at this
     simpa [Measure.pi_pi] using this
 
+/- English proof (translation)
+Take `⟨t1, t2, t3, t4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Take `⟨hI, hS, h1⟩` from `intK_facts σ hσ b v lam hlam`.
+
+Establish `hf : Measurable fun x : Fv F v ⊗[F] E => c * x` using `(continuous_const.mul continuous_id).measurable`. Establish `hT : MeasurableSet ((fun x : Fv F v ⊗[F] E => c * x) ⁻¹' intK b v)` using `hf hI`. Establish `hmass : coordK (Fv F v) b lam ((fun x : Fv F v ⊗[F] E => c * x) ⁻¹' intK b v) = a`. Rewrite using `[← Measure.map_apply hf hI, hmap, Measure.smul_apply, h1]`. Simplify using `[ENNReal.smul_def]`.
+
+Establish `hbox : {x : Fin 1 → Fin n → Fv F v ⊗[F] E | ∀ j, c * x 0 j ∈ intK b v} = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => (fun x : Fv F v ⊗[F] E => c * x) ⁻¹' intK b v`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, forall_true_left, Set.mem_preimage]`. Conclude with `⟨fun h p i => by rw [Subsingleton.elim p 0]; exact h i, fun h i => h 0 i⟩`. Rewrite using `[hbox]`.
+
+Use `⟨MeasurableSet.univ_pi fun _ => MeasurableSet.univ_pi fun _ => hT, ?_⟩` and prove the remaining obligations. Rewrite using `[coordW, Measure.pi_pi]`. Simplify using `[Measure.pi_pi, hmass]`.
+-/
 theorem box_mass (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {d : ℕ} (n : ℕ) (b : Module.Basis (Fin d) F E)
     (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)) (hlam : IsStdV v lam)
     (c : Fv F v ⊗[F] E) (a : ℝ≥0)
@@ -214,6 +278,21 @@ theorem box_mass (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {d : ℕ} (n : ℕ)
 
 end Meas
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ n d b v lam hlam m' c a hcu hc hmap y hy`. Take `⟨k, hk, rfl⟩` from `hy`. Take `⟨u, rfl⟩` from `hcu`. Establish `hinv : ∀ x, σ (σ x) = x`. Introduce `x`.
+
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hσ.2.2.2 τ, hσ.2.2.2 τ, star_star]`. Take `⟨t1, t2, t3, t4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI hB := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)).2.2.2.2.2.2.2.1 n M`.
+
+Establish `hlat : MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))` using `(GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hσ d b n M v).2.1.measurableSet`. Take `⟨hA, hAm⟩` from `box_mass σ hσ n b v lam hlam (u : Fv F v ⊗[F] E) a hmap`. Use `⟨k * tHA (Fv F v) σ hinv J u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[actW_mul, actW_tHA_e0, actW_scalT]`. Establish `hmem : ∀ (x : Fin 1 → Fin n → Fv F v ⊗[F] E) (Y : Fin n → Fin M → Fv F v ⊗[F] E), actW (Fv F v) σ (hypOne J) (k * tHA (Fv F v) σ hinv J u) (consA x Y) ∈ latV b v ↔ (∀ j, (u : Fv F v ⊗[F] E) * x 0 j ∈ intK b v) ∧ Y ∈ latV b v` using `fun x Y => by`.
+
+Rewrite using `[actW_mul, latStab_tuple σ (hypOne J) b v hk, tHA_consA_mem σ hinv J b v u hc]`. Establish `hin : ∀ Y : Fin n → Fin M → Fv F v ⊗[F] E, ∫⁻ x, (latV b v).indicator 1 (actW (Fv F v) σ (hypOne J) (k * tHA (Fv F v) σ hinv J u) (consA x Y)) ∂(coordW (Fv F v) b lam 1 n) = (latV b v).indicator (fun _ => (a : ℝ≥0∞) ^ n) Y`. Introduce `Y`. Distinguish the cases in `hY : Y ∈ latV b v`. Rewrite using `[Set.indicator_of_mem hY, ← hAm, ← lintegral_indicator_one hA]`.
+
+Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : ∀ j, (u : Fv F v ⊗[F] E) * x 0 j ∈ intK b v`. Establish `e1` using `Set.indicator_of_mem ((hmem x Y).2 ⟨hx, hY⟩) (1 : (Fin (n + 1) → Fin (M + 2) → Fv F v ⊗[F] E) → ℝ≥0∞)`. Establish `e2` using `Set.indicator_of_mem (s := {x : Fin 1 → Fin n → Fv F v ⊗[F] E | ∀ j, (u : Fv F v ⊗[F] E) * x 0 j ∈ intK b v}) hx (1 : (Fin 1 → Fin n → Fv F v ⊗[F] E) → ℝ≥0∞)`. Conclude with `e1.trans e2.symm`.
+
+Rewrite using `[Set.indicator_of_notMem (fun h => hx ((hmem x Y).1 h).1), Set.indicator_of_notMem (s := {x : Fin 1 → Fin n → Fv F v ⊗[F] E | ∀ j, (u : Fv F v ⊗[F] E) * x 0 j ∈ intK b v}) hx]`. Rewrite using `[Set.indicator_of_notMem hY]`. Use `(lintegral_congr fun x => ?_).trans lintegral_zero` and prove the remaining obligations. Rewrite using `[Set.indicator_of_notMem (fun h => hY ((hmem x Y).1 h).2)]`. Unfold `stageInt`.
+
+Simplify using `only [hin]`. Rewrite using `[lintegral_indicator_const hlat]`.
+-/
 theorem stageInt_primV : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n d : ℕ) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → ∀ (m' : Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (c : Fv F v ⊗[F] E) (a : ℝ≥0), IsUnit c → c ∈ intK b v → (coordK (Fv F v) b lam).map (fun x => c * x) = a • coordK (Fv F v) b lam → ∀ y ∈ primV σ J b v, ∃ g : HA (Fv F v) σ (hypOne J), actW (Fv F v) σ (hypOne J) g (e0 _ M) = scalT c y ∧ stageInt (Fv F v) σ J b lam m' ((latV b v).indicator 1) g = (a : ℝ≥0∞) ^ n * m' (latV b v) := by
   intro F E _ _ _ _ _ σ hσ M J hJ n d b v lam hlam m' c a hcu hc hmap y hy
   obtain ⟨k, hk, rfl⟩ := hy

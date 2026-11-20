@@ -14,10 +14,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `gS`. Use `push_cast`. Conclude with `mul_ne_zero (by exact_mod_cast (D.host.g_prime 0).ne_zero) (by exact_mod_cast (D.host.g_prime 1).ne_zero)`.
+-/
 theorem gS_ne : ((gS D : ℕ) : D.host.E) ≠ 0 := by
   unfold gS; push_cast
   exact mul_ne_zero (by exact_mod_cast (D.host.g_prime 0).ne_zero) (by exact_mod_cast (D.host.g_prime 1).ne_zero)
 
+/- English proof (translation)
+Unfold `qdPow qq`. Rewrite using `[FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.mem_singleton_mul]`. Establish `h0` using `gS_ne (D := D)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Rewrite using `[map_natCast, mul_div_cancel_left₀ _ h0]`. Conclude with `hy`. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast, mul_div_cancel₀ _ h0]`.
+-/
 theorem qdPow_mem_iff (k : ℕ) (w : D.host.E) : w ∈ qdPow D k ↔ w / ((gS D : ℕ) : D.host.E) ∈ ddPow D k := by
   unfold qdPow qq
   rw [FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.mem_singleton_mul]
@@ -29,6 +37,17 @@ theorem qdPow_mem_iff (k : ℕ) (w : D.host.E) : w ∈ qdPow D k ↔ w / ((gS D 
     refine ⟨_, h, ?_⟩
     rw [map_natCast, mul_div_cancel₀ _ h0]
 
+/- English proof (translation)
+Establish `hinv : Ring.inverse t * t = 1` using `Ring.inverse_mul_cancel t ht`. Establish `fwd : ∀ (t' : K) (T : Set K) (x : K), x ∈ Submodule.span O T → t' * x ∈ Submodule.span O ((fun s => t' * s) '' T)`. Introduce `t' T x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`.
+
+Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz => rw [mul_add]`. Conclude with `add_mem hx hz`. Consider the case `smul o x _ hx`.
+
+Rewrite using `[Subring.smul_def, smul_eq_mul, mul_left_comm, ← smul_eq_mul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ o hx`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `fwd (Ring.inverse t) _ y hy` as an intermediate fact.
+
+Rewrite using `[Set.image_image, show (fun s => Ring.inverse t * (t * s)) = id by` and apply the resulting hypothesis. Use function extensionality and compare the values at `s`. Rewrite using `[← mul_assoc, hinv, one_mul]`. Use the proof step `rfl, Set.image_id] at this`. Introduce `hy`.
+
+Use `fwd t S _ hy` as an intermediate fact. Rewrite `this` using `[← mul_assoc, Ring.mul_inverse_cancel t ht, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem mem_span_mul_iff {K : Type*} [CommRing K] (O : Subring K) (t : K) (ht : IsUnit t) (S : Set K) (y : K) :
     y ∈ Submodule.span O ((fun s => t * s) '' S) ↔ Ring.inverse t * y ∈ Submodule.span O S := by
   have hinv : Ring.inverse t * t = 1 := Ring.inverse_mul_cancel t ht
@@ -54,6 +73,9 @@ theorem mem_span_mul_iff {K : Type*} [CommRing K] (O : Subring K) (t : K) (ht : 
 variable (δ : ∀ p : PlF D, (D.s.atP p).Fp)
   (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hA : ∀ q, Agree δ M q) (p : PlF D)
 
+/- English proof (translation)
+Rewrite using `[← map_mul, mul_inv_cancel₀ gS_ne, map_one]`.
+-/
 theorem ιgS_mul_inv : (D.s.atP p).ιE ((gS D : ℕ) : D.host.E) * (D.s.atP p).ιE (((gS D : ℕ) : D.host.E)⁻¹) = 1 := by
   rw [← map_mul, mul_inv_cancel₀ gS_ne, map_one]
 
@@ -61,6 +83,15 @@ def uGS : (D.s.atP p).Epˣ :=
   ⟨(D.s.atP p).ιE ((gS D : ℕ) : D.host.E), (D.s.atP p).ιE (((gS D : ℕ) : D.host.E)⁻¹), ιgS_mul_inv p,
     by rw [mul_comm]; exact ιgS_mul_inv p⟩
 
+/- English proof (translation)
+Unfold `LocMem`. Use `set ι := (D.s.atP p).ιE`. Establish `hu : IsUnit (ι ((gS D : ℕ) : D.host.E))` using `(uGS p).isUnit`. Establish `hset : ι '' (qdPow D k : Set D.host.E) = (fun s => ι ((gS D : ℕ) : D.host.E) * s) '' (ι '' (ddPow D k : Set D.host.E))`. Rewrite using `[Set.image_image]`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Use `⟨w / ((gS D : ℕ) : D.host.E), (qdPow_mem_iff k w).1 hw, ?_⟩` and prove the remaining obligations. Use `show ι ((gS D : ℕ) : D.host.E) * ι (w / ((gS D : ℕ) : D.host.E)) = ι w`.
+
+Rewrite using `[← map_mul, mul_div_cancel₀ _ gS_ne]`. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨((gS D : ℕ) : D.host.E) * y, (qdPow_mem_iff k _).2 (by rwa [mul_div_cancel_left₀ _ gS_ne]), ?_⟩` and prove the remaining obligations. Use `show ι (((gS D : ℕ) : D.host.E) * y) = ι ((gS D : ℕ) : D.host.E) * ι y`. Rewrite using `[map_mul]`.
+
+Rewrite using `[hset, mem_span_mul_iff _ _ hu]`. Establish `hi : Ring.inverse (ι ((gS D : ℕ) : D.host.E)) = ι (((gS D : ℕ) : D.host.E)⁻¹)`. Rewrite using `[show ι ((gS D : ℕ) : D.host.E) = ((uGS p : (D.s.atP p).Epˣ) : (D.s.atP p).Ep) from rfl, Ring.inverse_unit]`. Both sides reduce to the same expression. Rewrite using `[hi, ← map_mul, div_eq_mul_inv, mul_comm z]`.
+-/
 theorem locMem_qd_iff (k : ℕ) (z : D.host.E) :
     LocMem D p (qdPow D k) z ↔ LocMem D p (ddPow D k) (z / ((gS D : ℕ) : D.host.E)) := by
   unfold LocMem
@@ -87,6 +118,23 @@ theorem locMem_qd_iff (k : ℕ) (z : D.host.E) :
 
 include hA in
 
+/- English proof (translation)
+Rewrite using `[locMem_qd_iff, locMem_iff δ M hA p hk]`. Use `set ι := (D.s.atP p).ιE`. Choose the witnesses or unpack the hypotheses as in `⟨sg, hsg, hq⟩ : ∃ sg, (D.s.atP p).split = some sg ∧ g.q = sg.q := by`. Establish `h6` using `(hA p).2.2.2.2.2`. Consider the cases of `hD : (D.s.atP p).split with`.
+
+Consider the case `none => rw [hs, hD] at h6`. Conclude with `h6.elim`. Consider the case `some sg => rw [hs, hD] at h6`. Conclude with `⟨sg, rfl, h6.2⟩`. Establish `hgp` using `Formalism.MainNotions.BridgeLemma.gpart_some p sg hsg`.
+
+Establish `hgS : ι ((gS D : ℕ) : D.host.E) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) * ι ((Formalism.MainNotions.BridgeLemma.oth p : ℕ) : D.host.E)`. Rewrite using `[hq, sg.q_eq, ← Formalism.MainNotions.BridgeLemma.gpart_mul_oth p, hgp]`. Simplify using `only [Nat.cast_mul, map_mul, map_natCast]`. Establish `huP : ι (uP p : D.host.E) * ι ((Formalism.MainNotions.BridgeLemma.oth p : ℕ) : D.host.E) = 1`. Rewrite using `[← map_mul, Formalism.MainNotions.BridgeLemma.unitAt_eq p]`.
+
+Establish `h0 : ((Formalism.MainNotions.BridgeLemma.oth p : ℕ) : D.host.E) ≠ 0`. Conclude with `Formalism.MainNotions.BridgeLemma.oth_ne_zero p` after adjusting the coercions. Use `push_cast`. Rewrite using `[inv_mul_cancel₀ h0, map_one]`. Establish `huO : ι (uP p : D.host.E) ∈ (D.s.atP p).O` using `LocFacts.unitPart_mem₂ p`.
+
+Establish `hoO : ι ((Formalism.MainNotions.BridgeLemma.oth p : ℕ) : D.host.E) ∈ (D.s.atP p).O`. Rewrite using `[map_natCast]`. Conclude with `natCast_mem _ _`. Establish `hz : ι z = ι (z / ((gS D : ℕ) : D.host.E)) * ι ((gS D : ℕ) : D.host.E)`. Rewrite using `[← map_mul, div_mul_cancel₀ _ gS_ne]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨ι ((Formalism.MainNotions.BridgeLemma.oth p : ℕ) : D.host.E) * (cc δ p ^ k * ι (z / ((gS D : ℕ) : D.host.E))), mul_mem hoO h, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, hgS]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce and unpack `⟨o, ho, he⟩`. Establish `: cc δ p ^ k * ι (z / ((gS D : ℕ) : D.host.E)) = o * ι (uP p : D.host.E)`. Establish `h1 : cc δ p ^ k * ι (z / ((gS D : ℕ) : D.host.E)) * ι ((gS D : ℕ) : D.host.E) = o * ι (uP p : D.host.E) * ι ((gS D : ℕ) : D.host.E)`. Rewrite using `[mul_assoc, ← hz, he, hgS]`. Take the linear combination `(-(algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (g.q : (D.s.atP p).Fp) * o)) * huP`.
+
+Establish `hu : IsUnit (ι ((gS D : ℕ) : D.host.E))` using `(uGS p).isUnit`. Conclude with `hu.mul_right_cancel h1`. Rewrite using `[this]`. Conclude with `mul_mem ho huO`.
+-/
 theorem qLocG_of_data (g : Loc.SplitG (M p).L) (hs : (M p).split = some g) (k : ℕ) (hk : k ≤ D.R.rS)
     (z : D.host.E) :
     LocMem D p (qdPow D k) z ↔ ∃ o ∈ (D.s.atP p).O,
@@ -131,8 +179,14 @@ theorem qLocG_of_data (g : Loc.SplitG (M p).L) (hs : (M p).split = some g) (k : 
       exact hu.mul_right_cancel h1
     rw [this]; exact mul_mem ho huO
 
+/- English proof (translation)
+Introduce `δ M hA p g hs k hk z` and use `qLocG_of_data δ M hA p g hs k hk z`.
+-/
 theorem qLocG : QLocG D := fun δ M hA p g hs k hk z => qLocG_of_data δ M hA p g hs k hk z
 
+/- English proof (translation)
+The claim follows from `locShapeG_of qLocG`.
+-/
 theorem locShapeG : LocShapeG D := locShapeG_of qLocG
 
 end Formalism.L2.SG.Pf.StabIntSh

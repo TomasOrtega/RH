@@ -18,25 +18,40 @@ namespace GlobalTheory.CompanionTheory.Ar.LieSigma
 
 variable {S : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R']
 
+/- English proof (translation)
+Apply the tactic sequence `refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[GlobalTheory.CompanionTheory.Ar.dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_comp_algebraMap (φ : R →+* R') :
     (dualMap φ).comp (algebraMap R (DualNumber R)) = (algebraMap R' (DualNumber R')).comp φ := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;>
     simp [GlobalTheory.CompanionTheory.Ar.dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.CompanionTheory.Ar.dualMap]`.
+-/
 theorem fst_comp_dualMap (φ : R →+* R') :
     (TrivSqZeroExt.fstHom R' R' R').toRingHom.comp (dualMap φ)
       = φ.comp (TrivSqZeroExt.fstHom R R R).toRingHom := by
   refine RingHom.ext fun a => ?_
   simp [GlobalTheory.CompanionTheory.Ar.dualMap]
 
+/- English proof (translation)
+Apply the tactic sequence `refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[GlobalTheory.CompanionTheory.Ar.dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, mul_comm]`.
+-/
 theorem dualMap_comp_epsMul (φ : R →+* R') (a : R) :
     (dualMap φ).comp (epsMul a) = (epsMul (φ a)).comp (dualMap φ) := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;>
     simp [GlobalTheory.CompanionTheory.Ar.dualMap, GlobalTheory.CompanionTheory.Ar.epsMul, mul_comm]
 
+/- English proof (translation)
+Conclude with `comp_one u`.
+-/
 theorem comp_one_over {X Y M : Over S} [GrpObj M] (u : Y ⟶ X) : u ≫ (1 : X ⟶ M) = 1 := by
   exact comp_one u
 
+/- English proof (translation)
+Conclude with `comp_mul u p q`.
+-/
 theorem comp_mul_over {X Y M : Over S} [GrpObj M] (u : Y ⟶ X) (p q : X ⟶ M) :
     u ≫ (p * q) = (u ≫ p) * (u ≫ q) := by
   exact comp_mul u p q
@@ -50,6 +65,11 @@ def pullEps (φ : R →+* R') (x : Sp R ⟶ S) : epsAt (spMap φ ≫ x) ⟶ epsA
 def pullPt (φ : R →+* R') (x : Sp R ⟶ S) : Over.mk (spMap φ ≫ x) ⟶ Over.mk x :=
   Over.homMk (spMap φ) rfl
 
+/- English proof (translation)
+Unfold `IsTanAt at hv ⊢`. Rewrite using `[← comp_one_over (pullPt φ x), Over.comp_left, Over.comp_left, ← hv]`. Establish `key : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R' R' R').toRingHom) ≫ spMap (dualMap φ) = spMap φ ≫ Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom)`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, fst_comp_dualMap]`. Simplify using `only [pullEps, pullPt, Over.homMk_left]`.
+
+Rewrite using `[reassoc_of% key]`.
+-/
 theorem isTanAt_pull (G : Over S) [GrpObj G] (φ : R →+* R') (x : Sp R ⟶ S) (v : epsAt x ⟶ G)
     (hv : IsTanAt G x v) : IsTanAt G (spMap φ ≫ x) (pullEps φ x ≫ v) := by
   unfold IsTanAt at hv ⊢
@@ -60,6 +80,13 @@ theorem isTanAt_pull (G : Over S) [GrpObj G] (φ : R →+* R') (x : Sp R ⟶ S) 
   simp only [pullEps, pullPt, Over.homMk_left]
   rw [reassoc_of% key]
 
+/- English proof (translation)
+Use `choose j hj using fun e => M₀.onto _ (isTanAt_pull G φ x (M.pt e) (M.tan e))`. Use `⟨{ toFun := j, map_add' := ?_, map_smul' := ?_ }, hj⟩` and prove the remaining obligations. Introduce `e e'`. Apply `M₀.inj` to reduce the goal to its premises. Rewrite using `[M₀.add, hj, hj, hj, M.add, comp_mul_over]`.
+
+Introduce `c e`. Apply `M₀.inj` to reduce the goal to its premises. Rewrite using `[RingHom.id_apply, hs, hj]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[M₀.smul, hj, Over.comp_left, Over.comp_left, M.smul]`.
+
+Simplify using `only [pullEps, Over.homMk_left, ← Category.assoc]`. Use `congr 1`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, dualMap_comp_epsMul]`.
+-/
 theorem exists_linear (G : Over S) [GrpObj G] (φ : R →+* R') (x : Sp R ⟶ S)
     {E E₀ : Type} [AddCommGroup E] [Module R E] [AddCommGroup E₀] [Module R' E₀] [Module R E₀]
     (hs : ∀ (a : R) (e : E₀), a • e = φ a • e) (M : LieModel G x E)
@@ -92,6 +119,17 @@ def transport {G : Over S} [GrpObj G] {x : Sp R ⟶ S} {E E' : Type} [AddCommGro
 
 open GroundTheory.Heights₂.Heights in
 
+/- English proof (translation)
+Introduce `S G _ _ _ L _ _ z V _ _ M σ`. Set `_ : Algebra (𝓞 L) ℂ` to `(σ.comp (algebraMap (𝓞 L) L)).toAlgebra`. Take `⟨E₀, i1, i2, ⟨M₀⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists S G ℂ (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z)`. Set `_ : Module (𝓞 L) E₀` to `Module.compHom E₀ (σ.comp (algebraMap (𝓞 L) L))`. Establish `_ : IsScalarTower (𝓞 L) ℂ E₀` using `⟨fun a b e => by show ((σ.comp (algebraMap (𝓞 L) L)) a * b) • e = (σ.comp (algebraMap (𝓞 L) L)) a • b • e`.
+
+Rewrite using `[mul_smul]⟩`. Take `⟨j, hj⟩` from `exists_linear G (σ.comp (algebraMap (𝓞 L) L)) z (fun a e => rfl) M M₀`. Establish `hl : ∀ e, M.Lifts (algebraMap (𝓞 L) ℂ) (𝟙 G.left) e (M₀.pt (j e))`. Introduce `e`. Unfold `GlobalTheory.CompanionTheory.Ar.LieModel.Lifts`.
+
+Rewrite using `[hj e, Over.comp_left, Category.comp_id]`. Both sides reduce to the same expression. Establish `hb` using `GlobalTheory.T.lie_model_isBaseChange S G (𝓞 L) ℂ z V E₀ M M₀ j hl`. Set `f : GroundTheory.Heights₂.Heights.Fibre σ V ≃ₗ[ℂ] E₀` to `hb.equiv`. Use `⟨transport M₀ f, fun e => ?_⟩` and prove the remaining obligations.
+
+Establish `hf : f ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] e) = j e` using `by show hb.equiv ((1 : ℂ) ⊗ₜ[𝓞 L] e) = j e`. Rewrite using `[IsBaseChange.equiv_tmul, one_smul]`. Unfold `GlobalTheory.CompanionTheory.Ar.LieModel.Lifts`. Use `show (M₀.pt (f ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] e))).left ≫ 𝟙 _ = _`. Rewrite using `[hf, hj e, Over.comp_left, Category.comp_id]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lieModel_fibre : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (L : Type) [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ S) (V : Type) [AddCommGroup V] [Module (𝓞 L) V] (M : LieModel G z V) (σ : L →+* ℂ), ∃ Mσ : LieModel G (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z) (GroundTheory.Heights₂.Heights.Fibre σ V), ∀ e : V, M.Lifts (σ.comp (algebraMap (𝓞 L) L)) (𝟙 G.left) e (Mσ.pt ((1 : GroundTheory.Heights₂.Heights.ComplexAt σ) ⊗ₜ[𝓞 L] e)) := by
   intro S G _ _ _ L _ _ z V _ _ M σ
   classical

@@ -21,6 +21,21 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {LL : Type} [Field LL] [Algebra Qp LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
+/- English proof (translation)
+Use `haveI := PD.finK`. Take `rfl : inst = minpoly.AlgHom.fintype Qp K LL` from `Subsingleton.elim _ _`. Establish `hm : ∀ (c : K) (v : V) (b : BdR), mulVdR (K` using `K) (BdR := BdR) (V := V) (LL := LL) (Qp := Qp) c (v ⊗ₜ b) = v ⊗ₜ (algebraMap K BdR c * b) := fun _ _ _ => rfl`. Set `m : K →ₐ[Qp] Module.End LL (V ⊗[Qp] BdR)` to `{ toFun := fun c => mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c map_one' := by ext v b; simp [hm] map_mul' := fun c d => by ext v b; simp [hm, mul_assoc] map_zero' := by ext v b; simp [hm] map_add' := fun c d => by ext v b; simp [hm, add_mul, tmul_add] commutes' := fun r = …`. Use extensionality with `v b`.
+
+Simplify using `[hm, ← IsScalarTower.algebraMap_apply, ← Algebra.smul_def, Algebra.algebraMap_eq_smul_one] }`. Establish `hD : ∀ x, x ∈ DdR PD ρ ↔ ∀ g, actVdR PD ρ g x = x` using `fun x => by`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Establish `hc : ∀ g c x, actVdR PD ρ g (m c x) = m c (actVdR PD ρ g x)`. Introduce `g c x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [m, hm, actVdR]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `hst : ∀ c, ∀ x ∈ DdR PD ρ, m c x ∈ DdR PD ρ` using `fun c x hx => (hD _).2 fun g => by rw [hc, (hD x).1 hx g]`.
+
+Establish `hF : ∀ a c, ∀ x ∈ FilV PD (LL` using `LL) (V := V) a, m c x ∈ FilV PD (LL := LL) (V := V) a := by`. Introduce and unpack `a c _ ⟨y, rfl⟩`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b`.
+
+Use `⟨v ⊗ₜ ⟨c • (b : BdR), (PD.Fil a).smul_mem c b.2⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v ⊗ₜ (c • (b : BdR)) = v ⊗ₜ (algebraMap K BdR c * (b : BdR))`. Rewrite using `[Algebra.smul_def]`. Consider the case `add y z hy hz => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+
+Establish `hE : ∀ (τ : K →ₐ[Qp] LL) x, x ∈ DdRE PD ρ τ ↔ x ∈ DdR PD ρ ∧ ∀ c, m c x = τ c • x` using `fun τ x => by`. Simplify using `only [DdRE, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Both sides reduce to the same expression. Use `haveI : ∀ τ : K →ₐ[Qp] LL, FiniteDimensional LL (DdRE PD ρ τ) := fun τ => Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ) inf_le_left`. Use `⟨GlobalTheory.Cmp.JumpDict.finrank_eq_sum_emb hcard m (DdR PD ρ) hst (DdRE PD ρ) hE, fun a => ?_⟩` and prove the remaining obligations.
+
+Use `haveI : ∀ τ : K →ₐ[Qp] LL, FiniteDimensional LL (FildR PD ρ τ a) := fun τ => Submodule.finiteDimensional_of_le (S₂ := DdRE PD ρ τ) inf_le_left`. Use `GlobalTheory.Cmp.JumpDict.finrank_eq_sum_emb hcard m (DdR PD ρ ⊓ FilV PD (LL := LL) (V := V) a) (fun c x hx => ⟨hst c x hx.1, hF a c x hx.2⟩) (fun τ => FildR PD ρ τ a) fun τ x => ?_` and prove the remaining obligations. Simplify using `only [FildR, Submodule.mem_inf, hE]`. The claim follows by propositional logic.
+-/
 theorem finrank_split [inst : Fintype (K →ₐ[Qp] LL)]
     (hcard : Fintype.card (K →ₐ[Qp] LL) = Module.finrank Qp K)
     (ρ : Representation LL G V) [Module.Finite LL (DdR PD ρ)] :
@@ -78,6 +93,9 @@ theorem finrank_split [inst : Fintype (K →ₐ[Qp] LL)]
 
 end General
 
+/- English proof (translation)
+Introduce `l _ P K LL _ hs V _ _ _ _ ρ hfin`. Conclude with `finrank_split (P.PD K) hs.2 ρ`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)], Splits (Qp := ℚ_[l]) (K := ↥K.1) ↥LL.1 → ∀ (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V), Module.Finite ↥LL.1 ↥(DdR (P.PD K) ρ) → Module.finrank ↥LL.1 ↥(DdR (P.PD K) ρ) = ∑ τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, Module.finrank ↥LL.1 ↥(DdRE (P.PD K) ρ τ) ∧ ∀ a : ℤ, Module.finrank ↥LL.1 ↥(DdR (P.PD K) ρ ⊓ FilV (P.PD K) (LL := ↥LL.1) (V := V) a) = ∑ τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, Module.finrank ↥LL.1 ↥(FildR (P.PD K) ρ τ a) := by
   intro l _ P K LL _ hs V _ _ _ _ ρ hfin
   exact finrank_split (P.PD K) hs.2 ρ

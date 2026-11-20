@@ -26,6 +26,11 @@ namespace GlobalTheory.UT
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hL` using `GlobalTheory.firstFiveLaws`. Take `⟨-, h1, h2, h3, h4⟩` from `GlobalTheory.twistBaseChange_and_valuation_statements`. Establish `hex` using `@GlobalTheory.EndData.exists_endU hL`. Establish `hros` using `@GlobalTheory.UT.rosatiAdj_and_c_linear_of_endU hL`. Establish `hcalc` using `@GlobalTheory.EndCalc.end_calculus hL`.
+
+Establish `hbal` using `@GlobalTheory.Balanced.main hL h1 h2 h3 h4`. Introduce `R _ _ _ I hB D A G _ _ hG U`. Use `⟨hex R I hB D A G hG U, fun E E' hE => ⟨hros R I hB D A G hG U E E' hE, fun F _ _ _ => ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨(hcalc R I hB D A G hG U F E E E).1, hbal R I hB D A G hG U F E E' hE⟩`.
+-/
 theorem functorial_of_unif :
     AllU fun {_} _ _ {_} {_} {_} {_} _ _ U => Cl.Functorial U := by
   have hL := GlobalTheory.firstFiveLaws

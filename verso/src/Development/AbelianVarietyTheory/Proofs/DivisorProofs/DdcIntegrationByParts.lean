@@ -22,21 +22,37 @@ section Point
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [delAt, Algebra.algebraMap_eq_smul_one, ← bas_empty]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[coefwise_smul (by simp), bas_empty, mul_smul_comm, mul_one]`.
+-/
 theorem delAt_fun (u : V n → ℂ) (x : V n) :
     delAt (fun y => algebraMap ℂ (Alt n) (u y)) x = ∑ a, del u x (coordVec a) • dz a := by
   simp only [delAt, Algebra.algebraMap_eq_smul_one, ← bas_empty]
   refine Finset.sum_congr rfl fun b _ => ?_
   rw [coefwise_smul (by simp), bas_empty, mul_smul_comm, mul_one]
 
+/- English proof (translation)
+Simplify using `only [dbarAt, Algebra.algebraMap_eq_smul_one, ← bas_empty]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[coefwise_smul (by simp), bas_empty, mul_smul_comm, mul_one]`.
+-/
 theorem dbarAt_fun (u : V n → ℂ) (x : V n) :
     dbarAt (fun y => algebraMap ℂ (Alt n) (u y)) x = ∑ a, dbar u x (coordVec a) • dzb a := by
   simp only [dbarAt, Algebra.algebraMap_eq_smul_one, ← bas_empty]
   refine Finset.sum_congr rfl fun b _ => ?_
   rw [coefwise_smul (by simp), bas_empty, mul_smul_comm, mul_one]
 
+/- English proof (translation)
+The claim follows from `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)`.
+-/
 theorem dzb_mul_dz (a b : Fin n) : dzb b * dz a = -(dz a * dzb b) :=
   eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap _ _)
 
+/- English proof (translation)
+Establish `hconst` using `(delAt_dbarAt_linear_local n v).2.2.2.2`. Establish `e₁ : (delAt fun y => algebraMap ℂ (Alt n) (u y)) = fun x => ∑ a, del u x (coordVec a) • dz a`. Use function extensionality and compare the values at `(delAt_fun u)`. Establish `e₂ : (dbarAt fun y => algebraMap ℂ (Alt n) (u y)) = fun x => ∑ a, dbar u x (coordVec a) • dzb a`. Use function extensionality and compare the values at `(dbarAt_fun u)`.
+
+Establish `hd (a : Fin n) : DifferentiableAt ℝ (fun x => del u x (coordVec a)) v`. Establish `h1 : DifferentiableAt ℝ (del u) v` using `(contDiffAt_del (m := 1) hu (by norm_num)).differentiableAt (by simp)`. Conclude with `((ContinuousLinearMap.apply ℂ ℂ (coordVec a)).restrictScalars ℝ).differentiableAt.comp v h1`. Rewrite using `[e₁, e₂, dbarAt_sum_smul (c := fun a x => del u x (coordVec a)) (F := fun a _ => dz a) hd (fun _ _ => differentiableAt_const _), DelForm.delAt_sum_smul (fun a x => dbar u x (coordVec a)) (fun a _ => dzb a) (fun a => differentiableAt_dbar_apply hu _) (fun _ _ => differentiableAt_c …`. Simplify using `only [(hconst _).1, (hconst _).2, smul_zero, add_zero, DelForm.dOne, Finset.sum_mul, smul_mul_assoc, ← ddbar_eq_dbar_del hu, ← ddbar_eq_del_dbar hu, dzb_mul_dz, smul_neg, Finset.sum_neg_distrib]`.
+
+Rewrite using `[Finset.sum_comm]`.
+-/
 theorem dbarAt_delAt_fun {u : V n → ℂ} {v : V n} (hu : ContDiffAt ℝ 2 u v) :
     dbarAt (delAt fun y => algebraMap ℂ (Alt n) (u y)) v = -delAt (dbarAt fun y => algebraMap ℂ (Alt n) (u y)) v := by
   have hconst := (delAt_dbarAt_linear_local n v).2.2.2.2
@@ -62,31 +78,51 @@ section Manifold
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
+/- English proof (translation)
+The claim follows from `(A.e x.1.1).open_target.mem_nhds (x.ch.map_source x.2)`.
+-/
 theorem target_mem (x : A.Pt) : (A.e x.1.1).target ∈ 𝓝 x.crd :=
   (A.e x.1.1).open_target.mem_nhds (x.ch.map_source x.2)
 
+/- English proof (translation)
+The claim follows from `((h.smooth x.1.1 S).contDiffAt (target_mem A x)).differentiableAt (by simp)`.
+-/
 theorem diff_coef {α : A.Fld} (h : A.IsForm α) (x : A.Pt) (S : Finset (Fin (n + n))) :
     DifferentiableAt ℝ (fun v => (bas n).repr (A.loc α x.1.1 v) S) x.crd :=
   ((h.smooth x.1.1 S).contDiffAt (target_mem A x)).differentiableAt (by simp)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Unfold `HolAtlas.loc`. Use `split_ifs`. Use `exacts [rfl, (mul_zero _).symm]`.
+-/
 theorem loc_mul (α β : A.Fld) (i : A.ι) : A.loc (α * β) i = fun v => A.loc α i v * A.loc β i v := by
   funext v
   unfold HolAtlas.loc
   split_ifs
   exacts [rfl, (mul_zero _).symm]
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> rw [HolAtlas.loc, dif_pos hv]`. Conclude with `congrArg (delAt (A.loc α i)) ((A.e i).right_inv hv)`. Conclude with `congrArg (dbarAt (A.loc α i)) ((A.e i).right_inv hv)`.
+-/
 theorem loc_del_dbar (α : A.Fld) (i : A.ι) {v : V n} (hv : v ∈ (A.e i).target) :
     A.loc (A.del α) i v = delAt (A.loc α i) v ∧ A.loc (A.dbar α) i v = dbarAt (A.loc α i) v := by
   constructor <;> rw [HolAtlas.loc, dif_pos hv]
   · exact congrArg (delAt (A.loc α i)) ((A.e i).right_inv hv)
   · exact congrArg (dbarAt (A.loc α i)) ((A.e i).right_inv hv)
 
+/- English proof (translation)
+The claim follows from `eventually_of_mem ((A.e i).open_target.mem_nhds hv) fun w hw => by rw [HolAtlas.loc, dif_pos hw] rfl`.
+-/
 theorem loc_fn (g : M → ℝ) (i : A.ι) {v : V n} (hv : v ∈ (A.e i).target) :
     A.loc (A.fn g) i =ᶠ[𝓝 v] fun w => algebraMap ℂ (Alt n) (g ((A.e i).symm w) : ℂ) :=
   eventually_of_mem ((A.e i).open_target.mem_nhds hv) fun w hw => by
     rw [HolAtlas.loc, dif_pos hw]
     rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `hgerm` using `fun v => (delAt_dbarAt_linear_local n v).2.2.2.1`. Establish `h₁ : A.loc (A.del (A.fn g)) x.1.1 =ᶠ[𝓝 x.crd] delAt fun w => algebraMap ℂ (Alt n) (g ((A.e x.1.1).symm w) : ℂ)` using `eventually_of_mem (target_mem A x) fun v hv => (loc_del_dbar A _ _ hv).1.trans (hgerm v _ _ (loc_fn A g _ hv)).1`. Establish `h₂ : A.loc (A.dbar (A.fn g)) x.1.1 =ᶠ[𝓝 x.crd] dbarAt fun w => algebraMap ℂ (Alt n) (g ((A.e x.1.1).symm w) : ℂ)` using `eventually_of_mem (target_mem A x) fun v hv => (loc_del_dbar A _ _ hv).2.trans (hgerm v _ _ (loc_fn A g _ hv)).2`. Establish `hu : ContDiffAt ℝ 2 (fun w => (g ((A.e x.1.1).symm w) : ℂ)) x.crd` using `(((hg x.1.1).mono fun v hv => ⟨hv, trivial⟩).contDiffAt (target_mem A x)).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`.
+
+Rewrite using `[Pi.neg_apply, HolAtlas.dbar, HolAtlas.del, (hgerm _ _ _ h₁).2, (hgerm _ _ _ h₂).1]`. Conclude with `dbarAt_delAt_fun hu`.
+-/
 theorem dbar_del_fn {g : M → ℝ} (hg : A.SmoothOn Set.univ fun y => (g y : ℂ)) :
     A.dbar (A.del (A.fn g)) = -A.del (A.dbar (A.fn g)) := by
   funext x
@@ -104,6 +140,11 @@ theorem dbar_del_fn {g : M → ℝ} (hg : A.SmoothOn Set.univ fun y => (g y : �
   rw [Pi.neg_apply, HolAtlas.dbar, HolAtlas.del, (hgerm _ _ _ h₁).2, (hgerm _ _ _ h₂).1]
   exact dbarAt_delAt_fun hu
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `key` using `(FormMul.leibniz_of_comm n (A.loc (A.del (A.fn g)) x.1.1) (A.loc ψ x.1.1) x.crd (-A.del (A.fn g) x) (diff_coef A hd x) (diff_coef A hψ x)).2 fun a => by`. Rewrite using `[A.loc_crd, HolAtlas.del, ((delAt_dbarAt_linear_local n _).2.2.2.1 _ _ (loc_fn A g _ (x.ch.map_source x.2))).1, delAt_fun]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc, dzb_mul_dz, neg_mul, smul_neg, Finset.sum_neg_distrib]`. Rewrite `key` using `[A.loc_crd ψ x, neg_mul, ← sub_eq_add_neg]`.
+
+Rewrite using `[HolAtlas.dbar, loc_mul]`. Conclude with `key`.
+-/
 theorem dbar_del_fn_mul {g : M → ℝ} {ψ : A.Fld} (hd : A.IsForm (A.del (A.fn g))) (hψ : A.IsForm ψ) :
     A.dbar (A.del (A.fn g) * ψ) = A.dbar (A.del (A.fn g)) * ψ - A.del (A.fn g) * A.dbar ψ := by
   funext x
@@ -119,6 +160,19 @@ theorem dbar_del_fn_mul {g : M → ℝ} {ψ : A.Fld} (hd : A.IsForm (A.del (A.fn
 
 end Manifold
 
+/- English proof (translation)
+Introduce `M _ _ _ _ _ _ n A g hg ψ hψ`. Take `⟨-, C, L, -⟩` from `GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A`. Take `⟨hfin, hadd, -⟩` from `GlobalTheory.T.holAtlas_topFormIntegral_finite_additive_homogeneous M n A`. Establish `S` using `GlobalTheory.T.integral_del_dbar_zero M n A`. Establish `add : ∀ α β : A.Fld, A.IsForm α → A.IsForm β → A.integral (α + β) = A.integral α + A.integral β`.
+
+Introduce `α β hα hβ`. Simplify using `only [← wInt_one]`. Conclude with `(hadd _ α β hα hβ (fun ε => have := hfin α hα ε; integrable_const _) (fun ε => have := hfin β hβ ε; integrable_const _)).2`. Establish `fmul : ∀ {α β : A.Fld}, A.IsForm α → A.IsForm β → A.IsForm (α * β)` using `fun h h' => (C 0 _ _ h h').2.1`. Establish `fsm : ∀ (c : ℂ) {α : A.Fld}, A.IsForm α → A.IsForm (c • α)` using `fun c _ h => (C c _ _ h h).2.2.1`.
+
+Establish `fdel : ∀ {α : A.Fld}, A.IsForm α → A.IsForm (A.del α)` using `fun h => (C 0 _ _ h h).2.2.2.1`. Establish `fdbar : ∀ {α : A.Fld}, A.IsForm α → A.IsForm (A.dbar α)` using `fun h => (C 0 _ _ h h).2.2.2.2.1`. Establish `ha : A.IsForm (A.fn g)` using `A.isForm_fn hg`. Establish `h₁` using `fmul ha (fdbar hψ)`. Establish `h₂` using `fmul (fdel ha) hψ`.
+
+Establish `e₁ : A.del (A.fn g * A.dbar ψ) = A.del (A.fn g) * A.dbar ψ + A.fn g * A.del (A.dbar ψ)` using `(L (fun x => algebraMap ℂ (Ev n) (g x.pt)) (A.dbar ψ) ha (fdbar hψ)).1`. Establish `e₂` using `dbar_del_fn_mul A (fdel ha) hψ`. Rewrite `e₂` using `[dbar_del_fn A hg]`. Establish `e : A.fn g * A.ddc ψ = A.ddc (A.fn g) * ψ + (A.del (HermFrame.kappa • (A.fn g * A.dbar ψ)) + A.dbar (HermFrame.kappa • (A.del (A.fn g) * ψ)))`. Rewrite using `[(C _ _ _ h₁ h₁).2.2.2.2.2.2.2.1, (C _ _ _ h₂ h₂).2.2.2.2.2.2.2.2, e₁, e₂, HolAtlas.ddc, HolAtlas.ddc, mul_smul_comm, smul_mul_assoc, ← smul_add, ← smul_add, neg_mul]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `k₁` using `fsm HermFrame.kappa h₁`. Establish `k₂` using `fsm HermFrame.kappa h₂`. Establish `k₀ : A.IsForm (A.ddc (A.fn g) * ψ)` using `fmul (fsm HermFrame.kappa (fdel (fdbar ha))) hψ`.
+
+Rewrite using `[e, add _ _ k₀ (C 0 _ _ (fdel k₁) (fdbar k₂)).1, add _ _ (fdel k₁) (fdbar k₂), (S _ k₁).1, (S _ k₂).2, add_zero, add_zero]`.
+-/
 theorem integral_fn_mul_ddc : ∀ (M : Type) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [CompactSpace M]
     [MeasurableSpace M] [BorelSpace M] (n : ℕ) (A : HolAtlas M n) (g : M → ℝ),
     A.SmoothOn Set.univ (fun y => (g y : ℂ)) → ∀ ψ : A.Fld, A.IsForm ψ →

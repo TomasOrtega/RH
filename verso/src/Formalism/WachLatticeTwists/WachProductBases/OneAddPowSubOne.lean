@@ -37,17 +37,29 @@ def Rad : Prop := S.π ∈ (⊥ : Ideal A).jacobson
 def Decomp : Prop :=
   ∀ g : A, ∃! e : Fin S.ℓ → A, g = ∑ j : Fin S.ℓ, S.ε ^ (j : ℕ) * S.φ (e j)
 
+/- English proof (translation)
+Simplify using `[ε, S.φπ]`.
+-/
 theorem φ_ε : S.φ S.ε = S.ε ^ S.ℓ := by
   simp [ε, S.φπ]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [ε]`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_sub, map_pow, map_one, S.φ_ε, ← pow_mul, pow_succ']`.
+-/
 theorem iter_π (k : ℕ) : (⇑S.φ)^[k] S.π = S.ε ^ (S.ℓ ^ k) - 1 := by
   induction k with
   | zero => simp [ε]
   | succ k ih =>
     rw [Function.iterate_succ_apply', ih, map_sub, map_pow, map_one, S.φ_ε, ← pow_mul, pow_succ']
 
+/- English proof (translation)
+The claim follows from `S.iter_π _`.
+-/
 theorem X_eq : S.X = S.ε ^ (S.ℓ ^ (S.s - 1)) - 1 := S.iter_π _
 
+/- English proof (translation)
+Rewrite using `[add_comm, add_pow, Finset.sum_range_succ', Finset.mul_sum]`. Simplify using `only [one_pow, mul_one, pow_zero, Nat.choose_zero_right, Nat.cast_one, add_sub_cancel_right]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem one_add_pow_sub_one (x : A) (n : ℕ) :
     (1 + x) ^ n - 1 = x * ∑ k ∈ Finset.range n, ((n.choose (k + 1) : ℕ) : A) * x ^ k := by
   rw [add_comm, add_pow, Finset.sum_range_succ', Finset.mul_sum]
@@ -55,12 +67,18 @@ theorem one_add_pow_sub_one (x : A) (n : ℕ) :
   refine Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Establish `h : S.φ S.X = (1 + S.X) ^ S.ℓ - 1`. Rewrite using `[S.X_eq, map_sub, map_pow, map_one, S.φ_ε]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, Q, one_add_pow_sub_one]`.
+-/
 theorem φ_X : S.φ S.X = S.X * S.Q := by
   have h : S.φ S.X = (1 + S.X) ^ S.ℓ - 1 := by
     rw [S.X_eq, map_sub, map_pow, map_one, S.φ_ε]
     ring
   rw [h, Q, one_add_pow_sub_one]
 
+/- English proof (translation)
+Establish `: S.s = (S.s - 1) + 1` using `by have := S.hs; omega`. Rewrite using `[← S.φ_X, X]`. Use `conv_lhs => rw [this]`. Rewrite using `[Function.iterate_succ_apply']`.
+-/
 theorem iterate_phi_s_pi_eq_X_mul_Q : (⇑S.φ)^[S.s] S.π = S.X * S.Q := by
   have : S.s = (S.s - 1) + 1 := by have := S.hs; omega
   rw [← S.φ_X, X]

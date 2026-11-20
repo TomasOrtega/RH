@@ -5,6 +5,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.EtLev GlobalTheory.UPel.HT.ES
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Establish `hr : 𝔞 ^ r ≠ ⊥` using `pow_ne_zero r h𝔞`. Establish `hN0 : Ideal.absNorm (𝔞 ^ r) ≠ 0` using `fun h => hr (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `hNmem : ((Ideal.absNorm (𝔞 ^ r) : ℕ) : 𝓞 D.F) ∈ 𝔞 ^ r` using `Ideal.absNorm_mem _`. Use `haveI hLa : AddGroup.FG D.La := Module.Finite.iff_addGroup_fg.mp D.finLa`. Use `haveI : AddGroup.FG (D.La ⧸ wSub D 𝔞 r) := AddGroup.fg_of_surjective (f := (Submodule.mkQ (wSub D 𝔞 r)).toAddMonoidHom) (Submodule.mkQ_surjective _)`.
+
+Apply `AddCommGroup.finite_of_fg_torsion` to reduce the goal to its premises. Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective (wSub D 𝔞 r) x`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.mpr ⟨Ideal.absNorm (𝔞 ^ r), Nat.pos_of_ne_zero hN0, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨((Ideal.absNorm (𝔞 ^ r) : ℕ) : 𝓞 D.F), hNmem, z, ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast, Nat.cast_smul_eq_nsmul]`.
+-/
 private theorem quot_finite {p : ℕ} [Fact p.Prime] (D : Datum p) (𝔞 : Ideal (𝓞 D.F)) (r : ℕ) (h𝔞 : 𝔞 ≠ ⊥) :
     Finite (D.La ⧸ wSub D 𝔞 r) := by
   have hr : 𝔞 ^ r ≠ ⊥ := pow_ne_zero r h𝔞
@@ -23,6 +30,9 @@ private theorem quot_finite {p : ℕ} [Fact p.Prime] (D : Datum p) (𝔞 : Ideal
   refine ⟨((Ideal.absNorm (𝔞 ^ r) : ℕ) : 𝓞 D.F), hNmem, z, ?_⟩
   rw [map_natCast, Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Introduce `p _ D 𝔞 r h𝔞`. Use `haveI hQ : Finite (D.La ⧸ wSub D 𝔞 r) := quot_finite D 𝔞 r h𝔞`. Use `⟨hQ, ?_⟩` and prove the remaining obligations. Conclude with `Finite.of_injective (fun e : (D.La ⧸ wSub D 𝔞 r) ≃ₗ[D.O] D.La ⧸ wSub D 𝔞 r => (e : D.La ⧸ wSub D 𝔞 r → D.La ⧸ wSub D 𝔞 r)) (fun a b h => LinearEquiv.ext (congrFun h))`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.grpFin_holds :
     GrpFin := by
   intro p _ D 𝔞 r h𝔞

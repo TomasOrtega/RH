@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.Nef
 
+/- English proof (translation)
+Introduce `k _ _ C _ hs hp hc G _ hG W r hW i hi`. Take `⟨C', _, π, hC', hdesc⟩` from `GlobalTheory.T.semiNegative_descends_fieldExtension_curve k C ⟨hs, hp, hc⟩ (AlgebraicClosure k)`. Establish `: IsIntegral C` using `GlobalTheory.LieSemineg.isIntegral_curve hs hc`. Use `hdesc (Lie G) ?_ W r hW i hi` and prove the remaining obligations. Conclude with `GlobalTheory.NeronCurve.LieDescent.semiNeg_of_iso (GlobalTheory.NeronCurve.LieDescent.lieBaseIso π G).symm (GlobalTheory.T.lieSheaf_semiAbelian_semiNeg_of_isAlgClosed (AlgebraicClosure k) C' hC' _ (IsSemiAbelian.pullback π G hG))`.
+-/
 theorem semiAbelianLieSeminegative : GlobalTheory.Published.SemiAbelianLieSeminegative := by
   intro k _ _ C _ hs hp hc G _ hG W r hW i hi
   obtain ⟨C', _, π, hC', hdesc⟩ := GlobalTheory.T.semiNegative_descends_fieldExtension_curve k C ⟨hs, hp, hc⟩ (AlgebraicClosure k)

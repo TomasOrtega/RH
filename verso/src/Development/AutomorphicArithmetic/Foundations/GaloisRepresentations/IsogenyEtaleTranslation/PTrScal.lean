@@ -13,6 +13,11 @@ open UpperTheory.Gal.Int.Geo (KS Lv Sc Integ IsTrans)
 
 namespace UpperTheory.Gal.FixZ
 
+/- English proof (translation)
+Apply `GlobalTheory.KS.PowPB.pow_left_hom_ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.KS.PowPB.powMap_w, Over.w, Category.comp_id]`. Introduce `i`. Rewrite using `[GlobalTheory.KS.PowPB.powMap_pr, h, ← Over.comp_left, ← Over.comp_left]`. Use `congr 1`.
+
+Unfold `KS.pr`. Simplify using the standard rewrite rules.
+-/
 private theorem powMap_scal {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (d k : ℕ) (Φ : A.left ⟶ A.left)
     (hw : Φ ≫ A.hom = A.hom ≫ 𝟙 S) (h : Φ = ((𝟙 A) ^ d).left) :
     GlobalTheory.KS.powMap (𝟙 S) Φ hw k = (Limits.Pi.map (fun _ : Fin k => (𝟙 A) ^ d)).left := by
@@ -26,6 +31,17 @@ private theorem powMap_scal {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonO
 
 end UpperTheory.Gal.FixZ
 
+/- English proof (translation)
+Introduce `hWU hIso hWS hPow p _ D G L gb k T N d z hd hdp hsc a b`. Take `⟨π, o, ψ, φ, hw, hπ, htr, heq⟩` from `T.tr_eq N N z a b`. Establish `hI : Integ L z` using `(T.Δ_eq z).1 a`. Establish `hA : UpperTheory.Gal.G3.AdmK L N.1 N.1 z`. Introduce `u hu`.
+
+Establish `hb` using `b u (by rw [T.K_eq]; exact hu)`. Rewrite `hb` using `[T.K_eq]`. Then use the resulting hypothesis. Take `⟨rfl, hΦ⟩` from `hWU p D G L ℂ gb N N (T.M N) (T.M N) z hI hA π (Over.Hom.left ψ ≫ φ.φ) (𝟙 _) (Over.Hom.left (𝟙 (T.M N).univ.A ^ d)) ⟨hπ, o, ψ, φ, htr, rfl⟩ (hWS p D G L gb N (T.M N) d z hd hdp hsc)`. Establish `hpm` using `GlobalTheory.DrinLev.HT.MulModel.isMonHom_id_pow (T.M N).univ.A d`. Establish `hS` using `powMap_scal (T.M N).univ.A d k _ hw hΦ`.
+
+Rewrite `heq` using `[hS]`. Establish `hfe : IsFinite (Over.Hom.left (𝟙 (T.M N).univ.A ^ d)) ∧ Etale (Over.Hom.left (𝟙 (T.M N).univ.A ^ d)) ∧ Surjective (Over.Hom.left (𝟙 (T.M N).univ.A ^ d))`. Use `hIso ℂ _ (T.M N).s _ _ (T.M N).univ.ab (T.M N).univ.ab (𝟙 _ ^ d) (𝟙 _ ^ d) (d * d) (Nat.mul_pos hd hd) hpm hpm ?_ ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_pow, Category.comp_id, ← pow_mul]`. Rewrite using `[MonObj.comp_pow, Category.comp_id, ← pow_mul]`.
+
+Take `⟨hf1, hf2, -⟩` from `hPow _ (T.M N).univ.A k (fun _ => 𝟙 _ ^ d) (fun _ => hfe) (Limits.Pi.map (fun _ : Fin k => 𝟙 (T.M N).univ.A ^ d)) (fun i => by unfold KS.pr; simp)`. Establish `htr' : T.X.tr (T.lev N) (T.lev N) z a b = (T.e N).hom ≫ Over.Hom.left (Limits.Pi.map (fun _ : Fin k => 𝟙 (T.M N).univ.A ^ d)) ≫ (T.e N).inv`. Rewrite using `[← Category.assoc, ← heq, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[htr']`. Prove the components needed by the constructor for the conclusion.
+
+Use `infer_instance`. Use `infer_instance`.
+-/
 theorem UpperTheory.Gal.FixZ.trScal_of :
     UpperTheory.Gal.G3.WitUniq → UpperTheory.Gal.G3.IsogFEt → UpperTheory.Gal.FixZ.WitScal → UpperTheory.Gal.FixZ.PowFEt → UpperTheory.Gal.FixZ.TrScal := by
   intro hWU hIso hWS hPow p _ D G L gb k T N d z hd hdp hsc a b

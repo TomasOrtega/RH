@@ -6,6 +6,17 @@ open scoped TensorProduct Quaternion
 
 namespace GlobalTheory.CompanionTheory.PlaneSA
 
+/- English proof (translation)
+Take `⟨γ, hγ, h, hh, rfl⟩` from `hx`. Take `⟨γ', hγ', h', hh', rfl⟩` from `hy`. Establish `hq : qn (rat γ' : Q d β (AF F)) = 1`. Use `qn_qmap (Algebra.ofId F (AF F)) γ'` as an intermediate fact. Rewrite `this` using `[hγ', map_one]`.
+
+Conclude with `this`. Establish `hs : star (rat γ' : Q d β (AF F)) * rat γ' = 1`. Rewrite using `[star_mul_eq, hq, map_one]`. Establish `hs' : (rat γ' : Q d β (AF F)) * star (rat γ') = 1`. Rewrite using `[mul_star_eq, hq, map_one]`.
+
+Use `⟨γ * γ', ?_, star (rat γ') * h * rat γ' * h', ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[show qn (γ * γ') = qn γ * qn γ' from qn_mul γ γ', hγ, hγ', one_mul]`. Rewrite using `[qn_mul, qn_mul, qn_mul, qn_star, hq, hh.1, hh'.1]`. Simplify using the standard rewrite rules. Introduce `u hu`.
+
+Establish `e1` using `hh.2 u hu`. Establish `e2` using `hh'.2 u hu`. Rewrite using `[map_mul, map_mul, map_mul, e1, e2, mul_one, mul_one, ← map_mul, hs, map_one]`. Rewrite using `[map_mul]`. Establish `: (rat γ : Q d β (AF F)) * rat γ' * (star (rat γ') * h * rat γ' * h') = rat γ * (rat γ' * star (rat γ')) * h * rat γ' * h'`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[this, hs', mul_one]`. Simplify using `only [mul_assoc]`.
+-/
 theorem SAQ_mul_mem {F : Type} [Field F] [NumberField F] {d β : F} {s : Pl F}
     {x y : Q d β (AF F)} (hx : x ∈ SAQ d β s) (hy : y ∈ SAQ d β s) : x * y ∈ SAQ d β s := by
   obtain ⟨γ, hγ, h, hh, rfl⟩ := hx
@@ -33,6 +44,9 @@ theorem SAQ_mul_mem {F : Type} [Field F] [NumberField F] {d β : F} {s : Pl F}
     rw [this, hs', mul_one]
     simp only [mul_assoc]
 
+/- English proof (translation)
+Introduce `F _ _ d β s x hx y hy`. Conclude with `map_mem_closure₂ continuous_mul hx hy fun a ha b hb => SAQ_mul_mem ha hb`.
+-/
 theorem closure_SAQ_mul : ∀ {F : Type} [Field F] [NumberField F] (d β : F) (s : Pl F),
     ∀ x ∈ closure (SAQ d β s), ∀ y ∈ closure (SAQ d β s), x * y ∈ closure (SAQ d β s) := by
   intro F _ _ d β s x hx y hy

@@ -7,6 +7,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirReductionTheory.OnePar
 
 namespace GlobalTheory.DecInputs
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.DecTransport.decLow_holds, Formalism.L2.SG.BesselDiscreteSeries.decInf, Formalism.L2.SG.LitS.kFinSmooth_pi Formalism.L2.SG.Pf.admitted.kFinSmooth'⟩`.
+-/
 theorem decLow_and_decInf_and_kFinSmooth :
     Formalism.FourierDecayAlt.ThreeDimData.DecLow ∧ Formalism.FourierDecayAlt.ThreeDimData.DecInf ∧ PI.KFinSmooth :=
   ⟨GlobalTheory.DecTransport.decLow_holds, Formalism.L2.SG.BesselDiscreteSeries.decInf,

@@ -10,6 +10,11 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Unfold `cycEval`. Establish `f₁ : (Function.support fun W => Z₁ W * φ W).Finite` using `h₁.subset fun W hW h0 => hW (by simp [h0])`. Establish `f₂ : (Function.support fun W => Z₂ W * φ W).Finite` using `h₂.subset fun W hW h0 => hW (by simp [h0])`. Rewrite using `[← finsum_add_distrib f₁ f₂]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cycEval_add_of_finite {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
     (φ : Ideal (MRing ι R) → ℤ) {Z₁ Z₂ : Ideal (MRing ι R) → ℤ}
     (h₁ : (Function.support Z₁).Finite) (h₂ : (Function.support Z₂).Finite) :
@@ -24,6 +29,9 @@ private theorem cycEval_add_of_finite {K : Type*} {ι : K → Type*} {R : Type*}
   simp only [Pi.add_apply]
   ring
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ _ K _ _ ι _ P d hP b f g s₁ s₂ hs₁ hs₂ L`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Unfold `cutIdentityRightSide`. Rewrite using `[h₁ O K ι P s₁ s₂ hPp hs₁ hs₂]`. Conclude with `cycEval_add_of_finite _ (h₂ O K ι P s₁) (h₂ O K ι P s₂)`.
+-/
 theorem RightSideMultiplicativeInForm.proof (h₁ : DivCycleMul.Statement.{u})
     (h₂ : DivCycleFiniteSupport.Statement.{u}) : RightSideMultiplicativeInForm.Statement.{u} := by
   intro O _ _ _ ϖ _ K _ _ ι _ P d hP b f g s₁ s₂ hs₁ hs₂ L

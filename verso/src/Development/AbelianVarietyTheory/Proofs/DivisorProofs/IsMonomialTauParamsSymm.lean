@@ -22,6 +22,11 @@ end GlobalTheory.MumFam
 
 namespace GlobalTheory.MumFam
 
+/- English proof (translation)
+Establish `h1 : ∀ (P M : σ →₀ ℕ) (x x' : MvPowerSeries σ W), IsUnit x' → MvPowerSeries.monomial P (1 : W) * x = MvPowerSeries.monomial M 1 * x' → P ≤ M`. Introduce `P M x x' hx' he`. Establish `hc` using `congrArg (MvPowerSeries.coeff M) he`. Rewrite `hc` using `[MvPowerSeries.coeff_monomial_mul, MvPowerSeries.coeff_monomial_mul, if_pos le_rfl, tsub_self, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Assume the negation of the conclusion as `hPM`.
+
+Rewrite `hc` using `[if_neg hPM, _root_.one_mul]`. Conclude with `(hx'.map (MvPowerSeries.constantCoeff (σ := σ) (R := W))).ne_zero hc.symm`. Conclude with `le_antisymm (h1 _ _ _ _ hx' he) (h1 _ _ _ _ hx he.symm)`.
+-/
 theorem monomial_eq_of_mul_unit {W : Type} [CommRing W] [Nontrivial W] {σ : Type} {P M : σ →₀ ℕ}
     {x x' : MvPowerSeries σ W} (hx : IsUnit x) (hx' : IsUnit x')
     (he : MvPowerSeries.monomial P (1 : W) * x = MvPowerSeries.monomial M 1 * x') : P = M := by

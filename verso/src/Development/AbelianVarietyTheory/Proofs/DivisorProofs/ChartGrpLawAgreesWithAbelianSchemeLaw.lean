@@ -10,11 +10,19 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc.ChartLaw
 
+/- English proof (translation)
+Introduce `h`. Establish `: algebraMap R (Localization.Away g) g ∈ w.asIdeal` using `h`. Conclude with `w.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ this (IsLocalization.Away.algebraMap_isUnit g))`.
+-/
 theorem awayMap_notMem {R : Type} [CommRing R] (g : R) (w : Sp (Localization.Away g)) : g ∉ (awayMap g w).asIdeal := by
   intro h
   have : algebraMap R (Localization.Away g) g ∈ w.asIdeal := h
   exact w.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ this (IsLocalization.Away.algebraMap_isUnit g))
 
+/- English proof (translation)
+Establish `ht : k ≫ t = t'`. Establish `e1 : a.left ≫ H.hom = t` using `Over.w a`. Establish `e2 : a₁.left ≫ H.hom = t'` using `Over.w a₁`. Rewrite using `[← e1, ← e2, ha]`. Conclude with `(Category.assoc _ _ _).symm`.
+
+Set `κ : Over.mk t' ⟶ Over.mk t` to `Over.homMk k ht`. Establish `e1 : a₁ = κ ≫ a` using `Over.OverMorphism.ext ha`. Establish `e2 : b₁ = κ ≫ b` using `Over.OverMorphism.ext hb`. Rewrite using `[e1, e2, ← MonObj.comp_mul]`. Both sides reduce to the same expression.
+-/
 theorem mul_left_comp {S T T' : Scheme.{0}} {H : Over S} [GrpObj H] {t : T ⟶ S} {t' : T' ⟶ S} (k : T' ⟶ T)
     (a b : Over.mk t ⟶ H) (a₁ b₁ : Over.mk t' ⟶ H) (ha : a₁.left = k ≫ a.left) (hb : b₁.left = k ≫ b.left) :
     (a₁ * b₁).left = k ≫ (a * b).left := by
@@ -28,6 +36,11 @@ theorem mul_left_comp {S T T' : Scheme.{0}} {H : Over S} [GrpObj H] {t : T ⟶ S
   rw [e1, e2, ← MonObj.comp_mul]
   rfl
 
+/- English proof (translation)
+Use `⟨IsOpenImmersion.lift (σ.V x).ι c ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use `(σ.hV x _).2 ?_` and prove the remaining obligations. Establish `h1` using `awayMap_notMem σ.f (d τ)`.
+
+Rewrite `h1` using `[← Scheme.Hom.comp_apply, ← e]`. Conclude with `h1`.
+-/
 theorem lift_open (σ : Setup) (x : Sp σ.R) {T : Scheme.{0}} (c : T ⟶ (σ.C x).G.left) (d : T ⟶ Sp (Localization.Away σ.f))
     (e : c ≫ (σ.C x).G.hom ≫ spMap (σ.ρ x) = d ≫ awayMap σ.f) : ∃ l : T ⟶ (σ.V x).toScheme, l ≫ (σ.V x).ι = c := by
   refine ⟨IsOpenImmersion.lift (σ.V x).ι c ?_, IsOpenImmersion.lift_fac _ _ _⟩
@@ -38,6 +51,17 @@ theorem lift_open (σ : Setup) (x : Sp σ.R) {T : Scheme.{0}} (c : T ⟶ (σ.C x
   rw [← Scheme.Hom.comp_apply, ← e] at h1
   exact h1
 
+/- English proof (translation)
+Establish `: IsOpenImmersion E.ιA` using `MorphismProperty.of_isPullback E.cartA.flip inferInstance`. Take `⟨l, hl⟩` from `lift_open σ x (pullback.fst (σ.C x).G.hom (jK (σ.C x).R)) (pullback.snd _ _ ≫ (σ.C x).y) (by`. Rewrite using `[pullback.condition_assoc, Category.assoc, (σ.C x).hy, σ.hρ])`. Establish `hα : (σ.C x).α ≫ E.ιA = pullback.fst (σ.C x).G.hom (jK (σ.C x).R) ≫ E.emb x`. Use `σ.compat x _ (𝟙 _) l (by rw [Category.id_comp, hl])` as an intermediate fact.
+
+Rewrite `this` using `[Category.id_comp]`. Rewrite using `[this, Category.assoc, E.onV, ← Category.assoc, hl]`. Set `P : (Over.mk (s ≫ jK (σ.C x).R) ⟶ (σ.C x).G) → (Over.mk s ⟶ (Over.pullback (jK (σ.C x).R)).obj (σ.C x).G)` to `fun c => Over.homMk (pullback.lift c.left s (Over.w c)) (pullback.lift_snd _ _ _)`. Establish `hP : ∀ c, c.left = (P c).left ≫ pullback.fst (σ.C x).G.hom (jK (σ.C x).R)` using `fun c => (pullback.lift_fst _ _ _).symm`. Establish `hA : ∀ c (c' : Over.mk t₂ ⟶ σ.A), c.left ≫ E.emb x = c'.left ≫ E.ιA → c'.left = (P c).left ≫ (σ.C x).α`.
+
+Introduce `c c' h`. Rewrite using `[← cancel_mono E.ιA, ← h, hP c]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((P c).left ≫ ·) hα.symm).trans (Category.assoc _ _ _).symm)`. Establish `ht : t₂ = s ≫ (σ.C x).y`. Establish `e1 : a'.left ≫ σ.A.hom = t₂` using `Over.w a'`.
+
+Establish `e2 : (P a).left ≫ ((Over.pullback (jK (σ.C x).R)).obj (σ.C x).G).hom = s` using `Over.w (P a)`. Establish `e3` using `(σ.C x).gen.1.w`. Rewrite using `[← e1, hA a a' ha]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((P a).left ≫ ·) e3).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ (σ.C x).y) e2)))`. Substitute `ht` using the available equality.
+
+Establish `m1` using `(σ.C x).gen.2 (Over.mk s) (P a) (P b) a' b' (hA a a' ha) (hA b b' hb)`. Establish `m2` using `(isGrpPullback_pullback (σ.C x).G (jK (σ.C x).R)).2 (Over.mk s) (P a) (P b) a b (hP a) (hP b)`. Conclude with `(congrArg (· ≫ E.emb x) m2).trans ((Category.assoc _ _ _).trans ((congrArg ((P a * P b).left ≫ ·) hα.symm).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ E.ιA) m1.symm))))`.
+-/
 theorem chart_mul_generic (σ : Setup) (E : Emb σ) (x : Sp σ.R) {T : Scheme.{0}} (s : T ⟶ Sp (FractionRing (σ.C x).R))
     (t₂ : T ⟶ Sp (Localization.Away σ.f)) (a b : Over.mk (s ≫ jK (σ.C x).R) ⟶ (σ.C x).G) (a' b' : Over.mk t₂ ⟶ σ.A)
     (ha : a.left ≫ E.emb x = a'.left ≫ E.ιA) (hb : b.left ≫ E.emb x = b'.left ≫ E.ιA) :
@@ -69,6 +93,15 @@ theorem chart_mul_generic (σ : Setup) (E : Emb σ) (x : Sp σ.R) {T : Scheme.{0
   exact (congrArg (· ≫ E.emb x) m2).trans ((Category.assoc _ _ _).trans ((congrArg ((P a * P b).left ≫ ·) hα.symm).trans
     ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ E.ιA) m1.symm))))
 
+/- English proof (translation)
+Use `E.sep` as an intermediate fact. Take `⟨w, -⟩` from `E.openIn x`. Establish `p1 : ∀ c : Over.mk t₁ ⟶ (σ.C x).G, (c.left ≫ E.emb x) ≫ E.p = t₁ ≫ spMap (σ.ρ x)` using `fun c => by`. Establish `e : c.left ≫ (σ.C x).G.hom = t₁` using `Over.w c`. Rewrite using `[Category.assoc, w, ← Category.assoc, e]`.
+
+Establish `p2 : ∀ c : Over.mk t₂ ⟶ σ.A, (c.left ≫ E.ιA) ≫ E.p = t₂ ≫ awayMap σ.f` using `fun c => by`. Establish `e : c.left ≫ σ.A.hom = t₂` using `Over.w c`. Rewrite using `[Category.assoc, E.cartA.w, ← Category.assoc, e]`. Establish `: IsSchemeTheoreticallyDominant (jK (σ.C x).R)` using `schDom_spec_map _ (IsFractionRing.injective (σ.C x).R (FractionRing (σ.C x).R))`. Establish `: IsSchemeTheoreticallyDominant (pullback.fst t₁ (jK (σ.C x).R))` using `IsSchemeTheoreticallyDominant.of_isPullback (IsPullback.of_hasPullback t₁ (jK (σ.C x).R)).flip`.
+
+Use `ext_of_schDom E.p (by rw [p1, p2, ← p1 a, ← p2 a', ha]) (pullback.fst t₁ (jK (σ.C x).R)) ?_` and prove the remaining obligations. Set `k` to `pullback.fst t₁ (jK (σ.C x).R)`. Set `Q : (Over.mk t₁ ⟶ (σ.C x).G) → (Over.mk (pullback.snd t₁ (jK (σ.C x).R) ≫ jK (σ.C x).R) ⟶ (σ.C x).G)` to `fun c => Over.homMk (k ≫ c.left) ((Category.assoc _ _ _).trans ((congrArg (k ≫ ·) (Over.w c)).trans pullback.condition))`. Set `Q' : (Over.mk t₂ ⟶ σ.A) → (Over.mk (k ≫ t₂) ⟶ σ.A)` to `fun c => Over.homMk (k ≫ c.left) ((Category.assoc _ _ _).trans (congrArg (k ≫ ·) (Over.w c)))`. Establish `h` using `chart_mul_generic σ E x _ _ (Q a) (Q b) (Q' a') (Q' b') ((Category.assoc _ _ _).trans ((congrArg (k ≫ ·) ha).trans (Category.assoc _ _ _).symm)) ((Category.assoc _ _ _).trans ((congrArg (k ≫ ·) hb).trans (Category.assoc _ _ _).symm))`.
+
+Rewrite `h` using `[mul_left_comp k a b (Q a) (Q b) rfl rfl, mul_left_comp k a' b' (Q' a') (Q' b') rfl rfl]`. Conclude with `(Category.assoc _ _ _).symm.trans (h.trans (Category.assoc _ _ _))`.
+-/
 theorem chart_mul_flat (σ : Setup) (E : Emb σ) (x : Sp σ.R) {T : Scheme.{0}} (t₁ : T ⟶ Sp (σ.C x).R) [Flat t₁]
     (t₂ : T ⟶ Sp (Localization.Away σ.f)) (a b : Over.mk t₁ ⟶ (σ.C x).G) (a' b' : Over.mk t₂ ⟶ σ.A)
     (ha : a.left ≫ E.emb x = a'.left ≫ E.ιA) (hb : b.left ≫ E.emb x = b'.left ≫ E.ιA) :
@@ -97,6 +130,21 @@ theorem chart_mul_flat (σ : Setup) (E : Emb σ) (x : Sp σ.R) {T : Scheme.{0}} 
   rw [mul_left_comp k a b (Q a) (Q b) rfl rfl, mul_left_comp k a' b' (Q' a') (Q' b') rfl rfl] at h
   exact (Category.assoc _ _ _).symm.trans (h.trans (Category.assoc _ _ _))
 
+/- English proof (translation)
+Introduce `σ E x T t₁ t₂ a b a' b' ha hb`. Establish `: IsOpenImmersion E.ιA` using `MorphismProperty.of_isPullback E.cartA.flip inferInstance`. Use `(σ.C x).semi.smooth` as an intermediate fact. Take `⟨w, -⟩` from `E.openIn x`. Establish `hl : ∀ (c : Over.mk t₁ ⟶ (σ.C x).G) (c' : Over.mk t₂ ⟶ σ.A), c.left ≫ E.emb x = c'.left ≫ E.ιA → ∃ l : T ⟶ (σ.V x).toScheme, l ≫ (σ.V x).ι = c.left ∧ l ≫ σ.φ x = c'.left`.
+
+Introduce `c c' h`. Take `⟨l, hl⟩` from `lift_open σ x c.left (c'.left ≫ σ.A.hom) (by`. Rewrite using `[← w, ← Category.assoc, h, Category.assoc, E.cartA.w, Category.assoc])`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono E.ιA, Category.assoc, E.onV, ← Category.assoc, hl]`.
+
+Conclude with `h`. Take `⟨la, ha1, ha2⟩` from `hl a a' ha`. Take `⟨lb, hb1, hb2⟩` from `hl b b' hb`. Set `q : (σ.V x).toScheme ⟶ Sp (σ.C x).R` to `(σ.V x).ι ≫ (σ.C x).G.hom`. Establish `hq : la ≫ q = lb ≫ q`.
+
+Establish `e1 : a.left ≫ (σ.C x).G.hom = t₁` using `Over.w a`. Establish `e2 : b.left ≫ (σ.C x).G.hom = t₁` using `Over.w b`. Simplify using `only [q, ← Category.assoc, ha1, hb1]`. Conclude with `e1.trans e2.symm`. Establish `hu : pullback.snd q q ≫ σ.φ x ≫ σ.A.hom = pullback.fst q q ≫ σ.φ x ≫ σ.A.hom`.
+
+Rewrite using `[← cancel_mono (awayMap σ.f)]`. Simplify using `only [Category.assoc]`. Rewrite using `[(σ.cart x).w]`. Conclude with `(pullback.condition_assoc (f := q) (g := q) _).symm`. Set `a₀ : Over.mk (pullback.fst q q ≫ q) ⟶ (σ.C x).G` to `Over.homMk (pullback.fst q q ≫ (σ.V x).ι) (Category.assoc _ _ _)`.
+
+Set `b₀ : Over.mk (pullback.fst q q ≫ q) ⟶ (σ.C x).G` to `Over.homMk (pullback.snd q q ≫ (σ.V x).ι) ((Category.assoc _ _ _).trans pullback.condition.symm)`. Set `a₁ : Over.mk (pullback.fst q q ≫ σ.φ x ≫ σ.A.hom) ⟶ σ.A` to `Over.homMk (pullback.fst q q ≫ σ.φ x) (Category.assoc _ _ _)`. Set `b₁ : Over.mk (pullback.fst q q ≫ σ.φ x ≫ σ.A.hom) ⟶ σ.A` to `Over.homMk (pullback.snd q q ≫ σ.φ x) ((Category.assoc _ _ _).trans hu)`. Establish `h` using `chart_mul_flat σ E x (pullback.fst q q ≫ q) _ a₀ b₀ a₁ b₁ ((Category.assoc _ _ _).trans ((congrArg (pullback.fst q q ≫ ·) (E.onV x).symm).trans (Category.assoc _ _ _).symm)) ((Category.assoc _ _ _).trans ((congrArg (pullback.snd q q ≫ ·) (E.onV x).symm).trans (Category.assoc _ _ …`. Set `k` to `pullback.lift la lb hq`.
+
+Establish `k1 : k ≫ pullback.fst q q = la` using `pullback.lift_fst _ _ _`. Establish `k2 : k ≫ pullback.snd q q = lb` using `pullback.lift_snd _ _ _`. Rewrite using `[mul_left_comp k a₀ b₀ a b (ha1.symm.trans (by rw [← k1]; exact Category.assoc _ _ _)) (hb1.symm.trans (by rw [← k2]; exact Category.assoc _ _ _)), mul_left_comp k a₁ b₁ a' b' (ha2.symm.trans (by rw [← k1]; exact Category.assoc _ _ _)) (hb2.symm.trans (by rw [← k2]; exact Categor …`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (k ≫ ·) h).trans (Category.assoc _ _ _).symm)`.
+-/
 theorem chart_mulAgree : ∀ (σ : Setup) (E : Emb σ) (x : Sp σ.R), MulAgree (σ.C x).G σ.A (E.emb x) E.ιA := by
   intro σ E x T t₁ t₂ a b a' b' ha hb
   have : IsOpenImmersion E.ιA := MorphismProperty.of_isPullback E.cartA.flip inferInstance

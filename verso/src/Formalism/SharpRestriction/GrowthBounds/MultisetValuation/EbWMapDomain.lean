@@ -19,6 +19,9 @@ def eb_w (F : MvPowerSeries σ K) (n : σ →₀ ℕ) : K :=
 def eb_J (F : MvPowerSeries σ K) (Q : MvPolynomial σ (MvPolynomial τ K)) : MvPolynomial τ K :=
   ∑ n ∈ Q.support, eb_w F n • MvPolynomial.coeff n Q
 
+/- English proof (translation)
+Unfold `eb_J`. Apply `Finset.sum_subset h` to reduce the goal to its premises. Introduce `n _ hn`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hn, smul_zero]`.
+-/
 theorem eb_J_subset (F : MvPowerSeries σ K) (Q : MvPolynomial σ (MvPolynomial τ K)) (S : Finset (σ →₀ ℕ))
     (h : Q.support ⊆ S) : eb_J F Q = ∑ n ∈ S, eb_w F n • MvPolynomial.coeff n Q := by
   unfold eb_J
@@ -26,6 +29,9 @@ theorem eb_J_subset (F : MvPowerSeries σ K) (Q : MvPolynomial σ (MvPolynomial 
   intro n _ hn
   rw [MvPolynomial.notMem_support_iff.1 hn, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[eb_J_subset F _ P.support (MvPolynomial.support_map_subset _ _)]`. Unfold `applyD eb_w`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`. Rewrite using `[MvPolynomial.coeff_map]`.
+-/
 theorem eb_applyD (P : MvPolynomial σ (MvPolynomial τ ℤ)) (F : MvPowerSeries σ K) :
     applyD P F = eb_J F (MvPolynomial.map (MvPolynomial.map (Int.castRingHom K)) P) := by
   rw [eb_J_subset F _ P.support (MvPolynomial.support_map_subset _ _)]
@@ -34,6 +40,11 @@ theorem eb_applyD (P : MvPolynomial σ (MvPolynomial τ ℤ)) (F : MvPowerSeries
   intro n _
   rw [MvPolynomial.coeff_map]
 
+/- English proof (translation)
+Rewrite using `[eb_J_subset F (MvPolynomial.C r * Q) Q.support (by`. Rewrite using `[MvPolynomial.C_mul']`. Conclude with `MvPolynomial.support_smul)]`. Unfold `eb_J`. Rewrite using `[Finset.mul_sum]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`. Rewrite using `[MvPolynomial.coeff_C_mul, mul_smul_comm]`.
+-/
 theorem eb_J_C_mul (F : MvPowerSeries σ K) (r : MvPolynomial τ K) (Q : MvPolynomial σ (MvPolynomial τ K)) :
     eb_J F (MvPolynomial.C r * Q) = r * eb_J F Q := by
   rw [eb_J_subset F (MvPolynomial.C r * Q) Q.support (by
@@ -45,6 +56,11 @@ theorem eb_J_C_mul (F : MvPowerSeries σ K) (r : MvPolynomial τ K) (Q : MvPolyn
   intro n _
   rw [MvPolynomial.coeff_C_mul, mul_smul_comm]
 
+/- English proof (translation)
+Unfold `eb_w`. Rewrite using `[Finsupp.mapDomain_support_of_injective hε, Finset.prod_image (fun a _ b _ h => hε h)]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `y _`.
+
+Rewrite using `[Finsupp.mapDomain_apply hε]`.
+-/
 theorem eb_w_mapDomain (ε : κ → σ) (hε : Function.Injective ε) (F : MvPowerSeries σ K) (n : κ →₀ ℕ) :
     eb_w F (n.mapDomain ε) = eb_w (resV ε F) n := by
   classical
@@ -55,6 +71,9 @@ theorem eb_w_mapDomain (ε : κ → σ) (hε : Function.Injective ε) (F : MvPow
   intro y _
   rw [Finsupp.mapDomain_apply hε]
 
+/- English proof (translation)
+Unfold `eb_J`. Rewrite using `[MvPolynomial.support_rename_of_injective hε, Finset.sum_image (fun a _ b _ h => Finsupp.mapDomain_injective hε h)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`. Rewrite using `[MvPolynomial.coeff_rename_mapDomain ε hε, eb_w_mapDomain ε hε]`.
+-/
 theorem eb_J_rename (ε : κ → σ) (hε : Function.Injective ε) (F : MvPowerSeries σ K)
     (Q : MvPolynomial κ (MvPolynomial τ K)) : eb_J F (MvPolynomial.rename ε Q) = eb_J (resV ε F) Q := by
   classical
@@ -65,6 +84,11 @@ theorem eb_J_rename (ε : κ → σ) (hε : Function.Injective ε) (F : MvPowerS
   intro n _
   rw [MvPolynomial.coeff_rename_mapDomain ε hε, eb_w_mapDomain ε hε]
 
+/- English proof (translation)
+Rewrite using `[eb_J_subset G _ Pc.support (MvPolynomial.support_map_subset _ _)]`. Unfold `Formalism.DworkPowerSeriesWeights.jetPairPoly`. Rewrite using `[map_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`.
+
+Rewrite using `[MvPolynomial.coeff_map, map_mul, MvPolynomial.rename_C, MvPolynomial.smul_eq_C_mul, mul_comm]`. Use `congr 2`. Unfold `eb_w Formalism.DworkPowerSeriesWeights.mfact Finsupp.prod`. Rewrite using `[Nat.cast_prod]`.
+-/
 theorem eb_J_map (φ : τ' → τ) (G : MvPowerSeries κ K) (Pc : MvPolynomial κ (MvPolynomial τ' K)) :
     eb_J G (MvPolynomial.map (MvPolynomial.rename φ : MvPolynomial τ' K →ₐ[K] MvPolynomial τ K).toRingHom Pc) =
       MvPolynomial.rename φ (Formalism.DworkPowerSeriesWeights.jetPairPoly Pc G) := by
@@ -85,18 +109,29 @@ variable {p : ℕ} [hp : Fact p.Prime] (X : Sys p)
 def eb_phi (v : X.Pl) (j : ℕ) : ea_S X v × Fin (NN X.G.P.m X.t j) × Fin (NN X.G.P.m X.t j) → X.FrI j :=
   fun y => ⟨v, ((ea_e X v).symm y.1, y.2.1.val, y.2.2)⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩ h`. Simplify using `only [eb_phi, Sigma.mk.injEq, heq_eq_eq, true_and, Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq] at h`. Take `⟨h1, h2, h3⟩` from `h`. Rewrite using `[h1, Fin.ext h2, h3]`.
+-/
 theorem eb_phi_inj (v : X.Pl) (j : ℕ) : Function.Injective (eb_phi X v j) := by
   rintro ⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩ h
   simp only [eb_phi, Sigma.mk.injEq, heq_eq_eq, true_and, Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq] at h
   obtain ⟨h1, h2, h3⟩ := h
   rw [h1, Fin.ext h2, h3]
 
+/- English proof (translation)
+Introduce and unpack `⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩ h`. Simplify using `only [ea_eps, Sigma.mk.injEq, heq_eq_eq, true_and, Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq] at h`. Take `⟨h1, h2, h3⟩` from `h`. Rewrite using `[h1, h2, h3]`.
+-/
 theorem eb_eps_inj (v : X.Pl) (j : ℕ) : Function.Injective (ea_eps X v j) := by
   rintro ⟨a1, a2, a3⟩ ⟨b1, b2, b3⟩ h
   simp only [ea_eps, Sigma.mk.injEq, heq_eq_eq, true_and, Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq] at h
   obtain ⟨h1, h2, h3⟩ := h
   rw [h1, h2, h3]
 
+/- English proof (translation)
+Unfold `Sys.colFac`. Rewrite using `[RingHom.map_det, AlgHom.map_det, RingHom.map_det]`. Use `congrArg Matrix.det (Matrix.ext fun r r' => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = MvPolynomial.map (MvPolynomial.map (Int.castRingHom K')) (∑ a : Fin (NN X.G.P.m X.t j), MvPolynomial.C (MvPolynomial.X (⟨v, ((ea_e X v).symm s, r.val, a)⟩ : X.FrI j)) * MvPolynomial.X (⟨v, ((ea_e X v).symm s, a, I v ((ea_e X v).symm s) c.val r'.val)⟩ : X.ZA j))`. Simplify using `only [RingHom.mapMatrix_apply, AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, MvPolynomial.rename_C, MvPolynomial.rename_X, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`.
+
+Both sides reduce to the same expression.
+-/
 theorem eb_fac (v : X.Pl) (j : ℕ) (K' : Type) [Field K'] (I : X.ColCh j) (s : ea_S X v) (c : Fin (ea_colN X v j s)) :
     MvPolynomial.rename (ea_eps X v j) (MvPolynomial.map
       (MvPolynomial.rename (eb_phi X v j) : MvPolynomial _ K' →ₐ[K'] MvPolynomial _ K').toRingHom

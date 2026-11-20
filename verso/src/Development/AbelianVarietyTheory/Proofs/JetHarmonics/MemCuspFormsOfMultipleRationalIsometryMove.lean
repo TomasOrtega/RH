@@ -20,6 +20,11 @@ open scoped Matrix
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `hg' : ∀ s, g s = c * g' s` using `hg`. Establish `key` using `GlobalTheory.mean_fundamentalDomain_eq_of_periodic Ψ L L' D D' g hD hD' hf hf' hc hb (fun p hp s => by rw [add_comm, hL p hp]) (fun p hp s => by rw [hg', hg', add_comm, hL' p hp])`. Establish `e : ∫ s in D', g s = 0`. Simplify using `only [hg']`.
+
+Rewrite using `[integral_const_mul, h0, mul_zero]`. Rewrite `key` using `[e, mul_zero]`. Use `(mul_eq_zero.1 key.symm).resolve_left ?_` and prove the remaining obligations. Conclude with `(ENNReal.toReal_pos hp'.ne' hf'.ne).ne'` after adjusting the coercions.
+-/
 theorem integral_eq_zero_cast {α : Type} {Ψ Ψ' : Finset α} (h : Ψ = Ψ') {L : AddSubgroup (Ψ → ℝ)}
     {L' : AddSubgroup (Ψ' → ℝ)} [Countable L] [Countable L'] {D : Set (Ψ → ℝ)} {D' : Set (Ψ' → ℝ)}
     {g : (Ψ → ℝ) → ℂ} {g' : (Ψ' → ℝ) → ℂ} {c : ℂ}
@@ -41,6 +46,9 @@ theorem integral_eq_zero_cast {α : Type} {Ψ Ψ' : Finset α} (h : Ψ = Ψ') {L
 
 variable {X X' : Data E r} {a : GL (Fin r) E}
 
+/- English proof (translation)
+Unfold `Data.nfac`. Simplify using `only [h.dmin_eq]`. Conclude with `(GlobalTheory.Dict.Pull.cast_wt h.psi rfl hl (castFr h.psi x)).symm`.
+-/
 theorem nfac_eq (h : IsMatch X X' a) {la : Wt X.Ψ r} {la' : Wt X'.Ψ r}
     (hl : ∀ (τ : X'.Ψ) i, la' τ i = la ⟨τ.1, h.mem τ⟩ i) (x : Frame X.Ψ r) :
     X'.nfac la' (lact a (castFr h.psi x)) = X.nfac la x := by
@@ -48,11 +56,19 @@ theorem nfac_eq (h : IsMatch X X' a) {la : Wt X.Ψ r} {la' : Wt X'.Ψ r}
   simp only [h.dmin_eq]
   exact (GlobalTheory.Dict.Pull.cast_wt h.psi rfl hl (castFr h.psi x)).symm
 
+/- English proof (translation)
+Use `⟨(h.lat ξ).1 hξ.1, by rw [h.iso, hξ.2.1], fun e => hξ.2.2 ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.Dict.Pull.inv_mulVec a ξ, e, Matrix.mulVec_zero]`.
+-/
 theorem isIso_map (h : IsMatch X X' a) {ξ : Fin r → E} (hξ : X.IsIso ξ) :
     X'.IsIso ((a : Matrix (Fin r) (Fin r) E) *ᵥ ξ) := by
   refine ⟨(h.lat ξ).1 hξ.1, by rw [h.iso, hξ.2.1], fun e => hξ.2.2 ?_⟩
   rw [← GlobalTheory.Dict.Pull.inv_mulVec a ξ, e, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Establish `he : Data.emb τ.1 ((a : Matrix (Fin r) (Fin r) E) *ᵥ ξ) = (a : Matrix (Fin r) (Fin r) E).map τ.1 *ᵥ Data.emb τ.1 ξ`. Use function extensionality and compare the values at `i`. Simplify using `[Data.emb, Matrix.mulVec, dotProduct]`. Establish `hc : X'.c τ = X.c ⟨τ.1, h.mem τ⟩` using `by simp only [Data.c, h.xi]`. Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Matrix.toLin'_apply]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, flowMat_mulVec, flowMat_mulVec, he, h.hermC_eq, hc, Matrix.mulVec_add, Matrix.mulVec_smul]`.
+-/
 theorem map_mul_flowMat (h : IsMatch X X' a) (ξ : Fin r → E) (τ : X'.Ψ) (s : ℂ) :
     (a : Matrix (Fin r) (Fin r) E).map τ.1 * X.flowMat ξ ⟨τ.1, h.mem τ⟩ s =
       X'.flowMat ((a : Matrix (Fin r) (Fin r) E) *ᵥ ξ) τ s * (a : Matrix (Fin r) (Fin r) E).map τ.1 := by
@@ -66,6 +82,9 @@ theorem map_mul_flowMat (h : IsMatch X X' a) (ξ : Fin r → E) (τ : X'.Ψ) (s 
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, flowMat_mulVec, flowMat_mulVec, he, h.hermC_eq, hc,
     Matrix.mulVec_add, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show (a : Matrix (Fin r) (Fin r) E).map τ.1 * (X.flowMat ξ ⟨τ.1, h.mem τ⟩ (s ⟨τ.1, h.mem τ⟩) * mat x ⟨τ.1, h.mem τ⟩) = X'.flowMat ((a : Matrix (Fin r) (Fin r) E) *ᵥ ξ) τ (s ⟨τ.1, h.mem τ⟩) * ((a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x ⟨τ.1, h.mem τ⟩)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, map_mul_flowMat h]`.
+-/
 theorem lact_flow (h : IsMatch X X' a) (ξ : Fin r → E) (s : X.Ψ → ℂ) (x : Frame X.Ψ r) :
     lact a (castFr h.psi (X.flow ξ s x)) =
       X'.flow ((a : Matrix (Fin r) (Fin r) E) *ᵥ ξ) (fun τ => s ⟨τ.1, h.mem τ⟩) (lact a (castFr h.psi x)) := by
@@ -75,14 +94,23 @@ theorem lact_flow (h : IsMatch X X' a) (ξ : Fin r → E) (s : X.Ψ → ℂ) (x 
       ((a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x ⟨τ.1, h.mem τ⟩)
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, map_mul_flowMat h]
 
+/- English proof (translation)
+Introduce `p _` and use `⟨0, by simp⟩`.
+-/
 theorem freq_zero (X : Data E r) (la : Wt X.Ψ r) :
     ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, (0 : X.Ψ → ℝ) τ * p τ = k := fun p _ => ⟨0, by simp⟩
 
+/- English proof (translation)
+Simplify using `[fjI]`. Both sides reduce to the same expression.
+-/
 theorem fjI_zero (X : Data E r) (ξ : Fin r → E) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) (s : X.Ψ → ℝ) :
     fjI X ξ 0 P x s = P (X.flow ξ (cR X s) x) := by
   simp [fjI]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Data.fj, if_pos (freq_zero X la), dif_pos (ExponentialGrowthExclusion.exists_fd X la)]`. Both sides reduce to the same expression.
+-/
 theorem fj_zero_eq (X : Data E r) (la : Wt X.Ψ r) (ξ : Fin r → E) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
     X.fj la ξ 0 P x = ((volume (ExponentialGrowthExclusion.exists_fd X la).choose).toReal : ℂ)⁻¹ *
       ∫ s in (ExponentialGrowthExclusion.exists_fd X la).choose, fjI X ξ 0 P x s := by
@@ -101,6 +129,17 @@ open scoped Matrix
 open GlobalTheory.LevelCusp.Transport ReciprocityTheory.ChartRestriction.G.FD.TransvectionPeriodicity ReciprocityTheory.ChartRestriction.G.FD.RealEmbeddingCharacters
   ReciprocityTheory.ChartRestriction.G.FD.FlowMeanContinuity in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X X' a h la la' hl P Q c hP hQ hPQ`. Take `⟨⟨hQs, C, hC⟩, hQ0⟩` from `hQ`. Establish `hb : ∀ x ∈ X.dom, X.pnorm la P x ≤ ‖c‖ * C` using `fun x hx => by`. Use `hC _ (h.mem_dom hx)` as an intermediate fact. Rewrite `this` using `[BoundedSectionAlgebra.pnorm_eq, nfac_eq h hl]`.
+
+Rewrite using `[BoundedSectionAlgebra.pnorm_eq, hPQ x hx, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left this (norm_nonneg _)`. Use `⟨⟨hP, _, hb⟩, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations. Establish `hξ'` using `isIso_map h hξ`. Establish `hx'` using `h.mem_dom hx`.
+
+Establish `h0` using `hQ0 _ hξ' _ hx'`. Take `⟨-, hD, -, hf⟩` from `(ExponentialGrowthExclusion.exists_fd X la).choose_spec`. Take `⟨-, hD', hp', hf'⟩` from `(ExponentialGrowthExclusion.exists_fd X' la').choose_spec`. Rewrite `h0`, the goal using `[fj_zero_eq]`. Establish `hne : ((MeasureTheory.volume (ExponentialGrowthExclusion.exists_fd X' la').choose).toReal : ℂ)⁻¹ ≠ 0` using `inv_ne_zero (by exact_mod_cast (ENNReal.toReal_pos hp'.ne' hf'.ne).ne')`.
+
+Establish `: Countable (X.periods la)` using `TopologicalSpace.separableSpace_iff_countable.mp inferInstance`. Establish `: Countable (X'.periods la')` using `TopologicalSpace.separableSpace_iff_countable.mp inferInstance`. Rewrite using `[integral_eq_zero_cast h.psi (c := c) (fun s => ?_) hD hD' hf hf' hp' (fjI_continuous X la P hP hξ.2.1 0 hx) ⟨‖c‖ * C / X.nfac la x, fun s => ?_⟩ (fjI_periodic X la P hP hξ.1 hξ.2.1 0 (freq_zero X la) hx) (fjI_periodic X' la' Q hQs hξ'.1 hξ'.2.1 0 (freq_zero X' la') hx') ((mul_eq …`. Rewrite using `[fjI_zero, fjI_zero, hPQ _ (flow_real_mem_dom X hξ.2.1 s x hx), lact_flow h]`. Both sides reduce to the same expression.
+
+Establish `hT` using `hb _ (flow_real_mem_dom X hξ.2.1 s x hx)`. Rewrite `hT` using `[BoundedSectionAlgebra.pnorm_eq, BoundedSectionAlgebra.nfac_flow_real X hξ.2.1]`. Rewrite using `[fjI_zero, le_div_iff₀ (BoundedSectionAlgebra.nfac_pos X hx la)]`. Conclude with `hT`.
+-/
 theorem GlobalTheory.LevelCusp.mem_SS_of_isMatch : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X X' : Data E r) (a : GL (Fin r) E) (h : IsMatch X X' a) (la : Wt X.Ψ r) (la' : Wt X'.Ψ r), (∀ (τ : X'.Ψ) i, la' τ i = la ⟨τ.1, h.mem τ⟩ i) → ∀ (P : Frame X.Ψ r → ℂ) (Q : Frame X'.Ψ r → ℂ) (c : ℂ), X.IsSec la P → Q ∈ X'.SS la' → (∀ x ∈ X.dom, P x = c * Q (lact a (castFr h.psi x))) → P ∈ X.SS la := by
   intro E _ _ _ r X X' a h la la' hl P Q c hP hQ hPQ
   obtain ⟨⟨hQs, C, hC⟩, hQ0⟩ := hQ

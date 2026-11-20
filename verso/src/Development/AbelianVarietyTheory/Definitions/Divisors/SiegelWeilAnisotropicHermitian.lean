@@ -73,10 +73,19 @@ structure KP : Prop where
 
   rallisTowerUnitary : GlobalTheory.Published.RallisTowerUnitary
 
+/- English proof (translation)
+The claim follows from `h.howeDualityUnitary`.
+-/
 example (h : KP) : GlobalTheory.Published.HoweDualityUnitary := h.howeDualityUnitary
 
+/- English proof (translation)
+The claim follows from `h.minguezThetaGL`.
+-/
 example (h : KP) : GlobalTheory.Published.MinguezThetaGL := h.minguezThetaGL
 
+/- English proof (translation)
+The claim follows from `h.base.stoneVonNeumann`.
+-/
 example (h : KP) : GlobalTheory.Published.StoneVonNeumann := h.base.stoneVonNeumann
 
 end GlobalTheory.ThK

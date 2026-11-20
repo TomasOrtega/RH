@@ -17,6 +17,13 @@ section Schur
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
 
+/- English proof (translation)
+Establish `hre : ∀ s ∈ S, Commute (ℜ T : E →L[ℂ] E) s`. Introduce `s hs`. Rewrite using `[realPart_apply_coe]`. Conclude with `((hT s hs).add_left (hT' s hs)).smul_left _`. Establish `him : ∀ s ∈ S, Commute (ℑ T : E →L[ℂ] E) s`.
+
+Introduce `s hs`. Rewrite using `[imaginaryPart_apply_coe]`. Conclude with `(((hT s hs).sub_left (hT' s hs)).smul_left _).smul_left _`. Take `⟨a, ha⟩` from `ArchWhittaker.eq_algebraMap_of_commute hirr (ℜ T).2 hre`. Take `⟨b, hb⟩` from `ArchWhittaker.eq_algebraMap_of_commute hirr (ℑ T).2 him`.
+
+Use `⟨a + Complex.I * b, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← realPart_add_I_smul_imaginaryPart T, ha, hb]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, ← Complex.coe_smul, ← Complex.coe_smul, smul_smul, ← add_smul]`.
+-/
 theorem eq_smul_one_of_commute_of_star [Nontrivial E] {S : Set (E →L[ℂ] E)}
     (hirr : ∀ W : Submodule ℂ E, IsClosed (W : Set E) → (∀ s ∈ S, ∀ v ∈ W, s v ∈ W) →
       W = ⊥ ∨ W = ⊤)
@@ -48,6 +55,9 @@ variable (D : Submodule ℂ V) [CompleteSpace D]
 def compr (a : G₁) : D →L[ℂ] D :=
   D.orthogonalProjectionOnto ∘L ((τ (ι₁ a) : V →L[ℂ] V) ∘L D.subtypeL)
 
+/- English proof (translation)
+Use `show ⟪(y : V), ((D.orthogonalProjectionOnto (τ (ι₁ a) (x : V)) : D) : V)⟫_ℂ = _`. Rewrite using `[← Submodule.coe_inner, Submodule.inner_orthogonalProjectionOnto_eq_of_mem_left]`.
+-/
 theorem inner_compr (a : G₁) (x y : D) :
     ⟪(y : V), (compr τ ι₁ D a x : V)⟫_ℂ = ⟪(y : V), τ (ι₁ a) x⟫_ℂ := by
   show ⟪(y : V), ((D.orthogonalProjectionOnto (τ (ι₁ a) (x : V)) : D) : V)⟫_ℂ = _
@@ -63,12 +73,18 @@ structure Splitting : Prop where
 
 variable {τ ι₁ ι₂ D}
 
+/- English proof (translation)
+Use `hs.inv _ (fun a => ?_) x hx` and prove the remaining obligations. Use `show τ (ι₂ b) * τ (ι₁ a) = τ (ι₁ a) * τ (ι₂ b)`. Rewrite using `[← UnitaryRep.map_mul, ← UnitaryRep.map_mul, hs.comm]`.
+-/
 theorem Splitting.mem₂ (hs : Splitting τ ι₁ ι₂ D) (b : G₂) {x : V} (hx : x ∈ D) :
     τ (ι₂ b) x ∈ D := by
   refine hs.inv _ (fun a => ?_) x hx
   show τ (ι₂ b) * τ (ι₁ a) = τ (ι₁ a) * τ (ι₂ b)
   rw [← UnitaryRep.map_mul, ← UnitaryRep.map_mul, hs.comm]
 
+/- English proof (translation)
+Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff D).1 hs.ne_bot`. Conclude with `⟨⟨⟨x, hx⟩, 0, fun h => hx0 (congrArg Subtype.val h)⟩⟩`.
+-/
 theorem Splitting.nontrivial (hs : Splitting τ ι₁ ι₂ D) : Nontrivial D := by
   obtain ⟨x, hx, hx0⟩ := (Submodule.ne_bot_iff D).1 hs.ne_bot
   exact ⟨⟨⟨x, hx⟩, 0, fun h => hx0 (congrArg Subtype.val h)⟩⟩
@@ -76,13 +92,28 @@ theorem Splitting.nontrivial (hs : Splitting τ ι₁ ι₂ D) : Nontrivial D :=
 def onWindow (hs : Splitting τ ι₁ ι₂ D) (b : G₂) : D →L[ℂ] D :=
   ((τ (ι₂ b) : V →L[ℂ] V) ∘L D.subtypeL).codRestrict D (fun x => hs.mem₂ b x.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_onWindow (hs : Splitting τ ι₁ ι₂ D) (b : G₂) (x : D) :
     ((onWindow hs b x : D) : V) = τ (ι₂ b) x := rfl
 
+/- English proof (translation)
+Rewrite using `[Submodule.coe_inner, inner_compr]`.
+-/
 theorem inner_map_right_mem (a : G₁) {x y : V} (hx : x ∈ D) (hy : y ∈ D) :
     ⟪y, τ (ι₁ a) x⟫_ℂ = ⟪(⟨y, hy⟩ : D), compr τ ι₁ D a ⟨x, hx⟩⟫_ℂ := by
   rw [Submodule.coe_inner, inner_compr]
 
+/- English proof (translation)
+Distinguish the cases in `hU0 : U = ⊥`. Conclude with `Or.inl hU0`. Use `right`. Take `⟨x', hx'U, hx'0⟩` from `(Submodule.ne_bot_iff U).1 hU0`. Establish `: CompleteSpace U` using `hU.completeSpace_coe`.
+
+Rewrite using `[← Submodule.orthogonal_eq_bot_iff, eq_bot_iff]`. Introduce `y' hy'`. Rewrite using `[Submodule.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `ArchWhittaker.eq_zero_of_forall_inner_map hs.irred (x := (x' : V)) (fun h => hx'0 (Subtype.ext h)) fun g => ?_` and prove the remaining obligations.
+
+Take `⟨a, b, rfl⟩` from `hs.gen g`. Rewrite using `[UnitaryRep.map_mul_apply]`. Establish `hz : onWindow hs b x' ∈ U` using `h2 b x' hx'U`. Establish `key` using `inner_compr τ ι₁ D a (onWindow hs b x') y'`. Rewrite `key` using `[coe_onWindow]`.
+
+Rewrite using `[← key, ← Submodule.coe_inner]`. Establish `h0 : ⟪(compr τ ι₁ D a (onWindow hs b x') : D), y'⟫_ℂ = 0` using `(Submodule.mem_orthogonal U y').1 hy' _ (h1 a _ hz)`. Rewrite using `[← inner_conj_symm, h0, map_zero]`.
+-/
 theorem window_irreducible (hs : Splitting τ ι₁ ι₂ D) (U : Submodule ℂ D) (hU : IsClosed (U : Set D))
     (h1 : ∀ a, ∀ x ∈ U, compr τ ι₁ D a x ∈ U) (h2 : ∀ b, ∀ x ∈ U, onWindow hs b x ∈ U) :
     U = ⊥ ∨ U = ⊤ := by
@@ -107,12 +138,20 @@ theorem window_irreducible (hs : Splitting τ ι₁ ι₂ D) (U : Submodule ℂ 
     (Submodule.mem_orthogonal U y').1 hy' _ (h1 a _ hz)
   rw [← inner_conj_symm, h0, map_zero]
 
+/- English proof (translation)
+Rewrite using `[ContinuousLinearMap.star_eq_adjoint, eq_comm, ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, ← inner_conj_symm, inner_compr, inner_conj_symm, UnitaryRep.inner_map_left, map_inv, inv_inv, ← inner_compr]`.
+-/
 theorem star_compr (a : G₁) : star (compr τ ι₁ D a) = compr τ ι₁ D a⁻¹ := by
   rw [ContinuousLinearMap.star_eq_adjoint, eq_comm, ContinuousLinearMap.eq_adjoint_iff]
   intro x y
   rw [Submodule.coe_inner, Submodule.coe_inner, ← inner_conj_symm, inner_compr,
     inner_conj_symm, UnitaryRep.inner_map_left, map_inv, inv_inv, ← inner_compr]
 
+/- English proof (translation)
+Use `ext1 x`. Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `y`. Use `show ⟪y, compr τ ι₁ D a (onWindow hs b x)⟫_ℂ = ⟪y, onWindow hs b (compr τ ι₁ D a x)⟫_ℂ`. Rewrite using `[Submodule.coe_inner, inner_compr, coe_onWindow, Submodule.coe_inner, coe_onWindow, τ.inner_map_right (ι₂ b) (y : V), ← map_inv]`.
+
+Use `set y₁ : D := ⟨τ (ι₂ b⁻¹) y, hs.mem₂ b⁻¹ y.2⟩`. Establish `e1 : ⟪τ (ι₂ b⁻¹) (y : V), (compr τ ι₁ D a x : V)⟫_ℂ = ⟪(y₁ : V), τ (ι₁ a) x⟫_ℂ` using `inner_compr τ ι₁ D a x y₁`. Rewrite using `[e1]`. Use `show _ = ⟪τ (ι₂ b⁻¹) (y : V), τ (ι₁ a) (x : V)⟫_ℂ`. Rewrite using `[τ.inner_map_left (ι₂ b⁻¹), map_inv, inv_inv, ← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, hs.comm]`.
+-/
 theorem commute_compr_onWindow (hs : Splitting τ ι₁ ι₂ D) (a : G₁) (b : G₂) :
     Commute (compr τ ι₁ D a) (onWindow hs b) := by
   ext1 x
@@ -129,6 +168,11 @@ theorem commute_compr_onWindow (hs : Splitting τ ι₁ ι₂ D) (a : G₁) (b :
   rw [τ.inner_map_left (ι₂ b⁻¹), map_inv, inv_inv, ← UnitaryRep.map_mul_apply,
     ← UnitaryRep.map_mul_apply, hs.comm]
 
+/- English proof (translation)
+Use `hs.nontrivial` as an intermediate fact. Use `set S : Set (D →L[ℂ] D) := range (compr τ ι₁ D) ∪ range (onWindow hs)`. Establish `hirr : ∀ U : Submodule ℂ D, IsClosed (U : Set D) → (∀ s ∈ S, ∀ v ∈ U, s v ∈ U) → U = ⊥ ∨ U = ⊤` using `fun U hU hinv => window_irreducible hs U hU (fun a x hx => hinv _ (Or.inl ⟨a, rfl⟩) x hx) (fun b x hx => hinv _ (Or.inr ⟨b, rfl⟩) x hx)`. Establish `hcs : ∀ a, ∀ s ∈ S, Commute (compr τ ι₁ D a) s`. Introduce and unpack `a s (⟨a', rfl⟩ | ⟨b, rfl⟩)`.
+
+Conclude with `hs.compr_comm a a'`. Conclude with `commute_compr_onWindow hs a b`. Use `choose c hc using fun a => eq_smul_one_of_commute_of_star hirr (hcs a) (by rw [star_compr]; exact hcs a⁻¹)`. Conclude with `⟨c, hc⟩`.
+-/
 theorem exists_compr_eq_smul (hs : Splitting τ ι₁ ι₂ D) :
     ∃ c : G₁ → ℂ, ∀ a, compr τ ι₁ D a = c a • (1 : D →L[ℂ] D) := by
   have := hs.nontrivial
@@ -147,10 +191,16 @@ theorem exists_compr_eq_smul (hs : Splitting τ ι₁ ι₂ D) :
 
 def Splitting.coeff (hs : Splitting τ ι₁ ι₂ D) (a : G₁) : ℂ := (exists_compr_eq_smul hs).choose a
 
+/- English proof (translation)
+The claim follows from `(exists_compr_eq_smul hs).choose_spec a`.
+-/
 theorem Splitting.compr_eq (hs : Splitting τ ι₁ ι₂ D) (a : G₁) :
     compr τ ι₁ D a = hs.coeff a • (1 : D →L[ℂ] D) :=
   (exists_compr_eq_smul hs).choose_spec a
 
+/- English proof (translation)
+Rewrite using `[inner_map_right_mem a hx hy, hs.compr_eq]`. Simplify using `[inner_smul_right]`.
+-/
 theorem Splitting.inner_map_eq (hs : Splitting τ ι₁ ι₂ D) (a : G₁) {x y : V} (hx : x ∈ D)
     (hy : y ∈ D) : ⟪y, τ (ι₁ a) x⟫_ℂ = hs.coeff a * ⟪y, x⟫_ℂ := by
   rw [inner_map_right_mem a hx hy, hs.compr_eq]
@@ -160,16 +210,30 @@ variable (τ ι₁) in
 
 def comb (x : V) : (G₁ →₀ ℂ) →ₗ[ℂ] V := Finsupp.linearCombination ℂ (fun a => τ (ι₁ a) x)
 
+/- English proof (translation)
+The claim follows from `Finsupp.linearCombination_apply ℂ f`.
+-/
 theorem comb_apply (x : V) (f : G₁ →₀ ℂ) : comb τ ι₁ x f = f.sum fun a α => α • τ (ι₁ a) x :=
   Finsupp.linearCombination_apply ℂ f
 
+/- English proof (translation)
+Simplify using `only [comb_apply, map_add, smul_add, Finsupp.sum_add]`.
+-/
 theorem comb_add (x y : V) (f : G₁ →₀ ℂ) : comb τ ι₁ (x + y) f = comb τ ι₁ x f + comb τ ι₁ y f := by
   simp only [comb_apply, map_add, smul_add, Finsupp.sum_add]
 
+/- English proof (translation)
+Simplify using `only [comb_apply, map_smul, Finsupp.smul_sum]`. Conclude with `Finsupp.sum_congr fun a _ => smul_comm _ _ _`.
+-/
 theorem comb_smul (c : ℂ) (x : V) (f : G₁ →₀ ℂ) : comb τ ι₁ (c • x) f = c • comb τ ι₁ x f := by
   simp only [comb_apply, map_smul, Finsupp.smul_sum]
   exact Finsupp.sum_congr fun a _ => smul_comm _ _ _
 
+/- English proof (translation)
+Rewrite using `[comb_apply, comb_apply, Finsupp.sum_inner, Finsupp.sum_mul]`. Use `Finsupp.sum_congr fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.inner_sum, Finsupp.sum_mul]`. Use `Finsupp.sum_congr fun a _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_smul_right, τ.inner_map_left, ← UnitaryRep.map_mul_apply, ← map_inv ι₁, ← map_mul ι₁, hs.inner_map_eq _ hx hy]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_comb (hs : Splitting τ ι₁ ι₂ D) {x y : V} (hx : x ∈ D) (hy : y ∈ D)
     (f f' : G₁ →₀ ℂ) : ⟪comb τ ι₁ y f', comb τ ι₁ x f⟫_ℂ =
       (f'.sum fun b β => f.sum fun a α => conj β * α * hs.coeff (b⁻¹ * a)) * ⟪y, x⟫_ℂ := by
@@ -183,12 +247,18 @@ theorem inner_comb (hs : Splitting τ ι₁ ι₂ D) {x y : V} (hx : x ∈ D) (h
 
 variable {v : V}
 
+/- English proof (translation)
+Rewrite using `[inner_comb hs hx hy, inner_comb hs hv hv, inner_self_eq_norm_sq_to_K, hvn]`. Simplify using the standard rewrite rules.
+-/
 theorem inner_comb_eq (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1) {x y : V}
     (hx : x ∈ D) (hy : y ∈ D) (f f' : G₁ →₀ ℂ) :
     ⟪comb τ ι₁ y f', comb τ ι₁ x f⟫_ℂ = ⟪comb τ ι₁ v f', comb τ ι₁ v f⟫_ℂ * ⟪y, x⟫_ℂ := by
   rw [inner_comb hs hx hy, inner_comb hs hv hv, inner_self_eq_norm_sq_to_K, hvn]
   simp
 
+/- English proof (translation)
+Establish `h` using `inner_comb_eq hs hv hvn hx hx f f`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `h' : ‖comb τ ι₁ x f‖ ^ 2 = ‖comb τ ι₁ v f‖ ^ 2 * ‖x‖ ^ 2` using `by exact_mod_cast h`. Establish `h'' : ‖comb τ ι₁ x f‖ ^ 2 = (‖x‖ * ‖comb τ ι₁ v f‖) ^ 2` using `by rw [h', mul_pow, mul_comm]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h''`.
+-/
 theorem norm_comb (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1) {x : V} (hx : x ∈ D)
     (f : G₁ →₀ ℂ) : ‖comb τ ι₁ x f‖ = ‖x‖ * ‖comb τ ι₁ v f‖ := by
   have h := inner_comb_eq hs hv hvn hx hx f f
@@ -205,16 +275,28 @@ def orbitClosure (v : V) : Submodule ℂ V :=
 instance (v : V) : CompleteSpace (orbitClosure τ ι₁ v) :=
   (Submodule.isClosed_topologicalClosure _).completeSpace_coe
 
+/- English proof (translation)
+The claim follows from `Submodule.isClosed_topologicalClosure _`.
+-/
 theorem isClosed_orbitClosure (v : V) : IsClosed (orbitClosure τ ι₁ v : Set V) :=
   Submodule.isClosed_topologicalClosure _
 
+/- English proof (translation)
+The claim follows from `Finsupp.range_linearCombination ℂ`.
+-/
 theorem range_comb (x : V) :
     LinearMap.range (comb τ ι₁ x) = Submodule.span ℂ (range fun a => τ (ι₁ a) x) :=
   Finsupp.range_linearCombination ℂ
 
+/- English proof (translation)
+The claim follows from `Submodule.le_topologicalClosure _ (range_comb (τ := τ) (ι₁ := ι₁) v ▸ LinearMap.mem_range_self _ f)`.
+-/
 theorem comb_mem_orbitClosure (v : V) (f : G₁ →₀ ℂ) : comb τ ι₁ v f ∈ orbitClosure τ ι₁ v :=
   Submodule.le_topologicalClosure _ (range_comb (τ := τ) (ι₁ := ι₁) v ▸ LinearMap.mem_range_self _ f)
 
+/- English proof (translation)
+The claim follows from `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem mem_orbitClosure (v : V) (a : G₁) : τ (ι₁ a) v ∈ orbitClosure τ ι₁ v :=
   Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨a, rfl⟩)
 
@@ -223,8 +305,16 @@ variable (τ ι₁) in
 def combW (v : V) : (G₁ →₀ ℂ) →ₗ[ℂ] orbitClosure τ ι₁ v :=
   (comb τ ι₁ v).codRestrict _ (comb_mem_orbitClosure v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_combW (v : V) (f : G₁ →₀ ℂ) : (combW τ ι₁ v f : V) = comb τ ι₁ v f := rfl
 
+/- English proof (translation)
+Introduce `w`. Establish `h2 : (w : V) ∈ closure ((Submodule.span ℂ (range fun a => τ (ι₁ a) v) : Submodule ℂ V) : Set V)`. Rewrite using `[← Submodule.topologicalClosure_coe]`. Conclude with `w.2`. Rewrite using `[Topology.IsInducing.subtypeVal.closure_eq_preimage_closure_image, Set.mem_preimage]`.
+
+Use `h2 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← range_comb, LinearMap.coe_range, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem denseRange_combW (v : V) : DenseRange (combW τ ι₁ v) := by
   intro w
   have h2 : (w : V) ∈ closure ((Submodule.span ℂ (range fun a => τ (ι₁ a) v) : Submodule ℂ V) :
@@ -240,10 +330,16 @@ variable (τ ι₁) in
 def tensorMap (v x : V) : orbitClosure τ ι₁ v →L[ℂ] V :=
   (comb τ ι₁ x).extendOfNorm (combW τ ι₁ v)
 
+/- English proof (translation)
+The claim follows from `LinearMap.extendOfNorm_eq (denseRange_combW v) ⟨‖x‖, fun f => (norm_comb hs hv hvn hx f).le⟩ f`.
+-/
 theorem tensorMap_combW (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1) {x : V}
     (hx : x ∈ D) (f : G₁ →₀ ℂ) : tensorMap τ ι₁ v x (combW τ ι₁ v f) = comb τ ι₁ x f :=
   LinearMap.extendOfNorm_eq (denseRange_combW v) ⟨‖x‖, fun f => (norm_comb hs hv hvn hx f).le⟩ f
 
+/- English proof (translation)
+Use `(denseRange_combW v).induction_on₂ (p := fun w' w => ⟪tensorMap τ ι₁ v y w', tensorMap τ ι₁ v x w⟫_ℂ = ⟪(w' : V), (w : V)⟫_ℂ * ⟪y, x⟫_ℂ) ?_ ?_ w' w` and prove the remaining obligations. Conclude with `isClosed_eq (((tensorMap τ ι₁ v y).continuous.comp continuous_fst).inner ((tensorMap τ ι₁ v x).continuous.comp continuous_snd)) (((continuous_subtype_val.comp continuous_fst).inner (continuous_subtype_val.comp continuous_snd)).mul continuous_const)`. Introduce `f' f`. Rewrite using `[tensorMap_combW hs hv hvn hy, tensorMap_combW hs hv hvn hx, inner_comb_eq hs hv hvn hx hy]`. Both sides reduce to the same expression.
+-/
 theorem inner_tensorMap (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1) {x y : V}
     (hx : x ∈ D) (hy : y ∈ D) (w w' : orbitClosure τ ι₁ v) :
     ⟪tensorMap τ ι₁ v y w', tensorMap τ ι₁ v x w⟫_ℂ = ⟪(w' : V), (w : V)⟫_ℂ * ⟪y, x⟫_ℂ := by
@@ -257,6 +353,11 @@ theorem inner_tensorMap (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : 
     rw [tensorMap_combW hs hv hvn hy, tensorMap_combW hs hv hvn hx, inner_comb_eq hs hv hvn hx hy]
     rfl
 
+/- English proof (translation)
+Establish `h` using `inner_tensorMap hs hv hvn hx hx w w`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `h' : ‖tensorMap τ ι₁ v x w‖ ^ 2 = ‖(w : V)‖ ^ 2 * ‖x‖ ^ 2` using `by exact_mod_cast h`. Establish `h'' : ‖tensorMap τ ι₁ v x w‖ ^ 2 = (‖x‖ * ‖w‖) ^ 2`. Rewrite using `[h', mul_pow, mul_comm]`.
+
+Both sides reduce to the same expression. Conclude with `(pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h''`.
+-/
 theorem norm_tensorMap (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1) {x : V}
     (hx : x ∈ D) (w : orbitClosure τ ι₁ v) : ‖tensorMap τ ι₁ v x w‖ = ‖x‖ * ‖w‖ := by
   have h := inner_tensorMap hs hv hvn hx hx w w
@@ -266,6 +367,9 @@ theorem norm_tensorMap (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : �
     rw [h', mul_pow, mul_comm]; rfl
   exact (pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h''
 
+/- English proof (translation)
+Use `LinearMap.extendOfNorm_unique (denseRange_combW v) ‖x + y‖ (fun f => (norm_comb hs hv hvn (D.add_mem hx hy) f).le) _ ?_` and prove the remaining obligations. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Use `show tensorMap τ ι₁ v x (combW τ ι₁ v f) + tensorMap τ ι₁ v y (combW τ ι₁ v f) = _`. Rewrite using `[tensorMap_combW hs hv hvn hx, tensorMap_combW hs hv hvn hy, comb_add]`.
+-/
 theorem tensorMap_add (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1) {x y : V}
     (hx : x ∈ D) (hy : y ∈ D) :
     tensorMap τ ι₁ v (x + y) = tensorMap τ ι₁ v x + tensorMap τ ι₁ v y := by
@@ -275,6 +379,9 @@ theorem tensorMap_add (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : �
   show tensorMap τ ι₁ v x (combW τ ι₁ v f) + tensorMap τ ι₁ v y (combW τ ι₁ v f) = _
   rw [tensorMap_combW hs hv hvn hx, tensorMap_combW hs hv hvn hy, comb_add]
 
+/- English proof (translation)
+Use `LinearMap.extendOfNorm_unique (denseRange_combW v) ‖c • x‖ (fun f => (norm_comb hs hv hvn (D.smul_mem c hx) f).le) _ ?_` and prove the remaining obligations. Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Use `show c • tensorMap τ ι₁ v x (combW τ ι₁ v f) = _`. Rewrite using `[tensorMap_combW hs hv hvn hx, comb_smul]`.
+-/
 theorem tensorMap_smul (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1) {x : V}
     (hx : x ∈ D) (c : ℂ) : tensorMap τ ι₁ v (c • x) = c • tensorMap τ ι₁ v x := by
   refine LinearMap.extendOfNorm_unique (denseRange_combW v) ‖c • x‖
@@ -298,12 +405,23 @@ def tensorMapL (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ =
     exact ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun w =>
       (norm_tensorMap hs hv hvn x.2 w).le
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tensorMapL_apply (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1) (x : D)
     (w : orbitClosure τ ι₁ v) : tensorMapL hs hv hvn x w = tensorMap τ ι₁ v x w := rfl
 
+/- English proof (translation)
+Simplify using `using mem_orbitClosure (τ := τ) (ι₁ := ι₁) v 1`.
+-/
 theorem self_mem_orbitClosure (v : V) : v ∈ orbitClosure τ ι₁ v := by
   simpa using mem_orbitClosure (τ := τ) (ι₁ := ι₁) v 1
 
+/- English proof (translation)
+Establish `hle : Submodule.span ℂ (range fun b => τ (ι₁ b) v) ≤ (orbitClosure τ ι₁ v).comap ((τ (ι₁ a) : V →L[ℂ] V) : V →ₗ[ℂ] V)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, ContinuousLinearMap.coe_coe]`. Rewrite using `[← UnitaryRep.map_mul_apply, ← map_mul]`.
+
+Conclude with `mem_orbitClosure v (a * b)`. Conclude with `Submodule.topologicalClosure_minimal _ hle ((isClosed_orbitClosure v).preimage (τ (ι₁ a)).continuous) hw`.
+-/
 theorem map_mem_orbitClosure (a : G₁) {w : V} (hw : w ∈ orbitClosure τ ι₁ v) :
     τ (ι₁ a) w ∈ orbitClosure τ ι₁ v := by
   have hle : Submodule.span ℂ (range fun b => τ (ι₁ b) v) ≤
@@ -321,15 +439,24 @@ variable (τ ι₁) in
 def repW (hι₁ : Continuous ι₁) (v : V) : UnitaryRep G₁ (orbitClosure τ ι₁ v) :=
   (τ.compHom ι₁ hι₁).restrict (orbitClosure τ ι₁ v) (fun a _ hw => map_mem_orbitClosure a hw)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_repW_apply (hι₁ : Continuous ι₁) (v : V) (a : G₁) (w : orbitClosure τ ι₁ v) :
     ((repW τ ι₁ hι₁ v a w : orbitClosure τ ι₁ v) : V) = τ (ι₁ a) w := rfl
 
 def repD (hs : Splitting τ ι₁ ι₂ D) (hι₂ : Continuous ι₂) : UnitaryRep G₂ D :=
   (τ.compHom ι₂ hι₂).restrict D (fun b _ hx => hs.mem₂ b hx)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_repD_apply (hs : Splitting τ ι₁ ι₂ D) (hι₂ : Continuous ι₂) (b : G₂) (x : D) :
     ((repD hs hι₂ b x : D) : V) = τ (ι₂ b) x := rfl
 
+/- English proof (translation)
+Rewrite using `[comb_apply, comb_apply, Finsupp.sum_mapDomain_index (h := fun b (β : ℂ) => β • τ (ι₁ b) x) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _), map_finsuppSum]`. Use `Finsupp.sum_congr fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_mul, UnitaryRep.map_mul_apply]`.
+-/
 theorem comb_mapDomain (a : G₁) (x : V) (f : G₁ →₀ ℂ) :
     comb τ ι₁ x (f.mapDomain (a * ·)) = τ (ι₁ a) (comb τ ι₁ x f) := by
   rw [comb_apply, comb_apply, Finsupp.sum_mapDomain_index
@@ -338,6 +465,9 @@ theorem comb_mapDomain (a : G₁) (x : V) (f : G₁ →₀ ℂ) :
   refine Finsupp.sum_congr fun b _ => ?_
   rw [map_smul, map_mul, UnitaryRep.map_mul_apply]
 
+/- English proof (translation)
+Use `(denseRange_combW v).induction_on w (isClosed_eq ((tensorMap τ ι₁ v x).continuous.comp (repW τ ι₁ hι₁ v a).continuous) ((τ (ι₁ a)).continuous.comp (tensorMap τ ι₁ v x).continuous)) fun f => ?_` and prove the remaining obligations. Establish `e : repW τ ι₁ hι₁ v a (combW τ ι₁ v f) = combW τ ι₁ v (f.mapDomain (a * ·))` using `Subtype.ext (comb_mapDomain a v f).symm`. Rewrite using `[e, tensorMap_combW hs hv hvn hx, tensorMap_combW hs hv hvn hx, comb_mapDomain]`.
+-/
 theorem tensorMap_repW (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1)
     (hι₁ : Continuous ι₁) {x : V} (hx : x ∈ D) (a : G₁) (w : orbitClosure τ ι₁ v) :
     tensorMap τ ι₁ v x (repW τ ι₁ hι₁ v a w) = τ (ι₁ a) (tensorMap τ ι₁ v x w) := by
@@ -348,6 +478,9 @@ theorem tensorMap_repW (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : �
     Subtype.ext (comb_mapDomain a v f).symm
   rw [e, tensorMap_combW hs hv hvn hx, tensorMap_combW hs hv hvn hx, comb_mapDomain]
 
+/- English proof (translation)
+Use `(denseRange_combW v).induction_on w (isClosed_eq ((τ (ι₂ b)).continuous.comp (tensorMap τ ι₁ v x).continuous) (tensorMap τ ι₁ v _).continuous) fun f => ?_` and prove the remaining obligations. Rewrite using `[tensorMap_combW hs hv hvn hx, tensorMap_combW hs hv hvn (hs.mem₂ b hx), comb_apply, comb_apply, map_finsuppSum]`. Use `Finsupp.sum_congr fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, hs.comm]`.
+-/
 theorem map_tensorMap (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1) {x : V}
     (hx : x ∈ D) (b : G₂) (w : orbitClosure τ ι₁ v) :
     τ (ι₂ b) (tensorMap τ ι₁ v x w) = tensorMap τ ι₁ v (τ (ι₂ b) x) w := by
@@ -359,6 +492,9 @@ theorem map_tensorMap (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : �
   refine Finsupp.sum_congr fun a _ => ?_
   rw [map_smul, ← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, hs.comm]
 
+/- English proof (translation)
+Rewrite using `[UnitaryRep.map_mul_apply, map_tensorMap hs hv hvn hx, tensorMap_repW hs hv hvn hι₁ (hs.mem₂ b hx)]`.
+-/
 theorem map_mul_tensorMap (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1)
     (hι₁ : Continuous ι₁) {x : V} (hx : x ∈ D) (a : G₁) (b : G₂) (w : orbitClosure τ ι₁ v) :
     τ (ι₁ a * ι₂ b) (tensorMap τ ι₁ v x w) =
@@ -366,6 +502,9 @@ theorem map_mul_tensorMap (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn 
   rw [UnitaryRep.map_mul_apply, map_tensorMap hs hv hvn hx,
     tensorMap_repW hs hv hvn hι₁ (hs.mem₂ b hx)]
 
+/- English proof (translation)
+Use `(denseRange_combW v).induction_on w (isClosed_eq (tensorMap τ ι₁ v v).continuous continuous_subtype_val) fun f => ?_` and prove the remaining obligations. Rewrite using `[tensorMap_combW hs hv hvn hv]`. Both sides reduce to the same expression.
+-/
 theorem tensorMap_self (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1)
     (w : orbitClosure τ ι₁ v) : tensorMap τ ι₁ v v w = w := by
   refine (denseRange_combW v).induction_on w
@@ -373,6 +512,13 @@ theorem tensorMap_self (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : �
   rw [tensorMap_combW hs hv hvn hv]
   rfl
 
+/- English proof (translation)
+Use `set y' := y - ⟪v, y⟫_ℂ • v with hy'`. Establish `hy'D : y' ∈ D` using `D.sub_mem hyD (D.smul_mem _ hv)`. Establish `hy'W : y' ∈ orbitClosure τ ι₁ v` using `(orbitClosure τ ι₁ v).sub_mem hyW ((orbitClosure τ ι₁ v).smul_mem _ (self_mem_orbitClosure v))`. Establish `hortho : ⟪y', v⟫_ℂ = 0`. Simplify using `[y', inner_self_eq_norm_sq_to_K, hvn]`.
+
+Establish `hle : orbitClosure τ ι₁ v ≤ (ℂ ∙ y')ᗮ`. Use `Submodule.topologicalClosure_minimal _ ?_ (Submodule.isClosed_orthogonal _)` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right, hs.inner_map_eq a hv hy'D, hortho, mul_zero]`.
+
+Establish `h` using `hle hy'W`. Rewrite `h` using `[Submodule.mem_orthogonal_singleton_iff_inner_right, inner_self_eq_zero, hy', sub_eq_zero]`. Conclude with `h`.
+-/
 theorem eq_smul_of_mem_window_orbitClosure (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D)
     (hvn : ‖v‖ = 1) {y : V} (hyD : y ∈ D) (hyW : y ∈ orbitClosure τ ι₁ v) :
     y = ⟪v, y⟫_ℂ • v := by
@@ -393,6 +539,31 @@ theorem eq_smul_of_mem_window_orbitClosure (hs : Splitting τ ι₁ ι₂ D) (hv
     sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Establish `hv0 : v ≠ 0` using `by rintro rfl; simp at hvn`. Use `⟨⟨⟨⟨v, self_mem_orbitClosure v⟩, 0, fun h => hv0 (congrArg Subtype.val h)⟩⟩, fun U' hU' hinv => ?_⟩` and prove the remaining obligations. Use `set U : Submodule ℂ V := U'.map (orbitClosure τ ι₁ v).subtype with hU`. Establish `hUc : IsClosed (U : Set V)`. Establish `e : (U : Set V) = Subtype.val '' (U' : Set (orbitClosure τ ι₁ v))`.
+
+Rewrite using `[hU, Submodule.map_coe]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(isClosed_orbitClosure v).isClosedEmbedding_subtypeVal.isClosedMap _ hU'`. Establish `: CompleteSpace U` using `hUc.completeSpace_coe`.
+
+Establish `hUinv : (τ.compHom ι₁ hι₁).IsInvariant U`. Introduce and unpack `a _ ⟨u, hu, rfl⟩`. Conclude with `⟨repW τ ι₁ hι₁ v a u, hinv a u hu, rfl⟩`. Establish `hP` using `((τ.compHom ι₁ hι₁).isInvariant_iff_commute_starProjection U).1 hUinv`. Establish `hPv : U.starProjection v ∈ D` using `hs.inv _ (fun a => (hP a).symm) v hv`.
+
+Establish `hPvW : U.starProjection v ∈ orbitClosure τ ι₁ v`. Take `⟨u, -, hu⟩` from `U.starProjection_apply_mem v`. Rewrite using `[← hu]`. Conclude with `u.2`. Take `⟨t, ht⟩ : ∃ t : ℂ, U.starProjection v = t • v` from `⟨_, eq_smul_of_mem_window_orbitClosure hs hv hvn hPv hPvW⟩`.
+
+Establish `htt : t * t = t`. Establish `h1 : U.starProjection (U.starProjection v) = U.starProjection v` using `Submodule.starProjection_eq_self_iff.2 (U.starProjection_apply_mem v)`. Rewrite `h1` using `[ht, map_smul, ht, smul_smul]`. Establish `h2 : (t * t - t) • v = 0` using `by rw [sub_smul, h1, sub_self]`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h2).resolve_right hv0)`.
+
+Establish `ht01 : t = 0 ∨ t = 1`. Establish `: t * (t - 1) = 0` using `by rw [mul_sub, htt, mul_one, sub_self]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (sub_eq_zero.1 h)`.
+
+Break down `ht01 with rfl | rfl` into its components or cases. Use `left`. Establish `hvU : v ∈ Uᗮ` using `(Submodule.starProjection_apply_eq_zero_iff U).1 (by rw [ht, zero_smul])`. Establish `hinvo` using `hUinv.orthogonal`. Establish `hle : orbitClosure τ ι₁ v ≤ Uᗮ`.
+
+Use `Submodule.topologicalClosure_minimal _ ?_ (Submodule.isClosed_orthogonal _)` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hinvo a v hvU`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `u hu`. Rewrite using `[Submodule.mem_bot]`. Establish `h1 : (u : V) ∈ U` using `⟨u, hu, rfl⟩`. Establish `h2 : (u : V) ∈ Uᗮ` using `hle u.2`. Establish `h3` using `Submodule.inner_right_of_mem_orthogonal h1 h2`.
+
+Rewrite `h3` using `[inner_self_eq_zero]`. Conclude with `Subtype.ext h3`. Use `right`. Establish `hvU : v ∈ U` using `Submodule.starProjection_eq_self_iff.1 (by rw [ht, one_smul])`. Establish `hle : orbitClosure τ ι₁ v ≤ U`.
+
+Use `Submodule.topologicalClosure_minimal _ ?_ hUc` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hUinv a v hvU`. Rewrite using `[eq_top_iff]`.
+
+Introduce `w _`. Take `⟨u, hu, hwu⟩` from `hle w.2`. Establish `: u = w` using `Subtype.ext hwu`. Rewrite using `[← this]` and apply the resulting hypothesis.
+-/
 theorem isIrreducible_repW (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn : ‖v‖ = 1)
     (hι₁ : Continuous ι₁) : (repW τ ι₁ hι₁ v).IsIrreducible := by
   have hv0 : v ≠ 0 := by rintro rfl; simp at hvn
@@ -458,6 +629,9 @@ theorem isIrreducible_repW (hs : Splitting τ ι₁ ι₂ D) (hv : v ∈ D) (hvn
     have : u = w := Subtype.ext hwu
     rwa [← this]
 
+/- English proof (translation)
+Use `⟨hs.nontrivial, fun U hU hinv => window_irreducible hs U hU (fun a x hx => ?_) (fun b x hx => hinv b x hx)⟩` and prove the remaining obligations. Rewrite using `[hs.compr_eq]`. Simplify using `using U.smul_mem (hs.coeff a) hx`.
+-/
 theorem isIrreducible_repD (hs : Splitting τ ι₁ ι₂ D) (hι₂ : Continuous ι₂) :
     (repD hs hι₂).IsIrreducible := by
   refine ⟨hs.nontrivial, fun U hU hinv => window_irreducible hs U hU (fun a x hx => ?_)

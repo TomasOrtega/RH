@@ -8,6 +8,11 @@ open scoped MatrixOrder ComplexOrder
 
 variable {𝕜 : Type*} [RCLike 𝕜] {n : Type*} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `hp : (polarPos g).PosDef` using `polarPos_posDef g`. Establish `hH : (polarPos g).IsHermitian` using `hp.isHermitian`. Use `⟨⟨polarUnitary g, polarUnitary_mem g⟩ * hH.eigenvectorUnitary, star hH.eigenvectorUnitary, hH.eigenvalues, hp.eigenvalues_pos, ?_⟩` and prove the remaining obligations. Establish `hs` using `hH.spectral_theorem`. Rewrite `hs` using `[Unitary.conjStarAlgAut_apply]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hs]`. Use `_ = _ := by simp [Matrix.mul_assoc, Function.comp_def]`.
+-/
 theorem exists_KAK (g : GL n 𝕜) :
     ∃ k₁ k₂ : unitaryGroup n 𝕜, ∃ a : n → ℝ, (∀ i, 0 < a i) ∧
       (g : Matrix n n 𝕜) = (k₁ : Matrix n n 𝕜) * diagonal (fun i => (a i : 𝕜)) * k₂ := by

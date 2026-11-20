@@ -10,6 +10,9 @@ namespace Formalism.L2.G.EvLe
 
 open Formalism.L2.G.Cmp Formalism.L2.G.RelativeIndexFlags Formalism.L2.G.RelativeIndexFlags.Core
 
+/- English proof (translation)
+Introduce `i j hij`. Unfold `nuOf`. Conclude with `Int.toNat_le_toNat (by have := h hij; omega)`.
+-/
 theorem nuOf_anti_ev {m : ℕ} {lam : Fin (m + 1) → ℤ} (h : Antitone lam) : Antitone (nuOf lam) := by
   intro i j hij
   unfold nuOf
@@ -20,6 +23,13 @@ section Gen
 variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   (P : Places p O Kf)
 
+/- English proof (translation)
+Set `T : Fin (P.n' v) → Set (MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℂ)` to `fun s => (fun f => map (Int.castRingHom ℂ) f) '' (weyl ℤ (P.m + 1) (P.m + 1) le_rfl (nuOf (lamAt (P.lam0 v) s)) : Set (MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℤ))`. Establish `hM : ∀ s F, F ∈ (if Antitone (lamAt (P.lam0 v) s) then dualWeyl ℂ (P.m + 1) (P.m + 1) (nuOf (lamAt (P.lam0 v) s)) else ⊥) → F ∈ Submodule.span ℂ (T s)`. Introduce `s F hF`. Establish `ha` using `lamAt_anti (P.lam0 v) (P.dom v) s`. Rewrite `hF` using `[if_pos ha, ← Formalism.L2.G.Model.sw_weyl_eq ℂ (P.m + 1) (P.m + 1) le_rfl _ (nuOf_anti_ev ha), weyl_eq_span_int]`.
+
+Conclude with `hF`. Establish `hP` using `prodSpan (O := ℂ) (I := Fin (P.n' v)) (B := fun _ => MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℂ) (fun s => (blockEmb ℂ (S := Fin (P.n' v)) (k := P.m + 1) (n := P.m + 1) s).toLinearMap) T`. Unfold `Vsp tensorLat`. Use `(Submodule.span_mono ?_).trans (hP.le.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+
+Conclude with `⟨F, fun s => hM s _ (hF s), rfl⟩`. Introduce and unpack `_ ⟨F, hF, rfl⟩ choose f hf hfe using fun s => (Set.mem_image _ _ _).1 (hF s)`. Conclude with `⟨f, hf, Finset.prod_congr rfl fun s _ => by rw [← hfe s]; rfl⟩`.
+-/
 theorem vsp_le (v : Fin P.nV) :
     Vsp ℂ (P.lam0 v) ≤ Submodule.span ℂ {Y | ∃ f : Fin (P.n' v) → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℤ,
       (∀ s, f s ∈ weyl ℤ (P.m + 1) (P.m + 1) le_rfl (nuOf (lamAt (P.lam0 v) s))) ∧
@@ -44,6 +54,11 @@ theorem vsp_le (v : Fin P.nV) :
     choose f hf hfe using fun s => (Set.mem_image _ _ _).1 (hF s)
     exact ⟨f, hf, Finset.prod_congr rfl fun s _ => by rw [← hfe s]; rfl⟩
 
+/- English proof (translation)
+Set `T : ∀ v : Fin P.nV, Set (MvPolynomial (Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) ℂ)` to `fun v => {Y | ∃ f : Fin (P.n' v) → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℤ, (∀ s, f s ∈ weyl ℤ (P.m + 1) (P.m + 1) le_rfl (nuOf (lamAt (P.lam0 v) s))) ∧ Y = ∏ s, blockEmb ℂ s (map (Int.castRingHom ℂ) (f s))}`. Establish `hP` using `prodSpan (O := ℂ) (I := Fin P.nV) (B := fun v => MvPolynomial (Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) ℂ) (fun v => (rename (R := ℂ) (fun x : Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1)) => (⟨v, x⟩ : Var P))).toLinearMap) T`. Unfold `VtupR`. Use `(Submodule.span_mono ?_).trans (hP.le.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+
+Conclude with `⟨F, fun v => vsp_le P v (hF v), rfl⟩`. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Establish `hF' : ∀ v, ∃ f : Fin (P.n' v) → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℤ, (∀ s, f s ∈ weyl ℤ (P.m + 1) (P.m + 1) le_rfl (nuOf (lamAt (P.lam0 v) s))) ∧ F v = ∏ s, blockEmb ℂ s (map (Int.castRingHom ℂ) (f s))` using `hF`. Use `choose f hf hfe using hF'`. Conclude with `⟨f, hf, Finset.prod_congr rfl fun v _ => by rw [hfe v]; rfl⟩`.
+-/
 theorem vtup_le : VtupR P ℂ ≤ Submodule.span ℂ {X | ∃ f : ∀ v, Fin (P.n' v) → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℤ,
     (∀ v s, f v s ∈ weyl ℤ (P.m + 1) (P.m + 1) le_rfl (nuOf (lamAt (P.lam0 v) s))) ∧
       X = ∏ v, rename (fun x => (⟨v, x⟩ : Var P)) (∏ s, blockEmb ℂ s (map (Int.castRingHom ℂ) (f v s)))} := by
@@ -67,6 +82,11 @@ theorem vtup_le : VtupR P ℂ ≤ Submodule.span ℂ {X | ∃ f : ∀ v, Fin (P.
 
 variable {Tau : Type} [Fintype Tau] (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau)
 
+/- English proof (translation)
+Establish `hn : nAt P rfl pos (fun _ => (1 : GL (Fin (P.m + 1)) ℂ)) v s = 1`. Apply the tactic sequence `unfold nAt; split_ifs <;> simp`. Establish `hi : niAt P rfl pos (fun _ => (1 : GL (Fin (P.m + 1)) ℂ)) v s = 1`. Apply the tactic sequence `unfold niAt; split_ifs <;> simp`. Unfold `bl`.
+
+Rewrite using `[hn, hi, Matrix.det_one, _root_.one_zpow, one_smul, rowAct_one, MvPolynomial.map_id]`.
+-/
 theorem blockRowSubstitution_one (v : Fin P.nV) (s : Fin (P.n' v)) (f : MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℤ) :
     map (RingHom.id ℂ) (bl P rfl pos (fun _ => (1 : GL (Fin (P.m + 1)) ℂ)) v s f) = map (Int.castRingHom ℂ) f := by
   have hn : nAt P rfl pos (fun _ => (1 : GL (Fin (P.m + 1)) ℂ)) v s = 1 := by
@@ -76,6 +96,21 @@ theorem blockRowSubstitution_one (v : Fin P.nV) (s : Fin (P.n' v)) (f : MvPolyno
   unfold bl
   rw [hn, hi, Matrix.det_one, _root_.one_zpow, one_smul, rowAct_one, MvPolynomial.map_id]
 
+/- English proof (translation)
+Use `choose ft hft hev using fun x : Σ v : Fin P.nV, Fin (P.n' v) => (blk_ev P pos lam M (fun _ => 1) (RingHom.id ℂ) (fun m l _ => oddFact_pf ℤ m l) hw x).1 (f x.1 x.2) (hf x.1 x.2)`. Establish `hX : (∏ v, rename (fun x => (⟨v, x⟩ : Var P)) (∏ s, blockEmb ℂ s (map (Int.castRingHom ℂ) (f v s)))) = map (RingHom.id ℂ) (gen P rfl pos (fun _ => (1 : GL (Fin (P.m + 1)) ℂ)) f)`. Rewrite using `[map_gen]`. Simplify using `only [blockRowSubstitution_one]`. Establish `hM : (fun τ => (M τ : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ)) = mcOf M (RingHom.id ℂ)`.
+
+Use function extensionality and compare the values at `τ`. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `key : evC P rfl pos G (mcOf M (RingHom.id ℂ)) (map (RingHom.id ℂ) (gen P rfl pos (fun _ => 1) f)) = fnOf G (shiftOf lam) (kcOf M (fun _ => 1) (RingHom.id ℂ)) (ten fun τ => map (Int.castRingHom ℂ) (ft (pos.symm τ)))`. Use function extensionality and compare the values at `z`.
+
+Use `evC_gen P pos lam M (fun _ => 1) (RingHom.id ℂ) G f (fun τ => ft (pos.symm τ)) (fun x => ?_) z` and prove the remaining obligations. Use `show BlockRealisation P pos lam M (fun _ => 1) (RingHom.id ℂ) x (f x.1 x.2) (ft (pos.symm (pos x)))`. Rewrite using `[pos.symm_apply_apply]`. Conclude with `hev x`. Establish `hK : kcOf M (fun _ => 1) (RingHom.id ℂ) = fun τ => (M τ : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ)`.
+
+Use function extensionality and compare the values at `τ`. Use extensionality with `a b`. Simplify using `[kcOf]`. Establish `hP : ten (fun τ => map (Int.castRingHom ℂ) (ft (pos.symm τ))) ∈ CSpan lam`. Use `Submodule.subset_span ⟨_, fun τ => ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `h1` using `hft (pos.symm τ)`. Rewrite `h1` using `[pos.apply_symm_apply]`. Unfold `delSq at h1 ⊢`. Conclude with `map_mem_weyl le_rfl _ _ h1`. Establish `h0 : fnOf G (shiftOf lam) 1 (ten fun τ => map (Int.castRingHom ℂ) (ft (pos.symm τ))) ∈ ValC G lam` using `Submodule.mem_map_of_mem hP`.
+
+Establish `hu : ∀ τ, IsUnit ((M τ : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ)).det` using `fun τ => (Matrix.isUnit_iff_isUnit_det _).1 (M τ).isUnit`. Establish `h1` using `Formalism.MainNotions.G.CmpJ.PFormsCl.foValC_tr lam (fun τ => (M τ : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ)) hu h0`. Rewrite using `[hX, hM, key, hK]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [fnOf, Formalism.MainNotions.G.CmpJ.PFormsCl.foTr, LinearMap.coe_mk, AddHom.coe_mk, Pi.one_apply, Matrix.one_mul]`.
+-/
 theorem gen_mem (G : Tau → Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ) (M : Tau → GL (Fin (P.m + 1)) ℂ)
     (lam : Tau → DomWeight (P.m + 1)) (hw : WtTie P rfl pos lam)
     (f : ∀ v, Fin (P.n' v) → MvPolynomial (Fin (P.m + 1) × Fin (P.m + 1)) ℤ)
@@ -123,6 +158,13 @@ section Main
 variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   (P : Places p O Kf) {Tau : Type} [Fintype Tau] {n : ℕ}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Introduce `Q hQ`. Establish `hS` using `vtup_le P hQ`. Use `clear hQ`. Proceed by induction on `hS using Submodule.span_induction with`.
+
+Consider the case `mem X hX`. Take `⟨f, hf, rfl⟩` from `hX`. Conclude with `gen_mem P pos G M lam hw f hf`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem evC_le (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (G : Tau → Matrix (Fin n) (Fin n) ℂ)
     (M : Tau → GL (Fin n) ℂ) (lam : Tau → DomWeight n) (hw : WtTie P h pos lam) :
     ∀ Q ∈ VtupR P ℂ, evC P h pos G (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) Q ∈ ValC G lam := by
@@ -138,6 +180,9 @@ theorem evC_le (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau)
   | add a b _ _ ha hb => rw [map_add]; exact add_mem ha hb
   | smul c a _ ha => rw [map_smul]; exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+The claim follows from `Submodule.map_le_iff_le_comap.2 fun Q hQ => evC_le P h pos G M lam hw Q hQ`.
+-/
 theorem evValC_le (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (G : Tau → Matrix (Fin n) (Fin n) ℂ)
     (M : Tau → GL (Fin n) ℂ) (lam : Tau → DomWeight n) (hw : WtTie P h pos lam) :
     (VtupR P ℂ).map (evC P h pos G (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ))) ≤ ValC G lam :=

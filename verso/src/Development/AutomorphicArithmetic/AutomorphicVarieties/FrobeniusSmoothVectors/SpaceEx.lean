@@ -11,6 +11,11 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 section
 variable {H C : Type} [CommRing C] {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp [h']`. Consider the case `cons a L ih`. Rewrite using `[List.map_cons, List.prod_cons, ih, List.prod_cons]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← mul_assoc P Q, h, one_mul]`.
+-/
 private theorem conj_prod {R : Type} [Monoid R] (P Q : R) (h : P * Q = 1) (h' : Q * P = 1) (L : List R) :
     (L.map fun x => Q * x * P).prod = Q * L.prod * P := by
   induction L with
@@ -20,6 +25,11 @@ private theorem conj_prod {R : Type} [Monoid R] (P Q : R) (h : P * Q = 1) (h' : 
     simp only [mul_assoc]
     rw [← mul_assoc P Q, h, one_mul]
 
+/- English proof (translation)
+Establish `h' : Q * P = 1` using `mul_eq_one_comm.1 h`. Use `conj_prod P Q h h' (List.ofFn fun i => r (g i) - ψ i (g i) • (1 : Matrix (Fin n) (Fin n) C))` as an intermediate fact. Unfold `ordProd at ho ⊢`. Rewrite `this` using `[ho, mul_zero, zero_mul, List.map_ofFn]`. Rewrite using `[← this]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[mul_sub, sub_mul, h']`.
+-/
 private theorem ord_conj (r : H → Matrix (Fin n) (Fin n) C) (ψ : Fin n → H → C) (P Q : Matrix (Fin n) (Fin n) C)
     (h : P * Q = 1) (g : Fin n → H) (ho : ordProd r ψ g = 0) : ordProd (fun s => Q * r s * P) ψ g = 0 := by
   have h' : Q * P = 1 := mul_eq_one_comm.1 h
@@ -31,6 +41,13 @@ private theorem ord_conj (r : H → Matrix (Fin n) (Fin n) C) (ψ : Fin n → H 
   funext i
   simp [mul_sub, sub_mul, h']
 
+/- English proof (translation)
+Establish `e : ∀ j, T g₀ - ψ j g₀ • (1 : Matrix (Fin n) (Fin n) C) = diagonal fun i => d i - ψ j g₀` using `fun j => by`. Rewrite using `[hd]`. Use extensionality with `x y`. Apply the tactic sequence `by_cases h : x = y <;> simp [h, Matrix.one_apply]`. Establish `h` using `congrFun (congrFun (ho (Function.update (fun _ => g₀) a s)) a) b`.
+
+Establish `k : ∀ i j, i ≠ j → ∀ x, ((d i - ψ j g₀) * x = 0 ↔ x = 0) ∧ (x * (d i - ψ j g₀) = 0 ↔ x = 0)` using `fun i j hij x => ⟨(hu i j hij).mul_right_eq_zero, (hu i j hij).mul_left_eq_zero⟩`. Unfold `ordProd at h`. Break down `hn with rfl | rfl` into its components or cases. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp at hab <;>`. Apply the tactic sequence `simp [List.ofFn_succ, e, k, -Matrix.sub_apply] at h <;> exact h`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp at hab <;>`. Apply the tactic sequence `simp [List.ofFn_succ, e, k, -Matrix.sub_apply, ← mul_assoc] at h <;>`. Apply the tactic sequence `(try simp [k, mul_assoc, -Matrix.sub_apply] at h) <;> exact h`.
+-/
 private theorem tri_diag (hn : n = 2 ∨ n = 3) (T : H → Matrix (Fin n) (Fin n) C) (ψ : Fin n → H → C) (g₀ : H)
     (d : Fin n → C) (hd : T g₀ = diagonal d) (hu : ∀ i j, i ≠ j → IsUnit (d i - ψ j g₀))
     (ho : ∀ g, ordProd T ψ g = 0) (s : H) (a b : Fin n) (hab : b ≤ a) :
@@ -50,6 +67,13 @@ private theorem tri_diag (hn : n = 2 ∨ n = 3) (T : H → Matrix (Fin n) (Fin n
       simp [List.ofFn_succ, e, k, -Matrix.sub_apply, ← mul_assoc] at h <;>
       (try simp [k, mul_assoc, -Matrix.sub_apply] at h) <;> exact h
 
+/- English proof (translation)
+Establish `h' : Q * P = 1` using `mul_eq_one_comm.1 h`. Set `χ : Fin n → H →* C` to `fun i => { toFun := fun s => (Q * r s * P) i i map_one' := by simp [h'] map_mul' := fun s t => by`. Establish `: Q * r (s * t) * P = (Q * r s * P) * (Q * r t * P)`. Simplify using `only [map_mul, mul_assoc]`. Rewrite using `[← mul_assoc P Q, h, one_mul]`.
+
+Rewrite using `[this, Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun j _ hj => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hj with k | k` into its components or cases. Rewrite using `[ht s i j k, zero_mul]`. Rewrite using `[ht t j i k, mul_zero] }`.
+
+Conclude with `⟨fun i => (χ i).toHomUnits, fun _ _ => rfl, (ord_of_flag r _ ⟨⟨Q, P, h', h⟩, fun s => ⟨ht s, fun _ => rfl⟩⟩).1⟩`.
+-/
 private theorem ord_of_tri [Group H] (r : H →* Matrix (Fin n) (Fin n) C) (P Q : Matrix (Fin n) (Fin n) C)
     (h : P * Q = 1) (ht : ∀ s i j, j < i → (Q * r s * P) i j = 0) :
     ∃ ψ : Fin n → H →* Cˣ, (∀ i s, (ψ i s : C) = (Q * r s * P) i i) ∧
@@ -70,6 +94,9 @@ private theorem ord_of_tri [Group H] (r : H →* Matrix (Fin n) (Fin n) C) (P Q 
   exact ⟨fun i => (χ i).toHomUnits, fun _ _ => rfl,
     (ord_of_flag r _ ⟨⟨Q, P, h', h⟩, fun s => ⟨ht s, fun _ => rfl⟩⟩).1⟩
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Use `Filter.eventually_all.2 fun a => Filter.eventually_all.2 fun b => (h a b).eventually_eq x` as an intermediate fact. Use `filter_upwards [this] with y hy`. Conclude with `Matrix.ext hy`.
+-/
 private theorem lc_mat {K : Type} [TopologicalSpace H] (M : H → Matrix (Fin n) (Fin n) K)
     (h : ∀ i j, IsLocallyConstant fun s => M s i j) : IsLocallyConstant M := by
   refine (IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_
@@ -77,6 +104,9 @@ private theorem lc_mat {K : Type} [TopologicalSpace H] (M : H → Matrix (Fin n)
   filter_upwards [this] with y hy
   exact Matrix.ext hy
 
+/- English proof (translation)
+Introduce `N` and use `by have := (lc_mat (fun s => (Ideal.Quotient.mk (I ^ N)).mapMatrix (M s)) fun a b => h a b N).comp fun X => ((Ideal.Quotient.mk (I ^ N)).mapMatrix Q * X * (Ideal.Quotient.mk (I ^ N)).mapMatrix P) i j convert this using 1 funext s simp only [Function.comp_apply, ← map_mul] rfl`.
+-/
 private theorem cont_conj [TopologicalSpace H] (I : Ideal C) (M : H → Matrix (Fin n) (Fin n) C)
     (P Q : Matrix (Fin n) (Fin n) C) (h : ∀ i j, AdicCont I fun s => M s i j) (i j : Fin n) :
     AdicCont I fun s => (Q * M s * P) i j := fun N => by
@@ -89,6 +119,11 @@ private theorem cont_conj [TopologicalSpace H] (I : Ideal C) (M : H → Matrix (
 
 end
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : x ^ (w n i - w n j) = 1` using `by rw [_root_.zpow_sub, Units.ext h, mul_inv_cancel]`. Establish `h2 : w n i - w n j ∣ 2` using `by clear h h1 revert i j`. Apply the tactic sequence `rcases hn with rfl | rfl <;> decide`. Take `⟨m, hm⟩` from `h2`.
+
+Apply `hx` to reduce the goal to its premises. Rewrite using `[← _root_.zpow_natCast, Nat.cast_ofNat, hm, _root_.zpow_mul, h1, _root_.one_zpow]`.
+-/
 private theorem w_inj {k : Type} [Field k] {n : ℕ} (hn : n = 2 ∨ n = 3) (x : kˣ) (hx : x ^ 2 ≠ 1) (i j : Fin n)
     (hij : i ≠ j) : ((x ^ w n i : kˣ) : k) ≠ ((x ^ w n j : kˣ) : k) := by
   intro h
@@ -101,6 +136,15 @@ private theorem w_inj {k : Type} [Field k] {n : ℕ} (hn : n = 2 ∨ n = 3) (x :
   apply hx
   rw [← _root_.zpow_natCast, Nat.cast_ofNat, hm, _root_.zpow_mul, h1, _root_.one_zpow]
 
+/- English proof (translation)
+Use `haveI : HenselianLocalRing R := ⟨fun f hf a₀ h1 h2 => HenselianRing.is_henselian f hf a₀ h1 (h2.map _)⟩`. Establish `hu : ∀ x : R, res O R x ≠ 0 → IsUnit x` using `fun x hx => by`. Assume the negation of the conclusion as `h`. Conclude with `hx ((res_eq_zero_iff O R x).2 h)`. Establish `hM' : ∀ i j, res O R (M i j) = diagonal a i j` using `fun i j => congrFun (congrFun hM i) j`.
+
+Take `⟨P, d, h1, h2, -⟩` from `UpperTheory.V.AlgebraTools.henselDiag R (Fin n) M (fun i j h => by rw [← res_eq_zero_iff O, hM', diagonal_apply_ne _ h]) (fun i j h => hu _ (by rw [map_sub, hM', hM', diagonal_apply_eq, diagonal_apply_eq]; exact sub_ne_zero.2 (ha i j h)))`. Establish `h3 : (res O R).mapMatrix P = 1`. Rewrite using `[← map_one (res O R).mapMatrix, ← sub_eq_zero, ← map_sub]`. Conclude with `Matrix.ext fun i j => (res_eq_zero_iff O R _).2 (h1 i j)`. Establish `h4 : IsUnit P`.
+
+Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Apply `hu` to reduce the goal to its premises. Rewrite using `[AlgHom.map_det, h3, det_one]`. Conclude with `one_ne_zero`. Take `⟨Q, hQ⟩` from `h4.exists_right_inv`.
+
+Use `⟨P, Q, d, hQ, h3, ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (res O R).mapMatrix hQ` as an intermediate fact. Rewrite `this` using `[map_mul, h3, one_mul, map_one]`. Then use the resulting hypothesis. Rewrite using `[mul_assoc, h2, ← mul_assoc, mul_eq_one_comm.1 hQ, one_mul]`.
+-/
 private theorem diag_ex {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) R) (a : Fin n → ResidueField O) (ha : ∀ i j, i ≠ j → a i ≠ a j)
     (hM : (res O R).mapMatrix M = diagonal a) :
@@ -128,6 +172,45 @@ private theorem diag_ex {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [
     rwa [map_mul, h3, one_mul, map_one] at this
   · rw [mul_assoc, h2, ← mul_assoc, mul_eq_one_comm.1 hQ, one_mul]
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ n hF hn`. Take `⟨ρ₀, hb, hdg⟩` from `rbar (n := n) hF`. Establish `hr0 : ∀ g, ρ₀.r g = diagonal fun i => ((F.Ψ g ^ w n i : (ResidueField O)ˣ) : ResidueField O)` using `fun g => by`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Rewrite using `[diagonal_apply_eq]`. Conclude with `hb.1 g i`. Rewrite using `[diagonal_apply_ne _ h, hdg g i j h]`. Establish `hΨ : IsLocallyConstant F.Ψ`.
+
+Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Establish `: IsOpen ((fun y => x⁻¹ * y) ⁻¹' (F.Ψ.ker : Set F.Γ))` using `hF.Ψ_open.preimage (by fun_prop)`. Use `filter_upwards [this.mem_nhds (show x ∈ _ by simp)] with y hy`. Establish `h : F.Ψ (x⁻¹ * y) = 1` using `hy`. Rewrite `h` using `[map_mul, map_inv, inv_mul_eq_one, eq_comm]`. Then use the resulting hypothesis.
+
+Establish `hc : IsLocallyConstant ρ₀.r`. Rewrite using `[show (ρ₀.r : F.G0 → _) = _ from funext hr0]`. Conclude with `(hΨ.comp_continuous continuous_subtype_val).comp fun x => diagonal fun i => ((x ^ w n i : (ResidueField O)ˣ) : ResidueField O)`. Use `haveI : CompactSpace F.G0 := isCompact_iff_compactSpace.1 (F.del.ker.isClosed_of_isOpen hF.del_open).isCompact`. Take `⟨R, _, _, _, u, hu⟩` from `univ_lift l O F.G0 (Fin n) ρ₀.r (Pa.Det.phiSub l _ hF.del_open hF.phi) hc`.
+
+Establish `hres : ∀ g, (res O R).mapMatrix (u.hom g) = ρ₀.r g` using `fun g => Matrix.ext (u.red g)`. Use `choose g₀ hg₀ using hF.f3`. Use `choose P Q d hPQ hP hQ hd using fun v => diag_ex (u.hom (F.loc0 v (g₀ v))) _ (w_inj hn _ (hg₀ v)) ((hres _).trans (hr0 _))`. Set `T : ∀ v, F.Gv v → Matrix (Fin n) (Fin n) R` to `fun v s => Q v * u.hom (F.loc0 v s) * P v`. Establish `hT : ∀ v s, (res O R).mapMatrix (T v s) = ρ₀.r (F.loc0 v s)` using `fun v s => by`.
+
+Rewrite using `[map_mul, map_mul, hP, hQ, hres, one_mul, mul_one]`. Establish `hTd : ∀ v s i, res O R (T v s i i) = ((F.Ψ (F.loc v s) ^ w n i : (ResidueField O)ˣ) : ResidueField O)` using `fun v s i => (congrFun (congrFun (hT v s) i) i).trans (hb.1 _ i)`. Set `A : F.G0 → Matrix (Fin n) (Fin n) R` to `fun g => u.hom (F.star g) - Jmat R n * (u.hom g)ᵀ * Jmat R n`. Set `S : Set R` to `{x | (∃ g i j, x = A g i j) ∨ (∃ i j, i ≠ j ∧ x = (u.hom F.g0 - u.hom (F.star F.g0)) i j) ∨ ∃ v s i j, j < i ∧ x = T v s i j}`. Establish `hA : ∀ (C : Type) [CommRing C] [Algebra O C] (f : R →ₐ[O] C) (g : F.G0), f.mapMatrix (A g) = f.mapMatrix (u.hom (F.star g)) - Jmat C n * (f.mapMatrix (u.hom g))ᵀ * Jmat C n` using `fun C _ _ f g => by`.
+
+Establish `hJ : f.mapMatrix (Jmat R n) = Jmat C n` using `Jmat_map (f : R →+* C) n`. Rewrite using `[map_sub, map_mul, map_mul, hJ]`. Both sides reduce to the same expression. Establish `hI : ∀ (C : Type) [CommRing C] [Algebra O C] (f : R →ₐ[O] C) (ρ : NRep F n C), (∀ g, f.mapMatrix (u.hom g) = ρ.r g) → (∀ v s i j, j < i → f (T v s i j) = 0) → ∀ x ∈ Ideal.span S, f x = 0`. Introduce `C _ _ f ρ h1 h2`.
+
+Use `(Ideal.span_le (I := RingHom.ker f)).2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨g, i, j, rfl⟩ | ⟨i, j, h, rfl⟩ | ⟨v, s, i, j, h, rfl⟩)`. Use `hA C f g` as an intermediate fact. Rewrite `this` using `[h1, h1, ← ρ.pol, sub_self]`. Conclude with `congrFun (congrFun this i) j`.
+
+Use `ρ.diag i j h` as an intermediate fact. Rewrite `this` using `[← h1, ← h1, ← map_sub]`. Then use the resulting hypothesis. Conclude with `h2 v s i j h`. Establish `h0` using `hI _ (res O R) ρ₀ hres fun v s i j h => (congrFun (congrFun (hT v s) i) j).trans (hdg _ i j h.ne')`. Use `haveI : Nontrivial (R ⧸ Ideal.span S) := Ideal.Quotient.nontrivial_iff.2 fun e => by`.
+
+Simplify using `using h0 1 (e ▸ Submodule.mem_top)`. Set `p` to `Ideal.Quotient.mkₐ O (Ideal.span S)`. Use `haveI : IsCO O (R ⧸ Ideal.span S) := co_quot O R _ p (Ideal.Quotient.mkₐ_surjective O _)`. Establish `hp : ∀ x ∈ S, p x = 0` using `fun x hx => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span hx)`. Establish `hTf : ∀ (C : Type) [CommRing C] [Algebra O C] (f : R →ₐ[O] C) v s i j, (f.mapMatrix (Q v) * f.mapMatrix (u.hom (F.loc0 v s)) * f.mapMatrix (P v)) i j = f (T v s i j)` using `fun C _ _ f v s i j => by`.
+
+Rewrite using `[← map_mul, ← map_mul]`. Both sides reduce to the same expression. Establish `hPQf : ∀ (C : Type) [CommRing C] [Algebra O C] (f : R →ₐ[O] C) v, f.mapMatrix (P v) * f.mapMatrix (Q v) = 1` using `fun C _ _ f v => by rw [← map_mul, hPQ, map_one]`. Use `choose ψ hψ ho using fun v => ord_of_tri ((u.map p).hom.comp (F.loc0 v)) _ _ (hPQf _ p v) fun s i j h => (hTf _ p v s i j).trans (hp _ (Or.inr (Or.inr ⟨v, s, i, j, h, rfl⟩)))`. Establish `hψ' : ∀ v i s, (ψ v i s : R ⧸ Ideal.span S) = p (T v s i i)` using `fun v i s => (hψ v i s).trans (hTf _ p v s i i)`.
+
+Set `ρ : NRep F n (R ⧸ Ideal.span S)` to `{ r := (u.map p).hom ψ := ψ pol := fun g => sub_eq_zero.1 ((hA _ p g).symm.trans (Matrix.ext fun i j => hp _ (Or.inl ⟨g, i, j, rfl⟩))) diag := fun i j h => (map_sub p _ _).symm.trans (hp _ (Or.inr (Or.inl ⟨i, j, h, rfl⟩))) ord := ho }`. Use `⟨⟨R ⧸ Ideal.span S, ρ, ⟨⟨(u.map p).cont, fun v i => ?_⟩, ⟨fun g i => ?_, fun v i s => ?_⟩, fun g i j h => ?_⟩, fun C _ _ _ ρ' ⟨⟨c1, c2⟩, ⟨b1, b2⟩, b3⟩ => ?_⟩⟩` and prove the remaining obligations. Use `cont_conj _ (fun s => (u.map p).hom (F.loc0 v s)) (p.mapMatrix (P v)) (p.mapMatrix (Q v)) (fun a b N => ((u.map p).cont a b N).comp_continuous (hF.loc_cont v)) i i` as an intermediate fact. Conclude with `(funext (hψ v i)).symm ▸ this`. Conclude with `((u.map p).red g i i).trans (hb.1 g i)`.
+
+Use `show res O _ (ψ v i s : R ⧸ Ideal.span S) = _`. Rewrite using `[hψ', res_map, hTd]`. Both sides reduce to the same expression. Conclude with `((u.map p).red g i j).trans (hdg g i j h)`. Set `r' : Lift O ρ₀.r C` to `⟨ρ'.r, c1, fun g i j => by`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Conclude with `(b1 g i).trans (hb.1 g i).symm`. Conclude with `(b3 g i j h).trans (hdg g i j h).symm⟩`. Take `⟨f, hf, hfu⟩` from `(hu C).2 r' trivial`.
+
+Establish `hf' : ∀ g, f.mapMatrix (u.hom g) = ρ'.r g` using `fun g => congrArg (fun x : Lift O ρ₀.r C => x.hom g) hf`. Establish `key : ∀ v s a b, b ≤ a → (f.mapMatrix (T v s) - (ρ'.ψ v a s : C) • (1 : Matrix (Fin n) (Fin n) C)) a b = 0` using `fun v => by`. Use `tri_diag hn (fun s => f.mapMatrix (T v s)) (fun i s => (ρ'.ψ v i s : C)) (g₀ v) (fun i => f (d v i)) ?_ (fun i j h => ?_) fun g => ?_` and prove the remaining obligations. Use `show f.mapMatrix (Q v * _ * P v) = _`. Rewrite using `[hd, AlgHom.mapMatrix_apply, diagonal_map (map_zero f)]`.
+
+Assume the negation of the conclusion as `hne`. Establish `h1` using `(res_eq_zero_iff O C _).2 hne`. Establish `h2 : d v i = T v (g₀ v) i i` using `by show _ = (Q v * u.hom (F.loc0 v (g₀ v)) * P v : Matrix _ _ R) i i`. Rewrite using `[hd, diagonal_apply_eq]`. Rewrite `h1` using `[map_sub, res_map, h2, hTd, sub_eq_zero]`.
+
+Conclude with `w_inj hn _ (hg₀ v) i j h (h1.trans (b2 v j _))`. Use `ord_conj _ _ _ _ (hPQf C f v) g (ρ'.ord v g)` as an intermediate fact. Simplify `this` using `only [← hf', ← map_mul]`. Establish `k1` using `hI C f ρ' hf' fun v s i j h => by simpa [h.ne'] using key v s i j h.le`. Establish `k2 : ∀ v i s, f (T v s i i) = ρ'.ψ v i s` using `fun v i s => by simpa [sub_eq_zero] using key v s i i le_rfl`.
+
+Use `⟨Ideal.Quotient.liftₐ _ f k1, NRep.ext (MonoidHom.ext hf') ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v i`. Use extensionality with `s`. Rewrite using `[NRep.map_ψ, ← k2]`. Conclude with `congrArg (Ideal.Quotient.liftₐ _ f k1) (hψ' v i s)`.
+
+Establish `: g.comp p = f` using `hfu _ (Lift.ext (congrArg NRep.r hg))`. Conclude with `Ideal.Quotient.algHom_ext _ this`.
+-/
 theorem UpperTheory.V.Fr.space_ex :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → Nonempty (Space O F n) := by
   intro l _ O _ _ _ _ F C₀ n hF hn

@@ -56,6 +56,9 @@ def GlobW : Prop :=
 
 def Glue : Prop := ThetaEx → IdemLift → LocGlob → GlobW → PI.ScRefExists.Target
 
+/- English proof (translation)
+The claim follows from `h0 h1 h2 h3 h4`.
+-/
 theorem target_of_steps (h0 : Glue) (h1 : ThetaEx) (h2 : IdemLift) (h3 : LocGlob) (h4 : GlobW) :
     PI.ScRefExists.Target := h0 h1 h2 h3 h4
 

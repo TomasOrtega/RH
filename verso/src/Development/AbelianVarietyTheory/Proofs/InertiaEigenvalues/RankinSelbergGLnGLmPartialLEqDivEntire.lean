@@ -27,6 +27,43 @@ open scoped ENNReal ComplexConjugate ContDiff
 
 namespace GlobalTheory.RSnmUnf
 
+/- English proof (translation)
+Introduce `E _ _ _ n m σ σ' hm hmn hσ hσ' T hψ hT hT'`. Take `⟨m₀, rfl⟩ : ∃ m₀, m = m₀ + 1` from `⟨m - 1, by omega⟩`. Take `⟨r, rfl⟩ : ∃ r, n = m₀ + r + 1 + 1` from `⟨n - m₀ - 2, by omega⟩`. Take `⟨α, _ℓ, _Φ, _J, _η, π, _ω, _φ, hα, hπ, hω, hωc, _h1, _h2, _h3, _h4, _h5, _h6, _h7, hZ⟩` from `GlobalTheory.T.unfolded_theta_integral_eq_mul_schur_euler_product E (m₀ + r + 1 + 1) σ (by omega) hσ T hT`. Take `⟨β, _ℓ', _Φ', _J', _η', π', _ω', _φ', hβ, hπ', hω', hωc', _h1', _h2', _h3', _h4', _h5', _h6', _h7', hZ'⟩` from `GlobalTheory.T.unfolded_theta_integral_eq_mul_schur_euler_product E (m₀ + 1) σ' (by omega) hσ' T hT'`.
+
+Substitute `hπ hπ'` using the available equality. Establish `hu : π.IsUnitary` using `(CG.isUnitary_mk π).1 hσ`. Establish `hu' : π'.IsUnitary` using `(CG.isUnitary_mk π').1 hσ'`. Establish `hfd : ∀ a : ℕ, ∃ (μ : Measure (GA E a)) (_ : μ.IsHaarMeasure) (𝓕 : Set (GA E a)) (𝓕₀ : Set (GA E a)), IsFundamentalDomain (ratGL E a).range 𝓕 μ ∧ IsFundamentalDomain (GlobalTheory.CellDec.NE E a) 𝓕₀ μ`. Introduce `a`.
+
+Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.locallyCompactSpace_GA E a`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.t2Space_GA E a`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.secondCountableTopology_GA E a`. Use `haveI : DiscreteTopology (ratGL E a).range := GroundTheory.Automorphic.AdelicGLn.discreteTopology_rationalGL E a`. Establish `hsub : (GlobalTheory.CellDec.NE E a : Set (GA E a)) ⊆ ((ratGL E a).range : Set (GA E a))`.
+
+Introduce and unpack `_ ⟨u, -, rfl⟩`. Conclude with `⟨u, rfl⟩`. Use `haveI : DiscreteTopology (GlobalTheory.CellDec.NE E a) := DiscreteTopology.of_subset (inferInstance : DiscreteTopology ((ratGL E a).range : Set (GA E a))) hsub`. Take `⟨𝓕, -, -, h𝓕⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup (ratGL E a).range`. Take `⟨𝓕₀, -, -, h𝓕₀⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup (GlobalTheory.CellDec.NE E a)`.
+
+Conclude with `⟨Measure.haar, inferInstance, 𝓕, 𝓕₀, h𝓕 _, h𝓕₀ _⟩`. Take `⟨μ₁, hμ₁, 𝓕₁, -, h𝓕₁, -⟩` from `hfd (m₀ + r + 1 + 1)`. Take `⟨μ, hμ, 𝓕, 𝓕₀, h𝓕, h𝓕₀⟩` from `hfd (m₀ + 1)`. Establish `hfin : ∀ x : ℝ, 1 < x → GlobalTheory.RSPole.eulD (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} => Ideal.absNorm w.1.asIdeal) (fun w i => ((α w i : ℂˣ) : ℂ)) x ≠ ⊤` using `fun x hx => by`. Take `⟨H, -, -, h⟩` from `hZ μ₁ 𝓕₁ h𝓕₁`.
+
+Conclude with `(h x hx).2.1`. Establish `hfin' : ∀ x : ℝ, 1 < x → GlobalTheory.RSPole.eulD (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} => Ideal.absNorm w.1.asIdeal) (fun w i => ((β w i : ℂˣ) : ℂ)) x ≠ ⊤` using `fun x hx => by`. Take `⟨H, -, -, h⟩` from `hZ' μ 𝓕 h𝓕`. Conclude with `(h x hx).2.1`. Set `αe : HeightOneSpectrum (𝓞 E) → Fin (m₀ + r + 1 + 1) → ℂˣ` to `fun w => if h : w ∉ T then α ⟨w, h⟩ else fun _ => 1`.
+
+Set `βe : HeightOneSpectrum (𝓞 E) → Fin (m₀ + 1) → ℂˣ` to `fun w => if h : w ∉ T then β ⟨w, h⟩ else fun _ => 1`. Establish `hαe : ∀ w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}, αe w.1 = α w` using `fun w => dif_pos w.2`. Establish `hβe : ∀ w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}, βe w.1 = β w` using `fun w => dif_pos w.2`. Establish `hsatσ : ∀ {a : ℕ} (ρ : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)), (∃ B, (CG.mk ρ).HasSat w B) → HasSatGL w (ρ.locRep w) (sat (CG.mk ρ) w)` using `fun ρ w h => by`. Rewrite using `[← CG.hasSat_mk, sat, dif_pos h]`.
+
+Conclude with `h.choose_spec`. Establish `hsat : ∀ w ∉ T, HasSatGL w (π.locRep w) (Finset.univ.val.map (αe w))` using `fun w hw => by`. Rewrite using `[hαe ⟨w, hw⟩, hα ⟨w, hw⟩]`. Conclude with `hsatσ π w (hT w hw)`. Establish `hsat' : ∀ w ∉ T, HasSatGL w (π'.locRep w) (Finset.univ.val.map (βe w))` using `fun w hw => by`.
+
+Rewrite using `[hβe ⟨w, hw⟩, hβ ⟨w, hw⟩]`. Conclude with `hsatσ π' w (hT' w hw)`. Take `⟨φ, φ', κ, hφ, hφ', v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13⟩` from `GlobalTheory.T.exists_matchedWhittakerVectors_shintaniRelations E m₀ r T hψ π π' hu hu' αe βe hsat hsat'`. Take `⟨F, hF, hC⟩` from `GlobalTheory.T.unfolded_rankinSelberg_cellIntegral_matchedVectors E m₀ r T hψ π π' hu hu' αe βe φ φ' κ hφ hφ' v1 v2 v3 v4 v5 v6 v7 v8 v9 v10 v11 v12 v13`. Take `⟨c, hc, hU⟩` from `GlobalTheory.T.rankinSelbergGLnGLm_unfolding_to_mirabolic E m₀ r μ`.
+
+Take `⟨f, t, hfm, htm, hf0, hfi, hfpos, hR, hid⟩` from `hC μ 𝓕₀ h𝓕₀`. Take `⟨hdiff, hreal⟩` from `GlobalTheory.exp_integral_entire_real_pos (μ.restrict 𝓕₀) f t hfm htm hf0 hfi hR`. Establish `hlt : m₀ + 1 < m₀ + r + 1 + 1` using `by omega`. Establish `hent` using `GlobalTheory.RSnmGood.rsIntegral_entire_good (by omega) hlt (GlobalTheory.RSnmGood.mspanR_le_goodFns (by omega) hu hφ) (GlobalTheory.RSnmGood.mspanR_le_goodFns (by omega) hu' hφ') hF μ h𝓕`. Use `⟨fun s => ∫ h in 𝓕, GlobalTheory.RSnm.rsIntegrand (m₀ + 1) hlt.le F φ φ' s h ∂μ, fun s => (c : ℂ) * ∫ g in 𝓕₀, (f g : ℂ) * Complex.exp (s * t g) ∂μ, fun s => (hent.2 s).differentiableAt, (differentiable_const _).mul hdiff, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x`. Take `⟨him, hre⟩` from `hreal x`. Establish `hre'` using `hre hfpos`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`.
+
+Conclude with `mul_pos hc hre'`. Simplify using `only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero, him, mul_zero]`. Introduce `x hx`. Establish `hq : ∀ w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}, 2 ≤ Ideal.absNorm w.1.asIdeal` using `fun w => HeightOneSpectrum.one_lt_absNorm w.1`. Establish `e1 : (fun (w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}) (i : Fin (m₀ + r + 1 + 1)) => ((αe w.1 i : ℂˣ) : ℂ)) = fun w i => ((α w i : ℂˣ) : ℂ)` using `by funext w i; rw [hαe w]`.
+
+Establish `e1' : (fun (w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T}) (i : Fin (m₀ + 1)) => ((βe w.1 i : ℂˣ) : ℂ)) = fun w i => ((β w i : ℂˣ) : ℂ)` using `by funext w i; rw [hβe w]`. Establish `hf1` using `hfin x hx`. Establish `hf1'` using `hfin' x hx`. Rewrite `hf1` using `[← e1]`. Rewrite `hf1'` using `[← e1']`.
+
+Take `⟨dd1, dd2, eq⟩` from `hid x hx hf1 hf1'`. Take `⟨-, eU⟩` from `hU π π' hu hu' φ φ' hφ hφ' F hF 𝓕 𝓕₀ h𝓕 h𝓕₀ x dd1 dd2`. Rewrite `hf1` using `[e1]`. Rewrite `hf1'` using `[e1']`. Take `⟨P, hP, hS⟩` from `GlobalTheory.T.eulerProduct_rankinSelbergGLnGLm_dirichletSeries (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} => Ideal.absNorm w.1.asIdeal) (by omega : m₀ + 1 ≤ m₀ + r + 1 + 1) α β x hx hq hf1 hf1'`.
+
+Establish `hsum : (∑' l : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} →₀ (Fin (m₀ + 1) → ℤ), l.prod fun w v => GlobalTheory.RSnmUnf.rsTermNM (Ideal.absNorm w.1.asIdeal) (fun i => (αe w.1 i : ℂ)) (fun i => (βe w.1 i : ℂ)) x v) = P`. Simplify using `only [hαe, hβe]`. Conclude with `hS.tsum_eq`. Establish `hJ : (∫ g in 𝓕₀, (f g : ℂ) * Complex.exp ((x : ℂ) * t g) ∂μ) ≠ 0`. Introduce `h0`.
+
+Use `(hreal x).2 hfpos` as an intermediate fact. Rewrite `this` using `[h0, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Establish `hval : (∫ h in 𝓕, GlobalTheory.RSnm.rsIntegrand (m₀ + 1) hlt.le F φ φ' (x : ℂ) h ∂μ) / ((c : ℂ) * ∫ g in 𝓕₀, (f g : ℂ) * Complex.exp ((x : ℂ) * t g) ∂μ) = P`. Rewrite using `[eU, eq, hsum]`.
+
+Establish `hc0 : (c : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hc.ne'`. Clear the denominators using the available nonvanishing facts. Establish `hP' : HasProd (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} => locL (Ideal.absNorm w.1.asIdeal) (sat (CG.mk π) w.1) ((sat (CG.mk π') w.1).map (Units.map (starRingEnd ℂ).toMonoidHom)) (x : ℂ)) P`. Simplify using `only [← hα, ← hβ]`. Conclude with `hP`.
+
+Simplify `hP'` using `only [hval]`.
+-/
 theorem rs_nm_partialL_eq_div : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n m : ℕ) (σ : CG E n) (σ' : CG E m), 1 ≤ m → m < n → σ.IsUnitary → σ'.IsUnitary → ∀ T : Finset (HeightOneSpectrum (𝓞 E)), (∀ w ∉ T, ∀ x : w.adicCompletion E, (∀ y ∈ Ov E w, GlobalTheory.JSW.psiLoc w (x * y) = 1) ↔ x ∈ Ov E w) → UnrOutside T σ → UnrOutside T σ' → ∃ F H : ℂ → ℂ, Differentiable ℂ F ∧ Differentiable ℂ H ∧ (∀ x : ℝ, 0 < (H x).re ∧ (H x).im = 0) ∧ ∀ x : ℝ, 1 < x → HasProd (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} => locL (Ideal.absNorm w.1.asIdeal) (sat σ w.1) ((sat σ' w.1).map (Units.map (starRingEnd ℂ).toMonoidHom)) (x : ℂ)) (F x / H x) := by
   intro E _ _ _ n m σ σ' hm hmn hσ hσ' T hψ hT hT'
   obtain ⟨m₀, rfl⟩ : ∃ m₀, m = m₀ + 1 := ⟨m - 1, by omega⟩

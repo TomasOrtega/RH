@@ -21,6 +21,9 @@ open IsLocalRing MvPowerSeries GlobalTheory.SqZero
 
 variable {O : Type} [CommRing O] [IsLocalRing O]
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by simp only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one] exact isUnit_or_isUnit_one_sub_self _`.
+-/
 theorem isLocalRing_trivSqZeroExt (M : Type) [AddCommGroup M] [Module O M] [Module Oᵐᵒᵖ M] [IsCentralScalar O M] :
     IsLocalRing (TrivSqZeroExt O M) :=
   IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by
@@ -41,21 +44,33 @@ def dirPt {n : ℕ} (e : MvPowerSeries (Fin n) O →ₐ[O] O) (c : Fin n → O) 
     (fun _ _ => TrivSqZeroExt.inr_mul_inr _ _ _)
 
 omit [IsLocalRing O] in
+/- English proof (translation)
+The claim follows from `add_zero (e a)`.
+-/
 theorem dirPt_fst {n : ℕ} (e : MvPowerSeries (Fin n) O →ₐ[O] O) (c : Fin n → O) (a : MvPowerSeries (Fin n) O) :
     (dirPt e c a).fst = e a := add_zero (e a)
 
 omit [IsLocalRing O] in
+/- English proof (translation)
+The claim follows from `(zero_add _).trans ((TrivSqZeroExt.snd_inr _ _).trans (by simp))`.
+-/
 theorem dirPt_snd {n : ℕ} (e : MvPowerSeries (Fin n) O →ₐ[O] O) (c : Fin n → O) (a : MvPowerSeries (Fin n) O) :
     (dirPt e c a).snd = ∑ j, c j * e (pderiv O j a) :=
   (zero_add _).trans ((TrivSqZeroExt.snd_inr _ _).trans (by simp))
 
 omit [IsLocalRing O] in
+/- English proof (translation)
+Simplify using `[dirPt_snd, pderiv_X, Pi.single_apply, apply_ite e]`.
+-/
 theorem dirPt_snd_X {n : ℕ} (e : MvPowerSeries (Fin n) O →ₐ[O] O) (c : Fin n → O) (i : Fin n) :
     (dirPt e c (X i)).snd = c i := by
   simp [dirPt_snd, pderiv_X, Pi.single_apply, apply_ite e]
 
 variable [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
 
+/- English proof (translation)
+Use `isLocalRing_trivSqZeroExt (O := O) O` as an intermediate fact. Establish `: Module.Finite O (DualNumber O)` using `inferInstanceAs (Module.Finite O (O × O))`. Use `GlobalTheory.FormalIsogeny.isAdicComplete_maximalIdeal_of_finite O (DualNumber O)` as an intermediate fact. Establish `h : ψ = dirPt e fun j => (ψ (X j)).snd` using `mvPowerSeries_algHom_ext_of_isHausdorff (maximalIdeal (DualNumber O)) (fun i h => he i (hψ _ ▸ TrivSqZeroExt.isUnit_iff_isUnit_fst.1 h)) (fun i => TrivSqZeroExt.ext (by rw [hψ, dirPt_fst]) (by rw [dirPt_snd_X]))`. Conclude with `(congrArg (fun q => (q a).snd) h).trans (dirPt_snd _ _ _)`.
+-/
 theorem snd_eq_sum {n : ℕ} (e : MvPowerSeries (Fin n) O →ₐ[O] O) (he : ∀ i, e (X i) ∈ maximalIdeal O)
     (ψ : MvPowerSeries (Fin n) O →ₐ[O] DualNumber O) (hψ : ∀ a, (ψ a).fst = e a) (a : MvPowerSeries (Fin n) O) :
     (ψ a).snd = ∑ j, (ψ (X j)).snd * e (pderiv O j a) := by
@@ -69,6 +84,9 @@ theorem snd_eq_sum {n : ℕ} (e : MvPowerSeries (Fin n) O →ₐ[O] O) (he : ∀
   exact (congrArg (fun q => (q a).snd) h).trans (dirPt_snd _ _ _)
 
 omit [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] in
+/- English proof (translation)
+Use `((IsLocalRing.local_hom_TFAE _).out 0 3).2 fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `algHom_sub_constantCoeff_mem e he g`. Establish `h2` using `(FormalIsogeny.mem_maximalIdeal_iff_constantCoeff (g := g)).1 hg`. Simplify using `using add_mem h1 h2`.
+-/
 theorem isLocalHom_of_X_mem {n : ℕ} (e : MvPowerSeries (Fin n) O →ₐ[O] O) (he : ∀ i, e (X i) ∈ maximalIdeal O) :
     IsLocalHom e.toRingHom := by
   refine ((IsLocalRing.local_hom_TFAE _).out 0 3).2 fun g hg => ?_
@@ -92,6 +110,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
   {G : Over (Spec (CommRingCat.of O))} [GrpObj G] [IsCommMonObj G] {n : ℕ} {v : Fin n → (epsR O ⟶ G)}
 
+/- English proof (translation)
+Establish `hz : ∀ {T T' : Type} [CommRing T] [Algebra O T] [CommRing T'] [Algebra O T'] (φ : T →ₐ[O] T'), spMap φ ≫ toUnit _ ≫ z = toUnit _ ≫ z` using `fun φ => by`. Rewrite using `[← Category.assoc, comp_toUnit]`. Establish `hfst : ∀ a, (χ a).fst = u a`. Use `fun a => (AlgHom.congr_fun (mvPowerSeries_algHom_ext_of_isHausdorff (maximalIdeal O) hu0 (inj u ((TrivSqZeroExt.fstHom O O _).comp χ) ?_)) a).symm` and prove the remaining obligations. Rewrite using `[← spMap_comp, Category.assoc, hχ, MonObj.comp_mul, hz, comp_lieExp, lieExp_eq_one hv.1 _ (fun i => by rfl), mul_one, hu]`.
+
+Set `φ : (Fin n → O) → (MvPowerSeries (Fin n) O →ₐ[O] DualNumber O)` to `fun c => (vecTo (inlS O O) (fun i => inr (c i)) (fun _ _ => TrivSqZeroExt.inr_mul_inr _ _ _)).comp χ`. Establish `hφ : ∀ c, spMap (φ c) ≫ j = (toUnit _ ≫ z) * tanExp v c` using `fun c => by`. Rewrite using `[← spMap_comp, Category.assoc, hχ, MonObj.comp_mul, hz, comp_lieExp]`. Conclude with `congrArg _ (lieExp_congr _ (fun i => vecTo_single _ _ _ i) _ _)`. Establish `hφ1 : ∀ c a, (φ c a).fst = u a` using `fun c a => by`.
+
+Simplify using `[φ, vecTo_apply, TrivSqZeroExt.fst_sum, hfst]`. Establish `hφ2 : ∀ c a, (φ c a).snd = ∑ k, (χ a).snd k * c k` using `fun c a => by`. Simplify using `[φ, vecTo_apply, TrivSqZeroExt.snd_sum, mul_comm]`. Take `⟨-, hsurj⟩` from `isLieBasisOver_self hv`. Establish `hM : ∀ l : Fin n, ∃ c : Fin n → O, ∀ i, ∑ k, (χ (X i)).snd k * c k = (Pi.single l 1 : Fin n → O) i`.
+
+Introduce `l`. Establish `h1 : (fstS O O).comp (dirPt u (Pi.single l 1)) = u` using `AlgHom.ext fun a => dirPt_fst _ _ a`. Take `⟨c, hc⟩` from `hsurj ((toUnit _ ≫ z)⁻¹ * (spMap (dirPt u (Pi.single l 1)) ≫ j)) (by`. Rewrite using `[IsTanOver, MonObj.comp_mul, GrpObj.comp_inv, hz, ← Category.assoc, spMap_comp, h1, hu, inv_mul_cancel])`. Establish `h2` using `inj (dirPt u (Pi.single l 1)) (φ c) (by rw [hφ, ← hc, mul_inv_cancel_left])`.
+
+Conclude with `⟨c, fun i => by rw [← hφ2, ← h2, dirPt_snd_X]⟩`. Use `choose M hM using hM`. Use `⟨Matrix.of fun i k => (χ (X i)).snd k, ?_, fun k => ⟨φ (Pi.single k 1), ?_, fun a => ?_⟩⟩` and prove the remaining obligations. Use `Matrix.isUnit_det_of_right_inverse (B := Matrix.of fun k l => M l k) (Matrix.ext fun i l => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Conclude with `(hM l i).trans (Pi.single_apply _ _ _)`. Rewrite using `[hφ, tanExp_single hv.1]`. Rewrite using `[snd_eq_sum u hu0 _ (hφ1 _)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hφ2, mul_comm]`.
+
+Simplify using `[Pi.single_apply]`.
+-/
 theorem exists_matrix (hv : IsLieBasis v) (j : sp (R₀ := O) (MvPowerSeries (Fin n) O) ⟶ G)
     (inj : ∀ {T : Type} [CommRing T] [Algebra O T] (φ ψ : MvPowerSeries (Fin n) O →ₐ[O] T),
       spMap φ ≫ j = spMap ψ ≫ j → ∀ i, φ (X i) = ψ (X i))
@@ -151,6 +184,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.AbLaw
 open GlobalTheory.KeyKa
 
+/- English proof (translation)
+Introduce `O _ _ _ _ x θ z e hθ ⟨V, t, hV, ht⟩ hlift he hz`. Set `j : Chart.sp (R₀` to `O) (MvPowerSeries (Fin x.P.g) O) ⟶ x.P.A := Over.homMk θ hθ`. Establish `hloc` using `GlobalTheory.JacSer.isLocalHom_of_X_mem e he`. Establish `hcl : z.left (IsLocalRing.closedPoint O) = θ (IsLocalRing.closedPoint (MvPowerSeries (Fin x.P.g) O))`. Rewrite using `[← hz, ← IsLocalRing.comap_closedPoint e.toRingHom]`.
+
+Both sides reduce to the same expression. Establish `hu : Chart.spMap e ≫ j = toUnit _ ≫ z`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `e1 : (toUnit (Chart.sp (R₀` using `O) O)).left = 𝟙 (Sp O) := by`. Rewrite using `[Over.toUnit_left]`.
+
+Conclude with `Spec.map_id _`. Rewrite using `[Over.comp_left, Over.comp_left, e1]`. Conclude with `hz.trans (Category.id_comp _).symm`. Use `GlobalTheory.JacSer.isLocalRing_trivSqZeroExt (O := O) (Fin x.P.g → O)` as an intermediate fact. Establish `: Module.Finite O (TrivSqZeroExt O (Fin x.P.g → O))` using `inferInstanceAs (Module.Finite O (O × (Fin x.P.g → O)))`.
+
+Use `GlobalTheory.FormalIsogeny.isAdicComplete_maximalIdeal_of_finite O (TrivSqZeroExt O (Fin x.P.g → O))` as an intermediate fact. Set `w : Chart.sp (R₀` to `O) (TrivSqZeroExt O (Fin x.P.g → O)) ⟶ x.P.A := (toUnit _ ≫ z) * GlobalTheory.SqZero.lieExp x.v (fun i => TrivSqZeroExt.inr (Pi.single i 1)) (fun _ => TrivSqZeroExt.inr_mul_inr _ _ _)`. Take `⟨χ, -, hχ⟩` from `hlift (TrivSqZeroExt O (Fin x.P.g → O)) w.left (Over.w w) (by`. Establish `h1 : IsLocalHom (TrivSqZeroExt.fstHom O O (Fin x.P.g → O)).toRingHom` using `⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ha⟩`. Establish `h2 : Chart.spMap (TrivSqZeroExt.fstHom O O (Fin x.P.g → O)) ≫ w = Chart.spMap e ≫ j`.
+
+Rewrite using `[hu, MonObj.comp_mul, GlobalTheory.SqZero.comp_lieExp, GlobalTheory.SqZero.lieExp_eq_one x.basis.1 _ (fun i => by rfl), _root_.mul_one, ← Category.assoc, comp_toUnit]`. Establish `h3` using `congrArg (fun q => q.left (IsLocalRing.closedPoint O)) h2`. Rewrite using `[← IsLocalRing.comap_closedPoint (TrivSqZeroExt.fstHom O O (Fin x.P.g → O)).toRingHom, ← IsLocalRing.comap_closedPoint e.toRingHom]`. Conclude with `h3)`. Take `⟨C, hC, hφ⟩` from `GlobalTheory.JacSer.exists_matrix x.basis j (fun φ ψ h i => by`.
+
+Establish `h1 : spMap φ.toRingHom ≫ θ = spMap ψ.toRingHom ≫ θ` using `congrArg (·.left) h`. Establish `h2` using `EtBaseChange.valT_spMap φ.toRingHom θ hV (t i)`. Rewrite `h2` using `[h1, EtBaseChange.valT_spMap ψ.toRingHom θ hV, ht]`. Conclude with `h2.symm) z e he hu χ (Over.OverMorphism.ext hχ)`. Use `⟨hC.unit, fun n s c hc => ?_⟩` and prove the remaining obligations.
+
+Establish `hθc : ⊤ ≤ θ ⁻¹ᵁ x.P.L.U c` using `fun p _ => ((IsLocalRing.specializes_closedPoint p).map θ.continuous).mem_open (x.P.L.U c).isOpen (hcl ▸ hc (x := IsLocalRing.closedPoint O) trivial)`. Rewrite using `[IsUnit.unit_spec, _root_.mul_comm, AlgHom.map_det, ← Matrix.det_mul]`. Use `congrArg Matrix.det (Matrix.ext fun i k => ?_)` and prove the remaining obligations. Take `⟨φ, h1, h2⟩` from `hφ k`. Rewrite using `[Matrix.mul_apply, Matrix.of_apply]`.
+
+Use `Eq.trans (congrArg TrivSqZeroExt.snd ?_) (h2 _)` and prove the remaining obligations. Conclude with `(congrArg (fun q : epsR O ⟶ x.P.A => valT (T := DualNumber O) q.left (x.P.L.U c) ((s i).f c)) h1.symm).trans (EtBaseChange.valT_spMap φ.toRingHom θ hθc _)`.
+-/
 theorem GlobalTheory.KeyKa.jac_eq_unit_mul_det_pderiv : ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (x : KeyIn O) (θ : Sp (MvPowerSeries (Fin x.P.g) O) ⟶ x.P.A.left) (z : Pt x) (e : (MvPowerSeries (Fin x.P.g) O) →ₐ[O] O), θ ≫ x.P.A.hom = spMap (algebraMap O (MvPowerSeries (Fin x.P.g) O)) → (∃ (V : x.P.A.left.Opens) (t : Fin x.P.g → Γ(x.P.A.left, V)), ⊤ ≤ θ ⁻¹ᵁ V ∧ ∀ i, valT (T := (MvPowerSeries (Fin x.P.g) O)) θ V (t i) = MvPowerSeries.X i) → (∀ (T : Type) [CommRing T] [IsLocalRing T] [Algebra O T] [IsAdicComplete (IsLocalRing.maximalIdeal T) T] (w : Sp T ⟶ x.P.A.left), w ≫ x.P.A.hom = spMap (algebraMap O T) → w (IsLocalRing.closedPoint T) = θ (IsLocalRing.closedPoint (MvPowerSeries (Fin x.P.g) O)) → ∃ e : (MvPowerSeries (Fin x.P.g) O) →ₐ[O] T, (∀ i, e (MvPowerSeries.X i) ∈ IsLocalRing.maximalIdeal T) ∧ spMap e.toRingHom ≫ θ = w) → (∀ i, e (MvPowerSeries.X i) ∈ IsLocalRing.maximalIdeal O) → spMap e.toRingHom ≫ θ = z.left → ∃ u : Oˣ, ∀ (n : ℕ) (s : Fin x.P.g → RR x n) (c : x.P.L.ι), ⊤ ≤ z.left ⁻¹ᵁ x.P.L.U c → jac x s z c = u * e (Matrix.of fun i j => MvPowerSeries.pderiv O j (valT (T := (MvPowerSeries (Fin x.P.g) O)) θ (x.P.L.U c) ((s i).f c))).det := by
   intro O _ _ _ _ x θ z e hθ ⟨V, t, hV, ht⟩ hlift he hz
   let j : Chart.sp (R₀ := O) (MvPowerSeries (Fin x.P.g) O) ⟶ x.P.A := Over.homMk θ hθ

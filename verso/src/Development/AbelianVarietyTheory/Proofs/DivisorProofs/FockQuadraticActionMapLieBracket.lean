@@ -6,6 +6,13 @@ open Formalism.BasicNotions.TH
 
 namespace GlobalTheory.FockLie
 
+/- English proof (translation)
+Establish `h1 : b j * a k = a k * b j + if j = k then (1 : A) else 0`. Rewrite using `[← (h j k).1]`. Normalize the expressions using the abelian group laws. Establish `h2 : b l * a i = a i * b l + if l = i then (1 : A) else 0`. Rewrite using `[← (h l i).1]`.
+
+Normalize the expressions using the abelian group laws. Establish `e1 : (a i * b j) * (a k * b l) = a i * (b j * a k) * b l` using `by simp only [mul_assoc]`. Establish `e2 : (a k * b l) * (a i * b j) = a k * (b l * a i) * b j` using `by simp only [mul_assoc]`. Establish `e3 : a i * (a k * b j) * b l = a k * (a i * b l) * b j`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e1, e2, h1, h2, mul_add, mul_add, add_mul, add_mul, e3]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem weyl_comm {A : Type*} [Ring A] [Algebra ℂ A] {ι : Type*} [DecidableEq ι] (a b : ι → A)
     (h : ∀ l m, (b l * a m - a m * b l = if l = m then (1 : A) else 0) ∧
       b l * b m = b m * b l ∧ a l * a m = a m * a l) (i j k l : ι) :
@@ -24,6 +31,15 @@ theorem weyl_comm {A : Type*} [Ring A] [Algebra ℂ A] {ι : Type*} [DecidableEq
   rw [e1, e2, h1, h2, mul_add, mul_add, add_mul, add_mul, e3]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h` using `weyl_comm (raiB : Ln p q r s → _) lowB (GlobalTheory.fock_letters_ccr p q r s) i j k l`. Establish `e : omE i j * omE k l - omE k l * omE i j = (raiB i * lowB j) * (raiB k * lowB l) - (raiB k * lowB l) * (raiB i * lowB j)`. Simplify using `only [omE]`. Apply the tactic sequence `split_ifs <;>`. Apply the tactic sequence `simp only [add_zero, mul_add, add_mul, smul_mul_assoc, mul_smul_comm, one_mul, mul_one] <;>`.
+
+Use `module`. Rewrite using `[e, h]`. Simplify using `only [omE]`. Apply the tactic sequence `by_cases h1 : j = k <;> by_cases h2 : l = i`. Substitute `h1` using the available equality.
+
+Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Establish `h3 : ¬ i = l` using `fun h => h2 h.symm`. Simplify using `[h1, h2, h3]`. Establish `h3 : ¬ k = j` using `fun h => h1 h.symm`.
+
+Simplify using `[h1, h2, h3]`. Simplify using `[h1, h2]`.
+-/
 theorem omE_comm {p q r s : ℕ} (i j k l : Ln p q r s) :
     omE i j * omE k l - omE k l * omE i j =
       (if j = k then omE i l else 0) - (if l = i then omE k j else 0) := by
@@ -44,11 +60,17 @@ theorem omE_comm {p q r s : ℕ} (i j k l : Ln p q r s) :
     simp [h1, h2, h3]
   · simp [h1, h2]
 
+/- English proof (translation)
+Rewrite using `[omAct_apply]`. Simplify using `[Matrix.single_apply, ite_and, Finset.sum_ite_eq, ite_smul]`.
+-/
 theorem omAct_single {p q r s : ℕ} (i j : Ln p q r s) (x : ℂ) :
     omAct p q r s (Matrix.single i j x) = x • omE i j := by
   rw [omAct_apply]
   simp [Matrix.single_apply, ite_and, Finset.sum_ite_eq, ite_smul]
 
+/- English proof (translation)
+Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same, omAct_single, if_pos rfl]`. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ h, if_neg h, map_zero, smul_zero]`.
+-/
 theorem omAct_single_mul {p q r s : ℕ} (i j k l : Ln p q r s) (x y : ℂ) :
     omAct p q r s (Matrix.single i j x * Matrix.single k l y) =
       (x * y) • (if j = k then omE i l else 0) := by
@@ -57,6 +79,15 @@ theorem omAct_single_mul {p q r s : ℕ} (i j k l : Ln p q r s) (x y : ℂ) :
     rw [Matrix.single_mul_single_same, omAct_single, if_pos rfl]
   · rw [Matrix.single_mul_single_of_ne _ _ _ _ h, if_neg h, map_zero, smul_zero]
 
+/- English proof (translation)
+Proceed by induction on `Y using Matrix.induction_on' with`. Consider the case `h_zero => simp`. Consider the case `h_add Y Y' hY hY'`. Establish `: (Y + Y') * Z - Z * (Y + Y') = (Y * Z - Z * Y) + (Y' * Z - Z * Y')`. Rewrite using `[add_mul, mul_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this, map_add, hY, hY', map_add, add_mul, mul_add]`. Normalize the expressions using the abelian group laws. Consider the case `h_std_basis i j x`. Proceed by induction on `Z using Matrix.induction_on' with`.
+
+Consider the case `h_zero => simp`. Consider the case `h_add Z Z' hZ hZ'`. Establish `: Matrix.single i j x * (Z + Z') - (Z + Z') * Matrix.single i j x = (Matrix.single i j x * Z - Z * Matrix.single i j x) + (Matrix.single i j x * Z' - Z' * Matrix.single i j x)`. Rewrite using `[add_mul, mul_add]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[this, map_add, hZ, hZ', map_add, add_mul, mul_add]`. Normalize the expressions using the abelian group laws. Consider the case `h_std_basis k l y`. Rewrite using `[map_sub, omAct_single_mul, omAct_single_mul, omAct_single, omAct_single, smul_mul_smul_comm, smul_mul_smul_comm, mul_comm y x, ← smul_sub, ← smul_sub, omE_comm]`.
+-/
 theorem omAct_lie (p q r s : ℕ) (Y Z : Matrix (Ln p q r s) (Ln p q r s) ℂ) :
     omAct p q r s (Y * Z - Z * Y) =
       omAct p q r s Y * omAct p q r s Z - omAct p q r s Z * omAct p q r s Y := by

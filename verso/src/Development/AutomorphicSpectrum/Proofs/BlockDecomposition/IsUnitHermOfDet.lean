@@ -12,6 +12,9 @@ section Alg
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem sigR_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R')
     (σ : E →ₐ[F] E) (x : R ⊗[F] E) :
     sigR R' σ (Algebra.TensorProduct.map f (AlgHom.id F E) x) =
@@ -29,6 +32,9 @@ def hermMap {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'
     simp only [Matrix.map_apply]
     rw [sigR_map, h]⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a b`. Simplify using `[hermMap]`.
+-/
 theorem hermMap_sub {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R')
     (σ : E →ₐ[F] E) {n : ℕ} (S T : HermR R σ n) :
     hermMap f σ (S - T) = hermMap f σ S - hermMap f σ T := by
@@ -36,6 +42,9 @@ theorem hermMap_sub {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Alge
   funext a b
   simp [hermMap]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a b`. Simplify using `[hermMap, HeckeCharacterZeroLocus.SiegelWeilU.hermOf, HeckeCharacterZeroLocus.SiegelWeilU.inclR]`.
+-/
 theorem hermMap_hermOf {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R')
     (σ : E →ₐ[F] E) {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b) :
     hermMap f σ (HeckeCharacterZeroLocus.SiegelWeilU.hermOf R σ T hT) = HeckeCharacterZeroLocus.SiegelWeilU.hermOf R' σ T hT := by
@@ -43,6 +52,13 @@ theorem hermMap_hermOf {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [A
   funext a b
   simp [hermMap, HeckeCharacterZeroLocus.SiegelWeilU.hermOf, HeckeCharacterZeroLocus.SiegelWeilU.inclR]
 
+/- English proof (translation)
+Establish `h2 : ∀ z : R ⊗[F] E, sigR R σ (sigR R σ z) = z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, hσ]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `h3 : ∀ i j, sigR R σ (JR R J i j) = JR R J j i`. Introduce `i j`. Simplify using `[sigR, JR, inclR, hJ j i]`. Simplify using `only [hR, Formalism.UG.hform, map_sum, map_mul, h2, h3]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sigR_hR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin M → R ⊗[F] E) :
     sigR R σ (hR R σ J y x) = hR R σ J x y := by
@@ -60,6 +76,9 @@ theorem sigR_hR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (hσ 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, map_sum, map_mul, sigR_map]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[JR, inclR]`.
+-/
 theorem hermMap_hR {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R')
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (x y : Fin M → R ⊗[F] E) :
     Algebra.TensorProduct.map f (AlgHom.id F E) (hR R σ J x y) =
@@ -75,6 +94,9 @@ section Cm
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2 τ, hCM.2.2.2 τ]`. Simplify using the standard rewrite rules.
+-/
 theorem sig_invol {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) (e : E) : σ (σ e) = e := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
@@ -85,6 +107,9 @@ def gramH {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin
     (R : Type) [CommRing R] [Algebra F R] {n : ℕ} (X : Fin n → Fin M → R ⊗[F] E) : HermR R σ n :=
   ⟨gramR R σ J X, fun a c => sigR_hR R σ (sig_invol hCM) hJ.1 (X a) (X c)⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a c`. Conclude with `hermMap_hR f σ J (X a) (X c)`.
+-/
 theorem hermMap_gramH {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : IsHermND σ J) {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R')
     {n : ℕ} (X : Fin n → Fin M → R ⊗[F] E) :
@@ -94,6 +119,9 @@ theorem hermMap_gramH {σ : E →ₐ[F] E} (hCM : IsCMExt F E σ) {M : ℕ} {J :
   funext a c
   exact hermMap_hR f σ J (X a) (X c)
 
+/- English proof (translation)
+Establish `h : (HeckeCharacterZeroLocus.SiegelWeilU.hermOf R σ T hT : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det = inclR R T.det` using `((inclR R).map_det T).symm`. Rewrite using `[h]`. Conclude with `(IsUnit.mk0 _ hd).map (inclR R)`.
+-/
 theorem isUnit_hermOf_det (R : Type) [CommRing R] [Algebra F R] [Nontrivial (R ⊗[F] E)] (σ : E →ₐ[F] E) {n : ℕ}
     (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b) (hd : T.det ≠ 0) :
     IsUnit (HeckeCharacterZeroLocus.SiegelWeilU.hermOf R σ T hT : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det := by

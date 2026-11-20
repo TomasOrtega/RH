@@ -8,6 +8,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbDual
 
+/- English proof (translation)
+Establish `c : cls P hP = cls _ (pull_isLB h.isLB (lift (fst A B) (snd A B ≫ x)).left)` using `(cls_eq_iff _ _).2 e`. Establish `key : ∀ (Y : Over S) (a : Y ⟶ A) (t : Y ⟶ B), evc hP a t = evc h.isLB a (t ≫ x)`. Introduce `Y a t`. Rewrite using `[evc, c, cls_ev h.isLB, pull_evc, lift_fst, lift_snd_assoc]`. Establish `iso : ∀ (T : Over S) (M : LB (A ⊗ T).left) (hM : M.IsLB) (w : T ⟶ B), LBIso M (ev P (fst A T) (snd A T ≫ w)) ↔ LBIso M (ev P' (fst A T) (snd A T ≫ w ≫ x))`.
+
+Introduce `T M hM w`. Rewrite using `[← cls_eq_iff hM (pull_isLB hP _), ← cls_eq_iff hM (pull_isLB h.isLB _), cls_ev hP, cls_ev h.isLB, key, Category.assoc]`. Use `⟨hP, (isAdditive_iff hP).2 fun Y a a' t ↦ ?_, (triv_ev_iff hP _ _).2 ?_, fun T M hM hM' ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[key, key, key]`. Conclude with `(isAdditive_iff h.isLB).1 h.additive Y a a' (t ≫ x)`.
+
+Rewrite using `[key, MonObj.one_comp]`. Conclude with `(triv_ev_iff h.isLB _ _).1 h.zero`. Take `⟨z, hz, hu⟩` from `h.univ T M hM hM'`. Use `⟨z ≫ inv x, (iso T M hM _).2 ?_, fun w hw ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, IsIso.inv_hom_id, Category.comp_id]` and apply the resulting hypothesis.
+
+Rewrite using `[← hu _ ((iso T M hM w).1 hw), Category.assoc, IsIso.hom_inv_id, Category.comp_id]`.
+-/
 theorem isDual_of_iso (S : Scheme.{0}) (A B B' : Over S) [GrpObj A] [GrpObj B] [GrpObj B']
     (P : LB (A ⊗ B).left) (P' : LB (A ⊗ B').left) (h : IsDual A B' P') (hP : P.IsLB) (x : B ⟶ B') (hx : IsIso x)
     (hm : IsMonHom x) (e : LBIso P (ev P' (fst A B) (snd A B ≫ x))) : IsDual A B P := by
@@ -31,6 +40,9 @@ theorem isDual_of_iso (S : Scheme.{0}) (A B B' : Over S) [GrpObj A] [GrpObj B] [
     · rwa [Category.assoc, IsIso.inv_hom_id, Category.comp_id]
     · rw [← hu _ ((iso T M hM w).1 hw), Category.assoc, IsIso.hom_inv_id, Category.comp_id]
 
+/- English proof (translation)
+The claim follows from `fun S A B B' _ _ _ P P' h hP x hx hm e ↦ isDual_of_iso S A B B' P P' h hP x hx hm e`.
+-/
 theorem transport : ∀ (S : Scheme.{0}) (A B B' : Over S) [GrpObj A] [GrpObj B] [GrpObj B'] (P : LB (A ⊗ B).left) (P' : LB (A ⊗ B').left), IsDual A B' P' → P.IsLB → ∀ x : B ⟶ B', IsIso x → IsMonHom x → LBIso P (ev P' (fst A B) (snd A B ≫ x)) → IsDual A B P :=
   fun S A B B' _ _ _ P P' h hP x hx hm e ↦ isDual_of_iso S A B B' P P' h hP x hx hm e
 

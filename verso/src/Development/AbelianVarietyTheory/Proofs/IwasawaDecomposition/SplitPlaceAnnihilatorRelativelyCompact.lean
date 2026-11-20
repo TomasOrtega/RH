@@ -15,6 +15,11 @@ open GlobalTheory.IdemModTwo
 
 open Classical in
 
+/- English proof (translation)
+Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F)))` using `Filter.le_principal_iff.2 (Set.finite_singleton v).compl_mem_cofinite`. Set `f : v.adicCompletion F → Πʳ w : HeightOneSpectrum (𝓞 F), [w.adicCompletion F, w.adicCompletionIntegers F]_[Filter.principal ({v}ᶜ : Set _)]` to `fun x => ⟨Pi.single (M := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) v x, by`. Introduce `w hw`. Establish `hw' : w ≠ v` using `hw`. Simplify using `only [Set.mem_ofPred_eq, Pi.single_eq_of_ne hw', SetLike.mem_coe]`.
+
+Conclude with `zero_mem _⟩`. Establish `hf : Continuous f` using `RestrictedProduct.continuous_rng_of_principal.2 (continuous_single v)`. Conclude with `(RestrictedProduct.continuous_inclusion hS).comp hf`.
+-/
 theorem continuous_singleV (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (singleV F v) := by
   have hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F))) :=
@@ -29,6 +34,11 @@ theorem continuous_singleV (F : Type) [Field F] [NumberField F] (v : HeightOneSp
   have hf : Continuous f := RestrictedProduct.continuous_rng_of_principal.2 (continuous_single v)
   exact (RestrictedProduct.continuous_inclusion hS).comp hf
 
+/- English proof (translation)
+Establish `h1 : fj D (singleV D.host.F v x) * e * (fj D (singleV D.host.F v y) * e) = fj D (singleV D.host.F v (x * y)) * e`. Rewrite using `[mul_mul_mul_comm, he.1, ← map_mul, singleV_mul, GlobalTheory.SplitIdem.evalV_singleV_same]`. Establish `h2` using `GlobalTheory.FockCompare.SymplVal.trace_AE D (fj D (singleV D.host.F v (x * y)) * e)`. Rewrite `h2` using `[map_mul (cA D), cA_fj, ← mul_add, he.2.2, ← map_mul (fj D), singleV_mul, GlobalTheory.SplitIdem.evalV_singleV_same, mul_one]`. Rewrite using `[h1]`.
+
+Conclude with `tmul_one_inj (F := D.host.F) (E := D.host.E) h2`.
+-/
 theorem trace_split {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D} (he : SplitAt D v e)
     (x y : Fv D.host.F v) :
     Algebra.trace (AF D.host.F) (AE D) (fj D (singleV D.host.F v x) * e * (fj D (singleV D.host.F v y) * e)) =
@@ -41,6 +51,21 @@ theorem trace_split {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D} 
   rw [h1]
   exact tmul_one_inj (F := D.host.F) (E := D.host.E) h2
 
+/- English proof (translation)
+Introduce `D ψ hψ e hε V hV`. Take `⟨v, he⟩` from `(isSplitIdem_iff e).1 hε`. Take `⟨y, hy⟩` from `hψ v`. Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`.
+
+Establish `: ProperSpace (Fv D.host.F v)` using `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion D.host.F v`. Set `j : Fv D.host.F v → AE D` to `fun x => fj D (singleV D.host.F v x) * e`. Establish `hj : Continuous j`. Establish `h1 : Continuous (algebraMap (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AF D.host.F) (AE D))`. Establish `h2 : Continuous fun x : Fv D.host.F v => pairA D.host.F 0 (singleV D.host.F v x)` using `Continuous.prodMk continuous_const (continuous_singleV D.host.F v)`.
+
+Conclude with `(h1.comp h2).mul continuous_const`. Establish `hj0 : j 0 = 0`. Establish `h0 : singleV D.host.F v 0 = 0`. Rewrite using `[← sub_self (0 : Fv D.host.F v), singleV_sub, sub_self]`. Simplify using `only [j, h0, map_zero, zero_mul]`.
+
+Establish `hV' : j ⁻¹' V ∈ nhds (0 : Fv D.host.F v)` using `hj.continuousAt.preimage_mem_nhds (by rwa [hj0])`. Take `⟨r, hr, hball⟩` from `Metric.mem_nhds_iff.1 hV'`. Use `⟨j '' Metric.closedBall 0 (‖y‖ / r), (isCompact_closedBall _ _).image hj, fun a ha hs => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `he.exists_scalar a`. Rewrite `hx` using `[ha]`.
+
+Use `⟨x, ?_, hx.symm⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[mem_closedBall_zero_iff, not_le]`. Establish `hxpos : 0 < ‖x‖` using `lt_of_le_of_lt (div_nonneg (norm_nonneg _) hr.le) hn`. Establish `hx0 : x ≠ 0` using `norm_pos_iff.1 hxpos`.
+
+Establish `hmem : y / x ∈ Metric.ball (0 : Fv D.host.F v) r`. Rewrite using `[mem_ball_zero_iff, norm_div, div_lt_iff₀ hxpos]`. Rewrite `hn` using `[div_lt_iff₀ hr]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `hs (j (y / x)) (hball hmem) (by show e * (_ * e) = _ * e`.
+
+Rewrite using `[mul_left_comm, he.1])`. Rewrite `h` using `[hx]`. Express the relevant statement in the definitionally equal form `ψ (Algebra.trace _ _ (_ * (_ * e))) = 1 at h`. Rewrite `h` using `[trace_split he, mul_div_cancel₀ _ hx0]`. Conclude with `hy h`.
+-/
 theorem annihilator_subset_compact : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), (∀ v, ∃ y, psiV D.host.F ψ v y ≠ 1) → ∀ ε : AE D, IsSplitIdem D ε → ∀ V ∈ nhds (0 : AE D), ∃ C : Set (AE D), IsCompact C ∧ ∀ a, ε * a = a → (∀ s ∈ V, ε * s = s → ψ (Algebra.trace (AF D.host.F) (AE D) (a * s)) = 1) → a ∈ C := by
   intro D ψ hψ e hε V hV
   obtain ⟨v, he⟩ := (isSplitIdem_iff e).1 hε

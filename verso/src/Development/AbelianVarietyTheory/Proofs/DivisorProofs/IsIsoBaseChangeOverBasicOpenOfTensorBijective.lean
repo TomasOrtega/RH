@@ -9,6 +9,13 @@ noncomputable section
 
 namespace GlobalTheory.Mum.LocIso
 
+/- English proof (translation)
+Set `e : W ≅ i.opensRange.toScheme` to `IsOpenImmersion.isoOfRangeEq i i.opensRange.ι (by simp)`. Establish `he : e.hom ≫ i.opensRange.ι = i` using `IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _`. Establish `hR : IsPullback (π.resLE i.opensRange (π ⁻¹ᵁ i.opensRange) le_rfl) (π ⁻¹ᵁ i.opensRange).ι i.opensRange.ι π`. Rewrite using `[Scheme.Hom.resLE_eq_morphismRestrict]`. Conclude with `isPullback_morphismRestrict π _`.
+
+Establish `hW : IsPullback (p ≫ e.hom) k i.opensRange.ι π`. Apply the tactic sequence `refine IsPullback.of_iso h₁.flip (Iso.refl _) e (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp [he]`. Set `φ` to `IsPullback.isoIsPullback _ _ hW hR`. Use `IsPullback.of_iso h₂ φ e (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(IsPullback.isoIsPullback_hom_fst _ _ hW hR).symm`.
+
+Rewrite using `[Iso.refl_hom, Category.comp_id, ← Category.assoc, IsPullback.isoIsPullback_hom_snd]`. Simplify using `[← he]`. Simplify using the standard rewrite rules.
+-/
 theorem isPullback_resLE_opensRange {W W' Y Z T S : Scheme.{0}} (π : Z ⟶ Y) (s : Z ⟶ T) (b : Y ⟶ S)
     (c : T ⟶ S) (i : W ⟶ Y) [IsOpenImmersion i] (k : W' ⟶ Z) (p : W' ⟶ W)
     (h₁ : IsPullback k p π i) (h₂ : IsPullback p (k ≫ s) (i ≫ b) c) :
@@ -28,6 +35,19 @@ theorem isPullback_resLE_opensRange {W W' Y Z T S : Scheme.{0}} (π : Z ⟶ Y) (
   · simp [← he]
   · simp
 
+/- English proof (translation)
+Use `set Φ := Algebra.TensorProduct.lift C.val (IsScalarTower.toAlgHom R R' C') fun _ _ => Commute.all _ _ with hΦdef`. Use `letI : Algebra (TensorProduct R C R') (Localization.Away (algebraMap C C' (f * g))) := ((algebraMap C' _).comp Φ.toRingHom).toAlgebra`. Establish `hΦ : ∀ c : C, Φ (c ⊗ₜ[R] (1 : R')) = algebraMap C C' c` using `fun c => by simp [Φ]`. Establish `halg : ∀ t, algebraMap (TensorProduct R C R') (Localization.Away (algebraMap C C' (f * g))) t = algebraMap C' _ (Φ t)` using `fun t => rfl`. Establish `hpow : ∀ n : ℕ, ((f * g) ⊗ₜ[R] (1 : R')) ^ n = ((g ^ n) ⊗ₜ[R] (1 : R')) * ((f ^ n) ⊗ₜ[R] (1 : R'))`.
+
+Introduce `n`. Rewrite using `[Algebra.TensorProduct.tmul_pow, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_pow, one_pow, _root_.mul_one, _root_.mul_comm (g ^ n)]`. Use `(isLocalization_iff _ _).mpr ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Rewrite using `[halg, map_pow, hΦ, map_pow]`.
+
+Conclude with `(IsLocalization.Away.algebraMap_isUnit _).pow n`. Introduce `z`. Take `⟨⟨a, ⟨_, m, rfl⟩⟩, hz⟩` from `IsLocalization.surj (Submonoid.powers (algebraMap C C' (f * g))) z`. Take `⟨k, t, ht⟩` from `hcok a`. Use `⟨⟨t * ((g ^ k) ⊗ₜ[R] (1 : R')), ⟨((f * g) ⊗ₜ[R] (1 : R')) ^ (m + k), m + k, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[halg, halg, map_pow Φ, hΦ, map_mul Φ, hΦ, ht, pow_add, map_mul (algebraMap C' _), ← _root_.mul_assoc, hz, ← map_mul (algebraMap C' _)]`. Use `congrArg (algebraMap C' _) ?_` and prove the remaining obligations. Establish `hco : ∀ c : C, algebraMap C C' c = (c : C')` using `fun _ => rfl`. Simplify using `only [hco, MulMemClass.coe_mul, SubmonoidClass.coe_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `x y hxy`. Rewrite `hxy` using `[halg, halg]`. Take `⟨⟨_, m, rfl⟩, hm⟩` from `IsLocalization.exists_of_eq (M := Submonoid.powers (algebraMap C C' (f * g))) hxy`. Establish `h0 : Φ (((f * g) ⊗ₜ[R] (1 : R')) ^ m * (x - y)) = 0`. Rewrite using `[map_mul, map_pow, hΦ, map_sub, mul_sub]`.
+
+Conclude with `sub_eq_zero.mpr hm`. Take `⟨n, hn⟩` from `hker _ h0`. Use `⟨⟨((f * g) ⊗ₜ[R] (1 : R')) ^ (n + m), n + m, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((f * g) ⊗ₜ[R] (1 : R')) ^ (n + m) * x = ((f * g) ⊗ₜ[R] (1 : R')) ^ (n + m) * y`. Rewrite using `[← sub_eq_zero, ← mul_sub, pow_add, hpow, _root_.mul_assoc, _root_.mul_assoc, hn, mul_zero]`.
+-/
 theorem isLocalization_tensor (R R' C' : Type) [CommRing R] [CommRing R'] [CommRing C'] [Algebra R R']
     [Algebra R C'] [Algebra R' C'] [IsScalarTower R R' C'] (C : Subalgebra R C') (f g : C)
     (hcok : ∀ x : C', ∃ n : ℕ, (f : C') ^ n * x ∈ Set.range (Algebra.TensorProduct.lift C.val
@@ -72,6 +92,31 @@ theorem isLocalization_tensor (R R' C' : Type) [CommRing R] [CommRing R'] [CommR
     change ((f * g) ⊗ₜ[R] (1 : R')) ^ (n + m) * x = ((f * g) ⊗ₜ[R] (1 : R')) ^ (n + m) * y
     rw [← sub_eq_zero, ← mul_sub, pow_add, hpow, _root_.mul_assoc, _root_.mul_assoc, hn, mul_zero]
 
+/- English proof (translation)
+Introduce `R R' _ _ _ X Z π s hX C' _ _ _ _ C j l _ hP hj hl f g hcok hker hsm q hf hg`. Set `A` to `Localization.Away (f * g)`. Set `A'` to `Localization.Away (algebraMap C C' (f * g))`. Set `φ : A →+* A'` to `IsLocalization.Away.map A A' (algebraMap C C') (f * g)`. Establish `hφ : φ.comp (algebraMap C A) = (algebraMap C' A').comp (algebraMap C C')` using `IsLocalization.map_comp _`.
+
+Establish `hLoc : IsPushout (CommRingCat.ofHom (algebraMap C C')) (CommRingCat.ofHom (algebraMap C A)) (CommRingCat.ofHom (algebraMap C' A')) (CommRingCat.ofHom φ)`. Establish `: IsLocalization ((Submonoid.powers (f * g)).map (algebraMap C C')) A'`. Rewrite using `[Submonoid.map_powers]`. Use `infer_instance`. Conclude with `CommRingCat.isPushout_of_isLocalization _ _ hφ (Submonoid.powers (f * g))`.
+
+Use `haveI : IsOpenImmersion (spMap (algebraMap C A)) := IsOpenImmersion.of_isLocalization (f * g)`. Establish `h₁ : IsPullback (spMap (algebraMap C' A') ≫ j) (spMap φ) π (spMap (algebraMap C A) ≫ l)` using `(isPullback_SpecMap_of_isPushout _ _ _ _ hLoc).paste_horiz hP`. Establish `hRing : IsPushout (CommRingCat.ofHom (algebraMap R A)) (CommRingCat.ofHom (algebraMap R R')) (CommRingCat.ofHom φ) (CommRingCat.ofHom (algebraMap R' A'))`. Set `Φ` to `Algebra.TensorProduct.lift C.val (IsScalarTower.toAlgHom R R' C') fun _ _ => Commute.all _ _`. Use `letI : Algebra (TensorProduct R C R') A' := ((algebraMap C' A').comp Φ.toRingHom).toAlgebra`.
+
+Establish `hL` using `isLocalization_tensor R R' C' C f g hcok hker`. Establish `Q1` using `CommRingCat.isPushout_tensorProduct R C R'`. Establish `: IsLocalization ((Submonoid.powers (f * g)).map (Algebra.TensorProduct.includeLeftRingHom : C →+* TensorProduct R C R')) A'`. Rewrite using `[Submonoid.map_powers]`. Conclude with `hL`.
+
+Establish `H : φ.comp (algebraMap C A) = (algebraMap (TensorProduct R C R') A').comp Algebra.TensorProduct.includeLeftRingHom`. Rewrite using `[hφ]`. Use extensionality with `c`. Simplify using `[RingHom.algebraMap_toAlgebra, Φ]`. Establish `Q2` using `CommRingCat.isPushout_of_isLocalization (S := TensorProduct R C R') (Rₘ := A) (Sₘ := A') Algebra.TensorProduct.includeLeftRingHom φ H (Submonoid.powers (f * g))`.
+
+Establish `Q` using `(Q1.flip.paste_vert Q2).flip`. Use `Q using 1` and compare the differences between its conclusion and the goal. Use extensionality with `c`. Simplify using `[← IsScalarTower.algebraMap_apply]`. Use extensionality with `r`.
+
+Simplify using `[RingHom.algebraMap_toAlgebra, Φ, ← IsScalarTower.algebraMap_apply]`. Establish `hs : (spMap (algebraMap C' A') ≫ j) ≫ s = spMap (algebraMap R' A')`. Rewrite using `[Category.assoc, hj, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Establish `hb : (spMap (algebraMap C A) ≫ l) ≫ X.hom = spMap (algebraMap R A)`. Rewrite using `[Category.assoc, hl, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`.
+
+Establish `h₂ : IsPullback (spMap φ) ((spMap (algebraMap C' A') ≫ j) ≫ s) ((spMap (algebraMap C A) ≫ l) ≫ X.hom) (spMap (algebraMap R R'))`. Rewrite using `[hs, hb]`. Conclude with `isPullback_SpecMap_of_isPushout _ _ _ _ hRing`. Establish `hG` using `isPullback_resLE_opensRange π s X.hom (spMap (algebraMap R R')) _ _ _ h₁ h₂`. Use `⟨(spMap (algebraMap C A) ≫ l).opensRange, ?_, isAffineOpen_opensRange _, ?_, ?_⟩` and prove the remaining obligations.
+
+Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : q ∈ Set.range (PrimeSpectrum.comap (algebraMap C A)) := by`. Rewrite using `[PrimeSpectrum.localization_away_comap_range A (f * g)]`. Conclude with `fun h => (q.isPrime.mem_or_mem h).elim hf hg`. Use `⟨w, ?_⟩` and prove the remaining obligations. Use `first`.
+
+Consider the case `exact (Scheme.Hom.comp_apply _ _ _).trans (congrArg l hw)`. Consider the case `exact (Scheme.comp_base_apply _ _ _).trans (congrArg l hw)`. Consider the case `exact congrArg l hw`. Set `B` to `Localization.Away (algebraMap C (Localization.Away g) f) haveI : Algebra.Smooth R B := Algebra.Smooth.comp R (Localization.Away g) B haveI : Algebra.Smooth R A := Algebra.Smooth.of_equiv ((IsLocalization.algEquiv (Submonoid.powers (f * g)) B A).restrictScalars R) haveI : Smooth ( …`. Set `e` to `IsOpenImmersion.isoOfRangeEq (spMap (algebraMap C A) ≫ l) (spMap (algebraMap C A) ≫ l).opensRange.ι (by simp)`.
+
+Establish `hfac : e.hom ≫ (spMap (algebraMap C A) ≫ l).opensRange.ι = spMap (algebraMap C A) ≫ l` using `IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _`. Establish `: (spMap (algebraMap C A) ≫ l).opensRange.ι ≫ X.hom = e.inv ≫ spMap (algebraMap R A)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Use `infer_instance`.
+
+Use `(inferInstance : IsIso hG.isoPullback.hom)` and compare the differences between its conclusion and the goal. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(pullback.lift_fst _ _ _).trans hG.isoPullback_hom_fst.symm`. Conclude with `(pullback.lift_snd _ _ _).trans hG.isoPullback_hom_snd.symm`.
+-/
 theorem exists_smooth_basicOpen_iso : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (X : Over (Sp R)) (Z : Scheme.{0}) (π : Z ⟶ X.left) (s : Z ⟶ Sp R') (hX : π ≫ X.hom = s ≫ spMap (algebraMap R R')) (C' : Type) [CommRing C'] [Algebra R C'] [Algebra R' C'] [IsScalarTower R R' C'] (C : Subalgebra R C') (j : Sp C' ⟶ Z) (l : Sp C ⟶ X.left) [IsOpenImmersion l], IsPullback j (spMap (algebraMap C C')) π l → j ≫ s = spMap (algebraMap R' C') → l ≫ X.hom = spMap (algebraMap R C) → ∀ f g : C, (∀ x : C', ∃ n : ℕ, (f : C') ^ n * x ∈ Set.range (Algebra.TensorProduct.lift C.val (IsScalarTower.toAlgHom R R' C') fun _ _ => Commute.all _ _)) → (∀ t : TensorProduct R C R', (Algebra.TensorProduct.lift C.val (IsScalarTower.toAlgHom R R' C') fun _ _ => Commute.all _ _) t = 0 → ∃ n : ℕ, ((f ^ n) ⊗ₜ[R] (1 : R')) * t = 0) → Algebra.Smooth R (Localization.Away g) → ∀ q : Sp C, f ∉ q.asIdeal → g ∉ q.asIdeal → ∃ V : X.left.Opens, l q ∈ V ∧ IsAffineOpen V ∧ Smooth (V.ι ≫ X.hom) ∧ IsIso (pullback.lift (π.resLE V (π ⁻¹ᵁ V) le_rfl) ((π ⁻¹ᵁ V).ι ≫ s) (by rw [Scheme.Hom.resLE_comp_ι_assoc, hX]; simp only [Category.assoc]) : (π ⁻¹ᵁ V).toScheme ⟶ pullback (V.ι ≫ X.hom) (spMap (algebraMap R R'))) := by
   intro R R' _ _ _ X Z π s hX C' _ _ _ _ C j l _ hP hj hl f g hcok hker hsm q hf hg
   let A := Localization.Away (f * g)

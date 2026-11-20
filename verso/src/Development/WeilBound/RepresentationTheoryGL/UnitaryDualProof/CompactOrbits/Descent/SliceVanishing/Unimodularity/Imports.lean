@@ -5,6 +5,9 @@ namespace PositivityTheory.RgUd.T.Desc.SLF.Un2
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `unimod_of_indexSym PositivityTheory.RgUd.T.Desc.SLT.indexSym`.
+-/
 theorem unimod [CharZero k] : PositivityTheory.RgUd.T.Desc.SLF.Unimod (k := k) :=
   unimod_of_indexSym PositivityTheory.RgUd.T.Desc.SLT.indexSym
 

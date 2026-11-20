@@ -137,17 +137,26 @@ variable {A : FamIn K G Pl0 T m} {P0 : Subgroup G} {ψ0 : P0 →* Kˣ} {P1 : Sub
   {hE : ∀ t, (A.fam.R t).Pl × ℕ → Module.End ℂ X.EE} {hW : ∀ j t, (A.fam.L j t).Pl × ℕ → Module.End ℂ (X.W j)}
   {gE : Representation ℂ G X.EE} {gW : ∀ j, Representation ℂ G (X.W j)}
 
+/- English proof (translation)
+The claim follows from `CxData.cutStable X hC.kFormR hC.kFormL (Formalism.IndefR.CxPass.kerStabR_of hC.kFormR hC.gEquiv (kerStabR_hecke hC.thetaR)) (Formalism.IndefR.CxPass.kerStabL_of hC.kFormL hC.gEquivL (kerStabL_hecke hC.thetaL)) (adjClosedR_of hC.ok hC.heckeR hC.kFormR hC.jIsoR) (adjClosedL_of hC.o …`.
+-/
 theorem CxCore.stable (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH hE hW gE gW) : X.zs.Stable :=
   CxData.cutStable X hC.kFormR hC.kFormL
     (Formalism.IndefR.CxPass.kerStabR_of hC.kFormR hC.gEquiv (kerStabR_hecke hC.thetaR))
     (Formalism.IndefR.CxPass.kerStabL_of hC.kFormL hC.gEquivL (kerStabL_hecke hC.thetaL))
     (adjClosedR_of hC.ok hC.heckeR hC.kFormR hC.jIsoR) (adjClosedL_of hC.ok hC.heckeL hC.kFormL hC.jIsoL)
 
+/- English proof (translation)
+Introduce `b` and use `match b with | false => A.side_WF hC.ok P0 ψ0 X.zs hC.stable hC.inBlock hC.sep | true => A.side_WF hC.ok P1 ψ1 X.zs hC.stable hC.inBlock hC.sep`.
+-/
 theorem CxCore.wf (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH hE hW gE gW) :
     ∀ b, (lv (faceOf A P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs) b).WF := fun b => match b with
   | false => A.side_WF hC.ok P0 ψ0 X.zs hC.stable hC.inBlock hC.sep
   | true => A.side_WF hC.ok P1 ψ1 X.zs hC.stable hC.inBlock hC.sep
 
+/- English proof (translation)
+The claim follows from `(cutRows (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) (cvOf A P0 ψ0 P1 ψ1) b (hC.wf b) hC.h4pos (isoR_of hC.ok hC.jIsoR hC.npTie b) (crdZ_of X b) (coordinates_in_good_part_of_definite X b) (Formalism.IndefR.CxPass.ratLev_of hC.ok hC.kFormR hC.jIsoR hC.ratZ hC.gUnit hC.gEquiv b) (Formalism.Ind …`.
+-/
 theorem CxCore.h2 (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH hE hW gE gW) (b : Bool) :
     X.H2 (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) b :=
   (cutRows (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) (cvOf A P0 ψ0 P1 ψ1) b (hC.wf b) hC.h4pos
@@ -157,6 +166,11 @@ theorem CxCore.h2 (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH h
     (Formalism.IndefR.CxPass.upLev_of hC.ok hC.kFormR hC.jIsoR hC.gUnit hC.gEquiv hC.lev0 hC.lev1 b)
     (hC.thmBop b) (hC.partsE b)).1
 
+/- English proof (translation)
+Establish `kR : X.KerStabR` using `Formalism.IndefR.CxPass.kerStabR_of hC.kFormR hC.gEquiv (kerStabR_hecke hC.thetaR)`. Establish `kL : X.KerStabL` using `Formalism.IndefR.CxPass.kerStabL_of hC.kFormL hC.gEquivL (kerStabL_hecke hC.thetaL)`. Establish `aR : X.AdjClosedR` using `adjClosedR_of hC.ok hC.heckeR hC.kFormR hC.jIsoR`. Establish `aL : X.AdjClosedL` using `adjClosedL_of hC.ok hC.heckeL hC.kFormL hC.jIsoL`. Establish `hst : X.zs.Stable` using `CxData.cutStable X hC.kFormR hC.kFormL kR kL aR aL`.
+
+Conclude with `{ kFormR := hC.kFormR, kFormL := hC.kFormL, kerStabR := kR, kerStabL := kL, adjClosedR := aR, adjClosedL := aL inBlock := hC.inBlock, ratZ := hC.ratZ, jIsoR := hC.jIsoR, jIsoL := hC.jIsoL, ok := hC.ok, sep := hC.sep heckeR := hC.heckeR A.fam.μ0, heckeL := fun j => hC.heckeL j A.f …`.
+-/
 theorem prims_of_core (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH hE hW gE gW)
     (hPass : Passage ((faceOf A P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs).Z.num C CH)
       (X.data (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) false) (X.data (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) true)) :
@@ -187,6 +201,9 @@ theorem prims_of_core (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C 
       galD := hC.galD, dimParts := hC.dimParts, l3 := hC.l3, on := hC.on, l6 := hC.l6, btVanish := hC.btVanish
       mi0 := hC.mi0, zetaOK := hC.zetaOK, l1e := hC.l1e, passage := hPass, fun0 := hC.fun0 }
 
+/- English proof (translation)
+The claim follows from `links_of_prims (prims_of_core hC hPass)`.
+-/
 theorem links_of_core (hC : CxCore A P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 C1 ζ sEE C CH hE hW gE gW)
     (hPass : Passage ((faceOf A P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs).Z.num C CH)
       (X.data (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) false) (X.data (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) true)) :

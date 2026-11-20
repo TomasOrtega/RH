@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.PointShiftSt
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CM
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CM.WeilAddLeft.weilEq_mul_left | exact GlobalTheory.CM.WeilAddLeft.weilEq_mul_left | (intros; apply GlobalTheory.CM.WeilAddLeft.weilEq_mul_left <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weilPairingCompatible_add_first_position_complex : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K]
     [NumberField K] (σ₁ : K →+* ℂ) (A B : PAT H (Sp (𝓞 K))) (f₁ f₂ g : A.t.G ⟶ B.t.G), IsMonHom f₁ → IsMonHom f₂ →
     IsMonHom g → ∀ r₁ r₂ : 𝓞 E,

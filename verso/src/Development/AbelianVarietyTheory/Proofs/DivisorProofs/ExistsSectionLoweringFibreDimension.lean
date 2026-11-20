@@ -16,6 +16,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.HSAmp
 
+/- English proof (translation)
+Take `⟨N, j, hj, hjp⟩` from `h.isProjOver`. Use `haveI := h.isDomain`. Use `haveI := h.finite`. Use `haveI : IsNoetherian ℤ k := isNoetherian_of_isNoetherianRing_of_finite ℤ k`. Use `haveI : IsNoetherianRing k := isNoetherian_of_tower ℤ inferInstance`.
+
+Use `haveI : IsProper p := hjp ▸ inferInstance`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian p`. Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace p`. Use `haveI : IsNoetherian X := {}`. Use `infer_instance`.
+-/
 theorem noetherianSpace_of_isArithVar {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ}
     (h : IsArithVar p D) : NoetherianSpace X := by
   obtain ⟨N, j, hj, hjp⟩ := h.isProjOver
@@ -29,6 +34,43 @@ theorem noetherianSpace_of_isArithVar {k : Type} [CommRing k] {X : Scheme.{0}} {
   haveI : IsNoetherian X := {}
   infer_instance
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX P hA d Z hZ hdim`. Use `haveI : NoetherianSpace X := noetherianSpace_of_isArithVar hX`. Establish `memfib : ∀ {x : X} {ℓ : ℕ}, x ∈ fib X ℓ ↔ ringChar (X.residueField x) = ℓ` using `Iff.rfl`. Take `⟨hcov, hfibc, -, -, hWfib⟩` from `GlobalTheory.T.projArith_residueCharFibre_structure k X p D hX`. Establish `hNV : ∀ (a b : ℤ) (g : X.functionField), g ∈ P.H a b → IsOpen (NV P a b g)` using `fun a b g hg => (GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P a b g hg).1`.
+
+Take `⟨e₀, g, hg, hfin0⟩` from `GlobalTheory.T.exists_sections_cut_genericFibre_finite k X p D hX P hA d Z hZ (hdim 0)`. Establish `hW₀c : IsClosed (Z \ ⋃ j, NV P (e₀ j) 0 (g j))` using `hZ.sdiff (isOpen_iUnion fun j => hNV _ _ _ (hg j).2)`. Establish `hpick0 : ∀ Y : irreducibleComponents ↥(Z ∩ fib X 0), ∃ y : ↥(Z ∩ fib X 0), y ∈ Y.1 ∧ IsClosed ({y} : Set ↥(Z ∩ fib X 0))` using `fun Y => (isClosed_of_mem_irreducibleComponents Y.1 Y.2).exists_closed_singleton Y.2.1.nonempty`. Use `choose q₀ hq₀ hq₀c using hpick0`. Use `haveI : Finite (irreducibleComponents ↥(Z ∩ fib X 0)) := NoetherianSpace.finite_irreducibleComponents.to_subtype`.
+
+Use `set W : Set X := (Z \ ⋃ j, NV P (e₀ j) 0 (g j)) ∪ ⋃ Y, closure {((q₀ Y : ↥(Z ∩ fib X 0)) : X)} with hWdef`. Establish `hWc : IsClosed W` using `hW₀c.union (isClosed_iUnion_of_finite fun _ => isClosed_closure)`. Establish `hcl0 : ∀ Y, closure {((q₀ Y : ↥(Z ∩ fib X 0)) : X)} ∩ fib X 0 ⊆ {((q₀ Y : ↥(Z ∩ fib X 0)) : X)}`. Introduce and unpack `Y x ⟨hx, hx0⟩`. Take `⟨K, hK, hKe⟩` from `isClosed_induced_iff.1 (hq₀c Y)`.
+
+Establish `hqK : ((q₀ Y : ↥(Z ∩ fib X 0)) : X) ∈ K`. Establish `: q₀ Y ∈ Subtype.val ⁻¹' K` using `by rw [hKe]; rfl`. Conclude with `this`. Establish `hxK : x ∈ K` using `closure_minimal (Set.singleton_subset_iff.2 hqK) hK hx`. Establish `hxZ : x ∈ Z` using `closure_minimal (Set.singleton_subset_iff.2 (q₀ Y).2.1) hZ hx`.
+
+Establish `: (⟨x, hxZ, hx0⟩ : ↥(Z ∩ fib X 0)) ∈ Subtype.val ⁻¹' K` using `hxK`. Rewrite `this` using `[hKe]`. Conclude with `congrArg Subtype.val this`. Establish `hWfin : (W ∩ fib X 0).Finite`. Use `(hfin0.union (Set.finite_range fun Y => ((q₀ Y : ↥(Z ∩ fib X 0)) : X))).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨hx | hx, hx0⟩`. Conclude with `Or.inl ⟨hx, hx0⟩`. Take `⟨Y, hY⟩` from `Set.mem_iUnion.1 hx`. Conclude with `Or.inr ⟨Y, (hcl0 Y ⟨hY, hx0⟩).symm⟩`. Take `⟨S, hSp, hWS⟩` from `hWfib W hWc`.
+
+Establish `hpick : ∀ i : (Σ ℓ : S, irreducibleComponents ↥(Z ∩ fib X (ℓ : ℕ))), ∃ y : ↥(Z ∩ fib X (i.1 : ℕ)), y ∈ i.2.1 ∧ IsClosed ({(y : X)} : Set X)`. Introduce and unpack `⟨ℓ, Y⟩`. Establish `hc : IsClosed (Z ∩ fib X ℓ)` using `hZ.inter (hfibc ℓ (hSp ℓ ℓ.2).ne_zero)`. Take `⟨y, hy, hyc⟩` from `(isClosed_of_mem_irreducibleComponents Y.1 Y.2).exists_closed_singleton Y.2.1.nonempty`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+
+Use `hc.isClosedEmbedding_subtypeVal.isClosedMap _ hyc` as an intermediate fact. Rewrite `this` using `[Set.image_singleton]`. Then use the resulting hypothesis. Use `choose q hq hqc using hpick`. Use `haveI : ∀ ℓ : S, Finite (irreducibleComponents ↥(Z ∩ fib X (ℓ : ℕ))) := fun _ => NoetherianSpace.finite_irreducibleComponents.to_subtype`. Establish `hFc : IsClosed (Set.range fun i => ((q i : ↥(Z ∩ fib X (i.1 : ℕ))) : X))`.
+
+Rewrite using `[← Set.iUnion_singleton_eq_range]`. Conclude with `isClosed_iUnion_of_finite hqc`. Use `set T : Set X := closure (W ∩ fib X 0) ∪ Set.range fun i => ((q i : ↥(Z ∩ fib X (i.1 : ℕ))) : X) with hTdef`. Establish `hTc : IsClosed T` using `isClosed_closure.union hFc`. Establish `hTfin : ∀ ℓ : ℕ, (T ∩ fib X ℓ).Finite` using `fun ℓ => ((GlobalTheory.T.finite_genericFibreClosure_inter_residueCharFibre k X p D hX W hWc hWfin ℓ).union (Set.finite_range _)).subset fun x ⟨hx, hxl⟩ => hx.elim (fun h => Or.inl ⟨h, hxl⟩) Or.inr`.
+
+Take `⟨e, he, f, hf, hTNV⟩` from `GlobalTheory.T.exists_ample_pow_section_nonvanishing_on_closed k X p D hX P hA T hTc hTfin`. Use `⟨e, he, f, hf, fun ℓ => ?_⟩` and prove the remaining obligations. Establish `hfo : IsOpen (NV P e 0 f)` using `hNV _ _ _ hf`. Establish `key : ∀ Y ∈ irreducibleComponents ↥(Z ∩ fib X ℓ), (d : WithBot ℕ∞) ≤ topologicalKrullDim Y → ∃ s ∈ Y, (s : X) ∈ T`. Introduce `Y hY hYd`.
+
+Break down `eq_or_ne ℓ 0 with rfl | hℓ0` into its components or cases. Use `⟨q₀ ⟨Y, hY⟩, hq₀ ⟨Y, hY⟩, Or.inl (subset_closure ⟨?_, (q₀ ⟨Y, hY⟩).2.2⟩)⟩` and prove the remaining obligations. Conclude with `Or.inr (Set.mem_iUnion.2 ⟨⟨Y, hY⟩, subset_closure rfl⟩)`. Distinguish the cases in `hℓS : ℓ ∈ S`. Conclude with `⟨q ⟨⟨ℓ, hℓS⟩, ⟨Y, hY⟩⟩, hq ⟨⟨ℓ, hℓS⟩, ⟨Y, hY⟩⟩, Or.inr ⟨_, rfl⟩⟩`.
+
+Take `⟨s₀, -⟩` from `hY.1.nonempty`. Establish `hℓp : ℓ.Prime`. Break down `hcov (s₀ : X) with h | ⟨ℓ', hℓ', h⟩` into its components or cases. Conclude with `absurd ((memfib.1 s₀.2.2).symm.trans (memfib.1 h)) hℓ0`. Rewrite using `[(memfib.1 s₀.2.2).symm.trans (memfib.1 h)]` and apply the resulting hypothesis.
+
+Establish `hc : IsClosed (Z ∩ fib X ℓ)` using `hZ.inter (hfibc ℓ hℓ0)`. Establish `hCi : IsIrreducible (Subtype.val '' Y)` using `hY.1.image _ continuous_subtype_val.continuousOn`. Establish `hCc : IsClosed (Subtype.val '' Y)` using `hc.isClosedEmbedding_subtypeVal.isClosedMap _ (isClosed_of_mem_irreducibleComponents Y hY)`. Establish `hCf : Subtype.val '' Y ⊆ fib X ℓ`. Introduce and unpack `_ ⟨s, -, rfl⟩`.
+
+Conclude with `s.2.2`. Establish `hCd : (d : WithBot ℕ∞) ≤ topologicalKrullDim ↥(Subtype.val '' Y)`. Rewrite using `[← (Topology.IsEmbedding.subtypeVal.homeomorphImage Y).isHomeomorph.topologicalKrullDim_eq]` and apply the resulting hypothesis. Take `⟨x, ⟨s, hsY, rfl⟩, hxg⟩` from `GlobalTheory.T.exists_common_zero_ample_sections_vertical k X p D hX P hA ℓ d (Subtype.val '' Y) e₀ g hℓp hCi hCc hCf hCd hg`. Use `⟨s, hsY, ?_⟩` and prove the remaining obligations.
+
+Establish `hxW : (s : X) ∈ W` using `Or.inl ⟨s.2.1, hxg⟩`. Break down `hWS hxW with h | h` into its components or cases. Conclude with `Or.inl h`. Take `⟨ℓ', hℓ'S, h'⟩` from `Set.mem_iUnion₂.1 h`. Establish `: ℓ' = ℓ` using `(memfib.1 h').symm.trans (memfib.1 s.2.2)`.
+
+Conclude with `absurd (this ▸ hℓ'S) hℓS`. Establish `hCsc : IsClosed {s : ↥(Z ∩ fib X ℓ) | (s : X) ∉ NV P e 0 f}` using `(hfo.preimage continuous_subtype_val).isClosed_compl`. Establish `hdrop` using `(GlobalTheory.T.topologicalKrullDim_drop_and_finite_of_dim_zero ↥(Z ∩ fib X ℓ)).1 _ d hCsc (hdim ℓ) fun Y hY hYd hsub => by`. Take `⟨s, hsY, hsT⟩` from `key Y hY hYd`. Conclude with `hsub hsY (hTNV hsT)`.
+
+Establish `hset : Subtype.val '' {s : ↥(Z ∩ fib X ℓ) | (s : X) ∉ NV P e 0 f} = (Z \ NV P e 0 f) ∩ fib X ℓ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `⟨⟨s.2.1, hs⟩, s.2.2⟩`.
+
+Introduce and unpack `⟨⟨hxZ, hxN⟩, hxl⟩`. Conclude with `⟨⟨x, hxZ, hxl⟩, hxN, rfl⟩`. Rewrite using `[← hset, ← (Topology.IsEmbedding.subtypeVal.homeomorphImage _).isHomeomorph.topologicalKrullDim_eq]`. Conclude with `hdrop`.
+-/
 theorem exists_sec_fibre_dim_lt : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (d : ℕ) (Z : Set X), IsClosed Z →
     (∀ ℓ : ℕ, topologicalKrullDim ↥(Z ∩ fib X ℓ) ≤ d) →

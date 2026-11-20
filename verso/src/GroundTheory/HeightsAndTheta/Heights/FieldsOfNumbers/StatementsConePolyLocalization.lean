@@ -10,6 +10,9 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mk_ker (I := p), ← MvPolynomial.ker_map]`. Conclude with `RingHom.ker_isPrime _`.
+-/
 theorem isPrime_map_C_mvPolynomial {A : Type*} [CommRing A] (σ : Type*) (p : Ideal A) [p.IsPrime] :
     (p.map (C : A →+* MvPolynomial σ A)).IsPrime := by
   rw [← Ideal.mk_ker (I := p), ← MvPolynomial.ker_map]

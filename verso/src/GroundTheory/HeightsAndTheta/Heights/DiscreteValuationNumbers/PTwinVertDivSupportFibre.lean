@@ -22,11 +22,23 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 
 open MvPolynomial
 
+/- English proof (translation)
+The claim follows from `FibreVarieties.proof GenericFibProps.proof (GenericDimBound.proof MaximalIdealHeightFG.proof) GenericDimGe.proof SpecialIdealCorresp.proof SpecialIdealMultiHomog.proof SupSpanMultiHomog.proof MinimalPrimeMultiHomog.proof SpecialQuotDim.proof ComponentDim.proof`.
+-/
 theorem VerticalDivisorSupportFibre.fibreVarieties : FibreVarieties.Statement.{0} :=
   FibreVarieties.proof GenericFibProps.proof (GenericDimBound.proof MaximalIdealHeightFG.proof)
     GenericDimGe.proof SpecialIdealCorresp.proof SpecialIdealMultiHomog.proof SupSpanMultiHomog.proof
     MinimalPrimeMultiHomog.proof SpecialQuotDim.proof ComponentDim.proof
 
+/- English proof (translation)
+Introduce `O _ _ _ K _ ι _ P d hP b f g hV W hW`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨-, hP1⟩` from `(BundleExamples.isModelOver_iff O P d).mp hP`. Establish `hV1` using `(VerticalDivisorCharacterisation.proof O K ι P ϖ b f g hϖ hP1.multiProj).mp hV`. Rewrite `hW` using `[BundleExamples.ratCyc_eq]`.
+
+Establish `hϖW` using `hV1.vertical W hW`. Rewrite using `[BundleExamples.redIdeal_eq]`. Establish `key : ∀ (h : MRing ι O) (bh : K → ℕ), IsMultiHomog h bh → h ∉ P → divCycle P h W ≠ 0 → ReciprocityTheory.ChartRestriction.G.AI.I1.IsProjVarF (specialIdeal W) d`. Introduce `h bh hh hhP hne`. Unfold `divCycle at hne`.
+
+Use `split_ifs at hne with hc`. Take `⟨hmp, hdim⟩` from `VerticalComponentFibre.proof VerticalDivisorSupportFibre.fibreVarieties O ϖ hϖ K ι P d hP1 h bh hh hhP W hc.1 hc.2 hϖW`. Take `⟨hpr, hho, hre⟩` from `hmp`. Conclude with `⟨⟨hpr, (VocabMultiHomogIdeal.proof VocabMultiHomog.proof _ K ι _).2 hho, hre⟩, hdim⟩`. Conclude with `absurd rfl hne`.
+
+Take `⟨bf, bg, hf, hg, -⟩` from `hV1.degrees`. Distinguish the cases in `hfW : divCycle P f W = 0`. Use `key g bg hg hV1.den_not_mem fun hgW => hW ?_` and prove the remaining obligations. Simplify using `[ratDiv, hfW, hgW]`. Conclude with `key f bf hf hV1.num_not_mem hfW`.
+-/
 theorem VerticalDivisorSupportFibre.proof : VerticalDivisorSupportFibre.Statement := by
   classical
   intro O _ _ _ K _ ι _ P d hP b f g hV W hW

@@ -11,6 +11,11 @@ open CompanionTheory.RgExh.U
 
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(if k ∈ A then sg k A • (if i ∈ A.erase k then 0 else sg i (A.erase k) • x (insert i (A.erase k))) else 0) ≠ 0 at h`. Distinguish the cases in `hk : k ∈ A`. Distinguish the cases in `hi : i ∈ A.erase k`. Rewrite `h` using `[if_pos hk, if_pos hi, smul_zero]`. Conclude with `absurd rfl h`.
+
+Use `⟨hk, hi, fun hx => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[if_pos hk, if_neg hi, hx, smul_zero, smul_zero]`. Conclude with `h rfl`. Rewrite `h` using `[if_neg hk]`. Conclude with `absurd rfl h`.
+-/
 theorem cre_ann_ne (i k : Pos n) (x : Cn n V) (A : Finset (Pos n))
     (h : (cre k * ann i : Module.End ℂ (Cn n V)) x A ≠ 0) :
     k ∈ A ∧ i ∉ A.erase k ∧ x (insert i (A.erase k)) ≠ 0 := by
@@ -26,6 +31,13 @@ theorem cre_ann_ne (i k : Pos n) (x : Cn n V) (A : Finset (Pos n))
   · rw [if_neg hk] at h
     exact absurd rfl h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨h0, hall⟩` from `hcon`. Apply `h` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((lift n (E p q) + adL p q : Module.End ℂ (Cn n V)) x) A = 0`.
+
+Rewrite using `[LinearMap.add_apply, Pi.add_apply, CompanionTheory.D.LK.lift_apply, h0, map_zero, zero_add]`. Unfold `adL`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Pi.smul_apply]`. Distinguish the cases in `hc : adC p q i k = 0`. Rewrite using `[hc, zero_smul]`. Rewrite using `[hall i k hc, smul_zero]`.
+-/
 theorem lF_ne (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (x : Cn n V) (A : Finset (Pos n))
     (h : lF E p q x A ≠ 0) :
     x A ≠ 0 ∨ ∃ i k : Pos n, adC p q i k ≠ 0 ∧ (cre k * ann i : Module.End ℂ (Cn n V)) x A ≠ 0 := by
@@ -45,6 +57,13 @@ theorem lF_ne (E : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (x : Cn n
   · rw [hc, zero_smul]
   · rw [hall i k hc, smul_zero]
 
+/- English proof (translation)
+Unfold `adC at h`. Unfold `inU at hi ⊢`. Distinguish the cases in `h1 : q = (i : Fin n × Fin n).1 ∧ (k : Fin n × Fin n) = (p, (i : Fin n × Fin n).2)`. Rewrite using `[h1.2] show lev p < lev (i : Fin n × Fin n).2`. Rewrite using `[hpq, h1.1]`.
+
+Conclude with `hi`. Distinguish the cases in `h2 : (i : Fin n × Fin n).2 = p ∧ (k : Fin n × Fin n) = ((i : Fin n × Fin n).1, q)`. Rewrite using `[h2.2] show lev (i : Fin n × Fin n).1 < lev q`. Rewrite using `[← hpq, ← h2.1]`. Conclude with `hi`.
+
+Rewrite `h` using `[if_neg h1, if_neg h2, sub_zero]`. Conclude with `absurd rfl h`.
+-/
 theorem inU_of_adC {lev : Fin n → ℕ} {p q : Fin n} (hpq : lev p = lev q) {i k : Pos n}
     (h : adC p q i k ≠ 0) (hi : inU lev i) : inU lev k := by
   unfold adC at h
@@ -62,6 +81,15 @@ theorem inU_of_adC {lev : Fin n → ℕ} {p q : Fin n} (hpq : lev p = lev q) {i 
     · rw [if_neg h1, if_neg h2, sub_zero] at h
       exact absurd rfl h
 
+/- English proof (translation)
+Unfold `SuppIn at hx ⊢`. Unfold `Deg`. Prove the components needed by the constructor for the conclusion. Introduce `A hA l hl`. Break down `lF_ne E p q x A hA with h0 | ⟨i, k, hc, hne⟩` into its components or cases.
+
+Conclude with `hx A h0 l hl`. Take `⟨hk, hi, hx'⟩` from `cre_ann_ne i k x A hne`. Establish `hsupp` using `hx _ hx'`. Distinguish the cases in `hlk : l = k`. Substitute `hlk` using the available equality.
+
+Conclude with `inU_of_adC hpq hc (hsupp i (Finset.mem_insert_self _ _))`. Conclude with `hsupp l (Finset.mem_insert_of_mem (Finset.mem_erase.2 ⟨hlk, hl⟩))`. Introduce `j hj A hA`. Break down `lF_ne E p q x A hA with h0 | ⟨i, k, hc, hne⟩` into its components or cases. Conclude with `hj A h0`.
+
+Take `⟨hk, hi, hx'⟩` from `cre_ann_ne i k x A hne`. Establish `hcard` using `hj _ hx'`. Rewrite `hcard` using `[Finset.card_insert_of_notMem hi, Finset.card_erase_of_mem hk]`. Establish `hpos : 0 < A.card` using `Finset.card_pos.2 ⟨k, hk⟩`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lF_suppIn_deg (n : ℕ) (lev : Fin n → ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (_hlev : Monotone lev) (x : Cn n V)
     (hx : SuppIn (inU lev) x) (p q : Fin n) (hpq : lev p = lev q) :

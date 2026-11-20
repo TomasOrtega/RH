@@ -12,6 +12,9 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 section herm
 variable {ι : Type*} [Fintype ι] (H : Matrix ι ι ℂ)
 
+/- English proof (translation)
+Establish `hg' : gᴴ * H * g = H` using `hg`. Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg']`.
+-/
 theorem herm_UH' [DecidableEq ι] {g : Matrix ι ι ℂ} (hg : g ∈ UH H) (u v : ι → ℂ) :
     herm H (g *ᵥ u) (g *ᵥ v) = herm H u v := by
   have hg' : gᴴ * H * g = H := hg
@@ -19,6 +22,9 @@ theorem herm_UH' [DecidableEq ι] {g : Matrix ι ι ℂ} (hg : g ∈ UH H) (u v 
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec,
     hg']
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Simplify using `only [herm, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem herm_sum_l {α : Type*} (c : α → ℂ) (s : Finset α) (u : α → ι → ℂ) (w : ι → ℂ) :
     herm H (∑ j ∈ s, c j • u j) w = ∑ j ∈ s, c j * herm H (u j) w := by
   classical
@@ -29,6 +35,9 @@ theorem herm_sum_l {α : Type*} (c : α → ℂ) (s : Finset α) (u : α → ι 
     simp only [herm, Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, dotProduct_smul,
       smul_eq_mul]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Simplify using `only [herm, star_add, star_smul, add_dotProduct, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem herm_sum_r {α : Type*} (c : α → ℂ) (s : Finset α) (u : ι → ℂ) (w : α → ι → ℂ) :
     herm H u (∑ j ∈ s, c j • w j) = ∑ j ∈ s, star (c j) * herm H u (w j) := by
   classical
@@ -38,6 +47,9 @@ theorem herm_sum_r {α : Type*} (c : α → ℂ) (s : Finset α) (u : ι → ℂ
     rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]
     simp only [herm, star_add, star_smul, add_dotProduct, smul_dotProduct, smul_eq_mul]
 
+/- English proof (translation)
+Conclude with `Matrix.toLin'.injective (LinearMap.ext fun v => by`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, h v])`.
+-/
 theorem mat_eq_of_mulVec' [DecidableEq ι] {A B : Matrix ι ι ℂ} (h : ∀ v, A *ᵥ v = B *ᵥ v) : A = B := by
   exact Matrix.toLin'.injective (LinearMap.ext fun v => by
     rw [Matrix.toLin'_apply, Matrix.toLin'_apply, h v])
@@ -47,6 +59,9 @@ end herm
 section hpk
 variable (k r : ℕ)
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem hpk_out {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = 2 * r + k - i.val then 1 else 0 := by
   have hi := i.isLt
@@ -54,6 +69,9 @@ theorem hpk_out {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) (j :
   simp only [Hpk, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem hpk_mid {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r + k < i.val)) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = i.val then (if i.val = r + k then -1 else 1) else 0 := by
   have hi := i.isLt
@@ -61,6 +79,15 @@ theorem hpk_mid {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r + k < i.val)) 
   simp only [Hpk, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h]`. Simplify using `only [Matrix.mulVec, dotProduct, hpk_out k r h]`. Rewrite using `[Finset.sum_eq_single ⟨2 * r + k - i.val, by omega⟩]`. Simplify using the standard rewrite rules.
+
+Introduce `j _ hj`. Establish `hj' : j.val ≠ 2 * r + k - i.val` using `fun hc => hj (Fin.ext hc)`. Simplify using `[hj']`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, hpk_mid k r h]`. Rewrite using `[Finset.sum_eq_single i]`. Apply the tactic sequence `by_cases h2 : i.val = r + k <;> simp [h2]`. Introduce `j _ hj`. Establish `hj' : j.val ≠ i.val` using `fun hc => hj (Fin.ext hc)`.
+
+Simplify using `[hj']`. Simplify using the standard rewrite rules.
+-/
 theorem hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) i = if i.val < r ∨ r + k < i.val then v ⟨2 * r + k - i.val, by omega⟩
       else if i.val = r + k then -v i else v i := by
@@ -82,6 +109,13 @@ theorem hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
       simp [hj']
     · simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hi` using `i.isLt`. Rewrite using `[hpk_mulVec]`. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h, hpk_mulVec, if_pos (by dsimp only; omega)]`.
+
+Use `congr 1`. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h] split_ifs with h2`.
+
+Rewrite using `[hpk_mulVec, if_neg h, if_pos h2, neg_neg]`. Rewrite using `[hpk_mulVec, if_neg h, if_neg h2]`.
+-/
 theorem hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk k r *ᵥ v) = v := by
   funext i
   have hi := i.isLt
@@ -97,20 +131,32 @@ theorem hpk_mulVec_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk 
     · rw [hpk_mulVec, if_neg h, if_pos h2, neg_neg]
     · rw [hpk_mulVec, if_neg h, if_neg h2]
 
+/- English proof (translation)
+The claim follows from `mat_eq_of_mulVec' fun v => by rw [← Matrix.mulVec_mulVec, hpk_mulVec_mulVec, Matrix.one_mulVec]`.
+-/
 theorem hpk_sq : Hpk k r * Hpk k r = 1 :=
   mat_eq_of_mulVec' fun v => by rw [← Matrix.mulVec_mulVec, hpk_mulVec_mulVec, Matrix.one_mulVec]
 
 variable {k r}
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hl : (Hpk k r * gᴴ * Hpk k r) * g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', hpk_sq]`. Rewrite using `[Matrix.inv_eq_left_inv hl, hl]`.
+-/
 theorem uh_inv_mul {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ * g = 1 := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
   have hl : (Hpk k r * gᴴ * Hpk k r) * g = 1 := by
     rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hg', hpk_sq]
   rw [Matrix.inv_eq_left_inv hl, hl]
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse (uh_inv_mul hg))`.
+-/
 theorem uh_mul_inv {g : Mat k r} (hg : g ∈ GV k r) : g * g⁻¹ = 1 :=
   Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse (uh_inv_mul hg))
 
+/- English proof (translation)
+Rewrite using `[← herm_UH' (Hpk k r) hx, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, uh_mul_inv hx, Matrix.one_mul]`.
+-/
 theorem herm_inv {x : Mat k r} (hx : x ∈ GV k r) (g : Mat k r) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) ((x⁻¹ * g) *ᵥ v) w = herm (Hpk k r) (g *ᵥ v) (x *ᵥ w) := by
   rw [← herm_UH' (Hpk k r) hx, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, uh_mul_inv hx,
@@ -120,6 +166,15 @@ end hpk
 
 section tri
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Establish `hemb : ∑ l : Fin m, A (Fin.castLE h i) (Fin.castLE h l) * B (Fin.castLE h l) (Fin.castLE h j) = ∑ l ∈ Finset.univ.map (Fin.castLEEmb h), A (Fin.castLE h i) l * B l (Fin.castLE h j)`. Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression.
+
+Rewrite using `[hemb]`. Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) ?_` and prove the remaining obligations. Introduce `l _ hl`. Establish `hlm : m ≤ l.val`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hl (Finset.mem_map.mpr ⟨⟨l.val, hc⟩, Finset.mem_univ _, Fin.ext rfl⟩)`. Establish `hjl : id (Fin.castLE h j) < id l` using `by show (Fin.castLE h j).val < l.val`. Use `j.isLt` as an intermediate fact.
+
+Simplify using `only [Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hB hjl, mul_zero]`.
+-/
 theorem sub_mul_tri {n m : ℕ} (h : m ≤ n) (A B : Matrix (Fin n) (Fin n) ℂ) (hB : B.BlockTriangular id) :
     (A * B).submatrix (Fin.castLE h) (Fin.castLE h) =
       A.submatrix (Fin.castLE h) (Fin.castLE h) * B.submatrix (Fin.castLE h) (Fin.castLE h) := by
@@ -144,6 +199,15 @@ theorem sub_mul_tri {n m : ℕ} (h : m ≤ n) (A B : Matrix (Fin n) (Fin n) ℂ)
     omega
   rw [hB hjl, mul_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Establish `hemb : ∑ l : Fin m, star (B (Fin.castLE h l) (Fin.castLE h i)) * A (Fin.castLE h l) (Fin.castLE h j) = ∑ l ∈ Finset.univ.map (Fin.castLEEmb h), star (B l (Fin.castLE h i)) * A l (Fin.castLE h j)`. Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression.
+
+Rewrite using `[hemb]`. Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) ?_` and prove the remaining obligations. Introduce `l _ hl`. Establish `hlm : m ≤ l.val`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hl (Finset.mem_map.mpr ⟨⟨l.val, hc⟩, Finset.mem_univ _, Fin.ext rfl⟩)`. Establish `hil : id (Fin.castLE h i) < id l` using `by show (Fin.castLE h i).val < l.val`. Use `i.isLt` as an intermediate fact.
+
+Simplify using `only [Fin.coe_castLE]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hB hil, star_zero, zero_mul]`.
+-/
 theorem sub_tri_mul {n m : ℕ} (h : m ≤ n) (A B : Matrix (Fin n) (Fin n) ℂ) (hB : B.BlockTriangular id) :
     (Bᴴ * A).submatrix (Fin.castLE h) (Fin.castLE h) =
       (B.submatrix (Fin.castLE h) (Fin.castLE h))ᴴ * A.submatrix (Fin.castLE h) (Fin.castLE h) := by
@@ -168,6 +232,9 @@ theorem sub_tri_mul {n m : ℕ} (h : m ≤ n) (A B : Matrix (Fin n) (Fin n) ℂ)
     omega
   rw [hB hil, star_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `i j hij` and use `hB (show (Fin.castLE h j).val < (Fin.castLE h i).val from hij)`.
+-/
 theorem tri_sub {n m : ℕ} (h : m ≤ n) (B : Matrix (Fin n) (Fin n) ℂ) (hB : B.BlockTriangular id) :
     (B.submatrix (Fin.castLE h) (Fin.castLE h)).BlockTriangular id :=
   fun i j hij => hB (show (Fin.castLE h j).val < (Fin.castLE h i).val from hij)
@@ -184,10 +251,16 @@ def cl (τ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (l : Fin (r + 1)) : ℝ≥0
   ∏ j : Fin (l.val + 1), ‖τ (Fin.castLE (show l.val + 1 ≤ r + 1 by omega) j)
     (Fin.castLE (show l.val + 1 ≤ r + 1 by omega) j)‖₊
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dl_eq (l : Fin (r + 1)) (g : Mat k r) :
     Dl k r l g = ((Pm k r g).submatrix (Fin.castLE (show l.val + 1 ≤ r + 1 by omega))
       (Fin.castLE (show l.val + 1 ≤ r + 1 by omega))).det := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Pm, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[herm_inv hx, hY a, herm_sum_r]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[herm_inv hκ]`.
+-/
 theorem pm_left {x κ : Mat k r} (hx : x ∈ GV k r) (hκ : κ ∈ GV k r) (τ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (hY : ∀ a, x *ᵥ phiV' k r a = ∑ b, τ b a • (κ *ᵥ phiV' k r b)) (g : Mat k r) :
     Pm k r (x⁻¹ * g) = τᴴ * Pm k r (κ⁻¹ * g) := by
@@ -197,6 +270,11 @@ theorem pm_left {x κ : Mat k r} (hx : x ∈ GV k r) (hκ : κ ∈ GV k r) (τ :
   refine Finset.sum_congr rfl fun c _ => ?_
   rw [herm_inv hκ]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Pm, Matrix.of_apply, Matrix.mul_apply]`. Establish `e : (g * y) *ᵥ phiV' k r b = ∑ c, τ c b • ((g * κ) *ᵥ phiV' k r c)`. Rewrite using `[← Matrix.mulVec_mulVec, hY b, Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec]`. Rewrite using `[e, herm_sum_l]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pm_right {y κ : Mat k r} (τ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (hY : ∀ a, y *ᵥ phiV' k r a = ∑ b, τ b a • (κ *ᵥ phiV' k r b)) (g : Mat k r) :
     Pm k r (g * y) = Pm k r (g * κ) * τ := by
@@ -210,6 +288,9 @@ theorem pm_right {y κ : Mat k r} (τ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
   refine Finset.sum_congr rfl fun c _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[dl_eq, dl_eq, pm_left hx hκ τ hY, sub_tri_mul _ _ _ hτ, Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_of_upperTriangular (tri_sub _ τ hτ), nnnorm_mul, nnnorm_star, nnnorm_prod]`. Both sides reduce to the same expression.
+-/
 theorem dl_left {x κ : Mat k r} (hx : x ∈ GV k r) (hκ : κ ∈ GV k r) (τ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (hτ : τ.BlockTriangular id) (hY : ∀ a, x *ᵥ phiV' k r a = ∑ b, τ b a • (κ *ᵥ phiV' k r b))
     (g : Mat k r) (l : Fin (r + 1)) : ‖Dl k r l (x⁻¹ * g)‖₊ = cl τ l * ‖Dl k r l (κ⁻¹ * g)‖₊ := by
@@ -218,6 +299,9 @@ theorem dl_left {x κ : Mat k r} (hx : x ∈ GV k r) (hκ : κ ∈ GV k r) (τ :
     nnnorm_star, nnnorm_prod]
   rfl
 
+/- English proof (translation)
+Rewrite using `[dl_eq, dl_eq, pm_right τ hY, sub_mul_tri _ _ _ hτ, Matrix.det_mul, Matrix.det_of_upperTriangular (tri_sub _ τ hτ), nnnorm_mul, nnnorm_prod, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem dl_right {y κ : Mat k r} (τ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (hτ : τ.BlockTriangular id) (hY : ∀ a, y *ᵥ phiV' k r a = ∑ b, τ b a • (κ *ᵥ phiV' k r b))
     (g : Mat k r) (l : Fin (r + 1)) : ‖Dl k r l (g * y)‖₊ = cl τ l * ‖Dl k r l (g * κ)‖₊ := by
@@ -225,6 +309,9 @@ theorem dl_right {y κ : Mat k r} (τ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     Matrix.det_of_upperTriangular (tri_sub _ τ hτ), nnnorm_mul, nnnorm_prod, mul_comm]
   rfl
 
+/- English proof (translation)
+Unfold `FsE`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[h l, ENNReal.coe_mul, ENNReal.mul_rpow_of_ne_top ENNReal.coe_ne_top ENNReal.coe_ne_top]`.
+-/
 theorem fsE_fac (s : Fin (r + 1) → ℝ) (g1 g2 : Mat k r) (c : Fin (r + 1) → ℝ≥0)
     (h : ∀ l, ‖Dl k r l g1‖₊ = c l * ‖Dl k r l g2‖₊) :
     FsE k r s g1 = (∏ l, ((c l : ℝ≥0∞)) ^ (-s l)) * FsE k r s g2 := by

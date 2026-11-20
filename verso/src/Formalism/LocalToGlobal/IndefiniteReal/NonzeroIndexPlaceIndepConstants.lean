@@ -26,6 +26,11 @@ variable {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex} {Dcf : ∀ Zs : DefS
   {Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)} {Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3}
   {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `ht` using `Q.charW.tup`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, _, _, h4⟩`. Conclude with `h4`. Introduce `h`.
+
+Use `⟨fun w hw => ht.mu_ne w ((h w).2 hw), fun w _ => ht.mu_conj w, fun w => ?_, h⟩` and prove the remaining obligations. Use `show Q.Rl.mu w = _`. Use `split_ifs with hw`. Both sides reduce to the same expression. Conclude with `ht.mu_off w fun hm => hw ((h w).1 hm)`.
+-/
 theorem muDef_iff (Q : RealT Rc P Dcf Spf Zscf S Ks) (C CH : ℝ) :
     (Q.Rl.toCx3 Q.F).MuDef Q.F.cr (Q.Rl.num Q.F C CH) Q.Rl.mu ↔
       ∀ w, w ∈ Q.Rl.twPl ↔ (Q.Rl.toCx3 Q.F).W1 Q.F.cr (Q.Rl.num Q.F C CH) w := by
@@ -40,6 +45,9 @@ theorem muDef_iff (Q : RealT Rc P Dcf Spf Zscf S Ks) (C CH : ℝ) :
     · rfl
     · exact ht.mu_off w fun hm => hw ((h w).1 hm)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => (muDef_iff Q 0 0).1 (h.muDef 0 0), fun h => ⟨fun C CH => (muDef_iff Q C CH).2 h⟩⟩`.
+-/
 theorem realPins3_iff (Q : RealT Rc P Dcf Spf Zscf S Ks) :
     RealPins3 Q ↔ ∀ w, w ∈ Q.Rl.twPl ↔ (Q.Rl.toCx3 Q.F).W1 Q.F.cr (Q.Rl.num Q.F 0 0) w :=
   ⟨fun h => (muDef_iff Q 0 0).1 (h.muDef 0 0), fun h => ⟨fun C CH => (muDef_iff Q C CH).2 h⟩⟩
@@ -53,6 +61,9 @@ variable {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex} {Dcf : ∀ Zs : DefS
   {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
   {Q : RealT Rc P Dcf Spf Zscf S Ks}
 
+/- English proof (translation)
+Introduce `w hw` and use `(h.muDef C CH).2.2.2 w |>.2 hw`.
+-/
 theorem w1 (h : RealPins3 Q) (C CH : ℝ) :
     ∀ w, (Q.Rl.toCx3 Q.F).W1 Q.F.cr (Q.Rl.num Q.F C CH) w → w ∈ Q.Rl.twPl :=
   fun w hw => (h.muDef C CH).2.2.2 w |>.2 hw

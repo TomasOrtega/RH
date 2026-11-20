@@ -12,6 +12,9 @@ section Alg
 
 variable {G E : Type} [Group G] [Field E]
 
+/- English proof (translation)
+Rewrite using `[map_mul, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three]`.
+-/
 private theorem mul_entry (t : G →* GL (Fin 3) E) (g h : G) (i j : Fin 3) :
     (t (g * h) : Matrix (Fin 3) (Fin 3) E) i j =
       (t g : Matrix (Fin 3) (Fin 3) E) i 0 * (t h : Matrix (Fin 3) (Fin 3) E) 0 j +
@@ -47,6 +50,9 @@ private def two (α κ : G →* Eˣ) (b : G → E) (hb : ∀ g h, b (g * h) = α
     refine LinearMap.ext fun x => ?_
     ext <;> simp [hb] <;> ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem two_apply (α κ : G →* Eˣ) (b : G → E) (hb : ∀ g h, b (g * h) = α g * b h + b g * κ h)
     (g : G) (x : E × E) : two α κ b hb g x = (α g * x.1 + b g * x.2, κ g * x.2) := rfl
 
@@ -58,6 +64,9 @@ variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsT
   {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [TopologicalSpace E]
   [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E]
 
+/- English proof (translation)
+Establish `hφH : IsOpenEmbedding (φ.comp H.subtype)` using `hφ.comp hH.isOpenEmbedding_subtypeVal`. Establish `hc : Continuous fun p : H × V => ((p.1 : G), p.2)` using `(continuous_subtype_val.comp continuous_fst).prodMk continuous_snd`. Establish `hc' : Continuous fun p : H × V' => ((p.1 : G), p.2)` using `(continuous_subtype_val.comp continuous_fst).prodMk continuous_snd`. Establish `key` using `isCrys_isDR_sub_quot (φ.comp H.subtype) hφH (ρ.comp H.subtype : Representation E H V) (ρ'.comp H.subtype : Representation E H V') (hρ.comp hc) (hρ'.comp hc') (f.restrictScalars ℚ_[l]) (fun g x => hf g x)`. Conclude with `⟨fun h => (key.1 h).1, fun h => (key.2 h).1⟩`.
+-/
 private theorem crOn_map (φ : G →* GQ l) (hφ : IsOpenEmbedding φ)
     {V : Type} [AddCommGroup V] [Module E V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] E V]
     [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V]
@@ -79,6 +88,9 @@ private theorem crOn_map (φ : G →* GQ l) (hφ : IsOpenEmbedding φ)
   exact ⟨fun h => (key.1 h).1, fun h => (key.2 h).1⟩
 
 omit [IsTopologicalGroup G] in
+/- English proof (translation)
+The claim follows from `(((hα.comp continuous_fst).mul (continuous_fst.comp continuous_snd)).add ((hbc.comp continuous_fst).mul (continuous_snd.comp continuous_snd))).prodMk ((hκ.comp continuous_fst).mul (continuous_snd.comp continuous_snd))`.
+-/
 private theorem cont_two (α κ : G →* Eˣ) (b : G → E) (hb : ∀ g h, b (g * h) = α g * b h + b g * κ h)
     (hα : Continuous fun g => (α g : E)) (hκ : Continuous fun g => (κ g : E)) (hbc : Continuous b) :
     ReciprocityTheory.Gal.ContAction (two α κ b hb) :=
@@ -86,6 +98,15 @@ private theorem cont_two (α κ : G →* Eˣ) (b : G → E) (hb : ∀ g h, b (g 
     ((hbc.comp continuous_fst).mul (continuous_snd.comp continuous_snd))).prodMk
     ((hκ.comp continuous_fst).mul (continuous_snd.comp continuous_snd))
 
+/- English proof (translation)
+Establish `c2` using `cont_two α κ b hb hα hκ hbc`. Establish `cα : ReciprocityTheory.Gal.ContAction (chRep α)` using `(hα.comp continuous_fst).mul continuous_snd`. Establish `cκ : ReciprocityTheory.Gal.ContAction (chRep κ)` using `(hκ.comp continuous_fst).mul continuous_snd`. Establish `e1 : ∀ g x, LinearMap.inl E E E (chRep α g x) = two α κ b hb g (LinearMap.inl E E E x)`. Introduce `g x`.
+
+Simplify using `[two_apply, chRep]`. Establish `e2 : ∀ g x, LinearMap.snd E E E (two α κ b hb g x) = chRep κ g (LinearMap.snd E E E x)`. Introduce `g x`. Simplify using `[two_apply, chRep]`. Establish `h1` using `(crOn_map φ hφ _ _ cα c2 _ e1 H hH).1 LinearMap.inl_injective hcr`.
+
+Establish `h2` using `(crOn_map φ hφ _ _ c2 cκ _ e2 H hH).2 LinearMap.snd_surjective hcr`. Establish `key` using `(crExt φ hφ (chRep α) (two α κ b hb) cα c2 κ (LinearMap.inl E E E) (LinearMap.snd E E E) (0, 1) (fun g => b g * (((κ g)⁻¹ : Eˣ) : E)) LinearMap.inl_injective Function.Exact.inl_snd rfl e1 (fun g => by`. Apply the tactic sequence `ext <;> simp [two_apply]`. Use the proof step `field_simp) H hH h1 h2).1 hcr`. Establish `e3 : twist κ⁻¹ (chRep α) = chRep ε`.
+
+Use `MonoidHom.ext fun g => LinearMap.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((κ g)⁻¹ : Eˣ) : E) * ((α g : E) * x) = (ε g : E) * x`. Rewrite using `[hε, mul_comm (ε g : E), mul_assoc, Units.inv_mul_cancel_left]`. Rewrite `key` using `[e3]`. Then use the resulting hypothesis.
+-/
 private theorem core (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) (α κ ε : G →* Eˣ) (b : G → E)
     (hb : ∀ g h, b (g * h) = α g * b h + b g * κ h)
     (hα : Continuous fun g => (α g : E)) (hκ : Continuous fun g => (κ g : E)) (hbc : Continuous b)
@@ -119,6 +140,17 @@ end Cr
 end UpperTheory.V.Z.J.StepF
 
 open UpperTheory.V.Z.J.StepF in
+/- English proof (translation)
+Introduce `l _ G _ _ _ φ hφ E _ _ _ _ _ _ _ _ t htc ht H _ hH hcr i hi`. Establish `h10` using `fun g => ht g 1 0 (by decide)`. Establish `h20` using `fun g => ht g 2 0 (by decide)`. Establish `h21` using `fun g => ht g 2 1 (by decide)`. Establish `ce : ∀ a b, Continuous fun g => (t g : Matrix (Fin 3) (Fin 3) E) a b` using `fun a b => htc.matrix_elem a b`.
+
+Establish `cc : ReciprocityTheory.Gal.ContAction (colRep t)` using `(htc.comp continuous_fst).matrix_mulVec continuous_snd`. Establish `hd : ∀ j g, ((diag t ht j g : Eˣ) : E) = (t g : Matrix (Fin 3) (Fin 3) E) j j` using `fun j g => rfl`. Establish `hb : ∀ g h, (t (g * h) : Matrix (Fin 3) (Fin 3) E) i.castSucc i.succ = (diag t ht i.castSucc g : E) * (t h : Matrix (Fin 3) (Fin 3) E) i.castSucc i.succ + (t g : Matrix (Fin 3) (Fin 3) E) i.castSucc i.succ * (diag t ht i.succ h : E)`. Introduce `g h`. Rewrite using `[mul_entry, hd, hd]`.
+
+Apply the tactic sequence `fin_cases i <;> simp [h10, h20, h21]`. Establish `c2` using `cont_two _ _ _ hb (ce _ _) (ce _ _) (ce _ _)`. Establish `h2 : CrOn φ (two (diag t ht i.castSucc) (diag t ht i.succ) (fun g => (t g : Matrix (Fin 3) (Fin 3) E) i.castSucc i.succ) hb) H` using `by fin_cases i`. Use `(crOn_map φ hφ _ _ c2 cc (LinearMap.coprod (LinearMap.single E (fun _ : Fin 3 => E) 0) (LinearMap.single E (fun _ : Fin 3 => E) 1)) (fun g x => ?_) H hH).1 (fun x y h => ?_) hcr` and prove the remaining obligations. Apply the tactic sequence `funext k fin_cases k <;> simp [two_apply, hd, colRep, Matrix.mulVec, dotProduct, Fin.sum_univ_three, h10, h20, h21]`.
+
+Conclude with `Prod.ext (by simpa using congrFun h 0) (by simpa using congrFun h 1)`. Use `(crOn_map φ hφ _ _ cc c2 (LinearMap.prod (LinearMap.proj (R := E) (φ := fun _ : Fin 3 => E) 1) (LinearMap.proj 2)) (fun g x => ?_) H hH).2 (fun y => ⟨![0, y.1, y.2], rfl⟩) hcr` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [two_apply, hd, colRep, Matrix.mulVec, dotProduct, Fin.sum_univ_three, h10, h20, h21]`. Establish `key` using `core φ hφ _ _ ((cycA l l E).comp φ) _ hb (ce _ _) (ce _ _) (ce _ _) H hH h2 hi`. Use `key using 3 with g` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← map_inv, ← map_inv, hd]`.
+-/
 theorem UpperTheory.V.Z.J.stepF :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l), IsOpenEmbedding φ → ∀ {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E] (t : G →* GL (Fin 3) E), Continuous (fun g => (t g : Matrix (Fin 3) (Fin 3) E)) → (∀ g i j, j < i → (t g : Matrix (Fin 3) (Fin 3) E) i j = 0) → ∀ (H : Subgroup G) [H.Normal], IsOpen (H : Set G) → CrOn φ (colRep t) H → ∀ i : Fin 2, (∀ g, (t g : Matrix (Fin 3) (Fin 3) E) i.castSucc i.castSucc = (cycA l l E (φ g) : E) * (t g : Matrix (Fin 3) (Fin 3) E) i.succ i.succ) → (fun g => (t g : Matrix (Fin 3) (Fin 3) E) i.castSucc i.succ * ((t g)⁻¹ : GL (Fin 3) E) i.succ i.succ) ∈ UpperTheory.V.Loc.finiteCocycles φ (chRep ((cycA l l E).comp φ)) := by
   intro l _ G _ _ _ φ hφ E _ _ _ _ _ _ _ _ t htc ht H _ hH hcr i hi

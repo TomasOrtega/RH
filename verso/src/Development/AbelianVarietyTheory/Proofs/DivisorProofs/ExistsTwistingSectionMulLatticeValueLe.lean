@@ -18,6 +18,9 @@ namespace GlobalTheory.TwMulOne
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨⟨q, T, io, e, ho, y, hy, η, hη, rfl⟩, rfl⟩` from `hv`. Use `letI := io.toAlgebra`. Use `show nval T.V e (evR Xo c g y.1) = nval T.V e (evR Xo c f y.1)`. Rewrite using `[h _ y.1 hy.2]`.
+-/
 theorem val_eq_of_agree {Z : Comp Xo c} {w : HeightOneSpectrum (𝓞 c.F)} {v : Rul Xo c → EReal} (hv : v ∈ valOn Z w)
     {f g : Rul Xo c}
     (h : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOn Z y → evR Xo c g y = evR Xo c f y) :
@@ -27,6 +30,13 @@ theorem val_eq_of_agree {Z : Comp Xo c} {w : HeightOneSpectrum (𝓞 c.F)} {v : 
   show nval T.V e (evR Xo c g y.1) = nval T.V e (evR Xo c f y.1)
   rw [h _ y.1 hy.2]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U hU x G G₀ hG Z t w v hv f hf`. Take `⟨f', hres, hlat⟩` from `GlobalTheory.CompRestr.exists_cuspOn_restrict E H Dw l Xo c r U hU Z G f`. Establish `hf'lat` using `hlat hf`. Take `⟨a, ha0, hva, hpos⟩` from `GlobalTheory.RefSum.ScalApprox.exists_scal c.F t.lo t.finite_lo w`. Take `⟨φ, hφ, -, hint, -⟩` from `GlobalTheory.FlatTw.Mul.twSec_mulEquiv_integral E H Dw l Xo c r U x Z G₀ t G hG`.
+
+Establish `hg` using `hint a ha0 hpos f' hf'lat (a • φ f') (by rw [Submodule.coe_smul])`. Use `⟨⟨(a • φ f' : cuspOn U Z (G + G₀)), cuspOn_le U Z (G + G₀) (a • φ f').2⟩, (mem_latOn U).1 hg, ?_⟩` and prove the remaining obligations. Establish `hV` using `isVal_valOn hv`. Take `⟨b, hb, -, -, hbhi⟩` from `t.exists_val hv`. Establish `e1 : v (f' : Rul Xo c) = v (f : Rul Xo c)` using `val_eq_of_agree hv (hres)`.
+
+Use `show v ((a • φ f' : cuspOn U Z (G + G₀)) : Rul Xo c) ≤ _`. Rewrite using `[Submodule.coe_smul, hV.smul _ _ ha0, hφ, hV.mul, e1, hb, hva]`. Rewrite using `[← add_assoc, add_comm (((-(⌊t.lo w⌋ : ℝ) : ℝ)) : EReal) (v (f : Rul Xo c)), add_assoc, ← EReal.coe_add]`. Conclude with `add_le_add le_rfl (EReal.coe_le_coe_iff.2 (by linarith))`.
+-/
 theorem exists_latW_val_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r),
     (∀ σ, GoodEmb c σ → IsUnf (U σ)) → ∀ (x : ℝ) (G G₀ : WTZ E), Even G.2 → ∀ (Z : Comp Xo c)

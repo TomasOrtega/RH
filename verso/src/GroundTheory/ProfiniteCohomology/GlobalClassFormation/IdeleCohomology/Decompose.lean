@@ -11,6 +11,15 @@ universe u
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [DiscreteTopology G]
   {ι : Type*} {P : Rep.{u} k G} {A : ι → Rep.{u} k G}
 
+/- English proof (translation)
+Apply `(cohomology_pi_bijective p hp n).1` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Simplify using `only [← cohomologyMapAlong_id_eq_cohomologyMap, map_sum]`. Distinguish the cases in `hj : j ∈ T`. Rewrite using `[Finset.sum_eq_single j]`.
+
+Rewrite using `[← ModuleCat.comp_apply, ← cohomologyMapAlong_id_comp, ← ModuleCat.comp_apply, ← cohomologyMapAlong_id_comp, hep, Category.comp_id]`. Introduce `i _ hij`. Rewrite using `[← ModuleCat.comp_apply, ← cohomologyMapAlong_id_comp, ← ModuleCat.comp_apply, ← cohomologyMapAlong_id_comp, hep' i j hij, Limits.comp_zero]`. Establish `h0 : cohomologyMapAlong (MonoidHom.id G) continuous_id (0 : P ⟶ A j) n = 0`. Rewrite using `[cohomologyMapAlong, cochainsMapAlong_zero, HomologicalComplex.homologyMap_zero]`.
+
+Both sides reduce to the same expression. Rewrite using `[h0]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd hj h`.
+
+Conclude with `(ModuleCat.isZero_iff_subsingleton.1 (hT j hj)).elim _ _`.
+-/
 theorem eq_sum_cohomologyMap_of_pi [DecidableEq ι] (p : ∀ i, P ⟶ A i)
     (hp : Function.Bijective fun (x : P) (i : ι) => (p i).hom x) (e : ∀ i, A i ⟶ P)
     (hep : ∀ i, e i ≫ p i = 𝟙 _) (hep' : ∀ i j, i ≠ j → e i ≫ p j = 0) (T : Finset ι) (n : ℕ)

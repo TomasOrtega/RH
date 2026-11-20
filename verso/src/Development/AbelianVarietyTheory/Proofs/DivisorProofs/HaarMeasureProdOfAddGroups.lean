@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.IwLevel
 
+/- English proof (translation)
+Introduce `k _ _ A _ hA φ _ hfin d hd`. Take `⟨hflat, hsurj⟩` from `GlobalTheory.flat_and_surjective_of_isFinite_abelianEnd GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected k A hA φ inferInstance hfin`. Use `hA.smooth` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Establish `: ConnectedSpace A.left` using `GeometricallyConnected.connectedSpace A.hom A.hom.isOpenMap`.
+
+Establish `: LocallyOfFinitePresentation (φ.left ≫ A.hom)`. Rewrite using `[Over.w]`. Use `infer_instance`. Use `GlobalTheory.TangentCrit.locallyOfFinitePresentation_of_comp φ.left A.hom` as an intermediate fact. Use `⟨hfin, hflat, hsurj, fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hd]`. Conclude with `(Scheme.Hom.isLocallyConstant_finrank φ.left).apply_eq_of_preconnectedSpace y _`.
+-/
 theorem isIsogDeg_of_isFinite_of_finrank_origin :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A], IsAbelianScheme A →
     ∀ (φ : A ⟶ A), IsMonHom φ → IsFinite φ.left → ∀ d : ℕ,

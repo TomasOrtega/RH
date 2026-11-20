@@ -23,10 +23,16 @@ def mOf {X : Scheme.{0}} (ρ : Γ(X, ⊤)) : X ⟶ A1 :=
 def fnOf {X : Scheme.{0}} (m : X ⟶ A1) : Γ(X, ⊤) :=
   m.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv.hom Polynomial.X)
 
+/- English proof (translation)
+Simplify using `only [fnOf, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`.
+-/
 lemma fnOf_comp {X Y : Scheme.{0}} (y : Y ⟶ X) (m : X ⟶ A1) :
     fnOf (y ≫ m) = y.appTop.hom (fnOf m) := by
   simp only [fnOf, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]
 
+/- English proof (translation)
+Establish `h : (mOf ρ).appTop = (Scheme.ΓSpecIso _).hom ≫ CommRingCat.ofHom (Polynomial.eval₂RingHom (Int.castRingHom _) ρ)`. Rewrite using `[mOf, Scheme.Hom.comp_appTop, Scheme.toSpecΓ_appTop, Scheme.ΓSpecIso_naturality]`. Rewrite using `[fnOf, h, CommRingCat.comp_apply, Iso.inv_hom_id_apply]`. Simplify using the standard rewrite rules.
+-/
 lemma fnOf_mOf {X : Scheme.{0}} (ρ : Γ(X, ⊤)) : fnOf (mOf ρ) = ρ := by
   have h : (mOf ρ).appTop = (Scheme.ΓSpecIso _).hom ≫
       CommRingCat.ofHom (Polynomial.eval₂RingHom (Int.castRingHom _) ρ) := by
@@ -34,6 +40,11 @@ lemma fnOf_mOf {X : Scheme.{0}} (ρ : Γ(X, ⊤)) : fnOf (mOf ρ) = ρ := by
   rw [fnOf, h, CommRingCat.comp_apply, Iso.inv_hom_id_apply]
   simp
 
+/- English proof (translation)
+Rewrite using `[mOf, mOf, ← Category.assoc, Scheme.toSpecΓ_naturality, Category.assoc, ← Spec.map_comp]`. Use `congr 2`. Use `ext1`. Use `Polynomial.ringHom_ext (fun a => ?_) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 lemma comp_mOf {X Y : Scheme.{0}} (y : Y ⟶ X) (ρ : Γ(X, ⊤)) :
     y ≫ mOf ρ = mOf (y.appTop.hom ρ) := by
   rw [mOf, mOf, ← Category.assoc, Scheme.toSpecΓ_naturality, Category.assoc, ← Spec.map_comp]
@@ -43,6 +54,9 @@ lemma comp_mOf {X Y : Scheme.{0}} (y : Y ⟶ X) (ρ : Γ(X, ⊤)) :
   · simp
   · simp
 
+/- English proof (translation)
+Rewrite using `[← fnOf_mOf ρ, h, fnOf_mOf]`.
+-/
 lemma mOf_inj {X : Scheme.{0}} {ρ ρ' : Γ(X, ⊤)} (h : mOf ρ = mOf ρ') : ρ = ρ' := by
   rw [← fnOf_mOf ρ, h, fnOf_mOf]
 
@@ -51,6 +65,17 @@ section Desc
 variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
 
+/- English proof (translation)
+Establish `hw : y1 ≫ (thickObj R I e G).hom = y2 ≫ (thickObj R I e G).hom`. Rewrite using `[← Over.w g.q, ← Category.assoc, hq, Category.assoc]`. Set `FinalForm : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk (y2 ≫ (thickObj R I e G).hom)`. Set `z1 : FinalForm ⟶ thickObj R I e G` to `Over.homMk y1 hw`. Set `z2 : FinalForm ⟶ thickObj R I e G` to `Over.homMk y2 rfl`.
+
+Establish `hq' : z1 ≫ g.q = z2 ≫ g.q` using `Over.OverMorphism.ext (by simpa [z1, z2] using hq)`. Use `g.q_hom` as an intermediate fact. Establish `hinv : z2⁻¹ ≫ g.q = (z2 ≫ g.q)⁻¹`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← MonObj.mul_comp, inv_mul_cancel, MonObj.one_comp]`.
+
+Establish `hd : (z1 * z2⁻¹) ≫ g.q = toUnit FinalForm ≫ η[thickObj R I e D.P.A]`. Rewrite using `[MonObj.mul_comp, hinv, hq', mul_inv_cancel, Hom.one_def]`. Set `τ` to `g.isKernel.lift (z1 * z2⁻¹) (toUnit FinalForm) hd`. Establish `hτ : τ ≫ g.i = z1 * z2⁻¹` using `g.isKernel.lift_fst _ _ _`. Establish `e1 : lift τ z2 ≫ WeightPf.act g = z1`.
+
+Establish `h1 : WeightPf.act g = (fst (WeightPf.Te D I e) (thickObj R I e G) ≫ g.i) * snd _ _` using `rfl`. Rewrite using `[h1, MonObj.comp_mul, lift_fst_assoc, lift_snd, hτ, inv_mul_cancel_right]`. Establish `e2 : lift τ z2 ≫ snd (WeightPf.Te D I e) (thickObj R I e G) = z2` using `lift_snd _ _`. Establish `E1 : y1 = (lift τ z2).left ≫ (WeightPf.act g).left`. Rewrite using `[← Over.comp_left, e1]`.
+
+Both sides reduce to the same expression. Establish `E2 : y2 = (lift τ z2).left ≫ (snd (WeightPf.Te D I e) (thickObj R I e G)).left`. Rewrite using `[← Over.comp_left, e2]`. Both sides reduce to the same expression. Rewrite using `[E1, E2, Scheme.Hom.comp_appTop, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, CommRingCat.comp_apply, h]`.
+-/
 theorem kp (ρ : Γ((thickObj R I e G).left, ⊤))
     (h : (WeightPf.act g).left.appTop.hom ρ =
       (snd (WeightPf.Te D I e) (thickObj R I e G)).left.appTop.hom ρ)
@@ -81,6 +106,21 @@ theorem kp (ρ : Γ((thickObj R I e G).left, ⊤))
   rw [E1, E2, Scheme.Hom.comp_appTop, Scheme.Hom.comp_appTop, CommRingCat.comp_apply,
     CommRingCat.comp_apply, h]
 
+/- English proof (translation)
+Use `g.q_flat` as an intermediate fact. Use `g.q_surj` as an intermediate fact. Use `g.q_affine` as an intermediate fact. Set `𝒰` to `(thickObj R I e D.P.A).left.affineCover`. Establish `hloc : ∀ i, ∃ u : 𝒰.X i ⟶ A1, pullback.snd g.q.left (𝒰.f i) ≫ u = pullback.fst g.q.left (𝒰.f i) ≫ mOf ρ`.
+
+Introduce `i`. Establish `: IsAffine (pullback g.q.left (𝒰.f i))` using `isAffine_of_isAffineHom (pullback.snd g.q.left (𝒰.f i))`. Establish `: IsRegularEpi (pullback.snd g.q.left (𝒰.f i))` using `isRegularEpi_of_flat_of_surjective_of_isAffine _`. Use `IsRegularEpi.exists_of_isKernelPair _ (IsKernelPair.of_hasPullback _) _ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc, comp_mOf, comp_mOf]`.
+
+Use `congr 1`. Use `kp g ρ h _ _ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, pullback.condition_assoc]`. Use `choose u hu using hloc`. Establish `hglue : ∀ i j, pullback.fst (𝒰.f i) (𝒰.f j) ≫ u i = pullback.snd (𝒰.f i) (𝒰.f j) ≫ u j`.
+
+Introduce `i j`. Set `c` to `pullback.fst (𝒰.f i) (𝒰.f j) ≫ 𝒰.f i`. Establish `: Epi (pullback.snd g.q.left c)` using `Flat.epi_of_flat_of_surjective _`. Rewrite using `[← cancel_epi (pullback.snd g.q.left c)]`. Establish `li : pullback.snd g.q.left c ≫ pullback.fst (𝒰.f i) (𝒰.f j) = pullback.lift (pullback.fst g.q.left c) (pullback.snd g.q.left c ≫ pullback.fst _ _) (by rw [pullback.condition, Category.assoc]) ≫ pullback.snd g.q.left (𝒰.f i)`.
+
+Rewrite using `[pullback.lift_snd]`. Establish `lj : pullback.snd g.q.left c ≫ pullback.snd (𝒰.f i) (𝒰.f j) = pullback.lift (pullback.fst g.q.left c) (pullback.snd g.q.left c ≫ pullback.snd _ _) (by rw [pullback.condition]; show _ ≫ pullback.fst (𝒰.f i) (𝒰.f j) ≫ 𝒰.f i = _`. Rewrite using `[pullback.condition, Category.assoc])`. Use the proof step `≫ pullback.snd g.q.left (𝒰.f j) := by`. Rewrite using `[pullback.lift_snd]`.
+
+Rewrite using `[← Category.assoc, li, Category.assoc, hu, pullback.lift_fst_assoc, ← Category.assoc, lj, Category.assoc, hu, pullback.lift_fst_assoc]`. Establish `hU : g.q.left ≫ 𝒰.glueMorphisms u hglue = mOf ρ`. Use `Scheme.Cover.hom_ext (𝒰.pullback₁ g.q.left) _ _ fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pullback.fst g.q.left (𝒰.f i) ≫ g.q.left ≫ 𝒰.glueMorphisms u hglue = pullback.fst g.q.left (𝒰.f i) ≫ mOf ρ`. Establish `hι : 𝒰.f i ≫ 𝒰.glueMorphisms u hglue = u i` using `Scheme.Cover.ι_glueMorphisms 𝒰 u hglue i`.
+
+Rewrite using `[pullback.condition_assoc, hι]`. Conclude with `hu i`. Use `⟨fnOf (𝒰.glueMorphisms u hglue), ?_⟩` and prove the remaining obligations. Rewrite using `[← fnOf_comp, hU, fnOf_mOf]`.
+-/
 theorem descend (ρ : Γ((thickObj R I e G).left, ⊤))
     (h : (WeightPf.act g).left.appTop.hom ρ =
       (snd (WeightPf.Te D I e) (thickObj R I e G)).left.appTop.hom ρ) :

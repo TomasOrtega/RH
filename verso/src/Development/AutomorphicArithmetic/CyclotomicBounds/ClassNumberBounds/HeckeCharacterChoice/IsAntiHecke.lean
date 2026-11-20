@@ -29,6 +29,9 @@ def HasCondExp (χ : Idele E →* ℂˣ) (w : HeightOneSpectrum (𝓞 E)) (n : �
     ∀ m : ℕ, m < n → ∃ x ∈ localUnits w,
       Valued.v (finComp w x - 1) ≤ WithZero.exp (-(m : ℤ)) ∧ χ x ≠ 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, by simp⟩`.
+-/
 example (w : HeightOneSpectrum (𝓞 E)) : HasCondExp 1 w 0 := ⟨fun _ _ _ => rfl, by simp⟩
 
 noncomputable def localOrder (χ : Idele E →* ℂˣ) (w : HeightOneSpectrum (𝓞 E)) : ℕ :=
@@ -50,6 +53,9 @@ structure IsAntiHecke {ι : Type*} [Fintype ι] (τ : ι → E →+* ℂ) (e : �
   infinite : ∀ x : Idele E, (∀ v, finComp v x = 1) →
     χ x = infType conjRatio τ e (infPart E x)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨continuous_const, fun _ => rfl, rfl, fun _ _ => by simp [infType]⟩`.
+-/
 example {ι : Type*} [Fintype ι] (τ : ι → E →+* ℂ) : IsAntiHecke τ 0 1 :=
   ⟨continuous_const, fun _ => rfl, rfl, fun _ _ => by simp [infType]⟩
 

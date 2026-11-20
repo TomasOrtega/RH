@@ -11,6 +11,9 @@ noncomputable section
 
 variable {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isRelevant_iff (W : Ideal (NumbersDVR.MRing ι R)) :
     NumbersDVR.IsRelevant W ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsRelevant (R := R) W := Iff.rfl
 
@@ -18,6 +21,13 @@ section Homog
 
 variable [DecidableEq K] [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Simplify using `only [NumbersDVR.blockWeight, Pi.smul_apply, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Use `set T : Finset (Σ k, ι k) := (Finset.univ : Finset (ι k)).map ⟨Sigma.mk k, sigma_mk_injective⟩`. Establish `h1 : ∑ x ∈ m.support, (if k = x.1 then m x else 0) = ∑ x ∈ m.support ∪ T, (if k = x.1 then m x else 0)`.
+
+Use `Finset.sum_subset Finset.subset_union_left fun x _ hx => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.notMem_support_iff.mp hx, ite_self]`. Establish `h2 : ∑ x ∈ T, (if k = x.1 then m x else 0) = ∑ x ∈ m.support ∪ T, (if k = x.1 then m x else 0)`. Use `Finset.sum_subset Finset.subset_union_right fun x _ hx => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+
+Introduce and unpack `rfl`. Conclude with `hx (Finset.mem_map.mpr ⟨x.2, Finset.mem_univ _, rfl⟩)`. Rewrite using `[h1, ← h2, Finset.sum_map]`. Simplify using the standard rewrite rules.
+-/
 theorem weight_blockWeight (m : (Σ k, ι k) →₀ ℕ) :
     Finsupp.weight (NumbersDVR.blockWeight ι) m = fun k => ∑ i, m ⟨k, i⟩ := by
   funext k
@@ -39,6 +49,9 @@ theorem weight_blockWeight (m : (Σ k, ι k) →₀ ℕ) :
   rw [h1, ← h2, Finset.sum_map]
   simp
 
+/- English proof (translation)
+Unfold `NumbersDVR.IsMultiHomog ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog IsWeightedHomogeneous`. Simplify using `only [weight_blockWeight, mem_support_iff, funext_iff]`.
+-/
 theorem isMultiHomog_iff (f : NumbersDVR.MRing ι R) (a : K → ℕ) :
     NumbersDVR.IsMultiHomog f a ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (R := R) f a := by
   unfold NumbersDVR.IsMultiHomog ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog IsWeightedHomogeneous
@@ -52,6 +65,15 @@ variable [DecidableEq K] [∀ k, Fintype (ι k)]
 
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨{g | ∃ f ∈ P, ∃ b, g = weightedHomogeneousComponent (NumbersDVR.blockWeight ι) b f}, ?_, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨f, -, b, rfl⟩`. Conclude with `⟨b, (isMultiHomog_iff _ _).mp (weightedHomogeneousComponent_isWeightedHomogeneous b f)⟩`.
+
+Introduce `f hf`. Rewrite using `[← sum_weightedHomogeneousComponent (NumbersDVR.blockWeight ι) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Conclude with `Ideal.sum_mem _ fun b _ => Ideal.subset_span ⟨f, hf, b, rfl⟩`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `g ⟨f, hf, b, rfl⟩`.
+
+Conclude with `h f hf b`. Introduce and unpack `⟨S, hS, rfl⟩ f hf b`. Establish `hom : (Ideal.span S).IsHomogeneous (weightedHomogeneousSubmodule R (NumbersDVR.blockWeight ι))`. Use `Ideal.homogeneous_span _ S fun x hx => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hS x hx`.
+
+Conclude with `⟨a, (isMultiHomog_iff x a).mpr ha⟩`. Conclude with `weightedHomogeneousComponent_mem_of_mem (h := hom) (hp := hf) (m := b)`.
+-/
 theorem isMultiHomogIdeal_iff (P : Ideal (NumbersDVR.MRing ι R)) :
     NumbersDVR.IsMultiHomogIdeal P ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomogIdeal (R := R) P := by
   classical
@@ -76,6 +98,9 @@ theorem isMultiHomogIdeal_iff (P : Ideal (NumbersDVR.MRing ι R)) :
       exact ⟨a, (isMultiHomog_iff x a).mpr ha⟩
     exact weightedHomogeneousComponent_mem_of_mem (h := hom) (hp := hf) (m := b)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.isPrime, (isMultiHomogIdeal_iff P).mp h.multiHomog, h.relevant⟩, fun h => ⟨h.1, (isMultiHomogIdeal_iff P).mpr h.2.1, h.2.2⟩⟩`.
+-/
 theorem isMultiProjPrime_iff (P : Ideal (NumbersDVR.MRing ι R)) :
     NumbersDVR.IsMultiProjPrime P ↔ ReciprocityTheory.ChartRestriction.G.Geo.IsMultiProjPrime (R := R) P :=
   ⟨fun h => ⟨h.isPrime, (isMultiHomogIdeal_iff P).mp h.multiHomog, h.relevant⟩,
@@ -85,11 +110,19 @@ end Ideals
 
 section Cycles
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.ChartRestriction.G.Geo.multAt NumbersDVR.multAt`. Rewrite using `[dif_pos ‹W.IsPrime›]`.
+-/
 theorem multAt_eq_toNat (J W : Ideal (NumbersDVR.MRing ι R)) [W.IsPrime] :
     ReciprocityTheory.ChartRestriction.G.Geo.multAt (R := R) J W = (NumbersDVR.multAt J W).toNat := by
   unfold ReciprocityTheory.ChartRestriction.G.Geo.multAt NumbersDVR.multAt
   rw [dif_pos ‹W.IsPrime›]
 
+/- English proof (translation)
+Unfold `NumbersDVR.divCycle ReciprocityTheory.ChartRestriction.G.Geo.divCycle`. Simplify using `only [Finsupp.ofSupportFinite_coe, ReciprocityTheory.ChartRestriction.G.Geo.divSupp, Set.mem_ofPred_eq, ← isRelevant_iff]`. Use `split_ifs with h`. Establish `: W.IsPrime` using `h.1.1.1`. Rewrite using `[multAt_eq_toNat]`.
+
+Both sides reduce to the same expression.
+-/
 theorem divCycle_eq [Fintype K] [∀ k, Fintype (ι k)] [IsNoetherianRing R]
     (P : Ideal (NumbersDVR.MRing ι R)) (f : NumbersDVR.MRing ι R) (W : Ideal (NumbersDVR.MRing ι R)) :
     NumbersDVR.divCycle P f W = (ReciprocityTheory.ChartRestriction.G.Geo.divCycle (R := R) P f W : ℤ) := by

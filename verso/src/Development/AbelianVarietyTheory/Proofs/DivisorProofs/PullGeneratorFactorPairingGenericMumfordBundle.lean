@@ -16,12 +16,18 @@ noncomputable section
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+The claim follows from `Geo.Tor.LBIso.chartPull (h := g) (Geo.Tor.chartPullPull (M.pull F) g g rfl) (Geo.Tor.chartPullSame M (fun _ => g ≫ F) (fun _ => F) (fun _ => 1) g (fun _ => rfl)) (GlobalTheory.PolBaseChange.lbIso_refl (Geo.Tor.pull_isLB hM F))`.
+-/
 theorem lbIso_pull_pull_comp {X Y Z : Scheme.{0}} {M : LB X} (hM : M.IsLB) (F : Y ⟶ X) (g : Z ⟶ Y) :
     LBIso ((M.pull F).pull g) (M.pull (g ≫ F)) :=
   Geo.Tor.LBIso.chartPull (h := g) (Geo.Tor.chartPullPull (M.pull F) g g rfl)
     (Geo.Tor.chartPullSame M (fun _ => g ≫ F) (fun _ => F) (fun _ => 1) g (fun _ => rfl))
     (GlobalTheory.PolBaseChange.lbIso_refl (Geo.Tor.pull_isLB hM F))
 
+/- English proof (translation)
+Establish `h₁` using `Geo.Tor.pull_isLB (Geo.Tor.pull_isLB hM F) g`. Establish `h₂` using `Geo.Tor.pull_isLB hM (g ≫ F)`. Conclude with `⟨GlobalTheory.CM.PairingIso.exists_gen_of_lbIso h₁ h₂ (lbIso_pull_pull_comp hM F g), GlobalTheory.CM.PairingIso.exists_gen_of_lbIso h₂ h₁ (Geo.Tor.LBIso.symm (lbIso_pull_pull_comp hM F g))⟩`.
+-/
 theorem exists_gen_pull_pull_iff {X Y Z : Scheme.{0}} {M : LB X} (hM : M.IsLB) (F : Y ⟶ X) (g : Z ⟶ Y) :
     (∃ t : LB.Gen ((M.pull F).pull g), t.IsGen) ↔ ∃ t : LB.Gen (M.pull (g ≫ F)), t.IsGen := by
   have h₁ := Geo.Tor.pull_isLB (Geo.Tor.pull_isLB hM F) g
@@ -29,12 +35,46 @@ theorem exists_gen_pull_pull_iff {X Y Z : Scheme.{0}} {M : LB X} (hM : M.IsLB) (
   exact ⟨GlobalTheory.CM.PairingIso.exists_gen_of_lbIso h₁ h₂ (lbIso_pull_pull_comp hM F g),
     GlobalTheory.CM.PairingIso.exists_gen_of_lbIso h₂ h₁ (Geo.Tor.LBIso.symm (lbIso_pull_pull_comp hM F g))⟩
 
+/- English proof (translation)
+Rewrite `h₁` using `[Over.fst_left]`. Rewrite `h₂` using `[Over.snd_left]`. Conclude with `pullback.hom_ext h₁ h₂`.
+-/
 theorem left_tensor_ext {S : Scheme.{0}} {X Y : Over S} {Z : Scheme.{0}} (u v : Z ⟶ (X ⊗ Y).left)
     (h₁ : u ≫ (fst X Y).left = v ≫ (fst X Y).left) (h₂ : u ≫ (snd X Y).left = v ≫ (snd X Y).left) : u = v := by
   rw [Over.fst_left] at h₁
   rw [Over.snd_left] at h₂
   exact pullback.hom_ext h₁ h₂
 
+/- English proof (translation)
+Introduce `R _ _ _ D D' F A' G' _ _ U' oA oG hlin G _ _ inc hinc κ₀ hκ T x ht`. Use `letI := A'.isAb.comm`. Use `haveI : IsMonHom U'.gen.hom := U'.gen_hom`. Establish `hL' : U'.LG.L.IsLB` using `U'.LG.isLB`. Establish `hQ : (abelian₂ G' U'.LG.L).IsLB` using `DVR.linComb_isLB _ hL' _ _`.
+
+Establish `hA : A'.L.IsLB` using `A'.isLB`. Establish `hQA : (abelian₂ A'.A A'.L).IsLB` using `DVR.linComb_isLB _ hA _ _`. Take `⟨β₂, hβ₂, Hβ⟩` from `lbIso_lam_pull_of_isGrpPullback _ _ (jK R) G' ((Over.pullback (jK R)).obj G') (pullback.fst G'.hom (jK R)) (Geo.Tor.isGrpPullback_pullback G' (jK R))`. Establish `E₁` using `Hβ U'.LG.L (U'.LG.L.pull (pullback.fst G'.hom (jK R))) _ (abelian₂ G' U'.LG.L) (𝟙 _) hL' (Geo.Tor.pull_isLB hL' _) hQ (GlobalTheory.PolBaseChange.lbIso_refl (Geo.Tor.pull_isLB hL' _)) (Geo.Tor.LBIso.chartPull (Geo.Tor.chartPullId _) (Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl) (Glob …`. Take `⟨γ₂, hγ₂, Hγ⟩` from `lbIso_lam_pull_of_isGrpPullback _ _ (𝟙 _) A'.A ((Over.pullback (jK R)).obj G') U'.gen.hom.left (Geo.Tor.isGrpPullback_of_iso U'.gen)`.
+
+Establish `E₂` using `Hγ A'.L (U'.LG.L.pull (pullback.fst G'.hom (jK R))) _ (abelian₂ A'.A A'.L) (𝟙 _) hA (Geo.Tor.pull_isLB hL' _) hQA (Geo.Tor.LBIso.symm U'.ext) (Geo.Tor.LBIso.chartPull (Geo.Tor.chartPullId _) (Geo.Tor.chartPullPull _ (𝟙 _) (𝟙 _) rfl) (GlobalTheory.PolBaseChange.lbIso_refl hQA))`. Establish `E₃` using `Geo.Tor.LBIso.trans (Geo.Tor.pull_isLB hQ _) (DVR.linComb_isLB _ (Geo.Tor.pull_isLB hL' _) _ _) (Geo.Tor.pull_isLB hQA _) (Geo.Tor.LBIso.symm E₁) E₂`. Set `m` to `(lift (snd ((Over.pullback (jK R)).obj G) T ≫ x ≫ (Over.pullback (jK R)).map inc) (fst ((Over.pullback (jK R)).obj G) T ≫ (Over.pullback (jK R)).map inc ≫ (Over.pullback (jK R)).map (oG.act F.f))).left`. Establish `E₄` using `Geo.Tor.LBIso.chartPull (Geo.Tor.chartPullPull _ m m rfl) (Geo.Tor.chartPullPull _ m m rfl) E₃`. Take `⟨t, ht⟩` from `ht`.
+
+Set `φl` to `(lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f) : G2 G ⟶ G2 G').left`. Set `ψl` to `(lift (snd ((Over.pullback (jK R)).obj G) T ≫ x) (fst ((Over.pullback (jK R)).obj G) T) : ((Over.pullback (jK R)).obj G) ⊗ T ⟶ G2 ((Over.pullback (jK R)).obj G)).left`. Set `χl` to `(lift (snd ((Over.pullback (jK R)).obj G) T ≫ (x ≫ ((Over.pullback (jK R)).map inc) ≫ U'.gen.hom)) (fst ((Over.pullback (jK R)).obj G) T ≫ (((Over.pullback (jK R)).map inc) ≫ U'.gen.hom) ≫ oA.act F.f) : ((Over.pullback (jK R)).obj G) ⊗ T ⟶ G2 A'.A).left`. Establish `hinc' : ((Over.pullback (jK R)).map inc).left ≫ pullback.fst G'.hom (jK R) = pullback.fst G.hom (jK R) ≫ inc.left` using `pullback.lift_fst _ _ _`. Establish `hf' : ((Over.pullback (jK R)).map (oG.act F.f)).left ≫ pullback.fst G'.hom (jK R) = pullback.fst G'.hom (jK R) ≫ (oG.act F.f).left` using `pullback.lift_fst _ _ _`.
+
+Establish `hgen : ((Over.pullback (jK R)).map (oG.act F.f)).left ≫ U'.gen.hom.left = U'.gen.hom.left ≫ (oA.act F.f).left` using `congrArg Over.Hom.left (hlin.ext F.f)`. Establish `hφ1 : φl ≫ (fst G' G').left = (fst G G).left ≫ inc.left`. Simplify `congrArg Over.Hom.left (lift_fst (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f))` using `only [Over.comp_left]`. Establish `hφ2 : φl ≫ (snd G' G').left = (snd G G).left ≫ inc.left ≫ (oG.act F.f).left`. Simplify `congrArg Over.Hom.left (lift_snd (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f))` using `only [Over.comp_left]`.
+
+Establish `hψ1 : ψl ≫ (fst ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G)).left = (snd ((Over.pullback (jK R)).obj G) T).left ≫ x.left`. Simplify `congrArg Over.Hom.left (lift_fst (snd ((Over.pullback (jK R)).obj G) T ≫ x) (fst ((Over.pullback (jK R)).obj G) T))` using `only [Over.comp_left]`. Establish `hψ2 : ψl ≫ (snd ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G)).left = (fst ((Over.pullback (jK R)).obj G) T).left`. Simplify `congrArg Over.Hom.left (lift_snd (snd ((Over.pullback (jK R)).obj G) T ≫ x) (fst ((Over.pullback (jK R)).obj G) T))` using `only [Over.comp_left]`. Establish `hm1 : m ≫ (fst ((Over.pullback (jK R)).obj G') ((Over.pullback (jK R)).obj G')).left = (snd ((Over.pullback (jK R)).obj G) T).left ≫ x.left ≫ ((Over.pullback (jK R)).map inc).left`.
+
+Simplify `congrArg Over.Hom.left (lift_fst (snd ((Over.pullback (jK R)).obj G) T ≫ x ≫ ((Over.pullback (jK R)).map inc)) (fst ((Over.pullback (jK R)).obj G) T ≫ ((Over.pullback (jK R)).map inc) ≫ ((Over.pullback (jK R)).map (oG.act F.f))))` using `only [Over.comp_left]`. Establish `hm2 : m ≫ (snd ((Over.pullback (jK R)).obj G') ((Over.pullback (jK R)).obj G')).left = (fst ((Over.pullback (jK R)).obj G) T).left ≫ ((Over.pullback (jK R)).map inc).left ≫ ((Over.pullback (jK R)).map (oG.act F.f)).left`. Simplify `congrArg Over.Hom.left (lift_snd (snd ((Over.pullback (jK R)).obj G) T ≫ x ≫ ((Over.pullback (jK R)).map inc)) (fst ((Over.pullback (jK R)).obj G) T ≫ ((Over.pullback (jK R)).map inc) ≫ ((Over.pullback (jK R)).map (oG.act F.f))))` using `only [Over.comp_left]`. Establish `hχ1 : χl ≫ (fst A'.A A'.A).left = (snd ((Over.pullback (jK R)).obj G) T).left ≫ x.left ≫ ((Over.pullback (jK R)).map inc).left ≫ U'.gen.hom.left`. Simplify `congrArg Over.Hom.left (lift_fst (snd ((Over.pullback (jK R)).obj G) T ≫ (x ≫ ((Over.pullback (jK R)).map inc) ≫ U'.gen.hom)) (fst ((Over.pullback (jK R)).obj G) T ≫ (((Over.pullback (jK R)).map inc) ≫ U'.gen.hom) ≫ oA.act F.f))` using `only [Over.comp_left]`.
+
+Establish `hχ2 : χl ≫ (snd A'.A A'.A).left = (fst ((Over.pullback (jK R)).obj G) T).left ≫ ((Over.pullback (jK R)).map inc).left ≫ U'.gen.hom.left ≫ (oA.act F.f).left`. Use `congrArg Over.Hom.left (lift_snd (snd ((Over.pullback (jK R)).obj G) T ≫ (x ≫ ((Over.pullback (jK R)).map inc) ≫ U'.gen.hom)) (fst ((Over.pullback (jK R)).obj G) T ≫ (((Over.pullback (jK R)).map inc) ≫ U'.gen.hom) ≫ oA.act F.f))` as an intermediate fact. Simplify using `only [Over.comp_left, Category.assoc] at this`. Conclude with `this`. Establish `eq1 : ψl ≫ κ₀ ≫ φl = m ≫ β₂ ≫ 𝟙 _`.
+
+Apply `left_tensor_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, Category.comp_id]`. Rewrite using `[hφ1, reassoc_of% hκ.1]`. Rewrite using `[reassoc_of% hψ1]`. Rewrite using `[hβ₂.1]`.
+
+Rewrite using `[reassoc_of% hm1]`. Simplify using `only [Category.assoc, hinc']`. Simplify using `only [Category.assoc, Category.comp_id]`. Rewrite using `[hφ2, reassoc_of% hκ.2]`. Rewrite using `[reassoc_of% hψ2]`.
+
+Rewrite using `[hβ₂.2]`. Rewrite using `[reassoc_of% hm2]`. Simplify using `only [Category.assoc, hf']`. Rewrite using `[reassoc_of% hinc']`. Establish `eq2 : m ≫ γ₂ ≫ 𝟙 _ = χl`.
+
+Apply `left_tensor_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, Category.comp_id]`. Rewrite using `[hγ₂.1]`. Rewrite using `[reassoc_of% hm1, hχ1]`. Simplify using `only [Category.assoc, Category.comp_id]`.
+
+Rewrite using `[hγ₂.2]`. Rewrite using `[reassoc_of% hm2, hχ2, hgen]`. Establish `hP1` using `Geo.Tor.pull_isLB (Geo.Tor.pull_isLB (Geo.Tor.pull_isLB hQ φl) κ₀) ψl`. Establish `hP2` using `Geo.Tor.pull_isLB (Geo.Tor.pull_isLB hQ (κ₀ ≫ φl)) ψl`. Establish `g₀` using `GlobalTheory.CM.PairingIso.exists_gen_of_lbIso hP1 hP2 (Geo.Tor.LBIso.chartPull (Geo.Tor.chartPullPull _ ψl ψl rfl) (Geo.Tor.chartPullPull _ ψl ψl rfl) (lbIso_pull_pull_comp hQ φl κ₀)) ⟨t, ht⟩`.
+
+Establish `g₁` using `(exists_gen_pull_pull_iff hQ (κ₀ ≫ φl) ψl).1 g₀`. Rewrite `g₁` using `[eq1]`. Establish `g₂` using `(exists_gen_pull_pull_iff hQ (β₂ ≫ 𝟙 _) m).2 g₁`. Establish `g₃` using `GlobalTheory.CM.PairingIso.exists_gen_of_lbIso (Geo.Tor.pull_isLB (Geo.Tor.pull_isLB hQ _) _) (Geo.Tor.pull_isLB (Geo.Tor.pull_isLB hQA _) _) E₄ g₂`. Establish `g₄` using `(exists_gen_pull_pull_iff hQA (γ₂ ≫ 𝟙 _) m).1 g₃`.
+
+Rewrite `g₄` using `[eq2]`. Conclude with `g₄`.
+-/
 theorem pull_gen_lam_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D D' : DegData R (maximalIdeal R)) (F : Factor D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R))) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'] (U' : Unif (maximalIdeal R) D' A' G') (oA : A'.OAct F.O) (oG : RingAct G' F.O), U'.toUnifPre.OLinear F.O F.o oA oG → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (inc : G ⟶ G'), IsMonHom inc → ∀ κ₀ : (G2 ((Over.pullback (jK R)).obj G)).left ⟶ (G2 G).left, Geo.Tor.IsSquare (G' := ((Over.pullback (jK R)).obj G)) (G := G) (pullback.fst G.hom (jK R)) κ₀ → ∀ (T : Over (Sp (FractionRing R))) (x : T ⟶ ((Over.pullback (jK R)).obj G)), (∃ t : LB.Gen ((((abelian₂ G' U'.LG.L).pull (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f) : G2 G ⟶ G2 G').left).pull κ₀).pull (lift (snd ((Over.pullback (jK R)).obj G) T ≫ x) (fst ((Over.pullback (jK R)).obj G) T) : ((Over.pullback (jK R)).obj G) ⊗ T ⟶ G2 ((Over.pullback (jK R)).obj G)).left), t.IsGen) → ∃ t : LB.Gen (letI := A'.isAb.comm; (abelian₂ A'.A A'.L).pull (lift (snd ((Over.pullback (jK R)).obj G) T ≫ (x ≫ (Over.pullback (jK R)).map inc ≫ U'.gen.hom)) (fst ((Over.pullback (jK R)).obj G) T ≫ ((Over.pullback (jK R)).map inc ≫ U'.gen.hom) ≫ oA.act F.f) : ((Over.pullback (jK R)).obj G) ⊗ T ⟶ G2 A'.A).left), t.IsGen := by
   intro R _ _ _ D D' F A' G' _ _ U' oA oG hlin G _ _ inc hinc κ₀ hκ T x ht
   letI := A'.isAb.comm

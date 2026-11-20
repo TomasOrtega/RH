@@ -19,15 +19,29 @@ variable {C : Type} [Field C]
 def Agr {τ : Type} (k : ℕ) (f g : MvPowerSeries τ C) : Prop :=
   ∀ e : τ →₀ ℕ, e.degree < k → MvPowerSeries.coeff e f = MvPowerSeries.coeff e g
 
+/- English proof (translation)
+Introduce `e he` and use `(h e he).symm`.
+-/
 theorem Agr.symm {τ : Type} {k : ℕ} {f g : MvPowerSeries τ C} (h : Agr k f g) : Agr k g f :=
   fun e he => (h e he).symm
 
+/- English proof (translation)
+Introduce `e he` and use `(h e he).trans (h' e he)`.
+-/
 theorem Agr.trans {τ : Type} {k : ℕ} {f g g' : MvPowerSeries τ C} (h : Agr k f g) (h' : Agr k g g') : Agr k f g' :=
   fun e he => (h e he).trans (h' e he)
 
+/- English proof (translation)
+Introduce `e he` and use `by rw [map_add, map_add, h e he, h' e he]`.
+-/
 theorem Agr.add {τ : Type} {k : ℕ} {f g f' g' : MvPowerSeries τ C} (h : Agr k f g) (h' : Agr k f' g') :
     Agr k (f + f') (g + g') := fun e he => by rw [map_add, map_add, h e he, h' e he]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `e`. Rewrite using `[MvPowerSeries.coeff_truncTotal_eq_ite, MvPowerSeries.coeff_truncTotal_eq_ite]`. Use `split_ifs with he`.
+
+Conclude with `h e he`. Both sides reduce to the same expression. Introduce `h e he`. Establish `h2` using `congrArg (MvPolynomial.coeff e) h`. Rewrite `h2` using `[MvPowerSeries.coeff_truncTotal _ he, MvPowerSeries.coeff_truncTotal _ he]`. Then use the resulting hypothesis.
+-/
 theorem agr_iff_trunc {τ : Type} [Finite τ] (k : ℕ) (f g : MvPowerSeries τ C) :
     Agr k f g ↔ MvPowerSeries.truncTotal k f = MvPowerSeries.truncTotal k g := by
   constructor
@@ -41,6 +55,9 @@ theorem agr_iff_trunc {τ : Type} [Finite τ] (k : ℕ) (f g : MvPowerSeries τ 
     have h2 := congrArg (MvPolynomial.coeff e) h
     rwa [MvPowerSeries.coeff_truncTotal _ he, MvPowerSeries.coeff_truncTotal _ he] at h2
 
+/- English proof (translation)
+Establish `h' : ∀ s, MvPowerSeries.truncTotal k (a s) = MvPowerSeries.truncTotal k (b s)` using `fun s => (agr_iff_trunc k _ _).1 (h s)`. Rewrite using `[agr_iff_trunc, MvPowerSeries.truncTotal_subst ha, MvPowerSeries.truncTotal_subst hb]`. Simplify using `only [h']`.
+-/
 theorem agr_subst_left {σ τ : Type} [Finite σ] [Finite τ] {a b : σ → MvPowerSeries τ C}
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (hb : ∀ s, MvPowerSeries.constantCoeff (b s) = 0)
     {k : ℕ} (h : ∀ s, Agr k (a s) (b s)) (f : MvPowerSeries σ C) :
@@ -50,6 +67,9 @@ theorem agr_subst_left {σ τ : Type} [Finite σ] [Finite τ] {a b : σ → MvPo
   rw [agr_iff_trunc, MvPowerSeries.truncTotal_subst ha, MvPowerSeries.truncTotal_subst hb]
   simp only [h']
 
+/- English proof (translation)
+Rewrite using `[agr_iff_trunc, MvPowerSeries.truncTotal_subst ha, MvPowerSeries.truncTotal_subst ha, (agr_iff_trunc k f g).1 h]`.
+-/
 theorem agr_subst_right {σ τ : Type} [Finite σ] [Finite τ] {a : σ → MvPowerSeries τ C}
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) {k : ℕ} {f g : MvPowerSeries σ C} (h : Agr k f g) :
     Agr k (MvPowerSeries.subst a f) (MvPowerSeries.subst a g) := by
@@ -71,6 +91,9 @@ def RawChart.TyWit (X : RawChart C d I κ) (V : VF C) (g : Fin 2) (x : ℕ → I
         ∑ c : I g, if X.ty g c = X.ty (1 - g) q then
           X.sg1 (X.u g c) (X.u (1 - g) q) • tyS V.l (fun s => x s (Sum.inl c)) else 0
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem RawChart.mem_tySet_iff (X : RawChart C d I κ) (V : VF C) (g : Fin 2) (x : ℕ → I g ⊕ JJ I g → C) :
     x ∈ X.TySet V g ↔ ∃ γ lam, X.TyWit V g x γ lam := Iff.rfl
 
@@ -93,14 +116,23 @@ section MM
 
 variable {C : Type} [Field C] {V : VF C}
 
+/- English proof (translation)
+Unfold `VF.MM`. Rewrite using `[AddValuation.map_zero]`. Conclude with `WithTop.coe_lt_top 0`.
+-/
 theorem mm_zero : V.MM (0 : C) := by
   unfold VF.MM
   rw [AddValuation.map_zero]
   exact WithTop.coe_lt_top 0
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le (lt_min ha hb) (V.v.map_add a b)`.
+-/
 theorem mm_add {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) :=
   lt_of_lt_of_le (lt_min ha hb) (V.v.map_add a b)
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Unfold `VF.Ge at hb`. Rewrite using `[V.v.map_mul]`. Establish `hb' : (0 : WithTop ℝ) ≤ V.v b` using `by simpa using hb`. Conclude with `lt_of_lt_of_le ha (le_add_of_nonneg_right hb')`.
+-/
 theorem mm_mul_ge {a b : C} (ha : V.MM a) (hb : V.Ge 0 b) : V.MM (a * b) := by
   unfold VF.MM at *
   unfold VF.Ge at hb
@@ -108,6 +140,11 @@ theorem mm_mul_ge {a b : C} (ha : V.MM a) (hb : V.Ge 0 b) : V.MM (a * b) := by
   have hb' : (0 : WithTop ℝ) ≤ V.v b := by simpa using hb
   exact lt_of_lt_of_le ha (le_add_of_nonneg_right hb')
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty]`. Conclude with `mm_zero`. Consider the case `insert i s hi ih`.
+
+Rewrite using `[Finset.sum_insert hi]`. Conclude with `mm_add (hf i (Finset.mem_insert_self i s)) (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem mm_sum {ι : Type} (s : Finset ι) (f : ι → C) (hf : ∀ i ∈ s, V.MM (f i)) : V.MM (∑ i ∈ s, f i) := by
   induction s using Finset.induction_on with
   | empty =>
@@ -123,13 +160,22 @@ section Step2
 
 variable {C : Type} [Field C]
 
+/- English proof (translation)
+Introduce `e he` and use `h e (lt_of_lt_of_le he hk)`.
+-/
 theorem Agr.mono {τ : Type} {k k' : ℕ} {f g : MvPowerSeries τ C} (h : Agr k f g) (hk : k' ≤ k) : Agr k' f g :=
   fun e he => h e (lt_of_lt_of_le he hk)
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => hs) (fun _ => hs) hγ`.
+-/
 theorem const_cvAt {s : MvPowerSeries (Fin 2) C} (hs : MvPowerSeries.constantCoeff s = 0) {γ : PowerSeries C}
     (hγ : PowerSeries.constantCoeff γ = 0) : MvPowerSeries.constantCoeff (cvAt s γ) = 0 :=
   MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => hs) (fun _ => hs) hγ
 
+/- English proof (translation)
+Unfold `cvAt`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ) (MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => hs)]`.
+-/
 theorem subst_cvAt {s : MvPowerSeries (Fin 2) C} (hs : MvPowerSeries.constantCoeff s = 0) {σ : Type} [Finite σ]
     {γ : σ → PowerSeries C} (hγ : ∀ j, PowerSeries.constantCoeff (γ j) = 0) (F : MvPowerSeries σ C) :
     MvPowerSeries.subst (fun j => cvAt s (γ j)) F = cvAt s (MvPowerSeries.subst γ F) := by
@@ -137,12 +183,20 @@ theorem subst_cvAt {s : MvPowerSeries (Fin 2) C} (hs : MvPowerSeries.constantCoe
   rw [MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ)
     (MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => hs)]
 
+/- English proof (translation)
+Unfold `cvAt`. Establish `hS` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (σ := Unit) fun _ => hs`. Rewrite using `[MvPowerSeries.subst_smul hS, MvPowerSeries.subst_X hS]`.
+-/
 theorem cvAt_smul_X {s : MvPowerSeries (Fin 2) C} (hs : MvPowerSeries.constantCoeff s = 0) (c : C) :
     cvAt s (c • (MvPowerSeries.X () : PowerSeries C)) = c • s := by
   unfold cvAt
   have hS := MvPowerSeries.hasSubst_of_constantCoeff_zero (σ := Unit) fun _ => hs
   rw [MvPowerSeries.subst_smul hS, MvPowerSeries.subst_X hS]
 
+/- English proof (translation)
+Unfold `ev`. Establish `e : (fun q : Fin 2 × Fin dd => (![pt C dd 0, pt C dd 1] : Fin 2 → Pt C 2 dd) q.1 q.2) = fun q => (MvPowerSeries.X q : PS C 2 dd)`. Use function extensionality and compare the values at `⟨k, j⟩`. Apply the tactic sequence `fin_cases k <;> rfl`. Rewrite using `[e, MvPowerSeries.subst_self]`.
+
+Both sides reduce to the same expression.
+-/
 theorem eval_points_two {dd : ℕ} (f : PS C 2 dd) : ev (n := 2) ![pt C dd 0, pt C dd 1] f = f := by
   unfold ev
   have e : (fun q : Fin 2 × Fin dd => (![pt C dd 0, pt C dd 1] : Fin 2 → Pt C 2 dd) q.1 q.2) =
@@ -155,6 +209,17 @@ theorem eval_points_two {dd : ℕ} (f : PS C 2 dd) : ev (n := 2) ![pt C dd 0, pt
 variable [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
   {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)]
 
+/- English proof (translation)
+Unfold `tyS`. Rewrite using `[PowerSeries.coeff_mk, Finset.sum_eq_single 0]`. Rewrite using `[pow_zero]`. Distinguish the cases in `hn1 : n = 1`. Substitute `hn1` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos rfl]`. Simplify using `[h0]`. Establish `hn1' : ¬ (1 = n)` using `fun h => hn1 h.symm`. Rewrite using `[if_neg hn1', if_neg hn1]`. Introduce `s _ hs0`.
+
+Distinguish the cases in `hs1 : s = 1`. Substitute `hs1` using the available equality. Simplify using `[h1 c]`. Rewrite using `[if_neg]`. Introduce `hsn`.
+
+Establish `h2 : 2 ≤ s` using `by omega`. Establish `h3 : V.l ^ 2 ≤ V.l ^ s` using `Nat.pow_le_pow_right (by omega) h2`. Rewrite `h3` using `[hsn]`. Conclude with `absurd hn (not_lt.mpr h3)`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_range.2 (Nat.succ_pos n)) h`.
+-/
 theorem tyS_good_coeff {g : Fin 2} {w : I g → C} {x : ℕ → I g ⊕ JJ I g → C}
     (h0 : x 0 = Sum.elim w 0) (h1 : ∀ c, x 1 (Sum.inl c) = 0) (hl : 2 ≤ V.l) (c : I g) (n : ℕ)
     (hn : n < V.l ^ 2) :
@@ -181,9 +246,19 @@ theorem tyS_good_coeff {g : Fin 2} {w : I g → C} {x : ℕ → I g ⊕ JJ I g �
   · intro h
     exact absurd (Finset.mem_range.2 (Nat.succ_pos n)) h
 
+/- English proof (translation)
+The claim follows from `PowerSeries.coeff_X n`.
+-/
 theorem coeffX' (n : ℕ) : PowerSeries.coeff n (MvPowerSeries.X () : PowerSeries C) = if n = 1 then 1 else 0 :=
   PowerSeries.coeff_X n
 
+/- English proof (translation)
+Introduce `e he`. Establish `hl` using `V.l_prime.two_le`. Rewrite using `[hlg i]`. Take `⟨n, rfl⟩ : ∃ n, e = Finsupp.single () n` from `⟨e (), Finsupp.unique_single e⟩`. Rewrite `he` using `[Finsupp.degree_single]`.
+
+Express the relevant statement in the definitionally equal form `PowerSeries.coeff n _ = PowerSeries.coeff n _`. Rewrite using `[map_sum, map_smul, coeffX']`. Simplify using `only [map_smul, smul_eq_mul, tyS_good_coeff h0 h1 hl _ n he]`. Distinguish the cases in `hn1 : n = 1`. Simplify using `[hn1]`.
+
+Simplify using `[hn1]`.
+-/
 theorem lgCv_agr (Y : FBChart C V O dd) (p : PairData Y d I) {g : Fin 2} {w : I g → C}
     {x : ℕ → I g ⊕ JJ I g → C} (h0 : x 0 = Sum.elim w 0) (h1 : ∀ c, x 1 (Sum.inl c) = 0)
     {γ : Fin dd → PowerSeries C}
@@ -203,6 +278,13 @@ theorem lgCv_agr (Y : FBChart C V O dd) (p : PairData Y d I) {g : Fin 2} {w : I 
   · simp [hn1]
   · simp [hn1]
 
+/- English proof (translation)
+Establish `hPP : MvPowerSeries.HasSubst (fun q : Fin 2 × Fin dd => P q.1 q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hP q.1 q.2`. Establish `hF0 : ∀ j, MvPowerSeries.constantCoeff (MvPowerSeries.subst (fun q : Fin 2 × Fin dd => P q.1 q.2) (Y.B.G.F j)) = 0` using `fun j => MvPowerSeries.constantCoeff_subst_eq_zero hPP (fun q => hP q.1 q.2) (Y.B.G.const j)`. Rewrite using `[subst_singlePointUncurry hF0, subst_singlePointUncurry (hP 0), subst_singlePointUncurry (hP 1)]`. Establish `key` using `congrArg (MvPowerSeries.subst (fun q : Fin 2 × Fin dd => P q.1 q.2)) (Y.lg_add i)`. Establish `hadd : addOf Y.B.G.F (pt C dd 0) (pt C dd 1) = Y.B.G.F`.
+
+Use function extensionality and compare the values at `j`. Conclude with `eval_points_two (Y.B.G.F j)`. Establish `hA : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => Y.B.G.F q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => Y.B.G.const q.2`. Establish `hX : ∀ k : Fin 2, MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => pt C (n` using `2) dd k q.2) := fun k => MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => MvPowerSeries.constantCoeff_X _`. Rewrite `key` using `[hadd, eval_single_eq_subst, eval_single_eq_subst, eval_single_eq_subst, MvPowerSeries.subst_add hPP, MvPowerSeries.subst_comp_subst_apply hA hPP, MvPowerSeries.subst_comp_subst_apply (hX 0) hPP, MvPowerSeries.subst_comp_subst_apply (hX 1) hPP]`.
+
+Simplify using `only [pt, MvPowerSeries.subst_X hPP] at key`. Conclude with `key`.
+-/
 theorem lg_addOf (Y : FBChart C V O dd) {τ : Type} (P : Fin 2 → Fin dd → MvPowerSeries τ C)
     (hP : ∀ k j, MvPowerSeries.constantCoeff (P k j) = 0) (i : Fin dd) :
     MvPowerSeries.subst (fun j => MvPowerSeries.subst (fun q : Fin 2 × Fin dd => P q.1 q.2) (Y.B.G.F j))
@@ -228,6 +310,9 @@ theorem lg_addOf (Y : FBChart C V O dd) {τ : Type} (P : Fin 2 → Fin dd → Mv
   simp only [pt, MvPowerSeries.subst_X hPP] at key
   exact key
 
+/- English proof (translation)
+Establish `hA'` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hA`. Establish `hL : MvPowerSeries.HasSubst (Y.raw p).lg` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun j => Y.chart_log_constantCoeff p j`. Rewrite using `[← MvPowerSeries.subst_comp_subst_apply hL hA', Y.raw_exlg p, MvPowerSeries.subst_X hA']`.
+-/
 theorem ex_lg_at (Y : FBChart C V O dd) (p : PairData Y d I) {τ : Type} (A : Fin dd → MvPowerSeries τ C)
     (hA : ∀ j, MvPowerSeries.constantCoeff (A j) = 0) (i : Fin dd) :
     MvPowerSeries.subst (fun j => MvPowerSeries.subst A ((Y.raw p).lg j)) ((Y.raw p).ex i) = A i := by
@@ -236,6 +321,21 @@ theorem ex_lg_at (Y : FBChart C V O dd) (p : PairData Y d I) {τ : Type} (A : Fi
     MvPowerSeries.hasSubst_of_constantCoeff_zero fun j => Y.chart_log_constantCoeff p j
   rw [← MvPowerSeries.subst_comp_subst_apply hL hA', Y.raw_exlg p, MvPowerSeries.subst_X hA']
 
+/- English proof (translation)
+Establish `hl` using `V.l_prime.two_le`. Establish `hγ0 : ∀ j, PowerSeries.constantCoeff (γ j) = 0` using `fun j => (hγ j).1`. Establish `hX : ∀ k : Fin 2, MvPowerSeries.constantCoeff (MvPowerSeries.X k : MvPowerSeries (Fin 2) C) = 0` using `fun k => MvPowerSeries.constantCoeff_X k`. Establish `hS : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 + MvPowerSeries.X 1 : MvPowerSeries (Fin 2) C) = 0`. Rewrite using `[map_add, hX 0, hX 1, add_zero]`.
+
+Establish `hP0 : ∀ (k : Fin 2) (j : Fin dd), MvPowerSeries.constantCoeff (cvAt (MvPowerSeries.X k) (γ j)) = 0` using `fun k j => const_cvAt (hX k) (hγ0 j)`. Establish `hQ0 : ∀ j, MvPowerSeries.constantCoeff (cvAt (MvPowerSeries.X 0 + MvPowerSeries.X 1) (γ j)) = 0` using `fun j => const_cvAt hS (hγ0 j)`. Establish `hPP : MvPowerSeries.HasSubst (fun q : Fin 2 × Fin dd => cvAt (MvPowerSeries.X q.1) (γ q.2))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hP0 q.1 q.2`. Establish `hFP0 : ∀ j, MvPowerSeries.constantCoeff (MvPowerSeries.subst (fun q : Fin 2 × Fin dd => cvAt (MvPowerSeries.X q.1) (γ q.2)) (Y.B.G.F j)) = 0` using `fun j => MvPowerSeries.constantCoeff_subst_eq_zero hPP (fun q => hP0 q.1 q.2) (Y.B.G.const j)`. Establish `hAt : ∀ (s : MvPowerSeries (Fin 2) C), MvPowerSeries.constantCoeff s = 0 → ∀ j, Agr (V.l ^ 2) (MvPowerSeries.subst (fun j' => cvAt s (γ j')) ((Y.raw p).lg j)) ((∑ c, (Y.raw p).u g c j * w c) • s)`.
+
+Introduce `s hs j`. Rewrite using `[subst_cvAt hs hγ0, ← cvAt_smul_X hs]`. Conclude with `agr_subst_right (a := fun _ : Unit => s) (fun _ => hs) (lgCv_agr Y p h0 h1 hlg j)`. Establish `hsum : ∀ j, Agr (V.l ^ 2) (MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 0) (γ j')) ((Y.raw p).lg j) + MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 1) (γ j')) ((Y.raw p).lg j)) (MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 0 + MvPowerSeries.X 1) (γ j')) ((Y …`. Introduce `j`.
+
+Use `((hAt _ (hX 0) j).add (hAt _ (hX 1) j)).trans ?_` and prove the remaining obligations. Rewrite using `[← smul_add]`. Conclude with `(hAt _ hS j).symm`. Establish `e1` using `ex_lg_at Y p _ hFP0 i`. Establish `e1' : (fun j => MvPowerSeries.subst (fun j' => MvPowerSeries.subst (fun q : Fin 2 × Fin dd => cvAt (MvPowerSeries.X q.1) (γ q.2)) (Y.B.G.F j')) ((Y.raw p).lg j)) = fun j => MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 0) (γ j')) ((Y.raw p).lg j) + MvPowerSeries.subst (fun …`.
+
+Use function extensionality and compare the values at `j`. Conclude with `lg_addOf Y (fun k j' => cvAt (MvPowerSeries.X k) (γ j')) hP0 j`. Rewrite `e1` using `[e1']`. Establish `e2` using `ex_lg_at Y p _ hQ0 i`. Establish `hc : ∀ j, MvPowerSeries.constantCoeff (MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 0) (γ j')) ((Y.raw p).lg j) + MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 1) (γ j')) ((Y.raw p).lg j)) = 0`.
+
+Introduce `j`. Rewrite using `[map_add, MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero fun j' => hP0 0 j') (fun j' => hP0 0 j') (Y.chart_log_constantCoeff p j), MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero fun j' => hP0 1 j') …`. Establish `hc' : ∀ j, MvPowerSeries.constantCoeff (MvPowerSeries.subst (fun j' => cvAt (MvPowerSeries.X 0 + MvPowerSeries.X 1) (γ j')) ((Y.raw p).lg j)) = 0` using `fun j => MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero hQ0) hQ0 (Y.chart_log_constantCoeff p j)`. Establish `hag` using `agr_subst_left hc hc' hsum ((Y.raw p).ex i)`. Rewrite `hag` using `[e1, e2]`.
+
+Establish `hdeg : μ.degree < V.l ^ 2`. Rewrite using `[Finsupp.degree_eq_sum, Fin.sum_univ_two]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `hag μ hdeg`.
+-/
 theorem hom_of_good (Y : FBChart C V O dd) (p : PairData Y d I) {g : Fin 2} {w : I g → C}
     {x : ℕ → I g ⊕ JJ I g → C} (h0 : x 0 = Sum.elim w 0) (h1 : ∀ c, x 1 (Sum.inl c) = 0)
     {γ : Fin dd → PowerSeries C} (hγ : IsCv V γ)
@@ -304,6 +404,11 @@ theorem hom_of_good (Y : FBChart C V O dd) (p : PairData Y d I) {g : Fin 2} {w :
   rw [map_sub, sub_eq_zero]
   exact hag μ hdeg
 
+/- English proof (translation)
+Establish `hl` using `V.l_prime.two_le`. Establish `hγ0 : ∀ j, PowerSeries.constantCoeff (γ j) = 0` using `fun j => (hγ j).1`. Establish `hlin : Agr 2 ((Y.raw p).lg i) (MvPowerSeries.X i)` using `fun e he => Y.raw_lin p i e (by omega)`. Establish `h2` using `agr_subst_right (a := γ) hγ0 hlin`. Rewrite `h2` using `[MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hγ0)]`.
+
+Establish `h3` using `(lgCv_agr Y p h0 h1 hlg i).mono (show 2 ≤ V.l ^ 2 by nlinarith)`. Establish `h4` using `(h2.symm.trans h3) (Finsupp.single () 1) (by rw [Finsupp.degree_single]; omega)`. Express the relevant statement in the definitionally equal form `PowerSeries.coeff 1 (γ i) = PowerSeries.coeff 1 _ at h4`. Rewrite using `[h4, map_smul, coeffX', if_pos rfl, smul_eq_mul, mul_one]`.
+-/
 theorem coeff1_of_good (Y : FBChart C V O dd) (p : PairData Y d I) {g : Fin 2} {w : I g → C}
     {x : ℕ → I g ⊕ JJ I g → C} (h0 : x 0 = Sum.elim w 0) (h1 : ∀ c, x 1 (Sum.inl c) = 0)
     {γ : Fin dd → PowerSeries C} (hγ : IsCv V γ)
@@ -322,6 +427,19 @@ theorem coeff1_of_good (Y : FBChart C V O dd) (p : PairData Y d I) {g : Fin 2} {
 
 end Step2
 
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd Y d _ I _ p hN hrk Hc hAlt g a hbig w x hG hc0 c`. Assume the negation of the conclusion as `hwc`. Take `⟨γ, lam, hW⟩` from `((Y.raw p).mem_tySet_iff V g x).1 hG.1.1`. Take `⟨b, hb, hbc⟩` from `h1 C V O dd Y d I p hrk Hc hAlt g a hbig w x hG hc0 γ lam hW`. Use `hN γ hW.1 ?_ ?_ ⟨b, hb, hbc⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hall push Not at hall`. Apply `hwc` to reduce the goal to its premises. Take `⟨wd, hwd, hsat⟩` from `p.u_sat g`. Establish `hU : ∀ i, V.MM (∑ c', (Y.raw p).u g c' i * w c')` using `fun i => by`. Rewrite using `[← coeff1_of_good Y p hG.1.2.1 hG.2 hW.1 hW.2.2.1 i]`.
+
+Conclude with `hall i`. Establish `e : w c = ∑ i, (∑ c', (Y.raw p).u g c' i * w c') * wd i c`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ c', ∑ i, (Y.raw p).u g c' i * w c' * wd i c = w c' * (if c' = c then 1 else 0)`.
+
+Introduce `c'`. Rewrite using `[← hsat c' c, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show p.u g c' i * w c' * wd i c = w c' * (p.u g c' i * wd i c)`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [this, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[e]`. Conclude with `mm_sum _ _ fun i _ => mm_mul_ge (hU i) (hwd i c)`. Introduce `i μ hμ0 hμ1`. Rewrite using `[hom_of_good Y p hG.1.2.1 hG.2 hW.1 hW.2.2.1 i μ hμ0 hμ1]`.
+
+Conclude with `mm_zero`.
+-/
 theorem rank_maximal_of_nondegenerate (h1 : RankMaximalInitialCoefficient) : RankMaximalOfNondegenerate := by
   intro C _ _ V O _ _ dd Y d _ I _ p hN hrk Hc hAlt g a hbig w x hG hc0 c
   by_contra hwc

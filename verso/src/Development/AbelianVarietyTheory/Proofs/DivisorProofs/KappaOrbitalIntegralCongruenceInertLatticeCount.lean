@@ -14,6 +14,13 @@ open scoped Classical
 
 namespace GlobalTheory.KapLat
 
+/- English proof (translation)
+Introduce `E _ _ _ w K e B u x n γ hM c`. Take `⟨ψ, h1, h2, h3⟩` from `hM`. Set `φ : B.A ≃+ (Fin n → w.adicCompletion E)` to `{ toFun := fun y => ψ ((c : B.A) * y) invFun := fun v => ((c⁻¹ : B.Aˣ) : B.A) * ψ.symm v left_inv := fun y => by simp [← mul_assoc] right_inv := fun v => by simp [← mul_assoc] map_add' := fun y z => by simp [mul_add] }`. Use `⟨φ, fun a y => ?_, fun y => ?_, fun y z => ?_⟩` and prove the remaining obligations. Use `show ψ ((c : B.A) * (a • y)) = e a • ψ ((c : B.A) * y)`.
+
+Rewrite using `[mul_smul_comm, h1]`. Use `show ψ ((c : B.A) * (u * y)) = γ.val *ᵥ ψ ((c : B.A) * y)`. Rewrite using `[show (c : B.A) * (u * y) = u * ((c : B.A) * y) by ring, h2]`. Use `show stdH w (ψ ((c : B.A) * y)) (ψ ((c : B.A) * z)) = _`. Rewrite using `[h3]`.
+
+Unfold `GlobalTheory.UnitLemma.InvAlg.herm`. Use `congr 2`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem model_mul_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E) (B : GlobalTheory.UnitLemma.InvAlg K) (u x : B.A) (n : ℕ) (γ : GLw n w), IsModel w e B u x γ → ∀ c : B.Aˣ, IsModel w e B u (x * ((c : B.A) * B.σ (c : B.A))) γ := by
   intro E _ _ _ w K e B u x n γ hM c
   obtain ⟨ψ, h1, h2, h3⟩ := hM
@@ -35,6 +42,35 @@ theorem model_mul_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
     rw [map_mul]
     ring
 
+/- English proof (translation)
+Establish `hF` using `GlobalTheory.T.prod_adjoinRootAlgebras_generated_by_pair E w K e Q₁ Q₂ B₁ B₂ u₁ u₂ hsep hF₁ hF₂`. Unfold `kapOrb clSum GlobalTheory.UnitLemma.InvAlg.kapSum`. Rewrite using `[cast_finsum]`. Use `set S' : Set (TwCl (MonoidHom.id (UL n w))) := {c | c.rep.1.val.charpoly = Q₁ * Q₂} with hS'`. Establish `hex : ∀ c : TwCl (MonoidHom.id (UL n w)), c ∈ S' → ∃ x : (B₁.prod B₂).A, (B₁.prod B₂).σ x = x ∧ IsUnit x ∧ IsModel w e (B₁.prod B₂) (u₁, u₂) x c.rep.1` using `fun c hc => GlobalTheory.T.exists_hermitianMultiplicationModel_nonsplit E w hw K e hBr n (Q₁ * Q₂) (B₁.prod B₂) (u₁, u₂) hsep hF c.rep.1 c.rep.2 hc`.
+
+Set `Φ : TwCl (MonoidHom.id (UL n w)) → (B₁.prod B₂).Cl` to `fun c => if h : ∃ x : (B₁.prod B₂).A, (B₁.prod B₂).σ x = x ∧ IsUnit x ∧ IsModel w e (B₁.prod B₂) (u₁, u₂) x c.rep.1 then Quot.mk _ ⟨h.choose_spec.2.1.unit, by simpa using h.choose_spec.1⟩ else Quot.mk _ ⟨1, by simp⟩`. Establish `hrep : ∀ c ∈ S', IsModel w e (B₁.prod B₂) (u₁, u₂) (GlobalTheory.UnitLemma.InvAlg.Cl.rep (Φ c)) c.rep.1`. Introduce `c hc`. Establish `h` using `hex c hc`. Establish `hΦ : Φ c = Quot.mk _ ⟨h.choose_spec.2.1.unit, by simpa using h.choose_spec.1⟩` using `dif_pos h`.
+
+Establish `hq` using `Quot.eqvGen_exact ((Quot.out_eq (Φ c)).trans hΦ)`. Take `⟨v, hv⟩` from `(clRel_equiv (B₁.prod B₂)).symm ((clRel_equiv (B₁.prod B₂)).eqvGen_iff.1 hq)`. Establish `hr : GlobalTheory.UnitLemma.InvAlg.Cl.rep (Φ c) = h.choose * ((v : (B₁.prod B₂).A) * (B₁.prod B₂).σ (v : (B₁.prod B₂).A))`. Unfold `GlobalTheory.UnitLemma.InvAlg.Cl.rep`. Rewrite using `[hv]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hr]`. Conclude with `model_mul_norm E w K e (B₁.prod B₂) _ _ n _ h.choose_spec.2.2 v`. Set `G : (B₁.prod B₂).Cl → ℂ` to `fun κ => ((K.eta (B₁.gramDet (GlobalTheory.UnitLemma.InvAlg.Cl.rep κ).1) * (B₁.prod B₂).N κ.rep : ℚ) : ℂ)`. Establish `hterm : ∀ c ∈ S', kapSign n w Q₁ c.rep.1 * twOrb (MonoidHom.id (UL n w)) (KL n w) c.rep (({γ : UL n w | γ.1 ∈ congSet w n k} : Set (UL n w)).indicator 1) = G (Φ c)`.
+
+Introduce `c hc`. Establish `hm` using `hrep c hc`. Establish `h7` using `GlobalTheory.T.twisted_orbitalIntegral_congruence_level_eq_count E w hw K e hBr k t ht htk n (Q₁ * Q₂) (B₁.prod B₂) _ _ hsep hF hg.symm c.rep.1 c.rep.2 hm`. Simplify using `only [Subtype.coe_eta] at h7`. Rewrite using `[GlobalTheory.T.inertPlace_kernelSign_eq_eta_gramDet E w hw K e hBr n Q₁ Q₂ B₁ B₂ u₁ u₂ hsep hF₁ hF₂ _ _ hm, h7]`.
+
+Simplify using `[G]`. Establish `hinj : Set.InjOn Φ S'`. Introduce `c₁ hc₁ c₂ hc₂ h12`. Establish `m₁` using `hrep c₁ hc₁`. Establish `m₂` using `hrep c₂ hc₂`.
+
+Rewrite `m₁` using `[h12]`. Take `⟨y, hy, hyc⟩` from `GlobalTheory.T.conj_unitary_of_same_hermitianMultiplicationModel E w hw K e (B₁.prod B₂) _ _ n _ _ m₁ m₂`. Rewrite using `[← Quot.out_eq c₁, ← Quot.out_eq c₂]`. Conclude with `Quot.sound ⟨⟨y, hy⟩, Subtype.ext (by simpa [TwCl.rep] using hyc)⟩`. Establish `hsupp : Function.support G ⊆ Φ '' S'`.
+
+Introduce `κ hκ`. Establish `hN : (B₁.prod B₂).N κ.rep ≠ 0`. Introduce `h0`. Apply `hκ` to reduce the goal to its premises. Simplify using `[G, h0]`.
+
+Establish `hfix : (B₁.prod B₂).σ (GlobalTheory.UnitLemma.InvAlg.Cl.rep κ) = GlobalTheory.UnitLemma.InvAlg.Cl.rep κ` using `(Quot.out κ).2`. Establish `hunit : IsUnit (GlobalTheory.UnitLemma.InvAlg.Cl.rep κ)` using `(Quot.out κ).1.isUnit`. Take `⟨γ, hγ, hmγ⟩` from `GlobalTheory.T.exists_unitary_model_of_selfDualLatticeCount_ne_zero E w hw K e hBr n (Q₁ * Q₂) (B₁.prod B₂) _ _ hF hdeg hfix hunit hN`. Establish `hcp : γ.val.charpoly = Q₁ * Q₂` using `GlobalTheory.T.charpoly_eq_of_hermitianMultiplicationModel E w K e n (Q₁ * Q₂) (B₁.prod B₂) _ _ γ hmon hF hmγ`. Set `c : TwCl (MonoidHom.id (UL n w))` to `Quot.mk _ ⟨γ, hγ⟩`.
+
+Take `⟨g, hg'⟩` from `(conjRel_equiv (UL n w)).symm ((conjRel_equiv (UL n w)).eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq c)))`. Establish `hcrep : c.rep.1 = g.1⁻¹ * γ * g.1`. Use `congrArg Subtype.val hg'` as an intermediate fact. Simplify `this` using `[TwCl.rep]`. Establish `hc : c ∈ S'` using `by show c.rep.1.val.charpoly = Q₁ * Q₂`.
+
+Rewrite using `[hcrep, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj', hcp]`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `m` using `hrep c hc`. Rewrite `m` using `[hcrep]`. Take `⟨v, hv⟩` from `GlobalTheory.T.hermitianModels_conj_unitary_differ_by_norm E w hw K e n (Q₁ * Q₂) (B₁.prod B₂) _ _ _ hsep hF γ g.1 g.2 hmγ m`.
+
+Conclude with `(Quot.out_eq (Φ c)).symm.trans ((Quot.sound ((clRel_equiv _).symm ⟨v, hv⟩)).trans (Quot.out_eq κ))`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hc : c ∈ S'`. Rewrite using `[Set.indicator_of_mem hc, ← hterm c hc]`. Conclude with `if_pos hc`.
+
+Rewrite using `[Set.indicator_of_notMem hc]`. Conclude with `if_neg hc`. Use `_ = ∑ᶠ c ∈ S', G (Φ c) := (finsum_mem_def _ _).symm`. Use `_ = ∑ᶠ κ ∈ Φ '' S', G κ := (finsum_mem_image hinj).symm`. Use `_ = ∑ᶠ κ, G κ := by`.
+
+Conclude with `(finsum_mem_inter_support_eq G (Φ '' S') Set.univ (by rw [Set.univ_inter, Set.inter_eq_right.2 hsupp])).trans (finsum_mem_univ G)`.
+-/
 theorem kapOrb_eq_kapSum_of_fits {E : Type} [Field E] [NumberField E] [IsCMField E] {w : Pl E} (hw : ¬ IsSplitAt w)
     {K : GlobalTheory.UnitLemma.UQ} {e : K.E ≃+* w.adicCompletion E} (hBr : Bridge w K e) {k : ℕ} {t : K.O} (ht : K.Small t)
     (htk : GlobalTheory.UnitLemma.val K.O (algebraMap K.O K.E t) = k) {n : ℕ} {Q₁ Q₂ : (w.adicCompletion E)[X]}
@@ -117,6 +153,9 @@ theorem kapOrb_eq_kapSum_of_fits {E : Type} [Field E] [NumberField E] [IsCMField
       exact (finsum_mem_inter_support_eq G (Φ '' S') Set.univ (by rw [Set.univ_inter, Set.inter_eq_right.2 hsupp])).trans
         (finsum_mem_univ G)
 
+/- English proof (translation)
+Introduce `E _ _ _ hU w hw K e he1 he2 he3 he4 k t ht htk n a b Q₁ Q₂ B₁ B₂ hab hm₁ hm₂ hd₁ hd₂ hsep hc₁ hc₂ hadj₁ hae₁ hfr₁ hu₁ hadj₂ hae₂ hfr₂ hu₂`. Conclude with `kapOrb_eq_kapSum_of_fits hw ⟨he1, he2, he3, he4⟩ ht htk hsep (hm₁.mul hm₂) (by rw [hm₁.natDegree_mul hm₂, hd₁, hd₂, hab]) ⟨hadj₁, hae₁, hfr₁, hu₁⟩ ⟨hadj₂, hae₂, hfr₂, hu₂⟩ (Prod.ext rfl rfl)`.
+-/
 theorem kapOrb_congruence_eq_kapSum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → (∀ x, GlobalTheory.UnitLemma.val K.O x = ordL (e x)) → qV E w = K.q ^ 2 → ∀ (k : ℕ) (t : K.O), K.Small t → GlobalTheory.UnitLemma.val K.O (algebraMap K.O K.E t) = k → ∀ (n a b : ℕ) (Q₁ Q₂ : (w.adicCompletion E)[X]) (B₁ B₂ : GlobalTheory.UnitLemma.InvAlg K), a + b = n → Q₁.Monic → Q₂.Monic → Q₁.natDegree = a → Q₂.natDegree = b → (Q₁ * Q₂).Separable → IsCsr w Q₁ → IsCsr w Q₂ → Algebra.adjoin K.E {(1 + algebraMap K.O B₁.A t * B₁.g)} = ⊤ → aeval (1 + algebraMap K.O B₁.A t * B₁.g) (Q₁.map e.symm.toRingHom) = 0 → Module.finrank K.E B₁.A = Q₁.natDegree → (1 + algebraMap K.O B₁.A t * B₁.g) * B₁.σ (1 + algebraMap K.O B₁.A t * B₁.g) = 1 → Algebra.adjoin K.E {(1 + algebraMap K.O B₂.A t * B₂.g)} = ⊤ → aeval (1 + algebraMap K.O B₂.A t * B₂.g) (Q₂.map e.symm.toRingHom) = 0 → Module.finrank K.E B₂.A = Q₂.natDegree → (1 + algebraMap K.O B₂.A t * B₂.g) * B₂.σ (1 + algebraMap K.O B₂.A t * B₂.g) = 1 → kapOrb n w Q₁ Q₂ ((({γ : UL n w | γ.1 ∈ {g : GLw n w | g ∈ GlobalTheory.LFun.KGL w n ∧ ∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(k : ℤ))}} : Set (UL n w))).indicator 1) = ((GlobalTheory.UnitLemma.InvAlg.kapSum B₁ B₂ : ℚ) : ℂ) := by
   intro E _ _ _ hU w hw K e he1 he2 he3 he4 k t ht htk n a b Q₁ Q₂ B₁ B₂ hab hm₁ hm₂ hd₁ hd₂ hsep hc₁ hc₂
     hadj₁ hae₁ hfr₁ hu₁ hadj₂ hae₂ hfr₂ hu₂

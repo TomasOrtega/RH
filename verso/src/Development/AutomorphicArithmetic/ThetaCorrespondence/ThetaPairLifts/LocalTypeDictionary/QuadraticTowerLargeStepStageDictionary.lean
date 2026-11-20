@@ -17,6 +17,19 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.SqStepBig
+/- English proof (translation)
+Introduce `hP hK hM`. Use `GlobalTheory.SqStepBig.gbig_two (_root_.GlobalTheory.T.exists_good_geometry_over_carried_frames hP) (_root_.GlobalTheory.T.pivot_reduction_divisibility hP hK hM) ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b q1 q2 W hψ i j p q A A' WW X lam t Bs hX hF hB`. Take `⟨FA, FA', FW, Γ, hO, hp, hq, hg, hs⟩` from `q1 W hψ i j p q A A' WW X lam t Bs hX hF hB`. Use `⟨Γ, hO, hp, hq, hg, ?_⟩` and prove the remaining obligations.
+
+Introduce `R om om' Rf om₀ om₀' Rf₀ c c₀ m1 m0 k1 k0`. Take `⟨h0, Pim, pp, pp', J, hsurj, hJ, hi, hI, hI', P', hP'0, hi'⟩` from `id hF`. Take `⟨P, k, H⟩` from `q2 W hψ i j p q A A' WW X lam t Bs hX hF hB FA FA' FW Γ hO hp hq hg hs R P' (fun s _ h => hi' s h)`. Establish `key : ∀ s, (s = t ∨ s = μ₀) → ∀ om om' Rf (c : ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ (GlobalTheory.SqStep.chs G i j s) om om' R Rf → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsConst Bs Γ (GlobalTheory.SqStep.chs G i j s) om om …`. Introduce `s hs' om om' Rf c m kc`.
+
+Apply `hJ s` to reduce the goal to its premises. Rewrite using `[map_smul, map_smul, mul_smul, ← hI, ← hI' s P' (hi' s)]`. Use function extensionality and compare the values at `h`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `H s hs' om om' Rf c m kc h`.
+
+Establish `e1` using `key t (Or.inl rfl) om om' Rf c m1 k1`. Establish `e0` using `key μ₀ (Or.inr rfl) om₀ om₀' Rf₀ c₀ m0 k0`. Establish `e2 : ((((GlobalTheory.SqStep.chs G i j μ₀).ν k : ℂ) * lam μ₀) * c) • pp' P' = ((((GlobalTheory.SqStep.chs G i j t).ν k : ℂ) * lam t) * c₀) • pp' P'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1]`.
+
+Use `_ = (((GlobalTheory.SqStep.chs G i j t).ν k : ℂ) * lam t) • ((((GlobalTheory.SqStep.chs G i j μ₀).ν k : ℂ) * lam μ₀) • pp P) := smul_comm _ _ _`. Use `_ = (((GlobalTheory.SqStep.chs G i j t).ν k : ℂ) * lam t) • (c₀ • pp' P') := by rw [e0]`. Use `_ = ((((GlobalTheory.SqStep.chs G i j t).ν k : ℂ) * lam t) * c₀) • pp' P' := (mul_smul _ _ _).symm`. Establish `e3` using `sub_eq_zero.2 e2`. Rewrite `e3` using `[← sub_smul]`.
+
+Establish `hz` using `(smul_eq_zero.1 e3).resolve_right hP'0`. Establish `hn : (((GlobalTheory.SqStep.chs G i j μ₀).ν k : Circle) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[Circle.coe_div, div_mul_eq_mul_div, eq_div_iff hn]`. Take the linear combination `hz`.
+-/
 theorem quadratic_tower_large_step_stage_dictionary : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D)
     (X : Tri T A A' WW) (lam : T → ℂ) (t : T) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E), GlobalTheory.SqTower.IsStageC W i j p q X →
@@ -80,6 +93,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 open GlobalTheory.SqTop
 open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SqStepBig.quadratic_tower_large_step_stage_dictionary | exact _root_.GlobalTheory.SqStepBig.quadratic_tower_large_step_stage_dictionary | (intros; apply _root_.GlobalTheory.SqStepBig.quadratic_tower_large_step_stage_dictionary <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tower_stage_fit_factor_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D)
     (X : Tri T A A' WW) (lam : T → ℂ) (t : T) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E), GlobalTheory.SqTower.IsStageC W i j p q X →

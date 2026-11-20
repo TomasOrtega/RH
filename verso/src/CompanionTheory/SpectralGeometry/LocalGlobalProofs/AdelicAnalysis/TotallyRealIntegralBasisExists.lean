@@ -5,6 +5,11 @@ open scoped ENNReal NNReal MatrixGroups Kronecker
 
 namespace GlobalTheory.CompanionTheory.SW.ThW
 
+/- English proof (translation)
+Establish `hcard : Fintype.card (InfinitePlace F) = Module.finrank ℚ F`. Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank F`. Establish `h3` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := F)`. Establish `h2 : InfinitePlace.nrComplexPlaces F = 0` using `IsTotallyReal.nrComplexPlaces_eq_zero F`. Use linear arithmetic over natural numbers and integers.
+
+Establish `e : Module.Free.ChooseBasisIndex ℤ (𝓞 F) ≃ InfinitePlace F` using `Fintype.equivOfCardEq (by`. Rewrite using `[hcard, ← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank])`. Conclude with `⟨(RingOfIntegers.basis F).reindex e⟩`.
+-/
 theorem exists_integralBasis_infinitePlace (F : Type) [Field F] [NumberField F]
     (hF : IsTotallyReal F) : Nonempty (Module.Basis (InfinitePlace F) ℤ (𝓞 F)) := by
   have hcard : Fintype.card (InfinitePlace F) = Module.finrank ℚ F := by

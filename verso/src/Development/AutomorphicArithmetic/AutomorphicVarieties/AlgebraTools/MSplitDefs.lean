@@ -17,6 +17,11 @@ abbrev MSplitAlg : Type := MvPolynomial (κ × Fin n) R ⧸ mSplitIdeal P n
 
 def MSplitAlg.root (j : κ) (i : Fin n) : MSplitAlg P n := Ideal.Quotient.mk _ (MvPolynomial.X (j, i))
 
+/- English proof (translation)
+Establish `h : (∏ i : Fin n, (X - C (MvPolynomial.X (j, i) : MvPolynomial (κ × Fin n) R)) - (P j).map MvPolynomial.C).map (Ideal.Quotient.mk (mSplitIdeal P n)) = 0`. Use extensionality with `k`. Rewrite using `[coeff_map, coeff_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span ⟨(j, k), rfl⟩`. Rewrite `h` using `[Polynomial.map_sub, Polynomial.map_prod, Polynomial.map_map, sub_eq_zero]`.
+
+Simplify using `only [Polynomial.map_sub, map_X, map_C] at h`. Conclude with `h`.
+-/
 theorem MSplitAlg.prod_root (j : κ) :
     ∏ i : Fin n, (X - C (MSplitAlg.root P n j i)) = (P j).map (algebraMap R (MSplitAlg P n)) := by
   have h : (∏ i : Fin n, (X - C (MvPolynomial.X (j, i) : MvPolynomial (κ × Fin n) R)) -
@@ -47,11 +52,17 @@ def MSplitAlg.lift {A : Type} [CommRing A] [Algebra R A] (a : κ → Fin n → A
     simp only [coeff_map, coeff_zero] at h4
     exact h4
 
+/- English proof (translation)
+The claim follows from `MvPolynomial.aeval_X (fun p : κ × Fin n => a p.1 p.2) (j, i)`.
+-/
 theorem MSplitAlg.lift_root {A : Type} [CommRing A] [Algebra R A] (a : κ → Fin n → A)
     (h : ∀ j, ∏ i : Fin n, (X - C (a j i)) = (P j).map (algebraMap R A)) (j : κ) (i : Fin n) :
     MSplitAlg.lift P n a h (MSplitAlg.root P n j i) = a j i :=
   MvPolynomial.aeval_X (fun p : κ × Fin n => a p.1 p.2) (j, i)
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.algHom_ext _ (MvPolynomial.algHom_ext fun p => h p.1 p.2)`.
+-/
 theorem MSplitAlg.hom_ext {A : Type} [CommRing A] [Algebra R A] {f g : MSplitAlg P n →ₐ[R] A}
     (h : ∀ j i, f (MSplitAlg.root P n j i) = g (MSplitAlg.root P n j i)) : f = g :=
   Ideal.Quotient.algHom_ext _ (MvPolynomial.algHom_ext fun p => h p.1 p.2)

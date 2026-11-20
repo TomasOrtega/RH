@@ -31,6 +31,11 @@ def Good {R : Type} [CommRing R] {r n : ℕ} (M : Submodule R (MvPolynomial (Fin
 
 open MvPolynomial in
 
+/- English proof (translation)
+Use `⟨⟨fun _ _ _ _ => Submodule.mem_top, fun _ _ _ => Submodule.mem_top, fun _ _ _ => Submodule.mem_top⟩, ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `a b f hf`. Rewrite `hf`, the goal using `[Submodule.mem_bot]`. Simplify using `[hf]`. Introduce `μ f hf`.
+
+Rewrite `hf`, the goal using `[Submodule.mem_bot]`. Simplify using `[hf]`. Introduce `σ f hf`. Rewrite `hf`, the goal using `[Submodule.mem_bot]`. Simplify using `[hf]`.
+-/
 theorem _root_.GlobalTheory.Alc.good_top_bot (R : Type) [CommRing R] (r n : ℕ) :
     _root_.GlobalTheory.Alc.Good (⊤ : Submodule R (MvPolynomial (Fin r × Fin n) R)) ∧ _root_.GlobalTheory.Alc.Good (⊥ : Submodule R (MvPolynomial (Fin r × Fin n) R)) := by
   refine ⟨⟨fun _ _ _ _ => Submodule.mem_top, fun _ _ _ => Submodule.mem_top,

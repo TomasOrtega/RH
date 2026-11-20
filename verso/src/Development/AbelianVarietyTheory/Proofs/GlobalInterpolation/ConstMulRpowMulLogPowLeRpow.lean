@@ -6,6 +6,15 @@ namespace GlobalTheory
 
 open Real Filter Asymptotics in
 
+/- English proof (translation)
+Introduce `a b C p hab`. Establish `hlo : (fun x : ℝ => Real.log x ^ (p : ℝ)) =o[atTop] fun x => x ^ (b - a)` using `isLittleO_log_rpow_rpow_atTop _ (sub_pos.mpr hab)`. Establish `hc : (0 : ℝ) < 1 / (|C| + 1)` using `by positivity`. Establish `hev` using `(hlo.bound hc).and (eventually_gt_atTop (0 : ℝ))`. Take `⟨x0, hx0⟩` from `eventually_atTop.mp hev`.
+
+Use `⟨x0, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨hb, hxpos⟩` from `hx0 x hx`. Rewrite `hb` using `[Real.rpow_natCast]`. Establish `hxa : 0 < x ^ a` using `Real.rpow_pos_of_pos hxpos a`. Establish `hxba : 0 < x ^ (b - a)` using `Real.rpow_pos_of_pos hxpos _`.
+
+Rewrite `hb` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos hxba]`. Establish `hsplit : x ^ b = x ^ a * x ^ (b - a)`. Rewrite using `[← Real.rpow_add hxpos]`. Put the polynomial expressions in normal form. Establish `h1 : C * Real.log x ^ p ≤ |C| * |Real.log x ^ p|`.
+
+Rewrite using `[← abs_mul]`. Conclude with `le_abs_self _`. Establish `h2 : |C| * |Real.log x ^ p| ≤ x ^ (b - a)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow :
     ∀ a b C : ℝ, ∀ p : ℕ, a < b →
       ∃ x0 : ℝ, ∀ x ≥ x0, C * x ^ a * Real.log x ^ p ≤ x ^ b := by

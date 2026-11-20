@@ -10,6 +10,17 @@ section
 variable {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U] (L : Submodule ℂ U)
   [FiniteDimensional ℂ L]
 
+/- English proof (translation)
+Use `set e := stdOrthonormalBasis ℂ L`. Establish `h1 : ∀ j, ⟪a, (e j : U)⟫_ℂ = ⟪(⟨L.starProjection a, L.starProjection_apply_mem a⟩ : L), e j⟫_ℂ`. Introduce `j`. Rewrite using `[Submodule.coe_inner]`. Use `L.inner_starProjection_left_eq_right a (e j : U)` as an intermediate fact.
+
+Rewrite using `[this, L.starProjection_eq_self_iff.2 (e j).2]`. Establish `h2 : ∀ j, ⟪(e j : U), c⟫_ℂ = ⟪e j, (⟨L.starProjection c, L.starProjection_apply_mem c⟩ : L)⟫_ℂ`. Introduce `j`. Rewrite using `[Submodule.coe_inner]`. Use `L.inner_starProjection_left_eq_right (e j : U) c` as an intermediate fact.
+
+Rewrite using `[← this, L.starProjection_eq_self_iff.2 (e j).2]`. Repeatedly rewrite using `[h1, h2]`. Rewrite using `[e.sum_inner_mul_inner, Submodule.coe_inner]`. Simplify using `only`. Establish `ha` using `L.sub_starProjection_mem_orthogonal a`.
+
+Establish `hc` using `L.sub_starProjection_mem_orthogonal c`. Establish `o1 : ⟪L.starProjection a, c - L.starProjection c⟫_ℂ = 0` using `Submodule.inner_right_of_mem_orthogonal (L.starProjection_apply_mem a) hc`. Establish `o2 : ⟪a - L.starProjection a, L.starProjection c⟫_ℂ = 0` using `Submodule.inner_left_of_mem_orthogonal (L.starProjection_apply_mem c) ha`. Establish `e1 : ⟪a, c⟫_ℂ = ⟪L.starProjection a + (a - L.starProjection a), L.starProjection c + (c - L.starProjection c)⟫_ℂ` using `by simp`. Rewrite using `[e1, inner_add_left, inner_add_right, inner_add_right, o1, o2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_inner_mul_inner_proj [L.HasOrthogonalProjection] (a c : U) :
     ∑ j, ⟪a, (stdOrthonormalBasis ℂ L j : U)⟫_ℂ * ⟪(stdOrthonormalBasis ℂ L j : U), c⟫_ℂ =
       ⟪a, c⟫_ℂ - ⟪a - L.starProjection a, c - L.starProjection c⟫_ℂ := by
@@ -40,6 +51,27 @@ theorem sum_inner_mul_inner_proj [L.HasOrthogonalProjection] (a c : U) :
 
 end
 
+/- English proof (translation)
+Introduce `U _ _ _ L _ x y A hx0 hxi hy hxd hA hAd`. Use `set e := stdOrthonormalBasis ℂ L`. Use `set E : Fin (Module.finrank ℂ L) → U := fun j => (e j : U)`. Use `set b : Fin (Module.finrank ℂ L) → U := fun k => ContinuousLinearMap.adjoint A (E k)`. Establish `hexp : ∀ u, A u = ∑ k, ⟪E k, A u⟫_ℂ • E k`.
+
+Introduce `u`. Use `e.sum_repr' (⟨A u, hA u⟩ : L)` as an intermediate fact. Establish `h` using `congrArg (fun z : L => (z : U)) this`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_inner] at h`. Conclude with `h.symm`.
+
+Establish `hterm : ∀ t, (∑ j, ⟪E j, x t (A (y t (E j)))⟫_ℂ) = ∑ k, (⟪x t (b k), x t (E k)⟫_ℂ - ⟪x t (b k) - L.starProjection (x t (b k)), x t (E k) - L.starProjection (x t (E k))⟫_ℂ)`. Introduce `t`. Establish `h1 : ∀ j, ⟪E j, x t (A (y t (E j)))⟫_ℂ = ∑ k, ⟪x t (b k), E j⟫_ℂ * ⟪E j, x t (E k)⟫_ℂ`. Introduce `j`. Rewrite using `[hexp (y t (E j)), map_sum, inner_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, inner_smul_right, ← ContinuousLinearMap.adjoint_inner_left, hy]`. Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Conclude with `sum_inner_mul_inner_proj L _ _`. Establish `hconst : ∀ t k, ⟪x t (b k), x t (E k)⟫_ℂ = ⟪b k, E k⟫_ℂ` using `fun t k => hxi t _ _`. Rewrite `hterm` using `[hconst]`. Establish `hfun : (fun t => ∑ j, ⟪E j, x t (A (y t (E j)))⟫_ℂ) = fun t => (∑ k, ⟪b k, E k⟫_ℂ) - ∑ k, ⟪x t (b k) - L.starProjection (x t (b k)), x t (E k) - L.starProjection (x t (E k))⟫_ℂ`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[hterm t, Finset.sum_sub_distrib]`. Use `show HasDerivAt (fun t => ∑ j, ⟪E j, x t (A (y t (E j)))⟫_ℂ) 0 0`. Rewrite using `[hfun]`. Establish `hbL : ∀ k, b k ∈ L` using `fun k => hAd _`. Establish `hEL : ∀ k, E k ∈ L` using `fun k => (e k).2`.
+
+Establish `hd : ∀ v ∈ L, ∃ w, HasDerivAt (fun t => x t v - L.starProjection (x t v)) w 0 ∧ x 0 v - L.starProjection (x 0 v) = 0`. Introduce `v hv`. Take `⟨w, hw⟩` from `hxd v hv`. Establish `hP : HasDerivAt (fun t => L.starProjection (x t v)) (L.starProjection w) 0` using `(L.starProjection.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hw`. Use `⟨w - L.starProjection w, hw.sub hP, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hx0, ContinuousLinearMap.one_apply, L.starProjection_eq_self_iff.2 hv, sub_self]`. Establish `hsum : HasDerivAt (fun t => ∑ k, ⟪x t (b k) - L.starProjection (x t (b k)), x t (E k) - L.starProjection (x t (E k))⟫_ℂ) 0 0`. Establish `: (0 : ℂ) = ∑ _k : Fin (Module.finrank ℂ L), (0 : ℂ)` using `by simp`. Rewrite using `[this]`. Use `HasDerivAt.fun_sum fun k _ => ?_` and prove the remaining obligations.
+
+Take `⟨w1, h1, z1⟩` from `hd _ (hbL k)`. Take `⟨w2, h2, z2⟩` from `hd _ (hEL k)`. Use `h1.inner ℂ h2` as an intermediate fact. Rewrite `this` using `[z1, z2, inner_zero_left, inner_zero_right, add_zero]`. Conclude with `this`.
+
+Use `hsum.const_sub (∑ k, ⟪b k, E k⟫_ℂ)` as an intermediate fact. Rewrite `this` using `[neg_zero]`. Then use the resulting hypothesis.
+-/
 theorem conjDeriv : ∀ (U : Type) [NormedAddCommGroup U] [InnerProductSpace ℂ U] [CompleteSpace U] (L : Submodule ℂ U) [FiniteDimensional ℂ L] (x y : ℝ → U →L[ℂ] U) (A : U →L[ℂ] U), x 0 = 1 → (∀ t v w, inner ℂ (x t v) (x t w) = inner ℂ v w) → (∀ t v w, inner ℂ v (y t w) = inner ℂ (x t v) w) → (∀ v ∈ L, ∃ w, HasDerivAt (fun t => x t v) w 0) → (∀ u, A u ∈ L) → (∀ u, ContinuousLinearMap.adjoint A u ∈ L) → HasDerivAt (fun t => ∑ j, inner ℂ (stdOrthonormalBasis ℂ L j : U) (x t (A (y t (stdOrthonormalBasis ℂ L j : U))))) 0 0 := by
   intro U _ _ _ L _ x y A hx0 hxi hy hxd hA hAd
   set e := stdOrthonormalBasis ℂ L

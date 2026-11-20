@@ -11,6 +11,17 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 
 namespace GlobalTheory.PPAS
 
+/- English proof (translation)
+Introduce `Y π hs`. Take `⟨P', φ, hg, hpull⟩` from `GlobalTheory.PPAS.exists_pull X Y P π`. Take `⟨hφ, -⟩` from `id hpull`. Take `⟨h', H'⟩` from `GlobalTheory.PPAS.exists_isDualRiemann k Y (π ≫ p) P' Real.pi Real.pi_pos`. Establish `hc` using `GlobalTheory.HodgeSmooth.isCInf_of_isDualRiemann k Y (π ≫ p) 1 hs P' Real.pi Real.pi_pos h' H'`.
+
+Establish `hf` using `GlobalTheory.HodgePull.form_omegaBase k X p Y (π ≫ p) π rfl P P' φ hφ hg hpull Real.pi h h' H H'`. Use `clear H'`. Use `revert h' hc hf`. Generalize the expression as in `P'.g = r at *`. Substitute `hg` using the available equality.
+
+Introduce `h' hc hf`. Apply the tactic sequence `have e : h'.IsIsometry (h.pull π rfl) (asIso (LieVB.omegaBase hφ)).symm := by`. Introduce `σ V s t y hy`. Use `hf σ V ((inv (LieVB.omegaBase hφ)).app V s) ((inv (LieVB.omegaBase hφ)).app V t) y hy` as an intermediate fact. Simplify using `only [Iso.symm_hom, asIso_inv]`.
+
+Rewrite using `[← this]`. Use `congr 1`. Conclude with `(congr(($(IsIso.inv_hom_id (LieVB.omegaBase hφ))).app V s) :)`. Conclude with `(congr(($(IsIso.inv_hom_id (LieVB.omegaBase hφ))).app V t) :)`. Rewrite using `[(VMetric.isIsometry_iff _).1 e]`.
+
+Conclude with `hc.map _`.
+-/
 theorem isCInfNorm_of_isHodge {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (P : PPAS X)
     {h : VMetric p (LieVB.omega P.A) P.g} (H : P.IsHodge h) : h.IsCInfNorm := by
   intro Y π hs

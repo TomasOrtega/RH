@@ -126,15 +126,27 @@ def Asph.liftId {Y : Type} [TopologicalSpace Y] (K : Asph Y) : Asph.Lift K K (Co
   equiv _ _ _ := rfl
   comm _ _ := rfl
 
+/- English proof (translation)
+Use `⟨⟨1, Multiplicative.ofAdd ⟨1, AddSubgroup.mem_zmultiples 1⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `h`. Use `congrArg (fun g => ((Multiplicative.toAdd g : AddSubgroup.zmultiples (1 : ℝ)) : ℝ)) h` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+-/
 theorem circleAsph_G_nontrivial : Nontrivial (Multiplicative (AddSubgroup.zmultiples (1 : ℝ))) := by
   refine ⟨⟨1, Multiplicative.ofAdd ⟨1, AddSubgroup.mem_zmultiples 1⟩, ?_⟩⟩
   intro h
   have := congrArg (fun g => ((Multiplicative.toAdd g : AddSubgroup.zmultiples (1 : ℝ)) : ℝ)) h
   norm_num at this
 
+/- English proof (translation)
+The claim follows from `circleAsph.liftId`.
+-/
 example : Asph.Lift circleAsph circleAsph (ContinuousMap.id _) := circleAsph.liftId
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : circleAsph.n = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (σ : Representation ℤ Γ L) (a b : SD σ) :
     (a * b).left = Multiplicative.ofAdd ((a.left).toAdd + σ a.right (b.left).toAdd) := rfl
 

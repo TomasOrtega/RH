@@ -11,6 +11,11 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.DblVac
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w hv H hD hA g hg`. Take `⟨p, hpK, hpD, hpgK, hbig⟩` from `GlobalTheory.T.exists_diagonalStabiliser_mul_mem_bigCell_inert σ B G.W _ _ hT.base hT.geo.hW v w hv g hg`. Take `⟨q, hqK, hqA, p', hp'K, hp'D, he⟩` from `GlobalTheory.T.doubledVacuumStabilizer_gaussDecomposition_bigCell σ G.W v (hT.base.inert v w hv).1 (p * g) hpgK hbig`. Establish `hg' : g = p⁻¹ * (q * p')` using `by rw [← he]; group`. Rewrite using `[hg']`.
+
+Conclude with `H.mul_mem (H.inv_mem (hD p hpK hpD)) (H.mul_mem (hA q hqK hqA) (hD p' hp'K hp'D))`.
+-/
 theorem gen_diag_anti : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → ∀ H : Subgroup (GlobalTheory.DblVac.UD σ G.W),

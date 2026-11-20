@@ -7,6 +7,13 @@ open scoped Classical
 
 namespace GlobalTheory.TwLatMul
 
+/- English proof (translation)
+Use `set M := LinearMap.toMatrix b b (LinearMap.mulLeft K.E a) with hM`. Establish `hij : ∀ i, e.symm (h.val i j) = ∑ k, M i k * e.symm (g.val k j)`. Introduce `i`. Rewrite using `[hh]`. Simplify using `[Matrix.mul_apply, GlobalTheory.TwLat.mulMat, map_sum, map_mul, hM]`.
+
+Establish `hab : ∀ k, a * b k = ∑ i, M i k • b i`. Introduce `k`. Simplify using `only [hM, LinearMap.toMatrix_apply, LinearMap.mulLeft_apply]`. Conclude with `(b.sum_repr _).symm`. Repeatedly rewrite using `[hij, Finset.mul_sum, mul_smul_comm, hab, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[mul_comm]`.
+-/
 theorem col_eq {E : Type} [Field E] [NumberField E] {w : Pl E} {K : GlobalTheory.UnitLemma.UQ}
     (e : K.E ≃+* w.adicCompletion E) {B : GlobalTheory.UnitLemma.InvAlg K} {m : ℕ}
     (b : Module.Basis (Fin m) K.E B.A) (a : B.A) (g h : GLw m w)
@@ -25,6 +32,9 @@ theorem col_eq {E : Type} [Field E] [NumberField E] {w : Pl E} {K : GlobalTheory
   rw [Finset.sum_comm]
   simp_rw [mul_comm]
 
+/- English proof (translation)
+Introduce `E _ _ _ _ w _ K e _ _ _ B m b a g h hh`. Unfold `GlobalTheory.TwLat.lat GlobalTheory.UnitLemma.mulLat`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congrArg _ (congrArg Set.range (funext fun j => ?_))` and prove the remaining obligations. Conclude with `col_eq e b a g h hh j`.
+-/
 theorem lat_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → (∀ x, GlobalTheory.UnitLemma.val K.O x = ordL (e x)) → ∀ (B : GlobalTheory.UnitLemma.InvAlg K) (m : ℕ) (b : Module.Basis (Fin m) K.E B.A), ∀ (a : B.A) (g h : GLw m w), h.val = GlobalTheory.TwLat.mulMat e b a * g.val → GlobalTheory.TwLat.lat e b h = GlobalTheory.UnitLemma.mulLat K.O a (GlobalTheory.TwLat.lat e b g) := by
   intro E _ _ _ _ w _ K e _ _ _ B m b a g h hh
   unfold GlobalTheory.TwLat.lat GlobalTheory.UnitLemma.mulLat

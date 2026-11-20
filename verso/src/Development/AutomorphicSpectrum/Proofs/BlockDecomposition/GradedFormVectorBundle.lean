@@ -14,6 +14,9 @@ open GlobalTheory.CompanionTheory.GrForm
 
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
+/- English proof (translation)
+Take `⟨f, hf, rfl, hs⟩` from `h`. Take `⟨f', hf', rfl, hs'⟩` from `h'`. Establish `e : f = f'` using `funext fun s => Subtype.ext ((hs s).trans (hs' s).symm)`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem rp_class {W : X.Opens} {P : ObjectProperty (Thick (LL q))} {d r : ℕ} {u : Fin d → ∀ T : Thick (LL q), T.B}
     {x : Idx r d → Γ(X, W)} {c c' : HU (GF q r) P r} (h : Rp (W := W) P u x c) (h' : Rp (W := W) P u x c') : c = c' := by
   obtain ⟨f, hf, rfl, hs⟩ := h
@@ -22,14 +25,25 @@ theorem rp_class {W : X.Opens} {P : ObjectProperty (Thick (LL q))} {d r : ℕ} {
   subst e
   rfl
 
+/- English proof (translation)
+The claim follows from `hT.trans (fun _ hx => h hx)`.
+-/
 theorem inU_mono {W W' : X.Opens} (h : W' ≤ W) {T : Thick (LL q)} (hT : InU W' T) : InU W T :=
   hT.trans (fun _ hx => h hx)
 
+/- English proof (translation)
+Introduce `i T hT`. Rewrite using `[ht, hu i T (inU_mono h hT), ev_res h T (inU_mono h hT) hT]`.
+-/
 theorem isLift_res {V W : X.Opens} (h : W ≤ V) {d : ℕ} {t : Fin d → Γ(X, V)} {u : Fin d → ∀ T : Thick (LL q), T.B}
     (hu : IsLift V t u) {t' : Fin d → Γ(X, W)} (ht : ∀ i, t' i = rs h (t i)) : IsLift W t' u := by
   intro i T hT
   rw [ht, hu i T (inU_mono h hT), ev_res h T (inU_mono h hT) hT]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, V, hV, hi⟩`. Take `rfl : V = W` from `hV`. Conclude with `⟨h, hi⟩`. Introduce and unpack `⟨h, hi⟩`.
+
+Conclude with `⟨h, W, rfl, hi⟩`.
+-/
 theorem st_iff {Q : ObjectProperty (Thick (LL q))} {W : X.Opens} (T : Thick (LL q)) :
     St Q {W} T ↔ Q T ∧ InU W T := by
   constructor
@@ -39,12 +53,18 @@ theorem st_iff {Q : ObjectProperty (Thick (LL q))} {W : X.Opens} (T : Thick (LL 
   · rintro ⟨h, hi⟩
     exact ⟨h, W, rfl, hi⟩
 
+/- English proof (translation)
+Establish `e : capO U i = ⨅ a ∈ (Finset.univ : Finset (Fin n)), U (i a)` using `by simp [capO]`. Rewrite using `[e, GlobalTheory.T.inOpen_finite_inf_iff (fun a => U (i a)) Finset.univ T]`. Simplify using the standard rewrite rules.
+-/
 theorem inU_capO {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) (T : Thick (LL q)) :
     InU (capO U i) T ↔ ∀ a, InU (U (i a)) T := by
   have e : capO U i = ⨅ a ∈ (Finset.univ : Finset (Fin n)), U (i a) := by simp [capO]
   rw [e, GlobalTheory.T.inOpen_finite_inf_iff (fun a => U (i a)) Finset.univ T]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T`. Use `propext ⟨fun h => ?_, fun h a => ?_⟩` and prove the remaining obligations. Conclude with `(st_iff T).2 ⟨((st_iff T).1 (h 0)).1, (inU_capO U i T).2 fun a => ((st_iff T).1 (h a)).2⟩`. Take `⟨h1, h2⟩` from `(st_iff T).1 h`. Conclude with `(st_iff T).2 ⟨h1, (inU_capO U i T).1 h2 a⟩`.
+-/
 theorem capT_eq (l s : ℕ) {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin (n + 1) → ι) :
     capT (fun α => SS q l s (U α)) i = SS q l s (capO U i) := by
   funext T
@@ -60,6 +80,9 @@ section Forms
 variable {W : X.Opens} {d : ℕ} {t : Fin d → Γ(X, W)} {u : Fin d → ∀ T : Thick (LL q), T.B}
   {P : ObjectProperty (Thick (LL q))} {r : ℕ}
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hE W t u hu P hP r 0`. Establish `h2` using `(hA W t u hu P hP r _ _ _ _ hc (hA W t u hu P hP r _ _ _ _ hc hc).2).1`. Rewrite `h2` using `[add_neg_cancel, add_neg_cancel]`. Conclude with `h2`.
+-/
 theorem rp_zero (hE : StExists) (hA : StAdd) (hu : IsLift W t u) (hP : ∀ T, P T → InU W T) :
     Rp (W := W) P u (0 : Idx r d → Γ(X, W)) (0 : HU (GF q r) P r) := by
   obtain ⟨c, hc⟩ := hE W t u hu P hP r 0
@@ -67,6 +90,11 @@ theorem rp_zero (hE : StExists) (hA : StAdd) (hu : IsLift W t u) (hP : ∀ T, P 
   rw [add_neg_cancel, add_neg_cancel] at h2
   exact h2
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `rp_zero hE hA hu hP`. Consider the case `insert a S ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(hA W t u hu P hP r _ _ _ _ (h a (Finset.mem_insert_self a S)) (ih fun k hk => h k (Finset.mem_insert_of_mem hk))).1`.
+-/
 theorem rp_sum (hE : StExists) (hA : StAdd) (hu : IsLift W t u) (hP : ∀ T, P T → InU W T) {κ' : Type} (S : Finset κ')
     (x : κ' → Idx r d → Γ(X, W)) (c : κ' → HU (GF q r) P r) (h : ∀ k ∈ S, Rp (W := W) P u (x k) (c k)) :
     Rp (W := W) P u (∑ k ∈ S, x k) (∑ k ∈ S, c k) := by
@@ -80,12 +108,18 @@ theorem rp_sum (hE : StExists) (hA : StAdd) (hu : IsLift W t u) (hP : ∀ T, P T
     exact (hA W t u hu P hP r _ _ _ _ (h a (Finset.mem_insert_self a S))
       (ih fun k hk => h k (Finset.mem_insert_of_mem hk))).1
 
+/- English proof (translation)
+Establish `h2` using `(hA W t u hu P hP r _ _ _ _ h (hA W t u hu P hP r _ _ _ _ h' h').2).1`. Rewrite `h2` using `[add_neg_cancel c]`. Conclude with `add_neg_eq_zero.1 (hF.2 _ h2)`.
+-/
 theorem rp_coef (hA : StAdd) (hu : IsLift W t u) (hP : ∀ T, P T → InU W T) (hF : Free W P r u)
     {x x' : Idx r d → Γ(X, W)} {c : HU (GF q r) P r} (h : Rp (W := W) P u x c) (h' : Rp (W := W) P u x' c) : x = x' := by
   have h2 := (hA W t u hu P hP r _ _ _ _ h (hA W t u hu P hP r _ _ _ _ h' h').2).1
   rw [add_neg_cancel c] at h2
   exact add_neg_eq_zero.1 (hF.2 _ h2)
 
+/- English proof (translation)
+Use `choose f hf using hF.1`. Use `choose g hg using fun x => hE W t u hu P hP r x`. Conclude with `⟨{ toFun := f, invFun := g, left_inv := fun c => rp_class (hg _) (hf c), right_inv := fun x => rp_coef hA hu hP hF (hf _) (hg x), map_add' := fun a b => rp_coef hA hu hP hF (hf _) (hA W t u hu P hP r _ _ _ _ (hf a) (hf b)).1 }, hf⟩`.
+-/
 theorem exists_equiv (hE : StExists) (hA : StAdd) (hu : IsLift W t u) (hP : ∀ T, P T → InU W T) (hF : Free W P r u) :
     ∃ e : HU (GF q r) P r ≃+ (Idx r d → Γ(X, W)), ∀ cl, Rp (W := W) P u (e cl) cl := by
   choose f hf using hF.1
@@ -96,6 +130,9 @@ theorem exists_equiv (hE : StExists) (hA : StAdd) (hu : IsLift W t u) (hP : ∀ 
 
 end Forms
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Take `⟨c', hc'⟩` from `GlobalTheory.T.coordinates_restrict_affine_open c h hW`. Conclude with `hL l s hb q c' u (isLift_res h hu hc') r hr`.
+-/
 theorem free_at (hL : StLoc) {l s : ℕ} (hb : TFBase (dividedPowersBot O) l s) {V W : X.Opens} (h : W ≤ V)
     (hW : IsAffineOpen W) {d : ℕ} (c : Coord q V d) {u : Fin d → ∀ T : Thick (LL q), T.B} (hu : IsLift V c.t u)
     {r : ℕ} (hr : r < s) {P : ObjectProperty (Thick (LL q))} (hP : P = SS q l s W) : Free W P r u := by
@@ -103,6 +140,17 @@ theorem free_at (hL : StLoc) {l s : ℕ} (hb : TFBase (dividedPowersBot O) l s) 
   obtain ⟨c', hc'⟩ := GlobalTheory.T.coordinates_restrict_affine_open c h hW
   exact hL l s hb q c' u (isLift_res h hu hc') r hr
 
+/- English proof (translation)
+Establish `hua' : IsLift W (fun i => rs h (ta i)) ua` using `isLift_res h hua fun _ => rfl`. Establish `hub' : IsLift W (fun i => rs h (tb i)) ub` using `isLift_res h hub fun _ => rfl`. Establish `hb1 : ∀ k', Rp (W` using `W₂) P₂ ub (Pi.single k' 1) (B.symm (Pi.single k' 1)) := fun k' => by`. Use `hB' (B.symm (Pi.single k' 1))` as an intermediate fact. Rewrite `this` using `[AddEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Use `choose m hm using fun k' => hAct W P hP r (y k')`. Establish `hd1 : ∀ k', Rp (W` using `W) P ub (fun I => y k' * rs h ((Pi.single k' 1 : Idx r db → Γ(X, W₂)) I)) (m k' ((resU (GF q r) hPP).pull r (B.symm (Pi.single k' 1)))) := fun k' => hm k' _ _ hub' _ _ (hR W₂ W h tb ub hub P₂ P hPP hP₂ hP r _ _ (hb1 k'))`. Establish `hd2 : ∀ k', Rp (W` using `W) P ua (fun I => y k' * rs h (A (B.symm (Pi.single k' 1)) I)) (m k' ((resU (GF q r) hPP).pull r (B.symm (Pi.single k' 1)))) := fun k' => hm k' _ _ hua' _ _ (hR W₂ W h ta ua hua P₂ P hPP hP₂ hP r _ _ (hA' _))`. Establish `s1` using `rp_sum hE hA hub' hP Finset.univ _ _ fun k' _ => hd1 k'`. Establish `s2` using `rp_sum hE hA hua' hP Finset.univ _ _ fun k' _ => hd2 k'`.
+
+Establish `e1 : (∑ k', fun I => y k' * rs h ((Pi.single k' 1 : Idx r db → Γ(X, W₂)) I)) = y`. Use function extensionality and compare the values at `I`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single I]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Pi.single_eq_of_ne (Ne.symm hb)]`. Simplify using the standard rewrite rules. Rewrite `s1` using `[e1]`. Rewrite `s2` using `[rp_class s1 hy]`. Use `s2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+-/
 theorem chg (hE : StExists) (hA : StAdd) (hR : StRes) (hAct : StAct) {W W₂ : X.Opens} (h : W ≤ W₂) {da db : ℕ}
     {ta : Fin da → Γ(X, W₂)} {tb : Fin db → Γ(X, W₂)} {ua : Fin da → ∀ T : Thick (LL q), T.B}
     {ub : Fin db → ∀ T : Thick (LL q), T.B} (hua : IsLift W₂ ta ua) (hub : IsLift W₂ tb ub)
@@ -139,16 +187,25 @@ theorem chg (hE : StExists) (hA : StAdd) (hR : StRes) (hAct : StAct) {W W₂ : X
   rw [Finset.sum_apply]
   exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
+/- English proof (translation)
+Use `le_antisymm (le_inf (capO_le U _ 0) (capO_le U _ 1)) (le_iInf fun a => ?_)` and prove the remaining obligations. Use `fin_cases a`. Conclude with `inf_le_left`. Conclude with `inf_le_right`.
+-/
 theorem capO_pair {ι : Type} (U : ι → X.Opens) (α β : ι) : capO U ![α, β] = U α ⊓ U β := by
   refine le_antisymm (le_inf (capO_le U _ 0) (capO_le U _ 1)) (le_iInf fun a => ?_)
   fin_cases a
   · exact inf_le_left
   · exact inf_le_right
 
+/- English proof (translation)
+The claim follows from `(inU_capO U i T).2 fun a => ((st_iff T).1 (h a)).2`.
+-/
 theorem capT_inU (l s : ℕ) {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) (T : Thick (LL q))
     (h : capT (fun α => SS q l s (U α)) i T) : InU (capO U i) T :=
   (inU_capO U i T).2 fun a => ((st_iff T).1 (h a)).2
 
+/- English proof (translation)
+The claim follows from `((st_iff T).1 h).2`.
+-/
 theorem ss_inU (l s : ℕ) (W : X.Opens) (T : Thick (LL q)) (h : SS q l s W T) : InU W T := ((st_iff T).1 h).2
 
 section Main
@@ -156,13 +213,30 @@ variable {ι : Type} (U : ι → X.Opens) (d : ι → ℕ) (c : ∀ α, Coord q 
 
 def uu (α : ι) : Fin (d α) → ∀ T : Thick (LL q), T.B := fun k T => lft (U α) T ((c α).t k)
 
+/- English proof (translation)
+Introduce `k T h` and use `lft_spec T h _`.
+-/
 theorem uu_lift (α : ι) : IsLift (U α) (c α).t (uu U d c α) := fun k T h => lft_spec T h _
 
+/- English proof (translation)
+The claim follows from `isLift_res h (uu_lift U d c α) fun _ => rfl`.
+-/
 theorem uu_res (α : ι) {W : X.Opens} (h : W ≤ U α) : IsLift W (fun k => rs h ((c α).t k)) (uu U d c α) :=
   isLift_res h (uu_lift U d c α) fun _ => rfl
 
 end Main
 
+/- English proof (translation)
+Introduce `hE hA hS hR hAct hL O _ l s hb X q ι _ U d c ha r hr`. Establish `hPi : ∀ {n : ℕ} (i : Fin (n + 1) → ι) (T : Thick (LL q)), capT (fun α => SS q l s (U α)) i T → InU (capO U i) T` using `fun i T h => capT_inU l s U i T h`. Establish `hFi : ∀ (n : ℕ) (a : Fin (n + 1)) (i : Fin (n + 1) → ι), Free (capO U i) (capT (fun α => SS q l s (U α)) i) r (uu U d c (i a))` using `fun n a i => free_at hL hb (capO_le U i a) (ha n i) (c (i a)) (uu_lift U d c (i a)) hr (capT_eq l s U i)`. Use `choose E hEr using fun (n : ℕ) (a : Fin (n + 1)) (i : Fin (n + 1) → ι) => exists_equiv hE hA (uu_res U d c (i a) (capO_le U i a)) (hPi i) (hFi n a i)`. Establish `aff2 : ∀ α β, IsAffineOpen (U α ⊓ U β)` using `fun α β => by`.
+
+Rewrite using `[← capO_pair]`. Conclude with `ha 1 _`. Use `choose A hAr using fun α β => exists_equiv (P := SS q l s (U α ⊓ U β)) (r := r) hE hA (uu_res U d c α inf_le_left) (ss_inU l s (U α ⊓ U β)) (free_at hL hb inf_le_left (aff2 α β) (c α) (uu_lift U d c α) hr rfl)`. Use `choose B hBr using fun α β => exists_equiv (P := SS q l s (U α ⊓ U β)) (r := r) hE hA (uu_res U d c β inf_le_right) (ss_inU l s (U α ⊓ U β)) (free_at hL hb inf_le_right (aff2 α β) (c β) (uu_lift U d c β) hr rfl)`. Use `⟨{ κ := fun α => Idx r (d α) fin := fun _ => inferInstance g := fun α β k k' => A α β ((B α β).symm (Pi.single k' 1)) k e := fun n a => AddEquiv.piCongrRight fun i => E n a i e_smul := ?_ e_δ := ?_ e_chg := ?_ }⟩` and prove the remaining obligations.
+
+Introduce `n a z x i k`. Use `rp_coef hA (uu_res U d c (i a) (capO_le U i a)) (hPi i) (hFi n a i) (hEr n a i (z • x i)) (hS _ _ _ (uu_res U d c (i a) (capO_le U i a)) _ (hPi i) r _ _ z (hEr n a i (x i)))` as an intermediate fact. Conclude with `congrFun this k`. Introduce `n a b x i k`. Use `rp_coef hA (uu_res U d c (i (b.succAbove a)) (capO_le U i (b.succAbove a))) (hPi i) (hFi (n + 1) (b.succAbove a) i) (hEr (n + 1) (b.succAbove a) i _) (hR _ _ (capO_comp U i b.succAbove) _ _ (uu_res U d c (i (b.succAbove a)) (capO_le U (i ∘ b.succAbove) a)) _ (capT (fun α => SS q …` as an intermediate fact.
+
+Conclude with `congrFun this k`. Introduce `n a b x i k`. Establish `hle : capO U i ≤ U (i a) ⊓ U (i b)` using `le_inf (capO_le U i a) (capO_le U i b)`. Establish `hPP : capT (fun α => SS q l s (U α)) i ≤ SS q l s (U (i a) ⊓ U (i b))` using `fun T h => (st_iff T).2 ⟨((st_iff T).1 (h a)).1, inU_mono hle (hPi i T h)⟩`. Use `rp_coef hA (uu_res U d c (i a) (capO_le U i a)) (hPi i) (hFi n a i) (hEr n a i (x i)) (chg hE hA hR hAct hle (uu_res U d c (i a) inf_le_left) (uu_res U d c (i b) inf_le_right) hPP (hPi i) (ss_inU l s _) (A (i a) (i b)) (hAr _ _) (B (i a) (i b)) (hBr _ _) (x i) _ (hEr n b i (x i)) …` as an intermediate fact.
+
+Conclude with `congrFun this k`.
+-/
 theorem main : StExists → StAdd → StSmul → StRes → StAct → StLoc → StVB := by
   classical
   intro hE hA hS hR hAct hL O _ l s hb X q ι _ U d c ha r hr

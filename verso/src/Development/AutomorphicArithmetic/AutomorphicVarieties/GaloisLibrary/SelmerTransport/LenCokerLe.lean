@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
+/- English proof (translation)
+Establish `h1` using `Module.length_eq_add_of_exact (LinearMap.range f).subtype (LinearMap.range f).mkQ (Submodule.subtype_injective _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ _)`. Establish `h2` using `Module.length_eq_add_of_exact (LinearMap.ker f).subtype (LinearMap.ker f).mkQ (Submodule.subtype_injective _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ _)`. Rewrite `h2` using `[(f.quotKerEquivRange).length_eq]`. Establish `h3 : Module.length R (LinearMap.range f) ≠ ⊤`. Introduce `h`.
+
+Rewrite `h1` using `[h, top_add]`. Conclude with `hfin h1`. Rewrite `h2` using `[h1, add_comm]`. Conclude with `(WithTop.add_right_inj h3).1 h2`.
+-/
 private theorem len_ker_eq_coker {R A : Type} [CommRing R] [AddCommGroup A] [Module R A]
     (f : A →ₗ[R] A) (hfin : Module.length R A ≠ ⊤) :
     Module.length R (A ⧸ LinearMap.range f) = Module.length R (LinearMap.ker f) := by
@@ -17,6 +22,9 @@ private theorem len_ker_eq_coker {R A : Type} [CommRing R] [AddCommGroup A] [Mod
   rw [h1, add_comm] at h2
   exact (WithTop.add_right_inj h3).1 h2
 
+/- English proof (translation)
+Establish `h` using `Module.length_le_of_surjective (S.subtype.coprod T.subtype).rangeRestrict (LinearMap.surjective_rangeRestrict _)`. Rewrite `h` using `[LinearMap.range_coprod, Submodule.range_subtype, Submodule.range_subtype, Module.length_prod]`. Conclude with `ne_top_of_le_ne_top (WithTop.add_ne_top.2 ⟨hS, hT⟩) h`.
+-/
 private theorem len_sup_ne_top {R A : Type} [CommRing R] [AddCommGroup A] [Module R A]
     (S T : Submodule R A) (hS : Module.length R S ≠ ⊤) (hT : Module.length R T ≠ ⊤) :
     Module.length R (S ⊔ T : Submodule R A) ≠ ⊤ := by
@@ -26,6 +34,15 @@ private theorem len_sup_ne_top {R A : Type} [CommRing R] [AddCommGroup A] [Modul
     Module.length_prod] at h
   exact ne_top_of_le_ne_top (WithTop.add_ne_top.2 ⟨hS, hT⟩) h
 
+/- English proof (translation)
+Use `set P := LinearMap.range (a • (LinearMap.id : N →ₗ[R] N)) with hP`. Set `g : F →ₗ[R] F.map P.mkQ` to `P.mkQ.submoduleMap F`. Establish `hg : Function.Surjective g` using `LinearMap.submoduleMap_surjective _ _`. Establish `hle : LinearMap.range (a • (LinearMap.id : F →ₗ[R] F)) ≤ LinearMap.ker g`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Use `show P.mkQ (a • (x : N)) = 0`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨x, rfl⟩`. Establish `hg' : Function.Surjective (Submodule.liftQ _ g hle)`. Introduce `y`.
+
+Take `⟨x, rfl⟩` from `hg y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Use `(Module.length_le_of_surjective _ hg').trans ?_` and prove the remaining obligations. Rewrite using `[len_ker_eq_coker _ hF]`. Use `Module.length_le_of_injective (F.subtype.restrict (p := LinearMap.ker (a • (LinearMap.id : F →ₗ[R] F))) (q := LinearMap.ker (a • (LinearMap.id : N →ₗ[R] N))) ?_) ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Conclude with `congrArg Subtype.val hx`. Introduce `x y h`. Establish `h'` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (Subtype.ext h')`.
+-/
 private theorem len_map_le {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] (a : R)
     (F : Submodule R N) (hF : Module.length R F ≠ ⊤) :
     Module.length R (F.map (LinearMap.range (a • (LinearMap.id : N →ₗ[R] N))).mkQ) ≤
@@ -53,6 +70,23 @@ private theorem len_map_le {R N : Type} [CommRing R] [AddCommGroup N] [Module R 
     have h' := congrArg Subtype.val h
     exact Subtype.ext (Subtype.ext h')
 
+/- English proof (translation)
+Introduce `R N _ _ _ hN a`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Use `set P := LinearMap.range (a • (LinearMap.id : N →ₗ[R] N)) with hP`. Use `set K := LinearMap.ker (a • (LinearMap.id : N →ₗ[R] N)) with hK`.
+
+Establish `key : ∀ k : ℕ, ∃ F : Submodule R N, Module.length R F ≠ ⊤ ∧ (k : ℕ∞) ≤ Module.length R (F.map P.mkQ)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨⊥, by simp, by simp⟩`. Consider the case `succ k ih`.
+
+Take `⟨F, hF, hk⟩` from `ih`. Establish `h1 : Module.length R (F.map P.mkQ) ≤ Module.length R K` using `len_map_le a F hF`. Establish `h2 : F.map P.mkQ ≠ ⊤`. Introduce `h`. Rewrite `h1` using `[h, Module.length_top]`.
+
+Conclude with `absurd hlt (not_lt.2 h1)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, y ∉ F.map P.mkQ := by`. Assume the negation of the conclusion as `hh`. Conclude with `h2 (eq_top_iff.2 fun y _ => by_contra fun h => hh ⟨y, h⟩)`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective P y`.
+
+Use `⟨F ⊔ Submodule.span R {x}, len_sup_ne_top _ _ hF (hN x), ?_⟩` and prove the remaining obligations. Establish `h3 : F.map P.mkQ < (F ⊔ Submodule.span R {x}).map P.mkQ`. Use `lt_of_le_of_ne (Submodule.map_mono le_sup_left) fun h => hy ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `Submodule.mem_map_of_mem (Submodule.mem_sup_right (Submodule.mem_span_singleton_self x))`.
+
+Establish `h4 : Order.height (F.map P.mkQ) < ⊤`. Rewrite using `[← Module.length_submodule]`. Conclude with `lt_of_le_of_lt h1 (lt_of_lt_of_le hlt le_top)`. Establish `h5` using `Order.height_strictMono h3 h4`. Rewrite `h5` using `[← Module.length_submodule, ← Module.length_submodule]`.
+
+Rewrite using `[Nat.cast_succ]`. Conclude with `Order.add_one_le_of_lt (lt_of_le_of_lt hk h5)`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.1 (lt_of_lt_of_le hlt le_top).ne`. Take `⟨F, hF, hk⟩` from `key (n + 1)`. Establish `h` using `hk.trans (len_map_le a F hF)`.
+
+Rewrite `h` using `[← hK, ← hn]`. Conclude with `absurd (Nat.cast_le.1 h) (by omega)`.
+-/
 theorem UpperTheory.V.Base.lenCokerLe :
     ∀ (R N : Type) [CommRing R] [AddCommGroup N] [Module R N], (∀ m : N, Module.length R (Submodule.span R {m}) ≠ ⊤) → ∀ a : R,
       Module.length R (N ⧸ LinearMap.range (a • (LinearMap.id : N →ₗ[R] N))) ≤ Module.length R (LinearMap.ker (a • (LinearMap.id : N →ₗ[R] N))) := by

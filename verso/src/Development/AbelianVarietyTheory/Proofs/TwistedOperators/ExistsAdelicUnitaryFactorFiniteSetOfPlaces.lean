@@ -24,6 +24,9 @@ variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {ι : Type} [Finty
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Establish `h1 : e * (1 - e) = 0` using `by rw [mul_sub, he, mul_one, sub_self]`. Establish `h2 : (1 - e) * e = 0` using `by rw [mul_comm, h1]`. Establish `h3 : (1 - e) * (1 - e) = 1 - e` using `by rw [mul_sub, h2, mul_one, sub_zero]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, he, h1, h2, h3, zero_smul, add_zero, zero_add]`.
+-/
 theorem glue_mul {e : R} (he : e * e = e) (a b c d : Matrix ι ι A) :
     (e • a + (1 - e) • b) * (e • c + (1 - e) • d) = e • (a * c) + (1 - e) • (b * d) := by
   have h1 : e * (1 - e) = 0 := by rw [mul_sub, he, mul_one, sub_self]
@@ -33,9 +36,19 @@ theorem glue_mul {e : R} (he : e * e = e) (a b c d : Matrix ι ι A) :
     zero_smul, add_zero, zero_add]
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Rewrite using `[← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem glue_self (e : R) (a : Matrix ι ι A) : e • a + (1 - e) • a = a := by
   rw [← add_smul, add_sub_cancel, one_smul]
 
+/- English proof (translation)
+Set `q : GL ι A` to `{ val := e • g.1.1 + (1 - e) • h.1.1 inv := e • g.1.2 + (1 - e) • h.1.2 val_inv := by rw [glue_mul he, g.1.3, h.1.3, glue_self] inv_val := by rw [glue_mul he, g.1.4, h.1.4, glue_self] }`. Establish `hq : q ∈ GlobalTheory.WeilM.UG c J`. Establish `hg : (g.1.1)ᵀ * J * (g.1.1).map c = J` using `g.2`. Establish `hh : (h.1.1)ᵀ * J * (h.1.1).map c = J` using `h.2`. Use `show (e • g.1.1 + (1 - e) • h.1.1)ᵀ * J * (e • g.1.1 + (1 - e) • h.1.1).map c = J`.
+
+Establish `m : (e • g.1.1 + (1 - e) • h.1.1).map c = e • (g.1.1).map c + (1 - e) • (h.1.1).map c`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, map_add, map_smul]`. Rewrite using `[m, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_smul]`. Establish `k` using `glue_mul he (g.1.1)ᵀ (h.1.1)ᵀ J J`.
+
+Rewrite `k` using `[glue_self]`. Rewrite using `[k, glue_mul he, hg, hh, glue_self]`. Conclude with `⟨⟨q, hq⟩, rfl, rfl⟩`.
+-/
 theorem exists_glue (c : A →ₐ[R] A) (J : Matrix ι ι A) {e : R} (he : e * e = e) (g h : GlobalTheory.WeilM.UG c J) :
     ∃ p : GlobalTheory.WeilM.UG c J, (p.1.1 : Matrix ι ι A) = e • g.1.1 + (1 - e) • h.1.1 ∧
       ((p⁻¹).1.1 : Matrix ι ι A) = e • (g⁻¹).1.1 + (1 - e) • (h⁻¹).1.1 := by
@@ -59,6 +72,21 @@ theorem exists_glue (c : A →ₐ[R] A) (J : Matrix ι ι A) {e : R} (he : e * e
 
 end Alg
 
+/- English proof (translation)
+Set `b : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F` to `∑ v ∈ S, GlobalTheory.AdelicU.singleFin v 1`. Establish `hb1 : ∀ w ∈ S, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w b = 1`. Introduce `w hw`. Rewrite using `[map_sum, Finset.sum_eq_single_of_mem w hw, GlobalTheory.AdelicU.evalV_singleFin_self]`. Introduce `v _ hv`.
+
+Conclude with `GlobalTheory.AdelicU.evalV_singleFin_ne hv.symm 1`. Establish `hb0 : ∀ w ∉ S, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w b = 0`. Introduce `w hw`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun v hv => GlobalTheory.AdelicU.evalV_singleFin_ne ?_ 1` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Conclude with `hw hv`. Use `⟨((0 : Ainf F), b), ?_, ?_, hb1, hb0, ?_⟩` and prove the remaining obligations. Use `Prod.ext (by change (0 : Ainf F) * 0 = 0; exact mul_zero _) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b * b = b`.
+
+Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[hb1 w hw, mul_one]`.
+
+Rewrite using `[hb0 w hw, mul_zero]`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _`. Introduce `u hu`. Use `Prod.ext (by change u.1 * 0 = 0; exact mul_zero _) ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `u.2 * b = 0`. Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hw : w ∈ S`.
+
+Establish `: Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w u.2 = 0` using `hu w hw`. Rewrite using `[this, zero_mul]`. Rewrite using `[hb0 w hw, mul_zero]`.
+-/
 theorem exists_idem {F : Type} [Field F] [NumberField F] (S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)) :
     ∃ e : AF F, e * e = e ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F e = 0 ∧ (∀ w ∈ S, GlobalTheory.AdelicU.evFin F w e = 1) ∧
       (∀ w ∉ S, GlobalTheory.AdelicU.evFin F w e = 0) ∧
@@ -98,6 +126,23 @@ theorem exists_idem {F : Type} [Field F] [NumberField F] (S : Finset (GlobalTheo
       rw [this, zero_mul]
     · rw [hb0 w hw, mul_zero]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n X g S`. Take `⟨e, he, heI, he1, he0, heu⟩` from `exists_idem S`. Take `⟨gS, hS, -⟩` from `exists_glue (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) he g 1`. Take `⟨k, hk, hk'⟩` from `exists_glue (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) he 1 g`. Establish `hS2 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat gS = e • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat g + (1 - e) • 1` using `hS`.
+
+Establish `hk2 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat k = e • 1 + (1 - e) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat g` using `hk`. Establish `hk3 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat k⁻¹ = e • 1 + (1 - e) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat g⁻¹`. Rewrite `hk'` using `[inv_one]`. Conclude with `hk'`. Establish `hoff : ∀ (u : AF F) (M : Matrix (Fin n) (Fin n) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)), u * e = 0 → u • (e • (1 : Matrix (Fin n) (Fin n) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) + (1 - e) • M) = u • M`.
+
+Introduce `u M hu`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_sub, hu, mul_one, sub_zero, zero_smul, zero_add]`. Use `⟨gS, k, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat g = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat gS * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat k`. Rewrite using `[hS2, hk2, glue_mul he, Matrix.mul_one, Matrix.one_mul, glue_self]`. Introduce `u hu`. Rewrite using `[hS2, smul_sub, smul_add, smul_smul, smul_smul, mul_sub, heu u hu, mul_one, sub_zero, zero_smul, zero_add, sub_self]`. Introduce `w hw u hu`.
+
+Establish `h1 : (1 - e) * u = 0` using `hu (1 - e) (by rw [map_sub, map_one, he1 w hw, sub_self])`. Establish `h2 : u * (1 - e) = 0` using `by rw [mul_comm, h1]`. Establish `h3 : u * e = u` using `by rw [mul_sub, mul_one, sub_eq_zero] at h2; exact h2.symm`. Rewrite using `[hk2, smul_sub, smul_add, smul_smul, smul_smul, h2, h3, zero_smul, add_zero, sub_self]`. Introduce `u hu`.
+
+Establish `h1 : e * u = 0` using `hu e heI`. Rewrite using `[hk2, smul_sub, smul_sub, hoff u _ (by rw [mul_comm, h1])]`. Introduce `w hw z hz`. Establish `key : ∀ M : Matrix (Fin n) (Fin n) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E), (e • (1 : Matrix (Fin n) (Fin n) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) + (1 - e) • M) *ᵥ z = M *ᵥ z`. Introduce `M`.
+
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, -, y, -, rfl⟩` from `hz`. Establish `h1 : e * a = 0` using `ha e (he0 w hw)`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, ← Matrix.smul_mulVec, ← Matrix.smul_mulVec, hoff a M (by rw [mul_comm, h1])]`.
+
+Consider the case `zero => rw [Matrix.mulVec_zero, Matrix.mulVec_zero]`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, Matrix.mulVec_add, hx, hy]`. Consider the case `neg x _ hx => rw [Matrix.mulVec_neg, Matrix.mulVec_neg, hx]`. Rewrite using `[hk2, hk3]`. Conclude with `⟨key _, key _⟩`.
+-/
 theorem exists_cut : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ X.J) (S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)),
     ∃ gS k : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ X.J, g = gS * k ∧

@@ -12,6 +12,13 @@ open scoped Classical
 
 namespace GlobalTheory.ThKConeB
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT φ hSB hev hSo h`. Establish `hPair` using `GlobalTheory.ThK.Inhab.pairV' hT`. Establish `hstd` using `hT.geo.hM'.std`. Set `A : (Fin a' × Fin (a + a') → Af F) → ℂ` to `fun z => ∏ᶠ v, φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (z i)`. Establish `hA : A ∈ SB (Fin a' × Fin (a + a') → Af F)` using `GlobalTheory.AdelicCoordSB.finprod_mem_SB F _ φ hSB ((hev.and hstd).mono fun v hv => hv.1.trans hv.2)`.
+
+Establish `heq : ∀ u : SInf F (Fin a' × Fin (a + a')), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure u φ = pureA F u A` using `fun _ => rfl`. Establish `hpure : ∀ u : SInf F (Fin a' × Fin (a + a')), pureA F u A ∈ G.M'.So B.ψ B.τ₁` using `fun u => Submodule.subset_span ⟨u, φ, hSB, hev, hSo, (heq u).symm⟩`. Use `continuous_iff_seqContinuous.2 fun u f hu => ?_` and prove the remaining obligations. Establish `hcont` using `GlobalTheory.T.schwartz_orbit_continuous hP F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hPair 1 (fun _ => A) (fun _ => f) (fun k _ => u k) (fun _ => ⟨hA, hu⟩) (fun k => Submodule.sum_mem _ fun _ _ => hpure (u k)) (Submodule.sum_mem _ fun _ _ => hpure f) h`. Simplify using `only [Fin.sum_univ_one] at hcont`.
+
+Conclude with `hcont`.
+-/
 theorem continuous_I_pure (hP : GlobalTheory.ThK.KP) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ φ : ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ, (∀ v, φ v ∈ SB (Fin a' × Fin (a + a') → Fv F v)) →

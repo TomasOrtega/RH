@@ -21,6 +21,9 @@ def uliftIntLinearMap {A B : Type*} [AddCommGroup A] [AddCommGroup B] (f : A →
     exact map_zsmul f r.down x
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uliftIntLinearMap_apply {A B : Type*} [AddCommGroup A] [AddCommGroup B] (f : A →+ B)
     (x : A) : uliftIntLinearMap.{u} f x = f x :=
   rfl
@@ -39,6 +42,9 @@ def rootsOfUnityToUnits : galRootsOfUnity.{u} K L n ⟶ galUnits.{u} K L :=
     rfl⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rootsOfUnityToUnits_hom_apply (x : Additive (rootsOfUnity n L)) :
     ((rootsOfUnityToUnits K L n).hom x : Additive Lˣ) =
       Additive.ofMul ((Additive.toMul x : rootsOfUnity n L) : Lˣ) :=
@@ -83,12 +89,18 @@ noncomputable def unitsRestrictHom (E : IntermediateField K L) [Normal K E] :
     exact AlgEquiv.restrictNormal_commutes σ E ((Additive.toMul (α := Eˣ) x : Eˣ) : E)⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitsRestrictHom_hom_apply (E : IntermediateField K L) [Normal K E]
     (x : Additive Eˣ) :
     ((Additive.toMul (α := Lˣ) ((unitsRestrictHom E).hom x) : Lˣ) : L) =
       ((Additive.toMul (α := Eˣ) x : Eˣ) : E) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `(IsLocallyConstant.of_discrete fun y => (unitsRestrictHom E).hom (x y)).comp_continuous (continuous_pi fun i => (InfiniteGalois.restrictNormalHom_continuous E).comp (continuous_apply i))`.
+-/
 theorem isLocallyConstant_unitsInflation (E : IntermediateField K L) [FiniteDimensional K E]
     [Normal K E] {n : ℕ} (x : (Fin n → Gal(E/K)) → Additive Eˣ) :
     IsLocallyConstant fun g : Fin n → Gal(L/K) =>
@@ -106,6 +118,9 @@ noncomputable def unitsInflationCochainsX (E : IntermediateField K L) [FiniteDim
     ((groupCohomology.cochainsMap (AlgEquiv.restrictNormalHom E) (unitsRestrictHom E)).f n).hom
     fun x => (mem_locallyConstantCochains _ _).2 (isLocallyConstant_unitsInflation E x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitsInflationCochainsX_comp_ι (E : IntermediateField K L) [FiniteDimensional K E]
     [Normal K E] (n : ℕ) :
     unitsInflationCochainsX E n ≫ (cochainsComplexι (galUnits.{u} K L)).f n =
@@ -121,6 +136,9 @@ noncomputable def unitsInflationCochains (E : IntermediateField K L) [FiniteDime
       Category.assoc, ← (cochainsComplexι (galUnits.{u} K L)).comm i j, ← Category.assoc,
       unitsInflationCochainsX_comp_ι, unitsInflationCochainsX_comp_ι, HomologicalComplex.Hom.comm]
 
+/- English proof (translation)
+Use extensionality with `n : 1`. Conclude with `unitsInflationCochainsX_comp_ι E n`. Use the proof step `@[simp]`.
+-/
 theorem unitsInflationCochains_comp_cochainsComplexι (E : IntermediateField K L)
     [FiniteDimensional K E] [Normal K E] :
     unitsInflationCochains E ≫ cochainsComplexι (galUnits.{u} K L) =
@@ -129,6 +147,9 @@ theorem unitsInflationCochains_comp_cochainsComplexι (E : IntermediateField K L
   exact unitsInflationCochainsX_comp_ι E n
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitsInflationCochains_f_hom_apply (E : IntermediateField K L) [FiniteDimensional K E]
     [Normal K E] (n : ℕ) (x : (Fin n → Gal(E/K)) → Additive Eˣ) (g : Fin n → Gal(L/K)) :
     ((cochainsComplexι (galUnits.{u} K L)).f n).hom (((unitsInflationCochains E).f n).hom x) g =

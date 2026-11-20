@@ -71,6 +71,9 @@ structure LevCh (P : PreCh) where
         rw [L.T_cond u] at h2
         exact Nat.dvd_one.1 h2 }
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `L.piT_norm u`. Rewrite `h1` using `[h, zero_mul]`. Conclude with `(L.T_prime u).ne_zero (by exact_mod_cast h1.symm)`.
+-/
 theorem LevCh.piT_ne {P : PreCh} (L : LevCh P) (u : P.Word) : (L.piT u : P.H.E) ≠ 0 := by
   intro h
   have h1 := L.piT_norm u

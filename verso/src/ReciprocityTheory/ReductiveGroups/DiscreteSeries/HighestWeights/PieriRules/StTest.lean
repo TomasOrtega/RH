@@ -8,6 +8,11 @@ namespace ReciprocityTheory.ChartRestriction.DS.HW
 
 open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
 
+/- English proof (translation)
+Simplify using `only [khwSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero, Formalism.REAL.KHighest, Formalism.REAL.IsWeight]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun a => by simpa using h1 a, fun a b hab he => h2 a b ⟨hab, he⟩⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun a => by simpa using h1 a, fun a b h => h2 a b h.1 h.2⟩`.
+-/
 theorem pieriSt_mem_khwSub_iff {W : Type*} [AddCommGroup W] [Module ℂ W] {n : ℕ} (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ W) (ν : Fin n → ℝ) (v : W) :
     v ∈ khwSub ε E ν ↔ Formalism.REAL.KHighest ε E ν v := by
@@ -20,16 +25,27 @@ theorem pieriSt_mem_khwSub_iff {W : Type*} [AddCommGroup W] [Module ℂ W] {n : 
   · rintro ⟨h1, h2⟩
     exact ⟨fun a => by simpa using h1 a, fun a b h => h2 a b h.1 h.2⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem pieriSt_isKHWVec_iff {W : Type*} [AddCommGroup W] [Module ℂ W] {n : ℕ} (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ W) (μ : Fin n → ℝ) (v : W) :
     IsKHWVec ε E μ v ↔ Formalism.REAL.KHighest ε E μ v := Iff.rfl
 
+/- English proof (translation)
+Simplify using `[tensAct]`.
+-/
 theorem pieriSt_tensAct_apply {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι : Type*}
     [Fintype ι] {n : ℕ} (A : Fin n → Fin n → Module.End ℂ V) (M : Fin n → Fin n → Matrix ι ι ℂ)
     (a b : Fin n) (x : PiLp 2 (fun _ : ι => V)) (i : ι) :
     tensAct A M a b x i = A a b (x i) + ∑ j, M a b i j • x j := by
   simp [tensAct]
 
+/- English proof (translation)
+Introduce `a b c d _ _`. Simplify using `only [stdM]`. Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a`. Substitute `h1 h2` using the available equality. Simplify using `[Matrix.single_mul_single_same]`.
+
+Substitute `h1` using the available equality. Simplify using `[Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, h2]`. Substitute `h2` using the available equality. Simplify using `[Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, h1]`. Simplify using `[Matrix.single_mul_single_of_ne, h1, h2]`.
+-/
 theorem pieriSt_kRel_stdM {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.KRel ε (stdM n) := by
   intro a b c d _ _
   simp only [stdM]
@@ -39,6 +55,11 @@ theorem pieriSt_kRel_stdM {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.KRel 
   · subst h2; simp [Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, h1]
   · simp [Matrix.single_mul_single_of_ne, h1, h2]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Distinguish the cases in `hai : a = i`. Substitute `hai` using the available equality.
+
+Simplify using `[stdM, stdWt]`. Simplify using `[stdM, stdWt, hai, Pi.single_apply]`. Simplify using `[stdM, Matrix.single_apply, hij]`. Introduce `h1 h2`. Conclude with `hij (h1.symm.trans h2)`.
+-/
 theorem pieriSt_stdM_diag {n : ℕ} (a : Fin n) :
     stdM n a a = Matrix.diagonal fun i => ((stdWt n i a : ℝ) : ℂ) := by
   ext i j
@@ -50,6 +71,13 @@ theorem pieriSt_stdM_diag {n : ℕ} (a : Fin n) :
   · simp [stdM, Matrix.single_apply, hij]
     intro h1 h2; exact hij (h1.symm.trans h2)
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_, pieriSt_kRel_stdM ε, pieriSt_stdM_diag⟩` and prove the remaining obligations. Introduce `a b c d _ _`. Simplify using the standard rewrite rules. Introduce `a b _ x y`. Simplify using the standard rewrite rules.
+
+Conclude with `⟨fun a => by simp, fun a b _ _ => by simp⟩`. Use `eq_top_iff.mpr fun v _ => ?_` and prove the remaining obligations. Simplify using `only [Formalism.REAL.kSpan, Submodule.mem_sInf, Set.mem_ofPred_eq]`. Introduce and unpack `S ⟨h1, _⟩`. Establish `: v = v • (1 : ℂ)` using `by simp`.
+
+Rewrite using `[this]`. Conclude with `S.smul_mem v h1`.
+-/
 theorem pieriSt_tensHW_inhabited {n : ℕ} (ε : Fin n → Bool) :
     Formalism.REAL.KRel ε (0 : Fin n → Fin n → Module.End ℂ ℂ) ∧
     Formalism.REAL.KUnit ε (0 : Fin n → Fin n → Module.End ℂ ℂ) ∧
@@ -68,6 +96,13 @@ theorem pieriSt_tensHW_inhabited {n : ℕ} (ε : Fin n → Bool) :
     rw [this]
     exact S.smul_mem v h1
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_, fun a b _ => Subsingleton.elim a b, ?_, ?_, ⟨trivialKType ε⟩⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.one_apply]`. Conclude with `continuous_const`. Introduce `X _ γ _ i j`. Simplify using `only [MonoidHom.one_apply, LinearMap.zero_apply]`.
+
+Conclude with `hasDerivAt_const _ _`. Introduce `a b c d _ _`. Simplify using the standard rewrite rules. Introduce `a`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `i h`. Conclude with `absurd (fun a b _ _ => by simp) h`.
+-/
 theorem pieriSt_count_inhabited {n : ℕ} (ε : Fin n → Bool) :
     Continuous (fun k : KG ε =>
       (((1 : KG ε →* unitary (Matrix Unit Unit ℂ)) k : unitary (Matrix Unit Unit ℂ)) : Matrix Unit Unit ℂ)) ∧
@@ -96,6 +131,9 @@ theorem pieriSt_count_inhabited {n : ℕ} (ε : Fin n → Bool) :
   · intro i h
     exact absurd (fun a b _ _ => by simp) h
 
+/- English proof (translation)
+Use `⟨fun a => by ext; simp, fun a b _ _ => by ext; simp, fun h => by simpa using congrFun h (), ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨fun a => (trivialKType ε).w_wt a, fun a b hab he => (trivialKType ε).w_hw a b hab he⟩`. Use `show (1 : ℂ) ≠ 0`. Conclude with `one_ne_zero`.
+-/
 theorem pieriSt_cartan_inhabited {n : ℕ} (ε : Fin n → Bool) :
     (∀ a : Fin n, ((0 : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Matrix Unit Unit ℂ) (Matrix.single a a 1)) *ᵥ
       (fun _ : Unit => (1 : ℂ)) = (((0 : Fin n → ℝ) a : ℝ) : ℂ) • (fun _ : Unit => (1 : ℂ))) ∧

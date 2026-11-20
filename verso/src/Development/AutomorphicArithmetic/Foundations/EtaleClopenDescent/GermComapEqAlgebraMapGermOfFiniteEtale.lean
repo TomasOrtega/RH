@@ -15,6 +15,9 @@ variable {B B' K L : Type} [CommRing B] [CommRing B'] [IsDomain B] [IsDomain B']
   [IsScalarTower B K L] [IsScalarTower B B' L] [IsFractionRing B K] [IsFractionRing B' L]
 
 include K L in
+/- English proof (translation)
+Establish `h : Function.Injective (algebraMap B L)`. Rewrite using `[IsScalarTower.algebraMap_eq B K L]`. Conclude with `(algebraMap K L).injective.comp (IsFractionRing.injective B K)`. Rewrite `h` using `[IsScalarTower.algebraMap_eq B B' L]`. Conclude with `Function.Injective.of_comp (f := algebraMap B' L) h`.
+-/
 private theorem injective_algebraMap : Function.Injective (algebraMap B B') := by
   have h : Function.Injective (algebraMap B L) := by
     rw [IsScalarTower.algebraMap_eq B K L]
@@ -23,6 +26,15 @@ private theorem injective_algebraMap : Function.Injective (algebraMap B B') := b
   exact Function.Injective.of_comp (f := algebraMap B' L) h
 
 include K L in
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap B B')` using `injective_algebraMap (K := K) (L := L)`. Establish `hL : Function.Injective (algebraMap B' L)` using `IsFractionRing.injective B' L`. Use `{ map_units := ?_, surj := ?_, exists_of_eq := ?_ }` and prove the remaining obligations. Introduce and unpack `⟨_, r, hr, rfl⟩`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations.
+
+Conclude with `(map_ne_zero_iff _ hL).2 ((map_ne_zero_iff _ hinj).2 (nonZeroDivisors.ne_zero hr))`. Introduce `z`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := B') z`. Take `⟨r, hr, t, ht⟩` from `(Algebra.IsIntegral.isIntegral (R := B) b).isAlgebraic.exists_nonzero_dvd hb`. Use `⟨⟨a * t, ⟨algebraMap B B' r, r, mem_nonZeroDivisors_of_ne_zero hr, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hb0 : algebraMap B' L b ≠ 0` using `(map_ne_zero_iff _ hL).2 (nonZeroDivisors.ne_zero hb)`. Establish `e : algebraMap B' L (algebraMap B B' r) = algebraMap B' L b * algebraMap B' L t`. Rewrite using `[ht, map_mul]`. Express the relevant statement in the definitionally equal form `algebraMap B' L a / algebraMap B' L b * algebraMap B' L (algebraMap B B' r) = algebraMap B' L (a * t)`. Rewrite using `[e, map_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Introduce `x y h`. Conclude with `⟨1, by rw [hL h]⟩`.
+-/
 private theorem isLocalization_of_integral [Algebra.IsIntegral B B'] :
     IsLocalization (Algebra.algebraMapSubmonoid B' (nonZeroDivisors B)) L := by
   have hinj : Function.Injective (algebraMap B B') := injective_algebraMap (K := K) (L := L)
@@ -46,11 +58,17 @@ private theorem isLocalization_of_integral [Algebra.IsIntegral B B'] :
     exact ⟨1, by rw [hL h]⟩
 
 include K L in
+/- English proof (translation)
+Establish `h1` using `isLocalization_of_integral (B := B) (B' := B') (K := K) (L := L)`. Establish `h2` using `(isLocalizedModule_iff_isLocalization (S := nonZeroDivisors B) (A := B') (Aₛ := L)).2 h1`. Conclude with `⟨(isLocalizedModule_iff_isBaseChange (nonZeroDivisors B) K _).1 h2⟩`.
+-/
 private theorem isPushout_of_integral [Algebra.IsIntegral B B'] : Algebra.IsPushout B K B' L := by
   have h1 := isLocalization_of_integral (B := B) (B' := B') (K := K) (L := L)
   have h2 := (isLocalizedModule_iff_isLocalization (S := nonZeroDivisors B) (A := B') (Aₛ := L)).2 h1
   exact ⟨(isLocalizedModule_iff_isBaseChange (nonZeroDivisors B) K _).1 h2⟩
 
+/- English proof (translation)
+Use `haveI := projective_of_etale B B'`. Use `haveI hp := isPushout_of_integral (B := B) (B' := B') (K := K) (L := L)`. Use `haveI : Module.Finite K L := Module.Finite.equiv hp.out.equiv`. Rewrite using `[← algTrace_eq_trace, algTrace_of_isPushout (B := B) (B' := B') b]`. Both sides reduce to the same expression.
+-/
 private theorem algebraMap_etTrace [Module.Finite B B'] [Algebra.Etale B B'] (b : B') :
     algebraMap B K (etTrace B B' b) = Algebra.trace K L (algebraMap B' L b) := by
   haveI := projective_of_etale B B'
@@ -61,6 +79,15 @@ private theorem algebraMap_etTrace [Module.Finite B B'] [Algebra.Etale B B'] (b 
 
 end Alg
 
+/- English proof (translation)
+Introduce `Z Y _ _ p p' c _ _ _ _ hg V hVa hV hV' b'`. Use `haveI : Nonempty V := ⟨⟨_, hV⟩⟩`. Use `haveI : Nonempty (c ⁻¹ᵁ V : Y.Opens) := ⟨⟨_, hV'⟩⟩`. Use `letI := secAlg p p' c V`. Use `haveI := sec_finite (s := p) (s' := p') (f := c) hVa`.
+
+Use `haveI := sec_etale (s := p) (s' := p') (f := c) hVa`. Use `letI : Algebra (Sec p V) Z.functionField := (Z.germToFunctionField V).hom.toAlgebra`. Use `letI : Algebra (Sec p' (c ⁻¹ᵁ V)) Y.functionField := (Y.germToFunctionField (c ⁻¹ᵁ V)).hom.toAlgebra`. Use `letI : Algebra (Sec p V) Y.functionField := ((algebraMap Z.functionField Y.functionField).comp (algebraMap (Sec p V) Z.functionField)).toAlgebra`. Use `haveI : IsScalarTower (Sec p V) Z.functionField Y.functionField := .of_algebraMap_eq fun _ ↦ rfl`.
+
+Use `haveI : IsScalarTower (Sec p V) (Sec p' (c ⁻¹ᵁ V)) Y.functionField := .of_algebraMap_eq fun g ↦ (hg V hV hV' g).symm`. Use `haveI : IsDomain (Sec p V) := inferInstanceAs (IsDomain Γ(Z, V))`. Use `haveI : IsDomain (Sec p' (c ⁻¹ᵁ V)) := inferInstanceAs (IsDomain Γ(Y, c ⁻¹ᵁ V))`. Use `haveI : IsFractionRing (Sec p V) Z.functionField := functionField_isFractionRing_of_isAffineOpen Z V hVa`. Use `haveI : IsFractionRing (Sec p' (c ⁻¹ᵁ V)) Y.functionField := functionField_isFractionRing_of_isAffineOpen Y (c ⁻¹ᵁ V) (hVa.preimage c)`.
+
+Conclude with `algebraMap_etTrace (B := Sec p V) (B' := Sec p' (c ⁻¹ᵁ V)) (K := Z.functionField) (L := Y.functionField) b'`.
+-/
 theorem germ_comap_eq_algebraMap_germ_of_finite_etale : ∀ (Z Y : Scheme.{0}) [IsIntegral Z] [IsIntegral Y] (p : Z ⟶ Sp ℂ) (p' : Y ⟶ Sp ℂ)
     (c : Y ⟶ Z) (hc : c ≫ p = p') [IsFinite c] [Etale c] [Algebra Z.functionField Y.functionField],
     (∀ (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c ⁻¹ᵁ V) (g : Γ(Z, V)),

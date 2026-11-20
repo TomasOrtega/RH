@@ -24,10 +24,16 @@ variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : M
 def matAct (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) : D'.P.A ⟶ D'.P.A :=
   T.lim.lift (Fan.mk D'.P.A fun i ↦ ∏ j, T.pr j ^ A i j)
 
+/- English proof (translation)
+The claim follows from `T.lim.fac (Fan.mk D'.P.A fun i ↦ ∏ j, T.pr j ^ A i j) ⟨i⟩`.
+-/
 theorem matAct_pr (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) :
     matAct T A ≫ T.pr i = ∏ j, T.pr j ^ A i j :=
   T.lim.fac (Fan.mk D'.P.A fun i ↦ ∏ j, T.pr j ^ A i j) ⟨i⟩
 
+/- English proof (translation)
+The claim follows from `T.lim.hom_ext fun i ↦ h i.as`.
+-/
 theorem hom_ext (T : Tens D D' W) {X : Over (Spec (CommRingCat.of R))} {a b : X ⟶ D'.P.A}
     (h : ∀ i, a ≫ T.pr i = b ≫ T.pr i) : a = b :=
   T.lim.hom_ext fun i ↦ h i.as
@@ -35,12 +41,18 @@ theorem hom_ext (T : Tens D D' W) {X : Over (Spec (CommRingCat.of R))} {a b : X 
 def latAct (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) (y : D'.X) : D'.X :=
   T.xe.symm fun i ↦ ∑ j, A i j • T.xe y j
 
+/- English proof (translation)
+Simplify using `[latAct]`.
+-/
 theorem xe_latAct (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) (y : D'.X) (i : Fin r) :
     T.xe (latAct T A y) i = ∑ j, A i j • T.xe y j := by
   simp [latAct]
 
 section Ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add, ih]`.
+-/
 theorem zpow_finsetSum {M : Type} [CommGroup M] (a : M) {K : Type} (s : Finset K) (f : K → ℤ) :
     a ^ (∑ k ∈ s, f k) = ∏ k ∈ s, a ^ f k := by
   classical
@@ -50,6 +62,11 @@ theorem zpow_finsetSum {M : Type} [CommGroup M] (a : M) {K : Type} (s : Finset K
 
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
 
+/- English proof (translation)
+Establish `hp` using `T.pr_hom`. Use `GlobalTheory.MatrixAction.isMonHom_of_points _ (fun X ↦ hom_ext T fun i ↦ ?_) (fun X x y ↦ hom_ext T fun i ↦ ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, matAct_pr, GlobalTheory.MatrixAction.comp_finsetProd, MonObj.one_comp (T.pr i)]`. Use `Finset.prod_eq_one fun l _ ↦ ?_` and prove the remaining obligations. Rewrite using `[GrpObj.comp_zpow, MonObj.one_comp, one_zpow]`.
+
+Rewrite using `[MonObj.mul_comp _ _ (T.pr i), Category.assoc, Category.assoc, Category.assoc, matAct_pr, GlobalTheory.MatrixAction.comp_finsetProd, GlobalTheory.MatrixAction.comp_finsetProd, GlobalTheory.MatrixAction.comp_finsetProd, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun l _ ↦ ?_` and prove the remaining obligations. Rewrite using `[GrpObj.comp_zpow, GrpObj.comp_zpow, GrpObj.comp_zpow, MonObj.mul_comp, mul_zpow]`.
+-/
 theorem matAct_hom (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) : IsMonHom (matAct T A) := by
   have hp := T.pr_hom
   refine GlobalTheory.MatrixAction.isMonHom_of_points _ (fun X ↦ hom_ext T fun i ↦ ?_) (fun X x y ↦ hom_ext T fun i ↦ ?_)
@@ -62,6 +79,11 @@ theorem matAct_hom (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) : IsMonHom
     refine Finset.prod_congr rfl fun l _ ↦ ?_
     rw [GrpObj.comp_zpow, GrpObj.comp_zpow, GrpObj.comp_zpow, MonObj.mul_comp, mul_zpow]
 
+/- English proof (translation)
+Use `hom_ext T fun i ↦ ?_` and prove the remaining obligations. Rewrite using `[matAct_pr, Category.id_comp, Finset.prod_eq_single i]`. Rewrite using `[Matrix.one_apply_eq, zpow_one]`. Introduce `l _ hl`. Rewrite using `[Matrix.one_apply_ne hl.symm, zpow_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem matAct_one (T : Tens D D' W) : matAct T 1 = 𝟙 _ := by
   refine hom_ext T fun i ↦ ?_
   rw [matAct_pr, Category.id_comp, Finset.prod_eq_single i]
@@ -71,6 +93,11 @@ theorem matAct_one (T : Tens D D' W) : matAct T 1 = 𝟙 _ := by
   · intro h
     exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Use `hom_ext T fun i ↦ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, matAct_pr, matAct_pr, GlobalTheory.MatrixAction.comp_finsetProd]`. Establish `e1 : ∀ k, matAct T B ≫ T.pr k ^ A i k = ∏ l, T.pr l ^ (A i k * B k l)` using `fun k ↦ by`. Rewrite using `[GrpObj.comp_zpow, matAct_pr, ← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun l _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_mul, mul_comm]`. Rewrite using `[Finset.prod_congr rfl fun k _ ↦ e1 k, Finset.prod_comm]`. Use `Finset.prod_congr rfl fun l _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, zpow_finsetSum]`.
+-/
 theorem matAct_mul (T : Tens D D' W) (A B : Matrix (Fin r) (Fin r) ℤ) :
     matAct T (A * B) = matAct T B ≫ matAct T A := by
   refine hom_ext T fun i ↦ ?_
@@ -83,6 +110,9 @@ theorem matAct_mul (T : Tens D D' W) (A B : Matrix (Fin r) (Fin r) ℤ) :
   refine Finset.prod_congr rfl fun l _ ↦ ?_
   rw [Matrix.mul_apply, zpow_finsetSum]
 
+/- English proof (translation)
+Use `hom_ext T fun i ↦ ?_` and prove the remaining obligations. Use `T.pr_hom i` as an intermediate fact. Rewrite using `[MonObj.mul_comp, matAct_pr, matAct_pr, matAct_pr, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun l _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, zpow_add]`.
+-/
 theorem matAct_add (T : Tens D D' W) (A B : Matrix (Fin r) (Fin r) ℤ) :
     matAct T (A + B) = matAct T A * matAct T B := by
   refine hom_ext T fun i ↦ ?_
@@ -130,6 +160,11 @@ def ringAct (T : Tens D D' W) {O : Type} [Ring O] (ρ : O →+* Matrix (Fin r) (
 def cHom (D : DegPre R) : D.X →+ Additive (𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D.P.A) :=
   AddMonoidHom.mk' (fun x ↦ Additive.ofMul (D.c x)) fun a b ↦ by rw [D.c_add]; rfl
 
+/- English proof (translation)
+Use `hom_ext T fun i ↦ ?_` and prove the remaining obligations. Rewrite using `[T.c_pr, Category.assoc, matAct_pr, GlobalTheory.MatrixAction.comp_finsetProd, xe_latAct]`. Establish `e` using `map_sum (cHom D) (fun j ↦ A i j • T.xe y j) Finset.univ`. Simplify using `only [map_zsmul] at e`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[ofMul_prod]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[GrpObj.comp_zpow, T.c_pr, ofMul_zpow]`. Both sides reduce to the same expression.
+-/
 theorem c_lin (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) (y : D'.X) :
     D'.c (latAct T A y) = D'.c y ≫ matAct T A := by
   refine hom_ext T fun i ↦ ?_

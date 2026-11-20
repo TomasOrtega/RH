@@ -18,6 +18,9 @@ def psiMaj (a : ℝ) (γ : Mx k r) (q : B.SS k r × Mt k r) : ℝ :=
 def gFib (a : ℝ) (G0 : Mx k r) (t : Mt k r) : ℝ :=
   B.gN (Matrix.of t) ^ (-a) * B.gN ((Matrix.of t)⁻¹ * G0) ^ (-a)
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem gN_nonneg (g : Mx k r) : 0 ≤ B.gN g := Real.sqrt_nonneg _
 
 end Formalism.FourierDecayAlt.P.S3dx6

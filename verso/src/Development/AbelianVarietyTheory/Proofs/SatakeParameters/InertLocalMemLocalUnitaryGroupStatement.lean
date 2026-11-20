@@ -13,5 +13,8 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open Formalism.UG
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InertLocUnitary.main | exact GlobalTheory.InertLocUnitary.main | (intros; apply GlobalTheory.InertLocUnitary.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.inertLocal_mem_localUnitaryGroup : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w), ∀ x : GAf L n, Dv.loc x ∈ GU Dv.σw n := by
   first | exact @GlobalTheory.InertLocUnitary.main | exact GlobalTheory.InertLocUnitary.main | (intros; apply GlobalTheory.InertLocUnitary.main <;> assumption)

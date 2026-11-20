@@ -19,6 +19,15 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory.CatCoh Gl
 
 namespace GlobalTheory.CatCoh.Desc.VandermondeTwoBasis
 
+/- English proof (translation)
+Introduce `R _ C _ C' _ F G _ _ H hcov hdir T z hz`. Take `⟨n, d, hd, hcT⟩` from `hcov T`. Establish `hpt : ∀ i : Fin n, ∃ (p : C') (_ : T ⟶ G.obj p), ∀ S (u : T ⟶ S), IsUnit (mp F u (d i)) → Nonempty (G.obj p ⟶ S)`. Introduce `i`. Take `⟨T', l, hl, -, -, huniv⟩` from `H T (d i)`.
+
+Take `⟨p, v, w, -⟩` from `hcT i T' l hl`. Conclude with `⟨p, v, fun S u hu ↦ by obtain ⟨m, -⟩ := huniv S u hu; exact ⟨w ≫ m⟩⟩`. Use `choose p v hp using hpt`. Take `⟨f, hf⟩` from `GlobalTheory.T.twoCocycle_comma_coboundary_of_standardCover_alt F G H hcov hdir T n d hd z hz fun i ↦ GlobalTheory.T.twoCocycle_coboundary_on_unitLocus_piece F G H hdir T (d i) (p i) (v i) (hp i) z hz`. Establish `hup : ∀ t (u : T ⟶ G.obj t) t' t'' (a : t ⟶ t') (b : t' ⟶ t''), (∃ i, IsUnit (mp F (u ≫ G.map a) (d i))) → ∃ i, IsUnit (mp F (u ≫ G.map (a ≫ b)) (d i))`.
+
+Introduce and unpack `t u t' t'' a b ⟨i, hi⟩`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[G.map_comp, ← Category.assoc, mp_comp]`. Conclude with `hi.map _`. Take `⟨h, hh⟩` from `Desc.coboundary_of_restrict (G ⋙ F) (E := fun t ↦ T ⟶ G.obj t) (fun u a ↦ u ≫ G.map a) (fun u a b ↦ by simp only [Functor.map_comp, Category.assoc]) (fun _ _ ↦ True) (fun t u ↦ ∃ i, IsUnit (mp F u (d i))) (fun _ _ _ _ _ ↦ trivial) (fun t u _ ↦ GlobalTheory.T.eq_zero_of_upwardFami …`.
+
+Conclude with `⟨h, fun t t' t'' u a b ↦ hh t t' t'' u a b trivial⟩`.
+-/
 theorem twoCocycle_coboundary_of_basisFunctor_alt : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] {C' : Type} [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C), [Quiver.IsThin C] → [Quiver.IsThin C'] → Desc.HasLoc F → (∀ T : C, ∃ (n : ℕ) (b : Fin n → (F).obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : C) (u : T ⟶ S), IsUnit (mp (F) u (b i)) → ∃ (t : C') (v : T ⟶ G.obj t) (w : G.obj t ⟶ S), v ≫ w = u) → (∀ (t₁ t₂ : C') (S : C), (G.obj t₁ ⟶ S) → (G.obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → (F).obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : C) (u : S ⟶ S'), IsUnit (mp (F) u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ Nonempty (t₂ ⟶ t₃) ∧ Nonempty (G.obj t₃ ⟶ S')) → (∀ (T : C) (z : ∀ t t' t'', (T ⟶ G.obj t) → (t ⟶ t') → (t' ⟶ t'') → (F).obj (G.obj t'')), (∀ t t' t'' t''' (u : T ⟶ G.obj t) (a : t ⟶ t') (b : t' ⟶ t'') (c : t'' ⟶ t'''), mp (F) (G.map c) (z t t' t'' u a b) + z t t'' t''' u (a ≫ b) c = z t t' t''' u a (b ≫ c) + z t' t'' t''' (u ≫ G.map a) b c) → ∃ y : ∀ t t', (T ⟶ G.obj t) → (t ⟶ t') → (F).obj (G.obj t'), ∀ t t' t'' (u : T ⟶ G.obj t) (a : t ⟶ t') (b : t' ⟶ t''), mp (F) (G.map b) (y t t' u a) - y t t'' u (a ≫ b) + y t' t'' (u ≫ G.map a) b = z t t' t'' u a b) := by
   intro R _ C _ C' _ F G _ _ H hcov hdir T z hz
   classical

@@ -10,6 +10,9 @@ namespace GroundTheory.Heights₂.Heights
 
 open MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+The claim follows from `|∑ᶠ w ∈ S, f w| ≤ ∑ᶠ w ∈ S, |f w| := by rw [finsum_mem_def, finsum_mem_def] have hind : S.indicator (fun w => |f w|) = fun w => |S.indicator f w| := by funext w by_cases hw : w ∈ S <;> simp [hw] rw [hind] have hsupp : Function.support (fun w => |S.indicator f w|) = Function.suppo …`.
+-/
 theorem abs_finsum_mem_le_finsum_mem_abs {α : Type*} (S : Set α) (f : α → ℝ) :
     |∑ᶠ w ∈ S, f w| ≤ ∑ᶠ w ∈ S, |f w| := by
   rw [finsum_mem_def, finsum_mem_def]
@@ -31,6 +34,9 @@ theorem abs_finsum_mem_le_finsum_mem_abs {α : Type*} (S : Set α) (f : α → �
   · have hinf' : ¬ (Function.support (fun w => |S.indicator f w|)).Finite := hsupp ▸ hfin
     rw [finsum_of_infinite_support hfin, finsum_of_infinite_support hinf', abs_zero]
 
+/- English proof (translation)
+Introduce `K _ ι _ P e Ψ L A s hP hΨ hL hA hs`. Use `(hAbs K ι P e Ψ L A s hP hΨ hL hA hs).mono' (hMeas K ι P e Ψ L A s hP hΨ hL hA hs) ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun y => by`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `abs_finsum_mem_le_finsum_mem_abs _ _`.
+-/
 theorem PtsIntegrable.of_found (hAbs : Inter.PtsAbsIntegrable.Statement)
     (hMeas : PtsSumMeasurable.Statement) : ReciprocityTheory.ChartRestriction.G.Geo.PtsIntegrableStatement := by
   intro K _ ι _ P e Ψ L A s hP hΨ hL hA hs

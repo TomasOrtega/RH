@@ -17,15 +17,32 @@ def finPart : UA E n →* finU E n where
   map_one' := Subtype.ext (Subtype.ext (by simp))
   map_mul' a b := Subtype.ext (Subtype.ext (by simp))
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Subtype.ext (GlobalTheory.DefU.ClassFin.finGL_pFin k))`.
+-/
 theorem finPart_fin (k : finU E n) : finPart (k : UA E n) = k :=
   Subtype.ext (Subtype.ext (GlobalTheory.DefU.ClassFin.finGL_pFin k))
 
+/- English proof (translation)
+Establish `h : GeneralLinearGroup.map (pFin E) x.1 = 1` using `hx`. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finGL E n (GeneralLinearGroup.map (pFin E) x.1) = 1`. Rewrite using `[h, map_one]`.
+-/
 theorem finPart_inf {x : UA E n} (hx : x ∈ infU E n) : finPart x = 1 := by
   have h : GeneralLinearGroup.map (pFin E) x.1 = 1 := hx
   refine Subtype.ext (Subtype.ext ?_)
   change finGL E n (GeneralLinearGroup.map (pFin E) x.1) = 1
   rw [h, map_one]
 
+/- English proof (translation)
+Take `⟨γ₀, hγ₀'⟩` from `hγ`. Establish `hγ₀ : ratGL E n γ₀ = γ.1` using `hγ₀'`. Establish `hg : cT (conjAd E) γ.1.val * 1 * γ.1.val = 1` using `γ.2`. Rewrite `hg` using `[← hγ₀, mul_one]`. Establish `hv : (ratGL E n γ₀).val = γ₀.val.map (algebraMap E (Ad E))` using `rfl`.
+
+Rewrite `hg` using `[hv, GlobalTheory.DefU.ClassFin.cT_map (algebraMap E (Ad E)) (IsCMField.complexConj E).toRingEquiv.toRingHom (conjAd E) (fun y => (conjAd_algebraMap y).symm), ← Matrix.map_mul]`. Establish `hU : γ₀ ∈ UE E n`. Express the relevant statement in the definitionally equal form `cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ₀.val * 1 * γ₀.val = 1`. Rewrite using `[mul_one]`. Use extensionality with `i j`.
+
+Use `congrFun₂ hg i j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.one_apply]`. Rewrite using `[Matrix.one_apply]`. Use `haveI hnt : Nontrivial (Ad E) := show Nontrivial (InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E) from inferInstance`. Apply `(algebraMap E (Ad E)).injective` to reduce the goal to its premises.
+
+Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨γ₀, hU, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finGL E n (ratF E n γ₀) = finGL E n (GeneralLinearGroup.map (pFin E) γ.1)`. Rewrite using `[← hγ₀]`.
+
+Both sides reduce to the same expression.
+-/
 theorem finPart_rat {γ : UA E n} (hγ : γ ∈ ratU E n) : finPart γ ∈ ratFinU E n := by
   obtain ⟨γ₀, hγ₀'⟩ := hγ
   have hγ₀ : ratGL E n γ₀ = γ.1 := hγ₀'
@@ -50,6 +67,13 @@ theorem finPart_rat {γ : UA E n} (hγ : γ ∈ ratU E n) : finPart γ ∈ ratFi
   rw [← hγ₀]
   rfl
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `GlobalTheory.DefU.ClassFin.classSet_finite E n K hK`. Set `φ : T → DoubleCoset.Quotient (ratFinU E n : Set (finU E n)) (K : Set (finU E n))` to `fun s => DoubleCoset.mk _ _ (finPart (s : UA E n))`. Use `Finite.of_surjective φ fun q => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩ : ∃ g, DoubleCoset.mk _ _ g = q` from `⟨q.out, DoubleCoset.out_eq' _ _ q⟩`. Take `⟨γ, hγ, s, hs, x, hx, k, hk, e⟩` from `hT (g : UA E n)`.
+
+Use `⟨⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Establish `hg : g = finPart γ * finPart s * k`. Use `congrArg finPart e` as an intermediate fact. Rewrite `this` using `[finPart_fin, map_mul, map_mul, map_mul, finPart_inf hx, mul_one, finPart_fin]`. Conclude with `this`.
+
+Use `show DoubleCoset.mk _ _ (finPart (s : UA E n)) = DoubleCoset.mk _ _ g`. Rewrite using `[hg]`. Conclude with `(DoubleCoset.eq _ _ _ _).2 ⟨finPart γ, finPart_rat hγ, k, hk, rfl⟩`.
+-/
 theorem finite_doubleCoset_of_isOpen (K : Subgroup (finU E n)) (hK : IsOpen (K : Set (finU E n))) :
     Finite (DoubleCoset.Quotient (ratFinU E n : Set (finU E n)) (K : Set (finU E n))) := by
   obtain ⟨T, hT⟩ := GlobalTheory.DefU.ClassFin.classSet_finite E n K hK
@@ -71,6 +95,9 @@ end GlobalTheory.BCT.ClassFinLev
 
 open GlobalTheory.BCT.ClassFinLev in
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n _ S _ K' hK`. Conclude with `finite_doubleCoset_of_isOpen _ (GlobalTheory.T.isOpen_productOfLocalLevelsUnitary E hE n S K' hK)`.
+-/
 theorem GlobalTheory.BCT.finite_doubleCoset_globLev : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → Finite (DoubleCoset.Quotient (ratFinU E n : Set (finU E n)) (globLev S K' : Set (finU E n))) := by
   intro E _ _ _ hE n _ S _ K' hK
   exact finite_doubleCoset_of_isOpen _ (GlobalTheory.T.isOpen_productOfLocalLevelsUnitary E hE n S K' hK)

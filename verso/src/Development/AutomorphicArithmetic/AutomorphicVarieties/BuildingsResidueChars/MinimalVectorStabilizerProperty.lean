@@ -6,6 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms
 open NumberField Matrix UpperTheory.V UpperTheory.V.KT
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `L _ _ _ N h hv hsp`. Establish `hfin : (minVec h).Finite`. Take `⟨S, hS, hev⟩` from `locfin L N h (rypos L N hv) 1`. Use `hS.subset fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Conclude with `(hev.self_of_nhds y hn).ne' hy`. Take `⟨A, hA, hcol⟩` from `exbasis L N _ hsp`. Use `haveI : Finite (minVec h) := hfin.to_subtype`. Establish `hmem : ∀ (g : MulAction.stabilizer (Gm L N) (minVec h)) (a : Fin N), (g.1 • (fun i => A i a : Lat L N)) ∈ minVec h` using `fun g a => by`. Establish `h1 : g.1 • minVec h = minVec h` using `g.2`.
+
+Establish `h2` using `Set.smul_mem_smul_set (a := g.1) (hcol a)`. Rewrite `h2` using `[h1]`. Conclude with `h2`. Use `Finite.of_injective (fun (g : MulAction.stabilizer (Gm L N) (minVec h)) (a : Fin N) => (⟨_, hmem g a⟩ : minVec h)) fun g k e => ?_` and prove the remaining obligations. Establish `h1 : (g.1 : Matrix (Fin N) (Fin N) (𝓞 L)) * A = (k.1 : Matrix (Fin N) (Fin N) (𝓞 L)) * A`.
+
+Use `Matrix.ext fun i a => ?_` and prove the remaining obligations. Conclude with `congrFun (congrArg Subtype.val (congrFun e a)) i`. Establish `h2` using `congrArg (· * A.adjugate) h1`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one] at h2`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Conclude with `mul_left_cancel₀ hA (congrFun (congrFun h2 i) j)`.
+-/
 theorem UpperTheory.minimal_vector_stabilizer_property :
     UpperTheory.V.Af.BA.MinStab := by
   intro L _ _ _ N h hv hsp

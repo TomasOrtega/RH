@@ -21,6 +21,9 @@ noncomputable def shapiroCochains :
     (coindEvalOne (V : Subgroup G) N)
 
 omit [CompactSpace H] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem homologyMap_shapiroCochains (n : ℕ) :
     HomologicalComplex.homologyMap (shapiroCochains V N) n = shapiroMap V N n :=
   rfl
@@ -34,11 +37,19 @@ noncomputable def mackeyCochainsMap (x : G) :
       (coindEvalOne (mackeySubgroup (V : Subgroup G) ι.toMonoidHom x)
         (mackeyRep (V : Subgroup G) ι.toMonoidHom N x))
 
+/- English proof (translation)
+Rewrite using `[mackeyCochainsMap, HomologicalComplex.homologyMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem homologyMap_mackeyCochainsMap (x : G) (n : ℕ) :
     HomologicalComplex.homologyMap (mackeyCochainsMap V ι N x) n = mackeyCohomologyMap V ι N x n := by
   rw [mackeyCochainsMap, HomologicalComplex.homologyMap_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mackeyCochainsMap, ← cochainsMapAlong_id_eq_cochainsMap, shapiroCochains]`. Rewrite using `[← cochainsMapAlong_comp, ← cochainsMapAlong_comp, ← cochainsMapAlong_comp]`. Use `Eq.trans ?_ (cochainsMapAlong_comp _ _ _ _ _ _)` and prove the remaining obligations. Use `cochainsMapAlong_congr _ _ _ _ ?_ (fun f => ?_)` and prove the remaining obligations. Use extensionality with `h`.
+
+Express the relevant statement in the definitionally equal form `x⁻¹⁻¹ * ι.toMonoidHom (h : H) * x⁻¹ = x * ι.toMonoidHom (h : H) * x⁻¹`. Rewrite using `[inv_inv]`. Express the relevant statement in the definitionally equal form `f.1 (x * ι.toMonoidHom 1 * x⁻¹) = f.1 1`. Rewrite using `[map_one, mul_one, mul_inv_cancel]`.
+-/
 theorem innerConj_comp_mackeyCochainsMap (x : G) :
     cochainsMapAlong (innerConjHom x⁻¹) (continuous_innerConjHom x⁻¹)
         (innerConjMor (Rep.coind (V : Subgroup G).subtype N) x⁻¹) ≫

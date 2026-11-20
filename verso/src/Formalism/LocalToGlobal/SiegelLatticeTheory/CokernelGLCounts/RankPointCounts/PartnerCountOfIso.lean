@@ -26,6 +26,11 @@ section Det
 
 variable {K : Type*} [CommRing K] {m : ℕ}
 
+/- English proof (translation)
+Establish `e : P + n • Ecorner m = L * (X + n • Ecorner m) * U`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, lo_corner_up hL hU, hP]`. Establish `hX' : ∀ a : Fin m, (X + n • Ecorner m : Matrix (Fin (m + 1)) (Fin (m + 1)) K) a.castSucc (Fin.last m) = 0 ∧ (X + n • Ecorner m : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (Fin.last m) a.castSucc = 0` using `fun a => by`. Simplify using `[Ecorner, (hX a).1, (hX a).2, Fin.castSucc_ne_last]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, det_lo' hL, det_up' hU, one_mul, mul_one, det_of_corner _ hX', leadM_add_corner, hP, leadM_mul hL hU]`.
+
+Simplify using `[Ecorner, hs]`.
+-/
 theorem det_shift {n s : K} {P X L U : Matrix (Fin (m + 1)) (Fin (m + 1)) K} (hL : IsLo L) (hU : IsUp U)
     (hP : P = L * X * U) (hX : ∀ a : Fin m, X a.castSucc (Fin.last m) = 0 ∧ X (Fin.last m) a.castSucc = 0)
     (hs : X (Fin.last m) (Fin.last m) = s) : (P + n • Ecorner m).det = (s + n) * leadM P m := by
@@ -45,6 +50,9 @@ section Model
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
+/- English proof (translation)
+Unfold `leadM`. Rewrite using `[dif_pos (Nat.le_succ m)]`. Use `congr 1`. Use extensionality with `a b`. Conclude with `(hY a b).symm`.
+-/
 theorem lead_eq_head (M : Loc.Model F E) {m : ℕ} (P : Matrix (Fin (m + 1)) (Fin (m + 1)) E) (Y : M.Mat m)
     (hY : ∀ a b : Fin m, (Y.Z a b : E) = P a.castSucc b.castSucc) : leadM P m = (Y.Z.map M.R.subtype).det := by
   unfold leadM
@@ -55,6 +63,15 @@ theorem lead_eq_head (M : Loc.Model F E) {m : ℕ} (P : Matrix (Fin (m + 1)) (Fi
 
 end Model
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M m n s P₁ P₂ X₁ X₂ L₁ U₁ L₂ U₂ hL₁ hU₁ hL₂ hU₂ hP₁ hP₂ hX h₁ h₂ hsn hn Y₁ Y₂ be₁ be₂ al₁ al₂ hY hba hi₁ hi₂`. Establish `hX₁ : ∀ a : Fin m, X₁ a.castSucc (Fin.last m) = 0 ∧ X₁ (Fin.last m) a.castSucc = 0` using `fun a => ⟨(hX a).1, (hX a).2.1⟩`. Establish `hX₂ : ∀ a : Fin m, X₂ a.castSucc (Fin.last m) = 0 ∧ X₂ (Fin.last m) a.castSucc = 0` using `fun a => ⟨(hX a).2.2.1, (hX a).2.2.2⟩`. Establish `hu₁ : IsUnit (P₁ + n • Ecorner m).det`. Rewrite using `[det_shift hL₁ hU₁ hP₁ hX₁ h₁, lead_eq_head M P₁ Y₁ fun a b => (hY a b).1]`.
+
+Conclude with `hsn.mul Y₁.unit`. Establish `hu₂ : IsUnit (P₂ + n • Ecorner m).det`. Rewrite using `[det_shift hL₂ hU₂ hP₂ hX₂ h₂, lead_eq_head M P₂ Y₂ fun a b => (hY a b).2]`. Conclude with `hsn.mul Y₂.unit`. Establish `hint : ∀ {P : Matrix (Fin (m + 1)) (Fin (m + 1)) E}, (∀ a b, P a b ∈ M.R) → ∀ a b, (P + n • Ecorner m : Matrix (Fin (m + 1)) (Fin (m + 1)) E) a b ∈ M.R` using `fun hP a b => by`.
+
+Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Ecorner, Matrix.of_apply, smul_eq_mul]`. Use `split_ifs`. Conclude with `M.R.add_mem (hP a b) (by rw [mul_one]; exact hn)`. Rewrite using `[mul_zero, add_zero]`. Conclude with `hP a b`.
+
+Use `⟨mkMat M _ (hint hi₁) hu₁, mkMat M _ (hint hi₂) hu₂, rfl, rfl, ?_⟩` and prove the remaining obligations. Conclude with `hI M m n s P₁ P₂ X₁ X₂ L₁ U₁ L₂ U₂ hL₁ hU₁ hL₂ hU₂ hP₁ hP₂ hX h₁ h₂ hsn hn Y₁ Y₂ be₁ be₂ al₁ al₂ hY hba hi₁ hi₂ _ _ rfl rfl`.
+-/
 theorem bridgeBA_of (hI : BridgeIso) : BridgeBA := by
   intro F _ _ _ E _ _ _ _ M m n s P₁ P₂ X₁ X₂ L₁ U₁ L₂ U₂ hL₁ hU₁ hL₂ hU₂ hP₁ hP₂ hX h₁ h₂ hsn hn Y₁ Y₂
     be₁ be₂ al₁ al₂ hY hba hi₁ hi₂
@@ -78,6 +95,9 @@ theorem bridgeBA_of (hI : BridgeIso) : BridgeBA := by
   exact hI M m n s P₁ P₂ X₁ X₂ L₁ U₁ L₂ U₂ hL₁ hU₁ hL₂ hU₂ hP₁ hP₂ hX h₁ h₂ hsn hn Y₁ Y₂ be₁ be₂ al₁ al₂ hY hba
     hi₁ hi₂ _ _ rfl rfl
 
+/- English proof (translation)
+The claim follows from `partnerCount_of_integral Zd hT2 hI (bridgeBA_of hB)`.
+-/
 theorem partnerCount_of_iso {D : Formalism.BasicNotions.D7} (Zd : Formalism.L2.SG.TermLoc.LocDat D) (hT2 : Formalism.MainNotions.ThinScalesBound.T2 D)
     (hI : IntGenP Zd) (hB : BridgeIso) : PartnerIsomorphismCount Zd :=
   partnerCount_of_integral Zd hT2 hI (bridgeBA_of hB)

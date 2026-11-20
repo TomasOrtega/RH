@@ -5,6 +5,35 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealL
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n M θ x hM hC hx hxx`. Take `⟨hθθ, hiso, hpos⟩` from `hC`. Establish `hstar : ∀ v : Fin n → ℂ, star (θ *ᵥ v) = θ.map star *ᵥ star v`. Introduce `v`. Use extensionality with `i`.
+
+Simplify using `[mulVec, dotProduct, star_sum]`. Establish `hisoV : ∀ u v : Fin n → ℂ, (θ *ᵥ u) ⬝ᵥ M *ᵥ star (θ *ᵥ v) = u ⬝ᵥ M *ᵥ star v`. Introduce `u v`. Rewrite using `[hstar, mulVec_mulVec, dotProduct_mulVec, ← vecMul_transpose, vecMul_vecMul, ← Matrix.mul_assoc, hiso, ← dotProduct_mulVec]`. Establish `hherm : ∀ u v : Fin n → ℂ, v ⬝ᵥ M *ᵥ star u = star (u ⬝ᵥ M *ᵥ star v)`.
+
+Introduce `u v`. Rewrite using `[← star_dotProduct_star, Matrix.star_mulVec, star_star, hM, ← dotProduct_mulVec]`. Establish `hθθv : ∀ v : Fin n → ℂ, θ *ᵥ (θ *ᵥ v) = v`. Introduce `v`. Rewrite using `[mulVec_mulVec, hθθ, one_mulVec]`.
+
+Use `set y : Fin n → ℂ := θ *ᵥ x with hy`. Establish `hyy : y ⬝ᵥ M *ᵥ star y = 0` using `by rw [hy, hisoV]; exact hxx`. Establish `hxy : x ⬝ᵥ M *ᵥ star y = y ⬝ᵥ M *ᵥ star x`. Rewrite using `[← hisoV x y, hy, hθθv]`. Use `set N : ℝ := (y ⬝ᵥ M *ᵥ star x).re with hN`.
+
+Establish `hNpos : 0 < N` using `hpos x hx`. Establish `hyx : y ⬝ᵥ M *ᵥ star x = (N : ℂ)`. Establish `h1 : star (y ⬝ᵥ M *ᵥ star x) = y ⬝ᵥ M *ᵥ star x` using `by rw [← hherm, hxy]`. Establish `h2` using `Complex.conj_eq_iff_re.mp h1`. Rewrite using `[hN]`.
+
+Conclude with `h2.symm`. Establish `hxy' : x ⬝ᵥ M *ᵥ star y = (N : ℂ)` using `by rw [hxy, hyx]`. Use `set s : ℝ := Real.sqrt (2 * N) with hs`. Establish `hspos : 0 < s` using `Real.sqrt_pos.mpr (by linarith)`. Establish `hs2 : s * s = 2 * N` using `Real.mul_self_sqrt (by linarith)`.
+
+Establish `hsc : (s : ℂ) ≠ 0` using `by exact_mod_cast hspos.ne'`. Use `set t : ℂ := 1 / (s : ℂ) with ht`. Establish `htstar : star t = t` using `by rw [ht]; simp [Complex.conj_ofReal]`. Establish `htt : t * t * (2 * (N : ℂ)) = 1`. Establish `: ((s : ℂ) * s) = 2 * (N : ℂ)` using `by exact_mod_cast hs2`.
+
+Rewrite using `[ht, ← this]`. Clear the denominators using the available nonvanishing facts. Use `⟨t • (x + y), t • (x - y), (s : ℂ) / 2, div_ne_zero hsc two_ne_zero, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, Pi.add_apply, Pi.sub_apply, smul_eq_mul, ht]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, Pi.add_apply, Pi.sub_apply, smul_eq_mul, ht]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mulVec_smul, mulVec_add, hθθv, add_comm]`. Rewrite using `[mulVec_smul, mulVec_sub, hθθv, ← smul_neg, neg_sub]`. Simplify using `only [star_smul, htstar, star_add, star_sub, mulVec_smul, mulVec_add, mulVec_sub, dotProduct_smul, smul_dotProduct, dotProduct_add, dotProduct_sub, add_dotProduct, sub_dotProduct, smul_eq_mul, hxx, hyy, hxy', hyx]`. Take the linear combination `htt`.
+
+Simplify using `only [star_smul, htstar, star_add, star_sub, mulVec_smul, mulVec_add, mulVec_sub, dotProduct_smul, smul_dotProduct, dotProduct_add, dotProduct_sub, add_dotProduct, sub_dotProduct, smul_eq_mul, hxx, hyy, hxy', hyx]`. Take the linear combination `-htt`. Simplify using `only [star_smul, htstar, star_add, star_sub, mulVec_smul, mulVec_add, mulVec_sub, dotProduct_smul, smul_dotProduct, dotProduct_add, dotProduct_sub, add_dotProduct, sub_dotProduct, smul_eq_mul, hxx, hyy, hxy', hyx]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [star_smul, htstar, star_add, star_sub, mulVec_smul, mulVec_add, mulVec_sub, dotProduct_smul, smul_dotProduct, dotProduct_add, dotProduct_sub, add_dotProduct, sub_dotProduct, smul_eq_mul, hxx, hyy, hxy', hyx]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `u hu1 hu2`. Establish `hue : u ⬝ᵥ M *ᵥ star (t • (x + y)) = 0`. Simplify using `only [star_smul, htstar, star_add, mulVec_smul, mulVec_add, dotProduct_smul, dotProduct_add, smul_eq_mul, hu1, hu2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `huf : u ⬝ᵥ M *ᵥ star (t • (x - y)) = 0`. Simplify using `only [star_smul, htstar, star_sub, mulVec_smul, mulVec_sub, dotProduct_smul, dotProduct_sub, smul_eq_mul, hu1, hu2]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hue, huf, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hherm, hue, star_zero]`.
+
+Rewrite using `[hherm, huf, star_zero]`.
+-/
 theorem hyperbolic_pair_of_cartan_isotropic : ∀ {n : ℕ} (M θ : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℂ), Mᴴ = M → IsCartan M θ → x ≠ 0 →
     x ⬝ᵥ M *ᵥ star x = 0 →
     ∃ (e f : Fin n → ℂ) (k : ℂ), k ≠ 0 ∧ x = k • (e + f) ∧ θ *ᵥ x = k • (e - f) ∧ θ *ᵥ e = e ∧ θ *ᵥ f = -f ∧

@@ -2,6 +2,17 @@ import Mathlib
 
 open Complex MeasureTheory
 
+/- English proof (translation)
+Establish `hhom : ((MvPolynomial.X 1 + MvPolynomial.C (s * I) * MvPolynomial.X 0 : MvPolynomial (Fin 2) ℂ) ^ (2 * k)).IsHomogeneous (2 * k)`. Establish `h1 : (MvPolynomial.X 1 + MvPolynomial.C (s * I) * MvPolynomial.X 0 : MvPolynomial (Fin 2) ℂ).IsHomogeneous 1` using `(MvPolynomial.isHomogeneous_X ℂ 1).add (MvPolynomial.isHomogeneous_C_mul_X _ _)`. Simplify using `using h1.pow (2 * k)`. Use `h k _ hhom` as an intermediate fact. Rewrite using `[← this]`.
+
+Use `intervalIntegral.integral_congr fun t _ => ?_` and prove the remaining obligations. Establish `he : cexp (s * (t * I)) = (Real.cos t : ℂ) + s * I * (Real.sin t : ℂ)`. Break down `hs with rfl | rfl` into its components or cases. Rewrite using `[one_mul, exp_mul_I]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `: (-1 : ℂ) * (t * I) = ((-t : ℝ) : ℂ) * I` using `by push_cast; ring`. Rewrite using `[this, exp_mul_I, ← ofReal_cos, ← ofReal_sin, Real.cos_neg, Real.sin_neg]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpow : cexp (s * (2 * k) * (t * I)) = cexp (s * (t * I)) ^ (2 * k)`. Rewrite using `[← exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [map_pow, map_add, map_mul, MvPolynomial.eval_X, MvPolynomial.eval_C, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, Matrix.head_cons]`. Rewrite using `[hpow, he]`.
+-/
 private lemma UpperTheory.fourier_vanishing_homogeneous (F : ℝ → ℂ) (hc : Continuous F) (hp : ∀ t, F (t + Real.pi) = F t)
     (h : ∀ (e : ℕ) (p : MvPolynomial (Fin 2) ℂ), p.IsHomogeneous (2 * e) →
       ∫ t in (0 : ℝ)..2 * Real.pi,
@@ -29,6 +40,31 @@ private lemma UpperTheory.fourier_vanishing_homogeneous (F : ℝ → ℂ) (hc : 
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, Matrix.head_cons]
   rw [hpow, he]
 
+/- English proof (translation)
+Introduce `F hc hp h`. Use `haveI : Fact (0 < Real.pi) := ⟨Real.pi_pos⟩`. Establish `hper : Function.Periodic F Real.pi` using `hp`. Set `f : C(AddCircle Real.pi, ℂ)` to `⟨hper.lift, (QuotientAddGroup.isQuotientMap_mk _).continuous_iff.2 hc⟩`. Establish `hfx : ∀ x : ℝ, f (x : AddCircle Real.pi) = F x` using `fun x => hper.lift_coe x`.
+
+Establish `hint : ∀ n : ℤ, ∫ t in (0 : ℝ)..Real.pi, cexp ((-(2 * n : ℂ)) * (t * I)) * F t = 0`. Introduce `n`. Establish `hG : Function.Periodic (fun t : ℝ => cexp ((-(2 * n : ℂ)) * (t * I)) * F t) Real.pi`. Introduce `t`. Establish `h1 : cexp ((-(2 * n : ℂ)) * (((t + Real.pi : ℝ) : ℂ) * I)) = cexp ((-(2 * n : ℂ)) * (t * I))`.
+
+Establish `: (-(2 * n : ℂ)) * (((t + Real.pi : ℝ) : ℂ) * I) = (-(2 * n : ℂ)) * (t * I) + ((-n : ℤ) : ℂ) * (2 * Real.pi * I)` using `by push_cast; ring`. Rewrite using `[this, exp_add, exp_int_mul_two_pi_mul_I, mul_one]`. Simplify using `only [h1, hp]`. Establish `hcont : Continuous (fun t : ℝ => cexp ((-(2 * n : ℂ)) * (t * I)) * F t)` using `by fun_prop`. Establish `hsplit : ∫ t in (0 : ℝ)..2 * Real.pi, cexp ((-(2 * n : ℂ)) * (t * I)) * F t = 2 * ∫ t in (0 : ℝ)..Real.pi, cexp ((-(2 * n : ℂ)) * (t * I)) * F t`.
+
+Rewrite using `[← intervalIntegral.integral_add_adjacent_intervals (hcont.intervalIntegrable 0 Real.pi) (hcont.intervalIntegrable Real.pi (2 * Real.pi))]`. Use `hG.intervalIntegral_add_eq Real.pi 0` as an intermediate fact. Rewrite `this` using `[show Real.pi + Real.pi = 2 * Real.pi by ring, zero_add]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hz : ∫ t in (0 : ℝ)..2 * Real.pi, cexp ((-(2 * n : ℂ)) * (t * I)) * F t = 0`. Break down `le_total 0 n with hn | hn` into its components or cases. Use `UpperTheory.fourier_vanishing_homogeneous F hc hp h (-1) (Or.inr rfl) n.toNat` as an intermediate fact. Establish `e : ((n.toNat : ℕ) : ℂ) = (n : ℂ)`. Conclude with `congrArg (fun z : ℤ => (z : ℂ)) (Int.toNat_of_nonneg hn)` after adjusting the coercions.
+
+Rewrite `this` using `[e]`. Rewrite using `[← this]`. Use `intervalIntegral.integral_congr fun t _ => ?_` and prove the remaining obligations. Simplify using `only [neg_mul, one_mul]`. Use `UpperTheory.fourier_vanishing_homogeneous F hc hp h 1 (Or.inl rfl) (-n).toNat` as an intermediate fact.
+
+Establish `e : (((-n).toNat : ℕ) : ℂ) = -(n : ℂ)`. Establish `h2 : (((-n).toNat : ℕ) : ℤ) = -n` using `Int.toNat_of_nonneg (neg_nonneg.2 hn)`. Rewrite using `[← Int.cast_natCast, h2, Int.cast_neg]`. Rewrite `this` using `[e]`. Rewrite using `[← this]`.
+
+Use `intervalIntegral.integral_congr fun t _ => ?_` and prove the remaining obligations. Simplify using `only [one_mul, mul_neg]`. Rewrite `hsplit` using `[hz]`. Conclude with `(mul_eq_zero.1 hsplit.symm).resolve_left two_ne_zero`. Establish `hF : ∀ n : ℤ, fourierCoeff f n = 0`.
+
+Introduce `n`. Rewrite using `[fourierCoeff_eq_intervalIntegral _ n 0, zero_add]`. Establish `e : ∀ x : ℝ, fourier (-n) (x : AddCircle Real.pi) • f (x : AddCircle Real.pi) = cexp ((-(2 * n : ℂ)) * (x * I)) * F x`. Introduce `x`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `ofReal_ne_zero.2 Real.pi_ne_zero`.
+
+Rewrite using `[fourier_coe_apply, smul_eq_mul, hfx]`. Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using `only [e]`.
+
+Rewrite using `[hint n, smul_zero]`. Establish `hsum : Summable (fourierCoeff f)`. Rewrite using `[show fourierCoeff f = 0 from funext hF]`. Conclude with `summable_zero`. Introduce `t`.
+
+Establish `hs` using `has_pointwise_sum_fourier_series_of_summable hsum (t : AddCircle Real.pi)`. Simplify using `only [hF, zero_smul] at hs`. Rewrite using `[← hfx]`. Conclude with `hs.unique hasSum_zero`.
+-/
 theorem UpperTheory.eq_zero_of_orthogonal_even_homogeneous_trig :
     ∀ (F : ℝ → ℂ), Continuous F → (∀ t, F (t + Real.pi) = F t) →
         (∀ (e : ℕ) (p : MvPolynomial (Fin 2) ℂ), p.IsHomogeneous (2 * e) →

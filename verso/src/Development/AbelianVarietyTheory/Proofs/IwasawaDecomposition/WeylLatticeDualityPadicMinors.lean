@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.WeylLatDualPf
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.columnMinorProducts_fock_reproducing_dualWeyl N Y hY f hf`.
+-/
 theorem fock_reproducing_formula (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N) (f : MvPolynomial (Fin N × Fin N) ℚ)
     (hf : f ∈ Formalism.GradedWeylDivisibility.dualWeyl ℚ N N (fun r : Fin N => Y.rowLen r)) :
     ∑ J : (∀ c : Fin (Y.rowLen 0), Fin (Y.colLen c) ↪o Fin N),
@@ -27,6 +30,9 @@ theorem fock_reproducing_formula (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 �
         (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) (fun r : Fin N => Y.rowLen r)) • f :=
   GlobalTheory.T.columnMinorProducts_fock_reproducing_dualWeyl N Y hY f hf
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_integral_dual_bases_columnMinors_weylLattice N Y hY hrep`.
+-/
 theorem dualData (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N)
     (hrep : ∀ f ∈ Formalism.GradedWeylDivisibility.dualWeyl ℚ N N (fun r : Fin N => Y.rowLen r),
       ∑ J : (∀ c : Fin (Y.rowLen 0), Fin (Y.colLen c) ↪o Fin N),
@@ -42,6 +48,9 @@ theorem dualData (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N)
       (∀ i, d i ∈ Formalism.GradedWeylDivisibility.weyl ℤ N N (le_refl N) (fun r : Fin N => Y.rowLen r)) :=
   GlobalTheory.T.exists_integral_dual_bases_columnMinors_weylLattice N Y hY hrep
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.weylLattice_integral_columnMinor_expansion N Y hY hrep f hf`.
+-/
 theorem weylExpand (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N)
     (hrep : ∀ f ∈ Formalism.GradedWeylDivisibility.dualWeyl ℚ N N (fun r : Fin N => Y.rowLen r),
       ∑ J : (∀ c : Fin (Y.rowLen 0), Fin (Y.colLen c) ↪o Fin N),
@@ -56,6 +65,9 @@ theorem weylExpand (N : ℕ) (Y : YoungDiagram) (hY : Y.colLen 0 ≤ N)
       ∑ J, z J • GlobalTheory.WeylMinorDual.colProd ℤ N Y hY J = f :=
   GlobalTheory.T.weylLattice_integral_columnMinor_expansion N Y hY hrep f hf
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_fock_functional_on_nablaX_products p N nu hY g`.
+-/
 theorem fockFunctional (p : ℕ) [Fact p.Prime] {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N : ℕ) (nu : Lt → YoungDiagram)
     (hY : ∀ s, (nu s).colLen 0 ≤ N) (g : Lt → MvPolynomial (Fin N × Fin N) ℤ) :
     ∃ Ψ : Module.Dual ℂ_[p] (MvPolynomial (Lt × ℕ × Fin N) ℂ_[p]),
@@ -69,6 +81,13 @@ def rho (p : ℕ) [Fact p.Prime] {Lt : Type} (N : ℕ) (s : Lt) :
     MvPolynomial (Fin N × Fin N) ℤ →+* MvPolynomial (Lt × ℕ × Fin N) ℂ_[p] :=
   (rename (fun v : Fin N × Fin N => (s, (v.2 : ℕ), v.1))).toRingHom.comp (map (Int.castRingHom ℂ_[p]))
 
+/- English proof (translation)
+Unfold `WeylLatticeDuality.nablaX`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Unfold `GlobalTheory.WeylMinorDual.colProd Formalism.GradedWeylDivisibility.bideterminant`. Rewrite using `[map_prod, map_prod]`.
+
+Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Unfold `Formalism.GradedWeylDivisibility.initMinor`. Rewrite using `[RingHom.map_det, RingHom.map_det, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `i k`.
+
+Simplify using `[rho, RingHom.mapMatrix_apply]`.
+-/
 theorem nablaX_eq_prod (p : ℕ) [Fact p.Prime] {Lt : Type} [Fintype Lt] (N : ℕ) (nu : Lt → YoungDiagram)
     (hY : ∀ s, (nu s).colLen 0 ≤ N) (J : ∀ s, ∀ c : Fin ((nu s).rowLen 0), Fin ((nu s).colLen c) ↪o Fin N) :
     map (Int.castRingHom ℂ_[p]) (WeylLatticeDuality.nablaX N nu J) =
@@ -85,6 +104,11 @@ theorem nablaX_eq_prod (p : ℕ) [Fact p.Prime] {Lt : Type} [Fintype Lt] (N : �
   ext i k
   simp [rho, RingHom.mapMatrix_apply]
 
+/- English proof (translation)
+Use `set E := Equiv.ofBijective e he`. Use `⟨fun τ => Matrix.of fun a b => y' (E.symm τ) a b, ?_⟩` and prove the remaining obligations. Unfold `WeylLatticeDuality.DeX`. Use `Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use extensionality with `i j`. Establish `hj : (j : ℕ) < N` using `lt_of_lt_of_le j.2 ((GlobalTheory.WeylMinorDual.colLen_le (hY s) c))`. Establish `hs : E.symm (e s) = s` using `E.symm_apply_apply s`. Simplify using `only [Matrix.of_apply, WeylLatticeDuality.colsOf, dif_pos hj, hs]`.
+-/
 theorem deX_trunc {Lt T : Type} [Fintype Lt] {k : Type} [CommRing k] (e : Lt → T) (he : Function.Bijective e) (N : ℕ)
     (nu : Lt → YoungDiagram) (hY : ∀ s, (nu s).colLen 0 ≤ N) (y' : Lt → Fin N → ℕ → k) :
     ∃ y : T → Matrix (Fin N) (Fin N) k,
@@ -99,6 +123,15 @@ theorem deX_trunc {Lt T : Type} [Fintype Lt] {k : Type} [CommRing k] (e : Lt →
   have hs : E.symm (e s) = s := E.symm_apply_apply s
   simp only [Matrix.of_apply, WeylLatticeDuality.colsOf, dif_pos hj, hs]
 
+/- English proof (translation)
+Establish `h` using `PI.WwInjectiveWork.deX_eq_sum N nu cauchy_binet_minors (K := ℂ_[p]) (fun s => WeylLatticeDuality.colsOf (y (e s)))`. Express the relevant statement in the definitionally equal form `φ (PI.WwInjective.DeX N nu fun s => WeylLatticeDuality.colsOf (y (e s))) = _`. Rewrite using `[h, map_sum]`. Set `eqv : PI.WwInjective.KM.ColChoice N nu ≃ (∀ s, ∀ c : Fin ((nu s).rowLen 0), Fin ((nu s).colLen c) ↪o Fin N)` to `⟨id, id, fun _ => rfl, fun _ => rfl⟩`. Use `Fintype.sum_equiv eqv _ _ fun J => ?_` and prove the remaining obligations.
+
+Rewrite using `[← smul_eq_C_mul, map_smul, smul_eq_mul, mul_comm]`. Use `congr 1`. Unfold `PI.WwInjective.minY`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Unfold `GlobalTheory.WeylMinorDual.colProd Formalism.GradedWeylDivisibility.bideterminant`.
+
+Rewrite using `[map_prod, map_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Unfold `Formalism.GradedWeylDivisibility.initMinor`. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `i j`. Establish `hj : (j : ℕ) < N` using `lt_of_lt_of_le j.2 ((GlobalTheory.WeylMinorDual.colLen_le (hY s) c))`. Simplify using `[WeylLatticeDuality.colsOf, dif_pos hj, RingHom.mapMatrix_apply]`. Both sides reduce to the same expression.
+-/
 theorem canExpand (p : ℕ) [Fact p.Prime] {Lt T : Type} [Fintype Lt] [DecidableEq Lt] (e : Lt → T) (N : ℕ)
     (nu : Lt → YoungDiagram) (hY : ∀ s, (nu s).colLen 0 ≤ N)
     (φ : Module.Dual ℂ_[p] (MvPolynomial (Lt × ℕ × Fin N) ℂ_[p])) (y : T → Matrix (Fin N) (Fin N) ℂ_[p]) :
@@ -129,21 +162,38 @@ theorem canExpand (p : ℕ) [Fact p.Prime] {Lt T : Type} [Fintype Lt] [Decidable
   simp [WeylLatticeDuality.colsOf, dif_pos hj, RingHom.mapMatrix_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one h`.
+-/
 theorem nsum {p : ℕ} [Fact p.Prime] {α : Type} (s : Finset α) (f : α → ℂ_[p]) (h : ∀ i ∈ s, ‖f i‖ ≤ 1) :
     ‖∑ i ∈ s, f i‖ ≤ 1 :=
   IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one h
 
+/- English proof (translation)
+Rewrite using `[norm_prod]`. Conclude with `Finset.prod_le_one (fun i _ => norm_nonneg _) h`.
+-/
 theorem nprod {p : ℕ} [Fact p.Prime] {α : Type} (s : Finset α) (f : α → ℂ_[p]) (h : ∀ i ∈ s, ‖f i‖ ≤ 1) :
     ‖∏ i ∈ s, f i‖ ≤ 1 := by
   rw [norm_prod]
   exact Finset.prod_le_one (fun i _ => norm_nonneg _) h
 
+/- English proof (translation)
+The claim follows from `IsUltrametricDist.norm_intCast_le_one _ z`.
+-/
 theorem nint {p : ℕ} [Fact p.Prime] (z : ℤ) : ‖(z : ℂ_[p])‖ ≤ 1 := IsUltrametricDist.norm_intCast_le_one _ z
 
+/- English proof (translation)
+The claim follows from `(Finset.prod_univ_sum (fun s => (Finset.univ : Finset (κ s))) f).symm.trans (by simp [Fintype.piFinset_univ])`.
+-/
 theorem sum_prod_eq {Lt : Type} [Fintype Lt] [DecidableEq Lt] {κ : Lt → Type} [∀ s, Fintype (κ s)] {R : Type} [CommRing R]
     (f : ∀ s, κ s → R) : ∑ J : (∀ s, κ s), ∏ s, f s (J s) = ∏ s, ∑ j, f s j :=
   (Finset.prod_univ_sum (fun s => (Finset.univ : Finset (κ s))) f).symm.trans (by simp [Fintype.piFinset_univ])
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hm : (N, 0) ∈ Y` using `YoungDiagram.mem_iff_lt_colLen.mpr h`. Use `YoungDiagram.mem_iff_lt_rowLen.mp hm` as an intermediate fact. Rewrite `this` using `[h0 N le_rfl]`.
+
+Conclude with `Nat.not_lt_zero _ this`.
+-/
 theorem colLen_le {N : ℕ} (Y : YoungDiagram) (h0 : ∀ r, N ≤ r → Y.rowLen r = 0) : Y.colLen 0 ≤ N := by
   by_contra h
   push_neg at h
@@ -152,10 +202,16 @@ theorem colLen_le {N : ℕ} (Y : YoungDiagram) (h0 : ∀ r, N ≤ r → Y.rowLen
   rw [h0 N le_rfl] at this
   exact Nat.not_lt_zero _ this
 
+/- English proof (translation)
+Rewrite using `[map_zsmul, ← Int.cast_smul_eq_zsmul ℂ_[p], smul_eq_C_mul]`.
+-/
 theorem rho_zsmul (p : ℕ) [Fact p.Prime] {Lt : Type} (N : ℕ) (s : Lt) (z : ℤ) (P : MvPolynomial (Fin N × Fin N) ℤ) :
     rho p N s (z • P) = C (z : ℂ_[p]) * rho p N s P := by
   rw [map_zsmul, ← Int.cast_smul_eq_zsmul ℂ_[p], smul_eq_C_mul]
 
+/- English proof (translation)
+Rewrite using `[show (∑ k : (∀ s, κ' s), C (∏ s, (M s (i s) (k s) : ℂ_[p])) * ∏ s, rho p N s (v s (k s))) = ∑ k : (∀ s, κ' s), ∏ s, (C (M s (i s) (k s) : ℂ_[p]) * rho p N s (v s (k s))) from Finset.sum_congr rfl fun k _ => by rw [map_prod, ← Finset.prod_mul_distrib]]`. Rewrite using `[sum_prod_eq (fun s k => C (M s (i s) k : ℂ_[p]) * rho p N s (v s k))]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[h s (i s), map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => rho_zsmul p N s _ _`.
+-/
 theorem expand_prod (p : ℕ) [Fact p.Prime] {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N : ℕ) {κ κ' : Lt → Type}
     [∀ s, Fintype (κ s)] [∀ s, Fintype (κ' s)] (u : ∀ s, κ s → MvPolynomial (Fin N × Fin N) ℤ)
     (v : ∀ s, κ' s → MvPolynomial (Fin N × Fin N) ℤ) (M : ∀ s, κ s → κ' s → ℤ)
@@ -169,6 +225,59 @@ theorem expand_prod (p : ℕ) [Fact p.Prime] {Lt : Type} [Fintype Lt] [Decidable
   rw [h s (i s), map_sum]
   exact Finset.sum_congr rfl fun k _ => rho_zsmul p N s _ _
 
+/- English proof (translation)
+Introduce `p _ Lt T _ _ e he N nu ν hν h0 φ`. Establish `hY : ∀ s, (nu s).colLen 0 ≤ N` using `fun s => colLen_le (nu s) (h0 s)`. Use `set E := Equiv.ofBijective e he with hE`. Establish `hμ : ∀ s, (fun r : Fin N => (nu s).rowLen r) = ν (e s)` using `fun s => funext fun r => hν s r`. Establish `hrep` using `fun s => fock_reproducing_formula N (nu s) (hY s)`.
+
+Establish `hnab` using `nablaX_eq_prod p N nu hY`. Prove the components needed by the constructor for the conclusion. Introduce `hφ choose ι hιF b d B Cm hB hCm hd hdW using fun s => dualData N (nu s) (hY s) (hrep s) set β : (∀ s, ι s) → MvPolynomial (Lt × ℕ × Fin N) ℂ_[p] := fun i => ∏ s, rho p N s (b s (i s)) with hβdef`. Establish `hβ : ∀ i, φ (β i) = ∑ J : (∀ s, ∀ c : Fin ((nu s).rowLen 0), Fin ((nu s).colLen c) ↪o Fin N), (∏ s, (Cm s (i s) (J s) : ℂ_[p])) * φ (map (Int.castRingHom ℂ_[p]) (WeylLatticeDuality.nablaX N nu J))`. Introduce `i`.
+
+Simplify using `only [hβdef]`. Rewrite using `[expand_prod p N b _ Cm hCm i, map_sum]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, map_smul, smul_eq_mul, hnab]`. Establish `hnabβ : ∀ J : (∀ s, ∀ c : Fin ((nu s).rowLen 0), Fin ((nu s).colLen c) ↪o Fin N), φ (map (Int.castRingHom ℂ_[p]) (WeylLatticeDuality.nablaX N nu J)) = ∑ i : (∀ s, ι s), (∏ s, (B s (J s) (i s) : ℂ_[p])) * φ (β i)`.
+
+Introduce `J`. Rewrite using `[hnab, expand_prod p N _ b B hB J, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, map_smul, smul_eq_mul]`. Establish `hcan : ∀ y : T → Matrix (Fin N) (Fin N) ℂ_[p], φ (WeylLatticeDuality.DeX N nu fun s => WeylLatticeDuality.colsOf (y (e s))) = ∑ i : (∀ s, ι s), φ (β i) * ∏ s, eval (fun k : Fin N × Fin N => y (e s) k.1 k.2) (map (Int.castRingHom ℂ_[p]) (d s (i s)))`.
+
+Introduce `y`. Use `set ev : Lt → MvPolynomial (Fin N × Fin N) ℤ →+* ℂ_[p] := fun s => (eval (fun k : Fin N × Fin N => y (e s) k.1 k.2)).comp (map (Int.castRingHom ℂ_[p])) with hev`. Establish `hev' : ∀ s P, eval (fun k : Fin N × Fin N => y (e s) k.1 k.2) (map (Int.castRingHom ℂ_[p]) P) = ev s P` using `fun s P => rfl`. Simplify using `only [hev']`. Rewrite using `[canExpand p e N nu hY φ y]`.
+
+Simplify using `only [hev', hnabβ, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hds : ∀ s, ev s (d s (i s)) = ∑ j, (B s j (i s) : ℂ_[p]) * ev s (GlobalTheory.WeylMinorDual.colProd ℤ N (nu s) (hY s) j)`. Introduce `s`.
+
+Rewrite using `[← hd s (i s), map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_zsmul, zsmul_eq_mul]`. Simplify using `only [hds]`. Rewrite using `[← sum_prod_eq (fun s j => (B s j (i s) : ℂ_[p]) * ev s (GlobalTheory.WeylMinorDual.colProd ℤ N (nu s) (hY s) j)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfun : (fun y : T → Matrix (Fin N) (Fin N) ℂ_[p] => φ (WeylLatticeDuality.DeX N nu fun s => WeylLatticeDuality.colsOf (y (e s)))) = ∑ i : (∀ s, ι s), fun y : T → Matrix (Fin N) (Fin N) ℂ_[p] => φ (β i) * ∏ s, eval (fun k : Fin N × Fin N => y (e s) k.1 k.2) (map (Int.castRingHom ℂ …`. Use function extensionality and compare the values at `y`. Rewrite using `[hcan, Finset.sum_apply]`.
+
+Rewrite using `[hfun]`. Use `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.subset_closure ?_` and prove the remaining obligations. Establish `key : ∀ s' s, s' = s → d s' (i s') = d s (i s)` using `by rintro _ _ rfl; rfl`. Use `⟨φ (β i), fun τ => d (E.symm τ) (i (E.symm τ)), ?_, fun τ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ i]`.
+
+Use `nsum _ _ fun J _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (nprod _ _ fun s _ => nint _) (norm_nonneg _) (hφ J)`. Establish `h1` using `hdW (E.symm τ) (i (E.symm τ))`. Rewrite `h1` using `[hμ, show e (E.symm τ) = τ from E.apply_symm_apply τ]`.
+
+Conclude with `h1`. Use function extensionality and compare the values at `y`. Use `congr 1`. Use `Fintype.prod_equiv E _ _ fun s => ?_` and prove the remaining obligations. Use `show _ = (eval fun k : Fin N × Fin N => y (E s) k.1 k.2) ((map (Int.castRingHom ℂ_[p])) (d (E.symm (E s)) (i (E.symm (E s)))))`.
+
+Rewrite using `[key _ s (E.symm_apply_apply s)]`. Both sides reduce to the same expression. Introduce `hF J`. Establish `key : ∀ F ∈ WeylLatticeDuality.DelW p T N ν, ∃ ψ : Module.Dual ℂ_[p] (MvPolynomial (Lt × ℕ × Fin N) ℂ_[p]), (∀ J : (∀ s, ∀ c : Fin ((nu s).rowLen 0), Fin ((nu s).colLen c) ↪o Fin N), ‖ψ (map (Int.castRingHom ℂ_[p]) (WeylLatticeDuality.nablaX N nu J))‖ ≤ 1) ∧ ∀ y : T → Matrix (Fin …`. Introduce `F hF`.
+
+Proceed by induction on `hF using AddSubgroup.closure_induction with`. Consider the case `mem F hF`. Take `⟨r, f, hr, hf, rfl⟩` from `hF`. Establish `hg : ∀ s, f (e s) ∈ Formalism.GradedWeylDivisibility.weyl ℤ N N (le_refl N) (fun r : Fin N => (nu s).rowLen r)` using `fun s => by`. Rewrite using `[hμ s]`.
+
+Conclude with `hf (e s)`. Use `choose z hz1 hz2 using fun s => weylExpand N (nu s) (hY s) (hrep s) (f (e s)) (hg s)`. Take `⟨Ψ, hΨ⟩` from `fockFunctional p N nu hY (fun s => f (e s))`. Use `set N0 : Lt → ℚ := fun s => Formalism.GradedWeylDivisibility.fockQ (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) (fun r : Fin N => (nu s).rowLen r)) (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) (fun r : Fin N => (nu s).rowLen r)) with hN0`. Establish `hN0ne : ∀ s, ((N0 s : ℚ) : ℂ_[p]) ≠ 0` using `fun s => by`.
+
+Use `((Formalism.GradedWeylDivisibility.fockQPos _ (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) (fun r : Fin N => (nu s).rowLen r)) (Formalism.GradedWeylDivisibility.hw ℚ (le_refl N) (fun r : Fin N => (nu s).rowLen r))).2 (Formalism.GradedWeylDivisibility.hwNe ℚ N N le_rfl _)).n …` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hP0 : (∏ s, ((N0 s : ℚ) : ℂ_[p])) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun s _ => hN0ne s`. Establish `hψJ : ∀ J : (∀ s, ∀ c : Fin ((nu s).rowLen 0), Fin ((nu s).colLen c) ↪o Fin N), Ψ (map (Int.castRingHom ℂ_[p]) (WeylLatticeDuality.nablaX N nu J)) = (∏ s, (z s (J s) : ℂ_[p])) * ∏ s, ((N0 s : ℚ) : ℂ_[p])`. Introduce `J`.
+
+Rewrite using `[hΨ J, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hz1 s (J s)]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Use `⟨(r * (∏ s, ((N0 s : ℚ) : ℂ_[p]))⁻¹) • Ψ, fun J => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hψJ, smul_eq_mul]`. Establish `: r * (∏ s, ((N0 s : ℚ) : ℂ_[p]))⁻¹ * ((∏ s, (z s (J s) : ℂ_[p])) * ∏ s, ((N0 s : ℚ) : ℂ_[p])) = r * ∏ s, (z s (J s) : ℂ_[p])`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, norm_mul]`.
+
+Conclude with `mul_le_one₀ hr (norm_nonneg _) (nprod _ _ fun s _ => nint _)`. Use `set ev : Lt → MvPolynomial (Fin N × Fin N) ℤ →+* ℂ_[p] := fun s => (eval (fun k : Fin N × Fin N => y (e s) k.1 k.2)).comp (map (Int.castRingHom ℂ_[p])) with hev`. Establish `hev' : ∀ s P, eval (fun k : Fin N × Fin N => y (e s) k.1 k.2) (map (Int.castRingHom ℂ_[p]) P) = ev s P` using `fun s P => rfl`. Establish `hfs : ∀ s, ev s (f (e s)) = ∑ j, (z s j : ℂ_[p]) * ev s (GlobalTheory.WeylMinorDual.colProd ℤ N (nu s) (hY s) j)`. Introduce `s`.
+
+Use `conv_lhs => rw [← hz2 s]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_zsmul, zsmul_eq_mul]`. Rewrite using `[LinearMap.smul_apply, canExpand p e N nu hY Ψ y, smul_eq_mul]`. Simplify using `only [hev', hψJ]`.
+
+Establish `h1 : ∀ J : (∀ s, ∀ c : Fin ((nu s).rowLen 0), Fin ((nu s).colLen c) ↪o Fin N), r * (∏ s, ((N0 s : ℚ) : ℂ_[p]))⁻¹ * (((∏ s, (z s (J s) : ℂ_[p])) * (∏ s, ((N0 s : ℚ) : ℂ_[p]))) * ∏ s, ev s (GlobalTheory.WeylMinorDual.colProd ℤ N (nu s) (hY s) (J s))) = r * ∏ s, ((z s (J s) : ℂ_[p]) …`. Introduce `J`. Rewrite using `[Finset.prod_mul_distrib]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl fun J _ => h1 J, ← Finset.mul_sum, sum_prod_eq (fun s j => (z s j : ℂ_[p]) * ev s (GlobalTheory.WeylMinorDual.colProd ℤ N (nu s) (hY s) j)), Finset.prod_congr rfl fun s _ => (hfs s).symm]`.
+
+Use `congr 1`. Use `Fintype.prod_equiv E _ _ fun s => ?_` and prove the remaining obligations. Use `show _ = (eval fun k : Fin N × Fin N => y (E s) k.1 k.2) ((map (Int.castRingHom ℂ_[p])) (f (E s)))`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, fun J => by simp, fun y => by simp⟩`.
+
+Consider the case `add F G _ _ ihF ihG`. Take `⟨ψ, h1, h2⟩` from `ihF`. Take `⟨ψ', h1', h2'⟩` from `ihG`. Conclude with `⟨ψ + ψ', fun J => by`. Rewrite using `[LinearMap.add_apply]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1 J) (h1' J)),`. Use `fun y => by rw [LinearMap.add_apply, h2, h2', Pi.add_apply]⟩`. Consider the case `neg F _ ihF`. Take `⟨ψ, h1, h2⟩` from `ihF`. Conclude with `⟨-ψ, fun J => by rw [LinearMap.neg_apply, norm_neg]; exact h1 J, fun y => by rw [LinearMap.neg_apply, h2, Pi.neg_apply]⟩`.
+
+Take `⟨ψ, hψ1, hψ2⟩` from `key _ hF`. Establish `hzero : ∀ y' : Lt → Fin N → ℕ → ℂ_[p], (φ - ψ) (PI.WwInjective.DeX N nu y') = 0`. Introduce `y'`. Take `⟨y, hy⟩` from `deX_trunc e he N nu hY y'`. Express the relevant statement in the definitionally equal form `(φ - ψ) (WeylLatticeDuality.DeX N nu y') = 0`.
+
+Rewrite using `[hy, LinearMap.sub_apply, hψ2 y, sub_eq_zero]`. Establish `h3` using `PI.WwInjectiveWork.wwInjective_of cauchy_binet_minors Lt p N nu (φ - ψ) hzero J`. Rewrite `h3` using `[LinearMap.sub_apply, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `‖φ (map (Int.castRingHom ℂ_[p]) (WeylLatticeDuality.nablaX N nu J))‖ ≤ 1`. Rewrite using `[show φ (map (Int.castRingHom ℂ_[p]) (WeylLatticeDuality.nablaX N nu J)) = ψ (map (Int.castRingHom ℂ_[p]) (WeylLatticeDuality.nablaX N nu J)) from h3]`.
+
+Conclude with `hψ1 J`.
+-/
 theorem stmt_holds : WeylLatticeDuality.Stmt := by
   intro p _ Lt T _ _ e he N nu ν hν h0 φ
   classical

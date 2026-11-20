@@ -11,12 +11,18 @@ section ExpChart
 
 variable (𝕂 : Type*) [RCLike 𝕂] (𝔸 : Type*) [NormedRing 𝔸] [NormedAlgebra 𝕂 𝔸] [CompleteSpace 𝔸]
 
+/- English proof (translation)
+The claim follows from `contDiff_iff_contDiffAt.2 fun x => (exp_analytic (𝕂 := 𝕂) x).contDiffAt`.
+-/
 theorem contDiff_exp {n : WithTop ℕ∞} : ContDiff 𝕂 n (exp : 𝔸 → 𝔸) :=
   contDiff_iff_contDiffAt.2 fun x => (exp_analytic (𝕂 := 𝕂) x).contDiffAt
 
 variable {𝔸} in
 include 𝕂 in
 
+/- English proof (translation)
+The claim follows from `exp_add_of_commute_of_mem_ball (𝕂 := 𝕂) h (by rw [expSeries_radius_eq_top]; exact edist_lt_top _ _) (by rw [expSeries_radius_eq_top]; exact edist_lt_top _ _)`.
+-/
 theorem exp_add_of_commute' {x y : 𝔸} (h : Commute x y) : exp (x + y) = exp x * exp y :=
   exp_add_of_commute_of_mem_ball (𝕂 := 𝕂) h
     (by rw [expSeries_radius_eq_top]; exact edist_lt_top _ _)
@@ -24,12 +30,21 @@ theorem exp_add_of_commute' {x y : 𝔸} (h : Commute x y) : exp (x + y) = exp x
 
 def expRegularSet : Set 𝔸 := {X | IsUnit (fderiv 𝕂 (exp : 𝔸 → 𝔸) X)}
 
+/- English proof (translation)
+The claim follows from `Units.isOpen.preimage ((contDiff_exp 𝕂 𝔸 (n := 1)).continuous_fderiv one_ne_zero)`.
+-/
 theorem isOpen_expRegularSet : IsOpen (expRegularSet 𝕂 𝔸) :=
   Units.isOpen.preimage ((contDiff_exp 𝕂 𝔸 (n := 1)).continuous_fderiv one_ne_zero)
 
+/- English proof (translation)
+Simplify using `[expRegularSet, (hasFDerivAt_exp_zero (𝕂 := 𝕂) (𝔸 := 𝔸)).fderiv]`.
+-/
 theorem zero_mem_expRegularSet : (0 : 𝔸) ∈ expRegularSet 𝕂 𝔸 := by
   simp [expRegularSet, (hasFDerivAt_exp_zero (𝕂 := 𝕂) (𝔸 := 𝔸)).fderiv]
 
+/- English proof (translation)
+Use `(hasStrictFDerivAt_exp_zero (𝕂 := 𝕂) (𝔸 := 𝔸)) using 1` and compare the differences between its conclusion and the goal. Conclude with `ContinuousLinearMap.ext fun _ => rfl`.
+-/
 theorem hasStrictFDerivAt_exp_zero_equiv :
     HasStrictFDerivAt (exp : 𝔸 → 𝔸) ((ContinuousLinearEquiv.refl 𝕂 𝔸 : 𝔸 →L[𝕂] 𝔸)) 0 := by
   convert (hasStrictFDerivAt_exp_zero (𝕂 := 𝕂) (𝔸 := 𝔸)) using 1
@@ -39,23 +54,45 @@ noncomputable def expPartialHomeomorph : OpenPartialHomeomorph 𝔸 𝔸 :=
   ((hasStrictFDerivAt_exp_zero_equiv 𝕂 𝔸).toOpenPartialHomeomorph exp).restrOpen
     (expRegularSet 𝕂 𝔸) (isOpen_expRegularSet 𝕂 𝔸)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_expPartialHomeomorph : ⇑(expPartialHomeomorph 𝕂 𝔸) = exp := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(hasStrictFDerivAt_exp_zero_equiv 𝕂 𝔸).mem_toOpenPartialHomeomorph_source, zero_mem_expRegularSet 𝕂 𝔸⟩`.
+-/
 theorem zero_mem_expPartialHomeomorph_source : (0 : 𝔸) ∈ (expPartialHomeomorph 𝕂 𝔸).source :=
   ⟨(hasStrictFDerivAt_exp_zero_equiv 𝕂 𝔸).mem_toOpenPartialHomeomorph_source,
     zero_mem_expRegularSet 𝕂 𝔸⟩
 
+/- English proof (translation)
+Simplify `(expPartialHomeomorph 𝕂 𝔸).map_source (zero_mem_expPartialHomeomorph_source 𝕂 𝔸)` using `[coe_expPartialHomeomorph]`.
+-/
 theorem one_mem_expPartialHomeomorph_target : (1 : 𝔸) ∈ (expPartialHomeomorph 𝕂 𝔸).target := by
   simpa [coe_expPartialHomeomorph] using
     (expPartialHomeomorph 𝕂 𝔸).map_source (zero_mem_expPartialHomeomorph_source 𝕂 𝔸)
 
+/- English proof (translation)
+Simplify `(expPartialHomeomorph 𝕂 𝔸).left_inv (zero_mem_expPartialHomeomorph_source 𝕂 𝔸)` using `[coe_expPartialHomeomorph]`.
+-/
 theorem expPartialHomeomorph_symm_one : (expPartialHomeomorph 𝕂 𝔸).symm 1 = 0 := by
   simpa [coe_expPartialHomeomorph] using
     (expPartialHomeomorph 𝕂 𝔸).left_inv (zero_mem_expPartialHomeomorph_source 𝕂 𝔸)
 
+/- English proof (translation)
+Introduce `_ h` and use `h.2`.
+-/
 theorem expPartialHomeomorph_source_subset :
     (expPartialHomeomorph 𝕂 𝔸).source ⊆ expRegularSet 𝕂 𝔸 := fun _ h => h.2
 
+/- English proof (translation)
+Introduce `y hy`. Use `set e := expPartialHomeomorph 𝕂 𝔸`. Establish `hs : e.symm y ∈ e.source` using `e.map_target hy`. Establish `hu : IsUnit (fderiv 𝕂 (exp : 𝔸 → 𝔸) (e.symm y))` using `expPartialHomeomorph_source_subset 𝕂 𝔸 hs`. Use `(e.contDiffAt_symm (f₀' := ContinuousLinearEquiv.unitsEquiv 𝕂 𝔸 hu.unit) hy ?_ ?_).contDiffWithinAt` and prove the remaining obligations.
+
+Establish `h1 : ((ContinuousLinearEquiv.unitsEquiv 𝕂 𝔸 hu.unit : 𝔸 ≃L[𝕂] 𝔸) : 𝔸 →L[𝕂] 𝔸) = fderiv 𝕂 (exp : 𝔸 → 𝔸) (e.symm y)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `((contDiff_exp 𝕂 𝔸 (n := 1)).differentiable one_ne_zero _).hasFDerivAt`.
+
+Conclude with `(contDiff_exp 𝕂 𝔸).contDiffAt`.
+-/
 theorem contDiffOn_expPartialHomeomorph_symm {n : WithTop ℕ∞} :
     ContDiffOn 𝕂 n (expPartialHomeomorph 𝕂 𝔸).symm (expPartialHomeomorph 𝕂 𝔸).target := by
   intro y hy
@@ -79,10 +116,19 @@ noncomputable def expUnit (X : 𝔸) : 𝔸ˣ :=
     rw [← exp_add_of_commute' 𝕂 (Commute.neg_right (Commute.refl X)), add_neg_cancel, exp_zero],
    by rw [← exp_add_of_commute' 𝕂 (Commute.neg_left (Commute.refl X)), neg_add_cancel, exp_zero]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_expUnit (X : 𝔸) : (expUnit 𝕂 𝔸 X : 𝔸) = exp X := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_expUnit_inv (X : 𝔸) : ((expUnit 𝕂 𝔸 X)⁻¹ : 𝔸ˣ) = exp (-X) := rfl
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨(contDiff_exp 𝕂 𝔸 (n := 0)).continuous, (contDiff_exp 𝕂 𝔸 (n := 0)).continuous.comp continuous_neg⟩`.
+-/
 theorem continuous_expUnit : Continuous (expUnit 𝕂 𝔸) :=
   Units.continuous_iff.2 ⟨(contDiff_exp 𝕂 𝔸 (n := 0)).continuous,
     (contDiff_exp 𝕂 𝔸 (n := 0)).continuous.comp continuous_neg⟩
@@ -118,17 +164,39 @@ noncomputable def expChartUnits (g : 𝔸ˣ) : OpenPartialHomeomorph 𝔸ˣ 𝔸
     (Units.continuous_val.comp (continuous_const.mul continuous_id)).continuousOn (fun _ hx => hx)
   continuousOn_invFun := (continuous_const.mul (continuous_expUnit 𝕂 𝔸)).continuousOn
 
+/- English proof (translation)
+Use `show ((g⁻¹ * g : 𝔸ˣ) : 𝔸) ∈ (𝔢).target`. Simplify using `using one_mem_expPartialHomeomorph_target 𝕂 𝔸`.
+-/
 theorem mem_expChartUnits_source (g : 𝔸ˣ) : g ∈ (expChartUnits 𝕂 g).source := by
   show ((g⁻¹ * g : 𝔸ˣ) : 𝔸) ∈ (𝔢).target
   simpa using one_mem_expPartialHomeomorph_target 𝕂 𝔸
 
+/- English proof (translation)
+Use `show (𝔢).symm ((g⁻¹ * g : 𝔸ˣ) : 𝔸) = 0`. Simplify using `using expPartialHomeomorph_symm_one 𝕂 𝔸`.
+-/
 theorem expChartUnits_self (g : 𝔸ˣ) : expChartUnits 𝕂 g g = 0 := by
   show (𝔢).symm ((g⁻¹ * g : 𝔸ˣ) : 𝔸) = 0
   simpa using expPartialHomeomorph_symm_one 𝕂 𝔸
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem expChartUnits_symm_apply (g : 𝔸ˣ) (X : 𝔸) :
     (((expChartUnits 𝕂 g).symm X : 𝔸ˣ) : 𝔸) = g * exp X := rfl
 
+/- English proof (translation)
+Rewrite using `[IsManifold.mem_maximalAtlas_iff]`. Introduce `e' he'`. Take `rfl : e' = _` from `he'`. Establish `h1 : (expChartUnits 𝕂 g).symm ≫ₕ Units.isOpenEmbedding_val.toOpenPartialHomeomorph (Units.val : 𝔸ˣ → 𝔸) ∈ contDiffGroupoid n 𝓘(𝕂, 𝔸)`. Rewrite using `[contDiffGroupoid, mem_groupoid_of_pregroupoid]`.
+
+Prove the components needed by the constructor for the conclusion. Simplify using `only [contDiffPregroupoid, modelWithCornersSelf_coe, modelWithCornersSelf_coe_symm, Function.id_comp, Function.comp_id, preimage_id_eq, range_id, inter_univ]`. Conclude with `(contDiff_const.mul (contDiff_exp 𝕂 𝔸)).contDiffOn.congr (fun X _ => rfl)`. Simplify using `only [contDiffPregroupoid, modelWithCornersSelf_coe, modelWithCornersSelf_coe_symm, Function.id_comp, Function.comp_id, preimage_id_eq, range_id, inter_univ] set e0 := Units.isOpenEmbedding_val.toOpenPartialHomeomorph (Units.val : 𝔸ˣ → 𝔸)`. Establish `hmaps : MapsTo (fun a : 𝔸 => ((g⁻¹ : 𝔸ˣ) : 𝔸) * a) ((expChartUnits 𝕂 g).symm ≫ₕ e0).symm.source (𝔢).target`.
+
+Introduce `a ha`. Rewrite `ha` using `[OpenPartialHomeomorph.symm_source, OpenPartialHomeomorph.trans_target]`. Establish `hr : ((e0.symm a : 𝔸ˣ) : 𝔸) = a` using `e0.right_inv ha.1`. Use `ha.2` as an intermediate fact. Simplify using `only [mem_preimage] at this`.
+
+Express the relevant statement in the definitionally equal form `(((g⁻¹ * e0.symm a : 𝔸ˣ) : 𝔸)) ∈ (𝔢).target at this`. Rewrite `this` using `[Units.val_mul, hr]`. Then use the resulting hypothesis. Use `((contDiffOn_expPartialHomeomorph_symm 𝕂 𝔸).comp (contDiff_const.mul contDiff_id).contDiffOn hmaps).congr ?_` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[OpenPartialHomeomorph.symm_source, OpenPartialHomeomorph.trans_target]`.
+
+Establish `hr : ((e0.symm a : 𝔸ˣ) : 𝔸) = a` using `e0.right_inv ha.1`. Use `show (𝔢).symm (((g⁻¹ * e0.symm a : 𝔸ˣ) : 𝔸)) = _`. Rewrite using `[Units.val_mul, hr]`. Both sides reduce to the same expression. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+
+Use `(contDiffGroupoid n 𝓘(𝕂, 𝔸)).symm h1` as an intermediate fact. Rewrite `this` using `[OpenPartialHomeomorph.trans_symm_eq_symm_trans_symm, OpenPartialHomeomorph.symm_symm]`. Then use the resulting hypothesis.
+-/
 theorem expChartUnits_mem_maximalAtlas (g : 𝔸ˣ) (n : WithTop ℕ∞) :
     expChartUnits 𝕂 g ∈ IsManifold.maximalAtlas 𝓘(𝕂, 𝔸) n 𝔸ˣ := by
   rw [IsManifold.mem_maximalAtlas_iff]
@@ -171,12 +239,21 @@ section GeneralLinear
 
 open scoped Matrix.Norms.L2Operator
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem lieGroup_GL (𝕂 : Type*) [RCLike 𝕂] (n : ℕ) (k : WithTop ℕ∞) :
     LieGroup 𝓘(𝕂, Matrix (Fin n) (Fin n) 𝕂) k (GL (Fin n) 𝕂) := inferInstance
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem lieGroup_GL_complex_real (n : ℕ) (k : WithTop ℕ∞) :
     LieGroup 𝓘(ℝ, Matrix (Fin n) (Fin n) ℂ) k (GL (Fin n) ℂ) := inferInstance
 
+/- English proof (translation)
+The claim follows from `expChartUnits_mem_maximalAtlas 𝕂 g k`.
+-/
 theorem expChart_GL_mem_maximalAtlas (𝕂 : Type*) [RCLike 𝕂] (n : ℕ) (g : GL (Fin n) 𝕂)
     (k : WithTop ℕ∞) :
     expChartUnits 𝕂 g ∈ IsManifold.maximalAtlas 𝓘(𝕂, Matrix (Fin n) (Fin n) 𝕂) k (GL (Fin n) 𝕂) :=
@@ -192,9 +269,15 @@ noncomputable def subspaceProj (𝔤 : Submodule ℝ 𝔸) : 𝔸 →L[ℝ] 𝔤
   LinearMap.toContinuousLinearMap
     (Submodule.projectionOnto 𝔤 _ (Submodule.exists_isCompl 𝔤).choose_spec)
 
+/- English proof (translation)
+The claim follows from `Submodule.projectionOnto_apply_left _ X`.
+-/
 @[simp] theorem subspaceProj_coe (𝔤 : Submodule ℝ 𝔸) (X : 𝔤) : subspaceProj 𝔤 (X : 𝔸) = X :=
   Submodule.projectionOnto_apply_left _ X
 
+/- English proof (translation)
+Simplify using `using congrArg Subtype.val (subspaceProj_coe 𝔤 ⟨X, hX⟩)`.
+-/
 theorem subspaceProj_of_mem {𝔤 : Submodule ℝ 𝔸} {X : 𝔸} (hX : X ∈ 𝔤) :
     (subspaceProj 𝔤 X : 𝔸) = X := by
   simpa using congrArg Subtype.val (subspaceProj_coe 𝔤 ⟨X, hX⟩)
@@ -204,6 +287,9 @@ structure IsExpLieAlgebra (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) : Pr
   exists_nhds : ∃ U : Set 𝔸, IsOpen U ∧ (0 : 𝔸) ∈ U ∧
     U ⊆ (expPartialHomeomorph ℝ 𝔸).source ∧ ∀ X ∈ U, expUnit ℝ 𝔸 X ∈ G → X ∈ 𝔤
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_val_val (G : Subgroup 𝔸ˣ) : Continuous (fun x : G => ((x : 𝔸ˣ) : 𝔸)) :=
   Units.continuous_val.comp continuous_subtype_val
 
@@ -215,39 +301,81 @@ local notation "𝔢" => expPartialHomeomorph ℝ 𝔸
 
 def nhd : Set 𝔸 := h.exists_nhds.choose
 
+/- English proof (translation)
+The claim follows from `h.exists_nhds.choose_spec.1`.
+-/
 theorem isOpen_nhd : IsOpen h.nhd := h.exists_nhds.choose_spec.1
+/- English proof (translation)
+The claim follows from `h.exists_nhds.choose_spec.2.1`.
+-/
 theorem zero_mem_nhd : (0 : 𝔸) ∈ h.nhd := h.exists_nhds.choose_spec.2.1
+/- English proof (translation)
+The claim follows from `h.exists_nhds.choose_spec.2.2.1`.
+-/
 theorem nhd_subset : h.nhd ⊆ (𝔢).source := h.exists_nhds.choose_spec.2.2.1
+/- English proof (translation)
+The claim follows from `h.exists_nhds.choose_spec.2.2.2 X hX hG`.
+-/
 theorem mem_of_mem_nhd {X : 𝔸} (hX : X ∈ h.nhd) (hG : expUnit ℝ 𝔸 X ∈ G) : X ∈ 𝔤 :=
   h.exists_nhds.choose_spec.2.2.2 X hX hG
 
 def nhdOne : Set 𝔸 := 𝔢 '' h.nhd
 
+/- English proof (translation)
+The claim follows from `(𝔢).isOpen_image_of_subset_source h.isOpen_nhd h.nhd_subset`.
+-/
 theorem isOpen_nhdOne : IsOpen h.nhdOne := (𝔢).isOpen_image_of_subset_source h.isOpen_nhd h.nhd_subset
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨X, hX, rfl⟩`. Conclude with `(𝔢).map_source (h.nhd_subset hX)`.
+-/
 theorem nhdOne_subset_target : h.nhdOne ⊆ (𝔢).target := by
   rintro _ ⟨X, hX, rfl⟩; exact (𝔢).map_source (h.nhd_subset hX)
 
+/- English proof (translation)
+Take `⟨X, hX, rfl⟩` from `ha`. Rewrite using `[(𝔢).left_inv (h.nhd_subset hX)]` and apply the resulting hypothesis.
+-/
 theorem symm_mem_nhd {a : 𝔸} (ha : a ∈ h.nhdOne) : (𝔢).symm a ∈ h.nhd := by
   obtain ⟨X, hX, rfl⟩ := ha; rwa [(𝔢).left_inv (h.nhd_subset hX)]
 
+/- English proof (translation)
+The claim follows from `(𝔢).right_inv (h.nhdOne_subset_target ha)`.
+-/
 theorem exp_symm {a : 𝔸} (ha : a ∈ h.nhdOne) : exp ((𝔢).symm a) = a :=
   (𝔢).right_inv (h.nhdOne_subset_target ha)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X, hX, rfl⟩`.
+-/
 theorem exp_mem_nhdOne {X : 𝔸} (hX : X ∈ h.nhd) : exp X ∈ h.nhdOne := ⟨X, hX, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(𝔢).left_inv (h.nhd_subset hX)`.
+-/
 theorem symm_exp {X : 𝔸} (hX : X ∈ h.nhd) : (𝔢).symm (exp X) = X := (𝔢).left_inv (h.nhd_subset hX)
 
+/- English proof (translation)
+Simplify `h.exp_mem_nhdOne h.zero_mem_nhd` using `[exp_zero]`.
+-/
 theorem one_mem_nhdOne : (1 : 𝔸) ∈ h.nhdOne := by
   simpa [exp_zero] using h.exp_mem_nhdOne h.zero_mem_nhd
 
 noncomputable def expG (X : 𝔤) : G := ⟨expUnit ℝ 𝔸 X, h.expUnit_mem X X.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_expG (X : 𝔤) : ((h.expG X : 𝔸ˣ) : 𝔸) = exp (X : 𝔸) := rfl
 
+/- English proof (translation)
+The claim follows from `((continuous_expUnit ℝ 𝔸).comp continuous_subtype_val).subtype_mk _`.
+-/
 theorem continuous_expG : Continuous h.expG :=
   ((continuous_expUnit ℝ 𝔸).comp continuous_subtype_val).subtype_mk _
 
+/- English proof (translation)
+Apply `h.mem_of_mem_nhd (h.symm_mem_nhd hx)` to reduce the goal to its premises. Establish `: expUnit ℝ 𝔸 ((𝔢).symm ((x : 𝔸ˣ) : 𝔸)) = (x : 𝔸ˣ)` using `Units.ext (h.exp_symm hx)`. Rewrite using `[this]`. Conclude with `x.2`.
+-/
 theorem symm_mem_lie {x : G} (hx : ((x : 𝔸ˣ) : 𝔸) ∈ h.nhdOne) : (𝔢).symm ((x : 𝔸ˣ) : 𝔸) ∈ 𝔤 := by
   apply h.mem_of_mem_nhd (h.symm_mem_nhd hx)
   have : expUnit ℝ 𝔸 ((𝔢).symm ((x : 𝔸ˣ) : 𝔸)) = (x : 𝔸ˣ) := Units.ext (h.exp_symm hx)
@@ -302,12 +430,22 @@ noncomputable def chartedSpace : ChartedSpace 𝔤 G where
     simpa using h.one_mem_nhdOne
   chart_mem_atlas g := mem_range_self g
 
+/- English proof (translation)
+The claim follows from `(subspaceProj 𝔤).contDiff.comp_contDiffOn ((contDiffOn_expPartialHomeomorph_symm ℝ 𝔸).comp (contDiff_const.mul ((contDiff_exp ℝ 𝔸).comp 𝔤.subtypeL.contDiff)).contDiffOn hs)`.
+-/
 theorem contDiffOn_proj_symm_mul_exp {n : WithTop ℕ∞} (c : 𝔸) (s : Set 𝔤)
     (hs : ∀ X ∈ s, c * exp (X : 𝔸) ∈ (𝔢).target) :
     ContDiffOn ℝ n (fun X : 𝔤 => subspaceProj 𝔤 ((𝔢).symm (c * exp (X : 𝔸)))) s :=
   (subspaceProj 𝔤).contDiff.comp_contDiffOn ((contDiffOn_expPartialHomeomorph_symm ℝ 𝔸).comp
     (contDiff_const.mul ((contDiff_exp ℝ 𝔸).comp 𝔤.subtypeL.contDiff)).contDiffOn hs)
 
+/- English proof (translation)
+Set `` to `h.chartedSpace`. Apply `isManifold_of_contDiffOn` to reduce the goal to its premises. Introduce and unpack `e e' ⟨g, rfl⟩ ⟨g', rfl⟩`. Simplify using `only [modelWithCornersSelf_coe, modelWithCornersSelf_coe_symm, Function.id_comp, Function.comp_id, preimage_id_eq, range_id, inter_univ]`. Establish `key : ∀ X : 𝔤, ((((g' : G)⁻¹ * (h.chart g).symm X : G) : 𝔸ˣ) : 𝔸) = ((((g'⁻¹ * g : G) : 𝔸ˣ) : 𝔸)) * exp (X : 𝔸)`.
+
+Introduce `X`. Use `show _ = _`. Simplify using `[chart, expG, mul_assoc]`. Use `(contDiffOn_proj_symm_mul_exp ((((g'⁻¹ * g : G) : 𝔸ˣ) : 𝔸)) _ ?_).congr ?_` and prove the remaining obligations. Introduce `X hX`.
+
+Rewrite using `[← key]`. Conclude with `h.nhdOne_subset_target hX.2`. Introduce `X _`. Conclude with `congrArg (fun a => subspaceProj 𝔤 ((𝔢).symm a)) (key X)`.
+-/
 theorem isManifold (n : WithTop ℕ∞) : letI := h.chartedSpace; IsManifold 𝓘(ℝ, 𝔤) n G := by
   let := h.chartedSpace
   apply isManifold_of_contDiffOn
@@ -324,6 +462,11 @@ theorem isManifold (n : WithTop ℕ∞) : letI := h.chartedSpace; IsManifold �
   · intro X _
     exact congrArg (fun a => subspaceProj 𝔤 ((𝔢).symm a)) (key X)
 
+/- English proof (translation)
+Set `` to `h.chartedSpace`. Introduce `x`. Rewrite using `[contMDiffAt_iff_source]`. Establish `: (fun x : G => ((x : 𝔸ˣ) : 𝔸)) ∘ (extChartAt 𝓘(ℝ, 𝔤) x).symm = fun X : 𝔤 => ((x : 𝔸ˣ) : 𝔸) * exp (X : 𝔸)` using `rfl`. Rewrite using `[this]`.
+
+Conclude with `(contDiff_const.mul ((contDiff_exp ℝ 𝔸).comp 𝔤.subtypeL.contDiff)).contMDiff.contMDiffAt |>.contMDiffWithinAt`.
+-/
 theorem contMDiff_val (n : WithTop ℕ∞) : letI := h.chartedSpace;
     ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, 𝔸) n (fun x : G => ((x : 𝔸ˣ) : 𝔸)) := by
   let := h.chartedSpace
@@ -335,6 +478,13 @@ theorem contMDiff_val (n : WithTop ℕ∞) : letI := h.chartedSpace;
   exact (contDiff_const.mul ((contDiff_exp ℝ 𝔸).comp 𝔤.subtypeL.contDiff)).contMDiff.contMDiffAt
     |>.contMDiffWithinAt
 
+/- English proof (translation)
+Set `` to `h.chartedSpace`. Rewrite using `[contMDiffAt_iff_target]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hemb : Topology.IsEmbedding (fun x : G => ((x : 𝔸ˣ) : 𝔸))` using `Units.isOpenEmbedding_val.isEmbedding.comp Topology.IsEmbedding.subtypeVal`. Conclude with `hemb.continuousAt_iff.2 hf.continuousAt`.
+
+Use `set c : 𝔸 := ((((f x)⁻¹ : G) : 𝔸ˣ) : 𝔸) with hc`. Establish `h1 : c * ((f x : 𝔸ˣ) : 𝔸) = 1` using `by simp [c]`. Establish `hF : ContDiffAt ℝ n (fun a : 𝔸 => subspaceProj 𝔤 ((𝔢).symm (c * a))) (((f x : 𝔸ˣ) : 𝔸))`. Use `(subspaceProj 𝔤).contDiff.contDiffAt.comp _ ?_` and prove the remaining obligations. Use `ContDiffAt.comp (g := (𝔢).symm) (f := fun a => c * a) _ ?_ (contDiff_const.mul contDiff_id).contDiffAt` and prove the remaining obligations.
+
+Simplify using `only [h1]`. Conclude with `(contDiffOn_expPartialHomeomorph_symm ℝ 𝔸).contDiffAt ((𝔢).open_target.mem_nhds (one_mem_expPartialHomeomorph_target ℝ 𝔸))`. Conclude with `ContDiffAt.comp_contMDiffAt (f := fun y => ((f y : 𝔸ˣ) : 𝔸)) hF hf`.
+-/
 theorem contMDiffAt_of_val {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {H : Type*}
     [TopologicalSpace H] {I : ModelWithCorners ℝ E H} {M : Type*} [TopologicalSpace M]
     [ChartedSpace H M] {n : WithTop ℕ∞} {f : M → G} {x : M}
@@ -358,6 +508,13 @@ theorem contMDiffAt_of_val {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E
         ((𝔢).open_target.mem_nhds (one_mem_expPartialHomeomorph_target ℝ 𝔸))
     exact ContDiffAt.comp_contMDiffAt (f := fun y => ((f y : 𝔸ˣ) : 𝔸)) hF hf
 
+/- English proof (translation)
+Set `` to `h.chartedSpace`. Conclude with `{ toIsManifold := h.isManifold n contMDiff_mul := fun p => by`. Use `h.contMDiffAt_of_val ?_` and prove the remaining obligations. Establish `: ContMDiff (𝓘(ℝ, 𝔤).prod 𝓘(ℝ, 𝔤)) 𝓘(ℝ, 𝔸 × 𝔸) n (fun p : G × G => (((p.1 : 𝔸ˣ) : 𝔸), ((p.2 : 𝔸ˣ) : 𝔸)))` using `((h.contMDiff_val n).comp contMDiff_fst).prodMk_space ((h.contMDiff_val n).comp contMDiff_snd)`. Conclude with `(contDiff_mul.comp_contMDiff this) p`.
+
+Use `contMDiff_inv := fun x => by`. Use `h.contMDiffAt_of_val ?_` and prove the remaining obligations. Establish `hx : ContDiffAt ℝ n Ring.inverse (((x : 𝔸ˣ) : 𝔸))` using `contDiffAt_ringInverse ℝ (x : 𝔸ˣ)`. Use `ContDiffAt.comp_contMDiffAt (f := fun x : G => ((x : 𝔸ˣ) : 𝔸)) hx ((h.contMDiff_val n) x)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `y`. Simplify using `}`.
+-/
 theorem lieGroup (n : WithTop ℕ∞) : letI := h.chartedSpace; LieGroup 𝓘(ℝ, 𝔤) n G := by
   let := h.chartedSpace
   exact {
@@ -390,20 +547,35 @@ variable (p q : ℕ)
 def indefJ : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ :=
   diagonal (Sum.elim (fun _ => 1) (fun _ => -1))
 
+/- English proof (translation)
+Rewrite using `[indefJ, diagonal_mul_diagonal, ← diagonal_one]`. Apply the tactic sequence `congr 1; funext i; cases i <;> simp`.
+-/
 theorem indefJ_mul_self : indefJ p q * indefJ p q = 1 := by
   rw [indefJ, diagonal_mul_diagonal, ← diagonal_one]
   congr 1; funext i; cases i <;> simp
 
+/- English proof (translation)
+Rewrite using `[indefJ, diagonal_conjTranspose]`. Apply the tactic sequence `congr 1; funext i; cases i <;> simp`.
+-/
 theorem indefJ_conjTranspose : (indefJ p q)ᴴ = indefJ p q := by
   rw [indefJ, diagonal_conjTranspose]
   congr 1; funext i; cases i <;> simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨indefJ p q, indefJ p q, indefJ_mul_self p q, indefJ_mul_self p q⟩, rfl⟩`.
+-/
 theorem isUnit_indefJ : IsUnit (indefJ p q) :=
   ⟨⟨indefJ p q, indefJ p q, indefJ_mul_self p q, indefJ_mul_self p q⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `inv_eq_left_inv (indefJ_mul_self p q)`.
+-/
 theorem inv_indefJ : (indefJ p q)⁻¹ = indefJ p q :=
   inv_eq_left_inv (indefJ_mul_self p q)
 
+/- English proof (translation)
+Rewrite using `[indefJ, l2_opNorm_diagonal]`. Use `pi_norm_le_iff_of_nonneg zero_le_one |>.2 fun i => ?_` and prove the remaining obligations. Apply the tactic sequence `cases i <;> simp`.
+-/
 theorem norm_indefJ_le : ‖indefJ p q‖ ≤ 1 := by
   rw [indefJ, l2_opNorm_diagonal]
   refine pi_norm_le_iff_of_nonneg zero_le_one |>.2 fun i => ?_
@@ -450,6 +622,11 @@ variable (p q : ℕ)
 
 local notation "𝔐" => Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Xᴴ * indefJ p q + indefJ p q * X = 0 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : Xᴴ * indefJ p q = -(indefJ p q * X)` using `eq_neg_of_add_eq_zero_left h`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `h`. Rewrite using `[h, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, indefJ_mul_self, Matrix.mul_one, neg_add_cancel]`.
+-/
 theorem mem_indefiniteUnitaryLieAlgebra_iff {X : 𝔐} :
     X ∈ indefiniteUnitaryLieAlgebra p q ↔ Xᴴ = -(indefJ p q * X * indefJ p q) := by
   change Xᴴ * indefJ p q + indefJ p q * X = 0 ↔ _
@@ -462,18 +639,43 @@ theorem mem_indefiniteUnitaryLieAlgebra_iff {X : 𝔐} :
     rw [h, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, indefJ_mul_self, Matrix.mul_one,
       neg_add_cancel]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_indefiniteUnitaryGroup_iff {g : GL (Fin p ⊕ Fin q) ℂ} :
     g ∈ indefiniteUnitaryGroup p q ↔ g.valᴴ * indefJ p q * g.val = indefJ p q := Iff.rfl
 
+/- English proof (translation)
+Use `Matrix.exp_conj (indefJ p q) (-X) (isUnit_indefJ p q)` as an intermediate fact. Rewrite `this` using `[inv_indefJ]`. Rewrite using `[← this, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem exp_neg_conj_indefJ (X : 𝔐) :
     exp (-(indefJ p q * X * indefJ p q)) = indefJ p q * exp (-X) * indefJ p q := by
   have := Matrix.exp_conj (indefJ p q) (-X) (isUnit_indefJ p q)
   rw [inv_indefJ] at this
   rw [← this, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+The claim follows from `(expUnit ℝ 𝔐 X).mul_inv`.
+-/
 theorem exp_mul_exp_neg (X : 𝔐) : exp X * exp (-X) = 1 := (expUnit ℝ 𝔐 X).mul_inv
+/- English proof (translation)
+The claim follows from `(expUnit ℝ 𝔐 X).inv_mul`.
+-/
 theorem exp_neg_mul_exp (X : 𝔐) : exp (-X) * exp X = 1 := (expUnit ℝ 𝔐 X).inv_mul
 
+/- English proof (translation)
+Rewrite `hX` using `[mem_indefiniteUnitaryLieAlgebra_iff]`. Rewrite using `[mem_indefiniteUnitaryGroup_iff, coe_expUnit, ← Matrix.exp_conjTranspose, hX, exp_neg_conj_indefJ]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (indefJ p q) (indefJ p q), indefJ_mul_self, Matrix.one_mul, exp_neg_mul_exp, Matrix.mul_one]`. Use `exists_nhds := by`.
+
+Take `⟨ε, εpos, hε⟩` from `Metric.isOpen_iff.1 (expPartialHomeomorph ℝ 𝔐).open_source 0 (zero_mem_expPartialHomeomorph_source ℝ 𝔐)`. Use `⟨Metric.ball 0 ε, Metric.isOpen_ball, Metric.mem_ball_self εpos, hε, fun X hX hG => ?_⟩` and prove the remaining obligations. Rewrite `hG` using `[mem_indefiniteUnitaryGroup_iff, coe_expUnit]`. Rewrite using `[mem_indefiniteUnitaryLieAlgebra_iff]`. Establish `h1 : (exp X)ᴴ = indefJ p q * exp (-X) * indefJ p q`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[exp_mul_exp_neg, Matrix.mul_one, Matrix.mul_assoc, indefJ_mul_self, Matrix.mul_one]`. Use `_ = (exp X)ᴴ * indefJ p q * exp X * exp (-X) * indefJ p q := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = indefJ p q * exp (-X) * indefJ p q := by rw [hG]`.
+
+Establish `h2 : exp Xᴴ = exp (-(indefJ p q * X * indefJ p q))`. Rewrite using `[Matrix.exp_conjTranspose, h1, exp_neg_conj_indefJ]`. Establish `hX' : ‖X‖ < ε` using `mem_ball_zero_iff.1 hX`. Establish `hs1 : Xᴴ ∈ (expPartialHomeomorph ℝ 𝔐).source` using `hε (by`. Rewrite using `[mem_ball_zero_iff, l2_opNorm_conjTranspose]`.
+
+Conclude with `hX')`. Establish `hs2 : -(indefJ p q * X * indefJ p q) ∈ (expPartialHomeomorph ℝ 𝔐).source` using `hε (by`. Rewrite using `[mem_ball_zero_iff, norm_neg]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_indefJ_le p q`.
+
+Conclude with `norm_indefJ_le p q`. Use `_ < ε := by simpa using hX')`. Conclude with `(expPartialHomeomorph ℝ 𝔐).injOn hs1 hs2 h2`.
+-/
 theorem isExpLieAlgebra_indefiniteUnitary :
     IsExpLieAlgebra (indefiniteUnitaryGroup p q) (indefiniteUnitaryLieAlgebra p q) where
   expUnit_mem X hX := by

@@ -38,6 +38,9 @@ section Steps
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : Type}
   {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T0 D.R.m}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.fixes_untwistedTupleData_of_fixes_smallField D Γ Pl0 I0 T0 A3 hRF T Rl cG S YS F κ v₀ hT hcore hfw hti hgal hval hray hroots j τ hτ`.
+-/
 theorem fixBase_of_fix (hRF : GlobalTheory.NT.RayField) {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {Rl : RealDat3 D A3 T.Q.c.F}
     {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {S : NX.RatDat D.ntw} (YS : NX.NExpRealS Rl cG S) {F : Face D A3.A}
     {κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)} {v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec}
@@ -49,11 +52,17 @@ theorem fixBase_of_fix (hRF : GlobalTheory.NT.RayField) {T : CoreJ D} [Algebra T
     FixBase T Rl.toRealDat j τ :=
   GlobalTheory.T.fixes_untwistedTupleData_of_fixes_smallField D Γ Pl0 I0 T0 A3 hRF T Rl cG S YS F κ v₀ hT hcore hfw hti hgal hval hray hroots j τ hτ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_complexLinear_extension_coefficientMap D G Pl0 T1 A T R j Tp tup O`.
+-/
 theorem exists_extC {G : Type} [Group G] [Fintype G] {T1 : Type} {A : FamIn D.what₂.LL G Pl0 T1 D.R.m} {T : CoreJ D}
     [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {j : Fin D.R.m} {Tp : Type} {tup : Tp → T1}
     (O : OMDat T.toCore R j Tp tup) : ∃ c : VsV D j ℂ →ₗ[ℂ] (R.cV j).W, ExtC R j (inC O.c') O.c0' c :=
   GlobalTheory.T.exists_complexLinear_extension_coefficientMap D G Pl0 T1 A T R j Tp tup O
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_thetaSeries_rational_vector_ne_zero_of_cuspForms D Γ Pl0 I0 T0 A3 T Rl F κ v₀ O hnV hcore hfw hio j hpins hrow0 hcusp c hc u hu`.
+-/
 theorem exists_ser_ne_zero {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {Rl : RealDat3 D A3 T.Q.c.F} {F : Face D A3.A}
     {κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)} {v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec}
     (O : ∀ j, OMDat T.toCore Rl.toRealDat j Unit (fun _ => A3.A.μ0)) (hnV : 8 * D.R.f * D.R.r + 4 ≤ D.R.nV)
@@ -68,6 +77,9 @@ theorem exists_ser_ne_zero {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {Rl : Re
       h ∈ GfC (Vc D j) ∧ ser Rl.toRealDat j A3.A.μ0 (Rl.vP j A3.A.μ0) u h (c x) g ≠ 0 :=
   GlobalTheory.T.exists_thetaSeries_rational_vector_ne_zero_of_cuspForms D Γ Pl0 I0 T0 A3 T Rl F κ v₀ O hnV hcore hfw hio j hpins hrow0 hcusp c hc u hu
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.rationalPhaseThetaSeries_expands_cuspForms_smallField D Γ Pl0 I0 T0 A3 hRF T Rl cG S YS F κ v₀ O hnV hT hcore hfw hti hio hQ hgal hval hray hroots j hV hpins hfp gramR c0R c0L hft hbc u hu ph₀ hph c hc v hv x hx h hh`.
+-/
 theorem expands_of_isRatPhase (hRF : GlobalTheory.NT.RayField) {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL]
     {Rl : RealDat3 D A3 T.Q.c.F} {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {S : NX.RatDat D.ntw} (YS : NX.NExpRealS Rl cG S)
     {F : Face D A3.A} {κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)}
@@ -96,6 +108,13 @@ theorem expands_of_isRatPhase (hRF : GlobalTheory.NT.RayField) {T : CoreJ D} [Al
         ∀ k, e k ∈ (embLL0 D).fieldRange :=
   GlobalTheory.T.rationalPhaseThetaSeries_expands_cuspForms_smallField D Γ Pl0 I0 T0 A3 hRF T Rl cG S YS F κ v₀ O hnV hT hcore hfw hti hio hQ hgal hval hray hroots j hV hpins hfp gramR c0R c0L hft hbc u hu ph₀ hph c hc v hv x hx h hh
 
+/- English proof (translation)
+Establish `h1 : Expands O κ Ψ (fun k => a * e k) f`. Introduce `g`. Rewrite using `[hΨ g, he g, Finset.mul_sum]`. Simplify using `only [mul_assoc]`. Establish `h2` using `hc.2 _ _ _ h1 g₀`.
+
+Establish `h3 : a * Φ g₀ = τ a * Φ g₀`. Rewrite using `[← hΨ' g₀, h2, he g₀, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show 1 * τ (a * e k) * _ = _`. Rewrite using `[one_mul, map_mul, hτ, mul_assoc]`.
+
+Conclude with `(mul_right_cancel₀ hg₀ h3).symm`.
+-/
 theorem fixed_of_expands {G : Type} [Group G] [Fintype G] {T1 : Type} {A : FamIn D.what₂.LL G Pl0 T1 D.R.m} {T : CoreJ D}
     [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {j : Fin D.R.m} {Tp : Type} {tup : Tp → T1}
     (O : OMDat T.toCore R j Tp tup) (κ : WeightFamilies.Wt D ((j : ℕ) + 1)) (τ : ℂ ≃+* ℂ) {Φ Ψ Ψ' : GA D (Wc D j) → ℂ} {a : ℂ}
@@ -114,6 +133,9 @@ theorem fixed_of_expands {G : Type} [Group G] [Fintype G] {T1 : Type} {A : FamIn
     rw [one_mul, map_mul, hτ, mul_assoc]
   exact (mul_right_cancel₀ hg₀ h3).symm
 
+/- English proof (translation)
+Unfold `ConjVec`. Rewrite using `[hx]`. Use extensionality with `m`. Take `⟨q, hq⟩` from `hv m`. Simplify using `[MvPolynomial.coeff_map, hq]`.
+-/
 theorem conjVec_self_of_rat (j : Fin D.R.m) (τ : ℂ ≃+* ℂ) (v : VsV D j D.what₂.LL)
     (hv : ∀ m, ∃ q : ℚ, MvPolynomial.coeff m (v : Pol D.what₂.LL D.what₂.Tau (Vc D j).rank) = (q : D.what₂.LL))
     (x : VsV D j ℂ)
@@ -127,6 +149,31 @@ theorem conjVec_self_of_rat (j : Fin D.R.m) (τ : ℂ ≃+* ℂ) (v : VsV D j D.
 
 end Steps
 
+/- English proof (translation)
+Introduce `_ hRF row D Γ _ _ Pl0 I0 T0 A3 T _ Rl cG S YS F κ v₀ O ρ hρ i j b hV hpin H hcusp`. Establish `hCI : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2` using `GlobalTheory.chartIndependence_unconditional`. Establish `hcore` using `H.core`. Establish `hT` using `H.laws`. Establish `hti` using `H.tieIn`.
+
+Establish `hfw` using `H.fw`. Establish `hio` using `H.io`. Establish `hQ` using `H.guard`. Establish `hfin` using `H.fin`. Establish `hpins` using `H.pins`.
+
+Establish `hphase` using `H.phase`. Establish `hfp` using `H.frame`. Establish `hnV` using `H.size`. Establish `hgal` using `H.galois`. Establish `hval` using `H.small.val`.
+
+Establish `hray` using `H.small.ray`. Establish `hroots` using `H.small.roots`. Establish `hrow0 : OneMapRow0 T Rl.toRealDat κ v₀ O j` using `GlobalTheory.OneMapTies.oneMapRow0_of_ties_base_clauses hCI D Γ Pl0 T0 A3.A T Rl.toRealDat F κ v₀ hcore.lev hcore.grp hcore.fam hcore.models hcore.thP hti hio O j hpins`. Take `⟨gramR, c0R, c0L, hft, hbc⟩` from `hpins.2.lift.c0`. Take `⟨u, w₀, hu, -, hw⟩` from `FWT.IsChosenExtremalVector.io _ (hti.hv₀ j (sg0 D A3.A)) hio`.
+
+Take `⟨c, hc0, hsc⟩` from `Scale.exists_scale hcore.lev hcore.thP (hcore.models.cV j) (hρ.base i j b) (hpin.psi i j b) (hpin.inf i j b) (hpin.cartT i j b) (hpin.onbS i j b) (hpin.onbT i j b) (hpin.mu0 i j b) (hpin.eta i j b) (hpin.ap i j b) (hpin.am i j b) (c0L j) (hft.mapL j) _ w₀ hw`. Choose the witnesses or unpack the hypotheses as in `⟨ph₀, hph₀1, hph₀⟩ : ∃ ph : ℂ, ‖ph‖ = 1 ∧ IsRatPhase T Rl.toRealDat j hV (κ j) u (c0L j) ph := by`. Take `⟨ph, h1, h2⟩` from `row D Γ Pl0 T0 A3.A T Rl.toRealDat F κ v₀ hT hcore.lev hcore.grp hcore.fam hcore.models hcore.thP hti j hV hfp H.std gramR c0R c0L hft u hu`. Conclude with `⟨ph, h1, fun C hC _ => h2 C hC⟩`. Establish `hph₀0 : ph₀ ≠ 0` using `fun e => by simp [e] at hph₀1`.
+
+Establish `hph1 : ‖cj (twAt D.what₂.embLL A3.A.v0) (Rl.phs j)‖ = 1` using `(hphase hrow0).2.1.2.2.2.2.1`. Establish `hph0 : cj (twAt D.what₂.embLL A3.A.v0) (Rl.phs j) ≠ 0` using `fun e => by rw [e, norm_zero] at hph1; exact zero_ne_one hph1`. Take `⟨cx, hcx⟩` from `exists_extC (O j)`. Take `⟨ζ, ⟨n, hn, hζn⟩, hζ⟩` from `GlobalTheory.ConjRefTup.conjFun_base_root hCI D Γ Pl0 T0 A3.A T Rl.toRealDat F κ v₀ O (fun j => cj (twAt D.what₂.embLL A3.A.v0) (Rl.phs j)) hnV hcore hfin hfw hio hQ j hpins hphase cx hcx`. Establish `hζ1 : ‖ζ‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hζn hn.ne'`.
+
+Establish `hζ0 : ζ ≠ 0` using `fun e => by simp [e] at hζ1`. Take `⟨v, x, h, g₀, hv, hx, hh, hg₀⟩` from `exists_ser_ne_zero O hnV hcore hfw hio j hpins hrow0 hcusp cx hcx u hu`. Take `⟨m, e, f, hexp, heL⟩` from `expands_of_isRatPhase hRF YS O hnV hT hcore hfw hti hio hQ hgal hval hray hroots hV hpins hfp hft hbc hu hph₀ cx hcx v hv x hx h hh`. Take `⟨a, ha_def⟩ : ∃ a, a = ζ * cj (twAt D.what₂.embLL A3.A.v0) (Rl.phs j) * ph₀⁻¹` from `⟨_, rfl⟩`. Establish `hv0 : (fun ρ => ((u ρ : (Rl.MW j (sg0 D A3.A)).sm ρ))) = v₀ j (sg0 D A3.A)` using `funext hu`.
+
+Establish `haL : a ∈ (embLL0 D).fieldRange`. Use `GlobalTheory.FixedRoots.mem_of_forall_ringEquiv_fixed _ a fun τ hτ => ?_` and prove the remaining obligations. Establish `hfix` using `fixBase_of_fix hRF YS hT hcore hfw hti hgal hval hray hroots j τ hτ`. Establish `hct : ConjTup Rl.toRealDat τ A3.A.μ0 A3.A.μ0`. Use `⟨rfl, fun z => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hcore.lev.xi A3.A.μ0`. Rewrite `h1` using `[hcore.lev.xi_base]`. Rewrite using `[GlobalTheory.ChrEqUnique.eq_one_of_chrEq h1 z]`. Simplify using the standard rewrite rules. Take `⟨y, y', hyy, hy⟩` from `GlobalTheory.T.exists_conjugateForms_thetaLift_eq_thetaSeries D Γ Pl0 T0 A3.A T Rl.toRealDat F κ v₀ hcore hfw j Unit (fun _ => A3.A.μ0) (O j) hpins.2 cx hcx τ A3.A.μ0 A3.A.μ0 hfix hct h hh x x (conjVec_self_of_rat j τ v hv x hx)`.
+
+Establish `hcf` using `hζ τ hfix y y' hyy`. Establish `hy1 : ∀ g, (Rl.thF j A3.A.μ0) y (v₀ j (sg0 D A3.A)) g = ser Rl.toRealDat j A3.A.μ0 (Rl.vP j A3.A.μ0) u h (cx x) g` using `fun g => by have e := (hy u g).1; rwa [hv0] at e`. Establish `hy2 : ∀ g, (Rl.thF j A3.A.μ0) y' (v₀ j (sg0 D A3.A)) g = ser Rl.toRealDat j A3.A.μ0 (Rl.vP j A3.A.μ0) u h (cx x) g` using `fun g => by have e := (hy u g).2; rwa [hv0] at e`. Use `fixed_of_expands (O j) (κ j) τ hcf (fun g => ?_) (fun g => ?_) hexp (fun k => hτ _ (heL k)) (g₀ := g₀) (mul_ne_zero hph₀0 hg₀)` and prove the remaining obligations. Rewrite using `[hy1 g, ha_def, mul_assoc (ζ * _) ph₀⁻¹, inv_mul_cancel_left₀ hph₀0]`.
+
+Rewrite using `[hy2 g, ha_def, mul_assoc (ζ * _) ph₀⁻¹, inv_mul_cancel_left₀ hph₀0]`. Establish `ha1 : ‖a‖ = 1` using `by rw [ha_def, norm_mul, norm_mul, norm_inv, hζ1, hph1, hph₀1]; norm_num`. Establish `hν : a * (ph₀ * c) = ζ * cj (twAt D.what₂.embLL A3.A.v0) (Rl.phs j) * c`. Rewrite using `[ha_def, ← mul_assoc, mul_assoc (ζ * _) ph₀⁻¹, inv_mul_cancel₀ hph₀0, mul_one]`. Use `⟨a * (ph₀ * c), ⟨?_, c, ⟨gramR, c0R, c0L, hft, u, hu, hsc⟩, n, hn.ne', ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hν]`. Conclude with `mul_ne_zero (mul_ne_zero hζ0 hph0) hc0`. Rewrite using `[hν, mul_assoc, mul_pow, hζn, one_mul]`. Conclude with `(IsRatScalar.intro hft hu hc0 hph₀1 hsc hph₀).mul haL ha1`.
+-/
 theorem exists_isNorm_isRatScalar_std : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.SerStd.SeriesRatS →
     ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T0 : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (Rl : RealDat3 D A3 T.Q.c.F) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd)

@@ -12,6 +12,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 variable {C : Type} [Field C]
 
+/- English proof (translation)
+Introduce `h0`. Establish `hl : ((V.l : ℕ) : T.Fr) ≠ 0` using `Nat.cast_ne_zero.2 V.l_prime.ne_zero`. Use `h _ hl` as an intermediate fact. Rewrite `this` using `[map_natCast, V.v_l, h0]`. Simplify using `at this`.
+-/
 theorem embOK_vl_ne {T : CDVR} {V : VF C} {ι : T.Fr →+* C} (h : EmbOK T V ι) :
     vV T.V ((V.l : ℕ) : T.Fr) ≠ 0 := by
   intro h0
@@ -20,6 +23,11 @@ theorem embOK_vl_ne {T : CDVR} {V : VF C} {ι : T.Fr →+* C} (h : EmbOK T V ι)
   rw [map_natCast, V.v_l, h0] at this
   simp at this
 
+/- English proof (translation)
+Unfold `vV`. Distinguish the cases in `ha : valV T.V (algebraMap T.V T.Fr a) = 0`. Simplify using `[ha]`. Establish `h1 : valV T.V (algebraMap T.V T.Fr a) ≤ 1` using `IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ a`. Use `(WithZero.log_le_log ha one_ne_zero).2 h1` as an intermediate fact.
+
+Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_nonneg (T : CDVR) (a : T.V) : 0 ≤ vV T.V (algebraMap T.V T.Fr a) := by
   unfold vV
   by_cases ha : valV T.V (algebraMap T.V T.Fr a) = 0
@@ -30,6 +38,11 @@ theorem vV_nonneg (T : CDVR) (a : T.V) : 0 ≤ vV T.V (algebraMap T.V T.Fr a) :=
   simp at this
   omega
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ vV T.V ((V.l : ℕ) : T.Fr)`. Use `vV_nonneg T (V.l : T.V)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h1` using `embOK_vl_ne h`. Unfold `eOf`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem embOK_eOf {T : CDVR} {V : VF C} {ι : T.Fr →+* C} (h : EmbOK T V ι) :
     0 < eOf T V ∧ ((eOf T V : ℕ) : ℤ) = vV T.V ((V.l : ℕ) : T.Fr) := by
   have h0 : 0 ≤ vV T.V ((V.l : ℕ) : T.Fr) := by
@@ -44,6 +57,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 variable {l : Level H} {c : Coeff l} {T : CDVR} {io : c.F →+* T.Fr} {ι : T.Fr →+* C} {V : VF C}
 variable {Orb : Type} {d : ℕ}
 
+/- English proof (translation)
+Establish `hx : IsIntegral ℤ (io (embK c τ x))` using `(Algebra.IsIntegral.isIntegral (R := ℤ) x).map_of_comp_eq (RingHom.id ℤ) (io.comp (embK c τ)) (Subsingleton.elim _ _)`. Establish `hx' : IsIntegral T.V (io (embK c τ x))` using `hx.tower_top`. Take `⟨z, hz⟩` from `(IsIntegrallyClosed.isIntegral_iff (K := T.Fr)).1 hx'`. Use `show V.Ge 0 (ι (io (embK c τ x)))`. Rewrite using `[← hz]`.
+
+Distinguish the cases in `h0 : algebraMap T.V T.Fr z = 0`. Rewrite using `[h0, map_zero]`. Conclude with `VF.Ge.zero 0`. Unfold `VF.Ge`. Rewrite using `[h _ h0, ← (embOK_eOf h).2]`.
+
+Use `vV_nonneg T z` as an intermediate fact. Conclude with `WithTop.coe_le_coe.2 (div_nonneg (by exact_mod_cast this) (by positivity))`.
+-/
 theorem em_int_holds (τ : E →+* ℂ) (x : 𝓞 E) (h : EmbOK T V ι) : V.Ge 0 (emA3 io ι τ x) := by
   have hx : IsIntegral ℤ (io (embK c τ x)) :=
     (Algebra.IsIntegral.isIntegral (R := ℤ) x).map_of_comp_eq (RingHom.id ℤ) (io.comp (embK c τ)) (Subsingleton.elim _ _)

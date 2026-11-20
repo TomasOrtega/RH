@@ -23,6 +23,9 @@ namespace GlobalTheory.InvFactor
 section Lie
 variable {R : Type} [CommRing R] {G B : Over (Sp R)} [GrpObj G] [GrpObj B] [IsCommMonObj G] [IsCommMonObj B]
 
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).symm`.
+-/
 theorem smT_comp (a : R) (v : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ G) (φ : G ⟶ B) :
     smT (𝟙 (Sp R)) a (v ≫ φ) = smT (𝟙 (Sp R)) a v ≫ φ := (Category.assoc _ _ _).symm
 
@@ -31,10 +34,24 @@ def lieMap (q : G ⟶ B) [IsMonHom q] : TanM (𝟙 (Sp R)) G →ₗ[R] TanM (�
   map_add' u v := ReciprocityTheory.ChartRestriction.G.PullbackSections.tanM_ext (MonObj.mul_comp (tv u) (tv v) q)
   map_smul' a v := ReciprocityTheory.ChartRestriction.G.PullbackSections.tanM_ext (smT_comp a (tv v) q).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tv_lieMap (q : G ⟶ B) [IsMonHom q] (v : TanM (𝟙 (Sp R)) G) : tv (lieMap q v) = tv v ≫ q := rfl
 
 end Lie
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hdd`. Establish `hB : Smooth Dd.toPre.P.A.hom` using `Dd.toPre.P.isAb.smooth`. Take `⟨g, ⟨w⟩⟩` from `GlobalTheory.RayBasis.exists_basis hB`. Use `choose e he using fun c => GlobalTheory.RayBasis.exists_isInv (w c)`. Use `haveI : IsMonHom Y.q := Y.q_linear.isMonHom`.
+
+Establish `hq : Smooth Y.q.left` using `Y.smooth_q`. Set `L` to `lieMap Y.q`. Use `choose s hs using fun c => GlobalTheory.T.smooth_commGroupSchemeHom_tangentAtOrigin_surjective R Y.H Dd.toPre.P.A Y.q hq (w c)`. Establish `hs' : ∀ c, L (s c) = w c` using `fun c => ReciprocityTheory.ChartRestriction.G.PullbackSections.tanM_ext (hs c)`. Use `⟨g, w, e, Matrix.of fun c b => w.repr (L (v b)) c, Matrix.of fun b c => v.repr (s c) b, he, ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `c c'`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Establish `h1 : w.repr (L (s c')) c = ∑ b, w.repr (L (v b)) c * v.repr (s c') b` using `by conv_lhs => rw [← v.sum_repr (s c')]`. Rewrite using `[map_sum, map_sum, Finsupp.coe_finset_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_comm]`. Rewrite using `[← h1, hs', w.repr_self, Matrix.one_apply, Finsupp.single_apply]`. Conclude with `if_congr eq_comm rfl rfl`. Introduce `b V W hW f`. Establish `hu : ∑ c, Matrix.of (fun c b => w.repr (L (v b)) c) c b • w c = L (v b)` using `w.sum_repr _`.
+
+Establish `hinv` using `GlobalTheory.T.invariant_vectorField_of_tangent_vector_linear_combination R Dd.toPre.P.A g w e he (fun c => Matrix.of (fun c b => w.repr (L (v b)) c) c b)`. Rewrite `hinv` using `[hu]`. Rewrite using `[GlobalTheory.T.invariant_vectorField_pullback_along_group_hom R Y.H Dd.toPre.P.A Y.q (v b) (L (v b)) (dd b) _ rfl (hdd b) hinv V W hW f, GlobalTheory.KS.pbT_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.KS.pbT_mul, GlobalTheory.KS.pbT_constFn _ _ hW, Over.w Y.q, Matrix.of_apply]`.
+-/
 theorem exists_basis_pull_matrix : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (Dd : DegData R (maximalIdeal R)) (O : Type) [CommRing O] [StarRing O] [Module O Dd.toPre.X] (oa : Dd.toPre.OAct O) (Y : Ray oa) (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) Y.H)) (dd : Fin n → Fld Y.H.left), (∀ a, IsInv Y.H (v a) (dd a)) → ∃ (g : ℕ) (w : Module.Basis (Fin g) R (TanM (𝟙 (Sp R)) Dd.toPre.P.A)) (e : Fin g → Fld Dd.toPre.P.A.left) (P : Matrix (Fin g) (Fin n) R) (Qm : Matrix (Fin n) (Fin g) R), (∀ c, IsInv Dd.toPre.P.A (w c) (e c)) ∧ P * Qm = 1 ∧ ∀ b (V : Dd.toPre.P.A.left.Opens) (W : Y.H.left.Opens), W ≤ Y.q.left ⁻¹ᵁ V → ∀ f : Γ(Dd.toPre.P.A.left, V), dd b W (pbT Y.q.left f W) = ∑ c, constFn Y.H.hom W (P c b) * pbT Y.q.left (e c V f) W := by
   intro R _ _ _ _ _ _ Dd O _ _ _ oa Y n v dd hdd
   have hB : Smooth Dd.toPre.P.A.hom := Dd.toPre.P.isAb.smooth

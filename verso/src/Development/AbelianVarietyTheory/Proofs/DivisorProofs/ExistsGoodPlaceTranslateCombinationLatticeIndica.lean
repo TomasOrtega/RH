@@ -22,6 +22,9 @@ noncomputable section
 
 namespace GlobalTheory.CombAtGood
 
+/- English proof (translation)
+Introduce `F _ _ κ _ f φ hSB hstd`. Establish `hg : (fun y : κ → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)) ∈ GlobalTheory.WeilM.SB _` using `⟨GlobalTheory.T.isLocallyConstant_finprod_schwartzBruhat_finiteAdeles φ hSB hstd, GlobalTheory.T.hasCompactSupport_finprod_schwartzBruhat_finiteAdeles φ hSB hstd⟩`. Conclude with `Submodule.subset_span ⟨f, _, hg, rfl⟩`.
+-/
 theorem pure_mem_schA : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ)
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ), (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) →
     (∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) →
@@ -31,6 +34,19 @@ theorem pure_mem_schA : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fi
       GlobalTheory.WeilM.SB _ := ⟨GlobalTheory.T.isLocallyConstant_finprod_schwartzBruhat_finiteAdeles φ hSB hstd, GlobalTheory.T.hasCompactSupport_finprod_schwartzBruhat_finiteAdeles φ hSB hstd⟩
   exact Submodule.subset_span ⟨f, _, hg, rfl⟩
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `GlobalTheory.SplitFlip.exists_isUnif (k := k)`. Take `⟨z₀, h1, h2⟩` from `exists_translates_eq_primFrame_lat hϖ ν α Λ a'`. Set `Q : GL (Fin a') k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero P.valᵀ (by`. Rewrite using `[Matrix.det_transpose]`. Conclude with `P.isUnit.map Matrix.detMonoidHom |>.ne_zero)`.
+
+Set `cj : GL (Fin a') k → GL (Fin a') k` to `fun g => Q * g * Q⁻¹`. Use `⟨z₀.mapDomain cj, ?_, fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[zdeg, Finsupp.sum_mapDomain_index (by simp) (by simp), h2]`. Conclude with `prod_primFactor_ne_zero (hν ϖ) hd`. Establish `hdet : ∀ g, gdet (cj g) = gdet g` using `fun g => by`.
+
+Simplify using `only [cj, map_mul, map_inv]`. Conclude with `mul_inv_cancel_comm _ _`. Establish `hPQ : P.val * (Q⁻¹).valᵀ = 1`. Establish `h` using `congrArg Matrix.transpose (congrArg Units.val (inv_mul_cancel Q))`. Rewrite `h` using `[Units.val_mul, Matrix.transpose_mul, Units.val_one, Matrix.transpose_one]`.
+
+Conclude with `h`. Establish `htr : ∀ (g : GL (Fin a') k) (Y : Matrix (Fin a') D k), P.val * ((cj g).valᵀ * Y * (1 : GL D k).val) = g.valᵀ * (P.val * Y)`. Introduce `g Y`. Simplify using `only [cj, Units.val_mul, Matrix.transpose_mul, Units.val_one, Matrix.mul_one]`. Establish `hQ : Q.valᵀ = P.val` using `Matrix.transpose_transpose _`.
+
+Rewrite using `[hQ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPQ, Matrix.one_mul, Matrix.mul_assoc]`. Establish `key : ∀ g (Y : Matrix (Fin a') D k), omB ν α (cj g) 1 (fun Y => c * (matLat (Fin a') Λ : Set (Matrix (Fin a') D k)).indicator 1 (P.val * Y)) Y = c * omB ν α g 1 ((matLat (Fin a') Λ : Set (Matrix (Fin a') D k)).indicator 1) (P.val * Y)`. Introduce `g Y`. Simplify using `only [omB]`. Rewrite using `[hdet, htr, Units.val_one, Matrix.mul_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finsupp.sum_mapDomain_index (f := cj) (s := z₀) (h := fun g (c' : ℂ) => c' • omB ν α g 1 (fun Y => c * (matLat (Fin a') Λ : Set (Matrix (Fin a') D k)).indicator 1 (P.val * Y))) (fun _ => zero_smul ℂ _) (fun _ _ _ => add_smul _ _ _), ← h1]`. Simplify using `only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, key, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => by ring`.
+-/
 theorem exists_translates_primFrame_conj {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {D : Type} [Fintype D] [DecidableEq D] (ν α : kˣ →* ℂˣ)
     (hν : ∀ x, ‖(ν x : ℂ)‖ = 1) {a' : ℕ} (hd : (a' : ℝ) - 1 < (Fintype.card D : ℝ) / 2)
@@ -70,6 +86,35 @@ theorem exists_translates_primFrame_conj {k : Type} [Field k] [ValuativeRel k] [
     simp only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, key, Finset.mul_sum]
     exact Finset.sum_congr rfl fun g _ => by ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ a a' B Γ hM' hlt om' H κ ν α hν ι hι hact m f φ φ₀ hSB hvac h₀ P Λ c hφ₀`. Establish `hd : ((a' : ℕ) : ℝ) - 1 < (Fintype.card (Fin (a + a')) : ℝ) / 2`. Rewrite using `[Fintype.card_fin]`. Use `push_cast`. Establish `: (a' : ℝ) + 1 ≤ a` using `by exact_mod_cast hlt`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨z₁, hz₁, hz₁Y⟩` from `exists_translates_primFrame_conj ν α hν hd Λ P c`. Use `choose kf hkf using hact`. Use `⟨z₁.mapDomain kf, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zdeg, Finsupp.sum_mapDomain_index (by simp) (by simp)]`.
+
+Conclude with `hz₁`. Rewrite using `[Finsupp.sum_mapDomain_index (f := kf) (s := z₁) (h := fun k (c' : ℂ) => c' • om' (κ k, 1) (∑ k, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f k) (φ k))) (fun _ => zero_smul ℂ _) (fun _ _ _ => add_smul _ _ _)]`. Simplify using `only [Finsupp.sum, map_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hstd : ∀ᶠ v in Filter.cofinite, φ i v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers F} 1` using `((hvac i).and hM'.std).mono fun v h => h.1.trans h.2`. Take `⟨r, hr, hrt⟩` from `GlobalTheory.T.exists_factor_pureTensor_component_at_place (B.v₁) (f i) (φ i) hstd`. Establish `hφ₀SB : φ₀ ∈ GlobalTheory.WeilM.SB _` using `h₀ i ▸ hSB i B.v₁`. Establish `hpure : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F B.v₁) φ₀ r`. Rewrite using `[hrt, ← h₀ i, Function.update_eq_self]`.
+
+Establish `hRest : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin F B.v₁) φ₀ r` using `⟨hr, hpure ▸ pure_mem_schA (f i) (φ i) (hSB i) hstd⟩`. Establish `hinj` using `(GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model.IsLin.bij hι).injOn`. Set `φ₁ : GL (Fin a') (Fv F B.v₁) → _` to `fun g => Function.invFunOn ι (GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁) : Set _) (omB ν α g 1 (ι φ₀))`. Establish `hφ₁ : ∀ g, φ₁ g ∈ GlobalTheory.WeilM.SB _ ∧ ι (φ₁ g) = omB ν α g 1 (ι φ₀) ∧ om' (κ (kf g), 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F B.v₁) φ₀ r) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F B.v₁) (φ₁ g) r`. Introduce `g`.
+
+Take `⟨ψ₁, hψ₁, he, hι₁⟩` from `hkf g φ₀ hφ₀SB r hRest`. Establish `hex : ∃ x ∈ (GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁) : Set _), ι x = omB ν α g 1 (ι φ₀)` using `⟨ψ₁, hψ₁, hι₁⟩`. Establish `hm` using `Function.invFunOn_mem hex`. Establish `heq` using `Function.invFunOn_eq hex`. Establish `h' : ψ₁ = φ₁ g` using `hinj hψ₁ hm (hι₁.trans heq.symm)`.
+
+Conclude with `⟨hm, heq, h' ▸ he⟩`. Use `set Φ₁ := ∑ g ∈ z₁.support, z₁ g • φ₁ g with hΦ₁`. Establish `hΦ₁SB : Φ₁ ∈ GlobalTheory.WeilM.SB _` using `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (hφ₁ g).1`. Establish `htens : ∀ (s : Finset (GL (Fin a') (Fv F B.v₁))) (w : GL (Fin a') (Fv F B.v₁) → ℂ), ∑ g ∈ s, w g • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F B.v₁) (φ₁ g) r = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F B.v₁) (∑ g ∈ s, w g • …`. Introduce `s w`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, mul_assoc]`. Establish `hsum : ∑ g ∈ z₁.support, z₁ g • om' (κ (kf g), 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (Function.update (φ i) B.v₁ Φ₁)`. Rewrite using `[← hrt, hpure, ← htens]`. Conclude with `Finset.sum_congr rfl fun g _ => by rw [(hφ₁ g).2.2]`.
+
+Rewrite using `[hsum]`. Use `Submodule.subset_span ⟨f i, Function.update (φ i) B.v₁ Φ₁, fun v => ?_, ?_, ?_, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = B.v₁`. Substitute `hv` using the available equality. Rewrite using `[Function.update_self]`.
+
+Conclude with `hΦ₁SB`. Rewrite using `[Function.update_of_ne hv]`. Conclude with `hSB i v`. Use `filter_upwards [hvac i, Filter.eventually_cofinite_ne B.v₁] with v h1 h2`. Rewrite using `[Function.update_of_ne h2, h1]`.
+
+Rewrite using `[Function.update_self]`. Use `⟨hΦ₁SB, ι, hι, fun Y hY => ?_⟩` and prove the remaining obligations. Establish `hιΦ : ι Φ₁ = ∑ g ∈ z₁.support, z₁ g • omB ν α g 1 (ι φ₀)`. Rewrite using `[hΦ₁, map_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => by rw [map_smul, (hφ₁ g).2.1]`.
+
+Establish `hιφ₀ : ι φ₀ = fun Y => c * (matLat (Fin a') Λ : Set (Matrix (Fin a') (Fin (a + a')) (Fv F B.v₁))).indicator 1 (P.val * Y)`. Use function extensionality and compare the values at `hφ₀`. Establish `h3` using `hz₁Y Y`. Rewrite `hιΦ` using `[hιφ₀]`. Rewrite using `[hιΦ, ← hιφ₀]`.
+
+Rewrite `h3` using `[← hιφ₀]`. Simplify using `only [Finsupp.sum] at h3`. Rewrite using `[h3, Set.indicator_of_notMem, mul_zero]`. Introduce `hp`. Apply `hY` to reduce the goal to its premises.
+
+Establish `h4` using `hp.1`. Rewrite `h4` using `[Matrix.rank_mul_eq_right_of_isUnit_det _ _ (P.isUnit.map Matrix.detMonoidHom), Fintype.card_fin]`. Then use the resulting hypothesis.
+-/
 theorem exists_comb_translates_mem_So : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {a a' : ℕ} (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a')
     (hM' : Γ.M'.IsGood B.ψ) (hlt : a' < a)

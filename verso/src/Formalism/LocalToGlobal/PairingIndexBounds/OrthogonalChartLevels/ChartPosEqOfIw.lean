@@ -17,6 +17,9 @@ section Gen
 variable {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : CEmbC X.G) (D : D7)
   (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
 
+/- English proof (translation)
+Establish `h3 : ∀ y : D.host.E, sigD D y = D.host.conj y` using `fun y => bridge_star_holds D.R D.host y`. Rewrite using `[h3, ← Formalism.L2.Herm.star_conj, ← Formalism.L2.Herm.star_conj, star_star]`.
+-/
 theorem sigD_conj (x : D.host.E) : sigD D (D.host.conj x) = x := by
   have h3 : ∀ y : D.host.E, sigD D y = D.host.conj y := fun y => bridge_star_holds D.R D.host y
   rw [h3, ← Formalism.L2.Herm.star_conj, ← Formalism.L2.Herm.star_conj, star_star]

@@ -220,6 +220,9 @@ def lineEquiv (p q r s : ℕ) : Ln p q r s ≃ Ix (p * r + q * s) (p * s + q * r
   Equiv.sumCongr ((Equiv.sumCongr finProdFinEquiv finProdFinEquiv).trans finSumFinEquiv)
     ((Equiv.sumCongr finProdFinEquiv finProdFinEquiv).trans finSumFinEquiv)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases l with ⟨a | a, c | c⟩ <;> simp [lineEquiv, linePos]`.
+-/
 theorem lineEquiv_isLeft {p q r s : ℕ} (l : Ln p q r s) :
     (lineEquiv p q r s l).isLeft = linePos l := by
   rcases l with ⟨a | a, c | c⟩ <;> simp [lineEquiv, linePos]
@@ -228,10 +231,16 @@ section RuleR
 
 open MvPolynomial
 
+/- English proof (translation)
+Simplify using `[omAct, LinearMap.sum_apply]`.
+-/
 theorem omAct_apply {p q r s : ℕ} (Z : Matrix (Ln p q r s) (Ln p q r s) ℂ) :
     omAct p q r s Z = ∑ l, ∑ l', Z l l' • omE l l' := by
   simp [omAct, LinearMap.sum_apply]
 
+/- English proof (translation)
+Simplify using `only [fockAct1, LinearMap.comp_apply, LinearMap.flip_apply, omAct_apply, Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, LinearMap.mul_apply', Fintype.sum_prod_type, Eab, Matrix.single_apply, Matrix.one_apply]`. Simplify using `[ite_and, Finset.sum_ite_eq, ite_smul]`.
+-/
 theorem fockAct1_Eab {p q r s : ℕ} (a b : Ix p q) :
     fockAct1 p q r s (Eab a b) = ∑ c, omE (a, c) (b, c) := by
   simp only [fockAct1, LinearMap.comp_apply, LinearMap.flip_apply, omAct_apply,
@@ -239,6 +248,9 @@ theorem fockAct1_Eab {p q r s : ℕ} (a b : Ix p q) :
     Fintype.sum_prod_type, Eab, Matrix.single_apply, Matrix.one_apply]
   simp [ite_and, Finset.sum_ite_eq, ite_smul]
 
+/- English proof (translation)
+Simplify using `only [fockAct2, LinearMap.comp_apply, omAct_apply, Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, LinearMap.mul_apply', Fintype.sum_prod_type, Eab, Matrix.single_apply, Matrix.one_apply]`. Simplify using `[ite_and, Finset.sum_ite_eq, ite_smul]`.
+-/
 theorem fockAct2_Eab {p q r s : ℕ} (c d : Ix r s) :
     fockAct2 p q r s (Eab c d) = ∑ a, omE (a, c) (a, d) := by
   simp only [fockAct2, LinearMap.comp_apply, omAct_apply,
@@ -246,6 +258,13 @@ theorem fockAct2_Eab {p q r s : ℕ} (c d : Ix r s) :
     Fintype.sum_prod_type, Eab, Matrix.single_apply, Matrix.one_apply]
   simp [ite_and, Finset.sum_ite_eq, ite_smul]
 
+/- English proof (translation)
+Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h : α l = 0`. Simplify using `[h]`. Establish `hα : Finsupp.single l 1 + (α - Finsupp.single l 1) = α`. Use extensionality with `i`.
+
+Distinguish the cases in `hi : i = l`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[Ne.symm hi]`.
+
+Rewrite using `[X, monomial_mul, smul_monomial, hα]`. Simplify using the standard rewrite rules.
+-/
 theorem X_mul_pderiv_monomial {σ : Type*} [DecidableEq σ] (l : σ) (α : σ →₀ ℕ) :
     (X l : MvPolynomial σ ℂ) * pderiv l (monomial α 1) = ((α l : ℕ) : ℂ) • monomial α 1 := by
   rw [pderiv_monomial]
@@ -259,12 +278,18 @@ theorem X_mul_pderiv_monomial {σ : Type*} [DecidableEq σ] (l : σ) (α : σ �
     rw [X, monomial_mul, smul_monomial, hα]
     simp
 
+/- English proof (translation)
+Simplify using `only [omE, raiB, lowB, hl, if_true]`. Use `show (X l : Pol p q r s) * pderiv l (monomial α (1 : ℂ)) + (1 / 2 : ℂ) • monomial α (1 : ℂ) = _`. Rewrite using `[X_mul_pderiv_monomial, add_smul]`.
+-/
 theorem omE_pos {p q r s : ℕ} (l : Ln p q r s) (hl : linePos l = true) (α : Ln p q r s →₀ ℕ) :
     omE l l (monomial α 1) = (((α l : ℕ) : ℂ) + 1 / 2) • monomial α 1 := by
   simp only [omE, raiB, lowB, hl, if_true]
   show (X l : Pol p q r s) * pderiv l (monomial α (1 : ℂ)) + (1 / 2 : ℂ) • monomial α (1 : ℂ) = _
   rw [X_mul_pderiv_monomial, add_smul]
 
+/- English proof (translation)
+Simplify using `only [omE, raiB, lowB, hl, if_true, Bool.false_eq_true, if_false]`. Use `show -(pderiv l ((X l : Pol p q r s) * monomial α (1 : ℂ))) + (1 / 2 : ℂ) • monomial α (1 : ℂ) = _`. Rewrite using `[Derivation.leibniz, pderiv_X_self, smul_eq_mul, smul_eq_mul, X_mul_pderiv_monomial, mul_one]`. Use `module`.
+-/
 theorem omE_neg {p q r s : ℕ} (l : Ln p q r s) (hl : linePos l = false) (α : Ln p q r s →₀ ℕ) :
     omE l l (monomial α 1) = (-(((α l : ℕ) : ℂ) + 1 / 2)) • monomial α 1 := by
   simp only [omE, raiB, lowB, hl, if_true, Bool.false_eq_true, if_false]
@@ -272,6 +297,11 @@ theorem omE_neg {p q r s : ℕ} (l : Ln p q r s) (hl : linePos l = false) (α : 
   rw [Derivation.leibniz, pderiv_X_self, smul_eq_mul, smul_eq_mul, X_mul_pderiv_monomial, mul_one]
   module
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c`. Rewrite using `[omE_pos _ rfl]`. Simplify using `[lineSign]`. Rewrite using `[omE_neg _ rfl]`. Simplify using `[lineSign]`.
+
+Rewrite using `[omE_neg _ rfl]`. Simplify using `[lineSign]`. Rewrite using `[omE_pos _ rfl]`. Simplify using `[lineSign]`.
+-/
 theorem omE_diag {p q r s : ℕ} (a : Ix p q) (c : Ix r s) (α : Ln p q r s →₀ ℕ) :
     omE (a, c) (a, c) (monomial α 1) =
       (lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) • monomial α 1 := by
@@ -281,12 +311,18 @@ theorem omE_diag {p q r s : ℕ} (a : Ix p q) (c : Ix r s) (α : Ln p q r s →�
   · rw [omE_neg _ rfl]; simp [lineSign]
   · rw [omE_pos _ rfl]; simp [lineSign]
 
+/- English proof (translation)
+Rewrite using `[fockAct1_Eab, LinearMap.sum_apply, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun c _ => omE_diag a c α`.
+-/
 theorem cartan1 {p q r s : ℕ} (a : Ix p q) (α : Ln p q r s →₀ ℕ) :
     fockAct1 p q r s (Eab a a) (monomial α 1) =
       (∑ c, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) • monomial α 1 := by
   rw [fockAct1_Eab, LinearMap.sum_apply, Finset.sum_smul]
   exact Finset.sum_congr rfl fun c _ => omE_diag a c α
 
+/- English proof (translation)
+Rewrite using `[fockAct2_Eab, LinearMap.sum_apply, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun a _ => omE_diag a c α`.
+-/
 theorem cartan2 {p q r s : ℕ} (c : Ix r s) (α : Ln p q r s →₀ ℕ) :
     fockAct2 p q r s (Eab c c) (monomial α 1) =
       (∑ a, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) • monomial α 1 := by

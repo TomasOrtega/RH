@@ -11,6 +11,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH Groun
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
+/- English proof (translation)
+Establish `hR4` using `GlobalTheory.CompanionTheory.Relay.kleiman_genericPointSectionInput`. Take `⟨-, hVA, hSC⟩` from `GlobalTheory.CompanionTheory.Relay.kleiman_input_nef_ample_section_count hR4`. Conclude with `GroundTheory.Heights₂.Heights.ForSecondHalf.SiuZB.of_kodaira (GlobalTheory.CompanionTheory.Relay.kodaira_generic_of_ample_section_count hVA hSC)`.
+-/
 theorem siuZ : SiuZStatement := by
   have hR4 := GlobalTheory.CompanionTheory.Relay.kleiman_genericPointSectionInput
   obtain ⟨-, hVA, hSC⟩ := GlobalTheory.CompanionTheory.Relay.kleiman_input_nef_ample_section_count hR4

@@ -16,10 +16,16 @@ namespace CrystallineSemistableComparison.Pb
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+The claim follows from `isIntegral_of_smooth_pf q n`.
+-/
 theorem isIntegral_of_smooth {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     [ConnectedSpace X] (n : ℕ) [SmoothOfRelativeDimension n q] : IsIntegral X :=
   isIntegral_of_smooth_pf q n
 
+/- English proof (translation)
+The claim follows from `exists_etale_away_pf s hs halg`.
+-/
 theorem exists_etale_away {K A : Type} [Field K] [CharZero K] [CommRing A] [IsDomain A] [Algebra K A]
     [Algebra.FiniteType K A] {d : ℕ} (s : Fin d → A) (hs : AlgebraicIndependent K s)
     (halg : Algebra.IsAlgebraic (Algebra.adjoin K (Set.range s)) A) :
@@ -27,6 +33,9 @@ theorem exists_etale_away {K A : Type} [Field K] [CharZero K] [CommRing A] [IsDo
       (fun k => algebraMap A (Localization.Away g) (s k)) : MvPolynomial (Fin d) K →+* Localization.Away g).Etale :=
   exists_etale_away_pf s hs halg
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.coords_of_etale_basic_open q hW g s`.
+-/
 theorem exists_coord_basicOpen {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     {W : X.Opens} (hW : IsAffineOpen W) (g : Γ(X, W)) {d : ℕ} (s : Fin d → Γ(X, W)) :
     letI := (strV q W).toAlgebra
@@ -35,10 +44,18 @@ theorem exists_coord_basicOpen {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ 
     ∃ c : Coord q (X.basicOpen g) d, ∀ k, c.t k = resO (X.basicOpen_le g) (s k) :=
   GlobalTheory.T.coords_of_etale_basic_open q hW g s
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.coord_dim_eq_relative_dim q n hne c`.
+-/
 theorem coord_card_eq {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (n : ℕ)
     [SmoothOfRelativeDimension n q] {V : X.Opens} (hne : (V : Set X).Nonempty) {m : ℕ} (c : Coord q V m) : m = n :=
   GlobalTheory.T.coord_dim_eq_relative_dim q n hne c
 
+/- English proof (translation)
+Introduce `r`. Use `letI := (resO (X.basicOpen_le g)).toAlgebra`. Use `haveI := hW.isLocalization_basicOpen g`. Use `haveI : Nonempty (X.basicOpen g) := hne.to_subtype`. Take `⟨k, a, hk⟩` from `IsLocalization.Away.surj g r`.
+
+Use `⟨resO (X.basicOpen_le g) a, ⟨a, rfl⟩, resO (X.basicOpen_le g) (g ^ k), ⟨g ^ k, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `((IsLocalization.Away.algebraMap_isUnit (S := Γ(X, X.basicOpen g)) g).pow k).ne_zero`. Rewrite using `[map_pow]`. Conclude with `hk`.
+-/
 theorem exists_frac_basicOpen {X : Scheme.{0}} {W : X.Opens} (hW : IsAffineOpen W) (g : Γ(X, W))
     (hne : (X.basicOpen g : Set X).Nonempty) :
     ∀ r : Γ(X, X.basicOpen g), ∃ b ∈ Set.range (resO (X.basicOpen_le g)), ∃ b' ∈ Set.range (resO (X.basicOpen_le g)),

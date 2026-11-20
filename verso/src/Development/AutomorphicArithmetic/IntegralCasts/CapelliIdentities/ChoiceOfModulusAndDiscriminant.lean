@@ -15,6 +15,9 @@ noncomputable def UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTh
     ℤ → ℕ → IntermediateField ℚ ℂ :=
     fun (b : ℤ) (d : ℕ) ↦ ℚ⟮UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta b d⟯
 
+/- English proof (translation)
+Establish `h : ((√(d : ℝ) : ℝ) : ℂ) * ((√(d : ℝ) : ℝ) : ℂ) = (d : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg d)]`. Simplify using the standard rewrite rules. Unfold `UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta`. Take the linear combination `(((√(d : ℝ) : ℝ) : ℂ) * ((√(d : ℝ) : ℝ) : ℂ) / 4) * Complex.I_mul_I - (1 / 4 : ℂ) * h`.
+-/
 private theorem UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_sq (b : ℤ) (d : ℕ) :
     UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta b d * UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta b d =
       (b : ℂ) * UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta b d - ((b : ℂ) ^ 2 + (d : ℂ)) / 4 := by
@@ -24,6 +27,11 @@ private theorem UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_
   unfold UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta
   linear_combination (((√(d : ℝ) : ℝ) : ℂ) * ((√(d : ℝ) : ℝ) : ℂ) / 4) * Complex.I_mul_I - (1 / 4 : ℂ) * h
 
+/- English proof (translation)
+Use `⟨Polynomial.X ^ 2 - Polynomial.C (b : ℚ) * Polynomial.X + Polynomial.C (((b : ℚ) ^ 2 + (d : ℚ)) / 4), ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`. Establish `h` using `UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_sq b d`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, eq_ratCast]`. Use `push_cast`.
+
+Take the linear combination `h`.
+-/
 private theorem UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_integral (b : ℤ) (d : ℕ) :
     IsIntegral ℚ (UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta b d) := by
   refine ⟨Polynomial.X ^ 2 - Polynomial.C (b : ℚ) * Polynomial.X
@@ -35,6 +43,15 @@ private theorem UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_
     push_cast
     linear_combination h
 
+/- English proof (translation)
+Introduce `a b c d _ x hx`. Establish `hx' : x ∈ Algebra.adjoin ℚ {UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.cmTheta b d}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_integral b d).isAlgebraic]`. Conclude with `hx`. Use `clear hx`.
+
+Proceed by induction on `hx' using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Conclude with `⟨0, 1, by simp [hy]⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`.
+
+Consider the case `add y z _ _ hy hz`. Take `⟨u, v, rfl⟩` from `hy`. Take `⟨u', v', rfl⟩` from `hz`. Conclude with `⟨u + u', v + v', by push_cast; ring⟩`. Consider the case `mul y z _ _ hy hz`.
+
+Take `⟨u, v, rfl⟩` from `hy`. Take `⟨u', v', rfl⟩` from `hz`. Use `⟨u * u' - v * v' * (((b : ℚ) ^ 2 + (d : ℚ)) / 4), u * v' + v * u' + v * v' * b, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `((v : ℂ) * (v' : ℂ)) * UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.theta_sq b d`.
+-/
 theorem UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.kap_repr :
     ∀ {a : ℕ} {b c : ℤ} {d : ℕ},
       UpperTheory.Reformulated.B.ChoiceOfModulusAndDiscriminant.CmOK a b c d →

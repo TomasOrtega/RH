@@ -4,6 +4,13 @@ import Mathlib.Topology.Algebra.ClopenNhdofOne
 
 open IsLocalRing Polynomial Matrix UpperTheory.V
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ Z P h U hU hne`. Take `⟨σ, hσU, hσZ⟩` from `hne`. Establish `hW : IsOpen ((fun x : G => σ * x) ⁻¹' U)` using `hU.preimage (continuous_const.mul continuous_id)`. Establish `h1 : (1 : G) ∈ ((fun x : G => σ * x) ⁻¹' U)` using `by simpa using hσU`. Take `⟨N, hN⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hW h1`.
+
+Establish `hfi : (N.toSubgroup).FiniteIndex`. Use `Subgroup.quotient_finite_of_isOpen N.toSubgroup N.isOpen` as an intermediate fact. Conclude with `Subgroup.finiteIndex_of_finite_quotient`. Take `⟨g, hg, hP⟩` from `h (N.toSubgroup.subgroupOf Z) inferInstance ⟨σ, hσZ⟩`. Use `⟨_, ⟨?_, ((⟨σ, hσZ⟩ : Z) * g).2⟩, hP⟩` and prove the remaining obligations.
+
+Conclude with `hN (show (g : G) ∈ N.toSubgroup from hg)`.
+-/
 theorem UpperTheory.V.Ws.exists_mem_open_inter_subgroup_of_cosetwise_finiteIndex :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G]
       (Z : Subgroup G) (P : G → Prop), (∀ V : Subgroup Z, V.FiniteIndex → ∀ σ : Z, ∃ g ∈ V, P (σ * g : Z)) →

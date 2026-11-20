@@ -13,6 +13,25 @@ noncomputable section
 
 namespace GlobalTheory.MumCmp
 
+/- English proof (translation)
+Introduce `R _ _ _ hBase D A G _ _ hG U g _ a _ _ A₂ D₂ U₂ _`. Establish `hR : AdmBase R (maximalIdeal R)` using `hBase.1`. Establish `hN : IsNoetherianRing R` using `hR.1`. Establish `hC : IsAdicComplete (maximalIdeal R) R` using `hR.2.2.2`. Establish `hJ : maximalIdeal R ≤ Ideal.jacobson ⊥` using `IsAdicComplete.le_jacobson_bot _`.
+
+Take `⟨b₁, hb₁, h₁⟩` from `GlobalTheory.Mum.Two.exists_abelian_hom R (maximalIdeal R) hR D₂ D A₂ A G G U₂.toUnifPre U.toUnifPre (𝟙 G) inferInstance`. Take `⟨b₂, hb₂, h₂⟩` from `GlobalTheory.Mum.Two.exists_abelian_hom R (maximalIdeal R) hR D D₂ A A₂ G G U.toUnifPre U₂.toUnifPre (𝟙 G) inferInstance`. Establish `q₁ : ∀ e, (U.gt e).q = (U₂.gt e).q ≫ (Over.pullback (thick R (maximalIdeal R) e)).map b₁`. Introduce `e`. Use `h₁ e` as an intermediate fact.
+
+Rewrite `this` using `[CategoryTheory.Functor.map_id, Category.id_comp]`. Conclude with `this`. Establish `q₂ : ∀ e, (U₂.gt e).q = (U.gt e).q ≫ (Over.pullback (thick R (maximalIdeal R) e)).map b₂`. Introduce `e`. Use `h₂ e` as an intermediate fact.
+
+Rewrite `this` using `[CategoryTheory.Functor.map_id, Category.id_comp]`. Conclude with `this`. Establish `epi : ∀ {D' : DegData R (maximalIdeal R)} {A' : PolAV (Sp (FractionRing R))} (V : UnifPre (maximalIdeal R) D' A' G) (e : ℕ), Epi (V.gt e).q`. Introduce `D' A' V e`. Use `(V.gt e).q_flat` as an intermediate fact.
+
+Use `(V.gt e).q_surj` as an intermediate fact. Establish `: Epi (V.gt e).q.left` using `Flat.epi_of_flat_of_surjective _`. Conclude with `Over.epi_of_epi_left _`. Establish `k₁ : b₂ ≫ b₁ = 𝟙 _`. Use `D.toPre.P.isAb.smooth` as an intermediate fact.
+
+Use `D.toPre.P.isAb.geomConnected` as an intermediate fact. Use `D.toPre.P.isAb.proper` as an intermediate fact. Use `GlobalTheory.AbelianPartIso.hom_eq_of_map_eq hJ _ _ _ fun n => ?_` and prove the remaining obligations. Use `epi U.toUnifPre n` as an intermediate fact. Rewrite using `[← cancel_epi (U.gt n).q, CategoryTheory.Functor.map_comp, CategoryTheory.Functor.map_id, Category.comp_id, ← Category.assoc, ← q₂, ← q₁]`.
+
+Establish `k₂ : b₁ ≫ b₂ = 𝟙 _`. Use `D₂.toPre.P.isAb.smooth` as an intermediate fact. Use `D₂.toPre.P.isAb.geomConnected` as an intermediate fact. Use `D₂.toPre.P.isAb.proper` as an intermediate fact. Use `GlobalTheory.AbelianPartIso.hom_eq_of_map_eq hJ _ _ _ fun n => ?_` and prove the remaining obligations.
+
+Use `epi U₂.toUnifPre n` as an intermediate fact. Rewrite using `[← cancel_epi (U₂.gt n).q, CategoryTheory.Functor.map_comp, CategoryTheory.Functor.map_id, Category.comp_id, ← Category.assoc, ← q₁, ← q₂]`. Use `⟨⟨b₁, b₂, k₂, k₁⟩, hb₁, fun e => ?_⟩` and prove the remaining obligations. Use `show (U₂.gt e).q.left ≫ (fstG (maximalIdeal R) e D₂.toPre.P.A).left ≫ b₁.left = (U.gt e).q.left ≫ (fstG (maximalIdeal R) e D.toPre.P.A).left`. Establish `m : ((Over.pullback (thick R (maximalIdeal R) e)).map b₁).left ≫ (fstG (maximalIdeal R) e D.toPre.P.A).left = (fstG (maximalIdeal R) e D₂.toPre.P.A).left ≫ b₁.left` using `pullback.lift_fst _ _ _`.
+
+Rewrite using `[← m, q₁ e, Over.comp_left, Category.assoc]`.
+-/
 theorem abelianPart_iso_of_twoUnif : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal R) D A G) (g : GtPt D.toPre (𝟙_ (Over (Sp R)))), (∃ z : GtPt D.toPre (𝟙_ (Over (Sp R))), z.IsZero ∧ GtPt.IsAdd g g z) → ∀ a : 𝟙_ (Over (Sp R)) ⟶ G, a ^ 2 = 1 → (∀ (e : ℕ) (ae : Spec (CommRingCat.of (R ⧸ maximalIdeal R ^ (e + 1))) ⟶ (thickObj R (maximalIdeal R) e G).left), ae ≫ (thickObj R (maximalIdeal R) e G).hom = 𝟙 _ → ae ≫ (fstG (maximalIdeal R) e G).left = thick R (maximalIdeal R) e ≫ a.left → ae ≫ (U.gt e).pG.left = thick R (maximalIdeal R) e ≫ g.b.left ∧ ∀ χ : D.toPre.X, LB.Gen.Corr D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ ((U.gt e).t χ) ae) (LB.pullGen D.toPre.P.L _ _ (g.s χ) (thick R (maximalIdeal R) e))) → ∀ (A₂ : PolAV (Sp (FractionRing R))) (D₂ : DegData R (maximalIdeal R)) (U₂ : Unif (maximalIdeal R) D₂ A₂ G), LBIso U₂.LG.L (U.LG.L.pull ((toUnit G ≫ a) * 𝟙 G).left) → ∃ β : D₂.toPre.P.A ≅ D.toPre.P.A, IsMonHom β.hom ∧ ∀ e : ℕ, (U₂.gt e).pG.left ≫ β.hom.left = (U.gt e).pG.left := by
   intro R _ _ _ hBase D A G _ _ hG U g _ a _ _ A₂ D₂ U₂ _
   have hR : AdmBase R (maximalIdeal R) := hBase.1

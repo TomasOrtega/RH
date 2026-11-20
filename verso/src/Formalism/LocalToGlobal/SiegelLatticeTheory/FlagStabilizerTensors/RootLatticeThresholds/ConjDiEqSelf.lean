@@ -11,11 +11,21 @@ open Formalism.MainNotions.S.Pv.Frames
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `e` using `congrFun hj i`. Simplify `e` using `[Matrix.mulVec, dotProduct, bvec, Pi.single_apply]`.
+-/
 private lemma apply_eq_ite_of_mulVec_bvec_eq' {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (j : Fin n)
     (hj : h *ᵥ bvec j = bvec j) (i : Fin n) : h i j = if i = j then 1 else 0 := by
   have e := congrFun hj i
   simpa [Matrix.mulVec, dotProduct, bvec, Pi.single_apply] using e
 
+/- English proof (translation)
+Establish `hcolS : ∀ l, star (h l p) = if l = p then 1 else 0`. Apply the tactic sequence `intro l; rw [hcol]; split_ifs <;> simp`. Establish `e1 : ∀ m, (hᴴ * H) p m = H p m`. Introduce `m`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, hcolS, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Establish `e : (hᴴ * H * h) p j = H p j` using `by rw [hU]`. Rewrite `e` using `[Matrix.mul_apply]`. Simplify using `only [e1, hrow, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at e`. Rewrite using `[e]`. Distinguish the cases in `hq : q = j`.
+
+Substitute `hq` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hq, Ne.symm hq]`.
+-/
 private lemma Hpk_apply_sig_ne_zero {n : ℕ} {h H : Matrix (Fin n) (Fin n) ℂ} (hU : hᴴ * H * h = H) {p q : Fin n}
     (hcol : ∀ l, h l p = if l = p then 1 else 0) (hrow : ∀ m, H p m = if m = q then 1 else 0)
     (j : Fin n) : h q j = if q = j then 1 else 0 := by
@@ -33,6 +43,9 @@ private lemma Hpk_apply_sig_ne_zero {n : ℕ} {h H : Matrix (Fin n) (Fin n) ℂ}
   · subst hq; simp
   · simp [hq, Ne.symm hq]
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Establish `hm` using `m.isLt`. Simplify using `only [Hpk, eI, esI, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 private lemma Hpk_esI_apply_eq_ite_eI (a : Fin r) (m : Fin (2 * r + k + 1)) :
     Hpk k r (esI k r a) m = if m = eI k r a then 1 else 0 := by
   have ha := a.isLt
@@ -40,6 +53,9 @@ private lemma Hpk_esI_apply_eq_ite_eI (a : Fin r) (m : Fin (2 * r + k + 1)) :
   simp only [Hpk, eI, esI, Fin.ext_iff, Fin.val_mk]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Establish `hm` using `m.isLt`. Simplify using `only [Hpk, eI, esI, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 private lemma Hpk_eI_apply_eq_ite_esI (a : Fin r) (m : Fin (2 * r + k + 1)) :
     Hpk k r (eI k r a) m = if m = esI k r a then 1 else 0 := by
   have ha := a.isLt
@@ -47,6 +63,19 @@ private lemma Hpk_eI_apply_eq_ite_esI (a : Fin r) (m : Fin (2 * r + k + 1)) :
   simp only [Hpk, eI, esI, Fin.ext_iff, Fin.val_mk]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Establish `hUe : hᴴ * Hpk k r * h = Hpk k r` using `hU`. Establish `colE : ∀ a : Fin r, ∀ l, h l (eI k r a) = if l = eI k r a then 1 else 0` using `fun a => apply_eq_ite_of_mulVec_bvec_eq' h _ (hfix a).1`. Establish `colS : ∀ a : Fin r, ∀ l, h l (esI k r a) = if l = esI k r a then 1 else 0` using `fun a => apply_eq_ite_of_mulVec_bvec_eq' h _ (hfix a).2`. Establish `rowE : ∀ a : Fin r, ∀ q, h (eI k r a) q = if eI k r a = q then 1 else 0` using `fun a => Hpk_apply_sig_ne_zero hUe (colS a) (Hpk_esI_apply_eq_ite_eI a)`. Establish `rowS : ∀ a : Fin r, ∀ q, h (esI k r a) q = if esI k r a = q then 1 else 0` using `fun a => Hpk_apply_sig_ne_zero hUe (colE a) (Hpk_eI_apply_eq_ite_esI a)`.
+
+Establish `out : ∀ p : Fin (2 * r + k + 1), (p.val < r ∨ r + k < p.val) → (∀ q, h p q = if p = q then 1 else 0) ∧ (∀ l, h l p = if l = p then 1 else 0)`. Introduce `p hp`. Break down `hp with hp | hp` into its components or cases. Establish `e : eI k r ⟨p.val, hp⟩ = p` using `Fin.ext rfl`. Rewrite using `[← e]`.
+
+Conclude with `⟨rowE _, colE _⟩`. Establish `hp2` using `p.isLt`. Establish `e : esI k r ⟨2 * r + k - p.val, by omega⟩ = p` using `Fin.ext (show 2 * r + k - (2 * r + k - p.val) = p.val by omega)`. Rewrite using `[← e]`. Conclude with `⟨rowS _, colS _⟩`.
+
+Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite `hne` using `[(out i hi).1 j]`. Distinguish the cases in `hij : i = j`. Rewrite using `[hij]`. Conclude with `absurd (if_neg hij) hne`.
+
+Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`. Rewrite `hne` using `[(out j hj).2 i]`. Distinguish the cases in `hij : i = j`. Rewrite using `[hij]`. Conclude with `absurd (if_neg hij) hne`.
+
+Use `push_neg at hi hj`. Rewrite using `[hmid i hi.1 hi.2, hmid j hj.1 hj.2]`.
+-/
 theorem fix_gen (d : Fin (2 * r + k + 1) → ℂ) (d0 : ℂ) (hmid : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → i.val ≤ r + k → d i = d0)
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hU : h ∈ UH (Hpk k r))
     (hfix : ∀ a : Fin r, h *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ h *ᵥ bvec (esI k r a) = bvec (esI k r a))

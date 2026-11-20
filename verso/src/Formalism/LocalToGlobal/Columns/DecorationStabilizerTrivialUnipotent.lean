@@ -18,9 +18,15 @@ section Lat
 variable {O E V : Type} [CommRing O] [Field E] [Algebra O E]
   [AddCommGroup V] [Module E V] [Module O V] [IsScalarTower O E V]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[HermitianLatticesTheory.gmap]`.
+-/
 theorem gmap_one (N : Submodule O V) : HermitianLatticesTheory.gmap (1 : V ≃ₗ[E] V) N = N := by
   ext x; simp [HermitianLatticesTheory.gmap]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[HermitianLatticesTheory.gmap]`.
+-/
 theorem gmap_mul (a b : V ≃ₗ[E] V) (N : Submodule O V) :
     HermitianLatticesTheory.gmap (a * b) N = HermitianLatticesTheory.gmap a (HermitianLatticesTheory.gmap b N) := by
   ext x; simp [HermitianLatticesTheory.gmap]
@@ -41,9 +47,15 @@ def autLat (N : Submodule O V) : Subgroup (V ≃ₗ[E] V) where
     calc HermitianLatticesTheory.gmap a⁻¹ N = HermitianLatticesTheory.gmap a⁻¹ (HermitianLatticesTheory.gmap a N) := by rw [ha']
       _ = N := by rw [← gmap_mul, inv_mul_cancel, gmap_one]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_autLat {N : Submodule O V} {γ : V ≃ₗ[E] V} :
     γ ∈ autLat N ↔ HermitianLatticesTheory.gmap γ N = N := Iff.rfl
 
+/- English proof (translation)
+Establish `h' : HermitianLatticesTheory.gmap γ N = N` using `h`. Rewrite using `[← h']`. Conclude with `Submodule.mem_map_of_mem hx`.
+-/
 theorem autLat_apply {N : Submodule O V} {γ : V ≃ₗ[E] V} (h : γ ∈ autLat N) {x : V}
     (hx : x ∈ N) : γ x ∈ N := by
   have h' : HermitianLatticesTheory.gmap γ N = N := h
@@ -86,13 +98,24 @@ def stabEnd (N : Submodule O V) : Subring (Module.End E V) where
 def MapsI (N : Submodule O V) (I : Ideal O) (X : Module.End E V) : Prop :=
   ∀ x ∈ N, X x ∈ I • N
 
+/- English proof (translation)
+The claim follows from `map_pow (LinearEquiv.automorphismGroup.toLinearMapMonoidHom (R := E) (M := V)) γ k`.
+-/
 theorem coe_pow' (γ : V ≃ₗ[E] V) (k : ℕ) :
     (((γ ^ k : V ≃ₗ[E] V) : V →ₗ[E] V) : Module.End E V) = ((γ : V →ₗ[E] V) : Module.End E V) ^ k :=
   map_pow (LinearEquiv.automorphismGroup.toLinearMapMonoidHom (R := E) (M := V)) γ k
 
+/- English proof (translation)
+Introduce `_ hx` and use `autLat_apply h hx`.
+-/
 theorem coe_mem_stabEnd {N : Submodule O V} {γ : V ≃ₗ[E] V} (h : γ ∈ autLat N) :
     ((γ : V →ₗ[E] V) : Module.End E V) ∈ stabEnd N := fun _ hx => autLat_apply h hx
 
+/- English proof (translation)
+Introduce `x hx`. Express the relevant statement in the definitionally equal form `X (Y x) ∈ (I * J) • N`. Use `Submodule.smul_induction_on (hY x hx) ?_ ?_` and prove the remaining obligations. Introduce `r hr n hn`. Rewrite using `[LinearMap.map_smul_of_tower, mul_comm, Submodule.mul_smul]`.
+
+Conclude with `Submodule.smul_mem_smul hr (hX n hn)`. Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+-/
 theorem MapsI.mul {N : Submodule O V} {I J : Ideal O} {X Y : Module.End E V}
     (hX : MapsI N I X) (hY : MapsI N J Y) : MapsI N (I * J) (X * Y) := by
   intro x hx
@@ -104,14 +127,31 @@ theorem MapsI.mul {N : Submodule O V} {I J : Ideal O} {X Y : Module.End E V}
   · intro a b ha hb
     rw [map_add]; exact add_mem ha hb
 
+/- English proof (translation)
+Introduce `x hx` and use `hX _ (hY x hx)`.
+-/
 theorem MapsI.mul_stab {N : Submodule O V} {I : Ideal O} {X Y : Module.End E V}
     (hX : MapsI N I X) (hY : Y ∈ stabEnd N) : MapsI N I (X * Y) :=
   fun x hx => hX _ (hY x hx)
 
+/- English proof (translation)
+Introduce `x hx` and use `Submodule.smul_mono_left h (hX x hx)`.
+-/
 theorem MapsI.mono {N : Submodule O V} {I J : Ideal O} {X : Module.End E V} (h : I ≤ J)
     (hX : MapsI N I X) : MapsI N J X :=
   fun x hx => Submodule.smul_mono_left h (hX x hx)
 
+/- English proof (translation)
+Take `⟨hγ, r, hr⟩` from `h`. Use `⟨r, pow_mem hγ _, fun x hx => ?_⟩` and prove the remaining obligations. Use `set X : Module.End E V := ((γ : V →ₗ[E] V) : Module.End E V) - 1 with hX`. Establish `hXs : X ∈ stabEnd N` using `sub_mem (coe_mem_stabEnd hγ) (one_mem _)`. Establish `hle : r ≤ g ^ r` using `(Nat.lt_pow_self hg.one_lt).le`.
+
+Establish `e1 : (((γ ^ g ^ r : V ≃ₗ[E] V) : V →ₗ[E] V) : Module.End E V) = (X + 1) ^ g ^ r`. Rewrite using `[hX, sub_add_cancel, coe_pow']`. Establish `e2` using `(Commute.one_right X).add_pow_prime_pow_eq hg r`. Use `set S : Module.End E V := X * 1 * ∑ k ∈ Finset.Ioo 0 (g ^ r), X ^ (k - 1) * 1 ^ (g ^ r - k - 1) * ((((g ^ r).choose k / g : ℕ)) : Module.End E V) with hS`. Establish `hSs : S ∈ stabEnd N`.
+
+Use `mul_mem (mul_mem hXs (one_mem _)) (sum_mem fun k _ => ?_)` and prove the remaining obligations. Conclude with `mul_mem (mul_mem (pow_mem hXs _) (pow_mem (one_mem _) _)) (natCast_mem _ _)`. Establish `e3 : (γ ^ g ^ r) x - x = (X ^ r) ((X ^ (g ^ r - r)) x) + (g : O) • S x`. Establish `: (γ ^ g ^ r) x = ((X + 1) ^ g ^ r) x` using `by rw [← e1]; rfl`. Rewrite using `[this, e2, one_pow]`.
+
+Establish `e4 : X ^ g ^ r = X ^ r * X ^ (g ^ r - r)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hle]`. Establish `e5 : (g : Module.End E V) * X * 1 * ∑ k ∈ Finset.Ioo 0 (g ^ r), X ^ (k - 1) * 1 ^ (g ^ r - k - 1) * ((((g ^ r).choose k / g : ℕ)) : Module.End E V) = (g : Module.End E V) * S`. Rewrite using `[hS]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[e5, e4]`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Module.End.one_apply, Module.End.natCast_apply, Nat.cast_smul_eq_nsmul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3]`. Conclude with `add_mem (hr _ (pow_mem hXs _ x hx)) (Submodule.smul_mem_smul hgw (hSs x hx))`.
+-/
 theorem UnipMod.exists_pow_mem_princLev {w : Ideal O} {N : Submodule O V} {γ : V ≃ₗ[E] V}
     {g : ℕ} (hg : g.Prime) (hgw : (g : O) ∈ w) (h : UnipMod w N γ) :
     ∃ a : ℕ, γ ^ g ^ a ∈ princLev w N := by
@@ -144,6 +184,13 @@ theorem UnipMod.exists_pow_mem_princLev {w : Ideal O} {N : Submodule O V} {γ : 
   rw [e3]
   exact add_mem (hr _ (pow_mem hXs _ x hx)) (Submodule.smul_mem_smul hgw (hSs x hx))
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => intro x _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Establish `e : (1 + X) ^ (m + 1) - 1 - (m + 1) • X = ((1 + X) ^ m - 1 - m • X) * (1 + X) + m • (X * X)`.
+
+Rewrite using `[pow_succ]`. Simplify using `only [add_smul, one_smul, mul_add, sub_mul, mul_one, one_mul, smul_mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Introduce `x hx`.
+
+Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply]`. Conclude with `add_mem (ih.mul_stab (add_mem (one_mem _) hXs) x hx) (Submodule.smul_of_tower_mem _ m ((hX.mul hX) x hx))`.
+-/
 theorem MapsI.binom {N : Submodule O V} {I : Ideal O} {X : Module.End E V}
     (hX : MapsI N I X) (hXs : X ∈ stabEnd N) (m : ℕ) :
     MapsI N (I * I) ((1 + X) ^ m - 1 - m • X) := by
@@ -161,6 +208,13 @@ theorem MapsI.binom {N : Submodule O V} {I : Ideal O} {X : Module.End E V}
     exact add_mem (ih.mul_stab (add_mem (one_mem _) hXs) x hx)
       (Submodule.smul_of_tower_mem _ m ((hX.mul hX) x hx))
 
+/- English proof (translation)
+Establish `hxN : x ∈ N` using `by simpa using hx 0`. Establish `: Module.Finite O N` using `Module.Finite.iff_fg.mpr hN`. Establish `key` using `Ideal.iInf_pow_smul_eq_bot_of_isTorsionFree (M := N) w hw`. Establish `: (⟨x, hxN⟩ : N) ∈ (⨅ i : ℕ, w ^ i • (⊤ : Submodule O N))`. Rewrite using `[Submodule.mem_iInf]`.
+
+Introduce `i`. Establish `h1 : x ∈ Submodule.map N.subtype (w ^ i • (⊤ : Submodule O N))`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_subtype]`. Conclude with `hx i`. Take `⟨y, hy, hyx⟩` from `h1`.
+
+Establish `: y = ⟨x, hxN⟩` using `Subtype.ext hyx`. Rewrite using `[← this]` and apply the resulting hypothesis. Rewrite `this` using `[key, Submodule.mem_bot]`. Conclude with `congrArg Subtype.val this`.
+-/
 theorem eq_zero_of_forall_mem_pow_smul [IsDomain O] [IsNoetherianRing O] [Module.IsTorsionFree O V]
     {w : Ideal O} (hw : w ≠ ⊤) {N : Submodule O V} (hN : N.FG) {x : V}
     (hx : ∀ r : ℕ, x ∈ w ^ r • N) : x = 0 := by
@@ -179,6 +233,25 @@ theorem eq_zero_of_forall_mem_pow_smul [IsDomain O] [IsNoetherianRing O] [Module
   rw [key, Submodule.mem_bot] at this
   exact congrArg Subtype.val this
 
+/- English proof (translation)
+Take `⟨hγN, hγw⟩` from `hγ`. Take `⟨a, ha⟩` from `hm`. Use `set X : Module.End E V := ((γ : V →ₗ[E] V) : Module.End E V) - 1 with hX`. Establish `hXs : X ∈ stabEnd N` using `sub_mem (coe_mem_stabEnd hγN) (one_mem _)`. Establish `h1 : (1 + X) ^ m = 1`.
+
+Rewrite using `[hX, add_sub_cancel, ← coe_pow', hpow]`. Both sides reduce to the same expression. Establish `step : ∀ r : ℕ, MapsI N (w ^ (r + 1)) X`. Introduce `r`. Proceed by induction on `r with`.
+
+Consider the case `zero`. Introduce `x hx`. Establish `: X x = γ x - x` using `rfl`. Rewrite using `[this]`. Simplify using `using hγw x hx`.
+
+Consider the case `succ r ih`. Introduce `x hx`. Establish `hb` using `ih.binom hXs m x hx`. Rewrite `hb` using `[h1, sub_self, zero_sub, LinearMap.neg_apply, LinearMap.smul_apply]`. Establish `hb' : m • X x ∈ (w ^ (r + 1 + 1)) • N`.
+
+Establish `h2 : w ^ (r + 1) * w ^ (r + 1) ≤ w ^ (r + 1 + 1)`. Rewrite using `[← pow_add]; exact Ideal.pow_le_pow_right (by omega)`. Conclude with `Submodule.smul_mono_left h2 (by simpa using hb)`. Establish `e : X x = a • (m • X x) - (a * (m : O) - 1) • X x`. Rewrite using `[sub_smul, one_smul, mul_smul, Nat.cast_smul_eq_nsmul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `sub_mem (Submodule.smul_mem _ a hb') ?_` and prove the remaining obligations. Rewrite using `[pow_succ' w (r + 1), Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul ha (ih x hx)`.
+
+Establish `hzero : ∀ x ∈ N, X x = 0`. Introduce `x hx`. Use `eq_zero_of_forall_mem_pow_smul hw hN fun r => ?_` and prove the remaining obligations. Consider the cases of `r with`. Consider the case `zero => simpa using hXs x hx`.
+
+Consider the case `succ r => exact step r x hx`. Establish `hX0 : X = 0`. Apply `LinearMap.ext_on hspan` to reduce the goal to its premises. Introduce `x hx`. Simplify using `using hzero x hx`.
+
+Use extensionality with `x`. Establish `: X x = γ x - x` using `rfl`. Rewrite `this` using `[hX0]`. Simplify using `using (sub_eq_zero.mp this.symm)`.
+-/
 theorem princLev_torsion [IsDomain O] [IsNoetherianRing O] [Module.IsTorsionFree O V]
     {w : Ideal O} (hw : w ≠ ⊤) {N : Submodule O V} (hN : N.FG)
     (hspan : Submodule.span E (N : Set V) = ⊤) {γ : V ≃ₗ[E] V} (hγ : γ ∈ princLev w N)
@@ -225,6 +298,15 @@ theorem princLev_torsion [IsDomain O] [IsNoetherianRing O] [Module.IsTorsionFree
   rw [hX0] at this
   simpa using (sub_eq_zero.mp this.symm)
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `h.exists_pow_mem_princLev hg hgw`. Take `⟨e, m, hm, hord⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (n := orderOf γ) hfin.orderOf_pos.ne' g hg.ne_one`. Use `⟨b + e, ?_⟩` and prove the remaining obligations. Establish `hmem : γ ^ g ^ (b + e) ∈ princLev w N`. Rewrite using `[pow_add, pow_mul]`.
+
+Conclude with `pow_mem hb _`. Use `princLev_torsion hw hN hspan hmem (m := m) ?_ ?_` and prove the remaining obligations. Establish `hc : IsCoprime (m : ℤ) (g : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.Prime.coprime_iff_not_dvd hg).mpr hm).symm`. Take `⟨u, v, huv⟩` from `hc`. Use `⟨(u : O), ?_⟩` and prove the remaining obligations.
+
+Establish `: (u : O) * (m : O) - 1 = -((v : O) * (g : O))`. Establish `h3 : ((u * m + v * g : ℤ) : O) = 1` using `by rw [huv]; simp`. Move the coercions through the operations in `at h3`. Rewrite using `[← h3]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `neg_mem (Ideal.mul_mem_left _ _ hgw)`. Rewrite using `[← pow_mul, pow_add, mul_assoc, ← hord, mul_comm, pow_mul, pow_orderOf_eq_one, one_pow]`.
+-/
 theorem UnipMod.exists_pow_eq_one [IsDomain O] [IsNoetherianRing O] [Module.IsTorsionFree O V]
     {w : Ideal O} (hw : w ≠ ⊤) {N : Submodule O V} (hN : N.FG)
     (hspan : Submodule.span E (N : Set V) = ⊤) {γ : V ≃ₗ[E] V}
@@ -282,6 +364,9 @@ def levOf {w : Ideal O} (N : Submodule O V) {n : ℕ} (be : V → Fin n → O �
 def IsUpperUni {k : Type} [CommRing k] {n : ℕ} (h : Matrix (Fin n) (Fin n) k) : Prop :=
   (∀ i j, j < i → h i j = 0) ∧ ∀ i, h i i = 1
 
+/- English proof (translation)
+Establish `h1 : h.charpoly = ∏ i : Fin n, (Polynomial.X - Polynomial.C (h i i))` using `Matrix.charpoly_of_isUpperTriangular h (fun i j hij => hh.1 i j hij)`. Establish `h2` using `Matrix.aeval_self_charpoly h`. Rewrite `h2` using `[h1]`. Simplify `h2` using `[hh.2, Finset.prod_const]`.
+-/
 theorem IsUpperUni.sub_one_pow {k : Type} [CommRing k] {n : ℕ} {h : Matrix (Fin n) (Fin n) k}
     (hh : IsUpperUni h) : (h - 1) ^ n = 0 := by
   have h1 : h.charpoly = ∏ i : Fin n, (Polynomial.X - Polynomial.C (h i i)) :=
@@ -290,9 +375,15 @@ theorem IsUpperUni.sub_one_pow {k : Type} [CommRing k] {n : ℕ} {h : Matrix (Fi
   rw [h1] at h2
   simpa [hh.2, Finset.prod_const] using h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨n, hh.sub_one_pow⟩`.
+-/
 theorem IsUpperUni.isNilpotent {k : Type} [CommRing k] {n : ℕ} {h : Matrix (Fin n) (Fin n) k}
     (hh : IsUpperUni h) : IsNilpotent (h - 1) := ⟨n, hh.sub_one_pow⟩
 
+/- English proof (translation)
+Use `hbe.add (x - y) (sub_mem hx hy) y hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem IsFrameMod.sub {w : Ideal O} {N : Submodule O V} {n : ℕ} {be : V → Fin n → O ⧸ w}
     (hbe : IsFrameMod w N be) {x y : V} (hx : x ∈ N) (hy : y ∈ N) :
     be (x - y) = be x - be y := by
@@ -300,6 +391,13 @@ theorem IsFrameMod.sub {w : Ideal O} {N : Submodule O V} {n : ℕ} {be : V → F
   rw [sub_add_cancel] at this
   rw [this]; abel
 
+/- English proof (translation)
+Establish `key : x ∈ N ∧ be x = 0`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `r hr y hy`. Use `⟨N.smul_mem r hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hbe.smul r y hy]`.
+
+Use extensionality with `i`. Establish `: (Ideal.Quotient.mk w r) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hr`. Simplify using `[this]`. Introduce and unpack `a b ⟨ha, ha0⟩ ⟨hb, hb0⟩`. Conclude with `⟨add_mem ha hb, by rw [hbe.add a ha b hb, ha0, hb0, add_zero]⟩`.
+
+Conclude with `key.2`.
+-/
 theorem IsFrameMod.eq_zero {w : Ideal O} {N : Submodule O V} {n : ℕ} {be : V → Fin n → O ⧸ w}
     (hbe : IsFrameMod w N be) {x : V} (hx : x ∈ w • N) : be x = 0 := by
   have key : x ∈ N ∧ be x = 0 := by
@@ -314,6 +412,15 @@ theorem IsFrameMod.eq_zero {w : Ideal O} {N : Submodule O V} {n : ℕ} {be : V �
       exact ⟨add_mem ha hb, by rw [hbe.add a ha b hb, ha0, hb0, add_zero]⟩
   exact key.2
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `hh`. Use `⟨hγ, r, fun x hx => ?_⟩` and prove the remaining obligations. Use `set X : Module.End E V := ((γ : V →ₗ[E] V) : Module.End E V) - 1 with hX`. Establish `hXs : X ∈ stabEnd N` using `sub_mem (coe_mem_stabEnd hγ) (one_mem _)`. Establish `key : ∀ (s : ℕ), ∀ x ∈ N, be ((X ^ s) x) = ((h - 1) ^ s).mulVec (be x)`.
+
+Introduce `s`. Proceed by induction on `s with`. Consider the case `zero => intro x _`. Simplify using the standard rewrite rules. Consider the case `succ s ih`.
+
+Introduce `x hx`. Rewrite using `[pow_succ, Module.End.mul_apply, ih _ (hXs x hx)]`. Establish `: X x = γ x - x` using `rfl`. Rewrite using `[this, hbe.sub (autLat_apply hγ hx) hx, hγh x hx, pow_succ, ← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`. Use `hbe.ker _ (pow_mem hXs r x hx) ?_` and prove the remaining obligations.
+
+Rewrite using `[key r x hx, hr, Matrix.zero_mulVec]`.
+-/
 theorem unipMod_of_frame {w : Ideal O} {N : Submodule O V} {n : ℕ} {be : V → Fin n → O ⧸ w}
     (hbe : IsFrameMod w N be) {γ : V ≃ₗ[E] V} (hγ : γ ∈ autLat N)
     {h : Matrix (Fin n) (Fin n) (O ⧸ w)} (hh : IsNilpotent (h - 1))
@@ -342,6 +449,19 @@ section NF
 variable {O E V : Type} [CommRing O] [Field E] [NumberField E] [Algebra O E]
   [AddCommGroup V] [Module E V] [FiniteDimensional E V] [Module O V] [IsScalarTower O E V]
 
+/- English proof (translation)
+Set `_ : Module ℚ V` to `Module.compHom V (algebraMap ℚ E)`. Establish `tower : IsScalarTower ℚ E V` using `⟨fun q e v => by`. Express the relevant statement in the definitionally equal form `(q • e) • v = (algebraMap ℚ E q) • (e • v)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Establish `fin : Module.Finite ℚ V` using `Module.Finite.trans E V`.
+
+Rewrite using `[Module.finrank_mul_finrank ℚ E V]`. Use `set B : Module.End ℚ V := (γ : V →ₗ[E] V).restrictScalars ℚ with hB`. Establish `hBpow : ∀ k : ℕ, ∀ x, (B ^ k) x = (γ ^ k) x`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ k ih`. Introduce `x`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, ih]`.
+
+Both sides reduce to the same expression. Set `b` to `Module.finBasis ℚ V`. Use `Formalism.HermitianLattices.RamifiedHeckeModels.prime_order_element (finrank ℚ V) p hp (LinearMap.toMatrixAlgEquiv b B) ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_pow]`. Establish `: B ^ p = 1`.
+
+Use extensionality with `x`. Rewrite using `[hBpow, hpow]`. Both sides reduce to the same expression. Rewrite using `[this, map_one]`. Introduce `h1`.
+
+Apply `hne` to reduce the goal to its premises. Establish `: B = 1` using `(LinearMap.toMatrixAlgEquiv b).injective (by rw [h1, map_one])`. Use extensionality with `x`. Establish `h2 : B x = x` using `by rw [this]; rfl`. Conclude with `h2`.
+-/
 theorem primeOrder_le {p : ℕ} (hp : p.Prime) {γ : V ≃ₗ[E] V} (hpow : γ ^ p = 1) (hne : γ ≠ 1) :
     p ≤ finrank ℚ E * finrank E V + 1 := by
   let _ : Module ℚ V := Module.compHom V (algebraMap ℚ E)
@@ -372,6 +492,13 @@ theorem primeOrder_le {p : ℕ} (hp : p.Prime) {γ : V ≃ₗ[E] V} (hpow : γ ^
     have h2 : B x = x := by rw [this]; rfl
     exact h2
 
+/- English proof (translation)
+Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card' p hdvd`. Establish `h1 : (x : V ≃ₗ[E] V) ^ p = 1`. Use `pow_orderOf_eq_one x` as an intermediate fact. Rewrite `this` using `[hx]`.
+
+Conclude with `congrArg Subtype.val this` after adjusting the coercions. Establish `h2 : (x : V ≃ₗ[E] V) ≠ 1`. Introduce `h`. Establish `: x = 1` using `Subtype.ext h`. Rewrite `hx` using `[this, orderOf_one]`.
+
+Conclude with `hp.one_lt.ne hx`. Conclude with `primeOrder_le hp h1 h2`.
+-/
 theorem prime_le_of_dvd_card (Γ : Subgroup (V ≃ₗ[E] V)) [Finite Γ] {p : ℕ} (hp : p.Prime)
     (hdvd : p ∣ Nat.card Γ) : p ≤ finrank ℚ E * finrank E V + 1 := by
   have : Fact p.Prime := ⟨hp⟩
@@ -387,6 +514,15 @@ theorem prime_le_of_dvd_card (Γ : Subgroup (V ≃ₗ[E] V)) [Finite Γ] {p : �
     exact hp.one_lt.ne hx
   exact primeOrder_le hp h1 h2
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `h.exists_pow_eq_one hw hN hspan hg hgw hfin`. Assume the negation of the conclusion as `hne`. Take `⟨k, hk⟩` from `(Nat.dvd_prime_pow hg).mp (orderOf_dvd_of_pow_eq_one ha)`. Take `⟨-, hk⟩` from `hk`. Consider the cases of `k with`.
+
+Consider the case `zero`. Rewrite `hk` using `[pow_zero, orderOf_eq_one_iff]`. Conclude with `hne hk`. Consider the case `succ k`. Establish `h1 : (γ ^ g ^ k) ^ g = 1`.
+
+Rewrite using `[← pow_mul, ← pow_succ, ← hk, pow_orderOf_eq_one]`. Establish `h2 : γ ^ g ^ k ≠ 1`. Introduce `h3`. Use `orderOf_dvd_of_pow_eq_one h3` as an intermediate fact. Rewrite `this` using `[hk]`.
+
+Use `Nat.le_of_dvd (pow_pos hg.pos k) this` as an intermediate fact. Conclude with `absurd this (not_le.mpr (Nat.pow_lt_pow_right hg.one_lt (Nat.lt_succ_self k)))`. Use `primeOrder_le hg h1 h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem stab0 [IsDomain O] [IsNoetherianRing O] [Module.IsTorsionFree O V]
     {w : Ideal O} (hw : w ≠ ⊤) {N : Submodule O V} (hN : N.FG)
     (hspan : Submodule.span E (N : Set V) = ⊤) {γ : V ≃ₗ[E] V}
@@ -425,6 +561,9 @@ open NumberField
 variable {E V : Type} [Field E] [NumberField E] [StarRing E]
   [AddCommGroup V] [Module E V] [FiniteDimensional E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
 
+/- English proof (translation)
+Establish `hfin` using `Formalism.HermitianLatticesTheory.autFinite E V h hsymm hpos N hN`. Establish `: Finite (HermitianLatticesTheory.isom h ⊓ autLat N : Subgroup (V ≃ₗ[E] V))` using `hfin.to_subtype`. Establish `h1` using `isOfFinOrder_of_finite (⟨γ, hγ, hγN⟩ : (HermitianLatticesTheory.isom h ⊓ autLat N : Subgroup (V ≃ₗ[E] V)))`. Conclude with `Submonoid.isOfFinOrder_coe.mpr h1`.
+-/
 theorem isOfFinOrder_of_isom (h : V →ₗ⋆[E] V →ₗ[E] E) (hsymm : h.IsSymm)
     (hpos : ∀ x : V, x ≠ 0 → 0 < Algebra.trace ℚ E (h x x))
     {N : Submodule (𝓞 E) V} (hN : Submodule.IsLattice E N) {γ : V ≃ₗ[E] V}
@@ -434,6 +573,9 @@ theorem isOfFinOrder_of_isom (h : V →ₗ⋆[E] V →ₗ[E] E) (hsymm : h.IsSym
   have h1 := isOfFinOrder_of_finite (⟨γ, hγ, hγN⟩ : (HermitianLatticesTheory.isom h ⊓ autLat N : Subgroup (V ≃ₗ[E] V)))
   exact Submonoid.isOfFinOrder_coe.mpr h1
 
+/- English proof (translation)
+Establish `: Module.IsTorsionFree (𝓞 E) V` using `Module.IsTorsionFree.trans_faithfulSMul (𝓞 E) E V`. Conclude with `stab0 hw hN.fg hN.span_eq_top hg hgw hbig hu (isOfFinOrder_of_isom h hsymm hpos hN hγ hu.1)`.
+-/
 theorem isometry_unipotent_mod_eq_one (h : V →ₗ⋆[E] V →ₗ[E] E) (hsymm : h.IsSymm)
     (hpos : ∀ x : V, x ≠ 0 → 0 < Algebra.trace ℚ E (h x x))
     {N : Submodule (𝓞 E) V} (hN : Submodule.IsLattice E N)
@@ -453,6 +595,15 @@ open NumberField IsDedekindDomain
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Establish `key : ((Algebra.trace ℚ E (star a * a) : ℚ) : ℂ) = ((∑ σ : E →ₐ[ℚ] ℂ, Complex.normSq (σ a) : ℝ) : ℂ)`. Rewrite using `[← eq_ratCast (algebraMap ℚ ℂ), trace_eq_sum_embeddings (E := ℂ)]`. Use `push_cast`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_conj_mul_self, map_mul]`.
+
+Use `congr 1`. Conclude with `hconj σ.toRingHom a`. Establish `key' : ((Algebra.trace ℚ E (star a * a) : ℚ) : ℝ) = ∑ σ : E →ₐ[ℚ] ℂ, Complex.normSq (σ a)`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← key]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hpos : 0 < ∑ σ : E →ₐ[ℚ] ℂ, Complex.normSq (σ a)`. Set `σ0 : E →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Use `Finset.sum_pos' (fun σ _ => Complex.normSq_nonneg _) ⟨σ0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Complex.normSq_pos.mpr ((map_ne_zero σ0).mpr ha)`. Conclude with `key' ▸ hpos` after adjusting the coercions.
+-/
 theorem trace_star_mul_self_pos (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = starRingEnd ℂ (φ x))
     (a : E) (ha : a ≠ 0) : 0 < Algebra.trace ℚ E (star a * a) := by
   have key : ((Algebra.trace ℚ E (star a * a) : ℚ) : ℂ) =
@@ -475,6 +626,11 @@ theorem trace_star_mul_self_pos (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (sta
     exact Complex.normSq_pos.mpr ((map_ne_zero σ0).mpr ha)
   exact_mod_cast key' ▸ hpos
 
+/- English proof (translation)
+Rewrite using `[hStd_apply, map_sum]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `hx (funext hh)`.
+
+Use `Finset.sum_pos' (fun j _ => ?_) ⟨i, Finset.mem_univ _, trace_star_mul_self_pos hconj _ hi⟩` and prove the remaining obligations. Distinguish the cases in `hj : x j = 0`. Simplify using `[hj]`. Conclude with `(trace_star_mul_self_pos hconj _ hj).le`.
+-/
 theorem hStd_trace_pos (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = starRingEnd ℂ (φ x))
     (x : Sp E n) (hx : x ≠ 0) : 0 < Algebra.trace ℚ E (hStd E n x x) := by
   rw [hStd_apply, map_sum]
@@ -487,6 +643,9 @@ theorem hStd_trace_pos (hconj : ∀ (φ : E →+* ℂ) (x : E), φ (star x) = st
   · simp [hj]
   · exact (trace_star_mul_self_pos hconj _ hj).le
 
+/- English proof (translation)
+Establish `hle : ∀ x ∈ d.N, x ∈ d.at w.1` using `fun x hx => ⟨1, Submonoid.one_mem _, by rwa [one_smul]⟩`. Conclude with `{ add := fun x hx y hy => hd.be_add w x (hle x hx) y (hle y hy) smul := fun c x hx => hd.be_smul w c x (hle x hx) ker := hd.be_ker w onto := hd.be_surj w }`.
+-/
 theorem Deco.Ok.isFrameMod {d : Deco E n ST SG} (hd : d.Ok) (w : SG) :
     IsFrameMod w.1.asIdeal d.N (d.be w) := by
   have hle : ∀ x ∈ d.N, x ∈ d.at w.1 := fun x hx =>
@@ -497,6 +656,15 @@ theorem Deco.Ok.isFrameMod {d : Deco E n ST SG} (hd : d.Ok) (w : SG) :
       ker := hd.be_ker w
       onto := hd.be_surj w }
 
+/- English proof (translation)
+Establish `hb : ∀ (w' : SG) (y : Sp E n), d.be w' (ga y) = (h w').1.mulVec (d.be w' y)`. Introduce `w' y`. Use `congrFun (congrFun hbe w') (ga y)` as an intermediate fact. Simplify using `only [Deco.act, LinearEquiv.symm_apply_apply] at this`. Conclude with `this.symm`.
+
+Establish `h1 : ga = 1`. Use `isometry_unipotent_mod_eq_one (hStd E n) hStd_isSymm hpos hd.lat (w := w.1.asIdeal) w.1.isPrime.ne_top hg hgw (by rwa [Module.finrank_fin_fun]) hga ?_` and prove the remaining obligations. Conclude with `unipMod_of_frame (hd.isFrameMod w) hN hu (fun y _ => hb w y)`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w'`.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.mulVec_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Take `⟨x, -, rfl⟩` from `hd.be_surj w' v`. Use `hb w' x` as an intermediate fact.
+
+Rewrite `this` using `[h1]`. Simplify using `using this.symm`.
+-/
 theorem Deco.stab0 (hpos : ∀ x : Sp E n, x ≠ 0 → 0 < Algebra.trace ℚ E (hStd E n x x))
     {d : Deco E n ST SG} (hd : d.Ok) {ga : Sp E n ≃ₗ[E] Sp E n} (hga : ga ∈ UF E n)
     {h : GLG E n SG} (hN : (d.act ga h).N = d.N) (hbe : (d.act ga h).be = d.be)
@@ -523,6 +691,9 @@ theorem Deco.stab0 (hpos : ∀ x : Sp E n, x ≠ 0 → 0 < Algebra.trace ℚ E (
   rw [h1] at this
   simpa using this.symm
 
+/- English proof (translation)
+The claim follows from `Deco.stab0 hpos hd hga (by rw [hfix]) (by rw [hfix]) w hg hgw hbig hu`.
+-/
 theorem Deco.stab_trivial (hpos : ∀ x : Sp E n, x ≠ 0 → 0 < Algebra.trace ℚ E (hStd E n x x))
     {d : Deco E n ST SG} (hd : d.Ok) {ga : Sp E n ≃ₗ[E] Sp E n} (hga : ga ∈ UF E n)
     {h : GLG E n SG} (hfix : d.act ga h = d)
@@ -532,6 +703,11 @@ theorem Deco.stab_trivial (hpos : ∀ x : Sp E n, x ≠ 0 → 0 < Algebra.trace 
       Matrix (Fin n) (Fin n) (𝓞 E ⧸ w.1.asIdeal)) - 1)) : ga = 1 ∧ h = 1 :=
   Deco.stab0 hpos hd hga (by rw [hfix]) (by rw [hfix]) w hg hgw hbig hu
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `Deco.stab0 hpos hd hga (by rw [hfix]; rfl) (by rw [hfix]; rfl) w hg hgw hbig hu`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `P`. Take `⟨x, -, hx⟩` from `hd.f_ne P`. Use `congrFun (congrFun (congrArg Deco.f hfix) P) x` as an intermediate fact.
+
+Rewrite `this` using `[h1]`. Establish `e : d.f P x = (c P).1 * d.f P x` using `this`. Establish `: ((c P).1 - 1) * d.f P x = 0` using `by rw [sub_mul, one_mul, ← e, sub_self]`. Establish `hP : (c P).1 - 1 = 0` using `(mul_eq_zero.mp this).resolve_right hx`. Conclude with `Units.ext (sub_eq_zero.mp hP)`.
+-/
 theorem Deco.dia_free (hpos : ∀ x : Sp E n, x ≠ 0 → 0 < Algebra.trace ℚ E (hStd E n x x))
     {d : Deco E n ST SG} (hd : d.Ok) {ga : Sp E n ≃ₗ[E] Sp E n} (hga : ga ∈ UF E n)
     {h : GLG E n SG} {c : DiaG E ST} (hfix : d.act ga h = d.dia c)
@@ -550,6 +726,9 @@ theorem Deco.dia_free (hpos : ∀ x : Sp E n, x ≠ 0 → 0 < Algebra.trace ℚ 
   have hP : (c P).1 - 1 = 0 := (mul_eq_zero.mp this).resolve_right hx
   exact Units.ext (sub_eq_zero.mp hP)
 
+/- English proof (translation)
+Establish `hfix : d.1.act a.1.1 a.2 = d.1` using `by rw [← DecoSet.smul_val, ha]`. Take `⟨h1, h2⟩` from `Deco.stab_trivial hpos d.2 a.1.2 hfix w hg hgw hbig hu`. Conclude with `Prod.ext (Subtype.ext h1) h2`.
+-/
 theorem DecoSet.eq_one_of_smul_eq
     (hpos : ∀ x : Sp E n, x ≠ 0 → 0 < Algebra.trace ℚ E (hStd E n x x))
     (d : DecoSet E n ST SG) {a : UF E n × GLG E n SG} (ha : a • d = d)
@@ -561,6 +740,9 @@ theorem DecoSet.eq_one_of_smul_eq
   obtain ⟨h1, h2⟩ := Deco.stab_trivial hpos d.2 a.1.2 hfix w hg hgw hbig hu
   exact Prod.ext (Subtype.ext h1) h2
 
+/- English proof (translation)
+Establish `hfix : d.1.act a.1.1 a.2 = d.1.dia c` using `by rw [← DecoSet.smul_val, ha]; rfl`. Conclude with `(Deco.dia_free hpos d.2 a.1.2 hfix w hg hgw hbig hu).2.2`.
+-/
 theorem DecoSet.dia_free
     (hpos : ∀ x : Sp E n, x ≠ 0 → 0 < Algebra.trace ℚ E (hStd E n x x))
     (d : DecoSet E n ST SG) {a : UF E n × GLG E n SG} {c : DiaG E ST} (ha : a • d = d.dia c)
@@ -571,6 +753,13 @@ theorem DecoSet.dia_free
   have hfix : d.1.act a.1.1 a.2 = d.1.dia c := by rw [← DecoSet.smul_val, ha]; rfl
   exact (Deco.dia_free hpos d.2 a.1.2 hfix w hg hgw hbig hu).2.2
 
+/- English proof (translation)
+Use `Prod.ext h1 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w'`. Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.mulVec_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `v`.
+
+Take `⟨x, -, rfl⟩` from `d.2.be_surj w' v`. Establish `hfix : d.1.act a.1.1 a.2 = d.1` using `by rw [← DecoSet.smul_val, ha]`. Use `congrFun (congrFun (congrArg Deco.be hfix) w') x` as an intermediate fact. Rewrite `this` using `[h1]`. Establish `e : (a.2 w').1.mulVec (d.1.be w' x) = d.1.be w' x` using `this`.
+
+Simplify using `using e`.
+-/
 theorem DecoSet.eq_one_of_fst_eq_one (d : DecoSet E n ST SG) {a : UF E n × GLG E n SG}
     (ha : a • d = d) (h1 : a.1 = 1) : a = 1 := by
   refine Prod.ext h1 ?_
@@ -585,6 +774,15 @@ theorem DecoSet.eq_one_of_fst_eq_one (d : DecoSet E n ST SG) {a : UF E n × GLG 
   have e : (a.2 w').1.mulVec (d.1.be w' x) = d.1.be w' x := this
   simpa using e
 
+/- English proof (translation)
+Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card' p hdvd`. Establish `h0 : (x : UF E n × GLG E n SG) ^ p = 1`. Use `pow_orderOf_eq_one x` as an intermediate fact. Rewrite `this` using `[hx]`.
+
+Conclude with `congrArg Subtype.val this` after adjusting the coercions. Establish `h1 : ((x : UF E n × GLG E n SG).1 : Sp E n ≃ₗ[E] Sp E n) ^ p = 1`. Use `congrArg (fun a : UF E n × GLG E n SG => (a.1 : Sp E n ≃ₗ[E] Sp E n)) h0` as an intermediate fact. Simplify using `using this`. Establish `h2 : ((x : UF E n × GLG E n SG).1 : Sp E n ≃ₗ[E] Sp E n) ≠ 1`.
+
+Introduce `h`. Establish `h3 : (x : UF E n × GLG E n SG) = 1` using `DecoSet.eq_one_of_fst_eq_one d (hΓ x.2) (Subtype.ext h)`. Establish `: x = 1` using `Subtype.ext h3`. Rewrite `hx` using `[this, orderOf_one]`. Conclude with `hp.one_lt.ne hx`.
+
+Use `primeOrder_le hp h1 h2` as an intermediate fact. Rewrite `this` using `[Module.finrank_fin_fun]`. Then use the resulting hypothesis.
+-/
 theorem DecoSet.prime_le_of_dvd_card (d : DecoSet E n ST SG) (Γ : Subgroup (UF E n × GLG E n SG))
     (hΓ : Γ ≤ MulAction.stabilizer (UF E n × GLG E n SG) d) [Finite Γ] {p : ℕ} (hp : p.Prime)
     (hdvd : p ∣ Nat.card Γ) : p ≤ finrank ℚ E * n + 1 := by
@@ -613,9 +811,15 @@ section BaseInst
 
 open NumberField IsDedekindDomain
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, Fields.f, hX.card_Tau, mul_comm]`.
+-/
 theorem Fields.Ok.finrank_E {X : Fields} (hX : X.Ok) : finrank ℚ X.E = 2 * X.f := by
   rw [← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, Fields.f, hX.card_Tau, mul_comm]
 
+/- English proof (translation)
+Unfold `divs at h`. Use `split_ifs at h with hfin`. Conclude with `(Set.Finite.mem_toFinset hfin).mp h`. Simplify using `at h`.
+-/
 theorem mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A}
     {P : HeightOneSpectrum A} (h : P ∈ divs a) : a ∈ P.asIdeal := by
   unfold divs at h
@@ -623,11 +827,17 @@ theorem mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A}
   · exact (Set.Finite.mem_toFinset hfin).mp h
   · simp at h
 
+/- English proof (translation)
+Rewrite using `[← hPr.piG_norm i]`. Conclude with `Ideal.mul_mem_left _ _ (mem_of_mem_divs hw)`.
+-/
 theorem Primes.Ok.g_mem {X : Fields} {Pr : Primes X} (hPr : Pr.Ok) {i : Fin 2}
     {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vG i) : (Pr.g i : 𝓞 X.E) ∈ w.asIdeal := by
   rw [← hPr.piG_norm i]
   exact Ideal.mul_mem_left _ _ (mem_of_mem_divs hw)
 
+/- English proof (translation)
+The claim follows from `DecoSet.eq_one_of_smul_eq (hStd_trace_pos hX.conjE) d ha w (hPr.g_prime i) (hPr.g_mem hw) (by rw [hX.finrank_E]; omega) hu`.
+-/
 theorem DecoSet.decoration_stabilizer_trivial_unipotent {X : Fields} (hX : X.Ok) {Pr : Primes X} (hPr : Pr.Ok)
     {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (d : DecoSet X.E n ST SG)
     {a : UF X.E n × GLG X.E n SG} (ha : a • d = d) (i : Fin 2) (w : SG) (hw : w.1 ∈ Pr.vG i)
@@ -637,6 +847,9 @@ theorem DecoSet.decoration_stabilizer_trivial_unipotent {X : Fields} (hX : X.Ok)
   DecoSet.eq_one_of_smul_eq (hStd_trace_pos hX.conjE) d ha w (hPr.g_prime i) (hPr.g_mem hw)
     (by rw [hX.finrank_E]; omega) hu
 
+/- English proof (translation)
+The claim follows from `DecoSet.dia_free (hStd_trace_pos hX.conjE) d ha w (hPr.g_prime i) (hPr.g_mem hw) (by rw [hX.finrank_E]; omega) hu`.
+-/
 theorem DecoSet.dia_free_cols {X : Fields} (hX : X.Ok) {Pr : Primes X}
     (hPr : Pr.Ok) {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (d : DecoSet X.E n ST SG)
     {a : UF X.E n × GLG X.E n SG} {c : DiaG X.E ST} (ha : a • d = d.dia c)
@@ -646,12 +859,18 @@ theorem DecoSet.dia_free_cols {X : Fields} (hX : X.Ok) {Pr : Primes X}
   DecoSet.dia_free (hStd_trace_pos hX.conjE) d ha w (hPr.g_prime i) (hPr.g_mem hw)
     (by rw [hX.finrank_E]; omega) hu
 
+/- English proof (translation)
+Take `⟨-, h2, h3⟩` from `mem_uniUT.mp hM`. Conclude with `⟨fun i j hji => h2 i j (lt_of_lt_of_le i.2 hn) hji, fun i => h3 i (lt_of_lt_of_le i.2 hn)⟩`.
+-/
 theorem isUpperUni_of_mem_uniUT {κ : Type} [CommRing κ] {n a : ℕ} {bl : List ℕ} (hn : n ≤ a)
     {M : GL (Fin n) κ} (hM : M ∈ uniUT n κ a bl) :
     IsUpperUni (M : Matrix (Fin n) (Fin n) κ) := by
   obtain ⟨-, h2, h3⟩ := mem_uniUT.mp hM
   exact ⟨fun i j hji => h2 i j (lt_of_lt_of_le i.2 hn) hji, fun i => h3 i (lt_of_lt_of_le i.2 hn)⟩
 
+/- English proof (translation)
+The claim follows from `(isUpperUni_of_mem_uniUT (by omega) hM).isNilpotent`.
+-/
 theorem isNilpotent_of_mem_HX_zero {κ : Type} [CommRing κ] {n k t : ℕ} (hn : n ≤ k)
     {M : GL (Fin n) κ} (hM : M ∈ HX κ n k t 0) :
     IsNilpotent ((M : Matrix (Fin n) (Fin n) κ) - 1) :=

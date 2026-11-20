@@ -26,6 +26,13 @@ noncomputable section
 
 namespace GlobalTheory.ArcUnique
 
+/- English proof (translation)
+Establish `hx` using `MatchRigid.genRel_ne_zero hL' hL h`. Take `⟨x, rfl⟩ : ∃ v : Fˣ, (v : F) = x` from `⟨Units.mk0 x hx, rfl⟩`. Take `rfl : (fun k => pt'' k ≫ Φ') = pt'` from `funext hp`. Use `(ArcTransport.genRel_val ((isGen_iff _).1 hw') hL' hL'' ht'' ht' 1).2 ⟨hp, fun y J' J'' hJ' hJ'' => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `ArcTransport.exists_good' hL (Y := Sp F) y`.
+
+Establish `a` using `((ArcTransport.genRel_val ((isGen_iff _).1 hw) hL hL' ht' ht x).1 h).2 y J J' hJ hJ'`. Establish `b` using `((ArcTransport.genRel_val ((isGen_iff _).1 hw'') hL hL'' ht'' ht x).1 h').2 y J J'' hJ hJ''`. Establish `c : ∀ k, Geo.Tor.gw w'' (pt'' k) y (J (pt'' k ≫ Φ' ≫ Φ)) (J'' (pt'' k)) = Geo.Tor.gw w (pt'' k ≫ Φ') y (J ((pt'' k ≫ Φ') ≫ Φ)) (J' (pt'' k ≫ Φ')) * Geo.Tor.gw w' (pt'' k) y (J' (pt'' k ≫ Φ')) (J'' (pt'' k))` using `fun k => T _ (pt'' k) y _ _ _ (hJ (pt'' k ≫ Φ' ≫ Φ)) (hJ' (pt'' k ≫ Φ')) (hJ'' _)`. Simplify using `only [c, mul_zpow, Finset.prod_mul_distrib] at b`. Rewrite `b` using `[← a, _root_.mul_assoc]`.
+
+Rewrite using `[map_one, _root_.one_mul]`. Conclude with `mul_left_cancel b`.
+-/
 theorem genRel_cancel {F : Type} [Field F] {X X' X'' : Scheme.{0}} {L : LB X} {L' : LB X'} {L'' : LB X''}
     {Φ : X' ⟶ X} {Φ' : X'' ⟶ X'} {w : LB.Iso L' (L.pull Φ)} {w' : LB.Iso L'' (L'.pull Φ')}
     {w'' : LB.Iso L'' (L.pull (Φ' ≫ Φ))} (hL : L.IsLB) (hL' : L'.IsLB) (hL'' : L''.IsLB) (hw : w.IsGen)
@@ -56,15 +63,24 @@ def IsFibre {S T : Scheme.{0}} (A : Over T) [GrpObj A] (act : 𝓞 E → (A ⟶ 
     (y : T ⟶ S) (φ : A.left ⟶ t.G.left) : Prop :=
   IsGrpPullback A t.G y φ ∧ (∀ a, (act a).left ≫ φ = φ ≫ (t.act.act a).left) ∧ LBIso L (t.PP.L.pull φ)
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (Geo.Tor.chartPullPull L' Φ' Φ' rfl) (chartPullSame L _ _ _ Φ' fun _ => rfl) h`.
+-/
 theorem lbIso_pull {X X' X'' : Scheme.{0}} {L : LB X} {L' : LB X'} {Φ : X' ⟶ X} (h : LBIso L' (L.pull Φ))
     (Φ' : X'' ⟶ X') : LBIso (L'.pull Φ') (L.pull (Φ' ≫ Φ)) :=
   LBIso.chartPull (Geo.Tor.chartPullPull L' Φ' Φ' rfl) (chartPullSame L _ _ _ Φ' fun _ => rfl) h
 
+/- English proof (translation)
+Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨m.cart, m.act, w, hw⟩`.
+-/
 theorem isFibre_of_sabMap {S T : Scheme.{0}} {t : SAB H S} {t' : SAB H T} {y : T ⟶ S} (m : SABMap t' t y) :
     IsFibre t'.G t'.act.act t'.PP.L t y m.φ := by
   obtain ⟨w, hw, -⟩ := m.lin
   exact ⟨m.cart, m.act, w, hw⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨g.comp h.1, fun a => by rw [← Category.assoc, ha, Category.assoc, h.2.1, Category.assoc], LBIso.trans hL' (pull_isLB hL ρ) (pull_isLB t.PP.isLB _) hi (lbIso_pull h.2.2 ρ)⟩`.
+-/
 theorem IsFibre.precomp {S T T' : Scheme.{0}} {A : Over T} [GrpObj A] {act : 𝓞 E → (A ⟶ A)} {L : LB A.left}
     {t : SAB H S} {y : T ⟶ S} {φ : A.left ⟶ t.G.left} (h : IsFibre A act L t y φ) (hL : L.IsLB) {A' : Over T'}
     [GrpObj A'] {act' : 𝓞 E → (A' ⟶ A')} {L' : LB A'.left} (hL' : L'.IsLB) {j : T' ⟶ T} {ρ : A'.left ⟶ A.left}
@@ -73,6 +89,11 @@ theorem IsFibre.precomp {S T T' : Scheme.{0}} {A : Over T} [GrpObj A] {act : �
   ⟨g.comp h.1, fun a => by rw [← Category.assoc, ha, Category.assoc, h.2.1, Category.assoc],
     LBIso.trans hL' (pull_isLB hL ρ) (pull_isLB t.PP.isLB _) hi (lbIso_pull h.2.2 ρ)⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Set `ρ : A'.left ⟶ A.left` to `h.1.1.lift φ' (A'.hom ≫ j) (by rw [h'.1.1.w, Category.assoc])`. Establish `e₁ : ρ ≫ φ = φ'` using `h.1.1.lift_fst _ _ _`. Establish `e₂ : ρ ≫ A.hom = A'.hom ≫ j` using `h.1.1.lift_snd _ _ _`. Use `⟨ρ, e₁, h.1.cancel (by rw [e₁]; exact h'.1) e₂, fun a => h.1.1.hom_ext ?_ ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, e₁, h'.2.1, Category.assoc, h.2.1, ← Category.assoc, e₁]`. Rewrite using `[Category.assoc, e₂, ← Category.assoc, Over.w, Category.assoc, Over.w, e₂]`. Establish `b` using `(lbIso_pull h.2.2 ρ).symm`. Rewrite `b` using `[e₁]`. Conclude with `LBIso.trans hL' (pull_isLB t.PP.isLB _) (pull_isLB hL ρ) h'.2.2 b`.
+-/
 theorem IsFibre.cancel {S T T' : Scheme.{0}} {A : Over T} [GrpObj A] {act : 𝓞 E → (A ⟶ A)} {L : LB A.left}
     {t : SAB H S} {y : T ⟶ S} {φ : A.left ⟶ t.G.left} (h : IsFibre A act L t y φ) (hL : L.IsLB) {A' : Over T'}
     [GrpObj A'] {act' : 𝓞 E → (A' ⟶ A')} {L' : LB A'.left} (hL' : L'.IsLB) {j : T' ⟶ T} {y' : T' ⟶ S}
@@ -92,6 +113,19 @@ theorem IsFibre.cancel {S T T' : Scheme.{0}} {A : Over T} [GrpObj A] {act : 𝓞
 
 variable {D : Datum H} {l : Level H}
 
+/- English proof (translation)
+Take `⟨o', ⟨m⟩⟩` from `obj_pull E H D l (KA l) (KA l) (baseKA l) (baseKA l) (RingHom.id _) _ T' _ (((j ≫ y) ≫ pullback.fst _ _) ≫ Xo.s) (j ≫ y) rfl rfl ((Category.assoc _ _ _).symm.trans ((Category.comp_id _).symm.trans (congrArg ((((j ≫ y) ≫ pullback.fst _ _) ≫ Xo.s) ≫ ·) (Spec.map_id _).symm))) o`. Take `⟨ρ, e₁, g, ha, hi⟩` from `h.cancel hL o'.t.PP.isLB (isFibre_of_sabMap m.toSABMap) rfl`. Take `⟨f₁, f₂, f₃⟩` from `h'.precomp hL o'.t.PP.isLB g ha hi`. Use `o'.proper` as an intermediate fact. Take `⟨m', hm'⟩` from `exists_sabMap_of_lbIso E H _ _ o.t o'.t (j ≫ y') (ρ ≫ φ') ⟨inferInstance, fun s _ K _ _ t _ => inferInstance⟩ f₁ f₂ f₃`.
+
+Establish `key : ∀ (x : 𝟙_ (Over T') ⟶ o'.t.G) (z : 𝟙_ (Over (Xo.XF c)) ⟶ o.t.G), x.left ≫ m.toSABMap.φ = (j ≫ y) ≫ z.left → (∀ x : Over.mk j ⟶ A, x.left ≫ φ = j ≫ y ≫ z.left → x.left ≫ φ' = j ≫ y' ≫ z.left) → x.left ≫ m'.φ = (j ≫ y') ≫ z.left` using `fun x z hx hz => by`. Use `hz (Over.homMk (x.left ≫ ρ) (by show (x.left ≫ ρ) ≫ A.hom = j` as an intermediate fact. Rewrite using `[Category.assoc, g.1.w, ← Category.assoc, Over.w]`. Conclude with `Category.id_comp _)) (by show (x.left ≫ ρ) ≫ φ = _`. Rewrite using `[Category.assoc, e₁, hx, Category.assoc])`.
+
+Rewrite using `[hm']`. Conclude with `(Category.assoc _ _ _).symm.trans (this.trans (Category.assoc _ _ _).symm)`. Establish `a₁ : ∀ a, (o'.eta a).left ≫ m'.φ = (j ≫ y') ≫ (o.eta a).left` using `fun a => by`. Establish `: a ∈ (l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) • (⊤ : Submodule (𝓞 E) D.La)`. Rewrite using `[l.coprime, Submodule.top_smul]`.
+
+Discharge the goal by the elementary cases of `trivial`. Rewrite `this` using `[Submodule.sup_smul]`. Take `⟨v₁, h₁, v₂, h₂, rfl⟩` from `Submodule.mem_sup.1 this`. Rewrite using `[o'.eta_add, o.eta_add, o'.eta_ker _ h₁, o.eta_ker _ h₁, _root_.one_mul, _root_.one_mul]`. Conclude with `key _ _ (m.eta v₂) (hM v₂ h₂)`.
+
+Establish `a₂ : ∀ a, (o'.etaA a).left ≫ m'.φ = (j ≫ y') ≫ (o.etaA a).left` using `fun a => key _ _ (m.etaA a) (hA a)`. Establish `comp : ∀ (g : T' ⟶ Xo.XF c), ObjMap o' o g → Nonempty (ObjMap o' Xo.univ (g ≫ pullback.fst _ _))` using `fun g u => (ObjComp.objMap_comp m0 u).nonempty`. Establish `e₃ : (j ≫ y) ≫ pullback.snd _ _ = (j ≫ y') ≫ pullback.snd _ _` using `by rw [Category.assoc, e₂, Category.assoc]`. Use `pullback.hom_ext ?_ e₃` and prove the remaining obligations. Use `(Xo.rep _ _ inferInstance o').unique ⟨rfl, comp _ m⟩ ⟨?_, comp _ ⟨m', a₁, a₂⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc (j ≫ y'), Category.assoc (j ≫ y), pullback.condition, ← Category.assoc, ← e₃, Category.assoc]`.
+-/
 theorem points_eq (Xo : Moduli D l) (c : Coeff l)
     (o : Obj D l (baseKA l) (pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s))
     (m0 : ObjMap o Xo.univ (pullback.fst _ _)) {T T' : Scheme.{0}} [IsReduced T'] (j : T' ⟶ T) {A : Over T} [GrpObj A]
@@ -143,6 +177,15 @@ variable {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c
   {O' : Type} [CommRing O'] [IsDomain O'] {b : O →+* O'} {a : ArcIn D l β O' b}
   {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {f : O' →+* R} {u : R}
 
+/- English proof (translation)
+Set `_` to `H.starRing`. Establish `gpG : IsGrpPullback W.P.A.A W.t.G (jK R) (W.P.U.gen.inv.left ≫ pullback.fst W.t.G.hom (jK R))`. Use `W.P.U.gen_hom` as an intermediate fact. Establish `: IsMonHom W.P.U.gen.symm.hom` using `by show IsMonHom W.P.U.gen.inv; infer_instance`. Conclude with `((isGrpPullback_of_iso W.P.U.gen.symm).comp (isGrpPullback_pullback W.t.G (jK R))).congr (Category.id_comp _) rfl`.
+
+Establish `hgi : W.P.U.gen.inv.left ≫ W.P.U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `actA : ∀ x, (W.P.oA.act x).left ≫ W.P.U.gen.inv.left ≫ pullback.fst W.t.G.hom (jK R) = (W.P.U.gen.inv.left ≫ pullback.fst W.t.G.hom (jK R)) ≫ (W.t.act.act x).left`. Introduce `x`. Establish `e : W.P.oA.act x ≫ W.P.U.gen.inv = W.P.U.gen.inv ≫ (Over.pullback (jK R)).map (W.t.act.act x)`.
+
+Rewrite using `[Iso.comp_inv_eq, Category.assoc]`. Conclude with `((Iso.inv_comp_eq _).2 (W.P.lin.ext x)).symm`. Rewrite using `[← Category.assoc, ← Over.comp_left, e, Over.comp_left, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (pullback.lift_fst _ _ _)`. Establish `wA : LBIso W.P.A.L (W.t.PP.L.pull (W.P.U.gen.inv.left ≫ pullback.fst W.t.G.hom (jK R)))`.
+
+Rewrite using `[← W.P.bundle]`. Conclude with `LBIso.chartPull (h := W.P.U.gen.inv.left) (chartPullSec W.P.A.L _ _ hgi) (chartPullSame W.P.U.LG.L _ (fun _ => pullback.fst W.t.G.hom (jK R)) _ _ fun _ => rfl) W.P.U.ext`. Establish `h₁` using `(isFibre_of_sabMap W.m).precomp W.t.PP.isLB W.P.A.isLB gpG actA wA`. Take `⟨ρ, e, g⟩` from `(isFibre_of_sabMap Y.m).cancel Y.oF.t.PP.isLB W.P.A.isLB h₁ hy`. Conclude with `⟨ρ, e.trans (Category.assoc _ _ _), g⟩`.
+-/
 theorem exists_isFibre {χ : Sp R ⟶ Y.X} (W : ArcWit Y a I f u χ) {y : Sp (FractionRing R) ⟶ Xo.XF c}
     (hy : y ≫ Y.j = jK R ≫ χ) :
     ∃ φ : W.P.A.A.left ⟶ Y.oF.t.G.left,
@@ -172,11 +215,23 @@ theorem exists_isFibre {χ : Sp R ⟶ Y.X} (W : ArcWit Y a I f u χ) {y : Sp (Fr
   obtain ⟨ρ, e, g⟩ := (isFibre_of_sabMap Y.m).cancel Y.oF.t.PP.isLB W.P.A.isLB h₁ hy
   exact ⟨ρ, e.trans (Category.assoc _ _ _), g⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨W.spec.1, W.spec.2.1, W.spec.2.2.1, W.spec.2.2.2.1, W.spec.2.2.2.2.1, fun F _ _ _ _ uF h h' => (W.spec.2.2.2.2.2 F uF h h').1⟩`.
+-/
 theorem match_of_wit {χ : Sp R ⟶ Y.X} (W : ArcWit Y a I f u χ) :
     LN.Match a f u W.P.D.toPre W.P.oD W.φ W.he W.w W.e :=
   ⟨W.spec.1, W.spec.2.1, W.spec.2.2.1, W.spec.2.2.2.1, W.spec.2.2.2.2.1,
     fun F _ _ _ _ uF h h' => (W.spec.2.2.2.2.2 F uF h h').1⟩
 
+/- English proof (translation)
+Establish `hF : ArcPull.Compat (RingHom.id R) F` using `fun _ => rfl`. Establish `hg' : w'.IsGen ∧ ∀ z, GenRel w' (g'.s (W'.e z)) (g₀.s z) (x z)`. Establish `k` using `And.intro W'.spec.2.1 h'`. Generalize the expression as in `W'.w = w₀ at hw k`. Generalize the expression as in `W'.φ = φ₀ at hφ w₀`.
+
+Substitute `hφ` using the available equality. Take `rfl` from `eq_of_heq hw`. Conclude with `k`. Establish `gp` using `pull_grp hD`. Establish `hb : ArcTransport.pushF gp hF.base g'.b = g.b` using `Over.OverMorphism.ext (W.spec.1.1.hom_ext ((Category.assoc _ _ _).trans (((hg'.2 0).1 2).trans ((h 0).1 2).symm)) (by rw [Over.w, Over.w]))`.
+
+Use `(ArcPull.isPullGtF_iff hD hF g g').2 fun z => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `W.e.surjective z`. Establish `e : hD.xe.symm (W.e z) = W'.e z` using `hD.xe.symm_apply_eq.2 (he z).symm`. Establish `p` using `ArcTransport.gtφ_push gp hF.base (ArcPull.c_symm hD) g'.b (W.e z)`. Rewrite `p` using `[hb]`.
+
+Rewrite `p`, the goal using `[e]`. Conclude with `genRel_cancel a.D₀.P.isLB W.P.D.toPre.P.isLB W'.P.D.toPre.P.isLB W.spec.2.1 hD.w_gen hg'.1 T (g₀.isGen _) (g.isGen _) (g'.isGen _) (h z) (hg'.2 z) p`.
+-/
 theorem isPullGtF_of_transport {χ χ' : Sp R ⟶ Y.X} (W : ArcWit Y a I f u χ) (W' : ArcWit Y a I f u χ')
     (hD : IsPullDeg (RingHom.id R) W.P.D.toPre W'.P.D.toPre) (he : ∀ y, hD.xe (W'.e y) = W.e y)
     (w' : LB.Iso W'.P.D.toPre.P.L (a.D₀.P.L.pull ((hD.e.hom.left ≫
@@ -208,6 +263,29 @@ theorem isPullGtF_of_transport {χ χ' : Sp R ⟶ Y.X} (W : ArcWit Y a I f u χ)
 
 end Witness
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 E _ _ _ H D l Xo c W₀ Y O' _ _ _ b a R _ _ _ _ I f u hR hI hf χ χ' y y' hy hy' hs hs' hχ hχ'`. Set `_` to `H.starRing`. Take `⟨W⟩` from `(Y.hasArcData_iff a I f u χ).1 hχ`. Take `⟨W'⟩` from `(Y.hasArcData_iff a I f u χ').1 hχ'`. Take `⟨hD, he, hact, w', hφ, hw, T⟩` from `GlobalTheory.T.degenerationData_iso_of_two_witnesses h1 h2 h5 E H D l Xo c W₀ Y O' b a R I f u hR hI hf χ χ' W W'`.
+
+Take `⟨ψ, mψ, hL, hQ, hO⟩` from `GlobalTheory.T.exists_generic_iso_of_uniformisations_isoData h1 h2 R I hR hI W.P.D W'.P.D W.P.A W'.P.A W.t.G W'.t.G W.t.semi W'.t.semi W.P.U W'.P.U hD`. Establish `hψ` using `hO (𝓞 E) W.P.oD W'.P.oD W.P.oA W'.P.oA _ _ W.P.lin W'.P.lin (fun x z => by`. Take `⟨z, rfl⟩` from `W'.e.surjective z`. Rewrite using `[← map_smul, he, he, map_smul]) hact`. Take `⟨φ, eφ, fφ⟩` from `exists_isFibre W hy`.
+
+Take `⟨φ', eφ', fφ'⟩` from `exists_isFibre W' hy'`. Establish `fψ` using `fφ.precomp W.P.A.isLB W'.P.A.isLB (act' := W'.P.oA.act) (isGrpPullback_of_iso ψ) (fun x => by rw [← Over.comp_left, hψ, Over.comp_left]) hL`. Rewrite `fψ` using `[Category.id_comp]`. Set `F` to `AlgebraicClosure (FractionRing R)`. Set `g : O' →+* F` to `((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R))).comp f`.
+
+Establish `hinj : Function.Injective ((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R)))` using `(algebraMap (FractionRing R) F).injective.comp (IsFractionRing.injective R _)`. Establish `hg : Function.Injective g` using `hinj.comp hf`. Use `letI : Algebra (FractionRing O') F := (IsFractionRing.lift (K := FractionRing O') hg).toAlgebra`. Establish `hF : ∀ x, algebraMap (FractionRing O') F (algebraMap O' _ x) = algebraMap (FractionRing R) F (algebraMap R _ (f x))` using `fun x => IsFractionRing.lift_algebraMap (K := FractionRing O') hg x`. Set `j : Sp F ⟶ Sp (FractionRing R)` to `jFK (R := R) F`.
+
+Establish `lev : ∀ (k : ℕ) (p₀ : QkPt a.D₀ (FractionRing O') k) (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G), 1 ≤ k → k ∣ l.M' → ((k = l.A ∧ ∃ v, HEq p₀ (a.etaA v) ∧ σ = Y.oF.etaA v) ∨ (k = l.M ∧ ∃ v ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), HEq p₀ (a.eta v) ∧ σ = Y.oF.eta v)) …`. Introduce `k p₀ σ hk hd hσ x hx`. Take `⟨q₀, hq₀, -⟩` from `TorusExt.existsUnique_qkExt a.bimult (algebraMap (FractionRing O') F) (by ext; rfl) p₀`. Take `⟨q, hq⟩` from `MatchRigid.exists_transport (match_of_wit W) hF rfl h1.globalFns hd q₀`. Take `⟨q', hq'⟩` from `MatchRigid.exists_transport (match_of_wit W') hF rfl h1.globalFns hd q₀`.
+
+Establish `t₁` using `(W.spec.2.2.2.2.2 F _ hF rfl).2 (j ≫ y) (by rw [Category.assoc, hy]) k p₀ σ hσ q₀ q (x ≫ ψ.hom) hq₀ hq.1 hq.2 (by`. Rewrite using `[← eφ, Over.comp_left, Category.assoc, Category.assoc]`. Conclude with `(by simpa only [Category.assoc] using congrArg (· ≫ Y.m.φ) hx))`. Establish `t₂` using `(hQ F k hk q q' x (by rw [hq'.1, hq.1, ← he, AddEquiv.symm_apply_apply]) (isPullGtF_of_transport W W' hD he w' hφ hw T hq.2 hq'.2)).2 t₁`. Establish `w₀ : (j ≫ y' ≫ σ.left) ≫ Y.oF.t.G.hom = j ≫ y'`.
+
+Rewrite using `[Category.assoc, Category.assoc, Over.w]`. Conclude with `congrArg _ (Category.comp_id _)`. Set `x' : Over.mk j ⟶ W'.P.A.A` to `Over.homMk (fφ'.1.1.lift (j ≫ y' ≫ σ.left) j w₀) (fφ'.1.1.lift_snd _ _ _)`. Establish `hx' : x'.left ≫ φ' = j ≫ y' ≫ σ.left` using `fφ'.1.1.lift_fst _ _ _`. Establish `t₃` using `(W'.spec.2.2.2.2.2 F _ hF rfl).2 (j ≫ y') (by rw [Category.assoc, hy']) k p₀ σ hσ q₀ q' x' hq₀ hq'.1 hq'.2 (by`.
+
+Rewrite using `[← eφ']`. Conclude with `(by simpa only [Category.assoc] using congrArg (· ≫ Y.m.φ) hx'))`. Take `⟨τ, hτ, -⟩` from `TorsionIso.torsion_eq ⟨h1, h2, h3, h4, h5⟩ R I hR W'.P.D W'.P.A W'.t.G W'.t.semi W'.P.U F k hk`. Rewrite using `[((hτ _ _).1 t₂).trans ((hτ _ _).1 t₃).symm]`. Conclude with `hx'`.
+
+Establish `hm : Mono (spMap (c.V W₀).subtype)`. Establish `: IsPreimmersion (spMap (c.V W₀).subtype)` using `IsPreimmersion.of_isLocalization (R := c.V W₀) (S := c.F) (nonZeroDivisors _)`. Use `infer_instance`. Establish `sn : ∀ {z : Sp (FractionRing R) ⟶ Xo.XF c} {ξ : Sp R ⟶ Y.X}, z ≫ Y.j = jK R ≫ ξ → (z ≫ pullback.snd _ _) ≫ spMap (c.V W₀).subtype = jK R ≫ ξ ≫ Y.s` using `fun {z ξ} hz => by`. Rewrite using `[← Y.jQ_over, Category.assoc, Category.assoc, ← pullback.condition, ← Category.assoc (jK R), ← hz, Model.j, Category.assoc, Category.assoc]`.
+
+Establish `key : j ≫ y = j ≫ y'` using `points_eq Xo c Y.oF Y.m0 j W'.P.A.isLB fψ fφ' ((cancel_mono (spMap (c.V W₀).subtype)).1 (by rw [sn hy, sn hy', hs, hs'])) (fun v => lev _ (a.etaA v) _ l.A_pos (Nat.dvd_lcm_right _ _) (Or.inl ⟨rfl, v, HEq.rfl, rfl⟩)) (fun v hv => lev _ (a.eta v) _ (le_trans (by norm_num) l.three_l …`. Use `ThetaDescent.isProper_of_isProjOver Y.proj` as an intermediate fact. Establish `: IsDominant (j ≫ jK R)`. Establish `e : j ≫ jK R = spMap ((algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R)))` using `(Spec.map_comp _ _).symm`. Rewrite using `[e]`.
+
+Conclude with `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 hinj).le.trans bot_le)⟩`. Use `ext_of_isDominant_of_isSeparated Y.s (hs.trans hs'.symm) (j ≫ jK R) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← hy, ← hy', ← Category.assoc, key, Category.assoc]`.
+-/
 theorem eq_of_hasArcData : Laws → Laws2 → Laws3 → Laws4 → Laws5 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (O' : Type) [CommRing O'] [IsDomain O'] [CharZero O'] (b : c.V W₀ →+* O') (a : ArcIn D l (c.V W₀).subtype O' b) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CharZero R] (I : Ideal R) (f : O' →+* R) (u : R), AdmBase R I → I ≠ ⊤ → Function.Injective f → ∀ (χ χ' : Sp R ⟶ Y.X) (y y' : Sp (FractionRing R) ⟶ Xo.XF c), y ≫ Y.j = jK R ≫ χ → y' ≫ Y.j = jK R ≫ χ' → χ ≫ Y.s = spMap f ≫ spMap b → χ' ≫ Y.s = spMap f ≫ spMap b → Y.HasArcData a I f u χ → Y.HasArcData a I f u χ' → χ = χ' := by
   intro h1 h2 h3 h4 h5 E _ _ _ H D l Xo c W₀ Y O' _ _ _ b a R _ _ _ _ I f u hR hI hf χ χ' y y' hy hy' hs hs' hχ hχ'
   let _ := H.starRing

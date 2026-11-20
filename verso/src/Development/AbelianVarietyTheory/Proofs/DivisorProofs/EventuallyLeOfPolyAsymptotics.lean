@@ -3,6 +3,25 @@ open Filter Topology GlobalTheory.VolBr
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `d b f g α β _hd hb hf hg ε hε`. Establish `hbR : (0 : ℝ) < b` using `by exact_mod_cast hb`. Establish `hc : (0 : ℝ) < (b : ℝ) ^ d` using `pow_pos hbR d`. Choose the witnesses or unpack the hypotheses as in `⟨η, θ, hη, hθ, key⟩ : ∃ η θ : ℝ, 0 < η ∧ 0 < θ ∧ (β * η + 2 * θ) * (b : ℝ) ^ d < ε := by`. Generalize the expression as in `(b : ℝ) ^ d = c at hc ⊢`.
+
+Establish `hβ1 : (0 : ℝ) < |β| + 1` using `by positivity`. Use `⟨ε / (4 * c * (|β| + 1)), ε / (8 * c), div_pos hε (by positivity), div_pos hε (by positivity), ?_⟩` and prove the remaining obligations. Establish `e1 : (|β| + 1) * (ε / (4 * c * (|β| + 1))) * c = ε / 4`. Clear the denominators using the available nonvanishing facts. Establish `e2 : ε / (8 * c) * c = ε / 8`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h1 : β * (ε / (4 * c * (|β| + 1))) * c ≤ |β| * (ε / (4 * c * (|β| + 1))) * c` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self β) (div_pos hε (by positivity)).le) hc.le`. Establish `h2 : 0 < ε / (4 * c * (|β| + 1)) * c` using `mul_pos (div_pos hε (by positivity)) hc`. Use the polynomial consequences of the given equalities and inequalities. Use `set A : ℝ := α + β * η + θ with hAdef`.
+
+Use `set B : ℝ := α - θ with hBdef`. Establish `hlim : Tendsto (fun n : ℕ => A * ((b : ℝ) + 1 / (n : ℝ)) ^ d) atTop (𝓝 (A * (b : ℝ) ^ d))`. Use `((tendsto_one_div_atTop_nhds_zero_nat.const_add (b : ℝ)).pow d).const_mul A` as an intermediate fact. Simplify using `using this`. Establish `hn : ∀ᶠ n : ℕ in atTop, A * ((b : ℝ) + 1 / (n : ℝ)) ^ d < B * (b : ℝ) ^ d + ε` using `(tendsto_order.1 hlim).2 _ (by rw [hAdef, hBdef]; nlinarith)`.
+
+Establish `hAe : ∀ᶠ j : ℕ in atTop, f η j / (j : ℝ) ^ d < A` using `(tendsto_order.1 (hf η hη.le)).2 A (by rw [hAdef]; linarith)`. Establish `hBe : ∀ᶠ j : ℕ in atTop, B < f 0 j / (j : ℝ) ^ d` using `(tendsto_order.1 (hf 0 le_rfl)).1 B (by rw [hBdef, mul_zero, add_zero]; linarith)`. Use `filter_upwards [hn, eventually_ge_atTop 1] with n hn hn1`. Establish `hnR : (0 : ℝ) < n` using `by exact_mod_cast hn1`. Establish `hk : Tendsto (fun m : ℕ => (b * n + 1) * m) atTop atTop` using `tendsto_atTop_mono (fun m => Nat.le_mul_of_pos_left m (Nat.succ_pos _)) tendsto_id`.
+
+Establish `hk' : Tendsto (fun m : ℕ => b * n * m) atTop atTop` using `tendsto_atTop_mono (fun m => Nat.le_mul_of_pos_left m (Nat.mul_pos hb hn1)) tendsto_id`. Use `filter_upwards [hk.eventually (hAe.and (hg η hη)), hk'.eventually hBe, eventually_gt_atTop 0] with m ⟨hA1, hG1⟩ hB1 hm`. Establish `hmR : (0 : ℝ) < m` using `by exact_mod_cast hm`. Establish `hj : (((b * n + 1) * m : ℕ) : ℝ) = ((b : ℝ) + 1 / (n : ℝ)) * ((n : ℝ) * m)`. Use `push_cast`.
+
+Rewrite using `[show ((b : ℝ) + 1 / (n : ℝ)) * ((n : ℝ) * (m : ℝ)) = (b : ℝ) * n * m + ((n : ℝ)⁻¹ * (n : ℝ)) * m by ring, inv_mul_cancel₀ hnR.ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `hj' : ((b * n * m : ℕ) : ℝ) = (b : ℝ) * ((n : ℝ) * m)` using `by push_cast; ring`. Establish `hjpos : (0 : ℝ) < (((b * n + 1) * m : ℕ) : ℝ)`. Rewrite using `[hj]`.
+
+Check the signs of the components of the expression. Establish `hj'pos : (0 : ℝ) < ((b * n * m : ℕ) : ℝ)`. Rewrite using `[hj']`. Check the signs of the components of the expression. Establish `hnm : (0 : ℝ) < ((n : ℝ) * m) ^ d` using `pow_pos (mul_pos hnR hmR) d`.
+
+Establish `hA2` using `(div_lt_iff₀ (pow_pos hjpos d)).1 hA1`. Establish `hB2` using `(lt_div_iff₀ (pow_pos hj'pos d)).1 hB1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eventually_le_of_poly_asymptotics :
     ∀ (d b : ℕ) (f : ℝ → ℕ → ℝ) (g : ℕ → ℝ) (α β : ℝ), 0 < d → 0 < b →
       (∀ η, 0 ≤ η → Tendsto (fun j : ℕ => f η j / (j : ℝ) ^ d) atTop (𝓝 (α + β * η))) →

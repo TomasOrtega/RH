@@ -6,6 +6,19 @@ noncomputable section
 
 namespace Formalism.F
 
+/- English proof (translation)
+Unfold `LinearMap.normDet`. Use `split_ifs with h`. Use `swap`. Check the signs of the components of the expression. Use `letI : MeasurableSpace R := borel R`.
+
+Use `haveI : BorelSpace R := ⟨rfl⟩`. Set `φ : LinearMap.range g ≃ₗᵢ[ℝ] R` to `h.some.repr.trans (stdOrthonormalBasis ℝ R).repr.symm`. Set `T : R →ₗ[ℝ] R` to `φ.toLinearEquiv.toLinearMap ∘ₗ g.rangeRestrict`. Establish `hmat : LinearMap.toMatrix (stdOrthonormalBasis ℝ R).toBasis h.some.toBasis g.rangeRestrict = LinearMap.toMatrix (stdOrthonormalBasis ℝ R).toBasis (stdOrthonormalBasis ℝ R).toBasis T`. Use extensionality with `i j`.
+
+Simplify using `[LinearMap.toMatrix_apply, T, φ]`. Rewrite using `[hmat, LinearMap.det_toMatrix, Real.norm_eq_abs]`. Establish `hT : ∀ y, ‖T y‖ = ‖g y‖`. Introduce `y`. Simplify using `[T]`.
+
+Establish `hsub : T '' Metric.ball 0 1 ⊆ Metric.closedBall 0 K`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite `hy` using `[mem_ball_zero_iff]`. Rewrite using `[mem_closedBall_zero_iff, hT]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hm` using `MeasureTheory.measure_mono (μ := (MeasureTheory.volume : MeasureTheory.Measure R)) hsub`. Rewrite `hm` using `[MeasureTheory.Measure.addHaar_image_linearMap, MeasureTheory.Measure.addHaar_closedBall _ _ hK]`. Establish `hpos : 0 < MeasureTheory.volume (Metric.ball (0 : R) 1)` using `Metric.measure_ball_pos _ _ one_pos`. Establish `hfin : MeasureTheory.volume (Metric.ball (0 : R) 1) ≠ ⊤` using `MeasureTheory.measure_ball_lt_top.ne`. Establish `h2` using `(ENNReal.mul_le_mul_iff_left hpos.ne' hfin).1 hm`.
+
+Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 h2`.
+-/
 theorem normDet_le_pow_finrank {R F : Type*} [NormedAddCommGroup R] [InnerProductSpace ℝ R]
     [FiniteDimensional ℝ R] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     (g : R →ₗ[ℝ] F) (K : ℝ) (hK : 0 ≤ K) (hg : ∀ y, ‖g y‖ ≤ K * ‖y‖) :
@@ -47,10 +60,20 @@ def linearCombinationMap {E : Type*} [NormedAddCommGroup E] [InnerProductSpace �
   map_add' x y := by simp [add_smul, Finset.sum_add_distrib]
   map_smul' a x := by simp [Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem linearCombinationMap_apply {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {ι : Type*} [Fintype ι] (v : ι → E) (c : EuclideanSpace ℝ ι) :
     linearCombinationMap v c = ∑ i, c i • v i := rfl
 
+/- English proof (translation)
+Rewrite using `[← Matrix.exists_mulVec_eq_zero_iff]`. Use `⟨fun i => c i, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hc` to reduce the goal to its premises. Use extensionality with `i`.
+
+Conclude with `congrFun h i`. Use extensionality with `i`. Rewrite `h0` using `[linearCombinationMap_apply]`. Establish `h1 : inner ℝ (v i) (∑ j, c j • v j) = 0` using `by rw [h0, inner_zero_right]`. Rewrite `h1` using `[inner_sum]`.
+
+Simplify `h1` using `[Matrix.mulVec, dotProduct, Matrix.gram_apply, real_inner_smul_right, mul_comm]`.
+-/
 private theorem det_gram_eq_zero_of_linearCombination_eq_zero {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {ι : Type*} [Fintype ι] [DecidableEq ι] (v : ι → E) (c : EuclideanSpace ℝ ι) (hc : c ≠ 0)
     (h0 : linearCombinationMap v c = 0) : (Matrix.gram ℝ v).det = 0 := by
@@ -66,6 +89,9 @@ private theorem det_gram_eq_zero_of_linearCombination_eq_zero {E : Type*} [Norme
     rw [inner_sum] at h1
     simpa [Matrix.mulVec, dotProduct, Matrix.gram_apply, real_inner_smul_right, mul_comm] using h1
 
+/- English proof (translation)
+Use extensionality with `k l`. Rewrite using `[Matrix.gram_apply, LinearMap.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.coe_toBasis, LinearMap.comp_apply, OrthonormalBasis.repr_apply_apply, LinearMap.adjoint_inner_right]`. Both sides reduce to the same expression.
+-/
 private theorem gram_linearCombinationMap_eq_toMatrix {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {ι κ : Type*} [Fintype ι] [Fintype κ] [DecidableEq κ] (v : ι → E)
     (b : OrthonormalBasis κ ℝ (EuclideanSpace ℝ ι)) :
@@ -78,6 +104,19 @@ private theorem gram_linearCombinationMap_eq_toMatrix {E : Type*} [NormedAddComm
     LinearMap.adjoint_inner_right]
   rfl
 
+/- English proof (translation)
+Establish `hv : v = fun i => linearCombinationMap v (EuclideanSpace.basisFun ι ℝ i)`. Use function extensionality and compare the values at `i`. Rewrite using `[linearCombinationMap_apply]`. Simplify using `[EuclideanSpace.basisFun_apply, EuclideanSpace.single_apply, ite_smul]`. Establish `h1 : (Matrix.gram ℝ v).det = LinearMap.det (LinearMap.adjoint (linearCombinationMap v).rangeRestrict ∘ₗ (linearCombinationMap v).rangeRestrict)` using `by conv_lhs => rw [hv]`.
+
+Rewrite using `[gram_linearCombinationMap_eq_toMatrix, LinearMap.det_toMatrix]`. Unfold `LinearMap.normDet`. Use `split_ifs with h`. Establish `h2 : (Matrix.gram ℝ (fun k => linearCombinationMap v (stdOrthonormalBasis ℝ (EuclideanSpace ℝ ι) k))).det = LinearMap.det (LinearMap.adjoint (linearCombinationMap v).rangeRestrict ∘ₗ (linearCombinationMap v).rangeRestrict)`. Rewrite using `[gram_linearCombinationMap_eq_toMatrix, LinearMap.det_toMatrix]`.
+
+Rewrite using `[h1, ← h2]`. Establish `hG : Matrix.gram ℝ (fun k => linearCombinationMap v (stdOrthonormalBasis ℝ (EuclideanSpace ℝ ι) k)) = (LinearMap.toMatrix (stdOrthonormalBasis ℝ (EuclideanSpace ℝ ι)).toBasis h.some.toBasis (linearCombinationMap v).rangeRestrict).transpose * LinearMap.toMatrix (stdOrthonormalBasi …`. Use extensionality with `k l`. Rewrite using `[Matrix.gram_apply, Matrix.mul_apply]`. Simplify using `only [Matrix.transpose_apply, LinearMap.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.coe_toBasis]`.
+
+Establish `e1 : inner ℝ (linearCombinationMap v (stdOrthonormalBasis ℝ (EuclideanSpace ℝ ι) k)) (linearCombinationMap v (stdOrthonormalBasis ℝ (EuclideanSpace ℝ ι) l)) = inner ℝ ((linearCombinationMap v).rangeRestrict (stdOrthonormalBasis ℝ (EuclideanSpace ℝ ι) k)) ((linearCombinationMap v) …` using `rfl`. Rewrite using `[e1, ← h.some.sum_inner_mul_inner]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[real_inner_comm (h.some m) ((linearCombinationMap v).rangeRestrict _), ← OrthonormalBasis.repr_apply_apply, ← OrthonormalBasis.repr_apply_apply]`. Rewrite using `[hG, Matrix.det_mul, Matrix.det_transpose, Real.norm_eq_abs, sq_abs, sq]`.
+
+Rewrite using `[zero_pow two_ne_zero]`. Establish `hni : ¬ Function.Injective (linearCombinationMap v)`. Introduce `hinj`. Conclude with `h ⟨(stdOrthonormalBasis ℝ (LinearMap.range (linearCombinationMap v))).reindex (finCongr (LinearMap.finrank_range_of_inj hinj))⟩`. Rewrite `hni` using `[← LinearMap.ker_eq_bot]`.
+
+Take `⟨c, hc, hc0⟩` from `(Submodule.ne_bot_iff _).1 hni`. Conclude with `det_gram_eq_zero_of_linearCombination_eq_zero v c hc0 (LinearMap.mem_ker.1 hc)`.
+-/
 theorem det_gram_eq_normDet_sq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {ι : Type*} [Fintype ι] [DecidableEq ι] (v : ι → E) :
     (Matrix.gram ℝ v).det = (linearCombinationMap v).normDet ^ 2 := by
@@ -123,6 +162,27 @@ theorem det_gram_eq_normDet_sq {E : Type*} [NormedAddCommGroup E] [InnerProductS
     obtain ⟨c, hc, hc0⟩ := (Submodule.ne_bot_iff _).1 hni
     exact det_gram_eq_zero_of_linearCombination_eq_zero v c hc0 (LinearMap.mem_ker.1 hc)
 
+/- English proof (translation)
+Introduce `E F _ _ _ _ ι _ _ v w C hC`. Establish `hvw : ∀ c : EuclideanSpace ℝ ι, ‖linearCombinationMap w c‖ ≤ C * ‖linearCombinationMap v c‖`. Introduce `c`. Simplify `hC (fun i => c i)` using `only [linearCombinationMap_apply]`. Distinguish the cases in `hinj : Function.Injective (linearCombinationMap v)`.
+
+Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Simplify using `[Matrix.det_isEmpty]`. Establish `hC0 : 0 ≤ C`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`.
+
+Take `⟨i⟩` from `hι`. Establish `h1` using `hvw (EuclideanSpace.single i 1)`. Establish `h3 : ‖linearCombinationMap v (EuclideanSpace.single i 1)‖ ≤ 0`. Use polynomial arithmetic with `[norm_nonneg (linearCombinationMap v (EuclideanSpace.single i 1)), norm_nonneg (linearCombinationMap w (EuclideanSpace.single i 1))]`. Establish `h4` using `hinj ((norm_le_zero_iff.1 h3).trans (map_zero _).symm)`.
+
+Establish `h5` using `congrArg (fun x : EuclideanSpace ℝ ι => x i) h4`. Simplify using `at h5`. Set `e` to `LinearEquiv.ofInjective (linearCombinationMap v) hinj`. Set `G : E →ₗ[ℝ] F` to `linearCombinationMap w ∘ₗ e.symm.toLinearMap ∘ₗ ((LinearMap.range (linearCombinationMap v)).orthogonalProjection : E →ₗ[ℝ] LinearMap.range (linearCombinationMap v))`. Establish `hP : ∀ y : LinearMap.range (linearCombinationMap v), (LinearMap.range (linearCombinationMap v)).orthogonalProjection (y : E) = y` using `fun y => Submodule.orthogonalProjection_mem_subspace_eq_self y`.
+
+Establish `hGf : G ∘ₗ linearCombinationMap v = linearCombinationMap w`. Use extensionality with `c`. Establish `: linearCombinationMap v c = (e c : E)` using `(LinearEquiv.ofInjective_apply _ c).symm`. Simplify using `only [G, LinearMap.comp_apply, ContinuousLinearMap.coe_coe, LinearEquiv.coe_toLinearMap]`. Rewrite using `[this, hP, LinearEquiv.symm_apply_apply]`.
+
+Establish `hb : ∀ y : LinearMap.range (linearCombinationMap v), ‖G.domRestrict (LinearMap.range (linearCombinationMap v)) y‖ ≤ C * ‖y‖`. Introduce `y`. Establish `hy : linearCombinationMap v (e.symm y) = (y : E)`. Rewrite using `[← LinearEquiv.ofInjective_apply (h := hinj) (linearCombinationMap v) (e.symm y)]`. Conclude with `congrArg Subtype.val (e.apply_symm_apply y)`.
+
+Simplify using `only [LinearMap.domRestrict_apply, G, LinearMap.comp_apply, ContinuousLinearMap.coe_coe, LinearEquiv.coe_toLinearMap]`. Rewrite using `[hP]`. Combine the equalities or inequalities in the displayed calculation. Establish `hdom` using `normDet_le_pow_finrank (G.domRestrict (LinearMap.range (linearCombinationMap v))) C hC0 hb`. Rewrite `hdom` using `[LinearMap.finrank_range_of_inj hinj, finrank_euclideanSpace]`.
+
+Establish `hle : (linearCombinationMap w).normDet ≤ C ^ Fintype.card ι * (linearCombinationMap v).normDet`. Rewrite using `[← hGf, LinearMap.normDet_comp]`. Conclude with `mul_le_mul_of_nonneg_right hdom (LinearMap.normDet_nonneg _)`. Rewrite using `[det_gram_eq_normDet_sq w, det_gram_eq_normDet_sq v]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_pow, ← pow_mul, mul_comm (Fintype.card ι) 2]`. Rewrite `hinj` using `[← LinearMap.ker_eq_bot]`. Take `⟨c, hc, hc0⟩` from `(Submodule.ne_bot_iff _).1 hinj`. Establish `hw0 : linearCombinationMap w c = 0`. Establish `h1` using `hvw c`.
+
+Rewrite `h1` using `[LinearMap.mem_ker.1 hc, norm_zero, mul_zero]`. Conclude with `norm_le_zero_iff.1 h1`. Rewrite using `[det_gram_eq_zero_of_linearCombination_eq_zero w c hc0 hw0]`. Conclude with `mul_nonneg (by rw [pow_mul]; positivity) (Matrix.posSemidef_gram ℝ v).det_nonneg`.
+-/
 theorem gram_det_le : GramDetLe := by
   intro E F _ _ _ _ ι _ _ v w C hC
   have hvw : ∀ c : EuclideanSpace ℝ ι,

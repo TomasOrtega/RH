@@ -11,6 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.TNZ
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h a ha ε rc H d v hv hd`. Take `⟨⟨n, c⟩, rfl⟩` from `H.bij.2 v`. Establish `hn : n = d` using `by rw [← hd, H.dim]`. Substitute `hn` using the available equality. Conclude with `⟨c.rep.V, inferInstance, inferInstance, c.rep.ρ, c.rep.smooth, c.rep.irr, (H.sph ⟨n, c⟩).2 hv, congrArg rc (IrrGL.of_rep ⟨n, c⟩)⟩`.
+-/
 theorem step_sphOfUnr : SphericalOfUnramifiedProp := by
   intro E Ω _ _ _ _ _ A w h a ha ε rc H d v hv hd
   obtain ⟨⟨n, c⟩, rfl⟩ := H.bij.2 v

@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.LiftSLMapMulInvM
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L
 
+/- English proof (translation)
+Establish `h1 : ((L i j : ℤ) : ZMod M) = ((γ i j : ℤ) : ZMod M)` using `congrArg (fun g : SL(2, ZMod M) => g i j) h`. Establish `h2` using `congrArg (ZMod.castHom hK (ZMod K)) h1`. Simplify `h2` using `only [map_intCast]`.
+-/
 private theorem exists_finite_residue_reps_mod_natCast (M K : ℕ) (hK : K ∣ M) (L γ : SL(2, ℤ))
     (h : Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) L =
       Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ) (i j : Fin 2) :
@@ -14,23 +17,38 @@ private theorem exists_finite_residue_reps_mod_natCast (M K : ℕ) (hK : K ∣ M
   have h2 := congrArg (ZMod.castHom hK (ZMod K)) h1
   simpa only [map_intCast] using h2
 
+/- English proof (translation)
+Simplify using `only [Tm, pow_add, map_mul]`.
+-/
 private theorem exists_mem_mul_or_neg_mul_symm (M : ℕ) (a b : ℕ) : Tm M (a + b) = Tm M a * Tm M b := by
   simp only [Tm, pow_add, map_mul]
 
+/- English proof (translation)
+Rewrite using `[← ModularGroup.coe_T_zpow, zpow_natCast]`. Both sides reduce to the same expression.
+-/
 private theorem tm_apply_eq_cast_upper_unipotent (M k : ℕ) (i j : Fin 2) :
     (Tm M k) i j = (((!![1, (k : ℤ); 0, 1] : Matrix (Fin 2) (Fin 2) ℤ) i j : ℤ) : ZMod M) := by
   rw [← ModularGroup.coe_T_zpow, zpow_natCast]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i k`. Rewrite using `[tm_apply_eq_cast_upper_unipotent]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp`.
+-/
 private theorem exists_mem_mul_or_neg_mul_trans (M : ℕ) (j : ℕ) : Tm M (M * j) = 1 := by
   ext i k
   rw [tm_apply_eq_cast_upper_unipotent]
   fin_cases i <;> fin_cases k <;> simp
 
+/- English proof (translation)
+Use `conv_rhs => rw [← Nat.mod_add_div k M]`. Rewrite using `[exists_mem_mul_or_neg_mul_symm, exists_mem_mul_or_neg_mul_trans, mul_one]`.
+-/
 private theorem tm_mod_eq (M : ℕ) (k : ℕ) : Tm M (k % M) = Tm M k := by
   conv_rhs => rw [← Nat.mod_add_div k M]
   rw [exists_mem_mul_or_neg_mul_symm, exists_mem_mul_or_neg_mul_trans, mul_one]
 
+/- English proof (translation)
+Establish `h1` using `congrArg (fun g : SL(2, ZMod M) => g 0 1) h`. Simplify using `only [tm_apply_eq_cast_upper_unipotent] at h1`. Simplify using `at h1`. Rewrite `h1` using `[ZMod.natCast_eq_natCast_iff']`. Rewrite `h1` using `[Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hb]`. Then use the resulting hypothesis.
+-/
 private theorem eq_of_tm_eq_of_lt (M : ℕ) (a b : ℕ) (ha : a < M) (hb : b < M) (h : Tm M a = Tm M b) : a = b := by
   have h1 := congrArg (fun g : SL(2, ZMod M) => g 0 1) h
   simp only [tm_apply_eq_cast_upper_unipotent] at h1
@@ -38,6 +56,11 @@ private theorem eq_of_tm_eq_of_lt (M : ℕ) (a b : ℕ) (ha : a < M) (hb : b < M
   rw [ZMod.natCast_eq_natCast_iff'] at h1
   rwa [Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hb] at h1
 
+/- English proof (translation)
+Use `Subgroup.mem_map_of_mem _ (Subgroup.pow_mem _ ?_ k)` and prove the remaining obligations. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CongruenceSubgroup.Gamma1_mem]`. Simplify using `[ModularGroup.coe_T]`. Rewrite using `[CongruenceSubgroup.Gamma0_mem]`.
+
+Simplify using `[ModularGroup.coe_T]`.
+-/
 private theorem tm_mem_map_gam (N l M : ℕ) (k : ℕ) :
     Tm M k ∈ Subgroup.map (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M))) (Gam N l) := by
   refine Subgroup.mem_map_of_mem _ (Subgroup.pow_mem _ ?_ k)
@@ -47,6 +70,13 @@ private theorem tm_mem_map_gam (N l M : ℕ) (k : ℕ) :
   · rw [CongruenceSubgroup.Gamma0_mem]
     simp [ModularGroup.coe_T]
 
+/- English proof (translation)
+Establish `hγ' : γ ∈ Subgroup.map (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M))) (Gam N l)`. Simplify `hγ` using `[Gs]`. Take `⟨γ', hg', rfl⟩` from `Subgroup.mem_map.1 hγ'`. Establish `hL : Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) (liftSL M (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ')) = Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ'` using `Classical.epsilon_spec (p := fun g => Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) g = Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) γ') ⟨γ', rfl⟩`. Use `⟨?_, hL⟩` and prove the remaining obligations.
+
+Establish `eN` using `exists_finite_residue_reps_mod_natCast M N (dvd_trans (dvd_mul_right N l) hM) _ _ hL`. Establish `el` using `exists_finite_residue_reps_mod_natCast M l (dvd_trans (dvd_mul_left l N) hM) _ _ hL`. Take `⟨h1, h0⟩` from `Subgroup.mem_inf.1 hg'`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `h1`, the goal using `[CongruenceSubgroup.Gamma1_mem]`.
+
+Rewrite using `[eN, eN, eN]`. Conclude with `h1`. Rewrite `h0`, the goal using `[CongruenceSubgroup.Gamma0_mem]`. Rewrite using `[el]`. Conclude with `h0`.
+-/
 private theorem liftSL_mem_gam_and_map_eq_of_mem_gs (N l M : ℕ) [NeZero M] (hM : N * l ∣ M) (γ : SL(2, ZMod M)) (hγ : γ ∈ Gs N l M) :
     liftSL M γ ∈ Gam N l ∧ Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) (liftSL M γ) = γ := by
   have hγ' : γ ∈ Subgroup.map (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M))) (Gam N l) := by
@@ -69,6 +99,47 @@ private theorem liftSL_mem_gam_and_map_eq_of_mem_gs (N l M : ℕ) [NeZero M] (hM
     rw [el]
     exact h0
 
+/- English proof (translation)
+Introduce `l _ N _ c d gm hP M _ hM`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Set `orb : SL(2, ZMod M) → Set (SL(2, ZMod M))` to `fun γ => Set.range (fun k : ℕ => γ * Tm M k)`. Set `rep : SL(2, ZMod M) → SL(2, ZMod M)` to `fun γ => Classical.epsilon (fun x => x ∈ orb γ)`. Establish `h0 : Tm M 0 = 1` using `by simpa using exists_mem_mul_or_neg_mul_trans M 0`.
+
+Establish `self_mem : ∀ γ, γ ∈ orb γ` using `fun γ => ⟨0, show γ * Tm M 0 = γ by rw [h0, mul_one]⟩`. Establish `rep_mem : ∀ γ, rep γ ∈ orb γ` using `fun γ => Classical.epsilon_spec ⟨γ, self_mem γ⟩`. Establish `orb_eq : ∀ γ x, x ∈ orb γ → orb x = orb γ`. Introduce and unpack `γ _ ⟨j, rfl⟩`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨j + k, show γ * Tm M (j + k) = γ * Tm M j * Tm M k by rw [mul_assoc, ← exists_mem_mul_or_neg_mul_symm]⟩`. Introduce and unpack `⟨k, rfl⟩`. Use `⟨k + (M - 1) * j, ?_⟩` and prove the remaining obligations.
+
+Establish `hM1 : j + (k + (M - 1) * j) = k + M * j`. Establish `: 1 ≤ M` using `NeZero.one_le`. Take `⟨m, rfl⟩ : ∃ m, M = m + 1` from `⟨M - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show γ * Tm M j * Tm M (k + (M - 1) * j) = γ * Tm M k`. Rewrite using `[mul_assoc, ← exists_mem_mul_or_neg_mul_symm, hM1, exists_mem_mul_or_neg_mul_symm, exists_mem_mul_or_neg_mul_trans, mul_one]`. Establish `rep_eq : ∀ γ x, x ∈ orb γ → rep x = rep γ`. Introduce `γ x hx`. Simplify using `only [rep]`.
+
+Rewrite using `[orb_eq γ x hx]`. Establish `hGs : ∀ γ, γ ∈ Gs N l M ↔ γ ∈ Subgroup.map (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M))) (Gam N l)`. Introduce `γ`. Simplify using `[Gs]`. Use `⟨(Gs N l M).image rep, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Take `⟨γ, hγ, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨j, hj⟩` from `rep_mem γ`. Rewrite using `[← hj, hGs]`. Conclude with `Subgroup.mul_mem _ ((hGs γ).1 hγ) (tm_mem_map_gam N l M j)`.
+
+Introduce `γ hγ`. Establish `hin : γ ∈ orb (rep γ)`. Rewrite using `[orb_eq γ (rep γ) (rep_mem γ)]`. Conclude with `self_mem γ`. Take `⟨k, hk⟩` from `hin`.
+
+Establish `hk : rep γ * Tm M k = γ` using `hk`. Use `⟨(rep γ, k % M), ⟨Finset.mem_image_of_mem _ hγ, Nat.mod_lt _ (NeZero.pos M), ?_⟩, ?_⟩` and prove the remaining obligations. Use `show γ = rep γ * Tm M (k % M)`. Rewrite using `[tm_mod_eq, hk]`. Introduce and unpack `⟨r, k'⟩ ⟨hr, hk', hγr⟩ dsimp only at hr hk' hγr`.
+
+Take `⟨γ1, -, rfl⟩` from `Finset.mem_image.1 hr`. Establish `hin1 : γ ∈ orb γ1`. Rewrite using `[← orb_eq γ1 (rep γ1) (rep_mem γ1)]`. Conclude with `⟨k', hγr.symm⟩`. Establish `hr1 : rep γ = rep γ1` using `rep_eq γ1 γ hin1`.
+
+Establish `hT : Tm M k' = Tm M (k % M)`. Establish `e : rep γ1 * Tm M k' = rep γ1 * Tm M (k % M)`. Rewrite using `[← hγr, tm_mod_eq, ← hr1, hk]`. Conclude with `mul_left_cancel e`. Use `eq_of_tm_eq_of_lt M k' (k % M) hk' (Nat.mod_lt _ (NeZero.pos M)) hT` as an intermediate fact.
+
+Simplify using `only [Prod.mk.injEq]`. Conclude with `⟨hr1.symm, this⟩`. Introduce `γ hγ r₀`. Take `⟨hLG, hL⟩` from `liftSL_mem_gam_and_map_eq_of_mem_gs N l M hM γ hγ`. Take `⟨hL1, hL0⟩` from `Subgroup.mem_inf.1 hLG`.
+
+Rewrite `hL1` using `[CongruenceSubgroup.Gamma1_mem]`. Rewrite `hL0` using `[CongruenceSubgroup.Gamma0_mem]`. Establish `detL : (((liftSL M γ) 0 0 : ℤ) : ZMod l) * (((liftSL M γ) 1 1 : ℤ) : ZMod l) = 1`. Establish `h1` using `(liftSL M γ).2`. Rewrite `h1` using `[Matrix.det_fin_two]`.
+
+Establish `h2` using `congrArg (Int.cast : ℤ → ZMod l) h1`. Move the coercions through the operations in `at h2`. Rewrite `h2` using `[hL0, mul_zero, sub_zero]`. Conclude with `h2`. Establish `hL00 : (((liftSL M γ) 0 0 : ℤ) : ZMod l) ≠ 0` using `left_ne_zero_of_mul_eq_one detL`.
+
+Establish `hg00 : (((gm r₀) 0 0 : ℤ) : ZMod l) ≠ 0`. Introduce `h0`. Establish `hc` using `hP.col r₀`. Rewrite `hc` using `[h0, mul_zero]`. Establish `h1` using `(gm r₀).2`.
+
+Rewrite `h1` using `[Matrix.det_fin_two]`. Establish `h2` using `congrArg (Int.cast : ℤ → ZMod l) h1`. Move the coercions through the operations in `at h2`. Rewrite `h2` using `[h0, hc]`. Simplify using `at h2`.
+
+Use `⟨hL, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mul_mem _ (hP.g0 r₀) (by rw [CongruenceSubgroup.Gamma0_mem]; exact hL1.2.2)`. Establish `ga` using `hP.ga r₀`. Simplify using `only [en, Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two] at ga ⊢`. Use `push_cast`.
+
+Rewrite using `[hL1.1, hL1.2.2, mul_one, mul_zero, add_zero]`. Conclude with `ga`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Simplify using `only [en, Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`.
+
+Rewrite using `[hL0, mul_zero, add_zero]`. Conclude with `mul_ne_zero hg00 hL00`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Simplify using `only [en, Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`.
+
+Rewrite using `[hL0, mul_zero, add_zero, hP.col r₀]`. Conclude with `mul_ne_zero (mul_ne_zero (neg_ne_zero.2 r₀.ne_zero) hg00) hL00`.
+-/
 theorem UpperTheory.Kd.L.reps :
     ∀ (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N] (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)), Par l N c d gm → ∀ (M : ℕ) [NeZero M], N * l ∣ M → (∃ R, IsReps N l M R) ∧ ∀ γ ∈ Gs N l M, ∀ r₀, Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) (liftSL M γ) = γ ∧ gm r₀ * liftSL M γ ∈ CongruenceSubgroup.Gamma0 N ∧ ((en (gm r₀ * liftSL M γ) 0 0 : ℤ) : ZMod N) = ((en (gm 1) 0 0 : ℤ) : ZMod N) ∧ ¬ (l : ℤ) ∣ en (gm r₀ * liftSL M γ) 0 0 ∧ ¬ (l : ℤ) ∣ en (gm r₀ * liftSL M γ) 1 0 := by
   intro l _ N _ c d gm hP M _ hM

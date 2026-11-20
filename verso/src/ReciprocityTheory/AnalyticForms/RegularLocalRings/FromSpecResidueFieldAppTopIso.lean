@@ -24,6 +24,9 @@ def valHom (x : S) : S.residueField x → ℂ :=
 def val {U : S.Opens} (f : Γ(S, U)) (x : S) (hx : x ∈ U) : ℂ :=
   valHom s x (S.evaluation U x hx f)
 
+/- English proof (translation)
+Simplify using `only [Scheme.fromSpecResidueField, Scheme.Hom.comp_appTop, Category.assoc, Scheme.ΓSpecIso_naturality, Scheme.fromSpecStalk_appTop, Scheme.evaluation]`. Establish `hid : (Spec (S.presheaf.stalk x)).presheaf.map (homOfLE (le_top : (⊤ : (Spec (S.presheaf.stalk x)).Opens) ≤ ⊤)).op = 𝟙 _`. Rewrite using `[show (homOfLE (le_top : (⊤ : (Spec (S.presheaf.stalk x)).Opens) ≤ ⊤)).op = 𝟙 _ from rfl, CategoryTheory.Functor.map_id]`. Simplify using `[hid]`.
+-/
 theorem fromSpecResidueField_appTop_iso (x : S) :
     (S.fromSpecResidueField x).appTop ≫ (Scheme.ΓSpecIso _).hom = S.evaluation ⊤ x trivial := by
   simp only [Scheme.fromSpecResidueField, Scheme.Hom.comp_appTop, Category.assoc,
@@ -34,6 +37,11 @@ theorem fromSpecResidueField_appTop_iso (x : S) :
       CategoryTheory.Functor.map_id]
   simp [hid]
 
+/- English proof (translation)
+Establish `hφ` using `Scheme.ΓSpecIso_naturality (Spec.preimage (S.fromSpecResidueField x ≫ s))`. Rewrite `hφ` using `[Spec.map_preimage]`. Establish `hpre : Spec.preimage (S.fromSpecResidueField x ≫ s) = (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ (S.fromSpecResidueField x ≫ s).appTop ≫ (Scheme.ΓSpecIso (S.residueField x)).hom`. Rewrite using `[hφ, Iso.inv_hom_id_assoc]`. Establish `hA : s.appLE ⊤ ⊤ le_top = s.appTop` using `(s.app_eq_appLE (U := ⊤)).symm`.
+
+Establish `hc : constRes s x = ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ s.appLE ⊤ ⊤ le_top ≫ S.evaluation ⊤ x trivial).hom` using `rfl`. Rewrite using `[hc, hA, ← fromSpecResidueField_appTop_iso x]`. Use `show _ = (Spec.preimage (S.fromSpecResidueField x ≫ s)).hom`. Rewrite using `[hpre, Scheme.Hom.comp_appTop, Category.assoc]`.
+-/
 theorem constRes_eq (x : S) (hx : IsClosed ({x} : Set S)) [LocallyOfFiniteType s] :
     constRes s x = (residueFieldIsoBase s x hx).inv.hom := by
   have hφ := Scheme.ΓSpecIso_naturality (Spec.preimage (S.fromSpecResidueField x ≫ s))
@@ -49,6 +57,11 @@ theorem constRes_eq (x : S) (hx : IsClosed ({x} : Set S)) [LocallyOfFiniteType s
   show _ = (Spec.preimage (S.fromSpecResidueField x ≫ s)).hom
   rw [hpre, Scheme.Hom.comp_appTop, Category.assoc]
 
+/- English proof (translation)
+Use extensionality with `y`. Establish `h1 : (residueFieldIsoBase s x hx).inv.hom ((residueFieldIsoBase s x hx).hom.hom y) = y`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Iso.hom_inv_id, CommRingCat.hom_id, RingHom.id_apply]`. Establish `h2` using `congrArg (fun f : ℂ →+* ℂ => f ((residueFieldIsoBase s x hx).hom.hom y)) h`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply, constRes_eq s x hx, h1] at h2`.
+
+Conclude with `h2`.
+-/
 theorem valHom_unique [LocallyOfFiniteType s] (x : S) (hx : IsClosed ({x} : Set S))
     (ψ : S.residueField x →+* ℂ) (h : ψ.comp (constRes s x) = RingHom.id ℂ) :
     ψ = (residueFieldIsoBase s x hx).hom.hom := by
@@ -60,10 +73,16 @@ theorem valHom_unique [LocallyOfFiniteType s] (x : S) (hx : IsClosed ({x} : Set 
   simp only [RingHom.comp_apply, RingHom.id_apply, constRes_eq s x hx, h1] at h2
   exact h2
 
+/- English proof (translation)
+Rewrite using `[constRes_eq s x hx, ← CommRingCat.hom_comp, Iso.inv_hom_id, CommRingCat.hom_id]`.
+-/
 theorem valHom_spec [LocallyOfFiniteType s] (x : S) (hx : IsClosed ({x} : Set S)) :
     ((residueFieldIsoBase s x hx).hom.hom).comp (constRes s x) = RingHom.id ℂ := by
   rw [constRes_eq s x hx, ← CommRingCat.hom_comp, Iso.inv_hom_id, CommRingCat.hom_id]
 
+/- English proof (translation)
+Establish `hex : ∃ φ : S.residueField x →+* ℂ, φ.comp (constRes s x) = RingHom.id ℂ` using `⟨_, valHom_spec s x hx⟩`. Unfold `valHom`. Rewrite using `[dif_pos hex, valHom_unique s x hx _ hex.choose_spec]`.
+-/
 theorem valHom_eq [LocallyOfFiniteType s] (x : S) (hx : IsClosed ({x} : Set S)) :
     valHom s x = (residueFieldIsoBase s x hx).hom.hom := by
   have hex : ∃ φ : S.residueField x →+* ℂ, φ.comp (constRes s x) = RingHom.id ℂ :=
@@ -71,6 +90,9 @@ theorem valHom_eq [LocallyOfFiniteType s] (x : S) (hx : IsClosed ({x} : Set S)) 
   unfold valHom
   rw [dif_pos hex, valHom_unique s x hx _ hex.choose_spec]
 
+/- English proof (translation)
+Establish `key : S.presheaf.map (homOfLE h).op ≫ S.evaluation V x hx = S.evaluation U x (h hx)`. Simplify using `only [Scheme.evaluation, TopCat.Presheaf.germ_res_assoc]`. Rewrite using `[← key]`. Both sides reduce to the same expression.
+-/
 theorem evaluation_res {U V : S.Opens} (h : V ≤ U) (f : Γ(S, U)) (x : S) (hx : x ∈ V) :
     S.evaluation V x hx (S.presheaf.map (homOfLE h).op f) = S.evaluation U x (h hx) f := by
   have key : S.presheaf.map (homOfLE h).op ≫ S.evaluation V x hx = S.evaluation U x (h hx) := by
@@ -78,12 +100,20 @@ theorem evaluation_res {U V : S.Opens} (h : V ≤ U) (f : Γ(S, U)) (x : S) (hx 
   rw [← key]
   rfl
 
+/- English proof (translation)
+Simplify using `only [constSec, RingHom.comp_apply]`. Rewrite using `[← s.appLE_map (U := ⊤) (V := ⊤) le_top (homOfLE (le_top : U ≤ ⊤)).op]`. Both sides reduce to the same expression.
+-/
 theorem constSec_res (U : S.Opens) (c : ℂ) :
     constSec s U c = S.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op (constSec s ⊤ c) := by
   simp only [constSec, RingHom.comp_apply]
   rw [← s.appLE_map (U := ⊤) (V := ⊤) le_top (homOfLE (le_top : U ≤ ⊤)).op]
   rfl
 
+/- English proof (translation)
+Use `haveI : JacobsonSpace T := AlgebraicGeometry.LocallyOfFiniteType.jacobsonSpace t`. Use `haveI : AlgebraicGeometry.LocallyOfFiniteType (g ≫ t) := by rw [hg]; infer_instance`. Use `haveI : AlgebraicGeometry.LocallyOfFiniteType g := AlgebraicGeometry.locallyOfFiniteType_of_comp g t`. Establish `hx : x ∈ closedPoints S` using `by simpa [mem_closedPoints_iff] using hc`. Use `g.closePoints_subset_preimage_closedPoints hx` as an intermediate fact.
+
+Simplify `this` using `[mem_closedPoints_iff]`.
+-/
 theorem isClosed_image_of_closed {T : Scheme.{0}} (t : T ⟶ Spec (CommRingCat.of ℂ)) (g : S ⟶ T)
     (hg : g ≫ t = s) [LocallyOfFiniteType s] [LocallyOfFiniteType t] (x : S)
     (hc : IsClosed ({x} : Set S)) : IsClosed ({g.base x} : Set T) := by
@@ -94,6 +124,11 @@ theorem isClosed_image_of_closed {T : Scheme.{0}} (t : T ⟶ Spec (CommRingCat.o
   have := g.closePoints_subset_preimage_closedPoints hx
   simpa [mem_closedPoints_iff] using this
 
+/- English proof (translation)
+Establish `hA : ∀ (Y : Scheme.{0}) (y : Y ⟶ Spec (CommRingCat.of ℂ)), y.appLE ⊤ ⊤ le_top = y.appTop` using `fun Y y => (y.app_eq_appLE (U := ⊤)).symm`. Establish `hc : ∀ (Y : Scheme.{0}) (y : Y ⟶ Spec (CommRingCat.of ℂ)) (z : Y), constRes y z = ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ y.appTop ≫ Y.evaluation ⊤ z trivial).hom`. Introduce `Y y z`. Rewrite using `[← hA]`. Both sides reduce to the same expression.
+
+Rewrite using `[hc, hc, ← CommRingCat.hom_comp]`. Use `congr 1`. Simplify using `only [Category.assoc]`. Rewrite using `[Scheme.evaluation_naturality g x (V := ⊤) trivial, ← hg, Scheme.Hom.comp_appTop, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem residueFieldMap_constRes {T : Scheme.{0}} (t : T ⟶ Spec (CommRingCat.of ℂ)) (g : S ⟶ T)
     (hg : g ≫ t = s) (x : S) :
     (g.residueFieldMap x).hom.comp (constRes t (g.base x)) = constRes s x := by
@@ -110,6 +145,9 @@ theorem residueFieldMap_constRes {T : Scheme.{0}} (t : T ⟶ Spec (CommRingCat.o
     Category.assoc]
   rfl
 
+/- English proof (translation)
+Use `⟨⟨_, valHom_spec s x hx, fun ψ hψ => valHom_unique s x hx ψ hψ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[valHom_eq s x hx]`. Conclude with `(residueFieldIsoBase s x hx).commRingCatIsoToRingEquiv.bijective`.
+-/
 theorem existsUnique_valHom [LocallyOfFiniteType s] (x : S) (hx : IsClosed ({x} : Set S)) :
     (∃! φ : S.residueField x →+* ℂ, φ.comp (constRes s x) = RingHom.id ℂ) ∧
       Function.Bijective (valHom s x) := by
@@ -117,6 +155,9 @@ theorem existsUnique_valHom [LocallyOfFiniteType s] (x : S) (hx : IsClosed ({x} 
   rw [valHom_eq s x hx]
   exact (residueFieldIsoBase s x hx).commRingCatIsoToRingEquiv.bijective
 
+/- English proof (translation)
+Use `⟨(residueFieldIsoBase s x hc).hom.hom.comp (S.evaluation U x hx).hom, fun f => ?_⟩` and prove the remaining obligations. Unfold `val`. Rewrite using `[valHom_eq s x hc]`. Both sides reduce to the same expression.
+-/
 theorem val_ringHom [LocallyOfFiniteType s] (U : S.Opens) (x : S) (hx : x ∈ U)
     (hc : IsClosed ({x} : Set S)) :
     ∃ φ : Γ(S, U) →+* ℂ, ∀ f, φ f = val s f x hx := by
@@ -125,23 +166,39 @@ theorem val_ringHom [LocallyOfFiniteType s] (U : S.Opens) (x : S) (hx : x ∈ U)
   rw [valHom_eq s x hc]
   rfl
 
+/- English proof (translation)
+Unfold `val`. Rewrite using `[constSec_res s U c, evaluation_res le_top _ x hx, valHom_eq s x hc]`. Conclude with `DFunLike.congr_fun (valHom_spec s x hc) c`.
+-/
 theorem val_const [LocallyOfFiniteType s] (U : S.Opens) (x : S) (hx : x ∈ U)
     (hc : IsClosed ({x} : Set S)) (c : ℂ) : val s (constSec s U c) x hx = c := by
   unfold val
   rw [constSec_res s U c, evaluation_res le_top _ x hx, valHom_eq s x hc]
   exact DFunLike.congr_fun (valHom_spec s x hc) c
 
+/- English proof (translation)
+Unfold `val`. Rewrite using `[evaluation_res hVU f x hx]`.
+-/
 theorem val_restrict {U V : S.Opens} (hVU : V ≤ U) (f : Γ(S, U)) (x : S) (hx : x ∈ V) :
     val s (S.presheaf.map (homOfLE hVU).op f) x hx = val s f x (hVU hx) := by
   unfold val
   rw [evaluation_res hVU f x hx]
 
+/- English proof (translation)
+Unfold `val`. Rewrite using `[valHom_eq s x hc]`. Conclude with `map_eq_zero_iff _ (residueFieldIsoBase s x hc).commRingCatIsoToRingEquiv.injective`.
+-/
 theorem val_eq_zero_iff [LocallyOfFiniteType s] {U : S.Opens} (f : Γ(S, U)) (x : S) (hx : x ∈ U)
     (hc : IsClosed ({x} : Set S)) : val s f x hx = 0 ↔ S.evaluation U x hx f = 0 := by
   unfold val
   rw [valHom_eq s x hc]
   exact map_eq_zero_iff _ (residueFieldIsoBase s x hc).commRingCatIsoToRingEquiv.injective
 
+/- English proof (translation)
+Establish `hcl` using `isClosed_image_of_closed s t g hg x hc`. Use `⟨hcl, ?_⟩` and prove the remaining obligations. Establish `hmor : g.appLE U V hVU ≫ S.evaluation V x hx = T.evaluation U (g.base x) (hVU hx) ≫ g.residueFieldMap x`. Rewrite using `[Scheme.evaluation_naturality g x (V := U) (hVU hx :), Scheme.Hom.appLE, Category.assoc]`. Use `congr 1`.
+
+Simplify using `only [Scheme.evaluation, TopCat.Presheaf.germ_res_assoc]`. Establish `hres : (residueFieldIsoBase s x hc).hom.hom.comp (g.residueFieldMap x).hom = (residueFieldIsoBase t (g.base x) hcl).hom.hom`. Apply `valHom_unique t (g.base x) hcl` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, residueFieldMap_constRes s t g hg x, valHom_spec s x hc]`. Unfold `val`.
+
+Rewrite using `[valHom_eq s x hc, valHom_eq t (g.base x) hcl, ← hres]`. Use `show _ = ((residueFieldIsoBase s x hc).hom.hom.comp (g.residueFieldMap x).hom) ((T.evaluation U (g.base x) (hVU hx)).hom f)`. Rewrite using `[RingHom.comp_apply, ← RingHom.comp_apply (g.residueFieldMap x).hom, ← CommRingCat.hom_comp, ← hmor]`. Both sides reduce to the same expression.
+-/
 theorem val_comp {T : Scheme.{0}} (t : T ⟶ Spec (CommRingCat.of ℂ)) (g : S ⟶ T) (hg : g ≫ t = s)
     [LocallyOfFiniteType s] [LocallyOfFiniteType t] {U : T.Opens} {V : S.Opens} (hVU : V ≤ g ⁻¹ᵁ U)
     (f : Γ(T, U)) (x : S) (hx : x ∈ V) (hc : IsClosed ({x} : Set S)) :

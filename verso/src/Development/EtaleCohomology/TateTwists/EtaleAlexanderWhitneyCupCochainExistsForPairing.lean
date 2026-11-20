@@ -28,6 +28,9 @@ def EtaleAlexanderWhitneyCupLeibnizRule : Prop :=
     (α : Cochain ((chains R).obj E) I n) (β : Cochain ((chains R).obj E) J m) (γ : Cochain ((chains R).obj E) K k) (γ₁ γ₂ : Cochain ((chains R).obj E) K k₁),
     μ.IsAW hk α β γ → μ.IsAW hk₁ (δ n n₁ α) β γ₁ → μ.IsAW hk₂ α (δ m m₁ β) γ₂ → δ k k₁ γ = γ₁ + n.negOnePow • γ₂
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[Cochain.add_v, Preadditive.comp_add]`. Both sides reduce to the same expression.
+-/
 theorem ev_add' {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α β : Cochain ((chains R).obj E) I n)
     (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     ev (α + β) p s h U x = ev α p s h U x + ev β p s h U x := by
@@ -35,6 +38,9 @@ theorem ev_add' {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α β : 
   rw [Cochain.add_v, Preadditive.comp_add]
   rfl
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[Cochain.zero_v, Limits.comp_zero]`. Both sides reduce to the same expression.
+-/
 theorem ev_zero' {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ}
     (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     ev (0 : Cochain ((chains R).obj E) I n) p s h U x = 0 := by
@@ -47,6 +53,15 @@ def EtaleAlexanderWhitneyCupCochainUnique : Prop :=
     (α : Cochain ((chains R).obj E) I n) (β : Cochain ((chains R).obj E) J m) (γ γ' : Cochain ((chains R).obj E) K k),
       μ.IsAW hk α β γ → μ.IsAW hk α β γ' → γ = γ'
 
+/- English proof (translation)
+Introduce `R _ I J K μ E n m k hk`. Use `⟨hu R μ hk, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `α α' β γ γ' h h' N w hw U x`. Rewrite using `[ev_add', h, h', ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ev_add', map_add, LinearMap.add_apply, smul_add]`. Introduce `α β β' γ γ' h h' N w hw U x`. Rewrite using `[ev_add', h, h', ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[ev_add', map_add, smul_add]`.
+
+Introduce `β N w hw U x`. Rewrite using `[ev_zero']`. Use `symm`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Rewrite using `[ev_zero', map_zero, LinearMap.zero_apply, smul_zero]`.
+
+Introduce `α N w hw U x`. Rewrite using `[ev_zero']`. Use `symm`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Rewrite using `[ev_zero', map_zero, smul_zero]`.
+-/
 theorem awalg_of (hu : EtaleAlexanderWhitneyCupCochainUnique) : EtaleAlexanderWhitneyCupUniqueBiadditive := by
   intro R _ I J K μ E n m k hk
   refine ⟨hu R μ hk, ?_, ?_, ?_, ?_⟩
@@ -69,6 +84,11 @@ theorem awalg_of (hu : EtaleAlexanderWhitneyCupCochainUnique) : EtaleAlexanderWh
     refine Finset.sum_eq_zero fun p _ => ?_
     rw [ev_zero', map_zero, smul_zero]
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `h1 R μ hk α.1 β.1`. Take `⟨γ₁, hγ₁⟩` from `h1 R μ (show (n + 1) + m = k + 1 by omega) (δ n (n + 1) α.1) β.1`. Take `⟨γ₂, hγ₂⟩` from `h1 R μ (show n + (m + 1) = k + 1 by omega) α.1 (δ m (m + 1) β.1)`. Establish `hd` using `h3 R μ hk rfl rfl _ _ α.1 β.1 γ γ₁ γ₂ hγ hγ₁ hγ₂`. Rewrite `hγ₁` using `[Cocycle.δ_eq_zero]`.
+
+Rewrite `hγ₂` using `[Cocycle.δ_eq_zero]`. Establish `e1 : γ₁ = 0` using `(h2 R μ _).1 _ _ _ _ hγ₁ ((h2 R μ _).2.2.2.1 _)`. Establish `e2 : γ₂ = 0` using `(h2 R μ _).1 _ _ _ _ hγ₂ ((h2 R μ _).2.2.2.2 _)`. Rewrite `hd` using `[e1, e2, smul_zero, add_zero]`. Conclude with `⟨Cocycle.mk γ (k + 1) rfl hd, hγ⟩`.
+-/
 theorem cup_spec_part1 (h1 : EtaleAlexanderWhitneyCupCochainExistsForPairing) (h2 : EtaleAlexanderWhitneyCupUniqueBiadditive) (h3 : EtaleAlexanderWhitneyCupLeibnizRule)
     (R : Type) [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m k : ℤ} (hk : n + m = k)
     (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m) :
@@ -99,22 +119,39 @@ noncomputable def chZ (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chai
     Cocycle ((chains R).obj E) K k :=
   Classical.choose (cup_spec_part1 h1 h2 h3 R μ hk α β)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (cup_spec_part1 h1 h2 h3 R μ hk α β)`.
+-/
 theorem chZ_spec (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m) :
     μ.IsAW hk α.1 β.1 (chZ h1 h2 h3 μ E hk α β).1 :=
   Classical.choose_spec (cup_spec_part1 h1 h2 h3 R μ hk α β)
 
+/- English proof (translation)
+The claim follows from `Cocycle.ext ((h2 R μ hk).1 _ _ _ _ (chZ_spec h1 h2 h3 μ E hk α β) h)`.
+-/
 theorem chZ_eq (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m)
     (γ : Cocycle ((chains R).obj E) K k) (h : μ.IsAW hk α.1 β.1 γ.1) : chZ h1 h2 h3 μ E hk α β = γ :=
   Cocycle.ext ((h2 R μ hk).1 _ _ _ _ (chZ_spec h1 h2 h3 μ E hk α β) h)
 
+/- English proof (translation)
+The claim follows from `chZ_eq h1 h2 h3 μ E hk _ _ _ ((h2 R μ hk).2.1 _ _ _ _ _ (chZ_spec h1 h2 h3 μ E hk α β) (chZ_spec h1 h2 h3 μ E hk α' β))`.
+-/
 theorem chZ_add_left (α α' : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m) :
     chZ h1 h2 h3 μ E hk (α + α') β = chZ h1 h2 h3 μ E hk α β + chZ h1 h2 h3 μ E hk α' β :=
   chZ_eq h1 h2 h3 μ E hk _ _ _ ((h2 R μ hk).2.1 _ _ _ _ _ (chZ_spec h1 h2 h3 μ E hk α β) (chZ_spec h1 h2 h3 μ E hk α' β))
 
+/- English proof (translation)
+The claim follows from `chZ_eq h1 h2 h3 μ E hk _ _ _ ((h2 R μ hk).2.2.1 _ _ _ _ _ (chZ_spec h1 h2 h3 μ E hk α β) (chZ_spec h1 h2 h3 μ E hk α β'))`.
+-/
 theorem chZ_add_right (α : Cocycle ((chains R).obj E) I n) (β β' : Cocycle ((chains R).obj E) J m) :
     chZ h1 h2 h3 μ E hk α (β + β') = chZ h1 h2 h3 μ E hk α β + chZ h1 h2 h3 μ E hk α β' :=
   chZ_eq h1 h2 h3 μ E hk _ _ _ ((h2 R μ hk).2.2.1 _ _ _ _ _ (chZ_spec h1 h2 h3 μ E hk α β) (chZ_spec h1 h2 h3 μ E hk α β'))
 
+/- English proof (translation)
+Take `⟨m', hm', η, hη⟩` from `hα`. Take `⟨γ, hγ⟩` from `h1 R μ (show m' + m = m' + m from rfl) η β.1`. Take `⟨γ₂, hγ₂⟩` from `h1 R μ (show m' + (m + 1) = k by omega) η (δ m (m + 1) β.1)`. Establish `hd` using `h3 R μ rfl hm' rfl (show n + m = k from hk) (show m' + (m + 1) = k by omega) η β.1 γ (chZ h1 h2 h3 μ E hk α β).1 γ₂ hγ (by rw [hη]; exact chZ_spec h1 h2 h3 μ E hk α β) hγ₂`. Rewrite `hγ₂` using `[Cocycle.δ_eq_zero]`.
+
+Establish `e2 : γ₂ = 0` using `(h2 R μ _).1 _ _ _ _ hγ₂ ((h2 R μ _).2.2.2.2 _)`. Rewrite `hd` using `[e2, smul_zero, add_zero]`. Conclude with `⟨m' + m, by omega, γ, hd⟩`.
+-/
 theorem chZ_cob_left (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m)
     (hα : α ∈ coboundaries _ _ n) : chZ h1 h2 h3 μ E hk α β ∈ coboundaries _ _ k := by
   obtain ⟨m', hm', η, hη⟩ := hα
@@ -127,6 +164,11 @@ theorem chZ_cob_left (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chain
   rw [e2, smul_zero, add_zero] at hd
   exact ⟨m' + m, by omega, γ, hd⟩
 
+/- English proof (translation)
+Take `⟨m', hm', θ, hθ⟩` from `hβ`. Take `⟨γ, hγ⟩` from `h1 R μ (show n + m' = n + m' from rfl) α.1 θ`. Take `⟨γ₁, hγ₁⟩` from `h1 R μ (show (n + 1) + m' = k by omega) (δ n (n + 1) α.1) θ`. Establish `hd` using `h3 R μ rfl rfl hm' (show (n + 1) + m' = k by omega) (show n + m = k from hk) α.1 θ γ γ₁ (chZ h1 h2 h3 μ E hk α β).1 hγ hγ₁ (by rw [hθ]; exact chZ_spec h1 h2 h3 μ E hk α β)`. Rewrite `hγ₁` using `[Cocycle.δ_eq_zero]`.
+
+Establish `e1 : γ₁ = 0` using `(h2 R μ _).1 _ _ _ _ hγ₁ ((h2 R μ _).2.2.2.1 _)`. Rewrite `hd` using `[e1, zero_add]`. Use `⟨n + m', by omega, n.negOnePow • γ, ?_⟩` and prove the remaining obligations. Rewrite using `[δ_units_smul, hd, smul_smul, Int.units_mul_self, one_smul]`.
+-/
 theorem chZ_cob_right (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m)
     (hβ : β ∈ coboundaries _ _ m) : chZ h1 h2 h3 μ E hk α β ∈ coboundaries _ _ k := by
   obtain ⟨m', hm', θ, hθ⟩ := hβ
@@ -142,6 +184,13 @@ theorem chZ_cob_right (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chai
 
 end Desc
 
+/- English proof (translation)
+Introduce `R _ I J K μ E n m k hk`. Set `G : Cocycle ((chains R).obj E) I n → (CohomologyClass ((chains R).obj E) J m →+ CohomologyClass ((chains R).obj E) K k)` to `fun α => QuotientAddGroup.lift _ (AddMonoidHom.mk' (fun β => CohomologyClass.mk (chZ h1 h2 h3 μ E hk α β)) (fun β β' => by rw [chZ_add_right, CohomologyClass.mk_add])) (fun β hβ => by`. Simplify using `only [AddMonoidHom.mem_ker, AddMonoidHom.mk'_apply]`. Conclude with `(QuotientAddGroup.eq_zero_iff _).2 (chZ_cob_right h1 h2 h3 μ E hk α β hβ))`. Set `F : Cocycle ((chains R).obj E) I n →+ (CohomologyClass ((chains R).obj E) J m →+ CohomologyClass ((chains R).obj E) K k)` to `AddMonoidHom.mk' G (fun α α' => by`.
+
+Use `QuotientAddGroup.addMonoidHom_ext _ (AddMonoidHom.ext fun β => ?_)` and prove the remaining obligations. Use `show CohomologyClass.mk _ = CohomologyClass.mk _ + CohomologyClass.mk _`. Rewrite using `[chZ_add_left, CohomologyClass.mk_add])`. Use `⟨QuotientAddGroup.lift _ F (fun α hα => ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.mem_ker]`.
+
+Use `QuotientAddGroup.addMonoidHom_ext _ (AddMonoidHom.ext fun β => ?_)` and prove the remaining obligations. Use `show CohomologyClass.mk _ = 0`. Conclude with `(QuotientAddGroup.eq_zero_iff _).2 (chZ_cob_left h1 h2 h3 μ E hk α β hα)`. Introduce `α β γ hγ show CohomologyClass.mk _ = _`. Rewrite using `[chZ_eq h1 h2 h3 μ E hk α β γ hγ]`.
+-/
 theorem desc_of (h1 : EtaleAlexanderWhitneyCupCochainExistsForPairing) (h2 : EtaleAlexanderWhitneyCupUniqueBiadditive) (h3 : EtaleAlexanderWhitneyCupLeibnizRule) :
     EtaleAlexanderWhitneyCupDescendsToCohomology := by
   intro R _ I J K μ E n m k hk
@@ -166,6 +215,11 @@ theorem desc_of (h1 : EtaleAlexanderWhitneyCupCochainExistsForPairing) (h2 : Eta
     show CohomologyClass.mk _ = _
     rw [chZ_eq h1 h2 h3 μ E hk α β γ hγ]
 
+/- English proof (translation)
+Establish `h2` using `awalg_of hu`. Establish `h4` using `desc_of h1 h2 h3`. Introduce `R _ I J K μ E n m k hk`. Use `⟨fun α β => cup_spec_part1 h1 h2 h3 R μ hk α β, ?_⟩` and prove the remaining obligations. Introduce `α β γ hγ`.
+
+Conclude with `pick_spec (h4 R μ E hk) α β γ hγ`.
+-/
 theorem etale_cup_compat_spec_of_alexander_whitney_exists_unique_leibniz (h1 : EtaleAlexanderWhitneyCupCochainExistsForPairing) (hu : EtaleAlexanderWhitneyCupCochainUnique)
     (h3 : EtaleAlexanderWhitneyCupLeibnizRule) : EtaleCupCompatAlexanderWhitneyCocycleSpec := by
   have h2 := awalg_of hu

@@ -8,6 +8,15 @@ namespace PositivityTheory.SiegelWeilFormula.Krd.CP
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `hY' : Yᴴ * J = -(J * Y)` using `eq_neg_of_add_eq_zero_left hY`. Establish `h1 : J * (1 - Y) = (1 + Y)ᴴ * J`. Rewrite using `[conjTranspose_add, conjTranspose_one, Matrix.add_mul, hY', Matrix.mul_sub, Matrix.mul_one, Matrix.one_mul, sub_eq_add_neg]`. Establish `h2 : J * (1 + Y) = (1 - Y)ᴴ * J`. Rewrite using `[conjTranspose_sub, conjTranspose_one, Matrix.sub_mul, hY', Matrix.mul_add, Matrix.mul_one, Matrix.one_mul, sub_neg_eq_add]`.
+
+Establish `hc : (1 - Y) * (1 + Y) = (1 + Y) * (1 - Y)` using `by noncomm_ring`. Establish `hB : (1 + Y)ᴴ * J * (1 + Y) = (1 - Y)ᴴ * J * (1 - Y)`. Rewrite using `[← h1, Matrix.mul_assoc, hc, ← Matrix.mul_assoc, h2]`. Establish `hA : ((1 - Y)⁻¹)ᴴ * (1 - Y)ᴴ = 1`. Rewrite using `[← conjTranspose_mul, Matrix.mul_nonsing_inv _ hu, conjTranspose_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ((1 - Y)⁻¹)ᴴ * (1 - Y)ᴴ * J * ((1 - Y) * (1 - Y)⁻¹) := by`. Rewrite using `[hB]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [hA, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem cay_inU {J Y : Matrix ι ι ℂ} (hY : Yᴴ * J + J * Y = 0) (hu : IsUnit (1 - Y).det) :
     ((1 + Y) * (1 - Y)⁻¹)ᴴ * J * ((1 + Y) * (1 - Y)⁻¹) = J := by
   have hY' : Yᴴ * J = -(J * Y) := eq_neg_of_add_eq_zero_left hY
@@ -29,6 +38,21 @@ theorem cay_inU {J Y : Matrix ι ι ℂ} (hY : Yᴴ * J + J * Y = 0) (hu : IsUni
         rw [hB]; simp only [Matrix.mul_assoc]
     _ = J := by rw [hA, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨P, hP⟩ : ∃ P : Matrix ι ι ℂ, P = 1 + h` from `⟨_, rfl⟩`. Rewrite `hu` using `[← hP]`. Establish `hPi : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hiP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ hu`. Take `⟨Y, hYd⟩ : ∃ Y : Matrix ι ι ℂ, Y = (h - 1) * P⁻¹` from `⟨_, rfl⟩`.
+
+Establish `e1 : 1 - Y = (2 : ℂ) • P⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : 1 + Y = (2 : ℂ) • (h * P⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Establish `hdet : IsUnit (1 - Y).det`.
+
+Rewrite using `[e1, Matrix.det_smul]`. Conclude with `(IsUnit.pow _ (isUnit_iff_ne_zero.2 two_ne_zero)).mul ((Matrix.isUnit_nonsing_inv_det_iff).2 hu)`. Use `⟨Y, ?_, hdet, ?_⟩` and prove the remaining obligations. Establish `hPc : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, hPi, conjTranspose_one]`. Establish `eY : Y * P = h - 1` using `by rw [hYd, Matrix.mul_assoc, hiP, Matrix.mul_one]`.
+
+Establish `eYh : Pᴴ * Yᴴ = (h - 1)ᴴ` using `by rw [← conjTranspose_mul, eY]`. Establish `key : Pᴴ * (Yᴴ * J + J * Y) * P = 0`. Establish `e3 : Pᴴ * (Yᴴ * J + J * Y) * P = (Pᴴ * Yᴴ) * J * P + Pᴴ * J * (Y * P)` using `by noncomm_ring`. Rewrite using `[e3, eYh, eY, hP, conjTranspose_sub, conjTranspose_add, conjTranspose_one]`. Establish `e4 : (hᴴ - 1) * J * (1 + h) + (1 + hᴴ) * J * (h - 1) = (2 : ℂ) • (hᴴ * J * h - J)`.
+
+Rewrite using `[two_smul]`. Use `noncomm_ring`. Rewrite using `[e4, hh, sub_self, smul_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hPc, hPi, Matrix.one_mul, Matrix.mul_one]`.
+
+Use `_ = (P⁻¹)ᴴ * (Pᴴ * (Yᴴ * J + J * Y) * P) * P⁻¹ := by simp only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [key, Matrix.mul_zero, Matrix.zero_mul]`. Rewrite using `[e1, e2]`. Establish `hinv : ((2 : ℂ) • P⁻¹)⁻¹ = (2 : ℂ)⁻¹ • P`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul, hPi]`. Rewrite using `[hinv, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ two_ne_zero, one_smul, Matrix.mul_assoc, hiP, Matrix.mul_one]`.
+-/
 theorem cay_surj {J h : Matrix ι ι ℂ} (hh : hᴴ * J * h = J) (hu : IsUnit (1 + h).det) :
     ∃ Y : Matrix ι ι ℂ, Yᴴ * J + J * Y = 0 ∧ IsUnit (1 - Y).det ∧ (1 + Y) * (1 - Y)⁻¹ = h := by
   obtain ⟨P, hP⟩ : ∃ P : Matrix ι ι ℂ, P = 1 + h := ⟨_, rfl⟩
@@ -70,6 +94,23 @@ theorem cay_surj {J h : Matrix ι ι ℂ} (hh : hᴴ * J * h = J) (hu : IsUnit (
     rw [hinv, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ two_ne_zero, one_smul, Matrix.mul_assoc, hiP,
       Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨q, hqd⟩ : ∃ q : Polynomial ℂ, q = (1 + (Polynomial.X : Polynomial ℂ) • h.map Polynomial.C).det` from `⟨_, rfl⟩`. Establish `hq : ∀ μ : ℂ, q.eval μ = (1 + μ • h).det`. Introduce `μ`. Rewrite using `[hqd, ← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij] <;> ring`. Establish `hq0 : q ≠ 0` using `fun h0 => by`. Use `hq 0` as an intermediate fact. Rewrite `this` using `[h0, Polynomial.eval_zero, zero_smul, add_zero, Matrix.det_one]`.
+
+Conclude with `zero_ne_one this`. Establish `hg : Continuous fun θ : ℝ => Complex.exp (θ * Complex.I) • h` using `(Complex.continuous_exp.comp (Complex.continuous_ofReal.mul continuous_const)).smul continuous_const`. Establish `hO : IsOpen ((fun θ : ℝ => Complex.exp (θ * Complex.I) • h) ⁻¹' V)` using `hV.preimage hg`. Establish `h0O : (0 : ℝ) ∈ (fun θ : ℝ => Complex.exp (θ * Complex.I) • h) ⁻¹' V`. Simplify using `only [Set.mem_preimage, Complex.ofReal_zero, zero_mul, Complex.exp_zero, one_smul]`.
+
+Conclude with `hhV`. Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.1 hO 0 h0O`. Establish `hδ' : (0 : ℝ) < min δ 1` using `lt_min hδ one_pos`. Establish `hSinf : (Set.Ioo (0 : ℝ) (min δ 1)).Infinite` using `Set.Ioo_infinite hδ'`. Establish `hinj : Set.InjOn (fun θ : ℝ => Complex.exp (θ * Complex.I)) (Set.Ioo (0 : ℝ) (min δ 1))`.
+
+Introduce `a ha b hb hab`. Establish `hpi : (1 : ℝ) < Real.pi` using `lt_trans (by norm_num) Real.pi_gt_three`. Establish `hIoc : ∀ t ∈ Set.Ioo (0 : ℝ) (min δ 1), t ∈ Set.Ioc (-Real.pi) Real.pi` using `fun t ht => ⟨by linarith [ht.1, Real.pi_pos], by linarith [ht.2, min_le_right δ 1]⟩`. Establish `e` using `congrArg Complex.arg hab`. Simplify using `only [Complex.exp_mul_I] at e`.
+
+Rewrite `e` using `[Complex.arg_cos_add_sin_mul_I (hIoc a ha), Complex.arg_cos_add_sin_mul_I (hIoc b hb)]`. Then use the resulting hypothesis. Take `⟨μ, ⟨θ, hθ, rfl⟩, hμ⟩` from `(hSinf.image hinj).exists_notMem_finset q.roots.toFinset`. Use `⟨Complex.exp (θ * Complex.I), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Rewrite using `[show (θ : ℂ) * -Complex.I + θ * Complex.I = 0 by ring, Complex.exp_zero]`.
+
+Use `hball ?_` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, Real.dist_eq, sub_zero, abs_of_pos hθ.1]`. Conclude with `lt_of_lt_of_le hθ.2 (min_le_left δ 1)`. Rewrite using `[isUnit_iff_ne_zero, ← hq]`. Introduce `h0`.
+
+Conclude with `hμ (Multiset.mem_toFinset.2 ((Polynomial.mem_roots hq0).2 h0))`.
+-/
 theorem scalar_avoid {J h : Matrix ι ι ℂ} (hh : hᴴ * J * h = J) {V : Set (Matrix ι ι ℂ)} (hV : IsOpen V) (hhV : h ∈ V) :
     ∃ μ : ℂ, star μ * μ = 1 ∧ μ • h ∈ V ∧ IsUnit (1 + μ • h).det := by
   obtain ⟨q, hqd⟩ : ∃ q : Polynomial ℂ, q = (1 + (Polynomial.X : Polynomial ℂ) • h.map Polynomial.C).det := ⟨_, rfl⟩

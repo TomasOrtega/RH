@@ -8,5 +8,8 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formal
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TwV.jointsAt_of_jIn | exact GlobalTheory.TwV.jointsAt_of_jIn | (intros; apply GlobalTheory.TwV.jointsAt_of_jIn <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jointsAtSplitUnramifiedPlaces_of_chainCharts : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) (μ : D.what₂.Tup), G.LatTied hT Gi Gl → (∀ u, Nonempty (JIn t u μ)) → GlobalTheory.TwV.JointsAt t μ := by
   first | exact @GlobalTheory.TwV.jointsAt_of_jIn | exact GlobalTheory.TwV.jointsAt_of_jIn | (intros; apply GlobalTheory.TwV.jointsAt_of_jIn <;> assumption)

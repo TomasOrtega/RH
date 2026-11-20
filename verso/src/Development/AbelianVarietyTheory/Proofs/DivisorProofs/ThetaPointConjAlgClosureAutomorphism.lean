@@ -29,6 +29,15 @@ end GlobalTheory.ThetaConj
 
 open GlobalTheory.ThetaConj GlobalTheory.ThetaCoord in
 
+/- English proof (translation)
+Introduce `R _ _ A k σ I x x' v hx H`. Establish `hs : Subsingleton (TFK (R` using `R) (Kb R)).left := inferInstanceAs (Subsingleton (PrimeSpectrum (Kb R)))`. Establish `hn : Nonempty (TFK (R` using `R) (Kb R)).left := inferInstanceAs (Nonempty (PrimeSpectrum (Kb R)))`. Set `e : Kb R ≃ₐ[FractionRing R] Kb R` to `AlgEquiv.ofBijective σ (Algebra.IsAlgebraic.algHom_bijective σ)`. Establish `hi : conjHom σ ≫ conjHom e.symm.toAlgHom = 𝟙 _`.
+
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `(Spec.map_comp _ _).symm.trans (Eq.trans (congrArg Spec.map ?_) (Spec.map_id _))` and prove the remaining obligations. Use extensionality with `a`. Conclude with `e.apply_symm_apply a`. Establish `Q` using `isThetaPtOver_pull A (isThetaPtOver_of_subsingleton A H) _ _ hi`.
+
+Establish `Q' : IsThetaPtOver A k x' (fun i => GlobalTheory.Ex.fnOf (σ (v i)))`. Use `Q using 2 with a a` and compare the differences between its conclusion and the goal. Conclude with `Over.OverMorphism.ext (hx a)`. Conclude with `congrArg (fun q => q.hom (v a)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom σ.toRingHom))`. Use `⟨H.1, H.2.1, fun p => ⟨⊤, trivial, ?_⟩⟩` and prove the remaining obligations.
+
+Set `j : TFK (R` to `R) (Kb R) ⟶ overRes (T := TFK (R := R) (Kb R)) ⊤ := Over.homMk (TFK (R := R) (Kb R)).left.topIso.inv (by`. Express the relevant statement in the definitionally equal form `_ ≫ Scheme.Opens.ι ⊤ ≫ _ = _`. Rewrite using `[← Category.assoc, Scheme.toIso_inv_ι, Category.id_comp])`. Conclude with `isThetaPtOver_pull A Q' (overResι ⊤) j (Over.OverMorphism.ext (TFK (R := R) (Kb R)).left.topIso.hom_inv_id)`.
+-/
 theorem GlobalTheory.isThetaPt_conj : ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (k : ℕ) (σ : Kb R →ₐ[FractionRing R] Kb R) (I : Type) (x x' : I → (TFK (R := R) (Kb R) ⟶ A.A)) (v : I → Kb R), (∀ i, (x' i).left = spMap σ.toRingHom ≫ (x i).left) → IsThetaPt A k x (fun i => GlobalTheory.Ex.fnOf (v i)) → IsThetaPt A k x' (fun i => GlobalTheory.Ex.fnOf (σ (v i))) := by
   intro R _ _ A k σ I x x' v hx H
   have hs : Subsingleton (TFK (R := R) (Kb R)).left :=

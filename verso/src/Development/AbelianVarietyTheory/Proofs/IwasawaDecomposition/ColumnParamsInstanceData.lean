@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.TwistedScalarIndependence
 
+/- English proof (translation)
+Substitute `h` using the available equality. Consider the cases of `hb`. Conclude with `H`.
+-/
 theorem dep_imp {α : Sort _} {β : α → Sort _} (P : ∀ a, β a → Prop) {a a' : α} {b : β a} {b' : β a'} (h : a' = a) (hb : HEq b' b)
     (H : P a b) : P a' b' := by
   subst h
@@ -60,6 +63,9 @@ def newC (C₀ : ReadC R (reFace F Dc Sp₀ Zsc₀) X0 Y) (ht : Y'.tup = Y.tup) 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `h'` using `dep_imp (β := fun tup : T → D.what₂.Tup => ∀ t, (Fin (rDim D A3.A F.P0 F.ψ0 t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] X0.s.Amb (tup t)) (fun tup jA => ∃ J, AmbTie D A3.A X0.s a0 F.P0 F.ψ0 tup jA J) (b := Y.jA0) (b' := (by with_unfolding_all exact (Y'.jA0 :))) ht ((by with_unfolding_all …`. Conclude with `(by with_unfolding_all exact (h' :))`.
+-/
 theorem rationalFormsComparison_baseLevel_indep_scalars {a0 : AmbForm D X0.s} (h : ∃ J, AmbTie D A3.A X0.s a0 F.P0 F.ψ0 Y.tup Y.jA0 J) (ht : Y'.tup = Y.tup)
     (hj : HEq Y'.jA0 Y.jA0) :
     ∃ J, AmbTie D A3.A X0.s a0 (reFace F Dc Sp Zsc).P0 (reFace F Dc Sp Zsc).ψ0 Y'.tup Y'.jA0 J := by
@@ -70,6 +76,9 @@ theorem rationalFormsComparison_baseLevel_indep_scalars {a0 : AmbForm D X0.s} (h
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨J, hJ⟩` from `h`. Establish `e : Z'.jW = (by with_unfolding_all exact (Z.jW :))` using `eq_of_heq ((by with_unfolding_all exact (hj :)))`. Use `⟨⟨(by with_unfolding_all exact (J.eW :))⟩, ?_, (by with_unfolding_all exact (hJ.hlat :))⟩` and prove the remaining obligations. Use `rewrite [e]`. Conclude with `(by with_unfolding_all exact (hJ.j_eq :))`.
+-/
 theorem mj_new {Z : ReadL R F X0 Y} {Z' : ReadL (newR R lam err) (reFace F Dc Sp Zsc) X0 Y'} {Xd : DivX D} (h : MjAre Z Xd)
     (hj : HEq Z'.jW Z.jW) : MjAre Z' Xd := by
   obtain ⟨J, hJ⟩ := h
@@ -91,6 +100,9 @@ def newGeo {C : Formalism.L2.Pj.CoreJ D} [Algebra C.Q.c.F D.what₂.LL] {R : Rea
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.jEvExists, h.jEvBar, h.evInj, h.jUnif, h.geoAct, h.latFull, h.dimMatch⟩`.
+-/
 theorem inGeo_new {C : Formalism.L2.Pj.CoreJ D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDat3 D A3 C.Q.c.F} (lam : type_of% R.lam3)
     (err : type_of% R.err0) {g : GlobalTheory.RealGeo.GeoHalf C R.toRealDat fun _ => 1} (h : GlobalTheory.RealGeo.InGeo g) :
     GlobalTheory.RealGeo.InGeo (newGeo lam err g) :=
@@ -150,6 +162,11 @@ open TwistedScalarIndependence
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `hC K B f T w Z Wt L hT Gi Gl Kc Yd cX ex t hA hM hG hp Dc Sp₀ Zsc₀ C₀ Sp Zsc sEE`. Take `⟨kap, lam, err, hP, hH, hE, rfl, hl, Y', Z', h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩` from `GlobalTheory.T.reFace_zero_part_conventions_chosen_again (w.st Z).toD7 _ _ _ _ (famT t) _ t.r.z.R t.r.z.F t.r.z.cG ex.p0 t.r.Y t.r.Z Dc Sp Zsc t.r.z.pins t.r.intersectionNumber_baseChange hp`. Set `x : TwIn ex` to `newTw (R := t.r.z.R) (F := t.r.z.F) (cG := t.r.z.cG) (Y := t.r.Y) (Z := t.r.Z) (Dc := Dc) (Sp₀ := Sp₀) (Sp := Sp) (Zsc₀ := Zsc₀) (Zsc := Zsc) (Y' := Y') lam err hC t.r.z.geo Z' ((by with_unfolding_all exact (C₀ :))) sEE hP hH hE hG hA.2 hM h1 h3 h4 h13`. Set `a : TwArgs ex t` to `{ Dc := Dc, Sp := Sp, Zsc := Zsc, lam := lam, err := err, lam_eq := hl, x := x pack := rfl intersectionNumber_baseChange := (by with_unfolding_all exact (hH :)) κ := (by with_unfolding_all exact ((HEq.refl t.r.z.geo.κ) :)) v₀ := (by with_unfolding_all exact ((HEq.refl t.r.z.geo.v …`. Use `⟨a, rfl, HEq.rfl, rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `kexactB HEq.refl sEE`. Use `kexactB HEq.refl C₀.wU`. Use `kexactB HEq.refl C₀.eNu`. Conclude with `(by with_unfolding_all exact (inGeo_new lam err t.inGeo :))`.
+-/
 theorem twArgs_exists : (GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧ GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay) → ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (L : SizeData₂ (w.st Z).toD7) (hT : GatTies (w.st Z).toD7) (Gi : Formalism.MainNotions.G.Inst (w.st Z).toD7 L) (Gl : Formalism.MainNotions.G.LatInst (w.st Z).toD7) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX (w.st Z).toD7) (cX : ExtraC) (ex : Extra (w.st Z).toD7 L hT Gi Gl Kc Yd cX) (t : RowsT K w Z Wt ex.p0), AmbAre t.r.Z ex.amb ex.amb0 → MjAre t.r.Z Yd → GrpTie (w.st Z).toD7 (famT t).A t.r.z.F.P0 t.r.z.F.ψ0 t.r.z.F.P1 t.r.z.F.ψ1 (t.r.z.R.eG.trans t.r.z.cG) → (∀ p, t.r.z.R.EEp3 p ≠ ⊥ → ∀ i, t.r.z.R.Wp3 i p ≠ ⊥ ∧ ∀ v, v ≠ (famT t).A.v0 → t.r.z.R.PartAt t.r.z.F i p v) → ∀ Dc Sp₀ Zsc₀ (C₀ : ReadC t.r.z.R (reFace t.r.z.F Dc Sp₀ Zsc₀) ex.p0 ((t.r.Y))) (Sp : ∀ Zs, SPer (Dc Zs)) Zsc (sEE : (t.r.z.R.toCx3 t.r.z.F).EE →ₗ⋆[ℂ] (Sp (zsOf t.r.z.R t.r.z.F)).HH), ∃ a : TwArgs ex t, a.Dc = Dc ∧ HEq a.Sp Sp ∧ a.Zsc = Zsc ∧ HEq a.x.sEE sEE ∧ HEq a.x.C.wU C₀.wU ∧ HEq a.x.C.eNu C₀.eNu ∧ GlobalTheory.RealGeo.InGeo a.x.geo := by
   intro hC K B f T w Z Wt L hT Gi Gl Kc Yd cX ex t hA hM hG hp Dc Sp₀ Zsc₀ C₀ Sp Zsc sEE
   obtain ⟨kap, lam, err, hP, hH, hE, rfl, hl, Y', Z', h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩ :=

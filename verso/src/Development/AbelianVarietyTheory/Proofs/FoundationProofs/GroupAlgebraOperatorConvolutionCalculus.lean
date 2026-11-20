@@ -8,6 +8,11 @@ namespace GlobalTheory.BadShare
 section
 variable {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [conv, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft z)]`.
+
+Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+-/
 theorem convCalc_assoc (a b c : G → ℂ) : conv (conv a b) c = conv a (conv b c) := by
   funext x
   simp only [conv, Finset.sum_mul, Finset.mul_sum]
@@ -17,22 +22,37 @@ theorem convCalc_assoc (a b c : G → ℂ) : conv (conv a b) c = conv a (conv b 
   refine Finset.sum_congr rfl fun y _ => ?_
   simp [mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[conv, sub_mul, Finset.sum_sub_distrib]`.
+-/
 theorem convCalc_sub_left (a b c : G → ℂ) : conv (a - b) c = conv a c - conv b c := by
   funext x
   simp [conv, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[conv, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem convCalc_sub_right (a b c : G → ℂ) : conv c (a - b) = conv c a - conv c b := by
   funext x
   simp [conv, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[conv, dirac]`.
+-/
 theorem convCalc_dirac_left (a : G → ℂ) : conv dirac a = a := by
   funext x
   simp [conv, dirac]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[conv, dirac, inv_mul_eq_one]`.
+-/
 theorem convCalc_dirac_right (a : G → ℂ) : conv a dirac = a := by
   funext x
   simp [conv, dirac, inv_mul_eq_one]
 
+/- English proof (translation)
+Simplify using `only [conv, map_sum, map_mul, ← ha, ← hb]`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft x⁻¹)]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm, mul_assoc]`.
+-/
 theorem convCalc_star (a b : G → ℂ) (ha : ∀ x, a x⁻¹ = (starRingEnd ℂ) (a x))
     (hb : ∀ x, b x⁻¹ = (starRingEnd ℂ) (b x)) (x : G) :
     conv a b x⁻¹ = (starRingEnd ℂ) (conv b a x) := by
@@ -41,12 +61,18 @@ theorem convCalc_star (a b : G → ℂ) (ha : ∀ x, a x⁻¹ = (starRingEnd ℂ
   refine Finset.sum_congr rfl fun y _ => ?_
   simp [mul_comm, mul_assoc]
 
+/- English proof (translation)
+Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[convCalc_assoc, ← convCalc_assoc b a b, ← h, convCalc_assoc a b b, hb.1, ← convCalc_assoc, ha.1]`. Rewrite using `[convCalc_star a b ha.2 hb.2, h]`.
+-/
 theorem convCalc_isProj_conv (a b : G → ℂ) (ha : IsProj a) (hb : IsProj b) (h : conv a b = conv b a) :
     IsProj (conv a b) := by
   refine ⟨?_, fun x => ?_⟩
   · rw [convCalc_assoc, ← convCalc_assoc b a b, ← h, convCalc_assoc a b b, hb.1, ← convCalc_assoc, ha.1]
   · rw [convCalc_star a b ha.2 hb.2, h]
 
+/- English proof (translation)
+Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[convCalc_sub_left, convCalc_sub_right, convCalc_sub_right, convCalc_dirac_left, convCalc_dirac_left, convCalc_dirac_right, ha.1]`. Simplify using the standard rewrite rules. Apply the tactic sequence `simp only [Pi.sub_apply, map_sub, ha.2, dirac, inv_eq_one] split_ifs <;> simp`.
+-/
 theorem convCalc_isProj_compl (a : G → ℂ) (ha : IsProj a) : IsProj (dirac - a) := by
   refine ⟨?_, fun x => ?_⟩
   · rw [convCalc_sub_left, convCalc_sub_right, convCalc_sub_right, convCalc_dirac_left, convCalc_dirac_left,
@@ -57,6 +83,11 @@ theorem convCalc_isProj_compl (a : G → ℂ) (ha : IsProj a) : IsProj (dirac - 
 
 variable {M : Type} [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ G M)
 
+/- English proof (translation)
+Simplify using `only [op, conv, Finset.sum_smul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft y)]`.
+
+Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `[smul_smul, mul_comm]`.
+-/
 theorem convCalc_op_conv (a b : G → ℂ) : op ρ (conv a b) = op ρ a * op ρ b := by
   simp only [op, conv, Finset.sum_smul, Finset.sum_mul, Finset.mul_sum]
   rw [Finset.sum_comm]
@@ -66,15 +97,29 @@ theorem convCalc_op_conv (a b : G → ℂ) : op ρ (conv a b) = op ρ a * op ρ 
   refine Finset.sum_congr rfl fun z _ => ?_
   simp [smul_smul, mul_comm]
 
+/- English proof (translation)
+Simplify using `[op, sub_smul, Finset.sum_sub_distrib]`.
+-/
 theorem convCalc_op_sub (a b : G → ℂ) : op ρ (a - b) = op ρ a - op ρ b := by
   simp [op, sub_smul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[op, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem convCalc_op_add (a b : G → ℂ) : op ρ (a + b) = op ρ a + op ρ b := by
   simp [op, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[op, dirac]`.
+-/
 theorem convCalc_op_dirac : op ρ dirac = 1 := by
   simp [op, dirac]
 
+/- English proof (translation)
+Establish `h1 : op ρ e * op ρ e = op ρ e` using `by rw [← convCalc_op_conv, he]`. Establish `hp : LinearMap.IsProj (LinearMap.range (op ρ e)) (op ρ e)` using `⟨fun x => LinearMap.mem_range_self _ x, by`. Introduce and unpack `x ⟨y, rfl⟩`. Conclude with `LinearMap.congr_fun h1 y⟩`. Rewrite using `[rk, ← hp.trace]`.
+
+Simplify using `[op, map_sum]`.
+-/
 theorem convCalc_rk [FiniteDimensional ℂ M] (e : G → ℂ) (he : conv e e = e) :
     (rk ρ e : ℂ) = ∑ γ, e γ * LinearMap.trace ℂ M (ρ γ) := by
   have h1 : op ρ e * op ρ e = op ρ e := by rw [← convCalc_op_conv, he]
@@ -87,6 +132,9 @@ theorem convCalc_rk [FiniteDimensional ℂ M] (e : G → ℂ) (he : conv e e = e
 
 end
 
+/- English proof (translation)
+Introduce `G _ _ M _ _ _ ρ`. Conclude with `⟨fun a b => ⟨convCalc_op_conv ρ a b, convCalc_op_sub ρ a b, convCalc_op_add ρ a b⟩, convCalc_op_dirac ρ, fun a b c => ⟨convCalc_assoc a b c, convCalc_sub_left a b c, convCalc_sub_right a b c⟩, fun a => ⟨convCalc_dirac_left a, convCalc_dirac_right a⟩, convCalc_isProj_conv, convCal …`.
+-/
 theorem convCalc : ∀ (G : Type) [Group G] [Fintype G] (M : Type) [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (ρ : Representation ℂ G M), (∀ a b : G → ℂ, op ρ (conv a b) = op ρ a * op ρ b ∧ op ρ (a - b) = op ρ a - op ρ b ∧ op ρ (a + b) = op ρ a + op ρ b) ∧ op ρ dirac = 1 ∧ (∀ a b c : G → ℂ, conv (conv a b) c = conv a (conv b c) ∧ conv (a - b) c = conv a c - conv b c ∧ conv c (a - b) = conv c a - conv c b) ∧ (∀ a : G → ℂ, conv dirac a = a ∧ conv a dirac = a) ∧ (∀ a b : G → ℂ, IsProj a → IsProj b → conv a b = conv b a → IsProj (conv a b)) ∧ (∀ a : G → ℂ, IsProj a → IsProj (dirac - a)) ∧ ∀ e : G → ℂ, conv e e = e → (rk ρ e : ℂ) = ∑ γ, e γ * LinearMap.trace ℂ M (ρ γ) := by
   intro G _ _ M _ _ _ ρ
   exact ⟨fun a b => ⟨convCalc_op_conv ρ a b, convCalc_op_sub ρ a b, convCalc_op_add ρ a b⟩, convCalc_op_dirac ρ,

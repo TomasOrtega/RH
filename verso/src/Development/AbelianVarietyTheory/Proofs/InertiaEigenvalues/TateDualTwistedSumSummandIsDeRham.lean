@@ -12,6 +12,19 @@ namespace GlobalTheory.SummandDualDR
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D hFont hP i r hr Xs w hw n hPot X hX X' PX hD`. Take `⟨K', h, hN, hF, hS, Sig, Fr, -, -, -, -, hx⟩` from `hPot`. Take `⟨a, x, j, hjinj, hjeq, -⟩` from `hX`. Take `⟨h1, h2, h3, h4⟩` from `hD`. Set `incl` to `Subgroup.inclusion (GK_le h)`.
+
+Establish `hincl : Continuous incl` using `Continuous.subtype_mk continuous_subtype_val _`. Set `W : GRep ↥(GK K') ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) (Br.OLL D.nbr i w hw)` to `{ V := X.V, ρ := X.ρ.comp incl, cont := fun v => (X.cont v).comp hincl }`. Set `W' : GRep ↥(GK K') ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) (Br.OLL D.nbr i w hw)` to `{ V := X'.V, ρ := X'.ρ.comp incl, cont := fun v => (X'.cont v).comp hincl }`. Set `Ms' : ↥Xs → (↥(GK K') →* Matrix (Fin D.R.nV) (Fin D.R.nV) (Br.LL D.nbr i w hw))` to `fun y => (Br.loc D.nbr i w hw (rTwO D.nd i r y)).comp incl`. Establish `hc' : ∀ y v, Continuous fun g => (Ms' y g).mulVec v` using `fun y v => ((GlobalTheory.JumpDual.loc_cont D i w hw _ (GlobalTheory.Pass.FamCont.stepCont D i r hr y).1).comp hincl).matrix_mulVec continuous_const`.
+
+Establish `hcr' : ∀ y, IsCrys ((D.loc (D.nd.l i)).PD K') (matRep (Ms' y))` using `fun y => (GlobalTheory.PcRes.main (D.nd.l i) (D.loc (D.nd.l i)) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL h hN hF hS _ (matRep (Br.loc D.nbr i w hw (rTwO D.nd i r y)))).2.1 (hx y).1`. Establish `hsub : IsSubOfSums W.ρ (fun y => ⇑(Ms' y))`. Use `⟨a, x, j, hjinj, fun g v => ?_⟩` and prove the remaining obligations. Conclude with `hjeq (incl g) v`. Establish `hW : IsCrys ((D.loc (D.nd.l i)).PD K') W.ρ` using `(subsum_crys (PD := (D.loc (D.nd.l i)).PD K') (Ms := Ms') (hc := hc') (hF := hFont (D.nd.l i) K' (D.nbr i w hw).LL) (S := fun _ => Set.univ) (hcr := hcr') (hS := fun _ _ _ _ => Set.mem_univ _) (A := W) (hA := hsub)).1`.
+
+Establish `hcyc : ∀ g : ↥(GK K'), ((cycLL ((D.loc (D.nd.l i)).PD K') (Br.LL D.nbr i w hw) g : (Br.LL D.nbr i w hw)ˣ) : Br.LL D.nbr i w hw) = ((cycLL (Br.PD D.loc D.nbr i w hw) (Br.LL D.nbr i w hw) (incl g) : (Br.LL D.nbr i w hw)ˣ) : Br.LL D.nbr i w hw)`. Introduce `g`. Establish `e1` using `(D.loc (D.nd.l i)).PD_χ K' g`. Establish `e2` using `(D.loc (D.nd.l i)).PD_χ (D.nbr i w hw).Kw (incl g)`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) ((((D.loc (D.nd.l i)).PD K').χ g : ℚ_[D.nd.l i]ˣ) : ℚ_[D.nd.l i]) = algebraMap ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) ((((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw).χ (incl g) : ℚ_[D.nd.l i]ˣ) : ℚ_[D.nd.l i])`.
+
+Rewrite using `[e1, e2]`. Both sides reduce to the same expression. Establish `hD' : IsDual1 ((D.loc (D.nd.l i)).PD K') W.ρ W'.ρ PX`. Use `⟨fun g v y => ?_, h2, h3, h4⟩` and prove the remaining obligations. Rewrite using `[hcyc]`.
+
+Conclude with `h1 (incl g) v y`. Establish `hW' : IsCrys ((D.loc (D.nd.l i)).PD K') W'.ρ` using `(hFont (D.nd.l i) K' (D.nbr i w hw).LL).2.2.1 W W' PX hD' hW`. Conclude with `hP (D.nd.l i) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL h X' hW'`.
+-/
 theorem main : ∀ (D : D7), FontaineAtPlacesOverL (D := D) → PotDRL D.loc → ∀ (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r →
     ∀ (Xs : Set (D.nd.X i)) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (n : ℕ),

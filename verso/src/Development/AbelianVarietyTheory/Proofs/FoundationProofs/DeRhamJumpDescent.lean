@@ -9,6 +9,25 @@ namespace GlobalTheory.JumpDescent
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N TensorProduct
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite (G ⧸ H)`. Establish `hm0 : ∀ x, m 0 x = 0` using `fun x => by`. Use `hma 0 0 x` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+
+Set `T : Submodule Ω (G ⧸ H → Ω)` to `{ carrier := {v | ∑ q, m (v q) (A q.out x) ∈ F'} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, Pi.add_apply, hma, Finset.sum_add_distrib] at *`. Conclude with `F'.add_mem ha hb`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq, Pi.zero_apply, hm0, Finset.sum_const_zero]`.
+
+Conclude with `F'.zero_mem`. Use the proof step `smul_mem' := fun c a ha => by`. Simplify using `only [Set.mem_setOf_eq, Pi.smul_apply, smul_eq_mul, hmm, ← map_sum] at *`. Conclude with `hF'm _ _ ha }`. Set `φ : G ⧸ H → (S →* Ω)` to `fun q => (ε q.out).comp S.subtype`.
+
+Establish `hφ : Function.Injective φ`. Introduce `q q' hq`. Rewrite using `[← q.out_eq, ← q'.out_eq]`. Apply `QuotientGroup.eq.2` to reduce the goal to its premises. Rewrite using `[hH]`.
+
+Introduce `a ha`. Establish `h1 : ε q.out a = ε q'.out a` using `DFunLike.congr_fun hq ⟨a, ha⟩`. Rewrite using `[hεm, ← h1, ← hεm, inv_mul_cancel, hε1]`. Establish `hli : LinearIndependent Ω (fun q => (φ q : S → Ω))` using `(linearIndependent_monoidHom S Ω).comp φ hφ`. Establish `hsp` using `span_flip_eq_top_iff_linearIndependent.2 hli`.
+
+Establish `hT : T = ⊤`. Rewrite using `[eq_top_iff, ← hsp, Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Express the relevant statement in the definitionally equal form `∑ q : G ⧸ H, m (ε q.out a) (A q.out x) ∈ F'`. Simplify using `only [← hε]`.
+
+Establish `hz : ∀ h ∈ H, A h (m a x) = m a x` using `fun h hh => by`. Rewrite using `[hε, hxH h hh, (hH h).1 hh a a.2]`. Apply `hfix _ (F.sum_mem fun q _ => hFA _ _ (hFm _ _ hx))` to reduce the goal to its premises. Introduce `g`. Rewrite using `[map_sum, ← Equiv.sum_comp (MulAction.toPerm g) (fun q : G ⧸ H => A q.out (m a x))]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H (g * q.out)`. Establish `h2 : (MulAction.toPerm g q : G ⧸ H) = ((g * q.out : G) : G ⧸ H)` using `(MulAction.Quotient.mk_smul_out H g q).symm`. Rewrite using `[h2, hh, hAm, hAm, hz _ h.2]`. Establish `h1 : (Pi.single ((1 : G) : G ⧸ H) 1 : G ⧸ H → Ω) ∈ T` using `hT ▸ Submodule.mem_top`.
+
+Express the relevant statement in the definitionally equal form `∑ q : G ⧸ H, m ((Pi.single ((1 : G) : G ⧸ H) 1 : G ⧸ H → Ω) q) (A q.out x) ∈ F' at h1`. Rewrite `h1` using `[Finset.sum_eq_single ((1 : G) : G ⧸ H) (fun q _ hq => by rw [Pi.single_eq_of_ne hq, hm0]) (fun h => absurd (Finset.mem_univ _) h), Pi.single_eq_same, hm1]`. Establish `h2` using `hF'A (((1 : G) : G ⧸ H).out)⁻¹ _ h1`. Rewrite `h2` using `[← hAm, inv_mul_cancel, hA1]`. Then use the resulting hypothesis.
+-/
 theorem descent {G M Ω : Type} [Group G] [AddCommGroup M] [Field Ω] (H : Subgroup G)
     [Finite (G ⧸ H)] (A : G → M →+ M) (hA1 : ∀ x, A 1 x = x)
     (hAm : ∀ g h x, A (g * h) x = A g (A h x))
@@ -78,6 +97,11 @@ section
 variable {LL : Type} [Field LL] [Algebra ℚ_[l] LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `tmul v b => exact ⟨f v ⊗ₜ ⟨g b.1, hg _ b.2⟩, rfl⟩`.
+
+Consider the case `add y z hy hz => simp only [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+-/
 theorem map_mem_FilV (K K' : FinExt l) (a : ℤ) (f : V →ₗ[LL] V) (g : P.R.BdR →ₗ[ℚ_[l]] P.R.BdR)
     (hg : ∀ b ∈ (P.PD K).Fil a, g b ∈ (P.PD K').Fil a) (x : V ⊗[ℚ_[l]] P.R.BdR)
     (hx : x ∈ FilV (P.PD K) (LL := LL) (V := V) a) :
@@ -88,6 +112,11 @@ theorem map_mem_FilV (K K' : FinExt l) (a : ℤ) (f : V →ₗ[LL] V) (g : P.R.B
   | tmul v b => exact ⟨f v ⊗ₜ ⟨g b.1, hg _ b.2⟩, rfl⟩
   | add y z hy hz => simp only [map_add]; exact Submodule.add_mem _ hy hz
 
+/- English proof (translation)
+Establish `key : ∀ K K' : FinExt l, FilV (P.PD K) (LL` using `LL) (V := V) a ≤ FilV (P.PD K') (LL := LL) (V := V) a := by`. Introduce `K K' x hx`. Use `map_mem_FilV P K K' a LinearMap.id LinearMap.id (fun b hb => by` as an intermediate fact. Establish `h : b ∈ (((P.PD K).Fil a : Submodule ↥K.1 P.R.BdR) : Set P.R.BdR)` using `hb`. Rewrite `h` using `[P.PD_Fil K K' a]`.
+
+Conclude with `h) x hx`. Rewrite `this` using `[AlgebraTensorModule.map_id]`. Then use the resulting hypothesis. Conclude with `le_antisymm (key _ _) (key _ _)`.
+-/
 theorem FilV_eq (K K' : FinExt l) (a : ℤ) :
     FilV (P.PD K') (LL := LL) (V := V) a = FilV (P.PD K) (LL := LL) (V := V) a := by
   have key : ∀ K K' : FinExt l,
@@ -100,6 +129,11 @@ theorem FilV_eq (K K' : FinExt l) (a : ℤ) :
     rwa [AlgebraTensorModule.map_id] at this
   exact le_antisymm (key _ _) (key _ _)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `tmul v b => exact ⟨v ⊗ₜ ⟨b.1, (P.PD K).Fil_anti a b.2⟩, rfl⟩`.
+
+Consider the case `add y z hy hz => simp only [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+-/
 theorem FilV_anti (K : FinExt l) (a : ℤ) :
     FilV (P.PD K) (LL := LL) (V := V) (a + 1) ≤ FilV (P.PD K) (LL := LL) (V := V) a := by
   rintro _ ⟨y, rfl⟩
@@ -108,6 +142,11 @@ theorem FilV_anti (K : FinExt l) (a : ℤ) :
   | tmul v b => exact ⟨v ⊗ₜ ⟨b.1, (P.PD K).Fil_anti a b.2⟩, rfl⟩
   | add y z hy hz => simp only [map_add]; exact Submodule.add_mem _ hy hz
 
+/- English proof (translation)
+Take `⟨E, hc⟩ : ∃ E : FinExt l, c ∈ E.1` from `⟨⟨IntermediateField.adjoin ℚ_[l] {c}, IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral c)⟩, IntermediateField.mem_adjoin_simple_self _ c⟩`. Establish `h : b ∈ (((P.PD K).Fil a : Submodule ↥K.1 P.R.BdR) : Set P.R.BdR)` using `hb`. Rewrite `h` using `[P.PD_Fil K E a]`. Establish `h2 : (⟨c, hc⟩ : ↥E.1) • b ∈ (((P.PD E).Fil a : Submodule ↥E.1 P.R.BdR) : Set P.R.BdR)` using `Submodule.smul_mem _ _ h`. Rewrite `h2` using `[P.PD_Fil E K a, Algebra.smul_def]`.
+
+Conclude with `h2`.
+-/
 theorem mul_mem_Fil (K : FinExt l) (a : ℤ) (c : Om l) (b : P.R.BdR) (hb : b ∈ (P.PD K).Fil a) :
     algebraMap (Om l) P.R.BdR c * b ∈ (P.PD K).Fil a := by
   obtain ⟨E, hc⟩ : ∃ E : FinExt l, c ∈ E.1 := ⟨⟨IntermediateField.adjoin ℚ_[l] {c},
@@ -120,16 +159,25 @@ theorem mul_mem_Fil (K : FinExt l) (a : ℤ) (c : Om l) (b : P.R.BdR) (hb : b �
   rw [P.PD_Fil E K a, Algebra.smul_def] at h2
   exact h2
 
+/- English proof (translation)
+Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_DdR (K : FinExt l) (ρ : Representation LL ↥(GK K) V) (x : V ⊗[ℚ_[l]] P.R.BdR) :
     x ∈ DdR (P.PD K) ρ ↔ ∀ g, actVdR (P.PD K) ρ g x = x := by
   simp only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply,
     sub_eq_zero]
 
+/- English proof (translation)
+Rewrite using `[← P.PD_actdR K g b]`. Both sides reduce to the same expression.
+-/
 theorem actVdR_tmul (K : FinExt l) (ρ : Representation LL ↥(GK K) V) (g : ↥(GK K)) (v : V)
     (b : P.R.BdR) : actVdR (P.PD K) ρ g (v ⊗ₜ b) = ρ g v ⊗ₜ P.actQdR g b := by
   rw [← P.PD_actdR K g b]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => rw [actVdR_tmul, actVdR_tmul]`. Both sides reduce to the same expression. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem actVdR_comp {K K' : FinExt l} (h : K.1 ≤ K'.1) (ρ : Representation LL ↥(GK K) V)
     (g : ↥(GK K')) (x : V ⊗[ℚ_[l]] P.R.BdR) :
     actVdR (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))) g x =
@@ -142,9 +190,31 @@ theorem actVdR_comp {K K' : FinExt l} (h : K.1 ≤ K'.1) (ρ : Representation LL
 def mulOm (c : Om l) : V ⊗[ℚ_[l]] P.R.BdR →ₗ[LL] V ⊗[ℚ_[l]] P.R.BdR :=
   AlgebraTensorModule.map LinearMap.id (LinearMap.mulLeft ℚ_[l] (algebraMap (Om l) P.R.BdR c))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulOm_tmul (c : Om l) (v : V) (b : P.R.BdR) :
     mulOm (LL := LL) P c (v ⊗ₜ b) = v ⊗ₜ (algebraMap (Om l) P.R.BdR c * b) := rfl
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥K'.1 := K'.2`. Use `haveI : Finite (GQ l ⧸ GK K') := Subgroup.quotient_finite_of_isOpen _ (IntermediateField.fixingSubgroup_isOpen K'.1)`. Use `haveI : (GK K').FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `hA : ∀ (a : ℤ) (g : ↥(GK K)), ∀ x ∈ FilV (P.PD K) (LL` using `LL) (V := V) a, actVdR (P.PD K) ρ g x ∈ FilV (P.PD K) (LL := LL) (V := V) a := fun a g x hx => map_mem_FilV P K K a _ _ (fun b hb => (P.PD K).Fil_G g a b hb) x hx`. Establish `hM : ∀ (a : ℤ) (c : Om l), ∀ x ∈ FilV (P.PD K) (LL` using `LL) (V := V) a, mulOm (LL := LL) P c x ∈ FilV (P.PD K) (LL := LL) (V := V) a := fun a c x hx => map_mem_FilV P K K a _ _ (fun b hb => mul_mem_Fil P K a c b hb) x hx`.
+
+Use `descent (Ω := Om l) ((GK K').subgroupOf (GK K)) (fun g => (actVdR (P.PD K) ρ g).toAddMonoidHom) ?_ ?_ (fun c => (mulOm (LL := LL) P c).toAddMonoidHom) ?_ ?_ ?_ (fun g => ((g : GQ l) : Om l →* Om l)) (fun _ _ _ => rfl) (fun _ => rfl) ?_ K'.1.toSubalgebra.toSubsemiring.toSubmonoid …` and prove the remaining obligations. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => simp [actVdR_tmul]`.
+
+Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Introduce `g g' x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => simp [actVdR_tmul]`.
+
+Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => simp [mulOm_tmul]`.
+
+Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Introduce `g g' x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => simp [mulOm_tmul, mul_assoc]`.
+
+Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Introduce `g g' x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, add_zero]`. Consider the case `tmul v b => simp [mulOm_tmul, add_mul, tmul_add]`.
+
+Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Normalize the expressions using the abelian group laws. Introduce `g c x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+
+Consider the case `tmul v b => simp [mulOm_tmul, actVdR_tmul, P.actQdR_Om]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Introduce `g`. Rewrite using `[Subgroup.mem_subgroupOf]`. Conclude with `⟨fun hg a ha => hg ⟨a, ha⟩, fun hg a => hg a.1 a.2⟩`.
+
+Introduce `g hg`. Use `(mem_DdR P K' _ x).1 hxH ⟨g.1, hg⟩` as an intermediate fact. Rewrite `this` using `[actVdR_comp P h]`. Conclude with `this`.
+-/
 theorem mem_succ_of_fixed {K K' : FinExt l} (h : K.1 ≤ K'.1) (ρ : Representation LL ↥(GK K) V)
     (u : ℤ)
     (hfix : ∀ y ∈ FilV (P.PD K) (LL := LL) (V := V) u, y ∈ DdR (P.PD K) ρ →
@@ -208,6 +278,13 @@ theorem mem_succ_of_fixed {K K' : FinExt l} (h : K.1 ≤ K'.1) (ρ : Representat
     rw [actVdR_comp P h] at this
     exact this
 
+/- English proof (translation)
+Rewrite using `[FilV_eq P K K', FilV_eq P K K', not_iff_not]`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Use `le_antisymm (inf_le_inf_left _ (FilV_anti P K u)) fun x hx => ⟨hx.1, ?_⟩` and prove the remaining obligations. Establish `hx' : x ∈ DdR (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h)))`.
+
+Rewrite using `[mem_DdR]`. Introduce `g`. Rewrite using `[actVdR_comp P h]`. Conclude with `(mem_DdR P K _ x).1 hx.1 _`. Conclude with `(he.ge ⟨hx', hx.2⟩).2`.
+
+Introduce `he`. Use `le_antisymm (inf_le_inf_left _ (FilV_anti P K u)) fun x hx => ⟨hx.1, ?_⟩` and prove the remaining obligations. Conclude with `mem_succ_of_fixed P h ρ u (fun y hy hy' => (he.ge ⟨hy', hy⟩).2) x hx.2 hx.1`.
+-/
 theorem de_rham_jump_iff_extension {K K' : FinExt l} (h : K.1 ≤ K'.1) (ρ : Representation LL ↥(GK K) V)
     (u : ℤ) :
     (DdR (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))) ⊓
@@ -232,6 +309,9 @@ theorem de_rham_jump_iff_extension {K K' : FinExt l} (h : K.1 ≤ K'.1) (ρ : Re
 
 end
 
+/- English proof (translation)
+Introduce `_ _ P _ _ _ h Y u` and use `de_rham_jump_iff_extension P h Y.ρ u`.
+-/
 theorem jump_iff : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K K' LL : FinExt l) (h : K.1 ≤ K'.1)
     (Y : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (u : ℤ),
     (DdR (P.PD K') (Y.ρ.comp (Subgroup.inclusion (GK_le h))) ⊓

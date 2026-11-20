@@ -4,6 +4,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCyclotom
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.Fr UpperTheory.V.GC
 
+/- English proof (translation)
+Take `⟨E, hE, hEK⟩` from `(krullTopology_mem_nhds_one_iff F Ω (K : Set (G F Ω))).1 (hK.mem_nhds K.one_mem)`. Use `haveI : NumberField E := NumberField.of_module_finite F E`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : IsAlgClosure E Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := F) E⟩`. Take `⟨T, hT⟩` from `(Base.ramFinite F F E Ω).1`.
+
+Use `⟨T, fun v hv A hA g hg => hEK ?_⟩` and prove the remaining obligations. Establish `h` using `hT v hv A hA (show g ∈ Base.galOf F F Ω ⊓ Ine (F := F) A from ⟨fun x => g.commutes x, hg⟩)`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff E g).2 fun x hx => h ⟨x, hx⟩`.
+-/
 private theorem ine_le_open (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (K : Subgroup (G F Ω)) (hK : IsOpen (K : Set (G F Ω))) :
     ∃ T : Finset (HeightOneSpectrum (𝓞 F)), ∀ v, v ∉ T → ∀ A : ValuationSubring Ω, IsPlaceOver A v →
@@ -17,6 +22,31 @@ private theorem ine_le_open (F Ω : Type) [Field F] [NumberField F] [Field Ω] [
   have h := hT v hv A hA (show g ∈ Base.galOf F F Ω ⊓ Ine (F := F) A from ⟨fun x => g.commutes x, hg⟩)
   exact (IntermediateField.mem_fixingSubgroup_iff E g).2 fun x hx => h ⟨x, hx⟩
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ S K Γ _ _ _ _ _ _ π h`. Take `⟨T, hT⟩` from `ine_le_open F Ω K h.isOpen`. Establish `hgen : ∀ v ∉ S, ∀ B : ValuationSubring Ω, IsPlaceOver B v → ∀ g ∈ Ine (F` using `F) B, g ∈ K → π g = 1 := by`. Introduce `v hv B hB g hg hgK`. Rewrite using `[← MonoidHom.mem_ker, h.ker]`.
+
+Use `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨v, hv, B, hB, hg, hgK⟩`. Establish `hcl : IsClosed (π.ker : Set (G F Ω))` using `isClosed_singleton.preimage h.cont`. Establish `hNS : NS Ω ((S ∪ T : Finset _) : Set (HeightOneSpectrum (𝓞 F))) ≤ π.ker`.
+
+Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal ?_) hcl` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [Set.mem_iUnion] at hg`. Take `⟨v, hv, B, hB, hg⟩` from `hg`. Conclude with `hgen v (fun h' => hv (Finset.mem_union_left _ h')) B hB g hg (hT v (fun h' => hv (Finset.mem_union_right _ h')) B hB hg)`.
+
+Establish `hp : Continuous (QuotientGroup.lift _ π hNS)` using `(QuotientGroup.isQuotientMap_mk _).continuous_iff.2 h.cont`. Use `⟨S ∪ T, QuotientGroup.lift _ π hNS, Finset.subset_union_left, hp, fun y => ?_, rfl, fun A hA => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `h.onto y`. Conclude with `⟨toGS Ω _ g, rfl⟩`. Generalize the expression as in `hN : (Subgroup.normalClosure (⋃ q : {v // v ∈ S ∪ T ∧ v ∉ S}, (((Ine (F := F) (A q.1) ⊓ K).map (toGS Ω ((S ∪ T : Finset _) : Set (HeightOneSpectrum (𝓞 F)))) : Subgroup _) : Set (GS Ω ((S ∪ T : Finset _) : Set (HeightOneSpectrum (𝓞 F))))))).topologicalClosure = N`.
+
+Use `haveI hNn : N.Normal := by`. Rewrite using `[← hN]`. Conclude with `Subgroup.is_normal_topologicalClosure _`. Establish `hNc : IsClosed (N : Set (GS Ω ((S ∪ T : Finset _) : Set (HeightOneSpectrum (𝓞 F)))))`. Rewrite using `[← hN]`.
+
+Conclude with `Subgroup.isClosed_topologicalClosure _`. Apply `le_antisymm` to reduce the goal to its premises. Establish `key : π.ker ≤ N.comap (toGS Ω _)`. Rewrite using `[h.ker]`. Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal ?_) (hNc.preimage QuotientGroup.continuous_mk)` and prove the remaining obligations.
+
+Introduce `g hg`. Simplify using `only [Set.mem_iUnion] at hg`. Take `⟨v, hv, B, hB, hg, hgK⟩` from `hg`. Distinguish the cases in `hvS : v ∈ S ∪ T`. Take `⟨u, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := F) (hA v) hB`.
+
+Establish `hm : u⁻¹ * g * u ∈ N.comap (toGS Ω _)`. Rewrite using `[← hN]`. Use `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_)` and prove the remaining obligations. Conclude with `Set.mem_iUnion.2 ⟨⟨v, hvS, hv⟩, Subgroup.mem_map_of_mem _ ⟨GlobalTheory.Cut.ShaBound.conj_mem_Ine' hg, h.normal.conj_mem' g hgK u⟩⟩`. Use `(hNn.comap (toGS Ω _)).conj_mem _ hm u` as an intermediate fact.
+
+Simplify `this` using `[mul_assoc]`. Establish `h1 : toGS Ω ((S ∪ T : Finset _) : Set (HeightOneSpectrum (𝓞 F))) g = 1`. Use `(QuotientGroup.eq_one_iff g).2 ?_` and prove the remaining obligations. Use `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`.
+
+Conclude with `⟨v, hvS, B, hB, hg⟩`. Use `show toGS Ω _ g ∈ N`. Rewrite using `[h1]`. Conclude with `N.one_mem`. Introduce `x hx`.
+
+Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Conclude with `key hx`. Rewrite using `[← hN]`. Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal ?_) (isClosed_singleton.preimage hp)` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨q, g, hg, rfl⟩` from `Set.mem_iUnion.1 hx`. Conclude with `hgen q.1 q.2.2 _ (hA q.1) g hg.1 hg.2`.
+-/
 theorem UpperTheory.V.GC.levelS :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (S : Finset (HeightOneSpectrum (𝓞 F))) (K : Subgroup (G F Ω)) (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ] (π : G F Ω →* Γ), GLink l S K π →
     ∃ (S' : Finset (HeightOneSpectrum (𝓞 F))) (p : GS Ω (S' : Set (HeightOneSpectrum (𝓞 F))) →* Γ), S ⊆ S' ∧ Continuous p ∧ Function.Surjective p ∧ p.comp (toGS Ω _) = π ∧ ∀ A : HeightOneSpectrum (𝓞 F) → ValuationSubring Ω, (∀ v, IsPlaceOver (A v) v) →

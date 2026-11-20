@@ -16,6 +16,15 @@ noncomputable section
 
 namespace GlobalTheory.Mem.LatGood
 
+/- English proof (translation)
+Establish `hk : LinearMap.ker (Matrix.toLin' B) = ⊥`. Apply `LinearMap.ker_eq_bot.mpr` to reduce the goal to its premises. Introduce `x y hxy`. Apply `h` to reduce the goal to its premises. Simplify `hxy` using `[Matrix.toLin'_apply]`.
+
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' B) hk`. Establish `h1 : LinearMap.toMatrix' (g ∘ₗ Matrix.toLin' B) = 1`. Rewrite using `[hg]`. Conclude with `LinearMap.toMatrix'_id`. Rewrite `h1` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin']`.
+
+Establish `h2 : (LinearMap.toMatrix' g).map φ * B.map φ = 1`. Rewrite using `[← Matrix.map_mul, h1]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Introduce `x y hxy`. Use `congrArg ((LinearMap.toMatrix' g).map φ).mulVec hxy` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVec_mulVec, h2]`.
+-/
 theorem map_mulVec_injective {K m k : Type} [Field K] [Fintype m] [Fintype k] (φ : K →+* ℂ) (B : Matrix m k K)
     (h : Function.Injective B.mulVec) : Function.Injective (B.map φ).mulVec := by
   classical
@@ -42,6 +51,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (C : CSD K)
 def valMat (c : C.Cl) : Matrix C.ιV (Fin C.dim) K :=
   Matrix.of fun i a => C.bV.repr ((C.basis a : C.Cl → C.V) c) i
 
+/- English proof (translation)
+Use `conv_lhs => rw [← C.bV.sum_repr x, ← C.bV.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, Finset.mul_sum, CSD.gramV, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pair_eq (x y : C.V) :
     C.pair x y = ∑ i, ∑ j, star (C.bV.repr x i) * C.gramV i j * C.bV.repr y j := by
   conv_lhs => rw [← C.bV.sum_repr x, ← C.bV.sum_repr y]
@@ -51,6 +63,11 @@ theorem pair_eq (x y : C.V) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, CSD.H, Matrix.of_apply, CSD.csum, map_sum, map_mul, map_inv₀, map_natCast, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, pair_eq, Matrix.mul_apply, Matrix.conjTranspose_apply, valMat]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[C.basis_rat hb a c i φ]`. Both sides reduce to the same expression.
+-/
 theorem gram_map (hb : C.HasRatBasis) (φ : K →+* ℂ) :
     C.H.map φ = ∑ c, ((C.wt c : ℕ) : ℂ)⁻¹ • (((valMat C c).map φ)ᴴ * C.gramV.map φ * (valMat C c).map φ) := by
   ext a b
@@ -65,6 +82,15 @@ theorem gram_map (hb : C.HasRatBasis) (φ : K →+* ℂ) :
   rw [C.basis_rat hb a c i φ]
   rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Set `B : Matrix (C.Cl × C.ιV) (Fin C.dim) K` to `Matrix.of fun p a => valMat C p.1 p.2 a`. Establish `hB : Function.Injective B.mulVec`. Introduce `u v huv`.
+
+Apply `C.I_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Apply `C.bV.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Establish `h1` using `congrFun huv (c, i)`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, B, valMat, Matrix.of_apply] at h1`. Simplify using `only [CSD.I_eq_sum, Finset.sum_apply, Pi.smul_apply, map_sum, map_smul, Finsupp.coe_finsetSum, Finsupp.smul_apply, smul_eq_mul]`. Simplify `h1` using `only [mul_comm]`. Apply `hx` to reduce the goal to its premises. Apply `map_mulVec_injective φ B hB` to reduce the goal to its premises.
+
+Rewrite using `[Matrix.mulVec_zero]`. Use function extensionality and compare the values at `p`. Conclude with `congrFun (hcon p.1) p.2`.
+-/
 theorem exists_val_ne (φ : K →+* ℂ) (x : Fin C.dim → ℂ) (hx : x ≠ 0) :
     ∃ c, ((valMat C c).map φ) *ᵥ x ≠ 0 := by
   by_contra hcon
@@ -87,6 +113,13 @@ theorem exists_val_ne (φ : K →+* ℂ) (x : Fin C.dim → ℂ) (hx : x ≠ 0) 
   funext p
   exact congrFun (hcon p.1) p.2
 
+/- English proof (translation)
+Establish `hw : ∀ c, (0 : ℂ) < ((C.wt c : ℕ) : ℂ)⁻¹` using `fun c => inv_pos.mpr (by exact_mod_cast C.wt_pos c)`. Rewrite using `[gram_map C hb φ]`. Establish `hpsd : (∑ c, ((C.wt c : ℕ) : ℂ)⁻¹ • (((valMat C c).map φ)ᴴ * C.gramV.map φ * (valMat C c).map φ)).PosSemidef` using `Matrix.posSemidef_sum _ fun c _ => (hp.posSemidef.conjTranspose_mul_mul_same _).smul (hw c).le`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos hpsd.1 fun x hx => ?_` and prove the remaining obligations. Establish `e : ∀ c, star x ⬝ᵥ (((C.wt c : ℕ) : ℂ)⁻¹ • (((valMat C c).map φ)ᴴ * C.gramV.map φ * (valMat C c).map φ)) *ᵥ x = ((C.wt c : ℕ) : ℂ)⁻¹ * (star (((valMat C c).map φ) *ᵥ x) ⬝ᵥ (C.gramV.map φ) *ᵥ (((valMat C c).map φ) *ᵥ x))`.
+
+Introduce `c`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Rewrite using `[Matrix.sum_mulVec, dotProduct_sum]`. Simplify using `only [e]`. Take `⟨c, hc⟩` from `exists_val_ne C φ x hx`.
+
+Conclude with `Finset.sum_pos' (fun c _ => mul_nonneg (hw c).le (hp.posSemidef.dotProduct_mulVec_nonneg _)) ⟨c, Finset.mem_univ c, mul_pos (hw c) (hp.dotProduct_mulVec_pos hc)⟩`.
+-/
 theorem gram_posDef (hb : C.HasRatBasis) (φ : K →+* ℂ) (hp : (C.gramV.map φ).PosDef) : (C.H.map φ).PosDef := by
   have hw : ∀ c, (0 : ℂ) < ((C.wt c : ℕ) : ℂ)⁻¹ := fun c => inv_pos.mpr (by exact_mod_cast C.wt_pos c)
   rw [gram_map C hb φ]
@@ -108,6 +141,11 @@ theorem gram_posDef (hb : C.HasRatBasis) (φ : K →+* ℂ) (hp : (C.gramV.map �
 
 omit [StarRing K] in
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.NonzeroSmulMemIntegralSpan.exists_ne_zero_smul_mem`. Consider the case `exact _root_.GlobalTheory.NonzeroSmulMemIntegralSpan.exists_ne_zero_smul_mem`. Consider the case `(apply _root_.GlobalTheory.NonzeroSmulMemIntegralSpan.exists_ne_zero_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NonzeroSmulMemIntegralSpan.exists_ne_zero_smul_mem <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.NonzeroSmulMemIntegralSpan.exists_ne_zero_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NonzeroSmulMemIntegralSpan.exists_ne_zero_smul_mem ..)`.
+-/
 theorem exists_smul_mem {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     {M : Submodule (𝓞 K) V} {x : V} (hx : x ∈ Submodule.span K (M : Set V)) : ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ M := by
   first
@@ -118,6 +156,17 @@ theorem exists_smul_mem {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K
   | (intros; apply @_root_.GlobalTheory.NonzeroSmulMemIntegralSpan.exists_ne_zero_smul_mem <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.NonzeroSmulMemIntegralSpan.exists_ne_zero_smul_mem ..)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Apply `Submodule.fg_of_fg_map_injective (C.Forms.subtype.restrictScalars (𝓞 K)) Subtype.val_injective` to reduce the goal to its premises. Use `Submodule.FG.of_le (Submodule.fg_pi fun c => (hM c).fg) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ c _`. Conclude with `(hL x).1 hx c`.
+
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h : ∀ c, ∃ d : 𝓞 K, d ≠ 0 ∧ d • x.1 c ∈ M c` using `fun c => exists_smul_mem (by rw [(hM c).span_eq_top]; trivial)`. Use `choose d hd hdM using h`. Establish `hx : (∏ c, d c) • x ∈ L`.
+
+Rewrite using `[hL]`. Introduce `c`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ c)]`. Use `show ((∏ c' ∈ Finset.univ.erase c, d c') * d c) • x.1 c ∈ M c`. Rewrite using `[mul_smul]`.
+
+Conclude with `(M c).smul_mem _ (hdM c)`. Establish `hd0 : (∏ c, d c) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun c _ => hd c`. Establish `hd' : algebraMap (𝓞 K) K (∏ c, d c) ≠ 0` using `by simpa only [ne_eq, FaithfulSMul.algebraMap_eq_zero_iff] using hd0`. Establish `: x = (algebraMap (𝓞 K) K (∏ c, d c))⁻¹ • ((∏ c, d c) • x)`. Rewrite using `[← algebraMap_smul K (∏ c, d c) x, smul_smul, inv_mul_cancel₀ hd', one_smul]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hx)`.
+-/
 theorem values_isLattice (M : C.Cl → Submodule (𝓞 K) C.V) (hM : ∀ c, Submodule.IsLattice K (M c))
     (L : Submodule (𝓞 K) C.Forms) (hL : ∀ x, x ∈ L ↔ ∀ c, x.1 c ∈ M c) :
     L.FG ∧ Submodule.span K (L : Set C.Forms) = ⊤ := by
@@ -148,6 +197,11 @@ theorem values_isLattice (M : C.Cl → Submodule (𝓞 K) C.V) (hM : ∀ c, Subm
 
 end Datum
 
+/- English proof (translation)
+Establish `key : ∀ φ : K →+* ℂ, φ u⁻¹ = starRingEnd ℂ (φ u)`. Introduce `φ`. Establish `h1 : (φ u) ^ m = 1` using `by rw [← map_pow, hu, map_one]`. Rewrite using `[map_inv₀]`. Conclude with `Complex.inv_eq_conj (Complex.norm_eq_one_of_pow_eq_one h1 hm)`.
+
+Establish `hs : star u = u⁻¹` using `σ.injective (by rw [hσ, key])`. Introduce `φ`. Rewrite using `[hs, key]`.
+-/
 theorem root_mem_cmMax {K : Type} [Field K] [StarRing K] (σ : K →+* ℂ)
     (hσ : ∀ x, σ (star x) = starRingEnd ℂ (σ x)) {u : K} {m : ℕ} (hm : m ≠ 0) (hu : u ^ m = 1) : u ∈ cmMax K := by
   have key : ∀ φ : K →+* ℂ, φ u⁻¹ = starRingEnd ℂ (φ u) := by
@@ -164,6 +218,11 @@ section Step
 variable {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι] {n : ℕ}
   (S : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n)
 
+/- English proof (translation)
+Establish `he : ∀ τ x, emb τ x ∈ cmMax K` using `fun τ x φ => by`. Rewrite using `[← hF.emb_star]`. Conclude with `hF.conjE (φ.comp (emb τ)) x`. Establish `h1` using `(GlobalTheory.coefAction_repr_mem_subfield emb (cmMax K) lam he (S.gam b g) i j).2`. Take `⟨m, hm, hu⟩` from `hS.root b g`.
+
+Establish `h2 : ((S.chr b g : Kˣ) : K) ∈ cmMax K` using `root_mem_cmMax σ hF.sig_star hm.ne' (by rw [← Units.val_pow_eq_pow_val, hu, Units.val_one])`. Establish `e : S.rho emb lam b g (bVV K lam j) = ((S.chr b g : Kˣ) : K) • rhoVr emb lam (S.gam b g) (bVV K lam j)` using `rfl`. Rewrite using `[e, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem h2 h1`.
+-/
 theorem rho_rat (hF : FOk emb σ) (hS : S.Ok) (b : S.β) (g : S.G b) (i j : VVIdx lam) :
     (bVV K lam).repr (S.rho emb lam b g (bVV K lam j)) i ∈ cmMax K := by
   have he : ∀ τ x, emb τ x ∈ cmMax K := fun τ x φ => by
@@ -177,9 +236,17 @@ theorem rho_rat (hF : FOk emb σ) (hS : S.Ok) (b : S.β) (g : S.G b) (i j : VVId
   rw [e, map_smul, Finsupp.smul_apply, smul_eq_mul]
   exact mul_mem h2 h1
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FormsDescent.hasRatBasis_of_act _ fun c γ i j => rho_rat S emb σ lam hF hS c.1 γ.1 i j`.
+-/
 theorem hasRatBasis (hF : FOk emb σ) (hS : S.Ok) (h : (S.fam emb lam).Ok) : (S.csd emb lam h).HasRatBasis :=
   GlobalTheory.FormsDescent.hasRatBasis_of_act _ fun c γ i j => rho_rat S emb σ lam hF hS c.1 γ.1 i j
 
+/- English proof (translation)
+Establish `h1` using `pairingPositive_holds K ι n lam (gramKd emb (1 : Matrix (Fin n) (Fin n) E)) φ fun τ => by`. Establish `: gramKd emb (1 : Matrix (Fin n) (Fin n) E) τ = 1`. Simplify using `[gramKd]`. Rewrite using `[this, map_one']`. Conclude with `Matrix.PosDef.one`.
+
+Conclude with `h1`.
+-/
 theorem gramV_posDef (h : (S.fam emb lam).Ok) (φ : K →+* ℂ) : ((S.csd emb lam h).gramV.map φ).PosDef := by
   have h1 := pairingPositive_holds K ι n lam (gramKd emb (1 : Matrix (Fin n) (Fin n) E)) φ fun τ => by
     have : gramKd emb (1 : Matrix (Fin n) (Fin n) E) τ = 1 := by
@@ -188,11 +255,17 @@ theorem gramV_posDef (h : (S.fam emb lam).Ok) (φ : K →+* ℂ) : ((S.csd emb l
     exact Matrix.PosDef.one
   exact h1
 
+/- English proof (translation)
+The claim follows from `gram_posDef _ (hasRatBasis S emb σ lam hF hS h) φ (gramV_posDef S emb lam h φ)`.
+-/
 theorem step_gram_posDef (hF : FOk emb σ) (hS : S.Ok) (h : (S.fam emb lam).Ok) (φ : K →+* ℂ) :
     ((S.csd emb lam h).H.map φ).PosDef :=
   gram_posDef _ (hasRatBasis S emb σ lam hF hS h) φ (gramV_posDef S emb lam h φ)
 
 omit [StarRing E] [StarRing K] in
+/- English proof (translation)
+The claim follows from `(GlobalTheory.TransLattice.nabDelLattice K ι n lam _ fun τ => GlobalTheory.DualLat.isLattice_dualFr _ (GlobalTheory.TauLat.tauLatLattice E K ι n emb τ L hL)).2`.
+-/
 theorem delAtr_isLattice (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.IsLattice E L) :
     Submodule.IsLattice K (delAtr emb lam L) :=
   (GlobalTheory.TransLattice.nabDelLattice K ι n lam _ fun τ =>
@@ -200,6 +273,9 @@ theorem delAtr_isLattice (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.
 
 end Step
 
+/- English proof (translation)
+Introduce `E K ι _ _ _ _ _ _ _ n S emb σ lam hF hS h`. Conclude with `⟨fun v => (frameOfSpec _ _ (step_gram_posDef S emb σ lam hF hS h v.embedding)).1, values_isLattice (S.csd emb lam h) (fun c => delAtr emb lam (S.Lsh c.1 (S.rep c))) (fun c => delAtr_isLattice emb lam _ (hS.lsh_lat c.1 _)) _ fun _ => Iff.rfl⟩`.
+-/
 theorem lawGood : ∀ {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι] {n : ℕ} (S : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n), FOk emb σ → S.Ok → ∀ h, S.LawGood emb lam h := by
   intro E K ι _ _ _ _ _ _ _ n S emb σ lam hF hS h
   exact ⟨fun v => (frameOfSpec _ _ (step_gram_posDef S emb σ lam hF hS h v.embedding)).1,

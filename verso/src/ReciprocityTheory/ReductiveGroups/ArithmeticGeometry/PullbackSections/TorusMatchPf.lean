@@ -21,6 +21,11 @@ def hLin (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u : Fin r → ℂ) :
     refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
     ring
 
+/- English proof (translation)
+Simplify using `only [hermC, Matrix.mulVec, dotProduct, col, Finset.sum_mul, Finset.mul_sum]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermC_mulVec (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) (y v : Fin r → ℂ) :
     hermC τ G (x.mulVec y) v = ∑ a, y a * hermC τ G (col x a) v := by
   simp only [hermC, Matrix.mulVec, dotProduct, col, Finset.sum_mul, Finset.mul_sum]
@@ -31,22 +36,34 @@ theorem hermC_mulVec (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matr
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ => ?_
   ring
 
+/- English proof (translation)
+The claim follows from `(ReciprocityTheory.ChartRestriction.G.FD.EmbeddingHermitianPairs.hermC_conj τ G hG v u).symm`.
+-/
 theorem hermC_symm (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (hG : ∀ a b, cc (G a b) = G b a) (u v : Fin r → ℂ) :
     hermC τ G u v = conj (hermC τ G v u) :=
   (ReciprocityTheory.ChartRestriction.G.FD.EmbeddingHermitianPairs.hermC_conj τ G hG v u).symm
 
 variable (X : Data E r) (x : Frame X.Ψ r)
 
+/- English proof (translation)
+Use `congrFun (congrFun (hx τ) a) b` as an intermediate fact. Simplify using `only [gram, Matrix.of_apply, Matrix.diagonal_apply] at this`. Rewrite using `[this]`.
+-/
 theorem ortho_gram (hx : X.IsOrtho x) (τ : X.Ψ) (a b : Fin r) :
     hermC τ.1 X.Gm (col (mat x τ) a) (col (mat x τ) b) = if a = b then ((sgn X.p0 a : ℝ) : ℂ) else 0 := by
   have := congrFun (congrFun (hx τ) a) b
   simp only [gram, Matrix.of_apply, Matrix.diagonal_apply] at this
   rw [this]
 
+/- English proof (translation)
+Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem sgn_sq (a : ℕ) : (sgn X.p0 a : ℂ) * (sgn X.p0 a : ℂ) = 1 := by
   unfold sgn
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `hw : w = (mat x τ).mulVec ((mat x τ)⁻¹.mulVec w)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mulVec]`. Use `conv_rhs => rw [hw, hermC_mulVec]`. Simplify using `only [ortho_gram X x hx, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← mul_assoc, mul_comm _ (sgn X.p0 b : ℂ), ← mul_assoc, sgn_sq, one_mul]`.
+-/
 theorem inv_coord (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (mat x τ).det ≠ 0) (w : Fin r → ℂ) (b : Fin r) :
     ((mat x τ)⁻¹.mulVec w) b = (sgn X.p0 b : ℂ) * hermC τ.1 X.Gm w (col (mat x τ) b) := by
   have hw : w = (mat x τ).mulVec ((mat x τ)⁻¹.mulVec w) := by
@@ -61,6 +78,27 @@ section Torus
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data E r} {x : Frame X.Ψ r}
 
+/- English proof (translation)
+Establish `hzero : ∀ b, b ≠ a → hermC τ.1 X.Gm (A.e τ a) (col (mat x τ) b) = 0`. Introduce `b hb`. Break down `lt_or_gt_of_ne hb with hlt | hgt` into its components or cases. Establish `hmem : col (mat x τ) b ∈ Submodule.span ℂ (Set.range fun c : Fin a => A.e τ (Fin.castLE a.2.le c))`. Rewrite using `[A.e_flag τ a a.2.le]`.
+
+Conclude with `Submodule.subset_span ⟨⟨b, hlt⟩, rfl⟩`. Establish `hker : Submodule.span ℂ (Set.range fun c : Fin a => A.e τ (Fin.castLE a.2.le c)) ≤ LinearMap.ker (hLin τ.1 X.Gm (A.e τ a))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Use `show hermC τ.1 X.Gm (A.e τ (Fin.castLE a.2.le c)) (A.e τ a) = 0`.
+
+Rewrite using `[A.e_orth, if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castLE] at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h0 : hermC τ.1 X.Gm (col (mat x τ) b) (A.e τ a) = 0` using `hker hmem`. Rewrite using `[hermC_symm τ.1 X.Gm X.Gm_herm, h0, map_zero]`. Establish `hle : (a : ℕ) + 1 ≤ r` using `a.2`. Establish `hmem : A.e τ a ∈ Submodule.span ℂ (Set.range fun c : Fin ((a : ℕ) + 1) => col (mat x τ) (Fin.castLE hle c))`. Rewrite using `[← A.e_flag τ ((a : ℕ) + 1) hle]`.
+
+Conclude with `Submodule.subset_span ⟨⟨a, by omega⟩, rfl⟩`. Establish `hker : Submodule.span ℂ (Set.range fun c : Fin ((a : ℕ) + 1) => col (mat x τ) (Fin.castLE hle c)) ≤ LinearMap.ker (hLin τ.1 X.Gm (col (mat x τ) b))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Use `show hermC τ.1 X.Gm (col (mat x τ) (Fin.castLE hle c)) (col (mat x τ) b) = 0`.
+
+Rewrite using `[ortho_gram X x hx, if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_castLE] at this`. Use `c.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `hker hmem`. Establish `hw` using `inv_coord X x hx τ (hdet τ) (A.e τ a)`. Establish `he : A.e τ a = (mat x τ).mulVec ((mat x τ)⁻¹.mulVec (A.e τ a))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (hdet τ)), Matrix.one_mulVec]`.
+
+Take `⟨y, hy⟩ : ∃ y, y = (mat x τ)⁻¹.mulVec (A.e τ a)` from `⟨_, rfl⟩`. Rewrite `hw`, `he` using `[← hy]`. Use `conv_lhs => rw [he]`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, col]`.
+
+Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[hw a]`. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`. Rewrite using `[hw b, hzero b hb]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem e_mul (A : ReciprocityTheory.ChartRestriction.G.I2.TorusAt X x) (hx : X.IsOrtho x) (hdet : ∀ τ : X.Ψ, (mat x τ).det ≠ 0)
     (τ : X.Ψ) (a : Fin r) :
     A.e τ a = ((sgn X.p0 a : ℂ) * hermC τ.1 X.Gm (A.e τ a) (col (mat x τ) a)) • col (mat x τ) a := by
@@ -122,12 +160,28 @@ section Relab
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l) (σ : c.F →+* ℂ)
 
+/- English proof (translation)
+Introduce `τ₁ τ₂ h`. Use extensionality with `a`. Use `congrArg (fun f : E →+* ℂ => f a) h` as an intermediate fact. Conclude with `congrArg Subtype.val (σ.injective this)`.
+-/
 theorem relab_inj : Function.Injective (relab c σ) := by
   intro τ₁ τ₂ h
   ext a
   have := congrArg (fun f : E →+* ℂ => f a) h
   exact congrArg Subtype.val (σ.injective this)
 
+/- English proof (translation)
+Establish `h0 : H.rt0 ≠ 0`. Introduce `h`. Use `H.sqrt_neg_disc_sq` as an intermediate fact. Rewrite `this` using `[h]`. Establish `hd : (H.d : ℂ) = 0` using `by linear_combination this`.
+
+Conclude with `H.d_prime.ne_zero (by exact_mod_cast hd)`. Establish `hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`. Establish `hE : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (fun z : 𝓞 E => (z : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`.
+
+Establish `hsq : (τ' (H.rt : E)) ^ 2 = H.rt0 ^ 2`. Rewrite using `[H.sqrt_neg_disc_sq, ← map_pow, hE, map_neg, map_natCast]`. Establish `hval : relab c σ τ' (H.rt : E) = σ ⟨τ' (H.rt : E), c.conj τ' _⟩` using `rfl`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with hx | hx` into its components or cases. Use `⟨fun _ => hx, fun _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hval, ← hσ0]`. Conclude with `congrArg σ (Subtype.ext hx)`. Establish `h1 : σ ⟨τ' (H.rt : E), c.conj τ' _⟩ = -σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩`. Rewrite using `[← map_neg]`. Conclude with `congrArg σ (Subtype.ext hx)`.
+
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Rewrite `h1` using `[← hval, h, hσ0]`. Conclude with `h0 (by linear_combination h1 / 2)`. It suffices to derive a contradiction.
+
+Conclude with `h0 (by linear_combination (h.symm.trans hx) / 2)`.
+-/
 theorem relab_rt (hσ : GoodEmb c σ) (τ' : E →+* ℂ) :
     relab c σ τ' (H.rt : E) = H.rt0 ↔ τ' (H.rt : E) = H.rt0 := by
   have h0 : H.rt0 ≠ 0 := by
@@ -160,9 +214,15 @@ theorem relab_rt (hσ : GoodEmb c σ) (τ' : E →+* ℂ) :
 def relabE : (E →+* ℂ) ≃ (E →+* ℂ) :=
   Equiv.ofBijective (relab c σ) (Finite.injective_iff_bijective.mp (relab_inj c σ))
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => Complex.conj_conj _`.
+-/
 theorem conjEmb_conjEmb (τ : E →+* ℂ) : conjEmb (conjEmb τ) = τ :=
   RingHom.ext fun a => Complex.conj_conj _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjugate_eq (τ : E →+* ℂ) : ComplexEmbedding.conjugate τ = conjEmb τ := rfl
 
 def conjE : (E →+* ℂ) ≃ (E →+* ℂ) :=
@@ -179,12 +239,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {U : Unf Xo c σ r} (hU : IsUnf U) (hσ : GoodEmb c σ) {k : U.Comp} {x : (U.X k).dom}
   (W : UnfAt U k x) (A : ReciprocityTheory.ChartRestriction.G.I2.TorusAt (U.X k) x.1)
 
+/- English proof (translation)
+Use `X.cmType (conjEmb ρ)` as an intermediate fact. Rewrite `this` using `[conjugate_eq, conjEmb_conjEmb]`. Conclude with `this`.
+-/
 theorem conj_mem_iff {X : Data E r} (ρ : E →+* ℂ) : conjEmb ρ ∈ X.Ψ ↔ ρ ∉ X.Ψ := by
   have := X.cmType (conjEmb ρ)
   rw [conjugate_eq, conjEmb_conjEmb] at this
   exact this
 
 include hU in
+/- English proof (translation)
+Use `split_ifs with h`. Conclude with `A.dim_pos ⟨ρ, h⟩`. Establish `hc : conjEmb ρ ∈ (U.X k).Ψ` using `(conj_mem_iff ρ).mpr h`. Use `A.dim_neg ⟨conjEmb ρ, hc⟩` as an intermediate fact. Rewrite `this` using `[conjugate_eq, conjEmb_conjEmb]`. Then use the resulting hypothesis.
+-/
 theorem dim_of (ρ : E →+* ℂ) :
     A.T.dim ρ = if ρ ∈ (U.X k).Ψ then (U.X k).p0 else r - (U.X k).p0 := by
   split_ifs with h
@@ -194,6 +260,13 @@ theorem dim_of (ρ : E →+* ℂ) :
     rwa [conjugate_eq, conjEmb_conjEmb] at this
 
 include hU hσ in
+/- English proof (translation)
+Establish `hrel : relab c σ ((relabE c σ).symm (conjEmb ρ)) = conjEmb ρ` using `(relabE c σ).apply_symm_apply _`. Establish `hiff : ((relabE c σ).symm (conjEmb ρ)) (H.rt : E) = H.rt0 ↔ ρ ∉ (U.X k).Ψ`. Rewrite using `[← relab_rt c σ hσ, hrel, ← (hU.2.1 k).2, conj_mem_iff]`. Establish `hr` using `hU.1`. Unfold `Datum.mult`.
+
+Rewrite using `[(hU.2.1 k).1]`. Use `split_ifs with h1 h2 h2`. Conclude with `absurd h2 (hiff.mp h1)`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+
+Conclude with `absurd (hiff.mpr h2) h1`.
+-/
 theorem mult_of (ρ : E →+* ℂ) :
     Dw.mult ((relabE c σ).symm (conjEmb ρ)) = if ρ ∈ (U.X k).Ψ then (U.X k).p0 else r - (U.X k).p0 := by
   have hrel : relab c σ ((relabE c σ).symm (conjEmb ρ)) = conjEmb ρ := (relabE c σ).apply_symm_apply _
@@ -222,6 +295,9 @@ def letT : ReciprocityTheory.ChartRestriction.G.I2.Idx A.T.dim ≃ Fin W.g :=
   (Equiv.sigmaCongr ((conjE).trans (relabE c σ).symm) (fun ρ => fibE hU hσ A ρ)).trans W.e.symm
 
 include hU hσ in
+/- English proof (translation)
+Rewrite using `[letT, Equiv.trans_apply, Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem letT_e (ρ : E →+* ℂ) (a : Fin (A.T.dim ρ)) :
     W.e (letT hU hσ W A ⟨ρ, a⟩) = ⟨(relabE c σ).symm (conjEmb ρ), fibE hU hσ A ρ a⟩ := by
   rw [letT, Equiv.trans_apply, Equiv.apply_symm_apply]
@@ -242,6 +318,9 @@ def yf (τ : (U.X k).Ψ) (b : Fin r) : ℂ :=
   (sgn (U.X k).p0 b : ℂ) * hermC τ.1 (U.X k).Gm (A.e τ b) (col (mat x.1 τ) b)
 
 include hU in
+/- English proof (translation)
+Establish `h1` using `dim_of hU A ρ`. Rewrite `h1` using `[if_pos h]`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem index_lt_signature_of_mem {ρ : E →+* ℂ} (h : ρ ∈ (U.X k).Ψ) (a : Fin (A.T.dim ρ)) : (a : ℕ) < (U.X k).p0 := by
   have h1 := dim_of hU A ρ
   rw [if_pos h] at h1
@@ -249,6 +328,9 @@ theorem index_lt_signature_of_mem {ρ : E →+* ℂ} (h : ρ ∈ (U.X k).Ψ) (a 
   omega
 
 include hU in
+/- English proof (translation)
+Establish `h1` using `dim_of hU A ρ`. Rewrite `h1` using `[if_neg h]`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem index_lt_complementSignature_of_not_mem {ρ : E →+* ℂ} (h : ρ ∉ (U.X k).Ψ) (a : Fin (A.T.dim ρ)) : (a : ℕ) < r - (U.X k).p0 := by
   have h1 := dim_of hU A ρ
   rw [if_neg h] at h1
@@ -278,6 +360,9 @@ def Lmap : (Fin W.g → ℂ) →ₗ[ℂ] ReciprocityTheory.ChartRestriction.G.I2
     simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, PiLp.toLp_apply, PiLp.smul_apply]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Lmap_apply (z : Fin W.g → ℂ) (i : ReciprocityTheory.ChartRestriction.G.I2.Idx A.T.dim) :
     Lmap hU hσ W A z i = wt hU A i * z (letT hU hσ W A i) := rfl
 
@@ -292,6 +377,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {U : Unf Xo c σ r} (hU : IsUnf U) (hσ : GoodEmb c σ) {k : U.Comp} {x : (U.X k).dom}
   (W : UnfAt U k x) (A : ReciprocityTheory.ChartRestriction.G.I2.TorusAt (U.X k) x.1)
 
+/- English proof (translation)
+Unfold `fibE`. Use `split_ifs with h`. Simplify using `only [Equiv.trans_apply, finCongr_apply, Fin.val_cast, Fin.revPerm_apply, Fin.val_rev]`. Use `index_lt_signature_of_mem hU A h a` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [finCongr_apply, Fin.val_cast]`.
+-/
 theorem fibE_val (ρ : E →+* ℂ) (a : Fin (A.T.dim ρ)) :
     ((fibE hU hσ A ρ a : Fin _) : ℕ) = if ρ ∈ (U.X k).Ψ then (U.X k).p0 - 1 - a else a := by
   unfold fibE
@@ -301,6 +391,11 @@ theorem fibE_val (ρ : E →+* ℂ) (a : Fin (A.T.dim ρ)) :
     omega
   · simp only [finCongr_apply, Fin.val_cast]
 
+/- English proof (translation)
+Establish `hc : conjEmb ρ ∉ X.Ψ` using `fun hc => (conj_mem_iff ρ).mp hc h`. Establish `hcc : conjEmb (conjEmb ρ) ∈ X.Ψ` using `by rw [conjEmb_conjEmb]; exact h`. Unfold `perFr`. Rewrite using `[dif_neg hc, dif_pos hcc, dif_pos (by have := X.p0_le; omega)]`. Establish `key : ∀ (ρ' : E →+* ℂ) (h' : ρ' ∈ X.Ψ), ρ' = ρ → hermC ρ' X.Gm (col (mat y ⟨ρ', h'⟩) ⟨X.p0 - 1 - i, by have` using `X.p0_le; omega⟩) (Data.emb ρ' v) = hermC ρ X.Gm (col (mat y ⟨ρ, h⟩) ⟨X.p0 - 1 - i, by have := X.p0_le; omega⟩) (Data.emb ρ v) := by`.
+
+Introduce and unpack `_ _ rfl`. Both sides reduce to the same expression. Conclude with `key _ hcc (conjEmb_conjEmb ρ)`.
+-/
 theorem perFr_conj (X : Data E r) (y : Frame X.Ψ r) (v : Fin r → E) {ρ : E →+* ℂ} (h : ρ ∈ X.Ψ) (i : ℕ)
     (hi : i < X.p0) :
     perFr X y v (conjEmb ρ) i = hermC ρ X.Gm (col (mat y ⟨ρ, h⟩) ⟨X.p0 - 1 - i, by have := X.p0_le; omega⟩)
@@ -316,6 +411,9 @@ theorem perFr_conj (X : Data E r) (y : Frame X.Ψ r) (v : Fin r → E) {ρ : E �
     rfl
   exact key _ hcc (conjEmb_conjEmb ρ)
 
+/- English proof (translation)
+Unfold `perFr`. Rewrite using `[dif_pos h, dif_pos hi]`.
+-/
 theorem perFr_self (X : Data E r) (y : Frame X.Ψ r) (v : Fin r → E) {τ : E →+* ℂ} (h : τ ∈ X.Ψ) (i : ℕ)
     (hi : X.p0 + i < r) :
     perFr X y v τ i = ((mat y ⟨τ, h⟩)⁻¹.mulVec (Data.emb τ v)) ⟨X.p0 + i, hi⟩ := by

@@ -4,6 +4,9 @@ open IsLocalRing
 
 namespace GlobalTheory.DenseSec
 
+/- English proof (translation)
+Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Both sides reduce to the same expression.
+-/
 theorem factorₐ_comp_factorₐ {P R : Type} [CommRing P] [CommRing R] [Algebra P R] {I J K : Ideal R}
     (hIJ : I ≤ J) (hJK : J ≤ K) :
     (Ideal.Quotient.factorₐ P hJK).comp (Ideal.Quotient.factorₐ P hIJ) =
@@ -13,6 +16,33 @@ theorem factorₐ_comp_factorₐ {P R : Type} [CommRing P] [CommRing R] [Algebra
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
   rfl
 
+/- English proof (translation)
+Introduce `R _ _ hc A _ _ g t h hE ε hε c hcε`. Use `haveI := hc`. Use `letI iPB : Algebra (MvPolynomial (Fin g) R) (Localization.Away h) := ((algebraMap A (Localization.Away h)).comp (MvPolynomial.aeval t).toRingHom).toAlgebra`. Use `haveI hEt : Algebra.Etale (MvPolynomial (Fin g) R) (Localization.Away h) := hE`. Use `letI iPR : Algebra (MvPolynomial (Fin g) R) R := (MvPolynomial.aeval c).toRingHom.toAlgebra`.
+
+Establish `hPB : ∀ p, algebraMap (MvPolynomial (Fin g) R) (Localization.Away h) p = algebraMap A (Localization.Away h) (MvPolynomial.aeval t p)` using `fun _ => rfl`. Establish `hPR : ∀ p, algebraMap (MvPolynomial (Fin g) R) R p = MvPolynomial.aeval c p` using `fun _ => rfl`. Set `m` to `maximalIdeal R`. Set `e' : Localization.Away h →+* R` to `IsLocalization.Away.lift h (g := (ε : A →+* R)) hε`. Establish `he' : ∀ x : A, e' (algebraMap A (Localization.Away h) x) = ε x` using `fun x => IsLocalization.Away.lift_eq h (g := (ε : A →+* R)) hε x`.
+
+Establish `hmod : (Ideal.Quotient.mk m).comp ((ε : A →+* R).comp (MvPolynomial.aeval (R` using `R) t).toRingHom) = (Ideal.Quotient.mk m).comp (MvPolynomial.aeval c).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Introduce `i`.
+
+Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_X]`. Conclude with `(Ideal.Quotient.eq.2 (by`. Use `hcε i` as an intermediate fact. Rewrite `this` using `[← neg_mem_iff, neg_sub]`. Conclude with `this))`.
+
+Set `f₁ : Localization.Away h →ₐ[MvPolynomial (Fin g) R] R ⧸ m` to `{ toRingHom := (Ideal.Quotient.mk m).comp e' commutes' := fun p => by show Ideal.Quotient.mk m (e' (algebraMap (MvPolynomial (Fin g) R) (Localization.Away h) p)) = algebraMap (MvPolynomial (Fin g) R) (R ⧸ m) p`. Rewrite using `[hPB, he']`. Use `show Ideal.Quotient.mk m (ε (MvPolynomial.aeval t p)) = Ideal.Quotient.mk m (MvPolynomial.aeval c p)`. Conclude with `congrArg (fun φ : MvPolynomial (Fin g) R →+* R ⧸ m => φ p) hmod }`. Establish `hle : ∀ n : ℕ, m ^ (n + 1) ≤ m` using `fun n => Ideal.pow_le_self n.succ_ne_zero`.
+
+Set `q : ∀ n : ℕ, R ⧸ m ^ (n + 1) →ₐ[MvPolynomial (Fin g) R] R ⧸ m` to `fun n => Ideal.Quotient.factorₐ _ (hle n)`. Establish `hqs : ∀ n, Function.Surjective (q n)` using `fun n x => by`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨Ideal.Quotient.mk _ y, rfl⟩`. Establish `hqn : ∀ n, IsNilpotent (RingHom.ker (q n : R ⧸ m ^ (n + 1) →+* R ⧸ m))` using `fun n => by`.
+
+Use `⟨n + 1, le_bot_iff.1 ?_⟩` and prove the remaining obligations. Establish `hk : RingHom.ker (q n : R ⧸ m ^ (n + 1) →+* R ⧸ m) = Ideal.map (Ideal.Quotient.mk (m ^ (n + 1))) m` using `Ideal.Quotient.factor_ker (hle n)`. Rewrite using `[hk, ← Ideal.map_pow, Ideal.map_quotient_self]`. Set `F : ∀ n : ℕ, Localization.Away h →ₐ[MvPolynomial (Fin g) R] R ⧸ m ^ (n + 1)` to `fun n => Algebra.FormallySmooth.liftOfSurjective f₁ (q n) (hqs n) (hqn n)`. Establish `hF : ∀ n, (q n).comp (F n) = f₁` using `fun n => Algebra.FormallySmooth.comp_liftOfSurjective _ _ _ _`.
+
+Establish `hFc : ∀ {k n : ℕ} (hkn : k ≤ n), (Ideal.Quotient.factorₐ (MvPolynomial (Fin g) R) (Ideal.pow_le_pow_right (Nat.succ_le_succ hkn))).comp (F n) = F k`. Introduce `k n hkn`. Use `Algebra.FormallyUnramified.ext' (q k : R ⧸ m ^ (k + 1) →+* R ⧸ m) (hqn k) _ _ fun x => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun φ => φ x) (hF n)`. Establish `h2` using `congrArg (fun φ => φ x) (hF k)`.
+
+Simplify using `only [AlgHom.comp_apply] at h1 h2`. Use `show (q k) ((Ideal.Quotient.factorₐ (MvPolynomial (Fin g) R) (Ideal.pow_le_pow_right (Nat.succ_le_succ hkn) : m ^ (n + 1) ≤ m ^ (k + 1))) (F n x)) = q k (F k x)`. Rewrite using `[h2, ← h1]`. Use `congrArg (fun φ => φ (F n x)) (factorₐ_comp_factorₐ (P := MvPolynomial (Fin g) R) (Ideal.pow_le_pow_right (Nat.succ_le_succ hkn) : m ^ (n + 1) ≤ m ^ (k + 1)) (hle k))` as an intermediate fact. Simplify `this` using `only [AlgHom.comp_apply]`.
+
+Set `f : ∀ n : ℕ, Localization.Away h →ₐ[MvPolynomial (Fin g) R] R ⧸ m ^ n` to `fun n => (Ideal.Quotient.factorₐ _ (Ideal.pow_le_pow_right (Nat.le_succ n))).comp (F n)`. Establish `hf : ∀ {k n : ℕ} (hkn : k ≤ n), (Ideal.Quotient.factorₐ (MvPolynomial (Fin g) R) (Ideal.pow_le_pow_right hkn)).comp (f n) = f k`. Introduce `k n hkn`. Simplify using `only [f]`. Rewrite using `[← AlgHom.comp_assoc, factorₐ_comp_factorₐ, ← hFc hkn, ← AlgHom.comp_assoc, factorₐ_comp_factorₐ]`.
+
+Set `Φ : Localization.Away h →ₐ[MvPolynomial (Fin g) R] R` to `IsAdicComplete.liftAlgHom m f hf`. Set `a : A →ₐ[R] R` to `{ toRingHom := (Φ : Localization.Away h →+* R).comp (algebraMap A (Localization.Away h)) commutes' := fun r => by show Φ (algebraMap A (Localization.Away h) (algebraMap R A r)) = algebraMap R R r`. Establish `: algebraMap A (Localization.Away h) (algebraMap R A r) = algebraMap (MvPolynomial (Fin g) R) (Localization.Away h) (MvPolynomial.C r)`. Rewrite using `[hPB, MvPolynomial.aeval_C]`. Rewrite using `[this, Φ.commutes, hPR, MvPolynomial.aeval_C] }`.
+
+Use `⟨a, ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `(IsLocalization.Away.algebraMap_isUnit h).map Φ`. Use `show Φ (algebraMap A (Localization.Away h) (t i)) = c i`. Establish `: algebraMap A (Localization.Away h) (t i) = algebraMap (MvPolynomial (Fin g) R) (Localization.Away h) (MvPolynomial.X i)`. Rewrite using `[hPB, MvPolynomial.aeval_X]`.
+
+Rewrite using `[this, Φ.commutes, hPR, MvPolynomial.aeval_X]`.
+-/
 theorem hensel_etChart : ∀ (R : Type) [CommRing R] [IsLocalRing R], IsAdicComplete (maximalIdeal R) R →
     ∀ (A : Type) [CommRing A] [Algebra R A] (g : ℕ) (t : Fin g → A) (h : A), GlobalTheory.DenseSec.EtChart R A t h →
     ∀ (ε : A →ₐ[R] R), IsUnit (ε h) → ∀ c : Fin g → R, (∀ i, c i - ε (t i) ∈ maximalIdeal R) →

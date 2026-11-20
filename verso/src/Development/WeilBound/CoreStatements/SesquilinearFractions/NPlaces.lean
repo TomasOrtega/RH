@@ -13,9 +13,15 @@ open IsDedekindDomain
 
 variable {k : Type} [Field k] [NumberField k]
 
+/- English proof (translation)
+The claim follows from `NI.norm_int_le (j.comp (algebraMap (𝓞 k) k)) a`.
+-/
 theorem norm_int_le {p : Nat.Primes} (j : k →+* ℂ_[p]) (a : 𝓞 k) : ‖j (a : k)‖ ≤ 1 :=
   NI.norm_int_le (j.comp (algebraMap (𝓞 k) k)) a
 
+/- English proof (translation)
+Use `haveI : Fact (p : ℕ).Prime := ⟨p.2⟩`. Rewrite using `[NR.norm_padicNat, padicNorm.padicNorm_p_of_prime, Rat.cast_inv, Rat.cast_natCast]`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast p.2.one_lt)`.
+-/
 theorem norm_p_lt (p : Nat.Primes) : ‖((p : ℕ) : ℂ_[p])‖ < 1 := by
   haveI : Fact (p : ℕ).Prime := ⟨p.2⟩
   rw [NR.norm_padicNat, padicNorm.padicNorm_p_of_prime, Rat.cast_inv, Rat.cast_natCast]
@@ -55,6 +61,13 @@ def vj {p : Nat.Primes} (j : k →+* ℂ_[p]) : HeightOneSpectrum (𝓞 k) where
     rw [Ideal.mem_bot] at this
     exact p.2.ne_zero (by exact_mod_cast this)
 
+/- English proof (translation)
+Establish `hP : ∀ n : ℕ, n ≠ 0 → (n : 𝓞 k) ∈ v.asIdeal → ∃ p : Nat.Primes, ((p : ℕ) : 𝓞 k) ∈ v.asIdeal`. Introduce `n`. Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => intro h`. Conclude with `absurd rfl h`.
+
+Consider the case `one => intro _ h; exact absurd (by simpa using h) (v.isPrime.ne_top ∘ (Ideal.eq_top_iff_one _).2)`. Consider the case `prime q hq => intro _ h`. Conclude with `⟨⟨q, hq⟩, h⟩`. Consider the case `mul a b ha hb`. Introduce `hab h`.
+
+Rewrite `h` using `[Nat.cast_mul]`. Break down `v.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `ha (fun h0 => hab (by rw [h0, zero_mul])) h`. Conclude with `hb (fun h0 => hab (by rw [h0, mul_zero])) h`. Conclude with `hP _ (fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)) (Ideal.absNorm_mem v.asIdeal)`.
+-/
 theorem exists_prime_mem (v : HeightOneSpectrum (𝓞 k)) : ∃ p : Nat.Primes, ((p : ℕ) : 𝓞 k) ∈ v.asIdeal := by
   have hP : ∀ n : ℕ, n ≠ 0 → (n : 𝓞 k) ∈ v.asIdeal → ∃ p : Nat.Primes, ((p : ℕ) : 𝓞 k) ∈ v.asIdeal := by
     intro n
@@ -70,6 +83,11 @@ theorem exists_prime_mem (v : HeightOneSpectrum (𝓞 k)) : ∃ p : Nat.Primes, 
       · exact hb (fun h0 => hab (by rw [h0, mul_zero])) h
   exact hP _ (fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)) (Ideal.absNorm_mem v.asIdeal)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hc : Nat.Coprime p q` using `(Nat.coprime_primes p.2 q.2).2 fun h => hne (Subtype.ext h)`. Take `⟨u, w, huw⟩` from `(Nat.isCoprime_iff_coprime.2 hc).map (Int.castRingHom (𝓞 k))`. Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← huw]`.
+
+Simplify using `only [eq_intCast, Int.cast_natCast]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hp) (v.asIdeal.mul_mem_left _ hq)`.
+-/
 theorem prime_unique (v : HeightOneSpectrum (𝓞 k)) {p q : Nat.Primes} (hp : ((p : ℕ) : 𝓞 k) ∈ v.asIdeal)
     (hq : ((q : ℕ) : 𝓞 k) ∈ v.asIdeal) : p = q := by
   by_contra hne
@@ -80,6 +98,11 @@ theorem prime_unique (v : HeightOneSpectrum (𝓞 k)) {p q : Nat.Primes} (hp : (
   simp only [eq_intCast, Int.cast_natCast]
   exact v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hp) (v.asIdeal.mul_mem_left _ hq)
 
+/- English proof (translation)
+Establish `hI : Ideal.span {((p : ℕ) : 𝓞 k)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `p.2.ne_zero` after adjusting the coercions. Use `(Ideal.finite_factors hI).subset fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hv ⊢`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hv`.
+-/
 theorem finite_over (p : Nat.Primes) : {v : HeightOneSpectrum (𝓞 k) | ((p : ℕ) : 𝓞 k) ∈ v.asIdeal}.Finite := by
   have hI : Ideal.span {((p : ℕ) : 𝓞 k)} ≠ 0 := by
     rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]

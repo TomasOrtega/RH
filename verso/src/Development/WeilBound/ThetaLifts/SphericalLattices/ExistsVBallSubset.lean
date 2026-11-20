@@ -11,6 +11,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 private def vBall {m p : Type} (r : k) : Set (Matrix m p k) :=
   {Z | ∀ i j, valuation k (Z i j) ≤ valuation k r}
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Use `⟨Units.mk0 (valuation k r) (by simpa using hr), fun z hz => ?_⟩` and prove the remaining obligations. Establish `h : z = (z - x) + x` using `by ring`.
+
+Simplify using `only [Set.mem_setOf_eq, Units.val_mk0] at hz hx ⊢`. Rewrite using `[h]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le hz.le hx)`.
+-/
 private lemma isOpen_vle (r : k) (hr : r ≠ 0) : IsOpen {x : k | valuation k x ≤ valuation k r} := by
   rw [isOpen_iff_mem_nhds]
   intro x hx
@@ -21,41 +26,65 @@ private lemma isOpen_vle (r : k) (hr : r ≠ 0) : IsOpen {x : k | valuation k x 
   rw [h]
   exact (Valuation.map_add _ _ _).trans (max_le hz.le hx)
 
+/- English proof (translation)
+Use extensionality with `Z`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`.
+-/
 private lemma vBall_eq {m p : Type} (r : k) : (vBall r : Set (Matrix m p k)) =
     Set.pi Set.univ (fun _ : m => Set.pi Set.univ
       (fun _ : p => {x : k | valuation k x ≤ valuation k r})) := by
   ext Z
   exact ⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩
 
+/- English proof (translation)
+Rewrite using `[vBall_eq]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_vle r hr`.
+-/
 private lemma isOpen_vBall {m p : Type} [Finite m] [Finite p] (r : k) (hr : r ≠ 0) :
     IsOpen (vBall r : Set (Matrix m p k)) := by
   rw [vBall_eq]
   exact isOpen_set_pi Set.finite_univ fun _ _ =>
     isOpen_set_pi Set.finite_univ fun _ _ => isOpen_vle r hr
 
+/- English proof (translation)
+Rewrite using `[vBall_eq]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k _`.
+-/
 private lemma isCompact_vBall {m p : Type} (r : k) : IsCompact (vBall r : Set (Matrix m p k)) := by
   rw [vBall_eq]
   exact isCompact_univ_pi fun _ => isCompact_univ_pi fun _ =>
     IsNonarchimedeanLocalField.isCompact_closedBall k _
 
+/- English proof (translation)
+Introduce `i j`. Simplify using the standard rewrite rules.
+-/
 private lemma zero_mem_vBall {m p : Type} (r : k) : (0 : Matrix m p k) ∈ vBall r := by
   intro i j; simp
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [Matrix.add_apply]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le (hY i j) (hZ i j))`.
+-/
 private lemma add_mem_vBall {m p : Type} {r : k} {Y Z : Matrix m p k} (hY : Y ∈ vBall r)
     (hZ : Z ∈ vBall r) : Y + Z ∈ vBall r := by
   intro i j
   simp only [Matrix.add_apply]
   exact (Valuation.map_add _ _ _).trans (max_le (hY i j) (hZ i j))
 
+/- English proof (translation)
+Introduce `i j`. Simplify `hY i j` using `[Matrix.neg_apply, Valuation.map_neg]`.
+-/
 private lemma neg_mem_vBall {m p : Type} {r : k} {Y : Matrix m p k} (hY : Y ∈ vBall r) :
     -Y ∈ vBall r := by
   intro i j
   simpa [Matrix.neg_apply, Valuation.map_neg] using hY i j
 
+/- English proof (translation)
+Introduce `_ hZ i j` and use `(hZ i j).trans h`.
+-/
 private lemma vBall_mono {m p : Type} {r s : k} (h : valuation k r ≤ valuation k s) :
     (vBall r : Set (Matrix m p k)) ⊆ vBall s :=
   fun _ hZ i j => (hZ i j).trans h
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul]`. Use `(Valuation.mem_integer_iff _ _).1 (hZ i j)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma smul_mem_vBall {m p : Type} (t : k) {Z : Matrix m p k} (hZ : IntM Z) :
     t • Z ∈ vBall t := by
   intro i j
@@ -64,6 +93,15 @@ private lemma smul_mem_vBall {m p : Type} (t : k) {Z : Matrix m p k} (hZ : IntM 
   calc _ ≤ valuation k t * 1 := mul_le_mul' le_rfl this
     _ = _ := mul_one _
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨r, hr, h⟩` from `ih`. Break down `le_total (valuation k (y a)) (valuation k r) with hle | hle` into its components or cases.
+
+Use `⟨r, hr, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `hle`. Conclude with `h i hi`. Break down `eq_or_ne (y a) 0 with h0 | h0` into its components or cases.
+
+Use `⟨r, hr, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Simplify using `[h0]`. Conclude with `h i hi`. Use `⟨y a, h0, fun i hi => ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `le_rfl`. Conclude with `(h i hi).trans hle`.
+-/
 private lemma exists_large {ι : Type} (s : Finset ι) (y : ι → k) :
     ∃ r : k, r ≠ 0 ∧ ∀ i ∈ s, valuation k (y i) ≤ valuation k r := by
   classical
@@ -86,6 +124,13 @@ private lemma exists_large {ι : Type} (s : Finset ι) (y : ι → k) :
         · exact le_rfl
         · exact (h i hi).trans hle
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, Subring.one_mem _, by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨t, ht, htO, h⟩` from `ih (fun i hi => hf i (Finset.mem_insert_of_mem hi))`. Establish `htO'` using `(Valuation.mem_integer_iff _ _).1 htO`.
+
+Break down `le_total (valuation k t) (valuation k (f a)) with hle | hle` into its components or cases. Use `⟨t, ht, htO, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `hle`. Conclude with `h i hi`.
+
+Use `⟨f a, hf a (Finset.mem_insert_self _ _), (Valuation.mem_integer_iff _ _).2 (hle.trans htO'), fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `le_rfl`. Conclude with `hle.trans (h i hi)`.
+-/
 private lemma exists_small {ι : Type} (s : Finset ι) (f : ι → k) (hf : ∀ i ∈ s, f i ≠ 0) :
     ∃ t : k, t ≠ 0 ∧ t ∈ 𝒪[k] ∧ ∀ i ∈ s, valuation k t ≤ valuation k (f i) := by
   classical
@@ -105,6 +150,13 @@ private lemma exists_small {ι : Type} (s : Finset ι) (f : ι → k) (hf : ∀ 
       · exact le_rfl
       · exact hle.trans (h i hi)
 
+/- English proof (translation)
+Use `(IsValuativeTopology.hasBasis_nhds_zero' k).to_hasBasis ?_ ?_` and prove the remaining obligations. Introduce `γ hγ`. Take `⟨a, rfl⟩` from `ValuativeRel.valuation_surjective γ`. Take `⟨w, hw0, hw1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `ha : a ≠ 0` using `by simpa using hγ`.
+
+Establish `hw : w ≠ 0` using `by simpa using hw0`. Use `⟨a * w, mul_ne_zero ha hw, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, map_mul] at hx ⊢`. Conclude with `hx.trans_lt (mul_lt_of_lt_one_right (zero_lt_iff.2 hγ) hw1)`. Introduce `r hr`.
+
+Conclude with `⟨valuation k r, by simpa using hr, fun x hx => show valuation k x ≤ valuation k r from le_of_lt hx⟩`.
+-/
 private lemma scalar_basis : (𝓝 (0 : k)).HasBasis (fun r : k => r ≠ 0)
     (fun r => {x : k | valuation k x ≤ valuation k r}) := by
   refine (IsValuativeTopology.hasBasis_nhds_zero' k).to_hasBasis ?_ ?_
@@ -120,6 +172,13 @@ private lemma scalar_basis : (𝓝 (0 : k)).HasBasis (fun r : k => r ≠ 0)
     exact ⟨valuation k r, by simpa using hr,
       fun x hx => show valuation k x ≤ valuation k r from le_of_lt hx⟩
 
+/- English proof (translation)
+Establish `hb2` using `((scalar_basis (k := k)).pi_self (ι := p)).pi_self (ι := m)`. Establish `h0 : 𝓝 (0 : Matrix m p k) = Filter.pi (fun _ : m => Filter.pi (fun _ : p => 𝓝 (0 : k)))`. Express the relevant statement in the definitionally equal form `𝓝 (0 : m → p → k) = _`. Rewrite using `[nhds_pi]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[nhds_pi]`. Both sides reduce to the same expression. Rewrite `hU` using `[h0]`. Take `⟨⟨J, ⟨I, r⟩⟩, ⟨-, -, hr⟩, hsub⟩` from `hb2.mem_iff.1 hU`.
+
+Conclude with `⟨r, hr, fun Z hZ => hsub fun i _ j _ => hZ i j⟩`.
+-/
 private lemma exists_vBall_subset {m p : Type} {U : Set (Matrix m p k)}
     (hU : U ∈ 𝓝 (0 : Matrix m p k)) : ∃ r : k, r ≠ 0 ∧ vBall r ⊆ U := by
   have hb2 := ((scalar_basis (k := k)).pi_self (ι := p)).pi_self (ι := m)
@@ -134,6 +193,27 @@ private lemma exists_vBall_subset {m p : Type} {U : Set (Matrix m p k)}
   obtain ⟨⟨J, ⟨I, r⟩⟩, ⟨-, -, hr⟩, hsub⟩ := hb2.mem_iff.1 hU
   exact ⟨r, hr, fun Z hZ => hsub fun i _ j _ => hZ i j⟩
 
+/- English proof (translation)
+Establish `hKc : IsCompact (tsupport Φ)` using `h2`. Use `haveI : Nonempty {s : k // s ≠ 0} := ⟨⟨1, one_ne_zero⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs0, hsK⟩ : ∃ s : k, s ≠ 0 ∧ tsupport Φ ⊆ vBall s := by`. Take `⟨⟨s, hs⟩, h⟩` from `hKc.elim_directed_cover (ι := {s : k // s ≠ 0}) (fun s => (vBall s.1 : Set (Matrix m p k))) (fun s => isOpen_vBall s.1 s.2) (fun Y _ => by`. Take `⟨r, hr, h⟩` from `exists_large (Finset.univ : Finset (m × p)) (fun ij => Y ij.1 ij.2)`.
+
+Conclude with `Set.mem_iUnion.2 ⟨⟨r, hr⟩, fun i j => h (i, j) (Finset.mem_univ _)⟩)`. Use the proof step `(fun a b => by`. Break down `le_total (valuation k a.1) (valuation k b.1) with h | h` into its components or cases. Conclude with `⟨b, vBall_mono h, subset_rfl⟩`. Conclude with `⟨a, subset_rfl, vBall_mono h⟩)`.
+
+Conclude with `⟨s, hs, h⟩`. Establish `hloc : ∀ x : Matrix m p k, ∃ r : k, r ≠ 0 ∧ ∀ Z ∈ vBall r, Φ (x + Z) = Φ x`. Introduce `x`. Establish `hU : (fun Z => x + Z) ⁻¹' (Φ ⁻¹' {Φ x}) ∈ 𝓝 (0 : Matrix m p k)` using `IsOpen.mem_nhds ((h1.isOpen_fiber (Φ x)).preimage (continuous_const.add continuous_id)) (by simp)`. Take `⟨r, hr, hsub⟩` from `exists_vBall_subset hU`.
+
+Conclude with `⟨r, hr, fun Z hZ => hsub hZ⟩`. Use `choose rr hrr0 hrr using hloc`. Take `⟨S, -, hS⟩` from `hKc.elim_nhds_subcover (fun x => (fun Y => Y - x) ⁻¹' vBall (rr x)) (fun x _ => IsOpen.mem_nhds ((isOpen_vBall _ (hrr0 x)).preimage (continuous_id.sub continuous_const)) (by simpa using zero_mem_vBall (m := m) (p := p) (rr x)))`. Take `⟨t₁, ht₁0, -, ht₁⟩` from `exists_small S rr (fun x _ => hrr0 x)`. Establish `key : ∀ Y ∈ tsupport Φ, ∀ Z ∈ vBall t₁, Φ (Y + Z) = Φ Y`.
+
+Introduce `Y hY Z hZ`. Take `⟨x, hxS, hYx⟩` from `Set.mem_iUnion₂.1 (hS hY)`. Establish `hYx' : Y - x ∈ vBall (rr x)` using `hYx`. Establish `hZ' : Z ∈ vBall (rr x)` using `vBall_mono (ht₁ x hxS) hZ`. Establish `e1 : Φ Y = Φ x`.
+
+Use `hrr x (Y - x) hYx'` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `e2 : Φ (Y + Z) = Φ x`. Use `hrr x (Y - x + Z) (add_mem_vBall hYx' hZ')` as an intermediate fact. Rewrite `this` using `[show x + (Y - x + Z) = Y + Z by abel]`. Then use the resulting hypothesis.
+
+Rewrite using `[e1, e2]`. Establish `hinv : ∀ Y, ∀ Z ∈ vBall t₁, Φ (Y + Z) = Φ Y`. Introduce `Y Z hZ`. Distinguish the cases in `hY : Y ∈ tsupport Φ`. Conclude with `key Y hY Z hZ`.
+
+Distinguish the cases in `hYZ : Y + Z ∈ tsupport Φ`. Use `key (Y + Z) hYZ (-Z) (neg_mem_vBall hZ)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hY, image_eq_zero_of_notMem_tsupport hYZ]`.
+
+Apply the tactic sequence `obtain ⟨t, ht0, htO, ht⟩ := exists_small (Finset.univ : Finset (Fin 2)) ![t₁, s⁻¹] (fun i _ => by fin_cases i <;> simp [ht₁0, hs0])`. Establish `ht1 : valuation k t ≤ valuation k t₁` using `by simpa using ht 0 (Finset.mem_univ _)`. Establish `hts : valuation k t ≤ valuation k s⁻¹` using `by simpa using ht 1 (Finset.mem_univ _)`. Use `⟨t, ht0, htO, fun Y hY i j => ?_, fun Y Z hZ => hinv Y (t • Z) (vBall_mono ht1 (smul_mem_vBall t hZ))⟩` and prove the remaining obligations. Use `hsK (subset_tsupport Φ hY) i j` as an intermediate fact.
+
+Rewrite using `[Valuation.mem_integer_iff, Matrix.smul_apply, smul_eq_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sb_bound {m p : Type} [Fintype m] [Fintype p] {Φ : Matrix m p k → ℂ} (h1 : IsLocallyConstant Φ)
     (h2 : HasCompactSupport Φ) :
     ∃ t : k, t ≠ 0 ∧ t ∈ 𝒪[k] ∧ (∀ Y, Φ Y ≠ 0 → IntM (t • Y)) ∧ ∀ Y Z, IntM Z → Φ (Y + t • Z) = Φ Y := by
@@ -195,6 +275,13 @@ theorem sb_bound {m p : Type} [Fintype m] [Fintype p] {Φ : Matrix m p k → ℂ
   calc valuation k t * valuation k (Y i j) ≤ valuation k s⁻¹ * valuation k s := mul_le_mul' hts this
     _ = 1 := by rw [map_inv₀, inv_mul_cancel₀ (by simpa using hs0)]
 
+/- English proof (translation)
+Establish `hc : IsCompact (vBall (m` using `m) (p := p) t⁻¹) := isCompact_vBall _`. Take `⟨S, -, hS⟩` from `hc.elim_nhds_subcover (fun x => (fun Y => Y - x) ⁻¹' vBall t) (fun x _ => IsOpen.mem_nhds ((isOpen_vBall _ ht).preimage (continuous_id.sub continuous_const)) (by simpa using zero_mem_vBall (m := m) (p := p) t))`. Use `⟨S, fun Y hY => ?_⟩` and prove the remaining obligations. Establish `hYb : Y ∈ vBall t⁻¹`. Introduce `i j`.
+
+Establish `h` using `(Valuation.mem_integer_iff _ _).1 (hY i j)`. Rewrite `h` using `[Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[show Y i j = t⁻¹ * (t * Y i j) from (inv_mul_cancel_left₀ ht _).symm, map_mul]`. Conclude with `mul_le_of_le_one_right' h`. Take `⟨y, hyS, hy⟩` from `Set.mem_iUnion₂.1 (hS hYb)`.
+
+Use `⟨y, hyS, t⁻¹ • (Y - y), fun i j => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hy i j`. Rewrite using `[Valuation.mem_integer_iff, Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, mul_inv_cancel₀ ht, one_smul, add_sub_cancel]`.
+-/
 theorem finite_cover {m p : Type} [Fintype m] [Fintype p] (t : k) (ht : t ≠ 0) :
     ∃ S : Finset (Matrix m p k), ∀ Y, IntM (t • Y) → ∃ y ∈ S, ∃ Z, IntM Z ∧ Y = y + t • Z := by
   classical

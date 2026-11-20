@@ -4,6 +4,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.DelB
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD`. Use `⟨{ gam := fun j hj La => if h : ((sysS H X std).Pj j).IsLatTup La.2 then Classical.choose (hD j hj La h).2.1 else 1, kap := fun j hj La => if h : ((sysS H X std).Pj j).IsLatTup La.2 then Classical.choose (Classical.choose_spec (hD j hj La h).2.1).2 else 1, mem := ?_, eq := ?_ }⟩` and prove the remaining obligations. Introduce `j hj La`. Distinguish the cases in `h : ((sysS H X std).Pj j).IsLatTup La.2`. Rewrite using `[dif_pos h]`.
+
+Conclude with `(Classical.choose_spec (hD j hj La h).2.1).1`. Rewrite using `[dif_neg h]`. Conclude with `Subgroup.one_mem _`. Introduce `j hj La h`. Simplify using `only [dif_pos h]`.
+
+Conclude with `Classical.choose_spec (Classical.choose_spec (hD j hj La h).2.1).2`.
+-/
 theorem dec_exists : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => J.Dict std → Nonempty (Dec J std)) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD
   classical

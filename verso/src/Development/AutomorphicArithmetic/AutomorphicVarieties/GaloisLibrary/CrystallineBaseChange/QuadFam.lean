@@ -5,6 +5,9 @@ import Mathlib.NumberTheory.LSeries.PrimesInAP
 
 open NumberField
 
+/- English proof (translation)
+Take `⟨K, hF, hN, hr, hd⟩` from `KStar.Consta.exists_quadField hp h4`. Establish `hp0 : p ≠ 0` using `hp.ne_zero`. Establish `htc : IsTotallyComplex K` using `(KStar.Choice.exists_sq_eq_neg_of_discr hr hp0 hd).2`. Establish `hq : Algebra.IsQuadraticExtension ℚ K` using `{ finrank_eq_two' := hr }`. Conclude with `⟨K, hF, hN, IsCMField.ofCMExtension ℚ K, hr, hd⟩`.
+-/
 private theorem quadFam_one (p : ℕ) (hp : p.Prime) (h4 : p % 4 = 3) :
     ∃ (K : Type) (_ : Field K) (_ : NumberField K) (_ : IsCMField K),
       Module.finrank ℚ K = 2 ∧ discr K = -(p : ℤ) := by
@@ -15,6 +18,15 @@ private theorem quadFam_one (p : ℕ) (hp : p.Prime) (h4 : p % 4 = 3) :
   have hq : Algebra.IsQuadraticExtension ℚ K := { finrank_eq_two' := hr }
   exact ⟨K, hF, hN, IsCMField.ofCMExtension ℚ K, hr, hd⟩
 
+/- English proof (translation)
+Introduce `N`. Establish `hS : {p : ℕ | p.Prime ∧ p % 4 = 3}.Infinite`. Apply `Set.infinite_of_forall_exists_gt` to reduce the goal to its premises. Introduce `n`. Take `⟨p, hpn, hpp, hmod⟩` from `Nat.forall_exists_prime_gt_and_modEq n (q := 4) (a := 3) (by norm_num) (by norm_num)`.
+
+Conclude with `⟨p, ⟨hpp, hmod⟩, hpn⟩`. Set `e` to `hS.natEmbedding`. Set `q : Fin N → ℕ` to `fun i => (e i.val).1`. Establish `hq : ∀ i, (q i).Prime ∧ q i % 4 = 3` using `fun i => (e i.val).2`. Establish `hinj : ∀ i j, q i = q j → i = j` using `fun i j h => Fin.ext (e.injective (Subtype.ext h))`.
+
+Use `choose K hF hN hC hr hd using fun i => quadFam_one (q i) (hq i).1 (hq i).2`. Use `⟨K, hF, hN, hC, hr, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[hd i, hd j]`. Establish `hne : q i ≠ q j` using `fun h => hij (hinj i j h)`.
+
+Establish `hcop : Nat.Coprime (q i) (q j)` using `(Nat.coprime_primes (hq i).1 (hq j).1).2 hne`. Conclude with `(Nat.isCoprime_iff_coprime.2 hcop).neg_neg`.
+-/
 theorem UpperTheory.V.Br.quadFam :
     UpperTheory.V.Br.QuadFam := by
   intro N

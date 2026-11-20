@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.Mem.Col2
 
+/- English proof (translation)
+Introduce `B X I _ l u a j b x p hx`. Take `⟨γ, κ⟩` from `x`. Simplify using `only at hx`. Substitute `hx` using the available equality. Conclude with `_root_.GlobalTheory.Mem.Col2.cosetIn_smul_unitary _ _ _ _ _ _ _ _ _ (GlobalTheory.Mem.FieldsLaws.fields_ok B) l.pr _ _ γ rfl rfl`.
+-/
 theorem cosetIn_act_rat : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (u : B.Word) (a : I.ι) (j : ℕ) (b : (I.stp u a j).β) (x : (I.stp u a j).G b) (p : (I.stp u a j).D b), x.2 = 1 → cosetIn ((I.stp u a j).act b x p) = cosetIn p := by
   intro B X I _ l u a j b x p hx
   obtain ⟨γ, κ⟩ := x

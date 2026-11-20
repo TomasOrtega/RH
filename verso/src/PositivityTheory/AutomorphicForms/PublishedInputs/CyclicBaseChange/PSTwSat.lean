@@ -7,6 +7,11 @@ noncomputable section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Published
 
+/- English proof (translation)
+Introduce `F _ _ n π η`. Use `filter_upwards [(GlobalTheory.Mem.UnrAe.finite_ramified η).compl_mem_cofinite] with v hv`. Establish `hu : η.UnrAt v` using `not_not.mp hv`. Use `⟨hu, fun B hB => ?_⟩` and prove the remaining obligations. Consider the cases of `π with`.
+
+Consider the case `cx π => exact GlobalTheory.SphGal.hasSatGL_twist F n π η v B hu hB`. Consider the case `re π => exact UpperTheory.V.TR.CuspSub.HasSat.twist hB hu`.
+-/
 theorem UpperTheory.CBC.STwSat_holds : UpperTheory.CBC.STwSat := by
   intro F _ _ n π η
   filter_upwards [(GlobalTheory.Mem.UnrAe.finite_ramified η).compl_mem_cofinite] with v hv

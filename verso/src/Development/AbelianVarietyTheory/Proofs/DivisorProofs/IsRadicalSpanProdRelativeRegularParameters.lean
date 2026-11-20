@@ -12,6 +12,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.RelParamRad
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro t _ _ x _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+
+Introduce `t hp hd x hx`. Take `⟨y, rfl⟩` from `hx 0`. Rewrite using `[Fin.prod_univ_succ]`. Use `mul_dvd_mul_left _ (ih (fun k => t k.succ) (fun k => hp _) (fun i j h => Fin.succ_injective _ (hd _ _ h)) y fun k => ?_)` and prove the remaining obligations. Use `((hp k.succ).dvd_or_dvd (hx k.succ)).resolve_left fun h => ?_` and prove the remaining obligations.
+
+Conclude with `Fin.succ_ne_zero k (hd _ _ h)`.
+-/
 theorem prod_dvd_of_forall_dvd {R : Type} [CommMonoidWithZero R] :
     ∀ (m : ℕ) (t : Fin m → R), (∀ k, Prime (t k)) → (∀ i j, t i ∣ t j → i = j) →
       ∀ x : R, (∀ k, t k ∣ x) → ∏ k, t k ∣ x := by
@@ -27,6 +34,11 @@ theorem prod_dvd_of_forall_dvd {R : Type} [CommMonoidWithZero R] :
     refine ((hp k.succ).dvd_or_dvd (hx k.succ)).resolve_left fun h => ?_
     exact Fin.succ_ne_zero k (hd _ _ h)
 
+/- English proof (translation)
+Introduce `o R _ _ _ _ b m t h`. Establish `hp : ∀ k, Prime (t k)` using `fun k => prime_of_not_mem_sq (h.1 k) (h.notMem_sq k)`. Introduce `x hx`. Take `⟨n, hn⟩` from `Ideal.mem_radical_iff.1 hx`. Rewrite `hn`, the goal using `[Ideal.mem_span_singleton]`.
+
+Conclude with `prod_dvd_of_forall_dvd m t hp (fun i j hij => h.eq_of_dvd hij) x fun k => (hp k).dvd_of_dvd_pow ((Finset.dvd_prod_of_mem t (Finset.mem_univ k)).trans hn)`.
+-/
 theorem isRadical_span_prod : ∀ (o R : Type) [CommRing o] [CommRing R] [IsRegularLocalRing R] [IsDomain R] (b : o →+* R)
     (m : ℕ) (t : Fin m → R), IsRelParam b t → (Ideal.span {∏ k, t k}).IsRadical := by
   intro o R _ _ _ _ b m t h

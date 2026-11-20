@@ -8,6 +8,13 @@ open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G
 
 variable {ι : Type} [Fintype ι] {n : ι → ℕ}
 
+/- English proof (translation)
+Simplify using `only [eval₂_eq', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm ↦ ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `congr 1`. Repeatedly rewrite using `[mul_pow]`.
+
+Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∏ i, t k ^ m ⟨k, i⟩ = t k ^ a k`.
+
+Rewrite using `[Finset.prod_pow_eq_pow_sum, hs m hm k]`.
+-/
 theorem eval₂_mul_block_of_isMultiHomog {R : Type*} [CommRing R] (s : MvPolynomial (Coord n) ℤ)
     (a : ι → ℕ) (hs : Geo.IsMultiHomog (ι := blockIdx n) s a) (g : ℤ →+* R) (y : Coord n → R)
     (t : ι → R) :
@@ -27,6 +34,9 @@ theorem eval₂_mul_block_of_isMultiHomog {R : Type*} [CommRing R] (s : MvPolyno
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Establish `h : (((ratioField x).val.restrictScalars ℤ).comp (chartRing x c).val).comp (chartEval x c) = aeval (fun p : Coord n ↦ x p.1 p.2 / x p.1 (c p.1))` using `algHom_ext fun p ↦ by simp [chartEval, chartRatio]`. Conclude with `DFunLike.congr_fun h f`.
+-/
 theorem coe_chartEval (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) → Fin (n k + 1))
     (f : MvPolynomial (Coord n) ℤ) :
     (((chartEval x c f : ratioField x) : AlgebraicClosure ℚ)) =
@@ -36,6 +46,11 @@ theorem coe_chartEval (x : Cone n (AlgebraicClosure ℚ)) (c : (k : ι) → Fin 
     algHom_ext fun p ↦ by simp [chartEval, chartRatio]
   exact DFunLike.congr_fun h f
 
+/- English proof (translation)
+Introduce `h0`. Apply `hW` to reduce the goal to its premises. Establish `hC : ∀ g : ℤ →+* MvPolynomial ι (AlgebraicClosure ℚ), eval₂ g (fun p ↦ C (flatCone x p)) s = C (evalCone x s)` using `fun g ↦ by`. Rewrite using `[evalCone, eval₂_comp_left]`. Use `congr 1`.
+
+Conclude with `RingHom.ext_int _ _`. Rewrite using `[orbitIdeal, Geo.mCoordIdeal, RingHom.mem_ker, Geo.mConeMap, aeval_def, eval₂_mul_block_of_isMultiHomog s a hs _ (fun p ↦ C (flatCone x p)) X, hC, h0, map_zero, zero_mul]`.
+-/
 theorem evalCone_ne_zero_of_notMem_orbitIdeal (x : Cone n (AlgebraicClosure ℚ))
     (s : MvPolynomial (Coord n) ℤ) (a : ι → ℕ) (hs : Geo.IsMultiHomog (ι := blockIdx n) s a)
     (hW : s ∉ orbitIdeal x) : evalCone x s ≠ 0 := by
@@ -52,6 +67,9 @@ theorem evalCone_ne_zero_of_notMem_orbitIdeal (x : Cone n (AlgebraicClosure ℚ)
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Establish `h` using `eval₂_comp_left (algebraMap (coordField x) (AlgebraicClosure ℚ)) (Int.castRingHom _) (fun v ↦ coordVec x v.1 v.2) s`. Rewrite `h` using `[RingHom.ext_int ((algebraMap (coordField x) (AlgebraicClosure ℚ)).comp (Int.castRingHom _)) (Int.castRingHom _)]`. Conclude with `h`.
+-/
 theorem coe_evalCone_coordVec (x : Cone n (AlgebraicClosure ℚ)) (s : MvPolynomial (Coord n) ℤ) :
     ((evalCone (coordVec x) s : coordField x) : AlgebraicClosure ℚ) = evalCone x s := by
   have h := eval₂_comp_left (algebraMap (coordField x) (AlgebraicClosure ℚ)) (Int.castRingHom _)
@@ -60,6 +78,21 @@ theorem coe_evalCone_coordVec (x : Cone n (AlgebraicClosure ℚ)) (s : MvPolynom
     (Int.castRingHom _)] at h
   exact h
 
+/- English proof (translation)
+Introduce `ι _ _ n A x s hs c hxc`. Take `⟨a, ha, hhom, hW⟩` from `hs`. Establish `hfac : evalCone x s = ((chartEval x c s : ratioField x) : AlgebraicClosure ℚ) * ∏ k, x k (c k) ^ a k`. Rewrite using `[coe_chartEval, aeval_def, ← eval₂_mul_block_of_isMultiHomog s a hhom _ (fun p ↦ x p.1 p.2 / x p.1 (c p.1)) (fun k ↦ x k (c k)), evalCone]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `p`. Conclude with `(div_mul_cancel₀ _ (hxc p.1)).symm`. Establish `hx0 : evalCone x s ≠ 0` using `evalCone_ne_zero_of_notMem_orbitIdeal x s a hhom hW`. Establish `hf0 : chartEval x c s ≠ 0`. Introduce `h`.
+
+Rewrite `hfac` using `[h]`. Simplify using `at hfac`. Conclude with `hx0 hfac`. Use `⟨hf0, fun v hv ↦ ?_⟩` and prove the remaining obligations. Establish `hsup : ∀ k, ⨆ i, v (coordVec x k i) = v (coordVec x k (c k))` using `fun k ↦ le_antisymm (not_lt.mp fun h ↦ hv k (X_mem_orbitCenter x v k (c k) h)) (le_ciSup (f := fun i ↦ v (coordVec x k i)) (Finite.bddAbove_range _) (c k))`.
+
+Establish `hK : evalCone (coordVec x) s = IntermediateField.inclusion (ratioField_le_coordField x) (chartEval x c s) * ∏ k, coordVec x k (c k) ^ a k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_evalCone_coordVec, hfac, MulMemClass.coe_mul, IntermediateField.coe_prod, IntermediateField.coe_inclusion]`. Simplify using `only [SubmonoidClass.coe_pow]`. Both sides reduce to the same expression.
+
+Establish `hc0 : ∀ k, 0 < v (coordVec x k (c k))` using `fun k ↦ FinitePlace.pos_iff.mpr fun h ↦ hxc k (congrArg Subtype.val h)`. Establish `hv0 : 0 < v (IntermediateField.inclusion (ratioField_le_coordField x) (chartEval x c s))` using `FinitePlace.pos_iff.mpr fun h ↦ hf0 (Subtype.ext ((IntermediateField.inclusion (ratioField_le_coordField x)).injective (h.trans (map_zero _).symm)))`. Establish `ha' : ∀ k, (A.deg k : ℝ) = (a k : ℝ)` using `fun k ↦ by`. Establish `h` using `ha k`. Rewrite `h` using `[HermLine.toGeo_a]`.
+
+Conclude with `h` after adjusting the coercions. Rewrite using `[hK, map_mul, map_prod, Real.log_mul hv0.ne' (Finset.prod_pos fun k _ ↦ (by`. Rewrite using `[map_pow]`. Conclude with `pow_pos (hc0 k) _)).ne',`. Use the proof step `Real.log_prod fun k _ ↦ (by rw [map_pow]; exact (pow_pos (hc0 k) _).ne'), finiteTerm]`.
+
+Simplify using `only [map_pow, Real.log_pow, hsup, ha']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem OrbitChartTerm.proof : OrbitChartTerm.Statement := by
   intro ι _ _ n A x s hs c hxc
   obtain ⟨a, ha, hhom, hW⟩ := hs

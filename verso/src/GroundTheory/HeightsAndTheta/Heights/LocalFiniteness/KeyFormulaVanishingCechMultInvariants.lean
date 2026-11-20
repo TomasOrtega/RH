@@ -205,11 +205,20 @@ import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PResidueAlgIndep
 import GroundTheory.HeightsAndTheta.Heights.VerticalDivisors.PSpecResidue
 set_option maxSynthPendingDepth 1
 
+/- English proof (translation)
+The claim follows from `@GroundTheory.Heights₂.Heights.Targets.LiftGraphMetric.proof GroundTheory.Heights₂.Heights.Targets.LiftGraphFactor.closed`.
+-/
 theorem GroundTheory.Heights₂.Heights.AutoClose.Targets_LiftGraphMetric : GroundTheory.Heights₂.Heights.Targets.LiftGraphMetric.Statement :=
   @GroundTheory.Heights₂.Heights.Targets.LiftGraphMetric.proof GroundTheory.Heights₂.Heights.Targets.LiftGraphFactor.closed
 
+/- English proof (translation)
+The claim follows from `@GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelVeryAmpleEq.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.VeryAmpleEq.full GroundTheory.Heights₂.Heights.AutoClose.model_mul_sections_holds GroundTheory.Heights₂.Heights.AutoClose.model_ch …`.
+-/
 theorem GroundTheory.Heights₂.Heights.AutoClose.model_very_ample_equality_holds : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelVeryAmpleEq.Statement :=
   @GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelVeryAmpleEq.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.VeryAmpleEq.full GroundTheory.Heights₂.Heights.AutoClose.model_mul_sections_holds GroundTheory.Heights₂.Heights.AutoClose.model_change_very_ample_holds
 
+/- English proof (translation)
+The claim follows from `@GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.VeryAmpleModel.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.VeryAmpleEq.full GroundTheory.Heights₂.Heights.AutoClose.model_change_generated_holds`.
+-/
 theorem GroundTheory.Heights₂.Heights.AutoClose.very_ample_model_holds : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.VeryAmpleModel.Statement :=
   @GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.VeryAmpleModel.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.VeryAmpleEq.full GroundTheory.Heights₂.Heights.AutoClose.model_change_generated_holds

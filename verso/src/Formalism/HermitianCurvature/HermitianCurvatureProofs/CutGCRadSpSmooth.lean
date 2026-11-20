@@ -8,6 +8,21 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl _ e he Φ ρ`. Establish `hT : Tz P.k P.r Bs.z = P.T` using `hpl.2.2.2.1`. Establish `hT' : Tz P.k P.r Bs.z' = P.T'` using `hpl.2.2.2.2.1`. Establish `hz : inWb P.k P.r Bs.z` using `hpl.2.1`. Establish `hz' : inWb P.k P.r Bs.z'` using `hpl.2.2.1`.
+
+Use `set Qs := MA.Qset P.r P.TT with hQs`. Establish `hζ : ∀ x ∈ Qs, Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq x.2`. Introduce `x hx`. Rewrite using `[hT, hT']`. Conclude with `hx.2`.
+
+Establish `hmZ : ContDiffOn ℝ ∞ (fun x : MA.E P.r => NF.muZ P.k P.r Bs.μsec x.2) Qs` using `(Formalism.FourierDecayAlt.P.NFRadRedA.muZ_contDiffOn Bs.sec).comp contDiff_snd.contDiffOn fun x hx => hζ x hx`. Establish `hm : ContDiffOn ℝ ∞ (fun x : MA.E P.r => (x.1, NF.muZ P.k P.r Bs.μsec x.2)) Qs` using `contDiffOn_fst.prodMk hmZ`. Establish `hGl : ∀ x ∈ Qs, NF.muZ P.k P.r Bs.μsec x.2 ∈ Q.Glev P.k P.r (Fin.last P.r)` using `fun x hx => Formalism.FourierDecayAlt.P.NFRadRedA.uwb_glev (Formalism.FourierDecayAlt.P.NFRadRedA.muZ_uwb Bs.sec (hζ x hx))`. Establish `hD : ∀ x ∈ Qs, (x.1, NF.muZ P.k P.r Bs.μsec x.2) ∈ Q.DomR P.k P.r Bs.z Bs.z'` using `fun x hx => Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' Bs.sec (q := x) ⟨hx.1, hζ x hx⟩`. Establish `hΦq : ContDiffOn ℝ ∞ (fun x : MA.E P.r => (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 (NF.muZ P.k P.r Bs.μsec x.2)) Qs`.
+
+Use `contDiffOn_of_locally_contDiffOn fun x₀ hx₀ => ?_` and prove the remaining obligations. Take `⟨U, F, hU, hx₀U, hF, hΦF⟩` from `Φ.2.2.1 _ (hD x₀ hx₀)`. Use `⟨Qs ∩ (fun x : MA.E P.r => (x.1, NF.muZ P.k P.r Bs.μsec x.2)) ⁻¹' U, hm.continuousOn.isOpen_inter_preimage (MA.Qset_open P.r P.TT) hU, ⟨hx₀, hx₀U⟩, ?_⟩` and prove the remaining obligations. Establish `hc : ContDiffOn ℝ ∞ (fun x : MA.E P.r => F (x.1, NF.muZ P.k P.r Bs.μsec x.2)) (Qs ∩ (Qs ∩ (fun x : MA.E P.r => (x.1, NF.muZ P.k P.r Bs.μsec x.2)) ⁻¹' U))` using `hF.comp (hm.mono fun x hx => hx.1) fun x hx => hx.2.2`. Conclude with `hc.congr fun x hx => hΦF _ hx.2.2 (hGl x hx.1)`.
+
+Establish `he' : ContDiffOn ℝ ∞ (fun x : MA.E P.r => e ρ x.2) Qs` using `(he.1 ρ).comp contDiff_snd.contDiffOn fun x hx => hx.2`. Establish `hw : ContDiffOn ℝ ∞ (fun x : MA.E P.r => ((wR P.k P.TT x.2 : ℝ) : ℂ)) Qs`. Use `Formalism.FourierDecayAlt.P.NFRadRedLocSec.cd_ofReal ?_` and prove the remaining obligations. Unfold `wR`. Use `(((Formalism.FourierDecayAlt.P.NFRadRedLocSec.cd_normSq.comp contDiff_snd).sub contDiff_const).pow _).contDiffOn.sqrt fun x hx => ?_` and prove the remaining obligations.
+
+Establish `h2 : P.TT < Complex.normSq x.2` using `hx.2`. Conclude with `(pow_pos (show (0 : ℝ) < Complex.normSq x.2 - P.TT by linarith) _).ne'`. Establish `hin : ContDiffOn ℝ ∞ (fun x : MA.E P.r => inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec ((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 (NF.muZ P.k P.r Bs.μsec x.2)))) Qs` using `(Formalism.FourierDecayAlt.P.CutMP.En.hsVec_contDiff.comp_contDiffOn he').inner ℂ (Formalism.FourierDecayAlt.P.CutMP.En.hsVec_contDiff.comp_contDiffOn hΦq)`. Establish `hall` using `hw.mul hin`. Use `show ContDiffOn ℝ MA.sm (MA.ext _) Qs`.
+
+Use `hall.congr fun x hx => ?_` and prove the remaining obligations. Conclude with `dif_pos hx`.
+-/
 theorem radial_space_smoothness : RadSpSmooth := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl _ e he Φ ρ
   have hT : Tz P.k P.r Bs.z = P.T := hpl.2.2.2.1

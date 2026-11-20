@@ -26,6 +26,19 @@ open GlobalTheory.UT.CoefBasic
 namespace GlobalTheory.GSep.FrameExpEx
 open GlobalTheory.Poinc.TorsRatio
 
+/- English proof (translation)
+Introduce `V _ _ A ρA _ N _ x e e' H H'`. Take `⟨-, he, α, hα, nα, cα⟩` from `H`. Take `⟨-, he', α', hα', nα', cα'⟩` from `H'`. Take `⟨l, hl0, hl⟩` from `frame_ratio he he'`. Establish `hp : Function.Surjective A.A.hom.appTop.hom` using `(GlobalTheory.globalFns_holds _ _ A.isAb).2`.
+
+Establish `hαα : ∀ (Z : Scheme.{0}) (r : Z ⟶ A.A.left) (z : Z) J, Good A.L z J → Geo.Tor.val α r z J = Geo.Tor.val α' r z J` using `gen_unique A.isLB A.A.hom (eSec A.A) (Over.w η[A.A]) hp hα hα' (fun w I hI => by`. Establish `a` using `val_corr hI nα (𝟙 _)`. Establish `b` using `val_corr hI nα' (𝟙 _)`. Rewrite `a`, `b` using `[val_pull hI, Category.id_comp]`. Conclude with `a.trans b.symm)`.
+
+Set `z : (TFK (R` to `V) (FractionRing V)).left := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing V))`. Use `choose J hJ using fun χ : (TFK (R := V) (FractionRing V)).left ⟶ A.A.left => Geo.Tor.exists_chart A.isLB (χ z)`. Use `replace hJ : Good A.L z J := hJ`. Establish `q : Geo.Tor.val e (𝟙 _) z J ^ ((N : ℤ) ^ 2) = Geo.Tor.val e' (𝟙 _) z J ^ ((N : ℤ) ^ 2)`. Establish `a` using `val_corr hJ cα (𝟙 _)`.
+
+Establish `b` using `val_corr hJ cα' (𝟙 _)`. Establish `p₁ : Geo.Tor.val (powFrame A.A A.L x e ((N : ℤ) ^ 2)) (𝟙 _) z J = Geo.Tor.val e (𝟙 _) z J ^ ((N : ℤ) ^ 2)` using `map_zpow _ _ _`. Establish `p₂ : Geo.Tor.val (powFrame A.A A.L x e' ((N : ℤ) ^ 2)) (𝟙 _) z J = Geo.Tor.val e' (𝟙 _) z J ^ ((N : ℤ) ^ 2)` using `map_zpow _ _ _`. Rewrite `a`, `b` using `[val_mul hJ, val_pull hJ]`. Rewrite using `[← p₁, ← p₂, a, b, hαα _ _ z J hJ]`.
+
+Establish `hlN : l ^ (N ^ 2) = 1`. Establish `q'` using `congrArg Units.val q`. Rewrite `q'` using `[show ((N : ℤ) ^ 2) = ((N ^ 2 : ℕ) : ℤ) by push_cast; ring, zpow_natCast, zpow_natCast, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hl z J hJ, mul_pow, ← map_pow]`. Establish `hu : IsUnit ((Geo.Tor.val e (𝟙 _) z J).val ^ (N ^ 2))` using `(Units.isUnit _).pow _`. Establish `h1 : cstK z (l ^ (N ^ 2)) = cstK z 1`.
+
+Rewrite using `[map_one]`. Conclude with `hu.mul_left_inj.1 (by rw [_root_.one_mul]; exact q'.symm)`. Conclude with `(cstK z).injective h1`. Conclude with `⟨l, hlN, hl⟩`.
+-/
 theorem torsFrame_ratio : ∀ (V : Type) [CommRing V] [IsDomain V] (A : PolAV (Sp (FractionRing V))) (ρA : LB.Gen (A.L.pull (eSec A.A))), ρA.IsGen → ∀ (N : ℕ), 1 ≤ N → ∀ (x : TFK (R := V) (FractionRing V) ⟶ A.A) (e e' : FrAt x), IsTorsFrame A ρA N x e → IsTorsFrame A ρA N x e' → ∃ l : FractionRing V, l ^ (N ^ 2) = 1 ∧ ∀ z J, Good A.L z J → (Geo.Tor.val e' (𝟙 _) z J).val = GlobalTheory.Poinc.TorsRatio.cstK z l * (Geo.Tor.val e (𝟙 _) z J).val := by
   intro V _ _ A ρA _ N _ x e e' H H'
   obtain ⟨-, he, α, hα, nα, cα⟩ := H
@@ -69,6 +82,19 @@ open GlobalTheory.GSep.TwistTranslate
 
 attribute [local instance] GlobalTheory.TorusExt.gtGroup in
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act x₀ hdiv V _ _ _ ev Y _ t δ 𝔪 a ha τ hτ`. Take `⟨T, hT⟩` from `GlobalTheory.T.thetaMember_exists_terms_dividing_group_label I X₁ z₁ act x₀ hdiv V ev Y t δ 𝔪 a ha`. Take `⟨x, fr, th, w₀, s, g', w, hx, hfr, hth, hw₀, hs, hc, -⟩` from `hT`. Take `⟨χ₀, hχ₀, hyp⟩` from `GlobalTheory.T.exists_level_killed_char_of_torus_label I X₁ z₁ act V ev Y t δ 𝔪 τ hτ`. Establish `hT₀ : GlobalTheory.GSep.TransTerms.TorChar 𝔪 τ χ₀` using `⟨hχ₀, hyp⟩`.
+
+Take `⟨ρA, hρA, htors⟩` from `exists_rig_torsFrame 𝔪 x fr hx hfr`. Establish `hg₀ : IsTor χ₀ (GlobalTheory.TorusExt.torusPt 𝔪.D.toPre (FractionRing V) (Additive.ofMul χ₀))` using `(isTor_iff _ _).2 (GlobalTheory.TorusExt.isTorusPtF_torusPt χ₀)`. Take `⟨p, xτ, hpy, hpg, hq, hxτ⟩` from `hyp _ hg₀`. Establish `hadd` using `(GlobalTheory.TorusExt.isAdd_iff_eq (g' ()) (GlobalTheory.TorusExt.torusPt 𝔪.D.toPre (FractionRing V) (Additive.ofMul χ₀)) _).2 rfl`. Establish `hb` using `(GlobalTheory.UT.ThetaAverage.val_translate hg₀ hadd).1`.
+
+Take `⟨w₂, hw₂g, hw₂v⟩ : ∃ w₂ : Frm 𝔪.D.toPre (FractionRing V) 1 (g' () + GlobalTheory.TorusExt.torusPt 𝔪.D.toPre (FractionRing V) (Additive.ofMul χ₀)).b, w₂.IsGen ∧ ∀ z J, val w₂ (𝟙 _) z J = val (w ()) (𝟙 _) z J` from `by revert hb`. Generalize the expression as in `(g' () + GlobalTheory.TorusExt.torusPt 𝔪.D.toPre (FractionRing V) (Additive.ofMul χ₀)).b = b`. Introduce and unpack `rfl`. Conclude with `⟨w (), (hc ()).2.1, fun _ _ => rfl⟩`. Take `⟨e₂, he₂, hov⟩` from `over_translate 𝔪 w₀ hw₀ ρA hρA (x a) (fr a) (htors _) (g' ()) (w ()) (hc ()).1 (hc ()).2.1 (hc ()).2.2 χ₀ hχ₀ _ hg₀ p xτ hpy hpg hq _ hadd w₂ (fun z J _ => hw₂v z J) (x (a + τ)) (x_add 𝔪 x hx a τ xτ hxτ)`.
+
+Establish `hN : 1 ≤ X₁.S.r * X₁.S.N` using `Nat.mul_pos X₁.S.r_pos (by have := X₁.S.N_ge; omega)`. Take `⟨l, hl, hlv⟩` from `torsFrame_ratio V 𝔪.A ρA hρA _ hN _ _ _ he₂ (htors (a + τ))`. Take `⟨e, he⟩` from `eq_yK_zeta_pow 𝔪 l hl`. Establish `hl0 : l ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hl` using `[zero_pow (by positivity)]`. Conclude with `zero_ne_one hl`. Use `⟨e, ⟨χ₀, hT₀⟩, x, fr, th, w₀, s, g' (), w (), hx, hfr, hth, hw₀, hs, (hc ()).1, (hc ()).2.1, (hc ()).2.2, ?_⟩` and prove the remaining obligations. Introduce `χ hχ g₀ hg₀' g'' hadd'' w'' _ hval`. Take `rfl : χ₀ = χ` from `GlobalTheory.T.thetaMember_torus_character_unique I X₁ z₁ act V ev Y t δ 𝔪 τ χ₀ χ hT₀ hχ`.
+
+Take `rfl : g₀ = GlobalTheory.TorusExt.torusPt 𝔪.D.toPre (FractionRing V) (Additive.ofMul χ₀)` from `(GlobalTheory.TorusExt.isTorusPtF_iff_eq g₀ χ₀).1 ((isTor_iff _ _).1 hg₀')`. Take `rfl` from `(GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).1 hadd''`. Use `GlobalTheory.T.thetaMember_lies_over_rescale_frames I X₁ z₁ act V ev Y t δ 𝔪 w₀ _ w₂ w'' (x (a + τ)) e₂ (fr (a + τ)) l hl0 hlv (fun z J hJ => ?_) hov` and prove the remaining obligations. Rewrite using `[hw₂v, hval z J hJ, he]`.
+-/
 theorem exists_frExp : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (Y : Type) [AddCommGroup Y] (t : Y → V) (δ : I → Y → Y) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ), ∀ a ∈ X₁.S.HH X₁.M z₁, ∀ τ ∈ X₁.S.TT X₁.M z₁, ∃ e : ℕ, GlobalTheory.GSep.TransTerms.FrExp 𝔪 a τ e := by
   intro I X₁ z₁ act x₀ hdiv V _ _ _ ev Y _ t δ 𝔪 a ha τ hτ
   obtain ⟨T, hT⟩ := GlobalTheory.T.thetaMember_exists_terms_dividing_group_label I X₁ z₁ act x₀ hdiv V ev Y t δ 𝔪 a ha

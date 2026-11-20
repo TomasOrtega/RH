@@ -9,6 +9,9 @@ namespace GlobalTheory.FlagBundle
 
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.ZH GlobalTheory.Cartier
 
+/- English proof (translation)
+Establish `: Algebra.IsStandardSmooth R (MvPolynomial (Fin r) R)` using `Algebra.IsStandardSmooth.iff_exists_basis_kaehlerDifferential.2 ⟨inferInstance, _, KaehlerDifferential.mvPolynomialBasis R _, by`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨MvPolynomial.X i, (KaehlerDifferential.mvPolynomialBasis_apply R _ i).symm⟩⟩`. Conclude with `(Algebra.IsStandardSmoothOfRelativeDimension.iff_of_isStandardSmooth _).2 (by`. Rewrite using `[rank_eq_card_basis (KaehlerDifferential.mvPolynomialBasis R _), Fintype.card_fin])`.
+-/
 theorem affSmooth_mvPolynomial (R : Type) [CommRing R] [Nontrivial R] (r : ℕ) :
     Algebra.IsStandardSmoothOfRelativeDimension r R (MvPolynomial (Fin r) R) := by
   have : Algebra.IsStandardSmooth R (MvPolynomial (Fin r) R) :=
@@ -19,6 +22,11 @@ theorem affSmooth_mvPolynomial (R : Type) [CommRing R] [Nontrivial R] (r : ℕ) 
   exact (Algebra.IsStandardSmoothOfRelativeDimension.iff_of_isStandardSmooth _).2 (by
     rw [rank_eq_card_basis (KaehlerDifferential.mvPolynomialBasis R _), Fintype.card_fin])
 
+/- English proof (translation)
+Set `g` to `MvPolynomial.eval₂Hom (j.comp ψ) t`. Set `e : MvPolynomial (Fin r) R ≃+* S` to `(RingEquiv.ofBijective g.rangeRestrict ⟨fun _ _ h => hg (congrArg Subtype.val h), g.rangeRestrict_surjective⟩).trans ((RingEquiv.subringCongr h).trans (RingEquiv.ofBijective j.rangeRestrict ⟨fun _ _ h => hj (congrArg Subtype.val h), j.rangeRestrict_surjective⟩).symm)`. Establish `he : ∀ P, j (e P) = g P` using `fun P => congrArg Subtype.val ((RingEquiv.ofBijective j.rangeRestrict ⟨fun _ _ h => hj (congrArg Subtype.val h), j.rangeRestrict_surjective⟩).apply_symm_apply _)`. Establish `: ψ = e.toRingHom.comp (algebraMap R (MvPolynomial (Fin r) R))` using `RingHom.ext fun a => hj (by show _ = j (e (MvPolynomial.C a))`. Rewrite using `[he]`.
+
+Conclude with `(MvPolynomial.eval₂Hom_C (j.comp ψ) t a).symm)`. Rewrite using `[this]`. Conclude with `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.1 _ e ((RingHom.isStandardSmoothOfRelativeDimension_algebraMap _).2 (affSmooth_mvPolynomial R r))`.
+-/
 theorem affSmooth_of_range_eq {R S K : Type} [CommRing R] [Nontrivial R] [CommRing S] [CommRing K] {r : ℕ}
     (ψ : R →+* S) (j : S →+* K) (hj : Function.Injective j) (t : Fin r → K)
     (hg : Function.Injective (MvPolynomial.eval₂Hom (j.comp ψ) t))
@@ -44,6 +52,25 @@ theorem affSmooth_of_range_eq {R S K : Type} [CommRing R] [Nontrivial R] [CommRi
 
 variable {F : Type} [Field F] {Ω Ω' : Type} [Field Ω] [Algebra F Ω] [Field Ω'] [Algebra F Ω']
 
+/- English proof (translation)
+Use `⟨fun z => ?_⟩` and prove the remaining obligations. Take `⟨U, W, t, hU, hW, hz, hUW, hind, hR⟩` from `h.2 z`. Establish `e : U ≤ f ⁻¹ᵁ W` using `hUW`. Establish `nU : (U : Set M'.Z).Nonempty` using `⟨z, hz⟩`. Establish `nW : (W : Set M.Z).Nonempty` using `⟨f z, hUW z hz⟩`.
+
+Establish `: Nontrivial Γ(M.Z, W)` using `(M.res W nW).domain_nontrivial`. Establish `hc : (M'.res U nU).comp (f.appLE W U e).hom = (φ : Ω →+* Ω').comp (M.res W nW)` using `RingHom.ext fun a => by show M'.res U nU _ = φ (M.res W nW a)`. Rewrite using `[M.res_apply, M'.res_apply, ← h.1.valF_app nW a]`. Conclude with `M'.valF_resG e nU (f.app W a)`. Use `⟨W, hW, U, hU, hz, e, affSmooth_of_range_eq _ (M'.res U nU) (M'.res_injective U nU) t ?_ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hc, injective_iff_map_eq_zero]`. Introduce `P hP`. Apply `MvPolynomial.map_injective _ (M.res_injective W nW)` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `hind` to reduce the goal to its premises.
+
+Rewrite using `[MvPolynomial.eval₂_map]`. Conclude with `hP`. Rewrite using `[hc, M'.range_res, hR]`. Establish `hm : ∀ a, (φ : Ω →+* Ω').comp (M.res W nW) a ∈ φ '' (M.ringOn W : Set Ω)` using `fun a => ⟨_, (RatModel.mem_ringOn_iff_exists nW).2 ⟨a, (M.res_apply W nW a).symm⟩, rfl⟩`. Establish `hm' : ∀ x ∈ M.ringOn W, φ x ∈ (MvPolynomial.eval₂Hom ((φ : Ω →+* Ω').comp (M.res W nW)) t).range` using `fun x hx => by`.
+
+Take `⟨a, rfl⟩` from `(RatModel.mem_ringOn_iff_exists nW).1 hx`. Conclude with `⟨MvPolynomial.C a, by rw [MvPolynomial.eval₂Hom_C, ← M.res_apply W nW]; rfl⟩`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨P, rfl⟩`. Rewrite using `[Subalgebra.mem_toSubring]`.
+
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => rw [MvPolynomial.eval₂Hom_C]`. Conclude with `Algebra.subset_adjoin (Or.inl (hm a))`. Consider the case `add P Q hP hQ => rw [map_add]`. Conclude with `add_mem hP hQ`.
+
+Consider the case `mul_X P i hP`. Rewrite using `[map_mul, MvPolynomial.eval₂Hom_X']`. Conclude with `mul_mem hP (Algebra.subset_adjoin (Or.inr ⟨i, rfl⟩))`. Introduce `x hx`. Rewrite `hx` using `[Subalgebra.mem_toSubring]`.
+
+Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨y, hy, rfl⟩ | ⟨i, rfl⟩` into its components or cases. Conclude with `hm' y hy`. Conclude with `⟨MvPolynomial.X i, MvPolynomial.eval₂Hom_X' _ _ i⟩`.
+
+Consider the case `algebraMap c => rw [← φ.commutes]`. Conclude with `hm' _ (Subalgebra.algebraMap_mem _ c)`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`.
+-/
 theorem AffCover.smoothOfRelativeDimension {M : RatModel F Ω} {M' : RatModel F Ω'} {φ : Ω →ₐ[F] Ω'}
     {f : M'.Z ⟶ M.Z} {r : ℕ} (h : AffCover M M' φ f r) : SmoothOfRelativeDimension r f := by
   refine ⟨fun z => ?_⟩
@@ -91,6 +118,9 @@ theorem AffCover.smoothOfRelativeDimension {M : RatModel F Ω} {M' : RatModel F 
       | add x y _ _ hx hy => exact add_mem hx hy
       | mul x y _ _ hx hy => exact mul_mem hx hy
 
+/- English proof (translation)
+Use `h.smoothOfRelativeDimension` as an intermediate fact. Rewrite using `[← h.1.inducedModelMorphism_comp_structureMap, Nat.add_comm]`. Use `infer_instance`.
+-/
 theorem affCover_smooth (F Ω Ω' : Type) [Field F] [Field Ω] [Algebra F Ω] [Field Ω'] [Algebra F Ω']
     (M : RatModel F Ω) (M' : RatModel F Ω') (φ : Ω →ₐ[F] Ω') (f : M'.Z ⟶ M.Z) (r d : ℕ)
     (h : AffCover M M' φ f r) (hd : SmoothOfRelativeDimension d M.s) :

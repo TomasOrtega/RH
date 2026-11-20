@@ -12,6 +12,11 @@ noncomputable section
 
 namespace RelSectionsLarge
 
+/- English proof (translation)
+Establish `h` using `monomial_mem_relSecM R y (b := b) (fun p => if p.2 = c0 p.1 then b p.1 else 0) (fun k => by simp)`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single (c0 k) (fun i _ hi => by simp [hi]) (by simp)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem chartMonomial_mem_relSecM {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (c0 : ∀ k, ι k) (b : K → ℕ) :
     ∏ k, y ⟨k, c0 k⟩ ^ b k ∈ relSecM R y b := by
@@ -24,6 +29,25 @@ theorem chartMonomial_mem_relSecM {K : Type} [Fintype K] {ι : K → Type} [∀ 
   rw [Finset.prod_eq_single (c0 k) (fun i _ hi => by simp [hi]) (by simp)]
   simp
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `e he b _ s _ hs`. Establish `h0 : e = 0` using `funext fun k => by`.
+
+Simplify using `using (Finset.sum_eq_zero_iff.mp he) k (Finset.mem_univ k)`. Substitute `h0` using the available equality. Simplify using `using hs`. Consider the case `succ m ih`. Introduce `e he b hb s hsL hs`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨k0, hk0⟩ : ∃ k0, 0 < e k0 := by`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_lt] at hcon`. Establish `: ∑ k, e k = 0` using `Finset.sum_eq_zero fun k _ => Nat.le_zero.mp (hcon k)`. Use linear arithmetic over natural numbers and integers.
+
+Use `set e' : K → ℕ := e - Pi.single k0 1 with he'`. Establish `hee : e = e' + Pi.single k0 1`. Use function extensionality and compare the values at `k`. Simplify using `only [he', Pi.add_apply, Pi.sub_apply]`. Distinguish the cases in `hk : k = k0`.
+
+Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[hk]`. Establish `hsum : ∑ k, e' k = m`.
+
+Establish `: ∑ k, e k = ∑ k, e' k + 1`. Rewrite using `[hee]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+
+Use linear arithmetic over natural numbers and integers. Use `ih e' hsum b hb s hsL ?_` and prove the remaining obligations. Establish `htL : s * ∏ k, y ⟨k, c0 k⟩ ^ e' k ∈ relChartLat R y (fun k => ((b + e') k : ℤ)) 1` using `mul_prod_mem_relChartLat R y (a := fun k => (b k : ℤ)) (a' := fun k => ((b + e') k : ℤ)) (n := 1) e' c0 (fun k => by simp only [Pi.add_apply]; push_cast; ring) hsL`. Establish `hb' : ∀ k, n₁ ≤ (b + e') k` using `fun k => le_trans (hb k) (Nat.le_add_right _ _)`. Use `hstep (b + e') hb' k0 _ htL ?_` and prove the remaining obligations.
+
+Establish `hprod : y ⟨k0, c0 k0⟩ * (s * ∏ k, y ⟨k, c0 k⟩ ^ e' k) = s * ∏ k, y ⟨k, c0 k⟩ ^ e k`. Rewrite using `[hee]`. Establish `h1 : ∏ k, y ⟨k, c0 k⟩ ^ (Pi.single k0 1 : K → ℕ) k = y ⟨k0, c0 k0⟩`. Rewrite using `[Fintype.prod_eq_single k0 (fun k hk => by simp [hk])]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib, h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hprod, add_assoc, ← hee]`. Conclude with `hs`.
+-/
 theorem descend {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (c0 : ∀ k, ι k) (n₁ : ℕ)
     (hstep : ∀ b : K → ℕ, (∀ k, n₁ ≤ b k) → ∀ k0 : K,
@@ -74,6 +98,13 @@ theorem descend {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k,
     rw [hprod, add_assoc, ← hee]
     exact hs
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ R hR y hy`. Use `choose c0 hc0 using hy`. Take `⟨n₁, hn₁⟩` from `hO K ι Ω R hR y c0 hc0`. Use `⟨n₁, fun b hb s hs => ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `hC K ι Ω R y c0 _ (hs c0 hc0)`.
+
+Establish `hform` using `mul_mem_relSecM R y hN (chartMonomial_mem_relSecM R y c0 b)`. Use `descend R y c0 n₁ hn₁ (∑ _k : K, N) (fun _ => N) rfl b hb s hs ?_` and prove the remaining obligations. Rewrite using `[add_comm]`. Use `hform using 1` and compare the differences between its conclusion and the goal. Establish `hcancel : (∏ k, y ⟨k, c0 k⟩ ^ (-(((1 : ℕ) : ℤ) * (b k : ℤ)))) * ∏ k, y ⟨k, c0 k⟩ ^ b k = 1`.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_one, one_mul, zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ (hc0 k))]`. Rewrite using `[← Finset.prod_pow]`. Take the linear combination `(-(s * ∏ k, y ⟨k, c0 k⟩ ^ N)) * hcancel`.
+-/
 theorem proof (hC : RelChartPoly.Statement) (hO : RelOneStep.Statement) : RelSectionsLarge.Statement := by
   classical
   intro K _ ι _ Ω _ R hR y hy

@@ -23,11 +23,20 @@ def topP (i t : ℕ) (y : Fin (i + t) → k) : Fin i → k := fun j => y (Fin.ca
 
 def middlePart (i t : ℕ) (y : Fin (i + t) → k) : Fin t → k := fun j => y (Fin.natAdd i j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem middlePart_add [Add k] (i t : ℕ) (a b : Fin (i + t) → k) : middlePart i t (a + b) = middlePart i t a + middlePart i t b := rfl
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun _ => continuous_apply _`.
+-/
 theorem continuous_topP [TopologicalSpace k] (i t : ℕ) : Continuous (topP (k := k) i t) :=
   continuous_pi fun _ => continuous_apply _
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun _ => continuous_apply _`.
+-/
 theorem continuous_midP [TopologicalSpace k] (i t : ℕ) : Continuous (middlePart (k := k) i t) :=
   continuous_pi fun _ => continuous_apply _
 
@@ -70,6 +79,9 @@ def fibAct {i : ℕ} (t : ℕ) (ρ₀ : Representation ℂ (Multiplicative (Fin 
     rw [h1, map_mul, middlePart_add, add_assoc]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fibAct_apply {i : ℕ} (t : ℕ) (ρ₀ : Representation ℂ (Multiplicative (Fin i → k)) Z)
     (y : Multiplicative (Fin (i + t) → k)) (φ : fibM (Fin t → k) Z) (v : Fin t → k) :
     (fibAct t ρ₀ y φ).1 v = ρ₀ (Multiplicative.ofAdd (topP i t y.toAdd)) (φ.1 (v + middlePart i t y.toAdd)) := rfl
@@ -135,10 +147,18 @@ def Lc (n : ℕ) (c : k) : Subgroup (Multiplicative (Fin n → k)) where
     rw [this]
     exact neg_mem (ha j)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Lc {n : ℕ} {c : k} {y : Multiplicative (Fin n → k)} : y ∈ Lc n c ↔ ∀ j, c * y.toAdd j ∈ 𝒪[k] := Iff.rfl
 
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hset : (Lc n c : Set (Multiplicative (Fin n → k))) = ⋂ j, (fun y : Multiplicative (Fin n → k) => c * y.toAdd j) ⁻¹' (𝒪[k] : Set k)`. Use extensionality with `y`. Simplify using `only [SetLike.mem_coe, mem_Lc, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[hset]`. Establish `hO : IsOpen (𝒪[k] : Set k)` using `by exact Valuation.isOpen_integer`.
+
+Conclude with `isOpen_iInter_of_finite fun j => hO.preimage (continuous_const.mul ((continuous_apply j).comp continuous_toAdd))`.
+-/
 theorem isOpen_Lc (n : ℕ) (c : k) : IsOpen (Lc n c : Set (Multiplicative (Fin n → k))) := by
   have hset : (Lc n c : Set (Multiplicative (Fin n → k))) =
       ⋂ j, (fun y : Multiplicative (Fin n → k) => c * y.toAdd j) ⁻¹' (𝒪[k] : Set k) := by
@@ -149,6 +169,13 @@ theorem isOpen_Lc (n : ℕ) (c : k) : IsOpen (Lc n c : Set (Multiplicative (Fin 
   exact isOpen_iInter_of_finite fun j =>
     hO.preimage (continuous_const.mul ((continuous_apply j).comp continuous_toAdd))
 
+/- English proof (translation)
+Establish `hK : IsCompact (Set.pi Set.univ fun _ : Fin n => {x : k | valuation k x ≤ 1})` using `isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Establish `hf : Continuous fun x : Fin n → k => Multiplicative.ofAdd (c⁻¹ • x)` using `continuous_ofAdd.comp (continuous_const_smul _)`. Use `hK.image hf using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Use `⟨c • y.toAdd, fun j _ => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `mem_Lc.1 hy j`. Rewrite `h` using `[Valuation.mem_integer_iff]`. Simplify using `using h`.
+
+Simplify using `[smul_smul, hc]`. Introduce and unpack `⟨x, hx, rfl⟩`. Use `mem_Lc.2 fun j => ?_` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff]`. Simplify `hx j trivial` using `[smul_smul, hc]`.
+-/
 theorem isCompact_Lc (n : ℕ) {c : k} (hc : c ≠ 0) : IsCompact (Lc n c : Set (Multiplicative (Fin n → k))) := by
   have hK : IsCompact (Set.pi Set.univ fun _ : Fin n => {x : k | valuation k x ≤ 1}) :=
     isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1
@@ -178,12 +205,20 @@ variable {Z : Type} [AddCommGroup Z] [Module ℂ Z]
 def cosetSet (t : ℕ) (c : k) (a : Fin t → k) : Set (Fin t → k) :=
   {v | Multiplicative.ofAdd (v - a) ∈ Lc t c}
 
+/- English proof (translation)
+Establish `hcont : Continuous fun v : Fin t → k => Multiplicative.ofAdd (v - a)` using `continuous_ofAdd.comp (continuous_id.sub continuous_const)`. Establish `h1 : IsOpen (Lc t c : Set (Multiplicative (Fin t → k)))` using `isOpen_Lc t c`. Conclude with `⟨(Subgroup.isClosed_of_isOpen _ h1).preimage hcont, h1.preimage hcont⟩`.
+-/
 theorem isClopen_cosetSet (t : ℕ) (c : k) (a : Fin t → k) : IsClopen (cosetSet t c a) := by
   have hcont : Continuous fun v : Fin t → k => Multiplicative.ofAdd (v - a) :=
     continuous_ofAdd.comp (continuous_id.sub continuous_const)
   have h1 : IsOpen (Lc t c : Set (Multiplicative (Fin t → k))) := isOpen_Lc t c
   exact ⟨(Subgroup.isClosed_of_isOpen _ h1).preimage hcont, h1.preimage hcont⟩
 
+/- English proof (translation)
+Establish `h` using `(isCompact_Lc t hc).image (f := fun y : Multiplicative (Fin t → k) => y.toAdd + a) ((continuous_toAdd).add continuous_const)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+
+Conclude with `⟨Multiplicative.ofAdd (v - a), hv, by simp⟩`. Introduce and unpack `⟨y, hy, rfl⟩ show Multiplicative.ofAdd (y.toAdd + a - a) ∈ Lc t c`. Simplify using `using hy`.
+-/
 theorem isCompact_cosetSet (t : ℕ) {c : k} (hc : c ≠ 0) (a : Fin t → k) : IsCompact (cosetSet t c a) := by
   have h := (isCompact_Lc t hc).image (f := fun y : Multiplicative (Fin t → k) => y.toAdd + a)
     ((continuous_toAdd).add continuous_const)

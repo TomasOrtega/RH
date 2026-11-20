@@ -18,6 +18,9 @@ namespace U0
 open WA
 
 omit [FiniteDimensional K V] in
+/- English proof (translation)
+Introduce `_ _` and use `Submodule.mem_top smul_mem := fun a ha m hm => smul_mem_loc hP ha hm int := by intro x hx y hy obtain ⟨s, hs, hsx⟩ := Formalism.HermitianLatticesTheory.locBasic_mem_locS.mp (show x ∈ Formalism.HermitianLatticesTheory.locS (Formalism.HermitianLatticesTheory.hcompl (K := K) P) L fr …`.
+-/
 theorem isLatIn_loc {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {P : Ideal (𝓞 K)}
     (hP : P.IsPrime) : IsLatIn (locRing P) h ⊤ (Formalism.HermitianLatticesTheory.loc (K := K) P L).toAddSubgroup where
@@ -47,6 +50,9 @@ theorem isLatIn_loc {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V
     exact Formalism.HermitianLatticesTheory.locBasic_le_locS _ L hnx
 
 omit [FiniteDimensional K V] in
+/- English proof (translation)
+Establish `h0` using `isSelfDualMod_loc hL hP hu`. Conclude with `⟨⟨fun _ _ => Submodule.mem_top, h0.smul_mem, h0.int, fun x _ => h0.span x⟩, fun x _ hx => h0.dual x hx⟩`.
+-/
 theorem isSD_loc {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) {P : Ideal (𝓞 K)} (hP : P.IsPrime)
     (hu : Formalism.HermitianLatticesTheory.IsUnimodularAt h P L) :
@@ -56,6 +62,11 @@ theorem isSD_loc {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     fun x _ hx => h0.dual x hx⟩
 
 omit [NumberField K] [StarRing K] [FiniteDimensional K V] in
+/- English proof (translation)
+Use extensionality with `w`. Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`.
+
+Conclude with `(hg v).mp hv`. Introduce `hw`. Conclude with `⟨g.symm w, (hg _).mpr (by rw [g.apply_symm_apply]; exact hw), g.apply_symm_apply w⟩`.
+-/
 theorem gmap_eq_of_iff {g : V ≃ₗ[K] V} {A B : Submodule (𝓞 K) V} (hg : ∀ v, v ∈ A ↔ g v ∈ B) :
     Formalism.HermitianLatticesTheory.gmap g A = B := by
   ext w
@@ -67,6 +78,25 @@ theorem gmap_eq_of_iff {g : V ≃ₗ[K] V} {A B : Submodule (𝓞 K) V} (hg : �
   · intro hw
     exact ⟨g.symm w, (hg _).mpr (by rw [g.apply_symm_apply]; exact hw), g.apply_symm_apply w⟩
 
+/- English proof (translation)
+Establish `hPp` using `hP.isPrime`. Establish `hb : BddAbove {e : ℕ | discrIdeal h L ≤ extP K (P.comap (algebraMap (𝓞 F) (𝓞 K))) ^ e}`. Assume the negation of the conclusion as `hnb`. Unfold `vd at hv`. Rewrite `hv` using `[Nat.sSup_of_not_bddAbove hnb]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hmem` using `Nat.sSup_mem (s := {e : ℕ | discrIdeal h L ≤ extP K (P.comap (algebraMap (𝓞 F) (𝓞 K))) ^ e}) ⟨0, by simp⟩ hb`. Establish `hle : discrIdeal h L ≤ extP K (P.comap (algebraMap (𝓞 F) (𝓞 K)))`. Express the relevant statement in the definitionally equal form `discrIdeal h L ≤ _ ^ vd h L (P.comap (algebraMap (𝓞 F) (𝓞 K))) at hmem`. Rewrite `hmem` using `[hv, pow_one]`. Then use the resulting hypothesis.
+
+Establish `hn2 : ¬ discrIdeal h L ≤ extP K (P.comap (algebraMap (𝓞 F) (𝓞 K))) ^ 2`. Introduce `hle2`. Establish `h3 : 2 ≤ vd h L (P.comap (algebraMap (𝓞 F) (𝓞 K)))` using `le_csSup hb hle2`. Use linear arithmetic over natural numbers and integers. Unfold `discrIdeal at hn2`.
+
+Rewrite `hn2` using `[Ideal.span_le, Set.not_subset]`. Take `⟨z, ⟨x, hx, hz⟩, hzn⟩` from `hn2`. Use `exists_isASD_of_tuple (isHermSemilocal_locRing hK hP) hπ hs hd (isLatIn_loc hL hLi hPp) x (fun i => Formalism.HermitianLatticesTheory.locBasic_le_locS _ L (hx i)) ?_ ?_` and prove the remaining obligations. Introduce `hdv`. Apply `hzn` to reduce the goal to its premises.
+
+Apply `h2` to reduce the goal to its premises. Rewrite using `[hz]`. Conclude with `hdv`. Introduce `t ht horth choose s hs' hst using fun i => Formalism.HermitianLatticesTheory.locBasic_mem_locS.mp (show t i ∈ Formalism.HermitianLatticesTheory.locS (Formalism.HermitianLatticesTheory.hcompl (K := K) P) L from ht i)`. Take `⟨g, -, hdet⟩` from `LocF.exists_gram hLi (fun i => s i • t i) hst`.
+
+Establish `hmem : g.det ∈ discrIdeal h L` using `Ideal.subset_span ⟨_, hst, hdet⟩`. Establish `hdv` using `h1 _ (hle hmem)`. Establish `e : (Matrix.of fun i j => h (s i • t i) (s j • t j)) = gram h fun i => algebraMap (𝓞 K) K (s i) • t i`. Use extensionality with `i j`. Simplify using `only [gram, Matrix.of_apply, algebraMap_smul]`.
+
+Rewrite `hdv` using `[hdet, e, gram_det_smul_orth horth, ← gram_det_orth horth]`. Establish `hu : IsUnitIn (locRing P) (∏ i, star (algebraMap (𝓞 K) K (s i)) * algebraMap (𝓞 K) K (s i))`. Apply `LocF.isUnitIn_prod` to reduce the goal to its premises. Introduce `i _`. Use `LocF.isUnitIn_mul ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[← algebraMap_conjO, LocF.isUnitIn_algebraMap_iff hPp]`. Conclude with `conjO_mem_hcompl (hs' i)`. Rewrite using `[LocF.isUnitIn_algebraMap_iff hPp]`. Conclude with `hs' i`. Establish `h3` using `hdv.mul_left hu.2.2`.
+
+Rewrite `h3` using `[← mul_assoc, inv_mul_cancel₀ hu.1, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem exists_isASD_loc {h : V →ₗ⋆[K] V →ₗ[K] K} (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hs : h.IsSymm)
     (hd : ∀ x, h x x = 0 → x = 0) {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L)
     (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L) {P : Ideal (𝓞 K)} (hP : P.IsMaximal)
@@ -126,6 +156,11 @@ theorem exists_isASD_loc {h : V →ₗ⋆[K] V →ₗ[K] K} (hK : Formalism.Herm
 
 end U0
 
+/- English proof (translation)
+Take `⟨P, hP, rfl⟩` from `exists_maximal_over hK hF h𝔭`. Establish `hda` using `LocF.aniso_of_totPosDef hd`. Take `⟨π, hπ, -, -⟩` from `U0.exists_isUnif hF hP`. Rewrite using `[locF_eq_loc hK hF hP, locF_eq_loc hK hF hP]`. Take `⟨g, hg, -, hgM⟩` from `U0.sd_main (WA.isHermSemilocal_locRing hK hP) hπ hs hda _ ⊤ ⊤ _ _ 1 le_rfl (U0.isSD_loc hA hP.isPrime ((isUnimodularAt_iff_vd hK hF hs hd hA hAi hP).mpr hvA)) (U0.isSD_loc hB hP.isPrime ((isUnimodularAt_iff_vd hK hF hs hd hB hBi hP).mpr hvB)) (one_mem _) (fun _ => ⟨fun _ => Submo …`.
+
+Conclude with `⟨g, hg, U0.gmap_eq_of_iff hgM⟩`.
+-/
 theorem exists_isom_locF_of_vd_zero (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A B : Submodule (𝓞 K) V}
     (hA : Submodule.IsLattice K A) (hB : Submodule.IsLattice K B)
@@ -143,6 +178,11 @@ theorem exists_isom_locF_of_vd_zero (hK : Formalism.HermitianLatticesTheory.IsCM
     (one_mem _) (fun _ => ⟨fun _ => Submodule.mem_top, fun _ => Submodule.mem_top⟩)
   exact ⟨g, hg, U0.gmap_eq_of_iff hgM⟩
 
+/- English proof (translation)
+Take `⟨P, hP, rfl⟩` from `exists_maximal_over hK hF h𝔭`. Establish `hda` using `LocF.aniso_of_totPosDef hd`. Take `⟨π, hπ, h1, h2⟩` from `U0.exists_isUnif hF hP`. Rewrite using `[locF_eq_loc hK hF hP, locF_eq_loc hK hF hP]`. Take `⟨z₁, hM⟩` from `U0.exists_isASD_loc hK hs hda hA hAi hP hvA hπ h1 h2`.
+
+Take `⟨z₂, hN⟩` from `U0.exists_isASD_loc hK hs hda hB hBi hP hvB hπ h1 h2`. Take `⟨g, hg, -, hgM⟩` from `U0.asd_main (WA.isHermSemilocal_locRing hK hP) hπ hs hda _ ⊤ ⊤ _ _ z₁ z₂ 1 le_rfl hM hN (one_mem _) (fun _ => ⟨fun _ => Submodule.mem_top, fun _ => Submodule.mem_top⟩)`. Conclude with `⟨g, hg, U0.gmap_eq_of_iff hgM⟩`.
+-/
 theorem exists_isom_locF_of_vd_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A B : Submodule (𝓞 K) V}
     (hA : Submodule.IsLattice K A) (hB : Submodule.IsLattice K B)

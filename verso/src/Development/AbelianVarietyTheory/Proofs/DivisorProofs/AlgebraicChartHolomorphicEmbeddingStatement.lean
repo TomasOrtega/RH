@@ -14,5 +14,8 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.IrrAn
 open scoped GlobalTheory.AffinePoints
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IrrAn.preconnected_locIdent_range_of_algebraicCharts | exact GlobalTheory.IrrAn.preconnected_locIdent_range_of_algebraicCharts | (intros; apply GlobalTheory.IrrAn.preconnected_locIdent_range_of_algebraicCharts <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.algebraic_chart_holomorphic_embedding : ∀ (d : ℕ) (Y : Type) [TopologicalSpace Y] (A : FinHolAtlas d Y) (C : Type) [CommRing C] [IsDomain C] [Algebra ℂ C] [Algebra.FiniteType ℂ C] (d' : ℕ) (ι : (C →ₐ[ℂ] ℂ) → Y), GlobalTheory.AffinePoints.HasAlgebraicCharts ℂ C d' → Topology.IsEmbedding ι → (∀ (O : Set Y) (g : Y → ℂ), IsOpen O → A.HoloOn O g → ∀ e : OpenPartialHomeomorph (C →ₐ[ℂ] ℂ) (Fin d' → ℂ), GlobalTheory.AffinePoints.IsAlgebraicChart e → AnalyticOnNhd ℂ (g ∘ ι ∘ e.symm) (e.target ∩ e.symm ⁻¹' (ι ⁻¹' O))) → IsPreconnected (Set.range ι) ∧ GlobalTheory.IrrAn.LocIdent A (Set.range ι) := by
   first | exact @GlobalTheory.IrrAn.preconnected_locIdent_range_of_algebraicCharts | exact GlobalTheory.IrrAn.preconnected_locIdent_range_of_algebraicCharts | (intros; apply GlobalTheory.IrrAn.preconnected_locIdent_range_of_algebraicCharts <;> assumption)

@@ -27,10 +27,18 @@ open MonoidalCategory CartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+-/
 theorem exists_sabMap_congr {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f f' : S' ⟶ S} (h : f = f')
     (m : SABMap t' t f) : ∃ m' : SABMap t' t f', m'.φ = m.φ := by
   subst h; exact ⟨m, rfl⟩
 
+/- English proof (translation)
+Establish `w : (gg ≫ Z.m.φ) ≫ Z.t.G.hom = r ≫ χZ`. Rewrite using `[Category.assoc, Z.m.cart.1.w, ← hw]`. Both sides reduce to the same expression. Establish `e₁` using `m₁.cart.1.lift_fst _ _ w`. Establish `e₂` using `m₁.cart.1.lift_snd _ _ w`.
+
+Establish `: g = m₁.cart.1.lift _ _ w` using `m₂.cart.1.hom_ext (h.trans (hc T _ gg g₂ e₁ h₀ h₁).symm) (hb.trans e₂.symm)`. Rewrite using `[this]`. Conclude with `e₁`.
+-/
 theorem comp_m_of_comp_m {O O₂ : Type} [CommRing O] [CommRing O₂] {β : O →+* c.F} {β₂ : O₂ →+* c.F}
     {Z : Model Xo c β} {Y : Model Xo c β₂} {S : Scheme.{0}} {χZ : S ⟶ Z.X} {χY : S ⟶ Y.X} {t : SAB H S}
     (m₁ : SABMap t Z.t χZ) (m₂ : SABMap t Y.t χY)
@@ -48,6 +56,19 @@ theorem comp_m_of_comp_m {O O₂ : Type} [CommRing O] [CommRing O₂] {β : O �
   have : g = m₁.cart.1.lift _ _ w := m₂.cart.1.hom_ext (h.trans (hc T _ gg g₂ e₁ h₀ h₁).symm) (hb.trans e₂.symm)
   rw [this]; exact e₁
 
+/- English proof (translation)
+Establish `hYj : Mono Y.j` using `GlobalTheory.ThetaShiftProofs.mono_j Y (mono_spMap_subtype _)`. Take `⟨t', m, P, φ, he, w, e, s1, s2, s3, s4, s5, s6⟩` from `hd`. Take `⟨m0, hm0⟩` from `exists_sabMap_congr (Category.id_comp χZ).symm m`. Take `⟨n, hn⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel m₁ m0`. Take `⟨m1, hm1⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m₂ n`.
+
+Take `⟨m', hm'⟩` from `exists_sabMap_congr (Category.id_comp χY) m1`. Use `⟨t', m', P, φ, he, w, e, s1, s2, s3, s4, s5, fun F _ _ _ _ uF ha hu => ⟨(s6 F uF ha hu).1, fun yF hyF k p₀ σ hσ q₀ q x e1 e2 e3 e4 => ?_⟩⟩` and prove the remaining obligations. Establish `hyZ : yF ≫ Z.j = Out.jFK (R` using `R) F ≫ Out.jK R ≫ χZ := by`. Establish `h1 : yF ≫ Y.j = (Out.jFK (R` using `R) F ≫ y) ≫ Y.j := by rw [hyF, hY, Category.assoc]`. Rewrite using `[(cancel_mono Y.j).1 h1, Category.assoc, hZ]`.
+
+Establish `hbase : (x.left ≫ P.U.gen.inv.left ≫ pullback.fst t'.G.hom (Out.jK R) ≫ n.φ) ≫ t.G.hom = Out.jFK (R` using `R) F ≫ Out.jK R := by`. Establish `a₁ : P.U.gen.inv.left ≫ pullback.snd t'.G.hom (Out.jK R) = P.A.A.hom` using `Over.w P.U.gen.inv`. Establish `a₂ : x.left ≫ P.A.A.hom = Out.jFK (R` using `R) F := Over.w x`. Establish `a₃ : n.φ ≫ t.G.hom = t'.G.hom ≫ 𝟙 _` using `n.cart.1.w`. Rewrite `a₃` using `[Category.comp_id]`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[a₃, pullback.condition, ← Category.assoc _ (pullback.snd _ _), a₁, ← Category.assoc, a₂]`. Establish `go : ∀ σZ : 𝟙_ (Over (Xo.XF c)) ⟶ Z.oF.t.G, σZ.left ≫ Z.m0.toSABMap.φ = σ.left ≫ Y.m0.toSABMap.φ → x.left ≫ P.U.gen.inv.left ≫ pullback.fst t'.G.hom (Out.jK R) ≫ m.φ = yF ≫ σZ.left ≫ Z.m.φ`. Introduce `σZ h0`. Establish `b₁ : σZ.left ≫ Z.oF.t.G.hom = 𝟙 _` using `Over.w σZ`.
+
+Establish `b₂ : σ.left ≫ Y.oF.t.G.hom = 𝟙 _` using `Over.w σ`. Use `comp_m_of_comp_m m₁ m₂ hc (x.left ≫ P.U.gen.inv.left ≫ pullback.fst t'.G.hom (Out.jK R) ≫ n.φ) (yF ≫ σZ.left) (yF ≫ σ.left) (by rw [Category.assoc, h0, Category.assoc]) (by rw [Category.assoc, b₁, Category.assoc, b₂]) _ hbase (by rw [Category.assoc, ← Category.assoc σZ.left, b₁, …` as an intermediate fact. Rewrite using `[← hm0, hn]`. Simplify `this` using `only [Category.assoc]`. Break down `hσ with ⟨hk, v, hv, rfl⟩ | ⟨hk, v, hvm, hv, rfl⟩` into its components or cases.
+
+Conclude with `(s6 F uF ha hu).2 yF hyZ k p₀ (Z.oF.etaA v) (Or.inl ⟨hk, v, hv, rfl⟩) q₀ q x e1 e2 e3 (go _ ((Z.m0.etaA v).trans (Y.m0.etaA v).symm))`. Conclude with `(s6 F uF ha hu).2 yF hyZ k p₀ (Z.oF.eta v) (Or.inr ⟨hk, v, hvm, hv, rfl⟩) q₀ q x e1 e2 e3 (go _ ((Z.m0.eta v).trans (Y.m0.eta v).symm))`.
+-/
 theorem hasArcData_moveV_of_triple (W : ValuationSubring ℂ) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F))
     (Y : Model Xo c (c.V W).subtype) (bV : 𝓞 c.F →+* c.V W) (hbV : ∀ x, ((bV x : c.V W) : c.F) = (x : c.F))
     {O' : Type} [CommRing O'] [IsDomain O'] (b' : c.V W →+* O') (a : ArcIn D l (algebraMap (𝓞 c.F) c.F) O' (b'.comp bV))
@@ -94,12 +115,21 @@ theorem hasArcData_moveV_of_triple (W : ValuationSubring ℂ) (Z : Model Xo c (a
   · exact (s6 F uF ha hu).2 yF hyZ k p₀ (Z.oF.eta v) (Or.inr ⟨hk, v, hvm, hv, rfl⟩) q₀ q x e1 e2 e3
       (go _ ((Z.m0.eta v).trans (Y.m0.eta v).symm))
 
+/- English proof (translation)
+Rewrite using `[← spMap_comp, ← spMap_comp, h]`.
+-/
 theorem spMap_comp_eq {A B C D : Type} [CommRing A] [CommRing B] [CommRing C] [CommRing D] (f : A →+* B) (g : B →+* D)
     (f' : A →+* C) (g' : C →+* D) (h : g.comp f = g'.comp f') : spMap g ≫ spMap f = spMap g' ≫ spMap f' := by
   rw [← spMap_comp, ← spMap_comp, h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jK_eq (R : Type) [CommRing R] : Out.jK R = spMap (algebraMap R (FractionRing R)) := rfl
 
+/- English proof (translation)
+Establish `hs : f ≫ s = g ≫ s` using `ext_of_isDominant_of_isSeparated (terminal.from _) (terminal.hom_ext _ _) (Out.jK R) (by rw [← Category.assoc, h, Category.assoc])`. Conclude with `ext_of_isDominant_of_isSeparated s hs (Out.jK R) h`.
+-/
 theorem ext_of_generic {R : Type} [CommRing R] [IsDomain R] {X : Scheme.{0}} {O : Type} [CommRing O] (s : X ⟶ Sp O)
     [IsSeparated s] (f g : Sp R ⟶ X) (h : Out.jK R ≫ f = Out.jK R ≫ g) : f = g := by
   have hs : f ≫ s = g ≫ s :=
@@ -107,6 +137,19 @@ theorem ext_of_generic {R : Type} [CommRing R] [IsDomain R] {X : Scheme.{0}} {O 
       (by rw [← Category.assoc, h, Category.assoc])
   exact ext_of_isDominant_of_isSeparated s hs (Out.jK R) h
 
+/- English proof (translation)
+Establish `hb'` using `GlobalTheory.PolArc.injective_of_charZero c W b'`. Establish `hinj : Function.Injective ((algebraMap O' (FractionRing O')).comp b')` using `(IsFractionRing.injective O' (FractionRing O')).comp hb'`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : c.F →+* FractionRing O', g.comp (c.V W).subtype = (algebraMap O' (FractionRing O')).comp b' := by`. Use `⟨IsFractionRing.lift (A := c.V W) (K := c.F) hinj, RingHom.ext fun v => ?_⟩` and prove the remaining obligations. Establish `key` using `IsFractionRing.lift_algebraMap (A := c.V W) (K := c.F) hinj v`.
+
+Rewrite using `[RingHom.comp_apply]`. Conclude with `key`. Establish `hring : (algebraMap O' (FractionRing O')).comp (b'.comp bV) = g.comp (algebraMap (𝓞 c.F) c.F)`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `congrArg (fun φ => φ (bV x)) hg` as an intermediate fact.
+
+Simplify using `only [RingHom.comp_apply] at this ⊢`. Rewrite using `[← this]`. Use `congr 1`. Conclude with `hbV x`. Establish `hsq : (Out.jK O' ≫ y') ≫ Z.s = spMap g ≫ spMap (algebraMap (𝓞 c.F) c.F)`.
+
+Rewrite using `[Category.assoc, hs, jK_eq]`. Conclude with `spMap_comp_eq _ _ _ _ hring`. Set `q` to `pullback.lift (Out.jK O' ≫ y') (spMap g) hsq`. Establish `hrange : Set.range q ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Rewrite using `[← Z.ab_gen, Set.mem_preimage, ← Scheme.Hom.comp_apply, pullback.lift_fst]`. Take `⟨z, hz⟩` from `hr ⟨p, rfl⟩`. Rewrite using `[← hz]`. Conclude with `GlobalTheory.ThetaShiftProofs.j_mem_abLocus Z z`. Use `haveI := Z.jQ_open`.
+
+Use `⟨IsOpenImmersion.lift Z.jQ q hrange, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]`.
+-/
 theorem exists_generic (W : ValuationSubring ℂ) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (bV : 𝓞 c.F →+* c.V W)
     (hbV : ∀ x, ((bV x : c.V W) : c.F) = (x : c.F)) {O' : Type} [CommRing O'] [IsDomain O'] [CharZero O']
     (b' : c.V W →+* O') (y' : Sp O' ⟶ Z.X) (hs : y' ≫ Z.s = spMap (b'.comp bV))
@@ -141,6 +184,11 @@ theorem exists_generic (W : ValuationSubring ℂ) (Z : Model Xo c (algebraMap (�
   refine ⟨IsOpenImmersion.lift Z.jQ q hrange, ?_⟩
   rw [Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]
 
+/- English proof (translation)
+Establish `hb'` using `GlobalTheory.PolArc.injective_of_charZero c W b'`. Establish `hV : ∀ y : nonZeroDivisors (c.V W), IsUnit ((ι.comp b') y)`. Introduce `y`. Establish `hy : b' y ≠ 0` using `fun h => nonZeroDivisors.ne_zero y.2 (hb' (h.trans (map_zero _).symm))`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy hϖ`.
+
+Rewrite using `[RingHom.comp_apply, hu, map_mul, map_pow]`. Conclude with `(u.isUnit.map _).mul (huϖ.pow n)`. Conclude with `⟨IsLocalization.lift (M := nonZeroDivisors (c.V W)) (S := c.F) hV, RingHom.ext fun v => IsLocalization.lift_eq (M := nonZeroDivisors (c.V W)) (S := c.F) hV v⟩`.
+-/
 theorem exists_lift_F (W : ValuationSubring ℂ) {O' : Type} [CommRing O'] [IsDomain O'] [CharZero O']
     [IsDiscreteValuationRing O'] (b' : c.V W →+* O') (ϖ : O') (hϖ : Irreducible ϖ) {A : Type} [CommRing A] (ι : O' →+* A)
     (huϖ : IsUnit (ι ϖ)) : ∃ φF : c.F →+* A, φF.comp (c.V W).subtype = ι.comp b' := by
@@ -154,6 +202,11 @@ theorem exists_lift_F (W : ValuationSubring ℂ) {O' : Type} [CommRing O'] [IsDo
   exact ⟨IsLocalization.lift (M := nonZeroDivisors (c.V W)) (S := c.F) hV,
     RingHom.ext fun v => IsLocalization.lift_eq (M := nonZeroDivisors (c.V W)) (S := c.F) hV v⟩
 
+/- English proof (translation)
+Establish `hinj : Function.Injective ((algebraMap A (FractionRing A)).comp ι)` using `(IsFractionRing.injective A (FractionRing A)).comp hι`. Use `⟨IsFractionRing.lift (A := R) (K := FractionRing R) hinj, ?_⟩` and prove the remaining obligations. Establish `h : ∀ r, IsFractionRing.lift (A` using `R) (K := FractionRing R) hinj (algebraMap R (FractionRing R) r) = algebraMap A (FractionRing A) (ι r) := fun r => IsFractionRing.lift_algebraMap hinj r`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+
+Use `congr 1`. Conclude with `CommRingCat.hom_ext (RingHom.ext fun r => (h r).symm)`.
+-/
 theorem exists_generic_map {R A : Type} [CommRing R] [IsDomain R] [CommRing A] [IsDomain A] (ι : R →+* A)
     (hι : Function.Injective ι) :
     ∃ γ : FractionRing R →+* FractionRing A, Out.jK A ≫ spMap ι = spMap γ ≫ Out.jK R := by
@@ -168,6 +221,29 @@ theorem exists_generic_map {R A : Type} [CommRing R] [IsDomain R] [CommRing A] [
   congr 1
   exact CommRingCat.hom_ext (RingHom.ext fun r => (h r).symm)
 
+/- English proof (translation)
+Use `haveI := isProper_toroidalModel_structureMap Z`. Establish `hYj : Mono Y.j` using `GlobalTheory.ThetaShiftProofs.mono_j Y (mono_spMap_subtype _)`. Establish `hb'` using `GlobalTheory.PolArc.injective_of_charZero c W b'`. Set `s : PowerSeries O'` to `PowerSeries.C ϖ * PowerSeries.X`. Establish `hs0 : s ≠ 0` using `mul_ne_zero (fun h => hϖ.ne_zero (PowerSeries.C_injective (h.trans (map_zero _).symm))) PowerSeries.X_ne_zero`.
+
+Establish `hle` using `powers_le_nonZeroDivisors_of_noZeroDivisors hs0`. Set `A` to `Localization.Away s`. Use `haveI : IsDomain A := IsLocalization.isDomain_localization hle`. Set `ι : PowerSeries O' →+* A` to `algebraMap (PowerSeries O') A`. Establish `hιinj : Function.Injective ι` using `IsLocalization.injective A hle`.
+
+Establish `hus : IsUnit (ι s)` using `IsLocalization.Away.algebraMap_isUnit s`. Establish `huϖ : IsUnit (ι (PowerSeries.C ϖ))`. Establish `: ι s = ι (PowerSeries.C ϖ) * ι PowerSeries.X` using `map_mul _ _ _`. Rewrite `hus` using `[this]`. Conclude with `isUnit_of_mul_isUnit_left hus`.
+
+Take `⟨φF, hφF₀⟩` from `exists_lift_F W b' ϖ hϖ (ι.comp (PowerSeries.C (R := O'))) huϖ`. Establish `hφF : φF.comp (c.V W).subtype = ι.comp ((PowerSeries.C (R` using `O')).comp b') := hφF₀`. Establish `hsq : (spMap ι ≫ χ₀) ≫ Y.s = spMap φF ≫ spMap (c.V W).subtype`. Rewrite using `[Category.assoc, hχ₀s, ← Category.assoc, ← spMap_comp, ← spMap_comp, ← spMap_comp, hφF]`. Set `q` to `pullback.lift (spMap ι ≫ χ₀) (spMap φF) hsq`.
+
+Establish `hrange : Set.range q ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[← Y.ab_gen, Set.mem_preimage, ← Scheme.Hom.comp_apply, pullback.lift_fst, Scheme.Hom.comp_apply, hχ₀ab]`. Introduce `hX`. Establish `h2 : ι PowerSeries.X ∈ p.asIdeal` using `hX`.
+
+Establish `h3 : ι s ∈ p.asIdeal`. Establish `: ι s = ι (PowerSeries.C ϖ) * ι PowerSeries.X` using `map_mul _ _ _`. Rewrite using `[this]`. Conclude with `p.asIdeal.mul_mem_left _ h2`. Conclude with `p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h3 hus)`.
+
+Use `haveI := Y.jQ_open`. Set `g : Sp A ⟶ Xo.XF c` to `IsOpenImmersion.lift Y.jQ q hrange`. Establish `hg : g ≫ Y.j = spMap ι ≫ χ₀`. Rewrite using `[Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]`. Take `⟨γ, hjγ⟩` from `exists_generic_map ι hιinj`.
+
+Establish `hgen : Out.jK A ≫ g = spMap γ ≫ x₀`. Rewrite using `[← cancel_mono Y.j, Category.assoc, hg, ← Category.assoc, hjγ, Category.assoc, hx₀, Category.assoc]`. Establish `hχA : spMap ι ≫ χ = g ≫ Z.j`. Use `ext_of_generic Z.s _ _ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hjγ, Category.assoc, hχ, ← Category.assoc, ← hgen, Category.assoc]`.
+
+Establish `hev : IsUnit (((algebraMap O' (FractionRing O')).comp ev) s)`. Use `isUnit_iff_ne_zero.2 ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, s, map_mul, hevC, hevX]`. Rewrite using `[← map_mul]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective O' (FractionRing O'))).2 (mul_ne_zero hϖ.ne_zero hϖ.ne_zero)`.
+
+Set `eA : A →+* FractionRing O'` to `IsLocalization.Away.lift s hev`. Establish `heA : eA.comp ι = (algebraMap O' (FractionRing O')).comp ev` using `IsLocalization.lift_comp _`. Establish `hjev : Out.jK O' ≫ spMap ev = spMap eA ≫ spMap ι`. Rewrite using `[jK_eq]`. Conclude with `spMap_comp_eq _ _ _ _ heA.symm`.
+
+Establish `hy : spMap eA ≫ g = y₀`. Rewrite using `[← cancel_mono Y.j, ← h0, Category.assoc, hg, ← Category.assoc, ← hjev, Category.assoc]`. Rewrite using `[← Category.assoc, hjev, Category.assoc, hχA, ← Category.assoc, hy]`.
+-/
 theorem eval_generic (W : ValuationSubring ℂ) {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c β)
     (Y : Model Xo c (c.V W).subtype) {O' : Type} [CommRing O'] [IsDomain O'] [CharZero O'] [IsDiscreteValuationRing O']
     (b' : c.V W →+* O') (ϖ : O') (hϖ : Irreducible ϖ) (χ₀ : Sp (PowerSeries O') ⟶ Y.X)
@@ -233,6 +309,17 @@ theorem eval_generic (W : ValuationSubring ℂ) {O : Type} [CommRing O] {β : O 
     rw [← cancel_mono Y.j, ← h0, Category.assoc, hg, ← Category.assoc, ← hjev, Category.assoc]
   rw [← Category.assoc, hjev, Category.assoc, hχA, ← Category.assoc, hy]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c W Z Y bV hbV O' _ _ _ b' ϖ a χ₀ hO hχ₀ hspec x₀ hx₀ χ hχ hϖ y' ev hy's hy'r hy'd hevC hevX`. Use `haveI : IsDiscreteValuationRing O' := by`. Break down `hO with ⟨-, rfl⟩ | ⟨hd, -, -⟩` into its components or cases. Conclude with `absurd hϖ not_irreducible_one`. Conclude with `hd`.
+
+Use `haveI := isProper_toroidalModel_structureMap Y`. Use `haveI := isProper_toroidalModel_structureMap Z`. Take `⟨y₀, hy₀⟩` from `GlobalTheory.PolArcSpec.exists_generic W Z bV hbV b' y' hy's hy'r`. Establish `hYs : (y₀ ≫ Y.j) ≫ Y.s = Out.jK O' ≫ spMap b'` using `by haveI := GlobalTheory.PolArcData.mono_spMap_incl bV hbV`. Rewrite using `[← cancel_mono (spMap bV)]`.
+
+Simplify using `only [Category.assoc]`. Establish `e1 : Y.j ≫ Y.s ≫ spMap bV = Z.j ≫ Z.s`. Rewrite using `[← Category.assoc, GlobalTheory.ThetaShiftProofs.j_over Y, GlobalTheory.ThetaShiftProofs.j_over Z, GlobalTheory.PolArcData.spMap_algebraMap_eq bV hbV, Category.assoc]`. Rewrite using `[e1, ← Category.assoc, ← hy₀, Category.assoc, hy's, spMap_comp]`. Take `⟨y'Y, hyY1, hyY2⟩` from `val_exists Y.s (y₀ ≫ Y.j) (spMap b') hYs`.
+
+Take `⟨t, m₁, m₂, hc⟩` from `GlobalTheory.T.integral_point_pullback_comparison E H D l Xo c W Z Y bV hbV O' y' y'Y y₀ hy₀ hyY1`. Establish `hdY` using `GlobalTheory.PolArcSpec.hasArcData_moveV_of_triple W Z Y bV hbV b' a (Ideal.span {ϖ}) (RingHom.id O') ϖ y' y'Y y₀ hy₀ hyY1 t m₁ m₂ hc hy'd`. Establish `hrY : Set.range (Out.jK O' ≫ y'Y) ⊆ Set.range Y.j`. Rewrite using `[hyY1]`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Conclude with `⟨y₀ p, by rw [Scheme.Hom.comp_apply]⟩`. Establish `hsp` using `hspec hϖ y'Y ev hyY2 hrY hdY hevC hevX`. Establish `h0 : Out.jK O' ≫ spMap ev ≫ χ₀ = y₀ ≫ Y.j` using `by rw [hsp, hyY1]`. Establish `hgen` using `GlobalTheory.PolArcSpec.eval_generic W Z Y b' ϖ hϖ χ₀ hχ₀.1 hχ₀.2.1 x₀ hx₀ χ hχ ev hevC hevX y₀ h0`. Conclude with `GlobalTheory.PolArcSpec.ext_of_generic Z.s _ _ (by rw [hgen, hy₀])`.
+-/
 theorem chart_specialises : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (W : ValuationSubring ℂ) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Y : Model Xo c (c.V W).subtype)
     (bV : 𝓞 c.F →+* c.V W) (hbV : ∀ x, ((bV x : c.V W) : c.F) = (x : c.F))

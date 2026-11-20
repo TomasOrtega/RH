@@ -19,6 +19,35 @@ attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
 open NumberField IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Aut UpperTheory.V.Pr UpperTheory.V
 open UpperTheory.V.Z.Win
 open Formalism.GaloisCohomology UpperTheory.V.Base in
+/- English proof (translation)
+Introduce `hF hL hD hQ hN hT hC Ω _ _ _ K _ _ _ aK l hl c N _ e ψ D ι B hB`. Establish `hσ : Sd.IsCC D.cc` using `D.conj`. Use `haveI : IsLocalHom (algebraMap ℤ_[l] c.O) := (dvrFacts l c.O).2.2.1`. Use `haveI : CharP (ResidueField c.O) l := by`. Rewrite using `[CharP.charP_iff_prime_eq_zero hl.out, ← map_natCast (residue c.O), residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] c.O)]`.
+
+Introduce `hu`. Conclude with `PadicInt.prime_p.not_unit (isUnit_of_map_unit _ _ hu)`. Take `⟨L, _, _, _, _, g₁, Φ, C₀, ⟨k⟩, ok, big, sc⟩` from `hF Ω K l c N e ψ D B hB`. Establish `hσ' : IsConjOm D.cc.toRingEquiv` using `hσ`. Establish `hsq : D.cc * D.cc = 1`.
+
+Take `⟨j, hj⟩` from `hσ'`. Conclude with `AlgEquiv.ext fun x => j.injective (by`. Establish `h1 : j (D.cc (D.cc x)) = starRingEnd ℂ (j (D.cc x))` using `hj (D.cc x)`. Establish `h2 : j (D.cc x) = starRingEnd ℂ (j x)` using `hj x`. Rewrite using `[AlgEquiv.mul_apply, h1, h2, Complex.conj_conj, AlgEquiv.one_apply])`.
+
+Establish `hΨ : Chr.Psi l e (Chr.dirG ℚ Ω ψ) D.cc = 1`. Establish `h1 : cycZ ℚ Ω l D.cc = -1` using `hσ'.cyc (E := ℚ)`. Establish `h2 : chiO ℚ Ω l c.O D.cc = -1` using `by show Units.map (algebraMap ℤ_[l] c.O).toMonoidHom (cycZ ℚ Ω l D.cc) = -1`. Rewrite using `[h1]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Establish `h3 : (Chr.dirG ℚ Ω ψ D.cc : c.O) = (-1) ^ e`. Rewrite using `[Chr.dirG, MonoidHom.comp_apply, (Chr.clsFacts ℚ Ω N).2.2.2.1 D.cc hσ', MulChar.coe_toUnitHom]`. Conclude with `D.gd.par`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `show ((chiO ℚ Ω l c.O D.cc ^ (e : ℤ) * Chr.dirG ℚ Ω ψ D.cc : c.Oˣ) : c.O) = 1`. Rewrite using `[h2, zpow_natCast, Units.val_mul, h3, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one, ← mul_pow]`. Simplify using the standard rewrite rules. Establish `hram : ∀ B' : ValuationSubring Ω, ¬ Ine (F` using `ℚ) B' ≤ D.η.ker → B'.valuation ((l * N * (discr K).natAbs : ℕ) : Ω) < 1 := by`. Introduce `B' h`.
+
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hd : B'.valuation ((discr K : ℤ) : Ω) < 1`. Assume the negation of the conclusion as `h4`. Use `h fun s hs => ?_` and prove the remaining obligations. Rewrite using `[D.η_ker]`.
+
+Establish `key` using `GlobalTheory.UnramDiscr.embedding_eq B' h4 ((s : Ω →+* Ω).comp (algebraMap K Ω)) (algebraMap K Ω) (fun x => by`. Use `hs.2 _ ((B'.valuation_le_one_iff _).mpr (GlobalTheory.UnramDiscr.mem_of_isIntegral B' ?_))` and prove the remaining obligations. Conclude with `(RingOfIntegers.isIntegral_coe x).map (algebraMap K Ω).toIntAlgHom)`. Conclude with `fun x => DFunLike.congr_fun key x`. Establish `hd' : B'.valuation (((discr K).natAbs : ℕ) : Ω) < 1`.
+
+Break down `Int.natAbs_eq (discr K) with h1 | h1` into its components or cases. Rewrite `hd` using `[h1, Int.cast_natCast]`. Conclude with `hd`. Rewrite `hd` using `[h1, Int.cast_neg, Int.cast_natCast, Valuation.map_neg]`. Conclude with `hd`.
+
+Rewrite using `[Nat.cast_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ((B'.valuation_le_one_iff _).2 (natCast_mem B' _))) hd'`. Establish `hlM : l ∣ l * N * (discr K).natAbs` using `(dvd_mul_right l N).mul_right _`. Take `⟨hfin, haut, ka, hka, haut2⟩` from `hL Ω l ι c N e ψ D.gd.e_pos D.gd.N_even D.η D.cc g₁ B _ (dvd_mul_right _ _) hram L Φ C₀ k hB ok big sc`. Use `haveI : IsAlgClosure L Ω := Th.Db.algClo L Ω`.
+
+Establish `hLk : LinkHyp c N e D.η D.cc B (l * N * (discr K).natAbs)` using `⟨D.gd.e_pos, dvd_mul_right _ _, mul_ne_zero (mul_ne_zero hl.out.ne_zero (NeZero.ne N)) (Int.natAbs_ne_zero.2 (discr_ne_zero K)), hram, hB, hσ⟩`. Establish `h3'` using `h3 Ω l c N e ψ _ _ g₁ B _ hLk L Φ C₀ k ok`. Establish `hK3'` using `hK3 Ω l c N e ψ D.gd.N_even _ _ g₁ B _ hLk L Φ C₀ k ok big sc`. Establish `h2'` using `_root_.UpperTheory.V.Z.Win.Dn.end2' (_root_.UpperTheory.V.Z.Win.Dn.autEnd2_alt H hPot hIne hQ hN hT hC D k ok hlM hB hLk ι ka hka haut2)`. Establish `h1'` using `_root_.UpperTheory.V.Z.Win.Dn.autEnd3_alt hD k ok hlM hσ ι K`.
+
+Establish `hk` using `D.η_ker`. Establish `hq` using `D.gd.quad`. Use `⟨g₁, marks_of_link k ok hlM hsq hΨ, finEnd_of_finPt k ok hlM hsq hfin, ?_, h2'⟩` and prove the remaining obligations. Establish `h0` using `fun a b => h1' a b haut`. Use `clear h1' h2' haut haut2`.
+
+Generalize the expression as in `D.η = η₀ at h0 h3' hK3' hk ⊢`. Establish `hker : ∀ [Algebra K Ω], Base.galOf ℚ K Ω = η₀.ker`. Rewrite using `[hk]`. Introduce `a`. Use extensionality with `s`.
+
+Conclude with `⟨fun h => fix_iff hq a.algebraMap aK.algebraMap s h, fun h => fix_iff hq aK.algebraMap a.algebraMap s h⟩`. Conclude with `h0 hker fun A _ _ r hr hi _ _ _ ρ hρ => by haveI : IsAlgClosure K Ω := Th.Db.algClo K Ω`. Establish `t` using `h3' A r hr K hker.symm ρ hρ`. Conclude with `⟨t.1, t.2, hK3' A r hr hi K hker.symm ρ hρ⟩`.
+-/
 theorem UpperTheory.V.Z.Win.Dn.gdEnd_of_frame_linkedEnd_downCsdK_descent (H : _root_.UpperTheory.V.Af.HypothesesH') (h3 : Dn.Loc3) (hK3 : Dn.LocalConditionRankThreeEvenLevel) (hPot : Dn.PotTwo) (hIne : Dn.Ine2) :
     GdFrameEx → _root_.UpperTheory.V.Z.Sym.Pl.LinkedEndEAlt → _root_.UpperTheory.V.Z.Win.Dn.DownCsdKAlt → RankTwoAutomorphyDescendsFromAbelianCMToRat → _root_.UpperTheory.V.Z.Win.RR.AutNewformA → Sd.TwC → Sd.AlgCyc → _root_.UpperTheory.V.Pr.GdEndAlt := by
   intro hF hL hD hQ hN hT hC Ω _ _ _ K _ _ _ aK l hl c N _ e ψ D ι B hB

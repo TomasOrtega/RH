@@ -20,12 +20,18 @@ namespace GlobalTheory.CompanionTheory.MPDict.HermRep
 section Main
 variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
+/- English proof (translation)
+The claim follows from `CxPts.ev_res e h _`.
+-/
 theorem ev_resU {U W : (MP ℤ m n).Opens} (e : W ≤ U) {y : CxPts (mpStr ℤ m n) σ₀}
     (h : y ∈ ptsIn (mpStr ℤ m n) σ₀ W) (u : Γ(MP ℤ m n, U)ˣ) :
     CxPts.ev (mpStr ℤ m n) σ₀ W ((res e u : Γ(MP ℤ m n, W)ˣ) : Γ(MP ℤ m n, W)) y =
       CxPts.ev (mpStr ℤ m n) σ₀ U (u : Γ(MP ℤ m n, U)) y :=
   CxPts.ev_res e h _
 
+/- English proof (translation)
+Establish `key : ∀ x : Γ(MP ℤ m n, W)ˣ, CxPts.ev (mpStr ℤ m n) σ₀ W (x : Γ(MP ℤ m n, W)) y = ((Units.map (evHom h).toMonoidHom x : ℂˣ) : ℂ)` using `fun x => ev_eq h _`. Rewrite using `[key, map_prod, Units.coe_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, Units.val_zpow_eq_zpow_val, key]`.
+-/
 theorem ev_prod_zpow {W : (MP ℤ m n).Opens} {y : CxPts (mpStr ℤ m n) σ₀}
     (h : y ∈ ptsIn (mpStr ℤ m n) σ₀ W) {ι : Type} [Fintype ι] (b : ι → Γ(MP ℤ m n, W)ˣ) (e : ι → ℤ) :
     CxPts.ev (mpStr ℤ m n) σ₀ W ((∏ k, b k ^ e k : Γ(MP ℤ m n, W)ˣ) : Γ(MP ℤ m n, W)) y =
@@ -36,6 +42,9 @@ theorem ev_prod_zpow {W : (MP ℤ m n).Opens} {y : CxPts (mpStr ℤ m n) σ₀}
   refine Finset.prod_congr rfl fun k _ => ?_
   rw [map_zpow, Units.val_zpow_eq_zpow_val, key]
 
+/- English proof (translation)
+Establish `hi : W ≤ blockChart n k i` using `h.trans ((prB n k).preimage_mono inf_le_left)`. Establish `e1 : (blockUnit i j h : Γ(MP ℤ m n, W)) = pullRatio (prB n k) W i hi j` using `appLE_ratioOn (φ := prB n k) (i := i) (j := j) (inf_le_left : chart ℤ (n k) i ⊓ chart ℤ (n k) j ≤ chart ℤ (n k) i) h`. Rewrite using `[e1, ← resG_pullRatio (W := blockChart n k i) (hi := le_rfl) hi, CxPts.ev_res hi hW]`. Conclude with `(hy k i).2 j (ptsIn_mono hi hW)`.
+-/
 theorem ev_blockUnit {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (hy : IsUnder y z)
     (k : Fin (m + 1)) (i j : Bk n k) {W : (MP ℤ m n).Opens}
     (h : W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) i ⊓ chart ℤ (n k) j)) (hW : y ∈ ptsIn (mpStr ℤ m n) σ₀ W) :
@@ -47,6 +56,9 @@ theorem ev_blockUnit {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → �
   rw [e1, ← resG_pullRatio (W := blockChart n k i) (hi := le_rfl) hi, CxPts.ev_res hi hW]
   exact (hy k i).2 j (ptsIn_mono hi hW)
 
+/- English proof (translation)
+Rewrite using `[ev_prod_zpow hW]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [ev_blockUnit hy k _ _ (h k) hW]`.
+-/
 theorem ev_prod_blockUnit {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (hy : IsUnder y z)
     (c c' : ∀ k, Bk n k) {W : (MP ℤ m n).Opens}
     (h : ∀ k, W ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) (c k) ⊓ chart ℤ (n k) (c' k)))
@@ -56,6 +68,9 @@ theorem ev_prod_blockUnit {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) 
   rw [ev_prod_zpow hW]
   exact Finset.prod_congr rfl fun k _ => by rw [ev_blockUnit hy k _ _ (h k) hW]
 
+/- English proof (translation)
+Introduce `k i`. Take `⟨h1, h2⟩` from `hy k i`. Use `⟨h1.trans ⟨fun h => mul_ne_zero (hl k) h, fun h => right_ne_zero_of_mul h⟩, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 j hj, mul_div_mul_left _ _ (hl k)]`.
+-/
 theorem isUnder_smul {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (hy : IsUnder y z)
     (l : Fin (m + 1) → ℂ) (hl : ∀ k, l k ≠ 0) : IsUnder y (fun p => l p.1 * z p) := by
   intro k i
@@ -63,6 +78,9 @@ theorem isUnder_smul {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → �
   refine ⟨h1.trans ⟨fun h => mul_ne_zero (hl k) h, fun h => right_ne_zero_of_mul h⟩, fun j hj => ?_⟩
   rw [h2 j hj, mul_div_mul_left _ _ (hl k)]
 
+/- English proof (translation)
+Use `isUnder_smul hy (fun k => (l k)⁻¹) fun k => inv_ne_zero (hl k)` as an intermediate fact. Simplify `this` using `only [inv_mul_cancel_left₀ (hl _)]`.
+-/
 theorem isUnder_of_smul {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (l : Fin (m + 1) → ℂ)
     (hl : ∀ k, l k ≠ 0) (hy : IsUnder y (fun p => l p.1 * z p)) : IsUnder y z := by
   have := isUnder_smul hy (fun k => (l k)⁻¹) fun k => inv_ne_zero (hl k)
@@ -76,6 +94,15 @@ def hval (y : CxPts (mpStr ℤ m n) σ₀) (z : (Σ k, Bk n k) → ℂ) (i : M.B
     ‖CxPts.ev (mpStr ℤ m n) σ₀ (M.B.U i ⊓ mchart c) (u i c : Γ(MP ℤ m n, M.B.U i ⊓ mchart c)) y‖ *
       Real.exp ((M.φ σ₀).φ i y / 2)
 
+/- English proof (translation)
+Rewrite `hi`, `hj` using `[mem_ptsIn_inf]`. Establish `hij : y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i ⊓ M.B.U j ⊓ mchart c)` using `mem_ptsIn_inf.2 ⟨mem_ptsIn_inf.2 ⟨hi.1, hj.1⟩, hi.2⟩`. Establish `e` using `congrArg (fun w : Γ(MP ℤ m n, M.B.U i ⊓ M.B.U j ⊓ mchart c)ˣ => CxPts.ev (mpStr ℤ m n) σ₀ _ w.val y) (h1 i j c)`. Simplify using `only [Units.val_mul, ev_mul, ev_resU _ hij] at e`. Establish `hg : gv (mpStr ℤ m n) σ₀ M.B i j y ≠ 0` using `gv_ne_zero hi.1 hj.1`.
+
+Establish `hpos : 0 < ‖gv (mpStr ℤ m n) σ₀ M.B i j y‖` using `norm_pos_iff.2 hg`. Establish `ht` using `(M.φ σ₀).trans i j y hi.1 hj.1`. Unfold `hval`. Rewrite using `[e, ht, norm_mul]`. Express the relevant statement in the definitionally equal form `_ = _ * (‖gv (mpStr ℤ m n) σ₀ M.B i j y‖ * _) * _`.
+
+Establish `ex : Real.exp (((M.φ σ₀).φ i y - Real.log (‖gv (mpStr ℤ m n) σ₀ M.B i j y‖ ^ 2)) / 2) = Real.exp ((M.φ σ₀).φ i y / 2) / ‖gv (mpStr ℤ m n) σ₀ M.B i j y‖`. Rewrite using `[Real.log_pow, sub_div, Real.exp_sub]`. Use `congr 1`. Rewrite using `[show ((2 : ℕ) : ℝ) * Real.log ‖gv (mpStr ℤ m n) σ₀ M.B i j y‖ / 2 = Real.log ‖gv (mpStr ℤ m n) σ₀ M.B i j y‖ by push_cast; ring, Real.exp_log hpos]`. Rewrite using `[ex]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem hval_chart (h1 : (∀ i j c',
       res (le_inf (inf_le_left.trans inf_le_right) inf_le_right :
           M.B.U i ⊓ M.B.U j ⊓ mchart c' ≤ M.B.U j ⊓ mchart c') (u j c') =
@@ -106,6 +133,13 @@ theorem hval_chart (h1 : (∀ i j c',
   rw [ex]
   field_simp
 
+/- English proof (translation)
+Rewrite `hc`, `hc'` using `[mem_ptsIn_inf]`. Establish `hcc : y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i ⊓ (mchart c ⊓ mchart c'))` using `mem_ptsIn_inf.2 ⟨hc.1, mem_ptsIn_inf.2 ⟨hc.2, hc'.2⟩⟩`. Establish `e` using `congrArg (fun w : Γ(MP ℤ m n, M.B.U i ⊓ (mchart c ⊓ mchart c'))ˣ => CxPts.ev (mpStr ℤ m n) σ₀ _ w.val y) (h2 i c c')`. Simplify using `only [Units.val_mul, ev_mul, ev_resU _ hcc] at e`. Rewrite `e` using `[ev_prod_blockUnit hy c c' (fun k => (fun _ hx => ⟨mchart_le c k hx.2.1, mchart_le c' k hx.2.2⟩ : M.B.U i ⊓ (mchart c ⊓ mchart c') ≤ prB n k ⁻¹ᵁ (chart ℤ (n k) (c k) ⊓ chart ℤ (n k) (c' k)))) hcc a]`.
+
+Establish `hz : ∀ k, z ⟨k, c k⟩ ≠ 0` using `fun k => ((hy k (c k)).1).1 (ptsIn_mono (mchart_le c k) hc.2)`. Unfold `hval`. Rewrite using `[e, norm_mul, norm_prod]`. Establish `hk : ∀ k, ‖z ⟨k, c k⟩‖ ^ a k * ‖(z ⟨k, c' k⟩ / z ⟨k, c k⟩) ^ a k‖ = ‖z ⟨k, c' k⟩‖ ^ a k`. Introduce `k`.
+
+Rewrite using `[norm_zpow, norm_div, div_zpow, mul_div_cancel₀ _ (zpow_ne_zero _ (norm_ne_zero_iff.2 (hz k)))]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by simp only [hk]`.
+-/
 theorem hval_multi (h2 : (∀ i (c' c'' : ∀ k, Bk n k),
       res (le_inf inf_le_left (inf_le_right.trans inf_le_left) :
           M.B.U i ⊓ (mchart c' ⊓ mchart c'') ≤ M.B.U i ⊓ mchart c') (u i c') =
@@ -144,12 +178,18 @@ variable {m : ℕ} {n : Fin (m + 1) → ℕ}
 
 def ptC (y : CxPts (mpStr ℤ m n) σ₀) : ∀ k, Bk n k := fun k => ptChart (y.1 (IsLocalRing.closedPoint ℂ)) k
 
+/- English proof (translation)
+The claim follows from `mem_ptsIn.2 (Set.mem_iInter.2 fun k => mem_ptChart _ k)`.
+-/
 theorem mem_ptC (y : CxPts (mpStr ℤ m n) σ₀) : y ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart (ptC y)) :=
   mem_ptsIn.2 (Set.mem_iInter.2 fun k => mem_ptChart _ k)
 
 variable (M : HermLB (mpStr ℤ m n)) (a : Fin (m + 1) → ℤ)
   (u : ∀ (i : M.B.ι) (c : ∀ k, Bk n k), Γ(MP ℤ m n, M.B.U i ⊓ mchart c)ˣ)
 
+/- English proof (translation)
+The claim follows from `mem_ptsIn_inf.2 ⟨mem_pick M.isLB y, mem_ptC y⟩`.
+-/
 theorem mem_pick_ptC (y : CxPts (mpStr ℤ m n) σ₀) :
     y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U (pick M.isLB y) ⊓ mchart (ptC y)) :=
   mem_ptsIn_inf.2 ⟨mem_pick M.isLB y, mem_ptC y⟩
@@ -159,6 +199,9 @@ open Classical in
 def hOf (z : (Σ k, Bk n k) → ℂ) : ℝ :=
   if hz : ∃ y, IsUnder y z then hval M a u hz.choose z (pick M.isLB hz.choose) (ptC hz.choose) else 0
 
+/- English proof (translation)
+Establish `hz : ∃ y, IsUnder y z` using `⟨y, hy⟩`. Rewrite using `[hOf, dif_pos hz, uniq z _ _ hz.choose_spec hy]`. Establish `h0` using `mem_pick_ptC M y`. Rewrite `h0`, `hi` using `[mem_ptsIn_inf]`. Rewrite using `[hval_chart M a u h1 z (pick M.isLB y) i (ptC y) (mem_ptsIn_inf.2 h0) (mem_ptsIn_inf.2 ⟨hi.1, h0.2⟩), hval_multi M a u h2 hy i (ptC y) c (mem_ptsIn_inf.2 ⟨hi.1, h0.2⟩) (mem_ptsIn_inf.2 hi)]`.
+-/
 theorem hOf_eq (h1 : (∀ i j c',
       res (le_inf (inf_le_left.trans inf_le_right) inf_le_right :
           M.B.U i ⊓ M.B.U j ⊓ mchart c' ≤ M.B.U j ⊓ mchart c') (u j c') =
@@ -182,6 +225,9 @@ theorem hOf_eq (h1 : (∀ i j c',
   rw [hval_chart M a u h1 z (pick M.isLB y) i (ptC y) (mem_ptsIn_inf.2 h0) (mem_ptsIn_inf.2 ⟨hi.1, h0.2⟩),
     hval_multi M a u h2 hy i (ptC y) c (mem_ptsIn_inf.2 ⟨hi.1, h0.2⟩) (mem_ptsIn_inf.2 hi)]
 
+/- English proof (translation)
+Establish `hz : ∀ k, z ⟨k, c k⟩ ≠ 0` using `fun k => ((hy k (c k)).1).1 (ptsIn_mono (mchart_le c k) (mem_ptsIn_inf.1 hi).2)`. Use `mul_pos (mul_pos (Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (hz k)) _) (norm_pos_iff.2 (ev_ne_zero hi (u i c).isUnit))) (Real.exp_pos _)` and prove the remaining obligations.
+-/
 theorem hval_pos {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (hy : IsUnder y z) (i : M.B.ι)
     (c : ∀ k, Bk n k) (hi : y ∈ ptsIn (mpStr ℤ m n) σ₀ (M.B.U i ⊓ mchart c)) : 0 < hval M a u y z i c := by
   have hz : ∀ k, z ⟨k, c k⟩ ≠ 0 := fun k =>
@@ -189,6 +235,9 @@ theorem hval_pos {y : CxPts (mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} 
   refine mul_pos (mul_pos (Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (hz k)) _)
     (norm_pos_iff.2 (ev_ne_zero hi (u i c).isUnit))) (Real.exp_pos _)
 
+/- English proof (translation)
+Unfold `hval`. Simplify using `only [norm_mul, mul_zpow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hval_smul {y : CxPts (mpStr ℤ m n) σ₀} (z : (Σ k, Bk n k) → ℂ) (l : Fin (m + 1) → ℂ) (i : M.B.ι)
     (c : ∀ k, Bk n k) : hval M a u y (fun p => l p.1 * z p) i c = (∏ k, ‖l k‖ ^ a k) * hval M a u y z i c := by
   unfold hval
@@ -225,6 +274,9 @@ def lineOf (h1 : (∀ i j c',
     · have hz' : ¬ ∃ y, IsUnder y (fun p => l p.1 * z p) := fun ⟨y, hy⟩ => hz ⟨y, isUnder_of_smul l hl hy⟩
       rw [hOf, dif_neg hz', hOf, dif_neg hz, mul_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨u, h1, h2, fun i c _ _ hy hi => hOf_eq M a u h1 h2 uniq hy i c hi⟩`.
+-/
 theorem isHermRep_lineOf (h1 : (∀ i j c',
       res (le_inf (inf_le_left.trans inf_le_right) inf_le_right :
           M.B.U i ⊓ M.B.U j ⊓ mchart c' ≤ M.B.U j ⊓ mchart c') (u j c') =
@@ -245,6 +297,9 @@ theorem isHermRep_lineOf (h1 : (∀ i j c',
 
 end Metric
 
+/- English proof (translation)
+Introduce `m n M hM`. Take `⟨c, t, ⟨hw⟩⟩` from `hM`. Take `⟨u, h1, h2⟩` from `GlobalTheory.CompanionTheory.MPDict.TwUnits.exists_units m n M.B c t M.isLB hw`. Conclude with `⟨_, isHermRep_lineOf M _ u h1 h2 (GlobalTheory.CompanionTheory.MPDict.UnderExists.exists_isUnder m n) (GlobalTheory.CompanionTheory.MPDict.isUnder_unique m n)⟩`.
+-/
 theorem exists_isHermRep : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (M : HermLB (mpStr ℤ m n)), IsTwB M →
     ∃ A : Geo.HermLine (Bk n), IsHermRep M A := by
   intro m n M hM

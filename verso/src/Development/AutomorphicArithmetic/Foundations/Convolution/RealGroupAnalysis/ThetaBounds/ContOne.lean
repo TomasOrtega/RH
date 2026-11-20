@@ -18,6 +18,9 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E]
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace (Matrix (Fin 2) (Fin 2) (Cinf E)) := inferInstanceAs (LocallyCompactSpace (Fin 2 → Fin 2 → Cinf E))`. Use `haveI : FirstCountableTopology (Matrix (Fin 2) (Fin 2) (Cinf E)) := inferInstanceAs (FirstCountableTopology (Fin 2 → Fin 2 → Cinf E))`. Use `haveI : FirstCountableTopology (Matrix (Fin 2) (Fin 2) (Cinf E))ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin 2) (Fin 2) (Cinf E))).symm.isInducing.firstCountableTopology`. Establish `h` using `Units.isClosedEmbedding_embedProduct (α := Matrix (Fin 2) (Fin 2) (Cinf E))`. Conclude with `⟨h.locallyCompactSpace, h.isEmbedding.isInducing.firstCountableTopology⟩`.
+-/
 private theorem top_GL (E : Type) [Field E] [NumberField E] :
     LocallyCompactSpace (GL (Fin 2) (Cinf E)) ∧ FirstCountableTopology (GL (Fin 2) (Cinf E)) := by
   haveI : LocallyCompactSpace (Matrix (Fin 2) (Fin 2) (Cinf E)) :=
@@ -29,12 +32,22 @@ private theorem top_GL (E : Type) [Field E] [NumberField E] :
   have h := Units.isClosedEmbedding_embedProduct (α := Matrix (Fin 2) (Fin 2) (Cinf E))
   exact ⟨h.locallyCompactSpace, h.isEmbedding.isInducing.firstCountableTopology⟩
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun T : Module.End ℂ (S4 F) => T φ) (W.comm h g)`. Simplify using `only [Module.End.mul_apply, hh] at e`. Rewrite using `[e, UpperTheory.ConvolutionTheory.R2.M.cD_one]`.
+-/
 private theorem om_L {D : Dat F E} (W : Weil D) (g : G1 F) (h : GL (Fin 2) (A E))
     (hh : nu F h = 1) (φ : S4 F) : W.Om g (W.L h φ) = W.L h (W.Om g φ) := by
   have e := congrArg (fun T : Module.End ℂ (S4 F) => T φ) (W.comm h g)
   simp only [Module.End.mul_apply, hh] at e
   rw [e, UpperTheory.ConvolutionTheory.R2.M.cD_one]
 
+/- English proof (translation)
+Take `⟨ρ, hρ, hact, hnu, hinf, -⟩` from `actCont F E D`. Establish `hΨ` using `(wtBound F Ψ).1`. Establish `e : (fun y : GL (Fin 2) (Cinf E) => (W.L (infGL E 2 y) Ψ).1 v) = fun y => (((ab (nu F (infGL E 2 y)))⁻¹ : ℝ) : ℂ) * Ψ.1 ((ρ (infGL E 2 y)⁻¹).val *ᵥ v)`. Use function extensionality and compare the values at `y`. Rewrite using `[W.L_apply, hact]`.
+
+Rewrite using `[e]`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Conclude with `Complex.continuous_ofReal.comp ((continuous_ab.comp (hnu.comp hinf)).inv₀ fun _ => (ab_pos _).ne')`. Use `hΨ.comp ?_` and prove the remaining obligations. Establish `h1 : Continuous fun y : GL (Fin 2) (Cinf E) => ρ (infGL E 2 y)⁻¹` using `hρ.comp (continuous_inv.comp hinf)`.
+
+Conclude with `(Units.continuous_val.comp h1).matrix_mulVec continuous_const`.
+-/
 private theorem term_cont (D : Dat F E) (W : Weil D) (Ψ : S4 F) (v : V4 F) :
     Continuous fun y : GL (Fin 2) (Cinf E) => (W.L (infGL E 2 y) Ψ).1 v := by
   obtain ⟨ρ, hρ, hact, hnu, hinf, -⟩ := actCont F E D
@@ -52,6 +65,15 @@ private theorem term_cont (D : Dat F E) (W : Weil D) (Ψ : S4 F) (v : V4 F) :
       hρ.comp (continuous_inv.comp hinf)
     exact (Units.continuous_val.comp h1).matrix_mulVec continuous_const
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `wtSum F`. Take `⟨ρ, -, -, -, hinf, -⟩` from `actCont F E D`. Take `⟨K, hK, hb⟩` from `lDom F E D W Unit Set.univ (fun _ => Ψ) (wtBound F Ψ).2 (infGL E 2 '' S) (hS.image hinf)`. Take `⟨B, hB⟩` from `hb n`. Take `⟨C, hC⟩` from `hn K hK 1 one_pos`.
+
+Take `⟨hs, -⟩` from `hC 1 (by rw [ab_one])`. Establish `e : (fun ξ : Fin 4 → F => wt K n (sc (1 : (A F)ˣ) ξ)) = fun ξ => wt K n fun i => rt (ξ i)`. Use function extensionality and compare the values at `ξ`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `((1 : (A F)ˣ) : A F) * rt (ξ i) = rt (ξ i)`. Rewrite using `[Units.val_one, one_mul]`. Rewrite `hs` using `[e]`. Unfold `Th`. Use `continuousOn_tsum (fun ξ => (term_cont D W Ψ _).continuousOn) (hs.mul_left B) ?_` and prove the remaining obligations.
+
+Introduce `ξ y hy`. Conclude with `hB (infGL E 2 y, ()) ⟨⟨y, hy, rfl⟩, trivial⟩ _`.
+-/
 private theorem th_cont (D : Dat F E) (W : Weil D) (Ψ : S4 F) (S : Set (GL (Fin 2) (Cinf E)))
     (hS : IsCompact S) : ContinuousOn (fun y => Th (W.L (infGL E 2 y) Ψ).1) S := by
   obtain ⟨n, hn⟩ := wtSum F
@@ -75,6 +97,17 @@ private theorem th_cont (D : Dat F E) (W : Weil D) (Ψ : S4 F) (S : Set (GL (Fin
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ y₀ hy₀`. Take `⟨ρ, -, -, hnu, hinf, -⟩` from `actCont F E D`. Take `⟨hlc, hfc⟩` from `top_GL E`. Establish `hfcont : Continuous f.1` using `(decay F π f hf).1`. Take `⟨S, hS, hSmem⟩` from `exists_compact_mem_nhds y₀`.
+
+Establish `hcl : IsClosed {y : GL (Fin 2) (Cinf E) | UpperTheory.ConvolutionTheory.R2.Ff.One F y}` using `isClosed_eq (hnu.comp hinf) continuous_const`. Establish `hC'` using `hS.inter_right hcl`. Take `⟨B, hB⟩` from `thBoundH F E D W π f hf φ hφ 1 {1} isCompact_singleton _ hC' (fun y hy => hy.2)`. Use `haveI : IsFiniteMeasure (M.μ.restrict M.D) := ⟨by simpa using vol F M⟩`. Establish `key : ContinuousWithinAt (fun y : GL (Fin 2) (Cinf E) => ∫ g, f.1 (gl g) * Th (W.Om g (W.L (infGL E 2 y) φ)).1 ∂(M.μ.restrict M.D)) {y | UpperTheory.ConvolutionTheory.R2.Ff.One F y} y₀`.
+
+Use `continuousWithinAt_of_dominated (bound := fun _ => B) ?_ ?_ (integrable_const _) ?_` and prove the remaining obligations. Use `filter_upwards with y`. Conclude with `((hfcont.comp continuous_gl).measurable.mul (thMeas F E D W (W.L (infGL E 2 y) φ)).1).aestronglyMeasurable`. Establish `hev : ∀ᶠ y in 𝓝[{y | UpperTheory.ConvolutionTheory.R2.Ff.One F y}] y₀, y ∈ S ∩ {y | UpperTheory.ConvolutionTheory.R2.Ff.One F y}` using `inter_mem (mem_nhdsWithin_of_mem_nhds hSmem) self_mem_nhdsWithin filter_upwards [hev] with y hy`. Use `ae_of_all _ fun g => ?_` and prove the remaining obligations.
+
+Simplify using `using hB g 1 rfl y hy`. Use `ae_of_all _ fun g => ?_` and prove the remaining obligations. Establish `h1 : ContinuousAt (fun y => Th (W.L (infGL E 2 y) (W.Om g φ)).1) y₀` using `(th_cont D W (W.Om g φ) S hS).continuousAt hSmem`. Establish `h2 : ContinuousWithinAt (fun y => Th (W.Om g (W.L (infGL E 2 y) φ)).1) {y | UpperTheory.ConvolutionTheory.R2.Ff.One F y} y₀` using `h1.continuousWithinAt.congr (fun y hy => by rw [om_L W g _ hy]) (by rw [om_L W g _ hy₀])`. Conclude with `continuousWithinAt_const.mul h2`.
+
+Use `key.congr (fun y hy => ?_) ?_` and prove the remaining obligations. Establish `hy' : nu F (infGL E 2 y) = 1` using `hy`. Simplify using `only [lift, hy', dM_one, mul_one]`. Establish `hy' : nu F (infGL E 2 y₀) = 1` using `hy₀`. Simplify using `only [lift, hy', dM_one, mul_one]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.contOne :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ContOne W M π := by
   intro F E _ _ _ _ _ _ _ D W M π f hf φ hφ y₀ hy₀

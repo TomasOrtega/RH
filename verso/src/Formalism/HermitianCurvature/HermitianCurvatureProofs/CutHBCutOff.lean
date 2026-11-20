@@ -45,6 +45,9 @@ section proofs
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.PBI.det_hMat_pt, Formalism.FourierDecayAlt.P.PBI.det_hMat_pt h]`. Establish `hsz : D.ptSize (h ++ [(1, t)]) = D.ptSize h + 1`. Simplify using `[D.ptSize]`. Rewrite using `[hsz, (Formalism.FourierDecayAlt.P.PBD.det_ptMatN_app t h (D.ptSize h) rfl).1, mul_comm]`.
+-/
 theorem det_hMat_app (h : C.LPt) (t : ℂ) :
     (U.hMat (D.ptPerm (h ++ [(1, t)])) (D.ptDiag (h ++ [(1, t)]))).det =
       (U.hMat (D.ptPerm h) (D.ptDiag h)).det * t := by
@@ -53,6 +56,9 @@ theorem det_hMat_app (h : C.LPt) (t : ℂ) :
     simp [D.ptSize]
   rw [hsz, (Formalism.FourierDecayAlt.P.PBD.det_ptMatN_app t h (D.ptSize h) rfl).1, mul_comm]
 
+/- English proof (translation)
+The claim follows from `| [], _, g, hg, hne => hε g hg hne | l :: w, e, g, hg, hne => by by_contra hlt push Not at hlt apply hne show D.vLet k r z z' i hi l (e 0) (D.uwG k r z z' F i hi w fun a => e a.succ) g = 0 refine Formalism.FourierDecayAlt.P.PBG.vLet_zero_near z z' i hi l (e 0) _ (V := {x | Gf k r …`.
+-/
 theorem uwG_zero_of_G {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (ε : ℝ)
     (hε : ∀ g ∈ B.GV k r, F g ≠ 0 → ε ≤ Gf k r z z' g) (i : ℕ) (hi : i ≤ r) :
     ∀ (w : List C.Letter) (e : Wd.Ix (Fin w.length)), ∀ g ∈ B.GV k r,
@@ -72,6 +78,21 @@ def cutW {P : M.Par} (Bs : B.RealPlaceData P.k P.r Wp Wq) (χ : ℂ → ℝ) (F 
     (hi : i ≤ P.r) (w : List C.Letter) (e : Wd.Ix (Fin w.length)) : B.Mat P.k P.r → (Wq →L[ℂ] Wp) :=
   fun g => χ (Dmin P.k P.r Bs.z Bs.z' g ⟨i, by omega⟩) • D.uwG P.k P.r Bs.z Bs.z' F i hi w e g
 
+/- English proof (translation)
+Take `⟨hck, ⟨R, hR⟩, ε, hε, hεG⟩` from `hF`. Establish `hn : 0 < ‖a‖` using `norm_pos_iff.mpr ha`. Set `b : ContDiffBump a` to `⟨‖a‖ / 4, ‖a‖ / 2, by positivity, by linarith⟩`. Establish `hD : ContDiff ℝ (⊤ : ℕ∞) (fun g : B.Mat P.k P.r => Dmin P.k P.r Bs.z Bs.z' g ⟨i, by omega⟩)` using `Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin Bs.z Bs.z' _`. Establish `hbD : ContDiff ℝ (⊤ : ℕ∞) (fun g : B.Mat P.k P.r => b (Dmin P.k P.r Bs.z Bs.z' g ⟨i, by omega⟩))` using `b.contDiff.comp hD`.
+
+Establish `hne : ∀ g, cutW Bs b F i hi w e g ≠ 0 → D.uwG P.k P.r Bs.z Bs.z' F i hi w e g ≠ 0`. Introduce `g hg h0`. Apply `hg` to reduce the goal to its premises. Simplify using `[cutW, h0]`. Use `⟨cutW Bs b F i hi w e, ⟨?_, ⟨R, fun g hg h1 => Formalism.FourierDecayAlt.P.PBG.uwG_supp Bs.z Bs.z' F R hR i hi w e g hg (hne g h1)⟩, ε, hε, fun g hg h1 => uwG_zero_of_G Bs.z Bs.z' F ε hεG i hi w e g hg (hne g h1)⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `g₀ hg₀`. Distinguish the cases in `h0 : Dmin P.k P.r Bs.z Bs.z' g₀ ⟨i, by omega⟩ = 0`. Use `⟨{g | ‖Dmin P.k P.r Bs.z Bs.z' g ⟨i, by omega⟩‖ < ‖a‖ / 2}, fun _ => 0, isOpen_lt (continuous_norm.comp hD.continuous) continuous_const, by simp [h0]; positivity, contDiffOn_const, fun g hg _ => ?_⟩` and prove the remaining obligations. Establish `hb0 : b (Dmin P.k P.r Bs.z Bs.z' g ⟨i, by omega⟩) = 0`. Apply `Function.notMem_support.1` to reduce the goal to its premises.
+
+Rewrite using `[b.support_eq, Metric.mem_ball, dist_eq_norm]`. Introduce `hlt`. Establish `h1 : ‖a‖ ≤ ‖Dmin P.k P.r Bs.z Bs.z' g ⟨i, by omega⟩ - a‖ + ‖Dmin P.k P.r Bs.z Bs.z' g ⟨i, by omega⟩‖`. Use `norm_sub_le (Dmin P.k P.r Bs.z Bs.z' g ⟨i, by omega⟩) (Dmin P.k P.r Bs.z Bs.z' g ⟨i, by omega⟩ - a)` as an intermediate fact. Simplify using `at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : b.rOut = ‖a‖ / 2` using `rfl`. Establish `h3 : ‖Dmin P.k P.r Bs.z Bs.z' g ⟨i, by omega⟩‖ < ‖a‖ / 2` using `hg`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[cutW, hb0]`.
+
+Take `⟨U, f', hU, hgU, hf', hE⟩` from `Formalism.FourierDecayAlt.P.PBG.uwG_mem Bs.z Bs.z' i hi hck w e g₀ h0 hg₀`. Use `⟨U, fun g => b (Dmin P.k P.r Bs.z Bs.z' g ⟨i, by omega⟩) • f' g, hU, hgU, (hbD.contDiffOn.of_le le_rfl).smul hf', fun g hg hgG => ?_⟩` and prove the remaining obligations. Simplify using `only [cutW]`. Rewrite using `[hE g hg hgG]`. Introduce `g hg`.
+
+Simplify using `only [cutW]`. Rewrite using `[hg, b.one_of_mem_closedBall (Metric.mem_closedBall_self b.rIn_pos.le), one_smul]`.
+-/
 theorem cutW_exists {P : M.Par} (Bs : B.RealPlaceData P.k P.r Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (hF : KB.CptCoef Bs F) (i : ℕ) (hi : i ≤ P.r) (w : List C.Letter) (e : Wd.Ix (Fin w.length)) (a : ℂ)
     (ha : a ≠ 0) :
@@ -119,6 +140,11 @@ theorem cutW_exists {P : M.Par} (Bs : B.RealPlaceData P.k P.r Wp Wq) (F : B.Mat 
 
 end proofs
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w h hh hF t ht e`. Establish `ht0 : t ≠ 0` using `(ht.1 (1, t) (List.mem_append_right _ (List.mem_singleton_self _))).2`. Establish `hH : (U.hMat (D.ptPerm h) (D.ptDiag h)).det ≠ 0`. Rewrite using `[Formalism.FourierDecayAlt.P.PBI.det_hMat_pt, hh.2]`. Conclude with `Formalism.FourierDecayAlt.P.PBI.det_ptMatN_ne h j hh`.
+
+Conclude with `cutW_exists p.T.base F hF (j + 1) hj w e _ (mul_ne_zero hH ht0)`.
+-/
 theorem truncation_off_exists_formula : CutOffExists := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj w h hh hF t ht e
   have ht0 : t ≠ 0 := (ht.1 (1, t) (List.mem_append_right _ (List.mem_singleton_self _))).2
@@ -127,6 +153,13 @@ theorem truncation_off_exists_formula : CutOffExists := by
     exact Formalism.FourierDecayAlt.P.PBI.det_ptMatN_ne h j hh
   exact cutW_exists p.T.base F hF (j + 1) hj w e _ (mul_ne_zero hH ht0)
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hγ hΩ t ht e Fc hFc hag`. Establish `hs : KB.slv p.T F (j + 1) hj w (h ++ [(1, t)]) ht.2 e = KB.slv p.T Fc (j + 1) hj [] (h ++ [(1, t)]) ht.2 (fun a => a.elim0)`. Unfold `KB.slv`. Use `congr 1`. Apply `Formalism.FourierDecayAlt.P.PBI.sliceAt_congr_Dr _ _ _ (by rw [ht.2]; exact hj)` to reduce the goal to its premises.
+
+Introduce `x hx`. Use `symm`. Use `show Fc x = _`. Apply `hag` to reduce the goal to its premises. Establish `e1 : (⟨j + 1, by omega⟩ : Fin (P.r + 2)) = ⟨D.ptSize (h ++ [(1, t)]), by rw [ht.2]; omega⟩` using `Fin.ext ht.2.symm`.
+
+Rewrite using `[e1, hx, det_hMat_app]`. Rewrite using `[hs, Formalism.FourierDecayAlt.P.slice_induction_level Wp Wq P p Fc j hj h t hh ht hFc γ hγ hΩ]`. Both sides reduce to the same expression.
+-/
 theorem truncation_off_induction : CutOffStep := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj w h hh γ hγ hΩ t ht e Fc hFc hag
   have hs : KB.slv p.T F (j + 1) hj w (h ++ [(1, t)]) ht.2 e =

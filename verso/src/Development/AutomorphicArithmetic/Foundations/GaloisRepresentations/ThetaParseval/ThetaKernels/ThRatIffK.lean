@@ -18,6 +18,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def thM_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {η : E} (hη : η ≠ 0) : UA σ d.A.J ≃ᵐ HeckeCharacterZeroLocus.SiegelWeilU.HA (AF F) σ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) :=
   (Homeomorph.mk (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_k d hη).toEquiv (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_cont_k d hη) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_symm_cont_k d hη)).toMeasurableEquiv
 def thE'_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {η : E} (hη : η ≠ 0) (g : UA σ d.A.J) : HeckeCharacterZeroLocus.SiegelWeilU.HR (AF F) σ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) := _root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_k d hη g
+/- English proof (translation)
+Rewrite using `[ratU, Subgroup.mem_subgroupOf, MonoidHom.mem_range, HeckeCharacterZeroLocus.SiegelWeilU.HFinIn, Subgroup.mem_subgroupOf, HeckeCharacterZeroLocus.SiegelWeilU.HFin, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ⟩`. Use `⟨γ, ?_, hγ⟩` and prove the remaining obligations. Establish `hg : (g.1 : GL (Fin d.m) (AE F E)) ∈ HeckeCharacterZeroLocus.SiegelWeilU.HR (AF F) σ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η)` using `(_root_.PositivityTheory.SiegelWeilFormula.KWhit.th_mem_iff_k d hη g.1).1 g.2`.
+
+Rewrite `hg` using `[← hγ]`. Express the relevant statement in the definitionally equal form `HeckeCharacterZeroLocus.SiegelWeilU.cT (σ : E →+* E) (γ : Matrix (Fin d.m) (Fin d.m) E) * _root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η * (γ : Matrix (Fin d.m) (Fin d.m) E) = _root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η`. Apply `Matrix.map_injective (th_inclR_injective (F := F) (E := E))` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR (AF F) σ) ((γ : Matrix (Fin d.m) (Fin d.m) E).map (inclR (F := F) (E := E) (AF F))) * HeckeCharacterZeroLocus.SiegelWeilU.JR (AF F) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) * (γ : M …`. Simplify using `only`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, th_cT_map]`. Conclude with `hg`. Introduce and unpack `⟨γ, -, hγ⟩`. Conclude with `⟨γ, hγ⟩`.
+-/
 theorem th_rat_iff_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {η : E} (hη : η ≠ 0) (g : UA σ d.A.J) :
     g ∈ ratU σ d.A.J ↔ _root_.PositivityTheory.SiegelWeilFormula.KWhit.thE'_k d hη g ∈ HeckeCharacterZeroLocus.SiegelWeilU.HFinIn (AF F) σ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) := by
   rw [ratU, Subgroup.mem_subgroupOf, MonoidHom.mem_range, HeckeCharacterZeroLocus.SiegelWeilU.HFinIn, Subgroup.mem_subgroupOf,
@@ -45,10 +52,16 @@ def thR_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {η : E} (hη 
   invFun g := ⟨_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE'_k d hη g.1, (_root_.PositivityTheory.SiegelWeilFormula.KWhit.th_rat_iff_k d hη _).1 g.2⟩
   left_inv h := Subtype.ext ((_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_k d hη).apply_symm_apply h.1)
   right_inv g := Subtype.ext ((_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_k d hη).symm_apply_apply g.1)
+/- English proof (translation)
+Use `d.ok.haar` as an intermediate fact. Conclude with `th_haar_map d.μ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_k d hη) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_cont_k d hη) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_symm_cont_k d hη)`.
+-/
 theorem th_haar_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {η : E} (hη : η ≠ 0) :
     HeckeCharacterZeroLocus.SiegelWeilU.IsHaarH F E σ d.m (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) (d.μ.map (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thM_k d hη)) := by
   have := d.ok.haar
   exact th_haar_map d.μ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_k d hη) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_cont_k d hη) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thE_symm_cont_k d hη)
+/- English proof (translation)
+Use `d.ok.dom.image_of_equiv (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thM_k d hη).toEquiv ⟨(_root_.PositivityTheory.SiegelWeilFormula.KWhit.thM_k d hη).symm.measurable, ?_⟩ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thR_k d hη) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Measure.map (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thM_k d hη).symm (Measure.map (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thM_k d hη) d.μ) ≪ d.μ`. Rewrite using `[MeasurableEquiv.map_symm_map]`. Introduce `h x`. Both sides reduce to the same expression.
+-/
 theorem th_fd_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {η : E} (hη : η ≠ 0) :
     HeckeCharacterZeroLocus.SiegelWeilU.IsFDH F E σ d.m (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) (d.μ.map (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thM_k d hη)) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thM_k d hη '' d.D) := by
   refine d.ok.dom.image_of_equiv (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thM_k d hη).toEquiv ⟨(_root_.PositivityTheory.SiegelWeilFormula.KWhit.thM_k d hη).symm.measurable, ?_⟩ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.thR_k d hη) ?_

@@ -21,6 +21,9 @@ namespace GlobalTheory.SeeSawComm
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Use `Measure.integrableOn_of_bounded (M := M * N) h𝓕 ((hf.mul hg.star).aestronglyMeasurable) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star]`. Conclude with `mul_le_mul (hM x) (hN x) (norm_nonneg _) ((norm_nonneg _).trans (hM x))`.
+-/
 theorem integrableOn_mul_star {X : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X]
     {μ : Measure X} {𝓕 : Set X} (h𝓕 : μ 𝓕 ≠ ⊤) {f g : X → ℂ} (hf : Continuous f) (hg : Continuous g)
     {M N : ℝ} (hM : ∀ x, ‖f x‖ ≤ M) (hN : ∀ x, ‖g x‖ ≤ N) : IntegrableOn (fun x => f x * star (g x)) 𝓕 μ := by
@@ -29,6 +32,9 @@ theorem integrableOn_mul_star {X : Type} [TopologicalSpace X] [MeasurableSpace X
   rw [norm_mul, norm_star]
   exact mul_le_mul (hM x) (hN x) (norm_nonneg _) ((norm_nonneg _).trans (hM x))
 
+/- English proof (translation)
+Set `d` to `GlobalTheory.BiTransfer.sumDec A (GlobalTheory.ChiGrid.negSp A')`. Establish `hF` using `GlobalTheory.BiTransfer.isThetaFunO_join d hC`. Establish `h` using `(GlobalTheory.T.weil_operator_commutes_superposition_slices_source D ψ _ A (GlobalTheory.ChiGrid.negSp A') S d χA χS oma hA _ hF Unit (0 : Measure Unit) (fun _ => 0) (fun _ => 0) measurable_const (integrable_zero _ _ _) p).1`. Simplify using `only [GlobalTheory.BiTransfer.join_symm] at h`. Conclude with `GlobalTheory.BiTransfer.isBiTheta_of_join (C := fun u v => oma p (fun u' => C u' v) u) d h`.
+-/
 theorem isBiTheta_left {A S A' : HSp D} {χA χS : (AE D)ˣ →* Circle} {oma : Om A S}
     (hA : IsWeilDatumO ψ A S χA χS oma) {C : WO A S → WO S A' → ℂ} (hC : IsBiTheta ψ A S A' C) (p : GA D A × GA D S) :
     IsBiTheta ψ A S A' fun u v => oma p (fun u' => C u' v) u := by
@@ -39,6 +45,9 @@ theorem isBiTheta_left {A S A' : HSp D} {χA χS : (AE D)ˣ →* Circle} {oma : 
   simp only [GlobalTheory.BiTransfer.join_symm] at h
   exact GlobalTheory.BiTransfer.isBiTheta_of_join (C := fun u v => oma p (fun u' => C u' v) u) d h
 
+/- English proof (translation)
+Use `⟨fun γ w => hK.quasiR γ u w, ?_, hK.cont.comp (continuous_const.prodMk continuous_id), fun k L hL hLf w => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, h⟩` from `hK.levR`. Conclude with `⟨U, hU, fun a ha ha' => h a ha ha' u⟩`. Use `hK.smooth k 0 L continuous_zero hL (fun _ => by simp) hLf u w` as an intermediate fact. Simplify using `using this`.
+-/
 theorem slice_right {A S A' : HSp D} {K : WO A S → WO S A' → ℂ} (hK : IsBiTheta ψ A S A' K) (u : WO A S) :
     IsThetaFunO ψ S A' (K u) := by
   refine ⟨fun γ w => hK.quasiR γ u w, ?_, hK.cont.comp (continuous_const.prodMk continuous_id), fun k L hL hLf w => ?_⟩
@@ -47,6 +56,31 @@ theorem slice_right {A S A' : HSp D} {K : WO A S → WO S A' → ℂ} (hK : IsBi
   · have := hK.smooth k 0 L continuous_zero hL (fun _ => by simp) hLf u w
     simpa using this
 
+/- English proof (translation)
+Introduce `D ψ A S A' χA χS χS' χA' oma omb hA hB C hC p q u v`. Establish `hψ : IsStdChar D ψ (-1)` using `hA.std`. Set `d` to `GlobalTheory.BiTransfer.sumDec A (GlobalTheory.ChiGrid.negSp A')`. Take `⟨μ, 𝓕, hcov⟩` from `GlobalTheory.MixModel.exists_isCovolOne D A'.rank S.rank`. Establish `h𝓕 : μ 𝓕 ≠ ⊤` using `by rw [hcov.2.2]; exact ENNReal.one_ne_top`.
+
+Set `v0 : VolM D A'.rank S.rank` to `⟨μ, 𝓕, hcov⟩`. Establish `: BorelSpace (WO S A')` using `⟨rfl⟩`. Establish `: BorelSpace (WO A' S)` using `⟨rfl⟩`. Establish `hC1 : IsBiTheta ψ A S A' fun u v => oma p (fun u' => C u' v) u` using `isBiTheta_left hA hC p`. Establish `hC2 : IsBiTheta ψ A S A' fun u v => omb q (C u) v` using `GlobalTheory.T.isBiTheta_weilRep_second_variable D ψ A S A' χS' χA' omb hB C hC q`.
+
+Establish `hC3 : IsBiTheta ψ A S A' fun u v => oma p (fun u' => omb q (C u') v) u` using `isBiTheta_left hA hC2 p`. Establish `hL` using `hB.om_pres q _ (slice_right hC1 u)`. Establish `hR` using `slice_right hC3 u`. Establish `hint : ∀ f g : WO S A' → ℂ, IsThetaFunO ψ S A' f → IsThetaFunO ψ S A' g → IntegrableOn (fun w => f w * star (g w)) 𝓕 μ`. Introduce `f g hf hg`.
+
+Take `⟨M, hM⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ hf`. Take `⟨N, hN⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ hg`. Conclude with `integrableOn_mul_star h𝓕 hf.cont hg.cont hM hN`. Establish `hintS : ∀ f : WO S A' → ℂ, IsThetaFunO ψ S A' f → Integrable (fun w => star (f w)) (μ.restrict 𝓕)`. Introduce `f hf`.
+
+Take `⟨M, hM⟩` from `GlobalTheory.OrientedHeis.theta_bounded hψ hf`. Use `Measure.integrableOn_of_bounded (M := M) h𝓕 hf.cont.star.aestronglyMeasurable (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_star]`. Conclude with `hM x`. Establish `hk : Measurable (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger S A')` using `(GlobalTheory.BiTransfer.continuous_dagger S A').measurable`.
+
+Use `set Q : WO S A' → ℂ := fun w => omb q (fun v' => oma p (fun u' => C u' v') u) w - oma p (fun u' => omb q (C u') w) u with hQ`. It suffices to establish `hQ0 : Q = 0 by`. Use `congrFun hQ0 v` as an intermediate fact. Simplify using `only [hQ, Pi.zero_apply] at this`. Conclude with `sub_eq_zero.1 this`.
+
+Use `GlobalTheory.ThetaOrthTotal.eq_zero_of_orthogonal_theta D ψ hψ S A' μ 𝓕 hcov.1 hcov.2.1 Q (hL.cont.sub hR.cont) (fun γ w => ?_) (fun f hf => ?_)` and prove the remaining obligations. Simplify using `only [hQ]`. Rewrite using `[mul_sub, ← hL.quasi γ w, ← hR.quasi γ w]`. Use `set g := omb q⁻¹ f with hg`. Establish `hgt : IsThetaFunO ψ S A' g` using `hB.om_pres _ _ hf`.
+
+Establish `hfg : omb q g = f`. Rewrite using `[hg, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `e1 : ∫ w in 𝓕, omb q (fun v' => oma p (fun u' => C u' v') u) w * star (f w) ∂μ = ∫ w in 𝓕, oma p (fun u' => C u' w) u * star (g w) ∂μ`. Use `GlobalTheory.WeilPairing.thPair_om_eq D ψ S A' χS' χA' omb hB v0 q _ g (slice_right hC1 u) hgt` as an intermediate fact. Rewrite `this` using `[hfg]`.
+
+Conclude with `this`. Establish `e2 : ∫ w in 𝓕, oma p (fun u' => omb q (C u') w) u * star (f w) ∂μ = ∫ w in 𝓕, oma p (fun u' => C u' w) u * star (g w) ∂μ`. Establish `c2` using `(GlobalTheory.T.weil_operator_commutes_superposition_slices_source D ψ _ A (GlobalTheory.ChiGrid.negSp A') S d χA χS oma hA _ (GlobalTheory.BiTransfer.isThetaFunO_join d hC2) (WO S A') (μ.restrict 𝓕) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger S A') (fu …`. Establish `c1` using `(GlobalTheory.T.weil_operator_commutes_superposition_slices_source D ψ _ A (GlobalTheory.ChiGrid.negSp A') S d χA χS oma hA _ (GlobalTheory.BiTransfer.isThetaFunO_join d hC) (WO S A') (μ.restrict 𝓕) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger S A') (fun …`. Simplify using `only [GlobalTheory.BiTransfer.join_symm, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger_dagger] at c1 c2`.
+
+Establish `inner : (fun u' => ∫ w, star (f w) * omb q (C u') w ∂(μ.restrict 𝓕)) = fun u' => ∫ w, star (g w) * C u' w ∂(μ.restrict 𝓕)`. Use function extensionality and compare the values at `u'`. Use `GlobalTheory.WeilPairing.thPair_om_eq D ψ S A' χS' χA' omb hB v0 q _ g (slice_right hC u') hgt` as an intermediate fact. Rewrite `this` using `[hfg]`. Simplify using `only [thPair, v0] at this`.
+
+Simplify using `only [mul_comm (star _)]`. Conclude with `this`. Simplify using `only [mul_comm _ (star _)]`. Rewrite using `[← c2, inner, c1]`. Simplify using `only [hQ, sub_mul]`.
+
+Rewrite using `[integral_sub (hint _ _ hL hf) (hint _ _ hR hf), e1, e2, sub_self]`.
+-/
 theorem comm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (χA χS χS' χA' : (AE D)ˣ →* Circle)
     (oma : Om A S) (omb : Om S A'), IsWeilDatumO ψ A S χA χS oma → IsWeilDatumO ψ S A' χS' χA' omb →
     ∀ C, IsBiTheta ψ A S A' C → ∀ p q u v,

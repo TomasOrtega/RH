@@ -3,6 +3,13 @@ open TensorProduct KaehlerDifferential
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `A P R K _ _ _ _ _ _ _ _ _ _ _ _ _ hext`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Use `(Module.forall_dual_apply_eq_zero_iff K z).1 fun φ => ?_` and prove the remaining obligations. Set `ℓ : RingHom.ker (algebraMap P R) →ₗ[P] K` to `(φ.restrictScalars P) ∘ₗ (TensorProduct.mk P K (RingHom.ker (algebraMap P R)) 1)`.
+
+Take `⟨D, hD⟩` from `hext ℓ`. Set `Λ : K ⊗[P] Ω[P⁄A] →ₗ[K] K` to `LinearMap.liftBaseChange K D.liftKaehlerDifferential`. Establish `key : Λ ∘ₗ cotangentComplexBaseChange A R P K = φ`. Use extensionality with `i`. Simplify using `[Λ, cotangentComplexBaseChange_tmul, kerToTensor_apply, hD, ℓ]`.
+
+Establish `h2` using `congrArg (fun f => f z) key`. Simplify `h2.symm` using `[hz]`.
+-/
 theorem injective_cotangentComplexBaseChange_of_forms_extend : ∀ (A P R K : Type) [CommRing A] [CommRing P] [CommRing R] [Field K] [Algebra A P] [Algebra A R] [Algebra P R] [IsScalarTower A P R] [Algebra R K] [Algebra P K] [IsScalarTower P R K] [Algebra A K] [IsScalarTower A P K], (∀ ℓ : RingHom.ker (algebraMap P R) →ₗ[P] K, ∃ D : Derivation A P K, ∀ i : RingHom.ker (algebraMap P R), D i = ℓ i) → Function.Injective (KaehlerDifferential.cotangentComplexBaseChange A R P K) := by
   intro A P R K _ _ _ _ _ _ _ _ _ _ _ _ _ hext
   rw [injective_iff_map_eq_zero]

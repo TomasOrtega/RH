@@ -13,6 +13,9 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.InertLatSelfDual
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB n d X Y r s r' s' hX hY v _w _hin z hz`. Conclude with `GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B n d X Y r s r' s' hB hX hY v z hz`.
+-/
 theorem latAtV_selfDual_inert : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ →
     ∀ {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (r s r' s' : ℕ), X.IsHerm σ B r s → Y.IsSkew σ B r' s' →

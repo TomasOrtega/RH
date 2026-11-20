@@ -18,6 +18,13 @@ section Ainf
 
 variable {P : LocPrime l} (AI : LocAinf l P)
 
+/- English proof (translation)
+Establish `hl : ((l : ℕ) : PadicComplex l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `h1 : ‖(z : PadicComplex l) / l‖ ≤ 1`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ hz (norm_nonneg _)`. Use `⟨⟨(z : PadicComplex l) / l, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite `h1` using `[PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict (PadicComplex.valued l).v]`. Use `(Valuation.mem_valuationSubring_iff _ _).2 ?_` and prove the remaining obligations. Conclude with `h1` after adjusting the coercions. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(z : PadicComplex l) = ((l : OC l) : PadicComplex l) * ((z : PadicComplex l) / l)`.
+
+Establish `: ((l : OC l) : PadicComplex l) = l` using `by simp`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_eq_mul_of_norm_le (z : OC l)
     (hz : ‖(z : PadicComplex l)‖ ≤ ‖((l : ℕ) : PadicComplex l)‖) : ∃ c : OC l, z = (l : OC l) * c := by
   have hl : ((l : ℕ) : PadicComplex l) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero
@@ -33,6 +40,13 @@ theorem exists_eq_mul_of_norm_le (z : OC l)
     have : ((l : OC l) : PadicComplex l) = l := by simp
     rw [this]; field_simp
 
+/- English proof (translation)
+Take `⟨θ, -, hs, hact, hker, -⟩` from `GlobalTheory.T.exists_fontaineTheta_on_Ainf l P AI`. Establish `hc` using `GlobalTheory.Cyc.IsActC.continuous_orbit l AI.actC ⟨AI.actC_ext, AI.actC_norm⟩ ((θ y : OC l) : PadicComplex l)`. Establish `hl : (0 : ℝ) < ‖((l : ℕ) : PadicComplex l)‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Use `(Metric.tendsto_nhds.1 (hc.tendsto 1)) _ hl` as an intermediate fact. Use `filter_upwards [this] with g hg`.
+
+Rewrite `hg` using `[dist_eq_norm, map_one, RingAut.one_apply, ← hact]`. Take `⟨c, hc⟩` from `exists_eq_mul_of_norm_le (θ (AI.actW g y) - θ y) (by simpa using hg.le)`. Take `⟨c', rfl⟩` from `hs c`. Take `⟨d, hd⟩` from `(hker (AI.actW g y - y - l * c')).1 (by`. Rewrite using `[map_sub, map_sub, hc, map_mul, map_natCast, sub_self])`.
+
+Rewrite using `[Ideal.mem_span_pair]`. Conclude with `⟨c', d, by linear_combination -hd⟩`.
+-/
 theorem eventually_sub_mem_one (y : Ainf l) :
     ∀ᶠ g in 𝓝 (1 : GQ l), AI.actW g y - y ∈ Ideal.span {((l : ℕ) : Ainf l), AI.ξ} := by
   obtain ⟨θ, -, hs, hact, hker, -⟩ := GlobalTheory.T.exists_fontaineTheta_on_Ainf l P AI
@@ -50,6 +64,15 @@ theorem eventually_sub_mem_one (y : Ainf l) :
   rw [Ideal.mem_span_pair]
   exact ⟨c', d, by linear_combination -hd⟩
 
+/- English proof (translation)
+Use `set I : Ideal (Ainf l) := Ideal.span {((l : ℕ) : Ainf l), AI.ξ} with hI`. Establish `hlI : ((l : ℕ) : Ainf l) ∈ I` using `Ideal.subset_span (by simp)`. Establish `ht : ∀ z : OCb l, ∀ᶠ g in 𝓝 (1 : GQ l), AI.actW g (WittVector.teichmuller l z) - WittVector.teichmuller l z ∈ I ^ (N + 1)`. Introduce `z`. Take `⟨w, rfl⟩` from `(iterateFrobeniusEquiv (OCb l) l N).surjective z`.
+
+Use `filter_upwards [eventually_sub_mem_one AI (WittVector.teichmuller l w)] with g hg`. Use `SModEq.sub_mem.1 ((SModEq.sub_mem.2 hg).pow_pow_add_one hlI N)` as an intermediate fact. Rewrite using `[iterateFrobeniusEquiv_def, map_pow, map_pow]`. Conclude with `this`. Take `⟨c, hc⟩` from `WittVector.dvd_sub_sum_teichmuller_iterateFrobeniusEquiv_coeff y N`.
+
+Establish `hall` using `(Filter.eventually_all_finset (Finset.Iic N)).2 (fun i _ => ht ((((_root_.frobeniusEquiv (OCb l) l).symm ^ i) (y.coeff i))))`. Use `filter_upwards [hall] with g hg`. Rewrite `hc` using `[sub_eq_iff_eq_add]`. Rewrite using `[hc, map_add, map_mul, map_pow, map_natCast, map_sum, add_sub_add_comm, ← mul_sub, ← Finset.sum_sub_distrib]`. Use `add_mem (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hlI _)) (sum_mem fun i hi => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_pow, map_natCast, ← sub_mul]`. Conclude with `Ideal.mul_mem_right _ _ (hg i hi)`.
+-/
 theorem eventually_sub_mem_pow (N : ℕ) (y : Ainf l) :
     ∀ᶠ g in 𝓝 (1 : GQ l), AI.actW g y - y ∈ Ideal.span {((l : ℕ) : Ainf l), AI.ξ} ^ (N + 1) := by
   set I : Ideal (Ainf l) := Ideal.span {((l : ℕ) : Ainf l), AI.ξ} with hI
@@ -73,6 +96,9 @@ theorem eventually_sub_mem_pow (N : ℕ) (y : Ainf l) :
   rw [map_mul, map_pow, map_natCast, ← sub_mul]
   exact Ideal.mul_mem_right _ _ (hg i hi)
 
+/- English proof (translation)
+Use `filter_upwards [eventually_sub_mem_pow AI (r + n) y] with g hg`. Establish `h1` using `Ideal.pow_le_pow_right (I := Ideal.span {((l : ℕ) : Ainf l), AI.ξ}) (Nat.le_succ (r + n)) hg`. Rewrite `h1`, the goal using `[Ideal.span_insert]`. Rewrite using `[← Ideal.span_singleton_pow, ← Ideal.span_singleton_pow]`. Conclude with `Ideal.sup_pow_add_le_pow_sup_pow h1`.
+-/
 theorem eventually_sub_mem (r n : ℕ) (y : Ainf l) :
     ∀ᶠ g in 𝓝 (1 : GQ l), AI.actW g y - y ∈ Ideal.span {((l : ℕ) : Ainf l) ^ r, AI.ξ ^ n} := by
   filter_upwards [eventually_sub_mem_pow AI (r + n) y] with g hg
@@ -82,15 +108,34 @@ theorem eventually_sub_mem (r n : ℕ) (y : Ainf l) :
   rw [← Ideal.span_singleton_pow, ← Ideal.span_singleton_pow]
   exact Ideal.sup_pow_add_le_pow_sup_pow h1
 
+/- English proof (translation)
+The claim follows from `WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))`.
+-/
 theorem inclW_injective : Function.Injective (inclW l) :=
   WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))
 
+/- English proof (translation)
+Apply `inclW_injective` to reduce the goal to its premises. Use `congrArg (inclW l) h` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Conclude with `AI.isUnit_inclW_ξ.mul_left_cancel this`.
+-/
 theorem xi_mul_cancel {a b : Ainf l} (h : AI.ξ * a = AI.ξ * b) : a = b := by
   apply inclW_injective
   have := congrArg (inclW l) h
   rw [map_mul, map_mul] at this
   exact AI.isUnit_inclW_ξ.mul_left_cancel this
 
+/- English proof (translation)
+Take `⟨θ, -, -, -, hker, -⟩` from `GlobalTheory.T.exists_fontaineTheta_on_Ainf l P AI`. Use `filter_upwards [eventually_sub_mem AI r (n + 1) AI.ξ] with g hg`. Take `⟨b, hb⟩` from `xi_dvd_act AI g AI.ξ ⟨1, (mul_one _).symm⟩`. Take `⟨b', hb'⟩` from `xi_dvd_act AI g⁻¹ AI.ξ ⟨1, (mul_one _).symm⟩`. Establish `h1 : AI.ξ * 1 = AI.ξ * (b * AI.actWHom g b')`.
+
+Use `congrArg (AI.actWHom g) hb'` as an intermediate fact. Rewrite `this` using `[← AlgEquiv.mul_apply, ← map_mul, mul_inv_cancel, map_one, AlgEquiv.one_apply, map_mul, hb]`. Rewrite using `[← mul_assoc, mul_one]`. Conclude with `this`. Establish `h2` using `(xi_mul_cancel AI h1).symm`.
+
+Establish `hb2 : AI.actW g AI.ξ = AI.ξ * b` using `hb`. Use `⟨Units.mkOfMulEqOne _ _ h2, hb2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b - 1 ∈ _`. Rewrite `hg`, the goal using `[Ideal.mem_span_pair]`. Take `⟨p, q, hpq⟩` from `hg`.
+
+Establish `hθξ : θ AI.ξ = 0` using `(hker _).2 dvd_rfl`. Establish `hp : θ p = 0`. Use `congrArg θ hpq` as an intermediate fact. Rewrite `this` using `[hb2]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast, map_sub, hθξ, pow_succ, mul_zero, zero_mul, add_zero, sub_zero] at this`.
+
+Establish `hl : ((l : ℕ) : OC l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Conclude with `(mul_eq_zero.1 this).resolve_right (pow_ne_zero _ hl)`. Take `⟨p', rfl⟩` from `(hker _).1 hp`. Use `⟨p', q, xi_mul_cancel AI ?_⟩` and prove the remaining obligations. Rewrite `hpq` using `[hb2]`.
+
+Take the linear combination `hpq`.
+-/
 theorem eventually_xi (r n : ℕ) :
     ∀ᶠ g in 𝓝 (1 : GQ l), ∃ u : (Ainf l)ˣ, AI.actW g AI.ξ = AI.ξ * u ∧
       (u : Ainf l) - 1 ∈ Ideal.span {((l : ℕ) : Ainf l) ^ r, AI.ξ ^ n} := by
@@ -122,6 +167,11 @@ theorem eventually_xi (r n : ℕ) :
   rw [hb2] at hpq
   linear_combination hpq
 
+/- English proof (translation)
+Establish `h1 : Units.map (Ideal.Quotient.mk J).toMonoidHom u = 1`. Use `ext`. Conclude with `Ideal.Quotient.eq.2 hu`. Establish `h2 : Units.map (Ideal.Quotient.mk J).toMonoidHom (u ^ a) = 1`. Rewrite using `[map_zpow, h1, one_zpow]`.
+
+Conclude with `Ideal.Quotient.eq.1 (congrArg Units.val h2)`.
+-/
 theorem units_zpow_sub_one_mem {R : Type} [CommRing R] (J : Ideal R) (u : Rˣ)
     (hu : (u : R) - 1 ∈ J) (a : ℤ) : ((u ^ a : Rˣ) : R) - 1 ∈ J := by
   have h1 : Units.map (Ideal.Quotient.mk J).toMonoidHom u = 1 := by
@@ -131,6 +181,19 @@ theorem units_zpow_sub_one_mem {R : Type} [CommRing R] (J : Ideal R) (u : Rˣ)
     rw [map_zpow, h1, one_zpow]
   exact Ideal.Quotient.eq.1 (congrArg Units.val h2)
 
+/- English proof (translation)
+Take `⟨n, rfl⟩` from `Int.exists_add_of_le hab`. Take `⟨⟨_, _, ⟨y, rfl⟩, rfl⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `filter_upwards [eventually_sub_mem AI r n y, eventually_xi AI r n] with g hy ⟨u, hu, hu1⟩`. Establish `hua` using `units_zpow_sub_one_mem _ u hu1 a`. Establish `hm : ((u ^ a : (Ainf l)ˣ) : Ainf l) * AI.actW g y - y ∈ Ideal.span {((l : ℕ) : Ainf l) ^ r, AI.ξ ^ n}`.
+
+Use `add_mem (Ideal.mul_mem_right (AI.actW g y) _ hua) hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨p, q, hpq⟩` from `Ideal.mem_span_pair.1 hm`. Use `⟨Submodule.Quotient.mk ⟨_, _, ⟨p, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[actQab, Submodule.mapQ_apply, ← Submodule.Quotient.mk_sub, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Use `⟨_, ⟨q, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hg : AI.actWCbHom g (xiU AI) = (Units.map (inclW l).toMonoidHom u : (WCb l)ˣ) * xiU AI`. Express the relevant statement in the definitionally equal form `AI.actWCbHom g (inclW l AI.ξ) = inclW l u * inclW l AI.ξ`. Rewrite using `[inclW_act, mul_comm, ← map_mul, ← hu]`.
+
+Both sides reduce to the same expression. Establish `hz` using `act_zpow (act := AI.actWCbHom) (ξ := xiU AI) g a _ hg`. Express the relevant statement in the definitionally equal form `((xiU AI ^ (a + n) : (WCb l)ˣ) : WCb l) * inclW l q = AI.actWCbHom g (((xiU AI ^ a : (WCb l)ˣ) : WCb l) * inclW l y) - ((xiU AI ^ a : (WCb l)ˣ) : WCb l) * inclW l y - (l : ℤ_[l]) ^ r • (((xiU AI ^ a : (WCb l)ˣ) : WCb l) * inclW l p)`. Rewrite using `[map_mul, hz, inclW_act, mul_zpow, ← map_zpow, zpow_add, zpow_natCast, Units.val_mul, Units.val_mul, Units.val_pow_eq_pow_val, Algebra.smul_def, map_pow, map_natCast]`. Establish `h3` using `congrArg (inclW l) hpq`.
+
+Simplify using `only [map_add, map_mul, map_pow, map_natCast, map_sub] at h3`. Establish `e1 : ((xiU AI : (WCb l)ˣ) : WCb l) = inclW l AI.ξ` using `rfl`. Establish `e2 : ((Units.map (inclW l).toMonoidHom (u ^ a) : (WCb l)ˣ) : WCb l) = inclW l ((u ^ a : (Ainf l)ˣ) : Ainf l)` using `rfl`. Establish `e3 : AI.actWHom g y = AI.actW g y` using `rfl`. Rewrite using `[e1, e2, e3]`.
+
+Take the linear combination `(((xiU AI ^ a : (WCb l)ˣ) : WCb l)) * h3`.
+-/
 theorem eventually_actQab (a b : ℤ) (hab : a ≤ b) (r : ℕ) (x : Qab (AinfSub l) (xiU AI) a b) :
     ∀ᶠ g in 𝓝 (1 : GQ l), ∃ y, actQab (xiOK AI) a b g x - x = (l : ℤ_[l]) ^ r • y := by
   obtain ⟨n, rfl⟩ := Int.exists_add_of_le hab
@@ -168,6 +231,11 @@ theorem eventually_actQab (a b : ℤ) (hab : a ≤ b) (r : ℕ) (x : Qab (AinfSu
 
 end Ainf
 
+/- English proof (translation)
+Establish `hx : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Rewrite `h` using `[← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralValue_le_one_iff (minpoly.monic hx)]`. Establish `hl : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Conclude with `fun n => ⟨⟨_, h n⟩, rfl⟩`.
+
+Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl (minpoly.monic hx)`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]`.
+-/
 theorem isIntegral_of_norm_le_one (x : Om l) (h : ‖x‖ ≤ 1) : IsIntegral ℤ_[l] x := by
   have hx : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
   rw [← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralValue_le_one_iff (minpoly.monic hx)] at h
@@ -178,10 +246,22 @@ theorem isIntegral_of_norm_le_one (x : Om l) (h : ‖x‖ ≤ 1) : IsIntegral �
   refine ⟨q, hqm, ?_⟩
   rw [← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]
 
+/- English proof (translation)
+The claim follows from `(isIntegral_algHom_iff (LL.1.val.restrictScalars ℤ_[l]) LL.1.val.toRingHom.injective).1 (isIntegral_of_norm_le_one _ h)`.
+-/
 theorem mem_OL_of_norm_le_one (LL : FinExt l) (x : ↥LL.1) (h : ‖(x : Om l)‖ ≤ 1) : x ∈ OL LL :=
   (isIntegral_algHom_iff (LL.1.val.restrictScalars ℤ_[l]) LL.1.val.toRingHom.injective).1
     (isIntegral_of_norm_le_one _ h)
 
+/- English proof (translation)
+Take `⟨n, s, hs⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 T.L.fg`. Establish `hsurj : Function.Surjective (Fintype.linearCombination LL s)`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, eq_top_iff, ← T.L.span, ← hs, Submodule.span_span_of_tower]`. Establish `hopen` using `(IsModuleTopology.isOpenQuotientMap_of_surjective hsurj).isOpenMap`. Establish `hU : {z : Fin n → LL | ∀ i, ∃ o : O, z i = algebraMap O LL (c * o)} ∈ 𝓝 0` using `Filter.eventually_all.2 fun i => ((continuous_apply i).tendsto (0 : Fin n → LL)).eventually hc`.
+
+Establish `h2` using `hopen.image_mem_nhds hU`. Rewrite `h2` using `[map_zero]`. Use `filter_upwards [h2] with v ⟨z, hz, hv⟩`. Use `choose o ho using hz`. Use `⟨∑ i, o i • s i, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Rewrite using `[← hv, Fintype.linearCombination_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, ho, algebraMap_smul]`.
+-/
 theorem lattice_mem_nhds {G Qp LL O : Type} [Group G] [TopologicalSpace G] [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] [IsTopologicalRing LL]
     (T : LocLat G Qp LL O) (c : O) (hc : ∀ᶠ z in 𝓝 (0 : LL), ∃ o : O, z = algebraMap O LL (c * o)) :
@@ -204,6 +284,11 @@ theorem lattice_mem_nhds {G Qp LL O : Type} [Group G] [TopologicalSpace G] [Fiel
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [smul_smul, ho, algebraMap_smul]
 
+/- English proof (translation)
+Use `haveI : IsTopologicalAddGroup T.V := IsModuleTopology.topologicalAddGroup LL T.V`. Establish `h : Tendsto (fun g => T.ρ g t - t) (𝓝 1) (𝓝 0)`. Establish `h1 : Continuous (fun g => T.ρ g t - t)` using `(T.cont t).sub continuous_const`. Simplify using `using h1.tendsto 1`. Use `filter_upwards [h.eventually (lattice_mem_nhds T c hc)] with g ⟨y, hy, e⟩`.
+
+Conclude with `⟨⟨y, hy⟩, Subtype.ext e⟩`.
+-/
 theorem eventually_actT {G Qp LL O : Type} [Group G] [TopologicalSpace G] [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] [IsTopologicalRing LL]
     (T : LocLat G Qp LL O) (c : O) (hc : ∀ᶠ z in 𝓝 (0 : LL), ∃ o : O, z = algebraMap O LL (c * o))
@@ -215,6 +300,15 @@ theorem eventually_actT {G Qp LL O : Type} [Group G] [TopologicalSpace G] [Field
   filter_upwards [h.eventually (lattice_mem_nhds T c hc)] with g ⟨y, hy, e⟩
   exact ⟨⟨y, hy⟩, Subtype.ext e⟩
 
+/- English proof (translation)
+Establish `hl : ((l : ℕ) : Om l) ^ r ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Establish `hl' : ((l : ℕ) : ↥LL.1) ^ r ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Establish `hc : Continuous fun z : ↥LL.1 => ‖(z : Om l)‖` using `continuous_subtype_val.norm`. Establish `hU : ∀ᶠ z : ↥LL.1 in 𝓝 0, ‖(z : Om l)‖ < ‖((l : ℕ) : Om l) ^ r‖`. Use `(isOpen_lt hc continuous_const).mem_nhds ?_` and prove the remaining obligations.
+
+Use `norm_pos_iff.2 hl` as an intermediate fact. Simplify using `using this`. Use `filter_upwards [hU] with z hz`. Establish `hm : z / (l : ↥LL.1) ^ r ∈ OL LL` using `mem_OL_of_norm_le_one LL _ (by`. Establish `: ((z / (l : ↥LL.1) ^ r : ↥LL.1) : Om l) = (z : Om l) / (l : Om l) ^ r` using `by simp`.
+
+Rewrite using `[this, norm_div]`. Conclude with `div_le_one_of_le₀ hz.le (norm_nonneg _))`. Use `⟨⟨_, hm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_natCast, map_pow, map_natCast]`. Express the relevant statement in the definitionally equal form `z = _ * (z / _)`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem pow_mul_OL_mem_nhds (LL : FinExt l) (r : ℕ) :
     ∀ᶠ z in 𝓝 (0 : ↥LL.1), ∃ o : ↥(OL LL), z = algebraMap ↥(OL LL) ↥LL.1
       (algebraMap ℤ_[l] ↥(OL LL) ((l : ℤ_[l]) ^ r) * o) := by
@@ -237,6 +331,9 @@ theorem pow_mul_OL_mem_nhds (LL : FinExt l) (r : ℕ) :
   change z = _ * (z / _)
   field_simp
 
+/- English proof (translation)
+Use `haveI : IsTopologicalRing ↥LL.1 := inferInstanceAs (IsTopologicalRing ↥LL.1.toSubfield.toSubring)`. Conclude with `eventually_actT T _ (pow_mul_OL_mem_nhds LL r) t`.
+-/
 theorem eventually_actTZ {G : Type} [Group G] [TopologicalSpace G] (LL : FinExt l)
     (T : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)) (r : ℕ) (t : ↥T.L.T) :
     letI := zlMod LL T
@@ -244,6 +341,11 @@ theorem eventually_actTZ {G : Type} [Group G] [TopologicalSpace G] (LL : FinExt 
   haveI : IsTopologicalRing ↥LL.1 := inferInstanceAs (IsTopologicalRing ↥LL.1.toSubfield.toSubring)
   exact eventually_actT T _ (pow_mul_OL_mem_nhds LL r) t
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.continuous_adicModule_iff]`. Introduce `g n`. Establish `hc : Tendsto (fun k => g⁻¹ * k) (𝓝 g) (𝓝 1)`. Use `(continuous_const_mul g⁻¹).tendsto g` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel]`. Then use the resulting hypothesis.
+
+Use `filter_upwards [hc.eventually (h n)] with k ⟨y, e⟩`. Use `⟨ρ g y, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, ← e, map_sub, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+-/
 theorem continuous_orbit_of_eventually {R G M : Type} [CommRing R] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [AddCommGroup M] [Module R M] (a : R) (ρ : Representation R G M) (x : M)
     (h : ∀ r : ℕ, ∀ᶠ g in 𝓝 (1 : G), ∃ y, ρ g x - x = a ^ r • y) :
@@ -257,6 +359,11 @@ theorem continuous_orbit_of_eventually {R G M : Type} [CommRing R] [Group G] [To
   refine ⟨ρ g y, ?_⟩
   rw [← map_smul, ← e, map_sub, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact .of_forall fun g => ⟨0, by simp⟩`. Consider the case `tmul m n => filter_upwards [h m, h' n] with g ⟨y, e⟩ ⟨y', e'⟩`. Use `⟨y ⊗ₜ f' g n + m ⊗ₜ y', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, TensorProduct.smul_tmul', ← TensorProduct.tmul_smul, ← e, ← e', TensorProduct.map_tmul, TensorProduct.sub_tmul, TensorProduct.tmul_sub]`.
+
+Normalize the expressions using the abelian group laws. Consider the case `add x x' hx hx' => filter_upwards [hx, hx'] with g ⟨y, e⟩ ⟨y', e'⟩`. Conclude with `⟨y + y', by rw [map_add, smul_add, ← e, ← e']; abel⟩`.
+-/
 theorem eventually_tensor {R G M N : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] (c : R) (F : Filter G) (f : G → M →ₗ[R] M) (f' : G → N →ₗ[R] N)
     (h : ∀ x, ∀ᶠ g in F, ∃ y, f g x - x = c • y) (h' : ∀ x, ∀ᶠ g in F, ∃ y, f' g x - x = c • y)
@@ -274,6 +381,11 @@ theorem eventually_tensor {R G M N : Type} [CommRing R] [AddCommGroup M] [Module
     filter_upwards [hx, hx'] with g ⟨y, e⟩ ⟨y', e'⟩
     exact ⟨y + y', by rw [map_add, smul_add, ← e, ← e']; abel⟩
 
+/- English proof (translation)
+Use `letI := zlMod LL T`. Introduce `x`. Use `continuous_orbit_of_eventually (l : ℤ_[l]) _ x fun r => ?_` and prove the remaining obligations. Establish `h1 : Tendsto (Subgroup.inclusion hle) (𝓝 1) (𝓝 1)`. Establish `: Continuous (Subgroup.inclusion hle)` using `continuous_subtype_val.subtype_mk _`.
+
+Simplify using `using this.tendsto 1`. Establish `h2 : Tendsto (fun g : ↥H => (g : GQ l)) (𝓝 1) (𝓝 1)` using `continuous_subtype_val.tendsto 1`. Conclude with `eventually_tensor ((l : ℤ_[l]) ^ r) (𝓝 (1 : ↥H)) (fun g => actTZ LL T (Subgroup.inclusion hle g)) (fun g => actQab (xiOK AI) a b (g : GQ l)) (fun t => h1.eventually (eventually_actTZ LL T r t)) (fun q => h2.eventually (eventually_actQab AI a b hab r q)) x`.
+-/
 theorem continuous_repQ {P : LocPrime l} (AI : LocAinf l P) (K LL : FinExt l)
     (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (a b : ℤ) (H : Subgroup (GQ l)) (hle : H ≤ GK K)
     (hab : a ≤ b) :
@@ -293,6 +405,9 @@ theorem continuous_repQ {P : LocPrime l} (AI : LocAinf l P) (K LL : FinExt l)
     (fun t => h1.eventually (eventually_actTZ LL T r t))
     (fun q => h2.eventually (eventually_actQab AI a b hab r q)) x
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h S E T a b j hle hab`. Conclude with `continuous_repQ (D.locA l) K LL T a b (Gj K j) hle hab`.
+-/
 theorem continuous_orbit_tensor_Qab : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; let E : S.Comparison₂ := ((F l).E K s LL h).tie; ∀ (T : LocLat S.G S.Qp S.LL S.O) (a b : ℤ) (j : ℕ) (hle : Gj K j ≤ GK K), a ≤ b → letI := zlMod LL T; letI : TopologicalSpace (TensorProduct ℤ_[l] ↥T.L.T (Qab (AinfSub l) (xiU (D.locA l)) a b)) := (Ideal.span {(l : ℤ_[l])}).adicModuleTopology _; ∀ x, Continuous fun g => (repQ (D.locA l) (Gj K j) ((actTZ LL T).comp (Subgroup.inclusion hle)) a b) g x := by
   intro D HW F l _ K s LL h S E T a b j hle hab
   exact continuous_repQ (D.locA l) K LL T a b (Gj K j) hle hab

@@ -45,11 +45,20 @@ def unitForm (R : Type*) [CommRing R] [StarRing R] : Sesq R R :=
     (fun _ _ _ => add_mul _ _ _) (fun _ _ _ => by simp [mul_assoc])
     (fun _ _ _ => by simp [mul_add]) (fun _ _ _ => by simp [starRingEnd_apply]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem unitForm_apply (p q : R) : unitForm R p q = p * star q := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restr_apply (h : Sesq R M) (N : Submodule R M) (x y : N) :
     restr h N x y = h x y := rfl
 
+/- English proof (translation)
+Rewrite using `[perp, LinearMap.mem_ker, LinearMap.flip_apply]`.
+-/
 theorem mem_perp (h : Sesq R M) (x y : M) : y ∈ perp h x ↔ h y x = 0 := by
   rw [perp, LinearMap.mem_ker, LinearMap.flip_apply]
 

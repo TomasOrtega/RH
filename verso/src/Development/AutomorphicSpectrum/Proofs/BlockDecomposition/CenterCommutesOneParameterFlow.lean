@@ -17,13 +17,24 @@ def HD (f f' : ℝ → A) : Prop :=
   ∃ (ι : Type) (_ : Fintype ι) (p p' : ι → ℝ → ℂ) (C : ι → A),
     (∀ i s, HasDerivAt (p i) (p' i s) s) ∧ (∀ s, f s = ∑ i, p i s • C i) ∧ ∀ s, f' s = ∑ i, p' i s • C i
 
+/- English proof (translation)
+Take `⟨ι, i, p, p', C, h1, h2, h3⟩` from `h`. Conclude with `⟨ι, i, p, p', C, h1, fun s => (e s).trans (h2 s), fun s => (e' s).trans (h3 s)⟩`.
+-/
 theorem HD.congr {f f' g g' : ℝ → A} (h : HD f f') (e : ∀ s, g s = f s) (e' : ∀ s, g' s = f' s) : HD g g' := by
   obtain ⟨ι, i, p, p', C, h1, h2, h3⟩ := h
   exact ⟨ι, i, p, p', C, h1, fun s => (e s).trans (h2 s), fun s => (e' s).trans (h3 s)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Unit, inferInstance, fun _ _ => 1, fun _ _ => 0, fun _ => C, fun _ s => hasDerivAt_const s 1, by simp, by simp⟩`.
+-/
 theorem HD.const (C : A) : HD (fun _ => C) (fun _ => 0) :=
   ⟨Unit, inferInstance, fun _ _ => 1, fun _ _ => 0, fun _ => C, fun _ s => hasDerivAt_const s 1, by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨ι, _, p, p', C, h1, h2, h3⟩` from `h`. Take `⟨κ, _, q, q', D, k1, k2, k3⟩` from `k`. Use `⟨ι ⊕ κ, inferInstance, Sum.elim p q, Sum.elim p' q', Sum.elim C D, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | j) s`. Conclude with `h1 i s`.
+
+Conclude with `k1 j s`. Introduce `s`. Simplify using `[h2, k2]`. Introduce `s`. Simplify using `[h3, k3]`.
+-/
 theorem HD.add {f f' g g' : ℝ → A} (h : HD f f') (k : HD g g') :
     HD (fun s => f s + g s) (fun s => f' s + g' s) := by
   obtain ⟨ι, _, p, p', C, h1, h2, h3⟩ := h
@@ -35,6 +46,11 @@ theorem HD.add {f f' g g' : ℝ → A} (h : HD f f') (k : HD g g') :
   · intro s; simp [h2, k2]
   · intro s; simp [h3, k3]
 
+/- English proof (translation)
+Take `⟨ι, _, p, p', C, h1, h2, h3⟩` from `h`. Take `⟨κ, _, q, q', D, k1, k2, k3⟩` from `k`. Use `⟨ι × κ, inferInstance, fun x s => p x.1 s * q x.2 s, fun x s => p' x.1 s * q x.2 s + p x.1 s * q' x.2 s, fun x => C x.1 * D x.2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x s`. Conclude with `(h1 x.1 s).mul (k1 x.2 s)`.
+
+Introduce `s`. Simplify using `only [h2, k2, Finset.sum_mul_sum, Fintype.sum_prod_type, smul_mul_smul_comm]`. Introduce `s`. Simplify using `only [h2, h3, k2, k3, Finset.sum_mul_sum, Fintype.sum_prod_type, smul_mul_smul_comm, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem HD.mul {f f' g g' : ℝ → A} (h : HD f f') (k : HD g g') :
     HD (fun s => f s * g s) (fun s => f' s * g s + f s * g' s) := by
   obtain ⟨ι, _, p, p', C, h1, h2, h3⟩ := h
@@ -48,6 +64,13 @@ theorem HD.mul {f f' g g' : ℝ → A} (h : HD f f') (k : HD g g') :
     simp only [h2, h3, k2, k3, Finset.sum_mul_sum, Fintype.sum_prod_type, smul_mul_smul_comm, add_smul,
       Finset.sum_add_distrib]
 
+/- English proof (translation)
+Take `⟨ι, _, p, p', C, h1, h2, h3⟩` from `h`. Establish `hd : ∀ s, HasDerivAt (fun s => l (f s)) 0 s`. Introduce `s`. Establish `h4 : HasDerivAt (fun s => ∑ i, p i s * l (C i)) (∑ i, p' i s * l (C i)) s` using `HasDerivAt.fun_sum fun i _ => (h1 i s).mul_const _`. Establish `e1 : (fun s => l (f s)) = fun s => ∑ i, p i s * l (C i)`.
+
+Use function extensionality and compare the values at `s`. Simplify using `[h2, map_sum]`. Establish `e2 : ∑ i, p' i s * l (C i) = 0`. Use `congrArg l (h3 s)` as an intermediate fact. Simplify `this.symm` using `[map_sum]`.
+
+Rewrite using `[e1]`. Rewrite `h4` using `[e2]`. Then use the resulting hypothesis. Conclude with `is_const_of_deriv_eq_zero (fun s => (hd s).differentiableAt) (fun s => (hd s).deriv) s t`.
+-/
 theorem HD.const_of_zero {f : ℝ → A} (h : HD f (fun _ => 0)) (l : A →ₗ[ℂ] ℂ) (s t : ℝ) : l (f s) = l (f t) := by
   obtain ⟨ι, _, p, p', C, h1, h2, h3⟩ := h
   have hd : ∀ s, HasDerivAt (fun s => l (f s)) 0 s := by
@@ -63,6 +86,17 @@ theorem HD.const_of_zero {f : ℝ → A} (h : HD f (fun _ => 0)) (l : A →ₗ[�
     rwa [e2] at h4
   exact is_const_of_deriv_eq_zero (fun s => (hd s).differentiableAt) (fun s => (hd s).deriv) s t
 
+/- English proof (translation)
+Establish `hmul : ∀ s x y, R s * x * Q s * (R s * y * Q s) = R s * (x * y) * Q s`. Introduce `s x y`. Combine the equalities or inequalities in the displayed calculation. Introduce `B hB`. Proceed by induction on `hB using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx => exact hG x hx`. Consider the case `algebraMap r`. Use `(HD.const (algebraMap ℂ A r)).congr (fun s => ?_) (fun s => ?_)` and prove the remaining obligations. Rewrite using `[← Algebra.commutes, mul_assoc, hRQ, mul_one]`. Rewrite using `[Algebra.commutes, sub_self]`.
+
+Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Use `(hx.add hy).congr (fun s => ?_) (fun s => ?_)` and prove the remaining obligations. Use `noncomm_ring`. Use `noncomm_ring`.
+
+Consider the case `mul x y _ _ hx hy`. Use `(hx.mul hy).congr (fun s => ?_) (fun s => ?_)` and prove the remaining obligations. Rewrite using `[hmul]`. Rewrite using `[hmul, hmul, ← add_mul, ← mul_add]`. Use `congr 2`.
+
+Use `noncomm_ring`.
+-/
 theorem hd_adjoin (R Q : ℝ → A) (hRQ : ∀ s, R s * Q s = 1) (hQR : ∀ s, Q s * R s = 1) (L : A) (G : Set A)
     (hG : ∀ B ∈ G, HD (fun s => R s * B * Q s) (fun s => R s * (L * B - B * L) * Q s)) :
     ∀ B ∈ Algebra.adjoin ℂ G, HD (fun s => R s * B * Q s) (fun s => R s * (L * B - B * L) * Q s) := by
@@ -92,6 +126,13 @@ end Abstract
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Use `set S := Algebra.adjoin ℂ (Set.range (lie E a)) with hSdef`. Establish `hL : ∀ X, lie E a X ∈ S` using `fun X => Algebra.subset_adjoin ⟨X, rfl⟩`. Establish `hS : ∀ i j x, lieS E a i j x ∈ S` using `fun i j x => by rw [lieS_apply]; exact hL _`. Establish `hE : ∀ (τ : E →+* ℂ) i j, Eop τ i j ∈ S` using `fun τ i j => S.smul_mem (S.sub_mem (hS _ _ _) (S.smul_mem (hS _ _ _) _)) _`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨τ, u, rfl⟩`. Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Use `S.add_mem ?_ (hE _ _ _)` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `S.algebraMap_mem _`. Conclude with `S.zero_mem`.
+-/
 theorem Zalg_le : Zalg E a ≤ Algebra.adjoin ℂ (Set.range (lie E a)) := by
   set S := Algebra.adjoin ℂ (Set.range (lie E a)) with hSdef
   have hL : ∀ X, lie E a X ∈ S := fun X => Algebra.subset_adjoin ⟨X, rfl⟩
@@ -107,6 +148,13 @@ theorem Zalg_le : Zalg E a ≤ Algebra.adjoin ℂ (Set.range (lie E a)) := by
   · exact S.algebraMap_mem _
   · exact S.zero_mem
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ (Lie E a)`. Establish `hsum : ∀ X : Lie E a, lie E a X = ∑ m, ((b.repr X m : ℝ) : ℂ) • lie E a (b m)`. Introduce `X`. Use `conv_lhs => rw [← b.sum_repr X]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `(algebraMap_smul ℂ _ _).symm`. Use `⟨_, inferInstance, fun m s => ((b.repr (F s) m : ℝ) : ℂ), fun m s => ((b.repr (F' s) m : ℝ) : ℂ), fun m => lie E a (b m), fun m s => ?_, fun s => hsum _, fun s => hsum _⟩` and prove the remaining obligations. Establish `hl` using `(LinearMap.toContinuousLinearMap (b.coord m)).hasFDerivAt.comp_hasDerivAt s (h s)`.
+
+Conclude with `hl.ofReal_comp`.
+-/
 theorem hd_lie {F F' : ℝ → Lie E a} (h : ∀ s, HasDerivAt F (F' s) s) :
     HD (fun s => lie E a (F s)) (fun s => lie E a (F' s)) := by
   classical
@@ -123,6 +171,11 @@ theorem hd_lie {F F' : ℝ → Lie E a} (h : ∀ s, HasDerivAt F (F' s) s) :
   have hl := (LinearMap.toContinuousLinearMap (b.coord m)).hasFDerivAt.comp_hasDerivAt s (h s)
   exact hl.ofReal_comp
 
+/- English proof (translation)
+Rewrite `hu`, `hv`, the goal using `[hasDerivAt_pi]`. Introduce `i`. Rewrite using `[hasDerivAt_pi]`. Introduce `j`. Establish `hu'` using `fun k => (hasDerivAt_pi.1 (hu i)) k`.
+
+Establish `hv'` using `fun k => (hasDerivAt_pi.1 (hv k)) j`. Use `HasDerivAt.fun_sum (u := Finset.univ) fun k (_ : k ∈ Finset.univ) => (hu' k).mul (hv' k)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Finset.sum_add_distrib]`.
+-/
 theorem hasDerivAt_matMul {u v : ℝ → Lie E a} {u' v' : Lie E a} {s : ℝ} (hu : HasDerivAt u u' s)
     (hv : HasDerivAt v v' s) :
     HasDerivAt (fun t => toL (Matrix.of (u t) * Matrix.of (v t)))
@@ -136,6 +189,23 @@ theorem hasDerivAt_matMul {u v : ℝ → Lie E a} {u' v' : Lie E a} {s : ℝ} (h
   have := HasDerivAt.fun_sum (u := Finset.univ) fun k (_ : k ∈ Finset.univ) => (hu' k).mul (hv' k)
   simpa [Matrix.mul_apply, Finset.sum_add_distrib] using this
 
+/- English proof (translation)
+Introduce `E _ _ _ a hconj z hz hcomm c Y h0 hc hci`. Set `R : ℝ → Module.End ℂ (Sm E a)` to `fun s => rt E a (infGL E a (c s))`. Set `Q : ℝ → Module.End ℂ (Sm E a)` to `fun s => rt E a (infGL E a (c s)⁻¹)`. Establish `hRQ : ∀ s, R s * Q s = 1` using `fun s => by`. Express the relevant statement in the definitionally equal form `rt E a _ * rt E a _ = 1`.
+
+Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel, map_one, map_one]`. Establish `hQR : ∀ s, Q s * R s = 1` using `fun s => by`. Express the relevant statement in the definitionally equal form `rt E a _ * rt E a _ = 1`. Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one]`. Establish `hconj' : ∀ s X, R s * lie E a X * Q s = lie E a (toL ((c s).val * Matrix.of X * ((c s)⁻¹).val))`.
+
+Introduce `s X`. Express the relevant statement in the definitionally equal form `rt E a (infGL E a (c s)) * lie E a X * Q s = _`. Rewrite using `[hconj (c s) X, mul_assoc]`. Rewrite using `[show rt E a (infGL E a (c s)) * Q s = 1 from hRQ s, mul_one]`. Establish `hG : ∀ B ∈ Set.range (lie E a), HD (fun s => R s * B * Q s) (fun s => R s * (lie E a Y * B - B * lie E a Y) * Q s)`.
+
+Introduce and unpack `_ ⟨X, rfl⟩`. Set `W : Lie E a` to `toL (Matrix.of Y * Matrix.of X - Matrix.of X * Matrix.of Y)`. Establish `hW : lie E a Y * lie E a X - lie E a X * lie E a Y = lie E a W`. Rewrite using `[lie_comm]`. Conclude with `(map_sub (lie E a) _ _).symm`.
+
+Use `(hd_lie (F := fun s => toL ((c s).val * Matrix.of X * ((c s)⁻¹).val)) (F' := fun s => toL ((c s).val * Matrix.of W * ((c s)⁻¹).val)) fun s => ?_).congr (fun s => hconj' s X) (fun s => by rw [hW]; exact hconj' s W)` and prove the remaining obligations. Establish `h1` using `hasDerivAt_matMul (hc s) (hasDerivAt_const s X)`. Establish `h2` using `hasDerivAt_matMul h1 (hci s)`. Use `HasDerivAt.congr_deriv h2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `toL (((c s).val * Matrix.of Y * Matrix.of X + (c s).val * 0) * ((c s)⁻¹).val + ((c s).val * Matrix.of X) * (-(Matrix.of Y * ((c s)⁻¹).val))) = toL ((c s).val * (Matrix.of Y * Matrix.of X - Matrix.of X * Matrix.of Y) * ((c s)⁻¹).val)`.
+
+Use `congr 1`. Use `noncomm_ring`. Establish `h` using `hd_adjoin R Q hRQ hQR (lie E a Y) _ hG z (Zalg_le hz)`. Establish `h' : HD (fun s => R s * z * Q s) (fun _ => 0)` using `h.congr (fun _ => rfl) fun s => by rw [hcomm Y, sub_self, mul_zero, zero_mul]`. Set `l : Sm E a → GA E a → (Module.End ℂ (Sm E a) →ₗ[ℂ] ℂ)` to `fun φ x => { toFun := fun B => (B φ).1 x map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+
+Establish `e1 : R 1 * z * Q 1 = R 0 * z * Q 0` using `LinearMap.ext fun φ => Subtype.ext <| funext fun x => h'.const_of_zero (l φ x) 1 0`. Establish `hR0 : R 0 = 1`. Express the relevant statement in the definitionally equal form `rt E a (infGL E a (c 0)) = 1`. Rewrite using `[h0, map_one, map_one]`. Establish `hQ0 : Q 0 = 1`.
+
+Express the relevant statement in the definitionally equal form `rt E a (infGL E a (c 0)⁻¹) = 1`. Rewrite using `[h0, inv_one, map_one, map_one]`. Rewrite `e1` using `[hR0, hQ0, one_mul, mul_one]`. Express the relevant statement in the definitionally equal form `z * R 1 = R 1 * z`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem zalg_comm_rt_curve : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), (∀ (g : GL (Fin a) (Cinf E)) (X : Lie E a), rt E a (infGL E a g) * lie E a X = lie E a (toL (g.val * Matrix.of X * (g⁻¹).val)) * rt E a (infGL E a g)) → ∀ z : Module.End ℂ (Sm E a), z ∈ Zalg E a → (∀ X : Lie E a, z * lie E a X = lie E a X * z) → ∀ (c : ℝ → GL (Fin a) (Cinf E)) (Y : Lie E a), c 0 = 1 → (∀ s, HasDerivAt (fun t => toL (c t).val) (toL ((c s).val * Matrix.of Y)) s) → (∀ s, HasDerivAt (fun t => toL ((c t)⁻¹).val) (toL (-(Matrix.of Y * ((c s)⁻¹).val))) s) → z * rt E a (infGL E a (c 1)) = rt E a (infGL E a (c 1)) * z := by
   intro E _ _ _ a hconj z hz hcomm c Y h0 hc hci
   let R : ℝ → Module.End ℂ (Sm E a) := fun s => rt E a (infGL E a (c s))

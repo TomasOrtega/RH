@@ -12,6 +12,23 @@ section Grp
 
 variable {G : Type*} [MeasurableSpace G] [Group G] [MeasurableMul₂ G] [MeasurableInv G]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, ν (spanningSets (μ + ν) n) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hν` to reduce the goal to its premises. Establish `: ν Set.univ = 0`.
+
+Rewrite using `[← iUnion_spanningSets (μ + ν)]`. Conclude with `measure_iUnion_null h`. Conclude with `Measure.measure_univ_eq_zero.mp this`. Establish `hS` using `measurableSet_spanningSets (μ + ν) n`. Establish `hfin` using `measure_spanningSets_lt_top (μ + ν) n`.
+
+Rewrite `hfin` using `[Measure.add_apply]`. Establish `hνf : ν (spanningSets (μ + ν) n) ≠ ∞` using `(lt_of_le_of_lt le_add_self hfin).ne`. Establish `hμf : μ (spanningSets (μ + ν) n) ≠ ∞` using `(lt_of_le_of_lt le_self_add hfin).ne`. Establish `heq : μ = (μ (spanningSets (μ + ν) n) / ν (spanningSets (μ + ν) n)) • ν` using `by first`. Consider the case `exact measure_eq_div_smul μ ν (spanningSets (μ + ν) n) hn hνf`.
+
+Consider the case `exact measure_eq_div_smul μ ν hS hn hνf`. Consider the case `exact measure_eq_div_smul μ ν (spanningSets (μ + ν) n) hS hn hνf`. Consider the case `(ext t ht`. Establish `key` using `measure_mul_measure_eq μ ν (spanningSets (μ + ν) n) t hn hνf ht`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.div_eq_inv_mul, mul_assoc, key, ← mul_assoc, ENNReal.inv_mul_cancel hn hνf, one_mul])`.
+
+Consider the case `(ext t ht`. Establish `key` using `measure_mul_measure_eq μ ν (spanningSets (μ + ν) n) t hn hνf`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.div_eq_inv_mul, mul_assoc, key, ← mul_assoc, ENNReal.inv_mul_cancel hn hνf, one_mul])`. Consider the case `(ext t ht`. Establish `key` using `measure_mul_measure_eq μ ν (spanningSets (μ + ν) n) t hS ht hn hνf`.
+
+Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.div_eq_inv_mul, mul_assoc, key, ← mul_assoc, ENNReal.inv_mul_cancel hn hνf, one_mul])`. Establish `hμ0 : μ (spanningSets (μ + ν) n) ≠ 0`. Introduce `h0`. Apply `hμ` to reduce the goal to its premises. Rewrite using `[heq, h0, ENNReal.zero_div, zero_smul]`.
+
+Use `⟨(μ (spanningSets (μ + ν) n) / ν (spanningSets (μ + ν) n)).toNNReal, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Rewrite `h` using `[ENNReal.toNNReal_eq_zero_iff, ENNReal.div_eq_zero_iff]`. Break down `h with (h | h) | h` into its components or cases. Conclude with `hμ0 h`.
+
+Conclude with `hνf h`. Conclude with `ENNReal.div_ne_top hμf hn h`. Rewrite using `[ENNReal.smul_def, ENNReal.coe_toNNReal (ENNReal.div_ne_top hμf hn)]`. Conclude with `heq`.
+-/
 theorem eq_smul_of_sigmaFinite (μ ν : Measure G) [SigmaFinite μ] [SigmaFinite ν]
     [μ.IsMulLeftInvariant] [ν.IsMulLeftInvariant] (hμ : μ ≠ 0) (hν : ν ≠ 0) :
     ∃ c : ℝ≥0, c ≠ 0 ∧ μ = c • ν := by
@@ -71,17 +88,29 @@ def Aset (U : Set (Mat k r)) : Set (Mt k r) := {x | Matrix.of x ∈ U}
 
 variable {U : Set (Mat k r)}
 
+/- English proof (translation)
+The claim follows from `continuous_matrix (fun i j => (continuous_apply j).comp (continuous_apply i))`.
+-/
 private theorem continuous_matrix_of_Mt : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r)) :=
   continuous_matrix (fun i j => (continuous_apply j).comp (continuous_apply i))
 
+/- English proof (translation)
+Conclude with `hU.closed.preimage continuous_matrix_of_Mt`.
+-/
 theorem isClosed_Aset (hU : IsClosedSubgroup U) : IsClosed (Aset U) := by
   exact hU.closed.preimage continuous_matrix_of_Mt
 
+/- English proof (translation)
+Conclude with `(isClosed_Aset hU).measurableSet`.
+-/
 theorem measurableSet_Aset (hU : IsClosedSubgroup U) : MeasurableSet (Aset U) := by
   exact (isClosed_Aset hU).measurableSet
 
 def toM (a : Aset U) : Mat k r := Matrix.of a.1
 
+/- English proof (translation)
+Conclude with `Subtype.ext (Matrix.of.injective h)`.
+-/
 theorem toM_inj {a b : Aset U} (h : toM a = toM b) : a = b := by
   exact Subtype.ext (Matrix.of.injective h)
 
@@ -91,8 +120,17 @@ instance : Mul (Aset U) := ⟨fun a b => ⟨(toM a * toM b : Mat k r), hU.out.mu
 instance : One (Aset U) := ⟨⟨(1 : Mat k r), hU.out.one_mem⟩⟩
 instance : Inv (Aset U) := ⟨fun a => ⟨((toM a)⁻¹ : Mat k r), hU.out.inv_mem _ a.2⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toM_mul (a b : Aset U) : toM (a * b) = toM a * toM b := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toM_one : toM (1 : Aset U) = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toM_inv (a : Aset U) : toM a⁻¹ = (toM a)⁻¹ := rfl
 
 instance : Group (Aset U) where
@@ -103,14 +141,25 @@ instance : Group (Aset U) where
     simp only [toM_mul, toM_one, toM_inv]
     exact Matrix.nonsing_inv_mul _ (hU.out.unit _ a.2))
 
+/- English proof (translation)
+Conclude with `continuous_matrix_of_Mt.comp continuous_subtype_val`.
+-/
 theorem continuous_toM : Continuous (toM : Aset U → Mat k r) := by
   exact continuous_matrix_of_Mt.comp continuous_subtype_val
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `show Continuous fun p : Aset U × Aset U => (toM p.1 * toM p.2 : Mat k r)`. Conclude with `(continuous_toM.comp continuous_fst).mul (continuous_toM.comp continuous_snd)`.
+-/
 theorem continuous_mulA : Continuous fun p : Aset U × Aset U => p.1 * p.2 := by
   refine Continuous.subtype_mk ?_ _
   show Continuous fun p : Aset U × Aset U => (toM p.1 * toM p.2 : Mat k r)
   exact (continuous_toM.comp continuous_fst).mul (continuous_toM.comp continuous_snd)
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Establish `h : (fun a : Aset U => (toM a)⁻¹) = fun a => (toM a).det⁻¹ • (toM a).adjugate`. Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv]`. Use `show Continuous fun a : Aset U => ((toM a)⁻¹ : Mat k r)`.
+
+Rewrite using `[h]`. Conclude with `((continuous_toM.matrix_det).inv₀ fun a => (hU.out.unit _ a.2).ne_zero).smul continuous_toM.matrix_adjugate`.
+-/
 theorem continuous_invA : Continuous fun a : Aset U => a⁻¹ := by
   refine Continuous.subtype_mk ?_ _
   have h : (fun a : Aset U => (toM a)⁻¹) = fun a => (toM a).det⁻¹ • (toM a).adjugate := by
@@ -130,24 +179,43 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 
 variable {k r : ℕ} {U : Set (Mat k r)} [hU : Fact (IsClosedSubgroup U)]
 
+/- English proof (translation)
+Conclude with `MeasurableEmbedding.subtype_coe (measurableSet_Aset hU.out)`.
+-/
 theorem mEmb : MeasurableEmbedding (Subtype.val : Aset U → Mt k r) := by
   exact MeasurableEmbedding.subtype_coe (measurableSet_Aset hU.out)
 
+/- English proof (translation)
+Rewrite using `[(mEmb (U := U)).map_comap μ]`. Apply the tactic sequence `first | rw [Subtype.range_coe] | rw [Subtype.range_val] | skip`. Conclude with `Measure.restrict_eq_self_of_ae_mem (ae_iff.mpr hc)`.
+-/
 theorem map_comap_val (μ : Measure (Mt k r)) (hc : μ (Aset U)ᶜ = 0) :
     (μ.comap (Subtype.val : Aset U → Mt k r)).map Subtype.val = μ := by
   rw [(mEmb (U := U)).map_comap μ]
   first | rw [Subtype.range_coe] | rw [Subtype.range_val] | skip
   exact Measure.restrict_eq_self_of_ae_mem (ae_iff.mpr hc)
 
+/- English proof (translation)
+Use `SigmaFinite.of_map _ (mEmb (U := U)).measurable.aemeasurable ?_` and prove the remaining obligations. Rewrite using `[(mEmb (U := U)).map_comap μ]`. Use `infer_instance`.
+-/
 theorem sigmaFinite_comap (μ : Measure (Mt k r)) [SigmaFinite μ] :
     SigmaFinite (μ.comap (Subtype.val : Aset U → Mt k r)) := by
   refine SigmaFinite.of_map _ (mEmb (U := U)).measurable.aemeasurable ?_
   rw [(mEmb (U := U)).map_comap μ]
   infer_instance
 
+/- English proof (translation)
+Conclude with `(continuous_const.mul continuous_matrix_of_Mt : Continuous fun x : Mt k r => (a * Matrix.of x : Mat k r))`.
+-/
 theorem continuous_lmulM (a : Mat k r) : Continuous (lmulM (k := k) (r := r) a) := by
   exact (continuous_const.mul continuous_matrix_of_Mt : Continuous fun x : Mt k r => (a * Matrix.of x : Mat k r))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `g`. Establish `hm : Measurable (fun x : Aset U => g * x)`. Use `Measurable.subtype_mk ?_` and prove the remaining obligations. Conclude with `(continuous_lmulM (toM g)).measurable.comp measurable_subtype_coe`.
+
+Establish `hval : Subtype.val ∘ (fun x : Aset U => g * x) = lmulM (toM g) ∘ Subtype.val` using `rfl`. Establish `hmap : ((μ.comap (Subtype.val : Aset U → Mt k r)).map (fun x : Aset U => g * x)).map Subtype.val = (μ.comap (Subtype.val : Aset U → Mt k r)).map Subtype.val`. Rewrite using `[Measure.map_map (mEmb (U := U)).measurable hm, hval, ← Measure.map_map (continuous_lmulM (toM g)).measurable (mEmb (U := U)).measurable, map_comap_val μ hc, hl (toM g) g.2]`. Use extensionality with `s hs`. Establish `h1` using `congrArg (fun m : Measure (Mt k r) => m (Subtype.val '' s)) hmap`.
+
+Rewrite `h1` using `[(mEmb (U := U)).map_apply, (mEmb (U := U)).map_apply, Set.preimage_image_eq _ Subtype.val_injective]`. Then use the resulting hypothesis.
+-/
 theorem isMulLeftInvariant_comap (μ : Measure (Mt k r)) (hc : μ (Aset U)ᶜ = 0)
     (hl : ∀ a ∈ U, μ.map (lmulM a) = μ) :
     (μ.comap (Subtype.val : Aset U → Mt k r)).IsMulLeftInvariant := by

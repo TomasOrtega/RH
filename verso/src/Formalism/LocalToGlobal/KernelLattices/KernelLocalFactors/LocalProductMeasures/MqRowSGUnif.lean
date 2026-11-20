@@ -16,9 +16,17 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E).symm`.
+-/
 theorem mq_finrank : Module.finrank (𝓞 F) (𝓞 E) = Module.finrank F E :=
   (IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E).symm
 
+/- English proof (translation)
+Take `⟨k, hk, rfl⟩` from `(Nat.dvd_prime_pow hq).1 (Dvd.intro b h)`. Use `interval_cases k`. Conclude with `absurd (pow_zero q) ha`. Conclude with `pow_one q`. It suffices to derive a contradiction.
+
+Apply `hb` to reduce the goal to its premises. Establish `h0 : 0 < q ^ 2` using `pow_pos hq.pos 2`. Conclude with `Nat.eq_of_mul_eq_mul_left h0 (by rw [h, mul_one])`.
+-/
 theorem mq_nat {q a b : ℕ} (hq : q.Prime) (h : a * b = q ^ 2) (ha : a ≠ 1) (hb : b ≠ 1) : a = q := by
   obtain ⟨k, hk, rfl⟩ := (Nat.dvd_prime_pow hq).1 (Dvd.intro b h)
   interval_cases k
@@ -29,6 +37,9 @@ theorem mq_nat {q a b : ℕ} (hq : q.Prime) (h : a * b = q ^ 2) (ha : a ≠ 1) (
     have h0 : 0 < q ^ 2 := pow_pos hq.pos 2
     exact Nat.eq_of_mul_eq_mul_left h0 (by rw [h, mul_one])
 
+/- English proof (translation)
+Establish `h` using `Ideal.absNorm_algebraMap (𝓞 F) (𝓞 E) v.asIdeal`. Rewrite `h` using `[hv, map_mul, mq_finrank, h2]`. Conclude with `mq_nat hq h (fun h1 => P.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h1)) (fun h1 => P'.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h1))`.
+-/
 theorem mq_absNorm (h2 : Module.finrank F E = 2) {v : HeightOneSpectrum (𝓞 F)} {P P' : HeightOneSpectrum (𝓞 E)}
     (hv : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal = P.asIdeal * P'.asIdeal) (hq : (Ideal.absNorm v.asIdeal).Prime) :
     Ideal.absNorm P.asIdeal = Ideal.absNorm v.asIdeal := by
@@ -36,6 +47,13 @@ theorem mq_absNorm (h2 : Module.finrank F E = 2) {v : HeightOneSpectrum (𝓞 F)
   rw [hv, map_mul, mq_finrank, h2] at h
   exact mq_nat hq h (fun h1 => P.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h1)) (fun h1 => P'.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h1))
 
+/- English proof (translation)
+Introduce `hc`. Establish `hs` using `qe_sup v q hq hq2`. Establish `h1 : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal ≤ P.asIdeal ^ 2`. Rewrite using `[← hs, Ideal.map_sup, Ideal.map_span, Set.image_singleton, Ideal.map_pow, hv]`. Use `sup_le ((Ideal.span_singleton_le_iff_mem _).2 hc) ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_pow]`. Conclude with `(Ideal.mul_le_left : P.asIdeal ^ 2 * P'.asIdeal ^ 2 ≤ P.asIdeal ^ 2)`. Rewrite `h1` using `[hv, pow_two]`. Establish `h3 : P.asIdeal * P.asIdeal ∣ P.asIdeal * P'.asIdeal` using `Ideal.dvd_iff_le.2 h1`. Establish `h4 : P.asIdeal ∣ P'.asIdeal` using `(mul_dvd_mul_iff_left P.ne_bot).1 h3`.
+
+Conclude with `hne (HeightOneSpectrum.ext (P'.isMaximal.eq_of_le P.isPrime.ne_top (Ideal.dvd_iff_le.1 h4)).symm)`.
+-/
 theorem mq_notMem_sq {v : HeightOneSpectrum (𝓞 F)} {P P' : HeightOneSpectrum (𝓞 E)} (hne : P ≠ P')
     (hv : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal = P.asIdeal * P'.asIdeal) {q : 𝓞 F} (hq : q ∈ v.asIdeal) (hq2 : q ∉ v.asIdeal ^ 2) :
     algebraMap (𝓞 F) (𝓞 E) q ∉ P.asIdeal ^ 2 := by
@@ -51,6 +69,9 @@ theorem mq_notMem_sq {v : HeightOneSpectrum (𝓞 F)} {P P' : HeightOneSpectrum 
   have h4 : P.asIdeal ∣ P'.asIdeal := (mul_dvd_mul_iff_left P.ne_bot).1 h3
   exact hne (HeightOneSpectrum.ext (P'.isMaximal.eq_of_le P.isPrime.ne_top (Ideal.dvd_iff_le.1 h4)).symm)
 
+/- English proof (translation)
+Rewrite using `[mq_absNorm h2 hv hd.1]`. Establish `h` using `mq_notMem_sq hne hv (Ideal.absNorm_mem v.asIdeal) hd.2`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem mq_split (h2 : Module.finrank F E = 2) {v : HeightOneSpectrum (𝓞 F)} {P P' : HeightOneSpectrum (𝓞 E)} (hne : P ≠ P')
     (hv : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal = P.asIdeal * P'.asIdeal) (hd : DegOne v) :
     ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2 := by
@@ -60,6 +81,13 @@ theorem mq_split (h2 : Module.finrank F E = 2) {v : HeightOneSpectrum (𝓞 F)} 
 
 end Gen
 
+/- English proof (translation)
+Introduce and unpack `⟨P, hP⟩`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Conclude with `ciQ_notMem_sq hX hPr h`. Take `⟨v, hv, rfl⟩` from `(mem_QE sel mu P).mp h`. Take `⟨⟨P1, P2, hne, hsp⟩, hd, -⟩` from `mu.good hv`.
+
+Use `show ((Ideal.absNorm (sel v).asIdeal : ℕ) : 𝓞 X.E) ∉ (sel v).asIdeal ^ 2`. Distinguish the cases in `h1 : sel v = P1`. Rewrite using `[h1]`. Conclude with `mq_split hX.rankE hne hsp hd`. Distinguish the cases in `h2 : sel v = P2`.
+
+Rewrite using `[h2]; exact mq_split hX.rankE hne.symm (by rw [hsp, mul_comm]) hd`. Conclude with `absurd (hsel v) (d_other hsp h1 h2)`.
+-/
 theorem mq_rowSG_unif {X : Fields} {Pr : Primes X} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
     (mu : Tup X.F X.E X.K S) (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) :
     ∀ P : rowSG Pr sel mu, ((Col.qOf P.1 : ℕ) : 𝓞 X.E) ∉ P.1.asIdeal ^ 2 := by

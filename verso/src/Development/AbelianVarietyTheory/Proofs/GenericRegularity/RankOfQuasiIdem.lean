@@ -11,11 +11,19 @@ namespace GlobalTheory.Reg.CellChart
 section Lin
 open Matrix
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular (u.submatrix ix id) (fun i j hij => h.1 i j hij)]`. Simplify using `[h.2]`.
+-/
 theorem det_of_inCell {R : Type} [CommRing R] {n r : ℕ} (ix : Fin r ↪ Fin n) (u : Matrix (Fin n) (Fin r) R)
     (h : InCell ix u) : (u.submatrix ix id).det = 1 := by
   rw [Matrix.det_of_lowerTriangular (u.submatrix ix id) (fun i j hij => h.1 i j hij)]
   simp [h.2]
 
+/- English proof (translation)
+Establish `: LinearMap.range P.mulVecLin = S`. Use extensionality with `x`. Rewrite using `[hS, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+
+Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hP, Matrix.smul_mulVec]`. Introduce `h`. Use `⟨N⁻¹ • x, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_smul, h, smul_smul, inv_mul_cancel₀ hN, one_smul]`. Rewrite using `[Matrix.rank, this]`.
+-/
 theorem rank_of_quasi_idem {L : Type} [Field L] {n : ℕ} (P : Matrix (Fin n) (Fin n) L) (N : L) (hN : N ≠ 0)
     (hP : P * P = N • P) (S : Submodule L (Fin n → L)) (hS : ∀ x, x ∈ S ↔ P.mulVec x = N • x) :
     P.rank = Module.finrank L S := by
@@ -30,6 +38,11 @@ theorem rank_of_quasi_idem {L : Type} [Field L] {n : ℕ} (P : Matrix (Fin n) (F
       rw [Matrix.mulVecLin_apply, Matrix.mulVec_smul, h, smul_smul, inv_mul_cancel₀ hN, one_smul]
   rw [Matrix.rank, this]
 
+/- English proof (translation)
+Establish `h : P.submatrix ix id * u = N • u.submatrix ix id`. Use extensionality with `i j`. Use `congrFun (congrFun hu (ix i)) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Take `⟨κ, hκ⟩` from `GlobalTheory.exists_cols_det_ne_zero_of_mul (P.submatrix ix id) u (by`.
+
+Rewrite using `[h, Matrix.det_smul, det_of_inCell ix u hc]`. Simplify using `[hN])`. Conclude with `⟨κ, hκ⟩`.
+-/
 theorem exists_minor {L : Type} [Field L] {n r : ℕ} (P : Matrix (Fin n) (Fin n) L) (N : L) (hN : N ≠ 0)
     (ix : Fin r ↪ Fin n) (u : Matrix (Fin n) (Fin r) L) (hu : P * u = N • u) (hc : InCell ix u) :
     ∃ κ : Fin r → Fin n, (P.submatrix ix κ).det ≠ 0 := by
@@ -41,6 +54,11 @@ theorem exists_minor {L : Type} [Field L] {n r : ℕ} (P : Matrix (Fin n) (Fin n
     rw [h, Matrix.det_smul, det_of_inCell ix u hc]; simp [hN])
   exact ⟨κ, hκ⟩
 
+/- English proof (translation)
+Establish `h : P.submatrix ix id * u = N • u.submatrix ix id`. Use extensionality with `i j`. Use `congrFun (congrFun hu (ix i)) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Establish `h1` using `((GlobalTheory.rank_minor_factorisation L n r P hr ix).1 κ hd)`.
+
+Establish `h2 : N • u = N • (P.submatrix id κ * (P.submatrix ix κ)⁻¹ * u.submatrix ix id)`. Rewrite using `[← hu, ← Matrix.mul_smul, ← h, ← Matrix.mul_assoc, ← h1]`. Conclude with `smul_right_injective _ hN h2`.
+-/
 theorem eq_of_rows {L : Type} [Field L] {n r m : ℕ} (P : Matrix (Fin n) (Fin n) L) (hr : P.rank = r) (N : L)
     (hN : N ≠ 0) (ix κ : Fin r → Fin n) (hd : (P.submatrix ix κ).det ≠ 0) (u : Matrix (Fin n) (Fin m) L)
     (hu : P * u = N • u) : u = P.submatrix id κ * (P.submatrix ix κ)⁻¹ * u.submatrix ix id := by
@@ -55,6 +73,19 @@ theorem eq_of_rows {L : Type} [Field L] {n r m : ℕ} (P : Matrix (Fin n) (Fin n
 
 end Lin
 
+/- English proof (translation)
+Take `⟨m, a, κ, h⟩` from `GlobalTheory.exists_eigen_projector_ringOfIntegers E K emb hemb τ`. Take `⟨N, hN⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) κ`. Use `choose t ht using hN`. Use `⟨N, ∑ k, α (t k) • ρ (a k), nonZeroDivisors.ne_zero N.2, fun R _ _ f hf => ?_⟩` and prove the remaining obligations. Establish `hf' : ∀ o, f (α o) = algebraMap K R (algebraMap O K o)` using `fun o => RingHom.congr_fun hf o`.
+
+Take `⟨h1, h2⟩` from `h R n (f.mapMatrix.comp ρ)`. Use `set π := ∑ k, algebraMap K R (κ k) • (f.mapMatrix.comp ρ) (a k) with hπ`. Establish `hp : (∑ k, α (t k) • ρ (a k)).map f = f (α N) • π`. Use extensionality with `i j`. Establish `ht' : ∀ i, algebraMap O K (t i) = algebraMap O K N * κ i` using `fun i => (ht i).trans (Algebra.smul_def _ _)`.
+
+Simplify using `only [hπ, Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, hf', ht', Finset.mul_sum, RingHom.comp_apply, RingHom.mapMatrix_apply, mul_assoc]`. Establish `hu : IsUnit (f (α N))`. Rewrite using `[hf']`. Conclude with `(IsLocalization.map_units K N).map _`. Establish `hππ : π * π = π`.
+
+Use extensionality with `i j`. Use `h2 (fun k => π k j) (fun b => by` as an intermediate fact. Use function extensionality and compare the values at `k`. Use `congrFun (congrFun (h1 b) k) j` as an intermediate fact. Simplify `this)` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+
+Simplify `congrFun this i` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[hp]`. Use `⟨by rw [Matrix.smul_mul, Matrix.mul_smul, hππ], fun x => ⟨fun hx => ?_, fun hx b => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec, h2 x hx]`. Rewrite `hx` using `[Matrix.smul_mulVec]`.
+
+Establish `hx' : π.mulVec x = x` using `hu.smul_left_cancel.mp hx`. Use `congrArg (fun M => Matrix.mulVec M x) (h1 b)` as an intermediate fact. Simplify using `only [← Matrix.mulVec_mulVec, Matrix.smul_mulVec, hx'] at this`. Conclude with `this`.
+-/
 theorem exists_projector (E K : Type) [Field E] [NumberField E] [Field K] (emb : (E →+* ℂ) → (E →+* K))
     (hemb : Function.Injective emb) (O : Type) [CommRing O] [IsDomain O] [Algebra O K] [IsFractionRing O K]
     (A : Type) [CommRing A] (α : O →+* A) (n : ℕ) (ρ : 𝓞 E →+* Matrix (Fin n) (Fin n) A) (τ : E →+* ℂ) :
@@ -94,6 +125,17 @@ theorem exists_projector (E K : Type) [Field E] [NumberField E] [Field K] (emb :
     simp only [← Matrix.mulVec_mulVec, Matrix.smul_mulVec, hx'] at this
     exact this
 
+/- English proof (translation)
+Establish `hi' : ∀ o, i (α o) = algebraMap K F (algebraMap O K o)` using `fun o => RingHom.congr_fun hi o`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | ⟨a, rfl⟩` into its components or cases. Conclude with `⟨1, 1, 1, one_ne_zero, by simp [hg]⟩`.
+
+Conclude with `⟨a, 1, 0, one_ne_zero, by simp⟩`. Consider the case `algebraMap k`. Take `⟨⟨a, b⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors O) k`. Use `⟨α a, b, 0, nonZeroDivisors.ne_zero b.2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, mul_one, hi', hi', ← map_mul, h]`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨a, b, m, hb, h⟩` from `hx`. Take `⟨a', b', m', hb', h'⟩` from `hy`. Use `⟨a * (α b' * g ^ m') + a' * (α b * g ^ m), b * b', m + m', mul_ne_zero hb hb', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow] at h h' ⊢`.
+
+Rewrite using `[← h, ← h']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`. Take `⟨a, b, m, hb, h⟩` from `hx`. Take `⟨a', b', m', hb', h'⟩` from `hy`.
+
+Use `⟨a * a', b * b', m + m', mul_ne_zero hb hb', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow] at h h' ⊢`. Rewrite using `[← h, ← h']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem loc_descr {K O A F : Type} [Field K] [CommRing O] [IsDomain O] [Algebra O K] [IsFractionRing O K]
     [CommRing A] [Field F] [Algebra K F] (α : O →+* A) (i : A →+* F)
     (hi : i.comp α = (algebraMap K F).comp (algebraMap O K)) (g : A) (hg : i g ≠ 0) (x : F)
@@ -122,6 +164,17 @@ theorem loc_descr {K O A F : Type} [Field K] [CommRing O] [IsDomain O] [Algebra 
     simp only [map_add, map_mul, map_pow] at h h' ⊢
     rw [← h, ← h']; ring
 
+/- English proof (translation)
+Establish `hi' : ∀ o, i (α o) = algebraMap K F (algebraMap O K o)` using `fun o => RingHom.congr_fun hi o`. Establish `hf' : ∀ o, f (α o) = algebraMap K L (algebraMap O K o)` using `fun o => RingHom.congr_fun hf o`. Use `set R₀ := Algebra.adjoin K (insert (i g)⁻¹ (Set.range i)) with hR₀`. Establish `hm : ∀ a, i a ∈ R₀` using `fun a => Algebra.subset_adjoin (Or.inr ⟨a, rfl⟩)`. Set `i₀ : A →+* R₀` to `i.codRestrict R₀.toSubring hm`.
+
+Use `letI : Algebra A R₀ := i₀.toAlgebra`. Set `S : Submonoid A` to `(IsUnit.submonoid R₀).comap i₀ ⊓ (IsUnit.submonoid L).comap f`. Establish `hO : ∀ b : O, i₀ (α b) = algebraMap K R₀ (algebraMap O K b)` using `fun b => Subtype.ext (hi' b)`. Establish `hK : ∀ b : O, b ≠ 0 → IsUnit (algebraMap O K b)` using `fun b hb => IsLocalization.map_units K (⟨b, mem_nonZeroDivisors_of_ne_zero hb⟩ : nonZeroDivisors O)`. Establish `hgS : g ∈ S` using `⟨IsUnit.of_mul_eq_one (⟨(i g)⁻¹, Algebra.subset_adjoin (Or.inl rfl)⟩ : R₀) (Subtype.ext (mul_inv_cancel₀ hg)), isUnit_iff_ne_zero.mpr hfg⟩`.
+
+Establish `hbS : ∀ b : O, b ≠ 0 → α b ∈ S` using `fun b hb => ⟨show IsUnit (i₀ (α b)) from hO b ▸ (hK b hb).map _, show IsUnit (f (α b)) from hf' b ▸ (hK b hb).map _⟩`. Use `haveI : IsLocalization S R₀ := by`. Use `(isLocalization_iff S R₀).mpr ⟨fun y => y.2.1, fun z => ?_, fun {x y} h => ⟨1, ?_⟩⟩` and prove the remaining obligations. Take `⟨a, b, m, hb, h⟩` from `loc_descr α i hi g hg z z.2`. Conclude with `⟨⟨a, ⟨α b * g ^ m, S.mul_mem (hbS b hb) (S.pow_mem hgS m)⟩⟩, Subtype.ext h⟩`.
+
+Rewrite using `[hinj (congrArg Subtype.val h)]`. Set `φ : R₀ →+* L` to `IsLocalization.lift (M := S) (g := f) (fun y => y.2.2)`. Establish `hφ : ∀ a, φ (i₀ a) = f a` using `fun a => IsLocalization.lift_eq (M := S) (g := f) (fun y => y.2.2) a`. Establish `hc : φ.comp (algebraMap K R₀) = algebraMap K L`. Use `IsLocalization.ringHom_ext (nonZeroDivisors O) (RingHom.ext fun o => ?_)` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← hO, hφ, hf']`. Conclude with `⟨⟨φ, fun k => RingHom.congr_fun hc k⟩, fun a h => hφ a⟩`.
+-/
 theorem loc_lift {K O A F L : Type} [Field K] [CommRing O] [IsDomain O] [Algebra O K] [IsFractionRing O K]
     [CommRing A] [Field F] [Algebra K F] [Field L] [Algebra K L] (α : O →+* A) (i : A →+* F)
     (hinj : Function.Injective i)

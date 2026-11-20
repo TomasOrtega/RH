@@ -11,6 +11,15 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.UnrNoChi
 variable {D : D7} (i : D.nd.Loc)
 end GlobalTheory.UnrNoChi
+/- English proof (translation)
+Introduce `D L nch i r π ρ hF _ _ hHG hr _ hρ`. Establish `hUnr` using `_root_.Formalism.MainNotions.N.admG4_of_goodR D i r hF.Conclusion1.1 hr`. Establish `hSub` using `Formalism.MainNotions.N.galois_condition_six_of D i r hF.Conclusion2.2.1 hHG hr`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x _ hxZ u hu`.
+
+Assume the negation of the conclusion as `hu0`. Use `hxZ (hSub x ⟨u, hu0, fun g => ?_⟩)` and prove the remaining obligations. Establish `h` using `hu g`. Rewrite `h` using `[rTwO, GlobalTheory.UnrNoChi.mapM_twistM', Matrix.smul_mulVec]`. Use `conv_rhs => rw [← h]`.
+
+Rewrite using `[smul_smul, ← map_mul, MonoidHom.inv_apply, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one, one_smul]`. Introduce `v hvl hvS hvQ x _ γ hγ`. Establish `hχ` using `GlobalTheory.UnrNoChi.chi_one_eq_one i r π ρ hρ (hUnr π v hvl hvS hvQ γ hγ)`. Establish `hx : rO D.nd i r x γ = 1` using `by simp [rO, hUnr x v hvl hvS hvQ γ hγ]`. Rewrite using `[rTwO, twistM]`.
+
+Simplify using `[hx, hχ]`.
+-/
 theorem GlobalTheory.UnrNoChi.main_alt_alt : ∀ (D : D7) (L : SizeData₂ D) (nch : NChoice D) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (π : D.nd.X i) (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)), _root_.GlobalTheory.NFacts.NormChoiceFacts D nch → LevelStarExponents.lStar L < (D.nd.l i : ℝ) → (∀ k, D.nd.l i ≠ D.host.g k) → HG D.nd D.naut i → GoodR D.nd i r → π ∈ D.nd.Z i → GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.IsRankRPart D i (r π) ρ → NoChiOff i r Set.univ ∧ UnrOut i r Set.univ := by
   intro D L nch i r π ρ hF _ _ hHG hr _ hρ
   have hUnr := _root_.Formalism.MainNotions.N.admG4_of_goodR D i r hF.Conclusion1.1 hr

@@ -13,6 +13,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.He
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CmGaloisRepresentationOfHyp
 open NumberField IsDedekindDomain
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions GlobalTheory.UnitaryBC
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GalAut.galoisRep_definiteUnitary | exact GlobalTheory.GalAut.galoisRep_definiteUnitary | (intros; apply GlobalTheory.GalAut.galoisRep_definiteUnitary <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cm_galois_representation_of_polarizedCuspidal : GlobalTheory.Published.BaseChangeDefiniteUnitary → GlobalTheory.Published.DiscreteSpectrumGL → GlobalTheory.Published.GaloisRepOfPolarizedCuspidal →
   GlobalTheory.Published.ClozelCohomological → GlobalTheory.Published.CohomologicalCsdTempered → GlobalTheory.Published.HeckeLAdicCharacter →
   GlobalTheory.Published.HeckeLAdicCharacterAbove → GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.BhattScholzeCrystallineLattices →

@@ -9,6 +9,11 @@ namespace GlobalTheory.PrinTwo.DiffTr
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Use `⟨Units.mk0 γ hγ, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Units.val_mk0] at hx hy ⊢`.
+
+Establish `h` using `(valuation k).map_add (y - x) x`. Rewrite `h` using `[sub_add_cancel]`. Conclude with `h.trans (max_le hy.le hx)`.
+-/
 theorem isOpen_le (γ : ValueGroupWithZero k) (hγ : γ ≠ 0) :
     IsOpen {x : k | valuation k x ≤ γ} := by
   rw [isOpen_iff_mem_nhds]
@@ -28,15 +33,26 @@ def ballSub (r : kˣ) : AddSubgroup k where
   neg_mem' := fun {a} ha =>
     show valuation k (-a) ≤ valuation k (r : k) by rw [Valuation.map_neg]; exact ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ballSub (r : kˣ) (z : k) : z ∈ ballSub r ↔ valuation k z ≤ valuation k (r : k) :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[QuotientAddGroup.eq, mem_ballSub]`. Use `show valuation k (x - c) ≤ valuation k (r : k) ↔ valuation k (-x + c) ≤ valuation k (r : k)`. Rewrite using `[show -x + c = -(x - c) by ring, Valuation.map_neg]`.
+-/
 theorem mem_ball_iff (r : kˣ) (x c : k) :
     x ∈ ball c r ↔ (QuotientAddGroup.mk x : k ⧸ ballSub r) = QuotientAddGroup.mk c := by
   rw [QuotientAddGroup.eq, mem_ballSub]
   show valuation k (x - c) ≤ valuation k (r : k) ↔ valuation k (-x + c) ≤ valuation k (r : k)
   rw [show -x + c = -(x - c) by ring, Valuation.map_neg]
 
+/- English proof (translation)
+Establish `h1 : (QuotientAddGroup.mk (Quotient.out (QuotientAddGroup.mk x : k ⧸ ballSub r)) : k ⧸ ballSub r) = QuotientAddGroup.mk x` using `QuotientAddGroup.out_eq' _`. Rewrite `h1` using `[QuotientAddGroup.eq, mem_ballSub]`. Establish `h4` using `hr (Quotient.out (QuotientAddGroup.mk x : k ⧸ ballSub r)) _ h1`. Rewrite using `[← h4]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem apply_out (r : kˣ) (Φ : k → ℂ)
     (hr : ∀ x y : k, valuation k y ≤ valuation k (r : k) → Φ (x + y) = Φ x) (x : k) :
     Φ (Quotient.out (QuotientAddGroup.mk x : k ⧸ ballSub r)) = Φ x := by
@@ -46,6 +62,13 @@ theorem apply_out (r : kˣ) (Φ : k → ℂ)
   have h4 := hr (Quotient.out (QuotientAddGroup.mk x : k ⧸ ballSub r)) _ h1
   rw [← h4]; congr 1; ring
 
+/- English proof (translation)
+Establish `hcov : {x : k | valuation k x ≤ γ} ⊆ ⋃ c ∈ {x : k | valuation k x ≤ γ}, ball c r`. Introduce `x hx`. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨x, hx, by simp [ball]⟩`. Establish `hopen : ∀ c ∈ {x : k | valuation k x ≤ γ}, IsOpen (ball c r)`.
+
+Introduce `c _`. Establish `h0 : valuation k (r : k) ≠ 0` using `by simp`. Conclude with `(isOpen_le _ h0).preimage (continuous_sub_right c)`. Take `⟨t, -, ht, hBt⟩` from `(IsNonarchimedeanLocalField.isCompact_closedBall k γ).elim_finite_subcover_image hopen hcov`. Use `(ht.image (QuotientAddGroup.mk : k → k ⧸ ballSub r)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `hBt hx` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`. Take `⟨c, hc, hxc⟩` from `this`. Conclude with `⟨c, hc, ((mem_ball_iff r x c).1 hxc).symm⟩`.
+-/
 theorem finite_image (r : kˣ) (γ : ValueGroupWithZero k) :
     ((QuotientAddGroup.mk : k → k ⧸ ballSub r) '' {x | valuation k x ≤ γ}).Finite := by
   have hcov : {x : k | valuation k x ≤ γ} ⊆
@@ -71,6 +94,31 @@ end GlobalTheory.PrinTwo.DiffTr
 namespace GlobalTheory.PrinTwo.DiffTr
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `hΦ`. Take `⟨R, hRad⟩` from `hR`. Set `mk : k → k ⧸ ballSub r` to `QuotientAddGroup.mk`. Set `f : k ⧸ ballSub r → ℂ` to `fun q => Φ (Quotient.out q)`. Establish `hf : ∀ x, f (mk x) = Φ x` using `apply_out r Φ hr`.
+
+Establish `hmk : ∀ a b : k, mk (a + b) = mk a + mk b` using `fun a b => rfl`. Establish `hmks : ∀ a b : k, mk (a - b) = mk a - mk b` using `fun a b => rfl`. Establish `hout' : ∀ q : k ⧸ ballSub r, mk (Quotient.out q) = q` using `fun q => QuotientAddGroup.out_eq' q`. Take `⟨γ, hRγ, hy⟩ : ∃ γ : ValueGroupWithZero k, valuation k (R : k) ≤ γ ∧ valuation k y ≤ γ` from `⟨max (valuation k (R : k)) (valuation k y), le_max_left _ _, le_max_right _ _⟩`. Establish `hfin` using `finite_image r γ`.
+
+Set `S` to `hfin.toFinset`. Establish `hmemS : ∀ q, q ∈ S ↔ ∃ x, valuation k x ≤ γ ∧ mk x = q`. Introduce `q`. Simplify using `[S, mk]`. Establish `hBy : ∀ x, valuation k x ≤ γ → valuation k (x + y) ≤ γ` using `fun x hx => (valuation k).map_add_le hx hy`.
+
+Establish `hBy' : ∀ x, valuation k x ≤ γ → valuation k (x - y) ≤ γ` using `fun x hx => (valuation k).map_add_le hx (show valuation k (-y) ≤ γ by rwa [Valuation.map_neg]) |>.trans_eq' (by rw [sub_eq_add_neg])`. Establish `hS : ∀ q, q + mk y ∈ S ↔ q ∈ S`. Introduce `q`. Rewrite using `[hmemS, hmemS]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, hxq⟩`. Use `⟨x - y, hBy' x hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hmks, hxq]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Conclude with `⟨x + y, hBy x hx, hmk x y⟩`. Establish `hsum : ∑ q ∈ S, (f (q + mk y) - f q) = 0`. Rewrite using `[Finset.sum_sub_distrib, sub_eq_zero]`. Conclude with `Finset.sum_nbij' (fun q => q + mk y) (fun q => q - mk y) (fun q hq => (hS q).2 hq) (fun q hq => (hS (q - mk y)).1 (by simpa using hq)) (fun q _ => by simp) (fun q _ => by simp) (fun q _ => rfl)`. Establish `hvanish : ∀ x, ¬ valuation k x ≤ γ → Φ (x + y) - Φ x = 0`.
+
+Introduce `x hx`. Rewrite `hx` using `[not_le]`. Establish `hxy : valuation k (x + y) = valuation k x`. Rewrite using `[add_comm]`. Conclude with `Valuation.map_add_eq_of_lt_right _ (lt_of_le_of_lt hy hx)`.
+
+Rewrite using `[sub_eq_zero]`. Conclude with `(hRad x (x + y) (lt_of_le_of_lt hRγ hx) hxy.symm).symm`. Establish `heq : (fun x => Φ (x + y) - Φ x) = ∑ q ∈ S, (f (q + mk y) - f q) • elemDiff (Quotient.out q) (Quotient.out (0 : k ⧸ ballSub r)) r`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`.
+
+Establish `hind : ∀ c : k, (ball c r).indicator (1 : k → ℂ) x = if mk x = mk c then 1 else 0`. Introduce `c`. Rewrite using `[Set.indicator_apply]`. Simplify using `only [mem_ball_iff, Pi.one_apply]`. Both sides reduce to the same expression.
+
+Simplify using `only [Pi.smul_apply, elemDiff, Pi.sub_apply, hind, hout', smul_eq_mul, mul_sub]`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.sum_mul, hsum, zero_mul, sub_zero]`. Simplify using `only [mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq]`. Establish `hval : f (mk x + mk y) - f (mk x) = Φ (x + y) - Φ x`.
+
+Rewrite using `[← hmk, hf, hf]`. Use `split_ifs with hxS`. Conclude with `hval.symm`. Establish `hxB : ¬ valuation k x ≤ γ` using `fun hB => hxS ((hmemS _).2 ⟨x, hB, rfl⟩)`. Conclude with `hvanish x hxB`.
+
+Rewrite using `[heq]`. Use `Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `⟨(Quotient.out q, Quotient.out (0 : k ⧸ ballSub r), r), rfl⟩`.
+-/
 theorem diff_mem (Φ : k → ℂ) (hΦ : IsLC Φ) (hR : IsEvRad Φ) (y : k) :
     (fun x => Φ (x + y) - Φ x) ∈ elemSpan k := by
   classical
@@ -136,6 +184,9 @@ theorem diff_mem (Φ : k → ℂ) (hΦ : IsLC Φ) (hR : IsEvRad Φ) (y : k) :
   refine Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)
   exact ⟨(Quotient.out q, Quotient.out (0 : k ⧸ ballSub r), r), rfl⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ Φ hΦ hR y` and use `diff_mem Φ hΦ hR y`.
+-/
 theorem diff_mem_elemSpan : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (Φ : k → ℂ), GlobalTheory.PrinTwo.IsLC Φ → GlobalTheory.PrinTwo.IsEvRad Φ →
     ∀ y : k, (fun x => Φ (x + y) - Φ x) ∈ GlobalTheory.PrinTwo.elemSpan k :=

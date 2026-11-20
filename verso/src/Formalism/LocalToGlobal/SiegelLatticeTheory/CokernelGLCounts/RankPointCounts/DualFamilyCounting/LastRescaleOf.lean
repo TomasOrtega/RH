@@ -25,6 +25,31 @@ def LastUnit : Prop :=
       ∃ l : K, l ≠ 0 ∧ InP 𝔭 0 (algebraMap F K (c j) * (l * star l)) ∧
         InP 𝔭 0 (algebraMap F K (c j) * (l * star l))⁻¹
 
+/- English proof (translation)
+Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hUc hpos hΛ₀ M hM hMi 𝔭 h𝔭 b a hba hc π w c τ hg`. Establish `hm : 0 < finrank K (orthK h U)` using `lt_of_le_of_lt (Nat.zero_le _) hc`. Use `set j₀ : Fin (finrank K (orthK h U)) := ⟨finrank K (orthK h U) - 1, by omega⟩ with hj₀`. Take `⟨l, hl0, hl1, hl2⟩` from `hL K F V hK hF h hs hnd U hUc hpos hΛ₀ M hM hMi 𝔭 h𝔭 b a hba hc π w c τ hg j₀ (by simp [j₀]; omega)`. Take `⟨hwW, hwo, hwn, hτ, hu, hcong, hτl, hunit⟩` from `hg`.
+
+Take `⟨μ, hμ⟩` from `(hF (l * star l)).1 (by rw [star_mul', star_star, mul_comm])`. Establish `hμ0 : μ ≠ 0`. Introduce `e`. Rewrite `hμ` using `[e, map_zero]`. Conclude with `mul_ne_zero hl0 (star_ne_zero.2 hl0) hμ.symm`.
+
+Set `w'` to `Function.update w j₀ (l • w j₀)`. Set `c'` to `Function.update c j₀ (μ * c j₀)`. Establish `hw'₀ : w' j₀ = l • w j₀` using `Function.update_self _ _ _`. Establish `hw'n : ∀ j, j ≠ j₀ → w' j = w j` using `fun j hj => Function.update_of_ne hj _ _`. Establish `hc'₀ : c' j₀ = μ * c j₀` using `Function.update_self _ _ _`.
+
+Establish `hc'n : ∀ j, j ≠ j₀ → c' j = c j` using `fun j hj => Function.update_of_ne hj _ _`. Establish `hτ₀ : ∀ i, vF 𝔭 (a i) ≠ 0 → τ i ≠ j₀`. Introduce `i hi e`. Use `hτl i hi` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Simplify using `[j₀] at this`. Use linear arithmetic over natural numbers and integers. Use `⟨w', c', ⟨?_, ?_, ?_, hτ, hu, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `j`. Distinguish the cases in `hj : j = j₀`.
+
+Rewrite using `[hj, hw'₀]`. Conclude with `Submodule.smul_mem _ _ (hwW j₀)`. Rewrite using `[hw'n j hj]`. Conclude with `hwW j`. Introduce `j k hjk`.
+
+Distinguish the cases in `hj : j = j₀`. Establish `hk : k ≠ j₀` using `fun e => hjk (hj.trans e.symm)`. Rewrite using `[hj, hw'₀, hw'n k hk, form_smul_left, hwo _ _ (hj ▸ hjk), mul_zero]`. Distinguish the cases in `hk : k = j₀`. Rewrite using `[hk, hw'₀, hw'n j hj, form_smul_right, hwo _ _ (hk ▸ hjk), mul_zero]`.
+
+Rewrite using `[hw'n j hj, hw'n k hk]`. Conclude with `hwo j k hjk`. Introduce `j`. Distinguish the cases in `hj : j = j₀`. Rewrite using `[hj, hw'₀, hc'₀, form_smul_smul, (hwn j₀).1, map_mul, hμ]`.
+
+Use `⟨by ring, mul_ne_zero hμ0 (hwn j₀).2⟩` and prove the remaining obligations. Rewrite using `[hw'n j hj, hc'n j hj]`. Conclude with `hwn j`. Introduce `i hi`. Rewrite using `[hc'n _ (hτ₀ i hi)]`.
+
+Conclude with `hcong i hi`. Introduce `j hnp`. Distinguish the cases in `hj : j = j₀`. Rewrite using `[hj, hc'₀]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hμ, mul_comm]`. Conclude with `hl1`. Rewrite using `[map_inv₀, map_mul, hμ, mul_comm]`. Conclude with `hl2`. Rewrite using `[hc'n j hj]`.
+
+Use `hunit j ?_ hnp` and prove the remaining obligations. Establish `h1` using `j.isLt`. Establish `h2 : (j : ℕ) ≠ finrank K (orthK h U) - 1` using `fun e => hj (Fin.ext e)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lastRescale_of (hL : LastUnit) : LastRescale := by
   intro K F V _ _ _ _ _ _ _ _ _ _ _ hK hF h hs hnd U hUc hpos hΛ₀ M hM hMi 𝔭 h𝔭 b a hba hc π w c τ hg
   have hm : 0 < finrank K (orthK h U) := lt_of_le_of_lt (Nat.zero_le _) hc

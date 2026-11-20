@@ -20,6 +20,15 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)} {hc : HeisClosedF σ JS JT ξ₀ B.ψ} {w : 𝓞 E} {lam : ℕ →* ℂ}
   {Om : GAF σ JS × GAF σ JT →* Module.End ℂ (thetaSubF σ JS JT ξ₀ B.ψ)}
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
+/- English proof (translation)
+Establish `hψ : ∀ a, ‖B.ψ a‖ = 1` using `(_root_.GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_k F E σ B C.good).1.2.1`. Establish `hi` using `(GQF σ JS).inv_mem hγ`. Establish `hi'` using `(GQF σ JT).inv_mem hγ'`. Establish `hinv : ∀ x, actOF σ JS JT γ γ' (actOF σ JS JT γ⁻¹ γ'⁻¹ x) = x` using `fun x => by`. Use `SubstA.actOF_inv_actOF (σ := σ) (JS := JS) (JT := JT) γ⁻¹ γ'⁻¹ x` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv, inv_inv]`. Then use the resulting hypothesis. Use `⟨SubstA.isThetaFunOF_comp C.hS hf hi hi', fun w₀ => ?_, fun μ 𝓕 hμ h𝓕 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Unfold `heisOF`. Use `beta_reduce`.
+
+Rewrite using `[GlobalTheory.FinLatF.actOF_add, SubstA.actOF_inv_actOF, ← SubstA.symplOHF_actOF C.hS γ⁻¹ γ'⁻¹ x, SubstA.actOF_inv_actOF]`. Set `e : WOF F E nS nT ≃+ WOF F E nS nT` to `{ toFun := actOF σ JS JT γ⁻¹ γ'⁻¹ invFun := actOF σ JS JT γ γ' left_inv := hinv right_inv := SubstA.actOF_inv_actOF γ γ' map_add' := GlobalTheory.FinLatF.actOF_add _ _ }`. Use `SubstA.setLIntegral_comp e (SubstA.continuous_actOF _ _) (SubstA.continuous_actOF _ _) (fun x => ⟨fun hx => ?_, SubstA.actOF_mem_ratLF hi hi'⟩) μ hμ h𝓕 (fun w => ‖f w‖ₑ ^ 2) ?_` and prove the remaining obligations. Rewrite using `[← hinv x]`. Conclude with `SubstA.actOF_mem_ratLF hγ hγ' hx`.
+
+Introduce and unpack `_ ⟨y, rfl⟩ x`. Establish `h7 : ‖f (ratWF y + x)‖ = ‖f x‖`. Rewrite using `[hf.quasi y x, norm_mul, hψ, one_mul]`. Use `show ‖f (ratWF y + x)‖ₑ ^ 2 = ‖f x‖ₑ ^ 2`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, h7]`.
+-/
 theorem rat_subst_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) {γ : GAF σ JS} (hγ : γ ∈ GQF σ JS) {γ' : GAF σ JT} (hγ' : γ' ∈ GQF σ JT)
     {f : WOF F E nS nT → ℂ} (hf : IsThetaFunOF σ JS JT ξ₀ B.ψ f) :
     IsThetaFunOF σ JS JT ξ₀ B.ψ (fun x => f (actOF σ JS JT γ⁻¹ γ'⁻¹ x)) ∧
@@ -55,6 +64,17 @@ theorem rat_subst_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ 
         rw [hf.quasi y x, norm_mul, hψ, one_mul]
       show ‖f (ratWF y + x)‖ₑ ^ 2 = ‖f x‖ₑ ^ 2
       rw [← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, h7]
+/- English proof (translation)
+Take `⟨c, hc⟩` from `_root_.GlobalTheory.T.theta_preserving_endomorphism_scalar F E σ B C.good nS nT JS JT C.hS C.hT ξ₀ C.h0 C.hξ M h1 h2 h3`. Establish `hψ : ∀ a, ‖B.ψ a‖ = 1` using `(_root_.GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_k F E σ B C.good).1.2.1`. Distinguish the cases in `h0 : ∃ f y, IsThetaFunOF σ JS JT ξ₀ B.ψ f ∧ f y ≠ 0`. Take `⟨f, y, hf, hy⟩` from `h0`. Take `⟨μ, 𝓕, hμ, h𝓕, hI0, hIt⟩` from `GlobalTheory.ThetaSchurUnitF.exists_fd_pos_fin hψ hf hy`.
+
+Establish `h` using `h3 μ 𝓕 hμ h𝓕 f hf`. Rewrite `h` using `[hc f hf]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, enorm_mul, mul_pow] at h`. Rewrite `h` using `[lintegral_const_mul' _ _ (ENNReal.pow_ne_top enorm_ne_top)]`. Establish `e1 : ‖c‖ₑ ^ 2 = 1`.
+
+Use `congrArg (· / ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ) h` as an intermediate fact. Rewrite `this` using `[ENNReal.mul_div_cancel_right hI0 hIt, ENNReal.div_self hI0 hIt]`. Then use the resulting hypothesis. Establish `e2 : (‖c‖₊ : ENNReal) ^ 2 = 1` using `by rwa [enorm_eq_nnnorm] at e1`. Establish `e3 : ‖c‖₊ ^ 2 = 1` using `by exact_mod_cast e2`. Establish `e4 : ‖c‖ ^ 2 = 1`.
+
+Use `congrArg (fun t : NNReal => (t : ℝ)) e3` as an intermediate fact. Simplify using `using this`. Conclude with `⟨c, (pow_eq_one_iff_of_nonneg (norm_nonneg c) two_ne_zero).1 e4, hc⟩`. Use `push_neg at h0`. Use `⟨1, norm_one, fun f hf => ?_⟩` and prove the remaining obligations.
+
+Establish `: f = 0` using `funext fun y => h0 f y hf`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem schur_norm_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (M : Module.End ℂ (WOF F E nS nT → ℂ))
     (h1 : ∀ f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → IsThetaFunOF σ JS JT ξ₀ B.ψ (M f))
     (h2 : ∀ u f, IsThetaFunOF σ JS JT ξ₀ B.ψ f → M (heisOF σ JS JT ξ₀ B.ψ u f) = heisOF σ JS JT ξ₀ B.ψ u (M f))

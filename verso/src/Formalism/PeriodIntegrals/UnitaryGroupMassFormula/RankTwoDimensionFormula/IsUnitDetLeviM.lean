@@ -15,24 +15,39 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (TR : TypedRed X)
 
+/- English proof (translation)
+Rewrite using `[← leviM_mul_par TR hx.1 hx.2, mul_inv_cancel, leviM_one]`.
+-/
 theorem leviM_mul_inv {x : X.B.I.Gf} (hx : Good X x) (v : TR.Pl) : leviM TR x v * leviM TR x⁻¹ v = 1 := by
   rw [← leviM_mul_par TR hx.1 hx.2, mul_inv_cancel, leviM_one]
 
+/- English proof (translation)
+The claim follows from `isUnit_iff_exists_inv.2 ⟨(leviM TR x⁻¹ v).det, by rw [← Matrix.det_mul, leviM_mul_inv TR hx, Matrix.det_one]⟩`.
+-/
 theorem isUnit_det_leviM {x : X.B.I.Gf} (hx : Good X x) (v : TR.Pl) : IsUnit (leviM TR x v).det :=
   isUnit_iff_exists_inv.2 ⟨(leviM TR x⁻¹ v).det, by rw [← Matrix.det_mul, leviM_mul_inv TR hx, Matrix.det_one]⟩
 
+/- English proof (translation)
+Unfold `levi`. Rewrite using `[dif_pos (isUnit_det_leviM TR hx v)]`. Both sides reduce to the same expression.
+-/
 theorem levi_coe {x : X.B.I.Gf} (hx : Good X x) (v : TR.Pl) :
     ((levi TR x v : GL (Fin D.R.k) (TR.Fq v)) : Matrix (Fin D.R.k) (Fin D.R.k) (TR.Fq v)) = leviM TR x v := by
   unfold levi
   rw [dif_pos (isUnit_det_leviM TR hx v)]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Pi.mul_apply, Units.val_mul, levi_coe TR (good_mul X hx hy), levi_coe TR hx, levi_coe TR hy, leviM_mul_par TR hx.1 hy.1]`.
+-/
 theorem levi_mul {x y : X.B.I.Gf} (hx : Good X x) (hy : Good X y) : levi TR (x * y) = levi TR x * levi TR y := by
   funext v
   apply Units.ext
   rw [Pi.mul_apply, Units.val_mul, levi_coe TR (good_mul X hx hy), levi_coe TR hx, levi_coe TR hy,
     leviM_mul_par TR hx.1 hy.1]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[levi_coe TR (good_one X), leviM_one]`. Both sides reduce to the same expression.
+-/
 theorem levi_one : levi TR (1 : X.B.I.Gf) = 1 := by
   funext v
   apply Units.ext
@@ -47,20 +62,39 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Simplify using `[AutInst.fmat]`.
+-/
 theorem fmat_mul (x y : X.B.I.Gf) : X.B.I.fmat (x * y) = X.B.I.fmat x * X.B.I.fmat y := by
   simp [AutInst.fmat]
 
+/- English proof (translation)
+Simplify using `[AutInst.fmat]`.
+-/
 theorem fmat_inv_mul (x : X.B.I.Gf) : X.B.I.fmat x⁻¹ * X.B.I.fmat x = 1 := by
   simp [AutInst.fmat]
 
+/- English proof (translation)
+Rewrite using `[fmat_mul, ← Matrix.mulVec_mulVec, hy, hx]`.
+-/
 theorem fixes_mul {x y : X.B.I.Gf} {v : VA X.B.I} (hx : X.B.I.fmat x *ᵥ v = v) (hy : X.B.I.fmat y *ᵥ v = v) :
     X.B.I.fmat (x * y) *ᵥ v = v := by
   rw [fmat_mul, ← Matrix.mulVec_mulVec, hy, hx]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fixes_inv {x : X.B.I.Gf} {v : VA X.B.I} (hx : X.B.I.fmat x *ᵥ v = v) : X.B.I.fmat x⁻¹ *ᵥ v = v := by
   calc X.B.I.fmat x⁻¹ *ᵥ v = X.B.I.fmat x⁻¹ *ᵥ (X.B.I.fmat x *ᵥ v) := by rw [hx]
     _ = v := by rw [Matrix.mulVec_mulVec, fmat_inv_mul, Matrix.one_mulVec]
 
+/- English proof (translation)
+Unfold `mL at *`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨X.B.I.fmat x *ᵥ w, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hx w).1 hw`. Rewrite using `[Matrix.mulVec_smul]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+
+Consider the case `smul c a _ ha`. Rewrite using `[Subring.smul_def, Matrix.mulVec_smul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem mem_mL_of_Kset {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (m : ℕ) {y : VA X.B.I} (hy : y ∈ mL X.B.I m) :
     X.B.I.fmat x *ᵥ y ∈ mL X.B.I m := by
   unfold mL at *
@@ -76,6 +110,9 @@ theorem mem_mL_of_Kset {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (m : ℕ) {y : VA 
     rw [Subring.smul_def, Matrix.mulVec_smul, ← Subring.smul_def]
     exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+Take `⟨c, hc, hcδ⟩` from `hδ`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, ← Matrix.mulVec_smul]`. Conclude with `Submodule.sub_mem _ (mem_mL_of_Kset X hx _ hcδ) hcδ`.
+-/
 theorem congG_of_Kset {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) {δ : VA X.B.I} (hδ : InAt X.B.I X.B.g X.B.g δ) :
     InAt X.B.I X.B.g X.B.g (X.B.I.fmat x *ᵥ δ - δ) := by
   obtain ⟨c, hc, hcδ⟩ := hδ
@@ -91,11 +128,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Rewrite using `[hA_symm]`. Conclude with `Z_sig X.B.I X.B.g (mL_Qs X.B.I X.B.g hw hd)`.
+-/
 theorem Z_hA_mL {d w : VA X.B.I} (hd : d ∈ mL X.B.I X.B.g) (hw : w ∈ X.B.I.Lf) :
     ZMod' X.B.I X.B.g (hA X.B.I d w) := by
   rw [hA_symm]
   exact Z_sig X.B.I X.B.g (mL_Qs X.B.I X.B.g hw hd)
 
+/- English proof (translation)
+Use `set k := ((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h' : X.B.I.Gf) * X.xu u) with hkdef`. Take `⟨hE0, hF0, hZ0, -, -⟩` from `frame_Lf X`. Establish `hk' : k = (X.xu u)⁻¹ * ((h : X.B.I.Gf)⁻¹ * ((h' : X.B.I.Gf) * X.xu u))` using `by rw [hkdef]; group`. Establish `hfix : ∀ y ∈ Formalism.L2.SG.PoincareInHH.PoincareSetting.fixSet X u, X.B.I.fmat (X.xu u) *ᵥ incl X.B.I y = incl X.B.I y → X.B.I.fmat k *ᵥ incl X.B.I y = incl X.B.I y`. Introduce `y hy hxu`.
+
+Rewrite using `[hk']`. Establish `h1 : X.B.I.fmat (h' : X.B.I.Gf) *ᵥ incl X.B.I y = incl X.B.I y` using `h'.2 y hy`. Establish `h2 : X.B.I.fmat (h : X.B.I.Gf)⁻¹ *ᵥ incl X.B.I y = incl X.B.I y` using `fixes_inv X (h.2 y hy)`. Conclude with `fixes_mul X (fixes_inv X hxu) (fixes_mul X h2 (fixes_mul X h1 hxu))`. Establish `hE : ∀ a, X.B.I.fmat k *ᵥ incl X.B.I (X.crd (X.eX a)) = incl X.B.I (X.crd (X.eX a))` using `fun a => hfix _ (Or.inl (Or.inl ⟨a, rfl⟩)) ((X.xu_fix u a).1)`.
+
+Establish `hZ : X.B.I.fmat k *ᵥ (X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd (X.zu u))) = X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd (X.zu u))`. Rewrite using `[Matrix.mulVec_mulVec, ← fmat_mul]`. Establish `e : k * (X.xu u)⁻¹ = (X.xu u)⁻¹ * ((h : X.B.I.Gf)⁻¹ * (h' : X.B.I.Gf))` using `by rw [hkdef]; group`. Rewrite using `[e, fmat_mul, ← Matrix.mulVec_mulVec]`. Use `congr 1`.
+
+Establish `hy : X.crd (X.zu u) ∈ Formalism.L2.SG.PoincareInHH.PoincareSetting.fixSet X u` using `Or.inr rfl`. Conclude with `fixes_mul X (fixes_inv X (h.2 _ hy)) (h'.2 _ hy)`. Establish `key : ∀ (w v : VA X.B.I), v ∈ X.B.I.Lf → X.B.I.fmat k *ᵥ w = w → InAt X.B.I X.B.g X.B.g (v - w) → X.B.I.fmat k *ᵥ v - v ∈ mL X.B.I X.B.g`. Introduce `w v hv hw hvw`. Use `mem_mL_of_InAt X (sub_mem (K_mv X.B.I hk hv) hv) ?_` and prove the remaining obligations.
+
+Use `congG_of_Kset X hk hvw` as an intermediate fact. Establish `e : X.B.I.fmat k *ᵥ v - v = X.B.I.fmat k *ᵥ (v - w) - (v - w)`. Rewrite using `[Matrix.mulVec_sub, hw]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+
+Conclude with `this`. Use `⟨fun a => key _ _ (hE0 a) (hE a) (X.basisApprox a).1, key _ _ hZ0 hZ ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hcm⟩` from `X.xu_z u`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[show X.z0 - X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd (X.zu u)) = -(X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd (X.zu u)) - X.z0) by abel, smul_neg]`.
+
+Conclude with `Submodule.neg_mem _ hcm`.
+-/
 theorem colStab (u : D.what₂.Word) (h h' : Formalism.L2.SG.PoincareInHH.PoincareSetting.Hfin X u)
     (hk : ((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h' : X.B.I.Gf) * X.xu u) ∈ X.B.I.Kset) :
     (∀ a, X.B.I.fmat (((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h' : X.B.I.Gf) * X.xu u)) *ᵥ X.e0 a - X.e0 a ∈
@@ -136,6 +191,13 @@ theorem colStab (u : D.what₂.Word) (h h' : Formalism.L2.SG.PoincareInHH.Poinca
     -(X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd (X.zu u)) - X.z0) by abel, smul_neg]
   exact Submodule.neg_mem _ hcm
 
+/- English proof (translation)
+Take `⟨hE0, hF0, hZ0, hB, hBd⟩` from `frame_Lf X`. Use `⟨hk, fun a => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[show X.B.I.fmat k *ᵥ X.e0 a = X.e0 a + (X.B.I.fmat k *ᵥ X.e0 a - X.e0 a) by abel]`. Conclude with `add_mem (sub_Mo X.B.I ⟨a, rfl⟩) (mL_Mo X.B.I (he a))`. Use `mem_Mo_eb X (K_mv X.B.I hk (hB j)) (fun a => ?_) ?_ (fun l => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hA_adj, show X.B.I.fmat k⁻¹ *ᵥ X.e0 a = X.e0 a + (X.B.I.fmat k⁻¹ *ᵥ X.e0 a - X.e0 a) by abel, hA_add_left]`. Conclude with `Z_add X.B.I X.B.g ((X.weightVectorsIntegral j).2.2 a).1 (Z_hA_mL X (hie a) (hB j))`. Rewrite using `[hA_adj, show X.B.I.fmat k⁻¹ *ᵥ X.z0 = X.z0 + (X.B.I.fmat k⁻¹ *ᵥ X.z0 - X.z0) by abel, hA_add_left]`. Conclude with `Z_add X.B.I X.B.g (X.weightVectorsIntegral j).1 (Z_hA_mL X hiz (hB j))`. Establish `e : hA X.B.I (X.bw l) (X.B.I.fmat k *ᵥ X.bw j) = 0`.
+
+Rewrite using `[X.bw_w l, X.bw_w j, Matrix.mulVec_smul, hA_smul_left, hA_smul_right]`. Use `X.ew_orth` as an intermediate fact. Take the linear combination `(hA X.B.I (X.bw l) (X.B.I.fmat k *ᵥ X.bw j)) * this`. Rewrite using `[e]`. Conclude with `Z_zero X.B.I X.B.g`.
+-/
 theorem par_of_stab {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kset)
     (he : ∀ a, X.B.I.fmat k *ᵥ X.e0 a - X.e0 a ∈ mL X.B.I X.B.g)
     (hie : ∀ a, X.B.I.fmat k⁻¹ *ᵥ X.e0 a - X.e0 a ∈ mL X.B.I X.B.g)
@@ -156,6 +218,11 @@ theorem par_of_stab {k : X.B.I.Gf} (hk : k ∈ X.B.I.Kset)
         linear_combination (hA X.B.I (X.bw l) (X.B.I.fmat k *ᵥ X.bw j)) * this
       rw [e]; exact Z_zero X.B.I X.B.g
 
+/- English proof (translation)
+Establish `einv : (((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h' : X.B.I.Gf) * X.xu u))⁻¹ = ((h' : X.B.I.Gf) * X.xu u)⁻¹ * ((h : X.B.I.Gf) * X.xu u)` using `by group`. Establish `s1` using `colStab X u h h' hk`. Establish `s2` using `colStab X u h' h hki`. Use `⟨par_of_stab X hk s1.1 (by rw [einv]; exact s2.1) (by rw [einv]; exact s2.2), ?_⟩` and prove the remaining obligations. Rewrite using `[einv]`.
+
+Establish `einv2 : (((h' : X.B.I.Gf) * X.xu u)⁻¹ * ((h : X.B.I.Gf) * X.xu u))⁻¹ = ((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h' : X.B.I.Gf) * X.xu u)` using `by group`. Conclude with `par_of_stab X hki s2.1 (by rw [einv2]; exact s1.1) (by rw [einv2]; exact s1.2)`.
+-/
 theorem colGood (u : D.what₂.Word) (h h' : Formalism.L2.SG.PoincareInHH.PoincareSetting.Hfin X u)
     (hk : ((h : X.B.I.Gf) * X.xu u)⁻¹ * ((h' : X.B.I.Gf) * X.xu u) ∈ X.B.I.Kset)
     (hki : ((h' : X.B.I.Gf) * X.xu u)⁻¹ * ((h : X.B.I.Gf) * X.xu u) ∈ X.B.I.Kset) :

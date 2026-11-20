@@ -14,6 +14,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Hk3
 
+/- English proof (translation)
+Introduce `X E I _ _ _ _ _ _ Θ op h C Ec lab hint hn hn' hc htop hh hne`. Establish `hcomm : Formalism.L2.Col.PairComm h`. Introduce `i j`. Use `GlobalTheory.EigTransfer.linearMap_ext_of_iSup_eq_top Ec htop (h i * h j) (h j * h i) fun c w hw => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, hh c w hw, map_smul, smul_smul, mul_comm]`.
+
+Establish `hup : ∀ c, (Ec c).map (LinearMap.adjoint Θ) ≤ Formalism.L2.Col.eigAt op (lab c)`. Introduce and unpack `c _ ⟨w, hw, rfl⟩`. Conclude with `Formalism.L2.Col.mem_eigAt_of_forall_apply fun i => GlobalTheory.T.eigenvector_adjoint_intertwiner_normal_operators Θ op h hint hn hn' i (lab c i) w (hh c w hw i)`. Establish `hiff : ∀ (Q : (I → ℂ) → Prop) c, Ec c ≠ ⊥ → ((Ec c).map (LinearMap.adjoint Θ) ≤ Formalism.L2.Col.eigSum op Q ↔ Q (lab c))`. Introduce `Q c hcne`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hle`. Assume the negation of the conclusion as `hq`. Take `⟨w, hw, hw0⟩` from `hne c hcne`. Establish `hm : LinearMap.adjoint Θ w ∈ (Ec c).map (LinearMap.adjoint Θ)` using `⟨w, hw, rfl⟩`.
+
+Establish `hd` using `Formalism.L2.Col.disjoint_eigSum hc (C := fun x => ¬ Q x) (C' := Q) fun x hx => hx`. Conclude with `hw0 ((Submodule.disjoint_def.1 hd) _ (Formalism.L2.Col.eigAt_le_eigSum (C := fun x => ¬ Q x) hq (hup c hm)) (hle hm))`. Introduce `hq`. Conclude with `(hup c).trans (Formalism.L2.Col.eigAt_le_eigSum hq)`. Use `⟨hcomm, fun Q => ⟨fun c hcne => hiff Q c hcne, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hle : ∀ P : (I → ℂ) → Prop, (⨆ (c : C) (_ : P (lab c)), Ec c) ≤ Formalism.L2.Col.eigSum h P` using `fun P => iSup₂_le fun c hq w hw => Formalism.L2.Col.eigAt_le_eigSum hq (Formalism.L2.Col.mem_eigAt_of_forall_apply fun i => hh c w hw i)`. Establish `hsup : (⨆ (c : C) (_ : Q (lab c)), Ec c) ⊔ (⨆ (c : C) (_ : ¬ Q (lab c)), Ec c) = ⊤`. Rewrite using `[eq_top_iff, ← htop]`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hq : Q (lab c)`.
+
+Conclude with `le_sup_of_le_left (le_iSup₂_of_le (f := fun c (_ : Q (lab c)) => Ec c) c hq le_rfl)`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le (f := fun c (_ : ¬ Q (lab c)) => Ec c) c hq le_rfl)`. Establish `hd : Disjoint (⨆ (c : C) (_ : ¬ Q (lab c)), Ec c) (Formalism.L2.Col.eigSum h Q)` using `(Formalism.L2.Col.disjoint_eigSum hcomm (C := fun x => ¬ Q x) (C' := Q) fun x hx => hx).mono_left (hle fun x => ¬ Q x)`. Establish `hQ : (⨆ (c : C) (_ : Q (lab c)), Ec c) = Formalism.L2.Col.eigSum h Q`. Use `sup_inf_assoc_of_le (⨆ (c : C) (_ : ¬ Q (lab c)), Ec c) (hle Q)` as an intermediate fact.
+
+Rewrite `this` using `[hsup, top_inf_eq, hd.eq_bot, sup_bot_eq]`. Conclude with `this.symm`. Rewrite using `[← hQ]`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le fun c hcq => ?_` and prove the remaining obligations.
+
+Conclude with `le_iSup₂_of_le (f := fun c (_ : Q (lab c)) => Ec c) c ((hiff Q c hcq.1).1 hcq.2) le_rfl`. Use `iSup₂_le fun c hq => ?_` and prove the remaining obligations. Distinguish the cases in `hb : Ec c = ⊥`. Rewrite using `[hb]`. Conclude with `bot_le`.
+
+Conclude with `le_iSup₂_of_le (f := fun c (_ : Ec c ≠ ⊥ ∧ (Ec c).map (LinearMap.adjoint Θ) ≤ Formalism.L2.Col.eigSum op Q) => Ec c) c ⟨hb, (hiff Q c hb).2 hq⟩ le_rfl`.
+-/
 theorem parts_of_adjoint_lift : ∀ {X E I : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [FiniteDimensional ℂ X] [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] (Θ : X →ₗ[ℂ] E) (op : I → Module.End ℂ X) (h : I → Module.End ℂ E), ∀ {C : Type} (Ec : C → Submodule ℂ E) (lab : C → I → ℂ), (∀ i u, Θ (op i u) = h i (Θ u)) → (∀ i, Commute (op i) (LinearMap.adjoint (op i))) → (∀ i, Commute (h i) (LinearMap.adjoint (h i))) → Formalism.L2.Col.PairComm op → (⨆ c, Ec c) = ⊤ → (∀ c, ∀ w ∈ Ec c, ∀ i, h i w = lab c i • w) → (∀ c, Ec c ≠ ⊥ → ∃ w ∈ Ec c, LinearMap.adjoint Θ w ≠ 0) → Formalism.L2.Col.PairComm h ∧ ∀ Q : (I → ℂ) → Prop, (∀ c, Ec c ≠ ⊥ → ((Ec c).map (LinearMap.adjoint Θ) ≤ Formalism.L2.Col.eigSum op Q ↔ Q (lab c))) ∧ (⨆ (c : C) (_ : Ec c ≠ ⊥ ∧ (Ec c).map (LinearMap.adjoint Θ) ≤ Formalism.L2.Col.eigSum op Q), Ec c) = Formalism.L2.Col.eigSum h Q := by
   intro X E I _ _ _ _ _ _ Θ op h C Ec lab hint hn hn' hc htop hh hne
   have hcomm : Formalism.L2.Col.PairComm h := by

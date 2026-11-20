@@ -5,6 +5,11 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h A K V _ _ _ _ _ _ _ _ _ _ _ _ M N hMf hMp hNf hNp hMs hNs hloc`. Use `h A K V M N hMf hMp hNf hNp hMs hNs fun p hp => ?_` and prove the remaining obligations. Conclude with `SetLike.coe_injective (hloc p.asIdeal p.isPrime hp)`. Introduce `h A _ _ _ _ K _ _ _ V _ _ _ _ _ M N hMf hMp hNf hNp hMs hNs hloc`.
+
+Use `h A K V M N hMf hMp hNf hNp hMs hNs fun p hp hh => ?_` and prove the remaining obligations. Establish `e` using `hloc ⟨p, hp⟩ hh`. Conclude with `congrArg (fun P : Submodule A V => (P : Set V)) e`.
+-/
 theorem LatticesAgree.equiv :
     GroundTheory.Heights₂.Heights.Model.LatticesAgree.Statement ↔ LatticesAgree.Statement := by
   constructor

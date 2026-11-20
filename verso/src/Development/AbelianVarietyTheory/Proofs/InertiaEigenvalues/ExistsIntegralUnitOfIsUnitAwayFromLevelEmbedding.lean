@@ -13,6 +13,19 @@ open GlobalTheory.HeightCounting.Up (PrN)
 
 namespace GlobalTheory.PlaceRead
 
+/- English proof (translation)
+Introduce `O _ _ _ ε N t hN ⟨ht0, n, h1, h2⟩`. Establish `hε : Function.Injective ε` using `ε.injective`. Establish `key : ∀ s : FractionRing O, IsIntegral ℤ (ε s) → ∃ a : O, algebraMap O (FractionRing O) a = s`. Introduce `s hs`. Use `letI : Algebra ℤ (FractionRing O) := Ring.toIntAlgebra _`.
+
+Establish `hs' : IsIntegral ℤ s` using `(isIntegral_algHom_iff (ε.toIntAlgHom) hε).mp hs`. Establish `hO : IsIntegral O s`. Use `IsIntegral.map_of_comp_eq (Int.castRingHom O) (RingHom.id (FractionRing O)) (RingHom.ext_int _ _) hs'` as an intermediate fact. Simplify using `using this`. Conclude with `IsIntegrallyClosed.isIntegral_iff.mp hO`.
+
+Establish `ht : t ≠ 0` using `by rintro rfl; simp at ht0`. Take `⟨a, ha⟩` from `key (((N : FractionRing O)) ^ n * t) (by simpa [map_mul, map_pow, map_natCast] using h1)`. Take `⟨b, hb⟩` from `key (((N : FractionRing O)) ^ n * t⁻¹) (by simpa [map_mul, map_pow, map_natCast, map_inv₀] using h2)`. Establish `hN' : (N : FractionRing O) ≠ 0`. Use `(hN.map (algebraMap O (FractionRing O))).ne_zero` as an intermediate fact.
+
+Simplify using `using this`. Establish `hab : a * b = (N : O) ^ (2 * n)`. Apply `IsFractionRing.injective O (FractionRing O)` to reduce the goal to its premises. Rewrite using `[map_mul, ha, hb, map_pow, map_natCast]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hua : IsUnit a` using `isUnit_of_mul_isUnit_left (hab ▸ hN.pow _)`. Establish `hinv : algebraMap O (FractionRing O) ((hN.unit⁻¹ : Oˣ) : O) = (N : FractionRing O)⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_natCast (algebraMap O (FractionRing O)) N, ← map_mul, IsUnit.val_inv_mul, map_one]`.
+
+Use `⟨hua.unit * hN.unit⁻¹ ^ n, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, IsUnit.unit_spec, map_mul, map_pow, hinv, ha]`. Rewrite using `[mul_comm (_ ^ n) t, mul_assoc, ← mul_pow, mul_inv_cancel₀ hN', one_pow, mul_one]`.
+-/
 theorem unit_of_unitOff : ∀ (O : Type) [CommRing O] [IsDomain O] [IsIntegrallyClosed O] (ε : FractionRing O →+* ℂ) (N : ℕ) (t : FractionRing O), IsUnit (N : O) → UnitOff N (ε t) → ∃ u : Oˣ, t = algebraMap O (FractionRing O) u := by
   intro O _ _ _ ε N t hN ⟨ht0, n, h1, h2⟩
   have hε : Function.Injective ε := ε.injective

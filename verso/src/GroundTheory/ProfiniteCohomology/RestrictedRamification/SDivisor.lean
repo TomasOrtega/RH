@@ -20,6 +20,9 @@ variable {K L : Type u} [Field K] [Field L] [NumberField K] [NumberField L] [Alg
 
 omit [NumberField F] [NumberField L] in
 
+/- English proof (translation)
+Take `⟨⟨Q, hQ, hQv⟩⟩` from `(inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 L)))`. Conclude with `⟨⟨Q, hQ, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, (liesOver_iff_eq_underPlace.1 hQv).symm⟩`.
+-/
 theorem exists_underPlace_eq (v : HeightOneSpectrum (𝓞 F)) :
     ∃ w : HeightOneSpectrum (𝓞 L), underPlace (F := F) w = v := by
   obtain ⟨⟨Q, hQ, hQv⟩⟩ := (inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 L)))
@@ -28,10 +31,16 @@ theorem exists_underPlace_eq (v : HeightOneSpectrum (𝓞 F)) :
 
 omit [NumberField F] [NumberField K] [NumberField L] in
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext (Ideal.under_under (A := 𝓞 F) (B := 𝓞 K) W.asIdeal)`.
+-/
 theorem underPlace_underPlace (W : HeightOneSpectrum (𝓞 L)) :
     underPlace (F := F) (underPlace (F := K) W) = underPlace (F := F) W :=
   HeightOneSpectrum.ext (Ideal.under_under (A := 𝓞 F) (B := 𝓞 K) W.asIdeal)
 
+/- English proof (translation)
+Establish `hu` using `((isUnramifiedAt_tower_iff (F := F) (L := K) W.asIdeal).1 hW).2`. Conclude with `valuation_algebraMap_of_isUnramifiedAt (underPlace (F := K) W) W y`.
+-/
 theorem valuation_algebraMap_underPlace (W : HeightOneSpectrum (𝓞 L))
     (hW : Algebra.IsUnramifiedAt (𝓞 F) W.asIdeal) (y : K) :
     W.valuation L (algebraMap K L y) = (underPlace (F := K) W).valuation K y := by
@@ -57,6 +66,13 @@ def IsOrdAbove (v : HeightOneSpectrum (𝓞 F)) (x : (maxUnramifiedOutside F Ω 
 
 variable [IsGalois F Ω]
 
+/- English proof (translation)
+Take `⟨E, hf, hu, hx⟩` from `(mem_maxUnramifiedOutside_iff S).1 (x : maxUnramifiedOutside F Ω S).2`. Use `NumberField.of_module_finite F E` as an intermediate fact. Take `⟨w, hw⟩` from `exists_underPlace_eq (L := E) v`. Establish `h0 : w.valuation E ⟨_, hx⟩ ≠ 0`. Rewrite using `[Ne, map_eq_zero]`.
+
+Introduce `h`. Apply `x.ne_zero` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `at this`.
+
+Use `⟨-WithZero.log (w.valuation E ⟨_, hx⟩), E, hf, le_maxUnramifiedOutside S hu, hx, w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[neg_neg, WithZero.exp_log h0]`.
+-/
 theorem exists_isOrdAbove (v : HeightOneSpectrum (𝓞 F)) (x : (maxUnramifiedOutside F Ω S)ˣ) :
     ∃ m, IsOrdAbove S v x m := by
   obtain ⟨E, hf, hu, hx⟩ :=
@@ -80,6 +96,9 @@ section Galois
 variable {F Ω : Type u} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsGalois F Ω]
 variable (S : Set (HeightOneSpectrum (𝓞 F)))
 
+/- English proof (translation)
+Use `⟨(τ.liftNormal Ω).restrictNormal (maxUnramifiedOutside F Ω S), fun y => ?_⟩` and prove the remaining obligations. Establish `h1` using `AlgEquiv.restrictNormal_commutes (τ.liftNormal Ω) (maxUnramifiedOutside F Ω S) ⟨y, hMle y.2⟩`. Establish `h2` using `AlgEquiv.liftNormal_commutes τ Ω y`. Conclude with `h1.trans h2`.
+-/
 theorem exists_galUnramifiedOutside_restrict {M : IntermediateField F Ω} [Normal F M]
     (hMle : M ≤ maxUnramifiedOutside F Ω S) (τ : Gal(M/F)) :
     ∃ ρ : galUnramifiedOutside F Ω S, ∀ y : M,
@@ -90,6 +109,21 @@ theorem exists_galUnramifiedOutside_restrict {M : IntermediateField F Ω} [Norma
   have h2 := AlgEquiv.liftNormal_commutes τ Ω y
   exact h1.trans h2
 
+/- English proof (translation)
+Establish `: IsGaloisGroup Gal(M/F) (𝓞 F) (𝓞 M)` using `IsGaloisGroup.of_isFractionRing _ _ _ F M`. Establish `: W'.asIdeal.LiesOver (underPlace (F` using `F) W).asIdeal := by`. Rewrite using `[hWW']`. Use `infer_instance`. Take `⟨σ, hσ⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup (underPlace (F := F) W).asIdeal W.asIdeal W'.asIdeal Gal(M/F)`.
+
+Establish `hW' : W' = smulPlace σ W` using `HeightOneSpectrum.ext hσ.symm`. Rewrite using `[hW', valuation_smulPlace_apply]`. Use `set y : M := ⟨_, hxM⟩ with hy`. Establish `hy0 : y ≠ 0`. Introduce `h`.
+
+Apply `x.ne_zero` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `[hy] at this`. Take `⟨ρ, hρ⟩` from `exists_galUnramifiedOutside_restrict S hMle σ⁻¹`.
+
+Establish `hyu : (σ⁻¹ y / y : M) ≠ 0` using `div_ne_zero ((map_ne_zero _).2 hy0) hy0`. Set `u : Mˣ` to `Units.mk0 _ hyu`. Establish `hmap : Units.map (IntermediateField.inclusion hMle : M →* maxUnramifiedOutside F Ω S) u = galUnitsHom F _ ρ x * x⁻¹`. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h1` using `hρ y`. Simplify using `only [Units.coe_map, Units.val_mk0, MonoidHom.coe_coe, Units.val_mul, coe_galUnitsHom_apply, Units.val_inv_eq_inv_val, IntermediateField.coe_mul, IntermediateField.coe_inv, u]`. Rewrite using `[IntermediateField.coe_inclusion, IntermediateField.coe_div, div_eq_mul_inv]`. Use `congr 1`. Conclude with `h1.symm`.
+
+Establish `hu : u ∈ sUnitsOf S M`. Rewrite using `[← map_inclusion_mem_sUnitsMax_iff F Ω S hMle, hmap]`. Conclude with `hx ρ`. Establish `hu1` using `(mem_sUnitsOf_iff_mem_unit S).1 hu W (fun h => hWS (mem_placesOver_iff.1 h))`. Establish `hu1' : W.valuation M (σ⁻¹ y / y) = 1` using `hu1`.
+
+Rewrite `hu1'` using `[map_div₀, div_eq_one_iff_eq ((map_ne_zero _).2 hy0)]`. Conclude with `hu1'.symm`.
+-/
 theorem valuation_eq_of_isSInvariant {M : IntermediateField F Ω} [FiniteDimensional F M]
     [IsGalois F M] [NumberField M] (hMle : M ≤ maxUnramifiedOutside F Ω S)
     {x : (maxUnramifiedOutside F Ω S)ˣ} (hx : IsSInvariant S x)
@@ -142,10 +176,20 @@ variable {F Ω : Type u} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [Is
 variable (S : Set (HeightOneSpectrum (𝓞 F)))
 
 omit [IsGalois F Ω] in
+/- English proof (translation)
+The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E`.
+-/
 theorem finiteDimensional_of_numberField (E : IntermediateField F Ω) [NumberField E] :
     FiniteDimensional F E :=
   Module.Finite.of_restrictScalars_finite ℚ F E
 
+/- English proof (translation)
+Use `finiteDimensional_of_numberField M` as an intermediate fact. Set `_ : Algebra E M` to `(IntermediateField.inclusion hEM).toAlgebra`. Establish `: IsScalarTower F E M` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hMu : IsUnramifiedOutside S M` using `(isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 hMle`. Take `⟨W, hW⟩` from `exists_underPlace_eq (F := E) (L := M) w`.
+
+Establish `hWF : underPlace (F` using `F) W = underPlace (F := F) w := by`. Rewrite using `[← hW, underPlace_underPlace]`. Use `⟨W, hWF, fun y => ?_⟩` and prove the remaining obligations. Establish `hun : Algebra.IsUnramifiedAt (𝓞 F) W.asIdeal` using `hMu (underPlace (F := F) W) (hWF ▸ hwS) W.asIdeal inferInstance inferInstance`. Use `valuation_algebraMap_underPlace (F := F) W hun y` as an intermediate fact.
+
+Rewrite `this` using `[hW]`. Conclude with `this`.
+-/
 theorem exists_place_valuation_eq_of_le {E M : IntermediateField F Ω} [NumberField E]
     [NumberField M] (hEM : E ≤ M) (hMle : M ≤ maxUnramifiedOutside F Ω S)
     (w : HeightOneSpectrum (𝓞 E)) (hwS : underPlace (F := F) w ∉ S) :
@@ -166,6 +210,17 @@ theorem exists_place_valuation_eq_of_le {E M : IntermediateField F Ω} [NumberFi
   rw [hW] at this
   exact this
 
+/- English proof (translation)
+Take `⟨E, hEf, hEle, hxE, hh⟩` from `h`. Take `⟨E', hE'f, hE'le, hxE', hh'⟩` from `h'`. Use `NumberField.of_module_finite F E` as an intermediate fact. Use `NumberField.of_module_finite F E'` as an intermediate fact. Take `⟨w, hw, hwx⟩` from `hh`.
+
+Take `⟨w', hw', hw'x⟩` from `hh'`. Set `M : IntermediateField F Ω` to `IntermediateField.normalClosure F ↥(E ⊔ E') Ω`. Establish `hMle : M ≤ maxUnramifiedOutside F Ω S` using `(IntermediateField.normalClosure_le_iff_of_normal (K₂ := maxUnramifiedOutside F Ω S)).2 (sup_le hEle hE'le)`. Establish `hEM : E ≤ M` using `le_sup_left.trans (IntermediateField.le_normalClosure _)`. Establish `hE'M : E' ≤ M` using `le_sup_right.trans (IntermediateField.le_normalClosure _)`.
+
+Establish `: FiniteDimensional F M` using `inferInstance`. Establish `: IsGalois F M` using `⟨⟩`. Use `NumberField.of_module_finite F M` as an intermediate fact. Take `⟨W, hW, hWx⟩` from `exists_place_valuation_eq_of_le S hEM hMle w (hw ▸ hv)`. Take `⟨W', hW', hW'x⟩` from `exists_place_valuation_eq_of_le S hE'M hMle w' (hw' ▸ hv)`.
+
+Establish `e1` using `hWx ⟨_, hxE⟩`. Establish `e2` using `hW'x ⟨_, hxE'⟩`. Establish `e3` using `valuation_eq_of_isSInvariant S hMle hx (hEM hxE) W W' (by rw [hW, hW', hw, hw']) (by rw [hW, hw]; exact hv)`. Establish `: WithZero.exp (-m) = WithZero.exp (-m')`. Rewrite using `[← hwx, ← hw'x, ← e1, ← e2]`.
+
+Conclude with `e3`. Simplify using `using this`.
+-/
 theorem IsOrdAbove.unique {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S)
     {x : (maxUnramifiedOutside F Ω S)ˣ} (hx : IsSInvariant S x) {m m' : ℤ}
     (h : IsOrdAbove S v x m) (h' : IsOrdAbove S v x m') : m = m' := by
@@ -197,15 +252,26 @@ theorem IsOrdAbove.unique {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S)
 noncomputable def ordAbove (v : HeightOneSpectrum (𝓞 F)) (x : (maxUnramifiedOutside F Ω S)ˣ) : ℤ :=
   (exists_isOrdAbove S v x).choose
 
+/- English proof (translation)
+The claim follows from `(exists_isOrdAbove S v x).choose_spec`.
+-/
 theorem isOrdAbove_ordAbove (v : HeightOneSpectrum (𝓞 F)) (x : (maxUnramifiedOutside F Ω S)ˣ) :
     IsOrdAbove S v x (ordAbove S v x) :=
   (exists_isOrdAbove S v x).choose_spec
 
+/- English proof (translation)
+The claim follows from `IsOrdAbove.unique S hv hx (isOrdAbove_ordAbove S v x) h`.
+-/
 theorem ordAbove_eq_of_isOrdAbove {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S)
     {x : (maxUnramifiedOutside F Ω S)ˣ} (hx : IsSInvariant S x) {m : ℤ}
     (h : IsOrdAbove S v x m) : ordAbove S v x = m :=
   IsOrdAbove.unique S hv hx (isOrdAbove_ordAbove S v x) h
 
+/- English proof (translation)
+Establish `h0 : w.valuation E ⟨_, hxE⟩ ≠ 0`. Rewrite using `[Ne, map_eq_zero]`. Introduce `h`. Apply `x.ne_zero` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `at this`. Establish `hE` using `finiteDimensional_of_numberField E`. Establish `hw : IsOrdAbove S (underPlace (F` using `F) w) x (-WithZero.log (w.valuation E ⟨_, hxE⟩)) := ⟨E, hE, hEle, hxE, w, rfl, by rw [neg_neg, WithZero.exp_log h0]⟩`. Rewrite using `[ordAbove_eq_of_isOrdAbove S hwS hx hw, neg_neg, WithZero.exp_log h0]`.
+-/
 theorem valuation_eq_exp_ordAbove {x : (maxUnramifiedOutside F Ω S)ˣ} (hx : IsSInvariant S x)
     {E : IntermediateField F Ω} [NumberField E] (hEle : E ≤ maxUnramifiedOutside F Ω S)
     (hxE : ((x : maxUnramifiedOutside F Ω S) : Ω) ∈ E) (w : HeightOneSpectrum (𝓞 E))
@@ -231,6 +297,9 @@ variable {F Ω : Type u} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [Is
 variable (S : Set (HeightOneSpectrum (𝓞 F)))
 
 omit [NumberField F] [IsGalois F Ω] in
+/- English proof (translation)
+Rewrite using `[map_mul, mul_inv]`. The two sides agree by associativity and commutativity.
+-/
 theorem galUnitsHom_mul_inv_eq (σ : galUnramifiedOutside F Ω S) (x y : (maxUnramifiedOutside F Ω S)ˣ) :
     galUnitsHom F _ σ (x * y) * (x * y)⁻¹ = (galUnitsHom F _ σ x * x⁻¹) * (galUnitsHom F _ σ y * y⁻¹) := by
   rw [map_mul, mul_inv]
@@ -253,12 +322,18 @@ def sInvariantSubgroup : Subgroup (maxUnramifiedOutside F Ω S)ˣ where
     exact inv_mem (hx σ)
 
 omit [IsGalois F Ω] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_sInvariantSubgroup {x : (maxUnramifiedOutside F Ω S)ˣ} :
     x ∈ sInvariantSubgroup Ω S ↔ IsSInvariant S x :=
   Iff.rfl
 
 omit [IsGalois F Ω] in
 
+/- English proof (translation)
+Introduce `σ`. Establish `: galUnitsHom F _ σ (Units.map (algebraMap F (maxUnramifiedOutside F Ω S) : F →* _) a) = Units.map (algebraMap F (maxUnramifiedOutside F Ω S) : F →* _) a` using `Units.ext (σ.commutes _)`. Rewrite using `[this, mul_inv_cancel]`. Conclude with `one_mem _`.
+-/
 theorem map_algebraMap_mem_sInvariantSubgroup (a : Fˣ) :
     Units.map (algebraMap F (maxUnramifiedOutside F Ω S) : F →* _) a ∈ sInvariantSubgroup Ω S := by
   intro σ
@@ -268,6 +343,9 @@ theorem map_algebraMap_mem_sInvariantSubgroup (a : Fˣ) :
   rw [this, mul_inv_cancel]
   exact one_mem _
 
+/- English proof (translation)
+Take `⟨E, hf, hu, hx⟩` from `(mem_maxUnramifiedOutside_iff S).1 (x : maxUnramifiedOutside F Ω S).2`. Conclude with `⟨E, NumberField.of_module_finite F E, le_maxUnramifiedOutside S hu, hx⟩`.
+-/
 theorem exists_numberField_mem (x : (maxUnramifiedOutside F Ω S)ˣ) :
     ∃ E : IntermediateField F Ω, NumberField E ∧ E ≤ maxUnramifiedOutside F Ω S ∧
       ((x : maxUnramifiedOutside F Ω S) : Ω) ∈ E := by
@@ -275,6 +353,15 @@ theorem exists_numberField_mem (x : (maxUnramifiedOutside F Ω S)ˣ) :
     (mem_maxUnramifiedOutside_iff S).1 (x : maxUnramifiedOutside F Ω S).2
   exact ⟨E, NumberField.of_module_finite F E, le_maxUnramifiedOutside S hu, hx⟩
 
+/- English proof (translation)
+Take `⟨E, hE, hEle, hxE⟩` from `exists_numberField_mem S x`. Establish `hx0 : (⟨_, hxE⟩ : E) ≠ 0`. Introduce `h`. Apply `x.ne_zero` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `at this`. Use `((finite_ordAt_ne_zero (Units.mk0 _ hx0)).image (underPlace (F := F))).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hv, hvo⟩`. Take `⟨w, hw⟩` from `exists_underPlace_eq (L := E) v`.
+
+Use `⟨w, ?_, hw⟩` and prove the remaining obligations. Introduce `h0`. Apply `hvo` to reduce the goal to its premises. Establish `h1` using `valuation_eq_exp_ordAbove S hx hEle hxE w (hw ▸ hv)`. Establish `h2` using `(ordAt_eq_zero_iff w _).1 h0`.
+
+Rewrite `h2` using `[Units.val_mk0]`. Rewrite `h1` using `[h2, hw]`. Use `congrArg WithZero.log h1` as an intermediate fact. Simplify using `using this.symm`.
+-/
 theorem finite_ordAbove_ne_zero {x : (maxUnramifiedOutside F Ω S)ˣ} (hx : IsSInvariant S x) :
     {v : HeightOneSpectrum (𝓞 F) | v ∉ S ∧ ordAbove S v x ≠ 0}.Finite := by
   obtain ⟨E, hE, hEle, hxE⟩ := exists_numberField_mem S x
@@ -297,6 +384,11 @@ theorem finite_ordAbove_ne_zero {x : (maxUnramifiedOutside F Ω S)ˣ} (hx : IsSI
   have := congrArg WithZero.log h1
   simpa using this.symm
 
+/- English proof (translation)
+Use `ordAbove_eq_of_isOrdAbove S hv (one_mem (sInvariantSubgroup Ω S)) ?_` and prove the remaining obligations. Take `⟨E, hE, hEle, hxE⟩` from `exists_numberField_mem S (1 : (maxUnramifiedOutside F Ω S)ˣ)`. Take `⟨w, hw⟩` from `exists_underPlace_eq (L := E) v`. Use `⟨E, finiteDimensional_of_numberField E, hEle, hxE, w, hw, ?_⟩` and prove the remaining obligations. Establish `: (⟨_, hxE⟩ : E) = 1` using `Subtype.ext (by simp)`.
+
+Rewrite using `[this, map_one, neg_zero, WithZero.exp_zero]`.
+-/
 theorem ordAbove_one {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) :
     ordAbove S v (1 : (maxUnramifiedOutside F Ω S)ˣ) = 0 := by
   refine ordAbove_eq_of_isOrdAbove S hv (one_mem (sInvariantSubgroup Ω S)) ?_
@@ -306,6 +398,17 @@ theorem ordAbove_one {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) :
   have : (⟨_, hxE⟩ : E) = 1 := Subtype.ext (by simp)
   rw [this, map_one, neg_zero, WithZero.exp_zero]
 
+/- English proof (translation)
+Take `⟨E, hE, hEle, hxE⟩` from `exists_numberField_mem S x`. Take `⟨E', hE', hE'le, hyE'⟩` from `exists_numberField_mem S y`. Establish `: FiniteDimensional F E` using `finiteDimensional_of_numberField E`. Establish `: FiniteDimensional F E'` using `finiteDimensional_of_numberField E'`. Use `NumberField.of_module_finite F ↥(E ⊔ E')` as an intermediate fact.
+
+Establish `hle` using `sup_le hEle hE'le`. Establish `hxE'' : ((x : maxUnramifiedOutside F Ω S) : Ω) ∈ E ⊔ E'` using `le_sup_left (α := IntermediateField F Ω) hxE`. Establish `hyE'' : ((y : maxUnramifiedOutside F Ω S) : Ω) ∈ E ⊔ E'` using `le_sup_right (α := IntermediateField F Ω) hyE'`. Establish `hxy : (((x * y : (maxUnramifiedOutside F Ω S)ˣ) : maxUnramifiedOutside F Ω S) : Ω) ∈ E ⊔ E'`. Simplify using `only [Units.val_mul, IntermediateField.coe_mul]`.
+
+Conclude with `mul_mem hxE'' hyE''`. Take `⟨w, hw⟩` from `exists_underPlace_eq (L := ↥(E ⊔ E')) v`. Establish `hxy' : IsSInvariant S (x * y)` using `(mul_mem hx hy : x * y ∈ sInvariantSubgroup Ω S)`. Establish `h1` using `valuation_eq_exp_ordAbove S hxy' hle hxy w (hw ▸ hv)`. Establish `h2` using `valuation_eq_exp_ordAbove S hx hle hxE'' w (hw ▸ hv)`.
+
+Establish `h3` using `valuation_eq_exp_ordAbove S hy hle hyE'' w (hw ▸ hv)`. Establish `hmul : (⟨_, hxy⟩ : ↥(E ⊔ E')) = ⟨_, hxE''⟩ * ⟨_, hyE''⟩` using `Subtype.ext (by simp)`. Rewrite `h1` using `[hmul, map_mul, h2, h3, hw, ← WithZero.exp_add]`. Use `congrArg WithZero.log h1` as an intermediate fact. Simplify using `only [WithZero.log_exp] at this`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem ordAbove_mul {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S)
     {x y : (maxUnramifiedOutside F Ω S)ˣ} (hx : IsSInvariant S x) (hy : IsSInvariant S y) :
     ordAbove S v (x * y) = ordAbove S v x + ordAbove S v y := by
@@ -346,6 +449,9 @@ noncomputable def divAbove : Additive (sInvariantSubgroup Ω S) →+ sDivisor S 
     ext v
     exact ordAbove_mul S v.2 (Additive.toMul x).2 (Additive.toMul y).2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem divAbove_apply (x : Additive (sInvariantSubgroup Ω S)) (v : {v // v ∉ S}) :
     divAbove S x v =
       ordAbove S v.1 ((Additive.toMul x : sInvariantSubgroup Ω S) : (maxUnramifiedOutside F Ω S)ˣ) :=
@@ -358,6 +464,15 @@ section Descent
 variable {F Ω : Type u} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsGalois F Ω]
 variable (S : Set (HeightOneSpectrum (𝓞 F)))
 
+/- English proof (translation)
+Take `⟨E, hE, hEle, hxE⟩` from `exists_numberField_mem S (x : (maxUnramifiedOutside F Ω S)ˣ)`. Establish `hx0 : (⟨_, hxE⟩ : E) ≠ 0`. Introduce `h`. Apply `(x : (maxUnramifiedOutside F Ω S)ˣ).ne_zero` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `at this`. Establish `hmem : Units.mk0 _ hx0 ∈ sUnitsOf S E`. Rewrite using `[mem_sUnitsOf_iff_mem_unit]`. Introduce `w hw`.
+
+Establish `hwS : underPlace (F` using `F) w ∉ S := fun h => hw (mem_placesOver_iff.2 h)`. Establish `h1` using `valuation_eq_exp_ordAbove S x.2 hEle hxE w hwS`. Establish `h2 : ordAbove S (underPlace (F` using `F) w) (x : (maxUnramifiedOutside F Ω S)ˣ) = 0 := by`. Use `congrArg (fun D : sDivisor S => D ⟨_, hwS⟩) h` as an intermediate fact. Simplify `this` using `[divAbove_apply]`.
+
+Rewrite using `[Units.val_mk0, h1, h2, neg_zero, WithZero.exp_zero]`. Establish `hmap : Units.map (IntermediateField.inclusion hEle : E →* maxUnramifiedOutside F Ω S) (Units.mk0 _ hx0) = x` using `Units.ext rfl`. Rewrite using `[← hmap]`. Conclude with `(map_inclusion_mem_sUnitsMax_iff F Ω S hEle).2 hmem`.
+-/
 theorem mem_sUnitsMax_of_divAbove_eq_zero {x : sInvariantSubgroup Ω S}
     (h : divAbove S (Additive.ofMul x) = 0) :
     (x : (maxUnramifiedOutside F Ω S)ˣ) ∈ sUnitsMax F Ω S := by
@@ -382,6 +497,13 @@ theorem mem_sUnitsMax_of_divAbove_eq_zero {x : sInvariantSubgroup Ω S}
   rw [← hmap]
   exact (map_inclusion_mem_sUnitsMax_iff F Ω S hEle).2 hmem
 
+/- English proof (translation)
+Use extensionality with `v`. Rewrite using `[divAbove_apply, divS_apply]`. Use `ordAbove_eq_of_isOrdAbove S v.2 (map_algebraMap_mem_sInvariantSubgroup (Ω := Ω) S a) ?_` and prove the remaining obligations. Take `⟨E, hE, hEle, hxE⟩` from `exists_numberField_mem (Ω := Ω) S (Units.map (algebraMap F (maxUnramifiedOutside F Ω S) : F →* _) a)`. Take `⟨w, hw⟩` from `exists_underPlace_eq (L := E) v.1`.
+
+Establish `hEf` using `finiteDimensional_of_numberField E`. Use `⟨E, hEf, hEle, hxE, w, hw, ?_⟩` and prove the remaining obligations. Establish `hE : IsUnramifiedOutside S E` using `(isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 hEle`. Establish `: w.asIdeal.LiesOver v.1.asIdeal` using `liesOver_iff_eq_underPlace.2 hw.symm`. Establish `: Algebra.IsUnramifiedAt (𝓞 F) w.asIdeal` using `hE v.1 v.2 w.asIdeal inferInstance this`.
+
+Establish `he : (⟨_, hxE⟩ : E) = algebraMap F E (a : F)` using `rfl`. Rewrite using `[he, valuation_algebraMap_of_isUnramifiedAt v.1 w, valuation_eq_exp_neg_ordAt]`. Both sides reduce to the same expression.
+-/
 theorem divAbove_algebraMap (a : Fˣ) :
     divAbove S (Additive.ofMul ⟨_, map_algebraMap_mem_sInvariantSubgroup (Ω := Ω) S a⟩) =
       divS S (Additive.ofMul a) := by
@@ -408,6 +530,31 @@ variable {F Ω : Type u} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [Is
   [IsSepClosed Ω]
 variable (S : Set (HeightOneSpectrum (𝓞 F)))
 
+/- English proof (translation)
+Establish `: NeZero ((N : ℕ) : Ω)` using `⟨by`. Rewrite using `[← map_natCast (algebraMap F Ω)]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hN)⟩`. Take `⟨α, hα⟩` from `IsSepClosed.exists_pow_nat_eq (algebraMap F Ω (a : F)) N`. Establish `hαint : IsIntegral F α` using `IsIntegral.of_pow (Nat.pos_of_ne_zero hN) (hα ▸ isIntegral_algebraMap)`.
+
+Set `E : IntermediateField F Ω` to `IntermediateField.adjoin F {α}`. Establish `: FiniteDimensional F E` using `IntermediateField.adjoin.finiteDimensional hαint`. Establish `: NumberField E` using `NumberField.of_module_finite F E`. Establish `hβ : IntermediateField.AdjoinSimple.gen F α ^ N = algebraMap F E (a : F)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[SubmonoidClass.coe_pow, IntermediateField.AdjoinSimple.coe_gen, hα]`. Both sides reduce to the same expression. Establish `hdiv : ∀ v ∉ S, (N : ℤ) ∣ WithZero.log (v.valuation F (a : F))`. Introduce `v hv`. Use `congrArg (fun D' : sDivisor S => D' ⟨v, hv⟩) ha` as an intermediate fact.
+
+Simplify using `only [divS_apply, toMul_ofMul, Finsupp.smul_apply, nsmul_eq_mul] at this`. Rewrite using `[valuation_eq_exp_neg_ordAt, WithZero.log_exp, this]`. Conclude with `⟨-D ⟨v, hv⟩, by ring⟩`. Establish `hEu : IsUnramifiedOutside S E` using `fun v hv => Global.Kummer.isUnramifiedIn_of_pow_eq a hβ (adjoin_gen_eq_top F α) v (hNS v hv) (hdiv v hv)`. Establish `hEle : E ≤ maxUnramifiedOutside F Ω S` using `le_maxUnramifiedOutside S hEu`.
+
+Establish `hαS : α ∈ maxUnramifiedOutside F Ω S` using `hEle (IntermediateField.mem_adjoin_simple_self F α)`. Establish `hα0 : (⟨α, hαS⟩ : maxUnramifiedOutside F Ω S) ≠ 0`. Introduce `h`. Establish `h' : α = 0` using `congrArg Subtype.val h`. Rewrite `hα` using `[h', zero_pow hN]`.
+
+Conclude with `a.ne_zero ((map_eq_zero _).1 hα.symm)`. Set `x : (maxUnramifiedOutside F Ω S)ˣ` to `Units.mk0 _ hα0`. Establish `hxN : x ^ N = Units.map (algebraMap F (maxUnramifiedOutside F Ω S) : F →* _) a` using `Units.ext (Subtype.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_mk0, SubmonoidClass.coe_pow]`. Conclude with `hα))`.
+
+Establish `hx : IsSInvariant S x`. Introduce `σ`. Apply `mem_sUnitsOf_of_mem_rootsOfUnity hN` to reduce the goal to its premises. Rewrite using `[mem_rootsOfUnity, mul_pow, ← map_pow, hxN, inv_pow, hxN]`. Establish `: galUnitsHom F _ σ (Units.map (algebraMap F (maxUnramifiedOutside F Ω S) : F →* _) a) = Units.map (algebraMap F (maxUnramifiedOutside F Ω S) : F →* _) a` using `Units.ext (σ.commutes _)`.
+
+Rewrite using `[this, mul_inv_cancel]`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Rewrite using `[divAbove_apply]`. Take `⟨w, hw⟩` from `exists_underPlace_eq (L := E) v.1`.
+
+Establish `hαE : ((x : maxUnramifiedOutside F Ω S) : Ω) ∈ E` using `IntermediateField.mem_adjoin_simple_self F α`. Establish `h1` using `valuation_eq_exp_ordAbove S hx hEle hαE w (hw ▸ v.2)`. Establish `: w.asIdeal.LiesOver v.1.asIdeal` using `liesOver_iff_eq_underPlace.2 hw.symm`. Establish `: Algebra.IsUnramifiedAt (𝓞 F) w.asIdeal` using `hEu v.1 v.2 w.asIdeal inferInstance this`. Establish `h2` using `valuation_algebraMap_of_isUnramifiedAt v.1 w (a : F)`.
+
+Rewrite `h2` using `[← hβ, map_pow, valuation_eq_exp_neg_ordAt]`. Establish `hgen : IntermediateField.AdjoinSimple.gen F α = ⟨_, hαE⟩` using `rfl`. Rewrite `h2` using `[hgen, h1, hw, ← WithZero.exp_nsmul]`. Establish `h3` using `congrArg WithZero.log h2`. Simplify using `only [WithZero.log_exp, smul_neg, nsmul_eq_mul] at h3`.
+
+Establish `h4` using `congrArg (fun D' : sDivisor S => D' v) ha`. Simplify using `only [divS_apply, toMul_ofMul, Finsupp.smul_apply, nsmul_eq_mul] at h4`. Rewrite `h3` using `[h4]`. Establish `hN' : (N : ℤ) ≠ 0` using `Nat.cast_ne_zero.2 hN`. Use `mul_left_cancel₀ hN' (neg_injective h3)` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem exists_divAbove_eq {N : ℕ} (hN : N ≠ 0) (hNS : ∀ v ∉ S, ((N : ℕ) : 𝓞 F) ∉ v.asIdeal)
     (D : sDivisor S) (a : Fˣ) (ha : divS S (Additive.ofMul a) = N • D) :
     ∃ x : sInvariantSubgroup Ω S, divAbove S (Additive.ofMul x) = D := by

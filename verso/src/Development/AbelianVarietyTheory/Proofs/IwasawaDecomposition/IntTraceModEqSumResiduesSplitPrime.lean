@@ -8,11 +8,31 @@ namespace GlobalTheory.SplitTrace
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_span_singleton, show ((p : 𝓞 K)) = algebraMap ℤ (𝓞 K) (p : ℤ) by simp, Algebra.norm_algebraMap, RingOfIntegers.rank, Int.natAbs_pow, Int.natAbs_natCast]`.
+-/
 theorem absNorm_span_natCast (p : ℕ) :
     Ideal.absNorm (Ideal.span {(p : 𝓞 K)}) = p ^ Module.finrank ℚ K := by
   rw [Ideal.absNorm_span_singleton, show ((p : 𝓞 K)) = algebraMap ℤ (𝓞 K) (p : ℤ) by simp,
     Algebra.norm_algebraMap, RingOfIntegers.rank, Int.natAbs_pow, Int.natAbs_natCast]
 
+/- English proof (translation)
+Use `set n := Module.finrank ℚ K`. Establish `hcop : ∀ i ∈ (Finset.univ : Finset ι), ∀ j ∈ (Finset.univ : Finset ι), i ≠ j → IsCoprime (e i).asIdeal (e j).asIdeal` using `fun i _ j _ hij => HeightOneSpectrum.isCoprime_of_ne _ _ (fun h => hij (he h))`. Establish `hJ : ∏ i, (e i).asIdeal = ⨅ i, (e i).asIdeal`. Rewrite using `[Ideal.prod_eq_iInf_of_pairwise_isCoprime hcop]`. Simplify using the standard rewrite rules.
+
+Establish `hle : Ideal.span {(p : 𝓞 K)} ≤ ∏ i, (e i).asIdeal`. Rewrite using `[hJ, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.mem_iInf.2 hmem`. Establish `hdvd_i : ∀ i, Ideal.absNorm (e i).asIdeal ∣ p ^ n` using `fun i => by`. Rewrite using `[← absNorm_span_natCast]`.
+
+Conclude with `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 (hmem i))`. Use `choose k hkn hk using fun i => (Nat.dvd_prime_pow hp).1 (hdvd_i i)`. Establish `hk1 : ∀ i, 1 ≤ k i` using `fun i => by`. Break down `Nat.eq_zero_or_pos (k i) with h | h` into its components or cases. It suffices to derive a contradiction.
+
+Establish `h1` using `hk i`. Rewrite `h1` using `[h, pow_zero, Ideal.absNorm_eq_one_iff]`. Conclude with `(e i).isPrime.ne_top h1`. Conclude with `h`. Establish `hprod : Ideal.absNorm (∏ i, (e i).asIdeal) = p ^ ∑ i, k i`.
+
+Rewrite using `[map_prod, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_congr rfl fun i _ => hk i`. Establish `hsum_le : ∑ i, k i ≤ n`. Establish `h` using `Ideal.absNorm_dvd_absNorm_of_le hle`. Rewrite `h` using `[hprod, absNorm_span_natCast]`.
+
+Conclude with `(Nat.pow_dvd_pow_iff_le_right hp.one_lt).1 h`. Establish `hsum_eq : ∑ i, k i = ∑ _i : ι, 1`. Use `le_antisymm ?_ (Finset.sum_le_sum fun i _ => hk1 i)` and prove the remaining obligations. Simplify `hsum_le` using `[hcard]`. Establish `hkeq : ∀ i, k i = 1` using `fun i => ((Finset.sum_eq_sum_iff_of_le (fun j _ => hk1 j)).1 hsum_eq.symm i (Finset.mem_univ i)).symm`.
+
+Use `⟨fun i => by rw [hk i, hkeq i, pow_one], ?_⟩` and prove the remaining obligations. Rewrite using `[← hJ]`. Take `⟨L, hL⟩` from `Ideal.dvd_iff_le.2 hle`. Establish `hnL : Ideal.absNorm L = 1`. Establish `h` using `congrArg Ideal.absNorm hL`.
+
+Rewrite `h` using `[map_mul, hprod, absNorm_span_natCast, show ∑ i, k i = n by simpa [hcard] using hsum_eq]`. Establish `hpn : 0 < p ^ n` using `pow_pos hp.pos n`. Conclude with `Nat.eq_of_mul_eq_mul_left hpn (by rw [mul_one]; exact h.symm)`. Rewrite using `[hL, Ideal.absNorm_eq_one_iff.1 hnL, Ideal.mul_top]`.
+-/
 theorem split_of_card (p : ℕ) (hp : p.Prime) {ι : Type} [Fintype ι] (e : ι → HeightOneSpectrum (𝓞 K))
     (he : Function.Injective e) (hmem : ∀ i, (p : 𝓞 K) ∈ (e i).asIdeal)
     (hcard : Fintype.card ι = Module.finrank ℚ K) :
@@ -60,6 +80,13 @@ theorem split_of_card (p : ℕ) (hp : p.Prime) {ι : Type} [Fintype ι] (e : ι 
     exact Nat.eq_of_mul_eq_mul_left hpn (by rw [mul_one]; exact h.symm)
   rw [hL, Ideal.absNorm_eq_one_iff.1 hnL, Ideal.mul_top]
 
+/- English proof (translation)
+Set `b` to `fun i => Module.Free.chooseBasis R (A i)`. Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basis b), Matrix.trace, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.trace_eq_matrix_trace (b i), Matrix.trace]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul, Pi.basis_apply, Pi.basis_repr]`. Rewrite using `[show z * Pi.single i (b i k) = Pi.single i (z i * b i k) by`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]]`. Simplify using the standard rewrite rules.
+-/
 theorem trace_pi {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
     (A : ι → Type) [∀ i, CommRing (A i)] [∀ i, Algebra R (A i)] [∀ i, Module.Free R (A i)]
     [∀ i, Module.Finite R (A i)] (z : ∀ i, A i) :
@@ -77,6 +104,23 @@ theorem trace_pi {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq �
     · simp [h]]
   simp
 
+/- English proof (translation)
+Introduce `K _ _ p hp ι _ e he hW hcard x b hxb`. Establish `hmem : ∀ i, (p : 𝓞 K) ∈ (e i).asIdeal` using `fun i => (hW (e i)).2 ⟨i, rfl⟩`. Take `⟨hnorm, hspan⟩` from `split_of_card p hp e he hmem hcard`. Use `set P : Ideal ℤ := Ideal.span {(p : ℤ)} with hPdef`. Use `haveI hPm : P.IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`.
+
+Use `letI := Ideal.Quotient.field P`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 K)) P = ⨅ i, (e i).asIdeal`. Rewrite using `[hPdef, Ideal.map_span, Set.image_singleton, map_natCast]`. Conclude with `hspan`. Establish `hPv : ∀ i, P ≤ (e i).asIdeal.comap (algebraMap ℤ (𝓞 K))` using `fun i => by`.
+
+Rewrite using `[← Ideal.map_le_iff_le_comap, hmap]`. Conclude with `iInf_le _ i`. Use `letI : ∀ i, Algebra (ℤ ⧸ P) (𝓞 K ⧸ (e i).asIdeal) := fun i => Ideal.Quotient.algebraQuotientOfLEComap (hPv i)`. Use `haveI : ∀ i, IsScalarTower ℤ (ℤ ⧸ P) (𝓞 K ⧸ (e i).asIdeal) := fun i => .of_algebraMap_eq' rfl`. Use `haveI : ∀ i, Module.Finite (ℤ ⧸ P) (𝓞 K ⧸ (e i).asIdeal) := fun i => Module.Finite.of_restrictScalars_finite ℤ _ _`.
+
+Use `letI : ∀ i, Field (𝓞 K ⧸ (e i).asIdeal) := fun i => Ideal.Quotient.field _`. Establish `hcop : Pairwise (Function.onFun IsCoprime fun i => (e i).asIdeal)` using `fun i j hij => HeightOneSpectrum.isCoprime_of_ne _ _ (fun h => hij (he h))`. Set `φ : (𝓞 K ⧸ Ideal.map (algebraMap ℤ (𝓞 K)) P) ≃ₐ[ℤ ⧸ P] (∀ i, 𝓞 K ⧸ (e i).asIdeal)` to `{ __ := (Ideal.quotEquivOfEq hmap).trans (Ideal.quotientInfRingEquivPiQuotient _ hcop), commutes' := Quotient.ind fun _ ↦ rfl }`. Establish `hφ : φ (Ideal.Quotient.mk _ x) = fun i => Ideal.Quotient.mk (e i).asIdeal x` using `rfl`. Establish `hx1 : ∀ i, Ideal.Quotient.mk (e i).asIdeal x = algebraMap (ℤ ⧸ P) (𝓞 K ⧸ (e i).asIdeal) (Ideal.Quotient.mk P (b i))` using `fun i => by`.
+
+Rewrite using `[Ideal.Quotient.eq.mpr (hxb i)]`. Use `show _ = Ideal.Quotient.mk (e i).asIdeal (algebraMap ℤ (𝓞 K) (b i))`. Rewrite using `[algebraMap_int_eq, eq_intCast]`. Establish `hcardP : Nat.card (ℤ ⧸ P) = p`. Rewrite using `[Nat.card_congr (Int.quotientSpanNatEquivZMod p).toEquiv, Nat.card_zmod]`.
+
+Establish `hfr : ∀ i, Module.finrank (ℤ ⧸ P) (𝓞 K ⧸ (e i).asIdeal) = 1` using `fun i => by`. Establish `hcardv : Nat.card (𝓞 K ⧸ (e i).asIdeal) = p`. Rewrite using `[← hnorm i, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `h` using `Module.natCard_eq_pow_finrank (K := ℤ ⧸ P) (V := 𝓞 K ⧸ (e i).asIdeal)`. Rewrite `h` using `[hcardP, hcardv]`.
+
+Conclude with `(Nat.pow_right_injective hp.two_le (h.symm.trans (pow_one p).symm))`. Establish `key : Ideal.Quotient.mk P (Algebra.intTrace ℤ (𝓞 K) x) = Ideal.Quotient.mk P (∑ i, b i)`. Rewrite using `[← Algebra.trace_quotient_eq_of_isDedekindDomain, ← Algebra.trace_eq_of_algEquiv φ, hφ, trace_pi]`. Repeatedly rewrite using `[hx1, Algebra.trace_algebraMap, hfr, one_smul]`. Rewrite using `[map_sum]`.
+
+Rewrite `key` using `[Ideal.Quotient.eq, hPdef, Ideal.mem_span_singleton]`. Rewrite using `[← Int.cast_sum, ZMod.intCast_eq_intCast_iff_dvd_sub]`. Take `⟨m, hm⟩` from `key`. Conclude with `⟨-m, by linear_combination -hm⟩`.
+-/
 theorem intTrace_modEq_sum : ∀ {K : Type} [Field K] [NumberField K] (p : ℕ), p.Prime → ∀ {ι : Type} [Fintype ι] (e : ι → HeightOneSpectrum (𝓞 K)), Function.Injective e → (∀ W : HeightOneSpectrum (𝓞 K), (p : 𝓞 K) ∈ W.asIdeal ↔ ∃ i, e i = W) → Fintype.card ι = Module.finrank ℚ K → ∀ (x : 𝓞 K) (b : ι → ℤ), (∀ i, x - (b i : 𝓞 K) ∈ (e i).asIdeal) → ((Algebra.intTrace ℤ (𝓞 K) x : ℤ) : ZMod p) = ∑ i, (b i : ZMod p) := by
   intro K _ _ p hp ι _ e he hW hcard x b hxb
   classical

@@ -7,11 +7,37 @@ variable {A : Type*} [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrall
 
 omit [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] in
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`.
+-/
 theorem smul_mk_eq_zero_iff {b r y : A} :
     r • (Ideal.Quotient.mk (Ideal.span {b}) y) = 0 ↔ b ∣ r * y := by
   rw [Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem,
     Ideal.mem_span_singleton]
 
+/- English proof (translation)
+Take `⟨hPp, yb, hPy⟩` from `isAssociatedPrime_iff.1 hP`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective yb`. Establish `hmem : ∀ r, r ∈ P ↔ b ∣ r * y`. Introduce `r`. Rewrite using `[hPy, Submodule.mem_colon_singleton, Submodule.mem_bot, smul_mk_eq_zero_iff]`.
+
+Establish `hbP : b ∈ P` using `(hmem b).2 (dvd_mul_right b y)`. Establish `hP0 : P ≠ ⊥` using `fun h => hb (by rw [h] at hbP; exact (Submodule.mem_bot _).1 hbP)`. Distinguish the cases in `hcase : ∀ r s : A, r ∈ P → r * y = b * s → s ∈ P`. It suffices to derive a contradiction. Set `K` to `FractionRing A`.
+
+Establish `hinj : Function.Injective (algebraMap A K)` using `IsFractionRing.injective A K`. Set `N : Submodule A K` to `Submodule.map (Algebra.linearMap A K) P`. Establish `hNfg : N.FG` using `(IsNoetherian.noetherian P).map _`. Establish `hN0 : N ≠ ⊥`. Introduce `h`.
+
+Establish `: algebraMap A K b ∈ N` using `Submodule.mem_map.2 ⟨b, hbP, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hb (hinj (by rw [this, map_zero]))`. Establish `hbK : algebraMap A K b ≠ 0` using `fun h => hb (hinj (by rw [h, map_zero]))`. Establish `hint : IsIntegral A (algebraMap A K y / algebraMap A K b)`.
+
+Use `isIntegral_of_smul_mem_submodule N hN0 hNfg _ ?_` and prove the remaining obligations. Introduce `n hn`. Take `⟨r, hr, rfl⟩` from `Submodule.mem_map.1 hn`. Take `⟨s, hs⟩` from `(hmem r).1 hr`. Use `Submodule.mem_map.2 ⟨s, hcase r s hr hs, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap A K s = (algebraMap A K y / algebraMap A K b) * algebraMap A K r`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hbK, ← map_mul, ← map_mul, mul_comm y r, hs, mul_comm]`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Establish `hyz : y = b * z`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, hz, mul_div_cancel₀ _ hbK]`. Apply `hPp.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, hmem, one_mul, hyz]`. Conclude with `dvd_mul_right b z`. Use `push Not at hcase`.
+
+Take `⟨r₀, s₀, hr₀, hrs, hs₀⟩` from `hcase`. Establish `hmin : P ∈ (Ideal.span {r₀}).minimalPrimes`. Use `⟨⟨hPp, (Ideal.span_singleton_le_iff_mem _).2 hr₀⟩, fun Q hQ hQP => ?_⟩` and prove the remaining obligations. Take `⟨hQp, hQr⟩` from `hQ`. Introduce `r hr`.
+
+Take `⟨s, hs⟩` from `(hmem r).1 hr`. Establish `key : r * s₀ = r₀ * s`. Apply `mul_left_cancel₀ hb` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hin : r * s₀ ∈ Q`.
+
+Rewrite using `[key]`. Conclude with `Q.mul_mem_right s ((Ideal.span_singleton_le_iff_mem _).1 hQr)`. Conclude with `(hQp.mem_or_mem hin).resolve_right fun h => hs₀ (hQP h)`. Establish `hle` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes (Ideal.span {r₀}) P hmin`. Establish `hne : P.height ≠ 0` using `fun h => hP0 (Ideal.height_eq_zero_iff_eq_bot.1 h)`.
+
+Conclude with `le_antisymm hle (Order.one_le_iff_ne_zero.2 hne)`.
+-/
 theorem height_eq_one_of_isAssociatedPrime {b : A} (hb : b ≠ 0) {P : Ideal A}
     (hP : IsAssociatedPrime P (A ⧸ Ideal.span {b})) : P.height = 1 := by
   classical
@@ -70,6 +96,15 @@ theorem height_eq_one_of_isAssociatedPrime {b : A} (hb : b ≠ 0) {P : Ideal A}
     have hne : P.height ≠ 0 := fun h => hP0 (Ideal.height_eq_zero_iff_eq_bot.1 h)
     exact le_antisymm hle (Order.one_le_iff_ne_zero.2 hne)
 
+/- English proof (translation)
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := A) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hinj : Function.Injective (algebraMap A K)` using `IsFractionRing.injective A K`. Establish `hbK : algebraMap A K b ≠ 0` using `fun h => hb0 (hinj (by rw [h, map_zero]))`. Distinguish the cases in `hab : b ∣ a`.
+
+Take `⟨c, rfl⟩` from `hab`. Conclude with `⟨c, by rw [map_mul, mul_div_cancel_left₀ _ hbK]⟩`. It suffices to derive a contradiction. Establish `hne : Ideal.Quotient.mk (Ideal.span {b}) a ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`.
+
+Conclude with `hab`. Take `⟨P, hP, hcol⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing A _ hne`. Take `⟨a', s, hs, hx⟩` from `h P hP.isPrime (height_eq_one_of_isAssociatedPrime hb0 hP)`. Apply `hs` to reduce the goal to its premises. Apply `hcol` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.mem_colon_singleton, Submodule.mem_bot, smul_mk_eq_zero_iff, mul_comm]`. Use `⟨a', hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hx, div_mul_eq_mul_div, mul_div_assoc', mul_div_cancel_left₀ _ hbK]`.
+-/
 theorem mem_range_of_forall_height_one {K : Type*} [Field K] [Algebra A K] [IsFractionRing A K]
     (x : K) (h : ∀ p : Ideal A, p.IsPrime → p.height = 1 →
       ∃ a s : A, s ∉ p ∧ x * algebraMap A K s = algebraMap A K a) :

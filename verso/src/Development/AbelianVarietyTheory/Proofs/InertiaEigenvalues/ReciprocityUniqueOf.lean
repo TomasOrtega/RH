@@ -16,6 +16,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.TheRec
 
+/- English proof (translation)
+Introduce `hEx hConv hExh hAdm hLen E Ω _ _ _ _ _ A w h rc rc' hrc hrc'`. Establish `hComp` using `GlobalTheory.LocLanglands.FieldCompat.fieldCompatible GlobalTheory.globalArtinReciprocity_holds GlobalTheory.Published.chevalleyUnits' GlobalTheory.BrauerZero.brauerDegreeZero hEx hConv hExh (GlobalTheory.BZBridge.main hAdm hLen)`. Use function extensionality and compare the values at `x`. Take `⟨n, c⟩` from `x`. Establish `hC` using `hComp E Ω A w h E Ω A w h rc' rc hrc' hrc (RingEquiv.refl Ω) (RingHom.id E) (RingEquiv.refl _) (fun _ => Iff.rfl) (fun _ => rfl) continuous_id (fun _ => rfl) n c.rep c.rep (LinearEquiv.refl ℂ _) (fun g v => by`.
+
+Establish `hg : GeneralLinearGroup.map (RingEquiv.refl (w.adicCompletion E)).toRingHom g = g` using `Units.ext (Matrix.ext fun _ _ => rfl)`. Rewrite using `[hg]`. Use the proof step `rfl)`. Take `⟨b, b', hb, hb', hN, hρ⟩` from `hC`. Establish `hbb : WD.mk b = WD.mk b'` using `WD.sound ⟨LinearEquiv.refl ℂ _, fun σ v => by`.
+
+Simplify using `only [LinearEquiv.refl_apply]; rw [hρ σ σ (fun _ => rfl)], fun v => by`. Simplify using `only [LinearEquiv.refl_apply]`. Rewrite using `[hN]⟩`. Establish `hx : (⟨n, c⟩ : IrrGL (w.adicCompletion E)) = cls c.rep` using `congrArg (Sigma.mk _) c.cl_rep.symm`. Rewrite using `[hx, ← hb, ← hb', hbb]`.
+-/
 theorem recUnique_of_localConverse : LocalLanglandsExists → LocalConverseGL → LanglandsExhaustionGL →
     IrreducibleAdmissibleGL → StandardFunctorsFiniteLength → RecUnique := by
   intro hEx hConv hExh hAdm hLen E Ω _ _ _ _ _ A w h rc rc' hrc hrc'

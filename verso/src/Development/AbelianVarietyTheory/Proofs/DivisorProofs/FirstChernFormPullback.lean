@@ -15,11 +15,19 @@ namespace GlobalTheory.ChernPull
 open ReciprocityTheory.L2DbarEstimates (V cHess)
 open GlobalTheory.GoodMetric (coordVec)
 
+/- English proof (translation)
+Simplify using `only [matForm, LinearMap.coe_mk, AddHom.coe_mk, rowForm, Fintype.linearCombination_apply, Subalgebra.coe_smul, AddSubmonoidClass.coe_finsetSum, sym]`.
+-/
 theorem coe_matForm {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) :
     (matForm n M : Alt n) = kappa • ∑ a, ∑ b, M a b • (dz a * dzb b) := by
   simp only [matForm, LinearMap.coe_mk, AddHom.coe_mk, rowForm, Fintype.linearCombination_apply,
     Subalgebra.coe_smul, AddSubmonoidClass.coe_finsetSum, sym]
 
+/- English proof (translation)
+Rewrite using `[coe_matForm, coe_matForm, map_smul]`. Use `congr 1`. Simplify using `only [map_sum, map_smul, map_mul, (pull_dz F _).1, (pull_dz F _).2, Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, Finset.smul_sum, smul_smul, Matrix.mul_apply, Matrix.of_apply, Finset.sum_smul]`. Simplify using `only [← Finset.sum_product']`. Use `Finset.sum_nbij' (fun x => (x.2.2.2, x.2.2.1, x.2.1, x.1)) (fun y => (y.2.2.2, y.2.2.1, y.2.1, y.1)) (by simp) (by simp) (by simp) (by simp) (fun x _ => ?_)` and prove the remaining obligations.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pull_matForm {n d : ℕ} (F : V n →L[ℂ] V d) (K : Matrix (Fin d) (Fin d) ℂ) :
     pull F (matForm d K : Alt d) = (matForm n (Matrix.of (fun j b => F (coordVec j) b) * K *
       Matrix.of (fun a l => conj (F (coordVec l) a))) : Alt n) := by
@@ -33,6 +41,19 @@ theorem pull_matForm {n d : ℕ} (F : V n →L[ℂ] V d) (K : Matrix (Fin d) (Fi
   congr 1
   ring
 
+/- English proof (translation)
+Use `set m := PtsOver.map π w (spMap σ)`. Establish `hm : ∀ z, (m z).1 = z.1 ≫ π` using `fun _ => rfl`. Use `set F : V D' → V D := c0.e ∘ m ∘ c.e.symm with hFdef`. Use `set U := c.e.target ∩ c.e.symm ⁻¹' (m ⁻¹' c0.e.source)`. Establish `hU : IsOpen U` using `GlobalTheory.ChartGlue.isOpen_over c.e (c0.e.open_source.preimage (continuous_of_comp hm))`.
+
+Establish `hyU : c.e y ∈ U` using `GlobalTheory.ChartGlue.mem_over c.e hy hy0`. Establish `hF0 : DifferentiableOn ℂ F U` using `AlgChart.holo_map hm c c0`. Establish `hF : ContDiffOn ℂ 2 F U` using `(contDiffOn_piLp 2).2 fun a => (ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn D' _ U hU (differentiableOn_euclidean.1 hF0 a)).of_le (by norm_cast)`. Establish `hFy : F (c.e y) = c0.e (m y)`. Simplify using `only [hFdef, Function.comp_apply, c.e.left_inv hy]`.
+
+Establish `him : m y ∈ ptsIn p σ (L.B.U (i PUnit.unit))` using `mem_of_mem_linComb (m := fun _ => m y) (fun _ => rfl) hi PUnit.unit`. Use `set g : V D → ℂ := fun v => ((L.φ σ).φ (i PUnit.unit) (c0.e.symm v) : ℂ)`. Establish `hg : ContDiffAt ℝ 2 g (F (c.e y))` using `hFy ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ ((L.cInf σ).contDiffAt c0 hy0 him)`. Establish `e : (fun v => (((L.pull π w).φ σ).φ i (c.e.symm v) : ℂ)) =ᶠ[nhds (c.e y)] g ∘ F` using `by filter_upwards [hU.mem_nhds hyU] with v hv`. Use `Weight.pull_φ (L.φ σ) π w i (c.e.symm v)` as an intermediate fact.
+
+Simplify using `only [g, hFdef, Function.comp_apply, c0.e.left_inv hv.2]`. Conclude with `congrArg _ this`. Establish `hK : c0.hess (L.φ σ) (i PUnit.unit) (m y) = cHess D g (F (c.e y))`. Rewrite using `[hFy]`. Both sides reduce to the same expression.
+
+Use `show cHess D' _ (c.e y) = _`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e, hK]`. Use extensionality with `j l`. Rewrite using `[GlobalTheory.HessPull.cHess_comp_apply D' D g F U hU _ hyU hF hg j l]`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by`. Simplify using `only [ReciprocityTheory.L2DbarEstimates.bas, coordVec]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hess_pull {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {p' : Y ⟶ Sp k} {D D' : ℕ}
     (π : Y ⟶ X) (w : π ≫ p = p') (σ : k →+* ℂ) (c : AlgChart p' σ D') (c0 : AlgChart p σ D) (y : CxPts p' σ)
     (hy : y ∈ c.e.source) (hy0 : PtsOver.map π w (spMap σ) y ∈ c0.e.source) (L : HermLB p)
@@ -73,6 +94,13 @@ theorem hess_pull {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {p
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by
     simp only [ReciprocityTheory.L2DbarEstimates.bas, coordVec]; ring
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX σ Y p' D' hY π w L`. Use function extensionality and compare the values at `x`. Take `⟨⟨c, y⟩, hy⟩` from `x`. Simplify using `only [pullF, HolAtlas.pullback, fld]`. Rewrite using `[c1F_eq_matForm_hessL hY _ hy]`.
+
+Establish `key : ∀ (c0 : AlgChart p σ D) (h0 : PtsOver.map π w (spMap σ) y ∈ c0.e.source), (matForm D' (hessL (L.pull π w) c y) : Alt D') = pull (fderiv ℂ (c0.e ∘ PtsOver.map π w (spMap σ) ∘ c.e.symm) (c.e y)) (c1F hX σ L ⟨(c0, PtsOver.map π w (spMap σ) y), h0⟩ : Alt D)`. Introduce `c0 h0`. Establish `hp` using `mem_pick ((L.pull π w).φ σ).isLB y`. Rewrite using `[c1F_eq_matForm_hessL hX L h0, pull_matForm]`. Simplify using `only [hessL]`.
+
+Rewrite using `[hess_pull π w σ c c0 y hy h0 L _ hp, c0.hess_eq (L.cInf σ) h0 (mem_pick (L.φ σ).isLB _) (mem_of_mem_linComb (m := fun _ => PtsOver.map π w (spMap σ) y) (fun _ => rfl) hp PUnit.unit)]`. Conclude with `key _ _`.
+-/
 theorem c1F_pull_eq_pullF_c1F : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) (hX : IsRegVar p D) (σ : k →+* ℂ),
     ∀ (Y : Scheme.{0}) (p' : Y ⟶ Sp k) (D' : ℕ) (hY : IsRegVar p' D') (π : Y ⟶ X) (w : π ≫ p = p'),
     ∀ L : HermLB p, fld _ (c1F hY σ (L.pull π w)) = pullF hX hY σ π w (fld _ (c1F hX σ L)) := by

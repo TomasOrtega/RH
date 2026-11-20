@@ -20,6 +20,23 @@ namespace GlobalTheory.CompanionTheory.LTLink
 
 open GroundTheory.Global GroundTheory.Global.SemiLocal in
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ w Ωv _ _ _ j hj a σ g hgj hloc L _ _`. Use `haveI : IsGalois E Ω := IsAlgClosure.isGalois E Ω`. Take `⟨w'⟩` from `GroundTheory.Global.IdeleGroup.nonempty_placesOver_of_finite (K := E) (L := L) w`. Use `haveI : IsSepClosed Ωv := IsSepClosure.sep_closed (w.adicCompletion E)`. Use `haveI : CharZero (w.adicCompletion E) := algebraRat.charZero _`.
+
+Use `haveI : Algebra.IsSeparable (w.adicCompletion E) (w'.1.adicCompletion L) := inferInstance`. Set `ι : w'.1.adicCompletion L →ₐ[w.adicCompletion E] Ωv` to `IsSepClosed.lift`. Use `set s := restrictAb L (le_maximalAbelianExtension L) (artinMap E Ω (GroundTheory.Global.IdeleClassGroup.mk E (IdeleGroup.finiteEmbedding w a))) with hs`. Establish `hres : PositivityTheory.FamInh.res L (PositivityTheory.FamInh.art0 E Ω (localIdele E w a)) = s` using `congrArg (restrictAb L (le_maximalAbelianExtension L)) ((topologicalAbelianizationEquiv E Ω).apply_symm_apply _)`. Establish `h1 : ∀ l : L, ι (algebraMap L (w'.1.adicCompletion L) (s l)) = g (ι (algebraMap L (w'.1.adicCompletion L) l))` using `fun l => by`.
+
+Rewrite using `[hs, artinMap_finiteEmbedding_apply L w w' ι a l]`. Conclude with `hloc _ _`. Rewrite using `[hres, PositivityTheory.FamInh.res_toAb]`. Use `letI : Algebra E Ωv := ((algebraMap (w.adicCompletion E) Ωv).comp (algebraMap E (w.adicCompletion E))).toAlgebra`. Set `m₂ : L →ₐ[E] Ωv` to `{ toRingHom := j.comp (algebraMap L Ω) commutes' := fun y => by show j (algebraMap L Ω (algebraMap E L y)) = _`.
+
+Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `hj y }`. Establish `hcomp : ∀ y : E, algebraMap L (w'.1.adicCompletion L) (algebraMap E L y) = algebraMap (w.adicCompletion E) (w'.1.adicCompletion L) (algebraMap E (w.adicCompletion E) y)`. Introduce `y`. Rewrite using `[← IsScalarTower.algebraMap_apply E L (w'.1.adicCompletion L), ← IsScalarTower.algebraMap_apply E (w.adicCompletion E) (w'.1.adicCompletion L)]`.
+
+Set `m₁ : L →ₐ[E] Ωv` to `{ toRingHom := (ι : w'.1.adicCompletion L →+* Ωv).comp (algebraMap L (w'.1.adicCompletion L)) commutes' := fun y => by show ι (algebraMap L (w'.1.adicCompletion L) (algebraMap E L y)) = _`. Rewrite using `[hcomp, ι.commutes]`. Use `rfl }`. Use `letI : Algebra L Ωv := m₂.toRingHom.toAlgebra`. Use `haveI : IsScalarTower E L Ωv := IsScalarTower.of_algebraMap_eq fun y => (m₂.commutes y).symm`.
+
+Set `τ : L ≃ₐ[E] L` to `Normal.algHomEquivAut E Ωv L m₁`. Establish `hτ : ∀ l : L, m₂ (τ l) = m₁ l` using `fun l => DFunLike.congr_fun ((Normal.algHomEquivAut E Ωv L).symm_apply_apply m₁) l`. Establish `h2 : ∀ l : L, τ (s l) = AlgEquiv.restrictNormalHom L σ (τ l)` using `fun l => by`. Apply `m₂.toRingHom.injective` to reduce the goal to its premises. Use `show m₂ (τ (s l)) = j (algebraMap L Ω (AlgEquiv.restrictNormalHom L σ (τ l)))`.
+
+Establish `hρ : algebraMap L Ω (AlgEquiv.restrictNormalHom L σ (τ l)) = σ (algebraMap L Ω (τ l))` using `AlgEquiv.restrictNormal_commutes σ L (τ l)`. Rewrite using `[hρ, ← hgj, hτ]`. Establish `hj₂ : j (algebraMap L Ω (τ l)) = m₁ l` using `hτ l`. Rewrite using `[hj₂]`. Conclude with `h1 l`.
+
+Establish `h3 : τ * s = AlgEquiv.restrictNormalHom L σ * τ` using `AlgEquiv.ext h2`. Establish `h4 : τ * s = τ * AlgEquiv.restrictNormalHom L σ`. Rewrite using `[h3]`. Conclude with `IsMulCommutative.is_comm.comm _ _`. Conclude with `(mul_left_cancel h4).symm`.
+-/
 theorem local_restriction_abelianization_artin : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (w : HeightOneSpectrum (𝓞 E)) {Ωv : Type} [Field Ωv] [Algebra (w.adicCompletion E) Ωv]
     [IsSepClosure (w.adicCompletion E) Ωv] (j : Ω →+* Ωv),
     (∀ y : E, j (algebraMap E Ω y) = algebraMap (w.adicCompletion E) Ωv (algebraMap E (w.adicCompletion E) y)) →

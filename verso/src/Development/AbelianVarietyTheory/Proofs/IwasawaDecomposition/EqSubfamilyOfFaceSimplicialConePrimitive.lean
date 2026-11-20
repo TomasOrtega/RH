@@ -12,6 +12,11 @@ namespace GlobalTheory.PolFan.FaceSub
 
 variable {X : Type} [AddCommGroup X]
 
+/- English proof (translation)
+Establish `hind : ∀ (d : Fin 0 → ℤ) (c : Fin p → ℤ), ∑ j, c j • u j = ∑ k, d k • (Fin.elim0 k : LinearMap.BilinForm ℤ X) → c = 0` using `fun d c hc => by`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty] at hc`. Conclude with `funext (Fintype.linearIndependent_iff.1 hu c hc)`. Establish `h0 : ∑ j, (r - r') j • toReal (u j) = ∑ k, (Fin.elim0 k : ℝ) • toReal (Fin.elim0 k : LinearMap.BilinForm ℤ X)`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h, sub_self, Finset.univ_eq_empty, Finset.sum_empty]`.
+
+Conclude with `sub_eq_zero.1 (eq_zero_of_toReal_rel hind h0)`.
+-/
 theorem eq_of_toReal_sum_eq {p : ℕ} {u : Fin p → LinearMap.BilinForm ℤ X} (hu : LinearIndependent ℤ u)
     {r r' : Fin p → ℝ} (h : ∑ j, r j • toReal (u j) = ∑ j, r' j • toReal (u j)) : r = r' := by
   have hind : ∀ (d : Fin 0 → ℤ) (c : Fin p → ℤ), ∑ j, c j • u j = ∑ k, d k • (Fin.elim0 k : LinearMap.BilinForm ℤ X) →
@@ -22,12 +27,28 @@ theorem eq_of_toReal_sum_eq {p : ℕ} {u : Fin p → LinearMap.BilinForm ℤ X} 
     simp only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h, sub_self, Finset.univ_eq_empty, Finset.sum_empty]
   exact sub_eq_zero.1 (eq_zero_of_toReal_rel hind h0)
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext₂ fun a b => by have := LinearMap.congr_fun₂ h a b simp only [toReal_apply, LinearMap.zero_apply] at this simpa using this`.
+-/
 theorem eq_zero_of_toReal_eq_zero {β : LinearMap.BilinForm ℤ X} (h : toReal β = 0) : β = 0 :=
   LinearMap.ext₂ fun a b => by
     have := LinearMap.congr_fun₂ h a b
     simp only [toReal_apply, LinearMap.zero_apply] at this
     simpa using this
 
+/- English proof (translation)
+Use `set B' : Fin q → Fin p → ℝ := fun l k' => if 0 < A l then B l k' else 0 with hB'`. Establish `hB'0 : ∀ l k', 0 ≤ B' l k'` using `fun l k' => by`. Apply the tactic sequence `simp only [hB']; split_ifs <;> [exact hB l k'; exact le_rfl]`. Establish `hterm : ∀ l, A l • toReal (v l) = A l • ∑ k', B' l k' • toReal (u k')` using `fun l => by`. Break down `(hA l).lt_or_eq with hl | hl` into its components or cases.
+
+Simplify using `only [hB', if_pos hl]`. Rewrite using `[hBe l hl]`. Simplify using `[← hl]`. Establish `hsum : ∑ k', (if k' = k then (1 : ℝ) else 0) • toReal (u k') = ∑ k', (∑ l, A l * B' l k') • toReal (u k')`. Rewrite using `[Finset.sum_eq_single k (fun b _ hb => by simp [hb]) (by simp)]`.
+
+Rewrite using `[if_pos rfl, one_smul, hk]`. Simplify using `only [hterm, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `hc` using `eq_of_toReal_sum_eq hu hsum`. Establish `hk1 : ∑ l, A l * B' l k = 1` using `by simpa using (congrFun hc k).symm`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨l, -, hl⟩ : ∃ l ∈ Finset.univ, A l * B' l k ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Rewrite `hk1` using `[Finset.sum_eq_zero hne]`. Conclude with `zero_ne_one hk1`.
+
+Establish `hAl : 0 < A l` using `(hA l).lt_of_ne fun h0 => hl (by rw [← h0, zero_mul])`. Establish `hoff : ∀ k', k' ≠ k → B l k' = 0` using `fun k' hk' => by`. Establish `h0 : ∑ l, A l * B' l k' = 0` using `by simpa [hk'] using (congrFun hc k').symm`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun l _ => mul_nonneg (hA l) (hB'0 l k'))).1 h0 l (Finset.mem_univ _)` as an intermediate fact. Simplify `this` using `[hB', if_pos hAl, hAl.ne']`.
+
+Establish `hvl : toReal (v l) = B l k • toReal (u k)`. Rewrite using `[hBe l hAl, Finset.sum_eq_single k (fun b _ hb => by rw [hoff b hb, zero_smul]) (by simp)]`. Use `⟨l, hAl, B l k, (hB l k).lt_of_ne fun h0 => hv l (eq_zero_of_toReal_eq_zero ?_), hvl⟩` and prove the remaining obligations. Rewrite using `[hvl, ← h0, zero_smul]`.
+-/
 theorem exists_ray {p q : ℕ} {u : Fin p → LinearMap.BilinForm ℤ X} {v : Fin q → LinearMap.BilinForm ℤ X}
     (hu : LinearIndependent ℤ u) (hv : ∀ l, v l ≠ 0) (A : Fin q → ℝ) (B : Fin q → Fin p → ℝ) (hA : ∀ l, 0 ≤ A l)
     (hB : ∀ l k', 0 ≤ B l k') (k : Fin p) (hk : toReal (u k) = ∑ l, A l • toReal (v l))
@@ -68,6 +89,17 @@ end GlobalTheory.PolFan.FaceSub
 
 open GlobalTheory.PolFan.FaceSub in
 
+/- English proof (translation)
+Introduce `O _ bar X _ _ m n δ γ hδ hγ h hδi hγi hδp hγp hγc hδn hγz hZ`. Use `choose b hb hbe using hγc`. Use `choose a ha hae using hZ`. Establish `hsupp : ∀ j i, 0 < b j i → h (δ i) = 0` using `fun j i hji => by`. Establish `e` using `apply_eq_of_toReal_eq (hbe j) h`.
+
+Rewrite `e` using `[hγz j, Int.cast_zero]`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => mul_nonneg (hb j i) (by exact_mod_cast hδn i))).1 e.symm i (Finset.mem_univ _)` as an intermediate fact. Establish `h2 : ((h (δ i) : ℤ) : ℝ) = 0` using `(mul_eq_zero.1 this).resolve_left hji.ne'`. Conclude with `h2` after adjusting the coercions. Establish `hex1 : ∀ i, h (δ i) = 0 → ∃ j, γ j = δ i` using `fun i hi => by`.
+
+Take `⟨j, -, c, hc, e⟩` from `exists_ray hδi hγi.ne_zero (a i hi) b (ha i hi) hb i (hae i hi) (fun l _ => hbe l)`. Conclude with `⟨j, GlobalTheory.T.eq_of_primitiveBalancedForm_same_real_ray bar (γ j) (δ i) (hγ j) (hδ i) (hγp j) (hδp i) c hc e⟩`. Establish `hex2 : ∀ j, ∃ i, h (δ i) = 0 ∧ γ j = δ i` using `fun j => by`. Apply the tactic sequence `obtain ⟨i, hbi, c, hc, e⟩ := exists_ray hγi hδi.ne_zero (b j) (fun i => if hi : h (δ i) = 0 then a i hi else 0) (hb j) (fun i j' => by split_ifs with hi <;> [exact ha i hi j'; exact le_rfl]) j (hbe j) (fun l hl => by rw [dif_pos (hsupp j l hl)]; exact hae l _)`. Conclude with `⟨i, hsupp j i hbi, (GlobalTheory.T.eq_of_primitiveBalancedForm_same_real_ray bar (δ i) (γ j) (hδ i) (hγ j) (hδp i) (hγp j) c hc e).symm⟩`.
+
+Use `choose s hsZ hsγ using hex2`. Establish `hsinj : Function.Injective s` using `fun j j' hjj => hγi.injective (by rw [hsγ j, hsγ j', hjj])`. Use `⟨⟨s, hsinj⟩, hsγ, fun i => ⟨fun hi => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `hex1 i hi`. Conclude with `⟨j, hδi.injective (show δ (s j) = δ i by rw [← hsγ j, hj])⟩`.
+
+Introduce and unpack `⟨j, rfl⟩`. Conclude with `hsZ j`.
+-/
 theorem GlobalTheory.PolFan.eq_subfamily_of_face : ∀ {O : Type} [CommRing O] (bar : O → O) {X : Type} [AddCommGroup X] [Module O X] {m n : ℕ}
     (δ : Fin m → LinearMap.BilinForm ℤ X) (γ : Fin n → LinearMap.BilinForm ℤ X) (hδ : ∀ i, δ i ∈ balForms bar X)
     (hγ : ∀ j, γ j ∈ balForms bar X) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ),

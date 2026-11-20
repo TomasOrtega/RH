@@ -31,6 +31,19 @@ namespace GlobalTheory.RSnmUnfProps
 
 open GroundTheory.Automorphic.FourierWhittaker (blockGL blockMat blockMat_apply coe_blockGL)
 
+/- English proof (translation)
+Unfold `GlobalTheory.Whittaker.superDiag`. Simplify using `only [Finset.sum_filter]`. Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE hj) (Fin.castLE_injective hj) _ _ ?_ ?_` and prove the remaining obligations. Introduce `i hi`.
+
+Establish `hij : ¬ (i : ℕ) < j` using `fun h => hi ⟨⟨i, h⟩, rfl⟩`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hb`. Rewrite using `[coe_blockGL, blockMat_apply, dif_neg hij, if_neg]`. Introduce `h`.
+
+Rewrite `hb` using `[h]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Introduce `i`. Use `Fintype.sum_of_injective (Fin.castLE hj) (Fin.castLE_injective hj) _ _ ?_ ?_` and prove the remaining obligations.
+
+Introduce `b hb`. Establish `hbj : ¬ (b : ℕ) < j` using `fun h => hb ⟨⟨b, h⟩, rfl⟩`. Use `split_ifs`. Rewrite using `[coe_blockGL, blockMat_apply, dif_pos (by simp), dif_neg hbj]`. Both sides reduce to the same expression.
+
+Introduce `b`. Simplify using `only [Fin.coe_castLE]`. Use `split_ifs`. Rewrite using `[coe_blockGL, blockMat_apply, dif_pos (by simp), dif_pos (by simp)]`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression.
+-/
 theorem superDiag_blockGL {R : Type} [CommRing R] {j n : ℕ} (hj : j ≤ n) (g : GL (Fin j) R) :
     GlobalTheory.Whittaker.superDiag (blockGL hj g) = GlobalTheory.Whittaker.superDiag g := by
   unfold GlobalTheory.Whittaker.superDiag
@@ -60,14 +73,27 @@ theorem superDiag_blockGL {R : Type} [CommRing R] {j n : ℕ} (hj : j ≤ n) (g 
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Unfold `GlobalTheory.JSW.psiN`. Rewrite using `[superDiag_blockGL]`.
+-/
 theorem psiN_blockGL {j n : ℕ} (hj : j ≤ n) (g : GA E j) :
     GlobalTheory.JSW.psiN (blockGL hj g : GA E n) = GlobalTheory.JSW.psiN g := by
   unfold GlobalTheory.JSW.psiN
   rw [superDiag_blockGL]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.JSW.psiN, Circle.norm_coe]`.
+-/
 theorem norm_psiN {a : ℕ} (u : GA E a) : ‖GlobalTheory.JSW.psiN u‖ = 1 := by
   simp [GlobalTheory.JSW.psiN, Circle.norm_coe]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hu`. Use `⟨fun i k hik => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_blockGL, blockMat_apply] split_ifs with ha hb hc`. Conclude with `h1 _ _ (by rw [Fin.lt_def] at hik ⊢; exact hik)`. Both sides reduce to the same expression.
+
+Conclude with `absurd hik (by rw [hc]; exact lt_irrefl _)`. Both sides reduce to the same expression. Rewrite using `[coe_blockGL, blockMat_apply] split_ifs with ha hb`. Conclude with `h2 _`. Both sides reduce to the same expression.
+
+Conclude with `absurd rfl hb`.
+-/
 theorem blockGL_mem_NA {j n : ℕ} (hj : j ≤ n) {u : GA E j} (hu : u ∈ GlobalTheory.JSW.NA E j) :
     (blockGL hj u : GA E n) ∈ GlobalTheory.JSW.NA E n := by
   obtain ⟨h1, h2⟩ := hu
@@ -84,6 +110,9 @@ theorem blockGL_mem_NA {j n : ℕ} (hj : j ≤ n) {u : GA E j} (hu : u ∈ Globa
     · rfl
     · exact absurd rfl hb
 
+/- English proof (translation)
+Establish `hd : Matrix.GeneralLinearGroup.det u = 1` using `Units.ext (GlobalTheory.RSLocalPart.det_eq_one hu)`. Rewrite using `[GlobalTheory.RSnm.detAbs, hd, map_one]`. Both sides reduce to the same expression.
+-/
 theorem detAbs_unip {a : ℕ} {u : GA E a} (hu : u ∈ GlobalTheory.CellDec.NA E a) : GlobalTheory.RSnm.detAbs u = 1 := by
   have hd : Matrix.GeneralLinearGroup.det u = 1 := Units.ext (GlobalTheory.RSLocalPart.det_eq_one hu)
   rw [GlobalTheory.RSnm.detAbs, hd, map_one]; rfl
@@ -92,6 +121,25 @@ end GlobalTheory.RSnmUnfProps
 
 open GroundTheory.Automorphic.FourierWhittaker (blockGL) in
 
+/- English proof (translation)
+Introduce `E _ _ _ m r S φ φ' F hW hW' hl hl' hF`. Establish `hmn : m + 1 ≤ m + r + 1 + 1` using `by omega`. Establish `cW : Continuous (fun g : GA E (m + 1) => GlobalTheory.JSW.whit φ (blockGL hmn g))` using `hW.comp (GlobalTheory.RSnm.continuous_blockGL hmn)`. Establish `cF : Continuous (fun g : GA E (m + 1) => GroundTheory.Automorphic.GJMatrix.adelicFourierPi E F (GlobalTheory.ZEul.lastRow g))` using `hF.comp GlobalTheory.ZUnfTheta.continuous_lastRow`. Establish `cD : ∀ y : ℂ, Continuous (fun g : GA E (m + 1) => ((GlobalTheory.RSnm.detAbs g : ℝ) : ℂ) ^ y)` using `fun y => (Complex.continuous_ofReal.comp GlobalTheory.RSnm.continuous_detAbs).cpow continuous_const fun h => Complex.ofReal_mem_slitPlane.2 (GlobalTheory.RSnm.detAbs_pos h)`.
+
+Establish `hwu : ∀ u ∈ GlobalTheory.CellDec.NA E (m + 1), ∀ g : GA E (m + 1), GlobalTheory.JSW.whit φ (blockGL hmn (u * g)) = GlobalTheory.JSW.psiN u * GlobalTheory.JSW.whit φ (blockGL hmn g)`. Introduce `u hu g`. Establish `hu' : u ∈ GlobalTheory.JSW.NA E (m + 1)` using `(GlobalTheory.SmGL.mem_unipB (Ad E)).1 hu`. Rewrite using `[map_mul, hl _ (GlobalTheory.RSnmUnfProps.blockGL_mem_NA hmn hu'), GlobalTheory.RSnmUnfProps.psiN_blockGL]`. Use `⟨cW, cF, fun x => ?_, fun u hu g => ?_, fun x g => ?_⟩` and prove the remaining obligations.
+
+Unfold `GlobalTheory.RSnmUnf.uIntNM`. Conclude with `(((cW.mul (Complex.continuous_conj.comp hW')).mul cF).mul (cD _)).measurable`. Establish `hu' : u ∈ GlobalTheory.JSW.NA E (m + 1)` using `(GlobalTheory.SmGL.mem_unipB (Ad E)).1 hu`. Establish `hlr` using `GlobalTheory.ZEulProps.lastRow_unip hu g`. Establish `hd : GlobalTheory.RSnm.detAbs (u * g) = GlobalTheory.RSnm.detAbs g`.
+
+Rewrite using `[GlobalTheory.RSnm.detAbs_mul, GlobalTheory.RSnmUnfProps.detAbs_unip hu, one_mul]`. Use `⟨?_, ?_, hlr, hd, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hwu u hu g, norm_mul, GlobalTheory.RSnmUnfProps.norm_psiN, one_mul]`. Rewrite using `[hl' u hu' g, norm_mul, GlobalTheory.RSnmUnfProps.norm_psiN, one_mul]`. Unfold `GlobalTheory.RSnmUnf.uIntNM`.
+
+Rewrite using `[hwu u hu g, hl' u hu' g, hlr, hd, map_mul]`. Establish `h1` using `GlobalTheory.ZEulProps.psiN_mul_conj u`. Take the linear combination `(GlobalTheory.JSW.whit φ (blockGL hmn g) * conj (GlobalTheory.JSW.whit φ' g) * GroundTheory.Automorphic.GJMatrix.adelicFourierPi E F (GlobalTheory.ZEul.lastRow g) * ((GlobalTheory.RSnm.detAbs g : ℝ) : ℂ) ^ ((x : ℂ) - (((m + r + 1 + 1 : ℕ) : ℂ) - ((m + 1 : ℕ) : ℂ)) / 2)) * h1`. Establish `hdp` using `GlobalTheory.RSnm.detAbs_pos g`. Establish `hre : ((x : ℂ) - (((m + r + 1 + 1 : ℕ) : ℂ) - ((m + 1 : ℕ) : ℂ)) / 2).re = (x - ((r : ℝ) + 1)) / 2 + x / 2`.
+
+Use `push_cast`. Simplify using `only [Complex.sub_re, Complex.div_re, Complex.add_re, Complex.ofReal_re, Complex.natCast_re, Complex.one_re, Complex.natCast_im, Complex.one_im, Complex.add_im, Complex.ofReal_im]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Unfold `GlobalTheory.RSnmUnf.uIntNM`.
+
+Rewrite using `[norm_mul, norm_mul, norm_mul, Complex.norm_conj, Complex.norm_cpow_eq_rpow_re_of_pos hdp, hre, Real.rpow_add hdp]`. Establish `hA : GlobalTheory.RSnm.detAbs g ^ (x - ((r : ℝ) + 1)) = (GlobalTheory.RSnm.detAbs g ^ ((x - ((r : ℝ) + 1)) / 2)) ^ 2`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hdp.le]`. Evaluate the numerical expressions. Establish `hB : GlobalTheory.RSnm.detAbs g ^ x = (GlobalTheory.RSnm.detAbs g ^ (x / 2)) ^ 2`.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hdp.le]`. Evaluate the numerical expressions. Rewrite using `[hA, hB]`. Use `set a := ‖GlobalTheory.JSW.whit φ (blockGL hmn g)‖`. Use `set b := ‖GlobalTheory.JSW.whit φ' g‖`.
+
+Use `set c := ‖GroundTheory.Automorphic.GJMatrix.adelicFourierPi E F (GlobalTheory.ZEul.lastRow g)‖`. Use `set α := GlobalTheory.RSnm.detAbs g ^ ((x - ((r : ℝ) + 1)) / 2)`. Use `set β := GlobalTheory.RSnm.detAbs g ^ (x / 2)`. Establish `hc : 0 ≤ c` using `norm_nonneg _`. Use polynomial arithmetic with `[mul_nonneg hc (sq_nonneg (a * α - b * β))]`.
+-/
 theorem GlobalTheory.RSnmUnfProps.uIntNM_props : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (φ : GA E (m + r + 1 + 1) → ℂ) (φ' : GA E (m + 1) → ℂ) (F : (Fin (m + 1) → Ad E) → ℂ),
     Continuous (GlobalTheory.JSW.whit φ) → Continuous (GlobalTheory.JSW.whit φ') →

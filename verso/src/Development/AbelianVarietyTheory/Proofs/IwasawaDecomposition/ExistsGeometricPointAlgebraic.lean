@@ -5,6 +5,21 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `A _ B f _ x K' _ _ ι`. Set `s : f.fiber (f x) ⟶ Spec (B.residueField (f x))` to `f.fiberToSpecResidueField (f x)`. Use `haveI : LocallyOfFiniteType s := by show LocallyOfFiniteType (pullback.snd _ _) infer_instance`. Use `haveI : JacobsonSpace (f.fiber (f x)) := LocallyOfFiniteType.jacobsonSpace s`. Establish `hx : x ∈ Set.range (f.fiberι (f x))`.
+
+Rewrite using `[f.range_fiberι]`. Both sides reduce to the same expression. Take `⟨x', -⟩` from `hx`. Take `⟨z, -, hz⟩` from `nonempty_inter_closedPoints (Z := (Set.univ : Set (f.fiber (f x)))) ⟨x', trivial⟩ isClosed_univ.isLocallyClosed`. Establish `h1 : LocallyOfFiniteType ((f.fiber (f x)).fromSpecResidueField z)` using `isClosed_singleton_iff_locallyOfFiniteType.mp hz`.
+
+Take `⟨φ, hφ⟩` from `Spec.map_surjective ((f.fiber (f x)).fromSpecResidueField z ≫ s)`. Establish `hft : φ.hom.FiniteType`. Establish `: LocallyOfFiniteType (Spec.map φ)` using `hφ ▸ inferInstance`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).mp this`. Use `letI : Algebra (B.residueField (f x)) ((f.fiber (f x)).residueField z) := φ.hom.toAlgebra`.
+
+Use `haveI : Algebra.FiniteType (B.residueField (f x)) ((f.fiber (f x)).residueField z) := hft`. Use `haveI : Module.Finite (B.residueField (f x)) ((f.fiber (f x)).residueField z) := finite_of_finite_type_of_isJacobsonRing _ _`. Use `haveI : Algebra.IsAlgebraic (B.residueField (f x)) ((f.fiber (f x)).residueField z) := Algebra.IsAlgebraic.of_finite _ _`. Use `letI : Algebra (B.residueField (f x)) K' := ι.toAlgebra`. Set `j : (f.fiber (f x)).residueField z →ₐ[B.residueField (f x)] K'` to `IsAlgClosed.lift`.
+
+Take `⟨θ, hθ⟩` from `Spec.map_surjective ((f.fiber (f x)).fromSpecResidueField z ≫ f.fiberι (f x))`. Establish `hjφ : φ ≫ CommRingCat.ofHom (j : (f.fiber (f x)).residueField z →+* K') = CommRingCat.ofHom ι`. Use extensionality with `c`. Conclude with `j.commutes c`. Use `⟨(j : (f.fiber (f x)).residueField z →+* K').comp θ.hom, ?_, fun r => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : spMap ((j : (f.fiber (f x)).residueField z →+* K').comp θ.hom) = Spec.map (CommRingCat.ofHom (j : (f.fiber (f x)).residueField z →+* K')) ≫ Spec.map θ`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `e2 : f.fiberι (f x) ≫ f = s ≫ B.fromSpecResidueField (f x)` using `pullback.condition`. Rewrite using `[e1, hθ, Category.assoc, Category.assoc, e2, ← Category.assoc ((f.fiber (f x)).fromSpecResidueField z), ← hφ, ← Category.assoc, ← Spec.map_comp]`.
+
+Conclude with `congrArg (fun g => Spec.map g ≫ B.fromSpecResidueField (f x)) hjφ`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (θ.hom r)).algHom j`.
+-/
 theorem exists_algebraic_point_of_fiber : ∀ {A : Type} [CommRing A] {B : Scheme.{0}} (f : Sp A ⟶ B)
     [LocallyOfFiniteType f] (x : Sp A) (K' : Type) [Field K']
     [IsAlgClosed K'] (ι : B.residueField (f x) →+* K'),

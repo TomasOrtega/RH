@@ -9,6 +9,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Pr UpperTheory.V.Alg UpperTheory.V.J
 
+/- English proof (translation)
+Substitute `hD` using the available equality. Establish `e2 : ((h + 1 : ℕ∞) : WithBot ℕ∞) = (((N + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[WithBot.coe_add, WithBot.coe_one, WithBot.coe_natCast]`. Conclude with `e`. Establish `e3 : h + 1 = ((N + 1 : ℕ) : ℕ∞)` using `WithBot.coe_injective e2`.
+
+Proceed by induction on `h using ENat.recTopCoe with`. Consider the case `top`. Rewrite `e3` using `[top_add]`. Conclude with `absurd e3.symm (ENat.coe_ne_top _)`. Consider the case `coe k`.
+
+Normalize the coercions in `at e3 ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem ht_of_sum {h : ℕ∞} {N : ℕ} {D : WithBot ℕ∞} (hD : D = 1)
     (e : (h : WithBot ℕ∞) + D = (N + 1 : ℕ)) : h = N := by
   subst hD
@@ -24,6 +31,9 @@ private theorem ht_of_sum {h : ℕ∞} {N : ℕ} {D : WithBot ℕ∞} (hD : D = 
     norm_cast at e3 ⊢
     omega
 
+/- English proof (translation)
+Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe k`. Normalize the coercions in `at h ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem le_of_add {a : ℕ∞} {b c : ℕ} (h : ((c + b : ℕ) : ℕ∞) ≤ a + b) : (c : ℕ∞) ≤ a := by
   induction a using ENat.recTopCoe with
   | top => exact le_top
@@ -31,6 +41,17 @@ private theorem le_of_add {a : ℕ∞} {b c : ℕ} (h : ((c + b : ℕ) : ℕ∞)
     norm_cast at h ⊢
     omega
 
+/- English proof (translation)
+Introduce `l _ c _ F C₀ n hF hn S q x L Q hO`. Take `⟨hQ, him, hmin, hdim⟩` from `hO`. Take `⟨N, N', p, f, hN, hp, hker⟩` from `Fr.pres hF hn S x L`. Take `⟨hfl, -, -⟩` from `Fr.loc_flat hF hn S x L`. Establish `hA : IsNoetherianRing S.A` using `(Fr.gr_A hF hn S).2.2.2.2.2.1`.
+
+Establish `hR : IsNoetherianRing L.R` using `inferInstance`. Take `⟨h1, h2⟩` from `htPres L.O' N N' L.R p f hp hker Q hQ`. Establish `hc : (Ideal.comap p Q).height = N` using `ht_of_sum hdim h1`. Establish `hfh : Q.height = q.height` using `flatHt S.A L.R L.ι hfl q Q hQ him hmin`. Establish `hlow : ((n * F.d + 1 : ℕ) : ℕ∞) ≤ Q.height`.
+
+Apply `le_of_add (b := N')` to reduce the goal to its premises. Rewrite using `[Nat.add_comm, ← hN, ← hc]`. Conclude with `h2`. Use `⟨hfh ▸ hlow, fun hle P hP hPq => ?_⟩` and prove the remaining obligations. Establish `hu : Q.height + N' ≤ (Ideal.comap p Q).height`.
+
+Rewrite using `[hc, hN, Nat.cast_add, add_comm (N' : ℕ∞)]`. Conclude with `add_le_add hle le_rfl`. Use `flatAss S.A L.R L.ι hfl Q hQ (unmix L.O' N N' L.R p f hp hker Q hQ hu) P hP ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P ≤ L.im Q`. Rewrite using `[him]`.
+
+Conclude with `hPq`.
+-/
 theorem UpperTheory.V.J.htLow :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] (F : Fr.Frame l (ResidueField c.O)) (C₀ n : ℕ), F.Ok C₀ → (n = 2 ∨ n = 3) →
         ∀ (S : Fr.Space c.O F n), ∀ (q x : Ideal S.A) (L : S.Loc x) (Q : Ideal L.R), Over S L q Q →

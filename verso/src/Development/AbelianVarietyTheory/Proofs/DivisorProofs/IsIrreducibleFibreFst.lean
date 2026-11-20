@@ -11,6 +11,15 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.MoverFibre
 
+/- English proof (translation)
+Introduce `R _ G _ hG x`. Set `j` to `G.left.fromSpecResidueField x`. Set `p₁ : pullback G.hom G.hom ⟶ G.left` to `pullback.fst G.hom G.hom`. Establish `hp : (fst G G).left = p₁` using `rfl`. Establish `hirr0` using `GlobalTheory.SemiAbFibre.irreducibleSpace_fibre _ G hG _ (j ≫ G.hom)`.
+
+Use `haveI hirr : IrreducibleSpace (pullback G.hom (j ≫ G.hom) : Scheme.{0}) := hirr0`. Apply the tactic sequence `let e : pullback G.hom (j ≫ G.hom) ≅ p₁.fiber x := pullbackSymmetry _ _ ≪≫ (pullbackRightPullbackFstIso G.hom G.hom j).symm ≪≫ pullbackSymmetry _ _`. Establish `hr` using `(IrreducibleSpace.isIrreducible_univ (pullback G.hom (j ≫ G.hom) : Scheme.{0})).image _ ((e.hom ≫ Scheme.Hom.fiberι p₁ x).continuous.continuousOn)`. Rewrite `hr` using `[Set.image_univ]`. Establish `hrange : Set.range (e.hom ≫ Scheme.Hom.fiberι p₁ x) = Set.range (Scheme.Hom.fiberι p₁ x)`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨e.hom z, by rw [Scheme.Hom.comp_apply]⟩`. Introduce and unpack `⟨z, rfl⟩`.
+
+Conclude with `⟨e.inv z, by rw [Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply e.inv e.hom, e.inv_hom_id]; rfl⟩`. Use `show IsIrreducible (p₁ ⁻¹' {x})`. Rewrite using `[← Scheme.Hom.range_fiberι p₁ x, ← hrange]`. Conclude with `hr`.
+-/
 theorem isIrreducible_fibre_fst : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ x : G.left, IsIrreducible ((fst G G).left ⁻¹' {x}) := by
   intro R _ G _ hG x
   let j := G.left.fromSpecResidueField x

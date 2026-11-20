@@ -22,20 +22,32 @@ variable {K} (η : Gal(PadicAlgCl p/K) →* ℤ_[p]ˣ)
 
 def charTowerGal (k : ℕ) : Subgroup Gal(PadicAlgCl p/K) := (unitsOneAdd p k).comap η
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_charTowerGal {k : ℕ} {σ : Gal(PadicAlgCl p/K)} : σ ∈ charTowerGal η k ↔ η σ ∈ unitsOneAdd p k :=
   Iff.rfl
 
 instance charTowerGal_normal (k : ℕ) : (charTowerGal η k).Normal :=
   Subgroup.Normal.comap (Subgroup.normal_of_isMulCommutative _) η
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subgroup.comap_mono (unitsOneAdd_antitone h)`.
+-/
 theorem charTowerGal_antitone : Antitone (charTowerGal η) := fun _ _ h =>
   Subgroup.comap_mono (unitsOneAdd_antitone h)
 
 variable {η}
 
+/- English proof (translation)
+The claim follows from `(isOpen_unitsOneAdd k).preimage hη`.
+-/
 theorem isOpen_charTowerGal (hη : Continuous η) (k : ℕ) : IsOpen (charTowerGal η k : Set Gal(PadicAlgCl p/K)) :=
   (isOpen_unitsOneAdd k).preimage hη
 
+/- English proof (translation)
+The claim follows from `Subgroup.isClosed_of_isOpen _ (isOpen_charTowerGal hη k)`.
+-/
 theorem isClosed_charTowerGal (hη : Continuous η) (k : ℕ) :
     IsClosed (charTowerGal η k : Set Gal(PadicAlgCl p/K)) :=
   Subgroup.isClosed_of_isOpen _ (isOpen_charTowerGal hη k)
@@ -45,30 +57,50 @@ variable (η)
 def charTower (k : ℕ) : IntermediateField K (PadicAlgCl p) :=
   _root_.IntermediateField.fixedField (charTowerGal η k)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `_root_.IntermediateField.fixedField_antitone (charTowerGal_antitone η h)`.
+-/
 theorem charTower_mono : Monotone (charTower η) := fun _ _ h =>
   _root_.IntermediateField.fixedField_antitone (charTowerGal_antitone η h)
 
 variable {η}
 
+/- English proof (translation)
+The claim follows from `InfiniteGalois.fixingSubgroup_fixedField ⟨charTowerGal η k, isClosed_charTowerGal hη k⟩`.
+-/
 theorem fixingSubgroup_charTower (hη : Continuous η) (k : ℕ) :
     (charTower η k).fixingSubgroup = charTowerGal η k :=
   InfiniteGalois.fixingSubgroup_fixedField ⟨charTowerGal η k, isClosed_charTowerGal hη k⟩
 
+/- English proof (translation)
+Establish `h` using `isOpen_charTowerGal hη k`. Rewrite `h` using `[← fixingSubgroup_charTower hη k]`. Conclude with `(InfiniteGalois.isOpen_iff_finite _).1 h`.
+-/
 theorem finiteDimensional_charTower (hη : Continuous η) (k : ℕ) : FiniteDimensional K (charTower η k) := by
   have h := isOpen_charTowerGal hη k
   rw [← fixingSubgroup_charTower hη k] at h
   exact (InfiniteGalois.isOpen_iff_finite _).1 h
 
+/- English proof (translation)
+Rewrite using `[← InfiniteGalois.normal_iff_isGalois, fixingSubgroup_charTower hη]`. Use `infer_instance`.
+-/
 theorem isGalois_charTower (hη : Continuous η) (k : ℕ) : IsGalois K (charTower η k) := by
   rw [← InfiniteGalois.normal_iff_isGalois, fixingSubgroup_charTower hη]
   infer_instance
 
+/- English proof (translation)
+Rewrite using `[← MonoidHom.mem_ker, (charTower η k).restrictNormalHom_ker, fixingSubgroup_charTower hη]`. Both sides reduce to the same expression.
+-/
 theorem restrictNormalHom_charTower_eq_one_iff (hη : Continuous η) (k : ℕ)
     [Normal K (charTower η k)] (σ : Gal(PadicAlgCl p/K)) :
     AlgEquiv.restrictNormalHom (charTower η k) σ = 1 ↔ η σ ∈ unitsOneAdd p k := by
   rw [← MonoidHom.mem_ker, (charTower η k).restrictNormalHom_ker, fixingSubgroup_charTower hη]
   rfl
 
+/- English proof (translation)
+Use `isGalois_charTower hη k` as an intermediate fact. Use `{ toIsGalois := inferInstance, toIsMulCommutative := ⟨⟨fun a b => ?_⟩⟩ }` and prove the remaining obligations. Take `⟨σ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := charTower η k) (E := PadicAlgCl p) a`. Take `⟨τ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := charTower η k) (E := PadicAlgCl p) b`. Rewrite using `[← map_mul, ← map_mul, ← div_eq_one, ← map_div]`.
+
+Rewrite using `[restrictNormalHom_charTower_eq_one_iff hη, map_div, map_mul, map_mul, mul_comm (η σ), div_self']`. Conclude with `one_mem _`.
+-/
 theorem isAbelianGalois_charTower (hη : Continuous η) (k : ℕ) : IsAbelianGalois K (charTower η k) := by
   have := isGalois_charTower hη k
   refine { toIsGalois := inferInstance, toIsMulCommutative := ⟨⟨fun a b => ?_⟩⟩ }
@@ -80,6 +112,9 @@ theorem isAbelianGalois_charTower (hη : Continuous η) (k : ℕ) : IsAbelianGal
   rw [restrictNormalHom_charTower_eq_one_iff hη, map_div, map_mul, map_mul, mul_comm (η σ), div_self']
   exact one_mem _
 
+/- English proof (translation)
+Use `isGalois_charTower hη k` as an intermediate fact. Establish `h : σ y = ((σ.restrictNormal (charTower η k) ⟨y, hy⟩ : charTower η k) : PadicAlgCl p)` using `(AlgEquiv.restrictNormal_commutes σ (charTower η k) ⟨y, hy⟩).symm`. Rewrite using `[h]`. Conclude with `SetLike.coe_mem _`.
+-/
 theorem map_mem_charTower (hη : Continuous η) {k : ℕ} (σ : Gal(PadicAlgCl p/K)) {y : PadicAlgCl p}
     (hy : y ∈ charTower η k) : σ y ∈ charTower η k := by
   have := isGalois_charTower hη k
@@ -102,15 +137,24 @@ def artinImage (n : ℕ) : Subgroup ℤ_[p]ˣ := (artinGal K n).map η
 
 variable {K}
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subgroup.comap_mono (Subgroup.map_mono (unitFiltrationUnits_antitone h))`.
+-/
 theorem artinGal_antitone : Antitone (artinGal K) := fun _ _ h =>
   Subgroup.comap_mono (Subgroup.map_mono (unitFiltrationUnits_antitone h))
 
 variable (η) in
+/- English proof (translation)
+Introduce `_ _ h` and use `Subgroup.map_mono (artinGal_antitone h)`.
+-/
 theorem artinImage_antitone : Antitone (artinImage K η) := fun _ _ h =>
   Subgroup.map_mono (artinGal_antitone h)
 
 omit [FiniteDimensional ℚ_[p] K] in
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[restrictAb_apply, AlgEquiv.restrictNormalHom_apply, AlgEquiv.restrictNormalHom_apply]`.
+-/
 theorem restrictAb_restrictNormalHom (E : IntermediateField K (PadicAlgCl p)) [Normal K E]
     (h : E ≤ maximalAbelianExtension K (PadicAlgCl p)) (ρ : Gal(PadicAlgCl p/K)) :
     restrictAb E h (AlgEquiv.restrictNormalHom (maximalAbelianExtension K (PadicAlgCl p)) ρ) =
@@ -120,6 +164,11 @@ theorem restrictAb_restrictNormalHom (E : IntermediateField K (PadicAlgCl p)) [N
 
 omit [FiniteDimensional ℚ_[p] K] in
 
+/- English proof (translation)
+Rewrite `hρ` using `[fixingSubgroup_maximalAbelianExtension]`. Establish `hker : (commutator Gal(PadicAlgCl p/K)).topologicalClosure ≤ η.ker`. Use `Subgroup.topologicalClosure_minimal _ (Abelianization.commutator_subset_ker η) ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.coe_ker]`. Conclude with `isClosed_singleton.preimage hη`.
+
+Conclude with `hker hρ`.
+-/
 theorem eq_one_of_mem_fixingSubgroup_maximalAbelianExtension (hη : Continuous η)
     {ρ : Gal(PadicAlgCl p/K)}
     (hρ : ρ ∈ (maximalAbelianExtension K (PadicAlgCl p)).fixingSubgroup) : η ρ = 1 := by
@@ -130,6 +179,17 @@ theorem eq_one_of_mem_fixingSubgroup_maximalAbelianExtension (hη : Continuous �
     exact isClosed_singleton.preimage hη
   exact hker hρ
 
+/- English proof (translation)
+Use `set M := charTower η k`. Use `set Lab := maximalAbelianExtension K (PadicAlgCl p)`. Establish `hM` using `le_maximalAbelianExtension M`. Rewrite using `[← map_unitFiltrationUnits_restrictAb_localArtinMap M n, Subgroup.mem_sup]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, hu, huσ⟩`. Take `⟨ρ, hρ⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := Lab) (E := PadicAlgCl p) (localArtinMap K (PadicAlgCl p) u)`. Establish `hρA : ρ ∈ artinGal K n` using `⟨u, hu, hρ.symm⟩`. Use `⟨η ρ, ⟨ρ, hρA, rfl⟩, η (ρ⁻¹ * σ), ?_, by rw [map_mul, map_inv, mul_inv_cancel_left]⟩` and prove the remaining obligations. Establish `h1 : AlgEquiv.restrictNormalHom M (ρ⁻¹ * σ) = 1`.
+
+Rewrite using `[map_mul, map_inv, ← huσ, MonoidHom.comp_apply, ← hρ, restrictAb_restrictNormalHom, inv_mul_cancel]`. Conclude with `(restrictNormalHom_charTower_eq_one_iff hη k _).1 h1`. Introduce and unpack `⟨a, ⟨ρ, hρA, rfl⟩, b, hb, hab⟩`. Take `⟨u, hu, hu'⟩` from `hρA`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : AlgEquiv.restrictNormalHom M (ρ⁻¹ * σ) = 1`. Use `(restrictNormalHom_charTower_eq_one_iff hη k _).2 ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, ← hab, inv_mul_cancel_left]`. Conclude with `hb`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`.
+
+Rewrite using `[MonoidHom.comp_apply, hu', restrictAb_restrictNormalHom, h1]`.
+-/
 theorem restrictNormalHom_mem_upperRamificationGroup_iff (hη : Continuous η) (k n : ℕ)
     [FiniteDimensional K (charTower η k)] [IsAbelianGalois K (charTower η k)]
     (σ : Gal(PadicAlgCl p/K)) :
@@ -159,6 +219,15 @@ theorem restrictNormalHom_mem_upperRamificationGroup_iff (hη : Continuous η) (
     rw [map_mul, map_inv, inv_mul_eq_one] at h1
     rw [MonoidHom.comp_apply, hu', restrictAb_restrictNormalHom, h1]
 
+/- English proof (translation)
+Use `set Lab := maximalAbelianExtension K (PadicAlgCl p)`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ρ, ⟨u, hu, hu'⟩, rfl⟩`. Rewrite `hu` using `[← h]`.
+
+Take `⟨w, hw, rfl⟩` from `hu`. Take `⟨ρw, hρw⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := Lab) (E := PadicAlgCl p) (localArtinMap K (PadicAlgCl p) w)`. Use `⟨η ρw, ⟨ρw, ⟨w, hw, hρw.symm⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hfix : ρ⁻¹ * ρw ^ p ∈ Lab.fixingSubgroup`. Rewrite using `[← Lab.restrictNormalHom_ker, MonoidHom.mem_ker, map_mul, map_inv, map_pow, hρw, ← hu', powMonoidHom_apply, map_pow, inv_mul_cancel]`.
+
+Establish `h1` using `eq_one_of_mem_fixingSubgroup_maximalAbelianExtension hη hfix`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one, map_pow]`. Rewrite using `[powMonoidHom_apply, h1]`. Introduce and unpack `⟨b, ⟨ρ, ⟨w, hw, hw'⟩, rfl⟩, rfl⟩`. Use `⟨ρ ^ p, ⟨w ^ p, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h]`. Conclude with `⟨w, hw, rfl⟩`. Rewrite using `[map_pow, map_pow, hw']`. Rewrite using `[map_pow, powMonoidHom_apply]`.
+-/
 theorem artinImage_add_eq_map_pow (hη : Continuous η) {n e : ℕ}
     (h : (unitFiltrationUnits K n).map (powMonoidHom p) = unitFiltrationUnits K (n + e)) :
     artinImage K η (n + e) = (artinImage K η n).map (powMonoidHom p) := by
@@ -183,6 +252,9 @@ theorem artinImage_add_eq_map_pow (hη : Continuous η) {n e : ℕ}
     · rw [map_pow, map_pow, hw']
     · rw [map_pow, powMonoidHom_apply]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨ρ, hρ, rfl⟩`. Establish `h1` using `(restrictNormalHom_mem_upperRamificationGroup_iff hη 2 n ρ).2 (Subgroup.mem_sup_left ⟨ρ, hρ, rfl⟩)`. Rewrite `h1` using `[(upperRamificationGroup_natCast_eq_bot_iff (charTower η 2) n).2 hn, Subgroup.mem_bot]`. Conclude with `(restrictNormalHom_charTower_eq_one_iff hη 2 ρ).1 h1`.
+-/
 theorem artinImage_le_of_conductor_le (hη : Continuous η) [FiniteDimensional K (charTower η 2)]
     [IsAbelianGalois K (charTower η 2)] {n : ℕ} (hn : conductor (charTower η 2) ≤ n) :
     artinImage K η n ≤ unitsOneAdd p 2 := by

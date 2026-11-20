@@ -10,6 +10,9 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.KTypeSlices
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[mem_lt]`. Introduce `k₀`. Use `h.2 (g * infGL E n (Unitary.toUnits k₀))` as an intermediate fact. Simplify `this` using `only [map_mul, mul_assoc]`.
+-/
 theorem typeB_lt {n : ℕ} {K' : Subgroup (GL (Fin n) (Af E))} {W' : Submodule ℂ (Kinf E n → ℂ)} {f : Sm E n}
     (h : SpectralAccumulation.TypeB K' W' f) (g : GA E n) :
     (fun κ : Kinf E n => f.1 (g * infGL E n (Unitary.toUnits κ))) ∈ lt W' := by
@@ -19,6 +22,41 @@ theorem typeB_lt {n : ℕ} {K' : Subgroup (GL (Fin n) (Af E))} {W' : Submodule �
   simpa only [map_mul, mul_assoc] using this
 
 open ParabolicProjection in
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `leaf V z`. Introduce `_ f hf hf0 hT`. Take `⟨χ, hχ, hχ0, hχT⟩` from `untw hf hf0 hT (Kf_le_det _)`. Conclude with `⟨_, rfl, _, rfl, χ, hχ, hχ0, hχT⟩`.
+
+Consider the case `@node r s t₁ t₂ ih₁ ih₂`. Introduce `hN f hf hf0 hT`. Rewrite `hf` using `[SpectralAccumulation.Tr.space]`. Establish `hI : MemInd2 (tw t₁.space ((s : ℂ) / 2)) (tw t₂.space (-(r : ℂ) / 2)) f` using `memInd2_of_span (Submodule.span_mono (fun φ h => h.1) hf)`. Choose the witnesses or unpack the hypotheses as in `⟨g₀, hg₀⟩ : ∃ g₀, f.1 g₀ ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hf0 (Subtype.ext (funext hc))`. Establish `hopen` using `isOpen_Kf hK (r + s)`. Take `⟨x, m, t, k, l, ht, hl, hg⟩` from `Tset_spec hopen g₀`.
+
+Establish `e₀ : g₀ = unip x * (lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t)) * finGL E (r + s) l`. Rewrite using `[hg, infGL_comm]`. Simplify using `only [mul_assoc]`. Establish `hfm : f.1 (lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t)) ≠ 0`. Rewrite `hg₀` using `[e₀, hT.1 l hl, hI.1]`.
+
+Conclude with `hg₀`. Take `⟨n', ψ₁, ψ₂, h₁, h₂, hsum⟩` from `tensor_pair_finite_sum (hI.2 k t)`. Establish `hne : ∑ i, (ψ₁ i).1 m.1 * (ψ₂ i).1 m.2 ≠ 0` using `(hsum m) ▸ hfm`. Establish `hχ₁' : ∑ i, (ψ₂ i).1 m.2 • ψ₁ i ∈ tw t₁.space ((s : ℂ) / 2)` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h₁ i)`. Establish `hχ₁'0 : ∑ i, (ψ₂ i).1 m.2 • ψ₁ i ≠ 0` using `sum_left_ne hne`.
+
+Establish `hval₁ : ∀ x₁, (∑ i, (ψ₂ i).1 m.2 • ψ₁ i).1 x₁ = f.1 (lev (Ad E) r s (x₁, m.2) * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t))`. Introduce `x₁`. Establish `e` using `hsum (x₁, m.2)`. Rewrite using `[e]`. Simplify using `[Finset.sum_apply, mul_comm]`.
+
+Establish `hT₁ : SpectralAccumulation.TypeB (Kf N K r) (Wf N W r) (∑ i, (ψ₂ i).1 m.2 • ψ₁ i)`. Use `⟨fun u hu x₁ => ?_, fun x₁ => ?_⟩` and prove the remaining obligations. Rewrite using `[hval₁, hval₁]`. Establish `h1 : lev (Ad E) r s (x₁ * finGL E r u, m.2) = lev (Ad E) r s (x₁, m.2) * finGL E (r + s) (lev (Af E) r s (u, 1))`. Rewrite using `[← Slice1.lev_finGL, map_one, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+
+Establish `hc` using `infGL_comm (Unitary.toUnits k) (lev (Af E) r s (u, 1))`. Establish `e : lev (Ad E) r s (x₁ * finGL E r u, m.2) * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t) = lev (Ad E) r s (x₁, m.2) * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t) * finGL E (r + s) (t⁻¹ * lev (Af E) r s (u, 1) * t)`. Rewrite using `[h1, map_mul, map_mul, map_inv]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (finGL E (r + s) (lev (Af E) r s (u, 1))), ← hc]`.
+
+Use `group`. Rewrite using `[e, hT.1 _ (Kf_left hN ht hu)]`. Establish `hw` using `typeB_lt hT (lev (Ad E) r s (x₁, m.2) * finGL E (r + s) t)`. Establish `hW₁` using `Wf_left (W := W) hN hw k`. Use `hW₁ using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k₁`. Rewrite using `[hval₁]`. Rewrite using `[infGL_comm, ← mul_assoc, Slice1.lev_infGL_right]`. Simplify using `only [map_mul, Slice1.toUnits_levK]`. Take `⟨χ₁, hχ₁, hχ₁0, hχ₁T⟩` from `untw hχ₁' hχ₁'0 hT₁ (Kf_le_det r)`.
+
+Establish `hχ₂' : ∑ i, (ψ₁ i).1 m.1 • ψ₂ i ∈ tw t₂.space (-(r : ℂ) / 2)` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h₂ i)`. Establish `hχ₂'0 : ∑ i, (ψ₁ i).1 m.1 • ψ₂ i ≠ 0` using `sum_right_ne hne`. Establish `hval₂ : ∀ x₂, (∑ i, (ψ₁ i).1 m.1 • ψ₂ i).1 x₂ = f.1 (lev (Ad E) r s (m.1, x₂) * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t))`. Introduce `x₂`. Establish `e` using `hsum (m.1, x₂)`.
+
+Rewrite using `[e]`. Simplify using `[Finset.sum_apply]`. Establish `hT₂ : SpectralAccumulation.TypeB (Kf N K s) (Wf N W s) (∑ i, (ψ₁ i).1 m.1 • ψ₂ i)`. Use `⟨fun u hu x₂ => ?_, fun x₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[hval₂, hval₂]`.
+
+Establish `h1 : lev (Ad E) r s (m.1, x₂ * finGL E s u) = lev (Ad E) r s (m.1, x₂) * finGL E (r + s) (lev (Af E) r s (1, u))`. Rewrite using `[← Slice2.lev_finGL_one, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hc` using `infGL_comm (Unitary.toUnits k) (lev (Af E) r s (1, u))`. Establish `e : lev (Ad E) r s (m.1, x₂ * finGL E s u) * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t) = lev (Ad E) r s (m.1, x₂) * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) t) * finGL E (r + s) (t⁻¹ * lev (Af E) r s (1, u) * t)`. Rewrite using `[h1, map_mul, map_mul, map_inv]`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (finGL E (r + s) (lev (Af E) r s (1, u))), ← hc]`. Use `group`. Rewrite using `[e, hT.1 _ (Kf_right hN ht hu)]`. Establish `hw` using `typeB_lt hT (lev (Ad E) r s (m.1, x₂) * finGL E (r + s) t)`.
+
+Establish `hW₂` using `Wf_right (W := W) hN hw k`. Use `hW₂ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k₂`. Rewrite using `[hval₂]`. Establish `h1 : lev (Ad E) r s (m.1, x₂ * infGL E s (Unitary.toUnits k₂)) = lev (Ad E) r s (m.1, x₂) * infGL E (r + s) (lev (Cinf E) r s (1, Unitary.toUnits k₂))`.
+
+Rewrite using `[← Slice2.lev_infGL_one, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[h1]`. Simplify using `only [map_mul, Slice2.toUnits_levK]`. Rewrite using `[infGL_comm (Unitary.toUnits k) t]`. Simplify using `only [← mul_assoc]`.
+
+Rewrite using `[mul_assoc (lev (Ad E) r s (m.1, x₂)) (infGL E (r + s) (lev (Cinf E) r s (1, Unitary.toUnits k₂))), infGL_comm (lev (Cinf E) r s (1, Unitary.toUnits k₂)) t, ← mul_assoc]`. Take `⟨χ₂, hχ₂, hχ₂0, hχ₂T⟩` from `untw hχ₂' hχ₂'0 hT₂ (Kf_le_det s)`. Conclude with `⟨ih₁ (by omega) χ₁ hχ₁ hχ₁0 hχ₁T, ih₂ (by omega) χ₂ hχ₂ hχ₂0 hχ₂T⟩`.
+-/
 theorem main_ind {N : ℕ} (K : Subgroup (GL (Fin N) (Af E))) (hK : IsOpen (K : Set (GL (Fin N) (Af E))))
     (W : Submodule ℂ (Kinf E N → ℂ)) {n : ℕ} (t : SpectralAccumulation.Tr E n) : n ≤ N → ∀ f ∈ t.space, f ≠ 0 →
       SpectralAccumulation.TypeB (Kf N K n) (Wf N W n) f →
@@ -127,6 +165,11 @@ end PositivityTheory.Rg.BcB.SpectralAccumulation.Cz.KTypeSlices
 
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation.Cz
 
+/- English proof (translation)
+Introduce `E _ _ _ N W hW`. Use `⟨fun M => {KTypeSlices.Wf N W M}, fun M => ⟨Set.finite_singleton _, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `KTypeSlices.fd_Wf hW M`. Introduce `K hK`.
+
+Use `⟨fun M => {KTypeSlices.Kf N K M}, fun M => ⟨Set.finite_singleton _, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `KTypeSlices.isOpen_Kf hK M`. Introduce `t f _ hf hf0 hT`. Conclude with `KTypeSlices.main_ind K hK W t le_rfl f hf hf0 ⟨fun u hu g => hT.1 u (KTypeSlices.Kf_top hu) g, fun g => KTypeSlices.lt_le_Wf (KTypeSlices.typeB_lt hT g)⟩`.
+-/
 theorem types_holds : Types := by
   intro E _ _ _ N W hW
   refine ⟨fun M => {KTypeSlices.Wf N W M}, fun M => ⟨Set.finite_singleton _, ?_⟩, ?_⟩

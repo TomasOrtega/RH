@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.AbelianFirstCohomologyOverField
 
+/- English proof (translation)
+Set `K` to `AlgebraicClosure k`. Establish `hφ` using `isGrpPullback_pullback A (spMap (algebraMap k K))`. Establish `hab'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hab hφ`. Establish `hsm' : SmoothOfRelativeDimension g ((Over.pullback (spMap (algebraMap k K))).obj A).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hφ.1 hsm`. Take `⟨hfin, hle⟩` from `hLe k A g hab hsm`.
+
+Take `⟨hfin', hle'⟩` from `hLe K _ g hab' hsm'`. Establish `hge` using `hGe K _ g hab' hsm' hfin'`. Use `hab.proper` as an intermediate fact. Take `⟨e, -⟩` from `hFlat k K _ _ A.hom _ _ hφ.1 inferInstance inferInstance`. Establish `hrank : Module.finrank k (HO1 A.hom) = g`.
+
+Establish `h1` using `e.finrank_eq`. Rewrite `h1` using `[Module.finrank_baseChange]`. Use linear arithmetic over natural numbers and integers. Use `⟨hfin, inferInstance, fun p ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Module.rankAtStalk_eq_finrank_of_free, hrank]`.
+
+Both sides reduce to the same expression.
+-/
 theorem vb_of_field (hFlat : FlatBCSt) (hLe : PositivityTheory.ObstructionTrivialLocus.H1StructureDimLe) (hGe : H1DimGeAbelianDim) (k : Type) [Field k]
     (A : Over (Sp k)) [GrpObj A] (g : ℕ) (hab : IsAbelianScheme A)
     (hsm : SmoothOfRelativeDimension g A.hom) : VB k (HO1 A.hom) g := by
@@ -35,6 +44,9 @@ theorem vb_of_field (hFlat : FlatBCSt) (hLe : PositivityTheory.ObstructionTrivia
   rw [Module.rankAtStalk_eq_finrank_of_free, hrank]
   rfl
 
+/- English proof (translation)
+Introduce `hFlat hLe hGe R _ A _ g hab hsm hR`. Use `letI := hR.toField`. Conclude with `vb_of_field hFlat hLe hGe R A g hab hsm`.
+-/
 theorem first_cohomology_rank_over_field : FlatBCSt → PositivityTheory.ObstructionTrivialLocus.H1StructureDimLe → H1DimGeAbelianDim → H1StructureFieldDim := by
   intro hFlat hLe hGe R _ A _ g hab hsm hR
   letI := hR.toField

@@ -9,6 +9,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.CompanionTheory.GE.Step
 
+/- English proof (translation)
+Establish `: Mono (incl (anti hS) 0)`. Unfold `incl`. Use `infer_instance`. Establish `: Epi (grπ (anti hS) 0)`. Conclude with `coequalizer.π_epi`.
+
+Conclude with `{ exact := ShortComplex.exact_cokernel (incl (anti hS) 0) }`.
+-/
 theorem shortExact_lvl_zero {A : Type} [CommRing A] [IsNoetherianRing A] {I : Ideal A}
     {X : Scheme.{0}} [X.Over (Spec (.of A))] {P : X.Modules} {S : ℕ → Subobject P}
     (hS : ClosedSys I P S) :
@@ -20,6 +25,11 @@ theorem shortExact_lvl_zero {A : Type} [CommRing A] [IsNoetherianRing A] {I : Id
     exact coequalizer.π_epi
   exact { exact := ShortComplex.exact_cokernel (incl (anti hS) 0) }
 
+/- English proof (translation)
+Introduce `A _ _ I X _ H hH P S hS n hv y`. Establish `hsurj : Function.Surjective ((GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (grπ (anti hS) 0)).app ⊤)` using `GlobalTheory.cohOn.app_surjective (GlobalTheory.Twist.shortExact_map (GlobalTheory.Twist.isLB_lbZPow hH n) (shortExact_lvl_zero hS)) ⊤ hv`. Take `⟨c, hc⟩` from `hsurj y`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `htop : Ideal.map (toFunctions (X` using `X) (A := A) ⊤) (I ^ 0) = ⊤ := by`.
+
+Rewrite using `[pow_zero, Ideal.one_eq_top, Ideal.map_top]`. Simplify using `only [twPow, htop, Submodule.top_smul]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem lifts_zero : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}}
     [X.Over (Spec (.of A))] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X), H.IsLB → ∀ {P : X.Modules}
     (S : ℕ → Subobject P) (hS : ClosedSys I P S) (n : ℤ),

@@ -35,16 +35,27 @@ namespace GlobalTheory.PartFlat
 
 open GlobalTheory.BaseCmp GlobalTheory.OnCmp Formalism.IndefR.Fin Formalism.IndefR.Fin.LevelGroupLemmas
 
+/- English proof (translation)
+Establish `k : ∀ l ∈ Q, idemAt l * idem Q = idemAt l` using `fun l hl => GlobalTheory.PlaceModelSum.mul_sum_orth (fun a ha => (hQ.isIdemAt ha).1) (fun a ha b hb hab => hQ.mul_eq_zero ha hb hab) hl`. Use `conv_lhs => rw [show idem P = ∑ PP ∈ P, idemAt PP from rfl, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l hl => by rw [mul_comm, k l (h hl)]`.
+-/
 theorem idem_mul_of_subset {D : D7} {P Q : Finset (Pl D.host.E)} (hQ : SplitSet Q) (h : P ⊆ Q) : idem Q * idem P = idem P := by
   have k : ∀ l ∈ Q, idemAt l * idem Q = idemAt l := fun l hl =>
     GlobalTheory.PlaceModelSum.mul_sum_orth (fun a ha => (hQ.isIdemAt ha).1) (fun a ha b hb hab => hQ.mul_eq_zero ha hb hab) hl
   conv_lhs => rw [show idem P = ∑ PP ∈ P, idemAt PP from rfl, Finset.mul_sum]
   exact Finset.sum_congr rfl fun l hl => by rw [mul_comm, k l (h hl)]
 
+/- English proof (translation)
+Introduce `k l`. Rewrite using `[← hu k l, ← mul_assoc, hab]`.
+-/
 theorem isHalf_mono {D : D7} {m n : ℕ} {a b : AE D} (hab : b * a = a) {u : Mx D m n} (hu : IsHalf a u) : IsHalf b u := by
   intro k l
   rw [← hu k l, ← mul_assoc, hab]
 
+/- English proof (translation)
+Introduce `k l`. Establish `hc : cA D b * cA D a = cA D a` using `by rw [← map_mul, hab]`. Establish `h1 : b * cA D a = 0` using `by rw [← hc, ← mul_assoc, hb, zero_mul]`. Establish `h2 : cA D b * a = 0` using `by rw [← hab, ← mul_assoc, mul_comm (cA D b), hb, zero_mul]`. Establish `e : (b + cA D b) * (a + cA D a) = a + cA D a` using `by linear_combination hab + hc + h1 + h2`.
+
+Rewrite using `[← hg k l, ← mul_assoc, e]`.
+-/
 theorem suppAt_mono {D : D7} {V : HSp D} {a b : AE D} (hab : b * a = a) (ha : a * cA D a = 0) (hb : b * cA D b = 0)
     {g : GA D V} (hg : SuppAt a V g) : SuppAt b V g := by
   intro k l
@@ -56,6 +67,23 @@ theorem suppAt_mono {D : D7} {V : HSp D} {a b : AE D} (hab : b * a = a) (ha : a 
 
 open GlobalTheory.ChiUnit GlobalTheory.DilChi in
 
+/- English proof (translation)
+Establish `hK` using `kerDat_tuple (i := i) hC.lev hC.thP t`. Establish `hchr` using `hK.chr`. Establish `hfin` using `hK.fin`. Establish `hpl` using `fun P (hP : P ∈ Q) => hK.pl P (hQ hP)`. Generalize the expression as in `R.xi t = χ at hchr ⊢`.
+
+Generalize the expression as in `R.xiH t = ξ at hchr hfin`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing.UnitOff N _`. Establish `hlev` using `hC.lev`. Establish `hs0 : star ((ϖ : 𝓞 D.host.E) : D.host.E) ≠ 0` using `by simpa using hϖ0`. Use `set u : D.host.Eˣ := Units.mk0 _ hs0 with hu`.
+
+Establish `hxl : (x : AE D) = Formalism.L2.JoinChr.locE D (cA D eQ) (((u ^ (Vc D i).rank : D.host.Eˣ)) : D.host.E)`. Rewrite using `[detIdele_eq_locE D (Vc D i) Q eQ heQ _ z hz x hx, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression. Establish `hval : ∀ (c : (AE D)ˣ →* Circle) (ψ : Formalism.L2.Host.HChar D.host.E), ChrEq c ψ → ((c x : Circle) : ℂ) = ∏ P ∈ Q, (((ψ.locK (conjPl P) u : ℂˣ) : ℂ)) ^ (Vc D i).rank`. Introduce `c ψ hc`.
+
+Rewrite using `[GlobalTheory.T.heckeCharacter_conjHalfIdele_eq_prod_local D Q eQ heQ (u ^ (Vc D i).rank) x hxl c ψ hc]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, Units.val_pow_eq_pow_val]`. Establish `e : ((((Lift.chrTh (Lift.tup R.mu0 χ) R.eta ((i : ℕ) + 1)).2 x : Circle) : ℂ)) = (((R.mu0 ((i : ℕ) + 1) x : Circle) : ℂ)) * (((χ x : Circle) : ℂ)) * (((R.eta x : Circle) : ℂ))⁻¹`. Simplify using `only [Lift.chrTh, Lift.tup, MonoidHom.mul_apply, MonoidHom.inv_apply, Circle.coe_mul, Circle.coe_inv]`.
+
+Rewrite using `[e, hval _ _ (hlev.mu0 i), hval _ _ hchr, hval _ _ hlev.eta]`. Establish `hb : ∀ P ∈ Q, Formalism.L2.DIV.starO ϖ ∈ (conjPl P).asIdeal ∧ Formalism.L2.DIV.starO ϖ ∉ (conjPl P).asIdeal ^ 2` using `fun P hP => ⟨(conjO_mem_conjPl P ϖ).2 (hϖ P hP).1, conjO_not_mem_sq (hϖ P hP).2⟩`. Establish `hNc : ∀ P ∈ Q, (N : 𝓞 D.host.E) ∈ (conjPl P).asIdeal` using `fun P hP => (natCast_mem_conjPl P N).2 (hNQ P hP)`. Establish `hunr : ∀ P ∈ Q, (R.C.mu0 i).UnrAt (conjPl P)` using `fun P hP => by`. Take `⟨⟨q, hq, hqc, -, hqg⟩, -⟩` from `hpl P hP`.
+
+Establish `hqm : (q : 𝓞 D.host.E) ∈ (conjPl P).asIdeal`. Rewrite using `[natCast_mem_conjPl, ← hqc]; exact natCard_mem P (by rw [hqc]; exact hq.ne_zero)`. Conclude with `(R.C.isMu0 i).unr (conjPl P) fun k hk => not_mem_of_prime_ne (conjPl P) (D.host.g_prime k) hq (hqg k) hqm hk`. Establish `hcoe : (u : D.host.E) = ((Formalism.L2.DIV.starO ϖ : 𝓞 D.host.E) : D.host.E)` using `by rw [Formalism.L2.DIV.starO_coe]; rfl`. Take `⟨nμ, -, hnμ⟩` from `(R.C.isMu0 i).inf`.
+
+Take `⟨n, hn, hnx⟩` from `hfin`. Use `unitOff_inv (unitOff_mul (unitOff_mul (unitOff_prod _ _ fun P hP => unitOff_pow ?_ _) (unitOff_prod _ _ fun P hP => unitOff_pow ?_ _)) (unitOff_inv (unitOff_prod _ _ fun P hP => unitOff_pow ?_ _)))` and prove the remaining obligations. Rewrite using `[locK_eq_val _ (hunr P hP) u _ hcoe (hb P hP).1 (hb P hP).2]`. Conclude with `GlobalTheory.ValUnit.unitOff_val _ _ _ _ nμ (conjPl P) _ hnμ (finite_ramified_places_hecke_character _ (R.C.isMu0 i).unr) (R.C.isMu0 i).tame (hunr P hP) (hNc P hP)`. Use `unitOff_of_pow_eq_one _ hn ?_` and prove the remaining obligations.
+
+Establish `h` using `LR ξ n hnx (conjPl P) u`. Rewrite using `[← Units.val_pow_eq_pow_val, h, Units.val_one]`. Rewrite using `[locK_eq_val _ (R.C.isEta.unr (conjPl P)) u _ hcoe (hb P hP).1 (hb P hP).2]`. Conclude with `GlobalTheory.ValUnit.unitOff_val _ _ _ _ _ (conjPl P) _ R.C.isEta.inf (Set.Finite.subset Set.finite_empty fun w hw => hw (R.C.isEta.unr w)) (fun w y hy _ => R.C.isEta.unr w y hy) (R.C.isEta.unr (conjPl P)) (hNc P hP)`.
+-/
 theorem chi_unitOff_part {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} (hC : GlobalTheory.Hk3.Core R F)
     (i : Fin D.R.m) (t : T0) (Q : Finset (Pl D.host.E)) (hQ : Q ⊆ R.Q t) (N : ℕ)
@@ -111,12 +139,28 @@ theorem chi_unitOff_part {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Typ
       (Set.Finite.subset Set.finite_empty fun w hw => hw (R.C.isEta.unr w)) (fun w y hy _ => R.C.isEta.unr w y hy)
       (R.C.isEta.unr (conjPl P)) (hNc P hP)
 
+/- English proof (translation)
+Take `⟨-, e, he, -⟩` from `(kerDat_tuple (i := i) hC.lev hC.thP t).vec`. Conclude with `SplitSet.mono ⟨e, he⟩ (by convert Finset.subset_union_right)`.
+-/
 theorem splitSet_tuple {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} (hC : GlobalTheory.Hk3.Core R F)
     (i : Fin D.R.m) (t : T0) : SplitSet (R.Q t) := by
   obtain ⟨-, e, he, -⟩ := (kerDat_tuple (i := i) hC.lev hC.thP t).vec
   exact SplitSet.mono ⟨e, he⟩ (by convert Finset.subset_union_right)
 
+/- English proof (translation)
+Establish `hK` using `kerDat_tuple (i := i) hC.lev hC.thP t`. Establish `hsp` using `splitSet_tuple hC i t`. Establish `hsub : idem (R.Q t) * eQ = eQ` using `by rw [← idem_eq heQ]; exact idem_mul_of_subset hsp hQ`. Establish `hsubc : cA D (idem (R.Q t)) * cA D eQ = cA D eQ` using `by rw [← map_mul, hsub]`. Take `⟨hSV, hSW, hθ, hfix0⟩` from `GlobalTheory.T.tameKernel_typePlaceThetaVector_latticeFixed D G Pl0 T0 A Ks R F hC hQG i hV _ _ _ _ _ _ hK ⟨t, subset_rfl⟩ eg (idem (R.Q t)) fg heg hsp.isIdemSum hfg`.
+
+Establish `hfix : ∀ u ∈ latAll (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i), (IsHalf eQ u ∨ IsHalf (cA D eQ) u) → heisO R.ψ (Vc D i) (Wc D i) u fg = fg` using `fun u hu h => hfix0 u hu (h.imp (isHalf_mono hsub) (isHalf_mono hsubc))`. Establish `hW` using `hK.weil`. Take `⟨hsupp, ⟨x, hx⟩, hpull, hsb, hlat⟩` from `GlobalTheory.T.scalarDilationElement_support_det_pullback D (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) Q eQ heQ N hN hNQ ϖ hϖ0 hϖ z hz`. Take `⟨Rr, hR1, hR2, hR3, hRc⟩` from `GlobalTheory.T.exists_conjHalf_cosetReps_scalarDilation D (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) hSV hSW Q eQ heQ N hN hNQ ϖ hϖ0 hϖ z hz`. Establish `hchi` using `chi_unitOff_part hC i t Q hQ N hNQ eQ heQ ϖ hϖ0 hϖ z hz x hx`.
+
+Use `⟨hsupp, (((Lift.chrTh (Lift.tup R.mu0 (R.xi t)) R.eta ((i : ℕ) + 1)).2 x : Circle) : ℂ)⁻¹ * ((Real.sqrt (Rr.card : ℝ) : ℝ) : ℂ), unitOff_mul' hchi hRc, fun Tm hTm Ψ hΨ => ?_⟩` and prove the remaining obligations. Establish `hom` using `GlobalTheory.T.weilOperator_idempotentSum_vacuum_normalised_sum D R.ψ (Vc D i) (Wc D i) _ _ _ hW (R.ΛV i) (R.ΛW i) hSV hSW Q eQ heQ z x hsupp hx Rr hR1 hR2 hR3 fg hθ hfix`. Establish `hsum` using `GlobalTheory.T.sum_heisenbergTranslates_baseVector_eq_card_smul D R.ψ hW.std (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) hSV hSW Q eQ heQ z hlat Rr hR1 hR2 hR3 fg Tm hTm`. Establish `hvac : R.ωP i t (z, 1) fg = (((((Lift.chrTh (Lift.tup R.mu0 (R.xi t)) R.eta ((i : ℕ) + 1)).2 x : Circle) : ℂ))⁻¹ * ((Real.sqrt (Rr.card : ℝ) : ℝ) : ℂ)) • Tm (actPull (z, (1 : GA D (Wc D i))) (halfInd eQ (latAll (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i))))`. Rewrite using `[hom, hsum, smul_smul]`.
+
+Use `congr 1`. Establish `hs : ((Rr.card : ℕ) : ℂ) = ((Real.sqrt (Rr.card : ℝ) : ℝ) : ℂ) * ((Real.sqrt (Rr.card : ℝ) : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg _), Complex.ofReal_natCast]`. Rewrite using `[hs]`. Simplify using `only [splitFacO, map_one, mul_one, Circle.coe_mul, Circle.coe_inv]`.
+
+Distinguish the cases in `h0 : ((Real.sqrt (Rr.card : ℝ) : ℝ) : ℂ) = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish `h` using `GlobalTheory.T.weilRep_apply_eq_smul_of_halfIndicator_base D R.ψ (Vc D i) (Wc D i) _ _ _ hW (R.ΛV i) (R.ΛW i) hSV hSW Q eQ heQ fg hθ hfix Tm hTm (z, 1) _ hsb hvac Ψ hΨ`.
+
+Rewrite using `[h, hpull Ψ hΨ.1]`.
+-/
 theorem dil_part {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} (hC : GlobalTheory.Hk3.Core R F)
     (hQG : QGuard R) (i : Fin D.R.m) (t : T0) (hV : VStd D i) (Q : Finset (Pl D.host.E)) (hQ : Q ⊆ R.Q t) (N : ℕ) (hN : N ≠ 0)
@@ -163,6 +207,13 @@ theorem dil_part {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : 
     Ψ hΨ
   rw [h, hpull Ψ hΨ.1]
 
+/- English proof (translation)
+Establish `hK` using `kerDat_tuple (i := i) hC.lev hC.thP t`. Take `⟨Y, a, Gc, hU, hY, hΦ, hS⟩` from `GlobalTheory.T.lift_datum_conjugate_half_finite_fourier_sum D G Pl0 T0 A Ks R F hC hG i hV (R.xiR t) Q ⟨t, hQ⟩ (fun PP hP => kerDat_xiR_ne D G Pl0 T0 A Ks R F hC i _ _ _ _ _ _ hK PP (hQ hP)) N hN hNQ eQ hq ϖ hϖ0 hϖ`. Use `⟨Gc, hU, GlobalTheory.T.dilatedFlatDatum_isSBHalf_tameKernel D G Pl0 T0 A Ks R F hC hG i hV (R.xiR t) Q ⟨t, hQ⟩ eQ hq ϖ hϖ0 hϖ Gc, fun Tm hTm φ hθ => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.DatumFourier.thetaAt_eq_sum (fun q : Y => q.1) (fun q : Y => a q.1) hθ (fun q => by rw [GlobalTheory.LatVac.cA_cA]; exact hY q.1 q.2) (fun s => by`. Use `(hΦ s).trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Conclude with `(Finset.sum_coe_sort Y fun y => a y * R.ψ (symplO (Vc D i) (Wc D i) s y)).symm)`. Establish `h2 : (fun x => Gc * flatDat R i Q (R.xiR t) eQ (dil i (ϖ : D.host.E) x)) = ∑ y ∈ Y, a y • fun s => halfInd eQ (lattice₂ R i) (s + y)`. Use function extensionality and compare the values at `s`. Rewrite using `[← hS s, Finset.sum_apply]`.
+
+Both sides reduce to the same expression. Establish `hvac : Tm (halfInd eQ (lattice₂ R i)) = fg` using `by simpa using hTm.vac`. Rewrite using `[h1, h2, map_sum, ← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hTm.trans _ (GlobalTheory.isSBHalf_halfInd eQ (lattice₂ R i)) _ (hY q.1 q.2), hvac]`.
+-/
 theorem lift_part {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} (hC : GlobalTheory.Hk3.Core R F)
     (hG : QGuard R) (i : Fin D.R.m) (t : T0) (hV : VStd D i) (Q : Finset (Pl D.host.E)) (hQ : Q ⊆ R.Q t) (N : ℕ) (hN : N ≠ 0)
@@ -190,6 +241,19 @@ theorem lift_part {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A :
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [map_smul, hTm.trans _ (GlobalTheory.isSBHalf_halfInd eQ (lattice₂ R i)) _ (hY q.1 q.2), hvac]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC hQG i t hV Sa hSa eg ea fg heg hea hfg`. Take `⟨ϖ, hϖ0, hϖ⟩` from `GlobalTheory.FlatLift.exists_unif D.host.E Sa`. Establish `hϖE : (ϖ : D.host.E) ≠ 0` using `by exact_mod_cast hϖ0`. Take `⟨z, -, hzm⟩` from `GlobalTheory.CentScal.exists_isCentAt_scalar D i Sa ea hea (ϖ : D.host.E) hϖE`. Establish `hN : GlobalTheory.TwistField.tupPrime R t ≠ 0`.
+
+Use `Finset.prod_ne_zero_iff.2 fun q hq => ?_` and prove the remaining obligations. Take `⟨PP, -, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `GlobalTheory.TupDil.card_ne_zero PP`. Establish `hNQ : ∀ PP ∈ Sa, ((GlobalTheory.TwistField.tupPrime R t : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Introduce `PP hPP`.
+
+Take `⟨c, hc⟩ : Nat.card (kP PP) ∣ GlobalTheory.TwistField.tupPrime R t` from `Finset.dvd_prod_of_mem (fun q : ℕ => q) (Finset.mem_image_of_mem (fun PP => Nat.card (kP PP)) (hSa hPP))`. Rewrite using `[hc, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (GlobalTheory.TupDil.card_mem PP)`. Take `⟨hsupp, κ, hκ, hact⟩` from `dil_part hC hQG i t hV Sa hSa _ hN hNQ eg ea fg heg hea hfg ϖ hϖE hϖ z hzm`. Take `⟨Gc, hG, hSB, hvP⟩` from `lift_part hC hQG i t hV Sa hSa _ hN hNQ ea fg hea ϖ hϖ0 hϖ`.
+
+Establish `hsp` using `splitSet_tuple hC i t`. Establish `hsub : idem (R.Q t) * ea = ea` using `by rw [← idem_eq hea]; exact idem_mul_of_subset hsp hSa`. Establish `hsi` using `GlobalTheory.SplitHecke.Stab.suppAt_inv hsupp`. Use `⟨z⁻¹, (κ * Gc)⁻¹, hsi, suppAt_mono hsub hea.2 hsp.isIdemSum.2 hsi, GlobalTheory.FlatLift.unitOff_inv_mul hκ hG, fun h g hh hg => ?_⟩` and prove the remaining obligations. Take `⟨Tm, hTm⟩` from `hh.1`.
+
+Establish `hfT` using `hh.2 Tm hTm`. Establish `hne : κ * Gc ≠ 0` using `mul_ne_zero hκ.1 hG.1`. Establish `hcomp : ∀ x : WO (Vc D i) (Wc D i), dil i (ϖ : D.host.E) (dil i (ϖ : D.host.E)⁻¹ x) = x`. Introduce `x`. Use extensionality with `a b`.
+
+Simplify using `only [dil, Matrix.map_apply, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hϖE, map_one, one_mul]`. Rewrite using `[inv_inv, hvP Tm hTm g hg, hact Tm hTm _ hSB]`. Simplify using `only [hcomp]`. Establish `hsm : (fun x : WO (Vc D i) (Wc D i) => Gc * flatDat R i Sa (R.xiR t) ea x) = Gc • flatDat R i Sa (R.xiR t) ea` using `rfl`. Rewrite using `[hsm, map_smul, ← hfT, smul_smul, smul_smul, mul_assoc (κ * Gc)⁻¹, inv_mul_cancel₀ hne, one_smul]`.
+-/
 theorem flat_eq_unit_smul_om_part : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m) (t : T0), VStd D i → ∀ (Sa : Finset (Pl D.host.E)), Sa ⊆ R.Q t → ∀ (eg ea : AE D) (fg : WO (Vc D i) (Wc D i) → ℂ), IsIdemSum eg R.Pg → IsIdemSum ea Sa → GlobalTheory.BaseCmp.IsTypeVec R i eg fg → ∃ (z : GA D (Vc D i)) (c : ℂ), SuppAt ea (Vc D i) z ∧ SuppAt (idem (R.Q t)) (Vc D i) z ∧ UnitOff (GlobalTheory.TwistField.tupPrime R t) c ∧ ∀ h g, ThAt R i ea fg (GlobalTheory.BaseCmp.flatDat R i Sa (R.xiR t) ea) h → ThAt R i (cA D ea) fg (adjDat R i Sa (R.xiR t) (cA D ea)) g → h = c • R.ωP i t (z⁻¹, 1) g := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC hQG i t hV Sa hSa eg ea fg heg hea hfg
   obtain ⟨ϖ, hϖ0, hϖ⟩ := GlobalTheory.FlatLift.exists_unif D.host.E Sa

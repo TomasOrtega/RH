@@ -19,6 +19,11 @@ def Piece : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {U E : Spc} (u : U �
 def Filt : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {U E : Spc} (u : U ⟶ E) (n : ℤ),
   (∀ p : ℕ, RelK R F n (piece R u p)) → RelZS R F n u
 
+/- English proof (translation)
+Introduce `R _ F U E u n hlow h0`. Use `hF R F u n (fun p => ?_)` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos p with rfl | hp` into its components or cases. Use `hP R F u 0 n h0` as an intermediate fact. Simplify using `using this`.
+
+Establish `hk : n - (p : ℤ) < n` using `by omega`. Use `hP R F u p (n - p) (hlow p (n - p) hk)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem etale_relK_single_degree_pieces_of_piece_and_filtration (hP : Piece) (hF : Filt) : LateralTheory.E.DescIntPf.EtaleRelativeIsoTruncationFromLevels := by
   intro R _ F U E u n hlow h0
   refine hF R F u n (fun p => ?_)

@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Substitute `hi hi' hx₁` using the available equality. Establish `: a = b` using `Thick.hom_ext h`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ev_triv_congr {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R} (f : Z1 (O (dp0 R) s))
     {D D' : Type} [CommRing D] [CommRing D'] (i j : Algebra R D) (i' j' : Algebra R D') (hi : i = j) (hi' : i' = j')
     (x : Sp D ⟶ X) (x₁ x₂ : Sp D' ⟶ X) (hx₁ : x₁ = x₂)
@@ -31,6 +34,9 @@ theorem ev_triv_congr {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R} 
 
 end GlobalTheory.PtExt
 
+/- English proof (translation)
+The claim follows from `ev_triv_congr f (((algebraMap R D).comp (RingHom.id R)).toAlgebra) j (((algebraMap R D').comp (RingHom.id R)).toAlgebra) j' (Algebra.algebra_ext _ _ fun _ ↦ rfl) (Algebra.algebra_ext _ _ fun _ ↦ rfl) (y.left ≫ q.left) ((spOver φ ≫ y).left ≫ q.left) (spOver φ ≫ y ≫ q).left (Catego …`.
+-/
 theorem GlobalTheory.PtExt.ev_functor_map_trivMap {R : Type} [CommRing R] {X Y : Over (Sp R)} (q : Y ⟶ X)
     (m : IsMor (dp0 R) (X.hom ≫ 𝟙 _) (dp0 R) (Y.hom ≫ 𝟙 _) (RingHom.id R) q.left)
     (f : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))) (D : Type) [CommRing D] [j : Algebra R D] (D' : Type) [CommRing D']
@@ -43,6 +49,9 @@ theorem GlobalTheory.PtExt.ev_functor_map_trivMap {R : Type} [CommRing R] {X Y :
     (m.obj (trivAt (spOver φ ≫ y))).w (Pt.w (spOver φ ≫ y ≫ q))
     (m.functor.map (trivMap φ y)) (trivMap φ (y ≫ q)) fun _ ↦ rfl
 
+/- English proof (translation)
+Introduce `R _ X Y q m f`. Use function extensionality and compare the values at `D _ _ D' _ _ φ y`. Conclude with `ev_functor_map_trivMap q m f D D' φ y`.
+-/
 theorem GlobalTheory.PtExt.fv_pullbackOneCocycle_eq_pull : ∀ (R : Type) [CommRing R] (X Y : Over (Sp R)) (q : Y ⟶ X) (m : IsMor (dp0 R) (X.hom ≫ 𝟙 _) (dp0 R) (Y.hom ≫ 𝟙 _) (RingHom.id R) q.left) (f : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _))), fv (m.coef.pullbackOneCocycle f) = (fv f).pull q := by
   intro R _ X Y q m f
   funext D _ _ D' _ _ φ y

@@ -27,15 +27,24 @@ section Tr
 
 variable {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {κ : GA D V}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.PointAtPlaceHom.comm_of_mem V (GlobalTheory.PointAtPlaceHom.atTau_mem V τ g) hκ`.
+-/
 theorem comm_atTau (hκ : κ ∈ GfC V) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     atTau θ V τ g * κ = κ * atTau θ V τ g :=
   GlobalTheory.PointAtPlaceHom.comm_of_mem V (GlobalTheory.PointAtPlaceHom.atTau_mem V τ g) hκ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [Rder, rTr, oneP, mul_assoc, comm_atTau hκ]`.
+-/
 theorem Rder_rTr (hκ : κ ∈ GfC V) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : GA D V → ℂ) :
     Rder θ V τ X (rTr V κ φ) = rTr V κ (Rder θ V τ X φ) := by
   funext g
   simp only [Rder, rTr, oneP, mul_assoc, comm_atTau hκ]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => rw [List.foldr_cons, List.foldr_cons, ih, hF]`.
+-/
 theorem foldr_rTr {α : Type} (F : α → (GA D V → ℂ) → (GA D V → ℂ))
     (hF : ∀ a φ, F a (rTr V κ φ) = rTr V κ (F a φ)) (l : List α) (φ : GA D V → ℂ) :
     l.foldr F (rTr V κ φ) = rTr V κ (l.foldr F φ) := by
@@ -43,6 +52,13 @@ theorem foldr_rTr {α : Type} (F : α → (GA D V → ℂ) → (GA D V → ℂ))
   | nil => rfl
   | cons a l ih => rw [List.foldr_cons, List.foldr_cons, ih, hF]
 
+/- English proof (translation)
+Establish `h : ∀ (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)), (l.map (RderC θ V τ)).foldr (fun f acc => f acc) (rTr V κ φ) = rTr V κ ((l.map (RderC θ V τ)).foldr (fun f acc => f acc) φ)`. Introduce `l`. Rewrite using `[List.foldr_map, List.foldr_map]`. Use `foldr_rTr (fun Z acc => RderC θ V τ Z acc) (fun Z ψ => ?_) l φ` and prove the remaining obligations. Simplify using `only [RderC, Rder_rTr hκ]`.
+
+Both sides reduce to the same expression. Use function extensionality and compare the values at `g`. Simplify using `only [gelf, rTr, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Use `congrFun (h (List.ofFn fun a : Fin (k + 1) => Matrix.single (idx a) (idx (a + 1)) 1)) g` as an intermediate fact.
+
+Rewrite `this` using `[List.map_ofFn]`. Conclude with `this`.
+-/
 theorem gelf_rTr (hκ : κ ∈ GfC V) (τ : D.what₂.Tau) (k : ℕ) (φ : GA D V → ℂ) :
     gelf θ V τ k (rTr V κ φ) = rTr V κ (gelf θ V τ k φ) := by
   have h : ∀ (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)),
@@ -60,6 +76,17 @@ theorem gelf_rTr (hκ : κ ∈ GfC V) (τ : D.what₂.Tau) (k : ℕ) (φ : GA D 
   rw [List.map_ofFn] at this
   exact this
 
+/- English proof (translation)
+Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `⟨⟨fun γ hγ g => ?_, ?_, h.cont.comp (continuous_mul_const κ)⟩, fun k τs Xs hX g => ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [rTr, mul_assoc, h.left γ hγ]`. Take `⟨U, hU, e⟩` from `h.level`. Use `⟨U.comap (MulAut.conj κ⁻¹).toMonoidHom, hU.preimage ?_, fun k hk hf g => ?_⟩` and prove the remaining obligations.
+
+Use `show Continuous fun x => κ⁻¹ * x * κ⁻¹⁻¹ fun_prop`. Use `e (κ⁻¹ * k * κ⁻¹⁻¹) hk ((GfC V).mul_mem ((GfC V).mul_mem ((GfC V).inv_mem hκ) hf) ((GfC V).inv_mem ((GfC V).inv_mem hκ))) (g * κ) show φ (g * k * κ) = φ (g * κ)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use `group`.
+
+Establish `hc : ∀ t : Fin k → ℝ, (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod * κ = κ * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod` using `fun t => GlobalTheory.PointAtPlaceHom.comm_of_mem V (Subgroup.list_prod_mem _ fun x hx => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_mem V _ _) hκ`. Simplify `h.smooth k τs Xs hX (g * κ)` using `only [rTr, mul_assoc, hc]`. Take `⟨W, hW, m, s⟩` from `h.zfin`.
+
+Use `⟨W.map (LinearMap.funLeft ℂ ℂ (· * κ)), inferInstance, ⟨φ, m, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `τ k _ ⟨f, hf, rfl⟩`. Conclude with `⟨_, s τ k f hf, (gelf_rTr hκ τ k f).symm⟩`. Take `⟨N, hN⟩` from `h.growth`. Use `⟨N, fun l hl x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨C, hC⟩` from `hN l hl (x * κ)`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e` using `foldr_rTr (κ := κ) (fun (p : D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ) f => Rder θ V p.1 p.2 f) (fun p f => Rder_rTr hκ p.1 p.2 f) l φ`. Rewrite using `[e]`. Simplify `hC g hg` using `only [rTr, mul_assoc, GlobalTheory.PointAtPlaceHom.comm_of_mem V hg hκ]`.
+-/
 theorem isAutFunSm_rTr (hκ : κ ∈ GfC V) {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ) : IsAutFunSm θ V (rTr V κ φ) := by
   haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _
   refine ⟨⟨fun γ hγ g => ?_, ?_, h.cont.comp (continuous_mul_const κ)⟩, fun k τs Xs hX g => ?_, ?_, ?_⟩
@@ -93,6 +120,13 @@ theorem isAutFunSm_rTr (hκ : κ ∈ GfC V) {φ : GA D V → ℂ} (h : IsAutFunS
 
 variable {S : D.what₂.Tau → SPar} {M : DSModel V S}
 
+/- English proof (translation)
+Establish `h1 : heckeOn M A T = ∑ a ∈ A, postOn M (LinearMap.funLeft ℂ ℂ (· * a)) T`. Use extensionality with `v g`. Simplify using `[heckeOn, postOn_apply, heckeLin_apply, LinearMap.funLeft_apply]`. Establish `h2 : IsMultMap θ M ∅ χ (heckeOn M A T)`. Rewrite using `[← GlobalTheory.MultMem.mem_mult_iff, h1]`.
+
+Use `Submodule.sum_mem _ fun a ha => Submodule.subset_span ?_` and prove the remaining obligations. Use `⟨fun v => isAutFunSm_rTr (hA a ha) (h.aut v), fun v r C hC μ 𝓕 hμ h𝓕 g => ?_, fun _ _ hk => hk.elim, fun τ g hg v w hw => ?_, fun τ v x => h.cont τ v (x * a)⟩` and prove the remaining obligations. Use `h.cusp v r C hC μ 𝓕 hμ h𝓕 (g * a)` as an intermediate fact. Simplify using `only [← mul_assoc] at this`. Conclude with `this`.
+
+Use function extensionality and compare the values at `x show T _ (x * a) = T v (x * atTau θ V τ g * a)`. Rewrite using `[h.equiv τ g hg v w hw, mul_assoc, comm_atTau (hA a ha), ← mul_assoc]`. Both sides reduce to the same expression. Conclude with `⟨h2.aut, h2.cusp, hl, h2.equiv, h2.cont⟩`.
+-/
 theorem isMultMap_heckeOn {J J' : Set (GA D V)} {χ χ' : GA D V → ℂ} {T : MMap M} (h : IsMultMap θ M J χ T)
     {A : Finset (GA D V)} (hA : ∀ a ∈ A, a ∈ GfC V)
     (hl : ∀ v, ∀ k ∈ J', ∀ g, heckeLin V A (T v) (g * k) = χ' k * heckeLin V A (T v) g) :
@@ -128,11 +162,22 @@ def OffLevel (L : LevDat D.host.E ℂ V.rank) (N : ℕ) (P : Pl D.host.E) : Prop
 def LocRep (J : Subgroup (GA D V)) (P : Pl D.host.E) (x : GA D V) (A : Finset (GA D V)) : Prop :=
   (∃ e, IsIdemAt e P ∧ SuppAt e V x ∧ ∀ a ∈ A, SuppAt e V a) ∧ IsDC J x A
 
+/- English proof (translation)
+Introduce `_ h` and use `⟨h.1, h.2.1, Subgroup.mem_top _⟩`.
+-/
 theorem levG_le_flag : levG V β L ≤ levG V β (flagL L) := fun _ h => ⟨h.1, h.2.1, Subgroup.mem_top _⟩
 
+/- English proof (translation)
+The claim follows from `(((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e _ (Or.inl ⟨he, rfl⟩)).2.2.2.1 e' _ (Or.inl ⟨he', rfl⟩)).1`.
+-/
 theorem idem_unique (V : HSp D) {P : Pl D.host.E} {e e' : Formalism.L2.Theta.AE D} (he : IsIdemAt e P) (he' : IsIdemAt e' P) : e' = e :=
   (((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e _ (Or.inl ⟨he, rfl⟩)).2.2.2.1 e' _ (Or.inl ⟨he', rfl⟩)).1
 
+/- English proof (translation)
+Establish `hpi : IsPrimeIdem P e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Take `⟨hf, hc, hfin, -⟩` from `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e _ hpi`. Take `⟨⟨Lp, hLp⟩, -, hcomm⟩` from `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 _ hf hc`. Take `⟨hJ, -, -⟩` from `(GlobalTheory.T.level_hyperspecial_trivialCharacter_splits_off_places V β Λ N L hβ).2 P e _ hpi hP.2.1 hP.2.2`. Take `⟨hQ, -, hs⟩` from `(GlobalTheory.T.level_hyperspecial_trivialCharacter_splits_off_places V β Λ N (flagL L) hβ).2 P e _ hpi hP.2.1 hP.2.2`.
+
+Use `⟨Lp, hLp, fun g hg => hfin g ((hLp g).1 hg), fun κ hκ => ?_, fun g => ?_⟩` and prove the remaining obligations. Take `⟨k₁, h₁, k₂, -, s₁, s₂, rfl⟩` from `hs κ hκ`. Conclude with `⟨k₁, (hJ _ s₁).2 ((hQ _ s₁).1 h₁), k₂, (hLp _).2 s₁, rfl, fun l hl => (hcomm _ l k₂ (by rw [mul_sub, hf, mul_one, sub_self]) ((hLp l).1 hl) s₂).symm⟩`. Conclude with `⟨fun h => ⟨(hJ g h.2).2 h.1, (hLp g).2 h.2⟩, fun h => ⟨(hJ g ((hLp g).1 h.2)).1 h.1, (hLp g).1 h.2⟩⟩`.
+-/
 theorem loc_package (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {e : Formalism.L2.Theta.AE D}
     (he : IsIdemAt e P) : ∃ Lp : Subgroup (GA D V), (∀ g, g ∈ Lp ↔ SuppAt e V g) ∧ (∀ g ∈ Lp, g ∈ GfC V) ∧
       Splits (levG V β (flagL L)) (levG V β L) Lp ∧
@@ -148,6 +193,11 @@ theorem loc_package (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLev
       (hcomm _ l k₂ (by rw [mul_sub, hf, mul_one, sub_self]) ((hLp l).1 hl) s₂).symm⟩
   · exact ⟨fun h => ⟨(hJ g h.2).2 h.1, (hLp g).2 h.2⟩, fun h => ⟨(hJ g ((hLp g).1 h.2)).1 h.1, (hLp g).1 h.2⟩⟩
 
+/- English proof (translation)
+Take `⟨Lp, hLp, -, hs, hK⟩` from `loc_package hβ hP he`. Establish `key : ∀ y, SuppAt e V y → ∃ A, LocRep (levG V β L) P y A`. Introduce `y hy`. Take `⟨A, hA, h1, h2⟩` from `(GlobalTheory.T.involution_spherical_hecke_anti V P e he).2.1 y hy`. Conclude with `⟨A, ⟨e, he, hy, hA⟩, isDC_of_splits hs levG_le_flag ((hLp y).2 hy) (fun a ha => (hLp a).2 (hA a ha)) hK (fun γ hγ => (h1 γ hγ).2) h2⟩`.
+
+Conclude with `⟨key x hx, key _ ((hLp _).1 (Lp.inv_mem ((hLp x).2 hx)))⟩`.
+-/
 theorem exists_locRep (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {e : Formalism.L2.Theta.AE D}
     (he : IsIdemAt e P) {x : GA D V} (hx : SuppAt e V x) :
     (∃ A, LocRep (levG V β L) P x A) ∧ ∃ A, LocRep (levG V β L) P x⁻¹ A := by
@@ -159,12 +209,18 @@ theorem exists_locRep (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffL
       (fun γ hγ => (h1 γ hγ).2) h2⟩
   exact ⟨key x hx, key _ ((hLp _).1 (Lp.inv_mem ((hLp x).2 hx)))⟩
 
+/- English proof (translation)
+Take `⟨⟨e, he, -, hA⟩, -⟩` from `h`. Take `⟨Lp, hLp, hf, -⟩` from `loc_package hβ hP he`. Conclude with `fun a ha => hf a ((hLp a).2 (hA a ha))`.
+-/
 theorem LocRep.fin (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {x : GA D V} {A : Finset (GA D V)}
     (h : LocRep (levG V β L) P x A) : ∀ a ∈ A, a ∈ GfC V := by
   obtain ⟨⟨e, he, -, hA⟩, -⟩ := h
   obtain ⟨Lp, hLp, hf, -⟩ := loc_package hβ hP he
   exact fun a ha => hf a ((hLp a).2 (hA a ha))
 
+/- English proof (translation)
+Take `⟨⟨e, he, -, hA⟩, hd⟩` from `h`. Take `⟨Lp, hLp, -, hs, -⟩` from `loc_package hβ hP he`. Conclude with `dcOp_translate hs hd (fun a ha => (hLp a).2 (hA a ha)) hF hκ g`.
+-/
 theorem LocRep.translate (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {x : GA D V}
     {A : Finset (GA D V)} (h : LocRep (levG V β L) P x A) {F : GA D V → ℂ} (hF : RInv (levG V β L) F) {κ : GA D V}
     (hκ : κ ∈ levG V β (flagL L)) (g : GA D V) : heckeLin V A F (g * κ) = heckeLin V A (fun y => F (y * κ)) g := by
@@ -172,6 +228,11 @@ theorem LocRep.translate (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : O
   obtain ⟨Lp, hLp, -, hs, -⟩ := loc_package hβ hP he
   exact dcOp_translate hs hd (fun a ha => (hLp a).2 (hA a ha)) hF hκ g
 
+/- English proof (translation)
+Take `⟨Lp, hLp, -, hs, hK⟩` from `loc_package hβ hP he`. Take `⟨θ, t1, t2, t3, t4, t5⟩` from `(GlobalTheory.T.involution_spherical_hecke_anti V P e he).1`. Use `GlobalTheory.DoubleCosetComm.dcOp_comm_and_card (levG V β L) Lp 1 x y A B A' F (hs.self levG_le_flag) (fun _ _ => rfl) ⟨θ, fun g hg => (hLp _).2 (t1 g ((hLp g).1 hg)), fun a ha b hb => t2 a b ((hLp a).1 ha) ((hLp b).1 hb), fun a ha => t3 a ((hLp a).1 ha), fun k hk => ?_, fun g hg …` and prove the remaining obligations. Conclude with `((hK _).1 ⟨t4 k ((hK k).2 hk), t1 k ((hLp k).1 hk.2)⟩).1`. Take `⟨a, ha, b, hb, e⟩` from `t5 g ((hLp g).1 hg)`.
+
+Conclude with `⟨a, (hK a).1 ha, b, (hK b).1 hb, e⟩`.
+-/
 theorem comm_card (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {e : Formalism.L2.Theta.AE D}
     (he : IsIdemAt e P) {x y : GA D V} {A B A' : Finset (GA D V)} (hA : ∀ a ∈ A, SuppAt e V a) (hB : ∀ a ∈ B, SuppAt e V a)
     (hA' : ∀ a ∈ A', SuppAt e V a) (dA : IsDC (levG V β L) x A) (dB : IsDC (levG V β L) y B)
@@ -187,6 +248,9 @@ theorem comm_card (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel
   · obtain ⟨a, ha, b, hb, e⟩ := t5 g ((hLp g).1 hg)
     exact ⟨a, (hK a).1 ha, b, (hK b).1 hb, e⟩
 
+/- English proof (translation)
+Take `⟨⟨e, he, -, hA⟩, hd⟩` from `h`. Take `⟨⟨e', he', -, hA'⟩, hd'⟩` from `h'`. Take `rfl` from `idem_unique V he he'`. Conclude with `(comm_card hβ hP he hA hA hA' hd hd hd' (F := 0) fun _ _ _ => rfl).2`.
+-/
 theorem LocRep.card (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {x : GA D V} {A A' : Finset (GA D V)}
     (h : LocRep (levG V β L) P x A) (h' : LocRep (levG V β L) P x⁻¹ A') : A.card = A'.card := by
   obtain ⟨⟨e, he, -, hA⟩, hd⟩ := h
@@ -194,6 +258,13 @@ theorem LocRep.card (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLev
   obtain rfl := idem_unique V he he'
   exact (comm_card hβ hP he hA hA hA' hd hd hd' (F := 0) fun _ _ _ => rfl).2
 
+/- English proof (translation)
+Take `⟨⟨e, he, hx, hA⟩, hd⟩` from `h`. Take `⟨⟨e', he', -, hB⟩, hd'⟩` from `h'`. Take `⟨hf, hc, -, -, hor⟩` from `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e _ (Or.inl ⟨he, rfl⟩)`. Break down `hor P' e' _ (Or.inl ⟨he', rfl⟩) with h0 | ⟨h1, -⟩` into its components or cases. Conclude with `dcOp_comm_of_commute (fun a ha b hb => ((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 _ hf hc).2.2 _ a b h0 (hA a ha) (hB b hb)) F`.
+
+Take `⟨A', ⟨e'', he'', -, hA'⟩, dA'⟩` from `(exists_locRep hβ hP he hx).2`. Take `rfl` from `idem_unique V he he''`. Use `(comm_card hβ hP he hA (fun b hb => ?_) hA' hd hd' dA' hF).1` and prove the remaining obligations. Use `hB b hb` as an intermediate fact. Unfold `SuppAt at this ⊢`.
+
+Rewrite `this` using `[h1]`. Then use the resulting hypothesis.
+-/
 theorem LocRep.comm (hβ : IsBaseFrame V β Λ N) {P P' : Pl D.host.E} (hP : OffLevel L N P) {x y : GA D V}
     {A B : Finset (GA D V)} (h : LocRep (levG V β L) P x A) (h' : LocRep (levG V β L) P' y B) {F : GA D V → ℂ}
     (hF : RInv (levG V β L) F) : heckeLin V A (heckeLin V B F) = heckeLin V B (heckeLin V A F) := by
@@ -209,6 +280,9 @@ theorem LocRep.comm (hβ : IsBaseFrame V β Λ N) {P P' : Pl D.host.E} (hP : Off
     unfold SuppAt at this ⊢
     rwa [h1] at this
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.MovedIdem.exists_isIdemAt P hP.1`. Take `⟨ϖ, h1, h2⟩` from `SetLike.exists_of_lt (Ideal.pow_lt_self P.asIdeal P.ne_bot P.isPrime.ne_top 2 le_rfl)`. Take `⟨α, hα⟩` from `((GlobalTheory.T.involution_spherical_hecke_anti V P e he).2.2 ϖ h1 h2).1 k hk`. Take `⟨⟨A', hA'⟩, A, hA⟩` from `exists_locRep hβ hP he hα.2.1`. Conclude with `⟨α, A, A', ⟨e, ϖ, he, h1, h2, hα⟩, hA, hA'⟩`.
+-/
 theorem exists_hecke (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {k : ℕ} (hk : k ≤ V.rank) :
     ∃ α A A', IsHeckeAt V P k α ∧ LocRep (levG V β L) P α⁻¹ A ∧ LocRep (levG V β L) P α A' := by
   obtain ⟨e, he⟩ := GlobalTheory.MovedIdem.exists_isIdemAt P hP.1
@@ -225,10 +299,16 @@ variable {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin
   {L : LevDat D.host.E ℂ V.rank} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
   {S : D.what₂.Tau → SPar} {M : DSModel V S}
 
+/- English proof (translation)
+Introduce `k hk g` and use `by rw [((GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hT).lev v k hk g, hχ k hk, one_mul]`.
+-/
 theorem rInv_of_mem (hχ : ∀ k ∈ levG V β L, levChi V β L k = 1) {T : MMap M}
     (hT : T ∈ Mult θ M (levS V β L) (levChi V β L)) (v : M.Vec) : RInv (levG V β L) (T v) := fun k hk g => by
   rw [((GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hT).lev v k hk g, hχ k hk, one_mul]
 
+/- English proof (translation)
+Rewrite `hT`, the goal using `[GlobalTheory.MultMem.mem_mult_iff]`. Use `isMultMap_heckeOn hT (h.fin hβ hP) fun v k hk g => ?_` and prove the remaining obligations. Rewrite using `[h.translate hβ hP (hi v) (hJ' k hk)]`. Simplify using `only [heckeLin_apply, hT.lev v k hk, Finset.mul_sum]`.
+-/
 theorem LocRep.mult (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {x : GA D V}
     {A : Finset (GA D V)} (h : LocRep (levG V β L) P x A) {J' : Set (GA D V)} {χ' : GA D V → ℂ}
     (hJ' : ∀ k ∈ J', k ∈ levG V β (flagL L)) {T : MMap M} (hT : T ∈ Mult θ M J' χ')
@@ -238,6 +318,11 @@ theorem LocRep.mult (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLev
   rw [h.translate hβ hP (hi v) (hJ' k hk)]
   simp only [heckeLin_apply, hT.lev v k hk, Finset.mul_sum]
 
+/- English proof (translation)
+Simplify using `only [gaL, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`. Use `Finset.sum_congr rfl fun g _ => congrArg _ ?_` and prove the remaining obligations. Use `show actG0 V β L (eG g) (heckeLin V A F) = heckeLin V A (actG0 V β L (eG g) F)`. Unfold `actG0`. Use `split_ifs with hk`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[h.translate hβ hP hF (κ := hk.choose) ⟨hk.choose_spec.1, hk.choose_spec.2.1, Subgroup.mem_top _⟩]`. Simplify using `only [heckeLin_apply, Finset.mul_sum]`. Rewrite using `[map_zero]`.
+-/
 theorem LocRep.gaL_comm (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {x : GA D V}
     {A : Finset (GA D V)} (h : LocRep (levG V β L) P x A) {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r)
     (c : G → ℂ) {F : GA D V → ℂ} (hF : RInv (levG V β L) F) :
@@ -252,6 +337,9 @@ theorem LocRep.gaL_comm (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : Of
     simp only [heckeLin_apply, Finset.mul_sum]
   · rw [map_zero]
 
+/- English proof (translation)
+Rewrite `hT`, the goal using `[mem_goodPart]`. Use `⟨h.mult hβ hP hJ' hT.1 hi, fun v => ?_⟩` and prove the remaining obligations. Use `show gaL V β L eG c (heckeLin V A (T v)) = heckeLin V A (T v)`. Rewrite using `[h.gaL_comm hβ hP eG c (hi v), hT.2]`.
+-/
 theorem LocRep.good (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLevel L N P) {x : GA D V}
     {A : Finset (GA D V)} (h : LocRep (levG V β L) P x A) {G : Type} [Group G] [Fintype G] (eG : G ≃* G0 L.Pg L.r)
     (c : G → ℂ) {J' : Set (GA D V)} {χ' : GA D V → ℂ} (hJ' : ∀ k ∈ J', k ∈ levG V β (flagL L)) {T : MMap M}
@@ -264,6 +352,15 @@ theorem LocRep.good (hβ : IsBaseFrame V β Λ N) {P : Pl D.host.E} (hP : OffLev
 
 variable {μ : Measure (GA D V)} {𝓕 : Set (GA D V)} {HM : HMod (MMap M)} {U : Submodule ℂ (MMap M)} {c : ℂ}
 
+/- English proof (translation)
+Establish `hd : ∀ z : HM.H, ∃ a, IsMultIP M μ 𝓕 (HM.e z) (HM.e z) a`. Introduce `z`. Distinguish the cases in `hz : z = 0`. Use `⟨0, fun v v' => ?_⟩` and prove the remaining obligations. Substitute `hz` using the available equality.
+
+Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hn`. Use `h.2.2 z z` as an intermediate fact. Simplify using `only [ipM, dif_neg hn, mul_zero] at this`. Conclude with `hz (inner_self_eq_zero.1 this)`.
+
+Take `⟨a, ha⟩` from `hd x`. Take `⟨b, hb⟩` from `hd y`. Take `⟨s, hs⟩` from `hd (x + y)`. Take `⟨t, ht⟩` from `hd (x + Complex.I • y)`. Rewrite `hs`, `ht` using `[map_add]`.
+
+Rewrite `ht` using `[map_smul]`. Conclude with `⟨_, GlobalTheory.SchurPolar.exists_of_diag M μ 𝓕 _ _ ha hb hs ht⟩`.
+-/
 theorem exists_isMultIP (h : HM.Is U fun T T' => c * ipM M μ 𝓕 T T') (x y : HM.H) :
     ∃ a, IsMultIP M μ 𝓕 (HM.e x) (HM.e y) a := by
   have hd : ∀ z : HM.H, ∃ a, IsMultIP M μ 𝓕 (HM.e z) (HM.e z) a := by
@@ -284,6 +381,9 @@ theorem exists_isMultIP (h : HM.Is U fun T T' => c * ipM M μ 𝓕 T T') (x y : 
   rw [map_smul] at ht
   exact ⟨_, GlobalTheory.SchurPolar.exists_of_diag M μ 𝓕 _ _ ha hb hs ht⟩
 
+/- English proof (translation)
+Establish `key : ∀ P P' : ℂ → Prop, P = P' → (if h : ∃ a, P a then h.choose else 0) = if h : ∃ a, P' a then h.choose else 0`. Introduce and unpack `P _ rfl`. Both sides reduce to the same expression. Conclude with `key _ _ h`.
+-/
 theorem ipM_congr {T₁ T₂ T₃ T₄ : MMap M} (h : IsMultIP M μ 𝓕 T₁ T₂ = IsMultIP M μ 𝓕 T₃ T₄) :
     ipM M μ 𝓕 T₁ T₂ = ipM M μ 𝓕 T₃ T₄ := by
   classical
@@ -292,6 +392,15 @@ theorem ipM_congr {T₁ T₂ T₃ T₄ : MMap M} (h : IsMultIP M μ 𝓕 T₁ T�
     rintro P _ rfl; rfl
   exact key _ _ h
 
+/- English proof (translation)
+Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Use `haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma _ _`. Use `haveI := GlobalTheory.T.isMulRightInvariant_haar_adelicUnitaryGroup_hermitianSpace D V μ hμ`. Establish `hm : ∀ z, HM.e z ∈ Mult θ M (levS V β L) (levChi V β L)` using `fun z => hU (h.2.1 ▸ LinearMap.mem_range_self _ z)`.
+
+Establish `ha : ∀ z v, IsAutFun V (HM.e z v)` using `fun z v => (((GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 (hm z)).aut v).toIsAutFun`. Establish `hi : ∀ z v, IntegrableOn (fun g => star (HM.e z v g) * HM.e z v g) 𝓕 μ` using `fun z v => ((exists_isMultIP h z z).choose_spec v v).1`. Establish `hd : ∀ {x : GA D V} {A : Finset (GA D V)}, IsDC (levG V β L) x A → ∀ a ∈ A, ∃ k₁ ∈ levG V β L, ∃ k₂ ∈ levG V β L, a = k₁ * x * k₂` using `fun hA a ha => by`. Take `⟨k₁, k₂, e⟩` from `hA.1 a ha`. Conclude with `⟨k₁, k₁.2, k₂, k₂.2, e⟩`.
+
+Establish `key : ∀ v v', ∫ g in 𝓕, star (HM.e (t y) v g) * HM.e y' v' g ∂μ = ∫ g in 𝓕, star (HM.e y v g) * HM.e (t' y') v' g ∂μ`. Introduce `v v'`. Rewrite using `[ht, ht']`. Conclude with `GlobalTheory.doubleCosetSum_adjoint μ (GQ V) (levG V β L) 𝓕 x A A' (HM.e y v) (HM.e y' v') h𝓕 (hd hA) (hd hA') hc (ha y v).cont (ha y' v').cont (ha y v).left (ha y' v').left (rInv_of_mem hχ (hm y) v) (rInv_of_mem hχ (hm y') v') (hi y v) (hi y' v')`. Rewrite using `[h.2.2, h.2.2]`.
+
+Use `congrArg _ (ipM_congr (funext fun a => propext ⟨fun H v v' => ⟨?_, ?_⟩, fun H v v' => ⟨?_, ?_⟩⟩))` and prove the remaining obligations. Conclude with `((exists_isMultIP h y (t' y')).choose_spec v v').1`. Rewrite using `[← key, (H v v').2]`. Conclude with `((exists_isMultIP h (t y) y').choose_spec v v').1`. Rewrite using `[key, (H v v').2]`.
+-/
 theorem inner_hecke (hχ : ∀ k ∈ levG V β L, levChi V β L k = 1) (hμ : μ.IsHaarMeasure)
     (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) (h : HM.Is U fun T T' => c * ipM M μ 𝓕 T T')
     (hU : U ≤ Mult θ M (levS V β L) (levChi V β L)) {x : GA D V} {A A' : Finset (GA D V)} (hA : IsDC (levG V β L) x A)
@@ -331,6 +440,13 @@ end Model
 
 section Parts
 
+/- English proof (translation)
+Establish `hint : ∀ x : 𝓞 D.host.E, finPart D (incA D (x : D.host.E)) ∈ intAE D` using `fun x => AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, x, rfl⟩`. Establish `hei : finPart D e ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, he.1])`. Establish `hm : Formalism.L2.Theta.mt V 1 = 1` using `rfl`. Establish `hf : finMat D.sp.cm.sig V.gram (1 : GA D V) = 1` using `by show (finHom V 1).1 = 1`. Rewrite using `[map_one, Units.val_one]`.
+
+Establish `h1 : finPart D 1 ∈ intAE D` using `by simpa using hint 1`. Use `⟨one_mem _, fun i j => ?_, fun y hy => ?_, fun y hy => ⟨_, GlobalTheory.SplitHecke.HeckeComp.smul_mem_LamHat V (hint ϖ) hy, ?_⟩, 1, 1, h1, h1, by rw [mul_one, mul_one], by rw [hm, Matrix.det_one, pow_zero, mul_one, mul_one]⟩` and prove the remaining obligations. Rewrite using `[hm, sub_self, Matrix.zero_apply, mul_zero]`. Rewrite using `[hf, Matrix.one_mulVec]`. Conclude with `GlobalTheory.SplitHecke.HeckeComp.smul_mem_LamHat V hei hy`.
+
+Rewrite using `[hf, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem isHeckeElt_one (V : HSp D) {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e) (ϖ : 𝓞 D.host.E) :
     IsHeckeElt V e (ϖ : D.host.E) 0 1 := by
   have hint : ∀ x : 𝓞 D.host.E, finPart D (incA D (x : D.host.E)) ∈ intAE D := fun x =>

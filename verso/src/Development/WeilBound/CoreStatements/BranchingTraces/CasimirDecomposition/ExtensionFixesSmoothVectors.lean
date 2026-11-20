@@ -20,12 +20,24 @@ section Lin
 
 variable {m : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Rewrite using `[Jm, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem Jm_sq (ε : Fin m → Bool) : Jm ε * Jm ε = 1 := by
   rw [Jm, diagonal_mul_diagonal, ← diagonal_one]
   congr 1
   funext a
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `key : ∀ d e, ∑ c, (if ε c = true then (1:ℂ) else -1) * (starRingEnd ℂ (A d c) * A e c) = Jm ε e d`. Introduce `d e`. Rewrite using `[← hA, Jm, Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, conjTranspose_apply, Complex.star_def]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Unfold `formT`. Simplify using `only [sum_inner, inner_sum, inner_smul_left, inner_smul_right, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = formT ε y x := by`.
+
+Simplify using `only [key, Jm, diagonal_apply]`. Unfold `formT`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem formT_mat (ε : Fin m → Bool) (A : Matrix (Fin m) (Fin m) ℂ) (hA : A * Jm ε * Aᴴ = Jm ε) (y x : Fin m → H) :
     formT ε (fun c => ∑ d, A d c • y d) (fun c => ∑ d, A d c • x d) = formT ε y x := by
   have key : ∀ d e, ∑ c, (if ε c = true then (1:ℂ) else -1) * (starRingEnd ℂ (A d c) * A e c) = Jm ε e d := by
@@ -49,6 +61,17 @@ theorem formT_mat (ε : Fin m → Bool) (A : Matrix (Fin m) (Fin m) ℂ) (hA : A
         refine Finset.sum_congr rfl fun d _ => ?_
         simp
 
+/- English proof (translation)
+Establish `bound : ∀ (z : Fin m → H) (c : Fin m), ‖∑ d, A d c • z d‖ ≤ (∑ d, ‖A d c‖) * ∑ d, ‖z d‖`. Introduce `z c`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `[norm_smul]`.
+
+Use `_ ≤ ∑ d, ‖A d c‖ * ∑ d, ‖z d‖ := by`. Use `Finset.sum_le_sum fun d _ => mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun d => ‖z d‖) (fun i _ => norm_nonneg _) (Finset.mem_univ d)`. Use `_ = (∑ d, ‖A d c‖) * ∑ d, ‖z d‖ := by rw [Finset.sum_mul]`. Unfold `formT`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Apply the tactic sequence `have h1 : ‖(if ε c = true then (1:ℂ) else -1)‖ = 1 := by split_ifs <;> simp`. Rewrite using `[h1, one_mul]`.
+
+Conclude with `norm_inner_le_norm _ _`. Use `_ ≤ ∑ c, ((∑ d, ‖A d c‖) * ∑ d, ‖y d‖) * ((∑ d, ‖A d c‖) * ∑ d, ‖x d‖) := by`. Use `Finset.sum_le_sum fun c _ => mul_le_mul (bound y c) (bound x c) (norm_nonneg _) ?_` and prove the remaining obligations. Conclude with `mul_nonneg (Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.sum_nonneg fun _ _ => norm_nonneg _)`. Use `_ = (∑ c, (∑ d, ‖A d c‖) ^ 2) * ((∑ d, ‖x d‖) * ∑ d, ‖y d‖) := by`.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formT_le (ε : Fin m → Bool) (A : Matrix (Fin m) (Fin m) ℂ) (y x : Fin m → H) :
     ‖formT ε (fun c => ∑ d, A d c • y d) (fun c => ∑ d, A d c • x d)‖ ≤
       (∑ c, (∑ d, ‖A d c‖) ^ 2) * ((∑ d, ‖x d‖) * ∑ d, ‖y d‖) := by
@@ -77,12 +100,18 @@ theorem formT_le (ε : Fin m → Bool) (A : Matrix (Fin m) (Fin m) ℂ) (y x : F
         refine Finset.sum_congr rfl fun c _ => ?_
         ring
 
+/- English proof (translation)
+Simplify using `only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun d _ => by rw [mul_comm]`.
+-/
 theorem sum_comp (A B : Matrix (Fin m) (Fin m) ℂ) (x : Fin m → H) (c : Fin m) :
     ∑ d, B d c • ∑ e, A e d • x e = ∑ e, (A * B) e c • x e := by
   simp only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun d _ => by rw [mul_comm]
 
+/- English proof (translation)
+Simplify using `[Matrix.one_apply]`.
+-/
 theorem sum_one (x : Fin m → H) (c : Fin m) : ∑ e, (1 : Matrix (Fin m) (Fin m) ℂ) e c • x e = x c := by
   simp [Matrix.one_apply]
 
@@ -90,6 +119,13 @@ end Lin
 
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 
+/- English proof (translation)
+Take `⟨⟨hu, hP⟩, _⟩` from `hP`. Establish `hPi : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P ((Matrix.isUnit_iff_isUnit_det P).mp hu)`. Establish `hPi' : P⁻¹ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, hPi, conjTranspose_one]`. Establish `hP' : Pᴴ * Jm ε * P = Formalism.QuantumDeterminants.Hpk k r` using `hP`. Use `show (P⁻¹ * g * P)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (P⁻¹ * g * P) = Formalism.QuantumDeterminants.Hpk k r`.
+
+Rewrite using `[← hP']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Pᴴ * (gᴴ * Jm ε * g) * P := by`. Rewrite using `[hPi, hPi']`.
+
+Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = Pᴴ * Jm ε * P := by rw [hg]`.
+-/
 theorem cay_mem {P : Mx k r} (hP : IsCayleyU k r ε P) {g : Mx k r} (hg : gᴴ * Jm ε * g = Jm ε) : P⁻¹ * g * P ∈ GG k r := by
   obtain ⟨⟨hu, hP⟩, _⟩ := hP
   have hPi : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P ((Matrix.isUnit_iff_isUnit_det P).mp hu)
@@ -105,6 +141,11 @@ theorem cay_mem {P : Mx k r} (hP : IsCayleyU k r ε P) {g : Mx k r} (hg : gᴴ *
         simp only [Matrix.mul_one, Matrix.mul_assoc]
     _ = Pᴴ * Jm ε * P := by rw [hg]
 
+/- English proof (translation)
+Establish `hPu : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hP.1.1`. Establish `h1 : P⁻¹ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, Matrix.mul_nonsing_inv _ hPu, conjTranspose_one]`. Establish `hg' : gᴴ * PI.UpqRep.Hpk k r * g = PI.UpqRep.Hpk k r` using `hg`. Establish `hc : Pᴴ * Jm ε * P = PI.UpqRep.Hpk k r` using `hP.1.2`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹ᴴ * Pᴴ) * Jm ε * (P * P⁻¹) := by rw [hc, hg', ← hc]; simp only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_nonsing_inv _ hPu, Matrix.mul_one, Matrix.one_mul]`.
+-/
 theorem cay_mem' {P : Mx k r} (hP : IsCayleyU k r ε P) {g : Mx k r} (hg : g ∈ GG k r) :
     (P * g * P⁻¹)ᴴ * Jm ε * (P * g * P⁻¹) = Jm ε := by
   have hPu : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det _).1 hP.1.1
@@ -116,6 +157,13 @@ theorem cay_mem' {P : Mx k r} (hP : IsCayleyU k r ε P) {g : Mx k r} (hg : g ∈
     _ = (P⁻¹ᴴ * Pᴴ) * Jm ε * (P * P⁻¹) := by rw [hc, hg', ← hc]; simp only [Matrix.mul_assoc]
     _ = _ := by rw [h1, Matrix.mul_nonsing_inv _ hPu, Matrix.mul_one, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨⟨hu, hP'⟩, _⟩` from `hP`. Take `⟨⟨hv, hQ'⟩, _⟩` from `hQ`. Establish `hQi : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q ((Matrix.isUnit_iff_isUnit_det Q).mp hv)`. Establish `hQi' : Q⁻¹ᴴ * Qᴴ = 1` using `by rw [← conjTranspose_mul, hQi, conjTranspose_one]`. Establish `e1 : Pᴴ * Jm ε * P = Formalism.QuantumDeterminants.Hpk k r` using `hP'`.
+
+Establish `e2 : Qᴴ * Jm ε * Q = Formalism.QuantumDeterminants.Hpk k r` using `hQ'`. Use `show (Q⁻¹ * P)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (Q⁻¹ * P) = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e2]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = Formalism.QuantumDeterminants.Hpk k r := by`. Rewrite using `[hQi, hQi', Matrix.one_mul, Matrix.mul_one]`. Conclude with `e1`.
+-/
 theorem cay_two {P Q : Mx k r} (hP : IsCayleyU k r ε P) (hQ : IsCayleyU k r ε Q) : Q⁻¹ * P ∈ GG k r := by
   obtain ⟨⟨hu, hP'⟩, _⟩ := hP
   obtain ⟨⟨hv, hQ'⟩, _⟩ := hQ
@@ -132,6 +180,9 @@ theorem cay_two {P Q : Mx k r} (hP : IsCayleyU k r ε P) (hQ : IsCayleyU k r ε 
         rw [hQi, hQi', Matrix.one_mul, Matrix.mul_one]
         exact e1
 
+/- English proof (translation)
+Simplify using `only [CompanionTheory.Zuck.act, CompanionTheory.Zuck.mAct, CompanionTheory.Zuck.dOp, vr, if_true, ite_true, BranchingSupport.dualM, CompanionTheory.Zuck.URep.sig, dif_pos hg, LinearMap.comp_apply, LinearMap.pi_apply, LinearMap.compLeft_apply, LinearMap.sum_apply, LinearMap.smul_a …`. Both sides reduce to the same expression.
+-/
 theorem act_coe (U : URep k r) {g : Mx k r} (hg : g ∈ GG k r) (x : M (vr k r true, U)) (c : Fin (2 * r + k + 1)) :
     (CompanionTheory.Zuck.act (vr k r true, U) g x c : U.R.H) = ∑ d, g⁻¹ d c • U.R.σ g (x d) := by
   simp only [CompanionTheory.Zuck.act, CompanionTheory.Zuck.mAct, CompanionTheory.Zuck.dOp, vr, if_true, ite_true, BranchingSupport.dualM, CompanionTheory.Zuck.URep.sig, dif_pos hg,
@@ -140,6 +191,9 @@ theorem act_coe (U : URep k r) {g : Mx k r} (hg : g ∈ GG k r) (x : M (vr k r t
     Submodule.coe_smul, LinearMap.restrict_coe_apply, ContinuousLinearMap.coe_coe]
   rfl
 
+/- English proof (translation)
+Simplify using `only [CompanionTheory.Zuck.act, CompanionTheory.Zuck.mAct, CompanionTheory.Zuck.dOp, CompanionTheory.Zuck.one, CompanionTheory.Zuck.triv, CompanionTheory.Zuck.URep.sig, dif_pos hg, LinearMap.comp_apply, LinearMap.pi_apply, LinearMap.compLeft_apply, LinearMap.sum_apply, LinearMap. …`. Simplify using `only [Fintype.univ_unit, Finset.sum_singleton, Matrix.one_apply_eq, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem act_one_coe (U : URep k r) {g : Mx k r} (hg : g ∈ GG k r) (x : M (one U)) :
     (CompanionTheory.Zuck.act (one U) g x () : U.R.H) = U.R.σ g (x ()) := by
   simp only [CompanionTheory.Zuck.act, CompanionTheory.Zuck.mAct, CompanionTheory.Zuck.dOp, CompanionTheory.Zuck.one, CompanionTheory.Zuck.triv, CompanionTheory.Zuck.URep.sig, dif_pos hg,
@@ -156,17 +210,29 @@ def dn (U : URep k r) (P : Mx k r) : M (vr k r true, U) →ₗ[ℂ] (Fin (2 * r 
 
 def ext1 (T : URep k r) (x : T.R.H) : M (one T) := if h : x ∈ T.R.sm then fun _ => ⟨x, h⟩ else 0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Establish `h : ((y ()) : T.R.H) ∈ T.R.sm` using `(y ()).2`. Simplify using `[ext1, h]`.
+-/
 theorem extension_one_coe (T : URep k r) (y : M (one T)) : ext1 T (y ()) = y := by
   funext u
   have h : ((y ()) : T.R.H) ∈ T.R.sm := (y ()).2
   simp [ext1, h]
 
+/- English proof (translation)
+Rewrite using `[ext1, dif_pos h]`.
+-/
 theorem extendHalfPlane_coe_point (T : URep k r) {x : T.R.H} (h : x ∈ T.R.sm) : (ext1 T x () : T.R.H) = x := by
   rw [ext1, dif_pos h]
 
+/- English proof (translation)
+The claim follows from `funext fun _ => Subtype.ext h`.
+-/
 theorem one_ext (T : URep k r) {y y' : M (one T)} (h : (y () : T.R.H) = y' ()) : y = y' :=
   funext fun _ => Subtype.ext h
 
+/- English proof (translation)
+Unfold `formT`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, inner_add_right, mul_add]`.
+-/
 private theorem formT_add_right {m : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ε : Fin m → Bool) (y x x' : Fin m → H) : formT ε y (x + x') = formT ε y x + formT ε y x' := by
   unfold formT
@@ -174,6 +240,9 @@ private theorem formT_add_right {m : ℕ} {H : Type} [NormedAddCommGroup H] [Inn
   refine Finset.sum_congr rfl fun l _ => ?_
   rw [Pi.add_apply, inner_add_right, mul_add]
 
+/- English proof (translation)
+Unfold `formT`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, inner_add_left, mul_add]`.
+-/
 private theorem formT_add_left {m : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ε : Fin m → Bool) (y y' x : Fin m → H) : formT ε (y + y') x = formT ε y x + formT ε y' x := by
   unfold formT
@@ -181,6 +250,9 @@ private theorem formT_add_left {m : ℕ} {H : Type} [NormedAddCommGroup H] [Inne
   refine Finset.sum_congr rfl fun l _ => ?_
   rw [Pi.add_apply, inner_add_left, mul_add]
 
+/- English proof (translation)
+Unfold `formT`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem formT_smul_right {m : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ε : Fin m → Bool) (a : ℂ) (y x : Fin m → H) : formT ε y (a • x) = a * formT ε y x := by
   unfold formT
@@ -189,6 +261,9 @@ private theorem formT_smul_right {m : ℕ} {H : Type} [NormedAddCommGroup H] [In
   rw [Pi.smul_apply, inner_smul_right]
   ring
 
+/- English proof (translation)
+Unfold `formT`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, inner_smul_left, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem formT_smul_left {m : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ε : Fin m → Bool) (a : ℂ) (y x : Fin m → H) : formT ε (a • y) x = star a * formT ε y x := by
   unfold formT
@@ -197,18 +272,27 @@ private theorem formT_smul_left {m : ℕ} {H : Type} [NormedAddCommGroup H] [Inn
   rw [Pi.smul_apply, inner_smul_left, Complex.star_def]
   ring
 
+/- English proof (translation)
+Establish `h : x + x' ∈ T.R.sm` using `T.R.smSub.add_mem hx hx'`. Apply `one_ext` to reduce the goal to its premises. Rewrite using `[extendHalfPlane_coe_point T h, Pi.add_apply, Submodule.coe_add, extendHalfPlane_coe_point T hx, extendHalfPlane_coe_point T hx']`.
+-/
 private theorem ext1_add' (T : URep k r) {x x' : T.R.H} (hx : x ∈ T.R.sm) (hx' : x' ∈ T.R.sm) :
     ext1 T (x + x') = ext1 T x + ext1 T x' := by
   have h : x + x' ∈ T.R.sm := T.R.smSub.add_mem hx hx'
   apply one_ext
   rw [extendHalfPlane_coe_point T h, Pi.add_apply, Submodule.coe_add, extendHalfPlane_coe_point T hx, extendHalfPlane_coe_point T hx']
 
+/- English proof (translation)
+Establish `h : a • x ∈ T.R.sm` using `T.R.smSub.smul_mem a hx`. Apply `one_ext` to reduce the goal to its premises. Rewrite using `[extendHalfPlane_coe_point T h, Pi.smul_apply, Submodule.coe_smul, extendHalfPlane_coe_point T hx]`.
+-/
 private theorem ext1_smul (T : URep k r) (a : ℂ) {x : T.R.H} (hx : x ∈ T.R.sm) :
     ext1 T (a • x) = a • ext1 T x := by
   have h : a • x ∈ T.R.sm := T.R.smSub.smul_mem a hx
   apply one_ext
   rw [extendHalfPlane_coe_point T h, Pi.smul_apply, Submodule.coe_smul, extendHalfPlane_coe_point T hx]
 
+/- English proof (translation)
+Use `show ∑ c : Unit, ‖PI.UpqRep.dsigW T.R.σ W (ext1 T x c : T.R.H)‖ = _`. Rewrite using `[Fintype.sum_unique]`. Use `show ‖PI.UpqRep.dsigW T.R.σ W (ext1 T x () : T.R.H)‖ = _`. Rewrite using `[extendHalfPlane_coe_point T hx]`.
+-/
 private theorem sn_one_ext1_eq_norm_dsigW (T : URep k r) {x : T.R.H} (hx : x ∈ T.R.sm) (W : List (Mx k r)) :
     CompanionTheory.Zuck.sn (one T) W (ext1 T x) = ‖PI.UpqRep.dsigW T.R.σ W x‖ := by
   show ∑ c : Unit, ‖PI.UpqRep.dsigW T.R.σ W (ext1 T x c : T.R.H)‖ = _
@@ -216,9 +300,39 @@ private theorem sn_one_ext1_eq_norm_dsigW (T : URep k r) {x : T.R.H} (hx : x ∈
   show ‖PI.UpqRep.dsigW T.R.σ W (ext1 T x () : T.R.H)‖ = _
   rw [extendHalfPlane_coe_point T hx]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem sn_nil_eq_sum_norm (U : URep k r) (w : M (vr k r true, U)) :
     CompanionTheory.Zuck.sn (vr k r true, U) [] w = ∑ c, ‖(w c : U.R.H)‖ := rfl
 
+/- English proof (translation)
+Establish `hJ : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_left_inv (Jm_sq ε)`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1.1`. Unfold `BranchingSupport.IsInvForm`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx x' hx' y hy`.
+
+Simplify using `only [ext1_add' T hx hx', map_add, formT_add_right]`. Introduce `a x hx y hy`. Simplify using `only [ext1_smul T a hx, map_smul, formT_smul_right]`. Introduce `x hx y hy y' hy'`. Simplify using `only [ext1_add' T' hy hy', map_add, formT_add_left]`.
+
+Introduce `a x hx y hy`. Simplify using `only [ext1_smul T' a hy, map_smul, formT_smul_left]`. Introduce `g hg x hx y hy`. Establish `e1 : ∀ (T0 : URep k r) {z : T0.R.H}, z ∈ T0.R.sm → ext1 T0 (T0.R.σ g z) = CompanionTheory.Zuck.act (one T0) g (ext1 T0 z)`. Introduce `T0 z hz`.
+
+Establish `hm : T0.R.σ g z ∈ T0.R.sm`. Establish `h0` using `(CompanionTheory.Zuck.act (one T0) g (ext1 T0 z) ()).2`. Rewrite `h0` using `[act_one_coe T0 hg, extendHalfPlane_coe_point T0 hz]`. Conclude with `h0`. Apply `one_ext` to reduce the goal to its premises.
+
+Rewrite using `[extendHalfPlane_coe_point T0 hm, act_one_coe T0 hg, extendHalfPlane_coe_point T0 hz]`. Establish `eB : P⁻¹ * (P * g * P⁻¹)⁻¹ = g⁻¹ * P⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hdet, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mul]`. Establish `e2 : ∀ w : M (vr k r true, U), dn U P (CompanionTheory.Zuck.act (vr k r true, U) g w) = fun c => ∑ d, (P * g * P⁻¹)⁻¹ d c • U.R.σ g (dn U P w d)`. Introduce `w`.
+
+Use function extensionality and compare the values at `c`. Use `show ∑ d, P⁻¹ d c • ((CompanionTheory.Zuck.act (vr k r true, U) g w d : U.R.H)) = ∑ d, (P * g * P⁻¹)⁻¹ d c • U.R.σ g (∑ e, P⁻¹ e d • (w e : U.R.H))`. Simplify using `only [act_coe U hg, map_sum, map_smul]`. Rewrite using `[sum_comp, sum_comp, eB]`. Establish `hB : (P * g * P⁻¹)⁻¹ * Jm ε * ((P * g * P⁻¹)⁻¹)ᴴ = Jm ε`.
+
+Establish `hC` using `cay_mem' hP hg`. Establish `h2 : ((P * g * P⁻¹)ᴴ * Jm ε * (P * g * P⁻¹))⁻¹ = (Jm ε)⁻¹` using `by rw [hC]`. Rewrite `h2` using `[Matrix.mul_inv_rev ((P * g * P⁻¹)ᴴ * Jm ε) (P * g * P⁻¹), Matrix.mul_inv_rev ((P * g * P⁻¹)ᴴ) (Jm ε), hJ]`. Rewrite using `[Matrix.conjTranspose_nonsing_inv, Matrix.mul_assoc]`. Conclude with `h2`.
+
+Establish `hiso : ∀ v w : U.R.H, ⟪U.R.σ g v, U.R.σ g w⟫_ℂ = ⟪v, w⟫_ℂ`. Introduce `v w`. Set `L : U.R.H →ₗᵢ[ℂ] U.R.H` to `{ toLinearMap := (U.R.σ g : U.R.H →ₗ[ℂ] U.R.H), norm_map' := U.rep.2.1 g hg }`. Conclude with `L.inner_map_map v w`. Establish `hi1` using `LinearMap.congr_fun (hi.equiv g hg) (ext1 T x)`.
+
+Establish `hi2` using `LinearMap.congr_fun (hi'.equiv g hg) (ext1 T' y)`. Simplify using `only [LinearMap.comp_apply] at hi1 hi2`. Simplify using `only []`. Rewrite using `[e1 T hx, e1 T' hy, hi1, hi2, e2, e2, formT_mat ε _ hB]`. Unfold `formT`.
+
+Simplify using `only [hiso]`. Take `⟨C1, Ws, hWs, hb1⟩` from `hi.cont [] (by intro Y hY; simp at hY)`. Take `⟨C2, Ws', hWs', hb2⟩` from `hi'.cont [] (by intro Y hY; simp at hY)`. Use `⟨(∑ c, (∑ d, ‖P⁻¹ d c‖) ^ 2) * C1 * C2, Ws, Ws', ?_, ?_⟩` and prove the remaining obligations. Introduce `W hW X hX`.
+
+Break down `List.mem_append.mp hW with h | h` into its components or cases. Conclude with `hWs W h X hX`. Conclude with `hWs' W h X hX`. Introduce `x hx y hy`. Establish `s1` using `hb1 (ext1 T x)`.
+
+Establish `s2` using `hb2 (ext1 T' y)`. Simplify using `only [sn_one_ext1_eq_norm_dsigW T hx, sn_one_ext1_eq_norm_dsigW T' hy, sn_nil_eq_sum_norm] at s1 s2`. Establish `hK : 0 ≤ ∑ c, (∑ d, ‖P⁻¹ d c‖) ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `n1 : 0 ≤ ∑ d, ‖(i (ext1 T x) d : U.R.H)‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `n2 : 0 ≤ ∑ d, ‖(i' (ext1 T' y) d : U.R.H)‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem invForm {U T T' : URep k r} {P : Mx k r} (hP : IsCayleyU k r ε P) (i : M (one T) →ₗ[ℂ] M (vr k r true, U))
     (i' : M (one T') →ₗ[ℂ] M (vr k r true, U)) (hi : IsHom (one T) (vr k r true, U) i)
     (hi' : IsHom (one T') (vr k r true, U) i') :

@@ -18,6 +18,17 @@ open GlobalTheory.Twist (resM resM_resM resM_smul app_resM)
 
 namespace GlobalTheory.VB
 
+/- English proof (translation)
+Establish `hc (W : Y.Opens) (s : Γ(E, W)) : (π ≫ m).app W s = m.app W (π.app W s)` using `rfl`. Use `isFrame_of_forall_exists fun V' h x hx => ?_` and prove the remaining obligations. Take `⟨W, hW, hxW, hle⟩` from `QCoh.exists_affine_mem_le x hx`. Use `⟨W, hle, hxW, ?_⟩` and prove the remaining obligations. Establish `hWV : W ≤ V` using `hle.trans h`.
+
+Establish `: Nonempty W` using `⟨⟨x, hxW⟩⟩`. Establish `hm (a : Fin 1 → Γ(Y, W)) : m.app W (Fintype.linearCombination Γ(Y, W) (fun _ : Fin 1 => resM M hWV (π.app V t)) a) = a 0 • resM L hWV (g • l 0)`. Rewrite using `[Fintype.linearCombination_apply, Fin.sum_univ_one, Scheme.Modules.Hom.app_smul, app_resM, ← hc, ht]`. Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hm a`. Rewrite `h1` using `[ha, map_zero, resM_smul, smul_smul]`. Establish `h2` using `(hl W hWV).1 (a₁ := fun _ => a 0 * resG Y hWV g) (a₂ := 0) (by`. Rewrite using `[map_zero, Fintype.linearCombination_apply, Fin.sum_univ_one]`. Conclude with `h1.symm)`.
+
+Establish `h3 : a 0 * resG Y hWV g = 0` using `congrFun h2 0`. Establish `h4 : resG Y hWV g ≠ 0` using `fun h0 => hg (map_injective_of_isIntegral Y (homOfLE hWV) (h0.trans (map_zero _).symm))`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Conclude with `(mul_eq_zero.1 h3).resolve_right h4`.
+
+Introduce `s`. Take `⟨u, rfl⟩` from `QCoh.surjective_app_of_epi π hW s`. Take `⟨a, ha⟩` from `hs W hWV u`. Use `⟨fun _ => a, QCoh.injective_app_of_mono m W ?_⟩` and prove the remaining obligations. Rewrite using `[hm, ← hc, ha]`.
+-/
 theorem isFrame_of_epi_mono_principal {Y : Scheme.{0}} [IsIntegral Y] {E M L : Y.Modules}
     [E.IsQuasicoherent] [M.IsQuasicoherent] (π : E ⟶ M) (m : M ⟶ L) [Epi π] [Mono m]
     {V : Y.Opens} {l : Fin 1 → Γ(L, V)} {g : Γ(Y, V)} {t : Γ(E, V)} (hl : IsFrame l) (hg : g ≠ 0)
@@ -55,6 +66,13 @@ theorem isFrame_of_epi_mono_principal {Y : Scheme.{0}} [IsIntegral Y] {E M L : Y
     refine ⟨fun _ => a, QCoh.injective_app_of_mono m W ?_⟩
     rw [hm, ← hc, ha]
 
+/- English proof (translation)
+Introduce `Y _ E L ψ n hE hL H`. Use `hE.isQuasicoherent` as an intermediate fact. Use `hL.isQuasicoherent` as an intermediate fact. Establish `hM : IsVB (cokernel (kernel.ι ψ)) 1`. Introduce `y`.
+
+Take `⟨V, l, g, t, hy, hl, hg, ht, hs⟩` from `H y`. Establish `e : cokernel.π (kernel.ι ψ) ≫ Abelian.factorThruCoimage ψ = ψ` using `Abelian.coimage.fac ψ`. Conclude with `⟨V, _, hy, isFrame_of_epi_mono_principal (cokernel.π (kernel.ι ψ)) (Abelian.factorThruCoimage ψ) hl hg (by rw [e]; exact ht) (by rw [e]; exact hs)⟩`. Use `⟨⟨inferInstance, 1, hM⟩, ?_⟩` and prove the remaining obligations. Establish `hS : (ShortComplex.mk _ _ (cokernel.condition (kernel.ι ψ))).ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`.
+
+Conclude with `isVB_X₁_of_shortExact Y _ n 1 hS hE hM`.
+-/
 theorem isSubbundle_kernel_of_locally_principal :
     ∀ (Y : Scheme.{0}) [IsIntegral Y] (E L : Y.Modules) (ψ : E ⟶ L) (n : ℕ), IsVB E (n + 1) →
       IsVB L 1 → (∀ y : Y, ∃ (V : Y.Opens) (l : Fin 1 → Γ(L, V)) (g : Γ(Y, V)) (t : Γ(E, V)),

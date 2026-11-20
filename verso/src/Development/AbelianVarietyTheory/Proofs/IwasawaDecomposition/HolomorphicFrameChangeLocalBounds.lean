@@ -11,6 +11,9 @@ open scoped ComplexOrder Topology
 
 namespace GlobalTheory.HermFrame
 
+/- English proof (translation)
+Establish `ha : AnalyticOnNhd ℂ g U` using `fun z hz => ReciprocityTheory.ChartRestriction.G.AR.Up.DivLA.analyticAt_of_diffOn hU hg hz`. Conclude with `ha.contDiffOn hU.uniqueDiffOn`.
+-/
 theorem holo_contDiffOn {n : ℕ} {U : Set (ReciprocityTheory.L2DbarEstimates.V n)} (hU : IsOpen U)
     {g : ReciprocityTheory.L2DbarEstimates.V n → ℂ} (hg : DifferentiableOn ℂ g U) {m : WithTop ℕ∞} :
     ContDiffOn ℂ m g U := by
@@ -18,6 +21,9 @@ theorem holo_contDiffOn {n : ℕ} {U : Set (ReciprocityTheory.L2DbarEstimates.V 
     ReciprocityTheory.ChartRestriction.G.AR.Up.DivLA.analyticAt_of_diffOn hU hg hz
   exact ha.contDiffOn hU.uniqueDiffOn
 
+/- English proof (translation)
+Establish `h2 : ContDiffOn ℂ 2 g U` using `holo_contDiffOn hU hg`. Establish `h1 : ContDiffOn ℂ 1 (fun u => fderiv ℂ g u) U` using `h2.fderiv_of_isOpen hU (by norm_num)`. Conclude with `(h1.clm_apply contDiffOn_const).differentiableOn (by norm_num)`.
+-/
 theorem holo_fderiv_apply_on {n : ℕ} {U : Set (ReciprocityTheory.L2DbarEstimates.V n)} (hU : IsOpen U)
     {g : ReciprocityTheory.L2DbarEstimates.V n → ℂ} (hg : DifferentiableOn ℂ g U) (w : ReciprocityTheory.L2DbarEstimates.V n) :
     DifferentiableOn ℂ (fun u => fderiv ℂ g u w) U := by
@@ -25,6 +31,9 @@ theorem holo_fderiv_apply_on {n : ℕ} {U : Set (ReciprocityTheory.L2DbarEstimat
   have h1 : ContDiffOn ℂ 1 (fun u => fderiv ℂ g u) U := h2.fderiv_of_isOpen hU (by norm_num)
   exact (h1.clm_apply contDiffOn_const).differentiableOn (by norm_num)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.del_eq_fderiv (hg.differentiableAt (hU.mem_nhds hu))]`.
+-/
 theorem holo_del_eq_on {n : ℕ} {U : Set (ReciprocityTheory.L2DbarEstimates.V n)} (hU : IsOpen U)
     {g : ReciprocityTheory.L2DbarEstimates.V n → ℂ} (hg : DifferentiableOn ℂ g U) {u : ReciprocityTheory.L2DbarEstimates.V n}
     (hu : u ∈ U) (w : ReciprocityTheory.L2DbarEstimates.V n) : GlobalTheory.del g u w = fderiv ℂ g u w := by
@@ -34,12 +43,18 @@ end GlobalTheory.HermFrame
 
 namespace GlobalTheory.HermFrame
 
+/- English proof (translation)
+The claim follows from `holo_del_eq_on hU (hP i k) hu w`.
+-/
 theorem holo_mdel_entry {n : ℕ} {K : Type} {P : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ}
     {U : Set (ReciprocityTheory.L2DbarEstimates.V n)} (hU : IsOpen U) (hP : ∀ i k, DifferentiableOn ℂ (fun u => P u i k) U)
     {u : ReciprocityTheory.L2DbarEstimates.V n} (hu : u ∈ U) (w : ReciprocityTheory.L2DbarEstimates.V n) (i k : K) :
     mdel P u w i k = fderiv ℂ (fun x => P x i k) u w :=
   holo_del_eq_on hU (hP i k) hu w
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `GlobalTheory.del (fun x => GlobalTheory.del (fun y => P y i k) x w') u w = _`. Establish `hev : (fun x => GlobalTheory.del (fun y => P y i k) x w') =ᶠ[𝓝 u] (fun x => fderiv ℂ (fun y => P y i k) x w')` using `by filter_upwards [hU.mem_nhds hu] with x hx`. Conclude with `holo_del_eq_on hU (hP i k) hx w'`. Rewrite using `[GlobalTheory.del_congr hev]`. Conclude with `holo_del_eq_on hU (holo_fderiv_apply_on hU (hP i k) w') hu w`.
+-/
 theorem holo_mdel_mdel_entry {n : ℕ} {K : Type} {P : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ}
     {U : Set (ReciprocityTheory.L2DbarEstimates.V n)} (hU : IsOpen U) (hP : ∀ i k, DifferentiableOn ℂ (fun u => P u i k) U)
     {u : ReciprocityTheory.L2DbarEstimates.V n} (hu : u ∈ U) (w w' : ReciprocityTheory.L2DbarEstimates.V n) (i k : K) :
@@ -53,6 +68,31 @@ theorem holo_mdel_mdel_entry {n : ℕ} {K : Type} {P : ReciprocityTheory.L2DbarE
   rw [GlobalTheory.del_congr hev]
   exact holo_del_eq_on hU (holo_fderiv_apply_on hU (hP i k) w') hu w
 
+/- English proof (translation)
+Introduce `n K _ _ P r hr hP h0`. Use `set U : Set (ReciprocityTheory.L2DbarEstimates.V n) := Metric.ball 0 r with hUdef`. Establish `hU : IsOpen U` using `Metric.isOpen_ball`. Establish `hPc : ContinuousOn P U` using `continuousOn_pi.2 fun i => continuousOn_pi.2 fun k => (hP i k).continuousOn`. Establish `hdetc : ContinuousOn (fun u => (P u).det) U` using `(continuous_id.matrix_det).comp_continuousOn hPc`.
+
+Establish `hadjc : ∀ i k, ContinuousOn (fun u => (P u).adjugate i k) U` using `fun i k => ((continuous_id.matrix_adjugate).matrix_elem i k).comp_continuousOn hPc`. Establish `h0U : (0 : ReciprocityTheory.L2DbarEstimates.V n) ∈ U` using `Metric.mem_ball_self hr`. Establish `hev : ∀ᶠ u in 𝓝 (0 : ReciprocityTheory.L2DbarEstimates.V n), (P u).det ≠ 0` using `(hdetc.continuousAt (hU.mem_nhds h0U)).eventually_ne h0.ne_zero`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Establish `hm : 0 < min ε r` using `lt_min hε hr`.
+
+Use `set ρ := min ε r / 2 with hρ`. Establish `hρpos : 0 < ρ` using `by rw [hρ]; linarith`. Establish `hρε : ρ < ε` using `by have := min_le_left ε r; rw [hρ]; linarith`. Establish `hρr : ρ < r` using `by have := min_le_right ε r; rw [hρ]; linarith`. Use `set S := Metric.closedBall (0 : ReciprocityTheory.L2DbarEstimates.V n) ρ with hSdef`.
+
+Establish `hSU : S ⊆ U` using `Metric.closedBall_subset_ball hρr`. Establish `hSdet : ∀ u ∈ S, (P u).det ≠ 0` using `fun u hu => hball u (Metric.closedBall_subset_ball hρε hu)`. Establish `hSc : IsCompact S` using `isCompact_closedBall 0 ρ`. Set `G1 : ReciprocityTheory.L2DbarEstimates.V n → (K → K → ℂ)` to `fun u i k => P u i k`. Set `G2 : ReciprocityTheory.L2DbarEstimates.V n → (K → K → ℂ)` to `fun u i k => (P u)⁻¹ i k`.
+
+Set `G3 : ReciprocityTheory.L2DbarEstimates.V n → (Fin n → K → K → ℂ)` to `fun u a i k => mdel P u (GlobalTheory.GoodMetric.coordVec a) i k`. Set `G4 : ReciprocityTheory.L2DbarEstimates.V n → (Fin n → Fin n → K → K → ℂ)` to `fun u a b i k => mdel (fun u => mdel P u (GlobalTheory.GoodMetric.coordVec b)) u (GlobalTheory.GoodMetric.coordVec a) i k`. Establish `hG1 : ContinuousOn G1 S` using `continuousOn_pi.2 fun i => continuousOn_pi.2 fun k => ((hP i k).continuousOn).mono hSU`. Establish `hG2 : ContinuousOn G2 S`. Use `continuousOn_pi.2 fun i => continuousOn_pi.2 fun k => ?_` and prove the remaining obligations.
+
+Use `(((hdetc.mono hSU).inv₀ hSdet).mul ((hadjc i k).mono hSU)).congr fun u _ => ?_` and prove the remaining obligations. Simplify using `[G2, Matrix.inv_def, Ring.inverse_eq_inv']`. Establish `hG3 : ContinuousOn G3 S`. Use `continuousOn_pi.2 fun a => continuousOn_pi.2 fun i => continuousOn_pi.2 fun k => ?_` and prove the remaining obligations. Use `((holo_fderiv_apply_on hU (hP i k) (GlobalTheory.GoodMetric.coordVec a)).continuousOn.mono hSU).congr fun u hu => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `exact holo_mdel_entry hU hP (hSU hu) _ i k`. Establish `hG4 : ContinuousOn G4 S`. Use `continuousOn_pi.2 fun a => continuousOn_pi.2 fun b => continuousOn_pi.2 fun i => continuousOn_pi.2 fun k => ?_` and prove the remaining obligations. Use `((holo_fderiv_apply_on hU (holo_fderiv_apply_on hU (hP i k) (GlobalTheory.GoodMetric.coordVec b)) (GlobalTheory.GoodMetric.coordVec a)).continuousOn.mono hSU).congr fun u hu => ?_` and prove the remaining obligations. Apply the tactic sequence `exact holo_mdel_mdel_entry hU hP (hSU hu) _ _ i k`.
+
+Take `⟨C1, hC1⟩` from `hSc.exists_bound_of_continuousOn hG1`. Take `⟨C2, hC2⟩` from `hSc.exists_bound_of_continuousOn hG2`. Take `⟨C3, hC3⟩` from `hSc.exists_bound_of_continuousOn hG3`. Take `⟨C4, hC4⟩` from `hSc.exists_bound_of_continuousOn hG4`. Use `⟨ρ, hρpos, hρr.le, max (max C1 C2) (max C3 C4), fun v hv => ?_⟩` and prove the remaining obligations.
+
+Establish `hvS : v ∈ S`. Rewrite using `[hSdef, Metric.mem_closedBall, dist_zero_right]`. Conclude with `hv.le`. Establish `hvU : v ∈ U` using `hSU hvS`. Use `⟨isUnit_iff_ne_zero.2 (hSdet v hvS), fun i k => ?_, ?_, fun i k => ?_, fun i k => ?_, fun a i k => ?_, fun a b i k => ?_⟩` and prove the remaining obligations.
+
+Conclude with `((holo_contDiffOn hU (hP i k)).contDiffAt (hU.mem_nhds hvU)).restrict_scalars ℝ`. Use `filter_upwards [hU.mem_nhds hvU] with u hu η`. Use extensionality with `i k`. Simplify using `[GlobalTheory.dbar_eq_zero ((hP i k).differentiableAt (hU.mem_nhds hu))]`. Establish `h` using `(norm_le_pi_norm (G1 v i) k).trans ((norm_le_pi_norm (G1 v) i).trans (hC1 v hvS))`.
+
+Conclude with `h.trans ((le_max_left _ _).trans (le_max_left _ _))`. Establish `h` using `(norm_le_pi_norm (G2 v i) k).trans ((norm_le_pi_norm (G2 v) i).trans (hC2 v hvS))`. Conclude with `h.trans ((le_max_right _ _).trans (le_max_left _ _))`. Establish `h` using `(norm_le_pi_norm (G3 v a i) k).trans ((norm_le_pi_norm (G3 v a) i).trans ((norm_le_pi_norm (G3 v) a).trans (hC3 v hvS)))`. Conclude with `h.trans ((le_max_left _ _).trans (le_max_right _ _))`.
+
+Establish `h` using `(norm_le_pi_norm (G4 v a b i) k).trans ((norm_le_pi_norm (G4 v a b) i).trans ((norm_le_pi_norm (G4 v a) b).trans ((norm_le_pi_norm (G4 v) a).trans (hC4 v hvS))))`. Conclude with `h.trans ((le_max_right _ _).trans (le_max_right _ _))`.
+-/
 theorem holoFrame_local_bounds : ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableEq K] (P : ReciprocityTheory.L2DbarEstimates.V n → Matrix K K ℂ) (r : ℝ), 0 < r → (∀ i k, DifferentiableOn ℂ (fun u => P u i k) (Metric.ball 0 r)) → IsUnit (P 0).det → ∃ r' : ℝ, 0 < r' ∧ r' ≤ r ∧ ∃ B : ℝ, ∀ v : ReciprocityTheory.L2DbarEstimates.V n, ‖v‖ < r' → IsUnit (P v).det ∧ (∀ i k, ContDiffAt ℝ 2 (fun u => P u i k) v) ∧ (∀ᶠ u in nhds v, ∀ η, GlobalTheory.HermFrame.mdbar P u η = 0) ∧ (∀ i k, ‖P v i k‖ ≤ B) ∧ (∀ i k, ‖(P v)⁻¹ i k‖ ≤ B) ∧ (∀ a i k, ‖GlobalTheory.HermFrame.mdel P v (GlobalTheory.GoodMetric.coordVec a) i k‖ ≤ B) ∧ (∀ a b i k, ‖GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.mdel P u (GlobalTheory.GoodMetric.coordVec b)) v (GlobalTheory.GoodMetric.coordVec a) i k‖ ≤ B) := by
   intro n K _ _ P r hr hP h0
   set U : Set (ReciprocityTheory.L2DbarEstimates.V n) := Metric.ball 0 r with hUdef

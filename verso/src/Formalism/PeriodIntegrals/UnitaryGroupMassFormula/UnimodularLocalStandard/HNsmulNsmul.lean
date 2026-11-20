@@ -10,10 +10,16 @@ open PI.ULS
 variable (a : ℕ) (b c : ℤ) (d : ℕ) (ha : 0 < a) (hd : 0 < d) (lam : ℂ) (hlam : lam ≠ 0)
   (m : Type) [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Unfold `repKappa`. Simplify using `only [map_mul, map_inv₀, Complex.conj_ofReal, map_natCast]`.
+-/
 lemma kappa_real : conj (repKappa a b d ha hd lam hlam) = repKappa a b d ha hd lam hlam := by
   unfold repKappa
   simp only [map_mul, map_inv₀, Complex.conj_ofReal, map_natCast]
 
+/- English proof (translation)
+Introduce `h`. Break down `(Nat.prime_iff_prime_int.mp hl).dvd_or_dvd h with h1 | h1` into its components or cases. Conclude with `hu h1`. Conclude with `hv h1`.
+-/
 lemma not_dvd_mul' {l : ℕ} (hl : l.Prime) {u v : ℤ} (hu : ¬ (l : ℤ) ∣ u) (hv : ¬ (l : ℤ) ∣ v) :
     ¬ (l : ℤ) ∣ u * v := by
   intro h
@@ -21,6 +27,9 @@ lemma not_dvd_mul' {l : ℕ} (hl : l.Prime) {u v : ℤ} (hu : ¬ (l : ℤ) ∣ u
   · exact hu h1
   · exact hv h1
 
+/- English proof (translation)
+Simplify using `only [stdH, matH, LinearMap.mk₂'ₛₗ_apply, Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by`. Simplify using `only [Pi.mul_apply, Pi.natCast_apply, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma H_nsmul_nsmul (L : PeriodPair) (s t : ℕ) (v w : m → ℂ) :
     stdH L m (s • v) (t • w) = (s : ℂ) * t * stdH L m v w := by
   simp only [stdH, matH, LinearMap.mk₂'ₛₗ_apply, Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast,
@@ -29,6 +38,11 @@ lemma H_nsmul_nsmul (L : PeriodPair) (s t : ℕ) (v w : m → ℂ) :
     simp only [Pi.mul_apply, Pi.natCast_apply, map_mul, map_natCast]
     ring
 
+/- English proof (translation)
+Rewrite using `[stdH_apply]`. Establish `hA : area L ≠ 0` using `by rw [area_eq]; exact abs_ne_zero.mpr (detD_ne L)`. Use `mul_ne_zero ?_ (inv_ne_zero (by exact_mod_cast hA))` and prove the remaining obligations. Take `⟨i, hi⟩ : ∃ i, v i ≠ 0` from `by by_contra h; push_neg at h; exact hv (funext h)`. Establish `hsum : (∑ j, v j * conj (v j)) = ((∑ j, Complex.normSq (v j) : ℝ) : ℂ)` using `by push_cast; exact Finset.sum_congr rfl fun j _ => Complex.mul_conj (v j)`.
+
+Rewrite using `[hsum]`. Establish `: 0 < ∑ j, Complex.normSq (v j)` using `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.mpr hi⟩`. Conclude with `this.ne'` after adjusting the coercions.
+-/
 lemma H_self_ne (L : PeriodPair) {v : m → ℂ} (hv : v ≠ 0) : stdH L m v v ≠ 0 := by
   rw [stdH_apply]
   have hA : area L ≠ 0 := by rw [area_eq]; exact abs_ne_zero.mpr (detD_ne L)
@@ -43,6 +57,11 @@ lemma H_self_ne (L : PeriodPair) {v : m → ℂ} (hv : v ≠ 0) : stdH L m v v �
 
 variable {a b c d ha hd lam hlam m}
 
+/- English proof (translation)
+Take `⟨s, hs, hsv⟩` from `hv`. Take `⟨n, hn⟩` from `rep_H_self_int a b c d ha hd lam hlam m hOK Λ hΛ hθ hsv`. Establish `hs' : ¬ (l : ℤ) ∣ (s : ℤ)` using `fun h => hs (by exact_mod_cast h)`. Use `⟨n, (s : ℤ) * s, not_dvd_mul' hl hs' hs', ?_⟩` and prove the remaining obligations. Establish `hs0 : (s : ℂ) ≠ 0`.
+
+Introduce `h; apply hs; rw [show s = 0 by exact_mod_cast h]; exact dvd_zero _`. Rewrite `hn` using `[H_nsmul_nsmul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hn`.
+-/
 lemma sat_norm (hOK : CmOK a b c d) {Λ : AddSubgroup (m → ℂ)}
     (hΛ : IsSelfDual (stdH (cmL a b d ha hd lam hlam) m) Λ) (hθ : ∀ z ∈ Λ, cmTheta b d • z ∈ Λ)
     {l : ℕ} (hl : l.Prime) {v : m → ℂ} (hv : SatMem l Λ v) :
@@ -58,6 +77,13 @@ lemma sat_norm (hOK : CmOK a b c d) {Λ : AddSubgroup (m → ℂ)}
   field_simp
   linear_combination hn
 
+/- English proof (translation)
+Take `⟨s, hs, hsv⟩` from `hv`. Take `⟨t, ht, htw⟩` from `hw`. Take `⟨n, c₂, hn, -⟩` from `rep_H_int a b c d ha hd lam hlam m hOK Λ hΛ hθ hsv htw`. Establish `hs' : ¬ (l : ℤ) ∣ (s : ℤ)` using `fun h => hs (by exact_mod_cast h)`. Establish `ht' : ¬ (l : ℤ) ∣ (t : ℤ)` using `fun h => ht (by exact_mod_cast h)`.
+
+Use `⟨n, c₂, (s : ℤ) * t, not_dvd_mul' hl hs' ht', ?_⟩` and prove the remaining obligations. Establish `hs0 : (s : ℂ) ≠ 0`. Introduce `h; apply hs; rw [show s = 0 by exact_mod_cast h]; exact dvd_zero _`. Establish `ht0 : (t : ℂ) ≠ 0`. Introduce `h; apply ht; rw [show t = 0 by exact_mod_cast h]; exact dvd_zero _`.
+
+Rewrite `hn` using `[H_nsmul_nsmul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hn`.
+-/
 lemma sat_pair (hOK : CmOK a b c d) {Λ : AddSubgroup (m → ℂ)}
     (hΛ : IsSelfDual (stdH (cmL a b d ha hd lam hlam) m) Λ) (hθ : ∀ z ∈ Λ, cmTheta b d • z ∈ Λ)
     {l : ℕ} (hl : l.Prime) {v w : m → ℂ} (hv : SatMem l Λ v) (hw : SatMem l Λ w) :
@@ -78,6 +104,15 @@ lemma sat_pair (hOK : CmOK a b c d) {Λ : AddSubgroup (m → ℂ)}
   field_simp
   linear_combination hn
 
+/- English proof (translation)
+Rewrite using `[rep_kappa_eq]`. Establish `hd' : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `hs : Real.sqrt d ≠ 0` using `(Real.sqrt_pos.2 hd').ne'`. Establish `hsq : Real.sqrt d * Real.sqrt d = d` using `Real.mul_self_sqrt hd'.le`. Establish `hpi : 2 * cmTheta b d - b = Complex.I * ((Real.sqrt d : ℝ) : ℂ)`.
+
+Unfold `cmTheta`. Expand and normalize the polynomial expressions, which then agree. Establish `hconj : conj (cmTheta b d) = ((b : ℂ) - Complex.I * ((Real.sqrt d : ℝ) : ℂ)) / 2`. Unfold `cmTheta`. Simplify using `[map_div₀, Complex.conj_ofReal, map_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpi, hconj]`. Simplify using `[Complex.mul_im, Complex.mul_re, Complex.inv_re, Complex.inv_im, Complex.normSq, Complex.div_re, Complex.div_im]`. Clear the denominators using the available nonvanishing facts. Rewrite `*` using `[show (Real.sqrt d) ^ 2 = d by rw [sq]; exact hsq]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma im_pi_inv (n c₂ : ℤ) :
     ((2 * cmTheta b d - b)⁻¹ * (repKappa a b d ha hd lam hlam * ((n : ℂ) - c₂ * conj (cmTheta b d)))).im =
       -((2 * n - c₂ * b : ℤ) : ℝ) / d := by

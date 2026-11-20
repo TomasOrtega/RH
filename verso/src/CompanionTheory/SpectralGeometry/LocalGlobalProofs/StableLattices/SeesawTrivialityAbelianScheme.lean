@@ -14,6 +14,15 @@ namespace GlobalTheory.CompanionTheory.RigDesc
 
 variable {S : Scheme.{0}} {A X Y : Over S} [GrpObj A]
 
+/- English proof (translation)
+Establish `hc : ∀ x₁ : T ⟶ X, lift (fst A T) (snd A T ≫ x₁) ≫ lift (fst A X) (snd A X ≫ q) = lift (fst A T) (snd A T ≫ x₁ ≫ q)` using `fun x₁ => by`. Apply the tactic sequence `ext <;> simp`. Establish `hc' : (lift (fst A T) (snd A T ≫ x)).left ≫ (lift (fst A X) (snd A X ≫ q)).left = (lift (fst A T) (snd A T ≫ x')).left ≫ (lift (fst A X) (snd A X ≫ q)).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, hc, hc, h]`. Establish `he : (lift (1 : T ⟶ A) (𝟙 T)).left ≫ (snd A T).left = 𝟙 _`.
+
+Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Establish `hs : ∀ x₁ : T ⟶ X, (lift (1 : T ⟶ A) (𝟙 T)).left ≫ (lift (fst A T) (snd A T ≫ x₁)).left = x₁.left ≫ (lift (1 : X ⟶ A) (𝟙 X)).left` using `fun x₁ => by`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`.
+
+Apply the tactic sequence `ext <;> simp`. Establish `hv : ∀ x₁ : T ⟶ X, ∀ (y : T.left) (I : (T.left ⟶ (A ⊗ Y).left) → N.ι), Good N y I → val (LB.pullGen N _ _ t (lift (fst A T) (snd A T ≫ x₁)).left) (lift (1 : T ⟶ A) (𝟙 T)).left y I = val r (x₁ ≫ q).left y I` using `fun x₁ y I hI => by`. Rewrite using `[val_pull hI, hs, hn _ _ _ _ hI, Over.comp_left]`. Establish `key` using `gen_unique' hN (u := LB.pullGen N _ _ t (lift (fst A T) (snd A T ≫ x)).left) (u' := LB.pullGen N _ _ t (lift (fst A T) (snd A T ≫ x')).left) (fun U _ k => by simp only [hc']) (snd A T).left (lift (1 : T ⟶ A) (𝟙 T)).left he (surj_snd GlobalTheory.globalFns_holds hA T) (DVR.pullGen …`. Establish `hl : ∀ x₁ : T ⟶ X, (lift α (𝟙 T)).left ≫ (lift (fst A T) (snd A T ≫ x₁)).left = (lift α x₁).left` using `fun x₁ => by`.
+
+Rewrite using `[← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`. Rewrite `key` using `[val_pull hJ, val_pull hJ, hl, hl]`. Conclude with `key`.
+-/
 theorem val_lift_eq_of_comp_eq (hA : IsAbelianScheme A) (q : X ⟶ Y) {N : LB (A ⊗ Y).left} (hN : N.IsLB)
     (r : LB.Gen (ev N (1 : Y ⟶ A) (𝟙 Y)))
     (t : LB.Gen (ev N (fst A X) (snd A X ≫ q))) (ht : t.IsGen)
@@ -56,6 +65,23 @@ end GlobalTheory.CompanionTheory.RigDesc
 
 namespace GlobalTheory.CompanionTheory.RigDesc
 
+/- English proof (translation)
+Introduce and unpack `S A X Y _ hA q hfl hlfp hsj N hN ⟨r, hr⟩ ⟨t₀, ht₀⟩`. Take `⟨f₁, f₂, f₃⟩` from `GlobalTheory.T.flat_cover_base_change_product S A X Y hA q hfl hlfp hsj`. Establish `he : (lift (1 : X ⟶ A) (𝟙 X)).left ≫ (snd A X).left = 𝟙 _`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+
+Establish `hef : (lift (1 : X ⟶ A) (𝟙 X)).left ≫ (lift (fst A X) (snd A X ≫ q)).left = q.left ≫ (lift (1 : Y ⟶ A) (𝟙 Y)).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`. Take `⟨t, ht, hn⟩` from `GlobalTheory.T.linear_combination_generator_section_exists hN (fun _ => (lift (fst A X) (snd A X ≫ q)).left) (fun _ => 1) (fun _ => q.left ≫ (lift (1 : Y ⟶ A) (𝟙 Y)).left) (fun _ => 1) (snd A X).left (lift (1 : X ⟶ A) (𝟙 X)).left he (fun U _ k => by simp only [hef]) t₀ ht₀ (LB.pu …`.
+
+Use `GlobalTheory.T.line_bundle_trivial_of_descended_generator _ f₁ f₂ f₃ N hN t ht fun W a b hab w i hi => ?_` and prove the remaining obligations. Establish `hw : a ≫ (A ⊗ X).hom = b ≫ (A ⊗ X).hom`. Establish `e` using `congrArg (· ≫ (A ⊗ Y).hom) hab`. Simplify `e` using `only [Category.assoc, Over.w]`. Set `T : Over S` to `Over.mk (a ≫ (A ⊗ X).hom)`.
+
+Set `a' : T ⟶ A ⊗ X` to `Over.homMk a rfl`. Set `b' : T ⟶ A ⊗ X` to `Over.homMk b hw.symm`. Establish `hab' : a' ≫ lift (fst A X) (snd A X ≫ q) = b' ≫ lift (fst A X) (snd A X ≫ q)`. Conclude with `Over.OverMorphism.ext hab`. Establish `h₁ : a' ≫ fst A X = b' ≫ fst A X`.
+
+Establish `e` using `congrArg (· ≫ fst A Y) hab'`. Simplify using `using e`. Establish `h₂ : (a' ≫ snd A X) ≫ q = (b' ≫ snd A X) ≫ q`. Establish `e` using `congrArg (· ≫ snd A Y) hab'`. Simplify using `using e`.
+
+Take `⟨J, hJ, hJi⟩` from `exists_good N hN w (K := PUnit.{1}) (fun _ => a ≫ (lift (fst A X) (snd A X ≫ q)).left) (fun _ => i) (fun _ _ _ => rfl) (fun _ => hi)`. Establish `hJi' : J (a ≫ (lift (fst A X) (snd A X ≫ q)).left) = i` using `hJi PUnit.unit`. Establish `key` using `val_lift_eq_of_comp_eq hA q hN r t ht (fun Z s z I hI => (hn Z s z I hI).trans (val_pull hI _ _ _)) (a' ≫ fst A X) (a' ≫ snd A X) (b' ≫ snd A X) h₂ w J hJ`. Establish `ea : (lift (a' ≫ fst A X) (a' ≫ snd A X)).left = a`. Rewrite using `[← comp_lift, lift_fst_snd]`.
+
+Simplify using `[a']`. Establish `eb : (lift (a' ≫ fst A X) (b' ≫ snd A X)).left = b`. Rewrite using `[h₁, ← comp_lift, lift_fst_snd]`. Simplify using `[b']`. Rewrite `key` using `[ea, eb, val_of t a w J (fun _ => i) (fun _ => hJi'), val_of t b w J (fun _ => i) (fun _ => by rw [← hab]; exact hJi')]`.
+
+Conclude with `key`.
+-/
 theorem triv_of_triv_of_flat_cover : ∀ (S : Scheme.{0}) (A X Y : Over S) [GrpObj A], IsAbelianScheme A → ∀ q : X ⟶ Y, Flat q.left →
     LocallyOfFinitePresentation q.left → Surjective q.left →
     ∀ N : LB (A ⊗ Y).left, N.IsLB → Triv (ev N (1 : Y ⟶ A) (𝟙 Y)) → Triv (ev N (fst A X) (snd A X ≫ q)) → Triv N := by

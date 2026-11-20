@@ -11,6 +11,13 @@ open Formalism.L2.Pj
 
 namespace GlobalTheory.Mem
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 h`. Take `⟨p', rfl⟩ : ∃ p', p = p' + 1` from `⟨p - 1, by omega⟩`. Take `⟨q', rfl⟩ : ∃ q', q = q' + 1` from `⟨q - 1, by omega⟩`. Use `⟨v * p', u * q', ?_⟩` and prove the remaining obligations. Rewrite using `[← Complex.exp_int_mul, ← Complex.exp_int_mul, ← Complex.exp_add]`.
+
+Use `congr 1`. Establish `h1 : (p' : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `h2 : (q' : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `h3 : (p' : ℂ) + 1 ≠ 0` using `Nat.cast_add_one_ne_zero _`. Establish `h4 : (q' : ℂ) + 1 ≠ 0` using `Nat.cast_add_one_ne_zero _`.
+
+Establish `h5 : (u : ℂ) * (p' + 1) + v * (q' + 1) = 1` using `by exact_mod_cast huv`. Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-1 : ℂ) * h5`.
+-/
 theorem exp_div_mul_eq_zpow_mul_zpow {p q : ℕ} (hp : 2 ≤ p) (hq : 2 ≤ q) (h : Nat.Coprime p q) :
     ∃ a b : ℤ, Complex.exp (2 * Real.pi * Complex.I / ((p * q : ℕ) : ℂ)) =
       Complex.exp (2 * Real.pi * Complex.I / ((p * (p - 1) : ℕ) : ℂ)) ^ a *
@@ -31,6 +38,13 @@ theorem exp_div_mul_eq_zpow_mul_zpow {p q : ℕ} (hp : 2 ≤ p) (hq : 2 ≤ q) (
   field_simp
   linear_combination (-1 : ℂ) * h5
 
+/- English proof (translation)
+Establish `p0` using `B.host.g_prime 0`. Establish `p1` using `B.host.g_prime 1`. Take `⟨z₀, hz₀, e₀⟩` from `B.roots_Ks (B.host.g 0 * (B.host.g 0 - 1)) (by simp)`. Take `⟨z₁, hz₁, e₁⟩` from `B.roots_Ks (B.host.g 1 * (B.host.g 1 - 1)) (by simp)`. Take `⟨a, b, hab⟩` from `exp_div_mul_eq_zpow_mul_zpow p0.two_le p1.two_le ((Nat.coprime_primes p0 p1).2 B.host.g_ne)`.
+
+Establish `hmem : z₀ ^ a * z₁ ^ b ∈ B.Ks` using `mul_mem (zpow_mem hz₀ a) (zpow_mem hz₁ b)`. Establish `he : B.embLL (z₀ ^ a * z₁ ^ b) = Complex.exp (2 * Real.pi * Complex.I / ((B.host.g 0 * B.host.g 1 : ℕ) : ℂ))`. Rewrite using `[map_mul, map_zpow₀, map_zpow₀, e₀, e₁, hab]`. Establish `hne : B.host.g 0 * B.host.g 1 ≠ 0` using `mul_ne_zero p0.ne_zero p1.ne_zero`. Establish `hint : IsIntegral ℤ (B.embLL (z₀ ^ a * z₁ ^ b))`.
+
+Rewrite using `[he]`. Conclude with `(Complex.isPrimitiveRoot_exp _ hne).isIntegral (Nat.pos_of_ne_zero hne)`. Establish `hint' : IsIntegral ℤ (z₀ ^ a * z₁ ^ b)` using `(isIntegral_algHom_iff B.embLL.toIntAlgHom B.embLL.injective).1 hint`. Use `⟨⟨⟨z₀ ^ a * z₁ ^ b, hmem⟩, ?_⟩, he⟩` and prove the remaining obligations. Conclude with `(isIntegral_algHom_iff (B.Ks.val : B.Ks →+* B.LL).toIntAlgHom Subtype.val_injective).1 hint'`.
+-/
 theorem Base.exists_root_mul (B : Base) : ∃ y : B.O, B.embLL (B.OtoLL y) =
     Complex.exp (2 * Real.pi * Complex.I / ((B.host.g 0 * B.host.g 1 : ℕ) : ℂ)) := by
   have p0 := B.host.g_prime 0
@@ -52,6 +66,9 @@ theorem Base.exists_root_mul (B : Base) : ∃ y : B.O, B.embLL (B.OtoLL y) =
   refine ⟨⟨⟨z₀ ^ a * z₁ ^ b, hmem⟩, ?_⟩, he⟩
   exact (isIntegral_algHom_iff (B.Ks.val : B.Ks →+* B.LL).toIntAlgHom Subtype.val_injective).1 hint'
 
+/- English proof (translation)
+Introduce `X` and use `X.B.exists_root_mul`.
+-/
 theorem hermitianCodeWordStages_has_rootOfUnity : ∀ X : Stages, OZeta X.toD7 := fun X => X.B.exists_root_mul
 
 end GlobalTheory.Mem

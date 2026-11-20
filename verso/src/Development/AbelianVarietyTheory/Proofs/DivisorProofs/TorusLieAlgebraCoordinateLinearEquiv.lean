@@ -26,11 +26,17 @@ def valA {A : Type} [CommRing A] [Algebra R A] (t : specO R A ⟶ torus R r) (χ
   (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom
     (t.left.appTop.hom (charUnit (Spec (CommRingCat.of R)) (Fin r → ℤ) χ).val)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.splitTorusPointsEquiv_val]`. Both sides reduce to the same expression.
+-/
 theorem valA_eq {A : Type} [CommRing A] [Algebra R A] (t : specO R A ⟶ torus R r) (χ : Fin r → ℤ) :
     valA t χ = (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom
       (GlobalTheory.splitTorusPointsEquiv _ _ _ t (Multiplicative.ofAdd χ)).val := by
   rw [GlobalTheory.splitTorusPointsEquiv_val]; rfl
 
+/- English proof (translation)
+Establish `h` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f.toRingHom)`. Unfold `valA`. Rewrite using `[Over.comp_left, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Conclude with `congrArg (fun g => g.hom (t.left.appTop.hom (charUnit (Spec (CommRingCat.of R)) (Fin r → ℤ) χ).val)) h`.
+-/
 theorem valA_comp {A B : Type} [CommRing A] [Algebra R A] [CommRing B] [Algebra R B]
     (f : A →ₐ[R] B) (t : specO R A ⟶ torus R r) (χ : Fin r → ℤ) :
     valA (ptMap f ≫ t) χ = f (valA t χ) := by
@@ -39,18 +45,30 @@ theorem valA_comp {A B : Type} [CommRing A] [Algebra R A] [CommRing B] [Algebra 
   rw [Over.comp_left, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]
   exact congrArg (fun g => g.hom (t.left.appTop.hom (charUnit (Spec (CommRingCat.of R)) (Fin r → ℤ) χ).val)) h
 
+/- English proof (translation)
+Rewrite using `[valA_eq, map_one, MonoidHom.one_apply, Units.val_one, map_one]`.
+-/
 theorem valA_one {A : Type} [CommRing A] [Algebra R A] (χ : Fin r → ℤ) :
     valA (1 : specO R A ⟶ torus R r) χ = 1 := by
   rw [valA_eq, map_one, MonoidHom.one_apply, Units.val_one, map_one]
 
+/- English proof (translation)
+Rewrite using `[valA_eq, valA_eq, valA_eq, map_mul, MonoidHom.mul_apply, Units.val_mul, map_mul]`.
+-/
 theorem valA_mul {A : Type} [CommRing A] [Algebra R A] (s t : specO R A ⟶ torus R r) (χ : Fin r → ℤ) :
     valA (s * t) χ = valA s χ * valA t χ := by
   rw [valA_eq, valA_eq, valA_eq, map_mul, MonoidHom.mul_apply, Units.val_mul, map_mul]
 
+/- English proof (translation)
+Rewrite using `[valA_eq, valA_eq, valA_eq, ofAdd_add, map_mul, Units.val_mul, map_mul]`.
+-/
 theorem valA_add {A : Type} [CommRing A] [Algebra R A] (t : specO R A ⟶ torus R r) (χ ψ : Fin r → ℤ) :
     valA t (χ + ψ) = valA t χ * valA t ψ := by
   rw [valA_eq, valA_eq, valA_eq, ofAdd_add, map_mul, Units.val_mul, map_mul]
 
+/- English proof (translation)
+Apply `(GlobalTheory.splitTorusPointsEquiv _ _ _).injective` to reduce the goal to its premises. Use `MonoidHom.ext fun χ => Units.ext ?_` and prove the remaining obligations. Establish `e` using `h χ.toAdd`. Rewrite `e` using `[valA_eq, valA_eq]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv.injective e`.
+-/
 theorem valA_injective {A : Type} [CommRing A] [Algebra R A] {s t : specO R A ⟶ torus R r}
     (h : ∀ χ, valA s χ = valA t χ) : s = t := by
   apply (GlobalTheory.splitTorusPointsEquiv _ _ _).injective
@@ -59,10 +77,16 @@ theorem valA_injective {A : Type} [CommRing A] [Algebra R A] {s t : specO R A �
   rw [valA_eq, valA_eq] at e
   exact (Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv.injective e
 
+/- English proof (translation)
+Rewrite using `[← Hom.one_def]`. Conclude with `valA_one χ`.
+-/
 theorem valA_toUnit {A : Type} [CommRing A] [Algebra R A] (χ : Fin r → ℤ) :
     valA (toUnit (specO R A) ≫ η[torus R r]) χ = 1 := by
   rw [← Hom.one_def]; exact valA_one χ
 
+/- English proof (translation)
+Establish `h : valA (ptMap (TrivSqZeroExt.fstHom R R R) ≫ x.1) χ = valA (toUnit (specO R R) ≫ η[torus R r]) χ` using `congrArg (fun t => valA t χ) x.2`. Rewrite `h` using `[valA_comp, valA_toUnit]`. Conclude with `h`.
+-/
 theorem fst_val (x : LieG (torus R r)) (χ : Fin r → ℤ) : (valA x.1 χ).fst = 1 := by
   have h : valA (ptMap (TrivSqZeroExt.fstHom R R R) ≫ x.1) χ =
       valA (toUnit (specO R R) ≫ η[torus R r]) χ := congrArg (fun t => valA t χ) x.2
@@ -80,8 +104,16 @@ def dChar (x : LieG (torus R r)) : (Fin r → ℤ) →+ R where
   map_add' χ ψ := by
     rw [valA_add, DualNumber.snd_mul, fst_val, fst_val, _root_.one_mul, _root_.mul_one, add_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lieCoord_eq (x : LieG (torus R r)) (i : Fin r) : lieCoord x i = dChar x (Pi.single i 1) := rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Finset.univ_sum_single χ]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: (Pi.single i (χ i) : Fin r → ℤ) = χ i • Pi.single i 1`. Apply the tactic sequence `ext j; by_cases h : j = i <;> simp [Pi.single_apply, h]`.
+
+Rewrite using `[this, map_zsmul, zsmul_eq_mul, lieCoord_eq]`.
+-/
 theorem dChar_apply (x : LieG (torus R r)) (χ : Fin r → ℤ) :
     dChar x χ = ∑ i, (χ i : R) * lieCoord x i := by
   conv_lhs => rw [← Finset.univ_sum_single χ]
@@ -91,6 +123,9 @@ theorem dChar_apply (x : LieG (torus R r)) (χ : Fin r → ℤ) :
     ext j; by_cases h : j = i <;> simp [Pi.single_apply, h]
   rw [this, map_zsmul, zsmul_eq_mul, lieCoord_eq]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[fst_val]`. Rewrite using `[← dChar_apply]`. Simplify using `[dChar]`.
+-/
 theorem val_eq_of_lieCoord (x : LieG (torus R r)) (χ : Fin r → ℤ) :
     valA x.1 χ = TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (∑ i, (χ i : R) * lieCoord x i) := by
   ext
@@ -113,6 +148,9 @@ def pt (c : Fin r → R) : specO R (DualNumber R) ⟶ torus R r :=
     ((Units.map (Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom.toMonoidHom).comp
       (epsUnit.comp (AddMonoidHom.toMultiplicative (linForm c))))
 
+/- English proof (translation)
+Rewrite using `[valA_eq, pt, MulEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of (DualNumber R))).inv.hom _) = _`. Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id]`. Both sides reduce to the same expression.
+-/
 theorem valA_pt (c : Fin r → R) (χ : Fin r → ℤ) :
     valA (pt c) χ = TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (linForm c χ) := by
   rw [valA_eq, pt, MulEquiv.apply_symm_apply]
@@ -121,12 +159,22 @@ theorem valA_pt (c : Fin r → R) (χ : Fin r → ℤ) :
   rw [← CommRingCat.comp_apply, Iso.inv_hom_id]
   rfl
 
+/- English proof (translation)
+The claim follows from `valA_injective fun χ => by rw [valA_comp, valA_toUnit, valA_pt] simp`.
+-/
 theorem pt_mem (c : Fin r → R) :
     ptMap (TrivSqZeroExt.fstHom R R R) ≫ pt c = toUnit (specO R R) ≫ η[torus R r] :=
   valA_injective fun χ => by
     rw [valA_comp, valA_toUnit, valA_pt]
     simp
 
+/- English proof (translation)
+Use `⟨⟨fun x y h => ?_, fun c => ⟨⟨pt c, pt_mem c⟩, ?_⟩⟩, fun x y => ?_, fun a x => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (valA_injective fun χ => ?_)` and prove the remaining obligations. Rewrite using `[val_eq_of_lieCoord x, val_eq_of_lieCoord y, h]`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(valA (pt c) (Pi.single i 1)).snd = c i`.
+
+Rewrite using `[valA_pt]`. Simplify using `[linForm, Pi.single_apply]`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(valA (x.1 * y.1) (Pi.single i 1)).snd = (valA x.1 (Pi.single i 1)).snd + (valA y.1 (Pi.single i 1)).snd`. Rewrite using `[valA_mul, DualNumber.snd_mul, fst_val, fst_val, _root_.one_mul, _root_.mul_one, add_comm]`.
+
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(valA (ptMap (dualScale a) ≫ x.1) (Pi.single i 1)).snd = a * (valA x.1 (Pi.single i 1)).snd`. Rewrite using `[valA_comp]`. Simplify using `[dualScale]`.
+-/
 theorem lieCoord_bijective_add_smul (R : Type) [CommRing R] (r : ℕ) :
     Function.Bijective (lieCoord : LieG (torus R r) → Fin r → R) ∧
       (∀ x y : LieG (torus R r), lieCoord (lieAdd _ x y) = lieCoord x + lieCoord y) ∧

@@ -11,6 +11,9 @@ end GlobalTheory.KZ.CjLaws
 
 open Matrix in
 open scoped MatrixGroups TensorProduct in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.KZ.H3.cj`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 private lemma mul_eq_cj_mul_of_exists {m : Matrix (Fin 2) (Fin 2) ℤ} {δ : SL(2, ℤ)}
     (h : ∃ δ' : SL(2, ℤ), m * (δ : Matrix (Fin 2) (Fin 2) ℤ) = (δ' : Matrix (Fin 2) (Fin 2) ℤ) * m) :
     m * (δ : Matrix (Fin 2) (Fin 2) ℤ) =
@@ -21,6 +24,9 @@ private lemma mul_eq_cj_mul_of_exists {m : Matrix (Fin 2) (Fin 2) ℤ} {δ : SL(
 
 open Matrix in
 open scoped MatrixGroups TensorProduct in
+/- English proof (translation)
+Establish `h2 : δ₁ * m * adjugate m = δ₂ * m * adjugate m` using `by rw [h]`. Rewrite `h2` using `[Matrix.mul_assoc, Matrix.mul_assoc, mul_adjugate, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_one]`. Conclude with `smul_right_injective _ hm h2`.
+-/
 private lemma eq_of_mul_eq_mul_of_det_ne_zero {m δ₁ δ₂ : Matrix (Fin 2) (Fin 2) ℤ} (hm : m.det ≠ 0)
     (h : δ₁ * m = δ₂ * m) : δ₁ = δ₂ := by
   have h2 : δ₁ * m * adjugate m = δ₂ * m * adjugate m := by rw [h]
@@ -30,6 +36,21 @@ private lemma eq_of_mul_eq_mul_of_det_ne_zero {m δ₁ δ₂ : Matrix (Fin 2) (F
 
 open Matrix in
 open scoped MatrixGroups TensorProduct in
+/- English proof (translation)
+Use `set d := m.det with hd`. Establish `hd0 : d ≠ 0` using `hm.ne'`. Establish `hN : ((M * d.natAbs : ℕ) : ℤ) = (M : ℤ) * d`. Use `push_cast`. Rewrite using `[abs_of_pos hm]`.
+
+Establish `hdvd : ∀ i j, ((M : ℤ) * d) ∣ (δ : Matrix (Fin 2) (Fin 2) ℤ) i j - (1 : Matrix (Fin 2) (Fin 2) ℤ) i j`. Rewrite `hδ` using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨h00, h01, h10, h11⟩` from `hδ`. Introduce `i j`. Rewrite using `[← hN, ← ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`. Use `choose X hX using hdvd`. Use `set D : Matrix (Fin 2) (Fin 2) ℤ := 1 + (M : ℤ) • (m * Matrix.of X * adjugate m) with hD`. Establish `hδX : (δ : Matrix (Fin 2) (Fin 2) ℤ) = 1 + ((M : ℤ) * d) • Matrix.of X`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[← hX i j]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDm : D * m = m * (δ : Matrix (Fin 2) (Fin 2) ℤ)`. Rewrite using `[hD, hδX, Matrix.add_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_assoc, Matrix.mul_assoc, adjugate_mul, ← Matrix.mul_assoc, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul, smul_smul]`.
+
+Establish `hdetD : D.det = 1`. Establish `h` using `congrArg Matrix.det hDm`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.SpecialLinearGroup.det_coe, mul_one]`. Conclude with `mul_right_cancel₀ hd0 (by rw [h, one_mul])`. Establish `hex : ∃ δ' : SL(2, ℤ), m * (δ : Matrix (Fin 2) (Fin 2) ℤ) = (δ' : Matrix (Fin 2) (Fin 2) ℤ) * m` using `⟨⟨D, hdetD⟩, hDm.symm⟩`.
+
+Establish `h1` using `mul_eq_cj_mul_of_exists hex`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2 : (_root_.GlobalTheory.KZ.H3.cj m δ : Matrix (Fin 2) (Fin 2) ℤ) = D` using `eq_of_mul_eq_mul_of_det_ne_zero hd0 (by rw [← h1, hDm])`. Rewrite using `[CongruenceSubgroup.Gamma_mem, h2]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> simp only [hD, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul] <;>`.
+
+Apply the tactic sequence `push_cast <;> simp`.
+-/
 private lemma mul_eq_cj_mul_and_cj_mem_gamma (m : Matrix (Fin 2) (Fin 2) ℤ) (M : ℕ) (hm : 0 < m.det)
     (δ : SL(2, ℤ)) (hδ : δ ∈ CongruenceSubgroup.Gamma (M * m.det.natAbs)) :
     m * (δ : Matrix (Fin 2) (Fin 2) ℤ) =
@@ -75,6 +96,13 @@ private lemma mul_eq_cj_mul_and_cj_mem_gamma (m : Matrix (Fin 2) (Fin 2) ℤ) (M
 
 open Matrix in
 open scoped MatrixGroups TensorProduct in
+/- English proof (translation)
+Use `⟨mul_eq_cj_mul_and_cj_mem_gamma, fun γ δ => ?_, fun m δ δ' hm h => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ δ' : SL(2, ℤ), (γ : Matrix (Fin 2) (Fin 2) ℤ) * (δ : Matrix (Fin 2) (Fin 2) ℤ) = (δ' : Matrix (Fin 2) (Fin 2) ℤ) * γ` using `⟨γ * δ * γ⁻¹, by simp [Matrix.mul_assoc, Matrix.adjugate_mul]⟩`. Establish `h1` using `mul_eq_cj_mul_of_exists hex`. Apply `Subtype.ext` to reduce the goal to its premises. Use `eq_of_mul_eq_mul_of_det_ne_zero (m := (γ : Matrix (Fin 2) (Fin 2) ℤ)) (by simp) ?_` and prove the remaining obligations.
+
+Rewrite using `[← h1]`. Simplify using `[Matrix.mul_assoc, Matrix.adjugate_mul]`. Introduce `z hz`. Take `⟨-, hmul, -, -, hcoe, hhom⟩` from `_root_.GlobalTheory.KZ.mob_laws`. Establish `hδ : (0 : ℤ) < (δ : Matrix (Fin 2) (Fin 2) ℤ).det` using `by simp`.
+
+Establish `hδ' : (0 : ℤ) < (δ' : Matrix (Fin 2) (Fin 2) ℤ).det` using `by simp`. Rewrite using `[← hmul _ _ z hz, ← hmul _ _ z hz, ← hcoe, ← hcoe, ← hhom _ _ hm hδ, ← hhom _ _ hδ' hm, h]`.
+-/
 theorem _root_.GlobalTheory.KZ.cj_laws : (∀ (m : Matrix (Fin 2) (Fin 2) ℤ) (M : ℕ), 0 < m.det →
     ∀ δ ∈ CongruenceSubgroup.Gamma (M * m.det.natAbs),
       m * (δ : Matrix (Fin 2) (Fin 2) ℤ) = (_root_.GlobalTheory.KZ.H3.cj m δ : Matrix (Fin 2) (Fin 2) ℤ) * m ∧

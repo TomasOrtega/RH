@@ -13,6 +13,11 @@ namespace GlobalTheory.CompanionTheory.CTFin.Slice2
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(lev R r s g).val.map f = (lev S r s _).val`. Rewrite using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.val_emb₂]`. Use extensionality with `i j`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]`.
+
+Apply the tactic sequence `rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i with a | a <;>`. Apply the tactic sequence `rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j with b | b <;> simp <;> rfl`.
+-/
 theorem map_lev {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (g : GL (Fin r) R × GL (Fin s) R) :
     Matrix.GeneralLinearGroup.map f (lev R r s g) =
       lev S r s (Matrix.GeneralLinearGroup.map f g.1, Matrix.GeneralLinearGroup.map f g.2) := by
@@ -24,6 +29,9 @@ theorem map_lev {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (g : GL (
   rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i with a | a <;>
     rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j with b | b <;> simp <;> rfl
 
+/- English proof (translation)
+Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_lev, pInf_infGL, pInf_infGL, pInf_infGL]`. Rewrite using `[map_lev, pFin_infGL, pFin_infGL, pFin_infGL]`. Conclude with `map_one _`.
+-/
 theorem lev_infGL (a : GL (Fin r) (Cinf E)) (b : GL (Fin s) (Cinf E)) :
     lev (Ad E) r s (infGL E r a, infGL E s b) = infGL E (r + s) (lev (Cinf E) r s (a, b)) := by
   refine ga_ext ?_ ?_
@@ -31,6 +39,9 @@ theorem lev_infGL (a : GL (Fin r) (Cinf E)) (b : GL (Fin s) (Cinf E)) :
   · rw [map_lev, pFin_infGL, pFin_infGL, pFin_infGL]
     exact map_one _
 
+/- English proof (translation)
+Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_lev, pInf_finGL, pInf_finGL, pInf_finGL]`. Conclude with `map_one _`. Rewrite using `[map_lev, pFin_finGL, pFin_finGL, pFin_finGL]`.
+-/
 theorem lev_finGL (a : GL (Fin r) (Af E)) (b : GL (Fin s) (Af E)) :
     lev (Ad E) r s (finGL E r a, finGL E s b) = finGL E (r + s) (lev (Af E) r s (a, b)) := by
   refine ga_ext ?_ ?_
@@ -38,14 +49,25 @@ theorem lev_finGL (a : GL (Fin r) (Af E)) (b : GL (Fin s) (Af E)) :
     exact map_one _
   · rw [map_lev, pFin_finGL, pFin_finGL, pFin_finGL]
 
+/- English proof (translation)
+Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul, mul_one]`.
+-/
 theorem lev_split (R : Type) [CommRing R] (a : GL (Fin r) R) (b : GL (Fin s) R) :
     lev R r s (a, b) = lev R r s (1, b) * lev R r s (a, 1) := by
   rw [← map_mul, Prod.mk_mul_mk, one_mul, mul_one]
 
+/- English proof (translation)
+Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`.
+-/
 theorem lev_mul_right (R : Type) [CommRing R] (a : GL (Fin r) R) (b c : GL (Fin s) R) :
     lev R r s (a, b * c) = lev R r s (a, b) * lev R r s (1, c) := by
   rw [← map_mul, Prod.mk_mul_mk, mul_one]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.val_emb₂]`. Establish `e : ((Unitary.toUnits k)⁻¹).val = star (Unitary.toUnits k).val` using `rfl`. Use extensionality with `i j`. Simplify using `only [Matrix.star_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i with a | a <;>`.
+
+Apply the tactic sequence `rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j with b | b <;> simp [e, Matrix.one_apply, eq_comm] <;> split_ifs <;> simp`.
+-/
 theorem star_lev (k : Kinf E s) :
     star (lev (Cinf E) r s (1, Unitary.toUnits k)).val = (lev (Cinf E) r s (1, (Unitary.toUnits k)⁻¹)).val := by
   rw [GlobalTheory.SmGL.val_emb₂, GlobalTheory.SmGL.val_emb₂]
@@ -68,9 +90,17 @@ def levK : Kinf E s →* Kinf E (r + s) where
     change (lev (Cinf E) r s (1, Unitary.toUnits (k * l))).val = (lev (Cinf E) r s (1, Unitary.toUnits k)).val * (lev (Cinf E) r s (1, Unitary.toUnits l)).val
     rw [← Units.val_mul, ← map_mul, Prod.mk_mul_mk, map_mul, one_mul])
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem toUnits_levK (k : Kinf E s) : Unitary.toUnits (levK E r s k) = lev (Cinf E) r s (1, Unitary.toUnits k) :=
   Units.ext rfl
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.SmGL.val_emb₂, Matrix.reindex_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i with a | a <;>`. Break down `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j with b | b` into its components or cases.
+
+Conclude with `continuous_const`. Conclude with `continuous_const`. Conclude with `continuous_const`. Express the relevant statement in the definitionally equal form `Continuous fun k : Kinf E s => k.val a b`. Conclude with `(continuous_apply b).comp ((continuous_apply a).comp continuous_subtype_val)`.
+-/
 theorem continuous_levK : Continuous (levK E r s) := by
   refine Continuous.subtype_mk ?_ _
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -86,14 +116,23 @@ theorem continuous_levK : Continuous (levK E r s) := by
 def lev2 (R : Type) [CommRing R] (r s : ℕ) : GL (Fin s) R →* GL (Fin (r + s)) R :=
   (lev R r s).comp (MonoidHom.inr _ _)
 
+/- English proof (translation)
+Conclude with `((GlobalTheory.SmGL.continuous_leviEmb (Af E) (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)))).comp (GlobalTheory.SmGL.continuous_leviTwo (Af E))).comp (continuous_const.prodMk continuous_id)`.
+-/
 theorem continuous_lev2 : Continuous (lev2 (Af E) r s) := by
   exact ((GlobalTheory.SmGL.continuous_leviEmb (Af E) (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)))).comp
     (GlobalTheory.SmGL.continuous_leviTwo (Af E))).comp (continuous_const.prodMk continuous_id)
 
+/- English proof (translation)
+Rewrite using `[← lev_infGL, map_one]`.
+-/
 theorem lev_infGL_one (y : GL (Fin s) (Cinf E)) :
     lev (Ad E) r s (1, infGL E s y) = infGL E (r + s) (lev (Cinf E) r s (1, y)) := by
   rw [← lev_infGL, map_one]
 
+/- English proof (translation)
+Rewrite using `[← lev_finGL, map_one]`.
+-/
 theorem lev_finGL_one (k : GL (Fin s) (Af E)) :
     lev (Ad E) r s (1, finGL E s k) = finGL E (r + s) (lev (Af E) r s (1, k)) := by
   rw [← lev_finGL, map_one]
@@ -102,6 +141,11 @@ def blkL (x : Lie E s) : Lie E (r + s) :=
   toL (Matrix.reindex (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)) (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s))
     (Matrix.fromBlocks 1 0 0 (Matrix.of x)))
 
+/- English proof (translation)
+Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [blkL, Matrix.reindex_apply, Matrix.submatrix_apply]`. Express the relevant statement in the definitionally equal form `ContDiff ℝ ∞ fun x : Lie E s => Matrix.fromBlocks 1 0 0 (Matrix.of x) ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i) ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j)`. Apply the tactic sequence `rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i with a | a <;>`. Break down `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j with b | b` into its components or cases.
+
+Conclude with `contDiff_const`. Conclude with `contDiff_const`. Conclude with `contDiff_const`. Conclude with `(contDiff_apply ℝ _ b).comp (contDiff_apply ℝ _ a)`.
+-/
 theorem contDiff_blkL : ContDiff ℝ ∞ (blkL (E := E) (r := r) (s := s)) := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_
   simp only [blkL, Matrix.reindex_apply, Matrix.submatrix_apply]
@@ -114,11 +158,21 @@ theorem contDiff_blkL : ContDiff ℝ ∞ (blkL (E := E) (r := r) (s := s)) := by
   · exact contDiff_const
   · exact (contDiff_apply ℝ _ b).comp (contDiff_apply ℝ _ a)
 
+/- English proof (translation)
+Simplify using `only [blkL]`. Rewrite using `[GlobalTheory.SmGL.val_emb₂]`. Both sides reduce to the same expression.
+-/
 theorem blkL_val (y : GL (Fin s) (Cinf E)) : blkL (r := r) (toL y.val) = toL (lev (Cinf E) r s (1, y)).val := by
   simp only [blkL]
   rw [GlobalTheory.SmGL.val_emb₂]
   rfl
 
+/- English proof (translation)
+Introduce `g`. Use `((F.2 (lev (Ad E) r s (1, g))).comp contDiff_blkL.contDiffOn ?_).congr ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨u, hu⟩` from `id hx`. Establish `e : x = toL u.val` using `hu.symm`.
+
+Substitute `e` using the available equality. Rewrite using `[blkL_val]`. Conclude with `val_mem_invSet _`. Introduce `x hx`. Take `⟨u, hu⟩` from `id hx`.
+
+Establish `e : x = toL u.val` using `hu.symm`. Substitute `e` using the available equality. Rewrite using `[chart_val, Function.comp_apply, blkL_val, chart_val, lev_mul_right, ← lev_infGL_one]`.
+-/
 theorem res_mem_Sm (F : Sm E (r + s)) : (fun m : GA E s => F.1 (lev (Ad E) r s (1, m))) ∈ Sm E s := by
   intro g
   refine ((F.2 (lev (Ad E) r s (1, g))).comp contDiff_blkL.contDiffOn ?_).congr ?_
@@ -134,6 +188,11 @@ theorem res_mem_Sm (F : Sm E (r + s)) : (fun m : GA E s => F.1 (lev (Ad E) r s (
     subst e
     rw [chart_val, Function.comp_apply, blkL_val, chart_val, lev_mul_right, ← lev_infGL_one]
 
+/- English proof (translation)
+Establish `hle : Zalg E a ≤ Subalgebra.centralizer ℂ {rt E a h}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce `y hy`.
+
+Take `rfl` from `Set.mem_singleton_iff.1 hy`. Rewrite using `[← infGL_mul_finGL h, map_mul]`. Conclude with `((GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _).mul_right (commute_cap_finRep τ u _)).symm.eq`. Conclude with `(Subalgebra.mem_centralizer_iff ℂ).1 (hle hz) _ rfl |>.symm`.
+-/
 theorem Zalg_comm_rt {a : ℕ} (h : GA E a) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) : Commute z (rt E a h) := by
   have hle : Zalg E a ≤ Subalgebra.centralizer ℂ {rt E a h} := by
     refine Algebra.adjoin_le ?_
@@ -145,6 +204,13 @@ theorem Zalg_comm_rt {a : ℕ} (h : GA E a) {z : Module.End ℂ (Sm E a)} (hz : 
     exact ((GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _).mul_right (commute_cap_finRep τ u _)).symm.eq
   exact (Subalgebra.mem_centralizer_iff ℂ).1 (hle hz) _ rfl |>.symm
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `GlobalTheory.CompanionTheory.CTFin.UniSol.exists_finset_separating A`. Set `ev : A →ₗ[ℂ] (S → ℂ)` to `LinearMap.pi fun κ => (LinearMap.proj κ.1 : (K → ℂ) →ₗ[ℂ] ℂ) ∘ₗ A.subtype`. Establish `hinj : LinearMap.ker ev = ⊥`. Use `LinearMap.ker_eq_bot'.2 fun c hc => Subtype.ext (hS c.1 c.2 fun κ hκ => ?_)` and prove the remaining obligations. Conclude with `congrFun hc ⟨κ, hκ⟩`.
+
+Take `⟨P, hP⟩` from `ev.exists_leftInverse_of_injective hinj`. Use `⟨S, fun k κ => (P (Pi.single κ 1)).1 k, fun c hc k => ?_⟩` and prove the remaining obligations. Establish `h1 : P (ev ⟨c, hc⟩) = ⟨c, hc⟩` using `LinearMap.congr_fun hP _`. Establish `h2 : ev ⟨c, hc⟩ = ∑ κ : S, c κ.1 • (Pi.single κ 1 : S → ℂ)`. Use function extensionality and compare the values at `κ'`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply, ev]`. Establish `h3` using `congrArg (fun x : A => x.1 k) h1`. Simplify using `only [h2, map_sum, map_smul] at h3`. Rewrite using `[← h3]`. Simplify using `[mul_comm]`.
+-/
 theorem exists_interp {K : Type} (A : Submodule ℂ (K → ℂ)) [FiniteDimensional ℂ A] :
     ∃ (S : Finset K) (lam : K → S → ℂ), ∀ c ∈ A, ∀ k, c k = ∑ κ : S, lam k κ * c κ.1 := by
   classical
@@ -164,6 +230,13 @@ theorem exists_interp {K : Type} (A : Submodule ℂ (K → ℂ)) [FiniteDimensio
   rw [← h3]
   simp [mul_comm]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.CompanionTheory.CTFin.UniSol.finiteDimensional_coeffSpan ρ`. Take `⟨S, lam, key⟩` from `exists_interp (GlobalTheory.Published.AutFin.coeffSpan ρ)`. Establish `hle : Submodule.span ℂ (Set.range fun k => cptRep E a k φ) ≤ Submodule.span ℂ ((fun κ : Kinf E a => cptRep E a κ φ) '' (S : Set (Kinf E a)))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Establish `e : cptRep E a k φ = ∑ κ : S, lam k κ • cptRep E a κ.1 φ`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `h1` using `key _ (h g) k`. Rewrite using `[AddSubmonoidClass.coe_finset_sum, Finset.sum_apply]`. Conclude with `h1`.
+
+Use `beta_reduce`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun κ _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨κ.1, κ.2, rfl⟩)`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ ((fun κ : Kinf E a => cptRep E a κ φ) '' (S : Set (Kinf E a)))) := FiniteDimensional.span_of_finite ℂ (S.finite_toSet.image _)`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem kfin_of_coeff {a : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (ρ : Representation ℂ (Kinf E a) W) (φ : Sm E a)
     (h : ∀ g : GA E a, (fun k : Kinf E a => (cptRep E a k φ).1 g) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ) :
@@ -187,6 +260,13 @@ theorem kfin_of_coeff {a : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] [Fini
     FiniteDimensional.span_of_finite ℂ (S.finite_toSet.image _)
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Take `⟨-, V, hV, hz⟩` from `hJ`. Set `ev : Module.End ℂ (Sm E a) →ₗ[ℂ] Sm E a` to `LinearMap.applyₗ φ`. Establish `hker : Submodule.span ℂ {y | ∃ x ∈ Zalg E a, ∃ j ∈ J, y = x * j} ≤ LinearMap.ker ev`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, j, hj, rfl⟩`.
+
+Express the relevant statement in the definitionally equal form `x (j φ) = 0`. Rewrite using `[h j hj, map_zero]`. Use `Submodule.finiteDimensional_of_le (S₂ := V.map ev) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hzZ, rfl⟩`. Take `⟨v, hv, y, hy, rfl⟩` from `Submodule.mem_sup.1 (hz z hzZ)`.
+
+Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Establish `: y φ = 0` using `hker hy`. Express the relevant statement in the definitionally equal form `v φ = v φ + y φ`. Rewrite using `[this, add_zero]`.
+-/
 theorem zfin_of_cofin {a : ℕ} {J : Set (Module.End ℂ (Sm E a))} (hJ : Cofin J) (φ : Sm E a) (h : ∀ z ∈ J, z φ = 0) :
     FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)) := by
   obtain ⟨-, V, hV, hz⟩ := hJ
@@ -204,6 +284,15 @@ theorem zfin_of_cofin {a : ℕ} {J : Set (Module.End ℂ (Sm E a))} (hJ : Cofin 
   change v φ = v φ + y φ
   rw [this, add_zero]
 
+/- English proof (translation)
+Establish `n0` using `norm_nonneg (toL y.val)`. Establish `h1 : ‖(1 : Cinf E)‖ ≤ 1` using `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun _ => by simp`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(lev (Cinf E) r s (1, y)).val i j‖ ≤ _`. Rewrite using `[GlobalTheory.SmGL.val_emb₂]`.
+
+Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases (GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm i with a | a <;>`. Break down `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).symm j with b | b` into its components or cases. Simplify using `only [Matrix.fromBlocks_apply₁₁, Units.val_one, Matrix.one_apply] split_ifs`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `only [norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, norm_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Matrix.fromBlocks_apply₂₂]`. Use `(norm_le_pi_norm (toL y.val a) b).trans (norm_le_pi_norm (toL y.val) a)` as an intermediate fact. Use `le_trans this ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_toL_lev (y : GL (Fin s) (Cinf E)) :
     ‖toL (lev (Cinf E) r s (1, y)).val‖ ≤ 1 + ‖toL y.val‖ := by
   have n0 := norm_nonneg (toL y.val)
@@ -225,6 +314,11 @@ theorem norm_toL_lev (y : GL (Fin s) (Cinf E)) :
     refine le_trans this ?_
     linarith
 
+/- English proof (translation)
+Establish `e : (lev (Cinf E) r s (1, y))⁻¹ = lev (Cinf E) r s (1, y⁻¹)`. Rewrite using `[← map_inv, Prod.inv_mk, inv_one]`. Establish `h1` using `norm_toL_lev (r := r) y`. Establish `h2` using `norm_toL_lev (r := r) y⁻¹`. Establish `n1` using `norm_nonneg (toL y.val)`.
+
+Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Unfold `height`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem height_lev_le (y : GL (Fin s) (Cinf E)) : height (lev (Cinf E) r s (1, y)) ≤ 3 * height y := by
   have e : (lev (Cinf E) r s (1, y))⁻¹ = lev (Cinf E) r s (1, y⁻¹) := by
     rw [← map_inv, Prod.inv_mk, inv_one]
@@ -238,6 +332,13 @@ theorem height_lev_le (y : GL (Fin s) (Cinf E)) : height (lev (Cinf E) r s (1, y
 
 def bnd {a : ℕ} (c : GL (Fin a) (Cinf E)) : ℝ := 1 + ‖rmul (toL c.val)‖ + ‖lmul (toL (c⁻¹).val)‖
 
+/- English proof (translation)
+Establish `h1 : toL (y * c).val = rmul (toL c.val) (toL y.val)` using `rfl`. Establish `h2 : toL ((y * c)⁻¹).val = lmul (toL (c⁻¹).val) (toL (y⁻¹).val)`. Rewrite using `[_root_.mul_inv_rev]`. Both sides reduce to the same expression. Establish `e1` using `(rmul (toL c.val)).le_opNorm (toL y.val)`.
+
+Establish `e2` using `(lmul (toL (c⁻¹).val)).le_opNorm (toL (y⁻¹).val)`. Establish `n1` using `norm_nonneg (toL y.val)`. Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `n3` using `norm_nonneg (rmul (toL c.val))`. Establish `n4` using `norm_nonneg (lmul (toL (c⁻¹).val))`.
+
+Unfold `height bnd`. Rewrite using `[h1, h2]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem height_mul_le {a : ℕ} (c y : GL (Fin a) (Cinf E)) : height (y * c) ≤ bnd c * height y := by
   have h1 : toL (y * c).val = rmul (toL c.val) (toL y.val) := rfl
   have h2 : toL ((y * c)⁻¹).val = lmul (toL (c⁻¹).val) (toL (y⁻¹).val) := by
@@ -252,6 +353,11 @@ theorem height_mul_le {a : ℕ} (c y : GL (Fin a) (Cinf E)) : height (y * c) ≤
   rw [h1, h2]
   nlinarith
 
+/- English proof (translation)
+Set `T : (Kinf E (r + s) → ℂ) →ₗ[ℂ] (Kinf E s → ℂ)` to `LinearMap.funLeft ℂ ℂ (fun k => levK E r s k * κ)`. Establish `hle : GlobalTheory.Published.AutFin.coeffSpan ρ ≤ (GlobalTheory.Published.AutFin.coeffSpan (ρ.comp (levK E r s))).comap T`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ℓ, w, rfl⟩`. Use `Submodule.subset_span ⟨ℓ, ρ κ w, funext fun k => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ℓ (ρ (levK E r s k * κ) w) = ℓ (ρ (levK E r s k) (ρ κ w))`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `hle hc`.
+-/
 theorem coeff_comp {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Kinf E (r + s)) W)
     (κ : Kinf E (r + s)) {c : Kinf E (r + s) → ℂ} (hc : c ∈ GlobalTheory.Published.AutFin.coeffSpan ρ) :
     (fun k => c (levK E r s k * κ)) ∈ GlobalTheory.Published.AutFin.coeffSpan (ρ.comp (levK E r s)) := by
@@ -270,12 +376,18 @@ def hh (m₁ : GA E r) (t : GL (Fin (r + s)) (Af E)) (κ : Kinf E (r + s)) : GA 
 def sl (F : Sm E (r + s)) (m₁ : GA E r) (t : GL (Fin (r + s)) (Af E)) (κ : Kinf E (r + s)) : Sm E s :=
   ⟨fun m => (rt E (r + s) (hh m₁ t κ) F).1 (lev (Ad E) r s (1, m)), res_mem_Sm _⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `F.1 (lev (Ad E) r s (1, m) * hh m₁ t κ) = _`. Rewrite using `[lev_split (Ad E) m₁ m, hh]`. Simplify using `only [mul_assoc]`.
+-/
 theorem sl_apply (F : Sm E (r + s)) (m₁ : GA E r) (t : GL (Fin (r + s)) (Af E)) (κ : Kinf E (r + s)) (m : GA E s) :
     (sl F m₁ t κ).1 m = F.1 (lev (Ad E) r s (m₁, m) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ)) := by
   change F.1 (lev (Ad E) r s (1, m) * hh m₁ t κ) = _
   rw [lev_split (Ad E) m₁ m, hh]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[sl_apply, lev_mul_right, lev_infGL_one, map_mul, mul_assoc (lev (Ad E) r s (m₁, g)), infGL_comm]`. Simplify using `only [mul_assoc]`.
+-/
 theorem sl_inf (F : Sm E (r + s)) (m₁ : GA E r) (t : GL (Fin (r + s)) (Af E)) (κ : Kinf E (r + s)) (g : GA E s)
     (y : GL (Fin s) (Cinf E)) :
     (sl F m₁ t κ).1 (g * infGL E s y) = F.1 (lev (Ad E) r s (m₁, g) * finGL E (r + s) t *
@@ -283,6 +395,11 @@ theorem sl_inf (F : Sm E (r + s)) (m₁ : GA E r) (t : GL (Fin (r + s)) (Af E)) 
   rw [sl_apply, lev_mul_right, lev_infGL_one, map_mul, mul_assoc (lev (Ad E) r s (m₁, g)), infGL_comm]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[sl_apply, sl_apply]`. Establish `e : lev (Ad E) r s (m₁, ratGL E s γ * g) = lev (Ad E) r s (ratGL E r 1, ratGL E s γ) * lev (Ad E) r s (m₁, g)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, map_one, one_mul]`. Rewrite using `[e]`. Simplify using `only [mul_assoc]`.
+
+Conclude with `a2 (1, γ) _`.
+-/
 theorem sl_left (F : Sm E (r + s))
     (a2 : ∀ (γ : GL (Fin r) E × GL (Fin s) E) (g : GA E (r + s)),
       F.1 (lev (Ad E) r s (ratGL E r γ.1, ratGL E s γ.2) * g) = F.1 g)
@@ -301,12 +418,24 @@ variable (r) in
 def L₂ (L : Subgroup (GL (Fin (r + s)) (Af E))) (t : GL (Fin (r + s)) (Af E)) : Subgroup (GL (Fin s) (Af E)) :=
   L.comap ((MulAut.conj t⁻¹).toMonoidHom.comp (lev2 (Af E) r s))
 
+/- English proof (translation)
+Establish `hc : Continuous fun k : GL (Fin s) (Af E) => t⁻¹ * lev2 (Af E) r s k * t⁻¹⁻¹` using `(continuous_const.mul continuous_lev2).mul continuous_const`. Conclude with `hL.preimage hc`.
+-/
 theorem isOpen_L₂ {L : Subgroup (GL (Fin (r + s)) (Af E))} (hL : IsOpen (L : Set (GL (Fin (r + s)) (Af E))))
     (t : GL (Fin (r + s)) (Af E)) : IsOpen (L₂ r L t : Set (GL (Fin s) (Af E))) := by
   have hc : Continuous fun k : GL (Fin s) (Af E) => t⁻¹ * lev2 (Af E) r s k * t⁻¹⁻¹ :=
     (continuous_const.mul continuous_lev2).mul continuous_const
   exact hL.preimage hc
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(sl F m₁ t κ).1 (g * finGL E s k) = _`. Rewrite using `[sl_apply, sl_apply]`. Use `set ℓ := t⁻¹ * lev2 (Af E) r s k * t with hℓ`. Establish `hmem : ℓ ∈ L`.
+
+Establish `: t⁻¹ * lev2 (Af E) r s k * t⁻¹⁻¹ ∈ L` using `hk`. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `h` using `congrFun (congrArg Subtype.val (a3 ℓ hmem)) (lev (Ad E) r s (m₁, g) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ))`. Express the relevant statement in the definitionally equal form `F.1 (_ * finGL E (r + s) ℓ) = _ at h`. Establish `e0 : t * ℓ = lev (Af E) r s (1, k) * t`.
+
+Rewrite using `[hℓ]`. Express the relevant statement in the definitionally equal form `t * (t⁻¹ * lev (Af E) r s (1, k) * t) = _`. Use `group`. Establish `e1 : finGL E (r + s) t * finGL E (r + s) ℓ = finGL E (r + s) (lev (Af E) r s (1, k)) * finGL E (r + s) t`. Rewrite using `[← map_mul, ← map_mul, e0]`.
+
+Establish `e2 : lev (Ad E) r s (m₁, g) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ) * finGL E (r + s) ℓ = lev (Ad E) r s (m₁, g) * (finGL E (r + s) t * finGL E (r + s) ℓ) * infGL E (r + s) (Unitary.toUnits κ)`. Rewrite using `[mul_assoc _ (infGL E (r + s) _), infGL_comm]`. Simplify using `only [mul_assoc]`. Rewrite using `[← h, e2, e1, lev_mul_right, lev_finGL_one]`. Simplify using `only [mul_assoc]`.
+-/
 theorem sl_level (F : Sm E (r + s)) {L : Subgroup (GL (Fin (r + s)) (Af E))}
     (a3 : ∀ k ∈ L, finRep E (r + s) k F = F) (m₁ : GA E r) (t : GL (Fin (r + s)) (Af E)) (κ : Kinf E (r + s))
     (k : GL (Fin s) (Af E)) (hk : k ∈ L₂ r L t) : finRep E s k (sl F m₁ t κ) = sl F m₁ t κ := by
@@ -333,6 +462,11 @@ theorem sl_level (F : Sm E (r + s)) {L : Subgroup (GL (Fin (r + s)) (Af E))}
   rw [← h, e2, e1, lev_mul_right, lev_finGL_one]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Use `coeff_comp ρ κ (a4 (lev (Ad E) r s (m₁, g) * finGL E (r + s) t)) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `(sl F m₁ t κ).1 (g * infGL E s (Unitary.toUnits k)) = F.1 (lev (Ad E) r s (m₁, g) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits (levK E r s k * κ)))`. Establish `e : Unitary.toUnits (levK E r s k * κ) = lev (Cinf E) r s (1, Unitary.toUnits k) * Unitary.toUnits κ`. Rewrite using `[map_mul, toUnits_levK]`.
+
+Rewrite using `[sl_inf, e]`.
+-/
 theorem sl_coeff {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ (Kinf E (r + s)) W) (F : Sm E (r + s))
     (a4 : ∀ g : GA E (r + s), (fun k : Kinf E (r + s) => (cptRep E (r + s) k F).1 g) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ)
     (m₁ : GA E r) (t : GL (Fin (r + s)) (Af E)) (κ : Kinf E (r + s)) (g : GA E s) :
@@ -345,6 +479,15 @@ theorem sl_coeff {W : Type} [AddCommGroup W] [Module ℂ W] (ρ : Representation
     rw [map_mul, toUnits_levK]
   rw [sl_inf, e]
 
+/- English proof (translation)
+Take `⟨C, N, h⟩` from `a5 (lev (Ad E) r s (m₁, g) * finGL E (r + s) t)`. Use `set c := bnd (Unitary.toUnits κ) with hc`. Establish `c0 : 0 ≤ c`. Rewrite using `[hc, bnd]`. Check the signs of the components of the expression.
+
+Use `⟨|C| * (c * 3) ^ N, N, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[sl_inf]`. Establish `hy0 : 0 ≤ height y` using `zero_le_one.trans (one_le_height y)`. Establish `h0 : 0 ≤ height (lev (Cinf E) r s (1, y) * Unitary.toUnits κ)` using `zero_le_one.trans (one_le_height _)`. Establish `h1 : height (lev (Cinf E) r s (1, y) * Unitary.toUnits κ) ≤ c * 3 * height y`.
+
+Use `(height_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (height_lev_le y) c0`. Use `(h _).trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg h0 N)).trans ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h0 h1 N) (abs_nonneg C)`.
+-/
 theorem sl_growth (F : Sm E (r + s))
     (a5 : ∀ g : GA E (r + s), ∃ (C : ℝ) (N : ℕ), ∀ y, ‖F.1 (g * infGL E (r + s) y)‖ ≤ C * height y ^ N)
     (m₁ : GA E r) (t : GL (Fin (r + s)) (Af E)) (κ : Kinf E (r + s)) (g : GA E s) :
@@ -365,6 +508,13 @@ theorem sl_growth (F : Sm E (r + s))
   rw [mul_assoc, ← mul_pow]
   exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h0 h1 N) (abs_nonneg C)
 
+/- English proof (translation)
+Introduce `E _ _ _ r s L hL W _ _ _ ρ hρ J hJ J₂ hJ₂ H t κ`. Use `⟨L₂ r L t, ρ.comp (levK E r s), isOpen_L₂ hL t, fun ℓ w => (hρ ℓ w).comp continuous_levK, ?_⟩` and prove the remaining obligations. Introduce and unpack `F ⟨a1, a2, a3, a4, a5, a6⟩ m₁`. Establish `hlev` using `sl_level F a3 m₁ t κ`. Establish `hco` using `sl_coeff ρ F a4 m₁ t κ`.
+
+Establish `hkill : ∀ z ∈ J₂, z (sl F m₁ t κ) = 0`. Use `H (rt E (r + s) (hh m₁ t κ) F) (fun x g => ?_) (fun z hz => ?_) _ (fun m => rfl)` and prove the remaining obligations. Simplify using `only [rt_apply, mul_assoc]`. Conclude with `a1 x _`. Establish `h` using `LinearMap.congr_fun (Zalg_comm_rt (hh m₁ t κ) (hJ.1 hz)).eq F`.
+
+Rewrite `h` using `[Module.End.mul_apply, Module.End.mul_apply, a6 z hz, map_zero]`. Conclude with `h`. Use `⟨sl F m₁ t κ, ⟨⟨fun γ g => sl_left F a2 m₁ t κ γ g, ?_, kfin_of_coeff _ _ hco, zfin_of_cofin hJ₂ _ hkill, sl_growth F a5 m₁ t κ⟩, hlev, hco, hkill⟩, sl_apply F m₁ t κ⟩` and prove the remaining obligations. Conclude with `isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset ((isOpen_L₂ hL t).mem_nhds (one_mem _)) hlev)`.
+-/
 theorem slice2 : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ)
     (L : Subgroup (GL (Fin (r + s)) (Af E))), IsOpen (L : Set (GL (Fin (r + s)) (Af E))) →
     ∀ (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ (Kinf E (r + s)) W),

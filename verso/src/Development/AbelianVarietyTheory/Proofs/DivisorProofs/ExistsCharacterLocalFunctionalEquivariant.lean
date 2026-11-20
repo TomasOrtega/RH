@@ -25,6 +25,39 @@ open scoped Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT ι hι`. Establish `hcm : IsCMExt F E σ` using `hT.base.cm`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `skew : ∀ i j, σ (G.W.J j i) = algebraMap F E (-1) * G.W.J i j` using `fun i j => by`. Rewrite using `[map_neg, map_one, neg_one_mul]`.
+
+Conclude with `hT.geo.hW.skew i j`. Establish `hdetW : IsUnit (G.W.J.map B.τ₁).det` using `GlobalTheory.SplitUnitLift.isUnit_det_of_cartan G.W.J B.τ₁ (B.emb w).1 Complex.I Complex.I_ne_zero (G.W.θ w) (hT.geo.hW.cartan w)`. Use `set L := GlobalTheory.SplitUnitLift.liftU hcm B.τ₁ G.W.J (-1) skew hdetW with hLdef`. Establish `hLmem : ∀ x, L x ∈ UAt σ G.W (evFin F B.v₁)` using `fun x => GlobalTheory.SplitUnitLift.liftU_mem_UAt hcm B.τ₁ G.W (-1) skew hdetW x`. Establish `hLt : ∀ x, (mat (L x)).map (piW B.τ₁) = x.val` using `fun x => GlobalTheory.SplitUnitLift.liftU_piW hcm B.τ₁ G.W.J (-1) skew hdetW x`.
+
+Establish `hone : (1 : UA σ G.V'.J) ∈ UAt σ G.V' (evFin F B.v₁)` using `fun u _ => by simp [mat]`. Take `⟨hEx, -, -⟩` from `GlobalTheory.T.theta_action_exists hP F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' G.q (a' - G.q) (a + a' - (G.p + G.q)) (G.p + G.q) (GlobalTheory.ThK.Inhab.pairV' hT) B.v₁`. Establish `hpres` using `(GlobalTheory.WeilM.IsUWeilPair.isUSplitting hT.weil').pres`. Establish `hex : ∀ x : GL (Fin (a + a')) (Fv F B.v₁), ∃ c : ℂ, ∀ φ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁), ∀ φ₁ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁), Acts (evFin F B.v₁) (om' (1, L x)) φ φ₁ → ∀ Y, ι φ₁ Y = c * ι φ (Y * x.val)`. Introduce `x`.
+
+Take `⟨S, hS, hlin, hcov, -⟩` from `GlobalTheory.WeilTransferW.local_weil_operator_second_space hP F E σ B a a' G X om om' hT B.v₁ (L x) (hLmem x)`. Take `⟨c, hc⟩` from `GlobalTheory.WeilTransferW.linBar_right_mul F E σ B a a' G X om om' hT B.v₁ B.τ₁ (L x) x (hLmem x) (hLt x) (GlobalTheory.SplitUnitLift.liftU_piW_comp hcm B.τ₁ G.W.J (-1) skew hdetW x) S (fun φ hφ => (hS φ hφ).1) hlin hcov ι hι`. Use `⟨c, fun φ hφ φ₁ hφ₁ hA Y => ?_⟩` and prove the remaining obligations. Establish `e : φ₁ = S φ` using `(hEx 1 hone (L x) (hLmem x) φ hφ).unique ⟨hφ₁, hA⟩ (hS φ hφ)`. Rewrite using `[e, hc φ hφ]`.
+
+Both sides reduce to the same expression. Use `choose c hrel using hex`. Establish `hvac` using `hT.geo.hM'.vac B.v₁`. Use `set φv := G.M'.vac B.v₁`. Establish `hφv : φv ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F B.v₁)` using `hvac.1`.
+
+Establish `hιv : ι φv ≠ 0` using `fun h0 => hvac.2.1 (hι.bij.injOn hφv (Submodule.zero_mem _) (by rw [h0, map_zero]))`. Take `⟨Y₀, hY₀⟩` from `Function.ne_iff.mp hιv`. Establish `hmul : ∀ x y, c (x * y) = c x * c y`. Introduce `x y`. Take `⟨φ₂, ⟨hφ₂, hA₂⟩, -⟩` from `hEx 1 hone (L y) (hLmem y) φv hφv`.
+
+Take `⟨φ₃, ⟨hφ₃, hA₃⟩, -⟩` from `hEx 1 hone (L x) (hLmem x) φ₂ hφ₂`. Establish `hA : Acts (evFin F B.v₁) (om' (1, L (x * y))) φv φ₃`. Establish `e : ((1, L (x * y)) : UA σ G.V'.J × UA σ G.W.J) = (1, L x) * (1, L y)`. Rewrite using `[Prod.mk_mul_mk, map_mul, one_mul]`. Rewrite using `[e, map_mul]`.
+
+Introduce `r hr`. Establish `h2 : Rest (evFin F B.v₁) φ₂ r` using `⟨hr.1, by rw [← hA₂ r hr]; exact hpres _ _ hr.2⟩`. Rewrite using `[Module.End.mul_apply, hA₂ r hr, hA₃ r h2]`. Establish `e1` using `hrel (x * y) φv hφv φ₃ hφ₃ hA (Y₀ * ((x * y)⁻¹).val)`. Establish `e2` using `hrel x φ₂ hφ₂ φ₃ hφ₃ hA₃ (Y₀ * ((x * y)⁻¹).val)`.
+
+Establish `e3` using `hrel y φv hφv φ₂ hφ₂ hA₂ (Y₀ * (y⁻¹).val)`. Establish `k1 : Y₀ * ((x * y)⁻¹).val * (x * y).val = Y₀`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Establish `k2 : Y₀ * ((x * y)⁻¹).val * x.val = Y₀ * (y⁻¹).val`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_rev, inv_mul_cancel_right]`.
+
+Establish `k3 : Y₀ * (y⁻¹).val * y.val = Y₀`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Rewrite `e1` using `[k1]`. Rewrite `e2` using `[k2]`. Rewrite `e3` using `[k3]`.
+
+Rewrite `e1` using `[e2, e3]`. Conclude with `mul_right_cancel₀ hY₀ (e1.symm.trans (mul_assoc _ _ _).symm)`. Establish `hc1 : c 1 = 1`. Establish `hA : Acts (evFin F B.v₁) (om' (1, L 1)) φv φv`. Rewrite using `[map_one, show ((1 : UA σ G.V'.J), (1 : UA σ G.W.J)) = 1 from rfl, map_one]`.
+
+Introduce `r _`. Both sides reduce to the same expression. Establish `e` using `hrel 1 φv hφv φv hφv hA Y₀`. Rewrite `e` using `[Units.val_one, Matrix.mul_one]`. Conclude with `(mul_eq_right₀ hY₀).mp e.symm`.
+
+Set `cH : GL (Fin (a + a')) (Fv F B.v₁) →* ℂ` to `⟨⟨c, hc1⟩, hmul⟩`. Take `⟨χ, hχ⟩` from `GlobalTheory.T.glCharacter_factors_through_det_of_two_ne_zero (GlobalTheory.LocalUnitSubgroupClosure.two_ne_zero_Fv B.v₁) cH.toHomUnits`. Establish `hcχ : ∀ x, c x = (χ (Matrix.GeneralLinearGroup.det x) : ℂ)` using `fun x => by rw [← hχ x]; rfl`. Use `⟨χ, fun h hh => ?_⟩` and prove the remaining obligations. Use `set g := GlobalTheory.LocalUnitSubgroupClosure.cmpGL B.τ₁ h with hg`.
+
+Establish `hgv : (mat h).map (piW B.τ₁) = g.val` using `(GlobalTheory.LocalUnitSubgroupClosure.cmpGL_val B.τ₁ h).symm`. Establish `hLg : L g = h` using `GlobalTheory.UnitaryInjAtPlace.eq_of_piW_eq F E σ B a a' G X om om' hT B.v₁ hT.chars.good B.τ₁ _ (hLmem g) _ hh (by rw [hLt, hgv])`. Establish `hr` using `hrel g`. Rewrite `hr` using `[hLg]`. Rewrite using `[hgv]`.
+
+Use `⟨⟨c g, fun φ hφ φ₁ hφ₁ hA => funext fun Y => hr φ hφ φ₁ hφ₁ hA Y⟩, fun c' hc' => ?_⟩` and prove the remaining obligations. Take `⟨φ₂, ⟨hφ₂, hA₂⟩, -⟩` from `hEx 1 hone h hh φv hφv`. Establish `e1` using `hr φv hφv φ₂ hφ₂ hA₂ (Y₀ * (g⁻¹).val)`. Establish `e2` using `congrFun (hc' φv hφv φ₂ hφ₂ hA₂) (Y₀ * (g⁻¹).val)`. Establish `k : Y₀ * (g⁻¹).val * g.val = Y₀`.
+
+Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at e2`. Rewrite `e1`, `e2` using `[k]`. Rewrite using `[← hcχ g]`. Conclude with `mul_right_cancel₀ hY₀ (e2.symm.trans e1)`.
+-/
 theorem GlobalTheory.WeilTransferW.exists_char_right_scalar : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ ι, G.M'.IsLinBar B.ψ B.τ₁ 1 1 ι → ∃ χ : (Fv F B.v₁)ˣ →* ℂˣ, ∀ h ∈ UAt σ G.W (evFin F B.v₁),

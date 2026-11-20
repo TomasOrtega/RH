@@ -6,6 +6,11 @@ namespace Formalism.HermitianLattices.GenusMassVolumes
 open Finset
 open Formalism.LogVandermondeBounds.StandardLattice
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[show k + (j + 1) + 1 = k + j + 1 + 1 by ring, Finset.sum_Ico_succ_top (by omega), ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma sum_Ico_cast_eq_mul_add_triangular (k j : ℕ) :
     ∑ M ∈ Ico (k + 1) (k + j + 1), (M : ℝ) = (j : ℝ) * k + ((j : ℝ) + 1) * j / 2 := by
   induction j with
@@ -15,6 +20,11 @@ private lemma sum_Ico_cast_eq_mul_add_triangular (k j : ℕ) :
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `k m hk hm`. Take `⟨j, rfl⟩ : ∃ j, m = j + 1` from `⟨m - 1, by omega⟩`. Establish `hk' : (0:ℝ) < k` using `Nat.cast_pos.mpr hk`. Establish `hI : k - 1 + (j + 1) + 1 = k + j + 1` using `by omega`. Rewrite using `[hI, sum_Ico_cast_eq_mul_add_triangular]`.
+
+Use `push_cast`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `field_simp <;> ring`. Apply the tactic sequence `field_simp <;> ring`.
+-/
 theorem mass_coefficients : BracketCoefficients := by
   intro k m hk hm
   obtain ⟨j, rfl⟩ : ∃ j, m = j + 1 := ⟨m - 1, by omega⟩
@@ -26,6 +36,17 @@ theorem mass_coefficients : BracketCoefficients := by
   · field_simp <;> ring
   · field_simp <;> ring
 
+/- English proof (translation)
+Introduce `f m k vE massk massr Lval hf hm hk hvE hmk hL hmass`. Take `⟨j, rfl⟩ : ∃ j, m = j + 1` from `⟨m - 1, by omega⟩`. Establish `hI : k - 1 + (j + 1) + 1 = k + j + 1` using `by omega`. Rewrite `hL`, `hmass`, the goal using `[hI]`. Establish `hf' : (0:ℝ) < f` using `Nat.cast_pos.mpr hf`.
+
+Establish `hk' : (0:ℝ) < k` using `Nat.cast_pos.mpr hk`. Establish `hpi : 0 < vE / Real.pi` using `div_pos hvE Real.pi_pos`. Establish `h2v : 0 < 2 * vE` using `by linarith`. Establish `hs : 0 < Real.sqrt ((2 * vE) ^ f)` using `Real.sqrt_pos.2 (pow_pos h2v f)`. Establish `hA : ∀ M : ℕ, 0 < (((M - 1).factorial : ℕ) : ℝ) * (vE / Real.pi) ^ M` using `fun M => mul_pos (by exact_mod_cast Nat.factorial_pos _) (pow_pos hpi M)`.
+
+Establish `hpos : ∀ M ∈ Finset.Ico (k + 1) (k + j + 1), 0 < ((((M - 1).factorial : ℕ) : ℝ) * (vE / Real.pi) ^ M) ^ f / Real.sqrt ((2 * vE) ^ f) * Lval M` using `fun M hM => mul_pos (div_pos (pow_pos (hA M) f) hs) (hL M hM)`. Establish `hterm : ∀ M ∈ Finset.Ico (k + 1) (k + j + 1), Real.log (((((M - 1).factorial : ℕ) : ℝ) * (vE / Real.pi) ^ M) ^ f / Real.sqrt ((2 * vE) ^ f) * Lval M) = f * Real.log (((M - 1).factorial : ℕ) : ℝ) + f * Real.log (vE / Real.pi) * (M : ℝ) - f / 2 * Real.log (2 * vE) + Real.log (Lval …`. Introduce `M hM`. Establish `hfac : (0:ℝ) < (((M - 1).factorial : ℕ) : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`. Rewrite using `[Real.log_mul (div_pos (pow_pos (hA M) f) hs).ne' (hL M hM).ne', Real.log_div (pow_pos (hA M) f).ne' hs.ne', Real.log_pow, Real.log_mul hfac.ne' (pow_pos hpi M).ne', Real.log_pow, Real.log_sqrt (pow_pos h2v f).le, Real.log_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hprod : massr / massk = ∏ M ∈ Finset.Ico (k + 1) (k + j + 1), ((((M - 1).factorial : ℕ) : ℝ) * (vE / Real.pi) ^ M) ^ f / Real.sqrt ((2 * vE) ^ f) * Lval M`. Rewrite using `[hmass, mul_div_cancel_left₀ _ hmk.ne']`. Establish `hc : (Finset.Ico (k + 1) (k + j + 1)).card = j` using `by rw [Nat.card_Ico]; omega`. Rewrite using `[hprod, Real.log_prod (fun M hM => (hpos M hM).ne'), Finset.sum_congr rfl hterm, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_const, hc, nsmul_eq_mul, sum_Ico_cast_eq_mul_add_triangular]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_mass_formula : LogMassFormula := by
   intro f m k vE massk massr Lval hf hm hk hvE hmk hL hmass
   obtain ⟨j, rfl⟩ : ∃ j, m = j + 1 := ⟨m - 1, by omega⟩
@@ -62,6 +83,9 @@ theorem log_mass_formula : LogMassFormula := by
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hN' : (N : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Combine the equalities or inequalities in the displayed calculation. Combine the linear relations using `[Real.add_one_le_exp (1 / (N : ℝ))]`. Use `_ = Real.exp 1 := by rw [← Real.exp_nat_mul, mul_one_div_cancel hN']`.
+-/
 private lemma one_add_inv_pow_le_exp_one (N : ℕ) (hN : 1 ≤ N) :
     (1 + 1 / (N : ℝ)) ^ N ≤ Real.exp 1 := by
   have hN' : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
@@ -70,6 +94,31 @@ private lemma one_add_inv_pow_le_exp_one (N : ℕ) (hN : 1 ≤ N) :
         linarith [Real.add_one_le_exp (1 / (N : ℝ))]
     _ = Real.exp 1 := by rw [← Real.exp_nat_mul, mul_one_div_cancel hN']
 
+/- English proof (translation)
+Introduce `f k T X Γ Dstar dstar dM lo hi hf hk hfk2 hT hX hΓ hD hd hXD hlow hup hdM hlo hhi`. Establish `hf' : (0:ℝ) < f` using `Nat.cast_pos.mpr hf`. Establish `hk' : (0:ℝ) < k` using `Nat.cast_pos.mpr hk`. Establish `hN : (0:ℝ) < f * k` using `mul_pos hf' hk'`. Establish `hN1 : 1 ≤ f * k` using `by simpa using Nat.mul_le_mul hf hk`.
+
+Establish `hΓ0 : 0 < Γ` using `by linarith`. Establish `hT0 : 0 < T` using `by linarith`. Use `set r : ℝ := -(2:ℝ) / ((f:ℝ) * k) with hr`. Use `set Y : ℝ := X * Γ ^ r with hY`. Establish `hYpos : 0 < Y` using `mul_pos hX (Real.rpow_pos_of_pos hΓ0 r)`.
+
+Establish `hrN : r * ((f * k : ℕ) : ℝ) = -2` using `by rw [hr, Nat.cast_mul, div_mul_cancel₀ _ hN.ne']`. Establish `hYN : Y ^ (f * k) = Dstar * (Γ⁻¹) ^ 2 / dstar`. Rewrite using `[hY, mul_pow, hXD, ← Real.rpow_natCast (Γ ^ r), ← Real.rpow_mul hΓ0.le, hrN, Real.rpow_neg hΓ0.le, Real.rpow_two, inv_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdY : dstar * Y ^ (f * k) = Dstar * (Γ⁻¹) ^ 2` using `by rw [hYN]; field_simp`.
+
+Establish `hTk : 1 ≤ T ^ k` using `one_le_pow₀ (by linarith)`. Establish `hTkpos : 0 < T ^ k` using `lt_of_lt_of_le one_pos hTk`. Establish `hB : (T ^ k - 1) ^ f ≤ Y ^ (f * k) * Real.exp 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hq : (f:ℝ) * (1 / T ^ k) ≤ 1 / 2`.
+
+Establish `h2k : (2:ℝ) ^ k ≤ T ^ k` using `by gcongr`. Establish `h2f : (2 * f : ℝ) ≤ 2 ^ k` using `by exact_mod_cast hfk2`. Rewrite using `[mul_one_div, div_le_iff₀ hTkpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle1 : 1 / T ^ k ≤ 1` using `(div_le_one hTkpos).2 hTk`.
+
+Establish `hBer : 1 + (f:ℝ) * (-(1 / T ^ k)) ≤ (1 + -(1 / T ^ k)) ^ f` using `one_add_mul_le_pow (by linarith) f`. Establish `hfac : T ^ k - 1 = T ^ k * (1 + -(1 / T ^ k))`. Rewrite using `[mul_add, mul_one, mul_neg, mul_one_div_cancel hTkpos.ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : Y ^ (f * k) / 2 ≤ (T ^ k - 1) ^ f`.
+
+Establish `h1 : Y ^ (f * k) ≤ (T ^ k) ^ f`. Rewrite using `[← pow_mul, mul_comm k f]`. Conclude with `pow_le_pow_left₀ hYpos.le hlow _`. Establish `h2 : 1 / 2 ≤ (1 + -(1 / T ^ k)) ^ f` using `by linarith`. Establish `h3 : 0 ≤ (T ^ k) ^ f` using `pow_nonneg hTkpos.le _`.
+
+Establish `h4` using `mul_le_mul_of_nonneg_left h2 h3`. Combine the equalities or inequalities in the displayed calculation. Establish `hΓr : Γ ^ r ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hΓ (by`. Rewrite using `[hr]; exact div_nonpos_of_nonpos_of_nonneg (by norm_num) hN.le)`. Establish `hYX : Y ≤ X` using `mul_le_of_le_one_right hX.le hΓr`.
+
+Establish `hinv : 1 / ((f:ℝ) * k) ≤ 1` using `(div_le_one hN).2 (by exact_mod_cast hN1)`. Establish `hT2X : T ≤ 2 * X` using `by nlinarith`. Establish `hlogY : Real.log Y = Real.log X + r * Real.log Γ`. Rewrite using `[hY, Real.log_mul hX.ne' (Real.rpow_pos_of_pos hΓ0 r).ne', Real.log_rpow hΓ0]`. Establish `hr2 : r * Real.log Γ = -(2 * Real.log Γ / ((f:ℝ) * k))` using `by rw [hr]; ring`.
+
+Establish `hYT : Real.log Y ≤ Real.log T` using `Real.log_le_log hYpos hlow`. Establish `hT2 : Real.log T ≤ Real.log 2 + Real.log X`. Rewrite using `[← Real.log_mul two_ne_zero hX.ne']`. Conclude with `Real.log_le_log hT0 hT2X`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hdM, ← hdY]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hdM, ← hdY]`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem mass_corollary : PowerProductTwoSidedBounds := by
   intro f k T X Γ Dstar dstar dM lo hi hf hk hfk2 hT hX hΓ hD hd hXD hlow hup hdM hlo hhi
   have hf' : (0:ℝ) < f := Nat.cast_pos.mpr hf
@@ -139,6 +188,13 @@ theorem mass_corollary : PowerProductTwoSidedBounds := by
   · linarith
   · linarith
 
+/- English proof (translation)
+Introduce `c hc`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hc (by norm_num : (1 / 2 : ℝ) < 1)`. Establish `h1 : ((1:ℝ) / 2) ^ (n + 1) < c` using `lt_of_le_of_lt (pow_le_pow_of_le_one (by norm_num) (by norm_num) (Nat.le_succ n)) hn`. Establish `h2 : ((1:ℝ) / 2) ^ (n + 1) * 2 ^ (n + 1) = 1` using `by rw [← mul_pow]; norm_num`. Establish `h3` using `mul_lt_mul_of_pos_right h1 (pow_pos (by norm_num : (0:ℝ) < 2) (n + 1))`.
+
+Rewrite `h3` using `[h2]`. Establish `h4 : (0:ℝ) ≤ 1 / (((n + 1 : ℕ) : ℝ) * ((1 : ℕ) : ℝ))` using `by positivity`. Use `⟨n + 1, 1, 2, 2, 1, 2 ^ (n + 1), 1, by omega, le_rfl, le_rfl, by norm_num, le_rfl, by positivity, one_pos, by simp, by simp, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.one_rpow, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem corollary_needs_degree : MeanSquareRequiresDegreeBound := by
   intro c hc
   obtain ⟨n, hn⟩ := exists_pow_lt_of_lt_one hc (by norm_num : (1 / 2 : ℝ) < 1)
@@ -155,6 +211,21 @@ theorem corollary_needs_degree : MeanSquareRequiresDegreeBound := by
   · norm_num
     linarith
 
+/- English proof (translation)
+Introduce `f k Dstar massk Ipi V u u' hf hk hD hm hI hV`. Establish `hf' : (0:ℝ) < f` using `Nat.cast_pos.mpr hf`. Establish `hk' : (0:ℝ) < k` using `Nat.cast_pos.mpr hk`. Establish `hfac : (0:ℝ) < ∏ i ∈ range k, ((i.factorial : ℕ) : ℝ)` using `Finset.prod_pos fun i _ => by exact_mod_cast Nat.factorial_pos i`. Establish `hF : ∀ x : ℕ → ℝ, 0 < vandN x k → 0 < dimVN x k` using `fun x hx => by`.
+
+Unfold `dimVN`. Conclude with `div_pos hx hfac`. Establish `hlog : ∀ x : ℕ → ℝ, 0 < vandN x k → Real.log (dimVN x k) = Real.log (vandN x k) - Real.log (∏ i ∈ range k, ((i.factorial : ℕ) : ℝ))` using `fun x hx => by`. Unfold `dimVN`. Rewrite using `[Real.log_div hx.ne' hfac.ne']`.
+
+Establish `hP : ∀ w : ℕ → ℕ → ℝ, (∀ ρ, ρ < f → 0 < vandN (w ρ) k) → Real.log (Dstar / (massk * Ipi * ∏ ρ ∈ range f, dimVN (w ρ) k)) = Real.log Dstar - Real.log (massk * Ipi) - ∑ ρ ∈ range f, Real.log (dimVN (w ρ) k)`. Introduce `w hw`. Establish `hpos : ∀ ρ ∈ range f, 0 < dimVN (w ρ) k` using `fun ρ hρ => hF _ (hw ρ (Finset.mem_range.1 hρ))`. Rewrite using `[Real.log_div hD.ne' (mul_pos (mul_pos hm hI) (Finset.prod_pos hpos)).ne', Real.log_mul (mul_pos hm hI).ne' (Finset.prod_pos hpos).ne', Real.log_prod (fun ρ hρ => (hpos ρ hρ).ne')]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hP u (fun ρ hρ => (hV ρ hρ).1), hP u' (fun ρ hρ => (hV ρ hρ).2.1)]`. Establish `hsum : |∑ ρ ∈ range f, Real.log (dimVN (u ρ) k) - ∑ ρ ∈ range f, Real.log (dimVN (u' ρ) k)| ≤ f * V`. Rewrite using `[← Finset.sum_sub_distrib]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `ρ hρ`. Establish `h` using `hV ρ (Finset.mem_range.1 hρ)`. Rewrite using `[hlog _ h.1, hlog _ h.2.1]`. Establish `e : Real.log (vandN (u ρ) k) - Real.log (∏ i ∈ range k, ((i.factorial : ℕ) : ℝ)) - (Real.log (vandN (u' ρ) k) - Real.log (∏ i ∈ range k, ((i.factorial : ℕ) : ℝ))) = Real.log (vandN (u ρ) k) - Real.log (vandN (u' ρ) k)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `h.2.2`. Use `_ = f * V := by simp`. Establish `hN : (0:ℝ) < 1 / ((f:ℝ) * k)` using `by positivity`. Establish `e : 1 / ((f:ℝ) * k) * (Real.log Dstar - Real.log (massk * Ipi) - ∑ ρ ∈ range f, Real.log (dimVN (u ρ) k)) - 1 / ((f:ℝ) * k) * (Real.log Dstar - Real.log (massk * Ipi) - ∑ ρ ∈ range f, Real.log (dimVN (u' ρ) k)) = 1 / ((f:ℝ) * k) * -(∑ ρ ∈ range f, Real.log (dimVN (u ρ) k) - ∑ ρ ∈ …`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, abs_mul, abs_neg, abs_of_pos hN]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem joint_variation_bound : NormalizedLogRatioVandermondeVariation := by
   intro f k Dstar massk Ipi V u u' hf hk hD hm hI hV
   have hf' : (0:ℝ) < f := Nat.cast_pos.mpr hf

@@ -5,12 +5,21 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PrincipalIde
 
 namespace PositivityTheory.Stage1.PM
 
+/- English proof (translation)
+The claim follows from `CompanionTheory.FamInh.globalArtin`.
+-/
 theorem globalArtinReciprocity : GlobalTheory.Published.GlobalArtinReciprocity :=
   CompanionTheory.FamInh.globalArtin
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.GlobalArtinReciprocity.rayClassFieldSt CompanionTheory.FamInh.globalArtin`.
+-/
 theorem rayClassFieldSt : GlobalTheory.Published.RayClassFieldSt :=
   GlobalTheory.Published.GlobalArtinReciprocity.rayClassFieldSt CompanionTheory.FamInh.globalArtin
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.GlobalArtinReciprocity.heckeLAdicCharacter CompanionTheory.FamInh.globalArtin`.
+-/
 theorem heckeLAdicCharacter : GlobalTheory.Published.HeckeLAdicCharacter :=
   GlobalTheory.Published.GlobalArtinReciprocity.heckeLAdicCharacter CompanionTheory.FamInh.globalArtin
 

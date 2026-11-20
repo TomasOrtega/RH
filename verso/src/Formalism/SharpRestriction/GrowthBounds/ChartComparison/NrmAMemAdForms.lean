@@ -25,6 +25,9 @@ structure DetTw (S : StepLevel F E σ J T f bad) (emb : Tau → E →+* ℂ) (c 
 
 def detF {G : Tau → Matrix (Fin n) (Fin n) ℂ} (c : ℤ) (z : Frames G) : ℂ := ∏ τ, (z.1 τ).det ^ c
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (z.2 τ).ne_zero`.
+-/
 theorem detF_ne {G : Tau → Matrix (Fin n) (Fin n) ℂ} (c : ℤ) (z : Frames G) : detF c z ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (z.2 τ).ne_zero
 
@@ -36,6 +39,9 @@ def scaleE {α β : Type} (a : α → β → ℂ) (ha : ∀ x z, a x z ≠ 0) : 
   left_inv g := by funext x z; simp [ha x z]
   right_inv g := by funext x z; simp [ha x z]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem scaleE_apply {α β : Type} (a : α → β → ℂ) (ha : ∀ x z, a x z ≠ 0) (g : α → β → ℂ) (x : α) (z : β) :
     scaleE a ha g x z = a x z * g x z := rfl
 
@@ -44,6 +50,9 @@ variable {S : StepLevel F E σ J T f bad} {emb : Tau → E →+* ℂ} {c : ℤ}
 def DetTw.fac (X : DetTw S emb c) (x : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (z : Frames (gramC J emb)) : ℂ :=
   (X.ch x : ℂ) * detF c z
 
+/- English proof (translation)
+The claim follows from `mul_ne_zero (Units.ne_zero _) (detF_ne c z)`.
+-/
 theorem DetTw.fac_ne (X : DetTw S emb c) (x : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (z : Frames (gramC J emb)) :
     X.fac x z ≠ 0 := mul_ne_zero (Units.ne_zero _) (detF_ne c z)
 
@@ -56,18 +65,32 @@ def nrm (X : DetTw S emb c) {cls : Type} (yc : cls → UPts σ J (FiniteAdeleRin
     (cls → Frames (gramC J emb) → ℂ) ≃ₗ[ℂ] (cls → Frames (gramC J emb) → ℂ) :=
   scaleE (fun cl z => X.fac (yc cl) z) (fun cl z => X.fac_ne (yc cl) z)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nrmA_apply (X : DetTw S emb c) (g : UPts σ J (FiniteAdeleRing (𝓞 F) F) → Frames (gramC J emb) → ℂ)
     (x : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (z : Frames (gramC J emb)) :
     nrmA X g x z = (X.ch x : ℂ) * detF c z * g x z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nrm_apply (X : DetTw S emb c) {cls : Type} (yc : cls → UPts σ J (FiniteAdeleRing (𝓞 F) F))
     (φ : cls → Frames (gramC J emb) → ℂ) (cl : cls) (z : Frames (gramC J emb)) :
     nrm X yc φ cl z = (X.ch (yc cl) : ℂ) * detF c z * φ cl z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem res_nrmA (X : DetTw S emb c) {cls : Type} (yc : cls → UPts σ J (FiniteAdeleRing (𝓞 F) F))
     (g : UPts σ J (FiniteAdeleRing (𝓞 F) F) → Frames (gramC J emb) → ℂ) :
     res emb yc (nrmA X g) = nrm X yc (res emb yc g) := rfl
 
+/- English proof (translation)
+Unfold `detF`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[h τ, Matrix.det_mul, mul_zpow]`. Use `congr 2`.
+
+Conclude with `(RingHom.map_det (emb τ) _).symm`.
+-/
 theorem detF_tr (γ : GL (Fin n) E) (y y' : Frames (gramC J emb)) (h : IsTr (atInf emb γ) y' y) :
     detF c y = (∏ τ, (emb τ (γ : Matrix (Fin n) (Fin n) E).det) ^ c) * detF c y' := by
   unfold detF
@@ -77,6 +100,11 @@ theorem detF_tr (γ : GL (Fin n) E) (y y' : Frames (gramC J emb)) (h : IsTr (atI
   congr 2
   exact (RingHom.map_det (emb τ) _).symm
 
+/- English proof (translation)
+Establish `hγU : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) := Formalism.UG.P.rational_points_le_holds F E (Fin n) σ J (FiniteAdeleRing (𝓞 F) F) ⟨γ, hγ, rfl⟩`. Establish `hκU : κ.1 ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)` using `((S.U_eq κ.1).1 κ.2).1`. Establish `e : x' = ⟨_, hγU⟩ * x * ⟨_, hκU⟩` using `Subtype.ext hx`. Establish `h1` using `X.ch_rat γ hγ ⟨_, hγU⟩ rfl`. Unfold `DetTw.fac`.
+
+Rewrite using `[e, map_mul, map_mul, X.ch_U ⟨_, hκU⟩ κ.2, mul_one, detF_tr γ y y' hy, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem DetTw.fac_eq (X : DetTw S emb c) (γ : GL (Fin n) E) (hγ : γ ∈ UJ (σ : E →+* E) J)
     (x x' : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (κ : S.U)
     (hx : x'.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * x.1 * κ.1)
@@ -91,6 +119,11 @@ theorem DetTw.fac_eq (X : DetTw S emb c) (γ : GL (Fin n) E) (hγ : γ ∈ UJ (�
   calc _ = ((X.ch ⟨_, hγU⟩ : ℂ) * ∏ τ, (emb τ (γ : Matrix (Fin n) (Fin n) E).det) ^ c) * ((X.ch x : ℂ) * detF c y') := by ring
     _ = _ := by rw [h1, one_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h γ hγ x x' κ hx y y' hy`. Establish `h1 : X.fac x' y * g x' y = (S.chi κ : ℂ) * (X.fac x y' * g x y')` using `h γ hγ x x' κ hx y y' hy`. Rewrite `h1` using `[X.fac_eq γ hγ x x' κ hx y y' hy]`. Apply `mul_left_cancel₀ (X.fac_ne x y')` to reduce the goal to its premises.
+
+Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h γ hγ x x' κ hx y y' hy show X.fac x' y * g x' y = (S.chi κ : ℂ) * (X.fac x y' * g x y')`. Rewrite using `[X.fac_eq γ hγ x x' κ hx y y' hy, h γ hγ x x' κ hx y y' hy]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nrmA_mem_AdFun (X : DetTw S emb c) (g : UPts σ J (FiniteAdeleRing (𝓞 F) F) → Frames (gramC J emb) → ℂ) :
     nrmA X g ∈ AdFun S emb ↔ g ∈ AdFun S emb := by
   constructor
@@ -103,6 +136,13 @@ theorem nrmA_mem_AdFun (X : DetTw S emb c) (g : UPts σ J (FiniteAdeleRing (𝓞
     show X.fac x' y * g x' y = (S.chi κ : ℂ) * (X.fac x y' * g x y')
     rw [X.fac_eq γ hγ x x' κ hx y y' hy, h γ hγ x x' κ hx y y' hy]; ring
 
+/- English proof (translation)
+Use `show detF c z * ((∏ τ, (M τ * z.1 τ).det ^ s τ) * _) = (∏ τ, _) * ((∏ τ, (M τ * z.1 τ).det ^ (s τ + c)) * _)`. Rewrite using `[← mul_assoc, ← mul_assoc]`. Use `congr 1`. Unfold `detF`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h1` using `(hM τ).ne_zero`. Establish `h2` using `(z.2 τ).ne_zero`. Rewrite using `[Matrix.det_mul, zpow_add₀ (mul_ne_zero h1 h2), mul_zpow _ _ c, _root_.zpow_neg]`. Establish `h3 : (M τ).det ^ c ≠ 0` using `zpow_ne_zero _ h1`.
+
+Generalize the expression as in `(M τ).det ^ c = a at h3 ⊢`. Generalize the expression as in `(z.1 τ).det ^ c = b`. Generalize the expression as in `((M τ).det * (z.1 τ).det) ^ s τ = d`. Establish `: a⁻¹ * (d * (a * b)) = (a⁻¹ * a) * (b * d)` using `by ring`. Rewrite using `[this, inv_mul_cancel₀ h3, one_mul]`.
+-/
 theorem detF_fnOf (G : Tau → Matrix (Fin n) (Fin n) ℂ) (s : Tau → ℤ) (M : Tau → Matrix (Fin n) (Fin n) ℂ)
     (hM : ∀ τ, IsUnit (M τ).det) (c : ℤ) (P : MvPolynomial (Tau × Fin n × Fin n) ℂ) (z : Frames G) :
     detF c z * fnOf G s M P z = (∏ τ, (M τ).det ^ (-c)) * fnOf G (fun τ => s τ + c) M P z := by
@@ -122,24 +162,40 @@ theorem detF_fnOf (G : Tau → Matrix (Fin n) (Fin n) ℂ) (s : Tau → ℤ) (M 
   have : a⁻¹ * (d * (a * b)) = (a⁻¹ * a) * (b * d) := by ring
   rw [this, inv_mul_cancel₀ h3, one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show (shW (lam τ) c).detShift + c = (lam τ).detShift`. Rewrite using `[detShift_shW _ _ hn]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shiftOf_shW (hn : 0 < n) (lam : Tau → DomWeight n) (c : ℤ) :
     (fun τ => shiftOf (fun τ => shW (lam τ) c) τ + c) = shiftOf lam := by
   funext τ
   show (shW (lam τ) c).detShift + c = (lam τ).detShift
   rw [detShift_shW _ _ hn]; ring
 
+/- English proof (translation)
+Rewrite using `[detF_fnOf G _ M hM c P z, shiftOf_shW hn lam c]`.
+-/
 theorem detF_fnOf_shW (hn : 0 < n) (G : Tau → Matrix (Fin n) (Fin n) ℂ) (lam : Tau → DomWeight n) (c : ℤ)
     (M : Tau → Matrix (Fin n) (Fin n) ℂ) (hM : ∀ τ, IsUnit (M τ).det)
     (P : MvPolynomial (Tau × Fin n × Fin n) ℂ) (z : Frames G) :
     detF c z * fnOf G (shiftOf (fun τ => shW (lam τ) c)) M P z = (∏ τ, (M τ).det ^ (-c)) * fnOf G (shiftOf lam) M P z := by
   rw [detF_fnOf G _ M hM c P z, shiftOf_shW hn lam c]
 
+/- English proof (translation)
+Rewrite using `[detF_fnOf_shW hn G lam c 1 (fun τ => by simp) P z]`. Simplify using the standard rewrite rules.
+-/
 theorem detF_fnOf_one (hn : 0 < n) (G : Tau → Matrix (Fin n) (Fin n) ℂ) (lam : Tau → DomWeight n) (c : ℤ)
     (P : MvPolynomial (Tau × Fin n × Fin n) ℂ) (z : Frames G) :
     detF c z * fnOf G (shiftOf (fun τ => shW (lam τ) c)) 1 P z = fnOf G (shiftOf lam) 1 P z := by
   rw [detF_fnOf_shW hn G lam c 1 (fun τ => by simp) P z]
   simp
 
+/- English proof (translation)
+Unfold `ValC`. Rewrite using `[CSpan_shW lam (fun _ => c)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, rfl⟩`. Use `⟨a • P, Submodule.smul_mem _ a hP, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc, detF_fnOf_one hn]`. Introduce and unpack `⟨P, hP, hPh⟩`. Use `⟨a⁻¹ • P, Submodule.smul_mem _ _ hP, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`.
+
+Establish `h1 : fnOf G (shiftOf lam) 1 P z = a * detF c z * h z` using `congrFun hPh z`. Rewrite `h1` using `[← detF_fnOf_one hn G lam c P z]`. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul]`. Establish `h2 : detF c z * fnOf G (shiftOf (fun τ => shW (lam τ) c)) 1 P z = detF c z * (a * h z)` using `by rw [h1]; ring`. Rewrite using `[mul_left_cancel₀ (detF_ne c z) h2, ← mul_assoc, inv_mul_cancel₀ ha, one_mul]`.
+-/
 theorem mem_ValC_shW (hn : 0 < n) (G : Tau → Matrix (Fin n) (Fin n) ℂ) (lam : Tau → DomWeight n) (c : ℤ) (a : ℂ) (ha : a ≠ 0)
     (h : Frames G → ℂ) :
     h ∈ ValC G (fun τ => shW (lam τ) c) ↔ (fun z => a * detF c z * h z) ∈ ValC G lam := by
@@ -159,6 +215,9 @@ theorem mem_ValC_shW (hn : 0 < n) (G : Tau → Matrix (Fin n) (Fin n) ℂ) (lam 
     have h2 : detF c z * fnOf G (shiftOf (fun τ => shW (lam τ) c)) 1 P z = detF c z * (a * h z) := by rw [h1]; ring
     rw [mul_left_cancel₀ (detF_ne c z) h2, ← mul_assoc, inv_mul_cancel₀ ha, one_mul]
 
+/- English proof (translation)
+Unfold `AdForms`. Rewrite using `[Submodule.mem_inf, Submodule.mem_inf, nrmA_mem_AdFun, Submodule.mem_pi, Submodule.mem_pi]`. Use `and_congr Iff.rfl (forall_congr' fun x => forall_congr' fun _ => ?_)` and prove the remaining obligations. Conclude with `(mem_ValC_shW hn (gramC J emb) lam c (X.ch x : ℂ) (Units.ne_zero _) (g x)).symm`.
+-/
 theorem nrmA_mem_AdForms (hn : 0 < n) (X : DetTw S emb c) (lam : Tau → DomWeight n)
     (g : UPts σ J (FiniteAdeleRing (𝓞 F) F) → Frames (gramC J emb) → ℂ) :
     nrmA X g ∈ AdForms S emb lam ↔ g ∈ AdForms S emb (fun τ => shW (lam τ) c) := by
@@ -167,6 +226,11 @@ theorem nrmA_mem_AdForms (hn : 0 < n) (X : DetTw S emb c) (lam : Tau → DomWeig
   refine and_congr Iff.rfl (forall_congr' fun x => forall_congr' fun _ => ?_)
   exact (mem_ValC_shW hn (gramC J emb) lam c (X.ch x : ℂ) (Units.ne_zero _) (g x)).symm
 
+/- English proof (translation)
+Unfold `FiC`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g', hg', h⟩`. Use `⟨(nrmA X).symm g', (nrmA_mem_AdForms hn X lam _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hg'), ?_⟩` and prove the remaining obligations. Apply `(nrm X yc).injective` to reduce the goal to its premises.
+
+Rewrite using `[← res_nrmA, LinearEquiv.apply_symm_apply]`. Conclude with `h`. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨nrmA X g, (nrmA_mem_AdForms hn X lam g).2 hg, res_nrmA X yc g⟩`.
+-/
 theorem FiC_nrm (hn : 0 < n) (X : DetTw S emb c) (lam : Tau → DomWeight n) {cls : Type}
     (yc : cls → UPts σ J (FiniteAdeleRing (𝓞 F) F)) (φ : cls → Frames (gramC J emb) → ℂ) :
     nrm X yc φ ∈ FiC S emb lam yc ↔ φ ∈ FiC S emb (fun τ => shW (lam τ) c) yc := by
@@ -180,12 +244,18 @@ theorem FiC_nrm (hn : 0 < n) (X : DetTw S emb c) (lam : Tau → DomWeight n) {cl
   · rintro ⟨g, hg, rfl⟩
     exact ⟨nrmA X g, (nrmA_mem_AdForms hn X lam g).2 hg, res_nrmA X yc g⟩
 
+/- English proof (translation)
+Rewrite using `[hv, mul_assoc, detF_fnOf_one hn]`.
+-/
 theorem nrm_val_one (hn : 0 < n) (a : ℂ) (G : Tau → Matrix (Fin n) (Fin n) ℂ) (lam : Tau → DomWeight n) (c : ℤ)
     (Q : MvPolynomial (Tau × Fin n × Fin n) ℂ) (z : Frames G) (v : ℂ)
     (hv : v = fnOf G (shiftOf (fun τ => shW (lam τ) c)) 1 Q z) :
     a * detF c z * v = a * fnOf G (shiftOf lam) 1 Q z := by
   rw [hv, mul_assoc, detF_fnOf_one hn]
 
+/- English proof (translation)
+Rewrite using `[hv, mul_assoc, detF_fnOf_shW hn G lam c M hM]`.
+-/
 theorem nrm_val_M (hn : 0 < n) (a : ℂ) (G : Tau → Matrix (Fin n) (Fin n) ℂ) (lam : Tau → DomWeight n) (c : ℤ)
     (M : Tau → Matrix (Fin n) (Fin n) ℂ) (hM : ∀ τ, IsUnit (M τ).det)
     (Q : MvPolynomial (Tau × Fin n × Fin n) ℂ) (z : Frames G) (v : ℂ)
@@ -193,6 +263,9 @@ theorem nrm_val_M (hn : 0 < n) (a : ℂ) (G : Tau → Matrix (Fin n) (Fin n) ℂ
     a * detF c z * v = a * ((∏ τ, (M τ).det ^ (-c)) * fnOf G (shiftOf lam) M Q z) := by
   rw [hv, mul_assoc, detF_fnOf_shW hn G lam c M hM]
 
+/- English proof (translation)
+Rewrite `hv` using `[mul_assoc, ← detF_fnOf_shW hn G lam c M hM]`. Conclude with `mul_left_cancel₀ (detF_ne _ _) (mul_left_cancel₀ ha hv)`.
+-/
 theorem nrm_val_M' (hn : 0 < n) (a : ℂ) (ha : a ≠ 0) (G : Tau → Matrix (Fin n) (Fin n) ℂ) (lam : Tau → DomWeight n) (c : ℤ)
     (M : Tau → Matrix (Fin n) (Fin n) ℂ) (hM : ∀ τ, IsUnit (M τ).det)
     (Q : MvPolynomial (Tau × Fin n × Fin n) ℂ) (z : Frames G) (v : ℂ)
@@ -210,10 +283,19 @@ variable {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW
 
 def cTw (D : D7) (i : ℕ) : ℤ := ((i * (D.R.t + 1) / 2 : ℕ) : ℤ)
 
+/- English proof (translation)
+Simplify using `[cTw]`.
+-/
 theorem cTw_zero (D : D7) : cTw D 0 = 0 := by simp [cTw]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamTG_eq (i : ℕ) : lamTG M i = fun τ => shW (M.lam i τ) (cTw D i) := rfl
 
+/- English proof (translation)
+Establish `h : (atInf emb (B : Matrix (Fin n) (Fin n) E) τ).det = emb τ (B : Matrix (Fin n) (Fin n) E).det` using `(RingHom.map_det (emb τ) _).symm`. Rewrite using `[h]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 B.isUnit).map (emb τ)`.
+-/
 theorem atInf_det_unit {E : Type} [Field E] {Tau : Type} {n : ℕ} (emb : Tau → E →+* ℂ) (B : GL (Fin n) E) (τ : Tau) :
     IsUnit (atInf emb (B : Matrix (Fin n) (Fin n) E) τ).det := by
   have h : (atInf emb (B : Matrix (Fin n) (Fin n) E) τ).det = emb τ (B : Matrix (Fin n) (Fin n) E).det :=
@@ -235,10 +317,16 @@ def embN (β : Ch) (X : DetTw (K β).lev (embT D) (cTw D i)) :
     (M.lat i).V →ₛₗ[D.what₂.embLL] ({c // chOf c = β} → Fr D i hi → ℂ) :=
   ((nrm X (K β).y).toLinearMap).comp (embCh M eY chOf β)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embN_apply (β : Ch) (X : DetTw (K β).lev (embT D) (cTw D i)) (x : (M.lat i).V) (cl : {c // chOf c = β})
     (z : Fr D i hi) :
     embN M eY chOf K β X x cl z = (X.ch ((K β).y cl) : ℂ) * detF (cTw D i) z * M.emb i x cl.1 (eY.symm z) := rfl
 
+/- English proof (translation)
+Apply `M.emb_inj i` to reduce the goal to its premises. Use function extensionality and compare the values at `c z`. Establish `h1` using `congrFun (congrFun (h (chOf c)) ⟨c, rfl⟩) (eY z)`. Rewrite `h1` using `[embN_apply, embN_apply, Equiv.symm_apply_apply]`. Conclude with `mul_left_cancel₀ ((X (chOf c)).fac_ne _ _) h1`.
+-/
 theorem embN_inj (X : ∀ β, DetTw (K β).lev (embT D) (cTw D i)) (x y : (M.lat i).V)
     (h : ∀ β, embN M eY chOf K β (X β) x = embN M eY chOf K β (X β) y) : x = y := by
   apply M.emb_inj i
@@ -249,12 +337,18 @@ theorem embN_inj (X : ∀ β, DetTw (K β).lev (embT D) (cTw D i)) (x y : (M.lat
 
 variable {M eY chOf K}
 
+/- English proof (translation)
+The claim follows from `(FiC_nrm (D.R.N_pos i) X (M.lam i) (K β).y _).2 ((V.Fi _).1 ((V.rat _).1 ⟨x, rfl⟩).1 β)`.
+-/
 theorem embN_mem_FiC (V : ValuationCompatibleChart M eY okW chOf K) (β : Ch) (X : DetTw (K β).lev (embT D) (cTw D i)) (x : (M.lat i).V) :
     embN M eY chOf K β X x ∈ FiC (K β).lev (embT D) (M.lam i) (K β).y :=
   (FiC_nrm (D.R.N_pos i) X (M.lam i) (K β).y _).2 ((V.Fi _).1 ((V.rat _).1 ⟨x, rfl⟩).1 β)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨Q, hQ, hz⟩` from `((V.rat _).1 ⟨x, rfl⟩).2 cl.1`. Use `⟨Q, hQ, fun z => ?_⟩` and prove the remaining obligations. Conclude with `(embN_apply M eY chOf K β X x cl z).trans (nrm_val_one (D.R.N_pos i) _ (gramC (gramN D i hi) (embT D)) (M.lam i) (cTw D i) Q z _ ((hz (eY.symm z)).trans (congrArg _ (eY.apply_symm_apply z))))`.
+-/
 theorem embN_rat (V : ValuationCompatibleChart M eY okW chOf K) (β : Ch) (X : DetTw (K β).lev (embT D) (cTw D i)) (x : (M.lat i).V)
     (cl : {c // chOf c = β}) : ∃ Q ∈ RatSpan D (M.lam i), ∀ z : Fr D i hi,
       embN M eY chOf K β X x cl z =
@@ -267,6 +361,13 @@ theorem embN_rat (V : ValuationCompatibleChart M eY okW chOf K) (β : Ch) (X : D
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Rewrite using `[V.lat w hw x]`. Prove the components needed by the constructor for the conclusion. Introduce `h β cl B hB`. Take `⟨Q, hQ, hz⟩` from `h cl.1 B hB`. Use `⟨Q, hQ, fun z => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(embN_apply M eY chOf K β (X β) x cl z).trans (nrm_val_M (D.R.N_pos i) _ (gramC (gramN D i hi) (embT D)) (M.lam i) (cTw D i) _ (atInf_det_unit (embT D) B⁻¹) Q z _ ((hz (eY.symm z)).trans (congrArg _ (eY.apply_symm_apply z))))`. Introduce `h c B hB`. Take `⟨Q, hQ, hz⟩` from `h (chOf c) ⟨c, rfl⟩ B hB`. Use `⟨Q, hQ, fun z => ?_⟩` and prove the remaining obligations. Establish `h1` using `(embN_apply M eY chOf K (chOf c) (X (chOf c)) x ⟨c, rfl⟩ (eY z)).symm.trans (hz (eY z))`.
+
+Establish `h2` using `nrm_val_M' (D.R.N_pos i) _ (Units.ne_zero _) (gramC (gramN D i hi) (embT D)) (M.lam i) (cTw D i) _ (atInf_det_unit (embT D) B⁻¹) Q (eY z) _ h1`. Conclude with `(congrArg (M.emb i x c) (eY.symm_apply_apply z)).symm.trans h2`.
+-/
 theorem embN_lat (V : ValuationCompatibleChart M eY okW chOf K) (X : ∀ β, DetTw (K β).lev (embT D) (cTw D i)) (w : D.what₂.places.Pl)
     (hw : okW w) (x : (M.lat i).V) :
     x ∈ M.S i w ↔ ∀ (β : Ch) (cl : {c // chOf c = β}) (B : GL (Fin (D.R.N i)) D.host.E),

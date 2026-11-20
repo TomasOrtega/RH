@@ -11,10 +11,16 @@ variable {K : UQ} (B : InvAlg K)
 
 abbrev abelian₂ : Submodule K.O B.A := Subalgebra.toSubmodule (integralClosure K.O B.A)
 
+/- English proof (translation)
+Simplify using `[mulLat]`.
+-/
 lemma mem_mulLat {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (t y : A) (L : Submodule O A) :
     y ∈ mulLat O t L ↔ ∃ z ∈ L, t * z = y := by
   simp [mulLat]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [mem_mulLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩; exact ⟨t * z, ⟨z, hz, rfl⟩, by ring⟩`. Introduce and unpack `⟨w, ⟨z, hz, rfl⟩, rfl⟩; exact ⟨z, hz, by ring⟩`.
+-/
 lemma mulLat_mul {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (s t : A) (L : Submodule O A) :
     mulLat O (s * t) L = mulLat O s (mulLat O t L) := by
   ext y; simp only [mem_mulLat]
@@ -22,20 +28,37 @@ lemma mulLat_mul {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (s t : A) 
   · rintro ⟨z, hz, rfl⟩; exact ⟨t * z, ⟨z, hz, rfl⟩, by ring⟩
   · rintro ⟨w, ⟨z, hz, rfl⟩, rfl⟩; exact ⟨z, hz, by ring⟩
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `[mem_mulLat]`.
+-/
 lemma mulLat_one {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (L : Submodule O A) :
     mulLat O 1 L = L := by
   ext y; simp [mem_mulLat]
 
+/- English proof (translation)
+Rewrite using `[mulLat_mul, mulLat_mul]`. Conclude with `Submodule.map_mono h`.
+-/
 lemma mulLat_le_mul {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (r s t : A) (L : Submodule O A)
     (h : mulLat O s L ≤ mulLat O t L) : mulLat O (r * s) L ≤ mulLat O (r * t) L := by
   rw [mulLat_mul, mulLat_mul]; exact Submodule.map_mono h
 
+/- English proof (translation)
+Simplify using `[abelian₂]`.
+-/
 lemma one_mem_Lam : (1 : B.A) ∈ abelian₂ B := by
   simp [abelian₂]
 
+/- English proof (translation)
+Simplify using `[abelian₂, mem_integralClosure_iff]`.
+-/
 lemma mem_Lam_iff (y : B.A) : y ∈ abelian₂ B ↔ IsIntegral K.O y := by
   simp [abelian₂, mem_integralClosure_iff]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `(mem_mulLat _ _ _).1 hy`. Rewrite `hz`, the goal using `[mem_Lam_iff]`. Conclude with `hu.1.mul hz`.
+
+Introduce `y hy`. Use `(mem_mulLat _ _ _).2 ⟨((u⁻¹ : B.Aˣ) : B.A) * y, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[mem_Lam_iff]`. Conclude with `hu.2.mul hy`. Rewrite using `[← mul_assoc, Units.mul_inv, one_mul]`.
+-/
 lemma mulLat_intUnit (u : B.Aˣ) (hu : u ∈ intUnits K.O B.A) : mulLat K.O (u : B.A) (abelian₂ B) = abelian₂ B := by
   apply le_antisymm
   · intro y hy
@@ -48,6 +71,11 @@ lemma mulLat_intUnit (u : B.Aˣ) (hu : u ∈ intUnits K.O B.A) : mulLat K.O (u :
       exact hu.2.mul hy
     · rw [← mul_assoc, Units.mul_inv, one_mul]
 
+/- English proof (translation)
+Establish `h1 : (v : B.A) ∈ abelian₂ B`. Rewrite using `[← h]`. Conclude with `(mem_mulLat _ _ _).2 ⟨1, one_mem_Lam B, mul_one _⟩`. Establish `h2 : (1 : B.A) ∈ mulLat K.O (v : B.A) (abelian₂ B)` using `by rw [h]; exact one_mem_Lam B`. Take `⟨z, hz, hvz⟩` from `(mem_mulLat _ _ _).1 h2`.
+
+Establish `hz' : ((v⁻¹ : B.Aˣ) : B.A) = z`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1`, `hz` using `[mem_Lam_iff]`. Conclude with `⟨h1, hz' ▸ hz⟩`.
+-/
 lemma intUnit_of_mulLat (v : B.Aˣ) (h : mulLat K.O (v : B.A) (abelian₂ B) = abelian₂ B) : v ∈ intUnits K.O B.A := by
   have h1 : (v : B.A) ∈ abelian₂ B := by
     rw [← h]; exact (mem_mulLat _ _ _).2 ⟨1, one_mem_Lam B, mul_one _⟩
@@ -59,6 +87,11 @@ lemma intUnit_of_mulLat (v : B.Aˣ) (h : mulLat K.O (v : B.A) (abelian₂ B) = a
   rw [mem_Lam_iff] at h1 hz
   exact ⟨h1, hz' ▸ hz⟩
 
+/- English proof (translation)
+Use `⟨hL.1.map _, ?_⟩` and prove the remaining obligations. Establish `: ((mulLat K.O (u : B.A) L : Submodule K.O B.A) : Set B.A) = (LinearMap.mulLeft K.E (u : B.A)) '' (L : Set B.A)`. Use extensionality with `y`. Simplify using `[mulLat]`. Rewrite using `[this, Submodule.span_image, hL.2, Submodule.map_top, LinearMap.range_eq_top]`.
+
+Introduce `y; exact ⟨((u⁻¹ : B.Aˣ) : B.A) * y, by simp⟩`.
+-/
 lemma isLat_mulLat (u : B.Aˣ) {L : Submodule K.O B.A} (hL : IsLat K.O K.E L) :
     IsLat K.O K.E (mulLat K.O (u : B.A) L) := by
   refine ⟨hL.1.map _, ?_⟩
@@ -68,10 +101,22 @@ lemma isLat_mulLat (u : B.Aˣ) {L : Submodule K.O B.A} (hL : IsLat K.O K.E L) :
   rw [this, Submodule.span_image, hL.2, Submodule.map_top, LinearMap.range_eq_top]
   intro y; exact ⟨((u⁻¹ : B.Aˣ) : B.A) * y, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A, B.σ_alg, h, ← IsScalarTower.algebraMap_apply]`.
+-/
 lemma sigma_algebraMap (c cb : K.O) (h : K.c (algebraMap K.O K.E c) = algebraMap K.O K.E cb) :
     B.σ (algebraMap K.O B.A c) = algebraMap K.O B.A cb := by
   rw [IsScalarTower.algebraMap_apply K.O K.E B.A, B.σ_alg, h, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨l, hl, rfl⟩` from `(mem_mulLat _ _ _).1 hy`. Establish `hb : B.σ (b : B.A) * B.σ ((b⁻¹ : B.Aˣ) : B.A) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `hy' : algebraMap K.O B.A (c * cb) * ((a : B.A) * B.σ a) * l * B.σ ((b⁻¹ : B.Aˣ) : B.A) ∈ mulLat K.O (b : B.A) (abelian₂ B)`. Apply `h3` to reduce the goal to its premises.
+
+Introduce `z hz`. Take `⟨m, hm, rfl⟩` from `(mem_mulLat _ _ _).1 hz`. Use `h4 _ ((mem_mulLat _ _ _).2 ⟨l, hl, rfl⟩) _ ((mem_mulLat _ _ _).2 ⟨m, hm, rfl⟩)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Unfold `InvAlg.herm`.
+
+Use `congr 1`. Simplify using `only [map_mul, hc]`. Take the linear combination `(x * algebraMap K.O B.A c * algebraMap K.O B.A cb * (a : B.A) * B.σ (a : B.A) * l * B.σ m) * hb`. Take `⟨n, hn, hbn⟩` from `(mem_mulLat _ _ _).1 hy'`. Use `(mem_mulLat _ _ _).2 ⟨n, hn, ?_⟩` and prove the remaining obligations.
+
+Take the linear combination `B.σ (b : B.A) * hbn + (algebraMap K.O B.A (c * cb) * ((a : B.A) * B.σ a) * l) * hb`.
+-/
 lemma key (x : B.A) (c cb : K.O) (hc : B.σ (algebraMap K.O B.A c) = algebraMap K.O B.A cb) (a b : B.Aˣ)
     (h4 : ∀ y ∈ mulLat K.O (a : B.A) (abelian₂ B), ∀ z ∈ mulLat K.O (a : B.A) (abelian₂ B),
       B.herm x (algebraMap K.O B.A c * y) (algebraMap K.O B.A c * z) ∈ (algebraMap K.O K.E).range)
@@ -104,6 +149,43 @@ end GlobalTheory.HullClasses
 noncomputable section
 namespace GlobalTheory.HullClasses
 
+/- English proof (translation)
+Take `⟨cb, hcb⟩` from `K.c_int c`. Establish `hσc` using `sigma_algebraMap B c cb hcb`. Establish `hcb0 : cb ≠ 0`. Introduce and unpack `rfl`. Rewrite `hcb` using `[map_zero, map_eq_zero_iff _ K.c.injective]`.
+
+Conclude with `hc0 ((IsFractionRing.injective K.O K.E) (by rw [hcb, map_zero]))`. Use `set d : K.O := c * cb with hd`. Establish `hd0 : d ≠ 0` using `mul_ne_zero hc0 hcb0`. Establish `hdd0 : d * d ≠ 0` using `mul_ne_zero hd0 hd0`. Establish `hDu : IsUnit (algebraMap K.O B.A d)`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A]`. Use `(IsUnit.mk0 _ ?_).map _` and prove the remaining obligations. Rewrite using `[Ne, ← map_zero (algebraMap K.O K.E)]`. Conclude with `(IsFractionRing.injective K.O K.E).ne hd0`. Use `set D : B.Aˣ := hDu.unit`.
+
+Establish `hDc : (D : B.A) = algebraMap K.O B.A d` using `hDu.unit_spec`. Set `σU : B.Aˣ →* B.Aˣ` to `Units.map B.σ.toMonoidHom`. Establish `hσU : ∀ a : B.Aˣ, ((σU a : B.Aˣ) : B.A) = B.σ (a : B.A)` using `fun a => rfl`. Set `Nu : B.Aˣ → B.Aˣ` to `fun a => a * σU a`. Establish `hNuc : ∀ a, ((Nu a : B.Aˣ) : B.A) = (a : B.A) * B.σ (a : B.A)` using `fun a => by simp [Nu, hσU]`.
+
+Set `Λ` to `abelian₂ B`. Set `adm : B.Aˣ → Prop` to `fun a => (∀ y, (∀ z ∈ mulLat K.O (a : B.A) Λ, B.herm x y z ∈ (algebraMap K.O K.E).range) → y ∈ mulLat K.O (a : B.A) Λ) ∧ (∀ y ∈ mulLat K.O (a : B.A) Λ, ∀ z ∈ mulLat K.O (a : B.A) Λ, B.herm x (algebraMap K.O B.A c * y) (algebraMap K.O B.A c * z) ∈ (algebraMap K.O K.E).range)`. Distinguish the cases in `hex : ∃ a₀ : B.Aˣ, IsLat K.O K.E (mulLat K.O (a₀ : B.A) Λ) ∧ adm a₀`. Use `swap`. Use `⟨∅, Set.finite_empty, by simp, ?_⟩` and prove the remaining obligations.
+
+Introduce `J hJ hst h3 h4`. Take `⟨a, rfl⟩` from `hPr J hJ hst`. Conclude with `(hex ⟨a, hJ, h3, h4⟩).elim`. Take `⟨a₀, hJ₀, hadm₀⟩` from `hex`. Establish `hΛ : IsLat K.O K.E Λ`.
+
+Use `isLat_mulLat B a₀⁻¹ hJ₀` as an intermediate fact. Rewrite `this` using `[← mulLat_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, mulLat_one]`. Then use the resulting hypothesis. Set `Mf : B.Aˣ → Submodule K.O B.A` to `fun a => mulLat K.O ((D * Nu a * (Nu a₀)⁻¹ : B.Aˣ) : B.A) Λ`. Set `Bset` to `{M : Submodule K.O B.A | mulLat K.O (algebraMap K.O B.A (d * d)) Λ ≤ M ∧ M ≤ Λ}`. Establish `hcancel : ∀ a : B.Aˣ, mulLat K.O (((a⁻¹ : B.Aˣ) : B.A) * a) Λ = Λ` using `fun a => by`.
+
+Rewrite using `[Units.inv_mul, mulLat_one]`. Establish `hM : ∀ a, adm a → Mf a ∈ Bset`. Introduce `a ha`. Establish `k1` using `key B x c cb hσc a a₀ ha.2 hadm₀.1`. Establish `k2` using `key B x c cb hσc a₀ a hadm₀.2 ha.1`.
+
+Prove the components needed by the constructor for the conclusion. Use `mulLat_le_mul (((D * (Nu a₀)⁻¹ : B.Aˣ) : B.A)) _ _ Λ k2` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, ← hDc, ← hNuc]`. Simplify using `only [Units.val_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hNuc]`. Simplify using `only [Units.val_mul, Mf]`. Expand and normalize the polynomial expressions, which then agree. Use `mulLat_le_mul ((((Nu a₀)⁻¹ : B.Aˣ)) : B.A) _ _ Λ k1` as an intermediate fact.
+
+Rewrite `this` using `[← hNuc, ← hNuc, hcancel]`. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Units.val_mul]`. Rewrite using `[hDc, hd]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `gch : Submodule K.O B.A → B.Aˣ` to `fun M => if h : ∃ a, adm a ∧ Mf a = M then h.choose else 1`. Take `⟨F, hF⟩` from `hNu`. Use `⟨(fun p : Submodule K.O B.A × B.Aˣ => mulLat K.O ((gch p.1 * p.2 : B.Aˣ) : B.A) Λ) '' (Bset ×ˢ (F : Set B.Aˣ)), ((hBe Λ hΛ (d * d) hdd0).prod F.finite_toSet).image _, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `J ⟨p, -, rfl⟩`. Conclude with `isLat_mulLat B _ hΛ`.
+
+Introduce `J hJ hst h3 h4`. Take `⟨a, rfl⟩` from `hPr J hJ hst`. Establish `ha : adm a` using `⟨h3, h4⟩`. Establish `hex' : ∃ a', adm a' ∧ Mf a' = Mf a` using `⟨a, ha, rfl⟩`. Establish `hg : gch (Mf a) = hex'.choose` using `dif_pos hex'`.
+
+Take `⟨ha', hMa'⟩` from `hex'.choose_spec`. Use `set a' := hex'.choose`. Establish `hv : Nu a * (Nu a')⁻¹ ∈ intUnits K.O B.A`. Apply `intUnit_of_mulLat` to reduce the goal to its premises. Establish `e1 : ((Nu a * (Nu a')⁻¹ : B.Aˣ) : B.A) = (((D * Nu a' * (Nu a₀)⁻¹)⁻¹ : B.Aˣ) : B.A) * ((D * Nu a * (Nu a₀)⁻¹ : B.Aˣ) : B.A)`.
+
+Rewrite using `[← Units.val_mul]`. Use `congr 1`. Use the proof step `(apply Additive.ofMul.injective; simp only [ofMul_mul, ofMul_inv]; abel)`. Rewrite using `[e1, mulLat_mul]`. Express the relevant statement in the definitionally equal form `mulLat K.O _ (Mf a) = Λ`.
+
+Rewrite using `[← hMa']`. Express the relevant statement in the definitionally equal form `mulLat K.O _ (mulLat K.O _ Λ) = Λ`. Rewrite using `[← mulLat_mul, hcancel]`. Use `set u : B.Aˣ := a * a'⁻¹`. Establish `hu : ∃ w ∈ intUnits K.O B.A, (w : B.A) = u * B.σ u`.
+
+Use `⟨_, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[← hNuc]`. Use `congr 1`. Simplify using `only [Nu, u, map_mul, map_inv]`. Use the proof step `(apply Additive.ofMul.injective; simp only [ofMul_mul, ofMul_inv]; abel)`.
+
+Take `⟨f, hf, t, ht, hw⟩` from `hF u hu`. Use `⟨t⁻¹, B.T.inv_mem ht, ⟨(Mf a, f), ⟨hM a ha, hf⟩, ?_⟩⟩` and prove the remaining obligations. Establish `e2 : t⁻¹ * a = a' * f * (u * f⁻¹ * t⁻¹)` using `by simp only [u]; (apply Additive.ofMul.injective; simp only [ofMul_mul, ofMul_inv]; abel)`. Use `show mulLat K.O ((gch (Mf a) * f : B.Aˣ) : B.A) Λ = mulLat K.O ((t⁻¹ : B.Aˣ) : B.A) (mulLat K.O (a : B.A) Λ)`. Rewrite using `[hg, ← mulLat_mul, ← Units.val_mul, e2, Units.val_mul (a' * f), mulLat_mul _ _ Λ, mulLat_intUnit B _ hw]`.
+-/
 theorem finite_mod_T_of (K : UQ) (B : InvAlg K)
     (hPr : ∀ J : Submodule K.O B.A, IsLat K.O K.E J → (∀ a ∈ integralClosure K.O B.A, ∀ y ∈ J, a * y ∈ J) →
       ∃ a : B.Aˣ, J = mulLat K.O (a : B.A) (Subalgebra.toSubmodule (integralClosure K.O B.A)))

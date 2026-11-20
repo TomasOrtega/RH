@@ -9,16 +9,28 @@ variable {E : Type} [NontriviallyNormedField E] [IsUltrametricDist E] {n : ℕ}
 
 def Sm (s : Matrix (Fin n) (Fin n) E) : Prop := ∀ i j, ‖s i j‖ < 1
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.add_apply]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (hx i j) (hy i j))`.
+-/
 theorem sm_add {x y : Matrix (Fin n) (Fin n) E} (hx : Sm x) (hy : Sm y) : Sm (x + y) := by
   intro i j
   rw [Matrix.add_apply]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (hx i j) (hy i j))
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.neg_apply, norm_neg]`. Conclude with `hx i j`.
+-/
 theorem sm_neg {x : Matrix (Fin n) (Fin n) E} (hx : Sm x) : Sm (-x) := by
   intro i j; rw [Matrix.neg_apply, norm_neg]; exact hx i j
 
+/- English proof (translation)
+Introduce `i j`. Simplify using the standard rewrite rules.
+-/
 theorem sm_zero : Sm (0 : Matrix (Fin n) (Fin n) E) := by intro i j; simp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (h a) ih)`.
+-/
 theorem norm_sum_lt_one' {s : Finset (Fin n)} {f : Fin n → E} (h : ∀ k, ‖f k‖ < 1) :
     ‖∑ k ∈ s, f k‖ < 1 := by
   induction s using Finset.induction_on with
@@ -27,6 +39,9 @@ theorem norm_sum_lt_one' {s : Finset (Fin n)} {f : Fin n → E} (h : ∀ k, ‖f
     rw [Finset.sum_insert ha]
     exact (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (h a) ih)
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `norm_sum_lt_one' (fun k => by`. Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (hx i k)) (hy k j))`.
+-/
 theorem sm_mul_left {x y : Matrix (Fin n) (Fin n) E} (hx : ∀ i j, ‖x i j‖ ≤ 1) (hy : Sm y) :
     Sm (x * y) := by
   intro i j
@@ -35,6 +50,9 @@ theorem sm_mul_left {x y : Matrix (Fin n) (Fin n) E} (hx : ∀ i j, ‖x i j‖ 
     rw [norm_mul]
     exact lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (hx i k)) (hy k j))
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `norm_sum_lt_one' (fun k => by`. Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (hy k j)) (hx i k))`.
+-/
 theorem sm_mul_right {x y : Matrix (Fin n) (Fin n) E} (hx : Sm x) (hy : ∀ i j, ‖y i j‖ ≤ 1) :
     Sm (x * y) := by
   intro i j
@@ -43,6 +61,11 @@ theorem sm_mul_right {x y : Matrix (Fin n) (Fin n) E} (hx : Sm x) (hy : ∀ i j,
     rw [norm_mul]
     exact lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (hy k j)) (hx i k))
 
+/- English proof (translation)
+Establish `hϖ : ϖ ≠ 0` using `norm_pos_iff.mp h0`. Use `⟨ϖ⁻¹ • s, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, hc]`. Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul, norm_inv, inv_mul_le_iff₀ h0, mul_one]`.
+
+Conclude with `hu _ (hs i j)`. Rewrite using `[smul_smul, mul_inv_cancel₀ hϖ, one_smul]`.
+-/
 theorem sm_eq_smul {N s : Matrix (Fin n) (Fin n) E} {ϖ : E} (h0 : 0 < ‖ϖ‖)
     (hu : ∀ y : E, ‖y‖ < 1 → ‖y‖ ≤ ‖ϖ‖) (hs : Sm s) (hc : s * N = N * s) :
     ∃ a : Matrix (Fin n) (Fin n) E, a * N = N * a ∧ (∀ i j, ‖a i j‖ ≤ 1) ∧ s = ϖ • a := by
@@ -59,6 +82,15 @@ end GlobalTheory.UnitDiscAlg.Red
 namespace GlobalTheory.UnitDiscAlg.Red
 variable {E : Type} [NontriviallyNormedField E] [IsUltrametricDist E] {n : ℕ}
 
+/- English proof (translation)
+Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`. Set `f : ℕ → Fin n → Fin n → E` to `fun k i j => (y ^ k) i j`. Establish `hs : IsCompact (Metric.closedBall (0 : Fin n → Fin n → E) 1)` using `isCompact_closedBall _ _`. Establish `hf : ∀ k, f k ∈ Metric.closedBall (0 : Fin n → Fin n → E) 1`. Introduce `k`.
+
+Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `i`. Rewrite using `[pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `j`. Conclude with `integ_pow hy k i j`.
+
+Take `⟨x, -, φ, hφ, hlim⟩` from `hs.tendsto_subseq hf`. Take `⟨N, hN⟩` from `Metric.cauchySeq_iff.mp hlim.cauchySeq 1 one_pos`. Use `⟨φ N, φ (N + 1), hφ (Nat.lt_succ_self N), ?_⟩` and prove the remaining obligations. Introduce `i j`. Establish `h1` using `hN (N + 1) (Nat.le_succ N) N le_rfl`.
+
+Establish `h2 : dist (f (φ (N + 1)) i j) (f (φ N) i j) < 1` using `lt_of_le_of_lt ((dist_le_pi_dist _ _ j).trans (dist_le_pi_dist _ _ i)) h1`. Rewrite `h2` using `[dist_eq_norm]`. Simplify `h2` using `[f, Matrix.sub_apply]`.
+-/
 theorem exists_pow_close [LocallyCompactSpace E] (y : Matrix (Fin n) (Fin n) E)
     (hy : ∀ i j, ‖y i j‖ ≤ 1) : ∃ a b : ℕ, a < b ∧ Sm (y ^ b - y ^ a) := by
   haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E
@@ -85,6 +117,29 @@ end GlobalTheory.UnitDiscAlg.Red
 
 namespace GlobalTheory.UnitDiscAlg.Red
 
+/- English proof (translation)
+Introduce `E _ _ _ n N ϖ hN hB h0 _ hu y hyN hy`. Establish `hred` using `GlobalTheory.T.commuting_integral_matrix_topnil E n N hN hB`. Take `⟨a, b, hab, hsm⟩` from `exists_pow_close y hy`. Establish `hcy : Commute y N` using `hyN`. Establish `step : ∀ k, a ≤ k → Sm (y ^ (k + (b - a)) - y ^ k)`.
+
+Introduce `k hk`. Establish `e1 : y ^ (k + (b - a)) - y ^ k = y ^ (k - a) * (y ^ b - y ^ a)`. Rewrite using `[mul_sub, ← pow_add, ← pow_add]`. Apply the tactic sequence `congr 2 <;> omega`. Rewrite using `[e1]`.
+
+Conclude with `sm_mul_left (integ_pow hy _) hsm`. Establish `per : ∀ k, a ≤ k → ∀ j, Sm (y ^ (k + j * (b - a)) - y ^ k)`. Introduce `k hk j`. Proceed by induction on `j with`. Consider the case `zero => simpa using (sm_zero : Sm (0 : Matrix (Fin n) (Fin n) E))`.
+
+Consider the case `succ j ih`. Establish `e2 : y ^ (k + (j + 1) * (b - a)) - y ^ k = (y ^ (k + j * (b - a) + (b - a)) - y ^ (k + j * (b - a))) + (y ^ (k + j * (b - a)) - y ^ k)`. Rewrite using `[show k + (j + 1) * (b - a) = k + j * (b - a) + (b - a) by ring]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2]`.
+
+Conclude with `sm_add (step _ (by omega)) ih`. Use `set M := (b - a) * (a + 1) with hMdef`. Establish `hpos : 1 ≤ b - a` using `by omega`. Establish `hMa : a + 1 ≤ M`. Rewrite using `[hMdef]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hidem : Sm (y ^ M * y ^ M - y ^ M)`. Rewrite using `[← pow_add]`. Use `per M (by omega) (a + 1)` as an intermediate fact. Rewrite `this` using `[show M + (a + 1) * (b - a) = M + M by rw [hMdef]; ring]`. Then use the resulting hypothesis.
+
+Use `set x := y ^ M with hx`. Establish `hxi : ∀ i j, ‖x i j‖ ≤ 1` using `integ_pow hy M`. Establish `hxN : Commute x N` using `hcy.pow_left M`. Establish `hyx : Commute y x` using `(Commute.refl y).pow_right M`. Establish `h1i : ∀ i j, ‖((1 : Matrix (Fin n) (Fin n) E) - x) i j‖ ≤ 1` using `integ_sub integ_one hxi`.
+
+Establish `hwM : Sm ((y * (1 - x)) ^ M)`. Establish `hc : Commute y (1 - x)` using `(Commute.one_right y).sub_right hyx`. Rewrite using `[hc.mul_pow, ← hx]`. Take `⟨m, hm⟩ : ∃ m, M = m + 1` from `⟨M - 1, by omega⟩`. Rewrite using `[hm, pow_succ', ← mul_assoc]`.
+
+Apply `sm_mul_right _ (integ_pow h1i m)` to reduce the goal to its premises. Establish `: x * (1 - x) = -(x * x - x)` using `by rw [mul_sub, mul_one]; abel`. Rewrite using `[this]`. Conclude with `sm_neg hidem`. Establish `hwN : Commute (y * (1 - x)) N` using `hcy.mul_left ((Commute.one_left N).sub_left hxN)`.
+
+Establish `hw : Sm (y * (1 - x))` using `hred (y * (1 - x)) hwN.eq (integ_mul hy h1i) M hwM`. Establish `hc1 : Commute (x * x - x) N` using `(hxN.mul_left hxN).sub_left hxN`. Take `⟨a₁, ha₁N, ha₁i, ha₁⟩` from `sm_eq_smul h0 hu hidem hc1.eq`. Take `⟨a₂, ha₂N, ha₂i, ha₂⟩` from `sm_eq_smul h0 hu hw hwN.eq`. Establish `hyz : y * y ^ (M - 1) = x`.
+
+Rewrite using `[hx, ← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Use `⟨x, y ^ (M - 1), a₁, a₂, a₁, ⟨hxN.eq, (hcy.pow_left _).eq, ha₁N, ha₂N, ha₁N⟩, fun i j => ⟨hxi i j, integ_pow hy _ i j, ha₁i i j, ha₂i i j, ha₁i i j⟩, ha₁, ha₂, ?_⟩` and prove the remaining obligations. Rewrite using `[hyz, ha₁]`.
+-/
 theorem main : ∀ (E : Type) [NontriviallyNormedField E] [IsUltrametricDist E] [LocallyCompactSpace E] (n : ℕ) (N : Matrix (Fin n) (Fin n) E) (ϖ : E), (∀ i j, ‖N i j‖ ≤ 1) → (∃ u v : Polynomial E, (∀ i, ‖u.coeff i‖ ≤ 1) ∧ (∀ i, ‖v.coeff i‖ ≤ 1) ∧ u * N.charpoly + v * Polynomial.derivative N.charpoly = 1) → 0 < ‖ϖ‖ → ‖ϖ‖ < 1 → (∀ y : E, ‖y‖ < 1 → ‖y‖ ≤ ‖ϖ‖) → ∀ y : Matrix (Fin n) (Fin n) E, y * N = N * y → (∀ i j, ‖y i j‖ ≤ 1) → ∃ x z a₁ a₂ a₃ : Matrix (Fin n) (Fin n) E, (x * N = N * x ∧ z * N = N * z ∧ a₁ * N = N * a₁ ∧ a₂ * N = N * a₂ ∧ a₃ * N = N * a₃) ∧ (∀ i j, ‖x i j‖ ≤ 1 ∧ ‖z i j‖ ≤ 1 ∧ ‖a₁ i j‖ ≤ 1 ∧ ‖a₂ i j‖ ≤ 1 ∧ ‖a₃ i j‖ ≤ 1) ∧ x * x - x = ϖ • a₁ ∧ y * (1 - x) = ϖ • a₂ ∧ y * z * x - x = ϖ • a₃ := by
   intro E _ _ _ n N ϖ hN hB h0 _ hu y hyN hy
   have hred := GlobalTheory.T.commuting_integral_matrix_topnil E n N hN hB

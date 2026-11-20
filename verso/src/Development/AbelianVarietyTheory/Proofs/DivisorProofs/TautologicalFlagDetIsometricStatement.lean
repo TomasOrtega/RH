@@ -15,6 +15,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.StepDet.isometric_det_step | exact GlobalTheory.FlagZ.StepDet.isometric_det_step | (intros; apply GlobalTheory.FlagZ.StepDet.isometric_det_step <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tautological_flag_det_isometric : ∀ (ι : Type) [Fintype ι] (N : ℕ)
     (fl : ∀ _ : ι, GlobalTheory.Vert.Flag ((Scheme.Modules.pullback (GlobalTheory.FlagZ.flStr ι N)).obj (GlobalTheory.FlagZ.Taut.stdE N)) N),
     GlobalTheory.FlagZ.Taut.IsTaut ι N fl → ∀ (a : ι) (l : Fin (N + 1)),

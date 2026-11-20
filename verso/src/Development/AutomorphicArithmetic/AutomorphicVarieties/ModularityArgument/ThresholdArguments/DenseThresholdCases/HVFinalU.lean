@@ -8,7 +8,13 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open Formalism.GaloisCohomology UpperTheory.Top GlobalTheory.Mem.LiteralAutomorphy
 namespace UpperTheory.V.HV.U
+/- English proof (translation)
+The claim follows from `GlobalTheory.PoitouTateConj.poitouTateDuality_of_normalised hN.coh.pt`.
+-/
 theorem pt_s (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) : GlobalTheory.Published.PoitouTateDuality := GlobalTheory.PoitouTateConj.poitouTateDuality_of_normalised hN.coh.pt
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hN.coh.lfK, hN.coh.ltK, hN.coh.leK, hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.bk⟩`.
+-/
 theorem locPrints_of_litN (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) : Loc.LocalPublishedTheorems :=
   ⟨hN.coh.lfK, hN.coh.ltK, hN.coh.leK, hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.bk⟩
 end UpperTheory.V.HV.U

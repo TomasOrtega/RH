@@ -10,12 +10,20 @@ namespace PI.MultFromLatWork
 
 open Formalism.REAL
 
+/- English proof (translation)
+Establish `hk' : k ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ k * Jm ε = Jm ε * k` using `hk`. Conclude with `⟨by simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff'.mp hk'.1, by simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff.mp hk'.1⟩`.
+-/
 lemma kset_unitary {n : ℕ} {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
     kᴴ * k = 1 ∧ k * kᴴ = 1 := by
   have hk' : k ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ k * Jm ε = Jm ε * k := hk
   exact ⟨by simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff'.mp hk'.1,
     by simpa [Matrix.star_eq_conjTranspose] using Matrix.mem_unitaryGroup_iff.mp hk'.1⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `kset_unitary hk`. Establish `hk' : k ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ k * Jm ε = Jm ε * k` using `hk`. Use `show kᴴ ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ kᴴ * Jm ε = Jm ε * kᴴ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]`.
+
+Conclude with `h1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma kset_conjTranspose {n : ℕ} {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
     kᴴ ∈ Kset ε := by
   obtain ⟨h1, h2⟩ := kset_unitary hk
@@ -30,6 +38,9 @@ lemma kset_conjTranspose {n : ℕ} {ε : Fin n → Bool} {k : Matrix (Fin n) (Fi
       _ = (kᴴ * k) * Jm ε * kᴴ := by simp only [Matrix.mul_assoc]
       _ = Jm ε * kᴴ := by rw [h1, Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `only [hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`.
+-/
 lemma hs_eq_trace {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : hs g = (trace (gᴴ * g)).re := by
   simp only [hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply,
     Complex.re_sum]
@@ -37,6 +48,13 @@ lemma hs_eq_trace {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : hs g = (trace (g�
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]
 
+/- English proof (translation)
+Establish `hk' : k ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ k * Jm ε = Jm ε * k` using `hk`. Establish `hkh : kᴴ ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ kᴴ * Jm ε = Jm ε * kᴴ` using `kset_conjTranspose hk`. Establish `hJkh` using `hkh.2`. Establish `hJk` using `hk'.2`. Establish `hG : Xᴴ * Jm ε + Jm ε * X = 0` using `hX.1`.
+
+Establish `hX2 : X * Jm ε = -(Jm ε * X)` using `hX.2`. Establish `e1 : (k * X * kᴴ)ᴴ * Jm ε = k * (Xᴴ * Jm ε) * kᴴ`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc, hJkh]`. Establish `e2 : Jm ε * (k * X * kᴴ) = k * (Jm ε * X) * kᴴ`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (k * X * kᴴ)ᴴ * Jm ε + Jm ε * (k * X * kᴴ) = 0`. Rewrite using `[e1, e2, ← Matrix.add_mul, ← Matrix.mul_add, hG, Matrix.mul_zero, Matrix.zero_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma inP_conj {n : ℕ} {ε : Fin n → Bool} {k X : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
     (hX : inP ε X) : inP ε (k * X * kᴴ) := by
   have hk' : k ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ k * Jm ε = Jm ε * k := hk
@@ -59,6 +77,11 @@ lemma inP_conj {n : ℕ} {ε : Fin n → Bool} {k X : Matrix (Fin n) (Fin n) ℂ
       _ = -(k * (Jm ε * X) * kᴴ) := by rw [Matrix.mul_neg, Matrix.neg_mul]
       _ = -(Jm ε * (k * X * kᴴ)) := by rw [e2]
 
+/- English proof (translation)
+Rewrite using `[hs_eq_trace, hs_eq_trace]`. Use `congr 1`. Establish `e : (k * X * kᴴ)ᴴ * (k * X * kᴴ) = k * (Xᴴ * X) * kᴴ`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc kᴴ k, hk1, Matrix.one_mul]`.
+
+Rewrite using `[e, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hk1, Matrix.one_mul]`.
+-/
 lemma hs_conj {n : ℕ} {k : Matrix (Fin n) (Fin n) ℂ} (hk1 : kᴴ * k = 1) (X : Matrix (Fin n) (Fin n) ℂ) :
     hs (k * X * kᴴ) = hs X := by
   rw [hs_eq_trace, hs_eq_trace]
@@ -68,6 +91,19 @@ lemma hs_conj {n : ℕ} {k : Matrix (Fin n) (Fin n) ℂ} (hk1 : kᴴ * k = 1) (X
     rw [← Matrix.mul_assoc kᴴ k, hk1, Matrix.one_mul]
   rw [e, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hk1, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce and unpack `t ⟨k, X, hk, hX, hg, rfl⟩`. Take `⟨h1, h2⟩` from `kset_unitary hk`. Establish `hku : IsUnit k` using `⟨⟨k, kᴴ, h2, h1⟩, rfl⟩`. Establish `hkinv : k⁻¹ = kᴴ` using `Matrix.inv_eq_left_inv h1`. Establish `hG : Xᴴ * Jm ε + Jm ε * X = 0` using `hX.1`.
+
+Establish `hX2 : X * Jm ε = -(Jm ε * X)` using `hX.2`. Establish `hnX : inP ε (-X)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (-X)ᴴ * Jm ε + Jm ε * (-X) = 0`. Rewrite using `[Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, hG, neg_zero]`.
+
+Use `show -X * Jm ε = -(Jm ε * -X)`. Rewrite using `[Matrix.neg_mul, Matrix.mul_neg, neg_neg, hX2, neg_neg]`. Use `⟨kᴴ, k * -X * kᴴ, kset_conjTranspose hk, inP_conj hk hnX, ?_, ?_⟩` and prove the remaining obligations. Establish `hexp : NormedSpace.exp (k * -X * kᴴ) = k * NormedSpace.exp (-X) * kᴴ`. Rewrite using `[← hkinv]`.
+
+Conclude with `Matrix.exp_conj k (-X) hku`. Establish `hEE : NormedSpace.exp X * NormedSpace.exp (-X) = 1`. Rewrite using `[← Matrix.exp_add_of_commute X (-X) (Commute.neg_right (Commute.refl X)), add_neg_cancel, NormedSpace.exp_zero]`. Use `show (((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = _`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises.
+
+Rewrite using `[hg, hexp]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1, Matrix.one_mul, hEE, Matrix.mul_one, h2]`. Rewrite using `[hs_conj h1]`.
+
+Use `congr 1`. Simplify using `[hs, norm_neg]`.
+-/
 lemma symD_set_inv {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) :
     {t | ∃ k X : Matrix (Fin n) (Fin n) ℂ, k ∈ Kset ε ∧ inP ε X ∧
       ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = k * NormedSpace.exp X ∧
@@ -106,6 +142,9 @@ lemma symD_set_inv {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) :
     congr 1
     simp [hs, norm_neg]
 
+/- English proof (translation)
+Unfold `PI.symD`. Use `congr 1`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Simplify `symD_set_inv g⁻¹` using `only [inv_inv]`. Conclude with `symD_set_inv g`.
+-/
 theorem symD_inv {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) : PI.symD ε g⁻¹ = PI.symD ε g := by
   unfold PI.symD
   congr 1
@@ -113,6 +152,13 @@ theorem symD_inv {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) : PI.symD ε g⁻¹
   · simpa only [inv_inv] using symD_set_inv g⁻¹
   · exact symD_set_inv g
 
+/- English proof (translation)
+Distinguish the cases in `hT : T.Finite`. Establish `hs` using `h hT.toFinset (by simp)`. Rewrite using `[hT.encard_eq_coe_toFinset_card]`. Simplify using `only [ENat.toENNReal_coe]`. Rewrite using `[← ENNReal.ofReal_natCast]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal hs`. It suffices to derive a contradiction. Take `⟨t, ht, hc⟩` from `Set.Infinite.exists_subset_card_eq hT (⌈B⌉₊ + 1)`. Establish `h1` using `h t ht`. Rewrite `h1` using `[hc]`.
+
+Move the coercions through the operations in `at h1`. Establish `h2` using `Nat.le_ceil B`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma encard_le_of_finset {α : Type*} (T : Set α) (B : ℝ)
     (h : ∀ s : Finset α, (↑s : Set α) ⊆ T → (s.card : ℝ) ≤ B) :
     ((T.encard : ℕ∞) : ℝ≥0∞) ≤ ENNReal.ofReal B := by
@@ -130,6 +176,9 @@ lemma encard_le_of_finset {α : Type*} (T : Set α) (B : ℝ)
     have h2 := Nat.le_ceil B
     linarith
 
+/- English proof (translation)
+Establish `he : ∑ v, (2 * r v) = 2 * ∑ v, r v` using `by rw [Finset.mul_sum]`. Establish `hp : t ^ (4 * I.n ^ 2 * I.f) = (t * t) ^ (2 * I.n ^ 2 * I.f)` using `by ring`. Establish `hx : 2 * (I.n : ℝ) ^ 2 * (2 * ∑ v, r v) = 4 * (I.n : ℝ) ^ 2 * ∑ v, r v` using `by ring`. Rewrite using `[PI.LatCountG.COm, hp, he, hx, div_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma const_eq (I : Formalism.MainNotions.S.AutInst) (r : NumberField.InfinitePlace I.F → ℝ) (t : ℝ) :
     (3 * Real.sqrt (I.n : ℝ) / (t * t)) ^ (2 * I.n ^ 2 * I.f) *
         Real.exp (2 * (I.n : ℝ) ^ 2 * ∑ v, (2 * r v)) =
@@ -140,6 +189,19 @@ lemma const_eq (I : Formalism.MainNotions.S.AutInst) (r : NumberField.InfinitePl
   rw [PI.LatCountG.COm, hp, he, hx, div_pow]
   ring
 
+/- English proof (translation)
+Introduce `r hr K' hK' x hx`. Unfold `Formalism.L2.SG.FoldBound.mult`. Use `iSup_le fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hne : ({γ : Formalism.MainNotions.LeviCoordinates.rr_GF I | x⁻¹ * ((γ : I.GA) * y) ∈ PI.LatCountG.Om I r (K' : Set I.Gf)} : Set _).Nonempty`. Take `⟨γ0, hγ0⟩` from `hne`.
+
+Apply `encard_le_of_finset` to reduce the goal to its premises. Introduce `s hs`. Set `f : Formalism.MainNotions.LeviCoordinates.rr_GF I → I.GFset` to `fun γ => ⟨(γ : I.GA) * (γ0 : I.GA)⁻¹, (Formalism.MainNotions.LeviCoordinates.rr_GF I).mul_mem γ.2 ((Formalism.MainNotions.LeviCoordinates.rr_GF I).inv_mem γ0.2)⟩`. Establish `finj : Function.Injective f`. Introduce `a b hab`.
+
+Establish `hv : (a : I.GA) * (γ0 : I.GA)⁻¹ = (b : I.GA) * (γ0 : I.GA)⁻¹` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext (mul_right_cancel hv)`. Establish `hcount` using `hL x x hx hx (fun v => 2 * r v) (fun v => by linarith [hr v]) (s.map ⟨f, finj⟩) ?_`. Combine the equalities or inequalities in the displayed calculation. Introduce `γ' hγ'`.
+
+Rewrite `hγ'` using `[Finset.mem_map]`. Take `⟨γ, hγs, rfl⟩` from `hγ'`. Establish `hγ : x⁻¹ * ((γ : I.GA) * y) ∈ PI.LatCountG.Om I r (K' : Set I.Gf)` using `hs hγs`. Establish `hid : x⁻¹ * ((γ : I.GA) * (γ0 : I.GA)⁻¹) * x = (x⁻¹ * ((γ : I.GA) * y)) * (x⁻¹ * ((γ0 : I.GA) * y))⁻¹` using `by group`. Use `show (x⁻¹ * ((γ : I.GA) * (γ0 : I.GA)⁻¹) * x).2 ∈ I.Kset ∧ ∀ v, PI.symD (I.ε v) ((x⁻¹ * ((γ : I.GA) * (γ0 : I.GA)⁻¹) * x).1 v) ≤ 2 * r v`.
+
+Rewrite using `[hid]`. Take `⟨h1, h2⟩` from `hγ`. Take `⟨h1', h2'⟩` from `hγ0`. Use `⟨hK' ?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.snd_mul, Prod.snd_inv]`.
+
+Conclude with `K'.mul_mem h2 (K'.inv_mem h2')`. Simplify using `only [Prod.fst_mul, Prod.fst_inv, Pi.mul_apply, Pi.inv_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.not_nonempty_iff_eq_empty.mp hne]`. Simplify using the standard rewrite rules.
+-/
 theorem multBound_of (hS : PI.SymDist) (I : Formalism.MainNotions.S.AutInst) (hL : PI.LatCountG.LatCount I) :
     PI.LatCountG.MultBound I := by
   intro r hr K' hK' x hx
@@ -187,6 +249,9 @@ theorem multBound_of (hS : PI.SymDist) (I : Formalism.MainNotions.S.AutInst) (hL
   · rw [Set.not_nonempty_iff_eq_empty.mp hne]
     simp
 
+/- English proof (translation)
+Introduce `hS I hL` and use `multBound_of hS I hL`.
+-/
 theorem multFromLat_main : PI.LatCountG.MultFromLat := fun hS I hL => multBound_of hS I hL
 
 end PI.MultFromLatWork

@@ -39,6 +39,13 @@ def HarmInvSt : Prop :=
     ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ harmA c a n →
       (∀ m ∈ P.support, m.degree ≤ D) → chartVal C k f' P = chartVal C k f P
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ hstar S _ _ _ y C C' k n F f f' hf hf' a P hP`. Establish `hD : ∀ m ∈ P.support, m.degree ≤ P.support.sup (fun m => m.degree)` using `fun m hm => Finset.le_sup (f := fun m => m.degree) hm`. Establish `step : ∀ (C₀ : ChartAt Xo c y) (f₀ : Fin n → MvPowerSeries (Fin 1 × Fin C₀.d) S), (∀ b, IsGerm y C₀.d C₀.x C₀.B.A.act C₀.e C₀.wP k (F b) (f₀ b)) → ∃ (C₁ : ChartAt Xo c y) (f₁ : Fin n → MvPowerSeries (Fin 1 × Fin C₁.d) S), FrTruncC y C₁ ∧ (∀ b, IsGerm y C₁.d C₁.x C₁.B.A.act C₁.e C …`. Introduce `C₀ f₀ hf₀`. Take `⟨e', hfr, hrig, cc, hT1, -, hsym, hbal, hu⟩` from `hFix E H Dw l Xo c hstar S y C₀`.
+
+Use `choose f₁ hf₁ hj using fun b => hGerm E H Dw l Xo c hstar S y C₀ e' hfr hrig cc hT1 hu k (F b) (f₀ b) (hf₀ b)`. Conclude with `⟨{ C₀ with e := e', frame := hfr, rig0 := hrig }, f₁, hT1, hf₁, hInv E H Dw l Xo c hstar S y C₀ (cc (P.support.sup fun m => m.degree)) (hsym _) (hbal _) k n (P.support.sup fun m => m.degree) f₀ f₁ (fun b => hj b _) a P hP hD⟩`. Take `⟨C₁, f₁, hC₁, hf₁, e₁⟩` from `step C f hf`. Take `⟨C₂, f₂, hC₂, hf₂, e₂⟩` from `step C' f' hf'`. Rewrite using `[← e₁, ← e₂]`.
+
+Conclude with `hTr E H Dw l Xo c hstar S y C₁ C₂ hC₁ hC₂ k n F f₁ f₂ hf₁ hf₂ a P hP`.
+-/
 theorem chartIndep2_verb (hTr : ChartIndepTruncSt) (hFix : FrTruncFixBSt) (hGerm : GermFixSt)
     (hInv : HarmInvSt) : ChartIndepSt2 := by
   intro E _ _ _ H Dw l Xo c _ hstar S _ _ _ y C C' k n F f f' hf hf' a P hP

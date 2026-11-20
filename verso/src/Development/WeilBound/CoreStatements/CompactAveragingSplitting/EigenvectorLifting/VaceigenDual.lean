@@ -14,12 +14,33 @@ open GlobalTheory.StdDual (codiff codiff_ne_zero)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.LatVacArith.eq_liftV_of_at ha).trans (GlobalTheory.LatVacArith.liftV_one_mul v a)`.
+-/
 theorem eq_liftV {v : Pl F} {a : AF F} (ha : At (evFin F v) a) : a = liftV v (evFin F v a) :=
   (GlobalTheory.LatVacArith.eq_liftV_of_at ha).trans (GlobalTheory.LatVacArith.liftV_one_mul v a)
 
+/- English proof (translation)
+The claim follows from `(eq_liftV (GlobalTheory.VacAny.at_mul_right (at_liftV v t) a)).trans (by rw [map_mul, evFin_liftV])`.
+-/
 theorem liftV_mul (v : Pl F) (t : Fv F v) (a : AF F) : liftV v t * a = liftV v (t * evFin F v a) :=
   (eq_liftV (GlobalTheory.VacAny.at_mul_right (at_liftV v t) a)).trans (by rw [map_mul, evFin_liftV])
 
+/- English proof (translation)
+Establish `h1 : ∀ t ∈ codiff F, algebraMap F (Fv F v) t * c ∈ GlobalTheory.Idele.localIdeal v (codiff F)` using `fun t ht => by`. Establish `hmem : singleFin v (algebraMap F (Fv F v) t * c) ∈ GlobalTheory.Idele.adelicIdeal (codiff F)`. Rewrite using `[GlobalTheory.SplitUnram.mem_adelicIdeal_codiff_iff hψ.1 (GlobalTheory.PsiNontriv.isStd_fin_rat hψ)]`. Introduce `α hα`. Establish `e : α * singleFin v (algebraMap F (Fv F v) t * c) = singleFin v (α v * (algebraMap F (Fv F v) t * c))`.
+
+Apply `af_ext` to reduce the goal to its premises. Introduce `u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[map_mul, evalV_singleFin_self, evalV_singleFin_self]`.
+
+Both sides reduce to the same expression. Rewrite using `[map_mul, evalV_singleFin_ne hu, evalV_singleFin_ne hu, mul_zero]`. Rewrite using `[e]`. Conclude with `h t ht _ (hα v)`. Establish `h2` using `hmem v`.
+
+Rewrite `h2` using `[show (singleFin v (algebraMap F (Fv F v) t * c)) v = _ from evalV_singleFin_self v _]`. Then use the resulting hypothesis. Establish `h2 : ∀ x ∈ GlobalTheory.Idele.localIdeal v (codiff F), x * c ∈ GlobalTheory.Idele.localIdeal v (codiff F)` using `fun x hx => by`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨t, ht, rfl⟩ := hx`. Conclude with `h1 t ht`.
+
+Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_mul_assoc]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`. Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `hx : Valued.v (algebraMap F (Fv F v) (π ^ FractionalIdeal.count F v (codiff F))) = WithZero.exp (-FractionalIdeal.count F v (codiff F))`. Rewrite using `[GlobalTheory.Idele.valued_algebraMap, map_zpow₀, hπ, ← WithZero.exp_zsmul, smul_eq_mul, mul_neg, mul_one]`. Establish `h3` using `(GlobalTheory.Idele.mem_localIdeal_iff codiff_ne_zero v _).1 (h2 _ ((GlobalTheory.Idele.mem_localIdeal_iff codiff_ne_zero v _).2 hx.le))`.
+
+Rewrite `h3` using `[map_mul, hx]`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `(mul_le_iff_le_one_right (WithZero.exp_pos)).1 h3`.
+-/
 theorem mem_int_of_psi {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (v : Pl F) (c : Fv F v)
     (h : ∀ t ∈ codiff F, ∀ a ∈ v.adicCompletionIntegers F, ψ (liftV v (a * (algebraMap F (Fv F v) t * c))) = 1) :
     c ∈ v.adicCompletionIntegers F := by
@@ -55,6 +76,11 @@ theorem mem_int_of_psi {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (v : Pl F) (c 
   rw [HeightOneSpectrum.mem_adicCompletionIntegers]
   exact (mul_le_iff_le_one_right (WithZero.exp_pos)).1 h3
 
+/- English proof (translation)
+Take `⟨e, A, hA⟩` from `h`. Establish `h1 : Aᵀ * (M * (A.map star * (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ))) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hA, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Establish `h2` using `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [e])).1 h1`.
+
+Rewrite `h2` using `[Matrix.mul_assoc]`. Conclude with `(Matrix.isUnit_det_of_right_inverse h2).ne_zero`.
+-/
 theorem isUnit_det_of_hasSig {M : Matrix (Fin n) (Fin n) ℂ} {r s : ℕ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨e, A, hA⟩ := h
   have h1 : Aᵀ * (M * (A.map star * (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ))) = 1 := by
@@ -64,30 +90,48 @@ theorem isUnit_det_of_hasSig {M : Matrix (Fin n) (Fin n) ℂ} {r s : ℕ} (h : H
   rw [Matrix.mul_assoc] at h2
   exact (Matrix.isUnit_det_of_right_inverse h2).ne_zero
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `isUnit_det_of_hasSig (h.sig w)` as an intermediate fact. Use `isUnit_iff_ne_zero.2 fun h0 => this ?_` and prove the remaining obligations. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`.
+-/
 theorem herm_det {B : Base F E} {X : Spc F E n} {r s : ℕ} (h : X.IsHerm σ B r s) : IsUnit X.J.det := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
   have := isUnit_det_of_hasSig (h.sig w)
   refine isUnit_iff_ne_zero.2 fun h0 => this ?_
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `isUnit_det_of_hasSig (h.sig w)` as an intermediate fact. Use `isUnit_iff_ne_zero.2 fun h0 => this ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]`.
+-/
 theorem skew_det {B : Base F E} {X : Spc F E n} {r s : ℕ} (h : X.IsSkew σ B r s) : IsUnit X.J.det := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
   have := isUnit_det_of_hasSig (h.sig w)
   refine isUnit_iff_ne_zero.2 fun h0 => this ?_
   rw [Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+-/
 theorem sigma_sigma (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [cA, h]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem cA_cA (h : ∀ x, σ (σ x) = x) (x : AE F E) : cA σ (cA σ x) = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul a e => simp [cA, h]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cA_incl (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := rfl
 
+/- English proof (translation)
+Use `show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+-/
 theorem trace_incl (e : E) : Algebra.trace (AF F) (AE F E) (inclR (F := F) (AF F) e) =
     algebraMap F (AF F) (Algebra.trace F E e) := by
   show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _
@@ -100,15 +144,26 @@ def trF (σ : E →ₐ[F] E) (J : Matrix (Fin d) (Fin d) E) (y : Fin d → E) : 
   map_add' w w' := by simp only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
   map_smul' a w := by simp only [Pi.smul_apply, map_smul, mul_smul_comm, ← Finset.smul_sum, RingHom.id_apply]
 
+/- English proof (translation)
+Rewrite using `[form, Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem form_eq (J : Matrix (Fin d) (Fin d) E) (y x : Fin d → E) : form σ J y x = ∑ l, (y ᵥ* J) l * σ (x l) := by
   rw [form, Matrix.dotProduct_mulVec]; rfl
 
+/- English proof (translation)
+Rewrite using `[← trace_incl, form_eq, map_sum]`. Simplify using `only [map_mul]`. Both sides reduce to the same expression.
+-/
 theorem trF_incV (J : Matrix (Fin d) (Fin d) E) (y x : Fin d → E) :
     trF σ J y (incV x) = algebraMap F (AF F) (Algebra.trace F E (form σ J y x)) := by
   rw [← trace_incl, form_eq, map_sum]
   simp only [map_mul]
   rfl
 
+/- English proof (translation)
+Establish `e : inclR (F` using `F) (AF F) (algebraMap F E t) = algebraMap (AF F) (AE F E) (algebraMap F (AF F) t) := ((Algebra.TensorProduct.includeRight : E →ₐ[F] AF F ⊗[F] E).commutes t).trans (IsScalarTower.algebraMap_apply _ _ _ _)`. Rewrite using `[← smul_eq_mul, ← map_smul]`. Express the relevant statement in the definitionally equal form `Algebra.trace _ _ _ = Algebra.trace _ _ _`. Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.smul_vecMul, Pi.smul_apply, smul_eq_mul, map_mul, e, Pi.smul_apply, map_smul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trF_smul (J : Matrix (Fin d) (Fin d) E) (t : F) (y : Fin d → E) (w : Fin d → AE F E) :
     trF σ J (algebraMap F E t • y) w = algebraMap F (AF F) t * trF σ J y w := by
   have e : inclR (F := F) (AF F) (algebraMap F E t) = algebraMap (AF F) (AE F E) (algebraMap F (AF F) t) :=
@@ -120,6 +175,15 @@ theorem trF_smul (J : Matrix (Fin d) (Fin d) E) (t : F) (y : Fin d → E) (w : F
   rw [Matrix.smul_vecMul, Pi.smul_apply, smul_eq_mul, map_mul, e, Pi.smul_apply, map_smul, Algebra.smul_def]
   ring
 
+/- English proof (translation)
+Rewrite using `[← Finset.univ_sum_single w]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Proceed by induction on `w j using TensorProduct.induction_on with`. Consider the case `zero => rw [Pi.single_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `tmul a e`. Establish `: (Pi.single j (a ⊗ₜ[F] e) : Fin d → AE F E) = a • incV (Pi.single j e)`. Use extensionality with `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using `only [incV, Pi.single_eq_same, Pi.smul_apply]`. Express the relevant statement in the definitionally equal form `_ = a • ((1 : AF F) ⊗ₜ[F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Simplify using `[incV, Pi.single_eq_of_ne h]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Consider the case `add x y hx hy => rw [Pi.single_add]`. Conclude with `add_mem hx hy`.
+-/
 theorem span_incV (w : Fin d → AE F E) : w ∈ Submodule.span (AF F) (Set.range (incV (F := F) (E := E) (d := d))) := by
   rw [← Finset.univ_sum_single w]
   refine Submodule.sum_mem _ fun j _ => ?_
@@ -138,6 +202,11 @@ theorem span_incV (w : Fin d → AE F E) : w ∈ Submodule.span (AF F) (Set.rang
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
   | add x y hx hy => rw [Pi.single_add]; exact add_mem hx hy
 
+/- English proof (translation)
+Establish `h : ∀ j : Fin d, ∃ b : E, ∀ e, Algebra.trace F E (b * e) = f (Pi.single j (σ e))` using `fun j => by`. Take `⟨b, hb⟩` from `((Algebra.traceForm F E).toDual (traceForm_nondegenerate F E)).surjective (f ∘ₗ LinearMap.single F (fun _ => E) j ∘ₗ σ.toLinearMap)`. Conclude with `⟨b, fun e => LinearMap.congr_fun hb e⟩`. Use `choose b hb using h`. Use `⟨b ᵥ* J⁻¹, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[form_eq, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hJ, Matrix.vecMul_one, map_sum]`. Simplify using `only [hb, hσ]`. Rewrite using `[← map_sum, Finset.univ_sum_single]`.
+-/
 theorem exists_tr_rep (hσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin d) (Fin d) E} (hJ : IsUnit J.det) (f : (Fin d → E) →ₗ[F] F) :
     ∃ u, ∀ x, f x = Algebra.trace F E (form σ J u x) := by
   have h : ∀ j : Fin d, ∃ b : E, ∀ e, Algebra.trace F E (b * e) = f (Pi.single j (σ e)) := fun j => by
@@ -150,6 +219,27 @@ theorem exists_tr_rep (hσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin d) (Fin d) E
   simp only [hb, hσ]
   rw [← map_sum, Finset.univ_sum_single]
 
+/- English proof (translation)
+Establish `hσ` using `sigma_sigma hB.cm`. Establish `: Module.Finite (𝓞 F) (𝓞 E)` using `Module.Finite.of_restrictScalars_finite ℤ _ _`. Take `⟨m, g, f, hg, hf, hid⟩` from `dual_family (𝓞 F) F (W.L.restrictScalars (𝓞 F)) (hW.lat.fg.restrictScalars) (by`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (Algebra.algebraMapSubmonoid (𝓞 E) ℤ⁰) E (W.L : Set (Fin d → E)) x (hW.lat.span_eq_top ▸ Submodule.mem_top)`. Take `⟨_, k, hk, rfl⟩` from `t`. Rewrite `ht` using `[Submodule.span_eq]`. Establish `hk0 : (k : F) ≠ 0` using `Int.cast_ne_zero.2 (nonZeroDivisors.ne_zero hk)`. Establish `ht' : (k : F) • x ∈ W.L`.
+
+Rewrite using `[Int.cast_smul_eq_zsmul, ← algebraMap_smul (𝓞 E) k x]`. Conclude with `ht`. Rewrite using `[← inv_smul_smul₀ hk0 x]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ht'))`. Use `choose u hu using fun i => exists_tr_rep hσ (skew_det hW) (f i)`.
+
+Establish `hdec : ∀ z : Fin d → AE F E, z = ∑ i, trF σ W.J (u i) z • incV (g i)` using `fun z => by`. Establish `hz` using `span_incV z`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, rfl⟩` from `hz`.
+
+Simplify using `only [trF_incV, ← hu]`. Use extensionality with `j`. Use `conv_lhs => rw [hid x]`. Simplify using `only [incV, Finset.sum_apply, Pi.smul_apply, map_sum, algebraMap_smul]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smul (Algebra.TensorProduct.includeRight : E →ₐ[F] AF F ⊗[F] E) _ _`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [map_add, add_smul, Finset.sum_add_distrib, ← hx, ← hy]`. Consider the case `smul a x _ hx => simp only [map_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum, ← hx]`. Rewrite using `[hdec w]`. Use `sum_mem fun i _ => AddSubgroup.subset_closure ⟨_, fun a ha => ?_, ?_, g i, hg i, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_smul, hw a ha, map_zero]`. Use `mem_int_of_psi hB.std v _ fun t ht a ha => ?_` and prove the remaining obligations. Establish `hm : algebraMap F E t • u i ∈ W.L` using `(hW.dual _).2 fun x hx o => by`. Set `o' : 𝓞 E` to `⟨σ o, (RingOfIntegers.isIntegral_coe o).map (σ.restrictScalars ℤ)⟩`. Take `⟨c, hc⟩` from `hf i _ (W.L.smul_mem o' hx)`.
+
+Establish `e : (o : E) * form σ W.J (algebraMap F E t • u i) x = t • form σ W.J (u i) (o' • x)`. Rewrite using `[form_eq, form_eq, Algebra.smul_def t, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `: (o' • x) l = σ o * x l` using `rfl`. Rewrite using `[this, map_mul, hσ, Matrix.smul_vecMul, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← Algebra.trace_trace (S := F), map_smul, ← hu, ← hc, smul_eq_mul]`. Take `⟨k, hk⟩` from `(FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 F)⁰ F))).1 ht _ ((FractionalIdeal.mem_one_iff _).2 ⟨c, rfl⟩)`. Rewrite `hk` using `[Algebra.traceForm_apply]`. Rewrite using `[← hk]`.
+
+Conclude with `isIntegral_algebraMap`. Use `h _ hm a ha` as an intermediate fact. Rewrite `this` using `[trF_smul, liftV_mul, map_mul (evFin F v), AlgHom.commutes]`. Then use the resulting hypothesis.
+-/
 theorem mem_latW {B : Base F E} (hB : B.IsGood σ) {W : Spc F E d} {r s : ℕ} (hW : W.IsSkew σ B r s) (v : Pl F)
     {w : Fin d → AE F E} (hw : At (evFin F v) w)
     (h : ∀ y ∈ W.L, ∀ a ∈ v.adicCompletionIntegers F, B.ψ (liftV v a * trF σ W.J y w) = 1) : w ∈ latW W v := by
@@ -204,6 +294,13 @@ theorem mem_latW {B : Base F E} (hB : B.IsGood σ) {W : Spc F E d} {r s : ℕ} (
     have := h _ hm a ha
     rwa [trF_smul, liftV_mul, map_mul (evFin F v), AlgHom.commutes] at this
 
+/- English proof (translation)
+Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hav, y, hy, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, hav, x, hx, y, hy, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `[incM, incV, Matrix.vecMulVec_apply]`. Consider the case `zero`. Establish `: Matrix.vecMulVec (incV (F` using `F) x) (0 : Fin d → AE F E) = 0 := by ext i j; exact mul_zero _`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+
+Consider the case `add y z _ _ hy hz => rw [Matrix.vecMulVec_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [Matrix.vecMulVec_neg]`. Conclude with `neg_mem hy`.
+-/
 theorem vecMulVec_mem {X : Spc F E n} {W : Spc F E d} {v : Pl F} {x : Fin n → E} (hx : x ∈ X.L) {w : Fin d → AE F E}
     (hw : w ∈ latW W v) : Matrix.vecMulVec (incV x) w ∈ latAtV X W v := by
   induction hw using AddSubgroup.closure_induction with
@@ -218,6 +315,13 @@ theorem vecMulVec_mem {X : Spc F E n} {W : Spc F E d} {v : Pl F} {x : Fin n → 
   | add y z _ _ hy hz => rw [Matrix.vecMulVec_add]; exact add_mem hy hz
   | neg y _ hy => rw [Matrix.vecMulVec_neg]; exact neg_mem hy
 
+/- English proof (translation)
+Rewrite using `[symp, neg_one_mul, map_neg]`. Express the relevant statement in the definitionally equal form `_ = -Algebra.trace _ _ _`. Use `congr 2`. Simplify using `only [hTens, incM, incV, Matrix.map_apply, Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct, map_sum, map_mul, cA_incl, hσ, Finset.sum_mul, Finset.mul_sum]`. Use `symm`.
+
+Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, k]`. Rewrite using `[Finset.sum_comm]`. Use `enter [2, i]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `conv_lhs => rw [Finset.sum_comm]`. Use `enter [2, i]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symp_vecMulVec (hσ : ∀ x, σ (σ x) = x) (JA : Matrix (Fin n) (Fin n) E) (JB : Matrix (Fin d) (Fin d) E)
     (x : Fin n → E) (y : Fin d → E) (z : Matrix (Fin n) (Fin d) (AE F E)) :
     symp (R := AF F) (cA σ) (-1) (incM F JA) (incM F JB) (incM F (Matrix.vecMulVec x y)) z =
@@ -235,6 +339,21 @@ theorem symp_vecMulVec (hσ : ∀ x, σ (σ x) = x) (JA : Matrix (Fin n) (Fin n)
     Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hσ` using `sigma_sigma hB.cm`. Take `⟨m, g, f, hg, hf, hid⟩` from `dual_family (𝓞 E) E X.L hX.lat.fg hX.lat.span_eq_top`. Set `a : Fin m → Fin n → E` to `fun i k => f i (Pi.single k 1)`. Set `u : Fin m → Fin n → E` to `fun i => (fun k => σ (a i k)) ᵥ* X.J⁻¹`. Establish `hu : ∀ i, u i ᵥ* X.J = fun k => σ (a i k)` using `fun i => by`.
+
+Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (herm_det hX), Matrix.vecMul_one]`. Establish `huL : ∀ i, u i ∈ X.L` using `fun i => (hX.dual _).2 fun x hx => by`. Take `⟨c, hc⟩` from `hf i x hx`. Establish `e : form σ X.J (u i) x = σ (f i x)`. Rewrite using `[form_eq, hu, LinearMap.pi_apply_eq_sum_univ (f i) x, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, map_mul, mul_comm]`. Establish `: (fun j => if k = j then (1 : E) else 0) = Pi.single k 1` using `funext fun j => by`. Rewrite using `[Pi.single_apply]`. Conclude with `if_congr eq_comm rfl rfl`.
+
+Rewrite using `[this]`. Rewrite using `[e, ← hc]`. Conclude with `(RingOfIntegers.isIntegral_coe c).map (σ.restrictScalars ℤ)`. Establish `hdec : z = ∑ i, Matrix.vecMulVec (incV (g i)) (incV (a i) ᵥ* z)`. Use extensionality with `p l`.
+
+Establish `e : ∀ k, ∑ i, incV (F` using `F) (g i) p * incV (a i) k = (1 : Matrix (Fin n) (Fin n) (AE F E)) p k := fun k => by`. Use `congrFun (hid (Pi.single k 1)) p` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Simplify using `only [incV, ← map_mul, ← map_sum, mul_comm (g _ p), a, ← this, Pi.single_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Simplify using `only [Matrix.sum_apply, Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct, Finset.mul_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_mul, e]`. Conclude with `(congrFun (congrFun (Matrix.one_mul z) p) l).symm`. Rewrite using `[hdec]`.
+
+Use `sum_mem fun i _ => vecMulVec_mem (hg i) (mem_latW hB hW v (fun c hc => ?_) fun y hy c hc => ?_)` and prove the remaining obligations. Rewrite using `[← Matrix.vecMul_smul, hz c hc, Matrix.vecMul_zero]`. Use `h _ (neg_mem (AddSubgroup.subset_closure ⟨liftV v c, at_liftV v c, by rwa [evFin_liftV], u i, huL i, y, hy, rfl⟩))` as an intermediate fact. Rewrite `this` using `[GlobalTheory.LatVacArith.symp_neg_left, ← one_smul (AF F) z, symp_smul_smul, symp_vecMulVec hσ, hu]`. Simplify `this` using `only [hσ, mul_one, mul_neg, neg_neg]`.
+-/
 theorem mem_latAtV {B : Base F E} (hB : B.IsGood σ) {X : Spc F E n} {W : Spc F E d} {r s r' s' : ℕ} (hX : X.IsHerm σ B r s)
     (hW : W.IsSkew σ B r' s') (v : Pl F) {z : Matrix (Fin n) (Fin d) (AE F E)} (hz : At (evFin F v) z)
     (h : ∀ γ ∈ latAtV X W v, B.ψ (symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) γ z) = 1) : z ∈ latAtV X W v := by

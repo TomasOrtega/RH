@@ -6,6 +6,25 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Jp.RedRank
 
+/- English proof (translation)
+Establish `hmax : IsLocalRing.maximalIdeal O = Ideal.span {ϖ}` using `IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ |>.1 hϖ`. Establish `hres : IsLocalRing.residue O ϖ = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, hmax]`. Conclude with `Ideal.mem_span_singleton_self ϖ`. Establish `hzero : d.map (IsLocalRing.residue O) * E.map (IsLocalRing.residue O) = 0`.
+
+Rewrite using `[← Matrix.map_mul, hdE]`. Use extensionality with `i j`. Simplify using `[hres]`. Establish `hker : LinearMap.ker (d.map (IsLocalRing.residue O)).mulVecLin = LinearMap.range (E.map (IsLocalRing.residue O)).mulVecLin`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : (d.map (IsLocalRing.residue O)) *ᵥ x = 0` using `by simpa using hx`. Use `choose x₀ hx₀ using fun i => IsLocalRing.residue_surjective (x i)`. Establish `hxc : (IsLocalRing.residue O) ∘ x₀ = x` using `funext hx₀`.
+
+Establish `hmem : ∀ i, ∃ y : O, y * ϖ = (d *ᵥ x₀) i`. Introduce `i`. Establish `h0 : IsLocalRing.residue O ((d *ᵥ x₀) i) = 0`. Rewrite using `[RingHom.map_mulVec, hxc, hx']`. Both sides reduce to the same expression.
+
+Rewrite `h0` using `[IsLocalRing.residue_eq_zero_iff, hmax]`. Conclude with `Ideal.mem_span_singleton'.1 h0`. Use `choose y hy using hmem`. Establish `hdx : d *ᵥ x₀ = ϖ • y`. Use extensionality with `i`.
+
+Simplify using `[← hy i, mul_comm]`. Establish `hEx : ϖ • x₀ = ϖ • (E *ᵥ y)`. Establish `h1 : E *ᵥ (d *ᵥ x₀) = ϖ • x₀`. Rewrite using `[Matrix.mulVec_mulVec, hEd, Matrix.smul_mulVec, Matrix.one_mulVec]`. Rewrite using `[← h1, hdx, Matrix.mulVec_smul]`.
+
+Establish `hxE : x₀ = E *ᵥ y` using `smul_right_injective _ hϖ.ne_zero hEx`. Use `⟨(IsLocalRing.residue O) ∘ y, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Matrix.mulVecLin_apply]`. Rewrite using `[← RingHom.map_mulVec, ← hxE]`.
+
+Conclude with `hx₀ i`. Introduce and unpack `⟨y, rfl⟩`. Simplify using `[Matrix.mulVec_mulVec, hzero]`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker (d.map (IsLocalRing.residue O)).mulVecLin`. Rewrite `hrn` using `[hker]`.
+
+Simplify `hrn` using `[Matrix.rank]`.
+-/
 theorem rank_add_rank_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {n : ℕ} {ϖ : O}
     (hϖ : Irreducible ϖ) (d E : Matrix (Fin n) (Fin n) O) (hdE : d * E = ϖ • (1 : Matrix (Fin n) (Fin n) O))
     (hEd : E * d = ϖ • (1 : Matrix (Fin n) (Fin n) O)) :
@@ -54,6 +73,11 @@ theorem rank_add_rank_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuati
   rw [hker] at hrn
   simpa [Matrix.rank] using hrn
 
+/- English proof (translation)
+Establish `h : g.1 * (g⁻¹).1 = 1` using `by rw [← Units.val_mul]; simp`. Establish `e : fromBlocks g.1.toBlocks₁₁ g.1.toBlocks₁₂ g.1.toBlocks₂₁ g.1.toBlocks₂₂ * fromBlocks (g⁻¹).1.toBlocks₁₁ (g⁻¹).1.toBlocks₁₂ (g⁻¹).1.toBlocks₂₁ (g⁻¹).1.toBlocks₂₂ = 1`. Rewrite using `[fromBlocks_toBlocks, fromBlocks_toBlocks]`. Conclude with `h`. Rewrite `e` using `[fromBlocks_multiply, ← fromBlocks_one]`.
+
+Conclude with `(Matrix.fromBlocks_inj.1 e).2.2.2`.
+-/
 theorem low_rows {R : Type} [CommRing R] {n : ℕ} (g : GL (Ix n) R) :
     lowerLeftBlock g * (g⁻¹).1.toBlocks₁₂ + dBlk g * (g⁻¹).1.toBlocks₂₂ = 1 := by
   have h : g.1 * (g⁻¹).1 = 1 := by rw [← Units.val_mul]; simp
@@ -63,10 +87,18 @@ theorem low_rows {R : Type} [CommRing R] {n : ℕ} (g : GL (Ix n) R) :
   rw [fromBlocks_multiply, ← fromBlocks_one] at e
   exact (Matrix.fromBlocks_inj.1 e).2.2.2
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[scM, Matrix.one_apply, Matrix.diagonal_apply]`.
+-/
 theorem scM_val {L : Type} [Field L] {n : ℕ} (w : Lˣ) : (scM (n := n) w).1 = (w : L) • (1 : Matrix (Fin n) (Fin n) L) := by
   ext i j
   simp [scM, Matrix.one_apply, Matrix.diagonal_apply]
 
+/- English proof (translation)
+Establish `e : fromBlocks X.toBlocks₁₁ X.toBlocks₁₂ X.toBlocks₂₁ X.toBlocks₂₂ * fromBlocks 1 0 0 (x • (1 : Matrix (Fin n) (Fin n) L)) = fromBlocks a b 0 d * fromBlocks Y.toBlocks₁₁ Y.toBlocks₁₂ Y.toBlocks₂₁ Y.toBlocks₂₂`. Rewrite using `[fromBlocks_toBlocks, fromBlocks_toBlocks]`. Conclude with `h`. Rewrite `e` using `[fromBlocks_multiply, fromBlocks_multiply]`. Take `⟨-, -, h3, h4⟩` from `Matrix.fromBlocks_inj.1 e`.
+
+Simplify using `only [Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add, Matrix.zero_mul, Matrix.mul_smul] at h3 h4`. Conclude with `⟨h3, h4⟩`.
+-/
 theorem low_eq {L : Type} [Field L] {n : ℕ} (x : L) (X Y : Matrix (Ix n) (Ix n) L) (a b d : Matrix (Fin n) (Fin n) L)
     (h : X * fromBlocks 1 0 0 (x • (1 : Matrix (Fin n) (Fin n) L)) = fromBlocks a b 0 d * Y) :
     X.toBlocks₂₁ = d * Y.toBlocks₂₁ ∧ x • X.toBlocks₂₂ = d * Y.toBlocks₂₂ := by
@@ -79,6 +111,19 @@ theorem low_eq {L : Type} [Field L] {n : ℕ} (x : L) (X Y : Matrix (Ix n) (Ix n
   simp only [Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add, Matrix.zero_mul, Matrix.mul_smul] at h3 h4
   exact ⟨h3, h4⟩
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (ι.mapMatrix (m` using `Fin n)) := fun A B h => by`. Use extensionality with `i j`. Conclude with `hι (congrFun (congrFun h i) j)`. Establish `hs : ∀ M : Matrix (Fin n) (Fin n) O, ι.mapMatrix (ϖ • M) = ι ϖ • ι.mapMatrix M`. Introduce `M`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hC' : ι.mapMatrix C = dL * ι.mapMatrix C'` using `hC`. Establish `hD' : ι ϖ • ι.mapMatrix D = dL * ι.mapMatrix D'` using `hD`. Establish `h1' : ι.mapMatrix C * ι.mapMatrix Bi + ι.mapMatrix D * ι.mapMatrix Di = 1`.
+
+Rewrite using `[← map_mul, ← map_mul, ← map_add, h1, map_one]`. Establish `h2' : ι.mapMatrix C' * ι.mapMatrix Bi' + ι.mapMatrix D' * ι.mapMatrix Di' = 1`. Rewrite using `[← map_mul, ← map_mul, ← map_add, h2, map_one]`. Establish `hCi : ι.mapMatrix C' = dLi * ι.mapMatrix C`. Rewrite using `[hC', ← Matrix.mul_assoc, hd', Matrix.one_mul]`.
+
+Establish `hDi : ι.mapMatrix D' = ι ϖ • (dLi * ι.mapMatrix D)`. Rewrite using `[← Matrix.mul_smul, hD', ← Matrix.mul_assoc, hd', Matrix.one_mul]`. Establish `hF : ι.mapMatrix (C * Bi' + ϖ • (D * Di')) = dL`. Rewrite using `[map_add, hs, map_mul, map_mul, hC', ← Matrix.smul_mul, hD', Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_add, h2', Matrix.mul_one]`. Establish `hG : ι.mapMatrix (ϖ • (C' * Bi) + D' * Di) = ι ϖ • dLi`.
+
+Rewrite using `[map_add, hs, map_mul, map_mul, hCi, hDi, Matrix.smul_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← smul_add, ← Matrix.mul_add, h1', Matrix.mul_one]`. Use `⟨hinj ?_, hinj ?_, hinj ?_, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hF, hG, hs, map_one, Matrix.mul_smul, hd]`. Rewrite using `[map_mul, hF, hG, hs, map_one, Matrix.smul_mul, hd']`. Rewrite using `[map_mul, hF, hC']`.
+
+Rewrite using `[map_mul, hG, Matrix.smul_mul, hDi]`.
+-/
 theorem exists_integral {O L : Type} [CommRing O] [Field L] (ι : O →+* L) (hι : Function.Injective ι) {n : ℕ} (ϖ : O)
     (C D C' D' Bi Di Bi' Di' : Matrix (Fin n) (Fin n) O) (h1 : C * Bi + D * Di = 1) (h2 : C' * Bi' + D' * Di' = 1)
     (dL dLi : Matrix (Fin n) (Fin n) L) (hd : dL * dLi = 1) (hd' : dLi * dL = 1)
@@ -113,6 +158,27 @@ theorem exists_integral {O L : Type} [CommRing O] [Field L] (ι : O →+* L) (h�
   · rw [map_mul, hF, hC']
   · rw [map_mul, hG, Matrix.smul_mul, hDi]
 
+/- English proof (translation)
+Introduce `O L _ _ _ _ _ _ n ϖ hϖ w hw κ h hred`. Take `⟨a, d, b, κ', hEq, rfl⟩` from `hred`. Establish `hv` using `congrArg Units.val hEq`. Establish `hlow` using `low_eq (w : L) (κ.1.map (algebraMap O L)) (κ'.1.map (algebraMap O L)) a.1 b d.1 (by`. Establish `: (tauM (n` using `n) w).1 = fromBlocks 1 0 0 ((w : L) • (1 : Matrix (Fin n) (Fin n) L)) := by`.
+
+Simplify using `[tauM, pM, scM_val]`. Rewrite using `[← this]`. Conclude with `hv)`. Establish `hres : IsLocalRing.residue O ϖ = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ |>.1 hϖ]`.
+
+Conclude with `Ideal.mem_span_singleton_self ϖ`. Take `⟨e1, e2, e3, e4⟩` from `exists_integral (algebraMap O L) (IsFractionRing.injective O L) ϖ (lowerLeftBlock κ) (dBlk κ) (lowerLeftBlock κ') (dBlk κ') (κ⁻¹).1.toBlocks₁₂ (κ⁻¹).1.toBlocks₂₂ (κ'⁻¹).1.toBlocks₁₂ (κ'⁻¹).1.toBlocks₂₂ (low_rows κ) (low_rows κ') d.1 (d⁻¹).1 (by rw [← Units.val_mul]; simp) (by rw …`. Establish `hn` using `rank_add_rank_eq hϖ _ _ e1 e2`. Use `set R := (IsLocalRing.residue O).mapMatrix (m := Fin n) with hR`. Establish `hsz : ∀ M : Matrix (Fin n) (Fin n) O, R (ϖ • M) = 0`.
+
+Introduce `M`. Use extensionality with `i j`. Simplify using `[hR, hres]`. Establish `hd0 : (lowerLeftBlock κ * (κ'⁻¹).1.toBlocks₁₂ + ϖ • (dBlk κ * (κ'⁻¹).1.toBlocks₂₂)).map (IsLocalRing.residue O) = R (lowerLeftBlock κ) * R (κ'⁻¹).1.toBlocks₁₂`. Express the relevant statement in the definitionally equal form `R _ = _`.
+
+Rewrite using `[map_add, hsz, add_zero, map_mul]`. Establish `hE0 : (ϖ • (lowerLeftBlock κ' * (κ⁻¹).1.toBlocks₁₂) + dBlk κ' * (κ⁻¹).1.toBlocks₂₂).map (IsLocalRing.residue O) = R (dBlk κ') * R (κ⁻¹).1.toBlocks₂₂`. Express the relevant statement in the definitionally equal form `R _ = _`. Rewrite using `[map_add, hsz, zero_add, map_mul]`. Establish `r1 : ((lowerLeftBlock κ * (κ'⁻¹).1.toBlocks₁₂ + ϖ • (dBlk κ * (κ'⁻¹).1.toBlocks₂₂)).map (IsLocalRing.residue O)).rank = (R (lowerLeftBlock κ)).rank`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[hd0]`. Conclude with `Matrix.rank_mul_le_left _ _`. Establish `: R (lowerLeftBlock κ) = (lowerLeftBlock κ * (κ'⁻¹).1.toBlocks₁₂ + ϖ • (dBlk κ * (κ'⁻¹).1.toBlocks₂₂)).map (IsLocalRing.residue O) * R (lowerLeftBlock κ')` using `by conv_lhs => rw [e3]`. Rewrite using `[map_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Matrix.rank_mul_le_left _ _`. Establish `r2 : ((ϖ • (lowerLeftBlock κ' * (κ⁻¹).1.toBlocks₁₂) + dBlk κ' * (κ⁻¹).1.toBlocks₂₂).map (IsLocalRing.residue O)).rank = (R (dBlk κ')).rank`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[hE0]`. Conclude with `Matrix.rank_mul_le_left _ _`. Establish `: R (dBlk κ') = (ϖ • (lowerLeftBlock κ' * (κ⁻¹).1.toBlocks₁₂) + dBlk κ' * (κ⁻¹).1.toBlocks₂₂).map (IsLocalRing.residue O) * R (dBlk κ)` using `by conv_lhs => rw [← e4]`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `Matrix.rank_mul_le_left _ _`. Rewrite `hn` using `[r1, r2]`. Establish `hc : lowerLeftBlock (resK κ) = R (lowerLeftBlock κ)` using `rfl`. Establish `hdd : dBlk (resK κ') = R (dBlk κ')` using `rfl`.
+
+Unfold `iD`. Rewrite using `[hc, hdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem iD_eq_rank : ∀ (O L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field L] [Algebra O L] [IsFractionRing O L]
     (n : ℕ) (ϖ : O), Irreducible ϖ → ∀ w : Lˣ, (w : L) = algebraMap O L ϖ →
     ∀ (κ : GL (Ix n) O) (h : GL (Ix n) (IsLocalRing.ResidueField O)), IsRed (O := O) w κ h →

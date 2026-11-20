@@ -12,6 +12,35 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Adapted
 
 variable {n m : Type} [Fintype n] [Fintype m] [DecidableEq n] [DecidableEq m]
 
+/- English proof (translation)
+Establish `hee : ∀ X : Matrix n n ℂ, e • e • X = X` using `fun X => by rw [smul_smul, he, one_smul]`. Establish `h1 : c * A = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : A * c = 1` using `(Matrix.mul_eq_one_comm_of_equiv eqv.symm).1 h1`. Establish `h1h : Aᴴ * cᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`.
+
+Establish `h2h : cᴴ * Aᴴ = 1` using `by rw [← conjTranspose_mul, h2, conjTranspose_one]`. Establish `hS : cᴴ * I * c = e • G`. Combine the equalities or inequalities in the displayed calculation. Establish `hSX : (e • G) * (A * I * Aᴴ) = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hS]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cᴴ * (I * I) * Aᴴ := by rw [h1, Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hI, Matrix.mul_one, h2h]`. Establish `hGX : G * (e • (A * I * Aᴴ)) = 1`.
+
+Rewrite using `[Matrix.mul_smul, ← Matrix.smul_mul]`. Conclude with `hSX`. Establish `hGinv : G⁻¹ = e • (A * I * Aᴴ)` using `Matrix.inv_eq_right_inv hGX`. Establish `hc_inj : Function.Injective c.mulVec`. Introduce `v w hvw`.
+
+Use `congrArg A.mulVec hvw` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, h2]`. Use `⟨h1, h2, Matrix.PosDef.conjTranspose_mul_self c hc_inj, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hGinv, Matrix.mul_smul, Matrix.smul_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = e • (cᴴ * I * c) := by rw [h1, h1h, Matrix.mul_one, Matrix.mul_one]`. Use `_ = G := by rw [hS, hee]`. Introduce `a ai hai ha`. Establish `hia : ai * a = 1` using `mul_eq_one_comm.1 hai`.
+
+Establish `hSa : aᴴ * (e • G) * a = e • G` using `by rw [Matrix.mul_smul, Matrix.smul_mul, ha]`. Establish `haS : aᴴ * (e • G) = (e • G) * ai`. Combine the equalities or inequalities in the displayed calculation. Establish `hform : (a * A)ᴴ * (e • G) * (a * A) = I`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = I := by rw [hSa, hA]`. Use `⟨hform, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = c * ai := by rw [haS, hc]; simp only [Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul c]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = I := by rw [hS, hform]`. Establish `hu : (c * (a * A))ᴴ * (c * (a * A)) = Aᴴ * (aᴴ * (cᴴ * c) * a) * A`. Rewrite using `[conjTranspose_mul c, conjTranspose_mul a]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[hu]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2h, h2, Matrix.one_mul, Matrix.mul_one]`.
+
+Use `_ = cᴴ * (Aᴴ * (aᴴ * (cᴴ * c) * a) * A) * c := by simp only [Matrix.mul_assoc]`. Use `_ = cᴴ * c := by rw [h, Matrix.mul_one]`. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h1h, h1, Matrix.one_mul]`. Introduce `A' hA'`. Establish `hX : e • ((A' * c)ᴴ * G * (A' * c)) = e • G`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[conjTranspose_mul, Matrix.mul_smul, Matrix.smul_mul]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_smul, Matrix.smul_mul]`. Use `_ = e • G := by rw [hA', hS]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem facts (eqv : n ≃ m) (I : Matrix m m ℂ) (hI : I * I = 1) (G : Matrix n n ℂ) (e : ℂ) (he : e * e = 1)
     (A : Matrix n m ℂ) (hA : Aᴴ * (e • G) * A = I) (c : Matrix m n ℂ) (hc : c = I * Aᴴ * (e • G)) :
     c * A = 1 ∧ A * c = 1 ∧ (cᴴ * c).PosDef ∧ (cᴴ * c) * G⁻¹ * (cᴴ * c) = G ∧
@@ -92,9 +121,15 @@ end GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Adapted
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict
 
+/- English proof (translation)
+Simplify using `[sgI, Matrix.fromBlocks_multiply]`.
+-/
 theorem sgI_mul_self (j j' : ℕ) : sgI j j' * sgI j j' = 1 := by
   simp [sgI, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C τ A hA`. Establish `he : ((C.eps τ : ℝ) : ℂ) * ((C.eps τ : ℝ) : ℂ) = 1`. Establish `h` using `C.eps_sq τ`. Rewrite using `[← Complex.ofReal_mul, ← pow_two, h, Complex.ofReal_one]`. Conclude with `Adapted.facts finSumFinEquiv.symm (sgI j j') (sgI_mul_self j j') (C.gr τ) ((C.eps τ : ℝ) : ℂ) he A hA (C.cinv A τ) rfl`.
+-/
 theorem cinv_facts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (τ : Ψ) (A : Matrix (Fin (j + j')) (Sg j j') ℂ), Aᴴ * C.sgr τ * A = sgI j j' → C.cinv A τ * A = 1 ∧ A * C.cinv A τ = 1 ∧ ((C.cinv A τ)ᴴ * C.cinv A τ).PosDef ∧ ((C.cinv A τ)ᴴ * C.cinv A τ) * (C.gr τ)⁻¹ * ((C.cinv A τ)ᴴ * C.cinv A τ) = C.gr τ ∧ (∀ a ai : Matrix (Fin (j + j')) (Fin (j + j')) ℂ, a * ai = 1 → aᴴ * C.gr τ * a = C.gr τ → (a * A)ᴴ * C.sgr τ * (a * A) = sgI j j' ∧ C.cinv (a * A) τ = C.cinv A τ * ai ∧ IsSgU (C.cinv A τ * (a * A)) ∧ ((C.cinv A τ * (a * A))ᴴ * (C.cinv A τ * (a * A)) = 1 ↔ aᴴ * ((C.cinv A τ)ᴴ * C.cinv A τ) * a = (C.cinv A τ)ᴴ * C.cinv A τ)) ∧ ∀ A' : Matrix (Fin (j + j')) (Sg j j') ℂ, A'ᴴ * C.sgr τ * A' = sgI j j' → (A' * C.cinv A τ)ᴴ * C.gr τ * (A' * C.cinv A τ) = C.gr τ := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F C τ A hA
   have he : ((C.eps τ : ℝ) : ℂ) * ((C.eps τ : ℝ) : ℂ) = 1 := by

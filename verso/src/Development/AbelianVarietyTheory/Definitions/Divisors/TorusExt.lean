@@ -111,6 +111,9 @@ def SecJets : Prop := ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K) (
 def SemiFib.ofGenFib {K : Type} [Field K] [NumberField K] {P : Out.PolAV (Sp (𝓞 K))} (hP : IsSemiAbelian P.A)
     (F : GlobalTheory.CM.GenFib P) : SemiFib K := ⟨F.P₀, P.A, hP, F.φ, F.fib.2.1, F.v, F.basis⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {K : Type} [Field K] [NumberField K] {P : Out.PolAV (Sp (𝓞 K))} (hP : IsSemiAbelian P.A)
     (F : GlobalTheory.CM.GenFib P) : (SemiFib.ofGenFib hP F).lieLat = F.lieLat := rfl
 

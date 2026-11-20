@@ -4,6 +4,17 @@ noncomputable def UpperTheory.Reformulated.B.Qf37.aOp :
     {G : Type} → [Group G] → Finset G → G → (G → ℂ) → G → ℂ :=
     fun {G : Type} [Group G] (R : Finset G) (t : G) (φ : G → ℂ) (g : G) ↦ ∑ r ∈ R, φ (g * r * t)
 
+/- English proof (translation)
+Introduce `G inst I t R hR hU φ hφ g i hi`. Establish `hex : ∀ r ∈ R, ∃ s, s ∈ R ∧ t⁻¹ * (s⁻¹ * (i * r)) * t ∈ I` using `fun r hr => (hU (i * r) (I.mul_mem hi (hR r hr))).exists`. Use `choose σ hσR hσ using hex`. Establish `hinj : ∀ a (ha : a ∈ R) b (hb : b ∈ R), σ a ha = σ b hb → a = b`. Introduce `a ha b hb hab`.
+
+Establish `h1` using `hσ a ha`. Establish `h2` using `hσ b hb`. Rewrite `h2` using `[← hab]`. Establish `h3` using `I.mul_mem (I.inv_mem h1) h2`. Establish `h4 : t⁻¹ * (a⁻¹ * b) * t ∈ I`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `group`. Establish `h5 : t⁻¹ * (b⁻¹ * b) * t ∈ I`. Simplify using the standard rewrite rules. Conclude with `(hU b (hR b hb)).unique ⟨ha, h4⟩ ⟨hb, h5⟩`.
+
+Unfold `UpperTheory.Reformulated.B.Qf37.aOp`. Use `Finset.sum_bij σ hσR hinj ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Take `⟨a, ha, hab⟩` from `Finset.surj_on_of_inj_on_of_card_le σ hσR (fun a b ha hb h => hinj a ha b hb h) le_rfl b hb`. Conclude with `⟨a, ha, hab.symm⟩`.
+
+Introduce `a ha`. Rewrite using `[← hφ (g * σ a ha * t) _ (hσ a ha)]`. Use `congr 1`. Use `group`.
+-/
 theorem UpperTheory.Reformulated.B.Qf37.aOp_rightInvariant :
     ∀ {G : Type} [inst : Group G] {I : Subgroup G} {t : G} {R : Finset G},
       (∀ r ∈ R, r ∈ I) →

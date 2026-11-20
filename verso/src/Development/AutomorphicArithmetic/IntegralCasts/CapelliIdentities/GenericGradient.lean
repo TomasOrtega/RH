@@ -19,6 +19,15 @@ noncomputable def UpperTheory.Reformulated.B.Qf34.Statement :
           ∃ s ∉ J, ∀ p ∈ J, s * p ∈ Ideal.span (Set.range f)
 
 open MvPolynomial in
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [MvPolynomial.algHom_C]`. Consider the case `add p q hp hq`. Simplify using `only [map_add, add_mul, Finset.sum_add_distrib, ← hp, ← hq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `mul_X p i hp`. Establish `e : ∀ l, φ (pderiv l (p * X i)) * (φ (X l) - ψ (X l)) = φ (X i) * (φ (pderiv l p) * (φ (X l) - ψ (X l))) + (if l = i then φ p * (φ (X i) - ψ (X i)) else 0)`. Introduce `l`. Rewrite using `[pderiv_mul, map_add, map_mul, map_mul]`. Use `split_ifs with hl`.
+
+Substitute `hl` using the available equality. Rewrite using `[pderiv_X_self, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pderiv_X_of_ne (Ne.symm hl), map_zero]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [e, Finset.sum_add_distrib, ← Finset.mul_sum, ← hp, Finset.sum_ite_eq', Finset.mem_univ, if_true, map_mul]`. Take the linear combination `- h p (X i)`.
+-/
 private theorem UpperTheory.Reformulated.B.Qf34.taylor {k B : Type*} [CommRing k] [CommRing B] [Algebra k B]
     {n : ℕ} (φ ψ : MvPolynomial (Fin n) k →ₐ[k] B)
     (h : ∀ p q, (φ p - ψ p) * (φ q - ψ q) = 0) (p : MvPolynomial (Fin n) k) :
@@ -45,6 +54,15 @@ private theorem UpperTheory.Reformulated.B.Qf34.taylor {k B : Type*} [CommRing k
     linear_combination - h p (X i)
 
 open MvPolynomial in
+/- English proof (translation)
+Establish `hd : ∀ q, π (φ q - (σ.comp (π.comp φ)) q) = 0`. Introduce `q`. Simplify using `[hσ]`. Establish `ht` using `UpperTheory.Reformulated.B.Qf34.taylor φ (σ.comp (π.comp φ)) fun p q => hsq _ _ (hd p) (hd q)`. Establish `ht' : ∀ q, π (φ q) = 0 → φ q = ∑ l, φ (pderiv l q) * (φ (X l) - (σ.comp (π.comp φ)) (X l))`.
+
+Introduce `q hq`. Rewrite using `[← ht q]`. Simplify using `[hq]`. Rewrite using `[ht' p hp, Finset.sum_congr rfl fun i _ => congrArg (σ (c i) * ·) (ht' _ (hf i))]`. Simplify using `only [Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Rewrite using `[← Finset.sum_mul, ← sub_eq_zero, ← sub_mul]`. Use `hsq _ _ ?_ (hd _)` and prove the remaining obligations.
+
+Simplify using `[hσ, hc]`.
+-/
 private theorem UpperTheory.Reformulated.B.Qf34.sq_zero_case {k B K ι : Type*} [CommRing k] [CommRing B]
     [Algebra k B] [CommRing K] [Algebra k K] [Fintype ι] {n : ℕ}
     (π : B →ₐ[k] K) (σ : K →ₐ[k] B) (hσ : ∀ x, π (σ x) = x)
@@ -72,6 +90,19 @@ private theorem UpperTheory.Reformulated.B.Qf34.sq_zero_case {k B K ι : Type*} 
   simp [hσ, hc]
 
 open MvPolynomial in
+/- English proof (translation)
+Use `set m : Ideal A := RingHom.ker π with hm`. Set `π' : (A ⧸ m * m) →ₐ[k] K` to `Ideal.Quotient.liftₐ (m * m) π fun a ha => Ideal.mul_le_left ha`. Establish `hπ' : ∀ a, π' (Ideal.Quotient.mk _ a) = π a` using `fun a => rfl`. Establish `hs : Function.Surjective π'` using `fun x => by`. Take `⟨a, rfl⟩` from `hπ x`.
+
+Conclude with `⟨_, hπ' a⟩`. Establish `hsq : ∀ a b, π' a = 0 → π' b = 0 → a * b = 0`. Introduce `a b ha hb`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+
+Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_mul ha hb`. Establish `hn : IsNilpotent (RingHom.ker (π' : (A ⧸ m * m) →+* K))`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`.
+
+Introduce `a ha b hb`. Conclude with `hsq a b ha hb`. Set `σ` to `Algebra.FormallySmooth.liftOfSurjective (AlgHom.id k K) π' hs hn`. Establish `hσ : ∀ x, π' (σ x) = x` using `Algebra.FormallySmooth.liftOfSurjective_apply (AlgHom.id k K) π' hs hn`. Establish `key` using `UpperTheory.Reformulated.B.Qf34.sq_zero_case π' σ hσ hsq ((Ideal.Quotient.mkₐ k (m * m)).comp φ) p f c hp hf hc`.
+
+Use `choose a ha using fun i => Ideal.Quotient.mk_surjective (I := m * m) (σ (c i))`. Establish `h2 : φ p - ∑ i, a i * φ (f i) ∈ m * m`. Rewrite using `[← Ideal.Quotient.eq, map_sum]`. Simplify `key` using `[← ha]`. Rewrite using `[← add_sub_cancel (∑ i, a i * φ (f i)) (φ p)]`.
+
+Use `Submodule.add_mem_sup (Ideal.sum_mem _ fun i _ => ?_) h2` and prove the remaining obligations. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+-/
 private theorem UpperTheory.Reformulated.B.Qf34.mem_sup_sq {k A K ι : Type*} [CommRing k] [CommRing A]
     [Algebra k A] [CommRing K] [Algebra k K] [Algebra.FormallySmooth k K] [Fintype ι] {n : ℕ}
     (π : A →ₐ[k] K) (hπ : Function.Surjective π)
@@ -109,6 +140,33 @@ private theorem UpperTheory.Reformulated.B.Qf34.mem_sup_sq {k A K ι : Type*} [C
   refine Submodule.add_mem_sup (Ideal.sum_mem _ fun i _ => ?_) h2
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Introduce `n J _ ι _ f hf hspan`. Set `R` to `MvPolynomial (Fin n) ℂ`. Set `K` to `FractionRing (R ⧸ J)`. Set `A` to `Localization.AtPrime J`. Set `g : R →ₐ[ℂ] K` to `(IsScalarTower.toAlgHom ℂ (R ⧸ J) K).comp (Ideal.Quotient.mkₐ ℂ J)`.
+
+Establish `hg : ∀ r, g r = algebraMap (R ⧸ J) K (Ideal.Quotient.mk J r)` using `fun r => rfl`. Establish `hg0 : ∀ r, g r = 0 ↔ r ∈ J` using `fun r => by`. Rewrite using `[hg, map_eq_zero_iff _ (IsFractionRing.injective (R ⧸ J) K), Ideal.Quotient.eq_zero_iff_mem]`. Establish `hu : ∀ y : J.primeCompl, IsUnit (g y)` using `fun y => isUnit_iff_ne_zero.mpr fun h => y.2 ((hg0 _).mp h)`. Set `π : A →ₐ[ℂ] K` to `IsLocalization.liftAlgHom (M := J.primeCompl) hu`.
+
+Set `φ : R →ₐ[ℂ] A` to `IsScalarTower.toAlgHom ℂ R A`. Establish `hπφ : ∀ r, π (φ r) = g r` using `fun r => IsLocalization.lift_eq hu r`. Establish `hπ : Function.Surjective π`. Introduce `x`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (R ⧸ J) x`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `hb' : b ∈ J.primeCompl` using `fun h => nonZeroDivisors.ne_zero hb (Ideal.Quotient.eq_zero_iff_mem.mpr h)`. Use `⟨IsLocalization.mk' A a ⟨b, hb'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, ← hg, eq_div_iff (hu ⟨b, hb'⟩).ne_zero, ← hπφ, ← hπφ, ← map_mul]`.
+
+Conclude with `congrArg π (IsLocalization.mk'_spec A a ⟨b, hb'⟩)`. Use `haveI : Algebra.EssFiniteType (R ⧸ J) K := Algebra.EssFiniteType.of_isLocalization K (nonZeroDivisors (R ⧸ J))`. Use `haveI : Algebra.EssFiniteType ℂ K := Algebra.EssFiniteType.comp ℂ (R ⧸ J) K`. Use `haveI : Algebra.FormallySmooth ℂ K := Algebra.FormallySmooth.of_perfectField`. Establish `hker : RingHom.ker π = IsLocalRing.maximalIdeal A` using `IsLocalRing.ker_eq_maximalIdeal (π : A →+* K) hπ`.
+
+Establish `hN : IsLocalRing.maximalIdeal A ≤ (Ideal.span (Set.range f)).map (algebraMap R A)`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := IsLocalRing.maximalIdeal A) (IsNoetherian.noetherian _) (IsLocalRing.maximalIdeal_le_jacobson _) ?_` and prove the remaining obligations. Use `conv_lhs => rw [← Localization.AtPrime.map_eq_maximalIdeal]`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `p hp`.
+
+Establish `hmem : UpperTheory.Reformulated.B.Qf34.genericGradient J p ∈ Submodule.span K (Set.range (UpperTheory.Reformulated.B.Qf34.genericGradient J ∘ f))`. Rewrite using `[hspan]`. Conclude with `Submodule.subset_span ⟨p, hp, rfl⟩`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).mp hmem`. Use `UpperTheory.Reformulated.B.Qf34.mem_sup_sq π hπ φ p f c (by rw [hπφ, hg0]; exact hp) (fun i => by rw [hπφ, hg0]; exact hf i) (fun l => by` as an intermediate fact.
+
+Establish `h` using `congrFun hc l`. Rewrite `h` using `[Finset.sum_apply]`. Simplify using `only [hπφ]`. Conclude with `h.symm)`. Rewrite `this` using `[hker]`.
+
+Rewrite using `[Ideal.mem_comap, Ideal.map_span, ← Set.range_comp, smul_eq_mul]`. Conclude with `this`. Take `⟨t, ht⟩ : J.FG` from `IsNoetherian.noetherian J`. Establish `hs : ∀ p ∈ J, ∃ s ∈ J.primeCompl, s * p ∈ Ideal.span (Set.range f)`. Introduce `p hp`.
+
+Rewrite using `[← IsLocalization.algebraMap_mem_map_algebraMap_iff J.primeCompl A]`. Apply `hN` to reduce the goal to its premises. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `Ideal.mem_map_of_mem _ hp`. Use `choose! s hs hs' using hs`.
+
+Establish `htJ : ∀ p ∈ t, p ∈ J` using `fun p hp => ht ▸ Ideal.subset_span hp`. Use `⟨∏ p ∈ t, s p, Submonoid.prod_mem J.primeCompl fun p hp => hs p (htJ p hp), ?_⟩` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp` using `[← ht]`. Proceed by induction on `hp using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨u, hu⟩` from `Finset.dvd_prod_of_mem s hx`. Rewrite using `[hu, mul_comm (s x), mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ (hs' x (htJ x hx))`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `Ideal.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [smul_eq_mul, mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ hx`.
+-/
 theorem UpperTheory.Reformulated.B.Qf34.proof :
     UpperTheory.Reformulated.B.Qf34.Statement := by
   intro n J _ ι _ f hf hspan

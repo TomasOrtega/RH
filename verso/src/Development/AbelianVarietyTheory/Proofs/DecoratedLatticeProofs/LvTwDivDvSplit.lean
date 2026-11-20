@@ -14,6 +14,19 @@ open GlobalTheory.LFun (toCompl locMat locChar IsSplitChart IsInertChart IsFrame
 namespace GlobalTheory.LocValSplit
 open GlobalTheory.LFun (LvTw_eq eulerFac_eq_prod etaU locL etaFam_of_unram eulerFac_singleton mem_aboveF)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ B m v w w' r b s hsplit hunr hne hv hqw hqw' hB' hm1`. Use `set X : ℂ := GlobalTheory.LFun.npow w (-(s + 1 / 2)) with hXdef`. Use `set μ : ℂ := (m w : ℂ) with hμ`. Establish `hX' : GlobalTheory.LFun.npow w' (-(s + 1 / 2)) = X` using `by rw [hXdef, GlobalTheory.LFun.npow, GlobalTheory.LFun.npow, hqw, hqw']`. Establish `hinv : ((m w' : ℂ))⁻¹ = μ` using `inv_eq_of_mul_eq_one_left (by rw [hμ, ← Units.val_mul, hm1, Units.val_one])`.
+
+Establish `e : Formalism.L2.Host.aboveF (L` using `E) F v = {w, w'} := by ext u; simp [mem_aboveF, hv]`. Establish `hL : LvTw B m v (s + 1 / 2) = ((B w).map fun b : ℂˣ => (1 - (b : ℂ) * μ⁻¹ * X)⁻¹).prod * ((B w).map fun b : ℂˣ => (1 - (b : ℂ)⁻¹ * μ * X)⁻¹).prod`. Rewrite using `[LvTw_eq, e, Finset.prod_pair hne, hB', Multiset.map_map, hX', hinv]`. Simplify using `only [Function.comp_def, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+
+Establish `hr1 : eulerFac ((B w).map ((m w)⁻¹ * ·)) X = ((B w).map fun b : ℂˣ => (1 - (b : ℂ) * μ⁻¹ * X)⁻¹).prod`. Rewrite using `[eulerFac_eq_prod, Multiset.map_map]`. Use `congrArg Multiset.prod (Multiset.map_congr rfl fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, Units.val_inv_eq_inv_val, hμ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hr2 : eulerFac ((B w).map fun β => ((m w)⁻¹ * β)⁻¹) X = ((B w).map fun b : ℂˣ => (1 - (b : ℂ)⁻¹ * μ * X)⁻¹).prod`. Rewrite using `[eulerFac_eq_prod, Multiset.map_map]`. Use `congrArg Multiset.prod (Multiset.map_congr rfl fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_inv_eq_inv_val, Units.val_mul, mul_inv, inv_inv, hμ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hd : dv E r b v s = (∏ i ∈ Finset.range r, (1 - (qV E w : ℂ) ^ (-(2 * s + r - i))))⁻¹`. Rewrite using `[← Finset.prod_inv_distrib, dv]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hu : etaU E v = 1` using `by unfold etaU; rw [if_pos hsplit]`. Rewrite using `[locL, etaFam_of_unram hunr, hu, one_pow, eulerFac_singleton, Units.val_one, one_mul, GlobalTheory.LFun.npow, qV, hqw]`.
+
+Rewrite using `[hd, div_inv_eq_mul, hL, hr1, hr2]`.
+-/
 theorem LvTw_div_dv_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (B : Fam E) (m : HeightOneSpectrum (𝓞 E) → ℂˣ) (v : HeightOneSpectrum (𝓞 F)) (w w' : HeightOneSpectrum (𝓞 E)) (r b : ℕ) (s : ℂ), IsSplit (E := E) v → Formalism.MainNotions.SchurIrreducible.IsUnram (E := E) v → w ≠ w' → (∀ u : HeightOneSpectrum (𝓞 E), u.under (𝓞 F) = v ↔ u = w ∨ u = w') → Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal → Ideal.absNorm w'.asIdeal = Ideal.absNorm v.asIdeal → B w' = (B w).map (·⁻¹) → m w * m w' = 1 → LvTw B m v (s + 1 / 2) / dv E r b v s = eulerFac ((B w).map ((m w)⁻¹ * ·)) (GlobalTheory.LFun.npow w (-(s + 1 / 2))) * eulerFac ((B w).map fun β => ((m w)⁻¹ * β)⁻¹) (GlobalTheory.LFun.npow w (-(s + 1 / 2))) * ∏ i ∈ Finset.range r, (1 - (qV E w : ℂ) ^ (-(2 * s + r - i))) := by
   intro F E _ _ _ _ _ B m v w w' r b s hsplit hunr hne hv hqw hqw' hB' hm1
   classical

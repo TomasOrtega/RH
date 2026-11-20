@@ -9,6 +9,9 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 namespace GlobalTheory.ThK.Dbl
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.ThK.Dbl.hgtEx_of_k _root_.GlobalTheory.ThK.Dbl.stab2Cpt_k`.
+-/
 theorem hgtEx_k : _root_.GlobalTheory.ThK.Dbl.HgtEx_k := _root_.GlobalTheory.ThK.Dbl.hgtEx_of_k _root_.GlobalTheory.ThK.Dbl.stab2Cpt_k
 end GlobalTheory.ThK.Dbl
 end

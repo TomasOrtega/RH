@@ -3,13 +3,24 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `N` and use `by simp only [map_mul]; exact (hf N).mul (hh N)`.
+-/
 private theorem ac_mul {G R : Type} [TopologicalSpace G] [CommRing R] {I : Ideal R} {f h : G → R}
     (hf : AdicCont I f) (hh : AdicCont I h) : AdicCont I fun g => f g * h g := fun N => by
   simp only [map_mul]; exact (hf N).mul (hh N)
 
+/- English proof (translation)
+Introduce `_` and use `IsLocallyConstant.const _`.
+-/
 private theorem ac_const {G R : Type} [TopologicalSpace G] [CommRing R] {I : Ideal R} (c : R) :
     AdicCont I fun _ : G => c := fun _ => IsLocallyConstant.const _
 
+/- English proof (translation)
+Introduce `N`. Simplify using `only [map_sum]`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`.
+
+Conclude with `IsLocallyConstant.const 0`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(hf a N).add ih`.
+-/
 private theorem ac_sum {G R ι : Type} [TopologicalSpace G] [CommRing R] {I : Ideal R} (s : Finset ι)
     {f : ι → G → R} (hf : ∀ i, AdicCont I (f i)) : AdicCont I fun g => ∑ i ∈ s, f i g := by
   classical
@@ -23,6 +34,15 @@ private theorem ac_sum {G R ι : Type} [TopologicalSpace G] [CommRing R] {I : Id
     simp only [Finset.sum_insert ha]
     exact (hf a N).add ih
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hx : ∀ᶠ y in nhds x, ∀ i j, Ideal.Quotient.mk (Ideal.span {algebraMap A R t} ^ N) (f y i j) = Ideal.Quotient.mk (Ideal.span {algebraMap A R t} ^ N) (f x i j)` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (hf i j N).eventually_eq x`. Use `filter_upwards [hx] with y hy`. Establish `hc : ∀ i j, ∃ c : R, c * algebraMap A R t ^ N = f y i j - f x i j`.
+
+Introduce `i j`. Establish `h` using `Ideal.Quotient.eq.1 (hy i j)`. Rewrite `h` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Then use the resulting hypothesis. Use `choose c hc using hc`. Simplify using `only [Submodule.mkQ_apply]`.
+
+Rewrite using `[Submodule.Quotient.eq]`. Establish `hm : f y - f x = t ^ N • Matrix.of c`. Use extensionality with `i j`. Simplify using `[Algebra.smul_def, ← hc i j, mul_comm]`. Rewrite using `[hm, Ideal.span_singleton_pow]`.
+
+Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+-/
 private theorem mat_lc {G A R : Type} [TopologicalSpace G] [CommRing A] [CommRing R] [Algebra A R]
     {n : ℕ} (t : A) (f : G → Matrix (Fin n) (Fin n) R)
     (hf : ∀ i j, AdicCont (Ideal.span {algebraMap A R t}) fun g => f g i j) (N : ℕ) :
@@ -48,6 +68,17 @@ private theorem mat_lc {G A R : Type} [TopologicalSpace G] [CommRing A] [CommRin
   rw [hm, Ideal.span_singleton_pow]
   exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top
 
+/- English proof (translation)
+Introduce `l _ K G R _ _ _ _ _ _ _ _ _ _ _ _ n χ r Z hφ hχ hr hZ`. Set `ρ : G →* Module.End (PowerSeries K) (Matrix (Fin n) (Fin n) R)` to `{ toFun := fun g => { toFun := fun m => χ g • (r g * m * r g⁻¹) map_add' := by intro a b; simp [Matrix.mul_add, Matrix.add_mul] map_smul' := by`. Introduce `c m`. Simplify using `only [RingHom.id_apply, Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `smul_comm _ _ _ }`.
+
+Use the proof step `map_one' := by ext m : 1; simp`. Use the proof step `map_mul' := by`. Introduce `g h`. Use extensionality with `m : 1`. Simplify using `[Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc, mul_comm] }`.
+
+Establish `hinv : ∀ i j, AdicCont (Ideal.span {algebraMap (PowerSeries K) R PowerSeries.X}) fun g => r g⁻¹ i j` using `fun i j N => (hr i j N).comp_continuous continuous_inv`. Use `Det.z1Fg l ρ Z hφ ?_ ?_` and prove the remaining obligations. Introduce `N m`. Use `mat_lc PowerSeries.X (fun g => χ g • (r g * m * r g⁻¹)) ?_ N` and prove the remaining obligations. Introduce `i j`.
+
+Establish `e : (fun g => (χ g • (r g * m * r g⁻¹)) i j) = fun g => χ g * ∑ q, (∑ k, r g i k * m k q) * r g⁻¹ q j`. Use function extensionality and compare the values at `g`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[e]`. Conclude with `ac_mul hχ (ac_sum _ fun q => ac_mul (ac_sum _ fun k => ac_mul (hr i k) (ac_const _)) (hinv q j))`.
+
+Introduce `z hz`. Take `⟨hzc, hzt⟩` from `hZ z hz`. Conclude with `⟨fun N => mat_lc PowerSeries.X z hzc N, fun g h => hzt g trivial h trivial⟩`.
+-/
 theorem UpperTheory.V.Pa.Det.matFg :
     ∀ (l : ℕ) [Fact l.Prime] {K G R : Type} [Field K] [Finite K] [CharP K l] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] [CommRing R] [Algebra (PowerSeries K) R] [Module.Free (PowerSeries K) R] [Module.Finite (PowerSeries K) R] {n : ℕ} (χ : G →* R) (r : G →* Matrix (Fin n) (Fin n) R) (Z : Submodule (PowerSeries K) (G → Matrix (Fin n) (Fin n) R)), PhiCond G l → AdicCont (Ideal.span {algebraMap (PowerSeries K) R PowerSeries.X}) χ → (∀ i j, AdicCont (Ideal.span {algebraMap (PowerSeries K) R PowerSeries.X}) fun g => r g i j) → (∀ z ∈ Z, (∀ i j, AdicCont (Ideal.span {algebraMap (PowerSeries K) R PowerSeries.X}) fun g => z g i j) ∧ TwCoc χ r Set.univ z) → Z.FG := by
   intro l _ K G R _ _ _ _ _ _ _ _ _ _ _ _ n χ r Z hφ hχ hr hZ

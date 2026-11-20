@@ -19,6 +19,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace PositivityTheory.HtPt.Ppic
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `Q M hM hu`. Establish `hO : (LB.div M Q.L).IsLB` using `LB.isLB_div hM Q.isLB`. Take `⟨x, hx⟩` from `GlobalTheory.T.exists_section_primitiveBundle_translate_localRing GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 ℂ Q _ hO hu`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `e` using `(cls_eq_iff hO (LB.isLB_linComb Q.isLB _ _)).2 hx`.
+
+Rewrite `e` using `[cls_div hM Q.isLB, cls_linComb Q.isLB, Fin.sum_univ_two]`. Use `(cls_eq_iff hM (pull_isLB Q.isLB _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull Q.isLB]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, pull_id] at e`. Rewrite `e` using `[← sub_eq_add_neg]`.
+
+Conclude with `sub_left_injective e`.
+-/
 theorem pic : ∀ (Q : Out.PolAV (Sp ℂ)) (M : LB Q.A.left), M.IsLB → (∃ u : LB.Gen (abelian₂ Q.A (LB.div M Q.L)), u.IsGen) → ∃ x : 𝟙_ (Over (Sp ℂ)) ⟶ Q.A, LBIso M (Q.L.pull ((toUnit Q.A ≫ x) * 𝟙 Q.A).left) := by
   intro Q M hM hu
   have hO : (LB.div M Q.L).IsLB := LB.isLB_div hM Q.isLB

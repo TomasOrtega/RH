@@ -17,17 +17,26 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
   [MeasurableSpace G] [BorelSpace G] [CompleteSpace H] in
+/- English proof (translation)
+The claim follows from `(⟨(π g : H →ₗ[ℂ] H), hn g⟩ : H →ₗᵢ[ℂ] H).inner_map_map a b`.
+-/
 theorem rrc_inner (hn : ∀ g x, ‖π g x‖ = ‖x‖) (g : G) (a b : H) : ⟪π g a, π g b⟫_ℂ = ⟪a, b⟫_ℂ :=
   (⟨(π g : H →ₗ[ℂ] H), hn g⟩ : H →ₗᵢ[ℂ] H).inner_map_map a b
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
   [MeasurableSpace G] [BorelSpace G] [CompleteSpace H] in
+/- English proof (translation)
+Use `le_trans (norm_inner_le_norm _ _) ?_` and prove the remaining obligations. Rewrite using `[hn]`.
+-/
 theorem rrc_bound (hn : ∀ g x, ‖π g x‖ = ‖x‖) (g : G) (v u : H) : ‖⟪π g v, u⟫_ℂ‖ ≤ ‖v‖ * ‖u‖ := by
   refine le_trans (norm_inner_le_norm _ _) ?_
   rw [hn]
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
   [BorelSpace G] [μ.IsHaarMeasure] [CompleteSpace H] [Group G] in
+/- English proof (translation)
+Establish `h` using `Complex.continuous_conj.comp_aestronglyMeasurable (hm u v)`. Use `h.congr (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `inner_conj_symm _ _`.
+-/
 theorem rrc_aesm (hm : ∀ x y, AEStronglyMeasurable (fun g => ⟪x, π g y⟫_ℂ) μ) (v u : H) :
     AEStronglyMeasurable (fun g => ⟪π g v, u⟫_ℂ) μ := by
   have h := Complex.continuous_conj.comp_aestronglyMeasurable (hm u v)
@@ -36,6 +45,9 @@ theorem rrc_aesm (hm : ∀ x y, AEStronglyMeasurable (fun g => ⟪x, π g y⟫_�
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
   [BorelSpace G] [μ.IsHaarMeasure] [CompleteSpace H] in
+/- English proof (translation)
+The claim follows from `IntegrableOn.of_bound hk (rrc_aesm hm v u).restrict (‖v‖ * ‖u‖) (Eventually.of_forall fun g => rrc_bound hn g v u)`.
+-/
 theorem rrc_intOn (hn : ∀ g x, ‖π g x‖ = ‖x‖) (hm : ∀ x y, AEStronglyMeasurable (fun g => ⟪x, π g y⟫_ℂ) μ)
     {k : Set G} (hk : μ k < ⊤) (v u : H) : IntegrableOn (fun g => ⟪π g v, u⟫_ℂ) k μ :=
   IntegrableOn.of_bound hk (rrc_aesm hm v u).restrict (‖v‖ * ‖u‖) (Eventually.of_forall fun g => rrc_bound hn g v u)
@@ -43,6 +55,13 @@ theorem rrc_intOn (hn : ∀ g x, ‖π g x‖ = ‖x‖) (hm : ∀ x y, AEStrong
 omit [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
   [BorelSpace G] [μ.IsHaarMeasure] in
 
+/- English proof (translation)
+Establish `hint` using `fun u => rrc_intOn hn hm hk v u`. Set `L : H →ₗ[ℂ] ℂ` to `{ toFun := fun u => ∫ g in k, ⟪π g v, u⟫_ℂ ∂μ map_add' := fun a b => by`. Simplify using `only [inner_add_right]`. Conclude with `integral_add (hint a) (hint b)`. Use the proof step `map_smul' := fun c a => by`.
+
+Simplify using `only [inner_smul_right, RingHom.id_apply, smul_eq_mul]`. Conclude with `integral_const_mul _ _ }`. Establish `hb : ∀ u, ‖L u‖ ≤ (‖v‖ * μ.real k) * ‖u‖` using `fun u => by`. Use `norm_setIntegral_le_of_norm_le_const (μ := μ) hk (fun g _ => rrc_bound hn g v u)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨(InnerProductSpace.toDual ℂ H).symm (L.mkContinuous _ hb), fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[InnerProductSpace.toDual_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem rrc_exists_vec (hn : ∀ g x, ‖π g x‖ = ‖x‖) (hm : ∀ x y, AEStronglyMeasurable (fun g => ⟪x, π g y⟫_ℂ) μ)
     {k : Set G} (hk : μ k < ⊤) (v : H) : ∃ w : H, ∀ u, ⟪w, u⟫_ℂ = ∫ g in k, ⟪π g v, u⟫_ℂ ∂μ := by
   have hint := fun u => rrc_intOn hn hm hk v u
@@ -63,6 +82,13 @@ theorem rrc_exists_vec (hn : ∀ g x, ‖π g x‖ = ‖x‖) (hm : ∀ x y, AES
   rfl
 
 omit [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [CompleteSpace H] in
+/- English proof (translation)
+Establish `e1 : π h (π h⁻¹ u) = u`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul, mul_inv_cancel, hone]`. Both sides reduce to the same expression. Establish `e2 : ∀ g, ⟪π g v, π h⁻¹ u⟫_ℂ = ⟪π (h * g) v, u⟫_ℂ` using `fun g => by`. Rewrite using `[← rrc_inner hn h, e1, hmul]`.
+
+Both sides reduce to the same expression. Establish `e3 : (fun g => h * g) ⁻¹' (h • k) = k`. Use extensionality with `g`. Simplify using `[Set.mem_smul_set_iff_inv_smul_mem]`. Establish `e4` using `(measurePreserving_mul_left μ h).setIntegral_preimage_emb (measurableEmbedding_mulLeft h) (fun g => ⟪π g v, u⟫_ℂ) (h • k)`.
+
+Rewrite `e4` using `[e3]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rrc_translate (hmul : ∀ g h, π (g * h) = π g ∘L π h) (hone : π 1 = 1) (hn : ∀ g x, ‖π g x‖ = ‖x‖)
     {k : Set G} {v w : H} (hw : ∀ u, ⟪w, u⟫_ℂ = ∫ g in k, ⟪π g v, u⟫_ℂ ∂μ) (h : G) (u : H) :
     ⟪π h w, u⟫_ℂ = ∫ g in h • k, ⟪π g v, u⟫_ℂ ∂μ := by
@@ -82,6 +108,19 @@ theorem rrc_translate (hmul : ∀ g h, π (g * h) = π g ∘L π h) (hone : π 1
     _ = ∫ g in h • k, ⟪π g v, u⟫_ℂ ∂μ := e4
 
 omit [LocallyCompactSpace G] [SecondCountableTopology G] [CompleteSpace H] in
+/- English proof (translation)
+Establish `hkm : MeasurableSet k` using `hk.measurableSet`. Establish `hk' : IsCompact (h • k)` using `hk.smul h`. Establish `hkm' : MeasurableSet (h • k)` using `hk'.measurableSet`. Establish `key : ∀ u, ‖⟪π h w - w, u⟫_ℂ‖ ≤ ‖v‖ * ‖u‖ * (μ.real (h • k \ k) + μ.real (k \ h • k))`. Introduce `u`.
+
+Rewrite using `[inner_sub_left, rrc_translate hmul hone hn hw h u, hw u]`. Establish `a1` using `integral_inter_add_sdiff (f := fun g => ⟪π g v, u⟫_ℂ) hkm (rrc_intOn hn hm hk'.measure_lt_top v u)`. Establish `a2` using `integral_inter_add_sdiff (f := fun g => ⟪π g v, u⟫_ℂ) hkm' (rrc_intOn hn hm hk.measure_lt_top v u)`. Rewrite `a2` using `[inter_comm]`. Rewrite using `[← a1, ← a2, add_sub_add_left_eq_sub]`.
+
+Establish `b1` using `norm_setIntegral_le_of_norm_le_const (μ := μ) (s := h • k \ k) (lt_of_le_of_lt (measure_mono sdiff_subset) hk'.measure_lt_top) (fun g _ => rrc_bound hn g v u)`. Establish `b2` using `norm_setIntegral_le_of_norm_le_const (μ := μ) (s := k \ h • k) (lt_of_le_of_lt (measure_mono sdiff_subset) hk.measure_lt_top) (fun g _ => rrc_bound hn g v u)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `key (π h w - w)`. Rewrite `h2` using `[inner_self_eq_norm_sq_to_K]`.
+
+Establish `h3 : ‖((‖π h w - w‖ : ℝ) : ℂ) ^ 2‖ = ‖π h w - w‖ ^ 2`. Rewrite using `[norm_pow, Complex.norm_real, norm_norm]`. Establish `h2' : ‖π h w - w‖ ^ 2 ≤ ‖v‖ * ‖π h w - w‖ * (μ.real (h • k \ k) + μ.real (k \ h • k))`. Rewrite using `[← h3]`. Conclude with `h2`.
+
+Distinguish the cases in `h0 : ‖π h w - w‖ = 0`. Rewrite using `[h0]`. Check the signs of the components of the expression. Establish `hpos : 0 < ‖π h w - w‖` using `lt_of_le_of_ne (norm_nonneg _) (Ne.symm h0)`. Establish `: ‖π h w - w‖ * ‖π h w - w‖ ≤ ‖π h w - w‖ * (‖v‖ * (μ.real (h • k \ k) + μ.real (k \ h • k)))`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left this hpos`.
+-/
 theorem rrc_norm_le (hmul : ∀ g h, π (g * h) = π g ∘L π h) (hone : π 1 = 1) (hn : ∀ g x, ‖π g x‖ = ‖x‖)
     (hm : ∀ x y, AEStronglyMeasurable (fun g => ⟪x, π g y⟫_ℂ) μ)
     {k : Set G} (hk : IsCompact k) {v w : H} (hw : ∀ u, ⟪w, u⟫_ℂ = ∫ g in k, ⟪π g v, u⟫_ℂ ∂μ) (h : G) :
@@ -118,6 +157,13 @@ theorem rrc_norm_le (hmul : ∀ g h, π (g * h) = π g ∘L π h) (hone : π 1 =
         _ = _ := by ring
     exact le_of_mul_le_mul_left this hpos
 
+/- English proof (translation)
+Establish `t1 : Tendsto (fun h : G => μ (h • k \ k)) (𝓝 1) (𝓝 0)` using `tendsto_measure_smul_sdiff_isCompact_isClosed hk hk.isClosed`. Establish `t2 : Tendsto (fun h : G => μ (k \ h • k)) (𝓝 1) (𝓝 0)`. Establish `e : ∀ h : G, μ (k \ h • k) = μ (h⁻¹ • k \ k)` using `fun h => by`. Rewrite using `[← measure_smul μ h⁻¹ (k \ h • k), Set.smul_set_sdiff, inv_smul_smul]`. Simplify using `only [e]`.
+
+Establish `ti : Tendsto (fun h : G => h⁻¹) (𝓝 1) (𝓝 1)`. Simplify using `using (continuous_inv (G := G)).tendsto 1`. Conclude with `t1.comp ti`. Establish `r1 : Tendsto (fun h : G => μ.real (h • k \ k)) (𝓝 1) (𝓝 0)` using `(ENNReal.tendsto_toReal ENNReal.zero_ne_top).comp t1`. Establish `r2 : Tendsto (fun h : G => μ.real (k \ h • k)) (𝓝 1) (𝓝 0)` using `(ENNReal.tendsto_toReal ENNReal.zero_ne_top).comp t2`.
+
+Establish `r : Tendsto (fun h : G => ‖v‖ * (μ.real (h • k \ k) + μ.real (k \ h • k))) (𝓝 1) (𝓝 0)`. Simplify using `using (r1.add r2).const_mul ‖v‖`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Conclude with `squeeze_zero (fun _ => norm_nonneg _) (fun h => rrc_norm_le hmul hone hn hm hk hw h) r`.
+-/
 theorem rrc_tendsto_vec (hmul : ∀ g h, π (g * h) = π g ∘L π h) (hone : π 1 = 1) (hn : ∀ g x, ‖π g x‖ = ‖x‖)
     (hm : ∀ x y, AEStronglyMeasurable (fun g => ⟪x, π g y⟫_ℂ) μ)
     {k : Set G} (hk : IsCompact k) {v w : H} (hw : ∀ u, ⟪w, u⟫_ℂ = ∫ g in k, ⟪π g v, u⟫_ℂ ∂μ) :
@@ -152,6 +198,17 @@ def rrc_C (π : G → (H →L[ℂ] H)) : Submodule ℂ H where
     have := Tendsto.const_smul ha c
     simpa only [mem_ofPred_eq, map_smul] using this
 
+/- English proof (translation)
+Rewrite using `[Submodule.eq_bot_iff]`. Introduce `u hu`. Rewrite `hu` using `[Submodule.mem_orthogonal]`. Establish `hz : ∀ v, (fun g => ⟪π g v, u⟫_ℂ) =ᵐ[μ] 0`. Introduce `v`.
+
+Apply `ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero'` to reduce the goal to its premises. Rewrite using `[locallyIntegrable_iff]`. Introduce `k hk`. Conclude with `rrc_intOn hn hm hk.measure_lt_top v u`. Introduce `k hk`.
+
+Take `⟨w, hw⟩` from `rrc_exists_vec hn hm hk.measure_lt_top v`. Rewrite using `[← hw u]`. Conclude with `hu w (rrc_tendsto_vec hmul hone hn hm hk hw)`. Establish `hall : ∀ᵐ g ∂μ, ∀ n, ⟪π g (TopologicalSpace.denseSeq H n), u⟫_ℂ = 0` using `ae_all_iff.2 fun n => hz _`. Take `⟨g, hg⟩` from `hall.exists`.
+
+Establish `hfun : (fun v => ⟪π g v, u⟫_ℂ) = fun _ => 0` using `(TopologicalSpace.denseRange_denseSeq H).equalizer ((π g).continuous.inner continuous_const) continuous_const (funext hg)`. Establish `h0` using `congrFun hfun (π g⁻¹ u)`. Establish `e1 : π g (π g⁻¹ u) = u`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul, mul_inv_cancel, hone]`. Both sides reduce to the same expression.
+
+Simplify using `only [e1] at h0`. Conclude with `inner_self_eq_zero.1 h0`.
+-/
 theorem rrc_orth [TopologicalSpace.SeparableSpace H] (hmul : ∀ g h, π (g * h) = π g ∘L π h) (hone : π 1 = 1)
     (hn : ∀ g x, ‖π g x‖ = ‖x‖) (hm : ∀ x y, AEStronglyMeasurable (fun g => ⟪x, π g y⟫_ℂ) μ) :
     (rrc_C π)ᗮ = ⊥ := by
@@ -179,6 +236,19 @@ theorem rrc_orth [TopologicalSpace.SeparableSpace H] (hmul : ∀ g h, π (g * h)
   simp only [e1] at h0
   exact inner_self_eq_zero.1 h0
 
+/- English proof (translation)
+Establish `hd : Dense ((rrc_C π : Submodule ℂ H) : Set H)`. Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top, Submodule.topologicalClosure_eq_top_iff]`. Conclude with `rrc_orth hmul hone hn hm`. Establish `h1 : ∀ x, Tendsto (fun h => π h x) (𝓝 1) (𝓝 x)`. Introduce `x`.
+
+Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨s, hs, hxs⟩` from `hd.exists_dist_lt x (by positivity : 0 < ε / 3)`. Establish `hs' : Tendsto (fun h => π h s) (𝓝 1) (𝓝 s)` using `hs`. Use `filter_upwards [(Metric.tendsto_nhds.1 hs') (ε / 3) (by positivity)] with h hh`.
+
+Establish `a : dist (π h x) (π h s) = dist x s`. Rewrite using `[dist_eq_norm, ← map_sub, hn, dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[a, dist_comm s x]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `_ = ε := by ring`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Establish `e : (fun g => π g x) = fun g => π g₀ (π (g₀⁻¹ * g) x)`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul, mul_inv_cancel_left]`. Establish `t : Tendsto (fun g => g₀⁻¹ * g) (𝓝 g₀) (𝓝 1)`. Simplify using `using (continuous_const_mul g₀⁻¹).tendsto g₀`. Establish `c` using `((π g₀).continuous.tendsto x).comp ((h1 x).comp t)`. Use `show Tendsto (fun g => π g x) (𝓝 g₀) (𝓝 (π g₀ x))`.
+
+Rewrite using `[e]`. Conclude with `c`.
+-/
 theorem rr_cont_of_meas [TopologicalSpace.SeparableSpace H] (hmul : ∀ g h, π (g * h) = π g ∘L π h) (hone : π 1 = 1)
     (hn : ∀ g x, ‖π g x‖ = ‖x‖) (hm : ∀ x y, AEStronglyMeasurable (fun g => ⟪x, π g y⟫_ℂ) μ) (x : H) :
     Continuous fun g => π g x := by

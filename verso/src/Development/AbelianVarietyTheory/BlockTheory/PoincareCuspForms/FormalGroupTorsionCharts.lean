@@ -16,6 +16,15 @@ variable {A : Type*} {R : Type*} [CommRing A] [CommRing R] [Algebra A R] {σ : T
 def evalTerm (F : MvPowerSeries σ A) (x : σ → R) (d : σ →₀ ℕ) : R :=
   MvPowerSeries.coeff d F • d.prod fun i n => x i ^ n
 
+/- English proof (translation)
+Use `choose N hN using hx`. Use `haveI := Fintype.ofFinite σ`. Use `(Set.finite_Iic (Finsupp.equivFunOnFinite.symm N)).subset fun d hd => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Apply `hd` to reduce the goal to its premises.
+
+Establish `: ∃ i, N i < d i`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hcon fun i => by simpa using h i`. Take `⟨i, hi⟩` from `this`.
+
+Establish `hi0 : i ∈ d.support`. Rewrite using `[Finsupp.mem_support_iff]`. Use linear arithmetic over natural numbers and integers. Unfold `evalTerm`. Establish `h0 : x i ^ d i = 0` using `pow_eq_zero_of_le hi.le (hN i)`.
+
+Rewrite using `[Finsupp.prod, Finset.prod_eq_zero (f := fun a => x a ^ d a) hi0 h0, smul_zero]`.
+-/
 theorem evalTerm_finite [Finite σ] (F : MvPowerSeries σ A) (x : σ → R)
     (hx : ∀ i, IsNilpotent (x i)) : (Function.support (evalTerm F x)).Finite := by
   classical
@@ -38,10 +47,16 @@ theorem evalTerm_finite [Finite σ] (F : MvPowerSeries σ A) (x : σ → R)
 def evalNil [Finite σ] (F : MvPowerSeries σ A) (x : σ → R) (hx : ∀ i, IsNilpotent (x i)) : R :=
   ∑ d ∈ (evalTerm_finite F x hx).toFinset, evalTerm F x d
 
+/- English proof (translation)
+The claim follows from `(finsum_eq_sum _ (evalTerm_finite F x hx)).symm`.
+-/
 theorem evalNil_eq_finsum [Finite σ] (F : MvPowerSeries σ A) (x : σ → R)
     (hx : ∀ i, IsNilpotent (x i)) : evalNil F x hx = ∑ᶠ d, evalTerm F x d :=
   (finsum_eq_sum _ (evalTerm_finite F x hx)).symm
 
+/- English proof (translation)
+Rewrite using `[evalNil_eq_finsum, finsum_eq_single _ (Finsupp.single j 1)]`. Simplify using `[evalTerm, MvPowerSeries.coeff_X]`. Introduce `d hd`. Simplify using `[evalTerm, MvPowerSeries.coeff_X, hd]`.
+-/
 example [Finite σ] (x : σ → R) (hx : ∀ i, IsNilpotent (x i)) (j : σ) :
     evalNil (MvPowerSeries.X j : MvPowerSeries σ A) x hx = x j := by
   classical
@@ -121,11 +136,21 @@ variable {k : LAlg R₀}
 
 abbrev kerRes (B : BX R₀) (R : ResAlg k) : AddSubgroup (B.G R.alg) := (B.map R.res).ker
 
+/- English proof (translation)
+Rewrite using `[AddMonoidHom.mem_ker, ← B.map_comp, hf]`. Conclude with `x.2`.
+-/
 theorem map_mem_kerRes (B : BX R₀) {R S : ResAlg k} (f : LHom R.alg S.alg)
     (hf : S.res.comp f = R.res) (x : kerRes B R) : B.map f x ∈ kerRes B S := by
   rw [AddMonoidHom.mem_ker, ← B.map_comp, hf]
   exact x.2
 
+/- English proof (translation)
+Establish `hle : RingHom.ker π.1 ≤ RingHom.ker R.res.1`. Rewrite using `[R.res_ker]`. Conclude with `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top _)`. Set `r : (S : Type u) →ₐ[R₀] (k : Type u)` to `AlgHom.liftOfSurjective π.1 hπ.1 R.res.1 hle`. Establish `hr : ∀ a, r (π.1 a) = R.res.1 a` using `fun a => AlgHom.liftOfSurjective_apply _ _ _ _ a`.
+
+Set `r' : LHom S k` to `⟨r, ⟨fun s hs => by`. Take `⟨a, rfl⟩` from `hπ.1 s`. Establish `h1 : IsUnit (R.res.1 a)` using `by rw [← hr]; exact hs`. Conclude with `(R.res.2.map_nonunit a h1).map π.1⟩⟩`. Establish `hc : r'.comp π = R.res` using `Subtype.ext (AlgHom.ext hr)`.
+
+Rewrite using `[AddMonoidHom.mem_ker, ← hc, B.map_comp, (B.tg_ker π hπ _).2 ⟨w, rfl⟩, map_zero]`.
+-/
 theorem tg_mem_kerRes (B : BX R₀) (R : ResAlg k) {S : LAlg R₀} (π : LHom R.alg S)
     (hπ : π.SqZero) (w : B.gg ⊗[R₀] π.ker) : B.tg π hπ w ∈ kerRes B R := by
   have hle : RingHom.ker π.1 ≤ RingHom.ker R.res.1 := by
@@ -176,6 +201,13 @@ def tateModule (B : BX R₀) (p : ℕ) (O : LAlg R₀) : AddSubgroup (ℕ → B.
     exact ⟨fun n => by simp [ha n], fun n => by
       rw [Pi.neg_apply, Pi.neg_apply, smul_neg, ← ha' n]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `key : ∀ n, p ^ n • τ n = τ 0`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, mul_smul, ← hτ.2 n, ih]`. Conclude with `⟨fun n => τ (n + 1), ⟨fun n => by rw [key, h0], fun n => hτ.2 (n + 1)⟩,`. Use function extensionality and compare the values at `fun n => hτ.2 n⟩`. Introduce and unpack `⟨τ', h', rfl⟩`.
+
+Simplify using `using h'.1 0`.
+-/
 theorem tateModule_ker (B : BX R₀) (p : ℕ) (O : LAlg R₀) (τ : ℕ → B.G O)
     (hτ : τ ∈ tateModule B p O) : τ 0 = 0 ↔ ∃ τ' ∈ tateModule B p O, τ = p • τ' := by
   constructor
@@ -215,6 +247,9 @@ abbrev total : Type u := ∀ x, ((D.A x).alg : Type u)
 def classify (t : Tors B p O.alg) : Σ x : Tors B p k, LHom (D.A x).alg O.alg :=
   (D.universal O.alg (LHom.id _) t).exists.choose
 
+/- English proof (translation)
+The claim follows from `(D.universal O.alg (LHom.id _) t).exists.choose_spec`.
+-/
 theorem classify_spec (t : Tors B p O.alg) :
     (D.classify t).2.comp (D.str _) = LHom.id _ ∧
       B.map (D.classify t).2 (D.y (D.classify t).1 : B.G (D.A _).alg) = (t : B.G O.alg) :=
@@ -253,6 +288,9 @@ structure ChartData (B : BX R₀) {g : ℕ} (gb : Module.Basis (Fin g) R₀ B.gg
 
   fin : FiniteTorsion B p g O C
 
+/- English proof (translation)
+The claim follows from `k res := LHom.id k res_surj := fun a => ⟨a, rfl⟩ res_ker := by rw [IsLocalRing.isField_iff_maximalIdeal_eq.1 hk] exact (RingHom.injective_iff_ker_eq_bot _).1 fun _ _ h => h nil := fun x hx => by rw [IsLocalRing.isField_iff_maximalIdeal_eq.1 hk, Ideal.mem_bot] at hx exact hx ▸ IsN …`.
+-/
 example (hk : IsField (k : Type u)) : NilAlg k where
   alg := k
   res := LHom.id k

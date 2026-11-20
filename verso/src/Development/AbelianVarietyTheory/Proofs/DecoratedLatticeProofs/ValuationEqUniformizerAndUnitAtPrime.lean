@@ -13,6 +13,13 @@ namespace GlobalTheory.FinPl.SplitPt
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hx' : x ∈ 𝒪[k]` using `hx.le`. Establish `hm : (⟨x, hx'⟩ : 𝒪[k]) ∈ maximalIdeal 𝒪[k]`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, Valuation.Integer.not_isUnit_iff_valuation_lt_one]`. Conclude with `hx`. Rewrite `hm` using `[q.2.maximalIdeal_eq, Ideal.mem_span_singleton']`.
+
+Take `⟨c, hc⟩` from `hm`. Establish `h : x = (c : k) * ((q.1 : 𝒪[k]) : k)`. Use `congrArg (fun z : 𝒪[k] => (z : k)) hc` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[h, Valuation.map_mul]`.
+
+Establish `hc1 : valuation k (c : k) ≤ 1` using `c.2`. Conclude with `(mul_le_mul_of_nonneg_right hc1 zero_le').trans_eq (one_mul _)`.
+-/
 theorem val_le_unif (q : Unif k) {x : k} (hx : valuation k x < 1) :
     valuation k x ≤ valuation k ((q.1 : 𝒪[k]) : k) := by
   have hx' : x ∈ 𝒪[k] := hx.le
@@ -28,19 +35,33 @@ theorem val_le_unif (q : Unif k) {x : k} (hx : valuation k x < 1) :
   have hc1 : valuation k (c : k) ≤ 1 := c.2
   exact (mul_le_mul_of_nonneg_right hc1 zero_le').trans_eq (one_mul _)
 
+/- English proof (translation)
+The claim follows from `Valuation.Integer.not_isUnit_iff_valuation_lt_one.1 q.2.not_isUnit`.
+-/
 theorem val_unif_lt_one (q : Unif k) : valuation k ((q.1 : 𝒪[k]) : k) < 1 :=
   Valuation.Integer.not_isUnit_iff_valuation_lt_one.1 q.2.not_isUnit
 
+/- English proof (translation)
+Rewrite using `[zero_lt_iff, Valuation.ne_zero_iff]`. Conclude with `fun h => q.2.ne_zero (Subtype.ext h)`.
+-/
 theorem val_unif_pos (q : Unif k) : 0 < valuation k ((q.1 : 𝒪[k]) : k) := by
   rw [zero_lt_iff, Valuation.ne_zero_iff]
   exact fun h => q.2.ne_zero (Subtype.ext h)
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `(p.prF_mem_iff he c.1).2 (mul_mem (GlobalTheory.IdemRes.resS_idem_eq_one D p.e PP he).1 c.2)`.
+-/
 theorem val_prF_le_one (p : SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt p.e PP)
     (c : Formalism.L2.Herm.intAf D.host.F D.host.E) : valuation k (p.prF he c.1) ≤ 1 :=
   (p.prF_mem_iff he c.1).2 (mul_mem (GlobalTheory.IdemRes.resS_idem_eq_one D p.e PP he).1 c.2)
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun s _ => valuation k (p.prF he s.1) < γ) ?_ ?_ ?_ ?_ hs` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `hI a ha`. Simplify using `using hγ`. Introduce `x y _ _ hx hy`.
+
+Rewrite using `[Subring.coe_add, map_add]`. Conclude with `Valuation.map_add_lt _ hx hy`. Introduce `c x _ hx`. Rewrite using `[smul_eq_mul, Subring.coe_mul, map_mul, Valuation.map_mul]`. Conclude with `(mul_le_mul_of_nonneg_right (p.val_prF_le_one he c) zero_le').trans_lt (by rwa [one_mul])`.
+-/
 theorem val_lt_of_mem_idS_of_forall (p : SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E}
     (he : Formalism.L2.NTheta.IsIdemAt p.e PP) {I : Ideal (𝓞 D.host.E)} {γ : ValueGroupWithZero k} (hγ : 0 < γ)
     (hI : ∀ a ∈ I, valuation k (p.prF he (Formalism.L2.DIV.oToS D.host.F D.host.E a : EAf D)) < γ)
@@ -57,6 +78,27 @@ theorem val_lt_of_mem_idS_of_forall (p : SplitPt D k) {PP : Formalism.L2.DIV.Pl 
     rw [smul_eq_mul, Subring.coe_mul, map_mul, Valuation.map_mul]
     exact (mul_le_mul_of_nonneg_right (p.val_prF_le_one he c) zero_le').trans_lt (by rwa [one_mul])
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p PP he t t' ht ht2 ht'`. Set `f : 𝓞 D.host.E →+* k` to `(p.prF he).comp ((Formalism.L2.Herm.intAf D.host.F D.host.E).subtype.comp (Formalism.L2.DIV.oToS D.host.F D.host.E))`. Establish `hf : ∀ x : 𝓞 D.host.E, f x = p.prF he (Formalism.L2.DIV.oToS D.host.F D.host.E x : EAf D)` using `fun _ => rfl`. Establish `hf' : ∀ x : 𝓞 D.host.E, p.pr (incA D (x : D.host.E)) = f x` using `fun x => (p.prF_toEAf he (incA D (x : D.host.E))).symm`. Establish `hle : ∀ x, valuation k (f x) ≤ 1` using `fun x => p.val_prF_le_one he _`.
+
+Establish `hlt : ∀ x, x ∈ PP.asIdeal ↔ valuation k (f x) < 1` using `fun x => p.mem_iff_val_lt he x`. Rewrite using `[hf', hf']`. Use `⟨?_, le_antisymm (hle _) (not_lt.1 fun h => ht' ((hlt _).2 h))⟩` and prove the remaining obligations. Take `⟨q⟩ : Nonempty (Unif k)` from `inferInstance`. Use `⟨q, le_antisymm (val_le_unif q ((hlt _).1 ht)) (not_lt.1 fun hlt' => ?_)⟩` and prove the remaining obligations.
+
+Use `set γ := valuation k ((q.1 : 𝒪[k]) : k) with hγ`. Establish `hγ0 : 0 < γ` using `val_unif_pos q`. Establish `hPP : Ideal.span {t} ⊔ PP.asIdeal ^ 2 = PP.asIdeal`. Establish `h` using `Ideal.eq_prime_pow_of_succ_lt_of_le (P := PP.asIdeal) (I := Ideal.span {t} ⊔ PP.asIdeal ^ 2) (i := 1) PP.ne_bot (lt_of_le_of_ne le_sup_right fun h => ht2 (by`. Rewrite using `[show (2 : ℕ) = 1 + 1 from rfl, h]`.
+
+Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self t)))`. Use the proof step `(by`. Rewrite using `[pow_one]`. Conclude with `sup_le ((Ideal.span_singleton_le_iff_mem _).2 ht) (Ideal.pow_le_self two_ne_zero))`. Rewrite `h` using `[pow_one]`. Then use the resulting hypothesis.
+
+Establish `hsq : ∀ a ∈ PP.asIdeal ^ 2, valuation k (f a) < γ`. Introduce `a ha`. Rewrite `ha` using `[pow_two]`. Use `Submodule.mul_induction_on ha (fun x hx y hy => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, Valuation.map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_add]`. Conclude with `Valuation.map_add_lt _ hx hy`. Establish `hall : ∀ a ∈ PP.asIdeal, valuation k (f a) < γ`. Introduce `a ha`.
+
+Rewrite `ha` using `[← hPP]`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 ha`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Rewrite using `[map_add]`. Use `Valuation.map_add_lt _ ?_ (hsq y hy)` and prove the remaining obligations.
+
+Rewrite using `[map_mul, Valuation.map_mul]`. Conclude with `(mul_le_mul_of_nonneg_right (hle c) zero_le').trans_lt (by rwa [one_mul])`. Establish `hs : toEAf D (p.sec ((q.1 : 𝒪[k]) : k)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `GlobalTheory.IdemRes.toEAf_mem_of_finPart ((p.int_iff _).1 q.1.2)`. Set `s : Formalism.L2.Herm.intAf D.host.F D.host.E` to `⟨_, hs⟩`. Establish `hsv : p.prF he s.1 = ((q.1 : 𝒪[k]) : k)` using `(p.prF_toEAf he _).trans (p.pr_sec _)`.
+
+Take `⟨a, ha0⟩` from `GlobalTheory.FunObj.Comparison₂.exists_approx PP.ne_bot s`. Establish `ha : s - Formalism.L2.DIV.oToS D.host.F D.host.E a ∈ Formalism.L2.DIV.idS D.host.F PP.asIdeal` using `ha0`. Establish `h2` using `val_lt_of_mem_idS_of_forall p he hγ0 hall ha`. Establish `e2 : ((s - Formalism.L2.DIV.oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D) = (s : EAf D) - ((Formalism.L2.DIV.oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)` using `rfl`. Rewrite `h2` using `[e2, RingHom.map_sub, hsv, ← hf]`.
+
+Establish `hγ1 : γ < 1` using `val_unif_lt_one q`. Establish `haP : a ∈ PP.asIdeal` using `(hlt a).2 (by simpa using Valuation.map_sub_lt _ hγ1 (h2.trans hγ1))`. Establish `h3` using `Valuation.map_add_lt _ h2 (hall a haP)`. Rewrite `h3` using `[sub_add_cancel]`. Conclude with `lt_irrefl _ h3`.
+-/
 theorem val_eq_unif_and_unit : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (PP : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e PP →

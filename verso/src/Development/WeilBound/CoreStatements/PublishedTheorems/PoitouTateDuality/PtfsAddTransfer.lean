@@ -2,6 +2,17 @@ import Mathlib
 
 namespace PositivityTheory.Lit1.PTN
 
+/- English proof (translation)
+Set `F : A →+ B` to `AddMonoidHom.mk' f hf0`. Establish `hu : (u : ℤ) * u = 1` using `by rw [← Units.val_mul, Int.units_mul_self, Units.val_one]`. Establish `hv : (v : ℤ) * v = 1` using `by rw [← Units.val_mul, Int.units_mul_self, Units.val_one]`. Introduce `b`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hb`. Establish `h1 : g' (eB b) = 0` using `by rw [hg, show g b = 0 from hb, map_zero, smul_zero]`. Take `⟨a', ha'⟩` from `(h (eB b)).1 h1`. Use `⟨(u : ℤ) • eA.symm a', ?_⟩` and prove the remaining obligations. Establish `h2` using `hf (eA.symm a')`.
+
+Rewrite `h2` using `[AddEquiv.apply_symm_apply, ha']`. Establish `h3 : f ((u : ℤ) • eA.symm a') = (u : ℤ) • f (eA.symm a')` using `map_zsmul F _ _`. Apply `eB.injective` to reduce the goal to its premises. Rewrite using `[h3, map_zsmul, h2]`. Introduce and unpack `⟨a, rfl⟩`.
+
+Establish `h1 : eB (f a) = (u : ℤ) • f' (eA a)`. Rewrite using `[hf, smul_smul, hu, one_smul]`. Establish `h2 : g' (f' (eA a)) = 0` using `(h _).2 ⟨_, rfl⟩`. Establish `h3 : (v : ℤ) • eC (g (f a)) = 0`. Rewrite using `[← hg, h1, map_zsmul, h2, smul_zero]`.
+
+Establish `h4 : eC (g (f a)) = 0`. Rewrite using `[← one_smul ℤ (eC (g (f a))), ← hv, ← smul_smul, h3, smul_zero]`. Conclude with `(map_eq_zero_iff eC eC.injective).1 h4`.
+-/
 theorem exact_of_addTransfer {A B C A' B' C' : Type} [AddCommGroup A] [AddCommGroup B]
     [AddCommGroup C] [AddCommGroup A'] [AddCommGroup B'] [AddCommGroup C'] {f : A → B} {g : B → C}
     (hf0 : ∀ a a', f (a + a') = f a + f a') (hg0 : ∀ b b', g (b + b') = g b + g b')
@@ -32,6 +43,19 @@ theorem exact_of_addTransfer {A B C A' B' C' : Type} [AddCommGroup A] [AddCommGr
       rw [← one_smul ℤ (eC (g (f a))), ← hv, ← smul_smul, h3, smul_zero]
     exact (map_eq_zero_iff eC eC.injective).1 h4
 
+/- English proof (translation)
+Set `δ₁ : A2 →ₗ[ZMod N] A3` to `(e3.symm.toAddMonoidHom.comp (g2.comp e2.toAddMonoidHom)).toZModLinearMap N`. Set `δ₂ : A5 →ₗ[ZMod N] A6` to `(e6.symm.toAddMonoidHom.comp (g5.comp e5.toAddMonoidHom)).toZModLinearMap N`. Establish `hδ₁ : ∀ a, g2 (e2 a) = ((1 : ℤˣ) : ℤ) • e3 (δ₁ a)`. Introduce `a`. Express the relevant statement in the definitionally equal form `g2 (e2 a) = ((1 : ℤˣ) : ℤ) • e3 (e3.symm (g2 (e2 a)))`.
+
+Rewrite using `[AddEquiv.apply_symm_apply, Units.val_one, one_smul]`. Establish `hδ₂ : ∀ a, g5 (e5 a) = ((1 : ℤˣ) : ℤ) • e6 (δ₂ a)`. Introduce `a`. Express the relevant statement in the definitionally equal form `g5 (e5 a) = ((1 : ℤˣ) : ℤ) • e6 (e6.symm (g5 (e5 a)))`. Rewrite using `[AddEquiv.apply_symm_apply, Units.val_one, one_smul]`.
+
+Take `⟨hi, x01, x12, x23, x34, x45, x56, x67, hs⟩` from `hx`. Use `⟨δ₁, δ₂, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Apply `e0.injective` to reduce the goal to its premises. Apply `hi` to reduce the goal to its premises.
+
+Rewrite using `[h0, h0, hab]`. Conclude with `PositivityTheory.Lit1.PTN.exact_of_addTransfer (map_add f0) (map_add f1) g0 g1 e0 e1 e2 (ε 0) (ε 1) h0 h1 x01`. Conclude with `PositivityTheory.Lit1.PTN.exact_of_addTransfer (map_add f1) (map_add δ₁) g1 g2 e1 e2 e3 (ε 1) 1 h1 hδ₁ x12`. Conclude with `PositivityTheory.Lit1.PTN.exact_of_addTransfer (map_add δ₁) (map_add f3) g2 g3 e2 e3 e4 1 (ε 2) hδ₁ h3 x23`. Conclude with `PositivityTheory.Lit1.PTN.exact_of_addTransfer (map_add f3) (map_add f4) g3 g4 e3 e4 e5 (ε 2) (ε 3) h3 h4 x34`.
+
+Conclude with `PositivityTheory.Lit1.PTN.exact_of_addTransfer (map_add f4) (map_add δ₂) g4 g5 e4 e5 e6 (ε 3) 1 h4 hδ₂ x45`. Conclude with `PositivityTheory.Lit1.PTN.exact_of_addTransfer (map_add δ₂) (map_add f6) g5 g6 e5 e6 e7 1 (ε 4) hδ₂ h6 x56`. Conclude with `PositivityTheory.Lit1.PTN.exact_of_addTransfer (map_add f6) (map_add f7) g6 g7 e6 e7 e8 (ε 4) (ε 5) h6 h7 x67`. Introduce `y`. Take `⟨z, hz⟩` from `hs (e8 y)`.
+
+Use `⟨(ε 5 : ℤ) • e7.symm z, ?_⟩` and prove the remaining obligations. Establish `hy` using `h7 (e7.symm z)`. Rewrite `hy` using `[AddEquiv.apply_symm_apply, hz]`. Apply `e8.injective` to reduce the goal to its premises. Rewrite using `[map_zsmul, map_zsmul, hy]`.
+-/
 theorem nine_of_addTransfer {N : ℕ} {A0 A1 A2 A3 A4 A5 A6 A7 A8 : Type} [AddCommGroup A0] [Module (ZMod N) A0] [AddCommGroup A1] [Module (ZMod N) A1] [AddCommGroup A2] [Module (ZMod N) A2] [AddCommGroup A3] [Module (ZMod N) A3] [AddCommGroup A4] [Module (ZMod N) A4] [AddCommGroup A5] [Module (ZMod N) A5] [AddCommGroup A6] [Module (ZMod N) A6] [AddCommGroup A7] [Module (ZMod N) A7] [AddCommGroup A8] [Module (ZMod N) A8]
     {B0 B1 B2 B3 B4 B5 B6 B7 BetaSesquilinearity : Type} [AddCommGroup B0] [AddCommGroup B1] [AddCommGroup B2] [AddCommGroup B3] [AddCommGroup B4] [AddCommGroup B5] [AddCommGroup B6] [AddCommGroup B7] [AddCommGroup BetaSesquilinearity]
     (f0 : A0 →ₗ[ZMod N] A1) (f1 : A1 →ₗ[ZMod N] A2) (f3 : A3 →ₗ[ZMod N] A4)

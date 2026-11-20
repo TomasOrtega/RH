@@ -17,6 +17,9 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.FockBridge
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FockLowStab.main | exact GlobalTheory.FockLowStab.main | (intros; apply GlobalTheory.FockLowStab.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.configuration_a_compact_integral : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

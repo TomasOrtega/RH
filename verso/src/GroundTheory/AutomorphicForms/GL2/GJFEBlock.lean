@@ -18,6 +18,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   [T2Space H] [TotallyDisconnectedSpace H]
   {W : Type*} [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ (GL (Fin m) F × H) W}
 
+/- English proof (translation)
+Introduce `h`. Take `⟨r, hr⟩` from `RatFunc.denom_div_dvd P Q`. Apply `hQ` to reduce the goal to its premises. Rewrite using `[hr, eval_mul, h, zero_mul]`.
+-/
 theorem denom_eval_ne_zero_of_div {P Q : ℂ[X]} {x : ℂ} (hQ : Q.eval x ≠ 0) :
     (algebraMap ℂ[X] (RatFunc ℂ) P / algebraMap ℂ[X] (RatFunc ℂ) Q).denom.eval x ≠ 0 := by
   intro h
@@ -28,6 +31,9 @@ theorem denom_eval_ne_zero_of_div {P Q : ℂ[X]} {x : ℂ} (hQ : Q.eval x ≠ 0)
 def reflPoly (κ : ℂ) (d : ℕ) (P : ℂ[X]) : ℂ[X] :=
   ∑ i ∈ Finset.range (d + 1), C (P.coeff i * κ ^ i) * X ^ (d - i)
 
+/- English proof (translation)
+Rewrite using `[reflPoly, eval_finsetSum, eval_eq_sum_range' (Nat.lt_succ_of_le hd), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hid : i ≤ d` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Rewrite using `[eval_mul, eval_C, eval_pow, eval_X, div_pow, mul_div_assoc', pow_sub₀ x hx hid]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem eval_reflPoly (κ : ℂ) {d : ℕ} {P : ℂ[X]} (hd : P.natDegree ≤ d) {x : ℂ} (hx : x ≠ 0) :
     (reflPoly κ d P).eval x = x ^ d * P.eval (κ / x) := by
   rw [reflPoly, eval_finsetSum, eval_eq_sum_range' (Nat.lt_succ_of_le hd), Finset.mul_sum]
@@ -36,6 +42,11 @@ theorem eval_reflPoly (κ : ℂ) {d : ℕ} {P : ℂ[X]} (hd : P.natDegree ≤ d)
   rw [eval_mul, eval_C, eval_pow, eval_X, div_pow, mul_div_assoc', pow_sub₀ x hx hid]
   field_simp
 
+/- English proof (translation)
+Use `set d := max P.natDegree Q.natDegree`. Use `⟨reflPoly κ d P, reflPoly κ d Q, fun x hx hQ => ?_⟩` and prove the remaining obligations. Establish `hQ' : (reflPoly κ d Q).eval x ≠ 0`. Rewrite using `[eval_reflPoly κ (le_max_right _ _) hx]`. Conclude with `mul_ne_zero (pow_ne_zero _ hx) hQ`.
+
+Use `⟨hQ', ?_⟩` and prove the remaining obligations. Rewrite using `[eval_reflPoly κ (le_max_left _ _) hx, eval_reflPoly κ (le_max_right _ _) hx, mul_div_mul_left _ _ (pow_ne_zero _ hx)]`.
+-/
 theorem exists_poly_eval_inv (κ : ℂ) (P Q : ℂ[X]) :
     ∃ P' Q' : ℂ[X], ∀ x : ℂ, x ≠ 0 → Q.eval (κ / x) ≠ 0 →
       Q'.eval x ≠ 0 ∧ P'.eval x / Q'.eval x = P.eval (κ / x) / Q.eval (κ / x) := by
@@ -48,17 +59,28 @@ theorem exists_poly_eval_inv (κ : ℂ) (P Q : ℂ[X]) :
   rw [eval_reflPoly κ (le_max_left _ _) hx, eval_reflPoly κ (le_max_right _ _) hx,
     mul_div_mul_left _ _ (pow_ne_zero _ hx)]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, qs_add, div_eq_mul_inv]`. Use `congr 1`. Rewrite using `[qs, qs, neg_neg, Complex.cpow_neg, inv_inv]`.
+-/
 theorem qs_natCast_sub (s : ℂ) : qs F ((m : ℂ) - s) = qs F (m : ℂ) / qs F s := by
   rw [sub_eq_add_neg, qs_add, div_eq_mul_inv]
   congr 1
   rw [qs, qs, neg_neg, Complex.cpow_neg, inv_inv]
 
+/- English proof (translation)
+Establish `hq0 : (0 : ℝ) ≤ LocalField.residueCard F` using `Nat.cast_nonneg _`. Rewrite using `[norm_mul, norm_pow, norm_qs, ← Real.rpow_natCast, ← Real.rpow_mul hq0]`. Put the polynomial expressions in normal form.
+-/
 theorem norm_mul_qs_pow (α : ℂ) (s : ℂ) :
     ‖α * qs F s ^ m‖ = ‖α‖ * (LocalField.residueCard F : ℝ) ^ (-(m * s.re)) := by
   have hq0 : (0 : ℝ) ≤ LocalField.residueCard F := Nat.cast_nonneg _
   rw [norm_mul, norm_pow, norm_qs, ← Real.rpow_natCast, ← Real.rpow_mul hq0]
   ring_nf
 
+/- English proof (translation)
+Establish `hq : (1 : ℝ) < LocalField.residueCard F` using `by exact_mod_cast LocalField.one_lt_residueCard`. Establish `hm : (0 : ℝ) < m` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne m)`. Rewrite using `[norm_mul_qs_pow, ← Real.rpow_logb (by linarith) hq.ne' (norm_pos_iff.2 hα0), ← Real.rpow_add (by linarith)]`. Use `Real.rpow_lt_one_of_one_lt_of_neg hq ?_` and prove the remaining obligations. Rewrite `hs` using `[div_lt_iff₀ hm]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_mul_qs_pow_lt_one {α : ℂ} (hα0 : α ≠ 0) {s : ℂ}
     (hs : Real.logb (LocalField.residueCard F) ‖α‖ / m < s.re) :
     ‖α * qs F s ^ m‖ < 1 := by
@@ -70,6 +92,11 @@ theorem norm_mul_qs_pow_lt_one {α : ℂ} (hα0 : α ≠ 0) {s : ℂ}
   rw [div_lt_iff₀ hm] at hs
   linarith
 
+/- English proof (translation)
+Establish `hq : (1 : ℝ) < LocalField.residueCard F` using `by exact_mod_cast LocalField.one_lt_residueCard`. Establish `hm : (0 : ℝ) < m` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne m)`. Rewrite using `[norm_mul_qs_pow, ← Real.rpow_logb (by linarith) hq.ne' (norm_pos_iff.2 hα0), ← Real.rpow_add (by linarith), ← Real.rpow_natCast, ← Real.rpow_intCast, ← Real.rpow_mul (by linarith)]`. Use `Real.rpow_lt_rpow_of_exponent_lt hq ?_` and prove the remaining obligations. Establish `: s.re * m < Real.logb (LocalField.residueCard F) ‖α‖ + m * m`.
+
+Use `(lt_div_iff₀ hm).1 (show s.re - m < Real.logb (LocalField.residueCard F) ‖α‖ / m by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem lt_norm_mul_qs_pow {α : ℂ} (hα0 : α ≠ 0) {s : ℂ}
     (hs : s.re < Real.logb (LocalField.residueCard F) ‖α‖ / m + m) :
     ((LocalField.residueCard F : ℝ) ^ m) ^ (-(m : ℤ)) < ‖α * qs F s ^ m‖ := by
@@ -86,6 +113,13 @@ theorem lt_norm_mul_qs_pow {α : ℂ} (hα0 : α ≠ 0) {s : ℂ}
   push_cast
   nlinarith
 
+/- English proof (translation)
+Establish `hst : (stabilizerOf σ v : Set (GL (Fin m) F × H)) ∈ nhds (1, 1)` using `(hσ v).mem_nhds (one_mem _)`. Take `⟨u, hu, t, ht, hut⟩` from `mem_nhds_prod_iff.1 hst`. Take `⟨r₁, -, hr₁⟩` from `(hasBasis_nhds_one F m).mem_iff.1 hu`. Take `⟨K'', hK''c, hK''t⟩` from `exists_openSubgroup_isCompact_subset ht`. Use `⟨max r₀ r₁, le_max_left _ _, K''.toSubgroup ⊓ K₀', inf_le_right, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hK₀'c.of_isClosed_subset (K''.isClosed.inter (Subgroup.isClosed_of_isOpen _ hK₀'o)) Set.inter_subset_right`. Conclude with `K''.isOpen.inter hK₀'o`. Use `mem_fixedVectors.2 fun k hk => ?_` and prove the remaining obligations. Take `⟨hk1, hk2⟩` from `Subgroup.mem_prod.1 hk`. Establish `hk1' : k.1 ∈ u` using `hr₁ (congruenceSubgroup_antitone F m (le_max_right r₀ r₁) hk1)`.
+
+Establish `hk2' : k.2 ∈ t` using `hK''t (Subgroup.mem_inf.1 hk2).1`. Conclude with `mem_stabilizerOf.1 (hut ⟨hk1', hk2'⟩)`.
+-/
 theorem exists_fixed_prod (hσ : IsSmooth σ) (v : W) (r₀ : ℕ) (K₀' : Subgroup H)
     (hK₀'c : IsCompact (K₀' : Set H)) (hK₀'o : IsOpen (K₀' : Set H)) :
     ∃ r ≥ r₀, ∃ K' : Subgroup H, K' ≤ K₀' ∧ IsCompact (K' : Set H) ∧ IsOpen (K' : Set H) ∧
@@ -105,6 +139,9 @@ theorem exists_fixed_prod (hσ : IsSmooth σ) (v : W) (r₀ : ℕ) (K₀' : Subg
     have hk2' : k.2 ∈ t := hK''t (Subgroup.mem_inf.1 hk2).1
     exact mem_stabilizerOf.1 (hut ⟨hk1', hk2'⟩)
 
+/- English proof (translation)
+Take `⟨K₀, hK₀c, -⟩` from `exists_openSubgroup_isCompact_subset (G := H) (U := Set.univ) Filter.univ_mem`. Take `⟨r, -, K', -, hc, ho, hv⟩` from `exists_fixed_prod hσ v 0 K₀.toSubgroup hK₀c K₀.isOpen`. Conclude with `⟨r, K', hc, ho, hv⟩`.
+-/
 theorem exists_fixed_prod₀ (hσ : IsSmooth σ) (v : W) :
     ∃ r : ℕ, ∃ K' : Subgroup H, IsCompact (K' : Set H) ∧ IsOpen (K' : Set H) ∧
       v ∈ fixedVectors σ ((congruenceSubgroup F m r).prod K') := by
@@ -113,6 +150,9 @@ theorem exists_fixed_prod₀ (hσ : IsSmooth σ) (v : W) :
   obtain ⟨r, -, K', -, hc, ho, hv⟩ := exists_fixed_prod hσ v 0 K₀.toSubgroup hK₀c K₀.isOpen
   exact ⟨r, K', hc, ho, hv⟩
 
+/- English proof (translation)
+Establish `hdet : ∀ g ∈ congruenceSubgroup F m r, detPow g s = 1` using `fun g hg => detPow_of_mem_integralGL (congruenceSubgroup_le F m r hg) s`. Establish `hfix : ∀ g ∈ congruenceSubgroup F m r, σ (g, 1) v = v` using `fun g hg => mem_fixedVectors.1 hv _ (Subgroup.mem_prod.2 ⟨hg, K'.one_mem⟩)`. Simplify using `only [blockA, mul_assoc]`. Rewrite using `[integral_indGL_mul μ (isOpen_congruenceSubgroup F m r).measurableSet (x₀ := 1) (fun g hg => by rw [hdet g hg, hdet 1 (one_mem _), hfix g hg, hfix 1 (one_mem _)]), hdet 1 (one_mem _), one_mul, hfix 1 (one_mem _)]`.
+-/
 theorem blockA_indGL (μ : Measure (GL (Fin m) F)) {r : ℕ} {K' : Subgroup H} {v : W}
     (hv : v ∈ fixedVectors σ ((congruenceSubgroup F m r).prod K')) (ℓ : Module.Dual ℂ W) (s : ℂ) :
     blockA μ σ (indGL (congruenceSubgroup F m r : Set (GL (Fin m) F))) v ℓ s =
@@ -126,6 +166,15 @@ theorem blockA_indGL (μ : Measure (GL (Fin m) F)) {r : ℕ} {K' : Subgroup H} {
     (fun g hg => by rw [hdet g hg, hdet 1 (one_mem _), hfix g hg, hfix 1 (one_mem _)]),
     hdet 1 (one_mem _), one_mul, hfix 1 (one_mem _)]
 
+/- English proof (translation)
+Take `⟨r, hr, K', hK'le, hK'c, hK'o, hv⟩` from `exists_fixed_prod hσ.1 v r₀ K₀' hK₀'c hK₀'o`. Take `⟨c, hc⟩` from `exists_blockB_eq_smul hσ hα0 hα hsupp μ hψ hψ1 hs hs' (isCompact_congruenceSubgroup F m r) (isOpen_congruenceSubgroup F m r) (congruenceSubgroup_le F m r) hK'c hK'o`. Establish `hv₀' : v₀ ∈ fixedVectors σ ((congruenceSubgroup F m r).prod K')`. Use `mem_fixedVectors.2 fun k hk => mem_fixedVectors.1 hv₀ k ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Subgroup.mem_prod.1 hk`.
+
+Conclude with `Subgroup.mem_prod.2 ⟨congruenceSubgroup_antitone F m hr h1, hK'le h2⟩`. Establish `he₀` using `isSchwartzBruhat_indGL (isCompact_congruenceSubgroup F m r₀) (isOpen_congruenceSubgroup F m r₀)`. Establish `h1` using `hc Φ hΦ v hv ℓ hℓ`. Establish `h2` using `hc _ he₀ v₀ hv₀' ℓ₀ hℓ₀`. Establish `hμK : ((μ.real (congruenceSubgroup F m r : Set (GL (Fin m) F)) : ℝ) : ℂ) ≠ 0`.
+
+Establish `: μ.real (congruenceSubgroup F m r : Set (GL (Fin m) F)) ≠ 0`. Rewrite using `[measureReal_ne_zero_iff ((isCompact_congruenceSubgroup F m r).measure_lt_top.ne)]`. Conclude with `((isOpen_congruenceSubgroup F m r).measure_pos μ ⟨1, one_mem _⟩).ne'`. Conclude with `this` after adjusting the coercions. Apply `mul_left_cancel₀ hμK` to reduce the goal to its premises.
+
+Take the linear combination `(blockA μ σ (indGL (congruenceSubgroup F m r₀ : Set (GL (Fin m) F))) v₀ ℓ₀ s) * h1 - (blockA μ σ Φ v ℓ s) * h2`.
+-/
 theorem blockB_mul_blockA_eq (hσ : IsAdmissible σ) [σ.IsIrreducible] {α : ℂ} (hα0 : α ≠ 0)
     (hα : ∀ v, σ (centralUnif F m, 1) v = α • v)
     (hsupp : ∀ v : W, ∀ ℓ ∈ smoothVectors (Representation.dual σ),
@@ -164,6 +213,59 @@ theorem blockB_mul_blockA_eq (hσ : IsAdmissible σ) [σ.IsIrreducible] {α : �
   linear_combination (blockA μ σ (indGL (congruenceSubgroup F m r₀ : Set (GL (Fin m) F))) v₀ ℓ₀ s) *
     h1 - (blockA μ σ Φ v ℓ s) * h2
 
+/- English proof (translation)
+Take `⟨v₀, hv₀ne⟩` from `exists_ne_zero_of_isIrreducible (ρ := σ)`. Establish `hα0 : α ≠ 0`. Introduce `h0`. Apply `hv₀ne` to reduce the goal to its premises. Establish `h1` using `hα v₀`.
+
+Rewrite `h1` using `[h0, zero_smul]`. Establish `h2` using `congrArg (σ ((centralUnif F m, (1 : H))⁻¹)) h1`. Rewrite `h2` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, map_zero]`. Then use the resulting hypothesis. Take `⟨r₀, K₀', hK₀'c, hK₀'o, hv₀⟩` from `exists_fixed_prod₀ hσ.1 v₀`. Use `set 𝕂₀ := (congruenceSubgroup F m r₀).prod K₀'`.
+
+Establish `h𝕂₀c : IsCompact (𝕂₀ : Set (GL (Fin m) F × H))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `(isCompact_congruenceSubgroup F m r₀).prod hK₀'c`. Establish `h𝕂₀o : IsOpen (𝕂₀ : Set (GL (Fin m) F × H))`. Rewrite using `[Subgroup.coe_prod]`.
+
+Conclude with `(isOpen_congruenceSubgroup F m r₀).prod hK₀'o`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ (fixedVectors σ 𝕂₀), φ ⟨v₀, hv₀⟩ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hv₀ne (congrArg Subtype.val ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 h))`.
+
+Use `set ef := fixedContragredientEquiv hσ.1 h𝕂₀c h𝕂₀o with hef`. Use `set ℓ₀ : Module.Dual ℂ W := (((ef.symm φ : fixedVectors (contragredient σ) 𝕂₀) : smoothVectors (Representation.dual σ)) : Module.Dual ℂ W) with hℓ₀def`. Establish `hℓ₀ : ℓ₀ ∈ smoothVectors (Representation.dual σ)` using `((ef.symm φ : fixedVectors (contragredient σ) 𝕂₀) : smoothVectors (Representation.dual σ)).2`. Establish `hℓ₀v₀ : ℓ₀ v₀ ≠ 0`. Establish `h` using `congrArg (fun f : Module.Dual ℂ (fixedVectors σ 𝕂₀) => f ⟨v₀, hv₀⟩) (ef.apply_symm_apply φ)`.
+
+Rewrite `h` using `[hef, fixedContragredientEquiv_apply, restrictFixed_apply]`. Rewrite using `[hℓ₀def, hef, h]`. Conclude with `hφ`. Use `set K₀ : Set (GL (Fin m) F) := (congruenceSubgroup F m r₀ : Set (GL (Fin m) F))`. Establish `he₀ : IsSchwartzBruhat (indGL K₀)` using `isSchwartzBruhat_indGL (isCompact_congruenceSubgroup F m r₀) (isOpen_congruenceSubgroup F m r₀)`.
+
+Use `set A₀ : ℂ := (μ.real K₀ : ℂ) * ℓ₀ v₀ with hA₀def`. Establish `hA₀ : A₀ ≠ 0`. Use `mul_ne_zero ?_ hℓ₀v₀` and prove the remaining obligations. Establish `: μ.real K₀ ≠ 0`. Rewrite using `[measureReal_ne_zero_iff ((isCompact_congruenceSubgroup F m r₀).measure_lt_top.ne)]`.
+
+Conclude with `((isOpen_congruenceSubgroup F m r₀).measure_pos μ ⟨1, one_mem _⟩).ne'`. Conclude with `this` after adjusting the coercions. Establish `hA₀s : ∀ s, blockA μ σ (indGL K₀) v₀ ℓ₀ s = A₀` using `fun s => blockA_indGL μ hv₀ ℓ₀ s`. Use `set a : ℝ := Real.logb (LocalField.residueCard F) ‖α‖ / m with ha`. Establish `hm : (0 : ℝ) < m` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne m)`.
+
+Establish `hdual : ∀ {v : W} {ℓ : Module.Dual ℂ W}, ℓ ∈ smoothVectors (Representation.dual σ) → ∀ {Φ : Matrix (Fin m) (Fin m) F → ℂ}, IsSchwartzBruhat Φ → ∃ P' Q' : ℂ[X], ∀ s : ℂ, ((LocalField.residueCard F : ℝ) ^ m) ^ (-(m : ℤ)) < ‖α * qs F s ^ m‖ → Q'.eval (qs F s) ≠ 0 ∧ blockB μ σ (local …`. Introduce `v ℓ hℓ Φ hΦ`. Take `⟨P, N, hP⟩` from `(isCentralCoeff_coeff hσ.1 hα0 hα hsupp v hℓ).inv.exists_eq_div_zeta μ (hΦ.localMatrixFourier hψ hψ1)`. Take `⟨P', Q', hPQ⟩` from `exists_poly_eval_inv (qs F (m : ℂ)) P (X ^ N * (1 - C α⁻¹ * X ^ m))`. Use `⟨P', Q', fun s hs' => ?_⟩` and prove the remaining obligations.
+
+Establish `hlt` using `norm_inv_mul_qs_sub_lt_one hα0 hs'`. Establish `hy : qs F ((m : ℂ) - s) = qs F (m : ℂ) / qs F s` using `qs_natCast_sub s`. Establish `hQ : (X ^ N * (1 - C α⁻¹ * X ^ m) : ℂ[X]).eval (qs F (m : ℂ) / qs F s) ≠ 0`. Rewrite using `[← hy]`. Simplify using `only [eval_mul, eval_pow, eval_X, eval_sub, eval_one, eval_C]`.
+
+Use `mul_ne_zero (pow_ne_zero _ (qs_ne_zero _)) fun h => ?_` and prove the remaining obligations. Establish `: α⁻¹ * qs F ((m : ℂ) - s) ^ m = 1` using `by linear_combination -h`. Rewrite `hlt` using `[this, norm_one]`. Conclude with `lt_irrefl _ hlt`. Take `⟨hQ', heq⟩` from `hPQ (qs F s) (qs_ne_zero s) hQ`.
+
+Use `⟨hQ', ?_⟩` and prove the remaining obligations. Rewrite using `[heq, ← hy]`. Use `hP ((m : ℂ) - s) hlt` as an intermediate fact. Simplify using `only [eval_mul, eval_pow, eval_X, eval_sub, eval_one, eval_C]`. Conclude with `this`.
+
+Take `⟨Pr, Qr, hPQr⟩` from `hdual hℓ₀ he₀`. Use `set γ : RatFunc ℂ := algebraMap ℂ[X] (RatFunc ℂ) (C A₀⁻¹ * Pr) / algebraMap ℂ[X] (RatFunc ℂ) Qr`. Use `⟨γ, max a (-(a + m)), fun Φ hΦ v ℓ hℓ => ⟨fun s hs => ?_, fun s hs => ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `integrable_blockA hσ.1 hα0 hα hsupp μ hΦ v hℓ (norm_mul_qs_pow_lt_one hα0 (lt_of_le_of_lt (le_max_left _ _) hs))`. Conclude with `integrable_blockB hσ.1 hα0 hα hsupp μ (hΦ.localMatrixFourier hψ hψ1) v hℓ (lt_norm_mul_qs_pow hα0 (by have := le_max_right a (-(a + m)); linarith))`.
+
+Take `⟨PA, NA, hPA⟩` from `(isCentralCoeff_coeff hσ.1 hα0 hα hsupp v hℓ).exists_eq_div_zeta μ hΦ`. Use `set QA : ℂ[X] := X ^ NA * (1 - C α * X ^ m)`. Use `set RA : RatFunc ℂ := algebraMap ℂ[X] (RatFunc ℂ) PA / algebraMap ℂ[X] (RatFunc ℂ) QA`. Establish `hAeval : ∀ s : ℂ, ‖α * qs F s ^ m‖ < 1 → QA.eval (qs F s) ≠ 0 ∧ blockA μ σ Φ v ℓ s = RA.eval (RingHom.id ℂ) (qs F s)`. Introduce `s hs`.
+
+Establish `hQ : QA.eval (qs F s) ≠ 0`. Simplify using `only [QA, eval_mul, eval_pow, eval_X, eval_sub, eval_one, eval_C]`. Use `mul_ne_zero (pow_ne_zero _ (qs_ne_zero _)) fun h => ?_` and prove the remaining obligations. Establish `: α * qs F s ^ m = 1` using `by linear_combination -h`. Rewrite `hs` using `[this, norm_one]`.
+
+Conclude with `lt_irrefl _ hs`. Use `⟨hQ, ?_⟩` and prove the remaining obligations. Rewrite using `[eval_div_algebraMap _ _ hQ, blockA, hPA s hs]`. Simplify using `only [QA, eval_mul, eval_pow, eval_X, eval_sub, eval_one, eval_C]`. Take `⟨PB, QB, hPQB⟩` from `hdual hℓ hΦ`.
+
+Use `set RB : RatFunc ℂ := algebraMap ℂ[X] (RatFunc ℂ) PB / algebraMap ℂ[X] (RatFunc ℂ) QB`. Establish `hBeval : ∀ s : ℂ, ((LocalField.residueCard F : ℝ) ^ m) ^ (-(m : ℤ)) < ‖α * qs F s ^ m‖ → blockB μ σ (localMatrixFourier ψ Φ) v ℓ s = RB.eval (RingHom.id ℂ) (qs F s)`. Introduce `s hs'`. Take `⟨hQ, heq⟩` from `hPQB s hs'`. Rewrite using `[heq, eval_div_algebraMap _ _ hQ]`.
+
+Establish `hid : RB = γ * RA` using `by set t : ℕ → ℝ := fun k => a + m / (k + 2)`. Establish `ht : ∀ k, a < t k ∧ t k < a + m` using `fun k => by`. Establish `hk : (0 : ℝ) < (k : ℝ) + 2` using `by positivity`. Use `⟨by simp only [t]; have := div_pos hm hk; linarith, ?_⟩` and prove the remaining obligations. Simplify using `only [t]`.
+
+Establish `: m / ((k : ℝ) + 2) < m`. Rewrite using `[div_lt_iff₀ hk]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Use `eq_of_eval_eq_of_infinite (S := Set.range fun k : ℕ => qs F ((t k : ℝ) : ℂ)) ?_ ?_` and prove the remaining obligations.
+
+Use `Set.infinite_range_of_injective fun k l hkl => ?_` and prove the remaining obligations. Establish `hn` using `congrArg norm hkl`. Simplify using `only [norm_qs, Complex.ofReal_re] at hn`. Establish `hq : (1 : ℝ) < LocalField.residueCard F`. Conclude with `LocalField.one_lt_residueCard` after adjusting the coercions.
+
+Establish `htt : t k = t l`. Establish `hl` using `congrArg (Real.logb (LocalField.residueCard F)) hn`. Rewrite `hl` using `[Real.logb_rpow (by linarith) hq.ne', Real.logb_rpow (by linarith) hq.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [t, add_right_inj] at htt`.
+
+Establish `hk : (0 : ℝ) < (k : ℝ) + 2` using `by positivity`. Establish `hl : (0 : ℝ) < (l : ℝ) + 2` using `by positivity`. Rewrite `htt` using `[div_eq_div_iff hk.ne' hl.ne']`. Establish `: (k : ℝ) = l` using `by nlinarith`. Conclude with `this` after adjusting the coercions.
+
+Introduce and unpack `x ⟨k, rfl⟩ set s : ℂ := ((t k : ℝ) : ℂ)`. Establish `hsre : s.re = t k` using `Complex.ofReal_re _`. Establish `hs : ‖α * qs F s ^ m‖ < 1` using `norm_mul_qs_pow_lt_one hα0 (by rw [hsre]; exact (ht k).1)`. Establish `hs'` using `lt_norm_mul_qs_pow hα0 (s := s) (by rw [hsre]; exact (ht k).2)`. Take `⟨hQA, hA⟩` from `hAeval s hs`.
+
+Take `⟨hQr, hr⟩` from `hPQr s hs'`. Establish `hcross` using `blockB_mul_blockA_eq hσ hα0 hα hsupp μ hψ hψ1 hs hs' hK₀'c hK₀'o hv₀ hℓ₀ hΦ v hℓ`. Rewrite `hcross` using `[hA₀s]`. Rewrite using `[← hBeval s hs', RatFunc.eval_mul (hx := denom_eval_ne_zero_of_div hQr) (hy := denom_eval_ne_zero_of_div hQA), eval_div_algebraMap _ _ hQr, ← hA]`. Simplify using `only [eval_mul, eval_C]`.
+
+Rewrite using `[mul_div_assoc, ← hr]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hcross`. Use `⟨RA, max a (-(a + m)), fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Conclude with `(hAeval s (norm_mul_qs_pow_lt_one hα0 (lt_of_le_of_lt (le_max_left _ _) hs))).2`.
+
+Rewrite using `[← hid]`. Conclude with `hBeval s (lt_norm_mul_qs_pow hα0 (by have := le_max_right a (-(a + m)); linarith))`.
+-/
 theorem exists_blockFE (μ : Measure (GL (Fin m) F)) [μ.IsHaarMeasure] (hσ : IsAdmissible σ)
     [σ.IsIrreducible] {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) {α : ℂ}
     (hα : ∀ v, σ (centralUnif F m, 1) v = α • v)

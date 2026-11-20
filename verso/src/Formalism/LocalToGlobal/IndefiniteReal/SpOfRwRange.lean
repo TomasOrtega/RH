@@ -47,6 +47,9 @@ def faceColT (hX : Fl.Ok) (A : FamIn Fl.K G Pl0 T m) (P1 : Subgroup G) (ψ1 : P1
     ∀ Zs : DefSub A.fam.amb, DefCols (A.side P1 ψ1 Zs) :=
   faceCol W Ch sel hX A P1 ψ1 Xg mu cst L hL hP Mem wd b hY (Formalism.L2.Ker.ambOf sm B χ cD) hK hF ev
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem faceCol_Pt (hX : Fl.Ok) (A : FamIn Fl.K G Pl0 T m) (P1 : Subgroup G) (ψ1 : P1 →* Fl.Kˣ)
     {P : LevFam Fl.E Fl.K Rk.r Pr.vGs} (Xg : Finset (G0 Fl.E Pr.vGs Rk.r → Fl.K)) {m2 : ℕ} {Gc : ChGlob Fl Rk.m}
     (mu : A.fam.base.Tup → Tup Fl.F Fl.E Fl.K Sg) (cst : ∀ t, LocCst Fl (rowSG Pr sel (mu t)))
@@ -111,12 +114,27 @@ section Facts
 variable (s : Bool) {Bs : DefBase D.what₂.LL} {Df : DefSide Bs} (Dc : DefCols Df) (hK : X.LevelSubgroupCharacter) (G : GoodOp X)
   (wdD : Dc.Mem → D.what₂.Word) (pw : ∀ x, PerW X hK (wdD x)) (bR : ∀ x, Fin (Dc.a x) → (D.mem (wdD x)).A.Mram)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem spOf_Pu (x : Dc.Mem) (φ : Fin (Dc.a x) → ℂ) :
     Tw.out (s := s) ((spOf s Dc hK G wdD pw bR).Pu x φ) = (pw x).op (ramCrd (bR x) (cjVec s _ φ)) := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_spOf_Rw (y : Tw s (HHX X)) :
     y ∈ (spOf s Dc hK G wdD pw bR).Rw ↔ ((Tw.out (s := s) y : HHX X) : L2X X) ∈ goodSub X G := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_spOf_Rw]`. Take `⟨j, hj⟩` from `h`. Establish `hj' : ∀ F, ι (D.sEE F) = conjHH X G (j F)` using `hj`. Prove the components needed by the constructor for the conclusion. Introduce `hm`.
+
+Establish `hF' : star ((Tw.out (s` using `s) y : HHX X) : L2X X) ∈ EEC X G := by`. Rewrite using `[mem_EEC, star_star]`. Conclude with `hm`. Use `⟨j.symm ⟨_, hF'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hj', LinearIsometryEquiv.apply_symm_apply]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[conjHH_apply]`. Conclude with `star_star _`. Introduce and unpack `⟨F, hF⟩`. Rewrite using `[← hF, hj', conjHH_apply]`.
+
+Establish `h2` using `(j F).2`. Rewrite `h2` using `[mem_EEC]`. Conclude with `h2`.
+-/
 theorem spOf_Rw_range {ι : D.s.HH ≃ₗᵢ[ℂ] HHX X} (h : RowDictTie X G ι) (y : Tw s (HHX X)) :
     y ∈ (spOf s Dc hK G wdD pw bR).Rw ↔ ∃ F : D.what₂.EE, ι (D.sEE F) = Tw.out (s := s) y := by
   rw [mem_spOf_Rw]

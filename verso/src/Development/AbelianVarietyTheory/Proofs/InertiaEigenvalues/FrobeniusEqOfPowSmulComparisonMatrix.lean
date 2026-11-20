@@ -11,10 +11,20 @@ open scoped Formalism.Per NNReal
 
 noncomputable section
 namespace GlobalTheory.BSP.Height
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private theorem matrix_map_smul {R S : Type*} [CommRing R] [CommRing S] {d : ℕ} (F : R →+* S) (c : R)
     (M : Matrix (Fin d) (Fin d) R) : (c • M).map F = F c • M.map F := by
   ext i j; simp
 
+/- English proof (translation)
+Establish `hxφ : (x.map φ).map t = (n : D) ^ k • ε.map Φ`. Establish `h1 : (x.map φ).map t = (x.map t).map Φ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `(hΦ (x i j)).symm`.
+
+Rewrite using `[h1, hx]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Apply `Matrix.map_injective ht` to reduce the goal to its premises. Simplify using `only [Matrix.map_mul, matrix_map_smul, map_pow]`.
+
+Rewrite using `[hxφ, hx, Matrix.mul_smul, Matrix.smul_mul, smul_comm _ ((n : D) ^ k), smul_comm _ ((n : D) ^ k), key]`.
+-/
 private theorem frobenius_height_matrix_relation {R D : Type*} [CommRing R] [CommRing D] {d : ℕ} (t : R →+* D)
     (ht : Function.Injective t) (φ : R →+* R) (Φ : D →+* D) (hΦ : ∀ a, Φ (t a) = t (φ a)) (n k m : ℕ) (a b : R)
     (Af Ag x : Matrix (Fin d) (Fin d) R) (ε : Matrix (Fin d) (Fin d) D) (hx : x.map t = (n : D) ^ k • ε)
@@ -28,6 +38,9 @@ private theorem frobenius_height_matrix_relation {R D : Type*} [CommRing R] [Com
   simp only [Matrix.map_mul, matrix_map_smul, map_pow]
   rw [hxφ, hx, Matrix.mul_smul, Matrix.smul_mul, smul_comm _ ((n : D) ^ k), smul_comm _ ((n : D) ^ k), key]
 
+/- English proof (translation)
+Introduce `l _ K bk d ρ τ s ht hper B f g ι hb k x ε hrel hx`. Take `⟨hinj, hE, -, -⟩` from `GlobalTheory.T.toDisc_injective_and_nonZeroDivisors_of_topBasis l K bk B.A (BK.hf f) ι hb`. Establish `hφ : ‖toDisc l (BK.hf f X) bk.ρ₀ (B.D.φ (BK.hf f X))‖ ≤ bk.ρ₀` using `(GlobalTheory.T.norm_breuilKisinHom_uniformizer_frobenius_le l K bk B f f).2`. Take `⟨Φ, hΦ⟩ : ∃ Φ : Disc l (BK.hf f X) bk.ρ₀ →+* Disc l (BK.hf f X) bk.ρ₀, IsDiscMap B.D.φ Φ` from `⟨_, isDiscMap_map B.D.φ hφ⟩`. Conclude with `frobenius_height_matrix_relation _ hinj B.D.φ Φ hΦ.ext l k _ _ _ _ _ x ε hx (GlobalTheory.T.comparisonMatrix_frobenius_disc l K bk d ρ τ s ht hper B f hE f g ε hrel Φ hΦ)`.
+-/
 theorem phi_eq_of_rel_pow : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s), bk.IsPer τ → ∀ (B : Obj l ↥(OL K)) (f g : Hom bk.prism B) (ι : Type), TopBasis (BK.hf f) bk.J ι → ∀ (k : ℕ) (x : Matrix (Fin d) (Fin d) B.A) (ε : Matrix (Fin d) (Fin d) (Disc l (BK.hf f X) bk.ρ₀)), ht.Rel (BK.hf f X) f g ε → x.map (toDisc l (BK.hf f X) bk.ρ₀) = ((l : ℕ) : Disc l (BK.hf f X) bk.ρ₀) ^ k • ε → BK.hf g bk.E ^ (ht.a + s.N) • (ht.A.map (BK.hf f) * x.map B.D.φ) = BK.hf f bk.E ^ (ht.a + s.N) • (x * ht.A.map (BK.hf g)) := by
   intro l _ K bk d ρ τ s ht hper B f g ι hb k x ε hrel hx
   obtain ⟨hinj, hE, -, -⟩ := GlobalTheory.T.toDisc_injective_and_nonZeroDivisors_of_topBasis l K bk B.A (BK.hf f) ι hb

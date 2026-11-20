@@ -32,6 +32,9 @@ def SelfDualAtP (I : LocId L p nV W Qq) : Prop :=
       hform (sigR sp.cm.sig ((I.plc v).adicCompletion F))
         (sp.gram0.map (inclE (F := F) ((I.plc v).adicCompletion F))) z y ∈ intV E (I.plc v)
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Prod.fst_sum, Prod.fst_mul]`. Both sides reduce to the same expression.
+-/
 theorem fst_mulVec (I : LocId L p nV W Qq) (v : Fin nV) (x : GL (Fin R.k) (E ⊗[F] (I.plc v).adicCompletion F))
     (y : Fin R.k → E ⊗[F] (I.plc v).adicCompletion F) (a : Fin R.k) :
     (splV I v (((x : Matrix (Fin R.k) (Fin R.k) _) *ᵥ y) a)).1 =
@@ -39,6 +42,13 @@ theorem fst_mulVec (I : LocId L p nV W Qq) (v : Fin nV) (x : GL (Fin R.k) (E ⊗
   simp only [Matrix.mulVec, dotProduct, map_sum, map_mul, Prod.fst_sum, Prod.fst_mul]
   rfl
 
+/- English proof (translation)
+Establish `hfr` using `I.fr_lat (I.plc v) (I.pl v).2`. Use `Iff.trans ?_ (int_conj_iff ((I.plc v).adicCompletionIntegers F).toSubring (frV I v) (bc (fstV I v) x))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h t ht`. Take `⟨y, hy, e⟩` from `(hfr t).2 ht`.
+
+Take `⟨y', hy', e'⟩` from `h y hy`. Use `(hfr _).1 ⟨y', hy', fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[e' a, fst_mulVec]`. Use `congr 2`. Use function extensionality and compare the values at `b`.
+
+Conclude with `e b`. Introduce `h y hy`. Establish `h1` using `h (fun b => (splV I v (y b)).1) ((hfr _).1 ⟨y, hy, fun _ => rfl⟩)`. Take `⟨y', hy', e'⟩` from `(hfr _).2 h1`. Conclude with `⟨y', hy', fun a => by rw [e' a, fst_mulVec]⟩`.
+-/
 theorem first_iff (I : LocId L p nV W Qq) (v : Fin nV) (x : GL (Fin R.k) (E ⊗[F] (I.plc v).adicCompletion F)) :
     (∀ y ∈ Formalism.L2.Herm.locL (I.plc v) L.Lb, ∃ y' ∈ Formalism.L2.Herm.locL (I.plc v) L.Lb,
       ∀ a, (splV I v (y' a)).1 = (splV I v (((x : Matrix (Fin R.k) (Fin R.k) _) *ᵥ y) a)).1) ↔
@@ -60,6 +70,13 @@ theorem first_iff (I : LocId L p nV W Qq) (v : Fin nV) (x : GL (Fin R.k) (E ⊗[
     obtain ⟨y', hy', e'⟩ := (hfr _).2 h1
     exact ⟨y', hy', fun a => by rw [e' a, fst_mulVec]⟩
 
+/- English proof (translation)
+Introduce `v x hx`. Rewrite using `[L.Uloc_hyp (I.plc v) (hb v).1 (hb v).2.1 (hb v).2.2]`. Establish `hlev : x ∈ levelVL sp.cm.sig sp.gram0 (I.plc v) L.Lb ↔ x ∈ stabGL (Formalism.L2.Herm.locL (I.plc v) L.Lb)` using `⟨fun h => (Subgroup.mem_inf.1 h).2, fun h => Subgroup.mem_inf.2 ⟨hx, h⟩⟩`. Establish `einv : ((frV I v)⁻¹ * bc (fstV I v) x * frV I v)⁻¹ = (frV I v)⁻¹ * bc (fstV I v) x⁻¹ * frV I v`. Rewrite using `[map_inv]`.
+
+Use `group`. Rewrite using `[hlev, einv, ← first_iff, ← first_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun y hy => ⟨_, (h y).1 hy, fun _ => rfl⟩, fun y hy => ⟨_, (((stabGL (Formalism.L2.Herm.locL (I.plc v) L.Lb)).inv_mem h) y).1 hy, fun _ => rfl⟩⟩`.
+
+Introduce and unpack `⟨ha, hb'⟩`. Conclude with `stab_of_first (splV I v) (sigR sp.cm.sig ((I.plc v).adicCompletion F)) (I.spl_sig (I.plc v) (I.pl v).2) ((I.plc v).adicCompletionIntegers F).toSubring (intV E (I.plc v)) (h1 v) _ _ (h2 v) x hx ha hb'`.
+-/
 theorem isHyperbolicAt_of_integralSplit (I : LocId L p nV W Qq) (hb : NotBad I) (h1 : IntSplit I) (h2 : SelfDualAtP I) : HypAtP I := by
   intro v x hx
   rw [L.Uloc_hyp (I.plc v) (hb v).1 (hb v).2.1 (hb v).2.2]

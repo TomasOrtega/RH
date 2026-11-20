@@ -16,6 +16,9 @@ open GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag
 
 set_option autoImplicit false
 
+/- English proof (translation)
+Introduce `h2 hH hRA hSW D O hO Sx R hR p hp c`. Take `⟨e, he⟩` from `GlobalTheory.T.local_flag_whole_symbol_reindexed h2 hH hRA hSW D O hO Sx R hR p hp c`. Conclude with `⟨e, GlobalTheory.T.flag_at_of_local_flag _ _ _ _ _ p hp he⟩`.
+-/
 theorem GlobalTheory.TrivFlag.flagAt_wholeSym : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core →
     ∀ (Sx : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → ∀ c : O.s.Comp,
     ∃ e : Fin (2 * (D.R.f * O.N)) ≃ Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N),

@@ -16,6 +16,13 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.FinPartAt
 
+/- English proof (translation)
+Set `f : CommRingCat.of D ⟶ CommRingCat.of O` to `Spec.preimage w.left`. Establish `hf : Spec.map f = w.left` using `Spec.map_preimage _`. Establish `hw : w.left ≫ (specO O D).hom = (specO O O).hom` using `Over.w w`. Establish `hc : ∀ c : O, f.hom (algebraMap O D c) = c`. Establish `h2 : Spec.map (CommRingCat.ofHom (algebraMap O D) ≫ f) = Spec.map (CommRingCat.ofHom (algebraMap O O))`.
+
+Rewrite using `[Spec.map_comp, hf]`. Conclude with `hw`. Establish `h3` using `Spec.map_injective h2`. Introduce `c`. Use `congrArg (fun g : CommRingCat.of O ⟶ CommRingCat.of O => g.hom c) h3` as an intermediate fact.
+
+Simplify using `using this`. Use `⟨{ f.hom with commutes' := hc }, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom f.hom) = w.left`. Rewrite using `[CommRingCat.ofHom_hom, hf]`.
+-/
 theorem exists_ptMap_eq {O : Type} [CommRing O] {D : Type} [CommRing D] [Algebra O D] (w : specO O O ⟶ specO O D) :
     ∃ φ : D →ₐ[O] O, ptMap φ = w := by
   let f : CommRingCat.of D ⟶ CommRingCat.of O := Spec.preimage w.left
@@ -33,6 +40,15 @@ theorem exists_ptMap_eq {O : Type} [CommRing O] {D : Type} [CommRing D] [Algebra
   change Spec.map (CommRingCat.ofHom f.hom) = w.left
   rw [CommRingCat.ofHom_hom, hf]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t R _ ξ p _ n _ P' x0 hu P π hg b tt hb w z hz`. Take `⟨φ, rfl⟩` from `exists_ptMap_eq w`. Set `β : P'.B →+* 𝓞_ℂ_[p]` to `φ.toRingHom.comp (inB P' x0 hu)`. Establish `hβ1 : β.comp P'.str = x0`. Express the relevant statement in the definitionally equal form `φ.toRingHom.comp ((inB P' x0 hu).comp P'.str) = x0`.
+
+Rewrite using `[inB_str]`. Conclude with `RingHom.ext fun r => φ.commutes (x0 r)`. Establish `hβ2 : spMap β ≫ P'.u.left = (ptMap φ ≫ aH P' x0 hu hg.1).left ≫ π`. Rewrite using `[Over.comp_left, Category.assoc, aH_left_π]`. Express the relevant statement in the definitionally equal form `_ = spMap φ.toRingHom ≫ spMap (inB P' x0 hu) ≫ P'.u.left`.
+
+Conclude with `(GlobalTheory.HTMap.spc_assoc _ _ _).symm`. Establish `hat : P'.At x0 ((ptMap φ ≫ aH P' x0 hu hg.1).left ≫ π) β` using `⟨hβ1, hβ2⟩`. Establish `hz' : z.left ≫ P.gen ≫ π = spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ (ptMap φ ≫ aH P' x0 hu hg.1).left ≫ π`. Rewrite using `[← Category.assoc, hz, Category.assoc]`. Establish `key` using `hb β _ hat z hz'`.
+
+Rewrite using `[GlobalTheory.GmPoints.unitOf_ptMap, unitOf_chi]`. Conclude with `key`.
+-/
 theorem unitOf_chi_eq_weil : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (p : ℕ) [Fact p.Prime] (n : ℕ) [StarRing (𝓞 E)] (P' : GlobalTheory.HTMap.FP t ξ (p ^ n)) (x0 : R →+* 𝓞_ℂ_[p]) (hu : IsUnit (x0 P'.f)) (P : PtP E p) (π : P.G.left ⟶ t.G.left) (hg : IsGrpPullback P.G t.G (spMap x0 ≫ ξ) π) (b : P'.Bˣ) (tt : P.T), (∀ (β : P'.B →+* 𝓞_ℂ_[p]) (w : Sp 𝓞_ℂ_[p] ⟶ t.G.left), P'.At x0 w β → ∀ z : GlobalTheory.ChTor.Pts P.A.A, z.left ≫ P.gen ≫ π = spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ w → algebraMap 𝓞_ℂ_[p] ℂ_[p] (β b) = (weil P.A (p ^ n) (tt.lev n) z : ℂ_[p])) → ∀ (w : specO 𝓞_ℂ_[p] 𝓞_ℂ_[p] ⟶ Hs P' x0 hu) (z : GlobalTheory.ChTor.Pts P.A.A), z.left ≫ P.gen = spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ (w ≫ aH P' x0 hu hg.1).left → algebraMap 𝓞_ℂ_[p] ℂ_[p] (unitOf (w ≫ chi P' x0 hu b) : 𝓞_ℂ_[p]) = (weil P.A (p ^ n) (tt.lev n) z : ℂ_[p]) := by
   intro E _ _ _ H X t R _ ξ p _ n _ P' x0 hu P π hg b tt hb w z hz
   obtain ⟨φ, rfl⟩ := exists_ptMap_eq w

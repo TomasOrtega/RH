@@ -4,6 +4,19 @@ namespace AevalSpecializationAlgHom
 
 open MvPolynomial
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨0, C a, by simp, by simp⟩`. Consider the case `add p q hp hq`. Take `⟨N1, G1, h1, h1'⟩` from `hp`. Take `⟨N2, G2, h2, h2'⟩` from `hq`.
+
+Use `⟨N1 + N2, G1 * F ^ N2 + G2 * F ^ N1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, ← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add, map_mul, map_pow, ← h1', ← h2']`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `mul_X p o hp`. Take `⟨N, G, h1, h1'⟩` from `hp`. Consider the cases of `o with`. Consider the case `none`. Use `⟨N + 1, G, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, aeval_X, Option.elim_none]`. Rewrite using `[← h1, pow_succ]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [map_mul, aeval_X, Option.elim_none]`. Rewrite using `[← h1', pow_succ]`.
+
+Take the linear combination `(aeval (fun o => Option.elim o v u) p * aeval u F ^ N) * hv`. Consider the case `some i`. Use `⟨N, G * X i, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, aeval_X, Option.elim_some, ← h1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [map_mul, aeval_X, Option.elim_some, ← h1']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem key {Ω : Type} [Field Ω] [Algebra ℚ Ω] {σ : Type} (τ : σ → Ω) (F : MvPolynomial σ ℚ)
     {E : Type} [CommRing E] [Algebra ℚ E] (u : σ → E) (hF : aeval τ F ≠ (0 : Ω))
     (v : E) (hv : v * aeval u F = 1) (P : MvPolynomial (Option σ) ℚ) :
@@ -36,6 +49,25 @@ private theorem key {Ω : Type} [Field Ω] [Algebra ℚ Ω] {σ : Type} (τ : σ
 
 end AevalSpecializationAlgHom
 
+/- English proof (translation)
+Introduce `Ω _ _ σ τ F S E _ _ u hF hS hker hU`. Take `⟨w, hw⟩` from `hU`. Use `set v : E := ((w⁻¹ : Eˣ) : E) with hvdef`. Establish `hv : v * MvPolynomial.aeval u F = 1` using `by rw [← hw]; simp [v]`. Use `set τ' : Option σ → Ω := fun o => Option.elim o (MvPolynomial.aeval τ F)⁻¹ τ with hτ'`.
+
+Use `set u' : Option σ → E := fun o => Option.elim o v u with hu'`. Establish `hS' : S = (MvPolynomial.aeval τ').range`. Rewrite using `[hS, ← Algebra.adjoin_range_eq_range_aeval, Option.range_eq]`. Both sides reduce to the same expression. Substitute `hS'` using the available equality.
+
+Establish `hsurj` using `AlgHom.rangeRestrict_surjective (MvPolynomial.aeval τ' : MvPolynomial (Option σ) ℚ →ₐ[ℚ] Ω)`. Establish `hK : ∀ P ∈ RingHom.ker (MvPolynomial.aeval τ' : MvPolynomial (Option σ) ℚ →ₐ[ℚ] Ω).rangeRestrict, (MvPolynomial.aeval u') P = 0`. Introduce `P hP`. Rewrite `hP` using `[RingHom.mem_ker]`. Establish `hP' : MvPolynomial.aeval τ' P = 0` using `congrArg Subtype.val hP`.
+
+Take `⟨N, G, h1, h1'⟩` from `AevalSpecializationAlgHom.key τ F u hF v hv P`. Establish `h0 : MvPolynomial.aeval τ G = 0`. Rewrite using `[← h1]`. Simplify using `only [τ'] at hP'`. Simplify using `[hP']`.
+
+Establish `h2` using `hker G h0`. Rewrite `h1'` using `[h2]`. Establish `hunit : IsUnit (MvPolynomial.aeval u F ^ N)`. Rewrite using `[← hw]`. Conclude with `(w.isUnit).pow N`.
+
+Conclude with `(hunit.mul_left_eq_zero).mp h1'`. Set `e` to `Ideal.quotientKerAlgEquivOfSurjective hsurj`. Set `L` to `Ideal.Quotient.liftₐ (RingHom.ker (MvPolynomial.aeval τ' : MvPolynomial (Option σ) ℚ →ₐ[ℚ] Ω).rangeRestrict) (MvPolynomial.aeval u') hK`. Use `⟨L.comp e.symm.toAlgHom, ?_⟩` and prove the remaining obligations. Introduce `G s hs`.
+
+Establish `hs' : s = (MvPolynomial.aeval τ').rangeRestrict (MvPolynomial.rename some G)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hs]`. Simplify using `[MvPolynomial.aeval_rename]`. Both sides reduce to the same expression.
+
+Rewrite using `[hs']`. Establish `he : e.symm ((MvPolynomial.aeval τ').rangeRestrict (MvPolynomial.rename some G)) = Ideal.Quotient.mk _ (MvPolynomial.rename some G)` using `Ideal.quotientKerAlgEquivOfSurjective_symm_apply hsurj _`. Express the relevant statement in the definitionally equal form `L (e.symm ((MvPolynomial.aeval τ').rangeRestrict (MvPolynomial.rename some G))) = _`. Rewrite using `[he]`. Express the relevant statement in the definitionally equal form `MvPolynomial.aeval u' (MvPolynomial.rename some G) = _`.
+
+Rewrite using `[MvPolynomial.aeval_rename]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Reformulated.B.Yde9.main :
     ∀ (Ω : Type) [inst : Field Ω] [inst_1 : Algebra ℚ Ω] (σ : Type) (τ : σ → Ω) (F : MvPolynomial σ ℚ) (S : Subalgebra ℚ Ω)
       (E : Type) [inst_2 : CommRing E] [inst_3 : Algebra ℚ E] (u : σ → E),

@@ -4,6 +4,11 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `E _ _ _ a χ s _ φ hφ g`. Take `⟨A, p, hA⟩` from `hφ g`. Take `⟨B, q, hB⟩` from `chiDet_growth (a := a) χ⁻¹`. Establish `hback : mulChi a χ⁻¹ (mulChi a χ φ) = φ`. Rewrite using `[← mulChi_mul, mul_inv_cancel, mulChi_one]`.
+
+Use `⟨‖((chiDet a χ⁻¹ g : ℂˣ) : ℂ)‖ * (A * B), p + q, fun y => ?_⟩` and prove the remaining obligations. Establish `e : φ.1 (g * infGL E a y) = ((chiDet a χ⁻¹ g : ℂˣ) : ℂ) * ((mulChi a χ φ).1 (g * infGL E a y) * ((chiDet a χ⁻¹ (infGL E a y) : ℂˣ) : ℂ))` using `by conv_lhs => rw [← hback, mulChi_apply, map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hprod` using `mul_le_mul (hA y) (hB y) (norm_nonneg _) ((norm_nonneg _).trans (hA y))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Cj.H.chiGrow :
     UpperTheory.V.Cj.H.ChiGrow := by
   intro E _ _ _ a χ s _ φ hφ g

@@ -11,6 +11,9 @@ variable {X : Type} [AddCommGroup X]
 
 def ev (a b : X) : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ := LinearMap.applyₗ b ∘ₗ LinearMap.applyₗ a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ev_apply (a b : X) (β : LinearMap.BilinForm ℤ X) : ev a b β = β a b := rfl
 
 def expo (n : X × X →₀ ℤ) : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ := n.sum fun p k => k • ev p.1 p.2

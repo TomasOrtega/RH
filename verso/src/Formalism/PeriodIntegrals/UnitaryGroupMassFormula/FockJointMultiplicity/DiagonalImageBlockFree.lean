@@ -8,6 +8,31 @@ namespace PI.FJMB
 
 variable {σ : Type*}
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.aeval_monomial, MvPolynomial.aeval_monomial, map_one, one_mul, one_mul]`. Distinguish the cases in `hoff : ∃ v ∈ e.support, v ∈ offD ι`. Take `⟨v, hv, hvo⟩` from `hoff`. Establish `h1 : (e.prod fun v k => killS (offD ι) v ^ k) = 0`. Use `Finset.prod_eq_zero hv ?_` and prove the remaining obligations.
+
+Simplify using `only [killS, if_pos hvo]`. Conclude with `zero_pow (Finsupp.mem_support_iff.mp hv)`. Establish `h2 : (e.prod fun v k => diagOne' ι v ^ k) = 0`. Use `Finset.prod_eq_zero hv ?_` and prove the remaining obligations. Simplify using `only [diagOne', if_pos hvo]`.
+
+Conclude with `zero_pow (Finsupp.mem_support_iff.mp hv)`. Rewrite using `[h1, h2, mul_zero]`. Use `push_neg at hoff`. Establish `hsum : ∀ i, ∑ k : Fin m, e (ι (i, k)) = e (ι (i, i))`. Introduce `i`.
+
+Rewrite using `[Finset.sum_eq_single i]`. Introduce `k _ hk`. Assume the negation of the conclusion as `hne`. Conclude with `hoff (ι (i, k)) (Finsupp.mem_support_iff.mpr hne) ⟨i, k, rfl, fun h => hk (Fin.ext h).symm⟩`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`. Simplify using `only [hsum]`. Establish `hL : (e.prod fun v k => killS (offD ι) v ^ k) = ∏ v ∈ e.support, (X v : MvPolynomial σ ℂ) ^ e v`. Unfold `Finsupp.prod`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations.
+
+Simplify using `only [killS, if_neg (hoff v hv)]`. Establish `hR : (e.prod fun v k => diagOne' ι v ^ k) = ∏ v ∈ e.support, (if (∃ i k, ι (i, k) = v ∧ (i : ℕ) = k) then 1 else (X v : MvPolynomial σ ℂ) ^ e v)`. Unfold `Finsupp.prod`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Simplify using `only [diagOne', if_neg (hoff v hv)]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hsplit : ∏ v ∈ e.support, (X v : MvPolynomial σ ℂ) ^ e v = (∏ v ∈ e.support, if (∃ i k, ι (i, k) = v ∧ (i : ℕ) = k) then (X v : MvPolynomial σ ℂ) ^ e v else 1) * ∏ v ∈ e.support, (if (∃ i k, ι (i, k) = v ∧ (i : ℕ) = k) then 1 else (X v : MvPolynomial σ ℂ) ^ e v)`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hF : ∏ v ∈ e.support.filter (fun v => ∃ i k, ι (i, k) = v ∧ (i : ℕ) = k), (X v : MvPolynomial σ ℂ) ^ e v = ∏ v ∈ e.support, if (∃ i k, ι (i, k) = v ∧ (i : ℕ) = k) then (X v : MvPolynomial σ ℂ) ^ e v else 1`. Rewrite using `[Finset.prod_filter]`. Establish `hinj : Function.Injective (fun i : Fin m => ι (i, i))` using `fun a b h => (Prod.mk.inj (hι h)).1`. Establish `himg : ∏ i, (X (ι (i, i)) : MvPolynomial σ ℂ) ^ e (ι (i, i)) = ∏ v ∈ Finset.univ.image (fun i : Fin m => ι (i, i)), (X v : MvPolynomial σ ℂ) ^ e v`. Rewrite using `[Finset.prod_image (fun a _ b _ h => hinj h)]`.
+
+Rewrite using `[hL, hR, hsplit, ← hF, himg]`. Use `congr 1`. Apply `Finset.prod_subset` to reduce the goal to its premises. Introduce `v hv`. Rewrite `hv` using `[Finset.mem_filter]`.
+
+Take `⟨i, k, hik, hk⟩` from `hv.2`. Rewrite using `[Finset.mem_image]`. Use `⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hik, ← Fin.ext hk]`. Introduce `v hv hvf`.
+
+Rewrite `hv` using `[Finset.mem_image]`. Take `⟨i, _, rfl⟩` from `hv`. Establish `h0 : e (ι (i, i)) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hvf (Finset.mem_filter.mpr ⟨Finsupp.mem_support_iff.mpr hne, i, i, rfl, rfl⟩)`.
+
+Rewrite using `[h0, pow_zero]`.
+-/
 theorem cd_mono_factor {m : ℕ} (ι : Fin m × Fin m → σ) (hι : Function.Injective ι) (e : σ →₀ ℕ) :
     aeval (killS (offD ι)) (monomial e (1 : ℂ)) =
       (∏ i, X (ι (i, i)) ^ (∑ k : Fin m, e (ι (i, k)))) * aeval (diagOne' ι) (monomial e (1 : ℂ)) := by
@@ -73,6 +98,13 @@ theorem cd_mono_factor {m : ℕ} (ι : Fin m × Fin m → σ) (hι : Function.In
         exact hvf (Finset.mem_filter.mpr ⟨Finsupp.mem_support_iff.mpr hne, i, i, rfl, rfl⟩)
       rw [h0, pow_zero]
 
+/- English proof (translation)
+Introduce `σ m ι hι α P hP`. Use `conv_lhs => rw [P.as_sum]`. Use `conv_rhs => rw [P.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations.
+
+Establish `hm : MvPolynomial.monomial e (P.coeff e) = MvPolynomial.C (P.coeff e) * MvPolynomial.monomial e 1`. Rewrite using `[MvPolynomial.C_mul_monomial, mul_one]`. Rewrite using `[hm, map_mul, map_mul, cd_mono_factor ι hι e]`. Establish `hs : ∀ i, ∑ k : Fin m, e (ι (i, k)) = α i` using `hP e he`. Simplify using `only [hs, MvPolynomial.aeval_C]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diagonal_hypothesis : HypDiag := by
   intro σ m ι hι α P hP
   conv_lhs => rw [P.as_sum]
@@ -86,6 +118,25 @@ theorem diagonal_hypothesis : HypDiag := by
   simp only [hs, MvPolynomial.aeval_C]
   ring
 
+/- English proof (translation)
+Introduce `σ m n ι hι P`. Establish `hC : ∀ c : ℂ, ∀ e ∈ (MvPolynomial.C c : MvPolynomial σ ℂ).support, ∀ x, e (ι x) = 0`. Introduce `c e he x`. Rewrite `he` using `[MvPolynomial.C_apply]`. Establish `h0` using `MvPolynomial.support_monomial_subset he`.
+
+Rewrite `h0` using `[Finset.mem_singleton]`. Rewrite using `[h0]`. Both sides reduce to the same expression. Establish `hadd : ∀ Q R : MvPolynomial σ ℂ, (∀ e ∈ Q.support, ∀ x, e (ι x) = 0) → (∀ e ∈ R.support, ∀ x, e (ι x) = 0) → ∀ e ∈ (Q + R).support, ∀ x, e (ι x) = 0`. Introduce `Q R hQ hR e he x`.
+
+Break down `Finset.mem_union.mp (MvPolynomial.support_add he) with h | h` into its components or cases. Conclude with `hQ e h x`. Conclude with `hR e h x`. Establish `hmul : ∀ Q R : MvPolynomial σ ℂ, (∀ e ∈ Q.support, ∀ x, e (ι x) = 0) → (∀ e ∈ R.support, ∀ x, e (ι x) = 0) → ∀ e ∈ (Q * R).support, ∀ x, e (ι x) = 0`. Introduce `Q R hQ hR e he x`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul Q R he)`. Rewrite using `[Finsupp.add_apply, hQ a ha x, hR b hb x]`. Establish `hgen : ∀ w, ∀ e ∈ (diagOne' ι w).support, ∀ x, e (ι x) = 0`. Introduce `w`. Unfold `diagOne'`.
+
+Use `split_ifs with h1 h2`. Simplify using `using hC 0`. Simplify using `using hC 1`. Introduce `e he x`. Establish `hne : w ≠ ι x`.
+
+Introduce and unpack `rfl`. Take `⟨i, k⟩` from `x`. Distinguish the cases in `hik : (i : ℕ) = k`. Conclude with `h2 ⟨i, k, rfl, hik⟩`. Conclude with `h1 ⟨i, k, rfl, hik⟩`.
+
+Rewrite `he` using `[MvPolynomial.support_X, Finset.mem_singleton]`. Rewrite using `[he, Finsupp.single_apply, if_neg hne]`. Proceed by induction on `P using MvPolynomial.induction_on`. Use `next a =>`. Rewrite using `[MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]`.
+
+Conclude with `hC a`. Use `next p q hp hq =>`. Rewrite using `[map_add]`. Conclude with `hadd _ _ hp hq`. Use `next p w hp =>`.
+
+Rewrite using `[map_mul, MvPolynomial.aeval_X]`. Conclude with `hmul _ _ hp (hgen w)`.
+-/
 theorem diagonal_image_block_free : HypFree := by
   intro σ m n ι hι P
   have hC : ∀ c : ℂ, ∀ e ∈ (MvPolynomial.C c : MvPolynomial σ ℂ).support, ∀ x, e (ι x) = 0 := by

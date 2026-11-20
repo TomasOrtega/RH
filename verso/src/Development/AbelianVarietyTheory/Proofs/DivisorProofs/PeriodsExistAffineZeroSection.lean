@@ -16,6 +16,9 @@ namespace GlobalTheory.AnPer.PerExist
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ}
   {B : Type} [CommRing B] {X : Scheme.{0}} {s : X ⟶ Sp B} {σ : B →+* Hol F.V}
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun f ↦ by change Hol.ev p hp (K.cst k f) = Hol.ev p.1 (K.base k p hp) f rw [Hol.ev_apply, Hol.ev_apply] exact K.fn_cst k f hp`.
+-/
 theorem ev_cst (K : Charts F) (k : K.K) (p : Tot I g) (hp : p ∈ K.W k) :
     (Hol.ev p hp).toRingHom.comp (K.cst k) = (Hol.ev p.1 (K.base k p hp)).toRingHom :=
   RingHom.ext fun f ↦ by
@@ -23,6 +26,9 @@ theorem ev_cst (K : Charts F) (k : K.K) (p : Tot I g) (hp : p ∈ K.W k) :
     rw [Hol.ev_apply, Hol.ev_apply]
     exact K.fn_cst k f hp
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun f ↦ by change Hol.ev p hp (Charts.sh h f) = Hol.ev (F.shift l p) (K.maps h p hp) f rw [Hol.ev_apply, Hol.ev_apply] exact Charts.fn_sh h f hp`.
+-/
 theorem ev_sh {K : Charts F} {l : Λ} {k k' : K.K} (h : K.le l k' k) (p : Tot I g) (hp : p ∈ K.W k') :
     (Hol.ev p hp).toRingHom.comp (Charts.sh h) = (Hol.ev (F.shift l p) (K.maps h p hp)).toRingHom :=
   RingHom.ext fun f ↦ by
@@ -33,6 +39,11 @@ theorem ev_sh {K : Charts F} {l : Λ} {k k' : K.K} (h : K.le l k' k) (p : Tot I 
 def Pt (u : Unif F s σ) (W : Opens (Tot I g)) : Prop :=
   ∃ x : Sp (Hol W) ⟶ X, ∀ (p : Tot I g) (hp : p ∈ W), spMap (Hol.ev p hp).toRingHom ≫ x = u.E p
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h`. Use `⟨spMap (Hol.comap id analyticOnNhd_id (fun p hp ↦ hW hp)).toRingHom ≫ x, fun p hp ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Cris.spMap_comp]`. Establish `e : (Hol.ev p hp).toRingHom.comp (Hol.comap id analyticOnNhd_id (fun p hp ↦ hW hp) : Hol W →ₐ[ℂ] Hol W').toRingHom = (Hol.ev p (hW hp)).toRingHom` using `RingHom.ext fun f ↦ by`. Express the relevant statement in the definitionally equal form `Hol.ev p hp (Hol.comap id analyticOnNhd_id (fun p hp ↦ hW hp) f) = Hol.ev p (hW hp) f`.
+
+Rewrite using `[Hol.ev_apply, Hol.ev_apply]`. Conclude with `Hol.fn_comap _ _ _ f hp`. Rewrite using `[e]`. Conclude with `hx p (hW hp)`.
+-/
 theorem Pt.mono {u : Unif F s σ} {W W' : Opens (Tot I g)} (hW : W' ≤ W) (h : Pt u W) : Pt u W' := by
   obtain ⟨x, hx⟩ := h
   refine ⟨spMap (Hol.comap id analyticOnNhd_id (fun p hp ↦ hW hp)).toRingHom ≫ x, fun p hp ↦ ?_⟩
@@ -46,6 +57,9 @@ theorem Pt.mono {u : Unif F s σ} {W W' : Opens (Tot I g)} (hW : W' ≤ W) (h : 
   rw [e]
   exact hx p (hW hp)
 
+/- English proof (translation)
+Introduce `U f`. Take `⟨ho, hd⟩` from `u.hol U f`. Establish `e : {b ∈ (W : Set (Tot I g)) | ⊤ ≤ u.E b ⁻¹ᵁ U} = (W : Set (Tot I g)) ∩ {p : Tot I g | p.1 ∈ F.V ∧ ⊤ ≤ u.E p ⁻¹ᵁ U}` using `Set.ext fun b ↦ ⟨fun h ↦ ⟨h.1, hW b h.1, h.2⟩, fun h ↦ ⟨h.1, h.2.2⟩⟩`. Rewrite using `[e]`. Conclude with `⟨W.isOpen.inter ho, hd.mono Set.inter_subset_right⟩`.
+-/
 theorem isHolTo (u : Unif F s σ) (W : Opens (Tot I g)) (hW : ∀ p ∈ W, p.1 ∈ F.V) : IsHolTo (W : Set (Tot I g)) u.E := by
   intro U f
   obtain ⟨ho, hd⟩ := u.hol U f
@@ -55,6 +69,9 @@ theorem isHolTo (u : Unif F s σ) (W : Opens (Tot I g)) (hW : ∀ p ∈ W, p.1 �
   rw [e]
   exact ⟨W.isOpen.inter ho, hd.mono Set.inter_subset_right⟩
 
+/- English proof (translation)
+Take `⟨x, -, hx⟩` from `exists_point_hol (Tot I g) W X u.E U hU (isHolTo u W fun p hp ↦ (hW p hp).1) fun p hp ↦ (hW p hp).2`. Conclude with `⟨x, hx⟩`.
+-/
 theorem pt_of_affine (u : Unif F s σ) (U : X.Opens) (hU : IsAffineOpen U) (W : Opens (Tot I g))
     (hW : ∀ p ∈ W, p.1 ∈ F.V ∧ ⊤ ≤ u.E p ⁻¹ᵁ U) : Pt u W := by
   obtain ⟨x, -, hx⟩ := exists_point_hol (Tot I g) W X u.E U hU (isHolTo u W fun p hp ↦ (hW p hp).1)
@@ -68,6 +85,13 @@ variable (u : Unif F s σ)
 
 abbrev Kmax : Charts F := Charts.std F (Pt u)
 
+/- English proof (translation)
+Use `⟨fun p hp ↦ ?_, fun l k₁ k₂ p h₁ h₂ ↦ ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨U, hU, rfl⟩, hq, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (u.E p (default : PrimeSpectrum ℂ))) isOpen_univ`. Establish `hpU : p ∈ inU u U` using `⟨hp, fun y _ ↦ by`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum ℂ) y default]`. Conclude with `hq⟩`.
+
+Conclude with `⟨⟨inU u U, fun q hq ↦ hq.1, pt_of_affine u U hU _ fun q hq ↦ hq⟩, hpU⟩`. Set `W : Opens (Tot I g)` to `⟨(k₁.1 : Set (Tot I g)) ∩ F.shift l ⁻¹' (k₂.1 : Set (Tot I g)), (F.shift_analytic l k₁.2.1).continuousOn.isOpen_inter_preimage k₁.1.isOpen k₂.1.isOpen⟩`. Establish `hW : W ≤ k₁.1` using `fun q hq ↦ hq.1`. Use `⟨⟨W, fun q hq ↦ k₁.2.1 q hq.1, k₁.2.2.mono hW⟩, ⟨h₁, h₂⟩, fun q hq ↦ ?_, fun q hq ↦ hq.2⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F.shift 0 q ∈ k₁.1`.
+
+Rewrite using `[F.shift_zero]`. Conclude with `hq.1`.
+-/
 theorem rich : (Kmax u).Rich := by
   refine ⟨fun p hp ↦ ?_, fun l k₁ k₂ p h₁ h₂ ↦ ?_⟩
   · obtain ⟨_, ⟨U, hU, rfl⟩, hq, -⟩ := X.isBasis_affineOpens.exists_subset_of_mem_open
@@ -84,10 +108,16 @@ theorem rich : (Kmax u).Rich := by
     rw [F.shift_zero]
     exact hq.1
 
+/- English proof (translation)
+Take `⟨U, hU, hz⟩` from `hu`. Conclude with `⟨⟨inU u U, fun q hq ↦ hq.1, pt_of_affine u U hU _ fun q hq ↦ hq⟩, fun z hz' ↦ ⟨hz', hz z hz'⟩⟩`.
+-/
 theorem based (hu : u.Based) : (Kmax u).Based := by
   obtain ⟨U, hU, hz⟩ := hu
   exact ⟨⟨inU u U, fun q hq ↦ hq.1, pt_of_affine u U hU _ fun q hq ↦ hq⟩, fun z hz' ↦ ⟨hz', hz z hz'⟩⟩
 
+/- English proof (translation)
+The claim follows from `point_hol_ext (Tot I g) (K.W k) (Sp B) _ (Limits.terminal.from _) _ _ (Limits.terminal.hom_ext _ _) fun p hp ↦ by change spMap (Hol.ev p hp).toRingHom ≫ x ≫ s = spMap (Hol.ev p hp).toRingHom ≫ _ rw [← Category.assoc, hx p hp, u.w p (K.base k p hp), ← Cris.spMap_comp, ← RingHom.co …`.
+-/
 theorem over_base (K : Charts F) (k : K.K) (x : Sp (Hol (K.W k)) ⟶ X)
     (hx : ∀ (p : Tot I g) (hp : p ∈ K.W k), spMap (Hol.ev p hp).toRingHom ≫ x = u.E p) :
     x ≫ s = spMap ((K.cst k).comp σ) :=
@@ -97,6 +127,9 @@ theorem over_base (K : Charts F) (k : K.K) (x : Sp (Hol (K.W k)) ⟶ X)
 
 variable [IsSeparated s]
 
+/- English proof (translation)
+The claim follows from `point_hol_ext (Tot I g) (K.W k) X (Sp B) s _ _ ((over_base u K k x hx).trans (over_base u K k x' hx').symm) fun p hp ↦ (hx p hp).trans (hx' p hp).symm`.
+-/
 theorem pt_unique (K : Charts F) (k : K.K) (x x' : Sp (Hol (K.W k)) ⟶ X)
     (hx : ∀ (p : Tot I g) (hp : p ∈ K.W k), spMap (Hol.ev p hp).toRingHom ≫ x = u.E p)
     (hx' : ∀ (p : Tot I g) (hp : p ∈ K.W k), spMap (Hol.ev p hp).toRingHom ≫ x' = u.E p) : x = x' :=
@@ -154,6 +187,11 @@ namespace GlobalTheory.AnPer
 
 open PerExist in
 
+/- English proof (translation)
+Introduce `I _ g Λ _ F B _ X s _ σ u hu c`. Take `⟨per, hper⟩` from `GlobalTheory.T.exists_period_cohomologyClass_of_rich_based (Kmax u) (rich u) (based u hu) ((rmax u).coef.pull1 c)`. Use `⟨per, fun K r hr ↦ ?_⟩` and prove the remaining obligations. Use `(CoefMap.pullCohomologyOne_eq_of_natTrans r.coef _ (toMaxTrans hr) (fun _ _ ↦ rfl) c).trans ?_` and prove the remaining obligations. Rewrite using `[CoefMap.pullCohomologyOne_comp, hper]`.
+
+Both sides reduce to the same expression.
+-/
 theorem periods_exist : PExist := by
   intro I _ g Λ _ F B _ X s _ σ u hu c
   obtain ⟨per, hper⟩ := GlobalTheory.T.exists_period_cohomologyClass_of_rich_based (Kmax u) (rich u) (based u hu) ((rmax u).coef.pull1 c)

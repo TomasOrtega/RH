@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsMaxThOne
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OneMemFinPt
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThKTypes.exists_typeProj | exact GlobalTheory.ThKTypes.exists_typeProj | (intros; apply GlobalTheory.ThKTypes.exists_typeProj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.matched_theta_descent_regular : GlobalTheory.ThK.KP → ∀ (F E
     : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B
     : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G

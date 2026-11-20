@@ -26,6 +26,11 @@ variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hUs : sSup (Set.range U.U) = ⊤`. Rewrite using `[sSup_range]`. Conclude with `U.cover`. Establish `g` using `GlobalTheory.T.witt_level_morphism_cover_compat q ρ U n ((l : WittVector l k) ^ n) (mq (F := B.schFn q) (ρ := ρ) hn) (hGq q ρ hn) (fun S hS j => by`. Take `⟨α, hα⟩` from `hS`.
+
+Take `⟨c', -⟩` from `GlobalTheory.T.coordinates_restrict_affine_open (U.c α) (iInf₂_le α hα : (⨅ α ∈ S, U.U α) ≤ U.U α) (U.inter S ⟨α, hα⟩)`. Conclude with `GlobalTheory.T.witt_coord_quotient_pull_bijective q ρ hn c' j) j`. Establish `z0` using `GlobalTheory.T.witt_site_restrict_bijective q ρ n (Set.range U.U) hUs j`. Establish `zq` using `GlobalTheory.T.witt_site_quotient_restrict_bijective q ρ (n + 1) (Set.range U.U) ((l : WittVector l k) ^ n) hUs j`. Conclude with `bij_of_sub (mq (F := B.schFn q) (ρ := ρ) hn) (stF q ρ n (Set.range U.U)) (stF q ρ (n + 1) (Set.range U.U)) (fun _ h => h.1) (fun _ h => h.1) (hGq q ρ hn _) j z0 zq g`.
+-/
 theorem bij_cov (U : Cov q) {n : ℕ} (hn : n ≠ 0) (j : ℕ) :
     Function.Bijective (((mq (F := B.schFn q) (ρ := ρ) hn).o (IdF.span _ ((l : WittVector l k) ^ n))
       (fun _ => le_rfl)).pull j) := by
@@ -46,6 +51,9 @@ end Q
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `l _ K r M hM n hn j`. Establish `: IsProper M.p` using `GlobalTheory.CommonModel.isProper_of_isProjOver hM.1.1`. Take `⟨U⟩` from `(cov_ex M.p).1 hM.2`. Conclude with `bij_cov M.p r.ρ U hn j`.
+-/
 theorem bij : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (M : Model l K), M.Sm →
     ∀ (n : ℕ) (hn : n ≠ 0) (j : ℕ), Function.Bijective (((mq (F := B.schFn M.p) (ρ := r.ρ) hn).o
       (IdF.span _ ((l : WittVector l r.k) ^ n)) (fun _ => le_rfl)).pull j) := by

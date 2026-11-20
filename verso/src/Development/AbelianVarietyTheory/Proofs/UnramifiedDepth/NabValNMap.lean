@@ -12,6 +12,21 @@ namespace GlobalTheory
 
 open MvPowerSeries ReciprocityTheory.ChartRestriction.G.TB ReciprocityTheory.ChartRestriction.G.TB.WickVanishing GlobalTheory.QuadDeriv GlobalTheory.GaugeBaseChange in
 
+/- English proof (translation)
+Introduce `S S' _ _ _ _ ψ d O _ _ B B' hF hA h hc w0 m n f κ _ cp u P`. Establish `eF : (fun i => MvPowerSeries.map ψ (B.FK S i)) = B'.FK S'`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map ψ (MvPowerSeries.map (algebraMap S S) (B.G.F i)) = MvPowerSeries.map (algebraMap S' S') (B'.G.F i)`. Rewrite using `[hF]`.
+
+Use extensionality with `e`. Simplify using `[coeff_map]`. Establish `eA : mapP ψ (B.actK S w0) = B'.actK S' w0`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map ψ (MvPowerSeries.map (algebraMap S S) (B.A.act w0 i)) = MvPowerSeries.map (algebraMap S' S') (B'.A.act w0 i)`.
+
+Rewrite using `[hA]`. Use extensionality with `e`. Simplify using `[coeff_map]`. Establish `gC : GP (comp1 (B.actK S w0) (pt S (n` using `1) d 0)) := gp_comp1 _ _ (gp_actK B w0) (gp_pt 0)`. Establish `cL : constantCoeff (B.hL S h w0) = 0` using `gt_const_ev _ (pair_points_zero_constant (gp_pt 0) gC) h hc`.
+
+Establish `eL : MvPowerSeries.map ψ (B.hL S h w0) = B'.hL S' (MvPowerSeries.map ψ h) w0`. Unfold `FB.hL`. Rewrite using `[map_ev_two _ _ _ (gp_pt _) gC, baseChange_comp1 _ _ _ (gp_pt _), eA, baseChange_pt]`. Establish `g1 : ∀ (b : Fin n) (j : Fin 1), GP ((![pt S d b] : Fin 1 → Pt S n d) j)`. Introduce `b j`.
+
+Use `fin_cases j`. Conclude with `gp_pt b`. Establish `cb : ∀ b : Fin n, constantCoeff (ev (n` using `n) ![pt S d b] (B.hL S h w0)) = 0 := fun b => gt_const_ev _ (g1 b) _ cL`. Establish `eb : ∀ b : Fin n, MvPowerSeries.map ψ (ev (n` using `n) ![pt S d b] (B.hL S h w0)) = ev (n := n) ![pt S' d b] (B'.hL S' (MvPowerSeries.map ψ h) w0) := by`. Introduce `b`.
+
+Rewrite using `[map_ev ψ _ (g1 b), eL]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Conclude with `baseChange_pt ψ b`.
+
+Unfold `nabValN`. Rewrite using `[← MvPowerSeries.constantCoeff_map, ← GlobalTheory.dpolyN_map, eF, map_mul, map_expS _ _ (by`. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, map_sum, Finset.sum_eq_zero fun b _ => cb b, mul_zero]),`. Use the proof step `MvPowerSeries.smul_eq_C_mul, MvPowerSeries.smul_eq_C_mul, map_mul, map_C, map_natCast ψ, map_sum,`. Use the proof step `Finset.sum_congr rfl fun b _ => eb b]`.
+-/
 theorem nabValN_map : ∀ (S S' : Type) [CommRing S] [Algebra ℚ S] [CommRing S'] [Algebra ℚ S'] (ψ : S →+* S') (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB S d O) (B' : FB S' d O), (∀ i, B'.G.F i = MvPowerSeries.map ψ (B.G.F i)) → (∀ a i, B'.A.act a i = MvPowerSeries.map ψ (B.A.act a i)) → ∀ (h : PS S 2 d), MvPowerSeries.constantCoeff h = 0 → ∀ (w0 : O) (m n : ℕ) (f : PS S n d) (κ : Type) [Fintype κ] (cp : κ → Fin n) (u : κ → Fin d → S) (P : MvPolynomial κ S), nabValN B' S' (MvPowerSeries.map ψ h) w0 m (MvPowerSeries.map ψ f) cp (fun l j => ψ (u l j)) (MvPolynomial.map ψ P) = ψ (nabValN B S h w0 m f cp u P) := by
   intro S S' _ _ _ _ ψ d O _ _ B B' hF hA h hc w0 m n f κ _ cp u P
   have eF : (fun i => MvPowerSeries.map ψ (B.FK S i)) = B'.FK S' := by

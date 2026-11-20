@@ -5,6 +5,33 @@ open scoped MatrixGroups
 
 namespace GlobalTheory.KZ.H3
 
+/- English proof (translation)
+Introduce `l _ w p hhom hcomp`. Establish `hc1 : ∀ (m : Fin 2 →₀ ℕ) (n : ℕ), ZMod.castHom (pow_dvd_pow l (Nat.le_succ n)) (ZMod (l ^ n)) ((p (n + 1)).coeff m) = (p n).coeff m`. Introduce `m n`. Rewrite using `[← hcomp n, MvPolynomial.coeff_map]`. Establish `hc : ∀ (m : Fin 2 →₀ ℕ) (k₁ k₂ : ℕ) (hk : k₁ ≤ k₂), ZMod.castHom (pow_dvd_pow l hk) (ZMod (l ^ k₁)) ((p k₂).coeff m) = (p k₁).coeff m`.
+
+Introduce `m k₁ k₂ hk`. Proceed by induction on `k₂, hk using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ k hk ih`. Rewrite using `[← ih, ← hc1 m k]`.
+
+Use `show _ = ((ZMod.castHom (pow_dvd_pow l hk) (ZMod (l ^ k₁))).comp (ZMod.castHom (pow_dvd_pow l (Nat.le_succ k)) (ZMod (l ^ k)))) _`. Rewrite using `[ZMod.castHom_comp]`. Set `f : ∀ k, MvPolynomial (Fin 2 →₀ ℕ) ℤ →+* ZMod (l ^ k)` to `fun k => MvPolynomial.eval₂Hom (Int.castRingHom _) (fun m => (p k).coeff m)`. Establish `hf : ∀ k₁ k₂ (hk : k₁ ≤ k₂), (ZMod.castHom (pow_dvd_pow l hk) (ZMod (l ^ k₁))).comp (f k₂) = f k₁`. Introduce `k₁ k₂ hk`.
+
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[f]`. Introduce `m`. Simplify using `only [f, RingHom.comp_apply, MvPolynomial.eval₂Hom_X']`.
+
+Conclude with `hc m k₁ k₂ hk`. Set `g` to `PadicInt.lift hf`. Set `c : (Fin 2 →₀ ℕ) → ℤ_[l]` to `fun m => g (MvPolynomial.X m)`. Establish `hcn : ∀ m n, PadicInt.toZModPow n (c m) = (p n).coeff m`. Introduce `m n`.
+
+Use `congrArg (fun φ => φ (MvPolynomial.X m)) (PadicInt.lift_spec hf n)` as an intermediate fact. Simplify `this` using `[c, g, f]`. Establish `hdeg : ∀ m, c m ≠ 0 → m.degree = w`. Introduce `m hm`. Assume the negation of the conclusion as `hne`.
+
+Apply `hm` to reduce the goal to its premises. Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations. Rewrite using `[hcn, map_zero]`. Assume the negation of the conclusion as `h0`. Apply `hne` to reduce the goal to its premises.
+
+Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hhom n h0`. Establish `hfin : (Function.support c).Finite` using `(Finsupp.finite_of_degree_le w).subset fun m hm => le_of_eq (hdeg m hm)`. Set `q : MvPolynomial (Fin 2) ℤ_[l]` to `∑ m ∈ hfin.toFinset, MvPolynomial.monomial m (c m)`. Establish `hq : ∀ m, q.coeff m = c m`.
+
+Introduce `m`. Simplify using `only [q, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression.
+
+Simplify using `only [Set.Finite.mem_toFinset, Function.mem_support, not_not] at h`. Conclude with `h.symm`. Use `⟨q, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m hm`. Rewrite `hm` using `[hq]`.
+
+Establish `h` using `hdeg m hm`. Rewrite `h` using `[Finsupp.degree_eq_weight_one]`. Conclude with `h`. Introduce `n`. Use extensionality with `m`.
+
+Rewrite using `[MvPolynomial.coeff_map, hq, hcn]`. Introduce `q' hq'`. Use extensionality with `m`. Rewrite using `[hq]`. Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations.
+
+Rewrite using `[hcn, ← hq' n, MvPolynomial.coeff_map]`.
+-/
 theorem homogeneous_lift_compatible : ∀ (l : ℕ) [Fact l.Prime] (w : ℕ) (p : (n : ℕ) → MvPolynomial (Fin 2) (ZMod (l ^ n))), (∀ n, (p n).IsHomogeneous w) → (∀ n, MvPolynomial.map (ZMod.castHom (pow_dvd_pow l (Nat.le_succ n)) (ZMod (l ^ n))) (p (n + 1)) = p n) → ∃ q : MvPolynomial (Fin 2) ℤ_[l], q.IsHomogeneous w ∧ (∀ n, MvPolynomial.map (PadicInt.toZModPow n) q = p n) ∧ ∀ q' : MvPolynomial (Fin 2) ℤ_[l], (∀ n, MvPolynomial.map (PadicInt.toZModPow n) q' = p n) → q' = q := by
   intro l _ w p hhom hcomp
   have hc1 : ∀ (m : Fin 2 →₀ ℕ) (n : ℕ),

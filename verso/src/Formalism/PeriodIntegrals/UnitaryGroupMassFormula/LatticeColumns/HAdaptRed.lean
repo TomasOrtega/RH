@@ -46,17 +46,29 @@ def AdaptIn (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p
       (((P⁻¹ : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) *
           ofCols (colv (cV X u p θ) (yV X hb u p θ))).det * uu = 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem mulVec_apply_eq_sum_lattice_columns {ι κ K : Type} [Fintype κ] [Field K] (M : Matrix ι κ K) (v : κ → K)
     (i : ι) : (M *ᵥ v) i = ∑ j, M i j * v j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem dotProduct_eq_sum_mul {κ K : Type} [Fintype κ] [Field K] (v w : κ → K) :
     v ⬝ᵥ w = ∑ j, v j * w j := rfl
 
+/- English proof (translation)
+Rewrite using `[dotProduct_eq_sum_mul, dotProduct_eq_sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+-/
 private theorem dotProduct_comm_field {κ K : Type} [Fintype κ] [Field K] (v w : κ → K) :
     v ⬝ᵥ w = w ⬝ᵥ v := by
   rw [dotProduct_eq_sum_mul, dotProduct_eq_sum_mul]
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
+/- English proof (translation)
+Break down `s with a | ((i | u) | b)` into its components or cases. Both sides reduce to the same expression. Conclude with `absurd ⟨i, rfl⟩ hs`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 private theorem colv_apply_of_not_isW {r k : ℕ} {K : Type} [Field K] (c : Idx r k → Idx r k → K)
     (y : Fin k → Idx r k → K) (s : Idx r k) (hs : ¬ IsW s) : colv c y s = c s := by
   rcases s with a | ((i | u) | b)
@@ -65,9 +77,17 @@ private theorem colv_apply_of_not_isW {r k : ℕ} {K : Type} [Field K] (c : Idx 
   · rfl
   · rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases s with a | ((i | u) | b) <;> simp [dlH]`.
+-/
 private theorem dlH_dlH_lattice_columns {r k : ℕ} (s : Idx r k) : dlH (dlH s) = s := by
   rcases s with a | ((i | u) | b) <;> simp [dlH]
 
+/- English proof (translation)
+Break down `s with a | ((i | u) | b)` into its components or cases. Introduce and unpack `⟨j, hj⟩`. Simplify using `[dlH] at hj`. Conclude with `absurd ⟨i, rfl⟩ hs`. Introduce and unpack `⟨j, hj⟩`.
+
+Simplify using `[dlH] at hj`. Introduce and unpack `⟨j, hj⟩`. Simplify using `[dlH] at hj`.
+-/
 private theorem not_isW_dlH_of_not_isW {r k : ℕ} (s : Idx r k) (hs : ¬ IsW s) : ¬ IsW (dlH s) := by
   rcases s with a | ((i | u) | b)
   · rintro ⟨j, hj⟩
@@ -78,24 +98,36 @@ private theorem not_isW_dlH_of_not_isW {r k : ℕ} (s : Idx r k) (hs : ¬ IsW s)
   · rintro ⟨j, hj⟩
     simp [dlH] at hj
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[mulVec_apply_eq_sum_lattice_columns]`. Simplify using `[ofCols, Pi.single_apply]`.
+-/
 private theorem ofCols_mulVec_single_one {r k : ℕ} {K : Type} [Field K] (v : Idx r k → Idx r k → K)
     (s : Idx r k) : ofCols v *ᵥ Pi.single s 1 = v s := by
   funext i
   rw [mulVec_apply_eq_sum_lattice_columns]
   simp [ofCols, Pi.single_apply]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `simp [mulVec_apply_eq_sum_lattice_columns, dotProduct_eq_sum_mul, ofCols, Matrix.transpose_apply]`.
+-/
 private theorem ofCols_transpose_mulVec_apply {r k : ℕ} {K : Type} [Field K] (v : Idx r k → Idx r k → K)
     (w : Idx r k → K) (t : Idx r k) : ((ofCols v)ᵀ *ᵥ w) t = v t ⬝ᵥ w := by
   first
   | rfl
   | simp [mulVec_apply_eq_sum_lattice_columns, dotProduct_eq_sum_mul, ofCols, Matrix.transpose_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[mulVec_apply_eq_sum_lattice_columns, Finset.sum_apply]`. Simplify using `[ofCols, mul_comm]`.
+-/
 private theorem ofCols_mulVec_eq_sum_smul {r k : ℕ} {K : Type} [Field K] (v : Idx r k → Idx r k → K)
     (w : Idx r k → K) : ofCols v *ᵥ w = ∑ j, w j • v j := by
   funext i
   rw [mulVec_apply_eq_sum_lattice_columns, Finset.sum_apply]
   simp [ofCols, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[ofCols_mulVec_eq_sum_smul]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : IsW j`. Rewrite using `[hw j hj, zero_smul]`. Simplify using `[colv_apply_of_not_isW _ _ j hj]`.
+-/
 private theorem ofCols_colv_zero_mulVec_eq_zero_of_isW {r k : ℕ} {K : Type} [Field K] (z : Fin k → Idx r k → K)
     (w : Idx r k → K) (hw : ∀ j, IsW j → w j = 0) : ofCols (colv (fun _ => 0) z) *ᵥ w = 0 := by
   rw [ofCols_mulVec_eq_sum_smul]
@@ -104,6 +136,11 @@ private theorem ofCols_colv_zero_mulVec_eq_zero_of_isW {r k : ℕ} {K : Type} [F
   · rw [hw j hj, zero_smul]
   · simp [colv_apply_of_not_isW _ _ j hj]
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : IsW j`. Distinguish the cases in `hb : IsW b`.
+
+Take `⟨i, rfl⟩` from `hb`. Simplify using `[ofCols, colv, hz i j hj]`. Simplify using `[ofCols, colv_apply_of_not_isW _ _ b hb]`. Simplify using `[ofCols, colv_apply_of_not_isW _ _ j hj]`.
+-/
 private theorem ofCols_colv_zero_mul_self_eq_zero_of_isW {r k : ℕ} {K : Type} [Field K] (z : Fin k → Idx r k → K)
     (hz : ∀ i j, IsW j → z i j = 0) :
     ofCols (colv (fun _ => 0) z) * ofCols (colv (fun _ => 0) z) = 0 := by
@@ -117,12 +154,20 @@ private theorem ofCols_colv_zero_mul_self_eq_zero_of_isW {r k : ℕ} {K : Type} 
     · simp [ofCols, colv_apply_of_not_isW _ _ b hb]
   · simp [ofCols, colv_apply_of_not_isW _ _ j hj]
 
+/- English proof (translation)
+Rewrite using `[mulVec_apply_eq_sum_lattice_columns]`. Conclude with `sum_mem fun j _ => mul_mem (hM i j) (hv j)`.
+-/
 private theorem mulVec_apply_mem_of_mem {ι κ K : Type} [Fintype κ] [Field K] (S : ValuationSubring K)
     (M : Matrix ι κ K) (hM : ∀ i j, M i j ∈ S) (v : κ → K) (hv : ∀ j, v j ∈ S) (i : ι) :
     (M *ᵥ v) i ∈ S := by
   rw [mulVec_apply_eq_sum_lattice_columns]
   exact sum_mem fun j _ => mul_mem (hM i j) (hv j)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hw i`. Establish `hw' : w = N *ᵥ (N' *ᵥ w)` using `by rw [Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`. Rewrite using `[hw']`. Conclude with `mulVec_apply_mem_of_mem S N hN _ hw i`.
+
+Introduce `hw i`. Conclude with `mulVec_apply_mem_of_mem S N' hN' w hw i`.
+-/
 private theorem mulVec_mem_iff_of_mul_eq_one_of_mem {κ K : Type} [Fintype κ] [DecidableEq κ] [Field K] (S : ValuationSubring K)
     (N N' : Matrix κ κ K) (h : N * N' = 1) (hN : ∀ i j, N i j ∈ S) (hN' : ∀ i j, N' i j ∈ S)
     (w : κ → K) : (∀ i, (N' *ᵥ w) i ∈ S) ↔ ∀ i, w i ∈ S := by
@@ -134,12 +179,20 @@ private theorem mulVec_mem_iff_of_mul_eq_one_of_mem {κ K : Type} [Fintype κ] [
   · intro hw i
     exact mulVec_apply_mem_of_mem S N' hN' w hw i
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => mul_mem (hM i l) (hE l j)`.
+-/
 private theorem matrix_mul_apply_mem_of_mem {κ K : Type} [Fintype κ] [Field K] (S : ValuationSubring K)
     (M E : Matrix κ κ K) (hM : ∀ i j, M i j ∈ S) (hE : ∀ i j, E i j ∈ S) (i j : κ) :
     (M * E) i j ∈ S := by
   rw [Matrix.mul_apply]
   exact sum_mem fun l _ => mul_mem (hM i l) (hE l j)
 
+/- English proof (translation)
+Set `M' : Matrix κ κ S.toSubring` to `fun a b => ⟨M a b, hM a b⟩`. Establish `hMeq : M = (S.toSubring.subtype).mapMatrix M'`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[hMeq, ← RingHom.map_adjugate]`.
+
+Conclude with `(M'.adjugate i j).2`.
+-/
 private theorem adjugate_apply_mem_of_forall_mem {κ K : Type} [Fintype κ] [DecidableEq κ] [Field K] (S : ValuationSubring K)
     (M : Matrix κ κ K) (hM : ∀ i j, M i j ∈ S) (i j : κ) : M.adjugate i j ∈ S := by
   let M' : Matrix κ κ S.toSubring := fun a b => ⟨M a b, hM a b⟩
@@ -149,6 +202,13 @@ private theorem adjugate_apply_mem_of_forall_mem {κ K : Type} [Fintype κ] [Dec
   rw [hMeq, ← RingHom.map_adjugate]
   exact (M'.adjugate i j).2
 
+/- English proof (translation)
+Unfold `LatBasis at h ⊢`. Introduce `x`. Rewrite using `[h x]`. Establish `e1 : (((P * R)⁻¹ : GL (Fin X.B.I.n) (FpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p)) = ((R⁻¹ : GL (Fin X.B.I.n) (FpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p)) * ((P⁻¹ : GL (Fin X.B.I.n) (FpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p))`. Rewrite using `[mul_inv_rev, Units.val_mul]`.
+
+Establish `e2 : ((P * R : GL (Fin X.B.I.n) (FpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p))ᵀ = (R : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p))ᵀ * (P : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p))ᵀ`. Rewrite using `[Units.val_mul, Matrix.transpose_mul]`. Rewrite using `[e1, e2]`. Simplify using `only [← Matrix.mulVec_mulVec]`. Use `and_congr ?_ ?_` and prove the remaining obligations.
+
+Use `(mulVec_mem_iff_of_mul_eq_one_of_mem _ (R : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p)) _ ?_ hR hR' _).symm` and prove the remaining obligations. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Use `(mulVec_mem_iff_of_mul_eq_one_of_mem _ ((R⁻¹ : GL (Fin X.B.I.n) (FpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p))ᵀ (R : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p))ᵀ ?_ (fun i j => hR' j i) (fun i j => hR j i) _).symm` and prove the remaining obligations. Rewrite using `[← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one]`.
+-/
 private theorem latBasis_mul_of_mem_integers_of_inv_mem (X : HidaSetting D) (p : TypX X)
     (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) (P R : GL (Fin X.B.I.n) (FpX X p))
     (hR : ∀ i j, (R : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p)) i j ∈
@@ -178,6 +238,67 @@ private theorem latBasis_mul_of_mem_integers_of_inv_mem (X : HidaSetting D) (p :
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨θ, hθ, P, hP, l, o, uu, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `h`. Set `cc : Fin D.R.k → Idx D.R.rS D.R.k → FpX X p` to `fun i t => if IsW t then 0 else -(o (dlH t) i) * (l (dlH t))⁻¹`. Set `z : Fin D.R.k → Idx D.R.rS D.R.k → FpX X p` to `fun i t => ((gOf p : ℕ) : FpX X p) * cc i t`. Establish `hccW : ∀ i j, IsW j → cc i j = 0` using `fun i j hj => by simp [cc, hj]`. Establish `hz : ∀ i j, IsW j → z i j = 0` using `fun i j hj => by simp [z, hccW i j hj]`.
+
+Establish `hcc : ∀ i t, cc i t ∈ p.1.adicCompletionIntegers X.B.I.F`. Introduce `i t`. Distinguish the cases in `ht : IsW t`. Rewrite using `[hccW i t ht]`. Conclude with `zero_mem _`.
+
+Simplify using `only [cc, if_neg ht]`. Conclude with `mul_mem (neg_mem (h5 _ _)) (h4 _ (not_isW_dlH_of_not_isW t ht))`. Establish `hgO : ((gOf p : ℕ) : FpX X p) ∈ p.1.adicCompletionIntegers X.B.I.F` using `natCast_mem _ _`. Take `⟨A, hA⟩ : ∃ A : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p), A = ofCols (colv (cV X u p θ) (yV X hb u p θ))` from `⟨_, rfl⟩`. Take `⟨Nn, hNn⟩ : ∃ Nn : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p), Nn = ofCols (colv (fun _ => 0) z)` from `⟨_, rfl⟩`.
+
+Rewrite `h6`, `h8` using `[← hA]`. Establish `hsq : Nn * Nn = 0`. Rewrite using `[hNn]`. Conclude with `ofCols_colv_zero_mul_self_eq_zero_of_isW z hz`. Establish `hE1 : (1 + Nn) * (1 - Nn) = 1` using `by first`.
+
+Consider the case `simp [add_mul, mul_sub, hsq]`. Consider the case `rw [add_mul, one_mul, mul_sub, mul_one, hsq, sub_zero, sub_add_cancel]`. Establish `hE2 : (1 - Nn) * (1 + Nn) = 1` using `by first`. Consider the case `simp [sub_mul, mul_add, hsq]`. Consider the case `rw [sub_mul, one_mul, mul_add, mul_one, hsq, add_zero, sub_sub_cancel_left, add_neg_cancel]`.
+
+Establish `hAdet : IsUnit A.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Rewrite `h8` using `[Matrix.det_mul, h0, mul_zero, zero_mul]`. Conclude with `zero_ne_one h8`.
+
+Set `Eu : GL (Idx D.R.rS D.R.k) (FpX X p)` to `⟨1 + Nn, 1 - Nn, hE1, hE2⟩`. Set `Q : GL (Idx D.R.rS D.R.k) (FpX X p)` to `Matrix.nonsingInvUnit A hAdet * Eu`. Establish `hQ : (Q : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) = A * (1 + Nn)` using `rfl`. Establish `hAs : ∀ s, ¬ IsW s → A *ᵥ Pi.single s 1 = cV X u p θ s` using `fun s hs => by`. Rewrite using `[hA, ofCols_mulVec_single_one, colv_apply_of_not_isW _ _ s hs]`.
+
+Establish `hAw : ∀ i, A *ᵥ Pi.single (wI i) 1 = yV X hb u p θ i` using `fun i => by`. Rewrite using `[hA, ofCols_mulVec_single_one]`. Both sides reduce to the same expression. Establish `hNs : ∀ s, ¬ IsW s → Nn *ᵥ Pi.single s 1 = 0` using `fun s hs => by`. Rewrite using `[hNn, ofCols_mulVec_single_one, colv_apply_of_not_isW _ _ s hs]`.
+
+Establish `hNw : ∀ i, Nn *ᵥ Pi.single (wI i) 1 = z i` using `fun i => by`. Rewrite using `[hNn, ofCols_mulVec_single_one]`. Both sides reduce to the same expression. Establish `hQs : ∀ s, ¬ IsW s → (Q : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) *ᵥ Pi.single s 1 = cV X u p θ s` using `fun s hs => by`. Rewrite using `[hQ, ← Matrix.mulVec_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, hNs s hs, add_zero, hAs s hs]`.
+
+Establish `hM : ∀ a b, (((P⁻¹ : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) * A) a b ∈ p.1.adicCompletionIntegers X.B.I.F` using `h6`. Establish `hNint : ∀ a b, Nn a b ∈ p.1.adicCompletionIntegers X.B.I.F`. Introduce `a b`. Rewrite using `[hNn]`. Use `show colv (fun _ => 0) z b a ∈ _`.
+
+Distinguish the cases in `hb' : IsW b`. Take `⟨i, rfl⟩` from `hb'`. Conclude with `mul_mem hgO (hcc i a)`. Rewrite using `[colv_apply_of_not_isW _ _ b hb']`. Conclude with `zero_mem _`.
+
+Establish `hEint : ∀ a b, (1 + Nn : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) a b ∈ p.1.adicCompletionIntegers X.B.I.F`. Introduce `a b`. Rewrite using `[Matrix.add_apply, Matrix.one_apply]`. Use `add_mem ?_ (hNint a b)` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `hEint' : ∀ a b, (1 - Nn : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) a b ∈ p.1.adicCompletionIntegers X.B.I.F`. Introduce `a b`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`.
+
+Use `sub_mem ?_ (hNint a b)` and prove the remaining obligations. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `hR0 : ∀ a b, ((P⁻¹ * Q : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) a b ∈ p.1.adicCompletionIntegers X.B.I.F`.
+
+Introduce `a b`. Rewrite using `[Units.val_mul, hQ, ← Matrix.mul_assoc]`. Conclude with `matrix_mul_apply_mem_of_mem _ _ _ hM hEint a b`. Establish `hR0' : ∀ a b, (((P⁻¹ * Q)⁻¹ : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) a b ∈ p.1.adicCompletionIntegers X.B.I.F`. Introduce `a b`.
+
+Rewrite using `[Matrix.coe_units_inv, Units.val_mul, hQ, ← Matrix.mul_assoc, Matrix.mul_inv_rev, Matrix.inv_eq_right_inv hE1]`. Use `matrix_mul_apply_mem_of_mem _ _ _ hEint' ?_ a b` and prove the remaining obligations. Introduce `c d`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul]`. Establish `hinv : Ring.inverse (((P⁻¹ : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) * A).det = uu`.
+
+Rewrite using `[Ring.inverse_eq_inv]`. Conclude with `(eq_inv_of_mul_eq_one_right h8).symm`. Rewrite using `[hinv]`. Conclude with `mul_mem h7 (adjugate_apply_mem_of_forall_mem _ _ hM c d)`. Unfold `HAdaptQ`.
+
+Use `⟨θ, hθ, Q, l, h3, fun s hs => ?_, fun s hs => ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((Q⁻¹ : GL (Idx D.R.rS D.R.k) (FpX X p)) : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) *ᵥ cV X u p θ s = Pi.single s 1`. Rewrite using `[← hQs s hs, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Express the relevant statement in the definitionally equal form `(Q : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p))ᵀ *ᵥ aV X u p θ s = l s • Pi.single (dlH s) 1`. Establish `hw : ∀ t, (Aᵀ *ᵥ aV X u p θ s) t = colv (cV X u p θ) (yV X hb u p θ) t ⬝ᵥ aV X u p θ s` using `fun t => by`.
+
+Rewrite using `[hA]`. Conclude with `ofCols_transpose_mulVec_apply _ _ t`. Establish `hwn : ∀ t, ¬ IsW t → (Aᵀ *ᵥ aV X u p θ s) t = if t = dlH s then l s else 0` using `fun t ht => by`. Rewrite using `[hw, colv_apply_of_not_isW _ _ t ht, dotProduct_comm_field]`. Conclude with `h1 s t hs ht`.
+
+Establish `hww : ∀ i, (Aᵀ *ᵥ aV X u p θ s) (wI i) = ((gOf p : ℕ) : FpX X p) * o s i` using `fun i => by`. Rewrite using `[hw, dotProduct_comm_field]`. Conclude with `h2 s i hs`. Establish `hNT : ∀ (v : Idx D.R.rS D.R.k → FpX X p) t, (Nnᵀ *ᵥ v) t = colv (fun _ => 0) z t ⬝ᵥ v` using `fun v t => by`. Rewrite using `[hNn]`.
+
+Conclude with `ofCols_transpose_mulVec_apply _ _ t`. Establish `hdn` using `not_isW_dlH_of_not_isW s hs`. Rewrite using `[hQ, Matrix.transpose_mul, ← Matrix.mulVec_mulVec]`. Use function extensionality and compare the values at `t`. Rewrite using `[Matrix.transpose_add, Matrix.transpose_one, Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply, hNT]`.
+
+Distinguish the cases in `ht : IsW t`. Take `⟨i, rfl⟩` from `ht`. Establish `hne : (wI i : Idx D.R.rS D.R.k) ≠ dlH s` using `fun heq => hdn ⟨i, heq.symm⟩`. Rewrite using `[hww]`. Express the relevant statement in the definitionally equal form `_ + z i ⬝ᵥ _ = _`.
+
+Rewrite using `[dotProduct_eq_sum_mul, Finset.sum_eq_single (dlH s)]`. Rewrite using `[hwn _ hdn, if_pos rfl]`. Simplify using `only [z, cc, if_neg hdn, dlH_dlH_lattice_columns, Pi.smul_apply, Pi.single_apply, if_neg hne, smul_eq_mul, mul_zero]`. Take the linear combination `(-(((gOf p : ℕ) : FpX X p) * o s i)) * mul_inv_cancel₀ (h3 s hs)`. Introduce `j _ hj`.
+
+Distinguish the cases in `hjW : IsW j`. Rewrite using `[hz i j hjW, zero_mul]`. Rewrite using `[hwn j hjW, if_neg hj, mul_zero]`. Introduce `hmem`. Conclude with `absurd (Finset.mem_univ _) hmem`.
+
+Rewrite using `[colv_apply_of_not_isW _ _ t ht, dotProduct_eq_sum_mul, hwn t ht]`. Distinguish the cases in `hts : t = dlH s`. Substitute `hts` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hts]`.
+
+Establish `hQP : Q = P * (P⁻¹ * Q)` using `(mul_inv_cancel_left P Q).symm`. Rewrite using `[hQP]`. Establish `hmap : reindex₂ X p (P * (P⁻¹ * Q)) = reindex₂ X p P * reindex₂ X p (P⁻¹ * Q)`. Unfold `reindex₂`. Conclude with `map_mul _ _ _`.
+
+Rewrite using `[hmap]`. Use `latBasis_mul_of_mem_integers_of_inv_mem X p θ _ _ ?_ ?_ hP` and prove the remaining obligations. Introduce `i j first`. Consider the case `exact hR0 _ _`. Consider the case `(unfold reindex₂; simp only [Units.coe_map]; exact hR0 _ _)`.
+
+Introduce `i j`. Unfold `reindex₂`. Rewrite using `[← map_inv]`. Use `first`. Consider the case `exact hR0' _ _`.
+
+Consider the case `(simp only [Units.coe_map]; exact hR0' _ _)`. Introduce `i`. Use `⟨fun t => ⟨cc i t, hcc i t⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Q : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) *ᵥ Pi.single (wI i) 1 - yV X hb u p θ i = ((gOf p : ℕ) : FpX X p) • ((Q : Matrix (Idx D.R.rS D.R.k) (Idx D.R.rS D.R.k) (FpX X p)) *ᵥ cc i)`. Rewrite using `[hQ, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, hNw, hNn, ofCols_colv_zero_mulVec_eq_zero_of_isW z (cc i) (hccW i), add_zero, Matrix.mulVec_add, hAw, add_sub_cancel_left, ← Matrix.mulVec_smul]`.
+
+Apply the tactic sequence `try rfl`.
+-/
 theorem hAdaptQ_of_in (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
     (h : AdaptIn X hb u p) : HAdaptQ X hb u p := by
   classical
@@ -358,6 +479,9 @@ def AdaptInAll : Prop :=
   ∀ {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (_hK : X.LevelSubgroupCharacter) (u : D.what₂.Word),
     X.MeasTie hb → X.LevelSubgroupNormalized → ∀ p : TypX X, AdaptIn X hb u p
 
+/- English proof (translation)
+Unfold `HAdaptAll`. Introduce `D X hb hK u hM hL p`. Conclude with `hAdaptQ_of_in X hb u p (h X hb hK u hM hL p)`.
+-/
 theorem hAdaptAll_of (h : AdaptInAll) : HAdaptAll := by
   unfold HAdaptAll
   intro D X hb hK u hM hL p

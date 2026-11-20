@@ -6,17 +6,26 @@ open Finset
 
 namespace ReciprocityTheory.ChartRestriction.TR.Weyl
 
+/- English proof (translation)
+Conclude with `(Finset.map_orderEmbOfFin_univ _ rfl).symm`.
+-/
 theorem bp_filter_eq_map {n : ℕ} (ε : Fin n → Bool) (b : Bool) :
     (univ.filter fun i : Fin n => ε i = b) =
       univ.map ((univ.filter fun i : Fin n => ε i = b).orderEmbOfFin rfl).toEmbedding := by
   exact (Finset.map_orderEmbOfFin_univ _ rfl).symm
 
+/- English proof (translation)
+Rewrite using `[bp_filter_eq_map, Finset.prod_map]`. Both sides reduce to the same expression.
+-/
 theorem bp_prod_blk {M : Type*} [CommMonoid M] {n : ℕ} (ε : Fin n → Bool) (b : Bool)
     (g : Fin n → M) :
     ∏ i ∈ univ.filter (fun i : Fin n => ε i = b), g i = ∏ r, g (blk ε b r) := by
   rw [bp_filter_eq_map, Finset.prod_map]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← bp_prod_blk ε true F, ← bp_prod_blk ε false F, ← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun i : Fin n => ε i = true)]`. Use `congr 2`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem bp_split {M : Type*} [CommMonoid M] {n : ℕ} (ε : Fin n → Bool) (F : Fin n → M) :
     ∏ i, F i = (∏ r, F (blk ε true r)) * ∏ r, F (blk ε false r) := by
   rw [← bp_prod_blk ε true F, ← bp_prod_blk ε false F,
@@ -25,6 +34,9 @@ theorem bp_split {M : Type*} [CommMonoid M] {n : ℕ} (ε : Fin n → Bool) (F :
   ext i
   simp
 
+/- English proof (translation)
+Establish `hi : i ∈ univ.filter fun i : Fin n => ε i = b` using `by simp [h]`. Rewrite `hi` using `[bp_filter_eq_map]`. Take `⟨r, _, hr⟩` from `Finset.mem_map.mp hi`. Conclude with `⟨r, hr⟩`.
+-/
 theorem bp_blk_surj {n : ℕ} (ε : Fin n → Bool) (b : Bool) (i : Fin n) (h : ε i = b) :
     ∃ r, blk ε b r = i := by
   have hi : i ∈ univ.filter fun i : Fin n => ε i = b := by simp [h]
@@ -32,6 +44,11 @@ theorem bp_blk_surj {n : ℕ} (ε : Fin n → Bool) (b : Bool) (i : Fin n) (h : 
   obtain ⟨r, _, hr⟩ := Finset.mem_map.mp hi
   exact ⟨r, hr⟩
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : ε (blk ε true r) = true`. Use `Finset.orderEmbOfFin_mem (univ.filter fun i : Fin n => ε i = true) rfl r` as an intermediate fact. Simplify `this` using `[blk]`. Establish `h2 : ε (blk ε false s) = false`.
+
+Use `Finset.orderEmbOfFin_mem (univ.filter fun i : Fin n => ε i = false) rfl s` as an intermediate fact. Simplify `this` using `[blk]`. Rewrite `h1` using `[h, h2]`. Conclude with `Bool.false_ne_true h1`.
+-/
 theorem bp_blk_disj {n : ℕ} (ε : Fin n → Bool) (r : Fin (cnt ε true)) (s : Fin (cnt ε false)) :
     blk ε true r ≠ blk ε false s := by
   intro h
@@ -44,6 +61,17 @@ theorem bp_blk_disj {n : ℕ} (ε : Fin n → Bool) (r : Fin (cnt ε true)) (s :
   rw [h, h2] at h1
   exact Bool.false_ne_true h1
 
+/- English proof (translation)
+Establish `hmem : ∀ (b : Bool) (s : Fin (cnt ε b)), ε (blk ε b s) = b` using `fun b s => by`. Use `Finset.orderEmbOfFin_mem (univ.filter fun i : Fin n => ε i = b) rfl s` as an intermediate fact. Simplify `this` using `[blk]`. Establish `hsame : ∀ (b : Bool) (r r' : Fin (cnt ε b)), (if blk ε b r < blk ε b r' ∧ ε (blk ε b r) = ε (blk ε b r') then t (blk ε b r) - t (blk ε b r') else 1) = (if r < r' then (t ∘ blk ε b) r - (t ∘ blk ε b) r' else 1)`. Introduce `b r r'`.
+
+Rewrite using `[hmem b r, hmem b r']`. Simplify using `only [and_true, Function.comp_apply, (blk_strictMono ε b).lt_iff_lt]`. Establish `hother : ∀ (b b' : Bool), b ≠ b' → ∀ (r : Fin (cnt ε b)) (s : Fin (cnt ε b')), (if blk ε b r < blk ε b' s ∧ ε (blk ε b r) = ε (blk ε b' s) then t (blk ε b r) - t (blk ε b' s) else 1) = 1`. Introduce `b b' hbb r s`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `⟨_, h⟩`. Rewrite `h` using `[hmem b r, hmem b' s]`. Conclude with `hbb h`. Unfold `wdenK wden`. Rewrite using `[bp_split ε]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[bp_split ε]`. Rewrite using `[Finset.prod_eq_one (fun s _ => hother true false (by decide) r s), mul_one]`. Conclude with `Finset.prod_congr rfl fun r' _ => hsame true r r'`.
+
+Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[bp_split ε]`. Rewrite using `[Finset.prod_eq_one (fun s _ => hother false true (by decide) r s), one_mul]`. Conclude with `Finset.prod_congr rfl fun r' _ => hsame false r r'`.
+-/
 theorem bp_wden {K : Type*} [Field K] {n : ℕ} (ε : Fin n → Bool) (t : Fin n → K) :
     wdenK ε t = wden (cnt ε true) (t ∘ blk ε true) * wden (cnt ε false) (t ∘ blk ε false) := by
   have hmem : ∀ (b : Bool) (s : Fin (cnt ε b)), ε (blk ε b s) = b := fun b s => by
@@ -74,6 +102,15 @@ theorem bp_wden {K : Type*} [Field K] {n : ℕ} (ε : Fin n → Bool) (t : Fin n
     rw [Finset.prod_eq_one (fun s _ => hother false true (by decide) r s), one_mul]
     exact Finset.prod_congr rfl fun r' _ => hsame false r r'
 
+/- English proof (translation)
+Establish `hmem : ∀ s : Fin (cnt ε b), ε (blk ε b s) = b` using `fun s => by`. Use `Finset.orderEmbOfFin_mem (univ.filter fun i : Fin n => ε i = b) rfl s` as an intermediate fact. Simplify `this` using `[blk]`. Use function extensionality and compare the values at `r`. Simplify using `only [Function.comp_apply, rhoK, delta, hmem r]`.
+
+Establish `hset : (univ.filter fun j : Fin n => blk ε b r < j ∧ ε j = b) = (Finset.Ioi r).map ⟨blk ε b, (blk_strictMono ε b).injective⟩`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map, Finset.mem_Ioi, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hlt, hj⟩`.
+
+Take `⟨s, hs⟩` from `bp_blk_surj ε b j hj`. Rewrite `hlt` using `[← hs]`. Conclude with `⟨s, (blk_strictMono ε b).lt_iff_lt.mp hlt, hs⟩`. Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `⟨(blk_strictMono ε b) hs, hmem s⟩`.
+
+Rewrite using `[hset, Finset.card_map, Fin.card_Ioi]`. Use `r.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem bp_rho {n : ℕ} (ε : Fin n → Bool) (b : Bool) : rhoK ε ∘ blk ε b = delta (cnt ε b) := by
   have hmem : ∀ s : Fin (cnt ε b), ε (blk ε b s) = b := fun s => by
     have := Finset.orderEmbOfFin_mem (univ.filter fun i : Fin n => ε i = b) rfl s
@@ -96,6 +133,9 @@ theorem bp_rho {n : ℕ} (ε : Fin n → Bool) (b : Bool) : rhoK ε ∘ blk ε b
   have := r.isLt
   omega
 
+/- English proof (translation)
+Unfold `alt`. Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Simplify using `[Matrix.of_apply]`.
+-/
 theorem bp_alt_eq_sum {K : Type*} [Field K] (n : ℕ) (a : Fin n → ℤ) (t : Fin n → K) :
     alt n a t = ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : K) * ∏ i, t (σ i) ^ a i := by
   unfold alt
@@ -119,24 +159,51 @@ def bp_e {n : ℕ} (ε : Fin n → Bool) : Fin (cnt ε true) ⊕ Fin (cnt ε fal
       · obtain ⟨r, hr⟩ := bp_blk_surj ε true i hb
         exact ⟨Sum.inl r, hr⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bp_e_inl {n : ℕ} (ε : Fin n → Bool) (r : Fin (cnt ε true)) :
     bp_e ε (Sum.inl r) = blk ε true r := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bp_e_inr {n : ℕ} (ε : Fin n → Bool) (r : Fin (cnt ε false)) :
     bp_e ε (Sum.inr r) = blk ε false r := rfl
 
+/- English proof (translation)
+Rewrite using `[Equiv.permCongr_apply, ← bp_e_inl ε r, Equiv.symm_apply_apply, Equiv.Perm.sumCongr_apply, Sum.map_inl, bp_e_inl]`.
+-/
 theorem bp_phi_inl {n : ℕ} (ε : Fin n → Bool) (α : Equiv.Perm (Fin (cnt ε true)))
     (β : Equiv.Perm (Fin (cnt ε false))) (r : Fin (cnt ε true)) :
     (bp_e ε).permCongr (Equiv.Perm.sumCongr α β) (blk ε true r) = blk ε true (α r) := by
   rw [Equiv.permCongr_apply, ← bp_e_inl ε r, Equiv.symm_apply_apply, Equiv.Perm.sumCongr_apply,
     Sum.map_inl, bp_e_inl]
 
+/- English proof (translation)
+Rewrite using `[Equiv.permCongr_apply, ← bp_e_inr ε r, Equiv.symm_apply_apply, Equiv.Perm.sumCongr_apply, Sum.map_inr, bp_e_inr]`.
+-/
 theorem bp_phi_inr {n : ℕ} (ε : Fin n → Bool) (α : Equiv.Perm (Fin (cnt ε true)))
     (β : Equiv.Perm (Fin (cnt ε false))) (r : Fin (cnt ε false)) :
     (bp_e ε).permCongr (Equiv.Perm.sumCongr α β) (blk ε false r) = blk ε false (β r) := by
   rw [Equiv.permCongr_apply, ← bp_e_inr ε r, Equiv.symm_apply_apply, Equiv.Perm.sumCongr_apply,
     Sum.map_inr, bp_e_inr]
 
+/- English proof (translation)
+Establish `hmem : ∀ (b : Bool) (s : Fin (cnt ε b)), ε (blk ε b s) = b` using `fun b s => by`. Use `Finset.orderEmbOfFin_mem (univ.filter fun i : Fin n => ε i = b) rfl s` as an intermediate fact. Simplify `this` using `[blk]`. Rewrite using `[bp_alt_eq_sum, bp_alt_eq_sum, Finset.sum_mul_sum, ← Finset.sum_product']`. Unfold `numK`.
+
+Use `symm`. Use `Finset.sum_bij (fun p _ => (bp_e ε).permCongr (Equiv.Perm.sumCongr p.1 p.2)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Introduce `i`.
+
+Take `⟨x, rfl⟩` from `(bp_e ε).surjective i`. Break down `x with r | r` into its components or cases. Rewrite using `[bp_e_inl, bp_phi_inl, hmem, hmem]`. Rewrite using `[bp_e_inr, bp_phi_inr, hmem, hmem]`. Introduce `p _ q _ h`.
+
+Conclude with `Equiv.Perm.sumCongrHom_injective ((Equiv.permCongr (bp_e ε)).injective h)`. Introduce `σ hσ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hσ`. Establish `hmaps : Set.MapsTo ((bp_e ε).symm.permCongr σ) (Set.range Sum.inl) (Set.range Sum.inl)`. Introduce and unpack `_ ⟨r, rfl⟩`.
+
+Take `⟨r', hr'⟩` from `bp_blk_surj ε true (σ (blk ε true r)) (by rw [hσ, hmem])`. Use `⟨r', ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.permCongr_apply, Equiv.symm_symm, bp_e_inl, ← hr', ← bp_e_inl, Equiv.symm_apply_apply]`. Take `⟨q, hq⟩` from `Equiv.Perm.mem_sumCongrHom_range_of_perm_mapsTo_inl hmaps`. Use `⟨q, Finset.mem_product.2 ⟨Finset.mem_univ _, Finset.mem_univ _⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hq' : Equiv.Perm.sumCongr q.1 q.2 = (bp_e ε).symm.permCongr σ` using `hq`. Rewrite using `[hq']`. Use extensionality with `i`. Simplify using `[Equiv.permCongr_apply]`. Introduce `p _`.
+
+Rewrite using `[Equiv.Perm.sign_permCongr, Equiv.Perm.sign_sumCongr, bp_split ε (fun i => t (((bp_e ε).permCongr (Equiv.Perm.sumCongr p.1 p.2)) i) ^ a i)]`. Simplify using `only [bp_phi_inl, bp_phi_inr, Function.comp_apply, Units.val_mul, Int.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bp_num {K : Type*} [Field K] {n : ℕ} (ε : Fin n → Bool) (a : Fin n → ℤ) (t : Fin n → K) :
     numK ε a t = alt (cnt ε true) (a ∘ blk ε true) (t ∘ blk ε true) *
       alt (cnt ε false) (a ∘ blk ε false) (t ∘ blk ε false) := by
@@ -176,6 +243,9 @@ theorem bp_num {K : Type*} [Field K] {n : ℕ} (ε : Fin n → Bool) (a : Fin n 
     simp only [bp_phi_inl, bp_phi_inr, Function.comp_apply, Units.val_mul, Int.cast_mul]
     ring
 
+/- English proof (translation)
+Introduce `K _ n ε a t`. Conclude with `⟨bp_wden ε t, bp_num ε a t, bp_rho ε⟩`.
+-/
 theorem blockComb : BlockCombStatement := by
   intro K _ n ε a t
   exact ⟨bp_wden ε t, bp_num ε a t, bp_rho ε⟩

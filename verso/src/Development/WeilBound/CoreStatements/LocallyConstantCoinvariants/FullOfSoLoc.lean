@@ -18,9 +18,25 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def augF (n d : ℕ) (ν α : kˣ →* ℂˣ) : Submodule ℂ (Matrix (Fin n) (Fin d) k → ℂ) :=
   Submodule.span ℂ {z | ∃ g : GL (Fin n) k, ∃ Φ, Full Φ ∧ z = omB ν α g 1 Φ - Φ}
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ ⟨g, Φ, h, e⟩ => ⟨g, Φ, h.1, e⟩`.
+-/
 theorem augF_le {ν α : kˣ →* ℂˣ} : augF n d ν α ≤ aug n d ν α :=
   Submodule.span_mono fun _ ⟨g, Φ, h, e⟩ => ⟨g, Φ, h.1, e⟩
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_le hnd`. Establish `hμ : IsSmoothChar ν⁻¹` using `IsSmoothChar.inv hν.2`. Take `⟨E⟩` from `GlobalTheory.T.omega_equiv_induced_fibre k (Fin n) (Fin (n + t)) (Fin n) (Fin t) (stdSum rfl) n (Fintype.card_fin n).symm ν⁻¹ hμ`. Establish `hR : twRel ((omegaOn (Fin n) (Fin (n + t)) ν⁻¹ {n}).comp (MonoidHom.inl _ _)) 1 ≤ (augF n (n + t) ν α).comap extZ` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, φ, rfl⟩`.
+
+Use `Submodule.subset_span ⟨g, extZ φ, ⟨extZ_mem φ, fun Y hY => extZ_neg φ (by rwa [rank_transpose])⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`. Use `congr 1`. Use `funext fun Y => (extZ_act _ g 1 φ Y).trans ?_` and prove the remaining obligations. Establish `n1 : nabs k 1 = 1` using `by simp [nabs]`.
+
+Simplify using `[omB, omChar, apow, val_absPow, n1])`. Break down `irr_equiv E (irr_ind hB n t hμ (fun y => by simp [hν.1 y])) (N.comap extZ) (hR.trans (Submodule.comap_mono (augF_le.trans hA))) (by` into its components or cases. Introduce `h φ hf`. Establish `h1` using `hN (invT h) _ hf (extZ_mem φ)`. Rewrite using `[Submodule.mem_comap]`.
+
+Establish `c0 : (α (gdet (invT h)) : ℂ) * apow (gdet (invT h)) ((n : ℂ) / 2) ≠ 0` using `mul_ne_zero (Units.ne_zero _) (Units.ne_zero (absPow k ((n : ℂ) / 2) (gdet (invT h))))`. Use `N.smul_mem ((omChar (Fin n) (Fin (n + t)) ν⁻¹ (1, h) : ℂ) / ((α (gdet (invT h)) : ℂ) * apow (gdet (invT h)) ((n : ℂ) / 2))) h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `Y`. Establish `e1 : omB ν α 1 (invT h) (extZ φ) Y = (α (gdet (invT h)) : ℂ) * apow (gdet (invT h)) ((n : ℂ) / 2) * extZ φ ((1 : GL (Fin n) k).valᵀ * Y * (invT h).val)`. Simplify using `[omB, apow, nabs]`.
+
+Rewrite using `[extZ_act, Pi.smul_apply, e1, smul_eq_mul, ← mul_assoc, div_mul_cancel₀ _ c0]) with h | h`. Use `Or.inl fun Φ hΦ => ?_` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `exists_extZ hΦ`. Conclude with `(h ▸ Submodule.mem_top : φ ∈ N.comap extZ)`. Use `Or.inr fun Φ hm hΦ => ?_` and prove the remaining obligations.
+
+Take `⟨φ, rfl⟩` from `exists_extZ hΦ`. Conclude with `hR (h hm)`.
+-/
 theorem irrF (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) {ν α : kˣ →* ℂˣ} (hnd : n ≤ d) (hν : USm ν)
     (N : Submodule ℂ (Matrix (Fin n) (Fin d) k → ℂ)) (hA : aug n d ν α ≤ N)
     (hN : ∀ h : GL (Fin d) k, ∀ Φ ∈ N, Φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k) → omB ν α 1 h Φ ∈ N) :
@@ -63,6 +79,9 @@ open NumberField IsDedekindDomain GlobalTheory.WeilM GlobalTheory.AdelicU Global
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Take `⟨h1, ι', hι', h2⟩` from `hφ`. Introduce `Y hY`. Take `⟨x, hx, h0, rfl⟩` from `exists_coB (X := X) (W := W) h t hX hW Y`. Conclude with `eigen_kill M h hψ hX hW hι' ((LinearMap.proj (coB σ X W t x)).comp ι) hx h0 (fun u hu hu1 φ' h' => mult' M hψ hι hu hu1 hx h0 h') h1 (h2 _ hY)`.
+-/
 theorem full_of_soLoc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) {ψ : AddChar (AF F) ℂ} (h : IsCMExt F E σ) (hψ : IsStd ψ)
     (hX : X.J.det ≠ 0) (hW : W.J.det ≠ 0) {t : E →ₐ[F] Fv F v} {ι} (hι : M.IsLinBar ψ t 1 1 ι) {φ} (hφ : φ ∈ M.SoLoc ψ t) :
@@ -73,6 +92,25 @@ theorem full_of_soLoc {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   exact eigen_kill M h hψ hX hW hι' ((LinearMap.proj (coB σ X W t x)).comp ι) hx h0
     (fun u hu hu1 φ' h' => mult' M hψ hι hu hu1 hx h0 h') h1 (h2 _ hY)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT φ hφ hA`. Take `⟨Rf, hF⟩` from `hK F E σ B a a' G X om om' hT`. Establish `ha' : 1 ≤ a'` using `by have := hT.geo.aBig; omega`. Take `⟨⟨ι, hι⟩, ν, α, hν, -, h1, hd⟩` from `hD F E σ _ _ B G.V' G.W G.M' om' _ _ hT.base ⟨_, _, hT.geo.hV'⟩ ⟨_, _, hT.geo.hW⟩ hT.geo.hM' hT.weil' hT.chars.heckeα (isHecke_div hT.chars.heckeα hT.chars.heckeβ) B.v₁ B.τ₁`. Establish `hn` using `nu_statement F E σ B a a' G X om om' hT B.v₁ hT.chars.good`.
+
+Establish `hν1 : ν ≠ 1` using `fun e => (h1 ha' (by omega) e).elim (hn _) (hn _)`. Establish `hD'` using `hd ι hι`. Establish `hb` using `hι.bij`. Use `hF.nontriv B.v₁` as an intermediate fact. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`.
+
+Establish `hdet : ∀ {m : ℕ} (J : Matrix (Fin m) (Fin m) E), (J.map (B.emb w).1).det ≠ 0 → J.det ≠ 0` using `fun J hJ h0 => hJ (((RingHom.map_det _ J).symm.trans (congrArg _ h0)).trans (map_zero _))`. Establish `dX : G.V'.J.det ≠ 0` using `hdet _ (GlobalTheory.WeilSchrodingerHerm.det_ne_zero_of_hasSig (hT.geo.hV'.sig w))`. Establish `dW : G.W.J.det ≠ 0` using `hdet _ fun h0 => GlobalTheory.WeilSchrodingerHerm.det_ne_zero_of_hasSig (hT.geo.hW.sig w) (by rw [Matrix.det_smul, h0, mul_zero])`. Establish `hs : φ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁)` using `augAt_le hA`. Establish `hf : Full (ι φ)` using `⟨hb.1 hs, fun Y hY => by`.
+
+Establish `: Submodule.span ℂ (G.M'.SoLoc B.ψ B.τ₁) ≤ LinearMap.ker ((LinearMap.proj Y).comp ι)` using `Submodule.span_le.2 fun χ hχ => full_of_soLoc G.M' hT.base.cm hT.base.std dX dW hι hχ Y hY`. Conclude with `this hφ⟩`. Break down `irrF hB (α := α) (by omega) hν ((SB _ ⊓ LinearMap.ker (Rf.p' B.v₁)).map ι) ((aug_le_map hb hD').trans (Submodule.map_mono (le_inf augAt_le (hF.inv' _)))) (by` into its components or cases. Introduce and unpack `h₀ _ ⟨ψ, hψ, rfl⟩ -`. Take `⟨h, hh, hr⟩` from `hD'.rightOnto h₀`.
+
+Take `⟨ψ₁, h₁, ha, e⟩` from `hr ψ hψ.1`. Use `⟨ψ₁, ⟨h₁, ?_⟩, e⟩` and prove the remaining obligations. Establish `h0 : Rf.p' B.v₁ ψ = 0` using `hψ.2`. Simplify using `using (hF.equiv _ h hh 0 (zero_mem _) ψ hψ.1 0 (zero_mem _) ψ₁ h₁ (acts_zero _) ha (by simp [h0])).symm) with h | h`. It suffices to derive a contradiction.
+
+Take `⟨x, hx⟩` from `exists_ne (0 : Rf.Pi B.v₁)`. Take `⟨ψ, hψ, rfl⟩ : x ∈ (SB _).map (Rf.p' B.v₁)` from `hF.onto' _ ▸ Submodule.mem_top`. Take `⟨ψ₀, h₀, hf₀, ha⟩` from `exists_full surjectivity_statement hb hD' hν hν1 hψ`. Take `⟨χ, hχ, e⟩` from `h _ hf₀`. Establish `e' : χ = ψ₀` using `hb.2.1 hχ.1 h₀ e`.
+
+Establish `h2 : Rf.p' B.v₁ (ψ - ψ₀) = 0` using `hF.inv' _ ha`. Establish `h3 : Rf.p' B.v₁ ψ₀ = 0` using `e' ▸ hχ.2`. Conclude with `hx (by rwa [map_sub, h3, sub_zero] at h2)`. Establish `key : augF a' (a + a') ν α ≤ (SB _ ⊓ PositivityTheory.ThKF.augOn om' B.v₁ (G.M'.SoLoc B.ψ B.τ₁)).map ι` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g₀, Φ, hΦ, rfl⟩`.
+
+Take `⟨χ, hχ, rfl⟩` from `hb.2.2 hΦ.1`. Take `⟨g, hg, hr⟩` from `hD'.leftOnto g₀`. Take `⟨χ₁, h₁, ha, e⟩` from `hr χ hχ`. Conclude with `⟨χ₁ - χ, ⟨sub_mem h₁ hχ, Submodule.subset_span ⟨g, hg, χ, ⟨hχ, ι, hι, hΦ.2⟩, χ₁, h₁, ha, rfl⟩⟩, by rw [map_sub, e]⟩)`. Take `⟨χ, hχ, e⟩` from `key (h _ ⟨φ, ⟨hs, hF.inv' _ hA⟩, rfl⟩ hf)`.
+
+Rewrite using `[← hb.2.1 hχ.1 hs e]`. Conclude with `hχ.2`.
+-/
 theorem soCoinv_of (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (hD : DictSt) (hK : GlobalTheory.ThK.KFin) :
     PositivityTheory.ThKF.SoCoinv := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT φ hφ hA

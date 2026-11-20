@@ -23,6 +23,9 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [NormedField C] [NormedAlgebra ℚ_
   {O : Type} [CommRing O] [Algebra O C] (H : IsIntegers O C)
 include H
 
+/- English proof (translation)
+The claim follows from `H.inj map_le_one a := by rw [NormedField.valuation_apply] exact_mod_cast (H.mem_iff _).1 ⟨a, rfl⟩ exists_of_le_one x hx := (H.mem_iff x).2 (by rw [NormedField.valuation_apply] at hx exact_mod_cast hx)`.
+-/
 theorem integers_valuation [IsUltrametricDist C] :
     (NormedField.valuation (K := C)).Integers O where
   hom_inj := H.inj
@@ -36,6 +39,9 @@ theorem integers_valuation [IsUltrametricDist C] :
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (span {(p : O)}) O]
 
 omit [IsAdicComplete (span {(p : O)}) O] in
+/- English proof (translation)
+Establish `: IsUltrametricDist C` using `IsUltrametricDist.of_normedAlgebra ℚ_[p]`. Establish `: IsDomain (PreTilt O p)` using `PreTilt.isDomain C _ O (integers_valuation H) p`. Use `infer_instance`.
+-/
 theorem isDomain_ainf : IsDomain (Ainf p O) := by
   have : IsUltrametricDist C := IsUltrametricDist.of_normedAlgebra ℚ_[p]
   have : IsDomain (PreTilt O p) := PreTilt.isDomain C _ O (integers_valuation H) p
@@ -49,11 +55,17 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O]
 
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (span {(p : O)}) O] {ε : PreTilt O p}
 
+/- English proof (translation)
+Rewrite using `[nu, map_sub, fontaineTheta_teichmuller, map_one, sub_ne_zero]`. Establish `: Nontrivial O` using `⟨p, 1, fun h => (Fact.out : ¬IsUnit (p : O)) (h ▸ isUnit_one)⟩`. Conclude with `(hε 1).ne_one (by simpa using (Fact.out : p.Prime).one_lt)`.
+-/
 theorem theta_nu_ne_zero (hε : IsPrimitiveSystem ε) : fontaineTheta O p (nu ε) ≠ 0 := by
   rw [nu, map_sub, fontaineTheta_teichmuller, map_one, sub_ne_zero]
   have : Nontrivial O := ⟨p, 1, fun h => (Fact.out : ¬IsUnit (p : O)) (h ▸ isUnit_one)⟩
   exact (hε 1).ne_one (by simpa using (Fact.out : p.Prime).one_lt)
 
+/- English proof (translation)
+Introduce `h` and use `theta_nu_ne_zero hε (by rw [← phiInv_mu, h, map_zero, map_zero])`.
+-/
 theorem mu_ne_zero (hε : IsPrimitiveSystem ε) : Sandwich.mu ε ≠ 0 := fun h =>
   theta_nu_ne_zero hε (by rw [← phiInv_mu, h, map_zero, map_zero])
 

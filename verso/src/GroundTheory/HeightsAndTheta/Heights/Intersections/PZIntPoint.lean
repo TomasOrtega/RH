@@ -18,6 +18,15 @@ section Algebra
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `hpr` using `hP.isPrime`. Use `choose i hi using hP.relevant`. Establish `hg : h * ∏ k, (X ⟨k, i k⟩ : MRing ι ℂ) ∈ P`. Rewrite using `[← MvPolynomial.IsPrime.vanishingIdeal_zeroLocus (K := ℂ) P]`. Introduce `x hx`.
+
+Establish `hx' : ∀ f ∈ P, eval x f = 0` using `fun f hf => hx f hf`. Use `show eval x (h * ∏ k, (X ⟨k, i k⟩ : MRing ι ℂ)) = 0`. Distinguish the cases in `hz : ∀ k, x ⟨k, i k⟩ ≠ 0`. Rewrite using `[map_mul, hv x ⟨fun k => ⟨i k, hz k⟩, hx'⟩, zero_mul]`. Use `push Not at hz`.
+
+Take `⟨k, hk⟩` from `hz`. Rewrite using `[map_mul, map_prod]`. Conclude with `mul_eq_zero_of_right _ (Finset.prod_eq_zero (Finset.mem_univ k) (by rw [eval_X, hk]))`. Break down `hpr.mem_or_mem hg with h' | h'` into its components or cases. Conclude with `h'`.
+
+Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp h'`. Conclude with `absurd hk (hi k)`.
+-/
 theorem mem_of_forall_eval_eq_zero {P : Ideal (MRing ι ℂ)} (hP : IsMultiProjPrime P)
     {h : MRing ι ℂ} (hv : ∀ z ∈ zPts P, eval z h = 0) : h ∈ P := by
   have hpr := hP.isPrime
@@ -38,6 +47,9 @@ theorem mem_of_forall_eval_eq_zero {P : Ideal (MRing ι ℂ)} (hP : IsMultiProjP
   · obtain ⟨k, -, hk⟩ := Ideal.IsPrime.prod_mem_iff.mp h'
     exact absurd hk (hi k)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty]`. Establish `h1 : (1 : MRing ι ℂ) ∈ P` using `mem_of_forall_eval_eq_zero hP fun z hz => by rw [hne] at hz; exact absurd hz (Set.notMem_empty z)`. Conclude with `hP.isPrime.ne_top ((Ideal.eq_top_iff_one P).mpr h1)`.
+-/
 theorem zPts_nonempty {P : Ideal (MRing ι ℂ)} (hP : IsMultiProjPrime P) : (zPts P).Nonempty := by
   by_contra hne
   rw [Set.not_nonempty_iff_eq_empty] at hne
@@ -45,6 +57,17 @@ theorem zPts_nonempty {P : Ideal (MRing ι ℂ)} (hP : IsMultiProjPrime P) : (zP
     mem_of_forall_eval_eq_zero hP fun z hz => by rw [hne] at hz; exact absurd hz (Set.notMem_empty z)
   exact hP.isPrime.ne_top ((Ideal.eq_top_iff_one P).mpr h1)
 
+/- English proof (translation)
+Use `hP.1.isPrime` as an intermediate fact. Establish `hrel : GroundTheory.Heights₂.Heights.FieldNumbers.relDim P = 0`. Rewrite using `[relDim_of_isProjVar hP]`. Both sides reduce to the same expression. Take `⟨hfd, -⟩` from `IntNumBase.full ℂ K ι P hP.1 hrel`.
+
+Establish `hbot : homFracDegZero P = ⊥` using `IntermediateField.eq_bot_of_isAlgClosed_of_isAlgebraic _`. Use `set Q := MRing ι ℂ ⧸ P`. Use `set F := FractionRing Q`. Establish `hinj : Function.Injective (algebraMap Q F)` using `IsFractionRing.injective Q F`. Use `set a : F := algebraMap Q F (Ideal.Quotient.mk P (X ⟨k, i'⟩))`.
+
+Use `set b : F := algebraMap Q F (Ideal.Quotient.mk P (X ⟨k, i⟩))`. Establish `hb : b ≠ 0`. Introduce `h0`. Rewrite `h0` using `[← map_zero (algebraMap Q F)]`. Conclude with `hi (Ideal.Quotient.eq_zero_iff_mem.mp (hinj h0))`.
+
+Establish `hmem : a / b ∈ homFracDegZero P` using `IntermediateField.subset_adjoin _ _ ⟨blockWeight ι ⟨k, i⟩, X ⟨k, i'⟩, X ⟨k, i⟩, isWeightedHomogeneous_X ℂ (blockWeight ι) ⟨k, i'⟩, isWeightedHomogeneous_X ℂ (blockWeight ι) ⟨k, i⟩, hi, rfl⟩`. Rewrite `hmem` using `[hbot]`. Take `⟨c, hc⟩` from `IntermediateField.mem_bot.mp hmem`. Use `⟨c, Ideal.Quotient.eq_zero_iff_mem.mp (hinj ?_)⟩` and prove the remaining obligations. Establish `hC : algebraMap Q F (Ideal.Quotient.mk P (C c)) = algebraMap ℂ F c`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply ℂ Q F]`. Both sides reduce to the same expression. Rewrite using `[map_zero, map_sub, map_sub, map_mul, map_mul, hC, hc]`. Use `show a - a / b * b = 0`. Rewrite using `[div_mul_cancel₀ a hb, sub_self]`.
+-/
 theorem exists_sub_mem_of_isProjVar_zero {P : Ideal (MRing ι ℂ)} (hP : IsProjVar P 0) (k : K)
     {i : ι k} (hi : (X ⟨k, i⟩ : MRing ι ℂ) ∉ P) (i' : ι k) :
     ∃ c : ℂ, (X ⟨k, i'⟩ - C c * X ⟨k, i⟩ : MRing ι ℂ) ∈ P := by
@@ -77,6 +100,15 @@ theorem exists_sub_mem_of_isProjVar_zero {P : Ideal (MRing ι ℂ)} (hP : IsProj
   show a - a / b * b = 0
   rw [div_mul_cancel₀ a hb, sub_self]
 
+/- English proof (translation)
+Use `choose i hi using hP.1.relevant`. Use `choose c hc using fun (k : K) (i' : ι k) => exists_sub_mem_of_isProjVar_zero hP k (hi k) i'`. Establish `key : ∀ w ∈ zPts P, (∀ q : Σ k, ι k, w q = c q.1 q.2 * w ⟨q.1, i q.1⟩) ∧ ∀ k, w ⟨k, i k⟩ ≠ 0`. Introduce `w hw`. Establish `hq : ∀ q : Σ k, ι k, w q = c q.1 q.2 * w ⟨q.1, i q.1⟩`.
+
+Introduce `q`. Establish `h0` using `hw.2 _ (hc q.1 q.2)`. Rewrite `h0` using `[map_sub, map_mul, eval_X, eval_X, eval_C, sub_eq_zero]`. Conclude with `h0`. Use `⟨hq, fun k h0 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨i', hi'⟩` from `hw.1 k`. Conclude with `hi' (by rw [hq ⟨k, i'⟩, h0, mul_zero])`. Take `⟨hzq, hz0⟩` from `key z hz`. Take `⟨hzq', hz0'⟩` from `key z' hz'`. Use `⟨fun k => z ⟨k, i k⟩ / z' ⟨k, i k⟩, fun k => div_ne_zero (hz0 k) (hz0' k), funext fun q => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hzq q, hzq' q]`. Clear denominators, using `[hz0' q.1]` for the nonvanishing conditions.
+-/
 theorem sameOrbit_of_isProjVar_zero {P : Ideal (MRing ι ℂ)} (hP : IsProjVar P 0) {z z' : MCone ι}
     (hz : z ∈ zPts P) (hz' : z' ∈ zPts P) : ReciprocityTheory.AnForm.R.SameOrbit z z' := by
   choose i hi using hP.1.relevant
@@ -98,6 +130,13 @@ theorem sameOrbit_of_isProjVar_zero {P : Ideal (MRing ι ℂ)} (hP : IsProjVar P
   rw [hzq q, hzq' q]
   field_simp [hz0' q.1]
 
+/- English proof (translation)
+Introduce `hzD`. Take `⟨f, hfD, hfP⟩` from `Set.not_subset.mp hDP`. Establish `hcomp : ∃ b : K → ℕ, weightedHomogeneousComponent (blockWeight ι) b f ∉ P`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+
+Apply `hfP` to reduce the goal to its premises. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Conclude with `Ideal.sum_mem _ fun b _ => hall b`. Take `⟨b, hb⟩` from `hcomp`. Apply `hb` to reduce the goal to its premises.
+
+Use `mem_of_forall_eval_eq_zero hP.1 fun w hw => ?_` and prove the remaining obligations. Take `⟨d, -, rfl⟩` from `sameOrbit_of_isProjVar_zero hP hw hz`. Establish `h` using `eval_tsmul_of_isMultiHomog (weightedHomogeneousComponent_isWeightedHomogeneous (w := blockWeight ι) b f) d z`. Rewrite using `[show (fun q : Σ k, ι k => d q.1 * z q) = tsmul d z from rfl, h, hzD.2 _ (hD f hfD b), mul_zero]`.
+-/
 theorem not_mem_conePts_of_isProjVar_zero {P D : Ideal (MRing ι ℂ)} (hP : IsProjVar P 0)
     (hD : IsMultiHomogIdeal D) (hDP : ¬ D ≤ P) {z : MCone ι} (hz : z ∈ zPts P) :
     z ∉ ReciprocityTheory.AnForm.R.conePts D := by
@@ -124,6 +163,11 @@ section Resolution
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `zPts_nonempty hP.1`. Take `⟨i₀, x₀, hx₀, -⟩` from `R.R.surj z hz (not_mem_conePts_of_isProjVar_zero hP R.homog R.not_le hz)`. Use `⟨x₀, fun x => ?_⟩` and prove the remaining obligations. Take `⟨i, hx⟩` from `R.R.cover x`. Establish `hy` using `R.R.lift_mem i x hx`.
+
+Conclude with `R.R.inj i i₀ x hx x₀ hx₀ (not_mem_conePts_of_isProjVar_zero hP R.homog R.not_le hy) (sameOrbit_of_isProjVar_zero hP hy (R.R.lift_mem i₀ x₀ hx₀))`.
+-/
 theorem Res.eq_of_isProjVar_zero {P : Ideal (MRing ι ℂ)} (hP : IsProjVar P 0) (R : Res ι P 0) :
     ∃ x₀ : R.R.M, ∀ x, x = x₀ := by
   obtain ⟨z, hz⟩ := zPts_nonempty hP.1
@@ -141,6 +185,23 @@ section Point
 
 variable {X : Type*} [TopologicalSpace X]
 
+/- English proof (translation)
+Take `⟨j₀, hj₀⟩` from `A.cover x₀`. Establish `hpart : Nonempty (ChartPartition A)`. Use `⟨⟨fun j _ => if j = j₀ then 1 else 0, fun j k => contDiffOn_const, fun j x => ?_, fun j => ?_, fun x => by simp⟩⟩` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> norm_num`. Distinguish the cases in `hj : j = j₀`.
+
+Substitute `hj` using the available equality. Introduce `x _`. Rewrite using `[hX x]`. Conclude with `hj₀`. Establish `h0 : (fun _ : X => if j = j₀ then (1 : ℝ) else 0) = 0`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[hj]`. Rewrite using `[h0, tsupport_zero]`. Conclude with `Set.empty_subset _`. Establish `hdens : ∀ j y, locDens A Φ j y = 1`.
+
+Introduce `j y`. Simplify using `[locDens, ReciprocityTheory.AnForm.maDens, ReciprocityTheory.AnForm.mdisc_zero]`. Establish `hvol : (volume : Measure (Fin 0 → ℂ)).real Set.univ = 1`. Simplify using `[Measure.real, volume_pi]`. Rewrite using `[ReciprocityTheory.AnForm.M.mInt, dif_pos hpart]`.
+
+Use `set Q := hpart.some`. Establish `hterm : ∀ j, ∫ y in (A.chart j).target, Q.χ j ((A.chart j).symm y) * 1 * locDens A Φ j y = Q.χ j x₀`. Introduce `j`. Distinguish the cases in `hT : (default : Fin 0 → ℂ) ∈ (A.chart j).target`. Establish `hU : (A.chart j).target = Set.univ` using `Set.eq_univ_of_forall fun y => Subsingleton.elim default y ▸ hT`.
+
+Rewrite using `[hU, Measure.restrict_univ, integral_unique, hvol, one_smul, hdens, mul_one, mul_one]`. Conclude with `congrArg (Q.χ j) (hX _)`. Establish `hE : (A.chart j).target = ∅` using `Set.eq_empty_of_forall_notMem fun y hy => hT (Subsingleton.elim y default ▸ hy)`. Establish `hx : x₀ ∉ (A.chart j).source` using `fun h => by`. Use `(A.chart j).map_source h` as an intermediate fact.
+
+Rewrite `this` using `[hE]`. Conclude with `this`. Rewrite using `[hE, Measure.restrict_empty, integral_zero_measure, image_eq_zero_of_notMem_tsupport fun h => hx (Q.tsupport_subset j h)]`. Use `show ∑ j, ∫ y in (A.chart j).target, Q.χ j ((A.chart j).symm y) * 1 * locDens A Φ j y = 1`. Simplify using `only [hterm]`.
+
+Conclude with `Q.sum_eq_one x₀`.
+-/
 theorem mInt_one_of_dim_zero (A : FinHolAtlas 0 X) (x₀ : X) (hX : ∀ x, x = x₀)
     (Φ : Fin 0 → LocPot X) : mInt A Φ (fun _ => 1) = 1 := by
   classical
@@ -188,6 +249,9 @@ theorem mInt_one_of_dim_zero (A : FinHolAtlas 0 X) (x₀ : X) (hX : ∀ x, x = x
 
 end Point
 
+/- English proof (translation)
+Introduce `K _ _ ι _ P φ hP hR`. Unfold `zInt`. Rewrite using `[dif_pos hR]`. Take `⟨x₀, hx₀⟩` from `Res.eq_of_isProjVar_zero hP hR.some`. Conclude with `mInt_one_of_dim_zero hR.some.atlas x₀ hx₀ _`.
+-/
 theorem ZIntPoint.proof : ZIntPoint.Statement := by
   intro K _ _ ι _ P φ hP hR
   unfold zInt

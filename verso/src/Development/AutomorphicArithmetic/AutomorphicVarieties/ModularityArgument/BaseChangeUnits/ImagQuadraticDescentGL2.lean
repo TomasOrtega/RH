@@ -16,6 +16,9 @@ def ImagQuadraticDescentGL2 : Prop :=
         ∃ B, sat' w B ∧ sat' w' B) →
       ∃ sat inf, IsCusp (F := ℚ) 2 sat inf ∧ WeakBC sat sat' ∧ ∀ τ m, inf' τ m → inf (τ.comp (algebraMap ℚ M)) m
 
+/- English proof (translation)
+Introduce `M _ _ h2 hM s i hc hr _` and use `(h M h2 hM).1 s i hc hr`.
+-/
 theorem imagQuadDescent_of_descentQ (h : DescQ) : ImagQuadraticDescentGL2 := fun M _ _ h2 hM s i hc hr _ => (h M h2 hM).1 s i hc hr
 
 def GapTwo : Prop :=

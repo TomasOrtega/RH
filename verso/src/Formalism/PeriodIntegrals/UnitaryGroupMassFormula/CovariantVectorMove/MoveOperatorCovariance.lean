@@ -9,9 +9,15 @@ namespace PI.UnitaryGroupMassFormula.QmMove
 def extN {n m : ℕ} (b : Fin m → Fin n) (d : Fin n) (k : ℕ) : Fin n :=
   if h : k < m then b ⟨k, h⟩ else d
 
+/- English proof (translation)
+Simplify using `[extN, k.isLt]`.
+-/
 theorem extN_lt {n m : ℕ} (b : Fin m → Fin n) (d : Fin n) (k : Fin m) : extN b d k = b k := by
   simp [extN, k.isLt]
 
+/- English proof (translation)
+Rewrite using `[Int.cast_mul, mul_assoc, ← mul_assoc (z' : A) x y, (Int.cast_commute z' x).eq, mul_assoc]`.
+-/
 theorem sgnlem {A : Type*} [Ring A] (z z' : ℤ) (x y : A) :
     ((z * z' : ℤ) : A) * (x * y) = (z : A) * (x * ((z' : A) * y)) := by
   rw [Int.cast_mul, mul_assoc, ← mul_assoc (z' : A) x y, (Int.cast_commute z' x).eq, mul_assoc]
@@ -30,6 +36,15 @@ omit [Algebra ℂ A] in
 
 def symC (d x c : Fin n) : A := (if x = d then η c else 0) + (if c = d then η x else 0)
 
+/- English proof (translation)
+Substitute `hv` using the available equality. Establish `h` using `hη x d c`. Establish `hc : η c * algebraMap ℂ A v' = algebraMap ℂ A v' * η c` using `(Algebra.commutes _ _).symm`. Establish `hk : η c * E x d = E x d * η c - (if c = d then η x else 0)`. Establish `e : (if c = d then η x else 0) = (if d = c then η x else 0)`.
+
+Distinguish the cases in `hcd : c = d`. Rewrite using `[if_pos hcd, if_pos hcd.symm]`. Rewrite using `[if_neg hcd, if_neg (Ne.symm hcd)]`. Rewrite using `[e, ← h]`. Normalize the expressions using the abelian group laws.
+
+Simplify using `only [Tm, symC, mul_add, add_mul, hk]`. Distinguish the cases in `hxd : x = d`. Simplify using `only [if_pos hxd]`. Rewrite using `[hc, map_add, map_one, add_mul, one_mul]`. Normalize the expressions using the abelian group laws.
+
+Simplify using `only [if_neg hxd, mul_zero, zero_mul, zero_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem midC (hη : ∀ a b c, E a b * η c - η c * E a b = if b = c then η a else 0)
     (v v' : ℂ) (hv : v = v' + 1) (x d c : Fin n) :
     η c * Tm E v' x d - Tm E v x d * η c = -symC η d x c := by
@@ -51,6 +66,13 @@ theorem midC (hη : ∀ a b c, E a b * η c - η c * E a b = if b = c then η a 
   · simp only [if_neg hxd, mul_zero, zero_mul, zero_add]
     abel
 
+/- English proof (translation)
+Proceed by induction on `l generalizing i with`. Consider the case `nil => simp at h`. Consider the case `cons x l ih`. Consider the cases of `i with`. Consider the case `zero`.
+
+Consider the cases of `l with`. Consider the case `nil => simp at h`. Consider the case `cons y l`. Rewrite using `[List.getElem_cons_succ, List.getElem_cons_zero, List.getElem_cons_zero, List.take_zero, List.drop_succ_cons, List.drop_succ_cons, List.drop_zero, List.prod_nil, one_mul, List.prod_cons, List.prod_cons, mul_assoc]`. Consider the case `succ i`.
+
+Establish `h' : i + 1 < l.length` using `by simp only [List.length_cons] at h; omega`. Rewrite using `[List.prod_cons, ih i h', List.take_succ_cons, List.prod_cons, List.getElem_cons_succ, List.getElem_cons_succ, List.drop_succ_cons]`. Simplify using `only [mul_assoc]`.
+-/
 private lemma list_prod_eq_take_mul_pair_mul_drop {M : Type*} [Monoid M] (l : List M) (i : ℕ) (h : i + 1 < l.length) :
     l.prod = (l.take i).prod * (l[i] * l[i + 1]) * (l.drop (i + 1 + 1)).prod := by
   induction l generalizing i with
@@ -70,6 +92,11 @@ private lemma list_prod_eq_take_mul_pair_mul_drop {M : Type*} [Monoid M] (l : Li
         List.getElem_cons_succ, List.drop_succ_cons]
       simp only [mul_assoc]
 
+/- English proof (translation)
+Establish `h1 : ∑ τ, G τ = -∑ τ, G τ`. Rewrite using `[← Finset.sum_neg_distrib, ← Equiv.sum_comp (Equiv.mulRight s)]`. Conclude with `Finset.sum_congr rfl fun τ _ => h τ`. Establish `h2 : ∑ τ, G τ + ∑ τ, G τ = 0`. Rewrite using `[← sub_neg_eq_add, ← h1, sub_self]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ (two_ne_zero : (2 : ℂ) ≠ 0), one_smul]`. Use `_ = 0 := by rw [two_smul, h2, smul_zero]`.
+-/
 private lemma sum_perm_eq_zero_of_mul_right_eq_neg {B : Type*} [Ring B] [Algebra ℂ B] {k : ℕ} (s : Equiv.Perm (Fin k))
     (G : Equiv.Perm (Fin k) → B) (h : ∀ τ, G (τ * s) = -G τ) : ∑ τ, G τ = 0 := by
   have h1 : ∑ τ, G τ = -∑ τ, G τ := by
@@ -81,6 +108,41 @@ private lemma sum_perm_eq_zero_of_mul_right_eq_neg {B : Type*} [Ring B] [Algebra
         rw [smul_smul, inv_mul_cancel₀ (two_ne_zero : (2 : ℂ) ≠ 0), one_smul]
     _ = 0 := by rw [two_smul, h2, smul_zero]
 
+/- English proof (translation)
+Establish `hp0 : p < m + 1` using `by omega`. Establish `hp1 : p + 1 < m + 1` using `by omega`. Take `⟨s, hs⟩ : ∃ s : Equiv.Perm (Fin (m + 1)), s = Equiv.swap ⟨p, hp0⟩ ⟨p + 1, hp1⟩` from `⟨_, rfl⟩`. Establish `hne : (⟨p, hp0⟩ : Fin (m + 1)) ≠ ⟨p + 1, hp1⟩`. Introduce `h`.
+
+Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Establish `hsP : s ⟨p, hp0⟩ = ⟨p + 1, hp1⟩` using `by rw [hs, Equiv.swap_apply_left]`. Establish `hsP1 : s ⟨p + 1, hp1⟩ = ⟨p, hp0⟩` using `by rw [hs, Equiv.swap_apply_right]`. Establish `hsq : ∀ q : Fin (m + 1), (q : ℕ) ≠ p → (q : ℕ) ≠ p + 1 → s q = q`.
+
+Introduce `q h1 h2`. Rewrite using `[hs]`. Conclude with `Equiv.swap_apply_of_ne_of_ne (fun h => h1 (by rw [h])) (fun h => h2 (by rw [h]))`. Establish `hsgn : ∀ τ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign (τ * s) : ℤ) : A) = -((Equiv.Perm.sign τ : ℤ) : A)`. Introduce `τ`.
+
+Rewrite using `[hs, Equiv.Perm.sign_mul, Equiv.Perm.sign_swap hne, mul_neg_one, Units.val_neg, Int.cast_neg]`. Establish `hoff : ∀ (τ : Equiv.Perm (Fin (m + 1))) (q : Fin (m + 1)), (q : ℕ) ≠ p → (q : ℕ) ≠ p + 1 → Fc E η a b w (p + 1) τ q = Fc E η a b w p (τ * s) q`. Introduce `τ q h1 h2`. Simplify using `only [Fc, Equiv.Perm.mul_apply, hsq q h1 h2, if_neg h1, if_neg h2]`. Distinguish the cases in `hq : (q : ℕ) < p`.
+
+Rewrite using `[if_pos hq, if_pos (show (q : ℕ) < p + 1 by omega)]`. Rewrite using `[if_neg hq, if_neg (show ¬ (q : ℕ) < p + 1 by omega)]`. Establish `hoff2 : ∀ (τ : Equiv.Perm (Fin (m + 1))) (q : Fin (m + 1)), (q : ℕ) ≠ p → (q : ℕ) ≠ p + 1 → Fc E η a b w (p + 1) (τ * s) q = Fc E η a b w (p + 1) τ q`. Introduce `τ q h1 h2`. Simplify using `only [Fc, Equiv.Perm.mul_apply, hsq q h1 h2]`.
+
+Establish `hT : ∀ τ : Equiv.Perm (Fin (m + 1)), (List.ofFn (Fc E η a b w p (τ * s))).take p = (List.ofFn (Fc E η a b w (p + 1) τ)).take p`. Introduce `τ`. Apply `List.ext_getElem (by simp)` to reduce the goal to its premises. Introduce `k h1 h2`. Simplify using `only [List.getElem_take, List.getElem_ofFn]`.
+
+Simplify using `only [List.length_take, List.length_ofFn] at h1`. Conclude with `(hoff τ _ (by show k ≠ p; omega) (by show k ≠ p + 1; omega)).symm`. Establish `hD : ∀ τ : Equiv.Perm (Fin (m + 1)), (List.ofFn (Fc E η a b w p (τ * s))).drop (p + 1 + 1) = (List.ofFn (Fc E η a b w (p + 1) τ)).drop (p + 1 + 1)`. Introduce `τ`. Apply `List.ext_getElem (by simp)` to reduce the goal to its premises.
+
+Introduce `k h1 h2`. Simplify using `only [List.getElem_drop, List.getElem_ofFn]`. Conclude with `(hoff τ _ (by show p + 1 + 1 + k ≠ p; omega) (by show p + 1 + 1 + k ≠ p + 1; omega)).symm`. Establish `hT2 : ∀ τ : Equiv.Perm (Fin (m + 1)), (List.ofFn (Fc E η a b w (p + 1) (τ * s))).take p = (List.ofFn (Fc E η a b w (p + 1) τ)).take p`. Introduce `τ`.
+
+Apply `List.ext_getElem (by simp)` to reduce the goal to its premises. Introduce `k h1 h2`. Simplify using `only [List.getElem_take, List.getElem_ofFn]`. Simplify using `only [List.length_take, List.length_ofFn] at h1`. Conclude with `hoff2 τ _ (by show k ≠ p; omega) (by show k ≠ p + 1; omega)`.
+
+Establish `hD2 : ∀ τ : Equiv.Perm (Fin (m + 1)), (List.ofFn (Fc E η a b w (p + 1) (τ * s))).drop (p + 1 + 1) = (List.ofFn (Fc E η a b w (p + 1) τ)).drop (p + 1 + 1)`. Introduce `τ`. Apply `List.ext_getElem (by simp)` to reduce the goal to its premises. Introduce `k h1 h2`. Simplify using `only [List.getElem_drop, List.getElem_ofFn]`.
+
+Conclude with `hoff2 τ _ (by show p + 1 + 1 + k ≠ p; omega) (by show p + 1 + 1 + k ≠ p + 1; omega)`. Establish `e1 : ∀ τ : Equiv.Perm (Fin (m + 1)), Fc E η a b w (p + 1) τ ⟨p, hp0⟩ = Tm E (w - (p : ℂ)) (a (τ ⟨p, hp0⟩)) (extN b (a 0) p)`. Introduce `τ`. Simplify using `[Fc]`. Establish `e2 : ∀ τ : Equiv.Perm (Fin (m + 1)), Fc E η a b w (p + 1) τ ⟨p + 1, hp1⟩ = η (a (τ ⟨p + 1, hp1⟩))`.
+
+Introduce `τ`. Simplify using `[Fc]`. Establish `e3 : ∀ τ : Equiv.Perm (Fin (m + 1)), Fc E η a b w p (τ * s) ⟨p, hp0⟩ = η (a (τ ⟨p + 1, hp1⟩))`. Introduce `τ`. Simplify using `[Fc, hsP]`.
+
+Establish `e4 : ∀ τ : Equiv.Perm (Fin (m + 1)), Fc E η a b w p (τ * s) ⟨p + 1, hp1⟩ = Tm E (w - ((p : ℂ) + 1)) (a (τ ⟨p, hp0⟩)) (extN b (a 0) p)`. Introduce `τ`. Simplify using `[Fc, hsP1]`. Establish `key : ∀ τ : Equiv.Perm (Fin (m + 1)), (List.ofFn (Fc E η a b w (p + 1) τ)).prod - (List.ofFn (Fc E η a b w p (τ * s))).prod = ((List.ofFn (Fc E η a b w (p + 1) τ)).take p).prod * symC η (extN b (a 0) p) (a (τ ⟨p, hp0⟩)) (a (τ ⟨p + 1, hp1⟩)) * ((List.ofFn (Fc E η a b w (p + 1) τ)) …`. Introduce `τ`.
+
+Rewrite using `[list_prod_eq_take_mul_pair_mul_drop (List.ofFn (Fc E η a b w (p + 1) τ)) p (by simp; omega), list_prod_eq_take_mul_pair_mul_drop (List.ofFn (Fc E η a b w p (τ * s))) p (by simp; omega), hT τ, hD τ, ← sub_mul, ← mul_sub]`. Use `congr 2`. Simplify using `only [List.getElem_ofFn]`. Rewrite using `[e1 τ, e2 τ, e3 τ, e4 τ]`. Establish `h` using `congrArg Neg.neg (midC E η hη (w - (p : ℂ)) (w - ((p : ℂ) + 1)) (by ring) (a (τ ⟨p, hp0⟩)) (extN b (a 0) p) (a (τ ⟨p + 1, hp1⟩)))`.
+
+Rewrite `h` using `[neg_sub, neg_neg]`. Conclude with `h`. Establish `hA : Nc E η a b w p = ∑ τ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign (τ * s) : ℤ) : A) * (List.ofFn (Fc E η a b w p (τ * s))).prod` using `(Equiv.sum_comp (Equiv.mulRight s) (fun τ => ((Equiv.Perm.sign τ : ℤ) : A) * (List.ofFn (Fc E η a b w p τ)).prod)).symm`. Rewrite using `[hA, Nc]`. Simplify using `only [hsgn, neg_mul, Finset.sum_neg_distrib, neg_neg]`.
+
+Rewrite using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Simplify using `only [← mul_sub, key]`. Apply `sum_perm_eq_zero_of_mul_right_eq_neg s` to reduce the goal to its premises. Introduce `τ`. Establish `hS2 : symC η (extN b (a 0) p) (a ((τ * s) ⟨p, hp0⟩)) (a ((τ * s) ⟨p + 1, hp1⟩)) = symC η (extN b (a 0) p) (a (τ ⟨p, hp0⟩)) (a (τ ⟨p + 1, hp1⟩))`.
+
+Rewrite using `[Equiv.Perm.mul_apply, Equiv.Perm.mul_apply, hsP, hsP1, symC, symC, add_comm]`. Simplify using `only [hsgn, hT2, hD2, hS2, neg_mul]`.
+-/
 theorem stepC (hη : ∀ a b c, E a b * η c - η c * E a b = if b = c then η a else 0)
     (p : ℕ) (hp : p < m) : Nc E η a b w (p + 1) = -Nc E η a b w p := by
   have hp0 : p < m + 1 := by omega
@@ -184,6 +246,13 @@ theorem stepC (hη : ∀ a b c, E a b * η c - η c * E a b = if b = c then η a
     rw [Equiv.Perm.mul_apply, Equiv.Perm.mul_apply, hsP, hsP1, symC, symC, add_comm]
   simp only [hsgn, hT2, hD2, hS2, neg_mul]
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (fun x : Fin (k + 1) × Equiv.Perm (Fin k) => x.1.cycleRange.symm * Equiv.Perm.decomposeFin.symm (0, x.2) * π)`. Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨?_, by simp [Fintype.card_perm, Nat.factorial_succ]⟩` and prove the remaining obligations. Introduce and unpack `⟨j, σ⟩ ⟨j', σ'⟩ h`. Establish `h1 : j.cycleRange.symm * Equiv.Perm.decomposeFin.symm (0, σ) = j'.cycleRange.symm * Equiv.Perm.decomposeFin.symm (0, σ')` using `mul_right_cancel h`.
+
+Establish `hj : j = j'`. Use `congrArg (fun e : Equiv.Perm (Fin (k + 1)) => e 0) h1` as an intermediate fact. Simplify `this` using `[Equiv.Perm.decomposeFin_symm_apply_zero, Fin.cycleRange_symm_zero]`. Substitute `hj` using the available equality. Establish `h3` using `(Equiv.injective Equiv.Perm.decomposeFin.symm) (mul_left_cancel h1)`.
+
+Rewrite using `[show σ = σ' from congrArg Prod.snd h3]`. Rewrite using `[← Fintype.sum_prod_type']`. Conclude with `(hb.sum_comp F).symm`.
+-/
 private lemma sum_perm_fin_succ_eq_sum_cycleRange_decomposeFin {M : Type*} [AddCommMonoid M] {k : ℕ} (π : Equiv.Perm (Fin (k + 1)))
     (F : Equiv.Perm (Fin (k + 1)) → M) :
     ∑ τ, F τ = ∑ j : Fin (k + 1), ∑ σ : Equiv.Perm (Fin k),
@@ -204,6 +273,13 @@ private lemma sum_perm_fin_succ_eq_sum_cycleRange_decomposeFin {M : Type*} [AddC
   rw [← Fintype.sum_prod_type']
   exact (hb.sum_comp F).symm
 
+/- English proof (translation)
+Simplify using `only [Nc, sum_perm_fin_succ_eq_sum_cycleRange_decomposeFin (1 : Equiv.Perm (Fin (m + 1))), mul_one]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[qminor, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hs : ((Equiv.Perm.sign (j.cycleRange.symm * Equiv.Perm.decomposeFin.symm (0, σ)) : ℤˣ) : ℤ) = (-1 : ℤ) ^ (j : ℕ) * ((Equiv.Perm.sign σ : ℤˣ) : ℤ)`.
+
+Rewrite using `[Equiv.Perm.sign_mul, Equiv.Perm.sign_symm, Fin.sign_cycleRange, Equiv.Perm.decomposeFin.symm_sign, if_pos rfl, one_mul, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one]`. Establish `h0 : Fc E η a b w 0 (j.cycleRange.symm * Equiv.Perm.decomposeFin.symm (0, σ)) 0 = η (a j)`. Simplify using `[Fc, Equiv.Perm.decomposeFin_symm_apply_zero, Fin.cycleRange_symm_zero]`. Establish `h1 : (fun i : Fin m => Fc E η a b w 0 (j.cycleRange.symm * Equiv.Perm.decomposeFin.symm (0, σ)) i.succ) = fun k : Fin m => Tm E (w - 1 - ((k : ℕ) : ℂ)) ((a ∘ j.succAbove) (σ k)) (b k)`. Use function extensionality and compare the values at `k`.
+
+Establish `hw : w - ((((k : ℕ) + 1 : ℕ)) : ℂ) = w - 1 - ((k : ℕ) : ℂ)` using `by push_cast; ring`. Simplify using `only [Fc, Fin.val_succ, if_neg (Nat.succ_ne_zero _), if_neg (Nat.not_lt_zero _), Nat.add_sub_cancel, hw, extN_lt, Equiv.Perm.mul_apply, Equiv.Perm.decomposeFin_symm_apply_succ, Equiv.swap_self, Equiv.refl_apply, Fin.cycleRange_symm_succ, Function.comp_apply]`. Rewrite using `[List.ofFn_succ, List.prod_cons, hs, sgnlem, h0, h1]`.
+-/
 theorem Nc_zero : Nc E η a b w 0 = ∑ j : Fin (m + 1),
     (((-1 : ℤ) ^ (j : ℕ) : ℤ) : A) * (η (a j) * qminor E (a ∘ j.succAbove) b (w - 1)) := by
   simp only [Nc, sum_perm_fin_succ_eq_sum_cycleRange_decomposeFin (1 : Equiv.Perm (Fin (m + 1))), mul_one]
@@ -225,6 +301,17 @@ theorem Nc_zero : Nc E η a b w 0 = ∑ j : Fin (m + 1),
       Equiv.swap_self, Equiv.refl_apply, Fin.cycleRange_symm_succ, Function.comp_apply]
   rw [List.ofFn_succ, List.prod_cons, hs, sgnlem, h0, h1]
 
+/- English proof (translation)
+Simplify using `only [Nc, sum_perm_fin_succ_eq_sum_cycleRange_decomposeFin (finRotate (m + 1))]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[qminor, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hjm` using `j.isLt`.
+
+Establish `hu : Equiv.Perm.sign (j.cycleRange.symm * Equiv.Perm.decomposeFin.symm (0, σ) * finRotate (m + 1)) = (-1) ^ (m - (j : ℕ)) * Equiv.Perm.sign σ`. Rewrite using `[Equiv.Perm.sign_mul, Equiv.Perm.sign_mul, Equiv.Perm.sign_symm, Fin.sign_cycleRange, Equiv.Perm.decomposeFin.symm_sign, if_pos rfl, one_mul, sign_finRotate, Nat.add_sub_cancel, mul_right_comm, ← pow_add, show (j : ℕ) + m = (m - (j : ℕ)) + 2 * (j : ℕ) by omega, pow_add, pow_mul, …`. Establish `hs : ((Equiv.Perm.sign (j.cycleRange.symm * Equiv.Perm.decomposeFin.symm (0, σ) * finRotate (m + 1)) : ℤˣ) : ℤ) = (-1 : ℤ) ^ (m - (j : ℕ)) * ((Equiv.Perm.sign σ : ℤˣ) : ℤ)`. Rewrite using `[hu, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one]`. Establish `h0 : Fc E η a b w m (j.cycleRange.symm * Equiv.Perm.decomposeFin.symm (0, σ) * finRotate (m + 1)) (Fin.last m) = η (a j)`.
+
+Simplify using `[Fc, finRotate_last, Equiv.Perm.decomposeFin_symm_apply_zero, Fin.cycleRange_symm_zero]`. Establish `h1 : (fun i : Fin m => Fc E η a b w m (j.cycleRange.symm * Equiv.Perm.decomposeFin.symm (0, σ) * finRotate (m + 1)) i.castSucc) = fun k : Fin m => Tm E (w - ((k : ℕ) : ℂ)) ((a ∘ j.succAbove) (σ k)) (b k)`. Use function extensionality and compare the values at `k`. Establish `hk` using `k.isLt`. Establish `hr : finRotate (m + 1) k.castSucc = k.succ`.
+
+Use `ext`. Rewrite using `[coe_finRotate_of_ne_last (Fin.castSucc_lt_last k).ne]`. Simplify using the standard rewrite rules. Simplify using `only [Fc, Fin.coe_castSucc, if_neg (Nat.ne_of_lt hk), if_pos hk, extN_lt, Equiv.Perm.mul_apply, hr, Equiv.Perm.decomposeFin_symm_apply_succ, Equiv.swap_self, Equiv.refl_apply, Fin.cycleRange_symm_succ, Function.comp_apply]`. Rewrite using `[List.ofFn_succ', List.concat_eq_append, List.prod_append, List.prod_cons, List.prod_nil, mul_one, hs, h0, h1]`.
+
+Simplify using `only [Int.cast_mul, mul_assoc]`.
+-/
 theorem Nc_last : Nc E η a b w m = ∑ j : Fin (m + 1),
     (((-1 : ℤ) ^ (m - (j : ℕ)) : ℤ) : A) * (qminor E (a ∘ j.succAbove) b w * η (a j)) := by
   simp only [Nc, sum_perm_fin_succ_eq_sum_cycleRange_decomposeFin (finRotate (m + 1))]
@@ -262,6 +349,17 @@ theorem Nc_last : Nc E η a b w m = ∑ j : Fin (m + 1),
 
 end Cov
 
+/- English proof (translation)
+Unfold `PI.MoveCov`. Introduce `A _ _ n t E η _ hη _ a b w`. Establish `hit : ∀ p, p ≤ t → Nc E η a b w p = (-1 : A) ^ p * Nc E η a b w 0`. Introduce `p`. Proceed by induction on `p with`.
+
+Consider the case `zero => intro _`. Rewrite using `[pow_zero, one_mul]`. Consider the case `succ p ih`. Introduce `hp`. Rewrite using `[stepC E η a b w hη p (by omega), ih (by omega), pow_succ, mul_neg_one, neg_mul]`.
+
+Establish `h` using `hit t le_rfl`. Rewrite `h` using `[Nc_last, Nc_zero]`. Establish `h2 : ∑ i : Fin (t + 1), (((-1 : ℤ) ^ (i : ℕ) : ℤ) : A) * (η (a i) * qminor E (a ∘ i.succAbove) b (w - 1)) = (-1 : A) ^ t * ∑ j : Fin (t + 1), (((-1 : ℤ) ^ (t - (j : ℕ)) : ℤ) : A) * (qminor E (a ∘ j.succAbove) b w * η (a j))`. Rewrite using `[h, ← mul_assoc ((-1 : A) ^ t), ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]`. Rewrite using `[h2, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc ((-1 : A) ^ t)]`. Use `congr 1`. Establish `hj` using `j.isLt`. Use `push_cast`.
+
+Rewrite using `[← pow_add, show t + (t - (j : ℕ)) = (j : ℕ) + 2 * (t - (j : ℕ)) by omega, pow_add, pow_mul, neg_one_sq, one_pow, mul_one]`.
+-/
 theorem move_operator_covariance : PI.MoveCov := by
   unfold PI.MoveCov
   intro A _ _ n t E η _ hη _ a b w

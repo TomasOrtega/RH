@@ -17,6 +17,9 @@ section LocU
 
 variable {D : D7} (Z : LocDat D) (p : PlF D)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, locU_apply, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem locU_mul (A B : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) :
     locU Z p A * locU Z p B = locU Z p (A * B) := by
   ext i j
@@ -26,6 +29,11 @@ theorem locU_mul (A B : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) :
         (frFac Z.δ p k * Ring.inverse (frFac Z.δ p k)) * (D.s.atP p).ιE (B k j) * frFac Z.δ p j := by ring
     _ = _ := by rw [frFac_mul_inv, mul_one]; ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, locU_apply, map_sub, Matrix.one_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[map_one, mul_sub, sub_mul, mul_one, frFac_inv_mul]`.
+
+Simplify using `only [map_zero, sub_zero]`.
+-/
 theorem locU_sub_one (A : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) :
     locU Z p A - 1 = locU Z p (A - 1) := by
   ext i j

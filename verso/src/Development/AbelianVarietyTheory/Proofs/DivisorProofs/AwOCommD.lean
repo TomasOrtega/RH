@@ -6,6 +6,9 @@ universe u v
 noncomputable section
 namespace GlobalTheory.EZ.AWChain
 
+/- English proof (translation)
+Use `Free.single_comp_single (R := ℤ) (C := SimplexCategoryᵒᵖ × SimplexCategoryᵒᵖ) (X := (op (SimplexCategory.mk n), op (SimplexCategory.mk m))) (Y := (op (SimplexCategory.mk p), op (SimplexCategory.mk q))) (Z := (op (SimplexCategory.mk r), op (SimplexCategory.mk s))) (α.op, β.op) (α' …` as an intermediate fact. Simplify using `only [mul_one] at this`. Conclude with `this`.
+-/
 theorem bop_comp {n m p q r s : ℕ} (α : SimplexCategory.mk p ⟶ SimplexCategory.mk n)
     (β : SimplexCategory.mk q ⟶ SimplexCategory.mk m) (α' : SimplexCategory.mk r ⟶ SimplexCategory.mk p)
     (β' : SimplexCategory.mk s ⟶ SimplexCategory.mk q) :
@@ -17,26 +20,52 @@ theorem bop_comp {n m p q r s : ℕ} (α : SimplexCategory.mk p ⟶ SimplexCateg
   simp only [mul_one] at this
   exact this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_apply' {a b c : ℕ} (f : SimplexCategory.mk a ⟶ SimplexCategory.mk b)
     (g : SimplexCategory.mk b ⟶ SimplexCategory.mk c) (j : Fin (a+1)) :
     ((f ≫ g).toOrderHom j : ℕ) = (g.toOrderHom (f.toOrderHom j) : ℕ) := rfl
 
+/- English proof (translation)
+Apply `SimplexCategory.Hom.ext` to reduce the goal to its premises. Use extensionality with `j`. Conclude with `h j`.
+-/
 theorem hom_ext' {a b : ℕ} (f g : SimplexCategory.mk a ⟶ SimplexCategory.mk b)
     (h : ∀ j : Fin (a+1), (f.toOrderHom j : ℕ) = (g.toOrderHom j : ℕ)) : f = g := by
   apply SimplexCategory.Hom.ext
   ext j
   exact h j
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem faceFun_lt {i j : ℕ} (h : j < i) : faceFun i j = j := if_pos h
+/- English proof (translation)
+The claim follows from `if_neg (by omega)`.
+-/
 theorem faceFun_ge {i j : ℕ} (h : i ≤ j) : faceFun i j = j + 1 := if_neg (by omega)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem backc_apply (n a b : ℕ) (j : Fin (b+1)) : ((backc n a b).toOrderHom j : ℕ) = min n (a + j) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem idc_apply (n m : ℕ) (j : Fin (m+1)) : ((idc n m).toOrderHom j : ℕ) = min n j := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fc_apply (n m i : ℕ) (j : Fin (m+1)) : ((fc n m i).toOrderHom j : ℕ) = min n (faceFun i j) := rfl
 
 section
 variable (a b : ℕ)
 
+/- English proof (translation)
+Apply `hom_ext'` to reduce the goal to its premises. Introduce `j`. Establish `hj` using `j.isLt`. Simplify using `only [comp_apply', fc_apply, idc_apply, backc_apply]`. Break down `lt_or_ge (j:ℕ) i with h | h` into its components or cases.
+
+Rewrite using `[faceFun_lt (by omega), faceFun_lt h]; omega`. Rewrite using `[faceFun_ge (by omega), faceFun_ge h]; omega`.
+-/
 theorem front_face_low (i : ℕ) (hi : i ≤ a) :
     idc (a+b) a ≫ fc (a+b+1) (a+b) i = fc (a+1) a i ≫ idc (a+b+1) (a+1) := by
   apply hom_ext'; intro j; have hj := j.isLt
@@ -45,18 +74,29 @@ theorem front_face_low (i : ℕ) (hi : i ≤ a) :
   · rw [faceFun_lt (by omega), faceFun_lt h]; omega
   · rw [faceFun_ge (by omega), faceFun_ge h]; omega
 
+/- English proof (translation)
+Apply `hom_ext'` to reduce the goal to its premises. Introduce `j`. Establish `hj` using `j.isLt`. Simplify using `only [comp_apply', fc_apply, idc_apply, backc_apply]`. Rewrite using `[faceFun_ge (by omega)]; omega`.
+-/
 theorem back_face_low (i : ℕ) (hi : i ≤ a) :
     backc (a+b) a b ≫ fc (a+b+1) (a+b) i = idc b b ≫ backc (a+b+1) (a+1) b := by
   apply hom_ext'; intro j; have hj := j.isLt
   simp only [comp_apply', fc_apply, idc_apply, backc_apply]
   rw [faceFun_ge (by omega)]; omega
 
+/- English proof (translation)
+Apply `hom_ext'` to reduce the goal to its premises. Introduce `j`. Establish `hj` using `j.isLt`. Simplify using `only [comp_apply', fc_apply, idc_apply, backc_apply]`. Rewrite using `[faceFun_lt (by omega)]; omega`.
+-/
 theorem front_face_high (i : ℕ) (hi : a < i) :
     idc (a+b) a ≫ fc (a+b+1) (a+b) i = idc a a ≫ idc (a+b+1) a := by
   apply hom_ext'; intro j; have hj := j.isLt
   simp only [comp_apply', fc_apply, idc_apply, backc_apply]
   rw [faceFun_lt (by omega)]; omega
 
+/- English proof (translation)
+Apply `hom_ext'` to reduce the goal to its premises. Introduce `k`. Establish `hk` using `k.isLt`. Simplify using `only [comp_apply', fc_apply, idc_apply, backc_apply]`. Break down `lt_or_ge (k:ℕ) (j+1) with h | h` into its components or cases.
+
+Rewrite using `[faceFun_lt (by omega), faceFun_lt h]; omega`. Rewrite using `[faceFun_ge (by omega), faceFun_ge h]; omega`.
+-/
 theorem back_face_high (j : ℕ) (hj : j ≤ b) :
     backc (a+b) a b ≫ fc (a+b+1) (a+b) (a+1+j) = fc (b+1) b (j+1) ≫ backc (a+b+1) a (b+1) := by
   apply hom_ext'; intro k; have hk := k.isLt
@@ -65,11 +105,17 @@ theorem back_face_high (j : ℕ) (hj : j ≤ b) :
   · rw [faceFun_lt (by omega), faceFun_lt h]; omega
   · rw [faceFun_ge (by omega), faceFun_ge h]; omega
 
+/- English proof (translation)
+Apply `hom_ext'` to reduce the goal to its premises. Introduce `j`. Establish `hj` using `j.isLt`. Simplify using `only [comp_apply', fc_apply, idc_apply, backc_apply]`. Rewrite using `[faceFun_lt (by omega)]; omega`.
+-/
 theorem front_face_cancel : fc (a+1) a (a+1) ≫ idc (a+b+1) (a+1) = idc a a ≫ idc (a+b+1) a := by
   apply hom_ext'; intro j; have hj := j.isLt
   simp only [comp_apply', fc_apply, idc_apply, backc_apply]
   rw [faceFun_lt (by omega)]; omega
 
+/- English proof (translation)
+Apply `hom_ext'` to reduce the goal to its premises. Introduce `j`. Establish `hj` using `j.isLt`. Simplify using `only [comp_apply', fc_apply, idc_apply, backc_apply]`. Rewrite using `[faceFun_ge (by omega)]; omega`.
+-/
 theorem back_face_cancel : idc b b ≫ backc (a+b+1) (a+1) b = fc (b+1) b 0 ≫ backc (a+b+1) a (b+1) := by
   apply hom_ext'; intro j; have hj := j.isLt
   simp only [comp_apply', fc_apply, idc_apply, backc_apply]
@@ -77,12 +123,21 @@ theorem back_face_cancel : idc b b ≫ backc (a+b+1) (a+1) b = fc (b+1) b 0 ≫ 
 
 end
 
+/- English proof (translation)
+Simplify using `[dT, dH, dV]`.
+-/
 theorem dT_h (a b : ℕ) : dT (a+1) b a b = ∑ i ∈ Finset.range (a+1+1), ((-1 : ℤ) ^ i) • bop (fc (a+1) a i) (idc b b) := by
   simp [dT, dH, dV]
 
+/- English proof (translation)
+Simplify using `[dT, dH, dV]`.
+-/
 theorem dT_v (a b : ℕ) : dT a (b+1) a b = ((-1 : ℤ) ^ a) • ∑ j ∈ Finset.range (b+1+1), ((-1 : ℤ) ^ j) • bop (idc a a) (fc (b+1) b j) := by
   simp [dT, dH, dV]
 
+/- English proof (translation)
+Simplify using `[dT, dH, dV, h1, h2]`.
+-/
 theorem dT_zero (x y a b : ℕ) (h1 : ¬ (x = a + 1 ∧ y = b)) (h2 : ¬ (x = a ∧ y = b + 1)) : dT x y a b = 0 := by
   simp [dT, dH, dV, h1, h2]
 
@@ -91,6 +146,21 @@ end GlobalTheory.EZ.AWChain
 namespace GlobalTheory.EZ
 open GlobalTheory.EZ.AWChain
 
+/- English proof (translation)
+Introduce `n a b hab`. Substitute `hab` using the available equality. Rewrite using `[Finset.sum_eq_add (a + 1, b) (a, b + 1) (by simp)]`. Use `rotate_left`. Introduce and unpack `c hc ⟨h1, h2⟩`.
+
+Rewrite `hc` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[dT_zero, Limits.comp_zero]`. Introduce and unpack `⟨e1, e2⟩`. Conclude with `h1 (Prod.ext e1 e2)`. Introduce and unpack `⟨e1, e2⟩`.
+
+Conclude with `h2 (Prod.ext e1 e2)`. Introduce `h; exact absurd (by rw [Finset.HasAntidiagonal.mem_antidiagonal]; omega) h`. Introduce `h; exact absurd (by rw [Finset.HasAntidiagonal.mem_antidiagonal]; omega) h`. Simplify using `only [dT_h, dT_v]`. Establish `e1 : awO (a + b + 1) (a + 1) b = bop (idc (a+b+1) (a+1)) (backc (a+b+1) (a+1) b)` using `if_pos (by omega)`.
+
+Establish `e2 : awO (a + b + 1) a (b + 1) = bop (idc (a+b+1) a) (backc (a+b+1) a (b+1))` using `if_pos (by omega)`. Establish `e3 : awO (a + b) a b = bop (idc (a+b) a) (backc (a+b) a b)` using `if_pos rfl`. Establish `e4 : dD (a + b + 1) (a + b) = ∑ i ∈ Finset.range (a+b+1+1), ((-1 : ℤ) ^ i) • bop (fc (a+b+1) (a+b) i) (fc (a+b+1) (a+b) i)` using `if_pos rfl`. Rewrite using `[e1, e2, e3, e4]`. Simplify using `only [Preadditive.sum_comp, Preadditive.comp_sum, Preadditive.zsmul_comp, Preadditive.comp_zsmul, bop_comp]`.
+
+Rewrite using `[show a + b + 1 + 1 = (a + 1) + (b + 1) by omega, Finset.sum_range_add]`. Use `conv_rhs => rw [Finset.sum_range_succ _ (a + 1), Finset.sum_range_succ' _ (b + 1), smul_add]`. Establish `hA : ∑ i ∈ Finset.range (a + 1), ((-1 : ℤ) ^ i) • bop (idc (a+b) a ≫ fc (a+b+1) (a+b) i) (backc (a+b) a b ≫ fc (a+b+1) (a+b) i) = ∑ i ∈ Finset.range (a + 1), ((-1 : ℤ) ^ i) • bop (fc (a+1) a i ≫ idc (a+b+1) (a+1)) (idc b b ≫ backc (a+b+1) (a+1) b)`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`.
+
+Rewrite using `[front_face_low a b i (by omega), back_face_low a b i (by omega)]`. Establish `hB : ∑ j ∈ Finset.range (b + 1), ((-1 : ℤ) ^ (a + 1 + j)) • bop (idc (a+b) a ≫ fc (a+b+1) (a+b) (a + 1 + j)) (backc (a+b) a b ≫ fc (a+b+1) (a+b) (a + 1 + j)) = ((-1 : ℤ) ^ a) • ∑ j ∈ Finset.range (b + 1), ((-1 : ℤ) ^ (j + 1)) • bop (idc a a ≫ idc (a+b+1) a) (fc (b+1) b (j + 1) ≫ …`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_range]`.
+
+Rewrite using `[front_face_high a b (a + 1 + j) (by omega), back_face_high a b j (by omega), smul_smul, ← pow_add, show a + (j + 1) = a + 1 + j by omega]`. Establish `hC : ((-1 : ℤ) ^ (a + 1)) • bop (fc (a+1) a (a + 1) ≫ idc (a+b+1) (a+1)) (idc b b ≫ backc (a+b+1) (a+1) b) + ((-1 : ℤ) ^ a) • (((-1 : ℤ) ^ 0) • bop (idc a a ≫ idc (a+b+1) a) (fc (b+1) b 0 ≫ backc (a+b+1) a (b+1))) = 0`. Rewrite using `[front_face_cancel, back_face_cancel, smul_smul, pow_zero, mul_one, pow_succ, mul_neg_one, neg_smul, neg_add_cancel]`. Rewrite using `[hA, hB, add_add_add_comm, hC, add_zero]`.
+-/
 theorem awO_comm_d : ∀ (n a b : ℕ), a + b = n → dD (n + 1) n ≫ awO n a b =
     ∑ x ∈ Finset.HasAntidiagonal.antidiagonal (n + 1), awO (n + 1) x.1 x.2 ≫ dT x.1 x.2 a b := by
   intro n a b hab
@@ -137,4 +207,7 @@ theorem awO_comm_d : ∀ (n a b : ℕ), a + b = n → dD (n + 1) n ≫ awO n a b
 
 end GlobalTheory.EZ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.EZ.awO_comm_d`.
+-/
 example : ∀ (n a b : ℕ), a + b = n → dD (n + 1) n ≫ awO n a b = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal (n + 1), awO (n + 1) x.1 x.2 ≫ dT x.1 x.2 a b := GlobalTheory.EZ.awO_comm_d

@@ -10,6 +10,11 @@ section Up
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Unfold `Ks`. Use `sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ ?_) _` and prove the remaining obligations. Introduce `x hx`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `hx' : x ^ (l ^ s) = 1` using `hx`.
+
+Use `show x ^ (l ^ (s + k)) = 1`. Rewrite using `[pow_add, pow_mul, hx', one_pow]`.
+-/
 theorem Ks_mono (K : FinExt l) {s s' : ℕ} (h : s ≤ s') : Ks K s ≤ Ks K s' := by
   unfold Ks
   refine sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ ?_) _

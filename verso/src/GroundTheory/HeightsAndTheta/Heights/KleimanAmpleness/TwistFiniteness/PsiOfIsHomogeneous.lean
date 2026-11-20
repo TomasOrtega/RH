@@ -41,15 +41,30 @@ instance modP : Module (Poly (Sy S r) N) (Amb x η) := Module.compHom _ (phi x �
 
 instance modSy : Module (Sy S r) (Amb x η) := Module.compHom _ (psi η S).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toA_smulP (p : Poly (Sy S r) N) (a : Amb x η) : toA x η (p • a) = phi x η S p * toA x η a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toA_smulSy (s : Sy S r) (a : Amb x η) : toA x η (s • a) = psi η S s * toA x η a := rfl
 
+/- English proof (translation)
+The claim follows from `eval₂Hom_C _ _ _`.
+-/
 theorem phi_C (s : Sy S r) : phi x η S (C s) = psi η S s := eval₂Hom_C _ _ _
 
+/- English proof (translation)
+The claim follows from `eval₂Hom_X' _ _ _`.
+-/
 theorem phi_X (i : Fin (N + 1)) : phi x η S (X i) = single ((1 : ℤ), (0 : ℤ)) (x i) :=
   eval₂Hom_X' _ _ _
 
+/- English proof (translation)
+The claim follows from `aeval_X _ _`.
+-/
 theorem psi_X (j : Fin (r + 1)) : psi η S (X j) = single ((0 : ℤ), (1 : ℤ)) (η j) :=
   aeval_X _ _
 
@@ -60,12 +75,23 @@ instance : IsScalarTower (Sy S r) (Poly (Sy S r) N) (Amb x η) where
 
 abbrev tgr (c : ℤ) : Submodule Ω (LA Ω) := gradeBy Ω (AddMonoidHom.fst ℤ ℤ) c
 
+/- English proof (translation)
+The claim follows from `single_mem_gradeBy (R := Ω) (AddMonoidHom.fst ℤ ℤ) (c, k) ω`.
+-/
 theorem single_mem_tgr (c k : ℤ) (ω : Ω) : (single (c, k) ω : LA Ω) ∈ tgr c :=
   single_mem_gradeBy (R := Ω) (AddMonoidHom.fst ℤ ℤ) (c, k) ω
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_LA (s : S) : algebraMap S (LA Ω) s = single ((0 : ℤ), (0 : ℤ)) (algebraMap S Ω s) :=
   rfl
 
+/- English proof (translation)
+Proceed by induction on `s using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[psi, aeval_C, algebraMap_LA]`. Conclude with `single_mem_tgr 0 0 _`. Consider the case `add p q hp hq => rw [map_add]`.
+
+Conclude with `add_mem hp hq`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul, psi_X]`. Simplify using `using SetLike.mul_mem_graded hp (single_mem_tgr 0 1 (η j))`.
+-/
 theorem psi_mem_tgr (s : Sy S r) : psi η S s ∈ tgr 0 := by
   induction s using MvPolynomial.induction_on with
   | C a =>
@@ -76,6 +102,13 @@ theorem psi_mem_tgr (s : Sy S r) : psi η S s ∈ tgr 0 := by
     rw [map_mul, psi_X]
     simpa using SetLike.mul_mem_graded hp (single_mem_tgr 0 1 (η j))
 
+/- English proof (translation)
+Rewrite using `[p.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun μ hμ => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i ∈ μ.support, μ i = d`. Use `hp (mem_support_iff.mp hμ)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`.
+
+Rewrite using `[phi, coe_eval₂Hom, eval₂_monomial]`. Establish `h1` using `psi_mem_tgr η S (MvPolynomial.coeff μ p)`. Establish `h2 : (∏ i ∈ μ.support, (single ((1 : ℤ), (0 : ℤ)) (x i) : LA Ω) ^ μ i) ∈ tgr (∑ i ∈ μ.support, ((μ i : ℕ) : ℤ))`. Use `SetLike.prod_mem_graded _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using SetLike.pow_mem_graded (μ i) (single_mem_tgr 1 0 (x i))`.
+
+Establish `h3` using `SetLike.mul_mem_graded h1 h2`. Rewrite `h3` using `[zero_add, ← Nat.cast_sum, hdeg]`. Conclude with `h3`.
+-/
 theorem phi_mem_tgr {p : Poly (Sy S r) N} {d : ℕ} (hp : p.IsHomogeneous d) :
     phi x η S p ∈ tgr (d : ℤ) := by
   classical
@@ -98,6 +131,15 @@ def kapT : Polynomial Ω →ₐ[Ω] LA Ω := Polynomial.aeval (single ((1 : ℤ)
 
 def kapU : Polynomial Ω →ₐ[Ω] LA Ω := Polynomial.aeval (single ((0 : ℤ), (1 : ℤ)) 1)
 
+/- English proof (translation)
+Establish `key : (phi x η S).comp (MvPolynomial.map (C : S →+* Sy S r)) = (kapT (Ω` using `Ω)).toRingHom.comp (cone (S := S) x).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, map_C, phi_C]`. Express the relevant statement in the definitionally equal form `psi η S (C a) = kapT ((cone (S := S) x) (C a))`.
+
+Rewrite using `[psi, aeval_C, ← MvPolynomial.algebraMap_eq, AlgHom.commutes, Polynomial.algebraMap_apply, kapT, Polynomial.aeval_C, coe_algebraMap, Function.comp_apply, algebraMap_LA, Algebra.algebraMap_self, RingHom.id_apply]`. Both sides reduce to the same expression. Introduce `i`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, map_X, phi_X]`. Express the relevant statement in the definitionally equal form `_ = kapT (coneGen x (X i))`.
+
+Rewrite using `[coneGen, aeval_X, kapT, map_mul, Polynomial.aeval_C, Polynomial.aeval_X, coe_algebraMap, Function.comp_apply, single_mul_single]`. Simplify using the standard rewrite rules. Use `congrArg (fun g => g f) key` as an intermediate fact. Simplify using `only [RingHom.coe_comp, Function.comp_apply] at this`. Rewrite using `[this]`.
+
+Express the relevant statement in the definitionally equal form `kapT (cone (S := S) x f) = _`. Rewrite using `[cone_of_isHomogeneous x hf, kapT, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, coe_algebraMap, Function.comp_apply, single_pow, single_mul_single]`. Simplify using `[MvPolynomial.aeval_def]`.
+-/
 theorem phi_map_C {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) :
     phi x η S (MvPolynomial.map (C : S →+* Sy S r) f) = single ((e : ℤ), (0 : ℤ)) (aeval x f) := by
   have key : (phi x η S).comp (MvPolynomial.map (C : S →+* Sy S r)) =
@@ -124,6 +166,13 @@ theorem phi_map_C {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) :
     coe_algebraMap, Function.comp_apply, single_pow, single_mul_single]
   simp [MvPolynomial.aeval_def]
 
+/- English proof (translation)
+Establish `key : (psi η S).toRingHom = (kapU (Ω` using `Ω)).toRingHom.comp (coneGen (S := S) η).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Express the relevant statement in the definitionally equal form `psi η S (C a) = kapU ((coneGen (S := S) η) (C a))`. Rewrite using `[psi, aeval_C, ← MvPolynomial.algebraMap_eq, AlgHom.commutes, Polynomial.algebraMap_apply, kapU, Polynomial.aeval_C, coe_algebraMap, Function.comp_apply, algebraMap_LA, Algebra.algebraMap_self, RingHom.id_apply]`.
+
+Both sides reduce to the same expression. Introduce `j`. Express the relevant statement in the definitionally equal form `psi η S (X j) = kapU (coneGen η (X j))`. Rewrite using `[psi_X, coneGen, aeval_X, kapU, map_mul, Polynomial.aeval_C, Polynomial.aeval_X, coe_algebraMap, Function.comp_apply, single_mul_single]`. Simplify using the standard rewrite rules.
+
+Use `congrArg (fun g => g h) key` as an intermediate fact. Express the relevant statement in the definitionally equal form `psi η S h = kapU (coneGen (S := S) η h) at this`. Rewrite using `[this, coneGen_of_isHomogeneous η hh, kapU, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, coe_algebraMap, Function.comp_apply, single_pow, single_mul_single]`. Simplify using `[MvPolynomial.aeval_def]`.
+-/
 theorem psi_of_isHomogeneous {h : Sy S r} {b : ℕ} (hh : h.IsHomogeneous b) :
     psi η S h = single ((0 : ℤ), (b : ℤ)) (aeval η h) := by
   have key : (psi η S).toRingHom = (kapU (Ω := Ω)).toRingHom.comp (coneGen (S := S) η).toRingHom := by

@@ -17,6 +17,13 @@ def farSet {Z Y : Scheme.{0}} (β : Z ⟶ Y) {L : LB Z} (s : L.Sec) : Set Y := {
 def cubeTen {S : Scheme.{0}} {G T : Over S} [GrpObj G] (x a b c : T ⟶ G) : List (T ⟶ G) :=
   [x * a, x * a⁻¹, a, a⁻¹, x * b, x * c, x * (b * c)⁻¹, b, c, (b * c)⁻¹]
 
+/- English proof (translation)
+Establish `: farSet β s = (β '' (secNz s : Set Z)ᶜ)ᶜ`. Use extensionality with `v`. Simplify using `only [farSet, Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_image, not_exists, not_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h g hg hgv`.
+
+Conclude with `hg (h g hgv)`. Introduce `h g hgv`. Assume the negation of the conclusion as `hg`. Conclude with `h g hg hgv`. Rewrite using `[this, isOpen_compl_iff]`.
+
+Conclude with `hβ _ (secNz s).isOpen.isClosed_compl`.
+-/
 theorem isOpen_farSet {Z Y : Scheme.{0}} (β : Z ⟶ Y) (hβ : IsClosedMap β) {L : LB Z} (s : L.Sec) :
     IsOpen (farSet β s) := by
   have : farSet β s = (β '' (secNz s : Set Z)ᶜ)ᶜ := by

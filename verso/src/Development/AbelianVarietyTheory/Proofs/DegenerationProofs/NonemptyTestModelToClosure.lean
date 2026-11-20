@@ -19,6 +19,13 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 
 namespace GlobalTheory.ZH.TestMap
 
+/- English proof (translation)
+Establish `: JacobsonSpace (pullback f s : Scheme.{0})` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd f s)`. Establish `h1 : x ∈ Set.range (pullback.fst f s)`. Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `hs`. Take `⟨x', rfl⟩` from `h1`.
+
+Take `⟨c, hcW, hc⟩` from `nonempty_inter_closedPoints (Z := (pullback.fst f s) ⁻¹' Z) ⟨x', hx⟩ (hZ.preimage (pullback.fst f s).continuous)`. Use `replace hc : IsClosed {c} := hc`. Use `⟨pointOfClosedPoint (pullback.snd f s) c hc ≫ pullback.fst f s, ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]`. Rewrite using `[Scheme.Hom.comp_apply, pointOfClosedPoint_apply]`.
+
+Conclude with `hcW`.
+-/
 theorem exists_pt {L : Type} [Field L] [IsAlgClosed L] {X T : Scheme.{0}} (f : X ⟶ T) [LocallyOfFiniteType f]
     (s : Sp L ⟶ T) {Z : Set X} (hZ : IsLocallyClosed Z) {x : X} (hx : x ∈ Z) (hs : f x ∈ Set.range s) :
     ∃ a : Sp L ⟶ X, a ≫ f = s ∧ ∀ w, a w ∈ Z := by
@@ -34,6 +41,11 @@ theorem exists_pt {L : Type} [Field L] [IsAlgClosed L] {X T : Scheme.{0}} (f : X
   · rw [Scheme.Hom.comp_apply, pointOfClosedPoint_apply]
     exact hcW
 
+/- English proof (translation)
+Rewrite using `[dense_iff_inter_open]`. Introduce `U hU hne`. Establish `ho : IsOpenMap f` using `f.isOpenMap`. Take `⟨_, ⟨x, hx, rfl⟩, hr⟩` from `hs.inter_open_nonempty _ (ho U hU) (hne.image _)`. Take `⟨a, ha, hU'⟩` from `exists_pt f s hU.isLocallyClosed hx hr`.
+
+Conclude with `⟨a (IsLocalRing.closedPoint L), hU' _, Set.mem_iUnion.2 ⟨⟨a, ha⟩, _, rfl⟩⟩`.
+-/
 theorem dense_pts {L : Type} [Field L] [IsAlgClosed L] {X T : Scheme.{0}} (f : X ⟶ T) [Smooth f]
     (s : Sp L ⟶ T) (hs : DenseRange s) : Dense (⋃ a : {a : Sp L ⟶ X // a ≫ f = s}, Set.range a.1) := by
   rw [dense_iff_inter_open]
@@ -43,6 +55,9 @@ theorem dense_pts {L : Type} [Field L] [IsAlgClosed L] {X T : Scheme.{0}} (f : X
   obtain ⟨a, ha, hU'⟩ := exists_pt f s hU.isLocallyClosed hx hr
   exact ⟨a (IsLocalRing.closedPoint L), hU' _, Set.mem_iUnion.2 ⟨⟨a, ha⟩, _, rfl⟩⟩
 
+/- English proof (translation)
+Establish `: IsDominant (Sigma.desc a)` using `⟨hd.mono (Set.iUnion_subset fun k => by`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨Sigma.ι (fun _ : A => Sp L) k w, by rw [← Scheme.Hom.comp_apply, Sigma.ι_desc]⟩)⟩`. Use `ext_of_isDominant_of_isSeparated i h (Sigma.desc a) (Sigma.hom_ext _ _ fun k => ?_)` and prove the remaining obligations. Rewrite using `[Sigma.ι_desc_assoc, Sigma.ι_desc_assoc, H]`.
+-/
 theorem ext_of_pts {L : Type} [Field L] {X Y T : Scheme.{0}} [IsReduced X] (i : Y ⟶ T) [IsSeparated i]
     {f g : X ⟶ Y} (h : f ≫ i = g ≫ i) {A : Type} (a : A → (Sp L ⟶ X)) (hd : Dense (⋃ k, Set.range (a k)))
     (H : ∀ k, a k ≫ f = a k ≫ g) : f = g := by
@@ -63,6 +78,11 @@ noncomputable def comb {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k)
     simp only [map_sum, map_mul, e, Finset.mul_sum, (s _).compat l l']
     exact Finset.sum_congr rfl fun j _ => mul_left_comm _ _ _
 
+/- English proof (translation)
+Take `⟨l, c, hl, hv⟩` from `hv`. Use `⟨l, c, hl, fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ j, ψ (m i j) * v j = c * valR x _ (∑ j, constFn p (H.U l) (m i j) * (s j).f l)`. Rewrite using `[CrdCalc.valR_eq x _ hl, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ← CrdCalc.valR_eq, ← CrdCalc.valR_eq, GlobalTheory.Points.valR_constFn_of_over p ψ x hx _ hl, hv, mul_left_comm]`.
+-/
 theorem crd_comb {k R : Type} [CommRing k] [CommRing R] {X : Scheme.{0}} {p : X ⟶ Sp k} {H : LB X}
     {J : Type} [Fintype J] {s : J → H.Sec} (m : Matrix J J k)
     {x : Sp R ⟶ X} {ψ : k →+* R} (hx : x ≫ p = spMap ψ) {v : J → R} (hv : Crd H s x v) :
@@ -75,6 +95,9 @@ theorem crd_comb {k R : Type} [CommRing k] [CommRing R] {X : Scheme.{0}} {p : X 
   rw [map_mul, ← CrdCalc.valR_eq, ← CrdCalc.valR_eq,
     GlobalTheory.Points.valR_constFn_of_over p ψ x hx _ hl, hv, mul_left_comm]
 
+/- English proof (translation)
+Rewrite using `[TopologicalSpace.Opens.mem_iSup, Function.ne_iff]`. Use `exists_congr fun j => ?_` and prove the remaining obligations. Rewrite using `[← CrdCalc.top_le_iff, ← CrdCalc.crd_isUnit_iff j hv, isUnit_iff_ne_zero]`. Both sides reduce to the same expression.
+-/
 theorem ne_zero_iff {K : Type} [Field K] {X : Scheme.{0}} {H : LB X} {J : Type} {s : J → H.Sec}
     {x : Sp K ⟶ X} {v : J → K} (hv : Crd H s x v) :
     v ≠ 0 ↔ x (IsLocalRing.closedPoint K) ∈ ⨆ j, nonzeroLocus (s j) := by
@@ -83,6 +106,11 @@ theorem ne_zero_iff {K : Type} [Field K] {X : Scheme.{0}} {H : LB X} {J : Type} 
   rw [← CrdCalc.top_le_iff, ← CrdCalc.crd_isUnit_iff j hv, isUnit_iff_ne_zero]
   rfl
 
+/- English proof (translation)
+Establish `: ∀ i, ∃ c : J → O, ∑ j, c j • b j = B i` using `fun i => (Submodule.mem_span_range_iff_exists_fun O).1 (h (Submodule.subset_span ⟨i, rfl⟩))`. Use `choose m hm using this`. Use `⟨Matrix.of m, ?_⟩` and prove the remaining obligations. Use extensionality with `i k`. Rewrite using `[← hm i]`.
+
+Simplify using `[Matrix.mul_apply, Finset.sum_apply, Algebra.smul_def]`.
+-/
 theorem exists_mul_of_span_eq {O K J : Type} [CommRing O] [Field K] [Algebra O K] [Fintype J] [DecidableEq J]
     {B b : Matrix J J K} (h : Submodule.span O (Set.range B) ≤ Submodule.span O (Set.range b)) :
     ∃ m : Matrix J J O, B = m.map (algebraMap O K) * b := by
@@ -94,6 +122,11 @@ theorem exists_mul_of_span_eq {O K J : Type} [CommRing O] [Field K] [Algebra O K
   rw [← hm i]
   simp [Matrix.mul_apply, Finset.sum_apply, Algebra.smul_def]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Take `⟨a, ha, hZ⟩` from `exists_pt p (spMap ψ) (⨆ i, nonzeroLocus (comb p s (m i)) : X.Opens).isOpen.isClosed_compl.isLocallyClosed hn hx`. Take `⟨w, hw, hc⟩` from `h a ha`. Use `hZ _ ((ne_zero_iff (crd_comb m ha hc)).1 fun h0 => hw ?_)` and prove the remaining obligations. Establish `hd : (m.map ψ).det ≠ 0`.
+
+Use `(hm.map ψ).ne_zero` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Conclude with `Matrix.eq_zero_of_mulVec_eq_zero hd h0`.
+-/
 theorem mem_iSup_comb {k L : Type} [CommRing k] [Field L] [IsAlgClosed L] {X : Scheme.{0}} {p : X ⟶ Sp k}
     [LocallyOfFiniteType p] {H : LB X} {J : Type} [Fintype J] {s : J → H.Sec} {m : Matrix J J k}
     (hm : IsUnit m.det) (ψ : k →+* L) (h : ∀ a : Sp L ⟶ X, a ≫ p = spMap ψ → ∃ w, w ≠ 0 ∧ Crd H s a w)
@@ -108,6 +141,9 @@ theorem mem_iSup_comb {k L : Type} [CommRing k] [Field L] [IsAlgClosed L] {X : S
     rwa [RingHom.map_det] at this
   exact Matrix.eq_zero_of_mulVec_eq_zero hd h0
 
+/- English proof (translation)
+The claim follows from `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical ψ).2 (((RingHom.injective_iff_ker_eq_bot ψ).1 h).le.trans bot_le)`.
+-/
 theorem denseRange_spMap {k L : Type} [CommRing k] [CommRing L] {ψ : k →+* L} (h : Function.Injective ψ) :
     DenseRange (spMap ψ) :=
   (PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical ψ).2
@@ -118,17 +154,29 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω
 section Test
 variable {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀)
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem gPt_j : gPt p ≫ spMap u.j = jFK (R := u.V) (PadicAlgCl p) ≫ jK u.V := by
   rw [← Spec.map_comp, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_j (a : u.V) :
     (u.j a : PadicAlgCl p) = algebraMap (FractionRing u.V) _ (algebraMap u.V (FractionRing u.V) a) := rfl
 
+/- English proof (translation)
+The claim follows from `(u.norm_le x).1 (h ▸ (mem_OO_iff _).1 c.2)`.
+-/
 theorem exists_of_eq_coe {x : FractionRing u.V} {c : OO p} (h : algebraMap _ (PadicAlgCl p) x = c) :
     ∃ a : u.V, algebraMap _ _ a = x :=
   (u.norm_le x).1 (h ▸ (mem_OO_iff _).1 c.2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a ha => by obtain ⟨b, hb⟩ := ha.exists_right_inv have h1 : algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) a) * b = 1 := congrArg Subtype.val hb have h0 : algebraMap u.V (FractionRing u.V) a ≠ 0 := fun h => by simp [h] at h1 obtain ⟨c, hc⟩ := …`.
+-/
 theorem isLocalHom_j : IsLocalHom u.j := ⟨fun a ha => by
   obtain ⟨b, hb⟩ := ha.exists_right_inv
   have h1 : algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) a) * b = 1 :=
@@ -139,9 +187,25 @@ theorem isLocalHom_j : IsLocalHom u.j := ⟨fun a ha => by
   refine IsUnit.of_mul_eq_one c (IsFractionRing.injective u.V (FractionRing u.V) ?_)
   rw [map_mul, hc, map_one, mul_inv_cancel₀ h0]⟩
 
+/- English proof (translation)
+The claim follows from `(algebraMap (FractionRing u.V) (PadicAlgCl p)).injective.comp (IsFractionRing.injective u.V (FractionRing u.V))`.
+-/
 theorem injective_j : Function.Injective ((OO p).subtype.comp u.j) :=
   (algebraMap (FractionRing u.V) (PadicAlgCl p)).injective.comp (IsFractionRing.injective u.V (FractionRing u.V))
 
+/- English proof (translation)
+Take `⟨m₁, h₁⟩` from `exists_mul_of_span_eq h.le`. Take `⟨m₂, h₂⟩` from `exists_mul_of_span_eq h.ge`. Use `set e := algebraMap (FractionRing u.V) (PadicAlgCl p)`. Establish `hd : ∀ A : Matrix J J (FractionRing u.V), (A.map e).det = e A.det` using `fun A => (e.map_det A).symm`. Establish `hd' : ∀ A : Matrix J J (OO p), (A.map (algebraMap _ (PadicAlgCl p))).det = (A.det : OO p)` using `fun A => ((algebraMap (OO p) (PadicAlgCl p)).map_det A).symm`.
+
+Establish `hB' : e B.det ≠ 0` using `(map_ne_zero e).2 hB`. Establish `e₁` using `congrArg Matrix.det h₁`. Establish `e₂` using `congrArg Matrix.det h₂`. Rewrite `e₁`, `e₂` using `[Matrix.det_mul, hd, hd, hd']`. Establish `hb : b.det ≠ 0` using `fun h0 => hB' (by rw [e₁, h0, map_zero, mul_zero])`.
+
+Establish `hu : m₁.det * m₂.det = 1` using `Subtype.ext (mul_right_cancel₀ hB' (by`. Rewrite using `[Subring.coe_mul, _root_.mul_assoc, ← e₂, ← e₁]`. Use the proof step `simp))`. Establish `h₃ : (B * b⁻¹).map e = m₁.map (algebraMap _ (PadicAlgCl p))`. Rewrite using `[Matrix.map_mul, h₁, Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hb.isUnit, Matrix.map_one _ (map_zero e) (map_one e), Matrix.mul_one]`.
+
+Establish `h₄ : ∀ i k, ∃ a : u.V, u.j a = m₁ i k` using `fun i k => by`. Establish `e' : e ((B * b⁻¹) i k) = (m₁ i k : OO p)` using `congrFun (congrFun h₃ i) k`. Take `⟨a, ha⟩` from `exists_of_eq_coe u e'`. Conclude with `⟨a, Subtype.ext ((congrArg e ha).trans e')⟩`. Use `choose m hm using h₄`.
+
+Establish `h₅ : (Matrix.of m).map u.j = m₁` using `Matrix.ext hm`. Use `⟨hb, Matrix.of m, ?_, ?_⟩` and prove the remaining obligations. Use `(isLocalHom_j u).map_nonunit _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, h₅]`. Conclude with `IsUnit.of_mul_eq_one _ hu`.
+
+Rewrite using `[h₁, ← h₅]`. Both sides reduce to the same expression.
+-/
 theorem exists_matrix {J : Type} [Fintype J] [DecidableEq J] {B b : Matrix J J (FractionRing u.V)} (hB : B.det ≠ 0)
     (h : Submodule.span (OO p) (Set.range (B.map (algebraMap _ (PadicAlgCl p)))) =
       Submodule.span (OO p) (Set.range (b.map (algebraMap _ (PadicAlgCl p))))) :
@@ -176,18 +240,32 @@ theorem exists_matrix {J : Type} [Fintype J] [DecidableEq J] {B b : Matrix J J (
   · rw [h₁, ← h₅]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Over.homMk (pullback.lift a _ (ha.trans (gPt_j u))) (pullback.lift_snd _ _ _), pullback.lift_fst _ _ _⟩`.
+-/
 theorem exists_ptC (a : Sp (PadicAlgCl p) ⟶ u.G.left) (ha : a ≫ u.G.hom = gPt p ≫ spMap u.j) :
     ∃ a' : u.PtC, u.toG a' = a :=
   ⟨Over.homMk (pullback.lift a _ (ha.trans (gPt_j u))) (pullback.lift_snd _ _ _), pullback.lift_fst _ _ _⟩
 
+/- English proof (translation)
+The claim follows from `Over.w a`.
+-/
 theorem ptC_snd (a : u.PtC) : a.left ≫ pullback.snd u.G.hom (jK u.V) = jFK (R := u.V) (PadicAlgCl p) := Over.w a
 
+/- English proof (translation)
+Rewrite using `[gPt_j, ← ptC_snd u a, Category.assoc, ← pullback.condition]`. Conclude with `Category.assoc _ _ _`.
+-/
 theorem toG_over (a : u.PtC) : u.toG a ≫ u.G.hom = gPt p ≫ spMap u.j := by
   rw [gPt_j, ← ptC_snd u a, Category.assoc, ← pullback.condition]
   exact Category.assoc _ _ _
 
 end Test
 
+/- English proof (translation)
+Set `a' : Sp K ⟶ (baseOver (Sp S.R) ⊗ ρ.P.A).left` to `pullback.lift (f := 𝟙 (Sp S.R)) (a ≫ ρ.P.A.hom) a (Category.comp_id _)`. Take `⟨v, hv⟩` from `CrdCalc.crd_exists (H := LPow ρ.P.A ρ.P.L S.N (baseOver (Sp S.R))) (DVR.linComb_isLB _ ρ.P.isLB _ _) ρ.s a'`. Use `⟨v, (ne_zero_iff hv).2 ?_, a', pullback.lift_snd _ _ _, hv⟩` and prove the remaining obligations. Use `h.1` as an intermediate fact. Simplify using `only [Set.mem_univ, iSup_pos] at this`.
+
+Rewrite using `[this]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem exists_real_crd (h : ImmBy (baseOver (Sp S.R) ⊗ ρ.P.A).hom (LPow ρ.P.A ρ.P.L S.N (baseOver (Sp S.R))) ρ.s
     Set.univ) {K : Type} [Field K] (a : Sp K ⟶ ρ.P.A.left) : ∃ v, v ≠ 0 ∧ ρ.Crd a v := by
   let a' : Sp K ⟶ (baseOver (Sp S.R) ⊗ ρ.P.A).left :=
@@ -200,6 +278,9 @@ theorem exists_real_crd (h : ImmBy (baseOver (Sp S.R) ⊗ ρ.P.A).hom (LPow ρ.P
   rw [this]
   trivial
 
+/- English proof (translation)
+Use `⟨?_, h.1, h.2.1⟩` and prove the remaining obligations. Establish `h1` using `Nat.pow_le_pow_left (Nat.le_trans ρ.n_prime.two_le (Nat.le_self_pow (by have := ρ.two_le; omega : ρ.k ≠ 0) ρ.n)) 2`. Rewrite using `[ρ.N_eq]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem big (ρ : S.Real) (h : S.Big) : Big S.g S.N (S.r * S.N) := by
   refine ⟨?_, h.1, h.2.1⟩
   have h1 := Nat.pow_le_pow_left (Nat.le_trans ρ.n_prime.two_le
@@ -207,6 +288,9 @@ theorem big (ρ : S.Real) (h : S.Big) : Big S.g S.N (S.r * S.N) := by
   rw [ρ.N_eq]
   omega
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]
@@ -215,6 +299,11 @@ theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A 
 section Cover
 variable {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (t : ρ.GeoTest p y₀)
 
+/- English proof (translation)
+Take `⟨a', h⟩` from `exists_ptC t.u a (ha.trans (spMap_comp _ _))`. Take `⟨v, hv, hc⟩` from `exists_real_crd (GlobalTheory.ZH.ThetaSys.Real.immBy_basis hL o Ω S ρ) (t.u.toA a')`. Establish `hd : (t.b.map (algebraMap _ (PadicAlgCl p))).det ≠ 0`. Use `(map_ne_zero (algebraMap _ (PadicAlgCl p))).2 hb` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+
+Establish `h1` using `t.link a' v hc`. Rewrite `h1` using `[h]`. Conclude with `⟨_, fun h0 => hv (Matrix.eq_zero_of_mulVec_eq_zero hd h0), h1⟩`.
+-/
 theorem crd_generic [ArithBase o Ω] (hL : GlobalTheory.UT.LL) (hb : t.b.det ≠ 0) (a : Sp (PadicAlgCl p) ⟶ t.u.G.left)
     (ha : a ≫ t.u.G.hom = spMap ((OO p).subtype.comp t.u.j)) : ∃ w, w ≠ 0 ∧ Crd (t.u.H S.N) t.σ a w := by
   obtain ⟨a', h⟩ := exists_ptC t.u a (ha.trans (spMap_comp _ _))
@@ -226,6 +315,13 @@ theorem crd_generic [ArithBase o Ω] (hL : GlobalTheory.UT.LL) (hb : t.b.det ≠
   rw [h] at h1
   exact ⟨_, fun h0 => hv (Matrix.eq_zero_of_mulVec_eq_zero hd h0), h1⟩
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed (kb p) := (GlobalTheory.ZJ.kb_isAlgClosed_and_conj p).1`. Establish `pb : IsPullback t.mod.r t.mod.Φ.G.hom t.u.G.hom (rPt p ≫ spMap t.u.j)` using `t.mod.cart.1`. Establish `hsq : a ≫ t.u.G.hom = 𝟙 _ ≫ rPt p ≫ spMap t.u.j` using `(ha.trans (spMap_comp _ _)).trans (Category.id_comp _).symm`. Set `x : t.mod.Φ.Pt` to `Over.homMk (pb.lift a (𝟙 _) hsq) (pb.lift_snd _ _ hsq)`. Establish `hx : x.left ≫ t.mod.r = a` using `pb.lift_fst _ _ hsq`.
+
+Take `⟨v, hv⟩` from `CrdCalc.crd_exists (R := kb p) (t.mod.Φ.H_isLB 1) t.mod.F x.left`. Establish `h1` using `t.mod.red x v hv`. Rewrite `h1` using `[hx]`. Use `⟨v, (ne_zero_iff hv).2 ?_, h1⟩` and prove the remaining obligations. Establish `hcov` using `(GlobalTheory.T.immBy_weight_zero' hL.1 hL.2.1 (kb p) t.mod.Φ _ _ _ _ _ _ t.mod.F t.mod.pol (big ρ hS) t.mod.good t.mod.dim).1`.
+
+Conclude with `(hcov.ge.trans (iSup₂_le fun i _ => le_iSup (fun i => nonzeroLocus (t.mod.F i)) i)) trivial`.
+-/
 theorem crd_special (hL : GlobalTheory.UT.LL) (hS : S.Big) (a : Sp (kb p) ⟶ t.u.G.left)
     (ha : a ≫ t.u.G.hom = spMap ((IsLocalRing.residue (OO p)).comp t.u.j)) :
     ∃ w, w ≠ 0 ∧ Crd (t.u.H S.N) t.σ a w := by
@@ -243,10 +339,20 @@ theorem crd_special (hL : GlobalTheory.UT.LL) (hS : S.Big) (a : Sp (kb p) ⟶ t.
     t.mod.good t.mod.dim).1
   exact (hcov.ge.trans (iSup₂_le fun i _ => le_iSup (fun i => nonzeroLocus (t.mod.F i)) i)) trivial
 
+/- English proof (translation)
+The claim follows from `haveI := t.mod.smooth SmoothOfRelativeDimension.smooth S.g _`.
+-/
 theorem smooth : Smooth t.u.G.hom :=
   haveI := t.mod.smooth
   SmoothOfRelativeDimension.smooth S.g _
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed (kb p) := (GlobalTheory.ZJ.kb_isAlgClosed_and_conj p).1`. Use `haveI := smooth t`. Use `haveI := isLocalHom_j t.u`. Use `top_unique fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : (t.u.G.hom x).asIdeal = ⊥`.
+
+Use `mem_iSup_comb hm _ (crd_generic t hL hb) ⟨IsLocalRing.closedPoint _, PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Express the relevant statement in the definitionally equal form `Ideal.comap _ (IsLocalRing.maximalIdeal _) = _`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot]`. Conclude with `Ideal.comap_bot_of_injective _ (injective_j t.u)`.
+
+Use `mem_iSup_comb hm _ (crd_special t hL hS) ⟨IsLocalRing.closedPoint _, (IsLocalRing.comap_closedPoint ((IsLocalRing.residue (OO p)).comp t.u.j)).trans (PrimeSpectrum.ext ?_)⟩` and prove the remaining obligations. Conclude with `(IsLocalRing.eq_maximalIdeal (Ring.DimensionLEOne.maximalOfPrime hx (t.u.G.hom x).isPrime)).symm`.
+-/
 theorem iSup_comb_eq_top [ArithBase o Ω] (hL : GlobalTheory.UT.LL) (hS : S.Big) (hb : t.b.det ≠ 0)
     {m : Matrix S.J S.J t.u.V} (hm : IsUnit m.det) : ⨆ i, nonzeroLocus (comb t.u.G.hom t.σ (m i)) = ⊤ := by
   haveI : IsAlgClosed (kb p) := (GlobalTheory.ZJ.kb_isAlgClosed_and_conj p).1
@@ -270,12 +376,22 @@ end Cover
 section Base
 variable {M : RatModel o Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J} (Q : Clos ρ M U₀ EE)
 
+/- English proof (translation)
+Establish `h : Q.B l i ∈ EE.E z` using `(Q.basis l z hl).ge (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite `h` using `[hE.1 z hz]`. Conclude with `(RatModel.Lat.mem_const_iff M).1 h j`.
+-/
 theorem basis_mem_O (hE : S.IsEE M U₀ EE) (l : Q.Λ) {z : M.Z} (hz : z ∈ U₀) (hl : z ∈ Q.W l) (i j : S.J) :
     Q.B l i j ∈ M.O z := by
   have h : Q.B l i ∈ EE.E z := (Q.basis l z hl).ge (Submodule.subset_span ⟨i, rfl⟩)
   rw [hE.1 z hz] at h
   exact (RatModel.Lat.mem_const_iff M).1 h j
 
+/- English proof (translation)
+Establish `hr` using `RatModel.range_eq_singleton x (IsLocalRing.closedPoint K)`. Generalize the expression as in `x (IsLocalRing.closedPoint K) = z at hz hl hr`. Set `cO : Matrix S.J S.J (M.O z)` to `fun i j => ⟨valF M.pt _ (Q.c l i j), RatModel.valF_mem_O hl _⟩`. Set `BO : Matrix S.J S.J (M.O z)` to `fun i j => ⟨Q.B l i j, basis_mem_O Q hE l hz hl i j⟩`. Establish `h : cO * BO = 1`.
+
+Use `Matrix.map_injective (f := (M.O z).val.toRingHom) Subtype.val_injective ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Q.c_inv l`. Establish `h2` using `congrArg (fun A => A.map (RatModel.valHom x z hr)) h`.
+
+Use `beta_reduce at h2`. Rewrite `h2` using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← h2]`. Use `congr 1`. Conclude with `Matrix.ext fun i j => (RatModel.val_valF (hr.le.trans (Set.singleton_subset_iff.2 hl)) _).symm`.
+-/
 theorem val_c_mul (hE : S.IsEE M U₀ EE) (l : Q.Λ) {K : Type} [Field K] (x : Sp K ⟶ M.Z)
     (hz : x (IsLocalRing.closedPoint K) ∈ U₀) (hl : x (IsLocalRing.closedPoint K) ∈ Q.W l) :
     (Q.c l).map (valR x (Q.W l)) * (Q.B l).map (M.val x) = 1 := by
@@ -295,6 +411,15 @@ theorem val_c_mul (hE : S.IsEE M U₀ EE) (l : Q.Λ) {K : Type} [Field K] (x : S
   congr 1
   exact Matrix.ext fun i j => (RatModel.val_valF (hr.le.trans (Set.singleton_subset_iff.2 hl)) _).symm
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hs` using `RatModel.gPt_specializes (y := y) rfl (IsLocalRing.closedPoint _)`. Establish `hr` using `RatModel.range_eq_singleton (gPt p ≫ y) (IsLocalRing.closedPoint _)`. Generalize the expression as in `(gPt p ≫ y) (IsLocalRing.closedPoint _) = z at hz hs hr`.
+
+Rewrite `hv` using `[Q.basis l _ hl]`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hv`. Use `(Submodule.mem_span_range_iff_exists_fun _).2 ⟨fun i => RatModel.valLoc y _ specializes_rfl (a i), funext fun j => ?_⟩` and prove the remaining obligations. Set `BO : S.J → M.O z` to `fun i => ⟨Q.B l i j, basis_mem_O Q hE l hz (hs.mem_open (Q.W l).isOpen hl) i j⟩`. Set `aO : S.J → M.O z` to `fun i => ⟨a i, RatModel.O_le_of_specializes hs (a i).2⟩`.
+
+Establish `e : (∑ i, a i • Q.B l i) j = ((∑ i, aO i * BO i : M.O z) : Ω)`. Simplify using `[aO, BO, Finset.sum_apply, Subalgebra.smul_def]`. Use `beta_reduce`. Rewrite using `[e, ← RatModel.valHom_apply _ z hr, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, RatModel.valHom_apply, RatModel.valHom_apply]`. Conclude with `congrArg (· * _) (RatModel.val_gPt rfl (a i)).symm`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨Q.B l i, (Q.basis l _ hl).ge (Submodule.subset_span ⟨i, rfl⟩), rfl⟩`.
+-/
 theorem span_val (hE : S.IsEE M U₀ EE) (l : Q.Λ) {p : ℕ} [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z)
     (hz : (gPt p ≫ y) (IsLocalRing.closedPoint _) ∈ U₀) (hl : y (cPt p) ∈ Q.W l) :
     Submodule.span (OO p) ((fun (v : S.J → Ω) j => M.val (gPt p ≫ y) (v j)) '' (EE.E (y (cPt p)))) =
@@ -323,14 +448,23 @@ theorem span_val (hE : S.IsEE M U₀ EE) (l : Q.Λ) {p : ℕ} [Fact p.Prime] (y 
 variable {Q} {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} {y₀ : S.R →+* PadicAlgCl p} {t : ρ.GeoTest p y₀}
   (c : Q.Fac y t.u)
 
+/- English proof (translation)
+Rewrite using `[c.yK_fac, ← Category.assoc, ← gPt_j, Category.assoc, c.fac]`.
+-/
 theorem gPt_eq : gPt p ≫ y = jFK (R := t.u.V) (PadicAlgCl p) ≫ c.yK ≫ U₀.ι := by
   rw [c.yK_fac, ← Category.assoc, ← gPt_j, Category.assoc, c.fac]
 
 include c in
+/- English proof (translation)
+Rewrite using `[gPt_eq c, ← Category.assoc, Scheme.Hom.comp_apply]`. Conclude with `Subtype.prop _`.
+-/
 theorem gPt_mem (w) : (gPt p ≫ y) w ∈ U₀ := by
   rw [gPt_eq c, ← Category.assoc, Scheme.Hom.comp_apply]
   exact Subtype.prop _
 
+/- English proof (translation)
+Use `haveI := isLocalHom_j t.u`. Use `(CrdCalc.top_le_iff _ _).2 ?_` and prove the remaining obligations. Rewrite `h` using `[← c.fac, Scheme.Hom.comp_apply]`. Conclude with `(IsLocalRing.comap_closedPoint t.u.j) ▸ h`.
+-/
 theorem le_preimage_yV {W : M.Z.Opens} (h : y (cPt p) ∈ W) : ⊤ ≤ c.yV ⁻¹ᵁ W := by
   haveI := isLocalHom_j t.u
   refine (CrdCalc.top_le_iff _ _).2 ?_
@@ -338,6 +472,13 @@ theorem le_preimage_yV {W : M.Z.Opens} (h : y (cPt p) ∈ W) : ⊤ ≤ c.yV ⁻�
   exact (IsLocalRing.comap_closedPoint t.u.j) ▸ h
 
 include c in
+/- English proof (translation)
+Set `x : Sp (FractionRing t.u.V) ⟶ M.Z` to `c.yK ≫ U₀.ι`. Establish `hz : x (IsLocalRing.closedPoint _) ∈ U₀` using `Subtype.prop (c.yK _)`. Establish `hx : x (IsLocalRing.closedPoint _) ∈ Q.W l`. Rewrite using `[show x = _ from c.yK_fac]`. Conclude with `le_preimage_yV c hl (x := jK t.u.V _) trivial`.
+
+Establish `e : ((Q.B l).map (M.val x)).map (algebraMap _ (PadicAlgCl p)) = (Q.B l).map (M.val (gPt p ≫ y))`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `RatModel.val_spMap_comp (algebraMap _ (PadicAlgCl p)) x specializes_rfl ⟨_, basis_mem_O Q hE l hz hx i j⟩` as an intermediate fact. Rewrite `this` using `[RatModel.valLoc_eq_val]`. Rewrite using `[gPt_eq c]`.
+
+Conclude with `this.symm`. Rewrite using `[← e]`. Use `exists_matrix t.u (Matrix.det_ne_zero_of_left_inverse (val_c_mul Q hE l x hz hx)) ?_` and prove the remaining obligations. Rewrite using `[e, ← span_val Q hE l y (gPt_mem c _) hl, ← t.span]`. Conclude with `hE.2 _ p y y₀ t.τ ⟨rfl, by rintro _ ⟨w, rfl⟩; exact gPt_mem c w⟩ c.at_`.
+-/
 theorem exists_change (hE : S.IsEE M U₀ EE) {l : Q.Λ} (hl : y (cPt p) ∈ Q.W l) :
     t.b.det ≠ 0 ∧ ∃ m : Matrix S.J S.J t.u.V, IsUnit m.det ∧ (Q.B l).map (M.val (gPt p ≫ y)) =
       (m.map fun a => (t.u.j a : PadicAlgCl p)) * t.b.map (algebraMap _ (PadicAlgCl p)) := by
@@ -372,22 +513,44 @@ noncomputable def genMap : pullback t.u.G.hom (jK t.u.V) ⟶ pullback ρ.P.A.hom
     rw [Category.assoc, Category.assoc, c.yK_u, h1, ← h2]
     exact (Category.assoc _ _ _).symm)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem genMap_fst : genMap c ≫ pullback.fst _ _ = t.u.U.gen.hom.left ≫ t.u.φ := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem genMap_snd : genMap c ≫ pullback.snd _ _ = pullback.snd _ _ ≫ c.yK := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, Q.cart.w, ← Category.assoc, genMap_snd, Category.assoc]`.
+-/
 theorem genMap_over : (genMap c ≫ Q.a₀) ≫ Q.P.hom = pullback.snd _ _ ≫ c.yK ≫ U₀.ι := by
   rw [Category.assoc, Q.cart.w, ← Category.assoc, genMap_snd, Category.assoc]
 
 noncomputable def ptA (a : t.u.PtC) : Sp (PadicAlgCl p) ⟶ pullback ρ.P.A.hom Q.u₀ := a.left ≫ genMap c
 
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).trans (congrArg (a.left ≫ ·) (genMap_fst c))`.
+-/
 theorem ptA_fst (a : t.u.PtC) : ptA c a ≫ pullback.fst _ _ = t.u.toA a :=
   (Category.assoc _ _ _).trans (congrArg (a.left ≫ ·) (genMap_fst c))
 
+/- English proof (translation)
+Rewrite using `[gPt_eq c, ← ptC_snd t.u a, Category.assoc a.left, ← genMap_over]`. Simplify using `only [ptA, Category.assoc]`.
+-/
 theorem ptA_over (a : t.u.PtC) : (ptA c a ≫ Q.a₀) ≫ Q.P.hom = gPt p ≫ y := by
   rw [gPt_eq c, ← ptC_snd t.u a, Category.assoc a.left, ← genMap_over]
   simp only [ptA, Category.assoc]
 
+/- English proof (translation)
+Take `⟨v, -, hv⟩` from `exists_real_crd (GlobalTheory.ZH.ThetaSys.Real.immBy_basis hL o Ω S ρ) (t.u.toA a)`. Take `⟨w, hw⟩` from `CrdCalc.crd_exists (pull_isLB Q.isLB (Q.P.hom ⁻¹ᵁ Q.W l).ι) (Q.σ l) x`. Establish `h1` using `Q.rel l _ x w hw`. Rewrite `h1` using `[← Category.assoc, hx, ptA_over]`. Establish `h2` using `Q.crd _ (ptA c a) v (by rw [ptA_fst]; exact hv)`.
+
+Take `⟨e, he⟩` from `CrdCalc.crd_unique h2 h1`. Establish `h3` using `crd_comb m ((toG_over t.u a).trans (spMap_comp _ _).symm) (t.link a v hv)`. Use `⟨w, ?_, hw⟩` and prove the remaining obligations. Establish `h4` using `mul_eq_one_comm.1 (val_c_mul Q hE l (gPt p ≫ y) (gPt_mem c _) ((RatModel.gPt_specializes (y := y) rfl _).mem_open (Q.W l).isOpen hl))`. Establish `h5 : ((Q.c l).map (valR (gPt p ≫ y) (Q.W l))).mulVec w = (e : PadicAlgCl p) • v` using `funext he`.
+
+Establish `h6 : w = (e : PadicAlgCl p) • ((Q.B l).map (M.val (gPt p ≫ y))).mulVec v`. Rewrite using `[← Matrix.mulVec_smul, ← h5, Matrix.mulVec_mulVec, h4, Matrix.one_mulVec]`. Rewrite using `[h6, hm, ← Matrix.mulVec_mulVec]`. Conclude with `CrdCalc.crd_smul e h3`.
+-/
 theorem crd_match [ArithBase o Ω] (hL : GlobalTheory.UT.LL) (hE : S.IsEE M U₀ EE) {l : Q.Λ} (hl : y (cPt p) ∈ Q.W l)
     {m : Matrix S.J S.J t.u.V} (hm : (Q.B l).map (M.val (gPt p ≫ y)) =
       (m.map fun a => (t.u.j a : PadicAlgCl p)) * t.b.map (algebraMap _ (PadicAlgCl p)))
@@ -411,6 +574,9 @@ theorem crd_match [ArithBase o Ω] (hL : GlobalTheory.UT.LL) (hE : S.IsEE M U₀
   rw [h6, hm, ← Matrix.mulVec_mulVec]
   exact CrdCalc.crd_smul e h3
 
+/- English proof (translation)
+Use `haveI := smooth t`. Use `(dense_pts t.u.G.hom _ (denseRange_spMap (injective_j t.u))).mono (Set.iUnion_subset fun a => ?_)` and prove the remaining obligations. Take `⟨a', h⟩` from `exists_ptC t.u a.1 (a.2.trans (spMap_comp _ _))`. Conclude with `h ▸ Set.subset_iUnion (fun a : t.u.PtC => Set.range (t.u.toG a)) a'`.
+-/
 theorem dense_toG : Dense (⋃ a : t.u.PtC, Set.range (t.u.toG a)) := by
   haveI := smooth t
   refine (dense_pts t.u.G.hom _ (denseRange_spMap (injective_j t.u))).mono (Set.iUnion_subset fun a => ?_)
@@ -419,6 +585,21 @@ theorem dense_toG : Dense (⋃ a : t.u.PtC, Set.range (t.u.toG a)) := by
 
 end Main
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ M U₀ EE hB Q p _ y y₀ t c hS`. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 (Q.cover.ge (Set.mem_univ (y (cPt p))))`. Take `⟨hb, m, hm, hme⟩` from `exists_change c hB.ee hl`. Use `haveI := smooth t`. Use `haveI : IsReduced t.u.G.left := GlobalTheory.isReduced_of_smooth_of_isReduced t.u.G.hom`.
+
+Take `⟨yW, hyW⟩ : ∃ yW : Sp t.u.V ⟶ (Q.W l).toScheme, yW ≫ (Q.W l).ι = c.yV` from `⟨IsOpenImmersion.lift _ _ (by`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(top_le_preimage_iff _ _).1 (le_preimage_yV c hl)), IsOpenImmersion.lift_fac _ _ _⟩`. Establish `hx : ∀ a : t.u.PtC, ∃ x : Sp (PadicAlgCl p) ⟶ (Q.P.hom ⁻¹ᵁ Q.W l).toScheme, x ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι = ptA c a ≫ Q.a₀` using `fun a => ⟨IsOpenImmersion.lift _ _ (by`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Express the relevant statement in the definitionally equal form `Q.P.hom _ ∈ Q.W l`. Rewrite using `[← Scheme.Hom.comp_apply, ptA_over]`. Conclude with `(RatModel.gPt_specializes (y := y) rfl _).mem_open (Q.W l).isOpen hl),`. Use the proof step `IsOpenImmersion.lift_fac _ _ _⟩`.
+
+Use `choose x hx using hx`. Take `⟨f, hf, hfx, hfc⟩` from `GlobalTheory.T.exists_factor_closedImmersion_dense_points Γ(M.Z, Q.W l) _ t.u.G.left ((Q.P.hom ∣_ Q.W l) ≫ (Q.aff l).isoSpec.hom) ((t.u.G.hom ≫ yW) ≫ (Q.aff l).isoSpec.hom) _ (t.u.H S.N) S.J (Q.σ l) (fun i => comb t.u.G.hom t.σ (m i)) (pull_isLB Q.isLB _) t.mod.isLB (Q.imm l) (iS …`. Establish `: x a ≫ (Q.P.hom ∣_ Q.W l) = t.u.toG a ≫ t.u.G.hom ≫ yW`. Rewrite using `[← cancel_mono (Q.W l).ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, hx, ptA_over, Category.assoc, Category.assoc, hyW, ← Category.assoc, toG_over, Category.assoc, c.fac]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (Q.aff l).isoSpec.hom) this).trans (Category.assoc _ _ _)), crd_match c hL hB.ee hl hme a _ (hx a)⟩)`.
+
+Establish `hf' : f ≫ (Q.P.hom ∣_ Q.W l) = t.u.G.hom ≫ yW` using `(cancel_mono (Q.aff l).isoSpec.hom).1 ((Category.assoc _ _ _).trans hf)`. Establish `hover : f ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι ≫ Q.P.hom = t.u.G.hom ≫ c.yV`. Rewrite using `[← morphismRestrict_ι, ← Category.assoc, hf', Category.assoc, hyW]`. Use `⟨⟨l, hl, m, hm, hme, f, hover, genMap c, genMap_fst c, genMap_snd c, ?_, fun R _ _ ψ z w hz hw => hfc R z _ (crd_comb m hz hw)⟩⟩` and prove the remaining obligations. Use `haveI := Q.proper`.
+
+Use `haveI : IsReduced (pullback t.u.G.hom (jK t.u.V)) := GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.snd _ _)`. Use `ext_of_pts Q.P.hom ?_ _ (dense_pts (pullback.snd t.u.G.hom (jK t.u.V)) _ (denseRange_spMap (algebraMap _ (PadicAlgCl p)).injective)) fun a => ?_` and prove the remaining obligations. Rewrite using `[genMap_over, c.yK_fac, Category.assoc, Category.assoc, hover, pullback.condition_assoc]`. Set `a' : t.u.PtC` to `Over.homMk a.1 a.2`. Establish `h1 : (a.1 ≫ pullback.fst _ _) ≫ f = x a'` using `hfx a'`.
+
+Establish `h2 : x a' ≫ _ = (a.1 ≫ genMap c) ≫ Q.a₀` using `hx a'`. Rewrite using `[← Category.assoc, ← h2, ← h1, Category.assoc, Category.assoc]`.
+-/
 theorem nonempty_tMap : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (t : ρ.GeoTest p y₀) (c : Q.Fac y t.u), S.Big → Nonempty (Q.TMap t c) := by
   intro hL o Ω _ _ _ _ S ρ M U₀ EE hB Q p _ y y₀ t c hS
   obtain ⟨l, hl⟩ := TopologicalSpace.Opens.mem_iSup.1 (Q.cover.ge (Set.mem_univ (y (cPt p))))

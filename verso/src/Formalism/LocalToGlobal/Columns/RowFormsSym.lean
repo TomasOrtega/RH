@@ -16,6 +16,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
 def rPsymF : LevFam X.E X.K R.r Pr.vGs := fun w =>
   ⟨HPsymF (𝓞 X.E ⧸ w.1.asIdeal) R.r R.k R.rS, chiSymF (Ch.psi0 w) R.r R.k R.rS⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rowTyG_PsymF_H (w : {w // w ∈ Pr.vGs}) :
     (rowTyG Ch (rPsymF Ch) w).H = HJsym (𝓞 X.E ⧸ w.1.asIdeal) (R.N R.m - 1) R.k R.r R.t R.m R.rS (r_le_X' R) := rfl
 

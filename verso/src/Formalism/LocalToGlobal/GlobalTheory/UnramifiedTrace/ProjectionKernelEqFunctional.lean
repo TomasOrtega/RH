@@ -13,6 +13,13 @@ open scoped TensorProduct Classical
 
 variable {D : D7} {u : D.what₂.Word}
 
+/- English proof (translation)
+Take `⟨z0, hz0⟩` from `CrossDiaZero.dni_exists_one T v c`. Take `⟨e, he⟩` from `T.atT.res_surj v ((D.fm u).fv 0 v c (T.lv0.pr v c y))`. Establish `hT0 : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • z0.1 ∈ Lk T.atT 0 (Nat.zero_le _) v c` using `Submodule.mem_sup_left (CrossDiaZero.dnk_tld T c z0.1 z0.2)`. Establish `hte` using `T.lv0.te v c z0 hz0 hT0`. Establish `hk : (y - e • z0).1 ∈ Lk T.atT 0 (Nat.zero_le _) v c`.
+
+Use `(T.lv0.fv_ker v c (y - e • z0)).1 ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, T.lv0.pr_smul, map_smul, hz0, he, smul_eq_mul, mul_one, sub_self]`. Establish `hTk : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (y - e • z0).1 ∈ T.atT.Pv v • Lk T.atT 0 (Nat.zero_le _) v c` using `Submodule.smul_mem_smul (bwA_T_mem_Pv (D := D) (u := u) (A := T.atT) (v := v)) hk`. Establish `h0 : T.lv0.prk v c ((⟨_, hy⟩ : ↥(Lk T.atT 0 (Nat.zero_le _) v c)) - e • ⟨_, hT0⟩) = 0`. Use `(T.lv0.prk_ker v c _).2 ?_` and prove the remaining obligations.
+
+Use `show (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • y.1 - e • ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • z0.1) ∈ _`. Rewrite using `[smul_comm e, ← smul_sub]`. Conclude with `hTk`. Rewrite `h0` using `[map_sub, T.lv0.prk_smul, hte, he, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem projection_kernel_eq_functional (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
     (y : ↥(Ld D u 0 (Nat.zero_le _) c))
     (hy : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • y.1 ∈ Lk T.atT 0 (Nat.zero_le _) v c) :
@@ -36,6 +43,13 @@ theorem projection_kernel_eq_functional (T : Forms0 D u) (v : (D.mem u).A.vT) (c
   rw [map_sub, T.lv0.prk_smul, hte, he, sub_eq_zero] at h0
   exact h0
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨t, ht, htx⟩` from `(rlv_mem_locP _ _ _).1 hx`. Take `⟨e, he⟩` from `T.atT.res_surj v ((D.fm u).fv 0 v c (T.lv0.pr v c ⟨_, htx⟩) * ((D.fm u).fv 0 v c (T.lv0.pr v c z3))⁻¹)`. Establish `hk : ((⟨_, htx⟩ : ↥(Ld D u 0 (Nat.zero_le _) c)) - e • z3).1 ∈ Lk T.atT 0 (Nat.zero_le _) v c`.
+
+Use `(T.lv0.fv_ker v c _).1 ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, T.lv0.pr_smul, map_smul, he, smul_eq_mul, mul_assoc, inv_mul_cancel₀ hz3, mul_one, sub_self]`. Establish `hl` using `CrossDiaZero.dnk_lk_locP T v c (mem_localization_of_mem₂ _ hk)`. Take `⟨r, hr, hrl⟩` from `(rlv_mem_locP _ _ _).1 hl`. Use `(rlv_mem_locP _ _ _).2 ⟨r * t, fun h => (Ideal.IsPrime.mem_or_mem inferInstance h).elim hr ht, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (r * t) • x = r • (t • x - e • z3.1) + (r * e) • z3.1`. Rewrite using `[smul_sub, mul_smul, mul_smul, sub_add_cancel]`. Rewrite using `[e1]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left hrl) (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)))`. Conclude with `localization_mono₂ _ (sup_le (CrossDiaZero.cls_le_ld T c) ((Submodule.span_singleton_le_iff_mem _ _).2 z3.2))`.
+-/
 theorem ld_locP (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
     (z3 : ↥(Ld D u 0 (Nat.zero_le _) c)) (hz3 : (D.fm u).fv 0 v c (T.lv0.pr v c z3) ≠ 0) :
     Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (Ld D u 0 (Nat.zero_le _) c) =
@@ -62,6 +76,13 @@ theorem ld_locP (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨s, hs, hz, hy⟩` from `hy`. Establish `hz' : γ.1.1 *ᵥ (s • z).1 ∈ Lk T.atT 0 (Nat.zero_le _) v c`. Rewrite using `[Submodule.coe_smul, Matrix.mulVec_smul]`. Conclude with `hz`. Establish `h4` using `hD.2.2.2.1 (s • z) hz'`.
+
+Establish `e1 : T.lv0.prk v c ⟨_, hz'⟩ = T.lv0.prk v c ⟨_, hz⟩`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show γ.1.1 *ᵥ (s • z).1 = s • (γ.1.1 *ᵥ z.1)`. Rewrite using `[Submodule.coe_smul, Matrix.mulVec_smul]`.
+
+Rewrite `h4` using `[e1, hy, T.lv0.pr_smul, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Conclude with `(mul_left_cancel₀ (res_ne T hs) h4).symm`.
+-/
 theorem ptz_val (T : Forms0 D u) {v : (D.mem u).A.vT} {c : (D.mem u).C.cls 0}
     {g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c)}
     {γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))}
@@ -92,6 +113,31 @@ def PtLatF (T : Forms0 D u) : Prop :=
 
 set_option maxHeartbeats 16000000 in
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `v c`. Use `⟨Equiv.inv _, ?_⟩` and prove the remaining obligations. Introduce `G hG a g η κ μ hP k hk δ hδ`. Take `⟨_, γ, hD, z, γ', κ', hz1, hU, hpt⟩` from `hP`. Take `⟨u1, u2, u3, u4, u5, -⟩` from `hU`.
+
+Establish `H1` using `comp_of_moves T v c g γ η κ hD.1 hD.2.1 hD.2.2.1 hD.2.2.2.1 z γ' μ κ' u1 u2 u3 u4 u5`. Establish `hga` using `(ptz_val T hD z _ hpt).trans hz1`. Establish `hkb : ((k : ℤ) : (D.mem u).A.Fv v) = ((a⁻¹ : ((D.mem u).A.Fv v)ˣ) : (D.mem u).A.Fv v)` using `hk`. Establish `hgte : g ((D.fm u).te 0 v c) = ((k : ℤ) : (D.mem u).A.Fv v)`. Rewrite using `[hkb, Units.val_inv_eq_inv_val]`.
+
+Rewrite `hga` using `[map_smul, smul_eq_mul]`. Conclude with `eq_inv_of_mul_eq_one_right hga`. Establish `hcl` using `T.val0.dil v a⁻¹ k hkb c δ hδ`. Take `⟨hh, hhH, κ0, hκK, e⟩` from `(DoubleCoset.eq _ _ _ _).1 hcl`. Establish `hκ : κ0.1 ∈ T.cls0.lev.U` using `hκK`.
+
+Take `⟨γd, hγd, hge⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hhH)`. Establish `hrel : (T.cls0.y c * δ).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γd * (T.cls0.y ((D.fm u).dil 0 v a⁻¹ c)).1 * κ0.1 := by`. Rewrite using `[e]`. Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[← hge]`.
+
+Take `⟨hLc, hLd⟩` from `diamond_lattice_transport T v k δ hδ c ((D.fm u).dil 0 v a⁻¹ c) γd hγd ⟨κ0.1, hκ⟩ hrel`. Take `⟨z0, hz0⟩` from `CrossDiaZero.dni_exists_one T v c`. Take `⟨ea, hea⟩` from `T.atT.res_surj v (a : (D.mem u).A.Fv v)`. Establish `hfz3 : (D.fm u).fv 0 v c (T.lv0.pr v c (ea • z0)) = (a : (D.mem u).A.Fv v)`. Rewrite using `[T.lv0.pr_smul, map_smul, hz0, hea, smul_eq_mul, mul_one]`.
+
+Establish `hTne : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast (D.mem u).A.T_prime.ne_zero`. Establish `hw3v : ((((D.mem u).A.T : ℕ) : D.host.E))⁻¹ • ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (ea • z0).1) = (ea • z0).1`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul D.host.E, inv_smul_smul₀ hTne]`. Establish `H3 : IsCompMv T v c ((D.fm u).dil 0 v a⁻¹ c) ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (ea • z0).1) g ⟨γd, hγd⟩ δ (⟨κ0.1, hκ⟩⁻¹)`. Use `⟨hδ.1, ?_, congrArg _ hLc, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γd * (T.cls0.y ((D.fm u).dil 0 v a⁻¹ c)).1 = (T.cls0.y c).1 * δ.1 * κ0.1⁻¹`. Simplify using `only [Subgroup.coe_mul] at hrel`. Rewrite using `[hrel, mul_inv_cancel_right]`. Use `show Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat (γd : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (Ld D u 0 (Nat.zero_le _) ((D.fm u).dil 0 v a⁻¹ c))) = _`. Rewrite using `[hLd, hw3v]`.
+
+Conclude with `ld_locP T v c (ea • z0) (by rw [hfz3]; exact Units.ne_zero a)`. Introduce `x hx`. Establish `hw : (γd : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ x.1 ∈ Ld D u 0 (Nat.zero_le _) c` using `CrossDiaZero.dni_mem_of _ hLd x.2`. Establish `hz2 : ((γd⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ ((γd : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ x.1) ∈ Ld D u 0 (Nat.zero_le _) ((D.fm u).dil 0 v a⁻¹ c)`. Rewrite using `[inv_mv]`.
+
+Conclude with `x.2`. Establish `hdf` using `UnramifiedDiagonal.diaFun_same T v k δ hδ c _ γd ⟨κ0.1, hκ⟩ hrel _ hw hz2`. Rewrite `hdf` using `[CrossDiaZero.pr_congr T v _ ⟨_, hz2⟩ x (inv_mv γd x.1)]`. Rewrite using `[hdf]`. Establish `hp` using `projection_kernel_eq_functional T v c ⟨_, hw⟩ hx`.
+
+Use `show _ = g (T.lv0.prk v c ⟨_, hx⟩)`. Rewrite using `[hp, map_smul, hgte, smul_eq_mul, zsmul_eq_mul, mul_comm]`. Establish `hw3 : (1 : 𝓞 D.host.E) • ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (ea • z0).1) ∈ Lk T.atT 0 (Nat.zero_le _) v c`. Rewrite using `[one_smul]`. Conclude with `Submodule.mem_sup_left (CrossDiaZero.dnk_tld T c _ (ea • z0).2)`.
+
+Establish `hy3 : T.lv0.prk v c ⟨_, hw3⟩ = T.atT.res v 1 • ((a : (D.mem u).A.Fv v) • (D.fm u).te 0 v c)`. Establish `hT3 : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (ea • z0).1 ∈ Lk T.atT 0 (Nat.zero_le _) v c`. Rewrite using `[← one_smul (𝓞 D.host.E) ((((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (ea • z0).1)]`. Conclude with `hw3`. Establish `e3 : (⟨_, hw3⟩ : ↥(Lk T.atT 0 (Nat.zero_le _) v c)) = ⟨_, hT3⟩` using `Subtype.ext (one_smul _ _)`.
+
+Rewrite using `[e3, projection_kernel_eq_functional T v c (ea • z0) hT3, hfz3, map_one, one_smul]`. Take `⟨s1, hs1, hw1, hy1⟩` from `hpt`. Establish `hlat` using `le_antisymm (hL v c _ _ s1 1 hw1 hw3 hs1 (one_nmem T) _ hy1 hy3) (hL v c _ _ 1 s1 hw3 hw1 (one_nmem T) hs1 _ hy3 hy1)`. Establish `hm` using `comp_cmp T v c _ _ (γ.1.1 *ᵥ z.1) _ g g (γ * γ') ⟨γd, hγd⟩ (hcomp T η κ μ) δ (κ * κ') (⟨κ0.1, hκ⟩⁻¹) H1 H3 hlat (dn_fwd T hD z.1 z.2) (fun _ _ _ _ => rfl)`. Conclude with `val_of_mem T v (T.cls0.y c) δ (hcomp T η κ μ) hδ.1 H1.1 hm G hG`.
+-/
 theorem valDia_of_lat (T : Forms0 D u) (hL : PtLatF T) : ValDia T := by
   intro v c
   refine ⟨Equiv.inv _, ?_⟩

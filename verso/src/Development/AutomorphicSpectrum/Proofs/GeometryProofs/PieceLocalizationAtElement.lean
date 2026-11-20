@@ -6,6 +6,31 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar GlobalTheo
 
 namespace GlobalTheory.CompanionTheory.Ar.FlagBun.Sm
 
+/- English proof (translation)
+Distinguish the cases in `hη : genPt ξ ∈ U`. Use `swap`. Establish `hno : ∀ q : Cpt ξ, q.1 ∉ U` using `fun q hq => hη (q.2.mem_open U.isOpen hq)`. Use `⟨U, ⟨hP.affine, hP.spec, fun b => ?_⟩, fun q => ?_⟩` and prove the remaining obligations. Use `⟨fun _ q hq => absurd hq (hno q), fun _ => le_locSub R a ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hP.ring b).2 fun q hq => absurd hq (hno q)`. Conclude with `⟨fun h => absurd h (hno q), fun h => h.1⟩`. Take `⟨-, hrng⟩` from `GlobalTheory.T.germ_genPt_injective_range_regAt X Ω ξ hc U hη hP.spec`. Take `⟨s, hs⟩` from `(hrng a).2 ((hP.ring a).1 haR)`. Establish `hga : ∀ (q : Cpt ξ) (hq : q.1 ∈ U), genMap ξ q (X.presheaf.germ U q.1 hq s) = a` using `fun q hq => (genMap_germ_eq_stalk_closed ξ q U hq hη s).trans hs`.
+
+Establish `hmem : ∀ q : Cpt ξ, q.1 ∈ X.basicOpen s ↔ q.1 ∈ U ∧ unitAt ξ q a`. Introduce `q`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Establish `hqU : q.1 ∈ U` using `X.basicOpen_le s hq`.
+
+Establish `hu` using `(Scheme.mem_basicOpen X s q.1 hqU).1 hq`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `h1 : a * genMap ξ q v = 1`. Rewrite using `[← hga q hqU, ← map_mul, hv, map_one]`. Conclude with `⟨hqU, ha0, ⟨_, hga q hqU⟩, ⟨v, (inv_eq_of_mul_eq_one_right h1).symm⟩⟩`.
+
+Introduce and unpack `⟨hqU, -, -, ⟨t, ht⟩⟩`. Use `(Scheme.mem_basicOpen X s q.1 hqU).2 (isUnit_iff_exists_inv.2 ⟨t, hc.inj q ?_⟩)` and prove the remaining obligations. Rewrite using `[map_mul, map_one, hga q hqU, ht, mul_inv_cancel₀ ha0]`. Establish `hreg : ∀ c : Ω, c ∈ regAt ξ (Subtype.mk (genPt ξ) specializes_rfl : Cpt ξ)`. Introduce `c`.
+
+Take `⟨y, hy⟩` from `hc.bij.2 c`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `e : X.presheaf.stalkSpecializes (specializes_rfl : genPt ξ ⤳ genPt ξ) = 𝟙 _` using `TopCat.Presheaf.stalkSpecializes_refl _ _`. Express the relevant statement in the definitionally equal form `(X.presheaf.stalkSpecializes (specializes_rfl : genPt ξ ⤳ genPt ξ) ≫ Scheme.stalkClosedPointTo ξ).hom y = c`. Rewrite using `[e]`.
+
+Conclude with `hy`. Establish `hη' : genPt ξ ∈ X.basicOpen s` using `(hmem (Subtype.mk (genPt ξ) specializes_rfl : Cpt ξ)).2 ⟨hη, ha0, hreg a, hreg a⁻¹⟩`. Use `⟨X.basicOpen s, ⟨hP.affine.basicOpen s, fun q hq => hP.spec q (X.basicOpen_le s hq), fun b => ?_⟩, hmem⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hb q hq`.
+
+Take `⟨k, hk⟩` from `(mem_locSub_iff haR ha0 b).1 hb`. Take `⟨hqU, -, -, hinv⟩` from `(hmem q).1 hq`. Establish `h1` using `(hP.ring _).1 hk q hqU`. Establish `e : b = a⁻¹ ^ k * (a ^ k * b)`. Rewrite using `[inv_pow, ← _root_.mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ ha0), _root_.one_mul]`.
+
+Rewrite using `[e]`. Conclude with `(regAt ξ q).mul_mem ((regAt ξ q).pow_mem hinv _) h1`. Introduce `hb`. Take `⟨-, hrng'⟩` from `GlobalTheory.T.germ_genPt_injective_range_regAt X Ω ξ hc (X.basicOpen s) hη' (fun q hq => hP.spec q (X.basicOpen_le s hq))`. Take `⟨t, ht⟩` from `(hrng' b).2 hb`.
+
+Establish `hloc` using `hP.affine.isLocalization_basicOpen s`. Take `⟨n, c, hcn⟩` from `IsLocalization.Away.surj s t`. Establish `hres : ∀ x : Γ(X, U), (X.presheaf.germ (X.basicOpen s) (genPt ξ) hη' ≫ Scheme.stalkClosedPointTo ξ).hom (algebraMap Γ(X, U) Γ(X, X.basicOpen s) x) = (X.presheaf.germ U (genPt ξ) hη ≫ Scheme.stalkClosedPointTo ξ).hom x`. Introduce `x`. Use `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE (X.basicOpen_le s)) (genPt ξ) hη' x` as an intermediate fact.
+
+Conclude with `congrArg (Scheme.stalkClosedPointTo ξ).hom this`. Establish `key : a ^ n * b = (X.presheaf.germ U (genPt ξ) hη ≫ Scheme.stalkClosedPointTo ξ).hom c`. Use `congrArg (X.presheaf.germ (X.basicOpen s) (genPt ξ) hη' ≫ Scheme.stalkClosedPointTo ξ).hom hcn` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, hres, hres, hs, ht]`. Rewrite using `[← this, _root_.mul_comm]`.
+
+Use `(mem_locSub_iff haR ha0 b).2 ⟨n, (hP.ring _).2 fun q hq => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `(hrng _).1 ⟨c, rfl⟩ q hq`.
+-/
 theorem exists_basicOpen_piece (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (U : X.Opens) (R : Subring Ω) (a : Ω) (hc : IsCptGen ξ) (hP : IsPiece ξ U R) (haR : a ∈ R)
     (ha0 : a ≠ 0) :

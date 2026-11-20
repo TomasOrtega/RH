@@ -12,6 +12,9 @@ namespace GlobalTheory.SpanIndex
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.relIndex_sup_mul_relIndex_inf A M₁ _ M₂ _ h₁ h₂, mul_comm, ← inf_inf_distrib_left]`. Use `Nat.mul_le_mul_left _ (AddSubgroup.relIndex_le_of_le_right ?_ hne)` and prove the remaining obligations. Conclude with `sup_le (inf_le_inf_left _ le_sup_left) (inf_le_inf_left _ le_sup_right)`.
+-/
 theorem relIndex_mul_le_of_le {A : Type} [AddCommGroup A] (M₁ M₂ W₁ W₂ Λ : AddSubgroup A)
     (h₁ : M₁ ≤ Λ ⊓ W₁) (h₂ : M₂ ≤ Λ ⊓ W₂)
     (hne : (M₁ ⊔ M₂).relIndex (Λ ⊓ (W₁ ⊔ W₂)) ≠ 0) :
@@ -23,6 +26,9 @@ theorem relIndex_mul_le_of_le {A : Type} [AddCommGroup A] (M₁ M₂ W₁ W₂ �
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Use `le_inf ?_ ?_` and prove the remaining obligations. Establish `: Submodule.span (𝓞 E) (Set.range w) ≤ Λ` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hw a)`. Conclude with `fun x hx => this hx`. Conclude with `fun x hx => Submodule.span_le_restrictScalars (𝓞 E) E _ hx`.
+-/
 theorem span_le_inf_span {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E)) {ι : Type}
     (w : ι → Fin r → E) (hw : ∀ a, w a ∈ Λ) :
     (Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup ≤
@@ -33,6 +39,11 @@ theorem span_le_inf_span {r : ℕ} (Λ : Submodule (𝓞 E) (Fin r → E)) {ι :
     exact fun x hx => this hx
   · exact fun x hx => Submodule.span_le_restrictScalars (𝓞 E) E _ hx
 
+/- English proof (translation)
+Introduce `r X α β γ _ _ _ _ _ _ w hw hΛ`. Establish `hw' : LinearIndependent (𝓞 E) w` using `hw.restrict_scalars' (𝓞 E)`. Take `⟨i₁, s₁⟩` from `GlobalTheory.span_inf_sup_overlapping_parts (𝓞 E) _ α β γ w hw'`. Take `⟨i₂, s₂⟩` from `GlobalTheory.span_inf_sup_overlapping_parts E _ α β γ w hw`. Establish `hne` using `relIndex_span_ne_zero r X _ w hw hΛ`.
+
+Rewrite `hne` using `[← s₁, ← s₂, Submodule.sup_toAddSubgroup, Submodule.sup_toAddSubgroup]`. Establish `key` using `relIndex_mul_le_of_le _ _ _ _ _ (span_le_inf_span X.Λ (w ∘ (Sum.map id Sum.inl : α ⊕ β → α ⊕ β ⊕ γ)) fun a => hΛ _) (span_le_inf_span X.Λ (w ∘ (Sum.map id Sum.inr : α ⊕ γ → α ⊕ β ⊕ γ)) fun a => hΛ _) hne`. Rewrite using `[← i₁, ← i₂, ← s₁, ← s₂, Submodule.sup_toAddSubgroup, Submodule.sup_toAddSubgroup]`. Conclude with `key`.
+-/
 theorem relIndex_span_mul_le : (∀ (r : ℕ) (X : Data E r) (α β γ : Type) [Fintype α] [Fintype β] [Fintype γ] [DecidableEq α] [DecidableEq β] [DecidableEq γ] (w : α ⊕ β ⊕ γ → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → ((Submodule.span (𝓞 E) (Set.range (w ∘ (Sum.map id Sum.inl : α ⊕ β → α ⊕ β ⊕ γ)))).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range (w ∘ (Sum.map id Sum.inl : α ⊕ β → α ⊕ β ⊕ γ)))).toAddSubgroup)) * ((Submodule.span (𝓞 E) (Set.range (w ∘ (Sum.map id Sum.inr : α ⊕ γ → α ⊕ β ⊕ γ)))).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range (w ∘ (Sum.map id Sum.inr : α ⊕ γ → α ⊕ β ⊕ γ)))).toAddSubgroup)) ≤ ((Submodule.span (𝓞 E) (Set.range (w ∘ (Sum.inl : α → α ⊕ β ⊕ γ)))).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range (w ∘ (Sum.inl : α → α ⊕ β ⊕ γ)))).toAddSubgroup)) * ((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup))) := by
   intro r X α β γ _ _ _ _ _ _ w hw hΛ
   have hw' : LinearIndependent (𝓞 E) w := hw.restrict_scalars' (𝓞 E)

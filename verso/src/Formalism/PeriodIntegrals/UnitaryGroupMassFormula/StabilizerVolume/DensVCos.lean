@@ -21,9 +21,15 @@ def DensCos (μ : Measure V) (f : V → Y) (ι : X → Y) (ν : Measure X) (U : 
         ∫ v in f ⁻¹' (ι '' S), {z | z - y ∈ Λ}.indicator (fun _ => (1 : ℝ)) v ∂μ =
           ∫ b in S, g b ∂ν
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨integrable_zero _ _ _, continuous_const, fun S _ => by simp⟩`.
+-/
 theorem hasDens_zero : HasDens μ f ι ν (fun _ => 0) (fun _ => 0) :=
   ⟨integrable_zero _ _ _, continuous_const, fun S _ => by simp⟩
 
+/- English proof (translation)
+Use `⟨h₁.1.add h₂.1, h₁.2.1.add h₂.2.1, fun S hS => ?_⟩` and prove the remaining obligations. Rewrite using `[integral_add h₁.1.integrableOn h₂.1.integrableOn, h₁.2.2 S hS, h₂.2.2 S hS, integral_add (h₁.2.1.continuousOn.integrableOn_compact hS) (h₂.2.1.continuousOn.integrableOn_compact hS)]`.
+-/
 theorem HasDens.add [IsFiniteMeasureOnCompacts ν] {φ₁ φ₂ : V → ℝ} {g₁ g₂ : X → ℝ}
     (h₁ : HasDens μ f ι ν φ₁ g₁) (h₂ : HasDens μ f ι ν φ₂ g₂) :
     HasDens μ f ι ν (fun v => φ₁ v + φ₂ v) (fun b => g₁ b + g₂ b) := by
@@ -32,6 +38,11 @@ theorem HasDens.add [IsFiniteMeasureOnCompacts ν] {φ₁ φ₂ : V → ℝ} {g�
     integral_add (h₁.2.1.continuousOn.integrableOn_compact hS)
       (h₂.2.1.continuousOn.integrableOn_compact hS)]
 
+/- English proof (translation)
+Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using `using (hasDens_zero (μ := μ) (f := f) (ι := ι) (ν := ν))`. Consider the case `insert i T hi ih`.
+
+Introduce `h`. Simplify using `only [Finset.sum_insert hi]`. Conclude with `(h i (Finset.mem_insert_self _ _)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem hasDens_sum [IsFiniteMeasureOnCompacts ν] {κ : Type} (φ : κ → V → ℝ) (g : κ → X → ℝ) :
     ∀ T : Finset κ, (∀ i ∈ T, HasDens μ f ι ν (φ i) (g i)) →
       HasDens μ f ι ν (fun v => ∑ i ∈ T, φ i v) (fun b => ∑ i ∈ T, g i b) := by
@@ -59,6 +70,11 @@ def IsCOBasis (B : AddSubgroup V → Prop) : Prop :=
     (Λ : Set V) ⊆ N
 
 omit [MeasurableSpace V] [OpensMeasurableSpace V] in
+/- English proof (translation)
+Establish `: {z | z - y ∈ Λ} = (fun w => w + y) '' (Λ : Set V)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Conclude with `⟨z - y, hz, sub_add_cancel z y⟩`.
+
+Introduce and unpack `⟨w, hw, rfl⟩ show w + y - y ∈ Λ`. Rewrite using `[add_sub_cancel_right]` and apply the resulting hypothesis. Rewrite using `[this]`. Conclude with `hΛc.image (continuous_id.add continuous_const)`.
+-/
 theorem isCompact_cos (Λ : AddSubgroup V) (hΛc : IsCompact (Λ : Set V)) (y : V) :
     IsCompact {z | z - y ∈ Λ} := by
   have : {z | z - y ∈ Λ} = (fun w => w + y) '' (Λ : Set V) := by
@@ -72,6 +88,9 @@ theorem isCompact_cos (Λ : AddSubgroup V) (hΛc : IsCompact (Λ : Set V)) (y : 
   rw [this]
   exact hΛc.image (continuous_id.add continuous_const)
 
+/- English proof (translation)
+Establish `hm : MeasurableSet {z : V | z - y ∈ Λ}` using `(hΛo.preimage (continuous_id.sub continuous_const)).measurableSet`. Rewrite using `[integrable_indicator_iff hm]`. Conclude with `integrableOn_const (isCompact_cos Λ hΛc y).measure_lt_top.ne`.
+-/
 theorem integrable_cos [IsFiniteMeasureOnCompacts μ] (Λ : AddSubgroup V)
     (hΛo : IsOpen (Λ : Set V)) (hΛc : IsCompact (Λ : Set V)) (y : V) :
     Integrable ({z | z - y ∈ Λ}.indicator fun _ => (1 : ℝ)) μ := by
@@ -80,6 +99,39 @@ theorem integrable_cos [IsFiniteMeasureOnCompacts μ] (Λ : AddSubgroup V)
   rw [integrable_indicator_iff hm]
   exact integrableOn_const (isCompact_cos Λ hΛc y).measure_lt_top.ne
 
+/- English proof (translation)
+Introduce and unpack `φ ⟨hlc, hs, hsU⟩`. Establish `hloc : ∀ x : tsupport φ, ∃ Λx : AddSubgroup V, IsOpen (Λx : Set V) ∧ IsCompact (Λx : Set V) ∧ (∀ y, y - (x : V) ∈ Λx → ∀ Λ : AddSubgroup V, B Λ → IsOpen (Λ : Set V) → IsCompact (Λ : Set V) → Λ ≤ Λx → ∃ g, HasDens μ f ι ν ({z | z - y ∈ Λ}.indicator fun _ => (1 : ℝ)) g) ∧ ∀ z ∈ Λx, …`. Introduce `x`. Take `⟨N, hN, hd⟩` from `h x (hsU x.2)`. Establish `hfib : {z : V | φ ((x : V) + z) = φ x} ∈ 𝓝 (0 : V)`.
+
+Establish `ho : IsOpen {z : V | (φ ∘ fun z => (x : V) + z) z = φ x}` using `(hlc.comp_continuous (continuous_const.add continuous_id)).isClopen_fiber _ |>.isOpen`. Conclude with `ho.mem_nhds (by simp)`. Take `⟨Λx, -, ho, hc, hsub⟩` from `hB _ (inter_mem hN hfib)`. Use `⟨Λx, ho, hc, fun y hy Λ hBΛ hΛo hΛc hle => ?_, fun z hz => (hsub hz).2⟩` and prove the remaining obligations. Take `⟨g, hg, hS⟩` from `hd y (hsub hy).1 Λ hBΛ hΛo hΛc fun z hz => (hsub (hle hz)).1`.
+
+Conclude with `⟨g, integrable_cos Λ hΛo hΛc y, hg, hS⟩`. Use `choose Λx hΛxo hΛxc hΛxd hΛxφ using hloc`. Take `⟨t, ht⟩` from `hs.isCompact.elim_finite_subcover (fun x : tsupport φ => {y : V | y - (x : V) ∈ Λx x}) (fun x => (hΛxo x).preimage (continuous_id.sub continuous_const)) (fun y hy => mem_iUnion.2 ⟨⟨y, hy⟩, by simp [(Λx _).zero_mem]⟩)`. Take `⟨Λs, -, hso, -, -⟩` from `hB univ univ_mem`. Use `set Λi : AddSubgroup V := Λs ⊓ ⨅ x ∈ t, Λx x with hΛi`.
+
+Establish `hΛio : IsOpen (Λi : Set V)` using `isOpen_inf_iInf Λs hso t Λx hΛxo`. Take `⟨Λ', hBΛ', hΛ'o, hΛ'c, hΛ'sub⟩` from `hB _ (hΛio.mem_nhds Λi.zero_mem)`. Establish `hΛ'le : ∀ x ∈ t, Λ' ≤ Λx x` using `fun x hx z hz => AddSubgroup.mem_iInf.1 (AddSubgroup.mem_iInf.1 (inf_le_right (a := Λs) (hΛ'sub hz)) x) hx`. Establish `hK : ∀ y ∈ tsupport φ, ∃ x ∈ t, y - (x : V) ∈ Λx x` using `fun y hy => by`. Take `⟨x, hx, hyx⟩` from `mem_iUnion₂.1 (ht hy)`.
+
+Conclude with `⟨x, hx, hyx⟩`. Establish `hconst : ∀ y ∈ tsupport φ, ∀ z ∈ Λ', φ (y + z) = φ y`. Introduce `y hy z hz`. Take `⟨x, hx, hyx⟩` from `hK y hy`. Establish `h1` using `hΛxφ x (y - x) hyx`.
+
+Establish `h2` using `hΛxφ x (y + z - x) (by`. Use `(Λx x).add_mem hyx (hΛ'le x hx hz)` as an intermediate fact. Rewrite using `[show y - (x : V) + z = y + z - x by abel] at this)` and apply the resulting hypothesis. Rewrite `h1`, `h2` using `[add_sub_cancel]`. Rewrite using `[h2, h1]`.
+
+Take `⟨t2, ht2⟩` from `hs.isCompact.elim_finite_subcover (fun y : tsupport φ => {z : V | z - (y : V) ∈ Λ'}) (fun y => hΛ'o.preimage (continuous_id.sub continuous_const)) (fun y hy => mem_iUnion.2 ⟨⟨y, hy⟩, by simp [Λ'.zero_mem]⟩)`. Use `set T : Finset (V ⧸ Λ') := t2.image fun y : tsupport φ => (QuotientAddGroup.mk (y : V) : V ⧸ Λ') with hT`. Establish `hrep : ∀ q ∈ T, ∃ y ∈ tsupport φ, q.out - y ∈ Λ'`. Introduce `q hq`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hq`.
+
+Use `⟨y, y.2, ?_⟩` and prove the remaining obligations. Use `Λ'.neg_mem (QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' (QuotientAddGroup.mk (y : V) : V ⧸ Λ')))` as an intermediate fact. Rewrite `this` using `[neg_add_rev, neg_neg, neg_add_eq_sub]`. Then use the resulting hypothesis. Establish `hTd : ∀ q ∈ T, ∃ g, HasDens μ f ι ν ({z | z - q.out ∈ Λ'}.indicator fun _ => (1 : ℝ)) g`. Introduce `q hq`.
+
+Take `⟨y, hy, hqy⟩` from `hrep q hq`. Take `⟨x, hx, hyx⟩` from `hK y hy`. Conclude with `hΛxd x q.out (by`. Use `(Λx x).add_mem hyx (hΛ'le x hx hqy)` as an intermediate fact. Rewrite using `[show y - (x : V) + (q.out - y) = q.out - x by abel] at this) Λ' hBΛ' hΛ'o hΛ'c` and apply the resulting hypothesis.
+
+Use the proof step `(hΛ'le x hx)`. Use `choose! gq hgq using hTd`. Establish `hsum` using `hasDens_sum (fun q v => φ (q : V ⧸ Λ').out * {z | z - q.out ∈ Λ'}.indicator (fun _ => (1 : ℝ)) v) (fun q b => φ (q : V ⧸ Λ').out * gq q b) T (fun q hq => (hgq q hq).const_mul _)`. Establish `heq : (fun v => ∑ q ∈ T, φ (q : V ⧸ Λ').out * {z | z - q.out ∈ Λ'}.indicator (fun _ => (1 : ℝ)) v) = φ`. Use function extensionality and compare the values at `x`.
+
+Establish `hind : ∀ q : V ⧸ Λ', {z | z - q.out ∈ Λ'}.indicator (fun _ => (1 : ℝ)) x = if (x : V ⧸ Λ') = q then 1 else 0`. Introduce `q`. Establish `: x - q.out ∈ Λ' ↔ (x : V ⧸ Λ') = q` using `by conv_rhs => rw [← QuotientAddGroup.out_eq' q]`. Rewrite using `[eq_comm, QuotientAddGroup.eq, neg_add_eq_sub]`. Distinguish the cases in `hq : (x : V ⧸ Λ') = q`.
+
+Rewrite using `[if_pos hq, Set.indicator_of_mem (show x ∈ {z | z - q.out ∈ Λ'} from this.2 hq)]`. Rewrite using `[if_neg hq, Set.indicator_of_notMem (show x ∉ {z | z - q.out ∈ Λ'} from fun h' => hq (this.1 h'))]`. Simplify using `only [hind, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq]`. Use `split_ifs with hxT`. Take `⟨y, hy, hqy⟩` from `hrep _ hxT`.
+
+Establish `e1` using `hconst y hy _ hqy`. Rewrite `e1` using `[add_sub_cancel]`. Establish `hxo : x - (x : V ⧸ Λ').out ∈ Λ'`. Use `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' (x : V ⧸ Λ'))` as an intermediate fact. Rewrite `this` using `[neg_add_eq_sub]`. Then use the resulting hypothesis.
+
+Establish `e2` using `hconst y hy _ (Λ'.add_mem hxo hqy)`. Rewrite `e2` using `[show y + (x - (x : V ⧸ Λ').out + ((x : V ⧸ Λ').out - y)) = x by abel]`. Rewrite using `[e1, e2]`. Assume the negation of the conclusion as `hne`. Establish `hxK : x ∈ tsupport φ` using `subset_tsupport φ (Ne.symm hne)`.
+
+Take `⟨y, hy, hxy⟩` from `mem_iUnion₂.1 (ht2 hxK)`. Apply `hxT` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨y, hy, ?_⟩` and prove the remaining obligations. Conclude with `QuotientAddGroup.eq.2 (by rw [neg_add_eq_sub]; exact hxy)`. Rewrite `hsum` using `[heq]`.
+
+Conclude with `⟨_, hsum.2.1, hsum.2.2⟩`.
+-/
 theorem densLC_of_cosB [IsFiniteMeasureOnCompacts μ] [IsFiniteMeasureOnCompacts ν] (U : Set V)
     (B : AddSubgroup V → Prop) (hB : IsCOBasis B) (h : DensCosB B μ f ι ν U) :
     DensOn (IsLCcOn U) μ f ι ν := by
@@ -181,6 +233,9 @@ theorem densLC_of_cosB [IsFiniteMeasureOnCompacts μ] [IsFiniteMeasureOnCompacts
   rw [heq] at hsum
   exact ⟨_, hsum.2.1, hsum.2.2⟩
 
+/- English proof (translation)
+Use `densLC_of_cosB U (fun _ => True) (fun N hN => ?_) (fun x hx => ?_)` and prove the remaining obligations. Take `⟨Λ, ho, hc, hs⟩` from `hNA N hN`. Conclude with `⟨Λ, trivial, ho, hc, hs⟩`. Take `⟨N, hN, hd⟩` from `h x hx`. Conclude with `⟨N, hN, fun y hy Λ _ ho hc hs => hd y hy Λ ho hc hs⟩`.
+-/
 theorem densLC_of_cos [IsFiniteMeasureOnCompacts μ] [IsFiniteMeasureOnCompacts ν] (U : Set V)
     (hNA : HasCOSub V) (h : DensCos μ f ι ν U) : DensOn (IsLCcOn U) μ f ι ν := by
   refine densLC_of_cosB U (fun _ => True) (fun N hN => ?_) (fun x hx => ?_)

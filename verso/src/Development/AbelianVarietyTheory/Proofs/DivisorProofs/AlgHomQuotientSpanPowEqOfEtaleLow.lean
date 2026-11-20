@@ -6,6 +6,37 @@ open scoped TensorProduct
 
 namespace GlobalTheory.GoodEtaleSection
 
+/- English proof (translation)
+Introduce `A R C _ _ _ _ _ _ ρ hρ t hker ht hE n f f' hff`. Use `set P₀ : Ideal R := RingHom.ker ρ with hP₀`. Use `haveI hP : P₀.IsPrime := RingHom.ker_isPrime ρ`. Establish `hρa : ∀ a : A, ρ (algebraMap A R a) = a` using `fun a => by`. Use `congrArg (fun g => g a) hρ` as an intermediate fact.
+
+Simplify using `using this`. Establish `hcomap : P₀.comap (algebraMap A R) = ⊥`. Use extensionality with `a`. Simplify using `only [Ideal.mem_comap, hP₀, RingHom.mem_ker, Ideal.mem_bot, hρa]`. Establish `hht : (P₀.comap (algebraMap A R)).height ≤ 1`.
+
+Rewrite using `[hcomap, Ideal.height_bot]`. Conclude with `zero_le_one`. Use `set Rp := Localization.AtPrime P₀`. Use `haveI : Algebra.Etale Rp (Rp ⊗[R] C) := hE P₀ hht`. Use `haveI : Algebra.FormallyUnramified R Rp := Algebra.FormallyUnramified.of_isLocalization P₀.primeCompl`.
+
+Use `haveI : Algebra.FormallyUnramified R (Rp ⊗[R] C) := Algebra.FormallyUnramified.comp R Rp (Rp ⊗[R] C)`. Use `set Q := R ⧸ Ideal.span {t} ^ n`. Use `set B := Localization (Algebra.algebraMapSubmonoid Q P₀.primeCompl)`. Use `letI : Algebra Rp B := localizationAlgebra P₀.primeCompl Q`. Establish `hle : Algebra.algebraMapSubmonoid Q P₀.primeCompl ≤ nonZeroDivisors Q`.
+
+Introduce and unpack `_ ⟨s, hs, rfl⟩`. It suffices to establish `H : ∀ x : Q, x * algebraMap R Q s = 0 → x = 0 from mem_nonZeroDivisors_iff.2 ⟨fun x hx => H x (by rw [mul_comm]; exact hx), H⟩`. Introduce `x hx`. Use `set a := ρ s`. Establish `ha : a ≠ 0` using `fun h => hs (RingHom.mem_ker.2 h)`.
+
+Establish `hd : s - algebraMap A R a ∈ Ideal.span {t}`. Rewrite using `[← hker, RingHom.mem_ker, map_sub, hρa, sub_self]`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 hd`. Use `set u : Q := Ideal.Quotient.mk _ s`. Use `set e : Q := Ideal.Quotient.mk _ (s - algebraMap A R a)`.
+
+Establish `he : e ^ n = 0`. Simplify using `only [e, ← map_pow, ← hr, mul_pow]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self t) n)`. Establish `hdv : u ∣ (u - e) ^ n`.
+
+Establish `h1` using `sub_dvd_pow_sub_pow (u - e) (-e) n`. Rewrite `h1` using `[neg_pow, he, mul_zero, sub_zero, sub_neg_eq_add, sub_add_cancel]`. Conclude with `h1`. Take `⟨k, hk⟩` from `hdv`. Establish `hue : u - e = Ideal.Quotient.mk _ (algebraMap A R a)`.
+
+Simplify using `only [u, e, map_sub, sub_sub_cancel]`. Establish `hzero : algebraMap A R (a ^ n) • x = 0`. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, map_pow, map_pow, ← hue, hk]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `torsionFree_quot A R ρ hρ t hker ht n (a ^ n) (pow_ne_zero n ha) x hzero`.
+
+Establish `hinj : Function.Injective (algebraMap Q B)` using `IsLocalization.injective B hle`. Set `φ : Rp →ₐ[R] B` to `(Algebra.ofId Rp B).restrictScalars R`. Set `ι : Q →ₐ[R] B` to `IsScalarTower.toAlgHom R Q B`. Set `g₁ : Rp ⊗[R] C →ₐ[R] B` to `Algebra.TensorProduct.productMap φ (ι.comp f)`. Set `g₂ : Rp ⊗[R] C →ₐ[R] B` to `Algebra.TensorProduct.productMap φ (ι.comp f')`.
+
+Use `set J : Ideal B := Ideal.span {algebraMap R B t}`. Establish `hJ : IsNilpotent J`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow (algebraMap R B t) n, ← map_pow, IsScalarTower.algebraMap_apply R Q B, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self t) n), map_zero, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Establish `e : (Ideal.Quotient.mkₐ R J).comp g₁ = (Ideal.Quotient.mkₐ R J).comp g₂`.
+
+Apply `Algebra.TensorProduct.ext` to reduce the goal to its premises. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[g₁, g₂]`. Use extensionality with `c`.
+
+Simplify using `only [g₁, g₂, AlgHom.comp_apply, AlgHom.restrictScalars_apply, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.productMap_apply_tmul, map_one, one_mul, Ideal.Quotient.mkₐ_eq_mk]`. Rewrite using `[Ideal.Quotient.eq, ← map_sub]`. Take `⟨q, hq⟩` from `Ideal.mem_span_singleton'.1 (hff c)`. Rewrite using `[← hq, map_mul]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[show ι (Ideal.Quotient.mk _ t) = algebraMap R B t from (IsScalarTower.algebraMap_apply R Q B t).symm]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hg : g₁ = g₂` using `Algebra.FormallyUnramified.ext J hJ fun x => by`. Simplify using `using congrArg (fun g => g x) e`. Use extensionality with `c`.
+
+Apply `hinj` to reduce the goal to its premises. Use `congrArg (fun g => g ((1 : Rp) ⊗ₜ[R] c)) hg` as an intermediate fact. Simplify `this` using `[g₁, g₂, ι]`.
+-/
 theorem algHom_quot_eq_of_etaleLow : ∀ (A R C : Type) [CommRing A] [IsDomain A] [CommRing R] [Algebra A R]
     [CommRing C] [Algebra R C] (ρ : R →+* A), ρ.comp (algebraMap A R) = RingHom.id A →
     ∀ t : R, RingHom.ker ρ = Ideal.span {t} → t ∈ nonZeroDivisors R →

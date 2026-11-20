@@ -34,6 +34,9 @@ def sumL {ι : Type} [Fintype ι] (f : ι → (Wq →L[ℂ] Wp)) (V : ι → (Wq
     (Wq →L[ℂ] Wp) →ₗ[ℂ] (Wq →L[ℂ] Wp) :=
   ∑ ρ, (((innerₛₗ ℂ (B.hsVec (f ρ))).comp Formalism.FourierDecayAlt.P.JFxI.hsVecL).smulRight (V ρ))
 
+/- English proof (translation)
+Unfold `sumL`. Rewrite using `[LinearMap.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem sumL_apply {ι : Type} [Fintype ι] (f : ι → (Wq →L[ℂ] Wp)) (V : ι → (Wq →L[ℂ] Wp)) (Y : Wq →L[ℂ] Wp) :
     sumL f V Y = ∑ ρ, inner ℂ (B.hsVec (f ρ)) (B.hsVec Y) • V ρ := by
   unfold sumL
@@ -43,6 +46,37 @@ theorem sumL_apply {ι : Type} [Fintype ι] (f : ι → (Wq →L[ℂ] Wp)) (V : 
 end SSPw
 
 open SSPw in
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs hk X d hA l hl`. Take `⟨hpl, hL, hS, hRel, hQQ⟩` from `hA`. Establish `hz` using `Bs.z_mem`. Establish `hz'` using `Bs.z'_mem`. Establish `hTz : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' = P.TT` using `Gauge.GC.tz_TT P Bs hpl`.
+
+Establish `hcs0` using `Formalism.FourierDecayAlt.P.TheSecStab.theSection_csec (k := P.k) (r := P.r) (by omega) Bs.z_mem Bs.z'_mem Bs.T_pos Bs.T'_pos`. Use `set μ0 := TheSec.theSection P.k P.r Bs.z Bs.z' with hμ0`. Set `Bs0 : B.RealPlaceData P.k P.r Wp Wq` to `{ Bs with μsec := μ0, sec := hcs0.1 }`. Establish `hyp0 : Gauge.GC.GTHyp P Bs0 X d` using `⟨hpl, hk, hcs0, hL, hS, hRel, hQQ⟩`. Take `⟨e0, he0, -⟩` from `Gauge.GC.gauge_kappa_holds Wp Wq P Bs0 X d hyp0`.
+
+Establish `hRT` using `Gauge.GC.radial_torus_local_holds Wp Wq P Bs0 hpl hk hcs0 X`. Establish `hSl : ∀ (Y : ℂ) (a b : Fin 2), Gauge.GC.SliceLoc P Bs0 (X.t Y a b)` using `fun Y a b => Gauge.GC.second_shift_slice_derivative Wp Wq P Bs0 hpl _ (hRT Y a b)`. Establish `hSL` using `(Gauge.GC.second_shift_slice_operator Wp Wq P Bs0 X d hyp0 hSl l hl).1`. Establish `hC : ∀ f : ℂ → ℂ, ContDiffOn ℝ ∞ f {ζ | P.TT < Complex.normSq ζ} → ∀ W : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'), NF.IsMulZ W f → Commute (d.SS l).1 W`. Introduce `f hf W hW`.
+
+Take `⟨W₁, hW₁⟩` from `Formalism.FourierDecayAlt.P.multiplication_zeta_exists Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl (NF.dZ f) (Formalism.FourierDecayAlt.P.NFx4.NO.dZ_smooth (Formalism.FourierDecayAlt.P.NFx4.NO.isOpen_U _) hf)`. Take `⟨W₂, hW₂⟩` from `Formalism.FourierDecayAlt.P.multiplication_zeta_exists Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl (NF.dZb f) (Formalism.FourierDecayAlt.P.NFx4.NO.dZb_smooth (Formalism.FourierDecayAlt.P.NFx4.NO.isOpen_U _) hf)`. Conclude with `((Formalism.FourierDecayAlt.P.normal_form_order_zero Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl X d hL hS hRel hQQ f hf W W₁ W₂ hW hW₁ hW₂).2.1 l hl).1`. Establish `hRB0 : NF.RadBase P.k P.r Bs.z Bs.z' μ0 Bs.π Bs.π'` using `Gauge.GC.radBase_of P Bs0 hpl`. Set `c0 : Fin P.r → ℂ` to `fun _ => 1`.
+
+Establish `hc0 : c0 ∈ OmX P.r` using `fun _ => one_ne_zero`. Establish `hsec : ∀ ρ, ((NF.QR P.k P.r Bs.z Bs.z').indicator fun q : (Fin P.r → ℂ) × ℂ => e0 ρ q.2) ∈ NF.RadSec P.k P.r Bs.z Bs.z' μ0 Bs.π Bs.π'`. Introduce `ρ`. Use `⟨((he0.1 ρ).comp contDiff_snd.contDiffOn fun q hq => ?_).congr fun q hq => ?_, fun q hq => ?_, fun q hq => ?_⟩` and prove the remaining obligations. Use `show P.TT < Complex.normSq q.2`.
+
+Rewrite using `[← hTz]`. Conclude with `hq.2`. Simplify using `[Set.indicator_of_mem hq]`. Rewrite using `[Set.indicator_of_mem hq]`. Conclude with `(he0.2 q.2 (by rw [← hTz]; exact hq.2)).1 ρ`.
+
+Simplify using `[Set.indicator_of_notMem hq]`. Use `choose Ψ0 hΨ0 hΨr using fun ρ => Formalism.FourierDecayAlt.P.radical_reduction_surjective Wp Wq P.k P.r Bs.z Bs.z' μ0 Bs.π Bs.π' hRB0 _ (hsec ρ)`. Set `Ψ : M.Ty P → Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'` to `fun ρ => ⟨Ψ0 ρ, hΨ0 ρ⟩`. Establish `hΨ : ∀ ρ, ∀ c ∈ OmX P.r, ∀ ζ ∈ Gauge.GC.Ann P, (Ψ ρ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r Bs0.μsec ζ) = e0 ρ ζ`. Introduce `ρ c hc ζ hζ`.
+
+Establish `hq : ((c, ζ) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨hc, by rw [hTz]; exact hζ⟩`. Establish `h` using `congrFun (hΨr ρ) (c, ζ)`. Simplify using `only [NF.radR, Set.indicator_of_mem hq] at h`. Conclude with `h`. Establish `hdec : ∀ ζ : ℂ, ∃ hh : Q.Mx P.k P.r × Q.Mx P.k P.r, ζ ∈ Gauge.GC.Ann P → hh.1 ∈ UWset P.k P.r Bs.z ∧ hh.2 ∈ UWset P.k P.r Bs.z' ∧ NF.muZ P.k P.r Bs.μsec ζ = hh.1 * NF.muZ P.k P.r μ0 ζ * hh.2`.
+
+Introduce `ζ`. Distinguish the cases in `hζ : ζ ∈ Gauge.GC.Ann P`. Establish `hq : ((c0, ζ) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨hc0, by rw [hTz]; exact hζ⟩`. Establish `hdom` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' Bs.sec hq`. Take `⟨h, hh, h', hh', he⟩` from `Formalism.FourierDecayAlt.P.NFRadRedA.decomp Bs.k_pos hz hz' Bs.T_pos Bs.T'_pos hcs0.1 hdom.2.1 hdom.2.2`.
+
+Rewrite `he` using `[Formalism.FourierDecayAlt.P.NFRadRedA.zeta_muZ hz hz' Bs.sec hq.2]`. Conclude with `⟨(h, h'), fun _ => ⟨hh, hh', he⟩⟩`. Conclude with `⟨(1, 1), fun h => absurd h hζ⟩`. Use `choose H hH using hdec`. Set `V : M.Ty P → ℂ → (Wq →L[ℂ] Wp)` to `fun ρ ζ => ((d.SS l).1 (Ψ ρ) : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r μ0 ζ)`.
+
+Use `⟨fun ζ => LinearMap.toContinuousLinearMap ((conjL (Bs.π (H ζ).1) (Bs.π' (H ζ).2)) ∘ₗ sumL (fun ρ => e0 ρ ζ) (fun ρ => V ρ ζ) ∘ₗ conjL (Bs.π (H ζ).1⁻¹) (Bs.π' (H ζ).2⁻¹)), ?_⟩` and prove the remaining obligations. Introduce `Φ c hc ζ hζ`. Take `⟨hh, hh', hd⟩` from `hH ζ hζ`. Use `set h := (H ζ).1`. Use `set h' := (H ζ).2`.
+
+Establish `hq : ((c, ζ) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨hc, by rw [hTz]; exact hζ⟩`. Establish `hdom` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' Bs.sec hq`. Establish `hdom0` using `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' hcs0.1 hq`. Establish `hhi` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh`. Establish `hhi'` using `Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv hh'`.
+
+Establish `hback : NF.muZ P.k P.r μ0 ζ = h⁻¹ * NF.muZ P.k P.r Bs.μsec ζ * h'⁻¹`. Rewrite using `[hd, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Formalism.FourierDecayAlt.P.NFRadRedS.uw_inv_mul hh, Matrix.one_mul, Matrix.mul_assoc, Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul_inv hh', Matrix.mul_one]`. Establish `hΦ0 : (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r μ0 ζ) = (Bs.π h⁻¹).comp (((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r Bs.μsec ζ)).comp (Bs.π' h'⁻¹))`. Rewrite using `[hback]`. Conclude with `Φ.2.2.2 (c, NF.muZ P.k P.r Bs.μsec ζ) hdom h⁻¹ hhi h'⁻¹ hhi'`.
+
+Establish `hfwd : (((d.SS l).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r Bs.μsec ζ) = (Bs.π h).comp (((((d.SS l).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r μ0 ζ)).comp (Bs.π' h'))`. Rewrite using `[hd]`. Conclude with `((d.SS l).1 Φ).2.2.2 (c, NF.muZ P.k P.r μ0 ζ) hdom0 h hh h' hh'`. Establish `hkey` using `Gauge.GC.key_slice P Bs0 hpl hk e0 he0 Ψ hΨ (d.SS l).1 hSL hC Φ hc hc0 hζ`. Rewrite using `[hfwd]`.
+
+Express the relevant statement in the definitionally equal form `_ = (Bs.π h).comp ((sumL (fun ρ => e0 ρ ζ) (fun ρ => V ρ ζ) ((Bs.π h⁻¹).comp (((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c (NF.muZ P.k P.r Bs.μsec ζ)).comp (Bs.π' h'⁻¹)))).comp (Bs.π' h'))`. Rewrite using `[← hΦ0, sumL_apply]`. Use `congr 2`.
+-/
 theorem second_shift_pointwise_holds : SSn.Rep.Core.SSPointwise := by
   intro Wp Wq _ _ _ _ _ _ P Bs hk X d hA l hl
   obtain ⟨hpl, hL, hS, hRel, hQQ⟩ := hA

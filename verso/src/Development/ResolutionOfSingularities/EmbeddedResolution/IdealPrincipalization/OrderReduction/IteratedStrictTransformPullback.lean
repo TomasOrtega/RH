@@ -27,16 +27,29 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `AlgebraicGeometry.Scheme.IdealSheafData.comap_id _`.
+-/
 private theorem comap_eqToHom_of_eq {F : ℕ → Scheme.{u}} (K : ∀ i : ℕ, (F i).IdealSheafData)
     {a b : ℕ} (h : a = b) : (K b).comap (eqToHom (congrArg F h)) = K a := by
   subst h
   exact AlgebraicGeometry.Scheme.IdealSheafData.comap_id _
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Smooth) sq.flip inferInstance`.
+-/
 private theorem smooth_of_isPullback_of_smooth_right {A B C D : Scheme.{u}} {f : A ⟶ B} {g : A ⟶ C}
     {h : B ⟶ D} {k : C ⟶ D} (sq : IsPullback f g h k) [AlgebraicGeometry.Smooth k] :
     AlgebraicGeometry.Smooth f :=
   MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Smooth) sq.flip inferInstance
 
+/- English proof (translation)
+Establish `w : (e ≫ ψ) ≫ h = e ≫ φ` using `by rw [Category.assoc, hψ]`. Use `IsPullback.of_isLimit' ⟨w⟩ (Limits.PullbackCone.IsLimit.mk w (fun s => s.snd ≫ inv e) ?_ ?_ ?_)` and prove the remaining obligations. Introduce `s`. Establish `h1` using `huniq s.pt s.snd s.fst s.condition`. Simplify using `only [Category.assoc, IsIso.inv_hom_id_assoc]`.
+
+Conclude with `h1.symm`. Introduce `s`. Simplify using the standard rewrite rules. Introduce `s m _ hm2`. Rewrite using `[← hm2]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem isPullback_of_unique {P A C B : Scheme.{u}} (e : P ⟶ A) [IsIso e]
     (ψ : A ⟶ C) (h : C ⟶ B) (φ : A ⟶ B) (hψ : ψ ≫ h = φ)
     (huniq : ∀ (T : Scheme.{u}) (v : T ⟶ A) (u : T ⟶ C), u ≫ h = v ≫ φ → u = v ≫ ψ) :
@@ -54,6 +67,23 @@ private theorem isPullback_of_unique {P A C B : Scheme.{u}} (e : P ⟶ A) [IsIso
     rw [← hm2]
     simp
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Establish `: IsIso (c.projectionToBase 0)`.
+
+Rewrite using `[SequenceOfBlowups.projectionToBase_zero]`. Use `infer_instance`. Use `⟨φ ≫ CategoryTheory.inv (c.projectionToBase 0), by simp, ?_⟩` and prove the remaining obligations. Introduce `T v u h`. Rewrite using `[← Category.assoc, ← h]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `hm`. Take `⟨ψ, hψ, hu⟩` from `ih (Nat.le_of_lt hm)`. Establish `hmlt : m < c.length` using `hm`.
+
+Establish `htop : (c.center m).comap ψ = ⊤` using `hinv m hmlt ψ hψ`. Establish `hbl : Blowup.IsBlowupAlongIdealSheaf (c.transitionMapSucc m) (c.center m)` using `c.isBlowupAlongIdealSheaf_blowupMorphism m hmlt`. Establish `hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor ((c.center m).comap ψ)`. Rewrite using `[htop]`. Conclude with `Blowup.isLocallyGeneratedByNonZeroDivisor_top _`.
+
+Establish `h2 : c.transitionMapSucc m ≫ c.projectionToBase m = c.projectionToBase (m + 1)`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap]`. Conclude with `c.transitionMap_comp_projectionToBase _`. Use `⟨hbl.lift ψ hcart, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : hbl.lift ψ hcart ≫ c.transitionMapSucc m = ψ` using `hbl.lift_comp ψ hcart`.
+
+Rewrite using `[← h2, ← Category.assoc, h1, hψ]`. Introduce `T v u h`. Establish `hdown : u ≫ c.transitionMapSucc m = v ≫ ψ`. Use `hu T v (u ≫ c.transitionMapSucc m) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, h2]`.
+
+Conclude with `h`. Establish `hcart2 : Blowup.IsLocallyGeneratedByNonZeroDivisor ((c.center m).comap (v ≫ ψ))`. Rewrite using `[Scheme.IdealSheafData.comap_comp, htop]`. Conclude with `Blowup.isLocallyGeneratedByNonZeroDivisor_comap_top v`. Use `hbl.hom_ext_of_comp_eq hcart2 hdown ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hbl.lift_comp ψ hcart]`.
+-/
 private theorem exists_lift_of_centers_comap_eq_top {A B : Scheme.{u}} (φ : A ⟶ B) (c : SequenceOfBlowups B)
     (hinv : ∀ i : ℕ, i < c.length → ∀ ψ : A ⟶ c.schemeAt i,
       ψ ≫ c.projectionToBase i = φ → (c.center i).comap ψ = ⊤) :
@@ -97,6 +127,11 @@ private theorem exists_lift_of_centers_comap_eq_top {A B : Scheme.{u}} (φ : A �
       refine hbl.hom_ext_of_comp_eq hcart2 hdown ?_
       rw [Category.assoc, hbl.lift_comp ψ hcart]
 
+/- English proof (translation)
+Establish `hilt : i < t.length` using `lt_of_lt_of_le hi (c.index_le_length j hj)`. Establish `: AlgebraicGeometry.IsNoetherian (t.schemeAt (i + 1))` using `hN (i + 1) hilt`. Establish `hcenter : ((t.center i).comap (t.transitionMapSucc i)).comap (c.mapToEarlierScheme j hj (i + 1) hi) = ⊤`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← c.mapToEarlierScheme_eq_comp_blowupMorphism j hj i hi]`. Conclude with `c.comap_center_mapToEarlierScheme_eq_top_of_unmatched j hj i hi hmiss`.
+
+Rewrite using `[h, hrec i hilt, FunctorialResolution.EmbeddedResolution.strictTransform_comap_of_comap_center_eq_top (t.transitionMapSucc i) (t.center i) (K i) (c.mapToEarlierScheme j hj (i + 1) hi) hcenter, ← Scheme.IdealSheafData.comap_comp, ← c.mapToEarlierScheme_eq_comp_blowupMorphism j hj …`.
+-/
 private theorem eq_comap_mapToEarlierScheme_succ_of_index_ne {X X' : Scheme.{u}} {φ : X' ⟶ X} {t' : SequenceOfBlowups X'}
     {t : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ t' t)
     (K : ∀ i : ℕ, (t.schemeAt i).IdealSheafData)
@@ -117,6 +152,11 @@ private theorem eq_comap_mapToEarlierScheme_succ_of_index_ne {X X' : Scheme.{u}}
       (c.mapToEarlierScheme j hj (i + 1) hi) hcenter,
     ← Scheme.IdealSheafData.comap_comp, ← c.mapToEarlierScheme_eq_comp_blowupMorphism j hj i hi]
 
+/- English proof (translation)
+Introduce `i hii`. Proceed by induction on `i, hii using Nat.le_induction with`. Consider the case `base => intro _`. Conclude with `h`. Consider the case `succ p hp ih`.
+
+Introduce `hi`. Establish `hplt : p < c.idx j` using `hi`. Conclude with `eq_comap_mapToEarlierScheme_succ_of_index_ne c K hN hrec j hj p hplt (hmiss p hp hplt) L (ih (le_of_lt hplt))`.
+-/
 private theorem eq_comap_mapToEarlierScheme_of_le_of_index_ne {X X' : Scheme.{u}} {φ : X' ⟶ X} {t' : SequenceOfBlowups X'}
     {t : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ t' t)
     (K : ∀ i : ℕ, (t.schemeAt i).IdealSheafData)
@@ -134,6 +174,13 @@ private theorem eq_comap_mapToEarlierScheme_of_le_of_index_ne {X X' : Scheme.{u}
     have hplt : p < c.idx j := hi
     exact eq_comap_mapToEarlierScheme_succ_of_index_ne c K hN hrec j hj p hplt (hmiss p hp hplt) L (ih (le_of_lt hplt))
 
+/- English proof (translation)
+Establish `hidxlt : c.idx j < t.length` using `c.idx_lt j hj`. Establish `: AlgebraicGeometry.IsNoetherian (t.schemeAt (c.idx j + 1))` using `hN (c.idx j + 1) hidxlt`. Establish `: AlgebraicGeometry.IsNoetherian (t'.schemeAt (j + 1))` using `hN' (j + 1) hj`. Establish `: AlgebraicGeometry.Flat (c.map j (le_of_lt hj))` using `c.flat_map j (le_of_lt hj)`. Establish `hsq` using `c.isPullback_blowupMorphism j hj`.
+
+Establish `key` using `FunctorialResolution.EmbeddedResolution.comap_strictTransform_of_flat_of_isLocallyNoetherian (t.transitionMapSucc (c.idx j)) (c.map j (le_of_lt hj)) (t'.transitionMapSucc j) (c.mapToEarlierScheme (j + 1) hj (c.idx j + 1) (c.idx_strictMono j hj)) hsq (t.center (c.idx j)) (K (c.idx …`. Establish `e1 : K (c.idx j + 1) = Blowup.strictTransform (t.transitionMapSucc (c.idx j)) (t.center (c.idx j)) (K (c.idx j))` using `hrec (c.idx j) hidxlt`. Establish `e2 : K' (j + 1) = (K (c.idx j + 1)).comap (c.mapToEarlierScheme (j + 1) hj (c.idx j + 1) (c.idx_strictMono j hj))`. Rewrite using `[hrec' j hj, e1, key, h, c.center_comap j hj]`. Establish `hmiss : ∀ i : ℕ, c.idx j + 1 ≤ i → i < c.idx (j + 1) → ∀ j' : ℕ, j' < t'.length → c.idx j' ≠ i` using `fun i h1 h2 => c.index_ne_of_index_lt_of_lt_index_succ j hj i h1 h2`.
+
+Establish `hfin` using `eq_comap_mapToEarlierScheme_of_le_of_index_ne c K hN hrec (j + 1) hj (K' (j + 1)) (c.idx j + 1) (c.idx_strictMono j hj) hmiss e2 (c.idx (j + 1)) (c.idx_strictMono j hj) le_rfl`. Rewrite `hfin` using `[c.mapToEarlierScheme_index (j + 1) hj]`. Conclude with `hfin`.
+-/
 private theorem iteratedStrictTransform_succ_eq_comap_map {X X' : Scheme.{u}} {φ : X' ⟶ X} {t' : SequenceOfBlowups X'}
     {t : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ t' t) [AlgebraicGeometry.Flat φ]
     (K : ∀ i : ℕ, (t.schemeAt i).IdealSheafData) (K' : ∀ j : ℕ, (t'.schemeAt j).IdealSheafData)
@@ -168,6 +215,15 @@ private theorem iteratedStrictTransform_succ_eq_comap_map {X X' : Scheme.{u}} {�
   rw [c.mapToEarlierScheme_index (j + 1) hj] at hfin
   exact hfin
 
+/- English proof (translation)
+Establish `main : ∀ (j : ℕ) (hj : j ≤ t'.length), K' j = (K (c.idx j)).comap (c.map j hj)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `hj`.
+
+Establish `hmiss : ∀ i : ℕ, 0 ≤ i → i < c.idx 0 → ∀ j' : ℕ, j' < t'.length → c.idx j' ≠ i` using `fun i _ h2 => c.index_ne_of_lt_index_zero i h2`. Establish `hfin` using `eq_comap_mapToEarlierScheme_of_le_of_index_ne c K hN hrec 0 hj (K' 0) 0 (Nat.zero_le _) hmiss hzero (c.idx 0) (Nat.zero_le _) le_rfl`. Rewrite `hfin` using `[c.mapToEarlierScheme_index 0 hj]`. Conclude with `hfin`. Consider the case `succ m ih`.
+
+Introduce `hj`. Conclude with `iteratedStrictTransform_succ_eq_comap_map c K K' hN hN' hrec hrec' m hj (ih (Nat.le_of_lt hj))`. Establish `hend` using `main t'.length le_rfl`. Establish `hLastMap : c.lastMap = c.map t'.length le_rfl ≫ eqToHom (congrArg t.schemeAt c.idx_length)` using `rfl`. Rewrite using `[hend, hLastMap, Scheme.IdealSheafData.comap_comp, comap_eqToHom_of_eq]`.
+
+Conclude with `c.idx_length`.
+-/
 private theorem iteratedStrictTransform_eq_comap_lastMap_of_sequence {X X' : Scheme.{u}} {φ : X' ⟶ X} {t' : SequenceOfBlowups X'}
     {t : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ t' t) [AlgebraicGeometry.Flat φ]
     (K : ∀ i : ℕ, (t.schemeAt i).IdealSheafData) (K' : ∀ j : ℕ, (t'.schemeAt j).IdealSheafData)
@@ -203,6 +259,9 @@ section
 
 variable {X X' : Scheme.{u}} {φ : X' ⟶ X}
 
+/- English proof (translation)
+The claim follows from `smooth_of_isPullback_of_smooth_right c.isPullback_lastMap`.
+-/
 theorem smooth_lastMap {s' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (c : SequenceOfBlowupsPullback φ s' s)
     [AlgebraicGeometry.Smooth φ] : AlgebraicGeometry.Smooth c.lastMap :=
   smooth_of_isPullback_of_smooth_right c.isPullback_lastMap
@@ -218,6 +277,13 @@ variable {g : Y ⟶ X}
 variable {I : X.IdealSheafData} {I' : Y.IdealSheafData} {m : ℕ}
 variable {E : List X.IdealSheafData} {E' : List Y.IdealSheafData}
 
+/- English proof (translation)
+Use `iteratedStrictTransform_eq_comap_lastMap_of_sequence d K K' ?_ ?_ hzero ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Conclude with `hN i hi`. Introduce `j hj`. Conclude with `hN' j hj`.
+
+Introduce `i hi`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_blowupMorphism, MarkedBlowupSequenceData.toMarkedSequence_center]`. Conclude with `hrec i hi`. Introduce `j hj`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_blowupMorphism, MarkedBlowupSequenceData.toMarkedSequence_center]`.
+
+Conclude with `hrec' j hj`.
+-/
 theorem iteratedStrictTransform_eq_comap_lastMap {s : MarkedBlowupSequenceData p I m E} {s' : MarkedBlowupSequenceData q I' m E'}
     (d : SequenceOfBlowupsPullback g s'.toMarkedSequenceOfBlowups.toSequenceOfBlowups s.toMarkedSequenceOfBlowups.toSequenceOfBlowups)
     [AlgebraicGeometry.Flat g]
@@ -246,6 +312,21 @@ end
 
 end SequenceOfBlowupsPullback
 
+/- English proof (translation)
+Take `⟨ψ, hψ, huniq⟩` from `exists_lift_of_centers_comap_eq_top φ c hinv c.length le_rfl`. Establish `hlt : ∀ j : ℕ, ¬ j < n.length`. Introduce `j hj`. Rewrite `hj` using `[hn]`. Conclude with `Nat.not_lt_zero j hj`.
+
+Use `SequenceOfBlowupsPullback.isPullbackSequenceOfBlowups { idx := fun _ => c.length map := fun j _ => n.projectionToBase j ≫ ψ idx_length := rfl idx_lt := fun j hj => absurd hj (hlt j) idx_strictMono := fun j hj => absurd hj (hlt j) isPullback := ?_ step := fun j hj => absurd hj (hl …` and prove the remaining obligations. Introduce `j hj`. Establish `hj0 : j = 0`. Rewrite `hj` using `[hn]`. Use linear arithmetic over natural numbers and integers.
+
+Substitute `hj0` using the available equality. Establish `: IsIso (n.projectionToBase 0)`. Rewrite using `[SequenceOfBlowups.projectionToBase_zero]`. Use `infer_instance`. Conclude with `isPullback_of_unique (n.projectionToBase 0) ψ (c.projectionToBase c.length) φ hψ huniq`.
+
+Introduce `i hi _ z hz x' hcon`. Take `⟨ψi, hψi, huniqi⟩` from `exists_lift_of_centers_comap_eq_top φ c hinv i (le_of_lt hi)`. Establish `htop : (c.center i).comap ψi = ⊤` using `hinv i hi ψi hψi`. Take `⟨w, hw1, hw2⟩` from `AlgebraicGeometry.Scheme.Pullback.exists_preimage_pullback (f := c.projectionToBase i) (g := φ) (x := z) (y := x') hcon.symm`. Establish `hfac : Limits.pullback.fst (c.projectionToBase i) φ = Limits.pullback.snd (c.projectionToBase i) φ ≫ ψi` using `huniqi _ (Limits.pullback.snd (c.projectionToBase i) φ) (Limits.pullback.fst (c.projectionToBase i) φ) Limits.pullback.condition`.
+
+Establish `hza : ψi.base ((Limits.pullback.snd (c.projectionToBase i) φ).base w) = z`. Rewrite using `[← hw1]`. Use `show (Limits.pullback.snd (c.projectionToBase i) φ ≫ ψi).base w = (Limits.pullback.fst (c.projectionToBase i) φ).base w`. Rewrite using `[hfac]`. Establish `key : (1 : ℕ∞) ≤ orderAt ((c.center i).comap ψi) ((Limits.pullback.snd (c.projectionToBase i) φ).base w)`.
+
+Use `le_trans ?_ (orderAt_le_orderAt_comap ψi (c.center i) _)` and prove the remaining obligations. Use `show (1 : ℕ∞) ≤ orderAt (c.center i) (ψi.base _)`. Rewrite using `[hza]`. Conclude with `(one_le_orderAt_iff_mem_support _ _).2 hz`. Rewrite `key` using `[htop, orderAt_top]`.
+
+Simplify using `at key`.
+-/
 theorem isPullback_of_length_zero_of_comap_center_eq_top {A B : Scheme.{u}} (φ : A ⟶ B)
     (n : SequenceOfBlowups A) (c : SequenceOfBlowups B) (hn : n.length = 0)
     (hinv : ∀ i : ℕ, i < c.length → ∀ ψ : A ⟶ c.schemeAt i,

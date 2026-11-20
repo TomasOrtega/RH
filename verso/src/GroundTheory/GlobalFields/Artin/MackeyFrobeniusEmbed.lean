@@ -25,12 +25,18 @@ def dxToQuot (H D I : Subgroup G) [(I.subgroupOf D).Normal] (x : G) :
           (x⁻¹ * ((a : H) : G) * x) * (x⁻¹ * ((b : H) : G) * x)
         group }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dxToQuot_apply [(I.subgroupOf D).Normal] (x : G)
     (d : (MulAut.conj x • D : Subgroup G).subgroupOf H) :
     dxToQuot H D I x d = ((⟨x⁻¹ * ((d : H) : G) * x,
       (mem_conj_smul_iff D x _).1 (Subgroup.mem_subgroupOf.1 d.2)⟩ : D) : D ⧸ I.subgroupOf D) :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[MonoidHom.mem_ker, dxToQuot_apply, QuotientGroup.eq_one_iff]`. Express the relevant statement in the definitionally equal form `x⁻¹ * ((d : H) : G) * x ∈ I ↔ _`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_subgroupOf, mem_conj_smul_iff]`.
+-/
 theorem ker_dxToQuot [(I.subgroupOf D).Normal] (x : G) :
     (dxToQuot H D I x).ker = ((MulAut.conj x • I : Subgroup G).subgroupOf H).subgroupOf
       ((MulAut.conj x • D : Subgroup G).subgroupOf H) := by

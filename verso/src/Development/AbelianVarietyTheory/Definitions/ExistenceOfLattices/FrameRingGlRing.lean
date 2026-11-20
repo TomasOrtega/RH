@@ -27,12 +27,18 @@ def glπ : R →ₐ[K] GlRing m R := (Ideal.Quotient.mkₐ K (rel m R)).comp (Is
 
 def glX (τ : J) : Matrix (Fin (m τ)) (Fin (m τ)) (GlRing m R) := (genMat m R τ).map (Ideal.Quotient.mk (rel m R))
 
+/- English proof (translation)
+Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk (rel m R)), Ideal.Quotient.eq]`. Unfold `rel`. Conclude with `Ideal.subset_span (Set.mem_union_right _ rfl)`.
+-/
 theorem unit_rel : Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inr (Sum.inr true))) *
     Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inr (Sum.inr false))) = 1 := by
   rw [← map_mul, ← map_one (Ideal.Quotient.mk (rel m R)), Ideal.Quotient.eq]
   unfold rel
   exact Ideal.subset_span (Set.mem_union_right _ rfl)
 
+/- English proof (translation)
+Unfold `glX`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, ← map_mul, ← map_one (Ideal.Quotient.mk (rel m R)), Ideal.Quotient.eq]`. Unfold `rel`. Conclude with `Ideal.subset_span (Set.mem_union_left _ ⟨τ, rfl⟩)`.
+-/
 theorem det_rel (τ : J) : (glX m R τ).det *
     Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inr (Sum.inl τ))) = 1 := by
   unfold glX
@@ -43,6 +49,33 @@ theorem det_rel (τ : J) : (glX m R τ).det *
 
 def glS : (GlRing m R)ˣ := Units.mkOfMulEqOne _ _ (unit_rel m R)
 
+/- English proof (translation)
+Use `⟨fun τ => IsUnit.of_mul_eq_one _ (det_rel m R τ), ?_⟩` and prove the remaining obligations. Introduce `T _ _ ψ g a hg`. Set `v : Var m → T` to `fun`. Consider the case `Sum.inl p => g p.1 p.2.1 p.2.2`. Consider the case `Sum.inr (Sum.inl τ) => (((hg τ).unit⁻¹ : Tˣ) : T)`.
+
+Consider the case `Sum.inr (Sum.inr true) => (a : T)`. Consider the case `Sum.inr (Sum.inr false) => ((a⁻¹ : Tˣ) : T)`. Set `φ : MvPolynomial (Var m) R →ₐ[K] T` to `{ MvPolynomial.eval₂Hom (ψ : R →+* T) v with commutes' := fun r => by show MvPolynomial.eval₂ (ψ : R →+* T) v (algebraMap K _ r) = algebraMap K T r`. Rewrite using `[IsScalarTower.algebraMap_apply K R (MvPolynomial (Var m) R), MvPolynomial.algebraMap_eq, MvPolynomial.eval₂_C]`. Conclude with `ψ.commutes r }`.
+
+Establish `hφ : ∀ p, φ p = MvPolynomial.eval₂ (ψ : R →+* T) v p` using `fun _ => rfl`. Establish `hgen : ∀ τ, (genMat m R τ).map φ = g τ` using `fun τ => by`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, hφ]`. Unfold `genMat`.
+
+Rewrite using `[Matrix.of_apply, MvPolynomial.eval₂_X]`. Establish `hle : rel m R ≤ RingHom.ker (φ : MvPolynomial (Var m) R →+* T)`. Unfold `rel`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `p (⟨τ, rfl⟩ | rfl)`.
+
+Rewrite using `[SetLike.mem_coe, RingHom.mem_ker] show φ _ = 0`. Rewrite using `[map_sub, map_mul, map_one, AlgHom.map_det, AlgHom.mapMatrix_apply, hgen τ, hφ, MvPolynomial.eval₂_X]`. Conclude with `sub_eq_zero.2 (IsUnit.mul_val_inv (hg τ))`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker] show φ _ = 0`. Rewrite using `[map_sub, map_mul, map_one, hφ, hφ, MvPolynomial.eval₂_X, MvPolynomial.eval₂_X]`.
+
+Conclude with `sub_eq_zero.2 (Units.mul_inv a)`. Establish `hI : ∀ p ∈ rel m R, φ p = 0` using `fun p hp => RingHom.mem_ker.1 (hle hp)`. Establish `hk : ∀ p, Ideal.Quotient.liftₐ (rel m R) φ hI (Ideal.Quotient.mk (rel m R) p) = MvPolynomial.eval₂ (ψ : R →+* T) v p` using `fun _ => rfl`. Use `⟨Ideal.Quotient.liftₐ (rel m R) φ hI, ⟨?_, fun τ => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `r show Ideal.Quotient.liftₐ (rel m R) φ hI (Ideal.Quotient.mk (rel m R) (MvPolynomial.C r)) = ψ r`.
+
+Rewrite using `[hk, MvPolynomial.eval₂_C]`. Both sides reduce to the same expression. Use extensionality with `i j show Ideal.Quotient.liftₐ (rel m R) φ hI (Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inl ⟨τ, i, j⟩))) = g τ i j`. Conclude with `(hk _).trans (MvPolynomial.eval₂_X _ _ _)`. Use `show Ideal.Quotient.liftₐ (rel m R) φ hI (Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inr (Sum.inr true)))) = (a : T)`.
+
+Conclude with `(hk _).trans (MvPolynomial.eval₂_X _ _ _)`. Introduce and unpack `k' ⟨h1, h2, h3⟩`. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+
+Introduce `r show k' (Ideal.Quotient.mk (rel m R) (MvPolynomial.C r)) = Ideal.Quotient.liftₐ (rel m R) φ hI (Ideal.Quotient.mk (rel m R) (MvPolynomial.C r))`. Rewrite using `[hk, MvPolynomial.eval₂_C]`. Conclude with `AlgHom.congr_fun h1 r`. Establish `ht : k' (Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inr (Sum.inr true)))) = a` using `h3`. Introduce and unpack `(⟨τ, i, j⟩ | τ | _ | _)`.
+
+Use `show k' (Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inl ⟨τ, i, j⟩))) = Ideal.Quotient.liftₐ (rel m R) φ hI (Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inl ⟨τ, i, j⟩)))`. Rewrite using `[hk, MvPolynomial.eval₂_X]`. Conclude with `congrFun (congrFun (h2 τ) i) j`. Use `show k' (Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inr (Sum.inl τ)))) = Ideal.Quotient.liftₐ (rel m R) φ hI (Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inr (Sum.inl τ))))`. Rewrite using `[hk, MvPolynomial.eval₂_X]`.
+
+Establish `hd` using `congrArg k' (det_rel m R τ)`. Rewrite `hd` using `[map_mul, map_one, AlgHom.map_det, AlgHom.mapMatrix_apply, h2 τ]`. Conclude with `(Units.inv_eq_of_mul_eq_one_right (u := (hg τ).unit) hd).symm`. Use `show k' (Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inr (Sum.inr false)))) = Ideal.Quotient.liftₐ (rel m R) φ hI (Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inr (Sum.inr false))))`. Rewrite using `[hk, MvPolynomial.eval₂_X]`.
+
+Establish `hu` using `congrArg k' (unit_rel m R)`. Rewrite `hu` using `[map_mul, map_one, ht]`. Conclude with `(Units.inv_eq_of_mul_eq_one_right hu).symm`. Use `show k' (Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inr (Sum.inr true)))) = Ideal.Quotient.liftₐ (rel m R) φ hI (Ideal.Quotient.mk (rel m R) (MvPolynomial.X (Sum.inr (Sum.inr true))))`. Rewrite using `[hk, MvPolynomial.eval₂_X]`.
+
+Conclude with `ht`.
+-/
 theorem frameRing_glRing : FrameRing m (glπ (K := K) m R) (glX m R) (glS m R) := by
   refine ⟨fun τ => IsUnit.of_mul_eq_one _ (det_rel m R τ), ?_⟩
   intro T _ _ ψ g a hg
@@ -128,6 +161,11 @@ theorem frameRing_glRing : FrameRing m (glπ (K := K) m R) (glX m R) (glS m R) :
 
 variable {m R}
 
+/- English proof (translation)
+Introduce `r₁ r₂ hr`. Take `⟨k, ⟨hk, -, -⟩, -⟩` from `h.2 R (AlgHom.id K R) (fun _ => 1) 1 (fun _ => by simp)`. Establish `e₁` using `AlgHom.congr_fun hk r₁`. Establish `e₂` using `AlgHom.congr_fun hk r₂`. Rewrite `e₁`, `e₂` using `[AlgHom.comp_apply, AlgHom.id_apply]`.
+
+Rewrite using `[← e₁, ← e₂, hr]`.
+-/
 theorem FrameRing.injective {A : Type} [CommRing A] [Algebra K A] {π : R →ₐ[K] A}
     {X : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) A} {s : Aˣ} (h : FrameRing m π X s) : Function.Injective π := by
   intro r₁ r₂ hr
@@ -137,6 +175,13 @@ theorem FrameRing.injective {A : Type} [CommRing A] [Algebra K A] {π : R →ₐ
   rw [AlgHom.comp_apply, AlgHom.id_apply] at e₁ e₂
   rw [← e₁, ← e₂, hr]
 
+/- English proof (translation)
+Introduce `hr`. Establish `hε : (1 + DualNumber.eps : DualNumber R) * (1 - DualNumber.eps) = 1`. Rewrite using `[mul_sub, _root_.mul_one, add_mul, _root_.one_mul, DualNumber.eps_mul_eps, add_zero, add_sub_cancel_right]`. Take `⟨k, ⟨hk1, -, hk3⟩, -⟩` from `h.2 (DualNumber R) (TrivSqZeroExt.inlAlgHom K R R) (fun _ => 1) (Units.mkOfMulEqOne _ _ hε) (fun _ => by simp)`. Establish `e` using `congrArg k hr`.
+
+Rewrite `e` using `[hk3]`. Establish `e₁` using `AlgHom.congr_fun hk1 r`. Rewrite `e₁` using `[AlgHom.comp_apply]`. Rewrite `e` using `[e₁]`. Establish `e₂` using `congrArg TrivSqZeroExt.snd e`.
+
+Simplify using `[Units.val_mkOfMulEqOne, DualNumber.snd_eps] at e₂`.
+-/
 theorem FrameRing.unit_not_mem [Nontrivial R] {A : Type} [CommRing A] [Algebra K A] {π : R →ₐ[K] A}
     {X : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) A} {s : Aˣ} (h : FrameRing m π X s) (r : R) : π r ≠ s := by
 
@@ -153,6 +198,21 @@ theorem FrameRing.unit_not_mem [Nontrivial R] {A : Type} [CommRing A] [Algebra K
   have e₂ := congrArg TrivSqZeroExt.snd e
   simp [Units.val_mkOfMulEqOne, DualNumber.snd_eps] at e₂
 
+/- English proof (translation)
+Introduce `I`. Establish `hX : ∀ τ i j, i < j → Ideal.Quotient.mk I (X τ i j) = 0` using `fun τ i j hij => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨τ, i, j, hij, rfl⟩)`. Use `⟨fun τ i => ?_, fun τ i j hij => hX τ i j hij, ?_⟩` and prove the remaining obligations. Establish `hd : IsUnit ((X τ).map (Ideal.Quotient.mk I)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+
+Conclude with `(h.1 τ).map _`. Rewrite `hd` using `[Matrix.det_of_isLowerTriangular _ (by intro i j hij; exact hX τ i j hij)]`. Conclude with `IsUnit.prod_univ_iff.1 hd i`. Introduce `T _ _ ψ g a hd hl`. Establish `hg : ∀ τ, IsUnit (g τ).det` using `fun τ => by`.
+
+Rewrite using `[Matrix.det_of_isLowerTriangular _ (by intro i j hij; exact hl τ i j hij)]`. Conclude with `IsUnit.prod_univ_iff.2 (hd τ)`. Take `⟨k, ⟨hk1, hk2, hk3⟩, hku⟩` from `h.2 T ψ g a hg`. Establish `hkX : ∀ τ i j, k (X τ i j) = g τ i j` using `fun τ i j => congrFun (congrFun (hk2 τ) i) j`. Establish `hle : I ≤ RingHom.ker (k : A →+* T)`.
+
+Apply `Ideal.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨τ, i, j, hij, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Conclude with `(hkX τ i j).trans (hl τ i j hij)`. Establish `hI : ∀ x ∈ I, k x = 0` using `fun x hx => RingHom.mem_ker.1 (hle hx)`.
+
+Use `⟨Ideal.Quotient.liftₐ I k hI, ⟨?_, fun τ => ?_, hk3⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Conclude with `AlgHom.congr_fun hk1 r`. Use extensionality with `i j`. Conclude with `hkX τ i j`.
+
+Introduce and unpack `k' ⟨h1, h2, h3⟩`. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Rewrite using `[Ideal.Quotient.liftₐ_comp]`. Apply `hku` to reduce the goal to its premises. Use `⟨?_, fun τ => ?_, h3⟩` and prove the remaining obligations.
+
+Rewrite using `[AlgHom.comp_assoc]`. Conclude with `h1`. Use extensionality with `i j`. Conclude with `congrFun (congrFun (h2 τ) i) j`.
+-/
 theorem FrameRing.triRing {A : Type} [CommRing A] [Algebra K A] {π : R →ₐ[K] A}
     {X : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) A} {s : Aˣ} (h : FrameRing m π X s) :
     let I : Ideal A := Ideal.span {x | ∃ τ i j, i < j ∧ x = X τ i j}
@@ -202,10 +262,21 @@ section Geo
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_id (S : Type) [CommRing S] : spMap (RingHom.id S) = 𝟙 (Sp S) := Spec.map_id _
 
+/- English proof (translation)
+The claim follows from `y.gen`.
+-/
 theorem secGen_frPt {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) : SecGen y.x y.s := y.gen
 
+/- English proof (translation)
+Introduce `p hp`. Establish `hp' : p ∈ ⋂ k, ⇑(snd (Over.mk x') Xo.univ.t.G).left ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)` using `hp`. Establish `e : ∀ q, (snd (Over.mk x) Xo.univ.t.G).left (pm q) = (snd (Over.mk x') Xo.univ.t.G).left q` using `fun q => by`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+
+Use `show pm p ∈ ⋂ k, ⇑(snd (Over.mk x) Xo.univ.t.G).left ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, e]`. Conclude with `Set.mem_iInter.1 hp' k`.
+-/
 theorem chart_le {S T : Type} [CommRing S] [CommRing T] (x : Sp S ⟶ Xo.X) (x' : Sp T ⟶ Xo.X) (pm : Gx x' ⟶ Gx x)
     (h : pm ≫ (snd (Over.mk x) Xo.univ.t.G).left = (snd (Over.mk x') Xo.univ.t.G).left)
     (i : Fin 1 → Xo.univ.t.PP.L.ι) : (PPx x').U i ≤ pm ⁻¹ᵁ (PPx x).U i := by
@@ -219,10 +290,16 @@ theorem chart_le {S T : Type} [CommRing S] [CommRing T] (x : Sp S ⟶ Xo.X) (x' 
   rw [Set.mem_preimage, e]
   exact Set.mem_iInter.1 hp' k
 
+/- English proof (translation)
+Unfold `scal Out.liftFun`. Simplify using `only [map_one]`.
+-/
 theorem scal_one {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) : scal x 1 i = 1 := by
   unfold scal Out.liftFun
   simp only [map_one]
 
+/- English proof (translation)
+Unfold `FrMap SecBC`. Use `and_congr_right fun _ => and_congr_right fun _ => exists_congr fun pm => and_congr_right fun _ => and_congr_right fun _ => forall_congr' fun i => forall_congr' fun h => ?_` and prove the remaining obligations. Rewrite using `[scal_one y.x i, _root_.one_mul]`.
+-/
 theorem frMap_iff {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     (y : FrPt Xo c S) (z : FrPt Xo c T) : FrMap φ y z ↔ z.x = spMap φ.toRingHom ≫ y.x ∧
       (∀ τ i, z.u τ i = spMap (dualMap φ.toRingHom) ≫ y.u τ i) ∧ SecBC φ.toRingHom 1 y.x z.x y.s z.s := by
@@ -231,6 +308,11 @@ theorem frMap_iff {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebr
     and_congr_right fun _ => forall_congr' fun i => forall_congr' fun h => ?_
   rw [scal_one y.x i, _root_.one_mul]
 
+/- English proof (translation)
+Unfold `FrBor FrChg SecBC`. Simplify using `only [spMap_id]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hu, hs⟩ choose cf hcf using hu`. Conclude with `⟨fun τ => Matrix.of (cf τ), fun τ i => (hcf τ i).1, fun τ i j hij => (hcf τ i).2.1 j hij, hx, fun τ i => (hcf τ i).2.2, hs⟩`.
+
+Introduce and unpack `⟨g, hd, hl, hx, hu, hs⟩`. Conclude with `⟨hx, fun τ i => ⟨g τ i, hd τ i, fun j hij => hl τ i j hij, hu τ i⟩, hs⟩`.
+-/
 theorem frBor_iff {S : Type} [CommRing S] [Algebra c.F S] (t : Ix Dw → Sˣ) (y y' : FrPt Xo c S) :
     FrBor t y y' ↔ ∃ g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S,
       (∀ τ i, g τ i i = (t (some ⟨τ, i⟩) : S)) ∧ (∀ τ i j, i < j → g τ i j = 0) ∧ FrChg g (t none : S) y y' := by
@@ -244,6 +326,9 @@ theorem frBor_iff {S : Type} [CommRing S] [Algebra c.F S] (t : Ix Dw → Sˣ) (y
   · rintro ⟨g, hd, hl, hx, hu, hs⟩
     exact ⟨hx, fun τ i => ⟨g τ i, hd τ i, fun j hij => hl τ i j hij, hu τ i⟩, hs⟩
 
+/- English proof (translation)
+Use `show ((𝟙 X : X ⟶ X).appLE U ((𝟙 X : X ⟶ X) ⁻¹ᵁ U) le_rfl).hom z = z`. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem appLE_id_apply (X : Scheme.{0}) (U : X.Opens) (h : U ≤ 𝟙 X ⁻¹ᵁ U) (z : Γ(X, U)) :
     (Scheme.Hom.appLE (𝟙 X) U U h).hom z = z := by
   show ((𝟙 X : X ⟶ X).appLE U ((𝟙 X : X ⟶ X) ⁻¹ᵁ U) le_rfl).hom z = z
@@ -251,6 +336,13 @@ theorem appLE_id_apply (X : Scheme.{0}) (U : X.Opens) (h : U ≤ 𝟙 X ⁻¹ᵁ
   simp
   rfl
 
+/- English proof (translation)
+Establish `hid : (fst (Over.mk x) Xo.univ.t.G).left ≫ spMap (RingHom.id S) = (fst (Over.mk x) Xo.univ.t.G).left`. Rewrite using `[spMap_id]`. Conclude with `Category.comp_id _`. Establish `hpm : ∀ pm : Gx x ⟶ Gx x, pm ≫ (snd (Over.mk x) Xo.univ.t.G).left = (snd (Over.mk x) Xo.univ.t.G).left → pm ≫ (fst (Over.mk x) Xo.univ.t.G).left = (fst (Over.mk x) Xo.univ.t.G).left ≫ spMap (RingHom.id S) → pm = 𝟙 _`. Introduce `pm h₁ h₂`.
+
+Rewrite `h₂` using `[hid]`. Conclude with `pullback.hom_ext (h₂.trans (Category.id_comp _).symm) (h₁.trans (Category.id_comp _).symm)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨pm, h₁, h₂, h₃⟩ i`. Take `rfl` from `hpm pm h₁ h₂`.
+
+Conclude with `((appLE_id_apply _ _ _ _).symm.trans (h₃ i le_rfl)).symm`. Introduce `hs`. Use `⟨𝟙 _, Category.id_comp _, (Category.id_comp _).trans hid.symm, fun i h => ?_⟩` and prove the remaining obligations. Conclude with `(appLE_id_apply _ _ _ _).trans (hs i).symm`.
+-/
 theorem secBC_id_iff {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a : S) (s s' : LB.Sec (PPx x)) :
     SecBC (RingHom.id S) a x x s s' ↔ ∀ i, s'.f i = scal x a i * s.f i := by
   have hid : (fst (Over.mk x) Xo.univ.t.G).left ≫ spMap (RingHom.id S) = (fst (Over.mk x) Xo.univ.t.G).left := by
@@ -271,6 +363,9 @@ theorem secBC_id_iff {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a : S) (s s' :
     refine ⟨𝟙 _, Category.id_comp _, (Category.id_comp _).trans hid.symm, fun i h => ?_⟩
     exact (appLE_id_apply _ _ _ _).trans (hs i).symm
 
+/- English proof (translation)
+Substitute `x'` using the available equality. Rewrite `ha`, `hb` using `[secBC_id_iff]`. Conclude with `(hgen s').unique ha hb`.
+-/
 private theorem secBC_unique_of_secGen {S : Type} [CommRing S] (x x' : Sp S ⟶ Xo.X) (hx : x' = x) {a b : S}
     (s : LB.Sec (PPx x)) (s' : LB.Sec (PPx x')) (ha : SecBC (RingHom.id S) a x x' s s')
     (hb : SecBC (RingHom.id S) b x x' s s') (hgen : SecGen x s) : a = b := by
@@ -278,6 +373,9 @@ private theorem secBC_unique_of_secGen {S : Type} [CommRing S] (x x' : Sp S ⟶ 
   rw [secBC_id_iff] at ha hb
   exact (hgen s').unique ha hb
 
+/- English proof (translation)
+Unfold `FrChg at h h'`. Take `⟨hx, hu, hs⟩` from `h`. Take `⟨-, hu', hs'⟩` from `h'`. Use `⟨funext fun τ => Matrix.ext fun i j => congrFun ((y.basis τ _ (by rw [← hx]; exact y'.tan τ i) (y'.eig τ i)).unique (hu τ i) (hu' τ i)) j, secBC_unique_of_secGen y.x y'.x hx y.s y'.s hs hs' y.gen⟩` and prove the remaining obligations.
+-/
 theorem frChg_unique {S : Type} [CommRing S] [Algebra c.F S]
     {g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} {a a' : S} {y y' : FrPt Xo c S}
     (h : FrChg g a y y') (h' : FrChg g' a' y y') : g = g' ∧ a = a' := by
@@ -287,6 +385,9 @@ theorem frChg_unique {S : Type} [CommRing S] [Algebra c.F S]
   refine ⟨funext fun τ => Matrix.ext fun i j => congrFun ((y.basis τ _ (by rw [← hx]; exact y'.tan τ i)
     (y'.eig τ i)).unique (hu τ i) (hu' τ i)) j, secBC_unique_of_secGen y.x y'.x hx y.s y'.s hs hs' y.gen⟩
 
+/- English proof (translation)
+Substitute `x'` using the available equality. Take `⟨a, ha, -⟩` from `hgen s'`. Conclude with `⟨a, (secBC_id_iff x a s s').2 ha⟩`.
+-/
 private theorem exists_secBC_of_secGen {S : Type} [CommRing S] (x x' : Sp S ⟶ Xo.X) (hx : x' = x)
     (s : LB.Sec (PPx x)) (s' : LB.Sec (PPx x')) (hgen : SecGen x s) :
     ∃ a, SecBC (RingHom.id S) a x x' s s' := by
@@ -294,6 +395,9 @@ private theorem exists_secBC_of_secGen {S : Type} [CommRing S] (x x' : Sp S ⟶ 
   obtain ⟨a, ha, -⟩ := hgen s'
   exact ⟨a, (secBC_id_iff x a s s').2 ha⟩
 
+/- English proof (translation)
+Use `choose g hg using fun τ i => (y.basis τ (y'.u τ i) (by rw [← h]; exact y'.tan τ i) (y'.eig τ i)).exists`. Take `⟨a, ha⟩` from `exists_secBC_of_secGen y.x y'.x h y.s y'.s y.gen`. Use `⟨fun τ => Matrix.of (g τ), a, ?_⟩` and prove the remaining obligations. Unfold `FrChg`. Conclude with `⟨h, fun τ i => hg τ i, ha⟩`.
+-/
 theorem exists_frChg {S : Type} [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S) (h : y'.x = y.x) :
     ∃ g a, FrChg g a y y' := by
   choose g hg using fun τ i => (y.basis τ (y'.u τ i) (by rw [← h]; exact y'.tan τ i) (y'.eig τ i)).exists
@@ -302,11 +406,19 @@ theorem exists_frChg {S : Type} [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S
   unfold FrChg
   exact ⟨h, fun τ i => hg τ i, ha⟩
 
+/- English proof (translation)
+Unfold `scal Out.liftFun`. Simplify using `only [map_mul]`.
+-/
 theorem scal_mul {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a b : S) (i : (PPx x).ι) :
     scal x (a * b) i = scal x a i * scal x b i := by
   unfold scal Out.liftFun
   simp only [map_mul]
 
+/- English proof (translation)
+Substitute `x'` using the available equality. Rewrite `hs` using `[secBC_id_iff]`. Take `⟨b, hb, -⟩` from `hgen' s`. Establish `h₁ : ∀ i, s.f i = scal x (b * a) i * s.f i` using `fun i => by`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h₂ : ∀ i, s.f i = scal x 1 i * s.f i` using `fun i => by rw [scal_one, _root_.one_mul]`. Conclude with `IsUnit.of_mul_eq_one_right b ((hgen s).unique h₁ h₂)`.
+-/
 private theorem isUnit_of_secBC_of_secGen {S : Type} [CommRing S] (x x' : Sp S ⟶ Xo.X) (hx : x' = x) {a : S}
     (s : LB.Sec (PPx x)) (s' : LB.Sec (PPx x')) (hs : SecBC (RingHom.id S) a x x' s s')
     (hgen : SecGen x s) (hgen' : SecGen x' s') : IsUnit a := by
@@ -320,12 +432,20 @@ private theorem isUnit_of_secBC_of_secGen {S : Type} [CommRing S] (x x' : Sp S �
   have h₂ : ∀ i, s.f i = scal x 1 i * s.f i := fun i => by rw [scal_one, _root_.one_mul]
   exact IsUnit.of_mul_eq_one_right b ((hgen s).unique h₁ h₂)
 
+/- English proof (translation)
+Unfold `FrChg at h`. Conclude with `isUnit_of_secBC_of_secGen y.x y'.x h.1 y.s y'.s h.2.2 y.gen y'.gen`.
+-/
 theorem FrChg.isUnit {S : Type} [CommRing S] [Algebra c.F S]
     {g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} {a : S} {y y' : FrPt Xo c S}
     (h : FrChg g a y y') : IsUnit a := by
   unfold FrChg at h
   exact isUnit_of_secBC_of_secGen y.x y'.x h.1 y.s y'.s h.2.2 y.gen y'.gen
 
+/- English proof (translation)
+Take `⟨-, h₁, h₂⟩` from `h`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst]`. Conclude with `h₁`. Rewrite using `[pullback.lift_snd]`.
+
+Conclude with `h₂`.
+-/
 theorem OpenChart.eq_lift {R : Type} [CommRing R] [Algebra c.F R] {j : Sp R ⟶ Xo.XF c} {y₀ : FrPt Xo c R}
     (h : OpenChart j y₀) :
     j = pullback.lift y₀.x (spMap (algebraMap c.F R)) (by rw [y₀.x_over, sOf]; simp [spMap]) := by

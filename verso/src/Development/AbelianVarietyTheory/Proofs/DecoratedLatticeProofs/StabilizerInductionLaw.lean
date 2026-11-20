@@ -14,10 +14,22 @@ namespace GlobalTheory.EisCont
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨b, h⟩, Units.ext ((eq_of_mul_jX d (mul_jX d ⟨p, ⟨b, h⟩⟩)).trans (eq_of_mul_jX d h).symm)⟩`.
+-/
 theorem mem_stab_onX_of_mul {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) {p : GA D T} {b : GL (Fin r) (AE D)}
     (h : mt T p ⬝ d.jX = d.jX ⬝ b.1) : ∃ hp : p ∈ stab d, onX d ⟨p, hp⟩ = b :=
   ⟨⟨b, h⟩, Units.ext ((eq_of_mul_jX d (mul_jX d ⟨p, ⟨b, h⟩⟩)).trans (eq_of_mul_jX d h).symm)⟩
 
+/- English proof (translation)
+Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨B, -, hB⟩, B', -, hB'⟩`. Express the relevant statement in the definitionally equal form `mt T p ⬝ d.jX = d.jX ⬝ B at hB`. Express the relevant statement in the definitionally equal form `mt T p⁻¹ ⬝ d.jX = d.jX ⬝ B' at hB'`.
+
+Establish `e1 : B ⬝ B' = 1`. Rewrite using `[eq_of_mul_jX d hB]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← hB', ← Matrix.mul_assoc (mt T p), mt_mul_inv, Matrix.one_mul, d.pX_jX]`. Establish `e2 : B' ⬝ B = 1`.
+
+Rewrite using `[eq_of_mul_jX d hB']`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← hB, ← Matrix.mul_assoc (mt T p⁻¹), mt_inv_mul, Matrix.one_mul, d.pX_jX]`. Conclude with `⟨⟨B, B', e1, e2⟩, hB⟩`. Introduce `hp`.
+
+Take `⟨α, h⟩` from `hp`. Take `⟨β, h'⟩` from `(stab d).inv_mem (show p ∈ stab d from ⟨α, h⟩)`. Conclude with `⟨⟨α.1, fun i j hij => absurd hij (lt_irrefl _), h⟩, β.1, fun i j hij => absurd hij (lt_irrefl _), h'⟩`.
+-/
 theorem parFlag_zero_eq_stab {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) :
     (parFlag D.sp.cm.sig T.gram d.e fun _ => 0) = stab d := by
   ext p
@@ -39,6 +51,15 @@ theorem parFlag_zero_eq_stab {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) :
     obtain ⟨β, h'⟩ := (stab d).inv_mem (show p ∈ stab d from ⟨α, h⟩)
     exact ⟨⟨α.1, fun i j hij => absurd hij (lt_irrefl _), h⟩, β.1, fun i j hij => absurd hij (lt_irrefl _), h'⟩
 
+/- English proof (translation)
+Establish `hr : ∀ q : stab d, (q : GA D T) ∈ GQ T → (onX d q).1 ∈ ratMx D r r` using `fun q hq => by`. Rewrite using `[eq_of_mul_jX d (mul_jX d q)]`. Conclude with `ratMx_mul ⟨_, rfl⟩ (ratMx_mul ((mem_GQ_iff T _).1 hq) ⟨_, rfl⟩)`. Take `⟨A, hA⟩` from `hr q hq`. Take `⟨A', hA'⟩` from `hr q⁻¹ ((GQ T).inv_mem hq)`.
+
+Express the relevant statement in the definitionally equal form `rat A = _ at hA`. Express the relevant statement in the definitionally equal form `rat A' = _ at hA'`. Establish `hAA : A * A' = 1`. Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[rat_mul, rat_one, hA, hA', map_inv, Units.mul_inv]`.
+
+Establish `hA'A : A' * A = 1`. Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[rat_mul, rat_one, hA, hA', map_inv, Units.inv_mul]`. Use `⟨⟨A.det, A'.det, by rw [← Matrix.det_mul, hAA, Matrix.det_one], by rw [← Matrix.det_mul, hA'A, Matrix.det_one]⟩, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `incA D A.det = (onX d q).1.det`.
+
+Rewrite using `[← hA, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_onX_rat {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q : stab d) (hq : (q : GA D T) ∈ GQ T) :
     ∃ u : D.host.Eˣ, Units.map (incA D : D.host.E →* AE D) u =
       Matrix.GeneralLinearGroup.det (onX d q) := by
@@ -61,12 +82,24 @@ theorem det_onX_rat {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q : stab d
   rw [← hA, RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Rewrite using `[hφ q g, h1, h2]`. Simplify using `[npow]`.
+-/
 theorem indLaw_inv {T T₀ : HSp D} {r : ℕ} {d : HypDec T T₀ r} {μ : (AE D)ˣ →* Circle} {t : ℂ} {φ : GA D T → ℂ}
     (hφ : IndLaw (absDet d) (detChar d μ) t φ) (q : stab d) (h1 : detChar d μ q = 1) (h2 : absDet d q = 1) (g : GA D T) :
     φ (q * g) = φ g := by
   rw [hφ q g, h1, h2]
   simp [npow]
 
+/- English proof (translation)
+Set `H : Subgroup (GA D T)` to `{ carrier := {γ | ∀ g, φ (γ * g) = φ g} one_mem' := fun g => by rw [one_mul] mul_mem' := fun {a b} ha hb g => by rw [mul_assoc, ha, hb] inv_mem' := fun {a} ha g => by rw [← ha, mul_inv_cancel_left] }`. Establish `hH : (leftGrp D.sp.cm.sig T.gram d.e fun _ => 0) ≤ H`. Use `sup_le ((Subgroup.closure_le _).2 fun u hu => ?_) fun γ hγ => ?_` and prove the remaining obligations. Take `⟨A, hA, e⟩` from `lower_iff.1 hu.1`. Rewrite `e` using `[show A = 0 from Matrix.ext fun j i => hA j i le_rfl, Matrix.mul_zero, Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`.
+
+Take `⟨hp, h1⟩` from `mem_stab_onX_of_mul d (p := u) (b := 1) (e.trans (Matrix.mul_one _).symm)`. Use `indLaw_inv hφ ⟨u, hp⟩ ?_ ?_` and prove the remaining obligations. Rewrite using `[detChar, MonoidHom.comp_apply, MonoidHom.comp_apply, h1, map_one, map_one]`. Rewrite using `[absDet, MonoidHom.comp_apply, MonoidHom.comp_apply, h1, map_one, map_one]`. Establish `hp : γ ∈ stab d` using `parFlag_zero_eq_stab d ▸ hγ.2`.
+
+Take `⟨u, hu⟩` from `det_onX_rat d ⟨γ, hp⟩ hγ.1`. Use `indLaw_inv hφ ⟨γ, hp⟩ ?_ ?_` and prove the remaining obligations. Rewrite using `[detChar, MonoidHom.comp_apply, MonoidHom.comp_apply, ← hu]`. Conclude with `hμ.2 u`. Rewrite using `[absDet, MonoidHom.comp_apply, MonoidHom.comp_apply, ← hu]`.
+
+Conclude with `absE_inclR u`. Conclude with `fun γ hγ => hH hγ`.
+-/
 theorem leftInv_leftGrp_of_indLaw {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) {μ : (AE D)ˣ →* Circle}
     (hμ : IsHeckeChar D μ) {t : ℂ} {φ : GA D T → ℂ} (hφ : IndLaw (absDet d) (detChar d μ) t φ) :
     GlobalTheory.AutomorphicL2Unitary.LeftInv (leftGrp D.sp.cm.sig T.gram d.e fun _ => 0) φ := by
@@ -93,6 +126,9 @@ theorem leftInv_leftGrp_of_indLaw {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ 
         exact absE_inclR u
   exact fun γ hγ => hH hγ
 
+/- English proof (translation)
+Introduce `_ _ _ _ d` and use `⟨parFlag_zero_eq_stab d, rfl, fun _ _ h => mem_stab_onX_of_mul d h, fun _ hμ _ _ hφ => leftInv_leftGrp_of_indLaw d hμ hφ⟩`.
+-/
 theorem parFlag_stab_leftInv : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ r), (parFlag D.sp.cm.sig T.gram d.e fun _ => 0) = stab d ∧ ratPts D.sp.cm.sig T.gram = GQ T ∧ (∀ (p : GA D T) (b : GL (Fin r) (AE D)), (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig T.gram p).1 * adMat D.host.F d.e = adMat D.host.F d.e * b.1 → ∃ hp : p ∈ stab d, onX d ⟨p, hp⟩ = b) ∧ ∀ (μ : (AE D)ˣ →* Circle), IsHeckeChar D μ → ∀ (t : ℂ) (φ : GA D T → ℂ), IndLaw (absDet d) (detChar d μ) t φ → GlobalTheory.AutomorphicL2Unitary.LeftInv (leftGrp D.sp.cm.sig T.gram d.e fun _ => 0) φ :=
   fun _ _ _ _ d => ⟨parFlag_zero_eq_stab d, rfl, fun _ _ h => mem_stab_onX_of_mul d h,
     fun _ hμ _ _ hφ => leftInv_leftGrp_of_indLaw d hμ hφ⟩

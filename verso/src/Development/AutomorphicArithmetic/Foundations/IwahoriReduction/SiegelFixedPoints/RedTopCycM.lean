@@ -18,6 +18,9 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 private def E1 (X : Tower Ω ε) (l n : ℕ) [Fact l.Prime] (a b : X.Fn l) : Prop :=
   AdicCompletion.eval (idl l) (X.Kl l) n (a ![1, 0]) = AdicCompletion.eval (idl l) (X.Kl l) n (b ![1, 0])
 
+/- English proof (translation)
+Establish `hu : (![(![1, 0] : Fin 2 → ℤ_[l]) 0, (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * (![1, 0] : Fin 2 → ℤ_[l]) 1] : Fin 2 → ℤ_[l]) = ![1, 0]`. Apply the tactic sequence `funext i; fin_cases i <;> simp`. Establish `hg : X.galB l s b ![1, 0] = X.kmap l (X.gal s) (b ![(![1, 0] : Fin 2 → ℤ_[l]) 0, (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * (![1, 0] : Fin 2 → ℤ_[l]) 1])` using `rfl`. Rewrite `hg` using `[hu]`. Conclude with `hg`.
+-/
 private theorem galB_col (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (s : Ω ≃ₐ[ℚ] Ω) (b : X.Fn l) :
     X.galB l s b ![1, 0] = X.kmap l (X.gal s) (b ![1, 0]) := by
   have hu : (![(![1, 0] : Fin 2 → ℤ_[l]) 0,
@@ -28,6 +31,9 @@ private theorem galB_col (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (s : Ω ≃�
   rw [hu] at hg
   exact hg
 
+/- English proof (translation)
+Unfold `E1 at *`. Rewrite `h` using `[AdicCompletion.eval_apply, AdicCompletion.eval_apply]`. Rewrite using `[galB_col, galB_col, AdicCompletion.eval_apply, AdicCompletion.eval_apply, Tower.kmap]`. Use `erw [AdicCompletion.map_val_apply, AdicCompletion.map_val_apply]`. Rewrite using `[h]`.
+-/
 private theorem E1.gal {X : Tower Ω ε} {l n : ℕ} [Fact l.Prime] {a b : X.Fn l} (h : E1 X l n a b) (s : Ω ≃ₐ[ℚ] Ω) :
     E1 X l n (X.galB l s a) (X.galB l s b) := by
   unfold E1 at *
@@ -36,6 +42,11 @@ private theorem E1.gal {X : Tower Ω ε} {l n : ℕ} [Fact l.Prime] {a b : X.Fn 
   erw [AdicCompletion.map_val_apply, AdicCompletion.map_val_apply]
   rw [h]
 
+/- English proof (translation)
+Unfold `Tower.cls`. Rewrite using `[Submodule.Quotient.eq, ofMul_mul, TensorProduct.tmul_add, add_sub_cancel_left, ofMul_pow, TensorProduct.tmul_smul, ← Nat.cast_smul_eq_nsmul ℤ_[l]]`. Apply `Submodule.smul_mem_smul _ Submodule.mem_top` to reduce the goal to its premises. Rewrite using `[Ideal.span_singleton_pow]`. Use `push_cast`.
+
+Conclude with `Ideal.mem_span_singleton_self _`.
+-/
 private theorem cls_mul_pow (X : Tower Ω ε) (l n : ℕ) [Fact l.Prime] (f v : X.Kˣ) :
     X.cls l n (f * v ^ l ^ n) = X.cls l n f := by
   unfold Tower.cls
@@ -46,6 +57,9 @@ private theorem cls_mul_pow (X : Tower Ω ε) (l n : ℕ) [Fact l.Prime] (f v : 
   push_cast
   exact Ideal.mem_span_singleton_self _
 
+/- English proof (translation)
+Rewrite `hf` using `[mem_lev_iff]`. Establish `hζ` using `isPrimitiveRoot_eOm ε hM`. Conclude with `X.recip M f (Nat.pos_of_ne_zero hM) hf _ hζ σ 1 (by rw [zpow_one]; exact (mem_fixMu_iff σ).1 hσ _ hζ.pow_eq_one) g g (by simp)`.
+-/
 private theorem gal_sl_comm [IsAlgClosed Ω] (X : Tower Ω ε) {M : ℕ} (hM : M ≠ 0) {σ : Ω ≃ₐ[ℚ] Ω} (hσ : σ ∈ fixMu Ω M)
     {f : X.K} (hf : f ∈ topL X M) (g : SL(2, ℤ)) : X.gal σ (X.sl (ofSL g) f) = X.sl (ofSL g) (X.gal σ f) := by
   rw [mem_lev_iff] at hf
@@ -53,6 +67,9 @@ private theorem gal_sl_comm [IsAlgClosed Ω] (X : Tower Ω ε) {M : ℕ} (hM : M
   exact X.recip M f (Nat.pos_of_ne_zero hM) hf _ hζ σ 1
     (by rw [zpow_one]; exact (mem_fixMu_iff σ).1 hσ _ hζ.pow_eq_one) g g (by simp)
 
+/- English proof (translation)
+Unfold `FF`. Simplify using `only [map_prod, map_pow, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun r₀ _ => Finset.prod_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[hu, map_mul, map_mul, map_pow, gal_sl_comm X (NeZero.ne _) hσ hτ, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem FF_mul [IsAlgClosed Ω] (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n m N : ℕ) [NeZero N] (x : ZMod N) (c d w : ℕ)
     (gm : (ZMod l)ˣ → SL(2, ℤ)) {σ τ : Ω ≃ₐ[ℚ] Ω} (hσ : σ ∈ fixMu Ω (topMu l n m N))
     (hτ : wkMu X l n m N x c d τ ∈ topL X (topMu l n m N)) {u : X.K}
@@ -66,6 +83,17 @@ private theorem FF_mul [IsAlgClosed Ω] (X : Tower Ω ε) (l : ℕ) [Fact l.Prim
   rw [hu, map_mul, map_mul, map_pow, gal_sl_comm X (NeZero.ne _) hσ hτ, mul_pow, mul_pow]
   ring
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Take `⟨hmem, hco⟩` from `wcoc ε X l N c d gm hp x m n hm`. Take `⟨u, -, hu0, hu⟩` from `hco σ hσ τ hτ`. Establish `hN1 : 1 ≤ N` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne N)`. Take `⟨hadd, -, hgal, -⟩` from `witalg ε X l N n hN1`.
+
+Take `⟨f₁, e₁, w₁⟩` from `wit ε X l N c d gm hp x w m n c₀ hw hm σ _ (hB σ hσ)`. Take `⟨f₂, e₂, w₂⟩` from `wit ε X l N c d gm hp x w m n c₀ hw hm τ _ (hB τ hτ)`. Take `⟨f₃, e₃, w₃⟩` from `wit ε X l N c d gm hp x w m n c₀ hw hm (σ * τ) _ (hB _ (mul_mem hσ hτ))`. Establish `hF` using `FF_mul X l n m N x c d w gm hσ (hmem τ).1 hu`. Use `set U : X.K := ∏ r₀ : (ZMod l)ˣ, ∏ γ ∈ Gs N l (topMu l n m N), X.sl (ofSL (gm r₀ * liftSL _ γ)) u ^ ex l n w (gm r₀ * liftSL _ γ) with hUdef`.
+
+Establish `hU0 : U ≠ 0` using `Finset.prod_ne_zero_iff.2 fun r₀ _ => Finset.prod_ne_zero_iff.2 fun γ _ => pow_ne_zero _ ((map_ne_zero _).2 hu0)`. Set `v : X.Kˣ` to `Units.mk0 (U ^ l ^ c₀) (pow_ne_zero _ hU0)`. Establish `hfv : f₃ = (f₁ * Units.map (X.gal σ).toMonoidHom f₂) * v ^ l ^ n`. Apply `Units.ext` to reduce the goal to its premises. Establish `hv : ((v ^ l ^ n : X.Kˣ) : X.K) = (U ^ l ^ c₀) ^ l ^ n` using `by simp [v]`.
+
+Establish `hg : ((Units.map (X.gal σ).toMonoidHom f₂ : X.Kˣ) : X.K) = X.gal σ f₂` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, hv, hg, e₃, hF, e₁, e₂, map_pow, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `h12` using `hadd _ _ _ _ w₁ (hgal σ _ _ w₂)`. Use `show AdicCompletion.eval (idl l) (X.Kl l) n _ = AdicCompletion.eval (idl l) (X.Kl l) n _`.
+
+Rewrite using `[w₃.2.1, h12.2.1, hfv, cls_mul_pow]`.
+-/
 private theorem coc_col [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N]
     (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)) (hp : Par l N c d gm) (x : ZMod N) (w m n c₀ : ℕ) (hw : Odd w) (hm : 1 ≤ m)
     (bB : (Ω ≃ₐ[ℚ] Ω) → X.Fn l)
@@ -96,6 +124,11 @@ private theorem coc_col [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) 
   show AdicCompletion.eval (idl l) (X.Kl l) n _ = AdicCompletion.eval (idl l) (X.Kl l) n _
   rw [w₃.2.1, h12.2.1, hfv, cls_mul_pow]
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω M`. Establish `h1` using `cycM_apply M (s * t) hζ.pow_eq_one`. Rewrite `h1` using `[AlgEquiv.mul_apply, cycM_apply M t hζ.pow_eq_one, map_pow, cycM_apply M s hζ.pow_eq_one, ← pow_mul]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `ZMod.val_injective` to reduce the goal to its premises. Use `hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) ?_` and prove the remaining obligations. Rewrite using `[← h1, Units.val_mul, ZMod.val_mul, ← pow_eq_pow_mod _ hζ.pow_eq_one]`.
+-/
 private theorem cycM_mul' [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] (s t : Ω ≃ₐ[ℚ] Ω) :
     cycM M (s * t) = cycM M s * cycM M t := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
@@ -108,6 +141,15 @@ private theorem cycM_mul' [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] (s t : Ω �
   refine hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) ?_
   rw [← h1, Units.val_mul, ZMod.val_mul, ← pow_eq_pow_mod _ hζ.pow_eq_one]
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hl0 : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Use `haveI : NeZero l := ⟨hl0⟩`. Establish `hζ : IsPrimitiveRoot (zt ε l (m + n)) (l ^ (m + n))`. Establish `h0` using `isPrimitiveRoot_eOm ε (pow_ne_zero (m + n) hl0)`.
+
+Rewrite `h0` using `[Nat.cast_pow]`. Conclude with `h0`. Establish `hz : zt ε l (m + n) ^ topM l n m (N * N) = 1` using `(hζ.pow_eq_one_iff_dvd _).2 (Dvd.intro _ rfl)`. Establish `h1` using `cycM_apply (topM l n m (N * N)) s hz`. Rewrite `h1` using `[h]`.
+
+Establish `h2 : (y : ZMod (l ^ (m + n))).val ≡ (cycM (topM l n m (N * N)) s : ZMod (topM l n m (N * N))).val [MOD l ^ (m + n)]`. Establish `hpos : 0 < l ^ (m + n)` using `pow_pos (Nat.pos_of_ne_zero hl0) _`. Conclude with `hζ.pow_inj (Nat.mod_lt _ hpos) (Nat.mod_lt _ hpos) (by rw [← pow_eq_pow_mod _ hζ.pow_eq_one, ← pow_eq_pow_mod _ hζ.pow_eq_one]; exact h1)`. Apply `Units.ext` to reduce the goal to its premises. Use `show ZMod.castHom _ _ ((cycM (topM l n m (N * N)) s : (ZMod (topM l n m (N * N)))ˣ) : ZMod (topM l n m (N * N))) = _`.
+
+Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val, ← ZMod.natCast_zmod_val (y : ZMod (l ^ (m + n)))]`. Conclude with `((ZMod.natCast_eq_natCast_iff _ _ _).2 h2).symm.trans (by simp)`.
+-/
 private theorem redTop_cycM [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (n m N : ℕ) [NeZero N]
     (y : (ZMod (l ^ (m + n)))ˣ) (s : Ω ≃ₐ[ℚ] Ω)
     (h : s (zt ε l (m + n)) = zt ε l (m + n) ^ (y : ZMod (l ^ (m + n))).val) :
@@ -131,6 +173,13 @@ private theorem redTop_cycM [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (n m 
   rw [ZMod.castHom_apply, ZMod.cast_eq_val, ← ZMod.natCast_zmod_val (y : ZMod (l ^ (m + n)))]
   exact ((ZMod.natCast_eq_natCast_iff _ _ _).2 h2).symm.trans (by simp)
 
+/- English proof (translation)
+Establish `hN1 : 1 ≤ N` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne N)`. Establish `h2` using `(witalg ε X l N n hN1).2.2.2`. Establish `hp' : shArg (topM l n m (N * N)) s y ∈ fixMu Ω (topMu l n m N)` using `shArg_mem_fixMu _ s y`. Establish `hq' : shArg (topM l n m (N * N)) t (y * (cycM (topM l n m (N * N)) s)⁻¹) ∈ fixMu Ω (topMu l n m N)` using `shArg_mem_fixMu _ t _`. Establish `hc` using `(coc_col ε X l N c d gm hp x w m n c₀ hw hm bB hB hp' hq').gal (repM (topM l n m (N * N)) y)`.
+
+Establish `e : shArg (topM l n m (N * N)) (s * t) y = shArg (topM l n m (N * N)) s y * shArg (topM l n m (N * N)) t (y * (cycM (topM l n m (N * N)) s)⁻¹)`. Unfold `shArg`. Rewrite using `[cycM_mul', mul_inv, mul_assoc y]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Establish `e2 : repM (topM l n m (N * N)) y * shArg (topM l n m (N * N)) s y = s * repM (topM l n m (N * N)) (y * (cycM (topM l n m (N * N)) s)⁻¹)`.
+
+Unfold `shArg`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Rewrite `hc` using `[← e, map_add, ← h2, e2, h2]`. Conclude with `hc`.
+-/
 private theorem bTop_coc [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N]
     (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)) (hp : Par l N c d gm) (x : ZMod N) (w m n c₀ : ℕ) (hw : Odd w) (hm : 1 ≤ m)
     (bB : (Ω ≃ₐ[ℚ] Ω) → X.Fn l)
@@ -156,6 +205,15 @@ private theorem bTop_coc [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ)
   rw [← e, map_add, ← h2, e2, h2] at hc
   exact hc
 
+/- English proof (translation)
+Establish `hmul : ∀ a b, redTop l n m N (a * b) = redTop l n m N a * redTop l n m N b` using `fun a b => map_mul _ _ _`. Establish `hinv : ∀ a, redTop l n m N a⁻¹ = (redTop l n m N a)⁻¹` using `fun a => map_inv (Units.map _) a`. Unfold `E1 bMid`. Rewrite using `[Finset.sum_apply, map_sum, map_sum (X.galB l s), Pi.add_apply, map_add, Finset.sum_apply, map_sum, Finset.sum_apply, map_sum, Finset.sum_congr rfl (fun y _ => bTop_coc ε X l N c d gm hp x w m n c₀ hw hm bB hB s t y)]`. Simplify using `only [Pi.add_apply, map_add, Finset.sum_add_distrib]`.
+
+Use `congr 1`. Use `Finset.sum_nbij' (fun y => y * (cycM (topM l n m (N * N)) s)⁻¹) (fun y => y * cycM (topM l n m (N * N)) s) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `y hy`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hy ⊢`. Rewrite using `[hmul, hinv, hy, hy₀]`.
+
+Introduce `y hy`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hy ⊢`. Rewrite using `[hmul, hy, hy₀, inv_mul_cancel_right]`. Introduce `y _`. Simplify using the standard rewrite rules.
+
+Introduce `y _`. Simplify using the standard rewrite rules. Introduce `y _`. Both sides reduce to the same expression.
+-/
 private theorem bMid_coc [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N]
     (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)) (hp : Par l N c d gm) (x : ZMod N) (w m n c₀ : ℕ) (hw : Odd w) (hm : 1 ≤ m)
     (bB : (Ω ≃ₐ[ℚ] Ω) → X.Fn l)
@@ -187,6 +245,15 @@ private theorem bMid_coc [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ)
 end UpperTheory.Kd.L.Zc
 
 open UpperTheory.Kd.L.Zc in
+/- English proof (translation)
+Introduce `Ω _ _ _ _ ε X l _ N _ c d gm hp A hA x w m n c₀ hw hm bB hB`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hN1 : 1 ≤ N` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne N)`. Establish `hcop : Nat.Coprime N l` using `((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hp.cop).symm`. Establish `hj : ∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)`.
+
+Take `⟨φ, h1, h2⟩` from `X.j_hol`. Conclude with `⟨φ, h2, h1⟩`. Establish `hmem : ∀ s z, bMid X l n m N bB s z ∈ X.B N l w`. Introduce `s z`. Use `Submodule.sum_mem _ fun y _ => ?_` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.T.galB_mem_kummer_invariant_set ε X ε.injective hj N l w hp.odd hp.five hcop hw _ _ (hB _ (shArg_mem_fixMu (topM l n m (N * N)) s y)).1`. Use `⟨hmem, fun χ hχ s t hs z φ₁ φ₂ φ₃ h₁ h₂ h₃ r => ?_⟩` and prove the remaining obligations. Establish `hg` using `GlobalTheory.T.isCuspFunctionalValue_galB_equivariant Ω ε X A N l n w s hA (fun x => (hs x).symm) _ (hmem t _) _ h₃`. Take `⟨f₂, w₂, d₂⟩` from `(isThB_iff X A N l n _ _).1 h₂`. Take `⟨f₃, w₃, d₃⟩` from `(isThB_iff X A N l n _ _).1 hg`.
+
+Establish `hw'` using `(witalg ε X l N n hN1).1 _ _ _ _ w₂ w₃`. Establish `hE` using `bMid_coc ε X l N c d gm hp x w m n c₀ hw hm bB hB s t z (χ s) (redTop_cycM l n m N (χ s) s (hχ s))`. Establish `hT : IsThB X A N l n (bMid X l n m N bB (s * t) z) (φ₂ + HahnSeries.map φ₃ (s : Ω →+* Ω))` using `(isThB_iff X A N l n _ _).2 ⟨f₂ * f₃, ⟨hw'.1, hE.trans hw'.2.1, hw'.2.2⟩, GlobalTheory.ThAdd.isDl_mul d₂ d₃⟩`. Use `GlobalTheory.T.cuspFunctionalValueModPrimePow_unique_oddWeight Ω ε X A N l X.j_hol hp.odd hp.cop hp.five hA n w hw _ (hmem _ _) _ _ h₁ hT r` as an intermediate fact. Simplify using `using this`.
+-/
 theorem UpperTheory.Kd.L.zcoc :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N] (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)), Par l N c d gm → ∀ (A : ValuationSubring Ω), ((l : ℕ) : Ω) ∈ A.nonunits → ∀ (x : ZMod N) (w m n c₀ : ℕ), Odd w → 1 ≤ m → ∀ bB : (Ω ≃ₐ[ℚ] Ω) → X.Fn l, (∀ σ ∈ fixMu Ω (topMu l n m N), LiftB X l N w n c₀ (clsBmu X l n m N x c d (w + 2) gm σ) (bB σ)) → (∀ s z, bMid X l n m N bB s z ∈ X.B N l w) ∧ ∀ χ : (Ω ≃ₐ[ℚ] Ω) → (ZMod (l ^ (m + n)))ˣ, (∀ s, s (zt ε l (m + n)) = zt ε l (m + n) ^ (χ s : ZMod (l ^ (m + n))).val) → ∀ s t, Stab A s → ∀ z (φ₁ φ₂ φ₃ : HahnSeries ℚ Ω), IsThB X A N l n (bMid X l n m N bB (s * t) z) φ₁ → IsThB X A N l n (bMid X l n m N bB s z) φ₂ → IsThB X A N l n (bMid X l n m N bB t (z * (χ s)⁻¹)) φ₃ → ∀ r, CgA A l n (φ₁.coeff r) (φ₂.coeff r + s (φ₃.coeff r)) := by
   intro Ω _ _ _ _ ε X l _ N _ c d gm hp A hA x w m n c₀ hw hm bB hB

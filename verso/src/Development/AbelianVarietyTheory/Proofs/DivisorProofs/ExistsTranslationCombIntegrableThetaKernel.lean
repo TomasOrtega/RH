@@ -16,6 +16,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 noncomputable section
 namespace GlobalTheory.ZConv
 
+/- English proof (translation)
+Introduce `D T L sc G hK hP μ₀ hL W B ρ t i j hT M hM Θ Θ' hΘ F hF hFc hFl hB g₁`. Take `⟨e, Bs, Γ, X, om, om', h, hTr, hv⟩` from `hT M hM`. Take `⟨z, Φ, a, C₀, hz, hΦ, hid⟩` from `GlobalTheory.T.translatedKernel_le_thetaFunction_routeBigVertex hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv`. Establish `dec` using `(hK.1 D.host.F D.host.E D.sp.cm.sig Bs _ _ Γ X om om' hTr).1`. Take `⟨C, k, hC⟩` from `(dec.2 Φ hΦ).1 0`.
+
+Establish `hbd : ∀ g u, ‖translates z (kerSmall W Θ' g g₁) u‖ ≤ |C₀| * |C| * (2 * GlobalTheory.Grow.quotHeight _ g * GlobalTheory.Grow.height _ g₁) ^ k`. Introduce `g u`. Take `⟨γ, hγ, hle⟩` from `GlobalTheory.Grow.exists_height_le_two_mul_quotHeight _ g`. Establish `e1 : translates z (kerSmall W Θ' g g₁) u = translates z (kerSmall W Θ' (γ * g) g₁) u`. Simplify using `only [translates, GlobalTheory.T.smallRouteKernel_left_invariant_rationalUnitary hL W B ρ t i j Θ Θ' hΘ g₁ γ hγ]`.
+
+Rewrite using `[e1]`. Establish `h1` using `hC (a u) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁))`. Rewrite `h1` using `[pow_zero, mul_one]`. Establish `h2` using `GlobalTheory.T.unitaryAdelicHeight_blockDiagonalEmbedding_le_mul _ _ e h.JWW (γ * g) g₁`. Establish `h3 : (0 : ℝ) ≤ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ht (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁)) : ℝ)` using `NNReal.coe_nonneg _`.
+
+Establish `h4 : (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ht (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (γ * g, g₁)) : ℝ) ≤ 2 * GlobalTheory.Grow.quotHeight _ g * GlobalTheory.Grow.height _ g₁` using `h2.trans (mul_le_mul_of_nonneg_right hle (GlobalTheory.Grow.height_pos _ _).le)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h3 h4 k) (mul_nonneg (abs_nonneg C₀) (abs_nonneg C))`. Establish `hWl` using `(hM.vtx (.grid i j) ⟨i.2.le, j.2.le⟩).haar_fund`.
+
+Establish `hVl` using `(hM.vtx (.grid i (j + 1)) ⟨i.2.le, j.2⟩).haar_fund`. Use `haveI : IsFiniteMeasure ((M.ν (.grid i j)).restrict (M.fd (.grid i j))) := isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol _ _ _ hWl.1 hWl.2).ne`. Use `haveI : IsFiniteMeasure ((M.ν (.grid i (j + 1))).restrict (M.fd (.grid i (j + 1)))) := isFiniteMeasure_restrict.2 (GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol _ _ _ hVl.1 hVl.2).ne`. Establish `hcont` using `GlobalTheory.T.continuous_translates_kernel_route_small_vertex hL W B ρ t i j Θ Θ' hΘ g₁ z`. Establish `hRD` using `GlobalTheory.Grow.rapidDec_of_cuspForm (GlobalTheory.Grow.cuspRapidDecay_of_bound hP) W.θ_is hF hFc`.
+
+Take `⟨Bd, hBd⟩` from `hRD.decay k`. Use `⟨z, hz, fun g => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Integrable.of_bound ((hcont.comp (continuous_const.prodMk continuous_id)).aestronglyMeasurable) _ (.of_forall fun u => hbd g u)`. Establish `h0 : (0 : ℝ) ≤ |C₀| * |C| * (2 * GlobalTheory.Grow.height _ g₁) ^ k` using `mul_nonneg (mul_nonneg (abs_nonneg C₀) (abs_nonneg C)) (pow_nonneg (by have := GlobalTheory.Grow.height_pos _ g₁; positivity) k)`. Use `Integrable.of_bound ((hRD.continuous.comp continuous_fst).mul hcont).aestronglyMeasurable (|C₀| * |C| * (2 * GlobalTheory.Grow.height _ g₁) ^ k * Bd) (.of_forall fun p => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem zconv : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree) (hP : GlobalTheory.Published.CuspDecayBound) {μ₀ : T} (hL : L.Is μ₀)
     (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (hT : SquareTriple W t i j)
     (M : Vol G) (hM : M.Is t) (Θ : TotT G (routeBig t i j)) (Θ' : TotT G (routeSmall t i j)) (hΘ : IsMatched B t ρ i j Θ Θ')

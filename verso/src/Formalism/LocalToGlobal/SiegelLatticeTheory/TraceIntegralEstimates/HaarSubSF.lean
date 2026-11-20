@@ -12,6 +12,9 @@ namespace Formalism.L2.S.Pv.HaarSubS
 
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.RealObj Formalism.L2.SG.Pf.EnergyAbs Formalism.L2.SG.RealObj.InfCut Formalism.L2.SG.Pf.WFL
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Conclude with `Formalism.L2.S.Pv.FolnerJ.isFolner_Sinf ev fv wv zv T hT (fun v => ⟨hee v, hff v, hef v, hez v, hfz v, hzz v, hww v, hew v, hfw v, hzw v⟩) μS hμ`.
+-/
 theorem isFolner_Sinf_gen {n r k : ℕ} (hn : n = 2 * r + k + 1) {ι : Type} [Fintype ι] {εv : ι → Fin n → Bool}
     (ev fv : ι → Fin r → Fin n → ℂ) (wv : ι → Fin k → Fin n → ℂ) (zv : ι → Fin n → ℂ) (T : ι → ℝ)
     (hT : ∀ v, 0 < T v)
@@ -32,16 +35,39 @@ theorem isFolner_Sinf_gen {n r k : ℕ} (hn : n = 2 * r + k + 1) {ι : Type} [Fi
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `z0v hJ`. Simplify using `[Matrix.mulVec_smul, dotProduct_smul]`.
+-/
 theorem hermitian_scaled_right {n : ℕ} (ε : Fin n → Bool) (T : ℝ) (x z : Fin n → ℂ) :
     hJ ε x (z0v T z) = (((Real.sqrt T)⁻¹ : ℝ) : ℂ) * hJ ε x z := by
   unfold z0v hJ
   simp [Matrix.mulVec_smul, dotProduct_smul]
 
+/- English proof (translation)
+Unfold `z0v hJ`. Simplify using `[Matrix.mulVec_smul, smul_dotProduct, star_smul]`.
+-/
 theorem hermitian_scaled_left {n : ℕ} (ε : Fin n → Bool) (T : ℝ) (x z : Fin n → ℂ) :
     hJ ε (z0v T z) x = (((Real.sqrt T)⁻¹ : ℝ) : ℂ) * hJ ε z x := by
   unfold z0v hJ
   simp [Matrix.mulVec_smul, smul_dotProduct, star_smul]
 
+/- English proof (translation)
+Establish `hn : X.B.I.n = 2 * D.R.rS + D.R.k + 1` using `X.n_eq.trans (dimS_eq D.R).symm`. Establish `hT : 0 < Tw (D` using `D) u := ProductExactness.Tw_pos u`. Establish `hk : 0 < D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Use `isFolner_Sinf_gen hn (fun v a => rv X.B.I v (X.eR a)) (fun v a => rv X.B.I v (X.fR a)) (fun v => X.wfr u v) (fun v => rv X.B.I v (X.zR u)) (fun _ => Tw u) (fun _ => hT) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ (Formalism.L2.SG.RealObj.muS X u) hμ` and prove the remaining obligations. Introduce `v a b`.
+
+Conclude with `(ProductExactness.hJ_X X v _ _).trans (by rw [X.ee]; simp)`. Introduce `v a b`. Conclude with `(ProductExactness.hJ_X X v _ _).trans (by rw [X.ff]; simp)`. Introduce `v a b`. Apply the tactic sequence `exact (ProductExactness.hJ_X X v _ _).trans (by rw [X.ef]; split_ifs <;> simp)`.
+
+Introduce `v a`. Rewrite using `[hermitian_scaled_right]`. Establish `: hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) = 0` using `(ProductExactness.hJ_X X v _ _).trans (by rw [(X.zu_orth u a).1]; simp)`. Rewrite using `[this, mul_zero]`. Introduce `v a`.
+
+Rewrite using `[hermitian_scaled_right]`. Establish `: hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) = 0` using `(ProductExactness.hJ_X X v _ _).trans (by rw [(X.zu_orth u a).2]; simp)`. Rewrite using `[this, mul_zero]`. Introduce `v`. Rewrite using `[hermitian_scaled_right, hermitian_scaled_left]`.
+
+Establish `h5 : hJ (X.B.I.ε v) (rv X.B.I v (X.zR u)) (rv X.B.I v (X.zR u)) = -(Tw (D` using `D) u : ℂ) := (ProductExactness.hJ_X X v _ _).trans (by rw [X.zu_norm u]; simp [Tw])`. Rewrite using `[h5]`. Establish `hs : ((Real.sqrt (Tw (D` using `D) u))⁻¹ : ℝ) * (Real.sqrt (Tw (D := D) u))⁻¹ * Tw (D := D) u = 1 := by`. Rewrite using `[← mul_inv, Real.mul_self_sqrt hT.le, inv_mul_cancel₀ hT.ne']`. Establish `: (((Real.sqrt (Tw (D` using `D) u))⁻¹ : ℝ) : ℂ) * ((((Real.sqrt (Tw (D := D) u))⁻¹ : ℝ) : ℂ) * -((Tw (D := D) u : ℝ) : ℂ)) = -(((Real.sqrt (Tw (D := D) u))⁻¹ * (Real.sqrt (Tw (D := D) u))⁻¹ * Tw (D := D) u : ℝ) : ℂ) := by push_cast; ring`.
+
+Rewrite using `[this, hs]`. Simplify using the standard rewrite rules. Introduce `v a b`. Conclude with `X.wfr_on u v a b`. Introduce `v c a`.
+
+Conclude with `((X.wfr_perp u v a).1 c).1`. Introduce `v c a`. Conclude with `((X.wfr_perp u v a).1 c).2`. Introduce `v a`. Rewrite using `[hermitian_scaled_left]`.
+
+Establish `h0 : hJ (X.B.I.ε v) (rv X.B.I v (X.zR u)) (X.wfr u v a) = 0` using `(X.wfr_perp u v a).2`. Rewrite using `[h0, mul_zero]`.
+-/
 theorem folner_of_haar {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word)
     (hμ : IsHaarSub (X.SinfU u) (Formalism.L2.SG.RealObj.muS X u)) :
     IsFolner (X.SinfU u) (Formalism.L2.SG.RealObj.muS X u) := by
@@ -90,6 +116,9 @@ theorem folner_of_haar {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) 
     have h0 : hJ (X.B.I.ε v) (rv X.B.I v (X.zR u)) (X.wfr u v a) = 0 := (X.wfr_perp u v a).2
     rw [h0, mul_zero]
 
+/- English proof (translation)
+Conclude with `stepSubG_of sDecomp_holds hN (measH_of sDecomp_holds) (fun D X u => folner_of_haar X u (isHaarSub_SinfU sDecomp_holds hN (measH_of sDecomp_holds) X u)) hQ`.
+-/
 theorem stepSubG_of_MN (hN : MeasN) (hQ : NuQSFinite) : Formalism.L2.SG.RealObj.EnergyInst.StepSubG := by
   exact stepSubG_of sDecomp_holds hN (measH_of sDecomp_holds)
     (fun D X u => folner_of_haar X u (isHaarSub_SinfU sDecomp_holds hN (measH_of sDecomp_holds) X u)) hQ

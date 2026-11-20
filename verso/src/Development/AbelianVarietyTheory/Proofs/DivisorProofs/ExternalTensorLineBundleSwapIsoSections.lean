@@ -13,6 +13,9 @@ open GlobalTheory.MumFam GlobalTheory.MumProd
 
 namespace GlobalTheory.MumProdSwap
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show (X.presheaf.map (homOfLE h').op).hom ((X.presheaf.map (homOfLE h).op).hom a.val) = (X.presheaf.map (homOfLE (h'.trans h)).op).hom a.val`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)ˣ) :
     res h' (res h a) = res (h'.trans h) a := by
   apply Units.ext
@@ -21,6 +24,9 @@ theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) 
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `e` using `congrArg (fun q => q.hom a.val) (f.naturality (homOfLE h).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Conclude with `e`.
+-/
 theorem pullU_res {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (a : Γ(X, U)ˣ) :
     pullU f V (res h a) = res (fun _ hx => h hx : f ⁻¹ᵁ V ≤ f ⁻¹ᵁ U) (pullU f U a) := by
   apply Units.ext
@@ -30,6 +36,9 @@ theorem pullU_res {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Opens} (h : V ≤ U)
 
 variable {X X₁ X₂ : Scheme.{0}} {L : LB X} {L₁ : LB X₁} {L₂ : LB X₂} {f₁ : X ⟶ X₁} {f₂ : X ⟶ X₂}
 
+/- English proof (translation)
+Introduce `_ hx` and use `⟨⟨hx.1.2, hx.1.1⟩, hx.2⟩`.
+-/
 theorem swap_le (p : (LB.div (extLB L₂ L₁ f₂ f₁) L).ι) :
     (LB.div (extLB L₂ L₁ f₂ f₁) L).U p ≤ (LB.div (extLB L₁ L₂ f₁ f₂) L).U ((p.1.2, p.1.1), p.2) :=
   fun _ hx => ⟨⟨hx.1.2, hx.1.1⟩, hx.2⟩
@@ -37,6 +46,9 @@ theorem swap_le (p : (LB.div (extLB L₂ L₁ f₂ f₁) L).ι) :
 def swapIso (w : LB.Iso L (extLB L₁ L₂ f₁ f₂)) : LB.Iso L (extLB L₂ L₁ f₂ f₁) where
   s := fun p => res (swap_le p) (w.s ((p.1.2, p.1.1), p.2))
 
+/- English proof (translation)
+Use `show gm f y _ (res _ (M.g p.1 q.1) * (res _ (N.g p.2 q.2))⁻¹) = _`. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res f y _ h _) ((map_inv _ _).trans (congrArg _ (gm_res f y _ h _))))`.
+-/
 theorem gm_div {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (M N : LB X) (p q : M.ι × N.ι)
     (h : f y ∈ (LB.div M N).U p ⊓ (LB.div M N).U q) :
     gm f y _ ((LB.div M N).g p q) = gm f y _ (M.g p.1 q.1) * (gm f y _ (N.g p.2 q.2))⁻¹ := by
@@ -44,12 +56,20 @@ theorem gm_div {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (M N : LB X) (p q : M.ι �
   exact (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res f y _ h _)
     ((map_inv _ _).trans (congrArg _ (gm_res f y _ h _))))
 
+/- English proof (translation)
+Use `show gm f y _ (res _ (M.g p.1 q.1) * res _ (N.g p.2 q.2)) = _`. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res f y _ h _) (gm_res f y _ h _))`.
+-/
 theorem gm_tens {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (M N : LB X) (p q : M.ι × N.ι)
     (h : f y ∈ (tensLB M N).U p ⊓ (tensLB M N).U q) :
     gm f y _ ((tensLB M N).g p q) = gm f y _ (M.g p.1 q.1) * gm f y _ (N.g p.2 q.2) := by
   show gm f y _ (res _ (M.g p.1 q.1) * res _ (N.g p.2 q.2)) = _
   exact (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res f y _ h _) (gm_res f y _ h _))
 
+/- English proof (translation)
+Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Establish `hx'` using `hle hx`. Establish `e1` using `(gm_div (𝟙 X) x (extLB L₂ L₁ f₂ f₁) L i j hx).trans (congrArg (· * _) (gm_tens (𝟙 X) x (L₂.pull f₂) (L₁.pull f₁) i.1 j.1 ⟨hx.1.1, hx.2.1⟩))`. Establish `e2` using `(gm_res (𝟙 X) x hle hx _).trans ((gm_div (𝟙 X) x (extLB L₁ L₂ f₁ f₂) L _ _ hx').trans (congrArg (· * _) (gm_tens (𝟙 X) x (L₁.pull f₁) (L₂.pull f₂) (i.1.2, i.1.1) (j.1.2, j.1.1) ⟨hx'.1.1, hx'.2.1⟩)))`.
+
+Conclude with `e1.trans ((congrArg₂ (· * ·) (mul_comm _ _) rfl).trans e2.symm)`.
+-/
 theorem g_swap (i j : (LB.div (extLB L₂ L₁ f₂ f₁) L).ι)
     (hle : (LB.div (extLB L₂ L₁ f₂ f₁) L).U i ⊓ (LB.div (extLB L₂ L₁ f₂ f₁) L).U j ≤
       (LB.div (extLB L₁ L₂ f₁ f₂) L).U ((i.1.2, i.1.1), i.2) ⊓ (LB.div (extLB L₁ L₂ f₁ f₂) L).U ((j.1.2, j.1.1), j.2)) :
@@ -64,9 +84,17 @@ theorem g_swap (i j : (LB.div (extLB L₂ L₁ f₂ f₁) L).ι)
     (congrArg (· * _) (gm_tens (𝟙 X) x (L₁.pull f₁) (L₂.pull f₂) (i.1.2, i.1.1) (j.1.2, j.1.1) ⟨hx'.1.1, hx'.2.1⟩)))
   exact e1.trans ((congrArg₂ (· * ·) (mul_comm _ _) rfl).trans e2.symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem externalTensorLineBundleSwapIso_sections (w : LB.Iso L (extLB L₁ L₂ f₁ f₂)) (p : (LB.div (extLB L₂ L₁ f₂ f₁) L).ι) :
     (swapIso w).s p = res (swap_le p) (w.s ((p.1.2, p.1.1), p.2)) := rfl
 
+/- English proof (translation)
+Introduce `i j`. Establish `hle : (LB.div (extLB L₂ L₁ f₂ f₁) L).U i ⊓ (LB.div (extLB L₂ L₁ f₂ f₁) L).U j ≤ (LB.div (extLB L₁ L₂ f₁ f₂) L).U ((i.1.2, i.1.1), i.2) ⊓ (LB.div (extLB L₁ L₂ f₁ f₂) L).U ((j.1.2, j.1.1), j.2)` using `fun _ hx => ⟨⟨⟨hx.1.1.2, hx.1.1.1⟩, hx.1.2⟩, ⟨⟨hx.2.1.2, hx.2.1.1⟩, hx.2.2⟩⟩`. Establish `e` using `congrArg (res hle) (hw ((i.1.2, i.1.1), i.2) ((j.1.2, j.1.1), j.2))`. Rewrite `e` using `[map_mul]`. Use `erw [res_res, res_res] at e`.
+
+Rewrite using `[externalTensorLineBundleSwapIso_sections, externalTensorLineBundleSwapIso_sections]`. Use `erw [res_res, res_res]`. Rewrite using `[g_swap i j hle]`. Conclude with `e`.
+-/
 theorem swapIso_isGen {w : LB.Iso L (extLB L₁ L₂ f₁ f₂)} (hw : w.IsGen) : (swapIso w).IsGen := by
   intro i j
   have hle : (LB.div (extLB L₂ L₁ f₂ f₁) L).U i ⊓ (LB.div (extLB L₂ L₁ f₂ f₁) L).U j ≤
@@ -80,6 +108,11 @@ theorem swapIso_isGen {w : LB.Iso L (extLB L₁ L₂ f₁ f₂)} (hw : w.IsGen) 
   rw [g_swap i j hle]
   exact e
 
+/- English proof (translation)
+Introduce `j₂ j₁ jL`. Establish `hle : p ⁻¹ᵁ (LB.div (extLB L₂ L₁ f₂ f₁) L).U (extIdx (f₁` using `f₂) (f₂ := f₁) j₂ j₁, jL) ≤ p ⁻¹ᵁ (LB.div (extLB L₁ L₂ f₁ f₂) L).U (extIdx (f₁ := f₁) (f₂ := f₂) j₁ j₂, jL) := fun _ hx => ⟨⟨hx.1.2, hx.1.1⟩, hx.2⟩`. Establish `e` using `congrArg (res hle) (h j₁ j₂ jL)`. Rewrite `e` using `[map_mul, map_mul, map_zpow]`. Use `erw [res_res, res_res, res_res] at e`.
+
+Establish `key : pullU p _ ((swapIso w).s (extIdx j₂ j₁, jL)) = res hle (pullU p _ (w.s (extIdx j₁ j₂, jL)))` using `pullU_res p (swap_le _) _`. Rewrite using `[key, mul_comm]`. Conclude with `e`.
+-/
 theorem mapsAt₂_swap {Y : Scheme.{0}} {w : LB.Iso L (extLB L₁ L₂ f₁ f₂)} {p : Y ⟶ X} {n : ℤ}
     {a : LB.Gen (LB.LinComb L (K := PUnit) (fun _ => p) (fun _ => n))}
     {b₁ : LB.Gen (LB.LinComb L₁ (K := PUnit) (fun _ => p ≫ f₁) (fun _ => n))}
@@ -101,6 +134,9 @@ section Deg
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Apply the tactic sequence `have e : lift g f = lift f g ≫ lift (snd A B) (fst A B) := by ext <;> simp`. Apply the tactic sequence `have hs : IsIso (lift (snd A B) (fst A B)) := ⟨⟨lift (snd B A) (fst B A), by ext <;> simp, by ext <;> simp⟩⟩`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem lift_swap_isIso {C : Type*} [Category C] [CartesianMonoidalCategory C] {T A B : C} (f : T ⟶ A) (g : T ⟶ B)
     (h : IsIso (lift f g)) : IsIso (lift g f) := by
   have e : lift g f = lift f g ≫ lift (snd A B) (fst A B) := by ext <;> simp
@@ -109,6 +145,9 @@ theorem lift_swap_isIso {C : Type*} [Category C] [CartesianMonoidalCategory C] {
   rw [e]
   infer_instance
 
+/- English proof (translation)
+Take `⟨w, hw, ⟨b₁, b₂, hm, hc₁, hc₂⟩, hψ⟩` from `h.w`. Use `⟨h.hom₂, h.hom₁, lift_swap_isIso _ _ h.lim, ?_, h.c_pr₂, h.c_pr₁, ⟨swapIso w, swapIso_isGen hw, ⟨b₂, b₁, mapsAt₂_swap hm, hc₂, hc₁⟩, fun x => ?_⟩⟩` and prove the remaining obligations. Conclude with `Prod.swap_bijective.comp h.xsum`. Take `⟨c₁, c₂, hm', h₁, h₂⟩` from `hψ x`. Conclude with `⟨c₂, c₁, mapsAt₂_swap hm', h₂, h₁⟩`.
+-/
 theorem isSumDeg_swap {D D₁ D₂ : DegPre R} {p₁ : D.P.A ⟶ D₁.P.A} {p₂ : D.P.A ⟶ D₂.P.A} {q₁ : D.X →+ D₁.X}
     {q₂ : D.X →+ D₂.X} (h : IsSumDeg D D₁ D₂ p₁ p₂ q₁ q₂) : IsSumDeg D D₂ D₁ p₂ p₁ q₂ q₁ := by
   obtain ⟨w, hw, ⟨b₁, b₂, hm, hc₁, hc₂⟩, hψ⟩ := h.w
@@ -120,6 +159,9 @@ theorem isSumDeg_swap {D D₁ D₂ : DegPre R} {p₁ : D.P.A ⟶ D₁.P.A} {p₂
 
 end Deg
 
+/- English proof (translation)
+Introduce `R _ _ I D D₁ D₂ p₁ p₂ q₁ q₂ h i₂ j₂ h₁ h₂ h₃ h₄`. Conclude with `GlobalTheory.T.product_degeneration_first_factor_adjoint R I D D₂ D₁ p₂ p₁ q₂ q₁ (isSumDeg_swap h) i₂ j₂ h₂ h₁ h₄ h₃`.
+-/
 theorem adj_snd : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D D₁ D₂ : DegData R I)
     (p₁ : D.toPre.P.A ⟶ D₁.toPre.P.A) (p₂ : D.toPre.P.A ⟶ D₂.toPre.P.A) (q₁ : D.toPre.X →+ D₁.toPre.X)
     (q₂ : D.toPre.X →+ D₂.toPre.X), IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂ →

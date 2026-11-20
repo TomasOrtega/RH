@@ -15,6 +15,15 @@ namespace GlobalTheory.DetVal
 
 open Formalism.L2.Host (IsUnitAt IsUnifAt)
 
+/- English proof (translation)
+Unfold `GlobalTheory.LFun.KGL at hk`. Take `⟨k', rfl⟩` from `hk`. Use `set c := Matrix.GeneralLinearGroup.det k' with hc`. Establish `hdc : ((Matrix.GeneralLinearGroup.det (Formalism.UG.bc (Formalism.UG.Ov E w).subtype k') : (w.adicCompletion E)ˣ) : w.adicCompletion E) = ((c : Formalism.UG.Ov E w) : w.adicCompletion E)`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hc, Matrix.GeneralLinearGroup.val_det_apply]`.
+
+Unfold `Formalism.UG.bc`. Rewrite using `[Units.coe_map]`. Conclude with `(RingHom.map_det _ _).symm`. Establish `hle : ∀ y : Formalism.UG.Ov E w, Valued.v (y : w.adicCompletion E) ≤ 1` using `fun y => (IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers ..).1 y.2`. Establish `h3 : Valued.v ((c : Formalism.UG.Ov E w) : w.adicCompletion E) * Valued.v ((↑c⁻¹ : Formalism.UG.Ov E w) : w.adicCompletion E) = 1`.
+
+Rewrite using `[← map_mul, ← Subring.coe_mul, Units.mul_inv, Subring.coe_one, map_one]`. Unfold `Formalism.L2.Host.IsUnitAt`. Rewrite using `[hdc]`. Use `le_antisymm (hle _) ?_` and prove the remaining obligations. Rewrite using `[← h3]`.
+
+Conclude with `mul_le_of_le_one_right' (hle _)`.
+-/
 theorem isUnitAt_det_of_mem_KGL {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) {n : ℕ}
     {k : GL (Fin n) (w.adicCompletion E)} (hk : k ∈ GlobalTheory.LFun.KGL w n) :
     IsUnitAt w (Matrix.GeneralLinearGroup.det k) := by
@@ -38,6 +47,19 @@ theorem isUnitAt_det_of_mem_KGL {E : Type} [Field E] [NumberField E] (w : Height
   rw [← h3]
   exact mul_le_of_le_one_right' (hle _)
 
+/- English proof (translation)
+Introduce `D T χ v w h hχ e he ϖ hϖ d t ht k₁ hk₁ k₂ hk₂`. Take `⟨⟨a, -, hea⟩, -⟩` from `he`. Establish `hloc : ∀ g, locMat D.sp.cm.sig T.gram h g = a * e g * a⁻¹` using `fun g => by`. Rewrite using `[hea g]`. Use `group`.
+
+Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Unfold `IsUnifV at hϖ`. Simplify using `at hϖ`. Use `set u : (w.adicCompletion D.host.E)ˣ := Units.mk0 ϖ hϖ0 with hu`.
+
+Establish `hprod : ∀ s : Finset (Fin T.rank), ∏ i ∈ s, u ^ d i = u ^ ∑ i ∈ s, d i`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `j s hj ih`.
+
+Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, ih, _root_.zpow_add]`. Establish `hdt : Matrix.GeneralLinearGroup.det t = u ^ ∑ i, d i`. Rewrite using `[← hprod]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, ht, Matrix.det_diagonal, Units.coe_prod]`.
+
+Simplify using `only [Units.val_zpow_eq_zpow_val, hu, Units.val_mk0]`. Establish `hdet : Matrix.GeneralLinearGroup.det (locMat D.sp.cm.sig T.gram h (e.symm (k₁ * t * k₂))) = Matrix.GeneralLinearGroup.det k₁ * u ^ (∑ i, d i) * Matrix.GeneralLinearGroup.det k₂`. Simplify using `only [hloc, MulEquiv.apply_symm_apply, map_mul, map_inv, hdt]`. Rewrite using `[mul_comm (Matrix.GeneralLinearGroup.det a), mul_inv_cancel_right]`. Establish `hunif` using `hχ.locChar_eq_val (x := u) (by show Valued.v (u : w.adicCompletion D.host.E) = WithZero.exp (-1 : ℤ)`.
+
+Rewrite using `[hu, Units.val_mk0, hϖ]`. Use the proof step `rfl)`. Rewrite using `[hdet, map_mul, map_mul, hχ _ (isUnitAt_det_of_mem_KGL _ hk₁), hχ _ (isUnitAt_det_of_mem_KGL _ hk₂), one_mul, mul_one, map_zpow, hunif, Units.val_zpow_eq_zpow_val]`.
+-/
 theorem locChar_det_doubleCoset : ∀ (D : D7) (T : HSp D) (χ : (AE D)ˣ →* Circle) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), UnrAt χ w → ∀ e, IsSplitChart D.sp.cm.sig T.gram (frameLat T) h e → ∀ ϖ, IsUnifV D.host.E w ϖ → ∀ (d : Fin T.rank → ℤ) (t : GL (Fin T.rank) (w.adicCompletion D.host.E)), t.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∀ k₁ ∈ KGL w T.rank, ∀ k₂ ∈ KGL w T.rank, ((locChar χ w (Matrix.GeneralLinearGroup.det (locMat D.sp.cm.sig T.gram h (e.symm (k₁ * t * k₂)))) : ℂˣ) : ℂ) = ((val χ w : ℂˣ) : ℂ) ^ (∑ i, d i) := by
   intro D T χ v w h hχ e he ϖ hϖ d t ht k₁ hk₁ k₂ hk₂
   obtain ⟨⟨a, -, hea⟩, -⟩ := he

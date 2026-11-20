@@ -12,6 +12,21 @@ section FiniteModule
 
 variable {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `exists_baseChange_surjective (R := R) (M := M) p.asIdeal.ResidueField`. Establish `h1` using `h.and ((isOpen_setOf_baseChange_surjective φ).mem_nhds hφ)`. Take `⟨_, ⟨f, rfl⟩, hpf, hf⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens.mem_nhds_iff).1 h1`. Establish `hker : ∀ x, φ x = 0 → f • x = 0`. Introduce `x hx`.
+
+Use extensionality with `j`. Use `IsReduced.eq_zero _ (nilpotent_iff_mem_prime.2 fun J hJ => ?_)` and prove the remaining obligations. Distinguish the cases in `hfJ : f ∈ J`. Conclude with `J.mul_mem_right _ hfJ`. Take `⟨h2, h3⟩` from `hf (show (⟨J, hJ⟩ : PrimeSpectrum R) ∈ _ from hfJ)`.
+
+Establish `hinj : Injective (φ.baseChange J.ResidueField)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank ((finrank_baseChange_fin _ _).trans h2.symm)).2 h3`. Establish `h4 : (1 : J.ResidueField) ⊗ₜ[R] x = 0` using `hinj (by simp [hx])`. Establish `h5` using `congrFun (congrArg (TensorProduct.piScalarRight R J.ResidueField J.ResidueField _) h4) j`. Use `J.mul_mem_left _ ?_` and prove the remaining obligations. Rewrite using `[← Ideal.algebraMap_residueField_eq_zero]`.
+
+Simplify `h5` using `[Algebra.smul_def]`. Set `A` to `Localization.Away f`. Establish `hsurj : Surjective (φ.baseChange A)`. Rewrite using `[baseChange_surjective_iff]`. Establish `: Subsingleton (LocalizedModule.Away f (M ⧸ LinearMap.range φ))`.
+
+Rewrite using `[LocalizedModule.subsingleton_iff_disjoint, Set.disjoint_left]`. Introduce `q hq`. Establish `h3 : Surjective (φ.baseChange q.asIdeal.ResidueField)` using `(hf hq).2`. Rewrite `h3` using `[baseChange_surjective_iff, ← not_nontrivial_iff_subsingleton, ← Module.mem_support_iff_nontrivial_residueField_tensorProduct]`. Then use the resulting hypothesis. Conclude with `(LocalizedModule.equivTensorProduct (Submonoid.powers f) _).symm.toEquiv.subsingleton`.
+
+Establish `hinj : Injective (φ.baseChange A)`. Establish `: Module.Flat R A` using `IsLocalization.flat A (Submonoid.powers f)`. Rewrite using `[← LinearMap.ker_eq_bot, ← baseChange_ker, Submodule.baseChange_eq_span, eq_bot_iff, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hu : IsUnit (algebraMap R A f)` using `IsLocalization.Away.algebraMap_isUnit f`.
+
+Use `(hu.smul_eq_zero).1 ?_` and prove the remaining obligations. Rewrite using `[algebraMap_smul, ← map_smul, hker x hx, map_zero]`. Conclude with `⟨f, hpf, ⟨(TensorProduct.piScalarRight R A A _).symm ≪≫ₗ LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩ ≪≫ₗ (LocalizedModule.equivTensorProduct (Submonoid.powers f) M).symm⟩⟩`.
+-/
 theorem exists_away_equiv_of_eventually_finrank_fiber_eq [IsReduced R] [Module.Finite R M]
     (p : PrimeSpectrum R)
     (h : ∀ᶠ q : PrimeSpectrum R in 𝓝 p,
@@ -61,6 +76,9 @@ theorem exists_away_equiv_of_eventually_finrank_fiber_eq [IsReduced R] [Module.F
     LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩ ≪≫ₗ
     (LocalizedModule.equivTensorProduct (Submonoid.powers f) M).symm⟩⟩
 
+/- English proof (translation)
+Use `Module.FinitePresentation.of_localizationSpan {f | Module.FinitePresentation (Localization.Away f) (LocalizedModule.Away f M)} ?_ fun g => g.2` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨f, hf, ⟨e⟩⟩` from `exists_away_equiv_of_eventually_finrank_fiber_eq (M := M) ⟨m, hm.isPrime⟩ (h.eventually_eq _)`. Conclude with `hf (hle (Ideal.subset_span (Module.FinitePresentation.of_equiv e)))`.
+-/
 theorem finitePresentation_of_isLocallyConstant_finrank_fiber [IsReduced R] [Module.Finite R M]
     (h : IsLocallyConstant fun p : PrimeSpectrum R =>
       finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M)) :
@@ -74,6 +92,9 @@ theorem finitePresentation_of_isLocallyConstant_finrank_fiber [IsReduced R] [Mod
     ⟨m, hm.isPrime⟩ (h.eventually_eq _)
   exact hf (hle (Ideal.subset_span (Module.FinitePresentation.of_equiv e)))
 
+/- English proof (translation)
+The claim follows from `have := finitePresentation_of_isLocallyConstant_finrank_fiber h projective_of_isLocallyConstant_finrank_fiber h`.
+-/
 theorem projective_of_finite_of_isLocallyConstant_finrank_fiber [IsReduced R] [Module.Finite R M]
     (h : IsLocallyConstant fun p : PrimeSpectrum R =>
       finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M)) :
@@ -81,6 +102,9 @@ theorem projective_of_finite_of_isLocallyConstant_finrank_fiber [IsReduced R] [M
   have := finitePresentation_of_isLocallyConstant_finrank_fiber h
   projective_of_isLocallyConstant_finrank_fiber h
 
+/- English proof (translation)
+Establish `: Module.Projective R M` using `projective_of_finite_of_isLocallyConstant_finrank_fiber (IsLocallyConstant.of_constant _ fun p q => (h p).trans (h q).symm)`. Conclude with `⟨this, fun p => (Module.rankAtStalk_eq p).trans (h p)⟩`.
+-/
 theorem projective_of_finite_of_finrank_fiber_eq [IsReduced R] [Module.Finite R M] (ρ : ℕ)
     (h : ∀ p : PrimeSpectrum R,
       finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M) = ρ) :
@@ -89,6 +113,11 @@ theorem projective_of_finite_of_finrank_fiber_eq [IsReduced R] [Module.Finite R 
     (IsLocallyConstant.of_constant _ fun p q => (h p).trans (h q).symm)
   exact ⟨this, fun p => (Module.rankAtStalk_eq p).trans (h p)⟩
 
+/- English proof (translation)
+Use `letI : Algebra p.asIdeal.ResidueField k := (Ideal.ResidueField.lift p.asIdeal (algebraMap R k) hp.le (fun x hx => by`. Use `IsUnit.mk0 _ fun h0 => hx ?_` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `h0)).toAlgebra`. Establish `: IsScalarTower R p.asIdeal.ResidueField k` using `IsScalarTower.of_algebraMap_eq fun x => (Ideal.ResidueField.lift_algebraMap ..).symm`.
+
+Rewrite using `[← (AlgebraTensorModule.cancelBaseChange R p.asIdeal.ResidueField k k M).finrank_eq, Module.finrank_baseChange]`.
+-/
 theorem finrank_tensorProduct_eq_finrank_fiber (k : Type*) [Field k] [Algebra R k]
     (p : PrimeSpectrum R) (hp : p.asIdeal = RingHom.ker (algebraMap R k)) :
     finrank k (k ⊗[R] M) = finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M) := by
@@ -109,6 +138,9 @@ section Map
 variable {R : Type*} [CommRing R] {E F : Type*} [AddCommGroup E] [Module R E]
   [AddCommGroup F] [Module R F]
 
+/- English proof (translation)
+Rewrite using `[(baseChangeQuotEquiv k _).finrank_eq, baseChange_range]`. Conclude with `Submodule.finrank_quotient_add_finrank _`.
+-/
 theorem finrank_baseChange_coker_add_finrank_range [Module.Finite R F]
     (k : Type*) [Field k] [Algebra R k] (φ : E →ₗ[R] F) :
     finrank k (k ⊗[R] (F ⧸ LinearMap.range φ)) + finrank k (LinearMap.range (φ.baseChange k)) =
@@ -116,6 +148,9 @@ theorem finrank_baseChange_coker_add_finrank_range [Module.Finite R F]
   rw [(baseChangeQuotEquiv k _).finrank_eq, baseChange_range]
   exact Submodule.finrank_quotient_add_finrank _
 
+/- English proof (translation)
+Use `projective_of_finite_of_isLocallyConstant_finrank_fiber ((IsLocallyConstant.iff_eventually_eq _).2 fun p => ?_)` and prove the remaining obligations. Use `filter_upwards [h.eventually_eq p, (isLocallyConstant_finrank_fiber F).eventually_eq p] with q h1 h2`. Establish `h3` using `finrank_baseChange_coker_add_finrank_range p.asIdeal.ResidueField φ`. Establish `h4` using `finrank_baseChange_coker_add_finrank_range q.asIdeal.ResidueField φ`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem projective_coker_of_isLocallyConstant_finrank_range [IsReduced R]
     [Module.Finite R F] [Module.Projective R F] (φ : E →ₗ[R] F)
     (h : IsLocallyConstant fun p : PrimeSpectrum R => finrank p.asIdeal.ResidueField
@@ -129,6 +164,9 @@ theorem projective_coker_of_isLocallyConstant_finrank_range [IsReduced R]
   have h4 := finrank_baseChange_coker_add_finrank_range q.asIdeal.ResidueField φ
   omega
 
+/- English proof (translation)
+The claim follows from `have := projective_coker_of_isLocallyConstant_finrank_range φ h exists_comp_comp_eq_of_projective φ`.
+-/
 theorem exists_comp_comp_eq_of_isLocallyConstant_finrank_range [IsReduced R]
     [Module.Finite R F] [Module.Projective R F] (φ : E →ₗ[R] F)
     (h : IsLocallyConstant fun p : PrimeSpectrum R => finrank p.asIdeal.ResidueField
@@ -137,6 +175,9 @@ theorem exists_comp_comp_eq_of_isLocallyConstant_finrank_range [IsReduced R]
   have := projective_coker_of_isLocallyConstant_finrank_range φ h
   exists_comp_comp_eq_of_projective φ
 
+/- English proof (translation)
+Use `⟨φ.rangeRestrict ∘ₗ s, LinearMap.ext ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, x, rfl⟩`. Conclude with `Subtype.ext (LinearMap.congr_fun hs x)`.
+-/
 theorem exists_retraction_range_of_generalizedInverse (φ : E →ₗ[R] F) (s : F →ₗ[R] E)
     (hs : φ ∘ₗ s ∘ₗ φ = φ) :
     ∃ r : F →ₗ[R] LinearMap.range φ, r ∘ₗ (LinearMap.range φ).subtype = LinearMap.id := by
@@ -144,6 +185,9 @@ theorem exists_retraction_range_of_generalizedInverse (φ : E →ₗ[R] F) (s : 
   rintro ⟨_, x, rfl⟩
   exact Subtype.ext (LinearMap.congr_fun hs x)
 
+/- English proof (translation)
+Establish `hs' : ∀ x, φ (s (φ x)) = φ x` using `LinearMap.congr_fun hs`. Use `⟨(LinearMap.id - s ∘ₗ φ).codRestrict _ fun x => by simp [hs'], ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem exists_retraction_ker_of_generalizedInverse (φ : E →ₗ[R] F) (s : F →ₗ[R] E)
     (hs : φ ∘ₗ s ∘ₗ φ = φ) :
     ∃ r : E →ₗ[R] LinearMap.ker φ, r ∘ₗ (LinearMap.ker φ).subtype = LinearMap.id := by
@@ -152,12 +196,20 @@ theorem exists_retraction_ker_of_generalizedInverse (φ : E →ₗ[R] F) (s : F 
   ext x
   simp
 
+/- English proof (translation)
+The claim follows from `LeftInverse.injective (g := r.lTensor N) fun x => by rw [← LinearMap.lTensor_comp_apply, hr, LinearMap.lTensor_id, LinearMap.id_apply]`.
+-/
 theorem lTensor_subtype_injective_of_retraction (P : Submodule R E) (r : E →ₗ[R] P)
     (hr : r ∘ₗ P.subtype = LinearMap.id) (N : Type*) [AddCommGroup N] [Module R N] :
     Injective (P.subtype.lTensor N) :=
   LeftInverse.injective (g := r.lTensor N) fun x => by
     rw [← LinearMap.lTensor_comp_apply, hr, LinearMap.lTensor_id, LinearMap.id_apply]
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker, ← LinearMap.comp_apply, ← LinearMap.baseChange_comp, LinearMap.comp_ker_subtype, LinearMap.baseChange_zero, LinearMap.zero_apply]`. Introduce `hz`.
+
+Take `⟨y, hy⟩` from `(tensorKer_bijective_of_comp_comp_eq S S φ s hs).2 ⟨z, hz⟩`. Conclude with `⟨y, (LinearMap.tensorKer_coe S S φ y).symm.trans (congrArg Subtype.val hy)⟩`.
+-/
 theorem baseChange_ker_of_comp_comp_eq (φ : E →ₗ[R] F) (s : F →ₗ[R] E)
     (hs : φ ∘ₗ s ∘ₗ φ = φ) (S : Type*) [CommRing S] [Algebra R S] :
     (LinearMap.ker φ).baseChange S = LinearMap.ker (φ.baseChange S) := by
@@ -170,6 +222,9 @@ theorem baseChange_ker_of_comp_comp_eq (φ : E →ₗ[R] F) (s : F →ₗ[R] E)
     obtain ⟨y, hy⟩ := (tensorKer_bijective_of_comp_comp_eq S S φ s hs).2 ⟨z, hz⟩
     exact ⟨y, (LinearMap.tensorKer_coe S S φ y).symm.trans (congrArg Subtype.val hy)⟩
 
+/- English proof (translation)
+The claim follows from `(LinearEquiv.ofInjective (P.subtype.baseChange k) h).finrank_eq`.
+-/
 theorem finrank_baseChange_eq_of_injective (P : Submodule R E) (k : Type*) [Field k] [Algebra R k]
     (h : Injective (P.subtype.lTensor k)) :
     finrank k (k ⊗[R] P) = finrank k (P.baseChange k) :=
@@ -177,6 +232,13 @@ theorem finrank_baseChange_eq_of_injective (P : Submodule R E) (k : Type*) [Fiel
 
 universe u v
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_comp_comp_eq_of_isLocallyConstant_finrank_range φ h`. Take `⟨r, hr⟩` from `exists_retraction_range_of_generalizedInverse φ s hs`. Take `⟨t, ht⟩` from `exists_retraction_ker_of_generalizedInverse φ s hs`. Establish `h1 : Module.Projective R (LinearMap.range φ)` using `Module.Projective.of_split _ r hr`. Establish `h2 : Module.Finite R (LinearMap.ker φ)` using `Module.Finite.of_surjective t (RightInverse.surjective (g := (LinearMap.ker φ).subtype) (LinearMap.congr_fun ht))`.
+
+Establish `h3 : Module.Projective R (LinearMap.ker φ)` using `Module.Projective.of_split _ t ht`. Use `⟨⟨inferInstance, h1⟩, ⟨h2, h3⟩, ⟨inferInstance, projective_coker_of_isLocallyConstant_finrank_range φ h⟩, ⟨_, LinearMap.isCompl_of_proj (LinearMap.congr_fun ht)⟩, ⟨_, LinearMap.isCompl_of_proj (LinearMap.congr_fun hr)⟩, fun p => ?_, fun p => ?_, fun S N _ _ _ _ _ _ => ⟨tensorKer_ …` and prove the remaining obligations. Rewrite using `[Module.rankAtStalk_eq, ← baseChange_range]`. Conclude with `finrank_baseChange_eq_of_injective _ _ (lTensor_subtype_injective_of_retraction _ r hr _)`. Rewrite using `[Module.rankAtStalk_eq, ← baseChange_ker_of_comp_comp_eq φ s hs]`.
+
+Conclude with `finrank_baseChange_eq_of_injective _ _ (lTensor_subtype_injective_of_retraction _ t ht _)`.
+-/
 theorem finite_projective_of_isLocallyConstant_finrank_range [IsReduced R]
     [Module.Finite R E] [Module.Projective R E] [Module.Finite R F] [Module.Projective R F]
     (φ : E →ₗ[R] F)
@@ -221,6 +283,9 @@ end Map
 
 universe u v w
 
+/- English proof (translation)
+Use `⟨fun φ ρ h => ?_, fun ρ h => projective_of_finite_of_finrank_fiber_eq ρ h⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5, h6, -, h7, h8⟩` from `finite_projective_of_isLocallyConstant_finrank_range.{u, v} φ (IsLocallyConstant.of_constant _ fun p q => (h p).trans (h q).symm)`. Conclude with `⟨h1, h2, h3, h4, h5, fun p => (h6 p).trans (h p), fun S N _ _ _ _ _ _ => (h7 S N).1, h8⟩`.
+-/
 theorem finite_projective_of_constant_fiber_rank {R : Type*} [CommRing R] [IsReduced R] :
     (∀ {E F : Type w} [AddCommGroup E] [Module R E] [AddCommGroup F] [Module R F]
       [Module.Finite R E] [Module.Projective R E] [Module.Finite R F] [Module.Projective R F]
@@ -248,6 +313,9 @@ theorem finite_projective_of_constant_fiber_rank {R : Type*} [CommRing R] [IsRed
       (IsLocallyConstant.of_constant _ fun p q => (h p).trans (h q).symm)
   exact ⟨h1, h2, h3, h4, h5, fun p => (h6 p).trans (h p), fun S N _ _ _ _ _ _ => (h7 S N).1, h8⟩
 
+/- English proof (translation)
+Establish `hs : Surjective ((LinearMap.lsmul ℤ ℤ 2).coprod (LinearMap.lsmul ℤ ℤ 3))` using `fun z => ⟨(-z, z), by simp; ring⟩`. Rewrite using `[← baseChange_range, LinearMap.range_eq_top.2 hs, Submodule.baseChange_top, finrank_top, Module.finrank_baseChange, Module.finrank_self]`.
+-/
 example (p : PrimeSpectrum ℤ) : finrank p.asIdeal.ResidueField (LinearMap.range
     (((LinearMap.lsmul ℤ ℤ 2).coprod (LinearMap.lsmul ℤ ℤ 3)).baseChange
       p.asIdeal.ResidueField)) = 1 := by

@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.SeeSaw
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Substitute `hq` using the available equality. Use `⟨Q, ?_⟩` and prove the remaining obligations. Use `show MvPolynomial.rename _ Q = Q`. Establish `: (fun v : D.what₂.Tau × Fin q × Fin p => (v.1, Fin.cast rfl v.2.1, Fin.cast rfl v.2.2)) = id`.
+
+Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules. Rewrite using `[this, MvPolynomial.rename_id_apply]`.
+-/
 theorem castP_surjective {D : D7} {p q a b : ℕ} (hp : p = a) (hq : q = b) (Q : FP D.what₂.Tau a b) :
     ∃ P : PolF D q p, castP hp hq P = Q := by
   subst hp; subst hq
@@ -21,6 +26,23 @@ theorem castP_surjective {D : D7} {p q a b : ℕ} (hp : p = a) (hq : q = b) (Q :
     funext v; simp
   rw [this, MvPolynomial.rename_id_apply]
 
+/- English proof (translation)
+Introduce `D c t ρ A hc ht hρ hA hK j hj`. Use `⟨hK j hj, fun w => ?_⟩` and prove the remaining obligations. Establish `hj1 : j + 1 ≤ D.R.m` using `hj`. Establish `hab : ρ.N j ≤ ρ.N (j + 1)` using `(hρ.rk j hj).2`. Take `⟨hB, ν, hν, -, hL⟩` from `GlobalTheory.T.thetaLifts_all_charts_eq_classSum D c ρ hc hρ j hj1 hab`.
+
+Use `haveI := hB`. Use `haveI := hν`. Use `set z : D.what₂.Tau → Matrix (Fin (ρ.N (j + 1))) (Fin (ρ.N (j + 1))) ℂ := fun τ => (ρ.sc j τ)⁻¹ • (ρ.fr (j + 1) w).1 τ with hz`. Take `⟨m, ys, Ps, hinv, havg⟩` from `GlobalTheory.KJInf.subY_eq_sum_averages D.what₂.Tau (ρ.N j) (ρ.N (j + 1)) hab (ρ.lam j) (ρ.n j) (GinfC (c.X j)) ν (fun k => ρ.r j (Nat.le_of_succ_le hj1) k.1) (hρ.uni j _) z`. Use `set s0 : ℂ := (∏ τ, ((ρ.fr (j + 1) w).1 τ).det ^ ρ.sD j τ)⁻¹ with hs0`.
+
+Set `y : Fin m → c.Fr j` to `fun i => (ρ.fr j).symm ⟨ys i, hinv i⟩`. Establish `hy : ∀ i, (ρ.fr j (y i)).1 = ys i` using `fun i => congrArg Subtype.val ((ρ.fr j).apply_symm_apply ⟨ys i, hinv i⟩)`. Establish `hP : ∀ i, ∃ P : PolF D (c.X (j + 1)).rank (c.X j).rank, castP (ρ.hN j (Nat.le_of_succ_le hj1)) (ρ.hN (j + 1) hj1) P = (s0 * ∏ τ, (ys i τ).det ^ ρ.sS j τ) • Ps i` using `fun i => castP_surjective _ _ _`. Use `choose P hP using hP`. Use `⟨m, y, P, fun ψ hψ γ => ?_⟩` and prove the remaining obligations.
+
+Establish `hsc : ∀ (i : Fin 1) τ, (ρ.fr (j + 1) ((fun _ => w) i)).1 τ = ρ.sc j τ • (fun _ => z) i τ`. Introduce `i τ`. Simplify using `only [hz]`. Rewrite using `[smul_smul, mul_inv_cancel₀ (hρ.sc j τ), one_smul]`. Establish `hav : ∀ F ∈ Vn (ρ.lam j) (ρ.n j), ∀ Λ : FP D.what₂.Tau (ρ.N j) (ρ.N (j + 1)) →ₗ[ℂ] ℂ, ∑ i, (∏ τ, ((ρ.fr j (y i)).1 τ).det ^ (-ρ.sS j τ)) * ∫ k, Λ (mvZ (fun τ => (ρ.r j (Nat.le_of_succ_le hj1) k.1 τ)⁻¹) (fun _ => 1) (castP (ρ.hN j (Nat.le_of_succ_le hj1)) (ρ.hN (j + 1) hj1) (P i)) …`.
+
+Introduce `F hF Λ`. Use `clear hL`. Establish `h0` using `havg F hF Λ`. Rewrite using `[Fin.sum_univ_one, ← h0, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `e : (∏ τ, (ys i τ).det ^ (-ρ.sS j τ)) * ∏ τ, (ys i τ).det ^ ρ.sS j τ = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ (hinv i τ).ne_zero)]`. Use `beta_reduce`.
+
+Simplify using `only [hy, hP, map_smul, smul_eq_mul, mul_assoc, integral_const_mul]`. Take the linear combination `(s0 * ∫ k, Λ (mvZ (fun τ => (ρ.r j (Nat.le_of_succ_le hj1) k.1 τ)⁻¹) (fun _ => 1) (Ps i)) * evalAt (fun τ => ρ.r j (Nat.le_of_succ_le hj1) k.1 τ * ys i τ) F ∂ν) * e`. Establish `hmain` using `hL m y P 1 (fun _ => z) (fun _ => w) (fun _ => s0) hsc hav t A ht hA ψ hψ γ`. Establish `hs1 : s0 * ∏ τ, ((ρ.fr (j + 1) w).1 τ).det ^ ρ.sD j τ = 1`. Rewrite using `[hs0]`.
+
+Use `inv_mul_cancel₀ (Finset.prod_ne_zero_iff.mpr fun τ _ => zpow_ne_zero _ ((ρ.fr (j + 1) w).2 τ).ne_zero)` and prove the remaining obligations. Rewrite using `[hmain, Fin.sum_univ_one]`. Simplify using `only [hs1, one_smul]`.
+-/
 theorem kBack_of_classData : ∀ (D : D7) (c : Comm D) (t : Tup c) (ρ : RealD c) (A : ClsK ρ t), c.Is → t.Is → ρ.Is → A.Is →
     (∀ j, j < D.R.m → t.cK j ≠ 0) → t.KBack := by
   intro D c t ρ A hc ht hρ hA hK j hj

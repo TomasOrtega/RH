@@ -13,6 +13,9 @@ variable {K L : Type} [Field K] [Field L] [CharZero K] [CharZero L] [Algebra K L
 def cK (c : L →ₐ[ℚ] L) (hcK : ∀ x : K, c (algebraMap K L x) = algebraMap K L x) : L →ₐ[K] L :=
   { c.toRingHom with commutes' := hcK }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cK_apply (c : L →ₐ[ℚ] L) (hcK : ∀ x : K, c (algebraMap K L x) = algebraMap K L x) (x : L) :
     cK c hcK x = c x := rfl
 
@@ -21,6 +24,9 @@ def fixOfK (c : L →ₐ[ℚ] L) (hcK : ∀ x : K, c (algebraMap K L x) = algebr
   map_one' := by ext; simp
   map_mul' a b := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem fixOfK_apply (c : L →ₐ[ℚ] L) (hcK : ∀ x : K, c (algebraMap K L x) = algebraMap K L x) (a : Kˣ) :
     (((fixOfK c hcK a : fixU ℚ c) : Lˣ) : L) = algebraMap K L a := rfl
 
@@ -39,6 +45,9 @@ variable [Algebra.IsQuadraticExtension K L]
 def cE (c : L →ₐ[ℚ] L) (hcK : ∀ x : K, c (algebraMap K L x) = algebraMap K L x) : L ≃ₐ[K] L :=
   AlgEquiv.ofBijective (cK c hcK) (Algebra.IsAlgebraic.algHom_bijective _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cE_apply (c : L →ₐ[ℚ] L) (hcK : ∀ x : K, c (algebraMap K L x) = algebraMap K L x) (x : L) :
     cE c hcK x = c x := rfl
 

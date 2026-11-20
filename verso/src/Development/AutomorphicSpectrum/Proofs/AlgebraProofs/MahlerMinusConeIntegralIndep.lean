@@ -12,6 +12,13 @@ open scoped ENNReal
 
 namespace GlobalTheory.CompanionTheory.Ar.Short.Crofton
 
+/- English proof (translation)
+Rewrite `hz` using `[finprod_mem_eq_finite_toFinset_prod _ hfin]`. Establish `hprod : ∏ y ∈ hfin.toFinset, ∑ j, u j * h.pointOf y j ≠ 0` using `fun h0 => hz0 (by rw [hz, h0, mul_zero])`. Establish `hne` using `Finset.prod_ne_zero_iff.mp hprod`. Establish `key : ∀ y ∈ hfin.toFinset, fsLog h u (h.pointOf y) = Real.log ‖∑ j, u j * h.pointOf y j‖ - Real.log ‖y‖`. Introduce `y hy`.
+
+Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Apply `hne _ hy` to reduce the goal to its premises. Use `show ∑ j, u j * (h.matᵀ *ᵥ (0 : Fin n → ℂ)) j = 0`. Simplify using the standard rewrite rules.
+
+Rewrite using `[fsLog, ConeFsLog.dualNorm_pointOf, Real.log_div (norm_ne_zero_iff.2 (hne y hy)) (norm_ne_zero_iff.2 hy0)]`. Rewrite using `[fsSum, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_congr rfl key, Finset.sum_sub_distrib, hz, norm_mul, norm_prod, Real.log_mul (norm_ne_zero_iff.2 hc) (Finset.prod_ne_zero_iff.mpr fun y hy => norm_ne_zero_iff.2 (hne y hy)), Real.log_prod (fun y hy => norm_ne_zero_iff.2 …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_norm_sub_fsSum_eq {n e : ℕ} (h : HermNorm n) (u : Fin n → ℂ)
     (S : Set (EuclideanSpace ℂ (Fin n))) (π : Fin (e + 1) → Fin n → ℂ) (c z : ℂ)
     (hfin : (fibrePts S π).Finite) (hc : c ≠ 0)
@@ -38,6 +45,17 @@ theorem log_norm_sub_fsSum_eq {n e : ℕ} (h : HermNorm n) (u : Fin n → ℂ)
     Real.log_prod (fun y hy => norm_ne_zero_iff.2 (hne y hy))]
   ring
 
+/- English proof (translation)
+Introduce `n e δ h W g u u' hW hg hδ hu hu'`. Establish `hq` using `SpecFirstNe.full ℂ n e W g u hW hg hu`. Establish `hq'` using `SpecFirstNe.full ℂ n e W g u' hW hg hu'`. Establish `hh` using `SpecFirstHomog.proof n e δ g u hδ`. Establish `hh'` using `SpecFirstHomog.proof n e δ g u' hδ`.
+
+Take `⟨hΓ0, hΓ⟩` from `GlobalTheory.T.gaussian_matrix_measure_pos_finite (e + 1) n`. Establish `hΓr : (gaussM (e + 1) n Set.univ).toReal ≠ 0` using `(ENNReal.toReal_pos hΓ0.ne' hΓ.ne).ne'`. Establish `hae : ∀ᵐ π : Fin (e + 1) → Fin n → ℂ, Real.log ‖eval (nrmGroups h e (coefRows h π)) (specFirst g u)‖ - fsSum h u (coneSet h W) π = Real.log ‖eval (nrmGroups h e (coefRows h π)) (specFirst g u')‖ - fsSum h u' (coneSet h W) π` using `by filter_upwards [GlobalTheory.T.ae_fibre_points_card_eq_degree n e δ h W g hW hg hδ, GlobalTheory.T.ae_polynomial_nonvanishing_rows n e δ h _ hq hh, GlobalTheory.T.ae_polynomial_nonvanishing_rows n e δ h _ hq' hh'] with π hcount h1 h2`. Rewrite `h1`, `h2`, the goal using `[EvalSpecFirst.proof]`. Rewrite using `[EvalSpecFirst.proof]`.
+
+Take `⟨c, hc, hfac⟩` from `GlobalTheory.T.chow_form_fibre_specialization n e δ h W g π u hW hg hδ hcount h1`. Establish `hfin : (fibrePts (coneSet h W) π).Finite` using `Set.finite_of_encard_eq_coe hcount`. Rewrite using `[log_norm_sub_fsSum_eq h u _ π c _ hfin hc (hfac u) h1, log_norm_sub_fsSum_eq h u' _ π c _ hfin hc (hfac u') h2]`. Establish `haeG` using `(withDensity_absolutelyContinuous (volume : Measure (Fin (e + 1) → Fin n → ℂ)) matGauss).ae_le hae`. Take `⟨i1, e1⟩` from `GlobalTheory.T.sphere_mean_normalized_groups n e h (fun w => Real.log ‖eval w (specFirst g u)‖) (MahlerIntegrand.proof n e δ h _ hq hh)`.
+
+Take `⟨i1', e1'⟩` from `GlobalTheory.T.sphere_mean_normalized_groups n e h (fun w => Real.log ‖eval w (specFirst g u')‖) (MahlerIntegrand.proof n e δ h _ hq' hh')`. Take `⟨i2, e2⟩` from `GlobalTheory.T.integral_fubini_study_sum_cone n e δ h W g u hW hg hδ hu`. Take `⟨i2', e2'⟩` from `GlobalTheory.T.integral_fubini_study_sum_cone n e δ h W g u' hW hg hδ hu'`. Establish `hint` using `integral_congr_ae (μ := gaussM (e + 1) n) haeG`. Rewrite `hint` using `[integral_sub i1 i2, integral_sub i1' i2', e1, e2, e1', e2']`.
+
+Apply `mul_left_cancel₀ hΓr` to reduce the goal to its premises. Rewrite using `[mul_sub, mul_sub]`. Conclude with `hint`.
+-/
 theorem defect_eq_of_linForm_notMem : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
     (g : MvPolynomial (Fin (e + 1) × Fin n) ℂ) (u u' : Fin n → ℂ),
     IsProjPrime W → IsChowForm W (e + 1) g → IsMultiHomog δ g → linForm u ∉ W → linForm u' ∉ W →

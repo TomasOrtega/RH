@@ -73,16 +73,31 @@ instance : SecondCountableTopology (ArchMatrix K n)ˣ :=
 instance : SecondCountableTopology (archGroup K n) :=
   Topology.IsEmbedding.subtypeVal.secondCountableTopology
 
+/- English proof (translation)
+Use `show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (infEmb K n y)).2) v = 1`. Rewrite using `[prodEquiv_infEmb, map_one]`. Both sides reduce to the same expression.
+-/
 theorem finAt_infEmb (v : HeightOneSpectrum (𝓞 K)) (y : archGroup K n) :
     finAt v (infEmb K n y) = 1 := by
   show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (infEmb K n y)).2) v = 1
   rw [prodEquiv_infEmb, map_one]
   rfl
 
+/- English proof (translation)
+The claim follows from `(continuous_infAt w).comp continuous_infEmb`.
+-/
 theorem continuous_infAt_infEmb (w : InfinitePlace K) :
     Continuous fun y : archGroup K n => infAt w (infEmb K n y) :=
   (continuous_infAt w).comp continuous_infEmb
 
+/- English proof (translation)
+Use `set F : archGroup K n → ℝ := fun y => 1 + ∑ w : InfinitePlace K, ∑ i : Fin n, ∑ j : Fin n, (‖(infAt w (infEmb K n y) : Matrix (Fin n) (Fin n) w.Completion) i j‖ + ‖(((infAt w (infEmb K n y))⁻¹ : GL (Fin n) w.Completion) : Matrix (Fin n) (Fin n) w.Completion) i j‖)`. Establish `hF : Continuous F` using `continuous_const.add (continuous_finsetSum _ fun w _ => continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => (((continuous_GL_apply i j).comp (continuous_infAt_infEmb w)).norm).add (((continuous_GL_apply i j).comp (continuous_infAt_infEmb w).inv).norm))`. Take `⟨c, hc⟩` from `hS.exists_bound_of_continuousOn hF.continuousOn`. Use `⟨∏ w : InfinitePlace K, (max 1 c) ^ w.mult, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hFy : F y ≤ max 1 c` using `(le_trans (le_abs_self _) (by simpa using hc y hy)).trans (le_max_right _ _)`.
+
+Establish `hterm : ∀ w i j, ‖(infAt w (infEmb K n y) : Matrix (Fin n) (Fin n) w.Completion) i j‖ + ‖(((infAt w (infEmb K n y))⁻¹ : GL (Fin n) w.Completion) : Matrix (Fin n) (Fin n) w.Completion) i j‖ ≤ F y`. Introduce `w i j`. Establish `h1` using `Finset.single_le_sum (f := fun j => ‖(infAt w (infEmb K n y) : Matrix (Fin n) (Fin n) w.Completion) i j‖ + ‖(((infAt w (infEmb K n y))⁻¹ : GL (Fin n) w.Completion) : Matrix (Fin n) (Fin n) w.Completion) i j‖) (fun _ _ => by positivity) (Finset.mem_univ j)`. Establish `h2` using `Finset.single_le_sum (f := fun i => ∑ j : Fin n, (‖(infAt w (infEmb K n y) : Matrix (Fin n) (Fin n) w.Completion) i j‖ + ‖(((infAt w (infEmb K n y))⁻¹ : GL (Fin n) w.Completion) : Matrix (Fin n) (Fin n) w.Completion) i j‖)) (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) …`. Establish `h3` using `Finset.single_le_sum (f := fun w : InfinitePlace K => ∑ i : Fin n, ∑ j : Fin n, (‖(infAt w (infEmb K n y) : Matrix (Fin n) (Fin n) w.Completion) i j‖ + ‖(((infAt w (infEmb K n y))⁻¹ : GL (Fin n) w.Completion) : Matrix (Fin n) (Fin n) w.Completion) i j‖)) (fun _ _ => Finset.sum_no …`.
+
+Simplify using `only [F]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hloc : ∀ w, locHeight (infAt w (infEmb K n y)) ≤ max 1 c` using `fun w => locHeight_le (le_max_left _ _) (fun i j => le_trans (le_add_of_nonneg_right (norm_nonneg _)) ((hterm w i j).trans hFy)) (fun i j => le_trans (le_add_of_nonneg_left (norm_nonneg _)) ((hterm w i j).trans hFy))`. Unfold `height`. Rewrite using `[finprod_eq_one_of_forall_eq_one (fun v => by rw [finAt_infEmb, locHeight_one]), mul_one]`.
+
+Conclude with `Finset.prod_le_prod (fun w _ => pow_nonneg (locHeight_pos _).le _) fun w _ => pow_le_pow_left₀ (locHeight_pos _).le (hloc w) _`.
+-/
 theorem exists_height_infEmb_le {S : Set (archGroup K n)} (hS : IsCompact S) :
     ∃ M : ℝ, ∀ y ∈ S, height (infEmb K n y) ≤ M := by
   classical
@@ -129,6 +144,17 @@ section Integral
 
 variable [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)]
 
+/- English proof (translation)
+Take `⟨C, N, hC⟩` from `hφ`. Take `⟨M, hM⟩` from `exists_height_infEmb_le (K := K) (n := n) hDc.isCompact`. Use `set M' := max M 1`. Establish `hc0 : 0 ≤ heightConst K n` using `le_trans zero_le_one one_le_heightConst`. Use `⟨|C| * (heightConst K n * M') ^ N * ∫ y, ‖D y‖ ∂μ, N, fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hψ]`. Establish `hb : ∀ y, ‖φ (g * infEmb K n y) * D y‖ ≤ |C| * (heightConst K n * M') ^ N * height g ^ N * ‖D y‖`. Introduce `y`. Distinguish the cases in `hy : y ∈ tsupport D`. Rewrite using `[norm_mul]`.
+
+Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `hhg` using `height_pos g`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (height_pos _).le ?_ _) (abs_nonneg _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = |C| * (heightConst K n * M') ^ N * height g ^ N := by ring`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, mul_zero, norm_zero, mul_zero]`. Establish `hint : Integrable (fun y => ‖D y‖) μ` using `hD.norm.integrable_of_hasCompactSupport hDc.norm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HasModerateGrowth.of_eq_integral {φ ψ : AdelicGLn.AdelicGL K n → ℂ}
     (hφ : HasModerateGrowth φ) (μ : Measure (archGroup K n)) [μ.IsHaarMeasure]
     {D : archGroup K n → ℂ} (hD : Continuous D) (hDc : HasCompactSupport D)
@@ -165,6 +191,17 @@ theorem HasModerateGrowth.of_eq_integral {φ ψ : AdelicGLn.AdelicGL K n → ℂ
     _ = |C| * (heightConst K n * M') ^ N * (∫ y, ‖D y‖ ∂μ) * height g ^ N := by
         rw [integral_const_mul]; ring
 
+/- English proof (translation)
+Introduce `r hr hrn g`. Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Use `set F : (UPos n r → 𝔸[K]) × archGroup K n → ℂ := fun p => φ (unipGL p.1 * g * infEmb K n p.2) * D p.2 with hF`. Establish `hFc : Continuous F` using `(hφc.comp ((continuous_unipGL.comp continuous_fst).mul continuous_const |>.mul (continuous_infEmb.comp continuous_snd))).mul (hD.comp continuous_snd)`. Establish `hint : Integrable F ((unipMeasure K n r).restrict (unipFundamentalDomain K n r) |>.prod μ)`.
+
+Establish `e : ((unipMeasure K n r).restrict (unipFundamentalDomain K n r)).prod μ = ((unipMeasure K n r).prod μ).restrict (unipFundamentalDomain K n r ×ˢ univ)`. Rewrite using `[← Measure.restrict_univ (μ := μ), Measure.prod_restrict, Measure.restrict_univ]`. Rewrite using `[e]`. Use `IntegrableOn.of_forall_sdiff_eq_zero (hFc.continuousOn.integrableOn_compact (hC.prod hDc.isCompact)) (measurableSet_unipFundamentalDomain.prod MeasurableSet.univ) fun p hp => ?_` and prove the remaining obligations. Establish `hy : p.2 ∉ tsupport D` using `fun hy => hp.2 ⟨hDC hp.1.1, hy⟩`.
+
+Simplify using `[hF, image_eq_zero_of_notMem_tsupport hy]`. Use `show ∫ X in unipFundamentalDomain K n r, ψ (unipGL X * g) ∂unipMeasure K n r = 0`. Repeatedly rewrite using `[hψ]`. Use `integral_integral_swap (f := fun X y => F (X, y)) hint` as an intermediate fact. Simplify using `only [hF] at this`.
+
+Rewrite using `[this]`. Use `integral_eq_zero_of_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show ∫ x in unipFundamentalDomain K n r, φ (unipGL x * g * infEmb K n y) * D y ∂unipMeasure K n r = 0`. Rewrite using `[integral_mul_const]`. Establish `h0` using `hφ r hr hrn (g * infEmb K n y)`.
+
+Simplify using `only [constantTerm, ← mul_assoc] at h0`. Simplify using `[h0]`.
+-/
 theorem IsCuspidal.of_eq_integral {φ ψ : AdelicGLn.AdelicGL K n → ℂ} (hφc : Continuous φ)
     (hφ : IsCuspidal φ) (μ : Measure (archGroup K n)) [μ.IsHaarMeasure]
     {D : archGroup K n → ℂ} (hD : Continuous D) (hDc : HasCompactSupport D)
@@ -200,6 +237,11 @@ theorem IsCuspidal.of_eq_integral {φ ψ : AdelicGLn.AdelicGL K n → ℂ} (hφc
 
 end Integral
 
+/- English proof (translation)
+Take `⟨d, b, ε, B, hε, horth, hsymm, hinv, hK⟩` from `exists_archCartanData K n`. Take `⟨P, hPm, hPd, hP⟩` from `hφ.exists_aeval_laplacian_sliceL_eq_zero b ε B hε horth hsymm hinv hK`. Take `⟨κ, hκs, hκc, -, hκ⟩` from `(isExpLieAlgebra K n).exists_kernel_eq_conv_of_aeval_laplacian μ b P hPm hPd Filter.univ_mem`. Use `⟨(isExpLieAlgebra K n).convDeriv ((isExpLieAlgebra K n).ofLie X) κ, IsExpLieAlgebra.continuous_convDeriv hκs _, IsExpLieAlgebra.hasCompactSupport_convDeriv hκc _, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[uAction_ι_apply]`.
+
+Establish `hconv : ∀ x, archSlice φ g x = ∫ y, archSlice φ g (x * y) * κ y ∂μ` using `fun x => hκ (sliceL g ⟨φ, hφ.isSmooth.1⟩) (hP g) x`. Rewrite using `[IsExpLieAlgebra.rightDeriv_eq_integral_convDeriv hκs hκc (hφ.isSmooth.1 g) hconv]`. Simplify using `only [archSlice_apply, one_mul]`.
+-/
 theorem exists_integral_uAction_ι [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)]
     {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsSmoothKZ φ) (μ : Measure (archGroup K n))
     [μ.IsHaarMeasure] (X : (isExpLieAlgebra K n).lieSubalgebra) :
@@ -219,6 +261,9 @@ theorem exists_integral_uAction_ι [MeasurableSpace (archGroup K n)] [BorelSpace
   rw [IsExpLieAlgebra.rightDeriv_eq_integral_convDeriv hκs hκc (hφ.isSmooth.1 g) hconv]
   simp only [archSlice_apply, one_mul]
 
+/- English proof (translation)
+Set `_ : MeasurableSpace (archGroup K n)` to `borel _`. Establish `_ : BorelSpace (archGroup K n)` using `⟨rfl⟩`. Take `⟨D, hD, hDc, hrep⟩` from `exists_integral_uAction_ι hφ.isSmoothKZ Measure.haar X`. Rewrite using `[isAutomorphicForm_iff]`. Conclude with `⟨hφ.isSmoothKZ.uAction _, hφ.hasModerateGrowth.of_eq_integral Measure.haar hD hDc hrep⟩`.
+-/
 theorem IsAutomorphicForm.uAction_ι {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsAutomorphicForm φ)
     (X : (isExpLieAlgebra K n).lieSubalgebra) :
     IsAutomorphicForm (AutomorphicForm.uAction (UniversalEnvelopingAlgebra.ι ℝ X)
@@ -229,6 +274,9 @@ theorem IsAutomorphicForm.uAction_ι {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ 
   rw [isAutomorphicForm_iff]
   exact ⟨hφ.isSmoothKZ.uAction _, hφ.hasModerateGrowth.of_eq_integral Measure.haar hD hDc hrep⟩
 
+/- English proof (translation)
+Set `_ : MeasurableSpace (archGroup K n)` to `borel _`. Establish `_ : BorelSpace (archGroup K n)` using `⟨rfl⟩`. Take `⟨D, hD, hDc, hrep⟩` from `exists_integral_uAction_ι hφ.1.isSmoothKZ Measure.haar X`. Conclude with `⟨hφ.1.uAction_ι X, IsCuspidal.of_eq_integral hφ.1.continuous hφ.2 Measure.haar hD hDc hrep⟩`.
+-/
 theorem mem_cuspForms_uAction_ι {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : φ ∈ cuspForms K n)
     (X : (isExpLieAlgebra K n).lieSubalgebra) :
     (AutomorphicForm.uAction (UniversalEnvelopingAlgebra.ι ℝ X) ⟨φ, hφ.1.isSmooth.1⟩ :
@@ -238,6 +286,9 @@ theorem mem_cuspForms_uAction_ι {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : φ
   obtain ⟨D, hD, hDc, hrep⟩ := exists_integral_uAction_ι hφ.1.isSmoothKZ Measure.haar X
   exact ⟨hφ.1.uAction_ι X, IsCuspidal.of_eq_integral hφ.1.continuous hφ.2 Measure.haar hD hDc hrep⟩
 
+/- English proof (translation)
+Rewrite using `[AlgHom.commutes, Module.algebraMap_end_apply]`. Use function extensionality and compare the values at `g`. Simplify using `[Complex.real_smul]`.
+-/
 theorem coe_uAction_algebraMap (r : ℝ) (φ : archSmooth K n) :
     ((AutomorphicForm.uAction (algebraMap ℝ (UEnv K n) r) φ : archSmooth K n) :
       AdelicGLn.AdelicGL K n → ℂ) = (r : ℂ) • (φ : AdelicGLn.AdelicGL K n → ℂ) := by
@@ -245,12 +296,22 @@ theorem coe_uAction_algebraMap (r : ℝ) (φ : archSmooth K n) :
   funext g
   simp [Complex.real_smul]
 
+/- English proof (translation)
+Rewrite using `[map_mul, Module.End.mul_apply]`.
+-/
 theorem coe_uAction_mul (a b : UEnv K n) (φ : archSmooth K n) :
     ((AutomorphicForm.uAction (a * b) φ : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ) =
       ((AutomorphicForm.uAction a (AutomorphicForm.uAction b φ) : archSmooth K n) :
         AdelicGLn.AdelicGL K n → ℂ) := by
   rw [map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Proceed by induction on `u using UEnv.induction with`. Consider the case `halg r`. Introduce `φ hφ`. Rewrite using `[coe_uAction_algebraMap]`. Conclude with `hφ.smul _`.
+
+Consider the case `hι X => exact fun hφ => hφ.uAction_ι X`. Consider the case `hmul a b ha hb`. Introduce `φ hφ`. Rewrite using `[coe_uAction_mul]`. Conclude with `ha (hb hφ)`.
+
+Consider the case `hadd a b ha hb`. Introduce `φ hφ`. Rewrite using `[map_add, LinearMap.add_apply, Submodule.coe_add]`. Conclude with `(ha hφ).add (hb hφ)`.
+-/
 theorem IsAutomorphicForm.uAction (u : UEnv K n) :
     ∀ {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsAutomorphicForm φ),
       IsAutomorphicForm (AutomorphicForm.uAction u ⟨φ, hφ.isSmooth.1⟩ :
@@ -270,6 +331,13 @@ theorem IsAutomorphicForm.uAction (u : UEnv K n) :
     rw [map_add, LinearMap.add_apply, Submodule.coe_add]
     exact (ha hφ).add (hb hφ)
 
+/- English proof (translation)
+Proceed by induction on `u using UEnv.induction with`. Consider the case `halg r`. Introduce `φ hφ`. Rewrite using `[coe_uAction_algebraMap]`. Conclude with `(cuspForms K n).smul_mem _ hφ`.
+
+Consider the case `hι X => exact fun hφ => mem_cuspForms_uAction_ι hφ X`. Consider the case `hmul a b ha hb`. Introduce `φ hφ`. Rewrite using `[coe_uAction_mul]`. Conclude with `ha (hb hφ)`.
+
+Consider the case `hadd a b ha hb`. Introduce `φ hφ`. Rewrite using `[map_add, LinearMap.add_apply, Submodule.coe_add]`. Conclude with `(cuspForms K n).add_mem (ha hφ) (hb hφ)`.
+-/
 theorem mem_cuspForms_uAction (u : UEnv K n) :
     ∀ {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : φ ∈ cuspForms K n),
       (AutomorphicForm.uAction u ⟨φ, hφ.1.isSmooth.1⟩ : AdelicGLn.AdelicGL K n → ℂ) ∈
@@ -289,6 +357,9 @@ theorem mem_cuspForms_uAction (u : UEnv K n) :
     rw [map_add, LinearMap.add_apply, Submodule.coe_add]
     exact (cuspForms K n).add_mem (ha hφ) (hb hφ)
 
+/- English proof (translation)
+Introduce `_ hφ` and use `hφ.isSmooth.1`.
+-/
 theorem automorphicForms_le_archSmooth : automorphicForms K n ≤ archSmooth K n :=
   fun _ hφ => hφ.isSmooth.1
 
@@ -317,6 +388,9 @@ def uActionAF : UEnv K n →ₐ[ℝ] Module.End ℂ (automorphicForms K n) where
       AdelicGLn.AdelicGL K n → ℂ) = _
     rw [AlgHom.commutes]; rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_uActionAF (u : UEnv K n) (φ : automorphicForms K n) :
     ((uActionAF K n u φ : automorphicForms K n) : AdelicGLn.AdelicGL K n → ℂ) =
       ((AutomorphicForm.uAction u ⟨φ, φ.2.isSmooth.1⟩ : archSmooth K n) :
@@ -348,11 +422,17 @@ def uActionCusp : UEnv K n →ₐ[ℝ] Module.End ℂ (cuspForms K n) where
       AdelicGLn.AdelicGL K n → ℂ) = _
     rw [AlgHom.commutes]; rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_uActionCusp (u : UEnv K n) (φ : cuspForms K n) :
     ((uActionCusp K n u φ : cuspForms K n) : AdelicGLn.AdelicGL K n → ℂ) =
       ((AutomorphicForm.uAction u ⟨φ, φ.2.1.isSmooth.1⟩ : archSmooth K n) :
         AdelicGLn.AdelicGL K n → ℂ) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (fun ψ : archSmooth K n => (ψ : AdelicGLn.AdelicGL K n → ℂ)) (uAction_rtFin u h ⟨φ, φ.2.isSmooth.1⟩)`.
+-/
 theorem uActionAF_finRep (u : UEnv K n) (h : AdelicGLn.FiniteAdelicGL K n)
     (φ : automorphicForms K n) :
     uActionAF K n u (finRep K n h φ) = finRep K n h (uActionAF K n u φ) := by
@@ -360,6 +440,9 @@ theorem uActionAF_finRep (u : UEnv K n) (h : AdelicGLn.FiniteAdelicGL K n)
   exact congrArg (fun ψ : archSmooth K n => (ψ : AdelicGLn.AdelicGL K n → ℂ))
     (uAction_rtFin u h ⟨φ, φ.2.isSmooth.1⟩)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (fun ψ : archSmooth K n => (ψ : AdelicGLn.AdelicGL K n → ℂ)) (uAction_rtFin u h ⟨φ, φ.2.1.isSmooth.1⟩)`.
+-/
 theorem uActionCusp_finRepCusp (u : UEnv K n) (h : AdelicGLn.FiniteAdelicGL K n)
     (φ : cuspForms K n) :
     uActionCusp K n u (finRepCusp K n h φ) = finRepCusp K n h (uActionCusp K n u φ) := by
@@ -402,35 +485,59 @@ def gkModuleCusp : (isExpLieAlgebra K n).GKModule (archCompact K n) (cuspForms K
     (Submodule.inclusion_injective _) (lieActionCusp K n) (archCompactRepCusp K n)
     (fun _ _ => Subtype.ext rfl) (fun _ _ => Subtype.ext rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem gkModuleAF_ρ_apply (X : (isExpLieAlgebra K n).lieSubalgebra)
     (φ : automorphicForms K n) :
     (gkModuleAF K n).ρ X φ = uActionAF K n (UniversalEnvelopingAlgebra.ι ℝ X) φ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem gkModuleAF_σ_apply (k : archCompact K n) (φ : automorphicForms K n) :
     (gkModuleAF K n).σ k φ = archCompactRep K n k φ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem gkModuleCusp_ρ_apply (X : (isExpLieAlgebra K n).lieSubalgebra)
     (φ : cuspForms K n) :
     (gkModuleCusp K n).ρ X φ = uActionCusp K n (UniversalEnvelopingAlgebra.ι ℝ X) φ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem gkModuleCusp_σ_apply (k : archCompact K n) (φ : cuspForms K n) :
     (gkModuleCusp K n).σ k φ = archCompactRepCusp K n k φ := rfl
 
+/- English proof (translation)
+The claim follows from `uActionAF_finRep _ h φ`.
+-/
 theorem gkModuleAF_ρ_finRep (X : (isExpLieAlgebra K n).lieSubalgebra)
     (h : AdelicGLn.FiniteAdelicGL K n) (φ : automorphicForms K n) :
     (gkModuleAF K n).ρ X (finRep K n h φ) = finRep K n h ((gkModuleAF K n).ρ X φ) :=
   uActionAF_finRep _ h φ
 
+/- English proof (translation)
+The claim follows from `(finRep_archCompactRep_comm h k φ).symm`.
+-/
 theorem gkModuleAF_σ_finRep (k : archCompact K n) (h : AdelicGLn.FiniteAdelicGL K n)
     (φ : automorphicForms K n) :
     (gkModuleAF K n).σ k (finRep K n h φ) = finRep K n h ((gkModuleAF K n).σ k φ) :=
   (finRep_archCompactRep_comm h k φ).symm
 
+/- English proof (translation)
+The claim follows from `uActionCusp_finRepCusp _ h φ`.
+-/
 theorem gkModuleCusp_ρ_finRepCusp (X : (isExpLieAlgebra K n).lieSubalgebra)
     (h : AdelicGLn.FiniteAdelicGL K n) (φ : cuspForms K n) :
     (gkModuleCusp K n).ρ X (finRepCusp K n h φ) = finRepCusp K n h ((gkModuleCusp K n).ρ X φ) :=
   uActionCusp_finRepCusp _ h φ
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Simplify using `only [gkModuleCusp_σ_apply]`. Use `show (φ : AdelicGLn.AdelicGL K n → ℂ) (g * infEmb K n k * finEmb K n h) = (φ : AdelicGLn.AdelicGL K n → ℂ) (g * finEmb K n h * infEmb K n k)`. Rewrite using `[mul_assoc, mul_assoc, infEmb_mul_finEmb_comm]`.
+-/
 theorem gkModuleCusp_σ_finRepCusp (k : archCompact K n) (h : AdelicGLn.FiniteAdelicGL K n)
     (φ : cuspForms K n) :
     (gkModuleCusp K n).σ k (finRepCusp K n h φ) = finRepCusp K n h ((gkModuleCusp K n).σ k φ) := by

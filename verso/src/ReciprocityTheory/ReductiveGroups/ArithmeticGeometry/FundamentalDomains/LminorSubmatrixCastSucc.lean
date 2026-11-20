@@ -6,19 +6,31 @@ namespace ReciprocityTheory.ChartRestriction.G.FD
 open Matrix NumberField
 open scoped ComplexOrder ComplexConjugate
 
+/- English proof (translation)
+Conclude with `(Matrix.PosSemidef.posDef_iff_det_ne_zero hA).2 hd`.
+-/
 theorem posDef_of_posSemidef_det {n : Type} [Fintype n] [DecidableEq n]
     {A : Matrix n n ℂ} (hA : A.PosSemidef) (hd : A.det ≠ 0) : A.PosDef := by
   exact (Matrix.PosSemidef.posDef_iff_det_ne_zero hA).2 hd
 
+/- English proof (translation)
+Unfold `lminor`. Rewrite using `[Matrix.submatrix_submatrix]`. Both sides reduce to the same expression.
+-/
 theorem lminor_submatrix_castSucc {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (i : Fin (n + 1)) :
     lminor (A.submatrix Fin.castSucc Fin.castSucc) i = lminor A i.castSucc := by
   unfold lminor
   rw [Matrix.submatrix_submatrix]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lminor_last {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : lminor A (Fin.last n) = A.det := by
   rfl
 
+/- English proof (translation)
+The claim follows from `| 0, A, hA, _ => ⟨hA, fun x hx => absurd (Subsingleton.elim x 0) hx⟩ | n + 1, A, hA, hm => by set A' := A.submatrix Fin.castSucc Fin.castSucc with hA'def have hA'h : A'.IsHermitian := hA.submatrix _ have hA' : A'.PosDef := posDef_of_lminor n A' hA'h (fun i => by rw [lminor_submat …`.
+-/
 theorem posDef_of_lminor : ∀ (n : ℕ) (A : Matrix (Fin n) (Fin n) ℂ), A.IsHermitian →
     (∀ i : Fin (n + 1), 0 < (lminor A i).re) → A.PosDef
   | 0, A, hA, _ => ⟨hA, fun x hx => absurd (Subsingleton.elim x 0) hx⟩
@@ -81,48 +93,75 @@ section Herm
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hermC_add_left (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u u' v : Fin r → ℂ) :
     hermC τ G (u + u') v = hermC τ G u v + hermC τ G u' v := by
   unfold hermC
   simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem hermC_smul_left (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : ℂ) (u v : Fin r → ℂ) :
     hermC τ G (c • u) v = c * hermC τ G u v := by
   unfold hermC
   simp only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+-/
 theorem hermC_sub_left (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u u' v : Fin r → ℂ) :
     hermC τ G (u - u') v = hermC τ G u v - hermC τ G u' v := by
   unfold hermC
   simp only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using the standard rewrite rules.
+-/
 theorem hermC_zero_left (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (v : Fin r → ℂ) :
     hermC τ G 0 v = 0 := by
   unfold hermC
   simp
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hermC_add_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u v v' : Fin r → ℂ) :
     hermC τ G u (v + v') = hermC τ G u v + hermC τ G u v' := by
   unfold hermC
   simp only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem hermC_smul_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : ℂ) (u v : Fin r → ℂ) :
     hermC τ G u (c • v) = conj c * hermC τ G u v := by
   unfold hermC
   simp only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem hermC_sub_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u v v' : Fin r → ℂ) :
     hermC τ G u (v - v') = hermC τ G u v - hermC τ G u v' := by
   unfold hermC
   simp only [Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using the standard rewrite rules.
+-/
 theorem hermC_zero_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u : Fin r → ℂ) :
     hermC τ G u 0 = 0 := by
   unfold hermC
   simp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Conclude with `hermC_zero_left τ G v`. Consider the case `@insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_left, ih]`.
+-/
 theorem hermC_sum_left {ι : Type} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (s : Finset ι)
     (f : ι → Fin r → ℂ) (v : Fin r → ℂ) :
     hermC τ G (∑ i ∈ s, f i) v = ∑ i ∈ s, hermC τ G (f i) v := by
@@ -131,6 +170,9 @@ theorem hermC_sum_left {ι : Type} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r
   | empty => rw [Finset.sum_empty, Finset.sum_empty]; exact hermC_zero_left τ G v
   | @insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_left, ih]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Conclude with `hermC_zero_right τ G u`. Consider the case `@insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_right, ih]`.
+-/
 theorem hermC_sum_right {ι : Type} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (s : Finset ι)
     (u : Fin r → ℂ) (f : ι → Fin r → ℂ) :
     hermC τ G u (∑ i ∈ s, f i) = ∑ i ∈ s, hermC τ G u (f i) := by
@@ -139,6 +181,11 @@ theorem hermC_sum_right {ι : Type} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin 
   | empty => rw [Finset.sum_empty, Finset.sum_empty]; exact hermC_zero_right τ G u
   | @insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hermC_add_right, ih]
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [map_sum, map_mul, Complex.conj_conj]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← emb_cc, hG]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermC_conj (τ : E →+* ℂ) {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, cc (G a b) = G b a)
     (u v : Fin r → ℂ) : conj (hermC τ G u v) = hermC τ G v u := by
   unfold hermC
@@ -148,6 +195,9 @@ theorem hermC_conj (τ : E →+* ℂ) {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a
   rw [← emb_cc, hG]
   ring
 
+/- English proof (translation)
+Use `Matrix.IsHermitian.ext fun a b => ?_` and prove the remaining obligations. Simplify using `only [gram, Matrix.of_apply]`. Conclude with `hermC_conj τ hG _ _`.
+-/
 theorem gram_isHermitian (τ : E →+* ℂ) {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, cc (G a b) = G b a) (M : Matrix (Fin r) (Fin r) ℂ) : (gram τ G M).IsHermitian := by
   refine Matrix.IsHermitian.ext fun a b => ?_
@@ -160,6 +210,11 @@ section Quad
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `hc' : star c ≠ 0` using `fun h0 => hc (by simpa using congrArg star h0)`. Establish `h` using `hM.dotProduct_mulVec_pos hc'`. Establish `e : star (star c) ⬝ᵥ (M *ᵥ star c) = ∑ a, ∑ b, c a * M a b * conj (c b)`. Simplify using `[dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Rewrite `h` using `[e]`.
+
+Establish `h'` using `(Complex.lt_def.1 h).1`. Rewrite `h'` using `[Complex.zero_re]`. Then use the resulting hypothesis.
+-/
 theorem quad_re_pos {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (hM : M.PosDef) {c : Fin n → ℂ}
     (hc : c ≠ 0) : 0 < (∑ a, ∑ b, c a * M a b * conj (c b)).re := by
   have hc' : star c ≠ 0 := fun h0 => hc (by simpa using congrArg star h0)
@@ -170,6 +225,11 @@ theorem quad_re_pos {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (hM : M.PosDef) {
   have h' := (Complex.lt_def.1 h).1
   rwa [Complex.zero_re] at h'
 
+/- English proof (translation)
+Establish `h : 0 ≤ star (star c) ⬝ᵥ (M *ᵥ star c)` using `hM.dotProduct_mulVec_nonneg (star c)`. Establish `e : star (star c) ⬝ᵥ (M *ᵥ star c) = ∑ a, ∑ b, c a * M a b * conj (c b)`. Simplify using `[dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Rewrite `h` using `[e]`. Establish `h'` using `(Complex.le_def.1 h).1`.
+
+Rewrite `h'` using `[Complex.zero_re]`. Then use the resulting hypothesis.
+-/
 theorem quad_re_nonneg {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (hM : M.PosSemidef) (c : Fin n → ℂ) :
     0 ≤ (∑ a, ∑ b, c a * M a b * conj (c b)).re := by
   have h : 0 ≤ star (star c) ⬝ᵥ (M *ᵥ star c) := hM.dotProduct_mulVec_nonneg (star c)
@@ -179,6 +239,11 @@ theorem quad_re_nonneg {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (hM : M.PosSem
   have h' := (Complex.le_def.1 h).1
   rwa [Complex.zero_re] at h'
 
+/- English proof (translation)
+Rewrite using `[hermC_sum_left]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_left, hermC_sum_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_right]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermC_quad (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {n : ℕ} (γ : Fin n → ℂ)
     (f : Fin n → Fin r → ℂ) :
     hermC τ G (∑ a, γ a • f a) (∑ b, γ b • f b) =
@@ -192,6 +257,9 @@ theorem hermC_quad (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {n : ℕ} (
 
 end Quad
 
+/- English proof (translation)
+Unfold `psgn`. Use `Finset.prod_eq_one fun a ha => ?_` and prove the remaining obligations. Establish `hlt : a < p0` using `lt_of_lt_of_le (Finset.mem_range.1 ha) h`. Unfold `sgn`. Rewrite using `[if_pos hlt]`.
+-/
 theorem psgn_eq_one {p0 i : ℕ} (h : i ≤ p0) : psgn p0 i = 1 := by
   unfold psgn
   refine Finset.prod_eq_one fun a ha => ?_
@@ -206,15 +274,29 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data 
 def colP (x : Frame X.Ψ r) (τ : X.Ψ) (a : Fin X.p0) : Fin r → ℂ :=
   col (mat x τ) (Fin.castLE X.p0_le a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gramPos_apply (x : Frame X.Ψ r) (τ : X.Ψ) (a b : Fin X.p0) :
     X.gramPos x τ a b = hermC τ.1 X.Gm (X.colP x τ a) (X.colP x τ b) := rfl
 
+/- English proof (translation)
+Conclude with `(gram_isHermitian τ.1 X.Gm_herm (mat x τ)).submatrix (Fin.castLE X.p0_le)`.
+-/
 theorem gramPos_isHermitian (x : Frame X.Ψ r) (τ : X.Ψ) : (X.gramPos x τ).IsHermitian := by
   exact (gram_isHermitian τ.1 X.Gm_herm (mat x τ)).submatrix (Fin.castLE X.p0_le)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_dom_iff (x : Frame X.Ψ r) : x ∈ X.dom ↔
     ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re := Iff.rfl
 
+/- English proof (translation)
+Establish `hx'` using `((X.mem_dom_iff x).1 hx τ).2`. Use `posDef_of_lminor X.p0 _ (X.gramPos_isHermitian x τ) fun i => ?_` and prove the remaining obligations. Establish `h1` using `hx' (Fin.castLE (Nat.succ_le_succ X.p0_le) i)`. Establish `h2 : psgn X.p0 ((Fin.castLE (Nat.succ_le_succ X.p0_le) i : Fin (r + 1)) : ℕ) = 1` using `psgn_eq_one (Nat.le_of_lt_succ i.isLt)`. Rewrite `h1` using `[h2, one_mul]`.
+
+Conclude with `h1`.
+-/
 theorem gramPos_posDef {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) : (X.gramPos x τ).PosDef := by
   have hx' := ((X.mem_dom_iff x).1 hx τ).2
   refine posDef_of_lminor X.p0 _ (X.gramPos_isHermitian x τ) fun i => ?_
@@ -224,13 +306,24 @@ theorem gramPos_posDef {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) : (X.gr
   rw [h2, one_mul] at h1
   exact h1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ppos_eq (x : Frame X.Ψ r) (τ : X.Ψ) (u : Fin r → ℂ) : X.ppos x τ u =
     ∑ a, (∑ b, hermC τ.1 X.Gm u (X.colP x τ b) * (X.gramPos x τ)⁻¹ b a) • X.colP x τ a := rfl
 
+/- English proof (translation)
+The claim follows from `isUnit_iff_ne_zero.2 ((Matrix.PosSemidef.posDef_iff_det_ne_zero h.posSemidef).1 h)`.
+-/
 private theorem isUnit_det_of_posDef_fundamental_domains {n : Type} [Fintype n] [DecidableEq n]
     {A : Matrix n n ℂ} (h : A.PosDef) : IsUnit A.det :=
   isUnit_iff_ne_zero.2 ((Matrix.PosSemidef.posDef_iff_det_ne_zero h.posSemidef).1 h)
 
+/- English proof (translation)
+Establish `hA : (X.gramPos x τ)⁻¹ * X.gramPos x τ = 1` using `Matrix.nonsing_inv_mul _ (isUnit_det_of_posDef_fundamental_domains (X.gramPos_posDef hx τ))`. Rewrite using `[X.ppos_eq x τ u, hermC_sum_left]`. Repeatedly rewrite using `[hermC_smul_left, ← X.gramPos_apply x τ, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.mul_sum, ← Matrix.mul_apply, hA, Matrix.one_apply]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem hermC_ppos_colP {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u : Fin r → ℂ) (d : Fin X.p0) :
     hermC τ.1 X.Gm (X.ppos x τ u) (X.colP x τ d) = hermC τ.1 X.Gm u (X.colP x τ d) := by
   have hA : (X.gramPos x τ)⁻¹ * X.gramPos x τ = 1 :=
@@ -241,6 +334,9 @@ theorem hermC_ppos_colP {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u : F
   simp_rw [← Finset.mul_sum, ← Matrix.mul_apply, hA, Matrix.one_apply]
   simp
 
+/- English proof (translation)
+Rewrite using `[X.ppos_eq x τ u, hermC_sum_left]`. Repeatedly rewrite using `[hermC_smul_left, Finset.sum_mul]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hermC_conj τ.1 X.Gm_herm u (X.colP x τ j)]`.
+-/
 theorem hermC_ppos_self (τ : X.Ψ) (x : Frame X.Ψ r) (u : Fin r → ℂ) :
     hermC τ.1 X.Gm (X.ppos x τ u) u = ∑ a, ∑ b, hermC τ.1 X.Gm u (X.colP x τ a) *
       (X.gramPos x τ)⁻¹ a b * conj (hermC τ.1 X.Gm u (X.colP x τ b)) := by
@@ -250,16 +346,31 @@ theorem hermC_ppos_self (τ : X.Ψ) (x : Frame X.Ψ r) (u : Fin r → ℂ) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [← hermC_conj τ.1 X.Gm_herm u (X.colP x τ j)]
 
+/- English proof (translation)
+Use `show hermC τ.1 X.Gm ((2 : ℂ) • X.ppos x τ u - u) w = _`. Rewrite using `[hermC_sub_left, hermC_smul_left]`.
+-/
 theorem Hf_eq_two_ppos (x : Frame X.Ψ r) (τ : X.Ψ) (u w : Fin r → ℂ) :
     X.Hf x τ u w = 2 * hermC τ.1 X.Gm (X.ppos x τ u) w - hermC τ.1 X.Gm u w := by
   show hermC τ.1 X.Gm ((2 : ℂ) • X.ppos x τ u - u) w = _
   rw [hermC_sub_left, hermC_smul_left]
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[Matrix.mulVec, dotProduct, col, Finset.sum_apply, mul_comm]`.
+-/
 theorem mulVec_eq_sum_col (P : Matrix (Fin r) (Fin r) ℂ) (c : Fin r → ℂ) :
     P *ᵥ c = ∑ i, c i • col P i := by
   ext k
   simp [Matrix.mulVec, dotProduct, col, Finset.sum_apply, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[hermC_quad]`. Establish `hcol : ∀ j k, hermC τ G (col P (n' j)) (col P (n' k)) = if j = k then -1 else 0`. Introduce `j k`. Establish `h1 : hermC τ G (col P (n' j)) (col P (n' k)) = gram τ G P (n' j) (n' k)` using `rfl`. Rewrite using `[h1, hP, Matrix.diagonal_apply]`.
+
+Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Establish `hlt : ¬ ((n' j : ℕ) < p0)` using `by rw [hn']; omega`. Simplify using `[sgn, hlt]`. Establish `hne : n' j ≠ n' k` using `fun h => hjk (Fin.ext (by`.
+
+Establish `h2` using `congrArg Fin.val h`. Rewrite `h2` using `[hn', hn']`. Use the proof step `omega))`. Simplify using `[hne, hjk]`. Repeatedly rewrite using `[hcol]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem hermC_sum_smul_col_negative_block {p0 : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (P : Matrix (Fin r) (Fin r) ℂ)
     (hP : gram τ G P = Matrix.diagonal fun a : Fin r => ((sgn p0 (a : ℕ) : ℝ) : ℂ))
@@ -283,6 +394,35 @@ private theorem hermC_sum_smul_col_negative_block {p0 : ℕ} (τ : E →+* ℂ) 
   simp_rw [hcol]
   simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Take `⟨P, -, hP⟩` from `X.signature τ`. Establish `hpd` using `X.gramPos_posDef hx τ`. Establish `hle` using `X.p0_le`.
+
+Set `n' : Fin (r - X.p0) → Fin r` to `fun j => ⟨X.p0 + j, by have := j.isLt; omega⟩`. Establish `hnli : ¬ LinearIndependent ℂ (Sum.elim (fun o : Option (Fin X.p0) => o.elim e (X.colP x τ)) (fun j : Fin (r - X.p0) => col P (n' j)))`. Introduce `hli`. Establish `h1` using `hli.fintype_card_le_finrank`. Simplify using `only [Fintype.card_sum, Fintype.card_option, Fintype.card_fin, Module.finrank_fin_fun] at h1`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨g, hg, i0, hi0⟩` from `Fintype.not_linearIndependent_iff.1 hnli`. Simplify using `only [Fintype.sum_sum_type, Fintype.sum_option, Sum.elim_inl, Sum.elim_inr, Option.elim] at hg`. Use `set α0 := g (Sum.inl none) with hα0def`. Use `set vW := ∑ a, g (Sum.inl (some a)) • X.colP x τ a with hvW`.
+
+Use `set vN := ∑ j, g (Sum.inr j) • col P (n' j) with hvN`. Establish `hN : hermC τ.1 X.Gm vN vN = -∑ j, g (Sum.inr j) * conj (g (Sum.inr j))` using `hermC_sum_smul_col_negative_block τ.1 X.Gm P hP n' (fun j => rfl) (fun j => g (Sum.inr j))`. Establish `hsum : vW + α0 • e = -vN`. Combine the equalities or inequalities in the displayed calculation. Establish `hWe : hermC τ.1 X.Gm vW e = 0`.
+
+Rewrite using `[hvW, hermC_sum_left]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_left, ← hermC_conj τ.1 X.Gm_herm e, hperp a]`. Simplify using the standard rewrite rules. Establish `heW : hermC τ.1 X.Gm e vW = 0`.
+
+Rewrite using `[← hermC_conj τ.1 X.Gm_herm vW e, hWe, map_zero]`. Establish `hexp : hermC τ.1 X.Gm (vW + α0 • e) (vW + α0 • e) = hermC τ.1 X.Gm vW vW + α0 * conj α0 * hermC τ.1 X.Gm e e`. Rewrite using `[hermC_add_left, hermC_add_right, hermC_add_right, hermC_smul_left, hermC_smul_left, hermC_smul_right, hermC_smul_right, hWe, heW]`. Expand and normalize the polynomial expressions, which then agree. Establish `hWW : hermC τ.1 X.Gm vW vW = ∑ a, ∑ b, g (Sum.inl (some a)) * X.gramPos x τ a b * conj (g (Sum.inl (some b)))`.
+
+Rewrite using `[hvW]`. Conclude with `hermC_quad τ.1 X.Gm _ _`. Establish `hNN : hermC τ.1 X.Gm (-vN) (-vN) = hermC τ.1 X.Gm vN vN`. Rewrite using `[← neg_one_smul ℂ vN, hermC_smul_left, hermC_smul_right]`. Simplify using the standard rewrite rules.
+
+Establish `key : hermC τ.1 X.Gm vW vW + α0 * conj α0 * hermC τ.1 X.Gm e e = -∑ j, g (Sum.inr j) * conj (g (Sum.inr j))`. Rewrite using `[← hexp, hsum, hNN, hN]`. Establish `hre` using `congrArg Complex.re key`. Simplify using `only [Complex.add_re, Complex.neg_re, Complex.re_sum, Complex.mul_conj, Complex.re_ofReal_mul, Complex.ofReal_re] at hre`. Establish `hq : 0 ≤ (hermC τ.1 X.Gm vW vW).re`.
+
+Rewrite using `[hWW]`. Conclude with `quad_re_nonneg hpd.posSemidef _`. Establish `ha : 0 ≤ Complex.normSq α0 * (hermC τ.1 X.Gm e e).re` using `mul_nonneg (Complex.normSq_nonneg _) hneg`. Establish `hs : 0 ≤ ∑ j, Complex.normSq (g (Sum.inr j))` using `Finset.sum_nonneg fun j _ => Complex.normSq_nonneg _`. Establish `hq0 : (hermC τ.1 X.Gm vW vW).re = 0` using `by linarith`.
+
+Establish `hs0 : ∑ j, Complex.normSq (g (Sum.inr j)) = 0` using `by linarith`. Establish `hβ : ∀ j, g (Sum.inr j) = 0` using `fun j => Complex.normSq_eq_zero.1 ((Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Complex.normSq_nonneg _)).1 hs0 j (Finset.mem_univ _))`. Establish `hα : (fun a => g (Sum.inl (some a))) = 0`. Assume the negation of the conclusion as `hne`. Establish `h5 : 0 < (hermC τ.1 X.Gm vW vW).re`.
+
+Rewrite using `[hWW]`. Conclude with `quad_re_pos hpd hne`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hvW0 : vW = 0`. Rewrite using `[hvW]`.
+
+Conclude with `Finset.sum_eq_zero fun a _ => by`. Rewrite using `[show g (Sum.inl (some a)) = 0 from congrFun hα a, zero_smul]`. Establish `hvN0 : vN = 0`. Rewrite using `[hvN]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [hβ j, zero_smul]`.
+
+Establish `hα0 : α0 = 0`. Rewrite `hg` using `[hvW0, hvN0, add_zero, add_zero, smul_eq_zero]`. Conclude with `hg.resolve_right he`. Break down `i0 with (_ | a) | j` into its components or cases. Conclude with `hi0 hα0`.
+
+Conclude with `hi0 (congrFun hα a)`. Conclude with `hi0 (hβ j)`.
+-/
 theorem neg_of_perp {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) {e : Fin r → ℂ} (he : e ≠ 0)
     (hperp : ∀ b, hermC τ.1 X.Gm e (X.colP x τ b) = 0) : (hermC τ.1 X.Gm e e).re < 0 := by
   classical
@@ -367,6 +507,13 @@ theorem neg_of_perp {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) {e : Fin r
   · exact hi0 (congrFun hα a)
   · exact hi0 (hβ j)
 
+/- English proof (translation)
+Establish `hA` using `(X.gramPos_posDef hx τ).inv`. Establish `hHf : X.Hf x τ e e = 2 * hermC τ.1 X.Gm (X.ppos x τ e) e`. Rewrite using `[X.Hf_eq_two_ppos, hiso, sub_zero]`. Rewrite using `[hHf, X.hermC_ppos_self]`. Establish `hc0 : (fun a => hermC τ.1 X.Gm e (X.colP x τ a)) ≠ 0`.
+
+Introduce `h0`. Establish `h3` using `X.neg_of_perp hx τ he (fun b => congrFun h0 b)`. Rewrite `h3` using `[hiso]`. Simplify using `at h3`. Establish `key` using `quad_re_pos hA hc0`.
+
+Rewrite using `[show ∀ z : ℂ, (2 * z).re = 2 * z.re from fun z => by simp [Complex.mul_re]]`. Conclude with `mul_pos two_pos key`.
+-/
 theorem Hf_iso_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) {e : Fin r → ℂ} (he : e ≠ 0)
     (hiso : hermC τ.1 X.Gm e e = 0) : 0 < (X.Hf x τ e e).re := by
   have hA := (X.gramPos_posDef hx τ).inv
@@ -382,10 +529,18 @@ theorem Hf_iso_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) {e : Fin r 
   rw [show ∀ z : ℂ, (2 * z).re = 2 * z.re from fun z => by simp [Complex.mul_re]]
   exact mul_pos two_pos key
 
+/- English proof (translation)
+Simplify using `only [X.ppos_eq, hermC_add_left, add_mul, Finset.sum_add_distrib, add_smul]`.
+-/
 theorem ppos_add (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
     X.ppos x τ (u + v) = X.ppos x τ u + X.ppos x τ v := by
   simp only [X.ppos_eq, hermC_add_left, add_mul, Finset.sum_add_distrib, add_smul]
 
+/- English proof (translation)
+Rewrite using `[X.ppos_eq, X.ppos_eq, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hermC_smul_left, mul_assoc]`.
+-/
 theorem ppos_smul_eq (x : Frame X.Ψ r) (τ : X.Ψ) (k : ℂ) (u : Fin r → ℂ) :
     X.ppos x τ (k • u) = k • X.ppos x τ u := by
   rw [X.ppos_eq, X.ppos_eq, Finset.smul_sum]
@@ -395,21 +550,33 @@ theorem ppos_smul_eq (x : Frame X.Ψ r) (τ : X.Ψ) (k : ℂ) (u : Fin r → ℂ
   refine Finset.sum_congr rfl fun b _ => ?_
   rw [hermC_smul_left, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [X.ppos_eq, hermC_sub_left, sub_mul, Finset.sum_sub_distrib, sub_smul]`.
+-/
 theorem ppos_sub (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
     X.ppos x τ (u - v) = X.ppos x τ u - X.ppos x τ v := by
   simp only [X.ppos_eq, hermC_sub_left, sub_mul, Finset.sum_sub_distrib, sub_smul]
 
+/- English proof (translation)
+Rewrite using `[X.ppos_eq x τ (X.ppos x τ v)]`. Repeatedly rewrite using `[X.hermC_ppos_colP hx τ]`. Conclude with `(X.ppos_eq x τ v).symm`.
+-/
 theorem ppos_ppos {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (v : Fin r → ℂ) :
     X.ppos x τ (X.ppos x τ v) = X.ppos x τ v := by
   rw [X.ppos_eq x τ (X.ppos x τ v)]
   simp_rw [X.hermC_ppos_colP hx τ]
   exact (X.ppos_eq x τ v).symm
 
+/- English proof (translation)
+Rewrite using `[X.ppos_eq x τ v, hermC_sum_right, hermC_sum_right]`. Repeatedly rewrite using `[hermC_smul_right, X.hermC_ppos_colP hx τ]`.
+-/
 theorem hermC_ppos_right {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
     hermC τ.1 X.Gm u (X.ppos x τ v) = hermC τ.1 X.Gm (X.ppos x τ u) (X.ppos x τ v) := by
   rw [X.ppos_eq x τ v, hermC_sum_right, hermC_sum_right]
   simp_rw [hermC_smul_right, X.hermC_ppos_colP hx τ]
 
+/- English proof (translation)
+Rewrite using `[← hermC_conj τ.1 X.Gm_herm v (X.ppos x τ u), X.hermC_ppos_right hx τ v u, hermC_conj τ.1 X.Gm_herm]`.
+-/
 theorem hermC_ppos_left {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
     hermC τ.1 X.Gm (X.ppos x τ u) v = hermC τ.1 X.Gm (X.ppos x τ u) (X.ppos x τ v) := by
   rw [← hermC_conj τ.1 X.Gm_herm v (X.ppos x τ u), X.hermC_ppos_right hx τ v u,
@@ -417,12 +584,21 @@ theorem hermC_ppos_left {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v :
 
 noncomputable def jp (x : Frame X.Ψ r) (τ : X.Ψ) (v : Fin r → ℂ) : Fin r → ℂ := (2 : ℂ) • X.ppos x τ v - v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Hf_eq_jp (x : Frame X.Ψ r) (τ : X.Ψ) (u w : Fin r → ℂ) :
     X.Hf x τ u w = hermC τ.1 X.Gm (X.jp x τ u) w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Jz_apply (x : Frame X.Ψ r) (u : X.Ψ → Fin r → ℂ) (τ : X.Ψ) :
     X.Jz x u τ = Complex.I • X.jp x τ (u τ) := rfl
 
+/- English proof (translation)
+Use `show (2 : ℂ) • X.ppos x τ (u + v) - (u + v) = ((2 : ℂ) • X.ppos x τ u - u) + ((2 : ℂ) • X.ppos x τ v - v)`. Rewrite using `[X.ppos_add, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem jp_add (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
     X.jp x τ (u + v) = X.jp x τ u + X.jp x τ v := by
   show (2 : ℂ) • X.ppos x τ (u + v) - (u + v) =
@@ -430,11 +606,17 @@ theorem jp_add (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
   rw [X.ppos_add, smul_add]
   abel
 
+/- English proof (translation)
+Use `show (2 : ℂ) • X.ppos x τ (k • u) - k • u = k • ((2 : ℂ) • X.ppos x τ u - u)`. Rewrite using `[X.ppos_smul_eq, smul_sub, smul_comm k (2 : ℂ)]`.
+-/
 theorem jp_smul (x : Frame X.Ψ r) (τ : X.Ψ) (k : ℂ) (u : Fin r → ℂ) :
     X.jp x τ (k • u) = k • X.jp x τ u := by
   show (2 : ℂ) • X.ppos x τ (k • u) - k • u = k • ((2 : ℂ) • X.ppos x τ u - u)
   rw [X.ppos_smul_eq, smul_sub, smul_comm k (2 : ℂ)]
 
+/- English proof (translation)
+Use `show (2 : ℂ) • X.ppos x τ (u - v) - (u - v) = ((2 : ℂ) • X.ppos x τ u - u) - ((2 : ℂ) • X.ppos x τ v - v)`. Rewrite using `[X.ppos_sub, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem jp_sub (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
     X.jp x τ (u - v) = X.jp x τ u - X.jp x τ v := by
   show (2 : ℂ) • X.ppos x τ (u - v) - (u - v) =
@@ -442,6 +624,11 @@ theorem jp_sub (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
   rw [X.ppos_sub, smul_sub]
   abel
 
+/- English proof (translation)
+Use `show (2 : ℂ) • X.ppos x τ ((2 : ℂ) • X.ppos x τ v - v) - ((2 : ℂ) • X.ppos x τ v - v) = v`. Rewrite using `[X.ppos_sub, X.ppos_smul_eq, X.ppos_ppos hx]`. Establish `h : (2 : ℂ) • X.ppos x τ v - X.ppos x τ v = X.ppos x τ v`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+-/
 theorem jp_jp {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (v : Fin r → ℂ) :
     X.jp x τ (X.jp x τ v) = v := by
   show (2 : ℂ) • X.ppos x τ ((2 : ℂ) • X.ppos x τ v - v) - ((2 : ℂ) • X.ppos x τ v - v) = v
@@ -452,6 +639,9 @@ theorem jp_jp {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (v : Fin r → �
   rw [h]
   abel
 
+/- English proof (translation)
+Use `show hermC τ.1 X.Gm ((2 : ℂ) • X.ppos x τ u - u) v = hermC τ.1 X.Gm u ((2 : ℂ) • X.ppos x τ v - v)`. Rewrite using `[hermC_sub_left, hermC_smul_left, hermC_sub_right, hermC_smul_right, X.hermC_ppos_left hx τ u v, X.hermC_ppos_right hx τ u v]`. Rewrite using `[map_ofNat]`.
+-/
 theorem hermC_jp_left {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
     hermC τ.1 X.Gm (X.jp x τ u) v = hermC τ.1 X.Gm u (X.jp x τ v) := by
   show hermC τ.1 X.Gm ((2 : ℂ) • X.ppos x τ u - u) v =
@@ -460,18 +650,29 @@ theorem hermC_jp_left {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : F
     X.hermC_ppos_left hx τ u v, X.hermC_ppos_right hx τ u v]
   rw [map_ofNat]
 
+/- English proof (translation)
+Rewrite using `[X.hermC_jp_left hx τ u (X.jp x τ v), X.jp_jp hx]`.
+-/
 theorem hermC_jp_jp {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u v : Fin r → ℂ) :
     hermC τ.1 X.Gm (X.jp x τ u) (X.jp x τ v) = hermC τ.1 X.Gm u v := by
   rw [X.hermC_jp_left hx τ u (X.jp x τ v), X.jp_jp hx]
 
 end Data
 
+/- English proof (translation)
+Unfold `hermC herm Data.emb`. Simplify using `only [map_sum, map_mul, emb_cc]`.
+-/
 theorem hermC_emb {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (τ : E →+* ℂ)
     (G : Matrix (Fin r) (Fin r) E) (u v : Fin r → E) :
     hermC τ G (Data.emb τ u) (Data.emb τ v) = τ (herm G u v) := by
   unfold hermC herm Data.emb
   simp only [map_sum, map_mul, emb_cc]
 
+/- English proof (translation)
+Introduce `h`. Apply `hu` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `h1` using `congrFun h a`. Simplify using `only [Data.emb, Pi.zero_apply] at h1`.
+
+Conclude with `(map_eq_zero τ).1 h1`.
+-/
 theorem emb_ne_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (τ : E →+* ℂ)
     {u : Fin r → E} (hu : u ≠ 0) : Data.emb τ u ≠ 0 := by
   intro h

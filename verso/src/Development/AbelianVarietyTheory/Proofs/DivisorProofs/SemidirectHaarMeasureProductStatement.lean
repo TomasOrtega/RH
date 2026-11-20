@@ -8,6 +8,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.ThK.LemF.QuotInv
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ModulusCoord.map_haar_eq_smul_of_coords | exact GlobalTheory.ModulusCoord.map_haar_eq_smul_of_coords | (intros; apply GlobalTheory.ModulusCoord.map_haar_eq_smul_of_coords <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.semidirect_haar_measure_product : ∀ (Q L A C : Type) [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q] [LocallyCompactSpace Q]
     [SecondCountableTopology Q] [T2Space Q] [MeasurableSpace Q] [BorelSpace Q]
     [Group L] [TopologicalSpace L] [IsTopologicalGroup L] [LocallyCompactSpace L]

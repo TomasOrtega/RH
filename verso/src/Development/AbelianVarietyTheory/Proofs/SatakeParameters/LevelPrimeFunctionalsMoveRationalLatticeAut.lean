@@ -11,6 +11,13 @@ namespace GlobalTheory.TwU
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D X s i hi T bad lev ST SG P v h ι x d g hh H w hw z hz`. Establish `hw' : g.symm w ∈ d.N` using `(Formalism.L2.Col.mem_gmap g d.N w).1 hw`. Establish `key : pullV (F` using `D.host.F) (ratA D.host.F (seamGL s g) * x) (fun a => s.iE (w a)) = pullV (F := D.host.F) x (fun a => s.iE (g.symm w a)) := by`. Unfold `pullV`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`.
+
+Use `congr 1`. Establish `e1 : (seamGL s g)⁻¹ = seamGL s g.symm` using `(map_inv (seamGL s) g).symm`. Rewrite using `[← map_inv, e1]`. Use `Formalism.MainNotions.G.KAat.bc_mulVec (F := D.host.F) (seamGL s g.symm) (fun a => s.iE (w a))` as an intermediate fact. Rewrite `this` using `[seamGL_mulVec]`.
+
+Conclude with `this`. Use `show d.f P (g.symm w) = _`. Conclude with `H (g.symm w) hw' z (by rw [hz, key])`.
+-/
 theorem funMoved_ratA_act : ∀ {D : D7} {X : Fields} (s : Seam D X) {i : ℕ} {hi : i ≤ D.R.m} {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} (lev : Formalism.L2.Forms.StepLevel D.host.F D.host.E (Formalism.L2.Forms.sigD D) (Formalism.L2.Forms.gramN D i hi) T D.R.f bad) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (P : ST) (v : HeightOneSpectrum (𝓞 D.host.F)) (h : (T : 𝓞 D.host.F) ∈ v.asIdeal) (ι : lev.fM v h →+ 𝓞 X.E ⧸ P.1.asIdeal) (x : GL (Fin (D.R.N i)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (d : Deco X.E (D.R.N i) ST SG) (g : Sp X.E (D.R.N i) ≃ₗ[X.E] Sp X.E (D.R.N i)) (hh : GLG X.E (D.R.N i) SG), FunMoved s lev P v h ι x d → FunMoved s lev P v h ι (ratA D.host.F (seamGL s g) * x) (d.act g hh) := by
   intro D X s i hi T bad lev ST SG P v h ι x d g hh H w hw z hz
   have hw' : g.symm w ∈ d.N := (Formalism.L2.Col.mem_gmap g d.N w).1 hw

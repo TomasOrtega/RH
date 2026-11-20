@@ -17,6 +17,9 @@ variable {D : D7}
 def Good (V : HSp D) (J : Set (GA D V)) (χ : GA D V → ℂ) (f : GA D V → ℂ) : Prop :=
   Continuous f ∧ (∃ C : ℝ, ∀ g, ‖f g‖ ≤ C) ∧ (∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) ∧ ∀ k ∈ J, ∀ g, f (g * k) = χ k * f g
 
+/- English proof (translation)
+Take `⟨c, ⟨C, hC⟩, l, r⟩` from `h`. Take `⟨c', ⟨C', hC'⟩, l', r'⟩` from `h'`. Use `⟨c.add c', ⟨C + C', fun g => (norm_add_le _ _).trans (add_le_add (hC g) (hC' g))⟩, fun γ hγ g => by simp [l γ hγ g, l' γ hγ g], fun k hk g => by simp [r k hk g, r' k hk g, mul_add]⟩` and prove the remaining obligations.
+-/
 theorem Good.add {V : HSp D} {J : Set (GA D V)} {χ : GA D V → ℂ} {f f' : GA D V → ℂ}
     (h : Good V J χ f) (h' : Good V J χ f') : Good V J χ (f + f') := by
   obtain ⟨c, ⟨C, hC⟩, l, r⟩ := h
@@ -24,6 +27,9 @@ theorem Good.add {V : HSp D} {J : Set (GA D V)} {χ : GA D V → ℂ} {f f' : GA
   refine ⟨c.add c', ⟨C + C', fun g => (norm_add_le _ _).trans (add_le_add (hC g) (hC' g))⟩,
     fun γ hγ g => by simp [l γ hγ g, l' γ hγ g], fun k hk g => by simp [r k hk g, r' k hk g, mul_add]⟩
 
+/- English proof (translation)
+Take `⟨c, ⟨C, hC⟩, l, r⟩` from `h`. Use `⟨continuous_const.mul c, ⟨‖a‖ * C, fun g => ?_⟩, fun γ hγ g => by simp [l γ hγ g], fun k hk g => by simp [r k hk g, mul_left_comm]⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hC g) (norm_nonneg a)`.
+-/
 theorem Good.smul {V : HSp D} {J : Set (GA D V)} {χ : GA D V → ℂ} {f : GA D V → ℂ} (a : ℂ)
     (h : Good V J χ f) : Good V J χ (a • f) := by
   obtain ⟨c, ⟨C, hC⟩, l, r⟩ := h
@@ -32,6 +38,13 @@ theorem Good.smul {V : HSp D} {J : Set (GA D V)} {χ : GA D V → ℂ} {f : GA D
   rw [Pi.smul_apply, smul_eq_mul, norm_mul]
   exact mul_le_mul_of_nonneg_left (hC g) (norm_nonneg a)
 
+/- English proof (translation)
+Establish `hT` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 ((mem_multT θ M J χ u).1 hu)`. Establish `hu' : u = PiTensorProduct.lift (PiTensorProduct.lift.symm u)` using `(LinearEquiv.apply_symm_apply _ _).symm`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod a x`. Rewrite using `[map_smul]`.
+
+Use `Good.smul a ?_` and prove the remaining obligations. Rewrite using `[hu', PiTensorProduct.lift.tprod]`. Conclude with `⟨(hT.aut x).cont, GlobalTheory.CuspDecay.bounded_of_cuspForm hP hθ (hT.aut x) (hT.cusp x), (hT.aut x).left, hT.lev x⟩`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`.
+
+Conclude with `hx.add hy`.
+-/
 theorem good_val (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D}
     {S : D.what₂.Tau → SPar} {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ}
     (u : (⨂[ℂ] τ, M.sm τ) →ₗ[ℂ] (GA D V → ℂ)) (hu : u ∈ MultT θ M J χ) (v : ⨂[ℂ] τ, M.sm τ) :
@@ -49,11 +62,17 @@ theorem good_val (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfFam D} (h
     rw [map_add]
     exact hx.add hy
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using congrArg conj h`. Introduce `h`. Simplify using `[h]`.
+-/
 theorem conj_eq_one_iff' (z : ℂ) : conj z = 1 ↔ z = 1 := by
   constructor
   · intro h; simpa using congrArg conj h
   · intro h; simp [h]
 
+/- English proof (translation)
+Introduce `hP D c hc j _ s _`. Use `⟨fun u v => good_val hP hc.inf (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) u.2 v, fun P d R => ?_, fun R f => ?_⟩` and prove the remaining obligations. Simplify using `only [Hecke₂, conj_eq_one_iff']`. Use function extensionality and compare the values at `g`. Simplify using `[heckeLin, map_sum]`.
+-/
 theorem conj_values_hecke : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, ForStage D fun c _ s =>
     (∀ (u : s.CC c) v, Continuous (PiLocalization₂.val u v) ∧ (∃ C : ℝ, ∀ g, ‖PiLocalization₂.val u v g‖ ≤ C) ∧
       (∀ γ ∈ GQ s.V, ∀ g, PiLocalization₂.val u v (γ * g) = PiLocalization₂.val u v g) ∧

@@ -11,6 +11,17 @@ namespace GlobalTheory.LevelApprox
 
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.ColAd
 
+/- English proof (translation)
+Assume the negation of the conclusion as `ht`. Distinguish the cases in `hγ0 : γ = 0`. Use `h 1` as an intermediate fact. Rewrite `this` using `[hγ0, pow_one]`. Conclude with `ht (le_antisymm this zero_le')`.
+
+Establish `hg : γ.log < 0`. Rewrite using `[← WithZero.exp_lt_exp, WithZero.exp_log hγ0]`. Simplify using `using hγ`. Use `set N : ℕ := (-t.log).toNat + 1 with hN`. Establish `hm : t.log ≤ (N : ℤ) * γ.log`.
+
+Establish `h3 : WithZero.exp t.log ≤ WithZero.exp (N • γ.log)`. Rewrite using `[WithZero.exp_nsmul, WithZero.exp_log ht, WithZero.exp_log hγ0]`. Conclude with `h N`. Rewrite `h3` using `[WithZero.exp_le_exp, nsmul_eq_mul]`. Conclude with `h3`.
+
+Establish `h1 : (N : ℤ) * γ.log ≤ -(N : ℤ)`. Establish `: (0 : ℤ) ≤ (N : ℤ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2` using `Int.self_le_toNat (-t.log)`. Establish `h4 : (N : ℤ) = ((-t.log).toNat : ℤ) + 1` using `by rw [hN]; push_cast; ring`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_zero_of_le_pow {γ t : WithZero (Multiplicative ℤ)} (hγ : γ < 1) (h : ∀ m : ℕ, t ≤ γ ^ m) : t = 0 := by
   by_contra ht
   by_cases hγ0 : γ = 0
@@ -39,6 +50,39 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def SmallAt (Q : Finset (HeightOneSpectrum (𝓞 E))) (d : ℕ) : Set (E ⊗[F] FiniteAdeleRing (𝓞 F) F) :=
   {a | (∀ w ∉ Q, adAt F w a = 0) ∧ ∀ w ∈ Q, Valued.v (adAt F w a) ≤ WithZero.exp (-(d : ℤ))}
 
+/- English proof (translation)
+Use `letI := Formalism.BasicNotions.tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Use `haveI := Formalism.L2.Col.rlt_topRing (F := F) (E := E)`. Use `haveI := Formalism.L2.Col.adeles_t2Space (F := F) (E := E)`. Take `⟨β, hβ0, hβ⟩ : ∃ β : 𝓞 E, β ≠ 0 ∧ ∀ P ∈ Q, β ∈ P.asIdeal` from `by choose f hf hf0 using fun P : HeightOneSpectrum (𝓞 E) => Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`. Conclude with `⟨∏ P ∈ Q, f P, Finset.prod_ne_zero_iff.2 fun P _ => hf0 P, fun P hP => Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem f hP) (hf P)⟩`.
+
+Use `set b : E := algebraMap (𝓞 E) E β with hb`. Establish `hb0 : b ≠ 0` using `by simpa [hb] using hβ0`. Set `ι : E →+* E ⊗[F] FiniteAdeleRing (𝓞 F) F` to `Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F)`. Use `set e : E ⊗[F] FiniteAdeleRing (𝓞 F) F := ∑ P ∈ Q, PtExist.idem F P with he_def`. Establish `he : ∀ w, adAt F w e = if w ∈ Q then 1 else 0`.
+
+Introduce `w`. Rewrite using `[he_def, map_sum]`. Simplify using `only [PtExist.adAt_idem]`. Conclude with `Finset.sum_ite_eq Q w (fun _ => (1 : w.adicCompletion E))`. Establish `hint : ∀ y ∈ Formalism.L2.Herm.intAf F E, ∀ w, Valued.v (adAt F w y) ≤ 1` using `fun y hy w => (mem_rInt_iff F E y).1 hy w`.
+
+Establish `hbw : ∀ w ∈ Q, Valued.v (adAt F w (ι b)) < 1` using `fun w hw => by`. Rewrite using `[adAt_inclE, valued_algebraMap]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem _ _).2 (hβ w hw)`. Establish `hbne : ∀ w, adAt F w (ι b) ≠ 0` using `fun w => by`. Rewrite using `[adAt_inclE]`.
+
+Conclude with `(map_ne_zero _).2 hb0`. Set `c : ℕ → E ⊗[F] FiniteAdeleRing (𝓞 F) F` to `fun m => e * ι b ^ m`. Set `K : ℕ → Set (E ⊗[F] FiniteAdeleRing (𝓞 F) F)` to `fun m => (c m * ·) '' (Formalism.L2.Herm.intAf F E : Set _)`. Establish `hKc : ∀ m, IsCompact (K m)` using `fun m => Formalism.L2.Col.rlt_isCompact_intAf.image (continuous_mul_left (c m))`. Establish `hKa : Antitone K`.
+
+Use `antitone_nat_of_succ_le fun m => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨ι b * y, mul_mem (Formalism.L2.Col.iA_mem β) hy, ?_⟩` and prove the remaining obligations. Simplify using `only [c, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hK0 : ∀ x ∈ ⋂ m, K m, V ∈ 𝓝 x`. Introduce `x hx`. Establish `: x = 0`. Use `PtExist.ad_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_zero]`.
+
+Distinguish the cases in `hw : w ∈ Q`. Establish `h0 : Valued.v (adAt F w x) = 0` using `eq_zero_of_le_pow (hbw w hw) fun m => by`. Take `⟨y, hy, hxy⟩` from `Set.mem_iInter.1 hx m`. Rewrite using `[← hxy]`. Simplify using `only [c, map_mul, map_pow, he, if_pos hw, one_mul]`.
+
+Conclude with `mul_le_of_le_one_right' (hint y hy w)`. Conclude with `(Valuation.zero_iff _).1 h0`. Take `⟨y, hy, rfl⟩` from `Set.mem_iInter.1 hx 0`. Simplify using `only [c, map_mul, he, if_neg hw, zero_mul]`. Rewrite using `[this]`.
+
+Conclude with `hV`. Take `⟨m, hm⟩` from `exists_subset_nhds_of_isCompact hKa.directed_ge hKc hK0`. Set `D : ℕ` to `∑ w ∈ Q, (-(Valued.v (adAt F w (ι b))).log).toNat`. Establish `hD : ∀ w ∈ Q, WithZero.exp (-(D : ℤ)) ≤ Valued.v (adAt F w (ι b))` using `fun w hw => by`. Establish `h0 : Valued.v (adAt F w (ι b)) ≠ 0` using `(Valuation.ne_zero_iff _).2 (hbne w)`.
+
+Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`. Establish `h1 : (-(Valued.v (adAt F w (ι b))).log).toNat ≤ D` using `Finset.single_le_sum (f := fun w => (-(Valued.v (adAt F w (ι b))).log).toNat) (fun _ _ => Nat.zero_le _) hw`. Establish `h2` using `Int.self_le_toNat (-(Valued.v (adAt F w (ι b))).log)`. Use linear arithmetic over natural numbers and integers. Use `⟨m * D, fun a ha => hm ?_⟩` and prove the remaining obligations.
+
+Establish `hinv : ∀ w, adAt F w (ι b⁻¹) = (adAt F w (ι b))⁻¹` using `fun w => by`. Rewrite using `[adAt_inclE, adAt_inclE, map_inv₀]`. Use `⟨e * ι b⁻¹ ^ m * a, (mem_rInt_iff F E _).2 fun w => ?_, ?_⟩` and prove the remaining obligations. Use `show Valued.v (adAt F w _) ≤ 1`. Distinguish the cases in `hw : w ∈ Q`.
+
+Simplify using `only [map_mul, map_pow, he, hinv, if_pos hw, one_mul, map_inv₀, inv_pow, map_one]`. Establish `hv : 0 < Valued.v (adAt F w (ι b)) ^ m` using `pow_pos (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (hbne w))) m`. Rewrite using `[inv_mul_le_one₀ hv]`. Use `(ha.2 w hw).trans ?_` and prove the remaining obligations. Establish `: WithZero.exp (-((m * D : ℕ) : ℤ)) = WithZero.exp (-(D : ℤ)) ^ m`.
+
+Rewrite using `[← WithZero.exp_nsmul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `pow_le_pow_left₀ zero_le' (hD w hw) m`. Rewrite using `[map_mul, ha.1 w hw, mul_zero, map_zero]`. Conclude with `zero_le'`. Use `PtExist.ad_ext fun w => ?_` and prove the remaining obligations. Simplify using `only [c, map_mul, map_pow, he, hinv]`.
+
+Distinguish the cases in `hw : w ∈ Q`. Rewrite using `[if_pos hw, one_mul, one_mul, ← mul_assoc, ← mul_pow, mul_inv_cancel₀ (hbne w), one_pow, one_mul]`. Rewrite using `[ha.1 w hw, mul_zero, mul_zero]`.
+-/
 theorem exists_smallAt_subset (Q : Finset (HeightOneSpectrum (𝓞 E))) {V : Set (E ⊗[F] FiniteAdeleRing (𝓞 F) F)}
     (hV : letI := Formalism.BasicNotions.tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
       V ∈ 𝓝 (0 : E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
@@ -137,6 +181,9 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.ColAd
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[map_sub, Matrix.sub_apply]`. Use `congr 1`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem adAt_entry_sub_one {n : ℕ} (w : HeightOneSpectrum (𝓞 E)) (z : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (i j : Fin n) :
     adAt F w ((z : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) i j -
       (1 : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) i j) = (locM w z - 1) i j := by
@@ -145,6 +192,9 @@ theorem adAt_entry_sub_one {n : ℕ} (w : HeightOneSpectrum (𝓞 E)) (z : GL (F
   rw [Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `⟨fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[adAt_entry_sub_one, h1 w hw, sub_self, Matrix.zero_apply]`. Rewrite using `[adAt_entry_sub_one]`. Conclude with `h2 w hw i j`.
+-/
 theorem entry_mem_smallAt {n : ℕ} {Q : Finset (HeightOneSpectrum (𝓞 E))} {d : ℕ}
     {z : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (h1 : ∀ w ∉ Q, locM w z = 1)
     (h2 : ∀ w ∈ Q, Sm Valued.v (WithZero.exp (-(d : ℤ))) (locM w z - 1)) (i j : Fin n) :
@@ -155,6 +205,19 @@ theorem entry_mem_smallAt {n : ℕ} {Q : Finset (HeightOneSpectrum (𝓞 E))} {d
   · rw [adAt_entry_sub_one]
     exact h2 w hw i j
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J T f bad S Q`. Use `letI := Formalism.BasicNotions.tensTopL (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Use `haveI := Formalism.L2.Col.rlt_topRing (F := F) (E := E)`. Set `A : ℕ → Set (GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))` to `fun d => {z | (∀ w ∉ Q, locM w z = 1) ∧ ∀ w ∈ Q, Sm Valued.v (WithZero.exp (-(d : ℤ))) (locM w z - 1) ∧ Sm Valued.v (WithZero.exp (-(d : ℤ))) (locM w z⁻¹ - 1)}`. Establish `hexp : Antitone fun d : ℕ => WithZero.exp (-(d : ℤ))` using `fun a b h => WithZero.exp_le_exp.2 (by simpa using h)`.
+
+Establish `hA : Antitone A` using `fun a b h z hz => ⟨hz.1, fun w hw => ⟨(hz.2 w hw).1.mono (hexp h), (hz.2 w hw).2.mono (hexp h)⟩⟩`. Establish `hinv1 : ∀ z ∈ A 0, ∀ w ∉ Q, locM w z⁻¹ = 1` using `fun z hz w hw => by`. Use `locM_mul (P := w) z z⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, locM_one, hz.1 w hw, one_mul]`. Conclude with `this.symm`.
+
+Set `G : Filter (GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))` to `⨅ d, Filter.principal (A d)`. Establish `hsmall : ∀ g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) → E ⊗[F] FiniteAdeleRing (𝓞 F) F, (∀ d, ∀ z ∈ A d, g z ∈ SmallAt (F` using `F) Q d) → Filter.Tendsto g G (𝓝 0) := fun g hg V hV => by`. Take `⟨d, hd⟩` from `exists_smallAt_subset (F := F) Q hV`. Conclude with `Filter.mem_iInf_of_mem d (Filter.mem_principal.2 fun z hz => hd (hg d z hz))`. Apply the tactic sequence `have hentry : ∀ (M : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) → Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), (∀ i j, Filter.Tendsto (fun z => M z i j - (1 : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) i j) G (𝓝 0)) → Filter.Tendsto M G (𝓝 1) := fun M …`.
+
+Use `(hM i j).add_const ((1 : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) i j)` as an intermediate fact. Simplify using `using this`. Establish `hT : Filter.Tendsto id G (𝓝 (1 : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)))`. Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Use `Filter.Tendsto.prodMk_nhds ?_ ((MulOpposite.continuous_op.tendsto _).comp ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `refine hentry _ fun i j => hsmall _ fun d z hz => entry_mem_smallAt hz.1 (fun w hw => (hz.2 w hw).1) i j`. Apply the tactic sequence `refine hentry (fun z => ((z⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _)) fun i j => hsmall _ fun d z hz => ?_`. Conclude with `entry_mem_smallAt (fun w hw => hinv1 z (hA (Nat.zero_le d) hz) w hw) (fun w hw => (hz.2 w hw).2) i j`. Establish `h1 : {x : Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F) | (x : GL _ _) ∈ S.U} ∈ 𝓝 (1 : Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F))` using `S.U_open.mem_nhds S.U.one_mem`. Take `⟨t, ht, hts⟩` from `(mem_nhds_subtype _ _ _).1 h1`.
+
+Establish `hdir : Directed (· ≥ ·) fun d => Filter.principal (A d)` using `Antitone.directed_ge (f := fun d => Filter.principal (A d)) fun a b h => Filter.principal_mono.2 (hA h)`. Take `⟨d, hd⟩` from `(Filter.mem_iInf_of_directed hdir _).1 (hT ht)`. Conclude with `⟨d, fun z hz h1 h2 => hts (show (⟨z, hz⟩ : Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F)) ∈ Subtype.val ⁻¹' t from hd ⟨h1, h2⟩)⟩`.
+-/
 theorem mem_U_of_near_one : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))} (S : Formalism.L2.Forms.StepLevel F E σ J T f bad)
     (Q : Finset (HeightOneSpectrum (𝓞 E))), ∃ d : ℕ, ∀ z : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F),

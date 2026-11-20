@@ -8,30 +8,53 @@ namespace UpperTheory.V.Cu.YCoincidenceMatrices
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Use `revert k`. Evaluate the decidable proposition.
+-/
 private theorem sgn_mul_self (k : Fin 4) : sgn k * sgn k = 1 := by revert k; decide
 
+/- English proof (translation)
+Use `revert i j`. Evaluate the decidable proposition.
+-/
 private theorem sgn_rev (i j : Fin 4) : sgn j.rev * sgn i.rev = sgn i * sgn j := by revert i j; decide
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [adj_apply, sgn, Fin.rev, Matrix.mul_apply, Fin.sum_univ_four] <;> ring`.
+-/
 private theorem adj_mul (X Y : M4 K) : adj (X * Y) = adj Y * adj X := by
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [adj_apply, sgn, Fin.rev, Matrix.mul_apply, Fin.sum_univ_four] <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[adj_apply, adj_apply, sgn_rev, smul_smul, Fin.rev_rev, Fin.rev_rev, mul_mul_mul_comm, sgn_mul_self, sgn_mul_self, one_mul, one_smul]`.
+-/
 private theorem adj_adj (X : M4 K) : adj (adj X) = X := by
   ext i j
   rw [adj_apply, adj_apply, sgn_rev, smul_smul, Fin.rev_rev, Fin.rev_rev, mul_mul_mul_comm, sgn_mul_self, sgn_mul_self,
     one_mul, one_smul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]`.
+-/
 private theorem adj_eq (X : M4 K) : adj X = !![X 3 3, X 2 3, -X 1 3, -X 0 3; X 3 2, X 2 2, -X 1 2, -X 0 2;
     -X 3 1, -X 2 1, X 1 1, X 0 1; -X 3 0, -X 2 0, X 1 0, X 0 0] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev]
 
+/- English proof (translation)
+Rewrite using `[adj_eq]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> rfl`.
+-/
 private theorem adj_rows (X : M4 K) : adj X 0 0 = X 3 3 ∧ adj X 0 1 = X 2 3 ∧ adj X 0 2 = -X 1 3 ∧ adj X 0 3 = -X 0 3 ∧
     adj X 1 0 = X 3 2 ∧ adj X 1 1 = X 2 2 ∧ adj X 1 2 = -X 1 2 ∧ adj X 1 3 = -X 0 2 := by
   rw [adj_eq]
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> rfl
 
+/- English proof (translation)
+Establish `x10` using `hX 1 0 (by decide); have x20 := hX 2 0 (by decide); have x21 := hX 2 1 (by decide)`. Establish `x30` using `hX 3 0 (by decide); have x31 := hX 3 1 (by decide); have x32 := hX 3 2 (by decide)`. Establish `y10` using `hY 1 0 (by decide); have y20 := hY 2 0 (by decide); have y21 := hY 2 1 (by decide)`. Establish `y30` using `hY 3 0 (by decide); have y31 := hY 3 1 (by decide); have y32 := hY 3 2 (by decide)`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_four]`.
+
+Apply the tactic sequence `fin_cases i <;> simp [x10, x20, x21, x30, x31, x32, y10, y20, y21, y30, y31, y32]`.
+-/
 private theorem up_mul_diag (X Y : M4 K) (hX : IsUp X) (hY : IsUp Y) (i : Fin 4) : (X * Y) i i = X i i * Y i i := by
   have x10 := hX 1 0 (by decide); have x20 := hX 2 0 (by decide); have x21 := hX 2 1 (by decide)
   have x30 := hX 3 0 (by decide); have x31 := hX 3 1 (by decide); have x32 := hX 3 2 (by decide)
@@ -40,20 +63,50 @@ private theorem up_mul_diag (X Y : M4 K) (hX : IsUp X) (hY : IsUp Y) (i : Fin 4)
   rw [Matrix.mul_apply, Fin.sum_univ_four]
   fin_cases i <;> simp [x10, x20, x21, x30, x31, x32, y10, y20, y21, y30, y31, y32]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem conj_mul (n A B : M4 K) (hnl : n * adj n = 1) : adj n * (A * B) * n = (adj n * A * n) * (adj n * B * n) := by
   calc adj n * (A * B) * n = adj n * A * (n * adj n) * B * n := by rw [hnl, Matrix.mul_one]; simp only [Matrix.mul_assoc]
     _ = _ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `h : adj n * n = 1` using `by have := hn.1; unfold IsGSp at this; rwa [one_smul] at this`. Apply the tactic sequence `exact ⟨h, by first | exact mul_eq_one_comm.mp h | exact (Matrix.mul_eq_one_comm_of_card_eq rfl).mp h | exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp h⟩`.
+-/
 private theorem low_inv (n : M4 K) (hn : IsLow n) : adj n * n = 1 ∧ n * adj n = 1 := by
   have h : adj n * n = 1 := by have := hn.1; unfold IsGSp at this; rwa [one_smul] at this
   exact ⟨h, by first | exact mul_eq_one_comm.mp h | exact (Matrix.mul_eq_one_comm_of_card_eq rfl).mp h | exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp h⟩
 
+/- English proof (translation)
+Use `show (adj (P.n v) * P.r (s * t) * P.n v) i i = (adj (P.n v) * P.r s * P.n v) i i * (adj (P.n v) * P.r t * P.n v) i i`. Rewrite using `[map_mul, conj_mul _ _ _ (low_inv _ hn).2, up_mul_diag _ _ hs ht]`.
+-/
 theorem psi_mul {ι Γ : Type} [Group Γ] (P : PD ι Γ K) (v : ι) (hn : IsLow (P.n v)) (s t : Γ)
     (hs : IsUp (adj (P.n v) * P.r s * P.n v)) (ht : IsUp (adj (P.n v) * P.r t * P.n v)) (i : Fin 4) :
     P.ψ v i (s * t) = P.ψ v i s * P.ψ v i t := by
   show (adj (P.n v) * P.r (s * t) * P.n v) i i = (adj (P.n v) * P.r s * P.n v) i i * (adj (P.n v) * P.r t * P.n v) i i
   rw [map_mul, conj_mul _ _ _ (low_inv _ hn).2, up_mul_diag _ _ hs ht]
 
+/- English proof (translation)
+Generalize the expression as in `hu : adj n * R * n = u at hup ⊢`. Take `⟨hln, hnl⟩` from `low_inv n hn`. Establish `hRn : R * n = n * u`. Rewrite using `[← hu, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hnl, Matrix.one_mul]`. Establish `hR' : adj R * R = ν • 1` using `hR`.
+
+Establish `huG : adj u * u = ν • 1`. Rewrite using `[← hu, adj_mul, adj_mul, adj_adj]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ν • 1 := by rw [hnl, Matrix.mul_one, hR', Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hln]`.
+
+Establish `htr : Matrix.trace u = Matrix.trace R`. Rewrite using `[← hu, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hnl, Matrix.one_mul]`. Establish `z : ∀ i j : Fin 4, i ≠ j → wt i j ∉ yY → R i j = 0` using `hS`. Establish `r01` using `z 0 1 (by decide) (by decide)`. Establish `r02` using `z 0 2 (by decide) (by decide)`.
+
+Establish `r10` using `z 1 0 (by decide) (by decide)`. Establish `r13` using `z 1 3 (by decide) (by decide)`. Establish `r20` using `z 2 0 (by decide) (by decide)`. Establish `r23` using `z 2 3 (by decide) (by decide)`. Establish `r31` using `z 3 1 (by decide) (by decide)`.
+
+Establish `r32` using `z 3 2 (by decide) (by decide)`. Establish `n00` using `hn.2.1 0`. Establish `n01` using `hn.2.2 0 1 (by decide); have n02 := hn.2.2 0 2 (by decide); have n03 := hn.2.2 0 3 (by decide)`. Establish `u10` using `hup 1 0 (by decide); have u20 := hup 2 0 (by decide); have u21 := hup 2 1 (by decide)`. Establish `u30` using `hup 3 0 (by decide); have u31 := hup 3 1 (by decide); have u32 := hup 3 2 (by decide)`.
+
+Take `⟨aR00, aR01, aR02, aR03, aR10, aR11, aR12, aR13⟩` from `adj_rows R`. Take `⟨au00, au01, au02, au03, au10, au11, au12, au13⟩` from `adj_rows u`. Establish `c0` using `congrFun (congrFun hRn 0) 0`. Establish `c1` using `congrFun (congrFun hRn 1) 0`. Establish `c2` using `congrFun (congrFun hRn 2) 0`.
+
+Establish `c3` using `congrFun (congrFun hRn 3) 0`. Establish `dA` using `congrFun (congrFun hR' 0) 0`. Establish `dB` using `congrFun (congrFun hR' 1) 1`. Establish `p0` using `congrFun (congrFun huG 0) 0`. Establish `p1` using `congrFun (congrFun huG 1) 1`.
+
+Simplify using `only [Matrix.mul_apply, Fin.sum_univ_four, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, aR00, aR01, aR02, aR03, aR10, aR11, aR12, aR13, au00, au01, au02, au03, au10, au11, au12, au13, r01, r02, r10, r13, r20, r23, r31, r32, n00, n01, n02, n03, u10, u20, u21, u30, u31, u32 …`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Fin.sum_univ_four] at htr`. Establish `hl : u 0 0 ≠ 0`. Introduce `h`. Apply `hν` to reduce the goal to its premises.
+
+Take the linear combination `-p0 + u 3 3 * h`. Establish `hA : u 0 0 * (u 0 0 + u 3 3 - (R 0 0 + R 3 3)) = 0`. Take the linear combination `(R 3 3 - u 0 0) * c0 - R 0 3 * c3 + p0 - dA`. Establish `hB : n 1 0 * (u 0 0 * (u 0 0 + u 3 3 - (R 1 1 + R 2 2))) = 0`. Take the linear combination `(R 2 2 - u 0 0) * c1 - R 1 2 * c2 + n 1 0 * p0 - n 1 0 * dB`.
+
+Establish `hA'` using `(mul_eq_zero.mp hA).resolve_left hl`. Establish `hB'` using `((mul_eq_zero.mp ((mul_eq_zero.mp hB).resolve_left h10))).resolve_left hl`. Use `⟨by linear_combination p0, by linear_combination p1, ?_⟩` and prove the remaining obligations. Take the linear combination `u 1 1 * (htr - hA' - hB') + p0 - p1`.
+-/
 theorem key (R n : M4 K) (ν : K) (hν : ν ≠ 0) (hR : IsGSp ν R) (hS : SuppM yY R) (hn : IsLow n)
     (hup : IsUp (adj n * R * n)) (h10 : n 1 0 ≠ 0) :
     (adj n * R * n) 0 0 * (adj n * R * n) 3 3 = ν ∧ (adj n * R * n) 1 1 * (adj n * R * n) 2 2 = ν ∧
@@ -114,6 +167,21 @@ theorem key (R n : M4 K) (ν : K) (hν : ν ≠ 0) (hR : IsGSp ν R) (hS : SuppM
 end UpperTheory.V.Cu.YCoincidenceMatrices
 
 open UpperTheory.V.Cu.YCoincidenceMatrices in
+/- English proof (translation)
+Introduce `O Γ _ _ Φ K _ a P hP hS v hv`. Establish `hν : ∀ s, a (Φ.ν s : O) ≠ 0` using `fun s => ((Φ.ν s).isUnit.map a).ne_zero`. Establish `hpt : ∀ s ∈ Φ.Gv v, P.ψ v 0 s * P.ψ v 3 s = a (Φ.ν s) ∧ P.ψ v 1 s * P.ψ v 2 s = a (Φ.ν s) ∧ (P.ψ v 1 s - P.ψ v 0 s) * (P.ψ v 1 s - P.ψ v 3 s) = 0` using `fun s hs => key (P.r s) (P.n v) _ (hν s) (hP.mult s) (hS s) (hP.low v) (hP.flag v s hs) hv`. Establish `hm : ∀ s ∈ Φ.Gv v, ∀ t ∈ Φ.Gv v, ∀ i, P.ψ v i (s * t) = P.ψ v i s * P.ψ v i t` using `fun s hs t ht i => psi_mul P v (hP.low v) s t (hP.flag v s hs) (hP.flag v t ht) i`. Assume the negation of the conclusion as `hc`.
+
+Rewrite `hc` using `[not_or]`. Take `⟨h1, h2⟩` from `hc`. Use `push_neg at h1 h2`. Take `⟨x, hx, hx'⟩` from `h1`. Take `⟨y, hy, hy'⟩` from `h2`.
+
+Take `⟨-, -, ex⟩` from `hpt x hx`. Take `⟨-, ey2, ey⟩` from `hpt y hy`. Take `⟨ex0, -, -⟩` from `hpt x hx`. Establish `hx3 : P.ψ v 1 x = P.ψ v 3 x`. Break down `mul_eq_zero.mp ex with h | h` into its components or cases.
+
+Conclude with `absurd (sub_eq_zero.mp h).symm hx'`. Conclude with `sub_eq_zero.mp h`. Establish `hy0 : P.ψ v 1 y = P.ψ v 0 y`. Break down `mul_eq_zero.mp ey with h | h` into its components or cases. Conclude with `sub_eq_zero.mp h`.
+
+Conclude with `absurd (sub_eq_zero.mp h) hy'`. Establish `hy1 : P.ψ v 1 y ≠ 0` using `fun h => hν y (by rw [← ey2, h, zero_mul])`. Establish `hx1 : P.ψ v 1 x ≠ 0` using `fun h => hν x (by rw [← ex0, ← hx3, h, mul_zero])`. Take `⟨-, -, exy⟩` from `hpt (x * y) (Subgroup.mul_mem _ hx hy)`. Rewrite `exy` using `[hm x hx y hy 0, hm x hx y hy 1, hm x hx y hy 3]`.
+
+Break down `mul_eq_zero.mp exy with h | h` into its components or cases. Apply `hx'` to reduce the goal to its premises. Establish `: (P.ψ v 0 x - P.ψ v 1 x) * P.ψ v 1 y = 0` using `by linear_combination P.ψ v 0 x * hy0 - h`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hy1)`. Apply `hy'` to reduce the goal to its premises.
+
+Establish `: (P.ψ v 1 y - P.ψ v 3 y) * P.ψ v 1 x = 0` using `by linear_combination h - P.ψ v 3 y * hx3`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_right hx1)`.
+-/
 theorem UpperTheory.V.Cu.yCoin : YCoin := by
   intro O Γ _ _ Φ K _ a P hP hS v hv
   have hν : ∀ s, a (Φ.ν s : O) ≠ 0 := fun s => ((Φ.ν s).isUnit.map a).ne_zero

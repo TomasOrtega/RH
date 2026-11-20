@@ -12,6 +12,31 @@ open Module
 
 namespace GlobalTheory.PolExistsRing
 
+/- English proof (translation)
+Set `Φ : W' →ₗ[R] Dual R W` to `W.subtype.dualMap ∘ₗ ψ ∘ₗ W'.subtype`. Set `e` to `Submodule.prodEquivOfIsCompl W W' hc`. Establish `hdec : ∀ v : V, (((e.symm v).1 : W) : V) + ((e.symm v).2 : V) = v` using `fun v ↦ by`. Rewrite using `[← Submodule.coe_prodEquivOfIsCompl' W W' hc, LinearEquiv.apply_symm_apply]`. Establish `hΦ' : ∀ v : V, ∀ g : W, Φ (e.symm v).2 g = ψ v g`.
+
+Introduce `v g`. Establish `h` using `congrArg (fun u ↦ ψ u g) (hdec v)`. Simplify using `only [map_add, LinearMap.add_apply] at h`. Rewrite `h` using `[hiso _ (Submodule.coe_mem _) g g.2, zero_add]`. Simplify `h` using `[Φ]`.
+
+Establish `hΦ : Function.Surjective Φ`. Introduce `l`. Take `⟨v, hv⟩` from `hψ.bijective_left.2 (l ∘ₗ W.projectionOnto W' hc)`. Use `⟨(e.symm v).2, LinearMap.ext fun g ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ' v g, hv]`.
+
+Simplify using the standard rewrite rules. Take `⟨s, hs⟩` from `Module.projective_lifting_property Φ LinearMap.id hΦ`. Establish `hsinj : Function.Injective s` using `fun x y h ↦ by`. Use `congrArg Φ h` as an intermediate fact. Rewrite `this` using `[← LinearMap.comp_apply, hs, ← LinearMap.comp_apply, hs]`. Then use the resulting hypothesis.
+
+Establish `hc2 : IsCompl (LinearMap.range s) (LinearMap.ker Φ)`. Establish `h` using `LinearMap.isCompl_of_proj (f := s.rangeRestrict ∘ₗ Φ) (fun x ↦ by`. Take `⟨_, y, rfl⟩` from `x`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [LinearMap.comp_apply, LinearMap.codRestrict_apply]`.
+
+Rewrite using `[← LinearMap.comp_apply Φ s, hs, LinearMap.id_apply])`. Establish `hk : LinearMap.ker s.rangeRestrict = ⊥`. Rewrite using `[LinearMap.ker_rangeRestrict]`. Conclude with `LinearMap.ker_eq_bot.2 hsinj`. Rewrite `h` using `[LinearMap.ker_comp_of_ker_eq_bot _ hk]`. Then use the resulting hypothesis.
+
+Set `ep` to `Submodule.prodEquivOfIsCompl _ _ hc2`. Set `es : Dual R W ≃ₗ[R] LinearMap.range s` to `LinearEquiv.ofInjective s hsinj`. Use `haveI : Module.Finite R (LinearMap.range s) := Module.Finite.equiv es`. Use `haveI : Module.Projective R (LinearMap.range s) := Module.Projective.of_equiv es`. Set `pr : W' →ₗ[R] LinearMap.ker Φ` to `LinearMap.snd R _ _ ∘ₗ ep.symm.toLinearMap`.
+
+Establish `hpr : pr ∘ₗ (LinearMap.ker Φ).subtype = LinearMap.id` using `LinearMap.ext fun x ↦ by`. Simplify using `[pr, ep, Submodule.prodEquivOfIsCompl_symm_apply_right]`. Use `haveI : Module.Finite R (LinearMap.ker Φ) := Module.Finite.of_surjective pr (fun x ↦ ⟨x, by simpa using congrArg (fun m ↦ m x) hpr⟩)`. Use `haveI : Module.Projective R (LinearMap.ker Φ) := Module.Projective.of_split _ _ hpr`. Establish `hr0 : rankAtStalk (R` using `R) (LinearMap.ker Φ) = 0 := by`.
+
+Establish `h1` using `rankAtStalk_eq_of_equiv ep`. Rewrite `h1` using `[rankAtStalk_prod, rankAtStalk_eq_of_equiv es.symm]`. Use function extensionality and compare the values at `p`. Use `congrFun h1 p` as an intermediate fact. Simplify using `only [Pi.add_apply] at this`.
+
+Rewrite `this` using `[hrk p]`. Simplify using `only [Pi.zero_apply]`. Use linear arithmetic over natural numbers and integers. Use `haveI := (rankAtStalk_eq_zero_iff_subsingleton).1 hr0`. Establish `hb : (e.symm f).2 ∈ LinearMap.ker Φ` using `LinearMap.mem_ker.2 (LinearMap.ext fun g ↦ by`.
+
+Rewrite using `[hΦ' f g]`. Conclude with `hf g g.2)`. Establish `h0 : (e.symm f).2 = 0`. Use `Subsingleton.elim (⟨_, hb⟩ : LinearMap.ker Φ) 0` as an intermediate fact. Simplify using `using congrArg Subtype.val this`.
+
+Rewrite using `[← hdec f, h0]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_of_annihilates {R V : Type*} [CommRing R] [AddCommGroup V] [Module R V]
     (ψ : LinearMap.BilinForm R V) [hψ : ψ.IsPerfPair] (W W' : Submodule R V) (hc : IsCompl W W')
     [Module.Finite R W'] [Module.Projective R W'] [Module.Finite R (Dual R W)]
@@ -75,6 +100,23 @@ theorem mem_of_annihilates {R V : Type*} [CommRing R] [AddCommGroup V] [Module R
   rw [← hdec f, h0]
   simp
 
+/- English proof (translation)
+Set `e` to `Submodule.prodEquivOfIsCompl F N hc`. Establish `hdec : ∀ x : M, (((e.symm x).1 : F) : M) + ((e.symm x).2 : M) = x` using `fun x ↦ by`. Rewrite using `[← Submodule.coe_prodEquivOfIsCompl' F N hc, LinearEquiv.apply_symm_apply]`. Establish `hc' : IsCompl F.dualAnnihilator N.dualAnnihilator`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[disjoint_iff_inf_le]`. Introduce and unpack `φ ⟨h1, h2⟩`. Rewrite using `[Submodule.mem_bot]`. Use `LinearMap.ext fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[← hdec x, map_add, (Submodule.mem_dualAnnihilator _).1 h1 _ (Submodule.coe_mem _), (Submodule.mem_dualAnnihilator _).1 h2 _ (Submodule.coe_mem _)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[codisjoint_iff_le_sup]`. Introduce `φ _`. Rewrite using `[Submodule.mem_sup]`. Use `⟨φ ∘ₗ N.subtype ∘ₗ LinearMap.snd R F N ∘ₗ e.symm.toLinearMap, ?_, φ ∘ₗ F.subtype ∘ₗ LinearMap.fst R F N ∘ₗ e.symm.toLinearMap, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `(Submodule.mem_dualAnnihilator _).2 fun x hx ↦ ?_` and prove the remaining obligations. Simplify using `[e]`. Rewrite using `[Submodule.projection_apply_of_mem_right _ hx, map_zero]`. Use `(Submodule.mem_dualAnnihilator _).2 fun x hx ↦ ?_` and prove the remaining obligations. Simplify using `[e]`.
+
+Rewrite using `[Submodule.projection_apply_of_mem_right _ hx, map_zero]`. Use `LinearMap.ext fun x ↦ ?_ conv_rhs => rw [← hdec x]` and prove the remaining obligations. Simplify using `[add_comm]`. Set `eW' : Dual R F ≃ₗ[R] N.dualAnnihilator` to `(Submodule.quotientEquivOfIsCompl N F hc.symm).dualMap.trans (Submodule.dualQuotEquivDualAnnihilator N)`. Set `eW : Dual R N ≃ₗ[R] F.dualAnnihilator` to `(Submodule.quotientEquivOfIsCompl F N hc).dualMap.trans (Submodule.dualQuotEquivDualAnnihilator F)`.
+
+Establish `hpN : (N.projectionOnto F hc.symm) ∘ₗ N.subtype = LinearMap.id` using `LinearMap.ext fun x ↦ Submodule.projectionOnto_apply_left hc.symm x`. Use `haveI : Module.Projective R N := Module.Projective.of_split _ _ hpN`. Use `haveI : Module.Finite R N := Module.Finite.of_surjective _ (Submodule.projectionOnto_surjective hc.symm)`. Set `eN : Dual R F.dualAnnihilator ≃ₗ[R] N` to `eW.dualMap.trans (Module.evalEquiv R N).symm`. Use `haveI : Module.Finite R N.dualAnnihilator := Module.Finite.equiv eW'`.
+
+Use `haveI : Module.Projective R N.dualAnnihilator := Module.Projective.of_equiv eW'`. Use `haveI : Module.Finite R (Dual R F.dualAnnihilator) := Module.Finite.equiv eN.symm`. Use `haveI : Module.Projective R (Dual R F.dualAnnihilator) := Module.Projective.of_equiv eN.symm`. Use `mem_of_annihilates ψ _ _ hc' (fun p ↦ ?_) hiso f hf` and prove the remaining obligations. Rewrite using `[← rankAtStalk_eq_of_equiv eW', rankAtStalk_eq_of_equiv eN, GlobalTheory.TopExt.rankAtStalk_dual F p, hF p]`.
+
+Establish `h1` using `congrFun (rankAtStalk_eq_of_equiv e) p`. Rewrite `h1` using `[rankAtStalk_prod, Pi.add_apply, hM p, hF p]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_of_annihilates_dual {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     (ψ : LinearMap.BilinForm R (Dual R M)) [ψ.IsPerfPair] (F N : Submodule R M) (hc : IsCompl F N)
     [Module.Finite R M] [Module.Projective R M] [Module.Finite R F] [Module.Projective R F] (g : ℕ)
@@ -136,6 +178,19 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.DeRham GlobalTheory.Cris
 open GlobalTheory.Published GlobalTheory.CatCoh
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `P E _ _ _ H Dw l Xo S _ x A _ π hπ`. Establish `hA` using `PolPull.isAbelianScheme_of_isGrpPullback (ObjDim.isAbelianScheme Xo.univ) hπ`. Establish `gA` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hπ.1 (ObjDim.smoothOfRelativeDimension Xo.univ)`. Take `⟨h0, -, -, -, e, he⟩` from `P.1 S A _ hA gA`. Establish `hLB : (Xo.univ.t.PP.L.pull π).IsLB` using `pull_isLB Xo.univ.t.PP.isLB π`.
+
+Take `⟨z, hz, -⟩` from `(isChern_existsUnique_and_iso S ⊥ (dp0 S) _ (A.hom ≫ 𝟙 _)).1 _ hLB`. Take `⟨n, a, b, hab⟩` from `GlobalTheory.PolExists.exists_sum_wedge (e.symm z)`. Establish `hm : ∀ c : FirstDeRham (A.hom ≫ 𝟙 _), c ∈ primDR A` using `fun c ↦ by`. Express the relevant statement in the definitionally equal form `c ∈ prim (dp0 S) (𝟙 _) A`. Rewrite using `[show prim (dp0 S) (𝟙 _) A = ⊤ from h0]`.
+
+Discharge the goal by the elementary cases of `trivial`. Set `a' : Fin n → primDR A` to `fun k ↦ ⟨a k, hm _⟩`. Set `b' : Fin n → primDR A` to `fun k ↦ ⟨b k, hm _⟩`. Establish `hz' : IsChern (dp0 S) (A.hom ≫ 𝟙 _) (Xo.univ.t.PP.L.pull π) (∑ k, cup _ (a' k).1 (b' k).1)`. Establish `: z = ∑ k, cup _ (a k) (b k)`.
+
+Rewrite using `[← e.apply_symm_apply z, ← hab, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ ↦ he _ _`. Conclude with `this ▸ hz`. Establish `hpol : IsPolForm (dp0 S) (𝟙 _) A (Xo.univ.t.PP.L.pull π) (wedgeForm (dp0 S) (𝟙 _) A a' b')` using `⟨n, a', b', hz', rfl⟩`. Establish `hK : Out.KTriv A (Xo.univ.t.PP.L.pull π)` using `kTriv_pull hπ Xo.univ.t.PP.isLB hLB ((isGen_iff _).1 (GlobalTheory.PolExists.isGen_self hLB)) Xo.univ.ktriv`.
+
+Take `⟨hiso, hperf⟩` from `P.2.2.2.2 S A _ hA gA _ hLB _ hpol`. Establish `hperf'` using `hperf hK`. Use `⟨_, hpol, hiso, hperf', fun f hf ↦ ?_⟩` and prove the remaining obligations. Take `⟨hfin, hproj, hrk⟩` from `AbelianDeRham.Free.prim P.1 hA gA`. Take `⟨-, ⟨N, hN⟩, hFfin, hFproj, hFrk⟩` from `P.2.1 S A _ hA gA`.
+
+Conclude with `mem_of_annihilates_dual (wedgeForm (dp0 S) (𝟙 _) A a' b') (PrimitiveSubmodule A) N hN _ hrk hFrk hiso f hf`.
+-/
 theorem polForm_exists : GlobalTheory.Published.AbelianDeRham → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X}
     {A : Over (Sp S)} [GrpObj A] {π : A.left ⟶ Xo.univ.t.G.left}, IsGrpPullback A Xo.univ.t.G x π →

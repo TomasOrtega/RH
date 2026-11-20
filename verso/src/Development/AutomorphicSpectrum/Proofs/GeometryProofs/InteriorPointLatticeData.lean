@@ -41,6 +41,13 @@ section Tangent
 
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
 
+/- English proof (translation)
+Establish `hc : (Λ : Set (Fin g₀ → ℂ)).Countable` using `by haveI := hd`. Establish `: Countable Λ` using `countable_of_Lindelof_of_discrete`. Conclude with `Set.countable_coe_iff.1 this`. Introduce `y`. Establish `h0 : (LinearMap.range F).mkQ y = 0`.
+
+Use `GlobalTheory.eq_zero_of_forall_smul_mem_countable (hc.image (LinearMap.range F).mkQ) fun s => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `h (s • y)`. Use `⟨_, hz, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, map_smul, Submodule.mkQ_apply]`. Rewrite using `[(Submodule.Quotient.mk_eq_zero (LinearMap.range F)).2 ⟨z, rfl⟩, sub_zero]`.
+
+Simplify using `using h0`.
+-/
 theorem surjective_of_add_mem {g₀ : ℕ} (Λ : Submodule ℤ (Fin g₀ → ℂ)) (hd : DiscreteTopology Λ)
     (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g₀ → ℂ)) (h : ∀ y, ∃ z, y - F z ∈ Λ) : Function.Surjective F := by
   have hc : (Λ : Set (Fin g₀ → ℂ)).Countable := by
@@ -56,6 +63,21 @@ theorem surjective_of_add_mem {g₀ : ℕ} (Λ : Submodule ℤ (Fin g₀ → ℂ
     rw [(Submodule.Quotient.mk_eq_zero (LinearMap.range F)).2 ⟨z, rfl⟩, sub_zero]
   simpa using h0
 
+/- English proof (translation)
+Establish `hab : IsAbelianScheme t'.G` using `AbelianSchemeGerms.isAbelianScheme_of_proper t'.G t'.semi`. Take `⟨g₀, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim ℂ t'.G hab`. Take `⟨u₀, hc⟩` from `GlobalTheory.CompanionTheory.Ar.AVExp.exists_holUnif t'.G t'.PP.L g₀ hab hA hg`. Take `⟨ht₁, ht₂⟩` from `@GlobalTheory.TangentOrigin.tangent_bijection_of_values @GlobalTheory.valAt'_rules t'.G _ _ g₀ u₀ hc`. Take `⟨e, hmon, -⟩` from `grpPullback_iso hp m.cart`.
+
+Use `haveI := hmon`. Establish `hol : IsHolTo (Set.univ : Set (Fin g → ℂ)) (fun w => (u.ex w ≫ e.hom).left)`. Simplify `GlobalTheory.HolTorsion.isHolTo_comp (isHolTo_ex u) e.hom.left` using `only [Over.comp_left]`. Take `⟨F, hF, -⟩` from `GlobalTheory.existsUnique_linear_lift_of_isHolTo t'.G hab _ g₀ g u₀ ht₁ ht₂ (fun w => u.ex w ≫ e.hom) (fun p q => by rw [u.ex_add, MonObj.mul_comp]) hol`. Establish `hF' : ∀ w, u₀.ex (F w) = u.ex w ≫ e.hom` using `hF`.
+
+Establish `hsurj : Function.Surjective F` using `surjective_of_add_mem u₀.Λ u₀.discrete F fun y => by`. Take `⟨w, hw⟩` from `u.ex_onto (u₀.ex y ≫ e.inv)`. Use `⟨w, (u₀.ker _).1 ?_⟩` and prove the remaining obligations. Establish `h1 : u₀.ex (F w) = u₀.ex y` using `by rw [hF', hw, Category.assoc, e.inv_hom_id, Category.comp_id]`. Establish `h2` using `u₀.ex_add (y - F w) (F w)`.
+
+Rewrite `h2` using `[sub_add_cancel, h1]`. Establish `h3 : u₀.ex (y - F w) * u₀.ex y = 1 * u₀.ex y` using `by rw [← h2, _root_.one_mul]`. Conclude with `mul_right_cancel h3`. Establish `hxe : IsTangent (x ≫ e.hom)`. Establish `h₁ : η[A] ≫ e.hom = η[t'.G]` using `IsMonHom.one_hom e.hom`.
+
+Unfold `IsTangent at hx ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hx, ← Over.comp_left, h₁]`. Take `⟨w₀, hw₀, -⟩` from `ht₁ (x ≫ e.hom) hxe`. Take `⟨w, rfl⟩` from `hsurj w₀`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+
+Establish `a` using `isDerivAt0_of_isDiff u₀ hxe hw₀`. Establish `b` using `GlobalTheory.FibreDeriv.isDerivAt0_comp a e.inv.left`. Establish `hol' : IsHolTo (Set.univ : Set (Fin g₀ → ℂ)) (fun z => (u₀.ex z).left ≫ e.inv.left)` using `GlobalTheory.HolTorsion.isHolTo_comp (isHolTo_ex u₀) e.inv.left`. Establish `c` using `isDerivAt0_comp_linMap hol' F b`. Establish `back : ∀ {T : Over (Sp ℂ)} (q : T ⟶ A), (q ≫ e.hom).left ≫ e.inv.left = q.left` using `fun q => by`.
+
+Rewrite using `[← Over.comp_left, Category.assoc, e.hom_inv_id, Category.comp_id]`. Establish `e1 : (fun z => (u₀.ex (F z)).left ≫ e.inv.left) = fun z => (u.ex z).left`. Use function extensionality and compare the values at `fun z => by rw [hF', back]`. Rewrite `c` using `[e1, back]`. Conclude with `fun U h f => c.2 U h f`.
+-/
 theorem exists_isDiff {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} {t : SAB H X}
     {z : Sp ℂ ⟶ X} (t' : SAB H (Sp ℂ)) (m : SABMap t' t z) (hP : IsProper t'.G.hom)
     (hA : Out.RelAmple t'.G t'.PP.L) {φ : A.left ⟶ t.G.left} (hp : IsGrpPullback A t.G z φ) (u : HolUnif A L g)
@@ -102,6 +124,13 @@ end Tangent
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨t', m, hP, hA⟩` from `hz`. Take `⟨A, _, φ, u, χ, hp, hAH, hact, hinj, hmem, -⟩` from `hF`. Establish `key : ∀ i, ∃ (x : Fin g → ℂ) (v' : epsR ℂ ⟶ A), v'.left ≫ φ = (v i).left ∧ u.IsDiff x v'` using `fun i => by`. Set `Φ` to `HodgeLin.tanEquiv hp`. Establish `hl : (Φ.symm (v i)).left ≫ φ = (v i).left` using `congrArg (fun q => q.left) (Φ.apply_symm_apply (v i))`.
+
+Establish `ht : IsTangent (Φ.symm (v i))` using `(HodgeLin.isTangent_iff hp _).2 (by`. Express the relevant statement in the definitionally equal form `IsTanAt t.G z (Φ (Φ.symm (v i)))`. Rewrite using `[Φ.apply_symm_apply]`. Conclude with `hv i)`. Take `⟨w, hw⟩` from `exists_isDiff t' m hP hA hp u ht`.
+
+Conclude with `⟨w, _, hl, hw⟩`. Use `choose x v' h1 h2 using key`. Conclude with `⟨x, A, inferInstance, φ, u, χ, hp, hAH, hact, hinj, hmem, fun i => ⟨v' i, h1 i, h2 i⟩⟩`.
+-/
 theorem fibreLatVec_of_fibreLat {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] {R : RiemLat E g Λ} (hz : HodgeMetric.PolarisedAt t z) (hF : FibreLat t z R) {A₀ : Type}
     (v : A₀ → (epsAt z ⟶ t.G)) (hv : ∀ i, IsTanAt t.G z (v i)) : ∃ x : A₀ → Fin g → ℂ, FibreLatVec t z R x v := by
@@ -119,6 +148,9 @@ theorem fibreLatVec_of_fibreLat {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X
   choose x v' h1 h2 using key
   exact ⟨x, A, inferInstance, φ, u, χ, hp, hAH, hact, hinj, hmem, fun i => ⟨v' i, h1 i, h2 i⟩⟩
 
+/- English proof (translation)
+Take `⟨A, _, φ, u, χ, h1, h2, -, -, -, h3⟩` from `h`. Take `⟨v', e', d'⟩` from `h3 i`. Take `⟨w', f', g'⟩` from `h3 j`. Conclude with `⟨t.PP.isLB, tan i, tan j, A, inferInstance, φ, g, u, R.Hm, χ, v', w', x i, x j, h1, h2, e', f', d', g', rfl⟩`.
+-/
 theorem hodgeInnerProduct_eq_pi_mul_riemannForm {X : Scheme.{0}} {t : SAB H X} {z : Sp ℂ ⟶ X} {g : ℕ} {Λ : Type} [AddCommGroup Λ]
     [Module (𝓞 E) Λ] {R : RiemLat E g Λ} {A₀ : Type} {x : A₀ → Fin g → ℂ} {v : A₀ → (epsAt z ⟶ t.G)}
     (h : FibreLatVec t z R x v) (tan : ∀ i, IsTanAt t.G z (v i)) (i j : A₀) :
@@ -128,6 +160,9 @@ theorem hodgeInnerProduct_eq_pi_mul_riemannForm {X : Scheme.{0}} {t : SAB H X} {
   obtain ⟨w', f', g'⟩ := h3 j
   exact ⟨t.PP.isLB, tan i, tan j, A, inferInstance, φ, g, u, R.Hm, χ, v', w', x i, x j, h1, h2, e', f', d', g', rfl⟩
 
+/- English proof (translation)
+Take `⟨h1, s, hs, rfl⟩` from `h`. Take `⟨h2, s', hs', rfl⟩` from `h'`. Establish `: s = s'` using `hg.inj ⟨centre z, h1⟩ (hs.trans hs'.symm)`. Rewrite using `[this]`.
+-/
 theorem val_unique {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {R : Type} [CommRing R]
     [IsLocalRing R] {z : Spec (CommRingCat.of R) ⟶ X} (hg : IsCptGen ξ) {a : Ω} {r r' : R} (h : ValAt ξ z a r)
     (h' : ValAt ξ z a r') : r = r' := by
@@ -136,6 +171,33 @@ theorem val_unique {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingC
   have : s = s' := hg.inj ⟨centre z, h1⟩ (hs.trans hs'.symm)
   rw [this]
 
+/- English proof (translation)
+Introduce `hG E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 z hD hz`. Take `⟨κ, p, hO⟩` from `exists_isOver E H D l Xo c Y S Ω K J y 𝔐 z hz`. Take `⟨g, ty, hty⟩` from `GlobalTheory.AllClasses.exists_isTypeFn H D.p D.q`. Establish `hN : N1c` using `hG.1.2.2.1`. Set `j : KA l →+* c.F` to `(IntermediateField.inclusion c.le).toRingHom`.
+
+Set `ρF : c.F` to `j (baseKA l).ρ`. Establish `hρF : (ρF : ℂ) = H.rt0` using `rfl`. Establish `hσ : p ≫ Xo.s = spMap (κ.comp j)`. Take `⟨x, -, h1, h2⟩` from `hO`. Rewrite using `[← h1, Category.assoc, pullback.condition, ← Category.assoc, h2, Chg.spMap_comp']`.
+
+Establish `hsq : (κ ρF) ^ 2 = H.rt0 ^ 2`. Establish `e : ρF ^ 2 = -((H.d : ℕ) : c.F)` using `Subtype.ext (by`. Use `push_cast`. Rewrite using `[hρF]`. Conclude with `H.sqrt_neg_disc_sq)`.
+
+Rewrite using `[← map_pow, e, H.sqrt_neg_disc_sq]`. Simplify using the standard rewrite rules. Establish `hconj : starRingEnd ℂ H.rt0 = -H.rt0` using `conj_eq_neg_of_sq H.d_prime.pos H.sqrt_neg_disc_sq`. Establish `hne : H.rt0 ≠ -H.rt0`. Introduce `h`.
+
+Establish `h0 : H.rt0 = 0`. Establish `: (2 : ℂ) * H.rt0 = 0` using `by linear_combination h`. Simplify using `using this`. Establish `h1` using `H.sqrt_neg_disc_sq`. Rewrite `h1` using `[h0]`.
+
+Establish `h2 : ((H.d : ℕ) : ℂ) = 0` using `by simpa using h1.symm`. Conclude with `H.d_prime.pos.ne' (by exact_mod_cast h2)`. Distinguish the cases in `hρ : κ ρF = H.rt0`. Take `⟨FU⟩` from `hN E H D l Xo (κ.comp j) g ty hD hρ hty`. Take `⟨i, P, hP, hu⟩` from `FU.onto p hσ`.
+
+Take `⟨⟨R, -, hF, hr⟩, -⟩` from `GlobalTheory.T.period_riemann_lattice_fibre E H D l Xo (κ.comp j) g ty FU i P hty hP`. Use `⟨κ, p, g, _, inferInstance, inferInstance, R, hO, GlobalTheory.T.riemann_lattice_over_point E H D l Xo c Y S Ω K J y 𝔐 z κ p g _ _ hO (hu ▸ hF), fun s => ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ, hτρ⟩` from `exists_emb_label E H l c κ s`. Establish `h` using `hτρ ρF hρF`. Rewrite using `[hτ, hr τ]`.
+
+Break down `s with s | s` into its components or cases. Establish `h' : τ (H.rt : E) = H.rt0` using `h.trans hρ`. Simplify using `[h']`. Establish `h' : τ (H.rt : E) = -H.rt0` using `h.trans (by simp [hρ])`. Simplify using `[h', hne.symm]`.
+
+Establish `hneg : κ ρF = -H.rt0` using `(sq_eq_sq_iff_eq_or_eq_neg.1 hsq).resolve_left hρ`. Establish `hρ₁ : ((starRingEnd ℂ).comp (κ.comp j)) (baseKA l).ρ = H.rt0` using `by show starRingEnd ℂ (κ ρF) = H.rt0`. Rewrite using `[hneg, map_neg, hconj, neg_neg]`. Take `⟨FU⟩` from `hN E H D l Xo ((starRingEnd ℂ).comp (κ.comp j)) g ty hD hρ₁ hty`. Establish `hσ₁ : (spMap (starRingEnd ℂ) ≫ p) ≫ Xo.s = spMap ((starRingEnd ℂ).comp (κ.comp j))`.
+
+Rewrite using `[Category.assoc, hσ]`. Conclude with `(Chg.spMap_comp' _ _).symm`. Take `⟨i, P, hP, hu⟩` from `FU.onto _ hσ₁`. Take `⟨-, R, -, hF, hr⟩` from `GlobalTheory.T.period_riemann_lattice_fibre E H D l Xo _ g ty FU i P hty hP`. Establish `hcc : spMap (starRingEnd ℂ) ≫ spMap (starRingEnd ℂ) ≫ p = p`.
+
+Establish `e : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ` using `RingHom.ext fun x => by simp`. Rewrite using `[← Category.assoc, ← Chg.spMap_comp', e]`. Simplify using `[spMap]`. Rewrite `hF` using `[hu, hcc]`. Use `⟨κ, p, g, _, inferInstance, inferInstance, R, hO, GlobalTheory.T.riemann_lattice_over_point E H D l Xo c Y S Ω K J y 𝔐 z κ p g _ _ hO hF, fun s => ?_⟩` and prove the remaining obligations.
+
+Take `⟨τ, hτ, hτρ⟩` from `exists_emb_label E H l c κ s`. Establish `h` using `hτρ ρF hρF`. Rewrite using `[hτ, hr τ]`. Break down `s with s | s` into its components or cases. Establish `h' : τ (H.rt : E) = -H.rt0` using `h.trans hneg`.
+
+Simplify using `[h', hne.symm]`. Establish `h' : τ (H.rt : E) = H.rt0` using `h.trans (by simp [hneg])`. Simplify using `[h']`.
+-/
 theorem exists_fibreLat_rank : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type)
     [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y)
@@ -210,6 +272,11 @@ theorem exists_fibreLat_rank : Top.Given → ∀ (E : Type) [Field E] [NumberFie
     · have h' : τ (H.rt : E) = H.rt0 := h.trans (by simp [hneg])
       simp [h']
 
+/- English proof (translation)
+Introduce `_ E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 z hD hz hG A₀ v hv`. Take `⟨κ, p, g, Λ, i₁, i₂, R, hO, hF, hr⟩` from `exists_fibreLat_rank hG E H D l Xo c Y S Ω K J y 𝔐 z hD hz`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom 𝔐.cst.injective`. Establish `hpol` using `HodgeMetric.polarisedAt_of_interior E H D l Xo c Y S Ω K J y 𝔐 z hz`. Take `⟨x, hx⟩` from `fibreLatVec_of_fibreLat hpol hF v hv`.
+
+Use `⟨g, Λ, i₁, i₂, R, x, hx, fun i j => hodgeInnerProduct_eq_pi_mul_riemannForm hx hv i j, fun σ hσ s => ?_⟩` and prove the remaining obligations. Establish `e : σ s = κ.comp (labelEmb c s)` using `RingHom.ext fun a => val_unique 𝔐.tie.gen (hσ s a) (val_cst E H D l Xo c Y S Ω K J y 𝔐 z κ p hO (labelEmb c s a))`. Rewrite using `[e]`. Conclude with `hr s`.
+-/
 theorem exists_riemLat_of_interior : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (z : Sp ℂ ⟶ 𝔐.X), 1 ≤ D.p + D.q → 𝔐.Interior z → Top.Given → ∀ (A₀ : Type) (v : A₀ → (epsAt z ⟶ 𝔐.t.G)), (∀ i, IsTanAt 𝔐.t.G z (v i)) → ∃ (g : ℕ) (Λ : Type) (_ : AddCommGroup Λ) (_ : Module (𝓞 E) Λ) (R : RiemLat E g Λ) (x : A₀ → Fin g → ℂ), FibreLatVec 𝔐.t z R x v ∧ (∀ i j, HodgeIP 𝔐.t.G 𝔐.t.PP.L z (v i) (v j) (Real.pi * R.ip (x i) (x j))) ∧ ∀ σ, 𝔐.LabVal z id σ → ∀ s, Module.finrank ℂ (eigSp R.B (σ s)) = labelRk D s := by
   intro _ E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 z hD hz hG A₀ v hv
   obtain ⟨κ, p, g, Λ, i₁, i₂, R, hO, hF, hr⟩ := exists_fibreLat_rank hG E H D l Xo c Y S Ω K J y 𝔐 z hD hz

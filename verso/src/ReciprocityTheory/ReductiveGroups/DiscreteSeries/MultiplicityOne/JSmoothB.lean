@@ -14,6 +14,9 @@ variable {k r : ℕ}
 section linf
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Conclude with `hasDerivAt_iff_tendsto_slope.mp (hasDerivAt_exp_smul_const' Y t)`.
+-/
 theorem expDer_op (Y : Mat k r) (t : ℝ) :
     Filter.Tendsto (slope (fun u : ℝ => NormedSpace.exp (u • Y)) t) (nhdsWithin t {t}ᶜ)
       (nhds (Y * NormedSpace.exp (t • Y))) := by
@@ -25,10 +28,16 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 abbrev ninf : WithTop ℕ∞ := ((⊤ : ℕ∞) : WithTop ℕ∞)
 
+/- English proof (translation)
+Use `show ((⊤ : ℕ∞) : WithTop ℕ∞) + 1 ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)`. Rewrite using `[← WithTop.coe_one, ← WithTop.coe_add, top_add]`.
+-/
 theorem ninf_succ_le : ninf + 1 ≤ ninf := by
   show ((⊤ : ℕ∞) : WithTop ℕ∞) + 1 ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)
   rw [← WithTop.coe_one, ← WithTop.coe_add, top_add]
 
+/- English proof (translation)
+Simplify using `[ninf]`.
+-/
 theorem ninf_ne_zero : ninf ≠ 0 := by
   simp [ninf]
 
@@ -37,6 +46,9 @@ section dx
 def mulL (X : Mat k r) : Mat k r →L[ℝ] Mat k r :=
   LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ X)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulL_apply (X x : Mat k r) : mulL X x = X * x := rfl
 
 def mulLL : Mat k r →L[ℝ] (Mat k r →L[ℝ] Mat k r) :=
@@ -46,15 +58,26 @@ def mulLL : Mat k r →L[ℝ] (Mat k r →L[ℝ] Mat k r) :=
       map_smul' := fun c a => by
         ext1 x; simp [mulL_apply] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulLL_apply (X x : Mat k r) : mulLL X x = X * x := rfl
 
 def DX (X : Mat k r) (Φ : Mat k r → ℂ) : Mat k r → ℂ := fun x => fderiv ℝ Φ x (-(X * x))
 
 def Dw (l : List (Mat k r)) (Φ : Mat k r → ℂ) : Mat k r → ℂ := l.foldr DX Φ
 
+/- English proof (translation)
+Conclude with `(hΦ.fderiv_right ninf_succ_le).clm_apply (mulL X).contDiff.neg`.
+-/
 theorem DX_contDiff {Φ : Mat k r → ℂ} (hΦ : ContDiff ℝ ninf Φ) (X : Mat k r) : ContDiff ℝ ninf (DX X Φ) := by
   exact (hΦ.fderiv_right ninf_succ_le).clm_apply (mulL X).contDiff.neg
 
+/- English proof (translation)
+Use `closure_minimal ?_ (isClosed_tsupport _)` and prove the remaining obligations. Introduce `x hx`. Apply `tsupport_fderiv_subset ℝ (f := Φ)` to reduce the goal to its premises. Apply `subset_tsupport` to reduce the goal to its premises. Introduce `h`.
+
+Apply `hx` to reduce the goal to its premises. Simplify using `[DX, h]`.
+-/
 theorem DX_tsupport (Φ : Mat k r → ℂ) (X : Mat k r) : tsupport (DX X Φ) ⊆ tsupport Φ := by
   refine closure_minimal ?_ (isClosed_tsupport _)
   intro x hx
@@ -64,14 +87,23 @@ theorem DX_tsupport (Φ : Mat k r → ℂ) (X : Mat k r) : tsupport (DX X Φ) �
   apply hx
   simp [DX, h]
 
+/- English proof (translation)
+The claim follows from `| [] => hΦ | X :: l => DX_contDiff (Dw_contDiff hΦ l) X`.
+-/
 theorem Dw_contDiff {Φ : Mat k r → ℂ} (hΦ : ContDiff ℝ ninf Φ) : ∀ l : List (Mat k r), ContDiff ℝ ninf (Dw l Φ)
   | [] => hΦ
   | X :: l => DX_contDiff (Dw_contDiff hΦ l) X
 
+/- English proof (translation)
+The claim follows from `| [] => subset_rfl | X :: l => (DX_tsupport _ X).trans (Dw_tsupport Φ l)`.
+-/
 theorem Dw_tsupport (Φ : Mat k r → ℂ) : ∀ l : List (Mat k r), tsupport (Dw l Φ) ⊆ tsupport Φ
   | [] => subset_rfl
   | X :: l => (DX_tsupport _ X).trans (Dw_tsupport Φ l)
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp only [List.ofFn_zero] exact hΦ.comp contDiff_snd | j + 1 => by have IH := Dw_joint hΦ j have e : (fun p : (Fin (j + 1) → Mat k r) × Mat k r => Dw (List.ofFn p.1) Φ p.2) = fun p => fderiv ℝ (fun y => Dw (List.ofFn (fun i => p.1 i.succ)) Φ y) p.2 (-(mulLL (p.1 0) p.2 …`.
+-/
 theorem Dw_joint {Φ : Mat k r → ℂ} (hΦ : ContDiff ℝ ninf Φ) :
     ∀ j : ℕ, ContDiff ℝ ninf (fun p : (Fin j → Mat k r) × Mat k r => Dw (List.ofFn p.1) Φ p.2)
   | 0 => by
@@ -92,6 +124,13 @@ theorem Dw_joint {Φ : Mat k r → ℂ} (hΦ : ContDiff ℝ ninf Φ) :
     refine (hf.fderiv contDiff_snd ninf_succ_le).clm_apply ?_
     exact ((mulLL.contDiff.comp ((contDiff_apply ℝ (Mat k r) (0 : Fin (j + 1))).comp contDiff_fst)).clm_apply contDiff_snd).neg
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `((isCompact_closedBall (0 : Fin j → Mat k r) 1).prod hc).exists_bound_of_continuousOn (Dw_joint hΦ j).continuous.continuousOn`. Use `⟨max C 0, le_max_right _ _, fun q hq x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport Φ`. Establish `hq' : q ∈ Metric.closedBall (0 : Fin j → Mat k r) 1`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`.
+
+Introduce `i`. Conclude with `(Matrix.norm_le_iff zero_le_one).2 (hq i)`. Conclude with `(hC (q, x) ⟨hq', hx⟩).trans (le_max_left _ _)`. Establish `: Dw (List.ofFn q) Φ x = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hx (Dw_tsupport Φ _ (subset_tsupport _ hne))`. Rewrite using `[this, norm_zero]`. Conclude with `le_max_right _ _`.
+-/
 theorem Dw_bound {Φ : Mat k r → ℂ} (hΦ : ContDiff ℝ ninf Φ) (hc : HasCompactSupport Φ) (j : ℕ) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ q : Fin j → Mat k r, (∀ i a b, ‖q i a b‖ ≤ 1) → ∀ x, ‖Dw (List.ofFn q) Φ x‖ ≤ M := by
   obtain ⟨C, hC⟩ := ((isCompact_closedBall (0 : Fin j → Mat k r) 1).prod hc).exists_bound_of_continuousOn
@@ -119,15 +158,24 @@ def pd {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (Ψ : Mt k r × Mt 
     Mt k r × Mt k r → (Mt k r →L[ℝ] E) :=
   fun p => (fderiv ℝ Ψ p).comp (ContinuousLinearMap.inl ℝ (Mt k r) (Mt k r))
 
+/- English proof (translation)
+Conclude with `((hΨ.differentiable ninf_ne_zero) (g, y)).hasFDerivAt.comp g (hasFDerivAt_prodMk_left g y)`.
+-/
 theorem pd_hasFDerivAt {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {Ψ : Mt k r × Mt k r → E}
     (hΨ : ContDiff ℝ ninf Ψ) (g y : Mt k r) :
     HasFDerivAt (fun g' => Ψ (g', y)) (pd Ψ (g, y)) g := by
   exact ((hΨ.differentiable ninf_ne_zero) (g, y)).hasFDerivAt.comp g (hasFDerivAt_prodMk_left g y)
 
+/- English proof (translation)
+Conclude with `(hΨ.fderiv_right ninf_succ_le).clm_comp contDiff_const`.
+-/
 theorem pd_contDiff {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {Ψ : Mt k r × Mt k r → E}
     (hΨ : ContDiff ℝ ninf Ψ) : ContDiff ℝ ninf (pd Ψ) := by
   exact (hΨ.fderiv_right ninf_succ_le).clm_comp contDiff_const
 
+/- English proof (translation)
+Introduce `g hg y hy hyK`. Establish `h0 : HasFDerivAt (fun g' => Ψ (g', y)) (0 : Mt k r →L[ℝ] E) g` using `(hasFDerivAt_const (0 : E) g).congr_of_eventuallyEq (Filter.eventually_of_mem (hU.mem_nhds hg) fun g' hg' => hz g' hg' y hy hyK)`. Conclude with `(pd_hasFDerivAt hΨ g y).unique h0`.
+-/
 theorem pd_zero {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {Ψ : Mt k r × Mt k r → E}
     (hΨ : ContDiff ℝ ninf Ψ) (hU : IsOpen U)
     (hz : ∀ g ∈ U, ∀ y : Mt k r, (Matrix.of y : Mat k r) ∈ GV k r → y ∉ K → Ψ (g, y) = 0) :
@@ -138,6 +186,11 @@ theorem pd_zero {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {Ψ : Mt k
       (Filter.eventually_of_mem (hU.mem_nhds hg) fun g' hg' => hz g' hg' y hy hyK)
   exact (pd_hasFDerivAt hΨ g y).unique h0
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hΘ.continuousOn`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hint : Integrable (K.indicator fun _ => Mh * max C 0) μ` using `(integrableOn_const (hμK K hK).ne enorm_ne_top).integrable_indicator hKm`. Establish `hGae : ∀ᵐ y ∂μ, y ∈ (GV k r : Set (Mt k r))` using `mem_ae_iff.2 hG`. Use `hint.mono' (hh.smul hΘ.aestronglyMeasurable) ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hMh, hGae] with y hy1 hyG`. Distinguish the cases in `hyK : y ∈ K`. Rewrite using `[Set.indicator_of_mem hyK, norm_smul, Real.norm_eq_abs]`. Conclude with `mul_le_mul hy1 ((hC y hyK).trans (le_max_left _ _)) (norm_nonneg _) ((abs_nonneg _).trans hy1)`. Simplify using `[Set.indicator, hyK, hz y hyG hyK]`.
+-/
 private theorem intg_lemma (hμK : ∀ S : Set (Mt k r), IsCompact S → μ S < ∞) (hG : μ (GV k r)ᶜ = 0)
     (hh : AEStronglyMeasurable h μ) (hMh : ∀ᵐ y ∂μ, |h y| ≤ Mh) (hK : IsCompact K)
     {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {Θ : Mt k r → E} (hΘ : Continuous Θ)
@@ -155,6 +208,15 @@ private theorem intg_lemma (hμK : ∀ S : Set (Mt k r), IsCompact S → μ S < 
     exact mul_le_mul hy1 ((hC y hyK).trans (le_max_left _ _)) (norm_nonneg _) ((abs_nonneg _).trans hy1)
   · simp [Set.indicator, hyK, hz y hyG hyK]
 
+/- English proof (translation)
+Take `⟨ε, hε, hεU⟩` from `Metric.isOpen_iff.1 hU g₀ hg₀`. Establish `hcb : IsCompact (Metric.closedBall g₀ (ε / 2) ×ˢ K)` using `(isCompact_closedBall _ _).prod hK`. Take `⟨C, hC⟩` from `hcb.exists_bound_of_continuousOn (pd_contDiff hΨ).continuous.continuousOn`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hGae : ∀ᵐ y ∂μ, y ∈ (GV k r : Set (Mt k r))` using `mem_ae_iff.2 hG`.
+
+Establish `hΨc : ∀ g, Continuous fun y => Ψ (g, y)` using `fun g => hΨ.continuous.comp (Continuous.prodMk continuous_const continuous_id)`. Establish `hpc : ∀ g, Continuous fun y => pd Ψ (g, y)` using `fun g => (pd_contDiff hΨ).continuous.comp (Continuous.prodMk continuous_const continuous_id)`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun g y => h y • Ψ (g, y)) (F' := fun g y => h y • pd Ψ (g, y)) (bound := K.indicator fun _ => Mh * max C 0) (Metric.ball_mem_nhds g₀ (half_pos hε)) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun g => hh.smul (hΨc g).aestronglyMeasurable`. Conclude with `intg_lemma hμK hG hh hMh hK (hΨc g₀) fun y hy hyK => hz g₀ hg₀ y hy hyK`.
+
+Conclude with `hh.smul (hpc g₀).aestronglyMeasurable`. Use `filter_upwards [hMh, hGae] with y hy1 hyG g hg`. Distinguish the cases in `hyK : y ∈ K`. Rewrite using `[Set.indicator_of_mem hyK, norm_smul, Real.norm_eq_abs]`. Conclude with `mul_le_mul hy1 ((hC (g, y) ⟨Metric.ball_subset_closedBall hg, hyK⟩).trans (le_max_left _ _)) (norm_nonneg _) ((abs_nonneg _).trans hy1)`.
+
+Establish `: pd Ψ (g, y) = 0` using `pd_zero hΨ hU hz g (hεU (Metric.ball_subset_ball (half_le_self hε.le) hg)) y hyG hyK`. Simplify using `[this, Set.indicator, hyK]`. Conclude with `(integrableOn_const (hμK K hK).ne enorm_ne_top).integrable_indicator hKm`. Conclude with `Filter.Eventually.of_forall fun y g _ => (pd_hasFDerivAt hΨ g y).const_smul (h y)`.
+-/
 theorem pint_hasFDerivAt (hμK : ∀ S : Set (Mt k r), IsCompact S → μ S < ∞) (hG : μ (GV k r)ᶜ = 0)
     (hh : AEStronglyMeasurable h μ) (hMh : ∀ᵐ y ∂μ, |h y| ≤ Mh) (hU : IsOpen U) (hK : IsCompact K)
     {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {Ψ : Mt k r × Mt k r → E}
@@ -188,6 +250,9 @@ theorem pint_hasFDerivAt (hμK : ∀ S : Set (Mt k r), IsCompact S → μ S < �
   · exact (integrableOn_const (hμK K hK).ne enorm_ne_top).integrable_indicator hKm
   · exact Filter.Eventually.of_forall fun y g _ => (pd_hasFDerivAt hΨ g y).const_smul (h y)
 
+/- English proof (translation)
+The claim follows from `| 0, E, _, _, Ψ, hΨ, hz => by rw [Nat.cast_zero, contDiffOn_zero] exact fun g hg => (pint_hasFDerivAt hμK hG hh hMh hU hK hΨ hz hg).continuousAt.continuousWithinAt | n + 1, E, _, _, Ψ, hΨ, hz => by have hd := fun g (hg : g ∈ U) => pint_hasFDerivAt hμK hG hh hMh hU hK hΨ hz hg rw …`.
+-/
 theorem pint_contDiffOn (hμK : ∀ S : Set (Mt k r), IsCompact S → μ S < ∞) (hG : μ (GV k r)ᶜ = 0)
     (hh : AEStronglyMeasurable h μ) (hMh : ∀ᵐ y ∂μ, |h y| ≤ Mh) (hU : IsOpen U) (hK : IsCompact K) :
     ∀ (n : ℕ) (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (Ψ : Mt k r × Mt k r → E),
@@ -211,6 +276,9 @@ section intg
 
 variable {μ : Measure (Mt k r)} {h : Mt k r → ℝ} {Mh : ℝ} {K : Set (Mt k r)}
 
+/- English proof (translation)
+Conclude with `intg_lemma hμK hG hh hMh hK hΘ hz`.
+-/
 theorem pint_integrable (hμK : ∀ S : Set (Mt k r), IsCompact S → μ S < ∞) (hG : μ (GV k r)ᶜ = 0)
     (hh : AEStronglyMeasurable h μ) (hMh : ∀ᵐ y ∂μ, |h y| ≤ Mh) (hK : IsCompact K)
     {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {Θ : Mt k r → E} (hΘ : Continuous Θ)
@@ -222,21 +290,33 @@ end intg
 
 section expo
 
+/- English proof (translation)
+Conclude with `hasDerivAt_iff_tendsto_slope.mpr (expDer_op Y t)`.
+-/
 theorem expDer (Y : Mat k r) (t : ℝ) :
     HasDerivAt (fun u : ℝ => NormedSpace.exp (u • Y)) (Y * NormedSpace.exp (t • Y)) t := by
   exact hasDerivAt_iff_tendsto_slope.mpr (expDer_op Y t)
 
+/- English proof (translation)
+Conclude with `continuous_iff_continuousAt.2 fun t => (expDer Y t).continuousAt`.
+-/
 theorem exp_continuous (Y : Mat k r) : Continuous fun t : ℝ => NormedSpace.exp (t • Y) := by
   exact continuous_iff_continuousAt.2 fun t => (expDer Y t).continuousAt
 
 def mulR (y : Mat k r) : Mat k r →L[ℝ] Mat k r :=
   LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ y)
 
+/- English proof (translation)
+Use `(mulR y).hasFDerivAt.comp_hasDerivAt t (expDer Y t)` as an intermediate fact. Conclude with `this`.
+-/
 theorem curveDer (Y y : Mat k r) (t : ℝ) :
     HasDerivAt (fun u : ℝ => NormedSpace.exp (u • Y) * y) (Y * NormedSpace.exp (t • Y) * y) t := by
   have := (mulR y).hasFDerivAt.comp_hasDerivAt t (expDer Y t)
   exact this
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ ((Commute.refl Y).smul_left _ |>.smul_right _), ← add_smul, neg_add_cancel, zero_smul, NormedSpace.exp_zero, Matrix.one_mul]`.
+-/
 theorem exp_neg_mul (Y : Mat k r) (t : ℝ) (y : Mat k r) :
     NormedSpace.exp ((-t) • Y) * (NormedSpace.exp (t • Y) * y) = y := by
   rw [← Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _
@@ -252,22 +332,37 @@ section rep
 
 variable {X : SigData k r}
 
+/- English proof (translation)
+Rewrite using `[X.rep.1.2 a ha b hb]`. Both sides reduce to the same expression.
+-/
 theorem sig_mul {a b : Mat k r} (ha : a ∈ GV k r) (hb : b ∈ GV k r) (v : X.Hs) :
     X.σ (a * b) v = X.σ a (X.σ b v) := by
   rw [X.rep.1.2 a ha b hb]
   rfl
 
+/- English proof (translation)
+Rewrite using `[X.rep.1.1]`. Both sides reduce to the same expression.
+-/
 theorem sig_one (v : X.Hs) : X.σ 1 v = v := by
   rw [X.rep.1.1]
   rfl
 
+/- English proof (translation)
+Conclude with `X.rep.2.1 g hg v`.
+-/
 theorem sig_norm {g : Mat k r} (hg : g ∈ GV k r) (v : X.Hs) : ‖X.σ g v‖ = ‖v‖ := by
   exact X.rep.2.1 g hg v
 
+/- English proof (translation)
+Set `L : X.Hs →ₗᵢ[ℂ] X.Hs` to `⟨(X.σ g).toLinearMap, fun v => X.rep.2.1 g hg v⟩`. Conclude with `L.inner_map_map u v`.
+-/
 theorem sig_inner {g : Mat k r} (hg : g ∈ GV k r) (u v : X.Hs) : ⟪X.σ g u, X.σ g v⟫_ℂ = ⟪u, v⟫_ℂ := by
   let L : X.Hs →ₗᵢ[ℂ] X.Hs := ⟨(X.σ g).toLinearMap, fun v => X.rep.2.1 g hg v⟩
   exact L.inner_map_map u v
 
+/- English proof (translation)
+Establish `h1 : X.σ g (X.σ g⁻¹ u) = u`. Rewrite using `[← sig_mul hg (gv_inv_mem hg), gv_mul_inv hg, sig_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sig_adj {g : Mat k r} (hg : g ∈ GV k r) (u v : X.Hs) : ⟪u, X.σ g v⟫_ℂ = ⟪X.σ g⁻¹ u, v⟫_ℂ := by
   have h1 : X.σ g (X.σ g⁻¹ u) = u := by
     rw [← sig_mul hg (gv_inv_mem hg), gv_mul_inv hg, sig_one]
@@ -284,6 +379,13 @@ def V (Φ : Mat k r → ℂ) : X.Hs := sigInt D X Φ X.w
 
 variable {D X}
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasureOnCompacts D.μG := ⟨D.haarG.finite_compact⟩`. Establish `hGae : ∀ᵐ x ∂D.μG, x ∈ (GV k r : Set (Mt k r))` using `mem_ae_iff.2 D.haarG.conc`. Establish `hof : Continuous fun x : Mt k r => (Matrix.of x : Mat k r)` using `continuous_id`. Establish `hc' : Continuous fun x : Mt k r => Ψ (Matrix.of x)` using `hc.comp hof`. Establish `hs' : HasCompactSupport fun x : Mt k r => Ψ (Matrix.of x)` using `hs`.
+
+Establish `hΨi : Integrable (fun x : Mt k r => Ψ (Matrix.of x)) D.μG` using `hc'.integrable_of_hasCompactSupport hs'`. Establish `hcon : ContinuousOn (fun x : Mt k r => X.σ (a * Matrix.of x) X.w) (GV k r)` using `(X.rep.2.2 X.w).comp (continuous_const.matrix_mul hof).continuousOn fun x hx => gv_mul ha hx`. Establish `hσm : AEStronglyMeasurable (fun x : Mt k r => X.σ (a * Matrix.of x) X.w) D.μG`. Use `hcon.aestronglyMeasurable (μ := D.μG) gv_meas` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `(Measure.restrict_eq_self_of_ae_mem hGae).symm`. Use `hΨi.norm.mono' (hΨi.aestronglyMeasurable.smul hσm) ?_` and prove the remaining obligations. Use `filter_upwards [hGae] with x hx`. Rewrite using `[norm_smul, show ‖X.σ (a * Matrix.of x) X.w‖ = 1 from (sig_norm (gv_mul ha hx) X.w).trans X.w_norm, mul_one]`.
+-/
 private theorem vint_lemma {Ψ : Mat k r → ℂ} (hc : Continuous Ψ) (hs : HasCompactSupport Ψ) {a : Mat k r}
     (ha : a ∈ GV k r) :
     Integrable (fun x : Mt k r => Ψ (Matrix.of x) • X.σ (a * Matrix.of x) X.w) D.μG := by
@@ -303,11 +405,19 @@ private theorem vint_lemma {Ψ : Mat k r → ℂ} (hc : Continuous Ψ) (hs : Has
   filter_upwards [hGae] with x hx
   rw [norm_smul, show ‖X.σ (a * Matrix.of x) X.w‖ = 1 from (sig_norm (gv_mul ha hx) X.w).trans X.w_norm, mul_one]
 
+/- English proof (translation)
+Use `vint_lemma (D := D) (X := X) hc hs gv_one` as an intermediate fact. Simplify `this` using `only [Matrix.one_mul]`.
+-/
 theorem V_int {Φ : Mat k r → ℂ} (hc : Continuous Φ) (hs : HasCompactSupport Φ) :
     Integrable (fun x : Mt k r => Φ (Matrix.of x) • X.σ (Matrix.of x) X.w) D.μG := by
   have := vint_lemma (D := D) (X := X) hc hs gv_one
   simpa only [Matrix.one_mul] using this
 
+/- English proof (translation)
+Establish `hi` using `V_int (D := D) (X := X) hc hs`. Simplify using `only [V, sigInt]`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ hi]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [mem_ae_iff.2 D.haarG.conc] with x hx`.
+
+Simplify using `only [map_smul]`. Rewrite using `[show X.σ (g * Matrix.of x) X.w = X.σ g (X.σ (Matrix.of x) X.w) from sig_mul hg hx X.w]`.
+-/
 theorem V_apply {Φ : Mat k r → ℂ} (hc : Continuous Φ) (hs : HasCompactSupport Φ) {g : Mat k r}
     (hg : g ∈ GV k r) :
     X.σ g (V D X Φ) = ∫ x : Mt k r, Φ (Matrix.of x) • X.σ (g * Matrix.of x) X.w ∂D.μG := by
@@ -319,6 +429,15 @@ theorem V_apply {Φ : Mat k r → ℂ} (hc : Continuous Φ) (hs : HasCompactSupp
   simp only [map_smul]
   rw [show X.σ (g * Matrix.of x) X.w = X.σ g (X.σ (Matrix.of x) X.w) from sig_mul hg hx X.w]
 
+/- English proof (translation)
+Rewrite using `[V_apply hc hs he]`. Establish `hGae : ∀ᵐ x ∂D.μG, x ∈ (GV k r : Set (Mt k r))` using `mem_ae_iff.2 D.haarG.conc`. Establish `hof : Continuous fun x : Mt k r => (Matrix.of x : Mat k r)` using `continuous_id`. Establish `hσm : AEStronglyMeasurable (fun x : Mt k r => X.σ (Matrix.of x) X.w) D.μG`. Use `ContinuousOn.aestronglyMeasurable (μ := D.μG) (f := fun x : Mt k r => X.σ (Matrix.of x) X.w) (X.rep.2.2 X.w) gv_meas` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `(Measure.restrict_eq_self_of_ae_mem hGae).symm`. Establish `hlc : Continuous (lmulM (k` using `k) (r := r) e) := continuous_const.matrix_mul hof`. Establish `hmeas : Measurable (lmulM (k` using `k) (r := r) e) := hlc.measurable`. Establish `hF : AEStronglyMeasurable (fun y : Mt k r => Φ (e⁻¹ * Matrix.of y) • X.σ (Matrix.of y) X.w) D.μG` using `(hc.comp (continuous_const.matrix_mul hof)).aestronglyMeasurable.smul hσm`.
+
+Establish `key` using `integral_map (μ := D.μG) hmeas.aemeasurable (f := fun y : Mt k r => Φ (e⁻¹ * Matrix.of y) • X.σ (Matrix.of y) X.w) (by rw [D.haarG.left e he]; exact hF)`. Rewrite `key` using `[D.haarG.left e he]`. Simplify using `only [V, sigInt]`. Rewrite using `[key]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Use `show Φ (Matrix.of x) • X.σ (e * Matrix.of x) X.w = Φ (e⁻¹ * (e * Matrix.of x)) • X.σ (e * Matrix.of x) X.w`. Rewrite using `[← Matrix.mul_assoc, gv_inv_mul he, Matrix.one_mul]`.
+-/
 theorem V_transl {Φ : Mat k r → ℂ} (hc : Continuous Φ) (hs : HasCompactSupport Φ) {e : Mat k r}
     (he : e ∈ GV k r) : X.σ e (V D X Φ) = V D X (fun x => Φ (e⁻¹ * x)) := by
   rw [V_apply hc hs he]
@@ -343,6 +462,23 @@ theorem V_transl {Φ : Mat k r → ℂ} (hc : Continuous Φ) (hs : HasCompactSup
   show Φ (Matrix.of x) • X.σ (e * Matrix.of x) X.w = Φ (e⁻¹ * (e * Matrix.of x)) • X.σ (e * Matrix.of x) X.w
   rw [← Matrix.mul_assoc, gv_inv_mul he, Matrix.one_mul]
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasureOnCompacts D.μG := ⟨D.haarG.finite_compact⟩`. Establish `hGae : ∀ᵐ x ∂D.μG, x ∈ (GV k r : Set (Mt k r))` using `mem_ae_iff.2 D.haarG.conc`. Establish `hof : Continuous fun x : Mt k r => (Matrix.of x : Mat k r)` using `continuous_id`. Establish `hσm : AEStronglyMeasurable (fun x : Mt k r => X.σ (Matrix.of x) X.w) D.μG`. Use `ContinuousOn.aestronglyMeasurable (μ := D.μG) (f := fun x : Mt k r => X.σ (Matrix.of x) X.w) (X.rep.2.2 X.w) gv_meas` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `(Measure.restrict_eq_self_of_ae_mem hGae).symm`. Establish `hexp` using `exp_continuous Y`. Establish `hE : Continuous fun p : ℝ × Mat k r => NormedSpace.exp (p.1 • Y) * p.2` using `(hexp.comp continuous_fst).matrix_mul continuous_snd`. Establish `hfd : Continuous (fderiv ℝ Φ)` using `(hΦ.fderiv_right ninf_succ_le).continuous`.
+
+Establish `hG : Continuous fun p : ℝ × Mat k r => fderiv ℝ Φ (NormedSpace.exp (p.1 • Y) * p.2) (Y * NormedSpace.exp (p.1 • Y) * p.2)` using `(hfd.comp hE).clm_apply ((continuous_const.matrix_mul (hexp.comp continuous_fst)).matrix_mul continuous_snd)`. Establish `hSc : IsCompact ((fun p : ℝ × Mat k r => NormedSpace.exp ((-p.1) • Y) * p.2) '' (Metric.closedBall (0 : ℝ) 1 ×ˢ tsupport Φ))` using `((isCompact_closedBall _ _).prod hs).image ((hexp.comp continuous_fst.neg).matrix_mul continuous_snd)`. Use `set S : Set (Mt k r) := (fun p : ℝ × Mat k r => NormedSpace.exp ((-p.1) • Y) * p.2) '' (Metric.closedBall (0 : ℝ) 1 ×ˢ tsupport Φ) with hSdef`. Establish `hS : IsCompact S` using `hSc`. Take `⟨C, hC⟩` from `((isCompact_closedBall (0 : ℝ) 1).prod hSc).exists_bound_of_continuousOn hG.continuousOn`.
+
+Establish `hSm : MeasurableSet (α` using `Mt k r) S := hS.isClosed.measurableSet`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := D.μG) (F := fun t (x : Mt k r) => Φ (NormedSpace.exp (t • Y) * Matrix.of x) • X.σ (Matrix.of x) X.w) (F' := fun t (x : Mt k r) => fderiv ℝ Φ (NormedSpace.exp (t • Y) * Matrix.of x) (Y * NormedSpace.exp (t • Y) * Matrix.of x) …`. Simplify using `only [zero_smul, NormedSpace.exp_zero, Matrix.mul_one, Matrix.one_mul] at key`. Conclude with `key.2`. Conclude with `Filter.Eventually.of_forall fun t => (hΦ.continuous.comp (hE.comp (continuous_const.prodMk hof))).aestronglyMeasurable.smul hσm`.
+
+Use `V_int (D := D) (X := X) hΦ.continuous hs` as an intermediate fact. Simplify `this` using `only [zero_smul, NormedSpace.exp_zero, Matrix.one_mul]`. Conclude with `(hG.comp (continuous_const.prodMk hof)).aestronglyMeasurable.smul hσm`. Use `filter_upwards [hGae] with x hx t ht`. Rewrite using `[norm_smul, show ‖X.σ (Matrix.of x) X.w‖ = 1 from (sig_norm hx X.w).trans X.w_norm, mul_one]`.
+
+Use `show _ ≤ S.indicator (fun _ => max C 0) x`. Distinguish the cases in `hxS : x ∈ S`. Rewrite using `[Set.indicator_of_mem hxS]`. Conclude with `(hC (t, Matrix.of x) ⟨Metric.ball_subset_closedBall ht, hxS⟩).trans (le_max_left _ _)`. Establish `h0 : fderiv ℝ Φ (NormedSpace.exp (t • Y) * Matrix.of x) = 0`.
+
+Assume the negation of the conclusion as `hne`. Apply `hxS` to reduce the goal to its premises. Conclude with `⟨(t, NormedSpace.exp (t • Y) * Matrix.of x), ⟨Metric.ball_subset_closedBall ht, tsupport_fderiv_subset ℝ (subset_tsupport _ hne)⟩, exp_neg_mul Y t _⟩`. Rewrite using `[h0, ContinuousLinearMap.zero_apply, norm_zero]`. Conclude with `Set.indicator_nonneg (fun _ _ => le_max_right _ _) _`.
+
+Conclude with `(integrableOn_const (D.haarG.finite_compact S hS).ne enorm_ne_top).integrable_indicator hSm`. Use `Filter.Eventually.of_forall fun x t _ => ?_` and prove the remaining obligations. Establish `h1` using `((hΦ.differentiable ninf_ne_zero) (NormedSpace.exp (t • Y) * Matrix.of x)).hasFDerivAt.comp_hasDerivAt t (curveDer Y (Matrix.of x) t)`. Conclude with `h1.smul_const (X.σ (Matrix.of x) X.w)`.
+-/
 theorem V_hasDerivAt {Φ : Mat k r → ℂ} (hΦ : ContDiff ℝ ninf Φ) (hs : HasCompactSupport Φ) (Y : Mat k r) :
     HasDerivAt (fun t : ℝ => V D X (fun x => Φ (NormedSpace.exp (t • Y) * x)))
       (V D X (fun x => fderiv ℝ Φ x (Y * x))) 0 := by
@@ -402,6 +538,9 @@ theorem V_hasDerivAt {Φ : Mat k r → ℂ} (hΦ : ContDiff ℝ ninf Φ) (hs : H
       (curveDer Y (Matrix.of x) t)
     exact h1.smul_const (X.σ (Matrix.of x) X.w)
 
+/- English proof (translation)
+Conclude with `vint_lemma hc hs hh`.
+-/
 theorem V_intH {Ψ : Mat k r → ℂ} (hc : Continuous Ψ) (hs : HasCompactSupport Ψ) {h : Mat k r}
     (hh : h ∈ GV k r) :
     Integrable (fun x : Mt k r => Ψ (Matrix.of x) • X.σ (h * Matrix.of x) X.w) D.μG := by

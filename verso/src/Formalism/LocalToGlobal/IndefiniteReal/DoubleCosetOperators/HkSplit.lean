@@ -16,26 +16,47 @@ variable {S S' R : Type} [CommRing S] [CommRing S'] [CommRing R] {n : Type} [Fin
 
 def extM (ι : S →ₙ+* R) (A : Matrix n n S) : Matrix n n R := (1 - ι 1) • (1 : Matrix n n R) + A.map ι
 
+/- English proof (translation)
+Rewrite using `[← map_mul, one_mul]`.
+-/
 theorem idem_mul (ι : S →ₙ+* R) (x : S) : ι 1 * ι x = ι x := by rw [← map_mul, one_mul]
 
+/- English proof (translation)
+Rewrite using `[sub_mul, one_mul, idem_mul, sub_self]`.
+-/
 theorem compl_mul (ι : S →ₙ+* R) (x : S) : (1 - ι 1) * ι x = 0 := by
   rw [sub_mul, one_mul, idem_mul, sub_self]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, map_mul]`.
+-/
 theorem map_mul_nu (ι : S →ₙ+* R) (A B : Matrix n n S) : (A * B).map ι = A.map ι * B.map ι := by
   ext i j; simp [Matrix.mul_apply, map_sum, map_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[compl_mul]`.
+-/
 theorem compl_smul_map (ι : S →ₙ+* R) (A : Matrix n n S) : (1 - ι 1) • A.map ι = 0 := by
   ext i j; simp [compl_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[idem_mul]`.
+-/
 theorem idem_smul_map (ι : S →ₙ+* R) (A : Matrix n n S) : ι 1 • A.map ι = A.map ι := by
   ext i j; simp [idem_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[extM]`. Simplify using `[extM, Matrix.one_apply, h]`.
+-/
 theorem extM_one (ι : S →ₙ+* R) : extM ι (1 : Matrix n n S) = 1 := by
   ext i j
   by_cases h : i = j
   · subst h; simp [extM]
   · simp [extM, Matrix.one_apply, h]
 
+/- English proof (translation)
+Establish `hc : (1 - ι 1) * (1 - ι 1) = 1 - ι 1`. Establish `h` using `idem_mul ι 1`. Take the linear combination `h`. Simplify using `only [extM, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, compl_smul_map, smul_smul, hc, map_mul_nu, add_zero, zero_add]`.
+-/
 theorem extM_mul (ι : S →ₙ+* R) (A B : Matrix n n S) : extM ι (A * B) = extM ι A * extM ι B := by
   have hc : (1 - ι 1) * (1 - ι 1) = 1 - ι 1 := by
     have h := idem_mul ι 1
@@ -50,8 +71,16 @@ def extHom (ι : S →ₙ+* R) : Matrix n n S →* Matrix n n R where
 
 def extGL (ι : S →ₙ+* R) : GL n S →* GL n R := Units.map (extHom ι)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extGL_coe (ι : S →ₙ+* R) (g : GL n S) : ((extGL ι g : GL n R) : Matrix n n R) = extM ι g := rfl
 
+/- English proof (translation)
+Establish `he : σR (ι 1) = ι 1` using `by rw [← hι, map_one]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[cT, extM, hι, he]`.
+
+Simplify using `[cT, extM, Matrix.one_apply, h, Ne.symm h, hι]`.
+-/
 theorem extM_cT (ι : S →ₙ+* R) (σS : S →+* S) (σR : R →+* R) (hι : ∀ x, ι (σS x) = σR (ι x)) (A : Matrix n n S) :
     cT σR (extM ι A) = extM ι (cT σS A) := by
   have he : σR (ι 1) = ι 1 := by rw [← hι, map_one]
@@ -60,6 +89,15 @@ theorem extM_cT (ι : S →ₙ+* R) (σS : S →+* S) (σR : R →+* R) (hι : �
   · subst h; simp [cT, extM, hι, he]
   · simp [cT, extM, Matrix.one_apply, h, Ne.symm h, hι]
 
+/- English proof (translation)
+Establish `hg' : cT σS (g : Matrix n n S) * JS * (g : Matrix n n S) = JS` using `hg`. Use `show cT σR (extM ι (g : Matrix n n S)) * JR * extM ι (g : Matrix n n S) = JR`. Rewrite using `[extM_cT ι σS σR hι]`. Use `set A := cT σS (g : Matrix n n S)`. Use `set B := (g : Matrix n n S)`.
+
+Establish `k1 : A.map ι * JR = (A * JS).map ι`. Rewrite using `[map_mul_nu, hJ, Matrix.mul_smul]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Finset.mul_sum, ← mul_assoc, idem_mul]`. Establish `k2 : (1 - ι 1) • (JR * B.map ι) = 0` using `by rw [← Matrix.mul_smul, compl_smul_map, Matrix.mul_zero]`.
+
+Establish `k3 : (1 - ι 1) • (A.map ι * JR) = 0` using `by rw [k1, compl_smul_map]`. Establish `hc : (1 - ι 1) * (1 - ι 1) = 1 - ι 1`. Establish `h` using `idem_mul ι 1`. Take the linear combination `h`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [extM, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_smul, hc, k2, k3, add_zero, zero_add]`. Use `_ = (1 - ι 1) • JR + ι 1 • JR := by rw [k1, ← map_mul_nu, hg', hJ]`. Use `_ = JR := by rw [← add_smul, sub_add_cancel, one_smul]`.
+-/
 theorem extGL_mem (ι : S →ₙ+* R) (σS : S →+* S) (σR : R →+* R) (hι : ∀ x, ι (σS x) = σR (ι x))
     (JS : Matrix n n S) (JR : Matrix n n R) (hJ : JS.map ι = ι 1 • JR) (g : GL n S) (hg : g ∈ UJ σS JS) :
     extGL ι g ∈ UJ σR JR := by
@@ -84,9 +122,17 @@ theorem extGL_mem (ι : S →ₙ+* R) (σS : S →+* S) (σR : R →+* R) (hι :
     _ = (1 - ι 1) • JR + ι 1 • JR := by rw [k1, ← map_mul_nu, hg', hJ]
     _ = JR := by rw [← add_smul, sub_add_cancel, one_smul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[hc]`.
+-/
 theorem smul_map_of (ι : S →ₙ+* R) (c : R) (hc : ∀ x, c * ι x = ι x) (A : Matrix n n S) : c • A.map ι = A.map ι := by
   ext i j; simp [hc]
 
+/- English proof (translation)
+Establish `h1 : ∀ y, (1 - ι 1) * ι' y = ι' y` using `fun y => by rw [sub_mul, one_mul, h0, sub_zero]`. Establish `h2 : ∀ x, (1 - ι' 1) * ι x = ι x` using `fun x => by rw [sub_mul, one_mul, mul_comm, h0, sub_zero]`. Establish `hAB : A.map ι * B.map ι' = 0` using `by ext i j; simp [Matrix.mul_apply, h0]`. Establish `hBA : B.map ι' * A.map ι = 0` using `by ext i j; simp [Matrix.mul_apply, mul_comm, h0]`. Simplify using `only [extM, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_smul, smul_map_of ι' _ h1, smul_map_of ι _ h2, hAB, hBA, add_zero, mul_comm (1 - ι 1)]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem extM_comm (ι : S →ₙ+* R) (ι' : S' →ₙ+* R) (h0 : ∀ x y, ι x * ι' y = 0) (A : Matrix n n S)
     (B : Matrix n n S') : extM ι A * extM ι' B = extM ι' B * extM ι A := by
   have h1 : ∀ y, (1 - ι 1) * ι' y = ι' y := fun y => by rw [sub_mul, one_mul, h0, sub_zero]
@@ -97,6 +143,11 @@ theorem extM_comm (ι : S →ₙ+* R) (ι' : S' →ₙ+* R) (h0 : ∀ x y, ι x 
     smul_map_of ι' _ h1, smul_map_of ι _ h2, hAB, hBA, add_zero, mul_comm (1 - ι 1)]
   abel
 
+/- English proof (translation)
+Establish `hcomm : M * A.map ι = A.map ι * M`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one]`. Use `_ = A.map ι * (ι 1 • M) := by rw [hM]`. Use `_ = (ι 1 • A.map ι) * M := by rw [Matrix.mul_smul, Matrix.smul_mul]`.
+
+Use `_ = A.map ι * M := by rw [idem_smul_map]`. Unfold `extM`. Rewrite using `[mul_add, add_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul, hcomm]`.
+-/
 theorem extM_comm_of_smul (ι : S →ₙ+* R) (M : Matrix n n R) (hM : ι 1 • M = ι 1 • (1 : Matrix n n R))
     (A : Matrix n n S) : M * extM ι A = extM ι A * M := by
   have hcomm : M * A.map ι = A.map ι * M := by
@@ -122,6 +173,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 def inrL : Af F →ₗ[F] AF F := LinearMap.inr F (Ainf F) (Af F)
 
+/- English proof (translation)
+The claim follows from `Prod.ext (mul_zero (0 : Ainf F)).symm rfl`.
+-/
 theorem inrL_mul (a c : Af F) : inrL (a * c) = inrL a * inrL c := Prod.ext (mul_zero (0 : Ainf F)).symm rfl
 
 def inrT : Af F ⊗[F] E →ₙ+* AF F ⊗[F] E where
@@ -143,9 +197,15 @@ def jv (v : HeightOneSpectrum (𝓞 F)) : E ⊗[F] v.adicCompletion F →ₙ+* A
   (inrT (E := E)).comp ((Algebra.TensorProduct.comm F E (Af F)).toRingEquiv.toRingHom.toNonUnitalRingHom.comp
     (Formalism.UG.P.afsplitIE (E := E) v))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jv_tmul (v : HeightOneSpectrum (𝓞 F)) (a : E) (b : v.adicCompletion F) :
     jv v (a ⊗ₜ[F] b) = inrL (Formalism.UG.P.afsplitI v b) ⊗ₜ[F] a := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, hx, hx']`. Consider the case `tmul a b => rfl`.
+-/
 theorem jv_sig (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion F) :
     jv v (Formalism.UG.sigR σ (v.adicCompletion F) x) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ (jv v x) := by
   induction x using TensorProduct.induction_on with
@@ -153,11 +213,19 @@ theorem jv_sig (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[
   | add x x' hx hx' => simp only [map_add, hx, hx']
   | tmul a b => rfl
 
+/- English proof (translation)
+Use `show jv v (e ⊗ₜ[F] 1) = jv v (1 ⊗ₜ[F] 1) * ((1 : AF F) ⊗ₜ[F] e)`. Rewrite using `[jv_tmul, jv_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+-/
 theorem jv_inclE (v : HeightOneSpectrum (𝓞 F)) (e : E) :
     jv v (Formalism.UG.inclE (F := F) (v.adicCompletion F) e) = jv v 1 * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (AF F) e := by
   show jv v (e ⊗ₜ[F] 1) = jv v (1 ⊗ₜ[F] 1) * ((1 : AF F) ⊗ₜ[F] e)
   rw [jv_tmul, jv_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => rw [map_add, map_add, hx, hx', add_zero]`. Consider the case `tmul a b`. Rewrite using `[jv_tmul, Algebra.TensorProduct.map_tmul]`.
+
+Conclude with `TensorProduct.zero_tmul _ _`.
+-/
 theorem jv_fst (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion F) :
     Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (jv v x) = 0 := by
   induction x using TensorProduct.induction_on with
@@ -171,6 +239,9 @@ def backT : AF F ⊗[F] E →+* E ⊗[F] Af F :=
   (Algebra.TensorProduct.comm F (Af F) E).toRingEquiv.toRingHom.comp
     (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, hx, hx']`. Consider the case `tmul a b => rfl`.
+-/
 theorem backT_jv (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion F) :
     backT (jv v x) = Formalism.UG.P.afsplitIE v x := by
   induction x using TensorProduct.induction_on with
@@ -178,14 +249,25 @@ theorem backT_jv (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion
   | add x x' hx hx' => simp only [map_add, hx, hx']
   | tmul a b => rfl
 
+/- English proof (translation)
+Rewrite using `[backT_jv, Formalism.UG.P.afsplit_prV_IE]`.
+-/
 theorem prV_backT_jv (v : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] v.adicCompletion F) :
     Formalism.UG.prV (E := E) v (backT (jv v x)) = x := by
   rw [backT_jv, Formalism.UG.P.afsplit_prV_IE]
 
+/- English proof (translation)
+Rewrite using `[backT_jv, Formalism.UG.P.afsplit_prV_IE_ne v w h]`.
+-/
 theorem prV_backT_jv_ne (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (x : E ⊗[F] v.adicCompletion F) :
     Formalism.UG.prV (E := E) w (backT (jv v x)) = 0 := by
   rw [backT_jv, Formalism.UG.P.afsplit_prV_IE_ne v w h]
 
+/- English proof (translation)
+Use `Formalism.UG.P.afsplit_inj _ fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Formalism.UG.P.afsplit_prV_IE_ne _ _ h, mul_zero]`.
+
+Rewrite using `[Formalism.UG.P.afsplit_prV_IE_ne _ _ hw, zero_mul]`.
+-/
 theorem IE_orth {v v' : HeightOneSpectrum (𝓞 F)} (h : v ≠ v') (x : E ⊗[F] v.adicCompletion F)
     (y : E ⊗[F] v'.adicCompletion F) : Formalism.UG.P.afsplitIE v x * Formalism.UG.P.afsplitIE v' y = 0 := by
   refine Formalism.UG.P.afsplit_inj _ fun w => ?_
@@ -194,6 +276,11 @@ theorem IE_orth {v v' : HeightOneSpectrum (𝓞 F)} (h : v ≠ v') (x : E ⊗[F]
   · subst hw; rw [Formalism.UG.P.afsplit_prV_IE_ne _ _ h, mul_zero]
   · rw [Formalism.UG.P.afsplit_prV_IE_ne _ _ hw, zero_mul]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [mul_add, hx, hy, map_add, map_add, map_add]`. Consider the case `tmul x a`. Rewrite using `[Algebra.TensorProduct.one_def, jv_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+
+Use `show (inrL (Formalism.UG.P.afsplitI v 1) * x) ⊗ₜ[F] a = jv v (a ⊗ₜ[F] (sndA F x) v)`. Rewrite using `[jv_tmul, Formalism.UG.P.afsplitI_eval]`. Use `congr 1`. Conclude with `Prod.ext (zero_mul _) rfl`.
+-/
 theorem jv_one_mul (v : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) :
     jv v 1 * z = jv v (Formalism.UG.prV (E := E) v (backT z)) := by
   induction z using TensorProduct.induction_on with
@@ -206,6 +293,9 @@ theorem jv_one_mul (v : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) :
     congr 1
     exact Prod.ext (zero_mul _) rfl
 
+/- English proof (translation)
+Establish `k : jv v x * jv v' y = inrT ((Algebra.TensorProduct.comm F E (Af F)) (Formalism.UG.P.afsplitIE v x * Formalism.UG.P.afsplitIE v' y))`. Rewrite using `[map_mul, map_mul]`. Both sides reduce to the same expression. Rewrite using `[k, IE_orth h, map_zero, map_zero]`.
+-/
 theorem jv_orth {v v' : HeightOneSpectrum (𝓞 F)} (h : v ≠ v') (x : E ⊗[F] v.adicCompletion F)
     (y : E ⊗[F] v'.adicCompletion F) : jv v x * jv v' y = 0 := by
   have k : jv v x * jv v' y = inrT ((Algebra.TensorProduct.comm F E (Af F))
@@ -230,6 +320,9 @@ def J1 (s : SplitAt σ v) (J : Matrix (Fin n) (Fin n) E) : Matrix (Fin n) (Fin n
   J.map ((RingHom.fst _ _).comp (s.sp.toRingHom.comp
     (Formalism.UG.inclE (F := F) (v.adicCompletion F))))
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => Prod.ext rfl ?_` and prove the remaining obligations. Use `show (s.sp (Formalism.UG.inclE (F := F) _ (J i j))).2 = (s.sp (Formalism.UG.inclE (F := F) _ (J j i))).1`. Establish `h` using `congrArg Prod.fst (s.sig (Formalism.UG.inclE (F := F) _ (J i j)))`. Rewrite using `[← hJ i j]`. Conclude with `h.symm`.
+-/
 theorem J_split (s : SplitAt σ v) (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J i j) = J j i) :
     J.map (s.sp.toRingHom.comp (Formalism.UG.inclE (F := F) (v.adicCompletion F))) =
       splitJ (J1 s J) := by
@@ -239,6 +332,9 @@ theorem J_split (s : SplitAt σ v) (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j,
   rw [← hJ i j]
   exact h.symm
 
+/- English proof (translation)
+Use `RingHom.map_det ((RingHom.fst _ _).comp (s.sp.toRingHom.comp (Formalism.UG.inclE (F := F) (v.adicCompletion F)))) J` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`. Rewrite using `[J1, ← this]`. Conclude with `(isUnit_iff_ne_zero.2 h).map _`.
+-/
 theorem split_matrix_det_unit (s : SplitAt σ v) (J : Matrix (Fin n) (Fin n) E) (h : J.det ≠ 0) : IsUnit (J1 s J).det := by
   have := RingHom.map_det ((RingHom.fst _ _).comp (s.sp.toRingHom.comp
     (Formalism.UG.inclE (F := F) (v.adicCompletion F)))) J
@@ -250,6 +346,9 @@ def e1 (s : SplitAt σ v) (J : Matrix (Fin n) (Fin n) E) (h : J.det ≠ 0) :
     UJ (swapR (v.adicCompletion F)) (splitJ (J1 s J)) ≃* GL (Fin n) (v.adicCompletion F) :=
   Classical.choose (Formalism.UG.Final.SplitIso (v.adicCompletion F) (Fin n) (J1 s J) (split_matrix_det_unit s J h))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (Formalism.UG.Final.SplitIso (v.adicCompletion F) (Fin n) (J1 s J) (split_matrix_det_unit s J h)) g`.
+-/
 theorem orderedCechToCatCochainsOne_apply_valueAtSubset (s : SplitAt σ v) (J : Matrix (Fin n) (Fin n) E) (h : J.det ≠ 0) (g) :
     e1 s J h g = bc (RingHom.fst _ _) (g : GL (Fin n) (v.adicCompletion F × v.adicCompletion F)) :=
   Classical.choose_spec (Formalism.UG.Final.SplitIso (v.adicCompletion F) (Fin n) (J1 s J) (split_matrix_det_unit s J h)) g
@@ -259,6 +358,11 @@ def locH (s : SplitAt σ v) (J : Matrix (Fin n) (Fin n) E) (h : J.det ≠ 0) :
   (bc s.sp.symm.toRingHom).comp
     ((UJ (swapR (v.adicCompletion F)) (splitJ (J1 s J))).subtype.comp (e1 s J h).symm.toMonoidHom)
 
+/- English proof (translation)
+Establish `k : ∀ y : GL (Fin n) (v.adicCompletion F × v.adicCompletion F), bc ((RingHom.fst _ _).comp s.sp.toRingHom) (bc s.sp.symm.toRingHom y) = bc (RingHom.fst _ _) y`. Introduce `y`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[bc]`.
+
+Rewrite using `[locH, MonoidHom.comp_apply, k]`. Conclude with `(orderedCechToCatCochainsOne_apply_valueAtSubset s J h ((e1 s J h).symm a)).symm.trans ((e1 s J h).apply_symm_apply a)`.
+-/
 theorem locH_fst (s : SplitAt σ v) (J : Matrix (Fin n) (Fin n) E) (h : J.det ≠ 0) (a) :
     bc ((RingHom.fst _ _).comp s.sp.toRingHom) (locH s J h a) = a := by
   have k : ∀ y : GL (Fin n) (v.adicCompletion F × v.adicCompletion F),
@@ -269,6 +373,11 @@ theorem locH_fst (s : SplitAt σ v) (J : Matrix (Fin n) (Fin n) E) (h : J.det �
   rw [locH, MonoidHom.comp_apply, k]
   exact (orderedCechToCatCochainsOne_apply_valueAtSubset s J h ((e1 s J h).symm a)).symm.trans ((e1 s J h).apply_symm_apply a)
 
+/- English proof (translation)
+Establish `hc : s.sp.toRingHom.comp (Formalism.UG.sigR σ (v.adicCompletion F)) = (swapR (v.adicCompletion F)).comp s.sp` using `RingHom.ext s.sig`. Establish `k : (⇑s.sp.symm.toRingHom ∘ ⇑(s.sp.toRingHom.comp (Formalism.UG.inclE (F` using `F) (v.adicCompletion F)))) = ⇑(Formalism.UG.inclE (F := F) (E := E) (v.adicCompletion F)) := by`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Establish `key : ∀ x ∈ UJ (swapR (v.adicCompletion F)) (splitJ (J1 s J)), bc s.sp.symm.toRingHom x ∈ Formalism.UG.UPts σ J (v.adicCompletion F)`.
+
+Introduce `x hx`. Establish `h1` using `Formalism.UG.P.transport_bc_mem (swapR (v.adicCompletion F)) (Formalism.UG.sigR σ (v.adicCompletion F)) s.sp.symm.toRingHom (Formalism.UG.P.transport_symm_comp _ _ s.sp hc) (splitJ (J1 s J)) x hx`. Rewrite `h1` using `[← J_split s J hJ, Matrix.map_map, k]`. Conclude with `h1`. Conclude with `key _ ((e1 s J h).symm a).2`.
+-/
 theorem locH_mem (s : SplitAt σ v) (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J i j) = J j i)
     (h : J.det ≠ 0) (a) : locH s J h a ∈ Formalism.UG.UPts σ J (v.adicCompletion F) := by
   have hc : s.sp.toRingHom.comp (Formalism.UG.sigR σ (v.adicCompletion F)) =
@@ -296,6 +405,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `V.herm.eq (V.frame i) (V.frame j)`.
+-/
 theorem gram_herm' (V : HSp D) (i j : Fin V.rank) : D.sp.cm.sig (V.gram i j) = V.gram j i :=
   V.herm.eq (V.frame i) (V.frame j)
 
@@ -305,6 +417,9 @@ variable {v : HeightOneSpectrum (𝓞 D.host.F)}
 
 abbrev locV (V : HSp D) (s : SplitD D v) := locH s V.gram (Formalism.L2.Theta.gram_det_ne V)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR]`. Conclude with `jv_inclE v _`.
+-/
 theorem jv_J (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     (V.gram.map (Formalism.UG.inclE (F := D.host.F) (v.adicCompletion D.host.F))).map (jv (E := D.host.E) v) =
       jv (E := D.host.E) v 1 • Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AF D.host.F) V.gram := by
@@ -312,6 +427,9 @@ theorem jv_J (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) :
   simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR]
   exact jv_inclE v _
 
+/- English proof (translation)
+The claim follows from `extGL_mem (jv v) (Formalism.UG.sigR D.sp.cm.sig _) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig) (jv_sig _ v) _ _ (jv_J V v) _ (locH_mem s V.gram (gram_herm' V) _ a)`.
+-/
 theorem embV_mem (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicCompletion D.host.F)) :
     extGL (jv v) (locV V s a) ∈ HR (AF D.host.F) D.sp.cm.sig V.gram :=
   extGL_mem (jv v) (Formalism.UG.sigR D.sp.cm.sig _) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig) (jv_sig _ v) _ _
@@ -320,12 +438,23 @@ theorem embV_mem (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicComple
 def embV (V : HSp D) (s : SplitD D v) : GL (Fin V.rank) (v.adicCompletion D.host.F) →* GA D V :=
   MonoidHom.codRestrict ((extGL (jv v)).comp (locV V s)) (HR (AF D.host.F) D.sp.cm.sig V.gram) (embV_mem V s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embV_coe (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicCompletion D.host.F)) :
     (matHom V (embV V s a)).val = extM (jv v) (locV V s a).val := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infHom_entry (V : HSp D) (g : GA D V) (i j : Fin V.rank) :
     (infHom V g).val i j = Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id _ _) ((matHom V g).val i j) := rfl
 
+/- English proof (translation)
+Rewrite using `[GfC, MonoidHom.mem_ker]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[infHom_entry, embV_coe, Units.val_one]`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using `[extM, jv_fst]`. Simplify using `[extM, jv_fst, h]`.
+-/
 theorem embV_fin (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicCompletion D.host.F)) :
     embV V s a ∈ GfC V := by
   rw [GfC, MonoidHom.mem_ker]
@@ -336,9 +465,17 @@ theorem embV_fin (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicComple
   · subst h; simp [extM, jv_fst]
   · simp [extM, jv_fst, h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compV_entry (V : HSp D) (w : HeightOneSpectrum (𝓞 D.host.F)) (g : GA D V) (i j : Fin V.rank) :
     (compV V w g).val i j = Formalism.UG.prV w (backT ((matHom V g).val i j)) := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[compV_entry, embV_coe]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using `[extM, prV_backT_jv]`. Simplify using `[extM, prV_backT_jv, h]`.
+-/
 theorem compV_embV (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicCompletion D.host.F)) :
     compV V v (embV V s a) = locV V s a := by
   apply Units.ext
@@ -348,6 +485,11 @@ theorem compV_embV (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicComp
   · subst h; simp [extM, prV_backT_jv]
   · simp [extM, prV_backT_jv, h]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[compV_entry, embV_coe, Units.val_one]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using `[extM, prV_backT_jv_ne v w hw]`. Simplify using `[extM, prV_backT_jv_ne v w hw, h]`.
+-/
 theorem compV_embV_ne (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicCompletion D.host.F))
     (w : HeightOneSpectrum (𝓞 D.host.F)) (hw : w ≠ v) : compV V w (embV V s a) = 1 := by
   apply Units.ext
@@ -357,14 +499,23 @@ theorem compV_embV_ne (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicC
   · subst h; simp [extM, prV_backT_jv_ne v w hw]
   · simp [extM, prV_backT_jv_ne v w hw, h]
 
+/- English proof (translation)
+Rewrite using `[compV_embV]`. Conclude with `locH_fst s _ _ a`.
+-/
 theorem embV_at (V : HSp D) (s : SplitD D v) (a : GL (Fin V.rank) (v.adicCompletion D.host.F)) :
     Formalism.UG.bc ((RingHom.fst _ _).comp s.sp.toRingHom) (compV V v (embV V s a)) = a := by
   rw [compV_embV]; exact locH_fst s _ _ a
 
+/- English proof (translation)
+Introduce `a b hab`. Rewrite using `[← embV_at V s a, ← embV_at V s b, hab]`.
+-/
 theorem embV_inj (V : HSp D) (s : SplitD D v) : Function.Injective (embV V s) := by
   intro a b hab
   rw [← embV_at V s a, ← embV_at V s b, hab]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `extM_comm (jv v) (jv v') (jv_orth h) _ _`.
+-/
 theorem embV_comm (V : HSp D) {v v' : HeightOneSpectrum (𝓞 D.host.F)} (h : v ≠ v') (s : SplitD D v)
     (s' : SplitD D v') (a : GL (Fin V.rank) (v.adicCompletion D.host.F))
     (b : GL (Fin V.rank) (v'.adicCompletion D.host.F)) : embV V s a * embV V s' b = embV V s' b * embV V s a := by
@@ -378,9 +529,15 @@ def embOn (V : HSp D) (T : Set (HeightOneSpectrum (𝓞 D.host.F))) (s : ∀ v �
     (v : HeightOneSpectrum (𝓞 D.host.F)) : GL (Fin V.rank) (v.adicCompletion D.host.F) →* GA D V :=
   if hv : v ∈ T then embV V (s v hv) else 1
 
+/- English proof (translation)
+The claim follows from `dif_pos hv`.
+-/
 theorem embOn_mem (V : HSp D) {T : Set (HeightOneSpectrum (𝓞 D.host.F))} (s : ∀ v ∈ T, SplitD D v)
     {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∈ T) : embOn V T s v = embV V (s v hv) := dif_pos hv
 
+/- English proof (translation)
+Rewrite using `[embOn, dif_neg hv, MonoidHom.one_apply]`.
+-/
 theorem embOn_not (V : HSp D) {T : Set (HeightOneSpectrum (𝓞 D.host.F))} (s : ∀ v ∈ T, SplitD D v)
     {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∉ T) (a : GL (Fin V.rank) (v.adicCompletion D.host.F)) :
     embOn V T s v a = 1 := by
@@ -411,6 +568,9 @@ def splitEmbOn (V : HSp D) (K : Set (GA D V)) (T : Set (HeightOneSpectrum (𝓞 
     · rw [embOn_not V s hv a, mul_one, one_mul]
     · rw [embOn_not V s hv a, embOn_not V s hv' b]
 
+/- English proof (translation)
+The claim follows from `embOn_mem V s hv`.
+-/
 theorem splitEmbOn_emb (V : HSp D) (K : Set (GA D V)) (T : Set (HeightOneSpectrum (𝓞 D.host.F)))
     (s : ∀ v ∈ T, SplitD D v) (hK : ∀ v (hv : v ∈ T), ∀ a ∈ Kv v V.rank, embV V (s v hv) a ∈ K)
     (h1 : (1 : GA D V) ∈ K) {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∈ T) :
@@ -430,6 +590,9 @@ def compVH (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     GA D V →* GL (Fin V.rank) (D.host.E ⊗[D.host.F] v.adicCompletion D.host.F) :=
   (Formalism.UG.bc (Formalism.UG.prV v)).comp (Formalism.IndefR.Lev.finE V)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compVH_apply (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GA D V) : compVH V v g = compV V v g := rfl
 
 def Kaway (V : HSp D) (K : Subgroup (GA D V)) (v : HeightOneSpectrum (𝓞 D.host.F)) : Subgroup (GA D V) :=
@@ -454,6 +617,13 @@ def LevSplitP (D : D7) : Prop :=
       (∀ y, embV V s y ∈ K → y ∈ Kv v V.rank) ∧
       (∀ κ ∈ K, ∃ a ∈ Kv v V.rank, ∃ c ∈ Kaway V K v, κ = embV V s a * c)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show (matHom V c).val * extM (jv v) (locV V s y).val = extM (jv v) (locV V s y).val * (matHom V c).val`. Establish `hM : jv (E` using `D.host.E) v 1 • (matHom V c).val = jv (E := D.host.E) v 1 • (1 : Matrix (Fin V.rank) (Fin V.rank) _) := by`. Use extensionality with `i j`.
+
+Establish `h` using `congrArg (fun g : GL (Fin V.rank) (D.host.E ⊗[D.host.F] v.adicCompletion D.host.F) => g.val i j) hc`. Simplify using `only [compV_entry, Units.val_one] at h`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[jv_one_mul, h]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Conclude with `extM_comm_of_smul (jv v) _ hM _`.
+-/
 theorem embV_comm_away (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} (s : SplitD D v) (c : GA D V)
     (hc : compV V v c = 1) (y : GL (Fin V.rank) (v.adicCompletion D.host.F)) :
     c * embV V s y = embV V s y * c := by
@@ -471,6 +641,9 @@ theorem embV_comm_away (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} (s : 
     · simp [hij]
   exact extM_comm_of_smul (jv v) _ hM _
 
+/- English proof (translation)
+Introduce `c hc y` and use `embV_comm_away V s c (by rw [← compVH_apply]; exact hc.2) y`.
+-/
 theorem embV_comm_Kaway (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} (s : SplitD D v) (K : Subgroup (GA D V)) :
     ∀ c ∈ Kaway V K v, ∀ y, c * embV V s y = embV V s y * c :=
   fun c hc y => embV_comm_away V s c (by rw [← compVH_apply]; exact hc.2) y
@@ -479,6 +652,9 @@ def GoodAt (V : HSp D) (N : ℕ) (T : Set (HeightOneSpectrum (𝓞 D.host.F))) (
   ∀ v (hv : v ∈ T), IsUnit (N : v.adicCompletionIntegers D.host.F) ∧ IntSplit (s v hv) ∧ LocStd V v
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Establish `hf : finMat D.sp.cm.sig V.gram (1 : GA D V) = 1` using `by show ((1 : Matrix (Fin V.rank) (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E))).map _ = 1`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Use `⟨⟨(GfC V).one_mem, fun y => by rw [hf, Matrix.one_mulVec], fun v hv => absurd hv (Finset.notMem_empty v)⟩, fun y _ => ⟨0, zero_mem _, by rw [hf, sub_self, Matrix.zero_mulVec, smul_zero]⟩⟩` and prove the remaining obligations.
+-/
 theorem one_mem_KpC (V : HSp D) (N : ℕ) : (1 : GA D V) ∈ Formalism.L2.NTheta.KpC V N := by
   have hf : finMat D.sp.cm.sig V.gram (1 : GA D V) = 1 := by
     show ((1 : Matrix (Fin V.rank) (Fin V.rank) (AF D.host.F ⊗[D.host.F] D.host.E))).map _ = 1
@@ -496,6 +672,11 @@ def splitEmbKpC (hP : LevSplitP D) (V : HSp D) (N : ℕ) (T : Set (HeightOneSpec
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨K, hK, h1, h2, h3⟩` from `hP V N v (s v hv) (hT v hv).1 (hT v hv).2.1 (hT v hv).2.2`. Establish `h4` using `embV_comm_Kaway V (s v hv) K`. Establish `hφ' : RightInv (K : Set (GA D V)) φ` using `by rw [hK]; exact hφ`. Use `⟨K, hK, isDCSys_map h1 inf_le_left h3 h4 h2 hR, fun g => ?_⟩` and prove the remaining obligations. Establish `he : (splitEmbKpC hP V N T s hT).emb v = embV V (s v hv)` using `embOn_mem V s hv`.
+
+Unfold `hkGA`. Rewrite using `[he]`. Conclude with `(opAt_dosetInd_map (embV_inj V (s v hv)) h1 inf_le_left h3 h4 h2 hR hφ' g).2`.
+-/
 theorem hkGA_dosetInd_KpC (hP : LevSplitP D) (V : HSp D) (N : ℕ) (T : Set (HeightOneSpectrum (𝓞 D.host.F)))
     (s : ∀ v ∈ T, SplitD D v) (hT : GoodAt V N T s) {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∈ T)
     {α : GL (Fin V.rank) (v.adicCompletion D.host.F)} {R : Finset (GL (Fin V.rank) (v.adicCompletion D.host.F))}
@@ -513,6 +694,9 @@ theorem hkGA_dosetInd_KpC (hP : LevSplitP D) (V : HSp D) (N : ℕ) (T : Set (Hei
   rw [he]
   exact (opAt_dosetInd_map (embV_inj V (s v hv)) h1 inf_le_left h3 h4 h2 hR hφ' g).2
 
+/- English proof (translation)
+Establish `he : (splitEmbKpC hP V N T s hT).emb v = embV V (s v hv)` using `embOn_mem V s hv`. Unfold `hkGA`. Rewrite using `[he]`. Conclude with `opAt_twist_dosetInd hχ hR (fun g' x ⟨a, ha, e⟩ => e ▸ hφ g' _ (by rw [← he]; exact (splitEmbKpC hP V N T s hT).emb_K v a ha)) g`.
+-/
 theorem hkGA_twist_KpC (hP : LevSplitP D) (V : HSp D) (N : ℕ) (T : Set (HeightOneSpectrum (𝓞 D.host.F)))
     (s : ∀ v ∈ T, SplitD D v) (hT : GoodAt V N T s) {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∈ T)
     {χ : GL (Fin V.rank) (v.adicCompletion D.host.F) →* ℂ} (hχ : ∀ κ ∈ Kv v V.rank, χ κ = 1)
@@ -532,6 +716,9 @@ section Clauses
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Use `⟨fun γ hγ => DoubleCoset.mem_doubleCoset.1 (h.1 γ hγ), fun x => ⟨fun hx => h.2 x (DoubleCoset.mem_doubleCoset.2 hx), fun ⟨γ, ⟨hγ, hx⟩, _⟩ => ?_⟩⟩` and prove the remaining obligations. Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `DoubleCoset.mem_doubleCoset.1 (h.1 γ hγ)`. Use `⟨k₁, hk₁, k₂ * (γ⁻¹ * x), K.mul_mem hk₂ hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e, mul_inv_cancel_left]`.
+-/
 theorem isDCSys_clauses {K : Subgroup G} {α : G} {R : Finset G} (h : IsDCSys K α R) :
     (∀ γ ∈ R, ∃ k₁ ∈ K, ∃ k₂ ∈ K, γ = k₁ * α * k₂) ∧
     ∀ x : G, (∃ k₁ ∈ K, ∃ k₂ ∈ K, x = k₁ * α * k₂) ↔ ∃! γ, γ ∈ R ∧ γ⁻¹ * x ∈ K := by
@@ -549,14 +736,23 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `splitEmbOn V Set.univ T s (fun _ _ _ _ => trivial) trivial`.
+-/
 example {D : D7} (V : HSp D) (T : Set (HeightOneSpectrum (𝓞 D.host.F))) (s : ∀ v ∈ T, SplitD D v) :
     SplitEmb V Set.univ :=
   splitEmbOn V Set.univ T s (fun _ _ _ _ => trivial) trivial
 
+/- English proof (translation)
+The claim follows from `(map_eq_one_iff (embV V s) (embV_inj V s))`.
+-/
 example {D : D7} (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} (s : SplitD D v)
     (a : GL (Fin V.rank) (v.adicCompletion D.host.F)) : embV V s a = 1 ↔ a = 1 :=
   (map_eq_one_iff (embV V s) (embV_inj V s))
 
+/- English proof (translation)
+The claim follows from `one_mem_KpC V N`.
+-/
 example {D : D7} (V : HSp D) (N : ℕ) : (1 : GA D V) ∈ Formalism.L2.NTheta.KpC V N := one_mem_KpC V N
 
 end Checks

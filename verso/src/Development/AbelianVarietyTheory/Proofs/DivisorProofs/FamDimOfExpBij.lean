@@ -11,6 +11,17 @@ open GlobalTheory.MumFam GlobalTheory.MumProd GlobalTheory.ProdUnif
 
 namespace GlobalTheory.ProdUnif
 
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U k hk hbij`. Take `⟨b, hex, huniq⟩` from `GlobalTheory.GenericSectionBasis.exists_secK_basis GlobalTheory.abelianSchemeLaws_all.1.secBaseChange R I D A G U k hk`. Use `choose F hF using fun i => (hbij.1 (b i)).exists`. Establish `hlin : ∀ (c : Fin (k ^ A.g) → FractionRing R) (s : U.SecK k), (∀ j, s.f j = ∑ i, resTop _ (scal (pullback.snd G.hom (jK R)) (c i)) * (b i).f j) → U.Expands k s (∑ i, c i • F i)` using `fun c s hs => GlobalTheory.UnifPowAdm.expands_comb U k (s := b) hF (fun j => hs j)`. Set `φ : (Fin (k ^ A.g) → FractionRing R) →ₗ[FractionRing R] Fam D.toPre (FractionRing R) k` to `Fintype.linearCombination (FractionRing R) F`.
+
+Establish `hφ : ∀ c, φ c = ∑ i, c i • F i` using `fun c => rfl`. Establish `hinj : Function.Injective φ`. Introduce `c c' h`. Take `⟨s, hs⟩` from `hex c`. Take `⟨s', hs'⟩` from `hex c'`.
+
+Establish `h1` using `hlin c s hs`. Establish `h2` using `hlin c' s' hs'`. Rewrite `h1`, `h2` using `[← hφ]`. Rewrite `h2` using `[← h]`. Establish `e : s = s'` using `(hbij.2 (φ c)).unique h1 h2`.
+
+Substitute `e` using the available equality. Conclude with `(huniq s).unique hs hs'`. Establish `hsurj : Function.Surjective φ`. Introduce `x`. Take `⟨s, hs⟩` from `(hbij.2 x).exists`.
+
+Take `⟨c, hc⟩` from `(huniq s).exists`. Conclude with `⟨c, (hbij.1 s).unique (hlin c s hc) hs⟩`. Rewrite using `[← (LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩).finrank_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem famDim_of_expBij : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (k : ℕ), 1 ≤ k → U.ExpBij k → Module.finrank (FractionRing R) (Fam D.toPre (FractionRing R) k) = k ^ A.g := by
   intro R _ _ I D A G _ _ U k hk hbij
   obtain ⟨b, hex, huniq⟩ := GlobalTheory.GenericSectionBasis.exists_secK_basis

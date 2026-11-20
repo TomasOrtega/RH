@@ -5,6 +5,15 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.CompactGroupRe
 
 open Formalism.ConjugateSelfDual IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `l _ c`. Use `⟨UpperTheory.V.Fr.sc_norm l c, ?_⟩` and prove the remaining obligations. Introduce `ι Γ _ _ _ _ _ _ P hc hr hn`. Take `⟨E, hE, hEr⟩` from `GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem l Γ 4 P.r.toHomUnits fun i j => hc.matrix_elem i j`. Set `s : Set (PadicAlgCl l)` to `Set.range fun p : ι × Fin 4 × Fin 4 => P.n p.1 p.2.1 p.2.2`.
+
+Use `haveI : Finite s := (Set.finite_range _).to_subtype`. Use `haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] s) := IntermediateField.finiteDimensional_adjoin fun z _ => (Algebra.IsAlgebraic.isAlgebraic z).isIntegral`. Take `⟨c₁, hcc, h₁⟩` from `(UpperTheory.integrality_of_norm_coefficients l).1 c (IntermediateField.adjoin ℚ_[l] s ⊔ E) inferInstance`. Establish `hr₁ : ∀ g i j, P.r g i j ∈ c₁.O` using `fun g i j => h₁ _ ((le_sup_right : E ≤ _) (hEr g i j)) (hr g i j)`. Establish `hn₁ : ∀ v i j, P.n v i j ∈ c₁.O` using `fun v i j => h₁ _ ((le_sup_left : IntermediateField.adjoin ℚ_[l] s ≤ _) (IntermediateField.subset_adjoin _ _ ⟨(v, i, j), rfl⟩)) (hn v i j)`.
+
+Set `ρ : Γ →* M4 c₁.O` to `{ toFun := fun g => Matrix.of fun i j => ⟨P.r g i j, hr₁ g i j⟩ map_one' := by`. Use extensionality with `i j`. Simplify using `only [map_one, Matrix.of_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Use the proof step `map_mul' := fun g h => by`.
+
+Use extensionality with `i j`. Simplify using `only [map_mul, Matrix.of_apply, Matrix.mul_apply, AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul] }`. Use `⟨c₁, hcc, ⟨ρ, fun v => Matrix.of fun i j => ⟨P.n v i j, hn₁ v i j⟩⟩, ?_, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `PD.ext (MonoidHom.ext fun g => Matrix.ext fun i j => rfl) (funext fun v => Matrix.ext fun i j => rfl)`. Conclude with `((UpperTheory.integrality_of_norm_coefficients l).2 c₁ Γ _).2 (hc.matrix_elem i j)`.
+-/
 theorem UpperTheory.automorphic_forms_descent_to_smaller_level :
     UpperTheory.V.Sd.S2.Descend := by
   intro l _ c

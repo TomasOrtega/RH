@@ -12,6 +12,17 @@ namespace UpperTheory.Depth.SplitPl
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hE : (H.rt : E) ^ 2 = -(H.d : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `h : τ (H.rt : E) ^ 2 = -(H.d : ℂ)` using `by rw [← map_pow, hE]; simp`.
+
+Break down `sq_eq_sq_iff_eq_or_eq_neg.1 (h.trans H.sqrt_neg_disc_sq.symm) with h1 | h1` into its components or cases. Conclude with `⟨τ, h1⟩`. Use `⟨ComplexEmbedding.conjugate τ, ?_⟩` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, h1]`. Establish `hre` using `congrArg Complex.re H.sqrt_neg_disc_sq`.
+
+Establish `him` using `congrArg Complex.im H.sqrt_neg_disc_sq`. Simplify using `[pow_two] at hre him`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `h0 : H.rt0.re = 0`. Assume the negation of the conclusion as `hne`.
+
+Establish `: H.rt0.im = 0`. Establish `: H.rt0.re * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left hne`. Rewrite `hre` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+-/
 private theorem exists_inPsi (H : Host E) : ∃ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   have hE : (H.rt : E) ^ 2 = -(H.d : E) := by
@@ -35,6 +46,13 @@ private theorem exists_inPsi (H : Host E) : ∃ τ : E →+* ℂ, τ (H.rt : E) 
       nlinarith [mul_self_nonneg H.rt0.re]
     apply Complex.ext <;> simp [h0]
 
+/- English proof (translation)
+Establish `hex : ∃ i, φ (g i) ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Rewrite `h` using `[map_sum, Finset.sum_eq_zero fun i _ => hc i]`. Conclude with `zero_ne_one h`.
+
+Take `⟨i, hi⟩` from `hex`. Establish `hi1 : φ (g i) = 1`. Apply `mul_left_cancel₀ hi` to reduce the goal to its premises. Rewrite using `[← map_mul, h1, mul_one]`. Use `⟨i, hi1, fun j hj => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Use `congrArg φ (h2 j i hne)` as an intermediate fact. Rewrite `this` using `[map_mul, hj, hi1, mul_one, map_zero]`. Conclude with `one_ne_zero this`.
+-/
 private theorem existsUnique_one {A O : Type} [CommRing A] [CommRing O] [IsDomain O] {F : Type} [FunLike F A O]
     [RingHomClass F A O] (φ : F) {s : ℕ} (g : Fin s → A) (h1 : ∀ i, g i * g i = g i)
     (h2 : ∀ i j, i ≠ j → g i * g j = 0) (h : φ (∑ i, g i) = 1) : ∃! i, φ (g i) = 1 := by
@@ -56,6 +74,43 @@ private theorem existsUnique_one {A O : Type} [CommRing A] [CommRing O] [IsDomai
 end UpperTheory.Depth.SplitPl
 
 open UpperTheory.Depth.SplitPl in
+/- English proof (translation)
+Introduce `p _ E _ _ _ H hsp f hf`. Use `letI := H.starRing`. Introduce `C _ _ _ v O _ _ hv _ _ τO hinj hrt`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Use `haveI : CharZero O := (algebraMap O C).charZero`.
+
+Take `⟨τ₀, hτ₀⟩` from `exists_inPsi H`. Establish `hpos : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `hsq : ∀ σ : 𝓞 E →+* O, σ H.rt ^ 2 = -(H.d : O)` using `fun σ => by`. Rewrite using `[← map_pow, H.rt_sq]`. Simplify using the standard rewrite rules.
+
+Establish `hsurj : Function.Surjective τO`. Establish `hc` using `(UpperTheory.trace_form_decomposition_CMDatum E p C v O hv 0 (by simp)).2`. Use `haveI : Finite (𝓞 E →+* O) := Nat.finite_of_card_ne_zero (by omega)`. Use `(hinj.bijective_of_nat_card_le ?_).2` and prove the remaining obligations. Rewrite using `[hc, Nat.card_eq_fintype_card, Embeddings.card E ℂ]`.
+
+Establish `hpsi : ∀ τ, InPsi H τ ↔ τO τ H.rt = τO τ₀ H.rt` using `fun τ => by`. Rewrite using `[← hrt, hτ₀]`. Both sides reduce to the same expression. Establish `hneg : ∀ τ, τO τ H.rt = - τO τ₀ H.rt → ¬ InPsi H τ`. Introduce `τ h h'`.
+
+Rewrite `h'` using `[hpsi]`. Establish `h3 : τO τ₀ H.rt = 0`. Establish `: (2 : O) * τO τ₀ H.rt = 0` using `by linear_combination h - h'`. Conclude with `(mul_eq_zero.1 this).resolve_left two_ne_zero`. Establish `h4` using `hsq (τO τ₀)`.
+
+Rewrite `h4` using `[h3]`. Establish `: (H.d : O) = 0` using `by linear_combination h4`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast this)`. Use `haveI : IsNoetherianRing (ℤ_[p] ⊗[ℤ] 𝓞 E) := IsNoetherianRing.of_finite ℤ_[p] (ℤ_[p] ⊗[ℤ] 𝓞 E)`. Take `⟨e, he, hs, hp, hm⟩ : ∃ e : ℤ_[p] ⊗[ℤ] 𝓞 E, e * e = e ∧ e + sig p (𝓞 E) e = 1 ∧ (∀ σ : 𝓞 E →+* O, σ ∈ Emb (O` from `O) e ↔ σ H.rt = τO τ₀ H.rt) ∧ (∀ σ : 𝓞 E →+* O, σ ∈ Emb (O := O) (1 - e) ↔ σ H.rt = - τO τ₀ H.rt) := by`.
+
+Take `⟨e, α, he, -, -, hs, hα, hemb⟩` from `UpperTheory.exists_splitIdempotent_of_splitAt p E H hsp`. Establish `hα' : algebraMap ℤ_[p] O α ^ 2 = -(H.d : O)` using `by rw [← map_pow, hα]; simp`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 ((hsq (τO τ₀)).trans hα'.symm) with h | h` into its components or cases. Use `⟨e, he, hs, fun σ => ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`.
+
+Conclude with `(hemb O σ).1`. Rewrite using `[h]`. Conclude with `(hemb O σ).2`. Use `⟨1 - e, by linear_combination he, ?_, fun σ => ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_one]`.
+
+Take the linear combination `-hs`. Rewrite using `[h]`. Conclude with `(hemb O σ).2`. Rewrite using `[h, neg_neg, sub_sub_cancel]`. Conclude with `(hemb O σ).1`.
+
+Establish `hbar : sig p (𝓞 E) e = 1 - e` using `by linear_combination hs`. Take `⟨s, g, hg, horth, hsum⟩` from `UpperTheory.exists_primitive_orthogonal_idempotents_sum_eq_of_noetherian _ e he`. Establish `hge : ∀ i, g i * e = g i` using `fun i => by`. Rewrite using `[← hsum, Finset.mul_sum, Finset.sum_eq_single i]`. Conclude with `(hg i).1`.
+
+Introduce `j _ hj`. Conclude with `horth i j (Ne.symm hj)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `hsge : ∀ i, sig p (𝓞 E) (g i) * (1 - e) = sig p (𝓞 E) (g i)` using `fun i => by`.
+
+Rewrite using `[← hbar, ← map_mul, hge]`. Establish `hcross : ∀ i j, g i * sig p (𝓞 E) (g j) = 0` using `fun i j => by`. Rewrite using `[← hge i, ← hsge j]`. Take the linear combination `(- (g i * sig p (𝓞 E) (g j))) * he`. Establish `hsplit : ∀ i, sig p (𝓞 E) (g i) ≠ g i` using `fun i h => by`.
+
+Use `hcross i i` as an intermediate fact. Rewrite `this` using `[h, (hg i).1]`. Conclude with `(hg i).2.1 this`. Set `w : Fin s → Place p (𝓞 E)` to `fun i => ⟨g i, (hg i).1, (hg i).2.1, (hg i).2.2, hsplit i⟩`. Establish `hone : (∑ i, (w i).e) + (∑ i, (w i).bar) = 1` using `by show (∑ i, g i) + (∑ i, sig p (𝓞 E) (g i)) = 1`.
+
+Rewrite using `[← map_sum, hsum, hs]`. Take `⟨hn, hvd⟩` from `UpperTheory.discr_CMDatum_eq_prod_places E p C v O hv s w horth hone hcross`. Establish `t : ∀ i, Fin (w i).n ≃ Emb (O` using `O) (w i).e := fun i => (UpperTheory.trace_form_decomposition_CMDatum E p C v O hv (g i) (hg i).1).1.some`. Take `⟨vdi, hv1, hv2⟩` from `hvd t`. Establish `hup : ∀ (x y : ℤ_[p] ⊗[ℤ] 𝓞 E) (σ : 𝓞 E →+* O), x * y = x → σ ∈ Emb (O` using `O) x → σ ∈ Emb (O := O) y := by`.
+
+Introduce `x y σ hxy hx`. Establish `hx' : tauExt σ x = 1` using `hx`. Use `congrArg (tauExt (p := p) σ) hxy` as an intermediate fact. Rewrite `this` using `[map_mul, hx', one_mul]`. Conclude with `this`.
+
+Use `⟨s, w, vdi, by omega, ?_, fun i σ h => ?_, fun τ hτ => ?_, fun i σ h => ?_, fun i => ⟨t i, hv1 i⟩⟩` and prove the remaining obligations. Establish `hf0 : (f : ℝ) ≠ 0`. Establish `: f ≠ 0` using `by omega`. Conclude with `this` after adjusting the coercions. Rewrite using `[hv2, hf]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take `⟨τ, rfl⟩` from `hsurj σ`. Conclude with `⟨τ, (hpsi τ).2 ((hp _).1 (hup _ _ _ (hge i) h)), rfl⟩`. Establish `h : tauExt (p` using `p) (τO τ) (∑ i, g i) = 1 := by`.
+
+Rewrite using `[hsum]`. Conclude with `(hp _).2 ((hpsi τ).1 hτ)`. Conclude with `existsUnique_one (tauExt (p := p) (τO τ)) g (fun i => (hg i).1) horth h`. Take `⟨τ, rfl⟩` from `hsurj σ`. Conclude with `⟨τ, hneg τ ((hm _).1 (hup _ _ _ (hsge i) h)), rfl⟩`.
+-/
 theorem UpperTheory.splitPlaces_discriminantDepth_of_splitAt :
     ∀ (p : ℕ) [Fact p.Prime] (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E), SplitAt H.d p →
       ∀ f : ℕ, Module.finrank ℚ E = 2 * f → SplitPlaces p H f ((padicValInt p (NumberField.discr E) : ℝ) / (Module.finrank ℚ E : ℝ)) := by

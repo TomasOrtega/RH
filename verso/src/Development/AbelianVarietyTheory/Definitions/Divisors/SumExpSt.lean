@@ -54,6 +54,9 @@ structure Dict (L : SizeData₂ D) (j : Fin D.R.m) (P : Par) (W : Wts D.what₂.
 def NumOk {ι : Type} (P : Par) (W : Wts ι) : Prop :=
   P.Hyp ∧ P.Large ∧ W.Ok P ∧ ∃ X' A : ℝ, Formalism.CohomologicalDescent.LargeParameterEstimates.Rows P X' A ∧ Formalism.CohomologicalDescent.LargeParameterEstimates.Big P.L P.x X' A
 
+/- English proof (translation)
+Introduce `z hz` and use `by rw [pow_succ', mul_smul] exact Submodule.smul_mem _ _ (h z hz)`.
+-/
 theorem LIncl.succ {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
     {B : BlockDat K G Pl0} {ℓ : Lvl K G} {Z : Submodule K B.S.Forms} {w : HeightOneSpectrum (𝓞 K)} {J : ℕ}
     (h : LIncl B ℓ Z w J) : LIncl B ℓ Z w (J + 1) := fun z hz => by

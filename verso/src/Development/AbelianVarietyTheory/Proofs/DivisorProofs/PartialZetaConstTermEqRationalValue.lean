@@ -8,6 +8,11 @@ open scoped Classical MatrixGroups nonZeroDivisors
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Introduce `F _ _ _ k z C Z hk hz hZ`. Take `⟨Z', hZ', e⟩` from `hz C`. Establish `hne : (1 - (k : ℂ)) ∈ ({1}ᶜ : Set ℂ)`. Establish `: (k : ℂ) ≠ 0` using `by exact_mod_cast (by omega : k ≠ 0)`. Simplify using `using this`.
+
+Establish `h : Z (1 - (k : ℂ)) = Z' (1 - (k : ℂ))` using `GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.IsClassZeta.eqOn (C := C) (Z := Z) (Z' := Z') hZ hZ' hne`. Rewrite using `[h, e]`. Use `push_cast`. Rewrite using `[div_eq_mul_inv, mul_comm, inv_pow]`.
+-/
 theorem constTerm_eq_zetaVal : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (z : ClassGroup (𝓞 F) → ℚ) (C : ClassGroup (𝓞 F)) (Z : ℂ → ℂ), 1 ≤ k → ZetaVals k z → IsPartialZeta C Z → (2 : ℂ)⁻¹ ^ Module.finrank ℚ F * Z (1 - (k : ℂ)) = ((z C / 2 ^ Module.finrank ℚ F : ℚ) : ℂ) := by
   intro F _ _ _ k z C Z hk hz hZ
   obtain ⟨Z', hZ', e⟩ := hz C

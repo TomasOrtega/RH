@@ -4,6 +4,11 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
 
+/- English proof (translation)
+Introduce `n e δ Z f u hZ hu`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `W' hW'`. Take `⟨W, hW, hW'W⟩` from `(h4 n Z u).2 W' hW'`. Conclude with `h2 n W u (hZ.prime W hW) W' hW'W`.
+
+Conclude with `h1 n (e + 1) Z f u hZ.prime hZ.chow hu`. Conclude with `h3 n (e + 1) δ f u hZ.homog`.
+-/
 theorem CycleSectionData.proof (h1 : CycleSectionChow.Statement) (h2 : DivCyclePrime.Statement)
     (h3 : SpecFirstHomog.Statement) (h4 : SupportCycleSection.Statement) :
     CycleSectionData.Statement := by

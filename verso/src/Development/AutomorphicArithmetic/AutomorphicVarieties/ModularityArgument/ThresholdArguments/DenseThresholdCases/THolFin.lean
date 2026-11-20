@@ -6,6 +6,9 @@ set_option maxHeartbeats 800000
 set_option synthInstance.maxHeartbeats 200000
 
 section
+/- English proof (translation)
+Introduce `_` and use `UpperTheory.V.Br.holFin0`.
+-/
 theorem UpperTheory.V.Sd.holomorphic_finite_of_printed_hida :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Sd.HolFin := fun _ => UpperTheory.V.Br.holFin0
 end

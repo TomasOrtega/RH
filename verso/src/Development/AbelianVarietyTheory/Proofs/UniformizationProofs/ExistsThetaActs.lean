@@ -12,6 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TorsionTheta
 
+/- English proof (translation)
+Introduce `hK S _ P F _ t n hn x hx`. Establish `: Unique (Over.mk t).left` using `inferInstanceAs (Unique (PrimeSpectrum F))`. Take `⟨θ, hθ⟩` from `GlobalTheory.BoxTheta.exists_theta hK P hn x hx`. Conclude with `⟨θ, hθ, fun s => GlobalTheory.VVRank.exists_isTwistPull P.A P.isLB θ.isGen s⟩`.
+-/
 theorem exists_theta_acts : KerPowSt → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S) (F : Type) [Field F] (t : Spec (CommRingCat.of F) ⟶ S) (n : ℕ), 1 ≤ n → ∀ x : Over.mk t ⟶ P.A, x ^ n = 1 → ∃ θ : ThetaGrp P.A P.L (n : ℤ) (Over.mk t), θ.pt = x ∧ ∀ s : LB.Sec (LPow P.A P.L (n : ℤ) (Over.mk t)), ∃ s', IsActOf P.A P.L (n : ℤ) θ s s' := by
   intro hK S _ P F _ t n hn x hx
 

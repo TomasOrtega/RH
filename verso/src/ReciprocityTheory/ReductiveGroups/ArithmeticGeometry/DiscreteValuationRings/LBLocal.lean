@@ -10,6 +10,9 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR
 
 open ReciprocityTheory.ChartRestriction.G.Semi
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[show (homOfLE (h'.trans h)).op = (homOfLE h).op ≫ (homOfLE h').op from rfl, Functor.map_comp, CommRingCat.hom_comp, RingHom.comp_apply]`.
+-/
 lemma res_res' {X : Scheme.{0}} {U W Z : X.Opens} (h : W ≤ U) (h' : Z ≤ W) (x : Γ(X, U)ˣ) :
     res h' (res h x) = res (h'.trans h) x := by
   ext
@@ -17,6 +20,9 @@ lemma res_res' {X : Scheme.{0}} {U W Z : X.Opens} (h : W ≤ U) (h' : Z ≤ W) (
   rw [show (homOfLE (h'.trans h)).op = (homOfLE h).op ≫ (homOfLE h').op from rfl,
     Functor.map_comp, CommRingCat.hom_comp, RingHom.comp_apply]
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [pullU, res, Units.coe_map, MonoidHom.coe_coe]`. Establish `e` using `congrArg (fun φ => φ.hom (x : Γ(X, U))) (f.naturality (homOfLE h).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Conclude with `e`.
+-/
 lemma pullU_res {X Y : Scheme.{0}} (f : Y ⟶ X) {U W : X.Opens} (h : W ≤ U) (x : Γ(X, U)ˣ) :
     pullU f W (res h x) = res ((TopologicalSpace.Opens.map f.base).monotone h) (pullU f U x) := by
   ext
@@ -25,6 +31,9 @@ lemma pullU_res {X Y : Scheme.{0}} (f : Y ⟶ X) {U W : X.Opens} (h : W ≤ U) (
   simp only [CommRingCat.hom_comp, RingHom.comp_apply] at e
   exact e
 
+/- English proof (translation)
+Rewrite using `[pullU_res, res_res']`.
+-/
 lemma res_pullU_eq {X Y : Scheme.{0}} (f : Y ⟶ X) {U W : X.Opens} (h : W ≤ U) {Z : Y.Opens}
     (hZ : Z ≤ f ⁻¹ᵁ U) (hZ' : Z ≤ f ⁻¹ᵁ W) (x : Γ(X, U)ˣ) :
     res hZ (pullU f U x) = res hZ' (pullU f W (res h x)) := by
@@ -35,6 +44,9 @@ section LinComb
 variable {X Y : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
 
 include hL in
+/- English proof (translation)
+Simplify using `only [LB.LinComb, map_prod, map_zpow]`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Use `erw [res_res', res_pullU_eq (φ k) (le_inf le_rfl le_rfl) _ (LB.wchart_le L φ j k), hL.g_self]`. Rewrite using `[map_one, map_one, one_zpow]`.
+-/
 lemma linComb_g_self (j : K → L.ι) :
     res (le_inf le_rfl le_rfl : LB.wchart L φ j ≤ LB.wchart L φ j ⊓ LB.wchart L φ j)
       ((LB.LinComb L φ ε).g j j) = 1 := by
@@ -45,6 +57,13 @@ lemma linComb_g_self (j : K → L.ι) :
 
 set_option maxHeartbeats 1000000 in
 include hL in
+/- English proof (translation)
+Simplify using `only [LB.LinComb, map_prod, map_zpow]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow]`. Use `congr 1`.
+
+Use `erw [res_res', res_res', res_res']`. Establish `hT : LB.wchart L φ i ⊓ LB.wchart L φ j ⊓ LB.wchart L φ l ≤ (φ k) ⁻¹ᵁ (L.U (i k) ⊓ L.U (j k) ⊓ L.U (l k))`. Introduce `y hy`. Conclude with `⟨⟨LB.wchart_le L φ i k hy.1.1, LB.wchart_le L φ j k hy.1.2⟩, LB.wchart_le L φ l k hy.2⟩`. Use `erw [res_pullU_eq (φ k) (inf_le_left : L.U (i k) ⊓ L.U (j k) ⊓ L.U (l k) ≤ L.U (i k) ⊓ L.U (j k)) _ hT, res_pullU_eq (φ k) (le_inf (inf_le_left.trans inf_le_right) inf_le_right : L.U (i k) ⊓ L.U (j k) ⊓ L.U (l k) ≤ L.U (j k) ⊓ L.U (l k)) _ hT, res_pullU_eq (φ k) (le_inf (inf_le_l …`.
+
+Rewrite using `[← map_mul, ← map_mul, hL.cocycle]`.
+-/
 lemma linComb_cocycle (i j l : K → L.ι) :
     res (inf_le_left : LB.wchart L φ i ⊓ LB.wchart L φ j ⊓ LB.wchart L φ l ≤ LB.wchart L φ i ⊓ LB.wchart L φ j)
         ((LB.LinComb L φ ε).g i j) *
@@ -73,6 +92,11 @@ lemma linComb_cocycle (i j l : K → L.ι) :
   rw [← map_mul, ← map_mul, hL.cocycle]
 
 include hL in
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hc : ∀ k, ∃ i, (φ k).base y ∈ L.U i`. Introduce `k`. Establish `h1 : (φ k).base y ∈ ⨆ i, L.U i` using `by rw [hL.cover]; trivial`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.mp h1`. Use `choose j hj using hc`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨j, Set.mem_iInter.mpr hj⟩`.
+-/
 lemma linComb_cover : ⨆ j, (LB.LinComb L φ ε).U j = ⊤ := by
   rw [eq_top_iff]
   intro y _
@@ -85,6 +109,9 @@ lemma linComb_cover : ⨆ j, (LB.LinComb L φ ε).U j = ⊤ := by
 
 include hL in
 
+/- English proof (translation)
+The claim follows from `linComb_cover L hL φ ε g_self := fun j => linComb_g_self L hL φ ε j cocycle := fun i j l => linComb_cocycle L hL φ ε i j l`.
+-/
 theorem linComb_isLB : (LB.LinComb L φ ε).IsLB where
   cover := linComb_cover L hL φ ε
   g_self := fun j => linComb_g_self L hL φ ε j

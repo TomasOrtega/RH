@@ -21,6 +21,15 @@ noncomputable section
 namespace GlobalTheory.RSThetaCont
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Establish `hc0` using `CuspSub.hasCentral_iff.2 hπ`. Establish `hu : π.IsUnitary` using `⟨ω, hω, hc0⟩`. Establish `hR : φ.1 ∈ GlobalTheory.JSW.mspanR π` using `hφ.elim (fun h => GlobalTheory.JSW.mem_mspanR_of_mem h) id`. Take `⟨ψ, hψ, h⟩` from `GlobalTheory.JSW.mspanR_words GlobalTheory.CuspOrth.cuspFormsBounded hu φ.1 hR`. Establish `h0` using `(h []).2`.
+
+Rewrite `h0` using `[GlobalTheory.JSW.word_nil, hψ]`. Establish `hR' : φ.1 ∈ GlobalTheory.JSW.rspan π` using `(GlobalTheory.JSW.rspan_eq_mspanR π).symm ▸ hR`. Establish `hZ : GlobalTheory.JSW.rspan π ≤ GlobalTheory.JSW.Central.centralFns E a ω`. Use `GlobalTheory.JSW.rspan_le (fun ψ hψ z g => hc0.apply hψ z g) (fun F hF h z g => ?_) fun F hF X _ ν _ k γ _ z g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F (GeneralLinearGroup.scalar (Fin a) z * g * h) = _ * F (g * h)`.
+
+Rewrite using `[mul_assoc]`. Conclude with `hF z _`. Express the relevant statement in the definitionally equal form `GlobalTheory.JSW.kerInf ν k γ F (GeneralLinearGroup.scalar (Fin a) z * g) = _ * GlobalTheory.JSW.kerInf ν k γ F g`. Simplify using `only [GlobalTheory.JSW.kerInf, mul_assoc]`. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hF z]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨h0.cont, GlobalTheory.JSW.rspan_left π hR', hZ hR', h0.bdd⟩`.
+-/
 theorem mem_bddForms_of_mspanR {π : CuspSub E a} {ω : HChar E} (hω : ω.IsUnitary) (hπ : π.HasCentChar ω) {φ : Sm E a}
     (hφ : φ ∈ π.V ∨ φ.1 ∈ GlobalTheory.JSW.mspanR π) : φ.1 ∈ GlobalTheory.Petersson.bddForms E a ω := by
   have hc0 := CuspSub.hasCentral_iff.2 hπ
@@ -42,6 +51,9 @@ theorem mem_bddForms_of_mspanR {π : CuspSub E a} {ω : HChar E} (hω : ω.IsUni
       rw [hF z]; ring
   exact ⟨h0.cont, GlobalTheory.JSW.rspan_left π hR', hZ hR', h0.bdd⟩
 
+/- English proof (translation)
+Conclude with `GlobalTheory.T.rankinSelberg_kernel_zero_coeff_two_central_chars E a ω ω' hω hω' φ φ' h h' ℓ Φ hΦ J η`.
+-/
 theorem resFn_props {ω ω' : HChar E} (hω : ω.IsUnitary) (hω' : ω'.IsUnitary) {φ φ' : Sm E a}
     (h : φ.1 ∈ GlobalTheory.Petersson.bddForms E a ω) (h' : φ'.1 ∈ GlobalTheory.Petersson.bddForms E a ω')
     {ℓ : Fin a} {Φ : (Fin a → Cinf E) → ℂ} (hΦ : GlobalTheory.CuspQuot.IsTest (GlobalTheory.RSTheta.rowSet E ℓ) Φ)
@@ -55,18 +67,27 @@ theorem resFn_props {ω ω' : HChar E} (hω : ω.IsUnitary) (hω' : ω'.IsUnitar
         ((ω.1 z : ℂˣ) : ℂ) * starRingEnd ℂ ((ω'.1 z : ℂˣ) : ℂ) * GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η g 0 := by
   exact GlobalTheory.T.rankinSelberg_kernel_zero_coeff_two_central_chars E a ω ω' hω hω' φ φ' h h' ℓ Φ hΦ J η
 
+/- English proof (translation)
+Conclude with `GlobalTheory.T.isFundamentalDomain_det_shell_latticeGL E a ha μ 𝓕 h𝓕`.
+-/
 theorem isFundamentalDomain_shell (ha : 0 < a) (μ : Measure (GA E a)) [μ.IsHaarMeasure] {𝓕 : Set (GA E a)}
     (h𝓕 : IsFundamentalDomain (ratGL E a).range 𝓕 μ) :
     IsFundamentalDomain (latticeGL E a) (𝓕 ∩ {g | Real.exp (-((a : ℝ) * (Module.finrank ℚ E : ℝ))) <
       (ideleModule E (GeneralLinearGroup.det g) : ℝ) ∧ (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1}) μ := by
   exact GlobalTheory.T.isFundamentalDomain_det_shell_latticeGL E a ha μ 𝓕 h𝓕
 
+/- English proof (translation)
+Conclude with `GlobalTheory.T.integral_absDet_cpow_bounded_shell_entire E a μ S hSm hS c hc hδ F hF C hC`.
+-/
 theorem differentiable_setIntegral_cpow (μ : Measure (GA E a)) {S : Set (GA E a)} (hSm : NullMeasurableSet S μ) (hS : μ S < ⊤) {c : ℝ} (hc : 0 < c)
     (hδ : ∀ g ∈ S, c ≤ (ideleModule E (GeneralLinearGroup.det g) : ℝ) ∧ (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1)
     {F : GA E a → ℂ} (hF : Continuous F) {C : ℝ} (hC : ∀ g, ‖F g‖ ≤ C) :
     Differentiable ℂ fun s : ℂ => ∫ g in S, F g * ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (s - 1) ∂μ := by
   exact GlobalTheory.T.integral_absDet_cpow_bounded_shell_entire E a μ S hSm hS c hc hδ F hF C hC
 
+/- English proof (translation)
+Conclude with `GlobalTheory.T.integral_det_le_one_eq_geometric_series_shells E a ha μ 𝓕 h𝓕 F hF C hC hrat χ hχ hz s hs`.
+-/
 theorem integral_low_geometric (ha : 0 < a) (μ : Measure (GA E a)) [μ.IsHaarMeasure] {𝓕 : Set (GA E a)}
     (h𝓕 : IsFundamentalDomain (ratGL E a).range 𝓕 μ) {F : GA E a → ℂ} (hF : Continuous F) {C : ℝ}
     (hC : ∀ g, ‖F g‖ ≤ C) (hrat : ∀ (γ : GL (Fin a) E) (g : GA E a), F (ratGL E a γ * g) = F g) {χ : ℂ}
@@ -79,12 +100,20 @@ theorem integral_low_geometric (ha : 0 < a) (μ : Measure (GA E a)) [μ.IsHaarMe
       (1 - starRingEnd ℂ χ * Complex.exp (-((((a : ℝ) * (Module.finrank ℚ E : ℝ) : ℝ) : ℂ) * (s - 1)))) := by
   exact GlobalTheory.T.integral_det_le_one_eq_geometric_series_shells E a ha μ 𝓕 h𝓕 F hF C hC hrat χ hχ hz s hs
 
+/- English proof (translation)
+Conclude with `GlobalTheory.T.exists_analytic_sub_one_div_one_sub_mul_exp L hL χ hχ`.
+-/
 theorem exists_analytic_ratio {L : ℝ} (hL : 0 < L) (χ : ℂ) (hχ : ‖χ‖ = 1) : ∃ h : ℂ → ℂ,
     (∀ x : ℝ, 0 < x → AnalyticAt ℂ h (x : ℂ)) ∧
     (∀ x : ℝ, 1 < x → h (x : ℂ) = ((x : ℂ) - 1) / (1 - χ * Complex.exp (-((L : ℂ) * ((x : ℂ) - 1))))) ∧
     (χ ≠ 1 → h 1 = 0) := by
   exact GlobalTheory.T.exists_analytic_sub_one_div_one_sub_mul_exp L hL χ hχ
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.RSResidue.setIntegral_mul_right hS hinv (GeneralLinearGroup.scalar (Fin a) z)`. Establish `e : ∀ g, F (g * GeneralLinearGroup.scalar (Fin a) z) = ν * F g` using `fun g => by`. Rewrite using `[← hz g]`. Use `congr 1`. Conclude with `Units.ext (Matrix.scalar_commute _ (fun _ => Commute.all _ _) g.val).eq.symm`.
+
+Simplify using `only [e, integral_const_mul] at h1`. Establish `h2 : (ν - 1) * ∫ g in S, F g ∂μ = 0` using `by rw [sub_mul, h1, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hν)`.
+-/
 theorem setIntegral_eq_zero_of_scalar (μ : Measure (GA E a)) [μ.IsHaarMeasure] {S : Set (GA E a)}
     (hS : IsFundamentalDomain (latticeGL E a) S μ) {F : GA E a → ℂ} (hinv : ∀ γ ∈ latticeGL E a, ∀ g, F (γ * g) = F g)
     (z : Neutral.B1.Ideles E) {ν : ℂ} (hν : ν ≠ 1) (hz : ∀ g, F (GeneralLinearGroup.scalar (Fin a) z * g) = ν * F g) :
@@ -100,6 +129,61 @@ theorem setIntegral_eq_zero_of_scalar (μ : Measure (GA E a)) [μ.IsHaarMeasure]
 
 open GlobalTheory.CuspRep.CuspidalL2GL in
 
+/- English proof (translation)
+Introduce `E _ _ _ a ℓ Φ hΦ hcs hs J η μ _ 𝓕 𝓕' h𝓕 h𝓕'`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.T.rankinSelberg_theta_integral_pole_rapid_kernel_span E a ℓ Φ hΦ hcs hs J η μ 𝓕 𝓕' h𝓕 h𝓕'`. Use `⟨c, hc0, ?_⟩` and prove the remaining obligations. Introduce `π π' ω ω' hω hω' hπ hπ' φ φ' hφ hφ'`. Establish `ha : 0 < a` using `ℓ.pos`.
+
+Establish `hb` using `mem_bddForms_of_mspanR hω hπ hφ`. Establish `hb'` using `mem_bddForms_of_mspanR hω' hπ' hφ'`. Establish `hu : π.IsUnitary` using `⟨ω, hω, CuspSub.hasCentral_iff.2 hπ⟩`. Establish `hu' : π'.IsUnitary` using `⟨ω', hω', CuspSub.hasCentral_iff.2 hπ'⟩`. Establish `hT : GlobalTheory.CuspQuot.IsTest (GlobalTheory.RSTheta.rowSet E ℓ) Φ` using `⟨hΦ, hcs, hs⟩`.
+
+Establish `hR : φ ∈ GlobalTheory.RSThetaLowM.rsm π` using `show φ.1 ∈ GlobalTheory.JSW.mspanR π from hφ.elim (fun h => GlobalTheory.JSW.mem_mspanR_of_mem h) id`. Establish `hR' : φ' ∈ GlobalTheory.RSThetaLowM.rsm π'` using `show φ'.1 ∈ GlobalTheory.JSW.mspanR π' from hφ'.elim (fun h => GlobalTheory.JSW.mem_mspanR_of_mem h) id`. Establish `hδc : Continuous fun g : GA E a => (ideleModule E (GeneralLinearGroup.det g) : ℝ)` using `GlobalTheory.RSThetaLow.continuous_absDet`. Establish `hδ0 : ∀ g : GA E a, 0 < (ideleModule E (GeneralLinearGroup.det g) : ℝ)` using `fun g => (ideleModule E _).2`. Establish `hlowm : MeasurableSet {g : GA E a | (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1}` using `(isClosed_le hδc continuous_const).measurableSet`.
+
+Establish `hupm : MeasurableSet {g : GA E a | 1 ≤ (ideleModule E (GeneralLinearGroup.det g) : ℝ)}` using `(isClosed_le continuous_const hδc).measurableSet`. Take `⟨r1, ⟨C0, r2⟩, r3, r4⟩` from `resFn_props hω hω' hb hb' hT J η`. Take `⟨z0, hz0⟩ : ∃ z0 : Neutral.B1.Ideles E, splitCentre E a 1 = GeneralLinearGroup.scalar (Fin a) z0` from `⟨_, splitCentre_eq_scalar 1⟩`. Use `set χ : ℂ := ((ω.1 z0 : ℂˣ) : ℂ) * starRingEnd ℂ ((ω'.1 z0 : ℂˣ) : ℂ) with hχdef`. Establish `hχ : ‖χ‖ = 1` using `by rw [hχdef, norm_mul, Complex.norm_conj, hω z0, hω' z0, one_mul]`.
+
+Establish `hzF : ∀ g, GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η (splitCentre E a 1 * g) 0 = χ * GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η g 0` using `fun g => by rw [hz0]; exact r4 z0 g`. Establish `hS` using `isFundamentalDomain_shell ha μ h𝓕`. Use `haveI : DiscreteTopology (latticeGL E a) := GlobalTheory.CuspRep.CuspidalL2GL.discreteTopology_latticeGL`. Use `haveI : Countable (latticeGL E a) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`.
+
+Establish `hSfin` using `hS`. Use `replace hSfin : μ (𝓕 ∩ {g | Real.exp (-((a : ℝ) * (Module.finrank ℚ E : ℝ))) < (ideleModule E (GeneralLinearGroup.det g) : ℝ) ∧ (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1}) < ⊤ := by`. Rewrite using `[← GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ hS]`. Conclude with `measure_lt_top _ _`. Establish `hL : 0 < (a : ℝ) * (Module.finrank ℚ E : ℝ)` using `mul_pos (Nat.cast_pos.2 ha) (Nat.cast_pos.2 Module.finrank_pos)`.
+
+Use `set I : ℂ → ℂ := fun s => ∫ g in 𝓕 ∩ {g | Real.exp (-((a : ℝ) * (Module.finrank ℚ E : ℝ))) < (ideleModule E (GeneralLinearGroup.det g) : ℝ) ∧ (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1}, GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η g 0 * ((ideleModule E (GeneralLinearGr …`. Establish `hI : Differentiable ℂ I` using `differentiable_setIntegral_cpow μ hS.nullMeasurableSet hSfin (Real.exp_pos _) (fun g hg => ⟨hg.2.1.le, hg.2.2⟩) r1 r2`. Establish `hA : ∀ s : ℂ, 1 < s.re → GlobalTheory.RSThetaLow.partA ℓ φ.1 φ'.1 Φ J η μ 𝓕 s = I s / (1 - starRingEnd ℂ χ * Complex.exp (-((((a : ℝ) * (Module.finrank ℚ E : ℝ) : ℝ) : ℂ) * (s - 1))))` using `fun s hs => integral_low_geometric ha μ h𝓕 r1 r2 r3 hχ hzF hs`. Take `⟨h, hh1, hh2, hh3⟩` from `exists_analytic_ratio hL (starRingEnd ℂ χ) (by rw [Complex.norm_conj]; exact hχ)`. Take `⟨-, -, u3, u4, -⟩` from `GlobalTheory.RSThetaM.theta_integral_upper_mspan E a ℓ π π' hu hu' φ φ' hφ hφ' Φ hΦ.continuous hcs hs J η μ 𝓕 h𝓕`.
+
+Take `⟨-, -, b3⟩` from `GlobalTheory.RSThetaLowM.partB_entire J η hu hu' hR hR' hb.1 hb'.1 hT h𝓕`. Use `set K0 : ℂ := ∫ g in 𝓕 ∩ {g | 1 ≤ (ideleModule E (GeneralLinearGroup.det g) : ℝ)} ∩ {g | (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1}, ∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, GlobalTheory.RSTheta.rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val) ∂μ with h …`. Use `set G : ℂ → ℂ := fun s => (∫ g in 𝓕 ∩ {g | 1 ≤ (ideleModule E (GeneralLinearGroup.det g) : ℝ)}, (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, GlobalTheory.RSTheta.rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)) * ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ …`. Establish `hG : Differentiable ℂ G` using `(u4.add b3).sub_const K0`. Establish `hFan : ∀ x : ℝ, 0 < x → AnalyticAt ℂ (fun s => (s - 1) * G s + I s * h s) (x : ℂ)` using `fun x hx => ((analyticAt_id.sub analyticAt_const).mul (hG.analyticAt _)).add ((hI.analyticAt _).mul (hh1 x hx))`.
+
+Establish `hFeq : ∀ x : ℝ, 1 < x → ((x : ℂ) - 1) * G x + I x * h x = ((x - 1 : ℝ) : ℂ) * ∫ g in 𝓕, (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, GlobalTheory.RSTheta.rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)) * ((((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ (x : ℝ) …`. Introduce `x hx`. Establish `e1 : ∀ g : GA E a, (((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ (x : ℝ) : ℝ) : ℂ) = ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (x : ℂ)` using `fun g => Complex.ofReal_cpow (hδ0 g).le x`. Simplify using `only [e1]`. Establish `hxre : 1 < (x : ℂ).re` using `by simpa using hx`.
+
+Establish `hlow` using `GlobalTheory.RSThetaLowM.integral_low_eq J η hu hu' hR hR' hb.1 hb'.1 hT h𝓕 hxre`. Establish `etsum : ∀ g, ∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, GlobalTheory.RSTheta.rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val) = ∑' ξ : Fin a → E, GlobalTheory.RSTheta.rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val)` using `fun g => GlobalTheory.RSThetaLow.tsum_rsPsi_eq_tsum_ne_zero J η φ.1 φ'.1 hs g`. Establish `iLo : IntegrableOn (fun g : GA E a => (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, GlobalTheory.RSTheta.rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)) * ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (x : ℂ)) (𝓕 ∩ {g | (ideleModule E (GeneralLinearGroup. …`. Simplify using `only [etsum]`. Conclude with `hlow.1`.
+
+Establish `iUp` using `u3 (x : ℂ)`. Establish `hint : IntegrableOn (fun g : GA E a => (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, GlobalTheory.RSTheta.rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)) * ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (x : ℂ)) 𝓕 μ`. Use `(iLo.union iUp).mono_set fun g hg => ?_` and prove the remaining obligations. Break down `le_total (ideleModule E (GeneralLinearGroup.det g) : ℝ) 1 with h' | h'` into its components or cases. Conclude with `Or.inl ⟨hg, h'⟩`.
+
+Conclude with `Or.inr ⟨hg, h'⟩`. Establish `s1` using `integral_inter_add_diff hlowm hint`. Establish `s2` using `integral_inter_add_diff hlowm iUp`. Establish `eset : (𝓕 ∩ {g : GA E a | 1 ≤ (ideleModule E (GeneralLinearGroup.det g) : ℝ)}) \ {g : GA E a | (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1} = 𝓕 \ {g | (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1}`. Use extensionality with `g`.
+
+Simplify using `only [Set.mem_diff, Set.mem_inter_iff, Set.mem_setOf_eq, not_le]`. Conclude with `⟨fun h' => ⟨h'.1.1, h'.2⟩, fun h' => ⟨⟨h'.1, h'.2.le⟩, h'.2⟩⟩`. Rewrite `s2` using `[eset]`. Establish `sK : ∫ g in 𝓕 ∩ {g : GA E a | 1 ≤ (ideleModule E (GeneralLinearGroup.det g) : ℝ)} ∩ {g | (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1}, (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, GlobalTheory.RSTheta.rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)) * ((ide …`. Rewrite using `[hK0]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `(ae_restrict_of_ae_restrict_of_subset (Set.inter_subset_inter_left _ Set.inter_subset_right) (ae_restrict_mem (hupm.inter hlowm))).mono fun g hg => ?_` and prove the remaining obligations. Establish `h1 : (ideleModule E (GeneralLinearGroup.det g) : ℝ) = 1` using `le_antisymm hg.2 hg.1`. Simplify using `only [h1, Complex.ofReal_one, Complex.one_cpow, mul_one]`. Establish `sLo : ∫ g in 𝓕 ∩ {g : GA E a | (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1}, (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, GlobalTheory.RSTheta.rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)) * ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (x : ℂ) …`.
+
+Simplify using `only [etsum]`. Conclude with `hlow.2`. Rewrite using `[← s1, sLo, hA x hxre, hh2 x hx]`. Rewrite `s2` using `[sK]`. Establish `hup : ∫ g in 𝓕 \ {g : GA E a | (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1}, (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, GlobalTheory.RSTheta.rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)) * ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (x : ℂ) …`.
+
+Rewrite using `[← s2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hup, hGdef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨fun s => (s - 1) * G s + I s * h s, hFan, hFeq, ?_, ?_⟩` and prove the remaining obligations. Introduce `hωω`. Substitute `hωω` using the available equality. Take `⟨-, ht⟩` from `hc π π' ω hω hπ hπ' φ φ' hφ hφ'`. Establish `hcont : Tendsto (fun x : ℝ => ((x : ℂ) - 1) * G x + I x * h x) (𝓝[>] 1) (𝓝 (((1 : ℂ) - 1) * G 1 + I 1 * h 1))`.
+
+Establish `h1` using `(hFan 1 one_pos).continuousAt.tendsto.comp (Complex.continuous_ofReal.tendsto 1)`. Simplify using `only [Complex.ofReal_one] at h1`. Conclude with `h1.mono_left nhdsWithin_le_nhds`. Use `tendsto_nhds_unique hcont (ht.congr' ?_)` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with x hx using (hFeq x hx).symm`.
+
+Introduce `hne`. Use `show ((1 : ℂ) - 1) * G 1 + I 1 * h 1 = 0`. Rewrite using `[sub_self, zero_mul, zero_add]`. Distinguish the cases in `hχ1 : starRingEnd ℂ χ = 1`. Establish `hχ1' : χ = 1` using `by simpa using congrArg (starRingEnd ℂ) hχ1`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, ω.1 z ≠ ω'.1 z := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hne (Subtype.ext (MonoidHom.ext hall))`. Establish `hν : ((ω.1 z : ℂˣ) : ℂ) * starRingEnd ℂ ((ω'.1 z : ℂˣ) : ℂ) ≠ 1`.
+
+Introduce `hν1`. Apply `hz` to reduce the goal to its premises. Use `Units.ext ?_` and prove the remaining obligations. Establish `hw : starRingEnd ℂ ((ω'.1 z : ℂˣ) : ℂ) * ((ω'.1 z : ℂˣ) : ℂ) = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hω' z]`.
+
+Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hw, mul_one]`. Use `_ = (((ω.1 z : ℂˣ) : ℂ) * starRingEnd ℂ ((ω'.1 z : ℂˣ) : ℂ)) * ((ω'.1 z : ℂˣ) : ℂ) := by ring`. Use `_ = ((ω'.1 z : ℂˣ) : ℂ) := by rw [hν1, one_mul]`.
+
+Establish `hzp : ∀ (n : ℤ) (g : GA E a), GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η (splitCentre E a 1 ^ n * g) 0 = GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η g 0`. Introduce `n`. Use `Int.induction_on n ?_ ?_ ?_` and prove the remaining obligations. Introduce `g`. Rewrite using `[zpow_zero, one_mul]`.
+
+Introduce `k ih g`. Rewrite using `[_root_.zpow_add_one, mul_assoc, ih, hzF, hχ1', one_mul]`. Introduce `k ih g`. Rewrite using `[_root_.zpow_sub_one, mul_assoc, ih]`. Use `hzF ((splitCentre E a 1)⁻¹ * g)` as an intermediate fact.
+
+Rewrite `this` using `[← mul_assoc, mul_inv_cancel, one_mul, hχ1', one_mul]`. Conclude with `this.symm`. Establish `hinv : ∀ γ ∈ latticeGL E a, ∀ g, GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η (γ * g) 0 = GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η g 0`. Introduce `γ hγ g`. Take `⟨γ', n, rfl⟩` from `mem_latticeGL_iff.1 hγ`.
+
+Rewrite using `[mul_assoc, r3, hzp]`. Establish `h0` using `setIntegral_eq_zero_of_scalar μ hS (F := fun g => GlobalTheory.RSThetaLow.rsHat ℓ φ.1 φ'.1 Φ J η g 0) hinv z hν (r4 z)`. Establish `hI1 : I 1 = 0`. Rewrite using `[hIdef]`. Simplify using `only [sub_self, Complex.cpow_zero, mul_one]`.
+
+Conclude with `h0`. Rewrite using `[hI1, zero_mul]`. Rewrite using `[hh3 hχ1, mul_zero]`.
+-/
 theorem theta_integral_continuation : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ℓ : Fin a) (Φ : (Fin a → Cinf E) → ℂ), ContDiff ℝ (⊤ : ℕ∞) Φ → HasCompactSupport Φ → tsupport Φ ⊆ GlobalTheory.RSTheta.rowSet E ℓ → ∀ (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E) (μ : Measure (GA E a)) [μ.IsHaarMeasure] (𝓕 𝓕' : Set (GA E a)), IsFundamentalDomain (ratGL E a).range 𝓕 μ → IsFundamentalDomain (latticeGL E a) 𝓕' μ → ∃ c : ℂ, ((∀ u, 0 ≤ (Φ u).re ∧ (Φ u).im = 0) → Φ ≠ 0 → c ≠ 0) ∧ ∀ (π π' : CuspSub E a) (ω ω' : HChar E), ω.IsUnitary → ω'.IsUnitary → π.HasCentChar ω → π'.HasCentChar ω' → ∀ φ φ' : Sm E a, (φ ∈ π.V ∨ φ.1 ∈ GlobalTheory.JSW.mspanR π) → (φ' ∈ π'.V ∨ φ'.1 ∈ GlobalTheory.JSW.mspanR π') → ∃ F : ℂ → ℂ, (∀ x : ℝ, 0 < x → AnalyticAt ℂ F (x : ℂ)) ∧ (∀ x : ℝ, 1 < x → F (x : ℂ) = ((x - 1 : ℝ) : ℂ) * ∫ g in 𝓕, (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, GlobalTheory.RSTheta.rsPsi ℓ φ.1 φ'.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)) * ((((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ (x : ℝ) : ℝ)) : ℂ) ∂μ) ∧ (ω = ω' → F 1 = c * ∫ g in 𝓕', φ.1 g * starRingEnd ℂ (φ'.1 g) ∂μ) ∧ (ω ≠ ω' → F 1 = 0) := by
   intro E _ _ _ a ℓ Φ hΦ hcs hs J η μ _ 𝓕 𝓕' h𝓕 h𝓕'
   obtain ⟨c, hc0, hc⟩ := GlobalTheory.T.rankinSelberg_theta_integral_pole_rapid_kernel_span E a ℓ Φ hΦ hcs hs J η μ 𝓕 𝓕' h𝓕 h𝓕'

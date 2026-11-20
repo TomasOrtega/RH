@@ -12,6 +12,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PoincareDescent
 
+/- English proof (translation)
+Introduce `K _ _ A A' B N _ _ _ _ P i q hA hA' hB hD hi hq hfin hfl hsurj hker hN`. Take `⟨P₀, hP₀, e⟩` from `GlobalTheory.T.additive_lineBundle_descends_along_isogeny_torsor K A A' B N P i q hA hA' hB hD.isLB hD.additive hD.zero hi hq hfin hfl hsurj (torsor_square i q hker) hN`. Establish `key : ∀ (Y : Over (Sp K)) (a : Y ⟶ A) (b : Y ⟶ B), evc hP₀ (a ≫ q) b = evc hD.isLB a b`. Introduce `Y a b`. Establish `c` using `congrArg (CechPic.pull (lift a b).left) ((cls_eq_iff (pull_isLB hP₀ _) hD.isLB).2 e)`.
+
+Rewrite `c` using `[cls_ev hP₀, pull_evc, lift_fst_assoc, lift_snd]`. Conclude with `c`. Set `φ : Fin 2 → ((A' ⊗ B).left ⟶ (A' ⊗ B).left)` to `![(lift (fst A' B) (snd A' B)).left, (lift (fst A' B) (1 : A' ⊗ B ⟶ B)).left]`. Establish `hP' : (LB.LinComb P₀ φ ![1, -1]).IsLB` using `LB.isLB_linComb hP₀ _ _`. Establish `ev' : ∀ (Y : Over (Sp K)) (a : Y ⟶ A') (b : Y ⟶ B), evc hP' a b = evc hP₀ a b - evc hP₀ a 1`.
+
+Introduce `Y a b`. Rewrite using `[evc, cls_linComb hP₀, Fin.sum_univ_two, map_add, map_zsmul, map_zsmul, ← pull_comp, ← pull_comp]`. Simplify using `only [φ, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, ← Over.comp_left, comp_lift, lift_fst, lift_snd, MonObj.comp_one, one_smul, neg_smul, evc, sub_eq_add_neg]`. Establish `one : ∀ (Y : Over (Sp K)) (b : Y ⟶ B), evc hP₀ (1 : Y ⟶ A') b = 0` using `fun Y b ↦ by`. Establish `: (1 : Y ⟶ A) ≫ q = 1` using `by simp`.
+
+Rewrite using `[← this, key]`. Conclude with `hD.additive.evc_one hD.isLB b`. Use `⟨_, hP', CubeNoeth.isAdditive_of_triv_axes hA' hB hP' ?_ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[triv_ev_iff hP', ev', one, one, sub_self]`. Rewrite using `[triv_ev_iff hP', ev', sub_self]`.
+
+Use `(cls_eq_iff (pull_isLB hP' _) hD.isLB).1 ?_` and prove the remaining obligations. Rewrite using `[cls_ev hP', ev', key, key, evc_one_right hD.isLB hD.zero, sub_zero, evc, lift_fst_snd, Over.id_left, pull_id]`.
+-/
 theorem descends : ∀ (K : Type) [Field K] [IsAlgClosed K] (A A' B N : Over (Sp K)) [GrpObj A] [GrpObj A']
     [GrpObj B] [GrpObj N] (P : LB (A ⊗ B).left) (i : N ⟶ A) (q : A ⟶ A'), IsAbelianScheme A →
     IsAbelianScheme A' → IsAbelianScheme B → IsDual A B P → IsMonHom i → IsMonHom q → IsFinite q.left →

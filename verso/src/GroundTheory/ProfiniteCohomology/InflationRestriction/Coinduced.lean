@@ -33,29 +33,47 @@ variable (N : Subgroup G) [N.Normal] {s : G ⧸ N → G} (hs : Continuous s)
 
 include hsec in
 
+/- English proof (translation)
+The claim follows from `QuotientGroup.eq.mp (hsec x)`.
+-/
 theorem inv_section_mul_mem (x : G) : (s (x : G ⧸ N))⁻¹ * x ∈ N :=
   QuotientGroup.eq.mp (hsec x)
 
 def sectionRetraction (x : G) : N :=
   ⟨(s (x : G ⧸ N))⁻¹ * x, inv_section_mul_mem N hsec x⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_sectionRetraction (x : G) :
     (sectionRetraction N hsec x : G) = (s (x : G ⧸ N))⁻¹ * x :=
   rfl
 
 include hs in
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk ((hs.comp QuotientGroup.continuous_mk).inv.mul continuous_id) _`.
+-/
 theorem continuous_sectionRetraction : Continuous (sectionRetraction N hsec) :=
   Continuous.subtype_mk ((hs.comp QuotientGroup.continuous_mk).inv.mul continuous_id) _
 
+/- English proof (translation)
+Rewrite using `[coe_sectionRetraction, mul_inv_cancel_left]`.
+-/
 theorem section_mul_sectionRetraction (x : G) :
     s (x : G ⧸ N) * (sectionRetraction N hsec x : G) = x := by
   rw [coe_sectionRetraction, mul_inv_cancel_left]
 
 include hsec in
+/- English proof (translation)
+The claim follows from `(QuotientGroup.eq.mpr (by rw [mul_inv_rev, inv_mul_cancel_right]; exact N.inv_mem m.2) : ((s c * m : G) : G ⧸ N) = (s c : G ⧸ N)).trans (hsec c)`.
+-/
 theorem mk_section_mul (c : G ⧸ N) (m : N) : ((s c * m : G) : G ⧸ N) = c :=
   (QuotientGroup.eq.mpr (by rw [mul_inv_rev, inv_mul_cancel_right]; exact N.inv_mem m.2) :
     ((s c * m : G) : G ⧸ N) = (s c : G ⧸ N)).trans (hsec c)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_sectionRetraction, mk_section_mul N hsec, inv_mul_cancel_left]`.
+-/
 theorem sectionRetraction_section_mul (c : G ⧸ N) (m : N) :
     sectionRetraction N hsec (s c * m) = m := by
   apply Subtype.ext
@@ -66,6 +84,11 @@ include hs in
 def restrictSlice (f : LocallyConstant G X) (m : N) : LocallyConstant (G ⧸ N) X :=
   ⟨fun c => f (s c * m), f.isLocallyConstant.comp_continuous (hs.mul continuous_const)⟩
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `m₀`. Establish `hc : Continuous fun m : N => (m₀ : G)⁻¹ * m` using `continuous_const.mul continuous_subtype_val`. Establish `h1 : Tendsto (fun m : N => (m₀ : G)⁻¹ * m) (𝓝 m₀) (𝓝 1)`. Simplify using `using hc.tendsto m₀`.
+
+Use `filter_upwards [h1.eventually (eventually_forall_mul_eq f)] with m hm`. Use extensionality with `c`. Use `hm (s c * m₀)` as an intermediate fact. Simplify using `only [mul_assoc, mul_inv_cancel_left] at this`. Conclude with `this`.
+-/
 theorem isLocallyConstant_restrictSlice (f : LocallyConstant G X) :
     IsLocallyConstant (restrictSlice X N hs f) := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -99,9 +122,15 @@ noncomputable def unrestrictCoind (F : LocallyConstant N (LocallyConstant (G ⧸
     exact hF.comp_continuous
       ((continuous_sectionRetraction N hs hsec).prodMk QuotientGroup.continuous_mk)
 
+/- English proof (translation)
+The claim follows from `QuotientGroup.eq.mpr (by rw [mul_inv_rev, inv_mul_cancel_right]; exact N.inv_mem m.2)`.
+-/
 theorem mk_mul_mem (x : G) (m : N) : ((x * m : G) : G ⧸ N) = x :=
   QuotientGroup.eq.mpr (by rw [mul_inv_rev, inv_mul_cancel_right]; exact N.inv_mem m.2)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_sectionRetraction, mk_mul_mem, Subgroup.coe_mul, coe_sectionRetraction, mul_assoc]`.
+-/
 theorem sectionRetraction_mul (x : G) (m : N) :
     sectionRetraction N hsec (x * m) = sectionRetraction N hsec x * m := by
   apply Subtype.ext
@@ -138,6 +167,9 @@ variable [TotallyDisconnectedSpace G]
 instance isDiscreteRep_res_discreteCoind : IsDiscreteRep (Rep.res N.subtype (discreteCoind k G X)) :=
   isDiscreteRep_res_subtype _ N
 
+/- English proof (translation)
+Take `⟨s, hs, hsec, -⟩` from `exists_continuous_section N hN`. Establish `: CompactSpace N` using `isCompact_iff_compactSpace.mp hN.isCompact`. Conclude with `(isZero_cohomology_discreteCoind k N (LocallyConstant (G ⧸ N) X) n).of_iso (cohomologyIsoOfIso (resDiscreteCoindIso X N hs hsec) (n + 1))`.
+-/
 theorem isZero_cohomology_res_discreteCoind (hN : IsClosed (N : Set G)) (n : ℕ) :
     Limits.IsZero (cohomology (Rep.res N.subtype (discreteCoind k G X)) (n + 1)) := by
   obtain ⟨s, hs, hsec, -⟩ := exists_continuous_section N hN
@@ -153,6 +185,9 @@ variable (N : Subgroup G) [N.Normal]
 
 variable {X N} in
 
+/- English proof (translation)
+Establish `hn : x⁻¹ * y ∈ N` using `QuotientGroup.eq.mp h`. Use `congrArg (fun φ : LocallyConstant G X => φ x) (hf ⟨x⁻¹ * y, hn⟩)` as an intermediate fact. Express the relevant statement in the definitionally equal form `f (x * (x⁻¹ * y)) = f x at this`. Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this.symm`.
+-/
 theorem apply_eq_of_mem_invariants {f : LocallyConstant G X}
     (hf : f ∈ Representation.invariants ((discreteCoindRep k G X).comp N.subtype)) {x y : G}
     (h : (x : G ⧸ N) = y) : f x = f y := by
@@ -176,6 +211,9 @@ noncomputable def descendInvariant (f : Representation.invariants ((discreteCoin
     rw [h]
     exact (f : LocallyConstant G X).isLocallyConstant S
 
+/- English proof (translation)
+The claim follows from `apply_eq_of_mem_invariants f.2 (QuotientGroup.out_eq' (x : G ⧸ N))`.
+-/
 theorem descendInvariant_mk (f : Representation.invariants ((discreteCoindRep k G X).comp N.subtype)) (x : G) :
     descendInvariant X N f x = (f : LocallyConstant G X) x :=
   apply_eq_of_mem_invariants f.2 (QuotientGroup.out_eq' (x : G ⧸ N))
@@ -235,6 +273,9 @@ instance isDiscreteRep_quotientToInvariants_discreteCoind :
     IsDiscreteRep ((discreteCoind k G X).quotientToInvariants N) :=
   isDiscreteRep_quotientToInvariants_of_normal _ N
 
+/- English proof (translation)
+The claim follows from `(isZero_cohomology_discreteCoind k (G ⧸ N) X n).of_iso (cohomologyIsoOfIso (quotientToInvariantsDiscreteCoindIso X N) (n + 1))`.
+-/
 theorem isZero_cohomology_quotientToInvariants_discreteCoind (n : ℕ) :
     Limits.IsZero (cohomology ((discreteCoind k G X).quotientToInvariants N) (n + 1)) :=
   (isZero_cohomology_discreteCoind k (G ⧸ N) X n).of_iso

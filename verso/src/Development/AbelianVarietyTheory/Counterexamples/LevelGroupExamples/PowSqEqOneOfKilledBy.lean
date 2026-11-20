@@ -19,12 +19,20 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable (Xo : Moduli Dw l) (c : Coeff l)
 
+/- English proof (translation)
+Take `⟨zz, -, -, h⟩` from `GlobalTheory.ZCount.exists_class_representatives E H Dw n Λ N hU hL.1.pos (hL.2.2.trans inf_le_left)`. Take `⟨i, -⟩` from `h (fun _ => 0) (fun mu _ cm _ i => ⟨0, by simp⟩)`. Conclude with `i.pos`.
+-/
 theorem zCard_pos (Dw : Datum H) {n : ℕ} (Λ : GenLat E n) (N M : ℕ) (hU : Λ.Unimod) (hL : Λ.LevOK N M) :
     0 < Λ.zCard N (Dw.p + Dw.q) := by
   obtain ⟨zz, -, -, h⟩ := GlobalTheory.ZCount.exists_class_representatives E H Dw n Λ N hU hL.1.pos (hL.2.2.trans inf_le_left)
   obtain ⟨i, -⟩ := h (fun _ => 0) (fun mu _ cm _ i => ⟨0, by simp⟩)
   exact i.pos
 
+/- English proof (translation)
+Establish `hle : Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb` using `l.prod ▸ Ideal.mul_le_left`. Establish `hm : ((l.M ^ 2 : ℕ) : 𝓞 E) ∈ l.Mb ^ 2`. Rewrite using `[Nat.cast_pow]`. Conclude with `Ideal.pow_mem_pow (hle (Ideal.mem_span_singleton_self _)) 2`. Use `h _ hm` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.ZhStable.act_natCast]`. Simplify `this` using `[MonObj.comp_pow]`.
+-/
 theorem pow_sq_eq_one_of_killedBy {T : Over Xo.X} (t : T ⟶ Xo.univ.t.G) (h : KilledBy Xo (l.Mb ^ 2) t) :
     t ^ (l.M ^ 2) = 1 := by
   have hle : Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb := l.prod ▸ Ideal.mul_le_left
@@ -34,6 +42,9 @@ theorem pow_sq_eq_one_of_killedBy {T : Over Xo.X} (t : T ⟶ Xo.univ.t.G) (h : K
   rw [GlobalTheory.ZhStable.act_natCast] at this
   simpa [MonObj.comp_pow] using this
 
+/- English proof (translation)
+Introduce `k _ ψ g hgl a ha`. Take `⟨hp₁, -, hp₃, -⟩` from `GlobalTheory.inZh_geoInj_stable E H Dw l Xo n Λ N`. Take `⟨i, hi⟩` from `hf k _ (fun i b => g ≫ z i b) (fun i => hp₁ _ _ g _ (hz i)) (hp₃ _ _ _ _ ψ g hgl _ z hg) a ha`. Conclude with `⟨i, fun b => (congrFun hi b).symm⟩`.
+-/
 theorem geoExhaust_of_field {n : ℕ} (Λ : GenLat E n) (N : ℕ) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X)
     (z : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G))
     (hf : ∀ (k : Type) [Field k] (x : Sp k ⟶ Xo.X)
@@ -46,6 +57,13 @@ theorem geoExhaust_of_field {n : ℕ} (Λ : GenLat E n) (N : ℕ) {S : Type} [Co
     (hp₃ _ _ _ _ ψ g hgl _ z hg) a ha
   exact ⟨i, fun b => (congrFun hi b).symm⟩
 
+/- English proof (translation)
+Introduce `n Λ N hU hLev S _ _ y`. Take `⟨B, _, φ₁, z, hφ, hz, hg⟩` from `hs S y.x n Λ N hU hLev`. Set `_ : Algebra c.F B` to `(φ₁.comp (algebraMap c.F S)).toAlgebra`. Set `φ : S →ₐ[c.F] B` to `{ φ₁ with commutes' := fun _ => rfl }`. Take `⟨y', hy'⟩` from `FramedBaseChange.exists_frMap hL E H Dw l Xo c S B φ y`.
+
+Establish `hx : y'.x = spMap φ₁ ≫ y.x` using `hy'.1`. Establish `key : ∀ x : Sp B ⟶ Xo.X, x = spMap φ₁ ≫ y.x → ∃ w, IsSplitBy Xo Λ N x w`. Introduce and unpack `_ rfl`. Conclude with `⟨z, hz, hg, geoExhaust_of_field Xo Λ N _ z (hf n Λ N hU hLev) hz hg⟩`. Take `⟨w, hw⟩` from `key _ hx`.
+
+Conclude with `⟨B, inferInstance, inferInstance, φ, y', w, hφ, hy', hw⟩`.
+-/
 theorem zSplits_of (hL : Laws)
     (hs : ∀ (S : Type) [CommRing S] (x0 : Sp S ⟶ Xo.X) (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → Λ.LevOK N l.M →
       ∃ (B : Type) (_ : CommRing B) (φ : S →+* B)

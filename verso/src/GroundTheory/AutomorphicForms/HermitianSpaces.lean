@@ -31,9 +31,17 @@ def unitaryGroupMatrix (s : A →+* A) (H : Matrix ι ι A) : Subgroup (GL ι A)
           rw [transpose_mul]; simp only [Matrix.mul_assoc]
       _ = H := by rw [h1, Units.mul_inv, transpose_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unitaryGroupMatrix {s : A →+* A} {H : Matrix ι ι A} {g : GL ι A} :
     g ∈ unitaryGroupMatrix s H ↔ ((g : Matrix ι ι A).map s)ᵀ * H * g = H := Iff.rfl
 
+/- English proof (translation)
+Establish `hd` using `congrArg Matrix.det hM`. Establish `hs : (M.map s).det = s M.det` using `(RingHom.map_det s M).symm`. Rewrite `hd` using `[det_mul, det_mul, det_transpose, hs]`. Establish `h2 : M.det * s M.det = 1`. Apply `hH.mul_left_cancel` to reduce the goal to its premises.
+
+Take the linear combination `hd`. Conclude with `IsUnit.of_mul_eq_one _ h2`.
+-/
 theorem isUnit_det_of_unitary (s : A →+* A) {H : Matrix ι ι A} (hH : IsUnit H.det)
     {M : Matrix ι ι A} (hM : (M.map s)ᵀ * H * M = H) : IsUnit M.det := by
   have hd := congrArg Matrix.det hM
@@ -44,6 +52,9 @@ theorem isUnit_det_of_unitary (s : A →+* A) {H : Matrix ι ι A} (hH : IsUnit 
     linear_combination hd
   exact IsUnit.of_mul_eq_one _ h2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `hg`. Introduce `hM`. Conclude with `⟨nonsingInvUnit M (isUnit_det_of_unitary s hH hM), hM, rfl⟩`.
+-/
 theorem exists_mem_unitaryGroupMatrix_iff (s : A →+* A) {H : Matrix ι ι A} (hH : IsUnit H.det)
     (M : Matrix ι ι A) :
     (∃ g ∈ unitaryGroupMatrix s H, (g : Matrix ι ι A) = M) ↔ (M.map s)ᵀ * H * M = H := by
@@ -86,6 +97,9 @@ def unitaryGroup (h : HermitianForm F E V) : Subgroup (V ≃ₗ[E] V) where
     conv_rhs => rw [← a.apply_symm_apply x, ← a.apply_symm_apply y]
     rw [ha]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unitaryGroup {h : HermitianForm F E V} {g : V ≃ₗ[E] V} :
     g ∈ h.unitaryGroup ↔ ∀ x y, h.toSesq (g x) (g y) = h.toSesq x y := Iff.rfl
 
@@ -97,11 +111,19 @@ noncomputable def gram (B : V →ₛₗ[conjHom F E] V →ₗ[E] E) (v : Basis �
   fun i j => B (v i) (v j)
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gram_apply (B : V →ₛₗ[conjHom F E] V →ₗ[E] E) (v : Basis ι E V) (i j : ι) :
     gram B v i j = B (v i) (v j) := rfl
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Use `conv_lhs => rw [← v.sum_repr x, ← v.sum_repr y]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, Finset.mul_sum, gram_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgEquiv.coe_toAlgHom]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sesq_eq_sum (B : V →ₛₗ[conjHom F E] V →ₗ[E] E) (v : Basis ι E V) (x y : V) :
     B x y = ∑ i, ∑ j, conj F E (v.repr x i) * gram B v i j * v.repr y j := by
   conv_lhs => rw [← v.sum_repr x, ← v.sum_repr y]
@@ -114,12 +136,20 @@ theorem sesq_eq_sum (B : V →ₛₗ[conjHom F E] V →ₗ[E] E) (v : Basis ι E
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [transpose_apply, map_apply, gram_apply]`. Conclude with `h.isSymm.eq (v j) (v i)`.
+-/
 theorem isHermitianFor_gram (h : HermitianForm F E V) (v : Basis ι E V) :
     IsHermitianFor (conjHom F E) (gram h.toSesq v) := by
   ext i j
   simp only [transpose_apply, map_apply, gram_apply]
   exact h.isSymm.eq (v j) (v i)
 
+/- English proof (translation)
+Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← vecMul_surjective_iff_isUnit]`. Introduce `w`. Take `⟨x, hx⟩` from `h.nonsingular.2 (v.constr E w)`. Use `⟨fun i => conj F E (v.repr x i), ?_⟩` and prove the remaining obligations. Use extensionality with `j`.
+
+Establish `hxj : h.toSesq x (v j) = w j` using `by rw [hx, Basis.constr_basis]`. Rewrite using `[← hxj, sesq_eq_sum h.toSesq v]`. Simplify using `only [vecMul, dotProduct, Basis.repr_self, Finsupp.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem isUnit_det_gram (h : HermitianForm F E V) (v : Basis ι E V) :
     IsUnit (gram h.toSesq v).det := by
   rw [← Matrix.isUnit_iff_isUnit_det, ← vecMul_surjective_iff_isUnit]
@@ -132,6 +162,9 @@ theorem isUnit_det_gram (h : HermitianForm F E V) (v : Basis ι E V) :
   simp only [vecMul, dotProduct, Basis.repr_self, Finsupp.single_apply, mul_ite, mul_one,
     mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Rewrite using `[sesq_eq_sum B v]`. Simplify using `only [Matrix.mul_apply, transpose_apply, map_apply, LinearMap.toMatrix_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+-/
 theorem sesq_apply_map_basis (B : V →ₛₗ[conjHom F E] V →ₗ[E] E) (v : Basis ι E V)
     (g : V →ₗ[E] V) (i j : ι) :
     B (g (v i)) (g (v j)) =
@@ -143,6 +176,13 @@ theorem sesq_apply_map_basis (B : V →ₛₗ[conjHom F E] V →ₗ[E] E) (v : B
   rw [Finset.sum_comm]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use extensionality with `i j`. Rewrite using `[← sesq_apply_map_basis]`. Conclude with `hg _ _`.
+
+Introduce `hM x y`. Establish `key : (h.toSesq.comp (g : V →ₗ[E] V)).compl₂ (g : V →ₗ[E] V) = h.toSesq`. Use `LinearMap.ext_basis v v fun i j => ?_` and prove the remaining obligations. Use `congrFun (congrFun hM i) j` as an intermediate fact. Rewrite `this` using `[← sesq_apply_map_basis]`.
+
+Simplify using `only [LinearMap.compl₂_apply, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Simplify `this` using `[gram_apply]`. Conclude with `LinearMap.congr_fun₂ key x y`.
+-/
 theorem mem_unitaryGroup_iff_toMatrix (h : HermitianForm F E V) (v : Basis ι E V)
     (g : V ≃ₗ[E] V) :
     g ∈ h.unitaryGroup ↔
@@ -166,6 +206,9 @@ noncomputable def autEquivGL (v : Basis ι E V) : (V ≃ₗ[E] V) ≃* GL ι E :
   (LinearMap.GeneralLinearGroup.generalLinearEquiv E V).symm.trans
     (Units.mapEquiv (LinearMap.toMatrixAlgEquiv v).toRingEquiv.toMulEquiv)
 
+/- English proof (translation)
+Simplify using `[autEquivGL]`. Both sides reduce to the same expression.
+-/
 theorem autEquivGL_apply (v : Basis ι E V) (g : V ≃ₗ[E] V) :
     (autEquivGL v g : Matrix ι ι E) = LinearMap.toMatrix v v (g : V →ₗ[E] V) := by
   simp [autEquivGL]
@@ -185,6 +228,9 @@ noncomputable def unitaryGroupEquivMatrix (h : HermitianForm F E V) (v : Basis �
     change autEquivGL v ((a : V ≃ₗ[E] V) * b) = autEquivGL v a * autEquivGL v b
     exact map_mul _ _ _)
 
+/- English proof (translation)
+The claim follows from `autEquivGL_apply v g`.
+-/
 theorem unitaryGroupEquivMatrix_apply (h : HermitianForm F E V) (v : Basis ι E V)
     (g : h.unitaryGroup) :
     ((unitaryGroupEquivMatrix h v g : GL ι E) : Matrix ι ι E) =

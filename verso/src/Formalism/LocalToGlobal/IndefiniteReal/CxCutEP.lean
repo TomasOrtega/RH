@@ -17,6 +17,35 @@ namespace EigenprojectionMatrices
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
   {B : BlockDat K G Pl0} {ℓ : Lvl K G} {v0 : InfinitePlace K} {s : ℕ}
 
+/- English proof (translation)
+Establish `hg` using `good_at_spec K v0 h.conj G ℓ.X h.irr ℓ.P ℓ.ψ`. Establish `hεrat : ∀ i j, B.vProj ℓ i j ∈ cmMax K` using `gaMat_rat B.S B.r h.ok.actRat _ hg.rat`. Establish `hεadj : (B.vProj ℓ)ᴴ * B.S.H = B.S.H * B.vProj ℓ`. Use `group_action_matrix_adjoint K B.S G B.r h.ok.act (goodAt ℓ.X ℓ.P ℓ.ψ)` as an intermediate fact. Rewrite `this` using `[hg.selfAdj]`. Then use the resulting hypothesis.
+
+Set `𝒯 : Set (Matrix (Fin B.S.dim) (Fin B.S.dim) K)` to `B.heckeSet ∪ {B.vProj ℓ}`. Set `Z : Submodule K (Fin B.S.dim → K)` to `B.coord (Col.eigSum B.op C) ⊓ LinearMap.range (B.vProj ℓ).mulVecLin`. Establish `hTrat : ∀ T ∈ 𝒯, ∀ i j, T i j ∈ cmMax K`. Introduce and unpack `T (⟨i, rfl⟩ | rfl)`. Conclude with `hH.rat i`.
+
+Conclude with `hεrat`. Establish `hTcomm : ∀ T ∈ 𝒯, ∀ T' ∈ 𝒯, T * T' = T' * T`. Introduce and unpack `T (⟨i, rfl⟩ | rfl) T' (⟨j, rfl⟩ | rfl)`. Conclude with `opMat_comm h.ok.comm i j`. Conclude with `opMat_gaMat h.ok.opG i _`.
+
+Conclude with `(opMat_gaMat h.ok.opG j _).symm`. Both sides reduce to the same expression. Establish `hTadj : IsAdjStable B.S.H 𝒯`. Introduce and unpack `T (⟨i, rfl⟩ | rfl)`. Take `⟨i', hi'⟩` from `hH.adj i`.
+
+Use `⟨B.opMat i', Or.inl ⟨i', rfl⟩, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[hform_eq_csum, hform_eq_csum, I_opMat, I_opMat, CSD.I_apply, CSD.I_apply]`. Conclude with `hi' _ _`. Conclude with `⟨B.vProj ℓ, Or.inr rfl, hform_adj hεadj⟩`. Establish `hZ : IsCommStable 𝒯 Z`.
+
+Introduce `M hM z hz`. Take `⟨hz1, hz2⟩` from `hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `hz1`. Set `g : Module.End K B.S.Forms` to `Matrix.toLin B.S.basis B.S.basis M`.
+
+Establish `hgc : ∀ i, Commute (B.op i) g`. Introduce `i`. Establish `e : B.op i = Matrix.toLin B.S.basis B.S.basis (B.opMat i)` using `(Matrix.toLin_toMatrix B.S.basis B.S.basis (B.op i)).symm`. Use `show B.op i * g = g * B.op i`. Rewrite using `[e, Module.End.mul_eq_comp, Module.End.mul_eq_comp, ← Matrix.toLin_mul, ← Matrix.toLin_mul, hM (B.opMat i) (Or.inl ⟨i, rfl⟩)]`.
+
+Establish `hgf : g f ∈ Col.eigSum B.op C` using `Col.eigSum_le_comap hgc _ hf`. Use `⟨g f, hgf, ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.toMatrix_mulVec_repr B.S.basis B.S.basis g f`. Rewrite `h1` using `[LinearMap.toMatrix_toLin]`. Use function extensionality and compare the values at `a`.
+
+Use `congrFun h1 a` as an intermediate fact. Simplify `this.symm` using `[Basis.equivFun_apply]`. Take `⟨y, rfl⟩` from `hz2`. Use `⟨M.mulVec y, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hM (B.vProj ℓ) (Or.inr rfl)]`.
+
+Establish `htw` using `commuting_twist K (cmMax K) ConjugateWeightGram.isCMSub_cmMax v0 h.conj B.S.dim B.S.H h.ok.hrat h.ok.hpos 𝒯 hTrat hTcomm hTadj Z hZ`. Take `⟨d, z, -, hspan, hzrat⟩` from `descent_cm_field K B.S.dim Z htw`. Take `⟨hinj, hrange⟩` from `image_idempotent_spec K B.S.dim (B.vProj ℓ)`. Establish `hinj' : Function.Injective (B.vE ℓ).mulVec` using `hinj`. Establish `hrange' : LinearMap.range (B.vE ℓ).mulVecLin = LinearMap.range (B.vProj ℓ).mulVecLin` using `hrange`.
+
+Establish `hzr : ∀ a, ∃ x, (B.vE ℓ).mulVecLin x = z a`. Introduce `a`. Establish `hza : z a ∈ Z` using `by rw [← hspan]; exact Submodule.subset_span ⟨a, rfl⟩`. Use `hza.2` as an intermediate fact. Rewrite `this` using `[← hrange']`.
+
+Conclude with `this`. Use `choose x hx using hzr`. Use `subHasRat_of_span (B.inV0 ℓ (Col.eigSum B.op C)) (Set.range x) ?_ ?_` and prove the remaining obligations. Apply `Submodule.map_injective_of_injective (f := (B.vE ℓ).mulVecLin) hinj'` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, ← Set.range_comp]`.
+
+Establish `e : (B.vE ℓ).mulVecLin ∘ x = z` using `funext hx`. Rewrite using `[e, hspan]`. Use `show Z = Submodule.map (B.vE ℓ).mulVecLin ((B.coord (Col.eigSum B.op C)).comap (B.vE ℓ).mulVecLin)`. Rewrite using `[Submodule.map_comap_eq, hrange', inf_comm]`. Introduce and unpack `_ ⟨a, rfl⟩ i`.
+
+Use `rat_of_mulVec (B.vE ℓ) hinj' (hv_spec h).1 (x a) (fun i => ?_) i` and prove the remaining obligations. Use `hx a` as an intermediate fact. Rewrite `this` using `[Matrix.mulVecLin_apply]`. Rewrite using `[this]`. Conclude with `hzrat a i`.
+-/
 theorem eig_rat (h : BlockHyp B ℓ v0 s) (hH : B.OkH) (C : (B.Pl × ℕ → K) → Prop) :
     SubHasRatBasis (B.inV0 ℓ (Col.eigSum B.op C)) := by
   classical
@@ -109,6 +138,9 @@ variable (hc : Col.PairComm B.op) (hs : Col.SplitOver B.op) (C : (B.Pl × ℕ �
 def pMat : Matrix (Fin B.S.dim) (Fin B.S.dim) K :=
   LinearMap.toMatrix B.S.basis B.S.basis (Col.eigProj hc hs C)
 
+/- English proof (translation)
+Simplify using `only [hform, Matrix.toLinearMapₛₗ₂'_apply, dotProduct, Matrix.mulVec, Pi.star_apply, starRingEnd_apply, RingHom.id_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hform_eq_lemma {L : Type} [Field L] [StarRing L] {n : ℕ} (H : Matrix (Fin n) (Fin n) L)
     (x y : Fin n → L) : hform H x y = star x ⬝ᵥ H *ᵥ y := by
   simp only [hform, Matrix.toLinearMapₛₗ₂'_apply, dotProduct, Matrix.mulVec, Pi.star_apply, starRingEnd_apply,
@@ -128,6 +160,9 @@ variable {n d : ℕ} {I : Type}
 
 def linF (N : I → Matrix (Fin n) (Fin n) ℂ) : I → Module.End ℂ (Fin n → ℂ) := fun i => Matrix.toLin' (N i)
 
+/- English proof (translation)
+Establish `h2` using `congrArg Matrix.toLin' h`. Rewrite `h2` using `[Matrix.toLin'_mul, Matrix.toLin'_mul]`. Conclude with `h2`.
+-/
 theorem linF_commute {M M' : Matrix (Fin n) (Fin n) ℂ} (h : M * M' = M' * M) :
     Commute (Matrix.toLin' M) (Matrix.toLin' M') := by
   have h2 := congrArg Matrix.toLin' h
@@ -136,6 +171,35 @@ theorem linF_commute {M M' : Matrix (Fin n) (Fin n) ℂ} (h : M * M' = M' * M) :
 
 variable (N : I → Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin n) (Fin n) ℂ)
 
+/- English proof (translation)
+Take `⟨i, hne⟩` from `Function.ne_iff.mp hab`. Take `⟨i', hi⟩` from `adj i`. Establish `hAh : Aᴴ = A` using `hA.1`. Establish `hi2 : A * N i' = (N i)ᴴ * A`. Establish `e` using `congrArg Matrix.conjTranspose hi`.
+
+Rewrite `e` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hAh]`. Conclude with `e.symm`. Establish `hpos : ∀ z : Fin n → ℂ, star z ⬝ᵥ A *ᵥ z = 0 → z = 0`. Introduce `z h0`. Assume the negation of the conclusion as `hz`.
+
+Establish `h1` using `hA.dotProduct_mulVec_pos hz`. Rewrite `h1` using `[h0]`. Conclude with `lt_irrefl _ h1`. Establish `hF : ∀ u v : Fin n → ℂ, star u ⬝ᵥ A *ᵥ (N i *ᵥ v) = star (N i' *ᵥ u) ⬝ᵥ A *ᵥ v`. Introduce `u v`.
+
+Use `conv_lhs => rw [Matrix.mulVec_mulVec, hi, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`. Rewrite using `[Matrix.star_mulVec]`. Establish `hF2 : ∀ u v : Fin n → ℂ, star u ⬝ᵥ A *ᵥ (N i' *ᵥ v) = star (N i *ᵥ u) ⬝ᵥ A *ᵥ v`. Introduce `u v`. Use `conv_lhs => rw [Matrix.mulVec_mulVec, hi2, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`.
+
+Rewrite using `[Matrix.star_mulVec]`. Establish `ipR : ∀ (l : ℂ) (u v : Fin n → ℂ), star u ⬝ᵥ A *ᵥ ((Matrix.toLin' (N i) - l • 1) v) = star ((Matrix.toLin' (N i') - star l • 1) u) ⬝ᵥ A *ᵥ v`. Introduce `l u v`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, Matrix.toLin'_apply, Matrix.mulVec_sub, Matrix.mulVec_smul, dotProduct_sub, dotProduct_smul, star_sub, star_smul, star_star, sub_dotProduct, smul_dotProduct, hF]`. Establish `ipR2 : ∀ (l : ℂ) (u v : Fin n → ℂ), star u ⬝ᵥ A *ᵥ ((Matrix.toLin' (N i') - l • 1) v) = star ((Matrix.toLin' (N i) - star l • 1) u) ⬝ᵥ A *ᵥ v`.
+
+Introduce `l u v`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, Matrix.toLin'_apply, Matrix.mulVec_sub, Matrix.mulVec_smul, dotProduct_sub, dotProduct_smul, star_sub, star_smul, star_star, sub_dotProduct, smul_dotProduct, hF2]`. Establish `hTS : ∀ (c d : ℂ), Commute (Matrix.toLin' (N i) - c • 1) (Matrix.toLin' (N i') - d • 1)`. Introduce `c d`. Establish `hc'` using `hc i i'`.
+
+Simplify using `only [linF] at hc'`. Conclude with `(hc'.sub_right ((Commute.one_right _).smul_right d)).sub_left ((Commute.one_left _).smul_left c)`. Establish `K1 : ∀ (l : ℂ) (z : Fin n → ℂ), (Matrix.toLin' (N i) - l • 1) z = 0 → (Matrix.toLin' (N i') - star l • 1) z = 0`. Introduce `l z hz`. Apply `hpos` to reduce the goal to its premises.
+
+Establish `hcm : (Matrix.toLin' (N i) - l • 1) ((Matrix.toLin' (N i') - star l • 1) z) = (Matrix.toLin' (N i') - star l • 1) ((Matrix.toLin' (N i) - l • 1) z)`. Rewrite using `[← Module.End.mul_apply, (hTS l (star l)).eq, Module.End.mul_apply]`. Rewrite using `[ipR2 (star l), star_star, hcm, hz, map_zero, star_zero, zero_dotProduct]`. Establish `K2 : ∀ (l : ℂ) (z : Fin n → ℂ), (Matrix.toLin' (N i) - l • 1) ((Matrix.toLin' (N i) - l • 1) z) = 0 → (Matrix.toLin' (N i) - l • 1) z = 0`. Introduce `l z hz`.
+
+Apply `hpos` to reduce the goal to its premises. Rewrite using `[ipR l, K1 l _ hz, star_zero, zero_dotProduct]`. Establish `K3 : ∀ (l : ℂ) (k : ℕ) (z : Fin n → ℂ), ((Matrix.toLin' (N i) - l • 1) ^ k) z = 0 → (Matrix.toLin' (N i) - l • 1) z = 0`. Introduce `l k`. Proceed by induction on `k with`.
+
+Consider the case `zero => intro z hz`. Rewrite `hz` using `[pow_zero, Module.End.one_apply]`. Rewrite using `[hz, map_zero]`. Consider the case `succ k ih => intro z hz`. Rewrite `hz` using `[pow_succ, Module.End.mul_apply]`.
+
+Conclude with `K2 l z (ih _ hz)`. Simplify using `only [Col.eigAt, Submodule.mem_iInf, linF] at hx hy`. Take `⟨kx, hkx⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).mp (hx i)`. Take `⟨ky, hky⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).mp (hy i)`. Establish `hRa` using `K3 (a i) kx x hkx`.
+
+Establish `hRb` using `K3 (b i) ky y hky`. Establish `hRa'` using `K1 (a i) x hRa`. Establish `e1 : star ((Matrix.toLin' (N i') - star (b i) • 1) x) ⬝ᵥ A *ᵥ y = 0`. Rewrite using `[← ipR (b i) x y, hRb, Matrix.mulVec_zero, dotProduct_zero]`. Establish `e2 : (Matrix.toLin' (N i') - star (b i) • 1) x = (star (a i) - star (b i)) • x`.
+
+Establish `e3 : (Matrix.toLin' (N i') - star (b i) • 1) x = (Matrix.toLin' (N i') - star (a i) • 1) x + (star (a i) - star (b i)) • x`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3, hRa', zero_add]`. Rewrite `e1` using `[e2, star_smul, smul_dotProduct, smul_eq_mul, mul_eq_zero]`.
+
+Break down `e1 with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Simplify `h` using `only [star_sub, star_star, sub_eq_zero]`. Conclude with `h`.
+-/
 private theorem dotProduct_mulVec_eigAt_eq_zero_of_ne (hA : A.PosDef) (adj : ∀ i, ∃ i', A * N i = (N i')ᴴ * A)
     (hc : Col.PairComm (linF N)) {a b : I → ℂ} (hab : a ≠ b) {x y : Fin n → ℂ}
     (hx : x ∈ Col.eigAt (linF N) a) (hy : y ∈ Col.eigAt (linF N) b) : star x ⬝ᵥ A *ᵥ y = 0 := by
@@ -217,6 +281,15 @@ private theorem dotProduct_mulVec_eigAt_eq_zero_of_ne (hA : A.PosDef) (adj : ∀
     simpa only [star_sub, star_star, sub_eq_zero] using h
   · exact h
 
+/- English proof (translation)
+Establish `stepA : ∀ a, C1 a → ∀ x' ∈ Col.eigAt (linF N) a, hform A x' y = 0`. Introduce `a ha x' hx'`. Establish `hle : Col.eigSum (linF N) C2 ≤ LinearMap.ker (hform A x')`. Unfold `Col.eigSum`. Use `iSup₂_le fun b hb => ?_` and prove the remaining obligations.
+
+Introduce `y' hy'`. Rewrite using `[LinearMap.mem_ker, hform_eq_lemma]`. Conclude with `dotProduct_mulVec_eigAt_eq_zero_of_ne N A hA adj hc (a := a) (b := b) (fun hab => h12 b hb (hab ▸ ha)) hx' hy'`. Establish `h` using `hle hy`. Rewrite `h` using `[LinearMap.mem_ker]`. Then use the resulting hypothesis.
+
+Establish `hle : Col.eigSum (linF N) C1 ≤ LinearMap.ker ((hform A).flip y)`. Unfold `Col.eigSum`. Use `iSup₂_le fun a ha => ?_` and prove the remaining obligations. Introduce `x' hx'`. Rewrite using `[LinearMap.mem_ker, LinearMap.flip_apply]`.
+
+Conclude with `stepA a ha x' hx'`. Establish `h` using `hle hx`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.flip_apply, hform_eq_lemma]`. Conclude with `h`.
+-/
 private theorem dotProduct_mulVec_eigSum_eq_zero_of_disjoint (hA : A.PosDef) (adj : ∀ i, ∃ i', A * N i = (N i')ᴴ * A)
     (hc : Col.PairComm (linF N)) {C1 C2 : (I → ℂ) → Prop} (h12 : ∀ y, C2 y → ¬ C1 y) {x y : Fin n → ℂ}
     (hx : x ∈ Col.eigSum (linF N) C1) (hy : y ∈ Col.eigSum (linF N) C2) : star x ⬝ᵥ A *ᵥ y = 0 := by
@@ -240,6 +313,17 @@ private theorem dotProduct_mulVec_eigSum_eq_zero_of_disjoint (hA : A.PosDef) (ad
   rw [LinearMap.mem_ker, LinearMap.flip_apply, hform_eq_lemma] at h
   exact h
 
+/- English proof (translation)
+Establish `hsym : ∀ u v : Fin n → ℂ, star (LinearMap.toMatrix' (Col.eigProj hc hs C) *ᵥ u) ⬝ᵥ A *ᵥ v = star u ⬝ᵥ A *ᵥ (LinearMap.toMatrix' (Col.eigProj hc hs C) *ᵥ v)`. Introduce `u v`. Simplify using `only [LinearMap.toMatrix'_mulVec]`. Establish `o1 : star (Col.eigProj hc hs C u) ⬝ᵥ A *ᵥ (v - Col.eigProj hc hs C v) = 0` using `dotProduct_mulVec_eigSum_eq_zero_of_disjoint N A hA adj hc (C1 := C) (C2 := fun x => ¬ C x) (fun y hy => hy) (Col.eigProj_apply_mem hc hs C u) (Col.sub_eigProj_mem hc hs C v)`. Establish `o2 : star (u - Col.eigProj hc hs C u) ⬝ᵥ A *ᵥ (Col.eigProj hc hs C v) = 0` using `dotProduct_mulVec_eigSum_eq_zero_of_disjoint N A hA adj hc (C1 := fun x => ¬ C x) (C2 := C) (fun y hy hn => hn hy) (Col.sub_eigProj_mem hc hs C u) (Col.eigProj_apply_mem hc hs C v)`.
+
+Rewrite `o1` using `[Matrix.mulVec_sub, dotProduct_sub, sub_eq_zero]`. Rewrite `o2` using `[star_sub, sub_dotProduct, sub_eq_zero]`. Conclude with `o1.trans o2.symm`. Establish `key : ∀ u v : Fin n → ℂ, star u ⬝ᵥ ((LinearMap.toMatrix' (Col.eigProj hc hs C))ᴴ * A) *ᵥ v = star u ⬝ᵥ (A * LinearMap.toMatrix' (Col.eigProj hc hs C)) *ᵥ v`. Introduce `u v`.
+
+Use `conv_lhs => rw [← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hsym u v`. Establish `hz : ∀ v : Fin n → ℂ, ((LinearMap.toMatrix' (Col.eigProj hc hs C))ᴴ * A) *ᵥ v = (A * LinearMap.toMatrix' (Col.eigProj hc hs C)) *ᵥ v`. Introduce `v`.
+
+Establish `h0` using `key (((LinearMap.toMatrix' (Col.eigProj hc hs C))ᴴ * A) *ᵥ v - (A * LinearMap.toMatrix' (Col.eigProj hc hs C)) *ᵥ v) v`. Rewrite `h0` using `[← sub_eq_zero, ← dotProduct_sub]`. Conclude with `sub_eq_zero.mp (dotProduct_star_self_eq_zero.mp h0)`. Conclude with `Matrix.toLin'.injective (LinearMap.ext fun v => by`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply]`.
+
+Conclude with `hz v)`.
+-/
 theorem cx_proj_adj (hA : A.PosDef) (adj : ∀ i, ∃ i', A * N i = (N i')ᴴ * A)
     (hc : Col.PairComm (linF N)) (hs : Col.SplitOver (linF N)) (C : (I → ℂ) → Prop) :
     (LinearMap.toMatrix' (Col.eigProj hc hs C))ᴴ * A = A * LinearMap.toMatrix' (Col.eigProj hc hs C) := by
@@ -273,6 +357,11 @@ theorem cx_proj_adj (hA : A.PosDef) (adj : ∀ i, ∃ i', A * N i = (N i')ᴴ * 
     rw [Matrix.toLin'_apply, Matrix.toLin'_apply]
     exact hz v)
 
+/- English proof (translation)
+Establish `hadj` using `cx_proj_adj N A hA adj hc hs C`. Establish `hf2 : LinearMap.toMatrix' (Col.eigProj hc hs C) *ᵥ f = f`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Conclude with `Col.eigProj_apply_of_mem hc hs hf`. Establish `hg2 : LinearMap.toMatrix' (Col.eigProj hc hs C) *ᵥ g = 0`.
+
+Rewrite using `[LinearMap.toMatrix'_mulVec]`. Conclude with `Col.eigProj_apply_of_mem_not hc hs (Col.eigSum_mono (fun y hy => hCC y hy) hg)`. Rewrite using `[← hf2, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hadj, ← Matrix.mulVec_mulVec, hg2]`. Simplify using the standard rewrite rules.
+-/
 theorem cx_eig_orth (hA : A.PosDef) (adj : ∀ i, ∃ i', A * N i = (N i')ᴴ * A)
     (hc : Col.PairComm (linF N)) (hs : Col.SplitOver (linF N)) {C C' : (I → ℂ) → Prop} (hCC : ∀ y, C' y → ¬ C y)
     {f g : Fin n → ℂ} (hf : f ∈ Col.eigSum (linF N) C) (hg : g ∈ Col.eigSum (linF N) C') :
@@ -297,6 +386,21 @@ section CxQ
 
 variable {n d : ℕ} {I : Type} (N : I → Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin n) (Fin n) ℂ)
 
+/- English proof (translation)
+Establish `hdA : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hA.det_pos.ne'`. Establish `hAA : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hdA`. Establish `hAA' : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A hdA`. Generalize the expression as in `hRdef : P * A⁻¹ * Pᴴ = R at hR ⊢`. Establish `hRR : R * R⁻¹ = 1` using `Matrix.mul_nonsing_inv R hR`.
+
+Establish `hRR' : R⁻¹ * R = 1` using `Matrix.nonsing_inv_mul R hR`. Establish `hQ : ∀ i, (A⁻¹ * Pᴴ * R⁻¹ * P) * N i = N i * (A⁻¹ * Pᴴ * R⁻¹ * P)`. Introduce `i`. Take `⟨i', hi⟩` from `adj i`. Establish `hNA : N i * A⁻¹ = A⁻¹ * (N i')ᴴ`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e1 : Pᴴ * (M i')ᴴ = (N i')ᴴ * Pᴴ`. Rewrite using `[← Matrix.conjTranspose_mul, ← Matrix.conjTranspose_mul, hPN]`. Establish `hMR : M i * R = R * (M i')ᴴ`. Rewrite using `[← hRdef]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hRM : R⁻¹ * M i = (M i')ᴴ * R⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc R⁻¹, Matrix.mul_assoc (M i), hRR, Matrix.mul_one]`. Use `_ = R⁻¹ * (R * (M i')ᴴ) * R⁻¹ := by rw [hMR]`.
+
+Use `_ = (M i')ᴴ * R⁻¹ := by rw [← Matrix.mul_assoc R⁻¹ R, hRR', Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcomm : ∀ i, Commute (linF N i) (Matrix.toLin' (A⁻¹ * Pᴴ * R⁻¹ * P))` using `fun i => linF_commute (hQ i).symm`. Establish `hQu : (A⁻¹ * Pᴴ * R⁻¹ * P) *ᵥ u' ∈ Col.eigSum (linF N) C'` using `Col.eigSum_le_comap hcomm C' hu'`. Establish `key : star (P *ᵥ u) ⬝ᵥ R⁻¹ *ᵥ (P *ᵥ u') = star u ⬝ᵥ A *ᵥ ((A⁻¹ * Pᴴ * R⁻¹ * P) *ᵥ u')`.
+
+Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec]`. Simplify using `only [Matrix.mulVec_mulVec]`. Use `congr 2`. Simplify using `only [← Matrix.mul_assoc, hAA, Matrix.one_mul]`. Rewrite using `[key]`.
+
+Conclude with `cx_eig_orth N A hA adj hc hs hCC hu hQu`.
+-/
 theorem cx_quot_orth (hA : A.PosDef) (adj : ∀ i, ∃ i', A * N i = (N i')ᴴ * A) (P : Matrix (Fin d) (Fin n) ℂ)
     (M : I → Matrix (Fin d) (Fin d) ℂ) (hPN : ∀ i, P * N i = M i * P) (hR : IsUnit (P * A⁻¹ * Pᴴ).det)
     (hc : Col.PairComm (linF N)) (hs : Col.SplitOver (linF N)) {C C' : (I → ℂ) → Prop} (hCC : ∀ y, C' y → ¬ C y)
@@ -358,6 +462,15 @@ namespace EigenprojectionMatrices
 
 section Transfer
 
+/- English proof (translation)
+Establish `key : ∀ (i : I) (μ : k) (m : ℕ) (v : V), f (((op i - μ • 1) ^ m) v) = ((op' i - μ • 1) ^ m) (f v)`. Introduce `i μ m`. Proceed by induction on `m with`. Consider the case `zero => intro v`. Simplify using the standard rewrite rules.
+
+Consider the case `succ m ih`. Introduce `v`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih]`. Use `congr 1`. Simplify using `[hf]`.
+
+Establish `hat : ∀ x, Col.eigAt op x ≤ (Col.eigAt op' x).comap f`. Introduce `x v hv`. Simplify using `only [Col.eigAt, Submodule.mem_iInf, Submodule.mem_comap] at hv ⊢`. Introduce `i`. Take `⟨m, hm⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).mp (hv i)`.
+
+Conclude with `(Module.End.mem_maxGenEigenspace _ _ _).mpr ⟨m, by rw [← key, hm, map_zero]⟩`. Simplify using `only [Col.eigSum]`. Use `iSup₂_le fun x hx => (hat x).trans (Submodule.comap_mono ?_)` and prove the remaining obligations. Conclude with `le_iSup₂_of_le x hx le_rfl`.
+-/
 theorem eigSum_le_comap_of {k V W I : Type} [Field k] [AddCommGroup V] [Module k V] [AddCommGroup W] [Module k W]
     (f : V →ₗ[k] W) (op : I → Module.End k V) (op' : I → Module.End k W) (hf : ∀ i v, f (op i v) = op' i (f v))
     (C : (I → k) → Prop) : Col.eigSum op C ≤ (Col.eigSum op' C).comap f := by
@@ -383,12 +496,30 @@ theorem eigSum_le_comap_of {k V W I : Type} [Field k] [AddCommGroup V] [Module k
 
 variable {K : Type} [Field K] {I : Type} {N' : ℕ}
 
+/- English proof (translation)
+Establish `h1 : Matrix.toLin' M - c • (1 : Module.End K (Fin N' → K)) = Matrix.toLinAlgEquiv' (M - c • 1)`. Rewrite using `[map_sub, map_smul, map_one]`. Both sides reduce to the same expression. Rewrite using `[h1, ← map_pow]`. Both sides reduce to the same expression.
+-/
 theorem toLin'_sub_pow (M : Matrix (Fin N') (Fin N') K) (c : K) (m : ℕ) (u : Fin N' → K) :
     ((Matrix.toLin' M - c • (1 : Module.End K (Fin N' → K))) ^ m) u = ((M - c • 1) ^ m) *ᵥ u := by
   have h1 : Matrix.toLin' M - c • (1 : Module.End K (Fin N' → K)) = Matrix.toLinAlgEquiv' (M - c • 1) := by
     rw [map_sub, map_smul, map_one]; rfl
   rw [h1, ← map_pow]; rfl
 
+/- English proof (translation)
+Establish `hM : ∀ (i : I) (c : K) (m : ℕ) (v : Fin N' → K), (fun a => σ ((((M i - c • 1) ^ m) *ᵥ v) a)) = (((M i).map σ - σ c • 1) ^ m) *ᵥ (fun a => σ (v a))`. Introduce `i c m v`. Establish `hX : ((M i - c • 1) ^ m).map σ = ((M i).map σ - σ c • 1) ^ m`. Rewrite using `[← RingHom.mapMatrix_apply, map_pow, map_sub, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply]`. Use `congr 2`.
+
+Use extensionality with `p q`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Use function extensionality and compare the values at `a`. Rewrite using `[RingHom.map_mulVec, hX]`.
+
+Both sides reduce to the same expression. Establish `hat : ∀ x, ∀ v ∈ Col.eigAt (fun i => Matrix.toLin' (M i)) x, (fun a => σ (v a)) ∈ Col.eigAt (linF fun i => (M i).map σ) (fun i => σ (x i))`. Introduce `x v hv`. Simplify using `only [Col.eigAt, Submodule.mem_iInf] at hv ⊢`. Introduce `i`.
+
+Take `⟨m, hm⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).mp (hv i)`. Use `(Module.End.mem_maxGenEigenspace _ _ _).mpr ⟨m, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[toLin'_sub_pow]`. Establish `e` using `toLin'_sub_pow ((M i).map σ) (σ (x i)) m (fun a => σ (v a))`. Simplify using `only [linF]`.
+
+Rewrite using `[e, ← hM i (x i) m v, hm]`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Set `g : (Fin N' → K) →ₛₗ[σ] (Fin N' → ℂ)` to `{ toFun := fun v a => σ (v a) map_add' := fun v w => by funext a; simp map_smul' := fun c v => by funext a; simp }`. Establish `hle : Col.eigSum (fun i => Matrix.toLin' (M i)) C ≤ (Col.eigSum (linF fun i => (M i).map σ) (fun y => ∃ x, C x ∧ y = fun i => σ (x i))).comap g`.
+
+Unfold `Col.eigSum`. Use `iSup₂_le fun x hx => ?_` and prove the remaining obligations. Introduce `v hv`. Establish `h1 : Col.eigAt (linF fun i => (M i).map σ) (fun i => σ (x i)) ≤ ⨆ (y) (_ : ∃ x, C x ∧ y = fun i => σ (x i)), Col.eigAt (linF fun i => (M i).map σ) y` using `le_iSup₂_of_le (fun i => σ (x i)) ⟨x, hx, rfl⟩ le_rfl`. Conclude with `h1 (hat x v hv)`.
+
+Conclude with `hle hu`.
+-/
 theorem emb_mem_eigSum (σ : K →+* ℂ) (M : I → Matrix (Fin N') (Fin N') K) (C : (I → K) → Prop) {u : Fin N' → K}
     (hu : u ∈ Col.eigSum (fun i => Matrix.toLin' (M i)) C) :
     (fun a => σ (u a)) ∈ Col.eigSum (linF fun i => (M i).map σ) (fun y => ∃ x, C x ∧ y = fun i => σ (x i)) := by
@@ -432,6 +563,13 @@ theorem emb_mem_eigSum (σ : K →+* ℂ) (M : I → Matrix (Fin N') (Fin N') K)
     exact h1 (hat x v hv)
   exact hle hu
 
+/- English proof (translation)
+Establish `hf : ∀ i v, Matrix.toLin' Φ (linF N i v) = linF Nf i (Matrix.toLin' Φ v)`. Introduce `i v`. Simplify using `only [linF, Matrix.toLin'_apply, Matrix.mulVec_mulVec, hΦ i]`. Establish `h1 : Φ *ᵥ Col.eigProj hc hs C w ∈ Col.eigSum (linF Nf) C` using `eigSum_le_comap_of (Matrix.toLin' Φ) (linF N) (linF Nf) hf C (Col.eigProj_apply_mem hc hs C w)`. Establish `h2 : Φ *ᵥ (w - Col.eigProj hc hs C w) ∈ Col.eigSum (linF Nf) (fun x => ¬ C x)` using `eigSum_le_comap_of (Matrix.toLin' Φ) (linF N) (linF Nf) hf _ (Col.sub_eigProj_mem hc hs C w)`.
+
+Establish `h3 : Φ *ᵥ (w - Col.eigProj hc hs C w) ∈ Col.eigSum (linF Nf) C`. Rewrite using `[Matrix.mulVec_sub]`. Conclude with `Submodule.sub_mem _ hw h1`. Establish `h4 : Φ *ᵥ (w - Col.eigProj hc hs C w) = 0` using `Submodule.disjoint_def.mp (Col.disjoint_eigSum hcf (C := C) (C' := fun x => ¬ C x) (fun x hx hn => hn hx)) _ h3 h2`. Establish `h5 : w - Col.eigProj hc hs C w = 0`.
+
+Rewrite using `[← Matrix.one_mulVec (w - Col.eigProj hc hs C w), ← hΨ, ← Matrix.mulVec_mulVec, h4, Matrix.mulVec_zero]`. Rewrite `h5` using `[sub_eq_zero]`. Rewrite using `[h5]`. Conclude with `Col.eigProj_apply_mem hc hs C w`.
+-/
 theorem mem_eigSum_of_emb {n m : ℕ} (N : I → Matrix (Fin n) (Fin n) ℂ) (Nf : I → Matrix (Fin m) (Fin m) ℂ)
     (Φ : Matrix (Fin m) (Fin n) ℂ) (Ψ : Matrix (Fin n) (Fin m) ℂ) (hΨ : Ψ * Φ = 1) (hΦ : ∀ i, Φ * N i = Nf i * Φ)
     (hc : Col.PairComm (linF N)) (hs : Col.SplitOver (linF N)) (hcf : Col.PairComm (linF Nf))
@@ -462,6 +600,11 @@ end EigenprojectionMatrices
 
 namespace EigenprojectionMatrices
 
+/- English proof (translation)
+Establish `e1 : Eᴴ * H * E * T = (E * T')ᴴ * (H * E)`. Rewrite using `[hT', Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hT, ← Matrix.mul_assoc H O E, hO]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.mul_smul]`. Use `congr 1`. Rewrite using `[e1, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem adj_transfer {R : Type} [CommRing R] [StarRing R] {n m : ℕ} (E : Matrix (Fin m) (Fin n) R)
     (H : Matrix (Fin m) (Fin m) R) (c : R) (T T' : Matrix (Fin n) (Fin n) R) (O O' : Matrix (Fin m) (Fin m) R)
     (hT : E * T = O * E) (hT' : E * T' = O' * E) (hO : H * O = O'ᴴ * H) :
@@ -482,6 +625,11 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
 def tV (B : BlockDat K G Pl0) (ℓ : Lvl K G) (i : B.Pl × ℕ) : Matrix (Fin (B.nV ℓ)) (Fin (B.nV ℓ)) K :=
   B.vPr ℓ * B.opMat i * B.vE ℓ
 
+/- English proof (translation)
+Take `⟨⟨hPE, -⟩, hG⟩` from `BlockDat.lf_v_proj h`. Unfold `tV`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = B.opMat i * (B.vE ℓ * B.vPr ℓ) * B.vE ℓ := by rw [hG, ← CyclotomicLifting.opMat_gaMat h.ok.opG i]`.
+
+Use `_ = B.opMat i * B.vE ℓ * (B.vPr ℓ * B.vE ℓ) := by simp only [Matrix.mul_assoc]`. Use `_ = B.opMat i * B.vE ℓ := by rw [hPE, Matrix.mul_one]`.
+-/
 theorem vE_tV (h : BlockHyp B ℓ v0 s) (i : B.Pl × ℕ) : B.vE ℓ * tV B ℓ i = B.opMat i * B.vE ℓ := by
   obtain ⟨⟨hPE, -⟩, hG⟩ := BlockDat.lf_v_proj h
   unfold tV
@@ -491,6 +639,13 @@ theorem vE_tV (h : BlockHyp B ℓ v0 s) (i : B.Pl × ℕ) : B.vE ℓ * tV B ℓ 
     _ = B.opMat i * B.vE ℓ * (B.vPr ℓ * B.vE ℓ) := by simp only [Matrix.mul_assoc]
     _ = B.opMat i * B.vE ℓ := by rw [hPE, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hij : B.opMat i * B.opMat j = B.opMat j * B.opMat i`. Unfold `BlockDat.opMat`. Rewrite using `[← LinearMap.toMatrix_mul, ← LinearMap.toMatrix_mul, (h.ok.comm i j).eq]`. Establish `e : ∀ a b, tV B ℓ a * tV B ℓ b = B.vPr ℓ * (B.opMat a * B.opMat b) * B.vE ℓ`. Introduce `a b`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `tV`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = B.vPr ℓ * (B.opMat a * B.opMat b) * B.vE ℓ := by`. Rewrite using `[vE_tV h]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, e, hij]`.
+-/
 theorem tV_comm (h : BlockHyp B ℓ v0 s) (i j : B.Pl × ℕ) : tV B ℓ i * tV B ℓ j = tV B ℓ j * tV B ℓ i := by
   have hij : B.opMat i * B.opMat j = B.opMat j * B.opMat i := by
     unfold BlockDat.opMat
@@ -505,6 +660,11 @@ theorem tV_comm (h : BlockHyp B ℓ v0 s) (i j : B.Pl × ℕ) : tV B ℓ i * tV 
           simp only [Matrix.mul_assoc]
   rw [e, e, hij]
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `hH` using `(h.ok.hpos v0).1`. Establish `e : ((B.S.H.map v0.embedding)ᴴ) a b = (B.S.H.map v0.embedding) a b` using `by rw [hH]`. Apply `v0.embedding.injective` to reduce the goal to its premises. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply] at e ⊢`.
+
+Rewrite using `[(show ∀ τ : K →+* ℂ, τ (star (B.S.H b a)) = starRingEnd ℂ (τ (B.S.H b a)) from h.ok.hrat b a) v0.embedding, starRingEnd_apply]`. Conclude with `e`.
+-/
 private theorem isHermitian_H_of_blockHyp (h : BlockHyp B ℓ v0 s) : (B.S.H)ᴴ = B.S.H := by
   ext a b
   have hH := (h.ok.hpos v0).1
@@ -515,6 +675,11 @@ private theorem isHermitian_H_of_blockHyp (h : BlockHyp B ℓ v0 s) : (B.S.H)ᴴ
     starRingEnd_apply]
   exact e
 
+/- English proof (translation)
+Take `⟨i', hi'⟩` from `CyclotomicLifting.opMat_adj hH i`. Establish `hHh` using `isHermitian_H_of_blockHyp h`. Establish `hO : B.S.H * B.opMat i = (B.opMat i')ᴴ * B.S.H`. Establish `e` using `congrArg Matrix.conjTranspose hi'`. Rewrite `e` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hHh]`.
+
+Conclude with `e`. Use `⟨i', ?_⟩` and prove the remaining obligations. Rewrite using `[BlockDat.lf_HV_eq]`. Conclude with `adj_transfer (B.vE ℓ) B.S.H _ (tV B ℓ i) (tV B ℓ i') (B.opMat i) (B.opMat i') (vE_tV h i) (vE_tV h i') hO`.
+-/
 theorem tV_adj (h : BlockHyp B ℓ v0 s) (hH : B.OkH) (i : B.Pl × ℕ) :
     ∃ i', B.HV ℓ * tV B ℓ i = (tV B ℓ i')ᴴ * B.HV ℓ := by
   obtain ⟨i', hi'⟩ := CyclotomicLifting.opMat_adj hH i
@@ -527,6 +692,19 @@ theorem tV_adj (h : BlockHyp B ℓ v0 s) (hH : B.OkH) (i : B.Pl × ℕ) :
   rw [BlockDat.lf_HV_eq]
   exact adj_transfer (B.vE ℓ) B.S.H _ (tV B ℓ i) (tV B ℓ i') (B.opMat i) (B.opMat i') (vE_tV h i) (vE_tV h i') hO
 
+/- English proof (translation)
+Establish `hco : ∀ F, B.S.basis.equivFun (B.op i F) = B.opMat i *ᵥ B.S.basis.equivFun F`. Introduce `F`. Unfold `BlockDat.opMat`. Rewrite using `[Basis.equivFun_apply, Basis.equivFun_apply, LinearMap.toMatrix_mulVec_repr]`. Establish `hmem : ∀ v ∈ B.Z0 ℓ Z, tV B ℓ i *ᵥ v ∈ B.Z0 ℓ Z`.
+
+Introduce `v hv`. Simplify using `only [BlockDat.Z0, BlockDat.inV0, BlockDat.coord, Submodule.mem_comap, Submodule.mem_map, Matrix.mulVecLin_apply, LinearEquiv.coe_coe] at hv ⊢`. Take `⟨F, hF, hFv⟩` from `hv`. Use `⟨B.op i F, hZ i hF, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, vE_tV h i, ← Matrix.mulVec_mulVec, ← hFv, hco]`.
+
+Establish `hr` using `(subspace_image_spec K (B.nV ℓ) (B.Z0 ℓ Z)).2`. Establish `hPE` using `(BlockDat.Pq_orth h.conj h.ok h.irr : IsOrthProj (B.HV ℓ) (B.zE ℓ Z) (B.Pq ℓ Z)).1`. Establish `key : ∀ w, (tV B ℓ i * B.zE ℓ Z) *ᵥ w = (B.zE ℓ Z * (B.Pq ℓ Z * tV B ℓ i * B.zE ℓ Z)) *ᵥ w`. Introduce `w`. Establish `hz : B.zE ℓ Z *ᵥ w ∈ B.Z0 ℓ Z`.
+
+Rewrite using `[← hr]`. Conclude with `LinearMap.mem_range_self _ w`. Establish `ht` using `hmem _ hz`. Rewrite `ht` using `[← hr]`. Take `⟨w', hw'⟩` from `ht`.
+
+Establish `hw'' : B.zE ℓ Z *ᵥ w' = tV B ℓ i *ᵥ (B.zE ℓ Z *ᵥ w)` using `hw'`. Simplify using `only [← Matrix.mulVec_mulVec]`. Rewrite using `[← hw'']`. Use `congr 1`. Rewrite using `[Matrix.mulVec_mulVec, hPE, Matrix.one_mulVec]`.
+
+Conclude with `Matrix.toLin'.injective (LinearMap.ext fun w => by`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply]`. Conclude with `key w)`.
+-/
 theorem tV_zE (h : BlockHyp B ℓ v0 s) (hZ : ∀ i, Z ≤ Z.comap (B.op i)) (i : B.Pl × ℕ) :
     tV B ℓ i * B.zE ℓ Z = B.zE ℓ Z * (B.Pq ℓ Z * tV B ℓ i * B.zE ℓ Z) := by
   have hco : ∀ F, B.S.basis.equivFun (B.op i F) = B.opMat i *ᵥ B.S.basis.equivFun F := by
@@ -566,6 +744,25 @@ namespace EigenprojectionMatrices
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
   {B : BlockDat K G Pl0} {ℓ : Lvl K G} {v0 : InfinitePlace K} {s : ℕ} {Z : Submodule K B.S.Forms}
 
+/- English proof (translation)
+Establish `hv0' : ∀ a : K, v0.embedding (star a) = star (v0.embedding a)` using `fun a => by`. Rewrite using `[h.conj a, starRingEnd_apply]`. Establish `hposK : ∀ c : Fin B.S.dim → K, star c ⬝ᵥ B.S.H *ᵥ c = 0 → c = 0`. Introduce `c h0`. Establish `h1 : star (fun i => v0.embedding (c i)) ⬝ᵥ (B.S.H.map v0.embedding) *ᵥ (fun i => v0.embedding (c i)) = v0.embedding (star c ⬝ᵥ B.S.H *ᵥ c)`.
+
+Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, Pi.star_apply, hv0', Matrix.map_apply]`. Rewrite `h1` using `[h0, map_zero]`. Assume the negation of the conclusion as `hc0`. Establish `hne : (fun i => v0.embedding (c i)) ≠ 0`. Introduce `h2`.
+
+Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h3` using `congrFun h2 i`. Simplify using `using h3`. Establish `h4` using `(h.ok.hpos v0).dotProduct_mulVec_pos hne`.
+
+Rewrite `h4` using `[h1]`. Conclude with `lt_irrefl _ h4`. Take `⟨⟨hPE, -⟩, -⟩` from `BlockDat.lf_v_proj h`. Establish `hinj` using `(subspace_image_spec K (B.nV ℓ) (B.Z0 ℓ Z)).1`. Establish `hcard : (Nat.card ℓ.P : K)⁻¹ ≠ 0` using `inv_ne_zero (Nat.cast_ne_zero.mpr Nat.card_pos.ne')`.
+
+Establish `hsm : ∀ (c : K) (M : Matrix (Fin (B.dZ ℓ Z)) (Fin (B.dZ ℓ Z)) K) (v : Fin (B.dZ ℓ Z) → K), (c • M) *ᵥ v = c • (M *ᵥ v)` using `fun c M v => by`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Introduce `hdet`.
+
+Take `⟨w, hw0, hw⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Apply `hw0` to reduce the goal to its premises. Establish `h1 : star w ⬝ᵥ ((B.zE ℓ Z)ᴴ * B.HV ℓ * B.zE ℓ Z) *ᵥ w = 0` using `by rw [hw, dotProduct_zero]`. Rewrite `h1` using `[BlockDat.lf_HV_eq, Matrix.mul_smul, Matrix.smul_mul, hsm, dotProduct_smul, smul_eq_mul, mul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases.
+
+Conclude with `absurd h1 hcard`. Simplify using `only [← Matrix.mulVec_mulVec] at h1`. Rewrite `h1` using `[Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`. Establish `h3` using `hposK _ h1`. Establish `h5 : B.zE ℓ Z *ᵥ w = 0`.
+
+Establish `h4` using `congrArg (fun x => B.vPr ℓ *ᵥ x) h3`. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hPE, Matrix.one_mul, Matrix.mulVec_zero] at h4`. Conclude with `h4`. Apply `hinj` to reduce the goal to its premises. Use `show B.zE ℓ Z *ᵥ w = B.zE ℓ Z *ᵥ 0`.
+
+Rewrite using `[h5, Matrix.mulVec_zero]`.
+-/
 theorem HZ_unit (h : BlockHyp B ℓ v0 s) : IsUnit ((B.zE ℓ Z)ᴴ * B.HV ℓ * B.zE ℓ Z) := by
   have hv0' : ∀ a : K, v0.embedding (star a) = star (v0.embedding a) := fun a => by
     rw [h.conj a, starRingEnd_apply]
@@ -612,6 +809,19 @@ theorem HZ_unit (h : BlockHyp B ℓ v0 s) : IsUnit ((B.zE ℓ Z)ᴴ * B.HV ℓ *
   show B.zE ℓ Z *ᵥ w = B.zE ℓ Z *ᵥ 0
   rw [h5, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Take `⟨hPE, hEH⟩` from `(BlockDat.Pq_orth h.conj h.ok h.irr : IsOrthProj (B.HV ℓ) (B.zE ℓ Z) (B.Pq ℓ Z))`. Take `⟨i', hi'⟩` from `tV_adj h hH i`. Establish `hX` using `tV_zE h hZ i'`. Establish `hW : IsUnit ((B.zE ℓ Z)ᴴ * B.HV ℓ * B.zE ℓ Z)` using `HZ_unit h`. Establish `key : (B.zE ℓ Z)ᴴ * B.HV ℓ * tV B ℓ i * (1 - B.zE ℓ Z * B.Pq ℓ Z) = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (B.zE ℓ Z)ᴴ * ((tV B ℓ i')ᴴ * B.HV ℓ) * (1 - B.zE ℓ Z * B.Pq ℓ Z) := by rw [hi']`. Use `_ = (tV B ℓ i' * B.zE ℓ Z)ᴴ * B.HV ℓ * (1 - B.zE ℓ Z * B.Pq ℓ Z) := by`. Rewrite using `[Matrix.conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = (B.zE ℓ Z * (B.Pq ℓ Z * tV B ℓ i' * B.zE ℓ Z))ᴴ * B.HV ℓ * (1 - B.zE ℓ Z * B.Pq ℓ Z) := by`. Rewrite using `[hX]`. Use `_ = (B.Pq ℓ Z * tV B ℓ i' * B.zE ℓ Z)ᴴ * ((B.zE ℓ Z)ᴴ * B.HV ℓ * (1 - B.zE ℓ Z * B.Pq ℓ Z)) := by`. Rewrite using `[Matrix.conjTranspose_mul (B.zE ℓ Z)]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [hEH, Matrix.mul_zero]`. Establish `hWP : (B.zE ℓ Z)ᴴ * B.HV ℓ = ((B.zE ℓ Z)ᴴ * B.HV ℓ * B.zE ℓ Z) * B.Pq ℓ Z`. Establish `e` using `hEH`. Rewrite `e` using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`.
+
+Conclude with `e.trans (Matrix.mul_assoc _ _ _).symm`. Establish `hdet : IsUnit ((B.zE ℓ Z)ᴴ * B.HV ℓ * B.zE ℓ Z).det` using `(Matrix.isUnit_iff_isUnit_det _).mp hW`. Establish `hP : ((B.zE ℓ Z)ᴴ * B.HV ℓ * B.zE ℓ Z)⁻¹ * ((B.zE ℓ Z)ᴴ * B.HV ℓ) = B.Pq ℓ Z`. Establish `e` using `congrArg (fun M => ((B.zE ℓ Z)ᴴ * B.HV ℓ * B.zE ℓ Z)⁻¹ * M) hWP`. Rewrite using `[e, ← Matrix.mul_assoc ((B.zE ℓ Z)ᴴ * B.HV ℓ * B.zE ℓ Z)⁻¹, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mul]`.
+
+Establish `h3 : B.Pq ℓ Z * tV B ℓ i * (1 - B.zE ℓ Z * B.Pq ℓ Z) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`. Conclude with `h3.trans (by simp only [Matrix.mul_assoc])`.
+-/
 theorem Pq_tV (h : BlockHyp B ℓ v0 s) (hH : B.OkH) (hZ : ∀ i, Z ≤ Z.comap (B.op i)) (i : B.Pl × ℕ) :
     B.Pq ℓ Z * tV B ℓ i = (B.Pq ℓ Z * tV B ℓ i * B.zE ℓ Z) * B.Pq ℓ Z := by
   obtain ⟨hPE, hEH⟩ := (BlockDat.Pq_orth h.conj h.ok h.irr : IsOrthProj (B.HV ℓ) (B.zE ℓ Z) (B.Pq ℓ Z))
@@ -661,6 +871,9 @@ variable (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* 
   (Dc : ∀ Zs : DefSub A.fam.amb, DefCols (A.side P1 ψ1 Zs)) (Sp : ∀ Zs : DefSub A.fam.amb, SPer (Dc Zs))
   (Zsc : DefSub A.fam.amb → IndefScale A.fam.base)
 
+/- English proof (translation)
+The claim follows from `A.fam.side_Proviso hOk P ψ X.zs fun j => by show SubHasRatBasis ((A.fam.L j A.fam.μ0).Z0 (A.fam.lvlA P ψ) (X.Zl j A.fam.μ0)) rw [hC j] exact EigenprojectionMatrices.eig_rat (A.fam.blockHyp_lift hOk P ψ j A.fam.μ0) (hH j) (C j)`.
+-/
 theorem proviso_at {s : ℕ} (hOk : A.fam.Ok s) (hH : HeckeRatL A) (P : Subgroup G) (ψ : P →* Kˣ)
     {C : ∀ j : Fin m, ((A.fam.L j A.fam.μ0).Pl × ℕ → K) → Prop} (hC : LiftsEig A X P ψ C) :
     (A.fam.side P ψ X.zs).Proviso :=
@@ -669,6 +882,9 @@ theorem proviso_at {s : ℕ} (hOk : A.fam.Ok s) (hH : HeckeRatL A) (P : Subgroup
     rw [hC j]
     exact EigenprojectionMatrices.eig_rat (A.fam.blockHyp_lift hOk P ψ j A.fam.μ0) (hH j) (C j)
 
+/- English proof (translation)
+The claim follows from `A.fam.side_Types hOk P ψ X.zs hst hsep fun j => by show (A.fam.L j A.fam.μ0).Z0 (A.fam.lvlA P ψ) (X.Zl j A.fam.μ0) ≤ _ rw [hC j] exact (A.fam.L j A.fam.μ0).good_part_coordinates_mono _ (Col.eigSum_mono fun x hx => hT j x hx)`.
+-/
 theorem types_at {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (hst : X.zs.Stable) (P : Subgroup G)
     (ψ : P →* Kˣ) {C : ∀ j : Fin m, ((A.fam.L j A.fam.μ0).Pl × ℕ → K) → Prop} (hC : LiftsEig A X P ψ C)
     (hT : LiftsTyp A C) : (A.fam.side P ψ X.zs).Types :=
@@ -677,12 +893,18 @@ theorem types_at {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (hst : X.z
     rw [hC j]
     exact (A.fam.L j A.fam.μ0).good_part_coordinates_mono _ (Col.eigSum_mono fun x hx => hT j x hx)
 
+/- English proof (translation)
+Introduce `s C0 C1 hOk hH h0 h1 b`. Consider the cases of `b`. Conclude with `proviso_at A X hOk hH P0 ψ0 h0`. Conclude with `proviso_at A X hOk hH P1 ψ1 h1`.
+-/
 theorem cutProviso : CutProviso A X P0 ψ0 P1 ψ1 Dc Sp Zsc := by
   intro s C0 C1 hOk hH h0 h1 b
   cases b
   · exact proviso_at A X hOk hH P0 ψ0 h0
   · exact proviso_at A X hOk hH P1 ψ1 h1
 
+/- English proof (translation)
+Introduce `s C0 C1 hOk hsep hst h0 h1 t0 t1 b`. Consider the cases of `b`. Conclude with `types_at A X hOk hsep hst P0 ψ0 h0 t0`. Conclude with `types_at A X hOk hsep hst P1 ψ1 h1 t1`.
+-/
 theorem cutTypes : CutTypes A X P0 ψ0 P1 ψ1 Dc Sp Zsc := by
   intro s C0 C1 hOk hsep hst h0 h1 t0 t1 b
   cases b

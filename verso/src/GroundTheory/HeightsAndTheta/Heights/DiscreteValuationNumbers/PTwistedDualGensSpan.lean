@@ -8,6 +8,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 noncomputable section
 
+/- English proof (translation)
+Use `Finset.sum_induction _ (fun x => ∃ n : ℕ, f ^ n * x ∈ A) ?_ ⟨0, by simp⟩ ?_` and prove the remaining obligations. Introduce and unpack `x z ⟨n, hn⟩ ⟨m, hm⟩`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Establish `: f ^ (n + m) * (x + z) = f ^ m * (f ^ n * x) + f ^ n * (f ^ m * z)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `add_mem (mul_mem (pow_mem hf _) hn) (mul_mem (pow_mem hf _) hm)`. Introduce `q _`. Take `⟨n, hn⟩` from `ha q`. Conclude with `⟨n, by rw [← mul_assoc]; exact mul_mem hn (ht q)⟩`.
+-/
 theorem TwistedDualGensSpan.sum_mul_mem_localized {R Ω : Type*} [CommRing R] [Field Ω] [Algebra R Ω]
     (A : Subalgebra R Ω) {f : Ω} (hf : f ∈ A) {r : ℕ} (a t : Fin r → Ω)
     (ha : ∀ q, ∃ n : ℕ, f ^ n * a q ∈ A) (ht : ∀ q, t q ∈ A) :
@@ -22,6 +27,33 @@ theorem TwistedDualGensSpan.sum_mul_mem_localized {R Ω : Type*} [CommRing R] [F
     obtain ⟨n, hn⟩ := ha q
     exact ⟨n, by rw [← mul_assoc]; exact mul_mem hn (ht q)⟩
 
+/- English proof (translation)
+Unfold `TwistedDualGensSpan.Statement`. Introduce `R _ Ω _ _ K _ ι y N E _ _ B a M φ hφ c hc`. Take `⟨k, f, cc, hf, hcc, hsum, hb⟩` from `B.frame c hc`. Use `choose b hli hsp hiff using hb`. Take `⟨l0, hl0⟩ : ∃ l0, f l0 ≠ 0` from `by by_contra! h`.
+
+Simplify using `[h] at hsum`. Take `⟨β, hβ⟩ : ∃ β : Module.Basis (Fin N) Ω E, ∀ q, β q = b l0 q` from `⟨Module.Basis.mk (hli l0) (hsp l0).ge, fun q => Module.Basis.mk_apply _ _ _⟩`. Establish `key : ∀ q, β.coord q ∈ Submodule.span Ω (Set.range φ)`. Introduce `q`. Establish `hden : ∀ l r, ∃ D ∈ chartRing R (segreVec y) c, D ≠ 0 ∧ (f l ≠ 0 → D * β.coord q (b l r) ∈ chartRing R (segreVec y) c)`.
+
+Introduce `l r`. Distinguish the cases in `hl : f l = 0`. Conclude with `⟨1, one_mem _, one_ne_zero, fun h => (h hl).elim⟩`. Take `⟨n, hn⟩` from `(hiff l (b l r)).2 ⟨Pi.single r 1, fun q' => ⟨0, by`. Distinguish the cases in `h : q' = r`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]⟩, by simp [Pi.single_apply]⟩`. Take `⟨a', ha', hrep⟩` from `(hiff l0 _).1 ⟨0, by simpa using hn⟩`. Take `⟨m, hm⟩` from `ha' q`.
+
+Use `⟨f l0 ^ m * f l ^ n, mul_mem (pow_mem (hf l0) _) (pow_mem (hf l) _), mul_ne_zero (pow_ne_zero _ hl0) (pow_ne_zero _ hl), fun _ => ?_⟩` and prove the remaining obligations. Establish `hc' : β.coord q (f l ^ n • b l r) = a' q`. Rewrite using `[hrep, show ∑ q, a' q • b l0 q = ∑ q, a' q • β q by simp [hβ], Module.Basis.coord_apply, Module.Basis.repr_sum_self]`. Establish `: f l0 ^ m * f l ^ n * β.coord q (b l r) = f l0 ^ m * a' q`. Rewrite using `[← hc', map_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hm`. Use `choose D hDA hD0 hDc using hden`. Use `set d : Ω := ∏ p : Fin k × Fin N, D p.1 p.2 with hd`.
+
+Establish `hd0 : d ≠ 0` using `Finset.prod_ne_zero_iff.2 fun p _ => hD0 _ _`. Establish `hdc : ∀ l r, f l ≠ 0 → d * β.coord q (b l r) ∈ chartRing R (segreVec y) c`. Introduce `l r hl`. Establish `hsplit` using `Finset.mul_prod_erase Finset.univ (fun p : Fin k × Fin N => D p.1 p.2) (Finset.mem_univ (l, r))`. Simplify using `only at hsplit`.
+
+Rewrite using `[hd, ← hsplit]`. Establish `: D l r * (∏ p ∈ Finset.univ.erase (l, r), D p.1 p.2) * β.coord q (b l r) = (∏ p ∈ Finset.univ.erase (l, r), D p.1 p.2) * (D l r * β.coord q (b l r))` using `by ring`. Rewrite using `[this]`. Conclude with `mul_mem (prod_mem fun p _ => hDA _ _) (hDc l r hl)`. Establish `hψ : ∀ v ∈ B.lat c, (d • β.coord q) v ∈ chartRing R (segreVec y) c`.
+
+Introduce `v hv`. Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Use `Subalgebra.mem_of_finsetSum_eq_one_of_pow_smul_mem _ Finset.univ f cc hsum hf hcc _ ?_` and prove the remaining obligations. Introduce `l`. Distinguish the cases in `hl : f l = 0`.
+
+Conclude with `⟨1, by simp [hl]⟩`. Take `⟨a', ha', hrep⟩` from `(hiff l v).1 ⟨0, by simpa using hv⟩`. Take `⟨n, hn⟩` from `TwistedDualGensSpan.sum_mul_mem_localized _ (hf l) a' (fun r => d * β.coord q (b l r)) ha' (fun r => hdc l r hl)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `: d * β.coord q v = ∑ r, a' r * (d * β.coord q (b l r))`.
+
+Rewrite using `[hrep, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[smul_eq_mul, this]`.
+
+Conclude with `hn`. Take `⟨u, -, hu⟩` from `hφ.generate c hc (d • β.coord q) hψ`. Establish `hmem : d • β.coord q ∈ Submodule.span Ω (Set.range φ)`. Rewrite using `[hu]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+
+Establish `: β.coord q = d⁻¹ • (d • β.coord q)` using `by rw [smul_smul, inv_mul_cancel₀ hd0, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hmem`. Rewrite using `[eq_top_iff, ← β.dualBasis.span_eq, Module.Basis.coe_dualBasis]`. Conclude with `Submodule.span_le.2 (by rintro _ ⟨q, rfl⟩; exact key q)`.
+-/
 theorem TwistedDualGensSpan.proof : TwistedDualGensSpan.Statement := by
   unfold TwistedDualGensSpan.Statement
   intro R _ Ω _ _ K _ ι y N E _ _ B a M φ hφ c hc

@@ -78,6 +78,9 @@ def IsBasOf (W : HSp D) (hr : W.rank = r) (X : Data D.host.E r) {q0 : ℕ} (hq :
     (i : ℕ) = Sum.elim (fun i : Fin q0 => (i : ℕ)) (fun i : Fin X.p0 => q0 + (i : ℕ)) k →
       B ρ a i = x τ (Fin.cast hr a) (rowIdx hq k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem perC_emb {E : Type} [Field E] [NumberField E] [IsCMField E] (X : Data E r) (x : Frame X.Ψ r) (v : Fin r → E) :
     perC X x (fun τ => Data.emb τ.1 v) = per X x v := rfl
 

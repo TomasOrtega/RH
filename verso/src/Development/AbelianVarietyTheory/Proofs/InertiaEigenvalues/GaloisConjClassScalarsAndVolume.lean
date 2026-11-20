@@ -20,6 +20,13 @@ open scoped nonZeroDivisors
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Proceed by induction on `cc using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact absurd rfl h0`. Consider the case `h₂ x hx`. Take `rfl : x = ⊤` from `Ideal.isUnit_iff.1 hx`. Simplify using `[onId_one]`.
+
+Consider the case `h₃ a p ha hp ih`. Set `v : HeightOneSpectrum (𝓞 L)` to `⟨p, Ideal.isPrime_of_prime hp, hp.ne_zero⟩`. Establish `hb : b ∉ v.asIdeal` using `fun hb => v.isPrime.ne_top (top_le_iff.1 (h1.ge.trans (sup_le Ideal.mul_le_left ((Ideal.span_singleton_le_iff_mem _).2 hb))))`. Establish `ha1 : a ⊔ Ideal.span {b} = ⊤` using `top_le_iff.1 (h1.ge.trans (sup_le_sup_right Ideal.mul_le_right _))`. Establish `key : ∀ ψ : HChar L, ((ψ.onId ((p * a : Ideal (𝓞 L)) : FractionalIdeal (𝓞 L)⁰ L) : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm (p * a) : ℝ) : ℝ) : ℂ) = (((ψ.val v : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm v.asIdeal : ℝ) : ℝ) : ℂ)) * (((ψ.onId (a : FractionalIdeal (𝓞 L)⁰ L) : ℂˣ) : ℂ) * ( …` using `fun ψ => by`.
+
+Rewrite using `[FractionalIdeal.coeIdeal_mul, onId_mul ψ (FractionalIdeal.coeIdeal_ne_zero.2 hp.ne_zero) (FractionalIdeal.coeIdeal_ne_zero.2 ha), map_mul, Nat.cast_mul, Real.sqrt_mul (Nat.cast_nonneg _), show ψ.onId (p : FractionalIdeal (𝓞 L)⁰ L) = ψ.val v from onId_prime ψ v]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, key, map_mul, h v hb, ih ha ha1]`.
+-/
 theorem conj_of_primes (χ χ' : HChar L) (τ : ℂ ≃+* ℂ) (b : 𝓞 L)
     (h : ∀ v : HeightOneSpectrum (𝓞 L), b ∉ v.asIdeal →
       τ (((χ.val v : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm v.asIdeal : ℝ) : ℝ) : ℂ)) =
@@ -57,6 +64,13 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨h0, cc, c1, c2, c3⟩` from `GlobalTheory.ScalarUnit.exists_numerator H Λ hU`. Establish `hN : Nat.Coprime (Λ.Ln.toAddSubgroup.addSubgroupOf Λ.La.toAddSubgroup).index bad`. Use `Nat.coprime_of_dvd fun p hp h1 h2 => ?_` and prove the remaining obligations. Take `⟨k, hk, hk'⟩` from `hT`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hp).1 (GlobalTheory.ScalarUnit.index_coprime hp Λ ⟨k, hk.coprime_dvd_right h2, hk'⟩ h0).symm h1`.
+
+Generalize the expression as in `(Λ.Ln.toAddSubgroup.addSubgroupOf Λ.La.toAddSubgroup).index = N at *`. Use `⟨cc, fun e => h0 ?_, ?_, c1, c2⟩` and prove the remaining obligations. Rewrite `c3` using `[e, Ideal.mem_bot]`. Conclude with `c3` after adjusting the coercions. Take `⟨u, v, e⟩` from `(Nat.isCoprime_iff_coprime.2 hN).map (Int.castRingHom (𝓞 E))`.
+
+Simplify using `only [map_natCast] at e`. Rewrite using `[Ideal.eq_top_iff_one, ← e]`. Conclude with `add_mem (Ideal.mem_sup_left (Ideal.mul_mem_left _ _ c3)) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)))`.
+-/
 theorem exists_numerator_coprime (H : Host E) {n bad : ℕ} (Λ : GenLat E n) (hU : Λ.Unimod) (hT : Λ.TrivAt bad) :
     ∃ cc : Ideal (𝓞 E), cc ≠ ⊥ ∧ cc ⊔ Ideal.span {(bad : 𝓞 E)} = ⊤ ∧ cc ⊔ cc.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤ ∧
       Submodule.span (𝓞 E) (detSet Λ.La) * idlE (cc.map (H.bar : 𝓞 E →+* 𝓞 E)) = idlE cc := by
@@ -76,6 +90,11 @@ theorem exists_numerator_coprime (H : Host E) {n bad : ℕ} (Λ : GenLat E n) (h
     exact add_mem (Ideal.mem_sup_left (Ideal.mul_mem_left _ _ c3))
       (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)))
 
+/- English proof (translation)
+Take `⟨cc, c0, c1, c2, c3⟩` from `exists_numerator_coprime H ⟨L⟩ g.1 g.2.1`. Take `⟨q, q0, q1, q2⟩` from `he L cc g.1 g.2.1 g.2.2 c2 c3`. Take `⟨q', q0', q1', q2'⟩` from `he' L cc g.1 g.2.1 g.2.2 c2 c3`. Establish `hN : (Ideal.absNorm cc : ℚ) ≠ 0` using `by exact_mod_cast fun h => c0 (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hq : q = q'`.
+
+Establish `h1` using `q1.trans q1'.symm`. Rewrite `hN` using `[← q1]`. Conclude with `(pow_left_inj₀ q0.le q0'.le two_ne_zero).1 (mul_right_cancel₀ (right_ne_zero_of_mul hN) h1)`. Rewrite using `[q2, q2', map_mul, map_inv₀, hB cc c0 c1, map_ratCast, hq]`.
+-/
 theorem ep_conj {H : Host E} {Dw : Datum H} {l : Level H} (c : Coeff l) {n bad : ℕ} (ta : c.F ≃+* c.F)
     {B B' : Ideal (𝓞 E) → c.F} {epF epF' : Submodule (𝓞 E) (Fin n → E) → c.F}
     (he : EpIs (Dw := Dw) c bad B epF) (he' : EpIs (Dw := Dw) c bad B' epF')
@@ -101,6 +120,19 @@ open Classical
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hC _ i Tp tup M hO τ ta hta hF a b e hS hab`. Take `⟨-, -, -, hbad, hvol, hk⟩` from `hS`. Use `⟨?_, fun k => ?_⟩` and prove the remaining obligations. Take `⟨h, J', hR, -⟩` from `(hO.tuple a).reps`. Rewrite using `[hvol, hR.2.2.2.2.1, map_inv₀, map_natCast]`.
+
+Establish `hxi` using `(GlobalTheory.T.conjugate_tuples_conjugate_residue_levels D G Pl0 T0 A T R F κ v₀ hC τ (tup a) (tup b) hab).2.2.1`. Take `⟨r1, r2, -, -, -, r6⟩` from `(hO.reps a).1 k`. Establish `hcj` using `(GlobalTheory.ClassScalarCompare.latPin_iff_conjLat _ _).1 (hO.reps a).2 k`. Establish `g` using `GlobalTheory.ClassScalarCompare.guard_conjLat (H := T.Q.H) (L := (M.La a k).La) ⟨r1, r2, r6⟩`. Rewrite `g` using `[hcj, GlobalTheory.ClassScalarCompare.conjLat_conjLat]`.
+
+Establish `heb` using `(hO.ep b).2`. Establish `hBb` using `(hO.tuple b).B`. Rewrite `heb`, `hBb` using `[hbad]`. Rewrite using `[(hO.ep a).1 k, (hO.ep b).1 (e k), (hk k).1]`. Use `ep_conj M.c' ta (hO.ep a).2 heb (fun cc c0 c1 => Subtype.ext ?_) g` and prove the remaining obligations.
+
+Establish `h1 : ((M.B a cc : M.c'.F) : ℂ) = _` using `(hO.tuple a).B cc c0 c1`. Establish `h2 : ((M.B b cc : M.c'.F) : ℂ) = _` using `hBb cc c0 c1`. Rewrite using `[hta, h1, h2]`. Use `conj_of_primes _ _ τ _ (fun P hP => ?_) cc c0 c1` and prove the remaining obligations. Establish `hs` using `hF.split P fun hj => hP (by`.
+
+Take `⟨u, hu⟩` from `(hO.bad a).2.2.2.2`. Rewrite using `[hu, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hj)`. Establish `key : ∀ t, (((R.C.mu0 i * R.xiH t * R.C.eta⁻¹).val P : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm P.asIdeal : ℝ) : ℝ) : ℂ) = (((R.xiH t).val P : ℂˣ) : ℂ) * ((((R.C.mu0 i * R.C.eta⁻¹).val P : ℂˣ) : ℂ) * ((Real.sqrt (Ideal.absNorm P.asIdeal : ℝ) : ℝ) : ℂ))` using `fun t => by`. Simplify using `only [Formalism.L2.Host.HChar.val_mul, Units.val_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, key, map_mul, hs, hxi]`.
+-/
 theorem conj_vol_ep : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (M : OMDat T.toCore R i Tp tup), M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) M.s0) → ∀ (τ : ℂ ≃+* ℂ) (ta : M.c'.F ≃+* M.c'.F), (∀ a : M.c'.F, ((ta a : M.c'.F) : ℂ) = τ (a : ℂ)) → FixBase T R i τ → ∀ (a b : Tp) (e : M.Cl' a ≃ M.Cl' b), SameCover M a b e → ConjTup R τ (tup a) (tup b) → ta (M.vol a) = M.vol b ∧ ∀ k, ta (M.ep a k) = M.ep b (e k) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hC _ i Tp tup M hO τ ta hta hF a b e hS hab
   obtain ⟨-, -, -, hbad, hvol, hk⟩ := hS

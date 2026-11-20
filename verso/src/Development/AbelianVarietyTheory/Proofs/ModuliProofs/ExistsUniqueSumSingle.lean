@@ -13,6 +13,11 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.LieEigenbasis
 
+/- English proof (translation)
+Establish `h : ∀ (d : Fin N → k) (j : Fin N), (∑ j, d j • (Pi.single (s j) 1 : Fin n → k)) (s j) = d j` using `fun d j => by`. Simplify using `[Finset.sum_apply, Pi.single_apply, hs.eq_iff]`. Use `⟨fun j => c (s j), funext fun i => ?_, fun d hd => funext fun j => by rw [hd, h]⟩` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ Set.range s`. Take `⟨j, rfl⟩` from `hi`.
+
+Rewrite using `[h]`. Rewrite using `[hc i hi, Finset.sum_apply]`. Use `(Finset.sum_eq_zero fun j _ => ?_).symm` and prove the remaining obligations. Establish `: i ≠ s j` using `fun e => hi ⟨j, e.symm⟩`. Simplify using `[this]`.
+-/
 theorem existsUnique_sum_single {k : Type} [Field k] {n N : ℕ} (s : Fin N → Fin n)
     (hs : Function.Injective s) (c : Fin n → k) (hc : ∀ i, i ∉ Set.range s → c i = 0) :
     ∃! d : Fin N → k, c = ∑ j, d j • (Pi.single (s j) 1 : Fin n → k) := by
@@ -32,6 +37,27 @@ end GlobalTheory.LieEigenbasis
 
 open ReciprocityTheory.ChartRestriction.G.Chart (prodPts scaleD tvec tmap) in
 
+/- English proof (translation)
+Introduce `k _ O _ G _ act n v τs _ hv hτ τ`. Use `act.hom` as an intermediate fact. Take `⟨x, hx, hxv⟩` from `Chart.chart_of_basis hv`. Establish `hxv' : ∀ j, v j = tvec (x` using `x) (Pi.single j 1) := hxv`. Establish `hdiag : ∀ a i, tmap hx (act.act a) (Pi.single i 1) = τs i a • (Pi.single i 1 : Fin n → k)` using `fun a i => (Chart.tvec_eig_iff hx _ _ _).1 (by`.
+
+Rewrite using `[← hxv']`. Conclude with `Over.OverMorphism.ext (hτ i a))`. Establish `hmap : ∀ a c i, tmap hx (act.act a) c i = τs i a * c i` using `fun a c i => by conv_lhs => rw [← Finset.univ_sum_single c]`. Establish `: ∀ j, (Pi.single j (c j) : Fin n → k) = c j • (Pi.single j 1 : Fin n → k)` using `fun j => by`. Rewrite using `[← Pi.single_smul, smul_eq_mul, _root_.mul_one]`.
+
+Simplify using `only [this, map_sum, map_smul, hdiag]`. Simplify using `[Finset.sum_apply, Pi.single_apply, mul_comm]`. Set `N` to `Nat.card {i // τs i = τ}`. Set `q : Fin N ≃ {i // τs i = τ}` to `(Finite.equivFin _).symm`. Set `s : Fin N → Fin n` to `fun j => (q j).1`.
+
+Establish `hs : Function.Injective s` using `Subtype.val_injective.comp q.injective`. Establish `hpr : ∀ d : Fin N → k, prodPts d (fun j => v (s j)) = tvec (x` using `x) (∑ j, d j • (Pi.single (s j) 1 : Fin n → k)) := fun d => by`. Establish `ht : ∀ j, Chart.IsTan (v (s j))` using `fun j => (Chart.isTan_iff _).2 (hv.1 _)`. Take `⟨h, e⟩` from `Chart.prodPts_tan hx d (fun j => v (s j)) ht`. Use `(Chart.tcoord_spec hx _ h).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `tvec (x := x) _ = _`. Rewrite using `[e]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Chart.tcoord_eq hx _ (ht j) _ (hxv _)]`. Set `j : epsPt (𝟙 (Sp k)) ≅ epsR k` to `Over.isoMk (Iso.refl _) (by simp)`.
+
+Set `e : (epsPt (𝟙 (Sp k)) ⟶ G) ≃* (epsR k ⟶ G)` to `MulEquiv.ofBijective (preHom j.inv) (j.symm.homCongr (Iso.refl G)).symm.bijective`. Establish `he : ∀ w, (e w).left = w.left` using `fun w => Category.id_comp _`. Establish `he' : ∀ w, (e.symm w).left = w.left` using `fun w => by rw [← he, e.apply_symm_apply]`. Establish `one : (1 : Over.mk (𝟙 (Sp k)) ⟶ G).left = η[G].left` using `Category.id_comp _`. Use `LiePull.basis_transport e.symm (Q := IsLieEigen act (𝟙 _) τ) (R' := fun c u v => u.left = spMap (epsScale c) ≫ v.left) (R := fun c u v => u.left = spMap (epsScaleR c) ≫ v.left) (P := fun w => IsTangent w ∧ ∀ a, w ≫ act.act a = Chart.spMap (scaleD (τ a)) ≫ w) (fun w => and_congr ( …` and prove the remaining obligations.
+
+Rewrite using `[Over.OverMorphism.ext_iff, Over.comp_left, Over.comp_left, Over.comp_left, he']`. Use the proof step `rfl))`. Use the proof step `(fun c u v => by rw [he', he']; rfl) N ⟨fun j => v (s j), fun j => ⟨hv.1 _, fun a => ?_⟩, ?_⟩`. Use `hτ (s j) a` as an intermediate fact. Rewrite `this` using `[(q j).2]`.
+
+Conclude with `Over.OverMorphism.ext this`. Introduce and unpack `w ⟨hw, hw'⟩`. Establish `ht` using `(Chart.isTan_iff _).2 hw`. Take `⟨c, rfl⟩ : ∃ c, w = tvec (x` from `x) c := ⟨_, Chart.tcoord_spec hx w ht⟩`. Use `(existsUnique_congr fun d => ?_).1 (LieEigenbasis.existsUnique_sum_single s hs c fun i hi => ?_)` and prove the remaining obligations.
+
+Use `Iff.trans ?_ (Chart.isLieComb_iff d _ _).symm` and prove the remaining obligations. Rewrite using `[hpr]`. Conclude with `⟨fun h => by rw [← h], Chart.tvec_inj hx⟩`. Assume the negation of the conclusion as `hc`. Use `hi ⟨q.symm ⟨i, RingHom.ext fun a => ?_⟩, by simp [s]⟩` and prove the remaining obligations.
+
+Use `congrFun ((Chart.tvec_eig_iff hx _ _ _).1 (hw' a)) i` as an intermediate fact. Rewrite `this` using `[hmap]`. Conclude with `mul_right_cancel₀ hc this`.
+-/
 theorem GlobalTheory.lieMult_of_eigenbasis : ∀ (k : Type) [Field k] (O : Type) [CommRing O] (G : Over (Sp k)) [GrpObj G] (act : OAct O G) (n : ℕ) (v : Fin n → (epsR k ⟶ G)) (τs : Fin n → (O →+* k)), Smooth G.hom → IsLieBasis v → (∀ i a, (v i ≫ act.act a).left = spMap (epsScale (τs i a)) ≫ (v i).left) → ∀ τ : O →+* k, LieMult act (𝟙 (Sp k)) τ (Nat.card {i // τs i = τ}) := by
   intro k _ O _ G _ act n v τs _ hv hτ τ
   have := act.hom

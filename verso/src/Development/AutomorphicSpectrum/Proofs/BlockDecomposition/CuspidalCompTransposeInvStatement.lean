@@ -9,5 +9,8 @@ open Ad3.R (G2 Jd md Dt KA Set0 Coord LInv pt dia2 pri)
 open GlobalTheory.CompanionTheory.UnfoldingAlt
 open scoped NumberField.AdeleRing ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TiCusp.isCuspidal_comp_ti | exact GlobalTheory.CompanionTheory.TiCusp.isCuspidal_comp_ti | (intros; apply GlobalTheory.CompanionTheory.TiCusp.isCuspidal_comp_ti <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cuspidal_comp_transposeInv : ∀ φ : G3 → ℂ, IsLeftInvariant φ → IsCuspidal φ → IsCuspidal (fun g : G3 => φ (ti g)) := by
   first | exact @GlobalTheory.CompanionTheory.TiCusp.isCuspidal_comp_ti | exact GlobalTheory.CompanionTheory.TiCusp.isCuspidal_comp_ti | (intros; apply GlobalTheory.CompanionTheory.TiCusp.isCuspidal_comp_ti <;> assumption)

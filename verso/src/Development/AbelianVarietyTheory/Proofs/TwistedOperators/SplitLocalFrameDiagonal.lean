@@ -14,6 +14,23 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 open ValuativeRel
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM F hF σ h h' v hv`. Take `⟨k, _, _, _, _, p, β, j, ϖ, hpv, hid, hlat, hmax, ⟨u₁, hu₁⟩, ⟨u₂, hu₂⟩, hj, hcol, hperp⟩` from `GlobalTheory.StairFrameFJ.exists_frame D hq T L μ0 hL sc G W M hM F hF σ h' v hv`. Establish `hϖ : (ϖ : k) ≠ 0`. Introduce `h0`. Establish `h0' : ϖ = 0` using `Subtype.ext h0`.
+
+Establish `: IsLocalRing.maximalIdeal 𝒪[k] = ⊥` using `by rw [hmax, h0', Ideal.span_singleton_eq_bot.2 rfl]`. Conclude with `IsDiscreteValuationRing.not_a_field _ this`. Take `⟨hs, ht⟩` from `GlobalTheory.FrameScale.clauses D hq T L μ0 hL sc G W M hM F hF σ h' k p β j (ϖ : k) (G.pl.depth sc v) hϖ hj hcol hperp`. Use `⟨k, inferInstance, inferInstance, inferInstance, inferInstance, p, β, fun q => j ⟨q.1, by omega⟩, fun q => j ⟨2 * σ - q.1, by omega⟩, _, _, hpv, hid, hlat, ?_, ?_, ?_, hs, ht, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+
+Use `hj hab` as an intermediate fact. Conclude with `Fin.ext (by simpa using congrArg Fin.val this)`. Introduce `a b hab`. Use `congrArg Fin.val (hj hab)` as an intermediate fact. Simplify using `at this`.
+
+Conclude with `Fin.ext (by omega)`. Introduce `a b hab`. Use `congrArg Fin.val (hj hab)` as an intermediate fact. Simplify using `at this`. Apply the tactic sequence `constructor <;> exact Fin.ext (by simp; omega)`.
+
+Introduce `a ha`. Establish `hu2 : (p.pr (incA D (star (-D.host.xi0)))) ≠ 0` using `right_ne_zero_of_mul_eq_one hu₂`. Use `⟨fun q i => ?_, fun q i => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `GlobalTheory.T.split_frame_lattice_functional D hq T L μ0 hL sc G W M hM F hF σ h h' v hv k p β ϖ hpv hid hlat hmax a ha q i`. Conclude with `⟨z, hz, hz'⟩`.
+
+Take `⟨z, hz, hz'⟩` from `GlobalTheory.ConjClause.functional_equation_local_lattice D hq T L μ0 hL sc G W M hM F hF σ h h' v hv k p β ϖ hpv hid hlat hmax a ha q i`. Use `⟨z * (if q.1 = σ then -1 else 1), Ideal.mul_mem_right _ _ hz, ?_⟩` and prove the remaining obligations. Use `clear hperp hcol hs ht hlat`. Establish `hϖn : (ϖ : k) ^ (G.pl.depth sc v * (2 * σ + 1 - q.1)) ≠ 0` using `pow_ne_zero _ hϖ`. Establish `hx : (p.pr (incA D (star (-D.host.xi0)))) ^ (q.1 + 1) ≠ 0` using `pow_ne_zero _ hu2`.
+
+Rewrite using `[← hz']`. Generalize the expression as in `(p.pr (incA D (star (-D.host.xi0)))) ^ (q.1 + 1) = X at hx ⊢`. Generalize the expression as in `(ϖ : k) ^ (G.pl.depth sc v * (2 * σ + 1 - q.1)) = Y at hϖn ⊢`. Distinguish the cases in `hqσ : q.1 = σ`. Simplify using `only [hqσ, if_true]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using `only [hqσ, if_false]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem GlobalTheory.FrameFB.frame_fb : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m), ∀ v ∈ G.pl.S0,
   ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k)
     (p : GlobalTheory.FinPl.SplitPt D k) (β : GlobalTheory.FinPl.Frame p (G.V (.grid (2 * σ + 2) 0)) (Fin (G.V (.grid (2 * σ + 2) 0)).rank))

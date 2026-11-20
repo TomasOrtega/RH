@@ -42,11 +42,17 @@ def chartPullSwap {X X' : Scheme.{0}} (L : LB X) {J K : Type} [Fintype J] [Finty
       simp only [zpow_one, Category.id_comp, hc, ← Finset.prod_zpow]
       exact Finset.prod_comm }
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Conclude with `⟨LB.linCombIso u φ ε, linCombIso_isGen u hu φ ε⟩`.
+-/
 theorem lbIso_linComb {X Y : Scheme.{0}} {L M : LB X} (h : LBIso L M) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     (ε : K → ℤ) : LBIso (LB.LinComb L φ ε) (LB.LinComb M φ ε) := by
   obtain ⟨u, hu⟩ := h
   exact ⟨LB.linCombIso u φ ε, linCombIso_isGen u hu φ ε⟩
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Rewrite using `[List.foldr_nil, List.foldr_nil, show pzero G' G' = 1 from Over.OverMorphism.ext rfl, show pzero G G = 1 from Over.OverMorphism.ext rfl, one_comp, comp_one]`. Consider the case `cons k l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, show ∀ a b : G' ⟶ G', padd G' a b = a * b from fun _ _ => Over.OverMorphism.ext rfl, show ∀ a b : G ⟶ G, padd G a b = a * b from fun _ _ => Over.OverMorphism.ext rfl, mul_comp, comp_mul, hx k, ih]`.
+-/
 private lemma foldr_padd_comp_eq_comp_foldr_padd {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [GrpObj G] (h : G' ⟶ G) [IsMonHom h]
     {n : ℕ} (x' : Fin n → (G' ⟶ G')) (x : Fin n → (G ⟶ G)) (hx : ∀ k, x' k ≫ h = h ≫ x k) (l : List (Fin n)) :
     List.foldr (fun k acc => padd G' (x' k) acc) (pzero G' G') l ≫ h =
@@ -59,6 +65,17 @@ private lemma foldr_padd_comp_eq_comp_foldr_padd {S : Scheme.{0}} {G' G : Over S
     rw [List.foldr_cons, List.foldr_cons, show ∀ a b : G' ⟶ G', padd G' a b = a * b from fun _ _ => Over.OverMorphism.ext rfl,
       show ∀ a b : G ⟶ G, padd G a b = a * b from fun _ _ => Over.OverMorphism.ext rfl, mul_comp, comp_mul, hx k, ih]
 
+/- English proof (translation)
+Introduce `S G' G _ _ _ _ j p L L' hL hL' hbox f f' hc hprim`. Unfold `cubeLB boxLB at *`. Establish `hcomm : ∀ (I : ULift.{0} (Finset (Fin 2))) (i : Fin j), (psum G' ![𝟙 G', f'] I.down).left ≫ (p.pr i).left = (p.pr i).left ≫ (psum G ![𝟙 G, f] I.down).left`. Introduce `I i`. Use `p.hom i` as an intermediate fact.
+
+Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Unfold `psum`. Use `foldr_padd_comp_eq_comp_foldr_padd (p.pr i) _ _ (fun k => ?_) _` and prove the remaining obligations. Use `fin_cases k`.
+
+Simplify using the standard rewrite rules. Simplify using `using hc i`. Establish `hP` using `linComb_isLB _ hL (fun i => (p.pr i).left) (fun _ => (1 : ℤ))`. Establish `hQ` using `linComb_isLB _ (linComb_isLB _ hL (fun I : ULift.{0} (Finset (Fin 2)) => (psum G ![𝟙 G, f] I.down).left) (fun I => (-1 : ℤ) ^ ((Nat.succ 0).succ - I.down.card))) (fun i => (p.pr i).left) (fun _ => (1 : ℤ))`. Establish `hR` using `linComb_isLB _ hP (fun I : ULift.{0} (Finset (Fin 2)) => (psum G' ![𝟙 G', f'] I.down).left) (fun I => (-1 : ℤ) ^ ((Nat.succ 0).succ - I.down.card))`.
+
+Establish `h1` using `lbIso_linComb hbox (fun I : ULift.{0} (Finset (Fin 2)) => (psum G' ![𝟙 G', f'] I.down).left) (fun I => (-1 : ℤ) ^ ((Nat.succ 0).succ - I.down.card))`. Establish `h3` using `lbIso_linComb hprim (fun i => (p.pr i).left) (fun _ => (1 : ℤ))`. Establish `cp` using `chartPullSwap L (fun i => (p.pr i).left) (fun I : ULift.{0} (Finset (Fin 2)) => (psum G ![𝟙 G, f] I.down).left) (fun I : ULift.{0} (Finset (Fin 2)) => (psum G' ![𝟙 G', f'] I.down).left) (fun I => (-1 : ℤ) ^ ((Nat.succ 0).succ - I.down.card)) hcomm`. Establish `h2 : LBIso (LB.LinComb (LB.LinComb L (fun i => (p.pr i).left) (fun _ => (1 : ℤ))) (fun I : ULift.{0} (Finset (Fin 2)) => (psum G' ![𝟙 G', f'] I.down).left) (fun I => (-1 : ℤ) ^ ((Nat.succ 0).succ - I.down.card))) (LB.LinComb (LB.LinComb L (fun I : ULift.{0} (Finset (Fin 2)) => (p …`. Establish `hQQ` using `LBIso.trans hQ hP hQ (LBIso.symm h3) h3`.
+
+Conclude with `LBIso.chartPull (h := 𝟙 G'.left) cp (chartPullId _) hQQ`. Conclude with `LBIso.trans hL' hQ (linComb_isLB _ hL' _ _) (LBIso.trans hL' hP hQ hbox h3) (LBIso.trans hQ hR (linComb_isLB _ hL' _ _) (LBIso.symm h2) (LBIso.symm h1))`.
+-/
 theorem lbIso_cube_pow : ∀ (S : Scheme.{0}) (G' G : Over S) [GrpObj G'] [IsCommMonObj G'] [GrpObj G] [IsCommMonObj G] (j : ℕ) (p : IsPowGrp G' G j) (L : LB G.left) (L' : LB G'.left), L.IsLB → L'.IsLB → Geo.Tor.LBIso L' (boxLB L p.pr) → ∀ (f : G ⟶ G) (f' : G' ⟶ G'), (∀ i, f' ≫ p.pr i = p.pr i ≫ f) → Geo.Tor.LBIso L (cubeLB G ![𝟙 G, f] L) → Geo.Tor.LBIso L' (cubeLB G' ![𝟙 G', f'] L') := by
   intro S G' G _ _ _ _ j p L L' hL hL' hbox f f' hc hprim
   unfold cubeLB boxLB at *

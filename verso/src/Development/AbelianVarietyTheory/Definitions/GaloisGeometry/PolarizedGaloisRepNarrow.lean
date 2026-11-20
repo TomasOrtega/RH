@@ -109,6 +109,9 @@ namespace GlobalTheory.NarrowPolarizedGalois
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime] {a : ℕ}
   [IsAlgClosure E Ω] [IsCMField E]
 
+/- English proof (translation)
+The claim follows from `(L.iwahori σ hσ hI (Or.inr hs)).1`.
+-/
 example {π : CuspSub E a} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)}
     {HT : (E →+* Qbar l) → Multiset ℤ} {P : LocPrime l} {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
     {h : IsPlaceOver A w} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
@@ -117,8 +120,14 @@ example {π : CuspSub E a} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (
     (hI : PRep.fixed σ.ρ (SmGL.iwahori (w.adicCompletion E) (Fin a)) ≠ ⊥) (hs : SmGL.IsSpherical σ.ρ) :
     IsSstAt P Bw (r.comp (Dec (F := E) A).subtype) := (L.iwahori σ hσ hI (Or.inr hs)).1
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example (π : CuspSub E a) (wt : ℤ) : IsWeightOf π wt ↔ GalNarrow7.IsWeightOf π wt := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `GalNarrowT.everywhereGood_rank_one π`.
+-/
 example (π : CuspSub E 1) : GalNarrowT.EverywhereGood π := GalNarrowT.everywhereGood_rank_one π
 
 end GlobalTheory.NarrowPolarizedGalois

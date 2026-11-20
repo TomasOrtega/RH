@@ -4,12 +4,22 @@ open Real Finset
 
 namespace Formalism.RankGapBounds.ChebyshevFactorialBounds
 
+/- English proof (translation)
+Introduce `n`. Establish `h` using `Chebyshev.theta_le_log4_mul_x (Nat.cast_nonneg n : (0 : ℝ) ≤ n)`. Rewrite `h` using `[Chebyshev.theta_eq_sum_primesLE_log]`. Conclude with `h`.
+-/
 theorem chebyshevThetaLe_holds : ChebyshevTheta := by
   intro n
   have h := Chebyshev.theta_le_log4_mul_x (Nat.cast_nonneg n : (0 : ℝ) ≤ n)
   rw [Chebyshev.theta_eq_sum_primesLE_log] at h
   exact h
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ℕ, (∀ p ∈ s, p.Prime) → ∏ p ∈ s, p ^ (n / p) ∣ n.factorial`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using the standard rewrite rules.
+
+Consider the case `@insert a s ha ih`. Introduce `hs`. Rewrite using `[Finset.prod_insert ha]`. Establish `hpa : a.Prime` using `hs a (Finset.mem_insert_self a s)`. Establish `hs' : ∀ p ∈ s, p.Prime` using `fun p hp => hs p (Finset.mem_insert_of_mem hp)`.
+
+Use `Nat.Coprime.mul_dvd_of_dvd_of_dvd ?_ ?_ (ih hs')` and prove the remaining obligations. Conclude with `Nat.Coprime.prod_right fun p hp => Nat.Coprime.pow _ _ ((Nat.coprime_primes hpa (hs' p hp)).mpr fun h => ha (h ▸ hp))`. Rewrite using `[hpa.pow_dvd_factorial_iff (show Nat.log a n < Nat.log a n + 2 by omega)]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `key _ fun p hp => (Finset.mem_filter.mp hp).2`.
+-/
 private theorem prod_primes_pow_div_dvd_factorial (n : ℕ) : ∏ p ∈ primesUpTo n, p ^ (n / p) ∣ n.factorial := by
   have key : ∀ s : Finset ℕ, (∀ p ∈ s, p.Prime) → ∏ p ∈ s, p ^ (n / p) ∣ n.factorial := by
     intro s
@@ -30,6 +40,17 @@ private theorem prod_primes_pow_div_dvd_factorial (n : ℕ) : ∏ p ∈ primesUp
               (Finset.mem_Ico.mpr ⟨le_rfl, by omega⟩)
   exact key _ fun p hp => (Finset.mem_filter.mp hp).2
 
+/- English proof (translation)
+Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hpos : ∀ p ∈ primesUpTo n, (0 : ℝ) < p` using `fun p hp => by`. Conclude with `(Finset.mem_filter.mp hp).2.pos` after adjusting the coercions. Establish `h1 : ∑ p ∈ primesUpTo n, ((n / p : ℕ) : ℝ) * Real.log p ≤ (n : ℝ) * Real.log n`. Establish `hd` using `Nat.le_of_dvd (Nat.factorial_pos n) (prod_primes_pow_div_dvd_factorial n)`.
+
+Establish `hprod : (0 : ℝ) < ∏ p ∈ primesUpTo n, (p : ℝ) ^ (n / p)` using `Finset.prod_pos fun p hp => pow_pos (hpos p hp) _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_prod fun p hp => (pow_pos (hpos p hp) _).ne']`. Simplify using `only [Real.log_pow]`. Use `_ ≤ Real.log (n.factorial : ℝ) := Real.log_le_log hprod (by exact_mod_cast hd)`.
+
+Use `_ ≤ Real.log ((n : ℝ) ^ n) := Real.log_le_log (by exact_mod_cast Nat.factorial_pos n) (by exact_mod_cast Nat.factorial_le_pow n)`. Use `_ = n * Real.log n := Real.log_pow _ _`. Establish `h2 : ∑ p ∈ primesUpTo n, Real.log p ≤ Real.log 4 * n` using `chebyshevThetaLe_holds n`. Establish `h3 : ∀ p ∈ primesUpTo n, (n : ℝ) * (Real.log p / p) ≤ ((n / p : ℕ) : ℝ) * Real.log p + Real.log p`. Introduce `p hp`.
+
+Establish `hlog : 0 ≤ Real.log p` using `Real.log_nonneg (by exact_mod_cast (Finset.mem_filter.mp hp).2.one_lt.le)`. Establish `hfl : (n : ℝ) / p ≤ ((n / p : ℕ) : ℝ) + 1`. Rewrite using `[← Nat.floor_div_eq_div (K := ℝ)]`. Conclude with `(Nat.lt_floor_add_one _).le`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsum : (n : ℝ) * ∑ p ∈ primesUpTo n, Real.log p / p ≤ n * (Real.log n + Real.log 4)`. Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left hsum hn'`.
+-/
 private theorem sum_primes_log_div_le_log_add_log_four (n : ℕ) (hn : 1 ≤ n) :
     ∑ p ∈ primesUpTo n, Real.log p / p ≤ Real.log n + Real.log 4 := by
   have hn' : (0 : ℝ) < n := by exact_mod_cast hn
@@ -69,6 +90,15 @@ private theorem sum_primes_log_div_le_log_add_log_four (n : ℕ) (hn : 1 ≤ n) 
       _ = n * (Real.log n + Real.log 4) := by ring
   exact le_of_mul_le_mul_left hsum hn'
 
+/- English proof (translation)
+Use `⟨6, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hlogn : Real.log 2 ≤ Real.log n` using `Real.log_le_log two_pos (by exact_mod_cast hn)`. Establish `h4 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`. Evaluate the numerical expressions.
+
+Establish `hS` using `sum_primes_log_div_le_log_add_log_four n (by omega)`. Establish `hterm : ∀ p ∈ primesUpTo n, Real.log p / ((p : ℝ) - 1) ≤ 2 * (Real.log p / p)`. Introduce `p hp`. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast (Finset.mem_filter.mp hp).2.two_le`. Establish `hlog : 0 ≤ Real.log p` using `Real.log_nonneg (by linarith)`.
+
+Rewrite using `[div_le_iff₀ (by linarith : (0 : ℝ) < p - 1)]`. Establish `hd : 2 * (Real.log p / p) * (p - 1) - Real.log p = Real.log p * (p - 2) / p`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `: 0 ≤ Real.log p * (p - 2) / p` using `div_nonneg (mul_nonneg hlog (by linarith)) (by linarith)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sumLogDivPredLe_holds : MertensType := by
   refine ⟨6, fun n hn => ?_⟩
   have hlogn : Real.log 2 ≤ Real.log n := Real.log_le_log two_pos (by exact_mod_cast hn)
@@ -92,6 +122,13 @@ theorem sumLogDivPredLe_holds : MertensType := by
     _ ≤ 2 * (Real.log n + Real.log 4) := by linarith
     _ ≤ 6 * Real.log n := by rw [h4]; linarith
 
+/- English proof (translation)
+Introduce `L z hL hz hzL`. Rewrite using `[Finset.card_le_one]`. Introduce `a ha b hb`. Simplify using `only [Finset.mem_filter, Nat.mem_primeFactors] at ha hb`. Assume the negation of the conclusion as `hne`.
+
+Establish `hab : a * b ∣ z` using `Nat.Coprime.mul_dvd_of_dvd_of_dvd ((Nat.coprime_primes ha.1.1 hb.1.1).mpr hne) ha.1.2.1 hb.1.2.1`. Establish `hle : ((a * b : ℕ) : ℝ) ≤ z` using `by exact_mod_cast Nat.le_of_dvd (by omega) hab`. Move the coercions through the operations in `at hle`. Establish `hLL : L * L < (a : ℝ) * b` using `mul_lt_mul'' ha.2 hb.2 hL hL`. Rewrite `hzL` using `[sq]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cardLargePrimeFactorsLeOne_holds : LargePrimeFactor := by
   intro L z hL hz hzL
   rw [Finset.card_le_one]
@@ -106,12 +143,32 @@ theorem cardLargePrimeFactorsLeOne_holds : LargePrimeFactor := by
   rw [sq] at hzL
   linarith
 
+/- English proof (translation)
+Introduce `n _`. Establish `h` using `harmonic_le_one_add_log n`. Simplify using `only [harmonic_eq_sum_Icc, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast] at h`. Simplify `h` using `only [one_div]`.
+-/
 theorem harmonicLeOneAddLog_holds : HarmonicLog := by
   intro n _
   have h := harmonic_le_one_add_log n
   simp only [harmonic_eq_sum_Icc, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast] at h
   simpa only [one_div] using h
 
+/- English proof (translation)
+Introduce `a l hl`. Unfold `leastRes`. Use `set S := {d : ℕ | 1 ≤ d ∧ (l : ℤ) ∣ a - (d : ℤ)} with hS`. Establish `hl' : (0 : ℤ) < l` using `by exact_mod_cast hl`. Establish `h0 : 0 ≤ (a - 1) % (l : ℤ)` using `Int.emod_nonneg _ hl'.ne'`.
+
+Establish `hlt0 : (a - 1) % (l : ℤ) < l` using `Int.emod_lt_of_pos _ hl'`. Use `set r := ((a - 1) % (l : ℤ)).toNat with hr`. Establish `hr' : (r : ℤ) = (a - 1) % (l : ℤ)` using `Int.toNat_of_nonneg h0`. Establish `hmemd : r + 1 ∈ S`. Use `⟨by omega, ?_⟩` and prove the remaining obligations.
+
+Establish `he : a - ((r + 1 : ℕ) : ℤ) = (l : ℤ) * ((a - 1) / l)`. Use `Int.emod_def (a - 1) (l : ℤ)` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[he]`.
+
+Conclude with `dvd_mul_right _ _`. Establish `hmem` using `Nat.sInf_mem ⟨_, hmemd⟩`. Establish `hle : sInf S ≤ r + 1` using `Nat.sInf_le hmemd`. Establish `hrl : r < l` using `by omega`. Use `⟨hmem.1, by omega, hmem.2, fun ha1 hal => ?_⟩` and prove the remaining obligations.
+
+Use `set m := a.toNat with hm`. Establish `hm' : (m : ℤ) = a` using `Int.toNat_of_nonneg (by omega)`. Establish `hamem : m ∈ S` using `⟨by omega, by rw [hm', sub_self]; exact dvd_zero _⟩`. Establish `h1 : sInf S ≤ m` using `Nat.sInf_le hamem`. Establish `h2 : m ≤ sInf S`.
+
+Assume the negation of the conclusion as `hlt'`. Rewrite `hlt'` using `[not_le]`. Take `⟨k, hk⟩` from `hmem.2`. Establish `hpos : 0 < a - ((sInf S : ℕ) : ℤ)` using `by omega`. Establish `hsmall : a - ((sInf S : ℕ) : ℤ) < l` using `by have := hmem.1; omega`.
+
+Break down `lt_trichotomy k 0 with hk0 | hk0 | hk0` into its components or cases. Use the polynomial consequences of the given equalities and inequalities. Rewrite `hk` using `[hk0, mul_zero]`. Use linear arithmetic over natural numbers and integers. Use the polynomial consequences of the given equalities and inequalities.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem leastPosResidueSpec_holds : LeastResFacts := by
   intro a l hl
   unfold leastRes

@@ -7,6 +7,27 @@ namespace GlobalTheory.CompanionTheory.MoyPrasad
 
 open PositivityTheory.LowerBoundConstant GlobalTheory GlobalTheory.Published GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.SplitRead Topology
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n s d e U hU`. Choose the witnesses or unpack the hypotheses as in `⟨V, hV, hVU⟩ : ∃ V ∈ 𝓝 (1 : Matrix (Fin n) (Fin n) k), Units.val ⁻¹' V ⊆ U := by`. Rewrite `hU` using `[(isEmbedding_val_GL (k := k) n).nhds_eq_comap]`. Simplify using `using Filter.mem_comap.mp hU`. Take `⟨W, hW, hWV⟩` from `exists_entry_nhds hV`.
+
+Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff W).mp hW`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc0, hcγ, hc1⟩ : ∃ c : k, c ≠ 0 ∧ ValuativeRel.valuation k c < γ ∧ ValuativeRel.valuation k c ≤ 1 := by`. Take `⟨x, hx0, hx1⟩` from `(Valuation.IsNontrivial.exists_lt_one : ∃ x : k, x ≠ 0 ∧ ValuativeRel.valuation k x < 1)`. Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective (K := k) (γ : ValuativeRel.ValueGroupWithZero k)`. Establish `hy0 : (0 : ValuativeRel.ValueGroupWithZero k) < ValuativeRel.valuation k y`.
+
+Rewrite using `[hy]`. Conclude with `Units.zero_lt γ`. Break down `le_or_gt (ValuativeRel.valuation k y) 1 with hy1 | hy1` into its components or cases. Use `⟨y * x, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (by rintro rfl; simp at hy0) hx0`.
+
+Rewrite using `[map_mul, ← hy]`. Conclude with `mul_lt_of_lt_one_right hy0 hx1`. Rewrite using `[map_mul]`. Apply the tactic sequence `first | exact mul_le_one' hy1 hx1.le | exact mul_le_one₀ hy1 zero_le' hx1.le`. Use `⟨x, hx0, ?_, hx1.le⟩` and prove the remaining obligations.
+
+Rewrite using `[← hy]`. Conclude with `hx1.trans hy1`. Use `⟨blockScalar hc0 (GlobalTheory.DepthZeroJac.expo s 1), blockScalar_central hc0 _, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [lowC, Set.mem_ofPred_eq] at hg`.
+
+Take `⟨hK, hlow⟩` from `hg`. Establish `hgint : ∀ i j, ValuativeRel.valuation k ((g : Matrix (Fin n) (Fin n) k) i j) ≤ 1`. Take `⟨h, -, rfl⟩` from `Subgroup.mem_map.mp hK`. Introduce `i j`. Conclude with `(h i j).2`.
+
+Establish `h0W : (0 : k) ∈ W` using `mem_of_mem_nhds hW`. Rewrite using `[leviEmb_blockScalar]`. Use `hVU (hWV _ fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `have hentry : (((GlobalTheory.DepthZeroJac.dia e hc0 (GlobalTheory.DepthZeroJac.expo s 1))⁻¹ * g * GlobalTheory.DepthZeroJac.dia e hc0 (GlobalTheory.DepthZeroJac.expo s 1) : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = (c ^ GlobalTheory.DepthZeroJac.expo s 1 (blk e i))⁻¹ * (g …`. Simplify using `[GlobalTheory.DepthZeroJac.dia, Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+
+Rewrite using `[Matrix.sub_apply, hentry]`. Distinguish the cases in `hij : blk e j < blk e i`. Establish `hne : i ≠ j` using `by rintro rfl; exact lt_irrefl _ hij`. Rewrite using `[Matrix.one_apply_ne hne, sub_zero]`. Apply `hγ` to reduce the goal to its premises.
+
+Conclude with `((valuation_conj_le hc0 hc1 (hgint i j) (GlobalTheory.CompanionTheory.MoyPrasad.expo_gap 1 hij)).trans_eq (pow_one _)).trans_lt hcγ`. Establish `h0` using `hlow i j hij`. Rewrite `h0` using `[Matrix.sub_apply, sub_eq_zero]`. Rewrite using `[h0]`. Distinguish the cases in `hij' : i = j`.
+
+Substitute `hij'` using the available equality. Simplify `h0W` using `[hc0]`. Simplify `h0W` using `[Matrix.one_apply_ne hij']`.
+-/
 theorem lowC_central_contract : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n), ∀ U ∈ 𝓝 (1 : GL (Fin n) k),
     ∃ t : Levi k (fun a => Fin (d a)), (∀ m, t * m = m * t) ∧
       ∀ c ∈ lowC k e, (leviEmb k e t)⁻¹ * c * leviEmb k e t ∈ U := by

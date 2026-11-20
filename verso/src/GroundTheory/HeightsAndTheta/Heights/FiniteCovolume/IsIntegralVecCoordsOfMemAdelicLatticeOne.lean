@@ -24,6 +24,9 @@ def pairE (x y : ι → K ⊗[K] E) : E := Algebra.TensorProduct.lid K E (hermPa
 
 variable {H}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Rewrite using `[baseTrace_tmul, Algebra.TensorProduct.lid_tmul, LinearMap.map_smul, smul_eq_mul, Algebra.algebraMap_self, RingHom.id_apply, mul_comm]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+-/
 theorem baseTrace_eq_trace_lid (z : K ⊗[K] E) :
     baseTrace K E K z = Algebra.trace K E (Algebra.TensorProduct.lid K E z) := by
   induction z using TensorProduct.induction_on with
@@ -33,20 +36,32 @@ theorem baseTrace_eq_trace_lid (z : K ⊗[K] E) :
       Algebra.algebraMap_self, RingHom.id_apply, mul_comm]
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
 
+/- English proof (translation)
+The claim follows from `baseTrace_eq_trace_lid _`.
+-/
 theorem hermTrace_eq_trace_pairE (x y : ι → K ⊗[K] E) :
     hermTrace K H K x y = Algebra.trace K E (pairE H x y) :=
   baseTrace_eq_trace_lid _
 
+/- English proof (translation)
+Rewrite using `[pairE, hermPair_smul_right, map_mul, Algebra.TensorProduct.lid_tmul, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem pairE_smul_right (β : E) (x y : ι → K ⊗[K] E) :
     pairE H x (((1 : K) ⊗ₜ[K] β) • y) = β * pairE H x y := by
   rw [pairE, hermPair_smul_right, map_mul, Algebra.TensorProduct.lid_tmul, one_smul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[pairE, hermPair_smul_left, map_mul, conjBase_tmul, Algebra.TensorProduct.lid_tmul, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem pairE_smul_left (β : E) (x y : ι → K ⊗[K] E) :
     pairE H (((1 : K) ⊗ₜ[K] β) • x) y = conj K E β * pairE H x y := by
   rw [pairE, hermPair_smul_left, map_mul, conjBase_tmul, Algebra.TensorProduct.lid_tmul, one_smul]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul_comm]`.
+-/
 theorem smul_smul_comm_vec (z : K ⊗[K] E) (c : K) (y : ι → K ⊗[K] E) :
     z • (c • y) = c • (z • y) := by
   funext i
@@ -58,6 +73,27 @@ section Nondegenerate
 
 variable {H : Matrix ι ι E}
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Take `⟨t, ht0, ht⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Use `set X : ι → K ⊗[K] E := vecOfCoords b K t with hXdef`. Establish `hX : ∀ Y : ι → K ⊗[K] E, hermTrace K H K X Y = 0`.
+
+Introduce `Y`. Rewrite using `[hermTrace_eq_sum_traceGram (H := H) (b := b) K, hXdef, vecCoords_vecOfCoords, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `hc` using `congrFun ht c`. Simplify using `only [vecMul, dotProduct, Pi.zero_apply] at hc`.
+
+Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = 0 := by rw [hc, mul_zero]`. Establish `hX0 : X ≠ 0`. Introduce `h`. Apply `ht0` to reduce the goal to its premises. Rewrite using `[← vecCoords_vecOfCoords b K t, ← hXdef, h]`.
+
+Use function extensionality and compare the values at `a`. Simplify using `[vecCoords]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, X i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hX0 (funext hc)`. Establish `hci : conjBase K E K (X i) ≠ 0`. Introduce `h`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← conjBase_conjBase (X i), h, map_zero]`.
+
+Establish `hunit : IsUnit (conjBase K E K (X i))`. Establish `h1 : Algebra.TensorProduct.lid K E (conjBase K E K (X i)) ≠ 0`. Introduce `h`. Conclude with `hci ((Algebra.TensorProduct.lid K E).injective (by rw [h, map_zero]))`. Use `(isUnit_iff_ne_zero.2 h1).map (Algebra.TensorProduct.lid K E).symm` as an intermediate fact.
+
+Rewrite `this` using `[AlgEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Take `⟨u, hu⟩` from `hunit`. Use `set Hb := baseMatrix K H K`. Establish `hHb : IsUnit Hb.det` using `isUnit_det_baseMatrix H K hH`. Use `set Y : ι → K ⊗[K] E := Hb⁻¹ *ᵥ Pi.single i (↑u⁻¹ : K ⊗[K] E)`.
+
+Establish `hpair : hermPair K H K X Y = 1`. Unfold `hermPair`. Rewrite using `[show baseMatrix K H K = Hb from rfl, mulVec_mulVec, Matrix.mul_nonsing_inv _ hHb, one_mulVec, dotProduct_single, ← hu, Units.mul_inv]`. Establish `h2` using `hX Y`. Rewrite `h2` using `[hermTrace, hpair, show (1 : K ⊗[K] E) = algebraMap K (K ⊗[K] E) 1 from (map_one _).symm, baseTrace_algebraMap, mul_one]`.
+
+Conclude with `two_ne_zero h2`.
+-/
 theorem isUnit_det_traceGram_of_isUnit (hH : IsUnit H.det) : IsUnit (traceGram H b).det := by
   classical
   rw [isUnit_iff_ne_zero]
@@ -117,6 +153,15 @@ section Integrality
 
 variable (H : Matrix ι ι E)
 
+/- English proof (translation)
+Take `⟨d₁, hd₁0, hd₁⟩` from `exists_int_isIntegral_hermTrace b H`. Take `⟨D, hD0, hD⟩` from `exists_int_isIntegral_of_trace (K := E)`. Use `⟨D * d₁, mul_ne_zero hD0 hd₁0, fun g x y hx hy => ?_⟩` and prove the remaining obligations. Establish `key : ∀ s, ∃ n : ℤ, Algebra.trace ℚ E (((d₁ : E) * pairE H x y) * integralBasis E s) = n`. Introduce `s`.
+
+Establish `hy'` using `smul_mem_coreLattice b hy (RingOfIntegers.basis E s)`. Establish `h1` using `hd₁ g x _ (coreLattice_le_adelicLattice b g hx) (coreLattice_le_adelicLattice b g hy')`. Rewrite `h1` using `[hermTrace_eq_trace_pairE, pairE_smul_right]`. Take `⟨n, hn⟩` from `exists_int_trace_eq h1`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hn, ← Algebra.trace_trace (S := K), integralBasis_apply, ← RingOfIntegers.coe_eq_algebraMap]`. Use `congr 1`. Rewrite using `[show (d₁ : E) = algebraMap K E (d₁ : K) by rw [map_intCast], mul_assoc, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul, mul_comm (pairE H x y)]`. Use `hD _ key` as an intermediate fact. Rewrite using `[show ((D * d₁ : ℤ) : E) * pairE H x y = (D : E) * ((d₁ : E) * pairE H x y) by push_cast; ring]`.
+
+Conclude with `this`.
+-/
 theorem exists_int_isIntegral_pairE : ∃ d : ℤ, d ≠ 0 ∧
     ∀ (g : unitaryPoints K E H (FinAdele K)) (x y : ι → K ⊗[K] E), x ∈ coreLattice b H g →
       y ∈ coreLattice b H g → IsIntegral ℤ ((d : E) * pairE H x y) := by
@@ -138,6 +183,13 @@ theorem exists_int_isIntegral_pairE : ∃ d : ℤ, d ≠ 0 ∧
   rw [show ((D * d₁ : ℤ) : E) * pairE H x y = (D : E) * ((d₁ : E) * pairE H x y) by push_cast; ring]
   exact this
 
+/- English proof (translation)
+Take `⟨N, hN0, hN⟩` from `exists_int_smul_mem_coreLattice b H`. Take `⟨m, hm0, hm⟩` from `exists_int_smul_mem_of_forall_isIntegral b H (isUnit_det_traceGram_of_isUnit b hH) (N : K) (by exact_mod_cast hN0)`. Use `⟨m, hm0, fun g y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_coreLattice_iff]`. Introduce `β`.
+
+Establish `hyβ : ∀ x ∈ adelicLattice b H g, IsIntegral ℤ ((N : K) * hermTrace K H K (((1 : K) ⊗ₜ[K] (β : E)) • y) x)`. Introduce `x hx`. Rewrite using `[← hermTrace_smul_right, hermTrace_eq_trace_pairE, pairE_smul_left]`. Use `Algebra.isIntegral_trace ((map_isIntegral_int (conj K E) β.2).mul (hy _ (hN g x hx)))` and prove the remaining obligations. Establish `h2` using `hm g _ hyβ`.
+
+Rewrite `h2` using `[← smul_smul_comm_vec]`. Then use the resulting hypothesis.
+-/
 theorem exists_int_smul_mem_coreLattice_of_dual {H : Matrix ι ι E} (hH : IsUnit H.det) :
     ∃ m : ℤ, m ≠ 0 ∧ ∀ (g : unitaryPoints K E H (FinAdele K)) (y : ι → K ⊗[K] E),
       (∀ x ∈ coreLattice b H g, IsIntegral ℤ (pairE H y x)) → (m : K) • y ∈ coreLattice b H g := by
@@ -161,6 +213,9 @@ section Bounds
 
 variable {H : Matrix ι ι E}
 
+/- English proof (translation)
+Rewrite `hx` using `[mem_adelicLattice, inv_one, show unitaryMat (1 : unitaryPoints K E H (FinAdele K)) = 1 from rfl, one_mulVec, mem_stdLattice_iff]`. Use `hx a` as an intermediate fact. Rewrite `this` using `[vecCoords_toFinAdele]`. Conclude with `isIntegral_of_algebraMap_mem this`.
+-/
 theorem isIntegral_vecCoords_of_mem_adelicLattice_one {x : ι → K ⊗[K] E}
     (hx : x ∈ adelicLattice b H 1) (a : ι × κ) : IsIntegral ℤ (vecCoords K b x a) := by
   rw [mem_adelicLattice, inv_one, show unitaryMat (1 : unitaryPoints K E H (FinAdele K)) = 1 from rfl,
@@ -169,6 +224,13 @@ theorem isIntegral_vecCoords_of_mem_adelicLattice_one {x : ι → K ⊗[K] E}
   rw [vecCoords_toFinAdele] at this
   exact isIntegral_of_algebraMap_mem this
 
+/- English proof (translation)
+Take `⟨r, hr0, hr⟩` from `exists_int_smul_mem_adelicLattice (b := b) g`. Take `⟨d₁, hd₁0, hd₁⟩` from `exists_int_isIntegral_hermTrace b H`. Take `⟨m, hm0, hm⟩` from `exists_int_smul_mem_of_forall_isIntegral b H (isUnit_det_traceGram_of_isUnit b hH) ((d₁ * r : ℤ) : K) (by exact_mod_cast mul_ne_zero hd₁0 hr0)`. Use `⟨m, hm0, fun y hy a => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ x ∈ adelicLattice b H 1, IsIntegral ℤ (((d₁ * r : ℤ) : K) * hermTrace K H K y x)`.
+
+Introduce `x hx`. Use `hd₁ g y _ hy (hr x (isIntegral_vecCoords_of_mem_adelicLattice_one b hx))` as an intermediate fact. Rewrite `this` using `[hermTrace_smul_right]`. Rewrite using `[show ((d₁ * r : ℤ) : K) * hermTrace K H K y x = (d₁ : K) * ((r : K) * hermTrace K H K y x) by push_cast; ring]`. Conclude with `this`.
+
+Use `isIntegral_vecCoords_of_mem_adelicLattice_one b (hm 1 y h1) a` as an intermediate fact. Rewrite `this` using `[vecCoords_smul]`. Then use the resulting hypothesis.
+-/
 theorem exists_int_isIntegral_coords (hH : IsUnit H.det) (g : unitaryPoints K E H (FinAdele K)) :
     ∃ m : ℤ, m ≠ 0 ∧ ∀ y ∈ adelicLattice b H g, ∀ a, IsIntegral ℤ ((m : K) * vecCoords K b y a) := by
   classical
@@ -187,6 +249,15 @@ theorem exists_int_isIntegral_coords (hH : IsUnit H.det) (g : unitaryPoints K E 
   have := isIntegral_vecCoords_of_mem_adelicLattice_one b (hm 1 y h1) a
   rwa [vecCoords_smul] at this
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `exists_int_mul_isIntegral (Finset.univ.image fun k => b.repr 1 k)`. Take `⟨r, hr0, hr⟩` from `exists_int_smul_mem_adelicLattice (b := b) g`. Take `⟨N, hN0, hN⟩` from `exists_int_smul_mem_coreLattice b H`. Use `⟨N * r * c, mul_ne_zero (mul_ne_zero hN0 hr0) hc0, ?_⟩` and prove the remaining obligations. Establish `hX : ∀ a, IsIntegral ℤ (vecCoords K b ((c : K) • (Pi.single i (1 : K ⊗[K] E) : ι → K ⊗[K] E)) a)`.
+
+Introduce and unpack `⟨j, k⟩`. Rewrite using `[vecCoords_smul]`. Simplify using `only [vecCoords]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Rewrite using `[Pi.single_eq_same, Algebra.TensorProduct.one_def, repr_one_tmul, Algebra.algebraMap_self, RingHom.id_apply]`. Conclude with `hc _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))`. Rewrite using `[Pi.single_eq_of_ne hj, map_zero, Finsupp.zero_apply, mul_zero]`. Conclude with `isIntegral_zero`. Use `hN g _ (hr _ hX)` as an intermediate fact.
+
+Rewrite `this` using `[smul_smul, smul_smul, ← Int.cast_mul, ← Int.cast_mul]`. Then use the resulting hypothesis.
+-/
 theorem exists_int_smul_single_mem_coreLattice (g : unitaryPoints K E H (FinAdele K)) (i : ι) :
     ∃ n : ℤ, n ≠ 0 ∧ (n : K) • (Pi.single i (1 : K ⊗[K] E) : ι → K ⊗[K] E) ∈ coreLattice b H g := by
   classical

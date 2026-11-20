@@ -6,6 +6,9 @@ noncomputable section
 
 namespace Formalism.HC
 
+/- English proof (translation)
+The claim follows from `have C := Der.hostCore H { art_surj := C.art_surj cm := C.cm conj_iff := C.conj_iff finrank_E := C.finrank_E finrank_F := C.finrank_F mem_F := C.mem_F cmType := Der.cmType H ps_root := Der.ps_root H art_ch := C.art_ch ps_d := C.ps_d frob := C.frob frob_any := C.frob_any inertia : …`.
+-/
 theorem HostRaw.der {φ : Frame} (H : HostRaw φ) : HostDer H :=
   have C := Der.hostCore H
   { art_surj := C.art_surj
@@ -41,6 +44,9 @@ theorem HostRaw.der {φ : Frame} (H : HostRaw φ) : HostDer H :=
 
 def HostAx.ofRaw {φ : Frame} (H : HostRaw φ) : HostAx φ := ⟨H, H.der⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem HostAx.ofRaw_toHostRaw {φ : Frame} (H : HostRaw φ) : (HostAx.ofRaw H).toHostRaw = H := rfl
 
 end Formalism.HC

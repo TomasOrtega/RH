@@ -24,6 +24,9 @@ def invariantsMap {A A' : Rep.{u} k G} (f : A ⟶ A') :
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.toLinearMap_injective` to reduce the goal to its premises. Conclude with `TensorProduct.ext' fun a b => rfl`.
+-/
 theorem invariantsTensorHom_braiding (A B : Rep.{u} k G) :
     (β_ (A.quotientToInvariants N) (B.quotientToInvariants N)).hom ≫ invariantsTensorHom B A N =
       invariantsTensorHom A B N ≫ invariantsMap N (β_ A B).hom := by
@@ -31,6 +34,9 @@ theorem invariantsTensorHom_braiding (A B : Rep.{u} k G) :
   apply Representation.IntertwiningMap.toLinearMap_injective
   exact TensorProduct.ext' fun a b => rfl
 
+/- English proof (translation)
+The claim follows from `cohomologyMap_inflation U f x`.
+-/
 theorem cohomologyMap_inflation' (U : OpenNormalSubgroup G) {A A' : Rep.{u} k G}
     [IsDiscreteRep A] [IsDiscreteRep A'] (f : A ⟶ A') {n : ℕ}
     (x : groupCohomology (A.quotientToInvariants (U : Subgroup G)) n) :
@@ -40,6 +46,9 @@ theorem cohomologyMap_inflation' (U : OpenNormalSubgroup G) {A A' : Rep.{u} k G}
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Rewrite using `[← ConcreteCategory.comp_apply, ← groupCohomology.map_id_comp, ← invariantsTensorHom_braiding, groupCohomology.map_id_comp, ConcreteCategory.comp_apply, GroundTheory.GroupCoh.map_braiding_cupH h h', map_smul]`.
+-/
 theorem map_invariantsMap_braiding_map_invariantsTensorHom_cupH {A B : Rep.{u} k G} {p q n : ℕ}
     (h : p + q = n) (h' : q + p = n) (x : groupCohomology (A.quotientToInvariants N) p)
     (y : groupCohomology (B.quotientToInvariants N) q) :
@@ -57,6 +66,11 @@ end Invariants
 variable [CompactSpace G] [TotallyDisconnectedSpace G]
   {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] {p q n : ℕ}
 
+/- English proof (translation)
+Take `⟨U, x₀, rfl⟩` from `exists_inflation_eq A p x`. Take `⟨V, y₀, rfl⟩` from `exists_inflation_eq B q y`. Establish `hx` using `ConcreteCategory.congr_hom (transition_comp_inflation A (inf_le_left : U ⊓ V ≤ U) p) x₀`. Establish `hy` using `ConcreteCategory.congr_hom (transition_comp_inflation B (inf_le_right : U ⊓ V ≤ V) q) y₀`. Rewrite `hx`, `hy` using `[ConcreteCategory.comp_apply]`.
+
+Rewrite using `[← hx, ← hy]`. Generalize the expression as in `(transition A (inf_le_left : U ⊓ V ≤ U) p) x₀ = x₁`. Generalize the expression as in `(transition B (inf_le_right : U ⊓ V ≤ V) q) y₀ = y₁`. Rewrite using `[cup_inflation (U ⊓ V) A B h, cup_inflation (U ⊓ V) B A h', cohomologyMap_inflation', map_invariantsMap_braiding_map_invariantsTensorHom_cupH _ h h', map_smul]`.
+-/
 theorem cohomologyMap_braiding_cup (h : p + q = n) (h' : q + p = n) (x : cohomology A p)
     (y : cohomology B q) :
     cohomologyMap (β_ A B).hom n (cup h x y) = (-1 : k) ^ (p * q) • cup h' y x := by

@@ -10,6 +10,15 @@ open GlobalTheory.SplitWeil (SB nabs)
 
 namespace GlobalTheory.KSp
 
+/- English proof (translation)
+Use `set M : Matrix ν ν (Polynomial E) := A.map Polynomial.C + (Polynomial.X : Polynomial E) • B.map Polynomial.C with hM`. Establish `hev : ∀ x : E, M.det.eval x = (A + x • B).det`. Introduce `x`. Establish `h1` using `RingHom.map_det (Polynomial.evalRingHom x) M`. Rewrite `h1` using `[Polynomial.coe_evalRingHom]`.
+
+Rewrite using `[h1]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[hM]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hp : M.det ≠ 0`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[← hev, h0, Polynomial.eval_zero]`. Establish `hfin` using `Polynomial.finite_setOfPred_isRoot hp`.
+
+Use `(hfin.preimage (f := algebraMap F E) (algebraMap F E).injective.injOn).subset ?_` and prove the remaining obligations. Introduce `r hr`. Express the relevant statement in the definitionally equal form `M.det.eval _ = 0`. Rewrite using `[hev]`. Conclude with `hr`.
+-/
 theorem finite_det_line_zero {F E : Type} [Field F] [Field E] [Algebra F E] {ν : Type} [Fintype ν] [DecidableEq ν]
     (A B : Matrix ν ν E) (r₀ : F) (h : (A + algebraMap F E r₀ • B).det ≠ 0) :
     {r : F | (A + algebraMap F E r • B).det = 0}.Finite := by
@@ -34,6 +43,19 @@ theorem finite_det_line_zero {F E : Type} [Field F] [Field E] [Algebra F E] {ν 
   rw [hev]
   exact hr
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by ext i j; simp, by simp⟩`. Consider the case `insert g s _ ih`. Take `⟨t₀, ht₀, h₀⟩` from `ih`. Take `⟨t₁, ht₁, h₁⟩` from `GlobalTheory.T.exists_hermitian_splitUnitary_lowerBlock_invertible F E c δ hE ν g`.
+
+Establish `key : ∀ k ∈ insert g s, {r : F | (((mat c k).toBlocks₂₁ + (mat c k).toBlocks₂₂ * t₀) + algebraMap F E r • ((mat c k).toBlocks₂₂ * (t₁ - t₀))).det = 0}.Finite`. Introduce `k hk`. Break down `Finset.mem_insert.mp hk with rfl | hk` into its components or cases. Use `finite_det_line_zero _ _ 1 ?_` and prove the remaining obligations. Rewrite using `[map_one, one_smul, add_assoc, ← Matrix.mul_add, add_sub_cancel]`.
+
+Conclude with `h₁`. Use `finite_det_line_zero _ _ 0 ?_` and prove the remaining obligations. Rewrite using `[map_zero, zero_smul, add_zero]`. Conclude with `h₀ k hk`. Establish `hfin` using `Set.Finite.biUnion (insert g s).finite_toSet key`.
+
+Take `⟨r, hr⟩` from `hfin.exists_notMem`. Use `⟨t₀ + algebraMap F E r • (t₁ - t₀), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `e₀ : c (t₀ j i) = t₀ i j` using `congrFun (congrFun ht₀ i) j`. Establish `e₁ : c (t₁ j i) = t₁ i j` using `congrFun (congrFun ht₁ i) j`.
+
+Simplify using `[e₀, e₁]`. Introduce `k hk h0`. Apply `hr` to reduce the goal to its premises. Use `Set.mem_biUnion (Finset.mem_coe.mpr hk) ?_` and prove the remaining obligations. Rewrite `h0` using `[Matrix.mul_add, Matrix.mul_smul, ← add_assoc]`.
+
+Conclude with `h0`.
+-/
 theorem exists_herm_transversal (F : Type) [Field F] [CharZero F] (E : Type) [Field E] [Algebra F E] (c : E →ₐ[F] E)
     (δ : E) (hE : IsQuad c δ) (ν : Type) [Fintype ν] [DecidableEq ν] (s : Finset (UG c (stdJ ν E))) :
     ∃ t : Matrix ν ν E, (t.map c)ᵀ = t ∧ ∀ g ∈ s, ((mat c g).toBlocks₂₁ + (mat c g).toBlocks₂₂ * t).det ≠ 0 := by
@@ -66,6 +88,13 @@ theorem exists_herm_transversal (F : Type) [Field F] [CharZero F] (E : Type) [Fi
       rw [Matrix.mul_add, Matrix.mul_smul, ← add_assoc] at h0
       exact h0
 
+/- English proof (translation)
+Introduce `F _ _ E _ _ c δ hE ν _ _ s`. Take `⟨t, ht, h⟩` from `exists_herm_transversal F E c δ hE ν s`. Set `u : UG c (stdJ ν E)` to `⟨⟨fromBlocks 1 0 t 1, fromBlocks 1 0 (-t) 1, by simp [fromBlocks_multiply], by simp [fromBlocks_multiply]⟩, by`. Rewrite using `[mem_UG_iff]`. Establish `h0 : (0 : Matrix ν ν E).map c = 0` using `Matrix.map_zero _ (map_zero c)`.
+
+Establish `h1 : (1 : Matrix ν ν E).map c = 1` using `Matrix.map_one _ (map_zero c) (map_one c)`. Simplify using `[stdJ, fromBlocks_map, fromBlocks_transpose, fromBlocks_multiply, h0, h1, ht]⟩`. Use `⟨u, fun g hg => (GlobalTheory.T.inCell_iff_det_lower_left_block_ne_zero F E c δ hE ν _).mpr ?_⟩` and prove the remaining obligations. Establish `e : mat c (g * u) = mat c g * fromBlocks 1 0 t 1` using `rfl`. Rewrite using `[e, ← fromBlocks_toBlocks (mat c g), fromBlocks_multiply, toBlocks_fromBlocks₂₁, Matrix.mul_one]`.
+
+Conclude with `h g hg`.
+-/
 theorem exists_translate_inCell : ∀ (F : Type) [Field F] [CharZero F] (E : Type) [Field E] [Algebra F E]
     (c : E →ₐ[F] E) (δ : E) (hE : IsQuad c δ) (ν : Type) [Fintype ν] [DecidableEq ν] (s : Finset (UG c (stdJ ν E))),
     ∃ u : UG c (stdJ ν E), ∀ g ∈ s, InCell c (g * u) := by

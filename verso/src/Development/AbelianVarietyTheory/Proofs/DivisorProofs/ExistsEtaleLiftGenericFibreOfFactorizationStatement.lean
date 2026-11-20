@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GenFibMapAlgebraMap
 open CategoryTheory Limits
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GenFibLift.exists_etale_genFib_lift | exact GlobalTheory.GenFibLift.exists_etale_genFib_lift | (intros; apply GlobalTheory.GenFibLift.exists_etale_genFib_lift <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_etale_lift_genericFibre_of_factorization : ∀ (T R O : Type) [CommRing T] [CommRing R] [CommRing O] [Algebra T R] [Algebra R O]
     [Algebra T O] [IsScalarTower T R O],
     (∀ (Z : Type) [CommRing Z] [Algebra R Z] [Algebra.FinitePresentation R Z] (g : Z →ₐ[R] O),

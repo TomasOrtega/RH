@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Use `hx.2.2.2.2.2.1 g i j h1 h2` as an intermediate fact. Rewrite `this` using `[hc, Matrix.mul_apply]`. Simplify using `only [Fr.split_r_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Conclude with `(mul_eq_zero.1 this).resolve_right ((Φ.χ j g).isUnit.map a).ne_zero`.
+-/
 private theorem zero_of_not_mem {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {k : Type} [Field k]
     {a : O →+* k} {S : Finset (ℤ × ℤ)} {c : PD Φ.ι Γ k} (hc : c.r = (Φ.split a).r) {x} (hx : x ∈ Φ.Tan S c) (i j : Fin 4)
     (h1 : i ≠ j) (h2 : wt i j ∉ S) (g : Γ) : x.1 g i j = 0 := by
@@ -10,10 +13,22 @@ private theorem zero_of_not_mem {O Γ : Type} [CommRing O] [Group Γ] [Topologic
   simp only [Fr.split_r_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this
   exact (mul_eq_zero.1 this).resolve_right ((Φ.χ j g).isUnit.map a).ne_zero
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun v s _ => by simp [h]⟩`.
+-/
 private theorem triv_of_zero {O Γ : Type} [CommRing O] [Group Γ] {Φ : Fr O Γ} {k : Type} [Field k]
     {a : O →+* k} {w : ℤ × ℤ} {z : Γ → k} (h : ∀ g, z g = 0) : ∃ n, Φ.LocTriv a w z n :=
   ⟨0, fun v s _ => by simp [h]⟩
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ Φ k _ a hok S hS h`. Establish `key : ∃ i₀ j₀ : Fin 4, wt i₀ j₀ ∈ oddRoots ∧ ∀ i j : Fin 4, i ≤ j.rev → wt i j ∈ oddRoots → j < i ∨ (i = i₀ ∧ j = j₀) ∨ (i ≠ j ∧ wt i j ∉ S)` using `by revert S`. Evaluate the decidable proposition. Establish `low : ∀ x ∈ Φ.Tan S (Φ.split a), ∀ i j : Fin 4, j < i → ∃ n, Φ.LocTriv a (wt i j) (fun g => x.1 g i j) n`. Introduce `x hx i j hij`.
+
+Use `⟨fun v => x.2 v i j, fun v s hs => ?_⟩` and prove the remaining obligations. Use `hx.2.2.2.2.2.2.2 v s hs i j hij` as an intermediate fact. Establish `e1 : (Φ.split a).n v = 1` using `rfl`. Establish `e2 : adj (1 : M4 k) = 1`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.one_apply]`. Rewrite `this` using `[e1, e2, one_mul, mul_one, Matrix.sub_apply, Matrix.add_apply, hok.conj_split]`. Take the linear combination `this`. Take `⟨i₀, j₀, h1, h2⟩` from `key`. Use `⟨i₀, j₀, h1, fun x hx h0 i j h3 h4 => ?_⟩` and prove the remaining obligations.
+
+Break down `h2 i j h3 h4 with h5 | ⟨rfl, rfl⟩ | ⟨h5, h6⟩` into its components or cases. Conclude with `low x hx i j h5`. Conclude with `triv_of_zero h0`. Conclude with `triv_of_zero (zero_of_not_mem rfl hx i j h5 h6)`.
+-/
 private theorem oneOdd_split : ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] (Φ : Fr O Γ) {k : Type} [Field k] (a : O →+* k), Φ.Ok a → ∀ S ∈ redTypes,
       ((-wPs ∈ S ∧ (wBe ∈ S ∨ -wAl ∈ S)) ∨ (-wAl ∈ S ∧ -wBe ∈ S)) → Φ.OneOdd a S (Φ.split a) := by
   intro O Γ _ _ _ Φ k _ a hok S hS h
@@ -38,6 +53,11 @@ private theorem oneOdd_split : ∀ {O Γ : Type} [CommRing O] [Group Γ] [Topolo
   · exact triv_of_zero h0
   · exact triv_of_zero (zero_of_not_mem rfl hx i j h5 h6)
 
+/- English proof (translation)
+Establish `s1` using `congrFun (congrFun (show adj Z = -Z from hZ) 1) 0`. Establish `s2` using `congrFun (congrFun (show adj Z = -Z from hZ) 0) 1`. Establish `h1` using `h 1 0 (by decide)`. Establish `h2` using `h 3 0 (by decide)`. Establish `h3` using `h 2 1 (by decide)`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev, Xm, Matrix.one_apply, Matrix.single_apply] at s1 s2 h1 h2 h3`. Use `⟨by linear_combination h1, by linear_combination h2 - b * s1 + 2 * b * h1, by linear_combination h3 - b * s2⟩` and prove the remaining obligations.
+-/
 private theorem rel_ps {k : Type} [Field k] (b : k) {Z : M4 k} (hZ : Z ∈ sp4 k)
     (h : IsUp (adj (1 + b • Xm k) * Z * (1 + b • Xm k))) :
     Z 1 0 = -b * Z 1 2 ∧ Z 3 0 = -b ^ 2 * Z 1 2 ∧ Z 2 1 = 2 * b * Z 0 1 + b ^ 2 * Z 0 3 := by
@@ -52,12 +72,56 @@ private theorem rel_ps {k : Type} [Field k] (b : k) {Z : M4 k} (hZ : Z ∈ sp4 k
 
 set_option synthInstance.maxSize 4000 in
 set_option synthInstance.maxHeartbeats 200000 in
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 private theorem keyB : ∀ S ∈ redTypes, (-wAl ∈ S ∨ (wBe ∈ S ∧ -wTh ∈ S)) → ∃ i₀ j₀ : Fin 4, wt i₀ j₀ ∈ oddRoots ∧
       ((i₀ = 1 ∧ j₀ = 2 ∨ wt 1 2 ∉ S) ∨ wt 1 0 ∉ S ∨ wt 3 0 ∉ S) ∧
       (((i₀ = 0 ∧ j₀ = 1 ∨ wt 0 1 ∉ S) ∧ (i₀ = 0 ∧ j₀ = 3 ∨ wt 0 3 ∉ S)) ∨
         (wt 2 1 ∉ S ∧ (i₀ = 0 ∧ j₀ = 1 ∨ wt 0 1 ∉ S ∨ wt 0 3 ∉ S))) := by
   decide
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ Φ k _ a hok b hb hχ S hS h`. Establish `two : (2 : k) ≠ 0` using `hok.two.ne_zero`. Establish `ps : ∀ v, ∀ s ∈ Φ.Gv v, ∀ w : ℤ × ℤ, a (Φ.rt w s) = a (Φ.rt (w.1 , 0) s)`. Introduce `v s hs w`. Establish `e : Units.map (a : O →* k) (Φ.χ 0 s * (Φ.χ 2 s)⁻¹) = 1`.
+
+Rewrite using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `Units.ext (hχ v s hs)`. Establish `e2 : ∀ u : Oˣ, a u = (Units.map (a : O →* k) u : kˣ)` using `fun _ => rfl`. Simplify using `only [Fr.rt, MonoidHom.coe_mk, OneHom.coe_mk, e2]`. Rewrite using `[map_mul, map_mul, map_zpow _ _ w.2, e]`.
+
+Simplify using the standard rewrite rules. Establish `rel : ∀ x ∈ Φ.Tan S (Φ.splitPs a b), ∀ v, ∀ s ∈ Φ.Gv v, ∀ ρ σ : k, ρ = a (Φ.rt (-1, 0) s) → σ = a (Φ.rt (1, 0) s) → x.1 s 1 0 + ρ * x.2 v 1 0 - x.2 v 1 0 = -b v * (x.1 s 1 2 + ρ * x.2 v 1 2 - x.2 v 1 2) ∧ x.1 s 3 0 + ρ * x.2 v 3 0 - x.2 v 3 0 = -b v ^ 2 * (x.1 s 1 2 + ρ * x.2 v 1 …`. Introduce and unpack `x hx v s hs _ _ rfl rfl`. Establish `ent : ∀ i j, (x.1 s + (Φ.split a).r s * x.2 v * (Φ.split a).r s⁻¹ - x.2 v) i j = x.1 s i j + a (Φ.rt ((wt i j).1, 0) s) * x.2 v i j - x.2 v i j` using `fun i j => by`. Rewrite using `[Matrix.sub_apply, Matrix.add_apply, hok.conj_split, ps v s hs]`.
+
+Establish `hZ : x.1 s + (Φ.split a).r s * x.2 v * (Φ.split a).r s⁻¹ - x.2 v ∈ sp4 k`. Use `sub_mem (add_mem (hx.2.1 s) ?_) (hx.2.2.2.2.2.2.1 v).1` and prove the remaining obligations. Use `show adj _ = -_`. Use extensionality with `i j`. Use `congrFun (congrFun (show adj (x.2 v) = -x.2 v from (hx.2.2.2.2.2.2.1 v).1) i) j` as an intermediate fact.
+
+Rewrite `this`, the goal using `[adj_apply, Matrix.neg_apply]`. Rewrite using `[hok.conj_split, hok.conj_split, wt_rev, ← mul_smul_comm, this, mul_neg]`. Use `rel_ps (b v) hZ (hx.2.2.2.2.2.2.2 v s hs)` as an intermediate fact. Simplify using `only [ent] at this`. Conclude with `this`.
+
+Take `⟨i₀, j₀, h1, h2, h3⟩` from `keyB S hS h`. Use `⟨i₀, j₀, h1, fun x hx h0 => ?_⟩` and prove the remaining obligations. Set `T : Fin 4 → Fin 4 → Prop` to `fun i j => ∃ n : Φ.ι → k, ∀ v, ∀ s ∈ Φ.Gv v, x.1 s i j = n v - a (Φ.rt ((wt i j).1, 0) s) * n v`. Establish `z0 : ∀ {i j}, i₀ = i ∧ j₀ = j → T i j`. Introduce and unpack `_ _ ⟨rfl, rfl⟩`.
+
+Conclude with `⟨0, fun v s _ => by simp [h0]⟩`. Establish `z1 : ∀ {i j}, i ≠ j → wt i j ∉ S → T i j` using `fun h1 h2 => ⟨0, fun v s _ => by rw [zero_of_not_mem (a := a) (c := Φ.splitPs a b) rfl hx _ _ h1 h2]; simp⟩`. Establish `t1 : T 1 2 → T 1 0 ∧ T 3 0`. Introduce and unpack `⟨n, hn⟩`. Use `⟨⟨fun v => x.2 v 1 0 - b v * (n v - x.2 v 1 2), fun v s hs => ?_⟩, ⟨fun v => x.2 v 3 0 - b v ^ 2 * (n v - x.2 v 1 2), fun v s hs => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `e : x.1 s 1 2 = n v - a (Φ.rt (-1, 0) s) * n v` using `hn v s hs show _ = _ - a (Φ.rt (-1, 0) s) * _`. Take the linear combination `(rel x hx v s hs _ _ rfl rfl).1 - b v * e`. Establish `e : x.1 s 1 2 = n v - a (Φ.rt (-1, 0) s) * n v` using `hn v s hs show _ = _ - a (Φ.rt (-1, 0) s) * _`. Take the linear combination `(rel x hx v s hs _ _ rfl rfl).2.1 - b v ^ 2 * e`. Establish `t2 : T 1 0 → T 1 2`.
+
+Introduce and unpack `⟨n, hn⟩`. Use `⟨fun v => x.2 v 1 2 - (n v - x.2 v 1 0) / b v, fun v s hs => ?_⟩` and prove the remaining obligations. Establish `e : x.1 s 1 0 = n v - a (Φ.rt (-1, 0) s) * n v` using `hn v s hs`. Use `hb v` as an intermediate fact. Use `show _ = _ - a (Φ.rt (-1, 0) s) * _`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(rel x hx v s hs _ _ rfl rfl).1 - e`. Establish `t3 : T 3 0 → T 1 2`. Introduce and unpack `⟨n, hn⟩`. Use `⟨fun v => x.2 v 1 2 - (n v - x.2 v 3 0) / b v ^ 2, fun v s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `e : x.1 s 3 0 = n v - a (Φ.rt (-1, 0) s) * n v` using `hn v s hs`. Use `hb v` as an intermediate fact. Use `show _ = _ - a (Φ.rt (-1, 0) s) * _`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(rel x hx v s hs _ _ rfl rfl).2.1 - e`.
+
+Establish `t4 : T 0 1 → T 0 3 → T 2 1`. Introduce and unpack `⟨n, hn⟩ ⟨n', hn'⟩`. Use `⟨fun v => x.2 v 2 1 + 2 * b v * (n v - x.2 v 0 1) + b v ^ 2 * (n' v - x.2 v 0 3), fun v s hs => ?_⟩` and prove the remaining obligations. Establish `e : x.1 s 0 1 = n v - a (Φ.rt (1, 0) s) * n v` using `hn v s hs`. Establish `e' : x.1 s 0 3 = n' v - a (Φ.rt (1, 0) s) * n' v` using `hn' v s hs`.
+
+Use `show _ = _ - a (Φ.rt (1, 0) s) * _`. Take the linear combination `(rel x hx v s hs _ _ rfl rfl).2.2 + 2 * b v * e + b v ^ 2 * e'`. Establish `t5 : T 2 1 → T 0 1 → T 0 3`. Introduce and unpack `⟨n, hn⟩ ⟨n', hn'⟩`. Use `⟨fun v => x.2 v 0 3 + ((n v - x.2 v 2 1) - 2 * b v * (n' v - x.2 v 0 1)) / b v ^ 2, fun v s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `e : x.1 s 2 1 = n v - a (Φ.rt (1, 0) s) * n v` using `hn v s hs`. Establish `e' : x.1 s 0 1 = n' v - a (Φ.rt (1, 0) s) * n' v` using `hn' v s hs`. Use `hb v` as an intermediate fact. Use `show _ = _ - a (Φ.rt (1, 0) s) * _`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `-(rel x hx v s hs _ _ rfl rfl).2.2 + e - 2 * b v * e'`. Establish `t6 : T 2 1 → T 0 3 → T 0 1`. Introduce and unpack `⟨n, hn⟩ ⟨n', hn'⟩`. Use `⟨fun v => x.2 v 0 1 + ((n v - x.2 v 2 1) - b v ^ 2 * (n' v - x.2 v 0 3)) / (2 * b v), fun v s hs => ?_⟩` and prove the remaining obligations. Establish `e : x.1 s 2 1 = n v - a (Φ.rt (1, 0) s) * n v` using `hn v s hs`.
+
+Establish `e' : x.1 s 0 3 = n' v - a (Φ.rt (1, 0) s) * n' v` using `hn' v s hs`. Use `hb v` as an intermediate fact. Use `show _ = _ - a (Φ.rt (1, 0) s) * _`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-(rel x hx v s hs _ _ rfl rfl).2.2 + e - b v ^ 2 * e'`.
+
+Establish `u12 : T 1 2`. Break down `h2 with (h | h) | h | h` into its components or cases. Use `exacts [z0 h, z1 (by decide) h, t2 (z1 (by decide) h), t3 (z1 (by decide) h)]`. Establish `u : T 0 1 ∧ T 0 3 ∧ T 2 1`. Break down `h3 with ⟨h, h'⟩ | ⟨h, h'⟩` into its components or cases.
+
+Establish `a1 : T 0 1` using `h.elim z0 (z1 (by decide))`. Establish `a2 : T 0 3` using `h'.elim z0 (z1 (by decide))`. Conclude with `⟨a1, a2, t4 a1 a2⟩`. Establish `a1 : T 2 1` using `z1 (by decide) h`. Break down `h' with h' | h' | h'` into its components or cases.
+
+Conclude with `⟨z0 h', t5 a1 (z0 h'), a1⟩`. Conclude with `⟨z1 (by decide) h', t5 a1 (z1 (by decide) h'), a1⟩`. Conclude with `⟨t6 a1 (z1 (by decide) h'), z1 (by decide) h', a1⟩`. Establish `pos : ∀ i j : Fin 4, i ≤ j.rev → wt i j ∈ oddRoots → (i = 0 ∧ j = 1) ∨ (i = 0 ∧ j = 3) ∨ (i = 2 ∧ j = 1) ∨ (i = 1 ∧ j = 2) ∨ (i = 1 ∧ j = 0) ∨ (i = 3 ∧ j = 0)` using `by decide`. Introduce `i j h4 h5`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : T i j := by`. Break down `pos i j h4 h5 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Use `exacts [u.1, u.2.1, u.2.2, u12, (t1 u12).1, (t1 u12).2]`. Conclude with `⟨n, fun v s hs => by rw [ps v s hs]; exact hn v s hs⟩`.
+-/
 private theorem oneOdd_splitPs : ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] (Φ : Fr O Γ) {k : Type} [Field k] (a : O →+* k), Φ.Ok a → ∀ b : Φ.ι → k, (∀ v, b v ≠ 0) →
       (∀ v, ∀ s ∈ Φ.Gv v, a (Φ.χ 0 s) = a (Φ.χ 2 s)) → ∀ S ∈ redTypes,
       (-wAl ∈ S ∨ (wBe ∈ S ∧ -wTh ∈ S)) → Φ.OneOdd a S (Φ.splitPs a b) := by
@@ -172,6 +236,35 @@ private theorem oneOdd_splitPs : ∀ {O Γ : Type} [CommRing O] [Group Γ] [Topo
     exacts [u.1, u.2.1, u.2.2, u12, (t1 u12).1, (t1 u12).2]
   exact ⟨n, fun v s hs => by rw [ps v s hs]; exact hn v s hs⟩
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ Φ k _ a hok d C hb S c hc hn ⟨i₀, j₀, h0, H⟩`. Establish `ent : ∀ x ∈ Φ.Tan S c, ∀ i j, (fun g => x.1 g i j) ∈ Φ.Zgl a (wt i j)`. Introduce `x hx i j`. Use `⟨hx.1.comp (fun Z : M4 k => Z i j), fun g h => ?_, fun g hg => ?_, fun hw => ?_⟩` and prove the remaining obligations. Use `show x.1 (g * h) i j = _`.
+
+Rewrite using `[hx.2.2.1, Matrix.add_apply, hc, hok.conj_split]`. Use `show x.1 g i j = 0`. Rewrite using `[hx.2.2.2.1 g hg]`. Both sides reduce to the same expression. Conclude with `hx.2.2.2.2.1 fun e => hw ((wt_eq_zero i j).2 e)`.
+
+Set `E : Fin 4 → Fin 4 → (Φ.TanS S c →ₗ[k] (Γ → k))` to `fun i j => { toFun := fun x g => x.1.1 g i j, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Set `P` to `{p : Fin 4 × Fin 4 // p.1 ≤ p.2.rev}`. Set `Q` to `{p : Fin 4 × Fin 4 // p.2 < p.1}`. Set `M : P → Submodule k (Γ → k)` to `fun p => if wt p.1.1 p.1.2 ∈ oddRoots then Φ.Str a (wt p.1.1 p.1.2) else Φ.Zgl a (wt p.1.1 p.1.2)`. Establish `hM : ∀ p, Module.rank k (M p) ≤ C`.
+
+Introduce `p`. Distinguish the cases in `h : wt p.1.1 p.1.2 ∈ oddRoots`. Rewrite using `[show M p = _ from if_pos h]`. Conclude with `hb.str _ (Finset.mem_union_left _ h)`. Rewrite using `[show M p = _ from if_neg h]`.
+
+Establish `: ∀ i j, wt i j ∉ oddRoots → wt i j ∈ [0, wPs, -wPs]` using `by decide`. Conclude with `hb.even _ (this _ _ h)`. Establish `mem : ∀ (x : LinearMap.ker (E i₀ j₀)) (p : P), E p.1.1 p.1.2 x.1 ∈ M p`. Introduce `x p`. Distinguish the cases in `h : wt p.1.1 p.1.2 ∈ oddRoots`.
+
+Rewrite using `[show M p = _ from if_pos h]`. Conclude with `⟨ent _ x.1.2 _ _, H _ x.1.2 (fun g => congrFun (LinearMap.mem_ker.1 x.2) g) _ _ p.2 h⟩`. Rewrite using `[show M p = _ from if_neg h]`. Conclude with `ent _ x.1.2 _ _`. Set `F : LinearMap.ker (E i₀ j₀) →ₗ[k] (∀ p : P, M p) × (Φ.ι × Q → k)` to `{ toFun := fun x => (fun p => ⟨_, mem x p⟩, fun z => (adj (c.n z.1) * x.1.1.2 z.1 * c.n z.1) z.2.1.1 z.2.1.2) map_add' := fun x y => Prod.ext rfl (funext fun z => by simp [mul_add, add_mul]) map_smul' := fun t x => Prod.ext rfl (funext fun z => by simp) }`.
+
+Establish `hF : Function.Injective F`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hx1 : ∀ g i j, i ≤ j.rev → x.1.1.1 g i j = 0` using `fun g i j h => congrFun (congrArg Subtype.val (congrFun (congrArg Prod.fst hx) ⟨(i, j), h⟩)) g`. Establish `hx2 : ∀ v i j, j < i → (adj (c.n v) * x.1.1.2 v * c.n v) i j = 0` using `fun v i j h => congrFun (congrArg Prod.snd hx) (v, ⟨(i, j), h⟩)`.
+
+Use `Subtype.ext (Subtype.ext (Prod.ext (funext fun g => ?_) (funext fun v => ?_)))` and prove the remaining obligations. Use extensionality with `i j`. Distinguish the cases in `h : i ≤ j.rev`. Conclude with `hx1 g i j h`. Use `congrFun (congrFun (show adj (x.1.1.1 g) = -x.1.1.1 g from x.1.2.2.1 g) i) j` as an intermediate fact.
+
+Establish `h' : ∀ i j : Fin 4, ¬ i ≤ j.rev → j.rev ≤ i.rev.rev` using `by decide`. Rewrite `this` using `[adj_apply, hx1 g _ _ (h' i j h), smul_zero, Matrix.neg_apply]`. Conclude with `neg_eq_zero.1 this.symm`. Establish `h1 : adj (c.n v) * c.n v = 1` using `by simpa [IsGSp] using hn v`. Establish `h2` using `mul_eq_one_comm.1 h1`.
+
+Establish `h3 : adj (c.n v) * x.1.1.2 v * c.n v = 0`. Use extensionality with `i j`. Break down `le_or_gt i j with h | h` into its components or cases. Use `exacts [(x.1.2.2.2.2.2.2.2.1 v).2 i j h, hx2 v i j h]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `r1 : Module.rank k (LinearMap.range (E i₀ j₀)) ≤ d + C`. Use `le_trans (Submodule.rank_mono ?_) (hb.odd _ h0)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `ent _ x.2 _ _`. Establish `r2 : Module.rank k (∀ p : P, M p) ≤ 10 * C`.
+
+Rewrite using `[rank_pi]`. Use `le_trans (Cardinal.sum_le_sum _ _ hM) ?_` and prove the remaining obligations. Rewrite using `[Cardinal.sum_const', Cardinal.mk_fintype, show Fintype.card P = 10 by decide]`. Simplify using the standard rewrite rules. Establish `r3 : Module.rank k (Φ.ι × Q → k) ≤ 6 * C` using `by haveI := Fintype.ofFinite Φ.ι`.
+
+Rewrite using `[rank_fun', Fintype.card_prod, show Fintype.card Q = 6 by decide, ← Nat.card_eq_fintype_card]`. Use `hb.card` as an intermediate fact. Conclude with `(by omega : Nat.card Φ.ι * 6 ≤ 6 * C)` after adjusting the coercions. Establish `r4` using `LinearMap.rank_le_of_injective F hF`. Rewrite `r4` using `[rank_prod']`.
+
+Rewrite using `[← LinearMap.rank_range_add_rank_ker (E i₀ j₀)]`. Use `le_trans (add_le_add r1 (r4.trans (add_le_add r2 r3))) ?_` and prove the remaining obligations. Conclude with `(by omega : d + C + (10 * C + 6 * C) ≤ d + 20 * C)` after adjusting the coercions.
+-/
 private theorem rank_of_oneOdd : ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] (Φ : Fr O Γ) {k : Type} [Field k] (a : O →+* k), Φ.Ok a → ∀ d C : ℕ, Φ.Bounds a d C → ∀ (S : Finset (ℤ × ℤ)) (c : PD Φ.ι Γ k),
       c.r = (Φ.split a).r → (∀ v, IsGSp 1 (c.n v)) → Φ.OneOdd a S c → Module.rank k (Φ.TanS S c) ≤ d + 20 * C := by
   intro O Γ _ _ _ Φ k _ a hok d C hb S c hc hn ⟨i₀, j₀, h0, H⟩
@@ -252,6 +345,11 @@ private theorem rank_of_oneOdd : ∀ {O Γ : Type} [CommRing O] [Group Γ] [Topo
   refine le_trans (add_le_add r1 (r4.trans (add_le_add r2 r3))) ?_
   exact_mod_cast (by omega : d + C + (10 * C + 6 * C) ≤ d + 20 * C)
 
+/- English proof (translation)
+Establish `z : ∀ i j, i ≠ j → m i ≤ m j → c.r g i j = 0` using `fun i j h1 h2 => hS g i j h1 fun h3 => absurd (hm i j h1 h3) (by omega)`. Use `⟨fun i j hij => z i j (by rintro rfl; omega) (by omega), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[cmp_apply, Fr.split_r_apply]`. Distinguish the cases in `h1 : i = j`.
+
+Substitute `h1` using the available equality. Simplify using `[h.diag]`. Rewrite using `[if_neg h1] split_ifs with h2`. Conclude with `(z i j h1 (by omega)).symm`. Both sides reduce to the same expression.
+-/
 private theorem limR {O Γ : Type} [CommRing O] [Group Γ] {Φ : Fr O Γ} {k : Type} [Field k] {a : O →+* k} {c : PD Φ.ι Γ k}
     (h : Φ.Res a c) {S : Finset (ℤ × ℤ)} (hS : Supp S c.r) {m : Fin 4 → ℤ}
     (hm : ∀ i j, i ≠ j → wt i j ∈ S → m j < m i) (g : Γ) : Lim m (c.r g) ((Φ.split a).r g) := by
@@ -267,6 +365,11 @@ private theorem limR {O Γ : Type} [CommRing O] [Group Γ] {Φ : Fr O Γ} {k : T
     · exact (z i j h1 (by omega)).symm
     · rfl
 
+/- English proof (translation)
+Use `⟨fun i j hij => z i j (by rintro rfl; omega) (by omega), ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[cmp_apply, Matrix.one_apply]`. Distinguish the cases in `h1 : i = j`. Substitute `h1` using the available equality.
+
+Simplify using `[h]`. Rewrite using `[if_neg h1] split_ifs with h2`. Conclude with `(z i j h1 (by omega)).symm`. Both sides reduce to the same expression.
+-/
 private theorem limN {k : Type} [Field k] {n : M4 k} (h : ∀ i, n i i = 1) {m : Fin 4 → ℤ}
     (z : ∀ i j, i ≠ j → m i ≤ m j → n i j = 0) : Lim m n 1 := by
   refine ⟨fun i j hij => z i j (by rintro rfl; omega) (by omega), ?_⟩
@@ -279,6 +382,11 @@ private theorem limN {k : Type} [Field k] {n : M4 k} (h : ∀ i, n i i = 1) {m :
     · exact (z i j h1 (by omega)).symm
     · rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Establish `h21 : n 2 1 = 0` using `hq 2 1 (by decide) (by decide)`. Establish `h31 : n 3 1 = n 2 0`. Use `congrFun (congrFun h1 2) 0` as an intermediate fact. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev, h2, h21, h3 0 1 (by decide)] at this`.
+
+Take the linear combination `-this`. Use `⟨fun i j hij => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact h3 _ _ (by decide) | exact h21 | (simp at hij)`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`. Simplify using `[cmp_apply, Xm, Matrix.one_apply, Matrix.single_apply, h2, h31, h3 0 2 (by decide), h3 1 3 (by decide)]`.
+-/
 private theorem limPs {k : Type} [Field k] {n : M4 k} (h : IsLow n) (hq : SuppM qQ n) :
     Lim ![0, 1, 0, 1] n (1 + n 2 0 • Xm k) := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -293,14 +401,25 @@ private theorem limPs {k : Type} [Field k] {n : M4 k} (h : IsLow n) (hq : SuppM 
     fin_cases i <;> fin_cases j <;>
       simp [cmp_apply, Xm, Matrix.one_apply, Matrix.single_apply, h2, h31, h3 0 2 (by decide), h3 1 3 (by decide)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev, Xm, Matrix.one_apply, Matrix.single_apply]`.
+-/
 private theorem gsp_ps {k : Type} [Field k] (b : k) : IsGSp 1 (1 + b • Xm k) := by
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev, Xm, Matrix.one_apply, Matrix.single_apply]
 
+/- English proof (translation)
+Simplify using `using gsp_ps (0 : k)`.
+-/
 private theorem gsp_one {k : Type} [Field k] : IsGSp 1 (1 : M4 k) := by
   simpa using gsp_ps (0 : k)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hp.low v`. Establish `h1' : c.n v * adj (c.n v) = 1` using `mul_eq_one_comm.1 (by simpa [IsGSp] using h1)`. Establish `e : c.r s * c.n v = c.n v * (adj (c.n v) * c.r s * c.n v)`. Rewrite using `[← mul_assoc, ← mul_assoc, h1', one_mul]`. Establish `u` using `hp.flag v s hs`.
+
+Establish `e2` using `congrFun (congrFun e 2) 0`. Establish `hc : (adj (c.n v) * c.r s * c.n v) 0 0 = a (Φ.χ 0 s)` using `h.char v s hs 0`. Rewrite `e2` using `[Matrix.mul_apply, Matrix.mul_apply (M := c.n v), Fin.sum_univ_four, Fin.sum_univ_four, u 1 0 (by decide), u 2 0 (by decide), u 3 0 (by decide), hc, h.diag, hV.1 s 2 0 (by decide) (by decide), hV.1 s 2 1 (by decide) (by decide), hV.1 s 2 3 (by decide) (by decide)]`. Conclude with `mul_left_cancel₀ (hV.2 v).2 (by linear_combination -e2)`.
+-/
 private theorem residual_chars_zero_two_eq {O Γ : Type} [CommRing O] [Group Γ] {Φ : Fr O Γ} {k : Type} [Field k] {a : O →+* k} {c : PD Φ.ι Γ k}
     (hp : Φ.IsPair a c) (h : Φ.Res a c) (hV : Fr.InV c) (v : Φ.ι) (s : Γ) (hs : s ∈ Φ.Gv v) :
     a (Φ.χ 0 s) = a (Φ.χ 2 s) := by
@@ -316,6 +435,19 @@ private theorem residual_chars_zero_two_eq {O Γ : Type} [CommRing O] [Group Γ]
     hV.1 s 2 3 (by decide) (by decide)] at e2
   exact mul_left_cancel₀ (hV.2 v).2 (by linear_combination -e2)
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ _ _ _ Φ k _ a hok d C hb c hc hg S hS hs`. Establish `ent : ∀ w, w ≠ 0 → Ent c.r w → w ∈ S`. Introduce and unpack `_ hw ⟨g, i, j, rfl, h⟩`. Assume the negation of the conclusion as `h'`. Conclude with `h (hs g i j (fun e => hw ((wt_eq_zero i j).2 e)) h')`.
+
+Establish `A : ((-wPs ∈ S ∧ (wBe ∈ S ∨ -wAl ∈ S)) ∨ (-wAl ∈ S ∧ -wBe ∈ S)) → Module.rank k (Φ.TanS S c) ≤ d + 20 * C`. Introduce `h`. Use `le_trans ?_ (rank_of_oneOdd Φ a hok d C hb S (Φ.split a) rfl (fun _ => gsp_one) (oneOdd_split Φ a hok S hS h))` and prove the remaining obligations. Break down `hc.res.shape with ⟨h1, h2⟩ | h1` into its components or cases. Establish `hm : ∀ i j, i ≠ j → wt i j ∈ nP → (![0, 2, 1, 3] : Fin 4 → ℤ) j < ![0, 2, 1, 3] i` using `by decide`.
+
+Establish `hq : ∀ i j, wt i j ∈ qQ → (![0, 2, 1, 3] : Fin 4 → ℤ) j < ![0, 2, 1, 3] i` using `by decide`. Conclude with `tan_flow Φ S c _ ![0, 2, 1, 3] (by unfold Symp; decide) (limR hc.res h1 hm) fun v => limN (hc.pair.low v).2.1 fun i j h3 h4 => h2 v i j h3 fun h5 => absurd (hq i j h5) (not_lt.2 h4)`. Establish `hm : ∀ i j, i ≠ j → wt i j ∈ nM → (![0, 1, 2, 3] : Fin 4 → ℤ) j < ![0, 1, 2, 3] i` using `by decide`. Establish `hq : ∀ i j : Fin 4, i ≠ j → (![0, 1, 2, 3] : Fin 4 → ℤ) i ≤ ![0, 1, 2, 3] j → i < j` using `by decide`. Conclude with `tan_flow Φ S c _ ![0, 1, 2, 3] (by unfold Symp; decide) (limR hc.res h1 hm) fun v => limN (hc.pair.low v).2.1 fun i j h3 h4 => (hc.pair.low v).2.2 i j (hq i j h3 h4)`.
+
+Establish `B : Fr.InV c → (-wAl ∈ S ∨ (wBe ∈ S ∧ -wTh ∈ S)) → Module.rank k (Φ.TanS S c) ≤ d + 20 * C`. Introduce `hV h`. Use `le_trans ?_ (rank_of_oneOdd Φ a hok d C hb S (Φ.splitPs a fun v => c.n v 2 0) rfl (fun _ => gsp_ps _) (oneOdd_splitPs Φ a hok _ (fun v => (hV.2 v).2) (residual_chars_zero_two_eq hc.pair hc.res hV) S hS h))` and prove the remaining obligations. Establish `hm : ∀ i j, i ≠ j → wt i j ∈ vV → (![0, 1, 0, 1] : Fin 4 → ℤ) j < ![0, 1, 0, 1] i` using `by decide`. Conclude with `tan_flow Φ S c _ ![0, 1, 0, 1] (by unfold Symp; decide) (limR hc.res hV.1 hm) fun v => limPs (hc.pair.low v) (hV.2 v).1`.
+
+Rewrite using `[Fr.span_Tan]`. Break down `hg with ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2, h3, -⟩` into its components or cases. Conclude with `A (Or.inl ⟨ent _ (by decide) h1, h2.imp (ent _ (by decide)) (ent _ (by decide))⟩)`. Conclude with `A (Or.inr ⟨ent _ (by decide) h1, ent _ (by decide) h2⟩)`. Conclude with `B h1 (Or.inl (ent _ (by decide) h2))`.
+
+Conclude with `B h1 (Or.inr ⟨ent _ (by decide) h2, ent _ (by decide) h3⟩)`.
+-/
 theorem UpperTheory.V.Ws.redTan :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] (Φ : Fr O Γ) {k : Type} [Field k] (a : O →+* k), Φ.Ok a → ∀ d C : ℕ, Φ.Bounds a d C → ∀ c : PD Φ.ι Γ k, Φ.IsRes a c → Φ.Good a c → ∀ S ∈ redTypes, Supp S c.r →
       Module.rank k (Submodule.span k (Φ.Tan S c)) ≤ d + 20 * C := by

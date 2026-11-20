@@ -67,6 +67,9 @@ def CH.AtT.toD {D : D7} {u : D.what₂.Word} {e : (D.mem u).A.vT ≃ {v : Height
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `Z.up0 upI := Z.upI dn0 := Z.dn0 dnI := Z.dnI dil0 := Z.dil0 dilI := Z.dilI`.
+-/
 theorem CH.AdTied.toD {D : D7} {H : CH.HermCols D.colRec} {aT : ∀ u, CH.AtT D.colRec u (H.vT u) (H.Fv u)}
     (Z : CH.AdTied D.colRec H aT) :
     Formalism.L2.Herm.AdTied D (CH.HermCols.toD H) (fun u => (CH.AtT.toD (aT u))) where
@@ -240,6 +243,9 @@ def CF.FormsTied.toD {D : D7} {u : D.what₂.Word}
 
 set_option maxHeartbeats 16000000 in
 
+/- English proof (translation)
+The claim follows from `Z.eV piU := Z.piU res := Z.res car0 := Z.car0 carI := Z.carI carP := Z.carP lattice₂ := Z.lattice₂ pr := Z.pr prk := Z.prk z0 := Z.z0 ga := Z.ga sp := Z.sp piG := Z.piG fr0 := Z.fr0`.
+-/
 theorem CF.Joint.toD {D : D7} {X : CH.ColsHerm D.colRec} {u : D.what₂.Word} {T : CF.FormsTied D.colRec u}
     (Z : CF.Joint X u T) :
     Formalism.L2.Forms.Joint (CH.ColsHerm.toD X) u (CF.FormsTied.toD T) where

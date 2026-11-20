@@ -4,6 +4,17 @@ open PowerSeries IsLocalRing UpperTheory.V.abelian₂
 open IsDiscreteValuationRing (addVal)
 open scoped Pointwise TensorProduct Topology
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hl (1 : Polynomial ℤ) Polynomial.X`. Establish `h1` using `congrArg (fun p : Polynomial ℤ => p.coeff 1) hr`. Establish `hl1 : (1 : ℕ) ≠ l` using `hl.one_lt.ne`. Establish `e : ((l : Polynomial ℤ) * 1 * Polynomial.X * r) = Polynomial.C (l : ℤ) * (Polynomial.X * r)`. Simplify using `[mul_assoc]`.
+
+Simplify using `only [Polynomial.coeff_one_add_X_pow, Nat.choose_one_right, one_pow, Polynomial.coeff_add, Polynomial.coeff_X_pow, if_neg hl1, e, Polynomial.coeff_C_mul, Polynomial.coeff_one] at h1`. Establish `h2 : (Polynomial.X * r).coeff 1 = r.coeff 0` using `Polynomial.coeff_X_mul r 0`. Rewrite `h1` using `[h2]`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `h3 : r.coeff 0 = 1`.
+
+Apply `mul_left_cancel₀ hl0` to reduce the goal to its premises. Simplify using `using h1.symm`. Establish `h4 : r = 1 + Polynomial.X * r.divX`. Use `Polynomial.X_mul_divX_add r` as an intermediate fact. Rewrite `this` using `[h3]`.
+
+Rewrite using `[add_comm]`. Simplify using `using this.symm`. Use `⟨Polynomial.aeval y r.divX, ?_⟩` and prove the remaining obligations. Establish `h5` using `congrArg (Polynomial.aeval y) hr`. Rewrite `h5` using `[h4]`.
+
+Simplify using `only [map_pow, map_add, map_one, Polynomial.aeval_X, map_mul, map_natCast] at h5`. Rewrite using `[h5]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem binom_prime {R : Type*} [CommRing R] {l : ℕ} (hl : l.Prime) (y : R) :
     ∃ s : R, (1 + y) ^ l - 1 = y ^ l + l * y * (1 + y * s) := by
   obtain ⟨r, hr⟩ := exists_add_pow_prime_eq hl (1 : Polynomial ℤ) Polynomial.X
@@ -31,6 +42,11 @@ private theorem binom_prime {R : Type*} [CommRing R] {l : ℕ} (hl : l.Prime) (y
   rw [h5]
   ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ n ih`. Take `⟨s, hs⟩` from `ih`. Use `⟨n + s + y * s, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_succ, sub_eq_iff_eq_add.1 hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem binom_one {R : Type*} [CommRing R] (y : R) (n : ℕ) :
     ∃ s : R, (1 + y) ^ n - 1 = y * (n + y * s) := by
   induction n with
@@ -42,6 +58,9 @@ private theorem binom_one {R : Type*} [CommRing R] (y : R) (n : ℕ) :
     push_cast
     ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h1 : a + b ∈ maximalIdeal O` using `h`. Establish `h2 : a ∈ maximalIdeal O` using `by simpa using (maximalIdeal O).sub_mem h1 hb`. Conclude with `h2 ha`.
+-/
 private theorem isUnit_add_mem {O : Type*} [CommRing O] [IsLocalRing O] {a b : O} (ha : IsUnit a)
     (hb : b ∈ maximalIdeal O) : IsUnit (a + b) := by
   by_contra h
@@ -49,6 +68,13 @@ private theorem isUnit_add_mem {O : Type*} [CommRing O] [IsLocalRing O] {a b : O
   have h2 : a ∈ maximalIdeal O := by simpa using (maximalIdeal O).sub_mem h1 hb
   exact h2 ha
 
+/- English proof (translation)
+Establish `h' : addVal O (l : O) < addVal O (y ^ (l - 1))`. Rewrite using `[IsDiscreteValuationRing.addVal_pow, nsmul_eq_mul]` and apply the resulting hypothesis. Take `⟨c, hc⟩` from `IsDiscreteValuationRing.addVal_le_iff_dvd.1 h'.le`. Establish `hcm : c ∈ maximalIdeal O`. Introduce `hu`.
+
+Rewrite `h'` using `[hc, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_eq_zero_iff.2 hu, add_zero]`. Conclude with `lt_irrefl _ h'`. Take `⟨s, hs⟩` from `binom_prime hl y`. Establish `e : y ^ l = y * (l * c)`. Rewrite using `[← hc, ← pow_succ', Nat.sub_add_cancel hl.one_lt.le]`.
+
+Establish `hu : IsUnit (1 + (y * s + c))` using `isUnit_add_mem isUnit_one ((maximalIdeal O).add_mem (Ideal.mul_mem_right _ _ hy) hcm)`. Establish `e2 : (1 + y) ^ l - 1 = y * l * (1 + (y * s + c))` using `by rw [hs, e]; ring`. Rewrite using `[e2, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_eq_zero_iff.2 hu, add_zero]`.
+-/
 private theorem step_prime {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {l : ℕ} (hl : l.Prime) {y : O} (hy : y ∈ maximalIdeal O)
     (h : addVal O (l : O) < ((l - 1 : ℕ) : ℕ∞) * addVal O y) :
@@ -70,6 +96,19 @@ private theorem step_prime {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValu
   rw [e2, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_mul,
     IsDiscreteValuationRing.addVal_eq_zero_iff.2 hu, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `y hy h`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules.
+
+Distinguish the cases in `hd : l ∣ n`. Take `⟨k, rfl⟩` from `hd`. Establish `hk : 0 < k` using `Nat.pos_of_mul_pos_left hn`. Establish `hlt : k < l * k` using `lt_mul_of_one_lt_left hk hl.one_lt`. Establish `h1` using `step_prime hl hy h`.
+
+Establish `hy' : (1 + y) ^ l - 1 ∈ maximalIdeal O`. Take `⟨s, hs⟩` from `binom_one y l`. Rewrite using `[hs]`. Conclude with `Ideal.mul_mem_right _ _ hy`. Establish `h2` using `ih k hlt _ hy' (h.trans_le (by`.
+
+Rewrite using `[h1]`. Use `gcongr`. Conclude with `le_self_add))`. Rewrite `h2` using `[add_sub_cancel, ← pow_mul, h1]`. Rewrite using `[h2, Nat.cast_mul, IsDiscreteValuationRing.addVal_mul, add_assoc]`.
+
+Establish `hu : IsUnit (n : O)`. Assume the negation of the conclusion as `hnu`. Establish `hnm : (n : O) ∈ maximalIdeal O` using `hnu`. Establish `hc : IsCoprime (l : O) (n : O)` using `((Nat.Prime.coprime_iff_not_dvd hl).2 hd).cast`. Take `⟨a, b, hab⟩` from `hc`.
+
+Establish `: (1 : O) ∈ maximalIdeal O` using `hab ▸ (maximalIdeal O).add_mem (Ideal.mul_mem_left _ _ hlm) (Ideal.mul_mem_left _ _ hnm)`. Conclude with `this isUnit_one`. Take `⟨s, hs⟩` from `binom_one y n`. Rewrite using `[hs, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_eq_zero_iff.2 hu, IsDiscreteValuationRing.addVal_eq_zero_iff.2 (isUnit_add_mem hu (Ideal.mul_mem_right _ _ hy))]`.
+-/
 private theorem lte_nat {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {l : ℕ} (hl : l.Prime) (hlm : (l : O) ∈ maximalIdeal O) (n : ℕ) :
     ∀ y : O, y ∈ maximalIdeal O → addVal O (l : O) < ((l - 1 : ℕ) : ℕ∞) * addVal O y →
@@ -106,6 +145,13 @@ private theorem lte_nat {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuati
       rw [hs, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_eq_zero_iff.2 hu,
         IsDiscreteValuationRing.addVal_eq_zero_iff.2 (isUnit_add_mem hu (Ideal.mul_mem_right _ _ hy))]
 
+/- English proof (translation)
+Introduce `O _ _ _ _ l hl hlm u h n`. Establish `key : ∀ k : ℕ, addVal O (((u : Oˣ) : O) ^ k - 1) = addVal O (pt u : O) + addVal O (k : O)`. Introduce `k`. Use `lte_nat hl hlm k _ (pt u).2 h` as an intermediate fact. Rewrite `this` using `[coe_pt, add_sub_cancel]`. Then use the resulting hypothesis.
+
+Take `⟨k, rfl | rfl⟩` from `n.eq_nat_or_neg`. Rewrite using `[zpow_natCast, Int.cast_natCast, ← key k, coe_pt]`. Simplify using the standard rewrite rules. Establish `e : (pt (u ^ (-(k : ℤ))) : O) = ((-((u : Oˣ) ^ k)⁻¹ : Oˣ) : O) * (((u : Oˣ) : O) ^ k - 1)`. Rewrite using `[coe_pt, zpow_neg, zpow_natCast, ← Units.val_pow_eq_pow_val, Units.val_neg, neg_mul, mul_sub, Units.inv_mul, mul_one, neg_sub]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, IsDiscreteValuationRing.addVal_mul, key k, IsDiscreteValuationRing.addVal_eq_zero_iff.2 (Units.isUnit _), zero_add, Int.cast_neg, Int.cast_natCast, AddValuation.map_neg]`.
+-/
 theorem UpperTheory.V.abelian₂.lte :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (l : ℕ), l.Prime → (l : O) ∈ maximalIdeal O → ∀ u : oneUnits O,
       addVal O (l : O) < ((l - 1 : ℕ) : ℕ∞) * addVal O (pt u : O) → (∀ n : ℤ, addVal O (pt (u ^ n) : O) = addVal O (pt u : O) + addVal O (n : O)) := by

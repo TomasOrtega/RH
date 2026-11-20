@@ -23,15 +23,27 @@ structure RecTAlt (ex : Extra D L hT Gi Gl K Y cX) where
   host : _root_.Formalism.L2.HostDatumSelfDual T.toTiedDataS
   weq : Theta.WeilCompatibleEquivariance T.toTiedDataS.theta.W
 def ExtraDataRecursive (ex : Extra D L hT Gi Gl K Y cX) : Prop := Nonempty (_root_.Formalism.L2.RecTAlt ex)
+/- English proof (translation)
+The claim follows from `let ⟨R⟩ := h; ⟨R.T⟩`.
+-/
 theorem ExtraDataRecursive.tiedSK {ex : Extra D L hT Gi Gl K Y cX} (h : _root_.Formalism.L2.ExtraDataRecursive ex) : _root_.Formalism.L2.ExtraDataSelfDualKernel ex :=
   let ⟨R⟩ := h; ⟨R.T⟩
 end
 def SecondLayerFamilyClass : FamClass := fun {_} Fm =>
   (∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, _root_.Formalism.L2.ExtraDataRecursive (Fm.ex x hx i)) ∧ _root_.Formalism.L2.LinkedFamiliesAligned' Fm
+/- English proof (translation)
+Take `⟨⟨x0, h⟩, _⟩` from `h`. Conclude with `⟨x0, fun x hx hx0 i => (h x hx hx0 i).tiedSK⟩`.
+-/
 theorem SecondLayerFamilyClass.c2sk {eps : ℝ} {Fm : FamP eps} (h : _root_.Formalism.L2.SecondLayerFamilyClass Fm) : _root_.Formalism.L2.LinkedFamiliesKernelFrame' Fm := by
   obtain ⟨⟨x0, h⟩, _⟩ := h
   exact ⟨x0, fun x hx hx0 i => (h x hx hx0 i).tiedSK⟩
+/- English proof (translation)
+The claim follows from `h.c2sk.c2s`.
+-/
 theorem SecondLayerFamilyClass.c2s {eps : ℝ} {Fm : FamP eps} (h : _root_.Formalism.L2.SecondLayerFamilyClass Fm) : _root_.Formalism.L2.SecondChernLinkedClass Fm := h.c2sk.c2s
+/- English proof (translation)
+The claim follows from `_root_.Formalism.L2.gTiedF_of_C2S_alt Fm h.c2s`.
+-/
 theorem group_compatibility_of_second_layer_family {eps : ℝ} (Fm : FamP eps) (h : _root_.Formalism.L2.SecondLayerFamilyClass Fm) : G.GroupCompatibilityFamily Fm := _root_.Formalism.L2.gTiedF_of_C2S_alt Fm h.c2s
 end Formalism.L2
 end

@@ -47,11 +47,17 @@ def MarkedSequenceOfBlowups.controlledNonMonomialTransform (t : MarkedSequenceOf
       residualByPow ((MarkedSequenceOfBlowups.controlledNonMonomialTransform t N c i).comap (t.transitionMapSucc i)) (t.exceptionalDivisor i) c
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem MarkedSequenceOfBlowups.controlledNonMonomialTransform_zero (t : MarkedSequenceOfBlowups p J μ E) (N : X.IdealSheafData)
     (c : ℕ) : MarkedSequenceOfBlowups.controlledNonMonomialTransform t N c 0 = N.comap t.isoZero.hom :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem MarkedSequenceOfBlowups.controlledNonMonomialTransform_succ (t : MarkedSequenceOfBlowups p J μ E) (N : X.IdealSheafData)
     (c i : ℕ) :
     MarkedSequenceOfBlowups.controlledNonMonomialTransform t N c (i + 1) =
@@ -66,11 +72,17 @@ def MarkedSequenceOfBlowups.controlledMonomialTransform (t : MarkedSequenceOfBlo
         (t.exceptionalDivisor i) a
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem MarkedSequenceOfBlowups.controlledMonomialTransform_zero (t : MarkedSequenceOfBlowups p J μ E) (M : X.IdealSheafData)
     (a c : ℕ) : MarkedSequenceOfBlowups.controlledMonomialTransform t M a c 0 = M.comap t.isoZero.hom :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem MarkedSequenceOfBlowups.controlledMonomialTransform_succ (t : MarkedSequenceOfBlowups p J μ E) (M : X.IdealSheafData)
     (a c i : ℕ) :
     MarkedSequenceOfBlowups.controlledMonomialTransform t M a c (i + 1) =
@@ -82,6 +94,15 @@ end
 
 section
 
+/- English proof (translation)
+Establish `hcz : CharZero T.base` using `hT.charZero`. Establish `hsm : AlgebraicGeometry.Smooth T.structMap` using `hT.smooth`. Establish `hle : ∀ x : ↥T.scheme, orderAt (N ^ T.mult ⊔ T.ideal ^ s) x ≤ ((T.mult * s : ℕ) : ℕ∞)` using `fun x => orderAt_pow_sup_pow_le T.base T.structMap N T.ideal T.mult s hord x`. Establish `hsub : (↑(N ^ T.mult ⊔ T.ideal ^ s).support : Set ↥T.scheme) ⊆ (↑T.ideal.support : Set ↥T.scheme)`. Introduce `x hx`.
+
+Assume the negation of the conclusion as `hc`. Establish `h0 : orderAt T.ideal x = 0` using `(orderAt_eq_zero_iff_not_mem_support T.ideal x).2 hc`. Establish `h1 : (1 : ℕ∞) ≤ orderAt (N ^ T.mult ⊔ T.ideal ^ s) x` using `(one_le_orderAt_iff_mem_support (N ^ T.mult ⊔ T.ideal ^ s) x).2 hx`. Rewrite `h1` using `[orderAt_pow_sup_pow T.base T.structMap N T.ideal T.mult s x]`. Establish `h2 : (1 : ℕ∞) ≤ (s : ℕ∞) * orderAt T.ideal x` using `le_trans h1 (min_le_right _ _)`.
+
+Rewrite `h2` using `[h0, mul_zero]`. Simplify using `at h2`. Establish `hnz : NonzeroOnComponents (N ^ T.mult ⊔ T.ideal ^ s)`. Rewrite using `[nonzeroOnComponents_iff]`. Introduce `Z hZ hZsub`.
+
+Conclude with `(nonzeroOnComponents_iff T.ideal).1 hT.nonzeroOnComponents Z hZ (hZsub.trans hsub)`. Establish `hmult : 1 ≤ T.mult * s`. Establish `h` using `Nat.mul_le_mul hT.one_le_mult hs`. Simplify using `using h`. Conclude with `⟨{ charZero := hT.charZero locallyOfFiniteType := hT.locallyOfFiniteType nonzeroOnComponents := hnz one_le_mult := hmult quasiCompact := hT.quasiCompact smooth := hT.smooth snc := hT.snc }, hle⟩`.
+-/
 theorem isAdmissible_withIdealAndMult_pow_sup_pow {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {N : T.scheme.IdealSheafData} {s : ℕ} (hs : 1 ≤ s)
     (hord : ∀ x ∈ orderAtLeastLocus T.ideal T.mult, orderAt N x ≤ (s : ℕ∞)) :
@@ -118,6 +139,55 @@ theorem isAdmissible_withIdealAndMult_pow_sup_pow {T : MarkedIdealWithBoundary.{
            smooth := hT.smooth
            snc := hT.snc }, hle⟩
 
+/- English proof (translation)
+Use `hT.charZero` as an intermediate fact. Use `hT.smooth` as an intermediate fact. Establish `hECNC : EffectiveCartierSupportContainsNoComponent.{u}` using `effectiveCartierSupportContainsNoComponent`. Establish `hgeom : OrderAtComapOffExceptionalLocus.{u}` using `orderAtComapOffExceptionalLocus_of_monomialGeometryHypotheses hG.monomialInputs`. Establish `hm : 1 ≤ T.mult` using `hT.one_le_mult`.
+
+Establish `hT'` using `(isAdmissible_withIdealAndMult_pow_sup_pow hT hs hord).1`. Establish `key : ∀ j : ℕ, j ≤ t.length → (t.ideal j = MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s j ^ T.mult ⊔ MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult j ^ s ∧ IsMonomialSplitting (t.boundary j) (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mu …`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`.
+
+Introduce `_`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[t.ideal_zero, MarkedSequenceOfBlowups.controlledNonMonomialTransform_zero, MarkedSequenceOfBlowups.controlledTransform_zero, Scheme.IdealSheafData.comap_sup, Scheme.IdealSheafData.comap_pow, Scheme.IdealSheafData.comap_pow]`. Rewrite using `[t.boundary_zero, MarkedSequenceOfBlowups.controlledTransform_zero, MarkedSequenceOfBlowups.controlledMonomialTransform_zero, MarkedSequenceOfBlowups.controlledNonMonomialTransform_zero]`. Conclude with `hsplit.comap_iso t.isoZero`.
+
+Introduce `x hx`. Establish `h1 : (T.mult : ℕ∞) ≤ orderAt (T.ideal.comap t.isoZero.hom) x` using `(mem_orderAtLeastLocus_iff _ _ _).1 hx`. Rewrite `h1` using `[orderAt_comap_of_isIso]`. Establish `h2` using `hord _ ((mem_orderAtLeastLocus_iff _ _ _).2 h1)`. Use `show orderAt (N.comap t.isoZero.hom) x ≤ (s : ℕ∞)`.
+
+Rewrite using `[orderAt_comap_of_isIso]`. Conclude with `h2`. Consider the case `succ n ih`. Introduce `hn`. Establish `hn' : n < t.length` using `hn`.
+
+Take `⟨ih1, ih2, ih3⟩` from `ih (le_of_lt hn')`. Establish `hbl : Blowup.IsBlowupAlongIdealSheaf (t.transitionMapSucc n) (t.center n)` using `t.isBlowupAlongIdealSheaf_blowupMorphism n hn'`. Establish `hexc : Blowup.exceptionalIdeal (t.transitionMapSucc n) (t.center n) = t.exceptionalDivisor n`. Rewrite using `[MarkedSequenceOfBlowups.exceptionalDivisor_eq, Blowup.exceptionalIdeal_eq_comap]`. Establish `hFcart : Blowup.IsLocallyGeneratedByNonZeroDivisor (t.exceptionalDivisor n)`.
+
+Rewrite using `[← hexc]`. Conclude with `isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal hbl`. Establish `hTn` using `MarkedIdealWithBoundary.IsAdmissible.transformAt hECNC hT' t n (le_of_lt hn')`. Establish `: AlgebraicGeometry.Smooth (MarkedSequenceOfBlowups.projectionToSpec t n)` using `MarkedSequenceOfBlowups.smooth_projectionToSpec hECNC hT' t n (le_of_lt hn')`. Establish `: AlgebraicGeometry.Smooth (MarkedSequenceOfBlowups.projectionToSpec t (n + 1))` using `MarkedSequenceOfBlowups.smooth_projectionToSpec hECNC hT' t (n + 1) hn`.
+
+Establish `: AlgebraicGeometry.IsNoetherian (t.schemeAt (n + 1))` using `MarkedSequenceOfBlowups.isNoetherian_schemeAt hECNC hT' t (n + 1) hn`. Establish `hsmn : AlgebraicGeometry.Smooth ((t.center n).subschemeι ≫ MarkedSequenceOfBlowups.projectionToSpec t n)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`. Conclude with `t.center_smooth n hn'`. Establish `hsncn : HasStrictNormalCrossingsWith (MarkedSequenceOfBlowups.projectionToSpec t n) (t.center n) (t.boundary n)`.
+
+Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`. Conclude with `t.center_snc n hn'`. Establish `hcos : orderAtLeastLocus (t.ideal n) (T.mult * s) = orderAtLeastLocus (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s n) s ∩ orderAtLeastLocus (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult n) T.mult`. Rewrite using `[ih1]`. Conclude with `orderAtLeastLocus_pow_sup_pow T.base (MarkedSequenceOfBlowups.projectionToSpec t n) _ _ hm hs`.
+
+Establish `hZord : ∀ x ∈ (t.center n).support, orderAt (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s n) x = (s : ℕ∞)`. Introduce `x hx`. Establish `hx1` using `t.center_order n hn' hx`. Rewrite `hx1` using `[hcos]`. Conclude with `le_antisymm (ih3 x hx1.2) ((mem_orderAtLeastLocus_iff _ _ _).1 hx1.1)`.
+
+Establish `hZP : (↑(t.center n).support : Set ↥(t.schemeAt n)) ⊆ orderAtLeastLocus (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult n) T.mult`. Introduce `x hx`. Establish `hx1` using `t.center_order n hn' hx`. Rewrite `hx1` using `[hcos]`. Conclude with `hx1.2`.
+
+Establish `hPle : MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult n ≤ t.center n ^ T.mult` using `le_pow_of_hasStrictNormalCrossingsWith (MarkedSequenceOfBlowups.projectionToSpec t n) (t.center n) _ (t.boundary n) hsncn T.mult hZP`. Establish `hAle : MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s n ≤ t.center n ^ s`. Use `le_pow_of_hasStrictNormalCrossingsWith (MarkedSequenceOfBlowups.projectionToSpec t n) (t.center n) _ (t.boundary n) hsncn s ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `(mem_orderAtLeastLocus_iff _ _ _).2 (le_of_eq (hZord x hx).symm)`.
+
+Establish `hPdiv : ∃ B : (t.schemeAt (n + 1)).IdealSheafData, t.exceptionalDivisor n ^ T.mult * B = (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult n).comap (t.transitionMapSucc n)`. Use `(hFcart.pow T.mult).exists_mul_eq ?_` and prove the remaining obligations. Rewrite using `[← hexc]`. Conclude with `comap_le_exceptionalIdeal_pow (t.transitionMapSucc n) hPle`. Establish `hAdiv : ∃ B : (t.schemeAt (n + 1)).IdealSheafData, t.exceptionalDivisor n ^ s * B = (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s n).comap (t.transitionMapSucc n)`.
+
+Use `(hFcart.pow s).exists_mul_eq ?_` and prove the remaining obligations. Rewrite using `[← hexc]`. Conclude with `comap_le_exceptionalIdeal_pow (t.transitionMapSucc n) hAle`. Establish `hPtw : t.exceptionalDivisor n ^ T.mult * MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult (n + 1) = (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult n).comap (t.transitionMapSucc n)`. Rewrite using `[MarkedSequenceOfBlowups.controlledTransform_succ]`.
+
+Conclude with `pow_mul_residualByPow _ _ _ hPdiv`. Establish `hAtw : t.exceptionalDivisor n ^ s * MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s (n + 1) = (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s n).comap (t.transitionMapSucc n)`. Rewrite using `[MarkedSequenceOfBlowups.controlledNonMonomialTransform_succ]`. Conclude with `pow_mul_residualByPow _ _ _ hAdiv`. Establish `hPtw' : Blowup.exceptionalIdeal (t.transitionMapSucc n) (t.center n) ^ T.mult * MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult (n + 1) = (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult n).comap (t.transitionMapSucc n)`.
+
+Rewrite using `[hexc]`. Conclude with `hPtw`. Establish `hAtw' : Blowup.exceptionalIdeal (t.transitionMapSucc n) (t.center n) ^ s * MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s (n + 1) = (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s n).comap (t.transitionMapSucc n)`. Rewrite using `[hexc]`. Conclude with `hAtw`.
+
+Establish `hCdiv : ∃ Cc : (t.schemeAt (n + 1)).IdealSheafData, Blowup.exceptionalIdeal (t.transitionMapSucc n) (t.center n) ^ T.mult * Cc = (MarkedSequenceOfBlowups.controlledMonomialTransform t M T.mult s n).comap (t.transitionMapSucc n) * Blowup.exceptionalIdeal (t.transitionMapSucc n) (t …` using `exists_exceptionalIdeal_pow_mul_eq_comap_mul_pow hG _ hTn (t.center n) hsmn hsncn _ (t.transitionMapSucc n) hbl _ _ _ T.mult s ih2 hZP hZord _ hPtw' _ hAtw'`. Establish `hCtw : t.exceptionalDivisor n ^ T.mult * MarkedSequenceOfBlowups.controlledMonomialTransform t M T.mult s (n + 1) = (MarkedSequenceOfBlowups.controlledMonomialTransform t M T.mult s n).comap (t.transitionMapSucc n) * t.exceptionalDivisor n ^ s`. Rewrite using `[MarkedSequenceOfBlowups.controlledMonomialTransform_succ]`. Use `pow_mul_residualByPow _ _ _ ?_` and prove the remaining obligations. Take `⟨Cc, hCc⟩` from `hCdiv`.
+
+Use `⟨Cc, ?_⟩` and prove the remaining obligations. Rewrite using `[← hexc]`. Conclude with `hCc`. Establish `hCtw' : Blowup.exceptionalIdeal (t.transitionMapSucc n) (t.center n) ^ T.mult * MarkedSequenceOfBlowups.controlledMonomialTransform t M T.mult s (n + 1) = (MarkedSequenceOfBlowups.controlledMonomialTransform t M T.mult s n).comap (t.transitionMapSucc n) * Blowup.exceptionalIdeal …`. Rewrite using `[hexc]`.
+
+Conclude with `hCtw`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hidsucc : t.exceptionalDivisor n ^ (T.mult * s) * t.ideal (n + 1) = (t.ideal n).comap (t.transitionMapSucc n)`. Rewrite using `[← hexc]`. Conclude with `t.ideal_succ n hn'`.
+
+Establish `hcancel : t.exceptionalDivisor n ^ (T.mult * s) * t.ideal (n + 1) = t.exceptionalDivisor n ^ (T.mult * s) * (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s (n + 1) ^ T.mult ⊔ MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult (n + 1) ^ s)`. Rewrite using `[hidsucc, ih1, Scheme.IdealSheafData.comap_sup, Scheme.IdealSheafData.comap_pow, Scheme.IdealSheafData.comap_pow, ← hAtw, ← hPtw, mul_pow, mul_pow, ← pow_mul, ← pow_mul, Scheme.IdealSheafData.mul_inf, Nat.mul_comm s T.mult]`. Conclude with `(hFcart.pow (T.mult * s)).eq_of_mul_eq_mul hcancel`. Rewrite using `[t.boundary_succ n hn']`. Conclude with `isMonomialSplitting_of_isBlowupAlongIdealSheaf hG _ hTn (t.center n) hsmn hsncn _ (t.transitionMapSucc n) hbl _ _ _ T.mult s ih2 hZP hZord _ hPtw' _ hAtw' _ hCtw'`.
+
+Introduce `x hx`. Distinguish the cases in `hxE : x ∈ (Blowup.exceptionalIdeal (t.transitionMapSucc n) (t.center n)).support`. Conclude with `hG.controlledTransform_orderAt_le _ hTn (t.center n) hsmn hsncn _ (t.transitionMapSucc n) hbl _ s hZord _ hAtw' x hxE`. Establish `hcs : orderAtLeastLocus (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult (n + 1)) T.mult ⊆ ⇑(t.transitionMapSucc n) ⁻¹' orderAtLeastLocus (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult n) T.mult` using `orderAtLeastLocus_subset_preimage_of_isBlowupAlongIdealSheaf hgeom _ hTn (t.center n) _ (t.transitionMapSucc n) hbl _ T.mult hZP _ hPtw' T.mult le_rfl`. Establish `hxP : (t.transitionMapSucc n) x ∈ orderAtLeastLocus (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult n) T.mult` using `hcs hx`.
+
+Establish `hord2` using `ih3 _ hxP`. Establish `hoff` using `hG.monomialInputs.orderAt_comap_off_exceptional _ hTn _ (t.transitionMapSucc n) (t.center n) hbl x hxE (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s n)`. Establish `hoff' : orderAt ((MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s n).comap (t.transitionMapSucc n)) x = orderAt (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s n) ((t.transitionMapSucc n) x)` using `hoff`. Establish `hx0 : orderAt (t.exceptionalDivisor n) x = 0`. Rewrite using `[← hexc]`.
+
+Conclude with `(orderAt_eq_zero_iff_not_mem_support _ _).2 hxE`. Establish `hsplit2 : orderAt ((MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s n).comap (t.transitionMapSucc n)) x = orderAt (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s (n + 1)) x`. Rewrite using `[← hAtw, orderAt_mul T.base (MarkedSequenceOfBlowups.projectionToSpec t (n + 1)), orderAt_pow T.base (MarkedSequenceOfBlowups.projectionToSpec t (n + 1)), hx0, mul_zero, zero_add]`. Rewrite using `[← hsplit2, hoff']`. Conclude with `hord2`.
+
+Conclude with `key i hi`.
+-/
 theorem isMonomialSplitting_controlledTransform_of_le_length (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {M N : T.scheme.IdealSheafData} (hsplit : IsMonomialSplitting T.boundary T.ideal M N)
     {s : ℕ} (hs : 1 ≤ s)
@@ -307,6 +377,25 @@ theorem isMonomialSplitting_controlledTransform_of_le_length (hG : Principalizat
             exact hord2
   exact key i hi
 
+/- English proof (translation)
+Establish `hECNC : EffectiveCartierSupportContainsNoComponent.{u}` using `effectiveCartierSupportContainsNoComponent`. Establish `hadm : (T.withIdealAndMult (N ^ T.mult ⊔ T.ideal ^ s) (T.mult * s)).IsAdmissible` using `(isAdmissible_withIdealAndMult_pow_sup_pow hT hs hord).1`. Establish `hlevel : ((T.withIdealAndMult (N ^ T.mult ⊔ T.ideal ^ s) (T.mult * s)).transformAt t i).IsAdmissible` using `MarkedIdealWithBoundary.IsAdmissible.transformAt hECNC hadm t i (le_of_lt hi)`. Establish `hchar : CharZero T.base` using `hT.charZero`. Establish `hsmooth : AlgebraicGeometry.Smooth (t.projectionToSpec i)` using `MarkedSequenceOfBlowups.smooth_projectionToSpec hECNC hadm t i (le_of_lt hi)`.
+
+Establish `hnoeth : AlgebraicGeometry.IsNoetherian (t.schemeAt (i + 1))` using `MarkedSequenceOfBlowups.isNoetherian_schemeAt hECNC hadm t (i + 1) hi`. Take `⟨hideal_i, hsplit_i, hord_i⟩` from `isMonomialSplitting_controlledTransform_of_le_length hG hT hsplit hs hord t i (le_of_lt hi)`. Establish `hexc : t.exceptionalDivisor i = Blowup.exceptionalIdeal (t.transitionMapSucc i) (t.center i)`. Rewrite using `[MarkedSequenceOfBlowups.exceptionalDivisor_eq, Blowup.exceptionalIdeal_eq_comap]`. Establish `hbl : Blowup.IsBlowupAlongIdealSheaf (t.transitionMapSucc i) (t.center i)` using `t.isBlowupAlongIdealSheaf_blowupMorphism i hi`.
+
+Establish `hsncc : HasStrictNormalCrossingsWith (t.projectionToSpec i) (t.center i) (t.boundary i)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`. Conclude with `t.center_snc i hi`. Establish `hsm : AlgebraicGeometry.Smooth ((t.center i).subschemeι ≫ t.projectionToSpec i)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`.
+
+Conclude with `t.center_smooth i hi`. Establish `key : ∀ x ∈ (t.center i).support, orderAt (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s i) x = (s : ℕ∞) ∧ (T.mult : ℕ∞) ≤ orderAt (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult i) x`. Introduce `x hx`. Establish `hx0 : ((T.mult * s : ℕ) : ℕ∞) ≤ orderAt (t.ideal i) x` using `(mem_orderAtLeastLocus_iff _ _ _).1 (t.center_order i hi hx)`. Rewrite `hx0` using `[hideal_i, orderAt_pow_sup_pow T.base (t.projectionToSpec i) _ _ _ _ x, le_min_iff, Nat.cast_mul]`.
+
+Take `⟨h1, h2⟩` from `hx0`. Establish `h1' : (s : ℕ∞) ≤ orderAt (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s i) x` using `(natCast_mul_le_mul_iff hT.one_le_mult s _).1 h1`. Establish `h2' : (T.mult : ℕ∞) ≤ orderAt (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult i) x`. Use `(natCast_mul_le_mul_iff hs T.mult _).1 ?_` and prove the remaining obligations. Rewrite using `[mul_comm ((s : ℕ∞)) ((T.mult : ℕ∞))]` and apply the resulting hypothesis.
+
+Conclude with `⟨le_antisymm (hord_i x ((mem_orderAtLeastLocus_iff _ _ _).2 h2')) h1', h2'⟩`. Establish `hZP : (↑(t.center i).support : Set ↥(t.schemeAt i)) ⊆ orderAtLeastLocus (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult i) T.mult`. Introduce `x hx`. Conclude with `(mem_orderAtLeastLocus_iff _ _ _).2 (key x hx).2`. Establish `hZord : (↑(t.center i).support : Set ↥(t.schemeAt i)) ⊆ orderAtLeastLocus (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s i) s`.
+
+Introduce `x hx`. Conclude with `(mem_orderAtLeastLocus_iff _ _ _).2 (le_of_eq (key x hx).1.symm)`. Establish `hPle : MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult i ≤ t.center i ^ T.mult` using `le_pow_of_hasStrictNormalCrossingsWith (t.projectionToSpec i) (t.center i) (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult i) (t.boundary i) hsncc T.mult hZP`. Establish `hAle : MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s i ≤ t.center i ^ s` using `le_pow_of_hasStrictNormalCrossingsWith (t.projectionToSpec i) (t.center i) (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s i) (t.boundary i) hsncc s hZord`. Take `⟨B', hB', -⟩` from `existsUnique_pow_mul_eq_comap_of_isBlowupAlongIdealSheaf (t.transitionMapSucc i) (t.center i) (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult i) T.mult hbl hPle`.
+
+Take `⟨A', hA', -⟩` from `existsUnique_pow_mul_eq_comap_of_isBlowupAlongIdealSheaf (t.transitionMapSucc i) (t.center i) (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s i) s hbl hAle`. Take `⟨C', hC'⟩` from `exists_exceptionalIdeal_pow_mul_eq_comap_mul_pow hG _ hlevel (t.center i) hsm hsncc (t.schemeAt (i + 1)) (t.transitionMapSucc i) hbl (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult i) (MarkedSequenceOfBlowups.controlledMonomialTransform t M T.mult s i) (MarkedSequen …`. Use `⟨fun x hx => (key x hx).1, hZP, ⟨B', ?_⟩, ⟨A', ?_⟩, ⟨C', ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hexc]`. Conclude with `hB'`.
+
+Rewrite using `[hexc]`. Conclude with `hA'`. Rewrite using `[hexc]`. Conclude with `hC'`.
+-/
 theorem exists_exceptionalDivisor_pow_mul_eq_comap_of_lt_length (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {M N : T.scheme.IdealSheafData} (hsplit : IsMonomialSplitting T.boundary T.ideal M N)
     {s : ℕ} (hs : 1 ≤ s)
@@ -396,6 +485,11 @@ theorem exists_exceptionalDivisor_pow_mul_eq_comap_of_lt_length (hG : Principali
   · rw [hexc]
     exact hC'
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero`. Conclude with `(BlowupSequenceData.controlledTransform_zero ((MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData) I m).symm`. Consider the case `succ n ih`. Establish `h2` using `BlowupSequenceData.controlledTransform_succ ((MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData) I m n`.
+
+Use `Eq.trans ?_ h2.symm` and prove the remaining obligations. Conclude with `congrArg (fun Jj : (s.schemeAt n).IdealSheafData => residualByPow (Jj.comap (s.transitionMapSucc n)) (s.exceptionalDivisor n) m) ih`.
+-/
 private theorem controlledTransform_eq_ofMarkedSequence_controlledTransform {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {J : X.IdealSheafData} {μ : ℕ} {E : List X.IdealSheafData}
     (s : MarkedSequenceOfBlowups p J μ E) (I : X.IdealSheafData) (m i : ℕ) :
@@ -411,6 +505,9 @@ private theorem controlledTransform_eq_ofMarkedSequence_controlledTransform {k :
         (fun Jj : (s.schemeAt n).IdealSheafData =>
           residualByPow (Jj.comap (s.transitionMapSucc n)) (s.exceptionalDivisor n) m) ih
 
+/- English proof (translation)
+The claim follows from `congrArg (fun Jj : (s.schemeAt i).IdealSheafData => Jj.comap (s.transitionMapSucc i)) (controlledTransform_eq_ofMarkedSequence_controlledTransform s I m i)`.
+-/
 private theorem comap_controlledTransform_eq_comap_ofMarkedSequence {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {J : X.IdealSheafData} {μ : ℕ} {E : List X.IdealSheafData}
     (s : MarkedSequenceOfBlowups p J μ E) (I : X.IdealSheafData) (m i : ℕ) :
@@ -420,6 +517,13 @@ private theorem comap_controlledTransform_eq_comap_ofMarkedSequence {k : Type u}
   congrArg (fun Jj : (s.schemeAt i).IdealSheafData => Jj.comap (s.transitionMapSucc i))
     (controlledTransform_eq_ofMarkedSequence_controlledTransform s I m i)
 
+/- English proof (translation)
+Establish `hself` using `(MarkedBlowupSequenceData.ofMarkedSequence t).isMarked_toBlowupSequenceData`. Use `⟨?_, ?_, hself.center_smooth, hself.center_snc⟩` and prove the remaining obligations. Introduce `i hi`. Establish `hi' : i < t.length` using `hi`. Take `⟨A, hA⟩` from `(exists_exceptionalDivisor_pow_mul_eq_comap_of_lt_length hG hT hsplit hs hord t i hi').2.2.1`.
+
+Conclude with `⟨A, hA.trans (comap_controlledTransform_eq_comap_ofMarkedSequence t T.ideal T.mult i)⟩`. Introduce `i hi`. Establish `hi' : i < t.length` using `hi`. Establish `hsub` using `(exists_exceptionalDivisor_pow_mul_eq_comap_of_lt_length hG hT hsplit hs hord t i hi').2.1`. Introduce `x hx`.
+
+Establish `h1 : (T.mult : ℕ∞) ≤ orderAt (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult i) x` using `(mem_orderAtLeastLocus_iff _ _ _).1 (hsub hx)`. Establish `he : orderAt (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult i) x = orderAt (((MarkedBlowupSequenceData.ofMarkedSequence t).toBlowupSequenceData).controlledTransform T.ideal T.mult i) x` using `congrArg (fun Jj : (t.schemeAt i).IdealSheafData => orderAt Jj x) (controlledTransform_eq_ofMarkedSequence_controlledTransform t T.ideal T.mult i)`. Conclude with `(mem_orderAtLeastLocus_iff _ _ _).2 (he ▸ h1)`.
+-/
 theorem isMarked_ofMarkedSequence_of_isMonomialSplitting (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) {M N : T.scheme.IdealSheafData}
     (hsplit : IsMonomialSplitting T.boundary T.ideal M N)
@@ -446,6 +550,11 @@ theorem isMarked_ofMarkedSequence_of_isMonomialSplitting (hG : PrincipalizationG
         (controlledTransform_eq_ofMarkedSequence_controlledTransform t T.ideal T.mult i)
     exact (mem_orderAtLeastLocus_iff _ _ _).2 (he ▸ h1)
 
+/- English proof (translation)
+Establish `hECNC : EffectiveCartierSupportContainsNoComponent.{u}` using `effectiveCartierSupportContainsNoComponent`. Establish `hadm : (T.withIdealAndMult (N ^ T.mult ⊔ T.ideal ^ s) (T.mult * s)).IsAdmissible` using `(isAdmissible_withIdealAndMult_pow_sup_pow hT hs hord).1`. Establish `hchar : CharZero T.base` using `hT.charZero`. Establish `hsmooth : AlgebraicGeometry.Smooth (t.projectionToSpec t.length)` using `MarkedSequenceOfBlowups.smooth_projectionToSpec hECNC hadm t t.length le_rfl`. Take `⟨hideal, -, -⟩` from `isMonomialSplitting_controlledTransform_of_le_length hG hT hsplit hs hord t t.length le_rfl`.
+
+Rewrite `hempty` using `[hideal]`. Conclude with `(orderAtLeastLocus_pow_sup_pow_eq_empty_iff T.base (t.projectionToSpec t.length) (MarkedSequenceOfBlowups.controlledNonMonomialTransform t N s t.length) (MarkedSequenceOfBlowups.controlledTransform t T.ideal T.mult t.length) hT.one_le_mult hs).1 hempty`.
+-/
 theorem orderAt_controlledNonMonomialTransform_length_lt (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     {M N : T.scheme.IdealSheafData} (hsplit : IsMonomialSplitting T.boundary T.ideal M N)
     {s : ℕ} (hs : 1 ≤ s)

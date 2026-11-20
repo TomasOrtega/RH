@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.ColPeriod
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `isOfFinOrder_iff_pow_eq_one.1 hξ`. Establish `h1 : (ξ y) ^ n = 1`. Use `congrArg (fun φ : G →* Kˣ => φ y) h` as an intermediate fact. Simplify using `using this`. Establish `h2 : (w.valuation K ((ξ y : Kˣ) : K)) ^ n = 1`.
+
+Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le hn.ne').1 h2`.
+-/
 theorem valuation_finOrder_apply {G K : Type} [Group G] [Field K] [NumberField K] (ξ : G →* Kˣ) (hξ : IsOfFinOrder ξ)
     (w : HeightOneSpectrum (𝓞 K)) (y : G) : w.valuation K ((ξ y : Kˣ) : K) = 1 := by
   obtain ⟨n, hn, h⟩ := isOfFinOrder_iff_pow_eq_one.1 hξ
@@ -18,6 +23,15 @@ theorem valuation_finOrder_apply {G K : Type} [Group G] [Field K] [NumberField K
     rw [← map_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, map_one]
   exact (pow_eq_one_iff_of_nonneg zero_le hn.ne').1 h2
 
+/- English proof (translation)
+Introduce `F E K _ _ _ _ _ _ _ S mu P w`. Establish `hfin : IsOfFinOrder (mu : Chr F E K)` using `mu.2.1.1.1.2`. Set `v : HeightOneSpectrum (𝓞 F)` to `P.under (𝓞 F)`. Establish `hv : P.asIdeal.under (𝓞 F) = v.asIdeal` using `rfl`. Prove the components needed by the constructor for the conclusion.
+
+Unfold `unifVal split_ifs with h`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb, hb2⟩ : ∃ b ∈ P.asIdeal, b ∉ P.asIdeal ^ 2 := by`. Use `Ideal.exists_mem_pow_notMem_pow_succ P.asIdeal P.ne_bot P.isPrime.ne_top 1` as an intermediate fact. Simplify using `using this`. Take `⟨y, y₀, h1, h2, h3, h4⟩` from `GlobalTheory.SuppIdele.exists_supported_idele F E P v b hv`.
+
+Rewrite using `[← h.choose_spec v hv y y₀ b h1 hb hb2 h2 h3 h4]`. Conclude with `valuation_finOrder_apply _ hfin w y`. Simplify using the standard rewrite rules. Unfold `qValC split_ifs with h`. Take `⟨y, y₀, h1, h2, h3, h4⟩` from `GlobalTheory.SuppIdele.exists_supported_idele F E P v ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) hv`.
+
+Rewrite using `[← h.choose_spec v hv y y₀ h1 h2 h3 h4]`. Conclude with `valuation_finOrder_apply _ hfin w y`. Simplify using the standard rewrite rules.
+-/
 theorem twistUnit : TwistUnit := by
   intro F E K _ _ _ _ _ _ _ S mu P w
   have hfin : IsOfFinOrder (mu : Chr F E K) := mu.2.1.1.1.2

@@ -13,6 +13,41 @@ open scoped TensorProduct
 
 namespace UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Introduce `p _ D G L h κ n hn hnp hnκ hI hκ`. Use `set u := L.actG h with hu`. Use `set ui := L.actG h⁻¹ with hui`. Establish `hinv : ∀ v, ui (u v) = v`. Introduce `v`.
+
+Rewrite using `[hu, hui, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hinv' : ∀ v, u (ui v) = v`. Introduce `v`. Rewrite using `[hu, hui, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hIu : ∀ v ∈ LaHat D, u v ∈ LaHat D` using `hI`.
+
+Use `set h₀ : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D) := κ • ui with hh₀`. Establish `h₀app : ∀ v, h₀ v = κ • ui v` using `fun v => rfl`. Establish `h₀mem : ∀ v ∈ LaHat D, h₀ v ∈ LaHat D`. Introduce `v hv`. Take `⟨v', hv', e⟩` from `hκ v hv`.
+
+Rewrite using `[h₀app, ← map_nsmul, ← e, hinv]`. Conclude with `hv'`. Establish `h₀u : ∀ v, u (h₀ v) = κ • v`. Introduce `v`. Rewrite using `[h₀app, map_nsmul, hinv']`.
+
+Establish `h₀c : ∀ (c : D.O) v, h₀ (actAf D c v) = actAf D c (h₀ v)`. Introduce `c v`. Rewrite using `[h₀app, h₀app, hui, actG_actAf, map_nsmul]`. Take `⟨φ, hφ⟩` from `GlobalTheory.T.lattice_endomorphism_integral_approximation p D h₀ h₀mem`. Choose the witnesses or unpack the hypotheses as in `⟨k, m, hkm⟩ : ∃ k : ℕ, ∃ m : ℤ, (κ : ℤ) * k = 1 + n * m := by`.
+
+Establish `hc : Nat.Coprime κ n` using `hnκ.symm`. Establish `e` using `Nat.gcd_eq_gcd_ab κ n`. Rewrite `e` using `[hc.gcd_eq_one]`. Establish `hn' : (0:ℤ) < n` using `by exact_mod_cast hn`. Use `⟨(Nat.gcdA κ n % n).toNat, -(Nat.gcdB κ n) - κ * (Nat.gcdA κ n / n), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Int.toNat_of_nonneg (Int.emod_nonneg _ hn'.ne'), Int.emod_def]`. Move the coercions through the operations in `at e`. Take the linear combination `-e`. Establish `hsm : ∀ {M : Type} [AddCommGroup M] (y : M), (κ * k) • y = y + n • (m • y)`. Introduce `M _ y`.
+
+Establish `: (((κ * k : ℕ) : ℤ)) • y = ((1:ℤ) + n * m) • y` using `by push_cast; rw [hkm]`. Rewrite `this` using `[natCast_zsmul]`. Rewrite using `[this, add_smul, one_smul, mul_smul, natCast_zsmul]`. Establish `key : ∀ x, ∃ v ∈ LaHat D, u (inAf D (k • φ n x)) = inAf D x + n • v`. Introduce `x`.
+
+Take `⟨w, hw, e⟩` from `hφ n hn hnp x`. Use `⟨m • inAf D x - k • u w, ?_, ?_⟩` and prove the remaining obligations. Conclude with `sub_mem (zsmul_mem (inAf_mem D x) _) (nsmul_mem (hIu w hw) _)`. Establish `e2 : inAf D (φ n x) = h₀ (inAf D x) - n • w` using `by rw [e]; abel`. Rewrite using `[inAf_nsmul, e2, map_nsmul, map_sub, h₀u, map_nsmul, smul_sub, smul_smul, mul_comm k κ, hsm, smul_sub n, smul_comm n k (u w)]`.
+
+Normalize the expressions using the abelian group laws. Establish `hg : ∀ x, (k • φ n) x = k • φ n x` using `fun x => rfl`. Use `⟨k • φ n, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c x`. Rewrite using `[hg, hg]`.
+
+Take `⟨w1, hw1, e1⟩` from `hφ n hn hnp (c • x)`. Take `⟨w2, hw2, e2⟩` from `hφ n hn hnp x`. Establish `a1 : inAf D (φ n (c • x)) = h₀ (inAf D (c • x)) - n • w1` using `by rw [e1]; abel`. Establish `a2 : inAf D (φ n x) = h₀ (inAf D x) - n • w2` using `by rw [e2]; abel`. Establish `hE : inAf D (k • φ n (c • x) - c • (k • φ n x)) = n • (k • (actAf D c w2 - w1))`.
+
+Rewrite using `[inAf_sub, inAf_nsmul, ← actAf_inAf, inAf_nsmul, map_nsmul, a1, a2, ← actAf_inAf, h₀c, map_sub, map_nsmul, smul_sub, smul_sub, smul_sub, smul_sub, smul_comm k n w1, smul_comm k n (actAf D c w2)]`. Normalize the expressions using the abelian group laws. Take `⟨z, hz⟩` from `LatDiv.eq_nsmul_of_inAf_eq_nsmul p D _ n hn hnp _ (nsmul_mem (sub_mem (actAf_mem_laHat D c hw2) hw1) k) hE`. Conclude with `⟨z, by rw [← hz]; abel⟩`. Introduce `x z hxz`.
+
+Rewrite `hxz` using `[hg]`. Take `⟨v, hv, e⟩` from `key x`. Rewrite `e` using `[hxz, inAf_nsmul, map_nsmul]`. Establish `hx : inAf D x = n • (u (inAf D z) - v)` using `by rw [smul_sub, e]; abel`. Conclude with `LatDiv.eq_nsmul_of_inAf_eq_nsmul p D x n hn hnp _ (sub_mem (hIu _ (inAf_mem D z)) hv) hx`.
+
+Introduce `x`. Take `⟨y, w, hw, e⟩` from `exists_inAf_add_nsmul_of_mem_laHat p D n hn hnp (u (inAf D x)) (hIu _ (inAf_mem D x))`. Take `⟨v, hv, ev⟩` from `key y`. Establish `hd : inAf D (k • φ n y) - inAf D x = ui (n • (v - w))`. Rewrite using `[← hinv (inAf D (k • φ n y) - inAf D x), map_sub, ev, e]`.
+
+Use `congr 1`. Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws. Establish `h1 : inAf D (κ • (k • φ n y - x)) = n • h₀ (v - w)`. Rewrite using `[inAf_nsmul, inAf_sub, hd, map_nsmul, h₀app, smul_comm κ n]`.
+
+Take `⟨z1, hz1⟩` from `LatDiv.eq_nsmul_of_inAf_eq_nsmul p D _ n hn hnp _ (h₀mem _ (sub_mem hv hw)) h1`. Use `⟨y, k • z1 - m • (k • φ n y - x), ?_⟩` and prove the remaining obligations. Establish `ht` using `hsm (k • φ n y - x)`. Rewrite `ht` using `[mul_comm κ k, ← smul_smul, hz1]`. Rewrite using `[hg, smul_sub, smul_comm n k z1, ht]`.
+
+Normalize the expressions using the abelian group laws. Introduce `x`. Rewrite using `[hg]`. Conclude with `key x`.
+-/
 theorem betaH_holds : BetaH := by
   intro p _ D G L h κ n hn hnp hnκ hI hκ
   set u := L.actG h with hu

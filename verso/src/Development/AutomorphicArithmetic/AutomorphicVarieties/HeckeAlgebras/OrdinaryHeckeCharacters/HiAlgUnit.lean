@@ -12,6 +12,27 @@ open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Establish `hYs : ∀ y ∈ Y, op i y ∈ Y` using `fun y hy => hb.mapsTo hy`. Set `fY : Module.End A Y` to `(op i).restrict hYs`. Establish `hfYb : Function.Bijective fY`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hb.injOn x.2 y.2 (congrArg Subtype.val hxy)`. Introduce `y`. Take `⟨x, hx, hxy⟩` from `hb.surjOn y.2`. Conclude with `⟨⟨x, hx⟩, Subtype.ext hxy⟩`.
+
+Take `⟨u, hu⟩` from `(Module.End.isUnit_iff fY).2 hfYb`. Establish `hinv : ((u⁻¹ : (Module.End A Y)ˣ) : Module.End A Y) ∈ Algebra.adjoin A ({fY} : Set (Module.End A Y))` using `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.invMem A Y _ u (by rw [hu]; exact Algebra.subset_adjoin rfl)`. Establish `hpres : ∀ g ∈ Algebra.adjoin A ({fY} : Set (Module.End A Y)), ∀ y : Y, (y : M) ∈ L → ((g y : Y) : M) ∈ L`. Introduce `g hg`. Proceed by induction on `hg using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Rewrite using `[hx]`. Introduce `y hy`. Conclude with `h.out.1 i y hy`.
+
+Consider the case `algebraMap r`. Introduce `y hy`. Simplify using `using L.smul_mem r hy`. Consider the case `add x z _ _ hx hz`. Introduce `y hy`.
+
+Simplify using `using L.add_mem (hx y hy) (hz y hy)`. Consider the case `mul x z _ _ hx hz`. Introduce `y hy`. Conclude with `hx _ (hz y hy)`. Establish `hgL : Function.Bijective (heckeGen L op i : Module.End A L)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hb.injOn (hLY x.2) (hLY y.2) (congrArg Subtype.val hxy)`. Introduce `y`.
+
+Use `⟨⟨(((u⁻¹ : (Module.End A Y)ˣ) : Module.End A Y) ⟨y, hLY y.2⟩ : M), hpres _ hinv _ y.2⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `LinearMap.congr_fun u.mul_inv ⟨y, hLY y.2⟩`. Rewrite `h1` using `[hu]`. Establish `h2` using `congrArg Subtype.val h1`.
+
+Conclude with `h2`. Take `⟨v, hv⟩` from `(Module.End.isUnit_iff _).2 hgL`. Establish `hmem : ((v⁻¹ : (Module.End A L)ˣ) : Module.End A L) ∈ heckeAlg L op` using `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.invMem A L (heckeAlg L op) v (by rw [hv]; exact (heckeGen L op i).2)`. Use `⟨⟨heckeGen L op i, ⟨_, hmem⟩, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Apply `Subtype.ext show (heckeGen L op i : Module.End A L) * _ = 1` to reduce the goal to its premises.
+
+Rewrite using `[← hv]`. Conclude with `v.mul_inv`. Apply `Subtype.ext show _ * (heckeGen L op i : Module.End A L) = 1` to reduce the goal to its premises. Rewrite using `[← hv]`. Conclude with `v.inv_mul`.
+-/
 private theorem hiAlg_unit {A M ι : Type} [CommRing A] [AddCommGroup M] [Module A M] (Y L : Submodule A M)
     [Module.Finite A Y] [Module.Finite A L] (hLY : L ≤ Y) (op : ι → Module.End A M) [h : Fact (CommOn L op)] (i : ι)
     (hb : Set.BijOn (op i) Y Y) : IsUnit (heckeGen L op i) := by
@@ -70,6 +91,15 @@ private theorem hiAlg_unit {A M ι : Type} [CommRing A] [AddCommGroup M] [Module
     rw [← hv]
     exact v.inv_mul
 
+/- English proof (translation)
+Use `eq_top_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩ -`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨j, hj⟩` from `hx`.
+
+Establish `he : (⟨x, Algebra.subset_adjoin ⟨j, hj⟩⟩ : heckeAlg L op) = heckeGen L op j`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `hj y`. Rewrite using `[he]`. Conclude with `Algebra.subset_adjoin ⟨j, rfl⟩`. Consider the case `algebraMap r`. Conclude with `Subalgebra.algebraMap_mem _ r`.
+
+Consider the case `add x z hx' hz' hx hz`. Conclude with `Subalgebra.add_mem _ hx hz`. Consider the case `mul x z hx' hz' hx hz`. Conclude with `Subalgebra.mul_mem _ hx hz`.
+-/
 private theorem hiAlg_top {A M ι : Type} [CommRing A] [AddCommGroup M] [Module A M] (L : Submodule A M)
     (op : ι → Module.End A M) [h : Fact (CommOn L op)] : Algebra.adjoin A (Set.range (heckeGen L op)) = ⊤ := by
   refine eq_top_iff.2 ?_
@@ -92,6 +122,17 @@ private theorem hiAlg_top {A M ι : Type} [CommRing A] [AddCommGroup M] [Module 
   | mul x z hx' hz' hx hz =>
     exact Subalgebra.mul_mem _ hx hz
 
+/- English proof (translation)
+Use `haveI : IsCNL A := IsCNL.ofCO O A`. Substitute `hL` using the available equality. Take `⟨hT, hfin, hloc, hres, hgen, hnzd⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.heckeLocal A M ι Y op (fun i => algebraMap O A (a i)) hc hne (heckeAlg (locPart Y op fun i => algebraMap O A (a i)) op) (Subalgebra.val _) Subtype.val_injective (Subalgebra.range_val _)`. Establish `hCO : Alg.IsCO O (heckeAlg (locPart Y op fun i => algebraMap O A (a i)) op)`. Use `UpperTheory.V.Alg.co_finite O A _ ?_` and prove the remaining obligations.
+
+Introduce `x`. Take `⟨c, hc'⟩` from `hres x`. Take `⟨d, hd⟩` from `UpperTheory.V.Alg.IsCO.res_surj (O := O) c`. Use `⟨d, ?_⟩` and prove the remaining obligations. Establish `h2` using `map_nonunit (algebraMap A (heckeAlg (locPart Y op fun i => algebraMap O A (a i)) op)) _ hd`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply O A _ d]`. Establish `h3` using `Ideal.add_mem _ hc' h2`. Rewrite `h3` using `[map_sub, sub_add_sub_cancel]`. Conclude with `h3`. Use `⟨hCO, RingHom.finite_algebraMap.2 hfin, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `b hb t ht`. Conclude with `(mem_nonZeroDivisors_iff.1 (hnzd b hb)).1 t ht`. Introduce `i`. Establish `h5` using `hgen i (heckeGen _ op i) (fun y => rfl)`. Rewrite using `[IsScalarTower.algebraMap_apply O A _ (a i)]`.
+
+Conclude with `h5`.
+-/
 private theorem hiAlg_abs {O A M ι : Type} [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [CommRing A] [Algebra O A]
     [Alg.IsCO O A] [AddCommGroup M] [Module A M] (Y : Submodule A M) [Module.Finite A Y] (op : ι → Module.End A M) (a : ι → O)
     (hc : CommOn Y op) (L : Submodule A M) (hL : L = locPart Y op fun i => algebraMap O A (a i)) [Fact (CommOn L op)] (hne : L ≠ ⊥)
@@ -124,6 +165,23 @@ private theorem hiAlg_abs {O A M ι : Type} [CommRing O] [IsLocalRing O] [Finite
     exact h5
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ l _ n c H hAx A _ _ _ θ hθ a K _ hne`. Use `haveI : Finite (IsLocalRing.ResidueField c.O) := by haveI := c.fin haveI : IsLocalHom (algebraMap ℤ_[l] c.O) := (UpperTheory.V.Base.dvrFacts l c.O).2.2.1`. Conclude with `IsLocalRing.ResidueField.finite_of_finite (R := ℤ_[l]) inferInstance`. Use `haveI : IsCNL A := IsCNL.ofCO c.O A`. Take `⟨hcY, hfY, hfrY, hMK⟩` from `hiComm L Ω l n c H hAx A θ hθ K`.
+
+Take `⟨-, hfM, -⟩` from `hMK a`. Use `haveI := hfY`. Use `haveI := hfM`. Use `haveI := hfrY`. Establish `hP : ∀ (v : H.V) (k : ℕ), alV n H.Sl v k ∈ H.X.I.P`.
+
+Introduce `v k`. Unfold `UpperTheory.V.Hi.alV UpperTheory.V.Hi.HSet.X`. Simplify using `only`. Unfold `UpperTheory.V.Hi.iwS UpperTheory.V.Hi.piIwa`. Simplify using `only`.
+
+Unfold `UpperTheory.V.Hi.piData`. Simplify using `only`. Introduce `w _`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Simplify using `only [Pi.mulSingle_eq_same]`. Conclude with `al_mem _ n k`. Simplify using `only [Pi.mulSingle, Function.update, hw, dif_neg, not_false_eq_true, Pi.one_apply]`. Conclude with `(glIwa _ n).P.one_mem`. Take `⟨-, -, hbij⟩` from `ordFree _ _ _ H.X A H.m (H.τA A) θ hθ.cont (H.lev K) (hAx.fin K) (hθ.free K)`.
+
+Take `⟨hCO, hfin, hnz, hres⟩` from `hiAlg_abs (O := c.O) (H.X.Ord (H.τA A) θ (H.lev K)) (H.op A) a hcY (H.MK θ a K) rfl hne`. Use `⟨hCO, hfin, ?_, hres, ?_, hiAlg_top _ _⟩` and prove the remaining obligations. Introduce `hdom b hb t ht`. Use `hnz b ?_ t ht` and prove the remaining obligations. Introduce `y hy hby`.
+
+Establish `h0 : b • (⟨y, hy⟩ : H.X.Ord (H.τA A) θ (H.lev K)) = 0` using `Subtype.ext hby`. Break down `smul_eq_zero.1 h0 with h1 | h1` into its components or cases. Conclude with `absurd h1 hb`. Conclude with `congrArg Subtype.val h1`. Introduce `v j`.
+
+Conclude with `hiAlg_unit (H.X.Ord (H.τA A) θ (H.lev K)) (H.MK θ a K) inf_le_left (H.op A) (.inr (v, j)) (hbij _ (hP v (j + 1)))`.
+-/
 theorem UpperTheory.V.Hi.hiAlg :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →
     ∀ (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ), H.IsWt θ →

@@ -26,6 +26,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CombFockTranslate
 
+/- English proof (translation)
+Introduce `D ψ θ S T hψ hθ J τ g hg hv ι R c t ht`. Conclude with `GlobalTheory.FockTranslate.isFockVacAt_sum D ψ θ S T hψ.1 hθ g hg τ J hv ι R t c ht`.
+-/
 theorem isFockVacAt_comb : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (J : Matrix (Fin T.rank) (Fin S.rank) ℂ → Matrix (Fin T.rank) (Fin S.rank) ℂ) (τ : D.what₂.Tau) (g : WO S T → ℂ), IsThetaFunO ψ S T g → IsFockVacAt (heisO ψ S T) θ τ J g → ∀ {ι : Type} (R : Finset ι) (c : ι → ℂ) (t : ι → WO S T), (∀ z ∈ R, (t z).map (infPart D) = 0) → IsFockVacAt (heisO ψ S T) θ τ J (∑ z ∈ R, c z • heisO ψ S T (t z) g) := by
   intro D ψ θ S T hψ hθ J τ g hg hv ι R c t ht
   exact GlobalTheory.FockTranslate.isFockVacAt_sum D ψ θ S T hψ.1 hθ g hg τ J hv ι R t c ht

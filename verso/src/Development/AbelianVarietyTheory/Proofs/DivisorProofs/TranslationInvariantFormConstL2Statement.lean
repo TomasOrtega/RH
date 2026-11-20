@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TranslationInvarian
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TransConstForm.eq_const_mul_l2_of_translation_invariant | exact GlobalTheory.TransConstForm.eq_const_mul_l2_of_translation_invariant | (intros; apply GlobalTheory.TransConstForm.eq_const_mul_l2_of_translation_invariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.translation_invariant_form_const_l2 : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (μ : @MeasureTheory.Measure V (borel V)), @MeasureTheory.Measure.IsAddHaarMeasure V _ _ (borel V) μ →
     ∀ (T : SchwartzMap V ℂ →L[ℂ] SchwartzMap V ℂ),

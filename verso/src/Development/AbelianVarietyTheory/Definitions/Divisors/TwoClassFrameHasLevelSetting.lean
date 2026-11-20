@@ -18,6 +18,13 @@ variable (l : ℕ) [Fact l.Prime]
 
 def embZ : ℤ_[l] →+* PadicAlgCl l := (algebraMap ℚ_[l] (PadicAlgCl l)).comp (algebraMap ℤ_[l] ℚ_[l])
 
+/- English proof (translation)
+Use `⟨(algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp Subtype.val_injective, ⊥, inferInstance, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `⟨IntermediateField.mem_bot.2 ⟨(y : ℚ_[l]), rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show ‖algebraMap ℚ_[l] (PadicAlgCl l) (y : ℚ_[l])‖ ≤ 1`. Rewrite using `[norm_algebraMap']`. Conclude with `y.2`. Introduce and unpack `⟨hx, hn⟩`. Take `⟨y, rfl⟩` from `IntermediateField.mem_bot.1 hx`.
+
+Rewrite `hn` using `[norm_algebraMap']`. Conclude with `⟨⟨y, hn⟩, rfl⟩`.
+-/
 theorem embZ_ring : Function.Injective (embZ l) ∧ ∃ L : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] L ∧
     Set.range (embZ l) = {x | x ∈ L ∧ ‖x‖ ≤ 1} := by
   refine ⟨(algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp Subtype.val_injective, ⊥, inferInstance, ?_⟩
@@ -45,6 +52,9 @@ def twoFrame (N : ℕ) : Frame l Unit N where
   tr _ := {(1, Multiplicative.ofAdd 1)}
   cst _ := 1
 
+/- English proof (translation)
+The claim follows from `embZ_ring l classes := by classical refine ⟨Finset.univ.image fun a : Multiplicative (ZMod 2) => ((1 : GL (Fin N) ℤ_[l]), a), ?_⟩ rintro ⟨g, a⟩ refine ⟨1, Subgroup.one_mem _, (1, a), Finset.mem_image.2 ⟨a, Finset.mem_univ _, rfl⟩, (g, 1), rfl, ?_⟩ exact Prod.ext (by change g = 1 …`.
+-/
 theorem twoFrame_ok (N : ℕ) : (twoFrame l N).Ok where
   ring := embZ_ring l
   classes := by
@@ -78,11 +88,17 @@ def sg (e : ℤˣ) (a : Multiplicative (ZMod 2)) : PadicAlgCl l := ((e ^ (Multip
 def act (N : ℕ) (mu : Unit → ℕ → ℕ) (g : GL (Fin N) ℤ_[l]) : Module.End (PadicAlgCl l) (NablaT (PadicAlgCl l) N mu) :=
   embZ l (Matrix.GeneralLinearGroup.det g : ℤ_[l]ˣ) • grp (PadicAlgCl l) N mu fun _ => Matrix.GeneralLinearGroup.map (embZ l) g
 
+/- English proof (translation)
+Establish `e : (fun _ : Unit => Matrix.GeneralLinearGroup.map (n` using `Fin N) (embZ l) 1) = 1 := funext fun _ => map_one _`. Establish `e2 : grp (PadicAlgCl l) N mu 1 = 1` using `map_one _`. Rewrite using `[act, e, e2, map_one, Units.val_one, map_one, one_smul]`.
+-/
 theorem act_one (N : ℕ) (mu : Unit → ℕ → ℕ) : act l N mu 1 = 1 := by
   have e : (fun _ : Unit => Matrix.GeneralLinearGroup.map (n := Fin N) (embZ l) 1) = 1 := funext fun _ => map_one _
   have e2 : grp (PadicAlgCl l) N mu 1 = 1 := map_one _
   rw [act, e, e2, map_one, Units.val_one, map_one, one_smul]
 
+/- English proof (translation)
+Establish `e : (fun _ : Unit => Matrix.GeneralLinearGroup.map (n` using `Fin N) (embZ l) (g * h)) = (fun _ : Unit => Matrix.GeneralLinearGroup.map (n := Fin N) (embZ l) g) * fun _ => Matrix.GeneralLinearGroup.map (embZ l) h :=`. Use function extensionality and compare the values at `fun _ => map_mul _ _ _`. Establish `e2 : ∀ a b, grp (PadicAlgCl l) N mu (a * b) = grp (PadicAlgCl l) N mu a * grp (PadicAlgCl l) N mu b` using `fun a b => map_mul _ _ _`. Rewrite using `[act, e, e2, map_mul, Units.val_mul, map_mul, act, act, smul_mul_smul_comm]`.
+-/
 theorem act_mul (N : ℕ) (mu : Unit → ℕ → ℕ) (g h : GL (Fin N) ℤ_[l]) : act l N mu (g * h) = act l N mu g * act l N mu h := by
   have e : (fun _ : Unit => Matrix.GeneralLinearGroup.map (n := Fin N) (embZ l) (g * h)) =
     (fun _ : Unit => Matrix.GeneralLinearGroup.map (n := Fin N) (embZ l) g) * fun _ => Matrix.GeneralLinearGroup.map (embZ l) h :=
@@ -90,6 +106,15 @@ theorem act_mul (N : ℕ) (mu : Unit → ℕ → ℕ) (g h : GL (Fin N) ℤ_[l])
   have e2 : ∀ a b, grp (PadicAlgCl l) N mu (a * b) = grp (PadicAlgCl l) N mu a * grp (PadicAlgCl l) N mu b := fun a b => map_mul _ _ _
   rw [act, e, e2, map_mul, Units.val_mul, map_mul, act, act, smul_mul_smul_comm]
 
+/- English proof (translation)
+Use `⟨fun g : GL (Fin N) ℤ_[l] × Multiplicative (ZMod 2) => sg l e g.2 • act l N mu g.1⁻¹ v, fun h => hv ?_, ⟨fun γ hγ g => ?_, fun κ g => ?_⟩, fun i g => ?_⟩` and prove the remaining obligations. Use `congrFun h (1, 1)` as an intermediate fact. Express the relevant statement in the definitionally equal form `sg l e 1 • act l N mu 1⁻¹ v = 0 at this`. Simplify `this` using `[sg, act_one]`. Take `rfl` from `Subgroup.mem_bot.1 hγ`.
+
+Conclude with `congrArg (fun g : GL (Fin N) ℤ_[l] × Multiplicative (ZMod 2) => sg l e g.2 • act l N mu g.1⁻¹ v) (one_mul g)`. Take `⟨⟨k, a⟩, hk⟩` from `κ`. Take `rfl : a = 1` from `hk`. Take `⟨g, b⟩` from `g`. Express the relevant statement in the definitionally equal form `act l N mu k (sg l e (b * 1) • act l N mu (g * k)⁻¹ v) = sg l e b • act l N mu g⁻¹ v`.
+
+Rewrite using `[mul_one, map_smul, ← Module.End.mul_apply, ← act_mul, mul_inv_rev, mul_inv_cancel_left]`. Take `⟨g, b⟩` from `g`. Express the relevant statement in the definitionally equal form `embZ l 1 • ∑ s ∈ ({(1, Multiplicative.ofAdd 1)} : Finset (GL (Fin N) ℤ_[l] × Multiplicative (ZMod 2))), sg l e (b * s.2) • act l N mu (g * s.1)⁻¹ v = ((e : ℤ) : PadicAlgCl l) • sg l e b • act l N mu g⁻¹ v`. Rewrite using `[map_one, one_smul, Finset.sum_singleton, mul_one, smul_smul]`. Use `congr 1`.
+
+Simplify using `[sg, uzpow_add, mul_comm]`.
+-/
 theorem twoFrame_isEig (N : ℕ) (mu : Unit → ℕ → ℕ) (v : NablaT (PadicAlgCl l) N mu) (hv : v ≠ 0) (e : ℤˣ) :
     (twoFrame l N).IsEig mu fun _ => ((e : ℤ) : PadicAlgCl l) := by
   refine ⟨fun g : GL (Fin N) ℤ_[l] × Multiplicative (ZMod 2) => sg l e g.2 • act l N mu g.1⁻¹ v, fun h => hv ?_,
@@ -111,9 +136,25 @@ theorem twoFrame_isEig (N : ℕ) (mu : Unit → ℕ → ℕ) (v : NablaT (PadicA
     congr 1
     simp [sg, uzpow_add, mul_comm]
 
+/- English proof (translation)
+Simplify using `using twoFrame_isEig l N _ _ (oneVec_ne_zero l N) (-1)`.
+-/
 theorem twoFrame_isEig_neg (N : ℕ) : (twoFrame l N).IsEig (fun _ _ => 0) fun _ => -1 := by
   simpa using twoFrame_isEig l N _ _ (oneVec_ne_zero l N) (-1)
 
+/- English proof (translation)
+Establish `hle : ∀ p : F.T, ‖MvPolynomial.eval₂ F.emb θ p‖ ≤ 1` using `fun p => by`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c`. Take `⟨L, -, hL⟩` from `hF.ring.2`. Rewrite using `[MvPolynomial.eval₂_C]`.
+
+Conclude with `(hL ▸ Set.mem_range_self c : F.emb c ∈ {x | x ∈ L ∧ ‖x‖ ≤ 1}).2`. Consider the case `add p q hp hq => rw [MvPolynomial.eval₂_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hp hq)`. Consider the case `mul_X p i hp => rw [MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X, norm_mul]`. Conclude with `mul_le_one₀ hp (norm_nonneg _) (hθ i)`.
+
+Set `m : Ideal F.T` to `{ carrier := {p | ‖MvPolynomial.eval₂ F.emb θ p‖ < 1} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, MvPolynomial.eval₂_add] at *`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ha hb)`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c x hx => by`.
+
+Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, MvPolynomial.eval₂_mul, norm_mul] at *`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hle c) (norm_nonneg _) hx }`. Use `⟨m, ⟨fun h => ?_, fun {x y} h => ?_⟩, hθ, fun p => Iff.rfl⟩` and prove the remaining obligations. Establish `: (1 : F.T) ∈ m` using `h ▸ Submodule.mem_top`. Express the relevant statement in the definitionally equal form `‖MvPolynomial.eval₂ F.emb θ 1‖ < 1 at this`.
+
+Simplify using `at this`. Express the relevant statement in the definitionally equal form `‖MvPolynomial.eval₂ F.emb θ (x * y)‖ < 1 at h`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h1 : ‖MvPolynomial.eval₂ F.emb θ x‖ = 1` using `le_antisymm (hle x) (not_lt.1 hc.1)`.
+
+Establish `h2 : ‖MvPolynomial.eval₂ F.emb θ y‖ = 1` using `le_antisymm (hle y) (not_lt.1 hc.2)`. Rewrite `h` using `[MvPolynomial.eval₂_mul, norm_mul, h1, h2]`. Simplify using `at h`.
+-/
 theorem exists_over {ι : Type} {N : ℕ} (F : Frame l ι N) (hF : F.Ok) (θ : F.I → PadicAlgCl l) (hθ : ∀ i, ‖θ i‖ ≤ 1) :
     ∃ m : Ideal F.T, m.IsPrime ∧ F.Over θ m := by
   have hle : ∀ p : F.T, ‖MvPolynomial.eval₂ F.emb θ p‖ ≤ 1 := fun p => by
@@ -150,6 +191,9 @@ def HasLevelSetting {ι : Type} [DecidableEq ι] {N : ℕ} (F : Frame l ι N) (l
     (_ : IsScalarTower F.O F.T (Forms F.O (A := alg F.O N lam) F.Γ jK (NablaT F.O N lam))) (m : Ideal F.T),
       m.IsPrime ∧ F.IsJ lam jK ∧ F.IsHecke lam jK (NablaT F.O N lam) ∧ F.Over θ m
 
+/- English proof (translation)
+Take `⟨jK, hJ⟩` from `levelMap_exists l ι N F lam`. Take `⟨i1, i2, hH⟩` from `HeckeMod.hecke_module l ι N F lam jK hF hJ (NablaT F.O N lam)`. Take `⟨m, hm, hO⟩` from `exists_over l F hF θ hθ`. Conclude with `⟨jK, i1, i2, m, hm, hJ, hH, hO⟩`.
+-/
 theorem hasLevelSetting {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (F : Frame l ι N) (hF : F.Ok) (lam : ι → ℕ → ℕ)
     (θ : F.I → PadicAlgCl l) (hθ : ∀ i, ‖θ i‖ ≤ 1) : HasLevelSetting l F lam θ := by
   obtain ⟨jK, hJ⟩ := levelMap_exists l ι N F lam
@@ -157,6 +201,9 @@ theorem hasLevelSetting {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (F :
   obtain ⟨m, hm, hO⟩ := exists_over l F hF θ hθ
   exact ⟨jK, i1, i2, m, hm, hJ, hH, hO⟩
 
+/- English proof (translation)
+The claim follows from `hasLevelSetting l _ (twoFrame_ok l N) lam _ fun _ => by simp`.
+-/
 theorem twoClassFrame_hasLevelSetting (N : ℕ) (lam : Unit → ℕ → ℕ) : HasLevelSetting l (twoFrame l N) lam fun _ => -1 :=
   hasLevelSetting l _ (twoFrame_ok l N) lam _ fun _ => by simp
 
@@ -235,6 +282,9 @@ def scFrame (ev : ℕ → ℤ) : Frame l Unit 3 where
   tr _ := {1}
   cst i := (ev (i + 1) : ℤ_[l])
 
+/- English proof (translation)
+The claim follows from `have h := GLInhab.ok l 3 ⟨embZ_ring l, h.classes, h.tame, fun _ κ => h.perm () κ, fun _ _ => h.comm () ()⟩`.
+-/
 theorem scFrame_ok (ev : ℕ → ℤ) : (scFrame l ev).Ok :=
   have h := GLInhab.ok l 3
   ⟨embZ_ring l, h.classes, h.tame, fun _ κ => h.perm () κ, fun _ _ => h.comm () ()⟩
@@ -244,15 +294,26 @@ def cc : NablaT (PadicAlgCl l) 3 (fun (_ : Unit) _ => 0) →ₗ[PadicAlgCl l] Pa
     (PiTensorProduct.subsingletonEquiv (R := PadicAlgCl l)
       (s := fun _ : Unit => Formalism.GradedWeylDivisibility.dualWeyl (PadicAlgCl l) 3 3 (res 3 (fun _ : ℕ => 0))) ()).toLinearMap)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `MvPolynomial.coeff 0 (PiTensorProduct.subsingletonEquiv (R := PadicAlgCl l) (s := fun _ : Unit => Formalism.GradedWeylDivisibility.dualWeyl (PadicAlgCl l) 3 3 (res 3 (fun _ : ℕ => 0))) () (PiTensorProduct.tprod _ x)).1 = _`. Rewrite using `[PiTensorProduct.subsingletonEquiv_apply_tprod]`.
+-/
 theorem cc_tprod (x : Unit → Formalism.GradedWeylDivisibility.dualWeyl (PadicAlgCl l) 3 3 (res 3 (fun _ : ℕ => 0))) :
     cc l (PiTensorProduct.tprod _ x) = MvPolynomial.coeff 0 (x ()).1 := by
   change MvPolynomial.coeff 0 (PiTensorProduct.subsingletonEquiv (R := PadicAlgCl l)
       (s := fun _ : Unit => Formalism.GradedWeylDivisibility.dualWeyl (PadicAlgCl l) 3 3 (res 3 (fun _ : ℕ => 0))) () (PiTensorProduct.tprod _ x)).1 = _
   rw [PiTensorProduct.subsingletonEquiv_apply_tprod]
 
+/- English proof (translation)
+Rewrite using `[oneVec, cc_tprod]`. Simplify using the standard rewrite rules.
+-/
 theorem cc_one : cc l (oneVec l 3) = 1 := by
   rw [oneVec, cc_tprod]; simp
 
+/- English proof (translation)
+Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `h0 : res 3 (fun _ : ℕ => 0) = 0` using `rfl`. Rewrite using `[MvPolynomial.mem_weightedHomogeneousSubmodule, h0]`. Conclude with `MvPolynomial.isWeightedHomogeneous_one (R := ℤ_[l]) (Formalism.GradedWeylDivisibility.colW 3 3)`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`.
+
+Introduce `a b _`. Simplify using the standard rewrite rules.
+-/
 theorem one_mem_int : (1 : MvPolynomial (Fin 3 × Fin 3) ℤ_[l]) ∈ Formalism.GradedWeylDivisibility.dualWeyl ℤ_[l] 3 3 (res 3 (fun _ : ℕ => 0)) := by
   refine Submodule.mem_inf.2 ⟨?_, ?_⟩
   · have h0 : res 3 (fun _ : ℕ => 0) = 0 := rfl
@@ -353,6 +414,11 @@ def scReads (ev : ℕ → ℤ) : Reads (scFrame l ev) (fun _ _ => 0) (dat ev) (p
 
 def th (ev : ℕ → ℤ) : (scFrame l ev).I → PadicAlgCl l := fun i => (ev ((show Fin 3 from i) + 1) : PadicAlgCl l)
 
+/- English proof (translation)
+Set `f : (dat ev).S.Forms` to `⟨fun _ => (1 : ℚ), fun _ _ => rfl⟩`. Use `⟨(scReads l ev).rd f, Submodule.subset_span ⟨f, trivial, rfl⟩, fun h0 => ?_, (scReads l ev).form f, fun i g => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (cc l) (congrFun h0 (1 : GL (Fin 3) ℤ_[l]))`. Express the relevant statement in the definitionally equal form `cc l (algebraMap ℚ (PadicAlgCl l) 1 • oneVec l 3) = cc l 0 at h2`. Rewrite `h2` using `[map_smul, cc_one, smul_eq_mul, mul_one, map_zero, map_one]`.
+
+Conclude with `one_ne_zero h2`. Express the relevant statement in the definitionally equal form `embZ l (ev ((show Fin 3 from i) + 1) : ℤ_[l]) • ∑ s ∈ ({1} : Finset (GL (Fin 3) ℤ_[l])), algebraMap ℚ (PadicAlgCl l) 1 • oneVec l 3 = (ev ((show Fin 3 from i) + 1) : PadicAlgCl l) • algebraMap ℚ (PadicAlgCl l) 1 • oneVec l 3`. Rewrite using `[Finset.sum_singleton, map_intCast]`.
+-/
 theorem th_occurs (ev : ℕ → ℤ) : (scReads l ev).Occurs ⊤ (th l ev) := by
   let f : (dat ev).S.Forms := ⟨fun _ => (1 : ℚ), fun _ _ => rfl⟩
   refine ⟨(scReads l ev).rd f, Submodule.subset_span ⟨f, trivial, rfl⟩, fun h0 => ?_, (scReads l ev).form f, fun i g => ?_⟩
@@ -380,6 +446,11 @@ def evNo : ℕ → ℤ
 
 open Polynomial in
 
+/- English proof (translation)
+Use `⟨fun i => (evYes i.2 : ℚ), fun _ => by simp [evYes], fun P => ⟨1 - C 4 * X, ?_⟩, fun i => (map_intCast _ _).symm⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.L2.Col.heckePolyOf 3 2 (fun k => (evYes k : ℚ)) = (([fun _ : Unit => (1 : ℚ)].map fun ν => Formalism.L2.Col.blockPoly (ν P) 2 2).prod) * (1 - C 4 * X)`. Simplify using `only [Formalism.L2.Col.heckePolyOf, Formalism.L2.Col.blockPoly, Finset.sum_range_succ, Finset.prod_range_succ, evYes, List.map_cons, List.map_nil, List.prod_cons, List.prod_nil]`. Evaluate the numerical expressions. Simplify using `only [map_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasBlock_yes : (scReads l evYes).HasBlock (th l evYes) := by
   refine ⟨fun i => (evYes i.2 : ℚ), fun _ => by simp [evYes], fun P => ⟨1 - C 4 * X, ?_⟩, fun i => (map_intCast _ _).symm⟩
   change Formalism.L2.Col.heckePolyOf 3 2 (fun k => (evYes k : ℚ)) =
@@ -392,6 +463,9 @@ theorem hasBlock_yes : (scReads l evYes).HasBlock (th l evYes) := by
 
 open Polynomial in
 
+/- English proof (translation)
+Establish `h0 : ([fun _ : Unit => (1 : ℚ)].map fun ν => Formalism.L2.Col.blockPoly (algebraMap ℚ (PadicAlgCl l) (ν ())) 2 2).prod ∣ Formalism.L2.Col.heckePolyOf 3 2 (sysOf (Pl` using `Unit) (I := Fin 3) 3 (fun _ k => k) θ ()) := h.dvd (Pl := Unit) (fun _ k => k) () () fun _ => rfl`. Establish `h1` using `eval_dvd (x := (1 : PadicAlgCl l)) h0`. Simplify using `[Formalism.L2.Col.heckePolyOf, Formalism.L2.Col.blockPoly, Finset.sum_range_succ, Finset.prod_range_succ, sysOf] at h1`. Take the linear combination `h1`.
+-/
 theorem root_of_hasBlock (ev : ℕ → ℤ) (θ : Fin 3 → PadicAlgCl l) (h : (scReads l ev).HasBlock θ) :
     1 - θ 0 + 2 * θ 1 - 8 * θ 2 = 0 := by
   have h0 : ([fun _ : Unit => (1 : ℚ)].map fun ν => Formalism.L2.Col.blockPoly (algebraMap ℚ (PadicAlgCl l) (ν ())) 2 2).prod ∣
@@ -401,11 +475,17 @@ theorem root_of_hasBlock (ev : ℕ → ℤ) (θ : Fin 3 → PadicAlgCl l) (h : (
   simp [Formalism.L2.Col.heckePolyOf, Formalism.L2.Col.blockPoly, Finset.sum_range_succ, Finset.prod_range_succ, sysOf] at h1
   linear_combination h1
 
+/- English proof (translation)
+Introduce `h` and use `by have := root_of_hasBlock l evNo _ h simp [th, evNo] at this norm_num at this`.
+-/
 theorem not_hasBlock_no : ¬ (scReads l evNo).HasBlock (th l evNo) := fun h => by
   have := root_of_hasBlock l evNo _ h
   simp [th, evNo] at this
   norm_num at this
 
+/- English proof (translation)
+Introduce `h` and use `by have : (1 : PadicAlgCl l) - 0 + 2 * 0 - 8 * 0 = 0 := root_of_hasBlock l ev _ h simp at this`.
+-/
 theorem not_hasBlock_zero (ev : ℕ → ℤ) : ¬ (scReads l ev).HasBlock 0 := fun h => by
   have : (1 : PadicAlgCl l) - 0 + 2 * 0 - 8 * 0 = 0 := root_of_hasBlock l ev _ h
   simp at this
@@ -417,6 +497,11 @@ def allPlaces (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] 
   cont := continuous_const
   cofin := by simp
 
+/- English proof (translation)
+Introduce `P B σ _ _`. Establish `e : (Polynomial.X - Polynomial.C (1 : PadicAlgCl l)).reverse = 1 - Polynomial.X`. Rewrite using `[Polynomial.reverse, Polynomial.natDegree_X_sub_C, Polynomial.reflect_sub, Polynomial.reflect_one_X, Polynomial.reflect_C]`. Simplify using the standard rewrite rules. Use `e.trans ?_` and prove the remaining obligations.
+
+Simplify using `[Formalism.L2.Col.heckePolyOf, Finset.sum_range_succ, allPlaces, sub_eq_add_neg]`.
+-/
 theorem allPlaces_reads (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] :
     (allPlaces l E Ω).Reads 1 (fun _ _ => 1) fun _ => Polynomial.X - Polynomial.C 1 := by
   intro P B σ _ _

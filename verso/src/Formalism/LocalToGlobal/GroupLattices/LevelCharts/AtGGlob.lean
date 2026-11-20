@@ -11,6 +11,11 @@ section Places
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((g : ℕ) : 𝓞 F)} ≠ 0`. Rewrite using `[Ideal.zero_eq_bot, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hg` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+
+Conclude with `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hv)`.
+-/
 theorem finite_placesOver (g : ℕ) (hg : g ≠ 0) :
     {v : HeightOneSpectrum (𝓞 F) | ((g : ℕ) : 𝓞 F) ∈ v.asIdeal}.Finite := by
   have h0 : Ideal.span {((g : ℕ) : 𝓞 F)} ≠ 0 := by
@@ -25,6 +30,9 @@ open Classical in
 def placesOver (g : ℕ) : Finset (HeightOneSpectrum (𝓞 F)) :=
   if h : {v : HeightOneSpectrum (𝓞 F) | ((g : ℕ) : 𝓞 F) ∈ v.asIdeal}.Finite then h.toFinset else ∅
 
+/- English proof (translation)
+Rewrite using `[placesOver, dif_pos (finite_placesOver F g hg)]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_placesOver (g : ℕ) (hg : g ≠ 0) (v : HeightOneSpectrum (𝓞 F)) :
     v ∈ placesOver F g ↔ ((g : ℕ) : 𝓞 F) ∈ v.asIdeal := by
   rw [placesOver, dif_pos (finite_placesOver F g hg)]
@@ -43,6 +51,9 @@ def prodChar {Z : Type} [CommGroup Z] (S : Finset (HeightOneSpectrum (𝓞 F)))
   ∏ v ∈ S.attach, (lam v.1 v.2).comp
     (((bc (prV (E := E) v.1)).subgroupComap (Uloc v.1)).comp (Subgroup.inclusion (h v.1 v.2)))
 
+/- English proof (translation)
+Simplify using `only [prodChar, MonoidHom.finsetProd_apply]`. Both sides reduce to the same expression.
+-/
 theorem prodChar_apply {Z : Type} [CommGroup Z] (S : Finset (HeightOneSpectrum (𝓞 F)))
     (Uloc : ∀ v : HeightOneSpectrum (𝓞 F), Subgroup (GL (Fin N) (E ⊗[F] v.adicCompletion F)))
     (lam : ∀ v, v ∈ S → (Uloc v →* Z)) (Up : Subgroup (GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)))

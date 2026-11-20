@@ -10,6 +10,9 @@ open GlobalTheory.ExpFrame GlobalTheory.ExpTie GlobalTheory.UnitaryBC GlobalTheo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FrameAut.exists_locComp_hasSatGL_heckeVec | exact GlobalTheory.FrameAut.exists_locComp_hasSatGL_heckeVec | (intros; apply GlobalTheory.FrameAut.exists_locComp_hasSatGL_heckeVec <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_satake_sphericalVector_definiteUnitary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : Submodule ℂ (UA E n → ℂ)), IsAutRepU π →
     ∀ w : HeightOneSpectrum (𝓞 E), IsSplitAt w → ∀ φ ∈ π, φ ≠ 0 →
     (∀ x ∈ locU n w, cLoc w x ∈ GlobalTheory.LFun.KGL w n → RU E n x φ = φ) →

@@ -7,6 +7,17 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.MemLoc
 
+/- English proof (translation)
+Introduce `l _ K x hx`. Establish `h` using `GlobalTheory.T.ax_sen_tate_complex_padic_fixed_closure l (GK K) x hx`. Establish `hset : {y : Om l | ∀ g ∈ GK K, g y = y} = (K.1 : Set (Om l))`. Use extensionality with `y`. Establish `h1` using `InfiniteGalois.fixedField_fixingSubgroup K.1`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `: y ∈ IntermediateField.fixedField K.1.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Conclude with `hy`.
+
+Rewrite `this` using `[h1]`. Then use the resulting hypothesis. Introduce `hy g hg`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff K.1 g).1 hg y hy`. Rewrite `h` using `[hset]`. Use `haveI : FiniteDimensional ℚ_[l] K.1 := K.2`.
+
+Use `haveI : FiniteDimensional ℚ_[l] K.1.toSubalgebra.toSubmodule := K.2`. Establish `hc : IsComplete (K.1 : Set (Om l))` using `Submodule.complete_of_finiteDimensional (𝕜 := ℚ_[l]) K.1.toSubalgebra.toSubmodule`. Establish `hc2 : IsComplete ((fun y : Om l => (y : ℂ_[l])) '' (K.1 : Set (Om l)))` using `(isComplete_image_iff (UniformSpace.Completion.isUniformInducing_coe (Om l))).2 hc`. Rewrite `h` using `[hc2.isClosed.closure_eq]`. Take `⟨y, hy, rfl⟩` from `h`.
+
+Conclude with `⟨y, hy, rfl⟩`.
+-/
 theorem invariants_finExt : ∀ (l : ℕ) [Fact l.Prime], ∀ (K : FinExt l) (x : ℂ_[l]), (∀ g ∈ GK K, Per.σC g x = x) → ∃ y ∈ K.1, ((y : Om l) : ℂ_[l]) = x := by
   intro l _ K x hx
   have h := GlobalTheory.T.ax_sen_tate_complex_padic_fixed_closure l (GK K) x hx

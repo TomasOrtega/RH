@@ -26,12 +26,32 @@ def mixRow (A P : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ :=
 
 variable {A P : Matrix (Fin r) (Fin r) ℂ}
 
+/- English proof (translation)
+Establish `h : (A⁻¹ * mixCol p A P) i j = (A⁻¹ * A) i j`. Simplify using `only [Matrix.mul_apply, mixCol, Matrix.of_apply, if_pos hj]`. Rewrite using `[h, Matrix.nonsing_inv_mul A (isUnit_iff_ne_zero.mpr hA)]`.
+-/
 theorem inv_mul_mixCol (hA : A.det ≠ 0) {j : Fin r} (hj : p j) (i : Fin r) :
     (A⁻¹ * mixCol p A P) i j = (1 : Matrix (Fin r) (Fin r) ℂ) i j := by
   have h : (A⁻¹ * mixCol p A P) i j = (A⁻¹ * A) i j := by
     simp only [Matrix.mul_apply, mixCol, Matrix.of_apply, if_pos hj]
   rw [h, Matrix.nonsing_inv_mul A (isUnit_iff_ne_zero.mpr hA)]
 
+/- English proof (translation)
+Establish `hM : (A⁻¹ * mixCol p A P).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv]`. Conclude with `mul_ne_zero (inv_ne_zero hA) hQ`. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`.
+
+Establish `hS : ∀ a, p a → v a = 0`. Introduce `a ha`. Establish `e : (mixRow p A P *ᵥ v) a = ((1 : Matrix (Fin r) (Fin r) ℂ) *ᵥ v) a`. Simplify using `only [Matrix.mulVec, dotProduct, mixRow, Matrix.of_apply, if_pos ha]`. Rewrite `e` using `[Matrix.one_mulVec, hv]`.
+
+Conclude with `e.symm`. Establish `hT : ∀ a, ¬ p a → ((A⁻¹ * mixCol p A P) *ᵥ v) a = 0`. Introduce `a ha`. Establish `e : (mixRow p A P *ᵥ v) a = ((A⁻¹ * mixCol p A P) *ᵥ v) a`. Simplify using `only [Matrix.mulVec, dotProduct, mixRow, Matrix.of_apply, if_neg ha]`.
+
+Rewrite using `[← e, hv]`. Both sides reduce to the same expression. Establish `hfix : ∀ w : Fin r → ℂ, (∀ b, ¬ p b → w b = 0) → (A⁻¹ * mixCol p A P) *ᵥ w = w`. Introduce `w hw`. Use function extensionality and compare the values at `i`.
+
+Establish `e : ((A⁻¹ * mixCol p A P) *ᵥ w) i = ((1 : Matrix (Fin r) (Fin r) ℂ) *ᵥ w) i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : p b`. Rewrite using `[inv_mul_mixCol p hA hb i]`.
+
+Rewrite using `[hw b hb, mul_zero, mul_zero]`. Rewrite using `[e, Matrix.one_mulVec]`. Establish `heq : v = (A⁻¹ * mixCol p A P) *ᵥ v`. Establish `h2` using `hfix _ hT`. Establish `h3 : (A⁻¹ * mixCol p A P) *ᵥ (v - (A⁻¹ * mixCol p A P) *ᵥ v) = 0`.
+
+Rewrite using `[Matrix.mulVec_sub, h2, sub_self]`. Conclude with `(sub_eq_zero.mp (Matrix.eq_zero_of_mulVec_eq_zero hM h3))`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : p a`.
+
+Conclude with `hS a ha`. Rewrite using `[heq]`. Conclude with `hT a ha`.
+-/
 theorem det_mixRow_ne_zero (hA : A.det ≠ 0) (hQ : (mixCol p A P).det ≠ 0) : (mixRow p A P).det ≠ 0 := by
   have hM : (A⁻¹ * mixCol p A P).det ≠ 0 := by
     rw [Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv]
@@ -72,6 +92,9 @@ theorem det_mixRow_ne_zero (hA : A.det ≠ 0) (hQ : (mixCol p A P).det ≠ 0) : 
   · rw [heq]
     exact hT a ha
 
+/- English proof (translation)
+Distinguish the cases in `ha : p a`. Simplify using `only [mixRow, Matrix.of_apply, if_pos ha]`. Simplify using `only [mixRow, Matrix.of_apply, if_neg ha]`. Conclude with `inv_mul_mixCol p hA hj a`.
+-/
 private theorem mix_apply_eq_one_apply_of_mem (hA : A.det ≠ 0) {j : Fin r} (hj : p j) (a : Fin r) :
     mixRow p A P a j = (1 : Matrix (Fin r) (Fin r) ℂ) a j := by
   by_cases ha : p a
@@ -79,6 +102,11 @@ private theorem mix_apply_eq_one_apply_of_mem (hA : A.det ≠ 0) {j : Fin r} (hj
   · simp only [mixRow, Matrix.of_apply, if_neg ha]
     exact inv_mul_mixCol p hA hj a
 
+/- English proof (translation)
+Establish `hR` using `det_mixRow_ne_zero p hA hQ`. Establish `hcol : ∀ a, (mixRow p A P)⁻¹ a j = (1 : Matrix (Fin r) (Fin r) ℂ) a j`. Introduce `a`. Establish `h1 : ((mixRow p A P)⁻¹ * mixRow p A P) a j = (1 : Matrix (Fin r) (Fin r) ℂ) a j`. Rewrite using `[Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hR)]`.
+
+Rewrite using `[← h1, Matrix.mul_apply]`. Simplify using `[mix_apply_eq_one_apply_of_mem p hA hj, Matrix.one_apply]`. Rewrite using `[Matrix.mul_apply]`. Simplify using `[hcol, Matrix.one_apply, mixCol, hj]`.
+-/
 theorem mix_col_eq (hA : A.det ≠ 0) (hQ : (mixCol p A P).det ≠ 0) {j : Fin r} (hj : p j) (k : Fin r) :
     (mixCol p A P * (mixRow p A P)⁻¹) k j = A k j := by
   have hR := det_mixRow_ne_zero p hA hQ
@@ -91,6 +119,9 @@ theorem mix_col_eq (hA : A.det ≠ 0) (hQ : (mixCol p A P).det ≠ 0) {j : Fin r
   rw [Matrix.mul_apply]
   simp [hcol, Matrix.one_apply, mixCol, hj]
 
+/- English proof (translation)
+Establish `hR` using `det_mixRow_ne_zero p hA hQ`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ (isUnit_iff_ne_zero.mpr hR)]`. Establish `e : (mixRow p A P * (mixCol p A P)⁻¹) a k = (A⁻¹ * mixCol p A P * (mixCol p A P)⁻¹) a k`. Simplify using `only [Matrix.mul_apply, mixRow, Matrix.of_apply, if_neg ha]`. Rewrite using `[e, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hQ), Matrix.mul_one]`.
+-/
 theorem mix_inv_row_eq (hA : A.det ≠ 0) (hQ : (mixCol p A P).det ≠ 0) {a : Fin r} (ha : ¬ p a) (k : Fin r) :
     (mixCol p A P * (mixRow p A P)⁻¹)⁻¹ a k = A⁻¹ a k := by
   have hR := det_mixRow_ne_zero p hA hQ
@@ -99,6 +130,9 @@ theorem mix_inv_row_eq (hA : A.det ≠ 0) (hQ : (mixCol p A P).det ≠ 0) {a : F
     simp only [Matrix.mul_apply, mixRow, Matrix.of_apply, if_neg ha]
   rw [e, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hQ), Matrix.mul_one]
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Conclude with `DifferentiableOn.fun_sum fun σ _ => (differentiableOn_const _).mul (DifferentiableOn.fun_finsetProd fun i _ => hM _ _)`.
+-/
 theorem differentiableOn_det {B : Set ℂ} {M : ℂ → Matrix (Fin r) (Fin r) ℂ}
     (hM : ∀ i j, DifferentiableOn ℂ (fun w => M w i j) B) :
     DifferentiableOn ℂ (fun w => (M w).det) B := by
@@ -106,6 +140,13 @@ theorem differentiableOn_det {B : Set ℂ} {M : ℂ → Matrix (Fin r) (Fin r) �
   exact DifferentiableOn.fun_sum fun σ _ => (differentiableOn_const _).mul
     (DifferentiableOn.fun_finsetProd fun i _ => hM _ _)
 
+/- English proof (translation)
+Establish `hadj : DifferentiableOn ℂ (fun w => (M w).adjugate i j) B`. Simplify using `only [Matrix.adjugate_apply]`. Apply `differentiableOn_det` to reduce the goal to its premises. Introduce `k l`. Distinguish the cases in `hk : k = j`.
+
+Substitute `hk` using the available equality. Simplify using `only [Matrix.updateRow_self]`. Conclude with `differentiableOn_const _`. Simplify using `only [Matrix.updateRow_ne hk]`. Conclude with `hM k l`.
+
+Establish `e : (fun w => (M w)⁻¹ i j) = fun w => ((M w).det)⁻¹ * (M w).adjugate i j`. Use function extensionality and compare the values at `w`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv, smul_eq_mul]`. Rewrite using `[e]`. Conclude with `((differentiableOn_det hM).inv hd).mul hadj`.
+-/
 theorem differentiableOn_inv {B : Set ℂ} {M : ℂ → Matrix (Fin r) (Fin r) ℂ}
     (hM : ∀ i j, DifferentiableOn ℂ (fun w => M w i j) B) (hd : ∀ w ∈ B, (M w).det ≠ 0) (i j : Fin r) :
     DifferentiableOn ℂ (fun w => (M w)⁻¹ i j) B := by
@@ -125,6 +166,15 @@ theorem differentiableOn_inv {B : Set ℂ} {M : ℂ → Matrix (Fin r) (Fin r) �
   rw [e]
   exact ((differentiableOn_det hM).inv hd).mul hadj
 
+/- English proof (translation)
+Establish `hQd : ∀ k l, DifferentiableOn ℂ (fun w => mixCol p (A w) P k l) B`. Introduce `k l`. Distinguish the cases in `hl : p l`. Simplify using `only [mixCol, Matrix.of_apply, if_pos hl]`. Conclude with `hc l hl k`.
+
+Simplify using `only [mixCol, Matrix.of_apply, if_neg hl]`. Conclude with `differentiableOn_const _`. Establish `hRd : ∀ k l, DifferentiableOn ℂ (fun w => mixRow p (A w) P k l) B`. Introduce `k l`. Distinguish the cases in `hk : p k`.
+
+Simplify using `only [mixRow, Matrix.of_apply, if_pos hk]`. Conclude with `differentiableOn_const _`. Simplify using `only [mixRow, Matrix.of_apply, if_neg hk, Matrix.mul_apply]`. Conclude with `DifferentiableOn.fun_sum fun m _ => (hr k hk m).mul (hQd m l)`. Establish `hRi` using `differentiableOn_inv (M := fun w => mixRow p (A w) P) hRd (fun w hw => det_mixRow_ne_zero p (hA w hw) (hQ w hw))`.
+
+Simplify using `only [Matrix.mul_apply]`. Conclude with `DifferentiableOn.fun_sum fun m _ => (hQd i m).mul (hRi m j)`.
+-/
 theorem differentiableOn_mix {B : Set ℂ} {A : ℂ → Matrix (Fin r) (Fin r) ℂ}
     (hA : ∀ w ∈ B, (A w).det ≠ 0) (hQ : ∀ w ∈ B, (mixCol p (A w) P).det ≠ 0)
     (hc : ∀ a, p a → ∀ k, DifferentiableOn ℂ (fun w => A w k a) B)
@@ -151,6 +201,15 @@ theorem differentiableOn_mix {B : Set ℂ} {A : ℂ → Matrix (Fin r) (Fin r) �
 
 end Mat
 
+/- English proof (translation)
+Establish `h0 : ∀ n, Φ n 0 = 0` using `fun n => by`. Establish `e` using `hs n 0 0`. Rewrite `e` using `[zero_smul, hσ, zero_mul]`. Then use the resulting hypothesis. Establish `hv : v ∈ Submodule.span E S`. Rewrite using `[hS]`.
+
+Conclude with `Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero`. Simplify using `only [h0]`.
+
+Conclude with `differentiableOn_const 0`. Consider the case `add x y _ _ hx hy`. Simplify using `only [ha]`. Conclude with `hx.add hy`. Consider the case `smul c x _ hx`.
+
+Simplify using `only [hs]`. Conclude with `(differentiableOn_const (σ c)).mul hx`.
+-/
 theorem differentiableOn_of_span {E : Type} [Field E] {r : ℕ} {B : Set ℂ}
     (S : Set (Fin r → E)) (hS : Submodule.span E S = ⊤) (σ : E → ℂ)
     (Φ : ℂ → (Fin r → E) → ℂ) (ha : ∀ n v w, Φ n (v + w) = Φ n v + Φ n w)
@@ -177,6 +236,35 @@ theorem differentiableOn_of_span {E : Type} [Field E] {r : ℕ} {B : Set ℂ}
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Establish `sum_castLE : ∀ (f : Fin r → Fin r → ℂ) (v : Fin r → ℂ), ∑ a : Fin X.p0, v (Fin.castLE X.p0_le a) • f (Fin.castLE X.p0_le a) = ∑ i : Fin r, (if (i : ℕ) < X.p0 then v i else 0) • f i`. Introduce `f v`. Use `Fintype.sum_of_injective (Fin.castLE X.p0_le) (Fin.castLE_injective X.p0_le) _ (fun i : Fin r => (if (i : ℕ) < X.p0 then v i else 0) • f i) ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Establish `hlt : ¬ (i : ℕ) < X.p0` using `fun hlt => hi ⟨⟨i, hlt⟩, Fin.ext rfl⟩`.
+
+Simplify using `[hlt]`. Introduce `a`. Simplify using `[a.isLt]`. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`.
+
+Take `⟨γ, hγ⟩ : ∃ γ : Fin r → ℂ, γ = fun i : Fin r => if (i : ℕ) < X.p0 then 0 else v i` from `⟨_, rfl⟩`. Take `⟨c, hc⟩ : ∃ c : Fin X.p0 → ℂ, c = fun a => v (Fin.castLE X.p0_le a)` from `⟨_, rfl⟩`. Take `⟨U, hU⟩ : ∃ U : Fin r → ℂ, U = ∑ a, c a • X.colP x τ a` from `⟨_, rfl⟩`. Take `⟨W, hW⟩ : ∃ W : Fin r → ℂ, W = ∑ i, γ i • col P i` from `⟨_, rfl⟩`. Establish `hUW : U + W = 0`.
+
+Rewrite using `[← hv, Data.mulVec_eq_sum_col, hU, hW, hc, hγ]`. Simplify using `only [Data.colP]`. Rewrite using `[sum_castLE (col (mat x τ)) v, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) < X.p0`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[hi, col, mixCol]`. Use function extensionality and compare the values at `k`. Simplify using `[hi, col, mixCol]`. Establish `hW' : W = (-1 : ℂ) • U`.
+
+Rewrite using `[neg_one_smul]`. Conclude with `add_eq_zero_iff_eq_neg.mp ((add_comm W U).trans hUW)`. Establish `hpos` using `Data.gramPos_posDef X hx τ`. Establish `hUU : hermC τ.1 X.Gm U U = ∑ a, ∑ b, c a * X.gramPos x τ a b * conj (c b)`. Rewrite using `[hU, hermC_quad]`.
+
+Simplify using `only [Data.gramPos_apply]`. Establish `hg : ∀ a b, hermC τ.1 X.Gm (col P a) (col P b) = Matrix.diagonal (fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) a b`. Introduce `a b`. Rewrite using `[← hP]`. Both sides reduce to the same expression.
+
+Establish `hWW : (hermC τ.1 X.Gm W W).re = -∑ i, Complex.normSq (γ i)`. Rewrite using `[hW, hermC_quad]`. Simplify using `only [hg, Matrix.diagonal_apply, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Complex.re_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hi : (i : ℕ) < X.p0`. Simplify using `[hγ, hi]`. Simplify using `[hγ, hi, sgn, Complex.mul_conj]`. Establish `hsame : hermC τ.1 X.Gm W W = hermC τ.1 X.Gm U U`. Rewrite using `[hW', hermC_smul_left, hermC_smul_right]`.
+
+Simplify using the standard rewrite rules. Establish `hUre : 0 ≤ (hermC τ.1 X.Gm U U).re`. Rewrite using `[hUU]`. Conclude with `quad_re_nonneg hpos.posSemidef c`. Establish `hsq : 0 ≤ ∑ i, Complex.normSq (γ i)` using `Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _`.
+
+Establish `hγ0 : ∑ i, Complex.normSq (γ i) = 0`. Rewrite `hWW` using `[hsame]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hU0 : (hermC τ.1 X.Gm U U).re = 0`. Rewrite using `[← hsame, hWW, hγ0, neg_zero]`.
+
+Establish `hc0 : c = 0`. Assume the negation of the conclusion as `hne`. Establish `h1` using `quad_re_pos hpos hne`. Rewrite `h1` using `[← hUU, hU0]`. Conclude with `lt_irrefl _ h1`.
+
+Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : (i : ℕ) < X.p0`. Establish `h1` using `congrFun hc0 ⟨i, hi⟩`. Rewrite `h1` using `[hc]`.
+
+Simplify using `using h1`. Establish `h1 : Complex.normSq (γ i) = 0` using `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Complex.normSq_nonneg (γ j))).mp hγ0 i (Finset.mem_univ _)`. Rewrite `h1` using `[Complex.normSq_eq_zero, hγ]`. Simplify `h1` using `[hi]`.
+-/
 theorem det_mixCol_ne_zero {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) {P : Matrix (Fin r) (Fin r) ℂ}
     (hP : gram τ.1 X.Gm P = Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) :
     (mixCol (fun a : Fin r => (a : ℕ) < X.p0) (mat x τ) P).det ≠ 0 := by
@@ -258,6 +346,17 @@ theorem det_mixCol_ne_zero {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) {P 
     rw [Complex.normSq_eq_zero, hγ] at h1
     simpa [hi] using h1
 
+/- English proof (translation)
+Establish `hxd : ∀ τ, (mat x τ).det ≠ 0` using `fun τ => ((Data.mem_dom_iff X x).mp hx τ).1`. Establish `hb : (fun τ => ((mat x τ)⁻¹ * mat y τ : Matrix (Fin r) (Fin r) ℂ)) ∈ Bor X.Ψ r`. Simplify using `only [Bor, Set.mem_setOf_eq]`. Introduce `τ`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show ((mat x τ)⁻¹ * mat y τ).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv]`. Conclude with `mul_ne_zero (inv_ne_zero (hxd τ)) (hy τ)`. Introduce `a c hca show ((mat x τ)⁻¹ * mat y τ) a c = 0`. Distinguish the cases in `hc' : (c : ℕ) < X.p0`.
+
+Establish `e : ((mat x τ)⁻¹ * mat y τ) a c = ((mat x τ)⁻¹ * mat x τ) a c`. Simplify using `only [Matrix.mul_apply, hc τ c hc']`. Rewrite using `[e, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (hxd τ)), Matrix.one_apply_ne (ne_of_gt hca)]`. Establish `ha' : ¬ (a : ℕ) < X.p0` using `fun h => hc' (lt_trans (show (c : ℕ) < a from hca) h)`. Establish `e : ((mat x τ)⁻¹ * mat y τ) a c = ((mat y τ)⁻¹ * mat y τ) a c`.
+
+Simplify using `only [Matrix.mul_apply, ← hr τ a ha']`. Rewrite using `[e, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (hy τ)), Matrix.one_apply_ne (ne_of_gt hca)]`. Establish `hyb : y = rmul x (fun τ => ((mat x τ)⁻¹ * mat y τ : Matrix (Fin r) (Fin r) ℂ))`. Use function extensionality and compare the values at `τ`. Establish `h1 : mat x τ * ((mat x τ)⁻¹ * mat y τ) = mat y τ` using `Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.mpr (hxd τ))`.
+
+Conclude with `h1.symm`. Rewrite using `[hyb]`. Conclude with `OrthogonalFrameDomain.rmul_mem_dom X hx hb`.
+-/
 theorem mem_dom_of_eq {x y : Frame X.Ψ r} (hx : x ∈ X.dom) (hy : ∀ τ, (mat y τ).det ≠ 0)
     (hc : ∀ τ, ∀ a : Fin r, (a : ℕ) < X.p0 → ∀ k, mat y τ k a = mat x τ k a)
     (hr : ∀ τ, ∀ a : Fin r, ¬ (a : ℕ) < X.p0 → ∀ k, (mat y τ)⁻¹ a k = (mat x τ)⁻¹ a k) :
@@ -290,6 +389,33 @@ theorem mem_dom_of_eq {x y : Frame X.Ψ r} (hx : x ∈ X.dom) (hy : ∀ τ, (mat
   rw [hyb]
   exact OrthogonalFrameDomain.rmul_mem_dom X hx hb
 
+/- English proof (translation)
+Introduce `E _ _ _ r X B x₁ hdom hdiff`. Establish `hemb_add : ∀ (τ : E →+* ℂ) (v v' : Fin r → E), Data.emb τ (v + v') = Data.emb τ v + Data.emb τ v'`. Introduce `τ v v'`. Use function extensionality and compare the values at `k`. Simplify using `[Data.emb]`.
+
+Establish `hemb_smul : ∀ (τ : E →+* ℂ) (c : E) (v : Fin r → E), Data.emb τ (c • v) = τ c • Data.emb τ v`. Introduce `τ c v`. Use function extensionality and compare the values at `k`. Simplify using `[Data.emb]`. Establish `hall : ∀ v τ a, DifferentiableOn ℂ (fun w => GlobalTheory.GenericFrames.pc X (x₁ w) v τ a) B`.
+
+Introduce `v τ a`. Distinguish the cases in `ha : (a : ℕ) < X.p0`. Establish `key` using `differentiableOn_of_span (B := B) (X.Λ : Set (Fin r → E)) X.Λ_span (fun c => conj (τ.1 c)) (fun w v => hermC τ.1 X.Gm (col (mat (x₁ w) τ) a) (Data.emb τ.1 v)) (fun w v v' => by simp only [hemb_add, hermC_add_right]) (fun w c v => by simp only [hemb_smul, hermC_smul_right]) (by si …`. Simplify `key` using `[GlobalTheory.GenericFrames.pc, ha]`. Establish `key` using `differentiableOn_of_span (B := B) (X.Λ : Set (Fin r → E)) X.Λ_span (fun c => τ.1 c) (fun w v => ((mat (x₁ w) τ)⁻¹ *ᵥ Data.emb τ.1 v) a) (fun w v v' => by simp only [hemb_add, Matrix.mulVec_add, Pi.add_apply]) (fun w c v => by simp only [hemb_smul, Matrix.mulVec_smul, Pi.smul_appl …`.
+
+Simplify `key` using `[GlobalTheory.GenericFrames.pc, ha]`. Establish `hcolD : ∀ τ : X.Ψ, ∀ a : Fin r, (a : ℕ) < X.p0 → ∀ k, DifferentiableOn ℂ (fun w => mat (x₁ w) τ k a) B`. Introduce `τ a ha k`. Establish `h` using `hall (fun b => cc (X.Gm⁻¹ b k)) τ a`. Simplify using `only [GlobalTheory.GenericFrames.pc, if_pos ha, GlobalTheory.PeriodLift.hermC_emb_inv_col τ.1 X.Gm X.Gm_det] at h`.
+
+Conclude with `h`. Establish `hrowD : ∀ τ : X.Ψ, ∀ a : Fin r, ¬ (a : ℕ) < X.p0 → ∀ k, DifferentiableOn ℂ (fun w => (mat (x₁ w) τ)⁻¹ a k) B`. Introduce `τ a ha k`. Establish `he : Data.emb τ.1 (Pi.single k (1 : E)) = Pi.single k 1`. Use function extensionality and compare the values at `j`.
+
+Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[Data.emb]`. Simplify using `[Data.emb, hj]`. Establish `hv : ∀ w, GlobalTheory.GenericFrames.pc X (x₁ w) (Pi.single k 1) τ a = (mat (x₁ w) τ)⁻¹ a k`.
+
+Introduce `w`. Simplify using `only [GlobalTheory.GenericFrames.pc, if_neg ha, he]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `h` using `hall (Pi.single k 1) τ a`. Simplify `h` using `only [hv]`.
+
+Use `choose P hPdet hP using X.signature`. Establish `hdetA : ∀ w ∈ B, ∀ τ, (mat (x₁ w) τ).det ≠ 0` using `fun w hw τ => ((Data.mem_dom_iff X _).mp (hdom w hw) τ).1`. Establish `hdetQ : ∀ w ∈ B, ∀ τ, (mixCol (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ)).det ≠ 0` using `fun w hw τ => det_mixCol_ne_zero X (hdom w hw) τ (hP τ)`. Use `⟨fun w τ => mixCol (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ) * (mixRow (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ))⁻¹, ?_, ?_⟩` and prove the remaining obligations. Use `differentiableOn_pi.mpr fun τ => differentiableOn_pi.mpr fun i => differentiableOn_pi.mpr fun j => ?_` and prove the remaining obligations.
+
+Conclude with `differentiableOn_mix (fun a : Fin r => (a : ℕ) < X.p0) (P := P τ) (A := fun w => mat (x₁ w) τ) (fun w hw => hdetA w hw τ) (fun w hw => hdetQ w hw τ) (hcolD τ) (hrowD τ) i j`. Introduce `w hw`. Establish `hmat : ∀ τ, mat ((fun w τ => mixCol (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ) * (mixRow (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ))⁻¹ : ℂ → Frame X.Ψ r) w) τ = mixCol (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ) * (mixRow (fun a : Fin r => (a : …` using `fun τ => rfl`. Establish `hcolEq : ∀ τ, ∀ a : Fin r, (a : ℕ) < X.p0 → ∀ k, mat ((fun w τ => mixCol (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ) * (mixRow (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ))⁻¹ : ℂ → Frame X.Ψ r) w) τ k a = mat (x₁ w) τ k a`. Introduce `τ a ha k`.
+
+Rewrite using `[hmat]`. Conclude with `mix_col_eq (fun a : Fin r => (a : ℕ) < X.p0) (hdetA w hw τ) (hdetQ w hw τ) ha k`. Establish `hrowEq : ∀ τ, ∀ a : Fin r, ¬ (a : ℕ) < X.p0 → ∀ k, (mat ((fun w τ => mixCol (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ) * (mixRow (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ))⁻¹ : ℂ → Frame X.Ψ r) w) τ)⁻¹ a k = (mat (x₁ w) τ)⁻¹ a k`. Introduce `τ a ha k`. Rewrite using `[hmat]`.
+
+Conclude with `mix_inv_row_eq (fun a : Fin r => (a : ℕ) < X.p0) (hdetA w hw τ) (hdetQ w hw τ) ha k`. Establish `hydet : ∀ τ, (mat ((fun w τ => mixCol (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ) * (mixRow (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ))⁻¹ : ℂ → Frame X.Ψ r) w) τ).det ≠ 0`. Introduce `τ`. Rewrite using `[hmat, Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv]`. Conclude with `mul_ne_zero (hdetQ w hw τ) (inv_ne_zero (det_mixRow_ne_zero _ (hdetA w hw τ) (hdetQ w hw τ)))`.
+
+Use `⟨mem_dom_of_eq X (hdom w hw) hydet hcolEq hrowEq, ?_⟩` and prove the remaining obligations. Introduce `v τ a`. Distinguish the cases in `ha : (a : ℕ) < X.p0`. Establish `hcol : col (mat ((fun w τ => mixCol (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ) * (mixRow (fun a : Fin r => (a : ℕ) < X.p0) (mat (x₁ w) τ) (P τ))⁻¹ : ℂ → Frame X.Ψ r) w) τ) a = col (mat (x₁ w) τ) a`. Use function extensionality and compare the values at `k`.
+
+Conclude with `hcolEq τ a ha k`. Simplify using `only [GlobalTheory.GenericFrames.pc, if_pos ha]`. Rewrite using `[hcol]`. Simplify using `only [GlobalTheory.GenericFrames.pc, if_neg ha, Matrix.mulVec, dotProduct, hrowEq τ a ha]`.
+-/
 theorem exists_holomorphic_frames : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (B : Set ℂ) (x₁ : ℂ → Frame X.Ψ r), (∀ w ∈ B, x₁ w ∈ X.dom) → (∀ v ∈ X.Λ, ∀ τ a, DifferentiableOn ℂ (fun w => GlobalTheory.GenericFrames.pc X (x₁ w) v τ a) B) → ∃ x : ℂ → Frame X.Ψ r, DifferentiableOn ℂ x B ∧ ∀ w ∈ B, x w ∈ X.dom ∧ ∀ v τ a, GlobalTheory.GenericFrames.pc X (x w) v τ a = GlobalTheory.GenericFrames.pc X (x₁ w) v τ a := by
   intro E _ _ _ r X B x₁ hdom hdiff
   have hemb_add : ∀ (τ : E →+* ℂ) (v v' : Fin r → E),

@@ -9,6 +9,23 @@ open scoped ComplexConjugate
 
 namespace Formalism.L2.S.Pv.Chart
 
+/- English proof (translation)
+Take `⟨k0, rfl⟩ : ∃ k0, k = k0 + 1` from `⟨k - 1, by omega⟩`. Take `⟨Ds, hDz, hDz'⟩` from `Formalism.MainNotions.S.Pv.AmpDDPf.bsetting_of (k0 + 1) r hk z' z ⟨hz', hT'⟩ ⟨hz, hT⟩`. Establish `hG` using `Formalism.FourierDecayAlt.P.unitary_group_closed (k0 + 1) r`. Establish `hgG : g₀ ∈ Formalism.FourierDecayAlt.B.GV (k0 + 1) r` using `hg`. Establish `hu : IsUnit g₀.det` using `hG.unit g₀ hgG`.
+
+Establish `hgi : g₀⁻¹ ∈ Formalism.FourierDecayAlt.B.GV (k0 + 1) r` using `hG.inv_mem g₀ hgG`. Use `set w := wPt p with hw`. Set `d : Fin (r + 1) → ℂ` to `fun a => (-1 : ℂ) ^ (r - (w a).val) * star (dPt p (w a))`. Establish `hd : ∀ a, d a ≠ 0` using `fun a => mul_ne_zero (pow_ne_zero _ (by norm_num)) (star_ne_zero.2 (dPt_ne p (w a)))`. Establish `hmono : ptMat p = Formalism.FourierDecayAlt.C2.monoP w (dPt p)` using `by rw [← ptMatN_swap, ptMatN_mono]`.
+
+Establish `hZ' : Formalism.QuantumDeterminants.Zhat (k0 + 1) r Ds.z Ds.z' g₀⁻¹ = Formalism.FourierDecayAlt.C2.monoP w d`. Use extensionality with `i a`. Rewrite using `[hDz, hDz', Formalism.L2.SG.Pf.RootHaarLoc.zhat_inv z z' hg hu i a]`. Establish `h1` using `congrFun (congrFun hZ a) i`. Unfold `Formalism.MainNotions.S.ZhatO at h1`.
+
+Establish `hs : ((-1 : ℂ) ^ (r - i.val)) * (-1 : ℂ) ^ (r - i.val) = 1`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions. Establish `h2 : Formalism.QuantumDeterminants.Zhat (k0 + 1) r z z' g₀ a i = (-1 : ℂ) ^ (r - i.val) * ptMat p a i`. Rewrite using `[← h1, ← mul_assoc, hs, one_mul]`.
+
+Rewrite using `[h2, hmono]`. Simplify using `only [Formalism.FourierDecayAlt.C2.monoP, Matrix.of_apply]`. Distinguish the cases in `hai : a = w i`. Establish `hia : i = w a` using `by rw [hai, wPt_invol]`. Rewrite using `[if_pos hai, if_pos hia]`.
+
+Simplify using `only [d, star_mul', star_pow, star_neg, star_one]`. Rewrite using `[← hia]`. Establish `hia : ¬ i = w a` using `fun h => hai (by rw [h, wPt_invol])`. Rewrite using `[if_neg hai, if_neg hia, mul_zero, star_zero]`. Establish `hset : Formalism.FourierDecayAlt.C6.Rset g₀⁻¹ = Formalism.MainNotions.S.Rset (k0 + 1) r g₀`.
+
+Use extensionality with `x`. Simplify using `only [Formalism.FourierDecayAlt.C6.Rset, Formalism.MainNotions.S.Rset, Set.mem_setOf_eq, Matrix.nonsing_inv_nonsing_inv _ hu]`. Establish `hGd` using `good_of Ds hgi hd hZ'`. Use `⟨fun y => Matrix.of.symm (Formalism.FourierDecayAlt.P.Dx2.Rad.rhoF Ds g₀⁻¹ w (Tinv p y)), fun y => ⟨?_, ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Use `(Formalism.FourierDecayAlt.P.Dx2.Rad.rhoF_spec Ds hgi hd hGd (Tinv p y)).1` as an intermediate fact.
+
+Rewrite using `[← hset]`. Simplify using `using this`. Conclude with `Formalism.L2.SG.Pf.RootHaarLoc.rootCoords_psiG z' Ds hDz p hgi hd hZ' y`. Rewrite `hx` using `[← hset]`. Conclude with `Formalism.L2.SG.Pf.RootHaarLoc.psi_rootCoordsG z' Ds hDz p hgi hd hZ' x hx`.
+-/
 theorem locChart (k r : ℕ) (hk : 1 ≤ k) (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hT : 0 < Tz k r z)
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (p : Point ℂ (r + 1))
     (g₀ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)

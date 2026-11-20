@@ -16,6 +16,9 @@ open scoped Classical
 open GlobalTheory.BoxLattice GlobalTheory.EvAdm
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BoxLattice.psi_fin_scaledInt_dot | exact GlobalTheory.BoxLattice.psi_fin_scaledInt_dot | (intros; apply GlobalTheory.BoxLattice.psi_fin_scaledInt_dot <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.box_lattice_dual_character : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ a : F, a ≠ 0 → ∀ z : κ → F, (∀ l ∈ boxLat F κ a, ∃ k : ℤ, GlobalTheory.VacLn.trPair F κ l (ratInf F κ z) = k) →
       ∀ u ∈ scaledInt F κ a, ψ (pairA F 0 (u ⬝ᵥ ratFin F κ z)) = 1 := by

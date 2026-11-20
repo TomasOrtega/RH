@@ -5,6 +5,17 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 
 namespace GlobalTheory.CuspGL
 
+/- English proof (translation)
+Use `Fintype.ofFinite F` as an intermediate fact. Establish `hx : IsIntegral F α` using `Algebra.IsIntegral.isIntegral α`. Establish `: FiniteDimensional F (IntermediateField.adjoin F {α})` using `IntermediateField.adjoin.finiteDimensional hx`. Establish `: Finite (IntermediateField.adjoin F {α})` using `Module.finite_of_finite F`. Establish `hgen : ∀ m : ℕ, (FiniteField.frobeniusAlgEquivOfAlgebraic F (IntermediateField.adjoin F {α}) ^ m) (IntermediateField.AdjoinSimple.gen F α) = IntermediateField.AdjoinSimple.gen F α ^ (Fintype.card F ^ m)`.
+
+Introduce `m`. Rewrite using `[AlgEquiv.coe_pow, FiniteField.coe_frobeniusAlgEquivOfAlgebraic_iterate]`. Rewrite using `[← IntermediateField.adjoin.finrank hx, ← FiniteField.orderOf_frobeniusAlgEquivOfAlgebraic F (IntermediateField.adjoin F {α}), orderOf_dvd_iff_pow_eq_one, Nat.card_eq_fintype_card]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Apply `AlgEquiv.coe_toAlgHom_injective` to reduce the goal to its premises. Apply `(IntermediateField.adjoin.powerBasis hx).algHom_ext` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin.powerBasis_gen hx]`. Simplify using `only [AlgEquiv.coe_toAlgHom, AlgEquiv.one_apply]`. Rewrite using `[hgen]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using h`. Introduce `h`. Establish `key` using `congrArg (fun f => ((f (IntermediateField.AdjoinSimple.gen F α) : (IntermediateField.adjoin F {α})) : AlgebraicClosure F)) h`. Simplify using `only [hgen, AlgEquiv.one_apply] at key`.
+
+Simplify using `using key`.
+-/
 theorem pow_card_pow_eq_iff_natDegree_minpoly_dvd (F : Type) [Field F] [Finite F]
     (α : AlgebraicClosure F) (e : ℕ) :
     α ^ Nat.card F ^ e = α ↔ (minpoly F α).natDegree ∣ e := by
@@ -36,6 +47,13 @@ theorem pow_card_pow_eq_iff_natDegree_minpoly_dvd (F : Type) [Field F] [Finite F
     simp only [hgen, AlgEquiv.one_apply] at key
     simpa using key
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hdim : (IntermediateField.adjoin.powerBasis hx).dim = (minpoly F α).natDegree` using `IntermediateField.adjoin.powerBasis_dim hx`. Establish `hg : (IntermediateField.adjoin.powerBasis hx).gen ≠ 0`. Rewrite using `[IntermediateField.adjoin.powerBasis_gen hx]`. Introduce `h`.
+
+Apply `h0` to reduce the goal to its premises. Use `congrArg (algebraMap (IntermediateField.adjoin F {α}) K) h` as an intermediate fact. Simplify using `using this`. Set `f : (IntermediateField.adjoin F {α}) →ₐ[F] Matrix (Fin (minpoly F α).natDegree) (Fin (minpoly F α).natDegree) F` to `(Matrix.reindexAlgEquiv F F (finCongr hdim)).toAlgHom.comp (Algebra.leftMulMatrix (IntermediateField.adjoin.powerBasis hx).basis)`. Use `⟨Units.map (f : (IntermediateField.adjoin F {α}) →* Matrix _ _ F) (Units.mk0 _ hg), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.coe_map, Units.val_mk0]`. Express the relevant statement in the definitionally equal form `(Matrix.reindexAlgEquiv F F (finCongr hdim) (Algebra.leftMulMatrix (IntermediateField.adjoin.powerBasis hx).basis (IntermediateField.adjoin.powerBasis hx).gen)).charpoly = _`. Rewrite using `[Matrix.coe_reindexAlgEquiv, Matrix.charpoly_reindex, charpoly_leftMulMatrix, IntermediateField.adjoin.powerBasis_gen, IntermediateField.minpoly_gen]`.
+-/
 theorem exists_GL_charpoly_eq_minpoly (F K : Type) [Field F] [Field K] [Algebra F K]
     (α : K) (hx : IsIntegral F α) (h0 : α ≠ 0) (n : ℕ) (hn : (minpoly F α).natDegree = n) :
     ∃ x : GL (Fin n) F, Matrix.charpoly (x : Matrix (Fin n) (Fin n) F) = minpoly F α := by
@@ -59,6 +77,15 @@ theorem exists_GL_charpoly_eq_minpoly (F K : Type) [Field F] [Field K] [Algebra 
   rw [Matrix.coe_reindexAlgEquiv, Matrix.charpoly_reindex, charpoly_leftMulMatrix,
     IntermediateField.adjoin.powerBasis_gen, IntermediateField.minpoly_gen]
 
+/- English proof (translation)
+Introduce `F _ _ n hn α hα`. Establish `hα' : α ^ (Nat.card F ^ n - 1) = 1` using `hα`. Establish `hx : IsIntegral F α` using `Algebra.IsIntegral.isIntegral α`. Establish `hq : 1 < Nat.card F ^ n` using `Nat.one_lt_pow hn.ne' Finite.one_lt_card`. Establish `h0 : α ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hα'` using `[zero_pow (Nat.sub_ne_zero_of_lt hq)]`. Conclude with `zero_ne_one hα'`. Establish `hfix : α ^ Nat.card F ^ n = α`. Establish `hsplit : Nat.card F ^ n = (Nat.card F ^ n - 1) + 1` using `(Nat.sub_add_cancel hq.le).symm`.
+
+Rewrite using `[hsplit, pow_succ, hα', one_mul]`. Establish `hdvd` using `(pow_card_pow_eq_iff_natDegree_minpoly_dvd F α n).1 hfix`. Establish `hdpos : 0 < (minpoly F α).natDegree` using `minpoly.natDegree_pos hx`. Use `⟨⟨fun h => ?_, fun h e he1 he2 heq => ?_⟩, fun h => exists_GL_charpoly_eq_minpoly F (AlgebraicClosure F) α hx h0 n h⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Establish `hlt : (minpoly F α).natDegree < n` using `lt_of_le_of_ne (Nat.le_of_dvd hn hdvd) hne`. Conclude with `h _ hdpos hlt ((pow_card_pow_eq_iff_natDegree_minpoly_dvd F α _).2 dvd_rfl)`. Establish `hd` using `(pow_card_pow_eq_iff_natDegree_minpoly_dvd F α e).1 heq`. Rewrite `hd` using `[h]`. Conclude with `absurd (Nat.le_of_dvd he1 hd) (not_le.2 he2)`.
+-/
 theorem regular_iff_natDegree_and_exists_elliptic :
     ∀ (F : Type) [Field F] [Finite F] (n : ℕ), 0 < n → ∀ α ∈ {α : AlgebraicClosure F | α ^ (Nat.card F ^ n - 1) = 1}, ((∀ e : ℕ, 0 < e → e < n → α ^ Nat.card F ^ e ≠ α) ↔ (minpoly F α).natDegree = n) ∧ ((minpoly F α).natDegree = n → ∃ x : GL (Fin n) F, Matrix.charpoly (x : Matrix (Fin n) (Fin n) F) = minpoly F α) := by
   intro F _ _ n hn α hα

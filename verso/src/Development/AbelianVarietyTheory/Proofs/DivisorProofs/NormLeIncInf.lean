@@ -72,6 +72,9 @@ def mCo (σ : E →ₐ[F] E) (h2 : Module.finrank F E = 2) {n : ℕ} (X : Spc F 
 def glue {n d d₁ : ℕ} (h : d = d₁ + 2) {R : Type} (p : Fin n × Fin d₁ → R) (q : Fin n × Fin 2 → R) : Fin n × Fin d → R :=
   fun k => Sum.elim p q (idx h k)
 
+/- English proof (translation)
+Simplify using `[glue]`.
+-/
 theorem glue_inl {n d d₁ : ℕ} (h : d = d₁ + 2) {R : Type} (p : Fin n × Fin d₁ → R) (q : Fin n × Fin 2 → R)
     (j : Fin n × Fin d₁) : glue h p q ((idx h).symm (Sum.inl j)) = p j := by
   simp [glue]
@@ -124,6 +127,9 @@ def incInf : (Fin n × Fin d₁ → mixedEmbedding.mixedSpace F) →L[ℝ] (Fin 
       map_smul' := fun c y => by funext k; simp only [glue, Pi.smul_apply, RingHom.id_apply]; cases idx h k <;> simp }
 
 open scoped Classical in
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => ?_` and prove the remaining obligations. Establish `e : y j = incInf h y ((idx h).symm (Sum.inl j))` using `(glue_inl h y 0 j).symm`. Rewrite using `[e]`. Conclude with `norm_le_pi_norm (incInf h y) _`.
+-/
 theorem norm_le_incInf (y : Fin n × Fin d₁ → mixedEmbedding.mixedSpace F) : ‖y‖ ≤ ‖incInf h y‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => ?_
   have e : y j = incInf h y ((idx h).symm (Sum.inl j)) := (glue_inl h y 0 j).symm

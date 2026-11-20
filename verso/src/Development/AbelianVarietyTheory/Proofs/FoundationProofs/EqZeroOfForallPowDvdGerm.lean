@@ -10,21 +10,33 @@ set_option backward.isDefEq.respectTransparency false
 
 namespace GlobalTheory.PrimeSection
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_res {X : Scheme.{u}} {U V W : X.Opens} (h : W ≤ V) (h' : V ≤ U) (s : Γ(X, U)) :
     X.presheaf.map (homOfLE h).op (X.presheaf.map (homOfLE h').op s) =
       X.presheaf.map (homOfLE (h.trans h')).op s := by
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[show (homOfLE h).op = 𝟙 (op U) from rfl, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 theorem res_self {X : Scheme.{u}} {U : X.Opens} (h : U ≤ U) (s : Γ(X, U)) :
     X.presheaf.map (homOfLE h).op s = s := by
   rw [show (homOfLE h).op = 𝟙 (op U) from rfl, CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+Rewrite using `[X.presheaf.germ_res_apply (homOfLE h) x hx s]`.
+-/
 theorem germ_res {X : Scheme.{u}} {U V : X.Opens} (h : V ≤ U) {x : X} (hx : x ∈ V) (s : Γ(X, U)) :
     X.presheaf.germ V x hx (X.presheaf.map (homOfLE h).op s) = X.presheaf.germ U x (h hx) s := by
   rw [X.presheaf.germ_res_apply (homOfLE h) x hx s]
 
+/- English proof (translation)
+Use `⟨(X.toRingedSpace.isUnit_res_basicOpen t).unit, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem exists_unit_eq_res {X : Scheme.{u}} (t : Γ(X, ⊤)) :
     ∃ τ : Γ(X, X.basicOpen t)ˣ,
       (τ : Γ(X, X.basicOpen t)) = X.presheaf.map (homOfLE le_top).op t := by
@@ -35,8 +47,14 @@ section Integral
 
 variable {X : Scheme.{u}} [IsIntegral X]
 
+/- English proof (translation)
+The claim follows from `((genericPoint_spec X).mem_open_set_iff W.isOpen).mpr ⟨x, trivial, hx⟩`.
+-/
 theorem genericPoint_mem {W : X.Opens} {x : X} (hx : x ∈ W) : genericPoint X ∈ W := ((genericPoint_spec X).mem_open_set_iff W.isOpen).mpr ⟨x, trivial, hx⟩
 
+/- English proof (translation)
+Establish `hne : X.basicOpen s ≠ ⊥` using `fun h => hs ((basicOpen_eq_bot_iff s).mp h)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, x ∈ X.basicOpen s := by`. Assume the negation of the conclusion as `hcon`. Conclude with `hne (eq_bot_iff.mpr fun x hx => (hcon ⟨x, hx⟩).elim)`. Conclude with `genericPoint_mem hx`.
+-/
 theorem genericPoint_mem_basicOpen {W : X.Opens} {s : Γ(X, W)} (hs : s ≠ 0) :
     genericPoint X ∈ X.basicOpen s := by
   have hne : X.basicOpen s ≠ ⊥ := fun h => hs ((basicOpen_eq_bot_iff s).mp h)
@@ -45,12 +63,18 @@ theorem genericPoint_mem_basicOpen {W : X.Opens} {s : Γ(X, W)} (hs : s ≠ 0) :
     exact hne (eq_bot_iff.mpr fun x hx => (hcon ⟨x, hx⟩).elim)
   exact genericPoint_mem hx
 
+/- English proof (translation)
+Establish `: Nonempty W` using `⟨⟨x, hx⟩⟩`. Rewrite using `[Scheme.algebraMap_germ_eq_germToFunctionField]`.
+-/
 theorem algebraMap_germ {W : X.Opens} {x : X} (hx : x ∈ W) (s : Γ(X, W)) :
     algebraMap (X.presheaf.stalk x) X.functionField (X.presheaf.germ W x hx s) =
       X.presheaf.germ W (genericPoint X) (genericPoint_mem hx) s := by
   have : Nonempty W := ⟨⟨x, hx⟩⟩
   rw [Scheme.algebraMap_germ_eq_germToFunctionField]
 
+/- English proof (translation)
+Distinguish the cases in `hW : genericPoint X ∈ W`. Conclude with `germ_injective_of_isIntegral X (genericPoint X) hW (h hW)`. Use `TopCat.Presheaf.section_ext X.sheaf W s s' fun x hx => ?_` and prove the remaining obligations. Conclude with `(hW (genericPoint_mem hx)).elim`.
+-/
 theorem eq_of_germ_eq {W : X.Opens} {s s' : Γ(X, W)}
     (h : ∀ hW : genericPoint X ∈ W, X.presheaf.germ W _ hW s = X.presheaf.germ W _ hW s') :
     s = s' := by
@@ -59,6 +83,9 @@ theorem eq_of_germ_eq {W : X.Opens} {s s' : Γ(X, W)}
   · refine TopCat.Presheaf.section_ext X.sheaf W s s' fun x hx => ?_
     exact (hW (genericPoint_mem hx)).elim
 
+/- English proof (translation)
+Introduce `s s' hss`. Use `eq_of_germ_eq fun hW => ?_` and prove the remaining obligations. Establish `hWD : genericPoint X ∈ W ⊓ D` using `⟨hW, hD⟩`. Rewrite using `[← germ_res (inf_le_left : W ⊓ D ≤ W) hWD s, ← germ_res (inf_le_left : W ⊓ D ≤ W) hWD s', hss]`.
+-/
 theorem res_inf_injective {D : X.Opens} (hD : genericPoint X ∈ D) (W : X.Opens) :
     Function.Injective (X.presheaf.map (homOfLE (inf_le_left : W ⊓ D ≤ W)).op) := by
   intro s s' hss
@@ -66,6 +93,9 @@ theorem res_inf_injective {D : X.Opens} (hD : genericPoint X ∈ D) (W : X.Opens
   have hWD : genericPoint X ∈ W ⊓ D := ⟨hW, hD⟩
   rw [← germ_res (inf_le_left : W ⊓ D ≤ W) hWD s, ← germ_res (inf_le_left : W ⊓ D ≤ W) hWD s', hss]
 
+/- English proof (translation)
+Establish `hgen : genericPoint X ∈ U a` using `genericPoint_mem hx`. Apply `res_inf_injective hgen (U b)` to reduce the goal to its premises. Rewrite using `[hs b a, h, map_zero, mul_zero, map_zero]`.
+-/
 theorem eq_zero_of_component_eq_zero {ι : Type v} {U : ι → X.Opens}
     (g : ∀ a b, Γ(X, U a ⊓ U b)) (s : ∀ a, Γ(X, U a))
     (hs : ∀ a b, X.presheaf.map (homOfLE inf_le_left).op (s a) =
@@ -75,6 +105,9 @@ theorem eq_zero_of_component_eq_zero {ι : Type v} {U : ι → X.Opens}
   apply res_inf_injective hgen (U b)
   rw [hs b a, h, map_zero, mul_zero, map_zero]
 
+/- English proof (translation)
+Establish `hnu : ¬ IsUnit (X.presheaf.germ ⊤ x trivial t)` using `fun hu => hxt ((X.mem_basicOpen_top t x).mpr hu)`. Establish `h0 : X.presheaf.germ (U a) x hx (s a) = 0` using `GlobalTheory.PrimeElement.eq_zero_of_forall_pow_dvd hnu h`. Establish `hsa : s a = 0` using `germ_injective_of_isIntegral X x hx (by rw [h0, map_zero])`. Conclude with `eq_zero_of_component_eq_zero g s hs hx hsa b`.
+-/
 theorem eq_zero_of_forall_pow_dvd_germ [IsLocallyNoetherian X] {t : Γ(X, ⊤)}
     {ι : Type v} {U : ι → X.Opens} (g : ∀ a b, Γ(X, U a ⊓ U b)) (s : ∀ a, Γ(X, U a))
     (hs : ∀ a b, X.presheaf.map (homOfLE inf_le_left).op (s a) =
@@ -95,16 +128,25 @@ variable {X : Scheme.{u}} {t : Γ(X, ⊤)} {η : X}
     Prime (X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op t))
 
 include hη in
+/- English proof (translation)
+The claim follows from `((hη x).mp hxt).mem_open W.isOpen hx`.
+-/
 theorem mem_of_notMem_basicOpen {W : X.Opens} {x : X} (hx : x ∈ W) (hxt : x ∉ X.basicOpen t) :
     η ∈ W := ((hη x).mp hxt).mem_open W.isOpen hx
 
 include hη in
+/- English proof (translation)
+Introduce `x hx`. Assume the negation of the conclusion as `hxt`. Conclude with `hW (mem_of_notMem_basicOpen hη hx hxt)`.
+-/
 theorem le_basicOpen_of_notMem {W : X.Opens} (hW : η ∉ W) : W ≤ X.basicOpen t := by
   intro x hx
   by_contra hxt
   exact hW (mem_of_notMem_basicOpen hη hx hxt)
 
 include hp in
+/- English proof (translation)
+Take `⟨_, ⟨V, hV, rfl⟩, hηV, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ η) isOpen_univ`. Introduce `ht`. Use `(hp V hV hηV).ne_zero` as an intermediate fact. Rewrite `this` using `[ht, map_zero]`. Conclude with `this rfl`.
+-/
 theorem ne_zero : t ≠ 0 := by
   obtain ⟨_, ⟨V, hV, rfl⟩, hηV, -⟩ := X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ η) isOpen_univ
   intro ht
@@ -112,6 +154,9 @@ theorem ne_zero : t ≠ 0 := by
   rw [ht, map_zero] at this
   exact this rfl
 
+/- English proof (translation)
+Rewrite using `[hU.primeIdealOf_eq_map_closedPoint x, X.mem_basicOpen s x.1 x.2]`. Express the relevant statement in the definitionally equal form `X.presheaf.germ U x.1 x.2 s ∈ IsLocalRing.maximalIdeal _ ↔ _`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+-/
 theorem mem_primeIdealOf_iff {U : X.Opens} (hU : IsAffineOpen U) (x : U) (s : Γ(X, U)) :
     s ∈ (hU.primeIdealOf x).asIdeal ↔ x.1 ∉ X.basicOpen s := by
   rw [hU.primeIdealOf_eq_map_closedPoint x, X.mem_basicOpen s x.1 x.2]
@@ -120,6 +165,17 @@ theorem mem_primeIdealOf_iff {U : X.Opens} (hU : IsAffineOpen U) (x : U) (s : Γ
 
 include hη hp in
 
+/- English proof (translation)
+Establish `hπ` using `hp U hU h`. Establish `hηt : η ∉ X.basicOpen t` using `(hη η).mpr (specializes_refl η)`. Establish `hP : (Ideal.span {X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op t}).IsPrime` using `GlobalTheory.PrimeElement.isPrime_span hπ`. Apply `le_antisymm` to reduce the goal to its premises. Set `P : PrimeSpectrum Γ(X, U)` to `⟨_, hP⟩`.
+
+Set `y : U` to `hU.isoSpec.inv P`. Establish `hy : hU.primeIdealOf y = P`. Express the relevant statement in the definitionally equal form `hU.isoSpec.hom (hU.isoSpec.inv P) = P`. Rewrite using `[← Scheme.Hom.comp_apply, Iso.inv_hom_id]`. Both sides reduce to the same expression.
+
+Establish `hyt : y.1 ∉ X.basicOpen t`. Introduce `hyt`. Establish `hmem : X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op t ∈ (hU.primeIdealOf y).asIdeal`. Rewrite using `[hy]`. Conclude with `Ideal.subset_span rfl`.
+
+Rewrite `hmem` using `[mem_primeIdealOf_iff hU y, Scheme.basicOpen_res]`. Conclude with `hmem ⟨y.2, hyt⟩`. Establish `hsp : (⟨η, h⟩ : U) ⤳ y` using `(Topology.IsInducing.subtypeVal.specializes_iff).mp ((hη y.1).mp hyt)`. Establish `hsp'` using `hsp.map hU.isoSpec.hom.continuous`. Rewrite `hsp'` using `[← PrimeSpectrum.le_iff_specializes]`.
+
+Express the relevant statement in the definitionally equal form `(hU.primeIdealOf ⟨η, h⟩).asIdeal ≤ (hU.primeIdealOf y).asIdeal at hsp'`. Rewrite `hsp'` using `[hy]`. Conclude with `hsp'`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, mem_primeIdealOf_iff hU ⟨η, h⟩, Scheme.basicOpen_res]`. Conclude with `fun hm => hηt hm.2`.
+-/
 theorem primeIdealOf_eq_span {U : X.Opens} (hU : IsAffineOpen U) (h : η ∈ U) :
     (hU.primeIdealOf ⟨η, h⟩).asIdeal =
       Ideal.span {X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op t} := by
@@ -155,6 +211,9 @@ theorem primeIdealOf_eq_span {U : X.Opens} (hU : IsAffineOpen U) (h : η ∈ U) 
 
 include hη hp in
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mem_span_singleton, ← primeIdealOf_eq_span hη hp hU h]`. Conclude with `mem_primeIdealOf_iff hU ⟨η, h⟩ s`.
+-/
 theorem dvd_iff_notMem_basicOpen {U : X.Opens} (hU : IsAffineOpen U) (h : η ∈ U) (s : Γ(X, U)) :
     X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op t ∣ s ↔ η ∉ X.basicOpen s := by
   rw [← Ideal.mem_span_singleton, ← primeIdealOf_eq_span hη hp hU h]
@@ -164,6 +223,13 @@ variable [IsIntegral X]
 
 include hη hp in
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hηU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ η) isOpen_univ`. Establish `hπ` using `hp U hU hηU`. Establish `: IsNoetherianRing Γ(X, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Establish `: Nonempty U` using `⟨⟨η, hηU⟩⟩`. Use `GlobalTheory.PrimeElement.isPrime_span hπ` as an intermediate fact.
+
+Set `_` to `TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨η, hηU⟩ : U)`. Establish `hloc : IsLocalization.AtPrime (X.presheaf.stalk η) (Ideal.span {X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op t})`. Establish `h0` using `hU.isLocalization_stalk ⟨η, hηU⟩`. Unfold `IsLocalization.AtPrime at h0 ⊢`. Use `h0 using 3` and compare the differences between its conclusion and the goal.
+
+Conclude with `(primeIdealOf_eq_span hη hp hU hηU).symm`. Use `⟨GlobalTheory.PrimeElement.isDiscreteValuationRing (X.presheaf.stalk η) hπ.ne_zero, ?_⟩` and prove the remaining obligations. Establish `hirr` using `GlobalTheory.PrimeElement.irreducible_algebraMap (X.presheaf.stalk η) hπ.ne_zero`. Use `hirr using 1` and compare the differences between its conclusion and the goal. Conclude with `(germ_res le_top hηU t).symm`.
+-/
 theorem isDiscreteValuationRing_stalk [IsLocallyNoetherian X] :
     IsDiscreteValuationRing (X.presheaf.stalk η) ∧
       Irreducible (X.presheaf.germ ⊤ η trivial t) := by
@@ -185,8 +251,22 @@ theorem isDiscreteValuationRing_stalk [IsLocallyNoetherian X] :
   exact (germ_res le_top hηU t).symm
 
 include hp in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨genericPoint_mem h, genericPoint_mem_basicOpen (ne_zero hp)⟩`.
+-/
 theorem genericPoint_mem_inf {W : X.Opens} (h : η ∈ W) : genericPoint X ∈ W ⊓ X.basicOpen t := ⟨genericPoint_mem h, genericPoint_mem_basicOpen (ne_zero hp)⟩
 
+/- English proof (translation)
+Use `GlobalTheory.PrimeElement.isPrime_span hπ` as an intermediate fact. Establish `: Nonempty V` using `⟨⟨η, hηV⟩⟩`. Establish `: Nonempty (X.basicOpen (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t))` using `⟨⟨_, hY⟩⟩`. Set `_ : Algebra Γ(X, V) Γ(X, X.basicOpen (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t))` to `(X.presheaf.map (homOfLE (X.basicOpen_le (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t))).op).hom.toAlgebra`. Establish `: IsLocalization.Away (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t) Γ(X, X.basicOpen (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t))` using `hV.isLocalization_basicOpen _`.
+
+Set `_` to `TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨η, hηV⟩ : V)`. Establish `hloc : IsLocalization.AtPrime (X.presheaf.stalk η) (Ideal.span {X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t})`. Establish `h0` using `hV.isLocalization_stalk ⟨η, hηV⟩`. Unfold `IsLocalization.AtPrime at h0 ⊢`. Use `h0 using 3` and compare the differences between its conclusion and the goal.
+
+Conclude with `hq.symm`. Establish `: IsScalarTower Γ(X, V) Γ(X, X.basicOpen (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t)) X.functionField`. Apply `IsScalarTower.of_algebraMap_eq` to reduce the goal to its premises. Introduce `a`. Conclude with `(germ_res (X.basicOpen_le _) hY a).symm`.
+
+Establish `: FaithfulSMul Γ(X, V) X.functionField` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (X.germToFunctionField_injective V)`. Establish `: IsScalarTower Γ(X, V) (X.presheaf.stalk η) X.functionField` using `functionField_isScalarTower X V ⟨η, hηV⟩`. Establish `hh : algebraMap _ X.functionField y = algebraMap (X.presheaf.stalk η) X.functionField z` using `h`. Take `⟨r, hr⟩` from `GlobalTheory.PrimeElement.exists_algebraMap_eq (K := X.functionField) hπ.ne_zero hh`. Use `⟨r, hr, fun hy hz => ?_⟩` and prove the remaining obligations.
+
+Take `⟨r', hr'u, hr'⟩` from `GlobalTheory.PrimeElement.exists_unit_algebraMap_eq (K := X.functionField) hπ.ne_zero hy hz hh`. Establish `hinj` using `IsLocalization.injective (M := Submonoid.powers (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t)) Γ(X, X.basicOpen (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t)) (powers_le_nonZeroDivisors_of_noZeroDivisors hπ.ne_zero)`. Establish `hrr : r' = r` using `hinj (hr'.trans hr.symm)`. Conclude with `hrr ▸ hr'u`.
+-/
 private theorem exists_section_restrict_eq_of_germ_eq {V : X.Opens} (hV : IsAffineOpen V) (hηV : η ∈ V)
     (hπ : Prime (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t))
     (hq : (hV.primeIdealOf ⟨η, hηV⟩).asIdeal = Ideal.span {X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t})
@@ -232,6 +312,27 @@ private theorem exists_section_restrict_eq_of_germ_eq {V : X.Opens} (hV : IsAffi
 
 include hη in
 
+/- English proof (translation)
+Establish `hloc : ∀ x : {x // x ∈ W ∧ x ∉ X.basicOpen t}, ∃ V : X.Opens, IsAffineOpen V ∧ x.1 ∈ V ∧ V ≤ W`. Introduce `x`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open x.2.1 W.isOpen`. Conclude with `⟨V, hV, hxV, hVW⟩`. Use `choose V hV hxV hVW using hloc`.
+
+Establish `hηV : ∀ x, η ∈ V x` using `fun x => mem_of_notMem_basicOpen hη (hxV x) x.2.2`. Establish `hsec : ∀ x, ∃ sx : Γ(X, V x), X.presheaf.germ (V x) (genericPoint X) (genericPoint_mem (hxV x)) sx = X.presheaf.germ _ (genericPoint X) (genericPoint_mem_inf hp (hVW x (hηV x))) r`. Introduce `x`. Establish `hπ` using `hp (V x) (hV x) (hηV x)`. Establish `hq` using `primeIdealOf_eq_span hη hp (hV x) (hηV x)`.
+
+Establish `hYle : X.basicOpen (X.presheaf.map (homOfLE (le_top : V x ≤ ⊤)).op t) ≤ W ⊓ X.basicOpen t`. Rewrite using `[Scheme.basicOpen_res]`. Conclude with `fun y hy => ⟨hVW x hy.1, hy.2⟩`. Establish `hY : genericPoint X ∈ X.basicOpen (X.presheaf.map (homOfLE (le_top : V x ≤ ⊤)).op t)`. Rewrite using `[Scheme.basicOpen_res]`.
+
+Conclude with `genericPoint_mem_inf hp (hηV x)`. Take `⟨z, hz⟩` from `hr (hVW x (hηV x))`. Take `⟨sx, hsx, -⟩` from `exists_section_restrict_eq_of_germ_eq (hV x) (hηV x) hπ hq hY (X.presheaf.map (homOfLE hYle).op r) z (by rw [germ_res]; exact hz.symm)`. Use `⟨sx, ?_⟩` and prove the remaining obligations. Rewrite using `[← germ_res (X.basicOpen_le _) hY sx, hsx, germ_res]`.
+
+Use `choose sx hsx using hsec`. Set `O : Option {x // x ∈ W ∧ x ∉ X.basicOpen t} → X.Opens` to `fun i => i.elim (W ⊓ X.basicOpen t) V`. Set `f : ∀ i, Γ(X, O i)` to `fun i => Option.rec (motive := fun i => Γ(X, O i)) r sx i`. Establish `hOW : ∀ i, O i ≤ W`. Introduce `i`.
+
+Consider the cases of `i with`. Consider the case `none => exact inf_le_left`. Consider the case `some x => exact hVW x`. Establish `hcov : W ≤ iSup O`. Introduce `y hy`.
+
+Distinguish the cases in `hyt : y ∈ X.basicOpen t`. Conclude with `(le_iSup O none) ⟨hy, hyt⟩`. Conclude with `(le_iSup O (some ⟨y, hy, hyt⟩)) (hxV ⟨y, hy, hyt⟩)`. Establish `hgD : genericPoint X ∈ X.basicOpen t` using `genericPoint_mem_basicOpen (ne_zero hp)`. Establish `hgerm : ∀ i (hi : genericPoint X ∈ O i), X.presheaf.germ (O i) (genericPoint X) hi (f i) = X.presheaf.germ _ (genericPoint X) (⟨hOW i hi, hgD⟩ : genericPoint X ∈ W ⊓ X.basicOpen t) r`.
+
+Introduce `i hi`. Consider the cases of `i with`. Consider the case `none => rfl`. Consider the case `some x => exact hsx x`. Establish `hcompat : TopCat.Presheaf.IsCompatible X.sheaf.1 O f`.
+
+Introduce `i j`. Use `eq_of_germ_eq fun hij => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `X.presheaf.germ _ _ hij (X.presheaf.map (Opens.infLELeft (O i) (O j)).op (f i)) = X.presheaf.germ _ _ hij (X.presheaf.map (Opens.infLERight (O i) (O j)).op (f j))`. Rewrite using `[TopCat.Presheaf.germ_res_apply, TopCat.Presheaf.germ_res_apply, hgerm i, hgerm j]`. Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' O W (fun i => homOfLE (hOW i)) hcov f hcompat`.
+
+Conclude with `⟨s, hs none⟩`.
+-/
 theorem exists_res_eq {W : X.Opens} (r : Γ(X, W ⊓ X.basicOpen t))
     (hr : ∀ h : η ∈ W, ∃ z : X.presheaf.stalk η, algebraMap _ X.functionField z =
       X.presheaf.germ _ (genericPoint X) (genericPoint_mem_inf hp h) r) :
@@ -293,6 +394,21 @@ theorem exists_res_eq {W : X.Opens} (r : Γ(X, W ⊓ X.basicOpen t))
 
 include hη hp in
 
+/- English proof (translation)
+Use `X.toRingedSpace.isUnit_of_isUnit_germ W s fun x hx => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsUnit (X.presheaf.germ W x hx s)`. Distinguish the cases in `hxt : x ∈ X.basicOpen t`. Establish `hx' : x ∈ W ⊓ X.basicOpen t` using `⟨hx, hxt⟩`. Rewrite using `[← germ_res inf_le_left hx' s]`.
+
+Conclude with `hs.map _`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVW0⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hx W.isOpen`. Establish `hVW : V ≤ W` using `hVW0`. Establish `hηV : η ∈ V` using `mem_of_notMem_basicOpen hη hxV hxt`. Establish `hηW : η ∈ W` using `hVW hηV`.
+
+Rewrite using `[← germ_res hVW hxV s]`. Use `IsUnit.map _ ?_` and prove the remaining obligations. Establish `hπ` using `hp V hV hηV`. Establish `hq` using `primeIdealOf_eq_span hη hp hV hηV`. Establish `hYle : X.basicOpen (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t) ≤ W ⊓ X.basicOpen t`.
+
+Rewrite using `[Scheme.basicOpen_res]`. Conclude with `fun y hy => ⟨hVW hy.1, hy.2⟩`. Establish `hY : genericPoint X ∈ X.basicOpen (X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op t)`. Rewrite using `[Scheme.basicOpen_res]`. Conclude with `genericPoint_mem_inf hp hηV`.
+
+Establish `hres : X.presheaf.map (homOfLE hYle).op (X.presheaf.map (homOfLE inf_le_left).op s) = X.presheaf.map (homOfLE (X.basicOpen_le _)).op (X.presheaf.map (homOfLE hVW).op s)`. Rewrite using `[res_res, res_res]`. Establish `hz : IsUnit (X.presheaf.germ V η hηV (X.presheaf.map (homOfLE hVW).op s))`. Rewrite using `[germ_res]`. Conclude with `(X.mem_basicOpen s η hηW).mp (hsη hηW)`.
+
+Take `⟨r, hr, hru⟩` from `exists_section_restrict_eq_of_germ_eq hV hηV hπ hq hY (X.presheaf.map (homOfLE (X.basicOpen_le _)).op (X.presheaf.map (homOfLE hVW).op s)) (X.presheaf.germ V η hηV (X.presheaf.map (homOfLE hVW).op s)) (by rw [algebraMap_germ, germ_res, germ_res])`. Establish `hinj : r = X.presheaf.map (homOfLE hVW).op s`. Establish `: Nonempty V` using `⟨⟨η, hηV⟩⟩`. Use `eq_of_germ_eq fun hgV => ?_` and prove the remaining obligations. Rewrite using `[← germ_res (X.basicOpen_le _) hY r, hr, germ_res]`.
+
+Rewrite using `[← hinj]`. Use `hru ?_ hz` and prove the remaining obligations. Rewrite using `[← hres]`. Conclude with `hs.map _`.
+-/
 theorem isUnit_of_isUnit_res {W : X.Opens} {s : Γ(X, W)}
     (hs : IsUnit (X.presheaf.map (homOfLE (inf_le_left : W ⊓ X.basicOpen t ≤ W)).op s))
     (hsη : η ∈ W → η ∈ X.basicOpen s) : IsUnit s := by
@@ -339,6 +455,9 @@ section Cocycle
 
 variable {ι : Type v} {U : ι → X.Opens} {g : ∀ a b, Γ(X, U a ⊓ U b)}
 
+/- English proof (translation)
+Establish `hx : x ∈ U a ⊓ U b ⊓ D` using `⟨⟨ha.1, hb.1⟩, ha.2⟩`. Establish `h` using `congrArg (X.presheaf.germ _ x hx) (hr a b)`. Rewrite `h` using `[map_mul, germ_res, germ_res, germ_res]`. Conclude with `h`.
+-/
 theorem germ_eq_mul_germ {D : X.Opens} {r : ∀ a, Γ(X, U a ⊓ D)}
     (hr : ∀ a b, X.presheaf.map (homOfLE (inf_le_inf_right D inf_le_left)).op (r a) =
       X.presheaf.map (homOfLE (inf_le_left : U a ⊓ U b ⊓ D ≤ U a ⊓ U b)).op (g a b) *
@@ -352,6 +471,11 @@ theorem germ_eq_mul_germ {D : X.Opens} {r : ∀ a, Γ(X, U a ⊓ D)}
   rw [map_mul, germ_res, germ_res, germ_res] at h
   exact h
 
+/- English proof (translation)
+Use `eq_of_germ_eq fun hab => ?_` and prove the remaining obligations. Establish `hga : genericPoint X ∈ U a ⊓ D` using `⟨hab.1, hD⟩`. Establish `hgb : genericPoint X ∈ U b ⊓ D` using `⟨hab.2, hD⟩`. Rewrite using `[map_mul, germ_res, germ_res]`. Rewrite using `[← germ_res (inf_le_left : U a ⊓ D ≤ U a) hga (s a), hs a, ← germ_res (inf_le_left : U b ⊓ D ≤ U b) hgb (s b), hs b]`.
+
+Rewrite using `[map_mul, map_mul, germ_res, germ_res, germ_eq_mul_germ hr hga hgb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem compatible_of_res_eq {D : X.Opens} (hD : genericPoint X ∈ D) {r : ∀ a, Γ(X, U a ⊓ D)}
     (hr : ∀ a b, X.presheaf.map (homOfLE (inf_le_inf_right D inf_le_left)).op (r a) =
       X.presheaf.map (homOfLE (inf_le_left : U a ⊓ U b ⊓ D ≤ U a ⊓ U b)).op (g a b) *
@@ -372,6 +496,11 @@ theorem compatible_of_res_eq {D : X.Opens} (hD : genericPoint X ∈ D) {r : ∀ 
 
 omit [IsIntegral X] in
 
+/- English proof (translation)
+Establish `hxb : x ∈ U b` using `X.basicOpen_le (s b) hb`. Establish `hab : x ∈ U a ⊓ U b` using `⟨ha, hxb⟩`. Establish `h` using `congrArg (X.presheaf.germ _ x hab) (hs a b)`. Rewrite `h` using `[map_mul, germ_res, germ_res]`. Rewrite using `[X.mem_basicOpen (s a) x ha, h]`.
+
+Conclude with `(IsUnit.mul (IsUnit.map (X.presheaf.germ _ x hab).hom (hg a b)) ((X.mem_basicOpen (s b) x hxb).mp hb))`.
+-/
 theorem mem_basicOpen_of_compatible (hg : ∀ a b, IsUnit (g a b)) {s : ∀ a, Γ(X, U a)}
     (hs : ∀ a b, X.presheaf.map (homOfLE inf_le_left).op (s a) =
       g a b * X.presheaf.map (homOfLE inf_le_right).op (s b))
@@ -387,6 +516,25 @@ variable [IsLocallyNoetherian X]
 
 include hη hp in
 
+/- English proof (translation)
+Establish `hgD : genericPoint X ∈ X.basicOpen t` using `genericPoint_mem_basicOpen (ne_zero hp)`. Establish `hηD : η ∉ X.basicOpen t` using `(hη η).mpr (specializes_refl η)`. Take `⟨a₀, ha₀⟩` from `hU η`. Establish `hga₀ : genericPoint X ∈ U a₀` using `genericPoint_mem ha₀`. Establish `hf : X.presheaf.germ _ (genericPoint X) (⟨hga₀, hgD⟩ : genericPoint X ∈ U a₀ ⊓ X.basicOpen t) (r a₀) ≠ 0`.
+
+Introduce `hf0`. Take `⟨b, hb⟩` from `hr0`. Apply `hb` to reduce the goal to its premises. Use `eq_of_germ_eq fun hgb => ?_` and prove the remaining obligations. Rewrite using `[map_zero, germ_eq_mul_germ hr hgb ⟨hga₀, hgD⟩, hf0, mul_zero]`.
+
+Take `⟨hdvr, hirr⟩` from `isDiscreteValuationRing_stalk hη hp`. Use `hdvr` as an intermediate fact. Establish `hφ : ∀ n : ℤ, X.presheaf.germ _ (genericPoint X) hgD (↑(τ ^ n) : Γ(X, X.basicOpen t)) = (algebraMap (X.presheaf.stalk η) X.functionField (X.presheaf.germ ⊤ η trivial t)) ^ n`. Introduce `n`. Establish `h1 : X.presheaf.germ _ (genericPoint X) hgD (τ : Γ(X, X.basicOpen t)) = algebraMap _ X.functionField (X.presheaf.germ ⊤ η trivial t)`.
+
+Rewrite using `[hτ, germ_res, algebraMap_germ]`. Rewrite using `[← h1]`. Express the relevant statement in the definitionally equal form `((Units.map (X.presheaf.germ _ (genericPoint X) hgD).hom.toMonoidHom (τ ^ n) : X.functionField)) = _`. Rewrite using `[map_zpow, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+
+Take `⟨n, ⟨u, hu, hun⟩, huniq⟩` from `GlobalTheory.PrimeElement.existsUnique_zpow_mul_eq_unit (K := X.functionField) hirr hf`. Establish `hext : ∀ a, ∃ sa : Γ(X, U a), X.presheaf.map (homOfLE inf_le_left).op sa = X.presheaf.map (homOfLE inf_le_right).op (↑(τ ^ n) : Γ(X, X.basicOpen t)) * r a`. Introduce `a`. Use `exists_res_eq hη hp _ fun hηa => ?_` and prove the remaining obligations. Use `⟨X.presheaf.germ _ η (⟨hηa, ha₀⟩ : η ∈ U a ⊓ U a₀) (g a a₀) * u, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, hun, algebraMap_germ, germ_res, hφ n, germ_eq_mul_germ hr (⟨genericPoint_mem hηa, hgD⟩ : genericPoint X ∈ U a ⊓ X.basicOpen t) ⟨hga₀, hgD⟩]`. Expand and normalize the polynomial expressions, which then agree. Use `choose s hs using hext`. Establish `hcomp` using `compatible_of_res_eq hgD hr (↑(τ ^ n) : Γ(X, X.basicOpen t)) hs`. Use `⟨n, ⟨s, hcomp, hs, a₀, η, hηD, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[X.mem_basicOpen (s a₀) η ha₀]`. Establish `hsu : X.presheaf.germ (U a₀) η ha₀ (s a₀) = u`. Apply `IsFractionRing.injective (X.presheaf.stalk η) X.functionField` to reduce the goal to its premises. Rewrite using `[hun, algebraMap_germ, ← germ_res inf_le_left (⟨hga₀, hgD⟩ : genericPoint X ∈ U a₀ ⊓ X.basicOpen t) (s a₀), hs a₀, map_mul, germ_res, hφ n]`. Conclude with `hsu ▸ hu`.
+
+Introduce and unpack `n' ⟨s', hs'c, hs', a', x', hx'D, hx's⟩`. Apply `huniq n'` to reduce the goal to its premises. Establish `hηs' : η ∈ X.basicOpen (s' a')` using `((hη x').mp hx'D).mem_open (X.basicOpen (s' a')).isOpen hx's`. Establish `hηs₀ : η ∈ X.basicOpen (s' a₀)` using `mem_basicOpen_of_compatible hg hs'c ha₀ hηs'`. Use `⟨X.presheaf.germ (U a₀) η ha₀ (s' a₀), (X.mem_basicOpen _ η ha₀).mp hηs₀, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[algebraMap_germ, ← germ_res inf_le_left (⟨hga₀, hgD⟩ : genericPoint X ∈ U a₀ ⊓ X.basicOpen t) (s' a₀), hs' a₀, map_mul, germ_res, hφ n']`.
+-/
 theorem existsUnique_zpow_mul (hU : ∀ x : X, ∃ a, x ∈ U a) (hg : ∀ a b, IsUnit (g a b))
     (τ : Γ(X, X.basicOpen t)ˣ)
     (hτ : (τ : Γ(X, X.basicOpen t)) = X.presheaf.map (homOfLE le_top).op t)
@@ -456,6 +604,13 @@ theorem existsUnique_zpow_mul (hU : ∀ x : X, ∃ a, x ∈ U a) (hg : ∀ a b, 
 
 include hη hp in
 
+/- English proof (translation)
+Take `⟨a₀, ha₀⟩` from `hU η`. Establish `hgD : genericPoint X ∈ X.basicOpen t` using `genericPoint_mem_basicOpen (ne_zero hp)`. Establish `hr0 : ∃ a, r a ≠ 0`. Use `⟨a₀, fun h0 => ?_⟩` and prove the remaining obligations. Establish `: Nonempty ↥(U a₀ ⊓ X.basicOpen t)` using `⟨⟨genericPoint X, genericPoint_mem ha₀, hgD⟩⟩`.
+
+Conclude with `(hru a₀).ne_zero h0`. Take `⟨n, ⟨s, hsc, hs, a', x', hx'D, hx's⟩, -⟩` from `existsUnique_zpow_mul hη hp hU hg τ hτ hr hr0`. Use `⟨n, s, fun a => ?_, hsc, hs⟩` and prove the remaining obligations. Use `isUnit_of_isUnit_res hη hp ?_ fun hηa => ?_` and prove the remaining obligations. Rewrite using `[hs a]`.
+
+Conclude with `((τ ^ n).isUnit.map _).mul (hru a)`. Establish `hηs' : η ∈ X.basicOpen (s a')` using `((hη x').mp hx'D).mem_open (X.basicOpen (s a')).isOpen hx's`. Conclude with `mem_basicOpen_of_compatible hg hsc hηa hηs'`.
+-/
 theorem exists_zpow_mul_isUnit (hU : ∀ x : X, ∃ a, x ∈ U a) (hg : ∀ a b, IsUnit (g a b))
     (τ : Γ(X, X.basicOpen t)ˣ)
     (hτ : (τ : Γ(X, X.basicOpen t)) = X.presheaf.map (homOfLE le_top).op t)
@@ -483,6 +638,15 @@ theorem exists_zpow_mul_isUnit (hU : ∀ x : X, ∃ a, x ∈ U a) (hg : ∀ a b,
   · have hηs' : η ∈ X.basicOpen (s a') := ((hη x').mp hx'D).mem_open (X.basicOpen (s a')).isOpen hx's
     exact mem_basicOpen_of_compatible hg hsc hηa hηs'
 
+/- English proof (translation)
+Break down `Int.eq_nat_or_neg n with ⟨k, rfl | rfl⟩` into its components or cases. Consider the cases of `k with`. Consider the case `zero => rfl`. Consider the case `succ k`. It suffices to derive a contradiction.
+
+Establish `h' : ρ σ = ρ (p ^ (k + 1) * u)`. Rewrite using `[h, map_mul, map_pow, ← hτ, zpow_natCast, Units.val_pow_eq_pow_val]`. Establish `hσ' : IsUnit (p ^ (k + 1) * u)` using `hρ h' ▸ hσ`. Conclude with `hp ((isUnit_pow_iff (Nat.succ_ne_zero k)).mp (isUnit_of_mul_isUnit_left hσ'))`. Consider the cases of `k with`.
+
+Consider the case `zero => simp`. Consider the case `succ k`. It suffices to derive a contradiction. Establish `e : ((τ ^ (-((k + 1 : ℕ) : ℤ)) : Bˣ) : B) * ((τ ^ (k + 1) : Bˣ) : B) = 1`. Rewrite using `[← Units.val_mul, zpow_neg, zpow_natCast, inv_mul_cancel, Units.val_one]`.
+
+Establish `h' : ρ (σ * p ^ (k + 1)) = ρ u`. Rewrite using `[map_mul, map_pow, h, ← hτ, ← Units.val_pow_eq_pow_val, mul_right_comm, e, one_mul]`. Establish `hu' : IsUnit (σ * p ^ (k + 1))` using `(hρ h').symm ▸ hu`. Conclude with `hp ((isUnit_pow_iff (Nat.succ_ne_zero k)).mp (isUnit_of_mul_isUnit_right hu'))`.
+-/
 theorem zpow_eq_zero {A B : Type*} [CommRing A] [CommRing B] (ρ : A →+* B)
     (hρ : Function.Injective ρ) {σ u p : A} (hσ : IsUnit σ) (hu : IsUnit u) (hp : ¬ IsUnit p)
     (τ : Bˣ) (hτ : (τ : B) = ρ p) {n : ℤ} (h : ρ σ = (τ ^ n : Bˣ) * ρ u) : n = 0 := by
@@ -508,6 +672,21 @@ theorem zpow_eq_zero {A B : Type*} [CommRing A] [CommRing B] (ρ : A →+* B)
 
 include hη hp in
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `exists_unit_eq_res t`. Take `⟨n, s, hsu, hsc, hs⟩` from `exists_zpow_mul_isUnit hη hp hU hg τ hτ hr hru`. It suffices to establish `hn : n = 0 by`. Substitute `hn` using the available equality. Use `⟨s, hsu, hsc, fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs a, zpow_zero, Units.val_one, map_one, one_mul]`. Establish `hTV : genericPoint T ∈ e ⁻¹ᵁ U a₀` using `genericPoint_mem (show y ∈ e ⁻¹ᵁ U a₀ from hya)`. Establish `hTD : genericPoint T ∈ e ⁻¹ᵁ X.basicOpen t`. Take `⟨y', hy'⟩` from `he`. Conclude with `genericPoint_mem (show y' ∈ e ⁻¹ᵁ X.basicOpen t from hy')`.
+
+Establish `hψ : ∀ (W W' : X.Opens) (hWW : W' ≤ W) (h' : genericPoint T ∈ e ⁻¹ᵁ W') (f : Γ(X, W)), T.presheaf.germ _ (genericPoint T) h' (e.app W' (X.presheaf.map (homOfLE hWW).op f)) = T.presheaf.germ _ (genericPoint T) (e.preimage_mono hWW h') (e.app W f)`. Introduce `W W' hWW h' f`. Rewrite using `[← CommRingCat.comp_apply (X.presheaf.map (homOfLE hWW).op) (e.app W'), e.naturality, CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply]`. Establish `hTVD : genericPoint T ∈ e ⁻¹ᵁ (U a₀ ⊓ X.basicOpen t)` using `⟨hTV, hTD⟩`. Set `φ` to `(T.presheaf.germ _ (genericPoint T) hTD).hom.comp (e.app (X.basicOpen t)).hom`.
+
+Use `zpow_eq_zero (T.presheaf.germ _ (genericPoint T) hTV).hom (germ_injective_of_isIntegral T _ hTV) (σ := e.app (U a₀) (s a₀)) (u := u) (p := e.app (U a₀) (X.presheaf.map (homOfLE (le_top : U a₀ ≤ ⊤)).op t)) ((hsu a₀).map _) hu ?_ (Units.map φ.toMonoidHom τ) ?_ ?_` and prove the remaining obligations. Introduce `hpu`. Apply `hy` to reduce the goal to its premises. Establish `hyb : y ∈ T.basicOpen (e.app (U a₀) (X.presheaf.map (homOfLE (le_top : U a₀ ≤ ⊤)).op t))`. Rewrite using `[T.basicOpen_of_isUnit hpu]`.
+
+Conclude with `hya`. Rewrite `hyb` using `[← Scheme.preimage_basicOpen, Scheme.basicOpen_res]`. Conclude with `hyb.2`. Express the relevant statement in the definitionally equal form `φ τ = _`. Simplify using `only [φ, RingHom.comp_apply]`.
+
+Rewrite using `[hτ, hψ ⊤ (X.basicOpen t) le_top hTD t, hψ ⊤ (U a₀) le_top hTV t]`. Establish `h1` using `congrArg (T.presheaf.germ _ (genericPoint T) hTVD) (congrArg (e.app _) (hs a₀))`. Rewrite `h1` using `[hψ (U a₀) _ inf_le_left hTVD (s a₀), map_mul, map_mul, hψ (X.basicOpen t) _ inf_le_right hTVD, ← hur, TopCat.Presheaf.germ_res_apply]`. Rewrite using `[h1]`. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `φ ↑(τ ^ n) = ((Units.map φ.toMonoidHom τ ^ n : _) : T.functionField)`. Rewrite using `[← map_zpow]`. Both sides reduce to the same expression.
+-/
 theorem exists_isUnit_res_eq (hU : ∀ x : X, ∃ a, x ∈ U a) (hg : ∀ a b, IsUnit (g a b))
     {r : ∀ a, Γ(X, U a ⊓ X.basicOpen t)}
     (hr : ∀ a b, X.presheaf.map (homOfLE (inf_le_inf_right _ inf_le_left)).op (r a) =

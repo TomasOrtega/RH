@@ -9,6 +9,37 @@ namespace GlobalTheory.CompanionTheory.EvalTensor
 
 variable {G S V : Type} [Group G] [AddCommGroup S] [Module ℂ S] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `haveI : IsSimpleOrder (Subrepresentation σ) := hirr`. Proceed by induction on `J using Finset.induction_on with`. Consider the case `empty => intro t _ j hj`. Simplify using `at hj`. Consider the case `insert a J ha ih`.
+
+Introduce `t ht`. Rewrite `ht` using `[Finset.sum_insert ha]`. Establish `hta : t a = 0`. Assume the negation of the conclusion as `hne`. Set `Φ : (J → S) →ₗ[ℂ] V` to `∑ j : J, (b j.1).comp (LinearMap.proj j)`.
+
+Establish `hΦ : ∀ f : J → S, Φ f = ∑ j : J, b j.1 (f j)` using `fun f => by`. Simplify using `[Φ, LinearMap.sum_apply]`. Establish `hinj : Function.Injective Φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`.
+
+Rewrite `hf` using `[hΦ]`. Use function extensionality and compare the values at `j`. Establish `h0` using `ih (fun i => if h : i ∈ J then f ⟨i, h⟩ else 0) (by`. Rewrite using `[← Finset.sum_coe_sort J]`. Simplify using `using hf) j.1 j.2`.
+
+Simplify using `using h0`. Establish `hequi : ∀ (g : G) (f : J → S), Φ (fun j => σ g (f j)) = π g (Φ f)` using `fun g f => by`. Rewrite using `[hΦ, hΦ, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hb j.1 g (f j)`. Set `W : Subrepresentation σ` to `{ toSubmodule := (LinearMap.range Φ).comap (b a) apply_mem_toSubmodule := by`.
+
+Introduce and unpack `g v ⟨f, hf⟩`. Conclude with `⟨fun j => σ g (f j), by rw [hequi, hf, hb]⟩ }`. Establish `hmem : t a ∈ W`. Use `⟨fun j => - t j.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ]`.
+
+Establish `h1 : ∑ j : J, b j.1 (- t j.1) = - ∑ j ∈ J, b j (t j)`. Rewrite using `[← Finset.sum_coe_sort J, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => map_neg _ _`. Rewrite using `[h1]`. Conclude with `(eq_neg_of_add_eq_zero_left ht).symm ▸ rfl`.
+
+Establish `htop : W = ⊤`. Break down `IsSimpleOrder.eq_bot_or_eq_top W with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Rewrite `hmem` using `[h]`.
+
+Conclude with `hmem`. Conclude with `h`. Establish `hall : ∀ s, b a s ∈ LinearMap.range Φ` using `fun s => by`. Establish `: s ∈ W` using `by rw [htop]; trivial`. Conclude with `this`.
+
+Set `e` to `LinearEquiv.ofInjective Φ hinj`. Set `B : S →ₗ[ℂ] (J → S)` to `e.symm.toLinearMap ∘ₗ (b a).codRestrict (LinearMap.range Φ) hall`. Establish `hB : ∀ s, Φ (B s) = b a s` using `fun s => by`. Establish `h1 : ((e (B s) : LinearMap.range Φ) : V) = Φ (B s)` using `LinearEquiv.ofInjective_apply _ _`. Rewrite using `[← h1]`.
+
+Simplify using `[B]`. Establish `hBc : ∀ g s, B (σ g s) = fun j => σ g (B s j)` using `fun g s => by`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hB, hequi, hB, hb]`. Establish `hsc : ∀ j : J, ∃ c : ℂ, (LinearMap.proj j) ∘ₗ B = c • (LinearMap.id : S →ₗ[ℂ] S)` using `fun j => hschur _ fun g s => by`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[hBc]`. Use `choose c hc using hsc`. Establish `hsum : b a = ∑ j : J, c j • b j.1`. Use extensionality with `s`.
+
+Rewrite using `[← hB, hΦ, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : B s j = c j • s`. Simplify using `using LinearMap.congr_fun (hc j) s`. Rewrite using `[h1, map_smul, LinearMap.smul_apply]`.
+
+Use `hli.notMem_span_image (s := (J : Set ι)) (x := a) (by simpa using ha) ?_` and prove the remaining obligations. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j.1, j.2, rfl⟩)`. Establish `hrest : ∑ j ∈ J, b j (t j) = 0`. Simplify `ht` using `[hta]`.
+
+Introduce `j hj`. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `hta`. Conclude with `ih t hrest j hj`.
+-/
 theorem eq_zero_of_sum_apply_eq_zero (σ : Representation ℂ G S) (π : Representation ℂ G V)
     (hirr : σ.IsIrreducible)
     (hschur : ∀ A : S →ₗ[ℂ] S, (∀ g s, A (σ g s) = σ g (A s)) → ∃ c : ℂ, A = c • LinearMap.id)
@@ -94,6 +125,15 @@ theorem eq_zero_of_sum_apply_eq_zero (σ : Representation ℂ G S) (π : Represe
     · exact hta
     · exact ih t hrest j hj
 
+/- English proof (translation)
+Introduce `G S V _ _ _ _ _ σ π hirr hschur M hM`. Set `β` to `Module.Basis.ofVectorSpace ℂ M`. Establish `hli : LinearIndependent ℂ (fun i => ((β i : M) : S →ₗ[ℂ] V))` using `β.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+
+Set `E` to `TensorProduct.equivFinsuppOfBasisRight (M := S) β`. Establish `hxs : x = (E x).sum fun i s => s ⊗ₜ[ℂ] β i`. Rewrite using `[← TensorProduct.equivFinsuppOfBasisRight_symm_apply, LinearEquiv.symm_apply_apply]`. Establish `hsum : ∑ i ∈ (E x).support, ((β i : M) : S →ₗ[ℂ] V) (E x i) = 0`. Rewrite `hx` using `[hxs, Finsupp.sum, map_sum]`.
+
+Simplify using `using hx`. Establish `h0` using `eq_zero_of_sum_apply_eq_zero σ π hirr hschur _ hli (fun i g s => hM _ (β i).2 g s) (E x).support (fun i => E x i) hsum`. Establish `hE : E x = 0`. Use extensionality with `i`. Distinguish the cases in `hi : i ∈ (E x).support`.
+
+Simplify using `using h0 i hi`. Simplify using `using hi`. Conclude with `E.map_eq_zero_iff.1 hE`.
+-/
 theorem lift_flip_subtype_injective : ∀ {G S V : Type} [Group G] [AddCommGroup S] [Module ℂ S] [AddCommGroup V] [Module ℂ V] (σ : Representation ℂ G S) (π : Representation ℂ G V), σ.IsIrreducible → (∀ A : S →ₗ[ℂ] S, (∀ g s, A (σ g s) = σ g (A s)) → ∃ c : ℂ, A = c • LinearMap.id) → ∀ M : Submodule ℂ (S →ₗ[ℂ] V), (∀ f ∈ M, ∀ g s, f (σ g s) = π g (f s)) → Function.Injective (TensorProduct.lift (LinearMap.flip (M.subtype)) : S ⊗[ℂ] M →ₗ[ℂ] V) := by
   intro G S V _ _ _ _ _ σ π hirr hschur M hM
   classical

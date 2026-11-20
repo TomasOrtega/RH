@@ -12,5 +12,8 @@ open GlobalTheory.AutomorphicL2Unitary (IsTopIrreducible)
 open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HCChar.weylOrder_ne_zero | exact GlobalTheory.HCChar.weylOrder_ne_zero | (intros; apply GlobalTheory.HCChar.weylOrder_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weyl_group_order_ne_zero : ∀ (n : ℕ) (ε : Fin n → Bool) (T : Subgroup (UJ ε)), IsCartanSub T → weylOrder T ≠ 0 := by
   first | exact @GlobalTheory.HCChar.weylOrder_ne_zero | exact GlobalTheory.HCChar.weylOrder_ne_zero | (intros; apply GlobalTheory.HCChar.weylOrder_ne_zero <;> assumption)

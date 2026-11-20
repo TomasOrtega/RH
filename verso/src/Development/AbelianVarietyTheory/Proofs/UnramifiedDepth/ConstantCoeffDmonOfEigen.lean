@@ -11,10 +11,18 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 
 namespace GlobalTheory.CharacterColumns
 
+/- English proof (translation)
+Simplify using `[Dof]`.
+-/
 theorem dof_zero_dir {R : Type} [CommRing R] {d : ℕ} (F : Fin d → PS R 2 d) (f : PS R 1 d) :
     Dof F 0 f = 0 := by
   simp [Dof]
 
+/- English proof (translation)
+Unfold `DmonOf`. Use `congr 1`. Use function extensionality and compare the values at `l g`. Distinguish the cases in `hl : mo l = 0`. Rewrite using `[hl]`.
+
+Both sides reduce to the same expression. Rewrite using `[hu l hl]`.
+-/
 theorem dmonOf_congr_dir {R : Type} [CommRing R] {d : ℕ} (F : Fin d → PS R 2 d) {ι : Type}
     [Fintype ι] (u u' : ι → Fin d → R) (mo : ι →₀ ℕ) (hu : ∀ l, mo l ≠ 0 → u l = u' l)
     (f : PS R 1 d) : DmonOf F u mo f = DmonOf F u' mo f := by
@@ -25,6 +33,9 @@ theorem dmonOf_congr_dir {R : Type} [CommRing R] {d : ℕ} (F : Fin d → PS R 2
   · rw [hl]; rfl
   · rw [hu l hl]
 
+/- English proof (translation)
+Unfold `FB.nabVal`. Rewrite using `[PullbackColumn.dpolyOf_monomial_one, PullbackColumn.dpolyOf_monomial_one, dmonOf_congr_dir _ u u' mo hu]`.
+-/
 theorem nabVal_congr_dir {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
     {k : Type} [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d) (w0 : O)
     (m : ℕ) (f : PS k 1 d) {ι : Type} [Fintype ι] (u u' : ι → Fin d → k) (mo : ι →₀ ℕ)
@@ -35,6 +46,13 @@ theorem nabVal_congr_dir {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing 
   rw [PullbackColumn.dpolyOf_monomial_one, PullbackColumn.dpolyOf_monomial_one,
     dmonOf_congr_dir _ u u' mo hu]
 
+/- English proof (translation)
+Establish `key` using `constantCoeff_dmonOf_sub_mem R d F ⊥ ι (S.indicator u) (S.indicator y) χ (by`. Introduce `l mo'`. Distinguish the cases in `hl : l ∈ S`. Rewrite using `[Set.indicator_of_mem hl, Set.indicator_of_mem hl, hχ l hl, sub_self, map_zero]`. Conclude with `Ideal.zero_mem _`.
+
+Rewrite using `[Set.indicator_of_notMem hl, Set.indicator_of_notMem hl, dof_zero_dir, map_zero, zero_mul, sub_self, map_zero]`. Conclude with `Ideal.zero_mem _) mo`. Rewrite `key` using `[Ideal.mem_bot, sub_eq_zero, h1, mul_one]`. Rewrite using `[key]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hl : mo l = 0`. Rewrite using `[hl, pow_zero, pow_zero]`. Rewrite using `[Set.indicator_of_mem (hmo l hl)]`.
+-/
 theorem constantCoeff_dmonOf_eigen {R : Type} [CommRing R] {d : ℕ} (F : Fin d → PS R 2 d) {ι : Type}
     [Fintype ι] (u : ι → Fin d → R) (S : Set ι) (χ : PS R 1 d) (y : ι → R)
     (h1 : constantCoeff χ = 1) (hχ : ∀ l ∈ S, Dof F (u l) χ = C (y l) * χ) (mo : ι →₀ ℕ)
@@ -61,6 +79,33 @@ namespace GlobalTheory
 
 open CharacterColumns
 
+/- English proof (translation)
+Introduce `COL R _ d O _ _ k _ _ _ B h hh hinj w0 N m n I hN a c hac ι _ u S α hα hβ χ y h1 hχ P hP`. Establish `hcol : ∀ b, ∃ g : PS R 1 d, ∀ mo : ι →₀ ℕ, (∀ l, mo l ≠ 0 → l ∈ S b) → ∃ s : R, s - ∏ l, y (l, b) ^ mo l ∈ I ∧ B.nabVal k h w0 m (FB.toK k g) (fun l i => algebraMap R k (u l i)) (MvPolynomial.monomial mo 1) = algebraMap R k s`. Introduce `b`. Establish `hz : (fun i => algebraMap R k ((0 : Fin d → R) i)) = 0`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Take `⟨g, hg⟩` from `COL R d O k B h hh hinj w0 (a b) (c b) N m I (hac b) hN ι ((S b).indicator u) (fun l => if l ∈ S b then α b l else 1) (by`. Introduce `l`. Distinguish the cases in `hl : l ∈ S b`. Rewrite using `[if_pos hl]`.
+
+Conclude with `(hα b l hl).1`. Rewrite using `[if_neg hl, sub_self]`. Conclude with `I.zero_mem)`. Use the proof step `(by`. Introduce `l`.
+
+Distinguish the cases in `hl : l ∈ S b`. Rewrite using `[if_pos hl]`. Conclude with `(hα b l hl).2.1`. Rewrite using `[if_neg hl]`. Conclude with `isUnit_one)`.
+
+Use the proof step `(by`. Introduce `l`. Distinguish the cases in `hl : l ∈ S b`. Rewrite using `[if_pos hl, Set.indicator_of_mem hl]`. Conclude with `(hα b l hl).2.2`.
+
+Rewrite using `[Set.indicator_of_notMem hl, hz, Matrix.mulVec_zero, smul_zero])`. Use the proof step `(by`. Introduce `l l'`. Distinguish the cases in `hl : l ∈ S b`. Distinguish the cases in `hl' : l' ∈ S b`.
+
+Rewrite using `[Set.indicator_of_mem hl, Set.indicator_of_mem hl']`. Conclude with `hβ b l hl l' hl'`. Rewrite using `[Set.indicator_of_notMem hl', hz, Matrix.mulVec_zero, Matrix.mulVec_zero, dotProduct_zero]`. Conclude with `zero_mem _`. Rewrite using `[Set.indicator_of_notMem hl, hz, zero_dotProduct]`.
+
+Conclude with `zero_mem _)`. Use the proof step `(χ b)`. Use `⟨g, fun mo hmo => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, e⟩` from `hg mo`. Use `⟨∏ l, y (l, b) ^ mo l + r, by rwa [add_sub_cancel_left], ?_⟩` and prove the remaining obligations.
+
+Rewrite `e` using `[constantCoeff_dmonOf_eigen B.G.F u (S b) (χ b) (fun l => y (l, b)) (h1 b) (hχ b) mo hmo]`. Rewrite using `[← e]`. Use `nabVal_congr_dir B h w0 m _ _ _ mo fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (hmo l hl)]`. Use `choose g hg using hcol`.
+
+Establish `hs : ∀ (mo : ι × Fin n →₀ ℕ) (b : Fin n), ∃ s : R, mo ∈ P.support → s - ∏ l, y (l, b) ^ mo (l, b) ∈ I ∧ B.nabVal k h w0 m (FB.toK k (g b)) (fun l i => algebraMap R k (u l i)) (MvPolynomial.monomial (colM mo b) 1) = algebraMap R k s`. Introduce `mo b`. Distinguish the cases in `hmo : mo ∈ P.support`. Take `⟨s, hs⟩` from `hg b (colM mo b) (fun l hl => hP mo hmo l b hl)`. Conclude with `⟨s, fun _ => hs⟩`.
+
+Conclude with `⟨0, fun h' => absurd h' hmo⟩`. Use `choose s hs using hs`. Use `⟨g, ∑ mo ∈ P.support, P.coeff mo * ∏ b, s mo b - MvPolynomial.eval y P, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval_eq', ← Finset.sum_sub_distrib]`. Use `I.sum_mem fun mo hmo => ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_sub]`. Use `I.mul_mem_left _ ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type_right, ← Ideal.Quotient.eq, map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun b _ => Ideal.Quotient.eq.2 (hs mo b hmo).1`. Rewrite using `[add_sub_cancel, map_sum]`.
+
+Use `Finset.sum_congr rfl fun mo hmo => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun b _ => (hs mo b hmo).2`.
+-/
 theorem nabVal_character_columns :
   (∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d), B.IsCanonGauge k h → Function.Injective (algebraMap R k) → ∀ (w0 a c : O) (N m : ℕ) (I : Ideal R), star a * a = (N : O) * c → (N : R) ∈ I →
     ∀ (ι : Type) [Fintype ι] (u : ι → Fin d → R) (α : ι → R), (∀ l, α l - 1 ∈ I) → (∀ l, IsUnit (α l)) →

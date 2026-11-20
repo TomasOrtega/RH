@@ -16,6 +16,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Af.IntGen
 
+/- English proof (translation)
+Establish `hev : Module.End.HasEigenvalue (Matrix.toLin' (r g : Matrix (Fin n) (Fin n) k)) x`. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, Matrix.charpoly_toLin']`. Conclude with `hx`. Take `⟨v, hv⟩` from `hev.exists_hasEigenvector`. Establish `hgv : (r g : Matrix (Fin n) (Fin n) k).mulVec v = x • v` using `hv.apply_eq_smul`.
+
+Take `⟨i, hi⟩` from `Function.ne_iff.1 hv.2`. Establish `hi' : 0 < ‖v i‖` using `norm_pos_iff.2 hi`. Establish `hc : Continuous fun s => ‖(r s : Matrix (Fin n) (Fin n) k).mulVec v i‖` using `((continuous_apply i).comp ((Units.continuous_val.comp hr).matrix_mulVec continuous_const)).norm`. Take `⟨C, hC⟩` from `(isCompact_range hc).bddAbove`. Establish `le : ∀ (s : Γ) (y : k), (r s : Matrix (Fin n) (Fin n) k).mulVec v = y • v → ‖y‖ ≤ 1` using `fun s y hy => by`.
+
+Establish `hp : ∀ N : ℕ, (r (s ^ N) : Matrix (Fin n) (Fin n) k).mulVec v = y ^ N • v` using `fun N => by`. Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih => rw [pow_succ, map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, hy, Matrix.mulVec_smul, ih, smul_smul, pow_succ']`. Assume the negation of the conclusion as `hlt`.
+
+Take `⟨N, hN⟩` from `pow_unbounded_of_one_lt (C / ‖v i‖) (not_le.1 hlt)`. Use `hC ⟨s ^ N, rfl⟩` as an intermediate fact. Simplify using `only [hp, Pi.smul_apply, norm_smul, norm_pow] at this`. Rewrite `hN` using `[div_lt_iff₀ hi']`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `e : x • (r g⁻¹ : Matrix (Fin n) (Fin n) k).mulVec v = v`. Rewrite using `[← Matrix.mulVec_smul, ← hgv, Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul]`. Simplify using the standard rewrite rules. Establish `hx0 : x ≠ 0` using `fun h0 => hv.2 (by rw [← e, h0, zero_smul])`. Establish `h2` using `le g⁻¹ x⁻¹ (by rw [eq_inv_smul_iff₀ hx0, e])`.
+
+Rewrite `h2` using `[norm_inv]`. Conclude with `le_antisymm (le g x hgv) ((inv_le_one₀ (norm_pos_iff.2 hx0)).1 h2)`.
+-/
 private theorem norm_root {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ] [NormedField k] {n : ℕ}
     (r : Γ →* GL (Fin n) k) (hr : Continuous r) (g : Γ) (x : k) (hx : (r g : Matrix (Fin n) (Fin n) k).charpoly.IsRoot x) :
     ‖x‖ = 1 := by

@@ -20,17 +20,37 @@ local notation "Kv" => v.adicCompletion F
 def qbIota : ↥(GLint E n P) →* GL (Fin n) Kv :=
   (bc φ).comp ((toGLm E n).toMonoidHom.comp (GLint E n P).subtype)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem qbIota_apply (g : ↥(GLint E n P)) (i j : Fin n) :
     ((qbIota P φ g : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv) i j = φ (((toGLm E n g.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j) := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem qsp_mem_locP {L : Submodule (𝓞 E) (Sp E n)} {x : Sp E n} :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal L ↔ ∃ s ∈ P.asIdeal.primeCompl, s • x ∈ L := Iff.rfl
 
+/- English proof (translation)
+Use `show LinearMap.toMatrix' (g : Sp E n →ₗ[E] Sp E n) i j = _`. Conclude with `LinearMap.toMatrix'_apply _ _ _`.
+-/
 theorem qsp_toGLm_apply (g : Sp E n ≃ₗ[E] Sp E n) (i j : Fin n) :
     ((toGLm E n g : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j = g (Pi.single j 1) i := by
   show LinearMap.toMatrix' (g : Sp E n →ₗ[E] Sp E n) i j = _
   exact LinearMap.toMatrix'_apply _ _ _
 
+/- English proof (translation)
+Rewrite using `[qsp_toGLm_apply]`. Establish `h1 : (Pi.single j 1 : Sp E n) ∈ stdAt E n P`. Use `(qsp_mem_locP P).2 ⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Introduce `l _`.
+
+Rewrite using `[Pi.single_apply]`. Use `show (if l = j then (1 : E) else 0) ∈ (1 : Submodule (𝓞 E) E)`. Distinguish the cases in `h : l = j`. Rewrite using `[if_pos h]`. Conclude with `Submodule.one_le.1 le_rfl`.
+
+Rewrite using `[if_neg h]`. Conclude with `zero_mem _`. Establish `h2 : g.1 (Pi.single j 1) ∈ stdAt E n P` using `(g.2 _).2 h1`. Take `⟨s, hs, hsx⟩` from `(qsp_mem_locP P).1 h2`. Take `⟨a, ha⟩` from `Submodule.mem_one.1 (hsx i trivial)`.
+
+Establish `e : g.1 (Pi.single j 1) i * algebraMap (𝓞 E) E s = algebraMap (𝓞 E) E a`. Rewrite using `[ha]`. Use `show _ = (s • g.1 (Pi.single j 1)) i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, mul_comm]`. Establish `h3` using `congrArg (P.valuation E) e`.
+
+Rewrite `h3` using `[map_mul, (P.valuation_eq_one_iff_notMem (K := E)).2 hs, mul_one]`. Rewrite using `[h3]`. Conclude with `P.valuation_le_one a`.
+-/
 theorem qsp_entry_int (g : ↥(GLint E n P)) (i j : Fin n) :
     P.valuation E (((toGLm E n g.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j) ≤ 1 := by
   rw [qsp_toGLm_apply]
@@ -55,17 +75,26 @@ theorem qsp_entry_int (g : ↥(GLint E n P)) (i j : Fin n) :
   rw [h3]; exact P.valuation_le_one a
 
 include hint hPv in
+/- English proof (translation)
+Introduce `i j` and use `by rw [qbIota_apply] exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (qsp_le_of_val P φ hint hPv _ (qsp_entry_int P g i j))`.
+-/
 theorem qbIota_int (g : ↥(GLint E n P)) : qbInt ((qbIota P φ g : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv) := fun i j => by
   rw [qbIota_apply]
   exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (qsp_le_of_val P φ hint hPv _ (qsp_entry_int P g i j))
 
 include hint hPv in
+/- English proof (translation)
+Rewrite using `[← map_inv]`. Conclude with `qbIota_int P φ hint hPv g⁻¹`.
+-/
 theorem qbIota_int_inv (g : ↥(GLint E n P)) :
     qbInt (((qbIota P φ g)⁻¹ : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv) := by
   rw [← map_inv]; exact qbIota_int P φ hint hPv g⁻¹
 
 variable (Θ : LevI E K n P) (cm : v.adicCompletion F)
 
+/- English proof (translation)
+Establish `h` using `(qbK cm).mul_mem (qbK_conj ka (hI g2) (hI' g2)) kb`. Simplify using `only [map_mul, mul_inv_rev, mul_assoc, mul_inv_cancel_left] at h ⊢`. Conclude with `h`.
+-/
 theorem qbU_mul_wit (hI : ∀ g : ↥(GLint E n P), qbInt ((qbIota P φ g : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv))
     (hI' : ∀ g : ↥(GLint E n P), qbInt (((qbIota P φ g)⁻¹ : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv))
     {a b : GL (Fin n) Kv} {g1 g2 : ↥(GLint E n P)} (ka : (qbIota P φ g1)⁻¹ * a ∈ qbK cm)
@@ -74,6 +103,9 @@ theorem qbU_mul_wit (hI : ∀ g : ↥(GLint E n P), qbInt ((qbIota P φ g : GL (
   simp only [map_mul, mul_inv_rev, mul_assoc, mul_inv_cancel_left] at h ⊢
   exact h
 
+/- English proof (translation)
+Establish `h` using `qbK_conj ((qbK cm).inv_mem ka) (hI' g) (by rw [inv_inv]; exact hI g)`. Simplify using `only [map_inv, inv_inv, mul_inv_rev, mul_assoc, mul_inv_cancel, mul_one] at h ⊢`. Conclude with `h`.
+-/
 theorem qbU_inv_wit (hI : ∀ g : ↥(GLint E n P), qbInt ((qbIota P φ g : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv))
     (hI' : ∀ g : ↥(GLint E n P), qbInt (((qbIota P φ g)⁻¹ : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv))
     {a : GL (Fin n) Kv} {g : ↥(GLint E n P)} (ka : (qbIota P φ g)⁻¹ * a ∈ qbK cm) :
@@ -99,6 +131,9 @@ def qbU : Subgroup (GL (Fin n) Kv) where
     rintro a ⟨ha1, ha2, g, hg, ka⟩
     exact ⟨ha2, by rw [inv_inv]; exact ha1, g⁻¹, Θ.H.inv_mem hg, qbU_inv_wit P φ cm (qbIota_int P φ hint hPv) (qbIota_int_inv P φ hint hPv) ka⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_qbU {k : GL (Fin n) Kv} : k ∈ qbU P φ hint hPv Θ cm ↔ qbInt (k : Matrix (Fin n) (Fin n) Kv) ∧
     qbInt ((k⁻¹ : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv) ∧ ∃ g : ↥(GLint E n P), g ∈ Θ.H ∧ (qbIota P φ g)⁻¹ * k ∈ qbK cm := Iff.rfl
 
@@ -106,6 +141,11 @@ variable {N : ℕ} (d : E) (hd : d ≠ 0) (hdN : P.valuation E d ≤ WithZero.ex
 
 include hint hPv hd hdN in
 
+/- English proof (translation)
+Introduce `i j`. Take `⟨z, hz, e⟩` from `hg.2.2 i j`. Establish `e1 : (((qbIota P φ g : GL (Fin n) Kv) : Matrix (Fin n) (Fin n) Kv) - 1) i j = φ ((((toGLm E n g.1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) - 1) i j)`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, qbIota_apply, map_sub, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite `e` using `[e1]`. Establish `h` using `qsp_mod P φ hint hPv _ d hd z ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hz) e`. Conclude with `le_trans h hdN`.
+-/
 theorem qbK_princ {g : ↥(GLint E n P)} (hg : qbIota P φ g ∈ qbK (φ d)) : lqPrinc P N (g : Sp E n ≃ₗ[E] Sp E n) := by
   intro i j
   obtain ⟨z, hz, e⟩ := hg.2.2 i j
@@ -121,6 +161,11 @@ variable (hΘ : ∀ g : ↥(GLint E n P), lqPrinc P N (g : Sp E n ≃ₗ[E] Sp E
 
 include hint hPv hd hdN hΘ in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, g0, hg0, k⟩`. Establish `h1 : qbIota P φ (g0⁻¹ * g) ∈ qbK (φ d)` using `by rw [map_mul, map_inv]; exact k`. Take `⟨h2, -⟩` from `hΘ _ (qbK_princ P φ hint hPv d hd hdN h1)`. Use `Θ.H.mul_mem hg0 h2` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Introduce `hg`. Conclude with `⟨qbIota_int P φ hint hPv g, by rw [← map_inv]; exact qbIota_int P φ hint hPv g⁻¹, g, hg, by simpa using (qbK (φ d)).one_mem⟩`.
+-/
 theorem qbU_rat (g : ↥(GLint E n P)) : qbIota P φ g ∈ qbU P φ hint hPv Θ (φ d) ↔ g ∈ Θ.H := by
   constructor
   · rintro ⟨-, -, g0, hg0, k⟩
@@ -133,6 +178,11 @@ theorem qbU_rat (g : ↥(GLint E n P)) : qbIota P φ g ∈ qbU P φ hint hPv Θ 
 
 include hint hPv hd hdN hΘ in
 
+/- English proof (translation)
+Establish `hk : qbIota P φ (g0⁻¹ * g1) ∈ qbK (φ d)`. Establish `e : qbIota P φ (g0⁻¹ * g1) = ((qbIota P φ g0)⁻¹ * k) * ((qbIota P φ g1)⁻¹ * k)⁻¹`. Rewrite using `[map_mul, map_inv]`. Apply the tactic sequence `try group`. Rewrite using `[e]`.
+
+Conclude with `(qbK (φ d)).mul_mem k0 ((qbK (φ d)).inv_mem k1)`. Take `⟨h2, h3⟩` from `hΘ _ (qbK_princ P φ hint hPv d hd hdN hk)`. Establish `e2 : (⟨g1, h1⟩ : Θ.H) = ⟨g0, h0⟩ * ⟨g0⁻¹ * g1, h2⟩` using `Subtype.ext (by simp)`. Rewrite using `[e2, map_mul, h3, mul_one]`.
+-/
 theorem qbChr_wd {k : GL (Fin n) Kv} {g0 g1 : ↥(GLint E n P)} (h0 : g0 ∈ Θ.H) (h1 : g1 ∈ Θ.H)
     (k0 : (qbIota P φ g0)⁻¹ * k ∈ qbK (φ d)) (k1 : (qbIota P φ g1)⁻¹ * k ∈ qbK (φ d)) : Θ.lam ⟨g0, h0⟩ = Θ.lam ⟨g1, h1⟩ := by
   have hk : qbIota P φ (g0⁻¹ * g1) ∈ qbK (φ d) := by
@@ -146,6 +196,9 @@ theorem qbChr_wd {k : GL (Fin n) Kv} {g0 g1 : ↥(GLint E n P)} (h0 : g0 ∈ Θ.
 def qbWit (k : qbU P φ hint hPv Θ (φ d)) : Θ.H :=
   ⟨Classical.choose k.2.2.2, (Classical.choose_spec k.2.2.2).1⟩
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec k.2.2.2).2`.
+-/
 theorem qbWit_spec (k : qbU P φ hint hPv Θ (φ d)) : (qbIota P φ (qbWit P φ hint hPv Θ d k).1)⁻¹ * k.1 ∈ qbK (φ d) :=
   (Classical.choose_spec k.2.2.2).2
 
@@ -165,6 +218,9 @@ def qbChr : qbU P φ hint hPv Θ (φ d) →* Kˣ where
     rw [this, ← map_mul]
     rfl
 
+/- English proof (translation)
+The claim follows from `qbChr_wd P φ hint hPv Θ d hd hdN hΘ _ hg (qbWit_spec P φ hint hPv Θ d ⟨_, h⟩) (by simpa using (qbK (φ d)).one_mem)`.
+-/
 theorem qbChr_rat (g : ↥(GLint E n P)) (hg : g ∈ Θ.H) (h : qbIota P φ g ∈ qbU P φ hint hPv Θ (φ d)) :
     qbChr P φ hint hPv Θ d hd hdN hΘ ⟨_, h⟩ = Θ.lam ⟨g, hg⟩ :=
   qbChr_wd P φ hint hPv Θ d hd hdN hΘ _ hg (qbWit_spec P φ hint hPv Θ d ⟨_, h⟩) (by simpa using (qbK (φ d)).one_mem)

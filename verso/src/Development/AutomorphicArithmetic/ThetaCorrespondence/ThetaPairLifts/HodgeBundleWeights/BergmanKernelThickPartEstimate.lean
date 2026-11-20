@@ -8,6 +8,29 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.ThickBerg
 open ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.ChartRestriction.G.AR.Inst MeasureTheory
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `_ _ _ hS _`. Take `⟨C0, hC0, hpeak⟩` from `GlobalTheory.T.exists_cusp_form_peak_at_injective_chart_frame`. Establish `hnum` using `GlobalTheory.T.torus_length_lower_bound_quotient hS`. Use `(((hnum.and (GlobalTheory.CovTop.Sizes.hostN (max 10 C0))).and GlobalTheory.CovTop.WtShape.wtN).and hS).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨⟨⟨C2, hC2, hN⟩, ⟨A, -, hH⟩⟩, ⟨C3, -, hW⟩⟩, ⟨C4, -, hSz⟩⟩` from `h`.
+
+Use `⟨C0 * (C2 + 1), by positivity, ?_⟩` and prove the remaining obligations. Take `⟨x0, hall⟩` from `((hN.and hH).and hW).and hSz`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY u1 hu1 => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨hN, hH⟩, hW⟩, hSz⟩` from `hall x hx hle ι p hp`. Take `⟨hZ24, hu⟩` from `hN i hi`.
+
+Take `⟨hTl1, hgap⟩` from `hu u1 hu1`. Establish `hHi` using `hH i`. Establish `hWi` using `hW i`. Establish `hSi` using `hSz i`. Establish `hsig` using `hWi.sig`.
+
+Establish `hm3` using `(Fm.D x ι).R.m_add_three_le_k`. Simplify using `only [Ranks.sigW] at hsig`. Establish `hp1 : 1 ≤ (dat p i).p` using `by omega`. Establish `hq1 : 1 ≤ (dat p i).q` using `by omega`. Establish `hf1 : (1 : ℝ) ≤ (Fm.D x ι).R.f` using `by exact_mod_cast (by have := hHi.f8; omega : 1 ≤ (Fm.D x ι).R.f)`.
+
+Establish `hr1 : (1 : ℝ) ≤ (Fm.D x ι).R.r` using `by exact_mod_cast (by omega : 1 ≤ (Fm.D x ι).R.r)`. Establish `hD1 : (1 : ℝ) ≤ (dimFlag (dat p i) : ℝ)`. Rewrite using `[hWi.dim]`. Establish `h2 : 1 ≤ (Fm.D x ι).R.r.choose 2` using `Nat.choose_pos (by omega)`. Establish `h8` using `hHi.f8`.
+
+Conclude with `(Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)))` after adjusting the coercions. Establish `hzb : zBase (Fm.L x ι) = ((Fm.D x ι).R.f * (Fm.D x ι).R.r) * (Fm.L x ι).sc.L` using `rfl`. Take `⟨hA8, hC08, h100⟩` from `nums ((Fm.D x ι).R.f * (Fm.D x ι).R.r) (Fm.L x ι).sc.L C0 _ _ _ _ _ (one_le_mul_of_one_le_of_one_le hf1 hr1) hHi.big.2.1 ((le_max_right _ _).trans hHi.big.1) (hzb ▸ hHi.ppLow) (hzb ▸ hZ24) hD1 hWi.what₂.2 hSi.2.1`. Establish `hl10 : 0 ≤ l1 u1` using `by unfold l1; positivity`. Use `⟨C0 * (l1 u1 + ((Fm.D x ι).R.f * (Fm.D x ι).R.r) ^ 8), by positivity, ?_, fun Z σ hσ y hy hb => ?_⟩` and prove the remaining obligations.
+
+Establish `e : (lenT p i (Fm.parT x hx ι).PP : ℝ) * (C0 * (l1 u1 + ((Fm.D x ι).R.f * (Fm.D x ι).R.r) ^ 8)) = C0 * ((lenT p i (Fm.parT x hx ι).PP : ℝ) * l1 u1 + (lenT p i (Fm.parT x hx ι).PP : ℝ) * ((Fm.D x ι).R.f * (Fm.D x ι).R.r) ^ 8)` using `by ring`. Rewrite using `[e, mul_add C0 C2 1, mul_one]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (add_le_add hTl1 hA8) hC0]`. Establish `hL` using `GlobalTheory.LawsDeep.levLaws _ p.T _ Y _ _ p.fw.laws ⟨Nat.le_add_left _ _, i.2⟩ hY.1`. Establish `hg0 : ∀ q : ℕ, q.Prime → p.T.Q.l.GoodAt q` using `Formalism.L2.Pj.goodAt_of_two_primes p.fw.laws.pins.2.1.1 ((Fm.D x ι).host.g_prime 0) ((Fm.D x ι).host.g_prime 1) (Fm.D x ι).host.g_ne`.
+
+Establish `hg : ∀ q : ℕ, q.Prime → Y.d.l₂.GoodAt q` using `GlobalTheory.LawsDeep.goodAt_of_mul _ _ _ hY.1.lev.1.2.1 hg0`. Establish `hU` using `hL.unf σ hσ`. Establish `hM' : Y.d.l₂.M' = Y.d.l₂.M` using `by rw [Level.M', hY.1.lev.2, Nat.lcm_one_right]`. Use `GlobalTheory.T.cuspForm_lower_bound_bergmanFunction_on_component (Fm.D x ι) ((i : ℕ) + 1) _ _ _ Y.d.Xo₂ Y.d.c₂ Y.U Y.dict hL σ hσ _ Z y hy _ (fun x0 FF hx0 hFF => ?_)` and prove the remaining obligations. Take `⟨x1, hx1, hla, htr⟩` from `orth_transfer _ _ ((Y.U σ).X y.1) (modelWt (Y.U σ) (wtOf (dat p i) u1 0) y.1) y.2.1 y.2.2`.
+
+Take `⟨hg1, hg2, hl1, hcard⟩` from `modelWt_shape _ _ _ _ _ _ σ _ (Y.U σ) hσ hU hp1 hq1 u1 (lenT p i (Fm.parT x hx ι).PP) (fun τ a b hab => by exact_mod_cast hgap τ a b hab) y.1`. Establish `hcf : (((Y.U σ).X y.1).Ψ.card : ℝ) = (Fm.D x ι).R.f`. Rewrite using `[hcard]`. Conclude with `hWi.card` after adjusting the coercions. Establish `hball` using `ball_injects _ _ _ _ _ _ σ _ (Y.U σ) hσ hU hg hp1 hq1 y.1 x1 hx1 (by`.
+
+Rewrite using `[hcf, hM', hla]`. Conclude with `h100.trans hb)`. Establish `hp0` using `(hU.2.1 y.1).1`. Establish `hr` using `hU.1`. Take `⟨P, hP, hPx, hle⟩` from `hpeak _ _ ((Y.U σ).X y.1) (modelWt (Y.U σ) (wtOf (dat p i) u1 0) y.1) x1 (by rw [hp0]; exact hq1) (by rw [hp0, hr]; exact Nat.lt_add_of_pos_left hp1) hx1 (fun τ a b hab hb0 => by rw [hcf]; exact hC08.trans (hg1 τ a b hab hb0)) (fun τ a b ha hb' => by rw [hcf]; exact hC08.trans (h …`.
+
+Take `⟨hPy, hpn⟩` from `htr P hP hPx`. Use `⟨P, hP, hPy, ?_⟩` and prove the remaining obligations. Rewrite using `[hpn]`. Rewrite `hle` using `[hl1, hcf]`. Conclude with `hle`.
+-/
 theorem bergman_kernel_bound_thick_part : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → HypothesesH → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP C => ∀ u1, Quo p i PP u1 → ∃ B : ℝ, 0 ≤ B ∧ lenT p i PP * B ≤ C * unitE p ∧ ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (σ : Y.d.c₂.F →+* ℂ), GoodEmb Y.d.c₂ σ → ∀ y : FPt (Y.U σ).X, (⟨y.1, y.2.1⟩ : Σ k, Frame ((Y.U σ).X k).Ψ (Fm.D x ι).R.r) ∈ framesOn (Y.U σ) Z → (Fm.L x ι).sc.b ≤ (Y.d.l₂.M : ℝ) * ((Y.U σ).X y.1).firstMinimumSq y.2.1 → ENNReal.ofReal (Real.exp (-B)) ≤ bergOn (Y.U σ) ((Fm.D x ι).sp.W ((i : ℕ) + 1)) (Y.dict σ) Z (wtOf (dat p i) u1 0) y := by
   intro _ _ _ hS _
   obtain ⟨C0, hC0, hpeak⟩ := GlobalTheory.T.exists_cusp_form_peak_at_injective_chart_frame
@@ -80,6 +103,9 @@ end
 section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.CovHt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThickBerg.bergman_kernel_bound_thick_part | exact _root_.GlobalTheory.ThickBerg.bergman_kernel_bound_thick_part | (intros; apply _root_.GlobalTheory.ThickBerg.bergman_kernel_bound_thick_part <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bergman_kernel_thick_part_estimate : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → HypothesesH → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP C => ∀ u1, Quo p i PP u1 → ∃ B : ℝ, 0 ≤ B ∧ lenT p i PP * B ≤ C * unitE p ∧ ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (σ : Y.d.c₂.F →+* ℂ), GoodEmb Y.d.c₂ σ → ∀ y : FPt (Y.U σ).X, (⟨y.1, y.2.1⟩ : Σ k, Frame ((Y.U σ).X k).Ψ (Fm.D x ι).R.r) ∈ framesOn (Y.U σ) Z → (Fm.L x ι).sc.b ≤ (Y.d.l₂.M : ℝ) * ((Y.U σ).X y.1).firstMinimumSq y.2.1 → ENNReal.ofReal (Real.exp (-B)) ≤ bergOn (Y.U σ) ((Fm.D x ι).sp.W ((i : ℕ) + 1)) (Y.dict σ) Z (wtOf (dat p i) u1 0) y := by
   first | exact @_root_.GlobalTheory.ThickBerg.bergman_kernel_bound_thick_part | exact _root_.GlobalTheory.ThickBerg.bergman_kernel_bound_thick_part | (intros; apply _root_.GlobalTheory.ThickBerg.bergman_kernel_bound_thick_part <;> assumption)
 end

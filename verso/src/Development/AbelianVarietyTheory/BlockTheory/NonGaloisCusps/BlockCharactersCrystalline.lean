@@ -63,12 +63,18 @@ def Inputs_at (D : D7) : Prop :=
         MatCrysAt D i w hw (rO D.nd i r x)) ∧
       ∀ π ∈ D.nd.Z i, IsConstituent D i (chiU D.nd i 1) (rO D.nd i r π)
 
+/- English proof (translation)
+Unfold `chiRatio chiU`. Rewrite using `[D.nd.chi_def i c h1 h2, mul_inv_cancel_comm]`. Both sides reduce to the same expression.
+-/
 theorem chiRatio_eq (D : D7) (i : D.nd.Loc) (c : ℕ) (h1 : 1 ≤ c) (h2 : c ≤ D.R.t) :
     chiRatio D i c = (epsU D.nd i) ^ (-((c : ℤ) - 1)) := by
   unfold chiRatio chiU
   rw [D.nd.chi_def i c h1 h2, mul_inv_cancel_comm]
   rfl
 
+/- English proof (translation)
+Simplify using `[chiRatO, twistM, chiRatio]`.
+-/
 theorem chiRatO_apply (D : D7) (i : D.nd.Loc) (c : ℕ) (g : GE D.nd) :
     chiRatO D.nd i c g 0 0 = ((chiRatio D i c g : (D.nd.O i)ˣ) : D.nd.O i) := by
   simp [chiRatO, twistM, chiRatio]

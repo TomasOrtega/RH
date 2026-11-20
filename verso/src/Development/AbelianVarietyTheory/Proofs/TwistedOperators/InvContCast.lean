@@ -15,6 +15,9 @@ namespace GlobalTheory.GenConvProof
 
 variable {D : D7}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨hc, hl⟩`.
+-/
 theorem invCont_cast {Λ : Submodule (𝓞 D.host.E) (Fin D.sp.X'.rank → D.host.E)} (X : LSp D) (h : X = ⟨D.sp.X', Λ⟩)
     (φ : GA D D.sp.X' → ℂ) (hc : Continuous φ) (hl : ∀ γ ∈ GQ D.sp.X', ∀ g, φ (γ * g) = φ g) :
     Continuous (fun g => φ (cast (congrArg (fun X : LSp D => GA D X.sp) h) g)) ∧
@@ -23,6 +26,17 @@ theorem invCont_cast {Λ : Submodule (𝓞 D.host.E) (Fin D.sp.X'.rank → D.hos
   subst h
   exact ⟨hc, hl⟩
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t a hOK β hβ M hM τ hτ d hd y Q ξ η`. Establish `hL` using `s.core.lev`. Establish `hm` using `s.core.models`. Establish `hcol : GlobalTheory.DefConv.IsInvCont (.top 0) (pairVec (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.coefPlus ch.G ch.W.θ) ξ (ch.col a))` using `⟨GlobalTheory.RowBplus.pairVec_cont ch.G ch.W.θ ch.W.θ_is ξ (col_mem ch a), fun γ hγ g => GlobalTheory.RowBplus.pairVec_left ch.G ch.W.θ ξ (col_mem ch a) hγ g⟩`.
+
+Establish `hx` using `(hm.HX t).2.1.le (LinearMap.mem_range_self (R.HX t).e y)`. Establish `hform : GlobalTheory.DefConv.IsInvCont (.grid 0 D.R.m) (formGen ch t y η)`. Establish `k` using `invCont_cast (columnBlock R.toLevCh D.R.m) (colY_m R.toLevCh) (fun g => η (R.cX.ext ((R.HX t).e y) g)) ((LinearMap.continuous_of_finiteDimensional η).comp (GlobalTheory.ThetaIntegrand.ext_continuous R.cX hm.cX R.βX (R.datXt t) hx)) (fun γ hγ g => by simp only [GlobalTheory.ThetaI …`. Conclude with `⟨k.1, k.2⟩`. Establish `hv` using `hOK.vec β τ hτ d hd`.
+
+Establish `hcG : Path.Fam.All (fun a f => GlobalTheory.DefConv.Good ch.W M a f) (colFam t D.R.m fun j => ch.W.fock (.top t j) (movedVec t ch.S.toGridChoice (d.1 j)) (Q.1 j))` using `GlobalTheory.DefConv.all_colFam t _ _ fun j => GlobalTheory.DefConv.good_col ch.W M j.2 _ (GlobalTheory.DefConv.theta_fock ch.W ch.S.toGridChoice (p := .top t j) (by show (j : ℕ) + 1 ≤ D.R.m; omega) (by show (j : ℕ) + 1 ≤ D.R.m; omega) (d.1 j) (hv.1 j) (Q.1 j)) (GlobalTheory.DefC …`. Establish `hrG : Path.Fam.All (fun a f => GlobalTheory.DefConv.Good ch.W M a f) (rowFam D.R.m D.R.m fun i => ch.W.fock (.chi i D.R.m) (movedVec t ch.S.toGridChoice (d.2 i)) (Q.2 i))` using `GlobalTheory.DefConv.all_rowFam D.R.m _ _ fun i => GlobalTheory.DefConv.good_row ch.W M i.2 _ (GlobalTheory.DefConv.theta_fock ch.W ch.S.toGridChoice (p := .chi i D.R.m) (show (i : ℕ) + 1 ≤ D.R.m ∧ D.R.m = D.R.m from ⟨by omega, rfl⟩) (show (i : ℕ) + 1 ≤ D.R.m ∧ D.R.m ≤ D.R.m from …`. Take `⟨hc1, hc2⟩` from `GlobalTheory.DefConv.path ch.W M hcol _ _ hcG`. Take `⟨hr1, hr2⟩` from `GlobalTheory.DefConv.path ch.W M hform _ _ hrG`. Use `⟨hc1, hr1, ?_⟩` and prove the remaining obligations.
+
+Take `⟨hac, hamul, haQ⟩` from `GlobalTheory.T.unitaryEmbedding_continuous_mul_rational ch.G.sp.topDec`. Establish `hpos` using `GlobalTheory.DefConv.posDef_of_node ch.G hL (X := .grid D.R.m D.R.m) ⟨le_rfl, le_rfl⟩ (by simp [Node.neg])`. Take `⟨Cc, hCc, hcov⟩` from `GlobalTheory.definite_unitary_cocompact _ hpos`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (ch.G.V (.grid D.R.m D.R.m))`. Take `⟨hH, hfd⟩` from `(hM.2 D.R.m le_rfl).haar_fund`.
+
+Use `GlobalTheory.CocompactIntegrable.integrableOn_of_cocompact _ _ _ Cc hfd hCc hcov _ ((hc2.1.comp hac).mul hr2.1) fun γ hγ g => ?_` and prove the remaining obligations. Simplify using `only [hamul, hc2.2 _ (haQ γ hγ), hr2.2 γ hγ]`.
+-/
 theorem genPer_conv : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t a, ch.S.SumOK t (ch.Phi a) →
     ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ M : Vol ch.G, IsTermVol t ch.S.toGridChoice (ch.Phi a) β M →
       ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ → ∀ d ∈ τ.support, ∀ y Q ξ η, GenConv ch t a M d y Q ξ η := by

@@ -10,6 +10,13 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace GlobalTheory.GSep
 
+/- English proof (translation)
+Introduce `X₁`. Take `⟨s, hs⟩` from `X₁.S.fg`. Use `⟨⟨⋂ x ∈ s, {z | x ∈ X₁.M.O z}, isOpen_biInter_finset fun x _ => X₁.M.isOpen_setOf_mem_O x⟩, ⟨genericPoint X₁.M.Z, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show genericPoint X₁.M.Z ∈ ⋂ x ∈ s, {z | x ∈ X₁.M.O z}`. Use `Set.mem_iInter₂.2 fun x _ => ?_` and prove the remaining obligations.
+
+Use `show x ∈ X₁.M.O (genericPoint X₁.M.Z)`. Rewrite using `[RatModel.O_genericPoint]`. Conclude with `Algebra.mem_top`. Introduce `z hz`. Establish `hz' : z ∈ ⋂ x ∈ s, {z | x ∈ X₁.M.O z}` using `hz`.
+
+Rewrite using `[← hs]`. Conclude with `Algebra.adjoin_le fun x hx => Set.mem_iInter₂.1 hz' x hx`.
+-/
 theorem exists_opens_R_le_O : ∀ X₁ : GlobalTheory.GSep.GSet, ∃ U : X₁.M.Z.Opens, (U : Set X₁.M.Z).Nonempty ∧
     ∀ z ∈ U, X₁.S.R ≤ X₁.M.O z := by
   intro X₁

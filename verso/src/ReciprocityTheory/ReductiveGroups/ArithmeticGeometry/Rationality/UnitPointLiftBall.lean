@@ -6,6 +6,11 @@ open MvPolynomial ReciprocityTheory.MultiplicativeHeights
 
 variable {K : Type*} [NormedField K] [IsUltrametricDist K] {ι : Type*} [Fintype ι]
 
+/- English proof (translation)
+Establish `hmem : P ∈ Set.range (MvPolynomial.map (unitBallRing K).subtype)`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `c hc`. Take `⟨μ, -, rfl⟩` from `MvPolynomial.mem_coeffs_iff.1 hc`. Use `⟨⟨coeff μ P, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[Valuation.mem_valuationSubring_iff, NormedField.valuation_apply]`. Conclude with `hP μ` after adjusting the coercions. Take `⟨PO, hPO⟩` from `hmem`. Conclude with `⟨PO, hPO⟩`.
+-/
 lemma lift_ball (P : MvPolynomial ι K) (hP : ∀ μ, ‖coeff μ P‖ ≤ 1) :
     ∃ PO : MvPolynomial ι (unitBallRing K), MvPolynomial.map (unitBallRing K).subtype PO = P := by
   have hmem : P ∈ Set.range (MvPolynomial.map (unitBallRing K).subtype) := by
@@ -18,6 +23,9 @@ lemma lift_ball (P : MvPolynomial ι K) (hP : ∀ μ, ‖coeff μ P‖ ≤ 1) :
   obtain ⟨PO, hPO⟩ := hmem
   exact ⟨PO, hPO⟩
 
+/- English proof (translation)
+Proceed by induction on `PO using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+-/
 lemma eval_lift (PO : MvPolynomial ι (unitBallRing K)) (σ : ι → unitBallRing K) :
     eval (fun i => (σ i : K)) (MvPolynomial.map (unitBallRing K).subtype PO) =
       ((eval σ PO : unitBallRing K) : K) := by
@@ -26,6 +34,35 @@ lemma eval_lift (PO : MvPolynomial ι (unitBallRing K)) (σ : ι → unitBallRin
   | add p q hp hq => simp [hp, hq]
   | mul_X p i hp => simp [hp]
 
+/- English proof (translation)
+Take `⟨PO, hPO⟩` from `lift_ball P hP`. Take `⟨δO, hδO⟩` from `lift_ball δ hδ`. Establish `mem_le : ∀ a : unitBallRing K, ‖(a : K)‖ ≤ 1` using `fun a => by`. Establish `h` using `a.2`. Rewrite `h` using `[Valuation.mem_valuationSubring_iff, NormedField.valuation_apply]`.
+
+Conclude with `h` after adjusting the coercions. Establish `unit_of_norm : ∀ a : unitBallRing K, ‖(a : K)‖ = 1 → IsUnit a`. Introduce `a ha`. Establish `ha0 : (a : K) ≠ 0`. Introduce `h`.
+
+Rewrite `ha` using `[h, norm_zero]`. Conclude with `zero_ne_one ha`. Establish `hinv : (a : K)⁻¹ ∈ unitBallRing K`. Rewrite using `[Valuation.mem_valuationSubring_iff, NormedField.valuation_apply]`. Establish `h1 : ‖(a : K)⁻¹‖ = 1` using `by rw [norm_inv, ha, inv_one]`.
+
+Conclude with `h1.le` after adjusting the coercions. Establish `hm : a * ⟨_, hinv⟩ = 1` using `Subtype.ext (by simp [ha0])`. Use `first`. Consider the case `exact IsUnit.of_mul_eq_one _ hm`. Consider the case `exact IsUnit.of_mul_eq_one hm`.
+
+Consider the case `exact ⟨⟨a, ⟨_, hinv⟩, hm, by rw [mul_comm]; exact hm⟩, rfl⟩`. Establish `norm_of_unit : ∀ a : unitBallRing K, IsUnit a → ‖(a : K)‖ = 1`. Introduce `a ha`. Take `⟨b, hb⟩` from `ha.exists_right_inv`. Establish `h1 : (a : K) * (b : K) = 1`.
+
+Use `congrArg (fun z : unitBallRing K => (z : K)) hb` as an intermediate fact. Simplify using `using this`. Establish `hn : ‖(a : K)‖ * ‖(b : K)‖ = 1` using `by rw [← norm_mul, h1, norm_one]`. Establish `ha1` using `mem_le a`. Establish `hb1` using `mem_le b`.
+
+Use `le_antisymm ha1 ?_` and prove the remaining obligations. Use polynomial arithmetic with `[norm_nonneg (a : K), norm_nonneg (b : K)]`. Establish `hcoeff : ∀ (Q : MvPolynomial ι (unitBallRing K)) (R : MvPolynomial ι K), MvPolynomial.map (unitBallRing K).subtype Q = R → ∀ μ, ((coeff μ Q : unitBallRing K) : K) = coeff μ R`. Introduce `Q R hQR μ`. Rewrite using `[← hQR, MvPolynomial.coeff_map]`.
+
+Both sides reduce to the same expression. Establish `hres_eval : ∀ (Q : MvPolynomial ι (unitBallRing K)) (u : ι → unitBallRing K), IsLocalRing.residue (unitBallRing K) (eval u Q) = eval (fun i => IsLocalRing.residue (unitBallRing K) (u i)) (MvPolynomial.map (IsLocalRing.residue (unitBallRing K)) Q)`. Introduce `Q u`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp`.
+
+Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`. Establish `hbar : ∀ (Q : MvPolynomial ι (unitBallRing K)) (R : MvPolynomial ι K), MvPolynomial.map (unitBallRing K).subtype Q = R → (∃ μ, ‖coeff μ R‖ = 1) → MvPolynomial.map (IsLocalRing.residue (unitBallRing K)) Q ≠ 0`. Introduce `Q R hQR hR h0`. Take `⟨μ, hμ⟩` from `hR`.
+
+Establish `h` using `congrArg (coeff μ) h0`. Rewrite `h` using `[MvPolynomial.coeff_map, MvPolynomial.coeff_zero]`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).2 (unit_of_norm _ (by rw [hcoeff Q R hQR μ]; exact hμ)) h`. Establish `hQ : MvPolynomial.map (IsLocalRing.residue (unitBallRing K)) PO * MvPolynomial.map (IsLocalRing.residue (unitBallRing K)) δO ≠ 0` using `mul_ne_zero (hbar PO P hPO hP1) (hbar δO δ hδO hδ1)`. Take `⟨S0, hS0T, hS0c⟩` from `(infinite_residues K₀ hK₀).exists_subset_card_eq ((MvPolynomial.map (IsLocalRing.residue (unitBallRing K)) PO * MvPolynomial.map (IsLocalRing.residue (unitBallRing K)) δO).totalDegree + 1)`.
+
+Establish `hex : ∃ y : ι → IsLocalRing.ResidueField (unitBallRing K), (∀ i, y i ∈ S0) ∧ eval y (MvPolynomial.map (IsLocalRing.residue (unitBallRing K)) PO * MvPolynomial.map (IsLocalRing.residue (unitBallRing K)) δO) ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hQ (MvPolynomial.eq_zero_of_eval_zero_at_prod_finset _ (fun _ => S0) (fun i => lt_of_le_of_lt (MvPolynomial.degreeOf_le_totalDegree _ i) (by rw [hS0c]; omega)) hcon)`. Take `⟨y, hyS, hyQ⟩` from `hex`.
+
+Establish `hlift : ∀ i, ∃ x : unitBallRing K, (x : K) ∈ K₀ ∧ ‖(x : K)‖ = 1 ∧ IsLocalRing.residue (unitBallRing K) x = y i` using `fun i => hS0T (Finset.mem_coe.2 (hyS i))`. Use `choose u hu0 hu1 hu2 using hlift`. Establish `hy : (fun i => IsLocalRing.residue (unitBallRing K) (u i)) = y` using `funext hu2`. Rewrite `hyQ` using `[map_mul]`. Use `⟨fun i => (u i : K), fun i => ⟨hu0 i, hu1 i⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hPO, eval_lift]`. Apply `norm_of_unit` to reduce the goal to its premises. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, hres_eval, hy]`. Conclude with `left_ne_zero_of_mul hyQ`. Rewrite using `[← hδO, eval_lift]`.
+
+Apply `norm_of_unit` to reduce the goal to its premises. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, hres_eval, hy]`. Conclude with `right_ne_zero_of_mul hyQ`.
+-/
 theorem exists_unit_point (K₀ : Subfield K) (hK₀ : ResidueFieldInfiniteOn (K₀ : Set K))
     (P δ : MvPolynomial ι K) (hP : ∀ μ, ‖coeff μ P‖ ≤ 1) (hP1 : ∃ μ, ‖coeff μ P‖ = 1)
     (hδ : ∀ μ, ‖coeff μ δ‖ ≤ 1) (hδ1 : ∃ μ, ‖coeff μ δ‖ = 1) :

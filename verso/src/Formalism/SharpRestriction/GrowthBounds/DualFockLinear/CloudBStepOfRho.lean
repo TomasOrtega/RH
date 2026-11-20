@@ -27,6 +27,17 @@ def RhoStep (C CK : ℝ) : Prop :=
 def RestRho (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : Prop :=
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → ∃ CK C₁ : ℝ, 0 < CK ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → RhoStep C CK
 
+/- English proof (translation)
+Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K _ _ hk hrk F hF E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis`. Set `_ : Algebra (WF p n') O` to `algOfIdent j φ`. Introduce `FsB hFsB Θ hΘ`. Establish `hkr : orbitWindowCount r de h x + 2 * r ≤ (m + 1) - r` using `H.2.2.2.2.2.2.2.1`. Establish `hr2 : 2 ≤ r` using `H.2.1`.
+
+Establish `hdom : IsDominant lam0` using `H.2.2.2.2.1.2.1`. Establish `hw : algebraMap O Kf w ≠ 0` using `w_ne_zero hSet.1`. Take `⟨Θ', hΘ1, hΘ2⟩` from `theta_exists p n' W Qq O Kf ι σ j w hSet.1 φ hφ m r (vecE n') (dT TT lam0) (flW (dT TT lam0)) (by omega) (by omega) (isFlat_flW _) hm hhm`. Establish `hΘeq : Θ = Θ'` using `LinearEquiv.ext fun G => Subtype.ext (by rw [hΘ G, hΘ2 G])`. Establish `hFs : ∀ b, Θ (FsB b) ∈ Re p ι σ w r (flW (dT TT lam0)) e`.
+
+Introduce `b`. Establish `h1 : InWjRg p n' O w r (flatLetters (vecE n')) g (FsB b : MvPolynomial (Fin n' × Fin (m + 1)) (KK O)) 0` using `by show InWj w (subst p n' O w n' r g (FsB b : MvPolynomial (TV n' (m + 1)) (KK O))) 0`. Rewrite using `[hFsB b]`. Unfold `symB toK`. Rewrite using `[subst_SPtrue w F hF.2.1 hSet.1.even (by omega) hrk hg, ← map_mul]`.
+
+Introduce `mm`. Conclude with `⟨coeff mm _, by rw [coeff_map, pow_zero, one_mul]⟩`. Establish `h2` using `(hΘ1.2 g hg e hbasis (FsB b) 0).1 h1`. Rewrite using `[hΘeq]`. Take `⟨z, hz, hze⟩` from `mem_scale.1 h2`.
+
+Rewrite using `[← hze]`. Simplify using `using hz`. Use `cloudBAt_of_rho hSet.1 Formalism.L2.G.Model.bePerfect r TT lam0 hdom c0 _ _ e he FsB Θ ?_ (hR p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ e he htgt hm g hhm hg hbasis Θ hΘ)` and prove the remaining obligations. Introduce `b s u hs hu`. Conclude with `edge_lattice_mul_of_weight_sum D (Formalism.L2.G.Model.products_sections_integral D) p ι σ w hw r (lambda_zero_eq_product TT lam0) (flW_dom _) (restW_dom (by omega) TT lam0 hdom) e hu (hFs b) hs`.
+-/
 theorem cloudBStep_of_rho (D : Formalism.BasicNotions.D7) (C CK CLa : ℝ) (hR : RhoStep C CK) : CloudBStep C CK CLa := by
   intro p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K
     _ _ hk hrk F hF E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis
@@ -60,6 +71,9 @@ theorem cloudBStep_of_rho (D : Formalism.BasicNotions.D7) (C CK CLa : ℝ) (hR :
   exact edge_lattice_mul_of_weight_sum D (Formalism.L2.G.Model.products_sections_integral D) p ι σ w hw r (lambda_zero_eq_product TT lam0) (flW_dom _)
     (restW_dom (by omega) TT lam0 hdom) e hu (hFs b) hs
 
+/- English proof (translation)
+Introduce `hA`. Take `⟨CK, C₁, h1, h2, h3⟩` from `h hA`. Conclude with `⟨CK, C₁, h1, h2, fun C hC => cloudBStep_of_rho D C CK CLa (h3 C hC)⟩`.
+-/
 theorem restCloudB_of_rho (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (h : RestRho D CLa Ck Crk Cdeg) :
     RestCloudB D CLa Ck Crk Cdeg := by
   intro hA

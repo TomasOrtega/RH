@@ -10,15 +10,28 @@ open scoped Classical
 
 namespace GlobalTheory.Hk.ZeroFree
 
+/- English proof (translation)
+Rewrite using `[one_div, inv_re, normSq_add_mul_I]`. Simplify using the standard rewrite rules.
+-/
 theorem re_one_div (a b : ℝ) : (1 / ((a : ℂ) + b * I)).re = a / (a ^ 2 + b ^ 2) := by
   rw [one_div, inv_re, normSq_add_mul_I]
   simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `(GlobalTheory.T.rayClassFamily_logDeriv_re_gt_one 𝓕 χ w h).2.2.1 hw`.
+-/
 theorem re_le_one {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} {w : ℂ} (hw : 𝓕.F χ w = 0) : w.re ≤ 1 := by
   by_contra h
   push_neg at h
   exact (GlobalTheory.T.rayClassFamily_logDeriv_re_gt_one 𝓕 χ w h).2.2.1 hw
 
+/- English proof (translation)
+Establish `hU` using `(GlobalTheory.T.rayClassLFunctionFamily_continuation_growth 𝓕 χ).1`. Establish `hA : AnalyticAt ℂ (𝓕.F χ) ρ` using `hU ρ h`. Establish `htop : analyticOrderAt (𝓕.F χ) ρ ≠ ⊤`. Introduce `ht`. Rewrite `ht` using `[analyticOrderAt_eq_top]`.
+
+Establish `hc : Convex ℝ {s : ℂ | 1 / 2 < s.re}` using `convex_halfSpace_re_gt _`. Establish `hE` using `hU.eqOn_zero_of_preconnected_of_eventuallyEq_zero hc.isPreconnected h ht`. Establish `h2 : (1 : ℝ) < (2 : ℂ).re` using `by norm_num`. Conclude with `(GlobalTheory.T.rayClassFamily_logDeriv_re_gt_one 𝓕 χ 2 h2).2.2.1 (hE (show (1 : ℝ) / 2 < (2 : ℂ).re by norm_num))`. Establish `hz : analyticOrderAt (𝓕.F χ) ρ ≠ 0` using `hA.analyticOrderAt_ne_zero.mpr hρ`.
+
+Rewrite using `[Nat.one_le_iff_ne_zero]`. Introduce `h0`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← Nat.cast_analyticOrderNatAt htop, h0]`. Simplify using the standard rewrite rules.
+-/
 theorem one_le_order {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} {ρ : ℂ} (h : 1 / 2 < ρ.re)
     (hρ : 𝓕.F χ ρ = 0) : 1 ≤ analyticOrderNatAt (𝓕.F χ) ρ := by
   have hU := (GlobalTheory.T.rayClassLFunctionFamily_continuation_growth 𝓕 χ).1
@@ -37,6 +50,29 @@ theorem one_le_order {𝓕 : LFam} {χ : AddChar 𝓕.G ℂ} {ρ : ℂ} (h : 1 /
   rw [← Nat.cast_analyticOrderNatAt htop, h0]
   simp
 
+/- English proof (translation)
+Take `⟨C, hC, hCb⟩` from `GlobalTheory.T.rayClassLFunction_logDeriv_local_formula`. Use `⟨C, hC, ?_⟩` and prove the remaining obligations. Introduce `𝓕 χ a t P ha ha2 hP hχ S hS`. Take `⟨hfin, -, hD⟩` from `hCb 𝓕 χ t`. Use `set s : ℂ := ((1 + a : ℝ) : ℂ) + t * I with hs`.
+
+Establish `hsre : s.re = 1 + a` using `by simp [hs]`. Establish `hsre1 : 1 < s.re` using `by rw [hsre]; linarith`. Take `⟨-, -, hFne, hL⟩` from `GlobalTheory.T.rayClassFamily_logDeriv_re_gt_one 𝓕 χ s hsre1`. Establish `hsd : ‖s - (5 / 4 + t * I)‖ ≤ 1 / 2`. Establish `e : s - (5 / 4 + t * I) = ((a - 1 / 4 : ℝ) : ℂ)` using `by rw [hs]; push_cast; ring`.
+
+Rewrite using `[e, Complex.norm_real, Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Establish `hE` using `hD s hsd hFne`. Establish `hfpos : ∀ w, 𝓕.F χ w = 0 → 0 ≤ (1 / (s - w)).re`. Introduce `w hw`.
+
+Rewrite using `[one_div, inv_re]`. Apply `div_nonneg _ (normSq_nonneg _)` to reduce the goal to its premises. Rewrite using `[sub_re, hsre]`. Combine the linear relations using `[re_le_one hw]`. Establish `hsum : (∑ᶠ w ∈ {w : ℂ | ‖w - (5 / 4 + t * I)‖ ≤ 3 / 5 ∧ 𝓕.F χ w = 0}, (analyticOrderNatAt (𝓕.F χ) w : ℂ) / (s - w)).re = ∑ w ∈ hfin.toFinset, (analyticOrderNatAt (𝓕.F χ) w : ℝ) * (1 / (s - w)).re`.
+
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, re_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[div_eq_mul_one_div, ← ofReal_natCast, re_ofReal_mul]`. Establish `hSZ : ∑ w ∈ S, (1 / (s - w)).re ≤ ∑ w ∈ hfin.toFinset, (analyticOrderNatAt (𝓕.F χ) w : ℝ) * (1 / (s - w)).re`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `w hw`. Take `⟨hw1, hw2⟩` from `hS w hw`. Establish `hre : 1 / 2 < w.re`.
+
+Establish `h1` using `(abs_le.mp ((abs_re_le_norm _).trans hw1)).1`. Simplify using `only [sub_re, add_re, mul_re, ofReal_re, ofReal_im, I_re, I_im] at h1`. Evaluate the numerical expressions using `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm : (1 : ℝ) ≤ analyticOrderNatAt (𝓕.F χ) w`.
+
+Conclude with `one_le_order hre hw2` after adjusting the coercions. Use polynomial arithmetic with `[hfpos w hw2]`. Use `_ ≤ _ := by`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `w hw`.
+
+Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `hS w hw`. Introduce `w hw _`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (hfpos w ((Set.Finite.mem_toFinset hfin).mp hw).2)`. Establish `hpole : (if χ = 1 then 1 / (s - 1) else 0 : ℂ).re ≤ P` using `by split_ifs with h1`.
+
+Establish `e : s - 1 = (a : ℂ) + t * I` using `by rw [hs]; push_cast; ring`. Rewrite using `[e, re_one_div]`. Conclude with `hχ h1`. Simplify using `using hP`. Rewrite using `[← hL, add_re, neg_re]`.
+
+Establish `hre` using `(abs_le.mp ((abs_re_le_norm _).trans hE)).1`. Rewrite `hre` using `[sub_re, hsum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem re_LSeries_le : ∃ C : ℝ, 0 < C ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (a t P : ℝ),
     0 < a → a ≤ 1 / 2 → 0 ≤ P → (χ = 1 → a / (a ^ 2 + t ^ 2) ≤ P) → ∀ S : Finset ℂ,
     (∀ w ∈ S, ‖w - (5 / 4 + t * I)‖ ≤ 3 / 5 ∧ 𝓕.F χ w = 0) →
@@ -101,10 +137,18 @@ theorem re_LSeries_le : ∃ C : ℝ, 0 < C ∧ ∀ (𝓕 : LFam) (χ : AddChar �
   rw [sub_re, hsum] at hre
   linarith
 
+/- English proof (translation)
+Use `𝓕.two_lt_ell t` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_ell (𝓕 : LFam) (t : ℝ) : 1 ≤ 𝓕.ell t := by
   have := 𝓕.two_lt_ell t
   linarith
 
+/- English proof (translation)
+Unfold `LFam.ell`. Establish `hB : (0 : ℝ) < 𝓕.B` using `by linarith [𝓕.B_ge]`. Rewrite using `[abs_zero]`. Apply `Real.log_le_log` to reduce the goal to its premises. Check the signs of the components of the expression.
+
+Apply `mul_le_mul_of_nonneg_left _ hB.le` to reduce the goal to its premises. Combine the linear relations using `[abs_nonneg t]`.
+-/
 theorem ell_zero_le (𝓕 : LFam) (t : ℝ) : 𝓕.ell 0 ≤ 𝓕.ell t := by
   unfold LFam.ell
   have hB : (0 : ℝ) < 𝓕.B := by linarith [𝓕.B_ge]
@@ -114,6 +158,13 @@ theorem ell_zero_le (𝓕 : LFam) (t : ℝ) : 𝓕.ell 0 ≤ 𝓕.ell t := by
   · apply mul_le_mul_of_nonneg_left _ hB.le
     linarith [abs_nonneg t]
 
+/- English proof (translation)
+Unfold `LFam.ell`. Establish `hB : (4 : ℝ) ≤ 𝓕.B` using `𝓕.B_ge`. Establish `hu` using `abs_nonneg t`. Establish `e : 2 * Real.log (𝓕.B * (|t| + 2)) = Real.log ((𝓕.B * (|t| + 2)) ^ 2)`. Rewrite using `[Real.log_pow]`.
+
+Evaluate the numerical expressions. Rewrite using `[e, abs_mul, abs_two]`. Apply `Real.log_le_log` to reduce the goal to its premises. Check the signs of the components of the expression. Establish `h1 : 2 * |t| + 2 ≤ 4 * (|t| + 2) ^ 2` using `by nlinarith`.
+
+Establish `h2 : 4 * (|t| + 2) ^ 2 ≤ 𝓕.B * (|t| + 2) ^ 2` using `by nlinarith [sq_nonneg (|t| + 2)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ell_two_le (𝓕 : LFam) (t : ℝ) : 𝓕.ell (2 * t) ≤ 2 * 𝓕.ell t := by
   unfold LFam.ell
   have hB : (4 : ℝ) ≤ 𝓕.B := 𝓕.B_ge
@@ -130,6 +181,9 @@ theorem ell_two_le (𝓕 : LFam) (t : ℝ) : 𝓕.ell (2 * t) ≤ 2 * 𝓕.ell t
           mul_le_mul_of_nonneg_left (by linarith) (by linarith)
       _ = (𝓕.B * (|t| + 2)) ^ 2 := by ring
 
+/- English proof (translation)
+Establish `hD : 0 < (6 * ε) ^ 2 + y ^ 2` using `by positivity`. Establish `e : 1 / 156 * (1 / ε) = 1 / (156 * ε)` using `by ring`. Rewrite using `[e, div_le_div_iff₀ hD (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem pole_le {ε y : ℝ} (hε : 0 < ε) (hy : (30 * ε) ^ 2 ≤ y ^ 2) :
     6 * ε / ((6 * ε) ^ 2 + y ^ 2) ≤ 1 / 156 * (1 / ε) := by
   have hD : 0 < (6 * ε) ^ 2 + y ^ 2 := by positivity
@@ -137,9 +191,63 @@ theorem pole_le {ε y : ℝ} (hε : 0 < ε) (hy : (30 * ε) ^ 2 ≤ y ^ 2) :
   rw [e, div_le_div_iff₀ hD (by positivity)]
   nlinarith
 
+/- English proof (translation)
+Simplify using `using norm_le_abs_re_add_abs_im ((x : ℂ) + y * I)`.
+-/
 private lemma norm_ofReal_add_mul_I_le_abs_add_abs (x y : ℝ) : ‖(x : ℂ) + y * I‖ ≤ |x| + |y| := by
   simpa using norm_le_abs_re_add_abs_im ((x : ℂ) + y * I)
 
+/- English proof (translation)
+Take `⟨C, hC, hR⟩` from `re_LSeries_le`. Use `⟨300 * C, by positivity, ?_⟩` and prove the remaining obligations. Introduce `𝓕 χ ε δ γ hz hχ hε hε1 hδ hδε`. Use `set ρ : ℂ := ((1 - δ : ℝ) : ℂ) + γ * I with hρ`. Establish `hℓ0` using `ell_zero_le 𝓕 γ`.
+
+Establish `hℓ2` using `ell_two_le 𝓕 γ`. Establish `hℓ1` using `one_le_ell 𝓕 γ`. Establish `hCℓ0 : C * 𝓕.ell 0 ≤ C * 𝓕.ell γ` using `mul_le_mul_of_nonneg_left hℓ0 hC.le`. Establish `hCℓ2 : C * 𝓕.ell (2 * γ) ≤ 2 * (C * 𝓕.ell γ)` using `by nlinarith`. Establish `hCℓ : 0 ≤ C * 𝓕.ell γ` using `mul_nonneg hC.le (by linarith)`.
+
+Take `⟨v, hv⟩ : ∃ v : ℝ, v = 1 / ε` from `⟨_, rfl⟩`. Establish `hv0 : 0 < v` using `by rw [hv]; positivity`. Rewrite using `[← hv]`. Distinguish the cases in `hB : χ * χ = 1 ∧ γ ^ 2 < (30 * ε) ^ 2`. Take `⟨hχ2, hγ⟩` from `hB`.
+
+Establish `hγ0 : γ ≠ 0` using `hχ.resolve_left (not_not.mpr hχ2)`. Establish `ha0 : 0 < 60 * ε` using `by positivity`. Establish `ha2 : 60 * ε ≤ 1 / 2` using `by linarith`. Use `set ρ' : ℂ := ((1 - δ : ℝ) : ℂ) + ((-γ : ℝ) : ℂ) * I with hρ'`. Establish `hz' : 𝓕.F χ ρ' = 0`.
+
+Establish `hc` using `(GlobalTheory.T.rayClassLFunctionFamily_continuation_growth 𝓕 χ).2.2.2 hχ2 ρ`. Establish `e : (starRingEnd ℂ) ρ = ρ'`. Rewrite using `[hρ, hρ']`. Apply the tactic sequence `apply Complex.ext <;> simp`. Rewrite using `[← e, hc, hz]`.
+
+Simplify using the standard rewrite rules. Establish `hne : ρ ≠ ρ'`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `[hρ, hρ'] at this`.
+
+Conclude with `hγ0 (by linarith)`. Establish `hγa : |γ| < 30 * ε` using `abs_lt_of_sq_lt_sq hγ (by linarith)`. Establish `hnorm : ∀ g : ℝ, |g| < 30 * ε → ‖(((1 - δ : ℝ) : ℂ) + g * I) - (5 / 4 + ((0 : ℝ) : ℂ) * I)‖ ≤ 3 / 5`. Introduce `g hg`. Establish `e : (((1 - δ : ℝ) : ℂ) + g * I) - (5 / 4 + ((0 : ℝ) : ℂ) * I) = ((-(1 / 4 + δ) : ℝ) : ℂ) + g * I` using `by push_cast; ring`.
+
+Rewrite using `[e]`. Use `(norm_ofReal_add_mul_I_le_abs_add_abs _ _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_neg, abs_of_nonneg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnear : ∀ w ∈ ({ρ, ρ'} : Finset ℂ), ‖w - (5 / 4 + ((0 : ℝ) : ℂ) * I)‖ ≤ 3 / 5 ∧ 𝓕.F χ w = 0`.
+
+Introduce `w hw`. Break down `Finset.mem_insert.mp hw with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `⟨hnorm γ hγa, hz⟩`. Rewrite using `[Finset.mem_singleton.mp h]`.
+
+Conclude with `⟨hnorm (-γ) (by rwa [abs_neg]), hz'⟩`. Establish `hsum : ∑ w ∈ ({ρ, ρ'} : Finset ℂ), (1 / (((1 + 60 * ε : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I - w)).re = 2 * ((60 * ε + δ) / ((60 * ε + δ) ^ 2 + γ ^ 2))`. Rewrite using `[Finset.sum_pair hne]`. Establish `e1 : ((1 + 60 * ε : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I - ρ = ((60 * ε + δ : ℝ) : ℂ) + ((-γ : ℝ) : ℂ) * I` using `by rw [hρ]; push_cast; ring`. Establish `e2 : ((1 + 60 * ε : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I - ρ' = ((60 * ε + δ : ℝ) : ℂ) + ((γ : ℝ) : ℂ) * I` using `by rw [hρ']; push_cast; ring`.
+
+Rewrite using `[e1, e2, re_one_div, re_one_div, neg_sq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hP : 60 * ε / ((60 * ε) ^ 2 + (0 : ℝ) ^ 2) ≤ 1 / (60 * ε)`. Apply `le_of_eq` to reduce the goal to its premises. Rewrite using `[show (60 * ε) ^ 2 + (0 : ℝ) ^ 2 = 60 * ε * (60 * ε) by ring, div_mul_eq_div_div, div_self ha0.ne']`.
+
+Establish `e0 : ((1 + 60 * ε : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I = ((1 + 60 * ε : ℝ) : ℂ)` using `by push_cast; ring`. Establish `hmain : 2 * ((60 * ε + δ) / ((60 * ε + δ) ^ 2 + γ ^ 2)) ≤ 1 / (60 * ε) + 2 * (C * 𝓕.ell 0)`. Distinguish the cases in `h1 : χ = 1`. Establish `h0` using `(GlobalTheory.T.rayClassLFunctionFamily_logDeriv_positivity 𝓕 χ χ (1 + 60 * ε) 0 (by linarith)).2.1`. Establish `hb` using `hR 𝓕 χ (60 * ε) 0 (1 / (60 * ε)) ha0 ha2 (by positivity) (fun _ => hP) {ρ, ρ'} hnear`.
+
+Rewrite `hb` using `[hsum, e0, h1]`. Establish `hC0 : 0 ≤ C * 𝓕.ell 0` using `mul_nonneg hC.le (by linarith [one_le_ell 𝓕 0])`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0` using `((GlobalTheory.T.rayClassLFunctionFamily_logDeriv_positivity 𝓕 χ χ (1 + 60 * ε) 0 (by linarith)).2.2 hχ2 hχ2).1`. Establish `hb1` using `hR 𝓕 1 (60 * ε) 0 (1 / (60 * ε)) ha0 ha2 (by positivity) (fun _ => hP) ∅ (by simp)`.
+
+Establish `hb2` using `hR 𝓕 χ (60 * ε) 0 0 ha0 ha2 le_rfl (fun h => absurd h h1) {ρ, ρ'} hnear`. Rewrite `hb2` using `[hsum, e0]`. Rewrite `hb1` using `[e0, Finset.sum_empty]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow : 60 / (4621 * ε) ≤ (60 * ε + δ) / ((60 * ε + δ) ^ 2 + γ ^ 2)`.
+
+Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`. Use polynomial arithmetic with `[mul_nonneg (show (0 : ℝ) ≤ 60 * ε + δ - 60 * ε by linarith) (show (0 : ℝ) ≤ 61 * ε - (60 * ε + δ) by linarith), mul_pos hε hε]`. Establish `i1 : 1 / (60 * ε) = v / 60` using `by rw [hv]; ring`. Establish `i2 : 60 / (4621 * ε) = 60 / 4621 * v` using `by rw [hv]; ring`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hcase1 : χ = 1 → (30 * ε) ^ 2 ≤ γ ^ 2`. Introduce `h`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hB ⟨by rw [h, mul_one], hc⟩`.
+
+Establish `hcase2 : χ * χ = 1 → (30 * ε) ^ 2 ≤ (2 * γ) ^ 2`. Introduce `h`. Establish `: (30 * ε) ^ 2 ≤ γ ^ 2`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hB ⟨h, hc⟩`. Use polynomial arithmetic with `[sq_nonneg γ]`. Establish `ha0 : 0 < 6 * ε` using `by positivity`. Establish `ha2 : 6 * ε ≤ 1 / 2` using `by linarith`. Establish `hP0 : 0 ≤ 1 / 156 * (1 / ε)` using `by positivity`.
+
+Establish `hP1 : 6 * ε / ((6 * ε) ^ 2 + (0 : ℝ) ^ 2) ≤ 1 / (6 * ε)`. Apply `le_of_eq` to reduce the goal to its premises. Rewrite using `[show (6 * ε) ^ 2 + (0 : ℝ) ^ 2 = 6 * ε * (6 * ε) by ring, div_mul_eq_div_div, div_self ha0.ne']`. Establish `h0` using `(GlobalTheory.T.rayClassLFunctionFamily_logDeriv_positivity 𝓕 χ χ (1 + 6 * ε) γ (by linarith)).1`. Establish `hb1` using `hR 𝓕 1 (6 * ε) 0 (1 / (6 * ε)) ha0 ha2 (by positivity) (fun _ => hP1) ∅ (by simp)`.
+
+Establish `hρn : ∀ w ∈ ({ρ} : Finset ℂ), ‖w - (5 / 4 + γ * I)‖ ≤ 3 / 5 ∧ 𝓕.F χ w = 0`. Introduce `w hw`. Rewrite using `[Finset.mem_singleton.mp hw]`. Use `⟨?_, hz⟩` and prove the remaining obligations. Establish `e : ρ - (5 / 4 + γ * I) = ((-(1 / 4 + δ) : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I`.
+
+Rewrite using `[hρ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(norm_ofReal_add_mul_I_le_abs_add_abs _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[abs_neg, abs_of_nonneg (by linarith), abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb2` using `hR 𝓕 χ (6 * ε) γ (1 / 156 * (1 / ε)) ha0 ha2 hP0 (fun h => pole_le hε (hcase1 h)) {ρ} hρn`. Establish `hb3` using `hR 𝓕 (χ * χ) (6 * ε) (2 * γ) (1 / 156 * (1 / ε)) ha0 ha2 hP0 (fun h => pole_le hε (hcase2 h)) ∅ (by simp)`. Establish `e0 : ((1 + 6 * ε : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I = ((1 + 6 * ε : ℝ) : ℂ)` using `by push_cast; ring`.
+
+Establish `e2 : ((1 + 6 * ε : ℝ) : ℂ) + ((2 * γ : ℝ) : ℂ) * I = ((1 + 6 * ε : ℝ) : ℂ) + 2 * (γ : ℂ) * I` using `by push_cast; ring`. Establish `e1 : ((1 + 6 * ε : ℝ) : ℂ) + (γ : ℂ) * I - ρ = ((6 * ε + δ : ℝ) : ℂ) + ((0 : ℝ) : ℂ) * I` using `by rw [hρ]; push_cast; ring`. Rewrite `hb1` using `[e0, Finset.sum_empty]`. Rewrite `hb3` using `[e2, Finset.sum_empty]`. Rewrite `hb2` using `[Finset.sum_singleton, e1, re_one_div]`.
+
+Establish `hlow : 1 / (7 * ε) ≤ (6 * ε + δ) / ((6 * ε + δ) ^ 2 + (0 : ℝ) ^ 2)`. Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (show 6 * ε + δ ≤ 7 * ε by linarith) (show (0 : ℝ) ≤ 6 * ε + δ by linarith)]`. Establish `i1 : 1 / (6 * ε) = v / 6` using `by rw [hv]; ring`. Establish `i2 : 1 / (7 * ε) = v / 7` using `by rw [hv]; ring`.
+
+Establish `i3 : 1 / 156 * (1 / ε) = v / 156` using `by rw [hv]; ring`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem inv_le_ell : ∃ K : ℝ, 0 < K ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (ε δ γ : ℝ),
     𝓕.F χ (((1 - δ : ℝ) : ℂ) + γ * I) = 0 → (χ * χ ≠ 1 ∨ γ ≠ 0) →
     0 < ε → ε ≤ 1 / 400 → 0 ≤ δ → δ ≤ ε → 1 / ε ≤ K * 𝓕.ell γ := by
@@ -283,6 +391,17 @@ theorem inv_le_ell : ∃ K : ℝ, 0 < K ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕
     have i3 : 1 / 156 * (1 / ε) = v / 156 := by rw [hv]; ring
     nlinarith
 
+/- English proof (translation)
+Take `⟨K, hK, hKb⟩` from `inv_le_ell`. Use `⟨1 / (4 * K + 400), by positivity, ?_⟩` and prove the remaining obligations. Introduce `𝓕 χ s _ hs hχ`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+
+Establish `hℓ2` using `𝓕.two_lt_ell s.im`. Establish `hℓpos : 0 < 𝓕.ell s.im` using `by linarith`. Establish `hpos : 0 < (2 * K + 200) * 𝓕.ell s.im` using `mul_pos (by linarith) hℓpos`. Establish `hε : 0 < 1 / ((2 * K + 200) * 𝓕.ell s.im)` using `by positivity`. Establish `hε1 : 1 / ((2 * K + 200) * 𝓕.ell s.im) ≤ 1 / 400`.
+
+Apply `one_div_le_one_div_of_le (by norm_num)` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_pos hK hℓpos]`. Establish `hδ : 0 ≤ 1 - s.re` using `by linarith [re_le_one hs]`. Establish `hδε : 1 - s.re ≤ 1 / ((2 * K + 200) * 𝓕.ell s.im)`. Establish `h1 : 1 - s.re ≤ 1 / (4 * K + 400) / 𝓕.ell s.im` using `by linarith`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[div_div]`. Apply `one_div_le_one_div_of_le hpos` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_pos hK hℓpos]`. Establish `hz : 𝓕.F χ (((1 - (1 - s.re) : ℝ) : ℂ) + s.im * I) = 0`.
+
+Rewrite using `[show (1 - (1 - s.re) : ℝ) = s.re by ring, re_add_im]`. Conclude with `hs`. Establish `h` using `hKb 𝓕 χ _ (1 - s.re) s.im hz hχ hε hε1 hδ hδε`. Rewrite `h` using `[one_div_one_div]`. Use polynomial arithmetic with `[mul_pos hK hℓpos]`.
+-/
 theorem zero_free_region : ∃ c : ℝ, 0 < c ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (s : ℂ), 3 / 4 ≤ s.re → 𝓕.F χ s = 0 → (χ * χ ≠ 1 ∨ s.im ≠ 0) → s.re < 1 - c / 𝓕.ell s.im := by
   obtain ⟨K, hK, hKb⟩ := inv_le_ell
   refine ⟨1 / (4 * K + 400), by positivity, ?_⟩

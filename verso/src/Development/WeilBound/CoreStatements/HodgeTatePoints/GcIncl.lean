@@ -7,6 +7,11 @@ open Module NumberField GlobalTheory.CompanionTheory.Ar.HT TensorProduct
 
 namespace PositivityTheory.HtPt.Gc
 
+/- English proof (translation)
+Establish `hk : k ∈ Subalgebra.toSubmodule (⊥ : Subalgebra A K)`. Rewrite using `[GroundTheory.Heights₂.Heights.Model.HeightOneIntersection.proof A K]`. Use `(Submodule.mem_iInf _).2 fun p => (Submodule.mem_iInf _).2 fun hp => ?_` and prove the remaining obligations. Take `⟨s, hs, c, hc⟩` from `h p.asIdeal p.isPrime hp`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hc, Subalgebra.mem_toSubmodule]`. Conclude with `Subalgebra.algebraMap_mem _ c`. Rewrite `hk` using `[Subalgebra.mem_toSubmodule, Algebra.mem_bot]`. Take `⟨c, hc⟩` from `hk`. Conclude with `⟨c, hc⟩`.
+-/
 private theorem mem_range_bc_of_entries_mem_intL {A K : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [IsIntegrallyClosed A] [Field K] [Algebra A K] [IsFractionRing A K] (k : K)
     (h : ∀ q : Ideal A, q.IsPrime → q.height = 1 →
@@ -23,6 +28,35 @@ private theorem mem_range_bc_of_entries_mem_intL {A K : Type} [CommRing A] [IsDo
   obtain ⟨c, hc⟩ := hk
   exact ⟨c, hc⟩
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ _ _ _ Ω _ _ _ _ M x hlat hproj hloc`. Establish `hden : ∀ w ∈ Submodule.span K (M : Set Ω), ∃ d ∈ nonZeroDivisors A, d • w ∈ M`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => exact ⟨1, one_mem _, by rw [one_smul]; exact hw⟩`.
+
+Consider the case `zero => exact ⟨1, one_mem _, by rw [smul_zero]; exact M.zero_mem⟩`. Consider the case `add u w _ _ hu hw`. Take `⟨d1, hd1, h1⟩` from `hu`. Take `⟨d2, hd2, h2⟩` from `hw`. Use `⟨d1 * d2, mul_mem hd1 hd2, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (d1 * d2) • u = d2 • (d1 • u)` using `by rw [mul_comm, mul_smul]`. Establish `e2 : (d1 * d2) • w = d1 • (d2 • w)` using `by rw [mul_smul]`. Rewrite using `[smul_add, e1, e2]`. Conclude with `M.add_mem (M.smul_mem _ h1) (M.smul_mem _ h2)`. Consider the case `smul k w _ hw`.
+
+Take `⟨d, hd, h1⟩` from `hw`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := A) k`. Use `⟨b * d, mul_mem hb hd, ?_⟩` and prove the remaining obligations. Establish `hb0 : algebraMap A K b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `e : (b * d) • ((algebraMap A K a / algebraMap A K b) • w) = a • (d • w)`.
+
+Rewrite using `[← algebraMap_smul K (b * d), smul_smul, smul_smul a d w, ← algebraMap_smul K (a * d) w]`. Use `congr 1`. Rewrite using `[map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Conclude with `M.smul_mem a h1`. Take `⟨d, hd, hdx⟩` from `hden x (by rw [hlat.span_eq_top]; trivial)`. Establish `hd0' : algebraMap A K d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Take `⟨σ, hσ⟩` from `hproj.out`. Use `set z : M := ⟨d • x, hdx⟩ with hzdef`.
+
+Establish `hdiv : ∀ m : M, ∃ c : A, σ z m = d * c`. Introduce `m`. Establish `hl : ∀ q : Ideal A, q.IsPrime → q.height = 1 → ∃ s : A, s ∉ q ∧ ∃ c : A, s • (algebraMap A K (σ z m) / algebraMap A K d) = algebraMap A K c`. Introduce `q hq hh`. Take `⟨s, hs, hsx⟩` from `hloc q hq hh`.
+
+Use `⟨s, hs, σ ⟨s • x, hsx⟩ m, ?_⟩` and prove the remaining obligations. Establish `hz : s • z = d • (⟨s • x, hsx⟩ : M)` using `Subtype.ext (smul_comm s d x)`. Establish `hm : s * σ z m = d * σ ⟨s • x, hsx⟩ m`. Establish `h'` using `congrArg (fun f => f m) (congrArg σ hz)`. Simplify `h'` using `only [map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[Algebra.smul_def, ← mul_div_assoc, ← map_mul, hm, map_mul]`. Clear the denominators using the available nonvanishing facts. Take `⟨c, hc⟩` from `mem_range_bc_of_entries_mem_intL (K := K) _ hl`. Use `⟨c, IsFractionRing.injective A K ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hc]`.
+
+Clear the denominators using the available nonvanishing facts. Use `choose c hc using hdiv`. Establish `hyM : (∑ m ∈ (σ z).support, c m • (m : Ω)) ∈ M` using `M.sum_mem (fun m _ => M.smul_mem _ m.2)`. Establish `hsum : (∑ m ∈ (σ z).support, (σ z m) • (m : Ω)) = (z : Ω)`. Establish `h1` using `congrArg Subtype.val (hσ z)`.
+
+Rewrite `h1` using `[Finsupp.linearCombination_apply, Finsupp.sum, Submodule.coe_sum]`. Simplify using `using h1`. Establish `hzy : d • (∑ m ∈ (σ z).support, c m • (m : Ω)) = d • x`. Rewrite using `[Finset.smul_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun m _ => ?_) hsum` and prove the remaining obligations.
+
+Rewrite using `[hc m, mul_smul]`. Establish `hcancel : ∀ u w : Ω, d • u = d • w → u = w`. Introduce `u w huw`. Establish `h1 : (algebraMap A K d) • u = (algebraMap A K d) • w`. Rewrite using `[algebraMap_smul, algebraMap_smul]`.
+
+Conclude with `huw`. Establish `h2 : (algebraMap A K d)⁻¹ • ((algebraMap A K d) • u) = (algebraMap A K d)⁻¹ • ((algebraMap A K d) • w)` using `by rw [h1]`. Rewrite `h2` using `[smul_smul, smul_smul, inv_mul_cancel₀ hd0', one_smul, one_smul]`. Conclude with `h2`. Rewrite using `[← hcancel _ _ hzy]`.
+
+Conclude with `hyM`.
+-/
 theorem test_incl : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [Field K] [Algebra A K] [IsFractionRing A K] (Ω : Type) [AddCommGroup Ω] [Module K Ω] [Module A Ω] [IsScalarTower A K Ω] (M : Submodule A Ω) (x : Ω), M.IsLattice K → Module.Projective A M → (∀ 𝔮 : Ideal A, 𝔮.IsPrime → 𝔮.height = 1 → ∃ s : A, s ∉ 𝔮 ∧ s • x ∈ M) → x ∈ M := by
   intro A K _ _ _ _ _ _ _ Ω _ _ _ _ M x hlat hproj hloc
   classical
@@ -95,6 +129,13 @@ theorem test_incl : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing
   rw [← hcancel _ _ hzy]
   exact hyM
 
+/- English proof (translation)
+Establish `ha' : algebraMap A (FractionRing A) a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A (FractionRing A))).mpr ha`. Establish `hl : ∀ q : Ideal A, q.IsPrime → q.height = 1 → ∃ s : A, s ∉ q ∧ ∃ c : A, s • (algebraMap A (FractionRing A) t / algebraMap A (FractionRing A) a) = algebraMap A (FractionRing A) c`. Introduce `q hq hh`. Take `⟨s, hs, u, hu⟩` from `h q hq hh`. Use `⟨s, hs, u, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, ← mul_div_assoc, ← map_mul, hu, map_mul]`. Clear the denominators using the available nonvanishing facts. Take `⟨c, hc⟩` from `mem_range_bc_of_entries_mem_intL (K := FractionRing A) _ hl`. Use `⟨c, IsFractionRing.injective A (FractionRing A) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hc]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem dvd_of_height_one {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [IsIntegrallyClosed A] {a t : A} (ha : a ≠ 0)
     (h : ∀ q : Ideal A, q.IsPrime → q.height = 1 → ∃ s : A, s ∉ q ∧ a ∣ s * t) : a ∣ t := by
@@ -114,6 +155,13 @@ theorem dvd_of_height_one {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing
   rw [map_mul, hc]
   field_simp
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `‹Module.Projective A M›.out`. Establish `hdiv : ∀ m : M, a ∣ σ x m`. Introduce `m`. Use `dvd_of_height_one ha (fun q hq hh => ?_)` and prove the remaining obligations. Take `⟨s, hs, y, hy⟩` from `h q hq hh`.
+
+Use `⟨s, hs, σ y m, ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg (fun f => f m) (congrArg σ hy)`. Simplify `h'` using `only [map_smul, Finsupp.smul_apply, smul_eq_mul]`. Use `choose c hc using hdiv`. Use `⟨∑ m ∈ (σ x).support, c m • m, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← hσ x]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Simplify using `only [hc m, mul_smul, id_eq]`.
+-/
 theorem smul_of_height_one {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [IsIntegrallyClosed A] {M : Type} [AddCommGroup M] [Module A M] [Module.Projective A M]
     {a : A} (ha : a ≠ 0) (x : M)
@@ -135,6 +183,11 @@ theorem smul_of_height_one {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRin
   refine Finset.sum_congr rfl (fun m _ => ?_)
   simp only [hc m, mul_smul, id_eq]
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ _ _ _ Ω _ _ _ _ M x a b _ hproj hx ha hab hloc`. Establish `hloc' : ∀ q : Ideal A, q.IsPrime → q.height = 1 → ∃ s : A, s ∉ q ∧ ∃ y : M, s • (⟨x, hx⟩ : M) = a • y`. Introduce `q hq hh`. Distinguish the cases in `hb : b ∈ q`. Take `⟨s, hs, y, hy, hsy⟩` from `hloc q hq hh hb`.
+
+Conclude with `⟨s, hs, ⟨y, hy⟩, Subtype.ext hsy⟩`. Conclude with `⟨a, fun haq => hb (hab q hq haq), ⟨x, hx⟩, rfl⟩`. Take `⟨y, hy⟩` from `smul_of_height_one ha (⟨x, hx⟩ : M) hloc'`. Conclude with `⟨y, y.2, congrArg Subtype.val hy⟩`.
+-/
 theorem test_div : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [Field K] [Algebra A K] [IsFractionRing A K] (Ω : Type) [AddCommGroup Ω] [Module K Ω] [Module A Ω] [IsScalarTower A K Ω] (M : Submodule A Ω) (x : Ω) (a b : A), M.FG → Module.Projective A M → x ∈ M → a ≠ 0 → (∀ 𝔮 : Ideal A, 𝔮.IsPrime → a ∈ 𝔮 → b ∈ 𝔮) → (∀ 𝔮 : Ideal A, 𝔮.IsPrime → 𝔮.height = 1 → b ∈ 𝔮 → ∃ s : A, s ∉ 𝔮 ∧ ∃ y ∈ M, s • x = a • y) → ∃ y ∈ M, x = a • y := by
   intro A K _ _ _ _ _ _ _ Ω _ _ _ _ M x a b _ hproj hx ha hab hloc
   have hloc' : ∀ q : Ideal A, q.IsPrime → q.height = 1 →

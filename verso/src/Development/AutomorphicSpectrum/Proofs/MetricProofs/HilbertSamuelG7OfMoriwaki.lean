@@ -17,6 +17,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
+/- English proof (translation)
+Introduce `hM K _ ι _ Ω _ _ y D A P0 II _ hII hY hb hS hconj`. Take `⟨q, w, hw, hgen, hsmall⟩` from `hS.gen`. Establish `hnef : NefOnFibres (mCoordIdeal y) A.a` using `GlobalTheory.T.generated_line_bundle_nef_on_fibres K ι Ω y D A.a q w hY hb hw hgen`. Establish `hhts : HeightsNonneg II (mCoordIdeal y) A` using `GlobalTheory.T.heights_nonneg_of_intersection_system K ι Ω y D A II q w hII hY hb hS.semipos.1 hw hgen hsmall`. Establish `hgeneric : NefOnGeneric (mCoordIdeal y) A` using `GroundTheory.Heights₂.Heights.HilbertSamuel.NefOnGenericOfSemipos.proof K ι (mCoordIdeal y) P0 A hS.normalForm_baseLattice_le_dualSpan_sup_line hS.semipos`.
+
+Conclude with `le_of_eq (hM K ι Ω y D A P0 II hII hY hb hS.normalForm_baseLattice_le_dualSpan_sup_line hS.semipos hconj hnef hgeneric hhts).limsup_eq`.
+-/
 theorem smallGenerated_count_upper_of_moriwakiHS :
     MoriwakiHSStatement → GroundTheory.Heights₂.Heights.HilbertSamuel.G7.Statement := by
   intro hM K _ ι _ Ω _ _ y D A P0 II _ hII hY hb hS hconj

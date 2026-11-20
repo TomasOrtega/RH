@@ -20,10 +20,19 @@ namespace GlobalTheory.Ker.OmRat
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Theta.mt]`.
+-/
 theorem mt_mul' (V : HSp D) (g g' : GA D V) : mt V (g * g') = mt V g * mt V g' := by simp [Formalism.L2.Theta.mt]
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Theta.mt]`.
+-/
 theorem mt_one' (V : HSp D) : mt V 1 = 1 := by simp [Formalism.L2.Theta.mt]
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[inv_inv]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← mt_mul', mul_inv_cancel, mt_one', Matrix.mul_one, ← Matrix.mul_assoc, ← mt_mul', mul_inv_cancel, mt_one', Matrix.one_mul]`.
+-/
 theorem actO_inv_cancel (g : GA D S) (h : GA D T) (w : WO S T) :
     actO S T g h (actO S T g⁻¹ h⁻¹ w) = w := by
   unfold actO
@@ -32,11 +41,17 @@ theorem actO_inv_cancel (g : GA D S) (h : GA D T) (w : WO S T) :
   rw [← mt_mul', mul_inv_cancel, mt_one', Matrix.mul_one, ← Matrix.mul_assoc, ← mt_mul', mul_inv_cancel,
     mt_one', Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h : hO S T 0 w = 0` using `by simp [hO]`. Simplify using `[heisO, symplOH, symplO, h]`.
+-/
 theorem heisO_at_zero (ψ : AddChar (AF D.host.F) ℂ) (w : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T w f 0 = f w := by
   have h : hO S T 0 w = 0 := by simp [hO]
   simp [heisO, symplOH, symplO, h]
 
+/- English proof (translation)
+Rewrite using `[mt_one']`. Unfold `compAt`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem compAt_one' (θ : InfFam D) (τ : D.what₂.Tau) :
     compAt θ τ (mt S 1) = 1 := by
   rw [mt_one']
@@ -44,6 +59,9 @@ theorem compAt_one' (θ : InfFam D) (τ : D.what₂.Tau) :
   ext i j
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Establish `h1` using `H.om_heis γ γ' (actO S T γ⁻¹ γ'⁻¹ w) f hf`. Establish `h2` using `H.om_aut γ hγ γ' hγ' _ (((GlobalTheory.T.thetaFunction_space_heisenberg_laws D S T C).2.2 f hf).2.1 (actO S T γ⁻¹ γ'⁻¹ w))`. Rewrite `h1` using `[actO_inv_cancel]`. Rewrite using `[← heisO_at_zero C.ψ w (om (γ, γ') f), ← h1]`. Conclude with `h2.trans (heisO_at_zero _ _ _)`.
+-/
 theorem om_subst (C : Ctx S T) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (H : IsWeak C.ψ S T om)
     (γ : GA D S) (hγ : γ ∈ GQ S) (γ' : GA D T) (hγ' : γ' ∈ GQ T) (f : WO S T → ℂ) (hf : C.IsTh f) (w : WO S T) :
     om (γ, γ') f w = f (actO S T γ⁻¹ γ'⁻¹ w) := by
@@ -53,6 +71,15 @@ theorem om_subst (C : Ctx S T) (om : GA D S × GA D T →* Module.End ℂ (WO S 
   rw [← heisO_at_zero C.ψ w (om (γ, γ') f), ← h1]
   exact h2.trans (heisO_at_zero _ _ _)
 
+/- English proof (translation)
+Introduce `D S T C om H`. Use `⟨fun γ hγ γ' hγ' f hf w => om_subst C om H γ hγ γ' hγ' f hf w, ?_⟩` and prove the remaining obligations. Introduce `ga γ hr φ hφ`. Establish `hγ : γ ∈ GQ T` using `((GlobalTheory.T.rational_unitary_group_structure D S T C).2.1 γ γ ga ga hr hr).2.2.1`. Establish `key : ∀ x ∈ C.X.dom, om (1, γ) (C.Th x φ) = C.Th (lact ga x) (wG C.X C.bas C.idx ga φ)`.
+
+Introduce `x hx`. Use function extensionality and compare the values at `w`. Rewrite using `[om_subst C om H 1 (one_mem _) γ hγ _ (GlobalTheory.T.adelicZakTheta_exists_unique D S T C x hx φ hφ).1.1 w, inv_one]`. Conclude with `((GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C x hx φ hφ).2.2.2 ga γ hr w).symm`. Use `⟨key, ?_⟩` and prove the remaining obligations.
+
+Introduce `B hB Q`. Establish `hJ` using `(GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB`. Establish `hx` using `hJ.2.1`. Establish `hm : C.xB (C.mvB γ B) = lact ga (C.xB B)` using `(hJ.2.2.2.2.2 γ).2.2.2.2.2 ga hr`. Establish `h5` using `((GlobalTheory.T.weakWeilRep_carries_derivatives_vacua_fockVectors D S T C om H 1 γ _ (GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hx φ hφ).1.1).2 B hB).2 Q`.
+
+Rewrite using `[h5, key _ hx, hm]`. Simplify using `only [compAt_one']`. Both sides reduce to the same expression.
+-/
 theorem om_rat : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ), IsWeak C.ψ S T om → (∀ γ ∈ GQ S, ∀ γ' ∈ GQ T, ∀ f, C.IsTh f → ∀ w, om (γ, γ') f w = f (actO S T γ⁻¹ γ'⁻¹ w)) ∧ ∀ (ga : GL (Fin T.rank) D.host.E) (γ : GA D T), IsRatOf T ga γ → ∀ φ : TF S.rank C.g, SW.IsSB φ → (∀ x ∈ C.X.dom, om (1, γ) (C.Th x φ) = C.Th (lact ga x) (wG C.X C.bas C.idx ga φ)) ∧ ∀ B, C.IsB B → ∀ Q : MvPolynomial (FVar D T.rank S.rank) ℂ, om (1, γ) (C.fvec B (C.Th (C.xB B) φ) Q) = C.fvec (C.mvB γ B) (C.Th (C.xB (C.mvB γ B)) (wG C.X C.bas C.idx ga φ)) Q := by
   intro D S T C om H
   refine ⟨fun γ hγ γ' hγ' f hf w => om_subst C om H γ hγ γ' hγ' f hf w, ?_⟩

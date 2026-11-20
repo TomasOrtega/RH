@@ -37,6 +37,13 @@ noncomputable def UpperTheory.Reformulated.B.Qj21.MS :
             Q = UpperTheory.Reformulated.B.Qj21.tmL t L (1 : UpperTheory.Reformulated.B.Qj21.PolyXZ H N0 N1) ∧
               UpperTheory.Reformulated.B.Qj21.nzc L = a ∧ UpperTheory.Reformulated.B.Qj21.z0c L = b}
 
+/- English proof (translation)
+Introduce `H N0 N1 t a b a' b' P Q hP hQ`. Establish `key : UpperTheory.Reformulated.B.Qj21.MS (N0` using `N0) (N1 := N1) t a b * UpperTheory.Reformulated.B.Qj21.MS t a' b' ≤ UpperTheory.Reformulated.B.Qj21.MS t (a + a') (b + b') := by`. Unfold `UpperTheory.Reformulated.B.Qj21.MS`. Rewrite using `[Submodule.span_mul_span]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨x, ⟨L, rfl, h1, h2⟩, y, ⟨L', rfl, h3, h4⟩, rfl⟩`. Use `⟨L ++ L', ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [UpperTheory.Reformulated.B.Qj21.tmL, List.map_append, List.prod_append, mul_one]`. Rewrite using `[← h1, ← h3]`. Simplify using `only [UpperTheory.Reformulated.B.Qj21.nzc, List.map_append, List.sum_append]`.
+
+Rewrite using `[← h2, ← h4]`. Simplify using `only [UpperTheory.Reformulated.B.Qj21.z0c, List.map_append, List.sum_append]`. Conclude with `key (Submodule.mul_mem_mul hP hQ)`.
+-/
 theorem UpperTheory.Reformulated.B.Qj21.ms_mul :
     ∀ {H : Type} {N0 N1 : ℕ} (t : H) {a b a' b' : ℕ} {P Q : UpperTheory.Reformulated.B.Qj21.PolyXZ H N0 N1},
       P ∈ UpperTheory.Reformulated.B.Qj21.MS t a b → Q ∈ UpperTheory.Reformulated.B.Qj21.MS t a' b' → P * Q ∈ UpperTheory.Reformulated.B.Qj21.MS t (a + a') (b + b') := by

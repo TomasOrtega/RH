@@ -15,8 +15,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 attribute [local instance] kc_ring adele_t2Space kc_smul
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul' {J : Matrix (Fin n) (Fin n) E} (g h : UA σ J) : mat (g * h) = mat g * mat h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one' {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
 def atGrp (σ : E →ₐ[F] E) (X : Spc F E n) {R : Type} [Zero R] (ev : AF F → R) : Subgroup (UA σ X.J) where
@@ -30,6 +36,15 @@ def atGrp (σ : E →ₐ[F] E) (X : Spc F E n) {R : Type} [Zero R] (ev : AF F �
     have e : mat k⁻¹ - 1 = -(mat k⁻¹ * (mat k - 1)) := by rw [mul_sub, e0, mul_one, neg_sub]
     rw [e, smul_neg, ← Matrix.mul_smul, hk u hu, Matrix.mul_zero, neg_zero]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n X τ`. Use `⟨{ carrier := KInf σ X τ one_mem' := ⟨(atGrp σ X (evI F)).one_mem, fun w => by` and prove the remaining obligations. Rewrite using `[mat_one', Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Commute.one_left _⟩`. Use the proof step `mul_mem' := fun {g h} hg hh => ⟨(atGrp σ X (evI F)).mul_mem hg.1 hh.1, fun w => by`.
+
+Rewrite using `[mat_mul', Matrix.map_mul]`. Conclude with `(hg.2 w).mul_left (hh.2 w)⟩`. Use the proof step `inv_mem' := fun {k} hk => ⟨(atGrp σ X (evI F)).inv_mem hk.1, fun w => ?_⟩ }, rfl⟩`. Establish `e0 : (mat k⁻¹).map (piInf (τ w)) * (mat k).map (piInf (τ w)) = 1`. Rewrite using `[← Matrix.map_mul, ← mat_mul', inv_mul_cancel, mat_one', Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `e1 : (mat k).map (piInf (τ w)) * (mat k⁻¹).map (piInf (τ w)) = 1` using `mul_eq_one_comm.1 e0`. Establish `h` using `(hk.2 w).eq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, mul_one]`. Use `_ = (mat k⁻¹).map (piInf (τ w)) * (X.θ w * (mat k).map (piInf (τ w))) * (mat k⁻¹).map (piInf (τ w)) := by`.
+
+Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [← h, ← mul_assoc, e0, one_mul]`.
+-/
 theorem exists_maximal_compact_infinite :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (X : Spc F E n)
     (τ : ∀ w : InfinitePlace F, EmbOver E w), ∃ K : Subgroup (UA σ X.J), (K : Set (UA σ X.J)) = KInf σ X τ := by
@@ -58,6 +73,9 @@ variable (F) in
 
 def bA (i : Ix E) : AE F E := inclR (F := F) (AF F) (integralBasis E i)
 
+/- English proof (translation)
+Use `⟨fun k => (RingOfIntegers.basis E).repr (RingOfIntegers.basis E i * RingOfIntegers.basis E j) k, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun x : 𝓞 E => inclR (F := F) (AF F) (algebraMap (𝓞 E) E x)) ((RingOfIntegers.basis E).sum_repr (RingOfIntegers.basis E i * RingOfIntegers.basis E j))`. Simplify using `only [map_sum, map_zsmul, map_mul] at h`. Simplify using `only [bA, integralBasis_apply]`. Conclude with `h.symm`.
+-/
 theorem bA_mul (i j : Ix E) : ∃ c : Ix E → ℤ, bA F i * bA F j = ∑ k, c k • bA F k := by
   refine ⟨fun k => (RingOfIntegers.basis E).repr (RingOfIntegers.basis E i * RingOfIntegers.basis E j) k, ?_⟩
   have h := congrArg (fun x : 𝓞 E => inclR (F := F) (AF F) (algebraMap (𝓞 E) E x))
@@ -66,6 +84,15 @@ theorem bA_mul (i j : Ix E) : ∃ c : Ix E → ℤ, bA F i * bA F j = ∑ k, c k
   simp only [bA, integralBasis_apply]
   exact h.symm
 
+/- English proof (translation)
+Set `Φ : (Ix E → AF F) →ₗ[AF F] AE F E` to `Fintype.linearCombination (AF F) (bA F)`. Establish `hs : Function.Surjective Φ`. Introduce `a`. Express the relevant statement in the definitionally equal form `a ∈ LinearMap.range Φ`. Proceed by induction on `a using TensorProduct.induction_on with`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`. Consider the case `tmul a x`. Use `⟨fun i => (algebraMap ℚ F ((integralBasis E).repr x i)) • a, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← (integralBasis E).sum_repr x, TensorProduct.tmul_sum]`.
+
+Rewrite using `[Fintype.linearCombination_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul F ((integralBasis E).repr x i) (integralBasis E i), TensorProduct.tmul_smul, smul_assoc]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `a • ((1 : AF F) ⊗ₜ[F] _) = _`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Take `⟨S, hS⟩` from `Module.projective_lifting_property Φ LinearMap.id hs`. Conclude with `⟨S, fun a => by simpa [Φ, Fintype.linearCombination_apply] using LinearMap.congr_fun hS a⟩`.
+-/
 theorem exists_sectionC : ∃ S : AE F E →ₗ[AF F] (Ix E → AF F), ∀ a, ∑ i, S a i • bA F i = a := by
   let Φ : (Ix E → AF F) →ₗ[AF F] AE F E := Fintype.linearCombination (AF F) (bA F)
   have hs : Function.Surjective Φ := by
@@ -89,6 +116,9 @@ theorem exists_sectionC : ∃ S : AE F E →ₗ[AF F] (Ix E → AF F), ∀ a, �
 
 def phi (v : Pl F) (x : Ix E → Fv F v) : AE F E := ∑ i, atPlace v (x i) • bA F i
 
+/- English proof (translation)
+The claim follows from `continuous_finsetSum _ fun i _ => Continuous.fun_smul (f := fun a : Ix E → Fv F v => atPlace v (a i)) ((kc_cont_atPlace v).comp (continuous_apply i)) continuous_const`.
+-/
 theorem phi_cont (v : Pl F) : Continuous (phi (E := E) v) :=
   continuous_finsetSum _ fun i _ => Continuous.fun_smul (f := fun a : Ix E → Fv F v => atPlace v (a i)) ((kc_cont_atPlace v).comp (continuous_apply i)) continuous_const
 
@@ -103,6 +133,11 @@ def lam (v : Pl F) (ε : ℝ) (hε : 0 ≤ ε) : AddSubgroup (AE F E) where
     rintro _ ⟨x, hx, rfl⟩
     exact ⟨-x, fun i => by simpa using hx i, by simp [phi]⟩
 
+/- English proof (translation)
+Use `⟨Pi.single k t, fun i => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using `using ht`. Simplify `hε` using `[h]`.
+
+Rewrite using `[phi, Finset.sum_eq_single k (fun i _ h => by simp [h]) (by simp)]; simp`.
+-/
 theorem single_mem (v : Pl F) {ε : ℝ} (hε : 0 ≤ ε) (k : Ix E) {t : Fv F v} (ht : ‖t‖ ≤ ε) :
     atPlace v t • bA F k ∈ lam (E := E) v ε hε := by
   classical
@@ -112,6 +147,13 @@ theorem single_mem (v : Pl F) {ε : ℝ} (hε : 0 ≤ ε) (k : Ix E) {t : Fv F v
     · simpa [h] using hε
   · rw [phi, Finset.sum_eq_single k (fun i _ h => by simp [h]) (by simp)]; simp
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `ha`. Take `⟨y, hy, rfl⟩` from `hb`. Rewrite using `[phi, phi, Finset.sum_mul_sum]`. Use `sum_mem fun i _ => sum_mem fun j _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `bA_mul (F := F) i j`.
+
+Rewrite using `[smul_mul_smul_comm, hc, Finset.smul_sum, atPlace_mul_right, evFin_atPlace]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Use `zsmul_mem (single_mem v hε k ?_) _` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `(mul_le_mul (hx i) ((hy j).trans h1) (norm_nonneg _) hε).trans_eq (mul_one _)`.
+-/
 theorem lam_mul (v : Pl F) {ε : ℝ} (hε : 0 ≤ ε) (h1 : ε ≤ 1) {a b : AE F E} (ha : a ∈ lam v ε hε) (hb : b ∈ lam v ε hε) :
     a * b ∈ lam v ε hε := by
   obtain ⟨x, hx, rfl⟩ := ha
@@ -126,6 +168,9 @@ theorem lam_mul (v : Pl F) {ε : ℝ} (hε : 0 ≤ ε) (h1 : ε ≤ 1) {a b : AE
   rw [norm_mul]
   exact (mul_le_mul (hx i) ((hy j).trans h1) (norm_nonneg _) hε).trans_eq (mul_one _)
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Use `IsCompact.image ?_ (phi_cont v)` and prove the remaining obligations. Establish `: {x : Ix E → Fv F v | ∀ i, ‖x i‖ ≤ ε} = Set.univ.pi fun _ => Metric.closedBall 0 ε` using `by ext; simp`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_closedBall _ _`.
+-/
 theorem lam_cpt (v : Pl F) {ε : ℝ} (hε : 0 ≤ ε) : IsCompact (lam (E := E) v ε hε : Set (AE F E)) := by
   haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v
   refine IsCompact.image ?_ (phi_cont v)
@@ -147,6 +192,13 @@ def kEps (σ : E →ₐ[F] E) (X : Spc F E n) (v : Pl F) (ε : ℝ) (hε : 0 ≤
     exact key _ _ (fun i j => (hh.2 i j).2) (fun i j => (hg.2 i j).2) i j
   inv_mem' := fun {g} hg => ⟨(atGrp σ X _).inv_mem hg.1, fun i j => ⟨(hg.2 i j).2, by rw [inv_inv]; exact (hg.2 i j).1⟩⟩
 
+/- English proof (translation)
+Establish `hm` using `kc_cont_mat (σ := σ) X.J`. Establish `hi : Continuous fun k : UA σ X.J => mat k⁻¹` using `hm.comp continuous_inv`. Establish `hL` using `lam_cpt (E := E) v hε`. Set `S₀ : Set (Matrix (Fin n) (Fin n) (AE F E))` to `Set.univ.pi fun _ => Set.univ.pi fun _ => (lam (E := E) v ε hε : Set (AE F E))`. Establish `hS₀ : IsCompact S₀` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hL`.
+
+Use `isCompact_of_units _ (kc_closedU X.J) _ ?_ ((fun A => A + 1) '' S₀) (hS₀.image (continuous_id.add continuous_const)) fun k hk => ⟨⟨mat k - 1, fun i _ j _ => (hk.2 i j).1, sub_add_cancel _ _⟩, ⟨mat k⁻¹ - 1, fun i _ j _ => (hk.2 i j).2, sub_add_cancel _ _⟩⟩` and prove the remaining obligations. Establish `e : (kEps σ X v ε hε h1 : Set (UA σ X.J)) = (⋂ u, ⋂ _ : evFin F v u = 0, {k : UA σ X.J | u • (mat k - 1) = 0}) ∩ ⋂ i, ⋂ j, ((fun k : UA σ X.J => (mat k - 1) i j) ⁻¹' (lam (E` using `E) v ε hε : Set (AE F E)) ∩ (fun k : UA σ X.J => (mat k⁻¹ - 1) i j) ⁻¹' (lam (E := E) v ε hε : Set (AE F E))) := by`. Use extensionality with `k`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `IsClosed.inter (isClosed_iInter fun u => isClosed_iInter fun _ => isClosed_eq ((hm.sub continuous_const).const_smul u) continuous_const) (isClosed_iInter fun i => isClosed_iInter fun j => IsClosed.inter (hL.isClosed.preimage ((hm.sub continuous_const).matrix_elem i j)) (hL.isClos …`.
+-/
 theorem kEps_cpt (X : Spc F E n) (v : Pl F) {ε : ℝ} (hε : 0 ≤ ε) (h1 : ε ≤ 1) :
     IsCompact (kEps σ X v ε hε h1 : Set (UA σ X.J)) := by
   have hm := kc_cont_mat (σ := σ) X.J
@@ -170,6 +222,15 @@ theorem kEps_cpt (X : Spc F E n) (v : Pl F) {ε : ℝ} (hε : 0 ≤ ε) (h1 : ε
       (hL.isClosed.preimage ((hm.sub continuous_const).matrix_elem i j))
       (hL.isClosed.preimage ((hi.sub continuous_const).matrix_elem i j)))
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_sectionC (F := F) (E := E)`. Establish `hSc : Continuous S` using `IsModuleTopology.continuous_of_linearMap S`. Establish `hev : Continuous (evFin F v)` using `((RestrictedProduct.continuous_eval v).comp continuous_snd)`. Establish `hm` using `kc_cont_mat (σ := σ) X.J`. Establish `hi : Continuous fun k : UA σ X.J => mat k⁻¹` using `hm.comp continuous_inv`.
+
+Establish `hin : ∀ A : Matrix (Fin n) (Fin n) (AE F E), At (evFin F v) A → ∀ i j, (∀ k, ‖evFin F v (S (A i j) k)‖ < ε) → A i j ∈ lam v ε hε.le` using `fun A hA i j h => by`. Use `⟨fun k => evFin F v (S (A i j) k), fun k => (h k).le, ?_⟩` and prove the remaining obligations. Establish `h2 : atPlace v 1 • A i j = A i j` using `congrFun (congrFun (kc_idem hA) i) j`. Rewrite using `[← h2]`. Use `conv_rhs => rw [← hS (A i j), Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, atPlace_mul_right, one_mul, h2]`. Establish `op : ∀ f : UA σ X.J → Matrix (Fin n) (Fin n) (AE F E), Continuous f → f 1 = 0 → ∀ᶠ g in 𝓝 (1 : UA σ X.J), ∀ i j k, ‖evFin F v (S (f g i j) k)‖ < ε` using `fun f hf h0 => by`. Simplify using `only [eventually_all]`. Introduce `i j k`.
+
+Establish `c : Continuous fun g => ‖evFin F v (S (f g i j) k)‖` using `(hev.comp ((continuous_apply k).comp (hSc.comp (hf.matrix_elem i j)))).norm`. Conclude with `c.continuousAt.eventually_lt continuousAt_const (by simpa [h0] using hε)`. Use `⟨_, (op _ (hm.sub continuous_const) (sub_self _)).and (op _ (hi.sub continuous_const) (by simp [mat_one'])), fun g hg => ⟨hg.2, fun i j => ⟨hin _ hg.2 i j (hg.1.1 i j), hin _ ((atGrp σ X _).inv_mem hg.2) i j (hg.1.2 i j)⟩⟩⟩` and prove the remaining obligations.
+-/
 theorem kEps_nhds (X : Spc F E n) (v : Pl F) {ε : ℝ} (hε : 0 < ε) (h1 : ε ≤ 1) :
     ∃ U' ∈ 𝓝 (1 : UA σ X.J), U' ∩ UAt σ X (evFin F v) ⊆ kEps σ X v ε hε.le h1 := by
   obtain ⟨S, hS⟩ := exists_sectionC (F := F) (E := E)
@@ -195,6 +256,17 @@ theorem kEps_nhds (X : Spc F E n) (v : Pl F) {ε : ℝ} (hε : 0 < ε) (h1 : ε 
   refine ⟨_, (op _ (hm.sub continuous_const) (sub_self _)).and (op _ (hi.sub continuous_const) (by simp [mat_one'])),
     fun g hg => ⟨hg.2, fun i j => ⟨hin _ hg.2 i j (hg.1.1 i j), hin _ ((atGrp σ X _).inv_mem hg.2) i j (hg.1.2 i j)⟩⟩⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n X v`. Use `⟨fun g hg => (atGrp σ X _).inv_mem hg, fun g hg g' hg' => (atGrp σ X _).mul_mem hg hg', fun U hU => ?_⟩` and prove the remaining obligations. Set `e : ℕ → ℝ` to `fun m => 1 / ((m : ℝ) + 1)`. Establish `e0 : ∀ m, 0 < e m` using `fun m => by positivity`. Establish `e1 : ∀ m, e m ≤ 1` using `fun m => (div_le_one (by positivity)).2 (by linarith [Nat.cast_nonneg (α := ℝ) m])`.
+
+Set `K : ℕ → Set (UA σ X.J)` to `fun m => kEps σ X v (e m) (e0 m).le (e1 m)`. Establish `anti : Antitone K` using `fun a b hab g hg => ⟨hg.1, fun i j => by`. Establish `hle : e b ≤ e a` using `Nat.one_div_le_one_div hab`. Conclude with `⟨Set.image_mono (fun x hx k => (hx k).trans hle) (hg.2 i j).1, Set.image_mono (fun x hx k => (hx k).trans hle) (hg.2 i j).2⟩⟩`. Use `haveI : T2Space (UA σ X.J) := (Units.isEmbedding_embedProduct.comp Topology.IsEmbedding.subtypeVal).t2Space`.
+
+Establish `hint : ∀ g ∈ ⋂ m, K m, g = 1` using `fun g hg => by`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mat g = 1`. Rewrite using `[← sub_eq_zero]`. Use extensionality with `i j`.
+
+Use `choose x hx hxe using fun m => ((Set.mem_iInter.1 hg m).2 i j).1`. Establish `t0 : Tendsto x atTop (𝓝 0)` using `tendsto_pi_nhds.2 fun k => squeeze_zero_norm (fun m => hx m k) tendsto_one_div_add_atTop_nhds_zero_nat`. Establish `t1` using `((phi_cont (E := E) v).tendsto 0).comp t0`. Establish `: (phi v ∘ x) = fun _ => (mat g - 1) i j` using `funext hxe`. Rewrite `t1` using `[this]`.
+
+Use `tendsto_nhds_unique tendsto_const_nhds t1` as an intermediate fact. Simplify `this` using `[phi]`. Take `⟨m, hm⟩` from `exists_subset_nhds_of_isCompact' (V := K) anti.directed_ge (fun m => kEps_cpt X v _ _) (fun m => (kEps_cpt X v _ _).isClosed) (U := U) (fun g hg => by rw [hint g hg]; exact hU)`. Conclude with `⟨kEps σ X v (e m) (e0 m).le (e1 m), kEps_cpt X v _ _, fun g hg => ⟨hm hg, hg.1⟩, kEps_nhds X v (e0 m) (e1 m)⟩`.
+-/
 theorem local_compact_open_subgroups :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (X : Spc F E n)
     (v : Pl F), (∀ g ∈ UAt σ X (evFin F v), g⁻¹ ∈ UAt σ X (evFin F v)) ∧

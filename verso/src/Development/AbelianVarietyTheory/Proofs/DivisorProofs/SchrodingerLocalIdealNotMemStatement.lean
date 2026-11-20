@@ -19,6 +19,9 @@ open scoped GlobalTheory.VacAny
 open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SuppOutQ.exists_lat_pair_ne_one | exact GlobalTheory.SuppOutQ.exists_lat_pair_ne_one | (intros; apply GlobalTheory.SuppOutQ.exists_lat_pair_ne_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schrodinger_local_ideal_not_mem : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) {a b : ℕ} (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), B.IsGood σ → G.IsGood B → CfgB B G G₁ H H' →

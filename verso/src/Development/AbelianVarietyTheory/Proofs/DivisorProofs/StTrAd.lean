@@ -10,6 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumInnerMulInnerPro
 
 namespace GlobalTheory.PsCo.Pc3
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.PsCo.Pc3.stTrAd_of @GlobalTheory.ShapeSmoothFinite.stShape @GlobalTheory.PsCo.Pc1.B.cutoffPolynomial_conjugation_deriv_mem_shapeSpan @GlobalTheory.PsCo.Pc3.uFin @GlobalTheory.PsCo.Pc3.rangeShape @GlobalTheory.OpTrace.hasTrace_sum_inner_of_range_le @GlobalTheory.Pc3. …`.
+-/
 theorem stTrAd : GlobalTheory.PsCo.Pc1.StTrAd :=
   @GlobalTheory.PsCo.Pc3.stTrAd_of @GlobalTheory.ShapeSmoothFinite.stShape @GlobalTheory.PsCo.Pc1.B.cutoffPolynomial_conjugation_deriv_mem_shapeSpan @GlobalTheory.PsCo.Pc3.uFin @GlobalTheory.PsCo.Pc3.rangeShape @GlobalTheory.OpTrace.hasTrace_sum_inner_of_range_le @GlobalTheory.Pc3.conjDeriv
 

@@ -16,9 +16,21 @@ private def amJ (x : Fin k → F) (N : ℕ) : AddSubmonoid F :=
 private def amP (x : Fin k → F) (L : List (ℤ × FreeMonoid (Fin k))) : F :=
   (L.map fun p => 1 + p.1 • FreeMonoid.lift x p.2).prod
 
+/- English proof (translation)
+The claim follows from `AddSubmonoid.closure_mono fun _ ⟨c, w, hw, e⟩ => ⟨c, w, h.trans hw, e⟩`.
+-/
 private theorem amJ_mono (x : Fin k → F) {a b : ℕ} (h : a ≤ b) : amJ x b ≤ amJ x a :=
   AddSubmonoid.closure_mono fun _ ⟨c, w, hw, e⟩ => ⟨c, w, h.trans hw, e⟩
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubmonoid.closure_induction with`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [add_mul]`. Conclude with `add_mem hu hv`. Consider the case `mem u hu`.
+
+Proceed by induction on `hz using AddSubmonoid.closure_induction with`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [mul_add]`. Conclude with `add_mem hu hv`. Consider the case `mem v hv`.
+
+Take `⟨c, w, hw, rfl⟩` from `hu`. Take `⟨c', w', hw', rfl⟩` from `hv`. Use `AddSubmonoid.subset_closure ⟨c * c', w * w', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[FreeMonoid.length_mul]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[map_mul, smul_mul_smul_comm]`.
+-/
 private theorem amJ_mul (x : Fin k → F) {a b : ℕ} {y z : F} (hy : y ∈ amJ x a) (hz : z ∈ amJ x b) :
     y * z ∈ amJ x (a + b) := by
   induction hy using AddSubmonoid.closure_induction with
@@ -35,6 +47,11 @@ private theorem amJ_mul (x : Fin k → F) {a b : ℕ} {y z : F} (hy : y ∈ amJ 
       · rw [FreeMonoid.length_mul]; omega
       · rw [map_mul, smul_mul_smul_comm]
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubmonoid.closure_induction with`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [neg_add]`. Conclude with `add_mem hu hv`. Consider the case `mem u hu`.
+
+Take `⟨c, w, hw, rfl⟩` from `hu`. Conclude with `AddSubmonoid.subset_closure ⟨-c, w, hw, (neg_smul _ _).symm⟩`.
+-/
 private theorem amJ_neg (x : Fin k → F) {a : ℕ} {y : F} (hy : y ∈ amJ x a) : -y ∈ amJ x a := by
   induction hy using AddSubmonoid.closure_induction with
   | zero => simp
@@ -43,6 +60,15 @@ private theorem amJ_neg (x : Fin k → F) {a : ℕ} {y : F} (hy : y ∈ amJ x a)
     obtain ⟨c, w, hw, rfl⟩ := hu
     exact AddSubmonoid.subset_closure ⟨-c, w, hw, (neg_smul _ _).symm⟩
 
+/- English proof (translation)
+Proceed by induction on `hd using AddSubmonoid.closure_induction with`. Consider the case `zero => exact ⟨[], by simp, 0, zero_mem _, by simp [amP]⟩`. Consider the case `mem u hu`. Take `⟨c, w, hw, rfl⟩` from `hu`. Use `⟨[(c, w)], ?_, 0, zero_mem _, by simp [amP]⟩` and prove the remaining obligations.
+
+Introduce `p hp h`. Rewrite `hp` using `[List.mem_singleton]`. Substitute `hp` using the available equality. Simplify using `only at h`. Rewrite `hw` using `[h]`.
+
+Simplify using `at hw`. Consider the case `add u v hu hv ihu ihv`. Take `⟨L, hL, e, he, h⟩` from `ihu`. Take `⟨L', hL', e', he', h'⟩` from `ihv`. Use `⟨L ++ L', fun p hp => (List.mem_append.1 hp).elim (hL p) (hL' p), e + e' + (u + e) * (v + e'), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `add_mem (add_mem he he') (amJ_mono x (by omega) (amJ_mul x (add_mem hu (amJ_mono x (by omega) he)) (add_mem hv (amJ_mono x (by omega) he'))))` and prove the remaining obligations. Establish `: amP x (L ++ L') = amP x L * amP x L'` using `by simp [amP]`. Rewrite using `[this, h, h']`. Use `noncomm_ring`.
+-/
 private theorem amJ_step (x : Fin k → F) {N : ℕ} {d : F} (hd : d ∈ amJ x (N + 1)) :
     ∃ L : List (ℤ × FreeMonoid (Fin k)), (∀ p ∈ L, p.2 ≠ 1) ∧ ∃ e ∈ amJ x (N + 2), amP x L = 1 + d + e := by
   induction hd using AddSubmonoid.closure_induction with
@@ -65,6 +91,15 @@ private theorem amJ_step (x : Fin k → F) {N : ℕ} {d : F} (hd : d ∈ amJ x (
     · have : amP x (L ++ L') = amP x L * amP x L' := by simp [amP]
       rw [this, h, h']; noncomm_ring
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero`. Use `⟨[], by simp, ⟨0, zero_mem _, by simp [amP]⟩, ∑ a, x a, ?_, by simp [amP]⟩` and prove the remaining obligations. Conclude with `sum_mem fun a _ => AddSubmonoid.subset_closure ⟨1, FreeMonoid.of a, by simp, by simp⟩`. Consider the case `succ N ih`.
+
+Take `⟨L, hL, ⟨q, hq, h1⟩, d, hd, h2⟩` from `ih`. Take `⟨L', hL', e, he, h3⟩` from `amJ_step x hd`. Establish `h4 : amP x (L ++ L') = amP x L * amP x L'` using `by simp [amP]`. Establish `hde : d + e ∈ amJ x (N + 1)` using `add_mem hd (amJ_mono x (by omega) he)`. Use `⟨L ++ L', fun p hp => (List.mem_append.1 hp).elim (hL p) (hL' p), ⟨q + (d + e) + q * (d + e), ?_, ?_⟩, -(e + q * (d + e)), ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `add_mem (add_mem hq (amJ_mono x (by omega) hde)) (amJ_mono x (by omega) (amJ_mul x hq hde))`. Rewrite using `[h4, h1, h3]`. Use `noncomm_ring`. Conclude with `amJ_neg x (add_mem he (amJ_mono x (by omega) (amJ_mul x hq hde)))`. Rewrite using `[h2, h4, h1, h3]`.
+
+Use `noncomm_ring`.
+-/
 private theorem amJ_fac (x : Fin k → F) (N : ℕ) :
     ∃ L : List (ℤ × FreeMonoid (Fin k)), (∀ p ∈ L, p.2 ≠ 1) ∧ (∃ q ∈ amJ x 1, amP x L = 1 + q) ∧
       ∃ d ∈ amJ x (N + 1), 1 + ∑ a, x a = amP x L + d := by
@@ -84,6 +119,17 @@ private theorem amJ_fac (x : Fin k → F) (N : ℕ) :
     · exact amJ_neg x (add_mem he (amJ_mono x (by omega) (amJ_mul x hq hde)))
     · rw [h2, h4, h1, h3]; noncomm_ring
 
+/- English proof (translation)
+Take `⟨L, hL, -, d, hd, h⟩` from `amJ_fac (FreeAlgebra.ι ℤ : Fin k → FreeAlgebra ℤ (Fin k)) N`. Use `⟨L, hL, fun F _ x hx => ?_⟩` and prove the remaining obligations. Establish `hw : ∀ w : FreeMonoid (Fin k), FreeAlgebra.lift ℤ x (FreeMonoid.lift (FreeAlgebra.ι ℤ) w) = FreeMonoid.lift x w`. Introduce `w`. Proceed by induction on `w using FreeMonoid.inductionOn' with`.
+
+Consider the case `one => simp`. Consider the case `of_mul a w ih => simp [ih]`. Establish `h0 : FreeAlgebra.lift ℤ x d = 0` using `by clear h`. Proceed by induction on `hd using AddSubmonoid.closure_induction with`. Consider the case `zero => simp`.
+
+Consider the case `add u v _ _ hu hv => rw [map_add, hu, hv, add_zero]`. Consider the case `mem u hu`. Take `⟨c, w, hw', rfl⟩` from `hu`. Rewrite using `[map_zsmul, hw, hx w (by omega), smul_zero]`. Use `congrArg (FreeAlgebra.lift ℤ x) h` as an intermediate fact.
+
+Rewrite `this` using `[map_add, map_add, h0, add_zero, map_one, map_sum, amP, map_list_prod, List.map_map]`. Simplify using `only [FreeAlgebra.lift_ι_apply] at this`. Rewrite using `[this, amP]`. Use `congr 1`. Use `List.map_congr_left fun p _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp, map_add, map_one, map_zsmul, hw]`.
+-/
 private theorem am_univ (k N : ℕ) :
     ∃ L : List (ℤ × FreeMonoid (Fin k)), (∀ p ∈ L, p.2 ≠ 1) ∧ ∀ (F : Type) [Ring F] (x : Fin k → F),
       (∀ w : FreeMonoid (Fin k), N < w.length → FreeMonoid.lift x w = 0) → 1 + ∑ a, x a = amP x L := by
@@ -123,6 +169,9 @@ private def amGood (n : ℕ) (Q : MvPolynomial (Fin k) (MvPolynomial (ℕ × Fre
   ∀ β, MvPolynomial.coeff β Q ∈ MvPolynomial.supported ℤ {v : ℕ × FreeMonoid (Fin k) | 1 ≤ v.1 ∧ v.1 ≤ n ∧ v.2 ≠ 1} ∧
     (MvPolynomial.coeff β Q).IsWeightedHomogeneous (fun v => v.1 • amWt v.2) β
 
+/- English proof (translation)
+Introduce `β`. Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs with h`. Conclude with `⟨h1, h ▸ h2⟩`. Conclude with `⟨zero_mem _, MvPolynomial.isWeightedHomogeneous_zero _ _ _⟩`.
+-/
 private theorem amGood_mon (n : ℕ) (γ : Fin k →₀ ℕ) (P : MvPolynomial (ℕ × FreeMonoid (Fin k)) ℤ)
     (h1 : P ∈ MvPolynomial.supported ℤ {v : ℕ × FreeMonoid (Fin k) | 1 ≤ v.1 ∧ v.1 ≤ n ∧ v.2 ≠ 1})
     (h2 : P.IsWeightedHomogeneous (fun v => v.1 • amWt v.2) γ) : amGood n (MvPolynomial.monomial γ P) := by
@@ -132,20 +181,34 @@ private theorem amGood_mon (n : ℕ) (γ : Fin k →₀ ℕ) (P : MvPolynomial (
   · exact ⟨h1, h ▸ h2⟩
   · exact ⟨zero_mem _, MvPolynomial.isWeightedHomogeneous_zero _ _ _⟩
 
+/- English proof (translation)
+The claim follows from `amGood_mon n 0 1 (one_mem _) (MvPolynomial.isWeightedHomogeneous_one _ _)`.
+-/
 private theorem amGood_one (n : ℕ) : amGood (k := k) n 1 :=
   amGood_mon n 0 1 (one_mem _) (MvPolynomial.isWeightedHomogeneous_one _ _)
 
+/- English proof (translation)
+Introduce `β`. Rewrite using `[MvPolynomial.coeff_add]`. Conclude with `⟨add_mem (h β).1 (h' β).1, (h β).2.add (h' β).2⟩`.
+-/
 private theorem amGood_add {n : ℕ} {Q Q'} (h : amGood (k := k) n Q) (h' : amGood n Q') : amGood n (Q + Q') := by
   intro β
   rw [MvPolynomial.coeff_add]
   exact ⟨add_mem (h β).1 (h' β).1, (h β).2.add (h' β).2⟩
 
+/- English proof (translation)
+Introduce `β`. Rewrite using `[MvPolynomial.coeff_sum]`. Conclude with `⟨sum_mem fun i hi => (h i hi β).1, MvPolynomial.IsWeightedHomogeneous.sum _ _ _ fun i hi => (h i hi β).2⟩`.
+-/
 private theorem amGood_sum {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → _) (h : ∀ i ∈ s, amGood (k := k) n (f i)) :
     amGood n (∑ i ∈ s, f i) := by
   intro β
   rw [MvPolynomial.coeff_sum]
   exact ⟨sum_mem fun i hi => (h i hi β).1, MvPolynomial.IsWeightedHomogeneous.sum _ _ _ fun i hi => (h i hi β).2⟩
 
+/- English proof (translation)
+Introduce `β`. Rewrite using `[MvPolynomial.coeff_mul]`. Use `⟨sum_mem fun i hi => mul_mem (h _).1 (h' _).1, MvPolynomial.IsWeightedHomogeneous.sum _ _ _ fun i hi => ?_⟩` and prove the remaining obligations. Establish `hi' : i.1 + i.2 = β` using `by simpa using hi`. Rewrite using `[← hi']`.
+
+Conclude with `(h _).2.mul (h' _).2`.
+-/
 private theorem amGood_mul {n : ℕ} {Q Q'} (h : amGood (k := k) n Q) (h' : amGood n Q') : amGood n (Q * Q') := by
   intro β
   rw [MvPolynomial.coeff_mul]
@@ -159,6 +222,9 @@ private noncomputable def amF (n : ℕ) (p : ℤ × FreeMonoid (Fin k)) :
   1 + ∑ i ∈ Finset.range n, MvPolynomial.monomial ((i + 1) • amWt p.2)
     (MvPolynomial.C (p.1 ^ (i + 1)) * MvPolynomial.X (i + 1, p.2))
 
+/- English proof (translation)
+Use `amGood_add (amGood_one n) (amGood_sum _ _ fun i hi => amGood_mon n _ _ ?_ ?_)` and prove the remaining obligations. Use `mul_mem (Subalgebra.algebraMap_mem _ _) (MvPolynomial.X_mem_supported.2 ⟨by simp, ?_, hp⟩)` and prove the remaining obligations. Conclude with `Finset.mem_range.1 hi`. Conclude with `(MvPolynomial.isWeightedHomogeneous_X ℤ (fun v : ℕ × FreeMonoid (Fin k) => v.1 • amWt v.2) (i + 1, p.2)).C_mul _`.
+-/
 private theorem amGood_F (n : ℕ) (p : ℤ × FreeMonoid (Fin k)) (hp : p.2 ≠ 1) : amGood n (amF n p) := by
   refine amGood_add (amGood_one n) (amGood_sum _ _ fun i hi => amGood_mon n _ _ ?_ ?_)
   · refine mul_mem (Subalgebra.algebraMap_mem _ _) (MvPolynomial.X_mem_supported.2 ⟨by simp, ?_, hp⟩)
@@ -166,6 +232,9 @@ private theorem amGood_F (n : ℕ) (p : ℤ × FreeMonoid (Fin k)) (hp : p.2 ≠
   · exact (MvPolynomial.isWeightedHomogeneous_X ℤ (fun v : ℕ × FreeMonoid (Fin k) => v.1 • amWt v.2)
       (i + 1, p.2)).C_mul _
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact amGood_one n`. Consider the case `cons p L ih`. Rewrite using `[List.map_cons, List.prod_cons]`. Conclude with `amGood_mul (amGood_F n p (hL p (by simp))) (ih fun q hq => hL q (by simp [hq]))`.
+-/
 private theorem amGood_prod (n : ℕ) (L : List (ℤ × FreeMonoid (Fin k))) (hL : ∀ p ∈ L, p.2 ≠ 1) :
     amGood n (L.map (amF n)).prod := by
   induction L with
@@ -174,6 +243,11 @@ private theorem amGood_prod (n : ℕ) (L : List (ℤ × FreeMonoid (Fin k))) (hL
     rw [List.map_cons, List.prod_cons]
     exact amGood_mul (amGood_F n p (hL p (by simp))) (ih fun q hq => hL q (by simp [hq]))
 
+/- English proof (translation)
+Proceed by induction on `w using FreeMonoid.inductionOn' with`. Consider the case `one => simp [amWt]`. Consider the case `of_mul a w ih`. Establish `: amWt (FreeMonoid.of a * w) = Finsupp.single a 1 + amWt w`. Simplify using `only [amWt, FreeMonoid.toList_of_mul, ← Multiset.cons_coe, ← Multiset.singleton_add, map_add, Multiset.toFinsupp_singleton]`.
+
+Rewrite using `[this, map_add, ih]`. Simplify using the standard rewrite rules.
+-/
 private theorem amWt_degree (w : FreeMonoid (Fin k)) : (amWt w).degree = w.length := by
   induction w using FreeMonoid.inductionOn' with
   | one => simp [amWt]
@@ -183,6 +257,11 @@ private theorem amWt_degree (w : FreeMonoid (Fin k)) : (amWt w).degree = w.lengt
         Multiset.toFinsupp_singleton]
     rw [this, map_add, ih]; simp
 
+/- English proof (translation)
+Proceed by induction on `w using FreeMonoid.inductionOn' with`. Consider the case `one => simp [amWt, Algebra.TensorProduct.one_def]`. Consider the case `of_mul a w ih`. Establish `: amWt (FreeMonoid.of a * w) = Finsupp.single a 1 + amWt w`. Simplify using `only [amWt, FreeMonoid.toList_of_mul, ← Multiset.cons_coe, ← Multiset.singleton_add, map_add, Multiset.toFinsupp_singleton]`.
+
+Rewrite using `[this, map_mul, map_mul, ih, FreeMonoid.lift_eval_of, FreeMonoid.lift_eval_of, Algebra.TensorProduct.tmul_mul_tmul, ← map_mul, MvPolynomial.X, MvPolynomial.monomial_mul, one_mul]`.
+-/
 private theorem am_lift {A E B : Type} [CommRing A] [Ring E] [Algebra A E] [CommRing B] [Algebra A B]
     (π : MvPolynomial (Fin k) A →ₐ[A] B) (x : Fin k → E) (w : FreeMonoid (Fin k)) :
     FreeMonoid.lift (fun a => π (MvPolynomial.X a) ⊗ₜ[A] x a) w =
@@ -196,6 +275,9 @@ private theorem am_lift {A E B : Type} [CommRing A] [Ring E] [Algebra A E] [Comm
     rw [this, map_mul, map_mul, ih, FreeMonoid.lift_eval_of, FreeMonoid.lift_eval_of,
       Algebra.TensorProduct.tmul_mul_tmul, ← map_mul, MvPolynomial.X, MvPolynomial.monomial_mul, one_mul]
 
+/- English proof (translation)
+Take `⟨h0, -, h, -⟩` from `d_chi D y`. Use `D.nat A[X] B (Polynomial.aeval b) (1 + X ⊗ₜ y)` as an intermediate fact. Rewrite `this` using `[h, map_add, map_one, Algebra.TensorProduct.map_tmul, aeval_X, AlgHom.id_apply]`. Rewrite using `[this, Finset.sum_range_succ', h0, add_comm]`. Simplify using the standard rewrite rules.
+-/
 private theorem am_one {n : ℕ} {A E B : Type} [CommRing A] [Ring E] [Algebra A E] [CommRing B] [Algebra A B]
     (D : Det n A E) (b : B) (y : E) :
     D.D B (1 + b ⊗ₜ y) = 1 + ∑ i ∈ Finset.range n, algebraMap A B (D.lam (i + 1) y) * b ^ (i + 1) := by
@@ -209,6 +291,21 @@ end Pol
 
 end UpperTheory.V.CA
 
+/- English proof (translation)
+Introduce `n k α`. Take `⟨L, hL, hu⟩` from `am_univ k α.degree`. Establish `hg` using `amGood_prod n L hL α`. Use `⟨_, fun v hv => MvPolynomial.mem_supported.1 hg.1 hv, hg.2, ?_⟩` and prove the remaining obligations. Introduce `A E _ _ _ D x`.
+
+Set `I : Ideal (MvPolynomial (Fin k) A)` to `Ideal.span ((fun s => MvPolynomial.monomial s 1) '' {β : Fin k →₀ ℕ | α.degree < β.degree})`. Set `π` to `Ideal.Quotient.mkₐ A I`. Set `φ : MvPolynomial (ℕ × FreeMonoid (Fin k)) ℤ →+* A` to `(MvPolynomial.aeval (R := ℤ) (fun v : ℕ × FreeMonoid (Fin k) => D.lam v.1 (FreeMonoid.lift x v.2))).toRingHom`. Establish `h1` using `hu ((MvPolynomial (Fin k) A ⧸ I) ⊗[A] E) (fun a => π (MvPolynomial.X a) ⊗ₜ[A] x a) fun w hw => by`. Establish `: π (MvPolynomial.monomial (amWt w) 1) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨amWt w, by simpa [amWt_degree] using hw, rfl⟩)`.
+
+Rewrite using `[am_lift, this, zero_tmul]`. Establish `h2 : π (D.D (MvPolynomial (Fin k) A) (1 + Det.gen x)) = π (MvPolynomial.map φ (L.map (amF n)).prod)`. Rewrite using `[← D.nat, map_add, map_one, Det.gen, map_sum]`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[h1, amP, map_list_prod, map_list_prod, map_list_prod, List.map_map, List.map_map, List.map_map]`.
+
+Use `congr 1`. Use `List.map_congr_left fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`. Rewrite using `[am_lift, smul_tmul', am_one, amF, map_add, map_add, map_one (MvPolynomial.map φ), map_one π, map_sum, map_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← map_zsmul, ← map_pow, ← π.commutes, ← map_mul]`. Use `congr 1`. Rewrite using `[MvPolynomial.map_monomial, _root_.smul_pow, MvPolynomial.monomial_pow, MvPolynomial.smul_monomial, MvPolynomial.algebraMap_eq, MvPolynomial.C_mul_monomial]`. Use `congr 1`.
+
+Simplify using `[φ, mul_comm]`. Establish `h3` using `MvPolynomial.mem_ideal_span_monomial_image.1 (Ideal.Quotient.eq.1 h2)`. Establish `h4 : MvPolynomial.coeff α (D.D (MvPolynomial (Fin k) A) (1 + Det.gen x) - MvPolynomial.map φ (L.map (amF n)).prod) = 0`. Assume the negation of the conclusion as `h`. Take `⟨β, hβ, hle⟩` from `h3 α (MvPolynomial.mem_support_iff.2 h)`.
+
+Conclude with `absurd (Finsupp.degree_mono hle) (not_le.2 hβ)`. Rewrite `h4` using `[MvPolynomial.coeff_sub, sub_eq_zero, MvPolynomial.coeff_map]`. Conclude with `h4`.
+-/
 theorem UpperTheory.V.CA.d_amitsur :
     ∀ (n k : ℕ) (α : Fin k →₀ ℕ), ∃ P : MvPolynomial (ℕ × FreeMonoid (Fin k)) ℤ, (∀ v ∈ P.vars, 1 ≤ v.1 ∧ v.1 ≤ n ∧ v.2 ≠ 1) ∧ P.IsWeightedHomogeneous (fun v => v.1 • Multiset.toFinsupp (v.2.toList : Multiset (Fin k))) α ∧ ∀ {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (x : Fin k → E), MvPolynomial.coeff α (D.D (MvPolynomial (Fin k) A) (1 + Det.gen x)) = MvPolynomial.aeval (fun v => D.lam v.1 (FreeMonoid.lift x v.2)) P := by
   intro n k α

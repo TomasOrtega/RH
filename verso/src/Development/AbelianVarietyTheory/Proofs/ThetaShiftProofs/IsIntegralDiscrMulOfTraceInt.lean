@@ -11,6 +11,37 @@ namespace GlobalTheory.ArcQ
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField in
 open scoped LaurentSeries in
 
+/- English proof (translation)
+Introduce `E _ _ X _ _ ξ`. Use `set b := RingOfIntegers.basis E with hbdef`. Establish `hB` using `traceForm_nondegenerate ℚ E`. Use `set d := (Algebra.traceForm ℚ E).dualBasis hB (integralBasis E) with hd`. Establish `hP : ∀ x, _root_.GlobalTheory.ArcQ.pairE ξ x = ∑ i, d i * (ξ (b i • x) : E)` using `fun x => rfl`.
+
+Establish `hexp : ∀ y : 𝓞 E, algebraMap (𝓞 E) E y = ∑ k, (b.repr y k : E) * integralBasis E k`. Introduce `y`. Use `conv_lhs => rw [← b.sum_repr y]`. Simplify using `[integralBasis_apply, zsmul_eq_mul, b]`. Establish `hdual : ∀ i k, Algebra.trace ℚ E (d i * integralBasis E k) = if k = i then 1 else 0`.
+
+Introduce `i k`. Rewrite using `[← Algebra.traceForm_apply]`. Conclude with `LinearMap.BilinForm.apply_dualBasis_left hB _ i k`. Establish `hL : ∀ (y : 𝓞 E) i, Algebra.trace ℚ E (d i * algebraMap (𝓞 E) E y) = (b.repr y i : ℚ)`. Introduce `y i`.
+
+Establish `e : ∀ k, d i * ((b.repr y k : E) * integralBasis E k) = (b.repr y k : ℚ) • (d i * integralBasis E k)`. Introduce `k`. Rewrite using `[Algebra.smul_def]`. Simplify using `only [eq_ratCast, Rat.cast_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hexp y, Finset.mul_sum, map_sum]`. Repeatedly rewrite using `[e, map_smul, hdual, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hC : ∀ x (y : 𝓞 E), Algebra.trace ℚ E (_root_.GlobalTheory.ArcQ.pairE ξ x * algebraMap (𝓞 E) E y) = (ξ (y • x) : ℚ)`. Introduce `x y`. Establish `e : ∀ i, d i * (ξ (b i • x) : E) * algebraMap (𝓞 E) E y = (ξ (b i • x) : ℚ) • (d i * algebraMap (𝓞 E) E y)`.
+
+Introduce `i`. Rewrite using `[Algebra.smul_def]`. Simplify using `only [eq_ratCast, Rat.cast_intCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hP, Finset.sum_mul, map_sum]`.
+
+Repeatedly rewrite using `[e, map_smul, hL, smul_eq_mul]`. Use `conv_rhs => rw [← b.sum_repr y]`. Simplify using `only [Finset.sum_smul, map_sum, smul_assoc, map_zsmul, smul_eq_mul, Int.cast_sum, Int.cast_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `huniq : ∀ y y' : E, (∀ k, Algebra.trace ℚ E (y * integralBasis E k) = Algebra.trace ℚ E (y' * integralBasis E k)) → y = y'`.
+
+Introduce `y y' h`. Rewrite using `[← d.sum_repr y, ← d.sum_repr y']`. Repeatedly rewrite using `[hd, LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply, h]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a x`.
+
+Apply `huniq` to reduce the goal to its premises. Introduce `k`. Establish `e : (a : E) * _root_.GlobalTheory.ArcQ.pairE ξ x * integralBasis E k = _root_.GlobalTheory.ArcQ.pairE ξ x * algebraMap (𝓞 E) E (b k * a)`. Rewrite using `[integralBasis_apply, map_mul]`. Use `show (algebraMap (𝓞 E) E a) * _ * _ = _`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hC, integralBasis_apply, hC, mul_smul]`. Introduce `x y`. Simplify using `only [hP, smul_add, map_add, Int.cast_add, mul_add, Finset.sum_add_distrib]`. Introduce `x`.
+
+Use `hC x 1` as an intermediate fact. Simplify using `using this`. Introduce `x`. Rewrite using `[hP, Finset.mul_sum]`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hdi : IsIntegral ℤ ((NumberField.discr E : E) * d i)`. Establish `h` using `isIntegral_discr_mul_of_mem_traceDual (A := ℤ) (K := ℚ) (L := E) (B := 𝓞 E) (1 : Submodule (𝓞 E) E) (b := integralBasis E) (fun k => by rw [integralBasis_apply]; exact RingOfIntegers.isIntegral_coe _) (a := 1) (x := d i) (Submodule.one_le.1 le_rfl) (by`. Rewrite using `[Submodule.mem_traceDual]`. Introduce `a ha`. Take `⟨y, rfl⟩` from `Submodule.mem_one.1 ha`.
+
+Rewrite using `[Algebra.traceForm_apply, hL]`. Conclude with `⟨b.repr y i, rfl⟩)`. Rewrite `h` using `[← coe_discr, Algebra.smul_def, mul_one]`. Simplify using `using h`. Establish `hξ : IsIntegral ℤ ((ξ (b i • x) : ℤ) : E)`.
+
+Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := E) (x := ξ (b i • x)))`. Rewrite using `[← mul_assoc]`. Conclude with `hdi.mul hξ`. Introduce `K _ τK x show ∑ i, τK (d i) * (ξ (b i • x) : K) = τK (_root_.GlobalTheory.ArcQ.pairE ξ x)`. Rewrite using `[hP]`.
+
+Simplify using `[map_sum, map_mul, map_intCast]`.
+-/
 theorem _root_.GlobalTheory.ArcQ.pairE_properties : ∀ (E : Type) [Field E] [NumberField E] (X : Type) [AddCommGroup X] [Module (𝓞 E) X] (ξ : Module.Dual ℤ X), (∀ (a : 𝓞 E) x, _root_.GlobalTheory.ArcQ.pairE ξ (a • x) = (a : E) * _root_.GlobalTheory.ArcQ.pairE ξ x) ∧ (∀ x y, _root_.GlobalTheory.ArcQ.pairE ξ (x + y) = _root_.GlobalTheory.ArcQ.pairE (E := E) ξ x + _root_.GlobalTheory.ArcQ.pairE ξ y) ∧ (∀ x, Algebra.trace ℚ E (_root_.GlobalTheory.ArcQ.pairE ξ x) = ξ x) ∧ (∀ x, IsIntegral ℤ ((NumberField.discr E : E) * _root_.GlobalTheory.ArcQ.pairE ξ x)) ∧ ∀ (K : Type) [Field K] (τK : E →+* K) x, _root_.GlobalTheory.ArcQ.xiVal τK ξ x = τK (_root_.GlobalTheory.ArcQ.pairE ξ x) := by
   intro E _ _ X _ _ ξ
   classical

@@ -4,6 +4,11 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 
 namespace GlobalTheory.CompanionTheory.LatC
 
+/- English proof (translation)
+Introduce `g a`. Establish `key : gP l g (kP l K a) = kP l K a`. Establish `h1 : galBdRHom (toBot g.1) (algClToBdR l (a : PadicAlgCl l)) = algClToBdR l ((toBot g.1) (a : PadicAlgCl l))` using `gal_smul_algClToBdR (toBot g.1) (a : PadicAlgCl l)`. Establish `h2 : (toBot g.1) (a : PadicAlgCl l) = (a : PadicAlgCl l)` using `g.2 a`. Rewrite `h1` using `[h2]`.
+
+Conclude with `h1`. Express the relevant statement in the definitionally equal form `gB h k g (pk l k (kP l K a)) = pk l k (kP l K a)`. Express the relevant statement in the definitionally equal form `Ideal.quotientMap _ (gP l g) (h.galT k g) (Ideal.Quotient.mk _ (kP l K a)) = Ideal.Quotient.mk _ (kP l K a)`. Rewrite using `[Ideal.quotientMap_mk, key]`.
+-/
 theorem sigmaB_fixes_K {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ}
     (h : LevHyp l K M) (k : ℕ) : ∀ g (a : K),
     (lev h k).σB g (algebraMap K (lev h k).B a) = algebraMap K (lev h k).B a := by

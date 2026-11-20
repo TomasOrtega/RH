@@ -17,17 +17,34 @@ variable {D : D7}
 def finInt (D : D7) : AddSubgroup (AE D) :=
   AddSubgroup.closure {z | ∃ α ∈ intAf D.host.F, ∃ x : D.host.E, IsIntegral ℤ x ∧ z = (pairA D.host.F 0 α) ⊗ₜ[D.host.F] x}
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨α, hα, x, hx, rfl⟩`.
+-/
 theorem gen_mem {α : Af D.host.F} (hα : α ∈ intAf D.host.F) {x : D.host.E} (hx : IsIntegral ℤ x) :
     ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] x : AE D) ∈ finInt D :=
   AddSubgroup.subset_closure ⟨α, hα, x, hx, rfl⟩
 
+/- English proof (translation)
+The claim follows from `hx.map (starRingEnd D.host.E).toIntAlgHom`.
+-/
 theorem star_int {x : D.host.E} (hx : IsIntegral ℤ x) : IsIntegral ℤ (star x) :=
   hx.map (starRingEnd D.host.E).toIntAlgHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incA_eq (e : D.host.E) : incA D e = ((1 : AF D.host.F) ⊗ₜ[D.host.F] e : AE D) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cA_tmul (a : AF D.host.F) (e : D.host.E) : cA D (a ⊗ₜ[D.host.F] e) = a ⊗ₜ[D.host.F] star e := rfl
 
+/- English proof (translation)
+Establish `h1 : a ⊗ₜ[D.host.F] e = a • ((1 : R) ⊗ₜ[D.host.F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `h2 : Algebra.lmul R (R ⊗[D.host.F] D.host.E) ((1 : R) ⊗ₜ[D.host.F] e) = (Algebra.lmul D.host.F D.host.E e).baseChange R`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1, map_smul, smul_eq_mul, Algebra.trace_apply, h2, LinearMap.trace_baseChange, ← Algebra.trace_apply]`.
+-/
 theorem trace_tmul {R : Type} [CommRing R] [Algebra D.host.F R] (a : R) (e : D.host.E) :
     Algebra.trace R (R ⊗[D.host.F] D.host.E) (a ⊗ₜ[D.host.F] e) =
       a * algebraMap D.host.F R (Algebra.trace D.host.F D.host.E e) := by
@@ -39,14 +56,25 @@ theorem trace_tmul {R : Type} [CommRing R] [Algebra D.host.F R] (a : R) (e : D.h
     simp
   rw [h1, map_smul, smul_eq_mul, Algebra.trace_apply, h2, LinearMap.trace_baseChange, ← Algebra.trace_apply]
 
+/- English proof (translation)
+Introduce `w` and use `by rw [map_mul]; exact mul_mem (ha w) (hb w)`.
+-/
 theorem intAf_mul' {a b : Af D.host.F} (ha : a ∈ intAf D.host.F) (hb : b ∈ intAf D.host.F) : a * b ∈ intAf D.host.F :=
   fun w => by rw [map_mul]; exact mul_mem (ha w) (hb w)
 
+/- English proof (translation)
+Introduce `v`. Rewrite using `[AlgHom.commutes]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.coe_algebraMap_mem (𝓞 D.host.F) D.host.F v r`.
+-/
 theorem coe_mem_intAf (r : 𝓞 D.host.F) : algebraMap D.host.F (Af D.host.F) (r : D.host.F) ∈ intAf D.host.F := by
   intro v
   rw [AlgHom.commutes]
   exact IsDedekindDomain.HeightOneSpectrum.coe_algebraMap_mem (𝓞 D.host.F) D.host.F v r
 
+/- English proof (translation)
+Use `GlobalTheory.IntDense.addChar_eq_one_of_integral D.host.F ψ hψ.1.1 1 (fun a => by` as an intermediate fact. Establish `htr : Algebra.trace ℚ D.host.F (a : D.host.F) = ((Algebra.intTrace ℤ (𝓞 D.host.F) a : ℤ) : ℚ)` using `(Algebra.algebraMap_intTrace (A := ℤ) (K := ℚ) (L := D.host.F) a).symm`. Rewrite using `[mul_one, GlobalTheory.StdRat.stdChar_fin_rat D ψ hψ, htr, mul_comm]`. Use `push_cast`. Conclude with `Complex.exp_int_mul_two_pi_mul_I _) β hβ`.
+
+Rewrite `this` using `[map_one, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem char_int {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {β : Af D.host.F} (hβ : β ∈ intAf D.host.F) :
     ψ (pairA D.host.F 0 β) = 1 := by
   have := GlobalTheory.IntDense.addChar_eq_one_of_integral D.host.F ψ hψ.1.1 1 (fun a => by
@@ -57,15 +85,28 @@ theorem char_int {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {�
     exact Complex.exp_int_mul_two_pi_mul_I _) β hβ
   rwa [map_one, mul_one] at this
 
+/- English proof (translation)
+The claim follows from `Prod.ext (mul_zero (0 : Ainf D.host.F)) rfl`.
+-/
 theorem pairFiniteAdele_zero_mul_pairFiniteAdele_zero (α β : Af D.host.F) :
     pairA D.host.F 0 α * pairA D.host.F 0 β = pairA D.host.F 0 (α * β) :=
   Prod.ext (mul_zero (0 : Ainf D.host.F)) rfl
 
+/- English proof (translation)
+The claim follows from `Prod.ext (zero_mul (algebraMap D.host.F (Ainf D.host.F) q)) rfl`.
+-/
 theorem pairFiniteAdele_zero_mul_algebraMap_base (α : Af D.host.F) (q : D.host.F) :
     pairA D.host.F 0 α * algebraMap D.host.F (AF D.host.F) q =
       pairA D.host.F 0 (α * algebraMap D.host.F (Af D.host.F) q) :=
   Prod.ext (zero_mul (algebraMap D.host.F (Ainf D.host.F) q)) rfl
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, x, hx, rfl⟩` from `hy`. Rewrite using `[incA_eq, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Conclude with `gen_mem hα (he.mul hx)`.
+
+Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem incA_mul_mem {e : D.host.E} (he : IsIntegral ℤ e) {z : AE D} (hz : z ∈ finInt D) : incA D e * z ∈ finInt D := by
   induction hz using AddSubgroup.closure_induction with
   | mem y hy =>
@@ -76,6 +117,13 @@ theorem incA_mul_mem {e : D.host.E} (he : IsIntegral ℤ e) {z : AE D} (hz : z �
   | add x y _ _ hx hy => rw [mul_add]; exact add_mem hx hy
   | neg x _ hx => rw [mul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, x, hx, rfl⟩` from `hy`. Rewrite using `[cA_tmul]`. Conclude with `gen_mem hα (star_int hx)`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem cA_mem {z : AE D} (hz : z ∈ finInt D) : cA D z ∈ finInt D := by
   induction hz using AddSubgroup.closure_induction with
   | mem y hy =>
@@ -86,6 +134,15 @@ theorem cA_mem {z : AE D} (hz : z ∈ finInt D) : cA D z ∈ finInt D := by
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, x, hx, rfl⟩` from `hy`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+
+Take `⟨β, hβ, x', hx', rfl⟩` from `hy`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, pairFiniteAdele_zero_mul_pairFiniteAdele_zero]`. Conclude with `gen_mem (intAf_mul' hα hβ) (hx.mul hx')`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`. Conclude with `neg_mem hx`. Consider the case `zero => rw [zero_mul]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [neg_mul]`. Conclude with `neg_mem hx`.
+-/
 theorem mul_mem' {z w : AE D} (hz : z ∈ finInt D) (hw : w ∈ finInt D) : z * w ∈ finInt D := by
   induction hz using AddSubgroup.closure_induction with
   | mem y hy =>
@@ -102,6 +159,11 @@ theorem mul_mem' {z w : AE D} (hz : z ∈ finInt D) (hw : w ∈ finInt D) : z * 
   | add x y _ _ hx hy => rw [add_mul]; exact add_mem hx hy
   | neg x _ hx => rw [neg_mul]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, x, hx, rfl⟩` from `hy`. Establish `hint : IsIntegral ℤ (Algebra.trace D.host.F D.host.E x)` using `Algebra.isIntegral_trace hx`. Rewrite using `[trace_tmul, pairFiniteAdele_zero_mul_algebraMap_base]`.
+
+Conclude with `char_int hψ (intAf_mul' hα (coe_mem_intAf ⟨_, hint⟩))`. Consider the case `zero => rw [map_zero]`. Conclude with `AddChar.map_zero_eq_one ψ`. Consider the case `add x y _ _ hx hy => rw [map_add, AddChar.map_add_eq_mul, hx, hy, one_mul]`. Consider the case `neg x _ hx => rw [map_neg, AddChar.map_neg_eq_inv, hx, inv_one]`.
+-/
 theorem psi_trace {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {z : AE D} (hz : z ∈ finInt D) :
     ψ (Algebra.trace (AF D.host.F) (AE D) z) = 1 := by
   induction hz using AddSubgroup.closure_induction with
@@ -114,6 +176,13 @@ theorem psi_trace {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {
   | add x y _ _ hx hy => rw [map_add, AddChar.map_add_eq_mul, hx, hy, one_mul]
   | neg x _ hx => rw [map_neg, AddChar.map_neg_eq_inv, hx, inv_one]
 
+/- English proof (translation)
+Use `haveI : Algebra.IsAlgebraic ℤ D.host.E := (IsFractionRing.comap_isAlgebraic_iff (A := ℤ) (K := ℚ) (C := D.host.E)).2 inferInstance`. Take `⟨y, hy, h⟩` from `Algebra.IsAlgebraic.exists_integral_multiples ℤ (Finset.univ.image f)`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `h (f i) (Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩)`. Rewrite `h1` using `[zsmul_eq_mul]`.
+
+Break down `Int.natAbs_eq y with e | e` into its components or cases. Rewrite `h1` using `[e]`. Simplify using `using h1`. Rewrite `h1` using `[e]`. Use `h1.neg` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem exists_den {ι : Type} [Fintype ι] (f : ι → D.host.E) :
     ∃ d : ℕ, 0 < d ∧ ∀ i, IsIntegral ℤ ((d : D.host.E) * f i) := by
   haveI : Algebra.IsAlgebraic ℤ D.host.E :=
@@ -128,6 +197,23 @@ theorem exists_den {ι : Type} [Fintype ι] (f : ι → D.host.E) :
     have := h1.neg
     simpa using this
 
+/- English proof (translation)
+Take `⟨a0, ha0, hfrac⟩` from `D.host.AA.isFractional`. Establish `ha0' : ((a0 : 𝓞 D.host.E) : D.host.E) ≠ 0`. Introduce `h`. Conclude with `nonZeroDivisors.coe_ne_zero ⟨a0, ha0⟩ (RingOfIntegers.coe_eq_zero_iff.1 h)`. Take `⟨d, hd, hx0⟩` from `exists_den (D := D) fun _ : Unit => ((a0 : D.host.E))⁻¹`.
+
+Take `⟨e, he, hG⟩` from `exists_den (D := D) fun p : Fin S.rank × Fin S.rank => S.gram p.1 p.2`. Use `⟨d * e, Nat.mul_pos hd he, fun v hv => ?_⟩` and prove the remaining obligations. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hw`.
+
+Introduce `r c`. Establish `hint' : IsIntegral ℤ (((d * e : ℕ) : D.host.E) * (a * t r * ∑ k, star (s k) * S.gram k c))`. Establish `hA : IsIntegral ℤ ((a0 : D.host.E) * a)`. Take `⟨y, hy⟩` from `hfrac a ha`. Establish `h2 : IsIntegral ℤ (algebraMap (𝓞 D.host.E) D.host.E y)` using `y.2`.
+
+Rewrite `h2` using `[hy, Algebra.smul_def]`. Conclude with `h2`. Establish `hsum : IsIntegral ℤ (∑ k, star (s k) * ((e : D.host.E) * S.gram k c))` using `IsIntegral.sum _ fun k _ => IsIntegral.mul (star_int (hs k)) (hG (k, c))`. Establish `e1 : ((d * e : ℕ) : D.host.E) * (a * t r * ∑ k, star (s k) * S.gram k c) = ((d : D.host.E) * ((a0 : D.host.E))⁻¹) * ((a0 : D.host.E) * a) * t r * ∑ k, star (s k) * ((e : D.host.E) * S.gram k c)`. Establish `hx : ((a0 : D.host.E))⁻¹ * (a0 : D.host.E) = 1` using `inv_mul_cancel₀ ha0'`.
+
+Establish `e2 : ∑ k, star (s k) * ((e : D.host.E) * S.gram k c) = (e : D.host.E) * ∑ k, star (s k) * S.gram k c`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[e2]`. Use `push_cast`. Take the linear combination `(-((d : D.host.E) * e * a * t r * ∑ k, star (s k) * S.gram k c)) * hx`.
+
+Rewrite using `[e1]`. Conclude with `(((hx0 ()).mul hA).mul (ht r)).mul hsum`. Rewrite using `[Matrix.of_apply, ← map_natCast (incA D) (d * e), incA_eq, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Conclude with `gen_mem hα hint'`. Consider the case `zero => intro r s`.
+
+Rewrite using `[Matrix.zero_apply, mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => intro r s`. Rewrite using `[Matrix.add_apply, mul_add]`. Conclude with `add_mem (hx r s) (hy r s)`.
+
+Consider the case `neg x _ hx => intro r s`. Rewrite using `[Matrix.neg_apply, mul_neg]`. Conclude with `neg_mem (hx r s)`.
+-/
 theorem exists_den_entries (S T : HSp D) : ∃ d : ℕ, 0 < d ∧ ∀ v ∈ stdHom S T, ∀ r s, (d : AE D) * v r s ∈ finInt D := by
   obtain ⟨a0, ha0, hfrac⟩ := D.host.AA.isFractional
   have ha0' : ((a0 : 𝓞 D.host.E) : D.host.E) ≠ 0 := by
@@ -164,6 +250,15 @@ theorem exists_den_entries (S T : HSp D) : ∃ d : ℕ, 0 < d ∧ ∀ v ∈ stdH
   | add x y _ _ hx hy => intro r s; rw [Matrix.add_apply, mul_add]; exact add_mem (hx r s) (hy r s)
   | neg x _ hx => intro r s; rw [Matrix.neg_apply, mul_neg]; exact neg_mem (hx r s)
 
+/- English proof (translation)
+Introduce `D ψ hψ S T`. Take `⟨d, hd, hden⟩` from `exists_den_entries S T`. Take `⟨p, hp, hξ⟩` from `exists_den (D := D) fun _ : Unit => D.host.xi0`. Take `⟨q, hq, hS⟩` from `exists_den (D := D) fun i : Fin S.rank × Fin S.rank => S.gram⁻¹ i.1 i.2`. Take `⟨r, hr, hT⟩` from `exists_den (D := D) fun i : Fin T.rank × Fin T.rank => T.gram i.1 i.2`.
+
+Use `⟨p * q * r * d * d, by positivity, fun x hx w hw => ?_⟩` and prove the remaining obligations. Use `psi_trace hψ ?_` and prove the remaining obligations. Unfold `hO`. Simplify using `only [Finset.mul_sum]`. Use `sum_mem fun a _ => sum_mem fun b _ => sum_mem fun c _ => sum_mem fun e _ => ?_` and prove the remaining obligations.
+
+Establish `key : incA D D.host.xi0 * (incA D (S.gram⁻¹ a b) * cA D (((p * q * r * d * d) • w) c b) * incA D (T.gram c e) * x e a) = incA D ((p : D.host.E) * D.host.xi0) * (incA D ((q : D.host.E) * S.gram⁻¹ a b) * (incA D ((r : D.host.E) * T.gram c e) * (cA D ((d : AE D) * w c b) * ((d : AE …`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul]`. Simplify using `only [map_mul, map_natCast, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+
+Conclude with `incA_mul_mem (hξ ()) (incA_mul_mem (hS (a, b)) (incA_mul_mem (hT (c, e)) (mul_mem' (cA_mem (hden w hw c b)) (hden x hx e a))))`.
+-/
 theorem exists_nsmul_orth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D), ∃ M : ℕ, 0 < M ∧ ∀ x ∈ stdHom S T, ∀ w ∈ stdHom S T, ψ (symplO S T x (M • w)) = 1 := by
   intro D ψ hψ S T
   obtain ⟨d, hd, hden⟩ := exists_den_entries S T

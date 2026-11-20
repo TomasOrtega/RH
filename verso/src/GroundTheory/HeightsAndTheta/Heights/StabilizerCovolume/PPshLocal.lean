@@ -14,6 +14,9 @@ noncomputable section
 
 variable {D : ℕ} {U : Set (Fin D → ℂ)} {φ : (Fin D → ℂ) → ℝ}
 
+/- English proof (translation)
+Introduce `x hx y hy`. Take `⟨W, hWo, hxW, -, hW⟩` from `hloc x hx`. Establish `h` using `hW.1 x hxW y hy`. Rewrite `h` using `[hWo.nhdsWithin_eq hxW]`. Conclude with `nhdsWithin_le_nhds h`.
+-/
 theorem PshLocal.usc
     (hloc : ∀ p ∈ U, ∃ W : Set (Fin D → ℂ), IsOpen W ∧ p ∈ W ∧ W ⊆ U ∧ IsPsh W φ) :
     UpperSemicontinuousOn φ U := by
@@ -23,6 +26,11 @@ theorem PshLocal.usc
   rw [hWo.nhdsWithin_eq hxW] at h
   exact nhdsWithin_le_nhds h
 
+/- English proof (translation)
+Use `⟨h.1.sup upperSemicontinuousOn_const, fun z w hd => ?_⟩` and prove the remaining obligations. Take `⟨hi, hm⟩` from `h.2 z w hd`. Establish `hca : CircleIntegrable (fun _ : ℂ => a) 0 1` using `intervalIntegrable_const`. Establish `hi' : CircleIntegrable (fun ζ : ℂ => max (φ (z + ζ • w)) a) 0 1` using `⟨hi.1.sup hca.1, hi.2.sup hca.2⟩`. Use `⟨hi', max_le ?_ ?_⟩` and prove the remaining obligations.
+
+Conclude with `hm.trans (circleAverage_mono hi hi' fun x _ => le_max_left _ _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem PshLocal.isPsh_max {W : Set (Fin D → ℂ)} (h : IsPsh W φ) (a : ℝ) :
     IsPsh W (fun x => max (φ x) a) := by
   refine ⟨h.1.sup upperSemicontinuousOn_const, fun z w hd => ?_⟩
@@ -35,6 +43,35 @@ theorem PshLocal.isPsh_max {W : Set (Fin D → ℂ)} (h : IsPsh W φ) (a : ℝ) 
   · calc a = circleAverage (fun _ : ℂ => a) 0 1 := (circleAverage_const a 0 1).symm
       _ ≤ _ := circleAverage_mono hca hi' fun x _ => le_max_right _ _
 
+/- English proof (translation)
+Establish `husc` using `PshLocal.usc hloc`. Use `set K := (fun ζ : ℂ => z + ζ • w) '' closedBall (0 : ℂ) 1 with hKdef`. Establish `hKc : IsCompact K` using `(isCompact_closedBall _ _).image (by fun_prop)`. Establish `hKU : K ⊆ U`. Introduce and unpack `_ ⟨ζ, hζ, rfl⟩`.
+
+Conclude with `hD ζ (mem_closedBall_zero_iff.1 hζ)`. Establish `hγ : Continuous (fun θ : ℝ => z + circleMap 0 1 θ • w)` using `continuous_const.add ((continuous_circleMap 0 1).smul continuous_const)`. Establish `hcirc : ∀ θ : ℝ, z + circleMap 0 1 θ • w ∈ K` using `fun θ => ⟨circleMap 0 1 θ, mem_closedBall_zero_iff.2 (by simp), rfl⟩`. Establish `hzK : z ∈ K` using `⟨0, mem_closedBall_self zero_le_one, by simp⟩`. Use `choose W hWo hpW hWU hWpsh using hloc`.
+
+Take `⟨δ, hδ, hδK⟩` from `lebesgue_number_lemma_of_metric hKc (c := fun p : U => W p.1 p.2) (fun p => hWo _ _) (fun x hx => mem_iUnion.2 ⟨⟨x, hKU hx⟩, hpW _ _⟩)`. Take `⟨δ', hδ', hδ'U⟩` from `hKc.exists_cthickening_subset_open hU hKU`. Take `⟨M, hM⟩` from `(husc.mono hδ'U).bddAbove_of_isCompact hKc.cthickening`. Establish `hMK : ∀ y ∈ cthickening δ' K, φ y ≤ M` using `fun y hy => hM ⟨y, hy, rfl⟩`. Take `⟨ρ⟩` from `mollifierInhabit_thm D`.
+
+Establish `hε0 : 0 < min (δ / 2) δ'` using `lt_min (by linarith) hδ'`. Establish `step : ∀ ε, 0 < ε → ε < min (δ / 2) δ' → (∀ x ∈ K, φ x ≤ molli ρ ε φ x ∧ molli ρ ε φ x ≤ M) ∧ Continuous (fun θ : ℝ => molli ρ ε φ (z + circleMap 0 1 θ • w)) ∧ molli ρ ε φ z ≤ circleAverage (fun ζ : ℂ => molli ρ ε φ (z + ζ • w)) 0 1`. Introduce `ε hε hεlt`. Establish `hεδ : ε < δ` using `by have := min_le_left (δ / 2) δ'; linarith`. Establish `hεδ' : ε ≤ δ'` using `by have := min_le_right (δ / 2) δ'; linarith`.
+
+Establish `hm` using `fun p : U => (mollify_thm D ρ (W p.1 p.2) φ (hWo _ _) (hWpsh _ _)).1 ε hε`. Establish `hm2 : ∀ p : U, ContDiffOn ℝ 2 (molli ρ ε φ) (shrink (W p.1 p.2) ε)` using `fun p => (hm p).2.1.of_le (WithTop.coe_le_coe.2 le_top)`. Use `set V := ⋃ p : U, shrink (W p.1 p.2) ε with hV`. Establish `hVo : IsOpen V` using `isOpen_iUnion fun p => (hm p).1`. Establish `hKV : ∀ x ∈ K, ∃ p : U, x ∈ shrink (W p.1 p.2) ε`.
+
+Introduce `x hx`. Take `⟨p, hp⟩` from `hδK x hx`. Conclude with `⟨p, (closedBall_subset_ball hεδ).trans hp⟩`. Establish `hcd : ContDiffOn ℝ 2 (molli ρ ε φ) V`. Use `contDiffOn_of_locally_contDiffOn fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨p, hp⟩` from `mem_iUnion.1 hy`. Conclude with `⟨_, (hm p).1, hp, (hm2 p).mono inter_subset_right⟩`. Establish `hpsh : IsPsh V (molli ρ ε φ)`. Use `(isPsh_iff_isLeviPsh_thm D V _ hVo hcd).2 ⟨hcd, fun y hy v => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `mem_iUnion.1 hy`.
+
+Conclude with `((isPsh_iff_isLeviPsh_thm D _ _ (hm p).1 (hm2 p)).1 (hm p).2.2.1).2 y hp v`. Establish `hmemV : ∀ x ∈ K, x ∈ V` using `fun x hx =>`. Set `⟨p, hp⟩` to `hKV x hx`. Use the proof step `mem_iUnion.2 ⟨p, hp⟩`. Use `⟨fun x hx => ?_, hcd.continuousOn.comp_continuous hγ fun θ => hmemV _ (hcirc θ), (hpsh.2 z w fun ζ hζ => hmemV _ ⟨ζ, mem_closedBall_zero_iff.2 hζ, rfl⟩).2⟩` and prove the remaining obligations.
+
+Take `⟨p, hp⟩` from `hKV x hx`. Take `⟨h1, h2⟩` from `(hm p).2.2.2 x hp`. Use `⟨h1, h2.trans (polyMax_le' hε.le fun y hy => hMK y ?_)⟩` and prove the remaining obligations. Conclude with `cthickening_mono hεδ' K (closedBall_subset_cthickening hx ε hy)`. Use `set f : ℝ → ℝ := fun θ => φ (z + circleMap 0 1 θ • w) with hf`.
+
+Use `set B := max |c| |M|`. Establish `hbd : ∀ t : ℝ, c ≤ t → t ≤ M → |t| ≤ B` using `fun t h1 h2 => by`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Use `neg_abs_le c` as an intermediate fact.
+
+Use `le_max_left |c| |M|` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_abs_self M` as an intermediate fact. Use `le_max_right |c| |M|` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hfM : ∀ θ, f θ ≤ M` using `fun θ => hMK _ (self_subset_cthickening K (hcirc θ))`. Establish `hfm : Measurable f` using `(upperSemicontinuousOn_univ_iff.1 (husc.comp hγ.continuousOn fun θ _ => hKU (hcirc θ))).measurable`. Use `⟨PlurisubharmonicExtension.ii_of_bdd hfm B (fun θ => hbd _ (hc θ) (hfM θ)) _ _, ?_⟩` and prove the remaining obligations. Establish `hev : ∀ᶠ ε in 𝓝[>] (0 : ℝ), 0 < ε ∧ ε < min (δ / 2) δ'` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (Iio_mem_nhds hε0)] with ε h1 h2`. Conclude with `⟨h1, h2⟩`.
+
+Establish `hT` using `intervalIntegral.tendsto_integral_filter_of_dominated_convergence (μ := volume) (a := 0) (b := 2 * π) (l := 𝓝[>] (0 : ℝ)) (F := fun ε θ => molli ρ ε φ (z + circleMap 0 1 θ • w)) (f := f) (fun _ => B) (hev.mono fun ε h => (step ε h.1 h.2).2.1.aestronglyMeasurable) (hev.mono fun ε …`. Take `⟨h1, h2⟩` from `(step ε h.1 h.2).1 _ (hcirc θ)`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `hbd _ ((hc θ).trans h1) h2)`. Use `intervalIntegrable_const`.
+
+Use the proof step `(ae_of_all _ fun θ _ => (mollify_thm D ρ _ φ (hWo _ (hKU (hcirc θ))) (hWpsh _ _)).2 _ (hpW _ _))`. Use `ge_of_tendsto (hT.const_mul (2 * π)⁻¹) (hev.mono fun ε h => ?_)` and prove the remaining obligations. Take `⟨h1, -, h3⟩` from `step ε h.1 h.2`. Rewrite `h3` using `[circleAverage_def, smul_eq_mul]`. Conclude with `(h1 z hzK).1.trans h3`.
+-/
 theorem PshLocal.core (hU : IsOpen U)
     (hloc : ∀ p ∈ U, ∃ W : Set (Fin D → ℂ), IsOpen W ∧ p ∈ W ∧ W ⊆ U ∧ IsPsh W φ)
     (z w : Fin D → ℂ) (hD : ∀ ζ : ℂ, ‖ζ‖ ≤ 1 → z + ζ • w ∈ U) {c : ℝ}
@@ -128,6 +165,27 @@ theorem PshLocal.core (hU : IsOpen U)
   rw [circleAverage_def, smul_eq_mul] at h3
   exact (h1 z hzK).1.trans h3
 
+/- English proof (translation)
+Introduce `D U φ hU hloc`. Use `⟨PshLocal.usc hloc, fun z w hD => ?_⟩` and prove the remaining obligations. Use `set f : ℝ → ℝ := fun θ => φ (z + circleMap 0 1 θ • w) with hf`. Use `set g : ℕ → ℝ → ℝ := fun n θ => max (f θ) (-(n : ℝ)) with hg`. Establish `hcore : ∀ n : ℕ, IntervalIntegrable (g n) volume 0 (2 * π) ∧ φ z ≤ (2 * π)⁻¹ * ∫ θ in (0 : ℝ)..2 * π, g n θ` using `fun n => by`.
+
+Use `PshLocal.core (φ := fun x => max (φ x) (-(n : ℝ))) hU (fun p hp => let ⟨W, h1, h2, h3, h4⟩ := hloc p hp; ⟨W, h1, h2, h3, PshLocal.isPsh_max h4 _⟩) z w hD (c := -(n : ℝ)) (fun θ => le_max_right _ _)` as an intermediate fact. Conclude with `⟨this.1, (le_max_left _ _).trans this.2⟩`. Establish `hγ : Continuous (fun θ : ℝ => z + circleMap 0 1 θ • w)` using `continuous_const.add ((continuous_circleMap 0 1).smul continuous_const)`. Use `set S := (fun ζ : ℂ => z + ζ • w) '' sphere (0 : ℂ) 1 with hSdef`. Establish `hSc : IsCompact S` using `(isCompact_sphere _ _).image (by fun_prop)`.
+
+Establish `hSU : S ⊆ U`. Introduce and unpack `_ ⟨ζ, hζ, rfl⟩`. Conclude with `hD ζ (mem_sphere_zero_iff_norm.1 hζ).le`. Establish `hcS : ∀ θ : ℝ, z + circleMap 0 1 θ • w ∈ S` using `fun θ => ⟨_, circleMap_mem_sphere 0 zero_le_one θ, rfl⟩`. Take `⟨M, hM⟩` from `((PshLocal.usc hloc).mono hSU).bddAbove_of_isCompact hSc`.
+
+Establish `hfM : ∀ θ, f θ ≤ M` using `fun θ => hM ⟨_, hcS θ, rfl⟩`. Use `set μ := volume.restrict (Ioc (0 : ℝ) (2 * π)) with hμ`. Establish `hgi : ∀ n, Integrable (g n) μ` using `fun n => (intervalIntegrable_iff_integrableOn_Ioc_of_le two_pi_pos.le).1 (hcore n).1`. Establish `hgl : ∀ θ, Tendsto (fun n => g n θ) atTop (𝓝 (f θ))`. Introduce `θ`.
+
+Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop ⌈-f θ⌉₊] with n hn`. Establish `h1` using `Nat.le_ceil (-f θ)`. Establish `h2 : ((⌈-f θ⌉₊ : ℕ) : ℝ) ≤ n` using `by exact_mod_cast hn`. Conclude with `(max_eq_left (by linarith)).symm`.
+
+Establish `hlow : ∀ n, 2 * π * φ z ≤ ∫ θ, g n θ ∂μ` using `fun n => by`. Rewrite using `[hμ, ← intervalIntegral.integral_of_le two_pi_pos.le]`. Conclude with `(le_inv_mul_iff₀ two_pi_pos).1 (hcore n).2`. Use `set P := max M 0 with hP`. Establish `hnorm : ∀ n, ∫ θ, ‖g n θ‖ ∂μ ≤ 2 * P * (2 * π) - 2 * π * φ z` using `fun n => by`.
+
+Establish `hle : ∀ θ, ‖g n θ‖ ≤ 2 * P - g n θ` using `fun θ => by`. Establish `h1 : g n θ ≤ P` using `max_le ((hfM θ).trans (le_max_left _ _)) ((neg_nonpos.2 (Nat.cast_nonneg n)).trans (le_max_right _ _))`. Establish `h2 : 0 ≤ P` using `le_max_right _ _`. Rewrite using `[Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+
+Establish `hμu : μ.real univ = 2 * π`. Simplify using `[hμ, Real.volume_real_Ioc, two_pi_pos.le]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_sub (integrable_const _) (hgi n), integral_const, hμu, smul_eq_mul, mul_comm]`. Use `_ ≤ _ := by linarith [hlow n]`.
+
+Establish `hfi : Integrable f μ`. Use `integrable_of_tendsto (G := g) (ae_of_all _ hgl) (fun n => (hgi n).aestronglyMeasurable) ?_` and prove the remaining obligations. Use `ne_top_of_le_ne_top (ENNReal.ofReal_ne_top (r := 2 * P * (2 * π) - 2 * π * φ z)) (liminf_le_of_frequently_le' (Frequently.of_forall fun n => ?_))` and prove the remaining obligations. Rewrite using `[← ofReal_integral_norm_eq_lintegral_enorm (hgi n)]`. Conclude with `ENNReal.ofReal_le_ofReal (hnorm n)`.
+
+Establish `hT` using `integral_tendsto_of_tendsto_of_antitone hgi hfi (ae_of_all _ fun θ n m hnm => max_le_max le_rfl (neg_le_neg (Nat.cast_le.2 hnm))) (ae_of_all _ hgl)`. Use `⟨(intervalIntegrable_iff_integrableOn_Ioc_of_le two_pi_pos.le).2 hfi, ?_⟩` and prove the remaining obligations. Rewrite using `[circleAverage_def, smul_eq_mul, intervalIntegral.integral_of_le two_pi_pos.le]`. Conclude with `(le_inv_mul_iff₀ two_pi_pos).2 (ge_of_tendsto' hT fun n => hlow n)`.
+-/
 theorem PshLocal.proof : PshLocal.Statement := by
   intro D U φ hU hloc
   refine ⟨PshLocal.usc hloc, fun z w hD => ?_⟩

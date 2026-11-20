@@ -26,16 +26,33 @@ open Classical in
 
 def Emb.h (m : Emb R S R₁ S₁) (a : Ix R S) : ℝ := if a = .inl m.i ∨ a = .inr m.j then m.ε else 0
 
+/- English proof (translation)
+The claim follows from `if_neg (not_or.2 ⟨m.ne_i b, m.ne_j b⟩)`.
+-/
 theorem Emb.h_e (m : Emb R S R₁ S₁) (b) : m.h (m.e b) = 0 := if_neg (not_or.2 ⟨m.ne_i b, m.ne_j b⟩)
 
+/- English proof (translation)
+The claim follows from `if_pos h`.
+-/
 theorem Emb.h_s (m : Emb R S R₁ S₁) {a} (h : a = .inl m.i ∨ a = .inr m.j) : m.h a = m.ε := if_pos h
 
+/- English proof (translation)
+The claim follows from `or_assoc.2 (m.cover a)`.
+-/
 theorem Emb.cases (m : Emb R S R₁ S₁) (a : Ix R S) : (a = .inl m.i ∨ a = .inr m.j) ∨ ∃ b, m.e b = a := or_assoc.2 (m.cover a)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases ha with rfl | rfl <;> rcases hb with rfl | rfl <;> first | rfl | exact h.elim`.
+-/
 theorem Emb.eq_of (m : Emb R S R₁ S₁) {a b : Ix R S} (ha : a = .inl m.i ∨ a = .inr m.j) (hb : b = .inl m.i ∨ b = .inr m.j)
     (h : sameBlock a b) : a = b := by
   rcases ha with rfl | rfl <;> rcases hb with rfl | rfl <;> first | rfl | exact h.elim
 
+/- English proof (translation)
+Establish `: (Finset.univ : Finset (Ix R S)) = insert (.inl m.i) (insert (.inr m.j) (Finset.univ.image m.e))`. Use extensionality with `a`. Simplify using `using m.cover a`. Rewrite using `[this, Finset.sum_insert, Finset.sum_insert, Finset.sum_image fun a _ b _ h => m.inj h, add_assoc]`. Simplify using `using m.ne_j`.
+
+Simplify using `using m.ne_i`.
+-/
 theorem Emb.sum (m : Emb R S R₁ S₁) {N : Type} [AddCommMonoid N] (g : Ix R S → N) :
     ∑ a, g a = g (.inl m.i) + g (.inr m.j) + ∑ b, g (m.e b) := by
   classical
@@ -57,6 +74,11 @@ structure IsPar (m : Emb R S R₁ S₁) (act : (ι → Mat R S) →ₗ[ℂ] Modu
   n₁ : ∀ w b x, D (act (un w (m.e b) (.inl m.i) - un w (m.e b) (.inr m.j)) x) = 0
   n₂ : ∀ w b x, D (act (un w (.inl m.i) (m.e b) + un w (.inr m.j) (m.e b)) x) = 0
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨fun w a b x => ?_, fun w x => ?_, fun w x => ?_, fun w x => ?_, fun w b x => ?_, fun w b x => ?_⟩ <;>`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply]`. Rewrite using `[h.levi, h'.levi, LinearMap.sub_apply, LinearMap.smul_apply, map_sub, map_smul]`. Rewrite using `[h.cpt, h'.cpt, LinearMap.sub_apply, LinearMap.smul_apply, smul_sub, smul_comm t]`. Rewrite using `[h.hyp, h'.hyp, LinearMap.sub_apply, LinearMap.smul_apply, smul_sub, smul_comm t]`.
+
+Rewrite using `[h.cen, h'.cen, smul_zero, sub_zero]`. Rewrite using `[h.n₁, h'.n₁, smul_zero, sub_zero]`. Rewrite using `[h.n₂, h'.n₂, smul_zero, sub_zero]`.
+-/
 theorem IsPar.sub {m : Emb R S R₁ S₁} {act : (ι → Mat R S) →ₗ[ℂ] Module.End ℂ M}
     {act₁ : (ι → Mat R₁ S₁) →ₗ[ℂ] Module.End ℂ M₁} {c c' : ι → ℂ} {D D' : M →ₗ[ℂ] M₁} (h : IsPar m act act₁ c c' D)
     (h' : IsPar m act act₁ c c' D') (t : ℂ) : IsPar m act act₁ c c' (D' - t • D) := by
@@ -69,6 +91,19 @@ theorem IsPar.sub {m : Emb R S R₁ S₁} {act : (ι → Mat R S) →ₗ[ℂ] Mo
   · rw [h.n₁, h'.n₁, smul_zero, sub_zero]
   · rw [h.n₂, h'.n₂, smul_zero, sub_zero]
 
+/- English proof (translation)
+Establish `e : ∑ a, un w a a = (Pi.single w 1 : ι → Mat R S)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`. Substitute `h` using the available equality. Simplify using `only [un, Finset.sum_apply, Pi.single_eq_same]`.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.sum_apply, Matrix.single_apply, Matrix.one_apply]`. Use `split_ifs with e`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `Finset.sum_eq_zero fun c _ => if_neg fun h => e (h.1.symm.trans h.2)`. Simplify using `[un, Pi.single_eq_of_ne h]`. Establish `: (act (Pi.single w 1)).eigenspace (∑ a, Λ w a) = ⊤`. Use `h.gen _ ?_ fun Z _ y hy => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff, ← e]`.
+
+Simplify using `only [map_sum, LinearMap.sum_apply, h.wt, Finset.sum_smul]`. Use `shift_eig h.lie (H := Pi.single w 1) (Z := Z) (k := 0) (by` as an intermediate fact. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]) hy`. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis. Establish `hx : x ∈ (act (Pi.single w 1)).eigenspace (∑ a, Λ w a)` using `this ▸ Submodule.mem_top`. Rewrite `hx` using `[Module.End.mem_eigenspace_iff, ← e, map_sum, LinearMap.sum_apply]`.
+
+Conclude with `hx`.
+-/
 theorem HWMod.centre {act : (ι → Mat R S) →ₗ[ℂ] Module.End ℂ M} {Λ : ι → Ix R S → ℂ} {f : M} (h : HWMod act Λ f) (w : ι) (x : M) :
     ∑ a, act (un w a a) x = (∑ a, Λ w a) • x := by
   have e : ∑ a, un w a a = (Pi.single w 1 : ι → Mat R S) := by
@@ -96,6 +131,33 @@ theorem HWMod.centre {act : (ι → Mat R S) →ₗ[ℂ] Module.End ℂ M} {Λ :
   rw [Module.End.mem_eigenspace_iff, ← e, map_sum, LinearMap.sum_apply] at hx
   exact hx
 
+/- English proof (translation)
+Establish `hs : ∀ (g : Ix R S → ℂ), ∑ a, (m.h a : ℂ) * g a = m.ε * (g (.inl m.i) + g (.inr m.j))` using `fun g => by`. Rewrite using `[m.sum, m.h_s (.inl rfl), m.h_s (.inr rfl)]`. Simplify using `[m.h_e, mul_add]`. Establish `hlow : low (act (dg ι m.h)) (∑ w, ∑ a, m.h a * Λ w a) ≤ LinearMap.ker D`. Use `low_ker D fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[dg_eq]`. Simplify using `only [map_sum, LinearMap.sum_apply, Finset.sum_smul, hs]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← hc, mul_smul, ← hD.cpt, m.sum, m.h_s (.inl rfl), m.h_s (.inr rfl)]`. Simplify using `[m.h_e]`.
+
+Take `⟨V, hV1, hV2, hV3⟩` from `cyc_le hM.lie (sb := sameBlock) (pos := posC) (z := fun a b => sameBlock a b ∧ ∃ a' b', m.e a' = a ∧ m.e b' = b) (fun _ _ _ => sb_trans) sb_refl (fun _ _ => sb_of_pos) m.h (fun a b e => by`. Apply the tactic sequence `rcases m.cases a with ha | ⟨a, rfl⟩ <;> rcases m.cases b with hb | ⟨b, rfl⟩`. Rewrite using `[m.h_s ha, m.h_s hb]`. Rewrite using `[m.h_s ha, m.h_e]`. Conclude with `not_lt.1 fun h => pos_asymm e ((m.ext a b ha (sb_of_pos e)).2 h)`.
+
+Rewrite using `[m.h_s hb, m.h_e]`. Conclude with `not_lt.1 fun h => pos_asymm e ((m.ext b a hb (sb_symm (sb_of_pos e))).1 h)`. Rewrite using `[m.h_e, m.h_e])`. Use the proof step `(by rintro _ _ ⟨e, a, b, rfl, rfl⟩; exact ⟨e, by rw [m.h_e, m.h_e]⟩)`. Use the proof step `(fun a b e e' => by`.
+
+Apply the tactic sequence `rcases m.cases a with ha | ⟨a, rfl⟩ <;> rcases m.cases b with hb | ⟨b, rfl⟩`. Conclude with `.inl (.inl (m.eq_of ha hb e))`. Rewrite `e'` using `[m.h_s ha, m.h_e]`. Conclude with `.inl (.inr ((m.ext a b ha e).1 (e'.lt_of_ne m.ε_ne.symm)))`. Rewrite `e'` using `[m.h_s hb, m.h_e]`.
+
+Conclude with `.inl (.inr ((m.ext b a hb (sb_symm e)).2 (e'.lt_of_ne m.ε_ne)))`. Conclude with `.inr ⟨e, a, b, rfl, rfl⟩)`. Use the proof step `hM.wt hM.pos (N := LinearMap.ker D) h0`. Use the proof step `(by`. Introduce and unpack `w _ _ ⟨-, a, b, rfl, rfl⟩ x hx`.
+
+Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hD.levi, hx, map_zero])`. Establish `hVk : V ≤ LinearMap.ker D` using `hV2.trans (sup_le le_rfl hlow)`. Use `set K := alg ι (sameBlock (p := R) (q := S))`. Use `set P := stab act (LinearMap.ker D)`.
+
+Establish `mP : ∀ Z (t : ℂ), (∀ x, D (act Z x) = t • D x) → Z ∈ K ⊔ P` using `fun Z t h => Submodule.mem_sup_right fun x hx => by`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[h, hx, smul_zero]`. Establish `mK : ∀ w {a b : Ix R S}, sameBlock a b → un w a b ∈ K ⊔ P` using `fun w _ _ e => Submodule.mem_sup_left (un_mem w e)`. Establish `hij : ∀ w, un w (.inl m.i) (.inr m.j) ∈ K ⊔ P ∧ un w (.inr m.j) (.inl m.i) ∈ K ⊔ P` using `fun w => by`.
+
+Establish `a1` using `mP _ _ (hD.hyp w)`. Establish `a2` using `mP _ 0 fun x => (hD.cen w x).trans (zero_smul _ _).symm`. Establish `a3` using `mK w (sb_refl (.inl m.i : Ix R S))`. Establish `a4` using `mK w (sb_refl (.inr m.j : Ix R S))`. Prove the components needed by the constructor for the conclusion.
+
+Use `Submodule.smul_mem _ (1 / 2 : ℂ) (sub_mem (add_mem (sub_mem a1 a2) a3) a4) using 1 module` and compare the differences between its conclusion and the goal. Use `Submodule.smul_mem _ (1 / 2 : ℂ) (add_mem (sub_mem (add_mem a1 a2) a3) a4) using 1 module` and compare the differences between its conclusion and the goal. Apply the tactic sequence `have tri : ∀ b : Ix R S, sameBlock b (.inl m.i) ∨ sameBlock b (.inr m.j) := fun b => by cases b <;> simp [sameBlock]`. Establish `hb : ∀ w b, (un w (m.e b) (.inl m.i) ∈ K ⊔ P ∧ un w (m.e b) (.inr m.j) ∈ K ⊔ P) ∧ un w (.inl m.i) (m.e b) ∈ K ⊔ P ∧ un w (.inr m.j) (m.e b) ∈ K ⊔ P` using `fun w b => by`. Establish `a1` using `mP _ 0 fun x => (hD.n₁ w b x).trans (zero_smul _ _).symm`.
+
+Establish `a2` using `mP _ 0 fun x => (hD.n₂ w b x).trans (zero_smul _ _).symm`. Break down `tri (m.e b) with e | e` into its components or cases. Establish `a3` using `mK w e`. Establish `a4` using `mK w (sb_symm e)`. Conclude with `⟨⟨a3, by simpa using sub_mem a3 a1⟩, a4, by simpa using sub_mem a2 a4⟩`.
+
+Establish `a3` using `mK w e`. Establish `a4` using `mK w (sb_symm e)`. Conclude with `⟨⟨by simpa using add_mem a1 a3, a3⟩, by simpa using sub_mem a2 a4, a4⟩`. Establish `top : (⊤ : Submodule ℂ (ι → Mat R S)) ≤ K ⊔ P`. Use `le_trans (fun Z _ => ?_ : _ ≤ alg ι fun _ _ => True) (alg_le fun w a b _ => ?_)` and prove the remaining obligations.
+
+Conclude with `fun _ _ _ h => (h trivial).elim`. Apply the tactic sequence `rcases m.cover a with rfl | rfl | ⟨a, rfl⟩ <;> rcases m.cover b with rfl | rfl | ⟨b, rfl⟩ exacts [mK w (sb_refl _), (hij w).1, (hb w b).2.1, (hij w).2, mK w (sb_refl _), (hb w b).2.2, (hb w a).1.1, (hb w a).1.2, Submodule.mem_sup_right fun x hx => by rw [LinearMap.mem_ker] at hx …`. Take `⟨W, hW1, hW2, hW3⟩` from `gen_le hM.lie (g := ⊤) (q := K) (l := P) (fun _ _ _ _ => trivial) le_top le_top top hV3 hVk fun Z hZ => hZ`. Rewrite `hW2` using `[hM.gen W (hW1 hV1) hW3]`. Conclude with `LinearMap.ker_eq_top.1 (top_le_iff.1 hW2)`.
+-/
 theorem par_zero {m : Emb R S R₁ S₁} {act : (ι → Mat R S) →ₗ[ℂ] Module.End ℂ M}
     {act₁ : (ι → Mat R₁ S₁) →ₗ[ℂ] Module.End ℂ M₁} {Λ : ι → Ix R S → ℂ} {f : M} (hM : HWMod act Λ f) {c c' : ι → ℂ}
     {D : M →ₗ[ℂ] M₁} (hD : IsPar m act act₁ c c' D) (hc : ∀ w, c w = Λ w (.inl m.i) + Λ w (.inr m.j)) (h0 : D f = 0) :
@@ -172,6 +234,15 @@ theorem par_zero {m : Emb R S R₁ S₁} {act : (ι → Mat R S) →ₗ[ℂ] Mod
   rw [hM.gen W (hW1 hV1) hW3] at hW2
   exact LinearMap.ker_eq_top.1 (top_le_iff.1 hW2)
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, D x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Conclude with `h0 (LinearMap.ext fun x => not_not.1 fun e => h ⟨x, e⟩)`. Establish `hc : ∀ w, c w = Λ w (.inl m.i) + Λ w (.inr m.j)` using `fun w => by`. Establish `e` using `congrArg D (hM.centre w x)`.
+
+Rewrite `e` using `[m.sum, m.sum, map_add, ← LinearMap.add_apply, ← map_add act, hD.cpt, map_sum, map_smul]`. Simplify using `only [hD.levi, hM₁.centre, hΛ] at e`. Rewrite `e` using `[← add_smul]`. Conclude with `add_right_cancel (smul_left_injective ℂ hx e)`. Establish `val : ∀ {E : M →ₗ[ℂ] M₁}, IsPar m act act₁ c c' E → ∃ t : ℂ, E f = t • f₁` using `fun {E} hE => hM₁.one _ (fun w a => by rw [← hE.levi, hM.wt, map_smul, hΛ]) fun w a b e => by`.
+
+Rewrite using `[← hE.levi, hM.pos w _ _ (m.pos a b e), map_zero]`. Take `⟨t, ht⟩` from `val hD`. Take `⟨t', ht'⟩` from `val hD'`. Establish `t0 : t ≠ 0` using `fun e => h0 (par_zero hM hD hc (by rw [ht, e, zero_smul]))`. Use `⟨t' / t, sub_eq_zero.1 (par_zero hM (hD.sub hD' _) hc ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, ht, ht', smul_smul, div_mul_cancel₀ _ t0, sub_self]`.
+-/
 theorem par_line {m : Emb R S R₁ S₁} {act : (ι → Mat R S) →ₗ[ℂ] Module.End ℂ M}
     {act₁ : (ι → Mat R₁ S₁) →ₗ[ℂ] Module.End ℂ M₁} {Λ : ι → Ix R S → ℂ} {Λ₁ : ι → Ix R₁ S₁ → ℂ} {f : M} {f₁ : M₁}
     (hM : HWMod act Λ f) (hM₁ : HWMod act₁ Λ₁ f₁) (hΛ : ∀ w b, Λ w (m.e b) = Λ₁ w b) {c c' : ι → ℂ}

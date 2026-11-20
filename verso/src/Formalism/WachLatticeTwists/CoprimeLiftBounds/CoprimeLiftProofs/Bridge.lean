@@ -11,6 +11,13 @@ namespace Formalism.RepresentationBoundsCohomology.BR
 
 open Formalism.NG
 
+/- English proof (translation)
+Introduce `O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ _ r χ E e₁ δ δO ι _ _ colIdx D j e' Kc k0 ℓ what₂ s L _ _ _ tens v₁ κ HcG Hc F Vo Io ε T₁ T₂ _ _ _ _ ρ₁ ρ₂ inc π γ lam Cs _ _ cls pr Fs Im hidem hE hk0 hδ hIn`. Take `⟨htens, he₁, hK, hBK, hC3, hcont, hres, hG4, hinc, hπ, hγ, hrow, hsel⟩` from `hIn`. Use `⟨fun l => liftBound O A T' G M L r χ e₁ (D (colIdx l)) (j (colIdx l)) (Kc l) ℓ (e' (colIdx l)) tens v₁ (κ l) htens he₁ hidem (hK l) (fun x hx a => by rw [hC3 l x hx a, map_zero]), ?_⟩` and prove the remaining obligations. Use `⟨F, HcG ⊓ ⨅ v, unrH1 _ (Io v), ?_, ?_, ?_, hsel⟩` and prove the remaining obligations. Introduce `w hw`.
+
+Take `⟨C₁, CN2, CN, CA, CP, c1, c2, c3, hH2, hTate, hImf, hle, hF⟩` from `hrow w hw`. Establish `hcup` using `rowCup O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (D w) (ε.comp (D w).subtype) T₁ T₂ (resRep ρ₁ (D w)) (resRep ρ₂ (D w)) inc π γ lam C₁ CN2 CN CA CP (fun g b => hinc g b) (fun g m => hπ g m) hγ c1 c2 c3 hH2`. Take `⟨B, hB1, hB2, hB3⟩` from `rowRho O (D w) M (resRep (uRep O (M := M) r χ) (D w)) (ε.comp (D w).subtype) T₁ T₂ (resRep ρ₁ (D w)) π γ C₁ CP (Hc w) (Cs w) (cls w) (pr w) (Fs w) (Im w) (Set.range (fun φ => restrictCocycles1 (uRep O (M := M) r χ) (D w) (colPsi (O := O) (M := M) r χ E e₁ δ (fun l => D (colIdx l) …`. Conclude with `⟨B, hF ▸ hB1, by rw [hF]; exact hB2, fun h => hB3 _ ⟨h, rfl⟩⟩`. Introduce `w hw h`.
+
+Take `⟨l, -, rfl⟩` from `Finset.mem_image.mp hw`. Conclude with `(colRho O A T' G M L r χ E e₁ δ δO ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 ℓ (fun l => e' (colIdx l)) tens v₁ κ htens he₁ hK hE hk0 hδ h l).2 (F (colIdx l)) (hBK l)`. Introduce `h`. Conclude with `⟨hcont h, (Submodule.mem_iInf _).2 fun v => (unrOutside O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (Io v) (hG4 v)).2 h⟩`.
+-/
 theorem bridgeRho : StatBridgeRho := by
   intro O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ _ r χ E e₁ δ δO ι _ _ colIdx D j e' Kc k0 ℓ what₂ s
     L _ _ _ tens v₁ κ HcG Hc F Vo Io ε T₁ T₂ _ _ _ _ ρ₁ ρ₂ inc π γ lam Cs _ _ cls pr Fs Im
@@ -42,6 +49,15 @@ theorem bridgeRho : StatBridgeRho := by
     exact ⟨hcont h, (Submodule.mem_iInf _).2 fun v =>
       (unrOutside O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (Io v) (hG4 v)).2 h⟩
 
+/- English proof (translation)
+Introduce `O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ _ r χ E e₁ δ ι _ _ colIdx D j Kc k0 ℓ cB what₂ qs deg cT s HcG Hc F Vo VS Io IS I γ ζ ζO n he₁ hE hk0 hIn`. Take `⟨hrow, hq, hcont, hres, hG4, hG5, hsel⟩` from `hIn`. Use `⟨F, (HcG ⊓ (⨅ v, unrH1 _ (Io v)) ⊓ ⨅ v, unrH1 _ (IS v)), ?_, ?_, ?_, ?_, hsel⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨h1, h2, h3, h4⟩` from `hrow w hw`.
+
+Conclude with `rowTB O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (D w) ℓ (cT w) cB (deg w) (Hc w) (F w) h1 h2 (fun φ => hres w hw (hcont φ)) h3 h4`. Introduce `w hw`. Take `⟨hF, a1, a2, a3, a4, a5, a6⟩` from `hq w hw`. Take `⟨-, B, b1, b2, b3⟩` from `qPlace O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (D w) (I w) (γ w) (ζ w) (ζO w) (n w) a1 a2 a3 a4 a5 a6`. Conclude with `⟨B, hF ▸ b1, by rw [hF]; exact b2, b3⟩`.
+
+Introduce `w hw h`. Take `⟨l, -, rfl⟩` from `Finset.mem_image.mp hw`. Rewrite using `[colChiC O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 he₁ hE hk0 h l]`. Conclude with `(F (colIdx l)).zero_mem`. Introduce `h`.
+
+Conclude with `⟨⟨hcont h, (Submodule.mem_iInf _).2 fun v => (unrOutside O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (Io v) (hG4 v)).2 h⟩, (Submodule.mem_iInf _).2 fun v => (unrS O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (IS v …`.
+-/
 theorem bridgeChiC : StatBridgeChiC := by
   intro O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ _ r χ E e₁ δ ι _ _ colIdx D j Kc k0 ℓ cB what₂ qs
     deg cT s HcG Hc F Vo VS Io IS I γ ζ ζO n he₁ hE hk0 hIn
@@ -66,6 +82,15 @@ theorem bridgeChiC : StatBridgeChiC := by
       (Submodule.mem_iInf _).2 fun v =>
       (unrS O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (IS v) (hG5 v) h).2⟩
 
+/- English proof (translation)
+Introduce `O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ _ r χ E e₁ δ δO ι _ _ colIdx D j e' Kc k0 ℓ cB what₂ qs deg cT s HcG Hc F Vo VS Io IS I γ ζ ζO n u hu he₁ hE hδ hk huI huF hFc hIn`. Take `⟨hrow, hq, hcont, hres, hG4, hG5, hsel⟩` from `hIn`. Use `⟨fun l => ?_, F, (HcG ⊓ (⨅ v, unrH1 _ (Io v)) ⊓ ⨅ v, unrH1 _ (IS v)), ?_, ?_, ?_, ?_, hsel⟩` and prove the remaining obligations. Take `⟨g, hg, hg1⟩` from `huF l`. Conclude with `⟨g, hg, 1, isUnit_one, fun m => by rw [hk l g hg m, hg1]⟩`.
+
+Introduce `w hw`. Take `⟨h1, h2, h3, h4⟩` from `hrow w hw`. Conclude with `rowTB O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (D w) ℓ (cT w) cB (deg w) (Hc w) (F w) h1 h2 (fun φ => hres w hw (hcont φ)) h3 h4`. Introduce `w hw`. Take `⟨hF, a1, a2, a3, a4, a5, a6⟩` from `hq w hw`.
+
+Take `⟨-, B, b1, b2, b3⟩` from `qPlace O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (D w) (I w) (γ w) (ζ w) (ζO w) (n w) a1 a2 a3 a4 a5 a6`. Conclude with `⟨B, hF ▸ b1, by rw [hF]; exact b2, b3⟩`. Introduce `w hw h`. Take `⟨l, -, rfl⟩` from `Finset.mem_image.mp hw`. Conclude with `hFc l ((colChiOne O A T' G M r χ E e₁ δ δO ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 ℓ (fun l => e' (colIdx l)) u hu he₁ hE hδ hk h l).2.2 (I (colIdx l)) (huI l))`.
+
+Introduce `h`. Conclude with `⟨⟨hcont h, (Submodule.mem_iInf _).2 fun v => (unrOutside O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (Io v) (hG4 v)).2 h⟩, (Submodule.mem_iInf _).2 fun v => (unrS O A T' G M r χ E e₁ δ ι (fun l => D (colIdx l)) (fun l => j (colIdx l)) Kc k0 (IS v …`.
+-/
 theorem bridgeChiOne : StatBridgeChiOne := by
   intro O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ _ r χ E e₁ δ δO ι _ _ colIdx D j e' Kc k0 ℓ cB what₂ qs
     deg cT s HcG Hc F Vo VS Io IS I γ ζ ζO n u hu he₁ hE hδ hk huI huF hFc hIn

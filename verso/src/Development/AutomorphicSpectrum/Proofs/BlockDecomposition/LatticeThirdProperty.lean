@@ -6,6 +6,13 @@ open Matrix PositivityTheory.Rg.Tf.Loc
 
 namespace GlobalTheory.CompanionTheory.TfLoc.Descent
 
+/- English proof (translation)
+Use `set M : Submodule R (Fin n → K) := Submodule.span R (Set.range w) with hM`. Use `haveI : Module.Finite R M := Module.Finite.span_of_finite R (Set.finite_range w)`. Use `haveI : Module.Free R M := Module.free_of_finite_type_torsion_free'`. Set `e` to `Module.finBasis R M`. Use `⟨_, fun s => (e s : Fin n → K), ?_, fun s => (e s).2, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← LinearIndependent.iff_fractionRing R K]`. Conclude with `e.linearIndependent.map' M.subtype M.ker_subtype`. Establish `h : (⟨w i, Submodule.subset_span ⟨i, rfl⟩⟩ : M) ∈ Submodule.span R (Set.range e)`. Rewrite using `[e.span_eq]`. Discharge the goal by the elementary cases of `trivial`.
+
+Establish `h2` using `Submodule.mem_map_of_mem (f := M.subtype) h`. Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h2`.
+-/
 theorem exists_free_gens {R K : Type*} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R]
     [Field K] [Algebra R K] [IsFractionRing R K] {ι : Type*} [Finite ι] {n : ℕ}
     (w : ι → Fin n → K) :
@@ -26,6 +33,23 @@ theorem exists_free_gens {R K : Type*} [CommRing R] [IsDomain R] [IsPrincipalIde
     rw [Submodule.map_span, ← Set.range_comp] at h2
     exact h2
 
+/- English proof (translation)
+Establish `hBA : B * A = 1`. Establish `h3 : (g : Matrix (Fin n) (Fin n) E) * (B * A) = (g : Matrix (Fin n) (Fin n) E) * 1`. Rewrite using `[← Matrix.mul_assoc, ← h1, ← h2, Matrix.mul_one]`. Establish `h4` using `congrArg (fun M => ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) * M) h3`. Simplify `h4` using `[← Matrix.mul_assoc]`.
+
+Establish `hr1 : r ≤ n` using `by simpa using hY.fintype_card_le_finrank`. Establish `hr2 : n ≤ r`. Establish `h3` using `Matrix.rank_mul_le_left B A`. Rewrite `h3` using `[hBA, Matrix.rank_one]`. Simplify using `using h3.trans (Matrix.rank_le_width B)`.
+
+Take `rfl : r = n` from `le_antisymm hr1 hr2`. Establish `hAB : A * B = 1` using `mul_eq_one_comm.1 hBA`. Establish `hdetY : Y.det ≠ 0`. Introduce `h0`. Establish `h3 : Y.map (algebraMap k E) * (A * ((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E)) = 1`.
+
+Rewrite using `[← Matrix.mul_assoc, ← h2]`. Simplify using the standard rewrite rules. Establish `h4` using `Matrix.det_ne_zero_of_right_inverse h3`. Apply `h4` to reduce the goal to its premises. Establish `h5` using `RingHom.map_det (algebraMap k E) Y`.
+
+Rewrite `h5` using `[h0, map_zero]`. Conclude with `h5.symm`. Use `⟨GeneralLinearGroup.mkOfDetNeZero Y hdetY, ?_⟩` and prove the remaining obligations. Set `A' : Matrix (Fin r) (Fin r) (intO E)` to `fun i j => ⟨A i j, hA i j⟩`. Set `B' : Matrix (Fin r) (Fin r) (intO E)` to `fun i j => ⟨B i j, hB i j⟩`.
+
+Establish `hinj : ∀ P Q : Matrix (Fin r) (Fin r) (intO E), P.map (intO E).subtype = Q.map (intO E).subtype → P = Q` using `fun P Q h => Matrix.map_injective Subtype.val_injective h`. Establish `hmap : ∀ P Q : Matrix (Fin r) (Fin r) (intO E), (P * Q).map (intO E).subtype = P.map (intO E).subtype * Q.map (intO E).subtype` using `fun P Q => Matrix.map_mul`. Establish `hA' : A'.map (intO E).subtype = A` using `by ext i j; rfl`. Establish `hB' : B'.map (intO E).subtype = B` using `by ext i j; rfl`. Establish `hone : (1 : Matrix (Fin r) (Fin r) (intO E)).map (intO E).subtype = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Establish `e1 : A' * B' = 1` using `hinj _ _ (by rw [hmap, hA', hB', hAB, hone])`. Establish `e2 : B' * A' = 1` using `hinj _ _ (by rw [hmap, hA', hB', hBA, hone])`. Use `⟨⟨A', B', e1, e2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_inv_mul_iff_mul_eq]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Conclude with `h2.symm`.
+-/
 theorem coset_of_factor {k E : Type*} [Field k] [Field E] [ValuativeRel E] [Algebra k E] {n r : ℕ}
     (g : GL (Fin n) E) (Y : Matrix (Fin n) (Fin r) k)
     (hY : LinearIndependent k (fun s p => Y p s))
@@ -79,6 +103,11 @@ section Galois
 
 variable {k E : Type*} [Field k] [Field E] [Algebra k E]
 
+/- English proof (translation)
+Establish `h : z ∈ (⊥ : IntermediateField k E)`. Rewrite using `[IsGalois.mem_bot_iff_fixed]`. Introduce `τ`. Take `⟨m, rfl⟩` from `(mem_powers_iff_mem_zpowers).2 (hσ τ)`. Proceed by induction on `m with`.
+
+Consider the case `zero => simp`. Consider the case `succ m ih => show (σ ^ (m + 1)) z = z`. Establish `ih' : (σ ^ m) z = z` using `ih`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, hz, ih']`. Conclude with `IntermediateField.mem_bot.1 h`.
+-/
 theorem exists_of_fixed [FiniteDimensional k E] [IsGalois k E] (σ : E ≃ₐ[k] E)
     (hσ : ∀ τ : E ≃ₐ[k] E, τ ∈ Subgroup.zpowers σ) (z : E) (hz : σ z = z) :
     ∃ a : k, algebraMap k E a = z := by
@@ -94,6 +123,11 @@ theorem exists_of_fixed [FiniteDimensional k E] [IsGalois k E] (σ : E ≃ₐ[k]
       rw [pow_succ, AlgEquiv.mul_apply, hz, ih']
   exact IntermediateField.mem_bot.1 h
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Establish `h : ∀ j, σ ((σ ^ j) z) = (σ ^ (j + 1)) z` using `fun j => by`. Rewrite using `[pow_succ', AlgEquiv.mul_apply]`. Repeatedly rewrite using `[h]`. Establish `h1` using `Finset.sum_range_succ (fun j => (σ ^ j) z) ℓ`.
+
+Establish `h2` using `Finset.sum_range_succ' (fun j => (σ ^ j) z) ℓ`. Establish `h3 : (σ ^ ℓ) z = (σ ^ 0) z` using `by rw [hℓ]; simp`. Rewrite `h2` using `[h1, h3]`. Conclude with `(add_right_cancel h2).symm`.
+-/
 theorem sum_pow_fixed (σ : E ≃ₐ[k] E) {ℓ : ℕ} (hℓ : σ ^ ℓ = 1) (z : E) :
     σ (∑ j ∈ Finset.range ℓ, (σ ^ j) z) = ∑ j ∈ Finset.range ℓ, (σ ^ j) z := by
   rw [map_sum]
@@ -106,6 +140,11 @@ theorem sum_pow_fixed (σ : E ≃ₐ[k] E) {ℓ : ℕ} (hℓ : σ ^ ℓ = 1) (z 
   rw [h1, h3] at h2
   exact (add_right_cancel h2).symm
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => intro x hx`. Simplify using `using hx`. Consider the case `succ j ih`. Introduce `x hx`.
+
+Rewrite using `[pow_succ', AlgEquiv.mul_apply]`. Conclude with `hint _ (ih x hx)`.
+-/
 theorem pow_mem_int [ValuativeRel E] (σ : E ≃ₐ[k] E) (hint : ∀ x ∈ intO E, σ x ∈ intO E) (j : ℕ) :
     ∀ x ∈ intO E, (σ ^ j) x ∈ intO E := by
   induction j with
@@ -115,6 +154,15 @@ theorem pow_mem_int [ValuativeRel E] (σ : E ≃ₐ[k] E) (hint : ∀ x ∈ intO
     rw [pow_succ', AlgEquiv.mul_apply]
     exact hint _ (ih x hx)
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => exact ⟨1, fun a b => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `(intO E).one_mem`.
+
+Conclude with `(intO E).zero_mem, by ext a b; simp⟩`. Consider the case `succ j ih`. Take `⟨Hj, h1, h2⟩` from `ih`. Use `⟨H * Hj.map σ, fun a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+
+Conclude with `Subring.sum_mem _ fun c _ => (intO E).mul_mem (hH a c) (hint _ (h1 c b))`. Establish `h3 : G.map (σ ^ (j + 1)) = (G.map (σ ^ j)).map σ`. Use extensionality with `a b`. Simplify using `[pow_succ', AlgEquiv.mul_apply]`. Establish `h4 : (G * Hj).map σ = G.map σ * Hj.map σ`.
+
+Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, map_sum]`. Rewrite using `[h3, h2, h4, h, Matrix.mul_assoc]`.
+-/
 theorem exists_pow_factor [ValuativeRel E] {n : ℕ} (σ : E ≃ₐ[k] E)
     (hint : ∀ x ∈ intO E, σ x ∈ intO E) (G H : Matrix (Fin n) (Fin n) E)
     (hH : ∀ a b, H a b ∈ intO E) (h : G.map σ = G * H) (j : ℕ) :
@@ -141,6 +189,41 @@ end GlobalTheory.CompanionTheory.TfLoc.Descent
 
 namespace GlobalTheory.CompanionTheory.TfLoc.Descent
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hg`. Use `set G : Matrix (Fin n) (Fin n) E := (g : Matrix (Fin n) (Fin n) E) with hG`. Set `H : Matrix (Fin n) (Fin n) E` to `((g⁻¹ * sigmaGL σ g : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)`. Establish `hHint : ∀ a b, H a b ∈ intO E`. Introduce `a b`.
+
+Establish `h1 : H a b = ((u : Matrix (Fin n) (Fin n) (intO E)) a b : E)`. Simplify using `only [H, ← hu]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `((u : Matrix (Fin n) (Fin n) (intO E)) a b).2`.
+
+Establish `hGH : G.map σ = G * H`. Establish `h1 : g * (g⁻¹ * sigmaGL σ g) = sigmaGL σ g` using `by group`. Conclude with `(congrArg Units.val h1).symm`. Use `choose Hj hHj hGj using exists_pow_factor σ hint G H hHint hGH`. Set `C : Fin ℓ → Matrix (Fin n) (Fin n) E` to `fun i => ∑ j ∈ Finset.range ℓ, ((σ ^ j) (y i)) • Hj j`.
+
+Establish `hCint : ∀ i a b, C i a b ∈ intO E`. Introduce `i a b`. Simplify using `only [C, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `Subring.sum_mem _ fun j _ => (intO E).mul_mem (pow_mem_int σ hint j _ (hxy i).2) (hHj j a b)`. Set `T : Fin ℓ → Fin n → Fin n → E` to `fun i p m => ∑ j ∈ Finset.range ℓ, (σ ^ j) (y i * G p m)`.
+
+Establish `hT : ∀ i p m, T i p m = (G * C i) p m`. Introduce `i p m`. Simplify using `only [T, C, Matrix.mul_sum, Matrix.sum_apply, Matrix.mul_smul, Matrix.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hGj j, map_mul]`.
+
+Both sides reduce to the same expression. Establish `hfix : ∀ i p m, ∃ a : k, algebraMap k E a = T i p m` using `fun i p m => exists_of_fixed σ hσ _ (sum_pow_fixed σ hℓ _)`. Use `choose S hS using hfix`. Establish `hrec : ∀ p m, G p m = ∑ i, x i * T i p m`. Introduce `p m`.
+
+Simplify using `only [T, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h1 : ∀ j ∈ Finset.range ℓ, ∑ i, x i * ((σ ^ j) (y i) * (σ ^ j) (G p m)) = if j = 0 then G p m else 0`. Introduce `j hj`. Simplify using `only [← mul_assoc]`.
+
+Rewrite using `[← Finset.sum_mul, hd j (Finset.mem_range.1 hj)]`. Use `split_ifs with h0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_ite_eq' (Finset.range ℓ) 0]`. Simplify using `[hℓ0]`. Take `⟨r, b, hb, hbw, hwb⟩` from `exists_free_gens (R := intO k) (K := k) (fun (q : Fin ℓ × Fin n) p => S q.1 p q.2)`. Use `choose c hc using fun s => (Submodule.mem_span_range_iff_exists_fun (intO k)).1 (hbw s)`. Use `choose a ha using fun q => (Submodule.mem_span_range_iff_exists_fun (intO k)).1 (hwb q)`.
+
+Establish `hbp : ∀ s p, b s p = ∑ q, (c s q : k) * S q.1 p q.2`. Introduce `s p`. Rewrite using `[← hc s]`. Simplify using `[Finset.sum_apply, Subring.smul_def]`. Establish `hwp : ∀ (i : Fin ℓ) (m p : Fin n), S i p m = ∑ s, (a (i, m) s : k) * b s p`.
+
+Introduce `i m p`. Establish `h1` using `congrFun (ha (i, m)) p`. Simplify `h1.symm` using `[Finset.sum_apply, Subring.smul_def]`. Set `Y : Matrix (Fin n) (Fin r) k` to `fun p s => b s p`. Set `B : Matrix (Fin n) (Fin r) E` to `fun m' s => ∑ q : Fin ℓ × Fin n, algebraMap k E (c s q : k) * C q.1 m' q.2`.
+
+Set `A : Matrix (Fin r) (Fin n) E` to `fun s m => ∑ i, x i * algebraMap k E (a (i, m) s : k)`. Establish `h1 : Y.map (algebraMap k E) = G * B`. Use extensionality with `p s`. Establish `e1 : (Y.map (algebraMap k E)) p s = ∑ q : Fin ℓ × Fin n, algebraMap k E (c s q : k) * T q.1 p q.2` using `by show algebraMap k E (b s p) = _`. Rewrite using `[hbp, map_sum]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hS]`. Rewrite using `[e1, Matrix.mul_apply]`. Use `show _ = ∑ m', G p m' * ∑ q : Fin ℓ × Fin n, algebraMap k E (c s q : k) * C q.1 m' q.2`. Simplify using `only [hT, Matrix.mul_apply, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : G = Y.map (algebraMap k E) * A`. Use extensionality with `p m`.
+
+Rewrite using `[hrec p m, Matrix.mul_apply]`. Use `show _ = ∑ s, algebraMap k E (b s p) * ∑ i, x i * algebraMap k E (a (i, m) s : k)`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hS i p m, hwp i m p, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `coset_of_factor g Y hb A B ?_ ?_ h1 h2` and prove the remaining obligations.
+
+Introduce `s m`. Conclude with `Subring.sum_mem _ fun i _ => (intO E).mul_mem (hxy i).1 (hkE _ (a (i, m) s).2)`. Introduce `m' s`. Conclude with `Subring.sum_mem _ fun q _ => (intO E).mul_mem (hkE _ (c s q).2) (hCint _ _ _)`.
+-/
 theorem descent_core {k E : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [Field E] [ValuativeRel E] [Algebra k E]
     [FiniteDimensional k E] [IsGalois k E] {n ℓ : ℕ} (σ : E ≃ₐ[k] E)
@@ -245,6 +328,13 @@ theorem descent_core {k E : Type} [Field k] [ValuativeRel k] [TopologicalSpace k
   · intro m' s
     exact Subring.sum_mem _ fun q _ => (intO E).mul_mem (hkE _ (c s q).2) (hCint _ _ _)
 
+/- English proof (translation)
+Introduce `hc _ k E _ _ _ _ _ _ _ _ _ _ _ _ hU σ hσ n g hg`. Take `⟨hv, hk, -⟩` from `GlobalTheory.CompanionTheory.UnramDict.unramifiedDictionary_a k E hU σ hσ`. Take `⟨-, x, y, hxy, hd⟩` from `hc k E hU σ hσ`. Establish `hint : ∀ z ∈ intO E, σ z ∈ intO E`. Introduce `z hz`.
+
+Rewrite `hz`, the goal using `[Valuation.mem_integer_iff]`. Rewrite using `[hv σ z]`. Conclude with `hz`. Establish `hℓ : σ ^ Module.finrank k E = 1`. Rewrite using `[← IsGalois.card_aut_eq_finrank]`.
+
+Conclude with `pow_card_eq_one'`. Conclude with `descent_core σ hσ hint (fun a ha => (hk a).2 ha) Module.finrank_pos hℓ x y hxy hd g hg`.
+-/
 theorem unramified_descent_coset : TraceOneIntegralElement → L1 → L3 := by
   intro hc _ k E _ _ _ _ _ _ _ _ _ _ _ _ hU σ hσ n g hg
   obtain ⟨hv, hk, -⟩ := GlobalTheory.CompanionTheory.UnramDict.unramifiedDictionary_a k E hU σ hσ

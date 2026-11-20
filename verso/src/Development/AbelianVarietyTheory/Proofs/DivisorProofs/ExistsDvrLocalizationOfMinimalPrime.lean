@@ -5,6 +5,11 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.AuxiliaryLemmaSecond.main`. Consider the case `exact _root_.GlobalTheory.AuxiliaryLemmaSecond.main`. Consider the case `(apply _root_.GlobalTheory.AuxiliaryLemmaSecond.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AuxiliaryLemmaSecond.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.AuxiliaryLemmaSecond.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AuxiliaryLemmaSecond.main ..)`.
+-/
 theorem exists_dvr_localization_of_minimal_prime : ∀ {κ : Type} [Field κ] (R : Subring κ)
     [IsNoetherianRing R] [IsIntegrallyClosed R] [IsFractionRing R κ] (Q : Ideal R) [Q.IsPrime],
     Q ≠ ⊥ → (∀ p : Ideal R, p.IsPrime → p ≠ ⊥ → p ≤ Q → p = Q) →

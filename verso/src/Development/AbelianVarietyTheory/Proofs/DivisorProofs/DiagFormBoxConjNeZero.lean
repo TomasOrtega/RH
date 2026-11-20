@@ -19,6 +19,19 @@ noncomputable section
 namespace GlobalTheory.DiagPos
 open MeasureTheory
 
+/- English proof (translation)
+Introduce `F _ _ κ _ Ψ hΨ h0`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `letI := DiagForm.measAf (F := F)`.
+
+Use `haveI := DiagForm.borelAf (F := F)`. Establish `hS : boxFun Ψ (fun x => starRingEnd ℂ (Ψ x)) ∈ schA F (κ ⊕ κ)` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F κ κ Ψ hΨ _ (GlobalTheory.SchAConj.star_mem_schA F κ Ψ hΨ)`. Establish `hi` using `DiagForm.integrable_resD hS`. Establish `hcg : Continuous fun p : DiagForm.Vi F κ × DiagForm.Vf F κ => Ψ (DiagForm.glue p)`. Establish `h1` using `GlobalTheory.WeilAdm.HaarSplit.continuous_comp_splitE F κ Ψ hΨ`.
+
+Establish `h2 : Continuous fun p : DiagForm.Vi F κ × DiagForm.Vf F κ => ((DiagForm.eI F κ p.1, p.2) : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F))` using `((DiagForm.eI F κ).continuous.comp continuous_fst).prodMk continuous_snd`. Conclude with `h1.comp h2`. Establish `e : DiagForm.resD F κ (boxFun Ψ fun x => starRingEnd ℂ (Ψ x)) = fun p => ((Complex.normSq (Ψ (DiagForm.glue p)) : ℝ) : ℂ)` using `funext fun p => Complex.mul_conj _`. Rewrite using `[DiagForm.lDiag, LinearMap.comp_apply, DiagForm.Lext_apply _ hi, e, integral_complex_ofReal, Ne, Complex.ofReal_eq_zero]`. Introduce `h1`.
+
+Rewrite `hi` using `[e]`. Establish `hi' : Integrable (fun p => Complex.normSq (Ψ (DiagForm.glue p))) (DiagForm.mu F κ)`. Simplify using `using hi.re`. Establish `h2` using `(integral_eq_zero_iff_of_nonneg (fun p => Complex.normSq_nonneg _) hi').1 h1`. Use `haveI : (DiagForm.mu F κ).IsOpenPosMeasure := by unfold DiagForm.mu; infer_instance`.
+
+Establish `h3` using `(Continuous.ae_eq_iff_eq _ (Complex.continuous_normSq.comp hcg) continuous_const).1 h2`. Use `h0 (funext fun x => ?_)` and prove the remaining obligations. Establish `h4` using `Complex.normSq_eq_zero.1 (congrFun h3 (0 + DiagForm.shiftOf x))`. Simplify using `only [DiagForm.glue_add_shiftOf] at h4`. Establish `h5 : DiagForm.glue (0 : DiagForm.Vi F κ × DiagForm.Vf F κ) = 0`.
+
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (DiagForm.eI F κ 0 i) = 0`. Rewrite using `[map_zero, Pi.zero_apply, map_zero]`. Rewrite `h4` using `[h5, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem lDiag_box_conj_ne_zero : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (g : (κ → AF F) → ℂ),
     g ∈ schA F κ → g ≠ 0 → GlobalTheory.DiagForm.lDiag F κ (boxFun g (fun x => starRingEnd ℂ (g x))) ≠ 0 := by
   intro F _ _ κ _ Ψ hΨ h0

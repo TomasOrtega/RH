@@ -4,6 +4,9 @@ import Mathlib
 open MeasureTheory
 open scoped NNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IwasawaAbs.kIntegral_mul_right_eq | exact GlobalTheory.IwasawaAbs.kIntegral_mul_right_eq | (intros; apply GlobalTheory.IwasawaAbs.kIntegral_mul_right_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.iwasawa_haar_integral_formula : ∀ (G Kt : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] [Group Kt] [TopologicalSpace Kt]
     [IsTopologicalGroup Kt] [CompactSpace Kt] [T2Space Kt] [MeasurableSpace Kt] [BorelSpace Kt]

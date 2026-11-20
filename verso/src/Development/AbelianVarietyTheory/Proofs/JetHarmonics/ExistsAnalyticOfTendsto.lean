@@ -12,16 +12,25 @@ namespace GlobalTheory.EllipticPoles
 
 variable (L : PeriodPair)
 
+/- English proof (translation)
+The claim follows from `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ (continuous_neg.continuousAt.tendsto.mono_left nhdsWithin_le_nhds) (by filter_upwards [self_mem_nhdsWithin] with z hz using by simpa using hz)`.
+-/
 lemma tendsto_neg_ne (a : ℂ) : Tendsto (fun z : ℂ ↦ -z) (𝓝[≠] a) (𝓝[≠] (-a)) :=
   tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _
     (continuous_neg.continuousAt.tendsto.mono_left nhdsWithin_le_nhds)
     (by filter_upwards [self_mem_nhdsWithin] with z hz using by simpa using hz)
 
+/- English proof (translation)
+The claim follows from `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ((continuous_add_const l).continuousAt.tendsto.mono_left nhdsWithin_le_nhds) (by filter_upwards [self_mem_nhdsWithin] with z hz using by simpa using hz)`.
+-/
 lemma tendsto_add_ne (a l : ℂ) : Tendsto (fun z : ℂ ↦ z + l) (𝓝[≠] a) (𝓝[≠] (a + l)) :=
   tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _
     ((continuous_add_const l).continuousAt.tendsto.mono_left nhdsWithin_le_nhds)
     (by filter_upwards [self_mem_nhdsWithin] with z hz using by simpa using hz)
 
+/- English proof (translation)
+The claim follows from `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ((by fun_prop : Continuous fun z : ℂ ↦ z + z).continuousAt.tendsto.mono_left nhdsWithin_le_nhds) (by filter_upwards [self_mem_nhdsWithin] with z hz h apply hz simp only [Set.mem_singleton_iff] at h ⊢ linear_combination h / …`.
+-/
 lemma tendsto_two_ne (a : ℂ) : Tendsto (fun z : ℂ ↦ z + z) (𝓝[≠] a) (𝓝[≠] (a + a)) :=
   tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _
     ((by fun_prop : Continuous fun z : ℂ ↦ z + z).continuousAt.tendsto.mono_left nhdsWithin_le_nhds)
@@ -31,10 +40,26 @@ lemma tendsto_two_ne (a : ℂ) : Tendsto (fun z : ℂ ↦ z + z) (𝓝[≠] a) (
       simp only [Set.mem_singleton_iff] at h ⊢
       linear_combination h / 2)
 
+/- English proof (translation)
+The claim follows from `hf.meromorphicOrderAt_nonneg_iff.1 ((tendsto_nhds_iff_meromorphicOrderAt_nonneg hf).1 ⟨c, h⟩)`.
+-/
 lemma exists_analytic_of_tendsto {f : ℂ → ℂ} {a c : ℂ} (hf : MeromorphicAt f a)
     (h : Tendsto f (𝓝[≠] a) (𝓝 c)) : ∃ g, AnalyticAt ℂ g a ∧ f =ᶠ[𝓝[≠] a] g :=
   hf.meromorphicOrderAt_nonneg_iff.1 ((tendsto_nhds_iff_meromorphicOrderAt_nonneg hf).1 ⟨c, h⟩)
 
+/- English proof (translation)
+Set `G : ℂ → ℂ` to `fun z ↦ if z ∈ L.lattice then 0 else limUnder (𝓝[≠] z) g`. Establish `hG : ∀ a ∉ L.lattice, ∀ c, Tendsto g (𝓝[≠] a) (𝓝 c) → G a = c` using `fun a ha c h ↦ by`. Simplify using `only [G, if_neg ha]`. Conclude with `h.limUnder_eq`. Establish `hGg : ∀ z₀, G =ᶠ[𝓝[≠] z₀] g` using `fun z₀ ↦ by filter_upwards [(hg z₀).eventually_analyticAt, eventually_ne_notMem_periodLattice L z₀] with z h1 h2`.
+
+Conclude with `hG z h2 _ (h1.continuousAt.tendsto.mono_left nhdsWithin_le_nhds)`. Take `⟨A, hA⟩` from `exists_eq_polynomial_weierstrassP L (g := G) ((hg 0).congr (hGg 0).symm) (fun a ha ↦ by`. Take `⟨c, hc⟩` from `hd a ha`. Take `⟨h, hh, hgh⟩` from `exists_analytic_of_tendsto (hg a) hc`. Use `hh.differentiableAt.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Rewrite using `[← nhdsNE_sup_pure, EventuallyEq, eventually_sup]`. Use `⟨(hGg a).trans hgh, ?_⟩` and prove the remaining obligations. Simplify using `only [eventually_pure]`. Conclude with `hG a ha _ ((hh.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' hgh.symm))`. Use the proof step `(fun z l hl ↦ by`.
+
+Distinguish the cases in `hz : z ∈ L.lattice`. Simplify using `[G, hz, add_mem hz hl]`. Establish `hz' : z + l ∉ L.lattice` using `by rwa [L.lattice.add_mem_iff_left hl]`. Take `⟨c, hc⟩` from `hd _ hz'`. Rewrite using `[hG _ hz' c hc, hG z hz c ((hc.comp (tendsto_add_ne z l)).congr fun w ↦ hp w l hl)])`.
+
+Use the proof step `(fun z ↦ by`. Distinguish the cases in `hz : z ∈ L.lattice`. Simplify using `[G, hz]`. Establish `hz' : -z ∉ L.lattice` using `by simpa using hz`. Take `⟨c, hc⟩` from `hd _ hz'`.
+
+Rewrite using `[hG _ hz' c hc, hG z hz c ((hc.comp (tendsto_neg_ne z)).congr fun w ↦ hev w)])`. Use `⟨A, fun z₀ ↦ ?_⟩` and prove the remaining obligations. Use `filter_upwards [hGg z₀, eventually_ne_notMem_periodLattice L z₀] with z h1 h2`. Rewrite using `[← h1, hA z h2]`.
+-/
 lemma even_case {g : ℂ → ℂ} (hg : Meromorphic g)
     (hd : ∀ a ∉ L.lattice, ∃ c, Tendsto g (𝓝[≠] a) (𝓝 c))
     (hp : ∀ z, ∀ l ∈ L.lattice, g (z + l) = g z) (hev : ∀ z, g (-z) = g z) :
@@ -74,6 +99,25 @@ lemma even_case {g : ℂ → ℂ} (hg : Meromorphic g)
   filter_upwards [hGg z₀, eventually_ne_notMem_periodLattice L z₀] with z h1 h2
   rw [← h1, hA z h2]
 
+/- English proof (translation)
+Establish `hgn : Meromorphic fun z ↦ g (-z)` using `fun a ↦ MeromorphicAt.comp_analyticAt (f := g) (g := fun z ↦ -z) (hg (-a)) (by fun_prop)`. Establish `hdn : ∀ a ∉ L.lattice, ∃ c, Tendsto (fun z ↦ g (-z)) (𝓝[≠] a) (𝓝 c)` using `fun a ha ↦ by`. Take `⟨c, hc⟩` from `hd (-a) (by simpa using ha)`. Conclude with `⟨c, hc.comp (tendsto_neg_ne a)⟩`. Establish `hpn : ∀ z, ∀ l ∈ L.lattice, g (-(z + l)) = g (-z)` using `fun z l hl ↦ by`.
+
+Rewrite using `[neg_add, hp _ _ (neg_mem hl)]`. Take `⟨A, hA⟩` from `even_case L (g := fun z ↦ (g z + g (-z)) / 2) (fun a ↦ by have := hg a; have := hgn a; fun_prop) (fun a ha ↦ by`. Take `⟨c, hc⟩` from `hd a ha`. Take `⟨c', hc'⟩` from `hdn a ha`. Conclude with `⟨_, (hc.add hc').div_const 2⟩)`.
+
+Use the proof step `(fun z l hl ↦ by simp only [hp z l hl, hpn z l hl])`. Use the proof step `(fun z ↦ by simp only [neg_neg, add_comm])`. Set `o : ℂ → ℂ` to `fun z ↦ (g z - g (-z)) / 2`. Establish `ho : Meromorphic o` using `fun a ↦ by have := hg a; have := hgn a; fun_prop`. Establish `hop : ∀ z, ∀ l ∈ L.lattice, o (z + l) = o z` using `fun z l hl ↦ by`.
+
+Simplify using `only [o, hp z l hl, hpn z l hl]`. Establish `hon : ∀ z, o (-z) = -o z` using `fun z ↦ by simp only [o, neg_neg]; ring`. Take `⟨B, hB⟩` from `even_case L (g := fun z ↦ o z / ℘'[L] z) (fun a ↦ (ho a).div (L.meromorphic_derivWeierstrassP a)) (fun a ha ↦ by`. Take `⟨c, hc⟩` from `hd a ha`. Take `⟨c', hc'⟩` from `hdn a ha`.
+
+Establish `h1 : Tendsto o (𝓝[≠] a) (𝓝 ((c - c') / 2))` using `(hc.sub hc').div_const 2`. Establish `hP` using `hasDerivAt_derivWeierstrassP L ha`. Distinguish the cases in `h0 : ℘'[L] a = 0`. Establish `h2` using `(derivWeierstrassP_eq_zero_iff L ha).1 h0`. Take `⟨h, hh, hoh⟩` from `exists_analytic_of_tendsto (ho a) h1`.
+
+Establish `h3 : Tendsto o (𝓝[≠] a) (𝓝 (h a))` using `(hh.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' hoh.symm`. Establish `h4 : Tendsto (fun z : ℂ ↦ -z + (a + a)) (𝓝[≠] a) (𝓝[≠] a)`. Use `(tendsto_add_ne (-a) (a + a)).comp (tendsto_neg_ne a)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `h5 : Tendsto o (𝓝[≠] a) (𝓝 (-h a))` using `(h3.comp h4).neg.congr fun z ↦ by simp [hop _ _ h2, hon]`.
+
+Establish `h6 : h a = 0` using `CharZero.eq_neg_self_iff.1 (tendsto_nhds_unique h3 h5)`. Use `⟨_, ((hasDerivAt_iff_tendsto_slope.1 hh.differentiableAt.hasDerivAt).div (hasDerivAt_iff_tendsto_slope.1 hP) (weierstrassP_second_ne_zero L ha h0)).congr' ?_⟩` and prove the remaining obligations. Use `filter_upwards [hoh, self_mem_nhdsWithin] with z hz hza`. Establish `: z - a ≠ 0` using `sub_ne_zero.2 hza`. Simplify using `only [Pi.div_apply, slope_def_field, h6, h0, sub_zero, hz]`.
+
+Rewrite using `[div_div_div_cancel_right₀ this]`. Conclude with `⟨_, h1.div (hP.continuousAt.tendsto.mono_left nhdsWithin_le_nhds) h0⟩)`. Use the proof step `(fun z l hl ↦ by simp only [hop z l hl, L.derivWeierstrassP_add_coe z ⟨l, hl⟩])`. Use the proof step `(fun z ↦ by simp only [hon, derivWeierstrassP_neg, neg_div_neg_eq])`. Use `⟨A, B, fun z₀ ↦ ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hA z₀, hB z₀, (tendsto_two_ne z₀).eventually (eventually_ne_notMem_periodLattice L (z₀ + z₀))] with z h1 h2 h3`. Establish `h4 : ℘'[L] z ≠ 0` using `fun h ↦ h3 ((derivWeierstrassP_eq_zero_iff L fun hz ↦ h3 (add_mem hz hz)).1 h)`. Rewrite using `[← h1, ← h2, div_mul_cancel₀ _ h4]`. Simplify using `only [o]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma no_pole_case {g : ℂ → ℂ} (hg : Meromorphic g)
     (hd : ∀ a ∉ L.lattice, ∃ c, Tendsto g (𝓝[≠] a) (𝓝 c))
     (hp : ∀ z, ∀ l ∈ L.lattice, g (z + l) = g z) :
@@ -136,6 +180,29 @@ lemma no_pole_case {g : ℂ → ℂ} (hg : Meromorphic g)
   simp only [o]
   ring
 
+/- English proof (translation)
+Take `⟨hf, hp⟩` from `hφ`. Establish `hK` using `(ZSpan.fundamentalDomain_isBounded L.basis).isCompact_closure`. Use `set K := closure (ZSpan.fundamentalDomain L.basis)`. Establish `hS` using `hK.finite_sdiff_of_mem_codiscreteWithin (hf.meromorphicOn (s := K)).analyticAt_mem_codiscreteWithin`. Set `S : Finset ℂ` to `hS.toFinset.filter fun a ↦ a ∉ L.lattice ∧ meromorphicOrderAt φ a < 0`.
+
+Use `choose n hn using id hf`. Set `e` to `Fintype.equivFin (Σ a : S, Fin (n a))`. Set `D : ℂ → ℂ` to `fun z ↦ ∏ a ∈ S, (℘[L] z - ℘[L] a) ^ n a`. Establish `hD : ∀ z, ∏ i, (℘[L] z - ℘[L] (e.symm i).1) = D z` using `fun z ↦ by`. Rewrite using `[e.symm.prod_comp (fun x : (Σ a : S, Fin (n a)) ↦ ℘[L] z - ℘[L] x.1), Fintype.prod_sigma]`.
+
+Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Conclude with `Finset.prod_coe_sort S fun a ↦ (℘[L] z - ℘[L] a) ^ n a`. Establish `hK' : ∀ a ∈ K, a ∉ L.lattice → ∃ c, Tendsto (fun z ↦ φ z * D z) (𝓝[≠] a) (𝓝 c)`. Introduce `a haK ha`. Establish `hP` using `L.analyticOnNhd_weierstrassP a ha`.
+
+Establish `hP'` using `hP.continuousAt`. Distinguish the cases in `haS : a ∈ S`. Take `⟨u, hu, hu'⟩` from `(natCast_le_analyticOrderAt (f := fun z ↦ ℘[L] z - ℘[L] a) (z₀ := a) (by fun_prop) (n := 1)).mp ((natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero (by fun_prop)).mpr fun i hi ↦ by interval_cases i; simp)`. Establish `h1` using `(hn a).continuousAt`. Establish `h2` using `hu.continuousAt`.
+
+Establish `h3 : ContinuousAt (fun z ↦ ((z - a) ^ n a • φ z) * u z ^ n a * ∏ b ∈ S.erase a, (℘[L] z - ℘[L] b) ^ n b) a` using `by fun_prop`. Use `⟨_, (h3.tendsto.congr' ?_).mono_left nhdsWithin_le_nhds⟩` and prove the remaining obligations. Use `filter_upwards [hu'] with z hz`. Simplify using `only [D]`. Rewrite using `[← Finset.mul_prod_erase _ _ haS, hz]`.
+
+Simplify using `only [smul_eq_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : 0 ≤ meromorphicOrderAt φ a`. Assume the negation of the conclusion as `h`. Use `haS (Finset.mem_filter.2 ⟨?_, ha, not_le.1 h⟩)` and prove the remaining obligations.
+
+Simplify using `only [Set.Finite.mem_toFinset]`. Conclude with `⟨haK, fun h' ↦ h (AnalyticAt.meromorphicOrderAt_nonneg h')⟩`. Take `⟨c, hc⟩` from `(tendsto_nhds_iff_meromorphicOrderAt_nonneg (hf a)).2 h1`. Establish `h2 : ContinuousAt D a` using `by simp only [D]; fun_prop`. Conclude with `⟨_, hc.mul (h2.tendsto.mono_left nhdsWithin_le_nhds)⟩`.
+
+Establish `hper : ∀ z, ∀ l ∈ L.lattice, φ (z + l) * D (z + l) = φ z * D z` using `fun z l hl ↦ by`. Simplify using `only [D, hp l hl z, L.weierstrassP_add_coe z ⟨l, hl⟩]`. Take `⟨A, B, hAB⟩` from `no_pole_case L (g := fun z ↦ φ z * D z) (fun a ↦ by`. Establish `h1` using `hf a`. Establish `h2` using `L.meromorphic_weierstrassP a`.
+
+Simplify using `only [D]`. Use the proof step `fun_prop)`. Use the proof step `(fun z hz ↦ by`. Establish `hl : -(ZSpan.floor L.basis z : ℂ) ∈ L.lattice`. Rewrite using `[L.lattice_eq_span_range_basis]`.
+
+Conclude with `neg_mem (ZSpan.floor L.basis z).2`. Take `⟨c, hc⟩` from `hK' (z + -ZSpan.floor L.basis z) (by rw [← sub_eq_add_neg]; exact subset_closure (ZSpan.fract_mem_fundamentalDomain L.basis z)) (by rwa [L.lattice.add_mem_iff_left hl])`. Conclude with `⟨c, (hc.comp (tendsto_add_ne z _)).congr fun w ↦ hper w _ hl⟩)`. Use `hper`. Use `⟨_, fun i ↦ (e.symm i).1, A, B, fun i ↦ (Finset.mem_filter.1 (e.symm i).1.2).2, fun z₀ ↦ ?_⟩` and prove the remaining obligations.
+
+Simplify `hAB z₀` using `only [hD]`.
+-/
 theorem exists_mul_prod_eq (L : PeriodPair) (φ : ℂ → ℂ) (hφ : GlobalTheory.MomOne.Ell L φ) :
     ∃ (m : ℕ) (P : Fin m → ℂ) (A B : Polynomial ℂ),
       (∀ i, P i ∉ L.lattice ∧ meromorphicOrderAt φ (P i) < 0) ∧

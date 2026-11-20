@@ -15,11 +15,31 @@ variable {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algeb
 
 omit [NumberField K] in
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.adicCompletion.valued_coe K v k`.
+-/
 theorem valued_algebraMap {R : Type} [CommRing R] [IsDedekindDomain R] [Algebra R K] [IsFractionRing R K]
     (v : HeightOneSpectrum R) (k : K) :
     Valued.v (algebraMap K (v.adicCompletion K) k) = v.valuation K k :=
   HeightOneSpectrum.adicCompletion.valued_coe K v k
 
+/- English proof (translation)
+Establish `he : (w.under (𝓞 K)).asIdeal.ramificationIdx' w.asIdeal ≠ 0` using `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver w.asIdeal (w.under (𝓞 K)).ne_bot`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Rewrite using `[map_zero, map_zero, map_zero, zero_pow he]`. Establish `hx0 : Valued.v x ≠ 0` using `by simpa using hx`. Take `⟨π, hπ⟩` from `HeightOneSpectrum.valuation_exists_uniformizer K (w.under (𝓞 K))`.
+
+Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Use `set m := WithZero.log (Valued.v x)`.
+
+Use `set k : K := π ^ (-m)`. Establish `hvk : (w.under (𝓞 K)).valuation K k = Valued.v x`. Rewrite using `[map_zpow₀, hπ, ← WithZero.exp_zsmul]`. Simplify using `only [smul_eq_mul, neg_mul_neg, mul_one]`. Conclude with `WithZero.exp_log hx0`.
+
+Use `set c : (w.under (𝓞 K)).adicCompletion K := algebraMap K _ k`. Establish `hc : Valued.v c = Valued.v x` using `(valued_algebraMap (w.under (𝓞 K)) k).trans hvk`. Establish `hc0 : c ≠ 0` using `fun h => hx0 (by rw [← hc, h, map_zero])`. Use `set u := x * c⁻¹`. Establish `hu0 : u ≠ 0` using `mul_ne_zero hx (inv_ne_zero hc0)`.
+
+Establish `hu : Valued.v u = 1`. Rewrite using `[map_mul, map_inv₀, hc, mul_inv_cancel₀ hx0]`. Establish `hu1 : u ∈ (w.under (𝓞 K)).adicCompletionIntegers K`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hu]`. Establish `hu2 : u⁻¹ ∈ (w.under (𝓞 K)).adicCompletionIntegers K`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hu, inv_one]`. Establish `a1` using `finiteCompletionMap_mapsTo K E w hu1`. Establish `a2` using `finiteCompletionMap_mapsTo K E w hu2`. Simplify using `only [SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers] at a1 a2`. Establish `hfu : Valued.v (finiteCompletionMap K E w u) = 1`.
+
+Establish `hprod : finiteCompletionMap K E w u * finiteCompletionMap K E w u⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hu0, map_one]`. Establish `h3` using `congrArg Valued.v hprod`. Rewrite `h3` using `[map_mul, map_one]`. Conclude with `eq_one_of_one_le_mul_left a1 a2 h3.ge`.
+
+Establish `hxu : x = u * c`. Simplify using `only [u, mul_assoc, inv_mul_cancel₀ hc0, mul_one]`. Use `conv_lhs => rw [hxu, map_mul, map_mul, hfu, one_mul, finiteCompletionMap_coe, valued_algebraMap, ← HeightOneSpectrum.valuation_liesOver E (w.under (𝓞 K)) w k, hvk]`.
+-/
 theorem valued_finiteCompletionMap (w : HeightOneSpectrum (𝓞 E)) (x : (w.under (𝓞 K)).adicCompletion K) :
     Valued.v (finiteCompletionMap K E w x) =
       Valued.v x ^ ((w.under (𝓞 K)).asIdeal.ramificationIdx' w.asIdeal) := by
@@ -64,6 +84,11 @@ theorem valued_finiteCompletionMap (w : HeightOneSpectrum (𝓞 E)) (x : (w.unde
   conv_lhs => rw [hxu, map_mul, map_mul, hfu, one_mul, finiteCompletionMap_coe, valued_algebraMap,
     ← HeightOneSpectrum.valuation_liesOver E (w.under (𝓞 K)) w k, hvk]
 
+/- English proof (translation)
+Use `haveI := w.isMaximal`. Use `haveI := (w.under (𝓞 K)).isMaximal`. Establish `h1 : ((upIdele K E t : Af E) w) = finiteCompletionMap K E w ((t : Af K) (w.under (𝓞 K)))` using `rfl`. Rewrite using `[h1, valued_finiteCompletionMap, WithZero.log_pow, Ideal.ramificationIdx'_eq_ramificationIdx _ _ (w.under (𝓞 K)).ne_bot, Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal (w.under (𝓞 K)).asIdeal (w.under (𝓞 K)).isPrime (w.under (𝓞 K)).ne_bot, Ideal.inertiaDeg'_eq_inertiaDeg]`. Use `push_cast`.
+
+Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul]`. Use `congr 1`. Rewrite using `[nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem factor_upIdele (t : (Af K)ˣ) (w : HeightOneSpectrum (𝓞 E)) :
     ((Ideal.absNorm w.asIdeal : ℕ) : ℝ) ^ WithZero.log (Valued.v ((upIdele K E t : Af E) w)) =
       (((Ideal.absNorm (w.under (𝓞 K)).asIdeal : ℕ) : ℝ) ^
@@ -86,6 +111,13 @@ theorem factor_upIdele (t : (Af K)ˣ) (w : HeightOneSpectrum (𝓞 E)) :
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[IsFractionRing.finrank_eq (𝓞 K) K (𝓞 E) E, ← Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 E)]`. Use `Finset.sum_bij' (fun w hw => (⟨w.asIdeal, w.isPrime, by` and prove the remaining obligations. Rewrite using `[← (Finset.mem_filter.mp hw).2]`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.liesOver_under K E w⟩ : v.asIdeal.primesOver (𝓞 E)))`. Use the proof step `(fun q _ => (⟨q.1, q.2.1, by haveI := q.2.2`.
+
+Conclude with `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot q.1⟩ : HeightOneSpectrum (𝓞 E)))`. Use the proof step `(fun _ _ => Finset.mem_univ _) (fun q _ => ?_) (fun _ _ => rfl) (fun _ _ => rfl) (fun _ _ => rfl)`. Establish `hq : (⟨q.1, q.2.1, by haveI` using `q.2.2`. Conclude with `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot q.1⟩ : HeightOneSpectrum (𝓞 E)).under (𝓞 K) = v :=`. Use the proof step `HeightOneSpectrum.ext q.2.2.over.symm`.
+
+Conclude with `Finset.mem_filter.mpr ⟨hs _ hq, hq⟩`.
+-/
 theorem sum_fiber (v : HeightOneSpectrum (𝓞 K)) (s : Finset (HeightOneSpectrum (𝓞 E)))
     (hs : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 K) = v → w ∈ s) :
     ∑ w ∈ s with w.under (𝓞 K) = v, w.asIdeal.ramificationIdx (𝓞 K) * w.asIdeal.inertiaDeg (𝓞 K) =
@@ -105,6 +137,19 @@ theorem sum_fiber (v : HeightOneSpectrum (𝓞 K)) (s : Finset (HeightOneSpectru
     HeightOneSpectrum.ext q.2.2.over.symm
   exact Finset.mem_filter.mpr ⟨hs _ hq, hq⟩
 
+/- English proof (translation)
+Use `set a : HeightOneSpectrum (𝓞 K) → ℝ := fun v => ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ WithZero.log (Valued.v ((t : Af K) v)) with ha`. Establish `hfin : {v : HeightOneSpectrum (𝓞 K) | ¬ Valued.v ((t : Af K) v) = 1}.Finite` using `Filter.eventually_cofinite.mp (FiniteAdeleRing.isUnit_iff.mp t.isUnit).2`. Establish `hT : ((fun w : HeightOneSpectrum (𝓞 E) => w.under (𝓞 K)) ⁻¹' {v : HeightOneSpectrum (𝓞 K) | ¬ Valued.v ((t : Af K) v) = 1}).Finite`. Establish `h2` using `Filter.mem_cofinite.mp (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under K E hfin.compl_mem_cofinite)`. Rewrite `h2` using `[Set.preimage_compl, compl_compl]`. Then use the resulting hypothesis.
+
+Use `set S := hfin.toFinset`. Use `set T := hT.toFinset`. Establish `haS : ∀ v, v ∉ S → a v = 1` using `fun v hv => by`. Establish `h3 : Valued.v ((t : Af K) v) = 1`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hv (hfin.mem_toFinset.mpr h)`. Simplify using `only [ha, h3, WithZero.log_one, zpow_zero]`. Establish `h1 : modF t = ∏ v ∈ S, a v`. Use `finprod_eq_prod_of_mulSupport_subset a fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hv (haS v h)`. Establish `h2 : modF (upIdele K E t) = ∏ w ∈ T, a (w.under (𝓞 K)) ^ (w.asIdeal.ramificationIdx (𝓞 K) * w.asIdeal.inertiaDeg (𝓞 K))`. Unfold `modF`. Rewrite using `[finprod_congr (factor_upIdele t)]`. Use `finprod_eq_prod_of_mulSupport_subset _ fun w hw => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Apply `hw` to reduce the goal to its premises. Establish `h4 : w.under (𝓞 K) ∉ S` using `fun h5 => h (hT.mem_toFinset.mpr (hfin.mem_toFinset.mp h5))`. Use `show a (w.under (𝓞 K)) ^ _ = 1`. Rewrite using `[haS _ h4, one_pow]`.
+
+Rewrite using `[h2, h1, ← Finset.prod_fiberwise_of_maps_to (s := T) (t := S) (g := fun w => w.under (𝓞 K)) (fun w hw => hfin.mem_toFinset.mpr (hT.mem_toFinset.mp hw)), ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl (g := fun w => a v ^ (w.asIdeal.ramificationIdx (𝓞 K) * w.asIdeal.inertiaDeg (𝓞 K))) (fun w hw => by rw [(Finset.mem_filter.mp hw).2]), Finset.prod_pow_eq_pow_sum, sum_fiber v T fun w hw => hT.mem_toFinset.mpr (by show w.under (𝓞 K) ∈ {v : HeightOneSpectrum …`. Rewrite using `[hw]`. Conclude with `hfin.mem_toFinset.mp hv)]`.
+-/
 theorem modF_upIdele (t : (Af K)ˣ) : modF (upIdele K E t) = modF t ^ Module.finrank K E := by
   classical
   set a : HeightOneSpectrum (𝓞 K) → ℝ := fun v =>

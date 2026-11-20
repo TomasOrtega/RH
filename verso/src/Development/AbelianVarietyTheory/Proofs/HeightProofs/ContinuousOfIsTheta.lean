@@ -20,6 +20,11 @@ variable {M N : Type} [AddCommGroup M] [TopologicalSpace M] [AddCommGroup N] [To
 def SmoothAlong (Z : M → Prop) (f : M → ℂ) : Prop :=
   ∀ (k : ℕ) (L : (Fin k → ℝ) →+ M), Continuous L → (∀ t, Z (L t)) → ∀ w, ContDiff ℝ ∞ fun t => f (w + L t)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h w`. Set `e : P ≃L[ℝ] (Fin (Module.finrank ℝ P) → ℝ)` to `ContinuousLinearEquiv.ofFinrankEq (by simp)`. Use `(h _ (r.comp e.symm.toLinearEquiv.toLinearMap.toAddMonoidHom) (hr.comp e.symm.continuous) (fun t => hZ _) w).comp e.contDiff` as an intermediate fact. Use `this using 2 with p` and compare the differences between its conclusion and the goal.
+
+Conclude with `congrArg (fun q => f (w + r q)) (e.symm_apply_apply p).symm`. Introduce `h k L hL h0 w`. Use `(h w).comp ((co.comp L).toRealLinearMap (hc.comp hL)).contDiff` as an intermediate fact. Use `this using 2 with t` and compare the differences between its conclusion and the goal. Conclude with `congrArg (fun q => f (w + q)) (h3 _ (h0 t)).symm`.
+-/
 theorem gen_smooth_iff {P : Type} [NormedAddCommGroup P] [NormedSpace ℝ P] [FiniteDimensional ℝ P] (Z : M → Prop)
     (r : P →+ M) (hr : Continuous r) (hZ : ∀ p, Z (r p)) (co : M →+ P) (hc : Continuous co)
     (h3 : ∀ z, Z z → r (co z) = z) (f : M → ℂ) :
@@ -36,6 +41,9 @@ theorem gen_smooth_iff {P : Type} [NormedAddCommGroup P] [NormedSpace ℝ P] [Fi
     convert this using 2 with t
     exact congrArg (fun q => f (w + q)) (h3 _ (h0 t)).symm
 
+/- English proof (translation)
+Introduce `k L hL h0 w`. Use `h k (φ.comp L) (hφ.comp hL) (fun t => hZ _ (h0 t)) (φ w)` as an intermediate fact. Use `this using 2 with t` and compare the differences between its conclusion and the goal. Conclude with `congrArg f (φ.map_add _ _)`.
+-/
 theorem gen_smooth_comp (φ : M →+ N) (hφ : Continuous φ) (Z : M → Prop) (Z' : N → Prop) (hZ : ∀ x, Z x → Z' (φ x))
     (f : N → ℂ) (h : SmoothAlong Z' f) : SmoothAlong Z (f ∘ φ) := by
   intro k L hL h0 w
@@ -43,6 +51,9 @@ theorem gen_smooth_comp (φ : M →+ N) (hφ : Continuous φ) (Z : M → Prop) (
   convert this using 2 with t
   exact congrArg f (φ.map_add _ _)
 
+/- English proof (translation)
+Use `⟨gen_smooth_comp φ.toAddMonoidHom h1 Z Z' (fun x => (hZ x).2) f, fun h => ?_⟩` and prove the remaining obligations. Use `gen_smooth_comp φ.symm.toAddMonoidHom h2 Z' Z (fun x hx => (hZ _).1 (by simpa using hx)) _ h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem gen_smooth_equiv (φ : M ≃+ N) (h1 : Continuous φ) (h2 : Continuous φ.symm) (Z : M → Prop) (Z' : N → Prop)
     (hZ : ∀ x, Z' (φ x) ↔ Z x) (f : N → ℂ) : SmoothAlong Z' f ↔ SmoothAlong Z (f ∘ φ) := by
   refine ⟨gen_smooth_comp φ.toAddMonoidHom h1 Z Z' (fun x => (hZ x).2) f, fun h => ?_⟩
@@ -51,6 +62,11 @@ theorem gen_smooth_equiv (φ : M ≃+ N) (h1 : Continuous φ) (h2 : Continuous �
   funext x
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨U, hU, h⟩`. Conclude with `⟨U.comap φ.toAddMonoidHom, hU.preimage h1, fun u hu h0 => (hQ u).1 (h _ hu ((hZ u).2 h0))⟩`. Introduce and unpack `⟨U, hU, h⟩`. Use `⟨U.comap φ.symm.toAddMonoidHom, hU.preimage h2, fun u hu h0 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, rfl⟩` from `φ.surjective u`. Conclude with `(hQ u).2 (h u (by simpa using hu) ((hZ u).1 h0))`.
+-/
 theorem gen_level (φ : M ≃+ N) (h1 : Continuous φ) (h2 : Continuous φ.symm) (Z Q : M → Prop) (Z' Q' : N → Prop)
     (hZ : ∀ x, Z' (φ x) ↔ Z x) (hQ : ∀ x, Q' (φ x) ↔ Q x) :
     (∃ U : AddSubgroup N, IsOpen (U : Set N) ∧ ∀ u ∈ U, Z' u → Q' u) ↔
@@ -63,17 +79,28 @@ theorem gen_level (φ : M ≃+ N) (h1 : Continuous φ) (h2 : Continuous φ.symm)
     obtain ⟨u, rfl⟩ := φ.surjective u
     exact (hQ u).2 (h u (by simpa using hu) ((hZ u).1 h0))
 
+/- English proof (translation)
+Use `h.comp h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem gen_cont_equiv (φ : M ≃+ N) (h2 : Continuous φ.symm) (f : N → ℂ) (h : Continuous (f ∘ φ)) : Continuous f := by
   convert h.comp h2 using 1
   funext x
   simp
 
 omit [TopologicalSpace M] [TopologicalSpace N] in
+/- English proof (translation)
+Simplify using `only [φ.surjective.forall, hS, hκ, Function.comp_apply, map_add]`.
+-/
 theorem gen_quasi (φ : M ≃+ N) (S : AddSubgroup M) (S' : AddSubgroup N) (hS : ∀ x, φ x ∈ S' ↔ x ∈ S)
     (κ : M → M → ℂ) (κ' : N → N → ℂ) (hκ : ∀ x y, κ' (φ x) (φ y) = κ x y) (f : N → ℂ) :
     (∀ γ ∈ S', ∀ w, f (γ + w) = κ' γ w * f w) ↔ ∀ γ ∈ S, ∀ w, (f ∘ φ) (γ + w) = κ γ w * (f ∘ φ) w := by
   simp only [φ.surjective.forall, hS, hκ, Function.comp_apply, map_add]
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `w₀`. Establish `hd : Continuous fun w => w - w₀` using `continuous_id.sub continuous_const`. Establish `hu : Continuous fun w => (w - w₀) - R (w - w₀)` using `hd.sub (hR.comp hd)`. Establish `hG : Continuous fun w => ψ (-s (w₀ + R (w - w₀)) ((w - w₀) - R (w - w₀))) * g (w₀ + R (w - w₀))` using `(hψ.comp (hs.comp ((continuous_const.add (hR.comp hd)).prodMk hu)).neg).mul ((h1 w₀).comp hd)`.
+
+Use `hG.continuousAt.congr ?_` and prove the remaining obligations. Use `filter_upwards [(hU.preimage hu).mem_nhds (show w₀ ∈ _ by simp)] with w hw`. Rewrite using `[← h2 _ hw (w₀ + R (w - w₀)), ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+-/
 theorem gen_continuous [IsTopologicalAddGroup M] {A : Type} [AddCommGroup A] [TopologicalSpace A]
     [IsTopologicalAddGroup A] (ψ : AddChar A ℂ) (hψ : Continuous ψ) (s : M → M → A)
     (hs : Continuous fun p : M × M => s p.1 p.2) (R : M →+ M) (hR : Continuous R) (U : AddSubgroup M)
@@ -92,6 +119,9 @@ theorem gen_continuous [IsTopologicalAddGroup M] {A : Type} [AddCommGroup A] [To
   congr 1
   abel
 
+/- English proof (translation)
+The claim follows from `continuous_const.mul (((continuous_const.matrix_mul (continuous_snd.matrix_transpose.matrix_map hσ).matrix_transpose).matrix_mul continuous_const).matrix_transpose.matrix_transpose.matrix_mul continuous_fst.matrix_transpose).matrix_trace`.
+-/
 theorem gen_cont_herm {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {a b : ℕ} (σ : R →+* R)
     (hσ : Continuous σ) (Ji : Matrix (Fin a) (Fin a) R) (K : Matrix (Fin b) (Fin b) R) (ξ : R) :
     Continuous fun p : Matrix (Fin a) (Fin b) R × Matrix (Fin a) (Fin b) R =>
@@ -108,10 +138,16 @@ def realMat (D : D7) (m n : ℕ) :
   AddMonoidHom.mk' (fun p => Matrix.of fun i j => HeisenbergWeilMatrices.realPt D (p i j)) fun p q =>
     Matrix.ext fun i j => (realPtHom D).map_add (p i j) (q i j)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_pi fun j => (continuous_realPt D).comp ((continuous_apply j).comp (continuous_apply i))`.
+-/
 theorem continuous_realMat (D : D7) (m n : ℕ) : Continuous (realMat D m n) :=
   continuous_pi fun i => continuous_pi fun j =>
     (continuous_realPt D).comp ((continuous_apply j).comp (continuous_apply i))
 
+/- English proof (translation)
+Take `⟨co, h1, h2, h3⟩` from `exists_co D`. Conclude with `⟨AddMonoidHom.mk' (fun z i j => co (z i j)) fun z w => funext₂ fun i j => co.map_add _ _, continuous_pi fun i => continuous_pi fun j => h1.comp ((continuous_apply j).comp (continuous_apply i)), fun z => Matrix.ext fun i j => h2 (z i j), fun z hz => Matrix.ext fun i j => h3 (z i j …`.
+-/
 theorem exists_coMat (D : D7) (m n : ℕ) : ∃ co : Matrix (Fin m) (Fin n) (AE D) →+
     (Fin m → Fin n → (InfinitePlace D.host.F → ℝ) × (InfinitePlace D.host.F → ℝ)), Continuous co ∧
     (∀ z, (z - realMat D m n (co z)).map (infPart D) = 0) ∧ ∀ z, z.map (finPart D) = 0 → realMat D m n (co z) = z := by
@@ -121,20 +157,32 @@ theorem exists_coMat (D : D7) (m n : ℕ) : ∃ co : Matrix (Fin m) (Fin n) (AE 
     fun z => Matrix.ext fun i j => h2 (z i j),
     fun z hz => Matrix.ext fun i j => h3 (z i j) (congrFun₂ hz i j)⟩
 
+/- English proof (translation)
+Take `⟨co, c1, -, c3⟩` from `exists_coMat D m n`. Conclude with `gen_smooth_iff (fun z : Matrix (Fin m) (Fin n) (AE D) => z.map (finPart D) = 0) (realMat D m n) (continuous_realMat D m n) (fun p => Matrix.ext fun i j => finPart_realPt D (p i j)) co c1 c3 f`.
+-/
 theorem smoothAlong_iff {m n : ℕ} (f : Matrix (Fin m) (Fin n) (AE D) → ℂ) :
     SmoothAlong (fun z => z.map (finPart D) = 0) f ↔ ∀ w, ContDiff ℝ ∞ fun p => f (w + realMat D m n p) := by
   obtain ⟨co, c1, -, c3⟩ := exists_coMat D m n
   exact gen_smooth_iff (fun z : Matrix (Fin m) (Fin n) (AE D) => z.map (finPart D) = 0) (realMat D m n) (continuous_realMat D m n)
     (fun p => Matrix.ext fun i j => finPart_realPt D (p i j)) co c1 c3 f
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.map (AlgHom.id (AF D.host.F) (AF D.host.F)) D.sp.cm.sig).toLinearMap`.
+-/
 theorem continuous_cA (D : D7) : Continuous (cA D) :=
   IsModuleTopology.continuous_of_linearMap
     (Algebra.TensorProduct.map (AlgHom.id (AF D.host.F) (AF D.host.F)) D.sp.cm.sig).toLinearMap
 
+/- English proof (translation)
+The claim follows from `continuous_const.mul ((IsModuleTopology.continuous_of_linearMap (HeisenbergWeilMatrices.trA D)).comp (gen_cont_herm (cA D) (continuous_cA D) (HeisenbergWeilMatrices.gramInvA A) (HeisenbergWeilMatrices.gramA B) (incA D D.host.xi0)))`.
+-/
 theorem continuous_hsymp (A B : HSp D) : Continuous fun p : HeisenbergWeilMatrices.WA A B × HeisenbergWeilMatrices.WA A B => HeisenbergWeilMatrices.hsymp p.1 p.2 :=
   continuous_const.mul ((IsModuleTopology.continuous_of_linearMap (HeisenbergWeilMatrices.trA D)).comp
     (gen_cont_herm (cA D) (continuous_cA D) (HeisenbergWeilMatrices.gramInvA A) (HeisenbergWeilMatrices.gramA B) (incA D D.host.xi0)))
 
+/- English proof (translation)
+Take `⟨-, hs, U, hU, hl⟩` from `hg`. Take `⟨co, c1, c2, -⟩` from `exists_coMat D A.rank B.rank`. Conclude with `gen_continuous ψ hψ HeisenbergWeilMatrices.hsymp (continuous_hsymp A B) ((realMat D _ _).comp co) ((continuous_realMat D _ _).comp c1) U hU g (fun w => (hs w).continuous.comp c1) fun d hd x => congrFun (hl _ hd (c2 d)) x`.
+-/
 theorem continuous_of_isTheta {A B : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) {g : HeisenbergWeilMatrices.WA A B → ℂ}
     (hg : HeisenbergWeilMatrices.IsTheta ψ g) : Continuous g := by
   obtain ⟨-, hs, U, hU, hl⟩ := hg

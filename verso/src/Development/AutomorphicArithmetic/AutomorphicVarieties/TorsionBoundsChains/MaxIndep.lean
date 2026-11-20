@@ -2,6 +2,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 
 open CategoryTheory UpperTheory.V.KH
 
+/- English proof (translation)
+Introduce `M _ _ s t hst hs`. Set `S : Set (Set M)` to `{b | s ⊆ b ∧ b ⊆ t ∧ LinearIndepOn ℤ id b}`. Take `⟨m, hsm, hmax⟩` from `zorn_subset_nonempty S (by`. Introduce `c hcS hc hne`. Use `⟨⋃₀ c, ⟨?_, ?_, ?_⟩, fun b hb => Set.subset_sUnion_of_mem hb⟩` and prove the remaining obligations.
+
+Take `⟨b, hb⟩` from `hne`. Conclude with `(hcS hb).1.trans (Set.subset_sUnion_of_mem hb)`. Conclude with `Set.sUnion_subset fun b hb => (hcS hb).2.1`. Conclude with `linearIndepOn_sUnion_of_directed hc.directedOn fun b hb => (hcS hb).2.2)`. Use `s ⟨subset_rfl, hst, hs⟩`.
+
+Take `⟨-, hmt, hmi⟩` from `hmax.prop`. Use `⟨m, hsm, hmt, hmi, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hxm : x ∈ m`. Conclude with `⟨1, one_ne_zero, by rw [one_smul]; exact Submodule.subset_span hxm⟩`. Establish `hdep : ¬ LinearIndepOn ℤ id (insert x m)`.
+
+Introduce `hi`. Establish `he` using `hmax.eq_of_subset ⟨hsm.trans (Set.subset_insert _ _), Set.insert_subset hx hmt, hi⟩ (Set.subset_insert _ _)`. Conclude with `hxm (he ▸ Set.mem_insert x m)`. Rewrite `hdep` using `[linearIndepOn_iff]`. Use `push_neg at hdep`.
+
+Take `⟨l, hl, hl0, hlne⟩` from `hdep`. Establish `hl' : Finsupp.erase x l ∈ Finsupp.supported ℤ ℤ m`. Rewrite `hl`, the goal using `[Finsupp.mem_supported]`. Introduce `y hy`. Rewrite `hy` using `[Finset.mem_coe, Finsupp.mem_support_iff]`.
+
+Establish `hyx : y ≠ x`. Introduce and unpack `rfl`. Conclude with `hy (by simp)`. Rewrite `hy` using `[Finsupp.erase_ne hyx]`. Conclude with `(hl (Finsupp.mem_support_iff.mpr hy)).resolve_left hyx`.
+
+Establish `hsum : l x • x + Finsupp.linearCombination ℤ id (Finsupp.erase x l) = 0`. Establish `h1` using `congrArg (Finsupp.linearCombination ℤ id) (Finsupp.single_add_erase x l)`. Rewrite `h1` using `[map_add, Finsupp.linearCombination_single, hl0]`. Simplify using `using h1`. Establish `hxne : l x ≠ 0`.
+
+Introduce `h0`. Apply `hlne` to reduce the goal to its premises. Establish `he : Finsupp.erase x l = l`. Use extensionality with `y`. Distinguish the cases in `hy : y = x`.
+
+Substitute `hy` using the available equality. Simplify using `[h0]`. Simplify using `[Finsupp.erase_ne hy]`. Rewrite using `[← he]`. Apply `(linearIndepOn_iff.mp hmi) _ hl'` to reduce the goal to its premises.
+
+Rewrite `hsum` using `[h0, zero_smul, zero_add]`. Conclude with `hsum`. Use `⟨l x, hxne, ?_⟩` and prove the remaining obligations. Establish `hmem : Finsupp.linearCombination ℤ id (Finsupp.erase x l) ∈ Submodule.span ℤ m`. Establish `h2` using `(Finsupp.mem_span_image_iff_linearCombination ℤ (v := id) (s := m)).mpr ⟨_, hl', rfl⟩`.
+
+Simplify using `using h2`. Rewrite using `[eq_neg_of_add_eq_zero_left hsum]`. Conclude with `Submodule.neg_mem _ hmem`.
+-/
 theorem UpperTheory.V.KH.maxIndep :
     ∀ (M : Type) [AddCommGroup M] [IsAddTorsionFree M] (s t : Set M), s ⊆ t →
       LinearIndepOn ℤ id s → ∃ b : Set M, s ⊆ b ∧ b ⊆ t ∧ LinearIndepOn ℤ id b ∧

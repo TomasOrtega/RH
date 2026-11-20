@@ -8,6 +8,9 @@ namespace GlobalTheory.CompanionTheory.KAdjoint
 variable {P : Type} [AddCommGroup P] [Module ℝ P] {M : Type} [AddCommGroup M] [Module ℂ M]
   [Module ℝ M] [IsScalarTower ℝ ℂ M] {β : Type} [Fintype β]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `Fin.succAboveCases s ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem comp_insertNth_eq {m : ℕ} (b : β → P) (s : Fin (m + 1)) (i : β) (J : Fin m → β) :
     b ∘ (s.insertNth i J : Fin (m + 1) → β) = s.insertNth (b i) (b ∘ J) := by
   funext j
@@ -15,6 +18,11 @@ theorem comp_insertNth_eq {m : ℕ} (b : β → P) (s : Fin (m + 1)) (i : β) (J
   · simp
   · simp
 
+/- English proof (translation)
+Rewrite using `[← (Fin.insertNthEquiv (fun _ => β) s).sum_comp, Fintype.sum_prod_type, Finset.sum_comm]`. Simplify using `only [kIp, kDel_apply, map_sum]`. Use `Finset.sum_congr rfl fun J _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.insertNthEquiv, Equiv.coe_fn_mk, comp_insertNth_eq, Fin.insertNth_apply_same, Fin.removeNth_insertNth]`. Rewrite using `[← h, θ.map_insertNth]`.
+
+Simplify using `only [map_zsmul, LinearMap.smul_apply, smul_smul, ← pow_add, Even.neg_one_pow ⟨_, rfl⟩, one_smul]`.
+-/
 theorem position_sum (B : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ) (b : β → P) (T T' : P →ₗ[ℝ] Module.End ℂ M)
     (h : ∀ X x y, B (T X x) y = B x (T' X y)) {m : ℕ} (η : P [⋀^Fin m]→ₗ[ℝ] M)
     (θ : P [⋀^Fin (m + 1)]→ₗ[ℝ] M) (s : Fin (m + 1)) :
@@ -29,6 +37,11 @@ theorem position_sum (B : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ) (b : β → P) (T 
   rw [← h, θ.map_insertNth]
   simp only [map_zsmul, LinearMap.smul_apply, smul_smul, ← pow_add, Even.neg_one_pow ⟨_, rfl⟩, one_smul]
 
+/- English proof (translation)
+Establish `hs : ∀ s : Fin (m + 1), ∑ I : Fin (m + 1) → β, B ((-1 : ℤ) ^ (s : ℕ) • T (b (I s)) (η (s.removeNth (b ∘ I)))) (θ (b ∘ I)) = kIp B b η (kDel T' b θ)` using `fun s => position_sum B b T T' h η θ s`. Simplify using `only [kIp, kD_apply, Function.comp_apply, map_sum, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [kIp] at hs`. Rewrite using `[Finset.sum_congr rfl fun s _ => hs s]`.
+
+Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kIp_kD (B : M →ₗ[ℂ] M →ₗ⋆[ℂ] ℂ) (b : β → P) (T T' : P →ₗ[ℝ] Module.End ℂ M)
     (h : ∀ X x y, B (T X x) y = B x (T' X y)) {m : ℕ} (η : P [⋀^Fin m]→ₗ[ℝ] M)
     (θ : P [⋀^Fin (m + 1)]→ₗ[ℝ] M) :

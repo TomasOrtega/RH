@@ -19,16 +19,30 @@ open GlobalTheory.KS GlobalTheory.HeatGlue
 
 variable {Y X : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[pbT_of_le (𝟙 Y) h, rsT_of_le h]`. Both sides reduce to the same expression.
+-/
 theorem pbT_id {O₀ O : Y.Opens} (h : O ≤ O₀) (s : Γ(Y, O₀)) : pbT (𝟙 Y) s O = rsT s O := by
   rw [pbT_of_le (𝟙 Y) h, rsT_of_le h]
   rfl
 
+/- English proof (translation)
+The claim follows from `(pbT_of_le π h r).symm`.
+-/
 theorem cst_eq (π : Y ⟶ X) (V : X.Opens) {O : Y.Opens} (h : O ≤ π ⁻¹ᵁ V) (r : Γ(X, V)) :
     GlobalTheory.HeatV.cst π V h r = pbT π r O := (pbT_of_le π h r).symm
 
+/- English proof (translation)
+Rewrite using `[← rsT_mul, Units.mul_inv, rsT_one h]`.
+-/
 theorem rsT_unit {O₀ O : Y.Opens} (h : O ≤ O₀) (w : Γ(Y, O₀)ˣ) : rsT w.val O * rsT w⁻¹.val O = 1 := by
   rw [← rsT_mul, Units.mul_inv, rsT_one h]
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun u : Γ(Y, L.U i ⊓ L.U j ⊓ L.U k)ˣ => rsT u.val O) (hL.cocycle i j k)`. Simplify using `only [Units.val_mul, rsT_mul] at e`. Establish `r : ∀ {V V' : Y.Opens} (h : V' ≤ V) (u : Γ(Y, V)ˣ), O ≤ V' → rsT (ReciprocityTheory.ChartRestriction.G.Semi.res h u).val O = rsT u.val O` using `fun h u hO' => by show rsT (resG Y h u.val) O = _`. Rewrite using `[← rsT_of_le h, rsT_rsT h hO']`. Rewrite `e` using `[r _ _ hO, r _ _ hO, r _ _ hO]`.
+
+Conclude with `e`.
+-/
 theorem rsT_cocycle (L : LB Y) (hL : L.IsLB) (i j k : L.ι) {O : Y.Opens} (hO : O ≤ L.U i ⊓ L.U j ⊓ L.U k) :
     rsT (L.g i j).val O * rsT (L.g j k).val O = rsT (L.g i k).val O := by
   have e := congrArg (fun u : Γ(Y, L.U i ⊓ L.U j ⊓ L.U k)ˣ => rsT u.val O) (hL.cocycle i j k)
@@ -40,6 +54,55 @@ theorem rsT_cocycle (L : LB Y) (hL : L.IsLB) (i j k : L.ι) {O : Y.Opens} (hO : 
   rw [r _ _ hO, r _ _ hO, r _ _ hO] at e
   exact e
 
+/- English proof (translation)
+Introduce `Y X π V L hL h2 n dd hddF _hddC Θ hΘ J W j d hW hWL hdF hKS hH1`. Simplify using `only [cst_eq] at hKS hH1`. Establish `hdd : ∀ a (O : Y.Opens), IsDer (dd a O)` using `fun a O => isDer_of_isField (hddF a) le_top`. Take `⟨t, ht⟩ : ∃ t : Γ(X, V), 2 * t = 1` from `⟨_, h2.mul_val_inv⟩`. Establish `hc2 : ∀ O : Y.Opens, O ≤ π ⁻¹ᵁ V → 2 * pbT π t O = 1` using `fun O hO => by`.
+
+Establish `e` using `congrArg (fun s => pbT π s O) ht`. Simplify using `only [pbT_mul, pbT_one π hO] at e`. Rewrite `e` using `[show (2 : Γ(X, V)) = 1 + 1 from one_add_one_eq_two.symm, pbT_add, pbT_one π hO, one_add_one_eq_two]`. Conclude with `e`. Establish `hs : ∀ (O : Y.Opens) a b, pbT π (Θ a b) O = pbT π (Θ b a) O` using `fun O a b => by`.
+
+Rewrite using `[show Θ a b = Θᵀ b a from rfl, hΘ]`. Establish `hV2 : ∀ i i' (O : Y.Opens), O ≤ W i ⊓ W i' → O ≤ π ⁻¹ᵁ V` using `fun i i' O h => h.trans (inf_le_left.trans (hW i))`. Establish `hm2 : ∀ i i' (O : Y.Opens), O ≤ W i ⊓ W i' → O ≤ L.U (j i) ⊓ L.U (j i')` using `fun i i' O h => le_inf (h.trans (inf_le_left.trans (hWL i))) (h.trans (inf_le_right.trans (hWL i')))`. Establish `hm3 : ∀ i i' i'' (O : Y.Opens), O ≤ W i ⊓ W i' ⊓ W i'' → O ≤ L.U (j i) ⊓ L.U (j i') ⊓ L.U (j i'')` using `fun i i' i'' O h => le_inf (le_inf (h.trans (inf_le_left.trans (inf_le_left.trans (hWL i)))) (h.trans (inf_le_left.trans (inf_le_right.trans (hWL i'))))) (h.trans (inf_le_right.trans (hWL i'')))`. Take `⟨φ, hφ⟩ : ∃ φ : Fin n → J → J → ∀ O : Y.Opens, Γ(Y, O), ∀ b i i' O, φ b i i' O = dd b O (rsT (L.g (j i) (j i')).val O) * rsT (L.g (j i) (j i'))⁻¹.val O` from `⟨_, fun _ _ _ _ => rfl⟩`.
+
+Establish `rφ : ∀ b i i' (O₁ O : Y.Opens), O₁ ≤ W i ⊓ W i' → O ≤ O₁ → rsT (φ b i i' O₁) O = φ b i i' O`. Introduce `b i i' O₁ O h1 h`. Rewrite using `[hφ, hφ, rsT_mul, ← field_rsT (hddF b) le_top h, rsT_rsT (hm2 i i' O₁ h1) h, rsT_rsT (hm2 i i' O₁ h1) h]`. Establish `dlc : ∀ i i' i'' (O : Y.Opens) (δ : Γ(Y, O) → Γ(Y, O)), IsDer δ → O ≤ W i ⊓ W i' ⊓ W i'' → δ (rsT (L.g (j i) (j i'')).val O) * rsT (L.g (j i) (j i''))⁻¹.val O = δ (rsT (L.g (j i) (j i')).val O) * rsT (L.g (j i) (j i'))⁻¹.val O + δ (rsT (L.g (j i') (j i'')).val O) * rsT (L.g (j i' …`. Introduce `i i' i'' O δ hδ hO`.
+
+Establish `h3` using `hm3 i i' i'' O hO`. Conclude with `hδ.dlog_mul (rsT_unit (h3.trans inf_le_left) _) (rsT_unit (le_inf (h3.trans (inf_le_left.trans inf_le_right)) (h3.trans inf_le_right)) _) (rsT_unit (le_inf (h3.trans (inf_le_left.trans inf_le_left)) (h3.trans inf_le_right)) _) (rsT_cocycle L hL _ _ _ h3)`. Establish `cφ : ∀ b i i' i'' (O : Y.Opens), O ≤ W i ⊓ W i' ⊓ W i'' → φ b i i'' O = φ b i i' O + φ b i' i'' O` using `fun b i i' i'' O hO => by`. Rewrite using `[hφ, hφ, hφ]`. Conclude with `dlc i i' i'' O _ (hdd b O) hO`.
+
+Establish `ks : ∀ i i' i'' (O : Y.Opens), O ≤ W i ⊓ W i' → d i O (rsT (L.g (j i') (j i'')).val O) * rsT (L.g (j i') (j i''))⁻¹.val O = d i' O (rsT (L.g (j i') (j i'')).val O) * rsT (L.g (j i') (j i''))⁻¹.val O + ∑ a, ∑ b, pbT π (Θ a b) O * φ b i i' O * φ a i' i'' O` using `fun i i' i'' O hO => by`. Rewrite using `[← sub_eq_iff_eq_add', ← sub_mul, hKS i i' O hO, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hφ, hφ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨z₁, hz₁⟩ : ∃ z : C1 W, ∀ i i', z i i' = -(pbT π t (W i ⊓ W i') * ∑ a, ∑ b, pbT π (Θ a b) (W i ⊓ W i') * dd a (W i ⊓ W i') (φ b i i' (W i ⊓ W i')))` from `⟨_, fun _ _ => rfl⟩`. Take `⟨z₂, hz₂⟩ : ∃ z : C1 W, ∀ i i', z i i' = d i (W i ⊓ W i') (rsT (L.g (j i) (j i')).val (W i ⊓ W i')) * rsT (L.g (j i) (j i'))⁻¹.val (W i ⊓ W i') - pbT π t (W i ⊓ W i') * ∑ a, ∑ b, pbT π (Θ a b) (W i ⊓ W i') * φ a i i' (W i ⊓ W i') * φ b i i' (W i ⊓ W i')` from `⟨_, fun _ _ => rfl⟩`. Establish `rz₁ : ∀ i i' (O : Y.Opens), O ≤ W i ⊓ W i' → rsT (z₁ i i') O = -(pbT π t O * ∑ a, ∑ b, pbT π (Θ a b) O * dd a O (φ b i i' O))`.
+
+Introduce `i i' O hO`. Establish `e : ∀ a b, rsT (dd a (W i ⊓ W i') (φ b i i' (W i ⊓ W i'))) O = dd a O (φ b i i' O)` using `fun a b => by`. Rewrite using `[← field_rsT (hddF a) le_top hO, rφ b i i' _ O le_rfl hO]`. Rewrite using `[hz₁]`. Simplify using `only [rsT_neg, rsT_mul, rsT_sum, rsT_pbT π (hV2 i i' _ le_rfl) hO, e]`.
+
+Establish `rz₂ : ∀ i i' (O : Y.Opens), O ≤ W i ⊓ W i' → rsT (z₂ i i') O = d i O (rsT (L.g (j i) (j i')).val O) * rsT (L.g (j i) (j i'))⁻¹.val O - pbT π t O * ∑ a, ∑ b, pbT π (Θ a b) O * φ a i i' O * φ b i i' O`. Introduce `i i' O hO`. Establish `e : ∀ b, rsT (φ b i i' (W i ⊓ W i')) O = φ b i i' O` using `fun b => rφ b i i' _ O le_rfl hO`. Rewrite using `[hz₂]`. Simplify using `only [rsT_sub, rsT_mul, rsT_sum, rsT_pbT π (hV2 i i' _ le_rfl) hO, e]`.
+
+Rewrite using `[← field_rsT (hdF i) inf_le_left hO, rsT_rsT (hm2 i i' _ le_rfl) hO, rsT_rsT (hm2 i i' _ le_rfl) hO]`. Establish `tri : ∀ i i' i'', (W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i') ∧ (W i ⊓ W i' ⊓ W i'' ≤ W i' ⊓ W i'') ∧ (W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i'')` using `fun _ _ _ => ⟨inf_le_left, le_inf (inf_le_left.trans inf_le_right) inf_le_right, le_inf (inf_le_left.trans inf_le_left) inf_le_right⟩`. Establish `coc₁ : IsCoc W z₁`. Introduce `i i' i''`. Take `⟨t1, t2, t3⟩` from `tri i i' i''`.
+
+Rewrite using `[rz₁ i i' _ t1, rz₁ i' i'' _ t2, rz₁ i i'' _ t3]`. Establish `e` using `fun b => cφ b i i' i'' _ le_rfl`. Simplify using `only [e, (hdd _ _).1, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `coc₂ : IsCoc W z₂`.
+
+Introduce `i i' i''`. Take `⟨t1, t2, t3⟩` from `tri i i' i''`. Rewrite using `[rz₂ i i' _ t1, rz₂ i' i'' _ t2, rz₂ i i'' _ t3]`. Establish `e` using `fun b => cφ b i i' i'' _ le_rfl`. Simplify using `only [e]`.
+
+Rewrite using `[dlc i i' i'' _ _ (isDer_of_isField (hdF i) (t1.trans inf_le_left)) le_rfl, ks i i' i'' _ t1, quad_add (hs _) (fun a => φ a i i' _) (fun a => φ a i' i'' _)]`. Take the linear combination `(∑ a, ∑ b, pbT π (Θ a b) (W i ⊓ W i' ⊓ W i'') * φ b i i' _ * φ a i' i'' _) * hc2 _ (hV2 i i' _ t1)`. Take `⟨c, y₁, hy₁⟩` from `hH1 z₁ coc₁`. Take `⟨e, y₂, hy₂⟩` from `hH1 z₂ coc₂`. Establish `A1 : ∀ i i' (O : Y.Opens), O ≤ W i ⊓ W i' → rsT (y₁ i') O - rsT (y₁ i) O = -(pbT π t O * ∑ a, ∑ b, pbT π (Θ a b) O * dd a O (φ b i i' O)) - ∑ b, pbT π (c b) O * φ b i i' O`.
+
+Introduce `i i' O hO`. Establish `h` using `congrArg (fun s => rsT s O) (hy₁ i i')`. Simplify using `only [rz₁ i i' O hO, rsT_add, rsT_sub, rsT_sum, rsT_mul, rsT_pbT π (hV2 i i' _ le_rfl) hO, rsT_rsT inf_le_left hO, rsT_rsT inf_le_right hO] at h`. Establish `e' : ∀ b, rsT (dd b (W i ⊓ W i') (rsT (L.g (j i) (j i')).val (W i ⊓ W i')) * rsT (L.g (j i) (j i'))⁻¹.val (W i ⊓ W i')) O = φ b i i' O` using `fun b => by`. Rewrite using `[← hφ, rφ b i i' _ O le_rfl hO]`.
+
+Simplify using `only [← rsT_mul, e'] at h`. Take the linear combination `-h`. Establish `A2 : ∀ i i' (O : Y.Opens), O ≤ W i ⊓ W i' → rsT (y₂ i') O - rsT (y₂ i) O = d i O (rsT (L.g (j i) (j i')).val O) * rsT (L.g (j i) (j i'))⁻¹.val O - pbT π t O * ∑ a, ∑ b, pbT π (Θ a b) O * φ a i i' O * φ b i i' O - ∑ b, pbT π (e b) O * φ b i i' O`. Introduce `i i' O hO`. Establish `h` using `congrArg (fun s => rsT s O) (hy₂ i i')`.
+
+Simplify using `only [rz₂ i i' O hO, rsT_add, rsT_sub, rsT_sum, rsT_mul, rsT_pbT π (hV2 i i' _ le_rfl) hO, rsT_rsT inf_le_left hO, rsT_rsT inf_le_right hO] at h`. Establish `e' : ∀ b, rsT (dd b (W i ⊓ W i') (rsT (L.g (j i) (j i')).val (W i ⊓ W i')) * rsT (L.g (j i) (j i'))⁻¹.val (W i ⊓ W i')) O = φ b i i' O` using `fun b => by`. Rewrite using `[← hφ, rφ b i i' _ O le_rfl hO]`. Simplify using `only [← rsT_mul, e'] at h`. Take the linear combination `-h`.
+
+Use `⟨fun a => -e a, fun a => -c a, y₂, y₁, ?_⟩` and prove the remaining obligations. Introduce `k i i' O h f`. Establish `hO : O ≤ π ⁻¹ᵁ V` using `hV2 i i' O h`. Rewrite using `[pbT_id (hm2 i i' O h)]`. Establish `hg` using `rsT_unit (hm2 i i' O h) (L.g (j i) (j i'))`.
+
+Establish `hdi : IsDer (fun f : Γ(Y, O) => d i O f + ∑ a, pbT π (-e a) O * dd a O f)`. Establish `h1` using `isDer_of_isField (hdF i) (h.trans inf_le_left)`. Use `⟨fun x y => ?_, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [h1.1, (hdd _ O).1, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `s : ∑ a, pbT π (-e a) O * (x * dd a O y + y * dd a O x) = x * ∑ a, pbT π (-e a) O * dd a O y + y * ∑ a, pbT π (-e a) O * dd a O x`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Simplify using `only [h1.2, (hdd _ O).2, s]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `key` using `ringOp_conj hdi (fun a => hdd a O) (Θ := Θ.map (GlobalTheory.HeatV.cst π V hO)) (fun a b => by show GlobalTheory.HeatV.cst π V hO (Θ a b) = GlobalTheory.HeatV.cst π V hO (Θ b a)`. Rewrite using `[show Θ a b = Θᵀ b a from rfl, hΘ])`. Use the proof step `(fun a => GlobalTheory.HeatV.cst π V hO (-c a)) (rsT (y₂ i) O) (rsT (y₁ i) O) hg k f`. Use `key.trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Establish `F1` using `hKS i i' O h f`. Establish `F2` using `A2 i i' O h`. Establish `F3` using `A1 i i' O h`. Simplify using `only [hφ] at F2 F3`. Simplify using `only [ringOp, GlobalTheory.HeatV.opV, Matrix.map_apply, cst_eq]`.
+
+Establish `E : (d i O (rsT (L.g (j i) (j i')).val O) + ∑ a, pbT π (-e a) O * dd a O (rsT (L.g (j i) (j i')).val O)) * rsT (L.g (j i) (j i'))⁻¹.val O = d i O (rsT (L.g (j i) (j i')).val O) * rsT (L.g (j i) (j i'))⁻¹.val O - ∑ b, pbT π (e b) O * (dd b O (rsT (L.g (j i) (j i')).val O) * rsT (L …`. Rewrite using `[add_mul, Finset.sum_mul, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [pbT_neg]; ring`. Establish `U1 : ∑ a, pbT π (-c a) O * (dd a O (rsT (L.g (j i) (j i')).val O) * rsT (L.g (j i) (j i'))⁻¹.val O) = -∑ b, pbT π (c b) O * (dd b O (rsT (L.g (j i) (j i')).val O) * rsT (L.g (j i) (j i'))⁻¹.val O)`.
+
+Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [pbT_neg]; ring`. Rewrite using `[E, U1]`. Use `set g := rsT (L.g (j i) (j i')).val O`. Use `set gi := rsT (L.g (j i) (j i'))⁻¹.val O`.
+
+Take the linear combination `(2 * (k : Γ(Y, O))) * F1 + (k : Γ(Y, O)) ^ 2 * f * (-2 * F2 + (∑ a, ∑ b, pbT π (Θ a b) O * (dd a O g * gi) * (dd b O g * gi)) * hc2 O hO) + (k : Γ(Y, O)) * f * (-2 * F3 + (∑ a, ∑ b, pbT π (Θ a b) O * dd a O (dd b O g * gi)) * hc2 O hO)`.
+-/
 theorem exists_heatV : ∀ (Y X : Scheme.{0}) (π : Y ⟶ X) (V : X.Opens) (L : LB Y), L.IsLB → IsUnit (2 : Γ(X, V)) → ∀ (n : ℕ) (dd : Fin n → Fld Y), (∀ a, IsField ⊤ (dd a)) → (∀ a O (h : O ≤ π ⁻¹ᵁ V) (r : Γ(X, V)), dd a O (GlobalTheory.HeatV.cst π V h r) = 0) → ∀ (Θ : Matrix (Fin n) (Fin n) Γ(X, V)), Θᵀ = Θ → ∀ (J : Type) (W : J → Y.Opens) (j : J → L.ι) (d : J → Fld Y) (hW : ∀ i, W i ≤ π ⁻¹ᵁ V), (∀ i, W i ≤ L.U (j i)) → (∀ i, IsField (W i) (d i)) → (∀ i i' O (h : O ≤ W i ⊓ W i') (f : Γ(Y, O)), d i O f - d i' O f = ∑ a, ∑ b, GlobalTheory.HeatV.cst π V (h.trans (inf_le_left.trans (hW i))) (Θ a b) * (dd b O (rsT (L.g (j i) (j i')).val O) * rsT (L.g (j i) (j i'))⁻¹.val O) * dd a O f) → (∀ z : C1 W, IsCoc W z → ∃ (cc : Fin n → Γ(X, V)) (y : ∀ i, Γ(Y, W i)), ∀ i i', z i i' = ∑ b, GlobalTheory.HeatV.cst π V (inf_le_left.trans (hW i)) (cc b) * (dd b (W i ⊓ W i') (rsT (L.g (j i) (j i')).val (W i ⊓ W i')) * rsT (L.g (j i) (j i'))⁻¹.val (W i ⊓ W i')) + (rsT (y i') (W i ⊓ W i') - rsT (y i) (W i ⊓ W i'))) → ∃ (e u : Fin n → Γ(X, V)) (pf pf' : ∀ i, Γ(Y, W i)), ∀ (k : ℕ) i i' O (h : O ≤ W i ⊓ W i') (f : Γ(Y, O)), GlobalTheory.HeatV.opV π V dd Θ u (fun O' f' => d i O' f' + ∑ a, pbT π (e a) O' * dd a O' f') (pf i) (pf' i) k O (h.trans (inf_le_left.trans (hW i))) (pbT (𝟙 Y) (L.g (j i) (j i')).val O ^ k * f) = pbT (𝟙 Y) (L.g (j i) (j i')).val O ^ k * GlobalTheory.HeatV.opV π V dd Θ u (fun O' f' => d i' O' f' + ∑ a, pbT π (e a) O' * dd a O' f') (pf i') (pf' i') k O (h.trans (inf_le_right.trans (hW i'))) f := by
   intro Y X π V L hL h2 n dd hddF _hddC Θ hΘ J W j d hW hWL hdF hKS hH1
   simp only [cst_eq] at hKS hH1

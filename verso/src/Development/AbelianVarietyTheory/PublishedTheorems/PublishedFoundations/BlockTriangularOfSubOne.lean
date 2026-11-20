@@ -16,6 +16,11 @@ def IsStrictBlock {k : Type} [Field k] (b : Fin N → ℕ) (X : Matrix (Fin N) (
 
 variable {k}
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : b l ≤ b i`. Rewrite using `[hX i l hl, zero_mul]`.
+
+Rewrite using `[hY (lt_of_le_of_lt hij (not_le.mp hl)), mul_zero]`.
+-/
 theorem IsStrictBlock.mul_blockTriangular {b : Fin N → ℕ} {X Y : Matrix (Fin N) (Fin N) k}
     (hX : IsStrictBlock b X) (hY : Y.BlockTriangular b) : IsStrictBlock b (X * Y) := by
   intro i j hij
@@ -25,6 +30,9 @@ theorem IsStrictBlock.mul_blockTriangular {b : Fin N → ℕ} {X Y : Matrix (Fin
   · rw [hX i l hl, zero_mul]
   · rw [hY (lt_of_le_of_lt hij (not_le.mp hl)), mul_zero]
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `hne : i ≠ j` using `fun h => by subst h; exact lt_irrefl _ hij`. Establish `h` using `hX i j hij.le`. Rewrite `h` using `[Matrix.sub_apply, Matrix.one_apply_ne hne, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem blockTriangular_of_sub_one {b : Fin N → ℕ} {X : Matrix (Fin N) (Fin N) k}
     (hX : IsStrictBlock b (X - 1)) : X.BlockTriangular b := by
   intro i j hij
@@ -60,6 +68,9 @@ def unipRadical (b : Fin N → ℕ) : Subgroup (GL (Fin N) k) where
 
 variable {k}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unipRadical {b : Fin N → ℕ} {u : GL (Fin N) k} :
     u ∈ unipRadical k b ↔ ∀ i j, b j ≤ b i → ((u : Matrix (Fin N) (Fin N) k) - 1) i j = 0 := Iff.rfl
 
@@ -69,6 +80,21 @@ def IsCuspidal {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation �
 
 def twoBlocks (N a : ℕ) : Fin N → ℕ := fun i => if (i : ℕ) < a then 0 else 1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a ha0 haN v hv`. Use `h (twoBlocks N a) ?_ ⟨⟨0, by omega⟩, ⟨a, haN⟩, ?_⟩ v hv` and prove the remaining obligations. Introduce `i j hij`. Establish `hij' : (i : ℕ) ≤ j` using `hij`.
+
+Simplify using `only [twoBlocks]`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `[twoBlocks, ha0]`. Introduce `h b hb hne v hv classical`. Take `⟨i₁, j₁, h₁⟩` from `hne`.
+
+Establish `hN : 0 < N` using `i₁.pos`. Set `i0 : Fin N` to `⟨0, hN⟩`. Establish `hmin : ∀ i : Fin N, b i0 ≤ b i` using `fun i => hb (Fin.mk_le_of_le_val (Nat.zero_le _))`. Establish `hex : ∃ m, ∃ hm : m < N, b i0 < b ⟨m, hm⟩`. Distinguish the cases in `hi : b i0 < b i₁`.
+
+Conclude with `⟨i₁, i₁.isLt, hi⟩`. Use `⟨j₁, j₁.isLt, lt_of_le_of_ne (hmin j₁) fun he => h₁ ?_⟩` and prove the remaining obligations. Use `hmin i₁` as an intermediate fact. Express the relevant statement in the definitionally equal form `b i0 = b j₁ at he`. Use linear arithmetic over natural numbers and integers.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a, haN, key⟩ : ∃ a, a < N ∧ ∀ i : Fin N, (i : ℕ) < a ↔ ¬ b i0 < b i := by`. Use `⟨Nat.find hex, (Nat.find_spec hex).1, fun i => ⟨fun hi hlt => ?_, fun hi => ?_⟩⟩` and prove the remaining obligations. Conclude with `Nat.find_min hex hi ⟨i.isLt, hlt⟩`. Assume the negation of the conclusion as `hge`. Take `⟨_, hlt⟩` from `Nat.find_spec hex`.
+
+Conclude with `hi (lt_of_lt_of_le hlt (hb (Fin.mk_le_of_le_val (not_lt.mp hge))))`. Use `h a ((key i0).mpr (lt_irrefl _)) haN v fun u hu => hv u ?_` and prove the remaining obligations. Rewrite `hu`, the goal using `[mem_unipRadical]`. Introduce `i j hij`. Apply `hu i j` to reduce the goal to its premises.
+
+Simplify using `only [twoBlocks]`. Distinguish the cases in `hi : (i : ℕ) < a`. Establish `hj : (j : ℕ) < a` using `(key j).mpr fun hlt => (key i).mp hi (lt_of_lt_of_le hlt hij)`. Simplify using `[hi, hj]`. Apply the tactic sequence `simp only [hi, if_false] split_ifs <;> omega`.
+-/
 theorem isCuspidal_iff_twoBlocks {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin N) k) V) :
     IsCuspidal ρ ↔ ∀ a : ℕ, 0 < a → a < N →
       ∀ v : V, (∀ u ∈ unipRadical k (twoBlocks N a), ρ u v = v) → v = 0 := by
@@ -110,6 +136,9 @@ theorem isCuspidal_iff_twoBlocks {V : Type} [AddCommGroup V] [Module ℂ V] (ρ 
     · simp only [hi, if_false]
       split_ifs <;> omega
 
+/- English proof (translation)
+Introduce `h`. Conclude with `one_ne_zero ((isCuspidal_iff_twoBlocks _).mp h 1 one_pos (by omega) (1 : ℂ) fun u _ => by simp)`.
+-/
 theorem not_isCuspidal_trivial (hN : 2 ≤ N) : ¬ IsCuspidal (Representation.trivial ℂ (GL (Fin N) k) ℂ) := by
   intro h
   exact one_ne_zero ((isCuspidal_iff_twoBlocks _).mp h 1 one_pos (by omega) (1 : ℂ) fun u _ => by simp)
@@ -127,6 +156,9 @@ def genericChar (ψ₀ : AddChar k ℂ) : uniSub k n →* ℂ where
   map_mul' u v := by
     rw [Subgroup.coe_mul, Subgroup.coe_mul, Units.val_mul, supd_mul _ _ u.2 v.2, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem genericChar_apply (ψ₀ : AddChar k ℂ) (u : uniSub k n) :
     genericChar n ψ₀ u =
       ψ₀ (supd (((u : mirabSub k n) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)) := rfl
@@ -134,12 +166,18 @@ theorem genericChar_apply (ψ₀ : AddChar k ℂ) (u : uniSub k n) :
 def genericLine (ψ₀ : AddChar k ℂ) : Representation ℂ (uniSub k n) ℂ :=
   (Algebra.lsmul ℂ ℂ ℂ).toMonoidHom.comp (genericChar n ψ₀)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem genericLine_apply (ψ₀ : AddChar k ℂ) (u : uniSub k n) (z : ℂ) :
     genericLine n ψ₀ u z = genericChar n ψ₀ u * z := rfl
 
 abbrev MirabInducedSpace (ψ₀ : AddChar k ℂ) : Submodule ℂ (mirabSub k n → ℂ) :=
   Representation.coindV (uniSub k n).subtype (genericLine n ψ₀)
 
+/- English proof (translation)
+Rewrite using `[Representation.mem_coindV]`. Simplify using `only [Subgroup.coe_subtype, genericLine_apply]`.
+-/
 theorem mem_mirabInducedSpace (ψ₀ : AddChar k ℂ) (f : mirabSub k n → ℂ) :
     f ∈ MirabInducedSpace n ψ₀ ↔
       ∀ (u : uniSub k n) (x : mirabSub k n), f ((u : mirabSub k n) * x) = genericChar n ψ₀ u * f x := by
@@ -149,6 +187,9 @@ theorem mem_mirabInducedSpace (ψ₀ : AddChar k ℂ) (f : mirabSub k n → ℂ)
 def mirabInduced (ψ₀ : AddChar k ℂ) : Representation ℂ (mirabSub k n) (MirabInducedSpace n ψ₀) :=
   Representation.coind (uniSub k n).subtype (genericLine n ψ₀)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mirabInduced_apply (ψ₀ : AddChar k ℂ) (h x : mirabSub k n) (f : MirabInducedSpace n ψ₀) :
     (mirabInduced n ψ₀ h f : mirabSub k n → ℂ) x = (f : mirabSub k n → ℂ) (x * h) := rfl
 
@@ -156,6 +197,9 @@ def restrictMirab {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representatio
     Representation ℂ (mirabSub k n) V :=
   ρ.comp (mirabSub k n).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem restrictMirab_apply {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin (n + 1)) k) V) (h : mirabSub k n) :
     restrictMirab n ρ h = ρ (h : GL (Fin (n + 1)) k) := rfl
@@ -167,8 +211,16 @@ section Examples
 def lineRep {G : Type} [Group G] (χ : G →* ℂ) : Representation ℂ G (Fin 1 → ℂ) :=
   (Algebra.lsmul ℂ ℂ (Fin 1 → ℂ)).toMonoidHom.comp χ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lineRep_apply {G : Type} [Group G] (χ : G →* ℂ) (g : G) (v : Fin 1 → ℂ) : lineRep χ g v = χ g • v := rfl
 
+/- English proof (translation)
+Establish `hs : IsSimpleOrder (Submodule ℂ (Fin 1 → ℂ))` using `is_simple_module_of_finrank_eq_one (K := ℂ) (by simp)`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun W => ?_ }` and prove the remaining obligations. Conclude with `bot_ne_top (congrArg Subrepresentation.toSubmodule h)`. Break down `hs.eq_bot_or_eq_top W.toSubmodule with h | h` into its components or cases. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective h)`.
+
+Conclude with `Or.inr (Subrepresentation.toSubmodule_injective h)`.
+-/
 theorem lineRep_isIrreducible {G : Type} [Group G] (χ : G →* ℂ) : (lineRep χ).IsIrreducible := by
   have hs : IsSimpleOrder (Submodule ℂ (Fin 1 → ℂ)) :=
     is_simple_module_of_finrank_eq_one (K := ℂ) (by simp)
@@ -184,11 +236,21 @@ def signGL₂ : GL (Fin 2) (ZMod 2) →* ℂ :=
 
 def transvGL₂ : GL (Fin 2) (ZMod 2) := ⟨!![1, 1; 0, 1], !![1, 1; 0, 1], by decide, by decide⟩
 
+/- English proof (translation)
+Establish `h : Equiv.Perm.sign (MulAction.toPerm transvGL₂ : Equiv.Perm (Fin 2 → ZMod 2)) = -1`. Evaluate the decidable proposition. Simplify using `[signGL₂, h]`.
+-/
 theorem signGL₂_transv : signGL₂ transvGL₂ = -1 := by
   have h : Equiv.Perm.sign (MulAction.toPerm transvGL₂ : Equiv.Perm (Fin 2 → ZMod 2)) = -1 := by
     decide
   simp [signGL₂, h]
 
+/- English proof (translation)
+Use `⟨lineRep_isIrreducible _, (isCuspidal_iff_twoBlocks _).mpr fun a ha0 ha2 v hv => ?_⟩` and prove the remaining obligations. Take `rfl : a = 1` from `by omega`. Establish `hmem : transvGL₂ ∈ unipRadical (ZMod 2) (twoBlocks 2 1)`. Rewrite using `[mem_unipRadical]`. Introduce `i j hij`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [twoBlocks, transvGL₂]`. Establish `h` using `hv transvGL₂ hmem`. Rewrite `h` using `[lineRep_apply, signGL₂_transv]`. Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun h i`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, neg_one_mul] at hi`. Simplify using `only [Pi.zero_apply]`. Take the linear combination `(-1 / 2 : ℂ) * hi`.
+-/
 theorem signGL₂_cuspidal : (lineRep signGL₂).IsIrreducible ∧ IsCuspidal (lineRep signGL₂) := by
   refine ⟨lineRep_isIrreducible _, (isCuspidal_iff_twoBlocks _).mpr fun a ha0 ha2 v hv => ?_⟩
   obtain rfl : a = 1 := by omega

@@ -6,6 +6,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.Chart
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `GlobalTheory.DriftCovolume.finMu_unconditional`.
+-/
 theorem finMu_all_data :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r), FinMu X :=
   fun _ _ _ _ => GlobalTheory.DriftCovolume.finMu_unconditional

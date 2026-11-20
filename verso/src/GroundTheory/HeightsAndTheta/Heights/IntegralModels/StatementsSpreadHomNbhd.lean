@@ -13,6 +13,9 @@ noncomputable section
 variable {X : Scheme.{0}}
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Rewrite using `[← cancel_mono (invOpen f m).ι]`. Simplify using `[Scheme.homOfLE_ι]`.
+-/
 lemma toOpen_homOfLE (f : X ⟶ SpecZ) (R : Type) [CommRing R] (W : X.Opens)
     (hW : Set.range (baseChangeMap f R) ⊆ Set.range W.ι) {m : ℤ} (hm : IsUnit (m : R))
     (h : W ≤ invOpen f m) : toOpen f R W hW ≫ X.homOfLE h = toInvOpen f R m hm := by

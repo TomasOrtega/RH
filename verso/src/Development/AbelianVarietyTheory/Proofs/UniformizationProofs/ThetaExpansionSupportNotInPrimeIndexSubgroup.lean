@@ -28,6 +28,9 @@ open GlobalTheory.UU
 noncomputable section
 namespace GlobalTheory.UU.PrimeIndex
 
+/- English proof (translation)
+Establish `: NeZero (l : F)` using `⟨hl⟩`. Establish `: NeZero l` using `NeZero.of_neZero_natCast F`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot F l`. Establish `hu : IsPrimitiveRoot (hζ.isUnit (NeZero.ne l)).unit l` using `hζ.isUnit_unit (NeZero.ne l)`. Conclude with `⟨(Subgroup.subtype _).comp (AddEquiv.toMultiplicativeLeft hu.zmodEquivZPowers).toMonoidHom, Subtype.val_injective.comp (AddEquiv.toMultiplicativeLeft hu.zmodEquivZPowers).injective⟩`.
+-/
 theorem exists_injective_character (F : Type) [Field F] [IsAlgClosed F] (l : ℕ) (hl : (l : F) ≠ 0) :
     ∃ φ : Multiplicative (ZMod l) →* Fˣ, Function.Injective φ := by
   have : NeZero (l : F) := ⟨hl⟩
@@ -40,6 +43,17 @@ theorem exists_injective_character (F : Type) [Field F] [IsAlgClosed F] (l : ℕ
 variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Set `y₀ : (TFK (R` to `R) F ⊗ A.A).left ⟶ ((Over.pullback (jK R)).obj G).left := (snd (TFK (R := R) F) A.A).left ≫ U.gen.inv.left`. Establish `ih : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _` using `by rw [← Over.comp_left, U.gen.inv_hom_id]; rfl`. Establish `ha : y₀ ≫ U.gen.hom.left = (snd (TFK (R` using `R) F) A.A).left := (Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ih).trans (Category.comp_id _))`. Establish `hcomm : ((fst (TFK (R` using `R) F) A.A).left ≫ φ.left) ≫ T.hom = (y₀ ≫ pullback.fst G.hom (jK R)) ≫ G.hom := by`. Establish `e₁ : φ.left ≫ T.hom = jFK (R` using `R) F ≫ jK R := Over.w φ`.
+
+Establish `e₂ : U.gen.inv.left ≫ pullback.snd G.hom (jK R) = A.A.hom` using `Over.w U.gen.inv`. Establish `e₃ : (fst (TFK (R` using `R) F) A.A).left ≫ jFK (R := R) F = (snd (TFK (R := R) F) A.A).left ≫ A.A.hom := (Over.w (fst (TFK (R := R) F) A.A)).trans (Over.w (snd (TFK (R := R) F) A.A)).symm`. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) e₁).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ jK R) e₃).trans ?_)))` and prove the remaining obligations. Use `Eq.trans ?_ ((Category.assoc _ _ _).trans (congrArg (y₀ ≫ ·) pullback.condition)).symm` and prove the remaining obligations. Rewrite using `[← e₂]`.
+
+Simplify using `only [y₀, Category.assoc]`. Set `h : (TFK (R` to `R) F ⊗ A.A).left ⟶ (T ⊗ G).left := pullback.lift _ _ hcomm`. Establish `h₃ : h ≫ (fst T G).left = (fst (TFK (R` using `R) F) A.A).left ≫ φ.left := pullback.lift_fst _ _ _`. Establish `h₂ : h ≫ (snd T G).left = y₀ ≫ pullback.fst G.hom (jK R)` using `pullback.lift_snd _ _ _`. Take `⟨JG, hG⟩` from `exists_good_pt U.P.L.isLB z`.
+
+Establish `e₁ : 𝟙 _ ≫ (snd (TFK (R` using `R) F) A.A).left = y₀ ≫ U.gen.hom.left := (Category.id_comp _).trans ha.symm`. Establish `e₃ : h ≫ (fst T G).left = 𝟙 _ ≫ (fst (TFK (R` using `R) F) A.A).left ≫ φ.left := h₃.trans (Category.id_comp _).symm`. Establish `a` using `h₁ _ (𝟙 _) y₀ h e₁ h₂ e₃ z JA JG hA hG`. Establish `b` using `(hk _ (𝟙 _) y₀ h e₁ h₂ e₃ z JA JG hA hG).trans ((hp _ h z JG hG).trans (congrArg (· ^ k) a.symm))`. Rewrite `b` using `[pow_one, mul_pow, ← Units.val_pow_eq_pow_val]`.
+
+Conclude with `(Units.mul_right_inj _).1 b`.
+-/
 theorem sval_pow_of_pullG (U : PreU I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F]
     {T : Over (Spec (CommRingCat.of R))} (φ : TF (R := R) F ⟶ T) (k : ℕ) (θ : U.SecGT T 1) (σ : U.SecGT T k)
     (th : LB.Sec (LPow A.A A.L ((1 : ℕ) : ℤ) (TFK (R := R) F))) (t : LB.Sec (LPow A.A A.L (k : ℤ) (TFK (R := R) F)))
@@ -77,6 +91,33 @@ theorem sval_pow_of_pullG (U : PreU I D A G) (F : Type) [Field F] [Algebra (Frac
 
 attribute [local instance] GlobalTheory.TorusExt.gtGroup
 
+/- English proof (translation)
+Introduce `L₁ L₂ V _ _ _ hV D A G _ _ U θ f hθ l hl g hg`. Use `hV.1` as an intermediate fact. Use `hV.2.2` as an intermediate fact. Establish `: CharZero (FractionRing V)` using `IsFractionRing.charZero_of_isFractionRing V`. Establish `hl0 : (l : Kbar V) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`.
+
+Establish `hl1 : 1 ≤ l` using `hl.one_le`. Take `⟨φ, hφ⟩` from `exists_injective_character (Kbar V) l hl0`. Set `χ₀ : Multiplicative D.X →* (Kbar V)ˣ` to `φ.comp (AddMonoidHom.toMultiplicative g)`. Establish `hχ : ∀ α, χ₀ (Multiplicative.ofAdd α) = φ (Multiplicative.ofAdd (g α))` using `fun _ => rfl`. Establish `hχl : χ₀ ^ l = 1` using `MonoidHom.ext fun α => by show χ₀ (Multiplicative.ofAdd α.toAdd) ^ l = 1`.
+
+Rewrite using `[hχ, ← map_pow, ← ofAdd_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul, ofAdd_zero, map_one]`. It suffices to establish `H : χ₀ = 1 by`. Use `AddMonoidHom.ext fun α => ?_` and prove the remaining obligations. Establish `e : φ (Multiplicative.ofAdd (g α)) = φ 1` using `by rw [← hχ, H, map_one]; rfl`. Conclude with `congrArg Multiplicative.toAdd (hφ e)`.
+
+Take `⟨p, pb, pv, pt, pz⟩` from `exists_gtPt_of_character V D (Kbar V) χ₀`. Take `⟨o, -, -, ot, oz⟩` from `exists_gtPt_of_character V D (Kbar V) 1`. Take `⟨m, minj, macts, madd⟩` from `GlobalTheory.T.torusTorsion_to_abelianTorsion_theta_action L₁ L₂ V hV D A G U l hl1`. Set `P : {g : GtPtF D (Kbar V) // GtTors D l g}` to `⟨p, pt l hχl⟩`. Set `O : {g : GtPtF D (Kbar V) // GtTors D l g}` to `⟨o, ot l (one_pow l)⟩`.
+
+Establish `ho : o = 0` using `(TorusExt.isZero_iff_eq o).1 (oz.2 rfl)`. Establish `mO : m O = 1`. Use `madd O O O ((TorusExt.isAdd_iff_eq o o o).2 (by rw [ho, add_zero]))` as an intermediate fact. Conclude with `left_eq_mul.1 this`. It suffices to establish `H : m P = 1 by`.
+
+Establish `e : p = o` using `congrArg Subtype.val (minj (H.trans mO.symm))`. Conclude with `pz.1 (e ▸ oz.2 rfl)`. Take `⟨σ, fl, hσ, hfl, hpow⟩` from `GlobalTheory.T.thetaPowers_expansion_support_subgroup L₁ L₂ V hV D A G U g.ker θ f hθ.1 (fun α hα j => by`. Assume the negation of the conclusion as `hj`. Conclude with `hα (hg α ⟨j, hj⟩)) l hl1`.
+
+Take `⟨th, hth, -⟩` from `PullSec.existsUnique_pullG U (Kbar V) (toUnit _) 1 θ`. Take `⟨s₀, hs₀, -⟩` from `PullSec.existsUnique_pullB D (Kbar V) (toUnit _) 1 f`. Take `⟨t, ht, -⟩` from `PullSec.existsUnique_pullG U (Kbar V) (toUnit _) l σ`. Take `⟨s, hs, -⟩` from `PullSec.existsUnique_pullB D (Kbar V) (toUnit _) l fl`. Take `⟨⟨j₀, hj₀⟩, -, -⟩` from `GlobalTheory.T.expF_of_theta_degree_one L₁ L₂ V hV D A G U θ f hθ th s₀ hth hs₀`.
+
+Establish `hts` using `GlobalTheory.expF_of_pull V D _ A G U (Kbar V) l σ fl t s hσ ht hs`. Take `⟨ex, ex₁, ex₂, ex₃, -⟩` from `GlobalTheory.UU.ExpLinMap.exists_expansion_linear L₁ L₂ V hV D A G U (Kbar V) l hl1`. Take `⟨hpl, hacts⟩` from `macts P`. Take `⟨ϑ, hϑ⟩` from `(GlobalTheory.ThetaIrred.main L₁ L₂ _ A (Kbar V) (jFK (R := V) (Kbar V)) l hl0).1 (m P) hpl`. Take `⟨w, hw, hΦ⟩` from `hacts ϑ hϑ`.
+
+Take `⟨t', ht'⟩` from `ThetaScalar.exists_actVal A.isLB ϑ t`. Establish `hact` using `ht'.isActOf A.isLB`. Take `⟨c, hc⟩` from `GlobalTheory.UU.phiRaw_torus V D (Kbar V) l p w pb hw`. Establish `hs'` using `hc s _ (hΦ t t' s _ hts (ex₁ (SecMod.mk _ t')) hact) (fun α hα z J hJ => by`. Take `⟨j, hj⟩` from `(GlobalTheory.pullB_ne_zero_iff V D (Kbar V) l fl s hs α).1 hα`.
+
+Establish `hm : g α = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hj (hfl α h0 j)`. Use `Units.ext ((pv α z J hJ).trans ?_)` and prove the remaining obligations. Establish `e₁ : scal (𝟙 (Spec (CommRingCat.of (Kbar V)))) ((1 : (Kbar V)ˣ) : Kbar V) = 1` using `by simp [scal]`.
+
+Rewrite using `[hχ, hm, ofAdd_zero, map_one, e₁]`. Conclude with `(gs_eq _ z ⊤ trivial _).trans ((congrArg _ (map_one _)).trans (map_one _)))`. Establish `e : SecMod.mk _ t' = c.val • (SecMod.mk _ t : EA A (jFK (R` using `V) (Kbar V)) l) := by`. Use `sub_eq_zero.1 (ex₃ _ fun α => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, sub_eq_zero]`.
+
+Use `SecMod.ext_coord fun j => (hs' α j).trans ?_` and prove the remaining obligations. Rewrite using `[ex₂ t s hts α]`. Both sides reduce to the same expression. Use `hϑ.symm.trans (GlobalTheory.T.thetaOperator_point_zero_of_power_eigen _ A (Kbar V) (jFK (R := V) (Kbar V)) l hl1 (SecMod.mk _ th) (SecMod.mk _ t) ϑ c (fun h0 => hj₀ ((SecMod.eq_zero_iff_coord _).1 h0 j₀)) (fun z J hJ => sval_pow_of_pullG U (Kbar V) (toUnit _) l θ σ th t hth ht hp …` and prove the remaining obligations. Rewrite using `[← e]`.
+
+Conclude with `hact`.
+-/
 theorem hom_zmod_eq_zero_of_support : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ f, U.Theta θ f → ∀ (l : ℕ), l.Prime → ∀ g : D.X →+ ZMod l, (∀ α, (∃ j, (f α).f j ≠ 0) → g α = 0) → g = 0) := by
   intro L₁ L₂ V _ _ _ hV D A G _ _ U θ f hθ l hl g hg
   have := hV.1

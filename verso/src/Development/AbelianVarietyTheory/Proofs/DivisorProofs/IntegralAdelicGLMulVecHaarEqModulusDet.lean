@@ -15,6 +15,17 @@ namespace GlobalTheory.JacSubst
 
 open GlobalTheory.ModuLR GlobalTheory.GaugeEx
 
+/- English proof (translation)
+Set `Mi : Matrix κ κ (Ainf F)` to `(fstA F).toRingHom.mapMatrix M`. Set `Mf : Matrix κ κ (Af F)` to `(sndA F).toRingHom.mapMatrix M`. Establish `hi : Mi.det = fstA F M.det` using `(RingHom.map_det _ _).symm`. Establish `hf : Mf.det = sndA F M.det` using `(RingHom.map_det _ _).symm`. Establish `hMi : IsUnit Mi.det` using `hi ▸ hM.map (fstA F)`.
+
+Establish `hMf : IsUnit Mf.det` using `hf ▸ hM.map (sndA F)`. Set `j : (κ → Ainf F) × (κ → Af F) →+ (κ → AF F)` to `zipHom κ (Ainf F) (Af F)`. Establish `hj : IsOpenEmbedding j` using `GlobalTheory.T.isOpenEmbedding_pairOfTuplesToTupleOfPairs κ (Ainf F) (Af F)`. Establish `s1 : addEquivAddHaarChar (mulVecCE M hM) = addEquivAddHaarChar (prodCE (mulVecCE Mi hMi) (mulVecCE Mf hMf))` using `GlobalTheory.T.addEquivAddHaarChar_eq_of_isOpenEmbedding_restrict _ _ j hj (mulVecCE M hM) (prodCE (mulVecCE Mi hMi) (mulVecCE Mf hMf)) fun p => by`. Use function extensionality and compare the values at `i`.
+
+Use `show (M *ᵥ j p) i = ((Mi *ᵥ p.1) i, (Mf *ᵥ p.2) i)`. Establish `e1 : fstA F ((M *ᵥ j p) i) = (Mi *ᵥ p.1) i`. Rewrite using `[show (fstA F) ((M *ᵥ j p) i) = (fstA F).toRingHom ((M *ᵥ j p) i) from rfl, RingHom.map_mulVec]`. Both sides reduce to the same expression. Establish `e2 : sndA F ((M *ᵥ j p) i) = (Mf *ᵥ p.2) i`.
+
+Rewrite using `[show (sndA F) ((M *ᵥ j p) i) = (sndA F).toRingHom ((M *ᵥ j p) i) from rfl, RingHom.map_mulVec]`. Both sides reduce to the same expression. Rewrite using `[← e1, ← e2]`. Both sides reduce to the same expression. Use `haveI : IsArtinianRing (Ainf F) := inferInstanceAs (IsArtinianRing (∀ v : InfinitePlace F, v.Completion))`.
+
+Use `haveI : IsReduced (Ainf F) := inferInstanceAs (IsReduced (∀ v : InfinitePlace F, v.Completion))`. Establish `s2 : addEquivAddHaarChar (mulVecCE Mi hMi) = modu (Ainf F) Mi.det` using `GlobalTheory.T.addEquivAddHaarChar_mulVec_artinian_reduced (Ainf F) inferInstance inferInstance κ Mi hMi`. Rewrite using `[s1, GlobalTheory.T.addEquivAddHaarChar_prodCongr, NNReal.coe_mul, s2, chi_Af F Mf hMf, hi, hf]`.
+-/
 theorem chi_AF_split (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [DecidableEq κ]
     (M : Matrix κ κ (AF F)) (hM : IsUnit M.det) :
     (addEquivAddHaarChar (mulVecCE M hM) : ℝ) =
@@ -47,6 +58,13 @@ theorem chi_AF_split (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype �
     GlobalTheory.T.addEquivAddHaarChar_mulVec_artinian_reduced (Ainf F) inferInstance inferInstance κ Mi hMi
   rw [s1, GlobalTheory.T.addEquivAddHaarChar_prodCongr, NNReal.coe_mul, s2, chi_Af F Mf hMf, hi, hf]
 
+/- English proof (translation)
+Set `a : (AF F)ˣ` to `hM.unit`. Set `N : Matrix Unit Unit (AF F)` to `fun _ _ => (a : AF F)`. Establish `hNd : N.det = M.det` using `by rw [Matrix.det_unique]; rfl`. Establish `hN : IsUnit N.det` using `hNd ▸ hM`. Establish `h1 : distribHaarChar (AF F) a = addEquivAddHaarChar (mulVecCE N hN)`.
+
+Rewrite using `[GlobalTheory.ModuNorm.distribHaarChar_eq_addEquivAddHaarChar, ← addEquivAddHaarChar_transport (GlobalTheory.ModuNorm.evalUnitCE (AF F)) (mulVecCE N hN)]`. Use `congr 1`. Use extensionality with `x`. Use `show (a : AF F) * x = (N *ᵥ fun _ => x) ()`. Simplify using `[N, Matrix.mulVec, dotProduct]`.
+
+Apply `NNReal.coe_injective` to reduce the goal to its premises. Use `show (addEquivAddHaarChar (mulVecCE M hM) : ℝ) = (distribHaarChar (AF F) a : ℝ)`. Rewrite using `[h1, chi_AF_split, chi_AF_split, hNd]`.
+-/
 theorem chi_AF_det (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [DecidableEq κ]
     (M : Matrix κ κ (AF F)) (hM : IsUnit M.det) :
     addEquivAddHaarChar (mulVecCE M hM) = distribHaarChar (AF F) hM.unit := by
@@ -91,6 +109,23 @@ end GlobalTheory.JacSubst
 
 open GlobalTheory.ModuLR GlobalTheory.GaugeEx GlobalTheory.JacSubst in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d t μ hμ f`. Use `letI mV : MeasurableSpace (Fin d → AE F E) := borel _`. Use `haveI : BorelSpace (Fin d → AE F E) := ⟨rfl⟩`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`.
+
+Set `e` to `coordCE F E (Module.finBasis F E)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isOpenEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : LocallyCompactSpace (Matrix (Fin d) (Fin 1) (AE F E)) := inferInstanceAs (LocallyCompactSpace (Fin d → Fin 1 → AE F E))`.
+
+Use `haveI : SecondCountableTopology (Matrix (Fin d) (Fin 1) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin d → Fin 1 → AE F E))`. Use `letI : MeasurableSpace (Matrix (Fin d) (Fin 1) (AE F E)) := borel _`. Use `haveI : BorelSpace (Matrix (Fin d) (Fin 1) (AE F E)) := ⟨rfl⟩`. Use `haveI : μ.Regular := inferInstance`. Establish `hdt : IsUnit (t : Matrix (Fin d) (Fin d) (AE F E)).det`.
+
+Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.isUnit _`. Set `φ` to `mulVecCE (t : Matrix (Fin d) (Fin d) (AE F E)) hdt`. Take `⟨κ, _, _, Λ, hΛ, hdet, hχ⟩` from `@exists_matrix_restrictScalars_lrCE F E _ _ _ _ _ d (1 : ℕ) _ _ _ _ t (1 : GL (Fin 1) (AE F E))`. Establish `hc : addEquivAddHaarChar φ = distribHaarChar (AF F) (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t))`.
+
+Establish `h1 : addEquivAddHaarChar φ = addEquivAddHaarChar (lrCE t (1 : GL (Fin 1) (AE F E)))`. Rewrite using `[← addEquivAddHaarChar_transport (colCE (AE F E) d) φ]`. Use `congr 1`. Use extensionality with `m i j`. Rewrite using `[Fin.fin_one_eq_zero j]`.
+
+Use `show ((t : Matrix (Fin d) (Fin d) (AE F E)) *ᵥ (fun k => m k 0)) i = ((t : Matrix (Fin d) (Fin d) (AE F E)) * m * ((1 : GL (Fin 1) (AE F E)) : Matrix (Fin 1) (Fin 1) (AE F E))) i 0`. Rewrite using `[Units.val_one, Matrix.mul_one]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Rewrite using `[h1, hχ, chi_AF_det]`. Use `congr 1`.
+
+Use `ext`. Simplify using `only [IsUnit.unit_spec, hdet, Units.coe_map, MonoidHom.coe_coe, map_one, one_pow, mul_one, pow_one]`. Establish `hmap : μ.map φ = (addEquivAddHaarChar φ)⁻¹ • μ`. Establish `key` using `addEquivAddHaarChar_smul_map μ φ`. Establish `hne : addEquivAddHaarChar φ ≠ 0` using `(addEquivAddHaarChar_pos φ).ne'`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel₀ hne, one_smul]`. Use `_ = (addEquivAddHaarChar φ)⁻¹ • μ := by rw [mul_smul, key]`. Establish `hint : ∫ u, f u ∂(μ.map φ) = ∫ u, f ((t : Matrix (Fin d) (Fin d) (AE F E)) *ᵥ u) ∂μ` using `integral_map_equiv φ.toHomeomorph.toMeasurableEquiv f`. Rewrite using `[← hint, hmap, integral_smul_nnreal_measure, hc, NNReal.smul_def, Complex.real_smul, NNReal.coe_inv]`.
+-/
 theorem GlobalTheory.JacSubst.integral_mulVec : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ) (t : GL (Fin d) (AE F E)),
     ∀ μ : @Measure (Fin d → AE F E) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
     ∀ f : (Fin d → AE F E) → ℂ, ∫ u, f ((t : Matrix (Fin d) (Fin d) (AE F E)) *ᵥ u) ∂μ =

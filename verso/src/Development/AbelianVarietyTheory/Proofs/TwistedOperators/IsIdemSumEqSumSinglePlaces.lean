@@ -14,6 +14,11 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 namespace GlobalTheory.IdemSingleSum
 
+/- English proof (translation)
+Repeatedly rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ S'`. Rewrite using `[if_pos hi, Finset.sum_eq_single_of_mem i hi fun j _ hji => horth i j (Ne.symm hji), hid]`.
+
+Rewrite using `[if_neg hi]`. Conclude with `Finset.sum_eq_zero fun j hj => horth i j fun hij => hi (by rw [hij]; exact hj)`. Use `_ = ∑ i ∈ S ∩ S', f i := Finset.sum_ite_mem S S' f`.
+-/
 theorem sum_mul_sum_orth {R ι : Type} [Ring R] [DecidableEq ι] (f : ι → R) (hid : ∀ i, f i * f i = f i)
     (horth : ∀ i j, i ≠ j → f i * f j = 0) (S S' : Finset ι) :
     (∑ i ∈ S, f i) * (∑ j ∈ S', f j) = ∑ i ∈ S ∩ S', f i := by
@@ -26,21 +31,33 @@ theorem sum_mul_sum_orth {R ι : Type} [Ring R] [DecidableEq ι] (f : ι → R) 
           exact Finset.sum_eq_zero fun j hj => horth i j fun hij => hi (by rw [hij]; exact hj)
     _ = ∑ i ∈ S ∩ S', f i := Finset.sum_ite_mem S S' f
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Simplify using `using hes w (Finset.mem_singleton_self w)`.
+-/
 theorem isIdemAt_of_single {D : D7} {a : AE D} {w : Pl D.host.E} (h : IsIdemSum a {w}) :
     Formalism.L2.NTheta.IsIdemAt a w := by
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := h
   simpa using hes w (Finset.mem_singleton_self w)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.PartialIdemSum.mul_sum_of_isIdemAt hx {w} (fun _ => x) (by simpa using hx)`. Simplify `h` using `only [Finset.sum_singleton, Finset.mem_singleton_self, if_true]`.
+-/
 private theorem mul_self_eq_of_isIdemAt {D : D7} {x : AE D} {w : Formalism.L2.DIV.Pl D.host.E}
     (hx : Formalism.L2.NTheta.IsIdemAt x w) : x * x = x := by
   have h := GlobalTheory.PartialIdemSum.mul_sum_of_isIdemAt hx {w} (fun _ => x) (by simpa using hx)
   simpa only [Finset.sum_singleton, Finset.mem_singleton_self, if_true] using h
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.PartialIdemSum.mul_sum_of_isIdemAt hx {w'} (fun _ => y) (by simpa using hy)`. Rewrite `h` using `[Finset.sum_singleton, if_neg (by simpa using hne)]`. Then use the resulting hypothesis.
+-/
 private theorem mul_eq_zero_of_isIdemAt_of_ne {D : D7} {x y : AE D} {w w' : Formalism.L2.DIV.Pl D.host.E}
     (hx : Formalism.L2.NTheta.IsIdemAt x w) (hy : Formalism.L2.NTheta.IsIdemAt y w') (hne : w ≠ w') : x * y = 0 := by
   have h := GlobalTheory.PartialIdemSum.mul_sum_of_isIdemAt hx {w'} (fun _ => y) (by simpa using hy)
   rwa [Finset.sum_singleton, if_neg (by simpa using hne)] at h
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.PartialIdemSum.mul_sum_of_isIdemAt hx {w} (fun _ => y) (by simpa using hy)`. Establish `h2` using `GlobalTheory.PartialIdemSum.mul_sum_of_isIdemAt hy {w} (fun _ => x) (by simpa using hx)`. Simplify using `only [Finset.sum_singleton, Finset.mem_singleton_self, if_true] at h1 h2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem eq_of_isIdemAt_of_isIdemAt {D : D7} {x y : AE D} {w : Formalism.L2.DIV.Pl D.host.E}
     (hx : Formalism.L2.NTheta.IsIdemAt x w) (hy : Formalism.L2.NTheta.IsIdemAt y w) : x = y := by
   have h1 := GlobalTheory.PartialIdemSum.mul_sum_of_isIdemAt hx {w} (fun _ => y) (by simpa using hy)
@@ -50,6 +67,15 @@ private theorem eq_of_isIdemAt_of_isIdemAt {D : D7} {x y : AE D} {w : Formalism.
     _ = y * x := mul_comm x y
     _ = y := h2
 
+/- English proof (translation)
+Introduce `D e P he eL hL`. Take `⟨⟨es, hes, hsum⟩, he0⟩` from `he`. Establish `hat : ∀ w : P, Formalism.L2.NTheta.IsIdemAt (eL w) w.1` using `fun w => isIdemAt_of_single (hL w)`. Establish `hprod : ∀ S S' : Finset P, (∑ w ∈ S, eL w) * (∑ w ∈ S', eL w) = ∑ w ∈ S ∩ S', eL w` using `fun S S' => sum_mul_sum_orth eL (fun w => mul_self_eq_of_isIdemAt (hat w)) (fun w w' hne => mul_eq_zero_of_isIdemAt_of_ne (hat w) (hat w') fun h => hne (Subtype.ext h)) S S'`. Establish `htot : e = ∑ w, eL w`.
+
+Rewrite using `[hsum, ← Finset.sum_coe_sort P es]`. Conclude with `Finset.sum_congr rfl fun w _ => (eq_of_isIdemAt_of_isIdemAt (hat w) (hes w.1 w.2)).symm`. Use `⟨htot, fun S => ⟨⟨es, ?_, ?_⟩, ?_⟩, hprod⟩` and prove the remaining obligations. Introduce `PP hPP`. Take `⟨w, -, rfl⟩` from `Finset.mem_map.1 hPP`.
+
+Conclude with `hes w.1 w.2`. Rewrite using `[Finset.sum_map]`. Conclude with `Finset.sum_congr rfl fun w _ => eq_of_isIdemAt_of_isIdemAt (hat w) (hes w.1 w.2)`. Establish `hse : (∑ w ∈ S, eL w) * e = ∑ w ∈ S, eL w`. Rewrite using `[htot, hprod, Finset.inter_univ]`.
+
+Use `set s := ∑ w ∈ S, eL w`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_single : ∀ (D : D7) (e : AE D) (P : Finset (Pl D.host.E)), IsIdemSum e P → ∀ (eL : P → AE D), (∀ w, IsIdemSum (eL w) {w.1}) → e = ∑ w, eL w ∧ (∀ S : Finset P, IsIdemSum (∑ w ∈ S, eL w) (S.map (Function.Embedding.subtype _))) ∧ ∀ S S' : Finset P, (∑ w ∈ S, eL w) * (∑ w ∈ S', eL w) = ∑ w ∈ S ∩ S', eL w := by
   intro D e P he eL hL
   obtain ⟨⟨es, hes, hsum⟩, he0⟩ := he

@@ -4,11 +4,19 @@ import Development.AbelianVarietyTheory.BlockTheory.AdelicCMFields.UnitaryHeckeC
 
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published UpperTheory.V.Af.Sol
 
+/- English proof (translation)
+Use `⟨(w.asIdeal.under (𝓞 K)).inertiaDeg' w.asIdeal, ?_⟩` and prove the remaining obligations. Establish `h` using `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal (w.asIdeal.under (𝓞 K)) (Ideal.IsPrime.under _ _) (HeightOneSpectrum.under (𝓞 K) w).ne_bot`. Simplify `h` using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 private theorem exists_not_mem_asIdeal_pow_of_ne_zero (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M] (w : HeightOneSpectrum (𝓞 M)) : ∃ f : ℕ, normV w = normV (HeightOneSpectrum.under (𝓞 K) w) ^ f := by
   refine ⟨(w.asIdeal.under (𝓞 K)).inertiaDeg' w.asIdeal, ?_⟩
   have h := Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal (w.asIdeal.under (𝓞 K)) (Ideal.IsPrime.under _ _) (HeightOneSpectrum.under (𝓞 K) w).ne_bot
   simpa [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply] using h
 
+/- English proof (translation)
+Use `Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v => ?_` and prove the remaining obligations. Establish `hfin` using `IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 M)`. Use `Set.Finite.to_subtype (Set.Finite.of_finite_image (f := HeightOneSpectrum.asIdeal) (hfin.subset ?_) (fun a _ b _ h => HeightOneSpectrum.ext h))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hx`.
+
+Substitute `hx` using the available equality. Conclude with `⟨x.isPrime, ⟨rfl⟩⟩`.
+-/
 private theorem tendsto_under_cofinite' (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M] : Filter.Tendsto (HeightOneSpectrum.under (𝓞 K) : HeightOneSpectrum (𝓞 M) → HeightOneSpectrum (𝓞 K)) Filter.cofinite Filter.cofinite := by
   refine Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v => ?_
   have hfin := IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 M)
@@ -18,6 +26,11 @@ private theorem tendsto_under_cofinite' (K M : Type) [Field K] [NumberField K] [
   subst hx
   exact ⟨x.isPrime, ⟨rfl⟩⟩
 
+/- English proof (translation)
+Unfold `algSat`. Simplify using `only [Multiset.bind_map, Multiset.map_map, Function.comp_def, Multiset.bind_singleton, Multiset.pure_def, Multiset.bind_def]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow]`. Use `congr 1`.
+
+Use `push_cast`. Rewrite using `[← Complex.ofReal_pow, Real.rpow_pow_comm (by positivity)]`.
+-/
 private theorem algSat_pow_map_pow (n q f : ℕ) (B : Multiset ℂˣ) : algSat n (q ^ f) (Multiset.map (fun x => x ^ f) B) = Multiset.map (fun x => x ^ f) (algSat n q B) := by
   unfold algSat
   simp only [Multiset.bind_map, Multiset.map_map, Function.comp_def, Multiset.bind_singleton, Multiset.pure_def, Multiset.bind_def]
@@ -27,6 +40,13 @@ private theorem algSat_pow_map_pow (n q f : ℕ) (B : Multiset ℂˣ) : algSat n
   push_cast
   rw [← Complex.ofReal_pow, Real.rpow_pow_comm (by positivity)]
 
+/- English proof (translation)
+Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ l _ ι n r sat sat' huniq hbc hatt hss`. Use `⟨hss, ?_⟩` and prove the remaining obligations. Establish `hT` using `UpperTheory.frobenius_power_compatibility K M Ω l ι`. Use `filter_upwards [hbc, (tendsto_under_cofinite' K M).eventually hatt.2] with w hw hv`. Take `⟨f, hf⟩` from `exists_not_mem_asIdeal_pow_of_ne_zero K M w`.
+
+Take `⟨B, hB, hE⟩` from `hv`. Take `⟨B0, hB0, hB0'⟩` from `hw f hf`. Take `rfl` from `huniq _ _ _ hB hB0`. Use `⟨_, hB0', ?_⟩` and prove the remaining obligations. Establish `h2` using `(hT w f hf).1 n r _ hE`.
+
+Rewrite using `[hf, algSat_pow_map_pow]`. Conclude with `h2`.
+-/
 theorem UpperTheory.satake_base_change_attached :
     UpperTheory.V.Af.Sol.AttBc := by
   intro K M Ω _ _ _ _ _ _ _ _ _ _ _ l _ ι n r sat sat' huniq hbc hatt hss

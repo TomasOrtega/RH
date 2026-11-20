@@ -11,6 +11,21 @@ namespace Formalism.L2.Pj.AvAlg
 variable {A B : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [CommRing B] [IsDomain B]
   [IsDiscreteValuationRing B] [Algebra A B] [IsLocalHom (algebraMap A B)]
 
+/- English proof (translation)
+Establish `hra : ∀ G : A[X], residue B (aeval α G) = aeval (residue B α) (G.map (residue A))`. Introduce `G`. Rewrite using `[Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.eval₂_map, Polynomial.hom_eval₂]`. Use `congr 1`. Apply the tactic sequence `all_goals (ext x; simp only [RingHom.comp_apply]; exact (IsLocalRing.ResidueField.algebraMap_residue x).symm)`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro b; exact ⟨0, Subalgebra.zero_mem _, b, by simp⟩`. Consider the case `succ n ih`. Introduce `b`.
+
+Take `⟨s, hs, c, rfl⟩` from `ih b`. Establish `hc : residue B c ∈ Algebra.adjoin (ResidueField A) {residue B α}`. Rewrite using `[hres]`. Conclude with `Algebra.mem_top`. Rewrite `hc` using `[Algebra.adjoin_singleton_eq_range_aeval]`.
+
+Take `⟨p, hp⟩` from `hc`. Take `⟨P, rfl⟩` from `Polynomial.map_surjective (residue A) IsLocalRing.residue_surjective p`. Establish `hm : c - aeval α P ∈ maximalIdeal B`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, hra]`. Rewrite using `[← hp]`.
+
+Conclude with `sub_self _`. Rewrite `hm` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer _).mp hβ, Ideal.mem_span_singleton']`. Take `⟨c', hc'⟩` from `hm`. Establish `hα : aeval α f ∈ Algebra.adjoin A {α}`. Rewrite using `[Algebra.adjoin_singleton_eq_range_aeval]`.
+
+Conclude with `AlgHom.mem_range_self _ f`. Establish `hP : aeval α P ∈ Algebra.adjoin A {α}`. Rewrite using `[Algebra.adjoin_singleton_eq_range_aeval]`. Conclude with `AlgHom.mem_range_self _ P`. Use `⟨s + aeval α f ^ n * aeval α P, ?_, c', ?_⟩` and prove the remaining obligations.
+
+Conclude with `Subalgebra.add_mem _ hs (Subalgebra.mul_mem _ (Subalgebra.pow_mem _ hα n) hP)`. Establish `e : c = aeval α P + c' * aeval α f` using `by rw [hc']; ring`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_adjoin_mod (α : B) (hres : Algebra.adjoin (ResidueField A) {residue B α} = ⊤) (f : A[X])
     (hβ : Irreducible (aeval α f)) :
     ∀ (n : ℕ) (b : B), ∃ s ∈ Algebra.adjoin A {α}, ∃ c : B, b = s + aeval α f ^ n * c := by
@@ -53,6 +68,15 @@ namespace Formalism.L2.Pj.AvAlg
 variable {A B : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [CommRing B] [IsDomain B]
   [IsDiscreteValuationRing B] [Algebra A B] [IsLocalHom (algebraMap A B)]
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Establish `hϖ0 : algebraMap A B ϖ ≠ 0`. Rewrite using `[map_ne_zero_iff _ hinj]`. Conclude with `hϖ.ne_zero`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hϖ0 hβ`.
+
+Establish `hϖm : ϖ ∈ maximalIdeal A` using `(IsLocalRing.mem_maximalIdeal ϖ).mpr hϖ.not_isUnit`. Establish `key : (⊤ : Submodule A B) ≤ Subalgebra.toSubmodule (Algebra.adjoin A {α}) ⊔ (maximalIdeal A) • ⊤`. Introduce `b _`. Take `⟨s, hs, c, hc⟩` from `mem_adjoin_mod α hres f hβ e b`. Establish `e1 : b = s + ϖ • ((↑u⁻¹ : B) * c)`.
+
+Rewrite using `[hc, Algebra.smul_def, hu]`. Use `congr 1`. Rewrite using `[mul_comm (↑u : B), mul_assoc, ← mul_assoc (↑u : B), Units.mul_inv, one_mul]`. Rewrite using `[e1]`. Conclude with `Submodule.add_mem_sup ((Subalgebra.mem_toSubmodule _).mpr hs) (Submodule.smul_mem_smul hϖm Submodule.mem_top)`.
+
+Establish `hfg : (⊤ : Submodule A B).FG` using `Module.Finite.fg_top`. Establish `hle` using `Submodule.le_of_le_smul_of_le_jacobson_bot hfg (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge key`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Conclude with `(Subalgebra.mem_toSubmodule _).mp (hle Submodule.mem_top)`.
+-/
 theorem adjoin_eq_top_of_gen [Module.Finite A B] (hinj : Function.Injective (algebraMap A B)) (α : B)
     (hres : Algebra.adjoin (ResidueField A) {residue B α} = ⊤) (f : A[X]) (hβ : Irreducible (aeval α f)) :
     Algebra.adjoin A {α} = ⊤ := by
@@ -85,12 +109,22 @@ namespace Formalism.L2.Pj.AvAlg
 variable {A B : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [CommRing B] [IsDomain B]
   [IsDiscreteValuationRing B] [Algebra A B] [IsLocalHom (algebraMap A B)]
 
+/- English proof (translation)
+Rewrite using `[Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.eval₂_map, Polynomial.hom_eval₂]`. Use `congr 1`. Apply the tactic sequence `all_goals (ext x; simp only [RingHom.comp_apply]; exact (IsLocalRing.ResidueField.algebraMap_residue x).symm)`.
+-/
 theorem residue_aeval (α : B) (G : A[X]) :
     residue B (aeval α G) = aeval (residue B α) (G.map (residue A)) := by
   rw [Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.eval₂_map, Polynomial.hom_eval₂]
   congr 1
   all_goals (ext x; simp only [RingHom.comp_apply]; exact (IsLocalRing.ResidueField.algebraMap_residue x).symm)
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := (ResidueField B)ˣ)`. Use `⟨(g : ResidueField B), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Distinguish the cases in `hx : x = 0`.
+
+Rewrite using `[hx]`. Conclude with `Subalgebra.zero_mem _`. Take `⟨n, hn⟩` from `(mem_powers_iff_mem_zpowers.mpr (hg (Units.mk0 x hx)))`. Establish `e : x = (g : ResidueField B) ^ n`. Rewrite using `[← Units.val_pow_eq_pow_val, show g ^ n = Units.mk0 x hx from hn, Units.val_mk0]`.
+
+Rewrite using `[e]`. Conclude with `Subalgebra.pow_mem (Algebra.adjoin (ResidueField A) {(g : ResidueField B)}) (Algebra.subset_adjoin (Set.mem_singleton _)) n`.
+-/
 theorem adjoin_residue_gen [Finite (ResidueField B)] :
     ∃ γ : ResidueField B, Algebra.adjoin (ResidueField A) {γ} = ⊤ := by
   obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ResidueField B)ˣ)
@@ -106,6 +140,29 @@ theorem adjoin_residue_gen [Finite (ResidueField B)] :
     exact Subalgebra.pow_mem (Algebra.adjoin (ResidueField A) {(g : ResidueField B)})
       (Algebra.subset_adjoin (Set.mem_singleton _)) n
 
+/- English proof (translation)
+Use `haveI : Finite (ResidueField B) := IsLocalRing.ResidueField.finite_of_finite (R := A) ‹_›`. Take `⟨γ, hγ⟩` from `adjoin_residue_gen (A := A) (B := B)`. Take `⟨α0, rfl⟩` from `IsLocalRing.residue_surjective γ`. Establish `hint : IsIntegral (ResidueField A) (residue B α0)` using `IsIntegral.of_finite _ _`. Establish `hsep : (minpoly (ResidueField A) (residue B α0)).Separable` using `PerfectField.separable_of_irreducible (minpoly.irreducible hint)`.
+
+Establish `hq0 : aeval (residue B α0) (minpoly (ResidueField A) (residue B α0)) = 0` using `minpoly.aeval _ _`. Establish `hq' : aeval (residue B α0) (derivative (minpoly (ResidueField A) (residue B α0))) ≠ 0` using `hsep.aeval_derivative_ne_zero hq0`. Take `⟨P, hP⟩` from `Polynomial.map_surjective (residue A) IsLocalRing.residue_surjective (minpoly (ResidueField A) (residue B α0))`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible B`. Establish `hmax` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer π).mp hπ`.
+
+Establish `hm : aeval α0 P ∈ maximalIdeal B`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, residue_aeval, hP, hq0]`. Establish `hd : IsUnit (aeval α0 (derivative P))`. Assume the negation of the conclusion as `hnu`. Establish `h3 : aeval α0 (derivative P) ∈ maximalIdeal B` using `(IsLocalRing.mem_maximalIdeal _).mpr hnu`.
+
+Rewrite `h3` using `[← IsLocalRing.residue_eq_zero_iff, residue_aeval, ← Polynomial.derivative_map, hP]`. Conclude with `hq' h3`. Distinguish the cases in `h2 : aeval α0 P ∈ Ideal.span {π ^ 2}`. Use `⟨α0 + π, adjoin_eq_top_of_gen hinj (α0 + π) ?_ P ?_⟩` and prove the remaining obligations. Establish `hr : residue B π = 0` using `(IsLocalRing.residue_eq_zero_iff _).mpr (hmax ▸ Ideal.mem_span_singleton_self π)`.
+
+Rewrite using `[map_add, hr, add_zero]`. Conclude with `hγ`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp h2`. Take `⟨k, hk⟩` from `Polynomial.binomExpansion (P.map (algebraMap A B)) α0 π`. Establish `e : aeval (α0 + π) P = π * (aeval α0 (derivative P) + π * (t + k))`.
+
+Simplify using `only [Polynomial.aeval_def, ← Polynomial.eval_map] at ht ⊢`. Rewrite using `[← Polynomial.derivative_map, hk, ← ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv : IsUnit (aeval α0 (derivative P) + π * (t + k))`. Assume the negation of the conclusion as `hnu`.
+
+Establish `h1 : aeval α0 (derivative P) + π * (t + k) ∈ maximalIdeal B` using `(IsLocalRing.mem_maximalIdeal _).mpr hnu`. Establish `h3 : π * (t + k) ∈ maximalIdeal B`. Rewrite using `[hmax]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self π)`. Establish `h4 : aeval α0 (derivative P) ∈ maximalIdeal B`.
+
+Simplify using `using Ideal.sub_mem _ h1 h3`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp h4 hd`. Rewrite using `[e]`. Conclude with `(irreducible_mul_isUnit hv).mpr hπ`. Use `⟨α0, adjoin_eq_top_of_gen hinj α0 hγ P ?_⟩` and prove the remaining obligations.
+
+Rewrite `hm` using `[hmax]`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.mp hm`. Establish `hwu : IsUnit w`. Assume the negation of the conclusion as `hnu`. Apply `h2` to reduce the goal to its premises.
+
+Establish `h5 : w ∈ maximalIdeal B` using `(IsLocalRing.mem_maximalIdeal _).mpr hnu`. Rewrite `h5` using `[hmax, Ideal.mem_span_singleton']`. Take `⟨v, hv⟩` from `h5`. Rewrite using `[Ideal.mem_span_singleton']`. Conclude with `⟨v, by rw [← hw, ← hv]; ring⟩`.
+
+Rewrite using `[← hw, mul_comm]`. Conclude with `(irreducible_mul_isUnit hwu).mpr hπ`.
+-/
 theorem exists_adjoin_eq_top [Module.Finite A B] [Finite (ResidueField A)]
     (hinj : Function.Injective (algebraMap A B)) : ∃ α : B, Algebra.adjoin A {α} = ⊤ := by
   haveI : Finite (ResidueField B) := IsLocalRing.ResidueField.finite_of_finite (R := A) ‹_›

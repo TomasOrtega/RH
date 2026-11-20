@@ -9,6 +9,9 @@ namespace GlobalTheory.Cris
 
 set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry DividedPowers in
+/- English proof (translation)
+Take `⟨N, hN⟩` from `hδ`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `h` using `hN [(N, x)] (by simpa using hx) (by simp)`. Simplify using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one] at h`. Rewrite using `[← δ.factorial_mul_dpow_eq_pow hx, h, mul_zero]`.
+-/
 private theorem isNilpotent_of_mem_of_isNilDP {B : Type} [CommRing B]
     {J : Ideal B} (δ : DividedPowers J) (hδ : _root_.GlobalTheory.Cris.IsNilDP δ) {x : B} (hx : x ∈ J) :
     IsNilpotent x := by
@@ -21,6 +24,25 @@ private theorem isNilpotent_of_mem_of_isNilDP {B : Type} [CommRing B]
 set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry DividedPowers in
 
+/- English proof (translation)
+Set `G : Set T.B₀` to `{f | ∃ k, ∀ p : PrimeSpectrum T.B₀, f ∉ p.asIdeal → T.x.base p ∈ U k}`. Establish `hG : Ideal.span G = ⊤`. Assume the negation of the conclusion as `h`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ h`. Set `p : PrimeSpectrum T.B₀` to `⟨m, hm.isPrime⟩`.
+
+Establish `hp : T.x.base p ∈ (⨆ i, U i : X.Opens)` using `by rw [hU]; trivial`. Take `⟨k, hk⟩` from `(TopologicalSpace.Opens.mem_iSup).1 hp`. Take `⟨_, ⟨f, rfl⟩, hpf, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := p) (u := (fun q : PrimeSpectrum T.B₀ ↦ T.x.base q) ⁻¹' (U k)) hk ((U k).isOpen.preimage T.x.continuous)`. Conclude with `hpf (hle (Ideal.subset_span ⟨k, fun q hq ↦ hsub hq⟩))`. Take `⟨t, htG, htspan⟩` from `(Ideal.span_eq_top_iff_finite G).1 hG`.
+
+Set `e` to `t.equivFin`. Establish `hlift : ∀ i : Fin t.card, ∃ y, T.π y = (e.symm i : T.B₀)` using `fun i ↦ T.surj _`. Use `choose b hb using hlift`. Use `⟨t.card, b, ?_, ?_⟩` and prove the remaining obligations. Establish `hmap : Ideal.map T.π (Ideal.span (Set.range b)) = ⊤`.
+
+Rewrite using `[Ideal.map_span, ← htspan]`. Use `congr 1`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨i, rfl⟩, rfl⟩`.
+
+Rewrite using `[hb]`. Conclude with `(e.symm i).2`. Introduce `hf`. Conclude with `⟨b (e ⟨f, hf⟩), ⟨_, rfl⟩, by rw [hb, Equiv.symm_apply_apply]⟩`. Take `⟨y, hy, hy1⟩` from `(Ideal.mem_map_iff_of_surjective _ T.surj).1 (hmap ▸ Submodule.mem_top : (1 : T.B₀) ∈ _)`.
+
+Establish `hJ : 1 - y ∈ T.J`. Rewrite using `[← T.ker, map_sub, map_one, hy1, sub_self]`. Establish `hunit : IsUnit y`. Use `(isNilpotent_of_mem_of_isNilDP _ T.nil hJ).isUnit_one_sub` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `Ideal.eq_top_of_isUnit_mem _ hy hunit`. Introduce `i S u hu`. Take `⟨k, hk⟩` from `htG (e.symm i).2`. Use `⟨k, fun q _ ↦ ?_⟩` and prove the remaining obligations. Use `show S.x.base q ∈ U k`.
+
+Rewrite using `[← u.pt, Scheme.Hom.comp_apply]`. Apply `hk` to reduce the goal to its premises. Introduce `hq`. Establish `h1 : u.φ₀ (e.symm i : T.B₀) ∈ q.asIdeal` using `hq`. Rewrite `h1` using `[← hb, u.comm]`.
+
+Conclude with `q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h1 (hu.map S.π))`.
+-/
 theorem _root_.GlobalTheory.Cris.exists_finite_small_cover (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I)
     (X : Scheme.{0}) (s : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R) (K : Type) (U : K → X.Opens) (hU : ⨆ i, U i = ⊤)
     (T : _root_.GlobalTheory.Cris.Thick κ s) : ∃ (n : ℕ) (b : Fin n → T.B),

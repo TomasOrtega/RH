@@ -5,6 +5,23 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Introduce `p G ι _ _ K hp hpow hx hind`. Use `choose x hx1 hx2 using hx`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : Finite (G ⧸ (⨅ i, K i)) := Nat.finite_of_card_ne_zero hind`. Establish `hord : ∀ j, orderOf (QuotientGroup.mk' (K j) (x j)) = p`.
+
+Introduce `j`. Apply `orderOf_eq_prime` to reduce the goal to its premises. Rewrite using `[← map_pow, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `hpow j _`. Rewrite using `[QuotientGroup.mk'_apply, Ne, QuotientGroup.eq_one_iff]`.
+
+Conclude with `hx1 j`. Establish `hprod : ∀ (n : ι → Fin p) (j : ι), QuotientGroup.mk' (K j) (∏ i, x i ^ (n i : ℕ)) = (QuotientGroup.mk' (K j) (x j)) ^ (n j : ℕ)`. Introduce `n j`. Rewrite using `[map_prod, Finset.prod_eq_single j]`. Rewrite using `[map_pow]`.
+
+Introduce `i _ hij`. Rewrite using `[map_pow]`. Establish `: QuotientGroup.mk' (K j) (x i) = 1`. Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `hx2 i j (Ne.symm hij)`.
+
+Rewrite using `[this, one_pow]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Set `f : (ι → Fin p) → G ⧸ (⨅ i, K i)` to `fun n => QuotientGroup.mk (∏ i, x i ^ (n i : ℕ))`. Establish `hf : Function.Injective f`.
+
+Introduce `n m h`. Establish `h1` using `QuotientGroup.eq.1 h`. Use function extensionality and compare the values at `j`. Establish `h2` using `Subgroup.mem_iInf.1 h1 j`. Establish `h3 : QuotientGroup.mk' (K j) (∏ i, x i ^ (n i : ℕ)) = QuotientGroup.mk' (K j) (∏ i, x i ^ (m i : ℕ))` using `QuotientGroup.eq.2 h2`.
+
+Rewrite `h3` using `[hprod, hprod]`. Apply `Fin.ext` to reduce the goal to its premises. Use `pow_injOn_Iio_orderOf ?_ ?_ h3` and prove the remaining obligations. Rewrite using `[hord]`. Conclude with `(n j).2`.
+
+Rewrite using `[hord]`. Conclude with `(m j).2`. Use `Nat.card_le_card_of_injective f hf` as an intermediate fact. Simplify `this` using `[Subgroup.index]`.
+-/
 theorem pow_card_le_index_iInf_of_prime :
     ∀ (p : ℕ) (G ι : Type) [CommGroup G] [Fintype ι] (K : ι → Subgroup G), p.Prime →
       (∀ (i : ι) (x : G), x ^ p ∈ K i) → (∀ i, ∃ x, x ∉ K i ∧ ∀ j, j ≠ i → x ∈ K j) →

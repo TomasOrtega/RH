@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.St.CFrame
 
+/- English proof (translation)
+Establish `hPi : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `hJv : I.J.map (I.φ v) = ((I.P v)⁻¹)ᴴ * Formalism.REAL.Jm (I.ε v) * (I.P v)⁻¹`. Rewrite using `[← I.P_spec v]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ hPi, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hPi, Matrix.conjTranspose_one, Matrix.one_mul]`.
+
+Unfold `hJ rv`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← hJv]`. Simplify using `only [dotProduct, mulVec, Pi.star_apply, Matrix.map_apply, Formalism.UG.hform, map_sum, map_mul, starRingEnd_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[I.cm.cmUnram.2.1]`.
+
+Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hJ_rv_gen (I : AutInst) (v : InfinitePlace I.F) (x y : Fin I.n → I.E) :
     hJ (I.ε v) (rv I v x) (rv I v y) = I.φ v (Formalism.UG.hform (starRingEnd I.E) I.J x y) := by
   have hPi : IsUnit (I.P v).det := (Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)
@@ -27,6 +34,9 @@ theorem hJ_rv_gen (I : AutInst) (v : InfinitePlace I.F) (x y : Fin I.n → I.E) 
   simp only [RCLike.star_def]
   ring
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem hform_cols {A : Type} [CommRing A] {n ι : Type} [Fintype n] [Fintype ι] (σ : A →+* A)
     (J : Matrix n n A) (Q : Matrix n ι A) (α β : ι) :
     Formalism.UG.hform σ J (fun i => Q i α) (fun i => Q i β) = ((Q.map σ)ᵀ * J * Q) α β := by
@@ -35,10 +45,16 @@ theorem hform_cols {A : Type} [CommRing A] {n ι : Type} [Fintype n] [Fintype ι
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Rewrite using `[hJ_rv_gen, ← Formalism.L2.SG.PoincareInHH.Cut.hform_crd X a b, RingEquiv.symm_apply_apply]`.
+-/
 theorem hJ_crd' (v : InfinitePlace X.B.I.F) (a b : (VS D).V) :
     hJ (X.B.I.ε v) (rv X.B.I v (X.crd a)) (rv X.B.I v (X.crd b)) = X.B.I.φ v (X.ιE.symm ((VS D).hT a b)) := by
   rw [hJ_rv_gen, ← Formalism.L2.SG.PoincareInHH.Cut.hform_crd X a b, RingEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Rewrite using `[X.n_eq]`. Simplify using `only [Formalism.BasicNotions.Ranks.r, Formalism.BasicNotions.Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_eq : X.B.I.n = 2 * D.R.rS + D.R.k + 1 := by
   obtain ⟨t, ht⟩ := D.R.m_even
   have h2 := D.R.two_le_m
@@ -52,6 +68,23 @@ namespace GlobalTheory.St.CFrame
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Take `⟨Q, Qi, G', hQQi, hQiQ, hq, he, hf, hz, _, hblk⟩` from `GlobalTheory.T.columnWittFrame_basis_blockGram D X u wt hw`. Establish `hent : ∀ α β, Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (fun i => Q i α) (fun i => Q i β) = Matrix.fromBlocks ((Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm) 0 0 G' α β`. Introduce `α β`. Rewrite using `[hform_cols, hblk]`. Establish `colq : ∀ j, (fun i => Q i (Sum.inl j)) = X.crd (qFr wt j)` using `fun j => funext fun i => hq j i`.
+
+Establish `cole : ∀ a, (fun i => Q i (Sum.inr (Sum.inl a))) = X.eR a` using `fun a => funext fun i => he a i`. Establish `colf : ∀ a, (fun i => Q i (Sum.inr (Sum.inr (Sum.inl a)))) = X.fR a` using `fun a => funext fun i => hf a i`. Establish `colz : (fun i => Q i (Sum.inr (Sum.inr (Sum.inr ())))) = X.zR u` using `funext fun i => hz i`. Use `⟨fun v a b => ?_, fun v c a => ⟨?_, ?_⟩, fun v a => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hent (Sum.inl a) (Sum.inl b)`.
+
+Rewrite `h` using `[colq, colq]`. Rewrite using `[rvV, rvV, hJ_rv_gen, h]`. Both sides reduce to the same expression. Establish `h` using `hent (Sum.inr (Sum.inl c)) (Sum.inl a)`. Rewrite `h` using `[cole, colq]`.
+
+Rewrite using `[rvV, hJ_rv_gen, h]`. Simplify using the standard rewrite rules. Establish `h` using `hent (Sum.inr (Sum.inr (Sum.inl c))) (Sum.inl a)`. Rewrite `h` using `[colf, colq]`. Rewrite using `[rvV, hJ_rv_gen, h]`.
+
+Simplify using the standard rewrite rules. Establish `h` using `hent (Sum.inr (Sum.inr (Sum.inr ()))) (Sum.inl a)`. Rewrite `h` using `[colz, colq]`. Rewrite using `[rvV, hJ_rv_gen, h]`. Simplify using the standard rewrite rules.
+
+Introduce `h0`. Establish `hJu : IsUnit X.B.I.J.det` using `isUnit_iff_ne_zero.2 X.B.I.J_det`. Establish `e1 : (Q.map (starRingEnd X.B.I.E))ᵀ * (Qi.map (starRingEnd X.B.I.E))ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, hQiQ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `hinv : ((Q.map (starRingEnd X.B.I.E))ᵀ * X.B.I.J * Q) * (Qi * X.B.I.J⁻¹ * (Qi.map (starRingEnd X.B.I.E))ᵀ) = 1`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Q Qi, hQQi, Matrix.one_mul, ← Matrix.mul_assoc X.B.I.J X.B.I.J⁻¹, Matrix.mul_nonsing_inv _ hJu, Matrix.one_mul, e1]`. Rewrite `hinv` using `[hblk]`. Establish `hd` using `congrArg Matrix.det hinv`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one]`.
+
+Establish `hA : ((Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm).det = 0`. Rewrite using `[show ((Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm).det = X.ιE.symm.toRingHom (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).det from (RingHom.map_det X.ιE.symm.toRingHom _).symm, h0, map_zero]`. Rewrite `hd` using `[hA, zero_mul, zero_mul]`. Conclude with `zero_ne_one hd`.
+-/
 theorem gram_blocks (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hw : WittX X u wt) :
     (∀ v a b, hJ (X.B.I.ε v) (rvV X v (qFr wt a)) (rvV X v (qFr wt b)) =
         X.B.I.φ v (X.ιE.symm (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _) a b))) ∧
@@ -109,6 +142,27 @@ end GlobalTheory.St.CFrame
 
 namespace GlobalTheory.St.CFrame
 
+/- English proof (translation)
+Introduce `D X u wt hw`. Take `⟨hqq, hqef, hqz, hdet⟩` from `gram_blocks X u wt hw`. Establish `hgQ : ∀ v, gramQ X wt v = (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map (Formalism.L2.Forms.embT D (X.pl v))`. Introduce `v`. Use extensionality with `a b`.
+
+Simplify using `only [gramQ, Matrix.of_apply, Matrix.map_apply]`. Rewrite using `[hqq, X.φ_eq, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hGu : ∀ v, IsUnit (gramQ X wt v).det`. Introduce `v`.
+
+Rewrite using `[hgQ, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `isUnit_iff_ne_zero.2 ((map_ne_zero _).2 hdet)`. Establish `hJm : ∀ v, IsUnit (Formalism.REAL.Jm (X.B.I.ε v)).det` using `fun v => Matrix.isUnit_det_of_left_inverse (Formalism.REAL.Jm_mul_self _)`. Establish `key` using `fun v => GlobalTheory.frame_complement_change_of_basis X.B.I.n D.R.rS D.R.k (D.R.N 0) D.R.N_zero.symm (Formalism.REAL.Jm (X.B.I.ε v)) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) (X.wfr u v) (fun a => rvV X v (qFr wt a)) (card_eq X) (Formali …`. Use `(hJ_crd' X v (X.eX a) (X.eX b)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[X.ee]`. Use the proof step `simp)`. Use the proof step `(fun a b => by show hJ (X.B.I.ε v) _ _ = 0`. Use `(hJ_crd' X v (X.fY a) (X.fY b)).trans ?_` and prove the remaining obligations. Rewrite using `[X.ff]`.
+
+Use the proof step `simp)`. Use the proof step `(fun a b => by show hJ (X.B.I.ε v) _ _ = _`. Use `(hJ_crd' X v (X.eX a) (X.fY b)).trans ?_` and prove the remaining obligations. Apply the tactic sequence `rw [X.ef]; split_ifs <;> simp)`. Use the proof step `(fun a => ⟨by show hJ (X.B.I.ε v) _ _ = 0`.
+
+Use `(hJ_crd' X v (X.eX a) (X.zu u)).trans ?_` and prove the remaining obligations. Rewrite using `[(X.zu_orth u a).1]; simp, by`. Use `show hJ (X.B.I.ε v) _ _ = 0`. Use `(hJ_crd' X v (X.fY a) (X.zu u)).trans ?_` and prove the remaining obligations. Rewrite using `[(X.zu_orth u a).2]`.
+
+Use the proof step `simp⟩)`. Use the proof step `(by show hJ (X.B.I.ε v) _ _ ≠ 0`. Use `(hJ_crd' X v (X.zu u) (X.zu u)).trans_ne ?_` and prove the remaining obligations. Rewrite using `[X.zu_norm]`. Establish `hT : (((D.mem u).A.T : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero`.
+
+Simplify using `using hT)`. Use the proof step `(X.wfr_on u v) (X.wfr_perp u v)`. Use the proof step `(fun a => ⟨fun c => ⟨(hqef v c a).1, (hqef v c a).2⟩, hqz v a⟩)`. Use the proof step `(gramQ X wt v) (fun a b => rfl) (hGu v)`. Use `choose oo hoo using key`.
+
+Use `⟨⟨fun τ => oo (X.pl.symm τ), fun τ => (hoo _).1⟩, fun τ => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h` using `(hoo (X.pl.symm τ)).2.1`. Rewrite `h` using `[hgQ, Equiv.apply_symm_apply]`. Conclude with `h`. Establish `hfix : ∀ v, ∀ x ∈ fixSet X u, uMat (s v) *ᵥ rv X.B.I v x = rv X.B.I v x` using `hs`.
+
+Establish `hm` using `fun τ => (hoo (X.pl.symm τ)).2.2 (uMat (s (X.pl.symm τ))) (s (X.pl.symm τ)).2 (fun a => ⟨hfix _ _ (Or.inl (Or.inl ⟨a, rfl⟩)), hfix _ _ (Or.inl (Or.inr ⟨a, rfl⟩))⟩) (hfix _ _ (Or.inr rfl))`. Use `choose m hmU hmW hmT using hm`. Conclude with `⟨m, fun τ => ⟨hmU τ, hmW τ, hmT τ⟩⟩`.
+-/
 theorem frame_of_type : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V), WittX X u wt → ∃ o : Formalism.L2.Forms.Fr D 0 (Nat.zero_le _), (∀ τ, (o.1 τ)ᴴ * Formalism.L2.Forms.gramC (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)) (Formalism.L2.Forms.embT D) τ * o.1 τ = 1) ∧ ∀ s ∈ Hinf X u, ∃ m : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ, ∀ τ, m τ ∈ Matrix.unitaryGroup (Fin (D.R.N 0)) ℂ ∧ (m τ).submatrix (Fin.cast D.R.N_zero.symm) (Fin.cast D.R.N_zero.symm) = matW X.B.I (X.wfr u (X.pl.symm τ)) (X.pl.symm τ) s ∧ sTil X wt s τ = o.1 τ * m τ * (o.1 τ)⁻¹ := by
   intro D X u wt hw
   obtain ⟨hqq, hqef, hqz, hdet⟩ := gram_blocks X u wt hw

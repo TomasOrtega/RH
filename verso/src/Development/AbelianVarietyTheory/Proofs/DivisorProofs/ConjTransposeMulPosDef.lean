@@ -8,6 +8,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.UnitaryClasses
 
+/- English proof (translation)
+Use `set B : Matrix (Fin n) (Fin n) E := (h⁻¹).val with hB`. Establish `hc : (cT (IsCMField.complexConj E).toRingEquiv.toRingHom B).map τ = (B.map τ)ᴴ`. Use extensionality with `i j`. Simplify using `[cT, Matrix.conjTranspose_apply, IsCMField.complexEmbedding_complexConj]`. Rewrite using `[Matrix.map_mul, hc]`.
+
+Use `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_of_isUnit ?_)` and prove the remaining obligations. Establish `hu : IsUnit B` using `(h⁻¹).isUnit`. Conclude with `hu.map (RingHom.mapMatrix τ)`.
+-/
 theorem posDef_cT_inv_mul_inv (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (h : GL (Fin n) E)
     (τ : E →+* ℂ) :
     ((cT (IsCMField.complexConj E).toRingEquiv.toRingHom (h⁻¹).val * (h⁻¹).val).map τ).PosDef := by

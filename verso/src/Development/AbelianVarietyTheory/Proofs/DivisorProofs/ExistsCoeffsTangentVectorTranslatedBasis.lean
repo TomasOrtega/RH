@@ -15,6 +15,33 @@ noncomputable section
 
 namespace GlobalTheory.VertSpan
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t U n v hv hb S _ φ g₀ w hg hred hw`. Establish `e : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _`. Rewrite using `[GlobalTheory.LogKSLoc.spMap_comp', ← Spec.map_id]`. Use `congr 1`. Set `g' : tEpsG (g₀ ≫ t.G.hom) ⟶ t.G` to `Over.homMk (spMap (algebraMap S (DualNumber S)) ≫ g₀) (Category.assoc _ _ _)`.
+
+Set `w' : tEpsG (g₀ ≫ t.G.hom) ⟶ t.G` to `Over.homMk w hw`. Set `s : Over.mk (g₀ ≫ t.G.hom) ⟶ tEpsG (g₀ ≫ t.G.hom)` to `Over.homMk (spMap (TrivSqZeroExt.fstHom S S S).toRingHom) (by`. Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ _ = g₀ ≫ t.G.hom`. Rewrite using `[← Category.assoc, e, Category.id_comp])`. Establish `hs : s ≫ g' = s ≫ w'`.
+
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ ≫ g₀ = spMap _ ≫ w`. Rewrite using `[hred, ← Category.assoc, e, Category.id_comp]`. Establish `hτ : IsTanAtG t (g₀ ≫ t.G.hom) (g'⁻¹ * w').left`. Use `⟨Over.w (g'⁻¹ * w'), ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(s ≫ (g'⁻¹ * w')).left = _`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, hs, inv_mul_cancel]`. Establish `hbas` using `(GlobalTheory.LineNorm.isTanBasis_of_basis E H X t _ (chart U) n v hv hb).2 S φ (g'⁻¹ * w').left`. Rewrite `hbas` using `[← hg]`. Take `⟨c, ⟨u, hu, hux⟩, -⟩` from `hbas hτ`.
+
+Establish `hwu : w' = g' * (List.ofFn u).prod`. Rewrite using `[show (List.ofFn u).prod = g'⁻¹ * w' from Over.OverMorphism.ext hux, mul_inv_cancel_left]`. Use `⟨c, fun S' _ ρ φ' wt hg' hwt O hO f => ?_⟩` and prove the remaining obligations. Establish `h₃ : (spMap ρ ≫ g₀) ≫ t.G.hom = spMap (ρ.comp φ) ≫ chart U`. Rewrite using `[Category.assoc, hg, ← Category.assoc, GlobalTheory.LogKSLoc.spMap_comp']`.
+
+Establish `hU : ⊤ ≤ (spMap ρ ≫ g₀) ⁻¹ᵁ (t.G.hom ⁻¹ᵁ U.1)`. Express the relevant statement in the definitionally equal form `⊤ ≤ ((spMap ρ ≫ g₀) ≫ t.G.hom) ⁻¹ᵁ U.1`. Rewrite using `[hg']`. Conclude with `GlobalTheory.Points.le_preimage_specMap_fromSpec U.2 (CommRingCat.ofHom φ')`. Take `rfl : φ' = ρ.comp φ` from `RingHom.ext fun r => (GlobalTheory.LogKSLin.valR_base U le_rfl hg' hU r).symm.trans (GlobalTheory.LogKSLin.valR_base U le_rfl h₃ hU r)`.
+
+Use `choose g'' v'' hg'' hv'' hw'' using hwt`. Establish `e' : spMap (dualMap ρ) ≫ spMap (algebraMap S (DualNumber S)) = spMap (algebraMap S' (DualNumber S')) ≫ spMap ρ`. Rewrite using `[GlobalTheory.LogKSLoc.spMap_comp', GlobalTheory.LogKSLoc.spMap_comp']`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Set `k : tEpsG ((spMap ρ ≫ g₀) ≫ t.G.hom) ⟶ tEpsG (g₀ ≫ t.G.hom)` to `Over.homMk (spMap (dualMap ρ)) (by`. Express the relevant statement in the definitionally equal form `_ ≫ _ ≫ _ = _ ≫ (_ ≫ _) ≫ _`. Rewrite using `[← Category.assoc, e']`. Simplify using `only [Category.assoc])`. Establish `hkg : (k ≫ g').left = spMap (algebraMap S' (DualNumber S')) ≫ spMap ρ ≫ g₀`.
+
+Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ ≫ g₀ = _`. Rewrite using `[← Category.assoc, e', Category.assoc]`. Establish `hgg : ∀ a, g'' a = k ≫ g'` using `fun a => Over.OverMorphism.ext ((hg'' a).trans hkg.symm)`. Establish `hy0 : ∀ a, smT ((spMap ρ ≫ g₀) ≫ t.G.hom) 0 (v'' a) = 1` using `fun a => by`. Establish `ht` using `GlobalTheory.LieMet.isTan_map (ρ.comp φ) h₃.symm (hv a)`.
+
+Rewrite using `[show v'' a = ovT ht from Over.OverMorphism.ext (hv'' a)]`. Conclude with `smT_zero_ovT ht`. Establish `hku : ∀ a, k ≫ u a = smT ((spMap ρ ≫ g₀) ≫ t.G.hom) (ρ (c a)) (v'' a)` using `fun a => by`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap (dualMap ρ) ≫ (u a).left = spMap (epsMul (ρ (c a))) ≫ (v'' a).left`.
+
+Rewrite using `[hu a, hv'' a]`. Simplify using `only [← Category.assoc, GlobalTheory.KSLin.spMap_comp_spMap]`. Use `congr 2`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul, dualMap]`.
+
+Establish `hmain : spMap (dualMap ρ) ≫ w = ((k ≫ g') * (List.ofFn fun a => smT ((spMap ρ ≫ g₀) ≫ t.G.hom) (ρ (c a)) (v'' a)).prod).left`. Express the relevant statement in the definitionally equal form `(k ≫ w').left = _`. Rewrite using `[hwu, MonObj.comp_mul, GlobalTheory.FirstOrderValue.comp_prod_ofFn]`. Simplify using `only [hku]`. Rewrite using `[hmain]`.
+
+Use `(GlobalTheory.KSLin.snd_valR_translate_prod _ t.G (spMap ρ ≫ g₀) (k ≫ g') hkg v'' (fun a => ρ (c a)) hy0 O f hO).trans (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[← hw'' a, hgg a]`.
+-/
 theorem exists_coeffs_translate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (U : X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)), (∀ a, IsTanAtG t (chart U) (v a)) → (∀ w, IsTanAtG t (chart U) w → ∃! cf : Fin n → Γ(X, U.1), IsCombAtG t (chart U) v cf w) → ∀ (S : Type) [CommRing S] (φ : Γ(X, U.1) →+* S) (g₀ : Sp S ⟶ t.G.left) (w : Sp (DualNumber S) ⟶ t.G.left), g₀ ≫ t.G.hom = spMap φ ≫ chart U → spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ w = g₀ → w ≫ t.G.hom = spMap (algebraMap S (DualNumber S)) ≫ g₀ ≫ t.G.hom → ∃ c : Fin n → S, ∀ (S' : Type) [CommRing S'] (ρ : S →+* S') (φ' : Γ(X, U.1) →+* S') (wt : Fin n → (Sp (DualNumber S') ⟶ t.G.left)), (spMap ρ ≫ g₀) ≫ t.G.hom = spMap φ' ≫ chart U → (∀ a, IsTranslate t φ' (spMap ρ ≫ g₀) (v a) (wt a)) → ∀ (O : t.G.left.Opens), ⊤ ≤ (spMap ρ ≫ g₀) ⁻¹ᵁ O → ∀ f : Γ(t.G.left, O), (valR (spMap (dualMap ρ) ≫ w) O f).snd = ∑ a, ρ (c a) * (valR (wt a) O f).snd := by
   intro E _ _ _ H X t U n v hv hb S _ φ g₀ w hg hred hw
   have e : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _ := by

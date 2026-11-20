@@ -20,6 +20,11 @@ def monSpan (k : ℕ) : Submodule R M where
     rintro r x ⟨c1, rfl⟩
     exact ⟨r • c1, by simp [Finset.smul_sum, smul_comm r]⟩
 
+/- English proof (translation)
+Use `⟨fun β => if β = α then m else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single α]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+
+Introduce `h`. Conclude with `absurd hα h`.
+-/
 theorem single_mem_monSpan {k : ℕ} {α : Fin d → ℕ} (hα : α ∈ Finset.Nat.antidiagonalTuple d k) (m : M) :
     (∏ i, g i ^ α i) • m ∈ monSpan (M := M) g k := by
   refine ⟨fun β => if β = α then m else 0, ?_⟩
@@ -28,6 +33,11 @@ theorem single_mem_monSpan {k : ℕ} {α : Fin d → ℕ} (hα : α ∈ Finset.N
   · intro b _ hb; simp [hb]
   · intro h; exact absurd hα h
 
+/- English proof (translation)
+Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Rewrite using `[mul_comm]`. Use `congr 1`. Rewrite using `[Finset.prod_eq_single i]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem prod_pow_add_single (α : Fin d → ℕ) (i : Fin d) :
     (∏ l, g l ^ (α + Pi.single i 1 : Fin d → ℕ) l) = g i * ∏ l, g l ^ α l := by
   simp only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]
@@ -38,6 +48,17 @@ theorem prod_pow_add_single (α : Fin d → ℕ) (i : Fin d) :
   · intro b _ hb; simp [Pi.single_apply, hb]
   · intro h; exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `x _`. Use `⟨fun _ => x, ?_⟩` and prove the remaining obligations. Simplify using `[Finset.Nat.antidiagonalTuple_zero_right]`.
+
+Consider the case `succ k ih`. Rewrite using `[pow_succ', Submodule.mul_smul, Submodule.smul_le]`. Introduce `r hr n hn`. Take `⟨cf, rfl⟩` from `ih hn`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hr`.
+
+Rewrite using `[Finset.sum_smul]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun β hβ => ?_` and prove the remaining obligations. Establish `hβ' : β + Pi.single i 1 ∈ Finset.Nat.antidiagonalTuple d (k + 1)`.
+
+Rewrite `hβ`, the goal using `[Finset.Nat.mem_antidiagonalTuple]`. Simplify using `[Finset.sum_add_distrib, hβ]`. Establish `e : (a i • g i) • ((∏ l, g l ^ β l) • cf β) = (∏ l, g l ^ (β + Pi.single i 1 : Fin d → ℕ) l) • (a i • cf β)`. Rewrite using `[smul_smul, smul_smul, prod_pow_add_single g β i, smul_eq_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `single_mem_monSpan g hβ' _`.
+-/
 theorem pow_smul_top_le_monSpan (k : ℕ) :
     (Ideal.span (Set.range g)) ^ k • (⊤ : Submodule R M) ≤ monSpan (M := M) g k := by
   induction k with
@@ -67,6 +88,11 @@ theorem pow_smul_top_le_monSpan (k : ℕ) :
 
 end Gen
 
+/- English proof (translation)
+Introduce `D B P j X ka wL wF G la k x hx`. Take `⟨cf, hcf⟩` from `pow_smul_top_le_monSpan (M := ↥(HK X la G.w wF)) (fun i : Fin (WeightFamilies.dimY D j) => sfr X la G.w i.succ) k hx`. Use `⟨cf, ?_⟩` and prove the remaining obligations. Establish `: x - ∑ α ∈ mon D j k, ym G la α • cf α = 0`. Rewrite using `[sub_eq_zero]`.
+
+Conclude with `hcf`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem taylorRep_holds : TaylorRep := by
   intro D B P j X ka wL wF G la k x hx
   obtain ⟨cf, hcf⟩ := pow_smul_top_le_monSpan (M := ↥(HK X la G.w wF))

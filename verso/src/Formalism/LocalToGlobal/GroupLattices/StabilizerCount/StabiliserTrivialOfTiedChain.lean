@@ -18,16 +18,25 @@ def TwStab0Tie (D : D7) : Prop :=
   ∀ u μ, DV.Used D μ → μ ≠ D.what₂.mu0 → ∃ e : (D.mem u).C.cls 0 ≃ (D.chTw u μ).cls 0,
     ∀ c, Nonempty ((D.mem u).C.stab 0 c ≃* (D.chTw u μ).stab 0 (e c))
 
+/- English proof (translation)
+Use `Formalism.L2.G.Triv.stabZero_rec D lev u c` as an intermediate fact. Conclude with `Nat.card_eq_one_iff_unique.2 ⟨inferInstance, ⟨1⟩⟩`.
+-/
 theorem card_stab0_mem (D : D7) (lev : LevelData D) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
     Nat.card ((D.mem u).C.stab 0 c) = 1 := by
   have := Formalism.L2.G.Triv.stabZero_rec D lev u c
   exact Nat.card_eq_one_iff_unique.2 ⟨inferInstance, ⟨1⟩⟩
 
+/- English proof (translation)
+Rewrite using `[D.memberColumns_twistedChain_base u]`. Conclude with `card_stab0_mem D lev u`.
+-/
 theorem card_stabiliser_reference_tuple (D : D7) (lev : LevelData D) (u : D.what₂.Word) :
     ∀ c : (D.chTw u D.what₂.mu0).cls 0, Nat.card ((D.chTw u D.what₂.mu0).stab 0 c) = 1 := by
   rw [D.memberColumns_twistedChain_base u]
   exact card_stab0_mem D lev u
 
+/- English proof (translation)
+Take `⟨c', rfl⟩` from `e.surjective c`. Take `⟨f⟩` from `s c'`. Rewrite using `[← Nat.card_congr f.toEquiv]`. Conclude with `card_stab0_mem D lev u c'`.
+-/
 theorem card_stab0_of_equiv (D : D7) (lev : LevelData D) (u : D.what₂.Word) (μ : D.what₂.Tup)
     (e : (D.mem u).C.cls 0 ≃ (D.chTw u μ).cls 0) (s : ∀ c, Nonempty ((D.mem u).C.stab 0 c ≃* (D.chTw u μ).stab 0 (e c)))
     (c : (D.chTw u μ).cls 0) : Nat.card ((D.chTw u μ).stab 0 c) = 1 := by
@@ -36,6 +45,11 @@ theorem card_stab0_of_equiv (D : D7) (lev : LevelData D) (u : D.what₂.Word) (�
   rw [← Nat.card_congr f.toEquiv]
   exact card_stab0_mem D lev u c'
 
+/- English proof (translation)
+Use `⟨card_stab0_mem D lev, fun u μ hU c => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : μ = D.what₂.mu0`. Substitute `h0` using the available equality. Conclude with `card_stabiliser_reference_tuple D lev u c`. Take `⟨e, s⟩` from `hT u μ hU h0`.
+
+Conclude with `card_stab0_of_equiv D lev u μ e s c`.
+-/
 theorem stab0Used_of_tie (D : D7) (lev : LevelData D) (hT : TwStab0Tie D) : Stab0Used D := by
   refine ⟨card_stab0_mem D lev, fun u μ hU c => ?_⟩
   by_cases h0 : μ = D.what₂.mu0
@@ -44,19 +58,34 @@ theorem stab0Used_of_tie (D : D7) (lev : LevelData D) (hT : TwStab0Tie D) : Stab
   · obtain ⟨e, s⟩ := hT u μ hU h0
     exact card_stab0_of_equiv D lev u μ e s c
 
+/- English proof (translation)
+Introduce `u μ _ _` and use `⟨T.eCls0 u μ, fun c => ⟨T.eStab0 u μ c⟩⟩`.
+-/
 theorem twStab0Tie_of_tied (D : D7) {inQ : D.what₂.Tup → IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F) → Prop}
     (T : Formalism.L2.Herm.TwChTied D inQ) : TwStab0Tie D :=
   fun u μ _ _ => ⟨T.eCls0 u μ, fun c => ⟨T.eStab0 u μ c⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨card_stab0_mem D lev, fun u μ _ c => card_stab0_of_equiv D lev u μ (T.eCls0 u μ) (fun c => ⟨T.eStab0 u μ c⟩) c⟩`.
+-/
 theorem stabiliser_trivial_of_tied_chain (D : D7) (lev : LevelData D)
     {inQ : D.what₂.Tup → IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F) → Prop}
     (T : Formalism.L2.Herm.TwChTied D inQ) : Formalism.MainNotions.OrbitPlaces.Stab0 D :=
   ⟨card_stab0_mem D lev, fun u μ _ c => card_stab0_of_equiv D lev u μ (T.eCls0 u μ) (fun c => ⟨T.eStab0 u μ c⟩) c⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem stab0Used_iff (D : D7) : Stab0Used D ↔ Formalism.MainNotions.OrbitPlaces.Stab0 D := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem stab0Used_of_stab0 (D : D7) (h : Formalism.MainNotions.OrbitPlaces.Stab0 D) : Stab0Used D := h
 
+/- English proof (translation)
+The claim follows from `stab0Used_of_tie D lev hT`.
+-/
 theorem stabiliser_trivial_of_tie (D : D7) (lev : LevelData D) (hT : TwStab0Tie D) : Formalism.MainNotions.OrbitPlaces.Stab0 D :=
   stab0Used_of_tie D lev hT
 

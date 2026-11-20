@@ -19,11 +19,17 @@ section Equivariant
 
 variable {G A B : Type*} [Group G] [AddCommGroup A] [AddCommGroup B]
 
+/- English proof (translation)
+Rewrite using `[cycSubOne_apply, cycSubOne_apply, map_sub, hf]`.
+-/
 theorem map_cycSubOne {ρA : Representation ℤ G A} {ρB : Representation ℤ G B} {f : A →+ B}
     (hf : ∀ g a, f (ρA g a) = ρB g (f a)) (σ : G) (a : A) :
     f (cycSubOne ρA σ a) = cycSubOne ρB σ (f a) := by
   rw [cycSubOne_apply, cycSubOne_apply, map_sub, hf]
 
+/- English proof (translation)
+Rewrite using `[cycNorm_apply, cycNorm_apply, map_sum]`. Simplify using `only [hf]`.
+-/
 theorem map_cycNorm [Fintype G] {ρA : Representation ℤ G A} {ρB : Representation ℤ G B}
     {f : A →+ B} (hf : ∀ g a, f (ρA g a) = ρB g (f a)) (a : A) :
     f (cycNorm ρA a) = cycNorm ρB (f a) := by
@@ -39,6 +45,13 @@ namespace IdeleGroup
 omit [NumberField K] [NumberField L] in
 open scoped Classical in
 
+/- English proof (translation)
+Establish `hv : w.comap (algebraMap K L) = v` using `NumberField.InfinitePlace.LiesOver.comap_eq w v`. Establish `hiff : v.IsUnramifiedIn L ↔ w.IsUnramified K`. Rewrite using `[← hv]`. Conclude with `NumberField.InfinitePlace.isUnramifiedIn_comap`. Break down `w.isUnramified_or_isRamified K with h | h` into its components or cases.
+
+Rewrite using `[if_pos (hiff.2 h), h.finrank_eq_one v, Nat.cast_one]`. Establish `hn : ¬ v.IsUnramifiedIn L` using `fun h' ↦ by`. Use `hiff.1 h'` as an intermediate fact. Rewrite `h` using `[NumberField.InfinitePlace.IsRamified]`. Conclude with `h this`.
+
+Rewrite using `[if_neg hn, h.finrank_eq_two v, Nat.cast_ofNat]`.
+-/
 theorem finrank_infiniteCompletion_eq_ite [IsGalois K L] (v : InfinitePlace K)
     (w : InfinitePlace L) [w.LiesOver v] :
     (finrank v.Completion w.Completion : ℚ) = if v.IsUnramifiedIn L then 1 else 2 := by
@@ -56,6 +69,9 @@ theorem finrank_infiniteCompletion_eq_ite [IsGalois K L] (v : InfinitePlace K)
 
 open AdicLiesOver in
 
+/- English proof (translation)
+Rewrite using `[finrank_adicCompletion v w.1, Ideal.ramificationIdxIn_eq_ramificationIdx v.asIdeal w.1.asIdeal Gal(L/K), Ideal.inertiaDegIn_eq_inertiaDeg v.asIdeal w.1.asIdeal Gal(L/K)]`.
+-/
 theorem finrank_adicCompletion_eq_ramificationIdxIn_mul [IsGalois K L]
     (v : HeightOneSpectrum (𝓞 K)) (w : PlacesOver L v) :
     finrank (v.adicCompletion K) (w.1.adicCompletion L) =
@@ -70,6 +86,11 @@ namespace IdeleGroup
 
 open AdeleBaseChange in
 
+/- English proof (translation)
+Establish `hfin` using `Filter.eventually_cofinite.1 (IdeleNorm.eventually_ramificationIdx_eq_one K L)`. Take `⟨S, hS₀, htop⟩` from `exists_finset_superset_sup_sIdeles_placesAbove_eq_top (L := L) (hfin.toFinset.image (below K))`. Use `⟨S, fun v hv w ↦ ?_, htop⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hv` to reduce the goal to its premises.
+
+Apply `hS₀` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`. Conclude with `⟨w.1, hfin.mem_toFinset.2 h, (below_eq_iff w.1 v).2 inferInstance⟩`.
+-/
 theorem exists_finset_unramified_sup_sIdeles_eq_top :
     ∃ S : Finset (HeightOneSpectrum (𝓞 K)),
       (∀ v ∉ (S : Set (HeightOneSpectrum (𝓞 K))), ∀ w : PlacesOver L v,
@@ -90,6 +111,31 @@ variable [IsGalois K L]
 
 open AdeleBaseChange AdicLiesOver in
 
+/- English proof (translation)
+Take `⟨S, hram, htop⟩` from `exists_finset_unramified_sup_sIdeles_eq_top (K := K) (L := L)`. Use `set T := placesAbove L (S : Set (HeightOneSpectrum (𝓞 K))) with hTdef`. Establish `hT : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ T, g • w ∈ T` using `fun g w hw ↦ (smul_mem_placesAbove_iff _ g w).2 hw`. Establish `: Finite T` using `(placesAbove_finite S.finite_toSet).to_subtype`. Use `set ρA := sUnitRep T hT`.
+
+Use `set ρB := Representation.ofMulDistribMulAction Gal(L/K) (sIdeles T)`. Use `set ρC := Representation.ofMulDistribMulAction Gal(L/K) (IdeleClassGroup L)`. Take `⟨hinj, hrange, hsurj⟩` from `sUnits_sIdeles_placesAbove_exact (L := L) (S : Set (HeightOneSpectrum (𝓞 K))) htop`. Set `i : Additive (T.unit L) →+ Additive (sIdeles T)` to `(sUnitsToSIdeles T).toAdditive`. Set `p : Additive (sIdeles T) →+ Additive (IdeleClassGroup L)` to `(sIdelesToIdeleClassGroup T).toAdditive`.
+
+Establish `hi : Function.Injective i` using `fun a b h ↦ hinj h`. Establish `hp : Function.Surjective p` using `hsurj`. Establish `hex : Function.Exact i p`. Introduce `b`. Use `SetLike.ext_iff.1 hrange b.toMul` as an intermediate fact.
+
+Rewrite `this` using `[MonoidHom.mem_ker, MonoidHom.mem_range]`. Conclude with `this.symm`. Establish `hiG : ∀ g a, i (ρA g a) = ρB g (i a)` using `fun g a ↦ by`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `diagonal L ((sUnitMap T hT g a.toMul : T.unit L) : Lˣ) = g • diagonal L ((a.toMul : T.unit L) : Lˣ)`. Rewrite using `[smul_diagonal]`. Conclude with `congrArg (diagonal L) (Units.ext rfl)`. Establish `hpG : ∀ g b, p (ρB g b) = ρC g (p b)` using `fun g b ↦ sIdelesToIdeleClassGroup_smul (S : Set (HeightOneSpectrum (𝓞 K))) g b.toMul`. Establish `hA` using `hasHerbrandQuotient_sUnitRep (K := K) T hT hσ`.
+
+Establish `hiS` using `map_cycSubOne hiG σ`. Establish `hiN` using `map_cycNorm hiG`. Establish `hpS : ∀ b, p (cycSubOne ρB σ b) = cycSubOne ρC σ (p b)` using `fun b ↦ by`. Rewrite using `[cycSubOne_apply, cycSubOne_apply, map_sub, hpG]`. Establish `hpN : ∀ b, p (cycNorm ρB b) = cycNorm ρC (p b)` using `fun b ↦ by`.
+
+Rewrite using `[cycNorm_apply, cycNorm_apply, map_sum]`. Simplify using `only [hpG]`. Take `⟨wFin⟩ : Nonempty (∀ v : HeightOneSpectrum (𝓞 K), PlacesOver L v)` from `⟨fun v ↦ (nonempty_placesOver_of_finite (L := L) v).some⟩`. Take `⟨wInf⟩ : Nonempty (∀ v : InfinitePlace K, v.placesOver L)` from `⟨fun v ↦ ⟨(InfinitePlace.comap_surjective (K := L) v).choose, (GroundTheory.Global.InfinitePlace.liesOver_iff_comap_eq v _).2 (InfinitePlace.comap_surjective (K := L) v).choose_spec⟩⟩`. Take `⟨hB, hBval⟩` from `cycHerbrand_sIdeles (S : Set (HeightOneSpectrum (𝓞 K))) S.finite_toSet hram σ hσ wInf wFin`.
+
+Establish `hC` using `HasHerbrandQuotient.of_shortExact_left_mid (C := Additive (IdeleClassGroup L)) (p := p) hi hp hex hiS hiN hpS hpN (cycSubOne_cycNorm ρB σ) (cycNorm_cycSubOne ρB σ) hA hB`. Use `⟨hC, ?_⟩` and prove the remaining obligations. Establish `hmul : cycHerbrand ρB σ = cycHerbrand ρA σ * cycHerbrand ρC σ` using `herbrandQuotient_eq_mul_of_shortExact (C := Additive (IdeleClassGroup L)) (p := p) hi hp hex hiS hiN hpS hpN (cycSubOne_cycNorm ρB σ) (cycNorm_cycSubOne ρB σ) hA hC`. Establish `hInf : ∏ v : InfinitePlace K, (finrank v.Completion (wInf v).1.Completion : ℚ) = ∏ v : InfinitePlace K, (if v.IsUnramifiedIn L then 1 else 2 : ℚ)` using `Finset.prod_congr rfl fun v _ ↦ by`. Conclude with `finrank_infiniteCompletion_eq_ite v (wInf v).1`.
+
+Establish `hFin : (∏ᶠ (v : HeightOneSpectrum (𝓞 K)) (_ : ∃ w ∈ T, w.asIdeal.LiesOver v.asIdeal), ((v.asIdeal.ramificationIdxIn (𝓞 L) * v.asIdeal.inertiaDegIn (𝓞 L) : ℕ) : ℚ)) = ∏ v ∈ S.finite_toSet.toFinset, (finrank (v.adicCompletion K) ((wFin v).1.adicCompletion L) : ℚ)`. Rewrite using `[Finset.finite_toSet_toFinset]`. Rewrite using `[finprod_cond_eq_prod_of_cond_iff _ (t := S) fun {v} _ ↦ ?_]`. Conclude with `Finset.prod_congr rfl fun v _ ↦ by`. Rewrite using `[finrank_adicCompletion_eq_ramificationIdxIn_mul v (wFin v)]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, hlies⟩`. Use `(below_eq_iff w v).2 hlies` as an intermediate fact. Rewrite using `[← this]`. Conclude with `hw`.
+
+Introduce `hv`. Use `⟨(wFin v).1, ?_, inferInstance⟩` and prove the remaining obligations. Rewrite using `[hTdef, mem_placesAbove, (below_eq_iff (wFin v).1 v).2 inferInstance]`. Conclude with `hv`. Rewrite `hmul` using `[hBval, cycHerbrand_sUnitRep T hT hσ, hFin, hInf]`.
+
+Apply the tactic sequence `have hI : (∏ v : InfinitePlace K, (if v.IsUnramifiedIn L then 1 else 2 : ℚ)) ≠ 0 := Finset.prod_ne_zero_iff.2 fun v _ ↦ by split_ifs <;> norm_num`. Establish `hP : (∏ v ∈ S.finite_toSet.toFinset, (finrank (v.adicCompletion K) ((wFin v).1.adicCompletion L) : ℚ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ ↦ Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `hn : (finrank K L : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Clear denominators, using `at hmul` for the nonvanishing conditions. Conclude with `hmul.symm`.
+-/
 theorem cycHerbrand_ideleClassGroup (σ : Gal(L/K)) (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     HasHerbrandQuotient
         (cycSubOne (Representation.ofMulDistribMulAction Gal(L/K) (IdeleClassGroup L)) σ)

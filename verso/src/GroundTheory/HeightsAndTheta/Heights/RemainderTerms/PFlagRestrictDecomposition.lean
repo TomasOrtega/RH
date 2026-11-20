@@ -9,6 +9,11 @@ namespace RestTerms
 
 open MvPolynomial Finset
 
+/- English proof (translation)
+Introduce `f N τ R`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `hl1 : 1 ≤ l` using `(Finset.mem_Icc.mp hl).1`. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_mul, h1 f N l τ _ hl1, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq' Finset.univ τ, if_pos (Finset.mem_univ τ)]`.
+-/
 theorem FlagRestrictDecomposition.proof (h1 : FlagRestrictPowerSum.Statement) :
     FlagRestrictDecomposition.Statement := by
   intro f N τ R

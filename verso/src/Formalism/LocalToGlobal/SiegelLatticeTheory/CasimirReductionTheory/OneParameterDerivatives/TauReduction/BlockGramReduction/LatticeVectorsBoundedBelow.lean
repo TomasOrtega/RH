@@ -11,6 +11,19 @@ namespace Formalism.L2.SG.Pf.Tau
 
 open Size Formalism.MainNotions.S
 
+/- English proof (translation)
+Use `set β : I.E := (a : I.E) * star (a : I.E) with hβ`. Establish `hfix : star β = β` using `by simp [hβ, mul_comm]`. Take `⟨γ, hγ⟩` from `(I.cm.fixed β).1 hfix`. Establish `haI : IsIntegral ℤ (a : I.E)` using `a.2`. Establish `hsI : IsIntegral ℤ (star (a : I.E))` using `IsIntegral.map I.cm.sig haI`.
+
+Establish `hβI : IsIntegral ℤ β` using `haI.mul hsI`. Establish `hγI : IsIntegral ℤ γ`. Rewrite using `[← isIntegral_algebraMap_iff (algebraMap I.F I.E).injective, hγ]`. Conclude with `hβI`. Establish `ha0 : (a : I.E) ≠ 0` using `by simpa using ha`.
+
+Establish `hβ0 : β ≠ 0` using `mul_ne_zero ha0 (star_ne_zero.2 ha0)`. Set `g : 𝓞 I.F` to `⟨γ, hγI⟩`. Establish `hg0 : g ≠ 0`. Introduce `h`. Apply `hβ0` to reduce the goal to its premises.
+
+Rewrite using `[← hγ]`. Establish `: γ = 0` using `congrArg Subtype.val h`. Simplify using `[this]`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : InfinitePlace I.F, 1 ≤ w (g : I.F) := by`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Take `⟨w₀⟩` from `(inferInstance : Nonempty (InfinitePlace I.F))`. Conclude with `absurd (InfinitePlace.one_le_of_lt_one (w := w₀) hg0 (fun z _ => h z)) (not_le.2 (h w₀))`. Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `e : w (g : I.F) = ‖I.φ w (a : I.E)‖ ^ 2`.
+
+Rewrite using `[← InfinitePlace.norm_embedding_eq, show (g : I.F) = γ from rfl, ← I.φ_over, hγ, hβ, map_mul, I.cm.cmUnram.2.1, norm_mul, Complex.norm_conj, sq]`. Rewrite `hw` using `[e]`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use polynomial arithmetic with `[norm_nonneg (I.φ w (a : I.E))]`.
+-/
 theorem one_le_norm_embedding_alt (I : AutInst) (a : 𝓞 I.E) (ha : a ≠ 0) :
     ∃ v, 1 ≤ ‖I.φ v (a : I.E)‖ := by
   set β : I.E := (a : I.E) * star (a : I.E) with hβ
@@ -45,10 +58,22 @@ theorem one_le_norm_embedding_alt (I : AutInst) (a : 𝓞 I.E) (ha : a ≠ 0) :
   push Not at h
   nlinarith [norm_nonneg (I.φ w (a : I.E))]
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.lattice_common_denominator .. | (apply UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.lattice_common_denominator <;> assumption) | (intros; apply UpperTheory.Reformulated.B.LatticeCoordin …`.
+-/
 theorem lattice_common_denominator (I : AutInst) : ∃ b : 𝓞 I.E, b ≠ 0 ∧
     ∀ y ∈ I.L, ∀ i, ∃ c : 𝓞 I.E, (c : I.E) = (b : I.E) * y i := by
   first | exact UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.lattice_common_denominator .. | (apply UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.lattice_common_denominator <;> assumption) | (intros; apply UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.lattice_common_denominator <;> assumption) | (apply @UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.lattice_common_denominator <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.lattice_common_denominator <;> assumption) | (apply @UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.lattice_common_denominator <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.LatticeCoordinatesCommonDenominator.lattice_common_denominator I
 
+/- English proof (translation)
+Take `⟨U, rfl⟩` from `hA`. Use `set B : Matrix (Fin n) (Fin n) ℂ := ((U⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)`. Use `⟨∑ i, ∑ k, ‖B i k‖ ^ 2 + 1, by positivity, fun w i => ?_⟩` and prove the remaining obligations. Use `set z := (U : Matrix (Fin n) (Fin n) ℂ) *ᵥ w`. Establish `hw : w = B *ᵥ z`.
+
+Simplify using `only [z, B, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `h1 : ‖w i‖ ≤ ∑ k, ‖B i k‖ * ‖z k‖`. Rewrite using `[hw]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Establish `h2 : ‖w i‖ ^ 2 ≤ (∑ k, ‖B i k‖ ^ 2) * ∑ k, ‖z k‖ ^ 2` using `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans (Finset.sum_mul_sq_le_sq_mul_sq _ _ _)`. Establish `h3 : ∑ k, ‖B i k‖ ^ 2 ≤ ∑ i, ∑ k, ‖B i k‖ ^ 2 + 1`. Use `Finset.single_le_sum (f := fun i => ∑ k, ‖B i k‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `h2.trans (mul_le_mul_of_nonneg_right h3 (by positivity))`.
+-/
 theorem invertible_matrix_lower_bound {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : IsUnit A) :
     ∃ C : ℝ, 0 < C ∧ ∀ (w : Fin n → ℂ) (i : Fin n), ‖w i‖ ^ 2 ≤ C * ∑ k, ‖(A *ᵥ w) k‖ ^ 2 := by
   obtain ⟨U, rfl⟩ := hA
@@ -70,6 +95,25 @@ theorem invertible_matrix_lower_bound {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ)
     linarith
   exact h2.trans (mul_le_mul_of_nonneg_right h3 (by positivity))
 
+/- English proof (translation)
+Introduce `I x`. Take `⟨m, hm1, hm, -⟩` from `h0 I x`. Take `⟨b, hb0, hb⟩` from `lattice_common_denominator I`. Establish `hC : ∀ v, ∃ C : ℝ, 0 < C ∧ ∀ (u : Fin I.n → I.E) (i : Fin I.n), ‖I.φ v (u i)‖ ^ 2 ≤ C * ∑ k, ‖coordV I x v u k‖ ^ 2` using `fun v => by`. Establish `hU : IsUnit (uMat (x.1 v)⁻¹ * (I.P v)⁻¹)` using `(Units.isUnit _).mul (Matrix.isUnit_nonsing_inv_iff.2 (I.P_unit v))`.
+
+Take `⟨C, hC, hCw⟩` from `invertible_matrix_lower_bound _ hU`. Conclude with `⟨C, hC, fun u i => hCw (fun i => I.φ v (u i)) i⟩`. Use `choose C hCpos hCb using hC`. Use `set K : ℝ := ∑ v, ‖I.φ v (b : I.E)‖ ^ 2 * (m : ℝ) ^ 2 * C v + 1 with hK`. Establish `hK0 : 0 < K`.
+
+Establish `: 0 ≤ ∑ v, ‖I.φ v (b : I.E)‖ ^ 2 * (m : ℝ) ^ 2 * C v` using `Finset.sum_nonneg fun w _ => by have := hCpos w; positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨1 / K, by positivity, ?_⟩` and prove the remaining obligations. Introduce `u hu hu0`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, u i ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hu0 (funext h)`. Take `⟨c, hc⟩` from `hb _ (hm u hu) i`. Establish `hm0 : (m : I.E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+
+Establish `hb0' : (b : I.E) ≠ 0` using `by simpa using hb0`. Establish `hc0 : c ≠ 0`. Introduce `h`. Establish `: (c : I.E) = 0` using `by simp [h]`. Rewrite `this` using `[hc, Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `mul_ne_zero hb0' (mul_ne_zero hm0 hi) this`. Take `⟨v, hv⟩` from `one_le_norm_embedding_alt I c hc0`. Establish `e : ‖I.φ v (c : I.E)‖ = ‖I.φ v (b : I.E)‖ * (m : ℝ) * ‖I.φ v (u i)‖`. Rewrite using `[hc, Pi.smul_apply, smul_eq_mul, map_mul, map_mul, map_natCast, norm_mul, norm_mul, Complex.norm_natCast, mul_assoc]`. Use `set S := ∑ w, ∑ k, ‖coordV I x w u k‖ ^ 2`.
+
+Establish `hSv : ∑ k, ‖coordV I x v u k‖ ^ 2 ≤ S` using `Finset.single_le_sum (f := fun w => ∑ k, ‖coordV I x w u k‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ v)`. Establish `hS0 : 0 ≤ S` using `by positivity`. Establish `h1 : 1 ≤ ‖I.φ v (b : I.E)‖ ^ 2 * (m : ℝ) ^ 2 * ‖I.φ v (u i)‖ ^ 2`. Establish `: 1 ≤ ‖I.φ v (c : I.E)‖ ^ 2` using `by nlinarith`. Rewrite `this` using `[e]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : ‖I.φ v (u i)‖ ^ 2 ≤ C v * S` using `(hCb v u i).trans (mul_le_mul_of_nonneg_left hSv (hCpos v).le)`. Establish `h3 : ‖I.φ v (b : I.E)‖ ^ 2 * (m : ℝ) ^ 2 * C v ≤ K`. Use `Finset.single_le_sum (f := fun w => ‖I.φ w (b : I.E)‖ ^ 2 * (m : ℝ) ^ 2 * C w) (fun w _ => by have := hCpos w; positivity) (Finset.mem_univ v)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h4 : 1 ≤ K * S`. Establish `hbm : 0 ≤ ‖I.φ v (b : I.E)‖ ^ 2 * (m : ℝ) ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ hK0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lattice_vectors_bounded_below (h0 : LatticeCommensurable) : LatticeVectorsBoundedBelow := by
   intro I x
   obtain ⟨m, hm1, hm, -⟩ := h0 I x

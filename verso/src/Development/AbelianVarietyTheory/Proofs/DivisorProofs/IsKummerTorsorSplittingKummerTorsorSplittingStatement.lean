@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.EtC.KummerSplit.isKum_kumT`. Consider the case `exact GlobalTheory.EtC.KummerSplit.isKum_kumT`. Consider the case `(intros; apply GlobalTheory.EtC.KummerSplit.isKum_kumT <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting : ∀ (q : ℕ) [NeZero q], IsKum q (kumT q) := by
   first
   | exact @GlobalTheory.EtC.KummerSplit.isKum_kumT

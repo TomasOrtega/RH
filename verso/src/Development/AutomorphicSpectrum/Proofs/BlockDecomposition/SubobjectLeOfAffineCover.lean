@@ -10,6 +10,13 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 
 namespace GlobalTheory.CompanionTheory.GE
 
+/- English proof (translation)
+Use `Scheme.Modules.hom_ext _ _ fun W ↦ ?_` and prove the remaining obligations. Use extensionality with `s`. Establish `hcov' : W ≤ ⨆ p : {p : Σ i, Γ(X, V i) // X.basicOpen p.2 ≤ W}, X.basicOpen p.1.2`. Introduce `x hx`. Establish `hx' : x ∈ iSup V` using `by rw [hcov]; trivial`.
+
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx'`. Take `⟨f, hfW, hxf⟩` from `(hV i).exists_basicOpen_le ⟨x, hx⟩ hi`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨i, f⟩, hfW⟩, hxf⟩`. Use `TopCat.Sheaf.eq_of_locally_eq' (⟨N.presheaf, N.isSheaf⟩ : TopCat.Sheaf Ab X) (fun p : {p : Σ i, Γ(X, V i) // X.basicOpen p.2 ≤ W} ↦ X.basicOpen p.1.2) W (fun p ↦ homOfLE p.2) hcov' _ _ fun p ↦ ?_` and prove the remaining obligations. Establish `nat` using `ConcreteCategory.congr_hom (φ.mapPresheaf.naturality (homOfLE p.2).op) s`.
+
+Establish `e1 : (ConcreteCategory.hom (N.presheaf.map (homOfLE p.2).op)) (φ.app W s) = 0` using `nat.symm.trans (h p.1.1 p.1.2 _)`. Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.zero_app]`. Simplify using the standard rewrite rules.
+-/
 theorem hom_eq_zero_of_basicOpen_cover {X : Scheme.{0}} {M N : X.Modules} (φ : M ⟶ N)
     {ι : Type} (V : ι → X.Opens) (hV : ∀ i, IsAffineOpen (V i)) (hcov : iSup V = ⊤)
     (h : ∀ i (f : Γ(X, V i)) (s : Γ(M, X.basicOpen f)), φ.app (X.basicOpen f) s = 0) :
@@ -32,6 +39,11 @@ theorem hom_eq_zero_of_basicOpen_cover {X : Scheme.{0}} {M N : X.Modules} (φ : 
   rw [Scheme.Modules.Hom.zero_app]
   simp
 
+/- English proof (translation)
+Take `⟨n, t, ht⟩` from `((GlobalTheory.QCoh.isLocalizedModule_resBasicOpen_iff M f).1 (GlobalTheory.QCoh.isLocalizedModule_resBasicOpen M hU f)).1 s`. Establish `hu : IsUnit (X.presheaf.map (homOfLE (X.basicOpen_le f)).op f ^ n)` using `(GlobalTheory.QCoh.isUnit_res_of_le_basicOpen f (X.basicOpen_le f) le_rfl).pow n`. Establish `nat` using `ConcreteCategory.congr_hom (φ.mapPresheaf.naturality (homOfLE (X.basicOpen_le f)).op) t`. Establish `key : X.presheaf.map (homOfLE (X.basicOpen_le f)).op f ^ n • φ.app (X.basicOpen f) s = 0`. Rewrite using `[← Scheme.Modules.Hom.app_smul, ht]`.
+
+Use `nat.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(ConcreteCategory.hom (N.presheaf.map (homOfLE (X.basicOpen_le f)).op)) (φ.app U t) = 0`. Rewrite using `[h0 t]`. Simplify using the standard rewrite rules. Conclude with `(hu.smul_eq_zero).1 key`.
+-/
 theorem app_basicOpen_eq_zero {X : Scheme.{0}} {M N : X.Modules} [M.IsQuasicoherent] (φ : M ⟶ N)
     {U : X.Opens} (hU : IsAffineOpen U) (h0 : ∀ t : Γ(M, U), φ.app U t = 0) (f : Γ(X, U))
     (s : Γ(M, X.basicOpen f)) : φ.app (X.basicOpen f) s = 0 := by
@@ -49,6 +61,13 @@ theorem app_basicOpen_eq_zero {X : Scheme.{0}} {M N : X.Modules} [M.IsQuasicoher
     simp
   exact (hu.smul_eq_zero).1 key
 
+/- English proof (translation)
+Establish `h0 : S.arrow ≫ cokernel.π T.arrow = 0`. Use `hom_eq_zero_of_basicOpen_cover _ V hV hcov fun i f s ↦ ?_` and prove the remaining obligations. Use `app_basicOpen_eq_zero _ (hV i) (fun t ↦ ?_) f s` and prove the remaining obligations. Take `⟨y, hy⟩` from `h i ⟨t, rfl⟩`. Establish `hz : (T.arrow ≫ cokernel.π T.arrow).app (V i) y = 0`.
+
+Rewrite using `[cokernel.condition]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(cokernel.π T.arrow).app (V i) (S.arrow.app (V i) t) = 0`. Rewrite using `[← hy]`. Conclude with `hz`.
+
+Conclude with `Subobject.le_of_comm (Abelian.monoLift T.arrow S.arrow h0) (Abelian.monoLift_comp _ _ _)`.
+-/
 theorem le_of_secs_subset_cover {X : Scheme.{0}} {E : X.Modules} [E.IsQuasicoherent]
     (S T : Subobject E) (hS : (S : X.Modules).IsQuasicoherent)
     (_hT : (T : X.Modules).IsQuasicoherent) {ι : Type} (V : ι → X.Opens)

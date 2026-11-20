@@ -9,6 +9,17 @@ open GlobalTheory.Poinc
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Introduce `p _ z₁ c₀ e`. Take `⟨f, hf0, hf⟩` from `hd p z₁ c₀ e`. Establish `hpow : ∀ c : CTrait X₁ p z₁, ‖c.val (f ^ m)‖ = ‖c.val f‖ ^ m` using `fun c => by`. Rewrite using `[CTrait.val_eq_valInt, CTrait.val_eq_valInt, map_pow]`. Use `push_cast`.
+
+Conclude with `norm_pow _ _`. Establish `hexp : ∀ c : CTrait X₁ p z₁, Real.exp (-(c.sc * (((d * m : ℕ) : ℝ) * φ.evalZ c.T.β))) = Real.exp (-(c.sc * (d * φ.evalZ c.T.β))) ^ m` using `fun c => by`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨f ^ m, ?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[hpow, hf0, hexp]`. Break down `hf c with h1 | ⟨h, hh, h2⟩` into its components or cases. Use `left`.
+
+Rewrite using `[hpow, hexp]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h1 m`. Use `right`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Rewrite using `[hpow]`.
+
+Conclude with `(pow_le_of_le_one (norm_nonneg _) (c.norm_val_le f) (by omega)).trans h2`.
+-/
 theorem approxAt_mul_of_one_le (g n : ℕ) (F : SFam g n (zetaAway n)) (W8 : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0})
     (i : F.X ⟶ Z) (X₁ : Setup F W8 i) (φ : InvFun ℤ) (d m : ℕ) (hm : 1 ≤ m) (hd : ApproxAt X₁ φ d) :
     ApproxAt X₁ φ (d * m) := by
@@ -35,6 +46,9 @@ theorem approxAt_mul_of_one_le (g n : ℕ) (F : SFam g n (zetaAway n)) (W8 : Mat
       rw [hpow]
       exact (pow_le_of_le_one (norm_nonneg _) (c.norm_val_le f) (by omega)).trans h2
 
+/- English proof (translation)
+The claim follows from `approxAt_mul_of_one_le`.
+-/
 theorem approxAt_mul : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W8 : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W8 i) (φ : InvFun ℤ) (d m : ℕ), 1 ≤ m → ApproxAt X₁ φ d → ApproxAt X₁ φ (d * m) := approxAt_mul_of_one_le
 
 end GlobalTheory.Poinc

@@ -6,12 +6,38 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BKReal
 
+/- English proof (translation)
+Simplify using `only [frobS]`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, ← coeff_zero_eq_constantCoeff_apply, coeff_map]`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_frobS_apply (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (p : (Wq l a)⟦X⟧) :
     constantCoeff (frobS l a p) = sigma l a (constantCoeff p) := by
   simp only [frobS]
   simp only [RingHom.coe_comp, Function.comp_apply, ← coeff_zero_eq_constantCoeff_apply, coeff_map]
   simp
 
+/- English proof (translation)
+Introduce `l _ a _ Ep ⟨hmon, hdeg, hdvd, w, hw⟩`. Prove the components needed by the constructor for the conclusion. Establish `hφ` using `(deltaS l a).φ_eq (Ep : (Wq l a)⟦X⟧)`. Establish `h1` using `congrArg constantCoeff hφ`. Rewrite `h1` using `[show (deltaS l a).φ (Ep : (Wq l a)⟦X⟧) = frobS l a Ep from rfl, constantCoeff_frobS_apply]`.
+
+Simplify using `only [Polynomial.constantCoeff_coe, map_add, map_pow, map_mul, map_natCast, hw] at h1`. Use `set c := constantCoeff ((deltaS l a).δ (Ep : (Wq l a)⟦X⟧)) with hc`. Take `⟨k, hk⟩ : ∃ k, l = k + 2` from `⟨l - 2, by have := (Fact.out : l.Prime).two_le; omega⟩`. Establish `h2 : c = sigma l a (w : Wq l a) - (l : Wq l a) ^ (k + 1) * (w : Wq l a) ^ l`. Establish `hl0 : (l : Wq l a) ≠ 0` using `WittVector.p_nonzero l (Fq l a)`.
+
+Apply `mul_left_cancel₀ hl0` to reduce the goal to its premises. Establish `: ((l : Wq l a) * w) ^ l = (l : Wq l a) * ((l : Wq l a) ^ (k + 1) * (w : Wq l a) ^ l)`. Establish `e : (l : Wq l a) ^ l = (l : Wq l a) ^ (k + 2)` using `by rw [← hk]`. Rewrite using `[mul_pow, e]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[this]`. Take the linear combination `-h1`. Rewrite using `[isUnit_iff_constantCoeff, ← hc, h2]`. Use `WittVector.isUnit_of_coeff_zero_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[← WittVector.constantCoeff_apply]`.
+
+Simplify using `only [map_sub, map_mul, map_pow, map_natCast, CharP.cast_eq_zero, zero_pow k.succ_ne_zero, zero_mul, sub_zero]`. Rewrite using `[WittVector.constantCoeff_apply, coeff_sigma, ← WittVector.constantCoeff_apply]`. Conclude with `pow_ne_zero _ ((w.isUnit.map (WittVector.constantCoeff (p := l) (R := Fq l a))).ne_zero)`. Use `set e := Ep.natDegree with he haveI : NeZero e := ⟨hdeg.ne'⟩`. Establish `hP : Polynomial.C (l : Wq l a) ∣ Ep - Polynomial.X ^ e`.
+
+Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_X_pow]`. Break down `lt_trichotomy i e with h | rfl | h` into its components or cases. Rewrite using `[if_neg h.ne, sub_zero]`.
+
+Conclude with `hdvd i h`. Establish `h1 : Ep.coeff e = 1` using `hmon.coeff_natDegree`. Rewrite using `[if_pos rfl, h1, sub_self]`. Conclude with `dvd_zero _`. Rewrite using `[if_neg h.ne', Polynomial.coeff_eq_zero_of_natDegree_lt h, sub_zero]`.
+
+Conclude with `dvd_zero _`. Take `⟨q, hq⟩` from `hP`. Establish `hS : (Ep : (Wq l a)⟦X⟧) = X ^ e + (l : (Wq l a)⟦X⟧) * (q : (Wq l a)⟦X⟧)`. Use `congrArg (fun p : Polynomial (Wq l a) => (p : (Wq l a)⟦X⟧)) hq` as an intermediate fact. Simplify using `only [Polynomial.coe_sub, Polynomial.coe_pow, Polynomial.coe_X, Polynomial.coe_mul, map_natCast] at this`.
+
+Establish `hc : ((l : Polynomial (Wq l a)) : (Wq l a)⟦X⟧) = l` using `map_natCast (Polynomial.coeToPowerSeries.ringHom (R := Wq l a)) l`. Rewrite `this` using `[hc]`. Take the linear combination `this`. Establish `hJ : Ideal.span {(l : (Wq l a)⟦X⟧)} ⊔ Ideal.span {(Ep : (Wq l a)⟦X⟧)} = Ideal.span {(l : (Wq l a)⟦X⟧)} ⊔ Ideal.span {eis l a e}`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, hS, show (X : (Wq l a)⟦X⟧) ^ e + (l : (Wq l a)⟦X⟧) * q = eis l a e + (l : (Wq l a)⟦X⟧) * (q - 1) by`. Rewrite using `[eis]`. Use the proof step `ring]`. Conclude with `add_mem (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) (Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))`.
+
+Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, show eis l a e = (Ep : (Wq l a)⟦X⟧) + (l : (Wq l a)⟦X⟧) * (1 - q) by rw [eis, hS]; ring]`. Conclude with `add_mem (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) (Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))`. Rewrite using `[hJ]`. Conclude with `complete_eis l a e`.
+-/
 theorem eisPoly_distinguished_complete : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (Ep : Polynomial (Wq l a)), (Ep.Monic ∧ 0 < Ep.natDegree ∧ (∀ i < Ep.natDegree, (l : Wq l a) ∣ Ep.coeff i) ∧ (∃ w : (Wq l a)ˣ, Ep.coeff 0 = (l : Wq l a) * w)) → IsUnit ((deltaS l a).δ (Ep : (Wq l a)⟦X⟧)) ∧ IsAdicComplete (Ideal.span {(l : (Wq l a)⟦X⟧)} ⊔ Ideal.span {(Ep : (Wq l a)⟦X⟧)}) (Wq l a)⟦X⟧ := by
   intro l _ a _ Ep ⟨hmon, hdeg, hdvd, w, hw⟩
   constructor

@@ -9,6 +9,9 @@ open scoped Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnitAlmostAll.unit_almost_all | exact GlobalTheory.UnitAlmostAll.unit_almost_all | (intros; apply GlobalTheory.UnitAlmostAll.unit_almost_all <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nonzero_cm_element_local_unit_almost_all : ∀ (D : D7) (Z : LocDat D) (x : D.host.E), x ≠ 0 →
     {p : PlF D | ¬ Formalism.MainNotions.S.LocNG.IsUnitO (Z.M p) ((D.s.atP p).ιE x)}.Finite := by
   first | exact @GlobalTheory.UnitAlmostAll.unit_almost_all | exact GlobalTheory.UnitAlmostAll.unit_almost_all | (intros; apply GlobalTheory.UnitAlmostAll.unit_almost_all <;> assumption)

@@ -12,6 +12,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed IsLocalRing
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `k _ P hP R P₁ h _`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨⟨f, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers P₁) z`. Simplify using `only at hz ⊢`.
+
+Unfold `IsLocalization.Away.lift at hz`. Rewrite `hz` using `[IsLocalization.lift_mk'_spec, mul_zero]`. Establish `h2` using `hz`. Establish `hinj : Function.Injective (algebraMap (Polynomial k) (Localization.Away P))` using `IsLocalization.injective (Localization.Away P) (powers_le_nonZeroDivisors_of_noZeroDivisors hP)`. Establish `h3 : f.map R.subtype = 0`.
+
+Apply `hinj` to reduce the goal to its premises. Simplify using `using h2`. Establish `h4 : f = 0`. Use `Polynomial.map_injective R.subtype Subtype.val_injective` as an intermediate fact. Conclude with `this (by simpa using h3)`.
+
+Substitute `h4` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.descentLocInj : ∀ (k : Type) [Field k] (P : Polynomial k), P ≠ 0 → ∀ (R : Subring k) (P₁ : Polynomial R) (h : IsUnit (((algebraMap (Polynomial k) (Localization.Away P)).comp (Polynomial.mapRingHom R.subtype)) P₁)), P₁.map R.subtype = P → Function.Injective (IsLocalization.Away.lift (S := Localization.Away P₁) P₁ h) := by
   intro k _ P hP R P₁ h _
   rw [injective_iff_map_eq_zero]

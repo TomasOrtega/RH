@@ -11,6 +11,15 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory.QLog
 
+/- English proof (translation)
+Introduce `B Q _ _ _ _ σ g hg α i`. Take `⟨u, hu⟩ : IsUnit g` from `isUnit_iff_constantCoeff.mpr (by rw [hg]; exact isUnit_one)`. Use `set φ := algebraMap B Q`. Establish `hG : constantCoeff (map φ g) = 1` using `by simp [hg]`. Establish `hd : pderiv Q i (formalLog (map φ g)) = map φ ((↑u⁻¹ : MvPowerSeries σ B) * pderiv B i g)`.
+
+Establish `h1` using `mul_pderiv_formalLog hG i`. Rewrite `h1` using `[pderiv_map]`. Establish `h2 : map φ (↑u⁻¹ : MvPowerSeries σ B) * map φ g = 1`. Rewrite using `[← map_mul, ← hu, Units.inv_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h2, one_mul]`. Use `_ = map φ ((↑u⁻¹ : MvPowerSeries σ B) * pderiv B i g) := by`. Rewrite using `[mul_assoc, h1, map_mul]`. Distinguish the cases in `hα : α i = 0`. Conclude with `⟨0, Submodule.mem_top, by simp [hα]⟩`.
+
+Use `⟨coeff (α - Finsupp.single i 1) ((↑u⁻¹ : MvPowerSeries σ B) * pderiv B i g), Submodule.mem_top, ?_⟩` and prove the remaining obligations. Rewrite using `[natCast_mul_coeff_of_pderiv_eq hd hα, coeff_map]`.
+-/
 theorem dIn_top_formalLog_map : ∀ (B Q : Type) [CommRing B] [CommRing Q] [Algebra B Q] [Algebra ℚ Q]
     (σ : Type) (g : MvPowerSeries σ B), constantCoeff g = 1 →
       DIn (⊤ : Ideal B) (formalLog (map (algebraMap B Q) g)) := by

@@ -14,6 +14,9 @@ namespace PositivityTheory.AdelicQuotientData
 
 namespace PsiDeterminantFlag
 
+/- English proof (translation)
+Take `⟨ψ₁, hψ₁⟩` from `GlobalTheory.SplitWeil.exists_hasConductor_one (w.adicCompletion E)`. Conclude with `⟨_, GlobalTheory.CompanionTheory.JSBound.psiOK_of_hasConductor hψ₁⟩`.
+-/
 theorem exists_psiOK {E : Type} [Field E] [NumberField E] (w : Pl E) :
     ∃ χ : AddChar (w.adicCompletion E) ℂ, PositivityTheory.JacquetShalikaLocal.PsiOK χ := by
   obtain ⟨ψ₁, hψ₁⟩ := GlobalTheory.SplitWeil.exists_hasConductor_one (w.adicCompletion E)
@@ -21,6 +24,13 @@ theorem exists_psiOK {E : Type} [Field E] [NumberField E] (w : Pl E) :
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {k : ℕ}
 
+/- English proof (translation)
+Take `⟨_, hmul, _, _, hUU, _, _, _, _, htor, hint⟩` from `hD0 E k`. Take `⟨_, _, hci, hcl, hcl', -⟩` from `hG0 E k`. Establish `h1 : Dt (fl k w n) = 1`. Take `⟨t1, t2, -⟩` from `GlobalTheory.T.localUpperUnipotent_adelic_upperUnipotent E k w n (fun i j hij => hn.1 hij) hn.2`. Conclude with `hUU 0 _ ⟨t1, t2, fun i c hc => absurd hc (Nat.not_lt_zero _)⟩`.
+
+Establish `h2 : Dt (fl k w κ) = 1`. Use `hint _ (hci w κ) fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[hcl]`.
+
+Conclude with `hκ`. Rewrite using `[hcl' w v κ hv]`. Conclude with `one_mem _`. Rewrite using `[map_mul, map_mul, hmul, hmul, h1, h2, htor, one_mul, mul_one]`.
+-/
 theorem dt_fl (hG0 : jumpWindows.G0) (hD0 : D0) (w : Pl E)
     (n : GL (Fin k) (w.adicCompletion E)) (hn : n ∈ Iwasawa.unipotent (w.adicCompletion E) k)
     (κ : GL (Fin k) (w.adicCompletion E)) (hκ : κ ∈ GLnLocal.integralGL (w.adicCompletion E) k)
@@ -41,6 +51,35 @@ theorem dt_fl (hG0 : jumpWindows.G0) (hD0 : D0) (w : Pl E)
 
 end PsiDeterminantFlag
 
+/- English proof (translation)
+Introduce `hG0 hD0 hP2 _ hC2 hD1 hM0 hK8a hC E _ _ _ k μ _ hk β hβ ψ hψ S m α α' u f φ hkm hα hα' hD`. Establish `: BorelSpace (GA E k)` using `⟨rfl⟩`. Take `⟨hpos, hmul, hcont, -, hUU, -⟩` from `hD0 E k`. Take `⟨hlaw, hpsN, hUU01, hwhit, -, hgood, -⟩` from `hP2 E k ψ hψ`. Take `⟨β', σ₀', hβ', hM⟩` from `hM0 E k μ hk β hβ ψ hψ S m α α' u f φ hD`.
+
+Establish `hk1 : k - 1 < k` using `by omega`. Establish `hWf : Pre ψ 0 (whit ψ (k - 1) f)` using `hwhit _ hk1 f hD.pre`. Establish `hWφ : Pre ψ 0 (whit ψ (k - 1) φ)` using `hwhit _ hk1 φ (hgood _ φ hD.good)`. Establish `hPc : Continuous (PW ψ f φ)` using `hWf.cont.mul (Complex.continuous_conj.comp hWφ.cont)`. Establish `hPu : ∀ n, UU 0 n → ∀ g, PW ψ f φ (n * g) = PW ψ f φ g`.
+
+Introduce `n hn g`. Establish `h1` using `hlaw 0 _ hWf n (hUU01 n hn) g`. Establish `h2` using `hlaw 0 _ hWφ n (hUU01 n hn) g`. Simplify using `only [PW, h1, h2, map_mul]`. Establish `e : psN ψ n * conj (psN ψ n) = 1`.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hpsN]`. Simplify using the standard rewrite rules. Take the linear combination `(whit ψ (k - 1) f g * conj (whit ψ (k - 1) φ g)) * e`. Establish `hDtu : ∀ n, UU 0 n → ∀ g, Dt (n * g) = Dt g` using `fun n hn g => by rw [hmul, hUU 0 n hn, one_mul]`. Establish `hDtm : Measurable fun g : GA E k => (Dt g : ℂ)` using `Complex.measurable_ofReal.comp hcont.measurable`.
+
+Establish `hΦm : ∀ z : ℂ, Measurable fun g => PW ψ f φ g * (Dt g : ℂ) ^ z` using `fun z => hPc.measurable.mul (hDtm.pow_const z)`. Establish `hΦu : ∀ z : ℂ, ∀ n, UU 0 n → ∀ g, PW ψ f φ (n * g) * (Dt (n * g) : ℂ) ^ z = PW ψ f φ g * (Dt g : ℂ) ^ z`. Introduce `z n hn g`. Rewrite using `[hPu n hn, hDtu n hn]`. Establish `hχ : ∀ w : Off E S, ∃ χ : AddChar (w.1.adicCompletion E) ℂ, PositivityTheory.JacquetShalikaLocal.PsiOK χ` using `fun w => PsiDeterminantFlag.exists_psiOK w.1`.
+
+Set `a' : ℂ → Off E S → (Fin k → ℤ) → ℂ` to `fun z w l => aLoc α α' w l * (((nq w : ℝ) ^ (-∑ i, l i) : ℝ) : ℂ) ^ z`. Establish `ha0 : ∀ z w, a' z w 0 = 1`. Introduce `z w`. Take `⟨χ, hχ'⟩` from `hχ w`. Simplify using `[a', (hK8a E S m k α α' w χ hχ' hk hkm).1]`.
+
+Establish `hlawz : ∀ z, LawOff S (fun g => PW ψ f φ g * (Dt g : ℂ) ^ z) (a' z)`. Introduce `z w g hg n hn κ hκ l`. Simplify using `only [a']`. Rewrite using `[hD.law w g hg n hn κ hκ l, hmul, PsiDeterminantFlag.dt_fl hG0 hD0 w.1 n hn κ hκ l, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (hpos g).le (by positivity)]`. Simplify using `only [nq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hI : ∀ s : ℂ, 2 < s.re → σ₀' < (s - ((m : ℂ) - k) / 2).re → ∫ g, PW ψ f φ g * (Dt g : ℂ) ^ (s - ((m : ℂ) - k) / 2) ∂μ.withDensity β' = (∫ g in G0 S, PW ψ f φ g * (Dt g : ℂ) ^ (s - ((m : ℂ) - k) / 2) ∂μ.withDensity β') * LS S α α' s`. Introduce `s hs hs'`. Establish `hsum` using `hC2 E k μ hk β' hβ' S _ (a' (s - ((m : ℂ) - k) / 2)) (hΦm _) (hΦu _) (hlawz _) (ha0 _) (hM _ hs').1`. Take `⟨-, hL⟩` from `hC E S m k α α' s hkm hα hα' hs`.
+
+Establish `e : (fun l : Off E S →₀ (Fin k → ℤ) => ∏ w ∈ l.support, loc (nq w) (α w) (α' w) s (l w)) = fun l => ∏ w ∈ l.support, (nq w : ℂ) ^ rhoPair (l w) * a' (s - ((m : ℂ) - k) / 2) w (l w)`. Use function extensionality and compare the values at `l`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Take `⟨χ, hχ'⟩` from `hχ w`. Conclude with `(((hK8a E S m k α α' w χ hχ' hk hkm).2 (l w)).1 s).symm`.
+
+Rewrite `hL` using `[e]`. Establish `hL2` using `hL.mul_right (∫ g in G0 S, PW ψ f φ g * (Dt g : ℂ) ^ (s - ((m : ℂ) - k) / 2) ∂μ.withDensity β')`. Rewrite using `[mul_comm _ (LS S α α' s)]`. Conclude with `hsum.unique hL2`. Take `⟨hdiff, hnz⟩` from `hD1 E k μ hk β' hβ' S (PW ψ f φ) u ((σ₀' + 1 : ℝ) : ℂ) hPc hPu hD.one hD.pos (hM _ (by simp)).1`.
+
+Use `⟨fun s => ∫ g in G0 S, PW ψ f φ g * (Dt g : ℂ) ^ (s - ((m : ℂ) - k) / 2) ∂μ.withDensity β', max 2 (σ₀' + ((m : ℝ) - k) / 2), hdiff.comp (differentiable_id.sub_const _), ?_, ?_⟩` and prove the remaining obligations. Introduce `σ`. Establish `e : ((σ : ℂ) + u * Complex.I) - ((m : ℂ) - k) / 2 = ((σ - ((m : ℝ) - k) / 2 : ℝ) : ℂ) + u * Complex.I` using `by push_cast; ring`. Simplify using `only`. Rewrite using `[e]`.
+
+Conclude with `hnz _`. Introduce `s hs`. Establish `hs2 : 2 < s.re` using `lt_of_le_of_lt (le_max_left _ _) hs`. Establish `hre : (s - ((m : ℂ) - k) / 2).re = s.re - ((m : ℝ) - k) / 2` using `by simp`. Establish `hs' : σ₀' < (s - ((m : ℂ) - k) / 2).re`.
+
+Rewrite using `[hre]`. Combine the linear relations using `[le_max_right 2 (σ₀' + ((m : ℝ) - k) / 2)]`. Establish `e1 : ∀ g, sumF f g * conj (φ g) * (Dt g : ℂ) ^ (-(((m : ℂ) - k) / 2)) * (Dt g : ℂ) ^ s = sumF f g * conj (φ g) * (Dt g : ℂ) ^ (s - ((m : ℂ) - k) / 2)`. Introduce `g`. Rewrite using `[mul_assoc, ← Complex.cpow_add _ _ (Complex.ofReal_ne_zero.2 (hpos g).ne'), neg_add_eq_sub]`.
+
+Repeatedly rewrite using `[e1]`. Rewrite using `[(hM _ hs').2, hI s hs2 hs']`.
+-/
 theorem mean_convergence_of : jumpWindows.G0 → D0 → P2 → C0 → C2 → D1 → M0 → LocalHeckeAlgebra → CAUCHY → M1 := by
   intro hG0 hD0 hP2 _ hC2 hD1 hM0 hK8a hC E _ _ _ k μ _ hk β hβ ψ hψ S m α α' u f φ hkm hα hα' hD
   have : BorelSpace (GA E k) := ⟨rfl⟩

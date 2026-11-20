@@ -28,6 +28,31 @@ namespace GlobalTheory.Mum.FactorPol
 
 open GlobalTheory.CechPic GlobalTheory.ZH.EndoExtend GlobalTheory.Mum.Two GlobalTheory.UT
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A G _ _ hG U O _ _ _ o oA oG hlin a`. Take `⟨hno, -, hic, -⟩` from `hR`. Establish `hS : IsSemiAbelian G` using `hG`. Use `hS.smooth` as an intermediate fact. Use `hS.geomConnected` as an intermediate fact.
+
+Use `geometricallyIntegral_of_smooth G.hom` as an intermediate fact. Use `smooth_tensorObj_hom G G` as an intermediate fact. Use `geometricallyIntegral_tensorObj_hom G G` as an intermediate fact. Establish `ha` using `oG.hom a`. Establish `hsa` using `oG.hom (star a)`.
+
+Establish `hgen` using `U.gen_hom`. Establish `hL` using `U.LG.isLB`. Establish `hA` using `A.isLB`. Establish `h₁ : IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `h₂ : Flat (jK R)`.
+
+Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ (nonZeroDivisors R))`. Establish `h₃ : IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))).le.trans bot_le)⟩`. Establish `hn : Geo.Tor.IsNormalScheme (Sp R)` using `(GlobalTheory.isNormalScheme_iff_pred _).1 inferInstance`. Establish `h0 : CechPic.pull (eSec G) (cls U.LG.L hL) = 0` using `(cls_eq_zero_iff (pull_isLB hL _)).2 ⟨U.LG.rig, U.LG.rigGen⟩`.
+
+Establish `eA : cubeCls A.A ![fst A.A A.A ≫ oA.act a, snd A.A A.A] (cls A.L hA) = cubeCls A.A ![fst A.A A.A, snd A.A A.A ≫ oA.act (star a)] (cls A.L hA)` using `(cls_cubeLB A.A _ hA).symm.trans (((cls_eq_iff (LB.isLB_linComb hA _ _) (LB.isLB_linComb hA _ _)).2 (GlobalTheory.FullPoint.lbIso_of_rosatiAdj hA (oA.rosati a))).trans (cls_cubeLB A.A _ hA))`. Establish `hc' : CechPic.pull (pullback.fst G.hom (jK R)) (cls U.LG.L hL) = CechPic.pull U.gen.hom.left (cls A.L hA)`. Take `⟨w, hw⟩` from `U.ext`. Rewrite using `[← cls_pull hL _ (pull_isLB hL _), ← cls_pull hA _ (pull_isLB hA _)]`. Conclude with `((cls_eq_iff _ _).2 ⟨w, hw⟩).symm`.
+
+Establish `hgK : cubeCls ((Over.pullback (jK R)).obj G) ![fst ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G) ≫ (Over.pullback (jK R)).map (oG.act a), snd ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G)] (CechPic.pull (pullback.fst G.hom (jK R)) (cls U.LG.L hL)) …`. Rewrite using `[hc']`. Set `u` to `lift (fst ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G) ≫ U.gen.hom) (snd ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G) ≫ U.gen.hom)`. Establish `hu : u.left ≫ (A.A ⊗ A.A).hom = ((Over.pullback (jK R)).obj G ⊗ (Over.pullback (jK R)).obj G).hom ≫ 𝟙 _`. Rewrite using `[Category.comp_id]`.
+
+Conclude with `Over.w u`. Establish `e₁` using `hlin.ext a`. Establish `e₂` using `hlin.ext (star a)`. Rewrite using `[← push_cubeCls (isGrpPullback_of_iso U.gen) _ ![fst A.A A.A ≫ oA.act a, snd A.A A.A] u.left hu (fun i => ?_), ← push_cubeCls (isGrpPullback_of_iso U.gen) _ ![fst A.A A.A, snd A.A A.A ≫ oA.act (star a)] u.left hu (fun i => ?_), eA]`. Use `fin_cases i`.
+
+Use `show (fst _ _ ≫ U.gen.hom).left = (u ≫ fst A.A A.A).left`. Use `congr 1`. Simplify using `[u]`. Use `show ((snd _ _ ≫ (Over.pullback (jK R)).map (oG.act (star a))) ≫ U.gen.hom).left = (u ≫ snd A.A A.A ≫ oA.act (star a)).left`. Use `congr 1`.
+
+Simplify using `[u, e₂]`. Use `fin_cases i`. Use `show ((fst _ _ ≫ (Over.pullback (jK R)).map (oG.act a)) ≫ U.gen.hom).left = (u ≫ fst A.A A.A ≫ oA.act a).left`. Use `congr 1`. Simplify using `[u, e₁]`.
+
+Use `show (snd _ _ ≫ U.gen.hom).left = (u ≫ snd A.A A.A).left`. Use `congr 1`. Simplify using `[u]`. Use `(cls_eq_iff (LB.isLB_linComb hL _ _) (LB.isLB_linComb hL _ _)).1 ((cls_cubeLB G _ hL).trans (Eq.trans ?_ (cls_cubeLB G _ hL).symm))` and prove the remaining obligations. Use `pic_ext (jK R) hn (G ⊗ G) (lift η[G] η[G]).left (Over.w _) ?_ ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `refine (pull_cubeCls G _ (fun _ => η[G]) (lift η[G] η[G]) (fun i => ?_) _).trans (pull_cubeCls G _ (fun _ => η[G]) (lift η[G] η[G]) (fun i => ?_) _).symm <;> fin_cases i <;> simp`. Establish `hGp` using `isGrpPullback_pullback G (jK R)`. Establish `Aw : ∀ {Y Z : Over (Sp R)} (q : Y ⟶ Z), ((Over.pullback (jK R)).map q).left ≫ pullback.fst Z.hom (jK R) = pullback.fst Y.hom (jK R) ≫ q.left` using `fun q => pullback.lift_fst _ _ _`. Set `δ` to `lift ((Over.pullback (jK R)).map (fst G G)) ((Over.pullback (jK R)).map (snd G G))`. Establish `e` using `congrArg (CechPic.pull δ.left) hgK`.
+
+Establish `e'` using `fun x : Fin 2 → (G ⊗ G ⟶ G) => push_cubeCls hGp (T' := (Over.pullback (jK R)).obj (G ⊗ G)) (T := G ⊗ G) (fun i => (Over.pullback (jK R)).map (x i)) x (pullback.fst (G ⊗ G).hom (jK R)) pullback.condition (fun i => Aw _) (cls U.LG.L hL)`. Apply the tactic sequence `rw [pull_cubeCls _ _ (fun i => (Over.pullback (jK R)).map (![fst G G ≫ oG.act a, snd G G] i)) δ (fun i => by fin_cases i <;> simp [δ]), pull_cubeCls _ _ (fun i => (Over.pullback (jK R)).map (![fst G G, snd G G ≫ oG.act (star a)] i)) δ (fun i => by fin_cases i <;> simp [δ])] at e`. Conclude with `(e' _).trans (e.trans (e' _).symm)`.
+-/
 theorem lbIso_star : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (o : D.toPre.OAct O) (oA : A.OAct O) (oG : RingAct G O), U.toUnifPre.OLinear O o oA oG → ∀ a : O, LBIso (cubeLB G ![fst G G ≫ oG.act a, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ oG.act (star a)] U.LG.L) := by
   intro R _ _ _ hR D A G _ _ hG U O _ _ _ o oA oG hlin a
   obtain ⟨hno, -, hic, -⟩ := hR
@@ -118,13 +143,22 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D₁ D₂ D₃ : De
   [IsCommMonObj G₂] [GrpObj G₃] [IsCommMonObj G₃] {U₁ : UnifPre I D₁ A₁ G₁} {U₂ : UnifPre I D₂ A₂ G₂}
   {U₃ : UnifPre I D₃ A₃ G₃} {a : G₁ ⟶ G₂} {a' : G₂ ⟶ G₃}
 
+/- English proof (translation)
+Introduce `e` and use `by rw [Functor.map_comp, Functor.map_comp, Category.assoc, h' e, ← Category.assoc, h e, Category.assoc]`.
+-/
 theorem over_comp {b : D₁.toPre.P.A ⟶ D₂.toPre.P.A} {b' : D₂.toPre.P.A ⟶ D₃.toPre.P.A} (h : Over₀ U₁ U₂ a b)
     (h' : Over₀ U₂ U₃ a' b') : Over₀ U₁ U₃ (a ≫ a') (b ≫ b') := fun e => by
   rw [Functor.map_comp, Functor.map_comp, Category.assoc, h' e, ← Category.assoc, h e, Category.assoc]
 
+/- English proof (translation)
+Introduce `e` and use `by rw [CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]`.
+-/
 theorem over_id : Over₀ U₁ U₁ (𝟙 _) (𝟙 _) := fun e => by
   rw [CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]
 
+/- English proof (translation)
+Introduce `e` and use `by obtain ⟨t, ht, et⟩ := H e obtain ⟨t', ht', et'⟩ := H' e refine ⟨t ≫ t', fun χ => unit_ext fun z _ => ?_, by rw [Functor.map_comp, ← Category.assoc, et, Category.assoc, et', Category.assoc]⟩ have e₁ := congrArg (gm (𝟙 _) z ⊤) (ht (h' χ)) have e₂ := congrArg (gm (𝟙 _ ≫ t.left) z …`.
+-/
 theorem onTorus_comp {h : D₂.toPre.X → D₁.toPre.X} {h' : D₃.toPre.X → D₂.toPre.X} (H : OnTorus U₁ U₂ a h)
     (H' : OnTorus U₂ U₃ a' h') : OnTorus U₁ U₃ (a ≫ a') (h ∘ h') := fun e => by
   obtain ⟨t, ht, et⟩ := H e
@@ -140,6 +174,9 @@ theorem onTorus_comp {h : D₂.toPre.X → D₁.toPre.X} {h' : D₃.toPre.X → 
   refine Eq.trans ?_ ((gm_res _ z (V := ⊤) _ trivial _).trans (gm_pull (𝟙 _ ≫ t.left) t'.left z ⊤ trivial _)).symm
   rw [Over.comp_left, Category.assoc]
 
+/- English proof (translation)
+Introduce `e` and use `⟨𝟙 _, fun χ => unit_ext fun z _ => ((gm_res (𝟙 _) z (V := ⊤) _ trivial _).trans (gm_pull (𝟙 _) (𝟙 _) z ⊤ trivial _)).trans (by rw [Category.comp_id]; rfl), by rw [CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]⟩`.
+-/
 theorem onTorus_id : OnTorus U₁ U₁ (𝟙 _) id := fun e =>
   ⟨𝟙 _, fun χ => unit_ext fun z _ => ((gm_res (𝟙 _) z (V := ⊤) _ trivial _).trans
     (gm_pull (𝟙 _) (𝟙 _) z ⊤ trivial _)).trans (by rw [Category.comp_id]; rfl), by
@@ -147,6 +184,11 @@ theorem onTorus_id : OnTorus U₁ U₁ (𝟙 _) id := fun e =>
 
 end Comp
 
+/- English proof (translation)
+Establish `hΛ' : (abelian₂ G' L').IsLB` using `LB.isLB_linComb hL' _ _`. Establish `e₁ : cubeCls G (x2 G) (cls L hL) = CechPic.pull (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ f) : G2 G ⟶ G2 G').left (cubeCls G' (x2 G') (cls L' hL'))` using `(cls_cubeLB G _ hL).symm.trans (((cls_eq_iff _ (pull_isLB hΛ' _)).2 H).trans ((cls_pull hΛ' _ _).trans (congrArg _ (cls_cubeLB G' _ hL'))))`. Establish `e₂` using `(cls_cubeLB G' _ hL').symm.trans (((cls_eq_iff (LB.isLB_linComb hL' _ _) (LB.isLB_linComb hL' _ _)).2 adj).trans (cls_cubeLB G' _ hL'))`. Apply the tactic sequence `rw [pull_cubeCls G' _ ![fst G G ≫ inc, snd G G ≫ inc ≫ f] _ (fun i => by fin_cases i <;> simp [x2])] at e₁`. Establish `e₃` using `congrArg (CechPic.pull (lift (fst G' G' ≫ pr) (snd G' G' ≫ pr) : G' ⊗ G' ⟶ G ⊗ G).left) e₁`.
+
+Establish `e₄` using `congrArg (CechPic.pull (lift (fst G' G' ≫ pr ≫ inc) (snd G' G') : G' ⊗ G' ⟶ G' ⊗ G').left) e₂`. Apply the tactic sequence `rw [pull_cubeCls G _ ![fst G' G' ≫ pr, snd G' G' ≫ pr] _ (fun i => by fin_cases i <;> simp [x2]), pull_cubeCls G' _ ![fst G' G' ≫ pr ≫ inc, snd G' G' ≫ g] _ (fun i => by fin_cases i <;> simp [← hg])] at e₃`. Apply the tactic sequence `rw [pull_cubeCls G' _ ![fst G' G' ≫ (pr ≫ inc) ≫ g', snd G' G' ≫ 𝟙 G'] _ (fun i => by fin_cases i <;> simp), pull_cubeCls G' _ ![fst G' G' ≫ pr ≫ inc, snd G' G' ≫ g] _ (fun i => by fin_cases i <;> simp)] at e₄`. Conclude with `(cls_eq_iff (LB.isLB_linComb hL _ _) (LB.isLB_linComb hL' _ _)).1 ((cls_cubeLB G _ hL).trans (e₃.trans (e₄.symm.trans (cls_cubeLB G' _ hL').symm)))`.
+-/
 theorem lbIso_proj {S : Scheme.{0}} {G G' : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
     {L : LB G.left} {L' : LB G'.left} (hL : L.IsLB) (hL' : L'.IsLB) (inc : G ⟶ G') (pr : G' ⟶ G) (f g g' : G' ⟶ G')
     (hg : pr ≫ inc ≫ f = g)
@@ -173,6 +215,31 @@ theorem lbIso_proj {S : Scheme.{0}} {G G' : Over S} [GrpObj G] [IsCommMonObj G] 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D D' F A' G' _ _ hG' U' oA oG lin G _ _ hG inc pr hinc hpr ip pi D₀ A U H`. Use `hR.2` as an intermediate fact. Establish `hA` using `hR.1`. Use `U.gen_hom` as an intermediate fact. Use `U'.gen_hom` as an intermediate fact.
+
+Take `⟨prB, hprB, qpr⟩` from `GlobalTheory.T.exists_abelianPart_hom_uniformisedGroups R _ hA D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr hpr`. Take `⟨incB, hincB, qinc⟩` from `GlobalTheory.T.exists_abelianPart_hom_uniformisedGroups R _ hA D₀ D' A A' G G' U.toUnifPre U'.toUnifPre inc hinc`. Take `⟨h, th⟩` from `GlobalTheory.T.uniformisedGroupHom_characterMap_constant R _ hA D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr hpr`. Take `⟨k, tk⟩` from `GlobalTheory.T.uniformisedGroupHom_characterMap_constant R _ hA D₀ D' A A' G G' U.toUnifPre U'.toUnifPre inc hinc`. Establish `un` using `GlobalTheory.T.uniformisedGroupHom_induced_maps_unique R _ hA D₀ D₀ A A G G U.toUnifPre U.toUnifPre`.
+
+Establish `un'` using `GlobalTheory.T.uniformisedGroupHom_induced_maps_unique R _ hA D' D' A' A' G' G' U'.toUnifPre U'.toUnifPre`. Establish `ql : ∀ x, Over₀ U'.toUnifPre U'.toUnifPre (oG.act x) (F.o.onB.act x)` using `fun x e => lin.q_lin e x`. Establish `il : ∀ x, OnTorus U'.toUnifPre U'.toUnifPre (oG.act x) (fun χ => star x • χ)` using `fun x e => lin.i_lin e x`. Establish `ipB : incB ≫ prB = 𝟙 _` using `(un _).1 _ _ (ip ▸ over_comp qinc qpr) over_id`. Establish `piB : prB ≫ incB = F.o.onB.act F.e` using `(un' _).1 _ _ (pi ▸ over_comp qpr qinc) (ql _)`.
+
+Establish `kh : ∀ χ, k (h χ) = χ` using `congrFun ((un _).2 _ _ (ip ▸ onTorus_comp tk th) onTorus_id)`. Establish `hk : ∀ χ, h (k χ) = star F.e • χ` using `congrFun ((un' _).2 _ _ (pi ▸ onTorus_comp th tk) (il _))`. Establish `hinj : Function.Injective h` using `Function.LeftInverse.injective kh`. Establish `L : Lin U'.toUnifPre U.toUnifPre pr prB h` using `⟨hpr, hprB, qpr, th⟩`. Establish `C` using `GlobalTheory.T.torusCoordinates_compare_normalisedGenerators R _ hA D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr prB h L`.
+
+Take `⟨c, hc, gc⟩ : ∃ c : A'.A ⟶ A.A, IsMonHom c ∧ Gen₀ U'.toUnifPre U.toUnifPre pr c` from `⟨U'.gen.inv ≫ (Over.pullback (jK R)).map pr ≫ U.gen.hom, inferInstance, by simp [Gen₀]⟩`. Establish `adj` using `lbIso_star R hA D' A' G' hG' U' F.O F.o oA oG lin`. Establish `ex` using `fun x => (functorial_of_unif R _ hA D' A' G' hG' U').1 (oG.act x) (oA.act x) (oG.hom x) (oA.hom x) (lin.ext x)`. Take `⟨E, eG, eA⟩` from `ex (star (F.f * F.e) * F.e)`. Take `⟨E', eG', -⟩` from `ex (star (star (F.f * F.e) * F.e))`.
+
+Establish `eh : ∀ y, E.h y = star F.e • F.f • F.e • y` using `fun y => (congrFun ((un' _).2 _ _ (eG ▸ (lin_of_endU E).1.2.2.2) (il _)) y).trans (by`. Rewrite using `[star_mul, star_star, mul_smul, mul_smul])`. Establish `H₁` using `lbIso_proj U.LG.isLB U'.LG.isLB inc pr (oG.act F.f) (oG.act (star (star (F.f * F.e)))) (oG.act (star (F.f * F.e))) (by rw [star_star, oG.map_mul, ← pi, Category.assoc]) H (adj _)`. Rewrite `H₁` using `[pi, ← oG.map_mul, ← eG]`. Establish `H₂` using `GlobalTheory.T.cubeBundleIso_uniformisedGroup_genericFibre R _ D' D₀ A' A G' G U'.toUnifPre U.toUnifPre pr pr E.aG (𝟙 _) c c E.aA (𝟙 _) gc gc E.ext (by simp [Gen₀]) H₁`.
+
+Take `⟨Ω, _, _, _, K⟩` from `GlobalTheory.T.exists_algClosedField_torsionMaps_commute_hom R _ hA D' D₀ A' A G' G hG' hG U' U pr c prB h hc gc L C hinj`. Take `⟨φ, hφ, hhφ⟩` from `GlobalTheory.T.semiAbelianHom_torsionCompatible_periods_lattices R _ hA D' D₀ A' A G' G hG' hG U' U pr c prB h hc gc L C E E' (by rw [eG, eG']; exact adj _) H₂ Ω K`. Use `oG.hom F.f` as an intermediate fact. Use `F.o.onB.hom F.f` as an intermediate fact. Establish `H₃` using `GlobalTheory.T.mumfordBundle_iso_along_homs_descends_abelianPart R hA D₀ D' A A' G G' hG hG' U U' inc (inc ≫ oG.act F.f) incB (incB ≫ F.o.onB.act F.f) hinc inferInstance hincB inferInstance qinc (over_comp qinc (ql _)) H`.
+
+Establish `hφ' : ∀ y, h (φ y) = star F.e • F.f • F.e • y` using `fun y => (hhφ y).trans (eh y)`. Take `⟨cφ, w, hw, ht⟩` from `GlobalTheory.T.factor_periods_projection_period_points R D₀.toPre D'.toPre D'.tau_bimult F.O F.o F.e F.f incB prB h φ hincB hprB piB (fun χ => (C χ).imp fun _ => And.left) H₃ Ω hφ hφ'`. Establish `ex : ∀ y, F.e • F.xi y = F.xi y` using `fun y => by rw [← F.xi_xp, F.xp_xi]`. Set `ε : D.toPre.X ≃+ D₀.toPre.X` to `AddEquiv.ofBijective (φ.comp F.xi) ⟨fun y y' e => F.inj (by`. Use `congrArg h e` as an intermediate fact.
+
+Simplify `this), fun χ => by` using `only [AddMonoidHom.comp_apply, hφ', ex]`. Take `⟨y, hy⟩` from `F.onto (h χ)`. Conclude with `⟨y, hinj (by rw [AddMonoidHom.comp_apply, hφ', ex, ← hy, ← hk, kh])⟩⟩`. Establish `hε : ∀ χ, φ (F.xi (ε.symm χ)) = χ` using `ε.apply_symm_apply`. Set `F₀ : Factor D₀.toPre D'.toPre` to `{ O := F.O, o := F.o, e := F.e, f := F.f, inc := incB, pr := prB, xi := F.xi.comp ε.symm.toAddMonoidHom, xp := φ, w := w idem := F.idem, inc_hom := hincB, pr_hom := hprB, inc_pr := ipB, pr_inc := piB, xp_xi := hε xi_xp := fun z => by`.
+
+Establish `: φ z = ε (F.xp z)` using `hinj (by show _ = h (φ (F.xi (F.xp z)))`. Rewrite using `[hφ', hφ', F.xi_xp, ← mul_smul F.e F.e, F.idem])`. Use `show F.xi (ε.symm (φ z)) = _`. Rewrite using `[this, ε.symm_apply_apply, F.xi_xp]`. Use `c_xi := fun χ => by show D'.toPre.c (F.xi (ε.symm χ)) = _ conv_rhs => rw [← hε χ, cφ, Category.assoc, piB, ← F.o.c_lin, ex]`.
+
+Use `inj := F.inj.comp ε.symm.injective`. Use `onto := fun z => (F.onto z).elim fun y hy => ⟨ε y, by show _ = star F.e • F.f • F.xi (ε.symm (ε y))`. Rewrite using `[ε.symm_apply_apply, hy]⟩`. Use `w_gen := hw`. Use `tau := fun a b z J J' hJ hJ' => by`.
+
+Use `ht (F.xi (ε.symm a)) (F.xi (ε.symm b)) z J J' hJ hJ'` as an intermediate fact. Rewrite `this` using `[hε, hε, ex, ex]`. Conclude with `this }`. Conclude with `GlobalTheory.T.samePolarised_of_two_idempotentFactors R D.toPre D₀.toPre D'.toPre D.tau_bimult F F₀ rfl rfl (fun _ => rfl) (fun _ => rfl)`.
+-/
 theorem samePol_of_unif_factor : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) (F : Factor D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R))) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R) D' A' G') (oA : A'.OAct F.O) (oG : RingAct G' F.O), U'.toUnifPre.OLinear F.O F.o oA oG → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (inc : G ⟶ G') (pr : G' ⟶ G), IsMonHom inc → IsMonHom pr → inc ≫ pr = 𝟙 G → pr ≫ inc = oG.act F.e → ∀ (D₀ : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D₀ A G), LBIso (abelian₂ G U.LG.L) ((abelian₂ G' U'.LG.L).pull (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f) : G2 G ⟶ G2 G').left) → SamePol D.toPre D₀.toPre := by
   intro R _ _ _ hR D D' F A' G' _ _ hG' U' oA oG lin G _ _ hG inc pr hinc hpr ip pi D₀ A U H
   have := hR.2

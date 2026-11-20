@@ -15,19 +15,48 @@ open NumberField Matrix GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTh
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype Ψ] {j j' n g : ℕ} {Λ : Type}
   [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap (intEmb_injective s) a`.
+-/
 theorem embOf_coe (s : 𝓞 E →+* ℂ) (a : 𝓞 E) : embOf s (a : E) = s a :=
   IsFractionRing.lift_algebraMap (intEmb_injective s) a
 
+/- English proof (translation)
+The claim follows from `RingHom.ext (embOf_coe s)`.
+-/
 theorem restr_embOf (s : 𝓞 E →+* ℂ) : (embOf s).comp (algebraMap (𝓞 E) E) = s :=
   RingHom.ext (embOf_coe s)
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h`.
+-/
 theorem hom_ext {φ ψ : E →+* ℂ} (h : φ.comp (algebraMap (𝓞 E) E) = ψ.comp (algebraMap (𝓞 E) E)) : φ = ψ :=
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h
 
+/- English proof (translation)
+The claim follows from `hom_ext (restr_embOf _)`.
+-/
 theorem embOf_restr (φ : E →+* ℂ) : embOf (φ.comp (algebraMap (𝓞 E) E)) = φ :=
   hom_ext (restr_embOf _)
 
+/- English proof (translation)
+Set `m : Ψ × Bool → (E →+* ℂ)` to `fun p => if p.2 then (starRingEnd ℂ).comp (embOf (σ p.1)) else embOf (σ p.1)`. Establish `hc : ∀ s t : 𝓞 E →+* ℂ, (starRingEnd ℂ).comp s = (starRingEnd ℂ).comp t → s = t`. Introduce `s t h`. Use extensionality with `x`. Use `congrArg (fun r : 𝓞 E →+* ℂ => starRingEnd ℂ (r x)) h` as an intermediate fact.
+
+Simplify using `using this`. Establish `hcc : ∀ s : 𝓞 E →+* ℂ, (starRingEnd ℂ).comp ((starRingEnd ℂ).comp s) = s`. Introduce `s`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Establish `hr : ∀ τ, ((starRingEnd ℂ).comp (embOf (σ τ))).comp (algebraMap (𝓞 E) E) = (starRingEnd ℂ).comp (σ τ)`. Introduce `τ`. Rewrite using `[RingHom.comp_assoc, restr_embOf]`. Establish `hm : Function.Bijective m`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨τ, b⟩ ⟨τ', b'⟩ h`. Establish `h'` using `congrArg (fun r : E →+* ℂ => r.comp (algebraMap (𝓞 E) E)) h`. Apply the tactic sequence `cases b <;> cases b' <;> simp only [m, Bool.false_eq_true, if_true, if_false, hr, restr_embOf] at h'`. Rewrite using `[hσ.1 h']`. Conclude with `absurd ⟨τ, h'⟩ ((hσ.2 (σ τ')).1 ⟨τ', rfl⟩)`.
+
+Conclude with `absurd ⟨τ', h'.symm⟩ ((hσ.2 (σ τ)).1 ⟨τ, rfl⟩)`. Rewrite using `[hσ.1 (hc _ _ h')]`. Introduce `φ`. Distinguish the cases in `h : ∃ τ, σ τ = φ.comp (algebraMap (𝓞 E) E)`. Take `⟨τ, hτ⟩` from `h`.
+
+Use `⟨(τ, false), ?_⟩` and prove the remaining obligations. Simplify using `only [m, Bool.false_eq_true, if_false, hτ, embOf_restr]`. Establish `h2 : ∃ τ, σ τ = (starRingEnd ℂ).comp (φ.comp (algebraMap (𝓞 E) E))`. Assume the negation of the conclusion as `h3`. Conclude with `h ((hσ.2 _).2 h3)`.
+
+Take `⟨τ, hτ⟩` from `h2`. Use `⟨(τ, true), ?_⟩` and prove the remaining obligations. Simplify using `only [m, if_true]`. Apply `hom_ext` to reduce the goal to its premises. Rewrite using `[hr, hτ, hcc]`.
+
+Rewrite using `[← (Equiv.ofBijective m hm).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[m, Fintype.sum_bool, add_comm]`.
+-/
 theorem sum_embeddings_cm {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) (f : (E →+* ℂ) → ℂ) :
     ∑ φ, f φ = ∑ τ, (f (embOf (σ τ)) + f ((starRingEnd ℂ).comp (embOf (σ τ)))) := by
   classical
@@ -71,6 +100,13 @@ theorem sum_embeddings_cm {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) (f
   refine Finset.sum_congr rfl fun τ _ => ?_
   simp [m, Fintype.sum_bool, add_comm]
 
+/- English proof (translation)
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := z)`. Rewrite `h` using `[eq_ratCast]`. Establish `h2 : ∑ φ : E →ₐ[ℚ] ℂ, φ z = ∑ φ : E →+* ℂ, φ z` using `(Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) _ _ fun τ => rfl).symm`. Rewrite `h` using `[h2, sum_embeddings_cm hσ (fun φ => φ z)]`.
+
+Use `push_cast`. Rewrite using `[h]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[Complex.add_conj]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_eq_sum_re {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) (z : E) :
     ((Algebra.trace ℚ E z : ℚ) : ℝ) = ∑ τ, 2 * (embOf (σ τ) z).re := by
   apply Complex.ofReal_injective
@@ -91,6 +127,9 @@ section Lat
 
 variable {F : UnivFam E Ψ j j' n g Λ} (C : LatEmb F)
 
+/- English proof (translation)
+Rewrite using `[sesq_eq_sum C.h.toSesq (Pi.basisFun E (Fin (j + j'))) w v]`. Simplify using `only [map_sum, map_mul, dotProduct, mulVec, Finset.mul_sum, LatEmb.gr, Matrix.map_apply, Pi.star_apply, Pi.basisFun_repr, GroundTheory.Heights₂.Theta.embedding_conj (maximalRealSubfield E) E, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem emb_sesq (τ : Ψ) (w v : Fin (j + j') → E) :
     embOf (F.σ τ) (C.h.toSesq w v) =
       star (fun i => embOf (F.σ τ) (w i)) ⬝ᵥ (C.gr τ *ᵥ fun i => embOf (F.σ τ) (v i)) := by
@@ -99,6 +138,11 @@ theorem emb_sesq (τ : Ψ) (w v : Fin (j + j') → E) :
     Pi.basisFun_repr, GroundTheory.Heights₂.Theta.embedding_conj (maximalRealSubfield E) E, mul_assoc]
   rfl
 
+/- English proof (translation)
+Establish `h` using `C.form_eq x y`. Establish `h2` using `trace_eq_sum_re F.cm (C.xi * C.h.toSesq (C.e y) (C.e x))`. Rewrite `h2` using `[← h]`. Simplify using `only [Rat.cast_intCast] at h2`. Rewrite using `[h2]`.
+
+Unfold `LatEmb.Fm`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, emb_sesq]`. Both sides reduce to the same expression.
+-/
 theorem Fm_vec (x y : Λ) : C.Fm (C.vec x) (C.vec y) = F.form x y := by
   have h := C.form_eq x y
   have h2 := trace_eq_sum_re F.cm (C.xi * C.h.toSesq (C.e y) (C.e x))
@@ -125,13 +169,24 @@ def vecHom : Λ →+ (Ψ → Fin (j + j') → ℂ) where
     ext τ i
     simp [LatEmb.vec]
 
+/- English proof (translation)
+Use extensionality with `τ i`. Conclude with `(C.bas_eq k τ i).symm`.
+-/
 theorem vec_lam (k : Fin (2 * g)) : C.vec (C.lam k) = C.bas k := by
   ext τ i
   exact (C.bas_eq k τ i).symm
 
+/- English proof (translation)
+Simplify using `[LatEmb.perExt]`.
+-/
 theorem perExt_bas (R : RiemLat E g Λ) (k : Fin (2 * g)) : C.perExt R (C.bas k) = R.P (C.lam k) := by
   simp [LatEmb.perExt]
 
+/- English proof (translation)
+Establish `h : ((C.perExt R).toAddMonoidHom.comp (vecHom C)).toIntLinearMap = R.P.toIntLinearMap`. Apply `C.lam.ext` to reduce the goal to its premises. Introduce `k`. Use `show C.perExt R (C.vec (C.lam k)) = R.P (C.lam k)`. Rewrite using `[vec_lam, perExt_bas]`.
+
+Conclude with `DFunLike.congr_fun h x`.
+-/
 theorem perExt_vec (R : RiemLat E g Λ) (x : Λ) : C.perExt R (C.vec x) = R.P x := by
   have h : ((C.perExt R).toAddMonoidHom.comp (vecHom C)).toIntLinearMap = R.P.toIntLinearMap := by
     apply C.lam.ext
@@ -168,6 +223,9 @@ def HrB (R : RiemLat E g Λ) : (Ψ → Fin (j + j') → ℂ) →ₗ[ℝ] (Ψ →
     (fun r y w => by
       simp only [map_smul, star_smul, star_trivial, mulVec_smul, dotProduct_smul, Complex.smul_im])
 
+/- English proof (translation)
+Establish `h : HrB C R = FmB C` using `LinearMap.ext_basis C.bas C.bas fun k l => by show (C.perExt R (C.bas k) ⬝ᵥ R.Hm *ᵥ star (C.perExt R (C.bas l))).im = C.Fm (C.bas k) (C.bas l)`. Rewrite using `[perExt_bas, perExt_bas, R.im, hform, ← vec_lam, ← vec_lam, Fm_vec]`. Conclude with `DFunLike.congr_fun (DFunLike.congr_fun h y) y'`.
+-/
 theorem im_eq_Fm (R : RiemLat E g Λ) (hform : R.form = F.form) (y y' : Ψ → Fin (j + j') → ℂ) :
     (C.perExt R y ⬝ᵥ R.Hm *ᵥ star (C.perExt R y')).im = C.Fm y y' := by
   have h : HrB C R = FmB C := LinearMap.ext_basis C.bas C.bas fun k l => by
@@ -185,6 +243,11 @@ def rotL (ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) :
     ext τ i
     simp [mulVec_smul]
 
+/- English proof (translation)
+Unfold `LatEmb.Fm`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h1 : star (ai τ *ᵥ y' τ) ⬝ᵥ (C.gr τ *ᵥ (ai τ *ᵥ y τ)) = star (y' τ) ⬝ᵥ (C.gr τ *ᵥ y τ)`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, h]`. Use `show 2 * (_ * (star (ai τ *ᵥ y' τ) ⬝ᵥ (C.gr τ *ᵥ (ai τ *ᵥ y τ)))).re = _`.
+
+Rewrite using `[h1]`.
+-/
 theorem Fm_rot (ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (h : ∀ τ, (ai τ)ᴴ * C.gr τ * ai τ = C.gr τ)
     (y y' : Ψ → Fin (j + j') → ℂ) : C.Fm (rotL ai y) (rotL ai y') = C.Fm y y' := by
   unfold LatEmb.Fm
@@ -205,10 +268,16 @@ def scL (c : 𝓞 E) : (Ψ → Fin (j + j') → ℂ) →ₗ[ℝ] (Ψ → Fin (j 
     ext τ i
     simp [mul_left_comm]
 
+/- English proof (translation)
+Use extensionality with `τ i`. Simplify using `[scL, LatEmb.vec, C.e_smul, embOf_coe]`.
+-/
 theorem scL_vec (c : 𝓞 E) (x : Λ) : scL F c (C.vec x) = C.vec (c • x) := by
   ext τ i
   simp [scL, LatEmb.vec, C.e_smul, embOf_coe]
 
+/- English proof (translation)
+Establish `h : (C.perExt R).comp (scL F c) = ((R.B c).restrictScalars ℝ).comp (C.perExt R)` using `C.bas.ext fun k => by show C.perExt R (scL F c (C.bas k)) = R.B c (C.perExt R (C.bas k))`. Rewrite using `[← vec_lam C k, scL_vec, perExt_vec, perExt_vec, R.act]`. Conclude with `DFunLike.congr_fun h y`.
+-/
 theorem perExt_sc (R : RiemLat E g Λ) (c : 𝓞 E) (y : Ψ → Fin (j + j') → ℂ) :
     C.perExt R (scL F c y) = R.B c (C.perExt R y) := by
   have h : (C.perExt R).comp (scL F c) = ((R.B c).restrictScalars ℝ).comp (C.perExt R) := C.bas.ext fun k => by
@@ -216,6 +285,9 @@ theorem perExt_sc (R : RiemLat E g Λ) (c : 𝓞 E) (y : Ψ → Fin (j + j') →
     rw [← vec_lam C k, scL_vec, perExt_vec, perExt_vec, R.act]
   exact DFunLike.congr_fun h y
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `[rotL, scL, mulVec_smul]`.
+-/
 theorem rotL_sc (ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (c : 𝓞 E) (y : Ψ → Fin (j + j') → ℂ) :
     rotL ai (scL F c y) = scL F c (rotL ai y) := by
   funext τ
@@ -232,12 +304,18 @@ def rot (R : RiemLat E g Λ) (ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) �
       show C.perExt R (rotL ai (C.vec (c • x))) = R.B c (C.perExt R (rotL ai (C.vec x)))
       rw [← scL_vec, rotL_sc, perExt_sc] }
 
+/- English proof (translation)
+The claim follows from `C.bas.ext fun k => by rw [LinearMap.comp_apply, perExt_bas, h, vec_lam]`.
+-/
 theorem perExt_of_P {R R' : RiemLat E g Λ} {ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ}
     (h : ∀ x, R'.P x = C.perExt R (rotL ai (C.vec x))) : C.perExt R' = (C.perExt R).comp (rotL ai) :=
   C.bas.ext fun k => by
     rw [LinearMap.comp_apply, perExt_bas, h, vec_lam]
 
 open Classical in
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : t = τ`. Substitute `ht` using the available equality. Simplify using `[rotL]`. Simplify using `[rotL, Pi.single_eq_of_ne ht]`.
+-/
 theorem rotL_single (ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (τ : Ψ) (y : Fin (j + j') → ℂ) :
     rotL ai (Pi.single τ y) = Pi.single τ (ai τ *ᵥ y) := by
   funext t
@@ -246,18 +324,29 @@ theorem rotL_single (ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (τ :
     simp [rotL]
   · simp [rotL, Pi.single_eq_of_ne ht]
 
+/- English proof (translation)
+Unfold `LatEmb.pPart`. Simplify using `only [perExt_of_P C h, LinearMap.comp_apply, rotL_single, mulVec_smul]`.
+-/
 theorem pPart_rot {R R' : RiemLat E g Λ} {ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ}
     (h : ∀ x, R'.P x = C.perExt R (rotL ai (C.vec x))) (τ : Ψ) (y : Fin (j + j') → ℂ) :
     C.pPart R' τ y = C.pPart R τ (ai τ *ᵥ y) := by
   unfold LatEmb.pPart
   simp only [perExt_of_P C h, LinearMap.comp_apply, rotL_single, mulVec_smul]
 
+/- English proof (translation)
+Unfold `LatEmb.pBar`. Simplify using `only [perExt_of_P C h, LinearMap.comp_apply, rotL_single, mulVec_smul]`.
+-/
 theorem pBar_rot {R R' : RiemLat E g Λ} {ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ}
     (h : ∀ x, R'.P x = C.perExt R (rotL ai (C.vec x))) (τ : Ψ) (y : Fin (j + j') → ℂ) :
     C.pBar R' τ y = C.pBar R τ (ai τ *ᵥ y) := by
   unfold LatEmb.pBar
   simp only [perExt_of_P C h, LinearMap.comp_apply, rotL_single, mulVec_smul]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = G := by`. Rewrite using `[hone]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem inv_preserves {N : Type} [Fintype N] [DecidableEq N] {a ai G : Matrix N N ℂ} (hone : a * ai = 1)
     (h : aᴴ * G * a = G) : aiᴴ * G * ai = G := by
   calc aiᴴ * G * ai = aiᴴ * (aᴴ * G * a) * ai := by rw [h]
@@ -268,6 +357,15 @@ theorem inv_preserves {N : Type} [Fintype N] [DecidableEq N] {a ai G : Matrix N 
       rw [hone]
       simp
 
+/- English proof (translation)
+Establish `hinv : ∀ τ, ai τ * a τ = 1` using `fun τ => mul_eq_one_comm.1 (hone τ)`. Establish `hback : ∀ τ (v : Sg j j' → ℂ), ai τ *ᵥ ((a τ * A τ) *ᵥ v) = A τ *ᵥ v`. Introduce `τ v`. Rewrite using `[mulVec_mulVec, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Use `⟨fun τ => ?_, fun τ v => ?_, fun τ v => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hA.unit τ, conjTranspose_mul]`. Unfold `LatEmb.sgr`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = (A τ)ᴴ * C.gr τ * A τ := by rw [ha]`. Rewrite using `[pPart_rot C h, hback]`. Conclude with `hA.ker τ v`. Rewrite using `[pBar_rot C h, hback]`.
+
+Conclude with `hA.kerBar τ v`.
+-/
 theorem isAdapted_rot {R R' : RiemLat E g Λ} {a ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ}
     (hone : ∀ τ, a τ * ai τ = 1) (ha : ∀ τ, (a τ)ᴴ * C.gr τ * a τ = C.gr τ)
     (h : ∀ x, R'.P x = C.perExt R (rotL ai (C.vec x))) {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ}
@@ -289,6 +387,9 @@ theorem isAdapted_rot {R R' : RiemLat E g Λ} {a ai : Ψ → Matrix (Fin (j + j'
   · rw [pBar_rot C h, hback]
     exact hA.kerBar τ v
 
+/- English proof (translation)
+Establish `h : ∀ x, (rot C R ai hform fun τ => inv_preserves (hone τ) (ha τ)).P x = C.perExt R (rotL ai (C.vec x))` using `fun _ => rfl`. Conclude with `⟨rot C R ai hform fun τ => inv_preserves (hone τ) (ha τ), rfl, rfl, h, fun A hA => isAdapted_rot C hone ha h hA⟩`.
+-/
 theorem rotate_exists (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type)
     [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (R : RiemLat E g Λ)
     (a ai : Ψ → Matrix (Fin (j + j')) (Fin (j + j')) ℂ) (hform : R.form = F.form) (hone : ∀ τ, a τ * ai τ = 1)

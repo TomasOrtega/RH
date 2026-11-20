@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.OrbFinAf
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hK.elim_directed_cover (fun s : Finset (AwayP p) => {z : AfP p | ∀ v ∉ s, AfP.eval v z ∈ v.1.adicCompletionIntegers ℚ}) (fun s => RestrictedProduct.isOpen_forall_imp_mem (fun v => Valued.isOpen_valuationSubring _) (p := fun v => v ∉ s)) (fun y _ => by`. Establish `h : {v : AwayP p | ¬ AfP.eval v y ∈ v.1.adicCompletionIntegers ℚ}.Finite` using `y.2`. Use `Set.mem_iUnion.2 ⟨h.toFinset, fun v hv => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hv ((Set.Finite.mem_toFinset _).2 hc))`.
+
+Use the proof step `(fun s t => ⟨s ∪ t, fun y hy v hv => hy v fun h => hv (Finset.mem_union_left _ h), fun y hy v hv => hy v fun h => hv (Finset.mem_union_right _ h)⟩)`. Rewrite using `[Filter.eventually_cofinite]`. Use `(s.finite_toSet).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hvs`. Conclude with `hv fun a ha => hs ha v hvs`.
+-/
 theorem eventually_int_of_isCompact {p : ℕ} (K : Set (AfP p)) (hK : IsCompact K) :
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ∀ a ∈ K, AfP.eval v a ∈ v.1.adicCompletionIntegers ℚ := by
   obtain ⟨s, hs⟩ := hK.elim_directed_cover
@@ -24,6 +29,9 @@ theorem eventually_int_of_isCompact {p : ℕ} (K : Set (AfP p)) (hK : IsCompact 
   by_contra hvs
   exact hv fun a ha => hs ha v hvs
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r c`. Simplify using `only [basV, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, AlgHom.commutes]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+-/
 theorem repr_map_eval {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : AwayP p) (y : AfP p ⊗[ℚ] G.C)
     (i : Fin (Module.finrank ℚ G.C)) :
     (basV G v).repr (Algebra.TensorProduct.map (AfP.eval v) (AlgHom.id ℚ G.C) y) i =
@@ -35,6 +43,19 @@ theorem repr_map_eval {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : AwayP p) (y 
       Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, AlgHom.commutes]
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
+/- English proof (translation)
+Introduce `p _ G Ω hΩ`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (AfP p) (AfP p ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `set bA := Algebra.TensorProduct.basis (AfP p) (Module.finBasis ℚ G.C) with hbA`. Establish `hrep : ∀ i, Continuous (fun y : AfP p ⊗[ℚ] G.C => bA.repr y i)` using `fun i => by`.
+
+Use `IsModuleTopology.continuous_of_linearMap (R := AfP p) (bA.coord i)` as an intermediate fact. Conclude with `this`. Establish `hg1 : Continuous (fun g : G.GAf => (((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C))` using `Units.continuous_val.comp (continuous_fst.comp continuous_subtype_val)`. Establish `hg2 : Continuous (fun g : G.GAf => ((((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1)⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C))` using `Units.continuous_coe_inv.comp (continuous_fst.comp continuous_subtype_val)`. Establish `hg3 : Continuous (fun g : G.GAf => (((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2 : (AfP p)ˣ) : AfP p))` using `Units.continuous_val.comp (continuous_snd.comp continuous_subtype_val)`.
+
+Establish `hg4 : Continuous (fun g : G.GAf => ((((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2)⁻¹ : (AfP p)ˣ) : AfP p))` using `Units.continuous_coe_inv.comp (continuous_snd.comp continuous_subtype_val)`. Establish `h1` using `Filter.eventually_all.2 fun i => eventually_int_of_isCompact _ (hΩ.image ((hrep i).comp hg1))`. Establish `h2` using `Filter.eventually_all.2 fun i => eventually_int_of_isCompact _ (hΩ.image ((hrep i).comp hg2))`. Establish `h3` using `eventually_int_of_isCompact _ (hΩ.image hg3)`. Establish `h4` using `eventually_int_of_isCompact _ (hΩ.image hg4)`.
+
+Use `filter_upwards [h1, h2, h3, h4] with v hv1 hv2 hv3 hv4`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `⟨fun i => ?_, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((((piV G v g : Gv G v) : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = Algebra.TensorProduct.map (AfP.eval v) (AlgHom.id ℚ G.C) (((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)` using `rfl`. Rewrite using `[e, repr_map_eval]`.
+
+Conclude with `hv1 i _ ⟨g, hg, rfl⟩`. Establish `e : (((((piV G v g : Gv G v) : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1)⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) = Algebra.TensorProduct.map (AfP.eval v) (AlgHom.id ℚ G.C) ((((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1)⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)` using `rfl`. Rewrite using `[e, repr_map_eval]`. Conclude with `hv2 i _ ⟨g, hg, rfl⟩`. Conclude with `hv3 _ ⟨g, hg, rfl⟩`.
+
+Conclude with `hv4 _ ⟨g, hg, rfl⟩`.
+-/
 theorem cptInt : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (Ω : Set G.GAf), IsCompact Ω →
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), piV G v '' Ω ⊆ IntV G v := by
   intro p _ G Ω hΩ

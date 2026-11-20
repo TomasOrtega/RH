@@ -11,5 +11,8 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MovedLat.movedLat | exact GlobalTheory.MovedLat.movedLat | (intros; apply GlobalTheory.MovedLat.movedLat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_self_dual_lattice_moves : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ j, j < D.R.m → ∀ g : GA D (Yc D j), ∃ M : GlobalTheory.FinPl.Lat (Yc D j), IsSelfDualC (Yc D j) M ∧ ∀ P, GlobalTheory.FinPl.Moves (Yc D j) g ((pk W).ΛY j) M P := by
   first | exact @GlobalTheory.MovedLat.movedLat | exact GlobalTheory.MovedLat.movedLat | (intros; apply GlobalTheory.MovedLat.movedLat <;> assumption)

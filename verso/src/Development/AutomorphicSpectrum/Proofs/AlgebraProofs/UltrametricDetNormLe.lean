@@ -5,6 +5,13 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ar.Fl
 
+/- English proof (translation)
+Introduce `A _ _ I _ _ M r hr hM`. Rewrite using `[Matrix.det_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (pow_nonneg hr _) ?_` and prove the remaining obligations. Introduce `σ _`. Rewrite using `[Units.smul_def, zsmul_eq_mul, norm_mul]`.
+
+Establish `h1 : ‖(((Equiv.Perm.sign σ : ℤˣ) : ℤ) : A)‖ ≤ 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Establish `h2 : ‖∏ i, M (σ i) i‖ ≤ r ^ Fintype.card I`. Rewrite using `[norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_det_le_pow_card_of_ultrametric :
     ∀ (A : Type) [NormedField A] [IsUltrametricDist A] (I : Type) [Fintype I] [DecidableEq I]
       (M : Matrix I I A) (r : ℝ), 0 ≤ r → (∀ a b, ‖M a b‖ ≤ r) →

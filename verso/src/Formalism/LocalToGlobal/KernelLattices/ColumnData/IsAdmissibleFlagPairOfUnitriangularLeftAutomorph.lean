@@ -21,17 +21,35 @@ open Formalism.L2.Th1.H
 open Formalism.MainNotions
 open Formalism.L2.Ker.Cd.Inhab (mem_stdL single_mem_stdL)
 
+/- English proof (translation)
+The claim follows from `InterInv_of heisenbergComm (InterReps_of semicharacterHom) (InterFixed_of semicharacterHom) cosetRepsExist`.
+-/
 theorem kInterInv : InterInv :=
   InterInv_of heisenbergComm (InterReps_of semicharacterHom) (InterFixed_of semicharacterHom) cosetRepsExist
+/- English proof (translation)
+The claim follows from `InterTh_of semicharacterHom heisenbergAnalytic`.
+-/
 theorem kInterTh : InterTh := InterTh_of semicharacterHom heisenbergAnalytic
+/- English proof (translation)
+The claim follows from `LineTransport_of kInterInv kInterTh`.
+-/
 theorem kLineTransport : LineTransport := LineTransport_of kInterInv kInterTh
+/- English proof (translation)
+The claim follows from `ThetaVector_of kLineTransport ThStd_proof product_theta_mem StdSelfDual_proof StdSemiChar_proof (ThIsom_of heisenbergIsometry) fourth_root`.
+-/
 theorem kThetaVector : ThetaVector :=
   ThetaVector_of kLineTransport ThStd_proof product_theta_mem StdSelfDual_proof StdSemiChar_proof (ThIsom_of heisenbergIsometry)
     fourth_root
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formV_apply (A : ℝ) (n : Type) [Fintype n] (N N' : ℕ) (z w : n → Fin N' → Fin N → ℂ) :
     formV A n N N' z w = (∑ τ, ∑ i, ∑ j, z τ i j * conj (w τ i j)) / (A : ℂ) := rfl
 
+/- English proof (translation)
+Introduce `x y`. Simplify using `only [formV_apply, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formV_herm (A : ℝ) (n : Type) [Fintype n] (N N' : ℕ) : IsHerm (formV A n N N') := by
   intro x y
   simp only [formV_apply, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal]
@@ -39,22 +57,39 @@ theorem formV_herm (A : ℝ) (n : Type) [Fintype n] (N N' : ℕ) : IsHerm (formV
   refine Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Hf_eq (D : Car) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (z w : TaylorLogMetric.VC D N N') :
     TaylorLogMetric.Hf D T z w = formV (TaylorLogMetric.area T.abelian₂) D.what₂.Tau N N' z w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem U_eq (D : Car) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (x : TaylorLogMetric.VC D N N') (G : TaylorLogMetric.VC D N N' → ℂ) :
     TaylorLogMetric.U D T x G = opU (formV (TaylorLogMetric.area T.abelian₂) D.what₂.Tau N N') x G := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Iop_eq (D : Car) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (La₁ La₂ : AddSubgroup (TaylorLogMetric.VC D N N'))
     (G : TaylorLogMetric.VC D N N' → ℂ) :
     TaylorLogMetric.Iop D T La₁ La₂ G = inter (formV (TaylorLogMetric.area T.abelian₂) D.what₂.Tau N N') (TaylorLogMetric.al D T) La₁ La₂ G := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun z => (h.1 z (Set.mem_univ z)).differentiableAt, fun x hx z => h.2 x hx z⟩`.
+-/
 theorem mem_ThSp_of (D : Car) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (La' : AddSubgroup (TaylorLogMetric.VC D N N'))
     (G : TaylorLogMetric.VC D N N' → ℂ)
     (h : G ∈ Formalism.L2.Th1.H.Th (formV (TaylorLogMetric.area T.abelian₂) D.what₂.Tau N N') (TaylorLogMetric.al D T) La') :
     G ∈ TaylorLogMetric.ThSp D T La' :=
   ⟨fun z => (h.1 z (Set.mem_univ z)).differentiableAt, fun x hx z => h.2 x hx z⟩
 
+/- English proof (translation)
+Unfold `TaylorLogMetric.Iop`. Establish `: ∀ q : La₂ ⧸ La₁.addSubgroupOf La₂, TaylorLogMetric.al D T ((Quotient.out q : La₂) : TaylorLogMetric.VC D N N') * TaylorLogMetric.U D T ((Quotient.out q : La₂) : TaylorLogMetric.VC D N N') (fun v => c * G v) z = c • (TaylorLogMetric.al D T ((Quotient.out q : La₂) : TaylorLogMetr …`. Introduce `q`. Simplify using `only [TaylorLogMetric.U, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [this]`. Rewrite using `[← smul_finsum, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Iop_smul (D : Car) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (La₁ La₂ : AddSubgroup (TaylorLogMetric.VC D N N'))
     (c : ℂ) (G : TaylorLogMetric.VC D N N' → ℂ) (z : TaylorLogMetric.VC D N N') :
     TaylorLogMetric.Iop D T La₁ La₂ (fun v => c * G v) z = c * TaylorLogMetric.Iop D T La₁ La₂ G z := by
@@ -73,19 +108,31 @@ section Gen
 variable (L : PeriodPair) (ω₀ : ℂ) (c : ℝ) {n : Type} [Fintype n] [DecidableEq n]
   (ΛM : AddSubgroup (n → ℂ)) (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) (κ : ℂ)
 
+/- English proof (translation)
+Take `⟨θ, h1, h2⟩` from `(kThetaVector L ω₀ n _ ΛM _ _ g h κ hκ).1`. Conclude with `Classical.epsilon_spec (p := IsThM L ω₀ c ΛM g κ) ⟨θ, h1, h2⟩`.
+-/
 theorem thM_spec (h : StdOK L ω₀ c ΛM g) (hκ : κ ≠ 0) : IsThM L ω₀ c ΛM g κ (thM L ω₀ c ΛM g κ) := by
   obtain ⟨θ, h1, h2⟩ := (kThetaVector L ω₀ n _ ΛM _ _ g h κ hκ).1
   exact Classical.epsilon_spec (p := IsThM L ω₀ c ΛM g κ) ⟨θ, h1, h2⟩
 
+/- English proof (translation)
+The claim follows from `((kThetaVector L ω₀ n _ ΛM _ _ g h κ hκ).2 θ hθ.1 hθ.2).1`.
+-/
 theorem isThM_ne_zero (h : StdOK L ω₀ c ΛM g) (hκ : κ ≠ 0) {θ : (n → ℂ) → ℂ} (hθ : IsThM L ω₀ c ΛM g κ θ) :
     θ ≠ 0 :=
   ((kThetaVector L ω₀ n _ ΛM _ _ g h κ hκ).2 θ hθ.1 hθ.2).1
 
+/- English proof (translation)
+The claim follows from `((kThetaVector L ω₀ n _ ΛM _ _ g h κ hκ).2 θ hθ.1 hθ.2).2.2`.
+-/
 theorem isThM_spans (h : StdOK L ω₀ c ΛM g) (hκ : κ ≠ 0) {θ : (n → ℂ) → ℂ} (hθ : IsThM L ω₀ c ΛM g κ θ) :
     ∀ F ∈ Formalism.L2.Th1.H.Th (matH (hOne L n)) (alphaQ c (matH (hOne L n))) ΛM, ∃ a : ℂ, F = a • θ :=
   ((kThetaVector L ω₀ n _ ΛM _ _ g h κ hκ).2 θ hθ.1 hθ.2).2.2
 
 omit [DecidableEq n] in
+/- English proof (translation)
+Take `⟨z₀, hz⟩` from `Function.ne_iff.1 hθ`. Introduce `h0`. Use `congrFun h0 (fun τ _ _ => z₀ τ)` as an intermediate fact. Simplify using `only [tensPow, Pi.zero_apply, Finset.prod_const] at this`. Conclude with `absurd this (pow_ne_zero _ (pow_ne_zero _ hz))`.
+-/
 theorem tensPow_ne_zero {θ : (n → ℂ) → ℂ} (hθ : θ ≠ 0) (N N' : ℕ) : tensPow θ N N' ≠ 0 := by
   obtain ⟨z₀, hz⟩ := Function.ne_iff.1 hθ
   intro h0
@@ -99,6 +146,9 @@ section Tens
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use `show (∑ i, ∑ j, z i * hOne L n i j * conj (w j)) = _`. Simplify using `only [hOne, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_div]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem matH_hOne (L : PeriodPair) (z w : n → ℂ) :
     matH (hOne L n) z w = (∑ τ, z τ * conj (w τ)) / ((Formalism.L2.Th1.F.area L : ℝ) : ℂ) := by
   show (∑ i, ∑ j, z i * hOne L n i j * conj (w j)) = _
@@ -107,6 +157,9 @@ theorem matH_hOne (L : PeriodPair) (z w : n → ℂ) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [div_eq_mul_inv]; ring
 
+/- English proof (translation)
+Simplify using `only [formV_apply, matH_hOne, ← Finset.sum_div]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem formV_sum (L : PeriodPair) (N N' : ℕ) (z w : n → Fin N' → Fin N → ℂ) :
     formV (Formalism.L2.Th1.F.area L) n N N' z w
       = ∑ i, ∑ j, matH (hOne L n) (fun τ => z τ i j) (fun τ => w τ i j) := by
@@ -116,6 +169,9 @@ theorem formV_sum (L : PeriodPair) (N N' : ℕ) (z w : n → Fin N' → Fin N �
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Simplify using `only [opU, tensPow, formV_sum, Finset.prod_mul_distrib, ← Complex.exp_sum]`. Use `congr 1`. Use `congr 1`. Simplify using `only [Finset.mul_sum, Finset.sum_div, Finset.sum_sub_distrib]`.
+-/
 theorem opU_tensPow (L : PeriodPair) (N N' : ℕ) (θ : (n → ℂ) → ℂ) (x z : n → Fin N' → Fin N → ℂ) :
     opU (formV (Formalism.L2.Th1.F.area L) n N N') x (tensPow θ N N') z
       = ∏ i, ∏ j, opU (matH (hOne L n)) (fun τ => x τ i j) θ (fun τ => z τ i j) := by
@@ -124,6 +180,9 @@ theorem opU_tensPow (L : PeriodPair) (N N' : ℕ) (θ : (n → ℂ) → ℂ) (x 
   congr 1
   simp only [Finset.mul_sum, Finset.sum_div, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `only [alphaQ, qOf, formV_sum, ← Complex.exp_sum]`. Use `congr 1`. Simplify using `only [Complex.re_sum, Finset.mul_sum, Complex.ofReal_sum, Complex.ofReal_mul]`.
+-/
 theorem alphaQ_tensPow (c : ℝ) (L : PeriodPair) (N N' : ℕ) (x : n → Fin N' → Fin N → ℂ) :
     alphaQ c (formV (Formalism.L2.Th1.F.area L) n N N') x
       = ∏ i, ∏ j, alphaQ c (matH (hOne L n)) (fun τ => x τ i j) := by
@@ -137,6 +196,13 @@ def entry (n : Type) (N N' : ℕ) (i : Fin N') (j : Fin N) : (n → Fin N' → F
       ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin N' => Fin N → ℂ) i).comp
         (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : n => Fin N' → Fin N → ℂ) τ))
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `z _`. Apply the tactic sequence `have : tensPow θ N N' = fun z => ∏ i, ∏ j, θ (entry n N N' i j z) := rfl`. Rewrite using `[this]`. Use `Finset.analyticAt_fun_prod _ fun i _ => Finset.analyticAt_fun_prod _ fun j _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `exact (hθ.1 _ (Set.mem_univ _)).comp ((entry n N N' i j).analyticAt z)`. Introduce `x hx z`. Rewrite using `[opU_tensPow, alphaQ_tensPow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun j _ => hθ.2 _ (hx i j) _`.
+-/
 theorem tensPow_mem (c : ℝ) (L : PeriodPair) (ΛM : AddSubgroup (n → ℂ)) {θ : (n → ℂ) → ℂ}
     (hθ : θ ∈ Formalism.L2.Th1.H.Th (matH (hOne L n)) (alphaQ c (matH (hOne L n))) ΛM) (N N' : ℕ) :
     tensPow θ N N' ∈ Formalism.L2.Th1.H.Th (formV (Formalism.L2.Th1.F.area L) n N N')
@@ -155,10 +221,16 @@ theorem tensPow_mem (c : ℝ) (L : PeriodPair) (ΛM : AddSubgroup (n → ℂ)) {
 
 end Tens
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hF.1, fun x hx z => by rw [← h x hx]; exact hF.2 x hx z⟩`.
+-/
 theorem Th_congr {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] (H : Sesq V) (α α' : V → ℂ) (Λ : AddSubgroup V)
     (h : ∀ x ∈ Λ, α x = α' x) {F : V → ℂ} (hF : F ∈ Formalism.L2.Th1.H.Th H α Λ) : F ∈ Formalism.L2.Th1.H.Th H α' Λ :=
   ⟨hF.1, fun x hx z => by rw [← h x hx]; exact hF.2 x hx z⟩
 
+/- English proof (translation)
+Establish `h' : qOf (Real.sqrt D.host.d / 2) (formV (TaylorLogMetric.area T.abelian₂) D.what₂.Tau N N') x = (m : ℝ)` using `h`. Unfold `TaylorLogMetric.al alphaQ`. Rewrite using `[h, h', round_intCast]`. Rewrite using `[show (Real.pi : ℂ) * Complex.I * ((m : ℝ) : ℂ) = (m : ℂ) * ((Real.pi : ℂ) * Complex.I) by push_cast; ring, Complex.exp_int_mul, Complex.exp_pi_mul_I]`.
+-/
 theorem al_eq (D : Car) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (x : TaylorLogMetric.VC D N N') (m : ℤ)
     (h : Real.sqrt D.host.d / 2 * (TaylorLogMetric.Hf D T x x).re = (m : ℝ)) :
     TaylorLogMetric.al D T x = alphaQ (Real.sqrt D.host.d / 2) (formV (TaylorLogMetric.area T.abelian₂) D.what₂.Tau N N') x := by
@@ -172,14 +244,25 @@ section Kap
 
 variable {D : Car} {γ₀ : IsoK D} (k : KapChoice γ₀)
 
+/- English proof (translation)
+The claim follows from `Fintype.card_ne_zero`.
+-/
 theorem classNumber_ne (D : Car) : classNumber D.host.K ≠ 0 := Fintype.card_ne_zero
 
+/- English proof (translation)
+Introduce `h0`. Establish `h` using `k.pi_gen p hp hs`. Rewrite `h` using `[h0, Ideal.span_singleton_eq_bot.2 rfl, ← Ideal.zero_eq_bot]`. Conclude with `(k.pp p).ne_bot ((pow_eq_zero_iff (classNumber_ne D)).1 h)`.
+-/
 theorem KapChoice.pi_ne_zero (p : ℕ) (hp : p.Prime) (hs : SplitK D p) : k.pi p ≠ 0 := by
   intro h0
   have h := k.pi_gen p hp hs
   rw [h0, Ideal.span_singleton_eq_bot.2 rfl, ← Ideal.zero_eq_bot] at h
   exact (k.pp p).ne_bot ((pow_eq_zero_iff (classNumber_ne D)).1 h)
 
+/- English proof (translation)
+Introduce `h0`. Establish `h` using `k.rt_pow p hp hs`. Establish `hpi` using `k.pi_ne_zero p hp hs`. Establish `h1 : ((k.pi p : 𝓞 D.host.K) : D.host.K) ≠ 0` using `by simpa using hpi`. Establish `h2 : (((k.pi p : 𝓞 D.host.K) : D.host.K) : D.host.E) ≠ 0` using `by simpa using h1`.
+
+Rewrite `h` using `[h0, zero_pow (mul_ne_zero two_ne_zero (classNumber_ne D))]`. Conclude with `(div_ne_zero ((map_ne_zero _).2 h2) ((map_ne_zero _).2 ((map_ne_zero _).2 h2))) h.symm`.
+-/
 theorem KapChoice.rt_ne_zero (p : ℕ) (hp : p.Prime) (hs : SplitK D p) : k.rt p ≠ 0 := by
   intro h0
   have h := k.rt_pow p hp hs
@@ -189,16 +272,27 @@ theorem KapChoice.rt_ne_zero (p : ℕ) (hp : p.Prime) (hs : SplitK D p) : k.rt p
   rw [h0, zero_pow (mul_ne_zero two_ne_zero (classNumber_ne D))] at h
   exact (div_ne_zero ((map_ne_zero _).2 h2) ((map_ne_zero _).2 ((map_ne_zero _).2 h2))) h.symm
 
+/- English proof (translation)
+The claim follows from `finprod_induction (· ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) (fun p => zpow_ne_zero _ (k.rt_ne_zero p p.2.1 p.2.2))`.
+-/
 theorem KapChoice.kappa_ne_zero : k.kappa ≠ 0 :=
   finprod_induction (· ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero)
     (fun p => zpow_ne_zero _ (k.rt_ne_zero p p.2.1 p.2.2))
 
 end Kap
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[inter, opU]`.
+-/
 theorem inter_zero {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (Λ₁ Λ₂ : AddSubgroup V) :
     inter H α Λ₁ Λ₂ 0 = 0 := by
   funext z; simp [inter, opU]
 
+/- English proof (translation)
+Introduce `h`. Apply `h0` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Use `kInterInv V H hH Λ₁ Λ₂ α s₁ s₂ c₁ c₂ i₁ i₂ F hF z` as an intermediate fact. Rewrite `this` using `[h, inter_zero]`.
+
+Conclude with `this.symm`.
+-/
 theorem inter_ne_zero {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (hH : IsHerm H) (Λ₁ Λ₂ : AddSubgroup V)
     (α : V → ℂ) (s₁ : IsSelfDual H Λ₁) (s₂ : IsSelfDual H Λ₂) (c₁ : IsSemiChar H Λ₁ α) (c₂ : IsSemiChar H Λ₂ α)
     (i₁ : relIdx Λ₁ Λ₂ ≠ 0) (i₂ : relIdx Λ₂ Λ₁ ≠ 0) {F : V → ℂ} (hF : F ∈ fixedBy H α Λ₁) (h0 : F ≠ 0) :
@@ -214,14 +308,29 @@ namespace Base
 
 variable {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
+/- English proof (translation)
+The claim follows from `B.kc.kappa_ne_zero`.
+-/
 theorem kappa_ne_zero : B.kappa ≠ 0 := B.kc.kappa_ne_zero
 
+/- English proof (translation)
+The claim follows from `thM_spec _ _ _ _ _ _ h B.kappa_ne_zero`.
+-/
 theorem thMM_spec (h : B.StdOK) : B.IsThMM B.thMM := thM_spec _ _ _ _ _ _ h B.kappa_ne_zero
 
+/- English proof (translation)
+The claim follows from `isThM_ne_zero _ _ _ _ _ _ h B.kappa_ne_zero (B.thMM_spec h)`.
+-/
 theorem thMM_ne_zero (h : B.StdOK) : B.thMM ≠ 0 := isThM_ne_zero _ _ _ _ _ _ h B.kappa_ne_zero (B.thMM_spec h)
 
+/- English proof (translation)
+The claim follows from `tensPow_ne_zero (B.thMM_ne_zero h) N N'`.
+-/
 theorem thZero_ne_zero (h : B.StdOK) (N N' : ℕ) : B.thZero N N' ≠ 0 := tensPow_ne_zero (B.thMM_ne_zero h) N N'
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Rewrite using `[Iop_smul]`. Simplify using `only [eNat, chiFac, thMoved]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eNat_base (χ : TaylorLogMetric.IdE D → ℂ) (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) :
     B.eNat χ N N' L L' = fun z => χ (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N') L') ^ (-((N / 2 : ℕ) : ℤ)) *
@@ -232,14 +341,23 @@ theorem eNat_base (χ : TaylorLogMetric.IdE D → ℂ) (N N' : ℕ) (L : Submodu
   simp only [eNat, chiFac, thMoved]
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.1, Formalism.L2.Ker.Cd.Inhab.stdL_isSD D N'⟩`.
+-/
 theorem isAdmissible_flagPair_of_unitriangular_left_automorphism {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (h : TaylorLogMetric.admitted D N N' L L') :
     TaylorLogMetric.admitted D N N' L (StandardLatticesGL3.stdL D N') := ⟨h.1, h.2.1, h.2.2.1, Formalism.L2.Ker.Cd.Inhab.stdL_isSD D N'⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.Ker.Cd.Inhab.Adm_std D N N' h.1 h.2.1`.
+-/
 theorem first_coordinate_admissible {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (h : TaylorLogMetric.admitted D N N' L L') :
     TaylorLogMetric.admitted D N N' (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') := Formalism.L2.Ker.Cd.Inhab.Adm_std D N N' h.1 h.2.1
 
+/- English proof (translation)
+Establish `h1` using `kInterTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _ (hL.1 N N' L _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).2 (hL.2 N N' _ _ _ _ (first_coordinate_admissible hA) (isAdmissible_flagPair_of_unitriangular_left_ …`. Conclude with `kInterTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _ (hL.1 N N' L L' hA).2 (hL.2 N N' _ _ _ _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA) hA).1 _ h1`.
+-/
 theorem thMoved_mem (hL : B.LatAll) {N N' : ℕ} (h0 : B.ThZeroMem N N') {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hA : TaylorLogMetric.admitted D N N' L L') :
     B.thMoved N N' L L' ∈ Formalism.L2.Th1.H.Th (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') (TaylorLogMetric.al D B.tor)
@@ -249,6 +367,11 @@ theorem thMoved_mem (hL : B.LatAll) {N N' : ℕ} (h0 : B.ThZeroMem N N') {L : Su
   exact kInterTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _
     (hL.1 N N' L L' hA).2 (hL.2 N N' _ _ _ _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA) hA).1 _ h1
 
+/- English proof (translation)
+Establish `hH` using `formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N'`. Establish `a0` using `hL.1 N N' _ _ (first_coordinate_admissible hA)`. Establish `a1` using `hL.1 N N' _ _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)`. Establish `a2` using `hL.1 N N' _ _ hA`. Establish `c01` using `hL.2 N N' _ _ _ _ (first_coordinate_admissible hA) (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)`.
+
+Establish `c12` using `hL.2 N N' _ _ _ _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA) hA`. Establish `h1` using `kInterTh _ _ hH _ _ _ a1.2 c01.1 _ h0`. Establish `n1` using `inter_ne_zero _ hH _ _ _ a0.1 a1.1 a0.2 a1.2 c01.1 c01.2 h0.2 (B.thZero_ne_zero hS N N')`. Conclude with `inter_ne_zero _ hH _ _ _ a1.1 a2.1 a1.2 a2.2 c12.1 c12.2 h1.2 n1`.
+-/
 theorem thMoved_ne_zero (hS : B.StdOK) (hL : B.LatAll) {N N' : ℕ} (h0 : B.ThZeroMem N N')
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (hA : TaylorLogMetric.admitted D N N' L L') : B.thMoved N N' L L' ≠ 0 := by
@@ -262,6 +385,11 @@ theorem thMoved_ne_zero (hS : B.StdOK) (hL : B.LatAll) {N N' : ℕ} (h0 : B.ThZe
   have n1 := inter_ne_zero _ hH _ _ _ a0.1 a1.1 a0.2 a1.2 c01.1 c01.2 h0.2 (B.thZero_ne_zero hS N N')
   exact inter_ne_zero _ hH _ _ _ a1.1 a2.1 a1.2 a2.2 c12.1 c12.2 h1.2 n1
 
+/- English proof (translation)
+Establish `e : B.eNat χ N N' L L' = chiFac χ N N' L L' • B.thMoved N N' L L'` using `rfl`. Use `⟨mem_ThSp_of D B.tor _ _ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (B.thMoved_mem hL h0 hA)`. Rewrite using `[e]`.
+
+Conclude with `smul_ne_zero hχ (B.thMoved_ne_zero hS hL h0 hA)`.
+-/
 theorem eNat_mem_ne (hS : B.StdOK) (hL : B.LatAll) {N N' : ℕ} (h0 : B.ThZeroMem N N') (χ : TaylorLogMetric.IdE D → ℂ)
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (hA : TaylorLogMetric.admitted D N N' L L') (hχ : chiFac χ N N' L L' ≠ 0) :
@@ -277,6 +405,11 @@ namespace Base
 
 variable {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
+/- English proof (translation)
+Establish `h1` using `tensPow_mem B.cq B.L B.lamM (B.thMM_spec hS).1 N N'`. Establish `e : TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ) = Formalism.L2.Th1.F.area B.L` using `hA`. Establish `h0' : TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') = powLat B.lamM N N'` using `h0`. Establish `h2 : B.thZero N N' ∈ Formalism.L2.Th1.H.Th (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') (alphaQ B.cq (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N')) (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (Stand …`. Rewrite using `[e, h0']`.
+
+Conclude with `h1`. Use `Th_congr _ _ _ _ (fun x hx => ?_) h2` and prove the remaining obligations. Take `⟨m, hm⟩` from `hq x hx`. Conclude with `(al_eq D B.tor x m hm).symm`.
+-/
 theorem thZeroMem_of (hS : B.StdOK) (hA : B.AreaOK) {N N' : ℕ} (h0 : B.Lat0OK N N') (hq : B.QInt0 N N') :
     B.ThZeroMem N N' := by
   have h1 := tensPow_mem B.cq B.L B.lamM (B.thMM_spec hS).1 N N'
@@ -292,6 +425,17 @@ theorem thZeroMem_of (hS : B.StdOK) (hA : B.AreaOK) {N N' : ℕ} (h0 : B.Lat0OK 
 
 end Base
 
+/- English proof (translation)
+Establish `hA` using `Formalism.L2.Th1.F.areaPos_thm L`. Unfold `TaylorLogMetric.area`. Apply `le_antisymm` to reduce the goal to its premises. Apply `csInf_le` to reduce the goal to its premises. Conclude with `⟨0, fun a ha => ha.1.le⟩`.
+
+Conclude with `⟨hA, L.ω₁, L.ω₁_mem_lattice, L.ω₂, L.ω₂_mem_lattice, rfl⟩`. Apply `le_csInf` to reduce the goal to its premises. Conclude with `⟨_, hA, L.ω₁, L.ω₁_mem_lattice, L.ω₂, L.ω₂_mem_lattice, rfl⟩`. Introduce and unpack `a ⟨ha, w₁, h₁, w₂, h₂, rfl⟩`. Take `⟨m, n, rfl⟩` from `PeriodPair.mem_lattice.1 h₁`.
+
+Take `⟨k, l, rfl⟩` from `PeriodPair.mem_lattice.1 h₂`. Establish `key : (conj ((m : ℂ) * L.ω₁ + (n : ℂ) * L.ω₂) * ((k : ℂ) * L.ω₁ + (l : ℂ) * L.ω₂)).im = ((m * l - n * k : ℤ) : ℝ) * (conj L.ω₁ * L.ω₂).im`. Simplify using `only [map_add, map_mul, map_intCast, Complex.mul_im, Complex.add_im, Complex.add_re, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.intCast_re, Complex.intCast_im]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `ha`, the goal using `[key, abs_mul]`. Establish `hne : (m * l - n * k : ℤ) ≠ 0`. Introduce `h`. Rewrite `ha` using `[h]`. Simplify using `at ha`.
+
+Establish `h1 : (1 : ℝ) ≤ |((m * l - n * k : ℤ) : ℝ)|` using `by exact_mod_cast Int.one_le_abs hne`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem area_eq (L : PeriodPair) : TaylorLogMetric.area L.lattice.toAddSubgroup = Formalism.L2.Th1.F.area L := by
   have hA := Formalism.L2.Th1.F.areaPos_thm L
   unfold TaylorLogMetric.area
@@ -316,15 +460,24 @@ theorem area_eq (L : PeriodPair) : TaylorLogMetric.area L.lattice.toAddSubgroup 
       calc Formalism.L2.Th1.F.area L = 1 * |(conj L.ω₁ * L.ω₂).im| := (one_mul _).symm
         _ ≤ _ := mul_le_mul_of_nonneg_right h1 (abs_nonneg _)
 
+/- English proof (translation)
+Unfold `Base.AreaOK`. Rewrite using `[← B.lat]`. Conclude with `area_eq B.L`.
+-/
 theorem Base.areaOK {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) : B.AreaOK := by
   unfold Base.AreaOK; rw [← B.lat]; exact area_eq B.L
 
+/- English proof (translation)
+Establish `h` using `B.t0.1`. Rewrite `h` using `[← B.lat]`. Establish `e : 2 * (B.ω₀ / 2) = B.ω₀` using `by ring`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem Base.omega_mem {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) : B.ω₀ ∈ B.L.lattice := by
   have h := B.t0.1
   rw [← B.lat] at h
   have e : 2 * (B.ω₀ / 2) = B.ω₀ := by ring
   rw [e] at h; exact h
 
+/- English proof (translation)
+The claim follows from `{ per := B.omega_mem half := half isom := isom alpha0 := by simp [alphaQ, qOf] betaStd := betaStd betaSemi := betaSemi betaAlpha := fun x => by rw [← quadMultiplierRules.2] exact quadMultiplierRules.1 _ _ _ _ _ isom _ x selfDual := selfDual idx₁ := idx₁ idx₂ := idx₂ }`.
+-/
 theorem Base.stdOK_of {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
     (half : B.ω₀ / 2 ∉ B.L.lattice)
     (isom : IsIsom (matH (blk4 (hOne B.L D.what₂.Tau))) (stdH B.L (Fin 4 × D.what₂.Tau))
@@ -357,6 +510,11 @@ section Lat0
 
 variable (D : Car) {N N' : ℕ}
 
+/- English proof (translation)
+Unfold `TaylorLogMetric.homL at hA`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A h`. Use `(mem_stdL D _).1 (h _ (single_mem_stdL D j)) i` as an intermediate fact. Simplify using `using this`.
+
+Consider the case `zero => exact Subring.zero_mem _`. Consider the case `add A B _ _ hA hB => exact Subring.add_mem _ hA hB`. Consider the case `smul r A _ hA => exact Subring.mul_mem _ ⟨r, rfl⟩ hA`.
+-/
 theorem homL_std_entry {A : Matrix (Fin N') (Fin N) D.host.E}
     (hA : A ∈ TaylorLogMetric.homL D (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (i : Fin N') (j : Fin N) :
     A i j ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
@@ -369,6 +527,13 @@ theorem homL_std_entry {A : Matrix (Fin N') (Fin N) D.host.E}
   | add A B _ _ hA hB => exact Subring.add_mem _ hA hB
   | smul r A _ hA => exact Subring.mul_mem _ ⟨r, rfl⟩ hA
 
+/- English proof (translation)
+Unfold `TaylorLogMetric.YYl at hA`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem B h`. Take `⟨a, ha, A, hA, rfl⟩` from `h`. Apply the tactic sequence `obtain ⟨r, hr⟩ := homL_std_entry D hA i j`.
+
+Establish `: (a • A) i j = r • a`. Rewrite using `[Matrix.smul_apply, ← hr, smul_eq_mul, Algebra.smul_def, mul_comm]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) r ha`. Consider the case `zero => exact Submodule.zero_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E)`.
+
+Consider the case `add A B _ _ hA hB => exact Submodule.add_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) hA hB`. Consider the case `smul r A _ hA => exact Submodule.smul_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) r hA`.
+-/
 theorem YYl_std_entry {A : Matrix (Fin N') (Fin N) D.host.E}
     (hA : A ∈ TaylorLogMetric.YYl D (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (i : Fin N') (j : Fin N) :
     A i j ∈ D.host.AA0 := by
@@ -385,6 +550,11 @@ theorem YYl_std_entry {A : Matrix (Fin N') (Fin N) D.host.E}
   | add A B _ _ hA hB => exact Submodule.add_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) hA hB
   | smul r A _ hA => exact Submodule.smul_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) r hA
 
+/- English proof (translation)
+Use `Submodule.subset_span fun x hx => ?_` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_stdL]`. Introduce `i'`. Distinguish the cases in `h : i = i'`. Substitute `h` using the available equality.
+
+Simplify `hx j` using `[Matrix.mulVec, dotProduct, Matrix.single_apply]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply, h]`.
+-/
 theorem single_mem_homL (i : Fin N') (j : Fin N) :
     (Matrix.single i j (1 : D.host.E)) ∈ TaylorLogMetric.homL D (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') := by
   refine Submodule.subset_span fun x hx => ?_
@@ -399,6 +569,21 @@ def putE (D : Car) (N N' : ℕ) (i : Fin N') (j : Fin N) : (D.what₂.Tau → �
   map_zero' := by funext τ i' j'; simp
   map_add' := by intro a b; funext τ i' j'; by_cases h : i' = i ∧ j' = j <;> simp [h]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Unfold `TaylorLogMetric.La`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `z ⟨w, hw, A, hA, rfl⟩ i j`. Apply the tactic sequence `exact AddSubgroup.subset_closure ⟨w, hw, A i j, YYl_std_entry D hA i j, rfl⟩`.
+
+Introduce `z hz`. Establish `key : ∀ (i : Fin N') (j : Fin N), lamMM D (TaylorLogMetric.lamOf D cc δ) ≤ (TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')).comap (putE D N N' i j)`. Introduce `i j`. Unfold `lamMM`. Rewrite using `[AddSubgroup.closure_le]`.
+
+Introduce and unpack `v ⟨w, hw, a, ha, rfl⟩`. Use `AddSubgroup.subset_closure ⟨w, hw, a • Matrix.single i j (1 : D.host.E), Submodule.subset_span ⟨a, ha, _, single_mem_homL D i j, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i' j'`. Use `show (if i' = i ∧ j' = j then w * TaylorLogMetric.embT D τ a else 0) = w * TaylorLogMetric.embT D τ ((a • Matrix.single i j (1 : D.host.E)) i' j')`. Distinguish the cases in `h : i' = i ∧ j' = j`.
+
+Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules. Establish `h' : ¬ (i = i' ∧ j = j')` using `fun e => h ⟨e.1.symm, e.2.symm⟩`. Simplify using `[h, Matrix.single_apply, h']`. Establish `hsum : z = ∑ i, ∑ j, putE D N N' i j (fun τ => z τ i j)`.
+
+Use function extensionality and compare the values at `τ i' j'`. Simplify using `only [Finset.sum_apply, putE, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[Finset.sum_eq_single i', Finset.sum_eq_single j']`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hsum]`. Conclude with `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.sum_mem _ fun j _ => key i j (hz i j)`.
+-/
 theorem Lat0 (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
     TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') = powLat (lamMM D (TaylorLogMetric.lamOf D cc δ)) N N' := by
   apply le_antisymm
@@ -436,9 +621,17 @@ theorem Lat0 (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
 
 end Lat0
 
+/- English proof (translation)
+The claim follows from `Lat0 D cc δ`.
+-/
 theorem Base.lat0OK {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (N N' : ℕ) : B.Lat0OK N N' :=
   Lat0 D cc δ
 
+/- English proof (translation)
+Establish `h2 : Complex.exp (2 * ((Real.pi : ℂ) * Complex.I * (r : ℂ))) = 1`. Apply the tactic sequence `rw [two_mul, Complex.exp_add]; rcases h with h | h <;> rw [h] <;> norm_num`. Take `⟨m, hm⟩` from `Complex.exp_eq_one_iff.1 h2`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hpi : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0` using `Complex.two_pi_I_ne_zero`.
+
+Establish `: (r : ℂ) = (m : ℂ)`. Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Take the linear combination `hm`. Conclude with `this` after adjusting the coercions.
+-/
 theorem int_of_sign {r : ℝ} (h : Complex.exp ((Real.pi : ℂ) * Complex.I * (r : ℂ)) = 1 ∨
     Complex.exp ((Real.pi : ℂ) * Complex.I * (r : ℂ)) = -1) : ∃ m : ℤ, r = (m : ℝ) := by
   have h2 : Complex.exp (2 * ((Real.pi : ℂ) * Complex.I * (r : ℂ))) = 1 := by
@@ -455,6 +648,17 @@ section Gen
 variable (L : PeriodPair) (ω₀ : ℂ) (c : ℝ) {n : Type} [Fintype n] [DecidableEq n]
   (ΛM : AddSubgroup (n → ℂ)) (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ))
 
+/- English proof (translation)
+Set `x : Fin 4 × n → ℂ` to `fun w => if w.1 = 0 then v w.2 else 0`. Establish `s0 : slice 0 x = v` using `by funext i; simp [slice, x]`. Establish `s1 : slice 1 x = 0` using `by funext i; simp [slice, x]`. Establish `s2 : slice 2 x = 0` using `by funext i; simp [slice, x]`. Establish `s3 : slice 3 x = 0` using `by funext i; simp [slice, x]`.
+
+Establish `hx : x ∈ pow4 ΛM`. Introduce `a`. Use `fin_cases a`. Use `show slice 0 x ∈ ΛM`. Rewrite using `[s0]`.
+
+Conclude with `hv`. Use `show slice 1 x ∈ ΛM`. Rewrite using `[s1]`. Conclude with `ΛM.zero_mem`. Use `show slice 2 x ∈ ΛM`.
+
+Rewrite using `[s2]`. Conclude with `ΛM.zero_mem`. Use `show slice 3 x ∈ ΛM`. Rewrite using `[s3]`. Conclude with `ΛM.zero_mem`.
+
+Establish `hb` using `h.betaSemi.1 (g x) ⟨x, hx, rfl⟩`. Rewrite `hb` using `[h.betaAlpha x, Fin.prod_univ_four, s0, s1, s2, s3, h.alpha0, mul_one, mul_one, mul_one]`. Conclude with `int_of_sign hb`.
+-/
 theorem qInt_of_stdOK (h : StdOK L ω₀ c ΛM g) {v : n → ℂ} (hv : v ∈ ΛM) :
     ∃ m : ℤ, qOf c (matH (hOne L n)) v = (m : ℝ) := by
   let x : Fin 4 × n → ℂ := fun w => if w.1 = 0 then v w.2 else 0
@@ -479,6 +683,15 @@ namespace Base
 
 variable {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx' : x ∈ powLat B.lamM N N'`. Use `B.lat0OK N N'` as an intermediate fact. Unfold `Lat0OK at this`. Rewrite `hx` using `[this]`.
+
+Conclude with `hx`. Establish `e : TaylorLogMetric.Hf D B.tor x x = formV (Formalism.L2.Th1.F.area B.L) D.what₂.Tau N N' x x`. Rewrite using `[Hf_eq]`. Use `B.areaOK` as an intermediate fact. Unfold `AreaOK at this`.
+
+Use `show formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N' x x = _`. Rewrite using `[this]`. Rewrite using `[e, formV_sum]`. Use `choose m hm using fun (i : Fin N') (j : Fin N) => qInt_of_stdOK _ _ _ _ _ hS (hx' i j)`. Use `⟨∑ i, ∑ j, m i j, ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Simplify using `only [Complex.re_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => hm i j`.
+-/
 theorem qInt0 (hS : B.StdOK) (N N' : ℕ) : B.QInt0 N N' := by
   intro x hx
   have hx' : x ∈ powLat B.lamM N N' := by
@@ -498,9 +711,15 @@ theorem qInt0 (hS : B.StdOK) (N N' : ℕ) : B.QInt0 N N' := by
   simp only [Complex.re_sum, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => hm i j
 
+/- English proof (translation)
+The claim follows from `B.thZeroMem_of hS B.areaOK (B.lat0OK N N') (B.qInt0 hS N N')`.
+-/
 theorem thZeroMem (hS : B.StdOK) (N N' : ℕ) : B.ThZeroMem N N' :=
   B.thZeroMem_of hS B.areaOK (B.lat0OK N N') (B.qInt0 hS N N')
 
+/- English proof (translation)
+Introduce `N N' _ _ hA` and use `B.eNat_mem_ne hS hL (B.thZeroMem hS N N') χ hA (hχ N N' _ _ hA)`.
+-/
 theorem vec_parts (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D → ℂ)
     (hχ : ∀ N N' L L', TaylorLogMetric.admitted D N N' L L' → chiFac χ N N' L L' ≠ 0) :
     ∀ N N' L L', TaylorLogMetric.admitted D N N' L L' →
@@ -509,6 +728,11 @@ theorem vec_parts (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D →
 
 end Base
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `hS : IsReps Λ Λ ({0} : Finset V)` using `⟨fun x hx => by rw [Finset.mem_singleton.1 hx]; exact Λ.zero_mem, fun x hx y hy _ => by rw [Finset.mem_singleton.1 hx, Finset.mem_singleton.1 hy], fun y hy => ⟨0, Finset.mem_singleton_self 0, by simpa using hy⟩⟩`. Rewrite using `[InterReps_of semicharacterHom V H hH Λ Λ α hα F hF {0} hS z]`. Establish `h1 : relIdx Λ Λ = 1` using `AddSubgroup.relIndex_self Λ`. Rewrite using `[h1]`.
+
+Simplify using `only [sumU, Finset.sum_singleton, Nat.cast_one, Real.sqrt_one, Complex.ofReal_one, inv_one, one_mul]`. Conclude with `hF 0 Λ.zero_mem z`.
+-/
 theorem inter_self {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (hH : IsHerm H) (Λ : AddSubgroup V)
     (α : V → ℂ) (hα : IsSemiChar H Λ α) {F : V → ℂ} (hF : F ∈ fixedBy H α Λ) : inter H α Λ Λ F = F := by
   funext z
@@ -522,6 +746,15 @@ theorem inter_self {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (hH :
   simp only [sumU, Finset.sum_singleton, Nat.cast_one, Real.sqrt_one, Complex.ofReal_one, inv_one, one_mul]
   exact hF 0 Λ.zero_mem z
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Unfold `TaylorLogMetric.detId`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨A, hA, rfl⟩`. Establish `hent : ∀ i j, A i j ∈ (algebraMap (𝓞 D.host.E) D.host.E).range`.
+
+Introduce `i j`. Use `(mem_stdL D _).1 (hA _ (single_mem_stdL D j)) i` as an intermediate fact. Simplify using `using this`. Use `choose A' hA' using hent`. Establish `e : A = (algebraMap (𝓞 D.host.E) D.host.E).mapMatrix (Matrix.of A')`.
+
+Use extensionality with `i j`. Simplify using `[hA']`. Use `show A.det ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `Submodule.mem_one.2 ⟨_, rfl⟩`.
+
+Rewrite using `[Submodule.one_le]`. Conclude with `Submodule.subset_span ⟨1, fun v hv => by simpa using hv, by simp⟩`.
+-/
 theorem detId_std (D : Car) (N : ℕ) : TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N) = 1 := by
   apply le_antisymm
   · unfold TaylorLogMetric.detId
@@ -540,6 +773,11 @@ theorem detId_std (D : Car) (N : ℕ) : TaylorLogMetric.detId D (StandardLattice
   · rw [Submodule.one_le]
     exact Submodule.subset_span ⟨1, fun v hv => by simpa using hv, by simp⟩
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Establish `h` using `hχ.2 (1 : unitary D.host.E)`. Establish `e : Submodule.span (𝓞 D.host.E) {((1 : unitary D.host.E) : D.host.E)} = 1`. Rewrite using `[Submodule.one_eq_span]`. Both sides reduce to the same expression.
+
+Rewrite `h` using `[e]`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem chi_one (D : Car) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) : χ 1 = 1 := by
   let _ := D.host.cmStar
   have h := hχ.2 (1 : unitary D.host.E)
@@ -552,6 +790,9 @@ namespace Base
 
 variable {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
+/- English proof (translation)
+The claim follows from `kInterTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _ (hL.1 N N' L _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).2 (hL.2 N N' _ _ _ _ (first_coordinate_admissible hA) (isAdmissible_flagPair_of_unitriangular_left_ …`.
+-/
 theorem thHalf_mem (hS : B.StdOK) (hL : B.LatAll) {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hA : TaylorLogMetric.admitted D N N' L L') :
     B.thHalf N N' L ∈ Formalism.L2.Th1.H.Th (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') (TaylorLogMetric.al D B.tor)
@@ -559,6 +800,9 @@ theorem thHalf_mem (hS : B.StdOK) (hL : B.LatAll) {N N' : ℕ} {L : Submodule (�
   kInterTh _ _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ _
     (hL.1 N N' L _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).2 (hL.2 N N' _ _ _ _ (first_coordinate_admissible hA) (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).1 _ (B.thZeroMem hS N N')
 
+/- English proof (translation)
+Establish `h1 : B.thMoved N N' L (StandardLatticesGL3.stdL D N') = B.thHalf N N' L` using `inter_self _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ (hL.1 N N' L _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA)).2 (B.thHalf_mem hS hL hA).2`. Use function extensionality and compare the values at `z`. Simplify using `only [eNat, chiFac, h1, detId_std, chi_one D χ hχ, one_zpow, mul_one]`.
+-/
 theorem eNat_left (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ}
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (hA : TaylorLogMetric.admitted D N N' L L') :
@@ -570,6 +814,9 @@ theorem eNat_left (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D →
   funext z
   simp only [eNat, chiFac, h1, detId_std, chi_one D χ hχ, one_zpow, mul_one]
 
+/- English proof (translation)
+Establish `hA` using `Formalism.L2.Ker.Cd.Inhab.Adm_std D N N' hN hN'`. Rewrite using `[B.eNat_left hS hL χ hχ hA]`. Establish `h1 : B.thHalf N N' (StandardLatticesGL3.stdL D N) = B.thZero N N'` using `inter_self _ (formV_herm (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') _ _ (hL.1 N N' _ _ hA).2 (B.thZeroMem hS N N').2`. Use function extensionality and compare the values at `z`. Simplify using `only [h1, detId_std, chi_one D χ hχ, one_zpow, one_mul]`.
+-/
 theorem eNat_zero (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ}
     (hN : Even N) (hN' : Even N') :
     B.eNat χ N N' (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') = B.thZero N N' := by
@@ -581,6 +828,9 @@ theorem eNat_zero (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D →
   funext z
   simp only [h1, detId_std, chi_one D χ hχ, one_zpow, one_mul]
 
+/- English proof (translation)
+Rewrite using `[B.eNat_left hS hL χ hχ hA]`. Conclude with `B.eNat_base χ N N' L L''`.
+-/
 theorem eq_change_right (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ}
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L'' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (hA : TaylorLogMetric.admitted D N N' L L'') :
@@ -589,6 +839,9 @@ theorem eq_change_right (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE
         (B.eNat χ N N' L (StandardLatticesGL3.stdL D N')) z := by
   rw [B.eNat_left hS hL χ hχ hA]; exact B.eNat_base χ N N' L L''
 
+/- English proof (translation)
+Rewrite using `[B.eNat_left hS hL χ hχ hA, B.eNat_zero hS hL χ hχ hA.1 hA.2.1]`. Both sides reduce to the same expression.
+-/
 theorem eq_change_left (hS : B.StdOK) (hL : B.LatAll) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ}
     {L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (hA : TaylorLogMetric.admitted D N N' L₁ L') :
@@ -602,6 +855,9 @@ end Base
 section Rec
 open Formalism.L2.Ker.Cd.IntegralLatticeDensity
 
+/- English proof (translation)
+Establish `h : (Real.pi : ℂ) * Complex.I * ((b : ℝ) : ℂ) = -((Real.pi : ℂ) * Complex.I * ((b : ℝ) : ℂ)) + (b : ℂ) * (2 * (Real.pi : ℂ) * Complex.I)` using `by push_cast; ring`. Rewrite using `[h, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exp_pi_int (b : ℤ) : Complex.exp ((Real.pi : ℂ) * Complex.I * ((b : ℝ) : ℂ))
     = Complex.exp (-((Real.pi : ℂ) * Complex.I * ((b : ℝ) : ℂ))) := by
   have h : (Real.pi : ℂ) * Complex.I * ((b : ℝ) : ℂ)
@@ -611,6 +867,9 @@ theorem exp_pi_int (b : ℤ) : Complex.exp ((Real.pi : ℂ) * Complex.I * ((b : 
   congr 1
   push_cast; ring
 
+/- English proof (translation)
+Unfold `TaylorLogMetric.al`. Break down `Int.even_or_odd (round (Real.sqrt D.host.d / 2 * (TaylorLogMetric.Hf D T x x).re)) with h | h` into its components or cases. Conclude with `Or.inl h.neg_one_zpow`. Conclude with `Or.inr h.neg_one_zpow`.
+-/
 theorem al_sign (D : Car) (T : TaylorLogMetric.Tor D) {N N' : ℕ} (x : TaylorLogMetric.VC D N N') : TaylorLogMetric.al D T x = 1 ∨ TaylorLogMetric.al D T x = -1 := by
   unfold TaylorLogMetric.al
   rcases Int.even_or_odd (round (Real.sqrt D.host.d / 2 * (TaylorLogMetric.Hf D T x x).re)) with h | h
@@ -621,6 +880,17 @@ namespace Base
 
 variable {D : Car} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
+/- English proof (translation)
+Use `⟨fun N N' L L' hA => ⟨?_, fun x _ => al_sign D _ x, ?_⟩, fun N N' L₁ L₁' L₂ L₂' h₁ h₂ => ⟨IO.La_index_ne_zero cc hcc δ L₁ L₂ L₁' L₂' h₁ h₂, IO.La_index_ne_zero cc hcc δ L₂ L₁ L₂' L₁' h₂ h₁⟩⟩` and prove the remaining obligations. Establish `hI` using `hermitian_form_integral_values D cc hcc δ hδ h0 N N' L L' hA`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `v hv`. Conclude with `self_dual_lattice D cc hcc δ hδ h0 N N' L L' hA v (fun y hy => hv y hy)`.
+
+Introduce `v hv y hy`. Take `⟨a, b, -, hab⟩` from `hI v hv y hy`. Use `⟨b, ?_⟩` and prove the remaining obligations. Use `show (TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) v y).im = (b : ℝ)`. Rewrite using `[hab]`.
+
+Simplify using the standard rewrite rules. Introduce `x hx y hy`. Establish `hI` using `hermitian_form_integral_values D cc hcc δ hδ h0 N N' L L' hA`. Establish `hs` using `IO.semiChar_of_HfInt _ hI x hx y hy`. Take `⟨a, b, -, hab⟩` from `hI x hx y hy`.
+
+Establish `him : (TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) x y).im = (b : ℝ)` using `by rw [hab]; simp`. Rewrite using `[hs]`. Use `congr 1`. Use `show Complex.exp (-((Real.pi : ℂ) * Complex.I * (((TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) x y).im : ℝ) : ℂ))) = Complex.exp ((Real.pi : ℂ) * Complex.I * (((TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) x y).im : ℝ) : ℂ))`. Rewrite using `[him]`.
+
+Conclude with `(exp_pi_int b).symm`.
+-/
 theorem latAll (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) : B.LatAll := by
   refine ⟨fun N N' L L' hA => ⟨?_, fun x _ => al_sign D _ x, ?_⟩, fun N N' L₁ L₁' L₂ L₂' h₁ h₂ =>
     ⟨IO.La_index_ne_zero cc hcc δ L₁ L₂ L₁' L₂' h₁ h₂, IO.La_index_ne_zero cc hcc δ L₂ L₁ L₂' L₁' h₂ h₁⟩⟩
@@ -644,6 +914,11 @@ theorem latAll (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.
       = Complex.exp ((Real.pi : ℂ) * Complex.I * (((TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) x y).im : ℝ) : ℂ))
     rw [him]; exact (exp_pi_int b).symm
 
+/- English proof (translation)
+Establish `h` using `character_unit_on_determinant D χ hχ`. Establish `h1` using `h N _ L hA.1 (Formalism.L2.Ker.Cd.Inhab.stdL_isSD D N) hA.2.2.1`. Establish `h2` using `h N' _ L' hA.2.1 (Formalism.L2.Ker.Cd.Inhab.stdL_isSD D N') hA.2.2.2`. Use `mul_ne_zero (zpow_ne_zero _ ?_) (zpow_ne_zero _ ?_)` and prove the remaining obligations. Introduce `e`.
+
+Rewrite `h1` using `[e]`. Simplify using `at h1`. Introduce `e`. Rewrite `h2` using `[e]`. Simplify using `at h2`.
+-/
 theorem chiFac_ne_zero (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ}
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (hA : TaylorLogMetric.admitted D N N' L L') : chiFac χ N N' L L' ≠ 0 := by
@@ -654,12 +929,18 @@ theorem chiFac_ne_zero (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetr
   · intro e; rw [e] at h1; simp at h1
   · intro e; rw [e] at h2; simp at h2
 
+/- English proof (translation)
+The claim follows from `B.vec_parts hS (B.latAll hcc hδ h0) χ fun _ _ _ _ hA => chiFac_ne_zero χ hχ hA`.
+-/
 theorem vec_mem_ne (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (hS : B.StdOK)
     (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) :
     ∀ N N' L L', TaylorLogMetric.admitted D N N' L L' →
       B.eNat χ N N' L L' ∈ TaylorLogMetric.Th D B.tor L L' ∧ B.eNat χ N N' L L' ≠ 0 :=
   B.vec_parts hS (B.latAll hcc hδ h0) χ fun _ _ _ _ hA => chiFac_ne_zero χ hχ hA
 
+/- English proof (translation)
+Establish `h` using `character_unit_on_determinant D χ hχ`. Establish `h1` using `h N _ L hA.1 (Formalism.L2.Ker.Cd.Inhab.stdL_isSD D N) hA.2.2.1`. Establish `h2` using `h N' _ L' hA.2.1 (Formalism.L2.Ker.Cd.Inhab.stdL_isSD D N') hA.2.2.2`. Unfold `chiFac`. Rewrite using `[norm_mul, norm_zpow, norm_zpow, h1, h2, one_zpow, one_zpow, mul_one]`.
+-/
 theorem chiFac_norm (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ}
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (hA : TaylorLogMetric.admitted D N N' L L') : ‖chiFac χ N N' L L'‖ = 1 := by
@@ -669,6 +950,11 @@ theorem chiFac_norm (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.
   unfold chiFac
   rw [norm_mul, norm_zpow, norm_zpow, h1, h2, one_zpow, one_zpow, mul_one]
 
+/- English proof (translation)
+Establish `hL` using `B.latAll hcc hδ h0`. Apply the tactic sequence `have hI := theta_operator_isometry D cc hcc δ hδ`. Establish `e : B.eNat χ N N' L L' = fun z => chiFac χ N N' L L' * B.thMoved N N' L L' z` using `rfl`. Rewrite using `[e, normSq_const_mul, chiFac_norm χ hχ hA, one_pow, one_mul]`. Establish `m0 : B.thZero N N' ∈ TaylorLogMetric.Th D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')` using `mem_ThSp_of D B.tor _ _ (B.thZeroMem hS N N')`.
+
+Establish `m1 : B.thHalf N N' L ∈ TaylorLogMetric.Th D B.tor L (StandardLatticesGL3.stdL D N')` using `mem_ThSp_of D B.tor _ _ (B.thHalf_mem hS hL hA)`. Establish `s2` using `hI N N' _ _ _ _ (isAdmissible_flagPair_of_unitriangular_left_automorphism hA) hA _ m1`. Establish `s1` using `hI N N' _ _ _ _ (first_coordinate_admissible hA) (isAdmissible_flagPair_of_unitriangular_left_automorphism hA) _ m0`. Conclude with `s2.trans s1`.
+-/
 theorem eNat_normSq (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (hS : B.StdOK)
     (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {N N' : ℕ} {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (hA : TaylorLogMetric.admitted D N N' L L') :
@@ -686,10 +972,16 @@ theorem eNat_normSq (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMe
   have s1 := hI N N' _ _ _ _ (first_coordinate_admissible hA) (isAdmissible_flagPair_of_unitriangular_left_automorphism hA) _ m0
   exact s2.trans s1
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ h₁ h₂` and use `(B.eNat_normSq hcc hδ h0 hS χ hχ h₁).trans (B.eNat_normSq hcc hδ h0 hS χ hχ h₂).symm`.
+-/
 theorem th_indep (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (hS : B.StdOK)
     (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) : ThetaNormIndependent D B.tor (B.eNat χ) :=
   fun _ _ _ _ _ _ h₁ h₂ => (B.eNat_normSq hcc hδ h0 hS χ hχ h₁).trans (B.eNat_normSq hcc hδ h0 hS χ hχ h₂).symm
 
+/- English proof (translation)
+Introduce `N N' L L' hA x` and use `theta_unitary_linkage D cc hcc δ hδ N N' L L' hA _ (B.vec_mem_ne hcc hδ h0 hS χ hχ N N' L L' hA).1 x`.
+-/
 theorem th_U (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (hS : B.StdOK)
     (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) : th22U D B.tor (B.eNat χ) :=
   fun N N' L L' hA x => theta_unitary_linkage D cc hcc δ hδ N N' L L' hA _ (B.vec_mem_ne hcc hδ h0 hS χ hχ N N' L L' hA).1 x
@@ -705,6 +997,25 @@ variable {D : Car}
 
 def emb4 (D : Car) (x : Fin 4 → D.host.E) : Fin 4 × D.what₂.Tau → ℂ := fun w => TaylorLogMetric.embT D w.2 (x w.1)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv : v = ∑ a : Fin 4, (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then v (a, w.2) else 0)`. Use function extensionality and compare the values at `w`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single w.1]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[hv]`.
+
+Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Establish `key : ∀ u : D.what₂.Tau → ℂ, (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then u w.2 else 0) ∈ Submodule.span ℂ (Set.range (emb4 D))`. Introduce `u`. Establish `hu : u ∈ Submodule.span ℝ (Set.range fun b : 𝓞 D.host.E => FL.embP D (b : D.host.E))`. Rewrite using `[FL.span_embP]`.
+
+Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u h`. Take `⟨b, rfl⟩` from `h`. Use `Submodule.subset_span ⟨Pi.single a (b : D.host.E), ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w.1 = a`. Simplify using `[emb4, h, FL.embP]`. Simplify using `[emb4, h, Pi.single_apply]`. Consider the case `zero`.
+
+Establish `: (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then (0 : D.what₂.Tau → ℂ) w.2 else 0) = 0`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.zero_mem (Submodule.span ℂ (Set.range (emb4 D)))`.
+
+Consider the case `add x y _ _ hx hy`. Establish `: (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then (x + y) w.2 else 0) = (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then x w.2 else 0) + (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then y w.2 else 0)`. Apply the tactic sequence `funext w; by_cases h : w.1 = a <;> simp [h]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul r x _ hx`. Establish `: (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then (r • x) w.2 else 0) = (r : ℂ) • (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then x w.2 else 0)`. Apply the tactic sequence `funext w; by_cases h : w.1 = a <;> simp [h]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+
+Conclude with `key fun τ => v (a, τ)`.
+-/
 theorem span_range_emb4_eq_top (D : Car) : Submodule.span ℂ (Set.range (emb4 D)) = ⊤ := by
   rw [eq_top_iff]
   intro v _
@@ -746,6 +1057,13 @@ theorem span_range_emb4_eq_top (D : Car) : Submodule.span ℂ (Set.range (emb4 D
       rw [this]; exact Submodule.smul_mem _ _ hx
   exact key fun τ => v (a, τ)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, CU.emb_conj]`. Both sides reduce to the same expression.
+
+Use `_ = D.host.φ₀ (algebraMap D.host.K D.host.E (∑ a, Algebra.trace D.host.K D.host.E (x a * D.host.conj (y a)))) := by rw [γ.isom]`. Use `_ = ∑ a, D.host.φ₀ (algebraMap D.host.K D.host.E (Algebra.trace D.host.K D.host.E (x a * D.host.conj (y a)))) := by rw [map_sum, map_sum]`. Use `_ = ∑ a, ∑ τ, TaylorLogMetric.embT D τ (x a * D.host.conj (y a)) := Finset.sum_congr rfl fun a _ => by rw [FL.sum_tau_trace]; rfl`. Use `_ = ∑ w, emb4 D x w * conj (emb4 D y w) := by`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, CU.emb_conj]`. Both sides reduce to the same expression.
+-/
 theorem isoK_hermitian_sum_eq_emb4_hermitian_sum (γ : IsoK D) (x y : Fin 4 → D.host.E) :
     ∑ w, D.host.φ₀ ((γ.g x w : D.host.K) : D.host.E) * conj (D.host.φ₀ ((γ.g y w : D.host.K) : D.host.E))
       = ∑ w, emb4 D x w * conj (emb4 D y w) := by
@@ -765,12 +1083,24 @@ theorem isoK_hermitian_sum_eq_emb4_hermitian_sum (γ : IsoK D) (x y : Fin 4 → 
         refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun τ _ => ?_
         rw [map_mul, CU.emb_conj]; rfl
 
+/- English proof (translation)
+Use extensionality with `⟨a, i⟩ ⟨a', i'⟩`. Simplify using `only [blk4, hOne, Matrix.smul_apply, Matrix.one_apply, Prod.mk.injEq, smul_eq_mul]`. Apply the tactic sequence `by_cases h1 : a = a' <;> by_cases h2 : i = i' <;> simp [h1, h2]`.
+-/
 theorem blockFourfold_hOne_eq_hOne (L : PeriodPair) (n : Type) [Fintype n] [DecidableEq n] :
     blk4 (hOne L n) = hOne L (Fin 4 × n) := by
   ext ⟨a, i⟩ ⟨a', i'⟩
   simp only [blk4, hOne, Matrix.smul_apply, Matrix.one_apply, Prod.mk.injEq, smul_eq_mul]
   by_cases h1 : a = a' <;> by_cases h2 : i = i' <;> simp [h1, h2]
 
+/- English proof (translation)
+Rewrite using `[blockFourfold_hOne_eq_hOne]`. Use `show ∀ x y, matH (hOne B.L (Fin 4 × D.what₂.Tau)) (B.gC x) (B.gC y) = matH (hOne B.L (Fin 4 × D.what₂.Tau)) x y`. Establish `hS : ∀ x y, matH (hOne B.L (Fin 4 × D.what₂.Tau)) (B.gC (emb4 D x)) (B.gC (emb4 D y)) = matH (hOne B.L (Fin 4 × D.what₂.Tau)) (emb4 D x) (emb4 D y)`. Introduce `x y`. Rewrite using `[show B.gC (emb4 D x) = _ from B.gC_spec x, show B.gC (emb4 D y) = _ from B.gC_spec y, matH_hOne, matH_hOne, isoK_hermitian_sum_eq_emb4_hermitian_sum]`.
+
+Establish `h1 : ∀ y, ((matH (hOne B.L (Fin 4 × D.what₂.Tau))).flip (B.gC (emb4 D y))).comp (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) = (matH (hOne B.L (Fin 4 × D.what₂.Tau))).flip (emb4 D y)`. Introduce `y`. Use `LinearMap.ext_on (span_range_emb4_eq_top D) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hS x y`.
+
+Establish `h2 : ∀ u, (matH (hOne B.L (Fin 4 × D.what₂.Tau)) (B.gC u)).comp (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) = matH (hOne B.L (Fin 4 × D.what₂.Tau)) u`. Introduce `u`. Use `LinearMap.ext_on (span_range_emb4_eq_top D) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `LinearMap.congr_fun (h1 y) u`.
+
+Introduce `x y`. Conclude with `LinearMap.congr_fun (h2 x) y`.
+-/
 theorem Base.isomOK {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) :
     IsIsom (matH (blk4 (hOne B.L D.what₂.Tau))) (stdH B.L (Fin 4 × D.what₂.Tau))
       (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) := by
@@ -798,6 +1128,9 @@ theorem Base.isomOK {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) :
   intro x y
   exact LinearMap.congr_fun (h2 x) y
 
+/- English proof (translation)
+The claim follows from `B.stdOK_of half B.isomOK betaStd betaSemi selfDual idx₁ idx₂`.
+-/
 theorem Base.stdOK_of' {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
     (half : B.ω₀ / 2 ∉ B.L.lattice)
     (betaStd : ∀ x ∈ stdLat B.L (Fin 4 × D.what₂.Tau),
@@ -819,6 +1152,13 @@ section KapInh
 
 variable {D : Car}
 
+/- English proof (translation)
+Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `: (Ideal.span {(p : ℤ)}).IsMaximal` using `Int.ideal_span_isMaximal_of_prime p`. Take `⟨P, hP, hO⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (Ideal.span {(p : ℤ)}) (S := 𝓞 D.host.K)`. Establish `hmem : ((p : ℕ) : 𝓞 D.host.K) ∈ P`. Establish `h1 : (p : ℤ) ∈ P.under ℤ` using `by rw [← hO.over]; exact Ideal.mem_span_singleton_self _`.
+
+Establish `h2` using `Ideal.mem_comap.1 h1`. Simplify using `using h2`. Establish `hne : P ≠ ⊥`. Introduce `h`. Rewrite `hmem` using `[h, Ideal.mem_bot]`.
+
+Conclude with `hp.ne_zero (by exact_mod_cast hmem)`. Conclude with `⟨⟨P, hP.isPrime, hne⟩, hmem⟩`.
+-/
 theorem exists_prime_over (D : Car) (p : ℕ) (hp : p.Prime) :
     ∃ 𝔭 : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.K), ((p : ℕ) : 𝓞 D.host.K) ∈ 𝔭.asIdeal := by
   have : Fact p.Prime := ⟨hp⟩
@@ -834,6 +1174,11 @@ theorem exists_prime_over (D : Car) (p : ℕ) (hp : p.Prime) :
     exact hp.ne_zero (by exact_mod_cast hmem)
   exact ⟨⟨P, hP.isPrime, hne⟩, hmem⟩
 
+/- English proof (translation)
+Establish `hmem : 𝔭.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 D.host.K))` using `mem_nonZeroDivisors_of_ne_zero 𝔭.ne_bot`. Establish `h1 : ClassGroup.mk0 (⟨𝔭.asIdeal, hmem⟩ ^ classNumber D.host.K : nonZeroDivisors (Ideal (𝓞 D.host.K))) = 1`. Rewrite using `[map_pow]`. Conclude with `pow_card_eq_one`. Establish `h2` using `(ClassGroup.mk0_eq_one_iff (Submonoid.pow_mem _ hmem _)).1 (by simpa using h1)`.
+
+Take `⟨π, hπ⟩` from `h2.principal`. Conclude with `⟨π, hπ⟩`.
+-/
 theorem exists_gen (D : Car) (𝔭 : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.K)) :
     ∃ π : 𝓞 D.host.K, 𝔭.asIdeal ^ classNumber D.host.K = Ideal.span {π} := by
   have hmem : 𝔭.asIdeal ∈ nonZeroDivisors (Ideal (𝓞 D.host.K)) := mem_nonZeroDivisors_of_ne_zero 𝔭.ne_bot
@@ -843,6 +1188,15 @@ theorem exists_gen (D : Car) (𝔭 : IsDedekindDomain.HeightOneSpectrum (𝓞 D.
   obtain ⟨π, hπ⟩ := h2.principal
   exact ⟨π, hπ⟩
 
+/- English proof (translation)
+Take `⟨𝔮, -⟩` from `exists_prime_over D 2 Nat.prime_two`. Establish `a1 : ∀ p : ℕ, ∃ 𝔭 : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.K), p.Prime → SplitK D p → ((p : ℕ) : 𝓞 D.host.K) ∈ 𝔭.asIdeal`. Introduce `p`. Distinguish the cases in `hp : p.Prime`. Take `⟨𝔭, h𝔭⟩` from `exists_prime_over D p hp`.
+
+Conclude with `⟨𝔭, fun _ _ => h𝔭⟩`. Conclude with `⟨𝔮, fun h' => absurd h' hp⟩`. Use `choose pp hpp using a1`. Use `choose pi hpi using fun p : ℕ => exists_gen D (pp p)`. Establish `a3 : ∀ p : ℕ, ∃ γ : IsoK D, p.Prime → SplitK D p → γ.AtP p`.
+
+Introduce `p`. Distinguish the cases in `hp : p.Prime ∧ SplitK D p`. Take `⟨γ, hγ⟩` from `h p hp.1 hp.2`. Conclude with `⟨γ, fun _ _ => hγ⟩`. Conclude with `⟨γ₀, fun h1 h2 => absurd ⟨h1, h2⟩ hp⟩`.
+
+Use `choose gaP hgaP using a3`. Use `choose rt hrt using fun p : ℕ => IsAlgClosed.exists_pow_nat_eq (D.host.φ₀ (((pi p : 𝓞 D.host.K) : D.host.K) : D.host.E) / D.host.φ₀ (D.host.conj (((pi p : 𝓞 D.host.K) : D.host.K) : D.host.E))) (Nat.pos_of_ne_zero (mul_ne_zero two_ne_zero (classNumber_ne D)))`. Conclude with `⟨⟨pp, hpp, pi, fun p _ _ => hpi p, gaP, hgaP, rt, fun p _ _ => hrt p⟩⟩`.
+-/
 theorem KapChoice.nonempty_of (γ₀ : IsoK D)
     (h : ∀ p : ℕ, p.Prime → SplitK D p → ∃ γ : IsoK D, γ.AtP p) : Nonempty (KapChoice γ₀) := by
   obtain ⟨𝔮, -⟩ := exists_prime_over D 2 Nat.prime_two
@@ -866,6 +1220,9 @@ theorem KapChoice.nonempty_of (γ₀ : IsoK D)
     (Nat.pos_of_ne_zero (mul_ne_zero two_ne_zero (classNumber_ne D)))
   exact ⟨⟨pp, hpp, pi, fun p _ _ => hpi p, gaP, hgaP, rt, fun p _ _ => hrt p⟩⟩
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `hL`. Take `⟨t, ht⟩` from `ht`. Take `⟨γ₀, gC, hg⟩` from `hγ`. Take `⟨k⟩` from `KapChoice.nonempty_of γ₀ hp`. Conclude with `⟨⟨L, hL, 2 * t, by rw [mul_div_cancel_left₀ t two_ne_zero]; exact ht, γ₀, gC, hg, k⟩⟩`.
+-/
 theorem Base.nonempty_of (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
     (hL : ∃ L : PeriodPair, L.lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ)
     (ht : ∃ t : ℂ, GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc δ) t)
@@ -881,6 +1238,9 @@ theorem Base.nonempty_of (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
 
 end KapInh
 
+/- English proof (translation)
+Introduce `cc hcc δ hδ`. Take `⟨B, hB⟩` from `h cc hcc δ hδ`. Use `⟨hper cc hcc δ hδ, hχ, fun χ hc => ⟨B.eNat χ, ?_⟩⟩` and prove the remaining obligations. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `hB χ hc`. Conclude with `⟨a1, a2, a3, a4, a5.1, a5.2, a6⟩`.
+-/
 theorem conclusion_of_hecke_commutation (D : Car) (C : ℝ)
     (hper : ∀ cc : Ideal (𝓞 D.host.K), TaylorLogMetric.IsCurveIdeal D cc → ∀ δ : ℂ, TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
       TaylorLogMetric.per22 D (TaylorLogMetric.tor0 D cc δ))
@@ -899,6 +1259,9 @@ open Formalism.L2.Th1.H.Inh (L7 gU stdData_seven seven_nontrivial)
 
 variable (n : Type) [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+The claim follows from `seven_nontrivial n`.
+-/
 theorem seven_moves [Nonempty n] :
     imgLat (gU n : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 (stdLat L7 n)) ≠ stdLat L7 (Fin 4 × n) :=
   seven_nontrivial n

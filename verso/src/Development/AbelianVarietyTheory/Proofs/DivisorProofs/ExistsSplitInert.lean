@@ -22,6 +22,9 @@ namespace GlobalTheory.FunObj.NormUniq
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cosetVec_mem_theta_space P h𝔪 o`.
+-/
 theorem cosetVec_mem_TT {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) (o : ℕ) :
     cosetVec P 𝔪 o ∈ TT D (tor0 D ⊤ δ) P.a P.d :=
   GlobalTheory.T.cosetVec_mem_theta_space P h𝔪 o

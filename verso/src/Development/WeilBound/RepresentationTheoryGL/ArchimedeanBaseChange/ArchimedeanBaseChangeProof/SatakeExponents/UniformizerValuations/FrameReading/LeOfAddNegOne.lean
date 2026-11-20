@@ -11,6 +11,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace PositivityTheory.Rg.BcB.F.Tail.PExp.DlB
 
+/- English proof (translation)
+Establish `hswap : ∑ i : Fin N, ∑ j ∈ Finset.univ.filter (fun j => i < j), x j = ∑ j : Fin N, ∑ i ∈ Finset.univ.filter (fun i => i < j), x j` using `Finset.sum_comm' (fun i j => by simp)`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_const, nsmul_eq_mul]`. Rewrite using `[hswap]`. Simplify using `only [Finset.sum_const, nsmul_eq_mul]`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hc1 : (Finset.univ.filter (fun j => i < j)).card = N - 1 - i`. Rewrite using `[Finset.filter_lt_eq_Ioi, Fin.card_Ioi]`. Establish `hc2 : (Finset.univ.filter (fun j => j < i)).card = i`. Rewrite using `[Finset.filter_gt_eq_Iio, Fin.card_Iio]`.
+
+Rewrite using `[hc1, hc2]`. Establish `hi` using `i.isLt`. Establish `h : (((N - 1 - (i : ℕ) : ℕ)) : ℤ) = (N : ℤ) - 1 - (i : ℕ)` using `by omega`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pair_sum (N : ℕ) (x : Fin N → ℤ) :
     ∑ i : Fin N, ∑ j ∈ Finset.univ.filter (fun j => i < j), (x i - x j) =
       ∑ i : Fin N, ((N : ℤ) - 1 - 2 * (i : ℕ)) * x i := by
@@ -32,6 +39,9 @@ theorem pair_sum (N : ℕ) (x : Fin N → ℤ) :
   rw [h]
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ ha, ih]`.
+-/
 theorem prod_zpow' (a : ℝ) (ha : a ≠ 0) {ι : Type*} (s : Finset ι) (f : ι → ℤ) :
     ∏ i ∈ s, a ^ f i = a ^ ∑ i ∈ s, f i := by
   classical
@@ -39,6 +49,11 @@ theorem prod_zpow' (a : ℝ) (ha : a ≠ 0) {ι : Type*} (s : Finset ι) (f : ι
   | empty => simp
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, zpow_add₀ ha, ih]
 
+/- English proof (translation)
+Proceed by induction on `b using WithZero.recZeroCoe with`. Consider the case `zero => exact zero_le`. Consider the case `coe a`. Rewrite `h` using `[← WithZero.coe_one, WithZero.coe_lt_coe]`. Rewrite using `[WithZero.coe_le_coe]`.
+
+Establish `h' : Multiplicative.toAdd a < 0` using `h`. Use `show Multiplicative.toAdd a ≤ -1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_ofAdd_neg_one (b : WithZero (Multiplicative ℤ)) (h : b < 1) :
     b ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
   induction b using WithZero.recZeroCoe with
@@ -50,6 +65,15 @@ theorem le_ofAdd_neg_one (b : WithZero (Multiplicative ℤ)) (h : b < 1) :
     show Multiplicative.toAdd a ≤ -1
     omega
 
+/- English proof (translation)
+Use `set K := w.adicCompletion E`. Establish `hv : Valued.v (ϖ : K) = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Unfold `ordL at h`. Use `split_ifs at h with h0`. Conclude with `absurd h (by norm_num)`.
+
+Rewrite using `[← WithZero.coe_unzero h0]`. Use `congr 1`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_ofAdd]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `key : ∀ a b : K, valuation K a ≤ valuation K b ↔ Valued.v a ≤ Valued.v b` using `fun a b => (Valuation.Compatible.vle_iff_le (v := valuation K) a b).symm.trans Iff.rfl`. Establish `hlt : ∀ a : K, valuation K a < 1 ↔ Valued.v a < 1` using `fun a => by`. Rewrite using `[← map_one (valuation K), ← map_one (Valued.v : Valuation K (WithZero (Multiplicative ℤ))), lt_iff_not_ge, lt_iff_not_ge, key]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[le_uniformizer_iff, hlt, hv, ← WithZero.coe_one, WithZero.coe_lt_coe, ← ofAdd_zero, Multiplicative.ofAdd_lt]`.
+
+Evaluate the numerical expressions. Take `⟨a, ha⟩` from `valuation_surjective (uniformizer K)`. Establish `h1 : valuation K a < 1` using `ha ▸ uniformizer_lt_one`. Rewrite using `[← ha, key, hv]`. Conclude with `le_ofAdd_neg_one _ ((hlt a).1 h1)`.
+-/
 theorem unif_of_ordL (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (ϖ : (w.adicCompletion E)ˣ) (h : ordL (ϖ : w.adicCompletion E) = 1) :
     valuation (w.adicCompletion E) (ϖ : w.adicCompletion E) = uniformizer (w.adicCompletion E) := by
@@ -82,6 +106,23 @@ end PositivityTheory.Rg.BcB.F.Tail.PExp.DlB
 namespace PositivityTheory.Rg.BcB.F.Tail.PExp
 
 open DlB in
+/- English proof (translation)
+Introduce `E _ _ _ w ϖ hord`. Establish `hu` using `unif_of_ordL E w ϖ hord`. Use `⟨hu, fun N x => ?_⟩` and prove the remaining obligations. Use `set q : ℝ := ((qV E w : ℕ) : ℝ) with hq`. Establish `hn : nabs (w.adicCompletion E) ϖ = q⁻¹`.
+
+Rewrite using `[GlobalTheory.GLDoubling.nabs_unif hu, GlobalTheory.T.residue_card_eq_abs_norm]`. Both sides reduce to the same expression. Establish `hqpos : 0 < q`. Use `nabs_pos' (w.adicCompletion E) ϖ` as an intermediate fact. Rewrite `this` using `[hn]`.
+
+Conclude with `inv_pos.1 this`. Establish `hz : ∀ n : ℤ, nabs (w.adicCompletion E) (ϖ ^ n) = q ^ (-n)`. Introduce `n`. Establish `h2` using `hn`. Unfold `nabs at h2 ⊢`.
+
+Rewrite using `[map_zpow, NNReal.coe_zpow, h2, _root_.inv_zpow']`. Use `set S : ℤ := ∑ i : Fin N, ((N : ℤ) - 1 - 2 * (i : ℕ)) * x i with hS`. Establish `hdB : deltaB (fun i => ϖ ^ x i) = q ^ (-S)`. Unfold `deltaB`. Establish `e1 : ∀ i j : Fin N, nabs (w.adicCompletion E) (ϖ ^ x i / ϖ ^ x j) = q ^ (-(x i - x j))` using `fun i j => by`.
+
+Rewrite using `[show ϖ ^ x i / ϖ ^ x j = ϖ ^ (x i - x j) by rw [_root_.zpow_sub, div_eq_mul_inv], hz]`. Simplify using `only [e1]`. Rewrite using `[Finset.prod_congr rfl fun i _ => prod_zpow' q hqpos.ne' _ _, prod_zpow' q hqpos.ne', hS, ← pair_sum]`. Use `congr 1`. Simplify using `only [Finset.sum_neg_distrib]`.
+
+Establish `hdH : (deltaHalf (w.adicCompletion E) (fun _ : Fin N => Unit) (leviTorus (w.adicCompletion E) (Fin N) fun i => ϖ ^ x i) : ℂ) = ((√(deltaB (fun i => ϖ ^ x i)) : ℝ) : ℂ)`. Rewrite using `[val_deltaHalf, deltaB_eq_modulus]`. Rewrite using `[hdH, hdB]`. Use `set r : ℝ := √q with hr`. Establish `hrpos : 0 < r` using `Real.sqrt_pos.2 hqpos`.
+
+Establish `e : q ^ (-S) = (r ^ (-S)) ^ 2`. Rewrite using `[← zpow_natCast, ← _root_.zpow_mul, mul_comm, _root_.zpow_mul, zpow_natCast, hr, Real.sq_sqrt hqpos.le]`. Establish `hqh : GlobalTheory.BCT.qh w = (r : ℂ)` using `rfl`. Rewrite using `[hqh, e, Real.sqrt_sq (zpow_nonneg hrpos.le _), ← Complex.ofReal_mul, ← Complex.ofReal_zpow]`. Use `congr 1`.
+
+Rewrite using `[← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_neg, ← zpow_add₀ hrpos.ne']`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dlBridge' : DlBridge := by
   intro E _ _ _ w ϖ hord
   have hu := unif_of_ordL E w ϖ hord

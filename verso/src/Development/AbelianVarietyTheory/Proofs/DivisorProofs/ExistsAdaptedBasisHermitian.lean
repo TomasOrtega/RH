@@ -21,12 +21,21 @@ variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {n₁ d : ℕ}
 def comb (f : Fin n₁ × Fin d → R) (g : Fin 2 × Fin d → R) : Fin (n₁ + 2) × Fin d → R :=
   fun k => Fin.addCases (motive := fun _ => R) (fun i => f (i, k.2)) (fun t => g (t, k.2)) k.1
 
+/- English proof (translation)
+Simplify using `[comb]`.
+-/
 @[simp] theorem comb_castAdd (f : Fin n₁ × Fin d → R) (g : Fin 2 × Fin d → R) (i : Fin n₁) (l : Fin d) :
     comb f g (Fin.castAdd 2 i, l) = f (i, l) := by simp [comb]
 
+/- English proof (translation)
+Simplify using `[comb]`.
+-/
 @[simp] theorem comb_natAdd (f : Fin n₁ × Fin d → R) (g : Fin 2 × Fin d → R) (t : Fin 2) (l : Fin d) :
     comb f g (Fin.natAdd n₁ t, l) = g (t, l) := by simp [comb]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Break down `k with ⟨i, l⟩` into its components or cases. Use `Fin.addCases (fun i => ?_) (fun t => ?_) i` and prove the remaining obligations. Conclude with `h1 i l`. Conclude with `h2 t l`.
+-/
 theorem comb_ext {u v : Fin (n₁ + 2) × Fin d → R} (h1 : ∀ i l, u (Fin.castAdd 2 i, l) = v (Fin.castAdd 2 i, l))
     (h2 : ∀ t l, u (Fin.natAdd n₁ t, l) = v (Fin.natAdd n₁ t, l)) : u = v := by
   funext k
@@ -35,6 +44,9 @@ theorem comb_ext {u v : Fin (n₁ + 2) × Fin d → R} (h1 : ∀ i l, u (Fin.cas
   · exact h1 i l
   · exact h2 t l
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Fintype.sum_prod_type, Fin.sum_univ_add, comb_castAdd, comb_natAdd]`.
+-/
 theorem dot_comb (f f' : Fin n₁ × Fin d → R) (g g' : Fin 2 × Fin d → R) :
     comb f g ⬝ᵥ comb f' g' = f ⬝ᵥ f' + g ⬝ᵥ g' := by
   simp only [dotProduct, Fintype.sum_prod_type, Fin.sum_univ_add, comb_castAdd, comb_natAdd]
@@ -88,6 +100,9 @@ def glue (e₁ : Matrix (Fin n₁) (Fin d) A ≃ₗ[R] (Fin n₁ × Fin d → R)
     rw [ht, h0, h1, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
     ext k <;> rcases k with ⟨i, l⟩ <;> refine Fin.addCases (fun i => ?_) (fun t => ?_) i <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glue_apply (e₁ : Matrix (Fin n₁) (Fin d) A ≃ₗ[R] (Fin n₁ × Fin d → R) × (Fin n₁ × Fin d → R))
     (p q : (Fin d → A) ≃ₗ[R] (Fin 2 × Fin d → R)) (z : Matrix (Fin (n₁ + 2)) (Fin d) A) :
     glue e₁ p q z = (comb (e₁ (top z)).1 (q (z (Fin.natAdd n₁ 1))), comb (e₁ (top z)).2 (p (z (Fin.natAdd n₁ 0)))) := rfl
@@ -98,6 +113,9 @@ section Glue2
 
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {n₁ d : ℕ}
 
+/- English proof (translation)
+Simplify using `only [glue_apply, dot_comb, h₁]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem glue_form (e₁ : Matrix (Fin n₁) (Fin d) A ≃ₗ[R] (Fin n₁ × Fin d → R) × (Fin n₁ × Fin d → R))
     (p q : (Fin d → A) ≃ₗ[R] (Fin 2 × Fin d → R)) (B₁ : Matrix (Fin n₁) (Fin d) A → Matrix (Fin n₁) (Fin d) A → R)
     (h₁ : ∀ z z', B₁ z z' = (e₁ z).1 ⬝ᵥ (e₁ z').2 - (e₁ z').1 ⬝ᵥ (e₁ z).2) (z z' : Matrix (Fin (n₁ + 2)) (Fin d) A) :
@@ -129,17 +147,61 @@ variable {A : Type} [CommRing A] {n₁ d : ℕ}
 def emb (z₀ : Matrix (Fin n₁) (Fin d) A) (a b : Fin d → A) : Matrix (Fin (n₁ + 2)) (Fin d) A :=
   Matrix.of fun r l => Fin.addCases (motive := fun _ => A) (fun i => z₀ i l) (fun t => ![a l, b l] t) r
 
+/- English proof (translation)
+Use extensionality with `i l`. Simplify using `[top, emb]`.
+-/
 @[simp] theorem top_emb (z₀ : Matrix (Fin n₁) (Fin d) A) (a b : Fin d → A) : top (emb z₀ a b) = z₀ := by
   ext i l; simp [top, emb]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `[emb]`.
+-/
 @[simp] theorem emb_zero (z₀ : Matrix (Fin n₁) (Fin d) A) (a b : Fin d → A) : emb z₀ a b (Fin.natAdd n₁ 0) = a := by
   funext l; simp [emb]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `[emb]`.
+-/
 @[simp] theorem emb_one (z₀ : Matrix (Fin n₁) (Fin d) A) (a b : Fin d → A) : emb z₀ a b (Fin.natAdd n₁ 1) = b := by
   funext l; simp [emb]
 
 end Emb
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W r s r' s' hB hX hW n₁ X₁ H j₀ j₁ M₁ r₁ s₁ hX₁ hH hM₁`. Take `rfl : n = n₁ + 2` from `hH.rank`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Apply `((B.emb w).1 : E →+* ℂ).injective` to reduce the goal to its premises.
+
+Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`. Establish `hX₁' : X₁.J.det ≠ 0` using `fun h0 => by`. Apply `GlobalTheory.RatDarboux.det_ne_zero_of_isCartan (hX₁.cartan w)` to reduce the goal to its premises. Use `((B.emb w).1 : E →+* ℂ).map_det X₁.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Conclude with `this.symm`. Establish `hW' : W.J.det ≠ 0` using `fun h0 => by`. Apply `GlobalTheory.RatDarboux.det_ne_zero_of_isCartan (hW.cartan w)` to reduce the goal to its premises. Use `((B.emb w).1 : E →+* ℂ).map_det W.J` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Rewrite using `[Matrix.det_smul]`. Conclude with `mul_eq_zero_of_right _ this.symm`. Take `⟨p, q, hpq, hpq', hpr, hqr⟩` from `GlobalTheory.T.quadratic_extension_symplectic_coordinates σ d W.J hσ hB.cm.2.2.1 hW.skew hW'`. Set `P : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) E` to `Matrix.of fun r c => Fin.addCases (motive := fun _ => E) (fun i => H.ι r i) (fun t => ![H.x r, H.y r] t) c`. Establish `hPι : ∀ r i, P r (Fin.castAdd 2 i) = H.ι r i` using `fun r i => by simp [P]`.
+
+Establish `hPx : ∀ r, P r (Fin.natAdd n₁ 0) = H.x r` using `fun r => by simp [P]`. Establish `hPy : ∀ r, P r (Fin.natAdd n₁ 1) = H.y r` using `fun r => by simp [P]`. Take `⟨hPdet, hG1, hG2, hG3, hG00, hG11, hG01, hG10⟩` from `GlobalTheory.T.hyperbolic_pair_splitting_matrix σ n₁ X.J X₁.J H.x H.y H.ι P hσ hX.herm hX₁' hH.xx hH.yy hH.xy hH.orth hH.gram hPι hPx hPy`. Establish `hPQ : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P (Ne.isUnit hPdet)`. Establish `hQP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P (Ne.isUnit hPdet)`.
+
+Establish `hinc : ∀ {a b c : ℕ} (U : Matrix (Fin a) (Fin b) E) (V : Matrix (Fin b) (Fin c) E), incM F (U * V) = incM F U * incM F V` using `fun U V => Matrix.map_mul`. Establish `hinc1 : incM F (1 : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1 : incM F P * incM F P⁻¹ = 1` using `by rw [← hinc, hPQ, hinc1]`. Establish `h2 : incM F P⁻¹ * incM F P = 1` using `by rw [← hinc, hQP, hinc1]`. Set `e` to `(mulLeft (R := AF F) (d := d) (incM F P⁻¹) (incM F P) h1 h2).trans (glue M₁.co.e p q)`.
+
+Establish `he : ∀ w', e w' = glue M₁.co.e p q (incM F P⁻¹ * w')` using `fun _ => rfl`. Establish `hrow : ∀ (Z : Matrix (Fin (n₁ + 2)) (Fin d) E) r, incM F Z r = incV F (Z r)` using `fun _ _ => rfl`. Establish `hembι : ∀ z : Matrix (Fin n₁) (Fin d) (AE F E), incM F H.ι * z = incM F P * emb z 0 0` using `fun z => by`. Use extensionality with `r l`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_add, emb, incM, hPι]`.
+
+Establish `hembx : ∀ z : Fin d → AE F E, Matrix.vecMulVec (incV F H.x) z = incM F P * emb (0 : Matrix (Fin n₁) (Fin d) (AE F E)) z 0` using `fun z => by`. Use extensionality with `r l`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_add, emb, incM, incV, hPx, Matrix.vecMulVec_apply]`. Establish `hemby : ∀ z : Fin d → AE F E, Matrix.vecMulVec (incV F H.y) z = incM F P * emb (0 : Matrix (Fin n₁) (Fin d) (AE F E)) 0 z` using `fun z => by`. Use extensionality with `r l`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_add, emb, incM, incV, hPy, Matrix.vecMulVec_apply]`. Establish `hback : ∀ Z : Matrix (Fin (n₁ + 2)) (Fin d) (AE F E), incM F P⁻¹ * (incM F P * Z) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`. Establish `hG : (incM F P)ᵀ * incM F X.J * (incM F P).map (cA σ) = incM F (Pᵀ * X.J * P.map σ)`. Rewrite using `[hinc, hinc]`.
+
+Both sides reduce to the same expression. Establish `key : ∀ z z' : Matrix (Fin (n₁ + 2)) (Fin d) (AE F E), symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) (incM F P * z) (incM F P * z') = (e (incM F P * z)).1 ⬝ᵥ (e (incM F P * z')).2 - (e (incM F P * z')).1 ⬝ᵥ (e (incM F P * z)).2 := fun z z' => by`. Rewrite using `[he, he, hback, hback, glue_form M₁.co.e p q _ M₁.co.form, GlobalTheory.T.symplectic_form_base_change_matrix, hG, GlobalTheory.T.hermitian_block_decomposition_hyperbolic σ n₁ d _ X₁.J W.J hG1 hG2 hG3 hG00 hG11 hG01 hG10 z z', hpq (z' (Fin.natAdd n₁ 0)) (z (Fin.natAdd n₁ 1)), hpq' …`. Simplify using `only [top]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hnot : ∀ (t : Fin 2) (l : Fin d), ¬∃ k : Fin n₁ × Fin d, (Fin.castAdd 2 k.1, k.2) = (Fin.natAdd n₁ t, l)`. Introduce and unpack `t l ⟨k, hk⟩`. Use `congrArg (fun x => x.1.val) hk` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hinj : Function.Injective (fun k : Fin n₁ × Fin d => (Fin.castAdd 2 k.1, k.2))` using `fun k k' h => by`. Simplify using `only [Prod.mk.injEq] at h`. Conclude with `Prod.ext (Fin.castAdd_injective _ _ h.1) h.2`. Establish `hext : ∀ f : Fin n₁ × Fin d → AF F, comb f 0 = Function.extend (fun k : Fin n₁ × Fin d => (Fin.castAdd 2 k.1, k.2)) f 0` using `fun f => by`. Use `comb_ext (fun i l => ?_) (fun t l => ?_)` and prove the remaining obligations.
+
+Rewrite using `[comb_castAdd]`. Conclude with `(hinj.extend_apply f 0 (i, l)).symm`. Rewrite using `[comb_natAdd, Function.extend_apply' _ _ _ (hnot t l)]`. Both sides reduce to the same expression. Use `⟨fun k => (Fin.castAdd 2 k.1, k.2), ⟨e, fun w₁ w₂ => ?_⟩, hinj, fun x => ?_, fun z => ?_, fun z => ?_, fun z => ?_⟩` and prove the remaining obligations.
+
+Use `key (incM F P⁻¹ * w₁) (incM F P⁻¹ * w₂)` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, h1, Matrix.one_mul, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Then use the resulting hypothesis. Rewrite using `[he, ← hinc, glue_apply]`. Take `⟨y₁, z₁, hM⟩` from `hM₁.rat (top (P⁻¹ * x))`. Take `⟨a, ha⟩` from `hqr ((P⁻¹ * x) (Fin.natAdd n₁ 1))`.
+
+Take `⟨b, hb⟩` from `hpr ((P⁻¹ * x) (Fin.natAdd n₁ 0))`. Use `⟨comb y₁ a, comb z₁ b, ?_⟩` and prove the remaining obligations. Rewrite using `[show top (incM F (P⁻¹ * x)) = incM F (top (P⁻¹ * x)) from rfl, hM, hrow, hrow, ha, hb]`. Apply the tactic sequence `ext k <;> rcases k with ⟨i, l⟩ <;> refine Fin.addCases (fun i => ?_) (fun t => ?_) i <;> simp`. Rewrite using `[he, hembι, hback, glue_apply, top_emb, emb_zero, emb_one, map_zero, map_zero, hext, hext]`.
+
+Rewrite using `[he, hembx, hback, glue_apply, top_emb, emb_zero, emb_one, map_zero, map_zero]`. Use `⟨?_, fun k => ?_⟩` and prove the remaining obligations. Conclude with `comb_ext (fun i l => by simp) (fun t l => by simp)`. Simplify using the standard rewrite rules. Rewrite using `[he, hemby, hback, glue_apply, top_emb, emb_zero, emb_one, map_zero, map_zero]`.
+
+Use `⟨?_, fun k => ?_⟩` and prove the remaining obligations. Conclude with `comb_ext (fun i l => by simp) (fun t l => by simp)`. Simplify using the standard rewrite rules.
+-/
 theorem adapted_darboux : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (r₁ s₁ : ℕ), X₁.IsHerm σ B r₁ s₁ →

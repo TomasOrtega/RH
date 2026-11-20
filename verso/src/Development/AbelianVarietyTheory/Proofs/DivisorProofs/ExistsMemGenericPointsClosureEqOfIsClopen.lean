@@ -10,6 +10,15 @@ open GlobalTheory.Poinc
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X Z i hi hd W hWc hWi`. Establish `he : Topology.IsOpenEmbedding i` using `i.isOpenEmbedding`. Establish `hgen : IsGenericPoint hWi.genericPoint W` using `hWi.isGenericPoint_genericPoint hWc.isClosed`. Establish `hne : (W ∩ Set.range i).Nonempty` using `hd.inter_open_nonempty W hWc.isOpen hWi.nonempty`. Establish `hmem : hWi.genericPoint ∈ Set.range i` using `(hgen.mem_open_set_iff he.isOpen_range).2 hne`.
+
+Take `⟨η, hη⟩` from `hmem`. Establish `hcl : closure {i η} = W` using `by rw [hη]; exact hgen`. Use `⟨η, ?_, hcl⟩` and prove the remaining obligations. Establish `hpre : closure ({η} : Set X) = i ⁻¹' W`. Rewrite using `[← hcl, he.isOpenMap.preimage_closure_eq_closure_preimage he.continuous, ← Set.image_singleton, he.injective.preimage_image]`.
+
+Use `show closure ({η} : Set X) ∈ irreducibleComponents X`. Establish `hirr : IsIrreducible (closure ({η} : Set X))` using `isIrreducible_singleton.closure`. Establish `hclo : IsClopen (closure ({η} : Set X))`. Rewrite using `[hpre]`. Conclude with `hWc.preimage he.continuous`.
+
+Use `⟨hirr, fun T hT hsub => ?_⟩` and prove the remaining obligations. Use `hT.2.isPreconnected.subset_isClopen hclo ?_` and prove the remaining obligations. Conclude with `⟨η, hsub (subset_closure rfl), subset_closure rfl⟩`.
+-/
 theorem exists_mem_genericPoints_closure_eq_of_isClopen :
     ∀ (X Z : Scheme.{0}) (i : X ⟶ Z), IsOpenImmersion i → Dense (Set.range i) → ∀ W : Set Z, IsClopen W → IsIrreducible W → ∃ η ∈ genericPoints X, closure {i η} = W := by
   intro X Z i hi hd W hWc hWi

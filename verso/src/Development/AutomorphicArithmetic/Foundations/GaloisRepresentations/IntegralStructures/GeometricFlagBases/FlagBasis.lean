@@ -17,6 +17,9 @@ namespace UpperTheory.Gal.Int.Geo
 def cj {Γ k : Type} [Group Γ] [Field k] {d : ℕ} (P : GL (Fin d) k) (ρ : Γ →* GL (Fin d) k) : Γ →* GL (Fin d) k :=
   (MulAut.conj P⁻¹).toMonoidHom.comp ρ
 
+/- English proof (translation)
+Simplify using `[cj]`.
+-/
 theorem cj_apply {Γ k : Type} [Group Γ] [Field k] {d : ℕ} (P : GL (Fin d) k) (ρ : Γ →* GL (Fin d) k) (g : Γ) :
     cj P ρ g = P⁻¹ * ρ g * P := by simp [cj]
 
@@ -53,6 +56,11 @@ def GrSS : Prop := ∀ (Γ k : Type) [Group Γ] [Field k] (d : ℕ) (ρ₀ ρ : 
 def GrEx : Prop := ∀ (Γ k : Type) [Group Γ] [Field k] (d : ℕ) (ρ₀ : Γ →* GL (Fin d) k),
   ∃ (P : GL (Fin d) k) (ρ : Γ →* GL (Fin d) k), IsGr (cj P ρ₀) ρ ∧ IsSSRep ρ
 
+/- English proof (translation)
+Introduce `Γ k _ _ d ρ₀`. Take `⟨W, hm, h0, ht, hJ⟩` from `h1 Γ k d ρ₀`. Take `⟨P, c, hP⟩` from `h2 k d d W hm h0 ht`. Establish `hJ'` using `h3 Γ k d ρ₀ W P (low k c) hP hJ`. Take `⟨htri, ρ, hρ⟩` from `h4 Γ k d _ c hJ'.1`.
+
+Conclude with `⟨P, ρ, ⟨c, fun g => ⟨htri g, hρ g⟩⟩, h5 Γ k d _ ρ c hJ' hρ⟩`.
+-/
 theorem grEx_of (h1 : FlagEx) (h2 : FlagBasis) (h3 : FlagMove) (h4 : GrHom) (h5 : GrSS) : GrEx := by
   intro Γ k _ _ d ρ₀
   obtain ⟨W, hm, h0, ht, hJ⟩ := h1 Γ k d ρ₀
@@ -69,6 +77,9 @@ def GrKill : Prop := ∀ (Γ k : Type) [Group Γ] [Field k] (d : ℕ) (ρ₀ ρ 
   (ρ₀ g = 1 → ρ g = 1) ∧ (∀ Q : k[X], aeval (ρ₀ g : Matrix (Fin d) (Fin d) k) Q = 0 → aeval (ρ g : Matrix (Fin d) (Fin d) k) Q = 0) ∧
     (ρ g : Matrix (Fin d) (Fin d) k).charpoly = (ρ₀ g : Matrix (Fin d) (Fin d) k).charpoly
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Conclude with `⟨c, fun g => hc (f g)⟩`.
+-/
 theorem IsGr.comp {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {d : ℕ} {ρ₀ ρ : Γ →* GL (Fin d) k} (h : IsGr ρ₀ ρ) (f : Γ' →* Γ) :
     IsGr (ρ₀.comp f) (ρ.comp f) := by
   obtain ⟨c, hc⟩ := h

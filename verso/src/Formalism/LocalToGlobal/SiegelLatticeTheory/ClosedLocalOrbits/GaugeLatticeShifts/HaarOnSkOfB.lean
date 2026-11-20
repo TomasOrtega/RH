@@ -14,11 +14,17 @@ namespace Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL
 
 open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Apply the tactic sequence `congr 1; funext i; split_ifs <;> norm_num`.
+-/
 theorem jm_mul_jm {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1; funext i; split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `h : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Rewrite using `[Matrix.mul_assoc (Formalism.REAL.Jm ε * gᴴ), Matrix.mul_assoc (Formalism.REAL.Jm ε), ← Matrix.mul_assoc gᴴ, h, jm_mul_jm]`.
+-/
 theorem ujOf_left {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) :
     Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε * g = 1 := by
   have h : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε := hg
@@ -27,9 +33,15 @@ theorem ujOf_left {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) �
 def ujOf {n : ℕ} {ε : Fin n → Bool} (g : Matrix (Fin n) (Fin n) ℂ) (hg : Formalism.REAL.inUJ ε g) : Formalism.REAL.UJ ε :=
   ⟨⟨g, Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε, mul_eq_one_comm.mp (ujOf_left hg), ujOf_left hg⟩, hg⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_ujOf {n : ℕ} {ε : Fin n → Bool} (g : Matrix (Fin n) (Fin n) ℂ) (hg : Formalism.REAL.inUJ ε g) :
     uMat (ujOf g hg) = g := rfl
 
+/- English proof (translation)
+Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hP`. Establish `h2 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Use `show (P * B * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * B * P⁻¹) = Formalism.REAL.Jm ε`. Simplify using `only [Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inUJ_conj {n : ℕ} {ε : Fin n → Bool} {H : Matrix (Fin n) (Fin n) ℂ} {P B : Matrix (Fin n) (Fin n) ℂ}
     (hPJ : Pᴴ * Formalism.REAL.Jm ε * P = H) (hP : IsUnit P.det) (hB : Bᴴ * H * B = H) :
     Formalism.REAL.inUJ ε (P * B * P⁻¹) := by
@@ -45,6 +57,11 @@ theorem inUJ_conj {n : ℕ} {ε : Fin n → Bool} {H : Matrix (Fin n) (Fin n) �
 def qOf (r : ℕ) (sc : ℝ) (c : Fin (r + 1) → ℂ) : (Fin r → ℂ) × ℂ :=
   (fun a => ((sc : ℂ) ^ (r - a.1)) ^ 2 * c (Fin.castSucc a), c (Fin.last r))
 
+/- English proof (translation)
+Establish `hs : ∀ m : ℕ, ((sc : ℂ) ^ m) ≠ 0` using `fun m => pow_ne_zero _ (by exact_mod_cast hsc.ne')`. Use `conv_rhs => rw [← Fin.snoc_init_self c]`. Unfold `coordSc qOf`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [Fin.init]`. Rewrite using `[inv_pow, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ (hs _)), one_mul]`.
+-/
 theorem coordSc_qOf (r : ℕ) {sc : ℝ} (hsc : 0 < sc) (c : Fin (r + 1) → ℂ) : coordSc r sc (qOf r sc c) = c := by
   have hs : ∀ m : ℕ, ((sc : ℂ) ^ m) ≠ 0 := fun m => pow_ne_zero _ (by exact_mod_cast hsc.ne')
   conv_rhs => rw [← Fin.snoc_init_self c]
@@ -54,6 +71,11 @@ theorem coordSc_qOf (r : ℕ) {sc : ℝ} (hsc : 0 < sc) (c : Fin (r + 1) → ℂ
   simp only [Fin.init]
   rw [inv_pow, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ (hs _)), one_mul]
 
+/- English proof (translation)
+Establish `hs : ∀ m : ℕ, ((sc : ℂ) ^ m) ≠ 0` using `fun m => pow_ne_zero _ (by exact_mod_cast hsc.ne')`. Unfold `coordSc qOf`. Use extensionality with `a`. Simplify using `only [Fin.snoc_castSucc]`. Rewrite using `[inv_pow, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ (hs _)), one_mul]`.
+
+Simplify using `only [Fin.snoc_last]`.
+-/
 theorem qOf_coordSc (r : ℕ) {sc : ℝ} (hsc : 0 < sc) (q : (Fin r → ℂ) × ℂ) : qOf r sc (coordSc r sc q) = q := by
   have hs : ∀ m : ℕ, ((sc : ℂ) ^ m) ≠ 0 := fun m => pow_ne_zero _ (by exact_mod_cast hsc.ne')
   unfold coordSc qOf
@@ -62,6 +84,11 @@ theorem qOf_coordSc (r : ℕ) {sc : ℝ} (hsc : 0 < sc) (q : (Fin r → ℂ) × 
     rw [inv_pow, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ (hs _)), one_mul]
   · simp only [Fin.snoc_last]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.bcWeight`. Use `split_ifs`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ a)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ha, norm_zero]`.
+
+Apply `zero_pow` to reduce the goal to its premises. Unfold `Formalism.QuantumDeterminants.Mdim`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+-/
 theorem bcWeight_zero {k r : ℕ} (T T' : ℝ) (q : (Fin r → ℂ) × ℂ) (a : Fin r) (ha : q.1 a = 0) :
     Formalism.QuantumDeterminants.bcWeight k r T T' q = 0 := by
   unfold Formalism.QuantumDeterminants.bcWeight
@@ -75,11 +102,19 @@ theorem bcWeight_zero {k r : ℕ} (T T' : ℝ) (q : (Fin r → ℂ) × ℂ) (a :
       omega
   · rfl
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩`. Conclude with `⟨inferInstance, h.ne_zero, h.conc, h.left⟩`.
+-/
 theorem haarOn_sk_of_b {k r : ℕ} {U : Set (Formalism.FourierDecayAlt.B.Mat k r)} {μ : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (h : Formalism.FourierDecayAlt.B.IsHaarOn U μ) : Formalism.MainNotions.S.IsHaarOn U μ := by
   haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩
   exact ⟨inferInstance, h.ne_zero, h.conc, h.left⟩
 
+/- English proof (translation)
+Unfold `Gv`. Rewrite using `[dl_diagonal c (r + 1) le_rfl, dl_diagonal c r (by omega), Fin.prod_univ_castSucc]`. Establish `e1 : ∀ i : Fin (r + 1), Fin.castLE (le_refl (r + 1)) i = i` using `fun i => Fin.ext rfl`. Establish `e2 : ∀ i : Fin r, Fin.castLE (show r ≤ r + 1 by omega) i = Fin.castSucc i` using `fun i => Fin.ext rfl`. Simplify using `only [e1, e2, norm_mul, Complex.normSq_eq_norm_sq]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gv_diag_eq {r : ℕ} (T T' : ℝ) (c : Fin (r + 1) → ℂ) :
     Gv T T' (Matrix.diagonal c) =
       ‖∏ a : Fin r, c (Fin.castSucc a)‖ ^ 2 * (Complex.normSq (c (Fin.last r)) - T * T') := by
@@ -90,6 +125,15 @@ theorem gv_diag_eq {r : ℕ} (T T' : ℝ) (c : Fin (r + 1) → ℂ) :
   simp only [e1, e2, norm_mul, Complex.normSq_eq_norm_sq]
   ring
 
+/- English proof (translation)
+Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hP`. Establish `h2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hP`. Establish `hu' : uMat u'⁻¹ * uMat u' = 1` using `by simp [uMat]`. Establish `hinv : (Matrix.of (psiP P u'))⁻¹ = P⁻¹ * uMat u'⁻¹ * P`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+
+Use `show P⁻¹ * uMat u'⁻¹ * P * (P⁻¹ * uMat u' * P) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = P⁻¹ * (uMat u'⁻¹ * uMat u') * P := by rw [h1, Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hu', Matrix.mul_one, h2]`.
+
+Establish `hm : uMat (u * w * u'⁻¹) = uMat u * uMat w * uMat u'⁻¹` using `by simp [uMat]`. Establish `key : Matrix.of (psiP P u) * B * (Matrix.of (psiP P u'))⁻¹ = P⁻¹ * uMat (u * w * u'⁻¹) * P`. Rewrite using `[hinv, hm, hw]`. Use `show P⁻¹ * uMat u * P * B * (P⁻¹ * uMat u'⁻¹ * P) = P⁻¹ * (uMat u * (P * B * P⁻¹) * uMat u'⁻¹) * P`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use function extensionality and compare the values at `i j`. Conclude with `congrFun (congrFun key i) j`.
+-/
 theorem psiP_mul_B {r k : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : IsUnit P.det) (u u' : Formalism.REAL.UJ ε) (B : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (w : Formalism.REAL.UJ ε) (hw : uMat w = P * B * P⁻¹) :
@@ -112,6 +156,45 @@ theorem psiP_mul_B {r k : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (
   funext i j
   exact congrFun (congrFun key i) j
 
+/- English proof (translation)
+Introduce `r k ε e z z' T T' sc hF hG hsc`. Take `⟨P, hPJ, hPdet, hPe, zH, zH', hzH, hzH', hPz, hPz', hTz, hTz'⟩` from `hP r k ε e z z' T T' hF hG`. Establish `hT : 0 < Formalism.QuantumDeterminants.Tz k r zH` using `by rw [hTz]; exact hF.T_pos`. Establish `hT' : 0 < Formalism.QuantumDeterminants.Tz k r zH'` using `by rw [hTz']; exact hF.T'_pos`. Take `⟨μsec, hμ⟩` from `hSec k r zH zH' hF.k_pos hzH hzH' hT hT'`.
+
+Set `μs : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ` to `fun ζ => if Formalism.QuantumDeterminants.Tz k r zH * Formalism.QuantumDeterminants.Tz k r zH' < Complex.normSq ζ then μsec ζ else 1`. Establish `hμs : Formalism.QuantumDeterminants.IsSection k r zH zH' μs`. Use `⟨fun i j => (hμ.1 i j).congr fun ζ hζ => ?_, fun ζ hζ => ?_⟩` and prove the remaining obligations. Establish `hζ' : Formalism.QuantumDeterminants.Tz k r zH * Formalism.QuantumDeterminants.Tz k r zH' < Complex.normSq ζ` using `hζ`. Simplify using `only [μs, if_pos hζ']`.
+
+Simplify using `only [μs, if_pos hζ]`. Conclude with `hμ.2 ζ hζ`. Establish `hU : ∀ ζ, (μs ζ)ᴴ * Formalism.QuantumDeterminants.Hb k * μs ζ = Formalism.QuantumDeterminants.Hb k`. Introduce `ζ`. Distinguish the cases in `hζ : Formalism.QuantumDeterminants.Tz k r zH * Formalism.QuantumDeterminants.Tz k r zH' < Complex.normSq ζ`.
+
+Simplify using `only [μs, if_pos hζ]`. Conclude with `(hμ.2 ζ hζ).1`. Simplify using `only [μs, if_neg hζ, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Establish `hMuj : ∀ q : (Fin r → ℂ) × ℂ, (∀ a, q.1 a ≠ 0) → Formalism.REAL.inUJ ε (P * Formalism.QuantumDeterminants.bigCell k r q.1 (μs q.2) * P⁻¹)` using `fun q hq => inUJ_conj hPJ hPdet (hBM k r q.1 (μs q.2) hq (hU q.2))`. Set `h0 : (Fin (r + 1) → ℂ) → Formalism.REAL.UJ ε` to `fun c => if hc : ∀ a, (qOf r sc c).1 a ≠ 0 then ujOf _ (hMuj (qOf r sc c) hc) else 1`.
+
+Establish `hsc' : (sc : ℂ) ≠ 0` using `by exact_mod_cast hsc.ne'`. Establish `hh0 : ∀ q : (Fin r → ℂ) × ℂ, (∀ a, q.1 a ≠ 0) → uMat (h0 (coordSc r sc q)) = P * Formalism.QuantumDeterminants.bigCell k r q.1 (μs q.2) * P⁻¹`. Introduce `q hq`. Establish `hq' : ∀ a, (qOf r sc (coordSc r sc q)).1 a ≠ 0` using `by rw [qOf_coordSc r hsc]; exact hq`. Simplify using `only [h0, dif_pos hq', uMat_ujOf, qOf_coordSc r hsc]`.
+
+Use `⟨h0, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Establish `hq1 : ∀ a, (qOf r sc c).1 a ≠ 0` using `fun a => mul_ne_zero (pow_ne_zero _ (pow_ne_zero _ hsc')) (hc.1 _)`. Establish `hζ : Formalism.QuantumDeterminants.Tz k r zH * Formalism.QuantumDeterminants.Tz k r zH' < Complex.normSq (qOf r sc c).2`. Establish `h2` using `hc.2`.
+
+Rewrite `h2` using `[gv_diag_eq]`. Rewrite using `[hTz, hTz']`. Break down `pos_and_pos_or_neg_and_neg_of_mul_pos h2 with ⟨_, h3⟩ | ⟨h3, _⟩` into its components or cases. Use `show T * T' < Complex.normSq (c (Fin.last r))`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `absurd h3 (not_lt.2 (sq_nonneg _))`. Establish `he0` using `hh0 (qOf r sc c) hq1`. Rewrite `he0` using `[coordSc_qOf r hsc]`. Use `show Zhat ε (famSc sc e z) (famSc sc e z') (uMat (h0 c)) = Matrix.diagonal c`. Rewrite using `[he0, (hZB r k ε e z z' zH zH' P sc hPJ hPdet hPe hzH hzH' hPz hPz' hsc μs hμs (qOf r sc c) hq1 hζ).2, coordSc_qOf r hsc]`.
+
+Introduce `μS μS' hS hS'`. Take `⟨μW0, hW0⟩` from `Formalism.FourierDecayAlt.P.weyl_haar_exists k r zH hzH hT`. Take `⟨μW0', hW0'⟩` from `Formalism.FourierDecayAlt.P.weyl_haar_exists k r zH' hzH' hT'`. Take `⟨μN0, hN0⟩` from `Formalism.FourierDecayAlt.P.unipotent_haar_exists k r`. Establish `hWs` using `haarOn_sk_of_b hW0`.
+
+Establish `hWs'` using `haarOn_sk_of_b hW0'`. Establish `hN` using `haarOn_sk_of_b hN0`. Take `⟨hGm, hC1⟩` from `hHC r k ε e z zH P hPJ hPdet hPe hzH hPz hT hF.k_pos`. Take `⟨-, hC2⟩` from `hHC r k ε e z' zH' P hPJ hPdet hPe hzH' hPz' hT' hF.k_pos`. Take `⟨c1, hc1, hm1⟩` from `hC1 μW0 μN0 hWs hN μS hS`.
+
+Take `⟨c2, hc2, hm2⟩` from `hC2 μW0' μN0 hWs' hN μS' hS'`. Take `⟨K, hK, hForm⟩` from `hH k r zH zH' hF.k_pos hzH hzH' hT hT' _ μW0 μW0' μN0 hGm hWs hWs' hN μs hμs`. Take `⟨κ, hκ, hCW⟩` from `hW r k T T' sc hF.k_pos hF.T_pos hF.T'_pos hsc`. Use `⟨K * κ / (c1 * c2), by positivity, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hme : MeasurableEmbedding (psiP (ε` using `ε) P) := (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi_closedEmbedding (ε := ε) (P := P) Formalism.REAL.uJEmb hPdet).measurableEmbedding`.
+
+Set `φh : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞` to `Function.extend (psiP (ε := ε) P) φ 0`. Establish `hφh : Measurable φh` using `hme.measurable_extend hφ measurable_const`. Establish `hext : ∀ u, φh (psiP P u) = φ u` using `fun u => hme.injective.extend_apply φ 0 u`. Establish `hL : ∫⁻ x, φ x ∂(Formalism.REAL.muG ε) = ∫⁻ x, φh x ∂((Formalism.REAL.muG ε).map (psiP P))`. Rewrite using `[hme.lintegral_map]`.
+
+Simplify using `only [hext]`. Establish `hne1 : ENNReal.ofReal c1 ≠ 0` using `(ENNReal.ofReal_pos.2 hc1).ne'`. Establish `hne2 : ENNReal.ofReal c2 ≠ 0` using `(ENNReal.ofReal_pos.2 hc2).ne'`. Establish `hmu1 : Formalism.MainNotions.S.muS μW0 μN0 = (ENNReal.ofReal c1)⁻¹ • μS.map (psiP P)`. Rewrite using `[hm1, smul_smul, ENNReal.inv_mul_cancel hne1 ENNReal.ofReal_ne_top, one_smul]`.
+
+Establish `hmu2 : Formalism.MainNotions.S.muS μW0' μN0 = (ENNReal.ofReal c2)⁻¹ • μS'.map (psiP P)`. Rewrite using `[hm2, smul_smul, ENNReal.inv_mul_cancel hne2 ENNReal.ofReal_ne_top, one_smul]`. Rewrite using `[hL, hForm φh hφh, hTz, hTz', hmu1, hmu2]`. Set `F : (Fin (r + 1) → ℂ) → ℝ≥0∞` to `fun c => ∫⁻ s, ∫⁻ s', φ (s * h0 c * s'⁻¹) ∂μS' ∂μS`. Establish `hpt : ∀ q : (Fin r → ℂ) × ℂ, ENNReal.ofReal (Formalism.QuantumDeterminants.bcWeight k r T T' q) * ∫⁻ s, ∫⁻ s', φh (fun i j => (Matrix.of s * Formalism.QuantumDeterminants.bigCell k r q.1 (μs q.2) * (Matrix.of s')⁻¹) i j) ∂((ENNReal.ofReal c2)⁻¹ • μS'.map (psiP P)) ∂((ENNReal.ofRe …`.
+
+Introduce `q`. Distinguish the cases in `hq : ∀ a, q.1 a ≠ 0`. Use `congr 1`. Repeatedly rewrite using `[lintegral_smul_measure, hme.lintegral_map]`. Rewrite using `[smul_eq_mul]`.
+
+Use `congr 1`. Repeatedly rewrite using `[smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.inv_ne_top.2 hne2)]`. Use `congr 1`. Use `lintegral_congr fun u => lintegral_congr fun u' => ?_` and prove the remaining obligations.
+
+Rewrite using `[psiP_mul_B hPdet u u' _ (h0 (coordSc r sc q)) (hh0 q hq), hext]`. Use `push_neg at hq`. Take `⟨a, ha⟩` from `hq`. Rewrite using `[bcWeight_zero T T' q a ha, ENNReal.ofReal_zero, zero_mul, zero_mul]`. Rewrite using `[lintegral_congr hpt]`.
+
+Establish `hrearr : ∀ q : (Fin r → ℂ) × ℂ, ENNReal.ofReal (Formalism.QuantumDeterminants.bcWeight k r T T' q) * ((ENNReal.ofReal c1)⁻¹ * ((ENNReal.ofReal c2)⁻¹ * F (coordSc r sc q))) = ((ENNReal.ofReal c1)⁻¹ * (ENNReal.ofReal c2)⁻¹) * (ENNReal.ofReal (Formalism.QuantumDeterminants.bcWeight …` using `fun q => by ring`. Rewrite using `[lintegral_congr hrearr, lintegral_const_mul' _ _ (ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 hne1) (ENNReal.inv_ne_top.2 hne2)), hCW F]`. Establish `hC0 : 0 ≤ K * κ / (c1 * c2)` using `by positivity`. Simplify using `only [F]`. Establish `hpt2 : ∀ c, ENNReal.ofReal (K * κ / (c1 * c2) * wtLoc k T T' c) * ∫⁻ s, ∫⁻ s', φ (s * h0 c * s'⁻¹) ∂μS' ∂μS = ENNReal.ofReal (K * κ / (c1 * c2)) * (ENNReal.ofReal (wtLoc k T T' c) * ∫⁻ s, ∫⁻ s', φ (s * h0 c * s'⁻¹) ∂μS' ∂μS)` using `fun c => by`.
+
+Rewrite using `[ENNReal.ofReal_mul hC0, mul_assoc]`. Rewrite using `[lintegral_congr hpt2, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Rewrite using `[ENNReal.ofReal_div_of_pos (by positivity), ENNReal.ofReal_mul hK.le, ENNReal.ofReal_mul hc1.le, ENNReal.div_eq_inv_mul, ENNReal.mul_inv (Or.inl hne1) (Or.inl ENNReal.ofReal_ne_top)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jacExGoodN_of_hpkEx_of_pFrame_of_haarCorr (hH : HpkEx) (hP : PFrame) (hHC : HaarCorr) (hZB : ZBig) (hBM : BigMem) (hW : CoordW)
     (hSec : SecWb) : JacExGoodN := by
   intro r k ε e z z' T T' sc hF hG hsc

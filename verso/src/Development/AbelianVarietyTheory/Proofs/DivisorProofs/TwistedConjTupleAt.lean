@@ -24,6 +24,19 @@ namespace GlobalTheory.BigOn.Exp.TwConj
 
 open Classical in
 
+/- English proof (translation)
+Use `AtTw.imp (AtTw.and (AtTw.and hA lowAt_holds) (twLevAt_holds h1 h2 h3 hA hC)) fun Fm x hx i p hr hm w _ j H => ?_` and prove the remaining obligations. Take `⟨⟨hadm, hlow⟩, hlev⟩` from `H`. Introduce `ρ ρ' hρ hρ' hp hS hAd`. Establish `H0` using `ratHyp0_at_point Fm x hx i p hr hm _ hadm.2.2 hlow j`. Establish `hB : BaseOf p.R.toRealDat j (baseW (Fm.ex x hx i) w j ρ)` using `baseOf_of_realPin H0.core.lev hρ hp _ j _`.
+
+Establish `hLaws : Laws p.T p.R.toRealDat (F2 p) p.κ p.v₀ p.O (phs p) j (baseW (Fm.ex x hx i) w j ρ)` using `⟨H0.core, H0.fin, H0.fw, H0.io, H0.guard, H0.pins, H0.phase, hB⟩`. Take `⟨χ, χ', xiR, xiR', hT, hT', hne, hne', hd⟩` from `hlev ρ ρ' hρ hρ' hp hS hAd`. Take `⟨A0, R0, F0, v0, O0, hL0, hE0, hxi0, htr⟩` from `GlobalTheory.BaseRestrict.restrict_to_base _ _ _ _ _ _ _ _ _ hLaws`. Establish `hT0` using `htr _ _ _ _ hT`. Establish `hT0'` using `htr _ _ _ _ hT'`.
+
+Establish `hQ : (twW (Fm.ex x hx i) w ρ').Q = (twW (Fm.ex x hx i) w ρ).Q` using `by simp only [Setup.tw, twistOf, hS.2.1]`. Establish `hQde : ∀ (N : Type) (Qn : N → Finset (Pl (Fm.D x i).host.E)), (∀ n, Qn n = (baseW (Fm.ex x hx i) w j ρ).de.Q ∪ (twW (Fm.ex x hx i) w ρ).Q) → ∀ q ∈ ({(Fm.D x i).host.pde, (Fm.D x i).host.pde'} : Set ℕ), ∃ 𝔭 : HeightOneSpectrum (𝓞 (Fm.D x i).host.K), (∀ t, ∀ PP ∈ R0.Q t, ((q : ℕ) : …`. Introduce `N Qn hQn q hq`. Take `⟨𝔭, h𝔭, h𝔭'⟩` from `hT0.Q_de q hq`. Conclude with `⟨𝔭, h𝔭, fun n => (hQn n).symm ▸ h𝔭'⟩`.
+
+Break down `hd with hd | hd` into its components or cases. Apply the tactic sequence `obtain ⟨T', A', R', F', v', O', hL', hE', htup⟩ := GlobalTheory.T.realisation_extends_by_newTuples_keeping_laws h1 h2 h3 h4 h5 p.T R0 F0 p.κ v0 O0 (phs p) j _ p.host hL0 Bool (fun b => if b then χ' else χ) (fun b => if b then (baseW (Fm.ex x hx i) w j ρ).de.chi * (twW (Fm.ex x hx …`. Apply the tactic sequence `cases a <;> cases b`. Both sides reduce to the same expression. Conclude with `absurd hab hd`.
+
+Conclude with `absurd hab.symm hd`. Use the proof step `rfl)`. Use the proof step `(fun b t => by rw [hxi0]; cases b; exacts [hne, hne'])`. Apply the tactic sequence `(hQde Bool _ fun b => by cases b <;> simp [hQ])`. Take `⟨t, ht1, ht2⟩` from `htup false`.
+
+Take `⟨t', ht1', ht2'⟩` from `htup true`. Conclude with `hasTuples_of_laws hL' (hE0.trans hE') (t := t) (t' := t') ⟨ht1, ht2⟩ ⟨ht1', ht2'⟩`. Take `⟨T', A', R', F', v', O', hL', hE', htup⟩` from `GlobalTheory.T.realisation_extends_by_newTuples_keeping_laws h1 h2 h3 h4 h5 p.T R0 F0 p.κ v0 O0 (phs p) j _ p.host hL0 Unit (fun _ => χ) (fun _ => (baseW (Fm.ex x hx i) w j ρ).de.chi * (twW (Fm.ex x hx i) w ρ).chi) (fun _ => (baseW (Fm.ex x hx i) w j ρ).de.Q ∪ (twW (Fm.ex x hx i) …`. Take `⟨t, ht1, ht2⟩` from `htup ()`. Conclude with `hasTuples_of_laws hL' (hE0.trans hE') (t := t) (t' := t) ⟨ht1, ht2⟩ ⟨ht1.trans hd, ht2.trans (by rw [hQ])⟩`.
+-/
 theorem tupAt (h1 : GlobalTheory.Published.CuspRapidDecay) (h2 : GlobalTheory.Published.GlobalArtinReciprocity) (h3 : GlobalTheory.Published.RayClassFieldSt)
     (h4 : GlobalTheory.Published.DiscreteSeriesCover) (h5 : GlobalTheory.Published.CasselmanWallach) (hA : TwAdm) (hC : TwChr) : TupAt := by
   refine AtTw.imp (AtTw.and (AtTw.and hA lowAt_holds) (twLevAt_holds h1 h2 h3 hA hC)) fun Fm x hx i p hr hm w _ j H => ?_

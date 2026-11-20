@@ -12,6 +12,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Z.Sym.Ga
 
+/- English proof (translation)
+Establish `h1 : ((cycZ L Ω l σ : ℤ_[l]ˣ) : ℤ_[l]) = (q : ℤ_[l])` using `PadicInt.ext_of_toZModPow.mp (cycZ_toZModPow_eq hl h hσ)`. Simplify using `[cycBar, h1]`.
+-/
 private theorem cyc_eq_of_pow {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
     {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 L)} (hl : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal)
     (h : IsPlaceOver A w) {σ : G L Ω} {q : ℕ}
@@ -23,6 +26,17 @@ private theorem cyc_eq_of_pow {L Ω : Type} [Field L] [NumberField L] [Field Ω]
 
 end UpperTheory.V.Z.Sym.Ga
 
+/- English proof (translation)
+Introduce `_ L Ω _ _ _ _ _ l _ ι w hl A h a ha s`. Establish `hfrob : (cycBar L Ω l ((frob h : Weil h) : G L Ω) : Qbar l) = ((normV w : ℕ) : Qbar l)` using `Ga.cyc_eq_of_pow hl h (isFrob_frob (h := h)).2`. Use `set t : Weil h := s * (frob h) ^ (-deg s) with ht`. Establish `hdt : deg t = 0`. Rewrite using `[ht, deg_mul, deg_zpow, deg_frob]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hI : (t : G L Ω) ∈ Ine (F` using `L) A := actsAs_zero_iff.1 (actsAs_of_deg (a := 0) (b := 0) (by simpa using hdt))`. Establish `hine : (cycBar L Ω l (t : G L Ω) : Qbar l) = 1`. Use `Ga.cyc_eq_of_pow (σ := (t : G L Ω)) (q := 1) hl h (fun x hx => by simpa using hI.2 x hx)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hs : s = t * (frob h) ^ (deg s)`. Rewrite using `[ht, mul_assoc, ← zpow_add, neg_add_cancel, zpow_zero, mul_one]`. Establish `hε : Ga.ep l (s : G L Ω) = ((normV w : ℕ) : Qbar l) ^ deg s` using `by show (cycBar L Ω l (s : G L Ω) : Qbar l) = _ conv_lhs => rw [hs]`. Rewrite using `[Subgroup.coe_mul, map_mul, Units.val_mul, hine, one_mul, Subgroup.coe_zpow, map_zpow, Units.val_zpow_eq_zpow_val, hfrob]`. Establish `hq : ι (Ga.ep l (s : G L Ω)) = ((normV w : ℕ) : ℂ) ^ deg s`.
+
+Rewrite using `[hε, map_zpow₀, map_natCast]`. Use `⟨?_, hq⟩` and prove the remaining obligations. Use `DFunLike.congr_fun (ha.absPow_comp 1) s` as an intermediate fact. Rewrite `this` using `[Complex.ofReal_one]`. Rewrite using `[hq, ← MonoidHom.comp_apply, this, GlobalTheory.WeilDeligne.unrChar_apply, Units.val_zpow_eq_zpow_val]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Z.Sym.Ga.epsAway :
     Af.Hypotheses₂ → ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (w : Plc L), ((l : ℕ) : 𝓞 L) ∉ w.asIdeal → ∀ (A : ValuationSubring Ω) (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion L)ˣ), IsLocalArtin h a → ∀ s : Weil h, ι (Ga.ep l (s : G L Ω)) = (absPow (w.adicCompletion L) 1 (a s) : ℂ) ∧ ι (Ga.ep l (s : G L Ω)) = ((normV w : ℕ) : ℂ) ^ deg s := by
   intro _ L Ω _ _ _ _ _ l _ ι w hl A h a ha s

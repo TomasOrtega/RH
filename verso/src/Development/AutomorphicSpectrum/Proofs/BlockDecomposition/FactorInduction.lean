@@ -9,6 +9,9 @@ open PositivityTheory.Rg.BcB.E PositivityTheory.Rg.BcB.SpectralAccumulation
 
 namespace GlobalTheory.CompanionTheory.EGlue
 
+/- English proof (translation)
+Introduce `N t`. Proceed by induction on `t with`. Consider the case `leaf V z => exact fun h => hPQ _ _ h`. Consider the case `node t₁ t₂ i₁ i₂ => exact fun h => ⟨i₁ h.1, i₂ h.2⟩`.
+-/
 theorem allLeaves_mono {E : Type} [Field E] [NumberField E] [IsCMField E]
     {P Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop} (hPQ : ∀ M V, P M V → Q M V) :
     ∀ {N : ℕ} {t : Tr E N}, t.AllLeaves P → t.AllLeaves Q := by
@@ -17,6 +20,13 @@ theorem allLeaves_mono {E : Type} [Field E] [NumberField E] [IsCMField E]
   | leaf V z => exact fun h => hPQ _ _ h
   | node t₁ t₂ i₁ i₂ => exact fun h => ⟨i₁ h.1, i₂ h.2⟩
 
+/- English proof (translation)
+Introduce `h4 E _ _ _ N W hW`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Use `⟨fun _ => ∅, fun M => ⟨Set.finite_empty, by simp⟩, fun K _ => ⟨fun _ => ∅, fun M => ⟨Set.finite_empty, by simp⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `U _ _ _ _ _ _ hU`. Take `⟨ψ, hψ, hne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU`.
+
+Use `⟨.leaf ⊤ 0, LinearMap.id, trivial, Or.inl ⟨rfl, rfl, rfl⟩, Or.inl rfl, fun _ _ _ => rfl, fun χ _ => ?_, ψ, hψ, hne⟩` and prove the remaining obligations. Conclude with `⟨(mulChi 0 (Model.absC E 0)).symm χ, trivial, by simp⟩`. Take `⟨Ω, hΩ, h⟩` from `h4 E N W hW`. Use `⟨Ω, hΩ, fun K hK => ?_⟩` and prove the remaining obligations. Take `⟨Θ, hΘ, h'⟩` from `h K hK`.
+
+Use `⟨Θ, hΘ, ?_⟩` and prove the remaining obligations. Introduce `U hs ha hg hn hc hi hU`. Take `⟨t, T, hG, hL, he, hm, hne⟩` from `h' U hN hs ha hg hn hc hi hU`. Conclude with `⟨t, T, red_of_leaves hL, hG, allLeaves_mono (fun M V h => Or.inr h.2) hL, he, hm, hne⟩`.
+-/
 theorem factorStep_holds : FactorStep := by
   intro h4 E _ _ _ N W hW
   rcases Nat.eq_zero_or_pos N with rfl | hN

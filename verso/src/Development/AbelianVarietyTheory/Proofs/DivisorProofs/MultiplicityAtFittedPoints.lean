@@ -25,6 +25,21 @@ open GlobalTheory.SignedHC
 
 variable (D : D7) (C : ℝ) (τ : D.what₂.Tau)
 
+/- English proof (translation)
+Establish `hk : 2 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hg : (0 : ℚ) ≤ (num D C τ).ga` using `by positivity`. Establish `hvk` using `v_le_two D C τ hk le_rfl`. Establish `ham : (num D C τ).a (num D C τ).m = (num D C τ).v 2 + (num D C τ).ga + 1 / 2` using `(num D C τ).a_m`. Establish `hlow : ∀ i, i ≤ D.R.m → ((num D C τ).v D.R.k : ℚ) - 1 / 2 ≤ (num D C τ).a i` using `fun i hi => by`.
+
+Use `a_le D C τ hi` as an intermediate fact. Establish `e : (num D C τ).m = D.R.m` using `rfl`. Rewrite `ham` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : ((num D C τ).v 2 : ℚ) + 1 / 2 ≤ (num D C τ).a 0`.
+
+Establish `h1` using `a_le D C τ (Nat.zero_le D.R.m)`. Establish `e : (num D C τ).m = D.R.m` using `rfl`. Rewrite `ham` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `GridData.mem_weightX.1 hx with h | h | ⟨i, h1, h2, h⟩ | ⟨l, h1, h2, -⟩` into its components or cases.
+
+Take `⟨i, hi, rfl⟩` from `GridData.mem_tops.1 h`. Conclude with `⟨hlow i hi, a_le D C τ (Nat.zero_le i)⟩`. Take `⟨i, h1, h2, rfl⟩` from `GridData.mem_cloudHalf.1 h`. Establish `hi` using `v_le_two D C τ h1 h2`. Establish `hik : ((num D C τ).v D.R.k : ℚ) ≤ (num D C τ).v i`.
+
+Break down `h2.eq_or_lt with e | e` into its components or cases. Rewrite using `[e]`. Conclude with `le_rfl`. Conclude with `((num D C τ).v_anti i D.R.k h1 e le_rfl).le` after adjusting the coercions. Simplify using `only [GridData.vHalf]`.
+
+Apply the tactic sequence `constructor <;> linarith`. Establish `hb` using `blockC'_between (num_nearMid D C τ) (odd_sLen D).pos (sLen_lt_gap D C) h1 h2 h`. Establish `hp` using `(num D C τ).a_pred h1`. Establish `hq` using `a_le D C τ (Nat.zero_le (i - 1))`. Conclude with `⟨(hlow i h2).trans hb.1.le, by linarith [hb.2]⟩`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem weightX_zero_bounds {x : ℚ} (hx : x ∈ (num D C τ).weightX 0) :
     ((num D C τ).v D.R.k : ℚ) - 1 / 2 ≤ x ∧ x ≤ (num D C τ).a 0 := by
   have hk : 2 ≤ D.R.k := by have := D.R.m_add_three_le_k; omega
@@ -58,6 +73,13 @@ theorem weightX_zero_bounds {x : ℚ} (hx : x ∈ (num D C τ).weightX 0) :
     exact ⟨(hlow i h2).trans hb.1.le, by linarith [hb.2]⟩
   · omega
 
+/- English proof (translation)
+Use `push_cast`. Rewrite using `[La_cast, La_cast]`. Simplify using `only [highestWeight]`. Establish `hi` using `weightX_zero_bounds D C τ (descEnum_mem _ (card_weight D C τ) i)`. Establish `hj` using `weightX_zero_bounds D C τ (descEnum_mem _ (card_weight D C τ) j)`.
+
+Establish `ea : (num D C τ).a 0 = (num D C τ).v 2 + 1 / 2 + ((D.R.m : ℚ) + 1 - ((0 : ℕ) : ℚ)) * (gap D C : ℚ)` using `rfl`. Establish `hi' : ((i : ℕ) : ℚ) ≤ (rankP D D.R.m : ℚ)` using `by exact_mod_cast i.2.le`. Establish `hj' : (0 : ℚ) ≤ ((j : ℕ) : ℚ)` using `by positivity`. Rewrite `hi`, `hj` using `[ea]`. Move the coercions through the operations in `at hi hj`.
+
+Combine the linear relations using `[hi.1, hi.2, hj.1, hj.2]`.
+-/
 theorem La_sub_le (i j : Fin (rankP D D.R.m)) :
     (((La D C τ).w i - (La D C τ).w j : ℤ) : ℚ) ≤
       (((num D C τ).v 2 - (num D C τ).v D.R.k : ℤ) : ℚ) + 1 + ((D.R.m : ℚ) + 1) * (gap D C : ℚ) + (rankP D D.R.m : ℚ) := by
@@ -79,6 +101,11 @@ section Leaf
 
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
+/- English proof (translation)
+Establish `hm` using `D.R.two_le_m`. Establish `e1 : D.R.r + 6 - 1 = D.R.k + D.R.m + 4` using `by unfold Ranks.r; omega`. Establish `e2 : D.R.r + 1 = D.R.k + D.R.m` using `by unfold Ranks.r; omega`. Establish `e : rankP D D.R.m = (D.R.k + D.R.m) + D.R.m * (D.R.k + D.R.m + 4)`. Unfold `rankP nRk sLen`.
+
+Rewrite using `[e1, e2]`. Rewrite using `[e]`. Use `show _ = ((D.R.k : ℝ) + D.R.m - 1 + 1) + D.R.m * (((D.R.k : ℝ) + D.R.m - 1) + 5)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem np_eq {p : PtAt ex Csz} {CF : ℝ} (d : FunIn p CF) : ((rankP D D.R.m : ℕ) : ℝ) = d.O.np := by
   have hm := D.R.two_le_m
   have e1 : D.R.r + 6 - 1 = D.R.k + D.R.m + 4 := by unfold Ranks.r; omega
@@ -91,6 +118,25 @@ theorem np_eq {p : PtAt ex Csz} {CF : ℝ} (d : FunIn p CF) : ((rankP D D.R.m : 
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨v₀, hv⟩` from `(GlobalTheory.ptField_main D).2.1`. Establish `hga : (gap D 1 : ℝ) ≤ d.O.ga C`. Rewrite using `[← GlobalTheory.BigTop.Fun.Model.ga_eq d 1]`. Conclude with `GlobalTheory.SizeLeafCheck.ga_mono _ hC` after adjusting the coercions. Establish `hm0 : (0 : ℝ) ≤ (D.R.m : ℝ) + 1` using `by positivity`.
+
+Establish `hRp : d.O.Rp C = ((D.R.m : ℝ) + 1) * ((d.O.ga C : ℝ) + 1) + d.O.Lc + d.O.np` using `rfl`. Establish `hnp : (0 : ℝ) ≤ d.O.np` using `by rw [← np_eq d]; positivity`. Establish `hR1 : 1 ≤ d.O.Rp C`. Rewrite using `[hRp]`. Establish `: (1 : ℝ) ≤ ((D.R.m : ℝ) + 1) * ((d.O.ga C : ℝ) + 1)`.
+
+Establish `h1 : (1 : ℝ) ≤ (D.R.m : ℝ) + 1` using `by linarith [(Nat.cast_nonneg D.R.m : (0 : ℝ) ≤ D.R.m)]`. Establish `h2 : (1 : ℝ) ≤ (d.O.ga C : ℝ) + 1` using `by linarith [(Nat.cast_nonneg (d.O.ga C) : (0 : ℝ) ≤ d.O.ga C)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `: (0 : ℝ) ≤ d.O.Lc` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hSp : GlobalTheory.TestLat.SpreadLe (LaP d.G) (d.O.Rp C)`. Introduce `τ i j`. Use `show (((La D 1 τ).w (Fin.cast (rank_Xp d.G) i) - (La D 1 τ).w (Fin.cast (rank_Xp d.G) j) : ℤ) : ℝ) ≤ _`. Establish `hq` using `La_sub_le D 1 τ (Fin.cast (rank_Xp d.G) i) (Fin.cast (rank_Xp d.G) j)`. Establish `hr` using `(Rat.cast_le (K := ℝ)).2 hq`.
+
+Move the coercions through the operations in `at hr`. Establish `hL : ((num D 1 τ).v 2 - (num D 1 τ).v D.R.k).toNat ≤ cloudLen D` using `Finset.le_sup (f := fun τ => ((GlobalTheory.SignedHC.GridData.ofHCParam (D.hc τ) 0 0 0).v 2 - (GlobalTheory.SignedHC.GridData.ofHCParam (D.hc τ) 0 0 0).v D.R.k).toNat) (Finset.mem_univ τ)`. Establish `hL' : (((num D 1 τ).v 2 : ℝ) - (num D 1 τ).v D.R.k) ≤ d.O.Lc`. Rewrite using `[GlobalTheory.BigTop.Fun.Model.Lc_eq d]`. Establish `h1` using `Int.self_le_toNat ((num D 1 τ).v 2 - (num D 1 τ).v D.R.k)`.
+
+Establish `h2 : (((num D 1 τ).v 2 - (num D 1 τ).v D.R.k : ℤ) : ℝ) ≤ (((num D 1 τ).v 2 - (num D 1 τ).v D.R.k).toNat : ℤ)`. Conclude with `h1` after adjusting the coercions. Establish `h3 : ((((num D 1 τ).v 2 - (num D 1 τ).v D.R.k).toNat : ℕ) : ℝ) ≤ (cloudLen D : ℝ)` using `by exact_mod_cast hL`. Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hmul` using `mul_le_mul_of_nonneg_left (by linarith : (gap D 1 : ℝ) + 1 ≤ (d.O.ga C : ℝ) + 1) hm0`. Establish `hexp : ((D.R.m : ℝ) + 1) * ((gap D 1 : ℝ) + 1) = ((D.R.m : ℝ) + 1) * (gap D 1 : ℝ) + ((D.R.m : ℝ) + 1)` using `by ring`. Establish `hm1 : (0 : ℝ) ≤ (D.R.m : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[hRp, ← np_eq d]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨h1, h2, h3, h4⟩` from `IsTestLat.gridTestLattice_largestSlope_bound GlobalTheory.TestLat.slope_holds.2 hv hR1 hSp h`. Use `⟨h1, h2, h3, h4.trans (le_of_eq ?_)⟩` and prove the remaining obligations. Unfold `GlobalTheory.TestLat.bound Formalism.L2.Indef.Tree.FunData.EMM`. Rewrite using `[rank_Xp, np_eq d, D.what₂.card_Tau]`.
+
+Both sides reduce to the same expression.
+-/
 theorem leafMM_of_test {p : PtAt ex Csz} {CF : ℝ} (d : FunIn p CF) (a : SlopeTestRemainingChoices p d.G d.W d.n) (h : TieTest d a) {C : ℝ}
     (hC : 1 ≤ C) : Formalism.L2.Indef.Tree.LeafMM d.O C := by
   obtain ⟨v₀, hv⟩ := (GlobalTheory.ptField_main D).2.1
@@ -139,6 +185,9 @@ theorem leafMM_of_test {p : PtAt ex Csz} {CF : ℝ} (d : FunIn p CF) (a : SlopeT
 
 end Leaf
 
+/- English proof (translation)
+Introduce `h` and use `⟨0, fun _ _ => h.imp fun _ _ _ _ _ => ⟨1, fun _ hC => EvPt.of_forall fun _ _ _ _ _ d hd => let ⟨_, a, ha⟩ := hd leafMM_of_test d a ha.test hC⟩⟩`.
+-/
 theorem mm_tie : GlobalTheory.BigTop.Fun.SetAt → GlobalTheory.BigTop.Fun.MM @GlobalTheory.BigTop.Fun.Comparison₂ := fun h =>
   ⟨0, fun _ _ => h.imp fun _ _ _ _ _ => ⟨1, fun _ hC => EvPt.of_forall fun _ _ _ _ _ d hd =>
     let ⟨_, a, ha⟩ := hd

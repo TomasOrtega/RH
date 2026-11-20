@@ -29,10 +29,16 @@ def lexEmb (K : Type) [Fintype K] : (K → ℕ) →+ Lex (Fin (Fintype.card K) �
   map_add' _ _ := rfl
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofLex_lexEmb (b : K → ℕ) (i : Fin (Fintype.card K)) :
     ofLex (lexEmb K b) i = b ((blockIdx K).symm i) := rfl
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Introduce `b b' h`. Use function extensionality and compare the values at `k`. Use `congrFun (congrArg ofLex h) (blockIdx K k)` as an intermediate fact. Rewrite `this` using `[ofLex_lexEmb, ofLex_lexEmb, Equiv.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem lexEmb_injective : Function.Injective (lexEmb K) := by
   intro b b' h
   funext k
@@ -42,6 +48,9 @@ theorem lexEmb_injective : Function.Injective (lexEmb K) := by
 def lexWeight : (Σ k, ι k) → Lex (Fin (Fintype.card K) → ℕ) :=
   fun v => lexEmb K (blockWeight ι v)
 
+/- English proof (translation)
+Simplify using `only [Finsupp.weight_apply, map_finsuppSum, map_nsmul, lexWeight]`.
+-/
 theorem weight_lexWeight (d : (Σ k, ι k) →₀ ℕ) :
     Finsupp.weight (lexWeight (ι := ι)) d = lexEmb K (Finsupp.weight (blockWeight ι) d) := by
   simp only [Finsupp.weight_apply, map_finsuppSum, map_nsmul, lexWeight]
@@ -51,6 +60,9 @@ abbrev lexGrading (ι : K → Type) (F : Type u) [Field F] :
   weightedHomogeneousSubmodule F (lexWeight (ι := ι))
 
 open Classical in
+/- English proof (translation)
+Use extensionality with `d`. Simplify using `only [coeff_weightedHomogeneousComponent, weight_lexWeight, lexEmb_injective.eq_iff]`.
+-/
 theorem component_lex (f : MRing ι F) (b : K → ℕ) :
     weightedHomogeneousComponent (lexWeight (ι := ι)) (lexEmb K b) f =
       weightedHomogeneousComponent (blockWeight ι) b f := by
@@ -58,12 +70,20 @@ theorem component_lex (f : MRing ι F) (b : K → ℕ) :
   simp only [coeff_weightedHomogeneousComponent, weight_lexWeight, lexEmb_injective.eq_iff]
 
 open Classical in
+/- English proof (translation)
+Use extensionality with `d`. Simplify using `[coeff_weightedHomogeneousComponent, weight_lexWeight, hm]`.
+-/
 theorem component_lex_of_ne (f : MRing ι F) (m : Lex (Fin (Fintype.card K) → ℕ))
     (hm : ∀ b, lexEmb K b ≠ m) :
     weightedHomogeneousComponent (lexWeight (ι := ι)) m f = 0 := by
   ext d
   simp [coeff_weightedHomogeneousComponent, weight_lexWeight, hm]
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ b, lexEmb K b = m`. Take `⟨b, rfl⟩` from `h`. Rewrite using `[component_lex]`. Conclude with `hI f hf b`. Use `push Not at h`.
+
+Rewrite using `[component_lex_of_ne f m h]`. Conclude with `I.zero_mem`.
+-/
 theorem component_lex_mem {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I) {f : MRing ι F}
     (hf : f ∈ I) (m : Lex (Fin (Fintype.card K) → ℕ)) :
     weightedHomogeneousComponent (lexWeight (ι := ι)) m f ∈ I := by
@@ -77,6 +97,13 @@ theorem component_lex_mem {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I) {f
 
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
+/- English proof (translation)
+Establish `e : I = Ideal.span {g | ∃ f ∈ I, ∃ m, g = weightedHomogeneousComponent (lexWeight (ι` using `ι)) m f} := by`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Rewrite using `[← sum_weightedHomogeneousComponent (lexWeight (ι := ι)) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f)]`. Conclude with `Ideal.sum_mem _ fun m _ => Ideal.subset_span ⟨f, hf, m, rfl⟩`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `g ⟨f, hf, m, rfl⟩`. Conclude with `component_lex_mem hI hf m`. Rewrite using `[e]`. Use `Ideal.homogeneous_span _ _ fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨f, -, m, rfl⟩` from `hx`. Conclude with `⟨m, weightedHomogeneousComponent_isWeightedHomogeneous m f⟩`.
+-/
 theorem isHomogeneous_of_multiHomog {I : Ideal (MRing ι F)} (hI : IsMultiHomogIdeal I) :
     I.IsHomogeneous (lexGrading ι F) := by
   classical
@@ -95,6 +122,9 @@ theorem isHomogeneous_of_multiHomog {I : Ideal (MRing ι F)} (hI : IsMultiHomogI
   obtain ⟨f, -, m, rfl⟩ := hx
   exact ⟨m, weightedHomogeneousComponent_isWeightedHomogeneous m f⟩
 
+/- English proof (translation)
+Introduce `f hf b`. Rewrite using `[← component_lex]`. Conclude with `weightedHomogeneousComponent_mem_of_mem (h := h) (hp := hf) (m := lexEmb K b)`.
+-/
 theorem multiHomog_of_isHomogeneous {I : Ideal (MRing ι F)}
     (h : I.IsHomogeneous (lexGrading ι F)) : IsMultiHomogIdeal I := by
   classical
@@ -102,12 +132,18 @@ theorem multiHomog_of_isHomogeneous {I : Ideal (MRing ι F)}
   rw [← component_lex]
   exact weightedHomogeneousComponent_mem_of_mem (h := h) (hp := hf) (m := lexEmb K b)
 
+/- English proof (translation)
+Rewrite using `[mem_weightedHomogeneousSubmodule]`. Introduce `d hd`. Rewrite using `[weight_lexWeight, hs hd]`.
+-/
 theorem mem_lexGrading {s : MRing ι F} {c : K → ℕ} (hs : IsMultiHomog s c) :
     s ∈ lexGrading ι F (lexEmb K c) := by
   rw [mem_weightedHomogeneousSubmodule]
   intro d hd
   rw [weight_lexWeight, hs hd]
 
+/- English proof (translation)
+Rewrite `hs` using `[mem_weightedHomogeneousSubmodule]`. Take `⟨d, hd⟩` from `MvPolynomial.ne_zero_iff.mp h0`. Use `⟨Finsupp.weight (blockWeight ι) d, fun {d'} hd' => ?_⟩` and prove the remaining obligations. Apply `lexEmb_injective` to reduce the goal to its premises. Rewrite using `[← weight_lexWeight, ← weight_lexWeight, hs hd', hs hd]`.
+-/
 theorem exists_multiHomog_of_mem {s : MRing ι F} {m : Lex (Fin (Fintype.card K) → ℕ)}
     (hs : s ∈ lexGrading ι F m) (h0 : s ≠ 0) : ∃ c : K → ℕ, IsMultiHomog s c := by
   rw [mem_weightedHomogeneousSubmodule] at hs
@@ -116,6 +152,9 @@ theorem exists_multiHomog_of_mem {s : MRing ι F} {m : Lex (Fin (Fintype.card K)
   apply lexEmb_injective
   rw [← weight_lexWeight, ← weight_lexWeight, hs hd', hs hd]
 
+/- English proof (translation)
+Establish `hs' : s ∈ weightedHomogeneousSubmodule F (blockWeight ι) c` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mpr hs`. Use `DirectSum.coe_decompose_mul_add_of_right_mem (𝒜 := weightedHomogeneousSubmodule F (blockWeight ι)) (i := b) (a := t) hs'` as an intermediate fact. Rewrite using `[← weightedDecomposition.decompose'_apply, ← weightedDecomposition.decompose'_apply]`. Conclude with `this`.
+-/
 theorem component_mul_form {c : K → ℕ} {s : MRing ι F} (hs : IsMultiHomog s c)
     (t : MRing ι F) (b : K → ℕ) :
     weightedHomogeneousComponent (blockWeight ι) (b + c) (t * s) =
@@ -128,10 +167,16 @@ theorem component_mul_form {c : K → ℕ} {s : MRing ι F} (hs : IsMultiHomog s
   exact this
 
 omit [Fintype K] [DecidableEq K] in
+/- English proof (translation)
+Rewrite using `[Submodule.mem_colon_span_singleton, smul_eq_mul]`.
+-/
 theorem mem_colon_iff {J : Ideal (MRing ι F)} {s f : MRing ι F} :
     f ∈ J.colon (Ideal.span {s}) ↔ f * s ∈ J := by
   rw [Submodule.mem_colon_span_singleton, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `f hf b`. Rewrite `hf`, the goal using `[mem_colon_iff]`. Rewrite using `[← component_mul_form hs]`. Conclude with `hJ _ hf _`.
+-/
 theorem multiHomog_colon {J : Ideal (MRing ι F)} (hJ : IsMultiHomogIdeal J) {s : MRing ι F}
     {c : K → ℕ} (hs : IsMultiHomog s c) : IsMultiHomogIdeal (J.colon (Ideal.span {s})) := by
   intro f hf b
@@ -139,6 +184,21 @@ theorem multiHomog_colon {J : Ideal (MRing ι F)} (hJ : IsMultiHomogIdeal J) {s 
   rw [← component_mul_form hs]
   exact hJ _ hf _
 
+/- English proof (translation)
+Set `𝒮 : Set (Ideal (MRing ι F))` to `{P | ∃ s, (∃ i, s ∈ lexGrading ι F i) ∧ s ∉ J ∧ P = J.colon (Ideal.span {s})}`. Establish `hne : 𝒮.Nonempty` using `⟨_, 1, ⟨0, SetLike.GradedOne.one_mem⟩, (Ideal.ne_top_iff_one J).mp hJt, rfl⟩`. Establish `hnoeth : IsNoetherian (MRing ι F) (MRing ι F)` using `inferInstance`. Take `⟨P, hP, hmax⟩` from `set_has_maximal_iff_noetherian.mpr hnoeth 𝒮 hne`. Take `⟨s, ⟨i, hsi⟩, hsJ, hPs⟩` from `hP`.
+
+Substitute `hPs` using the available equality. Establish `hs0 : s ≠ 0` using `fun h => hsJ (h ▸ J.zero_mem)`. Take `⟨c, hc⟩` from `exists_multiHomog_of_mem hsi hs0`. Establish `hmh` using `multiHomog_colon hJ hc`. Establish `hcolon` using `isHomogeneous_of_multiHomog hmh`.
+
+Establish `hprime : (J.colon (Ideal.span {s})).IsPrime`. Use `hcolon.isPrime_of_homogeneous_mem_or_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.eq_top_iff_one, mem_colon_iff, one_mul]`. Conclude with `hsJ`. Introduce `x y hx _ hxy`.
+
+Distinguish the cases in `hxP : x ∈ J.colon (Ideal.span {s})`. Conclude with `Or.inl hxP`. Use `right`. Take `⟨i', hxi⟩` from `hx`. Establish `hxs : x * s ∉ J` using `fun h => hxP (mem_colon_iff.mpr h)`.
+
+Establish `hle : J.colon (Ideal.span {s}) ≤ J.colon (Ideal.span {x * s})`. Introduce `f hf`. Rewrite `hf`, the goal using `[mem_colon_iff]`. Rewrite using `[show f * (x * s) = x * (f * s) by ring]`. Conclude with `J.mul_mem_left x hf`.
+
+Establish `heq : J.colon (Ideal.span {s}) = J.colon (Ideal.span {x * s})`. Assume the negation of the conclusion as `hne'`. Conclude with `hmax _ ⟨x * s, ⟨i' + i, SetLike.mul_mem_graded hxi hsi⟩, hxs, rfl⟩ (lt_of_le_of_ne hle hne')`. Rewrite using `[heq, mem_colon_iff, show y * (x * s) = x * y * s by ring]`. Conclude with `mem_colon_iff.mp hxy`.
+
+Conclude with `⟨c, s, hc, hsJ, hprime, hmh⟩`.
+-/
 theorem exists_colon_isPrime [∀ k, Fintype (ι k)] {J : Ideal (MRing ι F)}
     (hJ : IsMultiHomogIdeal J) (hJt : J ≠ ⊤) :
     ∃ (c : K → ℕ) (s : MRing ι F), IsMultiHomog s c ∧ s ∉ J ∧
@@ -178,6 +238,9 @@ theorem exists_colon_isPrime [∀ k, Fintype (ι k)] {J : Ideal (MRing ι F)}
       exact mem_colon_iff.mp hxy
   exact ⟨c, s, hc, hsJ, hprime, hmh⟩
 
+/- English proof (translation)
+Use `multiHomog_of_isHomogeneous ((isHomogeneous_of_multiHomog hJ).sup ?_)` and prove the remaining obligations. Use `Ideal.homogeneous_span _ _ ?_` and prove the remaining obligations. Introduce and unpack `x rfl`. Conclude with `⟨_, mem_lexGrading hs⟩`.
+-/
 theorem multiHomog_sup_span {J : Ideal (MRing ι F)} (hJ : IsMultiHomogIdeal J) {s : MRing ι F}
     {c : K → ℕ} (hs : IsMultiHomog s c) : IsMultiHomogIdeal (J ⊔ Ideal.span {s}) := by
   refine multiHomog_of_isHomogeneous ((isHomogeneous_of_multiHomog hJ).sup ?_)
@@ -191,10 +254,20 @@ section Length
 
 variable {K : Type} {ι : K → Type} {F : Type u} [Field F]
 
+/- English proof (translation)
+Conclude with `(Submodule.Quotient.mk_smul I r x).symm`.
+-/
 theorem smul_quot_mk (I : Ideal (MRing ι F)) (r x : MRing ι F) :
     r • Ideal.Quotient.mk I x = Ideal.Quotient.mk I (r * x) := by
   exact (Submodule.Quotient.mk_smul I r x).symm
 
+/- English proof (translation)
+Take `⟨q, hqA, hqW⟩` from `Set.not_subset.mp h`. Establish `hz : ∀ z : LocalizedModule W.primeCompl (MRing ι F ⧸ A), z = 0`. Introduce `z`. Proceed by induction on `z using LocalizedModule.induction_on with`. Consider the case `h m t`.
+
+Take `⟨m, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Rewrite using `[← LocalizedModule.zero_mk t, LocalizedModule.mk_eq]`. Use `⟨⟨q, Ideal.mem_primeCompl_iff.mpr hqW⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_zero, smul_zero, Submonoid.smul_def, Submonoid.smul_def, smul_smul, smul_quot_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `A.mul_mem_right _ (A.mul_mem_right _ hqA)`.
+
+Establish `: Subsingleton (LocalizedModule W.primeCompl (MRing ι F ⧸ A))` using `⟨fun x y => by rw [hz x, hz y]⟩`. Conclude with `Module.length_eq_zero`.
+-/
 theorem multAt_eq_zero {A W : Ideal (MRing ι F)} [W.IsPrime] (h : ¬ A ≤ W) : multAt A W = 0 := by
   obtain ⟨q, hqA, hqW⟩ := Set.not_subset.mp h
   have hz : ∀ z : LocalizedModule W.primeCompl (MRing ι F ⧸ A), z = 0 := by
@@ -211,6 +284,19 @@ theorem multAt_eq_zero {A W : Ideal (MRing ι F)} [W.IsPrime] (h : ¬ A ≤ W) :
     ⟨fun x y => by rw [hz x, hz y]⟩
   exact Module.length_eq_zero
 
+/- English proof (translation)
+Unfold `multAt`. Establish `hφ : ∀ x : Localization.AtPrime W, LinearMap.toSpanSingleton (Localization.AtPrime W) (LocalizedModule W.primeCompl (MRing ι F ⧸ W)) (LocalizedModule.mk 1 1) x = x • LocalizedModule.mk 1 1` using `fun x => rfl`. Establish `hsurj : Function.Surjective (LinearMap.toSpanSingleton (Localization.AtPrime W) (LocalizedModule W.primeCompl (MRing ι F ⧸ W)) (LocalizedModule.mk 1 1))`. Introduce `z`. Proceed by induction on `z using LocalizedModule.induction_on with`.
+
+Consider the case `h m t`. Take `⟨m, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Use `⟨Localization.mk m t, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, LocalizedModule.mk_smul_mk, mul_one, ← map_one (Ideal.Quotient.mk W), smul_quot_mk, mul_one]`. Establish `hle : IsLocalRing.maximalIdeal (Localization.AtPrime W) ≤ LinearMap.ker (LinearMap.toSpanSingleton (Localization.AtPrime W) (LocalizedModule W.primeCompl (MRing ι F ⧸ W)) (LocalizedModule.mk 1 1))`.
+
+Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_le_iff_le_comap]`. Introduce `w hw`. Rewrite using `[Ideal.mem_comap, LinearMap.mem_ker, hφ, algebraMap_smul, LocalizedModule.smul'_mk, ← map_one (Ideal.Quotient.mk W), smul_quot_mk, mul_one, (Ideal.Quotient.eq_zero_iff_mem).mpr hw, LocalizedModule.zero_mk]`. Establish `hne : LinearMap.ker (LinearMap.toSpanSingleton (Localization.AtPrime W) (LocalizedModule W.primeCompl (MRing ι F ⧸ W)) (LocalizedModule.mk 1 1)) ≠ ⊤`. Introduce `h`.
+
+Establish `h1` using `(LinearMap.mem_ker).mp (h ▸ Submodule.mem_top : (1 : Localization.AtPrime W) ∈ _)`. Rewrite `h1` using `[hφ, one_smul, ← LocalizedModule.zero_mk 1, LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `h1`. Rewrite `hu` using `[smul_zero, smul_zero, Submonoid.smul_def, Submonoid.smul_def, Submonoid.coe_one, one_smul, ← map_one (Ideal.Quotient.mk W), smul_quot_mk, mul_one, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `u.2 hu`.
+
+Establish `hker` using `((IsLocalRing.maximalIdeal.isMaximal (Localization.AtPrime W)).eq_of_le hne hle).symm`. Rewrite using `[← (LinearMap.quotKerEquivOfSurjective _ hsurj).length_eq]`. Establish `: IsSimpleModule (Localization.AtPrime W) (Localization.AtPrime W ⧸ LinearMap.ker (LinearMap.toSpanSingleton (Localization.AtPrime W) (LocalizedModule W.primeCompl (MRing ι F ⧸ W)) (LocalizedModule.mk 1 1)))`. Rewrite using `[isSimpleModule_iff_isCoatom, hker]`. Conclude with `Ideal.isMaximal_def.mp (IsLocalRing.maximalIdeal.isMaximal _)`.
+
+Conclude with `Module.length_eq_one _ _`.
+-/
 theorem multAt_self (W : Ideal (MRing ι F)) [hW : W.IsPrime] : multAt W W = 1 := by
   unfold multAt
   have hφ : ∀ x : Localization.AtPrime W,
@@ -253,6 +339,23 @@ theorem multAt_self (W : Ideal (MRing ι F)) [hW : W.IsPrime] : multAt W W = 1 :
     exact Ideal.isMaximal_def.mp (IsLocalRing.maximalIdeal.isMaximal _)
   exact Module.length_eq_one _ _
 
+/- English proof (translation)
+Set `f : (MRing ι F ⧸ J.colon (Ideal.span {s})) →ₗ[MRing ι F] (MRing ι F ⧸ J)` to `Submodule.liftQ _ (J.mkQ ∘ₗ LinearMap.mulRight (MRing ι F) s) (by`. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, LinearMap.mulRight_apply]`. Conclude with `(PrimeFiltration.mem_colon_iff).mp hx)`. Set `g : (MRing ι F ⧸ J) →ₗ[MRing ι F] (MRing ι F ⧸ (J ⊔ Ideal.span {s}))` to `Submodule.factor le_sup_left`.
+
+Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot]`. Use `Submodule.ker_liftQ_eq_bot _ _ _ ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, LinearMap.mulRight_apply]`.
+
+Conclude with `(PrimeFiltration.mem_colon_iff).mpr hx`. Establish `hg : Function.Surjective g` using `Submodule.factor_surjective _`. Establish `hex : Function.Exact f g`. Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`.
+
+Consider the case `H y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy' : y ∈ J ⊔ Ideal.span {s}`. Use `hy` as an intermediate fact.
+
+Simplify using `only [g] at this`. Rewrite `this` using `[← Submodule.mkQ_apply, Submodule.factor_mk, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hy'`. Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.mp hb`. Use `⟨Submodule.Quotient.mk t, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [f, Submodule.liftQ_apply, LinearMap.comp_apply, LinearMap.mulRight_apply, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`. Simplify using `using J.neg_mem ha`. Introduce and unpack `⟨x, hx⟩`. Rewrite using `[← hx]`.
+
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H t`. Simplify using `only [f, g, Submodule.liftQ_apply, LinearMap.comp_apply, LinearMap.mulRight_apply]`. Rewrite using `[Submodule.factor_mk, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.mem_sup_right (Ideal.mem_span_singleton'.mpr ⟨t, rfl⟩)`.
+
+Set `p` to `W.primeCompl`. Set `R'` to `Localization.AtPrime W`. Set `fL` to `(IsLocalizedModule.map p (LocalizedModule.mkLinearMap p _) (LocalizedModule.mkLinearMap p _) f).extendScalarsOfIsLocalization p R'`. Set `gL` to `(IsLocalizedModule.map p (LocalizedModule.mkLinearMap p _) (LocalizedModule.mkLinearMap p _) g).extendScalarsOfIsLocalization p R'`. Conclude with `Module.length_eq_add_of_exact fL gL (IsLocalizedModule.map_injective p _ _ f hf) (IsLocalizedModule.map_surjective p _ _ g hg) (LocalizedModule.map_exact p f g hex)`.
+-/
 theorem multAt_colon_add (J W : Ideal (MRing ι F)) [W.IsPrime] (s : MRing ι F) :
     multAt J W = multAt (J.colon (Ideal.span {s})) W + multAt (J ⊔ Ideal.span {s}) W := by
   let f : (MRing ι F ⧸ J.colon (Ideal.span {s})) →ₗ[MRing ι F] (MRing ι F ⧸ J) :=
@@ -310,6 +413,11 @@ end Length
 
 section Dim
 
+/- English proof (translation)
+Proceed by induction on `σ using Finite.induction_empty_option with`. Consider the case `of_equiv e H`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv (renameEquiv F e).toRingEquiv, ← Nat.card_congr e]`. Conclude with `H`. Consider the case `h_empty`.
+
+Simplify using `[ringKrullDim_eq_zero_of_field]`. Consider the case `h_option IH`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (MvPolynomial.optionEquivLeft F _).toRingEquiv, Polynomial.ringKrullDim_of_isNoetherianRing, Finite.card_option, Nat.cast_add, Nat.cast_one]`. Conclude with `add_le_add IH le_rfl`.
+-/
 theorem ringKrullDim_mvPolynomial_le (F : Type u) [Field F] (σ : Type) [Finite σ] :
     ringKrullDim (MvPolynomial σ F) ≤ Nat.card σ := by
   induction σ using Finite.induction_empty_option with
@@ -323,6 +431,9 @@ theorem ringKrullDim_mvPolynomial_le (F : Type u) [Field F] (σ : Type) [Finite 
       Polynomial.ringKrullDim_of_isNoetherianRing, Finite.card_option, Nat.cast_add, Nat.cast_one]
     exact add_le_add IH le_rfl
 
+/- English proof (translation)
+Establish `hset : PrimeSpectrum.zeroLocus (Q : Set R) = Set.Ici ⟨Q, hQ⟩`. Use extensionality with `x`. Rewrite using `[PrimeSpectrum.mem_zeroLocus, Set.mem_Ici, ← PrimeSpectrum.asIdeal_le_asIdeal]`. Conclude with `SetLike.coe_subset_coe`. Rewrite using `[ringKrullDim_quotient, hset, Order.coheight_eq_krullDim_Ici]`.
+-/
 theorem ringKrullDim_quotient_prime {R : Type*} [CommRing R] (Q : Ideal R) [hQ : Q.IsPrime] :
     ringKrullDim (R ⧸ Q) = (Order.coheight (⟨Q, hQ⟩ : PrimeSpectrum R) : WithBot ℕ∞) := by
   have hset : PrimeSpectrum.zeroLocus (Q : Set R) = Set.Ici ⟨Q, hQ⟩ := by
@@ -336,6 +447,19 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
 
 omit [DecidableEq K] in
 
+/- English proof (translation)
+Establish `hmono : StrictMono (fun x : WithBot ℕ∞ => WithBot.map (fun d : ℕ∞ => WithTop.map (fun e : ℕ => (e : ℤ) - Fintype.card K) d) x)` using `WithBot.strictMono_map_iff.2 (WithTop.strictMono_map_iff.2 (fun a b h => Int.sub_lt_sub_right (by exact_mod_cast h) _))`. Establish `hle : ringKrullDim (MRing ι F ⧸ Q) ≤ ringKrullDim (MRing ι F ⧸ I)` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hIQ) (Ideal.Quotient.factor_surjective hIQ)`. Distinguish the cases in `hmin : Q ∈ I.minimalPrimes`. Break down `hle.lt_or_eq with h | h` into its components or cases. Conclude with `Or.inl (hmono h)`.
+
+Conclude with `Or.inr ⟨hmin, by simp only [relDim, h]⟩`. Use `left`. Apply `hmono` to reduce the goal to its premises. Take `⟨W', hW', hW'Q⟩` from `Ideal.exists_minimalPrimes_le hIQ`. Establish `hW'p : W'.IsPrime` using `hW'.1.1`.
+
+Establish `hlt : (⟨W', hW'p⟩ : PrimeSpectrum (MRing ι F)) < ⟨Q, hQ⟩` using `lt_of_le_of_ne hW'Q (fun h => hmin (by`. Establish `: W' = Q` using `congrArg PrimeSpectrum.asIdeal h`. Conclude with `this ▸ hW'))`. Establish `h1` using `Order.coheight_add_one_le hlt`. Establish `h2 : ringKrullDim (MRing ι F ⧸ W') ≤ ringKrullDim (MRing ι F ⧸ I)` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hW'.1.2) (Ideal.Quotient.factor_surjective hW'.1.2)`.
+
+Establish `h3 : ringKrullDim (MRing ι F ⧸ W') ≤ Nat.card (Σ k, ι k)` using `(ringKrullDim_quotient_le W').trans (ringKrullDim_mvPolynomial_le F _)`. Rewrite `h2`, `h3` using `[ringKrullDim_quotient_prime W']`. Rewrite using `[ringKrullDim_quotient_prime Q]`. Establish `h3' : Order.coheight (⟨W', hW'p⟩ : PrimeSpectrum (MRing ι F)) ≤ (Nat.card (Σ k, ι k) : ℕ∞)`. Conclude with `h3` after adjusting the coercions.
+
+Establish `hfin : Order.coheight (⟨Q, hQ⟩ : PrimeSpectrum (MRing ι F)) ≠ ⊤`. Introduce `htop`. Rewrite `h1` using `[htop, top_add]`. Conclude with `absurd (h1.trans h3') (not_le.mpr (ENat.natCast_lt_top _))`. Establish `h4` using `(ENat.add_one_le_iff hfin).1 h1`.
+
+Conclude with `lt_of_lt_of_le (by exact_mod_cast h4) h2`.
+-/
 theorem relDim_cases {I Q : Ideal (MRing ι F)} [hQ : Q.IsPrime] (hIQ : I ≤ Q) :
     relDim Q < relDim I ∨ (Q ∈ I.minimalPrimes ∧ relDim Q = relDim I) := by
   have hmono : StrictMono (fun x : WithBot ℕ∞ =>
@@ -382,6 +506,9 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
   {F : Type u} [Field F]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Establish `: Subsingleton (MRing ι F ⧸ (⊤ : Ideal (MRing ι F)))` using `Ideal.Quotient.subsingleton_iff.mpr rfl`. Unfold `hilbFn`. Use `split_ifs`. Simplify using `[Module.finrank_zero_of_subsingleton]`. Both sides reduce to the same expression.
+-/
 theorem hilbFn_top (m : K → ℤ) : hilbFn (⊤ : Ideal (MRing ι F)) m = 0 := by
   have : Subsingleton (MRing ι F ⧸ (⊤ : Ideal (MRing ι F))) :=
     Ideal.Quotient.subsingleton_iff.mpr rfl
@@ -392,6 +519,25 @@ theorem hilbFn_top (m : K → ℤ) : hilbFn (⊤ : Ideal (MRing ι F)) m = 0 := 
 
 open Classical in
 
+/- English proof (translation)
+Proceed by induction on `J using IsNoetherian.induction with`. Consider the case `hgt J IH`. Distinguish the cases in `hJt : J = ⊤`. Substitute `hJt` using the available equality. Use `⟨0, Fin.elim0, Fin.elim0, fun j => j.elim0, fun m => ?_, fun W hW => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[hilbFn_top]`. Conclude with `absurd (top_le_iff.mp hW.1.2) hW.1.1.ne_top`. Take `⟨c, s, hs, hsJ, hQp, hQh⟩` from `exists_colon_isPrime hJ hJt`. Establish `hJQ : J ≤ J.colon (Ideal.span {s})` using `fun x hx => mem_colon_iff.mpr (Ideal.mul_mem_right s J hx)`. Establish `hgt : J < J ⊔ Ideal.span {s}` using `lt_of_le_of_ne le_sup_left (fun h => hsJ (h ▸ Ideal.mem_sup_right (Ideal.mem_span_singleton_self s)))`.
+
+Take `⟨r, Q', c', hQ', hh', hcount'⟩` from `IH _ hgt (multiHomog_sup_span hJ hs)`. Use `⟨r + 1, Fin.cons (J.colon (Ideal.span {s})) Q', Fin.cons c c', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`.
+
+Conclude with `⟨hQp, hQh, hJQ⟩`. Simplify using `only [Fin.cons_succ]`. Conclude with `⟨(hQ' j).1, (hQ' j).2.1, le_sup_left.trans (hQ' j).2.2⟩`. Introduce `m`. Rewrite using `[Fin.sum_univ_succ]`.
+
+Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← hh' m]`. Use `h1 F K ι J hJ c s hs m` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `W hW`.
+
+Establish `: W.IsPrime` using `hW.1.1`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[multAt_colon_add J W s, Nat.cast_add]`. Use `congr 1`.
+
+Distinguish the cases in `hle : J.colon (Ideal.span {s}) ≤ W`. Establish `heq : J.colon (Ideal.span {s}) = W` using `le_antisymm hle (hW.2 ⟨hQp, hJQ⟩ hle)`. Rewrite using `[if_pos heq]`. Simplify using `only [heq]`. Rewrite using `[multAt_self]`.
+
+Both sides reduce to the same expression. Rewrite using `[if_neg (fun h => hle h.le), multAt_eq_zero hle]`. Both sides reduce to the same expression. Distinguish the cases in `hJ'W : J ⊔ Ideal.span {s} ≤ W`. Establish `hW' : W ∈ Ideal.minimalPrimes (J ⊔ Ideal.span {s})` using `⟨⟨hW.1.1, hJ'W⟩, fun q hq hqW => hW.2 ⟨hq.1, le_sup_left.trans hq.2⟩ hqW⟩`.
+
+Conclude with `hcount' W hW'`. Rewrite using `[multAt_eq_zero hJ'W]`. Establish `: ∀ j, Q' j ≠ W` using `fun j h => hJ'W (h ▸ (hQ' j).2.2)`. Simplify using `[this]`.
+-/
 theorem filtration (h1 : HilbExactDivide.Statement.{u}) (J : Ideal (MRing ι F))
     (hJ : IsMultiHomogIdeal J) :
     ∃ (r : ℕ) (Q : Fin r → Ideal (MRing ι F)) (c : Fin r → K → ℕ),
@@ -450,6 +596,11 @@ theorem filtration (h1 : HilbExactDivide.Statement.{u}) (J : Ideal (MRing ι F))
 
 end Main
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ I hI`. Take `⟨r, Q, c, hQ, hhilb, hcount⟩` from `filtration h1 I hI`. Use `⟨r, Q, c, hQ, Filter.Eventually.of_forall hhilb, ?_, ?_⟩` and prove the remaining obligations. Introduce `W hW _ _`. Rewrite using `[← hcount W hW, Finset.card_filter]`.
+
+Introduce `j`. Use `(hQ j).1` as an intermediate fact. Break down `relDim_cases (hQ j).2.2 with h | h` into its components or cases. Conclude with `Or.inr (Or.inl h)`. Conclude with `Or.inr (Or.inr h)`.
+-/
 theorem proof (h1 : HilbExactDivide.Statement.{u}) : PrimeFiltration.Statement.{u} := by
   intro F _ K _ _ ι _ I hI
   obtain ⟨r, Q, c, hQ, hhilb, hcount⟩ := filtration h1 I hI

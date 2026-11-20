@@ -4,6 +4,9 @@ namespace GlobalTheory.IntegralOpen
 
 open IsDedekindDomain NumberField
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.isOpen_forall_mem (R := fun w : HeightOneSpectrum (RingOfIntegers F) => HeightOneSpectrum.adicCompletion F w) (A := fun w => (HeightOneSpectrum.adicCompletionIntegers F w : Set (HeightOneSpectrum.adicCompletion F w))) (fun _ => Valued.isOpen_valuationSubring _)`.
+-/
 theorem isOpen_integral (F : Type) [Field F] [NumberField F] :
     IsOpen {a : FiniteAdeleRing (RingOfIntegers F) F |
       ∀ v : HeightOneSpectrum (RingOfIntegers F),

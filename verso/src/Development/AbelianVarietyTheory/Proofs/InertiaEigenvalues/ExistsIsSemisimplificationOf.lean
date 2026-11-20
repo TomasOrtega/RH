@@ -23,6 +23,9 @@ def glue (ρ s : Representation k Γ V) (U : Submodule k V) (p : V →ₗ[k] V) 
     have h5 : p (ρ g (ρ h (p v))) = ρ g (ρ h (p v)) := hpU _ (hρ g _ (hρ h _ (hp v)))
     simp [h1, h2, h3, h4, h5]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glue_apply (ρ s : Representation k Γ V) (U : Submodule k V) (p : V →ₗ[k] V) (hp : ∀ v, p v ∈ U)
     (hpU : ∀ u ∈ U, p u = u) (hρ : Stable ρ U) (hs : Stable s U) (g : Γ) (v : V) :
     glue ρ s U p hp hpU hρ hs g v = s g (p v) + (ρ g (v - p v) - p (ρ g (v - p v))) := rfl
@@ -34,6 +37,13 @@ def Partial (ρ : Representation k Γ V) (U : Submodule k V) : Prop :=
     (∀ j < m, Stable s (Ws j)) ∧ (Finset.range m).SupIndep Ws ∧ (Finset.range m).sup Ws = U ∧
     ∀ j < m, ∀ g, ∀ v ∈ Ws j, ρ g v - s g v ∈ (Finset.range j).sup Ws
 
+/- English proof (translation)
+Unfold `Partial`. Establish `hb : Stable ρ (⊥ : Submodule k V)`. Introduce `g v hv`. Rewrite `hv`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hv, map_zero]`.
+
+Use `⟨ρ, 0, fun _ => ⊥, hb, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `W hW _`. Use `⟨⊥, hb, disjoint_bot_right, ?_⟩` and prove the remaining obligations. Rewrite using `[le_bot_iff.mp hW, bot_sup_eq]`. Introduce `j hj`.
+
+Conclude with `absurd hj (Nat.not_lt_zero j)`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `j hj`. Conclude with `absurd hj (Nat.not_lt_zero j)`.
+-/
 theorem partial_bot (ρ : Representation k Γ V) : Partial ρ ⊥ := by
   unfold Partial
   have hb : Stable ρ (⊥ : Submodule k V) := by
@@ -51,6 +61,9 @@ theorem partial_bot (ρ : Representation k Γ V) : Partial ρ ⊥ := by
   · intro j hj
     exact absurd hj (Nat.not_lt_zero j)
 
+/- English proof (translation)
+Introduce `g x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hx`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hA g a ha) (hB g b hb)`.
+-/
 private theorem stable_sup' (f : Representation k Γ V) (A B : Submodule k V) (hA : Stable f A)
     (hB : Stable f B) : Stable f (A ⊔ B) := by
   intro g x hx
@@ -58,6 +71,79 @@ private theorem stable_sup' (f : Representation k Γ V) (A B : Submodule k V) (h
   rw [map_add]
   exact Submodule.add_mem_sup (hA g a ha) (hB g b hb)
 
+/- English proof (translation)
+Take `⟨s, m, Ws, hsU', hcomp, hWst, hind, hsup, htri⟩` from `h`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl U'`. Take `⟨p, hp, hpU⟩ : ∃ p : V →ₗ[k] V, (∀ v, p v ∈ U') ∧ ∀ u ∈ U', p u = u` from `⟨U'.projection C hC, fun v => Submodule.projection_apply_mem hC v, fun u hu => Submodule.projection_apply_left hC ⟨u, hu⟩⟩`. Establish `hpp : ∀ v, p (p v) = p v` using `fun v => hpU _ (hp v)`. Use `set s' := glue ρ s U' p hp hpU hU' hsU' with hs'`.
+
+Establish `hA : ∀ g, ∀ u ∈ U', s' g u = s g u`. Introduce `g u hu`. Rewrite using `[hs', glue_apply, hpU u hu, sub_self, map_zero, map_zero, sub_zero, add_zero]`. Establish `hB : ∀ g w, p w = 0 → s' g w = ρ g w - p (ρ g w)`. Introduce `g w hw`.
+
+Rewrite using `[hs', glue_apply, hw, map_zero, sub_zero, zero_add]`. Establish `hD : ∀ g v, s' g (v - p v) = s' g v - p (s' g v)`. Introduce `g v`. Establish `e1 : p (v - p v) = 0` using `by rw [map_sub, hpp, sub_self]`. Establish `e2 : p (s g (p v)) = s g (p v)` using `hpU _ (hsU' g _ (hp v))`.
+
+Establish `e3 : s' g v = s g (p v) + (ρ g (v - p v) - p (ρ g (v - p v)))` using `by rw [hs', glue_apply]`. Rewrite using `[hB g _ e1, e3, map_add, e2]`. Generalize the expression as in `ρ g (v - p v) = x`. Rewrite using `[map_sub, hpp, sub_self, add_zero, add_sub_cancel_left]`. Use `set Wm : Submodule k V := U ⊓ LinearMap.ker p with hWm`.
+
+Establish `hUle : ∀ v, p v ∈ U` using `fun v => hle (hp v)`. Establish `hWmst : Stable s' Wm`. Introduce `g w hw`. Establish `hwk : p w = 0` using `hw.2`. Rewrite using `[hB g w hwk]`.
+
+Use `⟨sub_mem (hU g w hw.1) (hUle _), ?_⟩` and prove the remaining obligations. Use `show p (ρ g w - p (ρ g w)) = 0`. Rewrite using `[map_sub, hpp, sub_self]`. Establish `hdisj : Disjoint U' Wm`. Rewrite using `[Submodule.disjoint_def]`.
+
+Introduce `x hx hxW`. Establish `h0 : p x = 0` using `hxW.2`. Rewrite using `[← hpU x hx, h0]`. Establish `hsupU : U' ⊔ Wm = U`. Use `le_antisymm (sup_le hle inf_le_left) ?_` and prove the remaining obligations.
+
+Introduce `u hu`. Use `Submodule.mem_sup.mpr ⟨p u, hp u, u - p u, ⟨sub_mem hu (hUle u), ?_⟩, add_sub_cancel _ _⟩` and prove the remaining obligations. Use `show p (u - p u) = 0`. Rewrite using `[map_sub, hpp, sub_self]`. Establish `hs'U' : Stable s' U'`.
+
+Introduce `g u hu`. Rewrite using `[hA g u hu]`. Conclude with `hsU' g u hu`. Establish `hs'U : Stable s' U` using `hsupU ▸ stable_sup' s' U' Wm hs'U' hWmst`. Establish `hirr : ∀ X ≤ Wm, Stable s' X → X = ⊥ ∨ X = Wm`.
+
+Introduce `X hX hXs`. Establish `hρX : Stable ρ (U' ⊔ X)`. Introduce `g x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hx`. Establish `hbk : p b = 0` using `(hX hb).2`.
+
+Establish `hρb : ρ g b = p (ρ g b) + s' g b` using `by rw [hB g b hbk]; abel`. Rewrite using `[map_add, hρb, ← add_assoc]`. Conclude with `Submodule.add_mem_sup (add_mem (hU' g a ha) (hp _)) (hXs g b hb)`. Break down `hmax (U' ⊔ X) hρX le_sup_left (sup_le hle (hX.trans inf_le_left)) with h1 | h1` into its components or cases. Use `left`.
+
+Conclude with `le_bot_iff.mp (hdisj (h1 ▸ le_sup_right) hX)`. Use `right`. Use `le_antisymm hX ?_` and prove the remaining obligations. Introduce `w hw`. Establish `hwU : w ∈ U' ⊔ X` using `h1 ▸ hw.1`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hwU`. Establish `haW : a ∈ Wm`. Use `sub_mem hw (hX hb)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Establish `ha0 : a = 0` using `Submodule.disjoint_def.mp hdisj a ha haW`.
+
+Rewrite using `[ha0, zero_add]`. Conclude with `hb`. Establish `hWsle : ∀ j < m, Ws j ≤ U'` using `fun j hj => hsup ▸ Finset.le_sup (Finset.mem_range.mpr hj)`. Establish `hsuple : ∀ t ⊆ Finset.range m, t.sup Ws ≤ U'` using `fun t ht => Finset.sup_le fun j hj => hWsle j (Finset.mem_range.mp (ht hj))`. Unfold `Partial`.
+
+Use `⟨s', m + 1, fun j => if j < m then Ws j else Wm, hs'U, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `W hWU hW set X : Submodule k V := W.map (LinearMap.id - p) with hX`. Establish `hXmem : ∀ w ∈ W, w - p w ∈ X` using `fun w hw => ⟨w, hw, rfl⟩`. Establish `hXWm : X ≤ Wm`. Introduce and unpack `x ⟨w, hw, rfl⟩`.
+
+Use `⟨sub_mem (hWU hw) (hUle w), ?_⟩` and prove the remaining obligations. Use `show p (w - p w) = 0`. Rewrite using `[map_sub, hpp, sub_self]`. Establish `hXs : Stable s' X`. Introduce and unpack `g x ⟨w, hw, rfl⟩`.
+
+Use `show s' g (w - p w) ∈ X`. Rewrite using `[hD]`. Conclude with `hXmem _ (hW g w hw)`. Break down `hirr X hXWm hXs with h0 | h0` into its components or cases. Establish `hWU' : W ≤ U'`.
+
+Introduce `w hw`. Establish `h1 : w - p w ∈ X` using `hXmem w hw`. Rewrite `h1` using `[h0, Submodule.mem_bot, sub_eq_zero]`. Rewrite using `[h1]`. Conclude with `hp w`.
+
+Establish `hWs : Stable s W`. Introduce `g w hw`. Rewrite using `[← hA g w (hWU' hw)]`. Conclude with `hW g w hw`. Take `⟨W'', hW''s, hdis, hsup'⟩` from `hcomp W hWU' hWs`.
+
+Establish `hW''le : W'' ≤ U'` using `hsup' ▸ le_sup_right`. Establish `hW''s' : Stable s' W''`. Introduce `g x hx`. Rewrite using `[hA g x (hW''le hx)]`. Conclude with `hW''s g x hx`.
+
+Use `⟨W'' ⊔ Wm, stable_sup' s' W'' Wm hW''s' hWmst, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hdis.disjoint_sup_right_of_disjoint_sup_left (hsup' ▸ hdisj)`. Rewrite using `[← sup_assoc, hsup', hsupU]`. Establish `hYs : Stable s (W ⊓ U')`. Introduce `g y hy`.
+
+Use `⟨?_, hsU' g y hy.2⟩` and prove the remaining obligations. Rewrite using `[← hA g y hy.2]`. Conclude with `hW g y hy.1`. Take `⟨C', hC's, hdis', hsup''⟩` from `hcomp (W ⊓ U') inf_le_right hYs`. Establish `hC'le : C' ≤ U'` using `hsup'' ▸ le_sup_right`.
+
+Use `⟨C', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g x hx`. Rewrite using `[hA g x (hC'le hx)]`. Conclude with `hC's g x hx`. Rewrite using `[Submodule.disjoint_def]`.
+
+Introduce `x hxW hxC`. Conclude with `Submodule.disjoint_def.mp hdis' x ⟨hxW, hC'le hxC⟩ hxC`. Use `le_antisymm (sup_le hWU (hC'le.trans hle)) ?_` and prove the remaining obligations. Rewrite using `[← hsupU]`. Use `sup_le (hsup'' ▸ sup_le_sup_right inf_le_left C') ?_` and prove the remaining obligations.
+
+Rewrite using `[← h0]`. Introduce and unpack `x ⟨w, hw, rfl⟩`. Use `show w - p w ∈ W ⊔ C'`. Establish `hpw : p w ∈ W ⊔ C'`. Establish `: p w ∈ W ⊓ U' ⊔ C'` using `hsup''.symm ▸ hp w`.
+
+Conclude with `sup_le_sup_right inf_le_left C' this`. Conclude with `sub_mem (Submodule.mem_sup_left hw) hpw`. Introduce `j hj`. Distinguish the cases in `hjm : j < m`. Simplify using `only [if_pos hjm]`.
+
+Introduce `g x hx`. Rewrite using `[hA g x (hWsle j hjm hx)]`. Conclude with `hWst j hjm g x hx`. Simplify using `only [if_neg hjm]`. Conclude with `hWmst`.
+
+Introduce `t ht i hi hit`. Establish `hle' : t.sup (fun j => if j < m then Ws j else Wm) ≤ (t.erase m).sup Ws ⊔ Wm`. Use `Finset.sup_le fun j hj => ?_` and prove the remaining obligations. Distinguish the cases in `hjm : j < m`. Simplify using `only [if_pos hjm]`.
+
+Conclude with `le_sup_of_le_left (Finset.le_sup (Finset.mem_erase.mpr ⟨hjm.ne, hj⟩))`. Simplify using `only [if_neg hjm]`. Conclude with `le_sup_right`. Establish `hT0 : t.erase m ⊆ Finset.range m`. Introduce `j hj`.
+
+Take `⟨hjm, hjt⟩` from `Finset.mem_erase.mp hj`. Use `Finset.mem_range.mp (ht hjt)` as an intermediate fact. Conclude with `Finset.mem_range.mpr (by omega)`. Distinguish the cases in `him : i < m`. Simplify using `only [if_pos him]`.
+
+Establish `h1 : Disjoint (Ws i) ((t.erase m).sup Ws)` using `hind hT0 (Finset.mem_range.mpr him) (fun h => hit (Finset.mem_of_mem_erase h))`. Establish `h2 : Disjoint (Ws i ⊔ (t.erase m).sup Ws) Wm` using `hdisj.mono_left (sup_le (hWsle i him) (hsuple _ hT0))`. Conclude with `(h1.disjoint_sup_right_of_disjoint_sup_left h2).mono_right hle'`. Simplify using `only [if_neg him]`. Establish `him' : i = m`.
+
+Use `Finset.mem_range.mp hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute `him'` using the available equality. Use `hdisj.symm.mono_right (Finset.sup_le fun j hj => ?_)` and prove the remaining obligations. Establish `hjm : j < i`.
+
+Establish `h1` using `Finset.mem_range.mp (ht hj)`. Establish `h2 : j ≠ i` using `fun h => hit (h ▸ hj)`. Use linear arithmetic over natural numbers and integers. Simplify using `only [if_pos hjm]`. Conclude with `hWsle j hjm`.
+
+Rewrite using `[Finset.range_add_one, Finset.sup_insert, if_neg (lt_irrefl m), Finset.sup_congr rfl (fun j hj => if_pos (Finset.mem_range.mp hj)), hsup, sup_comm, hsupU]`. Introduce `j hj g v hv`. Establish `hsame : (Finset.range j).sup (fun j => if j < m then Ws j else Wm) = (Finset.range j).sup Ws` using `Finset.sup_congr rfl (fun i hi => if_pos (lt_of_lt_of_le (Finset.mem_range.mp hi) (Nat.lt_succ_iff.mp hj)))`. Rewrite using `[hsame]`. Distinguish the cases in `hjm : j < m`.
+
+Simplify using `only [if_pos hjm] at hv`. Rewrite using `[hA g v (hWsle j hjm hv)]`. Conclude with `htri j hjm g v hv`. Simplify using `only [if_neg hjm] at hv`. Establish `hjm' : j = m` using `by omega`.
+
+Substitute `hjm'` using the available equality. Rewrite using `[hB g v hv.2, sub_sub_cancel, hsup]`. Conclude with `hp _`.
+-/
 theorem partial_step (ρ : Representation k Γ V) (U U' : Submodule k V) (hU : Stable ρ U)
     (hU' : Stable ρ U') (hle : U' ≤ U)
     (hmax : ∀ X, Stable ρ X → U' ≤ X → X ≤ U → X = U' ∨ X = U) (h : Partial ρ U') : Partial ρ U := by
@@ -248,6 +334,15 @@ theorem partial_step (ρ : Representation k Γ V) (U U' : Submodule k V) (hU : S
       rw [hB g v hv.2, sub_sub_cancel, hsup]
       exact hp _
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `U hn hU`. Distinguish the cases in `hb : U = ⊥`. Substitute `hb` using the available equality.
+
+Conclude with `partial_bot ρ`. Establish `hbot : Stable ρ (⊥ : Submodule k V)`. Introduce `g v hv`. Rewrite `hv`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hv, map_zero]`.
+
+Establish `hne : {X : Submodule k V | Stable ρ X ∧ X < U}.Nonempty` using `⟨⊥, hbot, bot_lt_iff_ne_bot.mpr hb⟩`. Take `⟨U', ⟨hU', hlt⟩, hmin⟩` from `(wellFounded_gt (α := Submodule k V)).has_min _ hne`. Establish `hmax : ∀ X, Stable ρ X → U' ≤ X → X ≤ U → X = U' ∨ X = U`. Introduce `X hX h1 h2`. Distinguish the cases in `hXU : X = U`.
+
+Conclude with `Or.inr hXU`. Use `left`. Assume the negation of the conclusion as `hne'`. Conclude with `hmin X ⟨hX, lt_of_le_of_ne h2 hXU⟩ (lt_of_le_of_ne h1 (Ne.symm hne'))`. Conclude with `partial_step ρ U U' hU hU' hlt.le hmax (ih _ (hn ▸ Submodule.finrank_lt_finrank_of_lt hlt) U' rfl hU')`.
+-/
 private theorem partial_of_stable_finrank [FiniteDimensional k V] (ρ : Representation k Γ V) (n : ℕ) :
     ∀ U : Submodule k V, Module.finrank k U = n → Stable ρ U → Partial ρ U := by
   induction n using Nat.strong_induction_on with
@@ -273,11 +368,29 @@ private theorem partial_of_stable_finrank [FiniteDimensional k V] (ρ : Represen
       exact partial_step ρ U U' hU hU' hlt.le hmax
         (ih _ (hn ▸ Submodule.finrank_lt_finrank_of_lt hlt) U' rfl hU')
 
+/- English proof (translation)
+Introduce `hU`. Conclude with `partial_of_stable_finrank ρ _ U rfl hU`.
+-/
 theorem partial_of_stable [FiniteDimensional k V] (ρ : Representation k Γ V) (U : Submodule k V) :
     Stable ρ U → Partial ρ U := by
   intro hU
   exact partial_of_stable_finrank ρ _ U rfl hU
 
+/- English proof (translation)
+Introduce `k Γ _ _ V _ _ _ ρ`. Take `⟨s, m, Ws, -, hcomp, hst, hind, hsup, htri⟩` from `partial_of_stable ρ ⊤ (fun _ _ _ => Submodule.mem_top)`. Use `⟨s, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SemisimplificationConstituents.IsSemisimplificationOf IsSS`. Use `⟨?_, m, fun j => Ws j, LinearEquiv.refl k V, fun j => hst j j.isLt, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `W hW`. Take `⟨W', hW', hd, hs⟩` from `hcomp W le_top hW`. Conclude with `⟨W', hW', hd, codisjoint_iff.mpr hs⟩`. Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[iSupIndep_iff_supIndep_univ]`. Introduce `t _ i _ hit`. Establish `h` using `hind (t := t.map Fin.valEmbedding) (by`. Introduce `x hx`. Take `⟨a, _, rfl⟩` from `Finset.mem_map.mp hx`.
+
+Conclude with `Finset.mem_range.mpr a.isLt)`. Use the proof step `(Finset.mem_range.mpr i.isLt)`. Use the proof step `(by`. Introduce `hx`. Take `⟨a, ha, hai⟩` from `Finset.mem_map.mp hx`.
+
+Conclude with `hit (Fin.ext hai ▸ ha))`. Rewrite `h` using `[Finset.sup_map]`. Conclude with `h`. Use `eq_top_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[← hsup]`.
+
+Conclude with `Finset.sup_le fun i hi => le_iSup_of_le (⟨i, Finset.mem_range.mp hi⟩ : Fin m) le_rfl`. Introduce `j g v hv`. Use `Submodule.mem_map.mpr ⟨ρ g v - s g v, ?_, rfl⟩` and prove the remaining obligations. Establish `hle2 : (Finset.range j).sup Ws ≤ ⨆ j' ∈ Set.Iio j, Ws (j' : ℕ)`. Use `Finset.sup_le fun i hi => ?_` and prove the remaining obligations.
+
+Establish `hij : i < (j : ℕ)` using `Finset.mem_range.mp hi`. Conclude with `le_iSup₂_of_le (⟨i, hij.trans j.isLt⟩ : Fin m) (show (⟨i, hij.trans j.isLt⟩ : Fin m) < j from hij) le_rfl`. Conclude with `hle2 (htri j j.isLt g v hv)`.
+-/
 theorem exists_isSemisimplificationOf : ∀ {k Γ : Type} [Field k] [Group Γ] {V : Type} [AddCommGroup V]
     [Module k V] [FiniteDimensional k V] (ρ : Representation k Γ V),
     ∃ s : Representation k Γ V, GlobalTheory.IndefiniteRowSideFullHecke.SemisimplificationConstituents.IsSemisimplificationOf s ρ := by

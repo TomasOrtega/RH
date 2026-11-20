@@ -14,6 +14,11 @@ namespace GlobalTheory.Decompl
 section Gen
 variable {O A R : Type} [CommRing O] [CommRing A] [CommRing R] [Algebra O R] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `φ₀ (letE i (k - 1)) = letE (i + 1) k`. Distinguish the cases in `hk : k = i + 1`.
+
+Substitute `hk` using the available equality. Simplify using `[letE]`. Establish `: k - 1 ≠ i` using `fun h => hk (by rw [← h]; ring)`. Simplify using `[letE, hk, this]`.
+-/
 theorem letφ_smul_letE (φ₀ : PowerSeries O →ₐ[O] PowerSeries O) (o : O) (i : ZMod n) :
     letφ φ₀ (o • letE i : LetA O n) = o • letE (i + 1) := by
   rw [map_smul]
@@ -26,6 +31,27 @@ theorem letφ_smul_letE (φ₀ : PowerSeries O →ₐ[O] PowerSeries O) (o : O) 
   · have : k - 1 ≠ i := fun h => hk (by rw [← h]; ring)
     simp [letE, hk, this]
 
+/- English proof (translation)
+Take `⟨a', ha'⟩ : ∃ a' : LetA O n, a = letπ * a' + fun i => PowerSeries.C (PowerSeries.constantCoeff (a i))` from `⟨fun i => PowerSeries.mk fun k => PowerSeries.coeff (k + 1) (a i),`. Use function extensionality and compare the values at `fun i => PowerSeries.eq_X_mul_shift_add_const (a i)⟩`. Use `set c : LetA O n := fun i => PowerSeries.C (PowerSeries.constantCoeff (a i)) with hc`. Establish `h1 : Near ι p (j letπ) 1 (j c)`. Take `⟨b, hb⟩` from `hj a'`.
+
+Establish `h2 : j c = j a - j letπ ^ 1 * ι b`. Rewrite using `[pow_one, ← hb, ← map_mul, ← map_sub]`. Use `congr 1`. Conclude with `eq_sub_of_add_eq' ha'.symm`. Rewrite using `[h2]`.
+
+Conclude with `ha.sub (Near.pow_mul 1 b)`. Establish `h3 : ∀ i, ∃ o' : O, PowerSeries.constantCoeff (a i) = (p : O) * o'`. Introduce `i`. Use `set o := PowerSeries.constantCoeff (a i) with ho`. Establish `h4 : Near ι p (j letπ) 1 (j (o • letE i))`.
+
+Take `⟨b, hb⟩` from `hj (letE i)`. Establish `h5 : (o • letE i : LetA O n) = letE i * c`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+
+Simplify using `[letE, hc, ho, PowerSeries.smul_eq_C_mul]`. Simplify using `[letE, hk]`. Rewrite using `[h5, map_mul, hb]`. Conclude with `h1.mul_ι b`. Establish `h6 : ∀ k : ℕ, Near ι p (j letπ) 1 (j (o • letE (i + (k : ZMod n))))`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using h4`. Consider the case `succ k ih`. Use `hφ _ ih` as an intermediate fact.
+
+Rewrite `this` using `[hφj, letφ_smul_letE, add_assoc, ← Nat.cast_succ]`. Then use the resulting hypothesis. Establish `h7 : ∀ k : ZMod n, Near ι p (j letπ) 1 (j (o • letE k))`. Introduce `k`. Use `h6 (k - i).val` as an intermediate fact. Rewrite `this` using `[ZMod.natCast_zmod_val, add_sub_cancel]`. Then use the resulting hypothesis.
+
+Apply `hO` to reduce the goal to its premises. Establish `h8 : ∑ k : ZMod n, (letE k : LetA O n) = 1`. Use function extensionality and compare the values at `k`. Simplify using `[letE, Finset.sum_apply, Pi.single_apply]`. Establish `h9 : algebraMap O R o = ∑ k : ZMod n, j (o • letE k)`.
+
+Rewrite using `[← map_sum, ← Finset.smul_sum, h8, map_smul, map_one, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[h9]`. Conclude with `Near.sum _ fun k _ => h7 k`. Use `choose o' ho' using h3`. Use `⟨a', fun i => PowerSeries.C (o' i), ha'.trans ?_⟩` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[hc, ho']`.
+-/
 theorem near_one_split [NeZero n] {ι : A →+* R} {p : ℕ} (j : LetA O n →ₐ[O] R)
     (hj : ∀ a, ∃ b, j a = ι b) (φ₀ : PowerSeries O →ₐ[O] PowerSeries O) (φR : R → R)
     (hφj : ∀ b, φR (j b) = j (letφ φ₀ b))
@@ -84,6 +110,13 @@ theorem near_one_split [NeZero n] {ι : A →+* R} {p : ℕ} (j : LetA O n →�
   funext i
   simp [hc, ho']
 
+/- English proof (translation)
+Substitute `ht` using the available equality. Proceed by induction on `m with`. Consider the case `zero => exact ⟨a, 0, by simp⟩`. Consider the case `succ m ih`. Take `⟨τ, hτ⟩` from `hj letπ`.
+
+Take `⟨a1, a2, h⟩` from `ih (ha.mono hτ.symm (Nat.le_succ m))`. Establish `h1 : j letπ ^ m * j a1 = j a - (p : R) * j a2`. Rewrite using `[h, map_add, map_mul, map_mul, map_pow, map_natCast, add_sub_cancel_right]`. Establish `h2 : Near ι p (j letπ) (m + 1) (j letπ ^ m * j a1)`. Rewrite using `[h1]`.
+
+Conclude with `ha.sub (Near.of_mul _ _)`. Take `⟨b1, b2, hb⟩` from `near_one_split j hj φ₀ φR hφj hφ hO a1 (h2.cancel hu)`. Conclude with `⟨b1, letπ ^ m * b2 + a2, by rw [h, hb]; ring⟩`.
+-/
 theorem near_split [NeZero n] {ι : A →+* R} {p : ℕ} {t : R} (j : LetA O n →ₐ[O] R)
     (hj : ∀ a, ∃ b, j a = ι b) (ht : j letπ = t) (hu : IsUnit t)
     (φ₀ : PowerSeries O →ₐ[O] PowerSeries O) (φR : R → R)
@@ -109,6 +142,11 @@ end Gen
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `l _ P AI K s LL h W E m a ha`. Take `⟨c1, -, c3, -⟩` from `GlobalTheory.T.etaleEmbedding_frobenius_galois_compat l P AI K s LL h W E`. Take `⟨-, -, p3, p4⟩` from `GlobalTheory.DecomplFrob.frobenius_and_constants l P AI LL s`. Use `(P.PD K).finK₀` as an intermediate fact. Establish `: NeZero (Module.finrank ℚ_[l] ↥(K0 K))` using `⟨Module.finrank_pos.ne'⟩`.
+
+Establish `hu : IsUnit (piR AI LL s)` using `c3 ▸ W.EE_π.map E.tie.ioE`. Use `near_split (ι := (inclR LL : RA LL →+* RW LL)) ((inclR LL).comp E.tie.io) (fun b => ⟨E.tie.io b, rfl⟩) ((E.tie.ioE_ext letπ).symm.trans c3) hu W.φ₀ (fun x => φRW LL x) (fun b => ?_) (p3 1) p4 m a ha` and prove the remaining obligations. Establish `h1` using `c1 (algebraMap _ W.EE b)`. Conclude with `(congrArg (fun x => φRW LL x) (E.tie.ioE_ext b)).symm.trans (h1.symm.trans ((congrArg (fun e => E.tie.ioE e) (W.φE_ext b)).trans (E.tie.ioE_ext _)))`.
+-/
 theorem mem_pow_pi_of_nearPi : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (W : Wach P K LL) (E : EtSit P AI K s LL h W) (m : ℕ) (a : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))), NearPi AI LL s m (inclR LL (E.tie.io a)) → ∃ a1 a2 : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K)), a = letπ ^ m * a1 + (l : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) * a2 := by
   intro l _ P AI K s LL h W E m a ha
   obtain ⟨c1, -, c3, -⟩ := GlobalTheory.T.etaleEmbedding_frobenius_galois_compat l P AI K s LL h W E

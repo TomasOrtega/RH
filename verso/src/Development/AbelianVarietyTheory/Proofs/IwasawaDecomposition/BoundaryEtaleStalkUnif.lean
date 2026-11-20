@@ -11,6 +11,35 @@ namespace GlobalTheory.ChartCentre
 
 open GlobalTheory.TraitChartForm in
 
+/- English proof (translation)
+Take `⟨hWd, hWc, hW0⟩` from `hW`. Take `⟨hVd, hVc, hV0⟩` from `hV`. Take `⟨hRN, hRI, hRA, hR0⟩` from `hCN`. Take `⟨L₁, L₂, L₃, L₄, L₅⟩` from `GlobalTheory.firstFiveLaws`. Take `⟨tV, ⟨mV⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap f) t`.
+
+Take `⟨tRV, ⟨mRV⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap ψ) tR`. Take `⟨n₀⟩` from `GlobalTheory.TraitOrder.comp rfl mt mV`. Take `⟨n₂⟩` from `GlobalTheory.TraitOrder.comp rfl mR mRV`. Establish `j : Function.Injective ((algebraMap V (FractionRing V)).comp f)` using `(IsFractionRing.injective V _).comp hfi`. Set `g : FractionRing W →+* FractionRing V` to `IsFractionRing.lift j`.
+
+Establish `eg : jK V ≫ spMap f = spMap g ≫ jK W` using `(GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl).trans (GlobalTheory.Ex.UnifModel.spMap_comp (IsFractionRing.lift_algebraMap j)).symm`. Take `⟨k₁⟩` from `GlobalTheory.TraitOrder.cancel (show 𝟙 _ ≫ (spMap f ≫ χ) = spMap ψ ≫ ξ by rw [Category.id_comp, hc]) n₀ n₂`. Establish `hpV : PolAt tV (jK V)` using `GlobalTheory.DatUniq.polAt_pull mV (GlobalTheory.DatUniq.polAt_of_unif P) (jK V) (spMap g) eg.symm`. Establish `hpRV : PolAt tRV (jK V)` using `GlobalTheory.DatUniq.polAt_pull k₁ hpV (jK V) (𝟙 _) (by rw [Category.id_comp, Category.comp_id])`. Take `⟨B, -, gen, hg, hw, -⟩` from `GlobalTheory.LN.exists_polAV_of_polAt L₁ L₂ E H V tV hpV`.
+
+Take `⟨BR, -, genR, hgR, hwR, -⟩` from `GlobalTheory.LN.exists_polAV_of_polAt L₁ L₂ E H V tRV hpRV`. Establish `hχgen : χ (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum W) ∈ abLocus Z.t.G`. Set `p : Sp (FractionRing W)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing W))`. Take `⟨w, hw⟩` from `hr ⟨p, rfl⟩`. Rewrite using `[← jK_apply_eq_bot W p, ← Scheme.Hom.comp_apply, ← hw]`.
+
+Conclude with `j_mem_abLocus Z w`. Establish `hfbot : spMap f (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum V) = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum W)`. Rewrite using `[← ker_eq_spMap_bot]`. Conclude with `PrimeSpectrum.ext ((RingHom.injective_iff_ker_eq_bot f).1 hfi)`. Establish `hlocW : ∀ a ∈ maximalIdeal W, f a ∈ maximalIdeal V` using `fun a ha => (mem_maximalIdeal _).2 fun h => (mem_maximalIdeal _).1 ha (isUnit_of_map_unit f a h)`.
+
+Set `Ww : Set (Sp W)` to `abLocus t.G ∩ {p | ϖ ∉ p.asIdeal}`. Establish `hWo : IsOpen Ww` using `(GlobalTheory.AbLocusOpen.isOpen_abLocus_local t.G t.semi).inter (PrimeSpectrum.isOpen_basicOpen (a := ϖ))`. Establish `hkerW : (⟨RingHom.ker f, RingHom.ker_isPrime f⟩ : PrimeSpectrum W) ∈ Ww`. Rewrite using `[ker_eq_spMap_bot, hfbot]`. Use `⟨(abLocus_pullback abLocusOne Z.t.semi mt.cart.1 _).1 hχgen, fun h => hϖ.ne_zero ((Submodule.mem_bot W).1 h)⟩` and prove the remaining obligations.
+
+Establish `hψW : ∀ y, PsiUnitOn P.D.toPre y Ww` using `fun y => hmon.psiUnitOn y fun p hp => by simpa using hp.2`. Take `⟨PV, e₁, he₁⟩` from `GlobalTheory.PelCoordPull.exists_pelUnif_psiCoord E H W V f t tV mV P Ww inferInstance inferInstance hWc inferInstance inferInstance hVc hlocW hWo Set.inter_subset_left hψW hkerW ⟨B, gen, hg, hw⟩`. Establish `hlocR : ∀ a ∈ maximalIdeal R, ψ a ∈ maximalIdeal V` using `fun a ha => (mem_maximalIdeal _).2 fun h => (mem_maximalIdeal _).1 ha (isUnit_of_map_unit ψ a h)`. Establish `hRo : IsOpen (abLocus tR.G)` using `GlobalTheory.AbLocusOpen.isOpen_abLocus_local tR.G tR.semi`. Establish `hAdm : admitted R (maximalIdeal R)` using `⟨⟨hRN, inferInstance, hRI, hRA⟩, hRA, hR0, inferInstance, by letI := Ideal.Quotient.field (maximalIdeal R); infer_instance⟩`.
+
+Establish `hψR : ∀ y, PsiUnitOn PR.D.toPre y (abLocus tR.G)` using `GlobalTheory.psiUnitOn_abLocus_pel L₁ L₂ L₃ L₄ L₅ E H R (maximalIdeal R) hAdm tR PR hTor hRo`. Establish `hrV : Set.range (jK V ≫ spMap ψ ≫ ξ) ⊆ Set.range Z.j`. Rewrite using `[← hc, ← Category.assoc, eg, Category.assoc]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `hr ⟨spMap g p, by rw [Scheme.Hom.comp_apply (spMap g)]⟩`.
+
+Establish `hkerR : (⟨RingHom.ker ψ, RingHom.ker_isPrime ψ⟩ : PrimeSpectrum R) ∈ abLocus tR.G`. Rewrite using `[ker_eq_spMap_bot]`. Use `(abLocus_pullback abLocusOne Z.t.semi mR.cart.1 _).1 ?_` and prove the remaining obligations. Set `p : Sp (FractionRing V)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing V))`. Take `⟨w, hw⟩` from `hrV ⟨p, rfl⟩`.
+
+Establish `key : ξ (spMap ψ (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum V)) = (jK V ≫ spMap ψ ≫ ξ) p`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, jK_apply_eq_bot V p]`. Rewrite using `[key, ← hw]`. Conclude with `j_mem_abLocus Z w`. Take `⟨PRV, e₂, he₂⟩` from `GlobalTheory.PelCoordPull.exists_pelUnif_psiCoord E H R V ψ tR tRV mRV PR (abLocus tR.G) hRN hRI hRA inferInstance inferInstance hVc hlocR hRo subset_rfl hψR hkerR ⟨BR, genR, hgR, hwR⟩`.
+
+Take `⟨e₃, he₃⟩` from `GlobalTheory.SameCoord.exists_equiv_psiCoord E H V tV tRV k₁ PV PRV inferInstance inferInstance hVc`. Use `⟨(e₂.trans e₃.symm).trans e₁.symm, fun y => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `(GlobalTheory.PeriodFormCompare.exists_psiCoord_iff PR.D.toPre y).2 (GlobalTheory.PeriodFormCompare.psiIn_top PR.D y)`. Use `set x := ((e₂.trans e₃.symm).trans e₁.symm) y with hx`. Establish `hx2 : e₃ (e₁ x) = e₂ y` using `by simp [hx]`.
+
+Take `⟨u₀, nW, hnW, hcW⟩` from `hmon x`. Take `⟨u₁, h₁⟩` from `he₁ x _ hcW`. Take `⟨u₃, h₃⟩` from `he₃ _ _ h₁`. Take `⟨u₂, h₂⟩` from `he₂ y r hr`. Rewrite `h₃` using `[hx2]`.
+
+Take `⟨w, hw⟩` from `GlobalTheory.PsiCoordLocal.exists_unit_of_coord h₃ h₂`. Establish `key : ψ r = ((u₂⁻¹ * w * u₃ * u₁ * Units.map f.toMonoidHom u₀ : Vˣ) : V) * f ϖ ^ nW 0`. Establish `e` using `congrArg (fun z => ((u₂⁻¹ : Vˣ) : V) * z) hw`. Simplify using `only [Fin.prod_univ_one, Matrix.cons_val_zero, map_mul, map_pow] at e`. Rewrite `e` using `[← mul_assoc, Units.inv_mul, one_mul]`.
+
+Rewrite using `[e]`. Simplify using `only [Units.val_mul, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨r, nW 0, hr, by simpa using hnW 0, ?_⟩` and prove the remaining obligations. Conclude with `Associated.symm (⟨_, by rw [key, mul_comm]⟩ : Associated (f ϖ ^ nW 0) (ψ r))`.
+-/
 theorem exists_equiv_formAt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ Z.X)
     (tR : SAB H (Sp R)) (mR : SABMap tR Z.t ξ) (PR : PELUnif (maximalIdeal R) tR) (hCN : IsCN R) (hTor : PR.TorsionIso)
@@ -110,12 +139,20 @@ theorem exists_equiv_formAt {E : Type} [Field E] [NumberField E] [IsCMField E] {
   refine ⟨r, nW 0, hr, by simpa using hnW 0, ?_⟩
   exact Associated.symm (⟨_, by rw [key, mul_comm]⟩ : Associated (f ϖ ^ nW 0) (ψ r))
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Conclude with `⟨fun _ h => h⟩`.
+-/
 theorem isLocalHom_stalkSpecializes {X : Scheme.{0}} {x y : X} (h : x ⤳ y) (e : x = y) :
     IsLocalHom (X.presheaf.stalkSpecializes h).hom := by
   subst e
   rw [TopCat.Presheaf.stalkSpecializes_refl]
   exact ⟨fun _ h => h⟩
 
+/- English proof (translation)
+Establish `e : X.presheaf.stalkSpecializes hs ≫ Scheme.stalkClosedPointTo χ ≫ CommRingCat.ofHom ι = Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom g`. Use extensionality with `a`. Conclude with `(h a).symm`. Establish `e₁` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk χ`. Establish `e₂` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`.
+
+Establish `e₃` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hs`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Spec.map_comp_assoc, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc, e]`. Use `_ = spMap g ≫ ξ := by rw [e₂]`.
+-/
 theorem spMap_comp_eq {X : Scheme.{0}} {R W V : Type} [CommRing R] [IsLocalRing R] [CommRing W] [IsLocalRing W]
     [CommRing V] (ξ : Sp R ⟶ X) (χ : Sp W ⟶ X) (hs : χ (closedPoint W) ⤳ ξ (closedPoint R)) (ι : W →+* V) (g : R →+* V)
     (h : ∀ a, g ((Scheme.stalkClosedPointTo ξ).hom a) =
@@ -134,6 +171,17 @@ theorem spMap_comp_eq {X : Scheme.{0}} {R W V : Type} [CommRing R] [IsLocalRing 
         rw [← Spec.map_comp_assoc, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc, e]
     _ = spMap g ≫ ξ := by rw [e₂]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z R _ _ _ ξ t m P hR hE _ hT W _ _ _ hW ϖ hϖ χ tW mW PW hχ be _ hmon hs hx W' _ _ _ ι g hW' hι hg`. Establish `hd : IsDiscreteValuationRing W` using `hW.1`. Establish `hloc : IsLocalHom ι` using `⟨fun a ha => by`. Assume the negation of the conclusion as `hn`. Establish `hm : a ∈ maximalIdeal W` using `hn`.
+
+Rewrite `hm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `hι.not_isUnit (isUnit_of_dvd_unit (map_dvd ι hm) ha)⟩`. Establish `hinj : Function.Injective ι`. Use `(injective_iff_map_eq_zero ι).2 fun a ha => by_contra fun hn => ?_` and prove the remaining obligations. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hn hϖ`.
+
+Rewrite `ha` using `[map_mul, map_pow]`. Conclude with `mul_ne_zero (u.isUnit.map ι).ne_zero (pow_ne_zero n hι.ne_zero) ha`. Establish `hsl` using `isLocalHom_stalkSpecializes hs hx`. Establish `hgl : IsLocalHom g`. Establish `hle : maximalIdeal R ≤ (maximalIdeal W').comap g`.
+
+Rewrite using `[← hE.2.1, Ideal.map_le_iff_le_comap]`. Introduce `a ha hu`. Rewrite `hu` using `[hg]`. Conclude with `ha (isUnit_of_map_unit _ _ (isUnit_of_map_unit _ _ (isUnit_of_map_unit ι _ hu)))`. Conclude with `⟨fun a ha => by_contra fun hn => hle hn ha⟩`.
+
+Take `⟨e, he⟩` from `exists_equiv_formAt Z ξ t m P hR hT W hW ϖ hϖ χ tW mW PW hχ be hmon W' hW' ι g hinj hloc hgl (spMap_comp_eq ξ χ hs ι g hg)`. Conclude with `⟨e.toLinearMap, e.surjective, he⟩`.
+-/
 theorem exists_surjective_formAt : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ Z.X) (t : SAB H (Sp R)) (_ : SABMap t Z.t ξ) (P : PELUnif (maximalIdeal R) t), IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → P.TorsionIso → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ ϖ : W, Irreducible ϖ → ∀ (χ : Sp W ⟶ Z.X) (tW : SAB H (Sp W)) (_ : SABMap tW Z.t χ) (PW : PELUnif (maximalIdeal W) tW), Set.range (jK W ≫ χ) ⊆ Set.range Z.j → ∀ be ∈ levelForms H 1 PW.D.toPre.X, IsMonomial PW.D.toPre ![ϖ] ![be] → ∀ hs : χ (closedPoint W) ⤳ ξ (closedPoint R), χ (closedPoint W) = ξ (closedPoint R) → ∀ (W' : Type) [CommRing W'] [IsDomain W'] [IsLocalRing W'] (ι : W →+* W') (g : R →+* W'), CDvr W' → Irreducible (ι ϖ) → (∀ a, g ((Scheme.stalkClosedPointTo ξ).hom a) = ι ((Scheme.stalkClosedPointTo χ).hom ((Z.X.presheaf.stalkSpecializes hs).hom a))) → ∃ (e : P.D.toPre.X →ₗ[𝓞 E] PW.D.toPre.X), Function.Surjective e ∧ FormAt P.D.toPre g (ι ϖ) (be.compl₁₂ e.toAddMonoidHom.toIntLinearMap e.toAddMonoidHom.toIntLinearMap) := by
   intro E _ _ _ H D l Xo c Z R _ _ _ ξ t m P hR hE _ hT W _ _ _ hW ϖ hϖ χ tW mW PW hχ be _ hmon hs hx W' _ _ _ ι g hW'
     hι hg

@@ -18,6 +18,9 @@ def IsConjDual (c : Ω ≃+* Ω) (r : G E Ω →* GL (Fin a) k) (μ : G E Ω →
       (μ g : k) • ((P : Matrix (Fin a) (Fin a) k) * (r g⁻¹ : Matrix (Fin a) (Fin a) k)ᵀ *
         ((P⁻¹ : GL (Fin a) k) : Matrix (Fin a) (Fin a) k))
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `h`. Rewrite using `[hP g g' hg, Matrix.trace_smul, Matrix.trace_mul_cycle, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul, Matrix.trace_transpose, smul_eq_mul]`.
+-/
 theorem IsConjDual.trace {c : Ω ≃+* Ω} {r : G E Ω →* GL (Fin a) k} {μ : G E Ω →* kˣ} (h : IsConjDual c r μ)
     {g g' : G E Ω} (hg : ∀ x, g' x = c (g (c.symm x))) :
     (r g' : Matrix (Fin a) (Fin a) k).trace = μ g * (r g⁻¹ : Matrix (Fin a) (Fin a) k).trace := by
@@ -25,6 +28,9 @@ theorem IsConjDual.trace {c : Ω ≃+* Ω} {r : G E Ω →* GL (Fin a) k} {μ : 
   rw [hP g g' hg, Matrix.trace_smul, Matrix.trace_mul_cycle, ← Units.val_mul, inv_mul_cancel, Units.val_one,
     one_mul, Matrix.trace_transpose, smul_eq_mul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun _ _ _ => by simp⟩`.
+-/
 theorem isConjDual_one (c : Ω ≃+* Ω) : IsConjDual c (1 : G E Ω →* GL (Fin a) k) 1 :=
   ⟨1, fun _ _ _ => by simp⟩
 
@@ -42,6 +48,9 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂
 def RegAlgShift {a : ℕ} (π : A.CG a) (s : ℝ) : Prop :=
   ∀ τ, (A.infG π τ).Nodup ∧ ∀ z ∈ A.infG π τ, ∃ m : ℤ, z + (s : ℂ) = (m : ℂ) + ((a : ℂ) - 1) / 2
 
+/- English proof (translation)
+Rewrite using `[A.ralg_def, RegAlgShift]`. Simplify using the standard rewrite rules.
+-/
 theorem regAlgShift_zero {a : ℕ} (π : A.CG a) : RegAlgShift A π 0 ↔ A.ralg π := by
   rw [A.ralg_def, RegAlgShift]
   simp
@@ -81,16 +90,25 @@ variable {A}
 
 variable {i : N.Loc} {a : ℕ} {π : A.CG a} {s : ℝ} {r : G H.E N.Om →* GL (Fin a) (Qbar (N.l i))}
 
+/- English proof (translation)
+Use `h.pure w hw` as an intermediate fact. Rewrite `this` using `[h.away w hw, A.lpTw_add, show s + (1 - (a : ℝ)) / 2 + (((a : ℝ) - 1) / 2 - s) = 0 by ring, A.lpTw_zero]`. Then use the resulting hypothesis.
+-/
 theorem IsAttached.tempered (h : IsAttached A i π s r) {w : PlE H} (hw : w ∉ placesOver H.E (N.l i)) :
     A.tempered (A.locG π w) := by
   have := h.pure w hw
   rwa [h.away w hw, A.lpTw_add, show s + (1 - (a : ℝ)) / 2 + (((a : ℝ) - 1) / 2 - s) = 0 by ring,
     A.lpTw_zero] at this
 
+/- English proof (translation)
+Simplify using `using h.pol c hc 0 (by simp)`.
+-/
 theorem IsAttached.pol_zero (h : IsAttached A i π 0 r) {c : N.Om ≃+* N.Om} (hc : IsCMConjOm H.E N.Om c) :
     IsConjDual c r (cycBar H.E N.Om (N.l i) ^ (1 - (a : ℤ))) := by
   simpa using h.pol c hc 0 (by simp)
 
+/- English proof (translation)
+Establish `h1 : A.unr (A.wdOf i r w)` using `by rw [h.away w hw]; exact (A.unr_tw _ _).2 hu`. Use `⟨(A.wdOf_unr i r w hw h.cont).1 h1, fun B σ hB hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[A.wdOf_frob i r w hw h.cont h1 B σ hB hσ, h.away w hw]`. Both sides reduce to the same expression.
+-/
 theorem IsAttached.frob (h : IsAttached A i π s r) {w : PlE H} (hw : w ∉ placesOver H.E (N.l i))
     (hu : A.unr (A.locG π w)) :
     (∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), r σ = 1) ∧

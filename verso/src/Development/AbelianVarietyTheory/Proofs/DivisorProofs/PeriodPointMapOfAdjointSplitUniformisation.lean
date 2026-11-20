@@ -26,6 +26,27 @@ open GlobalTheory.Mum.FactorPol
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D D₀ A A₀ G G₀ _ _ _ _ hG hG₀ U U₀ q inc j hinc hj iq adj qB h k L T`. Establish `hA` using `hR.1`. Use `hR.2` as an intermediate fact. Use `U.gen_hom` as an intermediate fact. Use `U₀.gen_hom` as an intermediate fact.
+
+Use `haveI := hinc`. Use `haveI := hj`. Use `haveI : IsMonHom q := L.1`. Take `⟨k', tk'⟩` from `GlobalTheory.Mum.Two.unifPre_hom_character_const R _ hA D₀ D A₀ A G₀ G U₀.toUnifPre U.toUnifPre inc hinc`. Establish `un₀` using `GlobalTheory.Mum.Two.over₀_onTorus_unique R _ hA D₀ D₀ A₀ A₀ G₀ G₀ U₀.toUnifPre U₀.toUnifPre`.
+
+Establish `un` using `GlobalTheory.Mum.Two.over₀_onTorus_unique R _ hA D D A A G G U.toUnifPre U.toUnifPre`. Establish `kh : ∀ χ, k' (h χ) = χ` using `congrFun ((un₀ _).2 _ _ (iq ▸ onTorus_comp tk' L.2.2.2) onTorus_id)`. Establish `hinj : Function.Injective h` using `Function.LeftInverse.injective kh`. Establish `C` using `GlobalTheory.Mum.Two.coord_of_lin R _ hA D D₀ A A₀ G G₀ U.toUnifPre U₀.toUnifPre q qB h L`. Take `⟨c, hc, gc⟩ : ∃ c : A.A ⟶ A₀.A, IsMonHom c ∧ Gen₀ U.toUnifPre U₀.toUnifPre q c` from `⟨U.gen.inv ≫ (Over.pullback (jK R)).map q ≫ U₀.gen.hom, inferInstance, by simp [Gen₀]⟩`.
+
+Take `⟨c', hc', gc'⟩ : ∃ c' : A₀.A ⟶ A.A, IsMonHom c' ∧ Gen₀ U₀.toUnifPre U.toUnifPre j c'` from `⟨U₀.gen.inv ≫ (Over.pullback (jK R)).map j ≫ U.gen.hom, inferInstance, by simp [Gen₀]⟩`. Use `haveI := hc`. Use `haveI := hc'`. Take `⟨E, eG, eA⟩` from `(GlobalTheory.UT.functorial_of_unif R _ hA D A G hG U).1 (q ≫ j) (c ≫ c') inferInstance inferInstance (by`. Unfold `Gen₀ at gc gc'`.
+
+Rewrite using `[Functor.map_comp, Category.assoc, gc', ← Category.assoc, gc, Category.assoc])`. Establish `hL` using `U.LG.isLB`. Establish `hL₀` using `U₀.LG.isLB`. Establish `lamE : ∀ (T' : Over (Sp R)) (x y : T' ⟶ G), lam (cls U.LG.L hL) (x ≫ q ≫ j) y = lam (cls U₀.LG.L hL₀) (x ≫ q) (y ≫ q)` using `fun T' x y => by`. Rewrite using `[lam_comm, ← Category.assoc, adj, lam_comm]`.
+
+Establish `lamE' : ∀ (T' : Over (Sp R)) (x y : T' ⟶ G), lam (cls U.LG.L hL) x (y ≫ q ≫ j) = lam (cls U₀.LG.L hL₀) (x ≫ q) (y ≫ q)` using `fun T' x y => by`. Rewrite using `[← Category.assoc, adj]`. Establish `adjE : LBIso (cubeLB G ![fst G G ≫ E.aG, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ E.aG] U.LG.L)` using `(cls_eq_iff (LB.isLB_linComb hL _ _) (LB.isLB_linComb hL _ _)).1 ((cls_cube_two hL _ _ _).trans (Eq.trans (by rw [eG, lamE, lamE']) (cls_cube_two hL _ _ _).symm))`. Establish `H₂ : LBIso (cubeLB G₀ ![fst G G ≫ q, snd G G ≫ q] U₀.LG.L) (cubeLB G ![fst G G ≫ E.aG, snd G G ≫ 𝟙 G] U.LG.L)` using `(cls_eq_iff (LB.isLB_linComb hL₀ _ _) (LB.isLB_linComb hL _ _)).1 ((cls_cube_two hL₀ _ _ _).trans (Eq.trans (by rw [eG, Category.comp_id, lamE]) (cls_cube_two hL _ _ _).symm))`. Establish `H₃` using `GlobalTheory.Mum.Two.lbIso_cubeLB_generic R _ D D₀ A A₀ G G₀ U.toUnifPre U₀.toUnifPre q q E.aG (𝟙 _) c c E.aA (𝟙 _) gc gc E.ext (by simp [Gen₀]) H₂`.
+
+Take `⟨Ω, _, _, _, K⟩` from `GlobalTheory.Mum.Two.exists_key R _ hA D D₀ A A₀ G G₀ hG hG₀ U U₀ q c qB h hc gc L C hinj`. Take `⟨φ, hφ, hhφ⟩` from `GlobalTheory.Mum.Two.periods_of_key R _ hA D D₀ A A₀ G G₀ hG hG₀ U U₀ q c qB h hc gc L C E E adjE H₃ Ω K`. Establish `eh : (⇑E.h : D.toPre.X → D.toPre.X) = ⇑h ∘ ⇑k` using `(un _).2 _ _ (eG ▸ (lin_of_endU E).1.2.2.2) (onTorus_comp L.2.2.2 T)`. Establish `hφk : ∀ y, φ y = k y` using `fun y => hinj ((hhφ y).trans (congrFun eh y))`. Establish `hB` using `D.tau_bimult`.
+
+Use `⟨fun y => ?_, fun χ => ?_⟩` and prove the remaining obligations. Take `⟨g', ha, hg'⟩` from `hφ y _ (GlobalTheory.TorusExt.isIota_iota hB y)`. Establish `h1` using `ha.1`. Rewrite `h1` using `[hg'.1, (GlobalTheory.TorusExt.isIota_iota hB y).1]`. Rewrite using `[← hφk]`.
+
+Use `GlobalTheory.Mum.Two.Fac.pt_ext R D₀.toPre Ω _ _ ?_` and prove the remaining obligations. Simplify `h1` using `only [Category.assoc]`. Take `⟨u, hu, -⟩` from `C χ`. Use `⟨u, hu, fun y z J hJ => ?_⟩` and prove the remaining obligations. Take `⟨g', ha, hg'⟩` from `hφ y _ (GlobalTheory.TorusExt.isIota_iota hB y)`.
+
+Establish `e` using `GlobalTheory.Mum.Two.act_val_frac R D₀.toPre D.toPre qB h Ω y (φ y) _ g' (GlobalTheory.TorusExt.isIota_iota hB y) hg' ha χ u hu z J hJ`. Rewrite `e` using `[hφk]`. Then use the resulting hypothesis.
+-/
 theorem periodRel_of_adj : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D₀ : DegData R (maximalIdeal R)) (A A₀ : PolAV (Sp (FractionRing R))) (G G₀ : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [GrpObj G₀] [IsCommMonObj G₀], IsSemiAbelian G → IsSemiAbelian G₀ → ∀ (U : Unif (maximalIdeal R) D A G) (U₀ : Unif (maximalIdeal R) D₀ A₀ G₀), ∀ (q : G ⟶ G₀) (inc j : G₀ ⟶ G), IsMonHom inc → IsMonHom j → inc ≫ q = 𝟙 G₀ → AdjCls (cls U.LG.L U.LG.isLB) (cls U₀.LG.L U₀.LG.isLB) q j → ∀ (qB : D.toPre.P.A ⟶ D₀.toPre.P.A) (h : D₀.toPre.X →+ D.toPre.X) (k : D.toPre.X →+ D₀.toPre.X), Lin U.toUnifPre U₀.toUnifPre q qB h → OnTorus U₀.toUnifPre U.toUnifPre j k → (∀ y, D₀.toPre.c (k y) = D.toPre.c y ≫ qB) ∧ PeriodRel D.toPre D₀.toPre qB h k := by
   intro R _ _ _ hR D D₀ A A₀ G G₀ _ _ _ _ hG hG₀ U U₀ q inc j hinc hj iq adj qB h k L T
   have hA := hR.1

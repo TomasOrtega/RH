@@ -16,6 +16,25 @@ open GlobalTheory.Mum
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A lab hT m hm hmu v H σ`. Take `⟨W, _, _, _, φ, G', _, _, D', A', U', hD, a, _, em₀, hW, hφ, hloc, -, -, -, -⟩` from `hT`. Take `⟨C, _, _, _, _, _, _, hC⟩` from `GlobalTheory.Ex.StepInh.exists_cExt W hW`. Establish `hg : Function.Injective ((algebraMap (FractionRing W) C).comp ((algebraMap W (FractionRing W)).comp φ))` using `(algebraMap (FractionRing W) C).injective.comp ((IsFractionRing.injective W (FractionRing W)).comp hφ)`. Use `letI : Algebra (FractionRing R) C := (IsFractionRing.lift hg).toAlgebra`.
+
+Establish `hA : ∀ r : R, algebraMap (FractionRing R) C (algebraMap R _ r) = algebraMap (FractionRing W) C (algebraMap W _ (φ r))` using `fun r => IsFractionRing.lift_algebraMap hg r`. Use `haveI := hloc`. Establish `hCR : GlobalTheory.Ex.CExt R (maximalIdeal R) C` using `⟨fun r => by rw [hA]; exact hC.1 _, fun r hr => by rw [hA]; exact hC.2 _ (map_nonunit φ r hr)⟩`. Use `haveI : IsNoetherianRing R := hR.1.1`. Take `⟨N, nu, -⟩` from `GlobalTheory.ValuesExist.exists_integral_values GlobalTheory.firstFiveLaws.1 R D.toPre D.psi_even D.tau_bimult C ⊤ (fun _ => trivial)`.
+
+Establish `hB` using `D.tau_bimult`. Set `em : Kb R →ₐ[FractionRing R] C` to `IsAlgClosed.lift`. Establish `hq` using `((GlobalTheory.Ex.GtValues.points_correspond R D.toPre D.psi_even D.tau_bimult C N nu).2.2.2.2 (m ^ 2)).1`. Use `choose e₁ he₁ using fun i => GlobalTheory.LabTrans.exists_ext hB em i`. Use `choose e₂ he₂ using fun i => GlobalTheory.LabTrans.exists_ext hB σ i`.
+
+Use `choose qq hqq using fun x : QkPt D.toPre C (m ^ 2) => (hq x).exists`. Take `⟨s, hs⟩` from `H C hCR em N nu e₁ (fun i => qq (e₁ i)) he₁ (fun i => hqq _)`. Take `⟨s', hs'⟩` from `H C hCR (em.comp σ) N nu (fun i => e₁ (e₂ i)) (fun i => qq (e₁ (e₂ i))) (fun i => GlobalTheory.LabTrans.qkExt_trans (he₂ i) (he₁ (e₂ i))) (fun i => hqq _)`. Establish `key : ∀ p p', QkExt σ.toRingHom p p' → em (σ (v p)) = ((s' * s⁻¹ : Cˣ) : C) * em (v p')`. Introduce `p p' h`.
+
+Take `rfl : e₂ p = p'` from `GlobalTheory.LabTrans.ext_unique hB σ (he₂ p) h`. Establish `h1` using `hs' p`. Establish `h2` using `hs (e₂ p)`. Rewrite `h1` using `[AlgHom.comp_apply]`. Rewrite using `[h1, h2, Units.val_mul, _root_.mul_assoc, Units.inv_mul_cancel_left]`.
+
+Establish `emi : Function.Injective em` using `em.toRingHom.injective`. Distinguish the cases in `hex : ∃ p p', QkExt σ.toRingHom p p' ∧ v p' ≠ 0`. Take `⟨p₀, p₀', h₀, hv₀⟩` from `hex`. Establish `hσ0 : σ (v p₀) ≠ 0`. Introduce `h0`.
+
+Establish `k0` using `key p₀ p₀' h₀`. Rewrite `k0` using `[h0, map_zero]`. Conclude with `hv₀ ((map_eq_zero em).1 ((mul_eq_zero.1 k0.symm).resolve_left (Units.ne_zero _)))`. Use `⟨Units.mk0 (σ (v p₀) / v p₀') (div_ne_zero hσ0 hv₀), fun p p' h => emi ?_⟩` and prove the remaining obligations. Establish `hne : em (v p₀') ≠ 0` using `(map_ne_zero em).2 hv₀`.
+
+Rewrite using `[Units.val_mk0, map_mul, map_div₀, key p p' h, key p₀ p₀' h₀]`. Clear the denominators using the available nonvanishing facts. Use `push_neg at hex`. Use `⟨1, fun p p' h => ?_⟩` and prove the remaining obligations. Establish `k` using `key p p' h`.
+
+Rewrite `k` using `[hex p p' h, map_zero, mul_zero]`. Rewrite using `[hex p p' h, mul_zero]`. Conclude with `(map_eq_zero em).1 k`.
+-/
 theorem GlobalTheory.Mum.values_galois_scalar : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (lab : Labels D.toPre A), OneTrait D.toPre A lab → ∀ m : ℕ, Odd m → IsUnit (m : R) → ∀ v : QkPt D.toPre (Kb R) (m ^ 2) → Kb R, (∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C] [Algebra (FractionRing R) C], GlobalTheory.Ex.CExt R (maximalIdeal R) C → ∀ (em : Kb R →ₐ[FractionRing R] C) (N : GlobalTheory.Ex.NumD C) (nu : GlobalTheory.Ex.NumOf D.toPre C N) (p₁ : QkPt D.toPre (Kb R) (m ^ 2) → QkPt D.toPre C (m ^ 2)) (q : QkPt D.toPre (Kb R) (m ^ 2) → N.QT (m ^ 2)), (∀ i, QkExt em.toRingHom i (p₁ i)) → (∀ i, nu.QPt (p₁ i) (q i)) → ∃ s : Cˣ, ∀ i, em (v i) = s * N.tx m (q i)) → ∀ σ : Kb R →ₐ[FractionRing R] Kb R, ∃ c : (Kb R)ˣ, ∀ p p' : QkPt D.toPre (Kb R) (m ^ 2), QkExt σ.toRingHom p p' → σ (v p) = c * v p' := by
   intro R _ _ _ hR D A lab hT m hm hmu v H σ
   obtain ⟨W, _, _, _, φ, G', _, _, D', A', U', hD, a, _, em₀, hW, hφ, hloc, -, -, -, -⟩ := hT

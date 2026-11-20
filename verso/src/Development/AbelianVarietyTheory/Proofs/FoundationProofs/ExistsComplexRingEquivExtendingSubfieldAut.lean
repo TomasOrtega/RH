@@ -10,6 +10,13 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FN
 
+/- English proof (translation)
+Introduce `Ω _ ε s`. Use `letI : Algebra Ω ℂ := ε.toAlgebra`. Take `⟨B, hB⟩` from `exists_isTranscendenceBasis Ω ℂ`. Set `` to `IsAlgClosed.isAlgClosure_of_transcendence_basis _ hB`. Set `e` to `hB.1.aevalEquiv.symm.toRingEquiv.trans ((MvPolynomial.mapEquiv B s).trans hB.1.aevalEquiv.toRingEquiv)`.
+
+Use `⟨IsAlgClosure.equivOfEquiv ℂ ℂ e, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ y : Ω, algebraMap _ ℂ (hB.1.aevalEquiv (MvPolynomial.C y)) = ε y` using `fun y => by`. Rewrite using `[hB.1.algebraMap_aevalEquiv, MvPolynomial.aeval_C]`. Both sides reduce to the same expression. Use `conv_lhs => rw [← h1 x]`.
+
+Rewrite using `[IsAlgClosure.equivOfEquiv_algebraMap, ← h1 (s x)]`. Use `congr 1`. Simplify using `[e]`.
+-/
 theorem exists_ringEquiv_extend_of_embedding :
     ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ) (s : Ω ≃+* Ω), ∃ g : ℂ ≃+* ℂ, ∀ x, g (ε x) = ε (s x) := by
   intro Ω _ ε s

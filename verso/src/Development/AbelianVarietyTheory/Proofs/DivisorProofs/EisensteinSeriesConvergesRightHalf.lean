@@ -19,6 +19,23 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.EisMidHt
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ n J r X Y L a h hS T hT s hs`. Establish `hn : (4 : ℝ) ≤ n` using `by exact_mod_cast hS.2.2.2.1`. Take `⟨hpos, hid⟩` from `GlobalTheory.T.height_first_column_positive F E σ n J r X Y L a h hS`. Take `⟨Yr, hY, f, hf, hfe⟩` from `GlobalTheory.T.eisenstein_line_reps_exist F E σ n J r X Y L a h hS T hT`. Take `⟨C, hC⟩` from `GlobalTheory.T.eisenstein_height_lower_bound F E σ n J r X Y L a h hS s (by linarith)`.
+
+Establish `hD` using `GlobalTheory.T.eisenstein_line_reps_sum hP F E σ n J r X Y L a h hS Yr hY (s - 1) (by linarith)`. Establish `hnn : ∀ u, 0 ≤ GlobalTheory.EisMidHt.ht L a u` using `fun u => mul_nonneg (finprod_nonneg fun _ => NNReal.coe_nonneg _) (Finset.prod_nonneg fun _ _ => pow_nonneg (norm_nonneg _) _)`. Set `Q : Yr → E → ENNReal` to `fun y c => ENNReal.ofReal (GlobalTheory.EisMidHt.ht L a (GlobalTheory.EisMidHt.adVec F (y.1 + c • GlobalTheory.EisMidHt.firstColumn X)) ^ (-s))`. Establish `hterm : ∀ t : GlobalTheory.EisCT.midSet σ J (col0 X) T, ENNReal.ofReal (h t.1.1 ^ s) = ENNReal.ofReal (GlobalTheory.EisMidHt.ht L a (GlobalTheory.EisMidHt.adVec F (GlobalTheory.EisMidHt.firstColumn X)) ^ s) * Q (f t).1 (f t).2`. Introduce `t`.
+
+Take `⟨μ, hμ, he⟩` from `hfe t`. Establish `h1` using `hid t.1.1`. Rewrite `h1` using `[he, GlobalTheory.T.eisenstein_height_smul_invariant F E σ n J r X Y L a h hS μ hμ]`. Generalize the expression as in `hzdef : GlobalTheory.EisMidHt.ht L a (GlobalTheory.EisMidHt.adVec F ((f t).1.1 + (f t).2 • GlobalTheory.EisMidHt.firstColumn X)) = z at h1 ⊢`. Establish `hz0 : 0 ≤ z` using `hzdef ▸ hnn _`.
+
+Establish `hz : 0 < z`. Break down `hz0.lt_or_eq with hz | hz` into its components or cases. Conclude with `hz`. Rewrite `h1` using `[← hz, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hht : h t.1.1 = GlobalTheory.EisMidHt.ht L a (GlobalTheory.EisMidHt.adVec F (GlobalTheory.EisMidHt.firstColumn X)) / z`. Rewrite using `[eq_div_iff hz.ne']`. Conclude with `h1`. Rewrite using `[hht, Real.div_rpow hpos.le hz0, div_eq_mul_inv, ← Real.rpow_neg hz0, ENNReal.ofReal_mul (Real.rpow_nonneg hpos.le _)]`. Substitute `hzdef` using the available equality.
+
+Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Take `⟨h0, -, h1, h2⟩` from `hY.1 y.1 y.2`. Conclude with `hC y.1 h0 h1 h2`. Use `_ = ENNReal.ofReal (GlobalTheory.EisMidHt.ht L a (GlobalTheory.EisMidHt.adVec F (GlobalTheory.EisMidHt.firstColumn X)) ^ s) * (ENNReal.ofReal C * ∑' y : Yr, ENNReal.ofReal (GlobalTheory.EisMidHt.ht L a (GlobalTheory.EisMidHt.adVec F y.1) ^ (1 - s))) := by`.
+
+Rewrite using `[ENNReal.tsum_mul_left]`. Use `_ < ⊤ := by`. Use `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_)` and prove the remaining obligations. Establish `e : (1 - s) = -(s - 1)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `hD`.
+-/
 theorem midSet_sum_rpow_lt_top : GlobalTheory.Published.EisensteinIsotropicLine → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))
     (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ), HidaSetting σ J X Y L a h →

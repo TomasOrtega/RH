@@ -12,6 +12,11 @@ open GlobalTheory.FlatLine GlobalTheory.Reg
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← secZ_nat]`. Establish `: (fun i => (ex Dw (0 : (E →+* ℂ) × ℕ → ℕ) 0 i : ℤ)) = 0`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with _ | ⟨τ, i⟩ <;> simp [ex]`. Rewrite using `[this]`.
+
+Conclude with `idem_mem_secZ Z`.
+-/
 theorem idem_mem_sec (Z : Comp Xo c) : idem Z ∈ sec Xo c 0 0 := by
   rw [← secZ_nat]
   have : (fun i => (ex Dw (0 : (E →+* ℂ) × ℕ → ℕ) 0 i : ℤ)) = 0 := by
@@ -20,6 +25,15 @@ theorem idem_mem_sec (Z : Comp Xo c) : idem Z ∈ sec Xo c 0 0 := by
   rw [this]
   exact idem_mem_secZ Z
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[mem_cuspW]`. Use `⟨?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `mul_mem_secZ (idem_mem_secZ Z) hf.1` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Rewrite using `[AllWt.rdU_mul]`.
+
+Use `IdemCusp.mul_mem_holSub (U σ).X (modelWt (U σ) G) (rdU (U σ) (idem Z)) (fun k => ?_) (hf.2 σ hσ)` and prove the remaining obligations. Establish `hD : Dom (E` using `E) 0 0 := ⟨fun τ _ _ _ => le_rfl, Even.zero⟩`. Establish `hs` using `(hU σ hσ).2.2.2.2.1 0 0 hD (idem Z) (idem_mem_sec Z) k`. Establish `h0 : laU (U σ) 0 0 k = 0`. Use function extensionality and compare the values at `τ j`.
+
+Simplify using `[laU]`. Rewrite `hs` using `[h0]`. Use `IdemCusp.isIdemFn_of_isSec _ hs ?_` and prove the remaining obligations. Use `congrFun (AllWt.rdU_mul (U σ) (idem Z) (idem Z)) k` as an intermediate fact. Rewrite `this` using `[idem_mul_idem]`.
+
+Conclude with `this.symm`.
+-/
 theorem idem_mul_mem_cuspW {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ))
     (Z : Comp Xo c) {G : WTZ E} {f : Rul Xo c} (hf : f ∈ cuspW Xo c U G) : idem Z * f ∈ cuspW Xo c U G := by
   rw [mem_cuspW] at hf ⊢
@@ -39,6 +53,13 @@ theorem idem_mul_mem_cuspW {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (hU : ∀
     rw [idem_mul_idem] at this
     exact this.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U hU Z G f`. Establish `hs : idem Z * (f : Rul Xo c) ∈ suppOn Z`. Rewrite using `[mul_comm]`. Conclude with `mul_mem_suppOn _ (idem_mem_suppOn Z)`. Use `⟨⟨idem Z * (f : Rul Xo c), idem_mul_mem_cuspW hU Z f.2, hs⟩, fun S _ _ y hy => ?_, fun hf => ?_⟩` and prove the remaining obligations.
+
+Use `show evR Xo c (idem Z * (f : Rul Xo c)) y = evR Xo c f y`. Distinguish the cases in `ht : Tested y`. Establish `e : evR Xo c (idem Z * (f : Rul Xo c)) y = evR Xo c (idem Z) y * evR Xo c f y` using `evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (idem Z) f y`. Rewrite using `[e, evR_idem hy ht, one_mul]`. Unfold `evR evalAt`.
+
+Rewrite using `[dif_neg ht, dif_neg ht]`. Use `(mem_supLat_iff (Z := Z) hs).2 fun la v hv => ?_ show 0 ≤ v (idem Z * (f : Rul Xo c))` and prove the remaining obligations. Rewrite using `[(isVal_valOn hv).mul, val_idem hv, zero_add]`. Conclude with `hf la v (valOn_subset Z la hv)`.
+-/
 theorem exists_cuspOn_restrict : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → ∀ (Z : Comp Xo c) (G : WTZ E) (f : cuspW Xo c U G), ∃ g : cuspOn U Z G, (∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOn Z y → evR Xo c g y = evR Xo c f y) ∧ (f ∈ latW U G → g ∈ latOn U Z G) := by
   intro E _ _ _ H Dw l Xo c r U hU Z G f
   have hs : idem Z * (f : Rul Xo c) ∈ suppOn Z := by

@@ -18,10 +18,20 @@ local notation "Mat" => Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ
 def tauR (H X : Mat) : Mat :=
   (1 + 1) - (4 : ℂ) • (((1 + 1) - X) * Ring.inverse (H * ((1 + 1) + X) + ((1 + 1) - X)))
 
+/- English proof (translation)
+Rewrite using `[show (4 : ℂ) = 1 + 1 + 1 + 1 by norm_num, add_smul, add_smul, add_smul, one_smul, add_mul, add_mul, add_mul, one_mul]`.
+-/
 theorem smul_four (Z : Mat) : (4 : ℂ) • Z = (1 + 1 + 1 + 1) * Z := by
   rw [show (4 : ℂ) = 1 + 1 + 1 + 1 by norm_num, add_smul, add_smul, add_smul, one_smul, add_mul, add_mul,
     add_mul, one_mul]
 
+/- English proof (translation)
+Use `set S := (1 + 1 : Mat) - X with hS`. Establish `hX : (1 + 1 : Mat) + X = (1 + 1 + 1 + 1) - S`. Rewrite using `[hS]`. Use `noncomm_ring`. Establish `e1 : S * Ni * (H * ((1 + 1) + X) + S) * K = 1`.
+
+Rewrite using `[mul_assoc S Ni, hNi, mul_one, hK]`. Rewrite `e1` using `[hX]`. Establish `e2 : S * Ni * (H * ((1 + 1 + 1 + 1) - S) + S) * K = (1 + 1 + 1 + 1) * (S * Ni * H * K) - S * Ni * H * (S * K) + S * Ni * (S * K)` using `by noncomm_ring`. Rewrite `e1` using `[e2, hK, mul_one, mul_one]`. Establish `e3 : (1 + 1 + 1 + 1) * (S * Ni * H * K) = 1 + S * Ni * H - S * Ni`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem key_alg (H X Y Ni K : Mat)
     (hNi : Ni * (H * ((1 + 1) + X) + ((1 + 1) - X)) = 1) (hK : ((1 + 1) - X) * K = 1) :
     Y + ((1 + 1) - X) * Ni * (H * Y - Y) =
@@ -45,6 +55,15 @@ theorem key_alg (H X Y Ni K : Mat)
     _ = (1 + 1 + 1 + 1) * (S * Ni * H * K) * Y := by rw [e3]
     _ = (1 + 1 + 1 + 1) * (S * Ni * H * K * Y) := by noncomm_ring
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hN`. Establish `hA : HasFDerivAt (fun Z : Mat => (1 + 1) - Z) (-ContinuousLinearMap.id ℝ Mat) X` using `(hasFDerivAt_id X).const_sub _`. Establish `hB` using `(((hasFDerivAt_const (1 + 1 : Mat) X).add (hasFDerivAt_id X)).const_mul H).add hA`. Establish `hI : HasFDerivAt Ring.inverse (-ContinuousLinearMap.mulLeftRight ℝ Mat ↑u⁻¹ ↑u⁻¹) (H * ((1 + 1) + X) + ((1 + 1) - X))`. Rewrite using `[← hu]`.
+
+Conclude with `hasFDerivAt_ringInverse u`. Establish `hC` using `hI.comp X hB`. Establish `hD` using `((hA.mul' hC).const_smul (4 : ℂ)).const_sub (1 + 1 : Mat)`. Establish `hE : HasFDerivAt (tauR H) _ X` using `hD`. Establish `hinv : (↑u⁻¹ : Mat) = (H * ((1 + 1) + X) + ((1 + 1) - X))⁻¹`.
+
+Rewrite using `[Matrix.nonsing_inv_eq_ringInverse, ← hu, Ring.inverse_unit]`. Use `hE.congr_fderiv (ContinuousLinearMap.ext fun Y => ?_)` and prove the remaining obligations. Establish `hNi` using `Matrix.nonsing_inv_mul _ hN`. Establish `hK` using `Matrix.mul_nonsing_inv _ hS`. Establish `k` using `key_alg H X Y _ _ hNi hK`.
+
+Express the relevant statement in the definitionally equal form `-((4 : ℂ) • (((1 + 1) - X) * (-(Units.val u⁻¹ * (H * (0 + Y) + -Y) * Units.val u⁻¹)) + (-Y) * Ring.inverse (H * ((1 + 1) + X) + ((1 + 1) - X)))) = (4 : ℂ) • (((1 + 1) - X) * (H * ((1 + 1) + X) + ((1 + 1) - X))⁻¹ * H * ((1 + 1) - X)⁻¹) * Y * ((4 : ℂ) • (H * ((1 + 1) + X) + ((1 + 1 …`. Rewrite using `[hinv, ← Matrix.nonsing_inv_eq_ringInverse, smul_four, smul_four, smul_four, zero_add]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hasFDerivAt_tauR (H X : Mat) (hN : IsUnit (H * ((1 + 1) + X) + ((1 + 1) - X)).det)
     (hS : IsUnit ((1 + 1) - X).det) :
     HasFDerivAt (tauR H) (ContinuousLinearMap.mulLeftRight ℝ Mat
@@ -85,6 +104,19 @@ variable {P Q : ℕ}
 
 local notation "Mat" => Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ
 
+/- English proof (translation)
+Use `set ι : lieU P Q →L[ℝ] Mat := (lieU P Q).subtypeL with hι`. Use `set L : Mat →L[ℝ] Mat := ContinuousLinearMap.mulLeftRight ℝ Mat (chA h (x : Mat)) (chB h (x : Mat)) with hL`. Establish `hM : HasFDerivAt (tauR (UpqT.mat h)) L (ι x)` using `hasFDerivAt_tauR (UpqT.mat h) (x : Mat) hn hx`. Establish `c1 : Continuous fun y : lieU P Q => (1 + 1) - ι y` using `continuous_const.sub ι.continuous`. Establish `c2 : Continuous fun y : lieU P Q => UpqT.mat h * ((1 + 1) + ι y) + ((1 + 1) - ι y)` using `(continuous_const.mul (continuous_const.add ι.continuous)).add (continuous_const.sub ι.continuous)`.
+
+Establish `hev : ∀ᶠ y in 𝓝 x, IsUnit ((1 + 1) - ι y) ∧ IsUnit (UpqT.mat h * ((1 + 1) + ι y) + ((1 + 1) - ι y))` using `by filter_upwards [c1.continuousAt.preimage_mem_nhds (Units.isOpen.mem_nhds ((Matrix.isUnit_iff_isUnit_det _).2 hx)), c2.continuousAt.preimage_mem_nhds (Units.isOpen.mem_nhds ((Matrix.isUnit_iff_isUnit_det _).2 hn))] with y h1 h2`. Conclude with `⟨h1, h2⟩`. Establish `heq : (fun y : lieU P Q => ((tauL h y : lieU P Q) : Mat)) =ᶠ[𝓝 x] (tauR (UpqT.mat h) ∘ ι)` using `by filter_upwards [hev] with y hy`. Establish `hyD : y ∈ D0 P Q` using `(Matrix.isUnit_iff_isUnit_det _).1 hy.1`. Establish `hyN : IsUnit (nH h (y : Mat)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 hy.2`.
+
+Establish `hu : IsUnit (UpqT.mat (h * cayF P Q y) + 1).det`. Establish `e` using `hyN`. Rewrite `e` using `[nH_eq h y hyD, det_mul]`. Conclude with `isUnit_of_mul_isUnit_left e`. Rewrite using `[tauL_val h y hyD hu, Matrix.nonsing_inv_eq_ringInverse]`.
+
+Both sides reduce to the same expression. Establish `hF : HasFDerivAt (fun y : lieU P Q => ((tauL h y : lieU P Q) : Mat)) (L.comp ι) x` using `(HasFDerivAt.comp x hM ι.hasFDerivAt).congr_of_eventuallyEq heq`. Establish `hclosed : IsClosed ((lieU P Q : Set Mat))` using `(lieU P Q).closed_of_finiteDimensional`. Establish `hmem : ∀ Y, (L.comp ι) Y ∈ lieU P Q`. Introduce `Y`.
+
+Conclude with `hclosed.mem_of_tendsto (hF.lim_real Y) (Eventually.of_forall fun c => (lieU P Q).smul_mem c ((lieU P Q).sub_mem (tauL h _).2 (tauL h x).2))`. Use `⟨(L.comp ι).codRestrict (lieU P Q) hmem, fun Y => ?_, ?_⟩` and prove the remaining obligations. Establish `hLY : L (ι Y) = chA h (x : Mat) * ι Y * chB h (x : Mat)` using `ContinuousLinearMap.mulLeftRight_apply _ _ _ _ _`. Conclude with `hLY`. Establish `hF'` using `hasFDerivAt_iff_isLittleO_nhds_zero.1 hF`.
+
+Use `hasFDerivAt_iff_isLittleO_nhds_zero.2 ?_` and prove the remaining obligations. Rewrite `hF'`, the goal using `[← Asymptotics.isLittleO_norm_left]`. Use `hF'.congr_left fun k => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem tauDeriv_at (h : UpqT P Q) (x : lieU P Q) (hx : x ∈ D0 P Q)
     (hn : IsUnit (nH h (x : Mat)).det) :
     ∃ f' : lieU P Q →L[ℝ] lieU P Q,
@@ -134,6 +166,9 @@ theorem tauDeriv_at (h : UpqT P Q) (x : lieU P Q) (hx : x ∈ D0 P Q)
 
 end Sub
 
+/- English proof (translation)
+Introduce `_ _ h x hx hn` and use `tauDeriv_at h x hx hn`.
+-/
 theorem tau_derivative : TauDeriv := fun _ _ h x hx hn => tauDeriv_at h x hx hn
 
 end HcInf

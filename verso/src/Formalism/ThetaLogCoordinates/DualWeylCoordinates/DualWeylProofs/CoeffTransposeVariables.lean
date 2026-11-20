@@ -9,6 +9,13 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 
 open Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial s c`. Establish `h : X i * pderiv i (monomial s c) = (s i : ℚ) • monomial s c`. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `hs : s i = 0`.
+
+Simplify using `[hs]`. Establish `h1 : Finsupp.single i 1 + (s - Finsupp.single i 1) = s` using `add_tsub_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hs))`. Rewrite using `[X, monomial_mul, h1, smul_monomial, one_mul, smul_eq_mul, mul_comm]`. Rewrite using `[h, coeff_smul, coeff_monomial, smul_eq_mul]`. Use `split_ifs with hsm`.
+
+Rewrite using `[hsm]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, mul_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+-/
 theorem qn_coeff_X_pderiv {σ : Type*} (i : σ) (f : MvPolynomial σ ℚ) (m : σ →₀ ℕ) :
     coeff m (X i * pderiv i f) = (m i : ℚ) * coeff m f := by
   classical
@@ -29,6 +36,9 @@ theorem qn_coeff_X_pderiv {σ : Type*} (i : σ) (f : MvPolynomial σ ℚ) (m : �
 
 def qn_wt {n : ℕ} (m : Fin n × Fin n →₀ ℕ) : Fin n → ℤ := fun a => ((∑ l : Fin n, m (l, a) : ℕ) : ℤ)
 
+/- English proof (translation)
+Rewrite using `[qn_E_eq, qn_D_apply, coeff_sum]`. Simplify using `only [qn_coeff_X_pderiv]`. Rewrite using `[← Finset.sum_mul]`. Simplify using `[qn_wt]`.
+-/
 theorem qn_coeff_E (n : ℕ) (a : Fin n) (f : MvPolynomial (Fin n × Fin n) ℚ) (m : Fin n × Fin n →₀ ℕ) :
     coeff m (glOps ℚ n (rowLetters n) Set.univ a a f) = (qn_wt m a : ℚ) * coeff m f := by
   rw [qn_E_eq, qn_D_apply, coeff_sum]
@@ -36,12 +46,20 @@ theorem qn_coeff_E (n : ℕ) (a : Fin n) (f : MvPolynomial (Fin n × Fin n) ℚ)
   rw [← Finset.sum_mul]
   simp [qn_wt]
 
+/- English proof (translation)
+Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+-/
 theorem qn_mem_weightSp (n : ℕ) (w : Fin n → ℤ) (z : MvPolynomial (Fin n × Fin n) ℚ) :
     z ∈ weightSp (glOps ℚ n (rowLetters n) Set.univ) w ↔
       ∀ a, glOps ℚ n (rowLetters n) Set.univ a a z = (w a : ℚ) • z := by
   simp only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
     Module.End.one_apply, sub_eq_zero]
 
+/- English proof (translation)
+Rewrite using `[qn_mem_weightSp]`. Introduce `a`. Use extensionality with `m'`. Rewrite using `[qn_coeff_E, coeff_smul, coeff_monomial, smul_eq_mul]`. Use `split_ifs with h`.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem qn_monomial_mem (n : ℕ) (m : Fin n × Fin n →₀ ℕ) (c : ℚ) :
     monomial m c ∈ weightSp (glOps ℚ n (rowLetters n) Set.univ) (qn_wt m) := by
   classical
@@ -53,6 +71,11 @@ theorem qn_monomial_mem (n : ℕ) (m : Fin n × Fin n →₀ ℕ) (c : ℚ) :
   · rw [h]
   · simp
 
+/- English proof (translation)
+Rewrite `hz` using `[qn_mem_weightSp]`. Assume the negation of the conclusion as `hne`. Apply `hm` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Establish `h` using `congrArg (coeff m) (hz a)`.
+
+Rewrite `h` using `[qn_coeff_E, coeff_smul, smul_eq_mul]`. Use `mul_right_cancel₀ hne h` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem qn_weightSp_coeff (n : ℕ) (w : Fin n → ℤ) (z : MvPolynomial (Fin n × Fin n) ℚ)
     (hz : z ∈ weightSp (glOps ℚ n (rowLetters n) Set.univ) w) (m : Fin n × Fin n →₀ ℕ) (hm : qn_wt m ≠ w) :
     coeff m z = 0 := by
@@ -65,6 +88,11 @@ theorem qn_weightSp_coeff (n : ℕ) (w : Fin n → ℤ) (z : MvPolynomial (Fin n
   have := mul_right_cancel₀ hne h
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `hle : otherWts (glOps ℚ n (rowLetters n) Set.univ) lam ≤ LinearMap.ker (lcoeff ℚ m)`. Unfold `otherWts`. Use `iSup₂_le fun mu hmu => ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[LinearMap.mem_ker, lcoeff_apply]`.
+
+Conclude with `qn_weightSp_coeff n mu y hy m (by rw [hm]; exact fun h => hmu h.symm)`. Use `hle hz` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, lcoeff_apply]`. Then use the resulting hypothesis.
+-/
 theorem qn_otherWts_coeff (n : ℕ) (lam : Fin n → ℤ) (z : MvPolynomial (Fin n × Fin n) ℚ)
     (hz : z ∈ otherWts (glOps ℚ n (rowLetters n) Set.univ) lam) (m : Fin n × Fin n →₀ ℕ) (hm : qn_wt m = lam) :
     coeff m z = 0 := by
@@ -77,6 +105,9 @@ theorem qn_otherWts_coeff (n : ℕ) (lam : Fin n → ℤ) (z : MvPolynomial (Fin
   have := hle hz
   rwa [LinearMap.mem_ker, lcoeff_apply] at this
 
+/- English proof (translation)
+Rewrite using `[g.as_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Unfold `otherWts`. Conclude with `Submodule.mem_iSup_of_mem (qn_wt m) (Submodule.mem_iSup_of_mem (hg m hm) (qn_monomial_mem n m _))`.
+-/
 theorem qn_mem_otherWts (n : ℕ) (lam : Fin n → ℤ) (g : MvPolynomial (Fin n × Fin n) ℚ)
     (hg : ∀ m ∈ g.support, qn_wt m ≠ lam) : g ∈ otherWts (glOps ℚ n (rowLetters n) Set.univ) lam := by
   rw [g.as_sum]
@@ -84,14 +115,27 @@ theorem qn_mem_otherWts (n : ℕ) (lam : Fin n → ℤ) (g : MvPolynomial (Fin n
   unfold otherWts
   exact Submodule.mem_iSup_of_mem (qn_wt m) (Submodule.mem_iSup_of_mem (hg m hm) (qn_monomial_mem n m _))
 
+/- English proof (translation)
+The claim follows from `Finsupp.mapDomain_apply Prod.swap_injective m (l, a)`.
+-/
 theorem qn_swap_apply {n : ℕ} (m : Fin n × Fin n →₀ ℕ) (a l : Fin n) :
     (Finsupp.mapDomain Prod.swap m) (a, l) = m (l, a) :=
   Finsupp.mapDomain_apply Prod.swap_injective m (l, a)
 
+/- English proof (translation)
+The claim follows from `coeff_rename_mapDomain Prod.swap Prod.swap_injective g m`.
+-/
 theorem coeff_transposeVariables (n : ℕ) (g : MvPolynomial (Fin n × Fin n) ℚ) (m : Fin n × Fin n →₀ ℕ) :
     coeff (Finsupp.mapDomain Prod.swap m) (transposeVariables ℚ n g) = coeff m g :=
   coeff_rename_mapDomain Prod.swap Prod.swap_injective g m
 
+/- English proof (translation)
+Use `qn_mem_otherWts n _ g fun m hm hwt => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (coeff (Finsupp.mapDomain Prod.swap m)) hg`. Establish `hw : Finsupp.weight (rowW n n) (Finsupp.mapDomain Prod.swap m) = ν`. Use function extensionality and compare the values at `a`. Rewrite using `[lehw_weight_rowW, rowDeg]`.
+
+Simplify using `only [qn_swap_apply]`. Use `congrFun hwt a` as an intermediate fact. Simplify using `only [qn_wt] at this`. Conclude with `this` after adjusting the coercions. Rewrite `h1` using `[coeff_weightedHomogeneousComponent, if_pos hw, coeff_transposeVariables, coeff_zero]`.
+
+Conclude with `(mem_support_iff.mp hm) h1`.
+-/
 theorem qn_mem_otherWts' (n : ℕ) (ν : Fin n → ℕ) (g : MvPolynomial (Fin n × Fin n) ℚ)
     (hg : weightedHomogeneousComponent (rowW n n) ν (transposeVariables ℚ n g) = 0) :
     g ∈ otherWts (glOps ℚ n (rowLetters n) Set.univ) (fun a => (ν a : ℤ)) := by
@@ -108,6 +152,13 @@ theorem qn_mem_otherWts' (n : ℕ) (ν : Fin n → ℕ) (g : MvPolynomial (Fin n
   rw [coeff_weightedHomogeneousComponent, if_pos hw, coeff_transposeVariables, coeff_zero] at h1
   exact (mem_support_iff.mp hm) h1
 
+/- English proof (translation)
+Establish `h` using `coeff_transposeVariables n (transposeVariables ℚ n z) (lhwline_mnu (le_refl n) ν)`. Rewrite `h` using `[transposeVariables_involutive]`. Rewrite using `[← h]`. Use `qn_otherWts_coeff n _ z hz _ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [qn_wt, qn_swap_apply, lhwline_mnu_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Establish `: a.val ≠ b.val` using `fun h => hb (Fin.ext h).symm`.
+
+Simplify using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem qn_otherWts_coeff' (n : ℕ) (ν : Fin n → ℕ) (z : MvPolynomial (Fin n × Fin n) ℚ)
     (hz : z ∈ otherWts (glOps ℚ n (rowLetters n) Set.univ) (fun a => (ν a : ℤ))) :
     coeff (lhwline_mnu (le_refl n) ν) (transposeVariables ℚ n z) = 0 := by
@@ -125,10 +176,20 @@ theorem qn_otherWts_coeff' (n : ℕ) (ν : Fin n → ℕ) (z : MvPolynomial (Fin
     simp [this]
   · simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `[rowNu]`.
+-/
 theorem qn_rowNu (n : ℕ) (ν : Fin n → ℕ) : rowNu (r := n) ν = ν := by
   funext a
   simp [rowNu]
 
+/- English proof (translation)
+Establish `hD : ∀ (a : Fin n) (j : Fin n), a.val ≠ j.val → idFrame ℚ n n (a, j) = 0`. Introduce `a j h`. Simplify using `[idFrame, h]`. Rewrite using `[lhwline_diag (le_refl n) ν F hF (idFrame ℚ n n) hD]`. Establish `: ∏ v, idFrame ℚ n n v ^ (lhwline_mnu (le_refl n) ν) v = 1`.
+
+Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Take `⟨a, j⟩` from `v`. Rewrite using `[lhwline_mnu_apply]`. Distinguish the cases in `h : a.val = j.val`. Simplify using `[idFrame, h]`.
+
+Simplify using `[h]`. Rewrite using `[this, mul_one]`.
+-/
 theorem qn_eval_eq_coeff (n : ℕ) (ν : Fin n → ℕ) (F : MvPolynomial (Fin n × Fin n) ℚ)
     (hF : IsWeightedHomogeneous (colW n n) F ν) :
     eval (idFrame ℚ n n) F = coeff (lhwline_mnu (le_refl n) ν) F := by
@@ -145,10 +206,22 @@ theorem qn_eval_eq_coeff (n : ℕ) (ν : Fin n → ℕ) (F : MvPolynomial (Fin n
     · simp [h]
   rw [this, mul_one]
 
+/- English proof (translation)
+The claim follows from `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.mem_inf.mp hF).1`.
+-/
 theorem qn_colHom (R : Type) [CommRing R] (n : ℕ) (ν : Fin n → ℕ) (F : MvPolynomial (Fin n × Fin n) R)
     (hF : F ∈ dualWeyl R n n ν) : IsWeightedHomogeneous (colW n n) F ν :=
   (mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.mem_inf.mp hF).1
 
+/- English proof (translation)
+Use `set G := weightedHomogeneousComponent (rowW n n) ν F with hGdef`. Establish `hG : G ∈ dualWeyl ℚ n n ν` using `dualWeylRowGraded ℚ n n ν _ F hF`. Establish `hGh : IsWeightedHomogeneous (rowW n n) G (rowNu (r` using `n) ν) := by`. Rewrite using `[qn_rowNu]`. Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous _ _`.
+
+Take `⟨c, hc⟩` from `hwLine ℚ n n (le_refl n) ν hν G hG (fun a b hab k hk => lehw_kill (le_refl n) ν hν G hG hGh a b hab k hk)`. Establish `hHW` using `hwRowWeight ℚ n n (le_refl n) ν hν`. Rewrite `hHW` using `[qn_rowNu]`. Establish `hH1 : coeff (lhwline_mnu (le_refl n) ν) (hw ℚ (le_refl n) ν) = 1`. Rewrite using `[← qn_eval_eq_coeff n ν _ (qn_colHom ℚ n ν _ (hwMem ℚ n n (le_refl n) ν hν))]`.
+
+Conclude with `lehw_eval_idFrame_hw (le_refl n) ν`. Establish `hwt : Finsupp.weight (rowW n n) (lhwline_mnu (le_refl n) ν) = ν` using `hHW (by rw [hH1]; exact one_ne_zero)`. Establish `h1 : coeff (lhwline_mnu (le_refl n) ν) F = c`. Establish `e : coeff (lhwline_mnu (le_refl n) ν) F = coeff (lhwline_mnu (le_refl n) ν) G`. Rewrite using `[hGdef, coeff_weightedHomogeneousComponent, if_pos hwt]`.
+
+Rewrite using `[e, hc, coeff_smul, hH1, smul_eq_mul, mul_one]`. Rewrite using `[qn_eval_eq_coeff n ν F (qn_colHom ℚ n ν F hF), h1, hc]`.
+-/
 theorem qn_comp (n : ℕ) (ν : Fin n → ℕ) (hν : Antitone ν) (F : MvPolynomial (Fin n × Fin n) ℚ)
     (hF : F ∈ dualWeyl ℚ n n ν) :
     weightedHomogeneousComponent (rowW n n) ν F = eval (idFrame ℚ n n) F • hw ℚ (le_refl n) ν := by

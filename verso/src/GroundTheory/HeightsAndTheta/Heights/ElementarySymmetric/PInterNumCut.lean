@@ -32,6 +32,9 @@ section Dim
 
 end Dim
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.KleimanIntersectionNumberCut.proof hF hA hB`.
+-/
 theorem InterNumCut.proof (hF : CycleSplit.Filt.Statement.{u, w}) (hA : CutRestrLenExact.Statement.{u, w})
     (hB : MixedTwistShift.Statement.{u, w}) : InterNumCut.Statement.{u, w} :=
   _root_.UpperTheory.Reformulated.B.KleimanIntersectionNumberCut.proof hF hA hB

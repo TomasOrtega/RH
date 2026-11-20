@@ -14,6 +14,9 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 
 variable {n : ℕ} {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {P : Ideal (MRing J)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨R.isOpen_U, R.mem_U, R.holo, R.mem, R.compat, fun z hz => R.surj z hz (not_mem_top _), fun x x' h => R.inj x x' (not_mem_top _) h, fun x p hp j hj => R.immersion x (not_mem_top _) p hp j hj⟩`.
+-/
 theorem isLiftSys (R : AnLogRes P ⊤ n) : Cj.IsLiftSys R.A P R.U R.lift :=
   ⟨R.isOpen_U, R.mem_U, R.holo, R.mem, R.compat, fun z hz => R.surj z hz (not_mem_top _),
     fun x x' h => R.inj x x' (not_mem_top _) h, fun x p hp j hj => R.immersion x (not_mem_top _) p hp j hj⟩
@@ -29,6 +32,13 @@ def IsMember (R : AnLogRes P ⊤ n) (L : LocPot R.X) (s : R.X → R.X → ℂ) (
   (cen → ∀ t, IsPsh R.A ((potOf R (fsHerm J d) + LocPot.ofFun (phT t)).rsmul (-1)) ∧
     IsPsh R.A (potOf R (fsHerm J d) + LocPot.ofFun (phT t)))
 
+/- English proof (translation)
+Take `⟨B, a0, hs, hl⟩` from `exists_hermLine_log_eq_of_smooth _ _ _ n R f hf`. Establish `hfs : IsSmoothHerm (fsHerm J d)` using `StepW.fsHerm_isSmoothHerm K J d`. Establish `hmem : ∀ x, ∀ k, ∃ i, R.lift x x ⟨k, i⟩ ≠ 0` using `fun x => (R.mem x x (R.mem_U x)).1`. Establish `hB : ∀ x, Real.log ((Cj.conjAvg B).h (R.lift x x)) = f x` using `fun x => by`. Rewrite using `[Cj.conjAvg_log _ (hmem x), ← FA.deg0_orbit B a0 (hc x), hl, hl, hfc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨(fsHerm J d).tensor (Cj.conjAvg B), ?_, ?_, fun z => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show d + B.a = d`. Rewrite using `[a0, add_zero]`. Conclude with `ContDiffOn.mul hfs (Cj.conjAvg_smooth hs)`.
+
+Use `show (fsHerm J d).h _ * (Cj.conjAvg B).h _ = (fsHerm J d).h _ * (Cj.conjAvg B).h _`. Rewrite using `[Cj.fs_conj d z, Cj.conjAvg_conj B z]`. Use `show Real.log ((fsHerm J d).h _ * (Cj.conjAvg B).h _) = _`. Rewrite using `[Real.log_mul ((fsHerm J d).pos _ (hmem x)).ne' ((Cj.conjAvg B).pos _ (hmem x)).ne', hB]`.
+-/
 theorem exists_line (R : AnLogRes P ⊤ n) (c : R.X → R.X)
     (hc : ∀ x, SameOrbit (R.lift (c x) (c x)) (Cj.cj (R.lift x x))) (d : K → ℤ) (f : R.X → ℝ) (hf : R.A.Smooth f)
     (hfc : ∀ x, f (c x) = f x) : ∃ B : HermLine J, B.a = d ∧ IsSmoothHerm B ∧ IsConjInvariantH B ∧
@@ -48,6 +58,31 @@ theorem exists_line (R : AnLogRes P ⊤ n) (c : R.X → R.X)
   · show Real.log ((fsHerm J d).h _ * (Cj.conjAvg B).h _) = _
     rw [Real.log_mul ((fsHerm J d).pos _ (hmem x)).ne' ((Cj.conjAvg B).pos _ (hmem x)).ne', hB]
 
+/- English proof (translation)
+Take `⟨hA, hfs, hΘ⟩` from `fs_pos_potential K J P n R`. Establish `hfd : IsSmoothHerm (fsHerm J d)` using `StepW.fsHerm_isSmoothHerm K J d`. Establish `hth` using `hA _ hfd`. Establish `hsys` using `isLiftSys R`. Take `⟨c, hspec, hcont, hinv⟩` from `GlobalTheory.T.lift_system_complex_conjugation hsys`.
+
+Establish `hanal` using `GlobalTheory.T.conjugation_antiholomorphic_charts hsys c hspec hcont`. Establish `hsm` using `smoothOn_of_tame hT`. Take `⟨C₁, hC₁⟩` from `size_of_tame hn hT`. Establish `hpsh : IsPshOn R.A (bdry s)ᶜ (potOf R (fsHerm J d) + LocPot.ofFun u)`. Use `pshOn_of_local _ (fun x z hz => ?_) fun z hz => ?_` and prove the remaining obligations.
+
+Take `⟨V, h1, h2, G, h3, h4⟩` from `hth.2 x z z ⟨hz.1, R.mem_U z⟩`. Use `⟨V, h1, h2, G, h3, fun w hw => ?_⟩` and prove the remaining obligations. Use `h4 w ⟨⟨hw.1.1, hw.1.2.1⟩, hw.2.1⟩` as an intermediate fact. Use `show (potOf R (fsHerm J d)).φ x w + u w - ((potOf R (fsHerm J d)).φ z w + u w) = _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨ψ, h1, h2, h3, h4, -⟩` from `hP z hz`. Conclude with `⟨ψ, h1, h2, h3, h4⟩`. Take `⟨C₅, hsw⟩` from `GlobalTheory.T.singular_potential_log_growth_psh n R.X R.A L s nb m W hL hs snc hn _ u C₁ hth hsm hpsh hC₁`. Establish `hlines : ∀ (phT : ℝ → R.X → ℝ) (t₀ : ℝ), (∀ t, 0 < t → t ≤ t₀ → R.A.Smooth (phT t)) → (∀ t x, phT t (c x) = phT t x) → ∃ line : ℝ → HermLine J, (∀ t, (line t).a = d ∧ IsSmoothHerm (line t) ∧ IsConjInvariantH (line t)) ∧ (∀ t, 0 < t → t ≤ t₀ → ∀ x, Real.log ((line t).h (R.lift x x …`. Introduce `phT t₀ h1 h2`.
+
+Establish `: ∀ t, ∃ B : HermLine J, (B.a = d ∧ IsSmoothHerm B ∧ IsConjInvariantH B) ∧ (0 < t → t ≤ t₀ → ∀ x, Real.log (B.h (R.lift x x)) = Real.log ((fsHerm J d).h (R.lift x x)) + phT t x)` using `fun t => by`. Distinguish the cases in `ht : 0 < t ∧ t ≤ t₀`. Take `⟨B, b1, b2, b3, b4⟩` from `exists_line R c hspec d (phT t) (h1 t ht.1 ht.2) (h2 t)`. Conclude with `⟨B, ⟨b1, b2, b3⟩, fun _ _ => b4⟩`. Conclude with `⟨fsHerm J d, ⟨rfl, hfd, Cj.fs_conj d⟩, fun a b => absurd ⟨a, b⟩ ht⟩`.
+
+Use `choose line h3 h4 using this`. Conclude with `⟨line, h3, h4⟩`. Distinguish the cases in `hcen : cen`. Establish `hneg : IsPshOn R.A (bdry s)ᶜ ((potOf R (fsHerm J d) + LocPot.ofFun u).rsmul (-1))`. Use `pshOn_of_local _ (fun x z hz => ?_) fun z hz => ?_` and prove the remaining obligations.
+
+Take `⟨V, h1, h2, G, h3, h4⟩` from `hth.2 x z z ⟨hz.1, R.mem_U z⟩`. Use `⟨V, h1, h2, fun w => -G w, fun j y hy => (h3 j y hy).neg, fun w hw => ?_⟩` and prove the remaining obligations. Use `h4 w ⟨⟨hw.1.1, hw.1.2.1⟩, hw.2.1⟩` as an intermediate fact. Use `show -1 * ((potOf R (fsHerm J d)).φ x w + u w) - -1 * ((potOf R (fsHerm J d)).φ z w + u w) = _`. Rewrite using `[Complex.neg_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨ψ, h1, h2, h3, -, h4⟩` from `hP z hz`. Conclude with `⟨ψ, h1, h2, h3, h4 hcen⟩`. Take `⟨u', C₀, hu', heq, p1, p2, s1, r1, c1⟩` from `FA.central_regular R.A (potOf R (fsHerm J fun _ => 1)) L s m W hL hs snc hn (hA _ hfs) hΘ _ u C₅ hsw hneg`. Establish `hc1` using `Cj.smooth_continuous hu'`.
+
+Establish `hd : Dense (bdry s)ᶜ` using `interior_eq_empty_iff_dense_compl.1 (LeviFormBoundaryTopology.interior_bdry_eq_empty hs snc)`. Establish `hcp : ∀ y, u' (c y) = u' y` using `congrFun (Continuous.ext_on hd (hc1.comp hcont) hc1 fun y hy => by`. Establish `hy' : c y ∉ bdry s` using `fun h => hy ((hcb _ _ (hspec y)).1.1 h)`. Use `show u' (c y) = u' y`. Rewrite using `[heq _ hy', heq _ hy, huc _ _ (hspec y)])`.
+
+Take `⟨line, l1, l2⟩` from `hlines (fun _ => u') (Real.exp (-Real.exp 1)) (fun _ _ _ => hu') fun _ => hcp`. Conclude with `⟨u', fun _ => u', line, C₀, C₀, _, s1, r1, c1, heq, l1, l2, fun _ _ => ⟨p2, p1⟩⟩`. Take `⟨B, hB⟩` from `GlobalTheory.T.adapted_atlas_snc_section R.A L s m W hL hs snc hn`. Take `⟨C₆, hg⟩` from `GlobalTheory.T.adapted_atlas_smooth_potential_local n R.X R.A B L s nb m W hL hs snc hn hB u hsm fun x => by`. Take `⟨ψ, a, M, h, ht⟩` from `hT x`.
+
+Take `⟨V', c, h1, h2, h3, h4⟩` from `local_of_tame hn h ht`. Conclude with `⟨ψ, V', c, h.1, h1, h2, h3, fun x' a b => (h4 x' a b).2⟩`. Take `⟨m₁, -, -⟩` from `enlarging_constants_smooth_members n R.X R.A (potOf R (fsHerm J fun _ => 1)) L s nb m W hL hs snc hn (hA _ hfs) hΘ`. Establish `hsw'` using `m₁ _ _ _ _ (le_max_left C₅ C₆) hsw`. Take `⟨C, t₀, phT, r, c2⟩` from `hR R.A B _ L s m W (hA _ hfs) hΘ hL hs snc hn hB _ u _ hsw' (hg _ (le_max_right _ _))`.
+
+Establish `hthc` using `GlobalTheory.T.lift_system_real_structure hsys c hspec hcont hanal (fsHerm J d) (Cj.fs_conj d) (potOf R (fsHerm J d)) fun x => ⟨Set.univ, isOpen_univ, trivial, fun _ => 0, fun _ => analyticOnNhd_const, fun z _ => (sub_self _).trans Complex.zero_re.symm⟩`. Take `⟨C', t', r', c'⟩` from `GlobalTheory.T.conjugation_invariant_singular_potential n R.X R.A _ L s nb m W hL hs snc hn (hA _ hfs) hΘ c hcont hinv hanal (fun y => (hcb _ _ (hspec y)).1) (fun y => (hcb _ _ (hspec y)).2) _ u phT C t₀ hth hthc (fun y _ => huc _ _ (hspec y)) r c2`. Take `⟨line, l1, l2⟩` from `hlines (fun t y => (phT t y + phT t (c y)) / 2) t' (fun t h0 h1 => (r'.2.2 t h0 h1).1) fun t x => by rw [hinv, add_comm]`. Conclude with `⟨u, _, line, C₅, C', t', hsw, r', c', fun _ _ => rfl, l1, l2, fun h => absurd h hcen⟩`.
+-/
 theorem exists_member (hR : RegGlobalStatement) (R : AnLogRes P ⊤ n) (L : LocPot R.X) (s : R.X → R.X → ℂ) {nb : ℕ}
     (m : Fin nb → ℕ) (W : Fin nb → Set R.X) (hL : IsPotential R.A L) (hs : IsSection R.A L s)
     (snc : IsSNC R.A L s m W) (hn : ∀ y, logNormSec L s y ≤ 0)
@@ -132,6 +167,9 @@ theorem exists_member (hR : RegGlobalStatement) (R : AnLogRes P ⊤ n) (L : LocP
       fun t x => by rw [hinv, add_comm]
     exact ⟨u, _, line, C₅, C', t', hsw, r', c', fun _ _ => rfl, l1, l2, fun h => absurd h hcen⟩
 
+/- English proof (translation)
+Take `⟨hA, hfs, hΘ⟩` from `fs_pos_potential K J P n R`. Take `⟨m₁, m₂, -⟩` from `enlarging_constants_smooth_members n R.X R.A (potOf R (fsHerm J fun _ => 1)) L s nb m W hL hs snc hn (hA _ hfs) hΘ`. Take `⟨a1, a2, a3, a4, a5, a6, a7⟩` from `h`. Conclude with `⟨m₁ _ _ _ _ h₅ a1, m₂ _ _ _ _ _ _ _ hD hT0 hT hT1 a2 a1.1, a3, a4, a5, fun t h0 h1 => a6 t h0 (h1.trans hT), a7⟩`.
+-/
 theorem IsMember.mono {R : AnLogRes P ⊤ n} {L : LocPot R.X} {s : R.X → R.X → ℂ} {nb : ℕ}
     {m : Fin nb → ℕ} {W : Fin nb → Set R.X} (hL : IsPotential R.A L) (hs : IsSection R.A L s)
     (snc : IsSNC R.A L s m W) (hn : ∀ y, logNormSec L s y ≤ 0) {d : K → ℤ} {u : R.X → ℝ} {cen : Prop}
@@ -144,6 +182,15 @@ theorem IsMember.mono {R : AnLogRes P ⊤ n} {L : LocPot R.X} {s : R.X → R.X �
   obtain ⟨a1, a2, a3, a4, a5, a6, a7⟩ := h
   exact ⟨m₁ _ _ _ _ h₅ a1, m₂ _ _ _ _ _ _ _ hD hT0 hT hT1 a2 a1.1, a3, a4, a5, fun t h0 h1 => a6 t h0 (h1.trans hT), a7⟩
 
+/- English proof (translation)
+Take `⟨hA, hfs, hΘ⟩` from `fs_pos_potential K J P n R`. Establish `hfd : IsSmoothHerm (fsHerm J d)` using `StepW.fsHerm_isSmoothHerm K J d`. Take `⟨-, -, m₃⟩` from `enlarging_constants_smooth_members n R.X R.A (potOf R (fsHerm J fun _ => 1)) L s nb m W hL hs snc hn (hA _ hfs) hΘ`. Establish `hsm0 : R.A.Smooth (0 : R.X → ℝ)` using `fun jj => by show ContDiffOn ℝ _ (fun _ => (0 : ℝ)) _`. Conclude with `contDiffOn_const`.
+
+Establish `hpsh0 : IsPsh R.A (potOf R (fsHerm J d) + LocPot.ofFun (0 : R.X → ℝ))`. Introduce `x jj z hz w`. Establish `e1 : (potOf R (fsHerm J d) + LocPot.ofFun (0 : R.X → ℝ)).φ x ∘ (R.A.chart jj).symm = (potOf R (fsHerm J d)).φ x ∘ (R.A.chart jj).symm`. Use function extensionality and compare the values at `u`. Use `show (potOf R (fsHerm J d)).φ x _ + (0 : ℝ) = _`.
+
+Rewrite using `[add_zero]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Distinguish the cases in `hw : w = 0`. Rewrite using `[hw, levi_zero]`.
+
+Conclude with `(hd x jj z ⟨hz.1, hz.2.1⟩ w hw).le`. Take `⟨C₀, s0, r0, c0⟩` from `m₃ _ 0 (hA _ hfd) hsm0 hpsh0`. Conclude with `⟨C₀, C₀, _, s0, r0, c0, fun _ _ => rfl, fun _ => ⟨rfl, hfd, Cj.fs_conj d⟩, fun _ _ _ _ => (add_zero _).symm, False.elim⟩`.
+-/
 theorem member_zero (R : AnLogRes P ⊤ n) {L : LocPot R.X} {s : R.X → R.X → ℂ} {nb : ℕ}
     {m : Fin nb → ℕ} {W : Fin nb → Set R.X} (hL : IsPotential R.A L) (hs : IsSection R.A L s)
     (snc : IsSNC R.A L s m W) (hn : ∀ y, logNormSec L s y ≤ 0) (d : K → ℤ)
@@ -172,6 +219,11 @@ theorem member_zero (R : AnLogRes P ⊤ n) {L : LocPot R.X} {s : R.X → R.X →
   exact ⟨C₀, C₀, _, s0, r0, c0, fun _ _ => rfl, fun _ => ⟨rfl, hfd, Cj.fs_conj d⟩,
     fun _ _ _ _ => (add_zero _).symm, False.elim⟩
 
+/- English proof (translation)
+Use `choose C₅ C t₀ hm using h`. Take `⟨D₅, hD₅⟩` from `FA.common_bound C₅`. Take `⟨D, hD⟩` from `FA.common_bound fun a => |C a|`. Take `⟨T, hT0, hT⟩` from `FA.common_scale (fun o : Option σ => o.elim (Real.exp (-1)) t₀) (by`. Introduce and unpack `(_ | p)`.
+
+Conclude with `Real.exp_pos _`. Conclude with `(hm p).2.1.1)`. Conclude with `⟨D₅, D, T, fun a => (hm a).mono hL hs snc hn (hD₅ a) (hD a) hT0 (hT (some a)) (hT none)⟩`.
+-/
 theorem common_members {σ : Type} [Finite σ] {R : AnLogRes P ⊤ n} {L : LocPot R.X} {s : R.X → R.X → ℂ} {nb : ℕ}
     {m : Fin nb → ℕ} {W : Fin nb → Set R.X} (hL : IsPotential R.A L) (hs : IsSection R.A L s)
     (snc : IsSNC R.A L s m W) (hn : ∀ y, logNormSec L s y ≤ 0) {d : σ → K → ℤ} {u : σ → R.X → ℝ} {cen : σ → Prop}

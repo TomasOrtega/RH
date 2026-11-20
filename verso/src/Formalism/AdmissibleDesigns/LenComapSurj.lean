@@ -13,6 +13,13 @@ open Formalism.MainNotions.N.KHf Formalism.WeaklyAdmissibleFiltrations Module
 
 section Len
 
+/- English proof (translation)
+Set `q : ↥(Q.comap f) →ₗ[O] ↥Q ⧸ P.comap Q.subtype` to `(P.comap Q.subtype).mkQ ∘ₗ LinearMap.codRestrict Q (f ∘ₗ (Q.comap f).subtype) (fun x => x.2)`. Establish `hq : Function.Surjective q`. Introduce `y`. Take `⟨⟨b, hb⟩, rfl⟩` from `Submodule.mkQ_surjective _ y`. Take `⟨a, rfl⟩` from `hf b`.
+
+Conclude with `⟨⟨a, hb⟩, rfl⟩`. Establish `hk : LinearMap.ker q = (P.comap f).comap (Q.comap f).subtype`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `Submodule.Quotient.mk_eq_zero _`.
+
+Conclude with `((Submodule.quotEquivOfEq _ _ hk.symm).trans (q.quotKerEquivOfSurjective hq)).length_eq`.
+-/
 theorem len_comap_surj {O A B : Type} [CommRing O] [AddCommGroup A] [Module O A] [AddCommGroup B] [Module O B]
     (f : A →ₗ[O] B) (hf : Function.Surjective f) (Q P : Submodule O B) :
     Module.length O (↥(Q.comap f) ⧸ (P.comap f).comap (Q.comap f).subtype) =
@@ -42,6 +49,11 @@ def resQ : ↥Q →ₛₗ[(e : R →+* S)] ↥Q' where
   map_smul' c a := Subtype.ext (Ψ.map_smulₛₗ c (a : M))
 
 include hinj in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Establish `h' : Ψ (a : M) = Ψ (b : M)` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (hinj h')`. Introduce and unpack `⟨y, hy⟩`.
+
+Take `⟨x, hx, rfl⟩` from `(hQ y).1 hy`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+-/
 theorem resQ_bij : Function.Bijective (resQ e Ψ Q Q' hQ) := by
   constructor
   · intro a b h
@@ -57,10 +69,22 @@ def resQE : ↥Q ≃ₛₗ[(e : R →+* S)] ↥Q' :=
   LinearEquiv.ofBijective (resQ e Ψ Q Q' hQ) (resQ_bij e Ψ hinj Q Q' hQ)
 
 include hinj hQ in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resQE_apply (x : ↥Q) : ((resQE e Ψ hinj Q Q' hQ x : ↥Q') : N) = Ψ (x : M) := rfl
 
 include hinj hQ hP in
 
+/- English proof (translation)
+Take `⟨E, hE⟩ : ∃ E : ↥Q ≃ₛₗ[(e : R →+* S)] ↥Q', ∀ x, ((E x : ↥Q') : N) = Ψ (x : M)` from `⟨resQE e Ψ hinj Q Q' hQ, resQE_apply e Ψ hinj Q Q' hQ⟩`. Establish `hmap : (P.comap Q.subtype).map (E : ↥Q →ₛₗ[(e : R →+* S)] ↥Q') = P'.comap Q'.subtype`. Use extensionality with `y`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.coe_subtype, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[hE]`. Conclude with `(hP x x.2).1 hx`. Introduce `hy`. Take `⟨x, rfl⟩` from `E.surjective y`.
+
+Rewrite `hy` using `[hE]`. Conclude with `⟨x, (hP x x.2).2 hy, rfl⟩`. Set `F` to `Submodule.Quotient.equiv (P.comap Q.subtype) (P'.comap Q'.subtype) E hmap`. Establish `h1` using `Order.height_orderIso (Submodule.orderIsoMapComap F) ⊤`. Rewrite `h1` using `[OrderIso.map_top]`.
+
+Rewrite using `[Module.length_eq_height, Module.length_eq_height]`. Conclude with `h1.symm`.
+-/
 theorem len_semi :
     Module.length R (↥Q ⧸ P.comap Q.subtype) = Module.length S (↥Q' ⧸ P'.comap Q'.subtype) := by
   obtain ⟨E, hE⟩ : ∃ E : ↥Q ≃ₛₗ[(e : R →+* S)] ↥Q', ∀ x, ((E x : ↥Q') : N) = Ψ (x : M) :=
@@ -115,6 +139,9 @@ def rowLenD (w : ℕ) : ℕ∞ :=
   Module.length (D.nd.O i) (↥(Fs i dc VT VT' Dat w) ⧸
     (imRow i dc VT VT' Dat ρ₁ π vD hpD heD w).comap (Fs i dc VT VT' Dat w).subtype)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ = Br.toLLK (D.nbr i _ hn) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) a)`. Rewrite using `[Br.toLLK, IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression.
+-/
 theorem heO_br {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) (a : D.nd.O i) :
     algebraMap (Br.Ow (D.nbr i _ hn)) (Br.LLw (D.nbr i _ hn)) ((D.nbr i _ hn).eO a) =
       eK (D.nbr i _ hn) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) a) := by

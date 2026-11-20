@@ -11,10 +11,24 @@ noncomputable section
 
 namespace GlobalTheory.FlagCls
 
+/- English proof (translation)
+Introduce `h` and use `by exact IsTotallyComplex.complexEmbedding_not_isReal (tauEmb D ρ) (ComplexEmbedding.isReal_iff.2 h.symm)`.
+-/
 theorem tauEmb_ne_conjugate (D : D7) (ρ : D.what₂.Tau) :
     tauEmb D ρ ≠ ComplexEmbedding.conjugate (tauEmb D ρ) := fun h => by
   exact IsTotallyComplex.complexEmbedding_not_isReal (tauEmb D ρ) (ComplexEmbedding.isReal_iff.2 h.symm)
 
+/- English proof (translation)
+Introduce `D`. Establish `hb : Function.Bijective fun ρ => InfinitePlace.mk (tauEmb D ρ)` using `GlobalTheory.VolRatioCheck.place_bijective D`. Establish `hT : ∀ ρ, embB D (ρ, true) = tauEmb D ρ` using `fun _ => rfl`. Establish `hF : ∀ ρ, embB D (ρ, false) = ComplexEmbedding.conjugate (tauEmb D ρ)` using `fun _ => rfl`. Establish `hm : ∀ a, InfinitePlace.mk (embB D a) = InfinitePlace.mk (tauEmb D a.1)`.
+
+Introduce and unpack `⟨ρ, _ | _⟩`. Rewrite using `[hF, InfinitePlace.mk_conjugate_eq]`. Rewrite using `[hT]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, s⟩ ⟨b, t⟩ h`.
+
+Establish `hab : a = b` using `hb.1 ((hm (a, s)).symm.trans ((congrArg InfinitePlace.mk h).trans (hm (b, t))))`. Substitute `hab` using the available equality. Apply the tactic sequence `cases s <;> cases t`. Both sides reduce to the same expression. Rewrite `h` using `[hF, hT]`.
+
+Conclude with `(tauEmb_ne_conjugate D a h.symm).elim`. Rewrite `h` using `[hF, hT]`. Conclude with `(tauEmb_ne_conjugate D a h).elim`. Both sides reduce to the same expression. Introduce `φ`.
+
+Take `⟨ρ, hρ⟩` from `hb.2 (InfinitePlace.mk φ)`. Break down `InfinitePlace.mk_eq_iff.1 hρ with h | h` into its components or cases. Conclude with `⟨(ρ, true), h⟩`. Conclude with `⟨(ρ, false), h⟩`.
+-/
 theorem embB_bijective : ∀ D : D7, Function.Bijective (embB D) := by
   intro D
   have hb : Function.Bijective fun ρ => InfinitePlace.mk (tauEmb D ρ) := GlobalTheory.VolRatioCheck.place_bijective D

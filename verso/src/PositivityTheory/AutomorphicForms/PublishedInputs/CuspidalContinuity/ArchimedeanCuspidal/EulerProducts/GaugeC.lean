@@ -13,8 +13,14 @@ def uF (v : Pl) : (𝔸[ℚ])ˣ →* (Qv v)ˣ := Units.map (Reduction.finEval v)
 
 def uR : (𝔸[ℚ])ˣ →* ℝˣ := Units.map (eR.toRingHom.comp (Reduction.infEval wR)).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_uF (v : Pl) (a : (𝔸[ℚ])ˣ) : ((uF v a : (Qv v)ˣ) : Qv v) = (a : 𝔸[ℚ]).2 v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_uR (a : (𝔸[ℚ])ˣ) : ((uR a : ℝˣ) : ℝ) = eR ((a : 𝔸[ℚ]).1 wR) := rfl
 
 end Ad3.GP

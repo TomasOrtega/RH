@@ -35,12 +35,26 @@ def PullbackSmoothOfDimLT (n : ℕ) (L : PrincipalizationAssignment.{u}) : Prop 
         IsPullbackBlowupSequence h (L ((T.pullbackAlong Y q h).withBoundary E')).toSequenceOfBlowups
           (L T).toSequenceOfBlowups
 
+/- English proof (translation)
+Introduce `T hV hdim Y q h hsm hq E' hBE hV' hdim'`. Use `hsm` as an intermediate fact. Conclude with `hL.smooth_pullback T hV hdim Y q h hq E' hBE hV' hdim'`.
+-/
 theorem pullbackSmoothOfDimLT_of_isMaxOrderReduction (n : ℕ) (L O : PrincipalizationAssignment.{u})
     (hL : IsMaxOrderReduction (fun d => d < n) L O) : PullbackSmoothOfDimLT n L := by
   intro T hV hdim Y q h hsm hq E' hBE hV' hdim'
   have := hsm
   exact hL.smooth_pullback T hV hdim Y q h hq E' hBE hV' hdim'
 
+/- English proof (translation)
+Unfold `IsPullbackBlowupSequence`. Use `⟨fun _ => 0, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Consider the cases of `i with`. Consider the case `zero => exact B'.isoZero ≪≫ (asIso (Limits.pullback.fst φ (B.projectionToBase 0))).symm`.
+
+Consider the case `succ k => exact absurd hi (by rw [hB']; exact Nat.not_succ_le_zero k)`. Introduce `i hi`. Rewrite `hi` using `[hB']`. Conclude with `absurd hi (Nat.not_lt_zero i)`. Introduce `i k hk hik`.
+
+Rewrite `hk` using `[hB']`. Conclude with `absurd hik (by omega)`. Conclude with `hB.symm`. Introduce `i hi`. Rewrite `hi` using `[hB]`.
+
+Conclude with `absurd hi (Nat.not_lt_zero i)`. Introduce and unpack `(_ | k) hi`. Use `show (B'.isoZero ≪≫ (asIso (Limits.pullback.fst φ (B.projectionToBase 0))).symm).hom ≫ Limits.pullback.fst φ (B.projectionToBase 0) = B'.projectionToBase 0`. Simplify using `[SequenceOfBlowups.projectionToBase_zero]`. Conclude with `absurd hi (by rw [hB']; exact Nat.not_succ_le_zero k)`.
+
+Introduce `i hi _`. Conclude with `absurd hi (by rw [hB']; exact Nat.not_lt_zero i)`. Introduce `i hi`. Conclude with `absurd hi (by rw [hB']; exact Nat.not_lt_zero i)`.
+-/
 theorem isPullbackSequenceOfBlowups_of_length_eq_zero (X X' : Scheme.{u}) (φ : X' ⟶ X) (B' : SequenceOfBlowups X')
     (B : SequenceOfBlowups X) (hB' : B'.length = 0) (hB : B.length = 0) : IsPullbackBlowupSequence φ B' B := by
   unfold IsPullbackBlowupSequence
@@ -69,6 +83,17 @@ theorem isPullbackSequenceOfBlowups_of_length_eq_zero (X X' : Scheme.{u}) (φ : 
   · intro i hi
     exact absurd hi (by rw [hB']; exact Nat.not_lt_zero i)
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `i h`. Establish `hi : i = 0` using `Nat.le_zero.mp h`.
+
+Substitute `hi` using the available equality. Conclude with `(SequenceOfBlowups.transitionMap_self _ h).trans (SequenceOfBlowups.transitionMap_self s h).symm`. Consider the case `succ k ih`. Introduce `i h`. Break down `Nat.eq_or_lt_of_le h with heq | hlt` into its components or cases.
+
+Substitute `heq` using the available equality. Conclude with `(SequenceOfBlowups.transitionMap_self _ h).trans (SequenceOfBlowups.transitionMap_self s h).symm`. Establish `hik : i ≤ k` using `Nat.lt_succ_iff.mp hlt`. Establish `hb : (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.transitionMap (Nat.le_succ k) = s.transitionMap (Nat.le_succ k)`. Establish `e1 : (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.transitionMapSucc k = s.transitionMapSucc k` using `(BlowupSequenceData.toSequenceOfBlowups_blowupMorphism (BlowupSequenceData.ofSequenceOfBlowups s) k).trans (BlowupSequenceData.ofSequenceOfBlowups_blowupMorphism s k)`.
+
+Conclude with `((SequenceOfBlowups.blowupMorphism_eq_transitionMap _ k).symm.trans e1).trans (SequenceOfBlowups.blowupMorphism_eq_transitionMap s k)`. Establish `E1 : (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.transitionMap h = (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.transitionMap (Nat.le_succ k) ≫ (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.transitionMap hik` using `(SequenceOfBlowups.transitionMap_trans _ hik (Nat.le_succ k)).symm`. Establish `E2 : s.transitionMap h = s.transitionMap (Nat.le_succ k) ≫ s.transitionMap hik` using `(SequenceOfBlowups.transitionMap_trans s hik (Nat.le_succ k)).symm`. Establish `c1` using `congrArg (fun g => g ≫ (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.transitionMap hik) hb`. Establish `c2` using `congrArg (fun g => s.transitionMap (Nat.le_succ k) ≫ g) (ih i hik)`.
+
+Conclude with `E1.trans ((c1.trans c2).trans E2.symm)`.
+-/
 private theorem forall_ofSequenceOfBlowups_transitionMap_eq {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     ∀ (j i : ℕ) (h : i ≤ j), (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.transitionMap h = s.transitionMap h := by
   intro j
@@ -99,10 +124,20 @@ private theorem forall_ofSequenceOfBlowups_transitionMap_eq {X : Scheme.{u}} (s 
       have c2 := congrArg (fun g => s.transitionMap (Nat.le_succ k) ≫ g) (ih i hik)
       exact E1.trans ((c1.trans c2).trans E2.symm)
 
+/- English proof (translation)
+The claim follows from `forall_ofSequenceOfBlowups_transitionMap_eq s j i h`.
+-/
 private theorem ofSequenceOfBlowups_transitionMap {X : Scheme.{u}} (s : SequenceOfBlowups X) {i j : ℕ} (h : i ≤ j) :
     (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.transitionMap h = s.transitionMap h :=
   forall_ofSequenceOfBlowups_transitionMap_eq s j i h
 
+/- English proof (translation)
+Use `CategoryTheory.Functor.ext (fun _ => rfl) ?_` and prove the remaining obligations. Introduce `a b f`. Establish `hf : (homOfLE (leOfHom f.unop)).op = f` using `congrArg (fun g => Quiver.Hom.op g) (homOfLE_leOfHom f.unop)`. Establish `h1 : (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.tower.map f = (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.transitionMap (leOfHom f.unop)`. Rewrite using `[SequenceOfBlowups.transitionMap_def, hf]`.
+
+Establish `h2 : s.tower.map f = s.transitionMap (leOfHom f.unop)`. Rewrite using `[SequenceOfBlowups.transitionMap_def, hf]`. Establish `key : (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.tower.map f = s.tower.map f` using `h1.trans ((ofSequenceOfBlowups_transitionMap s (leOfHom f.unop)).trans h2.symm)`. Establish `hid : s.tower.map f = 𝟙 (s.tower.obj a) ≫ s.tower.map f ≫ 𝟙 (s.tower.obj b)`. Simplify using the standard rewrite rules.
+
+Conclude with `key.trans hid`.
+-/
 private theorem ofSequenceOfBlowups_tower {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.tower = s.tower := by
   refine CategoryTheory.Functor.ext (fun _ => rfl) ?_
@@ -121,6 +156,13 @@ private theorem ofSequenceOfBlowups_tower {X : Scheme.{u}} (s : SequenceOfBlowup
     simp
   exact key.trans hid
 
+/- English proof (translation)
+Take `⟨l₁, F, i₁, c₁, b₁⟩` from `s`. Take `⟨l₂, G, i₂, c₂, b₂⟩` from `t`. Establish `hl' : l₁ = l₂` using `hl`. Establish `ht' : F = G` using `ht`. Substitute `hl'` using the available equality.
+
+Substitute `ht'` using the available equality. Establish `hiso' : HEq i₁ i₂` using `hiso`. Establish `hc' : HEq c₁ c₂` using `hc`. Take `rfl` from `eq_of_heq hiso'`. Take `rfl` from `eq_of_heq hc'`.
+
+Both sides reduce to the same expression.
+-/
 private theorem sequenceOfBlowups_eq_of_tower_eq {X : Scheme.{u}} (s t : SequenceOfBlowups X)
     (ht : s.tower = t.tower) (hl : s.length = t.length)
     (hiso : HEq s.isoZero t.isoZero) (hc : HEq s.center t.center) : s = t := by
@@ -136,10 +178,16 @@ private theorem sequenceOfBlowups_eq_of_tower_eq {X : Scheme.{u}} (s t : Sequenc
   obtain rfl := eq_of_heq hc'
   rfl
 
+/- English proof (translation)
+The claim follows from `sequenceOfBlowups_eq_of_tower_eq _ _ (ofSequenceOfBlowups_tower s) rfl (HEq.refl _) (HEq.refl _)`.
+-/
 private theorem ofSequenceOfBlowups_toSequenceOfBlowups {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups = s :=
   sequenceOfBlowups_eq_of_tower_eq _ _ (ofSequenceOfBlowups_tower s) rfl (HEq.refl _) (HEq.refl _)
 
+/- English proof (translation)
+Establish `hA : (MarkedBlowupSequenceData.ofMarkedSequence sA).toBlowupSequenceData.toSequenceOfBlowups = sA.toSequenceOfBlowups` using `ofSequenceOfBlowups_toSequenceOfBlowups _`. Establish `hB : (MarkedBlowupSequenceData.ofMarkedSequence sB).toBlowupSequenceData.toSequenceOfBlowups = sB.toSequenceOfBlowups` using `ofSequenceOfBlowups_toSequenceOfBlowups _`. Rewrite using `[hA, hB]`. Conclude with `hs`.
+-/
 theorem isPullbackBlowupSequence_ofMarkedSequence (A B : MarkedIdealWithBoundary.{u})
     (φ : A.scheme ⟶ B.scheme) (sA : A.SequenceOfBlowups) (sB : B.SequenceOfBlowups)
     (hs : IsPullbackBlowupSequence φ sA.toSequenceOfBlowups sB.toSequenceOfBlowups) :
@@ -152,12 +200,18 @@ theorem isPullbackBlowupSequence_ofMarkedSequence (A B : MarkedIdealWithBoundary
   rw [hA, hB]
   exact hs
 
+/- English proof (translation)
+Rewrite using `[hI]`.
+-/
 private theorem markedIdealWithBoundary_mk_ideal_congr {k : Type u} [inst : Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {m : ℕ} {E : List X.IdealSheafData}
     {I₁ I₂ : X.IdealSheafData} (hI : I₁ = I₂) :
     (@MarkedIdealWithBoundary.mk k inst X p I₁ m E) = (@MarkedIdealWithBoundary.mk k inst X p I₂ m E) := by
   rw [hI]
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Establish `hee : φ = φ'` using `eq_of_heq hφ`. Substitute `hee` using the available equality. Conclude with `hpb`.
+-/
 private theorem isPullbackSequenceOfBlowups_apply_congr (L : PrincipalizationAssignment.{u})
     {X : Scheme.{u}} (B : SequenceOfBlowups X) (S S' : MarkedIdealWithBoundary.{u}) (hS : S = S')
     (φ : S.scheme ⟶ X) (φ' : S'.scheme ⟶ X) (hφ : HEq φ φ')
@@ -168,6 +222,17 @@ private theorem isPullbackSequenceOfBlowups_apply_congr (L : PrincipalizationAss
   subst hee
   exact hpb
 
+/- English proof (translation)
+Use `hsm` as an intermediate fact. Establish `hsm0 : AlgebraicGeometry.Smooth (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD)` using `hbc.smooth_of_isPullback T.scheme Y (T.boundary.get ⟨j, hj⟩).subscheme (E'.get ⟨j, hjE⟩).subscheme (T.boundary.get ⟨j, hj⟩).subschemeι (E'.get ⟨j, hjE⟩).subschemeι h (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD) ((hbc.isPullback_inducedHom T.scheme Y …`. Establish `hic : (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD) ≫ (T.boundary.get ⟨j, hj⟩).subschemeι = (E'.get ⟨j, hjE⟩).subschemeι ≫ h` using `DivisorReduction.subschemeMapOfComap_comp h (T.boundary.get ⟨j, hj⟩) (E'.get ⟨j, hjE⟩) hD`. Establish `a1 : (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD) ≫ ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap) = ((DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD) ≫ (T.boundary.get ⟨j, hj⟩).subschemeι) ≫ T.structMap` using `(Category.assoc _ _ _).symm`. Establish `a2 : ((DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD) ≫ (T.boundary.get ⟨j, hj⟩).subschemeι) ≫ T.structMap = ((E'.get ⟨j, hjE⟩).subschemeι ≫ h) ≫ T.structMap` using `congrArg (fun g => g ≫ T.structMap) hic`.
+
+Establish `a3 : ((E'.get ⟨j, hjE⟩).subschemeι ≫ h) ≫ T.structMap = (E'.get ⟨j, hjE⟩).subschemeι ≫ (h ≫ T.structMap)` using `Category.assoc _ _ _`. Establish `a4 : (E'.get ⟨j, hjE⟩).subschemeι ≫ (h ≫ T.structMap) = (E'.get ⟨j, hjE⟩).subschemeι ≫ q` using `congrArg (fun g => (E'.get ⟨j, hjE⟩).subschemeι ≫ g) hq`. Establish `hq₀ : (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD) ≫ (DivisorReduction.restrictToBoundaryDivisor T j hj I₀ E₀).structMap = (E'.get ⟨j, hjE⟩).subschemeι ≫ q` using `a1.trans (a2.trans (a3.trans a4))`. Establish `hIdeal : ((DivisorReduction.restrictToBoundaryDivisor T j hj I₀ E₀).ideal).comap (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD) = I₀'.comap (E'.get ⟨j, hjE⟩).subschemeι`. Rewrite using `[hI]`.
+
+Conclude with `DivisorReduction.comap_subschemeMapOfComap h (T.boundary.get ⟨j, hj⟩) (E'.get ⟨j, hjE⟩) hD I₀`. Establish `heq : (((DivisorReduction.restrictToBoundaryDivisor T j hj I₀ E₀).pullbackAlong (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ q) (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD)).withBoundary (List.map (fun D => D.comap (E'.get ⟨j, hjE⟩).s …` using `markedIdealWithBoundary_mk_ideal_congr hIdeal`. Establish `hBE₀ : MarkedIdealWithBoundary.SameNontrivialBoundary (((DivisorReduction.restrictToBoundaryDivisor T j hj I₀ E₀).pullbackAlong (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ q) (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD)).boundary) (L …` using `(DivisorReduction.sameNontrivialBoundary_comap_subschemeι h (T.boundary.get ⟨j, hj⟩) (E'.get ⟨j, hjE⟩) hD (List.take (T.boundary.length - 1) (E₀.eraseIdx j)) (List.take (E'.length - 1) (E₀'.eraseIdx j)) hEq).symm`. Establish `hV₀ : ((((DivisorReduction.restrictToBoundaryDivisor T j hj I₀ E₀).pullbackAlong (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ q) (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD)).withBoundary (List.map (fun D => D.comap (E'.get ⟨j, hjE⟩). …`. Rewrite using `[heq]`.
+
+Conclude with `hVS'`. Establish `hd₀ : ((((DivisorReduction.restrictToBoundaryDivisor T j hj I₀ E₀).pullbackAlong (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ q) (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD)).withBoundary (List.map (fun D => D.comap (E'.get ⟨j, hjE⟩). …`. Rewrite using `[heq]`. Conclude with `hdS'`. Establish `hmain` using `hL (DivisorReduction.restrictToBoundaryDivisor T j hj I₀ E₀) hadmissible hdS (E'.get ⟨j, hjE⟩).subscheme ((E'.get ⟨j, hjE⟩).subschemeι ≫ q) (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD) hq₀ (List.map (fun D => D.comap (E'.get ⟨j, hjE⟩).subschemeι) (L …`.
+
+Conclude with `isPullbackSequenceOfBlowups_apply_congr L (L (DivisorReduction.restrictToBoundaryDivisor T j hj I₀ E₀)).toSequenceOfBlowups _ _ heq _ _ (HEq.refl (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD)) hmain`.
+-/
 private theorem isPullbackBlowupSequence_restrictToBoundaryDivisor (n : ℕ) (L : PrincipalizationAssignment.{u})
     (hL : PullbackSmoothOfDimLT n L) (hbc : DivisorReduction.SmoothPullbackCompatibility.{u})
     (T : MarkedIdealWithBoundary.{u}) (j : ℕ) (hj : j < T.boundary.length)
@@ -264,6 +329,15 @@ private theorem isPullbackBlowupSequence_restrictToBoundaryDivisor (n : ℕ) (L 
     (L (DivisorReduction.restrictToBoundaryDivisor T j hj I₀ E₀)).toSequenceOfBlowups _ _ heq _ _
     (HEq.refl (DivisorReduction.divisorPullbackMap T j hj I₀ E₀ Y h (E'.get ⟨j, hjE⟩) hD)) hmain
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T hV hdim hO hbal hj hcs Y q h hsm hq E' hBE htake hV' hdim' hO' hDB' hjE hcs' hZ hZc hZ'`. Use `hsm` as an intermediate fact. Establish `hIc : DivisorReduction.lowerIdealWithoutBlowup ((T.pullbackAlong Y q h).withBoundary E') = (DivisorReduction.lowerIdealAfterBlowup T j hj).comap h`. Rewrite using `[DivisorReduction.lowerIdealWithoutBlowup_withBoundary T Y q h E']`.
+
+Conclude with `(hdt.lowerIdealPre_comap_eq_lowerIdealTop_comap T hV hO j hj Y h hZc).symm`. Establish `hEc : MarkedIdealWithBoundary.SameNontrivialBoundary (List.take (E'.length - 1) ((DivisorReduction.lowerBoundaryWithoutBlowup ((T.pullbackAlong Y q h).withBoundary E')).eraseIdx j)) (List.map (fun D => D.comap h) (List.take (T.boundary.length - 1) ((DivisorReduction.lowerBoundary …` using `(DivisorReduction.sameNontrivialBoundary_lowerBoundaryWithoutBlowup T j hj Y q h E' hBE htake hjE).trans (hdt.boundaryEquiv_restrictedBoundary_comap_of_center_comap_eq_top T hV j hj Y h hZc).symm`. Conclude with `isPullbackBlowupSequence_restrictToBoundaryDivisor n L hL hbc T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) Y q h hsm hq E' hjE (DivisorReduction.get_eq_comap_get_boundary T j hj Y q h E' hjE htake) (DivisorReduction.low …`. Introduce `T hV hdim hO hbal hj hcs Y q h hsm hq E' hBE htake hV' hdim' hO' hDB' hjE hcs' hZ hZ'`. Use `hsm` as an intermediate fact.
+
+Conclude with `isPullbackBlowupSequence_restrictToBoundaryDivisor n L hL hbc T j hj (DivisorReduction.lowerIdealWithoutBlowup T) (DivisorReduction.lowerBoundaryWithoutBlowup T) Y q h hsm hq E' hjE (DivisorReduction.get_eq_comap_get_boundary T j hj Y q h E' hjE htake) (DivisorReduction.lowerIdea …`. Introduce `T hV hdim hO hbal hj hcs Y q h hsm hq E' hBE htake hV' hdim' hO' hDB' hjE hcs' hZ hZc hZ'`. Use `hsm` as an intermediate fact. Establish `hZ'' : DivisorReduction.containedComponentsIdeal ((T.pullbackAlong Y q h).withBoundary E') j hjE ≠ ⊤`. Rewrite using `[hZ']`.
+
+Conclude with `hZc`. Conclude with `isPullbackBlowupSequence_restrictToBoundaryDivisor n L hL hbc T j hj (DivisorReduction.lowerIdealAfterBlowup T j hj) (DivisorReduction.lowerBoundaryAfterBlowup T j hj) Y q h hsm hq E' hjE (DivisorReduction.get_eq_comap_get_boundary T j hj Y q h E' hjE htake) (DivisorReduction.low …`.
+-/
 theorem restrictedSmoothPullback_of_pullbackSmoothOfDimLT
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -339,6 +413,9 @@ theorem restrictedSmoothPullback_of_pullbackSmoothOfDimLT
         (DivisorReduction.lowerIdealAfterBlowup ((T.pullbackAlong Y q h).withBoundary E') j hjE)
         (DivisorReduction.lowerBoundaryAfterBlowup ((T.pullbackAlong Y q h).withBoundary E') j hjE)) hdim')
 
+/- English proof (translation)
+The claim follows from `restrictedSmoothPullback_of_pullbackSmoothOfDimLT hres hfacts hbc hdt n L j (pullbackSmoothOfDimLT_of_isMaxOrderReduction n L O hL)`.
+-/
 theorem restrictedSmoothPullback_of_isMaxOrderReduction
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian)
@@ -349,6 +426,9 @@ theorem restrictedSmoothPullback_of_isMaxOrderReduction
   restrictedSmoothPullback_of_pullbackSmoothOfDimLT hres hfacts hbc hdt n L j
     (pullbackSmoothOfDimLT_of_isMaxOrderReduction n L O hL)
 
+/- English proof (translation)
+The claim follows from `{ isPullbackSeq_of_coSupport_empty := hdel isPullbackSeq_of_length_eq_zero := fun X X' φ B' B hB' hB => isPullbackSequenceOfBlowups_of_length_eq_zero X X' φ B' B hB' hB isPullbackSeq_ofMarkedSeq := fun A B φ sA sB hs => isPullbackBlowupSequence_ofMarkedSequence A B φ sA sB hs }`.
+-/
 theorem pullbackOfEmptySequence_of_isPullbackSequenceOfBlowups (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (L : PrincipalizationAssignment.{u}) (j : ℕ)
     (hdel : ∀ (T : MarkedIdealWithBoundary.{u}) (_hV : T.IsAdmissible) (_hj : j < T.boundary.length)

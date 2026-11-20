@@ -10,6 +10,19 @@ set_option autoImplicit false
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `R k _ _ σ hσ X s X₀ s₀ ψ w`. Set `e : R ≃+* k` to `RingEquiv.ofBijective σ hσ`. Set `τ : k →+* R` to `e.symm.toRingHom`. Establish `hστ : ∀ r, σ (τ r) = r` using `fun r => e.apply_symm_apply r`. Establish `hτσ : ∀ r, τ (σ r) = r` using `fun r => e.symm_apply_apply r`.
+
+Establish `c1 : spMap τ ≫ spMap σ = 𝟙 (Sp R)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: σ.comp τ = RingHom.id k` using `RingHom.ext hστ`. Establish `: τ.comp σ = RingHom.id R` using `RingHom.ext hτσ`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Establish `c2 : spMap σ ≫ spMap τ = 𝟙 (Sp k)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: σ.comp τ = RingHom.id k` using `RingHom.ext hστ`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Set `l : X ⟶ X₀` to `w.lift (𝟙 X) (s ≫ spMap τ) (by rw [Category.id_comp, Category.assoc, c1, Category.comp_id])`. Establish `hl1 : l ≫ ψ = 𝟙 X` using `w.lift_fst _ _ _`. Establish `hl2 : l ≫ s₀ = s ≫ spMap τ` using `w.lift_snd _ _ _`. Establish `hl3 : ψ ≫ l = 𝟙 X₀`.
+
+Apply `w.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hl1, Category.comp_id, Category.id_comp]`. Rewrite using `[Category.assoc, hl2, ← Category.assoc, w.w, Category.assoc, c2, Category.comp_id, Category.id_comp]`. Take `⟨hcomp, -, hid⟩` from `GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id`. Introduce `b`.
+
+Use `⟨pullHO1 hl2 b, ?_⟩` and prove the remaining obligations. Use `(hcomp k R X₀ X s₀ s τ l hl2 k X₀ s₀ σ ψ w.w (RingHom.id k) (𝟙 (Over.mk s₀) : Over.mk s₀ ⟶ Over.mk s₀).left (ovw (𝟙 (Over.mk s₀))) (by simp [hl3]) (fun r => (hστ r).symm)).1 b` as an intermediate fact. Rewrite using `[this]`. Conclude with `(hid k (Over.mk s₀)).1 b`.
+-/
 theorem pullHO1_surjective_of_bijective : ∀ (R k : Type) [CommRing R] [CommRing k] (σ : R →+* k), Function.Bijective σ → ∀ (X : Scheme.{0}) (s : X ⟶ Sp R) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp k) (ψ : X₀ ⟶ X) (w : IsPullback ψ s₀ s (spMap σ)), Function.Surjective (pullHO1 w.w) := by
   intro R k _ _ σ hσ X s X₀ s₀ ψ w
   let e : R ≃+* k := RingEquiv.ofBijective σ hσ

@@ -49,6 +49,11 @@ end Steps
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
+/- English proof (translation)
+Establish `he` using `congrArg g.e hx`. Rewrite `he` using `[e_cj]`. Establish `h12 : (g.e x).1 = (g.e x).2` using `(congrArg Prod.fst he).symm`. Establish `hne : (g.e x).1 ≠ 0`. Introduce `h1`.
+
+Apply `h0` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `Prod.ext h1 (h12 ▸ h1)`. Conclude with `isUnit_of_comp g hne (h12 ▸ hne)`.
+-/
 theorem isUnit_of_cj_fixed {M : Model F E} (g : SplitG M.L) {x : E} (hx : M.L.cj x = x) (h0 : x ≠ 0) :
     IsUnit x := by
   have he := congrArg g.e hx
@@ -62,6 +67,9 @@ theorem isUnit_of_cj_fixed {M : Model F E} (g : SplitG M.L) {x : E} (hx : M.L.cj
     exact Prod.ext h1 (h12 ▸ h1)
   exact isUnit_of_comp g hne (h12 ▸ hne)
 
+/- English proof (translation)
+Establish `crel : M.L.cj a * M.L.cj B = M.L.cj b * M.L.cj A`. Rewrite using `[← map_mul, ← map_mul, rel]`. Take the linear combination `(c * M.L.cj b * M.L.cj A) * rel + (c * a * B) * crel`.
+-/
 theorem gdet_rel {M : Model F E} (A a B b c : E) (rel : a * B = b * A) :
     (B * M.L.cj B - c * (b * M.L.cj b)) * (A * M.L.cj A) =
       (B * M.L.cj B) * (A * M.L.cj A - c * (a * M.L.cj a)) := by

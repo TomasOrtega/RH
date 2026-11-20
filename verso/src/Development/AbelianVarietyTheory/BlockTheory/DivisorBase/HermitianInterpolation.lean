@@ -101,6 +101,11 @@ def InterpCurvBound : Prop :=
       (H₀ H : (ι → ℂ) → Matrix n n ℂ) (r : (ι → ℂ) → ℝ) (G : (ι → ℂ) → Matrix ι ι ℂ),
       IsData Cμ C₀ C₂ C₃ CP U H₀ H r G → Conclusion Cμ κ χ C U H₀ H r G
 
+/- English proof (translation)
+Establish `h : ContDiff ℝ ∞ fun y : ℝ => Real.smoothTransition (3 - y)` using `Real.smoothTransition.contDiff.comp (contDiff_const.sub contDiff_id)`. Use `⟨(h.pow 2).contDiffOn, fun y _ => ⟨sq_nonneg _, ?_⟩, fun y hy => ?_, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Conclude with `pow_le_one₀ (Real.smoothTransition.nonneg _) (Real.smoothTransition.le_one _)`. Rewrite using `[Real.smoothTransition.one_of_one_le (by linarith [hy.2]), one_pow]`. Rewrite using `[Real.smoothTransition.zero_of_nonpos (by linarith)]; norm_num`.
+
+Simplify using `only [Real.sqrt_sq (Real.smoothTransition.nonneg _)]`. Conclude with `h.contDiffOn`.
+-/
 theorem isCutoff_sq : IsCutoff fun y => Real.smoothTransition (3 - y) ^ 2 := by
   have h : ContDiff ℝ ∞ fun y : ℝ => Real.smoothTransition (3 - y) :=
     Real.smoothTransition.contDiff.comp (contDiff_const.sub contDiff_id)
@@ -111,6 +116,31 @@ theorem isCutoff_sq : IsCutoff fun y => Real.smoothTransition (3 - y) ^ 2 := by
   · simp only [Real.sqrt_sq (Real.smoothTransition.nonneg _)]
     exact h.contDiffOn
 
+/- English proof (translation)
+Set `L : (Unit → ℂ) →L[ℝ] ℝ` to `Complex.reCLM.comp (ContinuousLinearMap.proj ())`. Establish `hu : ContDiff ℝ ∞ fun z : Unit → ℂ => 1 + (z ()).re` using `contDiff_const.add L.contDiff`. Establish `hr : ContDiff ℝ ∞ fun z : Unit → ℂ => Real.exp (1 + (z ()).re)` using `hu.exp`. Establish `ho : IsOpen {z : Unit → ℂ | 0 < (z ()).re}` using `isOpen_lt continuous_const L.continuous`. Establish `h1 : (1 : Matrix Unit Unit ℂ).PosDef` using `PosDef.one`.
+
+Establish `hp : ∀ z : Unit → ℂ, (((Real.exp (1 + (z ()).re) : ℝ) : ℂ) • (1 : Matrix Unit Unit ℂ)).PosDef` using `fun z => h1.smul (by exact_mod_cast Real.exp_pos _)`. Establish `hd : ∀ z ξ : Unit → ℂ, del (fun x : Unit → ℂ => ((1 + (x ()).re : ℝ) : ℂ)) z ξ = ξ () / 2`. Introduce `z ξ`. Establish `: HasFDerivAt (fun x : Unit → ℂ => ((1 + (x ()).re : ℝ) : ℂ)) (Complex.ofRealCLM.comp L) z` using `Complex.ofRealCLM.hasFDerivAt.comp z (L.hasFDerivAt.const_add 1)`. Rewrite using `[del_eq_of_hasFDerivAt this, linPart_apply]`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp [L] <;> ring`. Establish `hl : ∀ z : Unit → ℂ, leviForm (fun x : Unit → ℂ => 1 + (x ()).re) z = 0`. Introduce `z`. Establish `h : ContDiffAt ℂ 2 (fun x : Unit → ℂ => 1 + x ()) z` using `contDiffAt_const.add (contDiff_apply ℂ ℂ ()).contDiffAt`. Simplify using `using leviForm_re_eq_zero h`.
+
+Establish `hg : ∀ ξ : Unit → ℂ, gnorm (1 : Matrix Unit Unit ℂ) ξ = ‖ξ ()‖`. Introduce `ξ`. Simplify using `[gnorm, form, dotProduct, Complex.norm_def, Complex.normSq_apply]`. Use `⟨⟨ho, fun _ _ => contDiffOn_const, fun _ _ => h1⟩, ⟨ho, fun a b => ?_, fun z _ => hp z⟩, hr.contDiffOn, fun z hz => Real.exp_le_exp.2 (le_add_of_nonneg_right (le_of_lt hz)), fun _ _ => contDiffOn_const, fun _ _ => h1.posSemidef, fun z hz v => ?_, fun z _ => ⟨h1, h1.posSemidef, fu …` and prove the remaining obligations. Conclude with `((Complex.ofRealCLM.contDiff.comp hr).mul contDiff_const).contDiffOn`.
+
+Establish `h0 : 0 ≤ (form (1 : Matrix Unit Unit ℂ) v v).re`. Rewrite using `[← gnorm_sq h1.posSemidef]`. Check the signs of the components of the expression. Establish `he : 1 ≤ Real.exp (1 + (z ()).re)` using `Real.one_le_exp (by linarith [hz.out])`. Rewrite using `[form_smul, Complex.re_ofReal_mul, Real.rpow_one]`.
+
+Use `⟨mul_le_mul_of_nonneg_right ?_ h0, le_rfl⟩` and prove the remaining obligations. Conclude with `(Real.rpow_le_one_of_one_le_of_nonpos he (by norm_num)).trans he`. Use `beta_reduce`. Rewrite using `[conn_smul (H := fun _ => 1) (hr.differentiable (by simp) z) (Real.exp_pos _).ne' (mContDiffAt_const _) (by simp)]`. Simplify using `only [Real.log_exp, hd, add_sub_cancel_left]`.
+
+Use `(opNorm_smul_le h1 h1.posSemidef _ _).trans ?_` and prove the remaining obligations. Establish `h2 : opNorm (1 : Matrix Unit Unit ℂ) 1 1 ≤ 1` using `opNorm_le_of_bound zero_le_one fun v => by rw [hg, hg]; simp [mulVec, dotProduct]`. Use `(mul_le_of_le_one_right (norm_nonneg _) h2).trans ?_` and prove the remaining obligations. Rewrite using `[hg, norm_div]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[curv_smul (H := fun _ => 1) (hr.contDiffAt.of_le (by norm_cast)) (Real.exp_pos _).ne' (mContDiffAt_const _) (by simp)]`. Simplify using `[hl]`. Establish `h2` using `del_ofReal_comp (t := fun x : Unit → ℂ => 1 + (x ()).re) (z := z) (Real.hasDerivAt_exp _) (hu.differentiable (by simp) z) ξ`. Rewrite `h2` using `[hd]`. Establish `h3 : ((Real.exp (1 + (z ()).re) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.exp_pos _).ne'`.
+
+Establish `h4 : -Complex.I * (gradForm (fun x : Unit → ℂ => Real.exp (1 + (x ()).re)) z ξ ξ / ((Real.exp (1 + (z ()).re) : ℝ) : ℂ) ^ 2) = ((‖ξ ()‖ ^ 2 / (8 * Real.pi) : ℝ) : ℂ)`. Establish `hπ : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Rewrite using `[gradForm, dbar_ofReal, h2, kappa]`. Generalize the expression as in `Real.exp (1 + (z ()).re) = x at h3`. Use `push_cast`.
+
+Rewrite using `[← Complex.mul_conj']`. Simplify using `only [smul_eq_mul, map_mul, Complex.conj_ofReal, map_div₀, map_ofNat]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h5` using `diagVal_formOf_eq_gnorm_sq h1.posSemidef ξ`. Simplify using `only [diagVal] at h5 ⊢`. Rewrite using `[h4, Complex.ofReal_re, Complex.ofReal_one, one_mul, h5, hg]`. Conclude with `div_le_self (sq_nonneg _) (by linarith [Real.pi_gt_three])`. Rewrite using `[formAbsLe_iff]`.
+
+Introduce `ξ`. Rewrite using `[diagVal_formOf_eq_gnorm_sq h1.posSemidef]`. Simplify using `[diagVal, ddc, hl, sq_nonneg]`.
+-/
 theorem isData_halfPlane :
     IsData (ι := Unit) (n := Unit) 1 0 1 0 1 {z | 0 < (z ()).re} (fun _ => 1)
       (fun z => ((Real.exp (1 + (z ()).re) : ℝ) : ℂ) • 1) (fun z => Real.exp (1 + (z ()).re))

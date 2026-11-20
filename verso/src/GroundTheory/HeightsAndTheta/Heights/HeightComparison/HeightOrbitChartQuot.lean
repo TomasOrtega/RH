@@ -14,6 +14,9 @@ def OrbitChartQuot.Statement : Prop :=
         (MvPolynomial (Coord n) ℤ ⧸
           (V ⊔ Ideal.span (Set.range fun k ↦ (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) - 1))))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ ↦ by simp [samplePoint], le_rfl⟩`.
+-/
 example : (∀ k, samplePoint k ((fun _ ↦ 0) k) ≠ 0) ∧
     orbitIdeal samplePoint ≤ orbitIdeal samplePoint :=
   ⟨fun _ ↦ by simp [samplePoint], le_rfl⟩

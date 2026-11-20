@@ -27,30 +27,56 @@ def step (σ : Mat n → Mat n) (P : Mat (n + 1)) : Mat (n + 1) :=
       (Fin.cases (motive := fun _ => ℂ) ((Real.sqrt (P 0 0).re : ℝ) : ℂ) (fun _ => 0) j)
       (fun i' => Fin.cases (motive := fun _ => ℂ) (col P i') (fun j' => σ (schur P) i' j') j) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma step_zero_zero (σ : Mat n → Mat n) (P : Mat (n + 1)) :
     step σ P 0 0 = ((Real.sqrt (P 0 0).re : ℝ) : ℂ) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma step_zero_succ (σ : Mat n → Mat n) (P : Mat (n + 1)) (j : Fin n) :
     step σ P 0 j.succ = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma step_succ_zero (σ : Mat n → Mat n) (P : Mat (n + 1)) (i : Fin n) :
     step σ P i.succ 0 = col P i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma step_succ_succ (σ : Mat n → Mat n) (P : Mat (n + 1)) (i j : Fin n) :
     step σ P i.succ j.succ = σ (schur P) i j := rfl
 
+/- English proof (translation)
+The claim follows from `(Complex.pos_iff.1 (hP.diag_pos (i := 0))).1`.
+-/
 lemma lead_pos {P : Mat (n + 1)} (hP : P.PosDef) : 0 < (P 0 0).re :=
   (Complex.pos_iff.1 (hP.diag_pos (i := 0))).1
 
+/- English proof (translation)
+Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `using (Complex.pos_iff.1 (hP.diag_pos (i := 0))).2`.
+-/
 lemma lead_eq {P : Mat (n + 1)} (hP : P.PosDef) : (((P 0 0).re : ℝ) : ℂ) = P 0 0 := by
   apply Complex.ext
   · simp
   · simpa using (Complex.pos_iff.1 (hP.diag_pos (i := 0))).2
 
+/- English proof (translation)
+The claim follows from `mul_inv_cancel₀ (Real.sqrt_pos.2 (lead_pos hP)).ne'`.
+-/
 lemma root_mul_invRoot {P : Mat (n + 1)} (hP : P.PosDef) :
     Real.sqrt (P 0 0).re * invRoot P = 1 :=
   mul_inv_cancel₀ (Real.sqrt_pos.2 (lead_pos hP)).ne'
 
+/- English proof (translation)
+Establish `h : (P 0 0).re * (invRoot P * invRoot P) = 1`. Establish `h1` using `root_mul_invRoot hP`. Establish `h2` using `Real.mul_self_sqrt (lead_pos hP).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lead_eq hP]`.
+
+Conclude with `h` after adjusting the coercions.
+-/
 lemma lead_mul_invRoot {P : Mat (n + 1)} (hP : P.PosDef) :
     P 0 0 * ((invRoot P : ℂ) * (invRoot P : ℂ)) = 1 := by
   have h : (P 0 0).re * (invRoot P * invRoot P) = 1 := by
@@ -63,6 +89,29 @@ lemma lead_mul_invRoot {P : Mat (n + 1)} (hP : P.PosDef) :
   rw [← lead_eq hP]
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `hH : ∀ i j, star (P j i) = P i j` using `fun i j => hP.isHermitian.apply i j`. Establish `hcs : star ((invRoot P : ℝ) : ℂ) = (invRoot P : ℂ)` using `by simp`. Use `PosDef.of_dotProduct_mulVec_pos ?_ ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, schur, of_apply, star_sub, star_mul', star_star, hH]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `x hx set c : ℂ := (invRoot P : ℂ) with hc set w : ℂ := ∑ j, P 0 j.succ * x j with hw set u : ℂ := ∑ i, star (x i) * P i.succ 0 with hu set q : ℂ := ∑ i, star (x i) * ∑ j, P i.succ j.succ * x j with hq set t : ℂ := -(w * (c * c)) with ht`. Set `y : Fin (n + 1) → ℂ` to `Fin.cons t x`. Establish `y0 : y 0 = t` using `rfl`. Establish `ys : ∀ i : Fin n, y i.succ = x i` using `fun i => rfl`.
+
+Establish `hy : y ≠ 0` using `fun h => hx (funext fun i => by simpa [ys] using congrFun h i.succ)`. Establish `hpos` using `hP.dotProduct_mulVec_pos hy`. Establish `hW : ∑ j, star (col P j) * x j = w * c`. Rewrite using `[hw, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [col, star_mul', hH, hcs, ← hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrow : ∀ i, (schur P *ᵥ x) i = (∑ j, P i.succ j.succ * x j) - col P i * (w * c)`. Introduce `i`. Rewrite using `[← hW]`.
+
+Simplify using `only [mulVec, dotProduct, schur, of_apply, sub_mul, Finset.sum_sub_distrib, Finset.mul_sum, mul_assoc]`. Establish `hU : ∑ i, star (x i) * col P i = u * c`. Rewrite using `[hu, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [col, ← hc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hL : star x ⬝ᵥ (schur P *ᵥ x) = q - (u * c) * (w * c)`. Simplify using `only [dotProduct, hrow, Pi.star_apply, mul_sub, Finset.sum_sub_distrib]`. Use `congr 1`. Generalize the expression as in `w * c = v`.
+
+Rewrite using `[← hU, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : (P *ᵥ y) 0 = P 0 0 * t + w`. Simplify using `only [mulVec, dotProduct, Fin.sum_univ_succ, y0, ys, hw]`.
+
+Establish `hs : ∀ i : Fin n, (P *ᵥ y) i.succ = P i.succ 0 * t + ∑ j, P i.succ j.succ * x j`. Introduce `i`. Simplify using `only [mulVec, dotProduct, Fin.sum_univ_succ, y0, ys]`. Establish `hz : P 0 0 * t + w = 0`. Use `lead_mul_invRoot hP` as an intermediate fact.
+
+Rewrite `this` using `[← hc]`. Rewrite using `[ht]`. Take the linear combination `(-w) * this`. Establish `hR : star y ⬝ᵥ (P *ᵥ y) = u * t + q`. Rewrite using `[dotProduct, Fin.sum_univ_succ]`.
+
+Simplify using `only [Pi.star_apply, h0, hs, y0, ys, hz, mul_zero, zero_add, mul_add, Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[hu, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hk : star x ⬝ᵥ (schur P *ᵥ x) = star y ⬝ᵥ (P *ᵥ y)`. Rewrite using `[hL, hR, ht]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hk]`. Conclude with `hpos`.
+-/
 lemma schur_posDef {P : Mat (n + 1)} (hP : P.PosDef) : (schur P).PosDef := by
   have hH : ∀ i j, star (P j i) = P i j := fun i j => hP.isHermitian.apply i j
   have hcs : star ((invRoot P : ℝ) : ℂ) = (invRoot P : ℂ) := by simp
@@ -127,6 +176,17 @@ lemma schur_posDef {P : Mat (n + 1)} (hP : P.PosDef) : (schur P).PosDef := by
     rw [hk]
     exact hpos
 
+/- English proof (translation)
+Establish `hH : ∀ i j, star (P j i) = P i j` using `fun i j => hP.isHermitian.apply i j`. Establish `hr : ((Real.sqrt (P 0 0).re : ℝ) : ℂ) * (invRoot P : ℂ) = 1`. Conclude with `root_mul_invRoot hP` after adjusting the coercions. Establish `hrr : ((Real.sqrt (P 0 0).re : ℝ) : ℂ) * ((Real.sqrt (P 0 0).re : ℝ) : ℂ) = P 0 0`. Rewrite using `[← lead_eq hP]`.
+
+Conclude with `Real.mul_self_sqrt (lead_pos hP).le` after adjusting the coercions. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `only [mul_apply, conjTranspose_apply, Fin.sum_univ_succ, step_zero_zero, step_zero_succ]`. Simplify using `[hrr]`.
+
+Simplify using `only [mul_apply, conjTranspose_apply, Fin.sum_univ_succ, step_zero_zero, step_zero_succ, step_succ_zero]`. Simplify using `only [col, star_mul', hH]`. Simplify using the standard rewrite rules. Take the linear combination `(P 0 j.succ) * hr`. Simplify using `only [mul_apply, conjTranspose_apply, Fin.sum_univ_succ, step_zero_zero, step_zero_succ, step_succ_zero, step_succ_succ]`.
+
+Simplify using `[col]`. Take the linear combination `(P i.succ 0) * hr`. Establish `h` using `congrFun (congrFun hσ i) j`. Simplify using `only [mul_apply, conjTranspose_apply] at h`. Simplify using `only [mul_apply, conjTranspose_apply, Fin.sum_univ_succ, step_succ_zero, step_succ_succ, h]`.
+
+Simplify using `[schur]`.
+-/
 lemma step_mul {σ : Mat n → Mat n} {P : Mat (n + 1)} (hP : P.PosDef)
     (hσ : σ (schur P) * (σ (schur P))ᴴ = schur P) : step σ P * (step σ P)ᴴ = P := by
   have hH : ∀ i j, star (P j i) = P i j := fun i j => hP.isHermitian.apply i j
@@ -153,39 +213,68 @@ lemma step_mul {σ : Mat n → Mat n} {P : Mat (n + 1)} (hP : P.PosDef)
     simp only [mul_apply, conjTranspose_apply, Fin.sum_univ_succ, step_succ_zero, step_succ_succ, h]
     simp [schur]
 
+/- English proof (translation)
+The claim follows from `contDiff_apply_apply ℝ ℂ i j`.
+-/
 lemma contDiff_entry (i j : Fin m) : ContDiff ℝ ∞ (fun P : Mat m => P i j) :=
   contDiff_apply_apply ℝ ℂ i j
 
+/- English proof (translation)
+The claim follows from `contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => h i j`.
+-/
 lemma contDiffOn_mat {s : Set (Mat k)} {f : Mat k → Mat m}
     (h : ∀ i j, ContDiffOn ℝ ∞ (fun P => f P i j) s) : ContDiffOn ℝ ∞ f s :=
   contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => h i j
 
+/- English proof (translation)
+The claim follows from `(contDiff_entry i j).comp_contDiffOn h`.
+-/
 lemma contDiffOn_entry {s : Set (Mat k)} {f : Mat k → Mat m} (h : ContDiffOn ℝ ∞ f s)
     (i j : Fin m) : ContDiffOn ℝ ∞ (fun P => f P i j) s :=
   (contDiff_entry i j).comp_contDiffOn h
 
+/- English proof (translation)
+The claim follows from `ContDiffOn.sqrt (Complex.reCLM.contDiff.comp (contDiff_entry 0 0)).contDiffOn fun _ hP => (lead_pos hP).ne'`.
+-/
 lemma contDiffOn_root :
     ContDiffOn ℝ ∞ (fun P : Mat (n + 1) => Real.sqrt (P 0 0).re) {P | P.PosDef} :=
   ContDiffOn.sqrt (Complex.reCLM.contDiff.comp (contDiff_entry 0 0)).contDiffOn
     fun _ hP => (lead_pos hP).ne'
 
+/- English proof (translation)
+The claim follows from `Complex.ofRealCLM.contDiff.comp_contDiffOn (contDiffOn_root.inv fun _ hP => (Real.sqrt_pos.2 (lead_pos hP)).ne')`.
+-/
 lemma contDiffOn_invRoot :
     ContDiffOn ℝ ∞ (fun P : Mat (n + 1) => ((invRoot P : ℝ) : ℂ)) {P | P.PosDef} :=
   Complex.ofRealCLM.contDiff.comp_contDiffOn
     (contDiffOn_root.inv fun _ hP => (Real.sqrt_pos.2 (lead_pos hP)).ne')
 
+/- English proof (translation)
+The claim follows from `(contDiff_entry i.succ 0).contDiffOn.mul contDiffOn_invRoot`.
+-/
 lemma contDiffOn_col (i : Fin n) :
     ContDiffOn ℝ ∞ (fun P : Mat (n + 1) => col P i) {P | P.PosDef} :=
   (contDiff_entry i.succ 0).contDiffOn.mul contDiffOn_invRoot
 
+/- English proof (translation)
+The claim follows from `Complex.conjCLE.contDiff.comp_contDiffOn (contDiffOn_col i)`.
+-/
 lemma contDiffOn_star_col (i : Fin n) :
     ContDiffOn ℝ ∞ (fun P : Mat (n + 1) => star (col P i)) {P | P.PosDef} :=
   Complex.conjCLE.contDiff.comp_contDiffOn (contDiffOn_col i)
 
+/- English proof (translation)
+The claim follows from `contDiffOn_mat fun i j => (contDiff_entry i.succ j.succ).contDiffOn.sub ((contDiffOn_col i).mul (contDiffOn_star_col j))`.
+-/
 lemma contDiffOn_schur : ContDiffOn ℝ ∞ (schur (n := n)) {P | P.PosDef} :=
   contDiffOn_mat fun i j =>
     (contDiff_entry i.succ j.succ).contDiffOn.sub ((contDiffOn_col i).mul (contDiffOn_star_col j))
 
+/- English proof (translation)
+Use `contDiffOn_mat fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Conclude with `Complex.ofRealCLM.contDiff.comp_contDiffOn contDiffOn_root`. Conclude with `contDiffOn_const`. Conclude with `contDiffOn_col i`.
+
+Apply the tactic sequence `exact contDiffOn_entry (hσ.comp contDiffOn_schur fun _ hP => schur_posDef hP) i j`.
+-/
 lemma contDiffOn_step {σ : Mat n → Mat n} (hσ : ContDiffOn ℝ ∞ σ {P | P.PosDef}) :
     ContDiffOn ℝ ∞ (step σ) {P | P.PosDef} := by
   refine contDiffOn_mat fun i j => ?_
@@ -195,6 +284,11 @@ lemma contDiffOn_step {σ : Mat n → Mat n} (hσ : ContDiffOn ℝ ∞ σ {P | P
   · exact contDiffOn_col i
   · exact contDiffOn_entry (hσ.comp contDiffOn_schur fun _ hP => schur_posDef hP) i j
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨id, contDiffOn_id, fun P _ => Subsingleton.elim _ _⟩`. Consider the case `succ n ih`. Take `⟨σ, hσ, hf⟩` from `ih`.
+
+Conclude with `⟨step σ, contDiffOn_step hσ, fun P hP => step_mul hP (hf _ (schur_posDef hP))⟩`.
+-/
 theorem exists_smooth_section :
     ∀ n : ℕ, ∃ σ₀ : Mat n → Mat n, ContDiffOn ℝ ∞ σ₀ {P | P.PosDef} ∧
       ∀ P : Mat n, P.PosDef → σ₀ P * (σ₀ P)ᴴ = P := by

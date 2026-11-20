@@ -11,6 +11,9 @@ namespace GlobalTheory.HeckeUOps
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : embT D τ (a : D.host.E) ≠ 0` using `(map_ne_zero _).2 a.ne_zero`. Conclude with `div_ne_zero h (by exact_mod_cast (norm_ne_zero_iff.2 h))`.
+-/
 theorem phase_ne_zero (τ : D.what₂.Tau) (a : D.host.Eˣ) :
     embT D τ (a : D.host.E) / (‖embT D τ (a : D.host.E)‖ : ℂ) ≠ 0 := by
   have h : embT D τ (a : D.host.E) ≠ 0 := (map_ne_zero _).2 a.ne_zero
@@ -90,11 +93,20 @@ def ofChar (N : ℕ) (χ : HChar D.host.E) (n : D.what₂.Tau → ℤ) (hu : χ.
   par := hp
   unr := hr
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mul_f {N₁ N₂ N : ℕ} (χ₁ : HeckeU D N₁) (χ₂ : HeckeU D N₂) (h) (x) :
     (mul N χ₁ χ₂ h).f x = χ₁.f x * χ₂.f x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem inv_f {N N' : ℕ} (χ : HeckeU D N) (h) (x) : (inv N' χ h).f x = (χ.f x)⁻¹ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofChar_f (N : ℕ) (χ : HChar D.host.E) (n) (hu hi hc hn hp hr) (x) :
     (ofChar N χ n hu hi hc hn hp hr).f x = χ.1 (finIdl D x) := rfl
 

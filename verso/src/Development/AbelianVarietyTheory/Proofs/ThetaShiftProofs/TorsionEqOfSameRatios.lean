@@ -22,6 +22,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.H1
   ReciprocityTheory.ChartRestriction.G.H1.SectionArithmetic ReciprocityTheory.ChartRestriction.G.H1.SquareUnits GlobalTheory.ThetaScalar
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `exists_sec hL (K' := Fin 1) (φ' := fun _ => (snd T A).left) (ε' := fun _ => m + n) (formEq_of_add fun U _ h => by simp [Fintype.sum_sum_type, add_smul]) (mulSec (K := Fin 1) (φ := fun _ => (snd T A).left) (ε := fun _ => m) (K' := Fin 1) (φ' := fun _ => (snd T A).left) (ε' := fun …`. Conclude with `⟨u, fun Z r z J hJ => (hu Z r z J hJ).trans (sval_mulSec _ _ r z hJ)⟩`.
+-/
 theorem exists_mul {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {T : Over S} {m n : ℤ}
     (a : LB.Sec (LPow A L m T)) (b : LB.Sec (LPow A L n T)) : ∃ u : LB.Sec (LPow A L (m + n) T),
       ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A).left) (z : Z) J, Good L z J →
@@ -32,6 +35,15 @@ theorem exists_mul {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL 
       (φ' := fun _ => (snd T A).left) (ε' := fun _ => n) a b)
   exact ⟨u, fun Z r z J hJ => (hu Z r z J hJ).trans (sval_mulSec _ _ r z hJ)⟩
 
+/- English proof (translation)
+Take `⟨u', hu'⟩` from `exists_actVal hL θ u`. Take `⟨w, hw⟩` from `exists_mul hL u' s₀`. Establish `h0` using `dense w fun v => by`. Rewrite using `[hw _ _ z J₀ hJ₀]`. Distinguish the cases in `h : secVal s₀ (r v) z J₀ = 0`.
+
+Rewrite using `[h, MulZeroClass.mul_zero]`. Rewrite using `[hu' _ _ z J₀ hJ₀, hu v (hg v h), MulZeroClass.mul_zero, MulZeroClass.zero_mul]`. Establish `h1 : ∀ j, u'.f j = 0` using `eq_zero_of_sval (K := Fin 1) (φ := fun _ => (snd T A).left) (ε := fun _ => m) hL u' fun y J hJ => by`. Establish `e : secVal w (𝟙 _) y J = 0` using `sval_eq_zero (K := Fin 1) (φ := fun _ => (snd T A).left) (ε := fun _ => m + n) w h0 _ y hJ`. Rewrite `e` using `[hw _ _ y J hJ]`.
+
+Use `(mul_eq_zero.1 e).resolve_right fun e' => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hs`. Conclude with `hi (eq_zero_of_germ (K := Fin 1) (φ := fun _ => (snd T A).left) (ε := fun _ => n) s₀ y hJ e' i)`. Use `eq_zero_of_sval (K := Fin 1) (φ := fun _ => (snd T A).left) (ε := fun _ => m) hL u (fun y J hJ => ?_) j` and prove the remaining obligations. Establish `e` using `hu' _ (translT A θ.pt⁻¹).left y J hJ`.
+
+Rewrite `e` using `[← Over.comp_left, translT_mul, mul_inv_cancel, translT_one, Over.id_left]`. Conclude with `(Units.mul_right_eq_zero _).1 (e.symm.trans (sval_eq_zero (K := Fin 1) (φ := fun _ => (snd T A).left) (ε := fun _ => m) u' h1 _ y hJ))`.
+-/
 theorem dense_translate {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {T : Over S}
     [IsIntegral (T ⊗ A).left] {m n : ℤ} (θ : ThetaGrp A L m T) {V : Type} {Z : Scheme.{0}} (z : Z)
     (r : V → (Z ⟶ (T ⊗ A).left)) (J₀ : (Z ⟶ A.left) → L.ι) (hJ₀ : Good L z J₀) (good : V → Prop)
@@ -60,6 +72,15 @@ theorem dense_translate {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left}
   exact (Units.mul_right_eq_zero _).1 (e.symm.trans
     (sval_eq_zero (K := Fin 1) (φ := fun _ => (snd T A).left) (ε := fun _ => m) u' h1 _ y hJ))
 
+/- English proof (translation)
+Use `haveI := P.isAb.comm`. Use `haveI : IsIntegral (baseOver (Spec (CommRingCat.of F)) ⊗ P.A).left := isIntegral_fibre P (𝟙 _)`. Establish `hk0 : (k : F) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hd : (p / p') ^ k = 1` using `by rw [div_pow, hp, hp', div_one]`. Take `⟨θ, hθ⟩` from `exists_theta hL.weil P k (p / p') hd`.
+
+Establish `ex` using `exists_theta hL.weil P (k + k) p' (by rw [pow_add, hp', _root_.mul_one])`. Establish `den` using `dense (k + k + k) (by omega)`. Rewrite `den` using `[Nat.cast_add, Nat.cast_add]`. Rewrite `ex` using `[Nat.cast_add]`. Take `⟨θ', hθ'⟩` from `ex`.
+
+Establish `e : ∀ a d : baseOver (Spec (CommRingCat.of F)) ⟶ P.A, (ptSecT P.A a).left ≫ (translT P.A d).left = (ptSecT P.A (a * d)).left` using `fun a d => by`. Rewrite using `[← Over.comp_left, ptSecT_translT, mul_comm]`. Take `⟨a, ha⟩` from `exists_scalar P.isLB (Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv (finrank_pos_of_laws hL.globalSectionsRank P hk0) θ (cross_of_dense P.isLB θ (Z := Sp F) z (fun v : {v // good v} => (ptSecT P.A (x v * p')).left) J₀ hJ₀ (fun u hu => dense_translate P.isLB θ' (Z …`. Establish `e' : (ptSecT P.A (x v * p')).left ≫ (translT P.A θ.pt).left = (ptSecT P.A (x v * p)).left`. Rewrite using `[e, hθ, _root_.mul_assoc, mul_div_cancel]`.
+
+Conclude with `(congrArg (fun w => secVal (Z := Sp F) s w z J₀ * _) e').trans ((ratio v v.2 s t).trans (congrArg (fun w => secVal (Z := Sp F) t w z J₀ * _) e').symm))`. Use `theta_pt_eq_one_of_actVal hL.weil hL.weilNondeg hL.globalSectionsRank P k hk0 θ (by rw [hθ]; exact hd) a ha` as an intermediate fact. Rewrite `this` using `[hθ]`. Conclude with `div_eq_one.1 this`.
+-/
 theorem core (hL : Laws) {F : Type} [Field F] [IsAlgClosed F] [CharZero F] (P : PolAV (Spec (CommRingCat.of F)))
     (z : Sp F) (J₀ : (Sp F ⟶ P.A.left) → P.L.ι) (hJ₀ : Good P.L z J₀) {V : Type}
     (x : V → (baseOver (Spec (CommRingCat.of F)) ⟶ P.A)) (k : ℕ) (p p' : baseOver (Spec (CommRingCat.of F)) ⟶ P.A)
@@ -98,6 +119,13 @@ theorem core (hL : Laws) {F : Type} [Field F] [IsAlgClosed F] [CharZero F] (P : 
   rw [hθ] at this
   exact div_eq_one.1 this
 
+/- English proof (translation)
+Use `⟨fun t => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `ConstFam.exists_secThrough (φ' := fun _ : Fin 1 => π) hw hL hL' (fun _ => hψ) t`. Use `⟨a, fun Z r z J J' hJ hJ' => (ha.sval (fun _ => hψ) r hJ hJ').trans ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one]`. Take `⟨t₀, ht₀⟩` from `ConstFam.exists_sec_up ((isGen_iff w).1 hw) hL hL' a`.
+
+Establish `H : ConstFam.SecThrough w (fun _ : Fin 1 => π) (fun _ => π ≫ g) (fun _ => m) a t₀ (𝟙 _)` using `fun Z r z p q hp hq => by`. Rewrite using `[Category.comp_id]`. Conclude with `ht₀ Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq)`. Establish `hq : h' ≫ π ≫ g = q` using `by rw [hψ, ← Category.assoc, hh', Category.id_comp]`. Take `⟨t, ht⟩` from `exists_sec hL (K' := Fin 1) (φ' := fun _ => q) (ε' := fun _ => m) (formEq_of_add fun U _ h => by rw [Fin.sum_univ_one, Fin.sum_univ_one, hq]) (pullSec t₀ h')`.
+
+Use `⟨t, fun Z r z J J' hJ hJ' => (ht Z _ z J hJ).trans ((sval_pullSec _ _ _ z hJ).trans ?_)⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hh]`. Use `(H.sval (fun _ => (Category.id_comp _).symm) r hJ hJ').trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one]`.
+-/
 theorem move {X X' Y Y' : Scheme.{0}} {L : LB X} {L' : LB X'} {g : X' ⟶ X} (hL : L.IsLB) (hL' : L'.IsLB)
     (w : LB.Iso L' (L.pull g)) (hw : w.IsGen) (π : Y' ⟶ X') (q : Y ⟶ X) (h : Y' ⟶ Y) (h' : Y ⟶ Y')
     (hψ : π ≫ g = h ≫ q) (hh : h ≫ h' = 𝟙 _) (hh' : h' ≫ h = 𝟙 _) (m : ℤ) :
@@ -126,6 +154,9 @@ theorem move {X X' Y Y' : Scheme.{0}} {L : LB X} {L' : LB X'} {g : X' ⟶ X} (hL
     refine (H.sval (fun _ => (Category.id_comp _).symm) r hJ hJ').trans ?_
     rw [Fin.prod_univ_one]
 
+/- English proof (translation)
+Establish `hm : r z ∈ LB.wchart L (fun _ : Fin 1 => q) (fun _ => j)` using `Set.mem_iInter.2 fun _ => (top_le_iff_mem (r ≫ q) _ z).1 hj`. Conclude with `(toStk_valF_gs r _ z hm _).trans (sec_trans u r z hm (hJ.mem _ r))`.
+-/
 theorem toStk_sval {F : Type} [Field F] {X Y : Scheme.{0}} {L : LB X} {q : Y ⟶ X} {m : ℕ} (u : ArcPts.SecP L q m)
     (r : Sp F ⟶ Y) (z : Sp F) {J} (hJ : Good L z J) (j : L.ι) (hj : ⊤ ≤ (r ≫ q) ⁻¹ᵁ L.U j) :
     toStk z (ArcPts.sval u r j) =
@@ -135,6 +166,37 @@ theorem toStk_sval {F : Type} [Field F] {X Y : Scheme.{0}} {L : LB X} {q : Y ⟶
     Set.mem_iInter.2 fun _ => (top_le_iff_mem (r ≫ q) _ z).1 hj
   exact (toStk_valF_gs r _ z hm _).trans (sec_trans u r z hm (hJ.mem _ r))
 
+/- English proof (translation)
+Take `⟨P', g, hg, -, hmul, t, ht⟩` from `hL.polBaseChange S (Spec (CommRingCat.of F)) y P`. Take `⟨w, hw⟩ : LBIso P'.L (P.L.pull g)` from `LBIso.symm ⟨t, ht⟩`. Set `T` to `baseOver (Spec (CommRingCat.of F))`. Set `σ : P'.A ⟶ T ⊗ P'.A` to `lift (Over.homMk P'.A.hom (Category.comp_id _)) (𝟙 _)`. Establish `h₁ : σ ≫ snd _ _ = 𝟙 _` using `lift_snd _ _`.
+
+Establish `h₂ : snd _ _ ≫ σ = 𝟙 _`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Conclude with `Over.mkIdTerminal.hom_ext _ _`. Rewrite using `[Category.assoc, h₁, Category.comp_id, Category.id_comp]`. Establish `h₁' : σ.left ≫ (snd T P'.A).left = 𝟙 _` using `congrArg CommaMorphism.left h₁`.
+
+Establish `h₂' : (snd T P'.A).left ≫ σ.left = 𝟙 _` using `congrArg CommaMorphism.left h₂`. Establish `hh : ((snd T P'.A).left ≫ hg.isoPullback.hom) ≫ (hg.isoPullback.inv ≫ σ.left) = 𝟙 _`. Rewrite using `[Category.assoc, Iso.hom_inv_id_assoc, h₂']`. Establish `hh' : (hg.isoPullback.inv ≫ σ.left) ≫ ((snd T P'.A).left ≫ hg.isoPullback.hom) = 𝟙 _`. Rewrite using `[Category.assoc, ← Category.assoc σ.left, h₁', Category.id_comp, Iso.inv_hom_id]`.
+
+Establish `mv` using `move P.isLB P'.isLB w hw (snd T P'.A).left (pullback.fst P.A.hom y) _ _ (by rw [Category.assoc, hg.isoPullback_hom_fst]) hh hh'`. Set `φ₀ : (Over.mk y ⟶ P.A) → (T ⟶ P'.A)` to `fun a => Over.homMk (hg.lift a.left (𝟙 _) ((Over.w a).trans (Category.id_comp _).symm)) (hg.lift_snd _ _ _)`. Establish `φg : ∀ a, (φ₀ a).left ≫ g = a.left` using `fun a => hg.lift_fst _ _ _`. Establish `inj : ∀ a b : T ⟶ P'.A, a.left ≫ g = b.left ≫ g → a = b` using `fun a b e => Over.OverMorphism.ext (hg.hom_ext e ((Over.w a).trans (Over.w b).symm))`. Set `io : Over.mk (T.hom ≫ y) ⟶ Over.mk y` to `Over.homMk (𝟙 _) rfl`.
+
+Establish `tb : ∀ a, toBase hg.w (φ₀ a) = io ≫ a` using `fun a => Over.OverMorphism.ext ((φg a).trans (Category.id_comp _).symm)`. Set `φ : (Over.mk y ⟶ P.A) →* (T ⟶ P'.A)` to `MonoidHom.mk' φ₀ fun a b => inj _ _ (by`. Establish `e` using `hmul T (φ₀ a) (φ₀ b)`. Rewrite `e` using `[tb, tb, ← MonObj.comp_mul]`. Conclude with `(φg _).trans ((Category.id_comp _).symm.trans (congrArg CommaMorphism.left e).symm))`.
+
+Establish `pt : ∀ a, (ptSecT P'.A (φ a)).left ≫ (snd T P'.A).left ≫ hg.isoPullback.hom = ArcPts.fib a` using `fun a => by`. Establish `e : (ptSecT P'.A (φ a)).left ≫ (snd T P'.A).left = (φ₀ a).left` using `congrArg CommaMorphism.left (lift_snd (𝟙 _) (φ a))`. Rewrite using `[← Category.assoc, e]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hg.isoPullback_hom_fst, φg]`.
+
+Conclude with `(pullback.lift_fst _ _ _).symm`. Rewrite using `[Category.assoc, hg.isoPullback_hom_snd]`. Conclude with `(hg.lift_snd _ _ _).trans (pullback.lift_snd _ _ _).symm`. Establish `fq : ∀ a : Over.mk y ⟶ P.A, ArcPts.fib a ≫ pullback.fst P.A.hom y = a.left` using `fun a => pullback.lift_fst _ _ _`. Set `z : Sp F` to `IsLocalRing.closedPoint F`.
+
+Take `⟨J, hJ⟩` from `ConstFam.exists_good' P.isLB z`. Take `⟨J', hJ'⟩` from `ConstFam.exists_good' P'.isLB z`. Establish `ch : ∀ a : Over.mk y ⟶ P.A, ⊤ ≤ a.left ⁻¹ᵁ P.L.U (J a.left)` using `fun a => (top_le_iff_mem (F := F) a.left _ z).2 (hJ a.left)`. Establish `rd : ∀ (m : ℕ) (a : Over.mk y ⟶ P.A) j, ⊤ ≤ a.left ⁻¹ᵁ P.L.U j → ∃ c : ((Sp F).presheaf.stalk z)ˣ, ∀ (u : ArcPts.SecP P.L (pullback.fst P.A.hom y) m) (u' : LB.Sec (LPow P'.A P'.L m T)), (∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ P'.A).left) (z : Z) J J', Good P.L z J → Good P'.L z J' → sv …` using `Sp F) u' (ptSecT P'.A (φ a)).left z J' := fun m a j hj => ⟨_ * _, fun u u' H => by`. Establish `e` using `H (Sp F) (ptSecT P'.A (φ a)).left z J J' hJ hJ'`.
+
+Use `(toStk_sval u _ z hJ j (by rw [fq]; exact hj)).trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, _root_.mul_assoc]`. Conclude with `congrArg _ ((congrArg (fun r => sval u r z J) (pt a)).symm.trans e)⟩`. Take `⟨s₁, hs₁⟩` from `(mv k).1 s₀`. Establish `main : φ p = φ p'`.
+
+Use `core hL P' z J' hJ' (fun v => φ (x v)) k (φ p) (φ p') good s₁ hk (by rw [← map_pow, hp, map_one]) (by rw [← map_pow, hp', map_one]) (fun m hm u' hu' => ?_) ?_ (fun v hv => ?_) fun v hv t₁ t₂ => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `(mv m).2 u'`. Establish `h0` using `dense m hm u fun v j hj => by`. Take `⟨c, hc⟩` from `rd m (x v) j hj`. Use `(toStk z).injective ((hc u u' hu).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[hu' v, MulZeroClass.mul_zero, map_zero]`. Use `eq_zero_of_sval (K := Fin 1) (φ := fun _ => (snd T P'.A).left) (ε := fun _ => (m : ℤ)) P'.isLB u' fun b I' hI' => ?_` and prove the remaining obligations. Take `⟨I, hI⟩` from `ConstFam.exists_good' P.isLB b`. Conclude with `(Units.mul_right_eq_zero _).1 ((hu _ _ b I I' hI hI').symm.trans (sval_eq_zero u h0 _ b hI))`. Assume the negation of the conclusion as `hn push Not at hn`.
+
+Take `⟨i, hi⟩` from `hs`. Use `hi (eq_zero_of_sval P.isLB s₀ (fun b I hI => ?_) i)` and prove the remaining obligations. Take `⟨I', hI'⟩` from `ConstFam.exists_good' P'.isLB b`. Establish `e` using `hs₁ _ (hg.isoPullback.inv ≫ σ.left) b I I' hI hI'`. Rewrite `e` using `[hh', sval_eq_zero s₁ hn _ b hI', MulZeroClass.mul_zero]`.
+
+Conclude with `e`. Take `⟨c, hc⟩` from `rd k (x v) _ (ch _)`. Use `hgood v _ (ch _) fun e => hv ?_` and prove the remaining obligations. Establish `e'` using `hc s₀ s₁ hs₁`. Rewrite `e'` using `[e, map_zero]`.
+
+Conclude with `(Units.mul_right_eq_zero _).1 e'.symm`. Take `⟨u₁, h₁⟩` from `(mv k).2 t₁`. Take `⟨u₂, h₂⟩` from `(mv k).2 t₂`. Take `⟨c, hc⟩` from `rd k (x v * p) _ (ch _)`. Take `⟨c', hc'⟩` from `rd k (x v * p') _ (ch _)`.
+
+Establish `H` using `congrArg (toStk z) (ratio v hv u₁ u₂ _ _ (ch _) (ch _))`. Rewrite `H` using `[map_mul, map_mul, hc u₁ t₁ h₁, hc u₂ t₂ h₂, hc' u₁ t₁ h₁, hc' u₂ t₂ h₂, _root_.mul_mul_mul_comm, _root_.mul_mul_mul_comm c.val (secVal t₂ _ z J'), ← Units.val_mul, Units.mul_right_inj, map_mul, map_mul]`. Conclude with `H`. Conclude with `Over.OverMorphism.ext ((φg p).symm.trans ((congrArg (fun a => a.left ≫ g) main).trans (φg p')))`.
+-/
 theorem fibre (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {F : Type} [Field F] [IsAlgClosed F] [CharZero F]
     (y : Sp F ⟶ S) {V : Type} (x : V → (Over.mk y ⟶ P.A)) (k : ℕ) (p p' : Over.mk y ⟶ P.A) (good : V → Prop)
     (s₀ : ArcPts.SecP P.L (pullback.fst P.A.hom y) k) (hk : 1 ≤ k) (hp : p ^ k = 1) (hp' : p' ^ k = 1)
@@ -242,6 +304,9 @@ end Core
 open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArcPts
 open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 
+/- English proof (translation)
+Introduce `hL _ _ _ _ _ _ _ _ _ _ _ _ _ _ o _ _ _ _ y _ x k p p' good s₀` and use `fibre hL (objPolAV o) y x k p p' good s₀`.
+-/
 theorem torsion_eq_of_same_ratios : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (B : Type) [CommRing B] (bb : Base l B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l bb s) (F : Type) [Field F] [IsAlgClosed F] [CharZero F] (y : Sp F ⟶ S) (V : Type) (x : V → (Over.mk y ⟶ o.t.G)) (k : ℕ) (p p' : Over.mk y ⟶ o.t.G) (good : V → Prop) (s₀ : SecP o.t.PP.L (pullback.fst o.t.G.hom y) k), 1 ≤ k → p ^ k = 1 → p' ^ k = 1 → (∀ m, 1 ≤ m → ∀ u : SecP o.t.PP.L (pullback.fst o.t.G.hom y) m, (∀ v j, ⊤ ≤ (x v).left ⁻¹ᵁ o.t.PP.L.U j → sval u (fib (x v)) j = 0) → ∀ i, u.f i = 0) → (∃ i, s₀.f i ≠ 0) → (∀ v j, ⊤ ≤ (x v).left ⁻¹ᵁ o.t.PP.L.U j → sval s₀ (fib (x v)) j ≠ 0 → good v) → (∀ v, good v → ∀ (t₁ t₂ : SecP o.t.PP.L (pullback.fst o.t.G.hom y) k) j j', ⊤ ≤ (x v * p).left ⁻¹ᵁ o.t.PP.L.U j → ⊤ ≤ (x v * p').left ⁻¹ᵁ o.t.PP.L.U j' → sval t₁ (fib (x v * p)) j * sval t₂ (fib (x v * p')) j' = sval t₂ (fib (x v * p)) j * sval t₁ (fib (x v * p')) j') → p = p' :=
   fun hL _ _ _ _ _ _ _ _ _ _ _ _ _ _ o _ _ _ _ y _ x k p p' good s₀ =>
     fibre hL (objPolAV o) y x k p p' good s₀

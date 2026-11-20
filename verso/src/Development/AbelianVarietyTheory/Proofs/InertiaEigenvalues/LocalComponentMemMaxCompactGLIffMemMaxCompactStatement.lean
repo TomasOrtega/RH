@@ -13,5 +13,8 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocInteg.cLoc_mem_KGL_iff | exact GlobalTheory.LocInteg.cLoc_mem_KGL_iff | (intros; apply GlobalTheory.LocInteg.cLoc_mem_KGL_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.localComponent_mem_maxCompactGL_iff_mem_maxCompact : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (F : FinIso L n) (w : HeightOneSpectrum (𝓞 L)) (y : GAf L n), F.j y ∈ locU n w → (cLoc w (F.j y) ∈ GlobalTheory.LFun.KGL w n ↔ y ∈ Umax L n) := by
   first | exact @GlobalTheory.LocInteg.cLoc_mem_KGL_iff | exact GlobalTheory.LocInteg.cLoc_mem_KGL_iff | (intros; apply GlobalTheory.LocInteg.cLoc_mem_KGL_iff <;> assumption)

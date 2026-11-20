@@ -12,6 +12,11 @@ open GroundTheory.Heights₂.Heights.NumbersDVR
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hq` to reduce the goal to its premises. Establish `hfin` using `weightedHomogeneousComponent_finsupp (w := blockWeight ι) q`. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) q]`.
+
+Establish `key` using `map_finsum ((eval z).comp (MvPolynomial.map (Int.castRingHom ℂ))) hfin`. Simplify using `only [RingHom.coe_comp, Function.comp_apply] at key`. Rewrite using `[key]`. Simplify using `[h]`.
+-/
 theorem exists_component_ne (z : (Σ k, ι k) → ℂ) (q : MvPolynomial (Σ k, ι k) ℤ)
     (hq : eval z (MvPolynomial.map (Int.castRingHom ℂ) q) ≠ 0) :
     ∃ a : K → ℕ, eval z (MvPolynomial.map (Int.castRingHom ℂ)
@@ -26,6 +31,11 @@ theorem exists_component_ne (z : (Σ k, ι k) → ℂ) (q : MvPolynomial (Σ k, 
   rw [key]
   simp [h]
 
+/- English proof (translation)
+Use `choose i hi using hz`. Use `⟨∏ k, X ⟨k, i k⟩ ^ d k, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `IsWeightedHomogeneous.prod Finset.univ (fun k => (X ⟨k, i k⟩ : MvPolynomial (Σ k, ι k) ℤ) ^ d k) (fun k => d k • blockWeight ι ⟨k, i k⟩) (fun k _ => (isWeightedHomogeneous_X ℤ (blockWeight ι) ⟨k, i k⟩).pow (d k))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `conv_lhs => rw [← Finset.univ_sum_single d]`.
+
+Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Use extensionality with `j`. Simplify using `[blockWeight, Pi.single_apply]`. Simplify using `[Finset.prod_ne_zero_iff, hi]`.
+-/
 theorem exists_form_ne (z : (Σ k, ι k) → ℂ) (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (d : K → ℕ) :
     ∃ m : MvPolynomial (Σ k, ι k) ℤ, IsWeightedHomogeneous (blockWeight ι) m d ∧
       eval z (MvPolynomial.map (Int.castRingHom ℂ) m) ≠ 0 := by
@@ -44,6 +54,11 @@ theorem exists_form_ne (z : (Σ k, ι k) → ℂ) (hz : ∀ k, ∃ i, z ⟨k, i�
 
 end PositivityTheory.Xgn.MultihomogeneousNonvanishing
 
+/- English proof (translation)
+Introduce `K _ _ ι _ P bf bg z q hP hz hqP hq`. Take `⟨a, ha⟩` from `PositivityTheory.Xgn.MultihomogeneousNonvanishing.exists_component_ne z q hq`. Take `⟨m1, hm1, hm1z⟩` from `PositivityTheory.Xgn.MultihomogeneousNonvanishing.exists_form_ne z hz bg`. Take `⟨m2, hm2, hm2z⟩` from `PositivityTheory.Xgn.MultihomogeneousNonvanishing.exists_form_ne z hz bf`. Establish `hcP : weightedHomogeneousComponent (GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight ι) a q ∈ P` using `hP q hqP a`.
+
+Establish `hch` using `weightedHomogeneousComponent_isWeightedHomogeneous (w := GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight ι) a q`. Use `⟨a + bg, a + bf, _ * m1, _ * m2, hch.mul hm1, hch.mul hm2, by abel, P.mul_mem_right _ hcP, P.mul_mem_right _ hcP, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using mul_ne_zero ha hm1z`. Simplify using `using mul_ne_zero ha hm2z`.
+-/
 theorem PositivityTheory.Xgn.multihomogeneous_nonvanishing_off : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MvPolynomial (Σ k, ι k) ℤ)) (bf bg : K → ℕ) (z : ((Σ k, ι k) → ℂ)) (q : MvPolynomial (Σ k, ι k) ℤ), GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomogIdeal P → (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → q ∈ P → eval z (MvPolynomial.map (Int.castRingHom ℂ) q) ≠ 0 → ∃ (a b : K → ℕ) (u v : MvPolynomial (Σ k, ι k) ℤ), GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog u a ∧ GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog v b ∧ a + bf = b + bg ∧ u ∈ P ∧ v ∈ P ∧ eval z (MvPolynomial.map (Int.castRingHom ℂ) u) ≠ 0 ∧ eval z (MvPolynomial.map (Int.castRingHom ℂ) v) ≠ 0 := by
   intro K _ _ ι _ P bf bg z q hP hz hqP hq
   obtain ⟨a, ha⟩ := PositivityTheory.Xgn.MultihomogeneousNonvanishing.exists_component_ne z q hq

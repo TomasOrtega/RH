@@ -14,6 +14,21 @@ def cn_kapBd (Cv : ℝ) {a : ℕ} (j : Fin a → ℕ) (p q n0 f : ℕ) (v res : 
       (Cv * v) ^ ((f : ℝ) * (dimN j n0 : ℝ) / 2) * ∏ x, ((Cv * v) ^ (j x ^ 2 * f) * res * Cv ^ f)) *
     (v ^ (-(((p + q : ℕ) : ℝ) ^ 2 - (n0 : ℝ) ^ 2) * (f : ℝ) / 2) * Cv ^ ((p + q) * f))
 
+/- English proof (translation)
+Take `⟨C', hC', hA⟩` from `Formalism.HermitianLatticeCounting.Final.NearFarVolumeBounds.kappaAssembly Cv hCv`. Use `set C : ℝ := max C' (max |Cres| 1) with hC`. Establish `hCC' : C' ≤ C` using `le_max_left _ _`. Establish `hCres : |Cres| ≤ C` using `le_trans (le_max_left _ _) (le_max_right _ _)`. Establish `hC1 : 1 ≤ C` using `le_trans (le_max_right _ _) (le_max_right _ _)`.
+
+Take `⟨n₀, hK⟩` from `cn_kappaBoundAbs C hC1`. Use `⟨n₀, fun a p q n0 f j rd res hn hqp hq2 hj ha hJq hpq hf hrd hll hres0 hres => ?_⟩` and prove the remaining obligations. Establish `hv : (1 : ℝ) / 2 ≤ rd / 2` using `by linarith`. Establish `hv0 : 0 < rd / 2` using `by linarith`. Establish `hCv0 : 0 < Cv` using `by linarith`.
+
+Establish `hV : ∀ i, 0 < Vsph i` using `Formalism.HermitianLatticeCounting.P.vsph_pos`. Establish `hℓ : 0 < Real.log rd` using `Real.log_pos hrd`. Establish `h1` using `hA a p q n0 f j (rd / 2) res ((Cv ^ dimN j n0 * (Vsph p * Vsph q / (Vsph (p - ∑ x, j x) * Vsph (q - ∑ x, j x) * ∏ x, Vsph (j x)))) ^ f) ((Cv * (rd / 2)) ^ ((f : ℝ) * (dimN j n0 : ℝ) / 2)) ((rd / 2) ^ (-(((p + q : ℕ) : ℝ) ^ 2 - (n0 : ℝ) ^ 2) * (f : ℝ) / 2) * Cv ^ ((p + q) * f)) (f …`. Use `hV p` as an intermediate fact. Use `hV q` as an intermediate fact.
+
+Use `hV (p - ∑ x, j x)` as an intermediate fact. Use `hV (q - ∑ x, j x)` as an intermediate fact. Establish `: 0 < ∏ x, Vsph (j x)` using `Finset.prod_pos fun x _ => hV _`. Use the proof step `positivity) le_rfl`. Establish `haJ : a ≤ ∑ x, j x`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hdN : dimN j n0 ≤ 2 * (∑ x, j x) * (p + q)`. Rewrite using `[hpq]`. Conclude with `(Formalism.HermitianLatticeCounting.Final.S7.dimIdentity a j n0).2.1`. Establish `hres' : res ≤ (C * Real.log rd) ^ (2 * f)`.
+
+Use `le_trans hres ?_` and prove the remaining obligations. Rewrite using `[← Even.pow_abs ⟨f, two_mul f⟩ (Cres * Real.log rd), abs_mul, abs_of_pos hℓ]`. Conclude with `pow_le_pow_left₀ (by positivity) (mul_le_mul_of_nonneg_right hCres hℓ.le) _`. Establish `h2` using `hK (p + q) p q (∑ x, j x) a f (dimN j n0) (rd / 2) res (Real.log rd) hn rfl hq2 ha haJ hJq hf hdN hv hℓ hll hres0 hres'`. Use `le_trans ?_ h2` and prove the remaining obligations.
+
+Unfold `cn_kapBd`. Use `le_trans h1 ?_` and prove the remaining obligations. Establish `hC'0 : 0 < C'` using `by linarith`. Use `gcongr`.
+-/
 theorem cn_kappa_num (Cv Cres : ℝ) (hCv : 1 ≤ Cv) : ∃ n₁ : ℕ, ∀ (a p q n0 f : ℕ) (j : Fin a → ℕ) (rd res : ℝ),
     n₁ ≤ p + q → q ≤ p → q ^ 2 ≤ p + q → (∀ x, 1 ≤ j x) → 1 ≤ a → ∑ x, j x ≤ q → p + q = n0 + 2 * ∑ x, j x → 1 ≤ f →
     1 < rd → Real.log (Real.log rd) ≤ ((p + q : ℕ) : ℝ) → 0 ≤ res → res ≤ (Cres * Real.log rd) ^ (2 * f) →
@@ -67,6 +82,11 @@ def CSize.KappaVol {X : CData} (S : CSize X) (Cv : ℝ) : Prop :=
   ∀ (J : ℕ) (c : Composition J), 1 ≤ J → J ≤ X.qq →
     S.kap J c ≤ cn_kapBd Cv c.blocksFun (X.I.n - X.qq) X.qq (X.I.n - 2 * J) X.I.f (X.I.rd / 2) (cn_res X)
 
+/- English proof (translation)
+Establish `hdeg : 1 < Module.finrank ℚ I.E`. Establish `h1 : Module.finrank ℚ I.F * Module.finrank I.F I.E = Module.finrank ℚ I.E` using `Module.finrank_mul_finrank ℚ I.F I.E`. Rewrite `h1` using `[I.cm.deg2]`. Establish `h2 : 1 ≤ Module.finrank ℚ I.F` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2` using `NumberField.abs_discr_gt_two hdeg`. Establish `h3 : (2 : ℝ) < |(discr I.E : ℝ)|` using `by exact_mod_cast h2`. Unfold `AutInst.rd`. Establish `hf : (0 : ℝ) < (I.f : ℝ)` using `by exact_mod_cast one_le_autInst_f I`. Conclude with `Real.one_lt_rpow (by linarith) (by positivity)`.
+-/
 theorem cn_one_lt_rd (I : AutInst) : 1 < I.rd := by
   have hdeg : 1 < Module.finrank ℚ I.E := by
     have h1 : Module.finrank ℚ I.F * Module.finrank I.F I.E = Module.finrank ℚ I.E := Module.finrank_mul_finrank ℚ I.F I.E
@@ -79,6 +99,13 @@ theorem cn_one_lt_rd (I : AutInst) : 1 < I.rd := by
   have hf : (0 : ℝ) < (I.f : ℝ) := by exact_mod_cast one_le_autInst_f I
   exact Real.one_lt_rpow (by linarith) (by positivity)
 
+/- English proof (translation)
+Take `⟨n₁, h⟩` from `cn_kappa_num Cv Cres hCv`. Use `⟨max n₁ 4, fun X S n₀ A hn hX hK hR J c hJ1 hJq => ?_⟩` and prove the remaining obligations. Take `⟨-, hq2⟩` from `X.qq_spec hX`. Establish `hn4 : 4 ≤ X.I.n` using `le_trans (le_max_right _ _) hn`. Establish `h2q : 2 * X.qq ≤ X.I.n`.
+
+Distinguish the cases in `h : X.qq ≤ 1`. Use linear arithmetic over natural numbers and integers. Use the polynomial consequences of the given equalities and inequalities. Establish `hpq : X.I.n - X.qq + X.qq = X.I.n` using `by omega`. Use `h c.length (X.I.n - X.qq) X.qq (X.I.n - 2 * J) X.I.f c.blocksFun X.I.rd (cn_res X) (by rw [hpq]; exact le_trans (le_max_left _ _) hn) (by omega) (by rw [hpq]; exact hq2) c.one_le_blocksFun (c.length_pos_of_pos hJ1) (by rw [c.sum_blocksFun]; exact hJq) (by rw [c.sum_blocksFun]; om …` as an intermediate fact.
+
+Rewrite `this` using `[c.sum_blocksFun, hpq]`. Conclude with `le_trans (hK J c hJ1 hJq) this`.
+-/
 theorem cn_kappa_le (Cv Cres : ℝ) (hCv : 1 ≤ Cv) : ∃ n₁ : ℕ, ∀ (X : CData) (S : CSize X) (n₀ : ℕ) (A : ℝ), n₁ ≤ X.I.n →
     X.HypB n₀ A → S.KappaVol Cv → cn_ResBound X Cres → ∀ (J : ℕ) (c : Composition J), 1 ≤ J → J ≤ X.qq →
     S.kap J c ≤ Real.exp (-(1 / 8 * (J : ℝ) * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))) := by

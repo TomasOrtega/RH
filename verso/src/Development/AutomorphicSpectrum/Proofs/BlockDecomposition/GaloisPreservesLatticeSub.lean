@@ -10,6 +10,15 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 
 namespace GlobalTheory.CompanionTheory.LatGal
 
+/- English proof (translation)
+Establish `hle : sub f ξ l M ≤ (sub f ξ l M).comap g`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z (⟨w, rfl⟩ | ⟨i, rfl⟩)`. Use `show g (f w) ∈ sub f ξ l M`. Rewrite using `[hs]`.
+
+Conclude with `Subring.subset_closure (Or.inl ⟨_, rfl⟩)`. Use `show g (dpE f ξ l M i) ∈ sub f ξ l M`. Establish `hη : g (η f ξ l M) = f u * η f ξ l M`. Rewrite using `[η, map_rat_smul, hs, hu, map_mul, mul_smul_comm]`. Establish `hd : g (dpE f ξ l M i) = f u ^ i * dpE f ξ l M i`.
+
+Rewrite using `[dpE, map_rat_smul, map_pow, hη, mul_pow, mul_smul_comm]`. Rewrite using `[hd]`. Establish `h1 : f u ∈ sub f ξ l M` using `Subring.subset_closure (Or.inl ⟨u, rfl⟩)`. Establish `h2 : dpE f ξ l M i ∈ sub f ξ l M` using `Subring.subset_closure (Or.inr ⟨i, rfl⟩)`. Conclude with `(sub f ξ l M).mul_mem ((sub f ξ l M).pow_mem h1 i) h2`.
+
+Conclude with `fun x hx => hle hx`.
+-/
 theorem map_mem_sub_of_mul {W B : Type} [CommRing W] [CommRing B] [Algebra ℚ B] (f : W →+* B) (ξ : W) (l M : ℕ)
     (g : B →+* B) (s : W → W) (hs : ∀ w, g (f w) = f (s w)) (u : W) (hu : s ξ = u * ξ) :
     ∀ x ∈ sub f ξ l M, g x ∈ sub f ξ l M := by
@@ -30,6 +39,11 @@ theorem map_mem_sub_of_mul {W B : Type} [CommRing W] [CommRing B] [Algebra ℚ B
       exact (sub f ξ l M).mul_mem ((sub f ξ l M).pow_mem h1 i) h2
   exact fun x hx => hle hx
 
+/- English proof (translation)
+Introduce `l _ K M k g hT`. Establish `hmem : toBot g.1 • xi0 l ∈ RingHom.ker (theta0 l)` using `gal_smul_mem_ker_fontaineTheta (toBot g.1) (by`. Rewrite using `[ker_theta0]`. Conclude with `Ideal.mem_span_singleton_self _)`. Rewrite `hmem` using `[ker_theta0, Ideal.mem_span_singleton']`.
+
+Take `⟨u, hu⟩` from `hmem`. Use `map_mem_sub_of_mul (fk l k) (xi0 l) l M _ (fun w => toBot g.1 • w) (fun w => ?_) u hu.symm` and prove the remaining obligations. Use `show Ideal.quotientMap _ (gP l g) hT (Ideal.Quotient.mk _ (wittToBDeRhamPlus (normInteger ℂ_[l]) l w)) = Ideal.Quotient.mk _ (wittToBDeRhamPlus (normInteger ℂ_[l]) l (toBot g.1 • w))`. Rewrite using `[Ideal.quotientMap_mk, ← gal_smul_wittToBDeRhamPlus]`. Both sides reduce to the same expression.
+-/
 theorem gal_mem_sub : ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) (M k : ℕ)
     (g : K.fixingSubgroup) (hT : Ideal.span {tBdR l ^ k} ≤ (Ideal.span {tBdR l ^ k}).comap (Lat.gP l g)),
     ∀ x ∈ Lat.sub (Lat.fk l k) (xi0 l) l M,

@@ -11,6 +11,11 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 section CoordMap
 
+/- English proof (translation)
+Use `symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[(MeasurableEquiv.curry (Fin M) (Fin d) R).symm.map_apply]`. Establish `hpre : (MeasurableEquiv.curry (Fin M) (Fin d) R).symm ⁻¹' Set.pi Set.univ s = Set.pi Set.univ fun i : Fin M => Set.pi Set.univ fun k : Fin d => s (i, k)`. Use extensionality with `x`.
+
+Simplify using `[MeasurableEquiv.curry, Set.mem_pi, Prod.forall, Function.uncurry]`. Rewrite using `[hpre, Measure.pi_pi]`. Repeatedly rewrite using `[Measure.pi_pi]`. Rewrite using `[Fintype.prod_prod_type]`.
+-/
 theorem map_curry_symm_pi {R : Type} [MeasurableSpace R] (lam : Measure R) [SigmaFinite lam]
     (M d : ℕ) :
     (Measure.pi fun _ : Fin M => Measure.pi fun _ : Fin d => lam).map
@@ -27,6 +32,9 @@ theorem map_curry_symm_pi {R : Type} [MeasurableSpace R] (lam : Measure R) [Sigm
   simp_rw [Measure.pi_pi]
   rw [Fintype.prod_prod_type]
 
+/- English proof (translation)
+Rewrite using `[MeasurableEquiv.map_symm]`. Establish `: (e : R ⊗[F] E → Fin d → R) = fun (y : R ⊗[F] E) (k : Fin d) => (Algebra.TensorProduct.basis R b).repr y k`. Use function extensionality and compare the values at `y k`. Conclude with `he y k`. Rewrite using `[coordK, this]`.
+-/
 theorem coordK_eq_map {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R]
     [Algebra F R] [TopologicalSpace R] [MeasurableSpace R]
     {d : ℕ} (b : Module.Basis (Fin d) F E) (lam : Measure R)
@@ -39,6 +47,21 @@ theorem coordK_eq_map {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} 
     funext y k; exact he y k
   rw [coordK, this]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ R _ _ _ _ _ _ _ _ _ d b lam hlam M`. Take `⟨-, -, -, -, -, -, hh, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI := hlam`. Establish `hSF : SigmaFinite lam` using `inferInstance`.
+
+Set `e : R ⊗[F] E ≃ₜ (Fin d → R)` to `(hh d b).homeomorph _`. Establish `he : ∀ y k, e y k = (Algebra.TensorProduct.basis R b).repr y k` using `fun _ _ => rfl`. Set `em : R ⊗[F] E ≃ᵐ (Fin d → R)` to `e.toMeasurableEquiv`. Establish `hem : ∀ y k, em y k = (Algebra.TensorProduct.basis R b).repr y k` using `fun _ _ => rfl`. Establish `hK : coordK R b lam = (Measure.pi fun _ => lam).map em.symm` using `coordK_eq_map b lam em hem`.
+
+Use `haveI : SigmaFinite (coordK R b lam) := by`. Rewrite using `[hK]`. Conclude with `em.symm.measurableEmbedding.sigmaFinite_map`. Establish `hmp : MeasurePreserving em (coordK R b lam) (Measure.pi fun _ : Fin d => lam)` using `⟨em.measurable, by rw [hK]; exact MeasurableEquiv.map_map_symm em⟩`. Set `Φ : (Fin 1 → Fin M → R ⊗[F] E) ≃ᵐ (Fin M × Fin d → R)` to `(MeasurableEquiv.funUnique (Fin 1) (Fin M → R ⊗[F] E)).trans ((MeasurableEquiv.piCongrRight fun _ : Fin M => em).trans (MeasurableEquiv.curry (Fin M) (Fin d) R).symm)`.
+
+Establish `hΦ : (fun X : Fin 1 → Fin M → R ⊗[F] E => cv R b (X 0)) = Φ` using `rfl`. Establish `hsymm : (Φ.symm : (Fin M × Fin d → R) → Fin 1 → Fin M → R ⊗[F] E) = fun x _ i => e.symm fun k => x (i, k)` using `rfl`. Establish `hc1 : Continuous (Φ : (Fin 1 → Fin M → R ⊗[F] E) → Fin M × Fin d → R)`. Rewrite using `[← hΦ]`. Use `continuous_pi fun p => ?_` and prove the remaining obligations.
+
+Conclude with `(continuous_apply p.2).comp (e.continuous.comp ((continuous_apply p.1).comp (continuous_apply 0)))`. Establish `hc2 : Continuous (Φ.symm : (Fin M × Fin d → R) → Fin 1 → Fin M → R ⊗[F] E)`. Rewrite using `[hsymm]`. Use `continuous_pi fun _ => continuous_pi fun i => e.symm.continuous.comp ?_` and prove the remaining obligations. Conclude with `continuous_pi fun k => continuous_apply _`.
+
+Set `Ψ : (Fin 1 → Fin M → R ⊗[F] E) ≃ₜ (Fin M × Fin d → R)` to `{ Φ.toEquiv with continuous_toFun := hc1, continuous_invFun := hc2 }`. Use `⟨Ψ.isHomeomorph, Φ.measurableEmbedding, ?_⟩` and prove the remaining obligations. Establish `s1` using `measurePreserving_funUnique (Measure.pi fun _ : Fin M => coordK R b lam) (Fin 1)`. Establish `s2` using `measurePreserving_pi (fun _ : Fin M => coordK R b lam) (fun _ : Fin M => Measure.pi fun _ : Fin d => lam) (fun _ => hmp)`. Establish `h12` using `s2.comp s1`.
+
+Rewrite using `[hΦ, ← map_curry_symm_pi lam M d, ← h12.map_eq, Measure.map_map (MeasurableEquiv.curry (Fin M) (Fin d) R).symm.measurable h12.measurable]`. Both sides reduce to the same expression.
+-/
 theorem coordMap_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R] (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R), lam.IsAddHaarMeasure → ∀ M : ℕ, IsHomeomorph (fun X : Fin 1 → Fin M → R ⊗[F] E => cv R b (X 0)) ∧ MeasurableEmbedding (fun X : Fin 1 → Fin M → R ⊗[F] E => cv R b (X 0)) ∧ (coordW R b lam 1 M).map (fun X : Fin 1 → Fin M → R ⊗[F] E => cv R b (X 0)) = Measure.pi fun _ : Fin M × Fin d => lam := by
   intro F E _ _ _ _ _ σ hσ R _ _ _ _ _ _ _ _ _ d b lam hlam M
   obtain ⟨-, -, -, -, -, -, hh, -⟩ := GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R

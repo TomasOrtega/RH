@@ -2,6 +2,27 @@ import Mathlib
 
 namespace Bl.general_b_fact_right_ter_form
 
+/- English proof (translation)
+Introduce `L _ _ x c hx P hP _ σ hσ`. Establish `hsq : (σ x) ^ 2 = x ^ 2`. Rewrite using `[← map_pow, hx, map_intCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hsq with h | h` into its components or cases. Conclude with `h`.
+
+It suffices to derive a contradiction. Establish `hx' : x ^ 2 = 8 * (c : L) + 1` using `by rw [hx]; push_cast; ring`. Establish `hint : IsIntegral ℤ ((1 + x) / 2)`. Use `⟨Polynomial.X ^ 2 - Polynomial.X - Polynomial.C (2 * c), ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`.
+
+Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Simplify using `only [eq_intCast, Int.cast_mul, Int.cast_ofNat]`. Take the linear combination `hx' / 4`. Set `y : NumberField.RingOfIntegers L` to `⟨(1 + x) / 2, hint⟩`. Establish `hy : algebraMap (NumberField.RingOfIntegers L) L y = (1 + x) / 2` using `rfl`.
+
+Establish `h2 : (2 : NumberField.RingOfIntegers L) ∈ P`. Establish `h0` using `(Ideal.mem_of_liesOver P (Ideal.span {(2 : ℤ)}) (2 : ℤ)).mp (Ideal.subset_span rfl)`. Simplify using `using h0`. Establish `hprod : y * (y - 1) = 2 * (c : NumberField.RingOfIntegers L)`. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `algebraMap (NumberField.RingOfIntegers L) L (y * (y - 1)) = algebraMap (NumberField.RingOfIntegers L) L (2 * (c : NumberField.RingOfIntegers L))`. Rewrite using `[map_mul, map_sub, map_one, map_mul, map_ofNat, map_intCast, hy]`. Take the linear combination `hx' / 4`. Establish `hmem : y * (y - 1) ∈ P`. Rewrite using `[hprod]`.
+
+Conclude with `P.mul_mem_right _ h2`. Establish `hσP : Ideal.map (MulSemiringAction.toRingHom (L ≃ₐ[ℚ] L) (NumberField.RingOfIntegers L) σ) P = P` using `hσ`. Establish `key : ∀ a ∈ P, σ • a ∈ P` using `fun a ha => by`. Establish `h3` using `Ideal.mem_map_of_mem (MulSemiringAction.toRingHom (L ≃ₐ[ℚ] L) (NumberField.RingOfIntegers L) σ) ha`. Rewrite `h3` using `[hσP]`.
+
+Conclude with `h3`. Establish `hσy : σ • y = 1 - y`. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `σ (algebraMap (NumberField.RingOfIntegers L) L y) = algebraMap (NumberField.RingOfIntegers L) L (1 - y)`. Rewrite using `[map_sub, map_one, hy, map_div₀, map_add, map_one, h, map_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (1 : NumberField.RingOfIntegers L) ∈ P`. Break down `hP.mem_or_mem hmem with h' | h'` into its components or cases. Establish `h4` using `key y h'`. Rewrite `h4` using `[hσy]`.
+
+Establish `e : (1 : NumberField.RingOfIntegers L) = (1 - y) + y` using `by ring`. Rewrite using `[e]`. Conclude with `P.add_mem h4 h'`. Establish `h4` using `key _ h'`. Rewrite `h4` using `[smul_sub, hσy, smul_one]`.
+
+Establish `e : (1 : NumberField.RingOfIntegers L) = -((1 - y - 1) + (y - 1))` using `by ring`. Rewrite using `[e]`. Conclude with `P.neg_mem (P.add_mem h4 h')`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).mpr h1)`.
+-/
 theorem goal1 :
   ∀ {L : Type} [inst : Field.{0} L] [inst_1 : @NumberField.{0} L inst] (x : L) (c : Int),
   @Eq.{1} L

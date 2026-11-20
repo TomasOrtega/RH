@@ -20,6 +20,11 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h0 : prV (E` using `E) v ((x : Matrix (Fin n) (Fin n) (AfE F E)) i j) = prV (E := E) v ((x' : Matrix (Fin n) (Fin n) (AfE F E)) i j) := congrArg (fun g : GL (Fin n) (E ⊗[F] v.adicCompletion F) => (g : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) i j) h`. Establish `h1 : prV (E` using `E) v ((x : Matrix (Fin n) (Fin n) (AfE F E)) i j - (x' : Matrix (Fin n) (Fin n) (AfE F E)) i j) = 0 := by`. Rewrite using `[map_sub, h0, sub_self]`.
+
+Establish `h2` using `(GlobalTheory.T.placeProjection_zero_integral_iff_components_above F E v _).1.1 h1 P hP`. Rewrite `h2` using `[map_sub, sub_eq_zero]`. Conclude with `h2`.
+-/
 theorem localComponent_congr {v : HeightOneSpectrum (𝓞 F)} {P : HeightOneSpectrum (𝓞 E)} (hP : P.under (𝓞 F) = v)
     {x x' : GL (Fin n) (AfE F E)} (h : bc (prV (E := E) v) x = bc (prV (E := E) v) x') : rhoP F P x = rhoP F P x' := by
   apply Units.ext
@@ -39,12 +44,22 @@ section Dense
 variable {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K]
   {hc : CMData F E} {n : ℕ} [NeZero n] {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Take `⟨y, hy, -⟩` from `St_one_int (congruence_subgroup_le_stabilizer hc n ST (principal_le_congruence_subgroup hc n ST SG hz))`. Rewrite using `[hy]`. Conclude with `(mem_rInt_iff F E _).1 (y i j).2 P`.
+-/
 theorem valuation_entries_le_one_of_mem_levelGroupOne {z : GL (Fin n) (AfE F E)} (hz : z ∈ K1 hc n ST SG) (P : HeightOneSpectrum (𝓞 E)) (i j : Fin n) :
     Valued.v (adAt F P ((z : Matrix (Fin n) (Fin n) (AfE F E)) i j)) ≤ 1 := by
   obtain ⟨y, hy, -⟩ := St_one_int (congruence_subgroup_le_stabilizer hc n ST (principal_le_congruence_subgroup hc n ST SG hz))
   rw [hy]
   exact (mem_rInt_iff F E _).1 (y i j).2 P
 
+/- English proof (translation)
+Establish `hc0 : algebraMap E (P.adicCompletion E) c ≠ 0`. Simplify using `using h0`. Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `valuation_entries_le_one_of_mem_levelGroupOne hz P i j`. Rewrite using `[← map_inv]`.
+
+Conclude with `valuation_entries_le_one_of_mem_levelGroupOne (inv_mem hz) P i j`. Use `⟨(locM P z - 1) i j / algebraMap E (P.adicCompletion E) c, ?_, ?_⟩` and prove the remaining obligations. Use `show Valued.v ((locM P z - 1) i j / algebraMap E (P.adicCompletion E) c) ≤ 1`. Rewrite using `[map_div₀, valued_algebraMap]`. Conclude with `div_le_one_of_le₀ (hs i j) zero_le'`.
+
+Rewrite using `[mul_div_cancel₀ _ hc0]`. Both sides reduce to the same expression.
+-/
 theorem rhoP_mem_qbK {z : GL (Fin n) (AfE F E)} (hz : z ∈ K1 hc n ST SG) (P : HeightOneSpectrum (𝓞 E)) {c : E} (h0 : c ≠ 0)
     (hs : Sm Valued.v (P.valuation E c) (locM P z - 1)) : rhoP F P z ∈ qbK (algebraMap E (P.adicCompletion E) c) := by
   have hc0 : algebraMap E (P.adicCompletion E) c ≠ 0 := by
@@ -60,6 +75,17 @@ theorem rhoP_mem_qbK {z : GL (Fin n) (AfE F E)} (hz : z ∈ K1 hc n ST SG) (P : 
     · rw [mul_div_cancel₀ _ hc0]
       rfl
 
+/- English proof (translation)
+Introduce `g hg`. Establish `hkt : k * t ∈ UAd hc n` using `mul_mem hk (principal_le_adelic_unitary hc n ST SG ht)`. Take `⟨z, hz, hsm, p, hp⟩` from `GlobalTheory.T.exists_K1_point_congruent F E hc n ST SG Q hQ (g * (k * t)) (mul_mem hg hkt) e`. Establish `hzU` using `principal_le_adelic_unitary hc n ST SG hz`. Use `⟨(k * t) * z * (k * t)⁻¹, ⟨?_, ?_⟩, p, ?_⟩` and prove the remaining obligations.
+
+Use `(hU _ (mul_mem (mul_mem hkt hzU) (inv_mem hkt))).2 ?_` and prove the remaining obligations. Establish `e1 : k⁻¹ * ((k * t) * z * (k * t)⁻¹) * k = t * z * t⁻¹` using `by group`. Rewrite using `[e1]`. Establish `hle` using `kOne_le_unipotentLevel hc n ST SG Λ.grp`. Conclude with `mul_mem (mul_mem (hle ht) (hle hz)) (inv_mem (hle ht))`.
+
+Use `Subgroup.mem_iInf.2 fun P => ?_` and prove the remaining obligations. Establish `e2 : rhoT F P.1 t ((k * t) * z * (k * t)⁻¹) = rhoP F P.1 z`. Establish `e3 : t⁻¹ * ((k * t) * z * (k * t)⁻¹) * t⁻¹⁻¹ = t⁻¹ * k * t * z * t⁻¹ * k⁻¹ * t` using `by group`. Use `show rhoP F P.1 (t⁻¹ * ((k * t) * z * (k * t)⁻¹) * t⁻¹⁻¹) = _`. Rewrite using `[e3]`.
+
+Simplify using `only [map_mul, map_inv, hrk P, inv_one, mul_one, inv_mul_cancel, one_mul, mul_inv_cancel_right]`. Use `group`. Use `Subgroup.mem_comap.2 ?_` and prove the remaining obligations. Rewrite using `[e2]`. Use `qbK_le_locLev P.1 (Θ P) (d P) (rhoP_mem_qbK hz P.1 (hd P) ?_)` and prove the remaining obligations.
+
+Rewrite using `[hdq P]`. Conclude with `hsm P`. Establish `e4 : g * ((k * t) * z * (k * t)⁻¹) * (k * t) = g * (k * t) * z` using `by group`. Rewrite using `[e4]`. Conclude with `hp`.
+-/
 theorem topU_dense {U : Subgroup (GL (Fin n) (AfE F E))} {Λ : LevFam E K n SG} {Θ : LevQFam E K n Q} {d : Q → E} {k t : GL (Fin n) (AfE F E)}
     (e : ℕ) (hd : ∀ P, d P ≠ 0) (hQ : ∀ P ∈ Q, P ∉ ST ∧ P ∉ SG ∧ conjPrime₂ P ∉ ST ∧ conjPrime₂ P ∉ SG ∧ conjPrime₂ P ∉ Q)
     (hdq : ∀ P : Q, d P = ((qOf P.1 : ℕ) : E) ^ e) (hk : k ∈ UAd hc n) (hrk : ∀ P : Q, rhoP F P.1 k = 1) (ht : t ∈ K1 hc n ST SG)
@@ -95,6 +121,29 @@ end Dense
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `F E K _ _ _ _ _ _ _ hc n _ ST SG Q J T f bad S Qv Λ Θ e d hd N hdN hΘ k t C s y stab _ lat gm ψ hJ hQv hT hQ hdq hk hrk ht hU hlatS hpt hinj hsurj hlatc hgmi hgr hψ`. Substitute `hJ` using the available equality. Establish `hkt : k * t ∈ UAd hc n` using `mul_mem hk (principal_le_adelic_unitary hc n ST SG ht)`. Establish `hover : ∀ P : Q, P.1.under (𝓞 F) ∈ Qv` using `fun P => (hQv _).2 ⟨P.1, P.2, rfl⟩`. Establish `hloc : ∀ x ∈ S.U, (∀ v ∈ Qv, ∃ x' ∈ topU S.U t Θ d, bc (prV (E` using `E) v) x = bc (prV (E := E) v) x') → x ∈ topU S.U t Θ d := by`.
+
+Introduce `x hx h`. Use `⟨hx, Subgroup.mem_iInf.2 fun P => ?_⟩` and prove the remaining obligations. Take `⟨x', hx', e'⟩` from `h _ (hover P)`. Establish `e1 : rhoT F P.1 t x = rhoT F P.1 t x'` using `by show rhoP F P.1 (t⁻¹ * x * t⁻¹⁻¹) = rhoP F P.1 (t⁻¹ * x' * t⁻¹⁻¹)`. Establish `e0` using `localComponent_congr (P := P.1) rfl e'`.
+
+Simplify using `only [map_mul, e0]`. Use `Subgroup.mem_comap.2 ?_` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `rhoT_mem hx' P`. Establish `hψ' : ∀ x : topU S.U t Θ d, (∀ v ∈ Qv, bc (prV (E` using `E) v) x.1 = 1) → ψ x = 1 := fun x h => hψ x fun P => by`.
+
+Establish `h1` using `localComponent_congr (P := P.1) rfl ((h _ (hover P)).trans (map_one (bc (prV (E := E) (P.1.under (𝓞 F))))).symm)`. Rewrite using `[h1, map_one]`. Take `⟨L, hLb, hLU, hLoc, hLchi⟩` from `GlobalTheory.T.exists_stepLevel_smaller_at_finite_places F E hc.sig n 1 T f bad S Qv (topU S.U t Θ d) ψ (topU_le _ _ _ _) hT hloc (topU_open F E K hc.sig n 1 Q S.U t Θ d hd S.U_open) hψ'`. Establish `hyU : ∀ c, y c ∈ UPts hc.sig (1 : Matrix (Fin n) (Fin n) E) (FiniteAdeleRing (𝓞 F) F)` using `fun c => by`. Establish `h1 : y c * (k * t) * (k * t)⁻¹ ∈ UAd hc n` using `mul_mem (hpt c).uni (inv_mem hkt)`.
+
+Rewrite `h1` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis. Establish `hlev : ∀ (g x : GL (Fin n) (AfE F E)) (p p' : DecoF E n ST SG Q), IsPtOf hc (g * (k * t)) p → IsPtOf hc (g * x * (k * t)) p' → (x ∈ topU S.U t Θ d ↔ ∃ (h : Λ.grp) (θ : Θ.grp), ((1, h.1, θ.1) : UF E n × GLG E n SG × GLQ E n Q) • p = p')` using `fun g x p p' h h' => GlobalTheory.T.mem_framedLevel_iff_two_adelic_points F E K hc n ST SG Q Λ Θ d hd N hdN hΘ S.U k t g x p p' hk hrk ht hU h h'`. Establish `hle : topU S.U t Θ d ≤ UAd hc n` using `fun x hx => ((S.U_eq x).1 (topU_le _ _ _ _ hx)).1`. Set `sI : ∀ c, stab c →* UJ (hc.sig : E →+* E) (1 : Matrix (Fin n) (Fin n) E)` to `fun c => ((ufGL E n).comp (gm c)).codRestrict _ fun a => by show ufGL E n (gm c a) ∈ URat hc n`. Rewrite using `[RatMove.ufGL_eq hc]`.
+
+Conclude with `((ratEquiv hc n).symm (gm c a)).2`. Use `⟨{ lev := L, y := fun c => ⟨y c, hyU c⟩, y_bij := ?_, y_lat := ?_, stabI := sI, stabI_inj := ?_, stabI_range := ?_ }, hLb, hLU, hLoc, hLchi, fun c => rfl, fun c a => rfl⟩` and prove the remaining obligations. Use `GlobalTheory.T.decoratedPointClasses_bijective_doubleCosets F E K hc n ST SG Q C Λ Θ s L.U (k * t) (fun c => ⟨y c, hyU c⟩) (hLU ▸ hle) hkt ?_ ?_ hpt hinj hsurj` and prove the remaining obligations. Rewrite using `[hLU]`. Conclude with `hlev`.
+
+Rewrite using `[hLU]`. Conclude with `topU_dense e hd hQ hdq hk hrk ht hU`. Introduce `c x`. Rewrite using `[hlatc c, hLb]`. Conclude with `PtLat.latS_deco_iff F E hc n ST SG Q S.Lb k t (y c) (s c) ht hlatS (hpt c) x`.
+
+Introduce `c a b h`. Establish `h1 : ufGL E n (gm c a) = ufGL E n (gm c b)` using `congrArg Subtype.val h`. Conclude with `hgmi c (Subtype.ext ((toGLm E n).injective h1))`. Introduce `c γ`. Establish `e1 : ufGL E n (ratHom hc n γ) = γ.1`.
+
+Rewrite using `[RatMove.ufGL_eq hc]`. Conclude with `congrArg Subtype.val ((ratEquiv hc n).symm_apply_apply γ)`. Establish `key` using `stab_iff_mem_conj F E K hc n ST SG Q Λ Θ (topU S.U t Θ d) (k * t) (y c) (s c) hlev (hpt c) (ratHom hc n γ)`. Establish `e2 : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ.1 = ratAd F (ratHom hc n γ) := by rw [ratAd, e1]`. Rewrite using `[e2, hLU]`.
+
+Use `Iff.trans ?_ ((hgr c _).trans key)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Use `⟨a, Subtype.ext ((toGLm E n).injective ?_)⟩` and prove the remaining obligations. Conclude with `(congrArg Subtype.val ha).trans e1.symm`.
+
+Introduce and unpack `⟨a, ha⟩`. Use `⟨a, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show ufGL E n (gm c a) = γ.1`. Rewrite using `[ha, e1]`.
+-/
 theorem exists_clsG_top : ∀ (F E K : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K] (hc : CMData F E) (n : ℕ) [NeZero n] (ST SG Q : Finset (HeightOneSpectrum (𝓞 E))) (J : Matrix (Fin n) (Fin n) E) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 F))) (S : StepLevel F E hc.sig J T f bad) (Qv : Finset (HeightOneSpectrum (𝓞 F))) (Λ : LevFam E K n SG) (Θ : LevQFam E K n Q) (e : ℕ) (d : Q → E) (hd : ∀ P, d P ≠ 0) (N : Q → ℕ) (hdN : ∀ P : Q, P.1.valuation E (d P) ≤ WithZero.exp (-(N P : ℤ))) (hΘ : ∀ (P : Q) (g : ↥(GLint E n P.1)), lqPrinc P.1 (N P) (g : Sp E n ≃ₗ[E] Sp E n) → ∃ h : g ∈ (Θ P).H, (Θ P).lam ⟨g, h⟩ = 1) (k t : GL (Fin n) (AfE F E)) (C : Type) (s : C → DecoF E n ST SG Q) (y : C → GL (Fin n) (AfE F E)) (stab : C → Type) [∀ c, Group (stab c)] (lat : C → Submodule (𝓞 E) (Fin n → E)) (gm : ∀ c, stab c →* UF E n) (ψ : topU S.U t Θ d →* ℂˣ), J = 1 → (∀ v, v ∈ Qv ↔ ∃ P ∈ Q, P.under (𝓞 F) = v) → (∀ v ∈ Qv, (T : 𝓞 F) ∉ v.asIdeal) → (∀ P ∈ Q, P ∉ ST ∧ P ∉ SG ∧ conjPrime₂ P ∉ ST ∧ conjPrime₂ P ∉ SG ∧ conjPrime₂ P ∉ Q) → (∀ P : Q, d P = ((qOf P.1 : ℕ) : E) ^ e) → k ∈ UAd hc n → (∀ P : Q, rhoP F P.1 k = 1) → t ∈ K1 hc n ST SG → (∀ x ∈ UAd hc n, x ∈ S.U ↔ k⁻¹ * x * k ∈ levU hc n ST SG Λ.grp) → (∀ x : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F, x ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) S.Lb ↔ (k⁻¹ : GL (Fin n) (AfE F E)).1 *ᵥ x ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) (baseLb E n ST)) → (∀ c, IsPtOf hc (y c * (k * t)) (s c)) → (∀ c c' (γ : UF E n) (h : Λ.grp) (θ : Θ.grp), ((γ, h.1, θ.1) : UF E n × GLG E n SG × GLQ E n Q) • s c = s c' → c = c') → (∀ p, ∃ c, ∃ (γ : UF E n) (h : Λ.grp) (θ : Θ.grp), ((γ, h.1, θ.1) : UF E n × GLG E n SG × GLQ E n Q) • s c = p) → (∀ c, lat c = (s c).deco.1.L) → (∀ c, Function.Injective (gm c)) → (∀ c (γ : UF E n), γ ∈ (gm c).range ↔ ∃ (h : Λ.grp) (θ : Θ.grp), ((γ, h.1, θ.1) : UF E n × GLG E n SG × GLQ E n Q) • s c = s c) → (∀ x : topU S.U t Θ d, (∀ P : Q, rhoP F P.1 x.1 = 1) → ψ x = 1) → ∃ C' : ClsG hc.sig J T f (bad ∪ (Qv : Set (HeightOneSpectrum (𝓞 F)))) stab lat, C'.lev.Lb = S.Lb ∧ C'.lev.U = topU S.U t Θ d ∧ (∀ v, v ∉ Qv → C'.lev.Uloc v = S.Uloc v) ∧ (∀ (x : C'.lev.U) (x' : S.U) (x'' : topU S.U t Θ d), x.1 = x'.1 → x.1 = x''.1 → C'.lev.chi x = S.chi x' * ψ x'') ∧ (∀ c, (C'.y c).1 = y c) ∧ ∀ c s, (C'.stabI c s).1 = ufGL E n (gm c s) := by
   intro F E K _ _ _ _ _ _ _ hc n _ ST SG Q J T f bad S Qv Λ Θ e d hd N hdN hΘ k t C s y stab _ lat gm ψ
     hJ hQv hT hQ hdq hk hrk ht hU hlatS hpt hinj hsurj hlatc hgmi hgr hψ

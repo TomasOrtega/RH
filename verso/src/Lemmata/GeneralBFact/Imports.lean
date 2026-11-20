@@ -5,6 +5,11 @@ open scoped InnerProductSpace
 
 namespace Bl.general_b_fact
 
+/- English proof (translation)
+Establish `h1 : (A * B : Matrix (Fin i) (Fin i) R) = fun a => ∑ k, A a k • B k`. Use function extensionality and compare the values at `a j`. Simplify using `only [Matrix.mul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Establish `h2 : (A * B).det = (detRowAlternating : (Fin i → R) [⋀^Fin i]→ₗ[R] R).toMultilinearMap (fun a => ∑ k, A a k • B k)`. Rewrite using `[Matrix.det, h1]`.
+
+Both sides reduce to the same expression. Rewrite using `[h2, MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem goal1 {R : Type*} [CommRing R] {i N : ℕ} (A : Matrix (Fin i) (Fin N) R)
     (B : Matrix (Fin N) (Fin i) R) :
     (A * B).det = ∑ f : Fin i → Fin N, (∏ a, A a (f a)) * (B.submatrix f id).det := by

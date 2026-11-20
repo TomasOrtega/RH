@@ -9,6 +9,17 @@ noncomputable section
 
 namespace GlobalTheory.RapCover
 
+/- English proof (translation)
+Introduce `E _ _ _ a s L hL`. Establish `h0 : (unip (0 : BlockIx a s → Af E)) = 1`. Establish `h` using `unip_add (0 : BlockIx a s → Af E) 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.1 h.symm)`.
+
+Establish `hpre : (fun y : BlockIx a s → Af E => unip y) ⁻¹' L ∈ nhds (0 : BlockIx a s → Af E)`. Apply `JointCont.continuous_unip.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[h0]`. Conclude with `hL`. Rewrite `hpre` using `[nhds_pi, Filter.mem_pi]`.
+
+Take `⟨I, -, t, ht, hsub⟩` from `hpre`. Establish `hU : (⋂ p, t p) ∈ nhds (0 : Af E)` using `Filter.iInter_mem.2 fun p => by simpa using ht p`. Take `⟨R, hR, hx⟩` from `GlobalTheory.T.exists_rational_sub_bounded_infinite_small_finite E (⋂ p, t p) hU`. Use `⟨R, hR, fun x => ?_⟩` and prove the remaining obligations. Use `choose ξ hξ1 hξ2 using fun p => hx (x p)`.
+
+Use `⟨ξ, fun p => pInf E (x p - algebraMap E (Ad E) (ξ p)), unip (fun p => pFin E (x p - algebraMap E (Ad E) (ξ p))), ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `hsub` to reduce the goal to its premises. Introduce `p _`. Conclude with `Set.mem_iInter.1 (hξ2 p) p`. Conclude with `(pi_norm_le_iff_of_nonneg hR).2 hξ1`.
+
+Establish `hsplit : x = (fun p => algebraMap E (Ad E) (ξ p)) + (fun p => x p - algebraMap E (Ad E) (ξ p))`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [hsplit, unip_add, unip_algebraMap, ← infGL_mul_finGL (unip (fun p => x p - algebraMap E (Ad E) (ξ p))), JointCont.map_unip, JointCont.map_unip]`. Rewrite using `[mul_assoc]`.
+-/
 theorem unip_eq_rat_mul_inf_mul_fin : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (s : ℕ)
     (L : Set (GL (Fin a) (Af E))), L ∈ nhds (1 : GL (Fin a) (Af E)) → ∃ R : ℝ, 0 ≤ R ∧ ∀ x : BlockIx a s → Ad E,
     ∃ (ξ : BlockIx a s → E) (z : BlockIx a s → Cinf E) (k : GL (Fin a) (Af E)), k ∈ L ∧ ‖z‖ ≤ R ∧

@@ -25,6 +25,11 @@ namespace GlobalTheory.SmallJets
 
 section Alg
 
+/- English proof (translation)
+Establish `hm : a - algebraMap R A (aug a) ∈ RingHom.ker aug` using `by simp [RingHom.mem_ker]`. Establish `hn : IsNilpotent (a - algebraMap R A (aug a))` using `⟨n + 1, by`. Use `Ideal.pow_mem_pow hm (n + 1)` as an intermediate fact. Rewrite using `[h, Ideal.mem_bot] at this⟩` and apply the resulting hypothesis. Use `hn.isUnit_add_right_of_commute (ha.map (algebraMap R A)) (Commute.all _ _)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem isUnit_of_aug {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (aug : A →ₐ[R] R) {n : ℕ}
     (h : RingHom.ker aug ^ (n + 1) = ⊥) {a : A} (ha : IsUnit (aug a)) : IsUnit a := by
   have hm : a - algebraMap R A (aug a) ∈ RingHom.ker aug := by simp [RingHom.mem_ker]
@@ -34,6 +39,9 @@ theorem isUnit_of_aug {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (aug 
   have := hn.isUnit_add_right_of_commute (ha.map (algebraMap R A)) (Commute.all _ _)
   simpa using this
 
+/- English proof (translation)
+Establish `: Nontrivial A` using `aug.toRingHom.domain_nontrivial`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (aug a) with h1 | h1` into its components or cases. Conclude with `Or.inl (isUnit_of_aug aug h h1)`. Conclude with `Or.inr (isUnit_of_aug aug h (by rwa [map_sub, map_one]))`.
+-/
 theorem isLocalRing_of_aug {R A : Type} [CommRing R] [IsLocalRing R] [CommRing A] [Algebra R A] (aug : A →ₐ[R] R)
     {n : ℕ} (h : RingHom.ker aug ^ (n + 1) = ⊥) : IsLocalRing A := by
   have : Nontrivial A := aug.toRingHom.domain_nontrivial
@@ -42,6 +50,41 @@ theorem isLocalRing_of_aug {R A : Type} [CommRing R] [IsLocalRing R] [CommRing A
   · exact Or.inl (isUnit_of_aug aug h h1)
   · exact Or.inr (isUnit_of_aug aug h (by rwa [map_sub, map_one]))
 
+/- English proof (translation)
+Use `letI := f.toAlgebra`. Set `M : ℕ → Submodule S A` to `fun m => Submodule.span S {y | ∃ e : Fin r → ℕ, ∑ j, e j ≤ m ∧ y = ∏ j, v j ^ e j}`. Establish `mono : ∀ m, M m ≤ M (m + 1)` using `fun m => Submodule.span_mono fun y ⟨e, he, hy⟩ => ⟨e, by omega, hy⟩`. Establish `mulv : ∀ m j, ∀ y ∈ M m, y * v j ∈ M (m + 1)`. Introduce `m j y hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨e, he, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨e + Pi.single j 1, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Finset.sum_add_distrib, Finset.sum_pi_single', Finset.mem_univ, if_true]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[Finset.prod_eq_single j (fun i _ hi => by simp [hi]) (by simp)]`. Simplify using the standard rewrite rules.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [add_mul]`. Conclude with `add_mem ha hb`. Consider the case `smul s a _ ha => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ _ ha`.
+
+Establish `mult : ∀ m, ∀ y ∈ M m, ∀ u ∈ t, y * u ∈ M (m + 1)`. Introduce `m y hy u hu`. Break down `htv u hu with ⟨s, rfl⟩ | ⟨j, s, s', rfl⟩` into its components or cases. Rewrite using `[mul_comm]`. Conclude with `mono m ((M m).smul_mem s hy)`.
+
+Establish `e : y * (f s * v j + f s') = s • (y * v j) + s' • y` using `by show _ = f s * _ + f s' * _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (Submodule.smul_mem _ _ (mulv m j y hy)) (mono m (Submodule.smul_mem _ _ hy))`. Establish `zero : ∀ a, a ∈ M 0 ⊔ (I ^ (0 + 1)).restrictScalars S` using `fun a => by`.
+
+Take `⟨s, hs⟩` from `hc a`. Use `Submodule.mem_sup.2 ⟨s • 1, Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, by simp, by simp⟩), a - f s, by simpa using hs, ?_⟩` and prove the remaining obligations. Use `show f s * 1 + _ = _`. Expand and normalize the polynomial expressions, which then agree. Establish `step : ∀ m, ∀ a ∈ I ^ m, a ∈ M m ⊔ (I ^ (m + 1)).restrictScalars S`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact fun a _ => zero a`. Consider the case `succ m ih`. Introduce `a ha`.
+
+Rewrite `ha` using `[pow_succ]`. Use `Submodule.mul_induction_on ha (fun x hx y hy => ?_) fun x y hx hy => add_mem hx hy` and prove the remaining obligations. Rewrite `hy` using `[ht]`. Proceed by induction on `hy using Submodule.span_induction generalizing x with`. Consider the case `mem y hy`.
+
+Take `⟨p, hp, i, hi, rfl⟩` from `Submodule.mem_sup.1 (ih x hx)`. Rewrite using `[add_mul]`. Use `Submodule.add_mem_sup (mult m p hp y hy) ?_` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, pow_succ]`. Conclude with `Ideal.mul_mem_mul hi (ht ▸ Ideal.subset_span hy)`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `add_mem (ha x hx) (hb x hx)`. Consider the case `smul s a _ ha`. Rewrite using `[smul_eq_mul, ← _root_.mul_assoc]`.
+
+Conclude with `ha _ (Ideal.mul_mem_right _ _ hx)`. Establish `all : ∀ m a, a ∈ M m ⊔ (I ^ (m + 1)).restrictScalars S`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact zero`.
+
+Consider the case `succ m ih`. Introduce `a`. Take `⟨p, hp, i, hi, rfl⟩` from `Submodule.mem_sup.1 (ih a)`. Conclude with `add_mem (Submodule.mem_sup_left (mono m hp)) (step (m + 1) i hi)`. Establish `fin : ∀ y ∈ M n, ∀ s, f s * y ∈ N`.
+
+Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨e, he, rfl⟩ := hy`. Conclude with `hN e he`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => intro s`. Rewrite using `[mul_add]`. Conclude with `add_mem (ha s) (hb s)`. Consider the case `smul s' a _ ha`. Introduce `s`.
+
+Use `ha (s * s')` as an intermediate fact. Rewrite `this` using `[map_mul, _root_.mul_assoc]`. Then use the resulting hypothesis. Use `eq_top_iff.2 fun a _ => ?_` and prove the remaining obligations. Take `⟨p, hp, i, hi, rfl⟩` from `Submodule.mem_sup.1 (all n a)`. Rewrite `hi` using `[Submodule.restrictScalars_mem, hI, Ideal.mem_bot]`.
+
+Simplify `fin p hp 1` using `[hi]`.
+-/
 theorem eq_top_of_monomials {S A : Type} [CommRing S] [CommRing A] (f : S →+* A) (I : Ideal A) (n : ℕ)
     (hI : I ^ (n + 1) = ⊥) (hc : ∀ a, ∃ s, a - f s ∈ I) {r : ℕ} (v : Fin r → A) (t : Set A) (ht : I = Ideal.span t)
     (htv : ∀ y ∈ t, (∃ s, y = f s) ∨ ∃ j s s', y = f s * v j + f s') (N : AddSubgroup A)
@@ -126,10 +169,18 @@ theorem eq_top_of_monomials {S A : Type} [CommRing S] [CommRing A] (f : S →+* 
 
 open Chart ChartBaseChange
 
+/- English proof (translation)
+The claim follows from `Module.finite_of_surjective_of_ker_le_nilradical (jetAug R (Fin d) n) (aug_surj _) (fun a ha => elt_nil _ (ker_jetAug_nil (R := R) (Fin d) n) a ha) (IsNoetherian.noetherian _)`.
+-/
 theorem finite_jet (R : Type) [CommRing R] [IsNoetherianRing R] (d n : ℕ) : Module.Finite R (JetR R (Fin d) n) :=
   Module.finite_of_surjective_of_ker_le_nilradical (jetAug R (Fin d) n) (aug_surj _)
     (fun a ha => elt_nil _ (ker_jetAug_nil (R := R) (Fin d) n) a ha) (IsNoetherian.noetherian _)
 
+/- English proof (translation)
+Set `π` to `Ideal.Quotient.mkₐ R (p.map (algebraMap R (JetR R (Fin d) n)))`. Establish `hJ : ((RingHom.ker (jetAug R (Fin d) n)).map π) ^ (n + 1) = ⊥`. Rewrite using `[← Ideal.map_pow, ker_jetAug_pow, Ideal.map_bot]`. Set `g` to `jetLift (R ⧸ p) _ hJ (fun j => π (zR n j)) (fun j => Ideal.mem_map_of_mem _ (zR_mem_ker n j))`. Establish `e : (g.restrictScalars R).comp (jetCoeff R (R ⧸ p) (Fin d) n) = π` using `jet_ext fun j => by show g (jetCoeff R (R ⧸ p) (Fin d) n (zR n j)) = _`.
+
+Rewrite using `[jetCoeff_zR, jetLift_zR]`. Use `AlgHom.congr_fun e a` as an intermediate fact. Rewrite `this` using `[AlgHom.comp_apply, ha, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this.symm`.
+-/
 theorem mem_map_of_jetCoeff {R : Type} [CommRing R] (p : Ideal R) (d n : ℕ) {a : JetR R (Fin d) n}
     (ha : jetCoeff R (R ⧸ p) (Fin d) n a = 0) : a ∈ p.map (algebraMap R (JetR R (Fin d) n)) := by
   let π := Ideal.Quotient.mkₐ R (p.map (algebraMap R (JetR R (Fin d) n)))
@@ -143,6 +194,11 @@ theorem mem_map_of_jetCoeff {R : Type} [CommRing R] (p : Ideal R) (d n : ℕ) {a
   rw [AlgHom.comp_apply, ha, map_zero] at this
   exact Ideal.Quotient.eq_zero_iff_mem.1 this.symm
 
+/- English proof (translation)
+Use `finite_jet R d n` as an intermediate fact. Use `eq_top_iff.2 (Submodule.le_of_le_smul_of_le_jacobson_bot (I := p) Module.Finite.fg_top (hp.trans (maximalIdeal_le_jacobson _)) fun a _ => ?_)` and prove the remaining obligations. Take `⟨a', ha', e⟩` from `h (jetCoeff R (R ⧸ p) (Fin d) n a)`. Establish `hm` using `mem_map_of_jetCoeff p d n (a := a - a') (by rw [map_sub, e, sub_self])`. Use `Submodule.mem_sup.2 ⟨a', ha', a - a', ?_, add_sub_cancel _ _⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `hm`.
+-/
 theorem eq_top_of_jetCoeff {R : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (p : Ideal R)
     (hp : p ≤ maximalIdeal R) (d n : ℕ) (N : Submodule R (JetR R (Fin d) n))
     (h : ∀ y, ∃ a ∈ N, jetCoeff R (R ⧸ p) (Fin d) n a = y) : N = ⊤ := by
@@ -161,6 +217,9 @@ section Local
 
 variable {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
 
+/- English proof (translation)
+Establish `key : ∀ {W : Scheme.{0}} (g : W ⟶ Z) (w : W) {J}, Good L w J → sval (SectionArithmetic.secCMul (V` using `⊤) (fun _ => le_top) u (Geo.Tor.genSec τ hτ)) g w J = gs g w ⊤ u * (val τ g w J).val := fun g w J hJ => (gs_mul g w _ (hJ.mem _ g) _ _).trans (congrArg₂ (· * ·) (gs_res g w _ (hJ.mem _ g) _) (sval_genSec τ hτ g w hJ))`. Establish `e` using `sec_ext_val hL (s := SectionArithmetic.pullSec s m) (s' := SectionArithmetic.secCMul (V := ⊤) (fun _ => le_top) u (Geo.Tor.genSec τ hτ)) fun z J hJ => by rw [SectionArithmetic.sval_pullSec s m _ z hJ, Category.id_comp, h z J hJ, key _ z hJ]`. Rewrite using `[← SectionArithmetic.sval_pullSec s m g w hJ, ← key g w hJ]`. Conclude with `congrArg (gs g w _) (e _)`.
+-/
 theorem sval_pull_of_ratio (hL : L.IsLB) {Z : Scheme.{0}} (s : LB.Sec (LB.LinComb L φ ε)) (m : Z ⟶ Y)
     (τ : LB.Gen (LB.LinComb L (fun k => m ≫ φ k) ε)) (hτ : τ.IsGen) (u : Γ(Z, ⊤))
     (h : ∀ z J, Good L z J → sval s m z J = gs (𝟙 Z) z ⊤ u * (val τ (𝟙 Z) z J).val)
@@ -175,6 +234,11 @@ theorem sval_pull_of_ratio (hL : L.IsLB) {Z : Scheme.{0}} (s : LB.Sec (LB.LinCom
   rw [← SectionArithmetic.sval_pullSec s m g w hJ, ← key g w hJ]
   exact congrArg (gs g w _) (e _)
 
+/- English proof (translation)
+Set `j : K → L.ι` to `fun k => c ((r ≫ φ k) (closedPoint A))`. Establish `hm : ∀ p : Sp A, r p ∈ LB.wchart L φ j` using `fun p => (Scheme.preimage_eq_top_of_closedPoint_mem (R := .of A) r (U := LB.wchart L φ j) (Set.mem_iInter.2 fun k => hc ((r ≫ φ k) (closedPoint A)))).ge (Set.mem_univ p)`. Establish `le : (⊤ : (Sp A).Opens) ≤ r ⁻¹ᵁ LB.wchart L φ j` using `fun p _ => hm p`. Use `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom.toMonoidHom (res le (pullU r _ (t.s j))), fun Z g z hz => ?_⟩` and prove the remaining obligations. Establish `e1` using `val_of t (g ≫ r) z (fun ψ => c (ψ z)) j (fun k => congrArg c (by show ((g ≫ r) ≫ φ k) z = (r ≫ φ k) (closedPoint A)`.
+
+Rewrite using `[Category.assoc, Scheme.Hom.comp_apply, hz]))`. Use `(congrArg Units.val (e1.trans ((gm_pull g r z _ (hm _) _).symm.trans (gm_res g z le trivial _).symm))).trans ((gs_unit g z ⊤ trivial _).symm.trans (congrArg (gs g z ⊤) ?_))` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem exists_val_local (c : X → L.ι) (hc : ∀ x, x ∈ L.U (c x)) {A : Type} [CommRing A] [IsLocalRing A]
     (r : Sp A ⟶ Y) (t : LB.Gen (LB.LinComb L φ ε)) : ∃ a : Aˣ, ∀ (Z : Scheme.{0}) (g : Z ⟶ Sp A) (z : Z),
       g z = closedPoint A → (val t (g ≫ r) z (fun ψ => c (ψ z))).val = cst g z a := by
@@ -192,6 +256,11 @@ theorem exists_val_local (c : X → L.ι) (hc : ∀ x, x ∈ L.U (c x)) {A : Typ
     ((gs_unit g z ⊤ trivial _).symm.trans (congrArg (gs g z ⊤) ?_))
   simp
 
+/- English proof (translation)
+Establish `e : IntegralJets.germOf (A` using `A) (closedPoint A) = (stalkClosedPointIso (CommRingCat.of A)).inv.hom := by`. Use `germ_stalkClosedPointIso_hom (CommRingCat.of A)` as an intermediate fact. Rewrite `this` using `[← Iso.eq_comp_inv, ← Iso.inv_comp_eq]`. Conclude with `congrArg CommRingCat.Hom.hom this`. Rewrite using `[e]`.
+
+Conclude with `ConcreteCategory.bijective_of_isIso (stalkClosedPointIso (CommRingCat.of A)).inv`.
+-/
 theorem bijective_germOf (A : Type) [CommRing A] [IsLocalRing A] :
     Function.Bijective (IntegralJets.germOf (A := A) (closedPoint A)) := by
   have e : IntegralJets.germOf (A := A) (closedPoint A) = (stalkClosedPointIso (CommRingCat.of A)).inv.hom := by
@@ -201,11 +270,21 @@ theorem bijective_germOf (A : Type) [CommRing A] [IsLocalRing A] :
   rw [e]
   exact ConcreteCategory.bijective_of_isIso (stalkClosedPointIso (CommRingCat.of A)).inv
 
+/- English proof (translation)
+The claim follows from `IntegralJets.gs_const f z a`.
+-/
 theorem cst_spMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (z : Sp B) (a : A) :
     cst (Geo.Tor.spMap f) z a = IntegralJets.germOf z (f a) := IntegralJets.gs_const f z a
 
 end Local
 
+/- English proof (translation)
+Set `H : Subgroup Aˣ` to `(Units.map f.toMonoidHom).range`. Set `θ : X →+ Additive (Aˣ ⧸ H)` to `AddMonoidHom.mk' (fun χ => Additive.ofMul (QuotientGroup.mk' H (v χ))) fun a b => by`. Take `⟨u, hu⟩` from `hv a b`. Rewrite using `[← ofMul_mul, ← map_mul]`. Use `congrArg Additive.ofMul (QuotientGroup.eq.2 ⟨u, eq_inv_mul_of_mul_eq (Units.ext hu)⟩)` and prove the remaining obligations.
+
+Establish `h : QuotientGroup.mk' H (v (∑ j, e j • b j)) = QuotientGroup.mk' H (∏ j, v (b j) ^ e j)` using `by show Additive.toMul (θ (∑ j, e j • b j)) = _`. Rewrite using `[map_sum, toMul_sum, map_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, toMul_nsmul, map_pow]`. Both sides reduce to the same expression.
+
+Take `⟨u, hu⟩` from `QuotientGroup.eq.1 h`. Use `⟨u, ?_⟩` and prove the remaining obligations. Use `congrArg Units.val (mul_eq_of_eq_inv_mul hu)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_unit_prod {S A X : Type} [CommRing S] [CommRing A] [AddCommGroup X] (f : S →+* A) (v : X → Aˣ)
     (hv : ∀ a b, ∃ u : Sˣ, (v (a + b) : A) * f u = v a * v b) {r : ℕ} (b : Fin r → X) (e : Fin r → ℕ) :
     ∃ u : Sˣ, (v (∑ j, e j • b j) : A) * f u = ∏ j, (v (b j) : A) ^ e j := by
@@ -230,6 +309,9 @@ section Torus
 open Chart ChartBaseChange
 open scoped CategoryTheory.Obj
 
+/- English proof (translation)
+Use `letI := hk.toField`. Conclude with `ker_jetAug_eq_span_torus_union_quotient k X r b G B q i hq hi hpb d g n x xB hx hxB ψ hψ T hT h`.
+-/
 theorem ker_jetAug_eq (k : Type) [CommRing k] (hk : IsField k) (X : Type) [AddCommGroup X] (r : ℕ)
     (b : Module.Basis (Fin r) ℤ X) (G B : Over (Spec (CommRingCat.of k))) [GrpObj G] [GrpObj B] (q : G ⟶ B)
     (i : splitTorus (Spec (CommRingCat.of k)) X ⟶ G) (hq : IsMonHom q) (hi : IsMonHom i)
@@ -245,6 +327,11 @@ theorem ker_jetAug_eq (k : Type) [CommRing k] (hk : IsField k) (X : Type) [AddCo
   letI := hk.toField
   exact ker_jetAug_eq_span_torus_union_quotient k X r b G B q i hq hi hpb d g n x xB hx hxB ψ hψ T hT h
 
+/- English proof (translation)
+Rewrite using `[← le_bot_iff, pow_two, Ideal.mul_le]`. Introduce `u hu u' hu'`. Establish `h1 : u.fst = 0` using `hu`. Establish `h2 : u'.fst = 0` using `hu'`. Rewrite using `[Ideal.mem_bot]`.
+
+Apply the tactic sequence `ext <;> simp [h1, h2]`.
+-/
 theorem ker_fst_sq (k : Type) [CommRing k] : RingHom.ker (TrivSqZeroExt.fstHom k k k) ^ (1 + 1) = ⊥ := by
   rw [← le_bot_iff, pow_two, Ideal.mul_le]
   intro u hu u' hu'
@@ -253,6 +340,11 @@ theorem ker_fst_sq (k : Type) [CommRing k] : RingHom.ker (TrivSqZeroExt.fstHom k
   rw [Ideal.mem_bot]
   ext <;> simp [h1, h2]
 
+/- English proof (translation)
+Establish `ha : (TrivSqZeroExt.fstHom k k k).comp φ = jetAug k (Fin d) n` using `jet_ext fun l => by`. Use `letI := hk.toField`. Rewrite using `[jetAug_zR]`. Conclude with `((elt_nil _ (ker_jetAug_nil (R := k) (Fin d) n) _ (zR_mem_ker n l)).map _).eq_zero`. Establish `: IsLocalHom φ.toRingHom` using `⟨fun s hs => isUnit_of_aug _ (ker_jetAug_pow _ _) (ha ▸ hs.map (TrivSqZeroExt.fstHom k k k))⟩`.
+
+Conclude with `IsLocalRing.comap_closedPoint φ.toRingHom`.
+-/
 theorem spMap_closedPoint_dual {k : Type} [CommRing k] (hk : IsField k) {d n : ℕ} [IsLocalRing (JetR k (Fin d) n)]
     [IsLocalRing (DualNumber k)] (φ : JetR k (Fin d) n →ₐ[k] DualNumber k) :
     Geo.Tor.spMap φ.toRingHom (closedPoint _) = closedPoint _ := by
@@ -264,6 +356,9 @@ theorem spMap_closedPoint_dual {k : Type} [CommRing k] (hk : IsField k) {d n : �
     (ha ▸ hs.map (TrivSqZeroExt.fstHom k k k))⟩
   exact IsLocalRing.comap_closedPoint φ.toRingHom
 
+/- English proof (translation)
+Rewrite using `[map_sub, map_mul, map_one, AlgHom.commutes, h, add_sub_cancel, mul_left_comm, ← map_mul, Units.inv_mul, map_one, _root_.mul_one]`.
+-/
 theorem one_add_normalised {k A B : Type} [CommRing k] [CommRing A] [CommRing B] [Algebra k A] [Algebra k B]
     (φ : A →ₐ[k] B) (v : A) (w : kˣ) (χ : B) (h : φ v = χ * algebraMap k B w.val) :
     1 + φ (algebraMap k A w⁻¹.val * v - 1) = χ := by
@@ -274,6 +369,39 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R} {D :
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (e : ℕ)
 
+/- English proof (translation)
+Establish `hloc : IsLocalRing (R ⧸ I ^ (e + 1))` using `by letI := hk.toField; infer_instance`. Establish `hmk : IsLocalHom (algebraMap R (R ⧸ I ^ (e + 1)))` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hG : IsGrpPullback (thickObj R I e G) G (Spec.map (CommRingCat.ofHom (algebraMap R (R ⧸ I ^ (e + 1))))) (pullback.fst G.hom (thick R I e))` using `isGrpPullback_pullback G (thick R I e)`. Establish `hB : IsGrpPullback (thickObj R I e D.toPre.P.A) D.toPre.P.A (Spec.map (CommRingCat.ofHom (algebraMap R (R ⧸ I ^ (e + 1))))) (pullback.fst D.toPre.P.A.hom (thick R I e))` using `isGrpPullback_pullback _ (thick R I e)`. Use `choose x' hx' using fun m => push_surjective hG (Chart.spMap (jetCoeff R (R ⧸ I ^ (e + 1)) (Fin d) m) ≫ x m)`.
+
+Use `choose xB' hxB' using fun m => push_surjective hB (Chart.spMap (jetCoeff R (R ⧸ I ^ (e + 1)) (Fin g) m) ≫ xB m)`. Establish `hu` using `isUnivChart_baseChange hG hx hx'`. Establish `huB` using `isUnivChart_baseChange hB hxB hxB'`. Establish `hq` using `(U.gt e).q_hom`. Take `⟨ψ, ⟨hψa, hψ⟩, -⟩` from `huB.2.2 _ (jetAug _ (Fin d) n) n (ker_jetAug_pow _ _) (x' n ≫ (U.gt e).q) (by rw [← Category.assoc, spMap_jetAug_alt hu n, MonObj.one_comp])`.
+
+Set `p : Sp (JetR (R ⧸ I ^ (e + 1)) (Fin d) n) ⟶ (thickObj R I e G).left` to `(x' n).left`. Set `fa : JetR R (Fin g) n →ₐ[R] JetR (R ⧸ I ^ (e + 1)) (Fin d) n` to `(ψ.restrictScalars R).comp (jetCoeff R (R ⧸ I ^ (e + 1)) (Fin g) n)`. Set `f` to `fa.toRingHom`. Establish `hp : p ≫ pGl U e = Geo.Tor.spMap f ≫ (xB n).left`. Establish `e1 : push hB (x' n ≫ (U.gt e).q) = Chart.spMap fa ≫ xB n`.
+
+Rewrite using `[hψ, push_spMap, hxB', ← Category.assoc, Chart.spMap_comp]`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (·.left) e1)`. Establish `hfa : ∀ s, jetAug _ (Fin d) n (f s) = algebraMap R _ (jetAug R (Fin g) n s)` using `fun s => AlgHom.congr_fun (jet_ext (ψ₁ := ((jetAug _ (Fin d) n).restrictScalars R).comp fa) (ψ₂ := (Algebra.ofId R _).comp (jetAug R (Fin g) n)) fun j => by show (jetAug _ (Fin d) n).comp ψ (jetCoeff R (R ⧸ I ^ (e + 1)) (Fin g) n (zR n j)) = algebraMap R _ (jetAug R (Fin g) n (zR …`. Rewrite using `[hψa, jetCoeff_zR, jetAug_zR, jetAug_zR, map_zero]) s`. Establish `hfl : IsLocalHom f` using `⟨fun s hs => isUnit_of_aug _ (ker_jetAug_pow (R := R) (Fin g) n) (hmk.1 _ (hfa s ▸ hs.map (jetAug _ (Fin d) n)))⟩`.
+
+Establish `hfc : Geo.Tor.spMap f (closedPoint _) = closedPoint _` using `IsLocalRing.comap_closedPoint f`. Use `choose v hv using fun χ => exists_val_local c hc p (tG U e χ)`. Establish `hv1 : ∀ χ, (val (tG U e χ) p (closedPoint _) (fun ψ => c (ψ (closedPoint _)))).val = IntegralJets.germOf (closedPoint _) (v χ).val` using `fun χ => by`. Use `hv χ _ (𝟙 _) _ rfl` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`.
+
+Conclude with `this.trans (IntegralJets.germOf_eq _ _).symm`. Establish `hmul : ∀ χ χ', ∃ u : (JetR R (Fin g) n)ˣ, (v (χ + χ')).val * f u = v χ * v χ'`. Introduce `χ χ'`. Establish `hJ : Good (Z` using `Sp (JetR (R ⧸ I ^ (e + 1)) (Fin d) n)) D.toPre.P.L (closedPoint _) (fun ψ => c (ψ (closedPoint _))) := fun ψ => hc _`. Set `m : D.toPre.P.A ⟶ G3 D.toPre.P.A` to `lift (toUnit _ ≫ D.toPre.c χ) (lift (toUnit _ ≫ D.toPre.c χ') (𝟙 _))`.
+
+Take `⟨u, hu⟩` from `exists_val_local (φ := thφ D.toPre.P.A (x3 D.toPre.P.A)) (ε := thε) c hc ((xB n).left ≫ m.left) D.toPre.cub.t`. Establish `e1 : lift (toUnit _ ≫ D.toPre.c χ) (lift (toUnit _ ≫ D.toPre.c χ') (U.gt e).pG) = (U.gt e).pG ≫ m`. Simplify using `only [m, comp_lift, ← Category.assoc, comp_toUnit, Category.comp_id]`. Establish `e2 : p ≫ (lift (toUnit _ ≫ D.toPre.c χ) (lift (toUnit _ ≫ D.toPre.c χ') (U.gt e).pG)).left = Geo.Tor.spMap f ≫ (xB n).left ≫ m.left`. Rewrite using `[e1, ← Category.assoc, ← hp, Category.assoc]`.
+
+Both sides reduce to the same expression. Establish `h` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ ((U.gt e).t_mul χ χ') p).trans (val_mul hJ _ _ _))`. Establish `h2` using `((congrArg Units.val ((val_pull hJ _ _ p).trans (congrArg (fun q => val _ q _ _) e2))).trans (hu _ _ _ hfc)).trans (cst_spMap f _ _)`. Use `⟨u, (bijective_germOf _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hv1, ← hv1, ← hv1, ← h2]`.
+
+Conclude with `congrArg Units.val h`. Use `⟨p, f, v, congrArg (·.left) (hx' n), hp, hfc, hv1, fun N hN => ?_⟩` and prove the remaining obligations. Set `aug` to `jetAug (R ⧸ I ^ (e + 1)) (Fin d) n`. Set `w : Fin r → (R ⧸ I ^ (e + 1))ˣ` to `fun j => Units.map aug.toRingHom.toMonoidHom (v (b j))`. Set `T : Fin r → JetR (R ⧸ I ^ (e + 1)) (Fin d) n` to `fun j => algebraMap _ _ (w j)⁻¹.val * v (b j) - 1`.
+
+Establish `hconst : ∀ a : R ⧸ I ^ (e + 1), ∃ s, f s = algebraMap _ _ a` using `fun a => by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `⟨algebraMap R _ a, fa.commutes a⟩`. Establish `hker` using `ker_jetAug_eq _ hk _ r b _ _ _ _ hq (U.gt e).i_hom (U.gt e).isKernel d g n x' xB' hu huB ψ hψ T (fun j => by`. Simplify using `only [T]`.
+
+Rewrite using `[map_sub, map_mul, AlgHom.commutes, map_one, sub_eq_zero]`. Conclude with `(w j).inv_mul) ?_`. Use `eq_top_of_monomials f _ n (ker_jetAug_pow _ _) (fun a => ?_) (fun j => v (b j)) _ hker ?_ N fun a ha s => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `hconst (aug a)`. Conclude with `⟨s, by rw [hs]; simp [RingHom.mem_ker, aug]⟩`.
+
+Introduce and unpack `_ (⟨j, rfl⟩ | ⟨l, rfl⟩)`. Take `⟨s, hs⟩` from `hconst (w j)⁻¹.val`. Conclude with `Or.inr ⟨j, s, -1, by rw [hs, map_neg, map_one, ← sub_eq_add_neg]⟩`. Conclude with `Or.inl ⟨zR n l, congrArg ψ (jetCoeff_zR n l).symm⟩`. Take `⟨u, hu⟩` from `exists_unit_prod f v hmul b a`.
+
+Rewrite using `[← hu, mul_comm (v _).val, ← _root_.mul_assoc, ← map_mul]`. Conclude with `hN a ha _`. Introduce `φ y hy j`. Establish `hD : IsLocalRing (DualNumber (R ⧸ I ^ (e + 1)))` using `isLocalRing_of_aug _ (ker_fst_sq _)`. Set `φ₀ : JetR (R ⧸ I ^ (e + 1)) (Fin d) n →ₐ[R ⧸ I ^ (e + 1)] DualNumber (R ⧸ I ^ (e + 1))` to `(Algebra.ofId _ _).comp aug`.
+
+Establish `h0 : Chart.spMap φ₀ ≫ x' n = 1` using `JetGenerators.spMap_jetAug hu n`. Establish `hJ : Good (Z` using `Sp (DualNumber (R ⧸ I ^ (e + 1)))) D.toPre.P.L (closedPoint _) (fun ψ => c (ψ (closedPoint _))) := fun ψ => hc _`. Establish `h` using `TorusCoord.val_t_act (U.gt e) y 1 (b j) (𝟙 _) _ _ hJ`. Establish `e1 : 𝟙 _ ≫ ((y ≫ (U.gt e).i) * 1).left = Geo.Tor.spMap φ.toRingHom ≫ p` using `(Category.id_comp _).trans (congrArg (·.left) ((_root_.mul_one _).trans hy.symm))`. Establish `e2 : 𝟙 _ ≫ (1 : sp (DualNumber (R ⧸ I ^ (e + 1))) ⟶ thickObj R I e G).left = Geo.Tor.spMap φ₀.toRingHom ≫ p` using `(Category.id_comp _).trans (congrArg (·.left) h0.symm)`.
+
+Use `replace h := (congrArg (fun q => val (tG U e (b j)) q _ _) e1).symm.trans (h.trans (congrArg (fun q => _ * val (tG U e (b j)) q _ _) e2))`. Establish `h1` using `(hv (b j) _ _ _ (spMap_closedPoint_dual hk φ)).trans (cst_spMap _ _ _)`. Establish `h2` using `(hv (b j) _ _ _ (spMap_closedPoint_dual hk φ₀)).trans (cst_spMap _ _ _)`. Set `χ : DualNumber (R ⧸ I ^ (e + 1))` to `(Scheme.ΓSpecIso (CommRingCat.of (DualNumber (R ⧸ I ^ (e + 1))))).hom.hom (y.left.appTop.hom (charUnit _ _ (b j)).val)`. Establish `h3 : (gm (𝟙 (Sp (DualNumber (R ⧸ I ^ (e + 1))))) (closedPoint _) ⊤ (splitTorusPointsEquiv _ D.toPre.X _ y (Multiplicative.ofAdd (b j)))).val = IntegralJets.germOf (closedPoint _) χ` using `(gs_unit _ _ ⊤ trivial _).symm.trans ((congrArg (gs _ _ ⊤) (splitTorusPointsEquiv_val _ _ _ y (b j))).trans (IntegralJets.germOf_hom _ _).symm)`.
+
+Establish `h4 : φ (v (b j)) = χ * algebraMap _ _ (w j).val` using `(bijective_germOf _).1 (h1.symm.trans ((congrArg Units.val h).trans ((congrArg₂ (· * ·) h3 h2).trans (map_mul _ _ _).symm)))`. Conclude with `(congrArg _ (one_add_normalised φ _ _ χ h4)).trans (Iso.hom_inv_id_apply _ _)`.
+-/
 theorem torus_jets (hk : IsField (R ⧸ I ^ (e + 1))) (c : D.toPre.P.A.left → D.toPre.P.L.ι)
     (hc : ∀ x, x ∈ D.toPre.P.L.U (c x)) {d g : ℕ} (n : ℕ) (x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin d) m) ⟶ G)
     (hx : IsUnivChart G d x) (xB : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin g) m) ⟶ D.toPre.P.A)
@@ -400,6 +528,11 @@ section Main
 
 open Chart ChartBaseChange
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `expandsAt_val U e q σ f hE`. Take `⟨h₀, h₁⟩` from `hS _ p z J hJ`. Establish `hc : pGl U e ≫ D.toPre.P.A.hom = (thickObj R I e G).hom ≫ Geo.Tor.spMap (Ideal.Quotient.mk (I ^ (e + 1)))` using `Over.w (U.gt e).pG`. Establish `h0 : cst ((p ≫ pGl U e) ≫ D.toPre.P.A.hom) z ϖ = 0`. Rewrite using `[Category.assoc, hc, ← Category.assoc, cst_comp, Ideal.Quotient.eq_zero_iff_mem.2 hϖ, cst, map_zero]`.
+
+Conclude with `gs_zero _ _ _ trivial`. Use `(h₁ jL hL).trans (Finset.sum_eq_single χ (fun α _ hα => ?_) fun hχ => by rw [h₀ χ hχ, zero_mul])` and prove the remaining obligations. Take `⟨f', hf'⟩` from `hf α hα`. Establish `: sval (f α) (p ≫ pGl U e) z J = 0` using `(secIsMul_gs hf' (p ≫ pGl U e) z _ (hJ.mem _ _)).trans (by rw [h0, zero_mul])`. Rewrite using `[this, zero_mul]`.
+-/
 theorem expansion_single {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
     [IsCommMonObj G] (U : UnifPre I D A G) (e q : ℕ) (σ : H0 U.LG.L q) (f : ∀ α, D.toPre.SecB q α)
@@ -422,6 +555,31 @@ theorem expansion_single {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D :
     (secIsMul_gs hf' (p ≫ pGl U e) z _ (hJ.mem _ _)).trans (by rw [h0, zero_mul])
   rw [this, zero_mul]
 
+/- English proof (translation)
+Introduce `hL hTW V _ _ _ ϖ hϖ D A G _ _ U Q hQ r b Cc M₀ hC hM hb hB q n hq hn d x hx τ hτ`. Set `admitted : JetR V (Fin d) n → Prop` to `fun a => ∃ (σ : H0 U.LG.L q) (f : ∀ α, D.toPre.SecB q α) (χ : D.toPre.X), (∀ e, U.ExpandsAt e q σ f) ∧ (∃ Φ : Fam D.toPre (FractionRing V) q, ∀ α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε q) (Φ.s α) (D.toPre.famφB α) (DegPre.famε …`. It suffices to establish `h : Submodule.span V {a | admitted a} = ⊤ by`. Use `finite_jet V d n` as an intermediate fact. Take `⟨s, hs, e⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 (h ▸ Module.Finite.fg_top)`.
+
+Use `choose σ f χ h1 h2 h3 h4 h5 using fun i : Fin s.card => hs (s.equivFin.symm i).2`. Use `⟨s.card, σ, f, χ, fun i => (s.equivFin.symm i).1, h1, h2, h3, h4, h5, ?_⟩` and prove the remaining obligations. Rewrite using `[← h, e]`. Use `congr 1`. Use extensionality with `a`.
+
+Conclude with `⟨fun ⟨i, hi⟩ => hi ▸ (s.equivFin.symm i).2, fun ha => ⟨s.equivFin ⟨a, ha⟩, by simp⟩⟩`. Establish `hk : IsField (V ⧸ maximalIdeal V ^ (0 + 1))` using `(Ideal.Quotient.maximal_ideal_iff_isField_quotient _).1 (by rw [zero_add, pow_one]; infer_instance)`. Establish `hloc : IsLocalRing (V ⧸ maximalIdeal V ^ (0 + 1))` using `by letI := hk.toField; infer_instance`. Use `D.toPre.P.isAb.smooth` as an intermediate fact. Take `⟨g, xB, hxB⟩` from `univChartLoc D.toPre.P.A`.
+
+Establish `hl1 : IsLocalRing (JetR (V ⧸ maximalIdeal V ^ (0 + 1)) (Fin d) n)` using `isLocalRing_of_aug _ (ker_jetAug_pow _ _)`. Establish `hl2 : IsLocalRing (JetR V (Fin g) n)` using `isLocalRing_of_aug _ (ker_jetAug_pow _ _)`. Use `choose c hc using fun y : D.toPre.P.A.left => Geo.Tor.exists_chart D.toPre.P.isLB y`. Take `⟨p, f, v, hp1, hp2, hfc, hv, hN⟩` from `torus_jets U.toUnifPre 0 hk c hc n x hx xB hxB b`. Set `ρ` to `jetCoeff V (V ⧸ maximalIdeal V ^ (0 + 1)) (Fin d) n`.
+
+Set `z₀ : Sp (JetR (V ⧸ maximalIdeal V ^ (0 + 1)) (Fin d) n)` to `closedPoint _`. Establish `hJ : Good D.toPre.P.L z₀ (fun ψ => c (ψ z₀))` using `fun ψ => hc _`. Take `⟨J', hJ'⟩` from `TorusCoord.exists_good' U.LG.isLB z₀`. Set `jL` to `J' ((Geo.Tor.spMap ρ.toRingHom ≫ (x n).left) ≫ 𝟙 _)`. Establish `hjL : fGl (maximalIdeal V) G 0 (p z₀) ∈ U.LG.L.U jL` using `(congrArg (fun m => m z₀ ∈ U.LG.L.U jL) (hp1.trans (Category.comp_id _).symm)).mpr (hJ' _)`.
+
+Take `⟨w, hw⟩` from `(bijective_germOf _).2 (wv U.toUnifPre 0 p z₀ (c ((p ≫ pGl U.toUnifPre 0) z₀)) jL ^ q * val τ (Geo.Tor.spMap ρ.toRingHom) z₀ J').val`. Establish `hwu : IsUnit w`. Establish `: IsLocalHom (IntegralJets.germOf z₀)` using `IsLocalHom.of_surjective _ (bijective_germOf _).2`. Conclude with `this.1 w ((congrArg IsUnit hw).mpr (Units.isUnit _))`. Establish `key : ∀ a : Fin r → ℕ, ∑ j, a j ≤ n → ∀ s, ∃ y, admitted y ∧ w * ρ y = f s * v (∑ j, a j • b j)`.
+
+Introduce `a ha s`. Take `⟨hQ1, hQ2⟩` from `small_combination_strict_min_mod _ (QForm.bHom hϖ D hQ) Q (QForm.bOf_comm D) (QForm.two_Q_eq hϖ D hQ) (fun _ => QForm.Q_pos hϖ D hQ) r n q b Cc M₀ hC hM hb hB hn a ha`. Generalize the expression as in `∑ j, a j • b j = χ at hQ1 hQ2`. Take `⟨t, ht⟩` from `exists_gen_of_local (V := JetR V (Fin g) n) D.toPre.P.L D.toPre.P.isLB (fun i => (xB n).left ≫ D.toPre.famφB χ i) (DegPre.famε q)`. Take `⟨u, hu⟩` from `exists_val_local c hc (𝟙 _) t`.
+
+Establish `hu1` using `(congrArg (fun m => (val t m z₀ _).val) (Category.comp_id _).symm).trans ((hu _ (Geo.Tor.spMap f) z₀ hfc).trans (cst_spMap f _ _))`. Take `⟨β, hβ⟩` from `IntegralJets.integral_jets hL hTW V D.toPre q n hq χ g xB hxB t ht (s * u⁻¹.val)`. Take `⟨Φ, F, hF1, hF2, hF3, hF4⟩` from `integralFamily_of_strictMin hL V ϖ hϖ D Q hQ q (by omega) χ β hQ2`. Take `⟨σ, hσ⟩` from `IntegralExpansion.main hL V D A G U q (by omega) Φ F hF1`. Take `⟨y, hy⟩` from `IntegralJets.exists_ratio U.LG.isLB σ (x n).left τ hτ`.
+
+Set `y' : JetR V (Fin d) n` to `(Scheme.ΓSpecIso (CommRingCat.of (JetR V (Fin d) n))).hom.hom y`. Establish `hy' : (Scheme.ΓSpecIso (CommRingCat.of (JetR V (Fin d) n))).inv.hom y' = y` using `Iso.hom_inv_id_apply _ _`. Use `⟨y', ⟨σ, F, χ, hσ, ⟨Φ, hF1⟩, hQ1, hF3, fun z J h => hy'.symm ▸ hy z J h⟩, (bijective_germOf _).1 ?_⟩` and prove the remaining obligations. Establish `e1` using `expansion_single U.toUnifPre 0 q σ F (hσ 0) (Ideal.pow_mem_pow ((mem_maximalIdeal _).2 hϖ.not_isUnit) (0 + 1)) χ (fun α hα => by`. Rewrite using `[zero_add, pow_one]`.
+
+Conclude with `hF4 α hα) p z₀ hJ jL hjL`. Establish `e2 : sv U.toUnifPre q σ (p ≫ fGl (maximalIdeal V) G 0) z₀ jL = IntegralJets.germOf z₀ (ρ y') * (val τ (Geo.Tor.spMap ρ.toRingHom) z₀ J').val` using `(congrArg (fun m => sv U.toUnifPre q σ m z₀ jL) hp1).trans ((sval_pull_of_ratio U.LG.isLB σ (x n).left τ hτ y hy (Geo.Tor.spMap ρ.toRingHom) z₀ hJ').trans (congrArg (· * _) ((congrArg (gs _ z₀ ⊤) hy'.symm).trans (cst_spMap ρ.toRingHom z₀ y'))))`. Establish `e3 : sval (F χ) (p ≫ pGl U.toUnifPre 0) z₀ (fun ψ => c (ψ z₀)) = IntegralJets.germOf z₀ (f s)` using `(congrArg₂ (fun σ m => sval σ m z₀ _) hF2 hp2).trans ((sval_pull_of_ratio D.toPre.P.isLB β (xB n).left t ht _ hβ (Geo.Tor.spMap f) z₀ hJ).trans ((congrArg₂ (· * ·) (cst_spMap f z₀ _) hu1).trans (by`. Rewrite using `[← map_mul, ← map_mul, Units.inv_mul_cancel_right])))`. Establish `e4` using `(congrArg (_ * ·) e2).symm.trans (e1.trans (congrArg₂ (· * ·) e3 (hv χ)))`.
+
+Use `(map_mul _ _ _).trans (Eq.trans ?_ (e4.trans (map_mul _ _ _).symm))` and prove the remaining obligations. Conclude with `(congrArg (· * _) (hw.trans (Units.val_mul _ _))).trans ((mul_right_comm _ _ _).trans (_root_.mul_assoc _ _ _))`. Use `eq_top_of_jetCoeff (maximalIdeal V ^ (0 + 1)) (Ideal.pow_le_self (by omega)) d n _ fun y => ?_` and prove the remaining obligations. Establish `htop` using `hN ((Submodule.span V {a | admitted a}).toAddSubgroup.map ((AddMonoidHom.mulLeft w).comp ρ.toRingHom.toAddMonoidHom)) fun a ha s => by`. Take `⟨y, h1, h2⟩` from `key a ha s`.
+
+Conclude with `⟨y, Submodule.subset_span h1, h2⟩`. Take `⟨a, ha, e⟩ : w * y ∈ _` from `htop.ge (AddSubgroup.mem_top _)`. Conclude with `⟨a, ha, hwu.mul_left_cancel e⟩`.
+-/
 theorem small_characters_span_jets : Laws → TwistBCSpanStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal V) D A G) (Q : D.toPre.X → ℤ), QForm.IsQ D.toPre ϖ Q → ∀ (r : ℕ) (b : Module.Basis (Fin r) ℤ D.toPre.X) (Cc M₀ : ℝ), 0 ≤ Cc → 0 ≤ M₀ → (∀ j, (Q (b j) : ℝ) ≤ Cc) → (∀ j z, |(QForm.bOf D.toPre Q (b j) z : ℝ)| ≤ M₀ * Q z) → ∀ q n : ℕ, 4 * n + 4 ≤ q → (n : ℝ) * M₀ < q → ∀ (d : ℕ) (x : ∀ m : ℕ, Chart.sp (R₀ := V) (Chart.JetR V (Fin d) m) ⟶ G), Chart.IsUnivChart G d x → ∀ τ : LB.Gen (LB.LinComb U.LG.L (K := Fin 1) (fun _ => (x n).left ≫ 𝟙 G.left) (fun _ => (q : ℤ))), τ.IsGen → ∃ (l : ℕ) (σ : Fin l → H0 U.LG.L q) (f : Fin l → ∀ α, D.toPre.SecB q α) (χ : Fin l → D.toPre.X) (a : Fin l → Chart.JetR V (Fin d) n), (∀ i e, U.ExpandsAt e q (σ i) (f i)) ∧ (∀ i, ∃ Φ : Fam D.toPre (FractionRing V) q, (∀ α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε q) (Φ.s α) (D.toPre.famφB α) (DegPre.famε q) (f i α) (DegPre.prB D.toPre (FractionRing V)).left 1)) ∧ (∀ i, (Q (χ i) : ℝ) ≤ (n : ℝ) ^ 2 * Cc) ∧ (∀ i α, (∀ z, α ≠ χ i + q • z) → ∀ j, (f i α).f j = 0) ∧ (∀ i, (∀ (z : (Chart.sp (R₀ := V) (Chart.JetR V (Fin d) n)).left) (J), Good U.LG.L z J → sval (σ i) (x n).left z J = gs (𝟙 _) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of (Chart.JetR V (Fin d) n))).inv.hom (a i)) * (val τ (𝟙 _) z J).val)) ∧ Submodule.span V (Set.range a) = ⊤ := by
   intro hL hTW V _ _ _ ϖ hϖ D A G _ _ U Q hQ r b Cc M₀ hC hM hb hB q n hq hn d x hx τ hτ
   classical

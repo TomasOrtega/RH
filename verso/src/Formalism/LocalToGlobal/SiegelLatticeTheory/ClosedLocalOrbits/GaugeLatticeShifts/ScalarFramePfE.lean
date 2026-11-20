@@ -26,6 +26,41 @@ def IotaG (q : E) (abelian₂ : Submodule M.L.O V) {r : ℕ} (f₀ f₁ f₂ : F
     ∃ y y' : V, y ∈ abelian₂ ∧ y' ∈ abelian₂ ∧ y ∈ H.perp (H.X f₀) ∧ y' ∈ H.perp (H.X f₁) ∧ x - y ∈ H.X f₀ ∧
       e.symm x'' - y' ∈ H.X f₁ ∧ y - y' ∈ H.smulLat q abelian₂)
 
+/- English proof (translation)
+Use `⟨LinearEquiv.refl _ _, qEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21, ⟨?_, ?_, ?_, ?_, ?_, hrat⟩, ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x y x₂ y₂ hx hy`. Conclude with `h_eq_of_sub_mem H _ hX0 x.2 y.2 ((mk_eq_iff H _ x x₂).1 hx) ((mk_eq_iff H _ y y₂).1 hy)`. Introduce `x y x₂ y₂ hx hy`. Establish `hx' : e x - x₂ ∈ H.X f₂` using `(mk_eq_iff H _ _ x₂).1 hx`.
+
+Establish `hy' : e y - y₂ ∈ H.X f₂` using `(mk_eq_iff H _ _ y₂).1 hy`. Rewrite using `[h_eq_of_sub_mem H _ hX2 (perp_map H e hiso _ _ h21 x.2) (perp_map H e hiso _ _ h21 y.2) hx' hy', hiso]`. Introduce `w hw`. Take `⟨w₂, hw₂, h1, h2⟩` from `hW0 w hw`. Use `⟨w₂, hw₂, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x x₂ hx hx₂`. Apply `smul_mk_eq H` to reduce the goal to its premises. Rewrite using `[one_smul, one_smul, hx, hx₂]`. Conclude with `h1`. Introduce `x x₂ hx hx₂`.
+
+Apply `smul_mk_eq H` to reduce the goal to its premises. Use `show (1 : E) • e x - (1 : E) • (x₂ : V) ∈ H.X f₂`. Rewrite using `[one_smul, one_smul, hx, hx₂]`. Conclude with `h2`. Introduce `x x₂ hx hx₂`.
+
+Apply `smul_mk_eq H` to reduce the goal to its premises. Rewrite using `[hx, hx₂]`. Conclude with `homp`. Introduce `x x₂ hx hx₂`. Apply `smul_mk_eq H` to reduce the goal to its premises.
+
+Use `show M.L.cj (H.Dl f₀ f₂ (r + 1)) • e x - M.L.cj (H.Dl f₀ f₁ (r + 1)) • (x₂ : V) ∈ H.X f₂`. Rewrite using `[hx, hx₂]`. Conclude with `hom`. Use extensionality with `w`. Simplify using the standard rewrite rules.
+
+Introduce `x x₂ hx hx₂`. Establish `: x = x₂` using `Subtype.ext (hx.trans hx₂.symm)`. Rewrite using `[this]`. Both sides reduce to the same expression. Use extensionality with `w`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hxΛ, rfl⟩, rfl⟩`. Conclude with `⟨perpEquiv H e hiso _ _ h12 h21 x, hL _ hxΛ, rfl⟩`. Introduce and unpack `⟨x₂, hx₂Λ, rfl⟩`. Use `⟨H.mkW _ ⟨e.symm x₂, perp_map_symm H e hiso _ _ h12 x₂.2⟩, ⟨⟨e.symm x₂, perp_map_symm H e hiso _ _ h12 x₂.2⟩, hL' _ hx₂Λ, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show qEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21 (Submodule.Quotient.mk _) = Submodule.Quotient.mk x₂`. Rewrite using `[qEquiv_mk]`. Use `congr 1`. Conclude with `Subtype.ext (e.apply_symm_apply x₂)`. Introduce `x x₂ hx hx₂`.
+
+Apply `smul_mk_eq H` to reduce the goal to its premises. Use `show (1 : E) • e x - (1 : E) • (x₂ : V) ∈ H.X f₂`. Rewrite using `[one_smul, one_smul, hx, hx₂]`. Conclude with `hz`. Introduce `g hg`.
+
+Take `⟨hA, hB⟩` from `hI g hg`. Use extensionality with `⟨a, b⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a0, b0⟩, ⟨x', x, hx'Λ, hxΛ, hq, heq⟩, hmap⟩`. Take `⟨y, y'', hyΛ, hy''Λ, hyp, hy''p, hxy, hxy'', hyq⟩` from `hA x x' hxΛ hx'Λ x.2 x'.2 hq`.
+
+Use `⟨⟨y'', hy''p⟩, ⟨y, hyp⟩, hy''Λ, hyΛ, hyq, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.map, Prod.mk.injEq] at hmap heq`. Take `⟨rfl, rfl⟩` from `heq`. Take `⟨rfl, rfl⟩` from `hmap`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use `show qEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21 (Submodule.Quotient.mk x') = Submodule.Quotient.mk _`. Rewrite using `[qEquiv_mk, mk_eq_iff]`. Conclude with `hxy''`. Use `show Submodule.Quotient.mk x = Submodule.Quotient.mk _`. Rewrite using `[mk_eq_iff]`.
+
+Conclude with `hxy`. Introduce and unpack `⟨x'', x, hx''Λ, hxΛ, hq, heq⟩`. Take `⟨y, y', hyΛ, hy'Λ, hyp, hy'p, hxy, hxy', hyq⟩` from `hB x x'' hxΛ hx''Λ x.2 x''.2 hq`. Use `⟨(H.mkW _ ⟨y', hy'p⟩, H.mkW _ ⟨y, hyp⟩), ⟨⟨y', hy'p⟩, ⟨y, hyp⟩, hy'Λ, hyΛ, hyq, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.mk.injEq] at heq`.
+
+Take `⟨rfl, rfl⟩` from `heq`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show qEquiv H e hiso (H.X f₁) (H.X f₂) h12 h21 (Submodule.Quotient.mk _) = Submodule.Quotient.mk x''`. Rewrite using `[qEquiv_mk, mk_eq_iff]`. Establish `h` using `h12 _ hxy'`.
+
+Rewrite `h` using `[map_sub, LinearEquiv.apply_symm_apply]`. Establish `h'` using `Submodule.neg_mem _ h`. Rewrite `h'` using `[neg_sub]`. Then use the resulting hypothesis. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk x`. Rewrite using `[mk_eq_iff]`.
+
+Establish `h'` using `Submodule.neg_mem _ hxy`. Rewrite `h'` using `[neg_sub]`. Then use the resulting hypothesis.
+-/
 theorem scalarPair_generic {r : ℕ} (abelian₂ : Submodule M.L.O V) (f₀ f₁ f₂ : Fin (r + 1) → V) (T T' : F)
     (e : V ≃ₗ[E] V) (hiso : ∀ v w, H.h (e v) (e w) = H.h v w)
     (h12 : ∀ x ∈ H.X f₁, e x ∈ H.X f₂) (h21 : ∀ y ∈ H.X f₂, e.symm y ∈ H.X f₁)

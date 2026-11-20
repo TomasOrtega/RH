@@ -18,20 +18,35 @@ section Sections
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Simplify using `only [constFn, map_mul]`.
+-/
 theorem constFn_mul {X : Scheme.{0}} (f : X ⟶ Sp R) (U : X.Opens) (a b : R) :
     constFn f U (a * b) = constFn f U a * constFn f U b := by
   simp only [constFn, map_mul]
 
+/- English proof (translation)
+Simplify using `only [constFn, map_one]`.
+-/
 theorem constFn_one {X : Scheme.{0}} (f : X ⟶ Sp R) (U : X.Opens) : constFn f U 1 = 1 := by
   simp only [constFn, map_one]
 
+/- English proof (translation)
+Simplify using `only [constFn, map_pow]`.
+-/
 theorem constFn_pow {X : Scheme.{0}} (f : X ⟶ Sp R) (U : X.Opens) (a : R) (n : ℕ) :
     constFn f U (a ^ n) = constFn f U a ^ n := by
   simp only [constFn, map_pow]
 
+/- English proof (translation)
+Rewrite using `[h]`.
+-/
 theorem constFn_congr {X : Scheme.{0}} {f f' : X ⟶ Sp R} (h : f = f') (U : X.Opens) (a : R) :
     constFn f U a = constFn f' U a := by rw [h]
 
+/- English proof (translation)
+Simplify using `only [constFn]`. Use `erw [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+-/
 theorem appLE_constFn {X Y : Scheme.{0}} (f : Y ⟶ X) (g : X ⟶ Sp R) (U : X.Opens) (W : Y.Opens)
     (h : W ≤ f ⁻¹ᵁ U) (a : R) : (f.appLE U W h).hom (constFn g U a) = constFn (f ≫ g) W a := by
   simp only [constFn]
@@ -39,12 +54,21 @@ theorem appLE_constFn {X Y : Scheme.{0}} (f : Y ⟶ X) (g : X ⟶ Sp R) (U : X.O
 
 variable {X : Over (Sp R)} {L : LB X.left}
 
+/- English proof (translation)
+Introduce `i` and use `by rw [h₁ i, h₂ i, constFn_mul, _root_.mul_assoc]`.
+-/
 theorem IsMul.trans {s t u : L.Sec} {a b : R} (h₁ : IsMul (X := X) s a t) (h₂ : IsMul (X := X) t b u) :
     IsMul (X := X) s (a * b) u := fun i => by
   rw [h₁ i, h₂ i, constFn_mul, _root_.mul_assoc]
 
+/- English proof (translation)
+Introduce `i` and use `by rw [constFn_one, _root_.one_mul]`.
+-/
 theorem isMul_self (s : L.Sec) : IsMul (X := X) s 1 s := fun i => by rw [constFn_one, _root_.one_mul]
 
+/- English proof (translation)
+Take `⟨d, hd, -⟩` from `ht s`. Establish `e : a * d = 1` using `(hs s).unique (IsMul.trans h hd |> fun h' => by`. Use `IsMul.trans (isMul_self (X := X) s) (IsMul.trans hd h)` as an intermediate fact. Simplify `this) (isMul_self (X := X) s)` using `[_root_.one_mul, mul_comm]`. Conclude with `⟨⟨a, d, e, by rw [mul_comm]; exact e⟩, rfl⟩`.
+-/
 theorem Generates.isUnit {s t : L.Sec} (hs : Generates (X := X) s) (ht : Generates (X := X) t) {a : R}
     (h : IsMul (X := X) t a s) : IsUnit a := by
   obtain ⟨d, hd, -⟩ := ht s
@@ -53,10 +77,16 @@ theorem Generates.isUnit {s t : L.Sec} (hs : Generates (X := X) s) (ht : Generat
     simpa [_root_.one_mul, mul_comm] using this) (isMul_self (X := X) s)
   exact ⟨⟨a, d, e, by rw [mul_comm]; exact e⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem prod_const_mul {A : Type*} [CommMonoid A] {N : ℕ} (c : A) (x : Fin N → A) :
     ∏ k, c * x k = c ^ N * ∏ k, x k := by
   rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+Introduce `j` and use `by show (∏ k : Fin N, _) = _ * ∏ k : Fin N, _ have e : ∀ k : Fin N, (pr G N k ≫ G.hom) = (pow G N).hom := fun k => Over.w (Pi.π (fun _ : Fin N => G) k) simp only [h (j _), map_mul, appLE_constFn, constFn_congr (e _)] exact (prod_const_mul _ _).trans (congrArg (· * _) (constFn_pow …`.
+-/
 theorem isMul_boxSec {G : Over (Sp R)} {L : LB G.left} {θ θ₀ : L.Sec} {b : R} (h : IsMul (X := G) θ b θ₀) (N : ℕ) :
     IsMul (X := pow G N) (boxSec G θ N) (b ^ N) (boxSec G θ₀ N) := fun j => by
   show (∏ k : Fin N, _) = _ * ∏ k : Fin N, _
@@ -70,6 +100,27 @@ section Line
 
 open IsLocalRing ReciprocityTheory.ChartRestriction.G.H1 Formalism.L2.Pj
 
+/- English proof (translation)
+Take `⟨k₀, hb₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 hθ`. Establish `hk₀ : g ∈ L.U k₀` using `X.basicOpen_le _ hb₀`. Establish `un : IsUnit (gs (𝟙 _) g _ (θ.f k₀))`. Rewrite using `[gs_eq (𝟙 _) g _ hk₀]`. Conclude with `(X.mem_basicOpen _ _ hk₀).1 hb₀`.
+
+Take `⟨w, gw'⟩` from `hw`. Establish `down` using `sec_pull_down ((isGen_iff w).1 gw') hL hL'`. Take `⟨θ', hθ'⟩` from `down θ`. Establish `: IsDominant (spMap (algebraMap V K))` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V K)).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (spMap (algebraMap V K))` as an intermediate fact.
+
+Establish `: IsSchemeTheoreticallyDominant φ` using `IsSchemeTheoreticallyDominant.of_isPullback hφ.flip`. Establish `: QuasiCompact φ` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hφ.flip inferInstance`. Establish `inj : ∀ (σ τ σK τK : _) (r : V), (∀ (Z : Scheme.{0}) (q : Z ⟶ X') (y : Z) j k, φ (q y) ∈ L.U j → q y ∈ L'.U k → gs (q ≫ φ) y _ (LB.Sec.f σ j) = (gw w q y j k).val * gs q y _ (LB.Sec.f σK k)) → (∀ (Z : Scheme.{0}) (q : Z ⟶ X') (y : Z) j k, φ (q y) ∈ L.U j → q y ∈ L'.U k → gs (q ≫ …`. Introduce `σ τ σK τK r h₁ h₂ h₃ j`. Use `φ.app_injective _ (fn_ext fun y hy => ?_)` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `exists_chart hL' y`. Use `(gs_pull (𝟙 _) φ y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 _) φ y _ hy _).symm)` and prove the remaining obligations. Rewrite using `[gs_mul (𝟙 _ ≫ φ) y _ hy, gs_constFn _ _ (𝟙 _ ≫ φ) y hy, h₁ _ (𝟙 _) y j k hy hk, h₂ _ (𝟙 _) y j k hy hk, (sec_eq_iff _ _ _ _).1 h₃ k y hk, Category.id_comp, hφ.w, cst_comp, mul_left_comm]`. Establish `mulc : ∀ {s t u : L'.Sec} {a a' : K}, (∀ k, s.f k = constFn p' _ a * t.f k) → (∀ k, t.f k = constFn p' _ a' * u.f k) → ∀ k, s.f k = constFn p' _ (a * a') * u.f k` using `fun h h' => (sec_eq_iff _ _ _ _).2 fun k y hy => by`. Rewrite using `[(sec_eq_iff _ _ _ _).1 h k y hy, (sec_eq_iff _ _ _ _).1 h' k y hy, cst_mul, _root_.mul_assoc]`.
+
+Establish `invc : ∀ {s t : L'.Sec} {a : K}, a ≠ 0 → (∀ k, s.f k = constFn p' _ a * t.f k) → ∀ k, t.f k = constFn p' _ a⁻¹ * s.f k` using `fun ha h => (sec_eq_iff _ _ _ _).2 fun k y hy => by`. Rewrite using `[(sec_eq_iff _ _ _ _).1 h k y hy, ← _root_.mul_assoc, ← cst_mul, inv_mul_cancel₀ ha, cst_one, _root_.one_mul]`. Establish `unit : ∀ (σ : L.Sec) (r : V), (∀ j, θ.f j = constFn p _ r * σ.f j) → IsUnit r` using `fun σ r h => by`. Assume the negation of the conclusion as `hr`. Rewrite `un` using `[(sec_eq_iff _ _ _ _).1 h k₀ g hk₀]`.
+
+Conclude with `cst_not_isUnit p g hg hr (isUnit_of_mul_isUnit_left un)`. Take `⟨a₀, ha₀⟩` from `hb θ'`. Establish `h₀ : a₀ ≠ 0` using `fun h => not_isUnit_zero (unit θ 0 (inj θ θ θ' θ' 0 hθ' hθ' ((sec_eq_iff _ _ _ _).2 fun k y hy => by`. Rewrite using `[(sec_eq_iff _ _ _ _).1 ha₀ k y hy, h, map_zero, ← _root_.mul_assoc, ← cst_mul, mul_zero])))`. Take `⟨σK, hσK⟩` from `down σ`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : K, ∀ i, σK.f i = constFn p' _ a * θ'.f i := by`. Take `⟨a, ha⟩` from `hb σK`. Conclude with `⟨a * a₀⁻¹, mulc ha (invc h₀ ha₀)⟩`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : ∃ r : V, ∀ i, σ.f i = constFn p _ r * θ.f i := by`. Distinguish the cases in `h : IsLocalization.IsInteger V a`.
+
+Take `⟨r, rfl⟩` from `h`. Conclude with `⟨r, inj σ θ σK θ' r hσK hθ' ha⟩`. Establish `hne : a ≠ 0` using `fun e => h (e ▸ IsLocalization.isInteger_zero)`. Take `⟨r, hr⟩` from `(ValuationRing.isInteger_or_isInteger V a).resolve_left h`. Take `⟨u, rfl⟩` from `unit σ r (inj θ σ θ' σK r hθ' hσK (hr ▸ invc hne ha))`.
+
+Conclude with `absurd ⟨(u⁻¹ : Vˣ), by rw [← inv_inv a, ← hr, map_units_inv]⟩ h`. Use `⟨r, hr, fun r' hr' => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `e : cst p g (r' - r) * gs (𝟙 _) g _ (θ.f k₀) = cst p g (r' - r) * 0`. Rewrite using `[cst_sub, sub_mul, ← (sec_eq_iff _ _ _ _).1 hr' k₀ g hk₀, ← (sec_eq_iff _ _ _ _).1 hr k₀ g hk₀, sub_self, mul_zero]`.
+
+Conclude with `un.ne_zero (cst_regular p g (sub_ne_zero.2 hne) e)`.
+-/
 theorem generates_of_generic_line {V K : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] {X X' : Scheme.{0}}
     (p : X ⟶ Sp V) [Flat p] {p' : X' ⟶ Sp K} {φ : X' ⟶ X}
@@ -139,6 +190,13 @@ variable {V K : Type} [CommRing V] [Field K] [Algebra V K]
 def NonzeroClosed [IsLocalRing V] {X : Over (Sp V)} {L : LB X.left} (θ : L.Sec) : Prop :=
   ∃ g : X.left, X.hom g = closedPoint V ∧ g ∈ Out.nonzeroLocus θ
 
+/- English proof (translation)
+Take `⟨g, hg, hσ⟩` from `hσ`. Take `⟨k₀, hb₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 hσ`. Establish `hk₀ : g ∈ L.U k₀` using `X.left.basicOpen_le _ hb₀`. Establish `un : IsUnit (gs (𝟙 _) g _ (σ.f k₀))`. Rewrite using `[gs_eq (𝟙 _) g _ hk₀]`.
+
+Conclude with `(X.left.mem_basicOpen _ _ hk₀).1 hb₀`. Use `⟨?_, g, hg, TopologicalSpace.Opens.mem_iSup.2 ⟨k₀, ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hr`. Rewrite `un` using `[(sec_eq_iff _ _ _ _).1 h k₀ g hk₀]`. Conclude with `cst_not_isUnit X.hom g hg hr (isUnit_of_mul_isUnit_left un)`.
+
+Rewrite `hb₀` using `[h k₀, Scheme.basicOpen_mul]`. Conclude with `hb₀.2`.
+-/
 theorem NonzeroClosed.of_isMul [IsLocalRing V] {X : Over (Sp V)} {L : LB X.left} {θ σ : L.Sec} {a : V}
     (h : IsMul (X := X) σ a θ) (hσ : NonzeroClosed (X := X) σ) : IsUnit a ∧ NonzeroClosed (X := X) θ := by
   obtain ⟨g, hg, hσ⟩ := hσ
@@ -153,6 +211,9 @@ theorem NonzeroClosed.of_isMul [IsLocalRing V] {X : Over (Sp V)} {L : LB X.left}
   · rw [h k₀, Scheme.basicOpen_mul] at hb₀
     exact hb₀.2
 
+/- English proof (translation)
+Take `⟨φ, -, e, -, -, hp, he, -⟩` from `hx`. Take `⟨g, hg, hθ⟩` from `h₀`. Take `⟨b, hb⟩` from `principalPolarisation_exists_unique_section GlobalTheory.firstFiveLaws.2.1.secTwist x.P`. Conclude with `generates_of_generic_line G.hom hp.1 hL x.P.isLB ⟨e, he⟩ b (fun s => (hb s).exists) θ₀ hg hθ`.
+-/
 theorem generates_of_isFibreOf [IsDomain V] [ValuationRing V] [IsFractionRing V K] {G : Over (Sp V)} [GrpObj G]
     [IsCommMonObj G] [Flat G.hom] {L : LB G.left} (hL : L.IsLB) {rig : LB.Gen (L.pull (eSec G))} {θ : L.Sec} {n : ℕ}
     {w : Fin n → (epsR V ⟶ G)} {x : KeyIn K} (hx : IsFibreOf x G L rig θ w (algebraMap V K)) {θ₀ : L.Sec}
@@ -172,6 +233,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 
 include hb in
 
+/- English proof (translation)
+Establish `hsp : spMap β' ≫ spMap b = spMap β`. Rewrite using `[← hb, spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← hsp]`. Conclude with `(IsPullback.of_hasPullback _ _).paste_horiz (IsPullback.of_hasPullback _ _)`.
+-/
 theorem isPullback_gen : IsPullback (pullback.fst (pullback.snd Y.s (spMap b)) (spMap β') ≫ pullback.fst Y.s (spMap b))
     (pullback.snd (pullback.snd Y.s (spMap b)) (spMap β')) Y.s (spMap β) := by
   have hsp : spMap β' ≫ spMap b = spMap β := by
@@ -185,6 +249,9 @@ def locTriple : SAB H (pullback Y.s (spMap b)) := (exists_sab (pullback.fst Y.s 
 def locMap : SABMap (locTriple Y b) Y.t (pullback.fst Y.s (spMap b)) :=
   (exists_sab (pullback.fst Y.s (spMap b)) Y.t).choose_spec.some
 
+/- English proof (translation)
+Establish `aux : ∀ (g : Xo.XF c ⟶ pullback Y.s (spMap b)) (e : Xo.XF c ⟶ Y.X) (n : SABMap Y.oF.t Y.t e), g ≫ pullback.fst Y.s (spMap b) = e → ∃ m' : SABMap Y.oF.t (locTriple Y b) g, n.φ = m'.φ ≫ (locMap Y b).φ`. Introduce and unpack `g e n rfl`. Conclude with `ObjMaps.exists_sab_cancel (locMap Y b) n`. Use `aux _ _ Y.m ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, (isPullback_gen Y b hb).isoPullback_inv_fst]`.
+-/
 theorem exists_locGen : ∃ m' : SABMap Y.oF.t (locTriple Y b) ((Y.jQ ≫ (isPullback_gen Y b hb).isoPullback.inv) ≫
     pullback.fst (pullback.snd Y.s (spMap b)) (spMap β')), Y.m.φ = m'.φ ≫ (locMap Y b).φ := by
   have aux : ∀ (g : Xo.XF c ⟶ pullback Y.s (spMap b)) (e : Xo.XF c ⟶ Y.X) (n : SABMap Y.oF.t Y.t e),
@@ -194,6 +261,11 @@ theorem exists_locGen : ∃ m' : SABMap Y.oF.t (locTriple Y b) ((Y.jQ ≫ (isPul
   refine aux _ _ Y.m ?_
   simp only [Category.assoc, (isPullback_gen Y b hb).isoPullback_inv_fst]
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨u, by simp⟩`. Introduce and unpack `⟨u, hu⟩`.
+
+Conclude with `⟨u, by simp [hu]⟩`.
+-/
 theorem range_locGen : Set.range (Y.jQ ≫ (isPullback_gen Y b hb).isoPullback.inv) =
     (isPullback_gen Y b hb).isoPullback.hom ⁻¹' Set.range Y.jQ := by
   ext y
@@ -228,15 +300,29 @@ variable [IsPreimmersion (spMap b)] [Flat (spMap b)]
     rw [← abLocus_pullback abLocusOne Y.t.semi (locMap Y b).cart.1, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply,
       (isPullback_gen Y b hb).isoPullback_hom_fst]
 
+/- English proof (translation)
+Simplify using `only [Model.j, Category.assoc, (isPullback_gen Y b hb).isoPullback_inv_fst]`.
+-/
 theorem locModel_j : (locModel Y b hb).j ≫ pullback.fst Y.s (spMap b) = Y.j := by
   simp only [Model.j, Category.assoc, (isPullback_gen Y b hb).isoPullback_inv_fst]
 
+/- English proof (translation)
+The claim follows from `(exists_locGen Y b hb).choose_spec.symm`.
+-/
 theorem locModel_m : (locModel Y b hb).m.φ ≫ (locMap Y b).φ = Y.m.φ := (exists_locGen Y b hb).choose_spec.symm
 
+/- English proof (translation)
+The claim follows from `(abLocus_pullback abLocusOne Y.t.semi (locMap Y b).cart.1 x).symm`.
+-/
 theorem mem_abLocus_locModel (x : (locModel Y b hb).X) :
     x ∈ abLocus (locModel Y b hb).t.G ↔ pullback.fst Y.s (spMap b) x ∈ abLocus Y.t.G :=
   (abLocus_pullback abLocusOne Y.t.semi (locMap Y b).cart.1 x).symm
 
+/- English proof (translation)
+Introduce `R _ _ _ _ h₁ h₂ h₃ ξ t m hne hs`. Take `⟨n, -⟩` from `ObjMaps.exists_sab_comp (locMap Y b) m`. Establish `e : ξ ⁻¹' abLocus (locModel Y b hb).t.G = (ξ ≫ pullback.fst Y.s (spMap b)) ⁻¹' abLocus Y.t.G`. Use extensionality with `q`. Rewrite using `[Set.mem_preimage, Set.mem_preimage, mem_abLocus_locModel, Scheme.Hom.comp_apply]`.
+
+Rewrite `hne`, the goal using `[e]`. Conclude with `h R h₁ h₂ h₃ _ t n hne hs`.
+-/
 theorem localisedModel_uniformisation_baseChange (h : Y.N3) : (locModel Y b hb).N3 := by
   intro R _ _ _ _ h₁ h₂ h₃ ξ t m hne hs
   obtain ⟨n, -⟩ := ObjMaps.exists_sab_comp (locMap Y b) m
@@ -246,6 +332,9 @@ theorem localisedModel_uniformisation_baseChange (h : Y.N3) : (locModel Y b hb).
   rw [e] at hne ⊢
   exact h R h₁ h₂ h₃ _ t n hne hs
 
+/- English proof (translation)
+Take `⟨l₁, l₂, l₃, -, -⟩` from `GlobalTheory.firstFiveLaws`. Set `C` to `locModel Y b hb`. Conclude with `GlobalTheory.PushInv.pushInvertible_of_model l₁ l₂ l₃ E H D l _ _ _ _ _ _ Y.oF _ β' ⟨C.X, C.s, C.normal, C.proj, C.flat, C.jQ, C.jQ_over, C.jQ_open, C.jQ_dense, C.t, C.m, C.ab_gen⟩ hD ((GlobalTheory.AbLocusPull.abLocus_sections_pull _ _ _ Y.t.G C.t.G (locMap Y b).φ Y.t.semi (locM …`. Take `⟨V, hV, θ, hθ, -, nz⟩` from `hY x`. Conclude with `⟨V, hV, θ, hθ, nz⟩)`.
+-/
 theorem locModel_pushInvertible (hD : GlobalTheory.Models.IsDedFrac β') (hY : PushInvertible Y.t.G Y.t.PP.L) :
     PushInvertible (locModel Y b hb).t.G (locModel Y b hb).t.PP.L := by
   obtain ⟨l₁, l₂, l₃, -, -⟩ := GlobalTheory.firstFiveLaws

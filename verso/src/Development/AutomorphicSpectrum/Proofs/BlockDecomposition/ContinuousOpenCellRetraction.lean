@@ -17,25 +17,40 @@ variable (k : Type) [Field k]
 
 def rGL {a b : ℕ} (h : a = b) : GL (Fin a) k ≃* GL (Fin b) k := h ▸ MulEquiv.refl _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem rGL_apply {a b : ℕ} (h : a = b) (g : GL (Fin a) k) (r c : Fin b) :
     ((rGL k h g : GL (Fin b) k) : Matrix (Fin b) (Fin b) k) r c =
       (g : Matrix (Fin a) (Fin a) k) (Fin.cast h.symm r) (Fin.cast h.symm c) := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem rGL_rGL {a b : ℕ} (h : a = b) (h' : b = a) (g : GL (Fin a) k) : rGL k h' (rGL k h g) = g := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `continuous_id`.
+-/
 theorem continuous_rGL [TopologicalSpace k] {a b : ℕ} (h : a = b) : Continuous (rGL k h) := by
   subst h
   exact continuous_id
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castM_val {a b : ℕ} (h : a = b) (h' : a + 1 = b + 1) (M : Mir k a) :
     ((castM k h M : Mir k b) : GL (Fin (b + 1)) k) = rGL k h' (M : GL (Fin (a + 1)) k) := by
   subst h
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show blockMat k n ((u : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i j = _`. Rewrite using `[hu]`. Simplify using `[blockMat, unip, colMat, Fin.castSucc_ne_last, one_apply]`.
+-/
 theorem mirProj_eq_one_of_unip (n : ℕ) (u : Mir k n) (v : Multiplicative (Fin n → k))
     (hu : (u : GL (Fin (n + 1)) k) = unip k n v) : mirabolicProjection k n u = 1 := by
   ext i j
@@ -43,13 +58,22 @@ theorem mirProj_eq_one_of_unip (n : ℕ) (u : Mir k n) (v : Multiplicative (Fin 
   rw [hu]
   simp [blockMat, unip, colMat, Fin.castSucc_ne_last, one_apply]
 
+/- English proof (translation)
+Simplify using `[ePG]`.
+-/
 theorem ePG_true_val (i t : ℕ) (b : Fin t) : ((ePG i t ⟨true, b⟩ : Fin (i + t + 1)) : ℕ) = i + b := by
   simp [ePG]
 
+/- English proof (translation)
+Simplify using `[ePG, finSumFinEquiv_symm_apply_castSucc]`.
+-/
 theorem ePG_false_castSucc_val (i t : ℕ) (a : Fin i) :
     ((ePG i t ⟨false, Fin.castSucc a⟩ : Fin (i + t + 1)) : ℕ) = a := by
   simp [ePG, finSumFinEquiv_symm_apply_castSucc]
 
+/- English proof (translation)
+Establish `e1 : (((wGL k i t)⁻¹ : GL (Fin ((i + 1) + t + 1)) k) : Matrix (Fin ((i + 1) + t + 1)) (Fin ((i + 1) + t + 1)) k) = Equiv.Perm.permMatrix k (piPerm i t)` using `rfl`. Establish `e2 : ((wGL k i t : GL (Fin ((i + 1) + t + 1)) k) : Matrix (Fin ((i + 1) + t + 1)) (Fin ((i + 1) + t + 1)) k) = Equiv.Perm.permMatrix k (piPerm i t)⁻¹` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, e1, e2, Equiv.Perm.permMatrix, Equiv.Perm.permMatrix, PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Simplify using `[Matrix.submatrix_apply, Equiv.Perm.inv_def]`.
+-/
 theorem wGL_conj_apply (i t : ℕ) (A : GL (Fin ((i + 1) + t + 1)) k) (r c : Fin ((i + 1) + t + 1)) :
     (((wGL k i t)⁻¹ * A * wGL k i t : GL (Fin ((i + 1) + t + 1)) k) :
       Matrix (Fin ((i + 1) + t + 1)) (Fin ((i + 1) + t + 1)) k) r c =
@@ -62,10 +86,18 @@ theorem wGL_conj_apply (i t : ℕ) (A : GL (Fin ((i + 1) + t + 1)) k) (r c : Fin
     PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]
   simp [Matrix.submatrix_apply, Equiv.Perm.inv_def]
 
+/- English proof (translation)
+Simplify using `[piPerm]`.
+-/
 theorem piPerm_cast (i t : ℕ) (s : Σ x, Two (Fin (i + 1)) (Fin (t + 1)) x) (h : i + (t + 1) + 1 = (i + 1) + t + 1) :
     piPerm i t (Fin.cast h (ePG i (t + 1) s)) = eGP (i + 1) t s := by
   simp [piPerm]
 
+/- English proof (translation)
+Establish `e1` using `congrArg (mirabolicProjection k ((i + 1) + t + 1)) e`. Rewrite `e1` using `[map_mul, map_mul, map_mul, map_mul]`. Establish `h1 : mirabolicProjection k ((i + 1) + t + 1) (dEmb k i t d) = 1` using `mirProj_eq_one_of_unip k _ _ _ rfl`. Establish `h2 : mirabolicProjection k ((i + 1) + t + 1) (wEl k i t) = wGL k i t` using `GlobalTheory.CompanionTheory.BZMirAdj.mirProj_levi k _ _`. Establish `h3 : mirabolicProjection k ((i + 1) + t + 1) (sEmb k _ M) = (M : GL (Fin ((i + 1) + t + 1)) k)` using `GlobalTheory.CompanionTheory.BZMirAdj.mirProj_levi k _ _`.
+
+Rewrite `e1` using `[h1, h2, h3, one_mul]`. Rewrite using `[mul_assoc, mul_assoc, eq_inv_mul_iff_mul_eq, e1, mul_assoc]`.
+-/
 theorem proj_eq (i t : ℕ) (h : Mir k ((i + 1) + t + 1)) (d : Fin (t + 1) → k) (M : Mir k ((i + 1) + t))
     (x : Mir k ((i + 1) + t + 1))
     (e : dEmb k i t d * wEl k i t * sEmb k _ M = h * wEl k i t * x) :
@@ -82,6 +114,17 @@ theorem proj_eq (i t : ℕ) (h : Mir k ((i + 1) + t + 1)) (d : Fin (t + 1) → k
 
 end Alg
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t`. Establish `hn : (i + 1) + t + 1 = i + (t + 1) + 1` using `by omega`. Use `⟨fun x => rGL k hn (mirabolicProjection k _ x), (continuous_rGL k hn).comp (GlobalTheory.CompanionTheory.BZMirFun.continuous_mirProj k _), by simp, ?_⟩` and prove the remaining obligations. Introduce `h hh d m x e`. Establish `e2` using `proj_eq k i t h d (castM k (by omega) m) x e`.
+
+Rewrite `e2` using `[castM_val k _ hn.symm]`. Use `⟨rGL k hn ((wGL k i t)⁻¹ * mirabolicProjection k _ h * wGL k i t), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_parab_iff]`. Introduce `a b u v hab`. Apply the tactic sequence `cases a <;> cases b <;> first | exact absurd hab (by decide) | skip`.
+
+Rewrite using `[rGL_apply, wGL_conj_apply, piPerm_cast, piPerm_cast]`. Establish `hh' : ((h : Mir k ((i + 1) + (t + 1))) : GL (Fin ((i + 1) + (t + 1) + 1)) k) ∈ parab k (ePG (i + 1) (t + 1))` using `hh`. Establish `h0` using `mem_parab_iff.1 hh' true false u (Fin.castSucc v) (by decide)`. Establish `e3 : Fin.castSucc (eGP (i + 1) t ⟨true, u⟩) = ePG (i + 1) (t + 1) ⟨true, u⟩` using `Fin.ext (by rw [Fin.val_castSucc, GlobalTheory.CompanionTheory.LeibPhi.blockIndex_true_val, ePG_true_val])`. Establish `e4 : Fin.castSucc (eGP (i + 1) t ⟨false, v⟩) = ePG (i + 1) (t + 1) ⟨false, Fin.castSucc v⟩` using `Fin.ext (by rw [Fin.val_castSucc, GlobalTheory.CompanionTheory.LeibPhi.blockIndex_false_val, ePG_false_castSucc_val])`.
+
+Use `show ((h : Mir k ((i + 1) + (t + 1))) : GL (Fin ((i + 1) + (t + 1) + 1)) k).val (Fin.castSucc (eGP (i + 1) t ⟨true, u⟩)) (Fin.castSucc (eGP (i + 1) t ⟨false, v⟩)) = 0`. Rewrite using `[e3, e4]`. Conclude with `h0`. Establish `e5` using `congrArg (rGL k hn) e2`. Rewrite `e5` using `[rGL_rGL, map_mul]`.
+
+Conclude with `e5`.
+-/
 theorem exists_parab_mul : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ), ∃ Θ : Mir k ((i + 1) + t + 1) → GL (Fin (i + (t + 1) + 1)) k, Continuous Θ ∧ Θ 1 = 1 ∧
     ∀ (h : Mir k ((i + 1) + (t + 1))), h ∈ HPG k (i + 1) (t + 1) → ∀ (d : Fin (t + 1) → k) (m : Mir k (i + (t + 1)))
       (x : Mir k ((i + 1) + t + 1)), dEmb k i t d * wEl k i t * sO k i t m = h * wEl k i t * x →

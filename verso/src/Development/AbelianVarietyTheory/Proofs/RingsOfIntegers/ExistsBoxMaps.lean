@@ -27,6 +27,15 @@ section General
 
 variable {X X' Y Y' : Scheme.{0}} {M : LB X} {M' : LB X'} {j : ℕ} {pr : Fin j → (X' ⟶ X)}
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_boxPull w hw hM hM' p hφ (fun i => Geo.Tor.genSec (t i) (ht i))`. Establish `hv : ∀ (y : Y') (J J'), Good M y J → Good M' y J' → (∏ a, om w y J J' (𝟙 Y' ≫ φ' a) ^ ε a).val * sval s (𝟙 Y') y J' = (∏ i, val (t i) (𝟙 Y' ≫ p i) y J).val` using `fun y J J' hJ hJ' => (boxPull_val hs _ y hJ hJ').trans ((Finset.prod_congr rfl fun i _ => sval_genSec (t i) (ht i) _ y hJ).trans (Units.coe_prod _ _).symm)`. Establish `hu : ∀ c, IsUnit (s.f c)` using `fun c => Y'.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`. Take `⟨J', hJ', e⟩` from `sval_trans hM' s y c hy`. Take `⟨J, hJ⟩` from `exists_good_at hM y`.
+
+Establish `h₁ : IsUnit (sval s (𝟙 Y') y J')` using `isUnit_of_mul_isUnit_right ((hv y J J' hJ hJ').symm ▸ Units.isUnit _)`. Conclude with `(congrArg IsUnit ((gs_eq (𝟙 Y') y (LB.wchart M' φ' c) hy _).symm.trans e)).mpr ((Units.isUnit _).mul h₁)`. Use `⟨⟨fun c => (hu c).unit⟩, fun a b => Units.ext (s.compat a b), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨jN, jM⟩`. Use `Units.ext (Eq.trans ?_ (hs jN jM).symm)` and prove the remaining obligations.
+
+Use `fn_ext (V := LB.wchart (LB.LinComb M pr (fun _ => 1)) φ' jN ⊓ LB.wchart M' φ' jM) fun y hy => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (gs_prod (𝟙 Y') y _ hy _ _).symm` and prove the remaining obligations. Use `(gs_unit (𝟙 Y') y _ hy _).trans ((congrArg Units.val ((gm_res (𝟙 Y') y inf_le_left hy _).trans (map_prod (gm (𝟙 Y') y (LB.wchart (LB.LinComb M pr (fun _ => 1)) φ' jN)) (fun i => res (GeneratorPullback.box_le M pr φ' jN i) ((GeneratorPullback.pullAlong M (pr i) (p i) (φ i) ε φ' (h …` and prove the remaining obligations. Establish `hle` using `box_le_of_comp M pr φ' (φ i) (p i) i (hφ i) jN`. Use `(congrArg Units.val ((gm_res (𝟙 Y') y (GeneratorPullback.box_le M pr φ' _ i) hy.1 _).trans (gm_rp₁ (p i) y _ _ _ (GeneratorPullback.box_le M pr φ' _ i hy.1) _))).trans ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ ((gs_res (𝟙 Y') y (inf_le_left.trans hle) hy _).trans (gs_pull (𝟙 Y') (p i) y _ (hle hy.1) _)).symm` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `(gs_unit (p i) y _ (hle hy.1) _).symm`.
+-/
 theorem exists_box_maps (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) (hw : w.IsGen) (hM : M.IsLB) (hM' : M'.IsLB)
     {K : Type} [Fintype K] {φ' : K → (Y' ⟶ X')}
     {φ : Fin j → K → (Y ⟶ X)} {ε : K → ℤ} (p : Fin j → (Y' ⟶ Y)) (hφ : ∀ i a, φ' a ≫ pr i = p i ≫ φ i a)
@@ -69,10 +78,18 @@ section Deg
 variable {R : Type} [CommRing R] [IsDomain R] {j : ℕ} {D' D : DegPre R} (pD : IsPowDeg D' D j)
   {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+The claim follows from `pD.pw.lim.hom_ext fun ⟨i⟩ => h i`.
+-/
 theorem pt_ext {T : Over (Spec (CommRingCat.of R))} {a b : T ⟶ D'.P.A}
     (h : ∀ i, a ≫ pD.pw.pr i = b ≫ pD.pw.pr i) : a = b :=
   pD.pw.lim.hom_ext fun ⟨i⟩ => h i
 
+/- English proof (translation)
+Use `haveI := pD.pw.hom i`. Rewrite using `[Category.id_comp]`. Use `fin_cases a`. Use `congrArg (fun q : TF (R := R) F ⟶ D.P.A => q.left) (?_ : (cP D' _ χ * b') ≫ pD.pw.pr i = cP D _ (pD.xe χ i) * b i)` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, cPoint_pr, hb]`.
+
+Conclude with `congrArg (fun q : TF (R := R) F ⟶ D.P.A => q.left) (cPoint_pr pD _ χ i)`. Conclude with `congrArg (fun q : TF (R := R) F ⟶ D.P.A => q.left) (hb i)`. Conclude with `congrArg (fun q : TF (R := R) F ⟶ D.P.A => q.left) (MonObj.one_comp (pD.pw.pr i))`.
+-/
 theorem gtφ_pr (b' : TF (R := R) F ⟶ D'.P.A) (b : Fin j → (TF (R := R) F ⟶ D.P.A))
     (hb : ∀ i, b' ≫ pD.pw.pr i = b i) (χ : D'.X) (i : Fin j) (a : Fin 4) :
     DegPre.gtφ D' F b' χ a ≫ (pD.pw.pr i).left = 𝟙 _ ≫ DegPre.gtφ D F (b i) (pD.xe χ i) a := by
@@ -100,9 +117,15 @@ variable (y J J') in
 def omL (x b : TF (R := R) F ⟶ D'.P.A) : ((TF (R := R) F).left.presheaf.stalk y)ˣ :=
   (omP pD y J J' (x * b))⁻¹ * omP pD y J J' x * omP pD y J J' b * (omP pD y J J' 1)⁻¹
 
+/- English proof (translation)
+Rewrite using `[omL, _root_.mul_one]`. Simplify using the standard rewrite rules.
+-/
 theorem omL_one (x : TF (R := R) F ⟶ D'.P.A) : omL pD y J J' x 1 = 1 := by
   rw [omL, _root_.mul_one]; simp
 
+/- English proof (translation)
+Rewrite using `[omL, _root_.one_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem omL_one' (x : TF (R := R) F ⟶ D'.P.A) : omL pD y J J' 1 x = 1 := by
   rw [omL, _root_.one_mul]
   apply Additive.ofMul.injective
@@ -112,6 +135,9 @@ theorem omL_one' (x : TF (R := R) F ⟶ D'.P.A) : omL pD y J J' 1 x = 1 := by
 variable (hJ : Good D.P.L y J) (hJ' : Good D'.P.L y J')
 include hJ hJ'
 
+/- English proof (translation)
+The claim follows from `(congrArg₂ (· * ·) (prod_gt b' χ (om pD.w y J J')).symm rfl).trans (box_gen_val pD.w hψ t' t H y hJ hJ')`.
+-/
 theorem maps_val {b' : TF (R := R) F ⟶ D'.P.A} {b : Fin j → (TF (R := R) F ⟶ D.P.A)} {χ : D'.X}
     (hψ : ∀ i a, DegPre.gtφ D' F b' χ a ≫ (pD.pw.pr i).left = 𝟙 _ ≫ DegPre.gtφ D F (b i) (pD.xe χ i) a)
     (t' : LB.Gen (LB.LinComb D'.P.L (DegPre.gtφ D' F b' χ) DegPre.gtε))
@@ -122,6 +148,11 @@ theorem maps_val {b' : TF (R := R) F ⟶ D'.P.A} {b : Fin j → (TF (R := R) F �
     omL pD y J J' (cP D' _ χ) b' * val t' (𝟙 _) y J' = ∏ i, val (t i) (𝟙 _) y J :=
   (congrArg₂ (· * ·) (prod_gt b' χ (om pD.w y J J')).symm rfl).trans (box_gen_val pD.w hψ t' t H y hJ hJ')
 
+/- English proof (translation)
+Establish `e : th D' y J' x x' b * (omP pD y J J' (x * x' * b) * (omP pD y J J' (x * x'))⁻¹ * (omP pD y J J' (x * b))⁻¹ * (omP pD y J J' (x' * b))⁻¹ * omP pD y J J' x * omP pD y J J' x' * omP pD y J J' b * (omP pD y J J' 1)⁻¹) = _` using `GlobalTheory.CubBox.cubV_box hG R j D D' pD _ y J J' hJ hJ' x x' b`. Rewrite using `[← e]`. Unfold `omL`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem th_box (hG : GlobalFnsSt) (x x' b : TF (R := R) F ⟶ D'.P.A) :
     th D' y J' x x' b * (omL pD y J J' x b * omL pD y J J' x' b) =
       omL pD y J J' (x * x') b * ∏ i, th D y J (x ≫ pD.pw.pr i) (x' ≫ pD.pw.pr i) (b ≫ pD.pw.pr i) := by
@@ -134,6 +165,11 @@ theorem th_box (hG : GlobalFnsSt) (x x' b : TF (R := R) F ⟶ D'.P.A) :
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Establish `e : th D' y J' x b b' * (omP pD y J J' (x * b * b') * (omP pD y J J' (x * b))⁻¹ * (omP pD y J J' (x * b'))⁻¹ * (omP pD y J J' (b * b'))⁻¹ * omP pD y J J' x * omP pD y J J' b * omP pD y J J' b' * (omP pD y J J' 1)⁻¹) = _` using `GlobalTheory.CubBox.cubV_box hG R j D D' pD _ y J J' hJ hJ' x b b'`. Rewrite using `[← e]`. Unfold `omL`. Rewrite using `[← _root_.mul_assoc x]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem th_box' (hG : GlobalFnsSt) (x b b' : TF (R := R) F ⟶ D'.P.A) :
     th D' y J' x b b' * (omL pD y J J' x b * omL pD y J J' x b') =
       omL pD y J J' x (b * b') * ∏ i, th D y J (x ≫ pD.pw.pr i) (b ≫ pD.pw.pr i) (b' ≫ pD.pw.pr i) := by
@@ -147,6 +183,13 @@ theorem th_box' (hG : GlobalFnsSt) (x b b' : TF (R := R) F ⟶ D'.P.A) :
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Establish `a₁ : ∀ χ, (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) ≫ D'.xK χ = (cP D' (TF (R := R) F) χ).left := fun χ => (Category.assoc _ _ _).trans ((Category.id_comp _).trans (Category.assoc _ _ _).symm)`. Establish `a₂ : (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) ≫ (toUnit (TK R)).left ≫ eSec D'.P.A = (1 : TF (R := R) F ⟶ D'.P.A).left := (Category.assoc _ _ _).trans ((Category.id_comp _).trans (Category.assoc _ _ _).symm)`. Establish `b₁ : ∀ χ, (omP pD y J J' (cP D' _ χ))⁻¹ * val (D'.psi χ) (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) y J' = _ := fun χ => (congrArg (fun q => (om pD.w y J J' q)⁻¹ * val (D'.psi χ) (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y J') (a₁ χ)).symm.trans (psi_val pD hJ hJ' χ (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F))`. Establish `b₂ : omP pD y J J' 1 * val D'.rigK (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) y J' = _ := (congrArg (fun q => om pD.w y J J' q * val D'.rigK (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y J') a₂).symm.trans (rig_val pD hJ hJ' (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F))`. Establish `b₃` using `(b₁ (a + b)).trans (Finset.prod_congr rfl fun i _ => congrArg (fun χ => val (D.psi χ) (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y J) (show pD.xe (a + b) i = pD.xe a i + pD.xe b i by rw [map_add]; rfl))`.
+
+Establish `e : ∀ (E : DegPre R) (I), Good E.P.L y I → ∀ a b : E.X, val (E.tau a b) (𝟙 (TF (R` using `R) F).left ≫ jFK (R := R) F) y I = val (E.psi (a + b)) (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y I * (val (E.psi a) (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y I)⁻¹ * (val (E.psi b) (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y I)⁻¹ * (val E.rigK (𝟙 (TF (R := R) F).left ≫ jFK (R …`. Use `(congrArg₂ (· * ·) rfl (e D' J' hJ' a b)).trans (Eq.trans ?_ (Finset.prod_congr rfl fun i _ => e D J hJ (pD.xe a i) (pD.xe b i)).symm)` and prove the remaining obligations. Simplify using `only [Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Rewrite using `[← b₃, ← b₁ a, ← b₁ b, ← b₂, omL, ← cPoint_add, add_comm b a]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tau_box (a b : D'.X) :
     omL pD y J J' (cP D' _ b) (cP D' _ a) * val (D'.tau a b) (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y J' =
       ∏ i, val (D.tau (pD.xe a i) (pD.xe b i)) (𝟙 (TF (R := R) F).left ≫ jFK (R := R) F) y J := by
@@ -182,6 +225,9 @@ theorem tau_box (a b : D'.X) :
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Take `⟨hψ, H⟩` from `h.2 χ`. Conclude with `maps_val pD hJ hJ' hψ _ _ H`.
+-/
 theorem box_val {g' : GtPtF D' F} {g : Fin j → GtPtF D F} (h : IsBoxGtF pD F g' g) (χ : D'.X) :
     omL pD y J J' (cP D' _ χ) g'.b * val (g'.s χ) (𝟙 _) y J' = ∏ i, val ((g i).s (pD.xe χ i)) (𝟙 _) y J := by
   obtain ⟨hψ, H⟩ := h.2 χ
@@ -189,6 +235,9 @@ theorem box_val {g' : GtPtF D' F} {g : Fin j → GtPtF D F} (h : IsBoxGtF pD F g
 
 end Values
 
+/- English proof (translation)
+Substitute `h₁ h₂ h₃` using the available equality. Use `mul_left_cancel (a := a * b) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem alg_mul {U : Type} [CommGroup U] {a b c s t u θ Θ S T V : U} (h₁ : a * s = S) (h₂ : b * t = T) (h₃ : c * u = V)
     (h₄ : θ * (a * b) = c * Θ) (h₅ : V * Θ = S * T) : u * θ = s * t := by
   subst h₁ h₂ h₃
@@ -197,6 +246,17 @@ theorem alg_mul {U : Type} [CommGroup U] {a b c s t u θ Θ S T V : U} (h₁ : a
     _ = c * u * Θ := by rw [h₄]; ac_rfl
     _ = _ := by rw [h₅]; ac_rfl
 
+/- English proof (translation)
+Set `b' : TF (R` to `R) F ⟶ D'.P.A := pD.pw.lim.lift (Fan.mk _ fun i => (g i).b)`. Establish `hb : ∀ i, b' ≫ pD.pw.pr i = (g i).b` using `fun i => pD.pw.lim.fac (Fan.mk _ fun i => (g i).b) ⟨i⟩`. Use `choose s hs hm using fun χ : D'.X => exists_box_maps pD.w pD.w_gen D.P.isLB D'.P.isLB (fun _ => 𝟙 _) (gtφ_pr pD b' (fun i => (g i).b) hb χ) (fun i => (g i).s (pD.xe χ i)) (fun i => (g i).isGen _)`. Use `⟨⟨b', s, hs, corr_of_val D'.P.isLB fun y J' hJ' => ?_, fun χ χ' => corr_of_val D'.P.isLB fun y J' hJ' => ?_⟩, hb, fun χ => ⟨_, hm χ⟩⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at D.P.isLB y`.
+
+Establish `e` using `maps_val pD hJ hJ' _ _ _ (hm 0)`. Rewrite `e` using `[cPoint_zero, omL_one', _root_.one_mul]`. Use `e.trans ((Finset.prod_eq_one fun i _ => ?_).trans (val_one _).symm)` and prove the remaining obligations. Establish `z : pD.xe 0 i = 0` using `by rw [map_zero]; rfl`. Conclude with `(congrArg (fun χ => val ((g i).s χ) (𝟙 _) y J) z).trans ((val_corr hJ (g i).s_zero _).trans (val_one _))`.
+
+Take `⟨J, hJ⟩` from `exists_good_at D.P.isLB y`. Use `(val_mul hJ' _ _ _).trans ((congrArg₂ (· * ·) rfl (val_cubAt hJ' _ _ _)).trans (Eq.trans ?_ (val_mul hJ' _ _ _).symm))` and prove the remaining obligations. Establish `e` using `th_box pD hJ hJ' hG (cP D' _ χ) (cP D' _ χ') b'`. Rewrite `e` using `[← cPoint_add]`. Use `alg_mul (maps_val pD hJ hJ' _ _ _ (hm χ)) (maps_val pD hJ hJ' _ _ _ (hm χ')) (maps_val pD hJ hJ' _ _ _ (hm (χ + χ'))) e ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `z : pD.xe (χ + χ') i = pD.xe χ i + pD.xe χ' i` using `by rw [map_add]; rfl`. Establish `e₂` using `gt_mul (𝟙 (TF (R := R) F)) hJ (g i) (pD.xe χ i) (pD.xe χ' i)`. Rewrite `e₂` using `[Category.id_comp, Over.id_left]`.
+
+Rewrite using `[cPoint_pr, cPoint_pr, hb]`. Conclude with `(congrArg₂ (· * ·) (congrArg (fun χ => val ((g i).s χ) (𝟙 _) y J) z) rfl).trans e₂`.
+-/
 theorem exists_boxGt (hG : GlobalFnsSt) (g : Fin j → GtPtF D F) : ∃ g' : GtPtF D' F, IsBoxGtF pD F g' g := by
   let b' : TF (R := R) F ⟶ D'.P.A := pD.pw.lim.lift (Fan.mk _ fun i => (g i).b)
   have hb : ∀ i, b' ≫ pD.pw.pr i = (g i).b := fun i => pD.pw.lim.fac (Fan.mk _ fun i => (g i).b) ⟨i⟩
@@ -226,6 +286,11 @@ theorem exists_boxGt (hG : GlobalFnsSt) (g : Fin j → GtPtF D F) : ∃ g' : GtP
     rw [cPoint_pr, cPoint_pr, hb]
     exact (congrArg₂ (· * ·) (congrArg (fun χ => val ((g i).s χ) (𝟙 _) y J) z) rfl).trans e₂
 
+/- English proof (translation)
+Establish `hb : g'.b = 1` using `pt_ext pD fun i => by haveI := pD.pw.hom i`. Rewrite using `[h.1, ((isZero_iff _).1 (hz i)).1, MonObj.one_comp]`. Use `(isZero_iff _).2 ⟨hb, fun χ y J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at D.P.isLB y`. Establish `e` using `box_val pD hJ hJ' h χ`.
+
+Establish `o : omL pD y J J' (cP D' _ χ) g'.b = 1` using `by rw [hb, omL_one]`. Rewrite `e` using `[o, _root_.one_mul]`. Conclude with `e.trans (Finset.prod_eq_one fun i _ => ((isZero_iff _).1 (hz i)).2 _ y J hJ)`.
+-/
 theorem box_isZero {g' : GtPtF D' F} {g : Fin j → GtPtF D F} (h : IsBoxGtF pD F g' g) (hz : ∀ i, (g i).IsZero) :
     g'.IsZero := by
   have hb : g'.b = 1 := pt_ext pD fun i => by
@@ -238,6 +303,13 @@ theorem box_isZero {g' : GtPtF D' F} {g : Fin j → GtPtF D F} (h : IsBoxGtF pD 
   rw [o, _root_.one_mul] at e
   exact e.trans (Finset.prod_eq_one fun i _ => ((isZero_iff _).1 (hz i)).2 _ y J hJ)
 
+/- English proof (translation)
+Establish `hb : g₃'.b = g₁'.b * g₂'.b` using `pt_ext pD fun i => by haveI := pD.pw.hom i`. Rewrite using `[h₃.1, ((isAdd_iff _ _ _).1 (ha i)).1, MonObj.mul_comp, h₁.1, h₂.1]`. Use `(isAdd_iff _ _ _).2 ⟨hb, fun χ y J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at D.P.isLB y`. Establish `e` using `th_box' pD hJ hJ' hG (cP D' _ χ) g₁'.b g₂'.b`.
+
+Rewrite `e` using `[← hb]`. Use `alg_mul (box_val pD hJ hJ' h₁ χ) (box_val pD hJ hJ' h₂ χ) (box_val pD hJ hJ' h₃ χ) e ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[cPoint_pr, h₁.1, h₂.1]`.
+
+Conclude with `((isAdd_iff _ _ _).1 (ha i)).2 _ y J hJ`.
+-/
 theorem box_isAdd (hG : GlobalFnsSt) {g₁' g₂' g₃' : GtPtF D' F} {g₁ g₂ g₃ : Fin j → GtPtF D F}
     (h₁ : IsBoxGtF pD F g₁' g₁) (h₂ : IsBoxGtF pD F g₂' g₂) (h₃ : IsBoxGtF pD F g₃' g₃)
     (ha : ∀ i, (g₁ i).IsAdd (g₂ i) (g₃ i)) : g₁'.IsAdd g₂' g₃' := by
@@ -254,6 +326,11 @@ theorem box_isAdd (hG : GlobalFnsSt) {g₁' g₂' g₃' : GtPtF D' F} {g₁ g₂
   rw [cPoint_pr, h₁.1, h₂.1]
   exact ((isAdd_iff _ _ _).1 (ha i)).2 _ y J hJ
 
+/- English proof (translation)
+Establish `hb : g'.b = cP D' _ x` using `pt_ext pD fun i => by`. Rewrite using `[h.1, ((isIota_iff _ _).1 (hι i)).1, cPoint_pr]`. Use `(isIota_iff _ _).2 ⟨hb, fun χ y J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at D.P.isLB y`. Establish `e` using `tau_box pD hJ hJ' x χ`.
+
+Rewrite `e` using `[← hb]`. Conclude with `mul_left_cancel ((box_val pD hJ hJ' h χ).trans ((Finset.prod_congr rfl fun i _ => ((isIota_iff _ _).1 (hι i)).2 _ y J hJ).trans e.symm))`.
+-/
 theorem box_isIota {g' : GtPtF D' F} {g : Fin j → GtPtF D F} (h : IsBoxGtF pD F g' g) (x : D'.X)
     (hι : ∀ i, GtPtF.IsIota (pD.xe x i) (g i)) : GtPtF.IsIota x g' := by
   have hb : g'.b = cP D' _ x := pt_ext pD fun i => by
@@ -267,6 +344,11 @@ theorem box_isIota {g' : GtPtF D' F} {g : Fin j → GtPtF D F} (h : IsBoxGtF pD 
 
 end Deg
 
+/- English proof (translation)
+Introduce `hG R _ _ j D D' pD F _ _ k p`. Use `choose box hbox using fun g : Fin j → GtPtF D F => exists_boxGt pD hG g`. Use `choose h hn hι using fun i => (p i).eq`. Use `choose gs g₀ gst gl using hn`. Establish `hy : pD.xe (pD.xe.symm fun i => (p i).y) = fun i => (p i).y` using `pD.xe.apply_symm_apply _`.
+
+Use `⟨⟨pD.xe.symm fun i => (p i).y, box fun i => (p i).g, box h, ⟨fun n => box fun i => gs i n, box_isZero pD (hbox _) g₀, fun n => box_isAdd pD hG (hbox _) (hbox _) (hbox _) fun i => gst i n, congrArg box (funext gl)⟩, box_isIota pD (hbox _) _ fun i => ?_⟩, hy, hbox _⟩` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `hι i`.
+-/
 theorem exists_isBoxQk : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (D D' : DegPre R)
     (pD : IsPowDeg D' D j) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (p : Fin j → QkPt D F k),
     ∃ p' : QkPt D' F k, IsBoxQk pD F k p' p := by

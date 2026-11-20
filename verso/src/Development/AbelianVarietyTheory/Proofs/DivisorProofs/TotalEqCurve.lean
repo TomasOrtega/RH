@@ -32,9 +32,15 @@ def IsDens (ρ : AlgChart p σ D → CxPts p σ → ℝ) : Prop :=
 def total (ρ : AlgChart p σ D → CxPts p σ → ℝ) : ℝ :=
   (part ρ univ).toReal - (part (fun c y => -ρ c y) univ).toReal
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, Iff.rfl⟩`.
+-/
 theorem total_eq_curve (ρ : AlgChart p σ 1 → CxPts p σ → ℝ) :
     part ρ = CurveDens.part ρ ∧ total ρ = CurveDens.total ρ ∧ (IsDens ρ ↔ CurveDens.IsDens ρ) := ⟨rfl, rfl, Iff.rfl⟩
 
+/- English proof (translation)
+Unfold `ChartGlue.chartMeas`. Use `congr 1`. Apply `withDensity_congr_ae` to reduce the goal to its premises. Use `filter_upwards [ae_restrict_mem e.open_target.measurableSet] with v hv`. Conclude with `h _ (e.map_target hv)`.
+-/
 private theorem chartMeas_congr_source' {n : ℕ} {Z : Type} [TopologicalSpace Z] [MeasurableSpace Z]
     (e : OpenPartialHomeomorph Z (V n)) {f g : Z → ENNReal} (h : ∀ y ∈ e.source, f y = g y) :
     ChartGlue.chartMeas e f = ChartGlue.chartMeas e g := by
@@ -46,16 +52,27 @@ private theorem chartMeas_congr_source' {n : ℕ} {Z : Type} [TopologicalSpace Z
 
 variable {ρ ρ' : AlgChart p σ D → CxPts p σ → ℝ}
 
+/- English proof (translation)
+Unfold `part ChartGlue.glueMeas`. Conclude with `iSup_congr fun c => chartMeas_congr_source' _ fun y hy => congrArg ENNReal.ofReal (h c y hy)`.
+-/
 theorem part_congr (h : ∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, ρ c y = ρ' c y) : part ρ = part ρ' := by
   unfold part ChartGlue.glueMeas
   exact iSup_congr fun c => chartMeas_congr_source' _ fun y hy => congrArg ENNReal.ofReal (h c y hy)
 
+/- English proof (translation)
+Establish `h' : part (fun c y => -ρ c y) = part (fun c y => -ρ' c y)` using `part_congr fun c y hy => by rw [h c y hy]`. Unfold `total`. Rewrite using `[part_congr h, h']`.
+-/
 theorem total_congr (h : ∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, ρ c y = ρ' c y) : total ρ = total ρ' := by
   have h' : part (fun c y => -ρ c y) = part (fun c y => -ρ' c y) :=
     part_congr fun c y hy => by rw [h c y hy]
   unfold total
   rw [part_congr h, h']
 
+/- English proof (translation)
+Establish `h0 : ∀ c : AlgChart p σ D, ChartGlue.chartMeas c.e (fun y => ENNReal.ofReal (ρ c y)) = 0`. Introduce `c`. Rewrite using `[chartMeas_congr_source' c.e (g := fun _ => 0) fun y hy => ENNReal.ofReal_eq_zero.2 (h c y hy)]`. Use `show Measure.map _ ((volume.restrict c.e.target).withDensity 0) = 0`. Rewrite using `[withDensity_zero, Measure.map_zero]`.
+
+Unfold `part ChartGlue.glueMeas`. Conclude with `le_antisymm (iSup_le fun c => (h0 c).le) (Measure.zero_le _)`.
+-/
 theorem part_eq_zero (h : ∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, ρ c y ≤ 0) : part ρ = 0 := by
   have h0 : ∀ c : AlgChart p σ D, ChartGlue.chartMeas c.e (fun y => ENNReal.ofReal (ρ c y)) = 0 := by
     intro c
@@ -65,10 +82,16 @@ theorem part_eq_zero (h : ∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, ρ c y 
   unfold part ChartGlue.glueMeas
   exact le_antisymm (iSup_le fun c => (h0 c).le) (Measure.zero_le _)
 
+/- English proof (translation)
+Establish `h1 : part (fun (_ : AlgChart p σ D) (_ : CxPts p σ) => (0 : ℝ)) = 0` using `part_eq_zero fun _ _ _ => le_rfl`. Simplify using `[total, h1]`.
+-/
 theorem total_zero : total (fun (_ : AlgChart p σ D) _ => 0) = 0 := by
   have h1 : part (fun (_ : AlgChart p σ D) (_ : CxPts p σ) => (0 : ℝ)) = 0 := part_eq_zero fun _ _ _ => le_rfl
   simp [total, h1]
 
+/- English proof (translation)
+Unfold `part`. Rewrite using `[ChartGlue.glueMeas_apply _ _ (fun c c' => AlgChart.holo_trans c c') ?_ c hT hc]`. Conclude with `ChartGlue.chartMeas_apply_of_subset _ _ hT hc`. Introduce `c c' y hy hy'`. Rewrite using `[h.1 c c' y hy hy', ENNReal.ofReal_mul (by positivity)]`.
+-/
 theorem IsDens.part_apply [SecondCountableTopology (CxPts p σ)] (h : IsDens ρ) (c : AlgChart p σ D)
     {T : Set (CxPts p σ)} (hT : MeasurableSet T) (hc : T ⊆ c.e.source) :
     part ρ T = ∫⁻ v in c.e '' T, ENNReal.ofReal (ρ c (c.e.symm v)) := by
@@ -78,17 +101,32 @@ theorem IsDens.part_apply [SecondCountableTopology (CxPts p σ)] (h : IsDens ρ)
   · intro c c' y hy hy'
     rw [h.1 c c' y hy hy', ENNReal.ofReal_mul (by positivity)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ => by simp, fun _ => continuousOn_const⟩`.
+-/
 theorem isDens_zero : IsDens fun (_ : AlgChart p σ D) _ => 0 := ⟨fun _ _ _ _ _ => by simp, fun _ => continuousOn_const⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy', h'.1 c c' y hy hy']; ring, fun c => (h.2 c).add (h'.2 c)⟩`.
+-/
 theorem IsDens.add (h : IsDens ρ) (h' : IsDens ρ') : IsDens fun c y => ρ c y + ρ' c y := ⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy', h'.1 c c' y hy hy']; ring,
   fun c => (h.2 c).add (h'.2 c)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy', h'.1 c c' y hy hy']; ring, fun c => (h.2 c).sub (h'.2 c)⟩`.
+-/
 theorem IsDens.sub (h : IsDens ρ) (h' : IsDens ρ') : IsDens fun c y => ρ c y - ρ' c y := ⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy', h'.1 c c' y hy hy']; ring,
   fun c => (h.2 c).sub (h'.2 c)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy']; ring, fun c => (hf.comp_continuousOn c.e.continuousOn_symm).mul (h.2 c)⟩`.
+-/
 theorem IsDens.mul (h : IsDens ρ) {f : CxPts p σ → ℝ} (hf : Continuous f) : IsDens fun c y => f y * ρ c y := ⟨fun c c' y hy hy' => by beta_reduce; rw [h.1 c c' y hy hy']; ring,
   fun c => (hf.comp_continuousOn c.e.continuousOn_symm).mul (h.2 c)⟩
 
+/- English proof (translation)
+Use `⟨fun c c' y hy hy' => ?_, fun c => continuousOn_finset_sum s fun j _ => (h j).2 c⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (h j).1 c c' y hy hy'`.
+-/
 theorem IsDens.sum {J : Type} (s : Finset J) {τ : J → AlgChart p σ D → CxPts p σ → ℝ} (h : ∀ j, IsDens (τ j)) :
     IsDens fun c y => ∑ j ∈ s, τ j c y := by
   refine ⟨fun c c' y hy hy' => ?_, fun c => continuousOn_finset_sum s fun j _ => (h j).2 c⟩
@@ -96,9 +134,15 @@ theorem IsDens.sum {J : Type} (s : Finset J) {τ : J → AlgChart p σ D → CxP
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun j _ => (h j).1 c c' y hy hy'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun c c' y hy hy' => by rw [e c y hy, e c' y hy']; exact h.1 c c' y hy hy', fun c => (h.2 c).congr fun v hv => e c _ (c.e.map_target hv)⟩`.
+-/
 theorem IsDens.congr (h : IsDens ρ) (e : ∀ c : AlgChart p σ D, ∀ y ∈ c.e.source, ρ' c y = ρ c y) : IsDens ρ' := ⟨fun c c' y hy hy' => by rw [e c y hy, e c' y hy']; exact h.1 c c' y hy hy',
   fun c => (h.2 c).congr fun v hv => e c _ (c.e.map_target hv)⟩
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> simp [Weight.chernPart, part]`.
+-/
 theorem chernPart_eq {B : LB X} (φ : Weight p σ B) :
     φ.chernPart D 1 = part (fun (c : AlgChart p σ D) y => c.chernDens φ y) ∧
       φ.chernPart D (-1) = part fun (c : AlgChart p σ D) y => -c.chernDens φ y := by
@@ -107,6 +151,9 @@ theorem chernPart_eq {B : LB X} (φ : Weight p σ B) :
 def transMat (c c' : AlgChart p σ D) (y : CxPts p σ) : Matrix (Fin D) (Fin D) ℂ :=
   Matrix.of fun a b => fderiv ℂ (c'.e ∘ c.e.symm) (c.e y) (EuclideanSpace.single b 1) a
 
+/- English proof (translation)
+Unfold `transMat ChartGlue.transDet`. Rewrite using `[ContinuousLinearMap.det, ← LinearMap.det_toMatrix (EuclideanSpace.basisFun (Fin D) ℂ).toBasis]`. Use `congr 1`.
+-/
 theorem det_transMat (c c' : AlgChart p σ D) (y : CxPts p σ) :
     (transMat c c' y).det = ChartGlue.transDet c.e c'.e y := by
   unfold transMat ChartGlue.transDet
@@ -127,24 +174,45 @@ def mix (d : ℕ) (A M : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ) : ℝ :=
 
 variable {A M M' J : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ}
 
+/- English proof (translation)
+Unfold `mix`. Rewrite using `[Matrix.adjugate_mul, Matrix.trace_smul, Matrix.trace_one]`. Simplify using `[Nat.factorial_succ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mix_self : mix d A A = (d + 1).factorial / Real.pi ^ (d + 1) * A.det.re := by
   unfold mix
   rw [Matrix.adjugate_mul, Matrix.trace_smul, Matrix.trace_one]
   simp [Nat.factorial_succ, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [mix, Matrix.mul_add, Matrix.trace_add, Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mix_add : mix d A (M + M') = mix d A M + mix d A M' := by
   simp only [mix, Matrix.mul_add, Matrix.trace_add, Complex.add_re]
   ring
 
+/- English proof (translation)
+Simplify using `only [mix, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mix_smul (t : ℝ) : mix d A ((t : ℂ) • M) = t * mix d A M := by
   simp only [mix, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [mix, Finset.mul_sum, Matrix.trace_sum, Complex.re_sum]`.
+-/
 theorem mix_sum {I : Type} (s : Finset I) (N : I → Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ) :
     mix d A (∑ i ∈ s, N i) = ∑ i ∈ s, mix d A (N i) := by
   simp only [mix, Finset.mul_sum, Matrix.trace_sum, Complex.re_sum]
 
+/- English proof (translation)
+Establish `h1 : (Jᵀ).adjugate * Jᵀ = J.det • (1 : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ)`. Rewrite using `[Matrix.adjugate_mul, Matrix.det_transpose]`. Establish `h2 : Jᴴᵀ * (Jᴴᵀ).adjugate = star J.det • (1 : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ)`. Rewrite using `[Matrix.mul_adjugate, Matrix.det_transpose, Matrix.det_conjTranspose]`. Establish `key : ((chg J A).adjugate * chg J M).trace = ((‖J.det‖ ^ 2 : ℝ) : ℂ) * (A.adjugate * M).trace`.
+
+Unfold `chg`. Rewrite using `[Matrix.adjugate_mul_distrib, Matrix.adjugate_mul_distrib]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Jᴴᵀ * ((Jᴴᵀ).adjugate * (A.adjugate * ((Jᵀ).adjugate * Jᵀ) * M))).trace := Matrix.trace_mul_comm _ _`.
+
+Use `_ = ((Jᴴᵀ * (Jᴴᵀ).adjugate) * (A.adjugate * ((Jᵀ).adjugate * Jᵀ) * M)).trace := congrArg Matrix.trace (Matrix.mul_assoc _ _ _).symm`. Use `_ = ((‖J.det‖ ^ 2 : ℝ) : ℂ) * (A.adjugate * M).trace := by`. Rewrite using `[h1, h2]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, Matrix.trace_smul, smul_eq_mul]`. Rewrite using `[← mul_assoc, Complex.ofReal_pow, ← Complex.conj_mul', mul_comm J.det]`.
+
+Both sides reduce to the same expression. Unfold `mix`. Rewrite using `[key, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mix_chg : mix d (chg J A) (chg J M) = ‖J.det‖ ^ 2 * mix d A M := by
   have h1 : (Jᵀ).adjugate * Jᵀ = J.det • (1 : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ) := by
     rw [Matrix.adjugate_mul, Matrix.det_transpose]
@@ -170,6 +238,11 @@ theorem mix_chg : mix d (chg J A) (chg J M) = ‖J.det‖ ^ 2 * mix d A M := by
   rw [key, Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Unfold `mix`. Simplify using `only [Matrix.adjugate_diagonal, Matrix.diagonal_mul_diagonal, Matrix.trace_diagonal, Complex.re_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [← Complex.ofReal_prod, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mix_diagonal (a m : Fin (d + 1) → ℝ) :
     mix d (diagonal fun j => (a j : ℂ)) (diagonal fun j => (m j : ℂ)) =
       d.factorial / Real.pi ^ (d + 1) * ∑ j, m j * ∏ l ∈ Finset.univ.erase j, a l := by
@@ -180,6 +253,11 @@ theorem mix_diagonal (a m : Fin (d + 1) → ℝ) :
   simp only [← Complex.ofReal_prod, ← Complex.ofReal_mul, Complex.ofReal_re]
   ring
 
+/- English proof (translation)
+Use `⟨fun c c' y hy hy' => ?_, fun c => continuousOn_finset_sum s fun i _ => (h i).2.1 c, fun c y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [chg, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `(h i).1 c c' y hy hy'` as an intermediate fact. Simplify `this` using `[chg]`.
+
+Use `show (∑ i ∈ s, N i c y)ᴴ = ∑ i ∈ s, N i c y`. Rewrite using `[Matrix.conjTranspose_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (h i).2.2 c y hy`.
+-/
 theorem IsForm.sum {I : Type} (s : Finset I) {N : I → AlgChart p σ D → CxPts p σ → Matrix (Fin D) (Fin D) ℂ}
     (h : ∀ i, IsForm (N i)) : IsForm fun c y => ∑ i ∈ s, N i c y := by
   refine ⟨fun c c' y hy hy' => ?_, fun c => continuousOn_finset_sum s fun i _ => (h i).2.1 c,
@@ -192,6 +270,13 @@ theorem IsForm.sum {I : Type} (s : Finset I) {N : I → AlgChart p σ D → CxPt
     rw [Matrix.conjTranspose_sum]
     exact Finset.sum_congr rfl fun i _ => (h i).2.2 c y hy
 
+/- English proof (translation)
+Use `⟨fun c c' y hy hy' => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `e1` using `hA.1 c c' y hy hy'`. Establish `e2` using `hM.1 c c' y hy hy'`. Use `show mix d (A c y) (M c y) = ‖ChartGlue.transDet c.e c'.e y‖ ^ 2 * mix d (A c' y) (M c' y)`. Rewrite using `[← det_transMat, e1, e2]`.
+
+Conclude with `mix_chg`. Establish `hc : ContinuousOn (fun v => (A c (c.e.symm v), M c (c.e.symm v))) c.e.target` using `(hA.2.1 c).prodMk (hM.2.1 c)`. Establish `hg : Continuous fun q : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ × Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ => mix d q.1 q.2`. Unfold `mix`. Use `fun_prop`.
+
+Establish `hgc` using `hg.comp_continuousOn hc`. Conclude with `hgc`.
+-/
 theorem IsForm.isDens_mix {A M : AlgChart p σ (d + 1) → CxPts p σ → Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ}
     (hA : IsForm A) (hM : IsForm M) : IsDens fun c y => mix d (A c y) (M c y) := by
   refine ⟨fun c c' y hy hy' => ?_, fun c => ?_⟩
@@ -212,6 +297,9 @@ theorem IsForm.isDens_mix {A M : AlgChart p σ (d + 1) → CxPts p σ → Matrix
 def chernMat {B : LB X} (φ : Weight p σ B) (c : AlgChart p σ D) (y : CxPts p σ) : Matrix (Fin D) (Fin D) ℂ :=
   c.hess φ (pick φ.isLB y) y
 
+/- English proof (translation)
+Unfold `chernMat`. Conclude with `(e.hess_eq c hy (mem_pick _ y) (mem_pick _ y)).symm`.
+-/
 theorem chernMat_congr {L N : HermLB p} (e : L.Isometric N) (c : AlgChart p σ D) {y : CxPts p σ}
     (hy : y ∈ c.e.source) : chernMat (L.φ σ) c y = chernMat (N.φ σ) c y := by
   unfold chernMat
@@ -221,6 +309,11 @@ def bcMat {S : ShortComplex X.Modules} {r s : ℕ} (h : Met p σ S.X₂ (r + s))
     (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) (c : AlgChart p σ D) (y : CxPts p σ) : Matrix (Fin D) (Fin D) ℂ :=
   formMat (h.bcForm (Met.exists_adapted hS h₁ h₃ y).choose c y)
 
+/- English proof (translation)
+Rewrite using `[mix, Matrix.adjugate_fin_one, Matrix.one_mul]`. Unfold `Met.bcDens bcMat formMat`. Rewrite using `[Matrix.trace_fin_one]`. Simplify using `only [Matrix.of_apply, diagVal, kappa]`. Rewrite using `[div_div_eq_mul_div, Complex.div_I]`.
+
+Simplify using `[Complex.mul_re, Complex.mul_im]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mix_bcMat {S : ShortComplex X.Modules} {r s : ℕ} (h : Met p σ S.X₂ (r + s)) (hS : S.ShortExact)
     (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) (c : AlgChart p σ 1) (y : CxPts p σ) (A : Matrix (Fin 1) (Fin 1) ℂ) :
     mix 0 A (bcMat h hS h₁ h₃ c y) = h.bcDens hS h₁ h₃ c y := by
@@ -244,6 +337,9 @@ def flagDens (N : HermLB p) (d : ℕ) (σ : k →+* ℂ) (c : AlgChart p σ (d +
 
 def bcPair (N : HermLB p) (d : ℕ) : ℝ := ∑ᶠ σ, total (flagDens h fl N d σ)
 
+/- English proof (translation)
+Unfold `bcPair`. Use `finsum_congr fun σ => total_congr fun c y hy => ?_` and prove the remaining obligations. Simplify using `only [flagDens, chernMat_congr e c hy]`.
+-/
 theorem bcPair_congr {L N : HermLB p} (e : L.Isometric N) (d : ℕ) : bcPair h fl L d = bcPair h fl N d := by
   unfold bcPair
   refine finsum_congr fun σ => total_congr fun c y hy => ?_
@@ -272,6 +368,9 @@ def pt (z : V 1) (n : ∀ a, Low (r a) → ℂ) : V (d + 1) :=
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Unfold `base pt`. Use extensionality with `i`. Use `fin_cases i`. Simplify using the standard rewrite rules.
+-/
 theorem base_pt (z : V 1) (n : ∀ a, Low (r a) → ℂ) : base e (pt e z n) = z := by
   unfold base pt
   ext i
@@ -280,6 +379,9 @@ theorem base_pt (z : V 1) (n : ∀ a, Low (r a) → ℂ) : base e (pt e z n) = z
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a s`. Simplify using `[fib, pt]`.
+-/
 theorem fib_pt (z : V 1) (n : ∀ a, Low (r a) → ℂ) : fib e (pt e z n) = n := by
   funext a s
   simp [fib, pt]

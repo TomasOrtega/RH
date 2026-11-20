@@ -11,6 +11,13 @@ open GlobalTheory.CechPic GlobalTheory.ProjSpace GlobalTheory.CxPts
 
 namespace GlobalTheory.ProjModel
 
+/- English proof (translation)
+Use `isIntegral_of_isDomain k N` as an intermediate fact. Establish `: IsNoetherianRing k` using `IsNoetherianRing.of_finite ℤ k`. Establish `: Smooth (PSpace.str k N)` using `SmoothOfRelativeDimension.smooth N _`. Establish `hc : ∀ i, topologicalKrullDim (chart k N i : Set (PSpace k N)) = (N + 1 : ℕ)` using `fun i => by`. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding (chartι k N i).isOpenEmbedding.isEmbedding (congrArg SetLike.coe (opensRange_chartι k N i))]`.
+
+Use `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := MvPolynomial {j // j ≠ i} k)).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, hd]`. Simplify using `[add_comm]`. Use `⟨inferInstance, inferInstance, ‹_›, ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩, ?_, le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_) ((hc 0).ge.trans (topologicalKrullDim_subspace_le _ _))⟩` and prove the remaining obligations. Establish `h` using `(ArithBase.isArithVar_id hd).flat`.
+
+Rewrite `h` using `[Category.id_comp]`. Use `infer_instance`. Take `⟨i, hi⟩` from `exists_mem_chart k N x`. Conclude with `⟨_, (chart k N i).isOpen, hi, (hc i).le⟩`.
+-/
 theorem isArithVar_pspace (k : Type) [CommRing k] [IsDomain k] [CharZero k] [Module.Finite ℤ k]
     (hd : ringKrullDim k = 1) (N : ℕ) : IsArithVar (PSpace.str k N) N := by
   have := isIntegral_of_isDomain k N
@@ -32,6 +39,13 @@ theorem isArithVar_pspace (k : Type) [CommRing k] [IsDomain k] [CharZero k] [Mod
   · obtain ⟨i, hi⟩ := exists_mem_chart k N x
     exact ⟨_, (chart k N i).isOpen, hi, (hc i).le⟩
 
+/- English proof (translation)
+Introduce `Z i _ _ κ _ _ _ hd`. Establish `hA` using `hL.pull_of_isClosedImmersion i`. Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`.
+
+Establish `e : strHom κ Z ≫ spMap (Int.castRingHom κ) = i ≫ p ≫ spMap (Int.castRingHom k)` using `specZIsTerminal.hom_ext _ _`. Establish `: IsProper (strHom κ Z ≫ spMap (Int.castRingHom κ))` using `by rw [e]; infer_instance`. Establish `: IsProper (strHom κ Z)` using `IsProper.of_comp _ (spMap (Int.castRingHom κ))`. Establish `h` using `(isNef_iff_isClosedImmersion.1 (hA.isNef (k := κ))).2 Z (𝟙 Z) inferInstance inferInstance hd (by rw [Category.id_comp]; infer_instance)`. Rewrite `h` using `[interNumOn_id]`.
+
+Use `h.trans_eq (congrArg _ (funext fun j => ?_))` and prove the remaining obligations. Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem nefFib_of_isAmpleLB {k : Type} [CommRing k] [Module.Finite ℤ k] {X : Scheme.{0}} {p : X ⟶ Sp k} [IsProper p]
     (L : HermLB p) (hL : IsAmpleLB L.B) : ArInt.NefFib L := by
   intro Z i _ _ κ _ _ _ hd
@@ -50,6 +64,9 @@ theorem nefFib_of_isAmpleLB {k : Type} [CommRing k] [Module.Finite ℤ k] {X : S
   fin_cases j
   rfl
 
+/- English proof (translation)
+Introduce `σ y`. Establish `e (a) : Weight.combVal (PSpace.str k N) σ (coord k N) 1 a = secVal _ σ (coord k N a)`. Simplify using `[Weight.combVal, Matrix.one_apply]`. Use `le_of_le_of_eq ?_ (Weight.sum_nsq_fs (hB := O1_isLB k N) (he := fun a => e a ▸ secVal_mem _) (h := Weight.noCommonZero_combVal (iSup_nonzeroLocus_coord k N) (M := 1) (by simp)) y)` and prove the remaining obligations. Conclude with `le_of_eq_of_le (congrArg (Weight.nsq _ · y) (e a).symm) (Finset.single_le_sum (fun b _ => Weight.nsq_nonneg _ _ y) (Finset.mem_univ a))`.
+-/
 theorem coord_mem_smallSec (k : Type) [CommRing k] (N : ℕ) (a : Fin (N + 1)) :
     coord k N a ∈ (hermitianTwistingSheaf k N).smallSec := by
   intro σ y
@@ -62,6 +79,11 @@ theorem coord_mem_smallSec (k : Type) [CommRing k] (N : ℕ) (a : Fin (N + 1)) :
 
 variable (F : Type) [Field F] [NumberField F] (n : ℕ)
 
+/- English proof (translation)
+Establish `h : Ring.KrullDimLE 1 (𝓞 F)` using `inferInstance`. Use `le_antisymm (by exact_mod_cast Ring.krullDimLE_iff.1 h) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Establish `: Ring.KrullDimLE 0 (𝓞 F)` using `Ring.krullDimLE_iff.2 (by`. Establish `h' : ringKrullDim (𝓞 F) ≤ 0` using `Order.le_of_lt_succ (not_le.1 hlt)`.
+
+Conclude with `h')` after adjusting the coercions. Conclude with `RingOfIntegers.not_isField F Ring.KrullDimLE.isField_of_isDomain`.
+-/
 theorem ringKrullDim_ringOfIntegers : ringKrullDim (𝓞 F) = 1 := by
   have h : Ring.KrullDimLE 1 (𝓞 F) := inferInstance
   refine le_antisymm (by exact_mod_cast Ring.krullDimLE_iff.1 h) ?_
@@ -82,6 +104,13 @@ def projModel : TrueGeo.Model (proj F n) where
     have := H.paste_horiz (isPullback_baseChange n (algebraMap (𝓞 F) F))
     rwa [Category.id_comp] at this
 
+/- English proof (translation)
+Introduce `F _ _ n`. Establish `hL` using `LB.isLB_pull (O1_isLB (𝓞 F) n) (projModel F n).j`. Take `⟨r, hr⟩` from `exists_isRatSec hL`. Establish `hp` using `presents_divOfRatSec hL hr`. Use `⟨projModel F n, hermitianTwistingSheaf (𝓞 F) n, _, r, hp, ?_, ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Use `(Var.inter_congr fun _ => ?_).trans (inter_projHyp F n)` and prove the remaining obligations. Use `hp.toPic_eq.trans (Eq.trans ?_ ((proj F n).presents_hyp _).toPic_eq.symm)` and prove the remaining obligations. Use `(cls_pull (O1_isLB (𝓞 F) n) _ _).trans ((pull_comp _ _ _).trans ?_)` and prove the remaining obligations. Use `Eq.trans (congrArg _ ?_) (cls_pull (O1_isLB F n) _ _).symm` and prove the remaining obligations. Conclude with `(cls_eq_iff (LB.isLB_pull (O1_isLB (𝓞 F) n) _) (O1_isLB F n)).2 (lbIso_pull_O1 n _)`.
+
+Use `Geo.Tor.isProper_str (𝓞 F) n` as an intermediate fact. Conclude with `nefFib_of_isAmpleLB (hermitianTwistingSheaf (𝓞 F) n) (GlobalTheory.isAmple_projective_O_one (𝓞 F) n)`. Take `⟨a, ha⟩` from `Opens.mem_iSup.1 ((iSup_nonzeroLocus_coord (𝓞 F) n).ge (Opens.mem_top x))`. Conclude with `⟨_, coord_mem_smallSec _ n a, ha⟩`.
+-/
 theorem exists_model : ∀ (F : Type) [Field F] [NumberField F] (n : ℕ), ∃ (M : TrueGeo.Model (proj F n)) (L : HermLB M.p) (Δ : (proj F n).Dv) (r : (L.B.pull M.j).ι → (proj F n).Fnˣ), Presents Δ (L.B.pull M.j) r ∧ (proj F n).inter (fun _ => Δ) = 1 ∧ ArInt.NefFib L ∧ ∀ x : M.X, ∃ s ∈ L.smallSec, x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s := by
   intro F _ _ n
   have hL := LB.isLB_pull (O1_isLB (𝓞 F) n) (projModel F n).j

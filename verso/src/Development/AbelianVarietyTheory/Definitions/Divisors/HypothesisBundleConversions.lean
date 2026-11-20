@@ -8,22 +8,40 @@ def JoinOut : Prop :=
   GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator ∧ GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.Transport ∧ GlobalTheory.ToricTransport.TwistedTransport ∧
     GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators ∧ GlobalTheory.SqTop.Refl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem joinOut_iff : JoinOut ↔
     GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator ∧ GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.Transport ∧ GlobalTheory.ToricTransport.TwistedTransport ∧
       GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators ∧ GlobalTheory.SqTop.Refl :=
   Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h₁, h₂, h₃, h₄, h₅⟩`.
+-/
 theorem JoinOut.intro (h₁ : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator) (h₂ : GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.Transport)
     (h₃ : GlobalTheory.ToricTransport.TwistedTransport) (h₄ : GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators) (h₅ : GlobalTheory.SqTop.Refl) :
     JoinOut :=
   ⟨h₁, h₂, h₃, h₄, h₅⟩
 
+/- English proof (translation)
+The claim follows from `J.2.1`.
+-/
 theorem JoinOut.transport (J : JoinOut) : GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.Transport := J.2.1
 
+/- English proof (translation)
+The claim follows from `J.2.2.1`.
+-/
 theorem JoinOut.twisted (J : JoinOut) : GlobalTheory.ToricTransport.TwistedTransport := J.2.2.1
 
+/- English proof (translation)
+The claim follows from `J.2.2.2.1`.
+-/
 theorem JoinOut.zeta (J : JoinOut) : GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators := J.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.JoinFun.denominators_transport_reflection C.hb C.gm C.dr C.dual C.per C.gmp C.st C.cm C.hj C.dri C.pz C.fe`.
+-/
 theorem LitCM.joinOut (C : LitCM) : JoinOut :=
   GlobalTheory.JoinFun.denominators_transport_reflection C.hb C.gm C.dr C.dual C.per C.gmp C.st C.cm C.hj C.dri C.pz C.fe
 
@@ -39,11 +57,20 @@ structure LitNE : Prop where
 
   fe : GlobalTheory.Published.HeckeTateFunctionalEquation
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.loc, H.aut, H.coh, H.cm.joinOut, H.cm.fe⟩`.
+-/
 theorem LitN.toE (H : LitN) : LitNE :=
   ⟨H.loc, H.aut, H.coh, H.cm.joinOut, H.cm.fe⟩
 
+/- English proof (translation)
+The claim follows from `H.toE.join.twisted`.
+-/
 example (H : LitN) : GlobalTheory.ToricTransport.TwistedTransport := H.toE.join.twisted
 
+/- English proof (translation)
+The claim follows from `J.2.2.2`.
+-/
 example (J : JoinOut) : GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators ∧ GlobalTheory.SqTop.Refl := J.2.2.2
 
 end GlobalTheory.Mem.LiteralAutomorphy
@@ -126,17 +153,32 @@ structure HypothesesUE : Prop where
   localTateDuality : ReciprocityTheory.Gal.LocalTateDuality
   localEulerChar : ReciprocityTheory.Gal.LocalEulerChar
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨P.clozelCohomological, P.greenCuspidal, P.cohomologicalCsdTempered, P.heckeLAdicCharacter, P.chebotarevDegreeOne, P.discreteSpectrumGL, P.galoisRepOfPolarizedCuspidal, P.baseChangeDefiniteUnitary, P.bhattScholzeCrystallineLattices, P.heckeLAdicCharacterAbove, P.cuspRapidDecay, P …`.
+-/
 theorem HypothesesU.toE (P : HypothesesU) : HypothesesUE :=
   ⟨P.clozelCohomological, P.greenCuspidal, P.cohomologicalCsdTempered, P.heckeLAdicCharacter, P.chebotarevDegreeOne, P.discreteSpectrumGL, P.galoisRepOfPolarizedCuspidal, P.baseChangeDefiniteUnitary, P.bhattScholzeCrystallineLattices, P.heckeLAdicCharacterAbove, P.cuspRapidDecay, P.weilSiegelFormulaUnitary, P.siegelWeilUnitaryConvergent, P.doublingMethod, P.unramifiedDoublingGL, P.bernsteinZelevinskyFiniteness, P.formalDegreeCompactDual, P.bernsteinUnitaryProductIrreducible, P.geometricLemmaFiltration, P.unlinkedProductIrreducible, P.depthZeroJacquetInjective, P.howeDualityGL, P.jacquetShalika, P.automorphicFormsFiniteGL, P.localGlobalAboveL, P.regularAlgebraicPurity, P.globalArtinReciprocity, P.heckeLAdicParameterAbove, P.deRhamPotSemistable, P.harishChandraFinite, P.greenRegularCharacters, P.zelevinskyPolynomialRing, P.depthZeroInertia, P.rayClassFieldSt, P.rayCharacterArtin, P.genericUnitaryDualGL, P.standardCosocleGL, P.cheb, P.discreteSeriesCover, P.harishChandraModules, P.casselmanWallach, P.weilRepresentationUnitaryPair, P.discreteSeriesExists, P.discreteSeriesClassification, P.strongApproxSU, P.siegelWeilUnitaryConvergent2, P.harishChandraAnalyticity, P.cuspTraceClass, P.dixmierMalliavinFactorisation, P.flathFactorisation, P.pseudoCoefficientUpq, P.harishChandraCharacters, P.langlandsClassification, P.labesseWaldspurger, P.cMCurveGoodOutsidePrimeSt, P.weberRayFieldSt, P.discreteSeriesCoverExists, P.besselUniquenessReal, P.siegelWeilUnitarySchrodinger, P.siegelEisensteinContinuation, P.siegelEisensteinSimplePole, P.schurOrthogonalitySquareIntegrable, P.regularisedSiegelWeilFirstTerm, P.litN.toE, P.toHypothesesX, P.nLink, P.depthZeroWild', P.depthZeroSupport', P.localFiniteness, P.localTateDuality, P.localEulerChar⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨P.clozelCohomological, P.greenCuspidal, P.cohomologicalCsdTempered, P.heckeLAdicCharacter, P.chebotarevDegreeOne, P.discreteSpectrumGL, P.galoisRepOfPolarizedCuspidal, P.baseChangeDefiniteUnitary, P.bhattScholzeCrystallineLattices, P.heckeLAdicCharacterAbove, P.cuspRapidDecay, P …`.
+-/
 theorem HypothesesUE.toU (P : HypothesesUE) (C : GlobalTheory.Mem.LiteralAutomorphy.LitCM) : HypothesesU :=
   ⟨P.clozelCohomological, P.greenCuspidal, P.cohomologicalCsdTempered, P.heckeLAdicCharacter, P.chebotarevDegreeOne, P.discreteSpectrumGL, P.galoisRepOfPolarizedCuspidal, P.baseChangeDefiniteUnitary, P.bhattScholzeCrystallineLattices, P.heckeLAdicCharacterAbove, P.cuspRapidDecay, P.weilSiegelFormulaUnitary, P.siegelWeilUnitaryConvergent, P.doublingMethod, P.unramifiedDoublingGL, P.bernsteinZelevinskyFiniteness, P.formalDegreeCompactDual, P.bernsteinUnitaryProductIrreducible, P.geometricLemmaFiltration, P.unlinkedProductIrreducible, P.depthZeroJacquetInjective, P.howeDualityGL, P.jacquetShalika, P.automorphicFormsFiniteGL, P.localGlobalAboveL, P.regularAlgebraicPurity, P.globalArtinReciprocity, P.heckeLAdicParameterAbove, P.deRhamPotSemistable, P.harishChandraFinite, P.greenRegularCharacters, P.zelevinskyPolynomialRing, P.depthZeroInertia, P.rayClassFieldSt, P.rayCharacterArtin, P.genericUnitaryDualGL, P.standardCosocleGL, P.cheb, P.discreteSeriesCover, P.harishChandraModules, P.casselmanWallach, P.weilRepresentationUnitaryPair, P.discreteSeriesExists, P.discreteSeriesClassification, P.strongApproxSU, P.siegelWeilUnitaryConvergent2, P.harishChandraAnalyticity, P.cuspTraceClass, P.dixmierMalliavinFactorisation, P.flathFactorisation, P.pseudoCoefficientUpq, P.harishChandraCharacters, P.langlandsClassification, P.labesseWaldspurger, P.cMCurveGoodOutsidePrimeSt, P.weberRayFieldSt, P.discreteSeriesCoverExists, P.besselUniquenessReal, P.siegelWeilUnitarySchrodinger, P.siegelEisensteinContinuation, P.siegelEisensteinSimplePole, P.schurOrthogonalitySquareIntegrable, P.regularisedSiegelWeilFirstTerm, ⟨P.litN.loc, P.litN.aut, P.litN.coh, C⟩, P.toHypothesesX, P.nLink, P.depthZeroWild', P.depthZeroSupport', P.localFiniteness, P.localTateDuality, P.localEulerChar⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.geometricLemma_of_filtration P.bernsteinZelevinskyFiniteness P.geometricLemmaFiltration`.
+-/
 theorem HypothesesUE.geometricLemma (P : HypothesesUE) : GlobalTheory.Published.GeometricLemma :=
   GlobalTheory.geometricLemma_of_filtration P.bernsteinZelevinskyFiniteness P.geometricLemmaFiltration
 
+/- English proof (translation)
+The claim follows from `P.toU.toE.litN.join`.
+-/
 example (P : Hypotheses2) : GlobalTheory.Mem.LiteralAutomorphy.JoinOut := P.toU.toE.litN.join
 
+/- English proof (translation)
+The claim follows from `P.toE.nLink`.
+-/
 example (P : HypothesesU) : GlobalTheory.NLink.Hypotheses₂ := P.toE.nLink
 
 end GlobalTheory.Fc.S0

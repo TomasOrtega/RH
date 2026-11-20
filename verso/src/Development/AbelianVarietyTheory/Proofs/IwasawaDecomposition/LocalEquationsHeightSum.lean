@@ -15,6 +15,15 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 
 namespace GlobalTheory.TrueGeo.FinSum
 
+/- English proof (translation)
+Set `g : α × β → ℝ` to `fun p => if R p.2 p.1 then f p.1 else 0`. Establish `hg (p : α × β) (hp : g p ≠ 0) : R p.2 p.1 ∧ f p.1 ≠ 0`. Distinguish the cases in `hR : R p.2 p.1`. Conclude with `⟨hR, by simpa [g, hR] using hp⟩`. Simplify using `[g, hR] at hp`.
+
+Establish `hfin : (Function.support g).Finite` using `Set.Finite.of_injOn (f := Prod.fst) (fun p hp => (hg p hp).2) (fun p hp p' hp' e => Prod.ext e ((h _ (hg p hp).2).unique (hg p hp).1 (e ▸ (hg p' hp').1))) hf`. Establish `hfin' : (Function.support fun p : β × α => g p.swap).Finite` using `hfin.preimage (f := Prod.swap) Prod.swap_injective.injOn`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `ha : f a = 0`. Simplify using `[g, ha]`.
+
+Take `⟨b, hb, hu⟩` from `h a ha`. Rewrite using `[finsum_eq_single _ b fun b' hb' => if_neg fun e => hb' (hu b' e)]`. Conclude with `(if_pos hb).symm`. Use `_ = ∑ᶠ p, g p := (finsum_curry g hfin).symm`. Use `_ = ∑ᶠ p : β × α, g p.swap := (finsum_comp_equiv (Equiv.prodComm β α)).symm`.
+
+Use `_ = ∑ᶠ b, ∑ᶠ a, g (a, b) := finsum_curry _ hfin'`. Use `_ = _ := finsum_congr fun b => finsum_congr fun a => by rw [finsum_eq_if]`.
+-/
 theorem finsum_group {α β : Type} (f : α → ℝ) (hf : (Function.support f).Finite) (R : β → α → Prop)
     (h : ∀ a, f a ≠ 0 → ∃! b, R b a) : ∑ᶠ a, f a = ∑ᶠ b, ∑ᶠ (a) (_ : R b a), f a := by
   classical
@@ -41,6 +50,13 @@ theorem finsum_group {α β : Type} (f : α → ℝ) (hf : (Function.support f).
 
 variable {F : Type} [Field F] [NumberField F] {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp (𝓞 F)}
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `Spec.map_surjective (Z.fromSpecResidueField z ≫ q)`. Establish `e : q z = Spec.map φ (IsLocalRing.closedPoint _)`. Rewrite using `[hφ]`. Conclude with `congrArg q (Scheme.fromSpecResidueField_apply _ _).symm`. Establish `hi : Function.Injective φ.hom` using `(injective_iff_map_eq_zero _).2 fun a ha => by`.
+
+Establish `: a ∈ (q z).asIdeal`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `φ.hom a ∈ IsLocalRing.maximalIdeal _`. Rewrite using `[ha]`. Conclude with `zero_mem _`.
+
+Rewrite `this` using `[hz]`. Then use the resulting hypothesis. Conclude with `SmallSecHeight.eq_genericPoint hZ ((RingHom.charZero_iff hi).1 (inferInstanceAs (CharZero (𝓞 F))))`.
+-/
 theorem eq_generic (hZ : IsArithVar q 0) {z : Z} (hz : (q z).asIdeal = ⊥) : z = genericPoint Z := by
   obtain ⟨φ, hφ⟩ := Spec.map_surjective (Z.fromSpecResidueField z ≫ q)
   have e : q z = Spec.map φ (IsLocalRing.closedPoint _) := by
@@ -57,6 +73,13 @@ theorem eq_generic (hZ : IsArithVar q 0) {z : Z} (hz : (q z).asIdeal = ⊥) : z 
 
 omit [IsIntegral Z] in
 
+/- English proof (translation)
+Set `r : 𝓞 F →+* e.O` to `(algebraMap (𝓞 F) (AlgebraicClosure F)).codRestrict e.O fun a => by`. Rewrite using `[e.mem_O, IsScalarTower.algebraMap_apply (𝓞 F) F, e.w_alg, ← FinitePlace.norm_embedding]`. Conclude with `FinitePlace.norm_le_one F v a`. Establish `hE : ValuativeCriterion.Existence q` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed q) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) q).1`. Take `⟨⟨l⟩⟩` from `hE { R := e.O, K := AlgebraicClosure F, i₁ := y, i₂ := spMap r, commSq := ⟨by`.
+
+Rewrite using `[hy, ← Spec.map_comp]`. Use the proof step `rfl⟩ }`. Use `⟨l.l, l.fac_left, Ideal.ext fun a => ?_⟩` and prove the remaining obligations. Establish `h : q (l.l (IsLocalRing.closedPoint e.O)) = spMap r (IsLocalRing.closedPoint e.O)` using `(Scheme.Hom.comp_apply _ _ _).symm.trans (congrArg (fun t : Sp e.O ⟶ Sp (𝓞 F) => t _) l.fac_right)`. Rewrite using `[h, ← ExtConj.lies_over e a]`.
+
+Conclude with `e.O.valuation_lt_one_iff (r a)`.
+-/
 theorem exists_ext [IsProper q] {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (y : Sp (AlgebraicClosure F) ⟶ Z)
     (hy : y ≫ q = spMap (algebraMap (𝓞 F) (AlgebraicClosure F))) :
     ∃ yt : Sp e.O ⟶ Z, spMap e.O.subtype ≫ yt = y ∧
@@ -75,6 +98,13 @@ theorem exists_ext [IsProper q] {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (y 
   rw [h, ← ExtConj.lies_over e a]
   exact e.O.valuation_lt_one_iff (r a)
 
+/- English proof (translation)
+Take `⟨U, hU, hu⟩` from `hu.exists_nhds`. Take `⟨a, ha⟩` from `exists_unit_fnOf_eq hu`. Establish `ht : ⊤ ≤ yt ⁻¹ᵁ U` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of e.O) yt hU).ge`. Establish `h₁ : ⊤ ≤ y ⁻¹ᵁ U` using `fun x _ => by`. Express the relevant statement in the definitionally equal form `y x ∈ U`.
+
+Rewrite using `[← h]`. Conclude with `ht (x := spMap e.O.subtype x) trivial`. Establish `h₂ : below y ∈ U` using `h₁ trivial`. Establish `h₃` using `OfModel.eval_pull e.O.subtype (𝟙 Z) y yt (h.trans (Category.comp_id _).symm) (U := U) (W := U) le_rfl h₁ ht a`. Establish `h₄ : (Scheme.Hom.appLE (𝟙 Z) U U le_rfl).hom a = a`.
+
+Conclude with `congrArg (fun ψ => ψ.hom a.val) (Z.presheaf.map_id (Opposite.op U))`. Rewrite using `[← ha (gen_mem h₂), OfModel.valAt_fnOf y h₂ h₁, ← h₄, h₃]`. Conclude with `OfModel.w_unit e (a.isUnit.map _)`.
+-/
 theorem w_valAt {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (y : Sp (AlgebraicClosure F) ⟶ Z)
     (yt : Sp e.O ⟶ Z) (h : spMap e.O.subtype ≫ yt = y) {u : Z.functionField}
     (hu : UnitAt (yt (IsLocalRing.closedPoint e.O)) u) : e.w (valAt y u) = 1 := by
@@ -93,6 +123,15 @@ theorem w_valAt {v : HeightOneSpectrum (𝓞 F)} (e : Ext v) (y : Sp (AlgebraicC
   rw [← ha (gen_mem h₂), OfModel.valAt_fnOf y h₂ h₁, ← h₄, h₃]
   exact OfModel.w_unit e (a.isUnit.map _)
 
+/- English proof (translation)
+Introduce `F _ _ Z _ _ q hZ D e l hl`. Use `hZ.isNoetherian` as an intermediate fact. Use `T.arithmetic_variety_dim_zero_finite _ Z q hZ` as an intermediate fact. Establish `: IsAffine Z` using `isAffine_of_isAffineHom q`. Rewrite using `[finsum_group _ (D.finite_support_mult.subset fun z hz h0 => hz (by simp [h0])) (fun (v : HeightOneSpectrum (𝓞 F)) z => (q z).asIdeal = v.asIdeal) fun z hz => ?_, ← finsum_neg_distrib]`.
+
+Use `finsum_congr fun v => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `T.cartier_local_equation_common Z hZ.dim_eq.le D (q ⁻¹' {⟨v.asIdeal, v.isPrime⟩}) (q.finite_preimage_singleton _)`. Establish `ht' (z : Z) (hz : (q z).asIdeal = v.asIdeal) : D.IsEqn z t` using `ht z (PrimeSpectrum.ext hz)`. Establish `hv (y) : l v y = Real.log ((e v).w (valAt y.1 (t : Z.functionField)))`. Take `⟨yt, h₁, h₂⟩` from `exists_ext (e v) y.1 y.2`.
+
+Take `⟨g, hg, h₃⟩` from `hl v y yt h₁`. Establish `hb : below y.1 = genericPoint Z` using `SmallSecHeight.eq_genericPoint hZ (Scheme.SpecToEquivOfField _ Z y.1).2.hom.charZero`. Rewrite using `[h₃, ← div_mul_cancel₀ (g : Z.functionField) t.ne_zero, OfModel.valAt_mul _ (hb ▸ regAt_genericPoint _) (hb ▸ regAt_genericPoint _), map_mul, w_valAt _ _ yt h₁ ((ht' _ h₂).iff_unitAt.1 hg), one_mul]`. Rewrite using `[finsum_congr hv, ← T.product_formula_order F Z q hZ v (e v) t]`. Conclude with `finsum_congr fun z => finsum_congr fun hz => by rw [(ht' z hz).mult_eq]`.
+
+Establish `h0 : (q z).asIdeal ≠ ⊥` using `fun h => hz (by`. Establish `: D.mult z = 0` using `by_contra fun h' => D.genericPoint_notMem_supp (eq_generic hZ h ▸ CartierDiv.mem_supp_of_mult_ne_zero h')`. Simplify using `[this])`. Conclude with `⟨⟨_, (q z).isPrime, h0⟩, rfl, fun v hv => HeightOneSpectrum.ext hv.symm⟩`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (Z : Scheme.{0}) [IsIntegral Z] [IsLocallyNoetherian Z] (q : Z ⟶ Sp (𝓞 F)), IsArithVar q 0 → ∀ (D : CartierDiv Z) (e : ∀ v : HeightOneSpectrum (𝓞 F), Ext v) (l : HeightOneSpectrum (𝓞 F) → {y : Sp (AlgebraicClosure F) ⟶ Z // y ≫ q = spMap (algebraMap (𝓞 F) (AlgebraicClosure F))} → ℝ), (∀ v y (yt : Sp (e v).O ⟶ Z), spMap (e v).O.subtype ≫ yt = y.1 → ∃ g : Z.functionFieldˣ, D.IsEqn (yt (IsLocalRing.closedPoint (e v).O)) g ∧ l v y = Real.log ((e v).w (valAt y.1 (g : Z.functionField)))) → ∑ᶠ z : Z, (D.mult z : ℝ) * Real.log (Nat.card (Z.residueField z)) = -∑ᶠ v, ∑ᶠ y, l v y := by
   intro F _ _ Z _ _ q hZ D e l hl
   have := hZ.isNoetherian

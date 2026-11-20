@@ -33,6 +33,11 @@ def SpOne : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (m k : ℕ), 1 ≤ k → (∀ j < m, HL E j) →
     ∀ d : ℕ, 1 ≤ d → ∀ Γ : Matrix (Fin k) (Fin k) E, Γ.det ≠ 0 → FinCl (SplitSet E m k d {Γ})
 
+/- English proof (translation)
+Unfold `PartSplit`. Unfold `SpOne at h`. Introduce `F E _ _ _ _ _ _ _ m k hk hHL d hd G hG hdet`. Establish `h1 : ∀ Γ ∈ G, FinCl (SplitSet E m k d {Γ})` using `fun Γ hΓ => h E m k hk hHL d hd Γ (hdet Γ hΓ)`. Use `choose T hTfin hT using h1`.
+
+Use `⟨⋃ (Γ) (hΓ : Γ ∈ G), T Γ hΓ, hG.biUnion' hTfin, ?_⟩` and prove the remaining obligations. Introduce and unpack `p ⟨hpL, v, hv, hvG⟩`. Take `⟨q, hq, hiso⟩` from `hT _ hvG p ⟨hpL, v, hv, Set.mem_singleton _⟩`. Conclude with `⟨q, Set.mem_iUnion₂.mpr ⟨_, hvG, hq⟩, hiso⟩`.
+-/
 theorem partSplit_of_one (h : SpOne) : PartSplit := by
   unfold PartSplit
   unfold SpOne at h

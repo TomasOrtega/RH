@@ -11,6 +11,45 @@ open IsLocalRing GlobalTheory.Toroidal TensorProduct
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `A C R _ _ _ _ _ _ _ _ _ _ hC hEt hFU Q _`. Establish `hnoeth : IsNoetherianRing (Localization.AtPrime Q)` using `by haveI : IsNoetherianRing (R ⊗[A] C) := Algebra.EssFiniteType.isNoetherianRing R (R ⊗[A] C) haveI : IsNoetherianRing (C ⊗[A] R) := isNoetherianRing_of_ringEquiv _ (Algebra.TensorProduct.comm A R C).toRingEquiv infer_instance`. It suffices to establish `h : IsDomain (Localization.AtPrime Q) ∧ IsIntegrallyClosed (Localization.AtPrime Q) from ⟨h.1, h.2, hnoeth⟩`. Take `⟨Q', _, hQ'm, htr⟩` from `GlobalTheory.T.tensor_prime_contraction_maximal A C R Q`. Use `set P := Q.comap (Algebra.TensorProduct.includeLeft : C →ₐ[A] C ⊗[A] R) with hP`.
+
+Use `set B := Localization.AtPrime P`. Take `⟨hBd, hBi, hBc⟩` from `hC P`. Use `haveI := hBd`. Use `haveI := hBi`. Use `haveI := hBc`.
+
+Use `haveI : Algebra.EssFiniteType C B := .of_isLocalization B P.primeCompl`. Use `haveI : Algebra.EssFiniteType A B := .comp A C B`. Use `set W' := Localization.AtPrime Q'`. Set `k` to `ResidueField W'`. Set `φ : B →+* k` to `(residue W').comp ((algebraMap (B ⊗[A] R) W').comp (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] R).toRingHom)`.
+
+Set `ρ : R →+* k` to `(residue W').comp ((algebraMap (B ⊗[A] R) W').comp (Algebra.TensorProduct.includeRight : R →ₐ[A] B ⊗[A] R).toRingHom)`. Take `⟨V, hV, hVloc⟩` from `IsLocalRing.exists_factor_valuationRing ρ`. Establish `hker : RingHom.ker φ = maximalIdeal B`. Use extensionality with `b`. Rewrite using `[RingHom.mem_ker, ← hQ'm, Ideal.mem_comap]`.
+
+Express the relevant statement in the definitionally equal form `residue W' (algebraMap _ W' ((Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] R) b)) = 0 ↔ _`. Rewrite using `[residue_eq_zero_iff]`. Conclude with `IsLocalization.AtPrime.to_map_mem_maximal_iff W' Q' _`. Establish `hφρ : ∀ a : A, φ (algebraMap A B a) = ρ (algebraMap A R a)` using `fun a => by`. Simplify using `only [φ, ρ, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`.
+
+Establish `ha1 : ∀ a : A, V.valuation (φ (algebraMap A B a)) ≤ 1` using `fun a => by`. Rewrite using `[hφρ, ValuationSubring.valuation_le_one_iff]`. Conclude with `hV _`. Establish `ha2 : ∀ a ∈ maximalIdeal A, V.valuation (φ (algebraMap A B a)) < 1` using `fun a ha => by`. Establish `hR : algebraMap A R a ∈ maximalIdeal R` using `hEt.2.1 ▸ Ideal.mem_map_of_mem _ ha`.
+
+Establish `hm : ρ.codRestrict V.toSubring hV (algebraMap A R a) ∈ maximalIdeal V` using `fun hu => hR (IsUnit.of_map (ρ.codRestrict V.toSubring hV) _ hu)`. Rewrite using `[hφρ]`. Conclude with `(ValuationSubring.valuation_lt_one_iff V _).1 hm`. Take `⟨D, _, _, _, _, ι, hDi, hDe, hinj, hv1, hvm, hsurj⟩` from `GlobalTheory.T.exists_local_domain_valuation_dominated A B k φ V hker ha1 ha2`. Use `haveI := hDi`.
+
+Use `haveI := hDe`. Use `haveI : CharZero D := ⟨fun m n h => Nat.cast_injective (R := B) (by simpa using congrArg ι h)⟩`. Use `haveI : Algebra.EssFiniteType ℤ D := .comp ℤ A D`. Establish `hunit1 : ∀ d : D, IsUnit d → V.valuation (φ (ι d)) = 1` using `fun d hd => by`. Take `⟨u, rfl⟩` from `hd`.
+
+Establish `h1` using `hv1 u`. Establish `h2` using `hv1 ↑u⁻¹`. Establish `h3 : V.valuation (φ (ι u)) * V.valuation (φ (ι ↑u⁻¹)) = 1`. Rewrite using `[← map_mul, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one, map_one]`. Conclude with `le_antisymm h1 (by`.
+
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `mul_lt_one_of_lt_of_le hlt h2` as an intermediate fact. Rewrite `this` using `[h3]`. Conclude with `lt_irrefl _ this)`.
+
+Use `haveI : IsLocalHom (algebraMap A D) := ⟨fun a ha => by`. Assume the negation of the conclusion as `hna`. Establish `hv` using `hunit1 _ ha`. Rewrite `hv` using `[AlgHom.commutes]`. Conclude with `(ha2 a ((mem_maximalIdeal a).2 hna)).ne hv⟩`.
+
+Set `ψ : D ⊗[A] R →ₐ[A] W'` to `(IsScalarTower.toAlgHom A (B ⊗[A] R) W').comp (Algebra.TensorProduct.map ι (AlgHom.id A R))`. Set `θ : D ⊗[A] R →+* k` to `(residue W').comp ψ.toRingHom`. Establish `hθt : ∀ (d : D) (r : R), θ (d ⊗ₜ r) = φ (ι d) * ρ r` using `fun d r => by`. Simplify using `only [θ, φ, ρ, ψ, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, IsScalarTower.coe_toAlgHom', Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeRight_apply, ← map_mul, Algebra.T …`. Establish `hθt1 : ∀ d : D, θ (d ⊗ₜ[A] (1 : R)) = φ (ι d)` using `fun d => by`.
+
+Simplify using `only [θ, φ, ψ, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, IsScalarTower.coe_toAlgHom', Algebra.TensorProduct.includeLeft_apply]`. Establish `hθ0 : ∀ x, θ x = residue W' (algebraMap (B ⊗[A] R) W' (Algebra.TensorProduct.map ι (AlgHom.id A R) x))` using `fun x => rfl`. Use `clear_value θ`. Establish `hθV : ∀ x, θ x ∈ V` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simpa using V.zero_mem`. Consider the case `tmul d r => rw [hθt]`. Conclude with `V.mul_mem _ _ ((ValuationSubring.valuation_le_one_iff V _).1 (hv1 d)) (hV r)`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `V.add_mem _ _ hx hy`.
+
+Set `θV : D ⊗[A] R →+* V` to `θ.codRestrict V.toSubring hθV`. Set `q : Ideal (D ⊗[A] R)` to `(maximalIdeal V).comap θV`. Establish `hmq : ∀ d ∈ maximalIdeal D, d ⊗ₜ[A] (1 : R) ∈ q`. Introduce `d hd`. Rewrite using `[Ideal.mem_comap]`.
+
+Use `(ValuationSubring.valuation_lt_one_iff V _).2 ?_` and prove the remaining obligations. Establish `e2` using `hθt1 d`. Establish `e : ((θV (d ⊗ₜ[A] (1 : R)) : V) : k) = θ (d ⊗ₜ[A] (1 : R))` using `rfl`. Conclude with `(congrArg V.valuation (e.trans e2)).trans_lt (hvm d hd)`. Establish `hQq : Q'.comap (Algebra.TensorProduct.map ι (AlgHom.id A R)) ≤ q`.
+
+Introduce `x hx`. Establish `h0 : θ x = 0`. Rewrite using `[hθ0, residue_eq_zero_iff]`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff W' Q' _).2 hx`. Use `show θV x ∈ maximalIdeal V`.
+
+Establish `: θV x = 0` using `Subtype.ext h0`. Rewrite using `[this]`. Conclude with `zero_mem _`. Take `⟨hTn, hTl, hTf, hTm, hTfin, hTfu⟩` from `GlobalTheory.T.tensor_localization_noetherian A D R hEt hFU q hmq`. Take `⟨c1, c2⟩` from `GlobalTheory.T.completion_normal_of_unramified D (Localization.AtPrime q) _ hTn hTl hTf hTm hTfin hTfu`.
+
+Use `haveI := hTn`. Take `⟨t1, t2⟩` from `GlobalTheory.T.domain_integrally_closed_of_completion _ c1 c2`. Take `⟨w1, w2⟩` from `GlobalTheory.T.tensor_localization_normal_domain A B D R ι hinj hsurj Q' q hQq t1 t2`. Conclude with `htr w1 w2`.
+-/
 theorem GlobalTheory.TensorNormal.localization_tensor_normal_of_charZero : ∀ (A C R : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A] [CommRing C] [Algebra A C] [Algebra.EssFiniteType A C] [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [Algebra A R], (∀ (P : Ideal C) [P.IsPrime], IsDomain (Localization.AtPrime P) ∧ IsIntegrallyClosed (Localization.AtPrime P) ∧ CharZero (Localization.AtPrime P)) → IsEtaleCompletion (algebraMap A R) → ((residue R).comp (algebraMap A R)).FormallyUnramified → ∀ (Q : Ideal (TensorProduct A C R)) [Q.IsPrime], IsDomain (Localization.AtPrime Q) ∧ IsIntegrallyClosed (Localization.AtPrime Q) ∧ IsNoetherianRing (Localization.AtPrime Q) := by
   intro A C R _ _ _ _ _ _ _ _ _ _ hC hEt hFU Q _
   have hnoeth : IsNoetherianRing (Localization.AtPrime Q) := by

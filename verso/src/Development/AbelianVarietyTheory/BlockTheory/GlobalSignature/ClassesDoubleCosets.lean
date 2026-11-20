@@ -39,6 +39,9 @@ def DefiniteSpaceClassStatement (D : D7) (_Lv : LevelData D) (_u : D.what₂.Wor
 def ClassesAsDoubleCosets : Prop :=
   General ∧ ∀ (D : D7) (Lv : LevelData D) (u : D.what₂.Word), DefiniteSpaceClassStatement D Lv u
 
+/- English proof (translation)
+Use `haveI := h.1`. Use `letI := Fintype.ofFinite (ClassSet Γ K)`. Establish `hs : ∀ c : ClassSet Γ K, DoubleCoset.mk Γ K (Quotient.out c) = c` using `fun c => Quotient.out_eq' c`. Rewrite using `[← h.2.2 _ hs, ← h'.2.2 _ hs]`.
+-/
 theorem CosetMass.unique {G : Type} [Group G] {Γ K : Subgroup G} {m m' : ℝ}
     (h : CosetMass Γ K m) (h' : CosetMass Γ K m') : m = m' := by
   haveI := h.1
@@ -46,6 +49,9 @@ theorem CosetMass.unique {G : Type} [Group G] {Γ K : Subgroup G} {m m' : ℝ}
   have hs : ∀ c : ClassSet Γ K, DoubleCoset.mk Γ K (Quotient.out c) = c := fun c => Quotient.out_eq' c
   rw [← h.2.2 _ hs, ← h'.2.2 _ hs]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [stabHat, Subgroup.mem_subgroupOf, levelAfL, level, Subgroup.mem_inf]`. Conclude with `⟨fun h => ⟨x.2, h⟩, fun h => h.2⟩`.
+-/
 example {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) (W : HSpace E) (N : Submodule (𝓞 E) W.V) :
     stabHat hc W N = (levelAfL hc.sig W.gram (crdLat W N)).subgroupOf (UAf hc W) := by

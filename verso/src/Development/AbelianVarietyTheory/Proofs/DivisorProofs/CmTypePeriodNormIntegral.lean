@@ -11,6 +11,11 @@ section Mult
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Take `⟨y, hy, hi⟩` from `IsAlgebraic.exists_integral_multiple (R := ℤ) ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x))`. Use `⟨y.natAbs, Int.natAbs_ne_zero.2 hy, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq y with h | h` into its components or cases. Rewrite `hi` using `[h, zsmul_eq_mul]`. Simplify using `using hi`.
+
+Rewrite `hi` using `[h, zsmul_eq_mul]`. Use `hi.neg` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_natMul_isIntegral (x : E) : ∃ m : ℕ, m ≠ 0 ∧ IsIntegral ℤ ((m : E) * x) := by
   obtain ⟨y, hy, hi⟩ := IsAlgebraic.exists_integral_multiple (R := ℤ)
     ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x))
@@ -22,6 +27,11 @@ theorem exists_natMul_isIntegral (x : E) : ∃ m : ℕ, m ≠ 0 ∧ IsIntegral �
     have := hi.neg
     simpa using this
 
+/- English proof (translation)
+Take `⟨m, hm, hint⟩` from `exists_natMul_isIntegral x`. Establish `hk0 : Ideal.absNorm c ≠ 0` using `fun h => hc (Ideal.absNorm_eq_zero_iff.1 h)`. Take `⟨y, hy⟩ : ∃ y : 𝓞 E, algebraMap (𝓞 E) E y = (m : E) * x` from `⟨⟨(m : E) * x, (mem_integralClosure_iff ℤ E).2 hint⟩, rfl⟩`. Use `⟨Ideal.absNorm c * m, mul_ne_zero hk0 hm, ?_⟩` and prove the remaining obligations. Use `mem_orderC.2 ⟨0, algebraMap (OF E) (𝓞 E) ((Ideal.absNorm c : ℕ) : OF E) * y, Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (Ideal.absNorm_mem c)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_zero, zero_add, map_mul, hy, map_natCast, map_natCast, Nat.cast_mul, mul_assoc]`.
+-/
 theorem exists_natMul_mem_orderC {c : Ideal (OF E)} (hc : c ≠ ⊥) (x : E) :
     ∃ n : ℕ, n ≠ 0 ∧ (n : E) * x ∈ orderC c := by
   obtain ⟨m, hm, hint⟩ := exists_natMul_isIntegral x
@@ -42,9 +52,15 @@ variable {K A : Type} [Field K] [CharZero K] [Ring A] [Algebra K A]
 
 def mulN (hc : c ≠ ⊥) (x : E) : ℕ := Classical.choose (exists_natMul_mem_orderC hc x)
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (exists_natMul_mem_orderC hc x)).1`.
+-/
 theorem mulN_ne_zero (hc : c ≠ ⊥) (x : E) : mulN hc x ≠ 0 :=
   (Classical.choose_spec (exists_natMul_mem_orderC hc x)).1
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (exists_natMul_mem_orderC hc x)).2`.
+-/
 theorem mulN_mem (hc : c ≠ ⊥) (x : E) : (mulN hc x : E) * x ∈ orderC c :=
   (Classical.choose_spec (exists_natMul_mem_orderC hc x)).2
 
@@ -53,9 +69,19 @@ variable (K) in
 def extFun (hc : c ≠ ⊥) (g : orderC c →+* A) (x : E) : A :=
   ((mulN hc x : K))⁻¹ • g ⟨(mulN hc x : E) * x, mulN_mem hc x⟩
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_natCast, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`.
+-/
 theorem map_natMul (g : orderC c →+* A) (n : ℕ) (z : orderC c) : g ((n : orderC c) * z) = (n : K) • g z := by
   rw [map_mul, map_natCast, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]
 
+/- English proof (translation)
+Establish `hm0 : (m : K) ≠ 0` using `Nat.cast_ne_zero.2 hm`. Establish `hn0 : (mulN hc x : K) ≠ 0` using `Nat.cast_ne_zero.2 (mulN_ne_zero hc x)`. Establish `key : (m : K) • g ⟨(mulN hc x : E) * x, mulN_mem hc x⟩ = (mulN hc x : K) • g ⟨(m : E) * x, h⟩`. Rewrite using `[← map_natMul, ← map_natMul]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subring.coe_mul, Subring.coe_natCast]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_smul_smul₀ hm0]`.
+
+Both sides reduce to the same expression. Use `_ = ((mulN hc x : K))⁻¹ • ((m : K)⁻¹ • ((mulN hc x : K) • g ⟨(m : E) * x, h⟩)) := by rw [key]`. Use `_ = ((m : K))⁻¹ • g ⟨(m : E) * x, h⟩ := by`. Rewrite using `[smul_comm ((m : K)⁻¹) ((mulN hc x : K)), inv_smul_smul₀ hn0]`.
+-/
 theorem extFun_eq (hc : c ≠ ⊥) (g : orderC c →+* A) {x : E} {m : ℕ} (hm : m ≠ 0) (h : (m : E) * x ∈ orderC c) :
     extFun K hc g x = ((m : K))⁻¹ • g ⟨(m : E) * x, h⟩ := by
   have hm0 : (m : K) ≠ 0 := Nat.cast_ne_zero.2 hm
@@ -121,6 +147,11 @@ def extHom (hc : c ≠ ⊥) (g : orderC c →+* A) : E →+* A where
     · push_cast; field_simp
     · push_cast; field_simp
 
+/- English proof (translation)
+Use `show extFun K hc g a = g a`. Rewrite using `[extFun_eq hc g one_ne_zero (by simpa using a.2)]`. Simplify using `only [Nat.cast_one, inv_one, one_smul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules.
+-/
 theorem extHom_apply (hc : c ≠ ⊥) (g : orderC c →+* A) (a : orderC c) : extHom K hc g a = g a := by
   show extFun K hc g a = g a
   rw [extFun_eq hc g one_ne_zero (by simpa using a.2)]
@@ -128,6 +159,13 @@ theorem extHom_apply (hc : c ≠ ⊥) (g : orderC c →+* A) (a : orderC c) : ex
   congr 1
   apply Subtype.ext; simp
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨n, hn, hnx⟩` from `exists_natMul_mem_orderC hc x`. Establish `hnE : (n : E) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `h1 : f₁ ((n : E)⁻¹) * (n : B) = 1`. Rewrite using `[← map_natCast f₁, ← map_mul, inv_mul_cancel₀ hnE, map_one]`.
+
+Establish `h2 : (n : B) * f₂ ((n : E)⁻¹) = 1`. Rewrite using `[← map_natCast f₂, ← map_mul, mul_inv_cancel₀ hnE, map_one]`. Establish `hinv : f₁ ((n : E)⁻¹) = f₂ ((n : E)⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Establish `hx : x = (n : E)⁻¹ * ((n : E) * x)` using `by rw [← mul_assoc, inv_mul_cancel₀ hnE, one_mul]`.
+
+Use `h ⟨(n : E) * x, hnx⟩` as an intermediate fact. Simplify using `only at this`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ringHom_ext_orderC (hc : c ≠ ⊥) {B : Type} [Ring B] (f₁ f₂ : E →+* B) (h : ∀ a : orderC c, f₁ a = f₂ a) :
     f₁ = f₂ := by
   ext x
@@ -157,6 +195,9 @@ def baseChangeRingHom (O : Type) [CommRing O] (K : Type) [Field K] [Algebra O K]
   map_zero' := LinearMap.baseChange_zero
   map_add' f g := LinearMap.baseChange_add f g
 
+/- English proof (translation)
+Introduce `E _ _ _ c hc l hl O _ _ _ _ K _ _ _ hlm hcard D hD hcl I _ φ hφ H _ _ ρ Fil B hlat heig`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (IsFractionRing.injective O K)`. Use `⟨extHom K hc ((baseChangeRingHom O K H).comp ρ), fun a => extHom_apply hc _ a, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Conclude with `ringHom_ext_orderC hc f _ fun a => by rw [hf a, extHom_apply hc _ a]; rfl`.
+-/
 theorem exists_unique_extend : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ → ∀ (l : ℕ), l.Prime → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K], (l : O) ∈ IsLocalRing.maximalIdeal O → Nat.card (E →+* K) = Module.finrank ℚ E → ∀ (D : O), D ≠ 0 → ClearsIdem K c D → ∀ (I : Type) [Fintype I] (φ : I → E →+* K), IsCMTypeIn φ → ∀ (H : Type) [AddCommGroup H] [Module O H] (ρ : orderC c →+* Module.End O H) (Fil : Submodule O H) (B : LinearMap.BilinForm O H), IsCMLattice φ ρ Fil B → EigenClaims φ ρ Fil B D → (∃! ρE : E →+* Module.End K (K ⊗[O] H), ∀ a : orderC c, ρE a = (ρ a).baseChange K) := by
   intro E _ _ _ c hc l hl O _ _ _ _ K _ _ _ hlm hcard D hD hcl I _ φ hφ H _ _ ρ Fil B hlat heig
   haveI : CharZero K := charZero_of_injective_algebraMap (IsFractionRing.injective O K)

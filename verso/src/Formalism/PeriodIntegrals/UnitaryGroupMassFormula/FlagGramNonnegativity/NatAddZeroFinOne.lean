@@ -6,6 +6,13 @@ open Matrix PI.FlagGramNonneg
 
 namespace PI.UnitaryGroupMassFormula.FlagGramNonneg
 
+/- English proof (translation)
+Use `haveI : Invertible (Z.submatrix Fin.castSucc Fin.castSucc) := Matrix.invertibleOfIsUnitDet _ h`. Establish `hZ : Z.submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks (Z.submatrix Fin.castSucc Fin.castSucc) (Matrix.of fun a (_ : Fin 1) => Z (Fin.castSucc a) (Fin.last r)) (Matrix.of fun (_ : Fin 1) b => Z (Fin.last r) (Fin.castSucc b)) (Matrix.of fun (_ : Fin 1) (_ : Fin 1) => Z …`. Use extensionality with `(i | i) (j | j)`. Both sides reduce to the same expression. Rewrite using `[Fin.fin_one_eq_zero j]`.
+
+Both sides reduce to the same expression. Rewrite using `[Fin.fin_one_eq_zero i]`. Both sides reduce to the same expression. Rewrite using `[Fin.fin_one_eq_zero i, Fin.fin_one_eq_zero j]`. Both sides reduce to the same expression.
+
+Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv Z, hZ, Matrix.det_fromBlocks₁₁, Matrix.invOf_eq_nonsing_inv, Matrix.det_unique (n := Fin 1)]`. Use `congr 1`. Rewrite using `[Matrix.sub_apply, Matrix.mul_assoc]`. Apply the tactic sequence `simp only [Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.of_apply] <;> rfl`.
+-/
 theorem det_succ_schur {E : Type} [Field E] {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (h : IsUnit (Z.submatrix Fin.castSucc Fin.castSucc).det) :
     Z.det = (Z.submatrix Fin.castSucc Fin.castSucc).det *
@@ -30,12 +37,18 @@ theorem det_succ_schur {E : Type} [Field E] {r : ℕ} (Z : Matrix (Fin (r + 1)) 
   rw [Matrix.sub_apply, Matrix.mul_assoc]
   simp only [Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.of_apply] <;> rfl
 
+/- English proof (translation)
+Unfold `leadMinorE`. Rewrite using `[dif_pos le_rfl]`. Both sides reduce to the same expression.
+-/
 theorem leadMinorE_succ {E : Type} [Field E] {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     leadMinorE Z (r + 1) = Z.det := by
   unfold leadMinorE
   rw [dif_pos le_rfl]
   rfl
 
+/- English proof (translation)
+Unfold `leadMinorE`. Rewrite using `[dif_pos (Nat.le_succ r)]`. Both sides reduce to the same expression.
+-/
 theorem leadMinorE_self {E : Type} [Field E] {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     leadMinorE Z r = (Z.submatrix Fin.castSucc Fin.castSucc).det := by
   unfold leadMinorE

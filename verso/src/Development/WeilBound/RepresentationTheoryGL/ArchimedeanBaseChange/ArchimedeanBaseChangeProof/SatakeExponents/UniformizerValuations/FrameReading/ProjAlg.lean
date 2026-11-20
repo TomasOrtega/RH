@@ -16,6 +16,13 @@ def blockEvaluation (s : ι) : Prod' H d →⋆ₐ[ℂ] (H s →L[ℂ] H s) wher
   commutes' _ := rfl
   map_star' _ := rfl
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Apply `StarAlgebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `y (⟨a, rfl⟩ | hy)`. Establish `hmem : blockEvaluation (H` using `H) (d := d) s (a : Prod' H d) ∈ StarSubalgebra.map (blockEvaluation (H := H) (d := d) s) (StarAlgebra.adjoin ℂ (Set.range gen)) := StarSubalgebra.mem_map.2 ⟨a, a.2, rfl⟩`. Rewrite `hmem` using `[StarAlgHom.map_adjoin]`.
+
+Establish `hle : StarAlgebra.adjoin ℂ (⇑(blockEvaluation (H` using `H) (d := d) s) '' Set.range gen) ≤ StarAlgebra.adjoin ℂ (Set.range (fun x => (gen x).1 s) ∪ {X}) := by`. Apply `StarAlgebra.adjoin_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `Or.inl ⟨x, rfl⟩`. Conclude with `hle hmem`.
+
+Conclude with `StarAlgebra.subset_adjoin ℂ _ (Or.inr hy)`. Apply `StarAlgebra.adjoin_mono` to reduce the goal to its premises. Introduce and unpack `y (⟨x, rfl⟩ | hy)`. Conclude with `Or.inl ⟨⟨gen x, StarAlgebra.subset_adjoin ℂ _ ⟨x, rfl⟩⟩, rfl⟩`. Conclude with `Or.inr hy`.
+-/
 theorem projAdjoin (gen : Γ → Prod' H d) (s : ι) (X : H s →L[ℂ] H s) :
     StarAlgebra.adjoin ℂ (Set.range (fun a : StarAlgebra.adjoin ℂ (Set.range gen) => (a : Prod' H d).1 s) ∪ {X}) =
       StarAlgebra.adjoin ℂ (Set.range (fun x => (gen x).1 s) ∪ {X}) := by

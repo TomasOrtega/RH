@@ -15,11 +15,29 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 
 namespace GlobalTheory.Mem.R3.IsotPart
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem stdPsi_of_stdFrame {D : D7} {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E}
     {P : principalLevelFrame.RowPsi V n} (h : GlobalTheory.Mem.R3.StdFrame hF P) : GlobalTheory.StdFrame.StdPsi hF P := h
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `_ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH _ π c p hE hC i`. Take `⟨hcore, hSF, -, hW⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hP.char hH.aux.ex`. Establish `hQ : R.Q A3.A.μ0 = ∅` using `(GlobalTheory.GoodPrimes.good_primes R.toRealDat F.lv2 hcore.lev).1`. Establish `ht : Y.tupT D.what₂.mu0 = A3.A.μ0` using `by rw [← Y.tup0, Y.tupT_tup]`. Establish `hSF' : GlobalTheory.Hk3.IsSF R.toRealDat (SsetF R.toRealDat (Y.tupT D.what₂.mu0))`.
+
+Introduce `v`. Establish `hS : R.Sb = R.Pg` using `hP.char.allPl`. Rewrite using `[ht]`. Unfold `SsetF`. Rewrite using `[hQ, hS]`.
+
+Simplify using `only [Finset.union_empty, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨PP, h1, rfl⟩`. Conclude with `⟨PP, h1, rfl⟩`. Introduce and unpack `⟨PP, h1, h2⟩`.
+
+Conclude with `⟨PP, h1, HeightOneSpectrum.ext h2⟩`. Establish `hEq : SsetF R.toRealDat (Y.tupT D.what₂.mu0) = R.SF`. Use extensionality with `v`. Rewrite using `[hSF v, hSF' v]`. Unfold `HasEig at hE`.
+
+Rewrite `hE` using `[hEq]`. Introduce `y hy`. Establish `hy'` using `(Y.tied.lift.isot i π y).1 hy`. Rewrite `hy'` using `[Y.prtWE, Y.mjRead]`. Take `⟨U, hU, hUy⟩` from `hy'`.
+
+Take `⟨x, hx, hxU⟩` from `GlobalTheory.T.typePart_le_eigensystemPart_principalLevel R.toRealDat F.lv2 hH.ok.ok2 hcore R.SF hSF Y.hF Y.PY Y.PW (stdPsi_of_stdFrame Y.stdPsi.1) (fun j => stdPsi_of_stdFrame (Y.stdPsi.2 j)) _ _ c hE i U hU`. Establish `h1 : U = (R.HW i (sg0 D A3.A)).e (Y.mj.eW i y)` using `(PiTensorProduct.lift : Mult.MMap (R.MW i (sg0 D A3.A)) ≃ₗ[ℂ] _).injective hUy`. Establish `h2 : x = Y.mj.eW i y` using `(hcore.models.HW i (sg0 D A3.A)).1 (hxU.trans h1)`. Rewrite using `[Submodule.mem_comap, ← h2]`. Rewrite `hx` using `[← hW]`.
+
+Conclude with `(le_iSup₂ (f := fun (c : Pl D.host.E → List ℤ → ℂ) (_ : R.Carries p c) => R.Wc' i c) c hC) hx`.
+-/
 theorem isot_le_part : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0), Pins R F cG → Holds R F → HostHyp D → ∀ (π : D.what₂.FT) c p, HasEig R F Y π c → R.Carries p c → ∀ i : Fin D.R.m, D.what₂.isot ((i : ℕ) + 1) π ≤ (R.Wp3 i p).comap (Y.mj.eW i) := by
   intro _ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH _ π c p hE hC i
   obtain ⟨hcore, hSF, -, hW⟩ := GlobalTheory.CoreOfWeak.core_of_weak R F hP.char hH.aux.ex

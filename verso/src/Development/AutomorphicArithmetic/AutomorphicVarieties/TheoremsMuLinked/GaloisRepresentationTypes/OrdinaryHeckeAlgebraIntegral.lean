@@ -9,12 +9,20 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[CharP.charP_iff_prime_eq_zero hl.out, ← map_natCast (residue c.O), residue_eq_zero_iff]`. Conclude with `h3`.
+-/
 private theorem coef_isCoef (l : ℕ) [hl : Fact l.Prime] (c : Coef l) : IsCoef l c.O := by
   obtain ⟨h1, h2, h3, -⟩ := UpperTheory.V.abelian₂.dvr_finite l c.O
   refine ⟨h1, h2, ?_⟩
   rw [CharP.charP_iff_prime_eq_zero hl.out, ← map_natCast (residue c.O), residue_eq_zero_iff]
   exact h3
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Establish `hn' : ∀ g : Dec (F` using `L) A, cycBar L Ω l g = 1 := fun g => by`. Establish `: cycZ L Ω l g = 1`. Assume the negation of the conclusion as `h1`. Conclude with `hn ⟨g, h1⟩`.
+
+Rewrite using `[cycBar, MonoidHom.comp_apply, this, map_one]`. Use `UpperTheory.V.Ws.Eb.psiInj (l := l) A w h hw (n := 2) (fun _ => 1) ![0, 1] 1 (by decide) one_pos (fun i g _ => by rw [hn' g]; simp)` as an intermediate fact. Conclude with `absurd (@this 0 1 rfl) (by decide)`.
+-/
 private theorem eps_ne {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 L)) (h : IsPlaceOver A w) (hw : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal) :
     ∃ g : Dec (F := L) A, cycZ L Ω l g ≠ 1 := by
@@ -28,6 +36,13 @@ private theorem eps_ne {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberF
     (fun i g _ => by rw [hn' g]; simp)
   exact absurd (@this 0 1 rfl) (by decide)
 
+/- English proof (translation)
+Introduce `hP l _ L Ω _ _ _ _ _ _ s V0 c n r T P y al hS _ _ hPL h4 heig hdet`. Use `haveI := coef_isCoef l c`. Use `choose a p h1 h2 h3 using arPres l L Ω s V0 c.O n r T P hS`. Establish `S : Sys T (Module.finrank ℚ (Lp L)) V0.frame.D0` using `{ a := a counts := fun N => presCnts hP l _ _ _ _ (a N) (Lp L) Ω (p N) s.odd (unrLoc l L Ω s V0 c.O n r) dv := fun v : Vl l L => locDeg v.1 dv_eq := fun N => funext (h1 N) d0 := h2 ph := fun N j => (h3 N j).1 ta := fun N j => (h3 N j).2 }`. Establish `hΦ` using `(arPl hP l L Ω s V0 c.O n r hS).1`.
+
+Use `b1absO l _ _ T c.O n y al _ _ S s.odd hΦ (fun v => ?_) hPL h4 heig (detO l _ _ c n y _ s.odd hdet)` and prove the remaining obligations. Establish `hw : ((l : ℕ) : 𝓞 L) ∈ (s.w v.1).asIdeal`. Establish `h1` using `(s.hA v.1 ((l : ℕ) : 𝓞 (Lp L))).2 v.2`. Conclude with `(s.hw v.1 _).1 (by simpa using h1)`. Take `⟨g, hg⟩` from `eps_ne (s.A v.1) (s.w v.1) (s.hw v.1) hw`.
+
+Use `⟨g, fun e => hg (Units.ext ?_)⟩` and prove the remaining obligations. Establish `e1 : V0.ε (toGS Ω V0.S' (resP L Ω g)) = cycZ (Lp L) Ω l (resP L Ω g)` using `DFunLike.congr_fun V0.hε _`. Establish `e2 : algebraMap ℤ_[l] c.O (V0.ε (toGS Ω V0.S' (resP L Ω g)) : ℤ_[l]) = 1` using `e`. Rewrite `e2` using `[e1, ← map_one (algebraMap ℤ_[l] c.O)]`. Conclude with `(UpperTheory.V.abelian₂.dvr_finite l c.O).2.2.2.1 e2`.
+-/
 theorem UpperTheory.V.Th.b1O : ordinaryHeckeAlgebraIntegral := by
   intro hP l _ L Ω _ _ _ _ _ _ s V0 c n r T P y al hS _ _ hPL h4 heig hdet
   haveI := coef_isCoef l c

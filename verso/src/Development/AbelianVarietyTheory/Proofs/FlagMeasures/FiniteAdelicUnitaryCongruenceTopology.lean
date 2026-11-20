@@ -41,6 +41,9 @@ def cong (Λ : Submodule S (n → A)) (a : A) : Subgroup (GL n A) where
     simp only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec, sub_mul, one_mul, Units.mul_inv]
     abel
 
+/- English proof (translation)
+Use `⟨mul_mem (mul_mem hk hx.1) (inv_mem hk), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `hx.2 _ ((inv_mem hk y).1 hy)`. Use `⟨(k : Matrix n n A) *ᵥ z, (hk z).1 hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul, ← e]`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_sub, Units.val_mul, Units.mul_inv, mul_assoc, sub_mul, one_mul, mul_sub]`.
+-/
 theorem conj_mem_cong {Λ : Submodule S (n → A)} {a : A} {k x : GL n A}
     (hk : k ∈ Formalism.UG.stabGL Λ) (hx : x ∈ cong Λ a) : k * x * k⁻¹ ∈ cong Λ a := by
   refine ⟨mul_mem (mul_mem hk hx.1) (inv_mem hk), fun y hy => ?_⟩
@@ -52,6 +55,9 @@ theorem conj_mem_cong {Λ : Submodule S (n → A)} {a : A} {k x : GL n A}
 
 variable [TopologicalSpace A] [IsTopologicalRing A]
 
+/- English proof (translation)
+Use `hC.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun p : Matrix n n A × (n → A) => (p.1 - 1) *ᵥ p.2` using `(continuous_fst.sub continuous_const).matrix_mulVec continuous_snd`. Use `hc.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Simplify using `using hV`.
+-/
 theorem eventually_sub_one_mulVec {C V : Set (n → A)} (hC : IsCompact C) (hV : V ∈ 𝓝 (0 : n → A)) :
     ∀ᶠ m : Matrix n n A in 𝓝 1, ∀ y ∈ C, (m - 1) *ᵥ y ∈ V := by
   refine hC.eventually_forall_of_forall_eventually fun y _ => ?_
@@ -60,6 +66,9 @@ theorem eventually_sub_one_mulVec {C V : Set (n → A)} (hC : IsCompact C) (hV :
   refine hc.continuousAt.preimage_mem_nhds ?_
   simpa using hV
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `ha`. Establish `hc : Continuous fun w : n → A => ((u⁻¹ : Aˣ) : A) • w` using `continuous_const_smul _`. Use `mem_of_superset ((ho.preimage hc).mem_nhds (by simp)) fun w hw => ⟨_, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, Units.mul_inv, one_smul]`.
+-/
 theorem smul_mem_nhds {Λ : Submodule S (n → A)} (ho : IsOpen (Λ : Set (n → A))) {a : A}
     (ha : IsUnit a) : {w | ∃ z ∈ Λ, w = a • z} ∈ 𝓝 (0 : n → A) := by
   obtain ⟨u, rfl⟩ := ha
@@ -67,6 +76,11 @@ theorem smul_mem_nhds {Λ : Submodule S (n → A)} (ho : IsOpen (Λ : Set (n →
   refine mem_of_superset ((ho.preimage hc).mem_nhds (by simp)) fun w hw => ⟨_, hw, ?_⟩
   rw [smul_smul, Units.mul_inv, one_smul]
 
+/- English proof (translation)
+Establish `h0 : (Λ : Set (n → A)) ∈ 𝓝 (0 : n → A)` using `ho.mem_nhds (zero_mem _)`. Establish `t1 : Tendsto (fun x : GL n A => (x : Matrix n n A)) (𝓝 1) (𝓝 1)` using `Units.continuous_val.tendsto' _ _ rfl`. Establish `t2 : Tendsto (fun x : GL n A => ((x⁻¹ : GL n A) : Matrix n n A)) (𝓝 1) (𝓝 1)` using `Units.continuous_coe_inv.tendsto' _ _ (by simp)`. Use `(cong Λ a).isOpen_of_mem_nhds (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [t1.eventually (eventually_sub_one_mulVec hc h0), t2.eventually (eventually_sub_one_mulVec hc h0), t1.eventually (eventually_sub_one_mulVec hc (smul_mem_nhds ho ha))] with x h1 h2 h3`.
+
+Use `⟨fun y => ⟨fun hy => ?_, fun hy => ?_⟩, h3⟩` and prove the remaining obligations. Use `add_mem (h1 y hy) hy` as an intermediate fact. Simplify `this` using `[Matrix.sub_mulVec]`. Use `add_mem (h2 _ hy) hy` as an intermediate fact. Rewrite `this` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem isOpen_cong {Λ : Submodule S (n → A)} (ho : IsOpen (Λ : Set (n → A)))
     (hc : IsCompact (Λ : Set (n → A))) {a : A} (ha : IsUnit a) :
     IsOpen (cong Λ a : Set (GL n A)) := by
@@ -86,12 +100,20 @@ theorem isOpen_cong {Λ : Submodule S (n → A)} (ho : IsOpen (Λ : Set (n → A
     rwa [Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel, Matrix.mulVec_mulVec, Units.inv_mul,
       Matrix.one_mulVec] at this
 
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_mono (H₁ := cong Λ 1) (fun _ h => h.1) (isOpen_cong ho hc isUnit_one)`.
+-/
 theorem isOpen_stab {Λ : Submodule S (n → A)} (ho : IsOpen (Λ : Set (n → A)))
     (hc : IsCompact (Λ : Set (n → A))) : IsOpen (Formalism.UG.stabGL Λ : Set (GL n A)) :=
   Subgroup.isOpen_mono (H₁ := cong Λ 1) (fun _ h => h.1) (isOpen_cong ho hc isUnit_one)
 
 omit [Fintype n] in
 
+/- English proof (translation)
+Establish `hc : Continuous fun p : n → n → A => (Matrix.of fun i j => ((u⁻¹ : Aˣ) : A) * p j i)` using `continuous_matrix fun i j => continuous_const.mul (continuous_apply_apply j i)`. Use `(isCompact_univ_pi fun _ : n => hC).image hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨fun j i => u * m i j, fun j _ => h j, by ext i j; simp⟩`. Introduce and unpack `⟨p, hp, rfl⟩ j`. Simplify using `using hp j trivial`.
+-/
 theorem isCompact_cols {C : Set (n → A)} (hC : IsCompact C) (u : Aˣ) :
     IsCompact {m : Matrix n n A | ∀ j, (fun i => (u : A) * m i j) ∈ C} := by
   have hc : Continuous fun p : n → n → A => (Matrix.of fun i j => ((u⁻¹ : Aˣ) : A) * p j i) :=
@@ -104,6 +126,11 @@ theorem isCompact_cols {C : Set (n → A)} (hC : IsCompact C) (u : Aˣ) :
   · rintro ⟨p, hp, rfl⟩ j
     simpa using hp j trivial
 
+/- English proof (translation)
+Establish `h` using `isCompact_cols hc u`. Establish `h2` using `(Units.isClosedEmbedding_embedProduct (α := Matrix n n A)).isCompact_preimage (h.prod (h.image MulOpposite.continuous_op))`. Establish `key : ∀ x ∈ Formalism.UG.stabGL Λ, ∀ j, (fun i => (u : A) * (x : Matrix n n A) i j) ∈ Λ`. Introduce `x hx j`. Use `(hx _).1 (hu j) using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using `[mul_comm]`. Use `h2.of_isClosed_subset ((Formalism.UG.stabGL Λ).isClosed_of_isOpen (isOpen_stab ho hc)) ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨key x hx, _, key _ (inv_mem hx), rfl⟩`.
+-/
 theorem isCompact_stab [T2Space A] {Λ : Submodule S (n → A)} (ho : IsOpen (Λ : Set (n → A)))
     (hc : IsCompact (Λ : Set (n → A))) (u : Aˣ) (hu : ∀ j, (Pi.single j (u : A) : n → A) ∈ Λ) :
     IsCompact (Formalism.UG.stabGL Λ : Set (GL n A)) := by
@@ -119,6 +146,17 @@ theorem isCompact_stab [T2Space A] {Λ : Submodule S (n → A)} (ho : IsOpen (Λ
   intro x hx
   exact ⟨key x hx, _, key _ (inv_mem hx), rfl⟩
 
+/- English proof (translation)
+Rewrite `hW` using `[(Units.isEmbedding_embedProduct (M := Matrix n n A)).isInducing.nhds_eq_comap, mem_comap]`. Take `⟨T, hT, hTW⟩` from `hW`. Rewrite `hT` using `[show Units.embedProduct (Matrix n n A) 1 = (1, MulOpposite.op 1) from rfl, mem_nhds_prod_iff]`. Take `⟨V₁, hV₁, V₂, hV₂, hV⟩` from `hT`. Establish `hV₃ : V₁ ∩ MulOpposite.op ⁻¹' V₂ ∈ 𝓝 (1 : Matrix n n A)` using `inter_mem hV₁ (MulOpposite.continuous_op.continuousAt.preimage_mem_nhds hV₂)`.
+
+Establish `h : ∀ᶠ a : A in 𝓝 0, ∀ m ∈ {m : Matrix n n A | ∀ j, (fun i => (u : A) * m i j) ∈ (Λ : Set _)}, 1 + a • m ∈ V₁ ∩ MulOpposite.op ⁻¹' V₂`. Use `(isCompact_cols hc u).eventually_forall_of_forall_eventually fun m _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun p : A × Matrix n n A => 1 + p.1 • p.2` using `continuous_const.add (continuous_fst.smul continuous_snd)`. Use `hc.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Simplify using `using hV₃`.
+
+Use `filter_upwards [h] with a ha`. Establish `key : ∀ x ∈ cong Λ a, (x : Matrix n n A) ∈ V₁ ∩ MulOpposite.op ⁻¹' V₂`. Introduce `x hx`. Use `choose z hz e using fun j => hx.2 _ (hu j)`. Use `ha (Matrix.of fun i j => ((u⁻¹ : Aˣ) : A) * z j i) fun j => by simpa using hz j` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← sub_eq_iff_eq_add']`. Use extensionality with `i j`. Establish `e1` using `congrFun (e j) i`. Simplify using `only [Matrix.mulVec_single, Pi.smul_apply, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, Matrix.col_apply] at e1`.
+
+Rewrite using `[Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, mul_left_comm, ← e1, mul_comm, Units.mul_inv_cancel_right]`. Introduce `x hx`. Conclude with `hTW (hV ⟨(key x hx).1, (key _ (inv_mem hx)).2⟩)`.
+-/
 theorem eventually_cong_subset {Λ : Submodule S (n → A)}
     (hc : IsCompact (Λ : Set (n → A))) (u : Aˣ) (hu : ∀ j, (Pi.single j (u : A) : n → A) ∈ Λ)
     {W : Set (GL n A)} (hW : W ∈ 𝓝 1) : ∀ᶠ a : A in 𝓝 0, (cong Λ a : Set (GL n A)) ⊆ W := by
@@ -150,6 +188,11 @@ theorem eventually_cong_subset {Λ : Submodule S (n → A)}
   intro x hx
   exact hTW (hV ⟨(key x hx).1, (key _ (inv_mem hx)).2⟩)
 
+/- English proof (translation)
+Use `@IsTopologicalGroup.ext U _ t instTopologicalSpaceSubtype ht (Subgroup.instIsTopologicalGroupSubtypeMem U) (le_antisymm ?_ ?_)` and prove the remaining obligations. Introduce `W hW`. Take `⟨V, hV, hVW⟩` from `(mem_nhds_subtype _ _ _).1 hW`. Take `⟨g, hg, hgV⟩` from `h0 _ (eventually_cong_subset hc u hu hV)`. Conclude with `mem_of_superset (@IsOpen.mem_nhds _ t _ _ (h1 g hg) (one_mem (cong Λ g))) fun x hx => hVW (hgV hx)`.
+
+Introduce `W hW`. Take `⟨g, hg, hgW⟩` from `h2 W hW`. Conclude with `(mem_nhds_subtype _ _ _).2 ⟨_, (isOpen_cong ho hc (hun g hg)).mem_nhds (one_mem (cong Λ g)), hgW⟩`.
+-/
 theorem top_eq {Λ : Submodule S (n → A)} (ho : IsOpen (Λ : Set (n → A)))
     (hc : IsCompact (Λ : Set (n → A))) (u : Aˣ) (hu : ∀ j, (Pi.single j (u : A) : n → A) ∈ Λ)
     (hun : ∀ g : ℕ, 1 ≤ g → IsUnit (g : A)) (h0 : ∀ W ∈ 𝓝 (0 : A), ∃ g : ℕ, 1 ≤ g ∧ (g : A) ∈ W)
@@ -167,6 +210,11 @@ theorem top_eq {Λ : Submodule S (n → A)} (ho : IsOpen (Λ : Set (n → A)))
     obtain ⟨g, hg, hgW⟩ := h2 W hW
     exact (mem_nhds_subtype _ _ _).2 ⟨_, (isOpen_cong ho hc (hun g hg)).mem_nhds (one_mem (cong Λ g)), hgW⟩
 
+/- English proof (translation)
+Establish `c : ∀ a : A, Continuous fun w : n → A => fun i => a * w i` using `fun a => continuous_pi fun i => continuous_const.mul (continuous_apply i)`. Establish `h1 : IsOpen (Λ : Set (n → A))`. Establish `hp : IsOpen (Set.pi Set.univ fun _ : n => (R : Set A))` using `isOpen_set_pi Set.finite_univ fun _ _ => ho`. Use `Λ.toAddSubgroup.isOpen_of_mem_nhds (g := 0) (mem_of_superset ((hp.preimage (c ((u⁻¹ : Aˣ) : A))).mem_nhds fun i _ => by simp) fun w hw => ?_)` and prove the remaining obligations. Simplify using `using hu _ fun i => hw i trivial`.
+
+Use `⟨h1, ((isCompact_univ_pi fun _ : n => hc).image (c ((v⁻¹ : Aˣ) : A))).of_isClosed_subset (Λ.toAddSubgroup.isClosed_of_isOpen h1) fun w hw => ⟨_, fun i _ => hv w hw i, by simp⟩⟩` and prove the remaining obligations.
+-/
 theorem isOpen_isCompact_of_bounds (R : Subring A) (ho : IsOpen (R : Set A)) (hc : IsCompact (R : Set A))
     (Λ : Submodule S (n → A)) (u v : Aˣ)
     (hu : ∀ w : n → A, (∀ i, w i ∈ R) → (fun i => (u : A) * w i) ∈ Λ)
@@ -183,6 +231,17 @@ theorem isOpen_isCompact_of_bounds (R : Subring A) (ho : IsOpen (R : Set A)) (hc
   refine ⟨h1, ((isCompact_univ_pi fun _ : n => hc).image (c ((v⁻¹ : Aˣ) : A))).of_isClosed_subset
     (Λ.toAddSubgroup.isClosed_of_isOpen h1) fun w hw => ⟨_, fun i _ => hv w hw i, by simp⟩⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hu'`. Take `⟨v, rfl⟩` from `hv'`. Take `⟨hΛo, hΛc⟩` from `isOpen_isCompact_of_bounds R ho hc Λ u v hu hv`. Establish `hsing : ∀ j, (Pi.single j (u : A) : n → A) ∈ Λ` using `fun j => by`. Use `hu (Pi.single j 1) fun i => ?_ using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : i = j <;> simp [h]`. Rewrite using `[Pi.single_apply] split_ifs exacts [one_mem _, zero_mem _]`. Establish `htop` using `top_eq hΛo hΛc u hsing hun h0 _ t ht h1 h2`. Substitute `htop` using the available equality.
+
+Establish `hcl : IsClosed (Formalism.UG.UJ σ J : Set (GL n A))`. Establish `hv : Continuous fun g : GL n A => (g : Matrix n n A)` using `Units.continuous_val`. Conclude with `isClosed_eq (((hv.matrix_map hσ).matrix_transpose.matrix_mul continuous_const).matrix_mul hv) continuous_const`. Establish `hemb : IsClosedEmbedding (Subtype.val : Formalism.UG.UJ σ J → GL n A)` using `hcl.isClosedEmbedding_subtypeVal`. Use `haveI : SecondCountableTopology (Matrix n n A) := inferInstanceAs (SecondCountableTopology (n → n → A))`.
+
+Use `haveI : SecondCountableTopology (Matrix n n A)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL n A) := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : T2Space (GL n A) := Units.isEmbedding_embedProduct.t2Space`. Establish `hKc` using `hemb.isCompact_preimage (isCompact_stab hΛo hΛc u hsing)`. Establish `hKo` using `(isOpen_stab hΛo hΛc).preimage hemb.continuous`.
+
+Conclude with `⟨hemb.isEmbedding.t2Space, hKc.locallyCompactSpace_of_mem_nhds_of_group (hKo.mem_nhds (x := 1) (one_mem (Formalism.UG.stabGL Λ))), hemb.isEmbedding.secondCountableTopology, hKc, hKo⟩`.
+-/
 theorem properties [T2Space A] [SecondCountableTopology A]
     (R : Subring A) (ho : IsOpen (R : Set A)) (hc : IsCompact (R : Set A))
     (Λ : Submodule S (n → A)) (u v : A) (hu' : IsUnit u) (hv' : IsUnit v)
@@ -232,6 +291,15 @@ open Formalism.UG Formalism.UG.P
 
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Establish `hC` using `GlobalTheory.AdeleCocompact.isCompact_integral F`. Take `⟨V, hVW, hV, h0⟩` from `mem_nhds_iff.1 hW`. Set `T : ℕ → Set (Af F)` to `fun k => (fun a => k.factorial • a) '' {a : FiniteAdeleRing (𝓞 F) F | ∀ v, a v ∈ v.adicCompletionIntegers F}`. Establish `hT : ∀ k, IsCompact (T k)` using `fun k => hC.image (continuous_const_smul _)`.
+
+Establish `hdvd : ∀ N k : ℕ, N ∣ k.factorial → ∀ y ∈ T k, ∃ a : Af F, (∀ v, a v ∈ v.adicCompletionIntegers F) ∧ y = N • a`. Introduce and unpack `N k ⟨c, hc⟩ _ ⟨a, ha, rfl⟩`. Conclude with `⟨c • a, nsmul_mem (S := intAd F) ha c, by simp only [hc, mul_smul]⟩`. Establish `hanti : Antitone T` using `fun k l hkl y hy => by`. Take `⟨a, ha, e⟩` from `hdvd _ l (Nat.factorial_dvd_factorial hkl) y hy`.
+
+Conclude with `⟨a, ha, e.symm⟩`. Take `⟨k, hk⟩` from `exists_subset_nhds_of_isCompact' (V := T) hanti.directed_ge hT (fun k => (hT k).isClosed) (U := V) (by`. Use `fun y hy => hV.mem_nhds ?_` and prove the remaining obligations. Use `(GlobalTheory.AdLat.integral_finiteAdele_complete_separated F).1 y fun N hN => hdvd N N (Nat.dvd_factorial hN le_rfl) y (Set.mem_iInter.1 hy N)` as an intermediate fact. Rewrite using `[this])` and apply the resulting hypothesis.
+
+Conclude with `⟨k.factorial, k.factorial_pos, hVW (hk ⟨1, one_mem (intAd F), by simp⟩)⟩`.
+-/
 theorem exists_nat_mem_nhds (W : Set (Af F)) (hW : W ∈ 𝓝 (0 : Af F)) : ∃ g : ℕ, 1 ≤ g ∧ (g : Af F) ∈ W := by
   haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F
   have hC := GlobalTheory.AdeleCocompact.isCompact_integral F
@@ -254,6 +322,27 @@ theorem exists_nat_mem_nhds (W : Set (Af F)) (hW : W ∈ 𝓝 (0 : Af F)) : ∃ 
       rwa [this])
   exact ⟨k.factorial, k.factorial_pos, hVW (hk ⟨1, one_mem (intAd F), by simp⟩)⟩
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `letI : Algebra (Af F) (E ⊗[F] Af F) := Algebra.TensorProduct.rightAlgebra`. Set `e : (Fin (Module.finrank F E) → Af F) ≃ₗ[Af F] E ⊗[F] Af F` to `(Algebra.TensorProduct.basis (Af F) (Module.finBasis F E)).equivFun.symm.trans (Algebra.TensorProduct.commRight F (Af F) E).toLinearEquiv`.
+
+Use `haveI : Module.Finite (Af F) (E ⊗[F] Af F) := Module.Finite.equiv e`. Use `letI t : TopologicalSpace (E ⊗[F] Af F) := moduleTopology (Af F) (E ⊗[F] Af F)`. Use `haveI : IsModuleTopology (Af F) (E ⊗[F] Af F) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (E ⊗[F] Af F) := IsModuleTopology.isTopologicalRing (Af F) _`. Set `h : (E ⊗[F] Af F) ≃ₜ (Fin (Module.finrank F E) → Af F)` to `{ e.symm.toEquiv with continuous_toFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap }`.
+
+Take `⟨m, b, hb⟩` from `Module.Finite.exists_fin (R := ℤ) (M := 𝓞 E)`. Set `φ : (Fin m → Af F) →ₗ[Af F] E ⊗[F] Af F` to `Fintype.linearCombination (Af F) fun j => algebraMap (𝓞 E) E (b j) ⊗ₜ[F] (1 : Af F)`. Establish `hsm : ∀ (r : Af F) (x : E ⊗[F] Af F), r • x = ((1 : E) ⊗ₜ[F] r) * x` using `fun r x => rfl`. Establish `hφ : ∀ r, φ r = ∑ j, algebraMap (𝓞 E) E (b j) ⊗ₜ[F] r j` using `fun r => by`. Simplify using `[φ, Fintype.linearCombination_apply, hsm]`.
+
+Establish `him : (IntAf F E : Set (E ⊗[F] Af F)) = φ '' Set.pi Set.univ fun _ => (intAd F : Set (Af F))`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Take `⟨r, hr, e⟩` from `levelaf_decomp b hb hs`.
+
+Conclude with `⟨r, fun j _ => hr j, (hφ r).trans e.symm⟩`. Introduce and unpack `⟨r, hr, rfl⟩`. Rewrite using `[hφ]`. Conclude with `sum_mem fun j _ => levelaf_tmul_mem _ (hr j trivial)`. Establish `hsurj : Function.Surjective φ`.
+
+Introduce `x`. Take `⟨d, hd, hx⟩` from `levelaf_denom x`. Establish `hx' : levelafC E d * x ∈ (IntAf F E : Set (E ⊗[F] Af F))` using `hx`. Rewrite `hx'` using `[him]`. Take `⟨r, -, hr⟩` from `hx'`.
+
+Use `⟨algebraMap F (Af F) (algebraMap (𝓞 F) F d)⁻¹ • r, ?_⟩` and prove the remaining obligations. Establish `hd' : algebraMap (𝓞 F) F d ≠ 0` using `by simpa using hd`. Rewrite using `[map_smul, hr, hsm, levelafC, ← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, IsScalarTower.algebraMap_apply (𝓞 F) F (Af F), ← map_mul, inv_mul_cancel₀ hd', map_one, one_mul, ← Algebra.TensorProduct.one_def, one_mul]`. Establish `hio : IsOpen (intAd F : Set (Af F))` using `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) fun _ => Valued.isOpen_valuationSubring _`. Use `⟨t, inferInstance, h.isEmbedding.t2Space, h.secondCountableTopology, ?_, ?_, ?_, fun W hW => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[him]`. Conclude with `IsModuleTopology.isOpenMap_of_surjective hsurj _ (isOpen_set_pi Set.finite_univ fun _ _ => hio)`. Rewrite using `[him]`. Conclude with `(isCompact_univ_pi fun _ => GlobalTheory.AdeleCocompact.isCompact_integral F).image (IsModuleTopology.continuous_of_linearMap φ)`. Set `s : E ⊗[F] Af F →ₗ[Af F] E ⊗[F] Af F` to `{ toFun := sigR σ (Af F) map_add' := map_add _ map_smul' := fun r x => by`.
+
+Rewrite using `[RingHom.id_apply, hsm, hsm, map_mul]`. Use `congr 1`. Simplify using `[sigR] }`. Conclude with `IsModuleTopology.continuous_of_linearMap s`. Establish `hc : Continuous (algebraMap (Af F) (E ⊗[F] Af F))` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (Af F) (E ⊗[F] Af F))`.
+
+Take `⟨g, hg, hgW⟩` from `exists_nat_mem_nhds F _ (hc.continuousAt.preimage_mem_nhds (by rwa [map_zero]))`. Conclude with `⟨g, hg, by simpa using hgW⟩`.
+-/
 theorem exists_topology (σ : E →ₐ[F] E) : ∃ t : TopologicalSpace (E ⊗[F] Af F),
     IsTopologicalRing (E ⊗[F] Af F) ∧ T2Space (E ⊗[F] Af F) ∧ SecondCountableTopology (E ⊗[F] Af F) ∧
     IsOpen (IntAf F E : Set (E ⊗[F] Af F)) ∧ IsCompact (IntAf F E : Set (E ⊗[F] Af F)) ∧
@@ -323,6 +412,9 @@ theorem exists_topology (σ : E →ₐ[F] E) : ∃ t : TopologicalSpace (E ⊗[F
     obtain ⟨g, hg, hgW⟩ := exists_nat_mem_nhds F _ (hc.continuousAt.preimage_mem_nhds (by rwa [map_zero]))
     exact ⟨g, hg, by simpa using hgW⟩
 
+/- English proof (translation)
+Establish `hd' : algebraMap (𝓞 F) E d ≠ 0`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F E]`. Simplify using `using hd`. Rewrite using `[← adelstab_incl_C]`. Conclude with `hd'.isUnit.map _`.
+-/
 theorem isUnit_levelafC {d : 𝓞 F} (hd : d ≠ 0) : IsUnit (levelafC (F := F) E d) := by
   have hd' : algebraMap (𝓞 F) E d ≠ 0 := by
     rw [IsScalarTower.algebraMap_apply (𝓞 F) F E]
@@ -332,6 +424,13 @@ theorem isUnit_levelafC {d : 𝓞 F} (hd : d ≠ 0) : IsUnit (levelafC (F := F) 
 
 end Adeles
 
+/- English proof (translation)
+Introduce `I`. Take `⟨t, hr, h2, hsc, ho, hc, hσ, h0⟩` from `exists_topology I.F I.E I.cm.sig`. Establish `hL : I.Lf = Formalism.UG.latS (F` using `I.F) (Af I.F) (IntAf I.F I.E) I.L := by`. Unfold `AutInst.Lf lamAf Formalism.UG.latS`. Rewrite using `[Set.image_eq_range]`.
+
+Both sides reduce to the same expression. Take `⟨c, hc0, hlow⟩` from `Formalism.UG.P.adelstabL_lower (F := I.F) I.L I.L_span`. Take `⟨d, hd0, hup⟩` from `Formalism.UG.P.adelstabL_upper (F := I.F) I.L (Module.Finite.iff_fg.2 I.L_fg)`. Rewrite `hlow`, `hup` using `[← hL]`. Establish `hun : ∀ g : ℕ, 1 ≤ g → IsUnit (g : I.E ⊗[I.F] Af I.F)` using `fun g hg => by`.
+
+Establish `: (g : I.E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Use `this.isUnit.map (Formalism.UG.inclE (F := I.F) (Af I.F))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨a1, a2, a3, a4, a5⟩` from `properties (IntAf I.F I.E) ho hc I.Lf _ _ (isUnit_levelafC I.F I.E hc0) (isUnit_levelafC I.F I.E hd0) hlow hup hun h0 _ hσ (I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F))) (t := I.topf) (ht := I.topf_group) I.topf_open I.topf_basis`. Conclude with `⟨a1, a2, a3, a4, a5, ⟨(Formalism.UG.stabGL I.Lf).subgroupOf _, rfl⟩, fun g hg => ⟨I.topf_open g hg, ⟨(cong I.Lf (g : I.E ⊗[I.F] Af I.F)).subgroupOf _, rfl⟩, fun k hk x hx => conj_mem_cong (Λ := I.Lf) (a := (g : I.E ⊗[I.F] Af I.F)) hk hx⟩⟩`.
+-/
 theorem adelic_topology : ∀ I : AutInst, T2Space I.Gf ∧ LocallyCompactSpace I.Gf ∧ SecondCountableTopology I.Gf ∧ IsCompact I.Kset ∧ IsOpen I.Kset ∧ (∃ K : Subgroup I.Gf, (K : Set I.Gf) = I.Kset) ∧ ∀ g : ℕ, 1 ≤ g → IsOpen (I.Kg g) ∧ (∃ K : Subgroup I.Gf, (K : Set I.Gf) = I.Kg g) ∧ ∀ k ∈ I.Kset, ∀ x ∈ I.Kg g, k * x * k⁻¹ ∈ I.Kg g := by
   intro I
   obtain ⟨t, hr, h2, hsc, ho, hc, hσ, h0⟩ := exists_topology I.F I.E I.cm.sig

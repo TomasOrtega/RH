@@ -45,6 +45,9 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL}
 def At (p : Prm hL) (r : V4.Slot → LkT Bundle → Prop) : Prop :=
   Lg1 KPx (IsBuiltE p.s) (IsGoodE p.s) fun S => r S (IsLinked p)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ => True, largeBaseProperty_true, h.strengthen fun _ _ _ _ _ t => t.1⟩`.
+-/
 theorem At.of_row {p : Prm hL} {H : ∀ 𝒜 : FamClass, RawSel Bundle 𝒜 → Prop} (h : Row (IsGoodE p.s) (IsLinked p) H) :
     At p fun S L => Row S L H :=
   ⟨fun _ _ _ _ _ => True, largeBaseProperty_true, h.strengthen fun _ _ _ _ _ t => t.1⟩

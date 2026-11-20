@@ -22,6 +22,21 @@ noncomputable section
 
 namespace GlobalTheory.USep.EvG
 
+/- English proof (translation)
+Introduce `V₁ _ _ _ _ _ D τ₀ W₀ _ ib B₀ _ M₀ c₀ τ₁ β w hFB K _ _ ev k₀ hk₀ hk z J J₀ hJ hJ₀ N₁ hN b hb hbdef t ht`. Take `⟨-, hM₀, hβ, hw, -⟩` from `hFB`. Establish `HD : DescV ib β ev k₀ w` using `⟨hk₀, ptsVia_of hβ, hk, hM₀, hw, fun _ _ _ h _ => h⟩`. Take `⟨κ, hκ⟩` from `GlobalTheory.FamPull.exists_kap D N₁`. Set `y : Over.mk (spMap ev) ⟶ D.P.A` to `toUnit (Over.mk (spMap ev)) ≫ b`.
+
+Establish `hy : y ^ N₁ = 1` using `by rw [← MonObj.comp_pow, hb, MonObj.comp_one]`. Establish `hyd : RatPV β k₀ y.left` using `by show DefOver k₀ ((spMap ev ≫ b.left) ≫ β)`. Rewrite using `[Category.assoc]`. Conclude with `hbdef`. Take `⟨c, hc, ec⟩` from `kap_memV HD κ hκ y hyd z J J₀ hJ hJ₀`.
+
+Rewrite `ec` using `[hy]`. Establish `h1 : val t (spMap ev) z J ^ (N₁ ^ 2) * val (Z` using `Sp K) κ y.left z J = 1 := ht.2 κ hκ (Sp K) (spMap ev) z J hJ`. Take `⟨c', hc', ec'⟩` from `GlobalTheory.Poinc.Sep.Coef.zpow_mem ⟨c, hc, ec⟩ (-1)`. Use `set a := om (Z := Sp K) w z J J₀ (1 : Over.mk (spMap ev) ⟶ D.P.A).left with ha`. Use `set bb := om (Z := Sp K) w z J J₀ y.left with hbb`.
+
+Use `set T := val t (spMap ev) z J with hT`. Use `set Kv := val (Z := Sp K) κ y.left z J with hKv`. Establish `alg : (T * a * bb⁻¹) ^ (N₁ ^ 2) = (bb ^ ((N₁ : ℤ) ^ 2) * a⁻¹ * a ^ (1 - (N₁ : ℤ) ^ 2) * Kv) ^ (-1 : ℤ)`. Establish `hK : Kv = (T ^ (N₁ ^ 2))⁻¹` using `eq_inv_of_mul_eq_one_right h1`. Rewrite using `[hK]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Rewrite using `[← natCast_zsmul, ← natCast_zsmul]`. Use `push_cast`. Use `module`.
+
+Take `⟨c'', hc'', ec''⟩` from `GlobalTheory.Poinc.Sep.Coef.root_mem hk₀ (z := z) (s := (T * a * bb⁻¹).val) (n := N₁ ^ 2) (Nat.one_le_pow _ _ (by omega)) ⟨c', hc', by rw [← Units.val_pow_eq_pow_val, alg]; exact ec'⟩`. Use `⟨c'', hc'', ?_⟩` and prove the remaining obligations. Establish `e : T = (a⁻¹ * bb) * (T * a * bb⁻¹)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e, Units.val_mul, ← ec'']`. Both sides reduce to the same expression.
+-/
 theorem frame_ev : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) →
     ∀ (D : DegPre V₁) (τ₀ : GlobalTheory.UChart.Gens D) (W₀ : Type) [CommRing W₀] (ib : W₀ →+* V₁) (B₀ : Over (Sp W₀)) [GrpObj B₀]
       (M₀ : LB B₀.left) (c₀ : D.X → (Sp W₀ ⟶ B₀.left))

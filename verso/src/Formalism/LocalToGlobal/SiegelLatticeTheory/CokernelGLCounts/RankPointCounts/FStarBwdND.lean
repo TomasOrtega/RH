@@ -9,6 +9,45 @@ namespace Formalism.L2.SG.Pf.FrameGlobalPatching.FStar.BwdNA
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
 
+/- English proof (translation)
+Take `⟨c, hcI, hc⟩` from `htr`. Establish `hXo` using `X_le_orth S X hXiso`. Establish `hsurj : ∀ x ∈ Λ₃, ∃ y ∈ Λ, y - x ∈ X` using `fun x hx => by`. Take `⟨w, hw, hxw⟩` from `dual_sum S Λ hΛ hSD (orth S X) x (fun m hmΛ hmU => sd_int hSD₃ hx ((hM m hmU).2 hmΛ))`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations.
+
+Establish `: x - w ∈ X` using `mem_of_orth_orth S X fun u hu => by`. Rewrite using `[hsw S u (x - w), orth_X S hxw hu, star_zero]`. Establish `h2` using `X.neg_mem this`. Rewrite `h2` using `[neg_sub]`. Then use the resulting hypothesis. Take `⟨δ, hδX, hδ0, hδΛ⟩` from `glift S Λ₃ Λ hΛ₃fg X (orth S X) (fun x hx hxo => (hM x hxo).1 hx) hsurj`.
+
+Take `⟨B₀, hB₀⟩` from `ext_top S (W := S.V) Λ₃ hfull₃ δ`. Establish `hscale : ∀ v : S.V, ∃ d : 𝓞 E, d ≠ 0 ∧ ∃ hm : ((d : E) • v) ∈ Λ₃, (d : E) • B₀ v = δ ⟨_, hm⟩` using `fun v => by`. Take `⟨d, hd, hdv⟩` from `hfull₃ v`. Rewrite `hdv` using `[oSmul]`. Conclude with `⟨d, hd, hdv, by rw [← map_smul, hB₀ _ hdv]⟩`.
+
+Establish `hB₀X : ∀ v, B₀ v ∈ X` using `fun v => by`. Take `⟨d, hd, hm, he⟩` from `hscale v`. Establish `h1 : (d : E) • B₀ v ∈ X` using `by rw [he]; exact hδX _`. Establish `h2` using `X.smul_mem ((d : E)⁻¹) h1`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ (coe_ne_zero hd), one_smul]`. Then use the resulting hypothesis.
+
+Establish `hB₀o : ∀ u ∈ orth S X, B₀ u = 0` using `fun u hu => by`. Take `⟨d, hd, hm, he⟩` from `hscale u`. Rewrite `he` using `[hδ0 _ ((orth S X).smul_mem _ hu)]`. Conclude with `(smul_eq_zero.1 he).resolve_left (coe_ne_zero hd)`. Set `b` to `S.frame`.
+
+Take `⟨bs, hbs⟩` from `Formalism.HermitianLatticesTheory.dualLattice_dualBasis S.hT S.nondeg b`. Set `σL : Fin S.rank → S.V →ₗ[E] E` to `fun k => S.hT (B₀ (b k)) + S.hT (b k) ∘ₗ B₀`. Set `B₁ : S.V →ₗ[E] S.V` to `∑ k, ((-c) • σL k).smulRight (bs k)`. Establish `hB₁app : ∀ v, B₁ v = ∑ k, (-c * (S.hT (B₀ (b k)) v + S.hT (b k) (B₀ v))) • bs k` using `fun v => by show (∑ k, ((-c) • σL k).smulRight (bs k)) v = _`. Rewrite using `[LinearMap.sum_apply]`.
+
+Both sides reduce to the same expression. Establish `hB₁ : ∀ v v', S.hT (B₁ v) v' = -(star c) * (S.hT (B₀ v) v' + S.hT v (B₀ v'))` using `fun v v' => by`. Establish `key : S.hT (B₁ v) = -(star c) • (S.hT (B₀ v) + S.hT v ∘ₗ B₀)`. Apply `b.ext` to reduce the goal to its premises. Introduce `k'`.
+
+Rewrite using `[hB₁app, map_sum, LinearMap.sum_apply]`. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, smul_eq_mul, LinearMap.add_apply, LinearMap.comp_apply]`. Rewrite using `[Finset.sum_eq_single k']`. Rewrite using `[hsw S (b k') (bs k'), hbs k' k', if_pos rfl, star_one, mul_one, star_mul, star_neg, star_add, ← hsw S (B₀ (b k')) v, ← hsw S (b k') (B₀ v)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `k _ hk`. Rewrite using `[hsw S (b k') (bs k), hbs k' k, if_neg (Ne.symm hk), star_zero, mul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[key]`. Both sides reduce to the same expression.
+
+Set `B : S.V →ₗ[E] S.V` to `B₀ + B₁`. Establish `hBapp : ∀ v, B v = B₀ v + B₁ v` using `fun v => rfl`. Establish `hB₁X : ∀ v, B₁ v ∈ X` using `fun v => mem_of_orth_orth S X fun u hu => by`. Rewrite using `[hB₁, hB₀o u hu, map_zero, orth_X S hu (hB₀X v)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hB₁o : ∀ u ∈ orth S X, B₁ u = 0` using `fun u hu => S.nondeg.1 _ fun v' => by`. Rewrite using `[hB₁, hB₀o u hu, map_zero, LinearMap.zero_apply, orth_X' S hu (hB₀X v')]`. Expand and normalize the polynomial expressions, which then agree. Establish `hBX : ∀ v, B v ∈ X` using `fun v => by rw [hBapp]; exact X.add_mem (hB₀X v) (hB₁X v)`. Establish `hBo : ∀ u ∈ orth S X, B u = 0` using `fun u hu => by rw [hBapp, hB₀o u hu, hB₁o u hu, add_zero]`.
+
+Establish `hBB : ∀ v, B (B v) = 0` using `fun v => hBo _ (hXo (hBX v))`. Establish `hBiso : ∀ v v', S.hT (v + B v) (v' + B v') = S.hT v v'` using `fun v v' => by`. Establish `expand : S.hT (v + B v) (v' + B v') = S.hT v v' + S.hT (B v) v' + S.hT v (B v') + S.hT (B v) (B v')`. Simplify using `only [map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `f1 : S.hT (B v) v' = S.hT (B₀ v) v' + (-(star c) * (S.hT (B₀ v) v' + S.hT v (B₀ v')))`. Rewrite using `[hBapp, map_add, LinearMap.add_apply, hB₁]`. Establish `f2 : S.hT v (B v') = S.hT v (B₀ v') + (-c * (S.hT (B₀ v) v' + S.hT v (B₀ v')))`. Rewrite using `[hBapp, map_add, hsw S (B₁ v') v, hB₁, star_mul, star_neg, star_add, ← hsw S (B₀ v') v, ← hsw S v' (B₀ v), star_star]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[expand, hXiso _ (hBX v) _ (hBX v'), f1, f2]`. Take the linear combination `(-(S.hT (B₀ v) v' + S.hT v (B₀ v'))) * hc`. Set `n : S.V ≃ₗ[E] S.V` to `LinearEquiv.ofLinear (LinearMap.id + B) (LinearMap.id - B) (by ext v; simp [hBB]) (by ext v; simp [hBB])`. Establish `hnapp : ∀ v, n v = v + B v` using `fun v => rfl`. Establish `hniso : ∀ a b, S.hT (n a) (n b) = S.hT a b` using `fun a b => by rw [hnapp, hnapp, hBiso]`.
+
+Establish `hnin : ∀ x ∈ Λ₃, n x ∈ Λ` using `fun x hx => by`. Rewrite using `[hnapp, hBapp, ← add_assoc]`. Use `Λ.add_mem (by rw [hB₀ x hx]; exact hδΛ ⟨x, hx⟩) ((hM _ (hXo (hB₁X x))).1 ?_)` and prove the remaining obligations. Use `(hSD₃ _).2 fun y hy => ?_` and prove the remaining obligations. Establish `hσ : IsIntegral ℤ (S.hT (B₀ x) y + S.hT x (B₀ y))`.
+
+Establish `h1 : IsIntegral ℤ (S.hT (x + B₀ x) (y + B₀ y))`. Rewrite using `[hB₀ x hx, hB₀ y hy]`. Conclude with `sd_int hSD (hδΛ ⟨y, hy⟩) (hδΛ ⟨x, hx⟩)`. Establish `h2 : IsIntegral ℤ (S.hT x y)` using `sd_int hSD₃ hy hx`. Establish `e : S.hT (B₀ x) y + S.hT x (B₀ y) = S.hT (x + B₀ x) (y + B₀ y) - S.hT x y`.
+
+Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hXiso _ (hB₀X x) _ (hB₀X y)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h1.sub h2`. Rewrite using `[hsw S (B₁ x) y, hB₁, star_mul, star_neg, star_star]`.
+
+Conclude with `(isInt_star hσ).mul hcI.neg`. Use `⟨n, hniso, fun x hx => by rw [hnapp, hBo x hx, add_zero], ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `hnin y hy`. Introduce `hx`. Use `⟨n.symm x, (hSD₃ _).2 fun y hy => ?_, n.apply_symm_apply x⟩` and prove the remaining obligations. Rewrite using `[← hniso y (n.symm x), n.apply_symm_apply]`. Conclude with `sd_int hSD hx (hnin y hy)`.
+-/
 theorem stepD (X : Submodule E S.V) (hXiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0)
     (Λ Λ₃ : Submodule (𝓞 E) S.V) (hΛ : Submodule.IsLattice E Λ) (hSD : SD S Λ) (hΛ₃fg : Λ₃.FG)
     (hfull₃ : ∀ u : S.V, ∃ d : 𝓞 E, d ≠ 0 ∧ d • u ∈ Λ₃) (hSD₃ : SD S Λ₃)

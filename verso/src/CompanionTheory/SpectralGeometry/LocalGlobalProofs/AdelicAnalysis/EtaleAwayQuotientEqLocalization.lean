@@ -10,6 +10,11 @@ open scoped TensorProduct Matrix
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h1 : Algebra.trace R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e) = algebraMap F R (Algebra.trace F E e)`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← LinearMap.trace_baseChange]`. Use `congr 1`. Use extensionality with `y`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, LinearMap.baseChange_tmul]`.
+
+Establish `h2 : a ⊗ₜ[F] e = a • ((1 : R) ⊗ₜ[F] e)`. Simplify using `[TensorProduct.smul_tmul']`. Rewrite using `[h2, map_smul, h1, smul_eq_mul]`.
+-/
 theorem trace_tmul [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] (a : R) (e : E) :
     Algebra.trace R (R ⊗[F] E) (a ⊗ₜ[F] e) = a * algebraMap F R (Algebra.trace F E e) := by
   have h1 : Algebra.trace R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e) = algebraMap F R (Algebra.trace F E e) := by
@@ -21,6 +26,9 @@ theorem trace_tmul [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R]
     simp [TensorProduct.smul_tmul']
   rw [h2, map_smul, h1, smul_eq_mul]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (Algebra.TensorProduct.basis R b).sum_repr u]`. Simplify using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`.
+-/
 theorem expand {d : ℕ} (b : Module.Basis (Fin d) F E) (R : Type) [CommRing R] [Algebra F R]
     (u : R ⊗[F] E) :
     u = ∑ k, ((Algebra.TensorProduct.basis R b).repr u k) ⊗ₜ[F] b k := by
@@ -31,6 +39,11 @@ def trGram (σ : E →ₐ[F] E) {M d : ℕ} (J : Matrix (Fin M) (Fin M) E) (b : 
     Matrix (Fin M × Fin d) (Fin M × Fin d) F :=
   fun p q => Algebra.trace F E (σ (b p.2) * J p.1 q.1 * b q.2)
 
+/- English proof (translation)
+Use `conv_lhs => rw [expand b R u, expand b R v]`. Simplify using `only [map_sum, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `: sigR R σ (((Algebra.TensorProduct.basis R b).repr u k) ⊗ₜ[F] b k) = ((Algebra.TensorProduct.basis R b).repr u k) ⊗ₜ[F] σ (b k)`.
+
+Simplify using `[sigR]`. Rewrite using `[this, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, trace_tmul]`. Simplify using `only [mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_entry [FiniteDimensional F E] (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E)
     (R : Type) [CommRing R] [Algebra F R] (u v : R ⊗[F] E) (e : E) :
     Algebra.trace R (R ⊗[F] E) (sigR R σ u * ((1 : R) ⊗ₜ[F] e) * v) =
@@ -52,16 +65,27 @@ section CM
 
 variable [NumberField F] [NumberField E]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem sig_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+The claim follows from `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofAlgHom σ σ (AlgHom.ext (sig_sig h)) (AlgHom.ext (sig_sig h))) x`.
+-/
 theorem trace_sig {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) :
     Algebra.trace F E (σ x) = Algebra.trace F E x :=
   Algebra.trace_eq_of_algEquiv
     (AlgEquiv.ofAlgHom σ σ (AlgHom.ext (sig_sig h)) (AlgHom.ext (sig_sig h))) x
 
+/- English proof (translation)
+Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Simplify using `only [Matrix.transpose_apply, trGram]`. Rewrite using `[← trace_sig h (σ (b l) * J j i * b k)]`. Simplify using `only [map_mul, sig_sig h, hJ.1]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trGram_isSymm {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {M d : ℕ}
     {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) (b : Module.Basis (Fin d) F E) :
     (trGram σ J b).IsSymm := by
@@ -72,6 +96,19 @@ theorem trGram_isSymm {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {M d : ℕ}
   congr 1
   ring
 
+/- English proof (translation)
+Introduce `hdet`. Take `⟨v, hv, hBv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Use `set y : Fin M → E := fun j => ∑ l, v (j, l) • b l with hy`. Establish `key : ∀ i k, Algebra.trace F E (σ (b k) * (J *ᵥ y) i) = 0`. Introduce `i k`.
+
+Establish `h0` using `congrFun hBv (i, k)`. Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, trGram, Pi.zero_apply] at h0`. Rewrite using `[← h0]`. Simplify using `only [Matrix.mulVec, dotProduct, hy, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_smul_comm, mul_smul_comm, map_smul, smul_eq_mul, mul_comm, mul_assoc]`. Establish `key2 : ∀ i (e : E), Algebra.trace F E (e * (J *ᵥ y) i) = 0`. Introduce `i e`. Establish `he : e = ∑ k, (b.repr (σ e) k) • σ (b k)`. Establish `h3` using `congrArg σ (b.sum_repr (σ e))`.
+
+Rewrite `h3` using `[sig_sig h, map_sum]`. Conclude with `h3.symm.trans (Finset.sum_congr rfl fun k _ => σ.toLinearMap.map_smul _ _)`. Rewrite using `[he]`. Simplify using `only [Finset.sum_mul, map_sum, smul_mul_assoc, map_smul, key, smul_zero, Finset.sum_const_zero]`. Establish `hw : J *ᵥ y = 0`.
+
+Use function extensionality and compare the values at `i`. Use `(traceForm_nondegenerate F E).1 _ fun e => ?_` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `key2 i e`. Establish `hy0 : y = 0` using `Matrix.eq_zero_of_mulVec_eq_zero hJ.2 hw`.
+
+Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `⟨j, l⟩`. Use `congrFun hy0 j` as an intermediate fact. Establish `h2` using `Fintype.linearIndependent_iff.1 b.linearIndependent (fun l => v (j, l)) this l`. Simplify using `using h2`.
+-/
 theorem trGram_det_ne_zero {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {M d : ℕ}
     {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) (b : Module.Basis (Fin d) F E) :
     (trGram σ J b).det ≠ 0 := by
@@ -116,6 +153,11 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h M J hJ d b`. Use `haveI : FiniteDimensional F E := Module.Basis.finiteDimensional_of_finite b`. Use `⟨TraceFormGram.trGram σ J b, TraceFormGram.trGram_isSymm h hJ b, TraceFormGram.trGram_det_ne_zero h hJ b, ?_⟩` and prove the remaining obligations. Introduce `R _ _ x y`. Establish `hh : hR R σ J x y = ∑ i, ∑ j, sigR R σ (x i) * ((1 : R) ⊗ₜ[F] J i j) * y j` using `rfl`.
+
+Rewrite using `[hh]`. Apply the tactic sequence `simp only [map_sum, TraceFormGram.trace_entry σ b R]`. Simplify using `only [dotProduct, Matrix.mulVec, Fintype.sum_prod_type, Matrix.map_apply, TraceFormGram.trGram, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem trace_form_coords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∃ B : Matrix (Fin M × Fin d) (Fin M × Fin d) F, B.IsSymm ∧ B.det ≠ 0 ∧ ∀ (R : Type) [CommRing R] [Algebra F R] (x y : Fin M → R ⊗[F] E), Algebra.trace R (R ⊗[F] E) (hR R σ J x y) = (fun p : Fin M × Fin d => (Algebra.TensorProduct.basis R b).repr (x p.1) p.2) ⬝ᵥ (B.map (algebraMap F R) *ᵥ fun p : Fin M × Fin d => (Algebra.TensorProduct.basis R b).repr (y p.1) p.2) := by
   intro F E _ _ _ _ _ σ h M J hJ d b
   haveI : FiniteDimensional F E := Module.Basis.finiteDimensional_of_finite b

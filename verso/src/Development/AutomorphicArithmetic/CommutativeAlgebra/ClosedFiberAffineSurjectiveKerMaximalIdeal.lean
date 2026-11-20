@@ -5,6 +5,25 @@ import Development.EtaleCohomology.EtaleSheaves.StandardChartsLineOne
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry IsLocalRing GlobalTheory.EtC UpperTheory.Et LateralTheory.E.t_E2Cut LateralTheory.E.LineOneCut LateralTheory.E.StandardEtaleChartsMultivariableHensel
 
+/- English proof (translation)
+Introduce `A _ _ X F _ p r c h`. Establish `hcpt : IsClosedImmersion (cpt A)` using `IsClosedImmersion.spec_of_surjective _ (IsLocalRing.residue_surjective)`. Establish `hr : IsClosedImmersion r` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) h.flip hcpt`. Take `⟨hF, hsurj⟩` from `IsClosedImmersion.isAffine_surjective_of_isAffine r`. Use `⟨hF, hsurj, ?_⟩` and prove the remaining obligations.
+
+Establish `hinv : X.isoSpec.inv.appTop ≫ (Scheme.ΓSpecIso Γ(X, ⊤)).hom = 𝟙 _`. Rewrite using `[← Scheme.toSpecΓ_appTop, ← Scheme.isoSpec_hom, ← Scheme.Hom.comp_appTop, Iso.hom_inv_id]`. Simplify using the standard rewrite rules. Establish `key : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ p.appTop ≫ r.appTop = CommRingCat.ofHom (residue A) ≫ (Scheme.ΓSpecIso _).inv ≫ c.appTop`. Rewrite using `[← Scheme.Hom.comp_appTop, h.w, Scheme.Hom.comp_appTop, ← Category.assoc, ← Category.assoc]`.
+
+Use `congr 1`. Conclude with `(Scheme.ΓSpecIso_inv_naturality _).symm`. Use `set φ := ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ p.appTop).hom with hφ`. Use `set I := (maximalIdeal A).map φ with hI`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `b hb`. Rewrite `hb` using `[RingHom.mem_ker]`. Set `π : Γ(X, ⊤) ⟶ CommRingCat.of (Γ(X, ⊤) ⧸ I)` to `CommRingCat.ofHom (Ideal.Quotient.mk I)`. Set `χ0 : A ⧸ maximalIdeal A →+* Γ(X, ⊤) ⧸ I` to `Ideal.Quotient.lift (maximalIdeal A) ((Ideal.Quotient.mk I).comp φ) (fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem φ ha))`. Set `χ : CommRingCat.of (ResidueField A) ⟶ CommRingCat.of (Γ(X, ⊤) ⧸ I)` to `CommRingCat.ofHom χ0`.
+
+Set `z : Spec (CommRingCat.of (Γ(X, ⊤) ⧸ I)) ⟶ X` to `Spec.map π ≫ X.isoSpec.inv`. Establish `hz : z ≫ p = Spec.map χ ≫ cpt A`. Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[← cancel_epi (Scheme.ΓSpecIso (CommRingCat.of A)).inv, ← cancel_mono (Scheme.ΓSpecIso (CommRingCat.of (Γ(X, ⊤) ⧸ I))).hom]`. Simplify using `only [z, cpt, Scheme.Hom.comp_appTop, Category.assoc, Scheme.ΓSpecIso_naturality, Scheme.ΓSpecIso_naturality_assoc, reassoc_of% hinv, Iso.inv_hom_id_assoc, Category.id_comp]`.
+
+Use extensionality with `a`. Both sides reduce to the same expression. Set `u` to `h.lift z (Spec.map χ) hz`. Establish `hu : u ≫ r = z` using `h.lift_fst _ _ _`. Establish `hzt : z.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of (Γ(X, ⊤) ⧸ I))).hom = π`.
+
+Simplify using `only [z, Scheme.Hom.comp_appTop, Category.assoc, Scheme.ΓSpecIso_naturality, reassoc_of% hinv, Category.id_comp]`. Establish `e1 : z.appTop = r.appTop ≫ u.appTop`. Rewrite using `[← Scheme.Hom.comp_appTop, hu]`. Establish `e2` using `congrArg (fun f => f.hom b) hzt`. Rewrite `e2` using `[e1]`.
+
+Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, hb, map_zero] at e2`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 e2.symm`. Use `Ideal.map_le_iff_le_comap.2 (fun a ha => ?_)` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Establish `e` using `congrArg (fun f => f.hom a) key`.
+
+Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at e`. Rewrite using `[hφ, CommRingCat.hom_comp, RingHom.comp_apply, e, (IsLocalRing.residue_eq_zero_iff a).2 ha, map_zero, map_zero]`.
+-/
 theorem UpperTheory.closed_fiber_affine_surjective_ker_maximalIdeal :
     ∀ (A : Type) [CommRing A] [IsLocalRing A] {X F : Scheme.{0}} [IsAffine X] (p : X ⟶ Spec (CommRingCat.of A)) (r : F ⟶ X) (c : F ⟶ Spec (CommRingCat.of (ResidueField A))),
       IsPullback r c p (cpt A) → IsAffine F ∧ Function.Surjective r.appTop.hom ∧ RingHom.ker r.appTop.hom = (maximalIdeal A).map (((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (p).appTop).hom) := by

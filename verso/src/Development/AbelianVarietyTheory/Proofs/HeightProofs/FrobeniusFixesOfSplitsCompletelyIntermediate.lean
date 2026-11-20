@@ -9,6 +9,31 @@ open scoped Pointwise
 
 namespace GlobalTheory.SplitCriterion
 
+/- English proof (translation)
+Use `𝔭.isPrime` as an intermediate fact. Take `⟨P, hP, hPo, hx⟩` from `hσ`. Establish `hne : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot P`. Establish `hPm : P.IsMaximal` using `hP.isMaximal hne`. Establish `hq : Ideal.absNorm 𝔭.asIdeal ≠ 0`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `𝔭.ne_bot`. Establish `hfix : σ⁻¹ • P = P`. Use `symm`. Use `hPm.eq_of_le (Ideal.IsPrime.ne_top inferInstance) fun x hxP => ?_` and prove the remaining obligations.
+
+Rewrite using `[Ideal.mem_inv_pointwise_smul_iff]`. Establish `h1` using `P.add_mem (hx x) (P.pow_mem_of_mem hxP _ (Nat.pos_of_ne_zero hq))`. Rewrite `h1` using `[sub_add_cancel]`. Conclude with `h1`. Set `f : (N ≃ₐ[K] N) → Ideal (𝓞 M)` to `fun σ => (σ⁻¹ • P).under (𝓞 M)`.
+
+Establish `hker : ∀ σ τ, σ⁻¹ * τ ∈ M.fixingSubgroup → f σ = f τ`. Introduce `σ τ e`. Establish `e'` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 e`. Use extensionality with `x`. Simplify using `only [f, Ideal.under, Ideal.mem_comap, Ideal.mem_inv_pointwise_smul_iff]`.
+
+Establish `: (σ⁻¹ * τ) • algebraMap (𝓞 M) (𝓞 N) x = algebraMap (𝓞 M) (𝓞 N) x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `e' _ (x : M).2`. Rewrite `this` using `[mul_smul, inv_smul_eq_iff]`. Rewrite using `[this]`.
+
+Establish `hr : Set.range f = 𝔭.asIdeal.primesOver (𝓞 M)`. Use extensionality with `Q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, rfl⟩`. Use `⟨inferInstance, ⟨?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [f]`. Rewrite using `[Ideal.under_under]`. Conclude with `Ideal.LiesOver.over`. Introduce and unpack `⟨hQ, hQo⟩`. Take `⟨P', hP', hPo'⟩` from `(inferInstance : Nonempty (Q.primesOver (𝓞 N)))`.
+
+Establish `: P'.LiesOver 𝔭.asIdeal` using `Ideal.LiesOver.trans P' Q _`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (𝓞 K) (𝓞 N) (N ≃ₐ[K] N) P P' (hPo.over.symm.trans this.over)`. Conclude with `⟨g⁻¹, by simp only [f]; rw [inv_inv, ← hg]; exact hPo'.over.symm⟩`. Establish `hs : (fun Q : HeightOneSpectrum (𝓞 M) => Q.asIdeal) '' {Q | Q.asIdeal.comap (algebraMap (𝓞 K) (𝓞 M)) = 𝔭.asIdeal} = 𝔭.asIdeal.primesOver (𝓞 M)`. Use extensionality with `Q`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, hQ, rfl⟩`. Conclude with `⟨Q.isPrime, ⟨Eq.symm hQ⟩⟩`. Introduce and unpack `⟨hQ, hQo⟩`. Conclude with `⟨⟨Q, hQ, Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot Q⟩, hQo.over.symm, rfl⟩`.
+
+Rewrite `h` using `[← Set.ncard_image_of_injective _ (fun _ _ e => HeightOneSpectrum.ext e), hs, ← hr, IntermediateField.finrank_eq_fixingSubgroup_index, Subgroup.index, ← Nat.card_coe_set_eq]`. Set `F : (N ≃ₐ[K] N) ⧸ M.fixingSubgroup → Set.range f` to `Quotient.lift (fun g => ⟨f g, g, rfl⟩) fun a b e => Subtype.ext (hker a b (QuotientGroup.leftRel_apply.1 e))`. Establish `hF : Function.Surjective F`. Introduce and unpack `⟨_, g, rfl⟩`. Conclude with `⟨QuotientGroup.mk g, rfl⟩`.
+
+Establish `hinj : Function.Injective F` using `(hF.bijective_of_nat_card_le h.ge).1`. Establish `h1 : F (QuotientGroup.mk 1) = F (QuotientGroup.mk σ)`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `f 1 = f σ`. Simplify using `only [f]`.
+
+Rewrite using `[hfix, inv_one, one_smul]`. Establish `h2` using `QuotientGroup.eq.1 (hinj h1)`. Rewrite `h2` using `[inv_one, one_mul]`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 h2`.
+-/
 theorem frob_fix_of_ncard_primes_eq_finrank (K N : Type) [Field K] [NumberField K] [Field N] [NumberField N]
     [Algebra K N] [IsGalois K N] (M : IntermediateField K N) (𝔭 : HeightOneSpectrum (𝓞 K))
     (h : {Q : HeightOneSpectrum (𝓞 M) | Q.asIdeal.comap (algebraMap (𝓞 K) (𝓞 M)) = 𝔭.asIdeal}.ncard

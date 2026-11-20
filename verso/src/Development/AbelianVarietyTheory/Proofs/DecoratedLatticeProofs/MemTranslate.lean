@@ -15,9 +15,15 @@ namespace GlobalTheory.TriStep
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[rTrans, mul_assoc]`.
+-/
 theorem rTrans_rTrans {G : Type} [Semigroup G] (a b : G) (F : G → ℂ) : rTrans a (rTrans b F) = rTrans (a * b) F := by
   funext g; simp [rTrans, mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[rTrans]`.
+-/
 theorem rTrans_one {G : Type} [Monoid G] (F : G → ℂ) : rTrans 1 F = F := by
   funext g; simp [rTrans]
 
@@ -55,6 +61,11 @@ def space (Q : QStep S) : Submodule ℂ (GA D S.B'.V → ℂ) where
       simp only [rTrans, Pi.smul_apply, smul_eq_mul] at e1 ⊢
       rw [e1]
 
+/- English proof (translation)
+Take `⟨hc, U, hU, hfU⟩` from `hf`. Use `⟨fun y' => ?_, U.comap (MulAut.conj y⁻¹).toMonoidHom, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[rTrans_rTrans, ← map_mul]`. Conclude with `hc _`. Establish `hc : Continuous fun x : GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k => y⁻¹ * x * y⁻¹⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`.
+
+Conclude with `hU.preimage hc`. Establish `hu' : y⁻¹ * u * y ∈ U` using `by simpa using hu`. Rewrite using `[rTrans_rTrans, ← map_mul, show u * y = y * (y⁻¹ * u * y) by group, map_mul, ← rTrans_rTrans, hfU _ hu']`.
+-/
 theorem mem_translate (Q : QStep S) (y : GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k) {f : GA D S.B'.V → ℂ} (hf : f ∈ space Q) :
     rTrans (Q.gl₂ y) f ∈ space Q := by
   obtain ⟨hc, U, hU, hfU⟩ := hf
@@ -85,6 +96,13 @@ def valK (S : Dbl2 ψ σ) (Q : QStep S) (c₁ : WO S.B.A S.J.W₀ →₀ ℂ) (c
     (Ξ : SB (Matrix Q.n₁ Q.n₀ Q.k × Matrix Q.n₂ Q.n₁ Q.k)) (f : GA D S.B'.V → ℂ) : ℂ :=
   S.B'.per ψ (biLift S.oma S.omb S.B.vA S.J.v0 φ (biComb ψ S.B.A S.J.W₀ S.B'.A c₁ c₂ (Λ Ξ))) f
 
+/- English proof (translation)
+Introduce `v`. Take `⟨-, U, hU, hfU⟩` from `v.2`. Set `H : Subgroup (GL (Q.n₂ ⊕ Fin (Q.c + 1)) Q.k)` to `{ carrier := {g | rep Q g v = v} one_mem' := by simp mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hb, ha]`.
+
+Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hle : U ≤ H` using `fun u hu => Subtype.ext (hfU u hu)`.
+
+Conclude with `Subgroup.isOpen_mono hle hU`.
+-/
 theorem smooth (Q : QStep S) : IsSmoothRep (rep Q) := by
   intro v
   obtain ⟨-, U, hU, hfU⟩ := v.2

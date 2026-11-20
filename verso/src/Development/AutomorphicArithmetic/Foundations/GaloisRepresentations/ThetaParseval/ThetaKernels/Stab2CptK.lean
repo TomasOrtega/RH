@@ -15,6 +15,23 @@ open GlobalTheory.Doubling (absE)
 open PositivityTheory.ThKG.Tow St
 open scoped Pointwise
 attribute [local instance] ae_ring ae_t2 ae_smul
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n Y r s hB hY K hK`. Take `⟨hL, c, c0, hc⟩ : Y.L.IsLattice E ∧ ∃ c : ℂ, c ≠ 0 ∧ ∀ w, IsCartan (c • Y.J.map (B.emb w).1) (Y.θ w)` from `hY.elim (fun h => ⟨h.lat, 1, one_ne_zero, fun w => by simpa using h.cartan w⟩) fun h => ⟨h.lat, _, Complex.I_ne_zero, h.cartan⟩`. Take `⟨Φ, hΦ, eΦ⟩` from `exists_section hB.cm B.emb`. Use `choose C hC h using fin_bound (F := F) Y hL`. Use `choose R hR using fun w => cartan_bound2 (hc w)`.
+
+Establish `hD : IsCompact (Φ '' Set.univ.pi fun w => Metric.closedBall (0 : ℂ) (R w))` using `(isCompact_univ_pi fun w => isCompact_closedBall _ _).image hΦ`. Establish `hm : Continuous fun g : G2 σ Y => mat2 g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hp : ∀ w, Continuous (piInf (B.emb w))` using `fun w => GlobalTheory.Grow.continuous_infEmb_compInf F w (B.emb w)`. Establish `cc : Continuous (cA (F` using `F) σ) := IsModuleTopology.continuous_of_linearMap (cA (F := F) σ).toLinearMap`. Establish `cl` using `(isCompact_latHat Y hL.fg).isClosed`.
+
+Establish `key : ∀ k ∈ K, mat2 k ∈ Set.univ.pi fun i => Set.univ.pi fun j => (Φ '' Set.univ.pi fun w => Metric.closedBall (0 : ℂ) (R w)) + C (Sum.elim id id i) (Sum.elim id id j)` using `fun k hk i _ j _ => by`. Take `⟨k1, k2⟩` from `(hK k).1 hk`. Rewrite using `[eΦ (mat2 k i j)]`. Use `Set.add_mem_add ⟨_, fun w _ => ?_, rfl⟩ ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`.
+
+Use `hR w ((mat2 k).map (piInf (B.emb w))) ?_ (k1 w) i j` and prove the remaining obligations. Establish `e` using `congrArg (fun X => c • Matrix.map X (piInf (B.emb w))) (show (mat2 k)ᵀ * dbl (incM F Y.J) * (mat2 k).map (cA σ) = dbl (incM F Y.J) from k.2)`. Establish `d : c • (dbl (incM F Y.J)).map (piInf (B.emb w)) = dbl (c • Y.J.map (B.emb w).1)`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [dbl, incM, Levi.piInf_incl]`. Establish `d2 : ((mat2 k).map (cA σ)).map (piInf (B.emb w)) = ((mat2 k).map (piInf (B.emb w))).map star` using `Matrix.ext fun a b => Levi.piInf_cA hB.cm _ _`.
+
+Simplify using `only [Matrix.map_mul] at e`. Rewrite `e` using `[← Matrix.smul_mul, ← Matrix.mul_smul, d, d2]`. Then use the resulting hypothesis. Establish `a` using `fun y hy => k2 y 0 hy (zero_mem _) k (.inl rfl)`. Establish `b` using `fun y hy => k2 0 y (zero_mem _) hy k (.inl rfl)`. Rewrite `a`, `b` using `[← Matrix.fromBlocks_toBlocks (mat2 k)]`.
+
+Simplify using `only [Matrix.fromBlocks_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr, Matrix.mulVec_zero, add_zero, zero_add] at a b`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Use `exacts [h i j _ fun y hy => (a y hy).1, h i j _ fun y hy => (b y hy).1, h i j _ fun y hy => (a y hy).2, h i j _ fun y hy => (b y hy).2]`. Use `isCompact_of_units _ (isClosed_eq (((Units.continuous_val.matrix_transpose).matrix_mul continuous_const).matrix_mul (Units.continuous_val.matrix_map cc)) continuous_const) _ ?_ _ (isCompact_univ_pi fun i => isCompact_univ_pi fun j => hD.add (hC _ _)) fun k hk => ⟨key k hk, key _ …` and prove the remaining obligations. Rewrite using `[show (K : Set (G2 σ Y)) = {k | _} from Set.ext hK]`.
+
+Simplify using `only [Set.forall_mem_insert, Set.mem_singleton_iff, forall_eq]`. Simplify using `only [Set.setOf_and, Set.setOf_forall]`. Establish `v : ∀ {f : G2 σ Y → G2 σ Y}, Continuous f → ∀ z, IsClosed ({k | (mat2 (f k) *ᵥ z) ∘ Sum.inl ∈ latHat Y} ∩ {k | (mat2 (f k) *ᵥ z) ∘ Sum.inr ∈ latHat Y})` using `fun hf z =>`. Establish `t` using `(hm.comp hf).matrix_mulVec (continuous_const (y := z))`. Use the proof step `(cl.preimage (continuous_pi fun i => (continuous_apply _).comp t)).inter (cl.preimage (continuous_pi fun i => (continuous_apply _).comp t))`.
+
+Conclude with `(isClosed_iInter fun w => isClosed_eq ((hm.matrix_map (hp w)).matrix_mul continuous_const) (continuous_const.matrix_mul (hm.matrix_map (hp w)))).inter (isClosed_iInter fun z => isClosed_iInter fun z' => isClosed_iInter fun _ => isClosed_iInter fun _ => (v continuous_id _).inter ( …`.
+-/
 theorem stab2Cpt_k : _root_.GlobalTheory.ThK.Dbl.Stab2Cpt_k := by
   intro F E _ _ _ _ _ σ B n Y r s hB hY K hK
   obtain ⟨hL, c, c0, hc⟩ : Y.L.IsLattice E ∧ ∃ c : ℂ, c ≠ 0 ∧ ∀ w, IsCartan (c • Y.J.map (B.emb w).1) (Y.θ w) :=

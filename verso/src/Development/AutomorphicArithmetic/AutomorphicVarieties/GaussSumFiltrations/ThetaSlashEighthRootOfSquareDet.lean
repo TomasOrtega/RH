@@ -19,6 +19,11 @@ namespace GlobalTheory.HilbertThetaSeries.ThetaLevel
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Introduce `v`. Establish `e : (↑(toInf γ) : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det = rhom γ.val.det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[e, h, map_one]`.
+
+Conclude with `one_pos`.
+-/
 theorem pos_toInf {γ : GL (Fin 2) F} (h : γ.val.det = 1) : Pos (toInf γ) := by
   intro v
   have e : (↑(toInf γ) : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det = rhom γ.val.det := by
@@ -33,15 +38,30 @@ def low (x : F) : GL (Fin 2) F where
   val_inv := by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ]
   inv_val := by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Conclude with `isIntegral_natCast N`.
+-/
 theorem natCast_int (N : ℕ) : IsIntegral ℤ (N : F) := by
   exact isIntegral_natCast N
 
+/- English proof (translation)
+Establish `had : γ.val 0 0 * γ.val 1 1 - γ.val 0 1 * γ.val 1 0 = 1` using `by rw [← hdet, Matrix.det_fin_two]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, wm, Matrix.mul_apply, Fin.sum_univ_succ] <;> field_simp <;> linear_combination (-1 : F) * had`.
+-/
 theorem decomp (γ : GL (Fin 2) F) (hdet : γ.val.det = 1) (hc : γ.val 1 0 ≠ 0) :
     γ = aff 1 (γ.val 0 0 / γ.val 1 0) * wm (Units.mk0 _ hc) * aff 1 (γ.val 1 1 / γ.val 1 0) := by
   have had : γ.val 0 0 * γ.val 1 1 - γ.val 0 1 * γ.val 1 0 = 1 := by rw [← hdet, Matrix.det_fin_two]
   ext i j
   fin_cases i <;> fin_cases j <;> simp [aff, wm, Matrix.mul_apply, Fin.sum_univ_succ] <;> field_simp <;> linear_combination (-1 : F) * had
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [sl0]`. Establish `hact : act (g * h) z = act g (act h z)`. Use function extensionality and compare the values at `v`. Simplify using `only [act, map_mul, mul_smul]`.
+
+Establish `hden : ∀ v, UpperHalfPlane.denom (cmp v (g * h)) (z v) = UpperHalfPlane.denom (cmp v g) (act h z v) * UpperHalfPlane.denom (cmp v h) (z v)`. Introduce `v`. Establish `hpos : 0 < ((cmp v h).det : ℝ)`. Establish `e : ((cmp v h).det : ℝ) = (h : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two, Matrix.det_fin_two]`.
+
+Simplify using `[cmp]`. Rewrite using `[e]`. Conclude with `hh v`. Rewrite using `[map_mul, UpperHalfPlane.denom_cocycle_σ]`. Simplify using `only [UpperHalfPlane.σ, if_pos hpos, ContinuousAlgEquiv.refl_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[hact, Finset.prod_congr rfl (fun v _ => hden v), Finset.prod_mul_distrib, mul_inv, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sl0_mul_of_pos (k : ℕ) (g h : GL (Fin 2) (InfinitePlace F → ℝ)) (hh : Pos h)
     (f : Hn F → ℂ) : sl0 k (g * h) f = sl0 k h (sl0 k g f) := by
   funext z
@@ -65,12 +85,42 @@ private theorem sl0_mul_of_pos (k : ℕ) (g h : GL (Fin 2) (InfinitePlace F → 
   rw [hact, Finset.prod_congr rfl (fun v _ => hden v), Finset.prod_mul_distrib, mul_inv, mul_pow]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [sl0, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sl0_smul (k : ℕ) (h : GL (Fin 2) (InfinitePlace F → ℝ)) (ζ : ℂ)
     (f : Hn F → ℂ) : sl0 k h (ζ • f) = ζ • sl0 k h f := by
   funext z
   simp only [sl0, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `hNF : (N : F) ≠ 0` using `by exact_mod_cast hN0.ne'`. Establish `hcI : IsIntegral ℤ c`. Establish `h1` using `(natCast_int (F := F) N).mul hcN`. Rewrite `h1` using `[mul_div_cancel₀ _ hNF]`. Then use the resulting hypothesis. Take `⟨T, hT, -, hTle, -⟩` from `GlobalTheory.T.exists_finite_reps_scaled_lattice_card_norm F κ c 1 hc one_ne_zero (by rwa [div_one])`.
+
+Take `⟨hsymm, hsc, -, hint, hLL, haL, het, hLd⟩` from `GlobalTheory.T.evenPos_gramForm_integral_lattice_properties F κ G hG`. Establish `hsupp : ∀ x : κ → F, (fun x => oneL x * et (a / c * QF G x)) x ≠ 0 → x ∈ aL κ (1 : F)`. Introduce `x hx`. Establish `hxL : x ∈ LL F κ`. Assume the negation of the conclusion as `hn`.
+
+Apply `hx` to reduce the goal to its premises. Simplify using `[oneL, hn]`. Conclude with `(haL 1 x).2 ⟨x, hxL, (one_smul F x).symm⟩`. Establish `hper : ∀ x l : κ → F, l ∈ aL κ c → (fun x => oneL x * et (a / c * QF G x)) (x + l) = (fun x => oneL x * et (a / c * QF G x)) x`. Introduce `x l hl`.
+
+Take `⟨m, hm, rfl⟩` from `(haL c l).1 hl`. Establish `hcm : c • m ∈ LL F κ`. Rewrite using `[hLL]`. Introduce `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `hcI.mul ((hLL m).1 hm i)`. Distinguish the cases in `hx : x ∈ LL F κ`. Establish `hxl : x + c • m ∈ LL F κ` using `add_mem hx hcm`. Simplify using `only [oneL, if_pos hx, if_pos hxl, one_mul]`. Rewrite using `[(hsymm x (c • m)).2, (hsymm x (c • m)).1, (hsc c m x).1, (hsc c m x).2.1]`.
+
+Establish `e : a / c * (QF G x + c * BF G m x + c ^ 2 * QF G m) = a / c * QF G x + (a * BF G m x + a * c * QF G m)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hi : IsIntegral ℤ (a * BF G m x + a * c * QF G m)` using `(ha.mul ((hint m hm).2 x hx)).add ((ha.mul hcI).mul (hint m hm).1)`. Rewrite using `[e, (het (a / c * QF G x) (a * BF G m x + a * c * QF G m)).1, (het (a * BF G m x + a * c * QF G m) 0).2.2.2 hi, mul_one]`.
+
+Establish `hxl : x + c • m ∉ LL F κ`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Simplify using `using sub_mem h hcm`. Simplify using `[oneL, hx, hxl]`.
+
+Establish `hW'` using `GlobalTheory.T.hilbertThetaSeries_periodic_inversion_formula F κ G hG t ht k hk c 1 (Units.mk0 c hc) T (fun x => oneL x * et (a / c * QF G x)) hc one_ne_zero hTle hT hsupp hper`. Establish `hW : Pos (toInf (wm (Units.mk0 c hc)))` using `pos_toInf (by simp [wm, Matrix.det_fin_two, hc])`. Establish `hB : Pos (toInf (aff 1 (d / c)))` using `pos_toInf (by simp [aff, Matrix.det_fin_two])`. Rewrite using `[map_mul, sl0_mul_of_pos _ _ _ hB, map_mul, sl0_mul_of_pos _ _ _ hW, GlobalTheory.T.thetaSeries_translation_twists_coefficients, hW', GlobalTheory.T.thetaSeries_translation_twists_coefficients]`. Use `⟨wC k t c c * ∑ x ∈ T, et (a / c * QF G x), GlobalTheory.T.lattice_normalized_gaussSum_eighth_root F κ G hG t ht k hk N a b c d T hN0 hN ha hb hcN hd had hc hT, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [th, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Establish `key : wT G k t c (↑(Units.mk0 c hc)) T (fun x => oneL x * et (a / c * QF G x)) y * et (d / c * QF G y) = wC k t c c * (∑ x ∈ T, et (a / c * QF G x)) * oneL y`. Establish `hcc : (c / c) • y = y` using `by rw [div_self hc, one_smul]`. Distinguish the cases in `hy : y ∈ dualL F G`. Establish `hsum : ∑ x ∈ T, oneL x * et (a / c * QF G x) * et (BF G y x / c) = ∑ x ∈ T, et (a / c * QF G x) * et (BF G y x / c)`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hxL : x ∈ LL F κ`. Take `⟨l, hl, hxl⟩` from `(haL 1 x).1 (hT.1 x hx)`. Rewrite using `[hxl, one_smul]`. Conclude with `hl`. Simplify using `[oneL, hxL]`.
+
+Establish `h62` using `GlobalTheory.T.lattice_gaussSum_twist_dual_eq_indicator F κ G hG N a b c d T hN0 hN ha hb hcN hd had hc hT y hy`. Simplify using `only [wT, Units.val_mk0, hcc, hy, ↓reduceIte]`. Rewrite using `[hsum, mul_assoc, h62]`. Expand and normalize the polynomial expressions, which then agree. Establish `hyL : y ∉ LL F κ` using `fun h => hy (hLd h)`.
+
+Simplify using `only [wT, Units.val_mk0, hcc, hy, ↓reduceIte, oneL, hyL]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main_abcd {κ : Type} [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ) (hG : EvenPos G) (t : ℕ)
     (ht : G.det = (t : ℤ) ^ 2) (k : ℕ) (hk : Fintype.card κ = 2 * k) (N : ℕ) (hN0 : 0 < N)
     (hN : ∀ y ∈ dualL F G, (N : F) • y ∈ LL F κ ∧ IsIntegral ℤ ((N : F) * QF G y))
@@ -152,6 +202,11 @@ theorem main_abcd {κ : Type} [Fintype κ] [DecidableEq κ] (G : Matrix κ κ �
   rw [key]
   ring
 
+/- English proof (translation)
+Take `⟨hdet, ha, hb, hcN, hd⟩` from `hγ`. Establish `had : γ.val 0 0 * γ.val 1 1 - γ.val 0 1 * γ.val 1 0 = 1`. Rewrite using `[← Matrix.det_fin_two]`. Conclude with `hdet`. Rewrite using `[decomp γ hdet hc]`.
+
+Conclude with `main_abcd G hG t ht k hk N hN0 hN _ _ _ _ ha hb hcN hd had hc`.
+-/
 theorem main_ne {κ : Type} [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ) (hG : EvenPos G) (t : ℕ)
     (ht : G.det = (t : ℤ) ^ 2) (k : ℕ) (hk : Fintype.card κ = 2 * k) (N : ℕ) (hN0 : 0 < N)
     (hN : ∀ y ∈ dualL F G, (N : F) • y ∈ LL F κ ∧ IsIntegral ℤ ((N : F) * QF G y))
@@ -164,6 +219,9 @@ theorem main_ne {κ : Type} [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ)
   rw [decomp γ hdet hc]
   exact main_abcd G hG t ht k hk N hN0 hN _ _ _ _ ha hb hcN hd had hc
 
+/- English proof (translation)
+Establish `hNF : (N : F) ≠ 0` using `by exact_mod_cast hN0.ne'`. Use `⟨by simp [low, Matrix.det_fin_two], by simp [low, isIntegral_one], by simp [low, isIntegral_zero], ?_, by simp [low, isIntegral_one]⟩` and prove the remaining obligations. Establish `: (low (-(N : F))).val 1 0 / N = -1` using `by simp [low, hNF]`. Rewrite using `[this]`. Conclude with `isIntegral_one.neg`.
+-/
 theorem low_inGam (N : ℕ) (hN0 : 0 < N) : InGam N (low (-(N : F))) := by
   have hNF : (N : F) ≠ 0 := by exact_mod_cast hN0.ne'
   refine ⟨by simp [low, Matrix.det_fin_two], by simp [low, isIntegral_one], by simp [low, isIntegral_zero], ?_, by simp [low, isIntegral_one]⟩
@@ -174,6 +232,27 @@ end GlobalTheory.HilbertThetaSeries.ThetaLevel
 
 open GlobalTheory.HilbertThetaSeries.ThetaLevel in
 
+/- English proof (translation)
+Introduce `F _ _ _ κ _ _ G hG t ht k hk`. Take `⟨N, hN0, hN⟩` from `(GlobalTheory.T.dualLattice_index_eq_discr_pow_mul_det_pow F κ G hG).2.1`. Use `⟨N, hN0, fun γ hγ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : γ.val 1 0 = 0`. Establish `hNF : (N : F) ≠ 0` using `by exact_mod_cast hN0.ne'`.
+
+Take `⟨hdet, ha, hb, hcN, hd⟩` from `hγ`. Establish `hdet' : γ.val 0 0 * γ.val 1 1 = 1`. Rewrite `hdet` using `[Matrix.det_fin_two, hc, mul_zero, sub_zero]`. Conclude with `hdet`. Establish `hd0 : γ.val 1 1 ≠ 0`.
+
+Introduce `h0`. Rewrite `hdet'` using `[h0, mul_zero]`. Conclude with `zero_ne_one hdet'`. Establish `hNI : IsIntegral ℤ (N : F)` using `natCast_int N`. Establish `e3 : ∀ i j, (γ * low (N : F)).val i j = γ.val i 0 * (low (N : F)).val 0 j + γ.val i 1 * (low (N : F)).val 1 j`.
+
+Introduce `i j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Establish `hγ3 : InGam N (γ * low (N : F))`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.det_mul, hdet]`.
+
+Simplify using `[low, Matrix.det_fin_two]`. Rewrite using `[e3]`. Simplify using `only [low, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, mul_one]`. Conclude with `ha.add (hb.mul hNI)`. Rewrite using `[e3]`.
+
+Simplify `hb` using `[low]`. Rewrite using `[e3]`. Simplify using `only [low, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, mul_one, hc, zero_mul, zero_add]`. Rewrite using `[mul_div_cancel_right₀ _ hNF]`. Conclude with `hd`.
+
+Rewrite using `[e3]`. Simplify `hd` using `[low, hc]`. Establish `hc3 : (γ * low (N : F)).val 1 0 ≠ 0`. Rewrite using `[e3]`. Simplify `mul_ne_zero hd0 hNF` using `[low, hc]`.
+
+Establish `hlow : (low (-(N : F))).val 1 0 ≠ 0`. Simplify `hNF` using `[low]`. Take `⟨ζ1, h1, e1⟩` from `main_ne G hG t ht k hk N hN0 hN _ hγ3 hc3`. Take `⟨ζ2, h2, e2⟩` from `main_ne G hG t ht k hk N hN0 hN _ (low_inGam N hN0) hlow`. Establish `hγe : γ = γ * low (N : F) * low (-(N : F))`.
+
+Rewrite using `[mul_assoc]`. Use `conv_lhs => rw [← mul_one γ]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [low, Matrix.mul_apply, Fin.sum_univ_succ]`.
+
+Establish `hP : Pos (toInf (low (-(N : F))))` using `pos_toInf (by simp [low, Matrix.det_fin_two])`. Use `⟨ζ1 * ζ2, by rw [mul_pow, h1, h2, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[hγe, map_mul, sl0_mul_of_pos _ _ _ hP, e1, sl0_smul, e2, smul_smul]`. Conclude with `main_ne G hG t ht k hk N hN0 hN γ hγ hc`.
+-/
 theorem GlobalTheory.HilbertThetaSeries.theta_level_eighth_root : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → ∀ t : ℕ, G.det = (t : ℤ) ^ 2 → ∀ k : ℕ, Fintype.card κ = 2 * k → ∃ N : ℕ, 0 < N ∧ ∀ γ : GL (Fin 2) F, InGam N γ → ∃ ζ : ℂ, ζ ^ 8 = 1 ∧ sl0 k (toInf γ) (th G oneL) = ζ • th G oneL := by
   intro F _ _ _ κ _ _ G hG t ht k hk
   obtain ⟨N, hN0, hN⟩ := (GlobalTheory.T.dualLattice_index_eq_discr_pow_mul_det_pow F κ G hG).2.1
@@ -231,5 +310,8 @@ theorem GlobalTheory.HilbertThetaSeries.theta_level_eighth_root : ∀ (F : Type)
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.HilbertThetaSeries
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.theta_level_eighth_root | exact GlobalTheory.HilbertThetaSeries.theta_level_eighth_root | (intros; apply GlobalTheory.HilbertThetaSeries.theta_level_eighth_root <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_slash_eighth_root_of_square_det : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → ∀ t : ℕ, G.det = (t : ℤ) ^ 2 → ∀ k : ℕ, Fintype.card κ = 2 * k → ∃ N : ℕ, 0 < N ∧ ∀ γ : GL (Fin 2) F, InGam N γ → ∃ ζ : ℂ, ζ ^ 8 = 1 ∧ sl0 k (toInf γ) (th G oneL) = ζ • th G oneL := by
   first | exact @GlobalTheory.HilbertThetaSeries.theta_level_eighth_root | exact GlobalTheory.HilbertThetaSeries.theta_level_eighth_root | (intros; apply GlobalTheory.HilbertThetaSeries.theta_level_eighth_root <;> assumption)

@@ -14,12 +14,20 @@ section Move
 variable {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt}
 
+/- English proof (translation)
+Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Conclude with `(by with_unfolding_all exact ((Eq.refl (w.st Z).toD7.R.m) :))`.
+-/
 theorem m_eq (hP : B'.toPre = B.toPre) : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m := by
   rcases B' with ⟨P'⟩
   change P' = B.toPre at hP
   subst hP
   exact (by with_unfolding_all exact ((Eq.refl (w.st Z).toD7.R.m) :))
 
+/- English proof (translation)
+Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (px')) ((by with_unfolding_all exact ((px) :))) (px')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (px')) (px') (((px))) (((hpx)))).symm : _))`.
+
+Use `clear (hpx)`. Substitute `e))` using the available equality. Conclude with `(by with_unfolding_all exact ((Eq.refl (Gc B px)) :))`.
+-/
 theorem gc_eq (hP : B'.toPre = B.toPre) {px : PreX B.toPre} {px' : PreX B'.toPre} (hpx : HEq px' px) : Gc B' px' = Gc B px := by
   rcases B' with ⟨P'⟩
   change P' = B.toPre at hP
@@ -30,6 +38,17 @@ theorem gc_eq (hP : B'.toPre = B.toPre) {px : PreX B.toPre} {px' : PreX B'.toPre
   subst e))
   exact (by with_unfolding_all exact ((Eq.refl (Gc B px)) :))
 
+/- English proof (translation)
+Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (px')) ((by with_unfolding_all exact ((px) :))) (px')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (px')) (px') (((px))) (((hpx)))).symm : _))`.
+
+Use `clear (hpx)`. Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (Pg')) ((by with_unfolding_all exact ((Pg) :))) (Pg')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (Pg')) (Pg') (((Pg))) (((hPg)))).symm : _))`. Use `clear (hPg)`.
+
+Substitute `e))` using the available equality. Use the proof step `( (`. Establish `e : @Eq (type_of% (eG')) ((by with_unfolding_all exact ((eG) :))) (eG')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (eG')) (eG') (((eG))) (((heG)))).symm : _))`. Use `clear (heG)`. Substitute `e))` using the available equality.
+
+Use the proof step `( (`. Establish `e : @Eq (type_of% (g')) ((by with_unfolding_all exact ((g) :))) (g')` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (g')) (g') (((g))) (((hg)))).symm : _))`. Use `clear (hg)`. Substitute `e))` using the available equality. Establish `e : ∀ PP : Pl (w.st Z).toD7.host.E, PP ∈ Pg → HEq (χ' ((by with_unfolding_all exact (PP :)))) (χ PP)` using `fun PP hm => hχ ((by with_unfolding_all exact (PP :))) PP ((by with_unfolding_all exact ((HEq.refl PP) :))) hm`.
+
+Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun c : ℂˣ => (c : ℂ)) (DFunLike.congr_fun (eq_of_heq (e PP.1 PP.2)) _)`.
+-/
 theorem prod_move (hP : B'.toPre = B.toPre) {px : PreX B.toPre} {px' : PreX B'.toPre} (hpx : HEq px' px)
     {Pg : Finset (Pl (w.st Z).toD7.host.E)} {Pg' : Finset (Pl (w'.st Z').toD7.host.E)} (hPg : HEq Pg' Pg)
     {eG : Gc B px ≃* G0 Pg (w.st Z).toD7.R.r} {eG' : Gc B' px' ≃* G0 Pg' (w'.st Z').toD7.R.r} (heG : HEq eG' eG)
@@ -65,6 +84,15 @@ end Move
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Ks _ _ _ Xg tr z Wt' R' hE hpx hS hL`. Establish `hc` using `z.pins.char.base.grp.chiW`. Set `ι : (w.st Z).toD7.what₂.LL →+* (w'.st Z').toD7.what₂.LL` to `(B'.embLL.rangeRestrictFieldEquiv.symm : B'.embLL.fieldRange →+* B'.LL).comp (B.embLL.codRestrict B'.embLL.fieldRange fun x => hE.2.2.2 ⟨x, rfl⟩)`. Establish `hι : ∀ x, (w'.st Z').toD7.what₂.embLL (ι x) = (w.st Z).toD7.what₂.embLL x` using `fun x => congrArg Subtype.val (B'.embLL.rangeRestrictFieldEquiv.apply_symm_apply ⟨B.embLL x, hE.2.2.2 ⟨x, rfl⟩⟩)`. Introduce `i' g'`.
+
+Establish `hm` using `m_eq (w := w) (w' := w') (Z := Z) (Z' := Z') hE.1`. Set `i : Fin (w.st Z).toD7.R.m` to `⟨i', by have := i'.2; omega⟩`. Establish `hi : (i : ℕ) = i'` using `rfl`. Set `g : Gc B w.px` to `cast (gc_eq hE.1 hpx) g'`. Establish `hg : HEq g' g` using `(cast_heq _ _).symm`.
+
+Establish `hS'` using `hS`. Take `⟨-, -, -, -, -, -, -, -, -, hPg, heG, -, hW, -⟩` from `hS'`. Establish `hWi` using `hW i i' hi`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hWι⟩` from `hWi`. Establish `hch` using `(hWι ι hι).2.2.1 g' g hg`.
+
+Rewrite using `[hch, hι, hc i g]`. Conclude with `(prod_move hE.1 hpx hPg heG (fun PP' PP h hm => (hL.1 i i' hi).2 PP' PP h hm) hg).symm`.
+-/
 theorem grp_chiW_ext : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (w'.st Z').toD7.what₂.LL] {Xg : Finset (Gc B' w'.px → B'.LL)} {tr : TrI B' w'.px}

@@ -24,11 +24,20 @@ def Kills (ρ : Γ →* GL (Fin a) k) (j : I → Γ) (χ : I → k) (ω : Fin c 
 def TrSum (ρ : Γ →* GL (Fin a) k) (j : I → Γ) (κ : Fin a → I → k) : Prop :=
   ∀ s, trc ρ (j s) = ∑ i, κ i s
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem word_nil (ρ : Γ →* GL (Fin a) k) : word ρ [] = 1 := rfl
 
+/- English proof (translation)
+Simplify using `[word]`.
+-/
 theorem word_cons (ρ : Γ →* GL (Fin a) k) (p : Γ × k) (L : List (Γ × k)) :
     word ρ (p :: L) = (mat ρ p.1 - p.2 • 1) * word ρ L := by simp [word]
 
+/- English proof (translation)
+Simplify using `[word]`.
+-/
 theorem word_append (ρ : Γ →* GL (Fin a) k) (L M : List (Γ × k)) : word ρ (L ++ M) = word ρ L * word ρ M := by
   simp [word]
 

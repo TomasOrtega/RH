@@ -11,6 +11,11 @@ namespace GlobalTheory.K5.GeoKummer
 
 open Polynomial
 
+/- English proof (translation)
+Use `letI : Algebra A B := f.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R A B := IsScalarTower.of_algebraMap_eq (fun r => (f.commutes r).symm)`. Use `⟨(KaehlerDifferential.map R R A B).toAddMonoidHom, fun a x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.toAddMonoidHom_coe, LinearMap.map_smul_of_tower, KaehlerDifferential.map_D]`. Rewrite using `[← algebraMap_smul B a]`.
+
+Both sides reduce to the same expression.
+-/
 theorem kaehler_map_ex (R A B : Type) [CommRing R] [CommRing A] [CommRing B] [Algebra R A]
     [Algebra R B] (f : A →ₐ[R] B) :
     ∃ φ : KaehlerDifferential R A →+ KaehlerDifferential R B, ∀ a x : A,
@@ -24,28 +29,46 @@ theorem kaehler_map_ex (R A B : Type) [CommRing R] [CommRing A] [CommRing B] [Al
 
 variable {p : ℕ} [hp : Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, ← add_assoc, T.ζpow, ih]`.
+-/
 theorem zeta_pow_add' (T : Tower p Ω) (m k : ℕ) : T.ζ (m + k) ^ p ^ k = T.ζ m := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ', pow_mul, ← add_assoc, T.ζpow, ih]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, ← add_assoc, T.qpow, ih]`.
+-/
 theorem qq_pow_add' (T : Tower p Ω) (m k : ℕ) : T.qq (m + k) ^ p ^ k = T.qq m := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ', pow_mul, ← add_assoc, T.qpow, ih]
 
+/- English proof (translation)
+The claim follows from `IsIntegral.of_pow (pow_pos hp.out.pos m) (by rw [Basic.qq_pow]; exact isIntegral_algebraMap)`.
+-/
 theorem isInt_qq (T : Tower p Ω) (m : ℕ) : IsIntegral (O0 p) (T.qq m) :=
   IsIntegral.of_pow (pow_pos hp.out.pos m) (by rw [Basic.qq_pow]; exact isIntegral_algebraMap)
 
+/- English proof (translation)
+The claim follows from `IsIntegral.of_pow (pow_pos hp.out.pos m) (by rw [(T.prim m).pow_eq_one]; exact isIntegral_one)`.
+-/
 theorem isInt_zeta (T : Tower p Ω) (m : ℕ) : IsIntegral (O0 p) (T.ζ m) :=
   IsIntegral.of_pow (pow_pos hp.out.pos m) (by rw [(T.prim m).pow_eq_one]; exact isIntegral_one)
 
+/- English proof (translation)
+Establish `h : ψ b ∈ ψ.range` using `⟨b, rfl⟩`. Rewrite `h` using `[hψ.rng]`. Conclude with `adjoin_le_integralClosure (isInt_qq T L) h`.
+-/
 theorem isInt_psi {T : Tower p Ω} {L : ℕ} {ψ : O0 p →+* Ω} (hψ : IsReb T L ψ) (b : O0 p) :
     IsIntegral (O0 p) (ψ b) := by
   have h : ψ b ∈ ψ.range := ⟨b, rfl⟩
   rw [hψ.rng] at h
   exact adjoin_le_integralClosure (isInt_qq T L) h
 
+/- English proof (translation)
+Establish `h : ψ b ∈ ψ.range` using `⟨b, rfl⟩`. Rewrite `h` using `[hψ.rng]`. Establish `hle : Algebra.adjoin (O0 p) {T.qq L} ≤ AlgHom.equalizer g.toAlgHom (AlgHom.id (O0 p) Ω)` using `Algebra.adjoin_le (by simpa using hg)`. Conclude with `hle h`.
+-/
 theorem psi_fix {T : Tower p Ω} {L : ℕ} {ψ : O0 p →+* Ω} (hψ : IsReb T L ψ) {g : Gal p Ω}
     (hg : g (T.qq L) = T.qq L) (b : O0 p) : g (ψ b) = ψ b := by
   have h : ψ b ∈ ψ.range := ⟨b, rfl⟩
@@ -54,6 +77,13 @@ theorem psi_fix {T : Tower p Ω} {L : ℕ} {ψ : O0 p →+* Ω} (hψ : IsReb T L
     Algebra.adjoin_le (by simpa using hg)
   exact hle h
 
+/- English proof (translation)
+Use `haveI := hΩ.clo`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq e hN`. Use `⟨y, hy, IsIntegral.of_pow hN (hy ▸ he), ?_⟩` and prove the remaining obligations. Take `⟨P, hP, hPe⟩` from `hea`. Use `⟨P.comp (X ^ N), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Rewrite `h0` using `[comp_eq_zero_iff]`. Break down `h0 with h0 | ⟨-, h1⟩` into its components or cases. Conclude with `hP h0`. Use `congrArg natDegree h1` as an intermediate fact.
+
+Rewrite `this` using `[natDegree_X_pow, natDegree_C]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Polynomial.map_comp, Polynomial.aeval_comp]`. Simplify `hPe` using `[hy]`.
+-/
 theorem exists_root_alg (hΩ : IsClo p Ω) {e : Ω} (he : IsIntegral (O0 p) e) (hea : IsAlgZp p e)
     (N : ℕ) (hN : 0 < N) : ∃ y : Ω, y ^ N = e ∧ IsIntegral (O0 p) y ∧ IsAlgZp p y := by
   haveI := hΩ.clo
@@ -71,6 +101,9 @@ theorem exists_root_alg (hΩ : IsClo p Ω) {e : Ω} (he : IsIntegral (O0 p) e) (
   · rw [Polynomial.map_comp, Polynomial.aeval_comp]
     simpa [hy] using hPe
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.smul_kaehlerD_reparametrization_eq p Ω T L ψ hψ b x y qL hx hy hq`.
+-/
 theorem d_psi {T : Tower p Ω} {L : ℕ} {ψ : O0 p →+* Ω} (hψ : IsReb T L ψ) (b : Lau p)
     (x y qL : integralClosure (O0 p) Ω) (hx : (x : Ω) = ψ (algebraMap (Lau p) (O0 p) b))
     (hy : (y : Ω) = ψ (algebraMap (Lau p) (O0 p) (thL b))) (hq : (qL : Ω) = T.qq L) :
@@ -80,6 +113,73 @@ theorem d_psi {T : Tower p Ω} {L : ℕ} {ψ : O0 p →+* Ω} (hψ : IsReb T L �
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `p _ hp2`. Take `⟨c, hc⟩` from `GlobalTheory.T.torsion_kaehler_span_dlog_indep p hp2`. Use `⟨2 * c + 1, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ hΩ T L n hnL hn ψ hψ cw w w' r hEv hw0 hwi hr a lq ha hlq`. Take `⟨d, e, A, he, -, hwe, hw'e⟩` from `hEv`.
+
+Establish `hNpos : 0 < p ^ n` using `pow_pos (Fact.out : p.Prime).pos n`. Establish `hN1 : 1 ≤ p ^ n` using `hNpos`. Establish `hLpos : 0 < p ^ L` using `pow_pos (Fact.out : p.Prime).pos L`. Establish `hL1 : 1 ≤ p ^ L` using `hLpos`. Set `qinv : O0 p` to `((Basic.isUnit_qO p).unit⁻¹ : (O0 p)ˣ)`.
+
+Establish `hqinv : algebraMap (O0 p) Ω (qO p) * algebraMap (O0 p) Ω qinv = 1`. Rewrite using `[← map_mul, IsUnit.mul_val_inv, map_one]`. Set `z : integralClosure (O0 p) Ω` to `⟨T.ζ n, isInt_zeta T n⟩`. Set `zi : integralClosure (O0 p) Ω` to `⟨T.ζ n ^ (p ^ n - 1), (isInt_zeta T n).pow _⟩`. Set `qn : integralClosure (O0 p) Ω` to `⟨T.qq n, isInt_qq T n⟩`.
+
+Set `qi : integralClosure (O0 p) Ω` to `⟨T.qq n ^ (p ^ n - 1) * algebraMap (O0 p) Ω qinv, ((isInt_qq T n).pow _).mul isIntegral_algebraMap⟩`. Set `qL : integralClosure (O0 p) Ω` to `⟨T.qq L, isInt_qq T L⟩`. Set `qLi : integralClosure (O0 p) Ω` to `⟨T.qq L ^ (p ^ L - 1) * algebraMap (O0 p) Ω qinv, ((isInt_qq T L).pow _).mul isIntegral_algebraMap⟩`. Set `qN : integralClosure (O0 p) Ω` to `⟨T.qq (L + n), isInt_qq T (L + n)⟩`. Establish `hzzi : z * zi = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show T.ζ n * T.ζ n ^ (p ^ n - 1) = 1`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hN1, (T.prim n).pow_eq_one]`. Establish `hqqi : qn * qi = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show T.qq n * (T.qq n ^ (p ^ n - 1) * algebraMap (O0 p) Ω qinv) = 1`. Rewrite using `[← mul_assoc, ← pow_succ', Nat.sub_add_cancel hN1, Basic.qq_pow, hqinv]`. Establish `hqL : qL * qLi = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show T.qq L * (T.qq L ^ (p ^ L - 1) * algebraMap (O0 p) Ω qinv) = 1`.
+
+Rewrite using `[← mul_assoc, ← pow_succ', Nat.sub_add_cancel hL1, Basic.qq_pow, hqinv]`. Establish `hqN : qN ^ (p ^ n) = qL` using `Subtype.ext (by show T.qq (L + n) ^ p ^ n = T.qq L; exact qq_pow_add' T L n)`. Set `ζS : (integralClosure (O0 p) Ω)ˣ` to `⟨z, zi, hzzi, by rw [mul_comm]; exact hzzi⟩`. Establish `hζN : (ζS : integralClosure (O0 p) Ω) ^ (p ^ n) = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show T.ζ n ^ p ^ n = 1`. Rewrite using `[(T.prim n).pow_eq_one]`. Establish `hAI : ∀ t, IsIntegral (O0 p) (ψ (algebraMap (Lau p) (O0 p) (A t)))` using `fun t => isInt_psi hψ _`. Establish `hA'I : ∀ t, IsIntegral (O0 p) (ψ (algebraMap (Lau p) (O0 p) (thL (A t))))` using `fun t => isInt_psi hψ _`. Set `eS : Fin d → integralClosure (O0 p) Ω` to `fun t => ⟨e t, (he t).1⟩`.
+
+Set `AS : Fin d → integralClosure (O0 p) Ω` to `fun t => ⟨_, hAI t⟩`. Set `A'S : Fin d → integralClosure (O0 p) Ω` to `fun t => ⟨_, hA'I t⟩`. Establish `hwI : IsIntegral (O0 p) w`. Rewrite using `[hwe]`. Conclude with `IsIntegral.sum _ fun t _ => (he t).1.mul (hAI t)`.
+
+Establish `hw'I : IsIntegral (O0 p) w'`. Rewrite using `[hw'e]`. Conclude with `IsIntegral.sum _ fun t _ => (he t).1.mul (hA'I t)`. Set `wS : integralClosure (O0 p) Ω` to `⟨w, hwI⟩`. Set `w'S : integralClosure (O0 p) Ω` to `⟨w', hw'I⟩`.
+
+Set `wiS : integralClosure (O0 p) Ω` to `⟨w⁻¹, hwi⟩`. Establish `hwwi : wS * wiS = 1` using `Subtype.ext (by show w * w⁻¹ = 1; exact mul_inv_cancel₀ hw0)`. Establish `hwS : wS = ∑ t, eS t * AS t`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`.
+
+Conclude with `hwe`. Establish `hw'S : w'S = ∑ t, eS t * A'S t`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Conclude with `hw'e`.
+
+Establish `hroot : ∀ t, ∃ y : Ω, y ^ (p ^ n) = e t ∧ IsIntegral (O0 p) y ∧ IsAlgZp p y` using `fun t => exists_root_alg hΩ (he t).1 (he t).2 (p ^ n) hNpos`. Use `choose y hy hyI hyA using hroot`. Set `yS : Fin d → integralClosure (O0 p) Ω` to `fun t => ⟨y t, hyI t⟩`. Establish `hyS : ∀ t, yS t ^ (p ^ n) = eS t` using `fun t => Subtype.ext (hy t)`. Establish `hrI : IsIntegral (O0 p) r` using `IsIntegral.of_pow hNpos (hr ▸ hwI)`.
+
+Set `r' : integralClosure (O0 p) Ω` to `⟨r, hrI⟩`. Establish `hrN : r' ^ (p ^ n) = wS` using `Subtype.ext hr`. Set `D` to `KaehlerDifferential.D (O0 p) (integralClosure (O0 p) Ω)`. Establish `hterm : ∀ t, D (eS t * AS t) = ((eS t * A'S t) * qLi) • D qL + AS t • D (eS t)`. Introduce `t`.
+
+Establish `h` using `d_psi hψ (A t) (AS t) (A'S t) qL rfl rfl rfl`. Rewrite using `[Derivation.leibniz]`. Take the linear combination `(norm := module) (eS t * qLi) • h - (eS t * hqL) • D (AS t)`. Establish `hd : D wS = (w'S * qLi) • D qL + ∑ t, AS t • D (eS t)`. Rewrite using `[hwS, map_sum, Finset.sum_congr rfl (fun t _ => hterm t), Finset.sum_add_distrib, ← Finset.sum_smul, hw'S, Finset.sum_mul]`.
+
+Set `η` to `(1 * r' ^ (p ^ n - 1)) • D r' - (w'S * qLi * qN ^ (p ^ n - 1)) • D qN - ∑ t, (AS t * yS t ^ (p ^ n - 1)) • D (yS t)`. Establish `hE : ((p ^ n : ℕ) : integralClosure (O0 p) Ω) • ∑ t, (AS t * yS t ^ (p ^ n - 1)) • D (yS t) = ∑ t, AS t • D (eS t)`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `h` using `(GlobalTheory.K5.kaehlerD_root_twist (O0 p) _ ζS (yS t) (p ^ n) 0 hN1 hζN).2`.
+
+Rewrite `h` using `[hyS]`. Rewrite using `[← h, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hη : (p ^ n : ℕ) • η = 0`.
+
+Establish `h1` using `(GlobalTheory.K5.kaehlerD_root_twist (O0 p) _ ζS r' (p ^ n) 0 hN1 hζN).2`. Establish `h2` using `(GlobalTheory.K5.kaehlerD_root_twist (O0 p) _ ζS qN (p ^ n) 0 hN1 hζN).2`. Rewrite `h1` using `[hrN]`. Rewrite `h2` using `[hqN]`. Rewrite using `[← Nat.cast_smul_eq_nsmul (integralClosure (O0 p) Ω)]`.
+
+Take the linear combination `(norm := module) h1 - (w'S * qLi) • h2 - hE + hd`. Take `⟨hF1, hF2⟩` from `hc Ω hΩ T n hn z qn zi qi rfl rfl hzzi hqqi`. Take `⟨x, y0, hxy⟩` from `hF1 η hη`. Establish `hpI : IsIntegral (O0 p) (p : Ω)`. Establish `h` using `Basic.isInt_intCast (p := p) (Ω := Ω) (p : ℤ)`.
+
+Rewrite `h` using `[Int.cast_natCast]`. Conclude with `h`. Use `⟨(p : Ω) ^ (c + 1) * w⁻¹ * (x : Ω), ((hpI.pow _).mul hwi).mul x.2, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `hgeo : ∀ v : Ω, IsAlgZp p v → g v = v` using `(Subgroup.mem_inf.1 hg).1`.
+
+Establish `hgL` using `(Basic.mem_gn T L g).1 (Subgroup.mem_inf.1 hg).2`. Establish `hLn : n + (L - n) = L` using `by omega`. Establish `hgζ : g (T.ζ n) = T.ζ n`. Establish `e0` using `zeta_pow_add' T n (L - n)`. Rewrite `e0` using `[hLn]`.
+
+Rewrite using `[← e0, map_pow, hgL.1]`. Establish `hgq : g (T.qq n) = T.qq n`. Establish `e0` using `qq_pow_add' T n (L - n)`. Rewrite `e0` using `[hLn]`. Rewrite using `[← e0, map_pow, hgL.2]`.
+
+Establish `hgqinv : g (algebraMap (O0 p) Ω qinv) = algebraMap (O0 p) Ω qinv` using `AlgEquiv.commutes g qinv`. Establish `hgw : g w = w`. Rewrite using `[hwe, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hgeo _ (he t).2, psi_fix hψ hgL.2]`.
+
+Establish `hgw' : g w' = w'`. Rewrite using `[hw'e, map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hgeo _ (he t).2, psi_fix hψ hgL.2]`. Set `gS` to `(g.toAlgHom).mapIntegralClosure`.
+
+Take `⟨σ, hσ⟩` from `kaehler_map_ex (O0 p) _ _ gS`. Establish `hgz : gS z = z` using `Subtype.ext hgζ`. Establish `hgzi : gS zi = zi` using `Subtype.ext (by show g (T.ζ n ^ (p ^ n - 1)) = _; rw [map_pow, hgζ])`. Establish `hgqn : gS qn = qn` using `Subtype.ext hgq`. Establish `hgqi : gS qi = qi` using `Subtype.ext (by show g (T.qq n ^ (p ^ n - 1) * algebraMap (O0 p) Ω qinv) = _; rw [map_mul, map_pow, hgq, hgqinv])`.
+
+Establish `hgqLi : gS qLi = qLi` using `Subtype.ext (by show g (T.qq L ^ (p ^ L - 1) * algebraMap (O0 p) Ω qinv) = _; rw [map_mul, map_pow, hgL.2, hgqinv])`. Establish `hgw'S : gS w'S = w'S` using `Subtype.ext hgw'`. Establish `hgAS : ∀ t, gS (AS t) = AS t` using `fun t => Subtype.ext (psi_fix hψ hgL.2 _)`. Establish `hgyS : ∀ t, gS (yS t) = yS t` using `fun t => Subtype.ext (hgeo _ (hyA t))`. Establish `htr : ∀ (s t : integralClosure (O0 p) Ω) (k : ℕ), gS t = (ζS : integralClosure (O0 p) Ω) ^ k * t → σ ((s * t ^ (p ^ n - 1)) • D t) = gS s • (t ^ (p ^ n - 1) • D t + ((k : integralClosure (O0 p) Ω) * t ^ (p ^ n) * zi) • D z)`.
+
+Introduce `s t k h`. Rewrite using `[hσ, map_mul, map_pow, h, mul_smul, (GlobalTheory.K5.kaehlerD_root_twist (O0 p) _ ζS t (p ^ n) k hN1 hζN).1]`. Both sides reduce to the same expression. Establish `hra : gS r' = (ζS : integralClosure (O0 p) Ω) ^ (a g).val * r'` using `Subtype.ext (by show g r = T.ζ n ^ (a g).val * r; exact ha g hg)`. Establish `hqa : gS qN = (ζS : integralClosure (O0 p) Ω) ^ (lq g).val * qN` using `Subtype.ext (by show g (T.qq (L + n)) = T.ζ n ^ (lq g).val * T.qq (L + n); exact hlq g hg)`.
+
+Set `Aval : integralClosure (O0 p) Ω` to `((a g).val : integralClosure (O0 p) Ω) - w'S * wiS * ((lq g).val : integralClosure (O0 p) Ω)`. Establish `hσE : σ (∑ t, (AS t * yS t ^ (p ^ n - 1)) • D (yS t)) = ∑ t, (AS t * yS t ^ (p ^ n - 1)) • D (yS t)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hσ, map_mul, map_pow, hgAS, hgyS]`.
+
+Establish `hση : σ η = η + (wS * zi * Aval) • D z`. Establish `e1` using `htr 1 r' _ hra`. Establish `e2` using `htr (w'S * qLi) qN _ hqa`. Rewrite `e1` using `[map_one, hrN]`. Rewrite `e2` using `[map_mul, hgw'S, hgqLi, hqN]`.
+
+Use `show σ ((1 * r' ^ (p ^ n - 1)) • D r' - (w'S * qLi * qN ^ (p ^ n - 1)) • D qN - ∑ t, (AS t * yS t ^ (p ^ n - 1)) • D (yS t)) = _`. Rewrite using `[map_sub, map_sub, e1, e2, hσE]`. Take the linear combination `(norm := module) ((w'S * zi * ((lq g).val : integralClosure (O0 p) Ω)) * hwwi) • D z - ((w'S * zi * ((lq g).val : integralClosure (O0 p) Ω)) * hqL) • D z`. Establish `e1` using `congrArg σ hxy`. Rewrite `e1` using `[map_nsmul, hση, map_add, hσ, hσ, map_mul, map_mul, hgz, hgzi, hgqn, hgqi]`.
+
+Rewrite `e1`, `hxy` using `[← Nat.cast_smul_eq_nsmul (integralClosure (O0 p) Ω), Nat.cast_pow]`. Establish `hdiff : ((gS x - x - (p : integralClosure (O0 p) Ω) ^ c * wS * Aval) * zi) • D z + ((gS y0 - y0) * qi) • D qn = 0`. Take the linear combination `(norm := module) hxy - e1`. Take `⟨⟨t, ht⟩, -⟩` from `hF2 _ _ hdiff`. Establish `ht' : (p : Ω) ^ c * (g (x : Ω) - x - (p : Ω) ^ c * w * (((a g).val : Ω) - w' * w⁻¹ * ((lq g).val : Ω))) = (p : Ω) ^ (n - 1) * t` using `congrArg Subtype.val ht`.
+
+Establish `hgwi : g w⁻¹ = w⁻¹` using `by rw [map_inv₀, hgw]`. Establish `hww : w * w⁻¹ = 1` using `mul_inv_cancel₀ hw0`. Establish `hpn : (p : Ω) ^ n = (p : Ω) ^ (n - 1) * p` using `by rw [← pow_succ, Nat.sub_add_cancel hn]`. Use `⟨-(w⁻¹ * t), IsIntegral.neg (IsIntegral.mul hwi t.2), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_pow, map_natCast, hgwi, div_eq_mul_inv]`.
+
+Take the linear combination `(-(p : Ω) * w⁻¹) * ht' + (-(p : Ω) ^ (2 * c + 1) * (((a g).val : Ω) - w' * w⁻¹ * ((lq g).val : Ω))) * hww + (w⁻¹ * t) * hpn`.
+-/
 theorem geo_cob : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : GlobalTheory.K5.Tower p Ω) (L n : ℕ), n ≤ L → 1 ≤ n → ∀ (ψ : O0 p →+* Ω), IsReb T L ψ → ∀ (cw : ℤ → Ω) (w w' r : Ω), Ev ψ cw w w' → w ≠ 0 → IsInt p w⁻¹ → r ^ (p ^ n) = w →
   ∀ a lq : Gal p Ω → ZMod (p ^ n), IsKum T n (Ggeo p Ω ⊓ Gn T L) r a → IsKum T n (Ggeo p Ω ⊓ Gn T L) (T.qq (L + n)) lq →
   Cob1 n (Ggeo p Ω ⊓ Gn T L) (fun g => (p : Ω) ^ c * ((a g).val : Ω) - (p : Ω) ^ c * (w' / w) * ((lq g).val : Ω)) := by

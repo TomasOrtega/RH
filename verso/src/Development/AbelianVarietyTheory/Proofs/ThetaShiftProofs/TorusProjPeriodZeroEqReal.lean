@@ -11,6 +11,23 @@ open Matrix
 
 namespace PolarisedLattice
 
+/- English proof (translation)
+Use `set N : Matrix ι ι ℝ := M.map (Int.cast : ℤ → ℝ) with hN`. Establish `hH : N.IsHermitian`. Use extensionality with `i j`. Simplify using `[hN, hs i j]`. Establish `hcast : ∀ x : ι → ℤ, (fun i => (x i : ℝ)) ⬝ᵥ N *ᵥ (fun i => (x i : ℝ)) = ((x ⬝ᵥ M *ᵥ x : ℤ) : ℝ)`.
+
+Introduce `x`. Simplify using `[hN, dotProduct, mulVec]`. Establish `hq : ∀ x : ι → ℚ, 0 ≤ (fun i => (x i : ℝ)) ⬝ᵥ N *ᵥ (fun i => (x i : ℝ))`. Introduce `x`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) x`.
+
+Use `choose y hy using hd`. Establish `hd0 : ((d : ℤ) : ℝ) ≠ 0` using `by exact_mod_cast nonZeroDivisors.coe_ne_zero d`. Establish `hxy : (fun i => (y i : ℝ)) = ((d : ℤ) : ℝ) • (fun i => (x i : ℝ))`. Use function extensionality and compare the values at `i`. Use `congrArg (fun q : ℚ => (q : ℝ)) (hy i)` as an intermediate fact.
+
+Simplify `this` using `[Submonoid.smul_def]`. Establish `h1 : (0 : ℝ) ≤ ((y ⬝ᵥ M *ᵥ y : ℤ) : ℝ)`. Distinguish the cases in `h : y = 0`. Simplify using `[h]`. Conclude with `(hp y h).le` after adjusting the coercions.
+
+Rewrite `h1` using `[← hcast, hxy, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc]`. Conclude with `nonneg_of_mul_nonneg_right h1 (mul_self_pos.2 hd0)`. Establish `hsd : N.PosSemidef`. Use `posSemidef_iff_dotProduct_mulVec.2 ⟨hH, fun x => ?_⟩` and prove the remaining obligations. Establish `hd : DenseRange (Pi.map fun (_ : ι) => (Rat.cast : ℚ → ℝ))` using `DenseRange.piMap fun _ => Rat.denseRange_cast`.
+
+Use `hd.induction_on (p := fun x => 0 ≤ star x ⬝ᵥ N *ᵥ x) x ?_ (fun q => ?_)` and prove the remaining obligations. Conclude with `isClosed_le continuous_const (by fun_prop)`. Conclude with `hq q`. Establish `hdet : M.det ≠ 0`. Introduce `h`.
+
+Take `⟨v, hv, h0⟩` from `exists_mulVec_eq_zero_iff.2 h`. Use `hp v hv` as an intermediate fact. Simplify using `[h0] at this`. Use `hsd.posDef_iff_isUnit.2 ((isUnit_iff_isUnit_det _).2 (IsUnit.mk0 _ ?_))` and prove the remaining obligations. Establish `: N.det = (M.det : ℝ)` using `(Int.cast_det M).symm`.
+
+Rewrite using `[this]`. Conclude with `hdet` after adjusting the coercions.
+-/
 theorem real_pos_of_int_pos {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℤ) (hs : ∀ i j, M i j = M j i)
     (hp : ∀ x : ι → ℤ, x ≠ 0 → 0 < x ⬝ᵥ M *ᵥ x) : (M.map (Int.cast : ℤ → ℝ)).PosDef := by
   set N : Matrix ι ι ℝ := M.map (Int.cast : ℤ → ℝ) with hN
@@ -49,6 +66,15 @@ theorem real_pos_of_int_pos {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matri
   have : N.det = (M.det : ℝ) := (Int.cast_det M).symm
   rw [this]; exact_mod_cast hdet
 
+/- English proof (translation)
+Establish `hp : ∀ x : ι → ℝ, x ≠ 0 → 0 < x ⬝ᵥ N *ᵥ x` using `fun x hx => by`. Simplify using `using (posDef_iff_dotProduct_mulVec.1 hN).2 hx`. Establish `hc : ContinuousOn (fun x : ι → ℝ => -(x ⬝ᵥ C *ᵥ x) / (x ⬝ᵥ N *ᵥ x)) (Metric.sphere 0 1)`. Use `ContinuousOn.div (by fun_prop) (by fun_prop) fun x hx => (hp x ?_).ne'` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Simplify using `at hx`. Take `⟨T₀, hT⟩` from `((isCompact_sphere (0 : ι → ℝ) 1).image_of_continuousOn hc).bddAbove`. Use `⟨T₀, fun t ht => posDef_iff_dotProduct_mulVec.2 ⟨?_, fun x hx => ?_⟩⟩` and prove the remaining obligations. Use `IsHermitian.add ?_ hC` and prove the remaining obligations. Rewrite using `[IsHermitian, conjTranspose_smul, hN.1]`.
+
+Simplify using the standard rewrite rules. Establish `hn : 0 < ‖x‖` using `norm_pos_iff.2 hx`. Establish `h1` using `hT ⟨‖x‖⁻¹ • x, by simp [norm_smul, hn.ne'], rfl⟩`. Establish `h2` using `hp x hx`. Simplify using `only [mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul] at h1`.
+
+Establish `h3 : -(‖x‖⁻¹ * (‖x‖⁻¹ * x ⬝ᵥ C *ᵥ x)) / (‖x‖⁻¹ * (‖x‖⁻¹ * x ⬝ᵥ N *ᵥ x)) = -(x ⬝ᵥ C *ᵥ x) / (x ⬝ᵥ N *ᵥ x)` using `by field_simp`. Rewrite `h1` using `[h3, div_le_iff₀ h2]`. Simplify using `only [star_trivial, add_mulVec, smul_mulVec, dotProduct_add, dotProduct_smul, smul_eq_mul]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_posDef_smul_add {ι : Type} [Fintype ι] {N C : Matrix ι ι ℝ} (hN : N.PosDef) (hC : C.IsHermitian) :
     ∃ T₀ : ℝ, ∀ t, T₀ < t → (t • N + C).PosDef := by
   have hp : ∀ x : ι → ℝ, x ≠ 0 → 0 < x ⬝ᵥ N *ᵥ x := fun x hx => by
@@ -70,6 +96,25 @@ theorem exists_posDef_smul_add {ι : Type} [Fintype ι] {N C : Matrix ι ι ℝ}
     simp only [star_trivial, add_mulVec, smul_mulVec, dotProduct_add, dotProduct_smul, smul_eq_mul]
     nlinarith
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ L`. Set `M : Matrix _ _ ℤ` to `Matrix.of fun i j => E (b i) (b j)`. Establish `hdet : M.det ≠ 0`. Introduce `h`. Take `⟨v, hv, h0⟩` from `exists_vecMul_eq_zero_iff.2 h`.
+
+Establish `h1 : E (∑ i, v i • b i) = 0` using `b.ext fun j => by`. Use `congrFun h0 j` as an intermediate fact. Simplify `this` using `[M, vecMul, dotProduct]`. Establish `h2 : ∑ i, v i • b i = 0` using `hE (by rw [h1, map_zero])`. Conclude with `hv (funext (Fintype.linearIndependent_iff.1 b.linearIndependent v h2))`.
+
+Establish `hdet' : (M.map (Int.cast : ℤ → ℝ)).det ≠ 0`. Rewrite using `[← Int.cast_det]`. Conclude with `hdet` after adjusting the coercions. Establish `hli : LinearIndependent ℝ fun i => P (b i)`. Use `Fintype.linearIndependent_iff.2 fun c hc => ?_` and prove the remaining obligations.
+
+Establish `: c ᵥ* M.map (Int.cast : ℤ → ℝ) = 0`. Use function extensionality and compare the values at `j`. Establish `h1` using `congrArg (fun v => (S (P (b j)) v).im) hc`. Simplify using `only [map_sum, ← algebraMap_smul ℂ (c _) (P _), map_smul, map_zero, Complex.im_sum, smul_eq_mul, Complex.coe_algebraMap, Complex.im_ofReal_mul, hS, Complex.zero_im] at h1`. Simplify `h1` using `[M, vecMul, dotProduct]`.
+
+Conclude with `congrFun (eq_zero_of_vecMul_eq_zero hdet' this)`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ L) = Module.finrank ℝ W`. Rewrite using `[← hr, Module.finrank_eq_card_chooseBasisIndex]`. Establish `htop : ⊤ ≤ Submodule.span ℝ (Set.range fun i => P (b i))` using `(hli.span_eq_top_of_card_eq_finrank' hcard).ge`. Set `B` to `Module.Basis.mk hli htop`.
+
+Establish `hB : Set.range B = Set.range fun i => P (b i)` using `by simp [B]`. Establish `hrange : P.range = (Submodule.span ℤ (Set.range B)).toAddSubgroup`. Establish `: Submodule.span ℤ (Set.range B) = LinearMap.range P.toIntLinearMap`. Rewrite using `[hB, LinearMap.range_eq_map, ← b.span_eq, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Use `⟨(injective_iff_map_eq_zero P).2 fun a ha => hE ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `LinearMap.ext fun c => ?_` and prove the remaining obligations.
+
+Use `hS a c` as an intermediate fact. Rewrite `this` using `[ha, map_zero, Complex.zero_im]`. Conclude with `this.symm` after adjusting the coercions. Rewrite using `[hrange]`. Use `infer_instance`.
+
+Conclude with `eq_top_iff.2 (htop.trans (Submodule.span_mono (Set.range_comp_subset_range _ _)))`.
+-/
 theorem lattice_of_im {L W : Type} [AddCommGroup L] [Module.Free ℤ L] [Module.Finite ℤ L] [NormedAddCommGroup W]
     [NormedSpace ℂ W] [NormedSpace ℝ W] [IsScalarTower ℝ ℂ W] [FiniteDimensional ℝ W]
     (E : LinearMap.BilinForm ℤ L) (hE : Function.Injective E) (P : L →+ W) (S : W → W →ₗ[ℂ] ℂ)
@@ -122,6 +167,19 @@ namespace AnArc
 
 variable {O : Type} [CommRing O] [StarRing O] (A : AnArc O)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Establish `h : ∀ v', A.EF v v' = 0` using `fun v' => by rw [hv]; rfl`. Use `La.ext ?_ (AddMonoidHom.ext fun x => ?_) ?_` and prove the remaining obligations.
+
+Use `(Module.Free.chooseBasis ℤ A.X).ext_elem fun i => ?_` and prove the remaining obligations. Use `h (La.mk 0 ((Module.Free.chooseBasis ℤ A.X).coord i).toAddMonoidHom 0)` as an intermediate fact. Simplify `this` using `[EF_apply]`. Use `h (La.mk x 0 0)` as an intermediate fact. Simplify `this` using `[EF_apply]`.
+
+Use `A.Ef_bij.1 (LinearMap.ext fun m => ?_)` and prove the remaining obligations. Use `h (La.mk 0 0 m)` as an intermediate fact. Simplify `this` using `[EF_apply]`. Introduce `φ`. Set `φ₁ : A.X →+ ℤ` to `AddMonoidHom.mk' (fun y => φ (La.mk y 0 0)) fun y y' => by`.
+
+Apply the tactic sequence `rw [← map_add]; congr 1; ext <;> simp`. Set `φ₂ : Module.Dual ℤ (Module.Dual ℤ A.X)` to `(AddMonoidHom.mk' (fun n : Module.Dual ℤ A.X => φ (La.mk 0 n.toAddMonoidHom 0)) fun n n' => by`. Apply the tactic sequence `rw [← map_add]; congr 1; ext <;> simp).toIntLinearMap`. Set `φ₃ : Module.Dual ℤ A.abelian₂` to `(AddMonoidHom.mk' (fun l : A.abelian₂ => φ (La.mk 0 0 l)) fun n n' => by`. Apply the tactic sequence `rw [← map_add]; congr 1; ext <;> simp).toIntLinearMap`.
+
+Take `⟨y, hy⟩` from `(Module.evalEquiv ℤ A.X).surjective φ₂`. Take `⟨l, hl⟩` from `A.Ef_bij.2 φ₃`. Use `⟨La.mk y (-φ₁) l, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `h2 : v.n y = φ (La.mk 0 v.n 0)` using `congrArg (fun f => f v.n.toIntLinearMap) hy`. Establish `h3 : A.Ef l v.l = φ (La.mk 0 0 v.l)` using `congrArg (fun f => f v.l) hl`.
+
+Use `conv_rhs => rw [La.eq_add_parts v, map_add, map_add]`. Rewrite using `[EF_apply, La.mk_y, La.mk_n, La.mk_l, h2, h3]`. Simplify using `[φ₁]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem EF_bijective : Function.Bijective A.EF := by
   constructor
   · rw [injective_iff_map_eq_zero]
@@ -154,6 +212,11 @@ theorem EF_bijective : Function.Bijective A.EF := by
     rw [EF_apply, La.mk_y, La.mk_n, La.mk_l, h2, h3]
     simp [φ₁]; ring
 
+/- English proof (translation)
+Establish `h1 : Module.finrank ℤ (A.X →+ ℤ) = Module.finrank ℤ A.X`. Rewrite using `[(addMonoidHomLequivInt ℤ (A := A.X) (B := ℤ)).finrank_eq]`. Simplify using `[Module.finrank_linearMap]`. Establish `h2 : Module.finrank ℤ A.abelian₂ = 2 * A.gB`. Rewrite using `[ZLattice.rank ℝ A.abelian₂, finrank_real_of_complex]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : Module.finrank ℝ A.V = 2 * Module.finrank ℂ A.V`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ A.V, Complex.finrank_real_complex]`. Rewrite using `[A.laEquiv.finrank_eq, Module.finrank_prod, Module.finrank_prod, h1, h2, h3, finrank_V]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_La : Module.finrank ℤ A.La = Module.finrank ℝ A.V := by
   have h1 : Module.finrank ℤ (A.X →+ ℤ) = Module.finrank ℤ A.X := by
     rw [(addMonoidHomLequivInt ℤ (A := A.X) (B := ℤ)).finrank_eq]
@@ -176,12 +239,21 @@ def kappa : (Fin A.gB → ℂ) →ₗ[ℂ] (A.X →+ ℂ) where
     show A.H (c • z) _ / _ = c * (_ / _)
     rw [H_smul_left, mul_div_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem kappa_apply (z : Fin A.gB → ℂ) (x : A.X) : A.kappa z x = A.H z (A.ct x) / (2 * Complex.I) := rfl
 
 def torusProj : A.V →ₗ[ℂ] (A.X →+ ℂ) := LinearMap.fst ℂ _ _ + A.kappa ∘ₗ LinearMap.snd ℂ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem torusProj_def (v : A.V) : A.torusProj v = v.1 + A.kappa v.2 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem torusProj_apply (v : A.V) (x : A.X) :
     A.torusProj v x = v.1 x + A.H v.2 (A.ct x) / (2 * Complex.I) := rfl
 
@@ -192,34 +264,63 @@ def Bw (w : ℂ) : A.X →+ A.X →+ ℝ :=
       simp only [map_add, AddMonoidHom.add_apply, LinearMap.add_apply, AddMonoidHom.mk'_apply, ← Complex.add_im]
       push_cast; ring_nf
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Bw_apply (w : ℂ) (y x : A.X) : A.Bw w y x = (A.T y x + w * A.be y x + A.kappa (A.ct y) x).im := rfl
 
+/- English proof (translation)
+Rewrite using `[div_eq_iff (mul_ne_zero two_ne_zero Complex.I_ne_zero)]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+-/
 theorem div_two_I (h : ℂ) : h / (2 * Complex.I) = (h.im / 2 : ℝ) + (-(h.re / 2) : ℝ) * Complex.I := by
   rw [div_eq_iff (mul_ne_zero two_ne_zero Complex.I_ne_zero)]
   apply Complex.ext <;> simp
 
+/- English proof (translation)
+Rewrite using `[← A.H_conj z z', Complex.conj_re]`.
+-/
 theorem H_re_symm (z z' : Fin A.gB → ℂ) : (A.H z z').re = (A.H z' z).re := by
   rw [← A.H_conj z z', Complex.conj_re]
 
+/- English proof (translation)
+Rewrite using `[← A.H_conj z z', Complex.conj_im, neg_neg]`.
+-/
 theorem H_im_symm (z z' : Fin A.gB → ℂ) : (A.H z z').im = -(A.H z' z).im := by
   rw [← A.H_conj z z', Complex.conj_im, neg_neg]
 
+/- English proof (translation)
+Rewrite using `[Bw_apply, kappa_apply, div_two_I]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Bw_eq (w : ℂ) (y x : A.X) :
     A.Bw w y x = (A.T y x).im + w.im * A.be y x - (A.H (A.ct y) (A.ct x)).re / 2 := by
   rw [Bw_apply, kappa_apply, div_two_I]; simp; ring
 
+/- English proof (translation)
+Rewrite using `[Bw_eq, Bw_eq, A.T_symm, A.be_symm, H_re_symm]`.
+-/
 theorem Bw_symm (w : ℂ) (y x : A.X) : A.Bw w y x = A.Bw w x y := by
   rw [Bw_eq, Bw_eq, A.T_symm, A.be_symm, H_re_symm]
 
+/- English proof (translation)
+Rewrite using `[torusProj_apply, Pw_fst_apply, Pw_snd, H_add_left, Bw_eq, div_two_I, div_two_I]`. Simplify using `[A.H_re_symm (A.ct x) v.l]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem torusProj_Pw_im (w : ℂ) (v : A.La) (x : A.X) : (A.torusProj (A.Pw w v) x).im = A.Bw w v.y x := by
   rw [torusProj_apply, Pw_fst_apply, Pw_snd, H_add_left, Bw_eq, div_two_I, div_two_I]
   simp [A.H_re_symm (A.ct x) v.l]; ring
 
+/- English proof (translation)
+Rewrite using `[torusProj_apply, Pw_fst_apply, Pw_snd, H_add_left, div_two_I, div_two_I]`. Simplify using `[A.H_im_symm (A.ct x) v.l]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem torusProj_Pw_re (w : ℂ) (v : A.La) (x : A.X) : (A.torusProj (A.Pw w v) x).re =
     v.n x + (A.H v.l (A.ct x)).im + (A.T v.y x).re + w.re * A.be v.y x + (A.H (A.ct v.y) (A.ct x)).im / 2 := by
   rw [torusProj_apply, Pw_fst_apply, Pw_snd, H_add_left, div_two_I, div_two_I]
   simp [A.H_im_symm (A.ct x) v.l]; ring
 
+/- English proof (translation)
+Rewrite using `[← A.degeneratingTori_periodMap_eq_base_of_y_eq_zero 0 (La.mk_y 0 n l)]`. Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[torusProj_Pw_re]`. Simplify using the standard rewrite rules. Rewrite using `[torusProj_Pw_im]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem torusProj_periodZero_eq_real (n : A.X →+ ℤ) (l : A.abelian₂) (x : A.X) :
     A.torusProj (A.P0 (La.mk 0 n l)) x = ((n x + (A.H l (A.ct x)).im : ℝ) : ℂ) := by
   rw [← A.degeneratingTori_periodMap_eq_base_of_y_eq_zero 0 (La.mk_y 0 n l)]
@@ -230,9 +331,21 @@ theorem torusProj_periodZero_eq_real (n : A.X →+ ℤ) (l : A.abelian₂) (x : 
 def BwMat (w : ℂ) : Matrix (Module.Free.ChooseBasisIndex ℤ A.X) (Module.Free.ChooseBasisIndex ℤ A.X) ℝ :=
   Matrix.of fun i j => A.Bw w (Module.Free.chooseBasis ℤ A.X i) (Module.Free.chooseBasis ℤ A.X j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem BwMat_apply (w : ℂ) (i j) :
     A.BwMat w i j = A.Bw w (Module.Free.chooseBasis ℤ A.X i) (Module.Free.chooseBasis ℤ A.X j) := rfl
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ A.X`. Set `M : Matrix _ _ ℤ` to `Matrix.of fun i j => A.be (b i) (b j)`. Establish `hM : (M.map (Int.cast : ℤ → ℝ)).PosDef`. Use `PolarisedLattice.real_pos_of_int_pos M (fun i j => A.be_symm _ _) fun x hx => ?_` and prove the remaining obligations. Establish `h0 : ∑ i, x i • b i ≠ 0` using `fun h => hx (funext (Fintype.linearIndependent_iff.1 b.linearIndependent x h))`.
+
+Use `A.be_pos _ h0` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [M, dotProduct, mulVec, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, Matrix.of_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+
+Establish `hC : (A.BwMat 0).IsHermitian`. Use extensionality with `i j`. Simplify using `[BwMat_apply, A.Bw_symm 0 (Module.Free.chooseBasis ℤ A.X i)]`. Take `⟨T₀, hT⟩` from `PolarisedLattice.exists_posDef_smul_add hM hC`. Use `⟨T₀, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Use `hT _ hw using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `[BwMat_apply, Bw_eq, M, b]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_BwMat_posDef : ∃ T₀ : ℝ, ∀ w : ℂ, T₀ < w.im → (A.BwMat w).PosDef := by
   classical
   let b := Module.Free.chooseBasis ℤ A.X
@@ -255,11 +368,19 @@ theorem exists_BwMat_posDef : ∃ T₀ : ℝ, ∀ w : ℂ, T₀ < w.im → (A.Bw
   ext i j
   simp [BwMat_apply, Bw_eq, M, b]; ring
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (Module.Free.chooseBasis ℤ A.X).sum_repr y]`. Simplify using `only [map_sum, map_zsmul, zsmul_eq_mul]`.
+-/
 theorem map_eq_sum_repr {M : Type} [Ring M] (f : A.X →+ M) (y : A.X) :
     f y = ∑ i, ((Module.Free.chooseBasis ℤ A.X).repr y i : M) * f (Module.Free.chooseBasis ℤ A.X i) := by
   conv_lhs => rw [← (Module.Free.chooseBasis ℤ A.X).sum_repr y]
   simp only [map_sum, map_zsmul, zsmul_eq_mul]
 
+/- English proof (translation)
+Establish `h0 : (fun i => ((Module.Free.chooseBasis ℤ A.X).repr y i : ℝ)) ≠ 0` using `fun h => hy <| (Module.Free.chooseBasis ℤ A.X).ext_elem fun i => by simpa using congrFun h i`. Use `(posDef_iff_dotProduct_mulVec.1 hw).2 h0` as an intermediate fact. Use `this.trans_eq (Eq.symm ?_)` and prove the remaining obligations. Rewrite using `[A.map_eq_sum_repr (A.Bw w y) y]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Bw_symm, A.map_eq_sum_repr (A.Bw w _) y]`. Simplify using `[mulVec, dotProduct, BwMat_apply, mul_comm]`.
+-/
 theorem Bw_pos {w : ℂ} (hw : (A.BwMat w).PosDef) {y : A.X} (hy : y ≠ 0) : 0 < A.Bw w y y := by
   have h0 : (fun i => ((Module.Free.chooseBasis ℤ A.X).repr y i : ℝ)) ≠ 0 := fun h => hy <|
     (Module.Free.chooseBasis ℤ A.X).ext_elem fun i => by simpa using congrFun h i
@@ -282,9 +403,17 @@ def dualForm (w : ℂ) : (A.X →+ ℂ) →ₗ[ℂ] (A.X →+ ℂ) →ₗ⋆[ℂ
 
 open Classical in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualForm_apply (w : ℂ) (r r' : A.X →+ ℂ) :
     A.dualForm w r r' = A.coord r ⬝ᵥ ((A.BwMat w)⁻¹.map Complex.ofReal) *ᵥ star (A.coord r') := rfl
 
+/- English proof (translation)
+Establish `hC : (A.BwMat w).IsHermitian`. Use extensionality with `i j`. Simplify using `[BwMat_apply, A.Bw_symm w (Module.Free.chooseBasis ℤ A.X i)]`. Establish `h : ∀ i k, (A.BwMat w)⁻¹ i k = (A.BwMat w)⁻¹ k i` using `fun i k => by simpa using hC.inv.apply k i`. Simplify using `only [dualForm_apply, dotProduct, mulVec, map_sum, map_mul, Finset.mul_sum, Pi.star_apply, RCLike.star_def, Complex.conj_conj, Matrix.map_apply, Complex.conj_ofReal]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by rw [h k i]; ring`.
+-/
 theorem dualForm_conj (w : ℂ) (r r' : A.X →+ ℂ) : starRingEnd ℂ (A.dualForm w r r') = A.dualForm w r' r := by
   classical
   have hC : (A.BwMat w).IsHermitian := by
@@ -297,8 +426,16 @@ theorem dualForm_conj (w : ℂ) (r r' : A.X →+ ℂ) : starRingEnd ℂ (A.dualF
 
 def BwC (w : ℂ) (y : A.X) : A.X →+ ℂ := Complex.ofRealHom.toAddMonoidHom.comp (A.Bw w y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem BwC_apply (w : ℂ) (y x : A.X) : A.BwC w y x = A.Bw w y x := rfl
 
+/- English proof (translation)
+Establish `h1 : star (A.coord (A.BwC w y)) = ((A.BwMat w).map Complex.ofReal) *ᵥ fun i => ((Module.Free.chooseBasis ℤ A.X).repr y i : ℂ)`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.star_apply, coord_apply, BwC_apply, Bw_symm, A.map_eq_sum_repr (A.Bw w _) y]`. Simplify using `[mulVec, dotProduct, BwMat_apply, mul_comm]`. Establish `h2 : (A.BwMat w)⁻¹.map Complex.ofReal * (A.BwMat w).map Complex.ofReal = 1`.
+
+Use `Matrix.map_mul (f := Complex.ofRealHom) (L := (A.BwMat w)⁻¹) (M := A.BwMat w)` as an intermediate fact. Rewrite `this` using `[nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hw.isUnit), Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `this.symm`. Rewrite using `[dualForm_apply, h1, mulVec_mulVec, h2, one_mulVec, A.map_eq_sum_repr r y]`. Simplify using `[dotProduct, coord_apply, mul_comm]`.
+-/
 theorem dualForm_BwC {w : ℂ} (hw : (A.BwMat w).PosDef) (r : A.X →+ ℂ) (y : A.X) :
     A.dualForm w r (A.BwC w y) = r y := by
   classical
@@ -314,6 +451,9 @@ theorem dualForm_BwC {w : ℂ} (hw : (A.BwMat w).PosDef) (r : A.X →+ ℂ) (y :
   rw [dualForm_apply, h1, mulVec_mulVec, h2, one_mulVec, A.map_eq_sum_repr r y]
   simp [dotProduct, coord_apply, mul_comm]
 
+/- English proof (translation)
+Substitute `hM` using the available equality. Simplify using `only [dualForm_apply, dotProduct, mulVec, Finset.mul_sum, Complex.re_sum, Complex.im_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Apply the tactic sequence `constructor <;> refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_ <;> simp <;> ring`.
+-/
 theorem dualForm_re_im (w : ℂ) (r r' : A.X →+ ℂ) (M : Matrix _ _ ℝ) (hM : M = by classical exact (A.BwMat w)⁻¹) :
     (A.dualForm w r r').re = (fun i => (A.coord r i).re) ⬝ᵥ M *ᵥ (fun i => (A.coord r' i).re) +
       (fun i => (A.coord r i).im) ⬝ᵥ M *ᵥ (fun i => (A.coord r' i).im) ∧
@@ -324,6 +464,13 @@ theorem dualForm_re_im (w : ℂ) (r r' : A.X →+ ℂ) (M : Matrix _ _ ℝ) (hM 
     ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]
   constructor <;> refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_ <;> simp <;> ring
 
+/- English proof (translation)
+Rewrite using `[(A.dualForm_re_im w r r _ rfl).1]`. Establish `hp : ∀ x, x ≠ 0 → 0 < x ⬝ᵥ (A.BwMat w)⁻¹ *ᵥ x` using `fun x hx => by`. Simplify using `using (posDef_iff_dotProduct_mulVec.1 hw.inv).2 hx`. Establish `hn : ∀ x, 0 ≤ x ⬝ᵥ (A.BwMat w)⁻¹ *ᵥ x` using `fun x => by`. Distinguish the cases in `hx : x = 0`.
+
+Simplify using `[hx]`. Conclude with `(hp x hx).le`. Distinguish the cases in `h : (fun i => (A.coord r i).re) = 0`. Use `add_pos_of_nonneg_of_pos (hn _) (hp _ fun h' => hr (A.coord.map_eq_zero_iff.1 (funext fun i => ?_)))` and prove the remaining obligations. Conclude with `Complex.ext (congrFun h i) (congrFun h' i)`.
+
+Conclude with `add_pos_of_pos_of_nonneg (hp _ h) (hn _)`.
+-/
 theorem dualForm_pos {w : ℂ} (hw : (A.BwMat w).PosDef) {r : A.X →+ ℂ} (hr : r ≠ 0) : 0 < (A.dualForm w r r).re := by
   classical
   rw [(A.dualForm_re_im w r r _ rfl).1]
@@ -338,6 +485,9 @@ theorem dualForm_pos {w : ℂ} (hw : (A.BwMat w).PosDef) {r : A.X →+ ℂ} (hr 
     exact Complex.ext (congrFun h i) (congrFun h' i)
   · exact add_pos_of_pos_of_nonneg (hp _ h) (hn _)
 
+/- English proof (translation)
+Rewrite using `[(A.dualForm_re_im w r r' _ rfl).2]`. Simplify using `[coord_apply, hr, hr', dotProduct, mulVec]`.
+-/
 theorem dualForm_im_of_real (w : ℂ) {r r' : A.X →+ ℂ} (hr : ∀ x, (r x).im = 0) (hr' : ∀ x, (r' x).im = 0) :
     (A.dualForm w r r').im = 0 := by
   rw [(A.dualForm_re_im w r r' _ rfl).2]
@@ -353,12 +503,23 @@ def Hw (w : ℂ) : A.V →ₗ[ℂ] A.V →ₗ⋆[ℂ] ℂ :=
     (fun _ _ _ => by
       simp only [Prod.smul_snd, H_smul_right, map_smul, LinearMap.map_smulₛₗ, smul_eq_mul]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Hw_apply (w : ℂ) (v v' : A.V) :
     A.Hw w v v' = A.H v.2 v'.2 + A.dualForm w (A.torusProj v) (A.torusProj v') := rfl
 
+/- English proof (translation)
+Rewrite using `[Hw_apply, Hw_apply, map_add, H_conj, dualForm_conj]`.
+-/
 theorem Hw_conj (w : ℂ) (v v' : A.V) : starRingEnd ℂ (A.Hw w v v') = A.Hw w v' v := by
   rw [Hw_apply, Hw_apply, map_add, H_conj, dualForm_conj]
 
+/- English proof (translation)
+Rewrite using `[Hw_apply, Complex.add_re]`. Distinguish the cases in `h : A.torusProj v = 0`. Establish `h2 : v.2 ≠ 0` using `fun h2 => hv (Prod.ext (by simpa [torusProj_def, h2] using h) h2)`. Simplify `A.H_pos h2` using `[h]`. Use `add_pos_of_nonneg_of_pos ?_ (A.dualForm_pos hw h)` and prove the remaining obligations.
+
+Distinguish the cases in `h2 : v.2 = 0`. Simplify using `[h2]`. Conclude with `(A.H_pos h2).le`.
+-/
 theorem Hw_pos {w : ℂ} (hw : (A.BwMat w).PosDef) {v : A.V} (hv : v ≠ 0) : 0 < (A.Hw w v v).re := by
   rw [Hw_apply, Complex.add_re]
   by_cases h : A.torusProj v = 0
@@ -369,6 +530,13 @@ theorem Hw_pos {w : ℂ} (hw : (A.BwMat w).PosDef) {v : A.V} (hv : v ≠ 0) : 0 
     · simp [h2]
     · exact (A.H_pos h2).le
 
+/- English proof (translation)
+Establish `hre : ∀ (v : A.La) x, ((A.torusProj (A.Pw w v) - Complex.I • A.BwC w v.y) x).im = 0` using `fun v x => by`. Simplify using `[torusProj_Pw_im]`. Establish `h1` using `A.dualForm_im_of_real w (hre a) (hre b)`. Establish `h2 : A.dualForm w (A.BwC w a.y) (A.torusProj (A.Pw w b)) = starRingEnd ℂ (A.torusProj (A.Pw w b) a.y)`. Rewrite using `[← dualForm_conj, A.dualForm_BwC hw]`.
+
+Simplify using `only [map_sub, map_smul, LinearMap.map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, A.dualForm_BwC hw, h2, smul_eq_mul] at h1`. Simplify using `only [Complex.sub_im, Complex.sub_re, Complex.mul_im, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.I_re, Complex.I_im, RingHom.id_apply, torusProj_Pw_re, torusProj_Pw_im, BwC_apply, Complex.ofReal_re, Complex.ofReal_im] at h1`. Rewrite using `[Hw_apply, Complex.add_im, EF_apply, Pw_snd, Pw_snd]`. Simplify using `only [H_add_left, H_add_right, Complex.add_im]`. Use `push_cast`.
+
+Rewrite using `[Ef_eq_im]`. Rewrite `h1` using `[A.T_symm b.y a.y, A.be_symm b.y a.y, A.H_im_symm (A.ct b.y) (A.ct a.y), A.H_im_symm b.l (A.ct a.y)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem im_Hw_Pw {w : ℂ} (hw : (A.BwMat w).PosDef) (a b : A.La) :
     (A.Hw w (A.Pw w a) (A.Pw w b)).im = A.EF a b := by
   have hre : ∀ (v : A.La) x, ((A.torusProj (A.Pw w v) - Complex.I • A.BwC w v.y) x).im = 0 := fun v x => by
@@ -388,11 +556,25 @@ theorem im_Hw_Pw {w : ℂ} (hw : (A.BwMat w).PosDef) (a b : A.La) :
   rw [A.T_symm b.y a.y, A.be_symm b.y a.y, A.H_im_symm (A.ct b.y) (A.ct a.y), A.H_im_symm b.l (A.ct a.y)] at h1
   linarith
 
+/- English proof (translation)
+The claim follows from `PolarisedLattice.lattice_of_im A.EF A.EF_bijective.1 (A.Pw w) (fun v => (A.Hw w).flip v) (fun a b => A.im_Hw_Pw hw a b) A.finrank_La`.
+-/
 theorem Pw_lattice {w : ℂ} (hw : (A.BwMat w).PosDef) : Function.Injective (A.Pw w) ∧
     DiscreteTopology (A.Pw w).range ∧ Submodule.span ℝ (Set.range (A.Pw w)) = ⊤ :=
   PolarisedLattice.lattice_of_im A.EF A.EF_bijective.1 (A.Pw w) (fun v => (A.Hw w).flip v)
     (fun a b => A.im_Hw_Pw hw a b) A.finrank_La
 
+/- English proof (translation)
+Establish `hsp` using `(A.Pw_lattice hw).2.2`. Establish `him : ∀ v v' : A.V, (A.Hw w (A.actV a v) v').im = (A.Hw w v (A.actV (star a) v')).im`. Introduce `v v'`. Establish `hv : v ∈ Submodule.span ℝ (Set.range (A.Pw w))` using `hsp ▸ Submodule.mem_top`. Establish `hv' : v' ∈ Submodule.span ℝ (Set.range (A.Pw w))` using `hsp ▸ Submodule.mem_top`.
+
+Proceed by induction on `hv, hv' using Submodule.span_induction₂ with`. Consider the case `mem_mem x y hx hy`. Take `⟨x, rfl⟩` from `hx`. Take `⟨y, rfl⟩` from `hy`. Rewrite using `[← Pw_smul, ← Pw_smul, A.im_Hw_Pw hw, A.im_Hw_Pw hw, EF_smul]`.
+
+Consider the case `zero_left => simp`. Consider the case `zero_right => simp`. Consider the case `add_left x y z _ _ _ h h' => simp only [map_add, LinearMap.add_apply, Complex.add_im, h, h']`. Consider the case `add_right x y z _ _ _ h h' => simp only [map_add, Complex.add_im, h, h']`. Consider the case `smul_left r x y _ _ h`.
+
+Rewrite using `[← algebraMap_smul ℂ r x]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, Complex.coe_algebraMap, Complex.im_ofReal_mul, h]`. Consider the case `smul_right r x y _ _ h`. Rewrite using `[← algebraMap_smul ℂ r y]`. Simplify using `only [map_smul, LinearMap.map_smulₛₗ, smul_eq_mul, Complex.coe_algebraMap, Complex.conj_ofReal, Complex.im_ofReal_mul, h]`.
+
+Use `Complex.ext ?_ (him v v')` and prove the remaining obligations. Use `him (Complex.I • v) v'` as an intermediate fact. Simplify using `using this`.
+-/
 theorem Hw_actV {w : ℂ} (hw : (A.BwMat w).PosDef) (a : O) (v v' : A.V) :
     A.Hw w (A.actV a v) v' = A.Hw w v (A.actV (star a) v') := by
   have hsp := (A.Pw_lattice hw).2.2
@@ -423,10 +605,18 @@ theorem Hw_actV {w : ℂ} (hw : (A.BwMat w).PosDef) (a : O) (v v' : A.V) :
 def HwMat (w : ℂ) {g : ℕ} (h : A.V ≃ₗ[ℂ] (Fin g → ℂ)) : Matrix (Fin g) (Fin g) ℂ :=
   Matrix.of fun i j => A.Hw w (h.symm (Pi.single i 1)) (h.symm (Pi.single j 1))
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `A.Hw_conj w _ _`.
+-/
 theorem HwMat_isHermitian (w : ℂ) {g : ℕ} (h : A.V ≃ₗ[ℂ] (Fin g → ℂ)) : (A.HwMat w h).IsHermitian := by
   ext i j
   exact A.Hw_conj w _ _
 
+/- English proof (translation)
+Establish `e : ∀ v : A.V, v = ∑ i, h v i • h.symm (Pi.single i 1)` using `fun v => h.injective <| by`. Simplify using `only [map_sum, map_smul, LinearEquiv.apply_symm_apply]`. Conclude with `pi_eq_sum_univ' _`. Use `conv_rhs => rw [e v, e v']`. Simplify using `only [hermForm, HwMat, dotProduct, mulVec, map_sum, map_smul, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, Matrix.of_apply, Pi.star_apply, RCLike.star_def, RingHom.id_apply]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem hermForm_HwMat (w : ℂ) {g : ℕ} (h : A.V ≃ₗ[ℂ] (Fin g → ℂ)) (v v' : A.V) :
     hermForm (A.HwMat w h) (h v) (h v') = A.Hw w v v' := by
   have e : ∀ v : A.V, v = ∑ i, h v i • h.symm (Pi.single i 1) := fun v => h.injective <| by
@@ -439,6 +629,13 @@ theorem hermForm_HwMat (w : ℂ) {g : ℕ} (h : A.V ≃ₗ[ℂ] (Fin g → ℂ))
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Set `P' : A.La →+ (Fin g → ℂ)` to `h.toLinearMap.toAddMonoidHom.comp (A.Pw w)`. Establish `hr : Module.finrank ℤ A.La = Module.finrank ℝ (Fin g → ℂ)` using `A.finrank_La.trans (h.restrictScalars ℝ).finrank_eq`. Take `⟨h1, h2, h3⟩` from `PolarisedLattice.lattice_of_im A.EF A.EF_bijective.1 P' (fun z => (A.Hw w).flip (h.symm z) ∘ₗ h.symm.toLinearMap) (fun a b => by simpa [P'] using A.im_Hw_Pw hw a b) hr`. Establish `hPP : (P : L → _) = P' ∘ e` using `funext hP`. Establish `hrange : Set.range P = Set.range P'` using `by rw [hPP, e.surjective.range_comp]`.
+
+Establish `hrange' : P.range = P'.range` using `SetLike.coe_injective hrange`. Use `⟨hPP ▸ h1.comp e.injective, hrange' ▸ h2, hrange ▸ h3, A.HwMat w h, A.HwMat_isHermitian w h, fun z hz => ?_, fun x y => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `h.surjective z`. Rewrite using `[hermForm_HwMat]`. Conclude with `A.Hw_pos hw fun hv => hz (by simp [hv])`.
+
+Rewrite using `[hP, hP, hermForm_HwMat, A.im_Hw_Pw hw]`.
+-/
 theorem period_clauses {w : ℂ} (hw : (A.BwMat w).PosDef) {g : ℕ} (h : A.V ≃ₗ[ℂ] (Fin g → ℂ)) {L : Type}
     [AddCommGroup L] (e : L ≃+ A.La) (P : L →+ (Fin g → ℂ)) (hP : ∀ x, P x = h (A.Pw w (e x))) :
     Function.Injective P ∧ DiscreteTopology P.range ∧ Submodule.span ℝ (Set.range P) = ⊤ ∧
@@ -460,6 +657,9 @@ theorem period_clauses {w : ℂ} (hw : (A.BwMat w).PosDef) {g : ℕ} (h : A.V �
     exact A.Hw_pos hw fun hv => hz (by simp [hv])
   · rw [hP, hP, hermForm_HwMat, A.im_Hw_Pw hw]
 
+/- English proof (translation)
+Take `⟨T₀, hT⟩` from `A.exists_BwMat_posDef`. Use `⟨A.EF_isAlt, A.EF_bijective, A.EF_smul, T₀, fun w hw => ?_⟩` and prove the remaining obligations. Establish `h` using `hT w hw`. Take `⟨h1, h2, h3⟩` from `A.Pw_lattice h`. Conclude with `⟨h, h1, A.Pw_smul w, h2, h3, A.Hw_conj w, fun v hv => A.Hw_pos h hv, A.im_Hw_Pw h, fun g k P hP => A.period_clauses h k (AddEquiv.refl _) P hP⟩`.
+-/
 theorem periods_polarised :
     A.EF.IsAlt ∧ Function.Bijective A.EF ∧ (∀ (a : O) x y, A.EF (a • x) y = A.EF x (star a • y)) ∧
     ∃ T₀ : ℝ, ∀ w : ℂ, T₀ < w.im →
@@ -482,6 +682,9 @@ end AnArc
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor NumberField in
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, Hm, h4, h5, h6⟩` from `A.period_clauses hw h e P hP`. Use `⟨fun a x i => ?_, h1, h2, h3, Hm, h4, h5, fun x y => by rw [h6, hE]⟩` and prove the remaining obligations. Rewrite using `[hP, hP, he, A.Pw_smul, hh]`.
+-/
 theorem AnArc.isPeriod {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [StarRing (𝓞 E)]
     (A : AnArc (𝓞 E)) {w : ℂ} (hw : (A.BwMat w).PosDef) (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ))
     (h : A.V ≃ₗ[ℂ] (Fin g → ℂ)) (hh : ∀ (a : 𝓞 E) v i, h (A.actV a v) i = ty i (a : E) * h v i)

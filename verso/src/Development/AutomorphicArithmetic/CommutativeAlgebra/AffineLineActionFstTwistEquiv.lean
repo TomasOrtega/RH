@@ -16,11 +16,19 @@ open Polynomial
 private def coord {T : Scheme.{0}} (f : T ⟶ Pbf.A1) : Γ(T, ⊤) :=
   f.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of ℤ[X])).inv.hom X)
 
+/- English proof (translation)
+Simplify using `[coord]`. Both sides reduce to the same expression.
+-/
 private theorem coord_comp {T' T : Scheme.{0}} (g : T' ⟶ T) (f : T ⟶ Pbf.A1) :
     coord (g ≫ f) = g.appTop.hom (coord f) := by
   simp [coord]
   rfl
 
+/- English proof (translation)
+Establish `h` using `Scheme.toSpecΓ_naturality f`. Establish `h2 : (Spec (CommRingCat.of ℤ[X])).toSpecΓ ≫ Spec.map (Scheme.ΓSpecIso (CommRingCat.of ℤ[X])).inv = 𝟙 _`. Rewrite using `[← SpecMap_ΓSpecIso_hom, ← Spec.map_comp]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h2, Category.comp_id]`. Use `_ = _ := by`. Rewrite using `[← Category.assoc, h, Category.assoc, ← Spec.map_comp]`.
+-/
 private theorem eq_of_appTop {T : Scheme.{0}} (f : T ⟶ Pbf.A1) :
     f = T.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of ℤ[X])).inv ≫ f.appTop) := by
   have h := Scheme.toSpecΓ_naturality f
@@ -32,6 +40,11 @@ private theorem eq_of_appTop {T : Scheme.{0}} (f : T ⟶ Pbf.A1) :
     _ = _ := by
         rw [← Category.assoc, h, Category.assoc, ← Spec.map_comp]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `f g h`. Rewrite using `[eq_of_appTop f, eq_of_appTop g]`. Use `congr 2`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+
+Use `Polynomial.ringHom_ext' (RingHom.ext_int _ _) ?_` and prove the remaining obligations. Conclude with `h`. Introduce `a`. Use `⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (eval₂RingHom (Int.castRingHom _) a)), ?_⟩` and prove the remaining obligations. Simplify using `[coord, Scheme.toSpecΓ_appTop]`.
+-/
 private theorem coord_bij (T : Scheme.{0}) : Function.Bijective (coord (T := T)) := by
   constructor
   · intro f g h
@@ -44,6 +57,11 @@ private theorem coord_bij (T : Scheme.{0}) : Function.Bijective (coord (T := T))
     refine ⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (eval₂RingHom (Int.castRingHom _) a)), ?_⟩
     simp [coord, Scheme.toSpecΓ_appTop]
 
+/- English proof (translation)
+Establish `ho : ∀ i, x.obj i = y.obj i` using `fun i => by`. Use `h i` as an intermediate fact. Consider the cases of `hx : x.obj i`. Consider the cases of `hy : y.obj i`. Simplify the hypotheses and the goal together.
+
+Use `CategoryTheory.Functor.ext ho (fun i j f => ?_)` and prove the remaining obligations. Conclude with `Subtype.ext (Subsingleton.elim (α := PUnit) _ _)`.
+-/
 private theorem chain_ext {A : CommRingCat.{0}} {n : ℕ} (x y : Fin (n + 1) ⥤ Ob affC A)
     (h : ∀ i, (x.obj i).pt = (y.obj i).pt) : x = y := by
   have ho : ∀ i, x.obj i = y.obj i := fun i => by
@@ -54,6 +72,9 @@ private theorem chain_ext {A : CommRingCat.{0}} {n : ℕ} (x y : Fin (n + 1) ⥤
   refine CategoryTheory.Functor.ext ho (fun i j f => ?_)
   exact Subtype.ext (Subsingleton.elim (α := PUnit) _ _)
 
+/- English proof (translation)
+The claim follows from `((x.map (homOfLE (Fin.zero_le i))).2).symm`.
+-/
 private theorem chain_pt {A : CommRingCat.{0}} {n : ℕ} (x : Fin (n + 1) ⥤ Ob affC A) (i : Fin (n + 1)) :
     (x.obj i).pt = (x.obj 0).pt :=
   ((x.map (homOfLE (Fin.zero_le i))).2).symm
@@ -71,6 +92,11 @@ private def lineMap : sch.obj Pbf.A1 ⟶ spc affC where
     ext T x
     rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `f g h`. Use `(coord_bij T).1 ?_` and prove the remaining obligations. Conclude with `congrArg (fun c : Fin (k + 1) ⥤ Ob affC Γ(T, ⊤) => (c.obj 0).pt) h`. Introduce `y`.
+
+Take `⟨f, hf⟩` from `(coord_bij T).2 ((show Fin (k + 1) ⥤ Ob affC Γ(T, ⊤) from y).obj 0).pt`. Use `⟨f, ?_⟩` and prove the remaining obligations. Use `chain_ext _ _ fun i => ?_` and prove the remaining obligations. Conclude with `hf.trans (chain_pt (show Fin (k + 1) ⥤ Ob affC Γ(T, ⊤) from y) i).symm`.
+-/
 private theorem lineMap_bij (k : ℕ) (T : Scheme.{0}) :
     Function.Bijective (fun x : Sx (sch.obj Pbf.A1) k T => x.map lineMap) := by
   constructor
@@ -83,6 +109,9 @@ private theorem lineMap_bij (k : ℕ) (T : Scheme.{0}) :
     refine chain_ext _ _ fun i => ?_
     exact hf.trans (chain_pt (show Fin (k + 1) ⥤ Ob affC Γ(T, ⊤) from y) i).symm
 
+/- English proof (translation)
+Use extensionality with `k T x`. Establish `a` using `ConcreteCategory.congr_hom (NatTrans.congr_app (NatTrans.congr_app h1 k) T) x`. Establish `b` using `ConcreteCategory.congr_hom (NatTrans.congr_app (NatTrans.congr_app h2 k) T) x`. Conclude with `Prod.ext a b`.
+-/
 private theorem mulS_hom_ext {X E Z : Spc} {f g : X ⟶ mulS E Z}
     (h1 : f ≫ mulS.fst E Z = g ≫ mulS.fst E Z) (h2 : f ≫ mulS.snd E Z = g ≫ mulS.snd E Z) : f = g := by
   ext k T x
@@ -95,6 +124,19 @@ end UpperTheory.LineAct
 end
 
 open UpperTheory.LineAct in
+/- English proof (translation)
+Introduce `q _ S i hS`. Use `haveI : IsIso lineMap := UpperTheory.isIso_of_bijective_on_simplices lineMap lineMap_bij`. Set `u : sch.obj Pbf.A1 ⨯ S ⟶ Sp S affC` to `mulS.lift prod.snd (prod.fst ≫ lineMap)`. Set `v : Sp S affC ⟶ sch.obj Pbf.A1 ⨯ S` to `prod.lift (Sp.snd S affC ≫ inv lineMap) (Sp.fst S affC)`. Establish `hu1 : u ≫ mulS.fst _ _ = prod.snd` using `rfl`.
+
+Establish `hu2 : u ≫ mulS.snd _ _ = prod.fst ≫ lineMap` using `rfl`. Establish `huv : u ≫ v = 𝟙 _`. Apply `Limits.prod.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, prod.lift_fst, ← Category.assoc, hu2]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Category.assoc, prod.lift_snd, Category.id_comp]`. Conclude with `hu1`. Establish `hvu : v ≫ u = 𝟙 _`. Apply `mulS_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hu1, prod.lift_snd, Category.id_comp]`.
+
+Rewrite using `[Category.assoc, hu2, ← Category.assoc, prod.lift_fst]`. Simplify using the standard rewrite rules. Establish `hpu : ∀ n, Function.Bijective (pull (ZMod q) u (tw q i) n)` using `fun n => Function.bijective_iff_has_inverse.2 ⟨pull _ v (tw q i) n, fun x => by`. Rewrite using `[← pull_comp, hvu, pull_id], fun x => by`. Rewrite using `[← pull_comp, huv, pull_id]⟩`.
+
+Introduce `n`. Establish `h` using `UpperTheory.tateTwist_affineLine_projection_equiv q S i hS n`. Establish `e : (⇑(pull (ZMod q) (prod.snd : sch.obj Pbf.A1 ⨯ S ⟶ S) (tw q i) n)) = (pull (ZMod q) u (tw q i) n) ∘ (pull (ZMod q) (Sp.fst S affC) (tw q i) n)`. Use function extensionality and compare the values at `x`. Rewrite using `[← hu1]`.
+
+Conclude with `pull_comp _ u _ _ n x`. Rewrite `h` using `[e]`. Conclude with `(Function.Bijective.of_comp_iff' (hpu n) _).1 h`.
+-/
 theorem UpperTheory.affineLineAction_fst_twistEquiv :
     ∀ (q : ℕ) [NeZero q] (S : Spc) (i : ℤ), Inv q S → Eqv _ (Sp.fst S affC) (tw q i) := by
   intro q _ S i hS

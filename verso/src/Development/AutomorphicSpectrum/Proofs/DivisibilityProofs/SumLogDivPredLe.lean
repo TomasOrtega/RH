@@ -4,6 +4,19 @@ import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.SumLogDivNSqLeT
 
 namespace GlobalTheory.CompanionTheory.Ar.Small
 
+/- English proof (translation)
+Introduce `x S hx hS`. Establish `hsplit : ∀ p ∈ S, Real.log p / ((p : ℝ) - 1) = Real.log p / p + Real.log p / ((p : ℝ) * ((p : ℝ) - 1))`. Introduce `p hp`. Establish `h2 : (2 : ℝ) ≤ p` using `by exact_mod_cast (hS p hp).1.two_le`. Establish `hp0 : (p : ℝ) ≠ 0` using `by linarith`.
+
+Establish `hp1 : (p : ℝ) - 1 ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hsplit, Finset.sum_add_distrib]`. Establish `h1 : ∑ p ∈ S, Real.log p / (p : ℝ) ≤ Real.log x + Real.log 4`.
+
+Use `le_trans (Finset.sum_le_sum_of_subset_of_nonneg ?_ ?_) (GlobalTheory.T.sum_prime_log_div_le x hx)` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_Iic]`. Conclude with `⟨Nat.le_floor (hS p hp).2, (hS p hp).1⟩`. Introduce `p _ _`.
+
+Conclude with `div_nonneg (Real.log_natCast_nonneg p) (Nat.cast_nonneg p)`. Establish `h2 : ∑ p ∈ S, Real.log p / ((p : ℝ) * ((p : ℝ) - 1)) ≤ 2` using `GlobalTheory.T.sum_log_div_n_sq_le_two S (fun p hp => (hS p hp).1.two_le)`. Establish `hl4 : Real.log 4 < 7 / 5`. Establish `h4 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `Real.log_two_lt_d9`. Evaluate the numerical expressions using `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_log_div_pred_le :
     ∀ (x : ℝ) (S : Finset ℕ), 1 ≤ x → (∀ p ∈ S, p.Prime ∧ (p : ℝ) ≤ x) →
       ∑ p ∈ S, Real.log p / ((p : ℝ) - 1) ≤ Real.log x + 17 / 5 := by

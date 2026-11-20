@@ -10,6 +10,11 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr with k _`. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj, sq, ← mul_assoc]`. Establish `hj : ‖ζ.ofLp j‖ ≤ ‖ζ‖` using `PiLp.norm_apply_le ζ j`.
+
+Establish `hk : ‖ζ.ofLp k‖ ≤ ‖ζ‖` using `PiLp.norm_apply_le ζ k`. Use `gcongr`. Use `_ = (∑ j, ∑ k, ‖wd n j (wdb n k g) p‖) * ‖ζ‖ ^ 2 := by`. Simplify using `only [Finset.sum_mul]`.
+-/
 theorem leviV_re_le_sum_norm {n : ℕ} (g : V n → ℂ) (p ζ : V n) :
     (leviV n g p ζ.ofLp).re ≤
       (∑ j, ∑ k, ‖wd n j (wdb n k g) p‖) * ‖ζ‖ ^ 2 := by
@@ -27,6 +32,23 @@ theorem leviV_re_le_sum_norm {n : ℕ} (g : V n → ℂ) (p ζ : V n) :
     _ = (∑ j, ∑ k, ‖wd n j (wdb n k g) p‖) * ‖ζ‖ ^ 2 := by
         simp only [Finset.sum_mul]
 
+/- English proof (translation)
+Introduce `n O φ p hO hp hφ hlevi`. Use `set g : V n → ℂ := fun w => ((φ w : ℝ) : ℂ) with hg`. Establish `hgs : ContDiffOn ℝ ∞ g O` using `Complex.ofRealCLM.contDiff.comp_contDiffOn hφ`. Take `⟨m, hm, hmb⟩` from `levi_pos_compact (g := g) hO hgs (K0 := {p}) isCompact_singleton (Set.singleton_subset_iff.2 hp) (fun u hu ζ hζ => by`. Rewrite using `[Set.mem_singleton_iff.1 hu]`.
+
+Use `hlevi _ ?_` and prove the remaining obligations. Introduce `h0`. Apply `hζ` to reduce the goal to its premises. Conclude with `(WithLp.ofLp_eq_zero 2).1 h0)`. Establish `hφ2 : ContDiffAt ℝ 2 φ p` using `((hφ.contDiffAt (hO.mem_nhds hp)).of_le (by norm_cast))`.
+
+Take `⟨q, hq, ho⟩` from `GlobalTheory.T.exists_holo_quadratic_add_levi_isLittleO n φ p hφ2`. Use `set A : ℝ := ∑ j, ∑ k, ‖wd n j (wdb n k g) p‖ with hA`. Establish `hA0 : 0 ≤ A` using `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun k _ => norm_nonneg _`. Establish `hev` using `ho.def (half_pos hm)`. Take `⟨ε, hε, hεb⟩` from `Metric.eventually_nhds_iff.1 hev`.
+
+Take `⟨ε2, hε2, hε2O⟩` from `Metric.isOpen_iff.1 hO p hp`. Use `⟨q, m / 2, A + m / 2, min ε ε2 / 2, hq, half_pos hm, by positivity, by positivity, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Apply `hε2O` to reduce the goal to its premises. Rewrite `hv` using `[mem_closedBall]`.
+
+Rewrite using `[mem_ball]`. Establish `: min ε ε2 / 2 < ε2`. Use `min_le_right ε ε2` as an intermediate fact. Combine the linear relations using `[lt_min hε hε2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `v hv`. Rewrite `hv` using `[mem_closedBall]`. Establish `hvε : dist v p < ε`. Use `min_le_left ε ε2` as an intermediate fact. Combine the linear relations using `[lt_min hε hε2]`.
+
+Establish `hR` using `hεb hvε`. Rewrite `hR` using `[Real.norm_eq_abs, norm_pow, norm_norm]`. Establish `hlo` using `hmb p rfl (v - p)`. Establish `hup` using `leviV_re_le_sum_norm g p (v - p)`. Establish `habs` using `abs_le.1 hR`.
+
+Express the relevant statement in the definitionally equal form `m * ‖v - p‖ ^ 2 ≤ (leviV n g p (fun j => (v - p) j)).re at hlo`. Express the relevant statement in the definitionally equal form `(leviV n g p (fun j => (v - p) j)).re ≤ A * ‖v - p‖ ^ 2 at hup`. Apply the tactic sequence `constructor <;> nlinarith [habs.1, habs.2, sq_nonneg ‖v - p‖]`.
+-/
 theorem psh_normal_frame : ∀ (n : ℕ) (O : Set (V n)) (φ : V n → ℝ) (p : V n), IsOpen O → p ∈ O → ContDiffOn ℝ ∞ φ O → (∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < (leviV n (fun w => ((φ w : ℝ) : ℂ)) p ξ).re) → ∃ (q : V n → ℂ) (c C ρ : ℝ), Differentiable ℂ q ∧ 0 < c ∧ 0 < C ∧ 0 < ρ ∧ closedBall p ρ ⊆ O ∧ ∀ v ∈ closedBall p ρ, c * ‖v - p‖ ^ 2 ≤ φ v - 2 * (q v).re ∧ φ v - 2 * (q v).re ≤ C * ‖v - p‖ ^ 2 := by
   intro n O φ p hO hp hφ hlevi
   set g : V n → ℂ := fun w => ((φ w : ℝ) : ℂ) with hg

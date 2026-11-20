@@ -12,6 +12,9 @@ def EtaleSemilinearCohomologyOperationImageSpec : Prop :=
 
 namespace OpCompPf
 
+/- English proof (translation)
+Simplify using `only [ev, Cochain.comp_zero_cochain_v, Cochain.ofHom_v]`. Both sides reduce to the same expression.
+-/
 theorem ev_comp_ofHom {R : Type} [CommRing R] {E : Spc} {I J : Cx R} {n : ℤ} (m : I ⟶ J)
     (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E p U) :
     ev (α.comp (Cochain.ofHom m) (add_zero n)) p s h U x = Sec.map (m.f s) (ev α p s h U x) := by
@@ -40,11 +43,17 @@ noncomputable def invMap {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : 
     simp only [AddEquiv.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe]
     rw [h3, ← h1, h2]
 
+/- English proof (translation)
+The claim follows from `(AddEquiv.ofBijective (ρ.app U s) (hb U s)).apply_symm_apply a`.
+-/
 theorem invMap_app {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ : SemiMap I J)
     (hb : ∀ (U : Scheme.{0}) (s : ℤ), Function.Bijective (ρ.app U s)) (U : Scheme.{0}) (s : ℤ) (a : Sec (J.X s) U) :
     ρ.app U s ((invMap ρ hb).app U s a) = a :=
   (AddEquiv.ofBijective (ρ.app U s) (hb U s)).apply_symm_apply a
 
+/- English proof (translation)
+The claim follows from `(AddEquiv.ofBijective (ρ.app U s) (hb U s)).symm_apply_apply a`.
+-/
 theorem app_invMap {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ : SemiMap I J)
     (hb : ∀ (U : Scheme.{0}) (s : ℤ), Function.Bijective (ρ.app U s)) (U : Scheme.{0}) (s : ℤ) (a : Sec (I.X s) U) :
     (invMap ρ hb).app U s (ρ.app U s a) = a :=
@@ -53,6 +62,19 @@ theorem app_invMap {S R : Type} [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} 
 end OpCompPf
 
 open OpCompPf in
+/- English proof (translation)
+Introduce `S R _ _ I J J' ρ ρ' u hu`. Prove the components needed by the constructor for the conclusion. Introduce `E n x`. Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨β, hβ⟩` from `(hspec S R ρ).1 E n α`.
+
+Rewrite using `[(hspec S R ρ).2 E n α β hβ, cpost_mk]`. Apply `(hspec S R ρ').2` to reduce the goal to its premises. Introduce `p s h U y`. Use `show ev (β.1.comp (Cochain.ofHom u) (add_zero n)) p s h U y = _`. Rewrite using `[ev_comp_ofHom, hβ p s h U y, hu]`.
+
+Introduce `hb E n`. Set `σ` to `invMap ρ hb`. Rewrite using `[Function.bijective_iff_has_inverse]`. Use `⟨σ.op.app E n, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`.
+
+Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨β, hβ⟩` from `(hspec S R ρ).1 E n α`. Rewrite using `[(hspec S R ρ).2 E n α β hβ]`. Apply `(hspec R S σ).2` to reduce the goal to its premises. Introduce `p s h U y`.
+
+Rewrite using `[hβ p s h U y]`. Conclude with `(app_invMap ρ hb U s _).symm`. Introduce `x`. Take `⟨β, rfl⟩` from `x.mk_surjective`. Take `⟨γ, hγ⟩` from `(hspec R S σ).1 E n β`.
+
+Rewrite using `[(hspec R S σ).2 E n β γ hγ]`. Apply `(hspec S R ρ).2` to reduce the goal to its premises. Introduce `p s h U y`. Rewrite using `[hγ p s h U y]`. Conclude with `(invMap_app ρ hb U s _).symm`.
+-/
 theorem etale_cohomology_operation_comp_of_image_spec (hspec : EtaleSemilinearCohomologyOperationImageSpec) : EtaleCochainSemilinearMapCompCompatible := by
   intro S R _ _ I J J' ρ ρ' u hu
   constructor

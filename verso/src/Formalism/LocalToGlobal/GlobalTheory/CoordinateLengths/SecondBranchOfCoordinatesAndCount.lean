@@ -33,6 +33,9 @@ def SecondBranchCoordinates (D : D7) (u : D.what₂.Word) : Prop :=
 def DuCount (D : D7) (u : D.what₂.Word) : Prop :=
   D.duS u = Fintype.card ((D.mem u).C.cls 0) * ∏ τ, Module.finrank ℤ (delSq ℤ (D.R.N 0) ((D.fm u).lam 0 τ))
 
+/- English proof (translation)
+Introduce `w hw hs v hb`. Take `⟨B, B', hB, hB', hu, hO1, hO2⟩` from `hC T hA w hw hs v hb`. Conclude with `lenLen2_of_coord D u T.atT T.lv0 w hw v (fun c => Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0.bwL_lcInt0 D u T 0 (Nat.zero_le _) rfl c) B B' hB hB' hu (crdL T B w) (crdL_inj T B w) (le_antisymm (crdL_Bw_le T w hw hs v B B' hB hB') hO1) (le_antisymm (crdL_tL_le T w hw B h …`.
+-/
 theorem lenLen2_of_coordOnto {D : D7} {u : D.what₂.Word} (T : Forms0 D u) (hA : admS D u) (hC : SecondBranchCoordinates D u)
     (hd : DuCount D u) : SeenPlaceLatticeLengthFormula D u := by
   intro w hw hs v hb
@@ -41,6 +44,9 @@ theorem lenLen2_of_coordOnto {D : D7} {u : D.what₂.Word} (T : Forms0 D u) (hA 
     (crdL T B w) (crdL_inj T B w) (le_antisymm (crdL_Bw_le T w hw hs v B B' hB hB') hO1)
     (le_antisymm (crdL_tL_le T w hw B hB _) hO2) hd
 
+/- English proof (translation)
+Introduce `D u` and use `Formalism.MainNotions.lemmaB_second_branch_of_length_formula D u fun _ hT => by obtain ⟨⟨Ch, chOf, T, -⟩, hA⟩ := hT exact lenLen2_of_coordOnto T.to0 hA (hC D u) (hd D u T.to0 hA)`.
+-/
 theorem second_branch_of_coordinates_and_count (hC : ∀ (D : D7) (u : D.what₂.Word), SecondBranchCoordinates D u)
     (hd : ∀ (D : D7) (u : D.what₂.Word), Forms0 D u → admS D u → DuCount D u) :
     ∀ (D : D7) (u : D.what₂.Word), Formalism.MainNotions.RT.SecondBranchIntegralityUnderForms D u := fun D u =>

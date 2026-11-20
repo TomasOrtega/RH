@@ -10,6 +10,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 open GlobalTheory.FlatPlace GlobalTheory.LocMod GlobalTheory.SplitWeil
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Introduce `hLat t w hw p hp j hj d c hde hc`. Establish `hr : (Pair.top t j : Pair T).InRange D.R.m` using `hj`. Take `⟨f₀, hf₀⟩` from `exists_isVac ch.W hL hr`.
+
+Establish `hf0 : f₀ ≠ 0`. Introduce `h0`. Take `⟨⟨q, hq⟩, hn⟩` from `hf₀.2.norm`. Use `hn q hq` as an intermediate fact. Rewrite `this` using `[h0]`.
+
+Simplify using `[nrm2] at this`. Establish `hψ : IsStdChar D ch.W.ψ (-1)` using `ch.W.ψ_std`. Establish `hth` using `hc.2.2 f₀ hf₀.2.theta hf₀.2.lat`. Establish `sdS` using `(node_isV ch.G hL (X := .top j) hj.le).sd`. Establish `sdT` using `(node_isV ch.G hL (X := .top (j + 1)) hj).sd`.
+
+Establish `hsb` using `d.sb`. Establish `hth' : FinDatum.IsTheta ch.W d _ _ f₀ _` using `hth`. Unfold `FinDatum.IsTheta at hth'`. Rewrite `hsb`, `hth'` using `[hde]`. Take `⟨Tm, hTm, hO, Φ, hΦ, hTΦ⟩` from `GlobalTheory.T.exists_localModel_of_splitPlaceThetaFun D (Kw w) p ch.W.ψ hψ _ _ _ _ sdS sdT _ _ (frTop ch.S.toGridChoice t w j hj.le) (frTop ch.S.toGridChoice t w (j + 1) hj) ((hLat t w hw p hp j hj).2) f₀ d.fn _ hf₀.2.theta hsb hth'`.
+
+Take `⟨O, hO1, -⟩` from `GlobalTheory.LocMod.PinModel.exists_isOne (k := Kw w) (Y := Fin (topRank (locGrid ch.G t w) (j + 1))) (Y' := Fin (topRank (locGrid ch.G t w) j))`. Establish `hhalf` using `hc.2.1`. Rewrite `hhalf` using `[hde]`. Use `⟨Φ, hΦ, GlobalTheory.T.combination_produces_datum_all_localModels D (Kw w) p ch.W.ψ hψ _ _ _ _ _ _ c hhalf Tm hTm O Φ hO1 ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[hO O hO1]`.
+
+Conclude with `hf0`. Rewrite using `[hTΦ, hO O hO1]`.
+-/
 theorem GlobalTheory.FlatPlace.eventually_combination_of_lattice : Big fun ch => LatP ch → CombP ch := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩
   have hL : R.toLevCh.Is A.μ0 := s.core.lev

@@ -11,6 +11,11 @@ noncomputable section
 
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Establish `hev : fderiv ℝ (fun z => G (ψ z)) =ᶠ[𝓝 y] fun z => G₁ (ψ z) • fderiv ℝ ψ z` using `by filter_upwards [hG, hψ.eventually (by simp)] with z h1 h2`. Conclude with `(h1.comp_hasFDerivAt z (h2.differentiableAt (by norm_num)).hasFDerivAt).fderiv`. Establish `hD2 : HasFDerivAt (fderiv ℝ ψ) (fderiv ℝ (fderiv ℝ ψ) y) y` using `((hψ.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`. Establish `hc : HasFDerivAt (fun z => G₁ (ψ z)) (g₂ • fderiv ℝ ψ y) y` using `hG₁.comp_hasFDerivAt y (hψ.differentiableAt (by norm_num)).hasFDerivAt`. Establish `h` using `((hc.smul hD2).congr_of_eventuallyEq hev).fderiv`.
+
+Rewrite using `[h]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul]`.
+-/
 theorem fderiv2_comp_real {ψ : (ι → ℂ) → ℝ} {G G₁ : ℝ → ℝ} {g₂ : ℝ} {y : ι → ℂ}
     (hψ : ContDiffAt ℝ 2 ψ y) (hG : ∀ᶠ z in 𝓝 y, HasDerivAt G (G₁ (ψ z)) (ψ z))
     (hG₁ : HasDerivAt G₁ g₂ (ψ y)) (v w : ι → ℂ) :
@@ -28,6 +33,9 @@ theorem fderiv2_comp_real {ψ : (ι → ℂ) → ℝ} {G G₁ : ℝ → ℝ} {g�
   simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
     ContinuousLinearMap.smulRight_apply, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h` using `(hG.comp_hasFDerivAt y hψ.hasFDerivAt).fderiv`. Rewrite using `[show (fun z => G (ψ z)) = G ∘ ψ from rfl, h]`. Simplify using the standard rewrite rules.
+-/
 theorem fderiv_comp_real {ψ : (ι → ℂ) → ℝ} {G : ℝ → ℝ} {g₁ : ℝ} {y : ι → ℂ}
     (hψ : DifferentiableAt ℝ ψ y) (hG : HasDerivAt G g₁ (ψ y)) (v : ι → ℂ) :
     fderiv ℝ (fun z => G (ψ z)) y v = g₁ * fderiv ℝ ψ y v := by
@@ -35,6 +43,9 @@ theorem fderiv_comp_real {ψ : (ι → ℂ) → ℝ} {G : ℝ → ℝ} {g₁ : �
   rw [show (fun z => G (ψ z)) = G ∘ ψ from rfl, h]
   simp
 
+/- English proof (translation)
+Unfold `levi`. Rewrite using `[fderiv2_comp_real hψ hG hG₁, fderiv2_comp_real hψ hG hG₁]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_comp_real {ψ : (ι → ℂ) → ℝ} {G G₁ : ℝ → ℝ} {g₂ : ℝ} {y : ι → ℂ}
     (hψ : ContDiffAt ℝ 2 ψ y) (hG : ∀ᶠ z in 𝓝 y, HasDerivAt G (G₁ (ψ z)) (ψ z))
     (hG₁ : HasDerivAt G₁ g₂ (ψ y)) (w : ι → ℂ) :
@@ -44,6 +55,9 @@ theorem levi_comp_real {ψ : (ι → ℂ) → ℝ} {G G₁ : ℝ → ℝ} {g₂ 
   rw [fderiv2_comp_real hψ hG hG₁, fderiv2_comp_real hψ hG hG₁]
   ring
 
+/- English proof (translation)
+Establish `hS' : HasFDerivAt S ((fderiv ℂ S y).restrictScalars ℝ) y` using `hS.differentiableAt.hasFDerivAt.restrictScalars ℝ`. Establish `h` using `(Complex.reCLM.hasFDerivAt.comp y hS').fderiv`. Rewrite using `[show (fun z => (S z).re) = Complex.reCLM ∘ S from rfl, h]`. Simplify using the standard rewrite rules.
+-/
 theorem fderiv_re_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS : AnalyticAt ℂ S y) (v : ι → ℂ) :
     fderiv ℝ (fun z => (S z).re) y v = (fderiv ℂ S y v).re := by
   have hS' : HasFDerivAt S ((fderiv ℂ S y).restrictScalars ℝ) y :=
@@ -52,9 +66,15 @@ theorem fderiv_re_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS : Ana
   rw [show (fun z => (S z).re) = Complex.reCLM ∘ S from rfl, h]
   simp
 
+/- English proof (translation)
+Simplify using `[Complex.mul_re]`.
+-/
 theorem im_eq_re_mul (c : ℂ) : c.im = (-Complex.I * c).re := by
   simp [Complex.mul_re]
 
+/- English proof (translation)
+Establish `hS2 : AnalyticAt ℂ (fun z => -Complex.I * S z) y` using `analyticAt_const.mul hS`. Establish `h1 : (fun z => (S z).im) = fun z => (-Complex.I * S z).re` using `funext fun z => im_eq_re_mul _`. Rewrite using `[h1, fderiv_re_analytic hS2, fderiv_const_mul hS.differentiableAt]`. Simplify using `[Complex.mul_re]`.
+-/
 theorem fderiv_im_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS : AnalyticAt ℂ S y) (v : ι → ℂ) :
     fderiv ℝ (fun z => (S z).im) y v = (fderiv ℂ S y v).im := by
   have hS2 : AnalyticAt ℂ (fun z => -Complex.I * S z) y := analyticAt_const.mul hS
@@ -62,6 +82,9 @@ theorem fderiv_im_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS : Ana
   rw [h1, fderiv_re_analytic hS2, fderiv_const_mul hS.differentiableAt]
   simp [Complex.mul_re]
 
+/- English proof (translation)
+Establish `hS2 : AnalyticAt ℂ (fun z => -Complex.I * S z) y` using `analyticAt_const.mul hS`. Establish `h1 : (fun z => (S z).im) = fun z => (-Complex.I * S z).re` using `funext fun z => im_eq_re_mul _`. Rewrite using `[h1]`. Conclude with `levi_re_analytic hS2 w`.
+-/
 theorem levi_im_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS : AnalyticAt ℂ S y) (w : ι → ℂ) :
     levi (fun z => (S z).im) y w = 0 := by
   have hS2 : AnalyticAt ℂ (fun z => -Complex.I * S z) y := analyticAt_const.mul hS
@@ -69,21 +92,40 @@ theorem levi_im_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS : Analy
   rw [h1]
   exact levi_re_analytic hS2 w
 
+/- English proof (translation)
+The claim follows from `(Complex.reCLM.contDiff (n := 2)).contDiffAt.comp y (hS.restrictScalars (𝕜 := ℝ)).contDiffAt`.
+-/
 theorem contDiffAt_re_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS : AnalyticAt ℂ S y) :
     ContDiffAt ℝ 2 (fun z => (S z).re) y :=
   (Complex.reCLM.contDiff (n := 2)).contDiffAt.comp y (hS.restrictScalars (𝕜 := ℝ)).contDiffAt
 
+/- English proof (translation)
+The claim follows from `(Complex.imCLM.contDiff (n := 2)).contDiffAt.comp y (hS.restrictScalars (𝕜 := ℝ)).contDiffAt`.
+-/
 theorem contDiffAt_im_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS : AnalyticAt ℂ S y) :
     ContDiffAt ℝ 2 (fun z => (S z).im) y :=
   (Complex.imCLM.contDiff (n := 2)).contDiffAt.comp y (hS.restrictScalars (𝕜 := ℝ)).contDiffAt
 
+/- English proof (translation)
+Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sq_norm_eq_re_im (c : ℂ) : ‖c‖ ^ 2 = c.re ^ 2 + 1 * c.im ^ 2 := by
   rw [Complex.sq_norm, Complex.normSq_apply]
   ring
 
+/- English proof (translation)
+Simplify using `using hasDerivAt_pow 2 x`.
+-/
 theorem hasDerivAt_sq' (x : ℝ) : HasDerivAt (fun x : ℝ => x ^ 2) (2 * x) x := by
   simpa using hasDerivAt_pow 2 x
 
+/- English proof (translation)
+Establish `hre` using `contDiffAt_re_analytic hS`. Establish `him` using `contDiffAt_im_analytic hS`. Establish `e : (fun z => ‖S z‖ ^ 2) = fun z => (S z).re ^ 2 + 1 * (S z).im ^ 2`. Use function extensionality and compare the values at `fun z => sq_norm_eq_re_im _`. Establish `hG : ∀ (ψ : (ι → ℂ) → ℝ), ∀ᶠ z in 𝓝 y, HasDerivAt (fun x : ℝ => x ^ 2) (2 * ψ z) (ψ z)` using `fun ψ => Eventually.of_forall fun z => hasDerivAt_sq' _`.
+
+Establish `hG₁ : ∀ x : ℝ, HasDerivAt (fun x : ℝ => 2 * x) 2 x` using `fun x => by`. Simplify using `using (hasDerivAt_id x).const_mul (2 : ℝ)`. Establish `l1` using `levi_comp_real (G₁ := fun x => 2 * x) hre (hG _) (hG₁ _) w`. Establish `l2` using `levi_comp_real (G₁ := fun x => 2 * x) him (hG _) (hG₁ _) w`. Establish `hsq : ∀ (ψ : (ι → ℂ) → ℝ), ContDiffAt ℝ 2 ψ y → ContDiffAt ℝ 2 (fun z => ψ z ^ 2) y` using `fun ψ h => h.pow 2`.
+
+Rewrite using `[e, levi_add_smul 1 (hsq _ hre) (hsq _ him), l1, l2, levi_re_analytic hS, levi_im_analytic hS, fderiv_re_analytic hS, fderiv_re_analytic hS, fderiv_im_analytic hS, fderiv_im_analytic hS, map_smul, sq_norm_eq_re_im]`. Simplify using `only [smul_eq_mul, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_normSq_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS : AnalyticAt ℂ S y) (w : ι → ℂ) :
     levi (fun z => ‖S z‖ ^ 2) y w = ‖fderiv ℂ S y w‖ ^ 2 := by
   have hre := contDiffAt_re_analytic hS
@@ -104,6 +146,11 @@ theorem levi_normSq_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS : A
   simp only [smul_eq_mul, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im]
   ring
 
+/- English proof (translation)
+Establish `hre` using `contDiffAt_re_analytic hS`. Establish `him` using `contDiffAt_im_analytic hS`. Establish `e : (fun z => ‖S z‖ ^ 2) = fun z => (S z).re ^ 2 + (S z).im ^ 2`. Use function extensionality and compare the values at `fun z => by rw [sq_norm_eq_re_im, one_mul]`. Establish `d1 : DifferentiableAt ℝ (fun z => (S z).re ^ 2) y` using `(hre.differentiableAt (by norm_num)).pow 2`.
+
+Establish `d2 : DifferentiableAt ℝ (fun z => (S z).im ^ 2) y` using `(him.differentiableAt (by norm_num)).pow 2`. Rewrite using `[e, fderiv_fun_add d1 d2, ContinuousLinearMap.add_apply, fderiv_comp_real (G := fun x : ℝ => x ^ 2) (hre.differentiableAt (by norm_num)) (hasDerivAt_sq' _), fderiv_comp_real (G := fun x : ℝ => x ^ 2) (him.differentiableAt (by norm_num)) (hasDerivAt_sq' _), fderiv_re_analytic hS, …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fderiv_normSq_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS : AnalyticAt ℂ S y) (v : ι → ℂ) :
     fderiv ℝ (fun z => ‖S z‖ ^ 2) y v =
       2 * ((S y).re * (fderiv ℂ S y v).re + (S y).im * (fderiv ℂ S y v).im) := by
@@ -122,6 +169,27 @@ theorem fderiv_normSq_analytic {S : (ι → ℂ) → ℂ} {y : ι → ℂ} (hS :
       (hasDerivAt_sq' _), fderiv_re_analytic hS, fderiv_im_analytic hS]
   ring
 
+/- English proof (translation)
+Use `set h : (ι → ℂ) → ℝ := fun z => ‖S z‖ ^ 2 + ε * Real.exp (2 * Φ z) with hh`. Establish `hpos : ∀ z, 0 < h z` using `fun z => by`. Use `Real.exp_pos (2 * Φ z)` as an intermediate fact. Check the signs of the components of the expression. Establish `hSc : ContDiffAt ℝ 2 S y` using `(hS.restrictScalars (𝕜 := ℝ)).contDiffAt`.
+
+Establish `hQ : ContDiffAt ℝ 2 (fun z => ‖S z‖ ^ 2) y` using `(contDiff_norm_sq ℝ).contDiffAt.comp y hSc`. Establish `h2Φ : ContDiffAt ℝ 2 (fun z => 2 * Φ z) y` using `contDiffAt_const.mul hΦ`. Establish `hE : ContDiffAt ℝ 2 (fun z => Real.exp (2 * Φ z)) y` using `h2Φ.exp`. Establish `hhc : ContDiffAt ℝ 2 h y` using `hQ.add (contDiffAt_const.mul hE)`. Establish `l2Φ` using `levi_comp_real (G := fun x : ℝ => 2 * x) (G₁ := fun _ => 2) (g₂ := 0) hΦ (Eventually.of_forall fun z => by simpa using (hasDerivAt_id (Φ z)).const_mul (2 : ℝ)) (hasDerivAt_const _ _) w`.
+
+Establish `lE` using `levi_comp_real (G := Real.exp) (G₁ := Real.exp) (g₂ := Real.exp (2 * Φ y)) h2Φ (Eventually.of_forall fun z => Real.hasDerivAt_exp _) (Real.hasDerivAt_exp _) w`. Establish `d2Φ : ∀ v, fderiv ℝ (fun z => 2 * Φ z) y v = 2 * fderiv ℝ Φ y v` using `fun v => fderiv_comp_real (G := fun x : ℝ => 2 * x) (hΦ.differentiableAt (by norm_num)) (by simpa using (hasDerivAt_id (Φ y)).const_mul (2 : ℝ)) v`. Establish `dE : ∀ v, fderiv ℝ (fun z => Real.exp (2 * Φ z)) y v = Real.exp (2 * Φ y) * (2 * fderiv ℝ Φ y v)` using `fun v => by`. Rewrite using `[fderiv_comp_real (G := Real.exp) (h2Φ.differentiableAt (by norm_num)) (Real.hasDerivAt_exp _), d2Φ]`. Establish `dh : ∀ v, fderiv ℝ h y v = 2 * ((S y).re * (fderiv ℂ S y v).re + (S y).im * (fderiv ℂ S y v).im) + ε * (Real.exp (2 * Φ y) * (2 * fderiv ℝ Φ y v))`.
+
+Introduce `v`. Establish `d1 : DifferentiableAt ℝ (fun z => ‖S z‖ ^ 2) y` using `hQ.differentiableAt (by norm_num)`. Establish `d2 : DifferentiableAt ℝ (fun z => ε * Real.exp (2 * Φ z)) y` using `(contDiffAt_const.mul hE).differentiableAt (by norm_num)`. Rewrite using `[hh, fderiv_fun_add d1 d2, ContinuousLinearMap.add_apply, fderiv_normSq_analytic hS, fderiv_const_mul (hE.differentiableAt (by norm_num)), ContinuousLinearMap.smul_apply, dE, smul_eq_mul]`. Establish `lh : levi h y w = ‖fderiv ℂ S y w‖ ^ 2 + ε * (Real.exp (2 * Φ y) * (2 * levi Φ y w) + Real.exp (2 * Φ y) * ((2 * fderiv ℝ Φ y w) ^ 2 + (2 * fderiv ℝ Φ y (Complex.I • w)) ^ 2) / 4)`.
+
+Rewrite using `[hh, levi_add_smul ε hQ hE, levi_normSq_analytic hS, lE, l2Φ, d2Φ, d2Φ]`. Expand and normalize the polynomial expressions, which then agree. Establish `lK` using `levi_comp_real (G := Real.log) (G₁ := fun x => x⁻¹) (g₂ := -(h y ^ 2)⁻¹) hhc (Eventually.of_forall fun z => Real.hasDerivAt_log (hpos z).ne') (hasDerivAt_inv (hpos y).ne') w`. Express the relevant statement in the definitionally equal form `_ ≤ levi (fun z => Real.log (h z)) y w`. Rewrite using `[lK, lh, dh, dh, (fderiv ℂ S y).map_smul Complex.I w, sq_norm_eq_re_im (fderiv ℂ S y w)]`.
+
+Simplify using `only [smul_eq_mul, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im]`. Use `set E := ε * Real.exp (2 * Φ y) with hEdef`. Establish `hEpos : 0 < E` using `mul_pos hε (Real.exp_pos _)`. Establish `hy : h y = ‖S y‖ ^ 2 + E` using `rfl`. Rewrite `hy` using `[sq_norm_eq_re_im (S y)]`.
+
+Use `set σr := (S y).re`. Use `set σi := (S y).im`. Use `set ar := (fderiv ℂ S y w).re`. Use `set ai := (fderiv ℂ S y w).im`. Use `set b₁ := fderiv ℝ Φ y w`.
+
+Use `set b₂ := fderiv ℝ Φ y (Complex.I • w)`. Use `set L := levi Φ y w`. Establish `hhy : 0 < h y` using `hpos y`. Rewrite using `[show ‖S y‖ ^ 2 + E = h y from rfl]`. Establish `key : (h y)⁻¹ * (ar ^ 2 + 1 * ai ^ 2 + ε * (Real.exp (2 * Φ y) * (2 * L) + Real.exp (2 * Φ y) * ((2 * b₁) ^ 2 + (2 * b₂) ^ 2) / 4)) + -(h y ^ 2)⁻¹ * ((2 * (σr * ar + σi * ai) + ε * (Real.exp (2 * Φ y) * (2 * b₁))) ^ 2 + (2 * (σr * (0 * ar - 1 * ai) + σi * (0 * ai + 1 * ar)) + ε * …`.
+
+Rewrite using `[hy]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hEdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : 0 ≤ E * ((ar - (σr * b₁ + σi * b₂)) ^ 2 + (ai - (σi * b₁ - σr * b₂)) ^ 2) / h y ^ 2` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem levi_log_normSq_add_exp {S : (ι → ℂ) → ℂ} {Φ : (ι → ℂ) → ℝ} {y : ι → ℂ} {ε : ℝ}
     (hS : AnalyticAt ℂ S y) (hΦ : ContDiffAt ℝ 2 Φ y) (hε : 0 < ε) (w : ι → ℂ) :
     2 * (ε * Real.exp (2 * Φ y)) / (‖S y‖ ^ 2 + ε * Real.exp (2 * Φ y)) * levi Φ y w ≤

@@ -17,6 +17,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.VdmProj
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `hs (genericPoint B₁)`. Establish `h₂ : Limits.pullback.snd π g (genericPoint (Limits.pullback π g : Scheme.{0})) = genericPoint B₁` using `GenericBaseChange.eq_genericPoint_of_specializes (hz ▸ (genericPoint_specializes z).map (Limits.pullback.snd π g).continuous)`. Establish `hF` using `GlobalTheory.T.generic_point_pullback_residue_field GlobalTheory.T.isField_of_unique_prime_stalk π g (GlobalTheory.T.spec_tensor_preimmersion _ _ _) (h₂ ▸ hg)`. Rewrite using `[GlobalTheory.T.residue_degree_fst_eq_finrank π g _ hF, GlobalTheory.T.finrank_tensor_residue_degree]`. Express the relevant statement in the definitionally equal form `g.residueDegree (Limits.pullback.snd π g (genericPoint _)) = _`.
+
+Rewrite using `[h₂]`.
+-/
 theorem residueDegree_fst_eq {B B₁ Y : Scheme.{0}} [IsIntegral B₁] (π : Y ⟶ B) (g : B₁ ⟶ B)
     [IsIntegral (Limits.pullback π g)] (hs : Function.Surjective (Limits.pullback.snd π g))
     (hg : g.residueDegree (genericPoint B₁) ≠ 0) :
@@ -31,6 +36,15 @@ theorem residueDegree_fst_eq {B B₁ Y : Scheme.{0}} [IsIntegral B₁] (π : Y �
   change g.residueDegree (Limits.pullback.snd π g (genericPoint _)) = _
   rw [h₂]
 
+/- English proof (translation)
+Establish `hE : ∀ a, GlobalTheory.VB.IsVB (E a) (r a)` using `fun a => (h a).isVB`. Establish `hD : D - e = ∑ a, r a * (r a - 1) / 2`. Use `GlobalTheory.T.flag_bundle_smooth_relative_dimension B Y π ι E r fl hE hfl` as an intermediate fact. Use `hq.isLocallyNoetherian` as an intermediate fact. Establish `h₁` using `(GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_of_smooth_surjective B Y π (∑ a, r a * (r a - 1) / 2) e (GlobalTheory.FlagSurj.isFlagBundle_surjective B Y π ι E r fl hE hfl) hq.dim_eq).symm.trans hp.dim_eq`.
+
+Establish `h₂ : e + (∑ a, r a * (r a - 1) / 2) + 1 = D + 1` using `by exact_mod_cast h₁`. Use linear arithmetic over natural numbers and integers. Take `⟨Ψ', hΨ'⟩` from `((HP.p4.arExists k Y _ _ hp).2 _ (Sum.elim (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)) fun a => (A a).pull π w)).1`. Establish `key` using `GlobalTheory.T.flag_bundle_metric_setup HP k B Y q p e D hq hreg hp π w ι E r h H fl hfl μ A Φ Ψ' hΦ hΨ' P _ _ hP (hD ▸ FlagPullSquare.isHomogeneous_rootDiscr r) (FlagPullSquare.antisymm_rootDiscr r)`. Establish `e₁` using `apply_aeval HP.p4.arIso hp hΨ hΨ' (Sum.elim (fun z => MvPolynomial.X (x z)) fun m => MvPolynomial.X (y m)) (by`.
+
+Introduce and unpack `(z | m)`. Conclude with `⟨Pi.single (x z) 1, by simp [lin, Pi.single_apply, apply_ite], by`. Simplify `HermLB.icls_eq_iff.2 (hx z)⟩` using `[Pi.single_apply]`. Conclude with `⟨Pi.single (y m) 1, by simp [lin, Pi.single_apply, apply_ite], by`. Simplify `HermLB.icls_eq_iff.2 (hy m)⟩)` using `[Pi.single_apply]`.
+
+Use the proof step `(rename Sum.inl (GoodMetric.rootDiscr r) * rename Sum.inr P)`. Rewrite using `[← key, ← e₁, vdm, FlagPullSquare.prod_Ioi_eq_rootDiscr]`. Use `congr 1`. Rewrite using `[map_mul, aeval_rename, aeval_rename, rename_eq_aeval, rename_eq_aeval]`. Both sides reduce to the same expression.
+-/
 theorem vdm_mul_pull_of_regular (HP : Hypotheses2) {k : Type} [CommRing k] {B Y : Scheme.{0}} [IsIntegral B] [IsIntegral Y]
     {q : B ⟶ Sp k} {p : Y ⟶ Sp k} {e D : ℕ} (hq : IsArithVar q e) (hreg : ∀ b : B, IsRegularLocalRing (B.presheaf.stalk b))
     (hp : IsArithVar p D) (π : Y ⟶ B) (w : π ≫ q = p) {ι : Type} [Fintype ι] {E : ι → B.Modules} {r : ι → ℕ}
@@ -65,6 +79,13 @@ theorem vdm_mul_pull_of_regular (HP : Hypotheses2) {k : Type} [CommRing k] {B Y 
   rw [map_mul, aeval_rename, aeval_rename, rename_eq_aeval, rename_eq_aeval]
   rfl
 
+/- English proof (translation)
+Introduce `HP hR k _ B Y _ _ q p e D hq hp π w ι _ E r h H fl hfl κ μ _ _ L A x y hx hy Φ Ψ hΦ hΨ P hP`. Substitute `w` using the available equality. Establish `hE : ∀ a, GlobalTheory.VB.IsVB (E a) (r a)` using `fun a => (h a).isVB`. Take `⟨B₁, _, g, a₁, hreg, a₃, a₄⟩` from `AlterationOrder.regularAlteration_order hR k B q e hq`. Take `⟨_, hf⟩` from `Gen.isCov_pullback_fst hq hp ⟨a₁, a₃, a₄⟩ hE hfl`.
+
+Establish `hfl'` using `FlagBaseChange.isFlagBundle_pullFlag B Y B₁ π g ι E r fl hfl`. Establish `w₁ : Limits.pullback.fst π g ≫ π ≫ q = Limits.pullback.snd π g ≫ g ≫ q` using `Limits.pullback.condition_assoc q`. Establish `hdeg` using `residueDegree_fst_eq π g (GlobalTheory.FlagSurj.isFlagBundle_surjective _ _ _ ι _ r _ (fun a => (hE a).pullback g) hfl') a₄`. Establish `hΦ₁` using `(HP.p4.arProj k B B₁ q _ _ hq a₁ g rfl a₃ a₄).2 _ _ Φ hΦ`. Establish `hΨ₁` using `(HP.p4.arProj k Y _ _ _ _ hp (w₁ ▸ hf.1) _ w₁ hf.2.1 hf.2.2).2 _ _ Ψ hΨ`.
+
+Establish `key` using `vdm_mul_pull_of_regular HP a₁ hreg (w₁ ▸ hf.1) (Limits.pullback.snd π g) rfl (fun a => (H a).pull g rfl) hfl' x y (fun z => ((hx z).pull _ w₁).trans (Gen.isometric_grLB_pull_ofIso _ _ w₁ (Gen.isIsometry_sqIso Limits.pullback.condition (h z.1) rfl rfl w₁ rfl) (fl z.1) z.2)) (fun m …`. Rewrite `key` using `[LinearMap.smul_apply, LinearMap.smul_apply, hdeg, smul_eq_mul, smul_eq_mul, mul_left_comm]`. Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 a₄) key`.
+-/
 theorem vdm_mul_pull : Hypotheses2 → RegularAlteration → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (e D : ℕ), IsArithVar q e → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ (κ μ : Type) [Fintype κ] [Fintype μ] (L : κ → HermLB p) (A : μ → HermLB q) (x : (Σ a, Fin (r a)) → κ) (y : μ → κ), (∀ z, (L (x z)).Isometric (VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w))) → (∀ m, (L (y m)).Isometric ((A m).pull π w)) → ∀ (Φ : MvPolynomial μ ℝ →ₗ[ℝ] ℝ) (Ψ : MvPolynomial κ ℝ →ₗ[ℝ] ℝ), IsArFun A e Φ → IsArFun L D Ψ → ∀ P : MvPolynomial μ ℝ, P.IsHomogeneous (e + 1) → Ψ (rename x (vdm r) * rename y P) = (∏ a, ((r a).factorial : ℝ)) * Φ P := by
   intro HP hR k _ B Y _ _ q p e D hq hp π w ι _ E r h H fl hfl κ μ _ _ L A x y hx hy Φ Ψ hΦ hΨ P hP
   subst w

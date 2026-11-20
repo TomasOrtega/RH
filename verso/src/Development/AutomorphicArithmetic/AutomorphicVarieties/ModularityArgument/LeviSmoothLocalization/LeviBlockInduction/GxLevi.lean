@@ -10,6 +10,53 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 namespace UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 
+/- English proof (translation)
+Establish `_ : ∀ m : ℕ, BorelSpace (GL (Fin m) F)` using `fun m => borelSpace_GL_units m`. Use `set e := leviEquivPi F β with he`. Use `set κ' : (∀ a : Set.range β, GL (Fin (blockSize β a)) F) →* ℝ≥0 := κ.comp e.symm.toMonoidHom with hκ'def`. Establish `hκ' : Continuous κ'` using `hκ.comp e.symm.continuous`. Use `set σ' : Representation ℂ (∀ a : Set.range β, GL (Fin (blockSize β a)) F) W := σ.comp e.symm.toMonoidHom with hσ'def`.
+
+Use `set ρ₀ := twist (nnrealCharC κ') σ' with hρ₀def`. Use `set ρ : Representation ℂ ((∀ a : Set.range β, GL (Fin (blockSize β a)) F) × PUnit.{1}) W := ρ₀.comp (prodPUnitEquiv (∀ a : Set.range β, GL (Fin (blockSize β a)) F)).toMulEquiv.toMonoidHom with hρdef`. Establish `hρ : ∀ x (h : PUnit.{1}) v, ρ (x, h) v = ((κ (e.symm x) : ℝ) : ℂ) • σ (e.symm x) v` using `fun x h v => rfl`. Establish `hσ' : IsAdmissible σ'` using `(isAdmissible_comp_iff e.symm σ).2 hσ`. Establish `hadm : IsAdmissible ρ` using `(isAdmissible_comp_iff (prodPUnitEquiv (∀ a : Set.range β, GL (Fin (blockSize β a)) F)) ρ₀).2 (isAdmissible_twist κ' hκ' σ' hσ')`.
+
+Establish `hirr' : σ'.IsIrreducible` using `(isIrreducible_comp_iff e.symm σ).2 inferInstance`. Establish `hirr : ρ.IsIrreducible` using `(isIrreducible_comp_iff (prodPUnitEquiv (∀ a : Set.range β, GL (Fin (blockSize β a)) F)) ρ₀).2 (isIrreducible_twist κ' σ')`. Establish `hsm : ∀ ℓ : Module.Dual ℂ W, ℓ ∈ smoothVectors (Representation.dual ρ) ↔ ℓ ∈ smoothVectors (Representation.dual σ)` using `fun ℓ => by`. Rewrite using `[mem_smoothVectors_dual_comp_iff (prodPUnitEquiv (∀ a : Set.range β, GL (Fin (blockSize β a)) F)) ρ₀, mem_smoothVectors_dual_twist_iff κ' hκ' σ', mem_smoothVectors_dual_comp_iff e.symm σ]`. Establish `hW : Nontrivial W` using `nontrivial_of_isIrreducible σ`.
+
+Establish `hω0 : ∀ a, ω a ≠ 0`. Introduce `a h0`. Take `⟨v, hv⟩` from `exists_ne (0 : W)`. Apply `hv` to reduce the goal to its premises. Establish `h1 : σ (blockUnif F a)⁻¹ (σ (blockUnif F a) v) = v`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← h1, hω, h0, zero_smul, map_zero]`. Use `set αc : Set.range β → ℂ := fun a => ((κ (blockUnif F a) : ℝ) : ℂ) * ω a with hαc`. Establish `hα0 : ∀ a, αc a ≠ 0` using `fun a => mul_ne_zero (by simpa using nnrealCharC_ne_zero κ (blockUnif F a)) (hω0 a)`. Establish `hα : ∀ a v, ρ (Pi.mulSingle a (centralUnif F (blockSize β a)), 1) v = αc a • v`.
+
+Introduce `a v`. Rewrite using `[hρ, leviEquivPi_symm_mulSingle, hω, smul_smul]`. Establish `hsupp : ∀ v : W, ∀ ℓ ∈ smoothVectors (Representation.dual ρ), ∃ C : Set (∀ a : Set.range β, GL (Fin (blockSize β a)) F), IsCompact C ∧ ∀ x, ℓ (ρ (x, 1) v) ≠ 0 → ∃ j : Set.range β → ℤ, (fun a => centralUnif F (blockSize β a) ^ j a) * x ∈ C`. Introduce `v ℓ hℓ`. Establish `hℓσ` using `(hsm ℓ).1 hℓ`.
+
+Take `⟨CM, hCM, hCMs⟩` from `exists_compact_of_coeff hσ.1 hc v hℓσ (fun _ => 0) (fun b => (blockSize β b : ℤ) - 1)`. Use `⟨e '' CM, hCM.image e.continuous, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hpos : ∀ b, (0 : ℤ) < blockSize β b` using `fun b => by exact_mod_cast blockSize_pos β b`. Use `set j : Set.range β → ℤ := fun b => -(ordDet (x b) / blockSize β b) with hj`. Use `⟨j, e.symm ((fun a => centralUnif F (blockSize β a) ^ j a) * x), ?_, by simp⟩` and prove the remaining obligations.
+
+Use `hCMs _ ?_ fun b => ?_` and prove the remaining obligations. Establish `hmul` using `apply_centralPow ρ hα0 hα j (ρ (x, 1) v)`. Establish `h2 : ρ ((fun a => centralUnif F (blockSize β a) ^ j a) * x, 1) v = (∏ a, αc a ^ j a) • ρ (x, 1) v`. Rewrite using `[← hmul, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `h3` using `hρ ((fun a => centralUnif F (blockSize β a) ^ j a) * x) 1 v`.
+
+Introduce `h0`. Apply `hx` to reduce the goal to its premises. Establish `hprod0 : (∏ a, αc a ^ j a) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => zpow_ne_zero _ (hα0 a)`. Establish `hκ0` using `nnrealCharC_ne_zero κ (e.symm ((fun a => centralUnif F (blockSize β a) ^ j a) * x))`. Rewrite `hκ0` using `[nnrealCharC_apply]`.
+
+Establish `: ℓ (ρ ((fun a => centralUnif F (blockSize β a) ^ j a) * x, 1) v) = 0`. Rewrite using `[h3, map_smul, smul_eq_mul, h0, mul_zero]`. Rewrite `this` using `[h2, map_smul, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 this).resolve_left hprod0`. Rewrite using `[← ordDet_leviEquivPi, ContinuousMulEquiv.apply_symm_apply, Pi.mul_apply, ordDet_centralUnif_zpow_mul]`.
+
+Establish `h1` using `Int.emod_nonneg (ordDet (x b)) (hpos b).ne'`. Establish `h2` using `Int.emod_lt_of_pos (ordDet (x b)) (hpos b)`. Establish `h3` using `Int.emod_def (ordDet (x b)) (blockSize β b)`. Simplify using `only [hj]`. Apply the tactic sequence `constructor <;> nlinarith`.
+
+Establish `_ : ∀ a : Set.range β, NeZero (blockSize β a)` using `fun a => ⟨(blockSize_pos β a).ne'⟩`. Use `set μb : ∀ a : Set.range β, Measure (GL (Fin (blockSize β a)) F) := fun a => Measure.haar with hμb`. Take `⟨γ, hshape, hmain⟩` from `gxMulti_all (W := W) hB hψ hψ1 (Fintype.card (Set.range β)) (Set.range β) rfl (fun a => blockSize β a) μb PUnit.{1} ρ hadm hirr αc hα0 hα hsupp`. Take `⟨s₀, hconv⟩` from `exists_integrable_multi ρ hadm.1 hα0 hα hsupp μb`. Use `set em := e.toHomeomorph.toMeasurableEquiv with hem`.
+
+Establish `hν : (Measure.map em μM).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map μM e.toMulEquiv e.continuous e.symm.continuous`. Use `set c := haarScalarFactor (Measure.map em μM) (Measure.pi μb) with hcdef`. Establish `hc : Measure.map em μM = c • Measure.pi μb` using `Measure.isMulLeftInvariant_eq_smul (Measure.map em μM) (Measure.pi μb)`. Establish `hemx : ∀ m, e.symm (em m) = m` using `fun m => e.symm_apply_apply m`. Establish `hint_eq : ∀ f : levi F n β → ℂ, ∫ m, f m ∂μM = ((c : ℝ) : ℂ) * ∫ x, f (e.symm x) ∂Measure.pi μb`.
+
+Introduce `f`. Establish `h1 : ∫ x, f (e.symm x) ∂(Measure.map em μM) = ∫ m, f m ∂μM`. Rewrite using `[integral_map_equiv em]`. Simplify using `only [hemx]`. Rewrite using `[← h1, hc, show (c • Measure.pi μb) = ((c : ℝ≥0∞) • Measure.pi μb) from rfl, integral_smul_measure, ENNReal.coe_toReal, Complex.real_smul]`.
+
+Establish `hint_of : ∀ f : levi F n β → ℂ, Integrable (fun x => f (e.symm x)) (Measure.pi μb) → Integrable f μM`. Introduce `f hf`. Establish `h1 : Integrable (fun x => f (e.symm x)) (Measure.map em μM)`. Rewrite using `[hc, show (c • Measure.pi μb) = ((c : ℝ≥0∞) • Measure.pi μb) from rfl]`. Conclude with `hf.smul_measure ENNReal.coe_ne_top`.
+
+Rewrite `h1` using `[integrable_map_equiv]`. Conclude with `h1.congr (Filter.Eventually.of_forall fun m => by simp only [Function.comp_apply, hemx])`. Use `⟨γ, ?_, fun φ hφ w ℓ hℓ => ?_⟩` and prove the remaining obligations. Establish `hk : ∀ a, ∀ g ∈ integralGL F (blockSize β a), ρ (Pi.mulSingle a g, 1) = σ (e.symm (Pi.mulSingle a g))`. Introduce `a g hg`.
+
+Establish `h1 : κ' (Pi.mulSingle a g) = 1` using `eq_one_of_mem_compact (κ'.comp (MonoidHom.mulSingle (fun a : Set.range β => GL (Fin (blockSize β a)) F) a)) (hκ'.comp (continuous_mulSingle (A := fun a : Set.range β => GL (Fin (blockSize β a)) F) a) :) (isCompact_integralGL F _) hg`. Establish `h2 : κ (e.symm (Pi.mulSingle a g)) = 1` using `h1`. Use extensionality with `v`. Rewrite using `[hρ, h2]`. Simplify using the standard rewrite rules.
+
+Unfold `polF`. Use `hshape using 2 with a` and compare the differences between its conclusion and the goal. Use `if_congr (and_congr_right fun _ => forall₂_congr fun g hg => ?_) rfl rfl` and prove the remaining obligations. Rewrite using `[hk a g hg]`. Use `set Ψ : ∀ a : Set.range β, Matrix (Fin (blockSize β a)) (Fin (blockSize β a)) F → ℂ := fun a => blockTensor β φ a with hΨdef`.
+
+Establish `hΨ : ∀ a, IsSchwartzBruhat (Ψ a)` using `fun a => isSchwartzBruhat_blockTensor hφ a`. Establish `hℓρ : ℓ ∈ smoothVectors (Representation.dual ρ)` using `(hsm ℓ).2 hℓ`. Establish `hA_eq : ∀ s x, leviIntegrand σ κ (leviTensor β φ) w ℓ s (e.symm x) = multiA ρ Ψ w ℓ s x`. Introduce `s x`. Simplify using `only [leviIntegrand, multiA]`.
+
+Rewrite using `[leviTensor_leviEquivPi_symm, detPow_leviEquivPi_symm, hρ, map_smul, smul_eq_mul, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hB_eq : ∀ s x, leviIntegrandB σ κ (leviTensorHat β ψ φ) w ℓ s (e.symm x) = multiB ρ (fun a => GJMatrix.localMatrixFourier ψ (Ψ a)) w ℓ s x`. Introduce `s x`. Simplify using `only [leviIntegrandB, multiB]`.
+
+Rewrite using `[leviTensorHat_leviEquivPi_symm, leviModulus_leviEquivPi_symm, detPow_leviEquivPi_symm, hρ, map_smul, smul_eq_mul, map_inv e.symm x, map_inv κ]`. Establish `hdet : ∀ a, detPow (x a) ((blockSize β a : ℂ) - s) = ((detModulusPow (x a) : ℝ) : ℂ) * detPow (x a) (-s)` using `fun a => by`. Rewrite using `[sub_eq_add_neg, detPow_add, detPow_natCast]`. Repeatedly rewrite using `[hdet]`. Use `push_cast`.
+
+Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨s₀, fun s hs => hint_of _ (((hconv Ψ hΨ w ℓ hℓρ).1 s hs).congr (Filter.Eventually.of_forall fun x => (hA_eq s x).symm))⟩, ⟨-s₀, fun s hs => hint_of _ (((hconv (fun a => GJMatrix.localMatrixFourier ψ (Ψ a)) (fun a => (hΨ a).localMatrixFourier hψ hψ1) w ℓ hℓρ).2 s hs).congr (Filt …` and prove the remaining obligations. Use `((hmain Ψ hΨ w ℓ hℓρ).const_mul ((c : ℝ) : ℂ)).congr ⟨0, fun s _ => ?_⟩ ⟨0, fun s _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hint_eq]`.
+
+Use `congr 1`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => hA_eq s x)`. Rewrite using `[hint_eq]`. Use `congr 1`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => hB_eq s x)`.
+-/
 theorem gxLevi (hB : GxBlock) {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     [MeasurableSpace F] [BorelSpace F] {n : ℕ} {β : Fin n → ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ (levi F n β) W} (hσ : IsAdmissible σ) [σ.IsIrreducible] (hc : IsCuspidal σ)

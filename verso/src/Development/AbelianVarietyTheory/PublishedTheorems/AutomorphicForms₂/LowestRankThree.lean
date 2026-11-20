@@ -11,9 +11,19 @@ namespace GlobalTheory.Published.DSExistsModel
 def detPow (n : ℕ) (m : ℤ) (g : Matrix (Fin n) (Fin n) ℂ) : ℂ →L[ℂ] ℂ :=
   (g.det ^ m) • ContinuousLinearMap.id ℂ ℂ
 
+/- English proof (translation)
+Simplify using `[detPow]`.
+-/
 theorem detPow_apply (n : ℕ) (m : ℤ) (g : Matrix (Fin n) (Fin n) ℂ) (v : ℂ) :
     detPow n m g v = g.det ^ m * v := by simp [detPow]
 
+/- English proof (translation)
+Establish `h : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Establish `h1` using `congrArg Matrix.det h`. Establish `h2 : (Formalism.REAL.Jm ε).det * (Formalism.REAL.Jm ε).det = 1`. Rewrite using `[← Matrix.det_mul, Formalism.REAL.Jm_mul_self, Matrix.det_one]`. Establish `h3 : (Formalism.REAL.Jm ε).det ≠ 0` using `left_ne_zero_of_mul_eq_one h2`.
+
+Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `h4 : star g.det * g.det = 1`. Apply `mul_left_cancel₀ h3` to reduce the goal to its premises. Take the linear combination `h1`. Establish `h5` using `congrArg norm h4`.
+
+Rewrite `h5` using `[norm_mul, norm_star, norm_one]`. Use polynomial arithmetic with `[norm_nonneg g.det]`.
+-/
 theorem norm_det {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     ‖g.det‖ = 1 := by
   have h : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε := hg
@@ -31,18 +41,29 @@ theorem norm_det {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ
 
 def lamDet (n : ℕ) (m : ℤ) : Fin n → ℝ := fun a => (m : ℝ) + Formalism.QuantumDeterminants.rhoStd n a
 
+/- English proof (translation)
+Use `⟨fun a b h => ?_, fun a => ⟨m - (a : ℕ), ?_⟩⟩` and prove the remaining obligations. Establish `: ((a : ℕ) : ℝ) < (b : ℕ)` using `by exact_mod_cast h`. Simplify using `only [lamDet, Formalism.QuantumDeterminants.rhoStd]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [lamDet, Formalism.QuantumDeterminants.rhoStd]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lamDet_hc (n : ℕ) (m : ℤ) : Formalism.QuantumDeterminants.IsHCParam (lamDet n m) := by
   refine ⟨fun a b h => ?_, fun a => ⟨m - (a : ℕ), ?_⟩⟩
   · have : ((a : ℕ) : ℝ) < (b : ℕ) := by exact_mod_cast h
     simp only [lamDet, Formalism.QuantumDeterminants.rhoStd]; linarith
   · simp only [lamDet, Formalism.QuantumDeterminants.rhoStd]; push_cast; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Rewrite using `[GlobalTheory.DefiniteCheck.lowK_const]`. Simplify using `only [lamDet, Formalism.QuantumDeterminants.rhoStd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lowK_lamDet (n : ℕ) (s : Bool) (m : ℤ) :
     Formalism.QuantumDeterminants.lowK (fun _ : Fin n => s) (lamDet n m) = fun _ => (m : ℝ) := by
   funext a
   rw [GlobalTheory.DefiniteCheck.lowK_const]
   simp only [lamDet, Formalism.QuantumDeterminants.rhoStd]; ring
 
+/- English proof (translation)
+Rewrite using `[detPow_apply, Matrix.det_diagonal, ← Complex.exp_sum, ← Complex.exp_int_mul, smul_eq_mul]`. Use `congr 2`. Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+-/
 theorem detPow_diag (n : ℕ) (m : ℤ) (θ : Fin n → ℝ) (v : ℂ) :
     detPow n m (Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I))) v =
       Complex.exp (((∑ a, (m : ℝ) * θ a : ℝ) : ℂ) * Complex.I) • v := by
@@ -52,6 +73,25 @@ theorem detPow_diag (n : ℕ) (m : ℤ) (θ : Fin n → ℝ) (v : ℂ) :
   rw [Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun a _ => by ring
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.RealPar.isDS_const_iff]`. Use `⟨inferInstance, inferInstance, ⟨⟨?_, fun a _ b _ => ?_⟩, fun g hg v => ?_, fun v => ?_⟩, inferInstance, fun _ _ _ _ => trivial, fun S _ _ => eq_bot_or_eq_top S, ?_, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[detPow_apply]`. Use `ext`.
+
+Simplify using `[detPow_apply, mul_zpow]`. Rewrite using `[detPow_apply, norm_mul, norm_zpow, norm_det hg]`. Simplify using the standard rewrite rules. Simplify using `only [detPow_apply]`. Use `ContinuousOn.mul (ContinuousOn.zpow₀ (continuous_id.matrix_det.continuousOn) m fun g hg => Or.inl ?_) continuousOn_const` and prove the remaining obligations.
+
+Introduce `h0`. Use `norm_det hg` as an intermediate fact. Simplify using `only [id] at h0`. Rewrite `this` using `[h0]`. Simplify using `at this`.
+
+Use `⟨1, trivial, one_ne_zero, fun θ _ => ?_⟩` and prove the remaining obligations. Unfold `allPos`. Rewrite using `[lowK_lamDet]`. Conclude with `detPow_diag n m θ 1`. Introduce `μ v _ hv hw`.
+
+Use `⟨0, fun a b h => absurd rfl h, ?_⟩` and prove the remaining obligations. Unfold `allPos at *`. Rewrite using `[lowK_lamDet]`. Establish `hK : ∀ θ : Fin n → ℝ, Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ Formalism.REAL.Kset (fun _ : Fin n => true)`. Introduce `θ`.
+
+Use `⟨?_, by simp [GlobalTheory.DefiniteCheck.jm_const]⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.star_apply, RCLike.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`.
+
+Simplify using the standard rewrite rules. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.zero_apply, Nat.cast_zero, zero_smul, Finset.sum_const_zero, Pi.sub_apply]`. Assume the negation of the conclusion as `hne`. Establish `h` using `hw (Pi.single a (Real.pi / ((m : ℝ) - μ a))) (hK _)`.
+
+Rewrite `h` using `[detPow_diag]`. Establish `h2` using `smul_left_injective ℂ hv h`. Simplify using `only [Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`. Establish `h3 : Complex.exp (Real.pi * Complex.I) = 1`. Establish `e : (Real.pi : ℂ) * Complex.I = (((m : ℝ) * (Real.pi / ((m : ℝ) - μ a)) : ℝ) : ℂ) * Complex.I - ((μ a * (Real.pi / ((m : ℝ) - μ a)) : ℝ) : ℂ) * Complex.I`.
+
+Rewrite using `[← sub_mul, ← Complex.ofReal_sub, ← sub_mul, mul_div_cancel₀ _ hne]`. Rewrite using `[e, Complex.exp_sub, h2, div_self (Complex.exp_ne_zero _)]`. Rewrite `h3` using `[Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at h3`.
+-/
 theorem isDS_detPow (n : ℕ) (s : Bool) (m : ℤ) : IsDS (fun _ : Fin n => s) (lamDet n m) (detPow n m) := by
   rw [GlobalTheory.RealPar.isDS_const_iff]
   refine ⟨inferInstance, inferInstance, ⟨⟨?_, fun a _ b _ => ?_⟩, fun g hg v => ?_, fun v => ?_⟩,
@@ -101,6 +141,13 @@ theorem isDS_detPow (n : ℕ) (s : Bool) (m : ℤ) : IsDS (fun _ : Fin n => s) (
     rw [Complex.exp_pi_mul_I] at h3
     norm_num at h3
 
+/- English proof (translation)
+Use `interval_cases N`. Establish `h1 : ε = fun _ => true` using `funext fun a => a.elim0`. Establish `h2 : lam = lamDet 0 0` using `funext fun a => a.elim0`. Rewrite using `[h1, h2]`. Conclude with `⟨ℂ, _, _, _, isDS_detPow 0 true 0⟩`.
+
+Take `⟨m, hm⟩` from `h.2 0`. Establish `h1 : ε = fun _ => ε 0` using `funext fun a => by rw [Subsingleton.elim a 0]`. Establish `h2 : lam = lamDet 1 m` using `funext fun a => by`. Rewrite using `[Subsingleton.elim a 0]`. Simplify using `[lamDet, Formalism.QuantumDeterminants.rhoStd] at hm ⊢`.
+
+Conclude with `hm`. Rewrite using `[h1, h2]`. Conclude with `⟨ℂ, _, _, _, isDS_detPow 1 (ε 0) m⟩`.
+-/
 theorem holds_rank_le_one (N : ℕ) (hN : N ≤ 1) (ε : Fin N → Bool) (lam : Fin N → ℝ)
     (h : Formalism.QuantumDeterminants.IsHCParam lam) :
     ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H)
@@ -119,11 +166,19 @@ theorem holds_rank_le_one (N : ℕ) (hN : N ≤ 1) (ε : Fin N → Bool) (lam : 
     rw [h1, h2]
     exact ⟨ℂ, _, _, _, isDS_detPow 1 (ε 0) m⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨lamDet_hc N m, isDS_detPow N s m⟩`.
+-/
 theorem holds_det (N : ℕ) (s : Bool) (m : ℤ) :
     Formalism.QuantumDeterminants.IsHCParam (lamDet N m) ∧
     IsDS (fun _ : Fin N => s) (lamDet N m) (detPow N m) :=
   ⟨lamDet_hc N m, isDS_detPow N s m⟩
 
+/- English proof (translation)
+Establish `h : ∑ b : Fin N, ((if a < b ∧ ε b = ε a then (1 : ℝ) else 0) + (if b < a ∧ ε b = ε a then (1 : ℝ) else 0) + (if a < b ∧ ε b ≠ ε a then (1 : ℝ) else 0) + (if b < a ∧ ε b ≠ ε a then (1 : ℝ) else 0)) = ∑ b : Fin N, ((1 : ℝ) - if b = a then 1 else 0)`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Apply the tactic sequence `by_cases e : ε b = ε a <;> simp [h, h.ne', not_lt_of_gt h, e]`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Apply the tactic sequence `by_cases e : ε b = ε a <;> simp [h, h.ne, not_lt_of_gt h, e]`. Simplify `h` using `[Finset.sum_add_distrib, Finset.sum_sub_distrib]`.
+-/
 theorem card_split {N : ℕ} (ε : Fin N → Bool) (a : Fin N) :
     (((univ.filter fun b => a < b ∧ ε b = ε a).card : ℝ) + ((univ.filter fun b => b < a ∧ ε b = ε a).card : ℝ) +
     ((univ.filter fun b => a < b ∧ ε b ≠ ε a).card : ℝ) + ((univ.filter fun b => b < a ∧ ε b ≠ ε a).card : ℝ)) =
@@ -138,6 +193,11 @@ theorem card_split {N : ℕ} (ε : Fin N → Bool) (a : Fin N) :
     · by_cases e : ε b = ε a <;> simp [h, h.ne, not_lt_of_gt h, e]
   simpa [Finset.sum_add_distrib, Finset.sum_sub_distrib] using h
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `h a`. Use `card_split ε a` as an intermediate fact. Use `⟨m + (univ.filter fun b => a < b ∧ ε b ≠ ε a).card + (univ.filter fun b => b < a ∧ ε b = ε a).card, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.add_apply, rhoN, rhoC]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lowest_integral {N : ℕ} (ε : Fin N → Bool) (lam : Fin N → ℝ)
     (h : ∀ a, ∃ m : ℤ, lam a - ((N : ℝ) - 1) / 2 = (m : ℝ)) (a : Fin N) :
     ∃ m : ℤ, (lam + rhoN ε - rhoC ε) a = (m : ℝ) := by
@@ -148,24 +208,38 @@ theorem lowest_integral {N : ℕ} (ε : Fin N → Bool) (lam : Fin N → ℝ)
   push_cast
   linarith
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [rhoN, rhoC, Finset.card_filter, Pi.add_apply, Pi.sub_apply, Fin.sum_univ_succ, Fin.sum_univ_zero]`. Apply the tactic sequence `fin_cases a <;> simp [Fin.lt_def] <;> norm_num`.
+-/
 theorem lowest_rank_two :
     (![1 / 2, -1 / 2] : Fin 2 → ℝ) + rhoN ![true, false] - rhoC ![true, false] = ![1, -1] := by
   funext a
   simp only [rhoN, rhoC, Finset.card_filter, Pi.add_apply, Pi.sub_apply, Fin.sum_univ_succ, Fin.sum_univ_zero]
   fin_cases a <;> simp [Fin.lt_def] <;> norm_num
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [rhoN, rhoC, Finset.card_filter, Pi.add_apply, Pi.sub_apply, Fin.sum_univ_succ, Fin.sum_univ_zero]`. Apply the tactic sequence `fin_cases a <;> simp [Fin.lt_def] <;> norm_num`.
+-/
 theorem lowest_rank_three :
     (![1, 0, -1] : Fin 3 → ℝ) + rhoN ![true, false, true] - rhoC ![true, false, true] = ![1, 0, -1] := by
   funext a
   simp only [rhoN, rhoC, Finset.card_filter, Pi.add_apply, Pi.sub_apply, Fin.sum_univ_succ, Fin.sum_univ_zero]
   fin_cases a <;> simp [Fin.lt_def] <;> norm_num
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [rhoN, rhoC, Finset.card_filter, Pi.add_apply, Pi.sub_apply, Fin.sum_univ_succ, Fin.sum_univ_zero]`. Apply the tactic sequence `fin_cases a <;> simp [Fin.lt_def] <;> norm_num`.
+-/
 theorem lowest_rank_three' :
     (![1, 0, -1] : Fin 3 → ℝ) + rhoN ![true, true, false] - rhoC ![true, true, false] = ![1, 1, -2] := by
   funext a
   simp only [rhoN, rhoC, Finset.card_filter, Pi.add_apply, Pi.sub_apply, Fin.sum_univ_succ, Fin.sum_univ_zero]
   fin_cases a <;> simp [Fin.lt_def] <;> norm_num
 
+/- English proof (translation)
+Use `⟨?_, by simp [Jm, Matrix.diagonal_mul_diagonal, mul_comm]⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.star_apply, RCLike.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem diag_mem {N : ℕ} (ε : Fin N → Bool) (θ : Fin N → ℝ) :
     Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) ∈ Kset ε := by
   refine ⟨?_, by simp [Jm, Matrix.diagonal_mul_diagonal, mul_comm]⟩
@@ -177,6 +251,17 @@ theorem diag_mem {N : ℕ} (ε : Fin N → Bool) (θ : Fin N → ℝ) :
     Complex.norm_exp_ofReal_mul_I]
   simp
 
+/- English proof (translation)
+Take `⟨S, -, -, -, ⟨v, -, hv, hw⟩, -⟩` from `h.2.2.2.2.2.1`. Establish `h1` using `hw (Pi.single a (2 * Real.pi)) (diag_mem ε _)`. Establish `e : Matrix.diagonal (fun b => Complex.exp (((Pi.single a (2 * Real.pi) : Fin N → ℝ) b : ℂ) * Complex.I)) = 1`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hb]`.
+
+Rewrite `h1` using `[e, h.2.2.1.1.1]`. Simplify using `only [Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, ContinuousLinearMap.one_apply] at h1`. Establish `h2 : Complex.exp (((Formalism.QuantumDeterminants.lowK ε lam a * (2 * Real.pi) : ℝ) : ℂ) * Complex.I) = 1` using `smul_left_injective ℂ hv (h1.symm.trans (one_smul ℂ v).symm)`. Take `⟨k, hk⟩` from `Complex.exp_eq_one_iff.1 h2`. Establish `h3 : Formalism.QuantumDeterminants.lowK ε lam a = k`.
+
+Establish `h4 : ((Formalism.QuantumDeterminants.lowK ε lam a : ℝ) : ℂ) * (2 * Real.pi * Complex.I) = k * (2 * Real.pi * Complex.I)`. Rewrite using `[← hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_right_cancel₀ Complex.two_pi_I_ne_zero h4` after adjusting the coercions.
+
+Use `card_split ε a` as an intermediate fact. Use `⟨k - (univ.filter fun b => a < b ∧ ε b ≠ ε a).card - (univ.filter fun b => b < a ∧ ε b = ε a).card, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.QuantumDeterminants.lowK, Pi.sub_apply, Pi.add_apply, rhoN, rhoC] at h3`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem integral_of_isDS {N : ℕ} (ε : Fin N → Bool) (lam : Fin N → ℝ) {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)) (h : IsDS ε lam σ) (a : Fin N) :
     ∃ m : ℤ, lam a - ((N : ℝ) - 1) / 2 = (m : ℝ) := by
@@ -203,6 +288,9 @@ theorem integral_of_isDS {N : ℕ} (ε : Fin N → Bool) (lam : Fin N → ℝ) {
   push_cast
   linarith
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨H, i1, i2, σ, -, -, -, -, h5, h6, -⟩ := h 2 ![true, false] ![1 / 2, -1 / 2] ⟨by intro a b hab; fin_cases a <;> fin_cases b <;> simp_all <;> norm_num, by intro a; fin_cases a`. Conclude with `⟨0, by norm_num⟩`. Conclude with `⟨-1, by norm_num⟩⟩`. Rewrite `h6` using `[lowest_rank_two]`. Conclude with `⟨H, i1, i2, σ, h5, h6⟩`.
+-/
 theorem use_rank_two (h : DiscreteSeriesUpqExists) :
     ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H)
       (σ : Matrix (Fin 2) (Fin 2) ℂ → (H →L[ℂ] H)), IsSqIntOn ![true, false] σ ∧

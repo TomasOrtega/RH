@@ -22,27 +22,47 @@ section Rings
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.RingIface.aB_alg]`. Both sides reduce to the same expression.
+-/
 theorem toB_tmul_pt {O : Type} [CommRing O] [Algebra ℤ_[l] O] (o : O) (w : Per.Ainf l) :
     toB l O (o ⊗ₜ[ℤ_[l]] w) = o ⊗ₜ[ℤ_[l]] Per.aB l w := by
   rw [GlobalTheory.RingIface.aB_alg]
   rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.RingIface.aB_alg, C.ι_j, GlobalTheory.MemLoc.LogEx.algebraMap_acris, C.j_cris.on0, Subalgebra.coe_algebraMap]`. Both sides reduce to the same expression.
+-/
 theorem core_ι_aB (C : GlobalTheory.MemLoc.Core l) (w : Per.Ainf l) :
     C.ι (Per.aB l w) = algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l w) := by
   rw [GlobalTheory.RingIface.aB_alg, C.ι_j, GlobalTheory.MemLoc.LogEx.algebraMap_acris, C.j_cris.on0, Subalgebra.coe_algebraMap]
   rfl
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.MemLoc.filD_laws l).2.1`.
+-/
 theorem one_mem_filZero : (1 : Per.BdR l) ∈ Per.FilD l 0 :=
   (GlobalTheory.MemLoc.filD_laws l).2.1
 
+/- English proof (translation)
+Rewrite using `[← mul_one (algebraMap (Per.BdRp l) (Per.BdR l) u), ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ u one_mem_filZero`.
+-/
 theorem alg_mem_filZero (u : Per.BdRp l) : algebraMap (Per.BdRp l) (Per.BdR l) u ∈ Per.FilD l 0 := by
   rw [← mul_one (algebraMap (Per.BdRp l) (Per.BdR l) u), ← Algebra.smul_def]
   exact Submodule.smul_mem _ u one_mem_filZero
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.MemLoc.thetaD_props l).2.2.1 _ (by rw [(GlobalTheory.MemLoc.thetaD_props l).2.2.2.1]; exact hx)`.
+-/
 theorem isUnit_aDp_of_theta {x : Per.Ainf l} (hx : (Per.θ l x : ℂ_[l]) ≠ 0) :
     IsUnit (GlobalTheory.MemLoc.aDp l x) :=
   (GlobalTheory.MemLoc.thetaD_props l).2.2.1 _ (by rw [(GlobalTheory.MemLoc.thetaD_props l).2.2.2.1]; exact hx)
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `hx`. Establish `h1 : C.ι d * algebraMap (Per.BdRp l) (Per.BdR l) ((v : Per.BdRp l) ^ n) = 1`. Rewrite using `[map_pow, hv, ← core_ι_aB, ← map_pow, ← map_mul, hd, map_one]`. Establish `h2 : C.ι d = algebraMap (Per.BdRp l) (Per.BdR l) (((v⁻¹ : (Per.BdRp l)ˣ) : Per.BdRp l) ^ n)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← mul_pow, Units.mul_inv, one_pow, map_one, mul_one]`. Use `_ = _ := by rw [map_mul, ← mul_assoc, h1, one_mul]`. Rewrite using `[h2]`. Conclude with `alg_mem_filZero _`.
+-/
 theorem ι_mem_filZero_of_mul (C : GlobalTheory.MemLoc.Core l) {d : Per.Bcris l} {x : Per.Ainf l} {n : ℕ}
     (hd : d * Per.aB l x ^ n = 1) (hx : IsUnit (GlobalTheory.MemLoc.aDp l x)) : C.ι d ∈ Per.FilD l 0 := by
   obtain ⟨v, hv⟩ := hx
@@ -56,6 +76,11 @@ theorem ι_mem_filZero_of_mul (C : GlobalTheory.MemLoc.Core l) {d : Per.Bcris l}
   rw [h2]
   exact alg_mem_filZero _
 
+/- English proof (translation)
+Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `h' : Per.σC g (Per.θ l x : ℂ_[l]) = 0`. Rewrite using `[← (GlobalTheory.MemLoc.thetaD_props l).2.2.2.1, ← (GlobalTheory.MemLoc.thetaD_props l).2.2.2.2, (GlobalTheory.MemLoc.ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.2.1, (GlobalTheory.MemLoc.thetaD_props l).2.2.2.1]`. Conclude with `h`.
+
+Rewrite using `[← norm_eq_zero, ← GlobalTheory.RingBasics.norm_σC g, h', norm_zero]`.
+-/
 theorem theta_σA_ne_zero (g : Per.Gq l) {x : Per.Ainf l} (hx : (Per.θ l x : ℂ_[l]) ≠ 0) :
     (Per.θ l (Per.σA g x) : ℂ_[l]) ≠ 0 := by
   intro h
@@ -74,6 +99,9 @@ variable {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [Algebra ℤ_[l] O]
   [NormedField K] [NormedAlgebra ℚ_[l] K] [Algebra O K]
   {G : Type} [Group G] [TopologicalSpace G]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul s x`. Simplify using `only [TWincl, smul_tmul', TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply, smul_eq_mul, map_mul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem TWincl_smul {R R' : Type} [CommRing R] [CommRing R'] [Algebra O R] [Algebra O R'] (f : R →ₐ[O] R')
     (T : LocLat G ℚ_[l] K O) (r : R) (z : TW R T) : TWincl f T (r • z) = f r • TWincl f T z := by
   induction z using TensorProduct.induction_on with
@@ -83,6 +111,9 @@ theorem TWincl_smul {R R' : Type} [CommRing R] [CommRing R'] [Algebra O R] [Alge
       smul_eq_mul, map_mul]
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul s x`. Simplify using `only [TWact, smul_tmul', TensorProduct.map_tmul, AlgHom.toLinearMap_apply, smul_eq_mul, map_mul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem TWact_smul {R : Type} [CommRing R] [Algebra O R] (f : R →ₐ[O] R) (T : LocLat G ℚ_[l] K O) (g : G)
     (r : R) (z : TW R T) : TWact f T g (r • z) = f r • TWact f T g z := by
   induction z using TensorProduct.induction_on with
@@ -91,6 +122,11 @@ theorem TWact_smul {R : Type} [CommRing R] [Algebra O R] (f : R →ₐ[O] R) (T 
     simp only [TWact, smul_tmul', TensorProduct.map_tmul, AlgHom.toLinearMap_apply, smul_eq_mul, map_mul]
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul c x`. Simplify using `only [TWact, TWincl, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply]`. Use `congr 1`.
+
+Rewrite using `[toB, AlgHom.comp_apply, AlgHom.comp_apply, galOB_toOB, galOCr_toOCr]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem TWact_TWincl (h : GQ l) (T : LocLat G ℚ_[l] K O) (g : G) (z : TW (OA l O) T) :
     TWact (galOB O h) T g (TWincl (toB l O) T z) = TWincl (toB l O) T (TWact (galOA O h) T g z) := by
   induction z using TensorProduct.induction_on with
@@ -101,6 +137,15 @@ theorem TWact_TWincl (h : GQ l) (T : LocLat G ℚ_[l] K O) (g : G) (z : TW (OA l
     rw [toB, AlgHom.comp_apply, AlgHom.comp_apply, galOB_toOB, galOCr_toOCr]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, smul_zero]`. Conclude with `zero_mem _`. Consider the case `tmul c x`. Express the relevant statement in the definitionally equal form `((1 : O) ⊗ₜ[ℤ_[l]] d : OB l O) • (toB l O c ⊗ₜ[O] x) ∈ _`.
+
+Rewrite using `[smul_tmul', smul_eq_mul]`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, mul_zero, zero_tmul]`. Conclude with `zero_mem _`. Consider the case `tmul o w`.
+
+Establish `e : ((1 : O) ⊗ₜ[ℤ_[l]] d : OB l O) * toB l O (o ⊗ₜ w) = o • ((1 : O) ⊗ₜ[ℤ_[l]] (d * Per.aB l w) : OB l O)`. Rewrite using `[toB_tmul_pt, Algebra.TensorProduct.tmul_mul_tmul, one_mul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e, ← smul_tmul']`. Use `Submodule.smul_mem _ o (Submodule.subset_span ⟨d * Per.aB l w, x, ?_, rfl⟩)` and prove the remaining obligations. Rewrite using `[map_mul, core_ι_aB, mul_comm, ← Algebra.smul_def]`.
+
+Conclude with `Submodule.smul_mem _ _ hd`. Consider the case `add c c' hc hc' => rw [map_add, mul_add, add_tmul]`. Conclude with `add_mem hc hc'`. Consider the case `add z z' hz hz' => rw [map_add, smul_add]`. Conclude with `add_mem hz hz'`.
+-/
 theorem smul_TWincl_mem (C : GlobalTheory.MemLoc.Core l) (T : LocLat G ℚ_[l] K O) {d : Per.Bcris l}
     (hd : C.ι d ∈ Per.FilD l 0) (z : TW (OA l O) T) :
     ((1 : O) ⊗ₜ[ℤ_[l]] d : OB l O) • TWincl (toB l O) T z ∈ Submodule.span O {w : TW (OB l O) T |
@@ -129,6 +174,41 @@ end GlobalTheory.BKGal.ValueFil
 
 open GlobalTheory.BKGal.ValueFil in
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ hl2 ι _ _ η H D T R y hyY hy m₀ h1`. Take `⟨ζ, ε, h0, -, hz1, hr⟩` from `GlobalTheory.MemLoc.exists_zeta_eps l`. Establish `he : ε.untilt = 1` using `Subtype.ext (by`. Use `hr 0` as an intermediate fact. Rewrite `this` using `[h0, map_one]`.
+
+Conclude with `this)`. Establish `hE : GlobalTheory.MemLoc.IsEps ε` using `⟨he, fun hh => hz1 (by`. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Rewrite using `[← hr 1, map_one]`. Conclude with `congrArg Subtype.val hh)⟩`.
+
+Establish `hδl : ((frobeniusEquiv (Per.Fl l) l).symm ε) ^ l = ε`. Rewrite using `[← frobenius_def, ← frobeniusEquiv_apply, RingEquiv.apply_symm_apply]`. Establish `hEps : IsEps ε` using `⟨he, _, hδl, hE.2⟩`. Use `set δ := (frobeniusEquiv (Per.Fl l) l).symm ε with hδ`. Take `⟨hMA, -⟩` from `GlobalTheory.T.breuilKisin_mu_pow_smul_frobenius_mem_ainf l a e O K t ϖ ι D.toPhiMod T R.I η H D.upper D.lower ε δ hEps hδl ⟨y, hy⟩ hyY.1 m₀ h1`.
+
+Take `⟨-, hK2, hK3, -⟩` from `GlobalTheory.T.breuilKisin_lattice_exponents_ainf_comparison l a e O K t ϖ ι D.toPhiMod T R.I η H D.upper D.lower ε δ hEps hδl`. Take `⟨z, hz⟩` from `hK2 _ hMA`. Establish `hLA : ∀ (c : OA l O) {v : ι → OW l O}, v ∈ LA t ϖ D.toPhiMod → inclO l O c • v ∈ LA t ϖ D.toPhiMod`. Introduce and unpack `c _ ⟨d, rfl⟩`. Conclude with `⟨fun i => c * d i, inclL_smul_coord t ϖ D.toPhiMod c d⟩`.
+
+Establish `hT : ∀ z' : TW (OA l O) T, inclO l O (1 ⊗ₜ (muOf ε ^ H)) • R.I.j.symm (TWincl (inclO l O) T z') ∈ LA t ϖ D.toPhiMod`. Introduce `z'`. Proceed by induction on `z' using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `tmul c x`. Establish `e1 : TWincl (inclO l O) T (c ⊗ₜ[O] x) = inclO l O c • ((1 : OW l O) ⊗ₜ[O] x)`. Rewrite using `[smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Rewrite using `[e1, map_smul, smul_comm]`.
+
+Conclude with `hLA c (hK3 x)`. Consider the case `add c c' hc hc' => rw [map_add, map_add, smul_add]`. Conclude with `add_mem hc hc'`. Take `⟨cc, hcc⟩` from `hT z`. Rewrite `hcc` using `[← hz, LinearEquiv.symm_apply_apply]`.
+
+Establish `hB` using `R.cmp cc ((1 ⊗ₜ (muOf ε ^ H) : OA l O) • z) (by`. Rewrite using `[hcc, map_smul, hz, TWincl_smul])`. Rewrite `hB` using `[TWincl_smul]`. Establish `hμu : IsUnit (Per.aB l (muOf ε))`. Rewrite using `[GlobalTheory.RingIface.aB_alg]`.
+
+Conclude with `GlobalTheory.MemLoc.TFil.isUnit_mu hE`. Establish `hνu : IsUnit (Per.aB l (muOf δ))`. Establish `e2 : Per.aB l (muOf ε) = Per.aB l (GlobalTheory.MemLoc.xi ε) * Per.aB l (muOf δ)`. Rewrite using `[← map_mul]`. Conclude with `congrArg (Per.aB l) (GlobalTheory.MemLoc.TFil.mu_eq ε)`.
+
+Rewrite `hμu` using `[e2]`. Conclude with `isUnit_of_mul_isUnit_right hμu`. Establish `hθν : (Per.θ l (muOf δ) : ℂ_[l]) ≠ 0`. Express the relevant statement in the definitionally equal form `(Per.θ l (Per.tm δ - 1) : ℂ_[l]) ≠ 0`. Rewrite using `[map_sub, map_one, WittVector.fontaineTheta_teichmuller]`.
+
+Introduce `h`. Apply `hE.2` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`. Conclude with `Subtype.ext h`. Use `set n := η + (H + η) with hn`.
+
+Use `set d : Per.Bcris l := ((hνu.unit⁻¹ : (Per.Bcris l)ˣ) : Per.Bcris l) ^ n with hd`. Establish `hdn : d * Per.aB l (muOf δ) ^ n = 1`. Rewrite using `[hd, ← mul_pow, IsUnit.val_inv_mul, one_pow]`. Establish `hm : ((1 : O) ⊗ₜ[ℤ_[l]] (muOf ε ^ H * (muOf δ ^ η * muOf δ ^ (H + η))) : OA l O) = (1 ⊗ₜ (muOf ε ^ H)) * ((1 ⊗ₜ (muOf δ ^ η)) * (1 ⊗ₜ (muOf δ ^ (H + η))))`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+
+Use `⟨((1 : O) ⊗ₜ[ℤ_[l]] d : OB l O) • TWincl (toB l O) T z, ⟨(1 : O) ⊗ₜ[ℤ_[l]] (muOf ε ^ H * (muOf δ ^ η * muOf δ ^ (H + η))), cc, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (Per.aB l (muOf ε ^ H * (muOf δ ^ η * muOf δ ^ (H + η))))`. Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_pow]`. Conclude with `(hμu.pow H).mul ((hνu.pow _).mul (hνu.pow _))`. Use `hu.map (Algebra.TensorProduct.includeRight : Per.Bcris l →ₐ[ℤ_[l]] OB l O)` as an intermediate fact.
+
+Rewrite `this` using `[Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[toB_tmul_pt]`. Conclude with `this`. Rewrite using `[hcc, hm, map_mul, map_mul, mul_smul, mul_smul]`. Rewrite using `[hB, smul_smul]`.
+
+Use `congr 1`. Rewrite using `[toB_tmul_pt, toB_tmul_pt, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `congr 1`. Establish `hdn' : d * Per.aB l (muOf δ) ^ (η + (H + η)) = 1` using `hdn`. Rewrite using `[map_mul, map_mul, map_pow, map_pow, map_pow]`.
+
+Take the linear combination `(Per.aB l (muOf ε) ^ H) * hdn'`. Introduce `g _ C`. Use `sub_mem ?_ (smul_TWincl_mem C T (ι_mem_filZero_of_mul C hdn (isUnit_aDp_of_theta hθν)) z)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `TWact (galOB O (sQ l g)) T g (((1 : O) ⊗ₜ[ℤ_[l]] d : OB l O) • TWincl (toB l O) T z) ∈ _`. Rewrite using `[TWact_smul, TWact_TWincl]`.
+
+Establish `hg : Per.σB (sQ l g) d * Per.aB l (Per.σA (sQ l g) (muOf δ)) ^ n = 1`. Rewrite using `[← (GlobalTheory.MemLoc.ActLaws.act_laws l).2.2.2.2.2.1, ← map_pow, ← map_mul, hdn, map_one]`. Conclude with `smul_TWincl_mem C T (ι_mem_filZero_of_mul C hg (isUnit_aDp_of_theta (theta_σA_ne_zero (sQ l g) hθν))) _`.
+-/
 theorem GlobalTheory.BKGal.value_mem_filtration_zero : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e), l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (η H : ℕ) (D : BKDat O K l e a ι η H) (T : LocLat (Gl l) ℚ_[l] K O) (R : GalDat t ϖ (sQ l) D T), ∀ y ∈ D.Y, ∀ (hy : y ∈ ME D.toPhiMod) (m₀ : ι → OW l O), phiW t ϖ D.toPhiMod m₀ - m₀ = toW t ϖ D.toPhiMod ⟨y, hy⟩ → ∃ b₁, IsCrisVal t ϖ D.toPhiMod R.jB m₀ b₁ ∧ ∀ g : Gl l, sQ l g ∈ GK (ϖ.field a) → ∀ C : GlobalTheory.MemLoc.Core l, actB (sQ l) T g b₁ - b₁ ∈ Submodule.span O {w : TW (OB l O) T | ∃ (β : Per.Bcris l) (x : ↥T.L.T), C.ι β ∈ Per.FilD l 0 ∧ w = ((1 : O) ⊗ₜ[ℤ_[l]] β) ⊗ₜ[O] x} := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ hl2 ι _ _ η H D T R y hyY hy m₀ h1
 

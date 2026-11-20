@@ -10,6 +10,9 @@ open DoubleCoset (doubleCoset)
 
 namespace GlobalTheory.CompanionTheory.ParabBridge
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α _ _ N m _ _ e β h`. Use extensionality with `g`. Rewrite using `[mem_parab, GroundTheory.Automorphic.Iwasawa.mem_blockUpper]`. Conclude with `forall₂_congr fun i j => by rw [h j i]`.
+-/
 theorem parab_eq_blockUpper : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {α : Type} [Fintype α] [LinearOrder α] {N : ℕ} {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] (e : (Σ i, m i) ≃ Fin N) (β : Fin N → ℕ), (∀ x y, β x < β y ↔ blk e x < blk e y) → parab k e = blockUpper k N β := by
   intro k _ _ _ _ α _ _ N m _ _ e β h
   ext g

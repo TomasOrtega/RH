@@ -18,6 +18,9 @@ section Der
 variable {R A : Type} [CommRing R] [CommRing A] [Bialgebra R A] [Module.Finite R A] [Module.Projective R A]
   [Coalgebra.IsCocomm R A]
 
+/- English proof (translation)
+Rewrite using `[cobOne_apply, sub_sub, sub_eq_zero, CartierDual.comul_eq_iff]`. Use `forall₂_congr fun a b => ?_` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply, CartierDual.pair_tmul_tmul, CartierDual.pair_tmul_tmul, CartierDual.one_apply, CartierDual.one_apply, eq_comm, add_comm, mul_comm (φ a)]`.
+-/
 theorem cobOne_dual_eq_zero_iff (φ : CartierDual R A) : cobOne R (CartierDual R A) φ = 0 ↔
     ∀ a b, φ (a * b) = Coalgebra.counit (R := R) a * φ b + Coalgebra.counit (R := R) b * φ a := by
   rw [cobOne_apply, sub_sub, sub_eq_zero, CartierDual.comul_eq_iff]
@@ -25,12 +28,18 @@ theorem cobOne_dual_eq_zero_iff (φ : CartierDual R A) : cobOne R (CartierDual R
   rw [map_add, LinearMap.add_apply, CartierDual.pair_tmul_tmul, CartierDual.pair_tmul_tmul,
     CartierDual.one_apply, CartierDual.one_apply, eq_comm, add_comm, mul_comm (φ a)]
 
+/- English proof (translation)
+Establish `h'` using `(cobOne_dual_eq_zero_iff φ).1 h`. Conclude with `(AugCot.lift_d (Bialgebra.counitAlgHom R A) φ.ofConv h' a).symm.trans ((congrArg (AugCot.lift (Bialgebra.counitAlgHom R A) φ.ofConv h') e).trans (AugCot.lift_d _ _ h' b))`.
+-/
 theorem apply_eq_of_dUnit_eq {φ : CartierDual R A} (h : cobOne R (CartierDual R A) φ = 0) {a b : A}
     (e : dUnit R a = dUnit R b) : φ a = φ b := by
   have h' := (cobOne_dual_eq_zero_iff φ).1 h
   exact (AugCot.lift_d (Bialgebra.counitAlgHom R A) φ.ofConv h' a).symm.trans
     ((congrArg (AugCot.lift (Bialgebra.counitAlgHom R A) φ.ofConv h') e).trans (AugCot.lift_d _ _ h' b))
 
+/- English proof (translation)
+The claim follows from `(cobOne_dual_eq_zero_iff _).2 fun a b => by change l (AugCot.d _ (a * b)) = _ rw [AugCot.d_mul, map_add, map_smul, map_smul] rfl`.
+-/
 theorem cobOne_toConv_comp_d (l : Cot R A →ₗ[R] R) :
     cobOne R (CartierDual R A) (WithConv.toConv (l ∘ₗ AugCot.d (Bialgebra.counitAlgHom R A))) = 0 :=
   (cobOne_dual_eq_zero_iff _).2 fun a b => by
@@ -40,6 +49,11 @@ theorem cobOne_toConv_comp_d (l : Cot R A →ₗ[R] R) :
 
 end Der
 
+/- English proof (translation)
+Set `e` to `LinearEquiv.ofBijective _ hk`. Set `j : W₀ →ₗ[R] N` to `{ toFun := fun x₀ => ⟨a (e.symm (t x₀)), hN _ x₀ (e.apply_symm_apply _)⟩ map_add' := fun x y => Subtype.ext (by simp only [map_add]; rfl) map_smul' := fun r x => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `a (e.symm (t (r • x))) = r • a (e.symm (t x))`. Rewrite using `[map_smulₛₗ, map_smul, map_smul, algebraMap_smul]) }`. Use `⟨B.dualSubmoduleToDual _ ⟨s, hs⟩ ∘ₗ j, fun x x₀ h => ?_⟩` and prove the remaining obligations.
+
+Establish `h₂ : (j x₀).1 = a x` using `congrArg a (e.symm_apply_eq.2 h.symm)`. Rewrite using `[← h₂]`. Conclude with `(B.dualSubmoduleParing_spec ⟨s, hs⟩ (j x₀)).symm`.
+-/
 theorem exists_form_of_mem_dualSubmodule {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] {H W W' W₀ : Type*} [AddCommGroup H] [Module K H] [Module R H] [IsScalarTower R K H]
     [AddCommGroup W] [Module K W] [AddCommGroup W'] [Module K W'] [AddCommGroup W₀] [Module R W₀]
@@ -64,18 +78,31 @@ section Pair
 variable {p : ℕ} [Fact p.Prime] {R K : Type} [CommRing R] [Field K] [Algebra R K]
   {Γ' : PDivGroup p R} {𝒜 : PDivGroup p K}
 
+/- English proof (translation)
+Rewrite using `[SemiHom.rigToExt_rig]`. Conclude with `s.connecting h`.
+-/
 theorem isConnecting_rig {S S' : Type} [CommRing S] [CommRing S'] {σ : S →+* S'} {G : PDivGroup p S}
     {G' : PDivGroup p S'} (s : SemiHom σ G' G) {y : G.RigExt} {b : G.A 1} (h : G.IsConnecting (G.rigToExt y) b) :
     G'.IsConnecting (G'.rigToExt (s.rig y)) (s.app 1 b) := by
   rw [SemiHom.rigToExt_rig]
   exact s.connecting h
 
+/- English proof (translation)
+Rewrite using `[← SemiHom.ofHom_rig]`. Conclude with `isConnecting_rig (SemiHom.ofHom f) h`.
+-/
 theorem isConnecting_rigExtMap {S : Type} [CommRing S] {G G' : PDivGroup p S} (f : G' ⟶ G) {y : G.RigExt}
     {b : G.A 1} (h : G.IsConnecting (G.rigToExt y) b) :
     G'.IsConnecting (G'.rigToExt (rigExtMap f y)) (f.app 1 b) := by
   rw [← SemiHom.ofHom_rig]
   exact isConnecting_rig (SemiHom.ofHom f) h
 
+/- English proof (translation)
+Establish `h₁` using `isConnecting_rigExtMap (PerfdLat.dualBaseChange K Γ').hom (isConnecting_rig (Γ'.dual.toBase K) h₀)`. Establish `h₂` using `isConnecting_rigExtMap (dualHom _ _ κ) h₁`. Take `⟨a, ha⟩` from `AugCot.d_surjective _ (η'.1 1)`. Establish `h₃` using `hB _ _ h₂ η' a ha`. Rewrite using `[weilProj, rigExtMap_comp, rigExtMap_comp]`.
+
+Use `h₃.trans (congrArg (ε • ·) ?_)` and prove the remaining obligations. Establish `e : dUnit K (κ.app 1 a) = dUnit K ((1 : K) ⊗ₜ[R] a₀ : (Γ'.baseChange K).A 1)`. Establish `e'` using `congrArg (fun z => z.1 1) hη`. Simplify using `only [omegaMap_val, SemiHom.omega_val] at e'`. Rewrite `e'` using `[← ha₀, ← ha, SemiBialgHom.cot_d]`.
+
+Conclude with `(PDiv.cotMap_d _ _).symm.trans e'`. Use `(apply_eq_of_dUnit_eq (cobOne_eq_zero_of_connecting h₁) e).trans ?_` and prove the remaining obligations. Use `(CartierDual.baseChange_tmul_tmul K 1 1 b₀ a₀).trans ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_one, Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem pairing_weilProj (κ : Γ'.baseChange K ⟶ 𝒜) (w : 𝒜 ⟶ 𝒜.dual) (B : LinearMap.BilinForm K 𝒜.RigExt) (ε : ℤˣ)
     (hB : ∀ (y : 𝒜.dual.RigExt) (b : CartierDual K (𝒜.A 1)), 𝒜.dual.IsConnecting (𝒜.dual.rigToExt y) b →
       ∀ (η' : 𝒜.omega) (a : 𝒜.A 1), dUnit K a = η'.1 1 → B (rigExtMap w y) (𝒜.rigOfOmega η') = ε • b a)
@@ -98,6 +125,11 @@ theorem pairing_weilProj (κ : Γ'.baseChange K ⟶ 𝒜) (w : 𝒜 ⟶ 𝒜.dua
   refine (CartierDual.baseChange_tmul_tmul K 1 1 b₀ a₀).trans ?_
   rw [_root_.mul_one, Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Set `e` to `LinearEquiv.ofBijective _ hκ`. Take `⟨t, ht⟩` from `(Γ'.omega_baseChange_bijective K hR).2 (e η')`. Rewrite using `[← e.symm_apply_apply η', ← ht]`. Use `clear ht`. Proceed by induction on `t with`.
+
+Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy, add_zero]`. Consider the case `tmul r η₀`. Rewrite using `[PDiv.liftSemi_tmul, map_smul, map_smul, hf _ η₀ (e.apply_symm_apply _), smul_zero]`.
+-/
 theorem eq_zero_of_forall_toBase (hR : (p : R) = 0) (κ : Γ'.baseChange K ⟶ 𝒜)
     (hκ : Function.Bijective (omegaMap _ _ κ)) (f : 𝒜.omega →ₗ[K] K)
     (hf : ∀ η' η₀, omegaMap _ _ κ η' = (Γ'.toBase K).omega η₀ → f η' = 0) (η' : 𝒜.omega) : f η' = 0 := by
@@ -113,6 +145,19 @@ theorem eq_zero_of_forall_toBase (hR : (p : R) = 0) (κ : Γ'.baseChange K ⟶ �
 
 end Pair
 
+/- English proof (translation)
+Establish `hF : (LinearMap.range 𝒜.rigOfOmega).restrictScalars R ≤ B.dualSubmodule (latOmega κ)`. Introduce and unpack `x hx _ ⟨η', η₀, rfl, -⟩`. Rewrite using `[(hL x).1 hx _ ⟨η', rfl⟩]`. Conclude with `zero_mem _`. Use `le_antisymm (sup_le (sup_le ?_ ?_) hF) fun s hs => ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨η', η₀, rfl, -⟩`. Conclude with `hF ⟨η', rfl⟩`. Introduce and unpack `_ ⟨y₀, rfl⟩ _ ⟨η', η₀, rfl, hη⟩`. Take `⟨b₀, h₀⟩` from `Γ'.dual.exists_connecting hR (Γ'.dual.rigToExt y₀)`. Take `⟨a₀, ha₀⟩` from `AugCot.d_surjective _ (η₀.1 1)`.
+
+Rewrite using `[pairing_weilProj κ w B ε hB y₀ b₀ h₀ η' η₀ hη a₀ ha₀, Units.smul_def]`. Conclude with `zsmul_mem (Submodule.algebraMap_mem _) _`. Take `⟨l₀, hl₀⟩` from `exists_form_of_mem_dualSubmodule 𝒜.rigOfOmega _ hκ (Γ'.toBase K).omega B (latOmega κ) (fun x x₀ h => ⟨x, x₀, rfl, h⟩) hs`. Set `u` to `LinearEquiv.ofBijective _ (Γ'.omegaLevel_one_bijective hR)`. Set `l : Cot R (Γ'.A 1) →ₗ[R] R` to `(ε : ℤ) • (l₀ ∘ₗ u.symm.toLinearMap)`.
+
+Take `⟨x, hx⟩` from `exists_of_cobOne_eq_zero (G := Γ'.dual) (cobOne_toConv_comp_d l)`. Take `⟨y₀, rfl⟩` from `Γ'.dual.rigToExt_surjective x`. Rewrite using `[← add_sub_cancel (rigExtMap (weilProj κ w) ((Γ'.dual.toBase K).rig y₀)) s]`. Use `Submodule.add_mem_sup (Submodule.mem_sup_right ⟨y₀, rfl⟩) ((hL _).2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨η', rfl⟩`.
+
+Use `eq_zero_of_forall_toBase hR κ hκ (B (s - rigExtMap (weilProj κ w) ((Γ'.dual.toBase K).rig y₀)) ∘ₗ 𝒜.rigOfOmega) (fun η' η₀ hη => ?_) η'` and prove the remaining obligations. Take `⟨a₀, ha₀⟩` from `AugCot.d_surjective _ (η₀.1 1)`. Establish `h₃` using `pairing_weilProj κ w B ε hB y₀ _ hx η' η₀ hη a₀ ha₀`. Use `(B.sub_left _ _ _).trans (sub_eq_zero.2 (Eq.trans ?_ h₃.symm))` and prove the remaining obligations. Establish `h₁ : u.symm (AugCot.d _ a₀) = η₀` using `u.symm_apply_eq.2 ha₀`.
+
+Express the relevant statement in the definitionally equal form `_ = ε • algebraMap R K ((ε : ℤ) • l₀ (u.symm (AugCot.d _ a₀)))`. Rewrite using `[h₁, map_zsmul, hl₀ η' η₀ hη, ← Units.smul_def, smul_smul, Int.units_mul_self, one_smul]`.
+-/
 theorem lattice_sup_range_eq_dualSubmodule (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (hR : (p : R) = 0)
     (_hK : (p : K) = 0) (Γ' : PDivGroup p R) (𝒜 : PDivGroup p K) (κ : Γ'.baseChange K ⟶ 𝒜) (w : 𝒜 ⟶ 𝒜.dual)

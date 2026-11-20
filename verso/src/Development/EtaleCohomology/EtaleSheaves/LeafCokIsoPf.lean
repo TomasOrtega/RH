@@ -5,6 +5,11 @@ open CategoryTheory Limits
 
 namespace LateralTheory.E.LeafCokIsoPf
 
+/- English proof (translation)
+Set `φ : L ⟶ cokernel a` to `h.desc (cokernel.π a) 0 (by simp)`. Establish `hφ : b ≫ φ = 0` using `h.inr_desc _ _ _`. Use `⟨⟨cokernel.desc b φ hφ, ?_, ?_⟩⟩` and prove the remaining obligations. Use `ext`. Simplify using `[φ]`.
+
+Use `ext`. Simplify using `only [cokernel.π_desc_assoc, Category.comp_id]`. Apply `h.hom_ext` to reduce the goal to its premises. Simplify using `[φ]`. Simplify using `[reassoc_of% hφ]`.
+-/
 theorem isIso_cokernel_map_of_isPushout {C : Type*} [Category C] [HasZeroMorphisms C]
     {K' L' K L : C} (a : K' ⟶ L') (u : K' ⟶ K) (v : L' ⟶ L) (b : K ⟶ L)
     [HasCokernel a] [HasCokernel b] (w : a ≫ v = u ≫ b) (h : IsPushout a u v b) :
@@ -20,6 +25,13 @@ theorem isIso_cokernel_map_of_isPushout {C : Type*} [Category C] [HasZeroMorphis
     · simp [φ]
     · simp [reassoc_of% hφ]
 
+/- English proof (translation)
+It suffices to establish `hc : ∀ n, IsIso ((cokernel.map a b u v w).f n) from HomologicalComplex.Hom.isIso_of_components _`. Introduce `n`. Set `G : HomologicalComplex C c ⥤ C` to `HomologicalComplex.eval C c n`. Establish `w' : G.map a ≫ G.map v = G.map u ≫ G.map b`. Rewrite using `[← G.map_comp, w, G.map_comp]`.
+
+Establish `h1 : IsIso (cokernel.map (G.map a) (G.map b) (G.map u) (G.map v) w')` using `isIso_cokernel_map_of_isPushout (G.map a) (G.map u) (G.map v) (G.map b) w' (hpo n)`. Establish `e : cokernelComparison a G ≫ G.map (cokernel.map a b u v w) = cokernel.map (G.map a) (G.map b) (G.map u) (G.map v) w' ≫ cokernelComparison b G`. Rewrite using `[← cancel_epi (cokernel.π (G.map a))]`. Rewrite using `[π_comp_cokernelComparison_assoc, ← G.map_comp, cokernel.π_desc, G.map_comp, cokernel.π_desc_assoc, Category.assoc, π_comp_cokernelComparison]`. Establish `: IsIso (cokernelComparison a G ≫ G.map (cokernel.map a b u v w))` using `by rw [e]; infer_instance`.
+
+Conclude with `IsIso.of_isIso_comp_left (cokernelComparison a G) (G.map (cokernel.map a b u v w))`.
+-/
 theorem isIso_cokernel_map_complex {C : Type*} [Category C] [Abelian C] {ι : Type*} {c : ComplexShape ι}
     {K' L' K L : HomologicalComplex C c}
     (a : K' ⟶ L') (u : K' ⟶ K) (v : L' ⟶ L) (b : K ⟶ L) (w : a ≫ v = u ≫ b)
@@ -42,6 +54,9 @@ theorem isIso_cokernel_map_complex {C : Type*} [Category C] [Abelian C] {ι : Ty
   exact IsIso.of_isIso_comp_left (cokernelComparison a G) (G.map (cokernel.map a b u v w))
 
 open GlobalTheory.EtC in
+/- English proof (translation)
+Introduce `R _ K' L' K L a u v b w hpo`. Conclude with `isIso_cokernel_map_complex a u v b w hpo`.
+-/
 theorem LeafCokIso_of : LateralTheory.E.LeafExcPf.LeafCokIso := by
   intro R _ K' L' K L a u v b w hpo
   exact isIso_cokernel_map_complex a u v b w hpo

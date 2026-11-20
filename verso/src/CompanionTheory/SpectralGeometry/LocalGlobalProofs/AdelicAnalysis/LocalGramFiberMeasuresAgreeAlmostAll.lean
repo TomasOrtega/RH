@@ -12,6 +12,25 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ J' hJ' d b n`. Use `filter_upwards [GlobalTheory.T.hermitian_forms_integrally_equivalent_almost_all F E σ hσ M J hJ J' hJ' d b] with v hv`. Introduce `lam hlam m m' hm hm' S`. Take `⟨g, hg, hlat⟩` from `hv`. Establish `hL` using `GlobalTheory.T.completion_is_local_ring F v`.
+
+Take `⟨h1, h2, h3, h4, -⟩` from `id hL`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`. Use `haveI := h4`.
+
+Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨t1, t2, t3, t4, -, -, -, t8, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (Fv F v)`. Use `haveI := t1`. Use `haveI := t2`. Use `haveI := t3`.
+
+Use `haveI := t4`. Use `haveI := t8 n M`. Use `haveI := hlam.1`. Take `⟨-, c2, c3⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hσ (Fv F v) d b lam hlam.1`. Use `haveI := c2 n M`.
+
+Take `⟨a1, a2, a3, -⟩` from `GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hσ d b n M v`. Establish `hcont : ∀ k : GL (Fin M) (Fv F v ⊗[F] E), Continuous (actTup (Fv F v) (n` using `n) k) := by`. Introduce `k`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Conclude with `Continuous.matrix_mulVec continuous_const ((continuous_apply a))`.
+
+Establish `hinv : ∀ (k l : GL (Fin M) (Fv F v ⊗[F] E)), k * l = 1 → ∀ X : Fin n → Fin M → Fv F v ⊗[F] E, actTup (Fv F v) k (actTup (Fv F v) l X) = X`. Introduce `k l hkl X`. Use function extensionality and compare the values at `a`. Establish `h : (k : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) * (l : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) = 1`. Rewrite using `[← Units.val_mul, hkl, Units.val_one]`.
+
+Simplify using `only [actTup, Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`. Set `e : (Fin n → Fin M → Fv F v ⊗[F] E) ≃+ (Fin n → Fin M → Fv F v ⊗[F] E)` to `{ toFun := actTup (Fv F v) g invFun := actTup (Fv F v) g⁻¹ left_inv := hinv g⁻¹ g (inv_mul_cancel g) right_inv := hinv g g⁻¹ (mul_inv_cancel g) map_add' := by`. Introduce `X Y`. Use function extensionality and compare the values at `a`. Simplify using `only [actTup, Pi.add_apply, Matrix.mulVec_add] }`.
+
+Establish `hmap : (coordW (Fv F v) b lam n M).map e = coordW (Fv F v) b lam n M` using `(GlobalTheory.T.map_addHaar_addEquiv_eq_smul_and_eq_of_compact_open _ _ (coordW (Fv F v) b lam n M) (coordW (Fv F v) b lam n M) e (hcont g) (hcont g⁻¹)).2 (latV b v) (latV b v) a1 a2 ⟨0, a3⟩ (hlat n) rfl`. Establish `hfib` using `GlobalTheory.T.gram_fiber_measures_change_of_form F E σ hσ M J hJ J' hJ' (Fv F v) hL n (coordW (Fv F v) b lam n M) (coordHerm (Fv F v) σ b lam n) m (c2 n M) (c3 n) hm (coordW (Fv F v) b lam n M) m' (c2 n M) hm' g hg 1 (by rw [one_smul]; exact hmap) S`. Establish `hval` using `congrArg (fun μ => μ (latV b v)) hfib`. Simplify using `only [one_smul] at hval`. Rewrite `hval` using `[Measure.map_apply (hcont g).measurable a2.measurableSet]`.
+
+Establish `hpre : actTup (Fv F v) (n` using `n) g ⁻¹' latV (M := M) (n := n) b v = latV b v := by`. Use extensionality with `X`. Conclude with `hlat n X`. Rewrite `hval` using `[hpre]`. Conclude with `hval.symm`.
+-/
 theorem lattice_mass_fibre_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (J' : Matrix (Fin M) (Fin M) E), IsHermND σ J' → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ n : ℕ, ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ lam, IsStdV v lam → ∀ m m', IsGramFib (Fv F v) σ J n (coordW (Fv F v) b lam n M) (coordHerm (Fv F v) σ b lam n) m → IsGramFib (Fv F v) σ J' n (coordW (Fv F v) b lam n M) (coordHerm (Fv F v) σ b lam n) m' → ∀ S, m S (latV b v) = m' S (latV b v) := by
   intro F E _ _ _ _ _ σ hσ M J hJ J' hJ' d b n
   filter_upwards [GlobalTheory.T.hermitian_forms_integrally_equivalent_almost_all F E σ hσ M J hJ J' hJ' d b] with v hv

@@ -26,6 +26,11 @@ open GlobalTheory.QCoh (pullbackSections)
 
 namespace GlobalTheory.HodgeFrameGen
 
+/- English proof (translation)
+Take `⟨U, e, hx, he⟩` from `h (IsLocalRing.closedPoint R)`. Establish `hU : U = ⊤`. Use `top_le_iff.1 fun p _ => ?_` and prove the remaining obligations. Conclude with `(IsLocalRing.specializes_closedPoint p).mem_open U.isOpen hx`. Substitute `hU` using the available equality.
+
+Conclude with `⟨e, he⟩`.
+-/
 theorem exists_isFrame_top_of_isLocalRing (R : Type) [CommRing R] [IsLocalRing R] (F : (Sp R).Modules) {r : ℕ}
     (h : IsVB F r) : ∃ e : Fin r → Γ(F, ⊤), IsFrame e := by
   obtain ⟨U, e, hx, he⟩ := h (IsLocalRing.closedPoint R)
@@ -35,6 +40,9 @@ theorem exists_isFrame_top_of_isLocalRing (R : Type) [CommRing R] [IsLocalRing R
   subst hU
   exact ⟨e, he⟩
 
+/- English proof (translation)
+Establish `e : gam.comp (algebraMap R (FractionRing R)) = (algebraMap W (FractionRing W)).comp φ` using `RingHom.ext hgam`. Simplify using `only [spMap, jK, ← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`.
+-/
 theorem spMap_jK {R W : Type} [CommRing R] [IsDomain R] [CommRing W] [IsDomain W] (φ : R →+* W)
     (gam : FractionRing R →+* FractionRing W) (hgam : ∀ r, gam (algebraMap R _ r) = algebraMap W _ (φ r)) :
     spMap gam ≫ jK R = jK W ≫ spMap φ := by
@@ -42,6 +50,9 @@ theorem spMap_jK {R W : Type} [CommRing R] [IsDomain R] [CommRing W] [IsDomain W
     RingHom.ext hgam
   simp only [spMap, jK, ← Spec.map_comp, ← CommRingCat.ofHom_comp, e]
 
+/- English proof (translation)
+Use `hG₁.smooth` as an intermediate fact. Establish `h₁ : SmoothOfRelativeDimension g ((Over.pullback (jK R)).obj G₁).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hα.1 hGg`. Conclude with `GlobalTheory.SmoothRelDim.smoothOfRelativeDimension_of_generic R G₁ (FractionRing R) (algebraMap R (FractionRing R)) (IsFractionRing.injective R (FractionRing R)) g h₁`.
+-/
 theorem relDim {S' : Scheme.{0}} {g : ℕ} {G : Over S'} [GrpObj G] (hGg : SmoothOfRelativeDimension g G.hom)
     {R : Type} [CommRing R] [IsDomain R] {G₁ : Over (Sp R)} [GrpObj G₁] (hG₁ : IsSemiAbelian G₁)
     {y : Sp (FractionRing R) ⟶ S'} {α : pullback G₁.hom (jK R) ⟶ G.left}
@@ -52,6 +63,17 @@ theorem relDim {S' : Scheme.{0}} {g : ℕ} {G : Over S'} [GrpObj G] (hGg : Smoot
   exact GlobalTheory.SmoothRelDim.smoothOfRelativeDimension_of_generic R G₁ (FractionRing R)
     (algebraMap R (FractionRing R)) (IsFractionRing.injective R (FractionRing R)) g h₁
 
+/- English proof (translation)
+Introduce `S' g G _ _ hG hGg R _ _ _ _ _ G₁ _ _ hG₁ y α hα`. Use `haveI := hG`. Use `haveI := hG₁`. Use `haveI : SmoothOfRelativeDimension g G₁.hom := relDim hGg hG₁ hα`. Take `⟨ε, hε⟩` from `exists_isFrame_top_of_isLocalRing R (omega G₁) (isVB_omega G₁ g)`.
+
+Establish `p₁` using `isGrpPullback_pullback G₁ (jK R)`. Establish `ha : IsFrame fun i => (omegaBase p₁).app ⊤ (pullbackSections (jK R) _ le_top (ε i))` using `(GlobalTheory.BadPt.Fibre.frame_pb (jK R) hε le_top).map_iso _`. Use `⟨gen hα ha, GlobalTheory.T.hodgeBundlePullbackGenOfFrame_isGen hα ha, ?_⟩` and prove the remaining obligations. Introduce `W _ _ _ hW φ gam hgam χ' hχ`. Use `haveI : IsDiscreteValuationRing W := hW.1`.
+
+Take `⟨ρ', ψ', hρ', hψ', e₁, e₂⟩` from `GlobalTheory.T.traitPullback_semiAbelianModel_identification hG hG₁ hα φ gam hgam χ' hχ`. Establish `pW` using `isGrpPullback_pullback G₁ (spMap φ)`. Establish `ha' : IsFrame fun i => (omegaBase pW).app ⊤ (pullbackSections (spMap φ) _ le_top (ε i))` using `(GlobalTheory.BadPt.Fibre.frame_pb (spMap φ) hε le_top).map_iso _`. Use `⟨gen hψ' ha', GlobalTheory.T.hodgeBundlePullbackGenOfFrame_isGen hψ' ha', fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `q` using `isGrpPullback_pullback ((Over.pullback (jK R)).obj G₁) (spMap gam)`.
+
+Establish `hA` using `q.comp hα`. Establish `hq₁` using `q.comp p₁`. Establish `hb : IsFrame fun i => (omegaBase hq₁).app ⊤ (pullbackSections (spMap gam ≫ jK R) _ le_top (ε i))` using `(GlobalTheory.BadPt.Fibre.frame_pb _ hε le_top).map_iso _`. Use `(GlobalTheory.T.hodge_frame_generator_value_pullback hα ha (spMap gam) q _ _ hA rfl rfl hb (fun i => ?_) z J hJ).trans (GlobalTheory.T.hodge_frame_generator_value_pullback hψ' ha' (jK W) hρ' _ _ hA hχ.symm e₁ hb (fun i => ?_) z J hJ).symm` and prove the remaining obligations. Conclude with `(GlobalTheory.BadPt.Fibre.omegaBase_comp p₁ q hq₁ rfl rfl le_top le_top le_top (ε i)).symm`.
+
+Conclude with `(GlobalTheory.BadPt.Fibre.omegaBase_comp pW hρ' hq₁ (spMap_jK φ gam hgam).symm e₂ le_top le_top le_top (ε i)).symm`.
+-/
 theorem exists_integral_hodgeGen : ∀ (S' : Scheme.{0}) (g : ℕ) (G : Over S') [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → SmoothOfRelativeDimension g G.hom → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R] (G₁ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ (y : Sp (FractionRing R) ⟶ S') (α : pullback G₁.hom (jK R) ⟶ G.left), IsGrpPullback ((Over.pullback (jK R)).obj G₁) G y α → ∃ e₀ : LB.Gen ((hodge G g).pull y), e₀.IsGen ∧ ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ (φ : R →+* W) (gam : FractionRing R →+* FractionRing W), (∀ r, gam (algebraMap R _ r) = algebraMap W _ (φ r)) → ∀ χ' : Sp W ⟶ S', spMap gam ≫ y = jK W ≫ χ' → ∃ e₀' : LB.Gen ((hodge G g).pull χ'), e₀'.IsGen ∧ ∀ (z : Sp (FractionRing W)) (J : (Sp (FractionRing W) ⟶ S') → (hodge G g).ι), Good (hodge G g) z J → val (L := hodge G g) (φ := fun _ : PUnit => y) (ε := fun _ => 1) e₀ (spMap gam) z J = val (L := hodge G g) (φ := fun _ : PUnit => χ') (ε := fun _ => 1) e₀' (jK W) z J := by
   intro S' g G _ _ hG hGg R _ _ _ _ _ G₁ _ _ hG₁ y α hα
   haveI := hG; haveI := hG₁

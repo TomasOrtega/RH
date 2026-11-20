@@ -14,11 +14,19 @@ namespace GlobalTheory.ZH
 
 attribute [local instance] SplitExt.free SplitExt.finite
 
+/- English proof (translation)
+Establish `h : (default : Sp k) ∈ ⨆ i, L.U i` using `by rw [hL.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Conclude with `⟨i, top_le_iff.1 fun x _ => by rw [Subsingleton.elim x default]; exact hi⟩`.
+-/
 theorem exists_chart_eq_top {k : Type} [Field k] {L : LB (Sp k)} (hL : L.IsLB) : ∃ i, L.U i = ⊤ := by
   have h : (default : Sp k) ∈ ⨆ i, L.U i := by rw [hL.cover]; trivial
   obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 h
   exact ⟨i, top_le_iff.1 fun x _ => by rw [Subsingleton.elim x default]; exact hi⟩
 
+/- English proof (translation)
+Establish `le : ∀ p : M.ι × L.ι, M.U p.1 ⊓ L.U p.2 ≤ L.U p.2 ⊓ L.U i₀` using `fun p => le_inf inf_le_right (by rw [hi]; exact le_top)`. Use `⟨⟨fun p => (res (le p) (L.g p.2 i₀))⁻¹⟩, fun (p q : M.ι × L.ι) => ?_⟩` and prove the remaining obligations. Establish `le3 : M.U p.1 ⊓ L.U p.2 ⊓ (M.U q.1 ⊓ L.U q.2) ≤ L.U p.2 ⊓ L.U q.2 ⊓ L.U i₀` using `le_inf (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)) (by rw [hi]; exact le_top)`. Establish `e` using `congrArg (res le3) (hL.cocycle p.2 q.2 i₀)`. Rewrite `e` using `[map_mul, DVR.res_res', DVR.res_res', DVR.res_res']`.
+
+Use `show res (X := X) (U := M.U p.1 ⊓ L.U p.2) (V := M.U p.1 ⊓ L.U p.2 ⊓ (M.U q.1 ⊓ L.U q.2)) _ (res (le p) (L.g p.2 i₀))⁻¹ = res (X := X) (V := M.U p.1 ⊓ L.U p.2 ⊓ (M.U q.1 ⊓ L.U q.2)) _ (M.g p.1 q.1) * (res _ (L.g p.2 q.2))⁻¹ * res (X := X) (U := M.U q.1 ⊓ L.U q.2) _ (res (le q) (L …`. Rewrite using `[hM, map_one, map_inv, map_inv]`. Use `erw [DVR.res_res', DVR.res_res', ← e, _root_.one_mul, mul_inv]`. Both sides reduce to the same expression.
+-/
 theorem lbIso_of_chart_top {X : Scheme.{0}} {L M : LB X} (hL : L.IsLB) (i₀ : L.ι) (hi : L.U i₀ = ⊤)
     (hM : ∀ i j, M.g i j = 1) : LBIso L M := by
   have le : ∀ p : M.ι × L.ι, M.U p.1 ⊓ L.U p.2 ≤ L.U p.2 ⊓ L.U i₀ := fun p =>
@@ -39,6 +47,11 @@ theorem lbIso_of_chart_top {X : Scheme.{0}} {L M : LB X} (hL : L.IsLB) (i₀ : L
 section Torus
 variable (k : Type) [Field k] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
 
+/- English proof (translation)
+Establish `e : (toUnit (splitTorus (Sp k) X)).left = (splitTorus (Sp k) X).hom`. Simplify using `using Over.w (toUnit (splitTorus (Sp k) X))`. Use `Diag.isAffineHom_hom (Sp k) X` as an intermediate fact. Take `⟨O, h₁, h₂, h₃, h⟩` from `exists_gtDatum_of_splitTorus_extension (Sp k) X (splitTorus (Sp k) X) (𝟙_ (Over (Sp k))) (Diag.isAbelianScheme_unit _) (toUnit _) (𝟙 _) ⟨toUnit_unique _ _, toUnit_unique _ _⟩ inferInstance (e ▸ Diag.flat_hom (Sp k) X) (e ▸ Diag.surjective_hom (Sp k) X) (e ▸ (inferInstance : Quasi …`. Take `⟨d, -⟩` from `h (Diag.isAbelianScheme_unit _)`.
+
+Conclude with `⟨O, h₁, h₂, h₃, ⟨d⟩⟩`.
+-/
 theorem exists_torus_datum : ∃ (O : X → RigLB (𝟙_ (Over (Sp k)))) (h₁ : _) (h₂ : _) (h₃ : _),
     Nonempty ((SplitExt.mk (𝟙_ (Over (Sp k))) (Diag.isAbelianScheme_unit _) X O h₁ h₂ h₃).GtDatum
       (splitTorus (Sp k) X)) := by
@@ -54,6 +67,9 @@ theorem exists_torus_datum : ∃ (O : X → RigLB (𝟙_ (Over (Sp k)))) (h₁ :
   obtain ⟨d, -⟩ := h (Diag.isAbelianScheme_unit _)
   exact ⟨O, h₁, h₂, h₃, ⟨d⟩⟩
 
+/- English proof (translation)
+The claim follows from `Finset.prod_eq_one fun _ _ => by rw [hL]; erw [map_one, map_one]; exact one_zpow _`.
+-/
 theorem linComb_g_eq_one {X Y : Scheme.{0}} {L : LB X} (hL : ∀ i j, L.g i j = 1) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (j j' : (LB.LinComb L φ ε).ι) : (LB.LinComb L φ ε).g j j' = 1 :=
   Finset.prod_eq_one fun _ _ => by rw [hL]; erw [map_one, map_one]; exact one_zpow _
@@ -96,10 +112,18 @@ def torusSec (d : ℕ) (x : AddMonoidAlgebra Γ(Sp k, ⊤) X) : ((torusFib k X).
     rw [e, Units.val_one, _root_.one_mul]
     rfl
 
+/- English proof (translation)
+The claim follows from `congrArg (fun y : AddMonoidAlgebra Γ(Sp k, ⊤) X => y.coeff α) (Equiv.symm_apply_apply _ x)`.
+-/
 theorem wt_torusSec (d : ℕ) (x : AddMonoidAlgebra Γ(Sp k, ⊤) X) (α : X) (l) :
     (torusFib k X).wt (torusSec k X d x) α l = x.coeff α :=
   congrArg (fun y : AddMonoidAlgebra Γ(Sp k, ⊤) X => y.coeff α) (Equiv.symm_apply_apply _ x)
 
+/- English proof (translation)
+Establish `e : constFn (𝟙 (Sp R)) ⊤ = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`. Use function extensionality and compare the values at `a`. Simplify using `only [constFn, Scheme.Hom.appLE_eq_app, Scheme.Hom.id_app]`. Conclude with `congrArg (fun φ => CommRingCat.Hom.hom φ _) ((Sp R).presheaf.map_id _)`. Rewrite using `[e]`.
+
+Conclude with `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv`.
+-/
 theorem constFn_id_bijective (R : Type) [CommRing R] : Function.Bijective (constFn (𝟙 (Sp R)) ⊤) := by
   have e : constFn (𝟙 (Sp R)) ⊤ = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom := by
     funext a
@@ -108,6 +132,21 @@ theorem constFn_id_bijective (R : Type) [CommRing R] : Function.Bijective (const
   rw [e]
   exact ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv
 
+/- English proof (translation)
+Establish `hinj : Function.Injective cls` using `fun i j h => hi i j 0 (by simpa using h)`. Establish `h0 : ∀ x : X, ∃ m : X, x = x + N • m` using `fun x => ⟨0, by simp⟩`. Establish `hc0 : constFn (𝟙 (Sp k)) ⊤ 0 = 0` using `by simp [constFn]`. Establish `hsum : ∀ (a : J → k) (i₀ : J) (l), ∑ i, constFn (𝟙 (Sp k)) ⊤ (a i) * (show Γ(Sp k, ⊤) from (torusFib k X).wt (torusSec k X 1 (AddMonoidAlgebra.single (cls i) 1)) (cls i₀) l) = constFn (𝟙 (Sp k)) ⊤ (a i₀)` using `fun a i₀ l => by`. Simplify using `only [wt_torusSec]`.
+
+Rewrite using `[Finset.sum_eq_single i₀]`. Simplify using the standard rewrite rules. Introduce `i _ h`. Simplify using `[Finsupp.single_apply, hinj.ne h]`. Simplify using the standard rewrite rules.
+
+Use `⟨hq, fun i => (hs _).2 ⟨i, rfl⟩, fun i β hβ => ?_, fun α hα φ _ => ?_, fun α hα a ha h => ?_⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `hβ replace hl : (AddMonoidAlgebra.single (cls i) (1 : Γ(Sp k, ⊤))).coeff β ≠ 0 := fun h => hl ((wt_torusSec k X 1 _ β l).trans h)`. Establish `: (β : X) = cls i`. Assume the negation of the conclusion as `h`. Conclude with `hl (Finsupp.single_eq_of_ne h)`.
+
+Substitute `this` using the available equality. Conclude with `⟨(hs _).2 ⟨i, rfl⟩, h0 _⟩`. Take `⟨i₀, rfl⟩` from `(hs α).1 hα`. Take `⟨c, hc⟩` from `(constFn_id_bijective k).2 ((torusFib k X).wt φ (cls i₀) PUnit.unit)`. Use `⟨Pi.single i₀ c, fun i h => ?_, fun l => ?_⟩` and prove the remaining obligations.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : i = i₀ := by`. Assume the negation of the conclusion as `h'`. Conclude with `h (Pi.single_eq_of_ne h' _)`. Conclude with `h0 _`. Use `Eq.trans ?_ (hsum _ i₀ l).symm` and prove the remaining obligations.
+
+Rewrite using `[Pi.single_eq_same, hc]`. Both sides reduce to the same expression. Take `⟨i₀, rfl⟩` from `(hs α).1 hα`. Establish `h1 : a i₀ = 0` using `(constFn_id_bijective k).1 (((hsum a i₀ PUnit.unit).symm.trans (h PUnit.unit)).trans hc0.symm)`. Use function extensionality and compare the values at `i`.
+
+Assume the negation of the conclusion as `h'`. Take `⟨m, hm⟩` from `ha i h'`. Conclude with `h' (hi _ _ m hm ▸ h1)`.
+-/
 theorem torus_good (N : ℕ) (q : QuadraticMap ℤ X ℝ) (hq : Filter.Tendsto q Filter.cofinite Filter.atTop)
     {J : Type} [Fintype J] (cls : J → X) (hs : ∀ α, Short q N α ↔ α ∈ Set.range cls)
     (hi : ∀ i j m, cls i = cls j + N • m → i = j) :
@@ -156,8 +195,14 @@ end Good
 
 def squareForm : QuadraticMap ℤ ℤ ℝ := QuadraticMap.linMulLin (Algebra.linearMap ℤ ℝ) (Algebra.linearMap ℤ ℝ)
 
+/- English proof (translation)
+Simplify using `[squareForm, sq]`.
+-/
 theorem squareForm_apply (x : ℤ) : squareForm x = ((x ^ 2 : ℤ) : ℝ) := by simp [squareForm, sq]
 
+/- English proof (translation)
+Use `Filter.tendsto_atTop.2 fun b => Filter.eventually_cofinite.2 ?_` and prove the remaining obligations. Use `(Set.finite_Icc (-⌈b⌉) ⌈b⌉).subset fun x hx => ?_` and prove the remaining obligations. Establish `h : ((x ^ 2 : ℤ) : ℝ) < b` using `by simpa [squareForm_apply] using hx`. Establish `h' : x ^ 2 < ⌈b⌉` using `Int.lt_ceil.2 h`. Apply the tactic sequence `constructor <;> nlinarith [sq_nonneg (x - 1), sq_nonneg (x + 1), sq_nonneg x]`.
+-/
 theorem squareForm_tendsto : Filter.Tendsto squareForm Filter.cofinite Filter.atTop := by
   refine Filter.tendsto_atTop.2 fun b => Filter.eventually_cofinite.2 ?_
   refine (Set.finite_Icc (-⌈b⌉) ⌈b⌉).subset fun x hx => ?_
@@ -165,6 +210,17 @@ theorem squareForm_tendsto : Filter.Tendsto squareForm Filter.cofinite Filter.at
   have h' : x ^ 2 < ⌈b⌉ := Int.lt_ceil.2 h
   constructor <;> nlinarith [sq_nonneg (x - 1), sq_nonneg (x + 1), sq_nonneg x]
 
+/- English proof (translation)
+Simplify using `only [Short, squareForm_apply, Int.cast_le, nsmul_eq_mul]`. Use `push_cast`. Establish `hr : (0 : ℤ) ≤ r` using `Int.natCast_nonneg r`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h₁` using `h 1`. Establish `h₂` using `h (-1)`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hc`. Establish `: α ≤ -r - 1` using `by omega`.
+
+Use the polynomial consequences of the given equalities and inequalities. Assume the negation of the conclusion as `hc`. Establish `: r + 1 ≤ α` using `by omega`. Use the polynomial consequences of the given equalities and inequalities. Introduce and unpack `⟨h₁, h₂⟩ m`.
+
+Rewrite using `[sq_le_sq]`. Break down `lt_trichotomy m 0 with h | rfl | h` into its components or cases. Use `(abs_le.2 ⟨h₁, h₂⟩).trans (le_abs.2 (Or.inr ?_))` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
+
+Use `(abs_le.2 ⟨h₁, h₂⟩).trans (le_abs.2 (Or.inl ?_))` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem short_squareForm_iff (r : ℕ) (α : ℤ) : Short squareForm (2 * r + 1) α ↔ -(r : ℤ) ≤ α ∧ α ≤ r := by
   simp only [Short, squareForm_apply, Int.cast_le, nsmul_eq_mul]
   push_cast
@@ -189,6 +245,13 @@ theorem short_squareForm_iff (r : ℕ) (α : ℤ) : Short squareForm (2 * r + 1)
     · refine (abs_le.2 ⟨h₁, h₂⟩).trans (le_abs.2 (Or.inl ?_))
       nlinarith
 
+/- English proof (translation)
+Use `torus_good k ℤ _ squareForm squareForm_tendsto _ (fun α => ?_) fun i j m h => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[short_squareForm_iff]`. Simplify using the standard rewrite rules. Take `⟨h₁, h₂⟩` from `Finset.mem_Icc.1 i.2`. Take `⟨h₃, h₄⟩` from `Finset.mem_Icc.1 j.2`.
+
+Simplify using `only [nsmul_eq_mul] at h`. Move the coercions through the operations in `at h`. Establish `hr : (0 : ℤ) ≤ r` using `Int.natCast_nonneg r`. Establish `: m = 0`. Break down `lt_trichotomy m 0 with h' | h' | h'` into its components or cases.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `h'`. Use the polynomial consequences of the given equalities and inequalities. Simplify `h` using `[this]`.
+-/
 theorem gm_good (k : Type) [Field k] (r : ℕ) :
     (torusFib k ℤ).Good (2 * r + 1) squareForm (J := Finset.Icc (-(r : ℤ)) r) Subtype.val
       fun i => torusSec k ℤ 1 (AddMonoidAlgebra.single i.1 1) := by
@@ -207,6 +270,11 @@ theorem gm_good (k : Type) [Field k] (r : ℕ) :
       · nlinarith
     simpa [this] using h
 
+/- English proof (translation)
+Evaluate the numerical expressions using `lll := by`. Establish `: (2 : ℝ) ^ (((1 : ℕ) : ℝ) / 2) ≤ 2 ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)`. Rewrite `this` using `[Real.rpow_one]`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `sep := by`. Establish `: (2 : ℝ) ^ (((1 : ℕ) : ℝ) / 2 - 1) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by norm_num)`. Simplify using `only [Nat.factorial_one, pow_one]`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem big_one_three_pow : Big 1 81 19683 where
   four := by norm_num
   lll := by
@@ -220,6 +288,9 @@ theorem big_one_three_pow : Big 1 81 19683 where
     push_cast at this ⊢
     linarith
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨torusFib k ℤ, squareForm, Finset.Icc (-((40 : ℕ) : ℤ)) (40 : ℕ), inferInstance, _, _, torusPol k ℤ 81, gm_good k 40, by simp, by show 0 + Module.finrank ℤ ℤ = 1 simp, big_one_three_pow⟩`.
+-/
 theorem gm_all (k : Type) [Field k] :
     ∃ (Φ : FibPre k) (q : QuadraticMap ℤ Φ.E.X ℝ) (J : Type) (_ : Fintype J) (cls : J → Φ.E.X)
       (F : J → (Φ.H 1).Sec) (π : Φ.Pol 81), Φ.Good 81 q cls F ∧ Fintype.card J = 81 ∧
@@ -229,10 +300,21 @@ theorem gm_all (k : Type) [Field k] :
       show 0 + Module.finrank ℤ ℤ = 1
       simp, big_one_three_pow⟩
 
+/- English proof (translation)
+Introduce `h` and use `by have := h (-1); simp only [squareForm_apply] at this; norm_num at this`.
+-/
 example : ¬ Short squareForm 4 3 := fun h => by have := h (-1); simp only [squareForm_apply] at this; norm_num at this
 
+/- English proof (translation)
+The claim follows from `(short_squareForm_iff 1 (-1)).2 (by norm_num)`.
+-/
 example : Short squareForm 3 (-1) := (short_squareForm_iff 1 (-1)).2 (by norm_num)
 
+/- English proof (translation)
+Establish `key : ∀ α : ℤ, α ∈ (torusFib k ℤ).supp (torusSec k ℤ 1 (AddMonoidAlgebra.single (1 : ℤ) 1)) ↔ (AddMonoidAlgebra.single (1 : ℤ) (1 : Γ(Sp k, ⊤))).coeff α ≠ 0` using `fun α => ⟨fun ⟨l, hl⟩ h => hl ((wt_torusSec k ℤ 1 _ α l).trans h), fun h => ⟨PUnit.unit, fun h' => h ((wt_torusSec k ℤ 1 _ α PUnit.unit).symm.trans h')⟩⟩`. Use `Set.ext fun α : ℤ => (key α).trans ?_` and prove the remaining obligations. Use `show _ ↔ α = 1`. Distinguish the cases in `h : α = 1`. Simplify using `[h]`.
+
+Simplify using `[h, Finsupp.single_apply, Ne.symm h]`.
+-/
 example (k : Type) [Field k] :
     (torusFib k ℤ).supp (torusSec k ℤ 1 (AddMonoidAlgebra.single (1 : ℤ) 1)) = {(1 : ℤ)} := by
   have key : ∀ α : ℤ, α ∈ (torusFib k ℤ).supp (torusSec k ℤ 1 (AddMonoidAlgebra.single (1 : ℤ) 1)) ↔

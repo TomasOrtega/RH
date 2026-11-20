@@ -13,6 +13,13 @@ noncomputable section
 
 namespace ChartDensityIntegrableAlt
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨U, l, hl, hspec⟩ : ∃ (U : Matrix (Fin e) (Fin e) ℂ) (l : Fin e → ℝ), (∀ k, 0 ≤ l k) ∧ N = U * diagonal (fun k => (l k : ℂ)) * star U := by`. Use `⟨(hN.1.eigenvectorUnitary : Matrix (Fin e) (Fin e) ℂ), hN.1.eigenvalues, fun k => (hN.eigenvalues_pos k).le, ?_⟩` and prove the remaining obligations. Establish `h` using `hN.1.spectral_theorem`. Simplify using `only [Unitary.conjStarAlgAut_apply] at h`. Conclude with `h`.
+
+Use `set s : Fin e → ℂ := fun k => ((Real.sqrt (l k) : ℝ) : ℂ) with hs`. Establish `hss : (fun i => star s i * s i) = fun k => (l k : ℂ)`. Use function extensionality and compare the values at `k`. Simplify using `only [hs, Pi.star_apply, Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (hl k)]`. Establish `hNC : N = (diagonal s * star U)ᴴ * (diagonal s * star U)`.
+
+Rewrite using `[conjTranspose_mul, star_eq_conjTranspose, conjTranspose_conjTranspose, diagonal_conjTranspose, Matrix.mul_assoc, ← Matrix.mul_assoc (diagonal (star s)), diagonal_mul_diagonal, hss, hspec, star_eq_conjTranspose, Matrix.mul_assoc]`. Use `⟨diagonal s * star U, hNC, fun h => ?_⟩` and prove the remaining obligations. Establish `hdet` using `(hN.det_pos).ne'`. Rewrite `hdet` using `[hNC, det_mul, h, mul_zero]`. Conclude with `hdet rfl`.
+-/
 theorem exists_conjTranspose_mul_self {e : ℕ} {N : Matrix (Fin e) (Fin e) ℂ} (hN : N.PosDef) :
     ∃ C : Matrix (Fin e) (Fin e) ℂ, N = Cᴴ * C ∧ C.det ≠ 0 := by
   obtain ⟨U, l, hl, hspec⟩ : ∃ (U : Matrix (Fin e) (Fin e) ℂ) (l : Fin e → ℝ), (∀ k, 0 ≤ l k) ∧
@@ -36,6 +43,11 @@ theorem exists_conjTranspose_mul_self {e : ℕ} {N : Matrix (Fin e) (Fin e) ℂ}
   rw [hNC, det_mul, h, mul_zero] at hdet
   exact hdet rfl
 
+/- English proof (translation)
+Establish `h1 : star (C *ᵥ y + d) ⬝ᵥ (C *ᵥ y + d) = star y ⬝ᵥ ((Cᴴ * C) *ᵥ y) + star y ⬝ᵥ (Cᴴ *ᵥ d) + star (Cᴴ *ᵥ d) ⬝ᵥ y + star d ⬝ᵥ d`. Rewrite using `[star_add, add_dotProduct, dotProduct_add, dotProduct_add, star_mulVec, ← dotProduct_mulVec, ← dotProduct_mulVec, mulVec_mulVec, star_mulVec, conjTranspose_conjTranspose, dotProduct_mulVec, dotProduct_mulVec (star d) C y]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, ← hNC, hd]`. Establish `hw : ∀ j : Fin e, M 0 j.succ = star (M j.succ 0)` using `fun j => (hH.apply 0 j.succ).symm`.
+
+Simplify using `only [dotProduct, mulVec, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, Pi.star_apply, star_one, one_mul, mul_one, submatrix_apply, hw, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chart_quad_eq {e : ℕ} {M : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ} (hH : M.IsHermitian)
     {C : Matrix (Fin e) (Fin e) ℂ} (hNC : M.submatrix Fin.succ Fin.succ = Cᴴ * C) {d : Fin e → ℂ}
     (hd : Cᴴ *ᵥ d = fun i => M i.succ 0) (y : Fin e → ℂ) :
@@ -52,11 +64,31 @@ theorem chart_quad_eq {e : ℕ} {M : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ} (hH
     one_mul, mul_one, submatrix_apply, hw, mul_add, Finset.sum_add_distrib]
   ring
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def, Complex.conj_mul', Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re]`.
+-/
 theorem re_star_dotProduct_self {e : ℕ} (z : Fin e → ℂ) : (star z ⬝ᵥ z).re = ∑ i, ‖z i‖ ^ 2 := by
   simp only [dotProduct, Pi.star_apply, Complex.star_def, Complex.conj_mul', Complex.re_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [← Complex.ofReal_pow, Complex.ofReal_re]
 
+/- English proof (translation)
+Take `⟨C, hNC, hC⟩` from `exists_conjTranspose_mul_self (hM.submatrix (Fin.succ_injective e))`. Establish `hCH : Cᴴ.det ≠ 0` using `by rw [det_conjTranspose]; exact star_ne_zero.mpr hC`. Use `set w : Fin e → ℂ := fun i => M i.succ 0 with hw`. Use `set d : Fin e → ℂ := (Cᴴ)⁻¹ *ᵥ w with hd'`. Establish `hd : Cᴴ *ᵥ d = w`.
+
+Rewrite using `[hd', mulVec_mulVec, mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hCH), one_mulVec]`. Establish `hq` using `fun y => chart_quad_eq hM.1 hNC hd y`. Use `set s : ℝ := (M 0 0 - star d ⬝ᵥ d).re with hs`. Establish `hspos : 0 < s`. Establish `hy0 : C *ᵥ (-(C⁻¹ *ᵥ d)) + d = 0`.
+
+Rewrite using `[mulVec_neg, mulVec_mulVec, mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hC), one_mulVec, neg_add_cancel]`. Establish `hx : (Fin.cons 1 (-(C⁻¹ *ᵥ d)) : Fin (e + 1) → ℂ) ≠ 0` using `fun h => by`. Use `congr_fun h 0` as an intermediate fact. Simplify using `at this`. Establish `hpos` using `hM.re_dotProduct_pos hx`.
+
+Rewrite `hpos` using `[hq, hy0]`. Simplify `hpos` using `[hs]`. Use `set r : ℝ := Real.sqrt s with hr`. Establish `hrpos : 0 < r` using `Real.sqrt_pos.mpr hspos`. Use `⟨((r⁻¹ : ℝ) : ℂ) • d, ((r⁻¹ : ℝ) : ℂ) • C, Real.log r, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by exact_mod_cast (inv_pos.mpr hrpos).ne')) hC`. Use function extensionality and compare the values at `y`. Establish `hX : 0 ≤ ∑ i, ‖(C *ᵥ y + d) i‖ ^ 2` using `by positivity`. Establish `hcy : ((r⁻¹ : ℝ) : ℂ) • d + (((r⁻¹ : ℝ) : ℂ) • C) *ᵥ y = ((r⁻¹ : ℝ) : ℂ) • (C *ᵥ y + d)`.
+
+Rewrite using `[smul_mulVec, smul_add, add_comm]`. Establish `hnorm : ∑ i, ‖(((r⁻¹ : ℝ) : ℂ) • (C *ᵥ y + d)) i‖ ^ 2 = (r⁻¹) ^ 2 * ∑ i, ‖(C *ᵥ y + d) i‖ ^ 2`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hrpos), mul_pow]`.
+
+Establish `hsq : s = r ^ 2` using `(Real.sq_sqrt hspos.le).symm`. Establish `h1pos : 0 < 1 + (r⁻¹) ^ 2 * ∑ i, ‖(C *ᵥ y + d) i‖ ^ 2` using `by positivity`. Establish `hsplit : s + ∑ i, ‖(C *ᵥ y + d) i‖ ^ 2 = r ^ 2 * (1 + (r⁻¹) ^ 2 * ∑ i, ‖(C *ᵥ y + d) i‖ ^ 2)`. Rewrite using `[hsq]`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `only [hermChartPot, gbPot]`. Rewrite using `[hq, Complex.add_re, ← hs, re_star_dotProduct_self, hcy, hnorm, hsplit, Real.sqrt_mul (sq_nonneg r), Real.sqrt_sq hrpos.le, Real.log_mul hrpos.ne' (Real.sqrt_pos.mpr h1pos).ne']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermChartPot_eq_gbPot_affine {e : ℕ} (M : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ) (hM : M.PosDef) :
     ∃ (c : Fin e → ℂ) (P : Matrix (Fin e) (Fin e) ℂ) (κ : ℝ), P.det ≠ 0 ∧
       hermChartPot M = fun y => gbPot (c + P *ᵥ y) + κ := by
@@ -101,6 +133,13 @@ theorem hermChartPot_eq_gbPot_affine {e : ℕ} (M : Matrix (Fin (e + 1)) (Fin (e
       Real.log_mul hrpos.ne' (Real.sqrt_pos.mpr h1pos).ne']
     ring
 
+/- English proof (translation)
+Establish `hcont : Continuous (fun y : Fin D → ℂ => ((1 + ∑ i, ‖y i‖ ^ 2) ^ (D + 1))⁻¹)`. Use `Continuous.inv₀ (by fun_prop) fun y => ?_` and prove the remaining obligations. Establish `: 0 < 1 + ∑ i, ‖y i‖ ^ 2` using `by positivity`. Check the signs of the components of the expression. Use `⟨hcont.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hasFiniteIntegral_iff_ofReal (Eventually.of_forall fun y => by`. Simplify using `only [Pi.zero_apply]`. Use the proof step `positivity)]`. Establish `h` using `gaM_lintegral_pi D 1 one_pos 0`. Simplify using `only [add_zero] at h`.
+
+Rewrite using `[h]`. Conclude with `ENNReal.ofReal_lt_top`.
+-/
 theorem integrable_fsDens (D : ℕ) :
     Integrable (fun y : Fin D → ℂ => ((1 + ∑ i, ‖y i‖ ^ 2) ^ (D + 1))⁻¹) := by
   have hcont : Continuous (fun y : Fin D → ℂ => ((1 + ∑ i, ‖y i‖ ^ 2) ^ (D + 1))⁻¹) := by
@@ -115,6 +154,11 @@ theorem integrable_fsDens (D : ℕ) :
   rw [h]
   exact ENNReal.ofReal_lt_top
 
+/- English proof (translation)
+Use `set L := ChartMongeAmpereAffineInvariance.realCLE P hP`. Establish `hpos : 0 < Complex.normSq P.det` using `Complex.normSq_pos.mpr hP`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Fin D → ℂ)) (f := ((L : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ)) : (Fin D → ℂ) →ₗ[ℝ] (Fin D → ℂ))) (by rw [ChartMongeAmpereAffineInvariance.det_realCLE]; exact hpos.ne')`. Establish `hcoe : ⇑((L : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ)) : (Fin D → ℂ) →ₗ[ℝ] (Fin D → ℂ)) = ⇑L` using `rfl`. Rewrite `hmap` using `[hcoe]`.
+
+Establish `hg : Integrable (fun w => f (c + w)) (Measure.map L volume)`. Rewrite using `[hmap]`. Conclude with `(hf.comp_add_left c).smul_measure ENNReal.ofReal_ne_top`. Conclude with `L.toHomeomorph.measurableEmbedding.integrable_map_iff.mp hg`.
+-/
 theorem integrable_comp_affine {D : ℕ} {f : (Fin D → ℂ) → ℝ} (hf : Integrable f) (c : Fin D → ℂ)
     (P : Matrix (Fin D) (Fin D) ℂ) (hP : P.det ≠ 0) : Integrable (fun y => f (c + P *ᵥ y)) := by
   set L := ChartMongeAmpereAffineInvariance.realCLE P hP
@@ -133,6 +177,11 @@ end ChartDensityIntegrableAlt
 
 open ChartDensityIntegrableAlt in
 
+/- English proof (translation)
+Introduce `e M hM`. Take `⟨c, P, κ, hP, hpot⟩` from `hermChartPot_eq_gbPot_affine M hM`. Establish `h : (fun y : Fin e → ℂ => maDensity (fun _ : Fin e => hermChartPot M) y) = fun y => (Complex.normSq P.det * ((e.factorial : ℝ) / Real.pi ^ e)) * ((1 + ∑ i, ‖(c + P *ᵥ y) i‖ ^ 2) ^ (e + 1))⁻¹`. Use function extensionality and compare the values at `y`. Rewrite using `[hpot, ChartMongeAmpereAffineInvariance.maDensity_comp_affine gbPot c P hP κ y, maDensity_gbPot]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `(integrable_comp_affine (integrable_fsDens e) c P hP).const_mul _`.
+-/
 theorem ChartDensityIntegrable.proof : ChartDensityIntegrable.Statement := by
   intro e M hM
   obtain ⟨c, P, κ, hP, hpot⟩ := hermChartPot_eq_gbPot_affine M hM

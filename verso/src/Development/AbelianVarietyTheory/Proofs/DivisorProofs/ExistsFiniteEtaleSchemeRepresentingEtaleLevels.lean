@@ -16,6 +16,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.UPel.HT.EtLev
 
+/- English proof (translation)
+Introduce `p _ D R _ b N w0 r _hNp hw S _ s o`. Take `⟨r', hrr', H, i, hHf, hHfl, hHk, hHu⟩` from `GlobalTheory.T.finite_flat_torsion_subgroup p D R b N w0 hw.1 hw.2.1 S s o r`. Establish `hHe : Etale H.hom` using `GlobalTheory.T.torsion_subgroup_universal p D R b N w0 r' S s o H i hHf hHfl hHk hHu (fun k _ _ x v h0 hv => GlobalTheory.T.infinitesimal_point_trivial p D R b N w0 r' hw S s o k x v h0 hv)`. Take `⟨K, κ, hKf, hKe, hKk, hKu⟩` from `GlobalTheory.T.etale_torsion_subgroup_universal p D R b N w0 r r' hrr' S s o H i hHf hHe hHk hHu`. Take `⟨Z, et, hZf, hZe, eadd, elin, eker, huniv⟩` from `GlobalTheory.T.etale_level_kernel_universal p D R b N w0 r hw S s o K κ hKf hKe hKk hKu`.
+
+Establish `c1` using `GlobalTheory.T.clopenCond_injective_geom_alt p D R b N w0 r hw S s o K κ hKf hKe hKk hKu Z et hZf hZe eadd elin eker`. Establish `c2` using `GlobalTheory.T.clopenCond_onto_alt p D R b N w0 r hw S s o K κ hKf hKe hKk hKu Z et hZf hZe eadd elin eker`. Take `⟨U, hU, HU⟩` from `c1.and c2`. Use `haveI := hZf`. Use `haveI := hZe`.
+
+Take `⟨V, j, hV1, hV2, hmono, Hj⟩` from `GlobalTheory.LevCover.exists_sub U hU`. Establish `hPV` using `(HU V j).2 ((Hj V j).2 ⟨𝟙 V, Category.id_comp j⟩)`. Use `⟨V.left, V.hom, fun y => j ≫ et y, hV1, hV2, ⟨fun x y => ?_, fun c x => ?_, fun x hx => ?_, fun k _ _ x => ⟨hPV.1 k x, hPV.2 k x⟩⟩, fun T l hl => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[eadd, MonObj.comp_mul]`.
+
+Use `beta_reduce`. Rewrite using `[elin, Category.assoc]`. Use `beta_reduce`. Rewrite using `[eker x hx, MonObj.comp_one]`. Take `⟨hadd, hlin, hker, hgeo⟩` from `hl`.
+
+Take `⟨h, hh, hu⟩` from `huniv T l hadd hlin hker`. Establish `hP : (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ T.left), ∀ y, (Over.homMk x rfl : Over.mk (x ≫ T.hom) ⟶ T) ≫ h ≫ et y = 1 → y ∈ wSub D w0 r) ∧ (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ T.left), ∀ g : Over.mk (x ≫ T.hom) ⟶ o.A, (∀ c ∈ w0 ^ r, g ≫ o.act.act (alge …`. Use `⟨fun k _ _ x y hy => (hgeo k x).1 y (by rw [← hh y]; exact hy), fun k _ _ x g hg => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(hgeo k x).2 g hg`. Conclude with `⟨y, by rw [hh y]; exact hy⟩`.
+
+Take `⟨h', hh'⟩` from `(Hj T h).1 ((HU T h).1 hP)`. Use `⟨h', fun y => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← Category.assoc, hh', hh]`. Establish `: g ≫ j = h` using `hu _ fun y => by rw [Category.assoc]; exact hg y`.
+
+Conclude with `(cancel_mono j).1 (this.trans hh'.symm)`.
+-/
 theorem exists_etLevScheme : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (w0 : Ideal (𝓞 D.F)) (r : ℕ), N.Coprime p → IsEtPlace b w0 → ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp R) (o : Obj b N s), ∃ (Y : Scheme.{0}) (π : Y ⟶ S) (lu : D.La → (Over.mk π ⟶ o.A)), IsFinite π ∧ Etale π ∧ IsEtLevOver o w0 r lu ∧ ∀ (T : Over S) (l : D.La → (T ⟶ o.A)), IsEtLevOver o w0 r l → ∃! f : T ⟶ Over.mk π, ∀ y, f ≫ lu y = l y := by
   intro p _ D R _ b N w0 r _hNp hw S _ s o
   obtain ⟨r', hrr', H, i, hHf, hHfl, hHk, hHu⟩ := GlobalTheory.T.finite_flat_torsion_subgroup p D R b N w0 hw.1 hw.2.1 S s o r

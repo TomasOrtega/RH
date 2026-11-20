@@ -12,6 +12,9 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [F
 
 def w4 (i : Fin 4) : ℤ × ℤ := (lamW i, muW i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem w4_sub_w4_eq_wt (i j : Fin 4) : w4 i - w4 j = wt i j := rfl
 
 def J4 (R : Type) [CommRing R] : M4 R := !![0, 0, 0, 1; 0, 0, 1, 0; 0, -1, 0, 0; -1, 0, 0, 0]
@@ -37,8 +40,14 @@ namespace Raw
 
 variable (D : Raw Ω c)
 
+/- English proof (translation)
+The claim follows from `Finset.mem_insert_self _ _`.
+-/
 theorem residueChar_mem_levelPrimes : l ∈ D.T := Finset.mem_insert_self _ _
 
+/- English proof (translation)
+The claim follows from `Finset.mem_insert_of_mem hp`.
+-/
 theorem mem_T {p : ℕ} (hp : p ∈ D.Sb) : p ∈ D.T := Finset.mem_insert_of_mem hp
 
 def LocEqs {R : Type} [CommRing R] [Algebra c.O R] [IsCO c.O R] (ρ : ∀ v : D.T, Lift c.O (D.rbarAt v) R) : Prop :=

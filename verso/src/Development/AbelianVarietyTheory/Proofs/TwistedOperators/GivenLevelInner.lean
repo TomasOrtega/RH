@@ -27,25 +27,44 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {
 
 variable (G) in
 
+/- English proof (translation)
+The claim follows from `| (_ + 1, _ + 1), _, _ => rfl | (0, _), h, _ => absurd h (by omega) | (_ + 1, 0), _, h => absurd h (by omega)`.
+-/
 theorem givenLevel_inner (t : T) (w : Pl D.host.E) : ∀ X : ℕ × ℕ, 1 ≤ X.1 → 1 ≤ X.2 →
     givenLevel G t w X = GlobalTheory.SplitWeil.KO (Kw w) _
   | (_ + 1, _ + 1), _, _ => rfl
   | (0, _), h, _ => absurd h (by omega)
   | (_ + 1, 0), _, h => absurd h (by omega)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Substitute `hK` using the available equality. Conclude with `hx`.
+-/
 theorem inBasis_KO {n n' : ℕ} (h : n' = n) (β x : GL (Fin n) (Lev.EAf D)) (w : Pl D.host.E)
     (K : Subgroup (GL (Fin n') (Kw w))) (hK : K = GlobalTheory.SplitWeil.KO (Kw w) (Fin n')) (hx : inBasis h β w x ∈ K) :
     inBasis rfl β w x ∈ GlobalTheory.SplitWeil.KO (Kw w) (Fin n) := by
   subst h; subst hK; exact hx
 
+/- English proof (translation)
+The claim follows from `| 0, h, _ => absurd h (by omega) | i + 1, _, hi => S.B.isFrame (i + 1) D.R.m (by omega) hi le_rfl`.
+-/
 theorem isFrame_grid (S : GridChoice W U) : ∀ {i : ℕ}, 1 ≤ i → i ≤ D.R.m → IsFrame (S.B.β i D.R.m) (G.Λ (.grid i D.R.m))
   | 0, h, _ => absurd h (by omega)
   | i + 1, _, hi => S.B.isFrame (i + 1) D.R.m (by omega) hi le_rfl
 
+/- English proof (translation)
+The claim follows from `| 0, h, _ => absurd h (by omega) | i + 1, _, hi => (G.sp.V_is (i + 1) D.R.m (by omega) hi le_rfl).sd`.
+-/
 theorem isSelfDual_grid : ∀ {i : ℕ}, 1 ≤ i → i ≤ D.R.m → IsSelfDualC (G.V (.grid i D.R.m)) (G.Λ (.grid i D.R.m))
   | 0, h, _ => absurd h (by omega)
   | i + 1, _, hi => (G.sp.V_is (i + 1) D.R.m (by omega) hi le_rfl).sd
 
+/- English proof (translation)
+Establish `hm : 1 ≤ D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hfr` using `isFrame_grid S hm le_rfl`. Establish `hsd` using `isSelfDual_grid (G := G) hm le_rfl`. Establish `hU : finG (G.V (.grid D.R.m D.R.m)) k ∈ UA D.sp.cm (G.V (.grid D.R.m D.R.m)).gram` using `GlobalTheory.LevSplit.finE_mem_UA _ _`. Take `⟨h1, h2⟩` from `Subgroup.mem_inf.1 hk`.
+
+Establish `hP : ∀ w0 ∈ locPl G t, inBasis rfl (S.B.β D.R.m D.R.m) w0 (finG (G.V (.grid D.R.m D.R.m)) k) ∈ GlobalTheory.SplitWeil.KO (Kw w0) _` using `fun w0 hw0 => inBasis_KO _ _ _ _ _ (givenLevel_inner G t w0 (D.R.m, D.R.m) hm hm) (Subgroup.mem_iInf.1 h1 ⟨w0, hw0⟩)`. Use `GlobalTheory.Adopt.mem_latticeStabilizer_of_local_integral_inBasis _ _ fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : ∃ w0 ∈ locPl G t, w.under (𝓞 D.host.F) = w0.under (𝓞 D.host.F)`. Take `⟨w0, hw0, e⟩` from `hw`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq e with rfl | rfl` into its components or cases.
+
+Conclude with `hP w hw0`. Conclude with `GlobalTheory.T.unitaryInBasis_integral_at_conjugatePlace _ _ _ hfr (GlobalTheory.AdIsom.dualL_eq hsd) _ hU w0 (hP w0 hw0)`. Use `push_neg at hw`. Conclude with `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h2 w) hw`.
+-/
 theorem levRow_mem_St (S : GridChoice W U) (t : T) (k : FinPt G (.grid D.R.m D.R.m))
     (hk : finG (G.V (.grid D.R.m D.R.m)) k ∈ S.levRow t D.R.m le_rfl) :
     finG (G.V (.grid D.R.m D.R.m)) k ∈ St (S.B.β D.R.m D.R.m) := by
@@ -65,6 +84,9 @@ theorem levRow_mem_St (S : GridChoice W U) (t : T) (k : FinPt G (.grid D.R.m D.R
   · push_neg at hw
     exact Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h2 w) hw
 
+/- English proof (translation)
+Use `⟨GlobalTheory.LatStab.mulVec_mem_of_mem_St Λ β M hβ hM z, fun h => ?_⟩` and prove the remaining obligations. Establish `e : (M⁻¹).val *ᵥ (M.val *ᵥ z) = z` using `by rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Rewrite using `[← e]`. Conclude with `GlobalTheory.LatStab.mulVec_mem_of_mem_St Λ β M⁻¹ hβ (inv_mem hM) _ h`.
+-/
 theorem hat_stab_of_St {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (β M : GL (Fin n) (Lev.EAf D))
     (hβ : IsFrame β Λ) (hM : M ∈ St β) (z : Fin n → Lev.EAf D) :
     z ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ ↔ M.val *ᵥ z ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := by
@@ -73,6 +95,11 @@ theorem hat_stab_of_St {n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.ho
   rw [← e]
   exact GlobalTheory.LatStab.mulVec_mem_of_mem_St Λ β M⁻¹ hβ (inv_mem hM) _ h
 
+/- English proof (translation)
+Establish `e : (Lev.finE V u).val *ᵥ ((Lev.finE V (u⁻¹ * k * u)).val *ᵥ v) = (Lev.finE V k).val *ᵥ ((Lev.finE V u).val *ᵥ v)`. Rewrite using `[map_mul, map_mul, map_inv, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]`. Use `congr 2`. Use `group`. Use `(hu v).trans ((hk _).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[← e]`. Conclude with `(hu _).symm`.
+-/
 theorem hat_stab_conj (V : HSp D) (u k : GA D V) (Λ M : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hu : ∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) M ↔ (Lev.finE V u).val *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ)
     (hk : ∀ z, z ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ ↔ (Lev.finE V k).val *ᵥ z ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ)
@@ -88,6 +115,13 @@ theorem hat_stab_conj (V : HSp D) (u k : GA D V) (Λ M : Submodule (𝓞 D.host.
   rw [← e]
   exact (hu _).symm
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hy' : ∀ i, (Formalism.L2.Theta.mt V g *ᵥ y) i ∈ GlobalTheory.FinPl.idAt D (fun _ => True)` using `GlobalTheory.Core.Mi.FrameMove.mulVec_mem_ideal _ hy`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Use `GlobalTheory.HatLatV.mem_latV_of_hatL D V Λ _ _ hy' ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.Core.Mi.FrameMove.finE_mulVec_hat]`. Conclude with `(h _).1 (GlobalTheory.LatVHat.latV_mem_hatL D V Λ _ y h1)`. Introduce `h1`. Use `GlobalTheory.HatLatV.mem_latV_of_hatL D V Λ _ _ hy ?_` and prove the remaining obligations. Establish `h2` using `GlobalTheory.LatVHat.latV_mem_hatL D V Λ _ _ h1`.
+
+Rewrite `h2` using `[GlobalTheory.Core.Mi.FrameMove.finE_mulVec_hat]`. Conclude with `(h _).2 h2`.
+-/
 theorem moves_of_hat (V : HSp D) (g : GA D V) (Λ : Lat V)
     (h : ∀ z, z ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ ↔ (Lev.finE V g).val *ᵥ z ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ) :
     Moves V g Λ Λ (fun _ => True) := by
@@ -105,9 +139,15 @@ theorem moves_of_hat (V : HSp D) (g : GA D V) (Λ : Lat V)
     rw [GlobalTheory.Core.Mi.FrameMove.finE_mulVec_hat] at h2
     exact (h _).2 h2
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem moves_neg (V : HSp D) (g : GA D V) (Λ : Lat V) {P : GlobalTheory.FinPl.Pl D → Prop} (h : Moves V g Λ Λ P) :
     Moves (negSp V) (negGA V g) Λ Λ P := h
 
+/- English proof (translation)
+Introduce and unpack `i rfl g h`. Conclude with `h`.
+-/
 theorem moves_cast (S : GridChoice W U) : ∀ (i : ℕ) (e : D.R.m = i) (g : FinPt G (.grid D.R.m D.R.m)),
     Moves (G.V (.grid D.R.m D.R.m)) g.1 (colLat (S.N.fr (.grid D.R.m D.R.m))) (colLat (S.N.fr (.grid D.R.m D.R.m)))
       (fun _ => True) →
@@ -123,6 +163,15 @@ namespace GlobalTheory.LastRowLat
 open GlobalTheory.FinPl (Moves Lat)
 open Matrix
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t _ k hk x`. Establish `hm : 1 ≤ D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hX : DefNode D.R.m (.grid D.R.m D.R.m)` using `⟨le_rfl, rfl⟩`. Establish `hk'` using `hat_stab_of_St _ _ _ (isFrame_grid S hm le_rfl) (levRow_mem_St S t k hk)`. Establish `hg` using `hat_stab_conj (G.V (.grid D.R.m D.R.m)) (S.N.u (.grid D.R.m D.R.m)).1 k.1 _ _ (S.N.u_lat _ hX) hk'`.
+
+Establish `mv : Moves (G.V (.grid D.R.m D.R.m)) ((S.N.u (.grid D.R.m D.R.m))⁻¹ * k * S.N.u (.grid D.R.m D.R.m)).1 (colLat (S.N.fr (.grid D.R.m D.R.m))) (colLat (S.N.fr (.grid D.R.m D.R.m))) (fun _ => True)` using `moves_of_hat _ _ _ hg`. Establish `mv2` using `moves_cast S _ (lastIx_succ D) _ mv`. Establish `mvS : Moves (G.pS (.chi (lastIx D) D.R.m : Pair T)) (rowPt S k).1⁻¹ (S.N.latS (.chi (lastIx D) D.R.m)) (S.N.latS (.chi (lastIx D) D.R.m)) (fun _ => True)` using `GlobalTheory.VacMove.moves_inv (moves_neg _ _ _ mv2)`. Establish `mvT : Moves (G.pT (.chi (lastIx D) D.R.m : Pair T)) (rowPt S k).2⁻¹ (S.N.latT (.chi (lastIx D) D.R.m)) (S.N.latT (.chi (lastIx D) D.R.m)) (fun _ => True)`. Establish `e2 : (rowPt S k).2 = 1` using `rfl`.
+
+Rewrite using `[e2, inv_one]`. Introduce `y _`. Rewrite using `[GlobalTheory.VacMove.mt_one₀, Matrix.one_mulVec]`. Establish `hl` using `(lastIx D).2`. Establish `sdS : IsSelfDualC (G.pS (.chi (lastIx D) D.R.m : Pair T)) (S.N.latS (.chi (lastIx D) D.R.m))` using `isSelfDualC_neg (OrthoFrame.isSelfDualC_colLat_of_orthonormal _ _ (S.N.fr_on _ ⟨by omega, rfl⟩))`.
+
+Establish `sdT : IsSelfDualC (G.pT (.chi (lastIx D) D.R.m : Pair T)) (S.N.latT (.chi (lastIx D) D.R.m))` using `OrthoFrame.isSelfDualC_colLat_of_orthonormal _ _ (S.N.fr_on _ ⟨by omega, rfl⟩)`. Conclude with `(GlobalTheory.VacMove.mem_latO_iff_actO sdS sdS sdT sdT mvS mvT x).symm`.
+-/
 theorem rowPt_mem_stdLat : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T}, t ∈ U → ∀ k : FinPt G (.grid D.R.m D.R.m),
     finG (G.V (.grid D.R.m D.R.m)) k ∈ S.levRow t D.R.m le_rfl →
     ∀ x : WO (G.pS (.chi (lastIx D) D.R.m : Pair T)) (G.pT (.chi (lastIx D) D.R.m : Pair T)),

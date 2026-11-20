@@ -7,6 +7,9 @@ noncomputable section
 
 namespace GlobalTheory.SerOSys
 
+/- English proof (translation)
+Unfold `twoBlock`. Distinguish the cases in `h : (i : ℕ) < a`. Simplify using `[h]`. Simplify using `only [h, if_false, iff_false]`. Evaluate the decidable proposition.
+-/
 theorem twoBlock_eq_zero_iff {n a : ℕ} (i : Fin n) : twoBlock n a i = 0 ↔ (i : ℕ) < a := by
   unfold twoBlock
   by_cases h : (i : ℕ) < a
@@ -14,6 +17,11 @@ theorem twoBlock_eq_zero_iff {n a : ℕ} (i : Fin n) : twoBlock n a i = 0 ↔ (i
   · simp only [h, if_false, iff_false]
     decide
 
+/- English proof (translation)
+Unfold `twoBlock`. Distinguish the cases in `h : (i : ℕ) < a`. Simplify using `only [h, if_true]`. Conclude with `⟨fun h' => absurd h' (by decide), fun h' => absurd h' (by omega)⟩`. Simplify using `only [h, if_false]`.
+
+Conclude with `⟨fun _ => by omega, fun _ => trivial⟩`.
+-/
 theorem twoBlock_eq_one_iff {n a : ℕ} (i : Fin n) : twoBlock n a i = 1 ↔ a ≤ (i : ℕ) := by
   unfold twoBlock
   by_cases h : (i : ℕ) < a

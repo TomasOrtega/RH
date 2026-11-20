@@ -5,6 +5,37 @@ open Matrix
 
 namespace PositivityTheory.HtPt.Ra
 
+/- English proof (translation)
+Introduce `p f hp hf y hper hle1 hstep e j he hcong`. Establish `hperm : ∀ a c, y (a + f * c) = y a`. Introduce `a c`. Proceed by induction on `c with`. Consider the case `zero => simp`.
+
+Consider the case `succ c ih => rw [Nat.mul_succ, ← Nat.add_assoc, hper, ih]`. Establish `hiter : ∀ a k, y a ^ (p ^ k) ≤ y (a + k)`. Introduce `a k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+
+Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_mul, ← Nat.add_assoc]`. Conclude with `(pow_le_pow_left₀ zero_le ih p).trans (hstep _)`. Take `⟨q, s, hs, hj⟩ : ∃ q s, s < f ∧ j = s + f * q` from `⟨j / f, j % f, Nat.mod_lt _ hf, (Nat.mod_add_div j f).symm⟩`. Establish `hk : ∀ n : Fin f, ∃ k c m c', k + m = f - 1 ∧ (n : ℕ) + k = s + f * c ∧ m + (j + 1) = n + f * c'`.
+
+Introduce `n`. Establish `hn` using `n.isLt`. Distinguish the cases in `h : (n : ℕ) ≤ s`. Use `⟨s - n, 0, f - 1 - (s - n), q + 1, by omega, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[hj, Nat.mul_succ]`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨s + f - n, 1, f - 1 - (s + f - n), q, by omega, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[hj]`. Use linear arithmetic over natural numbers and integers. Use `choose k c m c' hkm hkc hmc using hk`.
+
+Establish `hyk : ∀ n : Fin f, y n ^ (p ^ k n) ≤ y j`. Introduce `n`. Use `hiter n (k n)` as an intermediate fact. Rewrite `this` using `[hkc, hperm]`. Rewrite using `[hj, hperm]`.
+
+Conclude with `this`. Establish `hpos : 1 ≤ p` using `by omega`. Establish `hN : p ^ f - 1 + 1 = p ^ f` using `Nat.sub_add_cancel (Nat.one_le_pow _ _ hpos)`. Establish `hT1 : (∑ n : Fin f, e n * p ^ m n) ≡ 1 [MOD (p ^ f - 1)]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff]`.
+
+Establish `hc` using `(ZMod.natCast_eq_natCast_iff _ _ _).2 hcong`. Move the coercions through the operations in `at hc ⊢`. Use `set u : ZMod (p ^ f - 1) := (p : ZMod (p ^ f - 1)) with hu`. Establish `huf : u ^ f = 1`. Rewrite using `[hu, ← Nat.cast_pow, ← hN, Nat.cast_add, ZMod.natCast_self, zero_add, Nat.cast_one]`.
+
+Establish `hper' : ∀ a c, u ^ (a + f * c) = u ^ a`. Introduce `a c`. Rewrite using `[pow_add, pow_mul, huf, one_pow, mul_one]`. Establish `hunit : IsUnit (u ^ (j + 1))`. Use `IsUnit.pow _ (isUnit_iff_exists_inv.2 ⟨u ^ (f - 1), ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[← pow_succ', Nat.sub_add_cancel hf, huf]`. Establish `hmul : (∑ n : Fin f, (e n : ZMod (p ^ f - 1)) * u ^ m n) * u ^ (j + 1) = u ^ (j + 1)`. Use `(Finset.sum_mul _ _ _).trans ((Finset.sum_congr rfl fun n _ => ?_).trans hc)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← pow_add, hmc, hper']`. Establish `h0 : ((∑ n : Fin f, (e n : ZMod (p ^ f - 1)) * u ^ m n) - 1) * u ^ (j + 1) = 0`.
+
+Rewrite using `[sub_mul, hmul, one_mul, sub_self]`. Conclude with `sub_eq_zero.1 (hunit.mul_left_eq_zero.1 h0)`. Establish `hT2 : 2 ≤ ∑ n : Fin f, e n * p ^ m n` using `le_trans he (Finset.sum_le_sum fun n _ => Nat.le_mul_of_pos_right _ (pow_pos (by omega) _))`. Establish `hTf : p ^ f ≤ ∑ n : Fin f, e n * p ^ m n`. Establish `hd` using `(Nat.modEq_iff_dvd' (by omega : 1 ≤ ∑ n : Fin f, e n * p ^ m n)).1 hT1.symm`.
+
+Establish `hle` using `Nat.le_of_dvd (by omega) hd`. Generalize the expression as in `p ^ f = P at *`. Generalize the expression as in `∑ n : Fin f, e n * p ^ m n = T at *`. Use linear arithmetic over natural numbers and integers. Establish `hP : 0 < p ^ (f - 1)` using `pow_pos (by omega) _`.
+
+Use `(pow_le_pow_iff_left₀ zero_le zero_le hP.ne').1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_mul]`.
+
+Use `congr 1`. Rewrite using `[← hkm n, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∏ n : Fin f, y j ^ (e n * p ^ m n) := Finset.prod_le_prod (fun _ _ => zero_le) fun n _ => pow_le_pow_left₀ zero_le (hyk n) _`. Use `_ = y j ^ (∑ n : Fin f, e n * p ^ m n) := Finset.prod_pow_eq_pow_sum _ _ _`.
+
+Use `_ ≤ y j ^ p ^ f := pow_le_pow_of_le_one zero_le (hle1 j) hTf`. Use `_ = (y j ^ p) ^ p ^ (f - 1) := by`. Rewrite using `[← pow_mul, ← pow_succ']`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem carry : ∀ (p f : ℕ), 2 ≤ p → 0 < f → ∀ (y : ℕ → NNReal), (∀ n, y (n + f) = y n) → (∀ n, y n ≤ 1) → (∀ n, y n ^ p ≤ y (n + 1)) → ∀ (e : Fin f → ℕ) (j : ℕ), 2 ≤ ∑ n, e n → (∑ n : Fin f, e n * p ^ (n : ℕ)) ≡ p ^ (j + 1) [MOD (p ^ f - 1)] → ∏ n : Fin f, y n ^ e n ≤ y j ^ p := by
   intro p f hp hf y hper hle1 hstep e j he hcong
   have hperm : ∀ a c, y (a + f * c) = y a := by

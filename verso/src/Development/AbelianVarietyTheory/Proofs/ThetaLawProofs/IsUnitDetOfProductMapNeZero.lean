@@ -19,6 +19,9 @@ noncomputable def mu : S ⊗[R] B →ₐ[S] B :=
 open scoped TensorProduct in
 variable {R S B : Type} [CommRing R] [CommRing S] [CommRing B] [Algebra R S] [Algebra S B]
   [Algebra R B] [IsScalarTower R S B] in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.DiscrJacobian.mu]`.
+-/
 @[simp] theorem _root_.GlobalTheory.DiscrJacobian.mu_tmul (s : S) (w : B) :
     _root_.GlobalTheory.DiscrJacobian.mu R S B (s ⊗ₜ w) = algebraMap S B s * w := by
   simp [_root_.GlobalTheory.DiscrJacobian.mu]
@@ -27,6 +30,39 @@ open scoped TensorProduct in
 variable {R S B : Type} [CommRing R] [CommRing S] [CommRing B] [Algebra R S] [Algebra S B]
   [Algebra R B] [IsScalarTower R S B] in
 
+/- English proof (translation)
+Use `set J := Ideal.span (Set.range fun j => x j ⊗ₜ[R] (1 : B) - (1 : S) ⊗ₜ[R] algebraMap S B (x j)) with hJ`. Use `set K : Ideal (S ⊗[R] B) := RingHom.ker (_root_.GlobalTheory.DiscrJacobian.mu R S B) with hK`. Use `set I : Ideal (S ⊗[R] B) := Ideal.map (algebraMap S (S ⊗[R] B)) (Ideal.span (Set.range x)) with hI`. Set `δ : S → S ⊗[R] B` to `fun s => s ⊗ₜ[R] (1 : B) - (1 : S) ⊗ₜ[R] algebraMap S B s`. Establish `hδK : ∀ s, δ s ∈ K`.
+
+Introduce `s`. Simplify using `[K, δ, RingHom.mem_ker]`. Establish `hδJ : ∀ j, δ (x j) ∈ J` using `fun j => Ideal.subset_span ⟨j, rfl⟩`. Establish `hxI : ∀ j, x j ⊗ₜ[R] (1 : B) ∈ I` using `fun j => Ideal.mem_map_of_mem _ (Ideal.subset_span ⟨j, rfl⟩)`. Establish `hadd : ∀ a b, δ (a + b) = δ a + δ b`.
+
+Introduce `a b`. Simplify using `only [δ, map_add, TensorProduct.add_tmul, TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws. Establish `hmul : ∀ a b, δ (a * b) = δ a * (b ⊗ₜ[R] (1 : B)) + (a ⊗ₜ[R] (1 : B)) * δ b - δ a * δ b`. Introduce `a b`.
+
+Simplify using `only [δ, map_mul, sub_mul, mul_sub, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Normalize the expressions using the abelian group laws. Establish `hδ : ∀ s, δ s ∈ J ⊔ I * K`. Introduce `s`. Take `⟨c, u, rfl⟩` from `hgen s`.
+
+Establish `hc : δ (algebraMap R S c) = 0` using `by show _ - _ = 0`. Rewrite using `[sub_eq_zero, ← IsScalarTower.algebraMap_apply R S B, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Establish `hsum : ∀ t : Finset ι, δ (∑ j ∈ t, x j * u j) = ∑ j ∈ t, δ (x j * u j)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`.
+
+Consider the case `empty => simp [δ]`. Consider the case `insert a t ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hadd, ih]`. Rewrite using `[hadd, hc, zero_add, hsum]`. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hmul]`.
+
+Use `Ideal.sub_mem _ (Ideal.add_mem _ ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (hδJ j))`. Conclude with `Ideal.mem_sup_right (Ideal.mul_mem_mul (hxI j) (hδK (u j)))`. Conclude with `Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (hδJ j))`. Establish `hle : K ≤ J ⊔ I * K`.
+
+Introduce `z hz`. Establish `key : ∀ t : S ⊗[R] B, t - (1 : S) ⊗ₜ[R] _root_.GlobalTheory.DiscrJacobian.mu R S B t ∈ J ⊔ I * K`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb`. Rewrite using `[map_add, TensorProduct.tmul_add]`. Use `Ideal.add_mem _ ha hb using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Consider the case `tmul s w`.
+
+Establish `: s ⊗ₜ[R] w - (1 : S) ⊗ₜ[R] _root_.GlobalTheory.DiscrJacobian.mu R S B (s ⊗ₜ[R] w) = δ s * ((1 : S) ⊗ₜ[R] w)`. Simplify using `[δ, sub_mul, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ (hδ s)`. Use `key z` as an intermediate fact.
+
+Rewrite `this` using `[show _root_.GlobalTheory.DiscrJacobian.mu R S B z = 0 from hz, TensorProduct.tmul_zero, sub_zero]`. Then use the resulting hypothesis. Establish `hKfg : K.FG`. Take `⟨t, ht⟩` from `Module.FinitePresentation.fg_ker (_root_.GlobalTheory.DiscrJacobian.mu R S B).toLinearMap (fun w => ⟨1 ⊗ₜ w, by simp⟩)`. Use `⟨t, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`.
+
+Introduce `a ha`. Use `ht ▸ Submodule.subset_span ha` as an intermediate fact. Simplify `this` using `[K, RingHom.mem_ker]`. Introduce `a ha`. Establish `: a ∈ Submodule.span S (t : Set (S ⊗[R] B))`.
+
+Rewrite using `[ht]`. Simplify `ha` using `[K, RingHom.mem_ker]`. Conclude with `Submodule.span_le_restrictScalars S (S ⊗[R] B) _ this`. Establish `hIjac : I ≤ (⊥ : Ideal (S ⊗[R] B)).jacobson`. Rewrite using `[hI, Ideal.map_le_iff_le_comap, Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap]`. Use `haveI : Algebra.IsIntegral S (S ⊗[R] B) := Algebra.IsIntegral.of_finite _ _`. Unfold `Ideal.jacobson`. Rewrite using `[Ideal.mem_sInf]`.
+
+Introduce `M hM`. Use `haveI : M.IsMaximal := hM.2`. Establish `hMc : (M.comap (algebraMap S (S ⊗[R] B))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M`. Establish `h2` using `hx j`. Unfold `Ideal.jacobson at h2`.
+
+Conclude with `Ideal.mem_sInf.mp h2 ⟨bot_le, hMc⟩`. Conclude with `Submodule.le_of_le_smul_of_le_jacobson_bot hKfg hIjac (by simpa [smul_eq_mul] using hle) hz`.
+-/
 theorem _root_.GlobalTheory.DiscrJacobian.mem_span_of_mu_eq_zero {ι : Type} [Fintype ι] [Module.Finite R B]
     [Module.FinitePresentation S B] (x : ι → S)
     (hx : ∀ j, x j ∈ (⊥ : Ideal S).jacobson)
@@ -122,6 +158,9 @@ noncomputable def der (D : Derivation R S S) : S ⊗[R] B →ₗ[R] B :=
 open scoped TensorProduct in
 variable {R S B : Type} [CommRing R] [CommRing S] [CommRing B] [Algebra R S] [Algebra S B]
   [Algebra R B] [IsScalarTower R S B] in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.DiscrJacobian.der]`.
+-/
 @[simp] theorem _root_.GlobalTheory.DiscrJacobian.der_tmul (D : Derivation R S S) (s : S) (w : B) :
     _root_.GlobalTheory.DiscrJacobian.der D (s ⊗ₜ[R] w) = algebraMap S B (D s) * w := by
   simp [_root_.GlobalTheory.DiscrJacobian.der]
@@ -129,6 +168,13 @@ variable {R S B : Type} [CommRing R] [CommRing S] [CommRing B] [Algebra R S] [Al
 open scoped TensorProduct in
 variable {R S B : Type} [CommRing R] [CommRing S] [CommRing B] [Algebra R S] [Algebra S B]
   [Algebra R B] [IsScalarTower R S B] in
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy' => rw [add_mul, map_add, hy, hy', map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul s w`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => rw [mul_add, map_add, hz, hz', map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul t v`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using `only [_root_.GlobalTheory.DiscrJacobian.der_tmul, _root_.GlobalTheory.DiscrJacobian.mu_tmul, Derivation.leibniz, smul_eq_mul, map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.DiscrJacobian.der_mul (D : Derivation R S S) (y z : S ⊗[R] B) :
     _root_.GlobalTheory.DiscrJacobian.der D (y * z) =
       _root_.GlobalTheory.DiscrJacobian.mu R S B y * _root_.GlobalTheory.DiscrJacobian.der D z +
@@ -157,10 +203,18 @@ noncomputable def pairing (ρ : B →ₐ[R] C) (ψ : B →ₗ[R] C) : B ⊗[R] B
 
 open scoped TensorProduct in
 variable {R B C : Type} [CommRing R] [CommRing B] [CommRing C] [Algebra R B] [Algebra R C] in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.DiscrJacobian.pairing]`.
+-/
 @[simp] theorem _root_.GlobalTheory.DiscrJacobian.pairing_tmul (ρ : B →ₐ[R] C) (ψ : B →ₗ[R] C) (u w : B) :
     _root_.GlobalTheory.DiscrJacobian.pairing ρ ψ (u ⊗ₜ w) = ρ u * ψ w := by
   simp [_root_.GlobalTheory.DiscrJacobian.pairing]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => exact absurd (LinearMap.ext fun w => hN w (by simp)) hφ`. Consider the case `succ N ih`. Distinguish the cases in `h : ∀ w ∈ n ^ N, φ w = 0`. Conclude with `ih h`.
+
+Use `push Not at h`. Take `⟨y, hy, hy'⟩` from `h`. Conclude with `⟨y, hy', fun w hw => hN _ (by rw [pow_succ']; exact Ideal.mul_mem_mul hw hy)⟩`.
+-/
 theorem exists_socle {V : Type} [AddCommGroup V] [Module R V] (n : Ideal B) (φ : B →ₗ[R] V)
     (hφ : φ ≠ 0) (N : ℕ) (hN : ∀ w ∈ n ^ N, φ w = 0) :
     ∃ y, φ y ≠ 0 ∧ ∀ w ∈ n, φ (w * y) = 0 := by
@@ -177,6 +231,27 @@ open scoped TensorProduct in
 variable {R B C : Type} [CommRing R] [CommRing B] [CommRing C] [Algebra R B] [Algebra R C] in
 open IsLocalRing in
 
+/- English proof (translation)
+Substitute `hDe` using the available equality. Use `haveI : Module.Finite R B := Module.Finite.of_basis b`. Use `haveI : Algebra.IsIntegral R B := Algebra.IsIntegral.of_finite R B`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i, ev (∑ j, M i j • b j) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Apply `H` to reduce the goal to its premises. Establish `hrow : ∀ i, ∑ j, M i j • (ρ (b i) * (IsScalarTower.toAlgHom R (ResidueField R) C) (ev (b j))) = ρ (b i) * (IsScalarTower.toAlgHom R (ResidueField R) C) (ev (∑ j, M i j • b j))`. Introduce `i`. Simplify using `[map_sum, Finset.mul_sum, mul_smul_comm]`.
+
+Simplify using `only [map_sum, map_smul, Algebra.TensorProduct.productMap_apply_tmul, AlgHom.comp_apply, hrow, hcon, map_zero, mul_zero, Finset.sum_const_zero]`. Use `set w := ∑ j, M i0 j • b j with hw`. Establish `hwunit : IsUnit w`. Take `⟨c, hc⟩` from `hgen w`. Establish `hevc : ev (algebraMap R B c) ≠ 0`.
+
+Use `hev _ hc` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[← this]` and apply the resulting hypothesis. Establish `hcu : IsUnit c`. Rewrite `hevc` using `[AlgHom.commutes]`.
+
+Assume the negation of the conclusion as `hnu`. Conclude with `hevc ((IsLocalRing.residue_eq_zero_iff c).mpr ((IsLocalRing.mem_maximalIdeal c).mpr hnu))`. Assume the negation of the conclusion as `hnw`. Take `⟨P, hP, hwP⟩` from `Ideal.exists_le_maximal (Ideal.span {w}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hPc : P.comap (algebraMap R B) = maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal P)`.
+
+Establish `hmP : (maximalIdeal R).map (algebraMap R B) ≤ P`. Rewrite using `[Ideal.map_le_iff_le_comap, hPc]`. Establish `hν : w - algebraMap R B c ∈ P` using `hP.isPrime.mem_of_pow_mem N (hmP (hN (Ideal.pow_mem_pow hc N)))`. Establish `hcP : algebraMap R B c ∈ P`. Use `P.sub_mem (hwP (Ideal.mem_span_singleton_self w)) hν` as an intermediate fact.
+
+Simplify using `using this`. Establish `: c ∈ maximalIdeal R` using `by rw [← hPc]; exact hcP`. Conclude with `(IsLocalRing.mem_maximalIdeal c).mp this hcu`. Take `⟨w', hw'⟩` from `hwunit.exists_right_inv`. Establish `hsurj : Function.Surjective (fun v : Fin d → R => Matrix.vecMul v M)`.
+
+Introduce `t`. Use `set u := w' * ∑ j, t j • b j with hu`. Use `⟨fun i => b.coord i0 (b i * u), ?_⟩` and prove the remaining obligations. Establish `hs` using `_root_.GlobalTheory.annihilator_diagonal_form_swap (⇑b) M h (b.coord i0) u`. Establish `hr : ∑ i, ∑ j, (M i j * b.coord i0 (b i)) • (b j * u) = ∑ j, t j • b j`.
+
+Establish `: w * u = ∑ j, t j • b j` using `by rw [hu, ← mul_assoc, hw', one_mul]`. Rewrite using `[← this, hw, Finset.sum_mul]`. Simplify using `[Module.Basis.coord_apply, Finsupp.single_apply, smul_mul_assoc]`. Apply `b.equivFun.symm.injective` to reduce the goal to its premises. Simplify using `only [Module.Basis.equivFun_symm_apply]`.
+
+Rewrite using `[← hr, ← hs]`. Simplify using `only [Matrix.vecMul, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `[mul_comm]`. Conclude with `(Matrix.isUnit_iff_isUnit_det M).mp (Matrix.vecMul_surjective_iff_isUnit.mp hsurj)`.
+-/
 theorem _root_.GlobalTheory.DiscrJacobian.isUnit_det_of_productMap_ne_zero [IsLocalRing R]
     [Algebra (ResidueField R) C]
     [IsScalarTower R (ResidueField R) C] {d : ℕ} (b : Module.Basis (Fin d) R B)
@@ -255,6 +330,13 @@ open MvPowerSeries IsLocalRing
 
 open MvPowerSeries IsLocalRing in
 open scoped TensorProduct in
+/- English proof (translation)
+Establish `hmem : s - C (constantCoeff s) ∈ Ideal.span ((fun i => (X i : MvPowerSeries (Fin g) R)) '' ↑(Finset.univ : Finset (Fin g)))`. Apply `_root_.GlobalTheory.SocleDet.mem_span_X_of_coeff` to reduce the goal to its premises. Introduce `m hm`. Establish `: m = 0` using `by ext j; simpa using hm j (Finset.mem_univ j)`. Substitute `this` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite `hmem` using `[Finset.coe_univ, Set.image_univ, Ideal.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hmem`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_iff_eq_add', ← hc]`.
+
+Simplify using `[mul_comm]`.
+-/
 theorem _root_.GlobalTheory.DiscrJacobian.exists_eq_C_add_sum {R : Type} [CommRing R] {g : ℕ}
     (s : MvPowerSeries (Fin g) R) :
     ∃ u : Fin g → MvPowerSeries (Fin g) R, s = C (constantCoeff s) + ∑ j, X j * u j := by
@@ -273,6 +355,9 @@ theorem _root_.GlobalTheory.DiscrJacobian.exists_eq_C_add_sum {R : Type} [CommRi
 
 open MvPowerSeries IsLocalRing in
 open scoped TensorProduct in
+/- English proof (translation)
+Rewrite using `[Ideal.mem_jacobson_bot]`. Introduce `y`. Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.DiscrJacobian.X_mem_jacobson {R : Type} [CommRing R] {σ : Type} (j : σ) :
     (X j : MvPowerSeries σ R) ∈ (⊥ : Ideal (MvPowerSeries σ R)).jacobson := by
   rw [Ideal.mem_jacobson_bot]
@@ -283,6 +368,13 @@ theorem _root_.GlobalTheory.DiscrJacobian.X_mem_jacobson {R : Type} [CommRing R]
 open MvPowerSeries IsLocalRing in
 open scoped TensorProduct in
 
+/- English proof (translation)
+Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`. Introduce `P hPmem`. Establish `hP : Ideal.map (algebraMap R B) (maximalIdeal R) ≤ P` using `hPmem.1`. Use `haveI hPprime : P.IsPrime := hPmem.2`. Establish `hle : maximalIdeal R ≤ P.comap (algebraMap R B)` using `Ideal.map_le_iff_le_comap.mp hP`.
+
+Use `haveI : (P.comap (algebraMap R B)).IsPrime := Ideal.IsPrime.comap (algebraMap R B)`. Establish `hcomap : P.comap (algebraMap R B) = maximalIdeal R` using `le_antisymm (IsLocalRing.le_maximalIdeal Ideal.IsPrime.ne_top') hle`. Establish `hm : (P.comap (algebraMap R B)).IsMaximal`. Rewrite using `[hcomap]`. Conclude with `maximalIdeal.isMaximal R`.
+
+Use `haveI : Algebra.IsIntegral R B := Algebra.IsIntegral.of_finite R B`. Use `haveI hPmax : P.IsMaximal := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap P hm`. Establish `hmax : (P.comap (algebraMap S B)).IsMaximal` using `Ideal.comap_isMaximal_of_surjective _ hsurj`. Unfold `Ideal.jacobson at hx`. Conclude with `Ideal.mem_sInf.mp hx ⟨bot_le, hmax⟩`.
+-/
 theorem _root_.GlobalTheory.DiscrJacobian.map_mem_radical {R S B : Type} [CommRing R]
     [IsLocalRing R] [CommRing S] [CommRing B]
     [Algebra R B] [Algebra S B] [Module.Finite R B] (hsurj : Function.Surjective (algebraMap S B))
@@ -307,6 +399,13 @@ theorem _root_.GlobalTheory.DiscrJacobian.map_mem_radical {R S B : Type} [CommRi
 open scoped TensorProduct in
 variable {R S B : Type} [CommRing R] [CommRing S] [CommRing B] [Algebra R S] [Algebra S B]
   [Algebra R B] [IsScalarTower R S B] in
+/- English proof (translation)
+Use `set π := Algebra.TensorProduct.map (IsScalarTower.toAlgHom R S B) (AlgHom.id R B) with hπ`. Establish `hker : ∀ l, a.det * (x l ⊗ₜ[R] (1 : B) - (1 : S) ⊗ₜ[R] algebraMap S B (x l)) ∈ RingHom.ker π`. Introduce `l`. Use `_root_.GlobalTheory.SocleDet.det_mul_mem (RingHom.ker π) a (fun j => x j ⊗ₜ[R] (1 : B) - (1 : S) ⊗ₜ[R] algebraMap S B (x j)) l fun r => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec, dotProduct, ← ha r, RingHom.mem_ker]`.
+
+Simplify using `[π, hf]`. Establish `hmem` using `_root_.GlobalTheory.DiscrJacobian.mem_span_of_mu_eq_zero x hx hgen (s ⊗ₜ[R] (1 : B) - (1 : S) ⊗ₜ[R] algebraMap S B s) (by simp)`. Rewrite `hmem` using `[Ideal.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hmem`. Establish `hπs : π (s ⊗ₜ[R] (1 : B) - (1 : S) ⊗ₜ[R] algebraMap S B s) = algebraMap S B s ⊗ₜ[R] (1 : B) - (1 : B) ⊗ₜ[R] algebraMap S B s`.
+
+Simplify using `[π]`. Rewrite using `[← hπs, ← map_mul, ← hc, Finset.mul_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, map_mul, RingHom.mem_ker.mp (hker l), mul_zero]`.
+-/
 private theorem tensorMap_det_mul_tmul_sub_eq_zero {g : ℕ} [Module.Finite R B] [Module.FinitePresentation S B]
     (x f : Fin g → S) (hx : ∀ j, x j ∈ (⊥ : Ideal S).jacobson)
     (hgen : ∀ s : S, ∃ (c : R) (u : Fin g → S), s = algebraMap R S c + ∑ j, x j * u j)
@@ -341,6 +440,11 @@ private theorem tensorMap_det_mul_tmul_sub_eq_zero {g : ℕ} [Module.Finite R B]
 open scoped TensorProduct in
 variable {R S B : Type} [CommRing R] [CommRing S] [CommRing B] [Algebra R S] [Algebra S B]
   [Algebra R B] [IsScalarTower R S B] in
+/- English proof (translation)
+Use `congrArg (_root_.GlobalTheory.DiscrJacobian.der D) (ha i)` as an intermediate fact. Rewrite `this` using `[_root_.GlobalTheory.DiscrJacobian.der_tmul, mul_one, map_sum]`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.DiscrJacobian.der_mul, map_sub, map_sub]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem algebraMap_derivation_eq_sum_mu_mul {g : ℕ} (D : Derivation R S S) (x f : Fin g → S)
     (a : Matrix (Fin g) (Fin g) (S ⊗[R] B))
     (ha : ∀ i, f i ⊗ₜ[R] (1 : B) =
@@ -354,6 +458,13 @@ private theorem algebraMap_derivation_eq_sum_mu_mul {g : ℕ} (D : Derivation R 
   simp
 
 open scoped TensorProduct in
+/- English proof (translation)
+Establish `hmul : ∀ l, (∑ i, ∑ j, M i j • (b i * b j)) * b l = ∑ j, (∑ i, M i j * Algebra.trace R B (b i * b l)) • b j`. Introduce `l`. Establish `hs` using `_root_.GlobalTheory.annihilator_diagonal_form_swap (⇑b) M h (Algebra.trace R B) (b l)`. Rewrite using `[← _root_.GlobalTheory.annihilator_diagonal_trace b M h, Finset.sum_mul]`. Simplify using `only [Finset.sum_mul, smul_mul_assoc]`.
+
+Rewrite using `[← hs, Finset.sum_comm]`. Simplify using `only [Finset.sum_smul]`. Establish `hmat : Algebra.leftMulMatrix b (∑ i, ∑ j, M i j • (b i * b j)) = M.transpose * Algebra.traceMatrix R b`. Use extensionality with `j l`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, hmul]`.
+
+Simplify using `[Matrix.mul_apply, Algebra.traceMatrix_apply, Module.Basis.repr_sum_self, Finsupp.single_apply]`. Rewrite using `[Algebra.norm_eq_matrix_det b, hmat, Matrix.det_mul, Matrix.det_transpose, Algebra.discr_def, mul_comm]`.
+-/
 private theorem norm_sum_mul_eq_discr_mul_det {R B : Type} [CommRing R] [CommRing B] [Algebra R B]
     {d : ℕ} (b : Module.Basis (Fin d) R B) (M : Matrix (Fin d) (Fin d) R)
     (h : ∀ x : B, (∑ i, ∑ j, M i j • TensorProduct.tmul R (b i) (b j)) *
@@ -381,6 +492,61 @@ open MvPowerSeries IsLocalRing in
 open scoped TensorProduct in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Use `haveI : Module.Finite R (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)) := Module.Finite.of_basis b`. Use `haveI : Module.FinitePresentation (MvPowerSeries (Fin g) R) (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)) := Module.finitePresentation_of_surjective (Submodule.mkQ (Ideal.span (Set.range f))) (Submodule.mkQ_surjective _) (by rw [Submodule.ker_mkQ]; exact ⟨Finset.univ.image …`. Establish `hx : ∀ j, (X j : MvPowerSeries (Fin g) R) ∈ (⊥ : Ideal (MvPowerSeries (Fin g) R)).jacobson` using `fun j => _root_.GlobalTheory.DiscrJacobian.X_mem_jacobson j`. Establish `hgen : ∀ s : MvPowerSeries (Fin g) R, ∃ (c : R) (u : Fin g → MvPowerSeries (Fin g) R), s = algebraMap R (MvPowerSeries (Fin g) R) c + ∑ j, X j * u j`. Introduce `s`.
+
+Take `⟨u, hu⟩` from `_root_.GlobalTheory.DiscrJacobian.exists_eq_C_add_sum s`. Conclude with `⟨constantCoeff s, u, hu⟩`. Establish `hf0 : ∀ i, algebraMap (MvPowerSeries (Fin g) R) (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)) (f i) = 0` using `fun i => Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.subset_span ⟨i, rfl⟩)`. Establish `hrow : ∀ i, ∃ r : Fin g → MvPowerSeries (Fin g) R ⊗[R] (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)), f i ⊗ₜ[R] (1 : MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)) = ∑ j, r j * (X j ⊗ₜ[R] 1 - (1 : MvPowerSeries (Fin g) R) ⊗ₜ[R] algebraMap (MvPowerSeries (Fin g) R) (Mv …`. Introduce `i`.
+
+Use `_root_.GlobalTheory.DiscrJacobian.mem_span_of_mu_eq_zero X hx hgen (f i ⊗ₜ[R] (1 : MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f))) (by simp [hf0])` as an intermediate fact. Rewrite `this` using `[Ideal.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `this`. Conclude with `⟨c, hc.symm⟩`. Use `choose a ha using hrow`.
+
+Use `set De := Algebra.TensorProduct.map (IsScalarTower.toAlgHom R (MvPowerSeries (Fin g) R) (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f))) (AlgHom.id R _) (Matrix.of a).det with hDe_def`. Establish `hann : ∀ y, De * (y ⊗ₜ[R] 1 - 1 ⊗ₜ[R] y) = 0`. Introduce `y`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `tensorMap_det_mul_tmul_sub_eq_zero X f hx hgen hf0 (Matrix.of a) ha s`.
+
+Use `set M : Matrix (Fin d) (Fin d) R := fun i j => (b.tensorProduct b).repr De (i, j) with hM`. Establish `hDe : De = ∑ i, ∑ j, M i j • TensorProduct.tmul R (b i) (b j)` using `by conv_lhs => rw [← (b.tensorProduct b).sum_repr De]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `[M, Module.Basis.tensorProduct_apply]`. Establish `h : ∀ x, (∑ i, ∑ j, M i j • TensorProduct.tmul R (b i) (b j)) * (TensorProduct.tmul R x 1 - TensorProduct.tmul R 1 x) = 0`.
+
+Introduce `x`. Rewrite using `[← hDe]`. Conclude with `hann x`. Establish `hJ : ∑ i, ∑ j, M i j • (b i * b j) = Ideal.Quotient.mk (Ideal.span (Set.range f)) (Matrix.of fun i j => pderiv R j (f i)).det`. Establish `hlm : ∀ t, Algebra.TensorProduct.lmul' R (Algebra.TensorProduct.map (IsScalarTower.toAlgHom R (MvPowerSeries (Fin g) R) (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f))) (AlgHom.id R _) t) = _root_.GlobalTheory.DiscrJacobian.mu R (MvPowerSeries (Fin g) R) (MvPowerSeries (Fin …`.
+
+Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz, map_add]`. Consider the case `tmul s w => simp`.
+
+Apply the tactic sequence `have hentry : ∀ i j, Ideal.Quotient.mk (Ideal.span (Set.range f)) (pderiv R j (f i)) = _root_.GlobalTheory.DiscrJacobian.mu R (MvPowerSeries (Fin g) R) (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)) (a i j) := by`. Introduce `i j`. Use `algebraMap_derivation_eq_sum_mu_mul (pderiv R j) X f (Matrix.of a) ha i` as an intermediate fact. Rewrite using `[← Ideal.Quotient.algebraMap_eq, this]`. Simplify using `only [Matrix.of_apply]`.
+
+Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by rw [pderiv_X_of_ne hk, map_zero, mul_zero]) (by simp), pderiv_X_self, map_one, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hDe]`. Simplify using `[map_sum, Algebra.TensorProduct.lmul'_apply_tmul]`. Use `_ = _root_.GlobalTheory.DiscrJacobian.mu R (MvPowerSeries (Fin g) R) (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)) (Matrix.of a).det := hlm _`.
+
+Use `_ = _ := by`. Rewrite using `[← AlgHom.coe_toRingHom, RingHom.map_det, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[RingHom.mapMatrix_apply, hentry]`.
+
+Establish `hMunit : IsUnit M.det`. Set `J : Ideal (MvPowerSeries (Fin g) (ResidueField R))` to `Ideal.span (Set.range fun i => MvPowerSeries.map (residue R) (f i))`. Set `red : MvPowerSeries (Fin g) R →ₐ[R] MvPowerSeries (Fin g) (ResidueField R)` to `MvPowerSeries.mapAlgHom (Algebra.ofId R (ResidueField R))`. Establish `hred : ∀ s, red s = MvPowerSeries.map (residue R) s` using `fun s => rfl`. Set `ev0 : MvPowerSeries (Fin g) R →ₐ[R] ResidueField R` to `{ toRingHom := (residue R).comp constantCoeff, commutes' := fun r => by simp [MvPowerSeries.algebraMap_apply] }`.
+
+Establish `hIev : Ideal.span (Set.range f) ≤ RingHom.ker ev0`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).mpr (hf i)`.
+
+Establish `hIred : Ideal.span (Set.range f) ≤ RingHom.ker ((Ideal.Quotient.mkₐ R J).comp red)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show Ideal.Quotient.mkₐ R J (red (f i)) = 0`. Rewrite using `[Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem, hred]`.
+
+Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Set `ev : (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)) →ₐ[R] ResidueField R` to `Ideal.Quotient.liftₐ _ ev0 (fun a ha => hIev ha)`. Set `ρ : (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)) →ₐ[R] (MvPowerSeries (Fin g) (ResidueField R) ⧸ J)` to `Ideal.Quotient.liftₐ _ ((Ideal.Quotient.mkₐ R J).comp red) (fun a ha => hIred ha)`. Set `n : Ideal (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f))` to `Ideal.span (Set.range fun j => Ideal.Quotient.mk (Ideal.span (Set.range f)) (X j))`. Establish `hnrad : n ≤ ((maximalIdeal R).map (algebraMap R (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)))).radical`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `_root_.GlobalTheory.DiscrJacobian.map_mem_radical (R := R) (S := MvPowerSeries (Fin g) R) (Ideal.Quotient.mk_surjective : Function.Surjective (algebraMap (MvPowerSeries (Fin g) R) (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)))) (hx j)` as an intermediate fact. Simplify `this` using `[Ideal.Quotient.algebraMap_eq]`. Take `⟨N, hN⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hnrad ⟨Finset.univ.image fun j => Ideal.Quotient.mk (Ideal.span (Set.range f)) (X j), by rw [Finset.coe_image, Finset.coe_univ, Set.image_univ]⟩`.
+
+Establish `hev : ∀ w ∈ n, ev w = 0`. Introduce `w hw`. Establish `hle : n ≤ RingHom.ker ev`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Use `show residue R (constantCoeff (X j : MvPowerSeries (Fin g) R)) = 0`. Simplify using the standard rewrite rules. Conclude with `hle hw`. Establish `hgenB : ∀ w : MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f), ∃ c : R, w - algebraMap R _ c ∈ n`.
+
+Introduce `w`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Take `⟨c, u, hu⟩` from `hgen s`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, map_add, Ideal.Quotient.mk_algebraMap, add_sub_cancel_left, map_sum]`.
+
+Conclude with `Ideal.sum_mem _ fun j _ => by`. Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, rfl⟩)`. Establish `hmB : ∀ w ∈ (maximalIdeal R).map (algebraMap R (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f))), ρ w = 0`. Introduce `w hw`.
+
+Establish `hle : (maximalIdeal R).map (algebraMap R (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f))) ≤ RingHom.ker ρ`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `c hc`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, AlgHom.commutes, IsScalarTower.algebraMap_apply R (ResidueField R), show algebraMap R (ResidueField R) c = 0 from (IsLocalRing.residue_eq_zero_iff c).mpr hc, map_zero]`. Conclude with `hle hw`.
+
+Establish `hpow : ∀ i, (X i : MvPowerSeries (Fin g) (ResidueField R)) ^ N ∈ J`. Introduce `i`. Establish `h1 : (Ideal.Quotient.mk (Ideal.span (Set.range f)) (X i)) ^ N ∈ n ^ N` using `Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self (f := fun j => Ideal.Quotient.mk (Ideal.span (Set.range f)) (X j)) i)) N`. Establish `h2` using `hmB _ (hN h1)`. Establish `h3 : ρ (Ideal.Quotient.mk (Ideal.span (Set.range f)) (X i)) = Ideal.Quotient.mk J (X i)` using `by show Ideal.Quotient.mk J (red (X i)) = _`.
+
+Rewrite using `[hred, MvPowerSeries.map_X]`. Rewrite `h2` using `[map_pow, h3, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h2`. Set `ιk` to `Algebra.ofId (ResidueField R) (MvPowerSeries (Fin g) (ResidueField R))`. Set `Φ : MvPowerSeries (Fin g) R ⊗[R] (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)) →ₐ[R] MvPowerSeries (Fin g) (ResidueField R)` to `Algebra.TensorProduct.productMap red ((ιk.restrictScalars R).comp ev)`.
+
+Establish `hcomp : ∀ t, Algebra.TensorProduct.productMap ρ ((IsScalarTower.toAlgHom R (ResidueField R) _).comp ev) (Algebra.TensorProduct.map (IsScalarTower.toAlgHom R (MvPowerSeries (Fin g) R) (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f))) (AlgHom.id R _) t) = Ideal.Quotient.mk J (Φ …`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+
+Consider the case `tmul s w`. Simplify using `[Φ, ρ, ιk, Ideal.Quotient.algebraMap_eq, Algebra.ofId_apply]`. Both sides reduce to the same expression. Establish `hrel : ∀ i, MvPowerSeries.map (residue R) (f i) = ∑ j, Φ (a i j) * X j`. Introduce `i`.
+
+Establish `hevX : ∀ j, ev (Ideal.Quotient.mk (Ideal.span (Set.range f)) (X j)) = 0` using `fun j => hev _ (Ideal.subset_span (Set.mem_range_self (f := fun j => Ideal.Quotient.mk (Ideal.span (Set.range f)) (X j)) j))`. Use `congrArg Φ (ha i)` as an intermediate fact. Simplify using `only [Φ, map_sum, map_mul, map_sub, Algebra.TensorProduct.productMap_apply_tmul, map_one, mul_one, one_mul] at this`. Rewrite using `[← hred, this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Simplify using `[hevX j, hred, MvPowerSeries.map_X, Ideal.Quotient.algebraMap_eq]`. Establish `hdet` using `_root_.GlobalTheory.SocleDet.det_notMem_span (ResidueField R) g N (fun i => MvPowerSeries.map (residue R) (f i)) (Φ.toRingHom.mapMatrix (Matrix.of a)) hrel hpow`. Use `_root_.GlobalTheory.DiscrJacobian.isUnit_det_of_productMap_ne_zero b n N hN ev hev hgenB ρ De M hDe hann ?_` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hdet` to reduce the goal to its premises. Rewrite `h0` using `[hDe_def, hcomp, Ideal.Quotient.eq_zero_iff_mem, ← AlgHom.coe_toRingHom, RingHom.map_det]`. Conclude with `h0`. Use `⟨hMunit.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[← hJ, norm_sum_mul_eq_discr_mul_det b M h, IsUnit.unit_spec]`.
+-/
 theorem _root_.GlobalTheory.DiscrJacobian.associated_discr_norm_jacobian (R : Type) [CommRing R] [IsLocalRing R]
     (g d : ℕ) (f : Fin g → MvPowerSeries (Fin g) R)
     (b : Module.Basis (Fin d) R (MvPowerSeries (Fin g) R ⧸ Ideal.span (Set.range f)))

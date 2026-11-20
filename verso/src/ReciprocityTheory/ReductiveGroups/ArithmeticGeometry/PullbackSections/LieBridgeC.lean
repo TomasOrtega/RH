@@ -6,6 +6,27 @@ namespace ReciprocityTheory.ChartRestriction.G.PullbackSections
 
 open Polynomial NumberField IntermediateField Module
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `Field.exists_primitive_element ℚ E`. Take `⟨y, hy0, hyi⟩` from `exists_integral_multiples ℤ ℚ ({θ} : Finset E)`. Establish `hint : IsIntegral ℤ (y • θ)` using `hyi θ (Finset.mem_singleton_self θ)`. Set `α : 𝓞 E` to `⟨y • θ, hint⟩`. Establish `hintα : IsIntegral ℤ ((α : 𝓞 E) : E)` using `hint`.
+
+Establish `hαE : ((α : 𝓞 E) : E) = (y : E) * θ` using `by simp [α, zsmul_eq_mul]`. Establish `htop : ℚ⟮((α : 𝓞 E) : E)⟯ = ⊤`. Rewrite using `[eq_top_iff, ← hθ, adjoin_simple_le_iff]`. Establish `hy : (y : E) ≠ 0` using `Int.cast_ne_zero.2 hy0`. Establish `: θ = ((y : ℚ)⁻¹ : ℚ) • ((α : 𝓞 E) : E)`.
+
+Rewrite using `[hαE, Rat.smul_def, ← mul_assoc, Rat.cast_inv, Rat.cast_intCast, inv_mul_cancel₀ hy, one_mul]`. Rewrite using `[this]`. Conclude with `smul_mem _ (mem_adjoin_simple_self ℚ _)`. Establish `hintQ : IsIntegral ℚ ((α : 𝓞 E) : E)` using `.of_finite ℚ _`. Establish `hadj : Algebra.adjoin ℚ {((α : 𝓞 E) : E)} = ⊤`.
+
+Rewrite using `[← adjoin_simple_toSubalgebra_of_isAlgebraic hintQ.isAlgebraic, htop]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective (fun τ => χ τ α)`. Introduce `τ τ' h`. Establish `h' : τ ((α : 𝓞 E) : E) = τ' ((α : 𝓞 E) : E)`.
+
+Rewrite using `[← hχ, ← hχ]`. Conclude with `congrArg j h`. Use `AlgHom.ext_of_adjoin_eq_top hadj (φ₁ := τ.toRatAlgHom) (φ₂ := τ'.toRatAlgHom) (by intro z hz; rw [Set.mem_singleton_iff.1 hz]; exact h')` as an intermediate fact. Conclude with `RingHom.ext fun z => congrArg (fun φ : E →ₐ[ℚ] ℂ => φ z) this`. Establish `hinjE : Function.Injective (algebraMap (𝓞 E) E)` using `FaithfulSMul.algebraMap_injective (𝓞 E) E`.
+
+Use `⟨α, hinj, ⟨minpoly ℤ ((α : 𝓞 E) : E), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `hinjE` to reduce the goal to its premises. Rewrite using `[← Polynomial.aeval_algebraMap_apply, map_zero]`. Conclude with `minpoly.aeval ℤ _`. Establish `hp : (∏ τ, (X - C (χ τ α))).Monic` using `Polynomial.monic_prod_X_sub_C _ _`.
+
+Establish `hq : ((minpoly ℤ ((α : 𝓞 E) : E)).map (Int.castRingHom F)).Monic` using `(minpoly.monic hintα).map _`. Use `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hp hq ?_ ?_` and prove the remaining obligations. Use `Finset.prod_dvd_of_coprime (fun τ _ τ' _ h => Polynomial.pairwise_coprime_X_sub_C hinj h) fun τ _ => Polynomial.dvd_iff_isRoot.2 ?_` and prove the remaining obligations. Establish `hχa : aeval (χ τ α) (minpoly ℤ ((α : 𝓞 E) : E)) = χ τ (aeval α (minpoly ℤ ((α : 𝓞 E) : E)))` using `Polynomial.aeval_algHom_apply (χ τ).toIntAlgHom α _`. Establish `h0 : aeval α (minpoly ℤ ((α : 𝓞 E) : E)) = 0`.
+
+Apply `hinjE` to reduce the goal to its premises. Rewrite using `[← Polynomial.aeval_algebraMap_apply, map_zero]`. Conclude with `minpoly.aeval ℤ _`. Rewrite using `[Polynomial.IsRoot, Polynomial.eval_map, ← algebraMap_int_eq, ← Polynomial.aeval_def, hχa, h0, map_zero]`. Rewrite using `[(minpoly.monic hintα).natDegree_map, Polynomial.natDegree_finsetProd_X_sub_C_eq_card, Finset.card_univ, NumberField.Embeddings.card E ℂ, ← IntermediateField.finrank_top', ← htop, IntermediateField.adjoin.finrank hintQ, minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hintα, (min …`.
+
+Introduce `a`. Establish `ha : ((a : 𝓞 E) : E) ∈ Algebra.adjoin ℚ {((α : 𝓞 E) : E)}` using `by rw [hadj]; trivial`. Rewrite `ha` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨r, hr⟩` from `ha`. Take `⟨b, hb⟩` from `IsLocalization.integerNormalization_map_to_map (nonZeroDivisors ℤ) r`.
+
+Use `⟨(b : ℤ), IsLocalization.integerNormalization (nonZeroDivisors ℤ) r, nonZeroDivisors.coe_ne_zero b, ?_⟩` and prove the remaining obligations. Apply `hinjE` to reduce the goal to its premises. Establish `hr' : aeval (algebraMap (𝓞 E) E α) r = algebraMap (𝓞 E) E a` using `hr`. Rewrite using `[← Polynomial.aeval_algebraMap_apply, ← Polynomial.aeval_map_algebraMap ℚ, hb, map_zsmul, hr', map_mul, map_intCast, zsmul_eq_mul]`.
+-/
 theorem exists_sepElt {E : Type} [Field E] [NumberField E] {F : Type} [Field F] (j : F →+* ℂ)
     (χ : (E →+* ℂ) → (𝓞 E →+* F)) (hχ : ∀ τ a, j (χ τ a) = τ (a : E)) :
     ∃ α : 𝓞 E, Function.Injective (fun τ => χ τ α) ∧

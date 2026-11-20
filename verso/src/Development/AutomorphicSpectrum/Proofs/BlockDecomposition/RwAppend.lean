@@ -21,8 +21,14 @@ abbrev CLof (E F : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCo
 
 def expC (X : Mat n) (t : ℝ) : G n := (Matrix.isUnit_exp (t • X)).unit
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem expC_val (X : Mat n) (t : ℝ) : (expC X t).val = NormedSpace.exp (t • X) := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[expC_val]`.
+-/
 theorem expC_zero (X : Mat n) : expC X 0 = 1 := by
   apply Units.ext
   simp [expC_val]
@@ -46,9 +52,17 @@ def lConv (φ : Mat n → ℝ) (x : Lp V 2 μ) : Lp V 2 μ := ∫ y : G n, φ y.
 
 variable {V}
 
+/- English proof (translation)
+The claim follows from `Lp.coeFn_compMeasurePreserving x (measurePreserving_mul_left μ y⁻¹)`.
+-/
 theorem lT_coe (y : G n) (x : Lp V 2 μ) : lT μ V y x =ᵐ[μ] fun z => x (y⁻¹ * z) :=
   Lp.coeFn_compMeasurePreserving x (measurePreserving_mul_left μ y⁻¹)
 
+/- English proof (translation)
+Use `haveI := (hU n μ).1`. Establish `hm : MeasurePreserving (fun y : G n => y * h) μ μ` using `measurePreserving_mul_right μ h`. Establish `: rR μ V h x = Lp.compMeasurePreserving (fun y : G n => y * h) hm x`. Simplify using `only [rR, dif_pos hm]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `Lp.coeFn_compMeasurePreserving x hm`.
+-/
 theorem rR_coe (hU : Unimod) (h : G n) (x : Lp V 2 μ) : rR μ V h x =ᵐ[μ] fun z => x (z * h) := by
   haveI := (hU n μ).1
   have hm : MeasurePreserving (fun y : G n => y * h) μ μ := measurePreserving_mul_right μ h
@@ -58,6 +72,9 @@ theorem rR_coe (hU : Unimod) (h : G n) (x : Lp V 2 μ) : rR μ V h x =ᵐ[μ] fu
   rw [this]
   exact Lp.coeFn_compMeasurePreserving x hm
 
+/- English proof (translation)
+Establish `hm : MemLp (fun y : G n => f y.val) 2 μ` using `(memLp_congr_ae h).2 (Lp.memLp x)`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Simplify using `only [cls, dif_pos hm]`. Conclude with `Lp.ext (hm.coeFn_toLp.trans h)`.
+-/
 theorem cls_of_ae {f : Mat n → V} {x : Lp V 2 μ} (h : (fun y : G n => f y.val) =ᵐ[μ] x) :
     MemLp (fun y : G n => f y.val) 2 μ ∧ cls μ f = x := by
   have hm : MemLp (fun y : G n => f y.val) 2 μ := (memLp_congr_ae h).2 (Lp.memLp x)
@@ -65,6 +82,9 @@ theorem cls_of_ae {f : Mat n → V} {x : Lp V 2 μ} (h : (fun y : G n => f y.val
   simp only [cls, dif_pos hm]
   exact Lp.ext (hm.coeFn_toLp.trans h)
 
+/- English proof (translation)
+Simplify using `only [cls, dif_pos h]`. Conclude with `h.coeFn_toLp`.
+-/
 theorem coe_cls {f : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ) :
     (cls μ f : G n → V) =ᵐ[μ] fun y => f y.val := by
   simp only [cls, dif_pos h]
@@ -72,6 +92,9 @@ theorem coe_cls {f : Mat n → V} (h : MemLp (fun y : G n => f y.val) 2 μ) :
 
 end Mol
 
+/- English proof (translation)
+Establish `: Continuous fun g : Mat n => g.det` using `Continuous.matrix_det continuous_id`. Conclude with `isOpen_ne.preimage this`.
+-/
 theorem isOpen_GLs : IsOpen (GLs n) := by
   have : Continuous fun g : Mat n => g.det := Continuous.matrix_det continuous_id
   exact isOpen_ne.preimage this
@@ -80,12 +103,18 @@ section Words
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Introduce `z hz`. Establish `: f =ᶠ[𝓝 z] f'` using `Filter.eventuallyEq_of_mem (isOpen_GLs.mem_nhds hz) h`. Simplify using `only [Rd, this.fderiv_eq]`.
+-/
 theorem Rd_congr {f f' : Mat n → V} (h : ∀ z ∈ GLs n, f z = f' z) (X : Mat n) :
     ∀ z ∈ GLs n, Rd X f z = Rd X f' z := by
   intro z hz
   have : f =ᶠ[𝓝 z] f' := Filter.eventuallyEq_of_mem (isOpen_GLs.mem_nhds hz) h
   simp only [Rd, this.fderiv_eq]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih => simp only [List.cons_append, Rw, ih]`.
+-/
 theorem Rw_append (w w' : List (Bool × Fin n × Fin n)) (f : Mat n → V) :
     Rw (w ++ w') f = Rw w (Rw w' f) := by
   induction w with

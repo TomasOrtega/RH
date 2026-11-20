@@ -7,6 +7,9 @@ open scoped Classical
 
 namespace ReciprocityTheory.Cheb
 
+/- English proof (translation)
+The claim follows from `|Real.log a - Real.log b| ≤ 2 * δ / b := by have ha0 : 0 < a := by linarith have hδ : 0 ≤ δ := (abs_nonneg _).trans hab rw [abs_le] at hab ⊢ constructor · have h1 : Real.log (b / a) ≤ b / a - 1 := Real.log_le_sub_one_of_pos (div_pos hb ha0) rw [Real.log_div hb.ne' ha0.ne'] at h1 …`.
+-/
 theorem abs_log_sub_log_le_of_half {a b δ : ℝ} (hb : 0 < b) (hab : |a - b| ≤ δ) (ha : b / 2 ≤ a) :
     |Real.log a - Real.log b| ≤ 2 * δ / b := by
   have ha0 : 0 < a := by linarith
@@ -27,6 +30,9 @@ theorem abs_log_sub_log_le_of_half {a b δ : ℝ} (hb : 0 < b) (hab : |a - b| �
       linarith
     linarith
 
+/- English proof (translation)
+The claim follows from `|Real.exp (-s * u) - Real.exp (-s * v)| ≤ s * |u - v| * Real.exp (-L) := by have key : ∀ u v : ℝ, L ≤ u → u ≤ v → Real.exp (-s * u) - Real.exp (-s * v) ≤ s * (v - u) * Real.exp (-L) := by intro u v hu huv have e1 : Real.exp (-s * v) = Real.exp (-s * u) * Real.exp (-(s * (v - u))) …`.
+-/
 theorem abs_exp_neg_mul_sub_le {s u v L : ℝ} (hs : 1 ≤ s) (hL : 0 ≤ L) (hu : L ≤ u) (hv : L ≤ v) :
     |Real.exp (-s * u) - Real.exp (-s * v)| ≤ s * |u - v| * Real.exp (-L) := by
   have key : ∀ u v : ℝ, L ≤ u → u ≤ v →
@@ -55,6 +61,11 @@ theorem abs_exp_neg_mul_sub_le {s u v L : ℝ} (hs : 1 ≤ s) (hL : 0 ≤ L) (hu
     rw [abs_of_nonpos (by linarith), abs_of_nonneg (by linarith)]
     linarith
 
+/- English proof (translation)
+Break down `lt_trichotomy a 0 with ha | ha | ha` into its components or cases. Rewrite `h` using `[abs_of_neg ha]`. Establish `: a + e < 0` using `by linarith [le_abs_self e]`. Rewrite using `[sign_neg this, sign_neg ha]`. Substitute `ha` using the available equality.
+
+Simplify using `at h`. Combine the linear relations using `[abs_nonneg e]`. Rewrite `h` using `[abs_of_pos ha]`. Establish `: 0 < a + e` using `by linarith [neg_abs_le e]`. Rewrite using `[sign_pos this, sign_pos ha]`.
+-/
 theorem sign_add_of_abs_lt {a e : ℝ} (h : |e| < |a|) : SignType.sign (a + e) = SignType.sign a := by
   rcases lt_trichotomy a 0 with ha | ha | ha
   · rw [abs_of_neg ha] at h
@@ -67,10 +78,16 @@ theorem sign_add_of_abs_lt {a e : ℝ} (h : |e| < |a|) : SignType.sign (a + e) =
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Rewrite using `[norm_eq_sup'_normAtPlace]`. Conclude with `Finset.le_sup' (fun w => normAtPlace w z) (Finset.mem_univ w)`.
+-/
 theorem normAtPlace_le_norm' (w : InfinitePlace E) (z : mixedSpace E) : normAtPlace w z ≤ ‖z‖ := by
   rw [norm_eq_sup'_normAtPlace]
   exact Finset.le_sup' (fun w => normAtPlace w z) (Finset.mem_univ w)
 
+/- English proof (translation)
+The claim follows from `|normAtPlace w (y + k) - normAtPlace w y| ≤ ‖k‖ := by have h1 := normAtPlace_add_le w y k have h2 := normAtPlace_add_le w (y + k) (-k) rw [add_neg_cancel_right, normAtPlace_neg] at h2 have h3 := normAtPlace_le_norm' w k rw [abs_le]; constructor <;> linarith`.
+-/
 theorem abs_normAtPlace_add_sub_le (w : InfinitePlace E) (y k : mixedSpace E) :
     |normAtPlace w (y + k) - normAtPlace w y| ≤ ‖k‖ := by
   have h1 := normAtPlace_add_le w y k
@@ -79,9 +96,15 @@ theorem abs_normAtPlace_add_sub_le (w : InfinitePlace E) (y k : mixedSpace E) :
   have h3 := normAtPlace_le_norm' w k
   rw [abs_le]; constructor <;> linarith
 
+/- English proof (translation)
+Apply the tactic sequence `unfold mult; split_ifs <;> norm_num`.
+-/
 theorem mult_le_two' (w : InfinitePlace E) : (mult w : ℝ) ≤ 2 := by
   unfold mult; split_ifs <;> norm_num
 
+/- English proof (translation)
+Rewrite using `[mixedEmbedding.norm_apply, Real.log_prod (fun w _ => pow_ne_zero _ (hz w))]`. Repeatedly rewrite using `[Real.log_pow]`.
+-/
 theorem log_norm_eq_sum {z : mixedSpace E} (hz : ∀ w, normAtPlace w z ≠ 0) :
     Real.log (mixedEmbedding.norm z) = ∑ w, (mult w : ℝ) * Real.log (normAtPlace w z) := by
   rw [mixedEmbedding.norm_apply, Real.log_prod (fun w _ => pow_ne_zero _ (hz w))]
@@ -91,17 +114,26 @@ section Core
 
 variable {y k : mixedSpace E} {B a : ℝ}
 
+/- English proof (translation)
+Establish `h` using `abs_normAtPlace_add_sub_le w y k`. Rewrite `h` using `[abs_le]`. Combine the linear relations using `[hy w]`.
+-/
 theorem half_le_normAtPlace_add (hk : ‖k‖ ≤ B) (ha : 2 * B ≤ a) (hy : ∀ w, a ≤ normAtPlace w y)
     (w : InfinitePlace E) : normAtPlace w y / 2 ≤ normAtPlace w (y + k) := by
   have h := abs_normAtPlace_add_sub_le w y k
   rw [abs_le] at h
   linarith [hy w]
 
+/- English proof (translation)
+Use `half_le_normAtPlace_add hk ha hy w` as an intermediate fact. Combine the linear relations using `[hy w]`.
+-/
 theorem normAtPlace_add_pos (hB : 0 < B) (hk : ‖k‖ ≤ B) (ha : 2 * B ≤ a) (hy : ∀ w, a ≤ normAtPlace w y)
     (w : InfinitePlace E) : 0 < normAtPlace w (y + k) := by
   have := half_le_normAtPlace_add hk ha hy w
   linarith [hy w]
 
+/- English proof (translation)
+The claim follows from `|Real.log (normAtPlace w (y + k)) - Real.log (normAtPlace w y)| ≤ 2 * B / a := by have ha0 : 0 < a := by linarith have hw : 0 < normAtPlace w y := lt_of_lt_of_le ha0 (hy w) refine (abs_log_sub_log_le_of_half hw ((abs_normAtPlace_add_sub_le w y k).trans hk) (half_le_normAtPlace_ad …`.
+-/
 theorem abs_log_normAtPlace_sub_le (hB : 0 < B) (hk : ‖k‖ ≤ B) (ha : 2 * B ≤ a)
     (hy : ∀ w, a ≤ normAtPlace w y) (w : InfinitePlace E) :
     |Real.log (normAtPlace w (y + k)) - Real.log (normAtPlace w y)| ≤ 2 * B / a := by
@@ -111,6 +143,9 @@ theorem abs_log_normAtPlace_sub_le (hB : 0 < B) (hk : ‖k‖ ≤ B) (ha : 2 * B
     (half_le_normAtPlace_add hk ha hy w)).trans ?_
   exact div_le_div_of_nonneg_left (by linarith) ha0 (hy w)
 
+/- English proof (translation)
+The claim follows from `|Real.log (mixedEmbedding.norm (y + k)) - Real.log (mixedEmbedding.norm y)| ≤ (Module.finrank ℚ E : ℝ) * (2 * B / a) := by have ha0 : 0 < a := by linarith rw [log_norm_eq_sum (fun w => (normAtPlace_add_pos hB hk ha hy w).ne'), log_norm_eq_sum (fun w => (lt_of_lt_of_le ha0 (hy w)) …`.
+-/
 theorem abs_log_norm_sub_le (hB : 0 < B) (hk : ‖k‖ ≤ B) (ha : 2 * B ≤ a)
     (hy : ∀ w, a ≤ normAtPlace w y) :
     |Real.log (mixedEmbedding.norm (y + k)) - Real.log (mixedEmbedding.norm y)| ≤
@@ -128,6 +163,9 @@ theorem abs_log_norm_sub_le (hB : 0 < B) (hk : ‖k‖ ≤ B) (ha : 2 * B ≤ a)
     _ = (Module.finrank ℚ E : ℝ) * (2 * B / a) := by
         rw [← Finset.sum_mul, ← sum_mult_eq]; push_cast; ring
 
+/- English proof (translation)
+The claim follows from `|logMap (y + k) w - logMap y w| ≤ 4 * (2 * B / a) := by have hd : (0 : ℝ) < Module.finrank ℚ E := Nat.cast_pos.mpr Module.finrank_pos have hδ : 0 ≤ 2 * B / a := div_nonneg (by linarith) (by linarith) simp only [logMap_apply] rw [← mul_sub, abs_mul, abs_of_nonneg (Nat.cast_nonneg …`.
+-/
 theorem abs_logMap_sub_le (hB : 0 < B) (hk : ‖k‖ ≤ B) (ha : 2 * B ≤ a)
     (hy : ∀ w, a ≤ normAtPlace w y) (w : {w : InfinitePlace E // w ≠ w₀}) :
     |logMap (y + k) w - logMap y w| ≤ 4 * (2 * B / a) := by
@@ -158,6 +196,9 @@ theorem abs_logMap_sub_le (hB : 0 < B) (hk : ‖k‖ ≤ B) (ha : 2 * B ≤ a)
         mul_le_mul (mult_le_two' w.1) h4 (abs_nonneg _) (by norm_num)
     _ = 4 * (2 * B / a) := by ring
 
+/- English proof (translation)
+Establish `hδ : 0 ≤ 2 * B / a` using `div_nonneg (by linarith) (by linarith)`. Use `(pi_norm_le_iff_of_nonneg (by linarith)).mpr fun w => ?_` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, Real.norm_eq_abs]`. Conclude with `abs_logMap_sub_le hB hk ha hy w`.
+-/
 theorem norm_logMap_sub_le (hB : 0 < B) (hk : ‖k‖ ≤ B) (ha : 2 * B ≤ a)
     (hy : ∀ w, a ≤ normAtPlace w y) : ‖logMap (y + k) - logMap y‖ ≤ 4 * (2 * B / a) := by
   have hδ : 0 ≤ 2 * B / a := div_nonneg (by linarith) (by linarith)
@@ -165,6 +206,13 @@ theorem norm_logMap_sub_le (hB : 0 < B) (hk : ‖k‖ ≤ B) (ha : 2 * B ≤ a)
   rw [Pi.sub_apply, Real.norm_eq_abs]
   exact abs_logMap_sub_le hB hk ha hy w
 
+/- English proof (translation)
+Unfold `rsgn`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h1 : |k.1 w| ≤ B`. Use `normAtPlace_le_norm' w.1 k` as an intermediate fact. Rewrite `this` using `[normAtPlace_apply_of_isReal w.2]`.
+
+Conclude with `(Real.norm_eq_abs _ ▸ this).trans hk`. Establish `h2 : a ≤ |y.1 w|`. Use `hy w.1` as an intermediate fact. Rewrite `this` using `[normAtPlace_apply_of_isReal w.2, Real.norm_eq_abs]`. Then use the resulting hypothesis. Establish `h3 : SignType.sign ((y + k).1 w) = SignType.sign (y.1 w)`.
+
+Rewrite using `[Prod.fst_add, Pi.add_apply]`. Conclude with `sign_add_of_abs_lt (a := y.1 w) (e := k.1 w) (by linarith)`. Rewrite using `[h3]`.
+-/
 theorem rsgn_add (hB : 0 < B) (hk : ‖k‖ ≤ B) (ha : 2 * B ≤ a) (hy : ∀ w, a ≤ normAtPlace w y) :
     rsgn (y + k) = rsgn y := by
   unfold rsgn
@@ -183,6 +231,11 @@ theorem rsgn_add (hB : 0 < B) (hk : ‖k‖ ≤ B) (ha : 2 * B ≤ a) (hy : ∀ 
 
 end Core
 
+/- English proof (translation)
+Use `set b := (basisUnitLattice E).ofZLatticeBasis ℝ (unitLattice E)`. Use `⟨∑ i, ‖LinearMap.toContinuousLinearMap (b.coord i)‖, Finset.sum_nonneg fun _ _ => norm_nonneg _, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h : ucoord x i - ucoord y i = LinearMap.toContinuousLinearMap (b.coord i) (logMap x - logMap y)`.
+
+Simplify using `[ucoord, b, Module.Basis.coord_apply, map_sub]`. Rewrite using `[h, ← Real.norm_eq_abs]`. Conclude with `ContinuousLinearMap.le_opNorm _ _`.
+-/
 theorem exists_ucoord_bound : ∃ A : ℝ, 0 ≤ A ∧ ∀ x y : mixedSpace E,
     ∑ i, |ucoord x i - ucoord y i| ≤ A * ‖logMap x - logMap y‖ := by
   set b := (basisUnitLattice E).ofZLatticeBasis ℝ (unitLattice E)
@@ -196,18 +249,27 @@ theorem exists_ucoord_bound : ∃ A : ℝ, 0 ≤ A ∧ ∀ x y : mixedSpace E,
   rw [h, ← Real.norm_eq_abs]
   exact ContinuousLinearMap.le_opNorm _ _
 
+/- English proof (translation)
+Unfold `uphi`. Rewrite using `[if_neg hx, if_neg hy]`. Conclude with `abs_Tent_sub_Tent_le _ _`.
+-/
 theorem abs_uphi_sub_le {x y : mixedSpace E} (hx : mixedEmbedding.norm x ≠ 0)
     (hy : mixedEmbedding.norm y ≠ 0) : |uphi x - uphi y| ≤ ∑ i, |ucoord x i - ucoord y i| := by
   unfold uphi
   rw [if_neg hx, if_neg hy]
   exact abs_Tent_sub_Tent_le _ _
 
+/- English proof (translation)
+Unfold `Gs`. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_cpow (mixedEmbedding.norm_nonneg x), Complex.ofReal_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Gs_eq_real {l : ℕ} (χ : DirichletCharacter ℂ l) (s : ℝ) (x : mixedSpace E) :
     Gs χ s x = χ (rsgn x : ZMod l) * ((uphi x * mixedEmbedding.norm x ^ (-s) : ℝ) : ℂ) := by
   unfold Gs
   rw [Complex.ofReal_mul, Complex.ofReal_cpow (mixedEmbedding.norm_nonneg x), Complex.ofReal_neg]
   ring
 
+/- English proof (translation)
+The claim follows from `|N' ^ (-s) - N ^ (-s)| ≤ s * |Real.log N' - Real.log N| * m⁻¹ := by have hm0 : 0 < m := by linarith rw [Real.rpow_def_of_pos (by linarith), Real.rpow_def_of_pos (by linarith), mul_comm (Real.log N'), mul_comm (Real.log N)] have := abs_exp_neg_mul_sub_le hs (Real.log_nonneg hm) (R …`.
+-/
 theorem abs_rpow_neg_sub_le {s m N N' : ℝ} (hs : 1 ≤ s) (hm : 1 ≤ m) (hN : m ≤ N) (hN' : m ≤ N') :
     |N' ^ (-s) - N ^ (-s)| ≤ s * |Real.log N' - Real.log N| * m⁻¹ := by
   have hm0 : 0 < m := by linarith
@@ -217,16 +279,37 @@ theorem abs_rpow_neg_sub_le {s m N N' : ℝ} (hs : 1 ≤ s) (hm : 1 ≤ m) (hN :
     (Real.log_le_log hm0 hN)
   rwa [Real.exp_neg, Real.exp_log hm0] at this
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rpow_neg_le_inv {s m N : ℝ} (hs : 1 ≤ s) (hm : 1 ≤ m) (hN : m ≤ N) : N ^ (-s) ≤ m⁻¹ := by
   calc N ^ (-s) ≤ N ^ (-1 : ℝ) := Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)
     _ = N⁻¹ := Real.rpow_neg_one N
     _ ≤ m⁻¹ := inv_anti₀ (by linarith) hN
 
+/- English proof (translation)
+Rewrite using `[mixedEmbedding.norm_apply, ← sum_mult_eq, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_le_prod (fun w _ => pow_nonneg hb _) (fun w _ => pow_le_pow_left₀ hb (h w) _)`.
+-/
 theorem pow_le_norm_of_le {z : mixedSpace E} {b : ℝ} (hb : 0 ≤ b) (h : ∀ w, b ≤ normAtPlace w z) :
     b ^ Module.finrank ℚ E ≤ mixedEmbedding.norm z := by
   rw [mixedEmbedding.norm_apply, ← sum_mult_eq, ← Finset.prod_pow_eq_pow_sum]
   exact Finset.prod_le_prod (fun w _ => pow_nonneg hb _) (fun w _ => pow_le_pow_left₀ hb (h w) _)
 
+/- English proof (translation)
+Establish `ha0 : 0 < a` using `by linarith`. Establish `hyw : ∀ w, 0 < normAtPlace w y` using `fun w => lt_of_lt_of_le ha0 (hy w)`. Establish `hyN : mixedEmbedding.norm y ≠ 0` using `mixedEmbedding.norm_ne_zero_iff.mpr fun w => (hyw w).ne'`. Establish `hykN : mixedEmbedding.norm (y + k) ≠ 0` using `mixedEmbedding.norm_ne_zero_iff.mpr fun w => (normAtPlace_add_pos hB hk ha hy w).ne'`. Use `set m := (a / 2) ^ Module.finrank ℚ E with hm_def`.
+
+Establish `hm1 : 1 ≤ m` using `one_le_pow₀ (by linarith)`. Establish `hmN : m ≤ mixedEmbedding.norm y` using `pow_le_norm_of_le (by linarith) fun w => by linarith [hy w]`. Establish `hmN' : m ≤ mixedEmbedding.norm (y + k)` using `pow_le_norm_of_le (by linarith) fun w => by`. Combine the linear relations using `[hy w, half_le_normAtPlace_add hk ha hy w]`. Establish `hδ : 0 ≤ 2 * B / a` using `div_nonneg (by linarith) ha0.le`.
+
+Establish `hu : |uphi (y + k) - uphi y| ≤ A * (4 * (2 * B / a))` using `(abs_uphi_sub_le hykN hyN).trans ((hAb _ _).trans (mul_le_mul_of_nonneg_left (norm_logMap_sub_le hB hk ha hy) hA))`. Establish `hP : |mixedEmbedding.norm (y + k) ^ (-s) - mixedEmbedding.norm y ^ (-s)| ≤ 2 * ((Module.finrank ℚ E : ℝ) * (2 * B / a)) * m⁻¹`. Use `(abs_rpow_neg_sub_le hs.1 hm1 hmN hmN').trans ?_` and prove the remaining obligations. Establish `hl` using `abs_log_norm_sub_le hB hk ha hy`. Establish `hm0 : 0 ≤ m⁻¹` using `inv_nonneg.mpr (by linarith)`.
+
+Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul hs.2 hl (abs_nonneg _) (by norm_num)) hm0`. Establish `hP' : mixedEmbedding.norm (y + k) ^ (-s) ≤ m⁻¹` using `rpow_neg_le_inv hs.1 hm1 hmN'`. Establish `hP0 : 0 ≤ mixedEmbedding.norm (y + k) ^ (-s)` using `Real.rpow_nonneg (mixedEmbedding.norm_nonneg _) _`. Establish `hu0 : 0 ≤ uphi y` using `uphi_nonneg y`. Establish `hu1 : uphi y ≤ 1` using `uphi_le_one y`.
+
+Establish `hreal : |uphi (y + k) * mixedEmbedding.norm (y + k) ^ (-s) - uphi y * mixedEmbedding.norm y ^ (-s)| ≤ (A * (4 * (2 * B / a)) + 2 * ((Module.finrank ℚ E : ℝ) * (2 * B / a))) * m⁻¹`. Establish `e : uphi (y + k) * mixedEmbedding.norm (y + k) ^ (-s) - uphi y * mixedEmbedding.norm y ^ (-s) = (uphi (y + k) - uphi y) * mixedEmbedding.norm (y + k) ^ (-s) + uphi y * (mixedEmbedding.norm (y + k) ^ (-s) - mixedEmbedding.norm y ^ (-s))` using `by ring`. Rewrite using `[e]`. Use `(abs_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_mul, abs_mul, abs_of_nonneg hP0, abs_of_nonneg hu0]`.
+
+Establish `h1 : |uphi (y + k) - uphi y| * mixedEmbedding.norm (y + k) ^ (-s) ≤ A * (4 * (2 * B / a)) * m⁻¹` using `mul_le_mul hu hP' hP0 (by positivity)`. Establish `h2 : uphi y * |mixedEmbedding.norm (y + k) ^ (-s) - mixedEmbedding.norm y ^ (-s)| ≤ 2 * ((Module.finrank ℚ E : ℝ) * (2 * B / a)) * m⁻¹`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Gs_eq_real, Gs_eq_real, rsgn_add hB hk ha hy, ← mul_sub, norm_mul, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_Gs_add_sub_le_core {l : ℕ} (χ : DirichletCharacter ℂ l) {s : ℝ} (hs : s ∈ Set.Icc (1 : ℝ) 2)
     {A : ℝ} (hA : 0 ≤ A)
     (hAb : ∀ x y : mixedSpace E, ∑ i, |ucoord x i - ucoord y i| ≤ A * ‖logMap x - logMap y‖)

@@ -8,6 +8,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LatChain
 
+/- English proof (translation)
+Rewrite using `[Ov, not_not]`. Use `⟨fun h => ⟨_, h, map_natCast _ p⟩, fun ⟨a, ha, e⟩ => ?_⟩` and prove the remaining obligations. Take `rfl` from `IsFractionRing.injective (X.presheaf.stalk x) X.functionField (e.trans (map_natCast _ p).symm)`. Conclude with `ha`.
+-/
 theorem not_ov_iff_unitAt_natCast {X : Scheme.{0}} [IsIntegral X] {p : ℕ} {x : X} :
     ¬ Ov p x ↔ UnitAt x (p : X.functionField) := by
   rw [Ov, not_not]
@@ -16,6 +19,17 @@ theorem not_ov_iff_unitAt_natCast {X : Scheme.{0}} [IsIntegral X] {p : ℕ} {x :
     (e.trans (map_natCast _ p).symm)
   exact ha
 
+/- English proof (translation)
+Introduce `X _ p η h`. Establish `key (x : X) : ∀ᶠ z in 𝓝 x, germOf z (if Ov p z then η z else 1) = germOf z (if Ov p x then η x else 1)`. Distinguish the cases in `hx : Ov p x`. Take `⟨h₁, ⟨a, h₂⟩, h₃⟩` from `h x hx filter_upwards [eventually_regAt h₁, eventually_regAt h₂, h₃] with z k₁ k₂ k₃`. Rewrite using `[if_pos hx, germOf_eq_iff]`.
+
+Distinguish the cases in `hz : Ov p z`. Rewrite using `[if_pos hz]`. Conclude with `k₃ hz`. Rewrite using `[if_neg hz, Units.val_one, div_one, unitAt_iff (η x).ne_zero]`. Use `⟨k₁, ?_⟩` and prove the remaining obligations.
+
+Establish `hu` using `not_ov_iff_unitAt_natCast.1 hz`. Establish `hr : RegAt z (((p : X.functionField)⁻¹) ^ a)` using `mem_loc.1 (pow_mem (mem_loc.2 hu.inv.regAt) a)`. Use `hr.mul k₂` as an intermediate fact. Rewrite `this` using `[div_eq_mul_inv, ← mul_assoc, ← mul_pow, inv_mul_cancel₀ hu.ne_zero, one_pow, one_mul]`. Then use the resulting hypothesis. Use `filter_upwards [eventually_unitAt (not_ov_iff_unitAt_natCast.1 hx)] with z hz`.
+
+Rewrite using `[if_neg hx, if_neg (not_ov_iff_unitAt_natCast.2 hz)]`. Use `⟨show cartierGroup X from ⟨fun x => germOf x (if Ov p x then η x else 1), fun x => ?_⟩, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, ho, hx⟩` from `eventually_nhds_iff.1 (key x)`. Conclude with `⟨⟨U, ho⟩, hx, _, hU⟩`. Conclude with `congrArg (germOf x) (if_neg hx)`.
+
+Conclude with `congrArg (germOf x) (if_pos hx)`.
+-/
 theorem exists_vert_isEqn : ∀ (X : Scheme.{0}) [IsIntegral X] (p : ℕ) (η : X → X.functionFieldˣ), VEq p η → ∃ E : CartierDiv X, Vert p E ∧ ∀ x, Ov p x → E.IsEqn x (η x) := by
   intro X _ p η h
   have key (x : X) : ∀ᶠ z in 𝓝 x, germOf z (if Ov p z then η z else 1) = germOf z (if Ov p x then η x else 1) := by

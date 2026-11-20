@@ -14,20 +14,37 @@ variable {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω]
 variable {K : Type} [Fintype K] {ι : K → Type} {x : (Σ k, ι k) → Ω}
 variable {V V₁ : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup V₁] [Module Ω V₁]
 
+/- English proof (translation)
+Rewrite using `[← Nat.sub_add_cancel hm, pow_add, mul_smul]`. Conclude with `h.1 t ht _ (pow_mem (div_mem_chartRing (mseg x) t s) _) _ hv`.
+-/
 theorem mono {Γ : (∀ k, ι k) → AddSubgroup V} (h : IsLatFamily o x Γ) {s t : ∀ k, ι k}
     (ht : mseg x t ≠ 0) {v : V} {m m' : ℕ} (hm : m ≤ m') (hv : (mseg x s / mseg x t) ^ m • v ∈ Γ t) :
     (mseg x s / mseg x t) ^ m' • v ∈ Γ t := by
   rw [← Nat.sub_add_cancel hm, pow_add, mul_smul]
   exact h.1 t ht _ (pow_mem (div_mem_chartRing (mseg x) t s) _) _ hv
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ a _ _ hv => U.smul_mem a hv, fun _ _ _ _ _ hv => ⟨0, U.smul_mem _ hv⟩⟩`.
+-/
 theorem fam_sub (U : Submodule Ω V) : IsLatFamily o x (fun _ => U.toAddSubgroup) :=
   ⟨fun _ _ a _ _ hv => U.smul_mem a hv, fun _ _ _ _ _ hv => ⟨0, U.smul_mem _ hv⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ => trivial, fun _ _ _ _ _ _ => ⟨0, trivial⟩⟩`.
+-/
 theorem fam_top : IsLatFamily o x (fun _ => (⊤ : AddSubgroup V)) :=
   ⟨fun _ _ _ _ _ _ => trivial, fun _ _ _ _ _ _ => ⟨0, trivial⟩⟩
 
+/- English proof (translation)
+The claim follows from `fam_sub ⊥`.
+-/
 theorem fam_bot : IsLatFamily o x (fun _ => (⊥ : AddSubgroup V)) := fam_sub ⊥
 
+/- English proof (translation)
+Use `⟨fun s hs a ha v hv => ?_, fun s t hs ht v hv => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, rfl⟩` from `AddSubgroup.mem_sup.1 hv`. Rewrite using `[smul_add]`. Conclude with `AddSubgroup.add_mem_sup (hA.1 s hs a ha y hy) (hB.1 s hs a ha z hz)`. Take `⟨y, hy, z, hz, rfl⟩` from `AddSubgroup.mem_sup.1 hv`.
+
+Take `⟨m, hm⟩` from `hA.2 s t hs ht y hy`. Take `⟨m', hm'⟩` from `hB.2 s t hs ht z hz`. Use `⟨m + m', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Conclude with `AddSubgroup.add_mem_sup (mono hA ht (Nat.le_add_right _ _) hm) (mono hB ht (Nat.le_add_left _ _) hm')`.
+-/
 theorem fam_sup {A B : (∀ k, ι k) → AddSubgroup V} (hA : IsLatFamily o x A) (hB : IsLatFamily o x B) :
     IsLatFamily o x (fun c => A c ⊔ B c) := by
   refine ⟨fun s hs a ha v hv => ?_, fun s t hs ht v hv => ?_⟩
@@ -42,6 +59,9 @@ theorem fam_sup {A B : (∀ k, ι k) → AddSubgroup V} (hA : IsLatFamily o x A)
     exact AddSubgroup.add_mem_sup (mono hA ht (Nat.le_add_right _ _) hm)
       (mono hB ht (Nat.le_add_left _ _) hm')
 
+/- English proof (translation)
+Use `⟨fun s hs a ha v hv => ⟨hA.1 s hs a ha v hv.1, hB.1 s hs a ha v hv.2⟩, fun s t hs ht v hv => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hA.2 s t hs ht v hv.1`. Take `⟨m', hm'⟩` from `hB.2 s t hs ht v hv.2`. Conclude with `⟨m + m', mono hA ht (Nat.le_add_right _ _) hm, mono hB ht (Nat.le_add_left _ _) hm'⟩`.
+-/
 theorem fam_inf {A B : (∀ k, ι k) → AddSubgroup V} (hA : IsLatFamily o x A) (hB : IsLatFamily o x B) :
     IsLatFamily o x (fun c => A c ⊓ B c) := by
   refine ⟨fun s hs a ha v hv => ⟨hA.1 s hs a ha v hv.1, hB.1 s hs a ha v hv.2⟩,
@@ -50,6 +70,11 @@ theorem fam_inf {A B : (∀ k, ι k) → AddSubgroup V} (hA : IsLatFamily o x A)
   obtain ⟨m', hm'⟩ := hB.2 s t hs ht v hv.2
   exact ⟨m + m', mono hA ht (Nat.le_add_right _ _) hm, mono hB ht (Nat.le_add_left _ _) hm'⟩
 
+/- English proof (translation)
+Use `⟨fun s hs a ha v hv => ?_, fun s t hs ht v hv => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hv`. Conclude with `⟨_, hA.1 s hs a ha y hy, hf a y⟩`. Take `⟨y, hy, rfl⟩` from `hv`. Take `⟨m, hm⟩` from `hA.2 s t hs ht y hy`.
+
+Conclude with `⟨m, _, hm, hf _ y⟩`.
+-/
 theorem fam_map {A : (∀ k, ι k) → AddSubgroup V} (hA : IsLatFamily o x A) (f : V →+ V₁)
     (hf : ∀ (a : Ω) v, f (a • v) = a • f v) : IsLatFamily o x (fun c => (A c).map f) := by
   refine ⟨fun s hs a ha v hv => ?_, fun s t hs ht v hv => ?_⟩
@@ -59,6 +84,9 @@ theorem fam_map {A : (∀ k, ι k) → AddSubgroup V} (hA : IsLatFamily o x A) (
     obtain ⟨m, hm⟩ := hA.2 s t hs ht y hy
     exact ⟨m, _, hm, hf _ y⟩
 
+/- English proof (translation)
+Use `⟨fun s hs a ha v hv => ?_, fun s t hs ht v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_comap, hf]`. Conclude with `hA.1 s hs a ha _ hv`. Take `⟨m, hm⟩` from `hA.2 s t hs ht _ hv`. Conclude with `⟨m, by rw [AddSubgroup.mem_comap, hf]; exact hm⟩`.
+-/
 theorem fam_comap {A : (∀ k, ι k) → AddSubgroup V₁} (hA : IsLatFamily o x A) (f : V →+ V₁)
     (hf : ∀ (a : Ω) v, f (a • v) = a • f v) : IsLatFamily o x (fun c => (A c).comap f) := by
   refine ⟨fun s hs a ha v hv => ?_, fun s t hs ht v hv => ?_⟩
@@ -67,6 +95,9 @@ theorem fam_comap {A : (∀ k, ι k) → AddSubgroup V₁} (hA : IsLatFamily o x
   · obtain ⟨m, hm⟩ := hA.2 s t hs ht _ hv
     exact ⟨m, by rw [AddSubgroup.mem_comap, hf]; exact hm⟩
 
+/- English proof (translation)
+Use `⟨fun s hs a ha v hv => ⟨hA.1 s hs a ha _ hv.1, hB.1 s hs a ha _ hv.2⟩, fun s t hs ht v hv => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hA.2 s t hs ht _ hv.1`. Take `⟨m', hm'⟩` from `hB.2 s t hs ht _ hv.2`. Conclude with `⟨m + m', mono hA ht (Nat.le_add_right _ _) hm, mono hB ht (Nat.le_add_left _ _) hm'⟩`.
+-/
 theorem fam_prod {A : (∀ k, ι k) → AddSubgroup V} {B : (∀ k, ι k) → AddSubgroup V₁}
     (hA : IsLatFamily o x A) (hB : IsLatFamily o x B) :
     IsLatFamily o x (fun c => (A c).prod (B c)) := by
@@ -76,9 +107,17 @@ theorem fam_prod {A : (∀ k, ι k) → AddSubgroup V} {B : (∀ k, ι k) → Ad
   obtain ⟨m', hm'⟩ := hB.2 s t hs ht _ hv.2
   exact ⟨m + m', mono hA ht (Nat.le_add_right _ _) hm, mono hB ht (Nat.le_add_left _ _) hm'⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h j => h j trivial, fun h j _ => h j⟩`.
+-/
 theorem mem_stdLat (R : Subalgebra o Ω) {J : Type} (v : J → Ω) : v ∈ stdLat R J ↔ ∀ j, v j ∈ R :=
   ⟨fun h j => h j trivial, fun h j _ => h j⟩
 
+/- English proof (translation)
+Use `⟨fun s _ a ha v hv => ?_, fun s t hs _ v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[mem_stdLat]`. Conclude with `fun j => mul_mem ha (hv j)`. Rewrite using `[mem_stdLat] at hv choose m hm using fun j => exists_pow_mul_mem_chartRing (mseg x) s t hs (hv j)`. Use `⟨∑ q, m q, (mem_stdLat _ _).2 fun q => ?_⟩` and prove the remaining obligations.
+
+Establish `hle : m q ≤ ∑ q, m q` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ q)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, ← Nat.sub_add_cancel hle, pow_add, mul_assoc]`. Conclude with `mul_mem (pow_mem (div_mem_chartRing (mseg x) t s) _) (hm q)`.
+-/
 theorem fam_std (J : Type) [Fintype J] :
     IsLatFamily o x (fun c => stdLat (chartRing o (mseg x) c) J) := by
   refine ⟨fun s _ a ha v hv => ?_, fun s t hs _ v hv => ?_⟩
@@ -92,6 +131,9 @@ theorem fam_std (J : Type) [Fintype J] :
     rw [Pi.smul_apply, smul_eq_mul, ← Nat.sub_add_cancel hle, pow_add, mul_assoc]
     exact mul_mem (pow_mem (div_mem_chartRing (mseg x) t s) _) (hm q)
 
+/- English proof (translation)
+Simplify using `only [dotDual, AddSubgroup.mem_iInf, AddSubgroup.mem_comap]`. Both sides reduce to the same expression.
+-/
 theorem mem_dotDual (R : Subalgebra o Ω) {m : ℕ} (L : AddSubgroup (Fin m → Ω)) (w : Fin m → Ω) :
     w ∈ dotDual R L ↔ ∀ v ∈ L, v ⬝ᵥ w ∈ R := by
   simp only [dotDual, AddSubgroup.mem_iInf, AddSubgroup.mem_comap]
@@ -101,6 +143,9 @@ def FG (R : Subalgebra o Ω) (L : AddSubgroup V) : Prop :=
   ∃ (I : Type) (_ : Fintype I) (g : I → V), (∀ i, g i ∈ L) ∧
     ∀ e ∈ L, ∃ a : I → Ω, (∀ i, a i ∈ R) ∧ ∑ i, a i • g i = e
 
+/- English proof (translation)
+Set `L' : Submodule R V` to `{ L with smul_mem' := fun a e he => h.1 a a.2 e he }`. Take `⟨k, φ, v, hφ, hv⟩` from `LocFreeProj.exists_dualBasis (L := L') (r := r) h`. Conclude with `⟨_, inferInstance, fun i => v i, fun i => (v i).2, fun e he => ⟨fun i => φ i e, fun i => hφ i e he, hv e⟩⟩`.
+-/
 theorem fg_of_locFree {R : Subalgebra o Ω} {r : ℕ} {L : AddSubgroup V} (h : LocFree R r L) :
     FG R L := by
   let L' : Submodule R V := { L with smul_mem' := fun a e he => h.1 a a.2 e he }
@@ -108,6 +153,13 @@ theorem fg_of_locFree {R : Subalgebra o Ω} {r : ℕ} {L : AddSubgroup V} (h : L
   exact ⟨_, inferInstance, fun i => v i, fun i => (v i).2,
     fun e he => ⟨fun i => φ i e, fun i => hφ i e he, hv e⟩⟩
 
+/- English proof (translation)
+Take `⟨I, hI, g, hg, hL⟩` from `h`. Take `⟨ρ, h1, h2, h3⟩` from `hS`. Use `choose y hy using fun i => h1 (g i)`. Use `⟨I, hI, y, fun i => ?_, fun e he => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (y i) ∈ L`.
+
+Rewrite using `[hy]`. Conclude with `h3 _ (hg i)`. Take `⟨a, ha, hs⟩` from `hL (f e) he`. Use `⟨a, ha, hf ?_⟩` and prove the remaining obligations. Rewrite using `[← h2 (f e) ⟨e, rfl⟩, ← hs]`.
+
+Simplify using `only [map_sum, map_smul, hy]`.
+-/
 theorem fg_comap {R : Subalgebra o Ω} {L : AddSubgroup V₁} (h : FG R L) (f : V →ₗ[Ω] V₁)
     (hf : Function.Injective f) (hS : Summand L (LinearMap.range f)) :
     FG R (L.comap f.toAddMonoidHom) := by
@@ -123,6 +175,19 @@ theorem fg_comap {R : Subalgebra o Ω} {L : AddSubgroup V₁} (h : FG R L) (f : 
     rw [← h2 (f e) ⟨e, rfl⟩, ← hs]
     simp only [map_sum, map_smul, hy]
 
+/- English proof (translation)
+Use `⟨fun s _ a ha w hw => ?_, fun s t hs ht w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw`, the goal using `[mem_dotDual]`. Introduce `v hv`. Rewrite using `[dotProduct_smul, smul_eq_mul]`. Conclude with `mul_mem ha (hw v hv)`.
+
+Rewrite `hw` using `[mem_dotDual]`. Take `⟨I, hI, g, hg, hL⟩` from `hfg t ht`. Establish `key : ∀ i, ∃ k : ℕ, (mseg x s / mseg x t) ^ k * (g i ⬝ᵥ w) ∈ chartRing o (mseg x) t`. Introduce `i`. Take `⟨k, hk⟩` from `hA.2 t s ht hs _ (hg i)`.
+
+Take `⟨k', hk'⟩` from `exists_pow_mul_mem_chartRing (mseg x) s t hs (hw _ hk)`. Use `⟨k', ?_⟩` and prove the remaining obligations. Establish `hu : (mseg x s / mseg x t) ^ k * (mseg x t / mseg x s) ^ k = 1`. Rewrite using `[← mul_pow, div_mul_div_comm, mul_comm (mseg x s), div_self (mul_ne_zero ht hs), one_pow]`. Rewrite `hk'` using `[smul_dotProduct, smul_eq_mul]`.
+
+Establish `: (mseg x s / mseg x t) ^ k' * (g i ⬝ᵥ w) = (mseg x s / mseg x t) ^ k * ((mseg x s / mseg x t) ^ k' * ((mseg x t / mseg x s) ^ k * (g i ⬝ᵥ w)))`. Take the linear combination `(-(mseg x s / mseg x t) ^ k' * (g i ⬝ᵥ w)) * hu`. Rewrite using `[this]`. Conclude with `mul_mem (pow_mem (div_mem_chartRing (mseg x) t s) _) hk'`. Use `choose k hk using key`.
+
+Use `⟨∑ q, k q, (mem_dotDual _ _ _).2 fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `hL v hv`. Rewrite using `[sum_dotProduct]`. Use `sum_mem fun q _ => ?_` and prove the remaining obligations. Establish `hle : k q ≤ ∑ q, k q` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ q)`.
+
+Rewrite using `[smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← Nat.sub_add_cancel hle, pow_add, mul_assoc]`. Conclude with `mul_mem (ha q) (mul_mem (pow_mem (div_mem_chartRing (mseg x) t s) _) (hk q))`.
+-/
 theorem fam_dual {m : ℕ} {A : (∀ k, ι k) → AddSubgroup (Fin m → Ω)} (hA : IsLatFamily o x A)
     (hfg : ∀ c, mseg x c ≠ 0 → FG (chartRing o (mseg x) c) (A c)) :
     IsLatFamily o x (fun c => dotDual (chartRing o (mseg x) c) (A c)) := by
@@ -157,6 +222,11 @@ theorem fam_dual {m : ℕ} {A : (∀ k, ι k) → AddSubgroup (Fin m → Ω)} (h
       mul_assoc]
     exact mul_mem (ha q) (mul_mem (pow_mem (div_mem_chartRing (mseg x) t s) _) (hk q))
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `l hl`. Use function extensionality and compare the values at `j`. Use `congrFun hl (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[linMap, Fintype.linearCombination_apply, Finset.sum_apply, Finset.sum_eq_single j]`.
+
+Simplify `this` using `[h1]`. Introduce `i _ hi`. Simplify using `[Pi.single_eq_of_ne hi, h0]`. Simplify using the standard rewrite rules.
+-/
 theorem linMap_inj {F : Type} [Zero F] [One F] (n : ℕ) (χ : F → Ω) (h0 : χ 0 = 0) (h1 : χ 1 = 1) :
     Function.Injective (linMap n χ) := by
   rw [injective_iff_map_eq_zero]
@@ -172,6 +242,13 @@ theorem linMap_inj {F : Type} [Zero F] [One F] (n : ℕ) (χ : F → Ω) (h0 : �
 end PositivityTheory.Xgn.A_fam_constr
 
 open PositivityTheory.Xgn.A_fam_constr in
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x _ F _ _ _ n Sg _ r s p _ w χ φ D hD`. Establish `hl1 : IsLatFamily O x (fun c => (D c).l1 (chartRing O (mseg x) c) p)` using `fam_sup hD.famM (fam_map (fam_std _) _ fun a v => smul_comm _ _ _)`. Use `⟨hl1, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨hlie, -, -, -, -, hDel, hTh⟩` from `hD.fam τ`. Establish `haf : IsLatFamily O x (fun c => (D c).af (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a)))` using `fam_comap hl1 _ fun a v => (linMap n (fun a => algebraMap O Ω (χ τ a))).map_smul a v`.
+
+Use `⟨haf, fun i => ⟨?_, ?_⟩, fun i => ?_, ?_, fun hG => ?_⟩` and prove the remaining obligations. Conclude with `fam_comap (fam_sup hD.famM (fam_sub _)) _ fun a v => (LinearMap.toSpanSingleton Ω _ _).map_smul a v`. Conclude with `fam_comap (fam_sup hTh (fam_prod (fam_sub _) fam_bot)) _ fun a v => Prod.ext ((LinearMap.toSpanSingleton Ω _ _).map_smul a v.1) rfl`. Conclude with `fam_map (fam_inf hTh (fam_prod (fam_sub _) fam_top)) _ fun a v => rfl`. Conclude with `fam_dual hlie fun c hc => fg_of_locFree ((hD.base c hc).free τ).1`.
+
+Establish `hh : IsLatFamily O x (fun c => (D c).hh (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a)))`. Use `fam_dual haf fun c hc => fg_comap (fg_of_locFree (hG c hc).l1) _ (linMap_inj n _ ?_ ?_) ((hG c hc).lin τ)` and prove the remaining obligations. Simplify using `[(hD.char.2.2.2.2 τ).1]`. Simplify using `[(hD.char.2.2.2.2 τ).2]`. Conclude with `⟨hh, fam_map (fam_inf hDel (fam_prod hh fam_top)) _ fun a v => rfl⟩`.
+-/
 theorem PositivityTheory.Xgn.t_fam_constr : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω), Function.Injective (algebraMap O Ω) → ∀ {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} [Fintype Sg] {r s : Sg → ℕ} (p : ℕ), p.Prime → ∀ (w : O) (χ : Sg → F → O) (φ : Equiv.Perm Sg) (D : (∀ k, ι k) → LieLatticeData Ω F n Sg r s), IsLatticeFamily O x p w χ φ D → IsLatFamily O x (fun c => (D c).l1 (chartRing O (mseg x) c) p) ∧ ∀ τ, IsLatFamily O x (fun c => (D c).af (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a))) ∧ (∀ i, IsLatFamily O x (fun c => (D c).xId (fun a => algebraMap O Ω (χ τ a)) i) ∧ IsLatFamily O x (fun c => (D c).stepGraph τ (fun a => algebraMap O Ω (χ τ a)) i)) ∧ (∀ i, IsLatFamily O x (fun c => (D c).kk τ i)) ∧ IsLatFamily O x (fun c => dotDual (chartRing O (mseg x) c) ((D c).lie τ)) ∧ ((∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))) → IsLatFamily O x (fun c => (D c).hh (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a))) ∧ IsLatFamily O x (fun c => (D c).imH (chartRing O (mseg x) c) p τ (fun a => algebraMap O Ω (χ τ a)))) := by
   classical
   intro O _ _ _ Ω _ _ K _ _ ι _ x _ F _ _ _ n Sg _ r s p _ w χ φ D hD

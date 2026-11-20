@@ -43,6 +43,9 @@ def IsInvariant (q : X ⟶ Y) : Prop :=
   (γ[G, X] : G ⊗ X ⟶ X) ≫ q = snd G X ≫ q
 
 variable {G} in
+/- English proof (translation)
+Rewrite using `[Hom.smul_def, Category.assoc, h, lift_snd_assoc]`.
+-/
 theorem IsInvariant.smul_comp {q : X ⟶ Y} (h : IsInvariant G q) {T : Over S} (g : T ⟶ G) (x : T ⟶ X) :
     (g • x) ≫ q = x ≫ q := by
   rw [Hom.smul_def, Category.assoc, h, lift_snd_assoc]
@@ -84,6 +87,13 @@ universe u
 
 variable {S : Scheme.{u}} {G X Y : Over S} [GrpObj G] [ModObj G X] {q : X ⟶ Y}
 
+/- English proof (translation)
+Establish `h2 : h.1.lift y x e ≫ snd G X = x` using `h.1.lift_snd _ _ _`. Use `⟨h.1.lift y x e ≫ fst G X, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `: lift (h.1.lift y x e ≫ fst G X) x = h.1.lift y x e`. Use `ext`. Simplify using the standard rewrite rules.
+
+Simplify using `[h2]`. Use `beta_reduce`. Rewrite using `[Hom.smul_def, this, h.1.lift_fst]`. Establish `: lift g x = h.1.lift y x e`. Apply `h.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[h.1.lift_fst]`. Conclude with `hg`. Rewrite using `[h.1.lift_snd, lift_snd]`. Rewrite using `[← this, lift_fst]`.
+-/
 theorem IsFppfTorsor.existsUnique_smul (h : IsFppfTorsor G q) {T : Over S} (x y : T ⟶ X) (e : y ≫ q = x ≫ q) :
     ∃! g : T ⟶ G, g • x = y := by
   have h2 : h.1.lift y x e ≫ snd G X = x := h.1.lift_snd _ _ _
@@ -102,6 +112,15 @@ theorem IsFppfTorsor.existsUnique_smul (h : IsFppfTorsor G q) {T : Over S} (x y 
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+Take `⟨hp, J, U, f, hf, hs, hl⟩` from `h`. Use `choose s hl using hl`. Establish `hp' : IsPullback (γ[G, X] : G ⊗ X ⟶ X).left (snd G X).left q.left q.left` using `hp.map (Over.forget S)`. Establish `h1 : P (snd G X).left` using `MorphismProperty.pullback_snd (P := P) G.hom X.hom hG`. Establish `e : Sigma.desc s ≫ q.left = Sigma.desc f`.
+
+Use extensionality with `i`. Simplify using `[hl]`. Establish `hq` using `(IsPullback.of_hasPullback (snd G X).left (Sigma.desc s)).flip.paste_vert hp'.flip`. Rewrite `hq` using `[e]`. Use `fun i => (hf i).1` as an intermediate fact.
+
+Use `fun i => (hf i).2` as an intermediate fact. Use `MorphismProperty.of_isPullback_of_descendsAlong (P := P) (Q := @Surjective ⊓ @Flat ⊓ @LocallyOfFinitePresentation) hq ⟨⟨⟨fun y => ?_⟩, ?_⟩, ?_⟩ (MorphismProperty.pullback_snd _ _ h1)` and prove the remaining obligations. Take `⟨i, z, rfl⟩` from `hs y`. Conclude with `⟨Sigma.ι U i z, by rw [← Scheme.Hom.comp_apply, Sigma.ι_desc]⟩`. Conclude with `IsZariskiLocalAtSource.sigmaDesc fun i => inferInstance`.
+
+Conclude with `IsZariskiLocalAtSource.sigmaDesc fun i => inferInstance`.
+-/
 theorem IsFppfTorsor.of_descendsAlong (h : IsFppfTorsor G q) (P : MorphismProperty Scheme.{u})
     [P.IsStableUnderBaseChange] [IsZariskiLocalAtTarget P]
     [P.DescendsAlong (@Surjective ⊓ @Flat ⊓ @QuasiCompact)] (hG : P G.hom) : P q.left := by
@@ -123,6 +142,9 @@ theorem IsFppfTorsor.of_descendsAlong (h : IsFppfTorsor G q) (P : MorphismProper
   · exact IsZariskiLocalAtSource.sigmaDesc fun i => inferInstance
   · exact IsZariskiLocalAtSource.sigmaDesc fun i => inferInstance
 
+/- English proof (translation)
+Take `⟨-, J, U, f, -, hs, hl⟩` from `h`. Use `⟨fun y => ?_⟩` and prove the remaining obligations. Take `⟨i, z, rfl⟩` from `hs y`. Take `⟨s, e⟩` from `hl i`. Conclude with `⟨s z, by rw [← Scheme.Hom.comp_apply, e]⟩`.
+-/
 theorem IsFppfTorsor.surjective (h : IsFppfTorsor G q) : Surjective q.left := by
   obtain ⟨-, J, U, f, -, hs, hl⟩ := h
   refine ⟨fun y => ?_⟩
@@ -132,6 +154,11 @@ theorem IsFppfTorsor.surjective (h : IsFppfTorsor G q) : Surjective q.left := by
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hG`. Use `isAffineHom_descendsAlong_fpqc.{0}` as an intermediate fact. Use `flat_descendsAlong_fpqc` as an intermediate fact. Establish `a2 : IsAffineHom q.left` using `h.of_descendsAlong @IsAffineHom (inferInstanceAs (IsAffineHom G.hom))`. Establish `a3 : UniversallyClosed q.left` using `h.of_descendsAlong @UniversallyClosed (inferInstanceAs (UniversallyClosed G.hom))`.
+
+Establish `a4 : LocallyOfFinitePresentation q.left` using `h.of_descendsAlong @LocallyOfFinitePresentation h3`. Conclude with `⟨(IsFinite.iff_isIntegralHom_and_locallyOfFiniteType _).mpr ⟨IsIntegralHom.iff_universallyClosed_and_isAffineHom.mpr ⟨a3, a2⟩, inferInstance⟩, h.of_descendsAlong @Flat h2, a4⟩`.
+-/
 theorem IsFppfTorsor.isFiniteLocallyFree {S : Scheme.{0}} {G X Y : Over S} [GrpObj G] [ModObj G X] {q : X ⟶ Y}
     (h : IsFppfTorsor G q) (hG : IsFiniteLocallyFree G.hom) : IsFiniteLocallyFree q.left := by
   obtain ⟨h1, h2, h3⟩ := hG
@@ -145,6 +172,15 @@ theorem IsFppfTorsor.isFiniteLocallyFree {S : Scheme.{0}} {G X Y : Over S} [GrpO
     ⟨IsIntegralHom.iff_universallyClosed_and_isAffineHom.mpr ⟨a3, a2⟩, inferInstance⟩,
     h.of_descendsAlong @Flat h2, a4⟩
 
+/- English proof (translation)
+Use `⟨h.1.w, ?_, ?_⟩` and prove the remaining obligations. Use `Presheaf.isLocallyInjective_of_injective _ _ ?_` and prove the remaining obligations. Introduce and unpack `T ⟨x⟩ ⟨y⟩ e`. Take `⟨g, hg, -⟩` from `h.existsUnique_smul y x e`. Conclude with `Quotient.sound ⟨g, hg⟩`.
+
+Take `⟨hp, J, U, f, hf, hs, hl⟩` from `h`. Use `⟨fun {T} y => ?_⟩` and prove the remaining obligations. Establish `hc : Presieve.ofArrows U f ∈ Scheme.fppfPrecoverage Y.left` using `(Scheme.ofArrows_mem_precoverage_iff _).mpr ⟨hs, hf⟩`. Use `Scheme.fppfTopology.pullback_stable y.left (Precoverage.generate_mem_toGrothendieck hc)` as an intermediate fact. Rewrite using `[GrothendieckTopology.mem_over_iff]`.
+
+Use `Scheme.fppfTopology.superset_covering ?_ this` and prove the remaining obligations. Introduce and unpack `V a ⟨W, b, c, ⟨i⟩, e⟩`. Take `⟨s, hs⟩` from `hl i`. Rewrite using `[Sieve.overEquiv_iff]`. Establish `e' : (b ≫ s) ≫ q.left = a ≫ y.left` using `by rw [Category.assoc, hs, e]`.
+
+Use `⟨Quotient.mk _ (Over.homMk (b ≫ s) ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.w q, ← Category.assoc, e', Category.assoc, Over.w y]`. Both sides reduce to the same expression. Conclude with `Over.OverMorphism.ext e'`.
+-/
 theorem IsFppfTorsor.isFppfQuotient (h : IsFppfTorsor G q) : IsFppfQuotient G q := by
   refine ⟨h.1.w, ?_, ?_⟩
   · refine Presheaf.isLocallyInjective_of_injective _ _ ?_

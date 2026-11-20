@@ -28,9 +28,17 @@ def AutOffW (_u : Plc (Lp F)) (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin n
 
 variable {u u' : Plc (Lp F)} {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun π h1 h2 => (h.2 π h1 h2).imp fun _ ht v _ hv => ht v hv⟩`.
+-/
 theorem WitOff.of (h : WitA ι r) : WitOff u ι r :=
   ⟨h.1, fun π h1 h2 => (h.2 π h1 h2).imp fun _ ht v _ hv => ht v hv⟩
 
+/- English proof (translation)
+Use `⟨h.1, fun π h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hO F n hn π`. Take `⟨a, ha⟩` from `h.2 π h1 h2`. Take `⟨b, hb⟩` from `h'.2 π h1 h2`. Use `⟨t, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `e : v.under (𝓞 (Lp F)) = u`. Establish `k` using `hb v (e ▸ hu) hv`. Conclude with `ht v k.1 (hU F n π b v k)`. Establish `k` using `ha v e hv`. Conclude with `ht v k.1 (hU F n π a v k)`.
+-/
 theorem witA_of (hO : UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.WinOf) (hU : UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.WinUnl) (hn : 1 ≤ n) (hu : u ≠ u') (h : WitOff u ι r) (h' : WitOff u' ι r) :
     WitA ι r := by
   refine ⟨h.1, fun π h1 h2 => ?_⟩
@@ -44,6 +52,9 @@ theorem witA_of (hO : UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.WinOf) (hU 
   · have k := ha v e hv
     exact ht v k.1 (hU F n π a v k)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun hc => witA_of UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.winOf winUnl hn hu (h.2 hc) (h'.2 hc)⟩`.
+-/
 theorem glueN (hn : 1 ≤ n) (hu : u ≠ u') (h : AutOffN u ι r) (h' : AutOffN u' ι r) :
     AutCsd0 ι r ∧ (Continuous r → WitA ι r) :=
   ⟨h.1, fun hc => witA_of UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.winOf winUnl hn hu (h.2 hc) (h'.2 hc)⟩
@@ -59,13 +70,22 @@ def IrrArithPointsAutomorphicAway : Prop :=
 
 variable {B ι J}
 
+/- English proof (translation)
+The claim follows from `H x h ρ`.
+-/
 theorem end2o (_ : r.V0ok) (H : B.arithmeticPointClassicality ι J) (x : B.Pt) (h : s.Wt n) (ρ : G L Ω →* GL (Fin n) (Qbar l)) :
     J ≤ RingHom.ker x → x.Arith h → x.IsRep ρ → Af.IsIrr ρ → AutOff s.v0 ι ρ := H x h ρ
+/- English proof (translation)
+The claim follows from `H x h ρ`.
+-/
 theorem end2oN (_ : r.V0ok) (H : IrrArithPointsAutomorphicAway B ι J) (x : B.Pt) (h : s.Wt n) (ρ : G L Ω →* GL (Fin n) (Qbar l)) :
     J ≤ RingHom.ker x → x.Arith h → x.IsRep ρ → Af.IsIrr ρ → AutOffN s.v0 ι ρ := H x h ρ
 
 omit [IsAlgClosure L Ω] in
 
+/- English proof (translation)
+Introduce `e` and use `h (by rw [← s.norm_v0_eq_one, ← s'.norm_v0_eq_one, e])`.
+-/
 theorem v0_ne {s s' : HidaSetting l L Ω} (h : ¬ s'.p ∣ s.p) : s.v0 ≠ s'.v0 := fun e =>
   h (by rw [← s.norm_v0_eq_one, ← s'.norm_v0_eq_one, e])
 

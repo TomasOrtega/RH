@@ -13,6 +13,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.FlatThickenings
 
+/- English proof (translation)
+Use `set φ := Ideal.quotientMap ((I ^ (e + 1)).map σ) σ (Ideal.le_comap_map (I := I ^ (e + 1))) with hφ`. Set `_` to `φ.toAlgebra`. Establish `: Module.Flat (V ⧸ I ^ (e + 1)) (C ⧸ (I ^ (e + 1)).map σ)` using `h`. Establish `hsm : ∀ (v : V) (c : C), (Ideal.Quotient.mk (I ^ (e + 1)) v) • (Ideal.Quotient.mk ((I ^ (e + 1)).map σ) c) = Ideal.Quotient.mk _ (σ v * c)`. Introduce `v c`.
+
+Rewrite using `[Algebra.smul_def, map_mul]`. Both sides reduce to the same expression. Take `⟨l, c, y, hy, hc⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := V ⧸ I ^ (e + 1)) (M := C ⧸ (I ^ (e + 1)).map σ) (f := fun _ : Unit => Ideal.Quotient.mk _ ϖ) (x := fun _ => Ideal.Quotient.mk _ a) (by rw [Fintype.sum_unique, hsm, ha, map_zero])`. Use `choose c' hc' using fun j => Ideal.Quotient.mk_surjective (c () j)`. Use `choose y' hy' using fun j => Ideal.Quotient.mk_surjective (y j)`.
+
+Establish `hd : ∀ j, ϖ ^ e ∣ c' j`. Introduce `j`. Establish `h1` using `hc j`. Rewrite `h1` using `[Fintype.sum_unique, ← hc', ← map_mul, Ideal.Quotient.eq_zero_iff_mem, hI, Ideal.span_singleton_pow, Ideal.mem_span_singleton, pow_succ']`. Conclude with `(mul_dvd_mul_iff_left hϖ).1 h1`.
+
+Establish `h2 : a - ∑ j, σ (c' j) * y' j ∈ (I ^ (e + 1)).map σ`. Rewrite using `[← Ideal.Quotient.eq, map_sum]`. Use `(hy ()).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hc', ← hy', hsm]`.
+
+Rewrite `h2` using `[hI, Ideal.map_pow, Ideal.map_span, Set.image_singleton]`. Establish `h3 : ∑ j, σ (c' j) * y' j ∈ Ideal.span {σ ϖ} ^ e`. Use `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← map_pow]`. Conclude with `map_dvd σ (hd j)`.
+
+Simplify using `using Ideal.add_mem _ (Ideal.pow_le_pow_right (Nat.le_succ e) h2) h3`.
+-/
 theorem mem_pow_of_flat_quotient {V C : Type} [CommRing V] [IsDomain V] [CommRing C] (σ : V →+* C)
     {ϖ : V} (hϖ : ϖ ≠ 0) (I : Ideal V) (hI : I = Ideal.span {ϖ}) (e : ℕ)
     (h : (Ideal.quotientMap ((I ^ (e + 1)).map σ) σ (Ideal.le_comap_map (I := I ^ (e + 1)))).Flat)
@@ -49,6 +62,19 @@ theorem mem_pow_of_flat_quotient {V C : Type} [CommRing V] [IsDomain V] [CommRin
     exact map_dvd σ (hd j)
   simpa using Ideal.add_mem _ (Ideal.pow_le_pow_right (Nat.le_succ e) h2) h3
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `key : ∀ a : C, σ ϖ * a = 0 → a = 0`. Introduce `a ha`. Establish `hm : a ∈ ⨅ i : ℕ, (Ideal.span {σ ϖ} ^ i • ⊤ : Submodule C C)`. Rewrite using `[Submodule.mem_iInf]`.
+
+Introduce `e`. Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Conclude with `mem_pow_of_flat_quotient σ hϖ.ne_zero _ hϖ.maximalIdeal_eq e (h e) ha`. Take `⟨⟨r, hr⟩, hra⟩` from `(Ideal.mem_iInf_smul_pow_eq_bot_iff _ a).1 hm`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`.
+
+Rewrite using `[← hra]`. Express the relevant statement in the definitionally equal form `c * σ ϖ * a = 0`. Rewrite using `[_root_.mul_assoc, ha, mul_zero]`. Establish `keyn : ∀ (n : ℕ) (a : C), σ ϖ ^ n * a = 0 → a = 0`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => intro a ha`. Simplify using `using ha`. Consider the case `succ n ih => intro a ha; exact key a (ih _ (by rw [← ha]; ring))`. Set `_` to `σ.toAlgebra`.
+
+Express the relevant statement in the definitionally equal form `Module.Flat V C`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce and unpack `a ⟨⟨v, hv⟩, hva⟩`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero hv) hϖ`. Establish `h1 : σ (u * ϖ ^ n) * a = 0` using `hva`.
+
+Rewrite `h1` using `[map_mul, _root_.mul_assoc, map_pow]`. Conclude with `keyn n a (((u.isUnit.map σ).mul_right_eq_zero).1 h1)`.
+-/
 theorem flat_of_flat_quotient {V C : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [CommRing C] [IsNoetherianRing C] (σ : V →+* C)
     (h : ∀ e : ℕ, (Ideal.quotientMap ((IsLocalRing.maximalIdeal V ^ (e + 1)).map σ) σ
@@ -81,6 +107,15 @@ theorem flat_of_flat_quotient {V C : Type} [CommRing V] [IsDomain V] [IsDiscrete
   rw [map_mul, _root_.mul_assoc, map_pow] at h1
   exact keyn n a (((u.isUnit.map σ).mul_right_eq_zero).1 h1)
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `Spec.map_surjective (u ≫ f)`. Establish `hft : LocallyOfFiniteType (Spec.map σ)` using `by rw [hσ]; infer_instance`. Rewrite `hft` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType.{0})]`. Establish `hN : IsNoetherianRing C`. Set `_ : Algebra V C` to `σ.hom.toAlgebra`.
+
+Establish `: Algebra.FiniteType V C` using `hft`. Conclude with `Algebra.FiniteType.isNoetherianRing V C`. Rewrite using `[← hσ, HasRingHomProperty.Spec_iff (P := @Flat.{0})]`. Use `flat_of_flat_quotient σ.hom fun e => ?_` and prove the remaining obligations. Establish `H` using `isPullback_SpecMap_of_isPushout _ _ _ _ (NilpotentLift.isPushout_quotient_map (IsLocalRing.maximalIdeal V ^ (e + 1)) σ)`.
+
+Establish `H'` using `(IsPullback.of_hasPullback (b e) u).flip.paste_vert (hb e)`. Rewrite `H'` using `[← hσ]`. Use `hY e` as an intermediate fact. Establish `hf : Flat ((H.isoIsPullback _ _ H').hom ≫ pullback.fst (b e) u ≫ (Y e).hom)` using `inferInstance`. Rewrite `hf` using `[IsPullback.isoIsPullback_hom_snd, HasRingHomProperty.Spec_iff (P := @Flat.{0})]`.
+
+Conclude with `hf`.
+-/
 theorem flat_chart {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {B : Scheme.{0}} (f : B ⟶ Spec (CommRingCat.of V)) [LocallyOfFiniteType f]
     (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1)))))
@@ -106,6 +141,9 @@ theorem flat_chart {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing
   rw [IsPullback.isoIsPullback_hom_snd, HasRingHomProperty.Spec_iff (P := @Flat.{0})] at hf
   exact hf
 
+/- English proof (translation)
+Introduce `V _ _ _ B _ Y b hb hY`. Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @Flat.{0})` as an intermediate fact. Conclude with `IsZariskiLocalAtSource.of_openCover (P := @Flat) B.left.affineOpenCover.openCover fun i =>`. Establish `: IsOpenImmersion (B.left.affineOpenCover.f i)` using `B.left.affineOpenCover.map_prop i`. Use `flat_chart B.hom Y b hb hY (B.left.affineOpenCover.f i)`.
+-/
 theorem flat_of_flat_thickenings :
     ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (B : Over (Spec (CommRingCat.of V))) [LocallyOfFiniteType B.hom] (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) (b : ∀ e, (Y e).left ⟶ B.left), (∀ e, IsPullback (b e) (Y e).hom B.hom (thick V (IsLocalRing.maximalIdeal V) e)) → (∀ e, Flat (Y e).hom) → Flat B.hom := by
   intro V _ _ _ B _ Y b hb hY

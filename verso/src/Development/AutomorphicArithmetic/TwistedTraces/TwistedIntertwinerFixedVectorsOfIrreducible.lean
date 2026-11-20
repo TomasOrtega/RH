@@ -5,6 +5,39 @@ import Development.AutomorphicArithmetic.TwistedTraces.FiniteDimensionalFixedVec
 open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.C.Sf
 
+/- English proof (translation)
+Introduce `G H S _ _ _ _ _ _ _ _ _ _ _ τ hτ hirr π s I hI hfd K hKc hKo hne`. Set `sK : Subgroup G` to `K.map s.toMulEquiv.toMonoidHom`. Establish `hsKc : IsCompact (sK : Set G)`. Establish `: (sK : Set G) = s '' (K : Set G)` using `rfl`. Rewrite using `[this]`.
+
+Conclude with `hKc.image s.continuous`. Establish `hsKo : IsOpen (sK : Set G)`. Establish `: (sK : Set G) = s.toHomeomorph '' (K : Set G)` using `rfl`. Rewrite using `[this]`. Conclude with `s.toHomeomorph.isOpenMap _ hKo`.
+
+Set `K₁ : Subgroup G` to `K ⊓ sK`. Establish `hK₁c : IsCompact (K₁ : Set G)`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hKc.inter hsKc`. Establish `hK₁o : IsOpen (K₁ : Set G)`.
+
+Rewrite using `[Subgroup.coe_inf]`. Conclude with `hKo.inter hsKo`. Establish `hPle : ∀ x ∈ fixedVectors τ K, x ∈ fixedVectors τ K₁` using `fun x hx k hk => hx k hk.1`. Establish `hsle : ∀ x ∈ fixedVectors τ sK, x ∈ fixedVectors τ K₁` using `fun x hx k hk => hx k hk.2`. Establish `hne₁ : fixedVectors τ K₁ ≠ ⊥`.
+
+Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Use `hPle x hx` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Then use the resulting hypothesis. Establish `hIm : ∀ x ∈ fixedVectors τ K, I x ∈ fixedVectors τ sK`. Introduce and unpack `x hx _ ⟨k, hk, rfl⟩`. Use `show τ (s k) (I x) = I x`. Rewrite using `[← hI, hx k hk]`.
+
+Establish `hIs : ∀ y ∈ fixedVectors τ sK, I.symm y ∈ fixedVectors τ K`. Introduce `y hy k hk`. Apply `I.injective` to reduce the goal to its premises. Rewrite using `[hI, I.apply_symm_apply]`. Conclude with `hy _ ⟨k, hk, rfl⟩`.
+
+Set `ε : S →ₗ[ℂ] fixedVectors τ sK` to `fixedProj τ hτ hsKc hsKo`. Set `h : Module.End ℂ (fixedVectors τ K₁)` to `LinearMap.codRestrict (fixedVectors τ K₁) ((I.symm : S →ₗ[ℂ] S) ∘ₗ (fixedVectors τ sK).subtype ∘ₗ ε ∘ₗ (fixedVectors τ K₁).subtype) (fun x => hPle _ (hIs _ (ε x).2))`. Take `⟨T₀, A₀, ⟨c1, c2, c3, c4, c5⟩, c6⟩` from `UpperTheory.finiteDimensional_fixedVectors_isotypic_of_irreducible G H S τ hτ hirr π K₁ hK₁c hK₁o (hfd K₁ hK₁c hK₁o) hne₁ h`. Take `⟨p1, -, p3, -⟩` from `UpperTheory.fixedProjection_invariant_and_commuting_reps G G H π π K K`. Set `e : S →ₗ[ℂ] fixedVectors τ K` to `fixedProj τ hτ hKc hKo`.
+
+Set `A : S →ₗ[ℂ] S` to `(fixedVectors τ K).subtype ∘ₗ e ∘ₗ A₀`. Set `B : S →ₗ[ℂ] S` to `A ∘ₗ (I : S →ₗ[ℂ] S)`. Establish `hB : ∀ x ∈ fixedVectors τ K, B x = x`. Introduce `x hx`. Establish `hIx` using `hIm x hx`.
+
+Establish `h1 : A₀ (I x) = x`. Establish `h2` using `c6 ⟨I x, hsle _ hIx⟩`. Establish `h3 : ((ε (I x) : fixedVectors τ sK) : S) = I x` using `fixedProj_apply_of_mem hτ hsKc hsKo hIx`. Establish `h4 : ((h ⟨I x, hsle _ hIx⟩ : fixedVectors τ K₁) : S) = I.symm (ε (I x) : fixedVectors τ sK)` using `rfl`. Rewrite `h2` using `[h4, h3, I.symm_apply_apply]`.
+
+Conclude with `h2`. Use `show ((e (A₀ (I x)) : fixedVectors τ K) : S) = x`. Rewrite using `[h1]`. Conclude with `fixedProj_apply_of_mem hτ hKc hKo hx`. Establish `hR : LinearMap.range B = fixedVectors τ K`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(e _).2`. Introduce `x hx`. Conclude with `⟨x, hB x hx⟩`.
+
+Use `haveI hfdR : FiniteDimensional ℂ (LinearMap.range B) := by`. Rewrite using `[hR]`. Conclude with `hfd K hKc hKo`. Use `haveI : Nontrivial (LinearMap.range B) := by`. Rewrite using `[hR]`.
+
+Conclude with `Submodule.nontrivial_iff_ne_bot.2 hne`. Establish `hrest : (B.restrict (p` using `LinearMap.range B) (q := LinearMap.range B) fun v _ => LinearMap.mem_range_self B v) = LinearMap.id := LinearMap.ext fun y => Subtype.ext (hB y (hR ▸ y.2))`. Use `⟨prj (fixU π K) ∘L T₀, A, (Module.finrank ℂ (LinearMap.range B) : ℂ), ⟨fun v => p1 _, fun x => (e _).2, ?_, ?_, ?_⟩, ⟨hfdR, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `D hD hinv v hv`. Conclude with `p3 D hD hinv _ (c3 D hD hinv v hv)`.
+
+Introduce `G' _ _ π' hc g v show prj (fixU π K) (T₀ (π' g v)) = π' g (prj (fixU π K) (T₀ v))`. Rewrite using `[c4 G' π' hc, ((UpperTheory.fixedProjection_invariant_and_commuting_reps G G' H π π' K ⊥).2.2.2 hc).1]`. Introduce `f hf x show prj (fixU π K) (T₀ (f x)) = f (e (A₀ x))`. Rewrite using `[c5 f hf]`. Conclude with `UpperTheory.fixedProjection_apply_equivariant_eq G H S τ hτ π K hKc hKo f hf _`.
+
+Use `show LinearMap.trace ℂ (LinearMap.range B) (B.restrict (p := LinearMap.range B) (q := LinearMap.range B) fun v _ => LinearMap.mem_range_self B v) = _`. Rewrite using `[hrest, LinearMap.trace_id]`. Conclude with `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
+-/
 theorem UpperTheory.twisted_intertwiner_fixedVectors_of_irreducible :
     ∀ (G H S : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] [AddCommGroup S] [Module ℂ S] (τ : Representation ℂ G S) (_ : GroundTheory.Automorphic.IsSmooth τ) (_ : τ.IsIrreducible) (π : UnitaryRep G H) (s : G ≃ₜ* G) (I : S ≃ₗ[ℂ] S), (∀ g x, I (τ g x) = τ (s g) (I x)) → (∀ K : Subgroup G, IsCompact (K : Set G) → IsOpen (K : Set G) → FiniteDimensional ℂ (fixedVectors τ K)) → ∀ K : Subgroup G, IsCompact (K : Set G) → IsOpen (K : Set G) → fixedVectors τ K ≠ ⊥ → ∃ (T : H →L[ℂ] H) (A : S →ₗ[ℂ] S) (t : ℂ), ((∀ v, T v ∈ fixU π K) ∧ (∀ x, A x ∈ fixedVectors τ K) ∧ (∀ D : Submodule ℂ H, IsClosed (D : Set H) → π.IsInvariant D → ∀ v ∈ D, T v ∈ D) ∧ (∀ (G' : Type) [Group G'] [TopologicalSpace G'] (π' : UnitaryRep G' H), (∀ g h v, π g (π' h v) = π' h (π g v)) → ∀ h v, T (π' h v) = π' h (T v)) ∧ (∀ f, Eqv τ π ⊤ f → ∀ x, T (f x) = f (A x))) ∧ HasFinTrace (A ∘ₗ (I : S →ₗ[ℂ] S)) t ∧ t ≠ 0 := by
   intro G H S _ _ _ _ _ _ _ _ _ _ _ τ hτ hirr π s I hI hfd K hKc hKo hne

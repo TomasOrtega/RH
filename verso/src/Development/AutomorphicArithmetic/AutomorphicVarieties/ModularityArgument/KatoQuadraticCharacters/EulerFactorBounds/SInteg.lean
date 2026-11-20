@@ -6,6 +6,15 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Tota
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.KA UpperTheory.Kd.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.V.Z.Kato.Nb
 open scoped Matrix MatrixGroups Classical
 
+/- English proof (translation)
+Establish `hpos : 0 < l - 1` using `Nat.sub_pos_of_lt hl.out.one_lt`. Use `haveI : NeZero (l - 1) := ⟨hpos.ne'⟩`. Take `⟨g, hg⟩` from `IsCyclic.exists_ofOrder_eq_natCard (α := (ZMod l)ˣ)`. Rewrite `hg` using `[Nat.card_eq_fintype_card, ZMod.card_units]`. Establish `hg1 : g ∈ rootsOfUnity (l - 1) (ZMod l)`.
+
+Rewrite using `[mem_rootsOfUnity, ← hg, pow_orderOf_eq_one]`. Rewrite `hg1` using `[← KStar.TotallyRealRoots.map_red_rootsOfUnity (l := l) dvd_rfl]`. Take `⟨ζ, hζ, hζg⟩` from `hg1`. Establish `hζ1 : ζ ^ (l - 1) = 1` using `hζ`. Establish `hp : IsPrimitiveRoot ζ (l - 1)`.
+
+Use `⟨hζ1, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, orderOf_dvd_iff_pow_eq_one, ← hζg, ← map_pow, hk, map_one]`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] (Qbar l))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (Qbar l), RingHom.coe_comp]`. Conclude with `(algebraMap ℚ_[l] (Qbar l)).injective.comp Subtype.val_injective`.
+
+Establish `hq` using `(IsPrimitiveRoot.coe_units_iff.2 hp).map_of_injective hinj`. Take `⟨i, -, rfl⟩` from `hq.eq_pow_of_pow_eq_one hx`. Conclude with `pow_mem (c.O.algebraMap_mem _) i`.
+-/
 private theorem root_mem {l : ℕ} [hl : Fact l.Prime] (c : Coef l) {x : Qbar l} (hx : x ^ (l - 1) = 1) : x ∈ c.O := by
   have hpos : 0 < l - 1 := Nat.sub_pos_of_lt hl.out.one_lt
   haveI : NeZero (l - 1) := ⟨hpos.ne'⟩
@@ -26,6 +35,11 @@ private theorem root_mem {l : ℕ} [hl : Fact l.Prime] (c : Coef l) {x : Qbar l}
   obtain ⟨i, -, rfl⟩ := hq.eq_pow_of_pow_eq_one hx
   exact pow_mem (c.O.algebraMap_mem _) i
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℤ_[l] a` using `(Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨a, ha⟩ : c.O)).map c.O.val`. Establish `hq : IsIntegral ℚ_[l] a` using `Algebra.IsIntegral.isIntegral a`. Express the relevant statement in the definitionally equal form `spectralValue (minpoly ℚ_[l] a) ≤ 1`. Rewrite using `[spectralValue_le_one_iff (minpoly.monic hq)]`. Introduce `k`.
+
+Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hi, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one _`.
+-/
 private theorem nle {l : ℕ} [Fact l.Prime] (c : Coef l) {a : Qbar l} (ha : a ∈ c.O) : ‖a‖ ≤ 1 := by
   have hi : IsIntegral ℤ_[l] a := (Algebra.IsIntegral.isIntegral (R := ℤ_[l]) (⟨a, ha⟩ : c.O)).map c.O.val
   have hq : IsIntegral ℚ_[l] a := Algebra.IsIntegral.isIntegral a
@@ -35,6 +49,9 @@ private theorem nle {l : ℕ} [Fact l.Prime] (c : Coef l) {a : Qbar l} (ha : a �
   rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hi, Polynomial.coeff_map]
   exact PadicInt.norm_le_one _
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun k _ => mul_mem (hM i k) (hv k)`.
+-/
 private theorem mv_mem {l : ℕ} [Fact l.Prime] (c : Coef l) {M : Matrix (Fin 2) (Fin 2) (Qbar l)} {v : Fin 2 → Qbar l}
     (hM : ∀ i k, M i k ∈ c.O) (hv : ∀ k, v k ∈ c.O) (i : Fin 2) : (M *ᵥ v) i ∈ c.O := by
   rw [Matrix.mulVec, dotProduct]
@@ -43,10 +60,42 @@ private theorem mv_mem {l : ℕ} [Fact l.Prime] (c : Coef l) {M : Matrix (Fin 2)
 private def rd (l : ℕ) : (ZMod (l ^ 1))ˣ →* (ZMod l)ˣ :=
   Units.map (ZMod.castHom (dvd_pow_self l one_ne_zero) (ZMod l)).toMonoidHom
 
+/- English proof (translation)
+Rewrite using `[ZMod.natCast_val]`. Both sides reduce to the same expression.
+-/
 private theorem rd_val (l : ℕ) [Fact l.Prime] (y : (ZMod (l ^ 1))ˣ) :
     ((rd l y : (ZMod l)ˣ) : ZMod l) = (((y : ZMod (l ^ 1)).val : ℕ) : ZMod l) := by
   rw [ZMod.natCast_val]; rfl
 
+/- English proof (translation)
+Introduce `l hl Ω _ _ _ ι e gN A W ε X pr N _ x c d gm ψ cf hA he hW`. Take `⟨-, -, -, -, -, -, hpr, -, -, -, -, χ, -, -, hχ⟩` from `hA`. Establish `hS` using `(sSlD Ω ε X N (Nat.pos_of_ne_zero (NeZero.ne N))).2.2.2.2.2.2.2`. Establish `hχ' : ∀ s : G ℚ Ω, (χ s : Qbar l) = ψ (rd l (cycMod ℚ Ω l 1 s) : (ZMod l)ˣ)` using `fun s => by`. Rewrite using `[rd_val]`.
+
+Conclude with `hχ s`. Establish `hsurj : ∀ u : (ZMod l)ˣ, ∃ s : G ℚ Ω, rd l (cycMod ℚ Ω l 1 s) = u`. Introduce `u`. Use `⟨repM l u, ?_⟩` and prove the remaining obligations. Establish `h1` using `(sCycZ Ω l 1 (repM l u)).1`.
+
+Establish `h2` using `(hS (l ^ 1) (repM l u)).2.2.2.2 l (dvd_pow_self l one_ne_zero)`. Rewrite using `[h1]`. Conclude with `h2.trans ((hS l 1).2.2.1 u)`. Establish `h1 : ψ 1 = 1`. Use `hχ' 1` as an intermediate fact.
+
+Rewrite `this` using `[map_one, map_one, map_one, Units.val_one, Units.val_one]`. Conclude with `this.symm`. Establish `hmul : ∀ u v : (ZMod l)ˣ, ψ ((u * v : (ZMod l)ˣ) : ZMod l) = ψ u * ψ v`. Introduce `u v`. Take `⟨s, rfl⟩` from `hsurj u`.
+
+Take `⟨t, rfl⟩` from `hsurj v`. Rewrite using `[← map_mul, ← map_mul, ← hχ', ← hχ', ← hχ', map_mul, Units.val_mul]`. Establish `hpow : ∀ s : G ℚ Ω, χ s ^ (l - 1) = 1`. Introduce `s`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[← map_pow, hχ', map_pow, map_pow, ZMod.units_pow_card_sub_one_eq_one, Units.val_one, h1, Units.val_one]`. Establish `hχO : ∀ s : G ℚ Ω, (χ s : Qbar l) ∈ cf.O` using `fun s => root_mem cf (by rw [← Units.val_pow_eq_pow_val, hpow, Units.val_one])`. Establish `hεO : ∀ s : G ℚ Ω, eps l s ∈ cf.O` using `fun s => cf.O.algebraMap_mem ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l])`. Set `θ : G ℚ Ω →* (Qbar l)ˣ` to `(cycBar ℚ Ω l ^ e)⁻¹ * χ`. Establish `hθ : ∀ s, thK l e ψ s = (θ s : Qbar l)` using `fun s => by`.
+
+Simplify using `only [thK, θ, ← hχ s, MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]`. Establish `hθO : ∀ s, (θ s : Qbar l) ∈ cf.O` using `fun s => by`. Establish `h2 : (θ s : Qbar l) = eps l s⁻¹ ^ e * (χ s : Qbar l)`. Simplify using `only [θ, eps, map_inv, MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, inv_pow]`. Rewrite using `[h2]`.
+
+Conclude with `mul_mem (pow_mem (hεO _) e) (hχO s)`. Establish `hθi : ∀ s, (θ s : Qbar l)⁻¹ = (θ s⁻¹ : (Qbar l)ˣ)` using `fun s => by`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val]`. Establish `hρO : ∀ s i k, rhoK W e ψ s i k ∈ cf.O` using `fun s i k => by`. Rewrite using `[rhoK, hθ, hθi, Matrix.smul_apply, smul_eq_mul]`.
+
+Conclude with `mul_mem (hθO _) (hW s i k)`. Use `⟨fun s => ?_, h1, hmul, fun u => ?_, hρO, fun s t => ?_, fun c₀ Y hY r s y i => ?_⟩` and prove the remaining obligations. Establish `h2` using `nle cf (hθO s⁻¹)`. Rewrite `h2` using `[← hθi, norm_inv, inv_le_one₀ (norm_pos_iff.2 (θ s).ne_zero)]`. Rewrite using `[hθ]`.
+
+Conclude with `le_antisymm (nle cf (hθO s)) h2`. Take `⟨s, rfl⟩` from `hsurj u`. Rewrite using `[← hχ']`. Conclude with `hχO s`. Simplify using `only [rhoK, hθ, mat, map_mul, Units.val_mul, mul_inv, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`.
+
+Rewrite using `[mul_comm ((θ s : Qbar l)⁻¹)]`. Take `⟨bB, hbB, b, hb, hc⟩` from `hY r 0`. Establish `hF : YfB X l pr W e ψ 0 r N bB s y i ∈ cf.O`. Unfold `YfB GlobalTheory.KA.push`. Rewrite using `[Finset.sum_apply]`.
+
+Use `sum_mem fun z _ => mv_mem cf (hρO _) (fun k => hpr _ (hbB _ ?_).1 k) i` and prove the remaining obligations. Establish `hM` using `hS (topM l 0 r (N * N))`. Establish `hm : ∀ s t : Ω ≃ₐ[ℚ] Ω, cycM (topM l 0 r (N * N)) (s * t) = _` using `fun s t => (hM s).2.1 t`. Establish `hr` using `(hM 1).2.2.1`. Use `(hM _).2.2.2.1.2 ?_` and prove the remaining obligations.
+
+Establish `h3` using `hm (repM (topM l 0 r (N * N)) z) ((repM (topM l 0 r (N * N)) z)⁻¹ * s * repM (topM l 0 r (N * N)) (z * (cycM (topM l 0 r (N * N)) s)⁻¹))`. Rewrite `h3` using `[← mul_assoc, mul_inv_cancel_left, hm, hr, hr, mul_left_comm, mul_inv_cancel, mul_one]`. Conclude with `(mul_eq_left.1 h3.symm)`. Establish `h4` using `hc s y i`. Establish `h5` using `nle cf (add_mem hF (sub_mem (mv_mem cf (hρO s) (hb (y * (cycMod (F := ℚ) (Ω := Ω) l r s)⁻¹)) i) (hb y i)))`.
+
+Rewrite `h4` using `[Cg, pow_zero, norm_one]`. Establish `h7 : ∀ a a' : Qbar l, ‖a - a'‖ ≤ 1 → ‖a'‖ ≤ 1 → ‖a‖ ≤ 1` using `fun a a' ha ha' => by`. Establish `h6` using `(IsUltrametricDist.norm_add_le_max (a - a') a').trans (max_le ha ha')`. Rewrite `h6` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `h7 _ _ h4 h5`.
+-/
 theorem UpperTheory.V.Z.Kato.Nb.sInteg :
     UpperTheory.V.Z.Kato.Nb.SInteg := by
   intro l hl Ω _ _ _ ι e gN A W ε X pr N _ x c d gm ψ cf hA he hW

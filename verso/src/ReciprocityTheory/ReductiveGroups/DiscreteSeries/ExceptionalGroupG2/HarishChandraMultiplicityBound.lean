@@ -13,6 +13,13 @@ namespace ReciprocityTheory.ChartRestriction.DS.G2
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Introduce `n ε lam hlam h hh hmax`. Take `⟨T⟩` from `HW.kType_exists ε lam hlam`. Distinguish the cases in `hpq : pOf ε = 0 ∨ qOf ε = 0`. Take `⟨σ, hDS, -⟩` from `isDS_compact hpq hlam T`. Conclude with `⟨T.V, inferInstance, inferInstance, σ, hDS⟩`.
+
+Establish `hmax'` using `hmax.resolve_left hpq push_neg at hpq`. Establish `hq : 1 ≤ S7.q0 ε` using `by show 1 ≤ min (pOf ε) (qOf ε)`. Use linear arithmetic over natural numbers and integers. Establish `hgap : StdGap ε lam` using `⟨hlam.1, h, hh, (le_max_left _ _).trans_lt hmax'⟩`. Take `⟨Ψ, hP, -⟩` from `exists_isPsiFor S7.psiExists T hlam hh hq ((le_max_right _ _).trans_lt hmax')`.
+
+Conclude with `⟨_, inferInstance, inferInstance, sigLam ε Ψ T.w, isDS_sigLam hgap hP (HW.KType.w_ne_zero T)⟩`.
+-/
 theorem discrete_series_exists_large_gap :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →
       ∀ h : ℝ, Formalism.QuantumDeterminants.GapAtLeast ε lam h →
@@ -33,6 +40,9 @@ theorem discrete_series_exists_large_gap :
     obtain ⟨Ψ, hP, -⟩ := exists_isPsiFor S7.psiExists T hlam hh hq ((le_max_right _ _).trans_lt hmax')
     exact ⟨_, inferInstance, inferInstance, sigLam ε Ψ T.w, isDS_sigLam hgap hP (HW.KType.w_ne_zero T)⟩
 
+/- English proof (translation)
+The claim follows from `isDS_props_of_gap`.
+-/
 theorem discrete_series_props_large_gap :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →
       ∀ h : ℝ, Formalism.QuantumDeterminants.GapAtLeast ε lam h → 2 * (n : ℝ) < h →

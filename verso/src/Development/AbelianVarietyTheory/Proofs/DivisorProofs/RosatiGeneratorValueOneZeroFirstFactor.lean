@@ -16,6 +16,15 @@ noncomputable section
 
 namespace GlobalTheory.RosZeroLeft
 
+/- English proof (translation)
+Introduce `S A _ _ L hL hA f g _ _ u hu h₀ T y z J hJ`. Establish `one_isGen : (LB.oneGen L (Y` using `A.left)).IsGen := isGen_of_gm _ fun _ _ _ _ _ => (map_one _).trans (Eq.symm ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)))`. Establish `key` using `gen_unique' hL (u := LB.pullGen L _ _ u (lift (1 : A ⟶ A) (𝟙 A)).left) (u' := LB.oneGen L) (fun U _ h => by`. Use `(Fintype.prod_empty _).trans (Eq.symm ((prod_ros f g 1 (𝟙 A) h).trans ?_))` and prove the remaining obligations. Rewrite using `[MonObj.one_comp, _root_.one_mul, _root_.one_mul, Category.id_comp]`.
+
+Use the proof step `simp)`. Use the proof step `A.hom η[A].left (Over.w η[A]) (GlobalTheory.globalFns_holds _ _ hA).2 (DVR.pullGen_isGen _ _ _ _ hu _)`. Use `one_isGen (fun y I hI => by`. Use `val_corr hI h₀ (𝟙 _)` as an intermediate fact. Rewrite `this` using `[val_pull hI, Category.id_comp, val_one]`.
+
+Rewrite using `[val_pull hI, val_one, ← Over.comp_left]`. Establish `e : η[A] ≫ lift (1 : A ⟶ A) (𝟙 A) = lift η[A] η[A]` using `by simp [Hom.one_def]`. Rewrite using `[e]`. Conclude with `this) _ y.left z J hJ`. Rewrite `key` using `[val_pull hJ, val_one, ← Over.comp_left, comp_lift, Category.comp_id, MonObj.comp_one]`.
+
+Conclude with `key`.
+-/
 theorem val_lift_one_left : ∀ {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (L : LB A.left), L.IsLB →
     IsAbelianScheme A → ∀ (f g : A ⟶ A) [IsMonHom f] [IsMonHom g]
     (u : LB.Gen (LB.LinComb L (rosatiφ A f g) rosatiε)), u.IsGen →

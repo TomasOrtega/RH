@@ -9,9 +9,15 @@ universe u
 
 variable {R : Type u} [CommRing R]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem algebraMap_degreeZero_apply (I : Ideal R) (x : ↥(reesGrading I 0)) :
     algebraMap ↥(reesGrading I 0) ↥(reesAlgebra I) x = (x : ↥(reesAlgebra I)) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[algebraMap_degreeZero_apply, reesDegreeZeroEquiv_coe_coe]`. Both sides reduce to the same expression.
+-/
 private theorem algebraMap_reesAlgebra_eq_algebraMap_degreeZero (I : Ideal R) (r : R) :
     algebraMap R ↥(reesAlgebra I) r =
       algebraMap ↥(reesGrading I 0) ↥(reesAlgebra I) (reesDegreeZeroEquiv I r) := by
@@ -26,14 +32,23 @@ private noncomputable def adjoinOverDegreeZero (I : Ideal R) (s : Set ↥(reesAl
     rw [algebraMap_reesAlgebra_eq_algebraMap_degreeZero]
     exact Subalgebra.algebraMap_mem (Algebra.adjoin ↥(reesGrading I 0) s) _
 
+/- English proof (translation)
+The claim follows from `hx`.
+-/
 private theorem mem_adjoin_degreeZero_of_mem_restrictScalars (I : Ideal R) (s : Set ↥(reesAlgebra I))
     (x : ↥(reesAlgebra I)) (hx : x ∈ adjoinOverDegreeZero I s) :
     x ∈ Algebra.adjoin ↥(reesGrading I 0) s := hx
 
+/- English proof (translation)
+The claim follows from `hx`.
+-/
 private theorem mem_restrictScalars_of_mem_adjoin_degreeZero (I : Ideal R) (s : Set ↥(reesAlgebra I))
     (x : ↥(reesAlgebra I)) (hx : x ∈ Algebra.adjoin ↥(reesGrading I 0) s) :
     x ∈ adjoinOverDegreeZero I s := hx
 
+/- English proof (translation)
+Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[SetLike.mem_coe]`. Conclude with `mem_restrictScalars_of_mem_adjoin_degreeZero I s y (Algebra.subset_adjoin hy)`.
+-/
 private theorem adjoin_le_adjoin_degreeZero (I : Ideal R) (s : Set ↥(reesAlgebra I)) :
     Algebra.adjoin R s ≤ adjoinOverDegreeZero I s := by
   refine Algebra.adjoin_le ?_
@@ -41,6 +56,11 @@ private theorem adjoin_le_adjoin_degreeZero (I : Ideal R) (s : Set ↥(reesAlgeb
   rw [SetLike.mem_coe]
   exact mem_restrictScalars_of_mem_adjoin_degreeZero I s y (Algebra.subset_adjoin hy)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ Algebra.adjoin R s`. Rewrite using `[hs]`. Conclude with `Algebra.mem_top`.
+
+Conclude with `mem_adjoin_degreeZero_of_mem_restrictScalars I s x (adjoin_le_adjoin_degreeZero I s hx)`.
+-/
 private theorem adjoin_degreeZero_eq_top_of_adjoin_eq_top (I : Ideal R) (s : Set ↥(reesAlgebra I))
     (hs : Algebra.adjoin R s = ⊤) : Algebra.adjoin ↥(reesGrading I 0) s = ⊤ := by
   rw [eq_top_iff]
@@ -50,6 +70,9 @@ private theorem adjoin_degreeZero_eq_top_of_adjoin_eq_top (I : Ideal R) (s : Set
     exact Algebra.mem_top
   exact mem_adjoin_degreeZero_of_mem_restrictScalars I s x (adjoin_le_adjoin_degreeZero I s hx)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `(inferInstance : Algebra.FiniteType R ↥(reesAlgebra I)).out`. Conclude with `⟨⟨s, adjoin_degreeZero_eq_top_of_adjoin_eq_top I (↑s : Set ↥(reesAlgebra I)) hs⟩⟩`.
+-/
 theorem finiteType_reesAlgebra_degreeZero (I : Ideal R) [IsNoetherianRing R] :
     Algebra.FiniteType ↥(reesGrading I 0) ↥(reesAlgebra I) := by
   obtain ⟨s, hs⟩ := (inferInstance : Algebra.FiniteType R ↥(reesAlgebra I)).out
@@ -59,6 +82,9 @@ instance instFiniteTypeReesAlgebraOverDegZero (I : Ideal R) [IsNoetherianRing R]
     Algebra.FiniteType ↥(reesGrading I 0) ↥(reesAlgebra I) :=
   finiteType_reesAlgebra_degreeZero I
 
+/- English proof (translation)
+Use `hf` as an intermediate fact. Use `hg` as an intermediate fact. Use `infer_instance`.
+-/
 private theorem isProper_comp_of_isIso {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y ⟶ Z)
     (hf : AlgebraicGeometry.IsProper f) (hg : IsIso g) :
     AlgebraicGeometry.IsProper (f ≫ g) := by
@@ -66,6 +92,9 @@ private theorem isProper_comp_of_isIso {X Y Z : Scheme.{u}} (f : X ⟶ Y) (g : Y
   have := hg
   infer_instance
 
+/- English proof (translation)
+Establish `hft : Algebra.FiniteType ↥(reesGrading I 0) ↥(reesAlgebra I)` using `finiteType_reesAlgebra_degreeZero I`. Establish `h1 : AlgebraicGeometry.IsProper (AlgebraicGeometry.Proj.toSpecZero (reesGrading I))` using `inferInstance`. Rewrite using `[AffineBlowup.toSpec_eq_toSpecZero_comp]`. Conclude with `isProper_comp_of_isIso _ _ h1 (isIso_SpecMap_iff.mpr (reesDegreeZeroEquiv I).bijective)`.
+-/
 theorem isProper_affineBlowup_toSpec (I : Ideal R) [IsNoetherianRing R] :
     AlgebraicGeometry.IsProper (AffineBlowup.toSpec I) := by
   have hft : Algebra.FiniteType ↥(reesGrading I 0) ↥(reesAlgebra I) :=
@@ -79,6 +108,9 @@ instance instIsProperAffineBlowupToSpec (I : Ideal R) [IsNoetherianRing R] :
     AlgebraicGeometry.IsProper (AffineBlowup.toSpec I) :=
   isProper_affineBlowup_toSpec I
 
+/- English proof (translation)
+Use `isProper_affineBlowup_toSpec I` as an intermediate fact. Use `infer_instance`.
+-/
 theorem locallyOfFiniteType_affineBlowup_toSpec (I : Ideal R) [IsNoetherianRing R] :
     AlgebraicGeometry.LocallyOfFiniteType (AffineBlowup.toSpec I) := by
   have := isProper_affineBlowup_toSpec I
@@ -88,6 +120,9 @@ instance instLocallyOfFiniteTypeAffineBlowupToSpec (I : Ideal R) [IsNoetherianRi
     AlgebraicGeometry.LocallyOfFiniteType (AffineBlowup.toSpec I) :=
   locallyOfFiniteType_affineBlowup_toSpec I
 
+/- English proof (translation)
+Use `isProper_affineBlowup_toSpec I` as an intermediate fact. Use `infer_instance`.
+-/
 theorem universallyClosed_affineBlowup_toSpec (I : Ideal R) [IsNoetherianRing R] :
     AlgebraicGeometry.UniversallyClosed (AffineBlowup.toSpec I) := by
   have := isProper_affineBlowup_toSpec I
@@ -97,6 +132,9 @@ instance instUniversallyClosedAffineBlowupToSpec (I : Ideal R) [IsNoetherianRing
     AlgebraicGeometry.UniversallyClosed (AffineBlowup.toSpec I) :=
   universallyClosed_affineBlowup_toSpec I
 
+/- English proof (translation)
+Use `isProper_affineBlowup_toSpec I` as an intermediate fact. Use `infer_instance`.
+-/
 theorem quasiCompact_affineBlowup_toSpec (I : Ideal R) [IsNoetherianRing R] :
     AlgebraicGeometry.QuasiCompact (AffineBlowup.toSpec I) := by
   have := isProper_affineBlowup_toSpec I

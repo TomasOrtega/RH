@@ -20,6 +20,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
   {R : Type} [CommRing R] {ξ : Sp R ⟶ X} {q : ℕ} (P' : GlobalTheory.HTMap.FP t ξ q)
   {O : Type} [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f))
 
+/- English proof (translation)
+Rewrite using `[Over.comp_left, Category.assoc, aH_left_π]`. Express the relevant statement in the definitionally equal form `spMap a.toRingHom ≫ spMap (inB P' x0 hu) ≫ P'.u.left = _`. Rewrite using `[GlobalTheory.HTMap.spc_assoc]`.
+-/
 theorem aH_left_π_ptMap {G' : Over (Sp O)} {π : G'.left ⟶ t.G.left}
     (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) {D : Type} [CommRing D] [Algebra O D]
     (a : Bt P' x0 hu →ₐ[O] D) :
@@ -28,17 +31,28 @@ theorem aH_left_π_ptMap {G' : Over (Sp O)} {π : G'.left ⟶ t.G.left}
   change spMap a.toRingHom ≫ spMap (inB P' x0 hu) ≫ P'.u.left = _
   rw [GlobalTheory.HTMap.spc_assoc]
 
+/- English proof (translation)
+Rewrite using `[RingHom.comp_assoc, inB_str, ← RingHom.comp_assoc]`. Use `congr 1`. Conclude with `a.comp_algebraMap`.
+-/
 theorem str_of_alg {D : Type} [CommRing D] [Algebra O D] (a : Bt P' x0 hu →ₐ[O] D) :
     (a.toRingHom.comp (inB P' x0 hu)).comp P'.str = (algebraMap O D).comp x0 := by
   rw [RingHom.comp_assoc, inB_str, ← RingHom.comp_assoc]
   congr 1
   exact a.comp_algebraMap
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨str_of_alg P' x0 hu a, rfl⟩`.
+-/
 theorem at_alg {D : Type} [CommRing D] [Algebra O D] (a : Bt P' x0 hu →ₐ[O] D) :
     P'.At ((algebraMap O D).comp x0) (spMap (a.toRingHom.comp (inB P' x0 hu)) ≫ P'.u.left)
       (a.toRingHom.comp (inB P' x0 hu)) :=
   ⟨str_of_alg P' x0 hu a, rfl⟩
 
+/- English proof (translation)
+Establish `ha` using `at_alg P' x0 hu a`. Establish `hb` using `at_alg P' x0 hu b`. Set `w₁ : Over.mk ((specO O D).hom ≫ spMap x0 ≫ ξ) ⟶ t.G` to `GlobalTheory.HTMap.mkPt _ (ha.over.trans (GlobalTheory.HTMap.spc_assoc _ _ _).symm)`. Set `w₂ : Over.mk ((specO O D).hom ≫ spMap x0 ≫ ξ) ⟶ t.G` to `GlobalTheory.HTMap.mkPt _ (hb.over.trans (GlobalTheory.HTMap.spc_assoc _ _ _).symm)`. Take `⟨β'', h''⟩` from `GlobalTheory.HTMap.FP.At.mul (w := w₁) (w' := w₂) ha hb`.
+
+Use `⟨ptOf P' x0 hu β'' h''.1, ?_⟩` and prove the remaining obligations. Use `Over.OverMorphism.ext (hg.1.hom_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[ptOf_aH_π, h''.2]`. Conclude with `hg.2 (specO O D) _ _ w₁ w₂ (aH_left_π_ptMap P' x0 hu hg.1 a).symm (aH_left_π_ptMap P' x0 hu hg.1 b).symm`. Rewrite using `[Over.w, Over.w]`.
+-/
 theorem exists_mul_affine {G' : Over (Sp O)} [GrpObj G'] {π : G'.left ⟶ t.G.left}
     (hg : IsGrpPullback G' t.G (spMap x0 ≫ ξ) π) {D : Type} [CommRing D] [Algebra O D]
     (a b : Bt P' x0 hu →ₐ[O] D) :
@@ -62,6 +76,15 @@ end GlobalTheory.FinPartAt
 
 namespace GlobalTheory.FinPartAt
 
+/- English proof (translation)
+Establish `hxy : x.left ≫ (specO O C).hom = y.left ≫ (specO O C).hom` using `by rw [Over.w, Over.w]`. Set `l` to `pullback.lift x.left y.left hxy ≫ (pullbackSpecIso O C C).hom`. Establish `hl : l ≫ (specO O (C ⊗[O] C)).hom = S.hom`. Express the relevant statement in the definitionally equal form `(pullback.lift x.left y.left hxy ≫ (pullbackSpecIso O C C).hom) ≫ Spec.map (CommRingCat.ofHom (algebraMap O (C ⊗[O] C))) = _`. Rewrite using `[Category.assoc, pullbackSpecIso_hom_base, ← Category.assoc]`.
+
+Use `erw [pullback.lift_fst]`. Conclude with `Over.w x`. Use `⟨Over.homMk l hl, ?_, ?_⟩` and prove the remaining obligations. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(pullback.lift x.left y.left hxy ≫ (pullbackSpecIso O C C).hom) ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom)) = _`.
+
+Rewrite using `[Category.assoc, pullbackSpecIso_hom_fst]`. Use `erw [pullback.lift_fst]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(pullback.lift x.left y.left hxy ≫ (pullbackSpecIso O C C).hom) ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight.toRingHom)) = _`. Rewrite using `[Category.assoc]`.
+
+Use `erw [pullbackSpecIso_hom_snd]`. Use `erw [pullback.lift_snd]`.
+-/
 theorem exists_mul_factor {O : Type} [CommRing O] {C : Type} [CommRing C] [Algebra O C] (S : Over (Sp O))
     (x y : S ⟶ specO O C) :
     ∃ c : S ⟶ specO O (C ⊗[O] C),
@@ -88,6 +111,9 @@ theorem exists_mul_factor {O : Type} [CommRing O] {C : Type} [CommRing C] [Algeb
     erw [pullbackSpecIso_hom_snd]
     erw [pullback.lift_snd]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t R _ ξ q P' O _ x0 hu G' _ π hg S x y`. Take `⟨c, hc₁, hc₂⟩` from `exists_mul_factor S x y`. Take `⟨z₀, hz₀⟩` from `exists_mul_affine P' x0 hu hg (Algebra.TensorProduct.includeLeft : Bt P' x0 hu →ₐ[O] Bt P' x0 hu ⊗[O] Bt P' x0 hu) Algebra.TensorProduct.includeRight`. Use `⟨c ≫ z₀, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hz₀, MonObj.comp_mul, ← Category.assoc, hc₁, ← Category.assoc, hc₂]`.
+-/
 theorem exists_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (q : ℕ) (P' : GlobalTheory.HTMap.FP t ξ q) (O : Type) [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f)) (G' : Over (Sp O)) [GrpObj G'] (π : G'.left ⟶ t.G.left) (hg : IsGrpPullback G' t.G (spMap x0 ≫ ξ) π) (S : Over (Sp O)) (x y : S ⟶ Hs P' x0 hu), ∃ z : S ⟶ Hs P' x0 hu, z ≫ aH P' x0 hu hg.1 = (x ≫ aH P' x0 hu hg.1) * (y ≫ aH P' x0 hu hg.1) := by
   intro E _ _ _ H X t R _ ξ q P' O _ x0 hu G' _ π hg S x y
   obtain ⟨c, hc₁, hc₂⟩ := exists_mul_factor S x y

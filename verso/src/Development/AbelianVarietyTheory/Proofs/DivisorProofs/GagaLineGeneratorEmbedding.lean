@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.PBFc.AWCross
 
+/- English proof (translation)
+The claim follows from `hom_ext_val _ _ fun v => by rw [sub_val] change min M (v : ℕ) = (v : ℕ) + 0 have := v.2 omega`.
+-/
 theorem idc_eq (M a : ℕ) (h : 0 + a ≤ M) : idc M a = SimplexCategory.subinterval 0 a h :=
   hom_ext_val _ _ fun v => by
     rw [sub_val]
@@ -15,6 +18,9 @@ theorem idc_eq (M a : ℕ) (h : 0 + a ≤ M) : idc M a = SimplexCategory.subinte
     have := v.2
     omega
 
+/- English proof (translation)
+The claim follows from `hom_ext_val _ _ fun v => by rw [sub_val] change min M (a + (v : ℕ)) = (v : ℕ) + a have := v.2 omega`.
+-/
 theorem backc_eq (M a b : ℕ) (h : a + b ≤ M) : backc M a b = SimplexCategory.subinterval a b h :=
   hom_ext_val _ _ fun v => by
     rw [sub_val]
@@ -24,6 +30,9 @@ theorem backc_eq (M a b : ℕ) (h : a + b ≤ M) : backc M a b = SimplexCategory
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Take `rfl : t = -((a + b : ℕ) : ℤ)` from `by simp only [ComplexShape.π_def] at ht; push_cast; omega`. Both sides reduce to the same expression.
+-/
 theorem evT_of_eq {X : SimplicialObject Spc} {K : Cx R} {n : ℤ} (γ : Cochain (totChains R X) K n) (a b : ℕ) (t s : ℤ)
     (ht : ComplexShape.π (ComplexShape.up ℤ) (ComplexShape.up ℤ) (ComplexShape.up ℤ) (-(a : ℤ), -(b : ℤ)) = t)
     (h : t + n = s) (U : Scheme.{0}) (y : BSx X a b U) :
@@ -33,20 +42,32 @@ theorem evT_of_eq {X : SimplicialObject Spc} {K : Cx R} {n : ℤ} (γ : Cochain 
   obtain rfl : t = -((a + b : ℕ) : ℤ) := by simp only [ComplexShape.π_def] at ht; push_cast; omega
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_comp_apply' {F G H : Shv R} (f : F ⟶ G) (g : G ⟶ H) {U : Scheme.{0}} (y : Sec F U) :
     Sec.map (f ≫ g) y = Sec.map g (Sec.map f y) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapHom_apply' (F G : Shv R) {U : Scheme.{0}} (y : Sec F U) (φ : F ⟶ G) : mapHom F G y φ = Sec.map φ y := rfl
 
 section Cross
 variable {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {B : Spc} (ℓ : twX E V ⟶ (Functor.const SimplexCategoryᵒᵖ).obj B)
 
+/- English proof (translation)
+Unfold `awP`. Rewrite using `[idc_eq M a (by omega)]`. Both sides reduce to the same expression.
+-/
 theorem baseS_aw (M a : ℕ) (ha : a ≤ M) (U : Scheme.{0}) (x : Sx (bidiag.obj (twX E V)) M U) :
     baseS V ((awP (twX E V) M a (M - a)).app (op U) x) = (x.sub 0 a (by omega)).map (twPi E V) := by
   unfold awP
   rw [idc_eq M a (by omega)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[(ℓ.app _).naturality, ← Category.assoc, ← NatTrans.comp_app, ℓ.naturality]`. Simplify using the standard rewrite rules.
+-/
 theorem ell_nat (M p q : ℕ) (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk M)
     (β : SimplexCategory.mk q ⟶ SimplexCategory.mk M) :
     ((twX E V).map θ.op).app (op (SimplexCategory.mk M)) ≫ ((twX E V).obj (op (SimplexCategory.mk p))).map β.op ≫
@@ -55,6 +76,9 @@ theorem ell_nat (M p q : ℕ) (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk 
   rw [(ℓ.app _).naturality, ← Category.assoc, ← NatTrans.comp_app, ℓ.naturality]
   simp
 
+/- English proof (translation)
+Unfold `awP vertS`. Rewrite using `[backc_eq M a (M - a) (by omega)]`. Establish `h1` using `ConcreteCategory.congr_hom (NatTrans.congr_app (ell_nat V ℓ M a (M - a) (idc M a) (SimplexCategory.subinterval (n := M) a (M - a) (by omega))) (op U)) x`. Establish `h2` using `ConcreteCategory.congr_hom (NatTrans.congr_app (ell_nat V ℓ M (M - a) (M - a) (SimplexCategory.subinterval (n := M) a (M - a) (by omega)) (SimplexCategory.subinterval (n := M) a (M - a) (by omega))) (op U)) x`. Conclude with `h1.trans h2.symm`.
+-/
 theorem vertS_aw (M a : ℕ) (ha : a ≤ M) (U : Scheme.{0}) (x : Sx (bidiag.obj (twX E V)) M U) :
     vertS V ℓ ((awP (twX E V) M a (M - a)).app (op U) x) =
       (x.sub a (M - a) (by omega)).map (bidiag.map ℓ ≫ (bidiagConst B).hom) := by
@@ -68,6 +92,11 @@ theorem vertS_aw (M a : ℕ) (ha : a ≤ M) (U : Scheme.{0}) (x : Sx (bidiag.obj
   exact h1.trans h2.symm
 end Cross
 
+/- English proof (translation)
+Introduce `R _ E N V B ℓ I J K μ n m k hk α z c hc M w h U x`. Rewrite using `[ev_def, hc M w h]`. Simplify using `only [awZ, Category.assoc, Iso.inv_hom_id_assoc, Preadditive.sum_comp]`. Express the relevant statement in the definitionally equal form `mapHom _ _ (freeGen R _ U x) (∑ a : Fin (M + 1), _) = _`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mapHom_apply', map_comp_apply', freeGen_map, evT_of_eq, evT_crossT, ev_pull, ev_pull, baseS_aw V M (a : ℕ) (by omega), vertS_aw V ℓ M (a : ℕ) (by omega)]`.
+-/
 theorem isAW_pull_crossT : ∀ {R : Type} [CommRing R] {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {B : Spc} (ℓ : twX E V ⟶ (Functor.const SimplexCategoryᵒᵖ).obj B) {I J K : Cx R} (μ : Pair I J K) {n m k : ℤ} (hk : n + m = k) (α : Cochain ((chains R).obj E) I n) (z : Cochain ((chains R).obj B) J m) (c : Cochain ((chains R).obj (bidiag.obj (twX E V))) K k) (hc : ∀ (M : ℕ) (s : ℤ) (h : -(M : ℤ) + k = s), c.v (-(M : ℤ)) s h = awZ R (twX E V) M ≫ (crossT V ℓ μ hk α z).v (-(M : ℤ)) s h), μ.IsAW hk ((Cochain.ofHom ((chains R).map (twPi E V))).comp α (zero_add n)) ((Cochain.ofHom ((chains R).map (bidiag.map ℓ ≫ (bidiagConst B).hom))).comp z (zero_add m)) c := by
   intro R _ E N V B ℓ I J K μ n m k hk α z c hc M w h U x
   rw [ev_def, hc M w h]

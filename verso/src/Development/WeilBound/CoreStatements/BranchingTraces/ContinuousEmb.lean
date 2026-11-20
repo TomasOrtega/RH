@@ -13,6 +13,37 @@ namespace PositivityTheory.UnitaryDecomposition
 
 open Formalism.REAL Formalism.MainNotions.S
 
+/- English proof (translation)
+Establish `hbd : ∀ (x y : K) (g : G), ‖⟪x, ρ g y⟫_ℂ‖ ≤ ‖x‖ * ‖y‖` using `fun x y g => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hcont : ∀ x y : K, Continuous fun g => ⟪x, ρ g y⟫_ℂ` using `fun x y => continuous_const.inner (hc y)`. Establish `hint : ∀ x y : K, Integrable (fun g => φ g * ⟪x, ρ g y⟫_ℂ) ν` using `fun x y => hφ.mul_bdd (hcont x y).aestronglyMeasurable (Filter.Eventually.of_forall (hbd x y))`. Set `L : K →ₗ[ℂ] ℂ` to `{ toFun := fun a => ∫ h, φ h * ⟪b, ρ h a⟫_ℂ ∂ν map_add' := fun x y => by`.
+
+Simplify using `only [map_add, inner_add_right, mul_add]`. Conclude with `integral_add (hint b x) (hint b y)`. Use the proof step `map_smul' := fun c x => by`. Simplify using `only [map_smul, inner_smul_right, RingHom.id_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `h`. Use `ring }`. Establish `hLb : ∀ a, ‖L a‖ ≤ ((∫ h, ‖φ h‖ ∂ν) * ‖b‖) * ‖a‖` using `fun a => by`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `norm_integral_le_of_norm_le (hφ.norm.mul_const _)` to reduce the goal to its premises. Conclude with `Filter.Eventually.of_forall fun h => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hbd b a h) (norm_nonneg _)`. Use `_ = _ := by`.
+
+Rewrite using `[integral_mul_const]`. Expand and normalize the polynomial expressions, which then agree. Use `set b' := (InnerProductSpace.toDual ℂ K).symm (L.mkContinuous _ hLb) with hb'`. Establish `hb'a : ∀ a, ⟪b', a⟫_ℂ = ∫ h, φ h * ⟪b, ρ h a⟫_ℂ ∂ν` using `fun a => by`. Rewrite using `[hb', InnerProductSpace.toDual_symm_apply]`.
+
+Both sides reduce to the same expression. Use `⟨b', hb'a, ?_⟩` and prove the remaining obligations. Use `set F : G → ℂ := fun g => ⟪b, ρ g b⟫_ℂ with hF`. Establish `hFinv : ∀ g, conj (F g) = F g⁻¹` using `fun g => by`. Simplify using `only [hF]`.
+
+Rewrite using `[inner_conj_symm, hadj]`. Establish `hpt : ∀ h, ⟪b, ρ h b'⟫_ℂ = ∫ k, φ k * F (h * k) ∂ν` using `fun h => by`. Establish `e1 : ⟪b, ρ h b'⟫_ℂ = conj ⟪b', ρ h⁻¹ b⟫_ℂ`. Rewrite using `[inner_conj_symm, hadj, inv_inv]`. Rewrite using `[e1, hb'a, ← integral_conj, ← integral_inv_eq_self (fun k => φ k * F (h * k)) ν]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Use `show conj (φ k * ⟪b, ρ k (ρ h⁻¹ b)⟫_ℂ) = φ k⁻¹ * F (h * k⁻¹)`. Rewrite using `[map_mul, ← hsym, ← hmul]`. Express the relevant statement in the definitionally equal form `φ k⁻¹ * conj (F (k * h⁻¹)) = φ k⁻¹ * F (h * k⁻¹)`.
+
+Rewrite using `[hFinv, _root_.mul_inv_rev, inv_inv]`. Establish `hI : Integrable (Function.uncurry fun h g => φ h * φ (h⁻¹ * g) * F g) (ν.prod ν)`. Establish `hP : Integrable (fun z : G × G => φ z.1 * φ (z.1⁻¹ * z.2)) (ν.prod ν)`. Establish `he : MeasurableEmbedding (fun z : G × G => (z.1, z.1 * z.2))` using `(MeasurableEquiv.shearMulRight G).measurableEmbedding`. Rewrite using `[← (measurePreserving_prod_mul ν ν).integrable_comp_emb he]`.
+
+Simplify `hφ.mul_prod hφ` using `[Function.comp_def]`. Conclude with `hP.mul_bdd ((hcont b b).comp continuous_snd).aestronglyMeasurable (Filter.Eventually.of_forall fun z => hbd b b z.2)`. Establish `hmain : ∫ h, φ h * ⟪b, ρ h b'⟫_ℂ ∂ν = κ * ∫ h, φ h * ⟪b, ρ h b⟫_ℂ ∂ν`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use function extensionality and compare the values at `h`. Rewrite using `[hpt]`. Use `_ = ∫ h, ∫ g, φ h * φ (h⁻¹ * g) * F g ∂ν ∂ν := by`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+
+Rewrite using `[← integral_const_mul, ← integral_mul_left_eq_self (fun g => φ h * φ (h⁻¹ * g) * F g) h]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [inv_mul_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = ∫ g, ∫ h, φ h * φ (h⁻¹ * g) * F g ∂ν ∂ν := integral_integral_swap hI`. Use `_ = ∫ g, κ * φ g * F g ∂ν := by`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[integral_mul_const, hconv]`.
+
+Use `_ = κ * ∫ h, φ h * ⟪b, ρ h b⟫_ℂ ∂ν := by`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [hF]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hb'a b', hb'a b]`. Conclude with `hmain`.
+-/
 theorem idem_avg {G K : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (ν : Measure G) [SFinite ν] [ν.IsMulLeftInvariant] [ν.IsInvInvariant]
     [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K] (ρ : G → K →L[ℂ] K)
@@ -104,11 +135,22 @@ theorem idem_avg {G K : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup
 
 variable {n : ℕ} {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {e : Fin n ⊕ Unit ≃ Fin (n + 1)}
 
+/- English proof (translation)
+Simplify using `[emb, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+-/
 theorem emb_mul (a b : Matrix (Fin n) (Fin n) ℂ) : emb e (a * b) = emb e a * emb e b := by
   simp [emb, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Simplify using `[emb, Matrix.fromBlocks_one]`.
+-/
 theorem emb_one : emb e 1 = 1 := by simp [emb, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Simplify using `only [emb, zi, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Break down `hq : e.symm d with i | ⟨⟩` into its components or cases. Establish `hd : d ≠ e (Sum.inr ())`. Introduce `hd'`. Rewrite `hq` using `[hd', Equiv.symm_apply_apply]`.
+
+Consider the cases of `hq`. Simplify using `[hd]`. Establish `hd : d = e (Sum.inr ())` using `by rw [← hq, Equiv.apply_symm_apply]`. Simplify using `[hd]`.
+-/
 theorem emb_col (a : Matrix (Fin n) (Fin n) ℂ) (d : Fin (n + 1)) : emb e a d (zi e) = if d = zi e then 1 else 0 := by
   simp only [emb, zi, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]
   rcases hq : e.symm d with i | ⟨⟩
@@ -120,6 +162,11 @@ theorem emb_col (a : Matrix (Fin n) (Fin n) ℂ) (d : Fin (n + 1)) : emb e a d (
   · have hd : d = e (Sum.inr ()) := by rw [← hq, Equiv.apply_symm_apply]
     simp [hd]
 
+/- English proof (translation)
+Take `⟨h0, h1⟩` from `hF`. Simplify using `only [zi] at h0`. Use extensionality with `i j`. Take `⟨x, rfl⟩` from `e.surjective i`. Take `⟨y, rfl⟩` from `e.surjective j`.
+
+Simplify using `only [emb, Jm, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.diagonal_apply, e.injective.eq_iff]`. Apply the tactic sequence `rcases x with x | ⟨⟩ <;> rcases y with y | ⟨⟩ <;> simp [Matrix.diagonal_apply, h0, h1, Matrix.one_apply]`.
+-/
 theorem jm_emb (hF : Fits ε ε' e) : Jm ε = emb e (Jm ε') := by
   obtain ⟨h0, h1⟩ := hF
   simp only [zi] at h0
@@ -130,6 +177,9 @@ theorem jm_emb (hF : Fits ε ε' e) : Jm ε = emb e (Jm ε') := by
     Matrix.diagonal_apply, e.injective.eq_iff]
   rcases x with x | ⟨⟩ <;> rcases y with y | ⟨⟩ <;> simp [Matrix.diagonal_apply, h0, h1, Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `[emb, Matrix.fromBlocks_conjTranspose]`.
+-/
 theorem emb_ct (a : Matrix (Fin n) (Fin n) ℂ) : (emb e a)ᴴ = emb e aᴴ := by
   simp [emb, Matrix.fromBlocks_conjTranspose]
 
@@ -140,8 +190,16 @@ def embU (hF : Fits ε ε' e) (h : UJ ε') : UJ ε :=
     rw [jm_emb hF, emb_ct, ← emb_mul, ← emb_mul]
     exact congrArg _ h.2⟩
 
+/- English proof (translation)
+The claim follows from `Matrix.coe_units_inv g.1`.
+-/
 theorem um_inv {m : ℕ} {ε : Fin m → Bool} (g : UJ ε) : um g⁻¹ = (um g)⁻¹ := Matrix.coe_units_inv g.1
 
+/- English proof (translation)
+Establish `hu : Continuous fun h : UJ ε' => um h` using `Units.continuous_val.comp continuous_subtype_val`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [emb, Matrix.reindex_apply, Matrix.submatrix_apply]`. Generalize the expression as in `e.symm i = p`. Generalize the expression as in `e.symm j = q`.
+
+Apply the tactic sequence `rcases p with x | x <;> rcases q with y | y <;>`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]`. Conclude with `(continuous_apply y).comp ((continuous_apply x).comp hu)`. Apply the tactic sequence `all_goals exact continuous_const`.
+-/
 theorem continuous_emb : Continuous fun h : UJ ε' => emb e (um h) := by
   have hu : Continuous fun h : UJ ε' => um h := Units.continuous_val.comp continuous_subtype_val
   refine continuous_matrix fun i j => ?_
@@ -154,6 +212,9 @@ theorem continuous_emb : Continuous fun h : UJ ε' => emb e (um h) := by
   · exact (continuous_apply y).comp ((continuous_apply x).comp hu)
   all_goals exact continuous_const
 
+/- English proof (translation)
+The claim follows from `|lam a - lam b| ≤ ((if a = s then 2 else 1) * (if b = s then 2 else 1) : ℝ) * |(lam - Pi.single s 1 : Fin m → ℝ) a - (lam - Pi.single s 1 : Fin m → ℝ) b| := by set l' := (lam - Pi.single s 1 : Fin m → ℝ) with hl' have hd : 1 ≤ |l' a - l' b| := by obtain ⟨ka, hka⟩ := h.2 a obtain …`.
+-/
 private theorem fdeg_of_isHCParam_sub_single_ne {m : ℕ} {lam : Fin m → ℝ} (s : Fin m)
     (h : Formalism.QuantumDeterminants.IsHCParam (lam - Pi.single s 1)) (a b : Fin m) (hab : a ≠ b) :
     |lam a - lam b| ≤ ((if a = s then 2 else 1) * (if b = s then 2 else 1) : ℝ) *
@@ -187,6 +248,25 @@ private theorem fdeg_of_isHCParam_sub_single_ne {m : ℕ} {lam : Fin m → ℝ} 
     rw [abs_le]
     constructor <;> linarith
 
+/- English proof (translation)
+Use `set l' := lam - Pi.single s 1 with hl'`. Use `set c : Fin m → ℝ := fun a => if a = s then 2 else 1 with hc`. Establish `hc1 : ∀ a, 1 ≤ c a` using `fun a => by`. Simplify using `only [hc]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+
+Unfold `Formalism.QuantumDeterminants.fdegHC`. Rewrite using `[mul_div_assoc']`. Apply `div_le_div_of_nonneg_right` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod (fun a _ => Finset.prod_nonneg fun b _ => abs_nonneg _)` to reduce the goal to its premises.
+
+Introduce `a _`. Apply `Finset.prod_le_prod (fun b _ => abs_nonneg _)` to reduce the goal to its premises. Introduce `b hb`. Conclude with `fdeg_of_isHCParam_sub_single_ne s h a b (Finset.mem_filter.mp hb).2.ne`. Use `_ = (∏ a : Fin m, ∏ b ∈ Finset.univ.filter (fun b => a < b), (c a * c b)) * ∏ a : Fin m, ∏ b ∈ Finset.univ.filter (fun b => a < b), |l' a - l' b| := by`.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `_ ≤ _ := by`. Apply `mul_le_mul_of_nonneg_right _ (Finset.prod_nonneg fun a _ => Finset.prod_nonneg fun b _ => abs_nonneg _)` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `a _`. Use `Finset.prod_nonneg fun b _ => ?_` and prove the remaining obligations. Use `hc1 a` as an intermediate fact.
+
+Use `hc1 b` as an intermediate fact. Check the signs of the components of the expression. Introduce `a _`. Rewrite using `[Finset.prod_filter]`. Apply `Finset.prod_le_prod` to reduce the goal to its premises.
+
+Introduce `b _`. Use `hc1 a` as an intermediate fact. Use `hc1 b` as an intermediate fact. Apply the tactic sequence `split_ifs <;> nlinarith`. Introduce `b _`.
+
+Use `hc1 a` as an intermediate fact. Use `hc1 b` as an intermediate fact. Apply the tactic sequence `split_ifs <;> nlinarith`. Use `_ = 2 ^ (2 * m) := by`. Simplify using `only [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Finset.prod_pow, hc, Finset.prod_ite_eq', Finset.mem_univ, if_true]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `Finset.prod_nonneg fun a _ => Finset.prod_nonneg fun b hb => ?_` and prove the remaining obligations. Conclude with `sub_nonneg.mpr (Nat.cast_le.mpr (le_of_lt (Finset.mem_filter.mp hb).2))`.
+-/
 theorem fdeg_shift {m : ℕ} {lam : Fin m → ℝ} (s : Fin m) (h : Formalism.QuantumDeterminants.IsHCParam (lam - Pi.single s 1)) :
     Formalism.QuantumDeterminants.fdegHC lam ≤ 2 ^ (2 * m) * Formalism.QuantumDeterminants.fdegHC (lam - Pi.single s 1) := by
   set l' := lam - Pi.single s 1 with hl'

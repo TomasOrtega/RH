@@ -6,6 +6,17 @@ noncomputable section
 
 namespace Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
+/- English proof (translation)
+Introduce `A _ I σ h0 h1 a`. Proceed by induction on `a with`. Consider the case `zero => intro r _`. Rewrite using `[zero_add, pow_one]`. Conclude with `h0 r`.
+
+Consider the case `succ a ih`. Introduce `r hr`. Rewrite `hr` using `[pow_succ]`. Use `Submodule.mul_induction_on hr ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy`.
+
+Establish `e : σ (x * y) - x * y = (σ x - x) * σ y + x * (σ y - y)` using `by rw [map_mul]; ring`. Rewrite using `[e]`. Apply `Ideal.add_mem` to reduce the goal to its premises. Rewrite using `[pow_succ I (a + 1)]`. Use `Ideal.mul_mem_mul (ih x hx) ?_` and prove the remaining obligations.
+
+Establish `: σ y = y + (σ y - y)` using `by ring`. Rewrite using `[this]`. Conclude with `I.add_mem hy (Ideal.pow_le_self (by norm_num) (h1 y hy))`. Establish `e2 : a + 1 + 1 = a + 2` using `rfl`. Rewrite using `[e2, pow_add]`.
+
+Conclude with `Ideal.mul_mem_mul hx (h1 y hy)`. Introduce `x y hx hy`. Establish `e : σ (x + y) - (x + y) = (σ x - x) + (σ y - y)` using `by rw [map_add]; ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ hx hy`.
+-/
 theorem idealStep : StatIdealStep := by
   intro A _ I σ h0 h1 a
   induction a with
@@ -31,6 +42,15 @@ theorem idealStep : StatIdealStep := by
       rw [e]
       exact Ideal.add_mem _ hx hy
 
+/- English proof (translation)
+Introduce `A _ I σ N _ _ γ hsl hσ hW3 a x hx`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `r hr n _`. Establish `e : γ (r • n) - r • n = (σ r - r) • γ n + r • (γ n - n)`. Rewrite using `[hsl, sub_smul, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Apply `Submodule.add_mem` to reduce the goal to its premises. Conclude with `Submodule.smul_mem_smul (hσ a r hr) trivial`. Establish `h` using `Submodule.smul_mem_smul hr (hW3 n)`.
+
+Rewrite `h` using `[← Submodule.smul_assoc, smul_eq_mul, ← pow_succ]`. Conclude with `h`. Introduce `x y hx hy`. Establish `e : γ (x + y) - (x + y) = (γ x - x) + (γ y - y)` using `by rw [map_add]; abel`. Rewrite using `[e]`.
+
+Conclude with `Submodule.add_mem _ hx hy`.
+-/
 theorem filtStep : StatFiltStep := by
   intro A _ I σ N _ _ γ hsl hσ hW3 a x hx
   refine Submodule.smul_induction_on hx ?_ ?_
@@ -48,6 +68,11 @@ theorem filtStep : StatFiltStep := by
     rw [e]
     exact Submodule.add_mem _ hx hy
 
+/- English proof (translation)
+Introduce `ℓ hℓ A _ I σ N _ _ γ hsl h0 h1 hW3 b hb x`. Establish `hstep` using `filtStep A I σ N γ hsl (idealStep A I σ h0 h1) hW3`. Conclude with `filtPow ℓ hℓ N (fun a => (I ^ a • (⊤ : Submodule A N)).toAddSubgroup) γ (by simp) (fun a => by`. Introduce `v hv`. Establish `hv' : v ∈ I ^ (a + 1) • (⊤ : Submodule A N)` using `hv`.
+
+Conclude with `(Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_succ a)) hv' : v ∈ I ^ a • (⊤ : Submodule A N)))`. Use the proof step `(fun a v hv => hstep a v hv) b hb x`.
+-/
 theorem frobenius_power_congruence_holds : FrobeniusPowerCongruence := by
   intro ℓ hℓ A _ I σ N _ _ γ hsl h0 h1 hW3 b hb x
   have hstep := filtStep A I σ N γ hsl (idealStep A I σ h0 h1) hW3
@@ -59,6 +84,11 @@ theorem frobenius_power_congruence_holds : FrobeniusPowerCongruence := by
         v ∈ I ^ a • (⊤ : Submodule A N)))
     (fun a v hv => hstep a v hv) b hb x
 
+/- English proof (translation)
+Introduce `ℓ _ H1K H1m H0m H0KQ H0mQ H1mQ _ _ _ _ _ _ _ _ _ _ _ _ res cup a0 a1 r0 cupQ al hc hinj htf hF y z hyz`. Take `⟨zm, t, hz⟩` from `hF (res y)`. Use `⟨zm, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg a1 hz`. Rewrite `h1` using `[map_smul, map_sub, map_smul, hyz, hc, map_zero, ← map_smul, ← map_sub]`.
+
+Establish `h2` using `tf_pow htf t _ h1`. Establish `h3 : ((ℓ : ℤ_[ℓ]) ^ al) • r0 z - a0 zm = 0` using `hinj (by rw [h2, map_zero])`. Conclude with `(sub_eq_zero.1 h3).symm`.
+-/
 theorem freeK : StatFreeK := by
   intro ℓ _ H1K H1m H0m H0KQ H0mQ H1mQ _ _ _ _ _ _ _ _ _ _ _ _ res cup a0 a1 r0 cupQ al hc hinj htf hF y z hyz
   obtain ⟨zm, t, hz⟩ := hF (res y)

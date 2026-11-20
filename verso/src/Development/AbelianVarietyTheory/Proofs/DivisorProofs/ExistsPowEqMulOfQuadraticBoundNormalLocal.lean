@@ -7,6 +7,17 @@ namespace GlobalTheory
 
 open IsDiscreteValuationRing in
 
+/- English proof (translation)
+Establish `hn : ∀ z, ∃ n : ℕ, addVal V (k z) = n` using `fun z => (ENat.ne_top_iff_exists.1 (mt addVal_eq_top_iff.1 (hk0 z))).imp fun _ e => e.symm`. Use `choose n hn using hn`. Establish `key` using `hq (fun z => (n z : ℤ)) (fun _ => Int.natCast_nonneg _) (by`. Use `hn 0` as an intermediate fact. Rewrite `this` using `[h2, addVal_one]`.
+
+Conclude with `this.symm)` after adjusting the coercions. Use the proof step `(fun z => by`. Use `hn (-z)` as an intermediate fact. Rewrite `this` using `[h1, hn]`. Conclude with `this.symm)` after adjusting the coercions.
+
+Use the proof step `(fun a b c => by`. Use `congrArg (addVal V) (h3 a b c)` as an intermediate fact. Simplify using `only [addVal_mul, hn] at this`. Conclude with `this)` after adjusting the coercions. Use the proof step `(fun a b => by`.
+
+Take `⟨u, hu, e⟩` from `h4 a b`. Use `congrArg (addVal V) e` as an intermediate fact. Simplify using `only [addVal_mul, hn, addVal_eq_zero_iff.2 hu, zero_add] at this`. Conclude with `this) y` after adjusting the coercions. Establish `key' : n (h y) ≤ C * n y` using `by exact_mod_cast key`.
+
+Rewrite using `[← addVal_le_iff_dvd, addVal_mul, addVal_pow, hn, hn, nsmul_eq_mul]`. Establish `: n y + n (h y) ≤ N * n y` using `by nlinarith [Nat.mul_le_mul_right (n y) hN]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem mul_dvd_pow_of_quadratic_bound_dvr {V : Type} [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] {X : Type} [AddCommGroup X] (h h' : X →+ X) (C : ℕ)
     (hq : ∀ q : X → ℤ, (∀ y, 0 ≤ q y) → q 0 = 0 → (∀ y, q (-y) = q y) →
@@ -44,6 +55,15 @@ theorem mul_dvd_pow_of_quadratic_bound_dvr {V : Type} [CommRing V] [IsDomain V]
   have : n y + n (h y) ≤ N * n y := by nlinarith [Nat.mul_le_mul_right (n y) hN]
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `R _ _ _ hR X _ h h' C hq N hN κ h1 h2 h3 hκ h4 y`. Take `⟨hno, -, hic, -⟩` from `hR`. Establish `hx : ∃ r : R, algebraMap R (FractionRing R) r = ((κ y ^ N * (κ y * κ (h y))⁻¹ : (FractionRing R)ˣ) : FractionRing R)`. Use `exists_algebraMap_eq_of_forall_discreteValuationSubring fun V hV hRV _ => ?_` and prove the remaining obligations. Establish `hm : ∀ z, (κ z : FractionRing R) ∈ V` using `fun z => by`.
+
+Take `⟨r, e⟩` from `hκ z`. Conclude with `e ▸ hRV r`. Take `⟨c, hc⟩` from `mul_dvd_pow_of_quadratic_bound_dvr (V := V) h h' C hq hN (fun z => ⟨κ z, hm z⟩) (fun z e => (κ z).ne_zero (congrArg Subtype.val e)) (fun z => Subtype.ext (congrArg Units.val (h1 z))) (Subtype.ext (congrArg Units.val h2)) (fun a b c => Subtype.ext (congrArg Units.val (h3 a b c))) …`. Take `⟨u, e⟩` from `h4 a b`. Conclude with `⟨(algebraMap R (FractionRing R)).codRestrict V hRV u, u.isUnit.map _, Subtype.ext e⟩) y`.
+
+Establish `hc' : (κ y : FractionRing R) ^ N = κ y * κ (h y) * (c : FractionRing R)`. Simplify using `using congrArg Subtype.val hc`. Establish `: ((κ y ^ N * (κ y * κ (h y))⁻¹ : (FractionRing R)ˣ) : FractionRing R) = c`. Rewrite using `[Units.val_mul, Units.mul_inv_eq_iff_eq_mul, Units.val_pow_eq_pow_val, hc', Units.val_mul, mul_comm]`. Conclude with `this ▸ c.2`.
+
+Take `⟨r, hr⟩` from `hx`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, mul_assoc, ← Units.val_mul, ← Units.val_mul, inv_mul_cancel_right]`.
+-/
 theorem exists_pow_eq_mul_of_quadratic_bound :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (X : Type) [AddCommGroup X] (h h' : X →+ X) (C : ℕ), (∀ q : X → ℤ, (∀ y, 0 ≤ q y) → q 0 = 0 → (∀ y, q (-y) = q y) → (∀ x y z, q (x + y + z) + q x + q y + q z = q (x + y) + q (x + z) + q (y + z)) → (∀ y z, q (h y + z) + q y + q (h' z) = q (y + h' z) + q (h y) + q z) → ∀ y, q (h y) ≤ C * q y) → ∀ N : ℕ, C + 1 ≤ N → ∀ (κ : X → (FractionRing R)ˣ), (∀ y, κ (-y) = κ y) → κ 0 = 1 → (∀ x y z, κ (x + y + z) * κ x * κ y * κ z = κ (x + y) * κ (x + z) * κ (y + z)) → (∀ y, ∃ r : R, (κ y : FractionRing R) = algebraMap R _ r) → (∀ y z, ∃ u : Rˣ, ((κ (h y + z) * κ y * κ (h' z) : (FractionRing R)ˣ) : FractionRing R) = algebraMap R _ (u : R) * ((κ (y + h' z) * κ (h y) * κ z : (FractionRing R)ˣ) : FractionRing R)) → ∀ y, ∃ r : R, ((κ y ^ N : (FractionRing R)ˣ) : FractionRing R) = algebraMap R _ r * κ y * κ (h y) := by
   intro R _ _ _ hR X _ h h' C hq N hN κ h1 h2 h3 hκ h4 y

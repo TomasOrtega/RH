@@ -70,14 +70,23 @@ def TorsDefined : Prop :=
 
 def Statement : Prop := UnifExists ∧ TripleUnifExists ∧ UnifLinear ∧ TorsDefined
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 example (p : ℕ) [Fact p.Prime] : GlobalTheory.UU.CDVR ℤ_[p] := ⟨inferInstance, inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Introduce `k hk p` and use `by obtain ⟨f, hf, -⟩ := hP F k hk exact ⟨f p, (hf p _).2 rfl, fun x hx => (hf p x).1 hx⟩`.
+-/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R] [IsDomain R]
     {I : Ideal R} {t : SAB H (Sp R)} (P : PELUnif I t) (hP : P.TorsionIso) (F : Type) [Field F] [IsAlgClosed F]
     [Algebra (FractionRing R) F] : TorsDefinedOn P.U F := fun k hk p => by
   obtain ⟨f, hf, -⟩ := hP F k hk
   exact ⟨f p, (hf p _).2 rfl, fun x hx => (hf p x).1 hx⟩
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, hT⟩` from `hU`. Conclude with `⟨_, rfl, rfl, HEq.rfl, hT⟩`.
+-/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R] [IsDomain R]
     {I : Ideal R} (t : SAB H (Sp R)) {D : DegData R I} {A : PolAV (Sp (FractionRing R))} (U : Unif I D A t.G)
     (h : U.LG = t.PP) (hU : IsLinearUnif t U h) :

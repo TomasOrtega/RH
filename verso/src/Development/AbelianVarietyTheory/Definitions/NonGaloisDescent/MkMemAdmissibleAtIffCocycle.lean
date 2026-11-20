@@ -40,9 +40,15 @@ structure TopData (n r : ℕ) where
   lowBd : ∀ i, ty i = LType.Bd → ∀ u ∈ lows i + block (w i) t, (h i : ℤ) - η i ≤ u ∧ u ≤ (h i : ℤ) - 1
   cloudBd : ∀ i, ty i = LType.Bd → ∀ u ∈ cloud i, u < (h i : ℤ) - η i
 
+/- English proof (translation)
+Simplify using `[block]`.
+-/
 theorem mem_block {w u : ℤ} {t : ℕ} : u ∈ block w t ↔ w ≤ u ∧ u < w + t := by
   simp [block]
 
+/- English proof (translation)
+Simplify using `[block]`.
+-/
 theorem card_block (w : ℤ) (t : ℕ) : Multiset.card (block w t) = t := by
   simp [block]
 
@@ -77,11 +83,20 @@ def T3 (l : ℕ) : Prop :=
   ∀ i, ∀ u ∈ D.cloud i, ∀ y : ℤ, -2 * (D.sg l i : ℤ) - 2 ≤ y → y ≤ (D.η i : ℤ) + 2 * D.sg l i + 3 →
     ¬ D.cloudRes i u ≡ y [ZMOD l]
 
+/- English proof (translation)
+The claim follows from `D.card_eq i`.
+-/
 theorem card_U (i : ZMod n) : Multiset.card (D.U i) = r := D.card_eq i
 
+/- English proof (translation)
+Rewrite using `[Ut, Multiset.card_add, card_U, B, card_block]`.
+-/
 theorem card_Ut (i : ZMod n) : Multiset.card (D.Ut i) = r + D.t := by
   rw [Ut, Multiset.card_add, card_U, B, card_block]
 
+/- English proof (translation)
+The claim follows from `D.range i u hu`.
+-/
 theorem mem_Ut (i : ZMod n) {u : ℤ} (hu : u ∈ D.Ut i) : 1 ≤ u ∧ u ≤ (D.h i : ℤ) - 1 := D.range i u hu
 
 end TopData
@@ -113,6 +128,13 @@ def exData : TopData 2 2 where
     split_ifs at hu hi
     simp at hu; push_cast; omega
 
+/- English proof (translation)
+Establish `h : ∑' j : ℕ, ((60 : ℕ) : ℝ) / ((41 : ℕ) : ℝ) ^ (j + 1) = 3 / 2`. Establish `h1 : ∀ j : ℕ, ((60 : ℕ) : ℝ) / ((41 : ℕ) : ℝ) ^ (j + 1) = (60 / 41) * (1 / 41 : ℝ) ^ j`. Introduce `j`. Use `push_cast`. Rewrite using `[one_div, inv_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h1]`. Rewrite using `[tsum_mul_left, tsum_geometric_of_lt_one (by norm_num) (by norm_num)]`. Evaluate the numerical expressions.
+
+Express the relevant statement in the definitionally equal form `⌊∑' j : ℕ, ((60 : ℕ) : ℝ) / ((41 : ℕ) : ℝ) ^ (j + 1)⌋₊ = 1`. Rewrite using `[h, Nat.floor_eq_iff (by norm_num)]`. Evaluate the numerical expressions.
+-/
 theorem exData_sg (i : ZMod 2) : exData.sg 41 i = 1 := by
   have h : ∑' j : ℕ, ((60 : ℕ) : ℝ) / ((41 : ℕ) : ℝ) ^ (j + 1) = 3 / 2 := by
     have h1 : ∀ j : ℕ, ((60 : ℕ) : ℝ) / ((41 : ℕ) : ℝ) ^ (j + 1) = (60 / 41) * (1 / 41 : ℝ) ^ j := by
@@ -124,6 +146,11 @@ theorem exData_sg (i : ZMod 2) : exData.sg 41 i = 1 := by
   rw [h, Nat.floor_eq_iff (by norm_num)]
   norm_num
 
+/- English proof (translation)
+Use `⟨fun i => ?_, fun i u hu β hβ => ?_, fun i u hu y h1 h2 h3 => ?_⟩` and prove the remaining obligations. Rewrite using `[exData_sg]`. Simplify using `[exData]`. Rewrite using `[exData_sg]`. Simplify using `only [exData, TopData.B] at hu hβ`.
+
+Apply the tactic sequence `split_ifs at hu hβ <;> simp [mem_block] at hu hβ <;> rw [lt_abs] <;> push_cast <;> omega`. Rewrite `h1`, `h2` using `[exData_sg]`. Simplify using `only [exData, TopData.cloudRes] at hu h2 h3`. Apply the tactic sequence `split_ifs at hu h3 <;> simp at hu <;> simp only [Int.ModEq] at h3 <;> push_cast at h1 h2 h3 <;> omega`.
+-/
 theorem exData_T1_T2_T3_fortyOne : exData.T1 41 ∧ exData.T2 41 ∧ exData.T3 41 := by
   refine ⟨fun i => ?_, fun i u hu β hβ => ?_, fun i u hu y h1 h2 h3 => ?_⟩
   · rw [exData_sg]; simp [exData]
@@ -134,6 +161,9 @@ theorem exData_T1_T2_T3_fortyOne : exData.T1 41 ∧ exData.T2 41 ∧ exData.T3 4
     simp only [exData, TopData.cloudRes] at hu h2 h3
     split_ifs at hu h3 <;> simp at hu <;> simp only [Int.ModEq] at h3 <;> push_cast at h1 h2 h3 <;> omega
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : exData.d 0 = 0 ∧ exData.d 1 = 2 := by decide
 
 section Ss
@@ -152,10 +182,18 @@ def SameFactors (R : Type) [Ring R] (M N : Type) [AddCommGroup M] [Module R M] [
 
 variable {M N P : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] [AddCommGroup P] [Module R P]
 
+/- English proof (translation)
+Take `⟨s, h1, h2⟩` from `isFiniteLength_iff_exists_compositionSeries.mp h`. Conclude with `⟨s, s, h1, h2, h1, h2, Equiv.refl _, fun _ => ⟨LinearEquiv.refl _ _⟩⟩`.
+-/
 theorem SameFactors.refl (h : IsFiniteLength R M) : SameFactors R M M := by
   obtain ⟨s, h1, h2⟩ := isFiniteLength_iff_exists_compositionSeries.mp h
   exact ⟨s, s, h1, h2, h1, h2, Equiv.refl _, fun _ => ⟨LinearEquiv.refl _ _⟩⟩
 
+/- English proof (translation)
+Take `⟨s, t, h1, h2, h3, h4, e, he⟩` from `h`. Use `⟨t, s, h3, h4, h1, h2, e.symm, fun i => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `e.surjective i`. Take `⟨f⟩` from `he j`. Rewrite using `[Equiv.symm_apply_apply]`.
+
+Conclude with `⟨f.symm⟩`.
+-/
 theorem SameFactors.symm (h : SameFactors R M N) : SameFactors R N M := by
   obtain ⟨s, t, h1, h2, h3, h4, e, he⟩ := h
   refine ⟨t, s, h3, h4, h1, h2, e.symm, fun i => ?_⟩
@@ -164,6 +202,11 @@ theorem SameFactors.symm (h : SameFactors R M N) : SameFactors R N M := by
   rw [Equiv.symm_apply_apply]
   exact ⟨f.symm⟩
 
+/- English proof (translation)
+Take `⟨s, t, h1, h2, h3, h4, e, he⟩` from `h`. Take `⟨t', u, h5, h6, h7, h8, e', he'⟩` from `h'`. Take `⟨c, hc⟩` from `CompositionSeries.jordan_holder t t' (h3.trans h5.symm) (h4.trans h6.symm)`. Use `⟨s, u, h1, h2, h7, h8, (e.trans c).trans e', fun i => ?_⟩` and prove the remaining obligations. Take `⟨f⟩` from `he i`.
+
+Take `⟨g⟩` from `he' (c (e i))`. Conclude with `⟨(f.trans (JordanHolderLattice.Iso.linearEquiv (hc (e i)))).trans g⟩`.
+-/
 theorem SameFactors.trans (h : SameFactors R M N) (h' : SameFactors R N P) : SameFactors R M P := by
   obtain ⟨s, t, h1, h2, h3, h4, e, he⟩ := h
   obtain ⟨t', u, h5, h6, h7, h8, e', he'⟩ := h'
@@ -173,6 +216,15 @@ theorem SameFactors.trans (h : SameFactors R M N) (h' : SameFactors R N P) : Sam
   obtain ⟨g⟩ := he' (c (e i))
   exact ⟨(f.trans (JordanHolderLattice.Iso.linearEquiv (hc (e i)))).trans g⟩
 
+/- English proof (translation)
+Take `⟨s, h1, h2⟩` from `isFiniteLength_iff_exists_compositionSeries.mp h`. Set `o : Submodule R M ≃o Submodule R N` to `Submodule.orderIsoMapComap e`. Set `t : CompositionSeries (Submodule R N)` to `{ length := s.length toFun := fun i => o (s i) step := fun i => (apply_covBy_apply_iff o).mpr (s.step i) }`. Use `⟨s, t, h1, h2, ?_, ?_, Equiv.refl _, fun i => ⟨?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `o s.head = ⊥`.
+
+Rewrite using `[h1, map_bot]`. Express the relevant statement in the definitionally equal form `o s.last = ⊤`. Rewrite using `[h2, map_top]`. Use `Submodule.Quotient.equiv _ _ (e.submoduleMap (s i.succ)) ?_` and prove the remaining obligations. Use extensionality with `⟨y, hy⟩`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxy⟩`. Conclude with `⟨x, hx, congrArg Subtype.val hxy⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨x', hx', hxx⟩` from `hy`.
+
+Take `rfl : x' = x` from `e.injective hxx`. Conclude with `⟨⟨x', hx'⟩, hx, rfl⟩`.
+-/
 theorem SameFactors.of_equiv (h : IsFiniteLength R M) (e : M ≃ₗ[R] N) : SameFactors R M N := by
   obtain ⟨s, h1, h2⟩ := isFiniteLength_iff_exists_compositionSeries.mp h
   let o : Submodule R M ≃o Submodule R N := Submodule.orderIsoMapComap e
@@ -195,6 +247,11 @@ theorem SameFactors.of_equiv (h : IsFiniteLength R M) (e : M ≃ₗ[R] N) : Same
       obtain rfl : x' = x := e.injective hxx
       exact ⟨⟨x', hx'⟩, hx, rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨s, t, h1, h2, h3, h4, e, -⟩`. Establish `a` using `Module.length_compositionSeries s h1 h2`. Establish `b` using `Module.length_compositionSeries t h3 h4`. Rewrite `a` using `[Module.length_eq_one, Fin.equiv_iff_eq.mp ⟨e⟩]`. Rewrite `b` using `[Module.length_eq_zero]`.
+
+Conclude with `one_ne_zero (a.symm.trans b)`.
+-/
 example [IsSimpleModule R M] [Subsingleton N] : ¬ SameFactors R M N := by
   rintro ⟨s, t, h1, h2, h3, h4, e, -⟩
   have a := Module.length_compositionSeries s h1 h2
@@ -203,6 +260,9 @@ example [IsSimpleModule R M] [Subsingleton N] : ¬ SameFactors R M N := by
   rw [Module.length_eq_zero] at b
   exact one_ne_zero (a.symm.trans b)
 
+/- English proof (translation)
+Take `⟨s, t, h1, h2, h3, h4, e, -⟩` from `h`. Rewrite using `[← Module.length_compositionSeries s h1 h2, ← Module.length_compositionSeries t h3 h4]`. Conclude with `congrArg _ (Fin.equiv_iff_eq.mp ⟨e⟩)`.
+-/
 theorem SameFactors.length_eq (h : SameFactors R M N) : Module.length R M = Module.length R N := by
   obtain ⟨s, t, h1, h2, h3, h4, e, -⟩ := h
   rw [← Module.length_compositionSeries s h1 h2, ← Module.length_compositionSeries t h3 h4]
@@ -224,6 +284,9 @@ def modRep (π : Representation O G M) (c : O) : Representation O G (QuotSMulTop
     rw [Submodule.mem_comap, map_smul]
     exact Submodule.smul_mem_pointwise_smul _ _ _ Submodule.mem_top)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem modRep_mk (π : Representation O G M) (c : O) (g : G) (x : M) :
     modRep π c g (Submodule.Quotient.mk x) = Submodule.Quotient.mk (π g x) := rfl
 
@@ -233,12 +296,21 @@ def piRep {ι : Type} {N : ι → Type} [∀ j, AddCommGroup (N j)] [∀ j, Modu
   map_one' := by ext x j; simp
   map_mul' g h := by ext x j; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem piRep_apply {ι : Type} {N : ι → Type} [∀ j, AddCommGroup (N j)] [∀ j, Module O (N j)]
     (π : ∀ j, Representation O G (N j)) (g : G) (x : ∀ j, N j) (j : ι) : piRep π g x j = π j g (x j) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRep_apply (π : Representation O G M) (χ : G →* Oˣ) (g : G) (x : M) :
     twistRep π χ g x = (χ g : O) • π g x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coefRep_tmul (π : Representation O G M) (X : Type) [AddCommGroup X] [Module O X] (g : G) (m : M)
     (x : X) : coefRep π X g (m ⊗ₜ[O] x) = π g m ⊗ₜ[O] x := rfl
 
@@ -246,6 +318,9 @@ abbrev twCoef (W : Representation O G M) (χ : G →* Oˣ) (X : Type) [AddCommGr
     Representation O G (M ⊗[O] X) :=
   coefRep (twistRep W χ⁻¹) X
 
+/- English proof (translation)
+Use extensionality with `g m x`. Simplify using `only [AlgebraTensorModule.curry_apply, curry_apply, LinearMap.restrictScalars_self, twistRep_apply, coefRep_tmul, smul_tmul', smul_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem twist_twCoef (W : Representation O G M) (χ : G →* Oˣ) (X : Type) [AddCommGroup X] [Module O X] :
     twistRep (twCoef W χ X) χ = coefRep W X := by
   ext g m x
@@ -253,6 +328,9 @@ theorem twist_twCoef (W : Representation O G M) (χ : G →* Oˣ) (X : Type) [Ad
     coefRep_tmul, smul_tmul', smul_smul]
   simp
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul m x => rw [← tmul_smul, hc, tmul_zero]`. Consider the case `add a b ha hb => rw [smul_add, ha, hb, add_zero]`.
+-/
 theorem smul_tensor_eq_zero {X : Type} [AddCommGroup X] [Module O X] {c : O} (hc : ∀ x : X, c • x = 0)
     (y : M ⊗[O] X) : c • y = 0 := by
   induction y using TensorProduct.induction_on with
@@ -274,16 +352,25 @@ def cycMap {c : O} (hc : ∀ m : M, c • m = 0) : M →ₗ[O] (O ⧸ Ideal.span
     obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
     exact smul_comm y a b
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cycMap_mk {c : O} (hc : ∀ m : M, c • m = 0) (m : M) (y : O) :
     cycMap hc m (Ideal.Quotient.mk _ y) = y • m := rfl
 
 variable [TopologicalSpace G]
 
+/- English proof (translation)
+Establish `h1 : π g ((z : G → M) h) - (z : G → M) (g * h) + (z : G → M) g = 0` using `congrFun z.2.2 (g, h)`. Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← h1]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cocycle_mul {π : Representation O G M} (z : ↥(Z1 π ⊤)) (g h : G) :
     (z : G → M) (g * h) = (z : G → M) g + π g ((z : G → M) h) := by
   have h1 : π g ((z : G → M) h) - (z : G → M) (g * h) + (z : G → M) g = 0 := congrFun z.2.2 (g, h)
   rw [← sub_eq_zero, ← neg_eq_zero, ← h1]; abel
 
+/- English proof (translation)
+Establish `h` using `cocycle_mul z 1 1`. Simplify using `using h`.
+-/
 theorem cocycle_one {π : Representation O G M} (z : ↥(Z1 π ⊤)) : (z : G → M) 1 = 0 := by
   have h := cocycle_mul z 1 1
   simpa using h
@@ -301,6 +388,9 @@ def extRep (π : Representation O G M) {c : O} (hc : ∀ m : M, c • m = 0) (z 
     simp [cocycle_mul z g h]
     abel
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extRep_apply (π : Representation O G M) {c : O} (hc : ∀ m : M, c • m = 0) (z : ↥(Z1 π ⊤)) (g : G)
     (m : M) (y : O) :
     extRep π hc z g (m, Ideal.Quotient.mk _ y) = (π g m + y • (z : G → M) g, Ideal.Quotient.mk _ y) := rfl
@@ -315,17 +405,26 @@ section Ea
 variable (W : Representation O G M) (χ : G →* Oˣ) {X : Type} [AddCommGroup X] [Module O X] {c : O}
     (hc : ∀ x : X, c • x = 0)
 
+/- English proof (translation)
+Rewrite using `[Ea, twistRep_apply, extRep_apply, ← twist_twCoef W χ X, twistRep_apply, Prod.smul_mk, smul_add, smul_smul]`. Both sides reduce to the same expression.
+-/
 theorem Ea_apply (z : ↥(Z1 (twCoef W χ X) ⊤)) (g : G) (m : M ⊗[O] X) (y : O) :
     Ea W χ hc z g (m, Ideal.Quotient.mk _ y) =
       (coefRep W X g m + ((χ g : O) * y) • (z : G → M ⊗[O] X) g, Ideal.Quotient.mk _ ((χ g : O) * y)) := by
   rw [Ea, twistRep_apply, extRep_apply, ← twist_twCoef W χ X, twistRep_apply, Prod.smul_mk, smul_add, smul_smul]
   rfl
 
+/- English proof (translation)
+Establish `h` using `Ea_apply W χ hc z g m 0`. Simplify using `using h`.
+-/
 theorem Ea_inl (z : ↥(Z1 (twCoef W χ X) ⊤)) (g : G) (m : M ⊗[O] X) :
     Ea W χ hc z g (m, 0) = (coefRep W X g m, 0) := by
   have h := Ea_apply W χ hc z g m 0
   simpa using h
 
+/- English proof (translation)
+Establish `h` using `Ea_apply W χ hc z g 0 1`. Simplify using `only [map_one, map_zero, zero_add, mul_one] at h`. Rewrite using `[h]`. Simplify using `[Algebra.smul_def]`.
+-/
 theorem Ea_gen (z : ↥(Z1 (twCoef W χ X) ⊤)) (g : G) :
     Ea W χ hc z g (0, 1) = (χ g : O) • (((0 : M ⊗[O] X), (1 : O ⧸ Ideal.span {c})) + ((z : G → M ⊗[O] X) g, 0)) := by
   have h := Ea_apply W χ hc z g 0 1
@@ -333,9 +432,19 @@ theorem Ea_gen (z : ↥(Z1 (twCoef W χ X) ⊤)) (g : G) :
   rw [h]
   simp [Algebra.smul_def]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Ea_snd (z : ↥(Z1 (twCoef W χ X) ⊤)) (g : G) (x : (M ⊗[O] X) × (O ⧸ Ideal.span {c})) :
     (Ea W χ hc z g x).2 = (χ g : O) • x.2 := rfl
 
+/- English proof (translation)
+Take `⟨b, -, hb⟩` from `(Submodule.Quotient.eq _).mp h`. Establish `hb' : ∀ g, twCoef W χ X g b - b = (z : G → M ⊗[O] X) g - (z' : G → M ⊗[O] X) g` using `fun g => congrFun hb g`. Set `f` to `cycMap (smul_tensor_eq_zero (M := M) hc) b`. Use `⟨LinearEquiv.ofLinearMap ((LinearMap.id.coprod f).prod (LinearMap.snd O _ _)) ((LinearMap.id.coprod (-f)).prod (LinearMap.snd O _ _)) (LinearMap.ext fun x => by simp) (LinearMap.ext fun x => by simp), ?_, fun m => by simp, fun x => by simp⟩` and prove the remaining obligations. Introduce and unpack `g ⟨m, y⟩`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Simplify using `only [Ea, twistRep_apply, map_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(twCoef W χ X g m + y • (z : G → M ⊗[O] X) g + y • b, Ideal.Quotient.mk _ y) = (twCoef W χ X g (m + y • b) + y • (z' : G → M ⊗[O] X) g, Ideal.Quotient.mk _ y)`. Rewrite using `[map_add, map_smul, eq_add_of_sub_eq (hb' g)]`.
+
+Use `congr 1`. Simplify using `only [smul_add, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem Ea_equiv_of_class_eq {z z' : ↥(Z1 (twCoef W χ X) ⊤)}
     (h : (Submodule.Quotient.mk z : H1 (twCoef W χ X) ⊤) = Submodule.Quotient.mk z') :
     ∃ e : ((M ⊗[O] X) × (O ⧸ Ideal.span {c})) ≃ₗ[O] ((M ⊗[O] X) × (O ⧸ Ideal.span {c})),
@@ -398,6 +507,11 @@ def unr (π : Representation O G M) (I : Subgroup G) : Submodule O (H1 π ⊤) :
         refine ⟨c • x, fun g hg => ?_⟩
         simp only [Submodule.coe_smul, Pi.smul_apply, hx g hg, map_smul, smul_sub] }
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z', ⟨b, hb⟩, h⟩ g hg`. Take `⟨b', -, hb'⟩` from `(Submodule.Quotient.eq _).mp h`. Establish `h1 : π g b' - b' = (z' : G → M) g - (z : G → M) g` using `congrFun hb' g`. Rewrite `h1` using `[hb g hg, hπ, hπ]`.
+
+Simplify using `using h1`. Introduce `h`. Conclude with `⟨z, ⟨0, fun g hg => by simp [h g hg]⟩, rfl⟩`.
+-/
 theorem mk_mem_unr_of_trivial {π : Representation O G M} (hπ : ∀ g m, π g m = m) (I : Subgroup G)
     (z : ↥(Z1 π ⊤)) : (Submodule.Quotient.mk z : H1 π ⊤) ∈ unr π I ↔ ∀ g ∈ I, (z : G → M) g = 0 := by
   constructor
@@ -414,6 +528,9 @@ abbrev Amb (π : Representation O G M) : Type := (G → M) ⧸ B1 π ⊤
 def toAmb (π : Representation O G M) : H1 π ⊤ →ₗ[O] Amb π :=
   Submodule.mapQ _ _ (Z1 π ⊤).subtype (fun _ h => h)
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h : (z : G → M) ∈ B1 π ⊤` using `(Submodule.Quotient.mk_eq_zero _).mp hx`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr h`.
+-/
 theorem toAmb_injective (π : Representation O G M) : Function.Injective (toAmb π) := by
   rw [← LinearMap.ker_eq_bot, eq_bot_iff]
   intro x hx
@@ -430,6 +547,9 @@ variable {G : Type} [Group G] {LL O : Type} [Field LL] [CommRing O] [Algebra O L
 def chiLL (LL : Type) [Field LL] [Algebra O LL] (χ : G →* Oˣ) : G →* LLˣ :=
   (Units.map (algebraMap O LL : O →* LL)).comp χ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem chiLL_apply (χ : G →* Oˣ) (g : G) : (chiLL LL χ g : LL) = algebraMap O LL (χ g) := rfl
 
 variable {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
@@ -443,6 +563,9 @@ def latRep (L : Lattice (O := O) ρ) : Representation O G ↥L.T where
     change ρ (g * h) x = ρ g (ρ h x)
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem latRep_apply (L : Lattice (O := O) ρ) (g : G) (x : ↥L.T) : (latRep L g x : V) = ρ g x := rfl
 
 abbrev twLattice (L : Lattice (O := O) ρ) (χ : G →* Oˣ) : Lattice (O := O) (twistRep ρ (chiLL LL χ)) where
@@ -455,6 +578,9 @@ abbrev twLattice (L : Lattice (O := O) ρ) (χ : G →* Oˣ) : Lattice (O := O) 
   free := L.free
   span := L.span
 
+/- English proof (translation)
+Use extensionality with `g x`. Conclude with `algebraMap_smul LL (χ g : O) (ρ g x)`.
+-/
 theorem latRep_twLattice (L : Lattice (O := O) ρ) (χ : G →* Oˣ) :
     latRep (twLattice L χ) = twistRep (latRep L) χ := by
   ext g x
@@ -479,6 +605,9 @@ def charLattice (hinj : Function.Injective (algebraMap O LL)) (χ : G →* Oˣ) 
       Submodule.subset_span ⟨1, by simp⟩
     simpa using Submodule.smul_mem _ x h
 
+/- English proof (translation)
+Use `⟨LinearEquiv.ofInjective (Algebra.linearMap O LL) hinj, fun _ => rfl, fun g a => Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap O LL ((χ g : O) • a) = algebraMap O LL (χ g) • algebraMap O LL a`. Simplify using the standard rewrite rules.
+-/
 theorem charLattice_equiv (hinj : Function.Injective (algebraMap O LL)) (χ : G →* Oˣ) :
     ∃ e : O ≃ₗ[O] ↥(charLattice hinj χ).T, (∀ a, (e a : LL) = algebraMap O LL a) ∧
       ∀ g a, e (scalRep O χ g a) = latRep (charLattice hinj χ) g (e a) := by
@@ -546,8 +675,14 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [
 
 def chi (c : ℕ) : G →* Oˣ := Γ.χ₁ * Γ.ε ^ (-((c : ℤ) - 1))
 
+/- English proof (translation)
+Simplify using `[chi]`.
+-/
 @[simp] theorem chi_one : Γ.chi 1 = Γ.χ₁ := by simp [chi]
 
+/- English proof (translation)
+Rewrite using `[chi, chi, mul_assoc, ← zpow_sub_one]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chi_succ (c : ℕ) : Γ.chi (c + 1) = Γ.chi c * Γ.ε⁻¹ := by
   rw [chi, chi, mul_assoc, ← zpow_sub_one]
   congr 2
@@ -569,6 +704,9 @@ def twist (θ : G →* Oˣ) (hθ : Continuous fun g => algebraMap O LL (θ g)) :
 
 end GalData
 
+/- English proof (translation)
+Rewrite using `[show (2 : ℕ) = 1 + 1 from rfl, GalData.chi_succ, GalData.chi_one]`. Both sides reduce to the same expression.
+-/
 example (l : ℕ) [Fact l.Prime] (g : ℤ_[l]ˣ) : (exGal l).chi 2 g = g⁻¹ * g⁻¹ := by
   rw [show (2 : ℕ) = 1 + 1 from rfl, GalData.chi_succ, GalData.chi_one]; rfl
 
@@ -613,15 +751,27 @@ def Admissible {M : Type} [AddCommGroup M] [Module O M] (π : Representation O G
 
 variable {PD emb Γ t Ut}
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem Full.withLat {T : LocLat G Qp LL O} (h : Full PD emb Γ t Ut T) (L : Lattice (O := O) T.ρ) :
     Full PD emb Γ t Ut (withLat T L) := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem SumFull.withLat {μ : ℕ} {T : LocLat G Qp LL O} (h : SumFull PD emb Γ t Ut μ T)
     (L : Lattice (O := O) T.ρ) : SumFull PD emb Γ t Ut μ (withLat T L) := h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => T, fun _ => h, (LinearEquiv.funUnique (Fin 1) LL T.V).symm, fun _ _ _ => rfl⟩`.
+-/
 theorem Full.sumFull {T : LocLat G Qp LL O} (h : Full PD emb Γ t Ut T) : SumFull PD emb Γ t Ut 1 T :=
   ⟨fun _ => T, fun _ => h, (LinearEquiv.funUnique (Fin 1) LL T.V).symm, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨hf, μ, T, hT, L₂, p, hle, hp, hg, hk⟩` from `h`. Use `⟨Finite.of_equiv _ e.toEquiv, μ, T, hT, L₂, e.toLinearMap.comp p, hle, e.surjective.comp hp, fun g x => ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `[hg, he]`. Simplify using `[hk]`.
+-/
 theorem Admissible.of_equiv {M M' : Type} [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
     {π : Representation O G M} {π' : Representation O G M'} (h : Admissible PD emb Γ t Ut π)
     (e : M ≃ₗ[O] M') (he : ∀ g x, e (π g x) = π' g (e x)) : Admissible PD emb Γ t Ut π' := by
@@ -631,6 +781,9 @@ theorem Admissible.of_equiv {M M' : Type} [AddCommGroup M] [Module O M] [AddComm
   · simp [hg, he]
   · simp [hk]
 
+/- English proof (translation)
+Establish `hV : Subsingleton (zeroLat G Qp LL O).V` using `inferInstanceAs (Subsingleton (Fin 0 → LL))`. Use `⟨inferInstance, 0, zeroLat G Qp LL O, ⟨Fin.elim0, fun j => j.elim0, LinearEquiv.ofSubsingleton _ _, fun _ _ j => j.elim0⟩, (zeroLat G Qp LL O).L, 0, le_rfl, fun y => ⟨0, Subsingleton.elim _ _⟩, fun _ _ => Subsingleton.elim _ _, fun x => ⟨fun _ => x.2, fun _ => rfl⟩⟩` and prove the remaining obligations.
+-/
 theorem admissible_zero [IsTopologicalRing LL] {M : Type} [AddCommGroup M] [Module O M] [Subsingleton M]
     (π : Representation O G M) : Admissible PD emb Γ t Ut π := by
   have hV : Subsingleton (zeroLat G Qp LL O).V := inferInstanceAs (Subsingleton (Fin 0 → LL))
@@ -638,6 +791,9 @@ theorem admissible_zero [IsTopologicalRing LL] {M : Type} [AddCommGroup M] [Modu
     fun _ _ j => j.elim0⟩, (zeroLat G Qp LL O).L, 0, le_rfl, fun y => ⟨0, Subsingleton.elim _ _⟩,
     fun _ _ => Subsingleton.elim _ _, fun x => ⟨fun _ => x.2, fun _ => rfl⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨‹_›, μ, T, hT, L₂, Submodule.mkQ _, hle, Submodule.mkQ_surjective _, fun _ _ => rfl, fun _ => Submodule.Quotient.mk_eq_zero _⟩`.
+-/
 theorem admissible_quotient {μ : ℕ} {T : LocLat G Qp LL O} (hT : SumFull PD emb Γ t Ut μ T)
     (L₂ : Lattice (O := O) T.ρ) (hle : L₂.T ≤ T.L.T) [Finite (↥T.L.T ⧸ L₂.T.comap T.L.T.subtype)] :
     Admissible PD emb Γ t Ut
@@ -658,6 +814,9 @@ def adm : Set (H1 (twCoef W Γ.χ₁ X) ⊤) :=
 
 variable {PD emb Γ t Ut W X}
 
+/- English proof (translation)
+Use `⟨?_, fun h => ⟨z, rfl, h⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨z', hz, h⟩`. Take `⟨e, he, -, -⟩` from `Ea_equiv_of_class_eq W Γ.χ₁ ha hz`. Conclude with `h.of_equiv e he`.
+-/
 theorem mk_mem_admissibleAt_iff_cocycle {a : ℕ} (ha : ∀ x : X, Γ.lam ^ a • x = 0) (z : ↥(Z1 (twCoef W Γ.χ₁ X) ⊤)) :
     Submodule.Quotient.mk z ∈ admAt PD emb Γ t Ut W X a ha ↔ Admissible PD emb Γ t Ut (Ea W Γ.χ₁ ha z) := by
   refine ⟨?_, fun h => ⟨z, rfl, h⟩⟩
@@ -701,6 +860,9 @@ def tensAmb : H1tw L χ ⊗[O] X →ₗ[O] Amb (twCoef (latRep L) χ X) :=
     congr 1
     exact Subtype.ext (congrFun hc g)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensAmb_tmul (c : ↥(latticeCocycles (twLattice L χ⁻¹))) (x : X) :
     tensAmb L χ X (Submodule.Quotient.mk c ⊗ₜ[O] x) = Submodule.Quotient.mk (tensCoc L χ X c x) := rfl
 

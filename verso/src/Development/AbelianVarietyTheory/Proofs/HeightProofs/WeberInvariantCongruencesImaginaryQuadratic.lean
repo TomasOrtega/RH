@@ -10,17 +10,26 @@ open scoped IntermediateField
 
 namespace GlobalTheory.WeberCongruence
 
+/- English proof (translation)
+Establish `h1 : IsIntegral W x` using `hx.tower_top`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h1`. Conclude with `y.2`.
+-/
 theorem mem_of_isIntegral (W : ValuationSubring ℂ) {x : ℂ} (hx : IsIntegral ℤ x) : x ∈ W := by
   have h1 : IsIntegral W x := hx.tower_top
   obtain ⟨y, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.mp h1
   exact y.2
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[← W.valuation_le_one_iff]`. Rewrite `hx` using `[map_pow]`. Conclude with `(pow_le_one_iff_of_nonneg zero_le hn).mp hx`.
+-/
 theorem mem_of_pow_mem (W : ValuationSubring ℂ) {x : ℂ} {n : ℕ} (hn : n ≠ 0) (hx : x ^ n ∈ W) :
     x ∈ W := by
   rw [← W.valuation_le_one_iff] at hx ⊢
   rw [map_pow] at hx
   exact (pow_le_one_iff_of_nonneg zero_le hn).mp hx
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[W.mem_nonunits_iff]`. Rewrite `hy` using `[← W.valuation_le_one_iff]`. Rewrite using `[map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le hx hy`.
+-/
 theorem mul_mem_nonunits (W : ValuationSubring ℂ) {x y : ℂ} (hx : x ∈ W.nonunits) (hy : y ∈ W) :
     x * y ∈ W.nonunits := by
   rw [W.mem_nonunits_iff] at hx ⊢
@@ -28,6 +37,9 @@ theorem mul_mem_nonunits (W : ValuationSubring ℂ) {x y : ℂ} (hx : x ∈ W.no
   rw [map_mul]
   exact mul_lt_one_of_nonneg_of_lt_one_left zero_le hx hy
 
+/- English proof (translation)
+Rewrite `hx`, `h`, the goal using `[W.mem_nonunits_iff]`. Rewrite `h` using `[map_mul]`. Assume the negation of the conclusion as `hy`. Conclude with `absurd h (not_lt.mpr (one_le_mul_of_one_le_of_one_le (not_lt.mp hx) (not_lt.mp hy)))`.
+-/
 theorem mem_nonunits_of_mul (W : ValuationSubring ℂ) {x y : ℂ} (hx : x ∉ W.nonunits)
     (h : x * y ∈ W.nonunits) : y ∈ W.nonunits := by
   rw [W.mem_nonunits_iff] at hx h ⊢
@@ -35,18 +47,29 @@ theorem mem_nonunits_of_mul (W : ValuationSubring ℂ) {x y : ℂ} (hx : x ∉ W
   by_contra hy
   exact absurd h (not_lt.mpr (one_le_mul_of_one_le_of_one_le (not_lt.mp hx) (not_lt.mp hy)))
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ← ValuationSubring.coe_mem_nonunits_iff]`. Both sides reduce to the same expression.
+-/
 theorem sub_mem_nonunits_iff (W : ValuationSubring ℂ) (x y : W) :
     (x : ℂ) - y ∈ W.nonunits ↔ IsLocalRing.residue W x = IsLocalRing.residue W y := by
   rw [← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff,
     ← ValuationSubring.coe_mem_nonunits_iff]
   rfl
 
+/- English proof (translation)
+Rewrite using `[CharP.charP_iff_prime_eq_zero hp]`. Use `(sub_mem_nonunits_iff W (p : W) 0).mp (by simpa using h)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem charP_residueField (W : ValuationSubring ℂ) {p : ℕ} (hp : p.Prime)
     (h : (p : ℂ) ∈ W.nonunits) : CharP (IsLocalRing.ResidueField W) p := by
   rw [CharP.charP_iff_prime_eq_zero hp]
   have := (sub_mem_nonunits_iff W (p : W) 0).mp (by simpa using h)
   simpa using this
 
+/- English proof (translation)
+Use `charP_residueField W hp h` as an intermediate fact. Establish `h1 : (m : ℂ) ∉ W.nonunits` using `fun hc ↦ by`. Use `(sub_mem_nonunits_iff W (m : W) 0).mp (by simpa using hc)` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero, CharP.cast_eq_zero_iff _ p]`. Conclude with `hm this`.
+
+Rewrite `h1` using `[ValuationSubring.mem_nonunits_iff_or]`. Use `push Not at h1`. Conclude with `h1.2`.
+-/
 theorem inv_natCast_mem (W : ValuationSubring ℂ) {p m : ℕ} (hp : p.Prime)
     (h : (p : ℂ) ∈ W.nonunits) (hm : ¬ p ∣ m) : (m : ℂ)⁻¹ ∈ W := by
   have := charP_residueField W hp h
@@ -58,6 +81,11 @@ theorem inv_natCast_mem (W : ValuationSubring ℂ) {p m : ℕ} (hp : p.Prime)
   push Not at h1
   exact h1.2
 
+/- English proof (translation)
+Use `Fact.mk hp` as an intermediate fact. Establish `e1` using `congrArg (frobenius k p) e`. Simplify using `only [map_sub, map_mul, map_pow, map_one, map_ofNat, frobenius_def] at e1`. Generalize the expression as in `g ^ p = G at *`. Generalize the expression as in `h ^ p = H at *`.
+
+Substitute `h2 h3` using the available equality. Take the linear combination `e - a ^ 6 * e1`.
+-/
 theorem pow_six_eq_one {k : Type*} [CommRing k] {p : ℕ} (hp : p.Prime) [CharP k p] {g h a : k}
     (e : g ^ 3 - 27 * h ^ 2 = 1) (h2 : g = a ^ 2 * g ^ p) (h3 : h = a ^ 3 * h ^ p) :
     a ^ 6 = 1 := by
@@ -69,6 +97,19 @@ theorem pow_six_eq_one {k : Type*} [CommRing k] {p : ℕ} (hp : p.Prime) [CharP 
   subst h2 h3
   linear_combination e - a ^ 6 * e1
 
+/- English proof (translation)
+Use `charP_residueField W hp hW` as an intermediate fact. Use `lift g to W using hg`. Use `lift h to W using hh`. Use `lift a to W using ha`. Establish `e' : g ^ 3 - 27 * h ^ 2 = 1` using `Subtype.ext e`.
+
+Establish `e1` using `congrArg (IsLocalRing.residue W) e'`. Establish `e2` using `(sub_mem_nonunits_iff W g (a ^ 2 * g ^ p)).mp h2`. Establish `e3` using `(sub_mem_nonunits_iff W h (a ^ 3 * h ^ p)).mp h3`. Simplify using `only [map_sub, map_mul, map_pow, map_one, map_ofNat] at e1 e2 e3`. Establish `e4` using `pow_six_eq_one hp e1 e2 e3`.
+
+Use `⟨(sub_mem_nonunits_iff W (g ^ 3) ((g ^ 3) ^ p)).mpr ?_, fun x y hx hy ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [map_pow]`. Rewrite using `[← pow_mul _ 3 p, mul_comm 3 p, pow_mul]`. Generalize the expression as in `IsLocalRing.residue W g ^ p = G at *`. Rewrite using `[e2]`.
+
+Take the linear combination `G ^ 3 * e4`. Use `lift x to W using hx`. Establish `hy' : y ∈ W`. Use `add_mem (W.nonunits_subset hy) (a * x ^ p).2` as an intermediate fact. Simplify using `using this`.
+
+Use `lift y to W using hy'`. Establish `e5` using `(sub_mem_nonunits_iff W y (a * x ^ p)).mp hy`. Use `(sub_mem_nonunits_iff W (g * h * y) ((g * h * x) ^ p)).mpr ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, mul_pow] at e5 ⊢`. Generalize the expression as in `IsLocalRing.residue W g ^ p = G at *`.
+
+Generalize the expression as in `IsLocalRing.residue W h ^ p = H at *`. Rewrite using `[e2, e3, e5]`. Take the linear combination `G * H * IsLocalRing.residue W x ^ p * e4`.
+-/
 theorem congruences (W : ValuationSubring ℂ) {p : ℕ} (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits)
     {g h a : ℂ} (hg : g ∈ W) (hh : h ∈ W) (ha : a ∈ W) (e : g ^ 3 - 27 * h ^ 2 = 1)
     (h2 : g - a ^ 2 * g ^ p ∈ W.nonunits) (h3 : h - a ^ 3 * h ^ p ∈ W.nonunits) :
@@ -103,6 +144,11 @@ theorem congruences (W : ValuationSubring ℂ) {p : ℕ} (hp : p.Prime) (hW : (p
     rw [e2, e3, e5]
     linear_combination G * H * IsLocalRing.residue W x ^ p * e4
 
+/- English proof (translation)
+Establish `h1 : Fintype.card (InfinitePlace K) = 1`. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces K`. Establish `h3` using `InfinitePlace.card_add_two_mul_card_eq_rank K`. Establish `h4` using `IsTotallyComplex.nrRealPlaces_eq_zero K`. Use linear arithmetic over natural numbers and integers.
+
+Establish `: Subsingleton (InfinitePlace K)` using `Fintype.card_le_one_iff_subsingleton.mp h1.le`. Establish `h5` using `InfinitePlace.prod_eq_abs_norm (π : K)`. Rewrite `h5` using `[Fintype.prod_subsingleton _ (InfinitePlace.mk σ), IsTotallyComplex.mult_eq, InfinitePlace.apply]`. Rewrite using `[h5, Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_sq_eq_absNorm {K : Type*} [Field K] [NumberField K] [IsTotallyComplex K]
     (hK : Module.finrank ℚ K = 2) (σ : K →+* ℂ) (π : 𝓞 K) :
     ‖σ π‖ ^ 2 = Ideal.absNorm (Ideal.span {π}) := by
@@ -118,6 +164,37 @@ theorem norm_sq_eq_absNorm {K : Type*} [Field K] [NumberField K] [IsTotallyCompl
   rw [h5, Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int]
   simp
 
+/- English proof (translation)
+Introduce `K _ _ hK L hL W π p hp h5 hN hπ`. Establish `hcm : ∀ a : 𝓞 K, ∀ z ∈ L.lattice, ((a : K) : ℂ) * z ∈ L.lattice` using `fun a z hz ↦ by`. Take `⟨b, rfl⟩` from `(hL z).mp hz`. Conclude with `(hL _).mpr ⟨a * b, by simp⟩`. Establish `hj` using `mem_of_isIntegral W (CMCurves.isIntegral_latticeJ hK (K.val : K →+* ℂ) L hcm)`.
+
+Establish `hn : ‖((π : K) : ℂ)‖ ^ 2 = p`. Rewrite using `[← hN]`. Conclude with `norm_sq_eq_absNorm hK (K.val : K →+* ℂ) π`. Establish `hπi : IsIntegral ℤ ((π : K) : ℂ)` using `(RingOfIntegers.isIntegral_coe π).map (K.val : K →+* ℂ).toIntAlgHom`. Establish `hpW : (p : ℂ) ∈ W.nonunits`.
+
+Use `mul_mem_nonunits W hπ (mem_of_isIntegral W (hπi.map (starRingEnd ℂ).toIntAlgHom))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `_ = _ * (starRingEnd ℂ) _`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hn]`. Simplify using the standard rewrite rules.
+
+Establish `i2 : (2 : ℂ)⁻¹ ∈ W`. Simplify using `using inv_natCast_mem W (m := 2) hp hpW fun h ↦ by`. Use `Nat.le_of_dvd (by norm_num) h; omega` as an intermediate fact. Establish `i3 : (3 : ℂ)⁻¹ ∈ W`. Simplify using `using inv_natCast_mem W (m := 3) hp hpW fun h ↦ by`.
+
+Use `Nat.le_of_dvd (by norm_num) h; omega` as an intermediate fact. Establish `hΔ` using `g₂_cube_sub_g₃_sq_ne_zero L`. Take `⟨c, hc⟩` from `IsAlgClosed.exists_pow_nat_eq (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) (n := 12) (by norm_num)`. Establish `hc0 : c ≠ 0` using `by rintro rfl; exact hΔ (by simpa using hc.symm)`. Establish `H` using `isHomothetic_scalePeriods L c hc0`.
+
+Generalize the expression as in `scalePeriods L c hc0 = L' at H`. Establish `hΔ' : L'.g₂ ^ 3 - 27 * L'.g₃ ^ 2 = 1`. Rewrite using `[H.g₂_eq, H.g₃_eq]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hc`.
+
+Establish `eJ : L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) = L'.g₂ ^ 3`. Rewrite using `[H.g₂_eq, ← hc]`. Clear the denominators using the available nonvanishing facts. Establish `eW : ∀ t, L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * L.weierstrassP t = L'.g₂ * L'.g₃ * L'.weierstrassP (c * t)` using `fun t ↦ by`. Rewrite using `[H.g₂_eq, H.g₃_eq, H.weierstrassP_mul, ← hc]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hJ : L'.g₂ ^ 3 ∈ W`. Use `mul_mem (mul_mem (pow_mem i2 6) (pow_mem i3 3)) hj` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← eJ, CMCurves.latticeJ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hg` using `mem_of_pow_mem W three_ne_zero hJ`. Establish `hh : L'.g₃ ∈ W`. Use `mem_of_pow_mem W two_ne_zero ?_` and prove the remaining obligations. Use `mul_mem (pow_mem i3 3) (sub_mem hJ (one_mem W))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-1 / 27 : ℂ) * hΔ'`. Establish `hD : (L'.g₂ ^ 3 - 27 * L'.g₃ ^ 2)⁻¹ ∈ W` using `by rw [hΔ', inv_one]; exact one_mem W`. Take `⟨a, ha, -, -, a2, a3, a4⟩` from `GlobalTheory.T.weierstrassP_complexMultiplication_congruence_mod_prime L' W ((π : K) : ℂ) p i2 i3 hg hh hD hp hpW hπ (fun l hl ↦ by`. Take `⟨z, rfl⟩ : ∃ z, l = c * z` from `⟨c⁻¹ * l, by field_simp⟩`.
+
+Rewrite using `[mul_left_comm]`. Conclude with `(H _).mpr (hcm π z ((H z).mp hl))) hn`. Take `⟨c1, c2⟩` from `congruences W hp hpW hg hh ha hΔ' a2 a3`. Simplify using `only [eW]`. Rewrite using `[eJ]`.
+
+Use `⟨hJ, c1, fun m hm hpm ↦ ?_⟩` and prove the remaining obligations. Establish `im` using `inv_natCast_mem W hp hpW hpm`. Take `⟨t1, t2⟩` from `GlobalTheory.T.weierstrassP_torsion_integral_and_distinct_mod L' W m i2 i3 hg hh hD hm im`. Establish `s1 : ∀ t, (m : ℂ) * t ∈ L.lattice → (m : ℂ) * (c * t) ∈ L'.lattice` using `fun t ht ↦ by`. Rewrite using `[mul_left_comm]`.
+
+Conclude with `(H _).mpr ht`. Use `⟨fun t ht ht' ↦ ?_, fun n1 n2 t t' ht ht0 ht' ht0' h ↦ ?_⟩` and prove the remaining obligations. Establish `hx` using `t1 (c * t) (s1 t ht) ((H t).not.mpr ht')`. Use `⟨mul_mem (mul_mem hg hh) hx, c2 _ _ hx ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm]`.
+
+Conclude with `a4 m (c * t) hm im (s1 t ht) ((H t).not.mpr ht')`. Establish `n3 : L'.g₂ ∉ W.nonunits` using `fun h ↦ n1 (by`. Simplify `mul_mem_nonunits W h (pow_mem hg 2))` using `[pow_succ']`. Establish `n4 : L'.g₃ ∉ W.nonunits` using `fun h ↦ n2 (by`. Use `mul_mem_nonunits W h (mul_mem (ofNat_mem W 27) hh)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `hΔ')`. Rewrite `h` using `[← mul_sub, mul_assoc]`. Use `t2 (c * t) (c * t') (s1 t ht) ((H t).not.mpr ht0) (s1 t' ht') ((H t').not.mpr ht0') (mem_nonunits_of_mul W n4 (mem_nonunits_of_mul W n3 h))` as an intermediate fact. Rewrite `this` using `[← mul_sub, ← mul_add, H, H]`. Then use the resulting hypothesis.
+-/
 theorem weber_congruences : ∀ (K : IntermediateField ℚ ℂ) [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 → ∀ L : PeriodPair, (∀ z, z ∈ L.lattice ↔ ∃ a : 𝓞 K, ((a : K) : ℂ) = z) → ∀ (W : ValuationSubring ℂ) (π : 𝓞 K) (p : ℕ), p.Prime → 5 ≤ p → Ideal.absNorm (Ideal.span {π}) = p → ((π : K) : ℂ) ∈ W.nonunits → (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) ∈ W ∧ (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) - (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) ^ p ∈ W.nonunits ∧ ∀ (m : ℕ), Odd m → ¬ p ∣ m → (∀ t, (m : ℂ) * t ∈ L.lattice → t ∉ L.lattice → (L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * L.weierstrassP t) ∈ W ∧ (L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * L.weierstrassP (((π : K) : ℂ) * t)) - (L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * L.weierstrassP t) ^ p ∈ W.nonunits) ∧ ((L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) ∉ W.nonunits → (L.g₂ ^ 3 / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2)) - 1 ∉ W.nonunits → ∀ t t', (m : ℂ) * t ∈ L.lattice → t ∉ L.lattice → (m : ℂ) * t' ∈ L.lattice → t' ∉ L.lattice → (L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * L.weierstrassP t) - (L.g₂ * L.g₃ / (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) * L.weierstrassP t') ∈ W.nonunits → t - t' ∈ L.lattice ∨ t + t' ∈ L.lattice) := by
   intro K _ _ hK L hL W π p hp h5 hN hπ
   have hcm : ∀ a : 𝓞 K, ∀ z ∈ L.lattice, ((a : K) : ℂ) * z ∈ L.lattice := fun a z hz ↦ by

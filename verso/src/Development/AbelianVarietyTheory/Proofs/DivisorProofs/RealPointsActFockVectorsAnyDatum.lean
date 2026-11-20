@@ -22,6 +22,25 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.FockAnyDatum
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR i ξR Q φ hφ u hu x w`. Establish `hθ : IsInfFam R.θ` using `hR.models.inf`. Establish `hω` using `hR.thP.ωP`. Establish `hthφ : IsThetaFunO R.ψ (Vc D i) (Wc D i) φ`. Take `⟨⟨hψ, h0⟩, e, -, h⟩` from `hφ`.
+
+Conclude with `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hψ hθ h h0.theta`. Establish `hthv : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i A.μ0)`. Take `⟨⟨hψ, h0⟩, e, -, h⟩` from `hR.thP.vP i A.μ0`. Conclude with `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hψ hθ h h0.theta`. Establish `hvφ` using `GlobalTheory.DatumFock.isFockVacAt_thPVec _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hφ hthφ`.
+
+Establish `hvv` using `GlobalTheory.DatumFock.isFockVacAt_thPVec _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (hR.thP.vP i A.μ0) hthv`. Establish `hBS : ∀ τ, (R.BV i τ)ᴴ * gramAt D (Vc D i) τ * R.BV i τ = 1` using `fun τ => GlobalTheory.JointHarm.onb_eq_one (hR.models.BV i τ)`. Establish `hBu : ∀ τ, IsUnit (R.BV i τ)` using `fun τ => IsUnit.of_mul_eq_one_right _ (hBS τ)`. Take `⟨x₁, x₂, x₃, hx⟩` from `GlobalTheory.T.lowestKType_coefficientWeight_eq_minorWeights D i (sg0 D A) (sgAt_mk _ R.hv0) (R.MW i (sg0 D A)) (hR.models.order i)`. Establish `hrk : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`.
+
+Establish `hpq : ∀ τ, ((Wc D i).sig (tauE D τ)).1 + ((Wc D i).sig (tauE D τ)).2 = (Wc D i).rank` using `fun τ => (GlobalTheory.T.thetaWeightArithmeticAtPlace_proof D i τ).rank.1.trans hrk.symm`. Establish `hfr : ∀ τ, (R.MW i (sg0 D A)).fr τ * ((R.MW i (sg0 D A)).fr τ)⁻¹ = 1` using `fun τ => Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 ((R.MW i (sg0 D A)).fr_unit τ))`. Establish `e : (fun τ => (R.MW i (sg0 D A)).fr τ * compAt R.θ τ (Formalism.L2.Theta.mt (Wc D i) 1) * ((R.MW i (sg0 D A)).fr τ)⁻¹) = 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[GlobalTheory.JointHarm.compAt_mt_one', Matrix.mul_one, hfr]`.
+
+Both sides reduce to the same expression. Establish `act` using `fun (f : WO (Vc D i) (Wc D i) → ℂ) (hf : IsThetaFunO R.ψ (Vc D i) (Wc D i) f) hv => GlobalTheory.T.weil_maximalCompact_fock_substitution_character D R.ψ R.θ (Vc D i) (Wc D i) _ _ (R.ωP i A.μ0) _ (R.MW i (sg0 D A)) (R.BV i) (hω i A.μ0) hθ (D.sp.V_sig _) (D.sp.W_sig _) hBS _ _ hpq …`. Establish `aφ` using `(act φ hthφ hvφ).2`. Establish `av` using `(act _ hthv hvv).2`. Rewrite `aφ`, `av` using `[e]`.
+
+Establish `hcV : ∀ τ, IsCartanInv (gramAt D (Vc D i) τ) ((fun _ => (1 : Matrix (Fin (Vc D i).rank) (Fin (Vc D i).rank) ℂ)) τ)` using `fun τ => by`. Establish `hu'` using `(Matrix.isUnit_iff_isUnit_det _).1 (hBu τ)`. Establish `h1` using `Matrix.mul_nonsing_inv _ hu'`. Establish `hG : gramAt D (Vc D i) τ = ((R.BV i τ)⁻¹)ᴴ * (R.BV i τ)⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_assoc, h1, Matrix.mul_one]`. Use `_ = _ := by rw [hBS τ, Matrix.mul_one]`. Use `⟨Matrix.one_mul _, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_one, hG]`. Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.2 (Matrix.isUnit_nonsing_inv_iff.2 (hBu τ)))`.
+
+Establish `hne : R.vP i A.μ0 ≠ 0` using `GlobalTheory.AdTh.VecNe.thPVec_ne_zero (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hR.lev.βV i)) (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hR.lev.βW i)) (hrk.trans_le (r_le_V i)) (hR.thP.vP i A.μ0)`. Establish `hinj` using `GlobalTheory.FockVecInj.pureTensorO_injective D R.ψ R.θ (Vc D i) (Wc D i) (hω i A.μ0).std hθ (fun _ => 1) (R.BV i) (cart (R.MW i (sg0 D A))) (onb (R.MW i (sg0 D A))) (fun _ => (Vc D i).rank) _ hcV (fun τ => GlobalTheory.AdTh.VecFock.isCartanInv_cart _ τ) (hR.models.BV i) (fun τ = …`. Establish `key` using `(hR.thP.ioP i A.μ0).1 u hu x w`. Unfold `RealDat.ptP at key`. Rewrite `key` using `[av]`.
+
+Rewrite using `[aφ, hinj key]`.
+-/
 theorem om_ioP_of_datum : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m) (ξR : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (Q : Finset (Pl D.host.E)) (φ : WO (Vc D i) (Wc D i) → ℂ), IsThPVecOf R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) R.Pg Q ξR (R.vacP i) φ → ∀ u ∈ GinfC (Vc D i), ∀ x w, R.ωP i A.μ0 (u, 1) (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) φ (R.ioP i x w)) = pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) φ (R.ioP i x ((R.cV i).ρ u w)) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR i ξR Q φ hφ u hu x w
   have hθ : IsInfFam R.θ := hR.models.inf

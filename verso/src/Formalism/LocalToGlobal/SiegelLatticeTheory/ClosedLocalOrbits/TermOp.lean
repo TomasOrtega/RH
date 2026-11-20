@@ -21,6 +21,9 @@ variable {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 def rk1 (v : V) (w : V') : V' →L[ℂ] V := (innerSL ℂ w).smulRight v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankOneInnerOperator_apply (v : V) (w ξ : V') : rk1 v w ξ = (inner ℂ w ξ) • v := rfl
 
 variable {G : Type*} [Group G] [MeasurableSpace G]
@@ -65,6 +68,9 @@ def RatLink (x : X.B.I.GA) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : Prop :=
       (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)) ∧
     ∀ y, X.crd (γ y) = (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd y
 
+/- English proof (translation)
+Take `⟨M, h1, h2, h3, -⟩` from `h`. Conclude with `⟨M, h1, h2, h3⟩`.
+-/
 theorem ratLink_mem {x : X.B.I.GA} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h : RatLink X x γ) :
     x ∈ X.B.I.GFset := by
   obtain ⟨M, h1, h2, h3, -⟩ := h
@@ -184,6 +190,9 @@ def chiL (κ : X.B.I.Gf) : ℂ :=
   X.psiEf (divN X.B.I X.B.g (∑ i : Fin D.R.k,
     if h : i.1 + 1 < D.R.k then hA X.B.I (X.bwd i) (X.B.I.fmat κ *ᵥ X.bw ⟨i.1 + 1, h⟩) else 0))
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.SG.HidaSetting.HidaSetting.chi2, Formalism.L2.SG.HidaSetting.chi2f, chiN, chiL, Formalism.L2.SG.HidaSetting.divN, mul_add]`. Conclude with `X.psiEf_add _ _`.
+-/
 theorem level_char_eq_mul (κ : X.B.I.Gf) : X.chi2 κ = chiN X κ * chiL X κ := by
   simp only [Formalism.L2.SG.HidaSetting.HidaSetting.chi2, Formalism.L2.SG.HidaSetting.chi2f, chiN, chiL,
     Formalism.L2.SG.HidaSetting.divN, mul_add]

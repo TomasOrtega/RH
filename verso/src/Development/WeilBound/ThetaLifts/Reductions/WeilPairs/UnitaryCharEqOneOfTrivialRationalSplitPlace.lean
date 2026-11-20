@@ -24,6 +24,17 @@ section Char
 
 variable {ν : GAF (c : E →ₐ[F] E) J →* Circle}
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `g hg`. Rewrite `hg` using `[Finset.sum_empty, zero_smul]`. Rewrite using `[show g = 1 from mt_ext (sub_eq_zero.1 hg.symm), map_one]`.
+
+Consider the case `insert v S hv ih`. Introduce `g hg`. Take `⟨e, he, he'⟩` from `exists_splitAt hcm v (hS v (Finset.mem_insert_self _ _))`. Establish `hp : pl E v * pl E v = pl E v`. Rewrite using `[← map_mul, singleV_mul, evalV_singleV_same, one_mul]`.
+
+Establish `hp' : (1 - pl E v) * (1 - pl E v) = 1 - pl E v` using `by linear_combination hp`. Establish `hσ : cAF σ (pl E v) = pl E v` using `cA_fj _ _`. Establish `hσ' : cAF σ (1 - pl E v) = 1 - pl E v` using `by rw [map_sub, map_one, hσ]`. Establish `hq : pl E v * ∑ w ∈ S, pl E w = 0`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun w hw => pl_mul_pl fun h => hv (h ▸ hw)`. Rewrite `hg` using `[Finset.sum_insert hv]`. Rewrite using `[← cutA_mul _ hp hσ hp' hσ' g, map_mul, hs e he, one_mul]`. Use `ih (fun w hw => hS w (Finset.mem_insert_of_mem hw)) _ ?_` and prove the remaining obligations. Rewrite using `[mt_cutA, add_sub_cancel_left, smul_smul]`.
+
+Use `conv_rhs => rw [← hg, smul_smul]`. Use `congr 1`. Take the linear combination `hp`. Introduce `i j`. Rewrite using `[mt_cutA, add_sub_cancel_left, he', Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hp]`.
+-/
 theorem eq_one_of_finset (hcm : IsCMExt F E σ) (hs : ∀ e, IsSplitIdemF σ e → ∀ g, SuppAtF σ e J g → ν g = 1)
     (S : Finset (HeightOneSpectrum (𝓞 F))) (hS : ∀ v ∈ S, SplitPl c v) :
     ∀ g : GAF σ J, (∑ v ∈ S, pl E v) • (mtF σ J g - 1) = mtF σ J g - 1 → ν g = 1 := by
@@ -54,6 +65,9 @@ theorem eq_one_of_finset (hcm : IsCMExt F E σ) (hs : ∀ e, IsSplitIdemF σ e �
     · intro i j
       rw [mt_cutA, add_sub_cancel_left, he', Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hp]
 
+/- English proof (translation)
+Use `eq_one_of_finset hcm hs h2.toFinset (fun v hv => h3 v (h2.mem_toFinset.1 hv)) g ?_` and prove the remaining obligations. Rewrite using `[← map_sum, ← idem_eq_sum e h1 h2.toFinset (fun v => h2.mem_toFinset), hg]`.
+-/
 theorem eq_one_of_idem (hcm : IsCMExt F E σ) (hs : ∀ e, IsSplitIdemF σ e → ∀ g, SuppAtF σ e J g → ν g = 1) (e : Af F)
     (h1 : e * e = e) (h2 : {v | e v ≠ 0}.Finite) (h3 : ∀ v, e v ≠ 0 → SplitPl c v) (g : GAF σ J)
     (hg : fj E e • (mtF σ J g - 1) = mtF σ J g - 1) : ν g = 1 := by
@@ -62,13 +76,22 @@ theorem eq_one_of_idem (hcm : IsCMExt F E σ) (hs : ∀ e, IsSplitIdemF σ e →
 
 end Char
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨x, hx⟩ := GlobalTheory.SplitDetCharF.sig_ne hcm exact hx (by subst h; rfl)`.
+-/
 theorem c_ne_one (hcm : IsCMExt F E σ) : c ≠ 1 := fun h => by
   obtain ⟨x, hx⟩ := GlobalTheory.SplitDetCharF.sig_ne hcm
   exact hx (by subst h; rfl)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.SplitDetCharF.sig_invol hcm, c_ne_one hcm, fun a b => hJ.1 a b, by rw [Matrix.det_transpose]; exact hJ.2⟩`.
+-/
 theorem isHermForm (hcm : IsCMExt F E σ) (hJ : IsHermND σ J) : IsHermForm c Jᵀ :=
   ⟨GlobalTheory.SplitDetCharF.sig_invol hcm, c_ne_one hcm, fun a b => hJ.1 a b, by rw [Matrix.det_transpose]; exact hJ.2⟩
 
+/- English proof (translation)
+Unfold `hermE Formalism.UG.hform`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x b * J a b * c (y a) = c (y a) * J a b * x b`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermE_eq (x y : Fin n → E) : hermE c Jᵀ x y = Formalism.UG.hform (σ : E →+* E) J y x := by
   unfold hermE Formalism.UG.hform
   rw [Finset.sum_comm]
@@ -76,6 +99,9 @@ theorem hermE_eq (x y : Fin n → E) : hermE c Jᵀ x y = Formalism.UG.hform (σ
   change x b * J a b * c (y a) = c (y a) * J a b * x b
   ring
 
+/- English proof (translation)
+Unfold `GlobalTheory.AdLat.hermA Formalism.UG.hform`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x b * JR (Af F) J a b * sigR (Af F) σ (y a) = sigR (Af F) σ (y a) * JR (Af F) J a b * x b`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermA_eq (x y : Fin n → Af F ⊗[F] E) :
     GlobalTheory.AdLat.hermA c Jᵀ x y = Formalism.UG.hform (sigR (Af F) σ) (JR (Af F) J) y x := by
   unfold GlobalTheory.AdLat.hermA Formalism.UG.hform
@@ -84,11 +110,17 @@ theorem hermA_eq (x y : Fin n → Af F ⊗[F] E) :
   change x b * JR (Af F) J a b * sigR (Af F) σ (y a) = sigR (Af F) σ (y a) * JR (Af F) J a b * x b
   ring
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Member.RatElt.mem_UJ_iff]`. Simplify using `only [IsUnE, hermE_eq]`. Conclude with `⟨fun h x y => h y x, fun h x y => h y x⟩`.
+-/
 theorem isUnE_iff (g : GL (Fin n) E) : IsUnE c Jᵀ g.1 ↔ g ∈ Formalism.UG.UJ (σ : E →+* E) J := by
   rw [GlobalTheory.Member.RatElt.mem_UJ_iff]
   simp only [IsUnE, hermE_eq]
   exact ⟨fun h x y => h y x, fun h x y => h y x⟩
 
+/- English proof (translation)
+Rewrite using `[HR, GlobalTheory.Member.RatElt.mem_UJ_iff]`. Simplify using `only [IsUnA, hermA_eq]`. Conclude with `⟨fun h x y => h y x, fun h x y => h y x⟩`.
+-/
 theorem isUnA_iff (g : GL (Fin n) (Af F ⊗[F] E)) : IsUnA c Jᵀ g.1 ↔ g ∈ HR (Af F) σ J := by
   rw [HR, GlobalTheory.Member.RatElt.mem_UJ_iff]
   simp only [IsUnA, hermA_eq]
@@ -100,8 +132,14 @@ def ratPt (g : GL (Fin n) E) (hg : g ∈ Formalism.UG.UJ (σ : E →+* E) J) : G
     change Formalism.UG.cT _ (g.1.map (incAF F E)) * J.map (incAF F E) * g.1.map (incAF F E) = J.map (incAF F E)
     rw [GlobalTheory.AutFunCounterexample.cT_map_gen, ← Matrix.map_mul, ← Matrix.map_mul, hg']⟩ : HR (AF F) σ J)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨g, hg, rfl⟩`.
+-/
 theorem ratPt_mem (g : GL (Fin n) E) (hg : g ∈ Formalism.UG.UJ (σ : E →+* E) J) : ratPt g hg ∈ GQF σ J := ⟨g, hg, rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_ratPt (g : GL (Fin n) E) (hg : g ∈ Formalism.UG.UJ (σ : E →+* E) J) :
     mtF σ J (ratPt g hg) = g.1.map (incAF F E) := rfl
 
@@ -113,25 +151,43 @@ def rfA (a : AEF F E) (ha : a * cAF σ a = 1) : GAF σ J :=
   rf (cAF σ) (JR (AF F) J) (P.map (incAF F E)) (by rw [← Matrix.map_mul, hP])
     (by rw [GlobalTheory.AutFunCounterexample.cT_map_gen, JR, ← Matrix.map_mul, ← Matrix.map_mul, hJ]) a ha
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_rfA (a : AEF F E) (ha : a * cAF σ a = 1) :
     mtF σ J (rfA hP hJ a ha) = 1 + (a - 1) • P.map (incAF F E) := rfl
 
+/- English proof (translation)
+Rewrite using `[show cAF σ (incAF F E u) = incAF F E (c u) from rfl, ← map_mul, hu, map_one]`.
+-/
 theorem norm_incA {u : E} (hu : u * c u = 1) : incAF F E u * cAF σ (incAF F E u) = 1 := by
   rw [show cAF σ (incAF F E u) = incAF F E (c u) from rfl, ← map_mul, hu, map_one]
 
+/- English proof (translation)
+Rewrite using `[mt_rfA]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, apply_ite (incAF F E)]`.
+-/
 theorem mt_rfA_rat {u : E} (hu : u * c u = 1) :
     mtF σ J (rfA hP hJ _ (norm_incA hu)) = (1 + (u - 1) • P).map (incAF F E) := by
   rw [mt_rfA]
   ext i j
   simp [Matrix.one_apply, apply_ite (incAF F E)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(rf (σ : E →+* E) J P hP hJ u hu).1, (rf (σ : E →+* E) J P hP hJ u hu).2, Units.ext (mt_rfA_rat hP hJ hu).symm⟩`.
+-/
 theorem rfA_mem {u : E} (hu : u * c u = 1) : rfA hP hJ _ (norm_incA hu) ∈ GQF σ J :=
   ⟨(rf (σ : E →+* E) J P hP hJ u hu).1, (rf (σ : E →+* E) J P hP hJ u hu).2, Units.ext (mt_rfA_rat hP hJ hu).symm⟩
 
+/- English proof (translation)
+The claim follows from `cut_rf (cAF σ) (JR (AF F) J) _ _ _ ε hε hσ a ha`.
+-/
 theorem cutA_rfA (ε : AEF F E) (hε : ε * ε = ε) (hσ : cAF σ ε = ε) (a : AEF F E) (ha : a * cAF σ a = 1) :
     cutA σ J ε hε hσ (rfA hP hJ a ha) = rfA hP hJ (1 + ε * (a - 1)) (norm_cut (cAF σ) ε hε hσ a ha) :=
   cut_rf (cAF σ) (JR (AF F) J) _ _ _ ε hε hσ a ha
 
+/- English proof (translation)
+Establish `: IsModuleTopology (AF F) (AEF F E)` using `⟨rfl⟩`. Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AEF F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Conclude with `tendsto_rf (cAF σ) _ continuous_cA _ _ _ ha ha₀ h`.
+-/
 theorem tendsto_rfA {a : ℕ → AEF F E} (ha : ∀ k, a k * cAF σ (a k) = 1) {a₀ : AEF F E}
     (ha₀ : a₀ * cAF σ a₀ = 1) (h : Tendsto a atTop (𝓝 a₀)) :
     Tendsto (fun k => rfA hP hJ (a k) (ha k)) atTop (𝓝 (rfA hP hJ a₀ ha₀)) := by
@@ -140,6 +196,13 @@ theorem tendsto_rfA {a : ℕ → AEF F E} (ha : ∀ k, a k * cAF σ (a k) = 1) {
   have : IsTopologicalRing (AEF F E) := IsModuleTopology.isTopologicalRing (AF F) _
   exact tendsto_rf (cAF σ) _ continuous_cA _ _ _ ha ha₀ h
 
+/- English proof (translation)
+Take `⟨w, e, hw, he, t1, t2⟩` from `exists_seq c (GlobalTheory.SplitDetCharF.sig_invol hcm) (c_ne_one hcm) u hu`. Establish `hε : ∀ k, fj E (e k) * fj E (e k) = fj E (e k)` using `fun k => by rw [← map_mul, (he k).1]`. Establish `hε' : ∀ k, (1 - fj E (e k)) * (1 - fj E (e k)) = 1 - fj E (e k)` using `fun k => by linear_combination hε k`. Establish `hσ' : ∀ k, cAF σ (1 - fj E (e k)) = 1 - fj E (e k)` using `fun k => by rw [map_sub, map_one, cA_fj]`. Establish `n1` using `fun k => norm_cut (cAF σ) _ (hε' k) (hσ' k) _ (norm_incA (hw k))`.
+
+Establish `h1 : ∀ k, ν (rfA hP hJ _ (n1 k)) = 1` using `fun k => by`. Establish `a1` using `hq _ (rfA_mem hP hJ (hw k))`. Rewrite `a1` using `[← cutA_mul _ (hε k) (cA_fj _ _) (hε' k) (hσ' k) (rfA _ _ _ _), map_mul, eq_one_of_idem hcm hs (e k) (he k).1 (he k).2.1 (he k).2.2 _ (by rw [mt_cutA, add_sub_cancel_left, smul_smul, hε]), one_mul, cutA_rfA]`. Conclude with `a1`. Establish `t : Tendsto (fun k => 1 + (1 - fj E (e k)) * (incAF F E (w k) - 1)) atTop (𝓝 (1 + (1 - fj E 1) * (incAF F E u - 1)))` using `tendsto_scal t1 t2`.
+
+Establish `t'` using `(hν.tendsto _).comp (tendsto_rfA hP hJ n1 (norm_cut (cAF σ) _ idem_inf conj_inf _ (norm_incA hu)) t)`. Rewrite using `[pInf, cutA_rfA]`. Conclude with `tendsto_nhds_unique t' (tendsto_const_nhds.congr fun k => (h1 k).symm)`.
+-/
 theorem eq_one_refl (hcm : IsCMExt F E σ) {ν : GAF σ J →* Circle} (hν : Continuous ν) (hq : ∀ γ ∈ GQF σ J, ν γ = 1)
     (hs : ∀ e, IsSplitIdemF σ e → ∀ g, SuppAtF σ e J g → ν g = 1) {u : E} (hu : u * c u = 1) :
     ν (pInf σ J (rfA hP hJ _ (norm_incA hu))) = 1 := by
@@ -163,6 +226,15 @@ theorem eq_one_refl (hcm : IsCMExt F E σ) {ν : GAF σ J →* Circle} (hν : Co
 
 end Refl
 
+/- English proof (translation)
+Take `⟨-, -, l3, l4⟩` from `GlobalTheory.UnRep.ReflLaws.refl_laws _ _ c n Jᵀ hH x hx`. Take `⟨P, hP⟩ : ∃ P : Matrix (Fin n) (Fin n) E, ∀ u, GlobalTheory.UnRep.refl c Jᵀ x u = 1 + (u - 1) • P` from `⟨(hermE c Jᵀ x x)⁻¹ • Matrix.vecMulVec x (Jᵀ *ᵥ fun b => c (x b)), fun u => by`. Rewrite using `[GlobalTheory.UnRep.refl, smul_smul, div_eq_mul_inv]⟩`. Establish `hPP : P * P = P`. Use `l3 0 0` as an intermediate fact.
+
+Rewrite `this` using `[mul_zero, hP, zero_sub, neg_smul, one_smul]`. Take the linear combination `(norm := noncomm_ring) this`. Use `⟨P, hPP, ?_, hP⟩` and prove the remaining obligations. Establish `hr : GlobalTheory.UnRep.refl c Jᵀ x (-1) * GlobalTheory.UnRep.refl c Jᵀ x (-1) = 1`. Rewrite using `[l3, hP]`.
+
+Simplify using the standard rewrite rules. Establish `h1 : Formalism.UG.cT (σ : E →+* E) (GlobalTheory.UnRep.refl c Jᵀ x (-1)) * J * GlobalTheory.UnRep.refl c Jᵀ x (-1) = J` using `(isUnE_iff (⟨_, _, hr, hr⟩ : GL (Fin n) E)).1 (l4 (-1) (by simp))`. Establish `h2` using `congrArg (· * GlobalTheory.UnRep.refl c Jᵀ x (-1)) h1`. Simplify using `only [mul_assoc, hr, mul_one] at h2`. Rewrite `h2` using `[hP, cT_add, cT_smul, Formalism.UG.cT_one, add_mul, mul_add, one_mul, mul_one, add_right_inj, Matrix.smul_mul, Matrix.mul_smul, map_sub, map_neg, map_one]`.
+
+Conclude with `smul_right_injective _ (by norm_num) h2`.
+-/
 theorem exists_proj (hH : IsHermForm c Jᵀ) (x : Fin n → E) (hx : hermE c Jᵀ x x ≠ 0) :
     ∃ P : Matrix (Fin n) (Fin n) E, P * P = P ∧ Formalism.UG.cT (σ : E →+* E) P * J = J * P ∧
       ∀ u, GlobalTheory.UnRep.refl c Jᵀ x u = 1 + (u - 1) • P := by
@@ -189,6 +261,15 @@ section Char
 
 variable {ν : GAF (c : E →ₐ[F] E) J →* Circle}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Introduce `γ h`. Rewrite `h` using `[List.map_nil, List.prod_nil, Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _)]`. Rewrite using `[show γ = 1 from mt_ext h, map_one, map_one]`.
+
+Consider the case `cons p l ih`. Introduce `γ h`. Take `⟨hx, hu⟩` from `hl p List.mem_cons_self`. Take `⟨P, hP, hJ, hr⟩` from `exists_proj hH p.1 hx`. Rewrite `h` using `[List.map_cons, List.prod_cons, Matrix.map_mul, hr, ← mt_rfA_rat hP hJ hu]`.
+
+Establish `h1` using `eq_one_refl hP hJ hcm hν hq hs hu`. Generalize the expression as in `rfA hP hJ _ (norm_incA hu) = r at h h1`. Establish `h2` using `ih (fun q hq => hl q (List.mem_cons_of_mem _ hq)) (r⁻¹ * γ) (by`. Rewrite using `[mt_mul, h, ← mul_assoc, ← mt_mul, inv_mul_cancel]`. Conclude with `one_mul _)`.
+
+Rewrite using `[← mul_inv_cancel_left r γ, map_mul, map_mul, h1, h2, mul_one]`.
+-/
 theorem eq_one_rat (hcm : IsCMExt F E σ) (hH : IsHermForm c Jᵀ) (hν : Continuous ν) (hq : ∀ γ ∈ GQF σ J, ν γ = 1)
     (hs : ∀ e, IsSplitIdemF σ e → ∀ g, SuppAtF σ e J g → ν g = 1) (l : List ((Fin n → E) × E))
     (hl : ∀ p ∈ l, hermE c Jᵀ p.1 p.1 ≠ 0 ∧ p.2 * c p.2 = 1) :
@@ -222,6 +303,39 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB n J hJ`. Establish `hcm` using `hB.cm`. Establish `hσ` using `GlobalTheory.SplitDetCharF.sig_invol hcm`. Take `⟨c, rfl⟩ : ∃ c : E ≃ₐ[F] E, (c : E →ₐ[F] E) = σ` from `⟨AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ), rfl⟩`. Introduce `ν hν hq hs`.
+
+Establish `hH` using `isHermForm hcm hJ`. Take `⟨e, he⟩` from `GlobalTheory.Mem.VolSplit.exists_adelic_split F E (c : E →ₐ[F] E) n J`. Establish `he1 : ∀ g, (Formalism.IndefR.DatumF.mtF _ J g).map (Formalism.IndefR.DatumF.infPartF F E) = (HA.mat _ _ J (e g).1).1` using `fun g => (he g).2.symm`. Establish `he2 : ∀ g, (Formalism.IndefR.DatumF.mtF _ J g).map (Formalism.IndefR.DatumF.finPartF F E) = (HA.mat _ _ J (e g).2).1` using `fun g => (he g).1.symm`. Establish `hc1 : Continuous fun x : HA (Ainf F) (c : E →ₐ[F] E) J => ν (e.symm (x, 1))` using `hν.comp (e.symm.continuous.comp (continuous_id.prodMk continuous_const))`.
+
+Establish `hc2 : Continuous fun x : HA (Af F) (c : E →ₐ[F] E) J => ν (e.symm (1, x))` using `hν.comp (e.symm.continuous.comp (continuous_const.prodMk continuous_id))`. Establish `hinf : ∀ x, ν (e.symm (x, 1)) = 1`. Establish `hd` using `GlobalTheory.RealApprox.dense_inf F E (c : E →ₐ[F] E) hσ (GlobalTheory.SplitDetCharF.sig_ne hcm) J (Matrix.ext fun i j => hJ.1 i j) hJ.2`. Use `fun x => hd.induction (P := fun x => ν (e.symm (x, 1)) = 1) ?_ (isClosed_eq hc1 continuous_const) x` and prove the remaining obligations. Introduce and unpack `x ⟨γ, hγ, hx⟩`.
+
+Take `⟨l, hl, e'⟩` from `GlobalTheory.UnRep.isUnE_eq_prod_refl _ _ c n Jᵀ hH γ.1 ((isUnE_iff γ).2 hγ)`. Establish `h3` using `eq_one_rat hcm hH hν hq hs l hl (ratPt γ hγ) (by rw [← e']; rfl)`. Establish `h4 : e.symm (x, 1) = pInf _ J (ratPt γ hγ)`. Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[he1, e.apply_symm_apply, inf_pInf, mt_ratPt]`.
+
+Use `(congrArg Units.val hx).symm.trans ?_` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(Algebra.TensorProduct.map_tmul _ _ _ _ |>.trans (by rw [map_one]; rfl)).symm`. Rewrite using `[he2, e.apply_symm_apply, fin_pInf]`. Both sides reduce to the same expression.
+
+Rewrite using `[h4, h3]`. Establish `hsplit : ∀ g, ν g = ν (e.symm (1, (e g).2))` using `fun g => by`. Establish `: g = e.symm ((e g).1, 1) * e.symm (1, (e g).2)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, one_mul, Prod.mk.eta, e.symm_apply_apply]`. Use `conv_lhs => rw [this, map_mul, hinf, one_mul]`.
+
+Set `μ : HA (Af F) (c : E →ₐ[F] E) J →* Circle` to `ν.comp (e.symm.toMonoidHom.comp (MonoidHom.inr _ _))`. Establish `hμ : ∀ x, μ x = ν (e.symm (1, x))` using `fun _ => rfl`. Introduce `g`. Rewrite using `[hsplit, ← hμ]`. Generalize the expression as in `(e g).2 = x`.
+
+Set `L : Submodule (𝓞 E) (Fin n → E)` to `Submodule.span (𝓞 E) (Set.range (Pi.basisFun E (Fin n)))`. Establish `hfg : L.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤`. Rewrite using `[Submodule.span_span_of_tower, (Pi.basisFun E (Fin n)).span_eq]`. Use `choose γ h k u1 u2 u3 hg hsup hk hk' using fun N : ℕ => GlobalTheory.T.exists_unitary_adelic_decomposition_split_support F E c n Jᵀ hH hcm.2.2.1 L hfg hsp (HA.mat _ _ J x) N.factorial ((isUnA_iff _).2 (show HR (Af F) (c : E →ₐ[F] E) J from x).2) N.factorial_pos`.
+
+Set `k' : ℕ → HA (Af F) (c : E →ₐ[F] E) J` to `fun N => (⟨k N, (isUnA_iff _).1 (u3 N)⟩ : HR (Af F) (c : E →ₐ[F] E) J)`. Establish `h1 : ∀ N, μ x = μ (k' N)` using `fun N => by`. Set `h' : HA (Af F) (c : E →ₐ[F] E) J` to `(⟨h N, (isUnA_iff _).1 (u2 N)⟩ : HR (Af F) (c : E →ₐ[F] E) J)`. Set `r` to `ratPt (γ N) ((isUnE_iff _).1 (u1 N))`. Establish `ex : x = (e r).2 * h' * k' N`.
+
+Use `Subtype.ext (Units.ext ((hg N).trans ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (HA.mat _ _ J (e r).2).1 * (h N).1 * (k N).1`. Rewrite using `[← he2, mt_ratPt]`. Use `congr 2`. Establish `a1 : μ (e r).2 = 1` using `by rw [hμ, ← hsplit]; exact hq _ (ratPt_mem _ _)`.
+
+Establish `a2 : μ h' = 1`. Take `⟨ε, b1, b2, b3, b4⟩` from `hsup N`. Use `eq_one_of_idem hcm hs ε b1 b2 (fun v hv => (b3 v hv).1) (e.symm (1, h')) ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`.
+
+Use `parts_inj _ _ ?_ ?_` and prove the remaining obligations. Establish `h6 : (Formalism.IndefR.DatumF.mtF _ J (e.symm (1, h'))).map (Formalism.IndefR.DatumF.infPartF F E) = 1`. Rewrite using `[he1, e.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[RingHom.map_mul, map_sub_one, h6, sub_self, Matrix.zero_apply, mul_zero]`.
+
+Establish `h6 : (Formalism.IndefR.DatumF.mtF _ J (e.symm (1, h'))).map (Formalism.IndefR.DatumF.finPartF F E) = (h N).1`. Rewrite using `[he2, e.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[RingHom.map_mul, map_sub_one, h6]`. Conclude with `congrFun (congrFun b4 i) j`.
+
+Rewrite using `[ex, map_mul, map_mul, a1, a2, one_mul, one_mul]`. Establish `t1` using `GlobalTheory.SplitRepsOpen.tendsto_one_of_cong F E L hfg hsp (fun N => (k N).1) hk`. Establish `t2` using `GlobalTheory.SplitRepsOpen.tendsto_one_of_cong F E L hfg hsp (fun N => ((k N)⁻¹).1) fun N z hz => by`. Take `⟨y, hy, e'⟩` from `hk N _ (hk' N z hz)`. Use `⟨-y, neg_mem hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite `e'` using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[neg_nsmul, ← e', neg_sub]`. Establish `t3 : Tendsto k' atTop (𝓝 1)` using `tendsto_UJ (sigR (Af F) (c : E →ₐ[F] E)) (JR (Af F) J) t1 t2`. Establish `t` using `(hc2.tendsto _).comp t3`. Establish `h0 : ν (e.symm (1, 1)) = 1` using `by rw [← hμ, map_one]`.
+
+Rewrite `t` using `[h0]`. Conclude with `tendsto_nhds_unique (tendsto_const_nhds.congr h1) t`.
+-/
 theorem PositivityTheory.ThKW.character_trivial_of_rational_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
       ∀ ν : Formalism.IndefR.DatumF.GAF σ J →* Circle, Continuous ν → (∀ γ ∈ Formalism.IndefR.DatumF.GQF σ J, ν γ = 1) →

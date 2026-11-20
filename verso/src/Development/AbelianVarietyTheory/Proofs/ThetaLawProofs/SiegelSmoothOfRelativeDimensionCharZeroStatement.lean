@@ -10,5 +10,8 @@ open scoped CategoryTheory.Obj TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SiegDim.smoothOfRelativeDimension | exact GlobalTheory.SiegDim.smoothOfRelativeDimension | (intros; apply GlobalTheory.SiegDim.smoothOfRelativeDimension <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.siegel_smoothOfRelativeDimension_charZero : Out.Laws → ∀ (h k : ℕ) (o : Type) [CommRing o] (ζ : o) (R : Type) [CommRing R] [Algebra ℚ R] (β : o →+* R) (c : SiegPre h k ζ (spMap β)), 2 ≤ k → IsUnit ζ → SmoothOfRelativeDimension h c.A.hom := by
   first | exact @GlobalTheory.SiegDim.smoothOfRelativeDimension | exact GlobalTheory.SiegDim.smoothOfRelativeDimension | (intros; apply GlobalTheory.SiegDim.smoothOfRelativeDimension <;> assumption)

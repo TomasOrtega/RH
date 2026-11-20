@@ -18,9 +18,17 @@ local notation "ιA" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 def mapQ (Q : Matrix m n E) (Λ : Submodule (𝓞 E) (n → E)) : Submodule (𝓞 E) (m → E) :=
   Λ.map ((Matrix.mulVecLin Q).restrictScalars (𝓞 E))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_mapQ (Q : Matrix m n E) (Λ : Submodule (𝓞 E) (n → E)) (y : m → E) :
     y ∈ mapQ Q Λ ↔ ∃ x ∈ Λ, Q *ᵥ x = y := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨z, hz, rfl⟩, rfl⟩ show Q' *ᵥ (Q *ᵥ z) ∈ Λ`. Rewrite using `[mulVec_mulVec, h, one_mulVec]` and apply the resulting hypothesis. Introduce `hx`.
+
+Conclude with `⟨Q *ᵥ x, ⟨x, hx, rfl⟩, by show Q' *ᵥ (Q *ᵥ x) = x`. Rewrite using `[mulVec_mulVec, h, one_mulVec]⟩`.
+-/
 theorem mapQ_mapQ (Q : Matrix m n E) (Q' : Matrix n m E) (h : Q' * Q = 1) (Λ : Submodule (𝓞 E) (n → E)) :
     mapQ Q' (mapQ Q Λ) = Λ := by
   ext x
@@ -33,6 +41,13 @@ theorem mapQ_mapQ (Q : Matrix m n E) (Q' : Matrix n m E) (h : Q' * Q = 1) (Λ : 
       show Q' *ᵥ (Q *ᵥ x) = x
       rw [mulVec_mulVec, h, one_mulVec]⟩
 
+/- English proof (translation)
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨y, hy, rfl⟩` from `hu`. Use `Submodule.subset_span ⟨Q *ᵥ y, ⟨y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Conclude with `RingHom.map_mulVec ιA Q y i`. Consider the case `zero => rw [mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [mulVec_add]`. Conclude with `add_mem hu hv`.
+
+Consider the case `smul s u _ hu`. Rewrite using `[Subring.smul_def, mulVec_smul]`. Conclude with `Submodule.smul_mem _ s hu`.
+-/
 theorem hat_map_le (Q : Matrix m n E) (Λ : Submodule (𝓞 E) (n → E)) (u : n → 𝒜) (hu : u ∈ hat F Λ) :
     (Q.map ιA) *ᵥ u ∈ hat F (mapQ Q Λ) := by
   induction hu using Submodule.span_induction with
@@ -47,10 +62,18 @@ theorem hat_map_le (Q : Matrix m n E) (Λ : Submodule (𝓞 E) (n → E)) (u : n
     rw [Subring.smul_def, mulVec_smul]
     exact Submodule.smul_mem _ s hu
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem map_mul_map (Q : Matrix m n E) (Q' : Matrix n m E) (h : Q * Q' = 1) :
     Q.map ιA * Q'.map ιA = (1 : Matrix m m 𝒜) := by
   rw [← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `hat_map_le (F := F) Q' (mapQ Q Λ) v hv` as an intermediate fact. Rewrite `this` using `[mapQ_mapQ Q Q' h2]`. Then use the resulting hypothesis. Introduce `hv`.
+
+Use `hat_map_le (F := F) Q Λ _ hv` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, map_mul_map Q Q' h1, one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem mem_hat_map (Q : Matrix m n E) (Q' : Matrix n m E) (h1 : Q * Q' = 1) (h2 : Q' * Q = 1)
     (Λ : Submodule (𝓞 E) (n → E)) (v : m → 𝒜) : v ∈ hat F (mapQ Q Λ) ↔ (Q'.map ιA) *ᵥ v ∈ hat F Λ := by
   constructor
@@ -79,10 +102,16 @@ def conjQ (Q : Matrix m n E) (Q' : Matrix n m E) (h1 : Q * Q' = 1) (h2 : Q' * Q 
       _ = 1 := by
           rw [e, Matrix.mul_one, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one, map_mul_map Q Q' h1]
 
+/- English proof (translation)
+The claim follows from `Matrix.det_conj_of_mul_eq_one (map_mul_map Q Q' h1) (map_mul_map Q' Q h2)`.
+-/
 theorem det_conjQ (Q : Matrix m n E) (Q' : Matrix n m E) (h1 : Q * Q' = 1) (h2 : Q' * Q = 1) (g : GL n 𝒜) :
     ((conjQ Q Q' h1 h2 g : GL m 𝒜) : Matrix m m 𝒜).det = (g : Matrix n n 𝒜).det :=
   Matrix.det_conj_of_mul_eq_one (map_mul_map Q Q' h1) (map_mul_map Q' Q h2)
 
+/- English proof (translation)
+Rewrite using `[mem_hat_map Q Q' h1 h2, mem_hat_glob hΛ, mem_hat_map Q Q' h1 h2]`. Establish `e : Q'.map ιA * Q.map ιA = (1 : Matrix n n 𝒜)` using `map_mul_map Q' Q h2`. Establish `: (Q'.map ιA) *ᵥ ((((conjQ Q Q' h1 h2 g)⁻¹ : GL m 𝒜) : Matrix m m 𝒜) *ᵥ v) = ((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ ((Q'.map ιA) *ᵥ v)` using `by show (Q'.map ιA) *ᵥ ((Q.map ιA * ((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) * Q'.map ιA) *ᵥ v) = _`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, e, Matrix.one_mul]`. Rewrite using `[this]`.
+-/
 theorem mem_hat_map_glob (Q : Matrix m n E) (Q' : Matrix n m E) (h1 : Q * Q' = 1) (h2 : Q' * Q = 1)
     {Λ : Submodule (𝓞 E) (n → E)} (hΛ : IsLat Λ) (g : GL n 𝒜) (v : m → 𝒜) :
     v ∈ hat F (mapQ Q (globLat g Λ)) ↔

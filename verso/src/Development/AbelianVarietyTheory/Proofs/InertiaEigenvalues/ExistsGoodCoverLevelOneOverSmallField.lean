@@ -27,6 +27,9 @@ namespace GlobalTheory.CoverSmall
 
 abbrev smallF (D : D7) : IntermediateField ℚ ℂ := (embLL0 D).toRatAlgHom.fieldRange
 
+/- English proof (translation)
+Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem smallF_toSubfield (D : D7) : (smallF D).toSubfield = (embLL0 D).fieldRange := by
   ext x; rfl
 
@@ -35,9 +38,19 @@ def smallEquiv (D : D7) : D.LL0 ≃ₐ[ℚ] smallF D := AlgEquiv.ofInjectiveFiel
 instance smallF_fin (D : D7) : FiniteDimensional ℚ (smallF D) :=
   (smallEquiv D).toLinearEquiv.finiteDimensional
 
+/- English proof (translation)
+The claim follows from `(IsGalois.of_algEquiv (smallEquiv D)).to_normal`.
+-/
 theorem smallF_normal (D : D7) (hgal : IsGalois ℚ D.LL0) : Normal ℚ (smallF D) :=
   (IsGalois.of_algEquiv (smallEquiv D)).to_normal
 
+/- English proof (translation)
+Take `⟨L, i1, i2, i3, i4, hL, j, hj, hk⟩` from `h`. Establish `hMb : Ideal.span {((M : ℕ) : 𝓞 D.host.K)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hM` after adjusting the coercions. Establish `hNb : Ideal.span {((N : ℕ) : 𝓞 D.host.K)} ≠ ⊥`.
+
+Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hN` after adjusting the coercions. Take `⟨L', f1, f2, f3, f4, hL'⟩` from `hRF D.host.K _ hMb`. Establish `hdv : Ideal.span {((M : ℕ) : 𝓞 D.host.K)} ∣ Ideal.span {((N : ℕ) : 𝓞 D.host.K)}` using `Ideal.dvd_iff_le.2 (Ideal.span_singleton_le_span_singleton.2 (Nat.cast_dvd_cast hd))`. Take `⟨f⟩` from `GlobalTheory.Published.nonempty_algHom_of_isRay_of_dvd (L := L) (L' := L') hNb hdv hL hL'`.
+
+Use `⟨L', f1, f2, f3, f4, hL', j.comp f.toRingHom, ?_, fun x => hk (f x)⟩` and prove the remaining obligations. Rewrite using `[← hj]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem rayIn_of_dvd (hRF : GlobalTheory.NT.RayField) (D : D7) {M N : ℕ} (hM : M ≠ 0) (hN : N ≠ 0) (hd : M ∣ N)
     {k : Subfield ℂ} (h : RayIn D N k) : RayIn D M k := by
   obtain ⟨L, i1, i2, i3, i4, hL, j, hj, hk⟩ := h
@@ -52,6 +65,11 @@ theorem rayIn_of_dvd (hRF : GlobalTheory.NT.RayField) (D : D7) {M N : ℕ} (hM :
   refine ⟨L', f1, f2, f3, f4, hL', j.comp f.toRingHom, ?_, fun x => hk (f x)⟩
   rw [← hj]; ext x; simp
 
+/- English proof (translation)
+Introduce `a ha'`. Use `⟨S.kKs ((YS.fi j).eK.symm ⟨a, ha'⟩), ?_⟩` and prove the remaining obligations. Establish `h1 : res T D.what₂.embLL = T.σ₀` using `res_embLL T ha hLaws.pins.2.2.1`. Express the relevant statement in the definitionally equal form `D.what₂.embLL ((S.kKs ((YS.fi j).eK.symm ⟨a, ha'⟩) : ↥D.LL0) : D.what₂.LL) = a`. Rewrite using `[S.kKs_spec, ← (YS.fi j).eK_LL, RingEquiv.apply_symm_apply]`.
+
+Conclude with `RingHom.congr_fun h1 ⟨a, ha'⟩`.
+-/
 theorem core_le_small {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : Type}
     {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T0 D.R.m} (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL]
     (Rl : RealDat3 D A3 ↥T.Q.c.F) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S)
@@ -63,6 +81,21 @@ theorem core_le_small {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : 
   rw [S.kKs_spec, ← (YS.fi j).eK_LL, RingEquiv.apply_symm_apply]
   exact RingHom.congr_fun h1 ⟨a, ha'⟩
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 I0 T0 A3 hRF T _ Rl cG S YS F κ v₀ O hLaws hCore hFW hTie hIo hQG hgal hVal hRay hroots j hV hOM hFP n`. Use `haveI : Normal ℚ (smallF D) := smallF_normal D hgal`. Establish `hle : T.Q.c.F ≤ smallF D` using `core_le_small T Rl cG S YS hLaws hTie.alg j`. Establish `hnum` using `GlobalTheory.T.numerical_consequences_of_pins D T.Q hLaws.toLawsM.pins`. Establish `hMg : T.Q.l.M = D.host.g 0 * D.host.g 1` using `hLaws.toLawsM.pins.2.1.1`.
+
+Establish `hz : ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta (T.Q.l.M * 1) ∈ smallF D`. Rewrite using `[mul_one, ← hnum.2.2.1]`. Conclude with `hle T.Q.c.zeta_mem`. Establish `hsm : GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SmallIn Rl.toRealDat j ((smallF D).val : smallF D →+* ℂ)`. Use `⟨fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `hVal.mu0 j v hv`. Conclude with `⟨⟨embLL0 D y, y, rfl⟩, hy⟩`. Take `⟨y, hy⟩` from `hVal.eta v hv`. Conclude with `⟨⟨embLL0 D y, y, rfl⟩, hy⟩`. Establish `hM0 : T.Q.l.M ≠ 0` using `by have := T.Q.l.three_le; omega`.
+
+Establish `hN0 : D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde' ≠ 0`. Establish `h0` using `(D.host.g_prime 0).ne_zero`. Establish `h1` using `(D.host.g_prime 1).ne_zero`. Establish `h2` using `D.host.pde_prime.ne_zero`. Establish `h3` using `D.host.pde'_prime.ne_zero`.
+
+Check the signs of the components of the expression. Establish `hray : GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.RayIn D (T.Q.l.M * 1) (smallF D).toSubfield`. Rewrite using `[mul_one, smallF_toSubfield]`. Use `rayIn_of_dvd hRF D hM0 hN0 ?_ hRay` and prove the remaining obligations. Rewrite using `[hMg, mul_assoc _ D.host.pde]`.
+
+Conclude with `dvd_mul_right _ _`. Establish `hj : InR D ((j : ℕ) + 1)` using `⟨by omega, j.2⟩`. Establish `hK : (⊤ : Ideal (𝓞 D.host.E)) = Ideal.span {x | x ∈ (⊤ : Ideal (𝓞 D.host.E)) ∧ x ∈ Algebra.adjoin ℤ {T.Q.H.w0}}` using `by symm; rw [Ideal.eq_top_iff_one]; exact Ideal.subset_span ⟨Submodule.mem_top, Subalgebra.one_mem _⟩`. Establish `hprod : (⊤ : Ideal (𝓞 D.host.E)) * (⊤ : Ideal (𝓞 D.host.E)).map (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = Ideal.span {((1 : ℕ) : 𝓞 D.host.E)}`. Rewrite using `[Ideal.map_top, Ideal.top_mul, Nat.cast_one, Ideal.span_singleton_one]`.
+
+Establish `hsup : (⊤ : Ideal (𝓞 D.host.E)) ⊔ (⊤ : Ideal (𝓞 D.host.E)).map (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = ⊤` using `top_sup_eq _`. Take `⟨C, hpd, -, hfr, hG⟩` from `GlobalTheory.CoverGalois.exists_goodCover_galois D T Rl.toRealDat hLaws j hj n 1 ⊤ (GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.auxiliarySplitSquarefreeLevel_one _) hK hprod hsup (smallF D) hle hz hsm hray`. Conclude with `⟨C, hpd, hfr.trans (smallF_toSubfield D), hG⟩`.
+-/
 theorem exists_goodCover_small : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T0 : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T0 D.R.m), GlobalTheory.NT.RayField → ∀ (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (Rl : RealDat3 D A3 T.Q.c.F) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S) (F : Face D A3.A) (κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) (O : ∀ j, OMDat T.toCore Rl.toRealDat j Unit (fun _ => A3.A.μ0)), LawsJ T → GlobalTheory.Hk3.Core Rl.toRealDat F → Nonempty (FWTie T Rl.toRealDat κ v₀) → TieIn T Rl.toRealDat κ v₀ → IoExt Rl.toRealDat → QGuard Rl.toRealDat → IsGalois ℚ D.LL0 → Formalism.L2.Host.ValLL0 D Rl.C → RayIn D (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde') (embLL0 D).fieldRange → (∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (embLL0 D).fieldRange) → ∀ (j : Fin D.R.m) (hV : T.V ((j : ℕ) + 1) T.σ₀ = Wc D j), OMPins T Rl.toRealDat κ v₀ O j → GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin T Rl.toRealDat j T.σ₀ hV → ∀ n : ℕ, ∃ C : GlobalTheory.CoverRead.Cover T ((j : ℕ) + 1) T.σ₀, C.d.pd = 1 ∧ C.σ₂.fieldRange = (embLL0 D).fieldRange ∧ GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.GoodCover T Rl.toRealDat j C n := by
   intro D Γ _ _ Pl0 I0 T0 A3 hRF T _ Rl cG S YS F κ v₀ O hLaws hCore hFW hTie hIo hQG hgal hVal hRay hroots j hV hOM hFP n
   haveI : Normal ℚ (smallF D) := smallF_normal D hgal

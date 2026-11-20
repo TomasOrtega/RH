@@ -10,15 +10,31 @@ namespace GlobalTheory.CompanionTheory.DerExhaust
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `infer_instance`.
+-/
 theorem t2 : T2Space k := by
   letI := IsTopologicalAddGroup.rightUniformSpace k
   haveI := isUniformAddGroup_of_addCommGroup (G := k)
   infer_instance
 
+/- English proof (translation)
+The claim follows from `Valuation.isOpen_integer`.
+-/
 theorem isOpen_O : IsOpen (𝒪[k] : Set k) := Valuation.isOpen_integer
 
+/- English proof (translation)
+The claim follows from `IsNonarchimedeanLocalField.isCompact_closedBall k 1`.
+-/
 theorem isCompact_O : IsCompact (𝒪[k] : Set k) := IsNonarchimedeanLocalField.isCompact_closedBall k 1
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff U).mp hU`. Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective (γ : ValueGroupWithZero k)`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `γ.ne_zero (by simpa using hy.symm)`.
+
+Take `⟨r, hr, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `hr0 : r ≠ 0` using `by simpa using hr`. Use `⟨r * y, mul_ne_zero hr0 hy0, hγ ?_⟩` and prove the remaining obligations. Use `show valuation k (r * y) < γ`. Rewrite using `[map_mul, hy]`.
+
+Conclude with `mul_lt_of_lt_one_left (by simp [zero_lt_iff]) hr1`.
+-/
 theorem exists_ne_zero_mem {U : Set k} (hU : U ∈ 𝓝 (0 : k)) : ∃ z : k, z ≠ 0 ∧ z ∈ U := by
   obtain ⟨γ, hγ⟩ := (IsValuativeTopology.mem_nhds_zero_iff U).mp hU
   obtain ⟨y, hy⟩ := ValuativeRel.valuation_surjective (γ : ValueGroupWithZero k)
@@ -52,6 +68,13 @@ def intGL (N : ℕ) : Subgroup (GL (Fin N) k) where
     intro i j
     simpa [and_comm] using ha i j
 
+/- English proof (translation)
+Use `haveI := t2 (k := k)`. Set `S : Set (Matrix (Fin N) (Fin N) k)` to `Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => (𝒪[k] : Set k)`. Establish `hS : IsCompact S` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_O`. Establish `hS' : IsCompact (S ×ˢ (MulOpposite.op '' S))` using `hS.prod (hS.image MulOpposite.continuous_op)`. Use `Units.isClosedEmbedding_embedProduct.isCompact_preimage hS' using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i _ j _ => (h i j).1, ⟨_, fun i _ j _ => (h i j).2, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨h1, ⟨x, hx, hxe⟩⟩ i j`.
+
+Establish `hx' : x = ((g⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k)` using `MulOpposite.op_injective hxe`. Substitute `hx'` using the available equality. Conclude with `⟨h1 i (Set.mem_univ _) j (Set.mem_univ _), hx i (Set.mem_univ _) j (Set.mem_univ _)⟩`.
+-/
 theorem isCompact_intGL (N : ℕ) : IsCompact (intGL k N : Set (GL (Fin N) k)) := by
   haveI := t2 (k := k)
   let S : Set (Matrix (Fin N) (Fin N) k) := Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => (𝒪[k] : Set k)
@@ -68,6 +91,15 @@ theorem isCompact_intGL (N : ℕ) : IsCompact (intGL k N : Set (GL (Fin N) k)) :
     subst hx'
     exact ⟨h1 i (Set.mem_univ _) j (Set.mem_univ _), hx i (Set.mem_univ _) j (Set.mem_univ _)⟩
 
+/- English proof (translation)
+Use `haveI := t2 (k := k)`. Establish `hv : Continuous fun g : GL (Fin N) k => (g : Matrix (Fin N) (Fin N) k)` using `Units.continuous_val`. Establish `he : ∀ i j : Fin N, Continuous fun g : GL (Fin N) k => (g : Matrix (Fin N) (Fin N) k) i j` using `fun i j => hv.matrix_elem i j`. Establish `h1 : (unipB k (Fin N) : Set (GL (Fin N) k)) = (⋂ i, ⋂ j, ⋂ (_ : j < i), {g : GL (Fin N) k | (g : Matrix (Fin N) (Fin N) k) i j = 0}) ∩ ⋂ i, {g : GL (Fin N) k | (g : Matrix (Fin N) (Fin N) k) i i = 1}`. Use extensionality with `g`.
+
+Simplify using `only [SetLike.mem_coe, mem_unipB, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Establish `h2 : (colFix k N n : Set (GL (Fin N) k)) = ⋂ i : Fin N, ⋂ (_ : (i : ℕ) < n), {g : GL (Fin N) k | (g : Matrix (Fin N) (Fin N) k).mulVec (Pi.single i 1) = Pi.single i 1}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Set.mem_iInter, Set.mem_setOf_eq]`. Both sides reduce to the same expression.
+
+Use `show IsClosed ((unipB k (Fin N) ⊓ colFix k N n : Subgroup _) : Set (GL (Fin N) k))`. Rewrite using `[Subgroup.coe_inf, h1, h2]`. Use `IsClosed.inter (IsClosed.inter ?_ ?_) ?_` and prove the remaining obligations. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (he i j) continuous_const`. Conclude with `isClosed_iInter fun i => isClosed_eq (he i i) continuous_const`.
+
+Conclude with `isClosed_iInter fun i => isClosed_iInter fun _ => isClosed_eq (hv.matrix_mulVec continuous_const) continuous_const`.
+-/
 theorem isClosed_derUnip (N n : ℕ) : IsClosed (derUnip k N n : Set (GL (Fin N) k)) := by
   haveI := t2 (k := k)
   have hv : Continuous fun g : GL (Fin N) k => (g : Matrix (Fin N) (Fin N) k) := Units.continuous_val
@@ -93,6 +125,15 @@ theorem isClosed_derUnip (N n : ℕ) : IsClosed (derUnip k N n : Set (GL (Fin N)
   · exact isClosed_iInter fun i => isClosed_iInter fun _ =>
       isClosed_eq (hv.matrix_mulVec continuous_const) continuous_const
 
+/- English proof (translation)
+Take `⟨h0, h1⟩` from `(mem_unipB k).1 hu`. Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, val_diagT, val_diagT, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Pi.inv_apply, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]`. Establish `ha0 : (y : k) ≠ 0` using `y.ne_zero`. Break down `lt_trichotomy (i : ℕ) j with hij | hij | hij` into its components or cases.
+
+Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_lt hij`. Rewrite using `[hd]`. Establish `e : ((y : k) ^ (i : ℕ))⁻¹ * (u : Matrix (Fin N) (Fin N) k) i j * (y : k) ^ ((i : ℕ) + d + 1) = ((y : k) * (u : Matrix (Fin N) (Fin N) k) i j) * (y : k) ^ d`. Rewrite using `[pow_succ, pow_add]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e]`. Conclude with `Subring.mul_mem _ (hyu i j) (Subring.pow_mem _ hy d)`. Establish `: i = j` using `Fin.ext hij`. Substitute `this` using the available equality. Rewrite using `[h1 i, mul_one, inv_mul_cancel₀ (pow_ne_zero _ ha0)]`.
+
+Conclude with `Subring.one_mem _`. Rewrite using `[h0 i j (Fin.lt_def.2 hij), mul_zero, zero_mul]`. Conclude with `Subring.zero_mem _`.
+-/
 theorem conj_entry_mem {N : ℕ} (y : kˣ) (hy : (y : k) ∈ 𝒪[k]) {u : GL (Fin N) k}
     (hu : u ∈ unipB k (Fin N)) (hyu : ∀ i j, (y : k) * (u : Matrix (Fin N) (Fin N) k) i j ∈ 𝒪[k])
     (i j : Fin N) :
@@ -120,6 +161,17 @@ theorem conj_entry_mem {N : ℕ} (y : kˣ) (hy : (y : k) ∈ 𝒪[k]) {u : GL (F
   · rw [h0 i j (Fin.lt_def.2 hij), mul_zero, zero_mul]
     exact Subring.zero_mem _
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N n s hs`. Establish `hmul : ∀ c : k, ∀ᶠ z in 𝓝 (0 : k), z * c ∈ 𝒪[k]`. Introduce `c`. Establish `h` using `(continuous_mul_right c).tendsto (0 : k)`. Rewrite `h` using `[zero_mul]`.
+
+Conclude with `h (isOpen_O.mem_nhds (Subring.zero_mem _))`. Establish `hU : ∀ᶠ z in 𝓝 (0 : k), z ∈ 𝒪[k] ∧ ∀ g ∈ s, ∀ i j : Fin N, z * (g : Matrix (Fin N) (Fin N) k) i j ∈ 𝒪[k] ∧ z * ((g⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j ∈ 𝒪[k]` using `(show ∀ᶠ z in 𝓝 (0 : k), z ∈ 𝒪[k] from isOpen_O.mem_nhds (Subring.zero_mem _)).and ((Filter.eventually_all_finset _).2 fun g _ => Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (hmul _).and (hmul _))`. Take `⟨y, hy0, hyO, hyS⟩` from `exists_ne_zero_mem hU`. Use `set t := diagT k (Fin N) (fun l : Fin N => (Units.mk0 y hy0) ^ (l : ℕ)) with ht`. Use `⟨(intGL k N).map (MulAut.conj t).toMonoidHom ⊓ derUnip k N n, inf_le_right, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg`. Establish `hgu : g ∈ unipB k (Fin N)` using `(hs hg).1`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_map.2 ⟨t⁻¹ * g * t, ?_, ?_⟩, hs hg⟩` and prove the remaining obligations. Introduce `i j`. Establish `hinv : (t⁻¹ * g * t)⁻¹ = t⁻¹ * g⁻¹ * t` using `by group`.
+
+Rewrite using `[hinv]`. Conclude with `⟨conj_entry_mem (Units.mk0 y hy0) hyO hgu (fun i j => (hyS g hg i j).1) i j, conj_entry_mem (Units.mk0 y hy0) hyO (inv_mem hgu) (fun i j => (hyS g hg i j).2) i j⟩`. Use `show t * (t⁻¹ * g * t) * t⁻¹ = g group`. Rewrite using `[Subgroup.coe_inf, Subgroup.coe_map]`. Establish `hc : Continuous fun g : GL (Fin N) k => t * g * t⁻¹` using `by fun_prop`.
+
+Conclude with `((isCompact_intGL N).image hc).inter_right (isClosed_derUnip N n)`.
+-/
 theorem exhaust : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (N n : ℕ) (s : Finset (GL (Fin N) k)), (↑s : Set (GL (Fin N) k)) ⊆ derUnip k N n →
     ∃ L : Subgroup (GL (Fin N) k), L ≤ derUnip k N n ∧ (↑s : Set (GL (Fin N) k)) ⊆ L ∧

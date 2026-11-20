@@ -12,6 +12,15 @@ open GlobalTheory.KZ GlobalTheory.Sieg GlobalTheory.QFam Cardinal
 
 namespace GlobalTheory.KZ.GalUnits
 
+/- English proof (translation)
+Set `: Algebra R K` to `f.toAlgebra`. Set `: Algebra R L` to `g.toAlgebra`. Take `⟨ι, v, hv⟩` from `exists_isTranscendenceBasis' R K`. Take `⟨κ, w, hw⟩` from `exists_isTranscendenceBasis' R L`. Establish `h1 : #K = #ι` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' v hv hR hK`.
+
+Establish `h2 : #L = #κ` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' w hw hR (hKL ▸ hK)`. Take `⟨e⟩` from `Cardinal.eq.1 (h1.symm.trans (hKL.trans h2))`. Set `` to `IsAlgClosed.isAlgClosure_of_transcendence_basis v hv`. Set `` to `IsAlgClosed.isAlgClosure_of_transcendence_basis w hw`. Set `e' : Algebra.adjoin R (Set.range v) ≃ₐ[R] Algebra.adjoin R (Set.range w)` to `(hv.1.aevalEquiv.symm.trans (MvPolynomial.renameEquiv R e)).trans hw.1.aevalEquiv`.
+
+Use `⟨IsAlgClosure.equivOfEquiv K L e'.toRingEquiv, fun r => ?_⟩` and prove the remaining obligations. Establish `hf : f r = algebraMap R K r` using `rfl`. Establish `hg : g r = algebraMap R L r` using `rfl`. Rewrite using `[hf, hg, IsScalarTower.algebraMap_apply R (Algebra.adjoin R (Set.range v)) K, IsAlgClosure.equivOfEquiv_algebraMap]`. Establish `: e'.toRingEquiv (algebraMap R _ r) = algebraMap R _ r` using `e'.commutes r`.
+
+Rewrite using `[this, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem exists_equiv_comp {R K L : Type} [Field R] [Field K] [Field L] [IsAlgClosed K]
     [IsAlgClosed L] (f : R →+* K) (g : R →+* L) (hR : #R ≤ ℵ₀) (hK : ℵ₀ < #K) (hKL : #K = #L) :
     ∃ σ : K ≃+* L, ∀ r : R, σ (f r) = g r := by
@@ -35,6 +44,9 @@ theorem exists_equiv_comp {R K L : Type} [Field R] [Field K] [Field L] [IsAlgClo
   have : e'.toRingEquiv (algebraMap R _ r) = algebraMap R _ r := e'.commutes r
   rw [this, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Establish `hR : #Ω ≤ ℵ₀` using `(Algebra.IsAlgebraic.cardinalMk_le_max ℚ Ω).trans (max_le Cardinal.mk_le_aleph0 le_rfl)`. Conclude with `exists_equiv_comp ε (ε.comp (s : Ω →+* Ω)) hR (by simp [Cardinal.mk_complex, Cardinal.aleph0_lt_continuum]) rfl`.
+-/
 theorem exists_ext {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (s : Ω ≃ₐ[ℚ] Ω) :
     ∃ σ : ℂ ≃+* ℂ, ∀ x : Ω, σ (ε x) = ε (s x) := by
   haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic
@@ -43,6 +55,11 @@ theorem exists_ext {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
   exact exists_equiv_comp ε (ε.comp (s : Ω →+* Ω)) hR
     (by simp [Cardinal.mk_complex, Cardinal.aleph0_lt_continuum]) rfl
 
+/- English proof (translation)
+Establish `: NeZero (n : Ω)` using `⟨Nat.cast_ne_zero.2 hn.ne'⟩`. Establish `: NeZero n` using `⟨hn.ne'⟩`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic n Ω) (ne_of_gt (Polynomial.degree_cyclotomic_pos n Ω hn))`. Establish `hz' : IsPrimitiveRoot z n` using `Polynomial.isRoot_cyclotomic_iff.1 hz`. Establish `he : IsPrimitiveRoot (ε z) n` using `hz'.map_of_injective ε.injective`.
+
+Take `⟨i, -, hi⟩` from `he.eq_pow_of_pow_eq_one hw`. Conclude with `⟨z ^ i, by rw [map_pow, hi]⟩`.
+-/
 theorem mem_range_of_pow_eq_one {Ω : Type} [Field Ω] [IsAlgClosed Ω] [CharZero Ω] (ε : Ω →+* ℂ) {n : ℕ}
     (hn : 0 < n) {w : ℂ} (hw : w ^ n = 1) : ∃ y, ε y = w := by
   have : NeZero (n : Ω) := ⟨Nat.cast_ne_zero.2 hn.ne'⟩
@@ -54,6 +71,13 @@ theorem mem_range_of_pow_eq_one {Ω : Type} [Field Ω] [IsAlgClosed Ω] [CharZer
   obtain ⟨i, -, hi⟩ := he.eq_pow_of_pow_eq_one hw
   exact ⟨z ^ i, by rw [map_pow, hi]⟩
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `hw : Complex.exp (2 * Real.pi * Complex.I * (x : ℂ)) ^ x.den = 1`. Rewrite using `[← Complex.exp_nat_mul]`. Establish `: (x.den : ℂ) * (2 * Real.pi * Complex.I * (x : ℂ)) = x.num * (2 * Real.pi * Complex.I)`.
+
+Establish `hd : (x.den : ℂ) ≠ 0` using `by exact_mod_cast x.den_ne_zero`. Establish `: (x : ℂ) = (x.num : ℂ) / x.den` using `by exact_mod_cast (Rat.num_div_den x).symm`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`.
+
+Establish `hex` using `mem_range_of_pow_eq_one ε x.den_pos hw`. Unfold `eOm ee`. Conclude with `Function.invFun_eq hex`.
+-/
 theorem eps_eOm {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (x : ℚ) :
     ε (eOm ε x) = ee (x : ℂ) := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
@@ -74,6 +98,11 @@ open Classical in
 def lc {R : Type} [Zero R] (M : ℕ) (k : ℤ) (A : ℕ → R) (r : ℚ) : R :=
   if h : ∃ n : ℕ, r = ((k : ℚ) + n) / M then A h.choose else 0
 
+/- English proof (translation)
+Establish `h : ∃ m : ℕ, ((k : ℚ) + n) / M = ((k : ℚ) + m) / M` using `⟨n, rfl⟩`. Unfold `lc`. Rewrite using `[dif_pos h]`. Establish `hM' : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`. Use `h.choose_spec` as an intermediate fact.
+
+Rewrite `this` using `[div_left_inj' hM', add_right_inj]`. Establish `: h.choose = n` using `by exact_mod_cast this.symm`. Rewrite using `[this]`.
+-/
 theorem lc_eq {R : Type} [Zero R] {M : ℕ} (hM : 0 < M) (k : ℤ) (A : ℕ → R) (n : ℕ) :
     lc M k A (((k : ℚ) + n) / M) = A n := by
   have h : ∃ m : ℕ, ((k : ℚ) + n) / M = ((k : ℚ) + m) / M := ⟨n, rfl⟩
@@ -85,6 +114,9 @@ theorem lc_eq {R : Type} [Zero R] {M : ℕ} (hM : 0 < M) (k : ℤ) (A : ℕ → 
   have : h.choose = n := by exact_mod_cast this.symm
   rw [this]
 
+/- English proof (translation)
+Unfold `lc`. Rewrite using `[dif_neg]`. Use `push_neg`. Conclude with `h`.
+-/
 theorem lc_zero {R : Type} [Zero R] {M : ℕ} {k : ℤ} (A : ℕ → R) {r : ℚ} (h : ∀ n : ℕ, r ≠ ((k : ℚ) + n) / M) :
     lc M k A r = 0 := by
   unfold lc
@@ -92,11 +124,19 @@ theorem lc_zero {R : Type} [Zero R] {M : ℕ} {k : ℤ} (A : ℕ → R) {r : ℚ
   push_neg
   exact h
 
+/- English proof (translation)
+Unfold `lc`. Apply the tactic sequence `split_ifs <;> simp [hg]`.
+-/
 theorem lc_map {R S : Type} [Zero R] [Zero S] (M : ℕ) (k : ℤ) (A : ℕ → R) (g : R → S) (hg : g 0 = 0) (r : ℚ) :
     lc M k (fun n => g (A n)) r = g (lc M k A r) := by
   unfold lc
   split_ifs <;> simp [hg]
 
+/- English proof (translation)
+Introduce `r`. Distinguish the cases in `h : ∃ n : ℕ, r = ((k : ℚ) + n) / M`. Take `⟨n, rfl⟩` from `h`. Rewrite using `[h1, lc_eq hM]`. Use `push_neg at h`.
+
+Rewrite using `[h2 r h, lc_zero A h]`.
+-/
 theorem eq_lc {R : Type} [Zero R] {M : ℕ} (hM : 0 < M) {k : ℤ} {A : ℕ → R} {F : ℚ → R}
     (h1 : ∀ n : ℕ, F (((k : ℚ) + n) / M) = A n) (h2 : ∀ r : ℚ, (∀ n : ℕ, r ≠ ((k : ℚ) + n) / M) → F r = 0) :
     ∀ r, F r = lc M k A r := by
@@ -107,6 +147,31 @@ theorem eq_lc {R : Type} [Zero R] {M : ℕ} (hM : 0 < M) {k : ℤ} {A : ℕ → 
   · push_neg at h
     rw [h2 r h, lc_zero A h]
 
+/- English proof (translation)
+Use `wlog hk : k ≤ k' generalizing k k' A A'`. Conclude with `(this h' h (le_of_not_ge hk)).symm`. Take `⟨m, rfl⟩ : ∃ m : ℕ, k' = k + m` from `⟨(k' - k).toNat, by omega⟩`. Establish `hs : HasQ M (fun τ => f τ * ee (-((k : ℂ) / M) * (τ : ℂ))) (fun n => if m ≤ n then A' (n - m) else 0)`. Rewrite `h'`, the goal using `[hasQ_iff]`.
+
+Introduce `τ`. Use `set Q := Complex.exp (2 * Real.pi * Complex.I * τ / M) with hQ`. Establish `h2` using `(h' τ).mul_right (Q ^ m)`. Establish `e : f τ * ee (-(((k + m : ℤ) : ℂ) / M) * (τ : ℂ)) * Q ^ m = f τ * ee (-((k : ℂ) / M) * (τ : ℂ))`. Rewrite using `[mul_assoc]`.
+
+Use `congr 1`. Unfold `ee`. Rewrite using `[hQ, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e]`. Use `(Function.Injective.hasSum_iff (f := fun n => (if m ≤ n then A' (n - m) else 0) * Q ^ n) (add_left_injective m) ?_).mp ?_` and prove the remaining obligations. Introduce `x hx`. Establish `: ¬ m ≤ x`.
+
+Introduce `hmx; exact hx ⟨x - m, by simp only; omega⟩`. Simplify using `[this]`. Rewrite `h2` using `[← hQ]`. Establish `e2 : (fun n => (if m ≤ n then A' (n - m) else 0) * Q ^ n) ∘ (· + m) = fun i => A' i * Q ^ i * Q ^ m`. Use function extensionality and compare the values at `n`.
+
+Simplify using `only [Function.comp, le_add_iff_nonneg_left, zero_le, if_true, Nat.add_sub_cancel, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `h2`. Establish `hA` using `HasQ.coeff_unique hM h hs`.
+
+Substitute `hA` using the available equality. Establish `hM' : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`. Use function extensionality and compare the values at `r`. Distinguish the cases in `hr : ∃ n : ℕ, r = ((k : ℚ) + n) / M`. Take `⟨n, rfl⟩` from `hr`.
+
+Rewrite using `[lc_eq hM]`. Distinguish the cases in `hmn : m ≤ n`. Rewrite using `[if_pos hmn]`. Establish `: ((k : ℚ) + n) / M = (((k + m : ℤ) : ℚ) + ((n - m : ℕ) : ℚ)) / M`. Move the coercions through the operations in `[Nat.cast_sub hmn]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, lc_eq hM]`. Rewrite using `[if_neg hmn, lc_zero]`. Introduce `n' hn'`. Rewrite `hn'` using `[div_left_inj' hM']`.
+
+Move the coercions through the operations in `at hn'`. Establish `: (n : ℚ) = m + n'` using `by linarith`. Establish `: n = m + n'` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Use `push_neg at hr`.
+
+Rewrite using `[lc_zero _ hr, lc_zero]`. Introduce `n' hn'`. Apply `hr (m + n')` to reduce the goal to its premises. Rewrite using `[hn']`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lc_unique {M : ℕ} (hM : 0 < M) {f : ℍ → ℂ} {k k' : ℤ} {A A' : ℕ → ℂ}
     (h : HasQ M (fun τ => f τ * ee (-((k : ℂ) / M) * (τ : ℂ))) A)
     (h' : HasQ M (fun τ => f τ * ee (-((k' : ℂ) / M) * (τ : ℂ))) A') : lc M k A = lc M k' A' := by
@@ -167,6 +232,15 @@ namespace GlobalTheory.KZ
 
 open GalUnits
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε T c M a b d s hM ha hs h1 h2`. Take `⟨σ, hσ⟩` from `exists_ext ε s`. Establish `hσM : σ (ee (1 / (M : ℂ))) = ee ((d : ℂ) / M)`. Establish `e1` using `eps_eOm ε (1 / M)`. Establish `e2` using `eps_eOm ε (d / M)`.
+
+Move the coercions through the operations in `at e1 e2`. Rewrite using `[← e1, hσ, hs, e2]`. Take `⟨k0, B, hB, hB'⟩` from `GlobalTheory.T.smoothedSiegelUnit_coeff_galois_level c M a b d σ hM ha hσM h1 h2`. Take `⟨k1, A1, hA1, c1, z1⟩` from `GlobalTheory.T.siegel_unit_q_expansion_coefficients Ω ε T c M a b hM ha h1`. Take `⟨k2, A2, hA2, c2, z2⟩` from `GlobalTheory.T.siegel_unit_q_expansion_coefficients Ω ε T c M a (d * b) hM ha h2`.
+
+Establish `L1` using `eq_lc hM c1 z1`. Establish `L2` using `eq_lc hM c2 z2`. Establish `U1` using `lc_unique hM hA1 hB`. Establish `U2` using `lc_unique hM hB' hA2`. Apply `T.exp.toRingHom.injective` to reduce the goal to its premises.
+
+Use extensionality with `r`. Apply `ε.injective` to reduce the goal to its premises. Use `show ε ((T.exp (T.gal s _)).coeff r) = ε ((T.exp _).coeff r)`. Rewrite using `[T.gal_exp, ← hσ, L1, L2, ← lc_map M k1 A1 ε (map_zero ε), U1, ← lc_map M k0 B σ (map_zero σ), U2, lc_map M k2 A2 ε (map_zero ε)]`.
+-/
 theorem gal_siegel : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Tower Ω ε) (c : ℕ) (M a b d : ℕ) (s : Ω ≃ₐ[ℚ] Ω), 0 < M → a < M → s (eOm ε (1 / M)) = eOm ε (d / M) → admitted c ![(a : ℚ) / M, (b : ℚ) / M] → admitted c ![(a : ℚ) / M, ((d * b : ℕ) : ℚ) / M] → T.gal s (siegel T c ![(a : ℚ) / M, (b : ℚ) / M]) = siegel T c ![(a : ℚ) / M, ((d * b : ℕ) : ℚ) / M] := by
   intro Ω _ _ _ ε T c M a b d s hM ha hs h1 h2
   obtain ⟨σ, hσ⟩ := exists_ext ε s

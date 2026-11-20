@@ -14,9 +14,15 @@ variable {n : ℕ}
 
 def wv (n : ℕ) (y : V n) : Fin (n + 1) → ℂ := Fin.cons 1 (fun j => y j)
 
+/- English proof (translation)
+Check the signs of the components of the expression.
+-/
 theorem pos_one_add (y : V n) : 0 < 1 + ‖y‖ ^ 2 := by
   positivity
 
+/- English proof (translation)
+The claim follows from `(contDiff_const.mul ((contDiff_const.add (contDiff_norm_sq ℂ)).log fun y => (pos_one_add y).ne'))`.
+-/
 theorem contDiff_ph (la : ℤ) : ContDiff ℝ ∞ (fun y : V n => (la : ℝ) * Real.log (1 + ‖y‖ ^ 2)) := (contDiff_const.mul ((contDiff_const.add (contDiff_norm_sq ℂ)).log fun y => (pos_one_add y).ne'))
 
 def atlas (n : ℕ) : WeightedAtlas n (V n) Unit ℤ where
@@ -41,12 +47,21 @@ def atlas (n : ℕ) : WeightedAtlas n (V n) Unit ℤ where
   mu := volume
   mu_chart _ A _ _ := by simp
 
+/- English proof (translation)
+Simplify using `[atlas]`.
+-/
 theorem ph_one (y : V n) : (atlas n).ph 1 () y = Real.log (1 + ‖y‖ ^ 2) := by
   simp [atlas]
 
+/- English proof (translation)
+Rewrite using `[ph_one, Real.exp_neg, Real.exp_log (pos_one_add y)]`.
+-/
 theorem exp_neg_ph_one (y : V n) : Real.exp (-(atlas n).ph 1 () y) = (1 + ‖y‖ ^ 2)⁻¹ := by
   rw [ph_one, Real.exp_neg, Real.exp_log (pos_one_add y)]
 
+/- English proof (translation)
+Use `show ‖f () y‖ ^ 2 * Real.exp (-(atlas n).ph 1 () y) = _`. Rewrite using `[exp_neg_ph_one]`.
+-/
 theorem nsq_eq (f : Unit → V n → ℂ) (y : V n) :
     (atlas n).nsq 1 f y = ‖f () y‖ ^ 2 * (1 + ‖y‖ ^ 2)⁻¹ := by
   show ‖f () y‖ ^ 2 * Real.exp (-(atlas n).ph 1 () y) = _
@@ -58,37 +73,67 @@ def w0I (n : ℕ) : Unit → V n → ℂ := fun _ _ => 1
 
 def sI (n : ℕ) : Fin n → Unit → V n → ℂ := fun k _ y => y k
 
+/- English proof (translation)
+The claim follows from `(EuclideanSpace.proj (𝕜 := ℂ) m).hasFDerivAt`.
+-/
 theorem hasFDerivAt_coord (m : Fin n) (y : V n) :
     HasFDerivAt (fun v : V n => v m) (EuclideanSpace.proj (𝕜 := ℂ) m) y := (EuclideanSpace.proj (𝕜 := ℂ) m).hasFDerivAt
 
+/- English proof (translation)
+Introduce `y` and use `(hasFDerivAt_coord m y).differentiableAt`.
+-/
 theorem differentiable_coord (m : Fin n) : Differentiable ℂ (fun v : V n => v m) := fun y => (hasFDerivAt_coord m y).differentiableAt
 
+/- English proof (translation)
+Proceed by induction on `k using Fin.cases with`. Consider the case `zero => simp only [wv, Fin.cons_zero]`. Conclude with `differentiable_const _`. Consider the case `succ j => simp only [wv, Fin.cons_succ]`. Conclude with `differentiable_coord j`.
+-/
 theorem differentiable_wv (k : Fin (n + 1)) : Differentiable ℂ (fun y : V n => wv n y k) := by
   induction k using Fin.cases with
   | zero => simp only [wv, Fin.cons_zero]; exact differentiable_const _
   | succ j => simp only [wv, Fin.cons_succ]; exact differentiable_coord j
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i => (hf.comp differentiable_id).differentiableOn, fun i j y _ _ _ => by cases i; cases j; simp [atlas]⟩`.
+-/
 theorem isSecOn_of (la : ℤ) (U : Set (V n)) (f : Unit → V n → ℂ) (hf : Differentiable ℂ (f ())) :
     (atlas n).IsSecOn la U f := ⟨fun i => (hf.comp differentiable_id).differentiableOn, fun i j y _ _ _ => by cases i; cases j; simp [atlas]⟩
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`.
+-/
 theorem norm_sq_eq' (y : V n) : ‖y‖ ^ 2 = ∑ j, ‖y j‖ ^ 2 := by rw [EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]
 
+/- English proof (translation)
+Simplify using `only [WeightedAtlas.sqn, nsq_eq, wI, ← Finset.sum_mul, Fin.sum_univ_succ, wv, Fin.cons_zero, Fin.cons_succ, norm_one, one_pow]`. Rewrite using `[← norm_sq_eq', mul_inv_cancel₀ (pos_one_add y).ne']`.
+-/
 theorem sqn_w (y : V n) : (atlas n).sqn 1 (wI n) y = 1 := by
   simp only [WeightedAtlas.sqn, nsq_eq, wI, ← Finset.sum_mul, Fin.sum_univ_succ, wv, Fin.cons_zero,
     Fin.cons_succ, norm_one, one_pow]
   rw [← norm_sq_eq', mul_inv_cancel₀ (pos_one_add y).ne']
 
+/- English proof (translation)
+Simplify using `only [WeightedAtlas.sqn, nsq_eq, sI, ← Finset.sum_mul]`. Rewrite using `[← norm_sq_eq']`.
+-/
 theorem euclideanAtlas_sumNormSq_coordSections (y : V n) : (atlas n).sqn 1 (sI n) y = ‖y‖ ^ 2 * (1 + ‖y‖ ^ 2)⁻¹ := by
   simp only [WeightedAtlas.sqn, nsq_eq, sI, ← Finset.sum_mul]
   rw [← norm_sq_eq']
 
+/- English proof (translation)
+Rewrite using `[nsq_eq]`. Simplify using `[w0I]`.
+-/
 theorem euclideanAtlas_pointwiseNormSq_unitSection (y : V n) : (atlas n).nsq 1 (w0I n) y = (1 + ‖y‖ ^ 2)⁻¹ := by
   rw [nsq_eq]; simp [w0I]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Simplify using `[WeightedAtlas.zLoc, w0I, sI, atlas]`.
+-/
 theorem zLoc_eq (i : Unit) : (atlas n).zLoc (w0I n) (sI n) i = id := by
   funext v
   simp [WeightedAtlas.zLoc, w0I, sI, atlas]
 
+/- English proof (translation)
+Rewrite using `[zLoc_eq, fderiv_id]`. Use `show LinearMap.det (LinearMap.id : V n →ₗ[ℂ] V n) ≠ 0`. Rewrite using `[LinearMap.det_id]`. Conclude with `one_ne_zero`.
+-/
 theorem det_ne (y : V n) :
     (fderiv ℂ ((atlas n).zLoc (w0I n) (sI n) ((atlas n).pick y))
       ((atlas n).chart ((atlas n).pick y) y)).det ≠ 0 := by
@@ -97,6 +142,11 @@ theorem det_ne (y : V n) :
   rw [LinearMap.det_id]
   exact one_ne_zero
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [WeightedAtlas.zeroSet, sI, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `k`.
+
+Simplify using `using h k`. Introduce and unpack `rfl k`. Simplify using the standard rewrite rules.
+-/
 theorem zeroSet_eq : (atlas n).zeroSet (sI n) = {0} := by
   ext y
   simp only [WeightedAtlas.zeroSet, sI, Set.mem_setOf_eq, Set.mem_singleton_iff]
@@ -104,8 +154,14 @@ theorem zeroSet_eq : (atlas n).zeroSet (sI n) = {0} := by
   · intro h; ext k; simpa using h k
   · rintro rfl k; simp
 
+/- English proof (translation)
+The claim follows from `(EuclideanSpace.proj (𝕜 := ℂ) m).contDiff`.
+-/
 theorem contDiff_coord (m : Fin n) : ContDiff ℂ 2 (fun v : V n => v m) := (EuclideanSpace.proj (𝕜 := ℂ) m).contDiff
 
+/- English proof (translation)
+The claim follows from `isSecOn_of _ _ _ (differentiable_wv k) isSection_denom := isSecOn_of _ _ _ (differentiable_const 1) sec_s k := isSecOn_of _ _ _ (differentiable_coord k) no_common_zero _ := ⟨0, by simp [wI, wv]⟩ finite_S := by rw [zeroSet_eq]; exact Set.finite_singleton 0 w0_ne _ _ := one_ne_zero …`.
+-/
 theorem d0 : (atlas n).D0 1 (wI n) (w0I n) (sI n) where
   sec_w k := isSecOn_of _ _ _ (differentiable_wv k)
   isSection_denom := isSecOn_of _ _ _ (differentiable_const 1)

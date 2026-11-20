@@ -12,6 +12,9 @@ variable {F : Type} [Field F]
 
 def intMat (O : Subring F) (n a : ℕ) : Set (Matrix (Fin n) (Fin a) F) := {y | ∀ i j, y i j ∈ O}
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply]; exact O.sum_mem fun k _ => O.mul_mem (hx i k) (hy k j)`.
+-/
 theorem isInt_mul' (O : Subring F) {a : ℕ} {x y : Matrix (Fin a) (Fin a) F} (hx : IsInt O x)
     (hy : IsInt O y) : IsInt O (x * y) := fun i j => by
   rw [Matrix.mul_apply]; exact O.sum_mem fun k _ => O.mul_mem (hx i k) (hy k j)

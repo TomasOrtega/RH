@@ -14,6 +14,11 @@ section Abstract
 variable {A ι κ : Type} [Ring A] [Algebra ℂ A] [Fintype ι] [Fintype κ] [DecidableEq ι] [DecidableEq κ]
   (u l : ι → κ → A)
 
+/- English proof (translation)
+Establish `e1 : u b j * l b k = l b k * u b j - if k = j then 1 else 0`. Rewrite using `[h b k j]`. Normalize the expressions using the abelian group laws. Establish `e2 : u a k * l a i * (l b k * u b j) = u a k * l b k * (l a i * u b j)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e1, mul_sub, e2]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem core_term (h : ∀ b c e, l b c * u b e = u b e * l b c + if c = e then 1 else 0)
     (hll : ∀ a c b e, l a c * l b e = l b e * l a c) (a b : ι) (i j k : κ) :
     u a k * l a i * (u b j * l b k) =
@@ -27,6 +32,9 @@ theorem core_term (h : ∀ b c e, l b c * u b e = u b e * l b c + if c = e then 
   rw [e1, mul_sub, e2]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [Finset.sum_mul, Finset.mul_sum, core_term u l h hll, Finset.sum_sub_distrib]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by simp [hk]) (by simp)]`. Simplify using `[Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, Finset.smul_sum]`.
+-/
 theorem core1 (h : ∀ b c e, l b c * u b e = u b e * l b c + if c = e then 1 else 0)
     (hll : ∀ a c b e, l a c * l b e = l b e * l a c) (i j : κ) :
     ∑ k, (∑ a, u a k * l a i) * (∑ b, u b j * l b k) =
@@ -42,6 +50,9 @@ theorem core1 (h : ∀ b c e, l b c * u b e = u b e * l b c + if c = e then 1 el
   · rw [Finset.sum_eq_single j (fun k _ hk => by simp [hk]) (by simp)]
     simp [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, Finset.smul_sum]
 
+/- English proof (translation)
+Simplify using `only [h, Finset.sum_add_distrib]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ]`.
+-/
 theorem core2 (h : ∀ b c e, l b c * u b e = u b e * l b c + if c = e then 1 else 0) (i j : κ) :
     ∑ a, l a i * u a j = ∑ a, u a j * l a i + if i = j then (Fintype.card ι : ℂ) • (1 : A) else 0 := by
   simp only [h, Finset.sum_add_distrib]
@@ -59,6 +70,15 @@ section Main
 variable {V ι κ : Type} [AddCommGroup V] [Module ℂ V] [Fintype ι] [Fintype κ] [DecidableEq ι]
   [DecidableEq κ] (u l : ι → κ → Module.End ℂ V) (E : ι → ι → Module.End ℂ V) (G : κ → κ → Module.End ℂ V)
 
+/- English proof (translation)
+Establish `hR : ∀ a b, (E a b - (if a = b then x else 0) • 1) * (l a i * u b j) = (∑ c, u a c * l b c) * (l a i * u b j) + (if a = b then (Fintype.card κ : ℂ) / 2 - x else 0) • (l a i * u b j)`. Introduce `a b`. Rewrite using `[hE]`. Apply the tactic sequence `split_ifs <;> simp [add_mul, sub_mul, sub_smul, smul_mul_assoc, add_sub_assoc]`. Simplify using `only [hR, Finset.sum_add_distrib]`.
+
+Establish `hD : ∑ a, ∑ b, (if a = b then (Fintype.card κ : ℂ) / 2 - x else 0) • (l a i * u b j) = ((Fintype.card κ : ℂ) / 2 - x) • ∑ a, l a i * u a j`. Simplify using `[ite_smul, Finset.sum_ite_eq, Finset.smul_sum]`. Establish `h1` using `core1 u l h hll i j`. Rewrite `h1` using `[eq_sub_iff_add_eq]`. Rewrite using `[hD, core2 u l h, ← h1]`.
+
+Simplify using `only [qop, hG]`. Simplify using `only [neg_mul_neg, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, Finset.sum_add_distrib, ite_smul, zero_smul, ite_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [if_true]`.
+
+Use `module`. Simplify using `only [hij, Ne.symm hij, if_false] module`.
+-/
 theorem quad_main (h : ∀ b c e, l b c * u b e = u b e * l b c + if c = e then 1 else 0)
     (hll : ∀ a c b e, l a c * l b e = l b e * l a c)
     (hE : ∀ a b, E a b = ∑ c, u a c * l b c + (if a = b then (Fintype.card κ : ℂ) / 2 else 0) • 1)
@@ -97,6 +117,9 @@ end GlobalTheory.HoweR.QuadT
 
 namespace GlobalTheory.HoweR.QuadT
 
+/- English proof (translation)
+Rewrite using `[fockAct1_Eab]`. Simplify using `only [omE, Prod.mk.injEq, and_true, Finset.sum_add_distrib]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, div_eq_mul_inv]`.
+-/
 theorem fockAct1_Eab_eq {P Q R S : ℕ} (a b : Ix P Q) :
     fockAct1 P Q R S (Eab a b) =
       ∑ c, raiB (a, c) * lowB (b, c) + (if a = b then (Fintype.card (Ix R S) : ℂ) / 2 else 0) • 1 := by
@@ -105,6 +128,9 @@ theorem fockAct1_Eab_eq {P Q R S : ℕ} (a b : Ix P Q) :
   congr 1
   split_ifs <;> simp [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, div_eq_mul_inv]
 
+/- English proof (translation)
+Rewrite using `[fockAct2_Eab]`. Simplify using `only [omE, Prod.mk.injEq, true_and, Finset.sum_add_distrib]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, div_eq_mul_inv]`.
+-/
 theorem fockAct2_Eab_eq {P Q R S : ℕ} (c d : Ix R S) :
     fockAct2 P Q R S (Eab c d) =
       ∑ a, raiB (a, c) * lowB (a, d) + (if c = d then (Fintype.card (Ix P Q) : ℂ) / 2 else 0) • 1 := by
@@ -113,6 +139,13 @@ theorem fockAct2_Eab_eq {P Q R S : ℕ} (c d : Ix R S) :
   congr 1
   split_ifs <;> simp [Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, div_eq_mul_inv]
 
+/- English proof (translation)
+Introduce `P Q R S x`. Use `⟨(Fintype.card (Ix R S) : ℂ) / 2 - x, (Fintype.card (Ix P Q) : ℂ) ^ 2 / 4 + (x - (Fintype.card (Ix R S) : ℂ) / 2) * (Fintype.card (Ix P Q) : ℂ) / 2, fun i j f => ?_⟩` and prove the remaining obligations. Establish `key : qop (negT (units (fockAct2 P Q R S))) ((Fintype.card (Ix R S) : ℂ) / 2 - x) ((Fintype.card (Ix P Q) : ℂ) ^ 2 / 4 + (x - (Fintype.card (Ix R S) : ℂ) / 2) * (Fintype.card (Ix P Q) : ℂ) / 2) i j = ∑ a, ∑ b, (fockAct1 P Q R S (Eab a b) - (if a = b then x else 0) • 1) * (lowB (a …` using `quad_main (fun (a : Ix P Q) (c : Ix R S) => raiB (a, c)) (fun a c => lowB (a, c)) (fun a b => fockAct1 P Q R S (Eab a b)) (fun c d => fockAct2 P Q R S (Eab c d)) (fun b c e => by simp [GlobalTheory.FockCasimir.lowB_mul_raiB]) (fun a c b e => GlobalTheory.FockCasimir.lowB_comm _ _ …`. Rewrite using `[key, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨Eab a b, (lowB (a, i) * raiB (b, j)) f, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[Eab, Matrix.trace_single_eq_same]`. Simplify using `[hab, Eab, Matrix.trace_single_eq_of_ne _ _ _ hab]`.
+-/
 theorem negT_fockAct2_quad : ∀ (P Q R S : ℕ) (x : ℂ), ∃ α β : ℂ, ∀ a b f,
     qop (negT (units (fockAct2 P Q R S))) α β a b f ∈ coinv P Q R S x := by
   intro P Q R S x

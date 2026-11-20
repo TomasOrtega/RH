@@ -18,6 +18,9 @@ def actH (q : ℕ) {P : Arrow Spc} (n : ℤ) {m i j : ℤ} (b : Hs q P m j) :
     simp only [Hs.act, Hs.proj, map_add, AddMonoidHom.add_apply, AddSubgroup.coe_add]
     abel
 
+/- English proof (translation)
+Rewrite using `[AddMonoidHom.coe_comp]`. Conclude with `hf.comp hg`.
+-/
 theorem bij_comp {A B C : Type*} [AddZeroClass A] [AddZeroClass B] [AddZeroClass C] {f : B →+ C} {g : A →+ B}
     (hf : Function.Bijective f) (hg : Function.Bijective g) : Function.Bijective (f.comp g) := by
   rw [AddMonoidHom.coe_comp]; exact hf.comp hg
@@ -33,6 +36,9 @@ def purT {d : ℕ} (T : ∀ P : SP d, Tube P) (q : ℕ) (P : SP d) (n i : ℤ) :
         (pull _ (pullback.snd (T P).π (sch.map P.ι)) (tw q i) n))
   else 0
 
+/- English proof (translation)
+Establish `h : q ≠ 0 ∧ IsUnit (q : Γ(P.X, ⊤))` using `⟨NeZero.ne q, hq⟩`. Unfold `purT`. Rewrite using `[dif_pos h]`. Use `bij_comp (bij_comp (AddEquiv.bijective _) ?_) (bij_comp (AddEquiv.bijective _) (((T P).ok q hq).2.1 i n))` and prove the remaining obligations. Conclude with `((T P).ok q hq).2.2.2 n i`.
+-/
 theorem purT_bij {d : ℕ} (T : ∀ P : SP d, Tube P) (q : ℕ) [NeZero q] (P : SP d) (hq : IsUnit (q : Γ(P.X, ⊤)))
     (n i : ℤ) : Function.Bijective (purT T q P n i) := by
   classical
@@ -67,6 +73,9 @@ def EtalePurityReduction : Prop := Hyp → LeafCl → ∀ d (T : ∀ P : SP d, T
   ∀ r : ℕ, r ∣ q → ∀ (n i : ℤ) (a : Ht q (sch.obj P.Z) n i),
     (purT T r P n i (red q r _ _ _ a)).1 = red q r _ _ _ (purT T q P n i a).1
 
+/- English proof (translation)
+Introduce `hH d`. Take `⟨T, hT⟩` from `hTube hH d`. Conclude with `⟨purT T, fun q _ P hq => ⟨purT_bij T q P hq, hN hH hCl d T hT q P hq, hP hH d T q P hq, hR hH hCl d T q P hq⟩⟩`.
+-/
 theorem EtalePurity_of_parts (hCl : LeafCl) (hTube : LeafTube) (hN : EtalePurityNaturality) (hP : EtalePurityProjection) (hR : EtalePurityReduction) :
     LeafPur := by
   intro hH d

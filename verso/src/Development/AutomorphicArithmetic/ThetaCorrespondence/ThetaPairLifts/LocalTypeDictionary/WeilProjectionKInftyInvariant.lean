@@ -26,6 +26,17 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {W W₁ X : H
   {cB : Matrix (Fin W₁.rank) (Fin (W.rank + W₁.rank)) (AE D) ≃+ WO W₁ X}
   {Pi : ModuleCat.{0} ℂ} {rf : GA D X → Module.End ℂ Pi}
   {rl : D.what₂.Tau → Matrix (Fin X.rank) (Fin X.rank) ℂ → Module.End ℂ Pi} {p : (WO W X → ℂ) →ₗ[ℂ] Pi}
+/- English proof (translation)
+Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ _ hO hT Pi rf rl p p' hm k hk ΦD hΦD Φ Φ₁ h0 h1`. Establish `hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hT.base.std`. Take `⟨U, hUf, hUle, hΦU, hUst⟩` from `_root_.GlobalTheory.T.kFinite_algebra_closed_under_derivation hP _ _ _ Bs _ _ Γ Xc om om' hT ΦD hΦD`. Take `⟨l, hl, rfl⟩` from `_root_.GlobalTheory.T.kInfinity_action_prod_lines hP D θ W Bs Γ.V _ _ hO.JW hθ hT.base hT.geo.hV k hk`. Use `haveI := hUf`.
+
+Establish `key : ∀ l : List (D.what₂.Tau × Matrix (Fin W.rank) (Fin W.rank) ℂ), (∀ q ∈ l, q.2 ∈ lieAt W q.1 ∧ ∀ t : ℝ, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hO.JW (oneP θ W q.1 q.2 t) ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf D.sp.cm.sig …`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ x hx`.
+
+Simplify using `only [List.map_nil, List.prod_nil, Prod.mk_one_one, map_one, Module.End.one_apply]`. Conclude with `⟨hx, fun Φ Φ₁ h0 h1 => by rw [GlobalTheory.SquareAgree.CoinvPass.isDatum_unique cA.surjective h1 h0]⟩`. Consider the case `cons q l ih`. Introduce `hl x hx`. Take `⟨hx1, hx2⟩` from `ih (fun q' hq' => hl q' (List.mem_cons_of_mem _ hq')) x hx`.
+
+Take `⟨hq1, hq2⟩` from `hl q List.mem_cons_self`. Establish `e : om ((List.map (fun q => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hO.JW (oneP θ W q.1 q.2 1)) (q :: l)).prod, 1) x = om (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hO.JW (oneP θ W q.1 q.2 1), 1) (om ((l.map fun q => GlobalT …`. Rewrite using `[List.map_cons, List.prod_cons, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[e]`. Use `⟨hUst _ (hq2 1) _ hx1, fun Φ Φ₁ h0 h1 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨Ψ, -, hΨ⟩` from `hO.algA' _ (hUle hx1)`. Rewrite using `[line_step hθ hψ hO hm.mapA hq1 U hUle (fun t z hz => hUst _ (hq2 t) z hz) hx1 hΨ h1, hx2 Φ Ψ h0 hΨ]`. Conclude with `(key l hl ΦD hΦU).2 Φ Φ₁ h0 h1`.
+-/
 theorem projection_kInfty_invariant : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -83,6 +94,9 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.KInvData.projection_kInfty_invariant | exact _root_.GlobalTheory.KInvData.projection_kInfty_invariant | (intros; apply _root_.GlobalTheory.KInvData.projection_kInfty_invariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weil_projection_kInfty_invariant : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

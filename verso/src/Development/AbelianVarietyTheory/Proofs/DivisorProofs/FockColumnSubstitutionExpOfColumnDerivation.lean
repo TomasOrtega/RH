@@ -15,6 +15,15 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Establish `hX : ∀ y : Var ι d a, (colSub g (X y : Pol ι d a)).totalDegree ≤ 1`. Introduce `y`. Rewrite using `[colSub, aeval_X]`. Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun j _ => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[totalDegree_C, totalDegree_X]`. Use `conv_lhs => rw [as_sum P]`. Rewrite using `[map_sum]`. Use `(totalDegree_finset_sum _ _).trans (Finset.sup_le fun m hm => ?_)` and prove the remaining obligations. Use `le_trans ?_ (le_totalDegree hm)` and prove the remaining obligations.
+
+Rewrite using `[monomial_eq, map_mul, algHom_C, algebraMap_eq, Finsupp.prod, map_prod]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Use `(totalDegree_finset_prod _ _).trans (Finset.sum_le_sum fun y _ => ?_)` and prove the remaining obligations. Rewrite using `[map_pow]`.
+
+Use `(totalDegree_pow _ _).trans ?_` and prove the remaining obligations. Simplify using `using Nat.mul_le_mul_left (m y) (hX y)`.
+-/
 theorem totalDegree_colSub_le {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) (P : Pol ι d a) :
     (colSub g P).totalDegree ≤ P.totalDegree := by
   have hX : ∀ y : Var ι d a, (colSub g (X y : Pol ι d a)).totalDegree ≤ 1 := by
@@ -35,6 +44,13 @@ theorem totalDegree_colSub_le {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ
   refine (totalDegree_pow _ _).trans ?_
   simpa using Nat.mul_le_mul_left (m y) (hX y)
 
+/- English proof (translation)
+Set `A : Finset (σ →₀ ℕ)` to `(Finsupp.finite_of_degree_le (σ := σ) N).toFinset ∪ u'.support`. Establish `key : ∀ P : MvPolynomial σ ℂ, P.support ⊆ A → l P = ∑ m ∈ A, coeff m P * l (monomial m 1)`. Introduce `P hP`. Use `conv_lhs => rw [as_sum P]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_subset_zero_on_sdiff hP (fun m hm => ?_) (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[notMem_support_iff.1 (Finset.mem_sdiff.1 hm).2, zero_mul]`. Rewrite using `[← smul_eq_mul, ← map_smul, smul_monomial, smul_eq_mul, mul_one]`. Establish `h1 : ∀ s, (u s).support ⊆ A`. Introduce `s m hm`.
+
+Use `Finset.mem_union_left _ ?_` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `(le_totalDegree hm).trans (hu s)`. Rewrite using `[key u' Finset.subset_union_right, funext fun s => key (u s) (h1 s)]`. Conclude with `HasDerivAt.fun_sum fun m _ => (hd m).mul_const _`.
+-/
 theorem hasDerivAt_dual_of_coeff {σ : Type} [Finite σ] (l : MvPolynomial σ ℂ →ₗ[ℂ] ℂ) (N : ℕ)
     (u : ℝ → MvPolynomial σ ℂ) (u' : MvPolynomial σ ℂ) (t : ℝ) (hu : ∀ s, (u s).totalDegree ≤ N)
     (hd : ∀ m, HasDerivAt (fun s => coeff m (u s)) (coeff m u') t) : HasDerivAt (fun s => l (u s)) (l u') t := by
@@ -56,6 +72,9 @@ theorem hasDerivAt_dual_of_coeff {σ : Type} [Finite σ] (l : MvPolynomial σ �
   exact HasDerivAt.fun_sum fun m _ => (hd m).mul_const _
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `[atPl]`. Simplify using `[atPl, h]`.
+-/
 theorem atPl_mul {a : ℕ} (τ : ι) (A B : Matrix (Fin a) (Fin a) ℂ) :
     atPl τ (A * B) = fun σ => atPl τ A σ * atPl τ B σ := by
   funext σ
@@ -63,6 +82,13 @@ theorem atPl_mul {a : ℕ} (τ : ι) (A B : Matrix (Fin a) (Fin a) ℂ) :
   · subst h; simp [atPl]
   · simp [atPl, h]
 
+/- English proof (translation)
+Establish `: (colSub (atPl τ 1) : Pol ι d a →ₐ[ℂ] Pol ι d a) = AlgHom.id ℂ _`. Use `algHom_ext fun v => ?_` and prove the remaining obligations. Establish `h1 : atPl τ (1 : Matrix (Fin a) (Fin a) ℂ) v.1 = 1`. Distinguish the cases in `h : v.1 = τ`. Rewrite using `[h]`.
+
+Simplify using `[atPl]`. Simplify using `[atPl, h]`. Rewrite using `[colSub, aeval_X, h1, Finset.sum_eq_single v.2.2]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Rewrite using `[Matrix.one_apply_ne hb]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[this, AlgHom.id_apply]`.
+-/
 theorem colSub_atPl_one {d a : ℕ} (τ : ι) (P : Pol ι d a) : colSub (atPl τ 1) P = P := by
   have : (colSub (atPl τ 1) : Pol ι d a →ₐ[ℂ] Pol ι d a) = AlgHom.id ℂ _ := by
     refine algHom_ext fun v => ?_
@@ -78,6 +104,19 @@ theorem colSub_atPl_one {d a : ℕ} (τ : ι) (P : Pol ι d a) : colSub (atPl τ
     · simp
   rw [this, AlgHom.id_apply]
 
+/- English proof (translation)
+Introduce `ι _ _ d a τ c Q _ _ q hco hq S hS P`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, map_smul, sub_eq_zero, smul_eq_mul]`. Use `set k : ℂ := (c : ℂ) * S.trace with hk`.
+
+Set `R : ℝ → Pol ι d a` to `fun t => colSub (atPl τ (NormedSpace.exp ((t : ℂ) • S))) P`. Set `f : ℝ → ℂ` to `fun t => l (q (R t))`. Establish `hadd : ∀ s t : ℝ, colSub (atPl τ (NormedSpace.exp ((s : ℂ) • S))) (R t) = R (s + t)`. Introduce `s t`. Simplify using `only [R]`.
+
+Rewrite using `[← colSub_mul, ← atPl_mul, Complex.ofReal_add, add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl S).smul_left _).smul_right _)]`. Establish `hd : ∀ t, HasDerivAt f (f t * k) t`. Introduce `t`. Establish `h0` using `hasDerivAt_dual_of_coeff (l ∘ₗ q) (R t).totalDegree (fun h : ℝ => colSub (atPl τ (NormedSpace.exp ((h : ℂ) • S))) (R t)) (colDer τ S (R t)) 0 (fun s => totalDegree_colSub_le _ _) (hco S (R t))`. Simplify using `only [hadd, LinearMap.comp_apply, hq S hS, map_smul, smul_eq_mul] at h0`.
+
+Rewrite `h0` using `[← sub_self t]`. Establish `h1` using `h0.comp_sub_const t t`. Simplify using `only [sub_add_cancel] at h1`. Rewrite using `[mul_comm]`. Conclude with `h1`.
+
+Establish `hg : ∀ t : ℝ, HasDerivAt (fun s : ℝ => f s * Complex.exp (-(s * k))) 0 t`. Introduce `t`. Establish `h1 : HasDerivAt (fun s : ℝ => -((s : ℂ) * k)) (-k) t`. Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := t)).mul_const k).fun_neg`. Conclude with `((hd t).fun_mul h1.cexp).congr_deriv (by ring)`.
+
+Establish `hc` using `is_const_of_deriv_eq_zero (fun t => (hg t).differentiableAt) (fun t => (hg t).deriv) 1 0`. Simplify using `only [f, R, Complex.ofReal_one, Complex.ofReal_zero, one_smul, zero_smul, NormedSpace.exp_zero, colSub_atPl_one, one_mul, zero_mul, neg_zero, Complex.exp_zero, mul_one] at hc`. Rewrite using `[← hc, GlobalTheory.SUVol.det_exp, ← Complex.exp_nat_mul, ← hk, mul_comm, mul_assoc, ← Complex.exp_add, neg_add_cancel, Complex.exp_zero, mul_one]`.
+-/
 theorem colSub_exp_of_colDer : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] (d a : ℕ) (τ : ι) (c : ℕ) (Q : Type) [AddCommGroup Q] [Module ℂ Q]
     (q : GlobalTheory.MinorFrame.Pol ι d a →ₗ[ℂ] Q),
     (∀ (S : Matrix (Fin a) (Fin a) ℂ) (R : GlobalTheory.MinorFrame.Pol ι d a) (m : GlobalTheory.MinorFrame.Var ι d a →₀ ℕ),

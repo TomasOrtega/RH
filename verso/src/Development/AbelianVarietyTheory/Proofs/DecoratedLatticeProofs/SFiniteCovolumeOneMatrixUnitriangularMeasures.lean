@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.Unf
 
+/- English proof (translation)
+Introduce `D ρ m vb vU`. Prove the components needed by the constructor for the conclusion. Take `⟨i1, i2, i3, -⟩` from `lattice_Mx D ρ m haveI : IsTopologicalAddGroup (Mx D ρ m) := i1 haveI : LocallyCompactSpace (Mx D ρ m) := i2 haveI : SecondCountableTopology (Mx D ρ m) := i3 haveI : vb.μ.IsAddHaarMeasure := vb.covol.1 haveI : SigmaFinite vb.μ := Measure.IsAddHaarMeasure.sigmaFinite _ infer_insta …`. Take `⟨i1, i2, -⟩` from `GlobalTheory.UnitU.topology D ρ haveI : LocallyCompactSpace (UX D ρ) := i1 haveI : SecondCountableTopology (UX D ρ) := i2 haveI : vU.ν.IsHaarMeasure := vU.unit.1 haveI : SigmaFinite vU.ν := Measure.IsHaarMeasure.sigmaFinite _ infer_instance`.
+-/
 theorem sFinite_vol : ∀ (D : D7) (ρ m : ℕ) (vb : VolM D ρ m) (vU : VolU D ρ), SFinite vb.μ ∧ SFinite vU.ν := by
   intro D ρ m vb vU
   constructor

@@ -7,6 +7,9 @@ import GroundTheory.AutomorphicForms.ReductionSiegel
 open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AltConv.norm_sum_altSign_integral_le | exact GlobalTheory.AltConv.norm_sum_altSign_integral_le | (intros; apply GlobalTheory.AltConv.norm_sum_altSign_integral_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.norm_signed_sum_integral_le : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (β : Lie E a → ℂ), ContDiff ℝ ∞ β →
     HasCompactSupport β → tsupport β ⊆ invSet E a → ∀ (m : ℕ) (R : ℝ), ∃ (c : ℝ) (Q : Set (Lie E a)),
     0 ≤ c ∧ IsCompact Q ∧ Q ⊆ invSet E a ∧ ∀ f : Lie E a → ℂ, ContinuousOn f (invSet E a) →

@@ -14,14 +14,25 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Matrix (Fin n) (Fin 1) E)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp⟩`.
+-/
 theorem stabL_one_transv : StabL σ J x 1 := ⟨1, by simp⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hg`. Take `⟨b, hb⟩` from `hh`. Use `⟨b * a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, hb, Matrix.mul_smul, ha, smul_smul, Units.val_mul]`.
+-/
 theorem stabL_mul_transv {g h : GAd σ J} (hg : StabL σ J x g) (hh : StabL σ J x h) : StabL σ J x (g * h) := by
   obtain ⟨a, ha⟩ := hg
   obtain ⟨b, hb⟩ := hh
   refine ⟨b * a, ?_⟩
   rw [map_mul, Units.val_mul, Matrix.mul_assoc, hb, Matrix.mul_smul, ha, smul_smul, Units.val_mul]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hg`. Use `⟨a⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : (matHom _ σ J g⁻¹).1 * ((matHom _ σ J g).1 * adMat F x) = adMat F x`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mul]`. Rewrite `h1` using `[ha, Matrix.mul_smul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = _ := by rw [h1]`.
+-/
 theorem stabL_inv_transv {g : GAd σ J} (hg : StabL σ J x g) : StabL σ J x g⁻¹ := by
   obtain ⟨a, ha⟩ := hg
   refine ⟨a⁻¹, ?_⟩
@@ -35,6 +46,15 @@ theorem stabL_inv_transv {g : GAd σ J} (hg : StabL σ J x g) : StabL σ J x g�
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J x`. Set `S : Setoid (ratPts σ J)` to `{ r := fun γ t => StabL σ J x (γ * t⁻¹ : ratPts σ J).1 iseqv := { refl := fun γ => by`. Rewrite using `[mul_inv_cancel]`. Conclude with `stabL_one_transv σ J x`. Use symmetry as in `:= fun {a b} h => by`.
+
+Establish `h2` using `stabL_inv_transv σ J x h`. Establish `e : (b * a⁻¹ : ratPts σ J) = (a * b⁻¹)⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `h2`. Use `trans := fun {a b c} h1 h2 => by`.
+
+Establish `h3` using `stabL_mul_transv σ J x h1 h2`. Establish `e : (a * c⁻¹ : ratPts σ J) = (a * b⁻¹) * (b * c⁻¹)` using `by group`. Rewrite using `[e]`. Conclude with `h3 } }`. Use `⟨Set.range (Quotient.out (s := S)), fun γ => ⟨(Quotient.mk S γ).out, ⟨⟨_, rfl⟩, ?_⟩, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `S.symm (Quotient.mk_out (s := S) γ)`. Introduce and unpack `t ⟨⟨q, rfl⟩, ht⟩`. Establish `h : Quotient.mk S γ = Quotient.mk S q.out` using `Quotient.sound (s := S) ht`. Rewrite using `[h, Quotient.out_eq]`.
+-/
 theorem exists_isTransv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (x : Matrix (Fin n) (Fin 1) E), ∃ T, GlobalTheory.EisCT.IsTransv σ J x T := by
   intro F E _ _ _ _ _ σ n J x

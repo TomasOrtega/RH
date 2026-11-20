@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdEqZeroOfUnderEqB
 open CategoryTheory AlgebraicGeometry
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SteinFibre.ord_eq_mul_ord_uniformizer | exact GlobalTheory.SteinFibre.ord_eq_mul_ord_uniformizer | (intros; apply GlobalTheory.SteinFibre.ord_eq_mul_ord_uniformizer <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.uniformizer_order_multiplicative : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [IsDedekindDomain Γ(X, ⊤)] (z : X)
     (P : Ideal Γ(X, ⊤)) (π a : Γ(X, ⊤)) (n : ℕ), P.IsPrime → P ≠ ⊥ → GlobalTheory.SteinFibre.under z = P → π ∈ P →
     π ∉ P ^ 2 → a ∈ P ^ n → a ∉ P ^ (n + 1) →

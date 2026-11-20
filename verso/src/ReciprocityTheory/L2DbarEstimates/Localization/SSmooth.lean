@@ -8,6 +8,15 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `z hz f hf φ hφ j k`. Establish `hφ1 : Ck n z 1 φ` using `Smooth.ck n z 1 φ hφ.1`. Establish `hcd : ∀ i : Fin n, HasCompactSupport (db n z i φ)` using `fun i => hφ.2.mono' ((subset_tsupport _).trans (tsupport_db_subset n z i φ))`. Establish `hcont : ∀ i : Fin n, Continuous (db n z i φ)` using `fun i => Ck.continuous n z hz 0 _ (Ck.db n z 0 i φ hφ1)`. Establish `hfc : ∀ i : Fin n, Continuous (fun y => f y i)` using `fun i => Ck.continuous n z hz 1 _ (hf i)`.
+
+Establish `hI1 : ∀ a b : Fin n, Integrable (fun x => f x a * db n z b φ x) (vol n z)` using `fun a b => integrable_of_continuous n z hz _ ((hfc a).mul (hcont b)) ((hcd b).mul_left)`. Establish `hI2 : ∀ a b : Fin n, Integrable (fun x => db n z b (fun y => f y a) x * φ x) (vol n z)` using `fun a b => integrable_of_continuous n z hz _ ((Ck.continuous n z hz 0 _ (Ck.db n z 0 b _ (hf a))).mul (Ck.continuous n z hz 1 _ hφ1)) hφ.2.mul_left`. Establish `h1` using `integral_db_mul n z hz j (fun y => f y k) φ (hf k) hφ1 hφ.2`. Establish `h2` using `integral_db_mul n z hz k (fun y => f y j) φ (hf j) hφ1 hφ.2`. Establish `hL : ∫ x, (f x k * db n z j φ x - f x j * db n z k φ x) ∂vol n z = ∫ x, f x k * db n z j φ x ∂vol n z - ∫ x, f x j * db n z k φ x ∂vol n z` using `integral_sub (hI1 k j) (hI1 j k)`.
+
+Establish `hR : ∫ x, sbar n z f x j k * φ x ∂vol n z = ∫ x, db n z j (fun y => f y k) x * φ x ∂vol n z - ∫ x, db n z k (fun y => f y j) x * φ x ∂vol n z`. Rewrite using `[← integral_sub (hI2 k j) (hI2 j k)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [sbar, sub_mul]`.
+
+Rewrite using `[hL, hR, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weakSSmooth (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] : WeakSSmoothStatement n M := by
   intro z hz f hf φ hφ j k
@@ -38,6 +47,13 @@ theorem weakSSmooth (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
   rw [hL, hR, h1, h2]
   ring
 
+/- English proof (translation)
+Establish `he0 : Set.EqOn z e e.source` using `he`. Establish `he0' : Set.EqOn z e' e'.source` using `he'`. Establish `hzp : z p = e' p` using `he0' hp'`. Establish `h2 : e'.target ∩ e'.symm ⁻¹' e.source ∈ 𝓝 (z p)`. Rewrite using `[hzp]`.
+
+Use `(e'.isOpen_inter_preimage_symm e.open_source).mem_nhds ⟨e'.map_source hp', ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, e'.left_inv hp']`. Conclude with `hp`. Use `filter_upwards [h2] with y hy`. Establish `hs : e'.symm y ∈ e'.source` using `e'.map_target hy.1`.
+
+Establish `h3 : e (e'.symm y) = y`. Rewrite using `[← he0 hy.2, he0' hs, e'.right_inv hy.1]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma chart_symm_eventuallyEq_of_isChart {n : ℕ} {M : Type*} [TopologicalSpace M] (z : M → V n)
     (e e' : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (he' : IsChart n z e')
     (p : M) (hp : p ∈ e.source) (hp' : p ∈ e'.source) :
@@ -57,6 +73,11 @@ private lemma chart_symm_eventuallyEq_of_isChart {n : ℕ} {M : Type*} [Topologi
   calc e.symm y = e.symm (e (e'.symm y)) := by rw [h3]
     _ = e'.symm y := e.left_inv hy.2
 
+/- English proof (translation)
+Establish `hex : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ p ∈ e.source` using `⟨e0, he0, hp⟩`. Establish `hspec` using `Classical.choose_spec hex`. Establish `hE : (g ∘ (Classical.choose hex).symm) =ᶠ[𝓝 (z p)] (g ∘ e0.symm)` using `(chart_symm_eventuallyEq_of_isChart z _ e0 hspec.1 he0 p hspec.2 hp).fun_comp g`. Rewrite using `[db, dif_pos hex]`. Unfold `wdb`.
+
+Rewrite using `[hE.fderiv_eq]`.
+-/
 private lemma db_eq_wdb_comp_chart_symm {n : ℕ} {M : Type*} [TopologicalSpace M] (z : M → V n)
     (e0 : OpenPartialHomeomorph M (V n)) (he0 : IsChart n z e0) (k : Fin n) (g : M → ℂ)
     (p : M) (hp : p ∈ e0.source) : db n z k g p = wdb n k (g ∘ e0.symm) (z p) := by
@@ -68,6 +89,13 @@ private lemma db_eq_wdb_comp_chart_symm {n : ℕ} {M : Type*} [TopologicalSpace 
   unfold wdb
   rw [hE.fderiv_eq]
 
+/- English proof (translation)
+Establish `hA` using `hd.hasFDerivAt.clm_apply (hasFDerivAt_const (bas n k) y0)`. Establish `hB` using `hd.hasFDerivAt.clm_apply (hasFDerivAt_const (Complex.I • bas n k) y0)`. Establish `hW` using `HasFDerivAt.const_mul (HasFDerivAt.add hA (HasFDerivAt.const_mul hB Complex.I)) ((2 : ℂ)⁻¹)`. Establish `heq : wdb n k h = fun y => (2 : ℂ)⁻¹ * (fderiv ℝ h y (bas n k) + Complex.I * fderiv ℝ h y (Complex.I • bas n k))`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[wdb, div_eq_inv_mul]`. Establish `hF : fderiv ℝ (wdb n k h) y0 = (2 : ℂ)⁻¹ • ((fderiv ℝ h y0).comp (0 : V n →L[ℝ] V n) + (fderiv ℝ (fderiv ℝ h) y0).flip (bas n k) + Complex.I • ((fderiv ℝ h y0).comp (0 : V n →L[ℝ] V n) + (fderiv ℝ (fderiv ℝ h) y0).flip (Complex.I • bas n k)))`. Rewrite using `[heq]`. Conclude with `HasFDerivAt.fderiv hW`. Rewrite using `[hF]`.
+
+Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.zero_apply, map_zero, zero_add, ContinuousLinearMap.flip_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma fderiv_wdb_apply_eq {n : ℕ} (k : Fin n) (h : V n → ℂ) (y0 : V n)
     (hd : DifferentiableAt ℝ (fderiv ℝ h) y0) (v : V n) :
     fderiv ℝ (wdb n k h) y0 v =
@@ -93,6 +121,19 @@ private lemma fderiv_wdb_apply_eq {n : ℕ} (k : Fin n) (h : V n → ℂ) (y0 : 
     ContinuousLinearMap.flip_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `z hz g hg x`. Take `⟨e0, hx0, hze⟩` from `hz x`. Establish `he0 : IsChart n z e0`. Introduce `y _`. Rewrite using `[hze]`.
+
+Establish `he0' : Set.EqOn z e0 e0.source` using `he0`. Establish `hy0 : z x ∈ e0.target`. Rewrite using `[he0' hx0]`. Conclude with `e0.map_source hx0`. Establish `hnb : e0.target ∈ 𝓝 (z x)` using `e0.open_target.mem_nhds hy0`.
+
+Establish `hcd : ContDiffAt ℝ 2 (g ∘ e0.symm) (z x)`. Use `(hg e0 he0).contDiffAt hnb` as an intermediate fact. Simplify using `using this`. Establish `hd : DifferentiableAt ℝ (fderiv ℝ (g ∘ e0.symm)) (z x)` using `(hcd.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hsym : ∀ v w : V n, fderiv ℝ (fderiv ℝ (g ∘ e0.symm)) (z x) v w = fderiv ℝ (fderiv ℝ (g ∘ e0.symm)) (z x) w v`.
+
+Introduce `v w`. Use `first`. Consider the case `exact hcd.isSymmSndFDerivAt (by simp) v w`. Consider the case `exact hcd.isSymmSndFDerivAt (by simp [minSmoothness_of_isRCLikeNormedField]) v w`. Establish `hloc : ∀ k : Fin n, ((fun y => db n z k g y) ∘ e0.symm) =ᶠ[𝓝 (z x)] wdb n k (g ∘ e0.symm)`.
+
+Introduce `k`. Use `filter_upwards [hnb] with y hy`. Rewrite using `[Function.comp_apply, db_eq_wdb_comp_chart_symm z e0 he0 k g _ (e0.map_target hy), he0' (e0.map_target hy), e0.right_inv hy]`. Use function extensionality and compare the values at `j k`. Use `show db n z j (fun y => db n z k g y) x - db n z k (fun y => db n z j g y) x = 0`.
+
+Rewrite using `[db_eq_wdb_comp_chart_symm z e0 he0 j _ x hx0, db_eq_wdb_comp_chart_symm z e0 he0 k _ x hx0]`. Unfold `wdb`. Rewrite using `[(hloc k).fderiv_eq, (hloc j).fderiv_eq, fderiv_wdb_apply_eq k _ _ hd (bas n j), fderiv_wdb_apply_eq k _ _ hd (Complex.I • bas n j), fderiv_wdb_apply_eq j _ _ hd (bas n k), fderiv_wdb_apply_eq j _ _ hd (Complex.I • bas n k), hsym (bas n k) (bas n j), hsym (bas n k) (Complex.I • b …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sbarDbar (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] : SbarDbarStatement n M := by
   intro z hz g hg x

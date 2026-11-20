@@ -12,6 +12,13 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `ξ hS hI`. Establish `: TotallyDisconnectedSpace k` using `totallyDisconnectedSpace_localField`. Establish `: LocallyCompactSpace (Matrix (Fin n) (Fin n) k)` using `inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → k))`. Establish `: TotallyDisconnectedSpace (Matrix (Fin n) (Fin n) k)` using `inferInstanceAs (TotallyDisconnectedSpace (Fin n → Fin n → k))`. Establish `: T2Space (Matrix (Fin n) (Fin n) k)` using `inferInstanceAs (T2Space (Fin n → Fin n → k))`.
+
+Introduce `f hf`. Establish `hle : supportedIn {p : Sp k n | p.2 ≠ 0} ≤ LinearMap.ker ξ` using `supportedIn_le_of_local fun p hp => by`. Take `⟨e, he, hee, hev, hprim⟩` from `prim Z hZ.1 hZ.2 p.2 hp`. Use `⟨{q : Sp k n | e *ᵥ q.2 ≠ 0}, ?_, hev, fun g hg => LinearMap.mem_ker.2 (mainE Z hZ h0 e he hee hprim p.2 hev ξ hS hI g hg)⟩` and prove the remaining obligations. Conclude with `isOpen_ne_fun (continuous_const.matrix_mulVec continuous_snd) continuous_const`.
+
+Conclude with `LinearMap.mem_ker.1 (hle hf)`.
+-/
 theorem van_of {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (h0 : dB0 Z = 0) : Van Z := by
   intro ξ hS hI
   have : TotallyDisconnectedSpace k := totallyDisconnectedSpace_localField
@@ -27,6 +34,9 @@ theorem van_of {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR 
     exact isOpen_ne_fun (continuous_const.matrix_mulVec continuous_snd) continuous_const
   exact LinearMap.mem_ker.1 (hle hf)
 
+/- English proof (translation)
+Introduce `n Z hZ h0 ξ hS hI`. Use `van_of k Z hZ h0 ξ (fun f hf hf0 => hS f hf fun p hp => hf0 p ⟨hp.1.1, hp.2⟩) hI` and prove the remaining obligations.
+-/
 theorem baseQ : BaseQ k := by
   intro n Z hZ h0 ξ hS hI
   refine van_of k Z hZ h0 ξ (fun f hf hf0 => hS f hf fun p hp => hf0 p ⟨hp.1.1, hp.2⟩) hI

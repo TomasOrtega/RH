@@ -23,6 +23,11 @@ def valEquiv (lam : ι → DomWeight n) (e : Fin N ≃ C × VVIdx lam) : (Fin N 
 open NumberField IsDedekindDomain MvPolynomial in
 open scoped Matrix ComplexOrder in
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n N : ℕ} {C : Type} in
+/- English proof (translation)
+Establish `hne : (_root_.Formalism.L2.Col.extV ℚ lam : _root_.Formalism.L2.DIV.VV ℚ lam) ≠ 0`. Introduce `h`. Apply `_root_.Formalism.L2.Col.evV_extV_ne_zero (E := ℚ) (fun _ => RingHom.id ℚ) (1 : Matrix (Fin n) (Fin n) ℚ) lam (Rat.castHom ℂ) (⟨fun _ => 1, fun _ => by simp⟩ : {y : ι → Matrix (Fin n) (Fin n) ℂ // ∀ τ, IsUnit (y τ).det})` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `map_zero _`.
+
+Use `haveI : Nontrivial (_root_.Formalism.L2.DIV.VV ℚ lam) := nontrivial_of_ne _ _ hne`. Conclude with `(_root_.Formalism.L2.DIV.bVV ℚ lam).index_nonempty`.
+-/
 theorem _root_.GlobalTheory.TestLat.SumLat.idx_nonempty (lam : ι → _root_.Formalism.BasicNotions.DomWeight n) : Nonempty (_root_.Formalism.L2.DIV.VVIdx lam) := by
   have hne : (_root_.Formalism.L2.Col.extV ℚ lam : _root_.Formalism.L2.DIV.VV ℚ lam) ≠ 0 := by
     intro h
@@ -37,6 +42,31 @@ theorem _root_.GlobalTheory.TestLat.SumLat.idx_nonempty (lam : ι → _root_.For
 open NumberField IsDedekindDomain MvPolynomial in
 open scoped Matrix ComplexOrder in
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n N : ℕ} {C : Type} in
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite C`. Use `set f := _root_.GlobalTheory.TestLat.SumLat.valEquiv (K := K) lam e with hf`. Set `g : C → _root_.Formalism.L2.DIV.VV K lam →ₗ[K] (Fin N → K)` to `fun c => f.symm.toLinearMap ∘ₗ LinearMap.single K (fun _ : C => _root_.Formalism.L2.DIV.VV K lam) c`. Establish `hval : ∀ c c' t, _root_.GlobalTheory.TestLat.valAt lam e c' (g c t) = (Pi.single c t : C → _root_.Formalism.L2.DIV.VV K lam) c'`. Introduce `c c' t`.
+
+Establish `h` using `congrFun (f.apply_symm_apply (Pi.single c t : C → _root_.Formalism.L2.DIV.VV K lam)) c'`. Conclude with `h`. Establish `hsum : ∀ u, ∑ c, g c (_root_.GlobalTheory.TestLat.valAt lam e c u) = u`. Introduce `u`. Apply `f.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_sum]`. Establish `h : ∀ c, f (g c (_root_.GlobalTheory.TestLat.valAt lam e c u)) = Pi.single c (_root_.GlobalTheory.TestLat.valAt lam e c u)` using `fun c => f.apply_symm_apply _`. Simplify using `only [h]`. Conclude with `Finset.univ_sum_single (fun c => _root_.GlobalTheory.TestLat.valAt lam e c u)`. Use `set L : Submodule (𝓞 K) (Fin N → K) := ⨆ c, (T c).map ((g c).restrictScalars (𝓞 K)) with hL`.
+
+Establish `hP : _root_.GlobalTheory.TestLat.sumLat lam e T = L`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `u hu`. Rewrite `hu` using `[_root_.GlobalTheory.TestLat.Model.mem_sumLat]`. Rewrite using `[← hsum u]`.
+
+Conclude with `Submodule.sum_mem _ fun c _ => Submodule.mem_iSup_of_mem c (Submodule.mem_map_of_mem (hu c))`. Rewrite using `[hL, iSup_le_iff]`. Introduce `c`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `t ht`.
+
+Rewrite using `[Submodule.mem_comap, _root_.GlobalTheory.TestLat.Model.mem_sumLat]`. Introduce `c'`. Rewrite using `[LinearMap.restrictScalars_apply, hval]`. Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality.
+
+Rewrite using `[Pi.single_eq_same]`. Conclude with `ht`. Rewrite using `[Pi.single_eq_of_ne hc]`. Conclude with `zero_mem _`. Establish `key : ∀ c, ∀ t ∈ Submodule.span K (T c : Set (_root_.Formalism.L2.DIV.VV K lam)), g c t ∈ Submodule.span K (L : Set (Fin N → K))`.
+
+Introduce `c t ht`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`. Conclude with `Submodule.subset_span (Submodule.mem_iSup_of_mem c (Submodule.mem_map_of_mem hx))`. Consider the case `zero`.
+
+Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul a x _ hx`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ a hx`. Rewrite using `[hP]`. Use `⟨Submodule.fg_iSup _ fun c => ((hT c).fg).map _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff]`. Introduce `u _`. Rewrite using `[← hsum u]`. Use `Submodule.sum_mem _ fun c _ => key c _ ?_` and prove the remaining obligations. Rewrite using `[(hT c).span_eq_top]`.
+
+Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem _root_.GlobalTheory.TestLat.SumLat.isLattice_sumLat [Finite C] (lam : ι → _root_.Formalism.BasicNotions.DomWeight n)
     (e : Fin N ≃ C × _root_.Formalism.L2.DIV.VVIdx lam)
     (T : C → Submodule (𝓞 K) (_root_.Formalism.L2.DIV.VV K lam)) (hT : ∀ c, Submodule.IsLattice K (T c)) :
@@ -107,6 +137,25 @@ open NumberField IsDedekindDomain MvPolynomial in
 open scoped Matrix ComplexOrder in
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n N : ℕ} {C : Type} in
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ n lam C _ N e T hT`. Take `⟨i₀⟩` from `_root_.GlobalTheory.TestLat.SumLat.idx_nonempty lam`. Use `haveI : Finite (C × _root_.Formalism.L2.DIV.VVIdx lam) := Finite.of_equiv _ e`. Use `haveI : Finite C := Finite.of_surjective (fun p : C × _root_.Formalism.L2.DIV.VVIdx lam => p.1) (fun c => ⟨(c, i₀), rfl⟩)`. Use `haveI : Fintype C := Fintype.ofFinite C`.
+
+Use `⟨_root_.GlobalTheory.TestLat.SumLat.isLattice_sumLat lam e T hT, ?_, ?_⟩` and prove the remaining obligations. Take `⟨c₀⟩` from `(inferInstance : Nonempty C)`. Use `Nat.pos_of_ne_zero fun h => ?_` and prove the remaining obligations. Substitute `h` using the available equality. Conclude with `(e.symm (c₀, i₀)).elim0`.
+
+Introduce `G _`. Use extensionality with `x`. Rewrite using `[_root_.GlobalTheory.TestLat.Model.mem_sumLat]`. Establish `hmemD : ∀ L : Submodule (𝓞 K) (Fin N → K), x ∈ _root_.Formalism.L2.DIV.hdualFr (_root_.GlobalTheory.TestLat.sumGram lam e G) L ↔ ∀ y ∈ L, star y ⬝ᵥ _root_.GlobalTheory.TestLat.sumGram lam e G *ᵥ x ∈ (1 : Submodule (𝓞 K) K)` using `fun _ => Iff.rfl`. Establish `hmemV : ∀ (c : C) (v : _root_.Formalism.L2.DIV.VV K lam), v ∈ _root_.Formalism.HermitianLatticesTheory.dual (_root_.Formalism.L2.DIV.pairK lam G) (T c) ↔ ∀ z ∈ T c, _root_.Formalism.L2.DIV.pairK lam G z v ∈ (1 : Submodule (𝓞 K) K)`.
+
+Introduce `c v`. Unfold `_root_.Formalism.HermitianLatticesTheory.dual _root_.Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`. Rewrite using `[hmemD]`. Repeatedly rewrite using `[_root_.GlobalTheory.TestLat.Model.sumGram_form, hmemV]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h c z hz set y := (_root_.GlobalTheory.TestLat.SumLat.valEquiv (K := K) lam e).symm (Pi.single c z : C → _root_.Formalism.L2.DIV.VV K lam) with hydef`. Establish `hy : ∀ c', _root_.GlobalTheory.TestLat.valAt lam e c' y = (Pi.single c z : C → _root_.Formalism.L2.DIV.VV K lam) c'`. Introduce `c'`. Establish `h'` using `congrFun ((_root_.GlobalTheory.TestLat.SumLat.valEquiv (K := K) lam e).apply_symm_apply (Pi.single c z : C → _root_.Formalism.L2.DIV.VV K lam)) c'`.
+
+Conclude with `h'`. Establish `hyL : y ∈ _root_.GlobalTheory.TestLat.sumLat lam e T`. Rewrite using `[_root_.GlobalTheory.TestLat.Model.mem_sumLat]`. Introduce `c'`. Rewrite using `[hy]`.
+
+Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `hz`. Rewrite using `[Pi.single_eq_of_ne hc]`.
+
+Conclude with `zero_mem _`. Establish `hsum` using `h y hyL`. Rewrite `hsum` using `[Finset.sum_eq_single c (fun c' _ hc => by rw [hy, Pi.single_eq_of_ne hc, map_zero, LinearMap.zero_apply]) (by simp), hy, Pi.single_eq_same]`. Then use the resulting hypothesis. Introduce `h y hy`. Rewrite `hy` using `[_root_.GlobalTheory.TestLat.Model.mem_sumLat]`.
+
+Conclude with `Submodule.sum_mem _ fun c _ => h c _ (hy c)`.
+-/
 theorem _root_.GlobalTheory.TestLat.SumLat.sumLat_lattice_dual : ∀ (K : Type) [Field K] [NumberField K]
     [StarRing K] (ι : Type) [Fintype ι] (n : ℕ) (lam : ι → _root_.Formalism.BasicNotions.DomWeight n) (C : Type) [Nonempty C]
     (N : ℕ) (e : Fin N ≃ C × _root_.Formalism.L2.DIV.VVIdx lam) (T : C → Submodule (𝓞 K) (_root_.Formalism.L2.DIV.VV K lam)),

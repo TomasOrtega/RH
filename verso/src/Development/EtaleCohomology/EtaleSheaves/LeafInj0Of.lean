@@ -6,6 +6,17 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.LeafInj0Pf
 open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafDegCut
 
+/- English proof (translation)
+Use `choose U' a y hy hC using h`. Use `choose T hT hP using hC`. Set `R : Sieve U` to `{ arrows := fun {Z} g => ∃ x, ∃ b : Z ⟶ U' x, T x b ∧ g = b ≫ a x downward_closed := by`. Introduce and unpack `Z W g ⟨x, b, hb, rfl⟩ h`. Conclude with `⟨x, h ≫ b, (T x).downward_closed hb h, by simp⟩ }`.
+
+Use `⟨R, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : Sieve.ofArrows U' a ∈ (EtTop B) U`. Rewrite using `[Scheme.ofArrows_mem_smallEtaleTopology_iff]`. Use extensionality with `z`. Simplify using `only [Set.mem_iUnion, Set.mem_range, Set.mem_univ, iff_true]`.
+
+Conclude with `⟨z, y z, hy z⟩`. Use `(EtTop B).transitive h0 R ?_` and prove the remaining obligations. Introduce `Z f hf`. Take `⟨W, g, f', hf', rfl⟩` from `hf`. Consider the cases of `hf' with`.
+
+Consider the case `mk x`. Use `(EtTop B).superset_covering ?_ ((EtTop B).pullback_stable g (hT x))` and prove the remaining obligations. Introduce `V c hc`. Conclude with `⟨x, c ≫ g, hc, by simp⟩`. Introduce and unpack `Z g ⟨x, b, hb, rfl⟩`.
+
+Conclude with `hP x Z b hb`.
+-/
 theorem cov_of_pts {B : Scheme.{0}} {U : B.Etale} {P : ∀ U' : B.Etale, (U' ⟶ U) → Prop}
     (h : ∀ x : U.left, ∃ (U' : B.Etale) (a : U' ⟶ U) (y : U'.left), a.left y = x ∧
       Cov U' (fun U'' b => P U'' (b ≫ a))) : Cov U P := by
@@ -48,6 +59,11 @@ def LeafInj0V : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (k : Type) [Field k], 
   ∀ x : U.left, U.hom x ∉ Set.range ι →
   ∃ (U' : B.Etale) (a : U' ⟶ U) (y : U'.left), a.left y = x ∧ Cov U' (fun U'' b => rB q i ι (b ≫ a) 0 c = 0)
 
+/- English proof (translation)
+Introduce `hH q _ k _ hq i B W Y0 Y1 Y2 s ι _ V hV' p g1 g2 hp1 hp2 hp3 hS U c hc`. Apply `cov_of_pts` to reduce the goal to its premises. Introduce `x`. Distinguish the cases in `hx : U.hom x ∈ Set.range ι`. Conclude with `hW hH q k hq i s ι V hV' p g1 g2 hp1 hp2 hp3 hS U c x hx`.
+
+Conclude with `hV hH q k hq i s ι V hV' p g1 g2 hp1 hp2 hp3 hS U c hc x hx`.
+-/
 theorem LeafInj0_of (hW : LeafInj0W) (hV : LeafInj0V) : LateralTheory.E.LeafDegCut.LeafInj0 := by
   intro hH q _ k _ hq i B W Y0 Y1 Y2 s ι _ V hV' p g1 g2 hp1 hp2 hp3 hS U c hc
   apply cov_of_pts

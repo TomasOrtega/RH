@@ -26,10 +26,56 @@ variable {R' : Type} [CommRing R'] [Algebra R R']
 def jetMapA (n m : ℕ) : JetR R (Fin n) m →ₐ[R] JetR R' (Fin n) m :=
   jetLift R (RingHom.ker (jetAug R' (Fin n) m)) (ker_jetAug_pow (Fin n) m) (fun j => zR m j) (fun j => zR_mem_ker m j)
 
+/- English proof (translation)
+Unfold `jetMapA`. Rewrite using `[jetLift_zR]`.
+-/
 theorem jetMapA_zR (m : ℕ) (j : Fin n) : jetMapA (R := R) (R' := R') n m (zR m j) = zR m j := by
   unfold jetMapA
   rw [jetLift_zR]
 
+/- English proof (translation)
+Set `f1 : R × A →ₐ[R] R'` to `(Algebra.ofId R R').comp (AlgHom.fst R R A)`. Set `f2 : R × A →ₐ[R] R'` to `(aug.restrictScalars R).comp (AlgHom.snd R R A)`. Set `A' : Subalgebra R (R × A)` to `AlgHom.equalizer f1 f2`. Establish `memA' : ∀ p : R × A, p ∈ A' ↔ algebraMap R R' p.1 = aug p.2`. Introduce `p`.
+
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `simp [A', f1, f2, AlgHom.mem_equalizer]`. Set `aug' : A' →ₐ[R] R` to `(AlgHom.fst R R A).comp A'.val`. Set `snd' : A' →ₐ[R] A` to `(AlgHom.snd R R A).comp A'.val`.
+
+Establish `hJ' : (RingHom.ker aug') ^ (m + 1) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Establish `hz1 : z ∈ RingHom.ker aug'` using `Ideal.pow_le_self (by omega) hz`. Establish `hmap : Ideal.map snd' (RingHom.ker aug') ≤ RingHom.ker aug`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `u hu`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Rewrite `hu` using `[RingHom.mem_ker]`. Establish `hu'` using `(memA' _).mp u.2`.
+
+Establish `hu0 : (u : R × A).1 = 0` using `hu`. Use `show aug (u : R × A).2 = 0`. Rewrite using `[← hu', hu0, map_zero]`. Establish `h2 : snd' z ∈ (RingHom.ker aug) ^ (m + 1)`. Use `Ideal.mem_map_of_mem snd' hz` as an intermediate fact.
+
+Rewrite `this` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hmap (m + 1) this`. Rewrite `h2` using `[hJ, Ideal.mem_bot]`. Rewrite using `[Ideal.mem_bot]`. Rewrite `hz1` using `[RingHom.mem_ker]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Conclude with `hz1`. Conclude with `h2`. Set `h' : B →ₐ[R] A'` to `(eps.prod h).codRestrict A' (fun b => (memA' _).mpr (by`.
+
+Use `DFunLike.congr_fun hh b` as an intermediate fact. Simplify using `using this.symm))`. Establish `hcomp : aug'.comp h' = eps` using `AlgHom.ext fun b => rfl`. Take `⟨ψ0, ⟨hψ0a, hψ0b⟩, huniq⟩` from `hπ A' aug' hJ' h' hcomp`. Set `ψ1 : JetR R (Fin n) m →ₐ[R] A` to `snd'.comp ψ0`.
+
+Establish `hψ1z : ∀ j, ψ1 (zR m j) ∈ RingHom.ker aug`. Introduce `j`. Rewrite using `[RingHom.mem_ker]`. Establish `e1` using `((memA' _).mp (ψ0 (zR m j)).2).symm`. Establish `e2 : aug' (ψ0 (zR m j)) = 0`.
+
+Rewrite using `[← AlgHom.comp_apply, hψ0a]`. Conclude with `(RingHom.mem_ker).mp (zR_mem_ker m j)`. Establish `e2' : ((ψ0 (zR m j) : A') : R × A).1 = 0` using `e2`. Use `show aug ((ψ0 (zR m j) : A') : R × A).2 = 0`. Rewrite using `[e1, e2', map_zero]`.
+
+Set `ψ : JetR R' (Fin n) m →ₐ[R'] A` to `jetLift R' (RingHom.ker aug) hJ (fun j => ψ1 (zR m j)) hψ1z`. Establish `key1 : (ψ.restrictScalars R).comp (jetMapA n m) = ψ1`. Apply `jet_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `only [AlgHom.comp_apply, AlgHom.restrictScalars_apply, jetMapA_zR, ψ, jetLift_zR]`.
+
+Use `⟨ψ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `jet_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `only [AlgHom.comp_apply, ψ, jetLift_zR]`. Rewrite using `[(RingHom.mem_ker).mp (hψ1z j), (RingHom.mem_ker).mp (zR_mem_ker m j)]`.
+
+Rewrite using `[← AlgHom.comp_assoc, key1]`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `b`. Use `show h b = snd' (ψ0 (π b))`. Rewrite using `[← AlgHom.comp_apply ψ0 π, ← hψ0b]`.
+
+Both sides reduce to the same expression. Introduce and unpack `ψ' ⟨ha', hb'⟩`. Set `χ : JetR R (Fin n) m →ₐ[R] A` to `(ψ'.restrictScalars R).comp (jetMapA n m)`. Establish `hχ0 : (Algebra.ofId R R').comp (jetAug R (Fin n) m) = (aug.restrictScalars R).comp χ`. Apply `jet_ext` to reduce the goal to its premises.
+
+Introduce `j`. Establish `e0 : jetAug R (Fin n) m (zR m j) = 0` using `(RingHom.mem_ker).mp (zR_mem_ker m j)`. Establish `e1 : aug (ψ' (zR m j)) = 0`. Rewrite using `[← AlgHom.comp_apply, ha']`. Conclude with `(RingHom.mem_ker).mp (zR_mem_ker m j)`.
+
+Simplify using `only [AlgHom.comp_apply, χ, AlgHom.restrictScalars_apply, jetMapA_zR, e0, map_zero, e1]`. Establish `hχ : ∀ u, algebraMap R R' (jetAug R (Fin n) m u) = aug (χ u)`. Introduce `u`. Use `DFunLike.congr_fun hχ0 u` as an intermediate fact. Simplify using `using this`.
+
+Set `χ' : JetR R (Fin n) m →ₐ[R] A'` to `((jetAug R (Fin n) m).prod χ).codRestrict A' (fun u => (memA' _).mpr (hχ u))`. Establish `hχ'a : aug'.comp χ' = jetAug R (Fin n) m` using `AlgHom.ext fun u => rfl`. Establish `hχ'b : h' = χ'.comp π`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `b`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Use `show eps b = jetAug R (Fin n) m (π b)`. Rewrite using `[← hπa]`. Both sides reduce to the same expression.
+
+Use `show h b = χ (π b)`. Rewrite using `[hb']`. Both sides reduce to the same expression. Establish `heq` using `huniq χ' ⟨hχ'a, hχ'b⟩`. Apply `jet_ext` to reduce the goal to its premises.
+
+Introduce `j`. Establish `e1 : ψ' (zR m j) = χ (zR m j)`. Simplify using `only [χ, AlgHom.comp_apply, AlgHom.restrictScalars_apply, jetMapA_zR]`. Establish `e2 : χ (zR m j) = ψ1 (zR m j)` using `by show ((χ' (zR m j) : A') : R × A).2 = ((ψ0 (zR m j) : A') : R × A).2`. Rewrite using `[heq]`.
+
+Rewrite using `[e1, e2]`. Simplify using `only [ψ, jetLift_zR]`.
+-/
 theorem isUnivRing_bc (m : ℕ) (π : B →ₐ[R] JetR R (Fin n) m) (hπ : IsUnivRing eps m π)
     (hπa : (jetAug R (Fin n) m).comp π = eps) (A : Type) [CommRing A] [Algebra R' A] [Algebra R A]
     [IsScalarTower R R' A] (aug : A →ₐ[R'] R') (hJ : (RingHom.ker aug) ^ (m + 1) = ⊥) (h : B →ₐ[R] A)
@@ -157,6 +203,9 @@ abbrev fB (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] :
 
 variable {P : Type} [CommRing P] [Algebra R' P] [Algebra R P] [IsScalarTower R R' P]
 
+/- English proof (translation)
+Simplify using `only [sp, Over.mk_hom, fB]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`.
+-/
 theorem sp_hom_fB : (sp (R₀ := R') P).hom ≫ fB R R' = (sp (R₀ := R) P).hom := by
   simp only [sp, Over.mk_hom, fB]
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]
@@ -167,6 +216,9 @@ def iotaB : sp (R₀ := R) P ⟶ Over.mk ((sp (R₀ := R') P).hom ≫ fB R R') :
 def pushR (y : sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G) : sp (R₀ := R) P ⟶ G :=
   iotaB ≫ pushPt (isGrpPullback_pullback G (fB R R')).1.w y
 
+/- English proof (translation)
+Simplify using `only [pushR, iotaB, pushPt, Over.comp_left, Over.homMk_left, Category.id_comp]`.
+-/
 theorem pushR_left (y : sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G) :
     (pushR G y).left = y.left ≫ pullback.fst G.hom (fB R R') := by
   simp only [pushR, iotaB, pushPt, Over.comp_left, Over.homMk_left, Category.id_comp]
@@ -175,12 +227,18 @@ def pullR (q : sp (R₀ := R) P ⟶ G) : sp (R₀ := R') P ⟶ (Over.pullback (f
   Over.homMk ((isGrpPullback_pullback G (fB R R')).1.lift q.left (sp (R₀ := R') P).hom
     ((Over.w q).trans (sp_hom_fB (R := R) (R' := R') (P := P)).symm)) ((isGrpPullback_pullback G (fB R R')).1.lift_snd _ _ _)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[pushR_left]`. Simplify using `only [pullR, Over.homMk_left]`. Conclude with `IsPullback.lift_fst _ _ _ _`.
+-/
 theorem pushR_pullR (q : sp (R₀ := R) P ⟶ G) : pushR G (pullR (R' := R') G q) = q := by
   apply Over.OverMorphism.ext
   rw [pushR_left]
   simp only [pullR, Over.homMk_left]
   exact IsPullback.lift_fst _ _ _ _
 
+/- English proof (translation)
+Establish `h1 : (pushR G y).left = (pushR G y').left` using `by rw [h]`. Rewrite `h1` using `[pushR_left, pushR_left]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(isGrpPullback_pullback G (fB R R')).1.hom_ext h1 ((Over.w y).trans (Over.w y').symm)`.
+-/
 theorem pushR_inj {y y' : sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G} (h : pushR G y = pushR G y') :
     y = y' := by
   have h1 : (pushR G y).left = (pushR G y').left := by rw [h]
@@ -188,6 +246,9 @@ theorem pushR_inj {y y' : sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G}
   apply Over.OverMorphism.ext
   exact (isGrpPullback_pullback G (fB R R')).1.hom_ext h1 ((Over.w y).trans (Over.w y').symm)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[pushR_left, Over.comp_left, Over.comp_left, pushR_left, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem pushR_spMap {P' : Type} [CommRing P'] [Algebra R' P'] [Algebra R P'] [IsScalarTower R R' P'] (g : P →ₐ[R'] P')
     (y : sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G) :
     pushR G (spMap g ≫ y) = spMap (g.restrictScalars R) ≫ pushR G y := by
@@ -195,6 +256,13 @@ theorem pushR_spMap {P' : Type} [CommRing P'] [Algebra R' P'] [Algebra R P'] [Is
   rw [pushR_left, Over.comp_left, Over.comp_left, pushR_left, Category.assoc]
   rfl
 
+/- English proof (translation)
+Establish `hw` using `(isGrpPullback_pullback G (fB R R')).1.w`. Establish `hmul : ∀ x y : sp (R₀` using `R') P ⟶ (Over.pullback (fB R R')).obj G, pushR G (x * y) = pushR G x * pushR G y := by`. Introduce `x y`. Establish `hpp : pushPt hw (x * y) = pushPt hw x * pushPt hw y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Conclude with `((isGrpPullback_pullback G (fB R R')).2 _ x y (pushPt hw x) (pushPt hw y) rfl rfl).symm`. Simplify using `only [pushR]`. Rewrite using `[hpp, MonObj.comp_mul]`. Establish `h1 : pushR G (1 : sp (R₀` using `R') P ⟶ (Over.pullback (fB R R')).obj G) * pushR G (1 : sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G) = pushR G (1 : sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G) := by`. Rewrite using `[← hmul, _root_.mul_one]`.
+
+Conclude with `mul_eq_left.mp h1`.
+-/
 theorem pushR_one : pushR G (1 : sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G) = 1 := by
   have hw := (isGrpPullback_pullback G (fB R R')).1.w
   have hmul : ∀ x y : sp (R₀ := R') P ⟶ (Over.pullback (fB R R')).obj G,
@@ -217,12 +285,44 @@ def dualMapA : DualNumber R →ₐ[R] DualNumber R' :=
   { dualMapR (algebraMap R R') with
     commutes' := fun r => by ext <;> simp [dualMapR, TrivSqZeroExt.algebraMap_eq_inl'] }
 
+/- English proof (translation)
+Use `show dualMapR (algebraMap R R') (TrivSqZeroExt.inr t) = _`. Apply the tactic sequence `ext <;> simp [dualMapR]`.
+-/
 theorem dualMapA_inr (t : R) : dualMapA R R' (TrivSqZeroExt.inr t) = TrivSqZeroExt.inr (algebraMap R R' t) := by
   show dualMapR (algebraMap R R') (TrivSqZeroExt.inr t) = _
   ext <;> simp [dualMapR]
 
 end Geo
 
+/- English proof (translation)
+Take `⟨C⟩` from `exists_chart G`. Establish `hin : ∀ m, ∃ π : Γ(G.left, C.U) →ₐ[R] JetR R (Fin n) m, x m = pt C π` using `fun m => exists_pt C (x m) (le_preimage_of_nil C (jetAug R (Fin n) m) (aug_surj _) (elt_nil _ (ker_jetAug_nil (Fin n) m)) (x m) ((Algebra.ofId R R).comp (eps C)) ((spMap_jetAug_alt hx m).trans (pt_eps C R).symm))`. Use `choose π hπ using hin`. Establish `hoe : (Algebra.ofId R R).comp (eps C) = eps C` using `AlgHom.ext fun _ => rfl`. Establish `hπa : ∀ m, (jetAug R (Fin n) m).comp (π m) = eps C` using `fun m => by`.
+
+Rewrite using `[← hoe]`. Apply `pt_injective C` to reduce the goal to its premises. Rewrite using `[← spMap_pt, ← hπ, spMap_jetAug_alt hx, pt_eps]`. Establish `hπtr : ∀ m, (jetTruncR R (Fin n) m).comp (π (m + 1)) = π m` using `fun m => pt_injective C (by rw [← spMap_pt, ← hπ, ← hπ, hx.1 m])`. Establish `hπ0 : ∀ m, (jetZeroR R (Fin n) m).comp (π m) = (Algebra.ofId R _).comp (eps C)` using `fun m => pt_injective C (by rw [← spMap_pt, ← hπ, hx.2.1 m, pt_eps])`.
+
+Establish `huniv : ∀ m, IsUnivRing (eps C) m (π m)`. Introduce `m A _ _ aug hJ h hh`. Establish `hy : spMap aug ≫ pt C h = 1` using `by rw [spMap_pt, hh, ← hoe, pt_eps]`. Take `⟨ψ, ⟨h1, h2⟩, hu⟩` from `hx.2.2 A aug m hJ (pt C h) hy`. Use `⟨ψ, ⟨h1, pt_injective C (by rw [← spMap_pt, ← hπ]; exact h2)⟩, fun ψ₂ hψ₂ => hu ψ₂ ⟨hψ₂.1, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hπ, spMap_pt, ← hψ₂.2]`. Use `⟨fun m => pullR G (pt C ((jetMapA n m).comp (π m))), ⟨fun m => ?_, fun m => ?_, ?_⟩, fun c => ?_⟩` and prove the remaining obligations. Apply `pushR_inj G` to reduce the goal to its premises. Rewrite using `[pushR_spMap, pushR_pullR, pushR_pullR, spMap_pt, ← hπtr m, ← AlgHom.comp_assoc, ← AlgHom.comp_assoc]`. Use `congr 2`.
+
+Apply `jet_ext` to reduce the goal to its premises. Introduce `j`. Use `show jetTruncR R' (Fin n) m (jetMapA n (m + 1) (zR (m + 1) j)) = jetMapA n m (zR m j)`. Rewrite using `[jetMapA_zR, jetMapA_zR]`. Both sides reduce to the same expression.
+
+Apply `pushR_inj G` to reduce the goal to its premises. Rewrite using `[pushR_spMap, pushR_pullR, spMap_pt, pushR_one, ← pt_eps C (JetR R' (Fin n) 0)]`. Use `congr 1`. Establish `e : ((jetZeroR R' (Fin n) m).restrictScalars R).comp (jetMapA n m) = (jetMapA n 0).comp (jetZeroR R (Fin n) m)`. Apply `jet_ext` to reduce the goal to its premises.
+
+Introduce `j`. Use `show jetZeroR R' (Fin n) m (jetMapA n m (zR m j)) = jetMapA n 0 (zR 0 j)`. Rewrite using `[jetMapA_zR, jetMapA_zR]`. Both sides reduce to the same expression. Rewrite using `[← AlgHom.comp_assoc, e, AlgHom.comp_assoc, hπ0, ← AlgHom.comp_assoc]`.
+
+Use `congr 1`. Conclude with `AlgHom.ext fun r => (jetMapA n 0).commutes r`. Introduce `A _ _ aug m hJ y hy`. Set `_ : Algebra R A` to `((algebraMap R' A).comp (algebraMap R R')).toAlgebra`. Establish `_ : IsScalarTower R R' A` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Establish `hz : spMap (aug.restrictScalars R) ≫ pushR G y = pt C ((Algebra.ofId R R').comp (eps C))`. Rewrite using `[← pushR_spMap, hy, pushR_one, pt_eps]`. Take `⟨h, hh⟩` from `exists_pt C (pushR G y) (le_preimage_of_nil C (aug.restrictScalars R) (aug_surj aug) (fun a ha => elt_nil _ (nil_of_pow _ hJ) a ha) _ _ hz)`. Establish `hha : (aug.restrictScalars R).comp h = (Algebra.ofId R R').comp (eps C)` using `pt_injective C (by rw [← spMap_pt, ← hh, hz])`. Take `⟨ψ, ⟨h1, h2⟩, hu⟩` from `isUnivRing_bc (eps C) m (π m) (huniv m) (hπa m) A aug hJ h hha`.
+
+Establish `key : ∀ ψ' : JetR R' (Fin n) m →ₐ[R'] A, y = spMap ψ' ≫ pullR G (pt C ((jetMapA n m).comp (π m))) ↔ h = (ψ'.restrictScalars R).comp ((jetMapA n m).comp (π m))`. Introduce `ψ'`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Apply `pt_injective C` to reduce the goal to its premises.
+
+Rewrite using `[← hh, e, pushR_spMap, pushR_pullR, spMap_pt]`. Introduce `e`. Apply `pushR_inj G` to reduce the goal to its premises. Rewrite using `[hh, e, pushR_spMap, pushR_pullR, spMap_pt]`. Conclude with `⟨ψ, ⟨h1, (key ψ).mpr h2⟩, fun ψ₂ hψ₂ => hu ψ₂ ⟨hψ₂.1, (key ψ₂).mp hψ₂.2⟩⟩`.
+
+Establish `e1 : pushR G (tvec (x` using `fun m => pullR G (pt C ((jetMapA n m).comp (π m)))) (algebraMap R R' ∘ c)) = pt C (((dualLift (algebraMap R R' ∘ c)).restrictScalars R).comp ((jetMapA n 1).comp (π 1))) := by show pushR G (spMap _ ≫ _) = _`. Rewrite using `[pushR_spMap, pushR_pullR, spMap_pt]`. Establish `e2 : spMap (dualMapA R R') ≫ tvec (x` using `x) c = pt C ((dualMapA R R').comp ((dualLift c).comp (π 1))) := by show spMap _ ≫ spMap _ ≫ x 1 = _`. Rewrite using `[hπ 1, spMap_pt, spMap_pt]`. Establish `e3 : (dualMapA R R').comp ((dualLift c).comp (π 1)) = ((dualLift (algebraMap R R' ∘ c)).restrictScalars R).comp ((jetMapA n 1).comp (π 1))`.
+
+Rewrite using `[← AlgHom.comp_assoc, ← AlgHom.comp_assoc]`. Use `congr 1`. Apply `jet_ext` to reduce the goal to its premises. Introduce `j`. Use `show dualMapA R R' (dualLift c (zR 1 j)) = dualLift (algebraMap R R' ∘ c) (jetMapA n 1 (zR 1 j))`.
+
+Rewrite using `[jetMapA_zR, dualLift_zR, dualLift_zR, dualMapA_inr]`. Both sides reduce to the same expression. Rewrite using `[← pushR_left, e1, ← e3, ← e2]`. Both sides reduce to the same expression.
+-/
 theorem tanBC_alg {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [Algebra R R']
     (G : Over (Spec (CommRingCat.of R))) [GrpObj G] (n : ℕ) (x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin n) m) ⟶ G)
     (hx : IsUnivChart G n x) :
@@ -313,6 +413,9 @@ theorem tanBC_alg {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [Alge
     rw [← pushR_left, e1, ← e3, ← e2]
     rfl
 
+/- English proof (translation)
+Introduce `R R' _ _ _ φ G _ n x hx`. Use `letI := φ.toAlgebra`. Conclude with `tanBC_alg G n x hx`.
+-/
 theorem tanBC : TanBCSt := by
   intro R R' _ _ _ φ G _ n x hx
   letI := φ.toAlgebra

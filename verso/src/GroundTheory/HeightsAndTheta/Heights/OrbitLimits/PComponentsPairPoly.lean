@@ -10,6 +10,13 @@ open MvPolynomial Matrix ComplexSets
 
 namespace ComponentsGenericCount
 
+/- English proof (translation)
+Take `⟨f, hfJ', hfJ⟩` from `SetLike.not_le_iff_exists.1 hJJ'`. Set `_ : Algebra (MvPolynomial (Fin d) ℂ) (MvPolynomial (Fin n) ℂ ⧸ J)` to `(projHom J A).toRingHom.toAlgebra`. Use `hJ` as an intermediate fact. Establish `hf0 : Ideal.Quotient.mk J f ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hint : IsIntegral (MvPolynomial (Fin d) ℂ) (Ideal.Quotient.mk J f)` using `hA.finite.to_isIntegral _`.
+
+Take `⟨c, hc, hc0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (Ideal.comap_ne_bot_of_integral_mem hf0 (Ideal.mem_span_singleton_self _) hint)`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 (Ideal.mem_comap.1 hc)`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Use `⟨c, hc0, fun x hx hx' => ?_⟩` and prove the remaining obligations. Establish `h1 : Ideal.Quotient.mk J (pullback A c) = Ideal.Quotient.mk J (r * f)`.
+
+Rewrite using `[map_mul]`. Conclude with `hr.symm`. Establish `h2` using `hx _ (Ideal.Quotient.eq.1 h1)`. Rewrite `h2` using `[map_sub, map_mul, hx' f hfJ', mul_zero, sub_zero, ComplexSets.FibreBound.eval_pullback]`. Then use the resulting hypothesis.
+-/
 theorem exists_pair_poly {n d : ℕ} (J J' : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     (hJ : J.IsPrime) (hA : IsFiniteProjection J A) (hJJ' : ¬ J' ≤ J) :
     ∃ c : MvPolynomial (Fin d) ℂ, c ≠ 0 ∧ ∀ x ∈ zeroSet J, x ∈ zeroSet J' → eval (A *ᵥ x) c = 0 := by
@@ -28,6 +35,9 @@ theorem exists_pair_poly {n d : ℕ} (J J' : Ideal (MvPolynomial (Fin n) ℂ)) (
   have h2 := hx _ (Ideal.Quotient.eq.1 h1)
   rwa [map_sub, map_mul, hx' f hfJ', mul_zero, sub_zero, ComplexSets.FibreBound.eval_pullback] at h2
 
+/- English proof (translation)
+Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.set_biUnion_insert]`. Conclude with `(Set.encard_union_le _ _).trans (by gcongr)`.
+-/
 theorem encard_biUnion_le {ι α : Type*} (F : Finset ι) (S : ι → Set α) :
     (⋃ i ∈ F, S i).encard ≤ ∑ i ∈ F, (S i).encard := by
   classical
@@ -37,6 +47,11 @@ theorem encard_biUnion_le {ι α : Type*} (F : Finset ι) (S : ι → Set α) :
     rw [Finset.sum_insert ha, Finset.set_biUnion_insert]
     exact (Set.encard_union_le _ _).trans (by gcongr)
 
+/- English proof (translation)
+Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.set_biUnion_insert, Set.encard_union_eq, ih]`. Conclude with `fun i hi j hj hij => h i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj) hij`.
+
+Use `Set.disjoint_iUnion₂_right.2 fun j hj => h a (Finset.mem_insert_self a s) j (Finset.mem_insert_of_mem hj) ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `ha hj`.
+-/
 theorem encard_biUnion_eq {ι α : Type*} (F : Finset ι) (S : ι → Set α)
     (h : ∀ i ∈ F, ∀ j ∈ F, i ≠ j → Disjoint (S i) (S j)) :
     (⋃ i ∈ F, S i).encard = ∑ i ∈ F, (S i).encard := by
@@ -52,6 +67,11 @@ theorem encard_biUnion_eq {ι α : Type*} (F : Finset ι) (S : ι → Set α)
       rintro rfl
       exact ha hj
 
+/- English proof (translation)
+Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨Δ, hΔ, hΔy⟩` from `ih fun i hi => h i (Finset.mem_insert_of_mem hi)`. Take `⟨P, hP, hPa⟩` from `h a (Finset.mem_insert_self a s)`.
+
+Use `⟨P * Δ, mul_ne_zero hP hΔ, fun y hy i hi => ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[map_mul]`. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `⟨P, hPa, left_ne_zero_of_mul hy⟩`. Conclude with `hΔy y (right_ne_zero_of_mul hy) i hi`.
+-/
 theorem exists_prod_ne_zero {ι : Type*} {k : ℕ} (F : Finset ι) (p : ι → MvPolynomial (Fin k) ℂ → Prop)
     (h : ∀ i ∈ F, ∃ P, P ≠ 0 ∧ p i P) :
     ∃ Δ : MvPolynomial (Fin k) ℂ, Δ ≠ 0 ∧

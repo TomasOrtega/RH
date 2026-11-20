@@ -6,11 +6,35 @@ open scoped ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.DoubleTate
 
+/- English proof (translation)
+Simplify using `[quasiCharExponent, h]`.
+-/
 theorem quasiCharExponent_eq_zero {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {χ : Fˣ →* ℂˣ} (h : ∀ x, ‖((χ x : ℂˣ) : ℂ)‖ = 1) :
     quasiCharExponent χ = 0 := by
   simp [quasiCharExponent, h]
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ f hf G hG α β hα hβ s hs`. Set `P : Fˣ → ℂ` to `fun u => f u * ((α u : ℂˣ) : ℂ) * ((modulus (u : F) : ℝ) : ℂ) ^ s`. Set `Q : Fˣ → ℂ` to `fun u => G u * (((α * β⁻¹) u : ℂˣ) : ℂ) * ((modulus (u : F) : ℝ) : ℂ) ^ s`. Establish `hγ : Continuous (α * β⁻¹)`. Establish `: ⇑(α * β⁻¹) = fun x => α x * (β x)⁻¹`.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hα.1.mul hβ.1.inv`. Establish `hγ1 : ∀ x, ‖(((α * β⁻¹) x : ℂˣ) : ℂ)‖ = 1`.
+
+Introduce `x`. Simplify using `[hα.2, hβ.2]`. Establish `hP : Integrable P (multHaar F)` using `integrable_localZeta hf hα.1 (by rw [quasiCharExponent_eq_zero hα.2]; simpa using hs)`. Establish `hQ : Integrable Q (multHaar F)` using `integrable_localZeta hG hγ (by rw [quasiCharExponent_eq_zero hγ1]; simpa using hs)`. Establish `hPQ : Integrable (fun z : Fˣ × Fˣ => P z.1 * Q z.2) ((multHaar F).prod (multHaar F))` using `hP.mul_prod hQ`.
+
+Establish `me` using `measurePreserving_mul_prod_inv (multHaar F) (multHaar F)`. Establish `h1 : Integrable (fun z : Fˣ × Fˣ => P (z.2 * z.1) * Q z.1⁻¹) ((multHaar F).prod (multHaar F))` using `me.integrable_comp_of_integrable hPQ`. Establish `h2 : Integrable (fun z : Fˣ × Fˣ => P (z.1 * z.2) * Q z.2⁻¹) ((multHaar F).prod (multHaar F))` using `h1.swap`. Establish `key : ∀ a h : Fˣ, ((α a : ℂˣ) : ℂ) * mp a s * (((β h : ℂˣ) : ℂ) * f ((h : F) * a) * G ((h⁻¹ : Fˣ) : F)) = P (a * h) * Q h⁻¹`. Introduce `a h`.
+
+Establish `hm : ((modulus (((a * h : Fˣ)) : F) : ℝ) : ℂ) ^ s * ((modulus (((h⁻¹ : Fˣ)) : F) : ℝ) : ℂ) ^ s = mp a s`. Rewrite using `[← Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]`. Establish `hmm : ((modulus (((a * h : Fˣ)) : F) : ℝ)) * (modulus (((h⁻¹ : Fˣ)) : F) : ℝ) = modulus (a : F)`. Rewrite using `[← NNReal.coe_mul, ← modulus_mul]`. Use `congr 2`.
+
+Simplify using the standard rewrite rules. Rewrite using `[mp, ← Complex.ofReal_mul, hmm]`. Establish `hc : ((α (a * h) : ℂˣ) : ℂ) * (((α * β⁻¹) h⁻¹ : ℂˣ) : ℂ) = ((α a : ℂˣ) : ℂ) * ((β h : ℂˣ) : ℂ)`. Establish `: α (a * h) * (α * β⁻¹) h⁻¹ = α a * β h`. Simplify using `[mul_comm, mul_left_comm]`.
+
+Conclude with `congrArg Units.val this` after adjusting the coercions. Simplify using `only [P, Q]`. Rewrite using `[← hm, show ((a * h : Fˣ) : F) = (h : F) * a by simp [mul_comm]]`. Take the linear combination `(-(f ((h : F) * a) * G ((h⁻¹ : Fˣ) : F) * ((modulus ((h : F) * a) : ℝ) : ℂ) ^ s * ((modulus (((h⁻¹ : Fˣ)) : F) : ℝ) : ℂ) ^ s)) * hc`. Establish `hin : ∀ a : Fˣ, ((α a : ℂˣ) : ℂ) * mp a s * (∫ h : Fˣ, ((β h : ℂˣ) : ℂ) * f ((h : F) * a) * G ((h⁻¹ : Fˣ) : F) ∂multHaar F) = ∫ h : Fˣ, P (a * h) * Q h⁻¹ ∂multHaar F`.
+
+Introduce `a`. Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun h => key a h)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hin]`.
+
+Conclude with `h2.integral_prod_left`. Simplify using `only [hin]`. Rewrite using `[← integral_prod (fun z : Fˣ × Fˣ => P (z.1 * z.2) * Q z.2⁻¹) h2]`. Establish `e1 : ∫ z : Fˣ × Fˣ, P (z.1 * z.2) * Q z.2⁻¹ ∂((multHaar F).prod (multHaar F)) = ∫ z : Fˣ × Fˣ, P (z.2 * z.1) * Q z.1⁻¹ ∂((multHaar F).prod (multHaar F))` using `integral_prod_swap (fun z : Fˣ × Fˣ => P (z.2 * z.1) * Q z.1⁻¹)`. Establish `e2 : ∫ z : Fˣ × Fˣ, P (z.2 * z.1) * Q z.1⁻¹ ∂((multHaar F).prod (multHaar F)) = ∫ z : Fˣ × Fˣ, P z.1 * Q z.2 ∂((multHaar F).prod (multHaar F))` using `by conv_rhs => rw [← me.map_eq]`.
+
+Conclude with `(integral_map me.measurable.aemeasurable (by rw [me.map_eq]; exact hPQ.1)).symm`. Rewrite using `[e1, e2, integral_prod_mul]`. Both sides reduce to the same expression.
+-/
 theorem sdz : SDZ := by
   intro F _ _ _ _ _ _ f hf G hG α β hα hβ s hs
   let P : Fˣ → ℂ := fun u => f u * ((α u : ℂˣ) : ℂ) * ((modulus (u : F) : ℝ) : ℂ) ^ s

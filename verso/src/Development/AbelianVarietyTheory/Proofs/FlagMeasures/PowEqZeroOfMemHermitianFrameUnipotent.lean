@@ -13,14 +13,37 @@ namespace GlobalTheory.FlagUnipotent
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Simplify using `[hf, sub_mul, Finset.sum_sub_distrib]`.
+-/
 theorem hf_sub_left (L : LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) (a b y : Fin n → E) :
     hf L H (a - b) y = hf L H a y - hf L H b y := by
   simp [hf, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[hf, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem hf_sub_right (L : LocE F E) {n : ℕ} (H : Matrix (Fin n) (Fin n) E) (x a b : Fin n → E) :
     hf L H x (a - b) = hf L H x a - hf L H x b := by
   simp [hf, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Take `⟨⟨hiso, hfl⟩, hmid⟩` from `hg`. Establish `hfl' : ∀ j, j < r → g ∈ unipOn (S.spanTo f (j + 1)) (S.spanTo f j)` using `fun j hj => (Subgroup.mem_iInf.1 hfl) ⟨j, hj⟩`. Use `set A : S.V →ₗ[E] S.V := (g : S.V →ₗ[E] S.V) - 1 with hA`. Establish `hAv : ∀ v, A v = g v - v` using `fun v => rfl`. Establish `h0 : S.spanTo f 0 = ⊥` using `by simp [Frames.spanTo]`.
+
+Establish `ha : ∀ j, j ≤ r → ∀ v, (A ^ j) v ∈ perp L S.Hm (S.spanTo f j)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ v y hy`.
+
+Rewrite `hy` using `[h0, Submodule.mem_bot]`. Simplify using `[hy, hf]`. Consider the case `succ j ih`. Introduce `hj v x hx`. Take `⟨h1, h2⟩` from `hfl' j hj`.
+
+Establish `hw` using `ih (by omega) v`. Rewrite using `[pow_succ', Module.End.mul_apply, hAv]`. Generalize the expression as in `(A ^ j) v = w at hw`. Take `⟨y, rfl⟩` from `g.surjective x`. Establish `h3 : hf L S.Hm w (g y - y) = 0` using `hw _ (h2 y ((h1 y).1 hx))`.
+
+Establish `h4 : hf L S.Hm (g w) (g y) = hf L S.Hm w y` using `hiso w y`. Rewrite `h3` using `[hf_sub_right]`. Rewrite using `[hf_sub_left, h4]`. Take the linear combination `-h3`. Establish `hc : ∀ j, j ≤ r → ∀ v ∈ S.spanTo f j, (A ^ j) v = 0`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ v hv`. Rewrite `hv` using `[h0, Submodule.mem_bot]`.
+
+Simplify using `[hv]`. Consider the case `succ j ih`. Introduce `hj v hv`. Rewrite using `[pow_succ, Module.End.mul_apply, hAv]`. Conclude with `ih (by omega) _ ((hfl' j hj).2 v hv)`.
+
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `e : 2 * r + 1 = r + (1 + r)` using `by omega`. Rewrite using `[e, pow_add, pow_add, pow_one, Module.End.mul_apply, Module.End.mul_apply, hAv]`. Conclude with `hc r le_rfl _ (hmid.2 _ (ha r le_rfl v))`.
+-/
 theorem pow_eq_zero_of_mem_Nof {L : LocE F E} {r k : ℕ} (S : Frames L r k)
     (f : Fin (r + 1) → S.V) (g : S.GLV) (hg : g ∈ S.Nof f) :
     ((g : S.V →ₗ[E] S.V) - 1) ^ (2 * r + 1) = 0 := by
@@ -65,6 +88,9 @@ theorem pow_eq_zero_of_mem_Nof {L : LocE F E} {r k : ℕ} (S : Frames L r k)
   rw [e, pow_add, pow_add, pow_one, Module.End.mul_apply, Module.End.mul_apply, hAv]
   exact hc r le_rfl _ (hmid.2 _ (ha r le_rfl v))
 
+/- English proof (translation)
+Introduce `_ _ _ S g hg` and use `pow_eq_zero_of_mem_Nof S S.f g hg`.
+-/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ g ∈ S.N, ((g : S.V →ₗ[E] S.V) - 1) ^ (2 * r + 1) = 0 :=
   fun _ _ _ S g hg => pow_eq_zero_of_mem_Nof S S.f g hg
 

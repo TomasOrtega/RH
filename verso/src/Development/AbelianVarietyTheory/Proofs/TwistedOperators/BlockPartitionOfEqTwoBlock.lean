@@ -21,9 +21,17 @@ def parSub (hr : r ≤ n) (H : Subgroup (GL (Fin r) κ)) : Subgroup (GL (Fin n) 
     show ext1 (blockTri (blk2 r)) (blkR hr) x⁻¹ ∈ H
     rw [extendOne_inv _ hx.1]; exact Subgroup.inv_mem _ hx.2⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_parSub {hr : r ≤ n} {H : Subgroup (GL (Fin r) κ)} {g : GL (Fin n) κ} :
     g ∈ parSub hr H ↔ g ∈ blockTri (blk2 r) ∧ upperLeftBlock hr g ∈ H := Iff.rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Unfold `blkOf blk2`. Use `split_ifs with h`. Both sides reduce to the same expression. Establish `: (a.val - r) / t = 0` using `Nat.div_eq_of_lt (by have := a.2; omega)`.
+
+Rewrite using `[this]`.
+-/
 theorem blockPartitionOf_eq_twoBlock {t : ℕ} (hn : n = r + t) : (blkOf r t : Fin n → ℕ) = blk2 r := by
   funext a
   unfold blkOf blk2
@@ -32,6 +40,9 @@ theorem blockPartitionOf_eq_twoBlock {t : ℕ} (hn : n = r + t) : (blkOf r t : F
   · have : (a.val - r) / t = 0 := Nat.div_eq_of_lt (by have := a.2; omega)
     rw [this]
 
+/- English proof (translation)
+Rewrite using `[blockPartitionOf_eq_twoBlock hn]`.
+-/
 theorem blockTri_blkOf_eq {t : ℕ} (hn : n = r + t) :
     blockTri (κ := κ) (n := n) (blkOf r t) = blockTri (blk2 r) := by
   rw [blockPartitionOf_eq_twoBlock hn]

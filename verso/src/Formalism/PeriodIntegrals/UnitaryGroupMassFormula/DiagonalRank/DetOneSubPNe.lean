@@ -6,6 +6,11 @@ namespace PI.UnitaryGroupMassFormula.DiagRank
 
 open Finset
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `congrArg (PadicInt.toZMod (p := p)) h0`. Rewrite `h1` using `[RingHom.map_det, map_zero]`. Establish `hI : (PadicInt.toZMod (p` using `p)).mapMatrix (1 - (p : ℤ_[p]) • M) = 1 := by`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.sub_apply, Matrix.one_apply, Matrix.smul_apply]`. Rewrite `h1` using `[hI, Matrix.det_one]`. Conclude with `one_ne_zero h1`.
+-/
 theorem det_one_sub_p_ne {p : ℕ} [Fact p.Prime] {n : ℕ} (M : Matrix (Fin n) (Fin n) ℤ_[p]) :
     (1 - (p : ℤ_[p]) • M).det ≠ 0 := by
 
@@ -18,6 +23,13 @@ theorem det_one_sub_p_ne {p : ℕ} [Fact p.Prime] {n : ℕ} (M : Matrix (Fin n) 
   rw [hI, Matrix.det_one] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Distinguish the cases in `h0 : x = 0`. Conclude with `⟨0, by simp [h0]⟩`. Establish `hv` using `hx h0`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hp0 : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`.
+
+Establish `hpow : (p : ℚ_[p]) ^ (D + 1) ≠ 0` using `zpow_ne_zero _ hp0`. Establish `hnp : ‖(p : ℚ_[p]) ^ (D + 1)‖ = (p : ℝ) ^ (-(D + 1))`. Rewrite using `[norm_zpow, Padic.norm_p, inv_zpow', zpow_neg]`. Use `⟨⟨x / (p : ℚ_[p]) ^ (D + 1), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, hnp, Padic.norm_eq_zpow_neg_valuation h0]`.
+
+Rewrite using `[div_le_one (zpow_pos (by linarith) _)]`. Conclude with `zpow_le_zpow_right₀ hp1.le (by omega)`. Use `show x = (p : ℚ_[p]) ^ (D + 1) * (x / (p : ℚ_[p]) ^ (D + 1))`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_int_mul {p : ℕ} [Fact p.Prime] (D : ℤ) (x : ℚ_[p]) (hx : x ≠ 0 → D < x.valuation) :
     ∃ u : ℤ_[p], x = (p : ℚ_[p]) ^ (D + 1) * (u : ℚ_[p]) := by
   by_cases h0 : x = 0
@@ -36,6 +48,31 @@ theorem exists_int_mul {p : ℕ} [Fact p.Prime] (D : ℤ) (x : ℚ_[p]) (hx : x 
     field_simp
 
 open Classical in
+/- English proof (translation)
+Introduce `p _ n m X Y c D h`. Establish `hp0 : (p : ℚ_[p]) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Establish `hpD : (p : ℚ_[p]) ^ D ≠ 0` using `zpow_ne_zero _ hp0`. Take `⟨S, hS⟩ : ∃ S : Finset (Fin m), S = Finset.univ.filter (fun a : Fin m => c a ≠ 0 ∧ (c a).valuation ≤ D)` from `⟨_, rfl⟩`. Rewrite using `[← hS]`.
+
+Establish `hsplit : ∀ a, a ∉ S → ∃ u : ℤ_[p], c a = (p : ℚ_[p]) ^ (D + 1) * (u : ℚ_[p])`. Introduce `a ha`. Apply `exists_int_mul D (c a)` to reduce the goal to its premises. Introduce `hc`. Assume the negation of the conclusion as `hle`.
+
+Conclude with `ha (by rw [hS]; simp [hc, not_lt.mp hle])`. Use `choose! u hu using hsplit`. Take `⟨s, hs⟩ : ∃ s : Fin m → ℚ_[p], s = fun a => if a ∈ S then c a / (p : ℚ_[p]) ^ D else 0` from `⟨_, rfl⟩`. Take `⟨u', hu'⟩ : ∃ u' : Fin m → ℤ_[p], u' = fun a => if a ∈ S then 0 else u a` from `⟨_, rfl⟩`. Establish `key : ∀ a, c a = (p : ℚ_[p]) ^ D * s a + (p : ℚ_[p]) ^ (D + 1) * (u' a : ℚ_[p])`.
+
+Introduce `a`. Distinguish the cases in `ha : a ∈ S`. Simplify using `[hs, hu', ha]`. Clear the denominators using the available nonvanishing facts. Simplify using `[hs, hu', ha, hu a ha]`.
+
+Establish `hent : ∀ i j, ∑ a, (X i a : ℚ_[p]) * s a * (Y j a : ℚ_[p]) = (if i = j then 1 else 0) - (p : ℚ_[p]) * ∑ a, (X i a : ℚ_[p]) * (u' a : ℚ_[p]) * (Y j a : ℚ_[p])`. Introduce `i j`. Establish `h1` using `h i j`. Establish `h2 : ∑ a, (X i a : ℚ_[p]) * c a * (Y j a : ℚ_[p]) = (p : ℚ_[p]) ^ D * (∑ a, (X i a : ℚ_[p]) * s a * (Y j a : ℚ_[p]) + (p : ℚ_[p]) * ∑ a, (X i a : ℚ_[p]) * (u' a : ℚ_[p]) * (Y j a : ℚ_[p]))`. Rewrite using `[mul_add, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[key a, zpow_add₀ hp0, zpow_one]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `have h3 : (if i = j then (p : ℚ_[p]) ^ D else 0) = (p : ℚ_[p]) ^ D * (if i = j then 1 else 0) := by split_ifs <;> simp`. Rewrite `h1` using `[h2, h3]`.
+
+Conclude with `eq_sub_of_add_eq (mul_left_cancel₀ hpD h1)`. Take `⟨N, hN⟩ : ∃ N : Matrix (Fin n) (Fin n) ℤ_[p], N = fun i j => ∑ a, X i a * u' a * Y j a` from `⟨_, rfl⟩`. Take `⟨Xq, hXq⟩ : ∃ Xq : Matrix (Fin n) (Fin m) ℚ_[p], Xq = fun i a => (X i a : ℚ_[p])` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin m) (Fin n) ℚ_[p], B = fun a j => (Y j a : ℚ_[p])` from `⟨_, rfl⟩`. Establish `heq : Xq * Matrix.diagonal s * B = PadicInt.Coe.ringHom.mapMatrix (1 - (p : ℤ_[p]) • N)`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[Matrix.mul_diagonal]`. Substitute `hXq hB` using the available equality. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sub_apply, Matrix.one_apply, Matrix.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[hent i j, hN]`. Use `show _ = ((_ : ℤ_[p]) : ℚ_[p])`. Establish `hc : ((∑ a, X i a * u' a * Y j a : ℤ_[p]) : ℚ_[p]) = ∑ a, (X i a : ℚ_[p]) * (u' a : ℚ_[p]) * (Y j a : ℚ_[p])`. Rewrite using `[show ((∑ a, X i a * u' a * Y j a : ℤ_[p]) : ℚ_[p]) = PadicInt.Coe.ringHom (∑ a, X i a * u' a * Y j a) from rfl, map_sum]`. Both sides reduce to the same expression.
+
+Apply the tactic sequence `split_ifs <;> push_cast <;> rw [hc]`. Establish `hdet : (PadicInt.Coe.ringHom.mapMatrix (1 - (p : ℤ_[p]) • N)).det ≠ 0`. Rewrite using `[← RingHom.map_det]`. Introduce `h0`. Conclude with `det_one_sub_p_ne N (Subtype.ext h0)`.
+
+Establish `hrank : (Xq * Matrix.diagonal s * B).rank = n`. Rewrite using `[heq, Matrix.rank_of_isUnit _ ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hdet))]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises.
+
+Introduce `a ha`. Assume the negation of the conclusion as `haS`. Simplify using `[hs, haS] at ha`.
+-/
 theorem diagRank : PI.DiagRank := by
   intro p _ n m X Y c D h
   have hp0 : (p : ℚ_[p]) ≠ 0 := by exact_mod_cast (Fact.out : p.Prime).ne_zero

@@ -204,6 +204,11 @@ structure PerTied {X : ThetaX D} {T : ThetaTied D X} (Wl : WeilTied D X T) exten
 
   fact : ∀ V W : HSp D, V.rank ≠ W.rank → X.fact V W = factSet Wl V W
 
+/- English proof (translation)
+Establish `: L.hD (L.frame i) (lineVec L) = ∑ m, L.gram m i`. Simplify using `only [HSpace.hD, lineVec, map_sum, LinearMap.sum_apply, HSpace.gram]`. Rewrite using `[this, WeilTieCompare.kap_symm_apply]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, gramA, Matrix.map_apply, tPt, Matrix.of_apply, map_neg, map_mul, map_sum, Finset.mul_sum, neg_mul, Finset.sum_mul, mul_neg, Finset.sum_neg_distrib]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun m _ => by ring`.
+-/
 theorem kap_symm_tPt (L A : HSp D) (c : D.host.E) (a : Fin A.rank → AE D) (i : Fin L.rank) (k : Fin A.rank) :
     (kap L A).symm (tPt L A c a) i k = incA D (-(c * L.hD (L.frame i) (lineVec L))) * a k := by
   have : L.hD (L.frame i) (lineVec L) = ∑ m, L.gram m i := by
@@ -214,18 +219,35 @@ theorem kap_symm_tPt (L A : HSp D) (c : D.host.E) (a : Fin A.rank → AE D) (i :
   congr 1
   exact Finset.sum_congr rfl fun m _ => by ring
 
+/- English proof (translation)
+Simplify using `only [lineNorm, HSpace.hD, lineVec, map_sum, LinearMap.sum_apply, HSpace.gram]`.
+-/
 theorem lineNorm_eq (L : HSp D) : lineNorm L = ∑ i, ∑ k, L.gram k i := by
   simp only [lineNorm, HSpace.hD, lineVec, map_sum, LinearMap.sum_apply, HSpace.gram]
 
+/- English proof (translation)
+The claim follows from `L.herm.eq _ _`.
+-/
 theorem star_lineNorm (L : HSp D) : star (lineNorm L) = lineNorm L := L.herm.eq _ _
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `only [tPt, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tPt_add (L A : HSp D) (c : D.host.E) (a a' : Fin A.rank → AE D) :
     tPt L A c (a + a') = tPt L A c a + tPt L A c a' := by
   ext i k; simp only [tPt, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]; ring
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[tPt]`.
+-/
 theorem tPt_zero (L A : HSp D) (c : D.host.E) : tPt L A c 0 = 0 := by
   ext i k; simp [tPt]
 
+/- English proof (translation)
+Unfold `hHom`. Rewrite using `[if_pos hr, lineNorm_eq]`. Simplify using `only [tPt, Matrix.of_apply, hA, map_neg, map_mul, map_sum, DualPairCheck.cA_incA, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm_cycle]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations.
+-/
 theorem hHom_tPt {L A : HSp D} (hr : L.rank ≤ A.rank) (c : D.host.E) (a a' : Fin A.rank → AE D) :
     hHom L A (tPt L A c a') (tPt L A c a) = incA D (c * star c * lineNorm L) * hA A a a' := by
   unfold hHom
@@ -236,17 +258,31 @@ theorem hHom_tPt {L A : HSp D} (hr : L.rank ≤ A.rank) (c : D.host.E) (a a' : F
   rw [Finset.sum_comm_cycle]
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hA, map_sum, map_mul, DualPairCheck.cA_cA, DualPairCheck.cA_incA, DualPairCheck.gram_star]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem cA_hA (A : HSp D) (a a' : Fin A.rank → AE D) : cA D (hA A a a') = hA A a' a := by
   simp only [hA, map_sum, map_mul, DualPairCheck.cA_cA, DualPairCheck.cA_incA, DualPairCheck.gram_star]
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [cenCo, mul_add, map_add]`.
+-/
 theorem cenCo_add (L : HSp D) (c : D.host.E) (t t' : AE D) : cenCo L c (t + t') = cenCo L c t + cenCo L c t' := by
   simp only [cenCo, mul_add, map_add]
 
+/- English proof (translation)
+Simplify using `only [cenCo, mul_zero, map_zero]`.
+-/
 theorem cenCo_zero (L : HSp D) (c : D.host.E) : cenCo L c 0 = 0 := by
   simp only [cenCo, mul_zero, map_zero]
 
+/- English proof (translation)
+Establish `h1 : star (D.host.xi0 * (c * star c) * lineNorm L) = -(D.host.xi0 * (c * star c) * lineNorm L)`. Rewrite using `[star_mul', star_mul', star_mul', star_star, star_lineNorm, DualPairCheck.star_purely_imaginary_eq_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : incA D (D.host.xi0 * (c * star c) * lineNorm L) * cA D t = -cA D (incA D (D.host.xi0 * (c * star c) * lineNorm L) * t)`. Rewrite using `[(cA D).map_mul, DualPairCheck.cA_incA, h1, (incA D).map_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `cenCo`. Rewrite using `[h2, LinearMap.map_neg, DualPairCheck.trace_cA, mul_neg]`.
+-/
 theorem cenCo_conj (L : HSp D) (c : D.host.E) (t : AE D) : cenCo L c (cA D t) = -cenCo L c t := by
   have h1 : star (D.host.xi0 * (c * star c) * lineNorm L) = -(D.host.xi0 * (c * star c) * lineNorm L) := by
     rw [star_mul', star_mul', star_mul', star_star, star_lineNorm, DualPairCheck.star_purely_imaginary_eq_neg]; ring
@@ -256,12 +292,20 @@ theorem cenCo_conj (L : HSp D) (c : D.host.E) (t : AE D) : cenCo L c (cA D t) = 
   unfold cenCo
   rw [h2, LinearMap.map_neg, DualPairCheck.trace_cA, mul_neg]
 
+/- English proof (translation)
+Rewrite using `[← cA_hA, ← map_neg, cenCo_conj]`. Unfold `symplH sympl cenCo`. Rewrite using `[hHom_tPt hr, mul_neg, map_neg, mul_neg, neg_neg, ← mul_assoc, ← map_mul, mul_assoc D.host.xi0]`.
+-/
 theorem symplH_tPt {L A : HSp D} (hr : L.rank ≤ A.rank) (c : D.host.E) (a a' : Fin A.rank → AE D) :
     symplH L A (tPt L A c a) (tPt L A c a') = cenCo L c (-hA A a' a) := by
   rw [← cA_hA, ← map_neg, cenCo_conj]
   unfold symplH sympl cenCo
   rw [hHom_tPt hr, mul_neg, map_neg, mul_neg, neg_neg, ← mul_assoc, ← map_mul, mul_assoc D.host.xi0]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Establish `h` using `congrFun (DualPairCheck.heis_heis ψ L A (tPt L A c a) (tPt L A c a') f) w`. Rewrite `h` using `[symplH_tPt hr]`. Simplify using `only [Heisenberg₂, Pi.smul_apply, smul_eq_mul] at h`. Simplify using `only [jacOp, Heisenberg₂, sub_eq_add_neg, cenCo_add, AddChar.map_add_eq_mul, tPt_add]`.
+
+Take the linear combination `ψ (cenCo L c t) * ψ (cenCo L c t') * h`.
+-/
 theorem jacOp_mul (ψ : AddChar (AF D.host.F) ℂ) {L A : HSp D} (hr : L.rank ≤ A.rank) (c : D.host.E)
     (a a' : Fin A.rank → AE D) (t t' : AE D) (f : WA L A → ℂ) :
     jacOp ψ L A c a t (jacOp ψ L A c a' t' f) = jacOp ψ L A c (a + a') (t + t' - hA A a' a) f := by
@@ -272,22 +316,34 @@ theorem jacOp_mul (ψ : AddChar (AF D.host.F) ℂ) {L A : HSp D} (hr : L.rank �
   simp only [jacOp, Heisenberg₂, sub_eq_add_neg, cenCo_add, AddChar.map_add_eq_mul, tPt_add]
   linear_combination ψ (cenCo L c t) * ψ (cenCo L c t') * h
 
+/- English proof (translation)
+Use `DualPairCheck.symplH_add_left V W 0 0 x` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.mp this`.
+-/
 theorem symplH_zero_left (V W : HSp D) (x : WA V W) : symplH V W 0 x = 0 := by
   have := DualPairCheck.symplH_add_left V W 0 0 x
   rw [add_zero] at this
   exact left_eq_add.mp this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Use `DualPairCheck.symplH_add_right V W w 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `only [Heisenberg₂, left_eq_add.mp this, add_zero, AddChar.map_zero_eq_one, one_mul]`.
+-/
 theorem heis_zero (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (f : WA V W → ℂ) : Heisenberg₂ ψ V W 0 f = f := by
   funext w
   have := DualPairCheck.symplH_add_right V W w 0 0
   rw [add_zero] at this
   simp only [Heisenberg₂, left_eq_add.mp this, add_zero, AddChar.map_zero_eq_one, one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [jacOp, tPt_zero, heis_zero, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem jacOp_centre (ψ : AddChar (AF D.host.F) ℂ) (L A : HSp D) (c : D.host.E) (t : AE D) (f : WA L A → ℂ) :
     jacOp ψ L A c 0 t f = ψ (cenCo L c t) • f := by
   funext w
   simp only [jacOp, tPt_zero, heis_zero, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h1` using `h.sigOK τ`. Rewrite `h1` using `[h.neg τ]`. Establish `h2` using `Formalism.UG.P.stdform_sig_neg _ h1 (fun _ => 1) (fun e => one_ne_zero (congrFun e ⟨0, by rw [h.rank_one]; omega⟩))`. Rewrite using `[lineNorm_eq, Finset.sum_comm]`. Simplify `h2` using `[Formalism.UG.P.stdformQ, Formalism.UG.hform]`.
+-/
 theorem IsNegLine.lineNorm_neg {L : HSp D} (h : IsNegLine L) (τ : D.host.E →+* ℂ) : (τ (lineNorm L)).re < 0 := by
   have h1 := h.sigOK τ
   rw [h.neg τ] at h1
@@ -299,6 +355,13 @@ namespace FJDat
 
 variable {L A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} (d : FJDat L A B ι)
 
+/- English proof (translation)
+Use `⟨Fintype.linearIndependent_iff.2 fun g hg i => ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : ∑ l, g l • d.e l = 0`. Apply `B.frame.repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => ?_` and prove the remaining obligations. Simplify `congrFun hg k` using `[eMat]`.
+
+Establish `h1` using `congrArg (B.hT (d.f i)) h0`. Establish `ef : ∀ l, B.hT (d.f i) (d.e l) = if l = i then 1 else 0` using `fun l => d.ef l i`. Simplify `h1` using `[map_sum, ef]`. Use function extensionality and compare the values at `i j`. Rewrite using `[BesselCompare.cT_mul]`.
+
+Conclude with `d.ee j i`.
+-/
 theorem isIsoSub : IsIsoSub B d.eM := by
   refine ⟨Fintype.linearIndependent_iff.2 fun g hg i => ?_, ?_⟩
   · have h0 : ∑ l, g l • d.e l = 0 := by
@@ -313,8 +376,18 @@ theorem isIsoSub : IsIsoSub B d.eM := by
     exact d.ee j i
 
 include d in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨d.ρ, by have := d.codim; omega⟩`.
+-/
 theorem even_codim : Even (B.rank - A.rank) := ⟨d.ρ, by have := d.codim; omega⟩
 
+/- English proof (translation)
+Establish `h` using `congrFun (Matrix.mulVec_mulVec (fun i => hA B (actV B n d.fTop) (vecA B (ι (A.frame i)))) (gramA A) (gramInvA A)) i`. Rewrite `h` using `[WeilTieCompare.gram_mul_inv, Matrix.one_mulVec]`. Rewrite using `[← h]`. Establish `hv : ∀ k, cA D (vecA A (A.frame i) k) = if i = k then 1 else 0` using `fun k => by`. Unfold `vecA`.
+
+Rewrite using `[DualPairCheck.cA_incA, Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Rewrite using `[star_one, map_one]`. Rewrite using `[star_zero, map_zero]`. Express the relevant statement in the definitionally equal form `∑ k, ∑ j, cA D (vecA A (A.frame i) k) * incA D (A.gram k j) * d.aCo n j = ∑ j, incA D (A.gram i j) * d.aCo n j`.
+
+Simplify using `only [hv, ite_mul, one_mul, zero_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Finset.sum_ite_eq, if_pos (Finset.mem_univ _)]`.
+-/
 theorem hA_aCo (n : GA D B) (i : Fin A.rank) :
     hA A (d.aCo n) (vecA A (A.frame i)) = hA B (actV B n d.fTop) (vecA B (ι (A.frame i))) := by
   have h := congrFun (Matrix.mulVec_mulVec (fun i => hA B (actV B n d.fTop) (vecA B (ι (A.frame i)))) (gramA A)
@@ -332,18 +405,38 @@ theorem hA_aCo (n : GA D B) (i : Fin A.rank) :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun j _ => by rw [Finset.sum_ite_eq, if_pos (Finset.mem_univ _)]
 
+/- English proof (translation)
+Simplify using `only [theta, jac, jacOp, Heisenberg₂, symplH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]`.
+-/
 theorem theta_eq (ψ : AddChar (AF D.host.F) ℂ) (Om : GA D A → WA L A → ℂ) (n : GA D B) (g : GA D A) :
     d.theta ψ Om n g = ψ (cenCo L d.c (d.tCo n)) * Om g (tPt L A d.c (d.aCo n)) := by
   simp only [theta, jac, jacOp, Heisenberg₂, symplH_zero_left, AddChar.map_zero_eq_one, one_mul, zero_add]
 
+/- English proof (translation)
+Unfold `actV`. Rewrite using `[BesselCompare.mt_one, Matrix.one_mulVec]`.
+-/
 theorem actV_one (v : B.V) : actV B 1 v = vecA B v := by
   unfold actV; rw [BesselCompare.mt_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Unfold `HSpace.hD at h ⊢`. Rewrite using `[fTop, map_sum]`. Apply the tactic sequence `exact Finset.sum_eq_zero fun i _ => by split_ifs <;> simp [h]`.
+-/
 theorem hD_fTop (y : B.V) (h : ∀ i, B.hD (d.f i) y = 0) : B.hD d.fTop y = 0 := by
   unfold HSpace.hD at h ⊢
   rw [fTop, map_sum]
   exact Finset.sum_eq_zero fun i _ => by split_ifs <;> simp [h]
 
+/- English proof (translation)
+Rewrite `h` using `[BesselCompare.frameMat_eq, BesselCompare.eMat_mulVec]`. Establish `key : ∀ y, hA B (actV B n d.fTop) (vecA B y) = incA D (B.hD d.fTop y) + ∑ k, a k * incA D (B.hD (ι (A.frame k)) y) + ∑ l, b l * incA D (B.hD (d.e l) y)` using `fun y => by`. Simplify using `only [h, BesselCompare.hA_add, BesselCompare.hA_sum, BesselCompare.hA_smul, BesselCompare.hA_vec]`. Prove the components needed by the constructor for the conclusion. Establish `e : (fun i => hA B (actV B n d.fTop) (vecA B (ι (A.frame i)))) = (gramA A).mulVec a`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[key, d.hD_fTop _ fun l => d.fA l _]`. Simplify using `only [d.eA, map_zero, mul_zero, Finset.sum_const_zero, zero_add, add_zero]`. Conclude with `Finset.sum_congr rfl fun k _ => (mul_comm _ _).trans (congrArg (incA D · * a k) (d.isom _ _))`. Rewrite using `[aCo, e, Matrix.mulVec_mulVec, WeilTieCompare.inv_mul_gram, Matrix.one_mulVec]`.
+
+Establish `e : ∀ l, B.hD (d.e l) d.fTop = if l.1 + 1 = d.ρ then 1 else 0` using `fun l => by`. Establish `ef : ∀ i, B.hT (d.f i) (d.e l) = if l = i then 1 else 0` using `fun i => d.ef l i`. Unfold `HSpace.hD`. Rewrite using `[fTop, map_sum, LinearMap.sum_apply, Finset.sum_eq_single l]`. Use `split_ifs`.
+
+Rewrite using `[ef, if_pos rfl]`. Rewrite using `[map_zero, LinearMap.zero_apply]`. Introduce `i _ hi split_ifs`. Rewrite using `[ef, if_neg hi.symm]`. Rewrite using `[map_zero, LinearMap.zero_apply]`.
+
+Conclude with `fun hl => absurd (Finset.mem_univ l) hl`. Establish `e' : ∀ x, B.hD (ι x) d.fTop = 0` using `fun x => BesselCompare.hD_swap_zero (d.hD_fTop _ fun l => d.fA l x)`. Rewrite using `[tCo, key, d.hD_fTop _ fun i => BesselCompare.hD_swap_zero (d.hD_fTop _ fun j => d.ff j i)]`. Simplify using `only [e, e', map_zero, mul_zero, Finset.sum_const_zero, zero_add]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun l _ => by split_ifs <;> simp`.
+-/
 theorem coords_of (n : GA D B) (a : Fin A.rank → AE D) (b : Fin d.ρ → AE D)
     (h : actV B n d.fTop = vecA B d.fTop + ((frameMat B A ι).map (incA D)).mulVec a + ∑ l, b l • vecA B (d.e l)) :
     d.aCo n = a ∧ d.tCo n = ∑ i : Fin d.ρ, if i.1 + 1 = d.ρ then b i else 0 := by
@@ -375,6 +468,11 @@ theorem coords_of (n : GA D B) (a : Fin A.rank → AE D) (b : Fin d.ρ → AE D)
     simp only [e, e', map_zero, mul_zero, Finset.sum_const_zero, zero_add]
     exact Finset.sum_congr rfl fun l _ => by split_ifs <;> simp
 
+/- English proof (translation)
+Establish `ha : d.aCo n = 0`. Unfold `aCo`. Simplify using `only [hn, BesselCompare.hA_vec, d.hD_fTop _ fun i => d.fA i _, map_zero]`. Conclude with `Matrix.mulVec_zero _`. Establish `ht : d.tCo n = 0`.
+
+Unfold `tCo`. Rewrite using `[hn, BesselCompare.hA_vec, d.hD_fTop _ fun i => BesselCompare.hD_swap_zero (d.hD_fTop _ fun j => d.ff j i), map_zero]`. Rewrite using `[jac, ha, ht, jacOp_centre, cenCo_zero, AddChar.map_zero_eq_one, one_smul]`.
+-/
 theorem jac_of_fix (ψ : AddChar (AF D.host.F) ℂ) (n : GA D B) (hn : actV B n d.fTop = vecA B d.fTop)
     (f : WA L A → ℂ) : d.jac ψ n f = f := by
   have ha : d.aCo n = 0 := by
@@ -387,9 +485,15 @@ theorem jac_of_fix (ψ : AddChar (AF D.host.F) ℂ) (n : GA D B) (hn : actV B n 
       BesselCompare.hD_swap_zero (d.hD_fTop _ fun j => d.ff j i), map_zero]
   rw [jac, ha, ht, jacOp_centre, cenCo_zero, AddChar.map_zero_eq_one, one_smul]
 
+/- English proof (translation)
+Rewrite using `[theta, d.jac_of_fix ψ 1 (actV_one _)]`.
+-/
 theorem theta_one (ψ : AddChar (AF D.host.F) ℂ) (Om : GA D A → WA L A → ℂ) (g : GA D A) : d.theta ψ Om 1 g = Om g 0 := by
   rw [theta, d.jac_of_fix ψ 1 (actV_one _)]
 
+/- English proof (translation)
+Unfold `chr`. Rewrite using `[Finset.sum_eq_zero, map_zero, AddChar.map_zero_eq_one]`. Introduce `i _`. Rewrite using `[actV_one, BesselCompare.hA_vec, d.ef, if_neg (by simp), map_zero, mul_zero]`.
+-/
 theorem chr_one (ψ : AddChar (AF D.host.F) ℂ) : d.chr ψ 1 = 1 := by
   unfold chr
   rw [Finset.sum_eq_zero, map_zero, AddChar.map_zero_eq_one]
@@ -398,6 +502,15 @@ theorem chr_one (ψ : AddChar (AF D.host.F) ℂ) : d.chr ψ 1 = 1 := by
 
 end FJDat
 
+/- English proof (translation)
+Establish `: BorelSpace (WA A B)` using `⟨rfl⟩`. Establish `: BorelSpace (WA V W)` using `⟨rfl⟩`. Use `(GlobalTheory.AdelicMatrixLattice.lattice D A B).1` as an intermediate fact. Use `(GlobalTheory.AdelicMatrixLattice.lattice D V W).1` as an intermediate fact. Take `⟨μ, 𝓕⟩` from `m`.
+
+Take `⟨hμ, hF, hv⟩` from `hm`. Set `e : WA A B ≃ᵐ WA V W` to `{ toEquiv := κ.toEquiv, measurable_toFun := h1.measurable, measurable_invFun := h2.measurable }`. Establish `hmp : MeasurePreserving e (μ.map κ.symm) μ` using `MeasurePreserving.symm e.symm ⟨e.symm.measurable, rfl⟩`. Use `⟨(μ.map κ.symm, e ⁻¹' 𝓕), ⟨AddEquiv.isAddHaarMeasure_map μ κ.symm h2 (by simpa using h1), ?_, ?_⟩, fun φ => hmp.setIntegral_preimage_emb e.measurableEmbedding φ 𝓕⟩` and prove the remaining obligations. Set `f : ratL V W → ratL A B` to `fun y => ⟨κ.symm y, (h3 _).1 (by simpa using y.2)⟩`.
+
+Establish `hf : Function.Bijective f` using `⟨fun a b hab => Subtype.ext (κ.symm.injective (congrArg Subtype.val hab)), fun x => ⟨⟨κ x, (h3 _).2 x.2⟩, Subtype.ext (κ.symm_apply_apply _)⟩⟩`. Use `IsAddFundamentalDomain.preimage_of_equiv (G := ratL V W) (H := ratL A B) hF hmp.quasiMeasurePreserving hf ?_` and prove the remaining obligations. Introduce `y x`. Express the relevant statement in the definitionally equal form `κ (κ.symm y + x) = y + κ x`. Rewrite using `[map_add, κ.apply_symm_apply]`.
+
+Conclude with `(hmp.measure_preimage_emb e.measurableEmbedding 𝓕).trans hv`.
+-/
 theorem probPair_change {A B V W : HSp D} (κ : WA A B ≃+ WA V W) (h1 : Continuous κ) (h2 : Continuous κ.symm)
     (h3 : ∀ x, κ x ∈ ratL V W ↔ x ∈ ratL A B) (m : Measure (WA V W) × Set (WA V W)) (hm : IsProbPair V W m.1 m.2) :
     ∃ m' : Measure (WA A B) × Set (WA A B), IsProbPair A B m'.1 m'.2 ∧
@@ -423,6 +536,15 @@ theorem probPair_change {A B V W : HSp D} (κ : WA A B ≃+ WA V W) (h1 : Contin
     rw [map_add, κ.apply_symm_apply]
   · exact (hmp.measure_preimage_emb e.measurableEmbedding 𝓕).trans hv
 
+/- English proof (translation)
+Establish `hs` using `hκ.2.2.2.2.1`. Establish `key : ∀ (m : Measure (WA V W) × Set (WA V W)) (m' : Measure (WA A B) × Set (WA A B)), (∀ u, coefH ψ V W m f (κ u) = IndefiniteRowSideFullHecke.SplittingKernelQuotients.coef ψ m' (f ∘ κ) u) → ((∀ x y : WA V W, ε • x = x → ε • y = 0 → coefH ψ V W m f (x + y) * coefH ψ V W m f 0 = c …`. Introduce `m m' h`. Rewrite using `[κ.surjective.forall]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[κ.surjective.forall]`. Use `forall_congr' fun y => ?_` and prove the remaining obligations. Rewrite using `[← hs, ← hs, κ.injective.eq_iff, κ.map_eq_zero_iff, ← h, ← h, ← h, ← h, map_add, map_zero]`. Establish `hw : ∀ u w, Heisenberg₂ ψ V W (κ u) f (κ w) * star (f (κ w)) = IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.rho ψ u (f ∘ κ) w * star ((f ∘ κ) w)` using `fun u w => congrArg (· * star (f (κ w))) (congrFun (WeilTieCompare.heis_change hκ ψ u f) w)`. Use `and_congr (iff_of_true (WeilTieCompare.exists_probPair V W) (WeilTieCompare.exists_probPair A B)) ⟨fun h m' hm' => ?_, fun h m hm => ?_⟩` and prove the remaining obligations.
+
+Take `⟨m, hm, hi⟩` from `probPair_change κ.symm hκ.2.1 hκ.1 (fun x => (hκ.2.2.2.1 (κ.symm x)).symm.trans (by rw [κ.apply_symm_apply])) m' hm'`. Use `(key m m' fun u => ?_).1 (h m hm)` and prove the remaining obligations. Use `Eq.trans ?_ (hi fun w => IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.rho ψ u (f ∘ κ) w * star ((f ∘ κ) w))` and prove the remaining obligations. Simplify using `only [← hw, κ.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Take `⟨m', hm', hi⟩` from `probPair_change κ hκ.1 hκ.2.1 hκ.2.2.2.1 m hm`. Use `(key m m' fun u => ?_).2 (h m' hm')` and prove the remaining obligations. Use `(hi fun w => Heisenberg₂ ψ V W (κ u) f w * star (f w)).symm.trans ?_` and prove the remaining obligations. Simplify using `only [hw]`. Both sides reduce to the same expression.
+-/
 theorem isPureAt_iff {A B V W : HSp D} {κ : WA A B ≃+ WA V W} {σ} (hκ : IsChange κ σ) (ψ : AddChar (AF D.host.F) ℂ)
     (ε : AE D) (f : WA V W → ℂ) : IsPureAt ψ V W ε f ↔ IndefiniteRowSideFullHecke.SplittingKernelQuotients.PureAt ψ ε (f ∘ κ) := by
   have hs := hκ.2.2.2.2.1
@@ -454,11 +576,19 @@ theorem isPureAt_iff {A B V W : HSp D} {κ : WA A B ≃+ WA V W} {σ} (hκ : IsC
     simp only [hw]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨⟨fun v => (isPureAt_iff hκ ψ _ f).1 (h.fin v), fun v => (isPureAt_iff hκ ψ _ f).1 (h.inf v)⟩, h.vac⟩, fun h => ⟨fun v => (isPureAt_iff hκ ψ _ f).2 (h.1.1 v), fun v => (isPureAt_iff hκ ψ _ f).2 (h.1.2 v), h.2⟩⟩`.
+-/
 theorem isFact_iff {A B V W : HSp D} {κ : WA A B ≃+ WA V W} {σ} (hκ : IsChange κ σ) (ψ : AddChar (AF D.host.F) ℂ)
     (f : WA V W → ℂ) : IsFact ψ V W f ↔ IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsPure ψ (f ∘ κ) ∧ IsVacAE ψ V W f :=
   ⟨fun h => ⟨⟨fun v => (isPureAt_iff hκ ψ _ f).1 (h.fin v), fun v => (isPureAt_iff hκ ψ _ f).1 (h.inf v)⟩, h.vac⟩,
     fun h => ⟨fun v => (isPureAt_iff hκ ψ _ f).2 (h.1.1 v), fun v => (isPureAt_iff hκ ψ _ f).2 (h.1.2 v), h.2⟩⟩
 
+/- English proof (translation)
+Unfold `coefH`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [Heisenberg₂, Pi.smul_apply, smul_eq_mul, star_mul']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coefH_smul (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (m) (c : ℂ) (f : WA V W → ℂ) (u : WA V W) :
     coefH ψ V W m (c • f) u = c * star c * coefH ψ V W m f u := by
   unfold coefH
@@ -468,6 +598,11 @@ theorem coefH_smul (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (m) (c : ℂ) 
   simp only [Heisenberg₂, Pi.smul_apply, smul_eq_mul, star_mul']
   ring
 
+/- English proof (translation)
+Establish `k : ∀ ε, IsPureAt ψ V W ε f → IsPureAt ψ V W ε (c • f)` using `fun ε h => ⟨h.1, fun m hm x y hx hy => by`. Simplify using `only [coefH_smul]`. Take the linear combination `(c * star c) ^ 2 * h.2 m hm x y hx hy⟩`. Take `⟨S, hS⟩` from `h.vac`. Use `⟨fun v => k _ (h.fin v), fun v => k _ (h.inf v), S, fun u hu => funext fun w => ?_⟩` and prove the remaining obligations.
+
+Use `congrFun (hS u hu) w` as an intermediate fact. Simplify using `only [Heisenberg₂, Pi.smul_apply, smul_eq_mul] at this ⊢`. Take the linear combination `c * this`.
+-/
 theorem IsFact.smul {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {f : WA V W → ℂ} (h : IsFact ψ V W f) (c : ℂ) :
     IsFact ψ V W (c • f) := by
   have k : ∀ ε, IsPureAt ψ V W ε f → IsPureAt ψ V W ε (c • f) := fun ε h => ⟨h.1, fun m hm x y hx hy => by
@@ -483,12 +618,23 @@ section Comparison₂
 
 variable {X : ThetaX D} {T : ThetaTied D X} {Wl : WeilTied D X T}
 
+/- English proof (translation)
+Rewrite using `[h, map_inv]`. Conclude with `resEta_inv T.etaT_res`.
+-/
 theorem resEta_line (T : ThetaTied D X) {L : HSp D} (h : L.rank = 1) : ResEta D (T.eChr X.etaT⁻¹) L.rank := by
   rw [h, map_inv]; exact resEta_inv T.etaT_res
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨T.etaT_res.1, fun η hη a => by rw [map_pow, MonoidHom.pow_apply, T.etaT_res.2 η hη a, pow_one]⟩`.
+-/
 theorem resEta_pow (T : ThetaTied D X) (n : ℕ) : ResEta D (T.eChr (X.etaT ^ n)) n :=
   ⟨T.etaT_res.1, fun η hη a => by rw [map_pow, MonoidHom.pow_apply, T.etaT_res.2 η hη a, pow_one]⟩
 
+/- English proof (translation)
+Establish `h0 : ResEta D (T.eChr (χ⁻¹ * X.etaT ^ A.rank)) 0`. Rewrite using `[map_mul, map_inv]`. Conclude with `resEta_parity (resEta_mul (resEta_inv hχ) (resEta_pow T _)) (by omega)`. Establish `hx : IsDetRoot L 1 1` using `by simp [IsDetRoot]`. Use `Wl.om_tw.twW_up L A X.etaT⁻¹ χ _ (hL ▸ hA) (resEta_line T hL) hχ h0 1 g 1 hx` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel_left, map_one, inv_one, Circle.coe_one, one_smul]`. Rewrite using `[omZ, this]`.
+-/
 theorem omZ_eq (Wl : WeilTied D X T) {L A : HSp D} (hL : L.rank = 1) (hA : 1 < A.rank) (χ : X.Chr)
     (hχ : ResEta D (T.eChr χ) A.rank) (Φ : X.Sch L A) (g : GA D A) :
     omZ Wl L A Φ g = Wl.evS L A (Wl.om L A X.etaT⁻¹ χ (1, g) Φ) := by
@@ -502,6 +648,9 @@ theorem omZ_eq (Wl : WeilTied D X T) {L A : HSp D} (hL : L.rank = 1) (hA : 1 < A
 
 variable {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V}
 
+/- English proof (translation)
+Introduce `μ 𝓕 hv ν 𝓝 hN s hs' σ φ F hφ`. Rewrite using `[Bt.bper A B ι ho hr hs hι p hp σ μ 𝓕 hv ν 𝓝 hN.1 hN.2.1 hN.2.2 s hs' φ F hφ, Bt.besC_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem isBesPos_of_besselTied (Bt : BesselTied D X T Wl) (ho : Odd (B.rank - A.rank)) (hr : A.rank ≤ B.rank)
     (hs : A.SigOK) (hι : HSpace.IsIsomEmb A B ι) (p : X.Pos A B ι) (hp : ∃ u, HEq p (X.posSym u)) :
     IsBesPos Wl (Bt.dat A B ι ho p) p := by
@@ -509,11 +658,20 @@ theorem isBesPos_of_besselTied (Bt : BesselTied D X T Wl) (ho : Odd (B.rank - A.
   rw [Bt.bper A B ι ho hr hs hι p hp σ μ 𝓕 hv ν 𝓝 hN.1 hN.2.1 hN.2.2 s hs' φ F hφ, Bt.besC_one, one_mul]
   rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [trCusp])`.
+-/
 theorem trCusp_one (F : X.cusp B) : trCusp X B 1 F = F := Subtype.ext (by simp [trCusp])
 
+/- English proof (translation)
+Introduce `σ F` and use `⟨1, fun _ => 1, fun _ => σ, fun _ => 1, fun φ => by simp [trCusp_one]⟩`.
+-/
 theorem isTranslSum_refl (p : X.Pos A B ι) : IsTranslSum X p p :=
   fun σ F => ⟨1, fun _ => 1, fun _ => σ, fun _ => 1, fun φ => by simp [trCusp_one]⟩
 
+/- English proof (translation)
+Take `⟨n, a, σ', y, hs⟩` from `h σ F`. Rewrite `hne` using `[hs]`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Conclude with `⟨σ' i, y i, right_ne_zero_of_mul hi⟩`.
+-/
 theorem IsTranslSum.exists_ne_zero {p p₀ : X.Pos A B ι} (h : IsTranslSum X p p₀) {σ φ F}
     (hne : X.Bper A B ι p σ φ F ≠ 0) : ∃ σ' y, X.Bper A B ι p₀ σ' φ (trCusp X B y F) ≠ 0 := by
   obtain ⟨n, a, σ', y, hs⟩ := h σ F
@@ -521,6 +679,13 @@ theorem IsTranslSum.exists_ne_zero {p p₀ : X.Pos A B ι} (h : IsTranslSum X p 
   obtain ⟨i, -, hi⟩ := Finset.exists_ne_zero_of_sum_ne_zero hne
   exact ⟨σ' i, y i, right_ne_zero_of_mul hi⟩
 
+/- English proof (translation)
+Use `(BesselCompare.isAniso_iff V).2 fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1` using `hs D.host.φ₀`. Rewrite `h1` using `[hp]`. Establish `h2` using `Formalism.UG.P.stdform_sig_pos _ h1 (fun k => D.host.φ₀ (BesselCompare.co V v k)) fun e => hne (by`.
+
+Apply `V.frame.repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => ?_` and prove the remaining obligations. Simplify `congrFun e k)` using `[BesselCompare.co]`. Establish `hc` using `D.host.isCMField_hostE`. Establish `h3 : ∀ a : D.host.E, D.host.φ₀ (star a) = starRingEnd ℂ (D.host.φ₀ a)` using `NumberField.IsCMField.complexEmbedding_complexConj D.host.E D.host.φ₀`.
+
+Establish `h4` using `congrArg (fun a => (D.host.φ₀ a).re) ((BesselCompare.hT_co V v v).symm.trans hv)`. Simplify using `only [map_sum, map_mul, h3, map_zero, Complex.zero_re] at h4`. Conclude with `h2.ne' h4`.
+-/
 theorem isAniso_of_posDef {V : HSp D} (hs : V.SigOK) (hp : V.IsPosDef) : IsAniso V := by
   refine (BesselCompare.isAniso_iff V).2 fun v hv => ?_
   by_contra hne
@@ -537,32 +702,56 @@ theorem isAniso_of_posDef {V : HSp D} (hs : V.SigOK) (hp : V.IsPosDef) : IsAniso
   simp only [map_sum, map_mul, h3, map_zero, Complex.zero_re] at h4
   exact h2.ne' h4
 
+/- English proof (translation)
+The claim follows from `isAniso_of_posDef (X.Xs_sig t j hj).1 (T.xs_pos t j hj)`.
+-/
 theorem isAniso_Xs (T : ThetaTied D X) (t : ℕ) {j : ℕ} (hj : j ≤ D.R.m) : IsAniso (X.Xs t j) :=
   isAniso_of_posDef (X.Xs_sig t j hj).1 (T.xs_pos t j hj)
 
+/- English proof (translation)
+Rewrite using `[X.Xs_rank t j hj]`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_lt_rank_Xs (X : ThetaX D) (t : ℕ) {j : ℕ} (hj : j ≤ D.R.m) : 1 < (X.Xs t j).rank := by
   rw [X.Xs_rank t j hj]
   have := D.R.m_add_three_le_k
   omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun Φ => by rw [P.fact A B hr.ne]; exact isFact_iff (WeilTieCompare.isChange_kap hr.le) _ _, fun Φ => by rw [P.fact B A hr.ne']; exact isFact_iff (WeilTieCompare.isChange_kapT hr) _ _⟩`.
+-/
 theorem PerTied.mem_fact_iff (P : PerTied Wl) (hr : A.rank < B.rank) :
     (∀ Φ, Φ ∈ X.fact A B ↔ IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsPure Wl.ψ (Wl.evS A B Φ ∘ kap A B) ∧ IsVacAE Wl.ψ A B (Wl.evS A B Φ)) ∧
     ∀ Φ, Φ ∈ X.fact B A ↔ IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsPure Wl.ψ (Wl.evS B A Φ ∘ kapT A B) ∧ IsVacAE Wl.ψ B A (Wl.evS B A Φ) :=
   ⟨fun Φ => by rw [P.fact A B hr.ne]; exact isFact_iff (WeilTieCompare.isChange_kap hr.le) _ _,
     fun Φ => by rw [P.fact B A hr.ne']; exact isFact_iff (WeilTieCompare.isChange_kapT hr) _ _⟩
 
+/- English proof (translation)
+The claim follows from `(J.fj_only t j hj ho p).elim fun d hd => ⟨d, p, hd, isTranslSum_refl p⟩`.
+-/
 theorem FJTied.fj_all (J : FJTied Wl) (t j : ℕ) (hj : j < D.R.m) (ho : Odd j)
     (p : X.Pos (X.Xs t j) (X.Ys t j) (X.iXYs t j)) :
     ∃ (d : FJDat J.line (X.Xs t j) (X.Ys t j) (X.iXYs t j)) (p₀ : X.Pos (X.Xs t j) (X.Ys t j) (X.iXYs t j)),
       IsFJPos Wl (J.eFJ t j hj ho) d p₀ ∧ IsTranslSum X p p₀ :=
   (J.fj_only t j hj ho p).elim fun d hd => ⟨d, p, hd, isTranslSum_refl p⟩
 
+/- English proof (translation)
+The claim follows from `P.toFJTied.fj_all t j hj ho p`.
+-/
 theorem PerTied.fj_all (P : PerTied Wl) (t j : ℕ) (hj : j < D.R.m) (ho : Odd j)
     (p : X.Pos (X.Xs t j) (X.Ys t j) (X.iXYs t j)) :
     ∃ (d : FJDat P.line (X.Xs t j) (X.Ys t j) (X.iXYs t j)) (p₀ : X.Pos (X.Xs t j) (X.Ys t j) (X.iXYs t j)),
       IsFJPos Wl (P.eFJ t j hj ho) d p₀ ∧ IsTranslSum X p p₀ :=
   P.toFJTied.fj_all t j hj ho p
 
+/- English proof (translation)
+Use `⟨fun σ σ' => ?_, fun c σ => ?_⟩` and prove the remaining obligations. Simplify using `only [h μ 𝓕 hv ν 𝓝 hN s hs _ φ F hφ, FJDat.per]`. Rewrite using `[← mul_add, ← integral_add (hc _).2 (hc _).2]`. Use `congr 2`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[← integral_add ((hc _).1 g) ((hc _).1 g)]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Simplify using `only [FJDat.perFun, FJDat.theta_eq, omZ, map_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [h μ 𝓕 hv ν 𝓝 hN s hs _ φ F hφ, FJDat.per, smul_eq_mul]`. Rewrite using `[mul_left_comm, ← integral_const_mul c]`. Use `congr 2`. Use function extensionality and compare the values at `g`. Rewrite using `[← integral_const_mul c]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `n`. Simplify using `only [FJDat.perFun, FJDat.theta_eq, omZ, map_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsFJPos.isLinearMap {L : HSp D} {k : X.FJd A B ι ≃ₗ[ℂ] X.Sch L A} {d : FJDat L A B ι} {p : X.Pos A B ι}
     (h : IsFJPos Wl k d p) {μ 𝓕 ν 𝓝} (hv : IsVolPair D A μ 𝓕) (hN : IsUnitN B d.eM ν 𝓝) {s : GA D A → GA D B}
     (hs : ∀ g, EmbRel B A ι (s g) g) {φ : X.AF A} (hφ : IsAniso A ∨ φ ∈ X.cusp A) (F : X.cusp B)
@@ -588,6 +777,9 @@ theorem IsFJPos.isLinearMap {L : HSp D} {k : X.FJd A B ι ≃ₗ[ℂ] X.Sch L A}
     simp only [FJDat.perFun, FJDat.theta_eq, omZ, map_smul, Pi.smul_apply, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `J.fj_only t j hj ho p`. Take `⟨ν, 𝓝, hν⟩` from `hN _ _ _ d.isIsoSub`. Establish `hs` using `fun g => (GlobalTheory.AutFunCompare.embRel_iff _ _ _ d.isom _ g).2 rfl`. Establish `ha` using `isAniso_Xs T t hj.le`. Conclude with `hd.isLinearMap hv hν hs (Or.inl ha) F fun Φ => hI X T Wl _ _ _ _ d (one_lt_rank_Xs X t hj.le) ha μ 𝓕 hv.1.1 hv.2 ν 𝓝 hν _ hs Φ _ _ (T.ev_aut _ _) (T.ev_aut _ _)`.
+-/
 theorem FJTied.isLinearMap (J : FJTied Wl) (hI : FJInt D)
     (hN : ∀ (B : HSp D) (ρ : ℕ) (e : Matrix (Fin B.rank) (Fin ρ) D.host.E), IsIsoSub B e → ∃ ν 𝓝, IsUnitN B e ν 𝓝)
     (t j : ℕ) (hj : j < D.R.m) (ho : Odd j) {μ 𝓕} (hv : IsVolPair D (X.Xs t j) μ 𝓕)
@@ -599,12 +791,18 @@ theorem FJTied.isLinearMap (J : FJTied Wl) (hI : FJInt D)
   exact hd.isLinearMap hv hν hs (Or.inl ha) F fun Φ =>
     hI X T Wl _ _ _ _ d (one_lt_rank_Xs X t hj.le) ha μ 𝓕 hv.1.1 hv.2 ν 𝓝 hν _ hs Φ _ _ (T.ev_aut _ _) (T.ev_aut _ _)
 
+/- English proof (translation)
+Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Rewrite using `[X.Xs_rank t j hj.le, X.Ys_rank t j hj.le, mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem codim_XYs (X : ThetaX D) (t : ℕ) {j : ℕ} (hj : j < D.R.m) :
     (X.Ys t j).rank - (X.Xs t j).rank = D.R.m - 1 - j := by
   have hr : D.R.r = D.R.k + D.R.m - 1 := rfl
   rw [X.Xs_rank t j hj.le, X.Ys_rank t j hj.le, mul_add, mul_one]
   omega
 
+/- English proof (translation)
+Establish `hm` using `Nat.even_iff.1 D.R.m_even`. Rewrite using `[codim_XYs X t hj, Nat.odd_iff]`. Rewrite `he` using `[Nat.even_iff]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem odd_codim_XYs (X : ThetaX D) (t : ℕ) {j : ℕ} (hj : j < D.R.m) (he : Even j) :
     Odd ((X.Ys t j).rank - (X.Xs t j).rank) := by
   have hm := Nat.even_iff.1 D.R.m_even
@@ -612,19 +810,31 @@ theorem odd_codim_XYs (X : ThetaX D) (t : ℕ) {j : ℕ} (hj : j < D.R.m) (he : 
   rw [Nat.even_iff] at he
   omega
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coefH_eq_thCoef (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (m : Measure (WA V W) × Set (WA V W)) (f : WA V W → ℂ)
     (u : WA V W) : coefH ψ V W m f u = GlobalTheory.Mem.Th.thCoef ψ V W m.1 m.2 f u := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h σ μ 𝓕 hv s hs φ F hφ ν 𝓝 h1 h2 h3 => h μ 𝓕 hv ν 𝓝 ⟨h1, h2, h3⟩ s hs σ φ F hφ, fun h μ 𝓕 hv ν 𝓝 hN s hs σ φ F hφ => h σ μ 𝓕 hv s hs φ F hφ ν 𝓝 hN.1 hN.2.1 hN.2.2⟩`.
+-/
 theorem isBesPos_iff_besGlob (d : BesDat A B ι) (p : X.Pos A B ι) :
     IsBesPos Wl d p ↔ GlobalTheory.Mem.Th.BesGlob T Wl.ψ d p :=
   ⟨fun h σ μ 𝓕 hv s hs φ F hφ ν 𝓝 h1 h2 h3 => h μ 𝓕 hv ν 𝓝 ⟨h1, h2, h3⟩ s hs σ φ F hφ,
     fun h μ 𝓕 hv ν 𝓝 hN s hs σ φ F hφ => h σ μ 𝓕 hv s hs φ F hφ ν 𝓝 hN.1 hN.2.1 hN.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨WeilTieCompare.exists_probPair V W, fun m hm x y hx hy => (h.2 m ⟨hm.1, hm.2.1⟩).2 x y (fun i j => congrFun (congrFun hx i) j) (fun i j => congrFun (congrFun hy i) j)⟩`.
+-/
 theorem isPureAt_of_all {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {ε : AE D} {f : WA V W → ℂ}
     (h : GlobalTheory.Mem.Th.IsPureAt ψ V W ε f) : IsPureAt ψ V W ε f :=
   ⟨WeilTieCompare.exists_probPair V W, fun m hm x y hx hy =>
     (h.2 m ⟨hm.1, hm.2.1⟩).2 x y (fun i j => congrFun (congrFun hx i) j) (fun i j => congrFun (congrFun hy i) j)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun v => isPureAt_of_all (h.1 v), fun v => isPureAt_of_all (h.2 v), hv⟩`.
+-/
 theorem isFact_of_isPureFun {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {f : WA V W → ℂ}
     (h : GlobalTheory.Mem.Th.IsPureFun ψ V W f) (hv : IsVacAE ψ V W f) : IsFact ψ V W f :=
   ⟨fun v => isPureAt_of_all (h.1 v), fun v => isPureAt_of_all (h.2 v), hv⟩
@@ -635,11 +845,17 @@ open GlobalTheory.Mem.Th (Realises WeilFun Tow RecFun InfF)
 
 variable {θ : InfF D} {Bt : BesselTied D X T Wl} {Wf : WeilFun D Wl.ψ} {Tw : Tow D} {Rc : RecFun D θ Wl.ψ}
 
+/- English proof (translation)
+The claim follows from `(h.besAll _ _ _ (odd_codim_XYs X t hj he) (X.Xs_sig t j hj.le).1 (X.iXYs_isom t j hj) d hd).imp fun p hp => (isBesPos_iff_besGlob d p).2 hp.2`.
+-/
 theorem bes_of_realises (h : Realises Bt Wf Tw Rc) (t j : ℕ) (hj : j < D.R.m) (he : Even j)
     (d : BesDat (X.Xs t j) (X.Ys t j) (X.iXYs t j)) (hd : (d.y : GA D (X.Ys t j)) = 1) : ∃ p, IsBesPos Wl d p :=
   (h.besAll _ _ _ (odd_codim_XYs X t hj he) (X.Xs_sig t j hj.le).1 (X.iXYs_isom t j hj) d hd).imp fun p hp =>
     (isBesPos_iff_besGlob d p).2 hp.2
 
+/- English proof (translation)
+The claim follows from `(h.besOnly _ _ _ (odd_codim_XYs X t hj he) (X.Xs_sig t j hj.le).1 (X.iXYs_isom t j hj) p).imp_left fun hp => ⟨_, Bt.dat_y _ _ _ _ p, (isBesPos_iff_besGlob _ p).2 hp⟩`.
+-/
 theorem bes_only_of_realises (h : Realises Bt Wf Tw Rc) (t j : ℕ) (hj : j < D.R.m) (he : Even j)
     (p : X.Pos (X.Xs t j) (X.Ys t j) (X.iXYs t j)) :
     (∃ d : BesDat (X.Xs t j) (X.Ys t j) (X.iXYs t j), (d.y : GA D (X.Ys t j)) = 1 ∧ IsBesPos Wl d p) ∨ ∃ u,
@@ -647,6 +863,9 @@ theorem bes_only_of_realises (h : Realises Bt Wf Tw Rc) (t j : ℕ) (hj : j < D.
   (h.besOnly _ _ _ (odd_codim_XYs X t hj he) (X.Xs_sig t j hj.le).1 (X.iXYs_isom t j hj) p).imp_left fun hp =>
     ⟨_, Bt.dat_y _ _ _ _ p, (isBesPos_iff_besGlob _ p).2 hp⟩
 
+/- English proof (translation)
+Use extensionality with `Φ`. Establish `hΦ : Wl.evS V W Φ ∈ Set.range (Wl.evS V W)` using `⟨Φ, rfl⟩`. Rewrite `hΦ` using `[h.sch]`. Conclude with `(h.fact V W Φ).trans (hF _ Wl.ψ_std V W _ hΦ).symm`.
+-/
 theorem fact_of_realises (h : Realises Bt Wf Tw Rc) (hF : FactPure D) (V W : HSp D) : X.fact V W = factSet Wl V W := by
   ext Φ
   have hΦ : Wl.evS V W Φ ∈ Set.range (Wl.evS V W) := ⟨Φ, rfl⟩
@@ -674,9 +893,17 @@ end Comparison₂
 
 def negLine (D : D7) : HSp D := Examples₂.stdSpace Examples₂.star_isIntegral 1 (fun _ => true) 0 1
 
+/- English proof (translation)
+The claim follows from `(Examples₂.stdSpace_gram_apply Examples₂.star_isIntegral 1 (fun _ => true) 0 1 i j).trans (if_pos (Subsingleton.elim _ _))`.
+-/
 theorem negLine_gram (D : D7) (i j) : (negLine D).gram i j = -1 :=
   (Examples₂.stdSpace_gram_apply Examples₂.star_isIntegral 1 (fun _ => true) 0 1 i j).trans (if_pos (Subsingleton.elim _ _))
 
+/- English proof (translation)
+Use `⟨rfl, fun τ => ?_, fun _ => rfl⟩` and prove the remaining obligations. Establish `: (negLine D).gram.map τ = -(1 : Matrix (Fin 1) (Fin 1) ℂ)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, negLine_gram, map_neg, map_one, Subsingleton.elim (α := Fin 1) i j]`. Conclude with `congrArg Neg.neg (Matrix.one_apply_eq (α := ℂ) (n := Fin 1) j).symm`.
+
+Rewrite using `[this]`. Conclude with `Formalism.UG.P.stdform_sig_neg_one (n := Fin 1)`.
+-/
 theorem isNegLine_negLine (D : D7) : IsNegLine (negLine D) := by
   refine ⟨rfl, fun τ => ?_, fun _ => rfl⟩
   have : (negLine D).gram.map τ = -(1 : Matrix (Fin 1) (Fin 1) ℂ) := by
@@ -686,6 +913,9 @@ theorem isNegLine_negLine (D : D7) : IsNegLine (negLine D) := by
   rw [this]
   exact Formalism.UG.P.stdform_sig_neg_one (n := Fin 1)
 
+/- English proof (translation)
+Rewrite using `[lineNorm_eq]`. Conclude with `(Fin.sum_univ_one _).trans ((Fin.sum_univ_one _).trans (negLine_gram D _ _))`.
+-/
 example (D : D7) : lineNorm (negLine D) = -1 := by
   rw [lineNorm_eq]
   exact (Fin.sum_univ_one _).trans ((Fin.sum_univ_one _).trans (negLine_gram D _ _))
@@ -698,6 +928,9 @@ def twoToSix (D : D7) : (Fin 2 → D.host.E) →ₗ[D.host.E] (Fin 6 → D.host.
   map_add' x y := by ext i; fin_cases i <;> simp
   map_smul' c x := by ext i; fin_cases i <;> simp
 
+/- English proof (translation)
+Use `(Examples₂.diagForm_apply 6 _ x y).trans ?_` and prove the remaining obligations. Simplify using `[Fin.sum_univ_six, Examples₂.sgn]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sixSpace_hT (D : D7) (x y : Fin 6 → D.host.E) : (sixSpace D).hT x y =
     star (x 0) * y 0 + star (x 1) * y 1 + star (x 2) * y 2 - star (x 3) * y 3 + star (x 4) * y 4 - star (x 5) * y 5 := by
   refine (Examples₂.diagForm_apply 6 _ x y).trans ?_
@@ -708,6 +941,9 @@ def eSix (D : D7) : Fin 2 → Fin 6 → D.host.E := ![![0, 0, 1, 1, 0, 0], ![0, 
 
 def fSix (D : D7) : Fin 2 → Fin 6 → D.host.E := ![![0, 0, 2⁻¹, -2⁻¹, 0, 0], ![0, 0, 0, 0, 2⁻¹, -2⁻¹]]
 
+/- English proof (translation)
+Establish `h2 : star (2⁻¹ : D.host.E) = 2⁻¹` using `by rw [star_inv₀, star_ofNat]`. Establish `h3 : (2⁻¹ : D.host.E) + 2⁻¹ = 1` using `by norm_num`. Simplify using `only [sixSpace_hT]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [eSix, fSix, twoToSix, h2, h3]`.
+-/
 theorem six_rel (D : D7) (i j : Fin 2) (x : Fin 2 → D.host.E) :
     (sixSpace D).hT (eSix D j) (eSix D i) = 0 ∧ (sixSpace D).hT (fSix D j) (fSix D i) = 0 ∧
     (sixSpace D).hT (fSix D j) (eSix D i) = (if i = j then 1 else 0) ∧
@@ -717,6 +953,9 @@ theorem six_rel (D : D7) (i j : Fin 2) (x : Fin 2 → D.host.E) :
   simp only [sixSpace_hT]
   fin_cases i <;> fin_cases j <;> simp [eSix, fSix, twoToSix, h2, h3]
 
+/- English proof (translation)
+Introduce `(x : Fin 2 → D.host.E) (y : Fin 2 → D.host.E)`. Use `(sixSpace_hT D (twoToSix D x) (twoToSix D y)).trans (Eq.trans ?_ (Examples₂.diagForm_apply 2 _ x y).symm)` and prove the remaining obligations. Simplify using `[twoToSix, Fin.sum_univ_two, Examples₂.sgn]`.
+-/
 theorem six_isom (D : D7) :
     HSpace.IsIsomEmb (Examples₂.posSpace Examples₂.star_isIntegral 2) (sixSpace D) (twoToSix D) := by
   intro (x : Fin 2 → D.host.E) (y : Fin 2 → D.host.E)
@@ -758,6 +997,11 @@ def topDat {L : HSp D} (hL : IsNegLine L) (A : HSp D) : FJDat L A A LinearMap.id
   c := -1
   c_ne := neg_ne_zero.2 one_ne_zero
 
+/- English proof (translation)
+Establish `h0 : (topDat hL A).fTop = 0` using `Finset.sum_of_isEmpty (ι := Fin 0) _`. Establish `hv : vecA A 0 = 0` using `by funext i; simp [vecA]`. Establish `h1 : (topDat hL A).chr ψ n = 1`. Unfold `FJDat.chr`. Rewrite using `[Finset.sum_eq_zero, map_zero, AddChar.map_zero_eq_one]`.
+
+Conclude with `fun i _ => Fin.elim0 i`. Rewrite using `[FJDat.perFun, h1, star_one, mul_one, FJDat.theta, (topDat hL A).jac_of_fix ψ n (by rw [h0, actV, hv, Matrix.mulVec_zero])]`.
+-/
 example {L : HSp D} (hL : IsNegLine L) (A : HSp D) (ψ Om s φ F g n) :
     (topDat hL A).perFun ψ Om s φ F g n = star (φ g) * F ((n : GA D A) * s g) * Om g 0 := by
   have h0 : (topDat hL A).fTop = 0 := Finset.sum_of_isEmpty (ι := Fin 0) _
@@ -769,6 +1013,9 @@ example {L : HSp D} (hL : IsNegLine L) (A : HSp D) (ψ Om s φ F g n) :
   rw [FJDat.perFun, h1, star_one, mul_one, FJDat.theta,
     (topDat hL A).jac_of_fix ψ n (by rw [h0, actV, hv, Matrix.mulVec_zero])]
 
+/- English proof (translation)
+Rewrite using `[kap_symm_tPt, neg_mul, one_mul, neg_neg]`.
+-/
 example (L A : HSp D) (a : Fin A.rank → AE D) (i k) :
     (kap L A).symm (tPt L A (-1) a) i k = incA D (L.hD (L.frame i) (lineVec L)) * a k := by
   rw [kap_symm_tPt, neg_mul, one_mul, neg_neg]

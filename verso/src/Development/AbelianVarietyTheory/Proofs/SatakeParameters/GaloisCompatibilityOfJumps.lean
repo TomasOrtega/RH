@@ -14,6 +14,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.TieGalAssembly
 
+/- English proof (translation)
+Introduce `i a r w hw hr`. Use `⟨fun hc => ?_, fun h => (D.naut.wdOf_mono0L i r w hw hr h.1).1 h.2⟩` and prove the remaining obligations. It suffices to establish `hd : D.naut.IsdRW i r w from ⟨hd, (D.naut.wdOf_mono0L i r w hw hr hd).2 hc⟩`. Use `D.nd.lPrime i` as an intermediate fact. Take `⟨L, hle, hL⟩` from `GlobalTheory.T.compactGroup_rep_defined_over_finite_extension (D.nd.l i) _ a r hr (D.nbr i w hw).LL`.
+
+Take `⟨ρ, hρ, rfl⟩` from `GlobalTheory.CrysWD.exists_descent r hr L hL`. Take `⟨-, h2, h1, -⟩` from `(D.loc_tie i w hw).2.2 L hle a ρ hρ`. Use `L.2` as an intermediate fact. Take `⟨K', hK, hc'⟩` from `h1.1 hc`. Establish `h3` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys _ _ _ (D.locT (D.nd.l i)) _ L _ _ hc').1`.
+
+Establish `h4` using `(GlobalTheory.Per.TiedRestrict.isDR_restrict_iff hK _ (D.locT (D.nd.l i))).2 h3`. Use `h2.2 ?_` and prove the remaining obligations. Unfold `IsDR at h4`. Unfold `LocBridge.IsdRE`. Simplify using `using h4`.
+-/
 theorem potCrysIffWD (D : D7) : PotCrysIffWD D.nd D.naut := by
   intro i a r w hw hr
   refine ⟨fun hc => ?_, fun h => (D.naut.wdOf_mono0L i r w hw hr h.1).1 h.2⟩
@@ -31,11 +38,17 @@ theorem potCrysIffWD (D : D7) : PotCrysIffWD D.nd D.naut := by
   unfold LocBridge.IsdRE
   simpa using h4
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.CrysWD.crysIffWD D, potCrysIffWD D, hJ, fun i => ⟨GlobalTheory.WeilDeligne.InertiaSplit.decomp_away hDR hL D P i, GlobalTheory.ConjGal.main hDR hL D P i, GlobalTheory.T.de_rham_weight_direct_sum hDR hL D P i, GlobalTheory.T.de_rham_weight_twist_character hDR hL D P …`.
+-/
 theorem tieGal_of_jumpsCard (hDR : GlobalTheory.Published.DeRhamPotSemistable) (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D)
     (hJ : JumpsCard D.nd D.naut) : Formalism.MainNotions.SumRepresentations.At.TieGal D.nd D.naut :=
   ⟨GlobalTheory.CrysWD.crysIffWD D, potCrysIffWD D, hJ, fun i => ⟨GlobalTheory.WeilDeligne.InertiaSplit.decomp_away hDR hL D P i, GlobalTheory.ConjGal.main hDR hL D P i,
     GlobalTheory.T.de_rham_weight_direct_sum hDR hL D P i, GlobalTheory.T.de_rham_weight_twist_character hDR hL D P i⟩⟩
 
+/- English proof (translation)
+Introduce `hDR hL D P hJ` and use `tieGal_of_jumpsCard hDR hL D P hJ`.
+-/
 theorem main : GlobalTheory.Published.DeRhamPotSemistable → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), JumpsCard D.nd D.naut → Formalism.MainNotions.SumRepresentations.At.TieGal D.nd D.naut :=
   fun hDR hL D P hJ => tieGal_of_jumpsCard hDR hL D P hJ
 

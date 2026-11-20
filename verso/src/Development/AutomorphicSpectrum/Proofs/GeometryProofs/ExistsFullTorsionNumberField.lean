@@ -16,6 +16,35 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.TorsRat
 
+/- English proof (translation)
+Set `Ω` to `AlgebraicClosure L`. Set `H` to `{φ : R →+* Ω // φ.comp (algebraMap L R) = algebraMap L Ω}`. Establish `hH : Nat.card H = N` using `hN Ω _`. Establish `hfin : Finite H` using `Nat.finite_of_card_ne_zero (by rw [hH]; exact hN0)`. Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule L R).FG)`.
+
+Set `S : Set Ω` to `⋃ φ : H, (φ.1 '' (s : Set R))`. Establish `hSfin : S.Finite` using `Set.finite_iUnion fun φ => (s.finite_toSet).image _`. Establish `: Finite S` using `hSfin`. Set `K : IntermediateField L Ω` to `IntermediateField.adjoin L S`. Establish `hKfd : FiniteDimensional L K` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`.
+
+Establish `hNF : NumberField K` using `NumberField.of_module_finite L K`. Establish `hmem : ∀ (φ : H) (r : R), φ.1 r ∈ K`. Introduce `φ r`. Establish `hr : r ∈ Submodule.span L (s : Set R)` using `by rw [hs]; trivial`. Proceed by induction on `hr using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact IntermediateField.subset_adjoin L S (Set.mem_iUnion.2 ⟨φ, x, hx, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`.
+
+Establish `: φ.1 (a • x) = algebraMap L Ω a * φ.1 x`. Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `congrArg (· * φ.1 x) (congrArg (fun f : L →+* Ω => f a) φ.2)`. Rewrite using `[this]`. Conclude with `mul_mem (K.algebraMap_mem a) hx`.
+
+Set `res : H → (R →+* K)` to `fun φ => φ.1.codRestrict K.toSubalgebra.toSubsemiring (hmem φ)`. Set `e : Fin N ≃ H` to `(Finite.equivFinOfCardEq hH).symm`. Establish `hres : ∀ φ : H, (res φ).comp (algebraMap L R) = algebraMap L K`. Introduce `φ`. Use extensionality with `a`.
+
+Conclude with `congrArg (fun f : L →+* Ω => f a) φ.2`. Establish `hresinj : Function.Injective res`. Introduce `φ ψ h`. Use extensionality with `r`. Conclude with `congrArg (fun f : R →+* K => ((f r : K) : Ω)) h`.
+
+Use `⟨K, inferInstance, hNF, inferInstance, fun i => res (e i), fun i => hres _, ?_⟩` and prove the remaining obligations. Introduce `F _ f φ hφ`. Set `Ω'` to `AlgebraicClosure F`. Set `j : F →+* Ω'` to `algebraMap F Ω'`. Set `io : L →+* Ω'` to `j.comp (f.comp (algebraMap L K))`.
+
+Set `H'` to `{ψ : R →+* Ω' // ψ.comp (algebraMap L R) = io}`. Establish `hH' : Nat.card H' = N` using `hN Ω' io`. Establish `hfin' : Finite H'` using `Nat.finite_of_card_ne_zero (by rw [hH']; exact hN0)`. Set `c : Fin N → H'` to `fun i => ⟨j.comp (f.comp (res (e i))), by`. Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc, hres]⟩`.
+
+Establish `hfj : Function.Injective (j.comp f)` using `(j.comp f).injective`. Establish `hc : Function.Injective c`. Introduce `a b h`. Establish `h1 : j.comp (f.comp (res (e a))) = j.comp (f.comp (res (e b)))` using `congrArg Subtype.val h`. Establish `h2 : res (e a) = res (e b)`.
+
+Use extensionality with `r`. Use `congrArg (fun t : R →+* Ω' => t r) h1` as an intermediate fact. Conclude with `congrArg _ (hfj this)`. Conclude with `e.injective (hresinj h2)`. Establish `hcb : Function.Bijective c` using `(Nat.bijective_iff_injective_and_card c).2 ⟨hc, by rw [Nat.card_eq_fintype_card, Fintype.card_fin, hH']⟩`.
+
+Take `⟨i, hi⟩` from `hcb.2 ⟨j.comp φ, by`. Rewrite using `[RingHom.comp_assoc, hφ]⟩`. Use `⟨i, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Use `congrArg (fun t : H' => t.1 r) hi` as an intermediate fact.
+
+Conclude with `(j.injective this).symm`. Introduce `i' hi'`. Apply `hc` to reduce the goal to its premises. Rewrite using `[hi]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show j.comp (f.comp (res (e i'))) = j.comp φ`. Rewrite using `[hi']`.
+-/
 theorem alg_split (L : Type) [Field L] [NumberField L] (R : Type) [CommRing R] [Algebra L R] [Module.Finite L R]
     (N : ℕ) (hN0 : N ≠ 0)
     (hN : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (io : L →+* Ω),
@@ -98,6 +127,45 @@ end GlobalTheory.CompanionTheory.Ar.Sl.TorsRat
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.TorsRat
 
+/- English proof (translation)
+Establish `hz : IsZLattice ℝ Λ` using `⟨hfull⟩`. Establish `hrank : Module.finrank ℤ Λ = 2 * g`. Rewrite using `[ZLattice.rank ℝ Λ]`. Establish `: Module.finrank ℝ (Fin g → ℂ) = 2 * g`. Rewrite using `[Module.finrank_pi_fintype]`.
+
+Simplify using `[Complex.finrank_real_complex, mul_comm]`. Conclude with `this`. Establish `hfr : Module.Free ℤ Λ` using `ZLattice.module_free ℝ Λ`. Establish `hfi : Module.Finite ℤ Λ` using `ZLattice.module_finite ℝ Λ`. Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast (by omega : m ≠ 0)`.
+
+Establish `: NeZero m` using `⟨by omega⟩`. Establish `ex_zero : ex 0 = 1`. Use `ex_add 0 0` as an intermediate fact. Simplify using `using this`. Establish `ex_neg : ∀ z, ex (-z) = (ex z)⁻¹` using `fun z => by`.
+
+Use `ex_add (-z) z` as an intermediate fact. Rewrite `this` using `[neg_add_cancel, ex_zero]`. Conclude with `eq_inv_of_mul_eq_one_left this.symm`. Establish `ex_nsmul : ∀ (n : ℕ) z, ex (n • z) = ex z ^ n`. Introduce `n z`.
+
+Proceed by induction on `n with`. Consider the case `zero => simp [ex_zero]`. Consider the case `succ n ih => rw [succ_nsmul, ex_add, ih, pow_succ]`. Establish `ex_eq : ∀ z w, ex z = ex w ↔ z - w ∈ Λ`. Introduce `z w`.
+
+Rewrite using `[← ker, sub_eq_add_neg, ex_add, ex_neg, mul_inv_eq_one]`. Set `F : Λ → {q : Q // q ^ m = 1}` to `fun l => ⟨ex ((m : ℂ)⁻¹ • (l : Fin g → ℂ)), by`. Rewrite using `[← ex_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hm0, one_smul]`. Conclude with `(ker _).2 l.2⟩`. Establish `hF : ∀ l l' : Λ, F l = F l' ↔ ∃ d : Λ, l - l' = (m : ℤ) • d`.
+
+Introduce `l l'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `(ex_eq _ _).1 (congrArg Subtype.val h)`. Rewrite `h1` using `[← smul_sub]`.
+
+Use `⟨⟨_, h1⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (l : Fin g → ℂ) - l' = (m : ℤ) • ((m : ℂ)⁻¹ • ((l : Fin g → ℂ) - l'))`. Rewrite using `[← Int.cast_smul_eq_zsmul ℂ, smul_smul]`. Simplify using `[hm0]`. Introduce and unpack `⟨d, hd'⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `(ex_eq _ _).2 ?_` and prove the remaining obligations. Rewrite using `[← smul_sub]`. Establish `h2 : ((l : Fin g → ℂ) - l') = (m : ℂ) • (d : Fin g → ℂ)`. Establish `h3 : (l : Fin g → ℂ) - l' = (((m : ℤ) • d : Λ) : Fin g → ℂ)` using `congrArg Subtype.val hd'`.
+
+Rewrite using `[h3, Submodule.coe_smul, ← Int.cast_smul_eq_zsmul ℂ]`. Simplify using the standard rewrite rules. Rewrite using `[h2, smul_smul, inv_mul_cancel₀ hm0, one_smul]`. Conclude with `d.2`. Establish `hFs : Function.Surjective F`.
+
+Introduce and unpack `⟨q, hq⟩`. Take `⟨w, rfl⟩` from `ex_onto q`. Establish `h1 : (m : ℂ) • w ∈ Λ`. Rewrite using `[← ker, Nat.cast_smul_eq_nsmul, ex_nsmul, hq]`. Use `⟨⟨_, h1⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Use `show ex ((m : ℂ)⁻¹ • (m : ℂ) • w) = ex w`. Rewrite using `[smul_smul, inv_mul_cancel₀ hm0, one_smul]`. Set `b : Module.Basis (Fin (2 * g)) ℤ Λ` to `Module.finBasisOfFinrankEq ℤ Λ hrank`. Set `G : (Fin (2 * g) → ZMod m) → {q : Q // q ^ m = 1}` to `fun c => F (∑ i, ((c i).val : ℤ) • b i)`. Establish `hG : Function.Bijective G`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `c c' h`. Take `⟨d, hd'⟩` from `(hF _ _).1 h`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrArg (fun v => b.repr v i) hd'`.
+
+Establish `h2 : ((c i).val : ℤ) - ((c' i).val : ℤ) = (m : ℤ) * b.repr d i`. Simplify using `only [map_sub, Finsupp.sub_apply, Module.Basis.repr_sum_self, map_smul, Finsupp.smul_apply, smul_eq_mul] at h1`. Conclude with `h1`. Establish `h3` using `congrArg (Int.cast : ℤ → ZMod m) h2`. Simplify `h3` using `[sub_eq_zero]`.
+
+Introduce `q`. Take `⟨l, rfl⟩` from `hFs q`. Use `⟨fun i => ((b.repr l i : ℤ) : ZMod m), (hF _ _).2 ?_⟩` and prove the remaining obligations. Establish `hdiv : ∀ i, (m : ℤ) ∣ ((((b.repr l i : ℤ) : ZMod m).val : ℕ) : ℤ) - b.repr l i`. Introduce `i`.
+
+Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `choose e he using hdiv`. Use `⟨∑ i, e i • b i, ?_⟩` and prove the remaining obligations. Establish `h4 : ∑ i, ((((b.repr l i : ℤ) : ZMod m).val : ℕ) : ℤ) • b i - l = ∑ i, (((((b.repr l i : ℤ) : ZMod m).val : ℕ) : ℤ) - b.repr l i) • b i`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[b.sum_repr]`. Use `show ∑ i, ((((b.repr l i : ℤ) : ZMod m).val : ℕ) : ℤ) • b i - l = _`. Rewrite using `[h4, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul]`. Use `congr 1`. Use `he i` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← Nat.card_congr (Equiv.ofBijective G hG)]`.
+
+Simplify using `[Nat.card_eq_fintype_card, ZMod.card]`.
+-/
 theorem card_torsion_of_lattice {g : ℕ} {Q : Type} [Group Q] (ex : (Fin g → ℂ) → Q)
     (ex_add : ∀ z w, ex (z + w) = ex z * ex w) (ex_onto : Function.Surjective ex)
     (Λ : Submodule ℤ (Fin g → ℂ)) (ker : ∀ z, ex z = 1 ↔ z ∈ Λ) (hd : DiscreteTopology Λ)
@@ -206,6 +274,13 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.TorsRat
 
 variable {L : Type} [Field L]
 
+/- English proof (translation)
+Establish `hA : IsAffine T.left` using `isAffine_of_isAffineHom T.hom`. Set `R : CommRingCat` to `Γ(T.left, ⊤)`. Set `i : T.left ≅ Spec R` to `T.left.isoSpec`. Take `⟨f, hf⟩ : ∃ f : CommRingCat.of L ⟶ R, i.inv ≫ T.hom = Spec.map f` from `⟨_, (Spec.map_preimage _).symm⟩`. Establish `hfin : IsFinite (Spec.map f)`.
+
+Rewrite using `[← hf]`. Use `infer_instance`. Rewrite `hfin` using `[IsFinite.SpecMap_iff]`. Use `letI : Algebra L R := f.hom.toAlgebra`. Use `⟨R, inferInstance, inferInstance, ?_, ⟨Over.isoMk i ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `RingHom.finite_algebraMap.1 hfin`. Use `show i.hom ≫ Spec.map f = T.hom`. Rewrite using `[← hf, Iso.hom_inv_id_assoc]`.
+-/
 theorem exists_finite_algebra (T : Over (Sp L)) (hT : IsFinite T.hom) :
     ∃ (R : Type) (_ : CommRing R) (_ : Algebra L R) (_ : Module.Finite L R),
       Nonempty (T ≅ Over.mk (spMap (algebraMap L R))) := by
@@ -223,17 +298,33 @@ theorem exists_finite_algebra (T : Over (Sp L)) (hT : IsFinite T.hom) :
   · show i.hom ≫ Spec.map f = T.hom
     rw [← hf, Iso.hom_inv_id_assoc]
 
+/- English proof (translation)
+Use `Spec.map_injective h` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+-/
 theorem spMap_inj {R F : Type} [CommRing R] [CommRing F] {f f' : R →+* F} (h : spMap f = spMap f') : f = f' := by
   have := Spec.map_injective h
   exact congrArg CommRingCat.Hom.hom this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Spec.preimage y).hom, by simp [spMap]⟩`.
+-/
 theorem exists_spMap {R F : Type} [CommRing R] [CommRing F] (y : Sp F ⟶ Sp R) : ∃ p : R →+* F, spMap p = y :=
   ⟨(Spec.preimage y).hom, by simp [spMap]⟩
 
+/- English proof (translation)
+Simplify using `[spMap, ← Spec.map_comp, CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp [spMap, ← Spec.map_comp, CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Establish `h1 : ∀ y : Over.mk (spMap io) ⟶ Over.mk (spMap (algebraMap L R)), ∃ p : R →+* F, p.comp (algebraMap L R) = io ∧ spMap p = y.left`. Introduce `y`. Take `⟨p, hp⟩` from `exists_spMap y.left`. Use `⟨p, spMap_inj ?_, hp⟩` and prove the remaining obligations. Rewrite using `[spMap_comp', hp]`.
+
+Conclude with `Over.w y`. Use `choose p hp1 hp2 using h1`. Use `⟨⟨fun y => ⟨p y, hp1 y⟩, fun φ => Over.homMk (spMap φ.1) ?_, fun y => ?_, fun φ => ?_⟩, hp2⟩` and prove the remaining obligations. Use `show spMap φ.1 ≫ spMap (algebraMap L R) = spMap io`. Rewrite using `[← spMap_comp', φ.2]`.
+
+Conclude with `Over.OverMorphism.ext (hp2 y)`. Conclude with `Subtype.ext (spMap_inj (hp2 _))`.
+-/
 theorem exists_ptEquiv {R F : Type} [CommRing R] [Algebra L R] [CommRing F] (io : L →+* F) :
     ∃ e : (Over.mk (spMap io) ⟶ Over.mk (spMap (algebraMap L R))) ≃
         {φ : R →+* F // φ.comp (algebraMap L R) = io}, ∀ y, spMap (e y).1 = y.left := by
@@ -251,6 +342,19 @@ theorem exists_ptEquiv {R F : Type} [CommRing R] [Algebra L R] [CommRing F] (io 
   · exact Over.OverMorphism.ext (hp2 y)
   · exact Subtype.ext (spMap_inj (hp2 _))
 
+/- English proof (translation)
+Take `⟨R, _, _, _, ⟨iso⟩⟩` from `exists_finite_algebra T hT`. Establish `hc : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (io : L →+* Ω), Nat.card {φ : R →+* Ω // φ.comp (algebraMap L R) = io} = N`. Introduce `Ω _ _ io`. Take `⟨e, -⟩` from `exists_ptEquiv (R := R) io`. Rewrite using `[← Nat.card_congr e, ← hcard Ω io]`.
+
+Conclude with `Nat.card_congr ⟨fun y => y ≫ iso.inv, fun y => y ≫ iso.hom, fun y => by simp, fun y => by simp⟩`. Take `⟨K, _, hK, _, x, hx, hu⟩` from `alg_split L R N hN0 hc`. Take `⟨e, he⟩` from `exists_ptEquiv (R := R) (algebraMap L K)`. Use `⟨K, inferInstance, hK, inferInstance, fun i => e.symm ⟨x i, hx i⟩ ≫ iso.inv, ?_⟩` and prove the remaining obligations. Introduce `F _ f y`.
+
+Establish `hxl : ∀ i, (e.symm ⟨x i, hx i⟩).left = spMap (x i)` using `fun i => by`. Rewrite using `[← he, Equiv.apply_symm_apply]`. Take `⟨e', he'⟩` from `exists_ptEquiv (R := R) (f.comp (algebraMap L K))`. Establish `key : ∀ i, y.left = spMap f ≫ (e.symm ⟨x i, hx i⟩ ≫ iso.inv).left ↔ (e' (y ≫ iso.hom)).1 = f.comp (x i)`. Introduce `i`.
+
+Establish `h2 : (y ≫ iso.hom).left = y.left ≫ iso.hom.left` using `rfl`. Establish `h4 : spMap (f.comp (x i)) = spMap f ≫ spMap (x i)` using `spMap_comp' _ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `spMap_inj` to reduce the goal to its premises.
+
+Rewrite using `[he', h4, ← hxl, h2, h, Over.comp_left, Category.assoc, Category.assoc, ← Over.comp_left, iso.inv_hom_id]`. Simplify using the standard rewrite rules. Introduce `h`. Establish `h3` using `he' (y ≫ iso.hom)`. Rewrite `h3` using `[h, h4, ← hxl, h2]`.
+
+Rewrite using `[Over.comp_left, ← Category.assoc, h3, Category.assoc, ← Over.comp_left, iso.hom_inv_id]`. Simplify using the standard rewrite rules. Take `⟨i, hi, hi'⟩` from `hu F f (e' (y ≫ iso.hom)).1 (e' (y ≫ iso.hom)).2`. Conclude with `⟨i, (key i).2 hi, fun j hj => hi' j ((key j).1 hj)⟩`.
+-/
 theorem finite_split [NumberField L] (T : Over (Sp L)) (hT : IsFinite T.hom) (N : ℕ) (hN0 : N ≠ 0)
     (hcard : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (io : L →+* Ω), Nat.card (Over.mk (spMap io) ⟶ T) = N) :
     ∃ (K : Type) (_ : Field K) (_ : NumberField K) (_ : Algebra L K)
@@ -298,6 +402,11 @@ variable {L : Type} [Field L]
 
 open scoped CategoryTheory.Obj in
 
+/- English proof (translation)
+Establish `hB` using `ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback t A hA`. Establish `hg' : SmoothOfRelativeDimension g ((Over.pullback t).obj A).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) hg`. Take `⟨e, -⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback (isGrpPullback_pullback A t) (𝟙 _) t (Category.id_comp t).symm`. Rewrite using `[← GlobalTheory.abMulN_holds Ω _ g n hB hg' hn]`. Use `(Nat.card_congr (e.toEquiv.subtypeEquiv fun x => ?_)).symm` and prove the remaining obligations.
+
+Use `show x ^ n = 1 ↔ e x ^ n = 1`. Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff]`.
+-/
 theorem card_points (A : Over (Sp L)) [GrpObj A] (hA : IsAbelianScheme A) {g : ℕ}
     (hg : SmoothOfRelativeDimension g A.hom) {Ω : Type} [Field Ω] [IsAlgClosed Ω] (t : Sp Ω ⟶ Sp L) (n : ℕ)
     (hn : (n : Ω) ≠ 0) : Nat.card {x : Over.mk t ⟶ A // x ^ n = 1} = n ^ (2 * g) := by
@@ -313,6 +422,13 @@ theorem card_points (A : Over (Sp L)) [GrpObj A] (hA : IsAbelianScheme A) {g : �
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [NumberField L]
 
+/- English proof (translation)
+Take `⟨σ⟩ : Nonempty (L →+* ℂ)` from `inferInstance`. Take `⟨a⟩` from `(GlobalTheory.T.theta_function_archimedean_frame E H L D σ).1`. Establish `h1` using `card_torsion_of_lattice a.u.ex a.u.ex_add a.u.ex_onto a.u.Λ a.u.ker a.u.discrete a.u.full 2 (by norm_num)`. Establish `h2` using `card_points D.tK.G hA hg (spMap σ) 2 (by norm_num)`. Take `⟨e1, -⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback a.cart (𝟙 _) (emb σ) (Category.id_comp _).symm`.
+
+Take `⟨e2, -⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback D.m.cart (spMap σ) (emb σ) (spMap_comp' _ _)`. Establish `h3 : Nat.card {q : 𝟙_ (Over (Sp ℂ)) ⟶ a.A // q ^ 2 = 1} = Nat.card {x : Over.mk (spMap σ) ⟶ D.tK.G // x ^ 2 = 1}` using `Nat.card_congr ((e1.trans e2.symm).toEquiv.subtypeEquiv fun x => by show x ^ 2 = 1 ↔ (e1.trans e2.symm) x ^ 2 = 1`. Rewrite using `[← map_pow, MulEquiv.map_eq_one_iff])`. Rewrite `h3` using `[h1, h2]`. Use `Nat.pow_right_injective le_rfl h3` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem dim_eq (D : PPData H L) (hA : IsAbelianScheme D.tK.G) {g : ℕ}
     (hg : SmoothOfRelativeDimension g D.tK.G.hom) : g = D.g := by
   obtain ⟨σ⟩ : Nonempty (L →+* ℂ) := inferInstance
@@ -331,6 +447,29 @@ theorem dim_eq (D : PPData H L) (hA : IsAbelianScheme D.tK.G) {g : ℕ}
   have := Nat.pow_right_injective le_rfl h3
   omega
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ D m hm`. Establish `hA : IsAbelianScheme D.tK.G` using `⟨D.tK.semi.comm, D.tK.semi.smooth, D.princ.1, D.tK.semi.geomConnected⟩`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim_of_connected D.tK.G hA`. Take `rfl : g = D.g` from `dim_eq D hA hg`. Take `⟨hfin, -⟩` from `GlobalTheory.AbTorsionAnyBase.isFinite_and_flat_torsion _ D.tK.G hA m hm`.
+
+Establish `hc : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (io : L →+* Ω), Nat.card (Over.mk (spMap io) ⟶ torsion D.tK.G m) = m ^ (2 * D.g)`. Introduce `Ω _ _ io`. Establish `: CharZero Ω` using `charZero_of_injective_ringHom io.injective`. Rewrite using `[Nat.card_congr (GlobalTheory.TorsionUnram.torsionEquiv _ m _)]`. Conclude with `card_points _ hA hg _ m (Nat.cast_ne_zero.2 (by omega))`.
+
+Take `⟨K, _, hK, _, x, hu⟩` from `finite_split _ hfin _ (pow_ne_zero _ (by omega)) hc`. Take `⟨e, he⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback D.m.cart (spMap (algebraMap L K)) (spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L))) (spMap_comp' _ _)`. Establish `hτ : ∀ (Y : Over (Sp L)) (p : Y ⟶ torsion D.tK.G m), ((GlobalTheory.TorsionUnram.torsionEquiv D.tK.G m Y p).1).left = p.left ≫ (torsion.ι D.tK.G m).left` using `fun _ _ => rfl`. Use `⟨K, inferInstance, hK, inferInstance, fun i => e (GlobalTheory.TorsionUnram.torsionEquiv D.tK.G m _ (x i)).1, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, (GlobalTheory.TorsionUnram.torsionEquiv D.tK.G m _ (x i)).2, map_one]`.
+
+Introduce `F _ f b y hb hy`. Substitute `hb` using the available equality. Establish `hb' : spMap f ≫ spMap ((algebraMap L K).comp (algebraMap (𝓞 L) L)) = spMap (f.comp (algebraMap L K)) ≫ spMap (algebraMap (𝓞 L) L)`. Rewrite using `[spMap_comp', spMap_comp', Category.assoc]`. Take `⟨e', he'⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback D.m.cart (spMap (f.comp (algebraMap L K))) _ hb'`.
+
+Establish `hy₀ : (e'.symm y) ^ m = 1` using `by rw [← map_pow, hy, map_one]`. Establish `hyl : (e'.symm y).left ≫ D.m.cm.F = y.left`. Rewrite using `[← he', MulEquiv.apply_symm_apply]`. Take `⟨w, hw⟩` from `(GlobalTheory.TorsionUnram.torsionEquiv D.tK.G m _).surjective ⟨e'.symm y, hy₀⟩`. Establish `hwl : w.left ≫ (torsion.ι D.tK.G m).left = (e'.symm y).left`.
+
+Rewrite using `[← hτ, hw]`. Establish `key : ∀ i, y.left = spMap f ≫ (e (GlobalTheory.TorsionUnram.torsionEquiv D.tK.G m _ (x i)).1).left ↔ w.left = spMap f ≫ (x i).left`. Introduce `i`. Establish `h1 : (e (GlobalTheory.TorsionUnram.torsionEquiv D.tK.G m _ (x i)).1).left = (x i).left ≫ (torsion.ι D.tK.G m).left ≫ D.m.cm.F`. Rewrite using `[he, hτ, Category.assoc]`.
+
+Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hz : (spMap f ≫ (x i).left) ≫ (torsion D.tK.G m).hom = spMap (f.comp (algebraMap L K))`. Use `Over.w (x i)` as an intermediate fact.
+
+Rewrite using `[Category.assoc, spMap_comp']`. Conclude with `congrArg (spMap f ≫ ·) this`. Set `w' : Over.mk (spMap (f.comp (algebraMap L K))) ⟶ torsion D.tK.G m` to `Over.homMk _ hz`. Establish `h2 : GlobalTheory.TorsionUnram.torsionEquiv D.tK.G m _ w' = ⟨e'.symm y, hy₀⟩`. Use `Subtype.ext (Over.OverMorphism.ext (D.m.cart.1.hom_ext ?_ ?_))` and prove the remaining obligations.
+
+Use `show ((GlobalTheory.TorsionUnram.torsionEquiv D.tK.G m _ w').1).left ≫ _ = _`. Rewrite using `[hτ, hyl, h]`. Simplify using `[w']`. Conclude with `(Over.w _).trans (Over.w _).symm`. Establish `h3 : w' = w` using `(GlobalTheory.TorsionUnram.torsionEquiv D.tK.G m _).injective (h2.trans hw.symm)`.
+
+Rewrite using `[← h3]`. Both sides reduce to the same expression. Introduce `h`. Rewrite using `[← hyl, ← hwl, h]`. Simplify using the standard rewrite rules.
+
+Take `⟨i, hi, hi'⟩` from `hu F f w`. Conclude with `⟨i, (key i).2 hi, fun j hj => hi' j ((key j).1 hj)⟩`.
+-/
 theorem torsion_rational : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L]
     [NumberField L] (D : PPData H L) (m : ℕ), 1 ≤ m →
     ∃ (K : Type) (_ : Field K) (_ : NumberField K) (_ : Algebra L K)

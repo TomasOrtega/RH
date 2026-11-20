@@ -10,6 +10,13 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.LocalWeilOps
 
+/- English proof (translation)
+Introduce `u hu p q Φ hΦ`. Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil`. Use `set w := Γ.M.co.e.symm (p, q) with hw`. Establish `he : Γ.M.co.e (u • w) = (u • p, u • q)`. Rewrite using `[LinearEquiv.map_smul, hw, LinearEquiv.apply_symm_apply, Prod.smul_mk]`.
+
+Establish `h0 : u • (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x - 1) = 0` using `hx u hu`. Establish `hact : GlobalTheory.WeilM.actAB (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) ((x, 1) : UA σ Γ.V.J × UA σ Γ.W.J) (u • w) = u • w`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x * (u • w) - u • w = (u • (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x - 1)) * w`. Rewrite using `[Matrix.smul_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_smul, smul_sub]`. Rewrite `h1` using `[h0, Matrix.zero_mul, sub_eq_zero]`.
+
+Simplify using `only [GlobalTheory.WeilM.actAB]`. Simplify `h1` using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat]`. Establish `h2` using `hW.impl (x, 1) (u • w) Φ hΦ`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, he, hact] at h2`. Conclude with `h2`.
+-/
 theorem comm_off_V {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (Bs : Base F E) (Γ : Geo σ a a') (X : Chars F E) (om : Rep σ Γ.V Γ.W) (om' : Rep σ Γ.V' Γ.W)
     (hTr : IsTriple Bs Γ X om om') (v : Pl F) (x : UA σ Γ.V.J) (hx : x ∈ UAt σ Γ.V (evFin F v)) :
@@ -32,6 +39,29 @@ theorem comm_off_V {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   simp only [GlobalTheory.WeilM.Darboux.rho, he, hact] at h2
   exact h2
 
+/- English proof (translation)
+Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil`. Use `set T := om (x, 1) with hTdef`. Establish `hkeep : ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), T Φ ∈ GlobalTheory.WeilM.schA F _` using `fun Φ hΦ => hW.pres (x, 1) Φ hΦ`. Establish `hcomm` using `comm_off_V Bs Γ X om om' hTr v x hx`. Establish `hfib` using `GlobalTheory.T.isometry_commuting_heisenberg_acts_fibrewise v Bs.ψ T hTr.base.std (GlobalTheory.T.standardAdelicAddChar_nontrivial_finitePlace Bs.ψ hTr.base.std) hkeep (fun μ hμ Φ hΦ => hW.unit μ hμ (x, 1) Φ hΦ) hcomm`.
+
+Establish `htr : ∀ u : AF F, evFin F v u = 0 → ∀ p : Fin a × Fin (a + a') → AF F, ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), T (fun y => Φ (y + u • p)) = fun y => T Φ (y + u • p)`. Introduce `u hu p Φ hΦ`. Establish `h` using `hcomm u hu p 0 Φ hΦ`. Rewrite `h` using `[smul_zero, GlobalTheory.WeilLocality.schr_trans, GlobalTheory.WeilLocality.schr_trans]`. Conclude with `h`.
+
+Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction (Fin a × Fin (a + a')) v`. Introduce `φ hφ`. Use `⟨fun t => (R 0)⁻¹ * T (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) φ R) (fun i => GlobalTheory.LatVac.liftV v (t i)), ?_, ?_⟩` and prove the remaining obligations. Establish `h4` using `GlobalTheory.T.adelicSchwartz_restrict_finitePlace_mem_schwartzBruhat v _ (hkeep _ (hR φ hφ).2)`. Conclude with `(GlobalTheory.WeilM.SB _).smul_mem (R 0)⁻¹ h4`.
+
+Introduce `r hr`. Use function extensionality and compare the values at `y`. Use `set u : AF F := 1 - GlobalTheory.LatVac.liftV v 1 with hudef`. Establish `hu : evFin F v u = 0` using `by simp [hudef, GlobalTheory.LatVac.evFin_liftV]`. Use `set p : Fin a × Fin (a + a') → AF F := fun i => GlobalTheory.LatVac.liftV v (evFin F v (y i)) with hpdef`.
+
+Establish `hyp : y + u • (-y) = p`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, hudef, hpdef]`. Rewrite using `[← GlobalTheory.WeilLocality.liftV_one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpat : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) p`. Introduce `u' hu'`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u' hu'`. Use `set Φ₀ := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) φ R with hΦ₀`.
+
+Use `set Φ₁ := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) φ r with hΦ₁`. Use `set Φ₂ : (Fin a × Fin (a + a') → AF F) → ℂ := (r y / R 0) • (fun w => Φ₀ (w + u • (-y))) with hΦ₂`. Establish `hm₀ : Φ₀ ∈ GlobalTheory.WeilM.schA F _` using `(hR φ hφ).2`. Establish `hm₂ : Φ₂ ∈ GlobalTheory.WeilM.schA F _` using `Submodule.smul_mem _ _ (GlobalTheory.T.adelicSchwartzSpace_translate_mem_of_mem _ _ hm₀)`. Establish `hfz : ∀ z, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z → (Φ₁ - Φ₂) (y + z) = 0`.
+
+Introduce `z hz`. Establish `e1 : r (y + z) = r y` using `hr.1 y z hz`. Establish `e2 : y + z + u • (-y) = p + z` using `by rw [← hyp]; abel`. Establish `hpz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) (p + z)` using `fun u' hu' => by`. Rewrite using `[smul_add, hpat u' hu', hz u' hu', add_zero]`.
+
+Establish `e3 : R (p + z) = R 0` using `by simpa using (hR φ hφ).1 0 (p + z) hpz`. Establish `e4 : (fun i => evFin F v ((y + z + u • (-y)) i)) = fun i => evFin F v ((y + z) i)`. Use function extensionality and compare the values at `i`. Simplify using `[hu]`. Simplify using `only [Pi.sub_apply, hΦ₂, hΦ₁, hΦ₀, Pi.smul_apply, smul_eq_mul, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens]`.
+
+Rewrite using `[e4, e2, e3, e1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `hfib (Φ₁ - Φ₂) (sub_mem hr.2 hm₂) y hfz`. Rewrite `h0` using `[map_sub, Pi.sub_apply, sub_eq_zero]`.
+
+Establish `h2 : T Φ₂ y = (r y / R 0) * T Φ₀ p`. Rewrite using `[hΦ₂, map_smul, htr u hu (-y) Φ₀ hm₀, Pi.smul_apply, smul_eq_mul, hyp]`. Rewrite using `[h0, h2]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, hpdef]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem locality_V {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (Bs : Base F E) (Γ : Geo σ a a') (X : Chars F E) (om : Rep σ Γ.V Γ.W) (om' : Rep σ Γ.V' Γ.W)
     (hTr : IsTriple Bs Γ X om om') (v : Pl F) (x : UA σ Γ.V.J) (hx : x ∈ UAt σ Γ.V (evFin F v)) :
@@ -96,6 +126,11 @@ theorem locality_V {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
     simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, hpdef]
     field_simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Establish `hz : At (evFin F v) (fun i => GlobalTheory.LatVac.liftV v (t i) : κ → AF F)`. Introduce `u' hu'`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u' hu'`.
+
+Establish `e` using `congrFun h (fun i => GlobalTheory.LatVac.liftV v (t i))`. Establish `hR` using `hRi 0 _ hz`. Rewrite `hR` using `[zero_add]`. Simplify using `only [tens, GlobalTheory.LatVac.evFin_liftV, hR] at e`. Conclude with `mul_right_cancel₀ hR0 e`.
+-/
 theorem read_off {F : Type} [Field F] [NumberField F] {κ : Type} (v : Pl F) (R : (κ → AF F) → ℂ) (hR0 : R 0 ≠ 0)
     (hRi : ∀ x z, At (evFin F v) z → R (x + z) = R x) (φ₁ φ₂ : (κ → Fv F v) → ℂ)
     (h : tens (evFin F v) φ₁ R = tens (evFin F v) φ₂ R) : φ₁ = φ₂ := by
@@ -110,12 +145,18 @@ theorem read_off {F : Type} [Field F] [NumberField F] {κ : Type} (v : Pl F) (R 
   simp only [tens, GlobalTheory.LatVac.evFin_liftV, hR] at e
   exact mul_right_cancel₀ hR0 e
 
+/- English proof (translation)
+Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction κ v`. Conclude with `read_off v R hR0 (hR φ hφ).1 φ₁ φ₂ ((h1 R (hR φ hφ)).symm.trans (h2 R (hR φ hφ)))`.
+-/
 theorem acts_unique {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F)
     (T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ) {φ : (κ → Fv F v) → ℂ} (hφ : φ ∈ GlobalTheory.WeilM.SB (κ → Fv F v))
     {φ₁ φ₂ : (κ → Fv F v) → ℂ} (h1 : Acts (evFin F v) T φ φ₁) (h2 : Acts (evFin F v) T φ φ₂) : φ₁ = φ₂ := by
   obtain ⟨R, hR0, hR⟩ := GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction κ v
   exact read_off v R hR0 (hR φ hφ).1 φ₁ φ₂ ((h1 R (hR φ hφ)).symm.trans (h2 R (hR φ hφ)))
 
+/- English proof (translation)
+Introduce `r hr`. Establish `e1` using `h1 r hr`. Establish `hr1 : Rest (evFin F v) φ₁ r` using `⟨hr.1, e1 ▸ hT₁ _ hr.2⟩`. Rewrite using `[Module.End.mul_apply, e1, h2 r hr1]`.
+-/
 theorem acts_comp {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F)
     (T₁ T₂ : Module.End ℂ ((κ → AF F) → ℂ)) (hT₁ : ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, T₁ Φ ∈ GlobalTheory.WeilM.schA F κ)
     {φ φ₁ φ₂ : (κ → Fv F v) → ℂ} (h1 : Acts (evFin F v) T₁ φ φ₁) (h2 : Acts (evFin F v) T₂ φ₁ φ₂) :
@@ -125,6 +166,33 @@ theorem acts_comp {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] 
   have hr1 : Rest (evFin F v) φ₁ r := ⟨hr.1, e1 ▸ hT₁ _ hr.2⟩
   rw [Module.End.mul_apply, e1, h2 r hr1]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v Γ _ j hj`. Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil`. Establish `hkeep : ∀ g, ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a')), om g Φ ∈ GlobalTheory.WeilM.schA F _` using `fun g Φ hΦ => hW.pres g Φ hΦ`. Establish `hsplit : ∀ g, om (j g) = om ((j g).1, 1) * om (1, (j g).2)`. Introduce `g`.
+
+Rewrite using `[← map_mul]`. Use `congr 1`. Simplify using `[Prod.mk_mul_mk]`. Establish `hex : ∀ g (φ : SB (Fin a × Fin (a + a') → Fv F v)), ∃ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (j g)) (φ : (Fin a × Fin (a + a') → Fv F v) → ℂ) φ₁`. Introduce `g φ`.
+
+Take `⟨φ₁, h₁, a₁⟩` from `GlobalTheory.T.weilRepresentationLocality_unitaryGroupW_pairVW F E σ B a a' G X om om' hTr v (j g).2 (hj g).2 φ φ.2`. Take `⟨φ₂, h₂, a₂⟩` from `locality_V B G X om om' hTr v (j g).1 (hj g).1 φ₁ h₁`. Use `⟨φ₂, h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit g]`. Conclude with `acts_comp v _ _ (hkeep _) a₁ a₂`.
+
+Use `choose S hS hA using hex`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction (Fin a × Fin (a + a')) v`. Establish `hRi` using `(hR 0 (Submodule.zero_mem _)).1`. Establish `hadd : ∀ g (φ φ' : SB (Fin a × Fin (a + a') → Fv F v)), S g (φ + φ') = S g φ + S g φ'`. Introduce `g φ φ'`.
+
+Apply `read_off v R hR0 hRi` to reduce the goal to its premises. Establish `e1` using `hA g (φ + φ') R (hR _ (φ + φ').2)`. Establish `e2` using `hA g φ R (hR _ φ.2)`. Establish `e3` using `hA g φ' R (hR _ φ'.2)`. Establish `t1 : ∀ ψ₁ ψ₂ : (Fin a × Fin (a + a') → Fv F v) → ℂ, tens (evFin F v) (ψ₁ + ψ₂) R = tens (evFin F v) ψ₁ R + tens (evFin F v) ψ₂ R`.
+
+Introduce `ψ₁ ψ₂`. Use function extensionality and compare the values at `x`. Simplify using `[tens, add_mul]`. Rewrite using `[← e1, Submodule.coe_add, t1, map_add, e2, e3, ← t1]`. Establish `hsmul : ∀ g (c : ℂ) (φ : SB (Fin a × Fin (a + a') → Fv F v)), S g (c • φ) = c • S g φ`.
+
+Introduce `g c φ`. Apply `read_off v R hR0 hRi` to reduce the goal to its premises. Establish `e1` using `hA g (c • φ) R (hR _ (c • φ).2)`. Establish `e2` using `hA g φ R (hR _ φ.2)`. Establish `t2 : ∀ ψ : (Fin a × Fin (a + a') → Fv F v) → ℂ, tens (evFin F v) (c • ψ) R = c • tens (evFin F v) ψ R`.
+
+Introduce `ψ`. Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`. Rewrite using `[← e1, Submodule.coe_smul, t2, map_smul, e2, ← t2]`. Set `ωl : Γ → Module.End ℂ (SB (Fin a × Fin (a + a') → Fv F v))` to `fun g => { toFun := fun φ => ⟨S g φ, hS g φ⟩ map_add' := fun φ φ' => Subtype.ext (hadd g φ φ') map_smul' := fun c φ => Subtype.ext (hsmul g c φ) }`.
+
+Establish `hone : ∀ φ : SB (Fin a × Fin (a + a') → Fv F v), S 1 φ = φ`. Introduce `φ`. Use `acts_unique v _ φ.2 (hA 1 φ) ?_` and prove the remaining obligations. Introduce `r hr`. Rewrite using `[map_one, map_one]`.
+
+Both sides reduce to the same expression. Establish `hmul : ∀ g h (φ : SB (Fin a × Fin (a + a') → Fv F v)), S (g * h) φ = S g ⟨S h φ, hS h φ⟩`. Introduce `g h φ`. Use `acts_unique v _ φ.2 (hA (g * h) φ) ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`.
+
+Conclude with `acts_comp v _ _ (hkeep _) (hA h φ) (hA g ⟨S h φ, hS h φ⟩)`. Use `⟨{ toFun := ωl, map_one' := ?_, map_mul' := ?_ }, ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.ext fun φ => Subtype.ext (hone φ)`. Introduce `g h`. Conclude with `LinearMap.ext fun φ => Subtype.ext (hmul g h φ)`.
+
+Introduce `g φ φ₁`. Prove the components needed by the constructor for the conclusion. Introduce `hφ₁`. Conclude with `acts_unique v _ φ.2 hφ₁ (hA g φ)`. Introduce and unpack `rfl`.
+
+Conclude with `hA g φ`.
+-/
 theorem local_ops : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (Γ : Type) [Group Γ] (j : Γ →* UA σ G.V.J × UA σ G.W.J),

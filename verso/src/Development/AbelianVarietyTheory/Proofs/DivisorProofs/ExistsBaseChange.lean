@@ -14,6 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ConjForms
 
+/- English proof (translation)
+Use `choose y hy using hχ`. Establish `h0 : ∀ k, σ (y k) ≠ 0` using `fun k h => by`. Establish `h1` using `hy k`. Rewrite `h1` using `[(map_eq_zero σ).1 h, map_zero]`. Conclude with `(χ k).ne_zero h1.symm`.
+
+Establish `hm : ∀ k k', y (k * k') = y k * y k'` using `fun k k' => σ₀.injective (by`. Rewrite using `[map_mul, hy, hy, hy, map_mul, Units.val_mul])`. Use `⟨MonoidHom.mk' (fun k => Units.mk0 _ (h0 k)) fun k k' => Units.ext ?_, fun k => ⟨y k, hy k, rfl⟩⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, Units.val_mk0, hm, map_mul]`.
+-/
 theorem exists_conjChar {J K : Type} [Group J] [Field K] (σ₀ σ : K →+* ℂ) (χ : J →* ℂˣ)
     (hχ : ∀ k, ∃ y, σ₀ y = ((χ k : ℂˣ) : ℂ)) :
     ∃ χ' : J →* ℂˣ, ∀ k, ∃ y, σ₀ y = ((χ k : ℂˣ) : ℂ) ∧ σ y = ((χ' k : ℂˣ) : ℂ) := by
@@ -27,6 +32,21 @@ theorem exists_conjChar {J K : Type} [Group J] [Field K] (σ₀ σ : K →+* ℂ
   refine ⟨MonoidHom.mk' (fun k => Units.mk0 _ (h0 k)) fun k k' => Units.ext ?_, fun k => ⟨y k, hy k, rfl⟩⟩
   simp only [Units.val_mul, Units.val_mk0, hm, map_mul]
 
+/- English proof (translation)
+Take `⟨χ', hχ'⟩` from `exists_conjChar σ₀ σ χ hχ`. Take `⟨H, hH⟩` from `GlobalTheory.AdFormsModel.exists_hmod_adForms G Γ W' ι ρ' J χ' S.Cl P.y P.reps fun c => Finite.of_equiv _ (P.stabI c).toEquiv`. Establish `hinj : Function.Injective c₀`. Introduce `v v' h`. Take `⟨x, rfl⟩` from `e.surjective v`.
+
+Take `⟨x', rfl⟩` from `e.surjective v'`. Rewrite `h` using `[← he, ← he]`. Rewrite using `[GlobalTheory.PresBasic.coef_injective P h]`. Establish `hv : ∀ (x : S.Forms) h, ∃ v, P.extL x h = c₀ v`. Introduce `x h`.
+
+Take `⟨y, hy, -⟩` from `hχ' (P.decK h)`. Take `⟨T, hT, -⟩` from `hact (P.decG h)`. Use `⟨y • T (e ((x : S.Cl → S.V) (P.decC h))), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, hy, hT, ← he]`. Both sides reduce to the same expression.
+
+Use `choose v hv using hv`. Take `⟨j, hj⟩` from `GlobalTheory.HilbertModel.exists_lift_fun σ hH (fun x h => c₁ (v x h)) (fun a b => by`. Use function extensionality and compare the values at `h`. Establish `: v (a + b) h = v a h + v b h` using `hinj (by rw [map_add, ← hv, ← hv, ← hv, map_add]; rfl)`. Rewrite using `[this, map_add]`.
+
+Use the proof step `rfl)`. Use the proof step `(fun c a => by`. Use function extensionality and compare the values at `h`. Establish `: v (c • a) h = c • v a h` using `hinj (by rw [map_smulₛₗ, ← hv, ← hv, map_smulₛₗ]; rfl)`. Rewrite using `[this, map_smulₛₗ]`.
+
+Use the proof step `rfl)`. Use the proof step `(fun a γ h k => by`. Take `⟨y, hy, hy'⟩` from `hχ' k`. Take `⟨T, hT, hT'⟩` from `hact γ`. Establish `: v a (ι γ * h * k) = y • T (v a h)` using `hinj (by`.
+
+Rewrite using `[map_smulₛₗ, hy, hT, ← hv, ← hv]`. Conclude with `GlobalTheory.PresBasic.extMem P a γ h k)`. Use `show c₁ (v a (ι γ * h * k)) = _`. Rewrite using `[this, map_smulₛₗ, hy', hT'])`. Conclude with `⟨H, j, ⟨χ', hχ', hH⟩, fun x h => ⟨v x h, hv x h, congrFun (hj x) h⟩⟩`.
+-/
 theorem exists_baseChange {G Γ W W' K M : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     [NormedAddCommGroup W'] [InnerProductSpace ℂ W'] [FiniteDimensional ℂ W'] [Field K] [NumberField K] [StarRing K]
     [AddCommGroup M] [Module K M] {ι : Γ →* G} {S : CSD K} {σ₀ : K →+* ℂ} (σ : K →+* ℂ) {ρ : Γ →* Module.End ℂ W}
@@ -74,6 +94,11 @@ theorem exists_baseChange {G Γ W W' K M : Type} [Group G] [Group Γ] [NormedAdd
       rw [this, map_smulₛₗ, hy', hT'])
   exact ⟨H, j, ⟨χ', hχ', hH⟩, fun x h => ⟨v x h, hv x h, congrFun (hj x) h⟩⟩
 
+/- English proof (translation)
+Use `haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩`. Take `⟨g, hg⟩` from `Matrix.GeneralLinearGroup.det_surjective (n := Fin r) (R := k a) u`. Establish `h1` using `h (Pi.mulSingle a g)`. Rewrite `h1` using `[Finset.prod_eq_single a]`. Rewrite `h1` using `[Pi.mulSingle_eq_same, hg]`. Then use the resulting hypothesis.
+
+Introduce `b _ hb`. Simplify using `[Pi.mulSingle_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+-/
 theorem factor_mem {I : Type} [Fintype I] {k : I → Type} [∀ a, CommRing (k a)] {r : ℕ} (hr : 0 < r) (S : Subfield ℂ)
     (c : ∀ a, (k a)ˣ →* ℂˣ)
     (h : ∀ g : ∀ a, GL (Fin r) (k a), (∏ a, ((c a (Matrix.GeneralLinearGroup.det (g a)) : ℂˣ) : ℂ)) ∈ S)
@@ -88,6 +113,11 @@ theorem factor_mem {I : Type} [Fintype I] {k : I → Type} [∀ a, CommRing (k a
     simp [Pi.mulSingle_eq_of_ne hb]
   · simp
 
+/- English proof (translation)
+Establish `h1 : ext1 (Lev.flag1L L).P.H (Lev.flag1L L).P.chi (rTup β (Lev.flag1L L) x) = 1` using `Lev.subgroupCharExtension_one_apply _ _`. Establish `h2 : (Lev.flag1L L).Q = ∅` using `hq`. Unfold `levFn`. Rewrite using `[h1, h2, one_mul, Finset.prod_empty, mul_one, Units.coe_prod]`. Use `prod_mem fun PP hP => ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.coe_prod]`. Conclude with `prod_mem fun c _ => hg PP hP _ _`.
+-/
 theorem levFn_mem {D : D7} {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (L : LevDat D.host.E ℂ n) (S : Subfield ℂ)
     (hg : ∀ PP ∈ L.Pg, ∀ c u, ((L.cg c PP u : ℂˣ) : ℂ) ∈ S) (hq : L.Q = ∅) (x : GL (Fin n) (Lev.EAf D)) :
     ((levFn β (Lev.flag1L L) x : ℂˣ) : ℂ) ∈ S := by
@@ -102,12 +132,20 @@ theorem levFn_mem {D : D7} {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (L : LevDat D
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `γ`. Unfold `GQ HFinIn at hγ`. Take `⟨g, -, hg⟩` from `hγ`. Conclude with `⟨g, hg.symm⟩`.
+-/
 theorem exists_ratMat (V : HSp D) (γ : GQ V) : ∃ γE, Bridge.IsRatMat V γ γE := by
   obtain ⟨γ, hγ⟩ := γ
   unfold GQ HFinIn at hγ
   obtain ⟨g, -, hg⟩ := hγ
   exact ⟨g, hg.symm⟩
 
+/- English proof (translation)
+Establish `hr : 0 < D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Use `factor_mem (I := R.Pg) (k := fun PP => kP PP.1) hr _ (fun PP => R.chi ((i : ℕ) + 1) PP.1) (fun g => ?_) ⟨PP, hP⟩ u` and prove the remaining obligations.
+
+Establish `h` using `hW i (R.eG.symm g)`. Rewrite `h` using `[MulEquiv.apply_symm_apply]`. Conclude with `⟨_, h⟩`.
+-/
 theorem chi_mem (R : RealDat D A Ks) (hW : R.grp_chiW) (i : Fin D.R.m) (PP : Pl D.host.E) (hP : PP ∈ R.Pg) (u : (kP PP)ˣ) :
     ((R.chi ((i : ℕ) + 1) PP u : ℂˣ) : ℂ) ∈ D.what₂.embLL.fieldRange := by
   have hr : 0 < D.R.r := by
@@ -118,6 +156,11 @@ theorem chi_mem (R : RealDat D A Ks) (hW : R.grp_chiW) (i : Fin D.R.m) (PP : Pl 
   rw [MulEquiv.apply_symm_apply] at h
   exact ⟨_, h⟩
 
+/- English proof (translation)
+Establish `hQ : R.Q A.μ0 = ∅`. Use `Finset.eq_empty_of_forall_notMem fun PP hP => ?_` and prove the remaining obligations. Use `(hL.Q_ram A.μ0 PP).2 (Or.inl hP) ?_` and prove the remaining obligations. Rewrite using `[hL.xi_base]`. Introduce `x _`.
+
+Both sides reduce to the same expression. Use `levFn_mem (R.βV i) (R.datVt i A.μ0) D.what₂.embLL.fieldRange (fun PP hP c u => ?_) hQ _` and prove the remaining obligations. Use `show (((R.chi ((i : ℕ) + 1) PP u)⁻¹ : ℂˣ) : ℂ) ∈ _`. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `inv_mem (chi_mem R hW i PP hP u)`.
+-/
 theorem levChar_mem (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (hW : R.grp_chiW) (i : Fin D.R.m) (k : levJ R i A.μ0) :
     ∃ y, D.what₂.embLL y = (((levEnv (Vc D i) (R.βV i) (R.datVt i A.μ0)).χ k : ℂˣ) : ℂ) := by
   have hQ : R.Q A.μ0 = ∅ := by
@@ -133,6 +176,11 @@ theorem levChar_mem (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) (hW : R.grp_c
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC i gramR c0R c0L hT σ c c₁ hc`. Establish `h1` using `hT.coefL i A.μ0`. Take `⟨e, -, he, -⟩` from `h1`. Establish `hact : ∀ γ : GQ (Vc D i), ∃ T : VsV D i D.what₂.LL → VsV D i D.what₂.LL, (∀ v, c0L i (T v) = (R.cV i).coef.ρ γ (c0L i v)) ∧ ∀ v, c₁ (T v) = c.coef.ρ γ (c₁ v)` using `fun γ => (exists_ratMat (Vc D i) γ).elim fun γE hγ => ⟨rhoVr (labLL D) (lamV D i) γE, (hT.mapL i).1 γ γE hγ, hc.act γ γE hγ⟩`. Establish `h2` using `exists_baseChange (W' := c.W) σ c.coef.ρ (R.B.L i A.μ0).pres (c0L i) c₁ e he hact (levChar_mem R hC.lev hC.grp.chiW i)`.
+
+Take `⟨H, j, hm, hb⟩` from `h2`. Use `⟨H, j, hc.coef, hc.act, hc.indep, hc.span, hc.pair, hm, fun x h => ?_⟩` and prove the remaining obligations. Conclude with `(hb x h).imp fun v hv => ⟨(congrFun (hC.models.jV i A.μ0 x) h).trans hv.1, hv.2⟩`.
+-/
 theorem exists_conjForms : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), ∀ gramR c0R c0L, Comparison₂ R gramR c0R c0L → ∀ (σ : D.what₂.LL →+* ℂ) (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W), CoefAt i σ c c₁ → ∃ (H : HMod (Bridge.Gf (Vc D i) → c.W)) (j : A.fam.amb.FL i A.μ0 →ₛₗ[σ] H.H), IsConjForms R i σ (c0L i) c c₁ H j := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i gramR c0R c0L hT σ c c₁ hc
   have h1 := hT.coefL i A.μ0

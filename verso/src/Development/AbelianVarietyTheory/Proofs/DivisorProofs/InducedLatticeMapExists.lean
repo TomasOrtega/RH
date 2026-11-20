@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.GeoLevel.ModHalf
 
+/- English proof (translation)
+Establish `h1 : (1 : R) ∈ I ⊔ J` using `by rw [h]; trivial`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 h1`. Establish `: a = x • a + y • a` using `by rw [← add_smul, hxy, one_smul]`. Rewrite using `[this, map_add, map_smul]`. Conclude with `add_mem (Submodule.smul_mem_smul hx trivial) (hf _ (Submodule.smul_mem_smul hy trivial))`.
+-/
 theorem mem_of_coprime {R A : Type} [CommRing R] [AddCommGroup A] [Module R A] {I J : Ideal R} (h : I ⊔ J = ⊤)
     (f : A →ₗ[R] A) (hf : ∀ a ∈ J • (⊤ : Submodule R A), f a ∈ I • (⊤ : Submodule R A)) (a : A) :
     f a ∈ I • (⊤ : Submodule R A) := by
@@ -23,12 +26,20 @@ theorem mem_of_coprime {R A : Type} [CommRing R] [AddCommGroup A] [Module R A] {
   rw [this, map_add, map_smul]
   exact add_mem (Submodule.smul_mem_smul hx trivial) (hf _ (Submodule.smul_mem_smul hy trivial))
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on ha (fun r hr x _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul hr trivial`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+-/
 theorem map_mem_smul_top {R A : Type} [CommRing R] [AddCommGroup A] [Module R A] {J : Ideal R}
     (f : A →ₗ[R] A) {a : A} (ha : a ∈ J • (⊤ : Submodule R A)) : f a ∈ J • (⊤ : Submodule R A) := by
   refine Submodule.smul_induction_on ha (fun r hr x _ => ?_) (fun x y hx hy => ?_)
   · rw [map_smul]; exact Submodule.smul_mem_smul hr trivial
   · rw [map_add]; exact add_mem hx hy
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `hu`. Rewrite `e` using `[← map_nsmul, ← map_sub]`. Establish `e' : x - y = (N : R) • v` using `by rw [Nat.cast_smul_eq_nsmul]; exact hι e`. Rewrite using `[e']`. Use `Submodule.smul_mem_smul ?_ trivial` and prove the remaining obligations.
+
+Establish `: (N : R) ∈ I * J`. Rewrite using `[h]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `(Ideal.mul_le_inf this).1`.
+-/
 theorem mem_of_range {R A B : Type} [CommRing R] [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B]
     {I J : Ideal R} {N : ℕ} (h : I * J = Ideal.span {(N : R)}) (ι : A →ₗ[R] B) (hι : Function.Injective ι)
     {x y : A} {u : B} (hu : u ∈ LinearMap.range ι) (e : ι x - ι y = N • u) : x - y ∈ I • (⊤ : Submodule R A) := by
@@ -43,6 +54,9 @@ theorem mem_of_range {R A B : Type} [CommRing R] [AddCommGroup A] [Module R A] [
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨u, hu, e⟩` from `GlobalTheory.MarkUniq.exists_of_finVec_eq_nsmul V 1 l.M (by have := l.three_le; omega) (ι x - ι y) w hw ((GlobalTheory.MarkUniq.finVec_sub V (ι x) (ι y)).trans h)`. Conclude with `mem_of_range l.prod ι hι.1 (hι.2.ge hu) e`.
+-/
 theorem mem_of_finVec {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (l : Level H) (V : HSp D)
     {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La] (ι : La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
     (hι : LatEmb V ι) (x y : La) (w : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) (hw : w ∈ latGHat V 1)
@@ -51,6 +65,11 @@ theorem mem_of_finVec {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor
     (ι x - ι y) w hw ((GlobalTheory.MarkUniq.finVec_sub V (ι x) (ι y)).trans h)
   exact mem_of_range l.prod ι hι.1 (hι.2.ge hu) e
 
+/- English proof (translation)
+Take `⟨a1, b1, c1⟩` from `h1`. Take `⟨a2, b2, c2⟩` from `h2`. Use `⟨mul_mem a1 a2, by rw [map_mul]; exact mul_mem b1 b2, fun w => ?_⟩` and prove the remaining obligations. Establish `: (⟨finR V hr (κ * κ'), by rw [map_mul]; exact mul_mem b1 b2⟩ : Formalism.L2.DIV.St β) = ⟨finR V hr κ, b1⟩ * ⟨finR V hr κ', b2⟩` using `Subtype.ext (map_mul _ _ _)`. Rewrite using `[this, map_mul, c1, c2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isLift_mul {D : D7} {V : HSp D} {r : ℕ} {hr : V.rank = r} {β : GL (Fin r) (EAf D)}
     {Pg : Finset (Formalism.L2.DIV.Pl D.host.E)} {g h : Formalism.L2.DIV.G0 Pg r} {κ κ' : GA D V}
     (h1 : IsLift V hr β Pg g κ) (h2 : IsLift V hr β Pg h κ') : IsLift V hr β Pg (g * h) (κ * κ') := by
@@ -61,9 +80,15 @@ theorem isLift_mul {D : D7} {V : HSp D} {r : ℕ} {hr : V.rank = r} {β : GL (Fi
       ⟨finR V hr κ, b1⟩ * ⟨finR V hr κ', b2⟩ := Subtype.ext (map_mul _ _ _)
   rw [this, map_mul, c1, c2]; rfl
 
+/- English proof (translation)
+Rewrite using `[smul_neg, ← e, neg_sub]`.
+-/
 theorem flip_sub {M : Type} [AddCommGroup M] (N : ℕ) {p q w : M} (e : p - q = N • w) : q - p = N • (-w) := by
   rw [smul_neg, ← e, neg_sub]
 
+/- English proof (translation)
+Rewrite using `[smul_sub, smul_add, ← map_nsmul, ← e1, ← e2, ← e3, map_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cocycle {M : Type} [AddCommGroup M] (k : M →+ M) (N : ℕ) {p q s t w₁ w₂ w₃ : M}
     (e1 : p - q = N • w₁) (e2 : k q - s = N • w₂) (e3 : k p - t = N • w₃) :
     t - s = N • (k w₁ + w₂ - w₃) := by
@@ -71,6 +96,13 @@ theorem cocycle {M : Type} [AddCommGroup M] (k : M →+ M) (N : ℕ) {p q s t w�
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D H l V r hr β Pg hβ hPg Dw ι₀ hι γ hγ`. Use `⟨fun a => ?_, fun g h a => ?_⟩` and prove the remaining obligations. Use `mem_of_coprime l.coprime (γ 1 - LinearMap.id) (fun a ha => ?_) a` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `hγ 1 1 (isLift_one V hr β Pg) a ha`. Rewrite `e` using `[map_one, Units.val_one, Matrix.one_mulVec]`.
+
+Conclude with `mem_of_finVec l V _ hι (γ 1 a) a (-w) (neg_mem hw) (flip_sub l.M e)`. Use `mem_of_coprime l.coprime (γ (g * h) - γ g ∘ₗ γ h) (fun a ha => ?_) a` and prove the remaining obligations. Take `⟨κ, hκ⟩` from `GlobalTheory.T.level_group_lift_exists D H l V r hr β Pg hβ hPg g`. Take `⟨κ', hκ'⟩` from `GlobalTheory.T.level_group_lift_exists D H l V r hr β Pg hβ hPg h`. Take `⟨w₁, hw₁, e₁⟩` from `hγ h κ' hκ' a ha`.
+
+Take `⟨w₂, hw₂, e₂⟩` from `hγ g κ hκ (γ h a) (map_mem_smul_top (γ h) ha)`. Take `⟨w₃, hw₃, e₃⟩` from `hγ (g * h) (κ * κ') (isLift_mul hκ hκ') a ha`. Rewrite `e₃` using `[map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]`. Establish `hk` using `(GlobalTheory.Member.AALev.congruences_agree D V κ).1.2 ((GlobalTheory.T.level_lift_finite_congruence D H l V r hr β Pg hβ hPg).1 g κ hκ) w₁ hw₁`. Conclude with `mem_of_finVec l V _ hι (γ (g * h) a) (γ g (γ h a)) _ (sub_mem (add_mem hk hw₂) hw₃) (cocycle (Matrix.mulVecLin (finHom V κ).1).toAddMonoidHom l.M e₁ e₂ e₃)`.
+-/
 theorem action_mod_half : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (l : Level H) (V : HSp D) (r : ℕ) (hr : V.rank = r) (β : GL (Fin r) (EAf D)) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)), IsLatBasis V hr β → (∀ w, w ∈ Pg ↔ l.Mb ≤ w.asIdeal) → ∀ (Dw : Datum H) (ι₀ : Dw.La →ₗ[𝓞 D.host.E] (Fin r → D.host.E)), LatEmb V (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ ι₀) → ∀ γ : Formalism.L2.DIV.G0 Pg r → Dw.La →ₗ[𝓞 D.host.E] Dw.La, (∀ g, Induces Dw l V hr ι₀ β Pg g (γ g)) → (∀ a, γ 1 a - a ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)) ∧ ∀ g h a, γ (g * h) a - γ g (γ h a) ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La) := by
   intro D H l V r hr β Pg hβ hPg Dw ι₀ hι γ hγ
   refine ⟨fun a => ?_, fun g h a => ?_⟩

@@ -52,6 +52,11 @@ structure IsAutForm (φ : Sm E a) : Prop where
   zfin : FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a))
   growth : ∀ g, ∃ (C : ℝ) (N : ℕ), ∀ y, ‖φ.1 (g * infGL E a y)‖ ≤ C * height y ^ N
 
+/- English proof (translation)
+Establish `h : nilM (x + y) = nilM x + nilM y`. Apply the tactic sequence `ext i j; simp only [nilM, Matrix.of_apply, Matrix.add_apply]; split_ifs <;> simp`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `1 + nilM (x + y) = (1 + nilM x) * (1 + nilM y)`. Rewrite using `[h]`.
+
+Simplify using `only [mul_add, add_mul, one_mul, mul_one, nilM_mul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem unip_add {R : Type} [CommRing R] {r : ℕ} (x y : BlockIx a r → R) : unip (x + y) = unip x * unip y := by
   have h : nilM (x + y) = nilM x + nilM y := by
     ext i j; simp only [nilM, Matrix.of_apply, Matrix.add_apply]; split_ifs <;> simp
@@ -59,6 +64,11 @@ theorem unip_add {R : Type} [CommRing R] {r : ℕ} (x y : BlockIx a r → R) : u
   change 1 + nilM (x + y) = (1 + nilM x) * (1 + nilM y)
   rw [h]; simp only [mul_add, add_mul, one_mul, mul_one, nilM_mul]; abel
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(1 + nilM x).det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `only [nilM, Matrix.add_apply, Matrix.one_apply_eq, Matrix.of_apply]`.
+
+Rewrite using `[dif_neg (fun h => by omega), add_zero]`. Introduce `i j hij`. Establish `hij' : (j : ℕ) < i` using `hij`. Simplify using `only [nilM, Matrix.add_apply, Matrix.of_apply]`. Rewrite using `[dif_neg (fun h => by omega), add_zero, Matrix.one_apply_ne (fun h => by rw [h] at hij'; omega)]`.
+-/
 theorem det_unip {R : Type} [CommRing R] {r : ℕ} (x : BlockIx a r → R) : GeneralLinearGroup.det (unip x) = 1 := by
   apply Units.ext
   change (1 + nilM x).det = 1
@@ -76,6 +86,9 @@ def ratN (E : Type) [Field E] [NumberField E] (a r : ℕ) : AddSubgroup (BlockIx
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 + nilM fun p => algebraMap E (Ad E) (x p) : Matrix (Fin a) (Fin a) (Ad E)) i j = algebraMap E (Ad E) ((1 + nilM x : Matrix (Fin a) (Fin a) E) i j)`. Simplify using `only [nilM, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply, map_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem unip_algebraMap {r : ℕ} (x : BlockIx a r → E) :
     unip (fun p => algebraMap E (Ad E) (x p)) = ratGL E a (unip x) := by
   ext i j
@@ -101,6 +114,11 @@ def opAdd (χ : HChar E) : Op E a → ℂ
   | .cpt _ => 0
   | .lie X => dchi χ (Matrix.of X).trace
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `fin k => simp only [opAdd, zero_smul, add_zero]`. Conclude with `rt_mulChi χ (finGL E a k) φ`. Consider the case `cpt k => simp only [opAdd, zero_smul, add_zero]`. Conclude with `rt_mulChi χ (infGL E a (Unitary.toUnits k)) φ`.
+
+Consider the case `lie X => simp only [opMul, Units.val_one, one_smul]`. Conclude with `lie_mulChi χ X φ`.
+-/
 theorem act_mulChi (χ : HChar E) (o : Op E a) (φ : Sm E a) :
     act o (mulChi a χ φ) = mulChi a χ (((opMul χ o : ℂˣ) : ℂ) • act o φ + opAdd χ o • φ) := by
   cases o with
@@ -108,6 +126,9 @@ theorem act_mulChi (χ : HChar E) (o : Op E a) (φ : Sm E a) :
   | cpt k => simp only [opAdd, zero_smul, add_zero]; exact rt_mulChi χ (infGL E a (Unitary.toUnits k)) φ
   | lie X => simp only [opMul, Units.val_one, one_smul]; exact lie_mulChi χ X φ
 
+/- English proof (translation)
+Establish `h` using `(isOpen_ker_finIdele E (χ.1.comp (finId E)) (χ.2.1.comp (continuous_finId E))).preimage (GeneralLinearGroup.continuous_det (n := Fin a))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `Iff.of_eq (congrArg (fun u => χ.1 u = 1) (det_finGL k))`.
+-/
 theorem isOpen_ker_chiDet (χ : HChar E) : IsOpen {k : GL (Fin a) (Af E) | chiDet a χ (finGL E a k) = 1} := by
   have h := (isOpen_ker_finIdele E (χ.1.comp (finId E)) (χ.2.1.comp (continuous_finId E))).preimage
     (GeneralLinearGroup.continuous_det (n := Fin a))
@@ -117,17 +138,28 @@ theorem isOpen_ker_chiDet (χ : HChar E) : IsOpen {k : GL (Fin a) (Af E) | chiDe
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Rewrite using `[← χ.2.2 (GeneralLinearGroup.det γ)]`. Conclude with `congrArg χ.1 (Units.ext (det_map _ γ))`.
+-/
 theorem chiDet_ratGL (χ : HChar E) (γ : GL (Fin a) E) : chiDet a χ (ratGL E a γ) = 1 := by
   rw [← χ.2.2 (GeneralLinearGroup.det γ)]
   exact congrArg χ.1 (Units.ext (det_map _ γ))
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Unfold `height`. Combine the linear relations using `[norm_nonneg (toL y.val), norm_nonneg (toL (y⁻¹).val)]`.
+-/
 theorem one_le_height (y : GL (Fin a) (Cinf E)) : 1 ≤ height y := by
   unfold height; linarith [norm_nonneg (toL y.val), norm_nonneg (toL (y⁻¹).val)]
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ (B ^ a) fun σ _ => ?_).trans_eq (by simp [Fintype.card_perm]))` and prove the remaining obligations. Establish `h : ‖∏ i, x (σ i) i‖ ≤ B ^ a`. Use `(Finset.norm_prod_le _ _).trans ((Finset.prod_le_prod (g := fun _ => B) (fun _ _ => norm_nonneg _) fun i _ => ?_).trans_eq (by simp))` and prove the remaining obligations. Conclude with `((norm_le_pi_norm (toL x (σ i)) i).trans (norm_le_pi_norm (toL x) (σ i))).trans hx`.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simpa [e] using h`.
+-/
 theorem norm_det_le (x : Matrix (Fin a) (Fin a) (Cinf E)) {B : ℝ} (hx : ‖toL x‖ ≤ B) :
     ‖x.det‖ ≤ a.factorial * B ^ a := by
   rw [Matrix.det_apply]
@@ -139,6 +171,11 @@ theorem norm_det_le (x : Matrix (Fin a) (Fin a) (Cinf E)) {B : ℝ} (hx : ‖toL
     exact ((norm_le_pi_norm (toL x (σ i)) i).trans (norm_le_pi_norm (toL x) (σ i))).trans hx
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> simpa [e] using h
 
+/- English proof (translation)
+Take `⟨C, N, -, h⟩` from `exists_bound _ (continuous_chiInf χ)`. Use `⟨C * a.factorial ^ N, a * N, fun y => ?_⟩` and prove the remaining obligations. Establish `h1` using `one_le_height y`. Establish `h2` using `h (GeneralLinearGroup.det y) (a.factorial * height y ^ a) (one_le_mul_of_one_le_of_one_le (by exact_mod_cast a.factorial_pos) (one_le_pow₀ h1)) (norm_det_le _ (by unfold height; linarith [norm_nonneg (toL (y⁻¹).val)])) (by rw [← map_inv]; exact norm_det_le _ (by unfold height; li …`. Rewrite using `[show chiDet a χ (infGL E a y) = chiInf χ (GeneralLinearGroup.det y) from congrArg χ.1 (det_infGL y)]`.
+
+Conclude with `h2.trans_eq (by rw [mul_pow, ← pow_mul, mul_assoc])`.
+-/
 theorem chiDet_growth (χ : HChar E) :
     ∃ (C : ℝ) (N : ℕ), ∀ y, ‖((chiDet a χ (infGL E a y) : ℂˣ) : ℂ)‖ ≤ C * height y ^ N := by
   obtain ⟨C, N, -, h⟩ := exists_bound _ (continuous_chiInf χ)
@@ -151,6 +188,13 @@ theorem chiDet_growth (χ : HChar E) :
   rw [show chiDet a χ (infGL E a y) = chiInf χ (GeneralLinearGroup.det y) from congrArg χ.1 (det_infGL y)]
   exact h2.trans_eq (by rw [mul_pow, ← pow_mul, mul_assoc])
 
+/- English proof (translation)
+Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨τ, u, rfl⟩` from `hx`. Conclude with `⟨_, Algebra.subset_adjoin ⟨τ, _, rfl⟩, cap_mulChi χ τ u⟩`. Consider the case `algebraMap c => exact ⟨_, Subalgebra.algebraMap_mem _ c, fun φ => by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨x', h1, h2⟩` from `hx`. Take `⟨y', h3, h4⟩` from `hy`. Conclude with `⟨x' + y', add_mem h1 h3, fun φ => by simp [h2, h4]⟩`. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨x', h1, h2⟩` from `hx`. Take `⟨y', h3, h4⟩` from `hy`. Conclude with `⟨x' * y', mul_mem h1 h3, fun φ => by simp [h2, h4]⟩`.
+-/
 theorem Zalg_mulChi (χ : HChar E) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     ∃ z' ∈ Zalg E a, ∀ φ, z (mulChi a χ φ) = mulChi a χ (z' φ) := by
   induction hz using Algebra.adjoin_induction with
@@ -167,6 +211,17 @@ theorem Zalg_mulChi (χ : HChar E) {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zal
     obtain ⟨y', h3, h4⟩ := hy
     exact ⟨x' * y', mul_mem h1 h3, fun φ => by simp [h2, h4]⟩
 
+/- English proof (translation)
+Simplify using `[h.left, chiDet_ratGL] level := isOpen_stab_of_mem_nhds _ _ <| Filter.mem_of_superset ((h.level.inter (isOpen_ker_chiDet χ)).mem_nhds ⟨by simp, by simp⟩) fun k hk => by`. Establish `h1 : rt E a (finGL E a k) φ = φ` using `hk.1`. Establish `h2 : chiDet a χ (finGL E a k) = 1` using `hk.2`. Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) _ = _`. Rewrite using `[rt_mulChi, h1, h2, Units.val_one, one_smul]`.
+
+Use `kfin := by`. Use `h.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E a k φ)).map (CuspRep.mulChi a χ).toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩), (rt_mulChi χ _ φ).symm⟩`.
+
+Use `zfin := by`. Use `h.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)).map (CuspRep.mulChi a χ).toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨z', h1, h2⟩` from `Zalg_mulChi χ hz`.
+
+Conclude with `⟨_, Submodule.subset_span ⟨z', h1, rfl⟩, (h2 φ).symm⟩`. Use `growth g := by`. Take `⟨C, N, h1⟩` from `h.growth g`. Take `⟨C', N', h2⟩` from `chiDet_growth (a := a) χ`. Use `⟨C * (‖((chiDet a χ g : ℂˣ) : ℂ)‖ * C'), N + N', fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mulChi_apply, map_mul, Units.val_mul, norm_mul, norm_mul]`. Use `(mul_le_mul (h1 y) (mul_le_mul_of_nonneg_left (h2 y) (norm_nonneg _)) (by positivity) ((norm_nonneg _).trans (h1 y))).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsAutForm.mulChi {φ : Sm E a} (h : IsAutForm φ) (χ : HChar E) : IsAutForm (mulChi a χ φ) where
   left γ g := by simp [h.left, chiDet_ratGL]
   level := isOpen_stab_of_mem_nhds _ _ <| Filter.mem_of_superset
@@ -197,6 +252,9 @@ theorem IsAutForm.mulChi {φ : Sm E a} (h : IsAutForm φ) (χ : HChar E) : IsAut
       ((norm_nonneg _).trans (h1 y))).trans_eq ?_
     ring
 
+/- English proof (translation)
+Use `⟨h.1.mulChi χ, fun r h0 h1 _ _ μ 𝓕 hμ hF g => ?_⟩` and prove the remaining obligations. Establish `e : ∀ x : BlockIx a r → Ad E, chiDet a χ (unip x * g) = chiDet a χ g` using `fun x => by`. Rewrite using `[map_mul, show chiDet a χ (unip x) = 1 from (congrArg χ.1 (det_unip x)).trans (map_one _), one_mul]`. Simplify using `only [mulChi_apply, e]`. Rewrite using `[integral_mul_const, h.2 r h0 h1 μ 𝓕 hμ hF g, zero_mul]`.
+-/
 theorem IsCuspForm.mulChi {φ : Sm E a} (h : IsCuspForm φ) (χ : HChar E) : IsCuspForm (mulChi a χ φ) := by
   refine ⟨h.1.mulChi χ, fun r h0 h1 _ _ μ 𝓕 hμ hF g => ?_⟩
   have e : ∀ x : BlockIx a r → Ad E, chiDet a χ (unip x * g) = chiDet a χ g := fun x => by
@@ -220,6 +278,9 @@ variable (π π' : CuspSub E a)
 
 def op (o : Op E a) : Module.End ℂ π.V := (act o).restrict (π.stable o)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem op_val (o : Op E a) (φ : π.V) : (π.op o φ).1 = act o φ.1 := rfl
 
 def Iso : Prop := ∃ T : π.V ≃ₗ[ℂ] π'.V, ∀ o φ, T (π.op o φ) = π'.op o (T φ)
@@ -251,22 +312,34 @@ def twist (χ : HChar E) : CuspSub E a where
 
 def toTwist (χ : HChar E) : π.V ≃ₗ[ℂ] (π.twist χ).V := (mulChi a χ).submoduleMap π.V
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (act_mulChi χ o φ.1)`.
+-/
 theorem op_toTwist (χ : HChar E) (o : Op E a) (φ : π.V) :
     (π.twist χ).op o (π.toTwist χ φ) = π.toTwist χ (((opMul χ o : ℂˣ) : ℂ) • π.op o φ + opAdd χ o • φ) :=
   Subtype.ext (act_mulChi χ o φ.1)
 
 variable {π π'} in
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `h`. Use `⟨((π.toTwist χ).symm.trans T).trans (π'.toTwist χ), fun o φ => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `(π.toTwist χ).surjective φ`. Simplify using `only [op_toTwist, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, map_add T, map_smul T, hT]`.
+-/
 theorem Iso.twist (h : Iso π π') (χ : HChar E) : Iso (π.twist χ) (π'.twist χ) := by
   obtain ⟨T, hT⟩ := h
   refine ⟨((π.toTwist χ).symm.trans T).trans (π'.toTwist χ), fun o φ => ?_⟩
   obtain ⟨φ, rfl⟩ := (π.toTwist χ).surjective φ
   simp only [op_toTwist, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, map_add T, map_smul T, hT]
 
+/- English proof (translation)
+The claim follows from `CuspSub.ext <| by ext φ exact ⟨fun ⟨ψ, h, e⟩ => e ▸ (mulChi_one ψ).symm ▸ h, fun h => ⟨φ, h, mulChi_one φ⟩⟩`.
+-/
 theorem twist_one : π.twist 1 = π := CuspSub.ext <| by
   ext φ
   exact ⟨fun ⟨ψ, h, e⟩ => e ▸ (mulChi_one ψ).symm ▸ h, fun h => ⟨φ, h, mulChi_one φ⟩⟩
 
+/- English proof (translation)
+The claim follows from `CuspSub.ext <| by change _ = (π.V.map _).map _ rw [← Submodule.map_comp] exact congrArg (fun f => π.V.map f) (LinearMap.ext (mulChi_mul χ χ'))`.
+-/
 theorem twist_mul (χ χ' : HChar E) : π.twist (χ * χ') = (π.twist χ).twist χ' := CuspSub.ext <| by
   change _ = (π.V.map _).map _
   rw [← Submodule.map_comp]
@@ -277,10 +350,22 @@ def HasInfChar (τ : E →+* ℂ) (m : Multiset ℂ) : Prop :=
 
 variable {π π'}
 
+/- English proof (translation)
+The claim follows from `UpperTheory.Reformulated.B.Gr23.abs π.ne_bot (cap τ) h h'`.
+-/
 theorem HasInfChar.unique {τ : E →+* ℂ} {m m' : Multiset ℂ} (h : π.HasInfChar τ m) (h' : π.HasInfChar τ m') :
     m = m' :=
   UpperTheory.Reformulated.B.Gr23.abs π.ne_bot (cap τ) h h'
 
+/- English proof (translation)
+Set `S : Subalgebra ℂ (Module.End ℂ (Sm E a))` to `{ carrier := {z | ∀ φ : π.V, ∃ h : z φ.1 ∈ π.V, (T ⟨_, h⟩).1 = z (T φ).1} mul_mem' := fun {x y} hx hy φ => by`. Take `⟨h1, e1⟩` from `hy φ`. Take `⟨h2, e2⟩` from `hx ⟨_, h1⟩`. Conclude with `⟨h2, e2.trans (congrArg x e1)⟩`. Use the proof step `add_mem' := fun {x y} hx hy φ => by`.
+
+Take `⟨h1, e1⟩` from `hx φ`. Take `⟨h2, e2⟩` from `hy φ`. Conclude with `⟨add_mem h1 h2, (congrArg Subtype.val (map_add T ⟨_, h1⟩ ⟨_, h2⟩)).trans (congrArg₂ (· + ·) e1 e2)⟩`. Use the proof step `algebraMap_mem' := fun c φ => ⟨π.V.smul_mem c φ.2, congrArg Subtype.val (map_smul T c φ)⟩ }`. Establish `hL : ∀ X, lie E a X ∈ S` using `fun X φ => ⟨π.stable (.lie X) _ φ.2, congrArg Subtype.val (hT (.lie X) φ)⟩`.
+
+Establish `hE : ∀ i j, Eop τ i j ∈ S` using `fun i j => S.smul_mem (S.sub_mem (hL _) (S.smul_mem (hL _) _)) _`. Establish `: cap τ u ∈ S`. Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Use `S.add_mem ?_ (hE _ _)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `S.algebraMap_mem _`. Conclude with `S.zero_mem`. Conclude with `this φ`.
+-/
 theorem iso_cap (T : π.V ≃ₗ[ℂ] π'.V) (hT : ∀ o φ, T (π.op o φ) = π'.op o (T φ)) (τ : E →+* ℂ) (u : ℂ) (φ : π.V) :
     ∃ h : cap τ u φ.1 ∈ π.V, (T ⟨_, h⟩).1 = cap τ u (T φ).1 := by
   let S : Subalgebra ℂ (Module.End ℂ (Sm E a)) :=
@@ -305,6 +390,11 @@ theorem iso_cap (T : π.V ≃ₗ[ℂ] π'.V) (hT : ∀ o φ, T (π.op o φ) = π
     · exact S.zero_mem
   exact this φ
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `h`. Use `⟨hm.1, fun u φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `T.surjective ⟨φ, hφ⟩`. Take `⟨h1, e⟩` from `iso_cap T hT τ u ψ`. Establish `e2 : (⟨_, h1⟩ : π.V) = (m.map (u + ·)).prod • ψ` using `Subtype.ext (hm.2 u _ ψ.2)`.
+
+Rewrite `e` using `[e2, map_smul, hψ]`. Conclude with `e.symm`.
+-/
 theorem Iso.hasInfChar (h : Iso π π') {τ : E →+* ℂ} {m : Multiset ℂ} (hm : π.HasInfChar τ m) : π'.HasInfChar τ m := by
   obtain ⟨T, hT⟩ := h
   refine ⟨hm.1, fun u φ hφ => ?_⟩
@@ -314,6 +404,11 @@ theorem Iso.hasInfChar (h : Iso π π') {τ : E →+* ℂ} {m : Multiset ℂ} (h
   rw [e2, map_smul, hψ] at e
   exact e.symm
 
+/- English proof (translation)
+Use `⟨by rw [Multiset.card_map, h.1], ?_⟩` and prove the remaining obligations. Introduce and unpack `u _ ⟨φ, hφ, rfl⟩`. Express the relevant statement in the definitionally equal form `cap τ u (mulChi a χ φ) = _ • mulChi a χ φ`. Rewrite using `[cap_mulChi, h.2 _ φ hφ, map_smul, Multiset.map_map]`. Use `congr 3`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HasInfChar.twist {τ : E →+* ℂ} {m : Multiset ℂ} (h : π.HasInfChar τ m) (χ : HChar E) :
     (π.twist χ).HasInfChar τ (m.map (· + expo χ τ)) := by
   refine ⟨by rw [Multiset.card_map, h.1], ?_⟩
@@ -326,6 +421,11 @@ theorem HasInfChar.twist {τ : E →+* ℂ} {m : Multiset ℂ} (h : π.HasInfCha
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `e : (sLoc E w : _ → Af E) = fun x => Neutral.B1.finiteSingle E w x - Neutral.B1.finiteSingle E w 0`. Use function extensionality and compare the values at `x`. Use `FiniteAdeleRing.ext _ fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Pi.single w x : ∀ v : HeightOneSpectrum (𝓞 E), v.adicCompletion E) v = Function.update (fun v : HeightOneSpectrum (𝓞 E) => (1 : v.adicCompletion E)) w x v - Function.update (fun v : HeightOneSpectrum (𝓞 E) => (1 : v.adicCompletion E)) w 0 v`. Distinguish the cases in `h : v = w`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[e]`. Conclude with `(GlobalTheory.Mem.UnrAe.continuous_finSingle w).sub continuous_const`.
+-/
 theorem continuous_sLoc (w : HeightOneSpectrum (𝓞 E)) : Continuous (sLoc E w) := by
   classical
   have e : (sLoc E w : _ → Af E) = fun x => Neutral.B1.finiteSingle E w x - Neutral.B1.finiteSingle E w 0 := by
@@ -342,6 +442,9 @@ theorem continuous_sLoc (w : HeightOneSpectrum (𝓞 E)) : Continuous (sLoc E w)
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map (continuous_sLoc w)))`.
+-/
 theorem continuous_locGL (w : HeightOneSpectrum (𝓞 E)) : Continuous (locGL E a w) :=
   Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map (continuous_sLoc w)))
 
@@ -355,11 +458,17 @@ variable (π) in
 def locRep (w : HeightOneSpectrum (𝓞 E)) : Representation ℂ (GL (Fin a) (w.adicCompletion E)) π.V :=
   π.finPart.comp (locGL E a w)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locRep_eq (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (w.adicCompletion E)) :
     π.locRep w g = π.op (.fin (locGL E a w g)) := rfl
 
 variable (π) in
 
+/- English proof (translation)
+Introduce `φ` and use `by convert (π.cusp _ φ.2).1.level using 1 ext k exact Subtype.ext_iff`.
+-/
 theorem isSmooth_finPart : GlobalTheory.PRep.IsSmooth π.finPart := fun φ => by
   convert (π.cusp _ φ.2).1.level using 1
   ext k
@@ -367,6 +476,9 @@ theorem isSmooth_finPart : GlobalTheory.PRep.IsSmooth π.finPart := fun φ => by
 
 variable (π) in
 
+/- English proof (translation)
+Introduce `φ` and use `(π.isSmooth_finPart φ).preimage (continuous_locGL w)`.
+-/
 theorem isSmooth_locRep (w : HeightOneSpectrum (𝓞 E)) : GlobalTheory.PRep.IsSmooth (π.locRep w) := fun φ =>
   (π.isSmooth_finPart φ).preimage (continuous_locGL w)
 
@@ -375,6 +487,11 @@ variable (π) in
 def IsLocComp (w : HeightOneSpectrum (𝓞 E)) (σ : SmIrr (GL (Fin a) (w.adicCompletion E))) : Prop :=
   ∃ f : σ.V →ₗ[ℂ] π.V, f ≠ 0 ∧ ∀ g v, f (σ.ρ g v) = π.locRep w g (f v)
 
+/- English proof (translation)
+Take `⟨f, h0, hf⟩` from `h`. Take `⟨T, hT⟩` from `hπ`. Take `⟨e⟩` from `hσ`. Use `⟨T.toLinearMap ∘ₗ f ∘ₗ e.symm.toLinearEquiv.toLinearMap, fun h => h0 (LinearMap.ext fun v => T.injective ?_), fun g v => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun h (e.toLinearEquiv v)` as an intermediate fact.
+
+Rewrite using `[LinearMap.zero_apply, map_zero]`. Conclude with `(congrArg (fun x => T (f x)) (e.toLinearEquiv.symm_apply_apply v)).symm.trans this`. Establish `h1 : e.symm.toLinearEquiv (σ'.ρ g v) = σ.ρ g (e.symm.toLinearEquiv v)` using `LinearMap.congr_fun (e.symm.isIntertwining' g) v`. Express the relevant statement in the definitionally equal form `T (f (e.symm.toLinearEquiv (σ'.ρ g v))) = π'.locRep w g (T (f (e.symm.toLinearEquiv v)))`. Rewrite using `[h1, hf, locRep_eq, hT, locRep_eq]`.
+-/
 theorem IsLocComp.congr {w : HeightOneSpectrum (𝓞 E)} {σ σ' : SmIrr (GL (Fin a) (w.adicCompletion E))}
     (h : π.IsLocComp w σ) (hπ : Iso π π') (hσ : Nonempty (σ.ρ.Equiv σ'.ρ)) : π'.IsLocComp w σ' := by
   obtain ⟨f, h0, hf⟩ := h
@@ -395,13 +512,24 @@ omit [IsTotallyComplex E] in
 def locDet (a : ℕ) (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) : GL (Fin a) (w.adicCompletion E) →* ℂˣ :=
   (χ.loc w).comp GeneralLinearGroup.det
 
+/- English proof (translation)
+The claim follows from `congrArg χ.1 ((det_finGL _).trans (finId_det_locGL w g))`.
+-/
 theorem chiDet_locGL (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (g : GL (Fin a) (w.adicCompletion E)) :
     chiDet a χ (finGL E a (locGL E a w g)) = locDet a χ w g :=
   congrArg χ.1 ((det_finGL _).trans (finId_det_locGL w g))
 
+/- English proof (translation)
+Simplify `(isOpen_ker_chiDet (a := a) χ).preimage (continuous_locGL w)` using `only [Set.preimage_ofPred_eq, chiDet_locGL]`.
+-/
 theorem isOpen_ker_locDet (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) : IsOpen {g | locDet a χ w g = 1} := by
   simpa only [Set.preimage_ofPred_eq, chiDet_locGL] using (isOpen_ker_chiDet (a := a) χ).preimage (continuous_locGL w)
 
+/- English proof (translation)
+Take `⟨f, h0, hf⟩` from `h`. Use `⟨(π.toTwist χ).toLinearMap ∘ₗ f, fun h => h0 (LinearMap.ext fun v => (π.toTwist χ).injective ?_), fun g v => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, map_zero]`. Conclude with `LinearMap.congr_fun h v`. Express the relevant statement in the definitionally equal form `π.toTwist χ (f (((locDet a χ w g : ℂˣ) : ℂ) • σ.ρ g v)) = (π.twist χ).op (.fin (locGL E a w g)) (π.toTwist χ (f v))`.
+
+Rewrite using `[op_toTwist, map_smul f, hf g v, ← chiDet_locGL, opAdd, zero_smul, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem IsLocComp.twist {w : HeightOneSpectrum (𝓞 E)} {σ : SmIrr (GL (Fin a) (w.adicCompletion E))}
     (h : π.IsLocComp w σ) (χ : HChar E) :
     (π.twist χ).IsLocComp w (σ.twist (locDet a χ w) (isOpen_ker_locDet χ w)) := by
@@ -431,6 +559,9 @@ def PhiK (E : Type) [Field E] (a : ℕ) : Kinf E a :=
 
 omit [NumberField E] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `h : Unitary.toUnits (PhiK E a) = PhiU a (Cinf E)` using `Units.ext rfl`. Rewrite using `[map_mul, map_mul, map_inv, h]`. Conclude with `congrArg (fun x => PhiU a (Cinf E) * x * (PhiU a (Cinf E))⁻¹) (Units.ext (star_star k.1).symm)`.
+-/
 theorem toUnits_conj_PhiK (k : Kinf E a) :
     Unitary.toUnits (PhiK E a * k * (PhiK E a)⁻¹) = thetaGL a (starRingEnd (Cinf E)) (Unitary.toUnits k) := by
   have h : Unitary.toUnits (PhiK E a) = PhiU a (Cinf E) := Units.ext rfl
@@ -446,6 +577,9 @@ namespace CuspSub
 
 def IsCsd (π : CuspSub L a) : Prop := ∃ T : π.V ≃ₗ[ℂ] π.V, ∀ o φ, T (π.op (thetaOp o) φ) = π.op o (T φ)
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `h`. Take `⟨T, hT⟩` from `hπ`. Use `⟨(S.symm.trans T).trans S, fun o φ => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `S.surjective φ`. Simplify using `only [← hS, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, hT]`.
+-/
 theorem Iso.isCsd {π π' : CuspSub L a} (h : Iso π π') (hπ : π.IsCsd) : π'.IsCsd := by
   obtain ⟨S, hS⟩ := h
   obtain ⟨T, hT⟩ := hπ
@@ -458,6 +592,9 @@ end CuspSub
 def ThetaInv (a : ℕ) (χ : HChar L) : Prop :=
   ∀ o : Op L a, opMul χ (thetaOp o) = opMul χ o ∧ opAdd χ (thetaOp o) = opAdd χ o
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `h`. Use `⟨((π.toTwist χ).symm.trans T).trans (π.toTwist χ), fun o φ => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `(π.toTwist χ).surjective φ`. Simplify using `only [CuspSub.op_toTwist, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, map_add T, map_smul T, hT, (hχ o).1, (hχ o).2]`.
+-/
 theorem CuspSub.IsCsd.twist {π : CuspSub L a} (h : π.IsCsd) {χ : HChar L} (hχ : ThetaInv a χ) : (π.twist χ).IsCsd := by
   obtain ⟨T, hT⟩ := h
   refine ⟨((π.toTwist χ).symm.trans T).trans (π.toTwist χ), fun o φ => ?_⟩
@@ -472,8 +609,14 @@ variable (E a) in
 def oneFn : Sm E a :=
   ⟨fun _ => 1, fun _ => contDiffOn_const.congr (f := fun _ => 1) fun x hx => dif_pos (show IsUnit (Matrix.of x) from hx)⟩
 
+/- English proof (translation)
+Introduce `h` and use `one_ne_zero (congrFun (congrArg Subtype.val h) 1)`.
+-/
 theorem oneFn_ne_zero : oneFn E a ≠ 0 := fun h => one_ne_zero (congrFun (congrArg Subtype.val h) 1)
 
+/- English proof (translation)
+Use `Subtype.ext <| funext fun g => ?_` and prove the remaining obligations. Establish `e : chart (oneFn E a).1 g =ᶠ[𝓝 (oneL E a)] fun _ => 1` using `Filter.eventually_of_mem (isOpen_invSet.mem_nhds isUnit_one) fun x hx => dif_pos (show IsUnit (Matrix.of x) from hx)`. Express the relevant statement in the definitionally equal form `fderiv ℝ _ _ X = 0`. Rewrite using `[e.fderiv_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem lie_oneFn (X : Lie E a) : lie E a X (oneFn E a) = 0 := by
   refine Subtype.ext <| funext fun g => ?_
   have e : chart (oneFn E a).1 g =ᶠ[𝓝 (oneL E a)] fun _ => 1 :=
@@ -487,17 +630,30 @@ def opTriv : Op E a → ℂ
   | .cpt _ => 1
   | .lie _ => 0
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `fin k => exact (one_smul _ _).symm`. Consider the case `cpt k => exact (one_smul _ _).symm`. Consider the case `lie X => exact (lie_oneFn X).trans (zero_smul _ _).symm`.
+-/
 theorem act_oneFn (o : Op E a) : act o (oneFn E a) = opTriv o • oneFn E a := by
   cases o with
   | fin k => exact (one_smul _ _).symm
   | cpt k => exact (one_smul _ _).symm
   | lie X => exact (lie_oneFn X).trans (zero_smul _ _).symm
 
+/- English proof (translation)
+Introduce `o φ hφ` and use `by obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hφ rw [map_smul, act_oneFn] exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))`.
+-/
 theorem isStable_const : IsStable (Submodule.span ℂ {oneFn E a}) := fun o φ hφ => by
   obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hφ
   rw [map_smul, act_oneFn]
   exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))
 
+/- English proof (translation)
+Take `⟨c, e⟩` from `Submodule.mem_span_singleton.1 hφ`. Use `⟨fun _ _ => e ▸ rfl, ?_, ?_, ?_, fun g => ⟨‖c‖, 0, fun y => ?_⟩⟩` and prove the remaining obligations. Establish `: {k | finRep E a k φ = φ} = Set.univ` using `Set.eq_univ_of_forall fun k => e ▸ rfl`. Rewrite using `[this]`. Conclude with `isOpen_univ`.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {oneFn E a}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `isStable_const (.cpt k) φ hφ`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {oneFn E a}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Conclude with `Zalg_stable (fun X => isStable_const (.lie X)) hz φ hφ`. Rewrite using `[← e]`. Express the relevant statement in the definitionally equal form `‖c * 1‖ ≤ _`. Simplify using the standard rewrite rules.
+-/
 theorem isAutForm_const {φ : Sm E a} (hφ : φ ∈ Submodule.span ℂ {oneFn E a}) : IsAutForm φ := by
   obtain ⟨c, e⟩ := Submodule.mem_span_singleton.1 hφ
   refine ⟨fun _ _ => e ▸ rfl, ?_, ?_, ?_, fun g => ⟨‖c‖, 0, fun y => ?_⟩⟩
@@ -513,6 +669,9 @@ theorem isAutForm_const {φ : Sm E a} (hφ : φ ∈ Submodule.span ℂ {oneFn E 
     change ‖c * 1‖ ≤ _
     simp
 
+/- English proof (translation)
+Establish `h : ∀ i j, Eop τ i j (oneFn E a) = 0` using `fun i j => by simp [Eop, lieS_apply, lie_oneFn]`. Simplify using `using cap_highest τ 0 (oneFn E a) ⟨fun i => by simp [h], fun i j _ => h i j⟩ u`.
+-/
 theorem cap_oneFn (τ : E →+* ℂ) (u : ℂ) :
     cap τ u (oneFn E a) = (∏ k : Fin a, (u + (((a : ℂ) - 1) / 2 - (k : ℕ)))) • oneFn E a := by
   have h : ∀ i j, Eop τ i j (oneFn E a) = 0 := fun i j => by simp [Eop, lieS_apply, lie_oneFn]
@@ -527,6 +686,11 @@ def CuspSub.triv (ha : a ≤ 1) : CuspSub E a where
   ne_bot h := oneFn_ne_zero (Submodule.span_singleton_eq_bot.1 h)
   irred W hW _ := ((nonzero_span_atom _ oneFn_ne_zero).le_iff.1 hW)
 
+/- English proof (translation)
+Take `⟨⟨φ, hφ⟩, rfl⟩` from `((CuspSub.triv E ha).toTwist χ).surjective φ`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Rewrite using `[CuspSub.op_toTwist, ← map_smul ((CuspSub.triv E ha).toTwist χ)]`. Use `congrArg _ (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((opMul χ o : ℂˣ) : ℂ) • act o (c • oneFn E a) + opAdd χ o • c • oneFn E a = _ • c • oneFn E a`.
+
+Rewrite using `[map_smul, act_oneFn]`. Use `module`.
+-/
 theorem CuspSub.op_triv_twist (ha : a ≤ 1) (χ : HChar E) (o : Op E a) (φ : ((CuspSub.triv E ha).twist χ).V) :
     ((CuspSub.triv E ha).twist χ).op o φ = (((opMul χ o : ℂˣ) : ℂ) * opTriv o + opAdd χ o) • φ := by
   obtain ⟨⟨φ, hφ⟩, rfl⟩ := ((CuspSub.triv E ha).toTwist χ).surjective φ
@@ -548,11 +712,20 @@ def mk (π : CuspSub E a) : CG E a := Quotient.mk _ π
 def twist (π : CG E a) (χ : HChar E) : CG E a :=
   Quotient.map (sa := CuspSub.setoid E a) (sb := CuspSub.setoid E a) (·.twist χ) (fun _ _ h => CuspSub.Iso.twist h χ) π
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem twist_mk (π : CuspSub E a) (χ : HChar E) : (mk π).twist χ = mk (π.twist χ) := rfl
 
+/- English proof (translation)
+The claim follows from `Quotient.inductionOn π fun π => congrArg mk π.twist_one`.
+-/
 @[simp] theorem twist_one (π : CG E a) : π.twist 1 = π :=
   Quotient.inductionOn π fun π => congrArg mk π.twist_one
 
+/- English proof (translation)
+The claim follows from `Quotient.inductionOn π fun π => congrArg mk (π.twist_mul χ χ')`.
+-/
 theorem twist_mul (π : CG E a) (χ χ' : HChar E) : π.twist (χ * χ') = (π.twist χ).twist χ' :=
   Quotient.inductionOn π fun π => congrArg mk (π.twist_mul χ χ')
 
@@ -565,6 +738,11 @@ open Classical in
 def infChar (π : CG E a) (τ : E →+* ℂ) : Multiset ℂ :=
   if h : ∃ m, π.HasInfChar τ m then h.choose else Multiset.replicate a 0
 
+/- English proof (translation)
+Establish `h' : ∃ m, π.HasInfChar τ m` using `⟨m, h⟩`. Rewrite using `[infChar, dif_pos h']`. Establish `h2` using `h'.choose_spec`. Generalize the expression as in `h'.choose = m' at h2`. Proceed by induction on `π using Quotient.inductionOn`.
+
+Conclude with `CuspSub.HasInfChar.unique h2 h`.
+-/
 theorem HasInfChar.infChar_eq {π : CG E a} {τ : E →+* ℂ} {m : Multiset ℂ} (h : π.HasInfChar τ m) :
     π.infChar τ = m := by
   have h' : ∃ m, π.HasInfChar τ m := ⟨m, h⟩
@@ -574,6 +752,11 @@ theorem HasInfChar.infChar_eq {π : CG E a} {τ : E →+* ℂ} {m : Multiset ℂ
   induction π using Quotient.inductionOn
   exact CuspSub.HasInfChar.unique h2 h
 
+/- English proof (translation)
+Unfold `infChar`. Use `split_ifs with h`. Establish `h2` using `h.choose_spec`. Generalize the expression as in `h.choose = m' at h2`. Proceed by induction on `π using Quotient.inductionOn`.
+
+Conclude with `h2.1`. Simplify using the standard rewrite rules.
+-/
 theorem card_infChar (π : CG E a) (τ : E →+* ℂ) : Multiset.card (π.infChar τ) = a := by
   unfold infChar
   split_ifs with h
@@ -583,6 +766,9 @@ theorem card_infChar (π : CG E a) (τ : E →+* ℂ) : Multiset.card (π.infCha
     exact h2.1
   · simp
 
+/- English proof (translation)
+Proceed by induction on `π using Quotient.inductionOn`. Conclude with `CuspSub.HasInfChar.twist h χ`.
+-/
 theorem HasInfChar.twist {π : CG E a} {τ : E →+* ℂ} {m : Multiset ℂ} (h : π.HasInfChar τ m) (χ : HChar E) :
     (π.twist χ).HasInfChar τ (m.map (· + expo χ τ)) := by
   induction π using Quotient.inductionOn
@@ -591,6 +777,9 @@ theorem HasInfChar.twist {π : CG E a} {τ : E →+* ℂ} {m : Multiset ℂ} (h 
 def IsRegAlg (π : CG E a) : Prop :=
   ∃ t : Reformulated.AlgebraicInfinityType.InfinityType E a, t.IsRegularAlgebraic ∧ ∀ τ, t.exponents τ = π.infChar τ
 
+/- English proof (translation)
+The claim follows from `UpperTheory.RegAlgFam.exists_iff _ π.card_infChar`.
+-/
 theorem isRegAlg_iff (π : CG E a) : π.IsRegAlg ↔
     ∀ τ, (π.infChar τ).Nodup ∧ ∀ z ∈ π.infChar τ, ∃ n : ℤ, z = (n : ℂ) + ((a : ℂ) - 1) / 2 :=
   UpperTheory.RegAlgFam.exists_iff _ π.card_infChar
@@ -605,9 +794,15 @@ def IsLoc (π : CG E a) (w : HeightOneSpectrum (𝓞 E)) (σ : Irr (GL (Fin a) (
 def loc (π : CG E a) (w : HeightOneSpectrum (𝓞 E)) : Irr (GL (Fin a) (w.adicCompletion E)) :=
   Classical.epsilon (π.IsLoc w)
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec ⟨σ, h⟩`.
+-/
 theorem IsLoc.loc {π : CG E a} {w : HeightOneSpectrum (𝓞 E)} {σ : Irr (GL (Fin a) (w.adicCompletion E))}
     (h : π.IsLoc w σ) : π.IsLoc w (π.loc w) := Classical.epsilon_spec ⟨σ, h⟩
 
+/- English proof (translation)
+Proceed by induction on `π using Quotient.inductionOn`. Proceed by induction on `σ using Quotient.inductionOn`. Conclude with `CuspSub.IsLocComp.twist h χ`.
+-/
 theorem IsLoc.twist {π : CG E a} {w : HeightOneSpectrum (𝓞 E)} {σ : Irr (GL (Fin a) (w.adicCompletion E))}
     (h : π.IsLoc w σ) (χ : HChar E) :
     (π.twist χ).IsLoc w (σ.twist (CuspSub.locDet a χ w) (CuspSub.isOpen_ker_locDet χ w)) := by
@@ -624,14 +819,23 @@ instance : Inhabited (CG E 1) := ⟨ofChar 1⟩
 
 instance : Inhabited (CG E 0) := ⟨mk (CuspSub.triv E zero_le_one)⟩
 
+/- English proof (translation)
+The claim follows from `congrArg mk (CuspSub.twist_mul _ χ χ').symm`.
+-/
 theorem twist_ofChar (χ χ' : HChar E) : (ofChar χ).twist χ' = ofChar (χ * χ') :=
   congrArg mk (CuspSub.twist_mul _ χ χ').symm
 
 def oneByOne {R : Type} [CommRing R] (u : Rˣ) : GL (Fin 1) R := Units.map (Matrix.scalar (Fin 1)).toMonoidHom u
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.det_fin_one _)`.
+-/
 theorem det_oneByOne {R : Type} [CommRing R] (u : Rˣ) : GeneralLinearGroup.det (oneByOne u) = u :=
   Units.ext (Matrix.det_fin_one _)
 
+/- English proof (translation)
+Use `Submodule.nontrivial_iff_ne_bot.2 ((CuspSub.triv E le_rfl).twist χ).ne_bot` as an intermediate fact. Take `⟨φ, hφ⟩` from `exists_ne (0 : ((CuspSub.triv E le_rfl).twist χ).V)`. Establish `h1` using `h φ`. Rewrite `h1` using `[CuspSub.op_triv_twist, CuspSub.op_triv_twist, map_smul]`. Conclude with `smul_left_injective ℂ ((map_ne_zero_iff T T.injective).2 hφ) h1`.
+-/
 theorem scalar_eq {χ χ' : HChar E} {o o' : Op E 1}
     (T : ((CuspSub.triv E le_rfl).twist χ).V ≃ₗ[ℂ] ((CuspSub.triv E le_rfl).twist χ').V)
     (h : ∀ φ, T (CuspSub.op _ o φ) = CuspSub.op _ o' (T φ)) :
@@ -642,6 +846,13 @@ theorem scalar_eq {χ χ' : HChar E} {o o' : Op E 1}
   rw [CuspSub.op_triv_twist, CuspSub.op_triv_twist, map_smul] at h1
   exact smul_left_injective ℂ ((map_ne_zero_iff T T.injective).2 hφ) h1
 
+/- English proof (translation)
+Introduce `χ χ' h`. Take `⟨T, hT⟩ : CuspSub.Iso _ _` from `Quotient.exact h`. Establish `h1 : ∀ k, chiDet 1 χ (finGL E 1 k) = chiDet 1 χ' (finGL E 1 k)` using `fun k => Units.ext (by simpa [opMul, opTriv, opAdd] using scalar_eq T (hT (.fin k)))`. Establish `h2 : ∀ z, dchi χ z = dchi χ' z` using `fun z => by`. Simplify `scalar_eq T (hT (.lie fun _ _ => z))` using `[opMul, opTriv, opAdd, Matrix.trace_fin_one]`.
+
+Establish `h3 : ∀ y, chiDet 1 χ (infGL E 1 y) = chiDet 1 χ' (infGL E 1 y)` using `fun y => by`. Establish `e : ∀ χ : HChar E, chiDet 1 χ (infGL E 1 y) = chiInf χ (GeneralLinearGroup.det y)` using `fun χ => congrArg χ.1 (det_infGL y)`. Rewrite using `[e, e, ← expU_log (GeneralLinearGroup.det y)]`. Conclude with `Units.ext (by rw [chiInf_expU, chiInf_expU, h2])`. Use `Subtype.ext (MonoidHom.ext fun x => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← det_oneByOne x]`. Express the relevant statement in the definitionally equal form `chiDet 1 χ _ = chiDet 1 χ' _`. Rewrite using `[← infGL_mul_finGL (oneByOne x), map_mul, map_mul, h1, h3]`.
+-/
 theorem ofChar_injective : Function.Injective (ofChar : HChar E → CG E 1) := by
   intro χ χ' h
   obtain ⟨T, hT⟩ : CuspSub.Iso _ _ := Quotient.exact h
@@ -661,12 +872,23 @@ theorem ofChar_injective : Function.Injective (ofChar : HChar E → CG E 1) := b
 
 def toChar (σ : CG E 1) : HChar E := Function.invFun ofChar σ
 
+/- English proof (translation)
+The claim follows from `Function.leftInverse_invFun ofChar_injective χ`.
+-/
 @[simp] theorem toChar_ofChar (χ : HChar E) : toChar (ofChar χ) = χ := Function.leftInverse_invFun ofChar_injective χ
 
 def tw (π : CG E a) (σ : CG E 1) : CG E a := π.twist (toChar σ)
 
+/- English proof (translation)
+Rewrite using `[tw, toChar_ofChar]`.
+-/
 @[simp] theorem tw_ofChar (π : CG E a) (χ : HChar E) : π.tw (ofChar χ) = π.twist χ := by rw [tw, toChar_ofChar]
 
+/- English proof (translation)
+Establish `h : (CuspSub.triv E (le_refl 1)).HasInfChar τ {0}` using `⟨rfl, fun u φ hφ => by`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Rewrite using `[map_smul, cap_oneFn, smul_comm]`. Use the proof step `simp⟩`. Establish `h2` using `h.twist χ`.
+
+Rewrite `h2` using `[Multiset.map_singleton, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem hasInfChar_ofChar (χ : HChar E) (τ : E →+* ℂ) : (ofChar χ).HasInfChar τ {expo χ τ} := by
   have h : (CuspSub.triv E (le_refl 1)).HasInfChar τ {0} := ⟨rfl, fun u φ hφ => by
     obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hφ
@@ -675,13 +897,22 @@ theorem hasInfChar_ofChar (χ : HChar E) (τ : E →+* ℂ) : (ofChar χ).HasInf
   have h2 := h.twist χ
   rwa [Multiset.map_singleton, zero_add] at h2
 
+/- English proof (translation)
+The claim follows from `(hasInfChar_ofChar χ τ).infChar_eq`.
+-/
 theorem infChar_ofChar (χ : HChar E) (τ : E →+* ℂ) : (ofChar χ).infChar τ = {expo χ τ} :=
   (hasInfChar_ofChar χ τ).infChar_eq
 
+/- English proof (translation)
+Rewrite using `[isRegAlg_iff]`. Simplify using `[infChar_ofChar]`.
+-/
 theorem isRegAlg_ofChar (χ : HChar E) : (ofChar χ).IsRegAlg ↔ ∀ τ, ∃ n : ℤ, expo χ τ = n := by
   rw [isRegAlg_iff]
   simp [infChar_ofChar]
 
+/- English proof (translation)
+Establish `h : (CuspSub.triv E (le_refl 1)).IsLocComp w (SmIrr.triv _)` using `⟨LinearMap.toSpanSingleton ℂ _ ⟨oneFn E 1, Submodule.mem_span_singleton_self _⟩, fun h => oneFn_ne_zero ((one_smul ℂ _).symm.trans (congrArg Subtype.val (LinearMap.congr_fun h (1 : ℂ)))), fun _ _ => rfl⟩`. Conclude with `h.twist χ`.
+-/
 theorem isLoc_ofChar (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) :
     (ofChar χ).IsLoc w (Irr.ofChar (CuspSub.locDet 1 χ w) (CuspSub.isOpen_ker_locDet χ w)) := by
   have h : (CuspSub.triv E (le_refl 1)).IsLocComp w (SmIrr.triv _) :=
@@ -694,6 +925,13 @@ section CM
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨T, hT⟩ o`. Establish `h` using `scalar_eq T (hT o)`. Consider the cases of `o with`. Consider the case `fin k => exact ⟨Units.ext (by simpa [opTriv, opAdd, thetaOp] using h), rfl⟩`.
+
+Consider the case `cpt k => exact ⟨Units.ext (by simpa [opTriv, opAdd, thetaOp] using h), rfl⟩`. Consider the case `lie X => exact ⟨rfl, by simpa [opTriv, thetaOp] using h⟩`. Use `CuspSub.IsCsd.twist ⟨.refl _ _, fun o φ => Subtype.ext ?_⟩` and prove the remaining obligations. Take `⟨c, e⟩` from `Submodule.mem_span_singleton.1 φ.2`. Express the relevant statement in the definitionally equal form `act (thetaOp o) φ.1 = act o φ.1`.
+
+Rewrite using `[← e, map_smul, map_smul, act_oneFn, act_oneFn]`. Apply the tactic sequence `cases o <;> rfl`.
+-/
 theorem isCsd_ofChar (χ : HChar L) : (ofChar χ).IsCsd ↔ ThetaInv 1 χ := by
   constructor
   · rintro ⟨T, hT⟩ o
@@ -708,11 +946,19 @@ theorem isCsd_ofChar (χ : HChar L) : (ofChar χ).IsCsd ↔ ThetaInv 1 χ := by
     rw [← e, map_smul, map_smul, act_oneFn, act_oneFn]
     cases o <;> rfl
 
+/- English proof (translation)
+Establish `h : (GlobalTheory.Tw.Phi a R)ᵀ * GlobalTheory.Tw.Phi a R = 1` using `mul_eq_one_comm.1 (Phi_mul_transpose a R)`. Rewrite using `[Matrix.trace_neg, Matrix.trace_mul_cycle, h, Matrix.one_mul, Matrix.trace_conjTranspose]`.
+-/
 theorem trace_theta {R : Type} [CommRing R] [StarRing R] (X : Matrix (Fin a) (Fin a) R) :
     (-(GlobalTheory.Tw.Phi a R * Xᴴ * (GlobalTheory.Tw.Phi a R)ᵀ)).trace = -star X.trace := by
   have h : (GlobalTheory.Tw.Phi a R)ᵀ * GlobalTheory.Tw.Phi a R = 1 := mul_eq_one_comm.1 (Phi_mul_transpose a R)
   rw [Matrix.trace_neg, Matrix.trace_mul_cycle, h, Matrix.one_mul, Matrix.trace_conjTranspose]
 
+/- English proof (translation)
+Introduce `o`. Consider the cases of `o with`. Consider the case `fin k => exact ⟨by simp only [thetaOp, opMul, chiDet, MonoidHom.comp_apply, det_finGL, det_thetaGL, h1], rfl⟩`. Consider the case `cpt k => exact ⟨by simp only [thetaOp, opMul, map_mul, map_inv, mul_inv_cancel_comm], rfl⟩`. Consider the case `lie X`.
+
+Use `⟨rfl, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dchi χ (-(GlobalTheory.Tw.Phi a (Cinf L) * (Matrix.of X)ᴴ * (GlobalTheory.Tw.Phi a (Cinf L))ᵀ)).trace = dchi χ _`. Rewrite using `[trace_theta, h2]`.
+-/
 theorem thetaInv_of {χ : HChar L}
     (h1 : ∀ u, χ.1 (finId L (Units.map (conjFin (IsCMField.complexConj L).toRingEquiv).toMonoidHom u)⁻¹) = χ.1 (finId L u))
     (h2 : ∀ z, dchi χ (-star z) = dchi χ z) : ThetaInv a χ := by
@@ -725,6 +971,9 @@ theorem thetaInv_of {χ : HChar L}
     change dchi χ (-(GlobalTheory.Tw.Phi a (Cinf L) * (Matrix.of X)ᴴ * (GlobalTheory.Tw.Phi a (Cinf L))ᵀ)).trace = dchi χ _
     rw [trace_theta, h2]
 
+/- English proof (translation)
+Use `⟨fun h => ⟨fun u => ?_, fun z => ?_⟩, fun h => thetaInv_of h.1 h.2⟩` and prove the remaining obligations. Simplify `(h (.fin (oneByOne u))).1` using `only [thetaOp, opMul, chiDet, MonoidHom.comp_apply, det_finGL, det_thetaGL, det_oneByOne]`. Establish `h1 : dchi χ (-(GlobalTheory.Tw.Phi 1 (Cinf L) * (Matrix.of fun _ _ => z)ᴴ * (GlobalTheory.Tw.Phi 1 (Cinf L))ᵀ)).trace = dchi χ (Matrix.of fun _ _ : Fin 1 => z).trace` using `(h (.lie fun _ _ => z)).2`. Rewrite `h1` using `[trace_theta, Matrix.trace_fin_one]`. Conclude with `h1`.
+-/
 theorem thetaInv_one_iff (χ : HChar L) : ThetaInv 1 χ ↔
     (∀ u, χ.1 (finId L (Units.map (conjFin (IsCMField.complexConj L).toRingEquiv).toMonoidHom u)⁻¹) = χ.1 (finId L u)) ∧
       ∀ z, dchi χ (-star z) = dchi χ z := by
@@ -736,11 +985,21 @@ theorem thetaInv_one_iff (χ : HChar L) : ThetaInv 1 χ ↔
     rw [trace_theta, Matrix.trace_fin_one] at h1
     exact h1
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(thetaInv_one_iff χ).1 ((isCsd_ofChar χ).1 hχ)`. Proceed by induction on `π using Quotient.inductionOn`. Conclude with `CuspSub.IsCsd.twist h (thetaInv_of h1 h2)`.
+-/
 theorem IsCsd.twist {π : CG L a} {χ : HChar L} (hχ : (ofChar χ).IsCsd) (h : π.IsCsd) : (π.twist χ).IsCsd := by
   obtain ⟨h1, h2⟩ := (thetaInv_one_iff χ).1 ((isCsd_ofChar χ).1 hχ)
   induction π using Quotient.inductionOn
   exact CuspSub.IsCsd.twist h (thetaInv_of h1 h2)
 
+/- English proof (translation)
+Take `⟨-, h2⟩` from `(thetaInv_one_iff χ).1 ((isCsd_ofChar χ).1 hχ)`. Establish `e : star (atEmb τ 1) = atEmb τ 1` using `by classical`. Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w = InfinitePlace.mk τ`. Substitute `h` using the available equality.
+
+Simplify using `[atEmb]`. Simplify using `[atEmb, h]`. Establish `e' : atEmb τ (-Complex.I) = -atEmb τ Complex.I`. Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules.
+
+Establish `h3` using `h2 (atEmb τ 1)`. Rewrite `h3` using `[e, map_neg]`. Simplify using `only [expo, atEmb_conj, map_one, Complex.conj_I, e', map_neg]`. Take the linear combination `-h3 / 2`.
+-/
 theorem expo_conj_of_isCsd {χ : HChar L} (hχ : (ofChar χ).IsCsd) (τ : L →+* ℂ) :
     expo χ (ComplexEmbedding.conjugate τ) = -expo χ τ := by
   obtain ⟨-, h2⟩ := (thetaInv_one_iff χ).1 ((isCsd_ofChar χ).1 hχ)
@@ -759,11 +1018,20 @@ theorem expo_conj_of_isCsd {χ : HChar L} (hχ : (ofChar χ).IsCsd) (τ : L →+
 
 end CM
 
+/- English proof (translation)
+The claim follows from `expo_eq_of_exp 1 τ 0 0 fun z => by simp [chiInf]`.
+-/
 theorem expo_one (τ : E →+* ℂ) : expo (1 : HChar E) τ = 0 :=
   expo_eq_of_exp 1 τ 0 0 fun z => by simp [chiInf]
 
+/- English proof (translation)
+The claim follows from `(isRegAlg_ofChar 1).2 fun τ => ⟨0, by simp [expo_one]⟩`.
+-/
 example : (ofChar (1 : HChar E)).IsRegAlg := (isRegAlg_ofChar 1).2 fun τ => ⟨0, by simp [expo_one]⟩
 
+/- English proof (translation)
+Rewrite using `[infChar_ofChar, expo_eq_of_exp χ τ 1 1 fun z => by rw [h, ← Complex.exp_conj, ← Complex.exp_add]; simp]`.
+-/
 example (χ : HChar E) (τ : E →+* ℂ)
     (h : ∀ z, ((chiInf χ (expU (atEmb τ z)) : ℂˣ) : ℂ) = Complex.exp z * starRingEnd ℂ (Complex.exp z)) :
     (ofChar χ).infChar τ = {1} := by
@@ -771,9 +1039,15 @@ example (χ : HChar E) (τ : E →+* ℂ)
 
 end CG
 
+/- English proof (translation)
+The claim follows from `H.isCMField_hostE`.
+-/
 theorem host_isCMField {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) : IsCMField H.E :=
   H.isCMField_hostE
 
+/- English proof (translation)
+The claim follows from `host_isCMField H; IsCMField.complexConj H.E z = H.conj z := by have := host_isCMField H apply H.φ₀.injective rw [NumberField.IsCMField.complexEmbedding_complexConj] exact (H.toHostAx.conjE_apply H.φ₀ z).symm`.
+-/
 theorem host_complexConj {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) (z : H.E) :
     haveI := host_isCMField H; IsCMField.complexConj H.E z = H.conj z := by
   have := host_isCMField H

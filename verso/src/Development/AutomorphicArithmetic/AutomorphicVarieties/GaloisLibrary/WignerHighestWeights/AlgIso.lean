@@ -23,6 +23,9 @@ private def pairSub {d d' : ℕ} (T : (Fin d → ℂ) ≃ₗ[ℂ] (Fin d' → �
     simp only [Algebra.algebraMap_eq_smul_one, Prod.smul_fst, Prod.smul_snd, Prod.fst_one, Prod.snd_one,
       Matrix.smul_mulVec, Matrix.one_mulVec, map_smul]
 
+/- English proof (translation)
+Introduce `E _ _ _ a Ξ Ξ' m h h'`. Take `⟨T, hT⟩` from `algIsoLie E a Ξ Ξ' m h h'`. Take `⟨h1, h2⟩` from `pairAlg E a Ξ Ξ' (pairSub T) (fun τ i j v => hT τ i j v)`. Conclude with `⟨T, fun y v => h2 y v, fun X v => h1 X v⟩`.
+-/
 theorem UpperTheory.V.AlgRepEndIrreducible.algIso :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (Ξ Ξ' : AlgRep E a) (m : (E →+* ℂ) → Multiset ℂ),
       (∀ τ, UpperTheory.V.Af.AlgInfChar Ξ τ (m τ)) → (∀ τ, UpperTheory.V.Af.AlgInfChar Ξ' τ (m τ)) → ∃ T, IsAlgIso Ξ Ξ' T := by

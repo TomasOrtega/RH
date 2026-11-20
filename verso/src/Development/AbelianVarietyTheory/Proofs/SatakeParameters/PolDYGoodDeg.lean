@@ -7,6 +7,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.DelA
 
+/- English proof (translation)
+Introduce `p _ X D pos j hN ν hν Q hQ s α hα`. Unfold `GoodDeg`. Introduce `v t`. Establish `hsz` using `(GlobalTheory.T.modelPartition_size_extension_firstLast_rows X D pos j hN ν hν).2.1 (pos ⟨v, t⟩)`. Unfold `szT szMu at hsz`.
+
+Rewrite `hsz` using `[pos.symm_apply_apply]`. Rewrite using `[hsz, Formalism.L2.KerInert.SecondKernelMoveDegree.blk_mapDomain X D pos j hN α v t, Finset.sum_comm, polDY_exp_deg D s ν Q hQ α hα (pos ⟨v, t⟩)]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem polDY_goodDeg : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (j : ℕ) (hN : RankTie X D j) (ν : D.what₂.Tau → Fin (D.R.N j) → ℕ), NuIs X D pos j ν → ∀ (Q : MvPolynomial (GL3Theta.FrV D (D.R.N j)) ℂ), Q ∈ WtPol ℂ ν → ∀ (s : D.what₂.Tau → ℂ), ∀ α ∈ (polDY D s Q (N' := D.R.N (j + 1))).support, GoodDeg X j (α.mapDomain (eIdx X D pos j hN)) := by
   intro p _ X D pos j hN ν hν Q hQ s α hα
   unfold GoodDeg

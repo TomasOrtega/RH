@@ -10,12 +10,34 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.MBLow
 
+/- English proof (translation)
+Establish `hs : n ⁻¹' {i} = (h.toFinset : Set X)` using `by ext; simp`. Rewrite using `[← Finset.tsum_subtype', ← hs]`.
+-/
 theorem regroup_fib_tsum {X M : Type} [AddCommMonoid M] [TopologicalSpace M] (n : X → ℕ) (i : ℕ)
     (h : {α | n α = i}.Finite) (f : X → M) :
     ∑' b : n ⁻¹' {i}, f b = ∑ α ∈ h.toFinset, f α := by
   have hs : n ⁻¹' {i} = (h.toFinset : Set X) := by ext; simp
   rw [← Finset.tsum_subtype', ← hs]
 
+/- English proof (translation)
+Introduce `C _ _ _ X n π a b hπ0 hπ1 hfin hb`. Establish `hmem : ∀ i α, α ∈ (hfin i).toFinset ↔ n α = i` using `fun i α => by simp`. Establish `hn : Filter.Tendsto n Filter.cofinite Filter.atTop`. Use `Filter.tendsto_atTop.2 fun N => Filter.eventually_cofinite.2 ?_` and prove the remaining obligations. Use `((Set.finite_lt_nat N).biUnion fun i _ => hfin i).subset ?_` and prove the remaining obligations.
+
+Introduce `α hα`. Simplify using `only [Set.mem_setOf_eq, not_le] at hα`. Conclude with `Set.mem_biUnion (x := n α) hα rfl`. Establish `hpow : Filter.Tendsto (fun α => b * ‖π‖ ^ n α) Filter.cofinite (nhds 0)`. Simplify using `using ((tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg π) hπ1).comp hn).const_mul b`.
+
+Establish `ha0 : Filter.Tendsto a Filter.cofinite (nhds 0)` using `squeeze_zero_norm hb hpow`. Establish `ha : Summable a` using `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero ha0`. Use `⟨PowerSeries.mk fun i => ∑ α ∈ (hfin i).toFinset, a α / π ^ i, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[PowerSeries.coeff_mk]`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (le_max_right _ _) fun α hα => ?_` and prove the remaining obligations. Establish `hpi : 0 < ‖π‖ ^ i` using `pow_pos (norm_pos_iff.2 hπ0) _`. Rewrite using `[norm_div, norm_pow, div_le_iff₀ hpi]`. Use `hb α` as an intermediate fact. Rewrite `this` using `[(hmem i α).1 hα]`.
+
+Conclude with `this.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hpi.le)`. Rewrite using `[← ((ha.hasSum.tsum_fiberwise n).tsum_eq)]`. Use `tsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_mk, regroup_fib_tsum n i (hfin i), Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun α _ => div_mul_cancel₀ _ (pow_ne_zero _ hπ0)`.
+
+Introduce `e u hsum`. Establish `heπ : e π ≠ 0` using `(map_ne_zero e).2 hπ0`. Establish `hkey : ∀ i, e (PowerSeries.coeff i (PowerSeries.mk fun i => ∑ α ∈ (hfin i).toFinset, a α / π ^ i)) * u ^ i = ∑ α ∈ (hfin i).toFinset, e (a α) * (u / e π) ^ n α`. Introduce `i`. Rewrite using `[PowerSeries.coeff_mk, map_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Rewrite using `[(hmem i α).1 hα, map_div₀, map_pow, div_pow]`. Clear the denominators using the available nonvanishing facts. Repeatedly rewrite using `[hkey]`. Establish `hf : Summable fun α => e (a α) * (u / e π) ^ n α` using `hsum.of_norm`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun i => norm_sum_le _ _) ?_` and prove the remaining obligations. Use `(hsum.hasSum.tsum_fiberwise n).summable` as an intermediate fact. Conclude with `this.congr fun i => regroup_fib_tsum n i (hfin i) (fun α => ‖e (a α) * (u / e π) ^ n α‖)`. Rewrite using `[← ((hf.hasSum.tsum_fiberwise n).tsum_eq)]`.
+
+Conclude with `tsum_congr fun i => (regroup_fib_tsum n i (hfin i) _).symm`.
+-/
 theorem lattice_series_regroup : ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] (X : Type) (n : X → ℕ) (π : C) (a : X → C) (b : ℝ), π ≠ 0 → ‖π‖ < 1 → (∀ i, {α | n α = i}.Finite) → (∀ α, ‖a α‖ ≤ b * ‖π‖ ^ n α) → ∃ Θ : PowerSeries C, (∀ i, ‖PowerSeries.coeff i Θ‖ ≤ max b 0) ∧ ∑' i, PowerSeries.coeff i Θ * π ^ i = ∑' α, a α ∧ ∀ (e : C →+* ℂ) (u : ℂ), (Summable fun α => ‖e (a α) * (u / e π) ^ n α‖) → (Summable fun i => ‖e (PowerSeries.coeff i Θ) * u ^ i‖) ∧ ∑' i, e (PowerSeries.coeff i Θ) * u ^ i = ∑' α, e (a α) * (u / e π) ^ n α := by
   intro C _ _ _ X n π a b hπ0 hπ1 hfin hb
   classical

@@ -17,6 +17,15 @@ namespace GlobalTheory.TwInputs
 
 variable {D : D7} {ρ : Setup D.ntw}
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `ρ.rc.exists_sym z`. Establish `hopen : IsOpen ((Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker : Set (G D.host.E D.nd.Om))`. Establish `e : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker = (D.ntw.delta i).ker`. Use extensionality with `g`. Apply the tactic sequence `cases b <;> simp [Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, MonoidHom.mem_ker]`.
+
+Rewrite using `[e]`. Conclude with `D.ntw.delta_open i`. Establish `: Finite (G D.host.E D.nd.Om ⧸ (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker)` using `Subgroup.quotient_finite_of_isOpen _ hopen`. Establish `hfi : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker.FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Establish `hn : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`.
+
+Establish `hpow : Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i) σ ^ (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker.index = 1`. Rewrite using `[← map_pow]`. Conclude with `MonoidHom.mem_ker.1 (Subgroup.pow_index_mem _ σ)`. Use `⟨algebraMap (D.ntw.O0 i) (D.ntw.O i) ((Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i) σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i), ?_⟩` and prove the remaining obligations. Rewrite using `[hρ.delta i j b]`.
+
+Conclude with `(charOf_eq ρ.rc ((ρ.eO i b).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))) hopen hσ hn hpow).symm`.
+-/
 theorem de_mem_eO (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (z : (AE D)ˣ) :
     (((ρ.B i j b).de.chi z : Circle) : ℂ) ∈ (ρ.eO i b).range := by
   obtain ⟨σ, hσ⟩ := ρ.rc.exists_sym z
@@ -37,6 +46,9 @@ theorem de_mem_eO (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (z :
   rw [hρ.delta i j b]
   exact (charOf_eq ρ.rc ((ρ.eO i b).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))) hopen hσ hn hpow).symm
 
+/- English proof (translation)
+Establish `h1 : a ^ n = 1` using `(ρ.e i b).injective (by rw [map_pow, h, map_one])`. Establish `hi : IsIntegral (D.ntw.O i) a` using `⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hn, by simp [h1]⟩`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Conclude with `⟨y, rfl⟩`.
+-/
 theorem e_mem_eO (ρ : Setup D.ntw) (i : D.ntw.Tw) (b : Bool) {a : FractionRing (D.ntw.O i)} {n : ℕ}
     (hn : n ≠ 0) (h : ρ.e i b a ^ n = 1) : ρ.e i b a ∈ (ρ.eO i b).range := by
   have h1 : a ^ n = 1 := (ρ.e i b).injective (by rw [map_pow, h, map_one])
@@ -44,6 +56,11 @@ theorem e_mem_eO (ρ : Setup D.ntw) (i : D.ntw.Tw) (b : Bool) {a : FractionRing 
   obtain ⟨y, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.1 hi
   exact ⟨y, rfl⟩
 
+/- English proof (translation)
+Unfold `ext1`. Use `split_ifs with h`. Take `⟨g', rfl⟩` from `(ρ.eG i j b).surjective g`. Establish `e1` using `T.psiU_eq ⟨g', (T.U_eq g').1 h⟩ h`. Establish `hfin : ((ρ.B i j b).G.P.chi ⟨ρ.eG i j b g', h⟩) ^ Nat.card (ρ.B i j b).G.P.H = 1`.
+
+Rewrite using `[← map_pow, pow_card_eq_one', map_one]`. Rewrite using `[e1]`. Use `e_mem_eO ρ i b (n := Nat.card (ρ.B i j b).G.P.H) Nat.card_pos.ne' ?_` and prove the remaining obligations. Rewrite using `[← e1, ← Units.val_pow_eq_pow_val, hfin, Units.val_one]`. Conclude with `one_mem _`.
+-/
 theorem typeCharacterExtension_value_mem_coefficientRing {hρ : ρ.Good} {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} {rd : Rd ρ D.nexp i j b}
     (T : CellTie hρ D.nexp rd) (g : G0 (ρ.B i j b).G.Pg (Wc D j).rank) :
     ((ext1 (ρ.B i j b).G.P.H (⇑(ρ.B i j b).G.P.chi) g : ℂˣ) : ℂ) ∈ (ρ.eO i b).range := by
@@ -58,10 +75,20 @@ theorem typeCharacterExtension_value_mem_coefficientRing {hρ : ρ.Good} {i : D.
     rw [← e1, ← Units.val_pow_eq_pow_val, hfin, Units.val_one]
   · exact one_mem _
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SplitResidueCard.card_quotient_of_ncard (F := D.host.E) (D.host.g_prime k) (D.nd.g_split k) PP h`.
+-/
 theorem card_residueField_of_type {k : Fin 2} {PP : Pl D.host.E} (h : PP ∈ placesOver D.host.E (D.host.g k)) :
     Nat.card (kP PP) = D.host.g k :=
   GlobalTheory.SplitResidueCard.card_quotient_of_ncard (F := D.host.E) (D.host.g_prime k) (D.nd.g_split k) PP h
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hρ.Pg i j b PP hPP`. Establish `hw : w ^ (D.host.g k - 1) = 1`. Rewrite using `[← card_residueField_of_type hk, ← Nat.card_units]`. Conclude with `pow_card_eq_one'`. Establish `hz : (((ρ.B i j b).G.muC PP w : ℂˣ) : ℂ) ^ (D.host.g k * (D.host.g k - 1)) = 1`.
+
+Rewrite using `[mul_comm, pow_mul, ← Units.val_pow_eq_pow_val, ← map_pow, hw, map_one, Units.val_one, one_pow]`. Take `⟨x, hx⟩` from `hr k _ hz`. Establish `h2` using `(D.host.g_prime k).two_le`. Establish `e : ρ.e i b (sideEmb D.ntw i b x) = (((ρ.B i j b).G.muC PP w : ℂˣ) : ℂ)` using `(hρ.e_LL0 i b x).trans hx`. Rewrite `hz`, the goal using `[← e]`.
+
+Conclude with `e_mem_eO ρ i b (Nat.mul_ne_zero (by omega) (by omega)) hz`.
+-/
 theorem muC_mem_eO (hρ : ρ.Good)
     (hr : ∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (Formalism.L2.Host.embLL0 D).fieldRange)
     (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) {PP : Pl D.host.E} (hPP : PP ∈ (ρ.B i j b).G.Pg) (w : (kP PP)ˣ) :
@@ -78,6 +105,11 @@ theorem muC_mem_eO (hρ : ρ.Good)
   rw [← e] at hz ⊢
   exact e_mem_eO ρ i b (Nat.mul_ne_zero (by omega) (by omega)) hz
 
+/- English proof (translation)
+Unfold `Twist.locC`. Use `split_ifs with hq`. Take `⟨x, hx⟩` from `GlobalTheory.ConjTwist.exists_isLocUnit (ht.split.isIdemAt hq) w show ((t.res PP w : Circle) : ℂ) ∈ _`. Rewrite using `[← hx.eq (ht.res PP hq)]`. Conclude with `h x`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem locC_mem {t : Twist D Circle} (ht : t.Good) {O : Subring ℂ} (h : ∀ x, ((t.chi x : Circle) : ℂ) ∈ O)
     (PP : Pl D.host.E) (w : (kP PP)ˣ) : ((t.locC PP w : ℂˣ) : ℂ) ∈ O := by
   unfold Twist.locC
@@ -88,6 +120,11 @@ theorem locC_mem {t : Twist D Circle} (ht : t.Good) {O : Subring ℂ} (h : ∀ x
     exact h x
   · simp
 
+/- English proof (translation)
+Take `⟨hg, -, hv⟩` from `GlobalTheory.TwistGood.tw_good D _ _ ρ hρ i j b k Q ψ hψ`. Establish `hle` using `hρ.range_le i b k`. Establish `e : (ρ.B i j b).levLam (ρ.tw i b k Q ψ) x = levFn (ρ.B i j b).F.βS ((ρ.B i j b).levS (ρ.tw i b k Q ψ)) (Formalism.UG.bc (Lev.swapAE D) x.1.1)`. Unfold `Base.levLam Lev.levCharAfE`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Simplify using `only [levFn, Base.levS, Units.val_mul, Units.coe_prod]`. Use `mul_mem (mul_mem (hle (typeCharacterExtension_value_mem_coefficientRing T _)) (prod_mem fun PP hPP => prod_mem fun _ _ => hle (muC_mem_eO hρ hr i j b hPP _))) (prod_mem fun PP _ => ?_)` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, Units.val_mul]`. Conclude with `mul_mem (hle (locC_mem (hρ.base i j b).de (de_mem_eO hρ i j b) PP _)) (locC_mem (O := (ρ.eOk i b k).range) hg (fun z => (hv z).elim fun u hu => ⟨u, hu.symm⟩) PP _)`.
+-/
 theorem levLam_mem_eOk {hρ : ρ.Good}
     (hr : ∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (Formalism.L2.Host.embLL0 D).fieldRange)
     {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} {rd : Rd ρ D.nexp i j b} (T : CellTie hρ D.nexp rd) {k Q ψ} (hψ : TwOK i k Q ψ)
@@ -107,6 +144,13 @@ theorem levLam_mem_eOk {hρ : ρ.Good}
   exact mul_mem (hle (locC_mem (hρ.base i j b).de (de_mem_eO hρ i j b) PP _))
     (locC_mem (O := (ρ.eOk i b k).range) hg (fun z => (hv z).elim fun u hu => ⟨u, hu.symm⟩) PP _)
 
+/- English proof (translation)
+Introduce `D ρ hρ rd hT hr E i _ j hj b k Q ψ hψ Sg _`. Take `⟨hj1, hj2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨j', rfl⟩ : ∃ j' : Fin D.R.m, j = (j' : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp; omega⟩`. Establish `T` using `hT.tie i j' b`. Rewrite using `[IntegralHeckeForms.ThPsi, Submodule.span_le]`.
+
+Introduce `x hx`. Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨d, -, hx⟩` from `hx`. Establish `hg` using `(T.thPsi_iff k Q ψ hψ d x).1 hx`. Take `⟨F, hF, e⟩` from `GlobalTheory.T.twistedThetaGenerator_eq_classSum_integralForm D ρ hρ i j' b k Q ψ hψ (levLam_mem_eOk hr T hψ) _ _ _ (T.dat d) _ hg`.
+
+Take `⟨f, hf, rfl⟩` from `(T.mtLat_iff k Q ψ hψ F).1 hF`. Use `⟨f, hf, T.injective_rdK k ?_⟩` and prove the remaining obligations. Rewrite using `[T.thP_eq k Q ψ hψ f ⟨x, e⟩]`. Conclude with `e.symm`.
+-/
 theorem admT4_of_full_compatibility : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (rd : Rds D.nexp ρ), FullTie hρ rd →
     (∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (Formalism.L2.Host.embLL0 D).fieldRange) →
     ∀ E : IntegralHeckeForms.XD D, IntegralHeckeForms.admT4 D.nexp E := by
@@ -125,6 +169,9 @@ theorem admT4_of_full_compatibility : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.
   rw [T.thP_eq k Q ψ hψ f ⟨x, e⟩]
   exact e.symm
 
+/- English proof (translation)
+The claim follows from `admT4_of_full_compatibility D Y.Z.ρ Y.Z.good Y.Z.rd Y.Z.full hX.roots E`.
+-/
 example (X : RealSide D) (hX : FieldOk X) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) : IntegralHeckeForms.admT4 D.nexp E :=
   admT4_of_full_compatibility D Y.Z.ρ Y.Z.good Y.Z.rd Y.Z.full hX.roots E
 

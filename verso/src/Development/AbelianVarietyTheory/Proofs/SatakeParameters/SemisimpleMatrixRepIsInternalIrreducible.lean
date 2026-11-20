@@ -6,12 +6,23 @@ namespace GlobalTheory.SemisimpleDecomp
 
 variable {k Γ : Type} [Field k] [Group Γ] {a : ℕ}
 
+/- English proof (translation)
+Introduce `g v hv` and use `⟨hU g v hv.1, hV g v hv.2⟩`.
+-/
 theorem isInv_inf {ρ : Γ →* GL (Fin a) k} {U V : Submodule k (Fin a → k)} (hU : IsInv ρ U)
     (hV : IsInv ρ V) : IsInv ρ (U ⊓ V) :=
   fun g v hv => ⟨hU g v hv.1, hV g v hv.2⟩
 
+/- English proof (translation)
+Introduce `_ _ _` and use `Submodule.mem_top`.
+-/
 theorem isInv_top (ρ : Γ →* GL (Fin a) k) : IsInv ρ ⊤ := fun _ _ _ => Submodule.mem_top
 
+/- English proof (translation)
+Take `⟨W, ⟨hW0, hWi, hWU⟩, hmin⟩` from `(wellFounded_lt (α := Submodule k (Fin a → k))).has_min {W | W ≠ ⊥ ∧ IsInv ρ W ∧ W ≤ U} ⟨U, h0, hU, le_rfl⟩`. Use `⟨W, hWU, hW0, hWi, fun W' hle hi => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : W' = ⊥`. Conclude with `Or.inl h`. Use `right`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hmin W' ⟨h, hi, hle.trans hWU⟩ (lt_of_le_of_ne hle hne)`.
+-/
 theorem exists_irr_le {ρ : Γ →* GL (Fin a) k} {U : Submodule k (Fin a → k)} (hU : IsInv ρ U)
     (h0 : U ≠ ⊥) : ∃ W, W ≤ U ∧ IsIrrSub ρ W := by
   obtain ⟨W, ⟨hW0, hWi, hWU⟩, hmin⟩ := (wellFounded_lt (α := Submodule k (Fin a → k))).has_min
@@ -23,6 +34,11 @@ theorem exists_irr_le {ρ : Γ →* GL (Fin a) k} {U : Submodule k (Fin a → k)
     by_contra hne
     exact hmin W' ⟨h, hi, hle.trans hWU⟩ (lt_of_le_of_ne hle hne)
 
+/- English proof (translation)
+Establish `hc : (b ⊔ w) ⊓ c = b`. Rewrite using `[sup_inf_assoc_of_le w hb, hw.eq_bot, sup_bot_eq]`. Rewrite using `[disjoint_iff_inf_le]`. Combine the equalities or inequalities in the displayed calculation. Use `le_inf inf_le_left ?_` and prove the remaining obligations.
+
+Conclude with `(le_inf (inf_le_right.trans (sup_comm w b).le) (inf_le_left.trans hx)).trans hc.le`. Use `_ ≤ ⊥ := hxb.le_bot`.
+-/
 theorem disjoint_sup_of_le {α : Type*} [Lattice α] [OrderBot α] [IsModularLattice α] {x b c w : α}
     (hx : x ≤ c) (hb : b ≤ c) (hxb : Disjoint x b) (hw : Disjoint w c) : Disjoint x (w ⊔ b) := by
   have hc : (b ⊔ w) ⊓ c = b := by
@@ -33,6 +49,23 @@ theorem disjoint_sup_of_le {α : Type*} [Lattice α] [OrderBot α] [IsModularLat
         exact (le_inf (inf_le_right.trans (sup_comm w b).le) (inf_le_left.trans hx)).trans hc.le
     _ ≤ ⊥ := hxb.le_bot
 
+/- English proof (translation)
+Proceed by induction on `U using WellFoundedLT.induction with`. Consider the case `_ U ih`. Distinguish the cases in `h0 : U = ⊥`. Conclude with `⟨0, Fin.elim0, fun i => i.elim0, by simp [h0], fun j => j.elim0⟩`. Take `⟨W, hWU, hW⟩` from `exists_irr_le hU h0`.
+
+Take `⟨W', hW'i, hc⟩` from `hρ W hW.2.1`. Establish `hlt : U ⊓ W' < U`. Use `lt_of_le_of_ne inf_le_left fun heq => hW.1 ?_` and prove the remaining obligations. Establish `hle : W ≤ W'` using `hWU.trans (heq.symm ▸ inf_le_right)`. Conclude with `hc.disjoint.eq_bot_of_le hle`.
+
+Take `⟨n, Vs, hind, hsup, hirr⟩` from `ih _ hlt (isInv_inf hU hW'i)`. Establish `hVs : ∀ j, Vs j ≤ U ⊓ W'` using `fun j => hsup ▸ le_iSup Vs j`. Use `⟨n + 1, Fin.cons W Vs, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+
+Use `hc.disjoint.mono_right (iSup₂_le fun j hj => ?_)` and prove the remaining obligations. Use `Fin.cases (fun h => absurd rfl h) (fun j _ => ?_) j hj` and prove the remaining obligations. Simplify using `using (hVs j).trans inf_le_right`. Establish `hle : (⨆ (j) (_ : j ≠ Fin.succ i), (Fin.cons W Vs : Fin (n + 1) → _) j) ≤ W ⊔ ⨆ (j) (_ : j ≠ i), Vs j`. Use `iSup₂_le fun j hj => ?_` and prove the remaining obligations.
+
+Use `Fin.cases (fun _ => ?_) (fun j hj => ?_) j hj` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hji : j ≠ i` using `fun h => hj (h ▸ rfl)`. Simplify using `only [Fin.cons_succ]`. Conclude with `le_sup_of_le_right (le_iSup₂ (f := fun j (_ : j ≠ i) => Vs j) j hji)`.
+
+Simplify using `only [Fin.cons_succ]`. Use `(disjoint_sup_of_le (hVs i) (iSup₂_le fun j _ => hVs j) (hind i) (hc.disjoint.mono_right inf_le_right)).mono_right hle` and prove the remaining obligations. Establish `hS : iSup (Fin.cons W Vs : Fin (n + 1) → Submodule k (Fin a → k)) = W ⊔ iSup Vs`. Use `le_antisymm (iSup_le fun j => ?_) (sup_le ?_ (iSup_le fun j => ?_))` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using `using le_sup_of_le_right (le_iSup Vs j)`. Simplify using `using le_iSup (Fin.cons W Vs : Fin (n + 1) → Submodule k (Fin a → k)) 0`. Simplify using `using le_iSup (Fin.cons W Vs : Fin (n + 1) → Submodule k (Fin a → k)) j.succ`. Rewrite using `[hS, hsup, inf_comm, ← sup_inf_assoc_of_le W' hWU, hc.sup_eq_top, top_inf_eq]`.
+
+Introduce `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using hW`. Simplify using `using hirr j`.
+-/
 theorem exists_decomp {ρ : Γ →* GL (Fin a) k} (hρ : IsSSRep ρ) (U : Submodule k (Fin a → k))
     (hU : IsInv ρ U) : ∃ (n : ℕ) (Vs : Fin n → Submodule k (Fin a → k)),
       iSupIndep Vs ∧ iSup Vs = U ∧ ∀ j, IsIrrSub ρ (Vs j) := by
@@ -80,6 +113,9 @@ theorem exists_decomp {ρ : Γ →* GL (Fin a) k} (hρ : IsSSRep ρ) (U : Submod
 
 end GlobalTheory.SemisimpleDecomp
 
+/- English proof (translation)
+Introduce `k Γ _ _ a ρ hρ`. Take `⟨n, Vs, hind, hsup, hirr⟩` from `GlobalTheory.SemisimpleDecomp.exists_decomp hρ ⊤ (GlobalTheory.SemisimpleDecomp.isInv_top ρ)`. Conclude with `⟨n, Vs, (DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top Vs).2 ⟨hind, hsup⟩, hirr⟩`.
+-/
 theorem GlobalTheory.semisimple_matrix_rep_decomp : ∀ {k Γ : Type} [Field k] [Group Γ] {a : ℕ}
     (ρ : Γ →* GL (Fin a) k), IsSSRep ρ → ∃ (n : ℕ) (Vs : Fin n → Submodule k (Fin a → k)),
       DirectSum.IsInternal Vs ∧ ∀ j, IsIrrSub ρ (Vs j) := by

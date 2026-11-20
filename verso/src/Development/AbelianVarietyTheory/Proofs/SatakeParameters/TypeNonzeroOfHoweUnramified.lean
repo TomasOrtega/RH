@@ -12,6 +12,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Host
 
 namespace GlobalTheory.DownLift.AtReal
 
+/- English proof (translation)
+Introduce `hP hH hX D cf nch tp X j t`. Establish `hR : GlobalTheory.RawLift.RallisConv D` using `GlobalTheory.RawLift.Assembled.rallisConv_of_siegelWeil hP hX.sw D`. Establish `hN : ∀ i t, GlobalTheory.DownLift.NonVan X.R i t` using `fun i t => GlobalTheory.T.howe_unramified_lift hP hX.dbl hX.ft hX.udbl hX.hl hH D X.G X.Pl0 X.T X.A X.Ks X.R X.F X.given X.full i t`. Conclude with `((GlobalTheory.T.liftInj_and_properties_of_rallis_of_nonVan hP hH D X.G X.Pl0 X.T X.A X.Ks X.R X.F X.given X.full hR hN).2 j t).1`.
+-/
 theorem main : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Hk3.HoweUnram → GlobalTheory.NRows.HypothesesX → ∀ (D : D7) (cf : CharFrame D)
     (nch : NChoice D) (tp : TupTied D cf nch) (X : GlobalTheory.NJoin.RealAt D cf nch tp) j t, GlobalTheory.DownLift.TypeNZ X.R j t := by
   intro hP hH hX D cf nch tp X j t

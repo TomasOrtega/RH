@@ -6,6 +6,31 @@ noncomputable section
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `W _ _ _ φ h0 hadd hc`. Establish `hmul : ∀ s t, φ (s + t) = φ s * φ t` using `fun s t => hadd s t`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hball⟩ : ∃ δ > 0, ∀ s : ℝ, |s| < δ → ‖φ s - 1‖ < 1 / 2 := by`. Take `⟨δ, hδ, H⟩` from `Metric.continuous_iff.1 hc 0 (1 / 2) (by norm_num)`. Use `⟨δ, hδ, fun s hs => ?_⟩` and prove the remaining obligations.
+
+Use `H s (by rwa [Real.dist_eq, sub_zero])` as an intermediate fact. Rewrite `this` using `[dist_eq_norm, h0]`. Then use the resulting hypothesis. Use `set h : ℝ := δ / 2 with hh`. Establish `hpos : 0 < h` using `by positivity`. Establish `hint : ∀ a b : ℝ, IntervalIntegrable φ MeasureTheory.volume a b` using `fun a b => hc.intervalIntegrable a b`.
+
+Use `set M : W →L[ℂ] W := ∫ s in (0 : ℝ)..h, φ s with hM`. Establish `hbound : ‖M - h • (1 : W →L[ℂ] W)‖ ≤ 1 / 2 * |h - 0|`. Establish `e : M - h • (1 : W →L[ℂ] W) = ∫ s in (0 : ℝ)..h, (φ s - 1)`. Rewrite using `[intervalIntegral.integral_sub (hint 0 h) intervalIntegrable_const, intervalIntegral.integral_const, sub_zero]`. Rewrite using `[e]`.
+
+Apply `intervalIntegral.norm_integral_le_of_norm_le_const` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[Set.uIoc_of_le hpos.le]`. Use `(hball s ?_).le` and prove the remaining obligations. Rewrite using `[abs_lt]`.
+
+Apply the tactic sequence `constructor <;> linarith [hs.1, hs.2]`. Use `set tt : W →L[ℂ] W := 1 - h⁻¹ • M with htt`. Establish `hnorm : ‖tt‖ < 1`. Establish `e : tt = h⁻¹ • (h • (1 : W →L[ℂ] W) - M)`. Rewrite using `[htt, smul_sub, smul_smul, inv_mul_cancel₀ hpos.ne', one_smul]`.
+
+Rewrite using `[e, norm_smul, norm_sub_rev, Real.norm_eq_abs, abs_inv, abs_of_pos hpos]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_zero, abs_of_pos hpos, ← mul_assoc, mul_comm h⁻¹, mul_assoc, inv_mul_cancel₀ hpos.ne', mul_one]`. Use `_ < 1 := by norm_num`. Set `u0` to `Units.oneSub tt hnorm`.
+
+Establish `hu0 : (u0 : W →L[ℂ] W) = h⁻¹ • M` using `by show 1 - tt = h⁻¹ • M`. Rewrite using `[htt, sub_sub_cancel]`. Use `set G : ℝ → W →L[ℂ] W := fun t => (∫ s in (0 : ℝ)..t + h, φ s) - ∫ s in (0 : ℝ)..t, φ s with hG`. Establish `hφM : ∀ t, φ t * M = G t`. Introduce `t`.
+
+Establish `e1` using `(ContinuousLinearMap.mul ℂ (W →L[ℂ] W) (φ t)).intervalIntegral_comp_comm (hint 0 h)`. Simplify using `only [ContinuousLinearMap.mul_apply'] at e1`. Rewrite using `[hM, ← e1]`. Simplify using `only [hG]`. Rewrite using `[intervalIntegral.integral_interval_sub_left (hint 0 (t + h)) (hint 0 t)]`.
+
+Rewrite using `[show (fun s => φ t * φ s) = fun s => φ (t + s) from funext fun s => (hmul t s).symm, intervalIntegral.integral_comp_add_left φ t, add_zero]`. Establish `hφ : φ = fun t => (h⁻¹ • G t) * (↑u0⁻¹ : W →L[ℂ] W)`. Use function extensionality and compare the values at `t`. Rewrite using `[← hφM t, ← mul_smul_comm, ← hu0, Units.mul_inv_cancel_right]`. Establish `hF : ∀ x, HasDerivAt (fun u => ∫ s in (0 : ℝ)..u, φ s) (φ x) x` using `fun x => (hc.integral_hasStrictDerivAt 0 x).hasDerivAt`.
+
+Use `⟨(h⁻¹ • (φ h - 1)) * (↑u0⁻¹ : W →L[ℂ] W), fun t => ?_⟩` and prove the remaining obligations. Establish `hGd : HasDerivAt G (φ (t + h) - φ t) t` using `((hF (t + h)).comp_add_const t h).sub (hF t)`. Set `R : (W →L[ℂ] W) →L[ℝ] (W →L[ℂ] W)` to `(((ContinuousLinearMap.mul ℂ (W →L[ℂ] W)).flip (↑u0⁻¹ : W →L[ℂ] W)).restrictScalars ℝ)`. Establish `hd` using `R.hasFDerivAt.comp_hasDerivAt t (hGd.const_smul h⁻¹)`. Establish `e : ∀ x, φ x = (⇑R ∘ (h⁻¹ • G)) x`.
+
+Introduce `x`. Rewrite using `[hφ]`. Both sides reduce to the same expression. Establish `e2 : φ t ∘SL ((h⁻¹ • (φ h - 1)) * (↑u0⁻¹ : W →L[ℂ] W)) = R (h⁻¹ • (φ (t + h) - φ t))` using `by show φ t * ((h⁻¹ • (φ h - 1)) * (↑u0⁻¹ : W →L[ℂ] W)) = (h⁻¹ • (φ (t + h) - φ t)) * (↑u0⁻¹ : W →L[ℂ] W)`. Rewrite using `[hmul t h, show φ t * φ h - φ t = φ t * (φ h - 1) by rw [mul_sub, mul_one], ← mul_smul_comm, mul_assoc]`.
+
+Rewrite using `[e2]`. Conclude with `hd.congr_of_eventuallyEq (Filter.Eventually.of_forall e)`.
+-/
 theorem one_parameter_differentiable : Formalism.FourierDecayAlt.Qr.OneParamDiff := by
   intro W _ _ _ φ h0 hadd hc
   have hmul : ∀ s t, φ (s + t) = φ s * φ t := fun s t => hadd s t

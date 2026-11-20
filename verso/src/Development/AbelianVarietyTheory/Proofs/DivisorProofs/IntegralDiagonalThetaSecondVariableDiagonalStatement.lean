@@ -25,6 +25,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open MeasureTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThetaDiagUnfold.integral_thetaSum_schr_diag | exact GlobalTheory.ThetaDiagUnfold.integral_thetaSum_schr_diag | (intros; apply GlobalTheory.ThetaDiagUnfold.integral_thetaSum_schr_diag <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_diagonalTheta_secondVariable_diagonal : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (κ : Type) [Fintype κ],
     letI : MeasurableSpace (κ → AF F) := borel _
     ∀ (μ : MeasureTheory.Measure (κ → AF F)), μ.IsAddHaarMeasure →

@@ -4,6 +4,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hw : IsIso (((SimplicialObject.whiskering _ _).obj (free R)).map f)`. Rewrite using `[NatTrans.isIso_iff_isIso_app]`. Introduce `n`. Conclude with `h n`. Establish `: IsIso ((chainsN R).map f)`.
+
+Unfold `chainsN`. Rewrite using `[Functor.comp_map]`. Use `infer_instance`. Unfold `chains`. Rewrite using `[Functor.comp_map]`.
+
+Use `infer_instance`.
+-/
 theorem EtC.isIso_chains_map_of_isIso_free (R : Type) [CommRing R] {E E' : Spc} (f : E ⟶ E')
     (h : ∀ n, IsIso ((free R).map (f.app n))) : IsIso ((chains R).map f) := by
   have hw : IsIso (((SimplicialObject.whiskering _ _).obj (free R)).map f) := by

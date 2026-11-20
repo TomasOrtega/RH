@@ -21,6 +21,13 @@ namespace GlobalTheory.CoeffNonvanish
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `D n lam`. Use `⟨⟨Formalism.L2.Col.extVV D.what₂.LL lam, Formalism.L2.Col.extVV_mem D.what₂.LL lam⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hmap : MvPolynomial.map D.what₂.embLL (Formalism.L2.Col.extVV D.what₂.LL lam) = 0`.
+
+Apply `GlobalTheory.ExportSeries.eq_zero_of_coefFn_id_eq_zero D n lam` to reduce the goal to its premises. Introduce `x`. Establish `hx` using `h x`. Simplify using `only [coefFn] at hx ⊢`. Rewrite `*` using `[eval₂Hom_map_hom]`.
+
+Simplify using `using hx`. Conclude with `Formalism.L2.Col.extVV_ne_zero D.what₂.LL lam ((map_eq_zero_iff _ (MvPolynomial.map_injective _ D.what₂.embLL.injective)).mp hmap)`.
+-/
 theorem exists_coefFn_ne_zero : ∀ {D : D7} {n : ℕ} (lam : D.what₂.Tau → DomWeight n),
     ∃ (F : VV D.what₂.LL lam) (x : GLR D n), coefFn D.what₂.embLL lam (F : Pol D.what₂.LL D.what₂.Tau n) x ≠ 0 := by
   intro D n lam

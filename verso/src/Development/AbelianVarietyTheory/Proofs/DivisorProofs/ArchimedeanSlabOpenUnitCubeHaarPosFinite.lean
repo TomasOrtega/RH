@@ -17,10 +17,16 @@ variable (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
 
 def intFin : Set (Af F) := {x | ∀ v : HeightOneSpectrum (𝓞 F), x v ∈ v.adicCompletionIntegers F}
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun _ => Valued.isOpen_valuationSubring _)`.
+-/
 theorem isOpen_intFin : IsOpen (intFin F) :=
   RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F)
     (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun _ => Valued.isOpen_valuationSubring _)
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F`. Establish `h` using `isCompact_range (RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (𝓕 := Filter.cofinite)).continuous`. Rewrite `h` using `[RestrictedProduct.range_structureMap]`. Conclude with `h`.
+-/
 theorem isCompact_intFin : IsCompact (intFin F) := by
   haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F
   have h := isCompact_range (RestrictedProduct.isEmbedding_structureMap
@@ -30,6 +36,11 @@ theorem isCompact_intFin : IsCompact (intFin F) := by
   rw [RestrictedProduct.range_structureMap] at h
   exact h
 
+/- English proof (translation)
+Establish `h : archIn F κ (archOut F κ w) i = infAd F (evI F (w i))`. Rewrite using `[archIn_apply, archOut_apply, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Rewrite using `[Pi.sub_apply, h]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(w i).1 - (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ((InfiniteAdeleRing.ringEquiv_mixedSpace F) (w i).1) = 0`. Rewrite using `[RingEquiv.symm_apply_apply, sub_self]`. Express the relevant statement in the definitionally equal form `(w i).2 - 0 = (w i).2`. Rewrite using `[sub_zero]`.
+-/
 theorem sub_archIn_apply (w : κ → AF F) (i : κ) :
     (w - archIn F κ (archOut F κ w)) i = ((0 : Ainf F), (w i).2) := by
   have h : archIn F κ (archOut F κ w) i = infAd F (evI F (w i)) := by
@@ -42,6 +53,19 @@ theorem sub_archIn_apply (w : κ → AF F) (i : κ) :
   · change (w i).2 - 0 = (w i).2
     rw [sub_zero]
 
+/- English proof (translation)
+Establish `hm0 : (m : F) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Establish `hc : algebraMap F (Af F) ((m : F)⁻¹) * (m : Af F) = 1`. Rewrite using `[← map_natCast (algebraMap F (Af F)) m, ← map_mul, inv_mul_cancel₀ hm0, map_one]`. Express the relevant statement in the definitionally equal form `(∀ i, ∃ a : AF F, _ ∧ _ ∧ _) ↔ _`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[sub_archIn_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, -, ha, he⟩`. Establish `h2 : (w i).2 = (m : Af F) * a.2`. Use `congrArg Prod.snd he` as an intermediate fact.
+
+Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `sndA F ((m : AF F) * a) = _`. Rewrite using `[map_mul, map_natCast]`. Both sides reduce to the same expression. Introduce `v`.
+
+Rewrite using `[h2, ← mul_assoc, hc, one_mul]`. Conclude with `ha v`. Introduce `h`. Use `⟨pairA F 0 (algebraMap F (Af F) ((m : F)⁻¹) * (w i).2), ?_, fun v => h v, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace F) 0 = 0`.
+
+Conclude with `map_zero _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Ainf F) = fstA F ((m : AF F) * pairA F 0 (algebraMap F (Af F) ((m : F)⁻¹) * (w i).2))`. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `(0 : Ainf F) = fstA F (m : AF F) * 0`.
+
+Rewrite using `[mul_zero]`. Express the relevant statement in the definitionally equal form `(w i).2 = sndA F ((m : AF F) * pairA F 0 (algebraMap F (Af F) ((m : F)⁻¹) * (w i).2))`. Rewrite using `[map_mul, map_natCast]`. Express the relevant statement in the definitionally equal form `(w i).2 = (m : Af F) * (algebraMap F (Af F) ((m : F)⁻¹) * (w i).2)`. Rewrite using `[← mul_assoc, mul_comm (m : Af F), hc, one_mul]`.
+-/
 theorem mem_slab_iff (m : ℕ) (hm : 0 < m) (w : κ → AF F) :
     w ∈ slab F κ m ↔ ∀ i, algebraMap F (Af F) ((m : F)⁻¹) * (w i).2 ∈ intFin F := by
   have hm0 : (m : F) ≠ 0 := Nat.cast_ne_zero.2 hm.ne'
@@ -74,6 +98,11 @@ theorem mem_slab_iff (m : ℕ) (hm : 0 < m) (w : κ → AF F) :
         change (w i).2 = (m : Af F) * (algebraMap F (Af F) ((m : F)⁻¹) * (w i).2)
         rw [← mul_assoc, mul_comm (m : Af F), hc, one_mul]
 
+/- English proof (translation)
+Establish `: slab F κ m = ⋂ i, (fun w : κ → AF F => algebraMap F (Af F) ((m : F)⁻¹) * (w i).2) ⁻¹' intFin F`. Use extensionality with `w`. Rewrite using `[mem_slab_iff F κ m hm]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `isOpen_iInter_of_finite fun i => (isOpen_intFin F).preimage (continuous_const.mul (continuous_snd.comp (continuous_apply i)))`.
+-/
 theorem isOpen_slab (m : ℕ) (hm : 0 < m) : IsOpen (slab F κ m) := by
   have : slab F κ m = ⋂ i, (fun w : κ → AF F => algebraMap F (Af F) ((m : F)⁻¹) * (w i).2) ⁻¹' intFin F := by
     ext w; rw [mem_slab_iff F κ m hm]; simp
@@ -81,6 +110,9 @@ theorem isOpen_slab (m : ℕ) (hm : 0 < m) : IsOpen (slab F κ m) := by
   exact isOpen_iInter_of_finite fun i => (isOpen_intFin F).preimage
     (continuous_const.mul (continuous_snd.comp (continuous_apply i)))
 
+/- English proof (translation)
+Rewrite using `[mem_slab_iff F κ 1 one_pos]`. Introduce `i v`. Establish `: (archIn F κ t i).2 = 0` using `rfl`. Rewrite using `[this, mul_zero]`. Conclude with `zero_mem _`.
+-/
 theorem archIn_mem_slab (t : Fin (dimA F κ) → ℝ) : archIn F κ t ∈ slab F κ 1 := by
   rw [mem_slab_iff F κ 1 one_pos]
   intro i v
@@ -89,6 +121,17 @@ theorem archIn_mem_slab (t : Fin (dimA F κ) → ℝ) : archIn F κ t ∈ slab F
   exact zero_mem _
 
 open scoped Pointwise in
+/- English proof (translation)
+Introduce `F _ _ κ _`. Use `⟨fun m hm => isOpen_slab F κ m hm, fun μ hμ => ?_⟩` and prove the remaining obligations. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `⟨?_, fun A hA => ?_⟩` and prove the remaining obligations.
+
+Set `U` to `archOut F κ ⁻¹' (Set.univ.pi fun _ => Set.Ioo (0 : ℝ) 1) ∩ slab F κ 1`. Establish `hU : IsOpen U` using `((isOpen_set_pi Set.finite_univ fun _ _ => isOpen_Ioo).preimage (continuous_archOut F κ)).inter (isOpen_slab F κ 1 one_pos)`. Establish `hne : U.Nonempty`. Use `⟨archIn F κ (fun _ => 1 / 2), ?_, archIn_mem_slab F κ _⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, archOut_archIn, Set.mem_pi, Set.mem_univ, true_implies]`.
+
+Apply the tactic sequence `intro _; constructor <;> norm_num`. Use `lt_of_lt_of_le (hU.measure_pos μ hne) (measure_mono ?_)` and prove the remaining obligations. Conclude with `Set.inter_subset_inter_left _ (Set.preimage_mono (Set.pi_mono fun _ _ => Set.Ioo_subset_Icc_self))`. Set `K : Set (κ → AF F)` to `(fun y : κ → Af F => fun i => pairA F 0 (y i)) '' Set.univ.pi fun _ => intFin F`. Establish `hK : IsCompact K`.
+
+Use `(isCompact_univ_pi fun _ => isCompact_intFin F).image (continuous_pi fun i => ?_)` and prove the remaining obligations. Conclude with `(continuous_const.prodMk (continuous_apply i) : Continuous fun y : κ → Af F => ((0 : Ainf F), y i))`. Establish `hsub : archOut F κ ⁻¹' A ∩ slab F κ 1 ⊆ archIn F κ '' A + K`. Introduce and unpack `w ⟨hwA, hw⟩`. Use `Set.mem_add.2 ⟨archIn F κ (archOut F κ w), ⟨_, hwA, rfl⟩, w - archIn F κ (archOut F κ w), ⟨fun i => (w i).2, fun i _ => ?_, funext fun i => (sub_archIn_apply F κ w i).symm⟩, add_sub_cancel _ _⟩` and prove the remaining obligations.
+
+Establish `h` using `(mem_slab_iff F κ 1 one_pos w).1 hw i`. Rewrite `h` using `[Nat.cast_one, inv_one, map_one, one_mul]`. Then use the resulting hypothesis. Conclude with `((measure_mono hsub).trans_lt ((hA.image (continuous_archIn F κ)).add hK).measure_lt_top).ne`.
+-/
 theorem slab_open_cube_pos_finite : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], (∀ m : ℕ, 0 < m → IsOpen (slab F κ m)) ∧ ∀ (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → 0 < μ (archOut F κ ⁻¹' cube (dimA F κ) ∩ slab F κ 1) ∧ ∀ A : Set (Fin (dimA F κ) → ℝ), IsCompact A → μ (archOut F κ ⁻¹' A ∩ slab F κ 1) ≠ ⊤ := by
   intro F _ _ κ _
   refine ⟨fun m hm => isOpen_slab F κ m hm, fun μ hμ => ?_⟩

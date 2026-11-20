@@ -11,15 +11,28 @@ open Formalism.L2.GlobalTheoryTheory Formalism.MainNotions
 
 def dens (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) (z : ℂ) : ℝ := ‖G z‖ ^ 2 * Real.exp (-Real.pi * (H1 Λ z z).re)
 
+/- English proof (translation)
+Unfold `H1`. Rewrite using `[Complex.div_ofReal_re, Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermitian_form_re_eq (Λ : AddSubgroup ℂ) (z w : ℂ) : (H1 Λ z w).re = (z.re * w.re + z.im * w.im) / TaylorLogMetric.area Λ := by
   unfold H1
   rw [Complex.div_ofReal_re, Complex.mul_re, Complex.conj_re, Complex.conj_im]
   ring
 
+/- English proof (translation)
+Unfold `al1`. Rewrite using `[norm_zpow, norm_neg, norm_one, one_zpow]`.
+-/
 theorem norm_cm_sign_eq_one (d : ℕ) (Λ : AddSubgroup ℂ) (x : ℂ) : ‖al1 d Λ x‖ = 1 := by
   unfold al1
   rw [norm_zpow, norm_neg, norm_one, one_zpow]
 
+/- English proof (translation)
+Introduce `d Λ G hG x hx z`. Establish `h` using `congrArg norm (hG.2.1 x hx z)`. Unfold `U1 at h`. Rewrite `h` using `[norm_mul, norm_cm_sign_eq_one, one_mul, norm_mul, Complex.norm_exp]`. Establish `hr : (-(Real.pi : ℂ) * H1 Λ z x - (Real.pi : ℂ) * H1 Λ x x / 2).re = -Real.pi * (H1 Λ z x).re - Real.pi / 2 * (H1 Λ x x).re`.
+
+Establish `: (-(Real.pi : ℂ) * H1 Λ z x - (Real.pi : ℂ) * H1 Λ x x / 2) = ((-Real.pi : ℝ) : ℂ) * H1 Λ z x - ((Real.pi / 2 : ℝ) : ℂ) * H1 Λ x x` using `by push_cast; ring`. Rewrite using `[this, Complex.sub_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Rewrite `h` using `[hr]`. Rewrite using `[← h, mul_pow, ← Real.exp_nat_mul, mul_assoc, ← Real.exp_add]`. Use `congr 2`.
+
+Simplify using `only [hermitian_form_re_eq, Complex.add_re, Complex.add_im]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem density_periodic_holds : DensityPeriodic := by
   intro d Λ G hG x hx z
   have h := congrArg norm (hG.2.1 x hx z)
@@ -37,26 +50,41 @@ theorem density_periodic_holds : DensityPeriodic := by
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `dens`. Simplify using `only [hermitian_form_re_eq]`. Use `fun_prop`.
+-/
 theorem dens_continuous (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) (hG : Continuous G) : Continuous (dens Λ G) := by
   unfold dens
   simp only [hermitian_form_re_eq]
   fun_prop
 
+/- English proof (translation)
+Unfold `dens`. Check the signs of the components of the expression.
+-/
 theorem dens_nonneg (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) (z : ℂ) : 0 ≤ dens Λ G z := by
   unfold dens; positivity
 
+/- English proof (translation)
+Establish `: g +ᵥ z = z + (g : ℂ)` using `by rw [add_comm]; rfl`. Rewrite using `[this]`. Conclude with `density_periodic_holds d Λ G hG g g.2 z`.
+-/
 theorem dens_vadd (d : ℕ) (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) (hG : IsTheta0 d Λ G) (g : Λ) (z : ℂ) :
     dens Λ G (g +ᵥ z) = dens Λ G z := by
   have : g +ᵥ z = z + (g : ℂ) := by rw [add_comm]; rfl
   rw [this]
   exact density_periodic_holds d Λ G hG g g.2 z
 
+/- English proof (translation)
+Establish `h` using `ZSpan.isAddFundamentalDomain' L.basis (volume : Measure ℂ)`. Rewrite `h` using `[← L.lattice_eq_span_range_basis]`. Conclude with `h`.
+-/
 theorem fd0 (L : PeriodPair) :
     IsAddFundamentalDomain L.lattice.toAddSubgroup (ZSpan.fundamentalDomain L.basis) volume := by
   have h := ZSpan.isAddFundamentalDomain' L.basis (volume : Measure ℂ)
   rw [← L.lattice_eq_span_range_basis] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[← F.areaCovolume L]`. Conclude with `(ZLattice.covolume_eq_measure_fundamentalDomain L.lattice volume h).symm`.
+-/
 theorem vol_real (L : PeriodPair) (Fd : Set ℂ) (h : IsAddFundamentalDomain L.lattice.toAddSubgroup Fd volume) :
     (volume : Measure ℂ).real Fd = F.area L := by
   rw [← F.areaCovolume L]
@@ -64,11 +92,19 @@ theorem vol_real (L : PeriodPair) (Fd : Set ℂ) (h : IsAddFundamentalDomain L.l
 
 instance (L : PeriodPair) : Countable L.lattice.toAddSubgroup := (inferInstance : Countable L.lattice)
 
+/- English proof (translation)
+Establish `hb` using `ZSpan.fundamentalDomain_isBounded L.basis`. Conclude with `((dens_continuous _ G hG).continuousOn.integrableOn_compact hb.isCompact_closure).mono_set subset_closure`.
+-/
 theorem density_integrable_fundDomain (L : PeriodPair) (G : ℂ → ℂ) (hG : Continuous G) :
     IntegrableOn (dens L.lattice.toAddSubgroup G) (ZSpan.fundamentalDomain L.basis) volume := by
   have hb := ZSpan.fundamentalDomain_isBounded L.basis
   exact ((dens_continuous _ G hG).continuousOn.integrableOn_compact hb.isCompact_closure).mono_set subset_closure
 
+/- English proof (translation)
+Establish `hs` using `Classical.epsilon_spec (p := fun Fd : Set ℂ => IsAddFundamentalDomain L.lattice.toAddSubgroup Fd volume) ⟨_, fd0 L⟩`. Use `⟨_, hs, ?_⟩` and prove the remaining obligations. Unfold `normSq1`. Simplify using `only`. Rewrite using `[setAverage_eq, vol_real L _ hs, smul_eq_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem normSq1_eq (L : PeriodPair) (G : ℂ → ℂ) :
     ∃ Fd, IsAddFundamentalDomain L.lattice.toAddSubgroup Fd volume ∧
       normSq1 L.lattice.toAddSubgroup G = (F.area L)⁻¹ * ∫ z in Fd, dens L.lattice.toAddSubgroup G z := by
@@ -79,6 +115,13 @@ theorem normSq1_eq (L : PeriodPair) (G : ℂ → ℂ) :
   rw [setAverage_eq, vol_real L _ hs, smul_eq_mul]
   rfl
 
+/- English proof (translation)
+Introduce and unpack `d Λ G Fd ⟨L, rfl⟩ hG hFd`. Establish `hv` using `vol_real L Fd hFd`. Establish `hpos` using `F.areaPos L`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[area_eq_holds L, ← hv]`.
+
+Use `(ENNReal.ofReal_toReal ?_).symm` and prove the remaining obligations. Introduce `htop`. Rewrite `hv` using `[Measure.real, htop, ENNReal.toReal_top]`. Conclude with `absurd hv hpos.ne`. Conclude with `(hFd.integrableOn_iff (fd0 L) (dens_vadd d _ G hG)).mpr (density_integrable_fundDomain L G hG.1.continuous)`.
+
+Take `⟨Fe, hFe, he⟩` from `normSq1_eq L G`. Rewrite using `[he, area_eq_holds L, hFe.setIntegral_eq hFd (dens_vadd d _ G hG)]`. Both sides reduce to the same expression.
+-/
 theorem norm_any_holds : NormAny := by
   rintro d Λ G Fd ⟨L, rfl⟩ hG hFd
   have hv := vol_real L Fd hFd
@@ -94,6 +137,17 @@ theorem norm_any_holds : NormAny := by
     rw [he, area_eq_holds L, hFe.setIntegral_eq hFd (dens_vadd d _ G hG)]
     rfl
 
+/- English proof (translation)
+Introduce and unpack `d Λ G ⟨L, rfl⟩ hG`. Take `⟨-, hint, he⟩` from `norm_any_holds d _ G _ ⟨L, rfl⟩ hG (fd0 L)`. Rewrite using `[he]`. Use `mul_pos (inv_pos.mpr (area_pos_lattice_holds _ ⟨L, rfl⟩)) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 < ∫ z in ZSpan.fundamentalDomain L.basis, dens L.lattice.toAddSubgroup G z`.
+
+Rewrite using `[setIntegral_pos_iff_support_of_nonneg_ae (Filter.Eventually.of_forall (dens_nonneg _ G)) hint]`. Rewrite using `[pos_iff_ne_zero]`. Introduce `h0`. Establish `hinv : ∀ g : L.lattice.toAddSubgroup, g +ᵥ Function.support (dens L.lattice.toAddSubgroup G) = Function.support (dens L.lattice.toAddSubgroup G)`. Introduce `g`.
+
+Use extensionality with `x`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem, Function.mem_support, Function.mem_support, dens_vadd d _ G hG]`. Establish `hz` using `(fd0 L).measure_zero_of_invariant _ hinv h0`. Establish `hopen : IsOpen (Function.support (dens L.lattice.toAddSubgroup G))` using `(dens_continuous _ G hG.1.continuous).isOpen_support`. Establish `hne : (Function.support (dens L.lattice.toAddSubgroup G)).Nonempty`.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.mem_support]`. Unfold `dens`. Rewrite using `[hG.2.2, norm_one, one_pow, one_mul]`. Conclude with `(Real.exp_pos _).ne'`.
+
+Conclude with `(hopen.measure_pos volume hne).ne' hz`.
+-/
 theorem norm_pos_holds : NormPos := by
   rintro d Λ G ⟨L, rfl⟩ hG
   obtain ⟨-, hint, he⟩ := norm_any_holds d _ G _ ⟨L, rfl⟩ hG (fd0 L)

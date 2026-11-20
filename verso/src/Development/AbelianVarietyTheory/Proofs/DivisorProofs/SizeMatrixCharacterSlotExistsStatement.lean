@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SizeMatrixCharacter
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CellFunctorOfCharCentral
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.AdelicU GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.LeviBlockExponent GlobalTheory.LeviBlockExponentLocal GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrability
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LeviBlockExponentLocal.norm_cellScalar_positionElt | exact GlobalTheory.LeviBlockExponentLocal.norm_cellScalar_positionElt | (intros; apply GlobalTheory.LeviBlockExponentLocal.norm_cellScalar_positionElt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_size_matrix_character : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (N i : ℕ) (b : Fin 2 → ℕ) (χ : Fin 2 → kˣ →* ℂˣ), (∀ j y, ‖((χ j y : ℂˣ) : ℂ)‖ = 1) → ∀ (ϖ : kˣ)
     (bm : SizeMatrix (fun j : Fin 2 => Fin (b j)) (fun j : Fin (i + 2) => Fin (blockSizes₂ N i j)))

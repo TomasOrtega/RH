@@ -5,6 +5,15 @@ open scoped Topology
 
 namespace GlobalTheory.CompanionTheory.RowSect
 
+/- English proof (translation)
+Establish `hs : LinearIndepOn k id ({ξ} : Set (Fin (m + 1) → k))` using `(linearIndepOn_singleton_iff k).2 hξ`. Establish `hmem : ξ ∈ hs.extend (Set.subset_univ _)` using `Module.Basis.subset_extend hs (Set.mem_singleton ξ)`. Establish `hcard : Fintype.card (hs.extend (Set.subset_univ _)) = m + 1`. Rewrite using `[← Module.finrank_eq_card_basis (Module.Basis.extend hs), Module.finrank_fin_fun]`. Set `e₀` to `Fintype.equivFinOfCardEq hcard`.
+
+Set `e` to `e₀.trans (Equiv.swap (e₀ ⟨ξ, hmem⟩) (Fin.last m))`. Establish `he : e.symm (Fin.last m) = ⟨ξ, hmem⟩`. Rewrite using `[Equiv.symm_apply_eq]`. Simplify using `[e]`. Set `b` to `(Module.Basis.extend hs).reindex e`.
+
+Establish `hlast : b (Fin.last m) = ξ`. Simplify using `only [b, Module.Basis.reindex_apply, he, Module.Basis.extend_apply_self]`. Establish `hu : IsUnit (Matrix.of fun i j => b i j)` using `Matrix.linearIndependent_rows_iff_isUnit.1 b.linearIndependent`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, single_vecMul, one_smul]`.
+
+Conclude with `hlast`.
+-/
 theorem exists_GL_last_row (k : Type) [Field k] (m : ℕ) (ξ : Fin (m + 1) → k) (hξ : ξ ≠ 0) :
     ∃ h : GL (Fin (m + 1)) k,
       (Pi.single (Fin.last m) 1 : Fin (m + 1) → k) ᵥ* (h : Matrix (Fin (m + 1)) (Fin (m + 1)) k) = ξ := by

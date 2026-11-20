@@ -10,21 +10,35 @@ namespace GlobalTheory.VacLine.RhoSlice
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[smul_eq_mul, mul_left_comm, ← smul_eq_mul u b, hb u hu, mul_zero]`.
+-/
 theorem at_mul {v : Pl F} {b : AF F} (hb : At (evFin F v) b) (a : AF F) : At (evFin F v) (a * b) := by
   intro u hu
   rw [smul_eq_mul, mul_left_comm, ← smul_eq_mul u b, hb u hu, mul_zero]
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[smul_add, ha u hu, hb u hu, add_zero]`.
+-/
 theorem at_add {v : Pl F} {a b : AF F} (ha : At (evFin F v) a) (hb : At (evFin F v) b) :
     At (evFin F v) (a + b) := by
   intro u hu
   rw [smul_add, ha u hu, hb u hu, add_zero]
 
+/- English proof (translation)
+Introduce `u hu`. Simplify using `only [dotProduct, Finset.smul_sum]`. Conclude with `Finset.sum_eq_zero fun i _ => at_mul (hb i) (a i) u hu`.
+-/
 theorem at_dot {κ : Type} [Fintype κ] {v : Pl F} (a b : κ → AF F) (hb : ∀ i, At (evFin F v) (b i)) :
     At (evFin F v) (a ⬝ᵥ b) := by
   intro u hu
   simp only [dotProduct, Finset.smul_sum]
   exact Finset.sum_eq_zero fun i _ => at_mul (hb i) (a i) u hu
 
+/- English proof (translation)
+Use `af_ext fun u => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Rewrite using `[evalV_singleFin_self, evalV_singleFin_self, one_mul]`.
+
+Rewrite using `[evalV_singleFin_ne h, evalV_singleFin_ne h, zero_mul]`.
+-/
 theorem singleFin_one_mul (v : Pl F) (y : Af F) : singleFin v 1 * y = singleFin v (evalV F v y) := by
   refine af_ext fun u => ?_
   rw [map_mul]
@@ -32,10 +46,18 @@ theorem singleFin_one_mul (v : Pl F) (y : Af F) : singleFin v 1 * y = singleFin 
   · subst h; rw [evalV_singleFin_self, evalV_singleFin_self, one_mul]
   · rw [evalV_singleFin_ne h, evalV_singleFin_ne h, zero_mul]
 
+/- English proof (translation)
+The claim follows from `evalV_singleFin_self v c`.
+-/
 theorem evFin_inr_singleFin (v : Pl F) (c : Fv F v) :
     evFin F v (LinearMap.inr F (Ainf F) (Af F) (singleFin v c)) = c :=
   evalV_singleFin_self v c
 
+/- English proof (translation)
+Establish `h1` using `ha (1 - (show AF F from LinearMap.inr F (Ainf F) (Af F) (singleFin v 1))) (by rw [map_sub, map_one, evFin_inr_singleFin, sub_self])`. Rewrite `h1` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`. Use `h1.trans (Prod.ext ?_ ?_)` and prove the remaining obligations. Use `show (0 : Ainf F) * a.1 = 0`. Conclude with `zero_mul _`.
+
+Use `show singleFin v 1 * a.2 = singleFin v (evFin F v a)`. Conclude with `singleFin_one_mul v a.2`.
+-/
 theorem eq_inr_of_at {v : Pl F} {a : AF F} (ha : At (evFin F v) a) :
     a = LinearMap.inr F (Ainf F) (Af F) (singleFin v (evFin F v a)) := by
   have h1 := ha (1 - (show AF F from LinearMap.inr F (Ainf F) (Af F) (singleFin v 1)))
@@ -47,6 +69,9 @@ theorem eq_inr_of_at {v : Pl F} {a : AF F} (ha : At (evFin F v) a) :
   · show singleFin v 1 * a.2 = singleFin v (evFin F v a)
     exact singleFin_one_mul v a.2
 
+/- English proof (translation)
+Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_ofNat (evFin F v) 2, ← map_mul, invOf_mul_self, map_one]`.
+-/
 theorem evFin_invOf_two (v : Pl F) : evFin F v (⅟(2 : AF F)) = (2 : Fv F v)⁻¹ := by
   refine eq_inv_of_mul_eq_one_left ?_
   rw [← map_ofNat (evFin F v) 2, ← map_mul, invOf_mul_self, map_one]
@@ -55,6 +80,11 @@ end GlobalTheory.VacLine.RhoSlice
 
 namespace GlobalTheory.VacLine.RhoSlice
 
+/- English proof (translation)
+Establish `h : ∀ u : AF F, evFin F v u = 0 → u • M.co.e w = 0` using `fun u hu => by`. Rewrite using `[← LinearEquiv.map_smul, hw u hu, map_zero]`. Use `⟨fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Use `congrArg (fun p => p.1 i) (h u hu)` as an intermediate fact. Simplify using `using this`.
+
+Use `congrArg (fun p => p.2 i) (h u hu)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem at_coord {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) {v : Pl F} {w : Matrix (Fin n) (Fin d) (AE F E)}
     (hw : At (evFin F v) w) (i : Fin n × Fin d) :
@@ -67,6 +97,13 @@ theorem at_coord {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   · have := congrArg (fun p => p.2 i) (h u hu)
     simpa using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ v w hw Φ x`. Use function extensionality and compare the values at `y`. Establish `hc` using `at_coord M hw`. Establish `hz : At (evFin F v) (mkPt x y ⬝ᵥ (M.co.e w).2 + ⅟(2 : AF F) * ((M.co.e w).1 ⬝ᵥ (M.co.e w).2))` using `at_add (at_dot _ _ fun i => (hc i).2) (at_mul (at_dot _ _ fun i => (hc i).2) _)`. Use `show ψ (mkPt x y ⬝ᵥ (M.co.e w).2 + ⅟(2 : AF F) * ((M.co.e w).1 ⬝ᵥ (M.co.e w).2)) * Φ (mkPt x y + (M.co.e w).1) = _`.
+
+Rewrite using `[show ψ (mkPt x y ⬝ᵥ (M.co.e w).2 + ⅟(2 : AF F) * ((M.co.e w).1 ⬝ᵥ (M.co.e w).2)) = psiLoc ψ v (evFin F v (mkPt x y ⬝ᵥ (M.co.e w).2 + ⅟(2 : AF F) * ((M.co.e w).1 ⬝ᵥ (M.co.e w).2))) from congrArg ψ (eq_inr_of_at hz)]`. Unfold `finOp slice locPt`. Use `congr 2`. Simplify using `only [dotProduct, map_add, map_mul, map_sum, evFin_invOf_two, evFin_mkPt]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use function extensionality and compare the values at `i show mkPt x y i + (M.co.e w).1 i = _`. Rewrite using `[eq_inr_of_at (hc i).1]`. Conclude with `Prod.ext (add_zero _) rfl`.
+-/
 theorem rho_slice : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl F)
     (w : Matrix (Fin n) (Fin d) (AE F E)), At (evFin F v) w →

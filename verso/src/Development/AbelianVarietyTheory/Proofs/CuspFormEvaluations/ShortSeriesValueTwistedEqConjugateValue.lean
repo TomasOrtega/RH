@@ -10,6 +10,9 @@ open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.GalTw
 
+/- English proof (translation)
+Substitute `hK` using the available equality. Conclude with `GlobalTheory.NabUniqCompare.thExprUniqSt_iff_top.1 (Formalism.MainNotions.ModuliIntegralCharts.H1.thExprUniq_of_chartIndep2 hC) E H Dw l Xo c nab nab' h h' S y k n G P ⟨(GlobalTheory.NabUniqCompare.isHarmonic_iff_cmType c P).2 hP.1, hP.2.1, a, hP.2.2⟩`.
+-/
 theorem colSum_eq_of_isNab (hC : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2) {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)]
     (nab nab' : NabV Xo c) (h : IsNab Xo c nab) (h' : IsNab Xo c nab') {n : ℕ} (a : (E →+* ℂ) × ℕ → ℕ)
@@ -24,15 +27,34 @@ theorem colSum_eq_of_isNab (hC : Formalism.MainNotions.ModuliIntegralCharts.H1.C
     nab nab' h h' S y k n G P
     ⟨(GlobalTheory.NabUniqCompare.isHarmonic_iff_cmType c P).2 hP.1, hP.2.1, a, hP.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun τ a => (ta.symm_apply_eq).2 (h.emb τ a).symm, fun a => (ta.symm_apply_eq).2 (h.base a).symm⟩`.
+-/
 theorem coeffAutFixesCMConjugatesAndBase_symm {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : Host E} {l : Level H} {c : Coeff l} {ta : c.F ≃+* c.F} (h : Fixes c ta) : Fixes c ta.symm :=
   ⟨fun τ a => (ta.symm_apply_eq).2 (h.emb τ a).symm, fun a => (ta.symm_apply_eq).2 (h.base a).symm⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `algebraMap K S (ta.symm (ta x)) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+-/
 theorem algebraMap_tw_symm {K : Type} [Field K] (ta : K ≃+* K) (S : Type) [CommRing S] [Algebra K S] (x : K) :
     (algebraMap K (Tw ta.symm S) (ta x)).val = algebraMap K S x := by
   change algebraMap K S (ta.symm (ta x)) = _
   rw [RingEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Introduce `hC E _ _ _ H Dw l Xo c ta h _ nab hnab n a P hP w Λ b N S _ _ y v hv`. Take `⟨S', i1, i2, φ, y', z, tp, F, hff, hmap, hz, hgeo, htp, hF, hv⟩` from `hv`. Establish `h' : Fixes c ta.symm` using `coeffAutFixesCMConjugatesAndBase_symm h`. Establish `hnab'` using `GlobalTheory.GalTw.isNab_twist E H Dw l Xo c ta.symm h' nab hnab`. Set `φ' : S →ₐ[c.F] Tw ta.symm S'` to `{ toRingHom := φ.toRingHom commutes' := fun x => by`.
+
+Use `φ.commutes (ta.symm x)` as an intermediate fact. Express the relevant statement in the definitionally equal form `φ (algebraMap c.F S (ta (ta.symm x))) = _ at this`. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `this }`. Establish `hinj : Function.Injective (ta : c.F →+* c.F)` using `ta.injective`.
+
+Establish `hsupp : (MvPolynomial.map (ta : c.F →+* c.F) P).support = P.support` using `MvPolynomial.support_map_of_injective P hinj`. Establish `hdeg : (MvPolynomial.map (ta : c.F →+* c.F) P).totalDegree = P.totalDegree`. Unfold `MvPolynomial.totalDegree`. Rewrite using `[hsupp]`. Use `⟨Tw ta.symm S', inferInstance, inferInstance, φ', twPt h' y', z, tp, F, hff, hmap, hz, hgeo, htp, hF, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (ta b)⁻¹ * ((Λ.mIdx N (Dw.p + Dw.q) : c.F))⁻¹ * ((Nat.card (Fin n → LevQ Dw l) : c.F))⁻¹ * ((N : c.F) ^ P.totalDegree)⁻¹ = ta (b⁻¹ * ((Λ.mIdx N (Dw.p + Dw.q) : c.F))⁻¹ * ((Nat.card (Fin n → LevQ Dw l) : c.F))⁻¹ * ((N : c.F) ^ P.totalDegree)⁻¹)`. Simplify using `only [map_mul, map_inv₀, map_pow, map_natCast]`. Rewrite using `[hsupp, hdeg, e1]`. Use `hv.trans ?_` and prove the remaining obligations. Use `congrArg₂ (fun s t : S' => s * t) (algebraMap_tw_symm ta S' _).symm ?_` and prove the remaining obligations.
+
+Use `finsum_congr fun q => ?_` and prove the remaining obligations. Use `congrArg₂ (fun s t : S' => s * t) (algebraMap_tw_symm ta S' _).symm ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `(colSum_eq_of_isNab hC Xo c _ _ hnab hnab' a P hP S' y' _ (N ^ 2) (Nat.cast_pow N 2).symm (F q i)).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.coeff_map]`. Conclude with `congrArg₂ (fun s t : S' => s * t) (algebraMap_tw_symm ta S' _).symm rfl`.
+-/
 theorem shortValAt_conj : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (ta : c.F ≃+* c.F) (h : Fixes c ta), ∀ [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (n : ℕ) (a : (E →+* ℂ) × ℕ → ℕ), ∀ P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)), ∀ (w : (Fin n → LevQ Dw l) → c.F) (Λ : GenLat E n) (b : c.F) (N : ℕ) (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (v : Tw ta S), ShortValAt Xo c nab w Λ b N P (twPt h y) v → ShortValAt Xo c nab (fun q => ta (w q)) Λ (ta b) N (MvPolynomial.map (ta : c.F →+* c.F) P) y v.val := by
   intro hC E _ _ _ H Dw l Xo c ta h _ nab hnab n a P hP w Λ b N S _ _ y v hv
   obtain ⟨S', i1, i2, φ, y', z, tp, F, hff, hmap, hz, hgeo, htp, hF, hv⟩ := hv

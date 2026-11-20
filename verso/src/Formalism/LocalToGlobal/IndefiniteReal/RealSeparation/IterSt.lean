@@ -164,6 +164,9 @@ def TwoModel (D : D7) : Prop :=
           (embP S T CS' (HMul.hMul (C.map (incA D)) p))) *
         modelA ψ S T C C' T0 B0 CS S0 BS μ 𝓕 μS 𝓕S f k z ∂ν
 
+/- English proof (translation)
+Introduce `g0 g h _ f _`. Simplify using the standard rewrite rules.
+-/
 example (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {ρ : ℕ} (CS CS' : Matrix (Fin S.rank) (Fin ρ) D.host.E)
     (S0 : HSp D) (BS : Matrix (Fin S.rank) (Fin S0.rank) D.host.E) (μ : Measure (Mx D T.rank ρ))
     (𝓕 : Set (Mx D T.rank ρ)) : IsDescSOf ψ S T CS CS' S0 BS μ 𝓕 1 1 := by

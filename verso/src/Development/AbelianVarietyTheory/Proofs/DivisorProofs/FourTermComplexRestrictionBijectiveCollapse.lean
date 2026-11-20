@@ -12,6 +12,9 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.CxCoh.Collapse
 
+/- English proof (translation)
+Establish `wi : Function.Injective w` using `fun y y' h ↦ bE.1 (by rw [hE, hE, h])`. Use `⟨fun x x' h ↦ bU.1 (by rw [hU, hU, h]), fun y ↦ ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `bU.2 (w y)`. Conclude with `⟨x, wi (by rw [← hU, hx])⟩`.
+-/
 theorem bij_of_two {A B X Y : Type*} (r : A → B) (w : B → X) (s : X → Y) (U : A → X) (E : B → Y)
     (hU : ∀ x, U x = w (r x)) (hE : ∀ y, E y = s (w y))
     (bU : Function.Bijective U) (bE : Function.Bijective E) : Function.Bijective r := by
@@ -108,6 +111,19 @@ end GlobalTheory.CxCoh.Collapse
 
 open GlobalTheory.CxCoh.Collapse in
 
+/- English proof (translation)
+Introduce `C _ D _ K ℓ q S u w ε hu hε`. Set `U` to `uMap K S u`. Set `W` to `wMap K ℓ q S w`. Set `E` to `eMap K ℓ q S w ε`. Establish `jU : U.Joined (K.resMap S) u` using `⟨fun _ _ ↦ rfl, fun _ _ ↦ rfl, fun _ _ ↦ rfl⟩`.
+
+Establish `jW : ((K.resMap ℓ).comp W).Joined (K.resMap S) w` using `⟨fun _ _ ↦ rfl, fun _ _ ↦ rfl, fun _ _ ↦ rfl⟩`. Establish `jE : E.Joined (W.comp ((K.res S).resMap ℓ)) ε` using `⟨fun _ x ↦ (K.M0.map_comp _ _ x).symm, fun _ x ↦ (K.M1.map_comp _ _ x).symm, fun _ x ↦ (K.M2.map_comp _ _ x).symm⟩`. Establish `qU : U.QAll` using `hu`. Establish `qE : E.QAll` using `hε`. Establish `a0U` using `GlobalTheory.T.vertical_h0_bijective_h1_injective_universes.1 U qU`.
+
+Establish `a1U` using `GlobalTheory.T.vertical_h1_surjective_universes.1 U qU`. Establish `a2U` using `GlobalTheory.T.vertical_h2_injective_three_universe_pairs.1 U qU`. Establish `a3U` using `GlobalTheory.T.vertical_h2_surjective_universes.1 U qU`. Establish `a0E` using `GlobalTheory.T.vertical_h0_bijective_h1_injective_universes.2.2 E qE`. Establish `a1E` using `GlobalTheory.T.vertical_h1_surjective_universes.2.2 E qE`.
+
+Establish `a2E` using `GlobalTheory.T.vertical_h2_injective_three_universe_pairs.2.2 E qE`. Establish `a3E` using `GlobalTheory.T.vertical_h2_surjective_universes.2.2 E qE`. Establish `oU` using `GlobalTheory.T.joinedMapsAgreeCohomologyZeroOne_instances.1 _ _ _ jU`. Establish `oW` using `GlobalTheory.T.joinedMapsAgreeCohomologyZeroOne_instances.1 _ _ _ jW`. Establish `oE` using `GlobalTheory.T.joinedMapsAgreeCohomologyZeroOne_instances.2.2 _ _ _ jE`.
+
+Establish `tU` using `GlobalTheory.T.joinedMapsAgreeCohomologyTwo_instances.1 _ _ _ jU`. Establish `tW` using `GlobalTheory.T.joinedMapsAgreeCohomologyTwo_instances.1 _ _ _ jW`. Establish `tE` using `GlobalTheory.T.joinedMapsAgreeCohomologyTwo_instances.2.2 _ _ _ jE`. Use `⟨bij_of_two _ W.h0 ((K.res S).resMap ℓ).h0 U.h0 E.h0 (fun x ↦ ?_) (fun y ↦ ?_) a0U.1 a0E.1, bij_of_two _ W.h1 ((K.res S).resMap ℓ).h1 U.h1 E.h1 (fun x ↦ ?_) (fun y ↦ ?_) ⟨a0U.2, a1U⟩ ⟨a0E.2, a1E⟩, bij_of_two _ W.h2 ((K.res S).resMap ℓ).h2 U.h2 E.h2 (fun x ↦ ?_) (fun y ↦ ?_) ⟨a2U, …` and prove the remaining obligations. Rewrite using `[oU.1, ← oW.1, CxMap.cohomZero_pullback_comp]`.
+
+Rewrite using `[oE.1, CxMap.cohomZero_pullback_comp]`. Rewrite using `[oU.2, ← oW.2, CxMap.cohomOne_pullback_comp]`. Rewrite using `[oE.2, CxMap.cohomOne_pullback_comp]`. Rewrite using `[tU, ← tW, CxMap.cohomTwo_pullback_comp]`. Rewrite using `[tE, CxMap.cohomTwo_pullback_comp]`.
+-/
 theorem GlobalTheory.CxCoh.collapse_resMap_bij : ∀ (C : Type 1) [Category.{0} C] (D : Type) [Category.{0} D] (K : Cx C) (ℓ : D ⥤ C)
     (q : C ⥤ D) (S : C ⥤ C) (u : 𝟭 C ⟶ S) (w : q ⋙ ℓ ⟶ S) (ε : 𝟭 D ⟶ ℓ ⋙ q), (∀ T, K.QAt (u.app T)) →
     (∀ U, K.QAt (ℓ.map (ε.app U) ≫ w.app (ℓ.obj U))) → (K.resMap ℓ).Bij := by

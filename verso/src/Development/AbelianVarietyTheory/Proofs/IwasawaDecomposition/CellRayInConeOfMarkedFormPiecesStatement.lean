@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOr
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PullAddInjective
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolFan.OrbMark
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PolFan.OrbMark.exists_coord_pullAdd_of_pos | exact GlobalTheory.PolFan.OrbMark.exists_coord_pullAdd_of_pos | (intros; apply GlobalTheory.PolFan.OrbMark.exists_coord_pullAdd_of_pos <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cell_ray_in_cone_of_marked_form_pieces : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (φ : InvFun (𝓞 E)), IsTwInv H φ →
   ∀ {X₀ : Type} [AddCommGroup X₀] [Module (𝓞 E) X₀] [Module.Finite (𝓞 E) X₀] {m₀ : ℕ} (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀),
   IsCell H.bar φ δ₀ → LinearIndependent ℤ δ₀ →

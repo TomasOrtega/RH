@@ -18,12 +18,42 @@ noncomputable section
 
 namespace GlobalTheory.HilbFam.TwistSize
 
+/- English proof (translation)
+Rewrite using `[stdLat, Submodule.mem_pi]`. Introduce `j _`. Conclude with `Submodule.mem_one.2 ⟨(z j : 𝓞 F), by simp⟩`.
+-/
 theorem intVec_mem_std {F : Type} [Field F] [NumberField F] (z : Fin 2 → ℤ) :
     (fun j ↦ ((z j : ℤ) : F)) ∈ stdLat F := by
   rw [stdLat, Submodule.mem_pi]
   intro j _
   exact Submodule.mem_one.2 ⟨(z j : 𝓞 F), by simp⟩
 
+/- English proof (translation)
+Introduce `l _ lam F _ _ _ N n L α ρ₀ hLs hnL hL hN`. Establish `hR` using `GlobalTheory.T.algebraicValuationAtLeastAtEmbedding_ring_ops l lam`. Establish `hZ` using `GlobalTheory.T.algebraicValuationAtLeast_basic_properties l lam`. Set `A : Matrix (Fin 2) (Fin 2) ℤ` to `(α : Matrix (Fin 2) (Fin 2) (ZMod N)).map (ZMod.cast : ZMod N → ℤ)`. Establish `hAα : A.map (Int.cast : ℤ → ZMod N) = (α : Matrix (Fin 2) (Fin 2) (ZMod N))`.
+
+Use extensionality with `i j`. Simplify using `[A, ZMod.intCast_cast, ZMod.cast_id']`. Establish `hI` using `(GlobalTheory.T.mem_hilbertLatticeTwist_iff_lift F N L A · hLs)`. Rewrite using `[← hAα]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Set `B : Matrix (Fin 2) (Fin 2) ℤ` to `((α⁻¹ : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N)).map (ZMod.cast : ZMod N → ℤ)`. Establish `h1 : ((α⁻¹ : GL (Fin 2) (ZMod N)) : Matrix (Fin 2) (Fin 2) (ZMod N)) * (α : Matrix (Fin 2) (Fin 2) (ZMod N)) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hmod : ∀ i j, (((B * A) i j - (1 : Matrix (Fin 2) (Fin 2) ℤ) i j : ℤ) : ZMod N) = 0`. Introduce `i j`.
+
+Establish `h2` using `congrFun (congrFun h1 i) j`. Rewrite `h2` using `[Matrix.mul_apply]`. Rewrite using `[Int.cast_sub, Matrix.mul_apply, Int.cast_sum, Matrix.one_apply]`. Rewrite `h2` using `[Matrix.one_apply]`. Simplify using `only [Int.cast_mul, B, A, Matrix.map_apply, ZMod.intCast_cast, ZMod.cast_id', id_eq]`.
+
+Apply the tactic sequence `rw [h2]; split_ifs <;> simp`. Establish `hdv : ∀ i j, (N : ℤ) ∣ (B * A) i j - (1 : Matrix (Fin 2) (Fin 2) ℤ) i j` using `fun i j ↦ (ZMod.intCast_zmod_eq_zero_iff_dvd _ N).1 (hmod i j)`. Use `choose D hD using hdv`. Establish `hy : (fun j ↦ (n : F) * (B 1 j : F)) ∈ L`. Use `hnL _ (intVec_mem_std (fun j ↦ B 1 j))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using `[Nat.cast_smul_eq_nsmul]`. Establish `hw : (fun j ↦ -((n : F) * (D 1 j : F))) ∈ stdLat F`. Use `Submodule.smul_mem (stdLat F) (-(n : 𝓞 F)) (intVec_mem_std (fun j ↦ D 1 j))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using `[Nat.cast_smul_eq_nsmul]`. Use `(hI _).2 ⟨_, hy, _, hw, ?_⟩` and prove the remaining obligations. Establish `hBA : ∀ j, (B 1 0 : F) * (A 0 j : F) + (B 1 1 : F) * (A 1 j : F) = (if (1 : Fin 2) = j then 1 else 0) + (N : F) * (D 1 j : F)`.
+
+Introduce `j`. Use `congrArg (Int.cast : ℤ → F) (hD 1 j)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.one_apply]`. Apply the tactic sequence `split_ifs at this ⊢ <;> push_cast at this ⊢ <;> linear_combination this`. Use extensionality with `j`.
+
+Use `fin_cases j`. Use `hBA 0` as an intermediate fact. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two] at this ⊢`. Take the linear combination `-(n : F) * this`. Use `hBA 1` as an intermediate fact.
+
+Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two] at this ⊢`. Take the linear combination `-(n : F) * this`. Introduce `v hv i`. Take `⟨y, hy, w, hw, rfl⟩` from `(hI v).1 hv`. Establish `hw0 : w 0 ∈ (1 : Submodule (𝓞 F) F)`.
+
+Rewrite `hw` using `[stdLat, Submodule.mem_pi]`. Conclude with `hw 0 (Set.mem_univ _)`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 hw0`. Establish `hint : Sz l lam 0 ((i (w 0) : ℝ) : ℂ)`. Use `hZ.1 1 _ (Nat.Prime.not_dvd_one (Fact.out)) ?_` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_one, one_mul, ← hr]`. Conclude with `map_isIntegral_int ((Complex.ofRealHom.comp i).comp (algebraMap (𝓞 F) F)) (RingOfIntegers.isIntegral r)`. Establish `heq : ((i ((Matrix.vecMul y (A.map (Int.cast : ℤ → F)) + (N : F) • w) 0) : ℝ) : ℂ) = ((i (y 0) : ℝ) : ℂ) * ((A 0 0 : ℤ) : ℂ) + ((i (y 1) : ℝ) : ℂ) * ((A 1 0 : ℤ) : ℂ) + (N : ℂ) * ((i (w 0) : ℝ) : ℂ)`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Rewrite using `[heq]`.
+
+Establish `p1` using `hR.2.2.1 ρ₀ 0 _ _ (hL y hy 0 i) (hR.2.2.2.2.1 (A 0 0))`. Establish `p2` using `hR.2.2.1 ρ₀ 0 _ _ (hL y hy 1 i) (hR.2.2.2.2.1 (A 1 0))`. Establish `p3` using `hR.2.2.1 ρ₀ 0 _ _ hN hint`. Rewrite `p1`, `p2`, `p3` using `[add_zero]`. Conclude with `(hR.2.1 _ _ _ (hR.2.1 _ _ _ p1 p2).1 p3).1`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]), ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (N n : ℕ) (L : Lat F) (α : GL (Fin 2) (ZMod N)) (ρ₀ : ℝ), L ≤ stdLat F → (∀ x ∈ stdLat F, (n : 𝓞 F) • x ∈ L) → (∀ v ∈ L, ∀ (j : Fin 2) (i : Emb F), Sz l lam ρ₀ ((i (v j) : ℝ) : ℂ)) → Sz l lam ρ₀ (N : ℂ) → ![0, (n : F)] ∈ twist N L (α : Matrix (Fin 2) (Fin 2) (ZMod N)) ∧ ∀ v ∈ twist N L (α : Matrix (Fin 2) (Fin 2) (ZMod N)), ∀ i : Emb F, Sz l lam ρ₀ ((i (v 0) : ℝ) : ℂ) := by
   intro l _ lam F _ _ _ N n L α ρ₀ hLs hnL hL hN
   have hR := GlobalTheory.T.algebraicValuationAtLeastAtEmbedding_ring_ops l lam

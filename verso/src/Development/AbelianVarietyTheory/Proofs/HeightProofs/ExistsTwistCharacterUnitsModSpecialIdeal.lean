@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwistChar
 
+/- English proof (translation)
+Take `⟨α, β, hab⟩ : IsCoprime (p : S) (M : S)` from `Nat.Coprime.cast h`. Use `⟨α * u + β * w, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(α * p) * hu + (β * M) * hw - z * hab`.
+-/
 theorem exists_mul_of_coprime {S : Type} [CommRing S] {M p : ℕ} (h : p.Coprime M) {z u w : S}
     (hu : z = M * u) (hw : z = p * w) : ∃ t, z = ((M * p : ℕ) : S) * t := by
   obtain ⟨α, β, hab⟩ : IsCoprime (p : S) (M : S) := Nat.Coprime.cast h
@@ -19,6 +22,57 @@ theorem exists_mul_of_coprime {S : Type} [CommRing S] {M p : ℕ} (h : p.Coprime
   push_cast
   linear_combination (α * p) * hu + (β * M) * hw - z * hab
 
+/- English proof (translation)
+Take `⟨i, hi, j, hj, hij⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 hII)`. Establish `hpII : (p : O) ∈ I * I.map bar` using `by rw [hI]; exact Ideal.mem_span_singleton_self _`. Establish `hpI : (p : O) ∈ I` using `(Ideal.mul_le_inf (I := I) (J := I.map bar) hpII).1`. Establish `hpS : (p : S) ∈ I.map ι` using `by simpa using Ideal.mem_map_of_mem ι hpI`. Establish `hbj : bar j ∈ I`.
+
+Establish `: I.map bar ≤ I.comap bar`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Simplify `ha` using `[Ideal.mem_comap, hbar]`. Conclude with `this hj`.
+
+Establish `hmul : ∀ y ∈ I.map ι, ∀ z ∈ (I.map bar).map ι, ∃ w, y * z = p * w`. Introduce `y hy z hz`. Use `Ideal.mul_mem_mul hy hz` as an intermediate fact. Rewrite `this` using `[← Ideal.map_mul, hI, Ideal.map_span, Set.image_singleton, map_natCast, Ideal.mem_span_singleton]`. Conclude with `this`.
+
+Establish `hcomap : (I.map ι).comap ι ≤ I`. Introduce `a ha`. Take `⟨w, hw⟩` from `hmul _ ha _ (Ideal.mem_map_of_mem ι hj)`. Rewrite `hw` using `[← map_mul]`. Take `⟨a', ha'⟩` from `hcon _ _ hw`.
+
+Establish `: a = a * i + p * a'` using `by linear_combination ha' - a * hij`. Rewrite using `[this]`. Conclude with `I.add_mem (I.mul_mem_left _ hi) (I.mul_mem_right _ hpI)`. Set `q : O ⧸ I →+* S ⧸ I.map ι` to `Ideal.quotientMap (I.map ι) ι Ideal.le_comap_map`. Establish `hq : Function.Bijective q`.
+
+Use `⟨Ideal.quotientMap_injective' hcomap, fun z => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨a, w, rfl⟩` from `hdense z`. Use `⟨Ideal.Quotient.mk I a, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.quotientMap_mk, eq_comm, Ideal.Quotient.eq, add_sub_cancel_left]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hpS`. Set `e` to `RingEquiv.ofBijective q hq`. Set `π : S →+* O ⧸ I` to `(e.symm : S ⧸ I.map ι →+* O ⧸ I).comp (Ideal.Quotient.mk _)`. Establish `hπ : ∀ z a, π z = Ideal.Quotient.mk I a ↔ z - ι a ∈ I.map ι`. Introduce `z a`.
+
+Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `e.symm_apply_eq`. Use `⟨π, fun z a => (hπ z a).2, fun u => ?_, fun x hx hM h1 => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : O ⧸ I)`. Take `⟨a', ha'⟩` from `Ideal.Quotient.mk_surjective ((u⁻¹ : (O ⧸ I)ˣ) : O ⧸ I)`.
+
+Establish `haa : a * a' - 1 ∈ I`. Rewrite using `[← Ideal.Quotient.eq, map_mul, ha, ha', map_one, Units.mul_inv]`. Take `⟨α, β, hab⟩ : IsCoprime (p : O) (M : O)` from `Nat.Coprime.cast hMp`. Establish `hb : ∀ t : O, 1 + (t - 1) * j * β * M - t ∈ I`. Introduce `t`.
+
+Establish `: 1 + (t - 1) * j * β * M - t = (1 - t) * i + (1 - t) * j * α * p`. Take the linear combination `(t - 1) * hij + (t - 1) * j * hab`. Rewrite using `[this]`. Conclude with `I.add_mem (I.mul_mem_left _ hi) (I.mul_mem_left _ hpI)`. Take `⟨b, hbdef⟩ : ∃ b, b = 1 + (a - 1) * j * β * M` from `⟨_, rfl⟩`.
+
+Take `⟨b', hbdef'⟩ : ∃ b', b' = 1 + (a' - 1) * j * β * M` from `⟨_, rfl⟩`. Establish `hba : b - a ∈ I` using `by rw [hbdef]; exact hb a`. Establish `hba' : b' - a' ∈ I` using `by rw [hbdef']; exact hb a'`. Establish `h1 : b * b' - 1 ∈ I`. Establish `: b * b' - 1 = (b - a) * b' + a * (b' - a') + (a * a' - 1)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `I.add_mem (I.add_mem (I.mul_mem_right _ hba) (I.mul_mem_left _ hba')) haa`. Establish `h2 : b * b' - 1 = j * (M * (β * ((a - 1) + (a' - 1) * b)))`. Rewrite using `[hbdef', hbdef]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3 : b * b' - 1 ∈ Ideal.span {(p : O)}`. Establish `: b * b' - 1 = i * (b * b' - 1) + (b * b' - 1) * j` using `by linear_combination (1 - b * b') * hij`. Rewrite using `[this, ← hI]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_mul hi (h2 ▸ Ideal.mul_mem_right _ _ hj)) (Ideal.mul_mem_mul h1 hj)`. Take `⟨w₁, hw₁⟩` from `Ideal.mem_span_singleton.1 h3`.
+
+Take `⟨t, ht⟩` from `exists_mul_of_coprime hMp (u := j * (β * ((a - 1) + (a' - 1) * b))) (h2.trans (by ring)) hw₁`. Take `⟨y, w, hy⟩` from `hlift (ι b) (ι b') (ι t) (by`. Rewrite using `[← map_mul, ← map_natCast ι, ← map_mul, ← ht, map_sub, map_one]`. Use the proof step `ring)`. Establish `hcy : c y = ι (bar b) + ((M * p : ℕ) : S) * c w`.
+
+Rewrite using `[hy, map_add, map_mul, map_natCast, hc]`. Establish `hN : ∀ s : S, ((M * p : ℕ) : S) * s ∈ I.map ι` using `fun s => by`. Use `push_cast`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hpS)`. Establish `hbb : bar b = 1 + bar (a - 1) * bar j * bar β * M`.
+
+Rewrite using `[hbdef]`. Simplify using `only [map_add, map_mul, map_one, map_natCast]`. Establish `hπy : π y = u`. Rewrite using `[← ha, hπ, hy]`. Use `Ideal.add_mem _ (Ideal.mem_map_of_mem ι hba) (hN w)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `hπc : π (c y) = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk I), hπ, hcy]`.
+
+Establish `h4 : bar b - 1 ∈ I`. Rewrite using `[hbb, add_sub_cancel_left]`. Conclude with `I.mul_mem_right _ (I.mul_mem_right _ (I.mul_mem_left _ hbj))`. Use `Ideal.add_mem _ (Ideal.mem_map_of_mem ι h4) (hN (c w))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Set `y' : Sˣ` to `Units.map (c : S →* S) y`. Establish `hy' : (y' : S) = c y` using `rfl`. Establish `hy'' : c y * ((y'⁻¹ : Sˣ) : S) = 1` using `y'.mul_inv`.
+
+Use `⟨y * y'⁻¹, ?_, ⟨(ι ((a - 1) * j * β) - ι (bar (a - 1) * bar j * bar β) + p * (w - c w)) * (y'⁻¹ : Sˣ), ?_⟩, ?_⟩` and prove the remaining obligations. Use `congrArg c hy''` as an intermediate fact. Rewrite `this` using `[map_mul, hcc, map_one]`. Rewrite using `[Units.val_mul, map_mul]`. Take the linear combination `((y : S) * c ((y'⁻¹ : Sˣ) : S)) * hy'' + this`.
+
+Establish `e1 : ι b = 1 + ι ((a - 1) * j * β) * M`. Rewrite using `[hbdef, map_add, map_one, map_mul, map_natCast]`. Establish `e2 : ι (bar b) = 1 + ι (bar (a - 1) * bar j * bar β) * M`. Rewrite using `[hbb, map_add, map_one, map_mul, map_natCast]`. Rewrite using `[Units.val_mul]`.
+
+Move the coercions through the operations in `at hy hcy`. Take the linear combination `hy'' + ((y'⁻¹ : Sˣ) : S) * (hy - hcy + e1 - e2)`. Use `congrArg π hy''` as an intermediate fact. Rewrite `this` using `[map_mul, hπc, one_mul, map_one]`. Rewrite using `[Units.val_mul, map_mul, this, mul_one, hπy]`.
+
+Take `⟨w, hw⟩` from `hM`. Rewrite `h1` using `[← map_one (Ideal.Quotient.mk I), hπ, map_one]`. Establish `h2 : c x - 1 ∈ (I.map bar).map ι`. Establish `: I.map ι ≤ ((I.map bar).map ι).comap c`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hc]`. Conclude with `Ideal.mem_map_of_mem ι (Ideal.mem_map_of_mem bar ha)`. Use `this h1` as an intermediate fact. Rewrite `this` using `[Ideal.mem_comap, map_sub, map_one]`. Then use the resulting hypothesis.
+
+Take `⟨w₁, hw₁⟩` from `hmul _ (Ideal.mem_map_of_mem ι hi) _ h2`. Take `⟨w₂, hw₂⟩` from `hmul _ h1 _ (Ideal.mem_map_of_mem ι hj)`. Establish `hij' : ι i + ι j = 1` using `by rw [← map_add, hij, map_one]`. Use `exists_mul_of_coprime hMp hw (w := w₂ - x * w₁) ?_` and prove the remaining obligations. Take the linear combination `hw₂ - x * hw₁ - (x - 1) * hij' + ι i * hx`.
+-/
 theorem exists_proj {O S : Type} [CommRing O] [CommRing S] (ι : O →+* S) (bar : O →+* O) (c : S →+* S)
     (hbar : ∀ a, bar (bar a) = a) (hcc : ∀ z, c (c z) = z) (hc : ∀ a, c (ι a) = ι (bar a))
     (M p : ℕ) (hMp : p.Coprime M) (I : Ideal O) (hI : I * I.map bar = Ideal.span {(p : O)})
@@ -157,6 +211,13 @@ section Adelic
 
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨e, f, hee, hef, hun⟩` from `exists_idem (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletionIntegers F) N`. Establish `hu` using `unit_of_integral (inclHat F E) (inclHat_integral F E) (e * N) hun k`. Establish `h1` using `congrArg (inclHat F E) hee`. Establish `h2` using `congrArg (inclHat F E) hef`. Rewrite `hu` using `[map_mul, map_natCast]`.
+
+Rewrite `h1` using `[map_mul]`. Rewrite `h2` using `[map_sub, map_one, map_mul, map_natCast]`. Generalize the expression as in `inclHat F E e = e' at *`. Generalize the expression as in `inclHat F E f = f' at *`. Establish `h3 : (e' * b + (1 - e')) * (e' * b' + (1 - e')) = 1 + e' * N * k`.
+
+Take the linear combination `e' * h + (b * b' - b - b' + 1) * h1`. Rewrite `hu` using `[← h3]`. Take `⟨y, hy⟩` from `isUnit_of_mul_isUnit_left hu`. Conclude with `⟨y, f' * (1 - b), by rw [hy]; linear_combination (1 - b) * h2⟩`.
+-/
 theorem exists_unit_lift (N : ℕ) (b b' k : intHat F E) (h : b * b' = 1 + (N : intHat F E) * k) :
     ∃ y : (intHat F E)ˣ, ∃ w, (y : intHat F E) = b + (N : intHat F E) * w := by
   obtain ⟨e, f, hee, hef, hun⟩ :=
@@ -175,6 +236,9 @@ theorem exists_unit_lift (N : ℕ) (b b' k : intHat F E) (h : b * b' = 1 + (N : 
   obtain ⟨y, hy⟩ := isUnit_of_mul_isUnit_left hu
   exact ⟨y, f' * (1 - b), by rw [hy]; linear_combination (1 - b) * h2⟩
 
+/- English proof (translation)
+Take `⟨a, w, hw, h⟩` from `GlobalTheory.CharFin.exists_int_add_nsmul F E N hN z z.2`. Use `⟨a, ⟨w, hw⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[h, nsmul_eq_mul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem exists_ratHat_add (N : ℕ) (hN : 0 < N) (z : intHat F E) :
     ∃ a w, z = ratHat F E a + (N : intHat F E) * w := by
   obtain ⟨a, w, hw, h⟩ := GlobalTheory.CharFin.exists_int_add_nsmul F E N hN z z.2
@@ -183,6 +247,13 @@ theorem exists_ratHat_add (N : ℕ) (hN : 0 < N) (z : intHat F E) :
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `hN' : (N : E) ≠ 0` using `by exact_mod_cast hN.ne'`. Set `r : E →ₐ[F] RA F E` to `Algebra.TensorProduct.includeRight`. Establish `h1 : r a = (N : RA F E) * w`. Use `congrArg Subtype.val h` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Conclude with `this`. Establish `h2 : r ((N : E)⁻¹ * a) = w`. Rewrite using `[map_mul, h1, ← mul_assoc, ← map_natCast r, ← map_mul, inv_mul_cancel₀ hN', map_one, one_mul]`. Take `⟨a', ha'⟩` from `GlobalTheory.AdIdem.mem_range_of_one_tmul_mem F E (x := (N : E)⁻¹ * a) (by`. Express the relevant statement in the definitionally equal form `r _ ∈ _`.
+
+Rewrite using `[h2]`. Conclude with `w.2)`. Use `⟨a', IsFractionRing.injective (𝓞 E) E ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ha', map_natCast, ← mul_assoc, mul_inv_cancel₀ hN', one_mul]`.
+-/
 theorem dvd_of_ratHat (N : ℕ) (hN : 0 < N) (a : 𝓞 E) (w : intHat F E) (h : ratHat F E a = (N : intHat F E) * w) :
     ∃ a', a = (N : 𝓞 E) * a' := by
   have hN' : (N : E) ≠ 0 := by exact_mod_cast hN.ne'
@@ -200,6 +271,13 @@ theorem dvd_of_ratHat (N : ℕ) (hN : 0 < N) (a : 𝓞 E) (w : intHat F E) (h : 
   rw [map_mul, ha', map_natCast, ← mul_assoc, mul_inv_cancel₀ hN', one_mul]
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, _, ⟨s, hs, rfl⟩, rfl⟩` from `hx`. Use `⟨⟨_, tmul_mem F E a ha 1⟩ * ratHat F E s, Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hs), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(a ⊗ₜ[F] (algebraMap (𝓞 E) E 1)) * ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (algebraMap (𝓞 E) E s)) = _`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, map_one, one_mul]`. Consider the case `zero => exact ⟨0, zero_mem _, rfl⟩`. Consider the case `add x y _ _ h1 h2`. Take `⟨s, hs, rfl⟩` from `h1`. Take `⟨t, ht, rfl⟩` from `h2`.
+
+Conclude with `⟨s + t, add_mem hs ht, rfl⟩`. Consider the case `neg x _ h`. Take `⟨s, hs, rfl⟩` from `h`. Conclude with `⟨-s, neg_mem hs, rfl⟩`.
+-/
 theorem exists_mem_map_ideal_of_adelicCompletion (I : Ideal (𝓞 E)) (z : RA F E)
     (hz : z ∈ hat1 F ((algebraMap (𝓞 E) E) '' (I : Set (𝓞 E)))) :
     ∃ s ∈ I.map (ratHat F E), (s : RA F E) = z := by
@@ -219,6 +297,11 @@ theorem exists_mem_map_ideal_of_adelicCompletion (I : Ideal (𝓞 E)) (z : RA F 
     exact ⟨-s, neg_mem hs, rfl⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, _, ⟨s, rfl⟩, rfl⟩` from `hx`. Conclude with `tmul_mem F E a ha (RingOfIntegers.mapRingEquiv (c : E ≃+* E) s)`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ h1 h2 => rw [map_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg x _ h => rw [map_neg]`. Conclude with `neg_mem h`.
+-/
 theorem sg_mem_intHat (c : E ≃ₐ[F] E) (z : RA F E) (hz : z ∈ intHat F E) :
     sg (FiniteAdeleRing (𝓞 F) F) c z ∈ intHat F E := by
   induction hz using AddSubgroup.closure_induction with
@@ -230,6 +313,9 @@ theorem sg_mem_intHat (c : E ≃ₐ[F] E) (z : RA F E) (hz : z ∈ intHat F E) :
   | neg x _ h => rw [map_neg]; exact neg_mem h
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [sg, hc]`. Consider the case `add x y h1 h2 => simp only [map_add, h1, h2]`.
+-/
 theorem sg_sg (c : E ≃ₐ[F] E) (hc : ∀ x, c (c x) = x) (z : RA F E) :
     sg (FiniteAdeleRing (𝓞 F) F) c (sg (FiniteAdeleRing (𝓞 F) F) c z) = z := by
   induction z using TensorProduct.induction_on with
@@ -237,6 +323,37 @@ theorem sg_sg (c : E ≃ₐ[F] E) (hc : ∀ x, c (c x) = x) (z : RA F E) :
   | tmul a x => simp [sg, hc]
   | add x y h1 h2 => simp only [map_add, h1, h2]
 
+/- English proof (translation)
+Set `cS : intHat F E →+* intHat F E` to `(sg (FiniteAdeleRing (𝓞 F) F) c).toRingHom.restrict _ _ (sg_mem_intHat F E c)`. Establish `hcS : ∀ z : intHat F E, (cS z : RA F E) = sg _ c z` using `fun _ => rfl`. Take `⟨π, hπ, hsur, hker⟩` from `exists_proj (ratHat F E) bar cS (fun a => IsFractionRing.injective (𝓞 E) E (by`. Express the relevant statement in the definitionally equal form `((bar (bar a) : 𝓞 E) : E) = a`. Rewrite using `[hbar, hbar, hc]))`.
+
+Use the proof step `(fun z => Subtype.ext (sg_sg F E c hc z))`. Use the proof step `(fun a => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (c a) = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] ((bar a : 𝓞 E) : E)`. Rewrite using `[hbar]))`. Use `M p hMp I hI hII (exists_unit_lift F E _) (exists_ratHat_add F E p hp) (dvd_of_ratHat F E p hp)`.
+
+Set `G : Subgroup (intHat F E)ˣ` to `{ carrier := {x | (x : intHat F E) * cS x = 1 ∧ ∃ w, (x : intHat F E) - 1 = M * w} one_mem' := ⟨by simp, 0, by simp⟩ mul_mem' := by`. Introduce and unpack `x y ⟨hx, w, hw⟩ ⟨hy, w', hw'⟩`. Use `⟨?_, w * y + w', ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul]`. Take the linear combination `((y : intHat F E) * cS y) * hx + hy`.
+
+Rewrite using `[Units.val_mul]`. Take the linear combination `(y : intHat F E) * hw + hw'`. Use the proof step `inv_mem' := by`. Introduce and unpack `x ⟨hx, w, hw⟩`. Use `⟨?_, -(w * (x⁻¹ : (intHat F E)ˣ)), ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `x.mul_inv`. Establish `h2` using `congrArg cS h1`. Rewrite `h2` using `[map_mul, map_one]`. Take the linear combination `(-((x⁻¹ : (intHat F E)ˣ) : intHat F E) * cS (x⁻¹ : (intHat F E)ˣ)) * hx + (cS x * cS (x⁻¹ : (intHat F E)ˣ)) * h1 + h2`. Take the linear combination `x.mul_inv - ((x⁻¹ : (intHat F E)ˣ) : intHat F E) * hw }`.
+
+Set `incG : G →* (RA F E)ˣ` to `(Units.map ((intHat F E).subtype : intHat F E →* RA F E)).comp G.subtype`. Establish `hinc : ∀ x : G, (incG x : RA F E) = ((x : (intHat F E)ˣ) : intHat F E)` using `fun _ => rfl`. Establish `hnorm : ∀ x : G, (incG x : RA F E) * sg _ c (incG x) = 1` using `fun x => congrArg Subtype.val x.2.1`. Set `φ : G →* (𝓞 E ⧸ I)ˣ` to `(Units.map (π : intHat F E →* 𝓞 E ⧸ I)).comp G.subtype`. Establish `hφ : Function.Surjective φ` using `fun u => by`.
+
+Take `⟨x, h1, h2, h3⟩` from `hsur u`. Conclude with `⟨⟨x, h1, h2⟩, Units.ext h3⟩`. Set `ξ₀ : G →* L` to `{ toFun := fun x => ⟨_, val _ (hnorm x)⟩ map_one' := Subtype.ext (by simp) map_mul' := fun x y => Subtype.ext (by simp) }`. Set `ξ : G →* Lˣ` to `ξ₀.toHomUnits`. Establish `hξ : ∀ x, (((ξ x : Lˣ) : L) : ℂ) = (xi (incG x) : ℂˣ)` using `fun _ => rfl`.
+
+Establish `hle : φ.ker ≤ ξ.ker`. Introduce `x hx`. Take `⟨w, hw⟩` from `hker _ x.2.1 x.2.2 (congrArg Units.val hx)`. Use `tame _ (hnorm x) ⟨w, w.2, by` as an intermediate fact. Use `congrArg Subtype.val hw` as an intermediate fact.
+
+Rewrite using `[nsmul_eq_mul, hinc]`. Move the coercions through the operations in `at this ⊢`. Conclude with `this⟩`. Use `Units.ext (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[hξ, this]`.
+
+Both sides reduce to the same expression. Establish `hmk : ∀ x : (RA F E)ˣ, (x : RA F E) * sg _ c x = 1 → (∃ w ∈ intHat F E, (x : RA F E) - 1 = M • w) → ∃ g : G, incG g = x`. Introduce and unpack `x hx ⟨w, hw, h⟩`. Establish `hxS : (x : RA F E) ∈ intHat F E`. Rewrite using `[← sub_add_cancel (x : RA F E) 1, h]`.
+
+Conclude with `add_mem (nsmul_mem hw _) (one_mem _)`. Establish `h1 : (⟨x, hxS⟩ : intHat F E) * cS ⟨x, hxS⟩ = 1` using `Subtype.ext hx`. Use `⟨⟨⟨⟨x, hxS⟩, cS ⟨x, hxS⟩, h1, by rw [mul_comm]; exact h1⟩, h1, ⟨w, hw⟩, Subtype.ext ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite `h` using `[nsmul_eq_mul]`. Use `push_cast`.
+
+Conclude with `h`. Set `χ : (𝓞 E ⧸ I)ˣ →* Lˣ` to `φ.liftOfSurjective hφ ⟨ξ, hle⟩`. Establish `hχ : ∀ g, χ (φ g) = ξ g` using `fun g => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ g`. Use `⟨χ, fun h => ?_, fun x a u hx hM hu ha => ?_⟩` and prove the remaining obligations. Take `⟨x, h1, h2, h3⟩` from `ram`.
+
+Take `⟨g, rfl⟩` from `hmk x h1 h2`. Apply `h3` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← hξ, ← hχ, h]`. Both sides reduce to the same expression.
+
+Take `⟨g, rfl⟩` from `hmk x hx hM`. Take `⟨s, hs, hs'⟩` from `exists_mem_map_ideal_of_adelicCompletion F E I _ ha`. Establish `: φ g = u`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hu]`.
+
+Use `hπ _ a ?_` and prove the remaining obligations. Use `hs using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext hs'.symm`. Rewrite using `[← this, hχ, hξ]`.
+-/
 theorem exists_char (c : E ≃ₐ[F] E) (hc : ∀ x, c (c x) = x) (bar : 𝓞 E →+* 𝓞 E)
     (hbar : ∀ a, ((bar a : 𝓞 E) : E) = c a) (M p : ℕ) (hp : 0 < p) (hMp : p.Coprime M) (I : Ideal (𝓞 E))
     (hI : I * I.map bar = Ideal.span {(p : 𝓞 E)}) (hII : I ⊔ I.map bar = ⊤)
@@ -337,6 +454,13 @@ theorem exists_char (c : E ≃ₐ[F] E) (hc : ∀ x, c (c x) = x) (bar : 𝓞 E 
 
 end Adelic
 
+/- English proof (translation)
+Introduce `D p I xi hp hcop hI hII h`. Establish `hS : ∀ w, w ∈ intAE D ↔ w ∈ intHat D.host.F D.host.E` using `fun w => by`. Rewrite using `[GlobalTheory.CharFin.integralFiniteAdeles_eq_adelicCompletion_integers]`. Both sides reduce to the same expression. Establish `hC : ∀ (N : ℕ) (x : (AfE D)ˣ), CongOne N x ↔ ∃ w ∈ intHat D.host.F D.host.E, (x : AfE D) - 1 = N • w` using `fun N x => by`.
+
+Simplify using `only [CongOne, hS]`. Take `⟨χ, h1, h2⟩` from `exists_char D.host.F D.host.E (GlobalTheory.Member.cF D) (fun x => star_star x) (barE D : 𝓞 D.host.E →+* 𝓞 D.host.E) (fun _ => rfl) _ p hp.pos hcop I hI hII (FO D) xi (fun x hx hM => h.tame x hx ((hC _ x).2 hM)) (by`. Take `⟨x, h1, h2, h3⟩` from `h.ram`. Conclude with `⟨x, h1, (hC _ x).1 h2, h3⟩)`. Use the proof step `h.val`.
+
+Conclude with `⟨χ, h1, fun x a u hx hM => h2 x a u hx ((hC _ x).1 hM)⟩`.
+-/
 theorem exists_char_of_xiOK : ∀ (D : D7) (p : ℕ) (I : Ideal (𝓞 D.host.E)) (xi : (AfE D)ˣ →* ℂˣ), p.Prime → p.Coprime (D.host.g 0 * D.host.g 1) → I * I.map (barE D : 𝓞 D.host.E →+* 𝓞 D.host.E) = Ideal.span {((p : ℕ) : 𝓞 D.host.E)} → I ⊔ I.map (barE D : 𝓞 D.host.E →+* 𝓞 D.host.E) = ⊤ → XiOK D p xi → ∃ χ : (𝓞 D.host.E ⧸ I)ˣ →* (FO D)ˣ, χ ≠ 1 ∧ ∀ (x : (AfE D)ˣ) (a : 𝓞 D.host.E) (u : (𝓞 D.host.E ⧸ I)ˣ), NormOne x → CongOne (D.host.g 0 * D.host.g 1) x → (u : 𝓞 D.host.E ⧸ I) = Ideal.Quotient.mk I a → (x : AfE D) - 1 ⊗ₜ (a : D.host.E) ∈ GlobalTheory.AdLat.hat1 D.host.F ((algebraMap (𝓞 D.host.E) D.host.E) '' (I : Set (𝓞 D.host.E))) → ((xi x : ℂˣ) : ℂ) = (((χ u : (FO D)ˣ) : FO D) : ℂ) := by
   intro D p I xi hp hcop hI hII h
   have hS : ∀ w, w ∈ intAE D ↔ w ∈ intHat D.host.F D.host.E := fun w => by

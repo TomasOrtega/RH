@@ -15,10 +15,16 @@ abbrev affChartIdeal (e : ℕ) : Ideal (MvPolynomial (Fin (e + 1)) ℂ) := Ideal
 
 def tailProj (e : ℕ) : Matrix (Fin e) (Fin (e + 1)) ℂ := fun i j => if j = i.succ then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[tailProj, Matrix.mulVec, dotProduct, Fin.tail]`.
+-/
 theorem tailProj_mulVec (e : ℕ) (x : Fin (e + 1) → ℂ) : tailProj e *ᵥ x = Fin.tail x := by
   ext i
   simp [tailProj, Matrix.mulVec, dotProduct, Fin.tail]
 
+/- English proof (translation)
+Simplify using `[linPoly, tailProj]`.
+-/
 theorem linPoly_tailProj (e : ℕ) (i : Fin e) : linPoly (tailProj e) i = X i.succ := by
   simp [linPoly, tailProj]
 
@@ -29,6 +35,11 @@ def affChartEquiv (e : ℕ) : MvPolynomial (Fin (e + 1)) ℂ ⧸ affChartIdeal e
       simp [finSuccEquiv_X_zero])).trans
     (Polynomial.quotientSpanXSubCAlgEquiv (1 : MvPolynomial (Fin e) ℂ)).toRingEquiv
 
+/- English proof (translation)
+Establish `h : (affChartEquiv e : _ →+* MvPolynomial (Fin e) ℂ).comp (projHom (affChartIdeal e) (tailProj e)).toRingHom = RingHom.id _`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Establish `hc : (finSuccEquiv ℂ e) (C c) = algebraMap ℂ _ c` using `(finSuccEquiv ℂ e).commutes c`. Simplify using `[affChartEquiv, projHom, pullback, Polynomial.quotientSpanXSubCAlgEquiv_mk, hc, Polynomial.algebraMap_apply, MvPolynomial.algebraMap_eq]`.
+
+Introduce `i`. Simplify using `[affChartEquiv, projHom, pullback, linPoly_tailProj, Polynomial.quotientSpanXSubCAlgEquiv_mk, finSuccEquiv_X_succ]`. Conclude with `RingHom.congr_fun h a`.
+-/
 theorem affChartEquiv_projHom (e : ℕ) (a : MvPolynomial (Fin e) ℂ) :
     affChartEquiv e (projHom (affChartIdeal e) (tailProj e) a) = a := by
   have h : (affChartEquiv e : _ →+* MvPolynomial (Fin e) ℂ).comp
@@ -43,22 +54,36 @@ theorem affChartEquiv_projHom (e : ℕ) (a : MvPolynomial (Fin e) ℂ) :
         Polynomial.quotientSpanXSubCAlgEquiv_mk, finSuccEquiv_X_succ]
   exact RingHom.congr_fun h a
 
+/- English proof (translation)
+Use `⟨fun a b h => ?_, RingHom.Finite.of_surjective _ fun z => ⟨affChartEquiv e z, ?_⟩⟩` and prove the remaining obligations. Use `congrArg (affChartEquiv e) h` as an intermediate fact. Rewrite `this` using `[affChartEquiv_projHom, affChartEquiv_projHom]`. Then use the resulting hypothesis. Conclude with `(affChartEquiv e).injective (affChartEquiv_projHom e _)`.
+-/
 theorem isFiniteProjection_tailProj (e : ℕ) : IsFiniteProjection (affChartIdeal e) (tailProj e) := by
   refine ⟨fun a b h => ?_, RingHom.Finite.of_surjective _ fun z => ⟨affChartEquiv e z, ?_⟩⟩
   · have := congrArg (affChartEquiv e) h
     rwa [affChartEquiv_projHom, affChartEquiv_projHom] at this
   · exact (affChartEquiv e).injective (affChartEquiv_projHom e _)
 
+/- English proof (translation)
+Establish `: IsDomain (MvPolynomial (Fin (e + 1)) ℂ ⧸ affChartIdeal e)` using `(affChartEquiv e).toMulEquiv.isDomain _`. Conclude with `(Ideal.Quotient.isDomain_iff_prime _).mp inferInstance`.
+-/
 theorem affChartIdeal_isPrime (e : ℕ) : (affChartIdeal e).IsPrime := by
   have : IsDomain (MvPolynomial (Fin (e + 1)) ℂ ⧸ affChartIdeal e) := (affChartEquiv e).toMulEquiv.isDomain _
   exact (Ideal.Quotient.isDomain_iff_prime _).mp inferInstance
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_eq_of_ringEquiv (affChartEquiv e), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+-/
 theorem affChartIdeal_dim (e : ℕ) :
     ringKrullDim (MvPolynomial (Fin (e + 1)) ℂ ⧸ affChartIdeal e) = (e : ℕ) := by
   rw [ringKrullDim_eq_of_ringEquiv (affChartEquiv e), MvPolynomial.ringKrullDim_of_isNoetherianRing,
     ringKrullDim_eq_zero_of_field]
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h _ (Ideal.subset_span rfl)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Introduce `h q hq`.
+
+Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hq`. Simplify using `[h]`.
+-/
 theorem mem_zeroSet_affChartIdeal {e : ℕ} (x : Fin (e + 1) → ℂ) : x ∈ zeroSet (affChartIdeal e) ↔ x 0 = 1 := by
   constructor
   · intro h
@@ -68,6 +93,11 @@ theorem mem_zeroSet_affChartIdeal {e : ℕ} (x : Fin (e + 1) → ℂ) : x ∈ ze
     obtain ⟨r, rfl⟩ := Ideal.mem_span_singleton'.mp hq
     simp [h]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [fibre, Set.mem_ofPred_eq, mem_zeroSet_affChartIdeal, Set.mem_singleton_iff]`. Rewrite using `[tailProj_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, ht⟩`.
+
+Rewrite using `[← Fin.cons_self_tail x, h0, ht]`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+-/
 theorem fibre_affChartIdeal {e : ℕ} (y : Fin e → ℂ) :
     fibre (affChartIdeal e) (tailProj e) y = {(Fin.cons 1 y : Fin (e + 1) → ℂ)} := by
   ext x
@@ -79,6 +109,11 @@ theorem fibre_affChartIdeal {e : ℕ} (y : Fin e → ℂ) :
   · rintro rfl
     simp
 
+/- English proof (translation)
+Introduce `y`. Rewrite using `[differentiableAt_pi]`. Introduce `j`. Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Simplify using `using differentiableAt_apply (𝕜 := ℂ) i y`.
+-/
 theorem differentiable_consOne (e : ℕ) :
     Differentiable ℂ (fun y : Fin e → ℂ => (Fin.cons 1 y : Fin (e + 1) → ℂ)) := by
   intro y
@@ -88,6 +123,11 @@ theorem differentiable_consOne (e : ℕ) :
   · simp
   · simpa using differentiableAt_apply (𝕜 := ℂ) i y
 
+/- English proof (translation)
+Use `⟨Set.univ, isOpen_univ, trivial, (differentiable_consOne e).differentiableOn, ?_, fun y' _ => ⟨?_, ?_⟩, Set.univ, univ_mem, fun x' hx' _ => ?_⟩` and prove the remaining obligations. Rewrite using `[tailProj_mulVec, Fin.tail_cons]`. Rewrite using `[tailProj_mulVec, Fin.tail_cons]`. Rewrite using `[mem_zeroSet_affChartIdeal]`. Both sides reduce to the same expression.
+
+Rewrite using `[tailProj_mulVec] conv_lhs => rw [← Fin.cons_self_tail x']`. Rewrite using `[(mem_zeroSet_affChartIdeal x').1 hx'.1]`.
+-/
 theorem isSheetAt_consOne {e : ℕ} (y : Fin e → ℂ) :
     IsSheetAt (affChartIdeal e) (tailProj e) (Fin.cons 1 y) fun y' => (Fin.cons 1 y' : Fin (e + 1) → ℂ) := by
   refine ⟨Set.univ, isOpen_univ, trivial, (differentiable_consOne e).differentiableOn, ?_,
@@ -100,6 +140,11 @@ theorem isSheetAt_consOne {e : ℕ} (y : Fin e → ℂ) :
     conv_lhs => rw [← Fin.cons_self_tail x']
     rw [(mem_zeroSet_affChartIdeal x').1 hx'.1]
 
+/- English proof (translation)
+Take `⟨U, hU, hyU, -, -, hsec, -⟩` from `h`. Rewrite `hyU` using `[tailProj_mulVec, Fin.tail_cons]`. Use `filter_upwards [hU.mem_nhds hyU] with y' hy'`. Take `⟨h1, h2⟩` from `hsec y' hy'`. Rewrite `h1` using `[tailProj_mulVec]`.
+
+Rewrite `h2` using `[mem_zeroSet_affChartIdeal]`. Rewrite using `[← Fin.cons_self_tail (s y'), h2, h1]`.
+-/
 theorem affChart_sheet_eventuallyEq {e : ℕ} {y : Fin e → ℂ} {s : (Fin e → ℂ) → Fin (e + 1) → ℂ}
     (h : IsSheetAt (affChartIdeal e) (tailProj e) (Fin.cons 1 y) s) :
     s =ᶠ[𝓝 y] fun y' => (Fin.cons 1 y' : Fin (e + 1) → ℂ) := by
@@ -111,6 +156,9 @@ theorem affChart_sheet_eventuallyEq {e : ℕ} {y : Fin e → ℂ} {s : (Fin e �
   rw [mem_zeroSet_affChartIdeal] at h2
   rw [← Fin.cons_self_tail (s y'), h2, h1]
 
+/- English proof (translation)
+Unfold `sheetSum`. Rewrite using `[fibre_affChartIdeal, finsum_mem_singleton]`. Establish `hex : ∃ s, IsSheetAt (affChartIdeal e) (tailProj e) (Fin.cons 1 y) s` using `⟨_, isSheetAt_consOne y⟩`. Rewrite using `[dif_pos hex]`. Conclude with `hF _ (affChart_sheet_eventuallyEq hex.choose_spec)`.
+-/
 theorem sheetSum_affChartIdeal {e : ℕ} (F : (Fin (e + 1) → ℂ) → ((Fin e → ℂ) → Fin (e + 1) → ℂ) → ℝ)
     (y : Fin e → ℂ) (hF : ∀ s, s =ᶠ[𝓝 y] (fun y' => (Fin.cons 1 y' : Fin (e + 1) → ℂ)) →
       F (Fin.cons 1 y) s = F (Fin.cons 1 y) fun y' => Fin.cons 1 y') :
@@ -121,6 +169,11 @@ theorem sheetSum_affChartIdeal {e : ℕ} (F : (Fin (e + 1) → ℂ) → ((Fin e 
   rw [dif_pos hex]
   exact hF _ (affChart_sheet_eventuallyEq hex.choose_spec)
 
+/- English proof (translation)
+Establish `h2 : ∀ k, fderiv ℝ (fderiv ℝ (F k)) z = fderiv ℝ (fderiv ℝ (G k)) z` using `fun k => ((h k).fderiv (𝕜 := ℝ)).fderiv_eq`. Establish `h3 : (fun k => ReciprocityTheory.AnForm.hessC (F k) z) = fun k => ReciprocityTheory.AnForm.hessC (G k) z`. Use function extensionality and compare the values at `k`. Use extensionality with `i j`. Simplify using `only [ReciprocityTheory.AnForm.hessC]`.
+
+Rewrite using `[h2 k]`. Unfold `ReciprocityTheory.AnForm.maDens`. Rewrite using `[h3]`.
+-/
 theorem maDens_congr {D : ℕ} {F G : Fin D → (Fin D → ℂ) → ℝ} {z : Fin D → ℂ}
     (h : ∀ k, F k =ᶠ[𝓝 z] G k) : ReciprocityTheory.AnForm.maDens F z = ReciprocityTheory.AnForm.maDens G z := by
   have h2 : ∀ k, fderiv ℝ (fderiv ℝ (F k)) z = fderiv ℝ (fderiv ℝ (G k)) z :=
@@ -133,9 +186,15 @@ theorem maDens_congr {D : ℕ} {F G : Fin D → (Fin D → ℂ) → ℝ} {z : Fi
   unfold ReciprocityTheory.AnForm.maDens
   rw [h3]
 
+/- English proof (translation)
+Simplify using `[HermNorm.dualNorm, HermNorm.std]`.
+-/
 theorem dualNorm_std {n : ℕ} (x : Fin n → ℂ) : (HermNorm.std n).dualNorm x = √(∑ i, ‖x i‖ ^ 2) := by
   simp [HermNorm.dualNorm, HermNorm.std]
 
+/- English proof (translation)
+Rewrite using `[dualNorm_std, Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, norm_one, one_pow]`. Rewrite using `[Real.log_sqrt (by positivity)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_dualNorm_consOne {e : ℕ} (y : Fin e → ℂ) :
     Real.log ((HermNorm.std (e + 1)).dualNorm (Fin.cons 1 y)) =
       (1 / 2) * Real.log (1 + ∑ i, ‖y i‖ ^ 2) := by
@@ -147,12 +206,18 @@ theorem log_dualNorm_consOne {e : ℕ} (y : Fin e → ℂ) :
 def fsChartDens (e : ℕ) (y : Fin e → ℂ) : ℝ :=
   (e.factorial : ℝ) / (Real.pi ^ e * (1 + ∑ i, ‖y i‖ ^ 2) ^ (e + 1))
 
+/- English proof (translation)
+Unfold `fsChartDens`. Establish `: 0 < 1 + ∑ i, ‖y i‖ ^ 2` using `by positivity`. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem fsChartDens_nonneg {e : ℕ} (y : Fin e → ℂ) : 0 ≤ fsChartDens e y := by
   unfold fsChartDens
   have : 0 < 1 + ∑ i, ‖y i‖ ^ 2 := by positivity
   have := Real.pi_pos
   positivity
 
+/- English proof (translation)
+Rewrite using `[maDens_congr (G := fun _ y' => (1 / 2) * Real.log (1 + ∑ i, ‖y' i‖ ^ 2)) fun k => ?_]`. Conclude with `(FourB.FubiniStudyChartDensity.proof e y y).2`. Use `filter_upwards [hs] with y' hy'`. Simplify using `only [Function.comp_apply, hy', log_dualNorm_consOne]`.
+-/
 theorem maDens_consOne {e : ℕ} (y : Fin e → ℂ) (s : (Fin e → ℂ) → Fin (e + 1) → ℂ)
     (hs : s =ᶠ[𝓝 y] fun y' => (Fin.cons 1 y' : Fin (e + 1) → ℂ)) :
     ReciprocityTheory.AnForm.maDens
@@ -163,6 +228,9 @@ theorem maDens_consOne {e : ℕ} (y : Fin e → ℂ) (s : (Fin e → ℂ) → Fi
   · filter_upwards [hs] with y' hy'
     simp only [Function.comp_apply, hy', log_dualNorm_consOne]
 
+/- English proof (translation)
+Unfold `chartDens`. Rewrite using `[sheetSum_affChartIdeal _ y fun s hs => by rw [maDens_consOne y s hs, maDens_consOne y _ (EventuallyEq.refl _ _)]]`. Rewrite using `[one_mul, maDens_consOne y _ (EventuallyEq.refl _ _)]`.
+-/
 theorem chartDens_affChartIdeal {e : ℕ} (y : Fin e → ℂ) :
     chartDens (affChartIdeal e) (tailProj e) (fun _ => 1)
       (fun _ x => Real.log ((HermNorm.std (e + 1)).dualNorm x)) y = fsChartDens e y := by
@@ -171,6 +239,9 @@ theorem chartDens_affChartIdeal {e : ℕ} (y : Fin e → ℂ) :
     maDens_consOne y _ (EventuallyEq.refl _ _)]]
   rw [one_mul, maDens_consOne y _ (EventuallyEq.refl _ _)]
 
+/- English proof (translation)
+Unfold `chartAbsDens`. Rewrite using `[sheetSum_affChartIdeal _ y fun s hs => by rw [maDens_consOne y s hs, maDens_consOne y _ (EventuallyEq.refl _ _)]]`. Rewrite using `[one_mul, maDens_consOne y _ (EventuallyEq.refl _ _), abs_of_nonneg (fsChartDens_nonneg y)]`.
+-/
 theorem chartAbsDens_affChartIdeal {e : ℕ} (y : Fin e → ℂ) :
     chartAbsDens (affChartIdeal e) (tailProj e) (fun _ => 1)
       (fun _ x => Real.log ((HermNorm.std (e + 1)).dualNorm x)) y = fsChartDens e y := by
@@ -179,6 +250,11 @@ theorem chartAbsDens_affChartIdeal {e : ℕ} (y : Fin e → ℂ) :
     maDens_consOne y _ (EventuallyEq.refl _ _)]]
   rw [one_mul, maDens_consOne y _ (EventuallyEq.refl _ _), abs_of_nonneg (fsChartDens_nonneg y)]
 
+/- English proof (translation)
+Establish `h : fsChartDens e = fun y => ((e.factorial : ℝ) / Real.pi ^ e) * ((1 + ∑ i, ‖y i‖ ^ 2) ^ (e + 1))⁻¹`. Use function extensionality and compare the values at `y`. Rewrite using `[fsChartDens, div_eq_mul_inv, div_eq_mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, integral_const_mul, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.gaM_integral_fsDens]`.
+
+Establish `: (e.factorial : ℝ) ≠ 0` using `by positivity`. Establish `: Real.pi ^ e ≠ 0` using `pow_ne_zero _ Real.pi_ne_zero`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem integral_fsChartDens (e : ℕ) : ∫ y, fsChartDens e y = 1 := by
   have h : fsChartDens e = fun y => ((e.factorial : ℝ) / Real.pi ^ e) *
       ((1 + ∑ i, ‖y i‖ ^ 2) ^ (e + 1))⁻¹ := by
@@ -190,9 +266,17 @@ theorem integral_fsChartDens (e : ℕ) : ∫ y, fsChartDens e y = 1 := by
   have : Real.pi ^ e ≠ 0 := pow_ne_zero _ Real.pi_ne_zero
   field_simp
 
+/- English proof (translation)
+The claim follows from `Integrable.of_integral_ne_zero (by rw [integral_fsChartDens]; exact one_ne_zero)`.
+-/
 theorem integrable_fsChartDens (e : ℕ) : Integrable (fsChartDens e) :=
   Integrable.of_integral_ne_zero (by rw [integral_fsChartDens]; exact one_ne_zero)
 
+/- English proof (translation)
+Use `⟨{x | x 0 ≠ 0}, isOpen_ne_fun (continuous_apply 0) continuous_const, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_ofPred_eq, (mem_zeroSet_affChartIdeal x).1 hx]`. Conclude with `one_ne_zero`. Introduce `x hx`. Establish `h0 : 0 < ‖x 0‖ ^ 2` using `pow_pos (norm_pos_iff.2 hx) 2`.
+
+Establish `hpos : 0 < euclPot x` using `lt_of_lt_of_le h0 (Finset.single_le_sum (f := fun i => ‖x i‖ ^ 2) (fun i _ => by positivity) (Finset.mem_univ 0))`. Establish `hf : (fun x => Real.log ((HermNorm.std (e + 1)).dualNorm x)) = fun x => Real.log (√(euclPot x))` using `funext fun x => by rw [dualNorm_std]; rfl`. Rewrite using `[hf]`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Conclude with `(Real.contDiffAt_log.2 (Real.sqrt_pos.2 hpos).ne').comp x ((Real.contDiffAt_sqrt hpos.ne').comp x (contDiff_euclPot _).contDiffAt)`.
+-/
 theorem smoothNear_log_dualNorm (e : ℕ) :
     SmoothNear (zeroSet (affChartIdeal e)) fun x => Real.log ((HermNorm.std (e + 1)).dualNorm x) := by
   refine ⟨{x | x 0 ≠ 0}, isOpen_ne_fun (continuous_apply 0) continuous_const, fun x hx => ?_, ?_⟩
@@ -210,6 +294,11 @@ theorem smoothNear_log_dualNorm (e : ℕ) :
     exact (Real.contDiffAt_log.2 (Real.sqrt_pos.2 hpos).ne').comp x
       ((Real.contDiffAt_sqrt hpos.ne').comp x (contDiff_euclPot _).contDiffAt)
 
+/- English proof (translation)
+Introduce `e`. Establish `hex : ∃ A : Matrix (Fin e) (Fin (e + 1)) ℂ, IsFiniteProjection (affChartIdeal e) A` using `⟨_, isFiniteProjection_tailProj e⟩`. Use `show varInt (affChartIdeal e) e _ _ = 1`. Unfold `varInt`. Rewrite using `[dif_pos hex]`.
+
+Establish `habs : Integrable (chartAbsDens (affChartIdeal e) (tailProj e) (fun _ => 1) fun _ x => Real.log ((HermNorm.std (e + 1)).dualNorm x))`. Rewrite using `[funext chartAbsDens_affChartIdeal]`. Conclude with `integrable_fsChartDens e`. Take `⟨-, heq⟩` from `h₁ (e + 1) e _ (tailProj e) hex.choose _ _ (affChartIdeal_isPrime e) (affChartIdeal_dim e) (isFiniteProjection_tailProj e) hex.choose_spec measurable_const (fun _ => smoothNear_log_dualNorm e) habs`. Rewrite using `[← heq, chartInt, funext chartDens_affChartIdeal, integral_fsChartDens]`.
+-/
 theorem PlaneSliceMass.proof (h₁ : IntegralIndep.Statement) : PlaneSliceMass.Statement := by
   intro e
   have hex : ∃ A : Matrix (Fin e) (Fin (e + 1)) ℂ, IsFiniteProjection (affChartIdeal e) A :=

@@ -16,6 +16,13 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `hemp : IsEmpty ↥(⊤ : S.IdealSheafData).subscheme` using `inferInstance`. Establish `hqc : QuasiCompact ((⊤ : S.IdealSheafData).subschemeι ≫ σ)`. Prove the components needed by the constructor for the conclusion. Introduce `U _ _`. Use `isCompact_empty` and compare the differences between its conclusion and the goal.
+
+Conclude with `Set.eq_empty_of_isEmpty _`. Rewrite using `[imageIdealSheaf_eq_ker, ← Scheme.IdealSheafData.support_eq_bot_iff]`. Establish `hs` using `Scheme.Hom.support_ker ((⊤ : S.IdealSheafData).subschemeι ≫ σ)`. Rewrite `hs` using `[Set.range_eq_empty, closure_empty]`. Use `SetLike.coe_injective ?_` and prove the remaining obligations.
+
+Rewrite using `[hs]`. Simplify using the standard rewrite rules.
+-/
 private theorem imageIdealSheaf_top {S X : Scheme.{u}} (σ : S ⟶ X) :
     imageIdealSheaf σ (⊤ : S.IdealSheafData) = ⊤ := by
   have hemp : IsEmpty ↥(⊤ : S.IdealSheafData).subscheme := inferInstance
@@ -31,6 +38,11 @@ private theorem imageIdealSheaf_top {S X : Scheme.{u}} (σ : S ⟶ X) :
   rw [hs]
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hI`. Establish `h2 : (imageIdealSheaf σ I).comap σ = I` using `Blowup.comap_schemeImageIdeal σ I`. Rewrite `h2` using `[hI]`. Rewrite using `[← h2]`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Conclude with `imageIdealSheaf_top σ`.
+-/
 private theorem imageIdealSheaf_eq_top_iff {S X : Scheme.{u}} (σ : S ⟶ X) [IsClosedImmersion σ]
     (I : S.IdealSheafData) : imageIdealSheaf σ I = ⊤ ↔ I = ⊤ := by
   constructor
@@ -42,11 +54,17 @@ private theorem imageIdealSheaf_eq_top_iff {S X : Scheme.{u}} (σ : S ⟶ X) [Is
   · rintro rfl
     exact imageIdealSheaf_top σ
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem eqToHom_projectionToBase {Sc : Scheme.{u}} (t : SequenceOfBlowups Sc) {a a' : ℕ} (ha : a = a') :
     eqToHom (congrArg t.schemeAt ha) ≫ t.projectionToBase a' = t.projectionToBase a := by
   subst ha
   simp
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Substitute `hb` using the available equality. Simplify using `using H`.
+-/
 private theorem comp_eqToHom_comp_transitionMap {Sc A C : Scheme.{u}} (t : SequenceOfBlowups Sc) {a b a' b' : ℕ}
     (ha : a = a') (hb : b = b') (hab : a ≤ b) (hab' : a' ≤ b')
     (g : C ⟶ t.schemeAt b) (f : A ⟶ t.schemeAt a) (u : C ⟶ A)
@@ -57,12 +75,18 @@ private theorem comp_eqToHom_comp_transitionMap {Sc A C : Scheme.{u}} (t : Seque
   subst hb
   simpa using H
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Simplify using `using hf`.
+-/
 private theorem isClosedImmersion_comp_eqToHom {Sc A : Scheme.{u}} (t : SequenceOfBlowups Sc) {a a' : ℕ}
     (ha : a = a') (f : A ⟶ t.schemeAt a) (hf : IsClosedImmersion f) :
     IsClosedImmersion (f ≫ eqToHom (congrArg t.schemeAt ha)) := by
   subst ha
   simpa using hf
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Simplify using `using hf`.
+-/
 private theorem center_eq_imageIdealSheaf_comp_eqToHom {Sc A : Scheme.{u}} (t : SequenceOfBlowups Sc)
     (I : A.IdealSheafData) {a a' : ℕ} (ha : a = a') (f : A ⟶ t.schemeAt a)
     (hf : t.center a = imageIdealSheaf f I) :
@@ -70,6 +94,9 @@ private theorem center_eq_imageIdealSheaf_comp_eqToHom {Sc A : Scheme.{u}} (t : 
   subst ha
   simpa using hf
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Substitute `hb` using the available equality. Simplify using `using H`.
+-/
 private theorem ker_comp_eqToHom_eq_strictTransform {Sc A C : Scheme.{u}} (t : SequenceOfBlowups Sc)
     {a b a' b' : ℕ} (ha : a = a') (hb : b = b') (hab : a ≤ b) (hab' : a' ≤ b')
     (g : C ⟶ t.schemeAt b) (f : A ⟶ t.schemeAt a)
@@ -80,6 +107,43 @@ private theorem ker_comp_eqToHom_eq_strictTransform {Sc A C : Scheme.{u}} (t : S
   subst hb
   simpa using H
 
+/- English proof (translation)
+Take `⟨hlen, σ, hci, h0, hsq, hcen, hker⟩` from `h`. Establish `htriv : ∀ i : ℕ, i < B.length → (B.center i = ⊤ ↔ t.center i = ⊤)`. Introduce `i hi`. Use `hci i hi.le` as an intermediate fact. Rewrite using `[hcen i hi]`.
+
+Conclude with `(imageIdealSheaf_eq_top_iff (σ i hi.le) (B.center i)).symm`. Establish `hretf : B.nontrivialIndex = t.nontrivialIndex` using `SequenceOfBlowups.nontrivialIndex_congr_of_center_eq_top_iff B t hlen htriv`. Establish `hplen : B.lengthWithoutIsoBlowups = t.lengthWithoutIsoBlowups` using `SequenceOfBlowups.lengthWithoutIsoBlowups_congr_of_center_eq_top_iff B t hlen htriv`. Establish `hret : ∀ i : ℕ, B.nontrivialIndex i = t.nontrivialIndex i` using `fun i => congrFun hretf i`. Establish `hdown : ∀ (a b : ℕ) (hab : a ≤ b) (hb : b ≤ B.length), σ b hb ≫ t.transitionMap hab = B.transitionMap hab ≫ σ a (le_trans hab hb)`.
+
+Introduce `a b hab`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base`. Introduce `hb`. Rewrite using `[t.transitionMap_self, B.transitionMap_self, Category.comp_id, Category.id_comp]`.
+
+Consider the case `succ b hab ih`. Introduce `hb`. Establish `hbl : b < B.length` using `hb`. Establish `e1 : t.transitionMapSucc b ≫ t.transitionMap hab = t.transitionMap (le_trans hab (Nat.le_succ b))`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap]`.
+
+Conclude with `t.transitionMap_trans hab (Nat.le_succ b)`. Establish `e2 : B.transitionMapSucc b ≫ B.transitionMap hab = B.transitionMap (le_trans hab (Nat.le_succ b))`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap]`. Conclude with `B.transitionMap_trans hab (Nat.le_succ b)`. Rewrite using `[← e1, ← Category.assoc, hsq b hbl, Category.assoc, ih hbl.le, ← Category.assoc, e2]`.
+
+Establish `hstruct : ∀ (i : ℕ) (hi : i ≤ B.length), σ i hi ≫ t.projectionToBase i = B.projectionToBase i ≫ j`. Introduce `i hi`. Establish `hd` using `hdown 0 i (Nat.zero_le i) hi`. Rewrite using `[SequenceOfBlowups.projectionToBase_def, SequenceOfBlowups.projectionToBase_def, ← Category.assoc (σ i hi), hd]`. Simplify using `only [Category.assoc, h0]`.
+
+Establish `key : ∀ (a c : ℕ) (hac : a + 1 ≤ c), (∀ d : ℕ, a + 1 ≤ d → d < c → t.center d = ⊤) → ∀ (hc : c ≤ B.length) (ha : a < B.length), (σ c hc).ker = Blowup.strictTransform (t.transitionMap (Nat.le_of_succ_le hac)) (t.center a) (σ a ha.le).ker`. Introduce `a c hac`. Proceed by induction on `c, hac using Nat.le_induction with`. Consider the case `base`. Introduce `_ hc ha`.
+
+Establish `hk` using `hker a ha`. Rewrite `hk` using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap]`. Conclude with `hk`. Consider the case `succ c hac ih`. Introduce `htop hc ha`.
+
+Establish `hcl : c < B.length` using `hc`. Establish `hc' : c ≤ B.length` using `le_of_lt hcl`. Establish `htopc : ∀ d : ℕ, a + 1 ≤ d → d < c → t.center d = ⊤` using `fun d hd1 hd2 => htop d hd1 (Nat.lt_succ_of_lt hd2)`. Establish `hctop : t.center c = ⊤` using `htop c hac (Nat.lt_succ_self c)`. Establish `: IsLocallyNoetherian (t.schemeAt c)` using `hN c (by omega)`.
+
+Establish `: IsLocallyNoetherian (t.schemeAt (c + 1))` using `hN (c + 1) (by omega)`. Establish `ihc` using `ih htopc hc' ha`. Establish `hk` using `hker c hcl`. Rewrite `hk` using `[hctop, strictTransform_top_eq_comap (t.transitionMapSucc c) ((σ c hcl.le).ker), ihc]`. Establish `hiso : IsIso (t.transitionMapSucc c)`.
+
+Establish `hB` using `t.isBlowupAlongIdealSheaf_blowupMorphism c (by omega)`. Rewrite `hB` using `[hctop]`. Conclude with `hB.isIso_of_top`. Establish `hbl : Blowup.IsBlowupAlongIdealSheaf (t.transitionMap (Nat.le_of_succ_le hac)) (t.center a)`. Establish `: IsIso (t.transitionMap hac)` using `t.isIso_transitionMap_of_center_eq_top hac (by omega) htopc`.
+
+Establish `hB : Blowup.IsBlowupAlongIdealSheaf (t.transitionMapSucc a) (t.center a)` using `t.isBlowupAlongIdealSheaf_blowupMorphism a (by omega)`. Establish `hcomp` using `hB.iso_hom_comp (asIso (t.transitionMap hac))`. Establish `heq2 : (asIso (t.transitionMap hac)).hom ≫ t.transitionMapSucc a = t.transitionMap (Nat.le_of_succ_le hac)`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap]`. Conclude with `t.transitionMap_trans (Nat.le_succ a) hac`.
+
+Rewrite `hcomp` using `[heq2]`. Conclude with `hcomp`. Establish `heq : t.transitionMapSucc c ≫ t.transitionMap (Nat.le_of_succ_le hac) = t.transitionMap (Nat.le_of_succ_le (le_trans hac (Nat.le_succ c)))`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap]`. Conclude with `t.transitionMap_trans (Nat.le_of_succ_le hac) (Nat.le_succ c)`.
+
+Rewrite using `[hk, ← strictTransform_isIso_comp (t.transitionMapSucc c) (t.transitionMap (Nat.le_of_succ_le hac)) (t.center a) ((σ a ha.le).ker) hbl, heq]`. Establish `h1 : ∀ (i : ℕ) (hi : i ≤ B.lengthWithoutIsoBlowups), IsClosedImmersion (σ (B.nontrivialIndex i) (B.nontrivialIndex_le_length hi) ≫ eqToHom (congrArg t.schemeAt (hret i)))`. Introduce `i hi`. Conclude with `isClosedImmersion_comp_eqToHom t (hret i) _ (hci _ _)`. Establish `h2 : (σ (B.nontrivialIndex 0) (B.nontrivialIndex_le_length (Nat.zero_le B.lengthWithoutIsoBlowups)) ≫ eqToHom (congrArg t.schemeAt (hret 0))) ≫ t.withoutIsoBlowups.isoZero.hom = B.withoutIsoBlowups.isoZero.hom ≫ j`.
+
+Simplify using `only [SequenceOfBlowups.withoutIsoBlowups_isoObjZero, SequenceOfBlowups.objNontrivialIndexZeroIso_hom]`. Rewrite using `[Category.assoc, eqToHom_projectionToBase t (hret 0)]`. Conclude with `hstruct (B.nontrivialIndex 0) (B.nontrivialIndex_le_length (Nat.zero_le B.lengthWithoutIsoBlowups))`. Establish `h3 : ∀ (i : ℕ) (hi : i < B.lengthWithoutIsoBlowups), (σ (B.nontrivialIndex (i + 1)) (B.nontrivialIndex_le_length hi) ≫ eqToHom (congrArg t.schemeAt (hret (i + 1)))) ≫ t.withoutIsoBlowups.transitionMapSucc i = B.withoutIsoBlowups.transitionMapSucc i ≫ (σ (B.nontrivialIndex i) (B.n …`. Introduce `i hi`.
+
+Simplify using `only [SequenceOfBlowups.withoutIsoBlowups_blowupMorphism]`. Conclude with `comp_eqToHom_comp_transitionMap t (hret i) (hret (i + 1)) (B.nontrivialIndex_monotone (Nat.le_succ i) : B.nontrivialIndex i ≤ B.nontrivialIndex (i + 1)) (t.nontrivialIndex_monotone (Nat.le_succ i) : t.nontrivialIndex i ≤ t.nontrivialIndex (i + 1)) _ _ _ (hdown (B.nontrivialIndex …`. Establish `h4 : ∀ (i : ℕ) (hi : i < B.lengthWithoutIsoBlowups), t.withoutIsoBlowups.center i = imageIdealSheaf (σ (B.nontrivialIndex i) (B.nontrivialIndex_le_length (le_of_lt hi)) ≫ eqToHom (congrArg t.schemeAt (hret i))) (B.withoutIsoBlowups.center i)`. Introduce `i hi`. Simplify using `only [SequenceOfBlowups.withoutIsoBlowups_center]`.
+
+Conclude with `center_eq_imageIdealSheaf_comp_eqToHom t (B.center (B.nontrivialIndex i)) (hret i) _ (hcen (B.nontrivialIndex i) (B.nontrivialIndex_lt_length hi))`. Establish `h5 : ∀ (i : ℕ) (hi : i < B.lengthWithoutIsoBlowups), (σ (B.nontrivialIndex (i + 1)) (B.nontrivialIndex_le_length hi) ≫ eqToHom (congrArg t.schemeAt (hret (i + 1)))).ker = Blowup.strictTransform (t.withoutIsoBlowups.transitionMapSucc i) (t.withoutIsoBlowups.center i) (σ (B.nontriv …`. Introduce `i hi`. Establish `htopd : ∀ d : ℕ, B.nontrivialIndex i + 1 ≤ d → d < B.nontrivialIndex (i + 1) → t.center d = ⊤`. Introduce `d hd1 hd2`.
+
+Establish `hdlt : d < B.length` using `lt_of_lt_of_le hd2 (B.nontrivialIndex_le_length hi)`. Conclude with `(htriv d hdlt).1 (B.center_eq_top_of_nontrivialIndex_lt (Nat.lt_of_succ_le hd1) hd2)`. Simplify using `only [SequenceOfBlowups.withoutIsoBlowups_blowupMorphism, SequenceOfBlowups.withoutIsoBlowups_center]`. Conclude with `ker_comp_eqToHom_eq_strictTransform t (hret i) (hret (i + 1)) (B.nontrivialIndex_monotone (Nat.le_succ i)) (t.nontrivialIndex_monotone (Nat.le_succ i)) _ _ (key (B.nontrivialIndex i) (B.nontrivialIndex (i + 1)) (B.succ_le_nontrivialIndex_succ i) htopd (B.nontrivialIndex_le_length …`. Conclude with `⟨hplen, fun i hi => σ (B.nontrivialIndex i) (B.nontrivialIndex_le_length hi) ≫ eqToHom (congrArg t.schemeAt (hret i)), h1, h2, h3, h4, h5⟩`.
+-/
 theorem isPushforwardSequenceOfBlowups_withoutIsoBlowups {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
     (B : SequenceOfBlowups S) (t : SequenceOfBlowups X)
     (hN : ∀ i : ℕ, i ≤ t.length → IsLocallyNoetherian (t.schemeAt i))

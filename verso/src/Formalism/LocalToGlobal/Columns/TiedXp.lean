@@ -18,10 +18,18 @@ section GenP
 variable {X : Fields} {Pr : Primes X} (hc : CMData X.F X.E) (σ₀ : X.K →+* ℂ) {n : ℕ} [NeZero n]
   (Λ : LevFam X.E X.K n Pr.vGs)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => one_dvd r, fun _ P hP => absurd hP (Finset.notMem_empty P)⟩ cop := isCoprime_one_left`.
+-/
 theorem xp_basePi_one : BasePi (∅ : Finset (Pl X.E)) (1 : 𝓞 X.E) where
   dvd r := ⟨fun _ => one_dvd r, fun _ P hP => absurd hP (Finset.notMem_empty P)⟩
   cop := isCoprime_one_left
 
+/- English proof (translation)
+Unfold `Deco.L`. Establish `: {x | x ∈ d.N ∧ ∀ P : (∅ : Finset (Pl E)), d.f P x = 0} = (d.N : Set (Sp E n))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.1`.
+
+Conclude with `fun h => ⟨h, fun P => absurd P.2 (Finset.notMem_empty P.1)⟩`. Rewrite using `[this, Submodule.span_eq]`.
+-/
 theorem xp_L_eq_N {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {SG : Finset (Pl E)}
     (d : Deco E n (∅ : Finset (Pl E)) SG) : d.L = d.N := by
   unfold Deco.L

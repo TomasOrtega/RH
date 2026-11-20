@@ -10,6 +10,19 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial Filter Topology Matrix ComplexSets
 open scoped ContDiff
 
+/- English proof (translation)
+Introduce `n e h W F u' ℓ f hW hF hu hℓ hℓP hf hfc`. Take `⟨hprime, hdim, huS⟩` from `hI n (e + 1) W F ℓ hW hF hℓ`. Take `⟨hinj, himg, hmult⟩` from `hC n W u' ℓ hW hℓP`. Establish `h0 : ∀ x ∈ zeroSet (W ⊔ Ideal.span {linForm ℓ - 1}), x ≠ 0` using `fun x hx => SliceFormLelongCompact.ne_zero_of_mem_zeroSet (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) hx`. Establish `hsm` using `smoothNear_log_dualNorm_slice h W ℓ`.
+
+Take `⟨g, hg, hgc, hgf⟩` from `SliceFormLelongCompact.exists_contDiff_eqOn (SheetSumMeasurable.isClosed_zeroSet _) hf hfc`. Establish `hSP : ∀ P ∈ (divCycle W u').support, W ⊔ Ideal.span {linForm ℓ - 1} ≤ P ⊔ Ideal.span {linForm ℓ - 1}`. Introduce `P hP`. Establish `hm : P ⊔ Ideal.span {linForm ℓ - 1} ∈ (W ⊔ Ideal.span {linForm ℓ - 1} ⊔ Ideal.span {linForm u'}).minimalPrimes`. Rewrite using `[← himg]`.
+
+Conclude with `⟨P, Finset.mem_coe.2 hP, rfl⟩`. Conclude with `le_sup_left.trans hm.1.2`. Establish `hw : ∀ (I : Ideal (MvPolynomial (Fin n) ℂ)) (d : ℕ) (ψ : Fin d → (Fin n → ℂ) → ℝ), W ⊔ Ideal.span {linForm ℓ - 1} ≤ I → varInt I d f ψ = varInt I d g ψ` using `fun I d ψ hle => SliceFormLelongCompact.varInt_congr_weight (fun x hx => (hgf x (SliceFormLelongCompact.zeroSet_anti hle hx)).symm) ψ`. Establish `hsumf : ∑ P ∈ (divCycle W u').support, ((divCycle W u' P : ℕ) : ℝ) * varInt (P ⊔ Ideal.span {linForm ℓ - 1}) e f (fun _ x => Real.log (h.dualNorm x)) = ∑ P ∈ (divCycle W u').support, ((divCycle W u' P : ℕ) : ℝ) * varInt (P ⊔ Ideal.span {linForm ℓ - 1}) e g (fun _ x => Real.log (h …` using `Finset.sum_congr rfl fun P hP => by rw [hw _ _ _ (hSP P hP)]`. Rewrite using `[hsumf, hw (W ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) (fun _ x => Real.log (h.dualNorm x)) le_rfl]`.
+
+Use `Tendsto.congr (fun ε => (hw _ _ _ le_rfl).symm) ?_` and prove the remaining obligations. Establish `hgS : SmoothNear (zeroSet (W ⊔ Ideal.span {linForm ℓ - 1})) g` using `smoothNear_of_contDiff hg`. Establish `hlim` using `SliceFormLelongCompact.tendsto_varInt_fsLogReg hLI hCM h _ u' g (fun (_ : Fin e) x => Real.log (h.dualNorm x)) hprime hdim (huS u' hu) h0 hgS hgc (fun _ => hsm)`. Establish `hP` using `hPL n e _ u' g (fun _ x => Real.log (h.dualNorm x)) hprime hdim (huS u' hu) hg hgc (fun _ => hsm)`. Establish `hS2` using `hSt n e _ g (fun x => Real.log (h.dualNorm x)) (fun _ x => Real.log (h.dualNorm x)) hprime hdim hgS hsm (fun _ => hsm) (Or.inl hgc)`.
+
+Establish `hcons : (vecCons (fun x => Real.log (h.dualNorm x)) fun (_ : Fin e) x => Real.log (h.dualNorm x)) = fun _ x => Real.log (h.dualNorm x)`. Use function extensionality and compare the values at `fun i => Fin.cases rfl (fun _ => rfl) i`. Rewrite `hS2` using `[hcons]`. Establish `hsum : ∑ P ∈ (divCycle W u').support, (localMult (W ⊔ Ideal.span {linForm ℓ - 1} ⊔ Ideal.span {linForm u'}) (P ⊔ Ideal.span {linForm ℓ - 1}) : ℝ) * varInt (P ⊔ Ideal.span {linForm ℓ - 1}) e g (fun _ x => Real.log (h.dualNorm x)) = ∑ P ∈ (divCycle W u').support, ((divCycle W u' P …` using `Finset.sum_congr rfl fun P hP => by rw [hmult P hP]`. Rewrite `hlim` using `[hP, ← himg, finsum_mem_image hinj, finsum_mem_coe_finset, hsum, ← hS2]`.
+
+Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Conclude with `(hSt n e _ g (fsLogReg h u' ε) _ hprime hdim hgS ⟨{0}ᶜ, isOpen_compl_singleton, fun x hx => h0 x hx, contDiffOn_fsLogReg h u' hε⟩ (fun _ => hsm) (Or.inl hgc)).symm`.
+-/
 theorem SliceFormLelongCompact.proof (hSt : StokesOnVariety.Statement) (hLI : LogIntegrable.Statement)
     (hPL : PoincareLelong.Statement) (hCM : ChartMassCompact.Statement) (hI : SliceIdeal.Statement)
     (hC : SliceComponents.Statement) : SliceFormLelongCompact.Statement := by

@@ -24,6 +24,25 @@ namespace GlobalTheory.ConstDefSym
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Introduce `R _ _ Q k _ _ ρ B' _ π₁ π₂ h₁ h₂ hfib`. Set `ρ₀ : R →+* k` to `(TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ`. Set `A₀ : Over (Sp k)` to `(Over.pullback (spMap ρ₀)).obj Q.P.A`. Use `letI : GrpObj A₀ := Functor.grpObjObj`. Establish `hj : IsGrpPullback A₀ Q.P.A (spMap ρ₀) (pullback.fst Q.P.A.hom (spMap ρ₀))` using `isGrpPullback_pullback Q.P.A (spMap ρ₀)`.
+
+Establish `ec : spMap (constHom ρ) = spMap (algebraMap k (DualNumber k)) ≫ spMap ρ₀`. Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Establish `h₂' : IsGrpPullback B' Q.P.A (spMap (algebraMap k (DualNumber k)) ≫ spMap ρ₀) π₂` using `h₂.congr ec rfl`. Set `q : B'.left ⟶ A₀.left` to `hj.1.lift π₂ (B'.hom ≫ spMap (algebraMap k (DualNumber k))) (by rw [h₂'.1.w, Category.assoc])`.
+
+Establish `hq₁ : q ≫ pullback.fst Q.P.A.hom (spMap ρ₀) = π₂` using `hj.1.lift_fst _ _ _`. Establish `hq₂ : q ≫ A₀.hom = B'.hom ≫ spMap (algebraMap k (DualNumber k))` using `hj.1.lift_snd _ _ _`. Establish `hq : IsGrpPullback B' A₀ (spMap (algebraMap k (DualNumber k))) q` using `IsGrpPullback.cancel hj (h₂'.congr rfl hq₁.symm) hq₂`. Establish `eid : GlobalTheory.DeRham.epsRed k ≫ spMap (algebraMap k (DualNumber k)) = 𝟙 _`. Rewrite using `[GlobalTheory.DeRham.epsRed, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `Spec.map_id (CommRingCat.of k)` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules. Set `i : A₀.left ⟶ B'.left` to `hq.1.lift (𝟙 _) (A₀.hom ≫ GlobalTheory.DeRham.epsRed k) (by rw [Category.id_comp, Category.assoc, eid, Category.comp_id])`. Establish `e : i ≫ q = 𝟙 _` using `hq.1.lift_fst _ _ _`.
+
+Establish `hi₂ : i ≫ B'.hom = A₀.hom ≫ GlobalTheory.DeRham.epsRed k` using `hq.1.lift_snd _ _ _`. Use `haveI : IsMonHom (Iso.refl A₀).hom := inferInstanceAs (IsMonHom (𝟙 A₀))`. Establish `hi : IsGrpPullback A₀ B' (GlobalTheory.DeRham.epsRed k) i` using `IsGrpPullback.cancel hq ((isGrpPullback_of_iso (Iso.refl A₀)).congr eid.symm (by rw [e]; rfl)) hi₂`. Establish `hA₀ : IsAbelianScheme A₀` using `PolPull.isAbelianScheme_of_isGrpPullback Q.P.isAb hj`. Establish `hL` using `Q.P.isLB`.
+
+Establish `hsymA : pull (GrpObj.inv : Q.P.A ⟶ Q.P.A).left (cls Q.P.L hL) = cls Q.P.L hL`. Establish `h0` using `(cls_eq_zero_iff (LB.isLB_linComb hL _ _)).2 ⟨Q.sym, Q.sym_gen⟩`. Rewrite `h0` using `[cls_linComb hL]`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, one_smul, neg_smul, pull_id] at h0`. Conclude with `sub_eq_zero.1 (by simpa [sub_eq_add_neg] using h0)`.
+
+Establish `key : ∀ {f : Sp (DualNumber k) ⟶ Sp R} (π : B'.left ⟶ Q.P.A.left), IsGrpPullback B' Q.P.A f π → LBIso ((Q.P.L.pull π).pull (GrpObj.inv : B' ⟶ B').left) (Q.P.L.pull π)`. Introduce `f π hπ`. Rewrite using `[← cls_eq_iff (pull_isLB (pull_isLB hL _) _) (pull_isLB hL _)]`. Use `show pull _ (pull π (cls Q.P.L hL)) = pull π (cls Q.P.L hL)`. Rewrite using `[← pull_comp, GlobalTheory.SymSpread.inv_comp_of_isGrpPullback hπ, pull_comp, hsymA]`.
+
+Establish `hfib' : i ≫ π₁ = i ≫ π₂` using `hfib A₀.left i A₀.hom hi₂`. Establish `hclosed : LBIso ((Q.P.L.pull π₁).pull i) ((Q.P.L.pull π₂).pull i)`. Rewrite using `[← cls_eq_iff (pull_isLB (pull_isLB hL _) _) (pull_isLB (pull_isLB hL _) _)]`. Use `show pull i (pull π₁ (cls Q.P.L hL)) = pull i (pull π₂ (cls Q.P.L hL))`. Rewrite using `[← pull_comp, ← pull_comp, hfib']`.
+
+Conclude with `GlobalTheory.SymFirstOrder.lbIso_of_symmetric k A₀ B' i q hA₀ hi hq e _ _ (pull_isLB hL _) (pull_isLB hL _) (key π₁ h₁) (key π₂ h₂) hclosed`.
+-/
 theorem lbIso_pull_of_const : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (k : Type) [Field k] [CharZero k] (ρ : R →+* DualNumber k) (B' : Over (Sp (DualNumber k))) (_ : GrpObj B') (π₁ π₂ : B'.left ⟶ Q.P.A.left), IsGrpPullback B' Q.P.A (spMap ρ) π₁ → IsGrpPullback B' Q.P.A (spMap (constHom ρ)) π₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → LBIso (Q.P.L.pull π₁) (Q.P.L.pull π₂) := by
   intro R _ _ Q k _ _ ρ B' _ π₁ π₂ h₁ h₂ hfib
 

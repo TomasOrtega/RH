@@ -19,8 +19,14 @@ noncomputable def backTop : X ⟶ U.toScheme :=
   IsOpenImmersion.lift U.ι (𝟙 X) (by
     rw [Scheme.Opens.range_ι, hU]; exact Set.subset_univ _)
 
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+-/
 theorem backTop_ι : backTop U hU ≫ U.ι = 𝟙 X := IsOpenImmersion.lift_fac _ _ _
 
+/- English proof (translation)
+The claim follows from `congrArg (fun g : X ⟶ X => g y) (backTop_ι U hU)`.
+-/
 theorem backTop_apply (y : X) : U.ι (backTop U hU y) = y :=
   congrArg (fun g : X ⟶ X => g y) (backTop_ι U hU)
 
@@ -33,6 +39,9 @@ namespace GlobalTheory.AmpleCover
 
 variable {S : Scheme.{0}} (A : Over S) (L : LB A.left) (N : ℕ)
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Both sides reduce to the same expression.
+-/
 theorem gm_pow_congr {y : A.left} {r : A.left ⟶ A.left} (hr : r = 𝟙 A.left) (a b : L.ι) :
     gm (𝟙 A.left) y (L.U a ⊓ L.U b) (L.g a b) ^ N = gm r y (L.U a ⊓ L.U b) (L.g a b) ^ N := by
   subst hr; rfl
@@ -65,6 +74,15 @@ end GlobalTheory.AmpleCover
 
 open GlobalTheory.AmpleCover in
 
+/- English proof (translation)
+Introduce `K _ P₀`. Take `⟨N, hN, M, s, hcov, hs⟩` from `P₀.ample ⊤ (isAffineOpen_top _)`. Establish `hT : P₀.A.hom ⁻¹ᵁ ⊤ = ⊤` using `by simp`. Set `a` to `chartPullPowTop P₀.A P₀.L N`. Establish `loc : ∀ i, Out.nonzeroLocus (GlobalTheory.chartSec a (s i)) = backTop _ hT ⁻¹ᵁ Out.nonzeroLocus (s i)` using `fun i => GlobalTheory.nonzeroLocus_chartSec a (s i) fun y j hj => by`.
+
+Establish `h0 : (P₀.A.hom ⁻¹ᵁ ⊤).ι (backTop _ hT y) ∈ P₀.L.U ((j : Fin N → P₀.L.ι) ⟨0, hN⟩)` using `Set.mem_iInter.1 hj ⟨0, hN⟩`. Rewrite `h0` using `[backTop_apply]`. Conclude with `⟨fun _ => (j : Fin N → P₀.L.ι) ⟨0, hN⟩, Set.mem_iInter.2 fun _ => h0⟩`. Use `⟨N, {i : Fin (M + 1) // ((Out.nonzeroLocus (GlobalTheory.chartSec a (s i)) : P₀.A.left.Opens) : Set P₀.A.left).Nonempty}, fun i => GlobalTheory.chartSec a (s i.1), hN, ?_, fun i => ⟨?_, i.2⟩⟩` and prove the remaining obligations. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations.
+
+Establish `hy : backTop _ hT y ∈ ⨆ i, Out.nonzeroLocus (s i)` using `by rw [hcov]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Establish `hy' : y ∈ Out.nonzeroLocus (GlobalTheory.chartSec a (s i))` using `by rw [loc]; exact hi`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨i, y, hy'⟩, hy'⟩`. Use `show IsAffineOpen (Out.nonzeroLocus (GlobalTheory.chartSec a (s i.1)))`.
+
+Rewrite using `[loc]`. Conclude with `(hs i.1).1.preimage _`.
+-/
 theorem GlobalTheory.AmpleCover.exists_affine_cover_secM : ∀ (K : Type) [Field K] (P₀ : Out.PolAV (Sp K)), ∃ (k : ℕ) (I : Type) (s : I → SecM (𝟙 P₀.A.left) P₀.L k), 1 ≤ k ∧ ⨆ i, Out.nonzeroLocus (s i) = ⊤ ∧ ∀ i, IsAffineOpen (Out.nonzeroLocus (s i)) ∧ ((Out.nonzeroLocus (s i) : P₀.A.left.Opens) : Set P₀.A.left).Nonempty := by
   intro K _ P₀
   obtain ⟨N, hN, M, s, hcov, hs⟩ := P₀.ample ⊤ (isAffineOpen_top _)

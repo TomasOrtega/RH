@@ -60,6 +60,9 @@ def whole : ArithVariety n where
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Use `⟨hz, fun f hf ↦ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f ∈ (⊥ : Ideal _) at hf`. Rewrite `hf` using `[Submodule.mem_bot]`. Rewrite using `[hf, evalCone, eval₂_zero]`.
+-/
 theorem mem_points_whole {F : Type*} [CommRing F] {z : Cone n F} (hz : BlockNonzero z) :
     z ∈ (whole n).points F := by
   refine ⟨hz, fun f hf ↦ ?_⟩
@@ -83,24 +86,41 @@ structure HermLine where
 
 def l2Norm {m : ℕ} (w : Fin m → ℂ) : ℝ := Real.sqrt (∑ i, ‖w i‖ ^ 2)
 
+/- English proof (translation)
+The claim follows from `Real.le_sqrt_of_sq_le (Finset.single_le_sum (f := fun j ↦ ‖w j‖ ^ 2) (fun _ _ ↦ sq_nonneg _) (Finset.mem_univ i))`.
+-/
 theorem norm_le_l2Norm {m : ℕ} (w : Fin m → ℂ) (i : Fin m) : ‖w i‖ ≤ l2Norm w :=
   Real.le_sqrt_of_sq_le (Finset.single_le_sum (f := fun j ↦ ‖w j‖ ^ 2)
     (fun _ _ ↦ sq_nonneg _) (Finset.mem_univ i))
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `Function.ne_iff.mp hw`. Conclude with `lt_of_lt_of_le (norm_pos_iff.mpr hi) (norm_le_l2Norm w i)`.
+-/
 theorem vectorL2Norm_pos {m : ℕ} {w : Fin m → ℂ} (hw : w ≠ 0) : 0 < l2Norm w := by
   obtain ⟨i, hi⟩ := Function.ne_iff.mp hw
   exact lt_of_lt_of_le (norm_pos_iff.mpr hi) (norm_le_l2Norm w i)
 
+/- English proof (translation)
+Simplify using `only [l2Norm, norm_mul, mul_pow, ← Finset.mul_sum]`. Rewrite using `[Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+-/
 theorem vectorL2Norm_const_mul {m : ℕ} (c : ℂ) (w : Fin m → ℂ) :
     l2Norm (fun i ↦ c * w i) = ‖c‖ * l2Norm w := by
   simp only [l2Norm, norm_mul, mul_pow, ← Finset.mul_sum]
   rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]
 
+/- English proof (translation)
+Simplify using `only [l2Norm, Complex.norm_conj]`.
+-/
 theorem vectorL2Norm_conj {m : ℕ} (w : Fin m → ℂ) :
     l2Norm (fun i ↦ starRingEnd ℂ (w i)) = l2Norm w := by
   simp only [l2Norm, Complex.norm_conj]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Establish `hsum : ContDiff ℝ ∞ (fun z : Cone n ℂ ↦ ∑ i, ‖z k i‖ ^ 2)`. Use `ContDiff.sum fun i _ ↦ ?_` and prove the remaining obligations. Conclude with `(contDiff_norm_sq ℝ).comp (contDiff_pi.1 (contDiff_pi.1 contDiff_id k) i)`. Use `hsum.contDiffOn.sqrt fun z hz ↦ ?_` and prove the remaining obligations. Use `vectorL2Norm_pos (hz k)` as an intermediate fact.
+
+Conclude with `ne_of_gt (Real.sqrt_pos.mp this)`.
+-/
 theorem contDiffOn_l2Norm_block (k : ι) :
     ContDiffOn ℝ ∞ (fun z : Cone n ℂ ↦ l2Norm (z k)) {z | BlockNonzero z} := by
   have hsum : ContDiff ℝ ∞ (fun z : Cone n ℂ ↦ ∑ i, ‖z k i‖ ^ 2) := by
@@ -136,6 +156,9 @@ def project {ι' : Type} {n' : ι' → ℕ} (j : ι → ι') {F : Type*} (z : Co
   fun k ↦ z (j k)
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Use `symm`. Use `Fintype.prod_of_injective j hj _ _ (fun k' hk' ↦ ?_) (fun k ↦ ?_)` and prove the remaining obligations. Rewrite using `[Function.extend_apply' _ _ _ (fun ⟨k, hk⟩ ↦ hk' ⟨k, hk⟩), Pi.zero_apply, zpow_zero]`. Rewrite using `[hj.extend_apply]`.
+-/
 theorem prod_extend_zpow {ι' : Type} [Fintype ι'] {j : ι → ι'} (hj : Function.Injective j)
     (a : ι → ℤ) (r : ι' → ℝ) :
     ∏ k', r k' ^ Function.extend j a 0 k' = ∏ k, r (j k) ^ a k := by
@@ -164,6 +187,9 @@ end HermLine
 def coordField (z : Cone n (AlgebraicClosure ℚ)) : IntermediateField ℚ (AlgebraicClosure ℚ) :=
   IntermediateField.adjoin ℚ (Set.range fun v : Coord n ↦ z v.1 v.2)
 
+/- English proof (translation)
+Establish `: Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ)`. Apply the tactic sequence `convert AlgebraicClosure.isAlgebraic ℚ <;> rfl`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic x).isIntegral`.
+-/
 theorem isIntegral_algebraicClosure_rat (x : AlgebraicClosure ℚ) : IsIntegral ℚ x := by
   have : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := by
     convert AlgebraicClosure.isAlgebraic ℚ <;> rfl
@@ -215,6 +241,11 @@ structure IntegralSection (P : ArithVariety n) (a : ι → ℤ) where
   regular : ∀ c : (k : ι) → Fin (n k + 1), (∀ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ∉ P.ideal) →
     ∃ (d : ι → ℕ) (e : MvPolynomial (Coord n) ℤ), IsChartForm P a num den c d e
 
+/- English proof (translation)
+Establish `h` using `IsWeightedHomogeneous.prod Finset.univ (fun k ↦ (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ^ d k) (fun k ↦ d k • Pi.single k 1) (fun k _ ↦ (isWeightedHomogeneous_X (R := ℤ) (coordDeg n) ⟨k, c k⟩).pow (d k))`. Establish `e : (∑ k, d k • Pi.single k 1 : ι → ℕ) = d`. Use extensionality with `k'`. Rewrite using `[Finset.sum_apply]`. Simplify using `[Pi.single_apply]`.
+
+Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem isWeightedHomogeneous_chartMonomial (c : (k : ι) → Fin (n k + 1)) (d : ι → ℕ) :
     IsWeightedHomogeneous (coordDeg n) (chartMonomial c d) d := by
   have h := IsWeightedHomogeneous.prod Finset.univ

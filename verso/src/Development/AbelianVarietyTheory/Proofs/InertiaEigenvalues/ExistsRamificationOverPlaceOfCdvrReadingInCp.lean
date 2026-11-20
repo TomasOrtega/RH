@@ -14,6 +14,11 @@ open GlobalTheory.GoodPts
 
 variable {p : ℕ} [Fact p.Prime] {F : Type} [Field F] [NumberField F] (φ : F →+* ℂ_[p])
 
+/- English proof (translation)
+Take `⟨n, d, hnd⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer (placeAt φ) x hx`. Establish `hd : ‖φ ((d : 𝓞 F) : F)‖ = 1` using `le_antisymm (norm_int_le_one φ _) (not_lt.1 d.2)`. Establish `h2` using `congrArg (fun t => ‖φ t‖) hnd`. Simplify using `only [map_mul, norm_mul] at h2`. Establish `h3 : ‖φ x‖ * ‖φ ((d : 𝓞 F) : F)‖ = ‖φ (n : F)‖` using `h2`.
+
+Rewrite `h3` using `[hd, mul_one]`. Rewrite using `[h3]`. Conclude with `norm_int_le_one φ n`.
+-/
 theorem norm_le_one_of_valuation_le_one {x : F} (hx : (placeAt φ).valuation F x ≤ 1) : ‖φ x‖ ≤ 1 := by
   obtain ⟨n, d, hnd⟩ := HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer (placeAt φ) x hx
   have hd : ‖φ ((d : 𝓞 F) : F)‖ = 1 := le_antisymm (norm_int_le_one φ _) (not_lt.1 d.2)
@@ -25,11 +30,19 @@ theorem norm_le_one_of_valuation_le_one {x : F} (hx : (placeAt φ).valuation F x
 
 variable (T : CDVR)
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `hx`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_le_one _ _`.
+-/
 theorem valV_le_one_of_inV {x : T.Fr} (hx : InV T x) : valV T.V x ≤ 1 := by
   obtain ⟨v, rfl⟩ := hx
   rw [valV, HeightOneSpectrum.valuation_of_algebraMap]
   exact HeightOneSpectrum.intValuation_le_one _ _
 
+/- English proof (translation)
+Take `⟨n, d, hnd⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer (IsDiscreteValuationRing.maximalIdeal T.V) x hx`. Establish `hu : IsUnit (d : T.V)`. Assume the negation of the conclusion as `h`. Conclude with `d.2 ((IsLocalRing.mem_maximalIdeal _).2 h)`. Use `⟨n * ↑hu.unit⁻¹, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ← hnd, mul_assoc, ← map_mul, hu.mul_val_inv, map_one, mul_one]`.
+-/
 theorem inV_of_valV_le_one {x : T.Fr} (hx : valV T.V x ≤ 1) : InV T x := by
   obtain ⟨n, d, hnd⟩ := HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer
     (IsDiscreteValuationRing.maximalIdeal T.V) x hx
@@ -39,12 +52,40 @@ theorem inV_of_valV_le_one {x : T.Fr} (hx : valV T.V x ≤ 1) : InV T x := by
   refine ⟨n * ↑hu.unit⁻¹, ?_⟩
   rw [map_mul, ← hnd, mul_assoc, ← map_mul, hu.mul_val_inv, map_one, mul_one]
 
+/- English proof (translation)
+Simplify using `only [vV, map_zpow₀, WithZero.log_zpow, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vV_zpow {x : T.Fr} (n : ℤ) : vV T.V (x ^ n) = n * vV T.V x := by
   simp only [vV, map_zpow₀, WithZero.log_zpow, smul_eq_mul]
   ring
 
 variable {T}
 
+/- English proof (translation)
+Use `set P := placeAt φ with hP`. Establish `key : ∀ y : T.Fr, valV T.V y ≤ 1 ↔ ‖k y‖ ≤ 1` using `fun y => ⟨fun h => (hR.int y).2 (inV_of_valV_le_one T h), fun h => valV_le_one_of_inV T ((hR.int y).1 h)⟩`. Take `⟨π, hπ⟩` from `P.intValuation_exists_uniformizer`. Establish `hπ1 : P.intValuation π < 1`. Rewrite using `[hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Evaluate the numerical expressions. Establish `hπn : ‖φ (π : F)‖ < 1` using `(mem_placeAt φ π).1 ((P.intValuation_lt_one_iff_mem π).1 hπ1)`. Establish `hπ0 : (π : F) ≠ 0`. Introduce `h`. Establish `h' : π = 0` using `by exact_mod_cast h`.
+
+Rewrite `hπ` using `[h', map_zero]`. Conclude with `WithZero.exp_ne_zero.symm hπ`. Establish `hνπ : P.valuation F (π : F) = WithZero.exp (-1)`. Rewrite using `[← hπ]`. Conclude with `HeightOneSpectrum.valuation_of_algebraMap P π`.
+
+Use `set x := io (π : F) with hx`. Establish `hx0 : x ≠ 0` using `(map_ne_zero io).2 hπ0`. Establish `hkx : ‖k x‖ < 1` using `by rw [hx, hR.comp]; exact hπn`. Establish `hvx1 : valV T.V x < 1`. Use `lt_of_le_of_ne ((key x).2 hkx.le) fun h1 => ?_` and prove the remaining obligations.
+
+Establish `h2 : valV T.V x⁻¹ ≤ 1` using `by rw [map_inv₀, h1, inv_one]`. Establish `h3` using `(key _).1 h2`. Rewrite `h3` using `[map_inv₀, norm_inv]`. Establish `h4 : 0 < ‖k x‖` using `norm_pos_iff.2 ((map_ne_zero k).2 hx0)`. Conclude with `absurd h3 (not_le.2 ((one_lt_inv₀ h4).2 hkx))`.
+
+Establish `hvx : 0 < vV T.V x`. Establish `h` using `(WithZero.log_lt_log (valV_ne_zero hx0) one_ne_zero).2 hvx1`. Rewrite `h` using `[WithZero.log_one]`. Simplify using `only [vV]`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨(vV T.V x).toNat, by omega, fun a => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `[vV, vLa]`. Use `set n := vLa P a with hn`.
+
+Use `set b := a * (π : F) ^ (-n) with hb`. Establish `hb0 : b ≠ 0` using `mul_ne_zero ha (zpow_ne_zero _ hπ0)`. Establish `hνa : P.valuation F a = WithZero.exp (-n)`. Rewrite using `[hn, vLa, neg_neg, WithZero.exp_log ((P.valuation F).ne_zero_iff.2 ha)]`. Establish `hνb : P.valuation F b = 1`.
+
+Rewrite using `[hb, map_mul, map_zpow₀, hνa, hνπ, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules. Establish `hkb : ‖k (io b)‖ ≤ 1` using `by rw [hR.comp]; exact norm_le_one_of_valuation_le_one φ hνb.le`. Establish `hkb' : ‖k (io b)⁻¹‖ ≤ 1`. Rewrite using `[← map_inv₀, hR.comp]`.
+
+Conclude with `norm_le_one_of_valuation_le_one φ (by rw [map_inv₀, hνb, inv_one])`. Establish `hvb1 : valV T.V (io b) = 1`. Establish `h1` using `(key _).2 hkb`. Establish `h2` using `(key _).2 hkb'`. Rewrite `h2` using `[map_inv₀]`.
+
+Establish `hv0 : valV T.V (io b) ≠ 0` using `valV_ne_zero ((map_ne_zero io).2 hb0)`. Establish `h3 : valV T.V (io b) * (valV T.V (io b))⁻¹ ≤ valV T.V (io b) * 1` using `mul_le_mul_right h2 _`. Rewrite `h3` using `[mul_inv_cancel₀ hv0, mul_one]`. Conclude with `le_antisymm h1 h3`. Establish `hvb : vV T.V (io b) = 0` using `by simp [vV, hvb1]`.
+
+Establish `hab : io a = io b * x ^ n`. Rewrite using `[hx, ← map_zpow₀, ← map_mul, hb, mul_assoc, ← zpow_add₀ hπ0, neg_add_cancel, zpow_zero, mul_one]`. Rewrite using `[hab, vV_mul ((map_ne_zero io).2 hb0) (zpow_ne_zero _ hx0), hvb, vV_zpow, Int.toNat_of_nonneg hvx.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem overLa_placeAt_of_isReading {io : F →+* T.Fr} {k : T.Fr →+* ℂ_[p]} (hR : IsReading φ T io k) :
     ∃ e : ℕ, OverLa (placeAt φ) T.V io e := by
   set P := placeAt φ with hP
@@ -104,6 +145,9 @@ theorem overLa_placeAt_of_isReading {io : F →+* T.Fr} {k : T.Fr →+* ℂ_[p]}
   rw [hab, vV_mul ((map_ne_zero io).2 hb0) (zpow_ne_zero _ hx0), hvb, vV_zpow, Int.toNat_of_nonneg hvx.le]
   ring
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ φ _ _ _ hR` and use `overLa_placeAt_of_isReading φ hR`.
+-/
 theorem overLa_placeAt : ∀ (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [NumberField F] (φ : F →+* ℂ_[p]) (T : CDVR)
     (io : F →+* T.Fr) (k : T.Fr →+* ℂ_[p]), IsReading φ T io k → ∃ e : ℕ, OverLa (placeAt φ) T.V io e :=
   fun _ _ _ _ _ φ _ _ _ hR => overLa_placeAt_of_isReading φ hR

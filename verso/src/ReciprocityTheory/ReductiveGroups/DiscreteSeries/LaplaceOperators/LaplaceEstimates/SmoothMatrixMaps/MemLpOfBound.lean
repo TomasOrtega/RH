@@ -17,6 +17,9 @@ namespace TDAux
 
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ Formalism.REAL.hs g` using `by unfold Formalism.REAL.hs; positivity`. Rewrite using `[frob_eq, Real.sqrt_eq_rpow, ← Real.rpow_mul h0, ← Real.rpow_mul_natCast h0]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frob_rpow_sq (g : Mat k r) (b : ℝ) : (frob g ^ b) ^ 2 = Formalism.REAL.hs g ^ b := by
   have h0 : 0 ≤ Formalism.REAL.hs g := by unfold Formalism.REAL.hs; positivity
   rw [frob_eq, Real.sqrt_eq_rpow, ← Real.rpow_mul h0, ← Real.rpow_mul_natCast h0]
@@ -24,6 +27,23 @@ theorem frob_rpow_sq (g : Mat k r) (b : ℝ) : (frob g ^ b) ^ 2 = Formalism.REAL
   push_cast
   ring
 
+/- English proof (translation)
+Apply `memLp_muG_of_haar ε F 2` to reduce the goal to its premises. Introduce `ν hν`. Establish `hc : Continuous (fun g : S7.UJ ε => F (S7.toM g))` using `Formalism.REAL.continuous_smooth_on_group_eval hs`. Rewrite using `[memLp_two_iff_integrable_sq_norm hc.aestronglyMeasurable]`. Take `⟨s, hsq⟩` from `S7.exists_signVG ε`.
+
+Establish `hn1 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast n_pos`. Establish `hq0 : (0 : ℝ) ≤ (S7.q0 ε : ℝ)` using `Nat.cast_nonneg _`. Establish `ha1 : 1 - a ≤ 0` using `by nlinarith`. Use `set C' := max C 0 with hC'`. Establish `hb' : ∀ g : S7.UJ ε, ‖F (S7.toM g)‖ ^ 2 ≤ C' ^ 2 * Formalism.REAL.hs (S7.toM g) ^ (1 - a)`.
+
+Introduce `g`. Establish `hg : Formalism.REAL.inUJ ε (S7.toM g)` using `g.2`. Establish `hF` using `hb _ hg`. Establish `h1 : ‖F (S7.toM g)‖ ≤ C' * frob (S7.toM g) ^ (1 - a)` using `hF.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.rpow_nonneg (frob_pos n_pos hg).le _))`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hhs : ∀ g : S7.UJ ε, ((2 * r + k + 1 : ℕ) : ℝ) ≤ Formalism.REAL.hs (S7.toM g)` using `fun g => Formalism.REAL.dim_le_frobenius (ε := ε) g.2`. Establish `hC2 : 0 ≤ C' ^ 2` using `sq_nonneg _`. Use `S7.integrable_of_decayVG ε s ν _ (hc.norm.pow 2).aestronglyMeasurable (C' ^ 2) ?_ (2 * (a - 1)) ?_ ?_` and prove the remaining obligations. Introduce `g _`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`.
+
+Use `(hb' g).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsq]`. Move the coercions through the operations in `at ha ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `g _`. Establish `hpos : 0 < Formalism.REAL.hs (S7.toM g)` using `lt_of_lt_of_le one_pos (hn1.trans (hhs g))`. Establish `hnpos : (0 : ℝ) < ((2 * r + k + 1 : ℕ) : ℝ)` using `lt_of_lt_of_le one_pos hn1`. Use `set t := Real.log (Formalism.REAL.hs (S7.toM g) / ((2 * r + k + 1 : ℕ) : ℝ)) / 2 with ht`. Establish `he : ((2 * r + k + 1 : ℕ) : ℝ) * Real.exp (2 * t) = Formalism.REAL.hs (S7.toM g)`.
+
+Rewrite using `[ht, show 2 * (Real.log (Formalism.REAL.hs (S7.toM g) / ((2 * r + k + 1 : ℕ) : ℝ)) / 2) = Real.log (Formalism.REAL.hs (S7.toM g) / ((2 * r + k + 1 : ℕ) : ℝ)) by ring, Real.exp_log (div_pos hpos hnpos)]`. Clear the denominators using the available nonvanishing facts. Use `⟨t, le_of_eq he.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Use `(hb' g).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← he, Real.mul_rpow hnpos.le (Real.exp_pos _).le, ← Real.exp_mul]`. Establish `hn' : ((2 * r + k + 1 : ℕ) : ℝ) ^ (1 - a) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hn1 ha1`. Establish `e2 : 2 * t * (1 - a) = -(2 * (a - 1) * t)` using `by ring`. Rewrite using `[e2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem memLp_of_bound {F : Mat k r → ℂ} (hs : Formalism.REAL.SmoothOnG ε F) {a C : ℝ}
     (ha : ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ) < a - 1)
     (hb : ∀ g, Formalism.REAL.inUJ ε g → ‖F g‖ ≤ C * frob g ^ (1 - a)) :
@@ -85,6 +105,13 @@ end TDAux
 
 namespace TDAux
 
+/- English proof (translation)
+Establish `hq : min ((pOf ε : ℕ) : ℝ) ((qOf ε : ℕ) : ℝ) = (S7.q0 ε : ℝ)`. Simplify using `only [S7.q0, Nat.cast_min]`. Unfold `hNeed at hneed`. Rewrite `hneed` using `[hq]`. Establish `h3` using `lt_of_le_of_lt ((le_max_right _ _).trans (le_max_right _ _)) hneed`.
+
+Establish `hq1 : (1 : ℝ) ≤ (S7.q0 ε : ℝ)` using `by exact_mod_cast hq0`. Establish `hs : 0 < Real.sqrt (2 * (S7.q0 ε : ℝ))` using `Real.sqrt_pos.mpr (by linarith)`. Establish `hn : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hm : 2 * ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ) ≤ max (2 * ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ)) (2 * ((qOf ε : ℝ) - 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2)` using `le_max_left _ _`. Unfold `aExp`.
+
+Rewrite using `[lt_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem a_gt {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {h : ℝ} (hneed : hNeed ε < h) (hq0 : 1 ≤ S7.q0 ε) :
     8 * ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ) + 1 < aExp ε h := by
   have hq : min ((pOf ε : ℕ) : ℝ) ((qOf ε : ℕ) : ℝ) = (S7.q0 ε : ℝ) := by
@@ -104,6 +131,17 @@ theorem a_gt {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {h : ℝ} (hneed : 
 
 end TDAux
 
+/- English proof (translation)
+Introduce `k r ε lam h H _ _ _ σ D E V T μ ι hσ hE hV hcas hK hμ hcoef hp hq hgap hHC hGap x₁ x₀ w hx₀ f hf`. Take `⟨hq0, hneed⟩` from `gapNeed k r ε h hp hq hgap`. Establish `hx₀' : Formalism.REAL.inUJ ε x₀` using `hx₀`. Establish `hagt` using `TDAux.a_gt (ε := ε) hneed hq0`. Establish `hn : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `hq0' : (0 : ℝ) ≤ (S7.q0 ε : ℝ)` using `Nat.cast_nonneg _`. Establish `ha0 : 0 ≤ aExp ε h` using `by nlinarith`. Establish `ha : ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ) < aExp ε h - 1` using `by nlinarith`. Establish `hQ : ∀ m ∈ genSub E V, TDAux.Qp ε σ x₀ ((w : D) : H) (aExp ε h) (m : H)`. Use `TDAux.Qp_genSub (fun v hv wd => ?_)` and prove the remaining obligations.
+
+Use `TDAux.Qp_word hσ hE hx₀' (ψ := fun y => ⟪ι w, S7.PsiM T μ y (ι ⟨v, hv⟩)⟫_ℂ) ?_ (TDAux.psi_smooth T μ hμ _ _) ha0 ?_ wd` and prove the remaining obligations. Introduce `y hy`. Conclude with `hcoef (x₀⁻¹ * y) (Formalism.REAL.indefinite_unitary_mul_mem ε (TDAux.inv_mem hx₀') hy) ⟨v, hv⟩ w`. Introduce `wd'`. Take `⟨C, hC⟩` from `S0.DecDeriv.decDeriv _ ε lam h T μ hHC hGap hneed hq0 hμ wd' (ι ⟨v, hv⟩) (ι w)`.
+
+Conclude with `⟨C, fun y hy => hC y hy⟩`. Establish `hQf : ∀ wd c, TDAux.Qp ε σ x₀ ((w : D) : H) (aExp ε h) ((TDAux.Fw E wd f c : D) : H)` using `fun wd c => hQ _ (TDAux.Fw_mem E V hf wd c)`. Establish `hsm` using `TDAux.tMapD_smooth (σ := σ) x₁ (hQf [])`. Use `⟨⟨hsm, fun wd => ?_⟩, fun a b g hg => TDAux.tMapD_Eab hσ hE hx₀' hg x₁ _ f a b, fun wd => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `TDAux.tMapD_bound (σ := σ) x₁ (hQf wd)`.
+
+Conclude with `TDAux.memLp_of_bound (Formalism.REAL.smooth_iterated_lie_derivative hsm wd) ha (fun g hg => by`. Rewrite using `[TDAux.tMapD_Eword hσ hE hx₀' x₁ _ f wd g hg]`. Conclude with `hC g hg)`. Take `⟨C, hC⟩` from `TDAux.tMapD_bound (σ := σ) x₁ (hQf wd)`. Conclude with `⟨C, fun g hg => by rw [TDAux.tMapD_Eword hσ hE hx₀' x₁ _ f wd g hg]; exact hC g hg⟩`.
+-/
 theorem tMapD_spec : TMapDStatement := by
   intro k r ε lam h H _ _ _ σ D E V T μ ι hσ hE hV hcas hK hμ hcoef hp hq hgap hHC hGap x₁ x₀ w hx₀ f hf
   obtain ⟨hq0, hneed⟩ := gapNeed k r ε h hp hq hgap

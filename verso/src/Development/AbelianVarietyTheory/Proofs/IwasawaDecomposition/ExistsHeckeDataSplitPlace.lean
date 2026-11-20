@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HeckeDataAtState
 
+/- English proof (translation)
+Introduce `hL`. Use `StepW.of_all fun K B f T w _ _ _ P x _ i k Pl _ hk hs hP => ?_` and prove the remaining obligations. Take `⟨α, Rr, h, -⟩` from `GlobalTheory.TwInputs.Eig.exists_hkDat (R := x.m.z.R) x.m.z.F x.m.z.pins.char.base.lev (subset_refl _) (GlobalTheory.TwInputs.Eig.low_SbD (Dof x)) i hs hP hk`. Conclude with `⟨α, Rr, h⟩`.
+-/
 theorem exists_hkDat_at_state : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), LA hL x →
     ∀ (i : Fin (Dof x).R.m) (k : ℕ) (Pl : PlE (Dof x).host), 1 ≤ k → k ≤ (Dof x).R.r → IsSplitPl (Dof x).host Pl →
       Pl ∉ SbD (Dof x) → ∃ α Rr, HkDat x.m.z.R (SbD (Dof x)) i k Pl α Rr := by

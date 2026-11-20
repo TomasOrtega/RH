@@ -11,11 +11,17 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ, star_star]`.
+-/
 theorem sigma_sigma (h : IsCMExt F E σ) (a : E) : σ (σ a) = a := by
   let τ : E →+* ℂ := (IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom
   apply τ.injective
   rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
 
+/- English proof (translation)
+Establish `hJ' : ∀ i j, σ (J i j) = ε * J j i` using `fun i j => hJ j i`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, sigma_sigma h, hJ', Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : E} (hJ : ∀ i j, σ (J j i) = ε * J i j)
     (a b : Fin n → E) : σ (form σ J a b) = ε * form σ J b a := by
   have hJ' : ∀ i j, σ (J i j) = ε * J j i := fun i j => hJ j i
@@ -24,41 +30,68 @@ theorem form_swap (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `[form, add_dotProduct]`.
+-/
 theorem form_add_left {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b c : Fin n → E) :
     form σ J (a + b) c = form σ J a c + form σ J b c := by simp [form, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[form, sub_dotProduct]`.
+-/
 theorem form_sub_left {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b c : Fin n → E) :
     form σ J (a - b) c = form σ J a c - form σ J b c := by simp [form, sub_dotProduct]
 
+/- English proof (translation)
+Simplify using `[form, smul_dotProduct]`.
+-/
 theorem form_smul_left {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (s : E) (a c : Fin n → E) :
     form σ J (s • a) c = s * form σ J a c := by simp [form, smul_dotProduct]
 
+/- English proof (translation)
+Establish `: (fun i => σ ((a + b) i)) = (fun i => σ (a i)) + fun i => σ (b i)` using `funext fun i => by simp`. Simplify using `only [form, this, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem form_add_right {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b c : Fin n → E) :
     form σ J c (a + b) = form σ J c a + form σ J c b := by
   have : (fun i => σ ((a + b) i)) = (fun i => σ (a i)) + fun i => σ (b i) := funext fun i => by simp
   simp only [form, this, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Establish `: (fun i => σ ((s • a) i)) = σ s • fun i => σ (a i)` using `funext fun i => by simp`. Simplify using `only [form, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem form_smul_right {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (s : E) (a c : Fin n → E) :
     form σ J c (s • a) = σ s * form σ J c a := by
   have : (fun i => σ ((s • a) i)) = σ s • fun i => σ (a i) := funext fun i => by simp
   simp only [form, this, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `e1 : (fun i => σ ((ι *ᵥ u') i)) = ι.map σ *ᵥ fun i => σ (u' i)`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (σ : E →+* E) ι u' i`. Simplify using `only [form, e1, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`.
+-/
 theorem form_gram {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E) (ι : Matrix (Fin n) (Fin n₁) E) (u u' : Fin n₁ → E) :
     form σ (ιᵀ * J * ι.map σ) u u' = form σ J (ι *ᵥ u) (ι *ᵥ u') := by
   have e1 : (fun i => σ ((ι *ᵥ u') i)) = ι.map σ *ᵥ fun i => σ (u' i) :=
     funext fun i => RingHom.map_mulVec (σ : E →+* E) ι u' i
   simp only [form, e1, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, Matrix.map_apply, Pi.star_apply, h.2.2.2 e]`.
+-/
 theorem map_form (h : IsCMExt F E σ) (e : E →+* ℂ) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b : Fin n → E) :
     e (form σ J a b) = (fun i => e (a i)) ⬝ᵥ J.map e *ᵥ star (fun i => e (b i)) := by
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, Matrix.map_apply, Pi.star_apply, h.2.2.2 e]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Use `hw (Pi.single k 1)` as an intermediate fact. Rewrite `this` using `[dotProduct_comm, Matrix.dotProduct_mulVec, dotProduct_single, mul_one, ← Matrix.mulVec_transpose]`. Then use the resulting hypothesis.
+-/
 theorem transpose_mulVec_eq_zero {n n₁ : ℕ} {R : Type} [CommRing R] (ι : Matrix (Fin n) (Fin n₁) R) (w : Fin n → R)
     (hw : ∀ u, (ι *ᵥ u) ⬝ᵥ w = 0) : ιᵀ *ᵥ w = 0 := by
   funext k
   have := hw (Pi.single k 1)
   rwa [dotProduct_comm, Matrix.dotProduct_mulVec, dotProduct_single, mul_one, ← Matrix.mulVec_transpose] at this
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, star_mul', ← h.2.2.2 e, hJ, map_mul]`. Rewrite using `[← mul_assoc, hκ]`.
+-/
 theorem map_herm (h : IsCMExt F E σ) (e : E →+* ℂ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : E} {κ : ℂ}
     (hκ : star κ * e ε = κ) (hJ : ∀ i j, σ (J j i) = ε * J i j) : (κ • J.map e)ᴴ = κ • J.map e := by
   ext i j
@@ -66,11 +99,19 @@ theorem map_herm (h : IsCMExt F E σ) (e : E →+* ℂ) {n : ℕ} {J : Matrix (F
     map_mul]
   rw [← mul_assoc, hκ]
 
+/- English proof (translation)
+Establish `: (fun i => σ ((a - b) i)) = (fun i => σ (a i)) - fun i => σ (b i)` using `funext fun i => by simp`. Simplify using `only [form, this, Matrix.mulVec_sub, dotProduct_sub]`.
+-/
 theorem form_sub_right {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b c : Fin n → E) :
     form σ J c (a - b) = form σ J c a - form σ J c b := by
   have : (fun i => σ ((a - b) i)) = (fun i => σ (a i)) - fun i => σ (b i) := funext fun i => by simp
   simp only [form, this, Matrix.mulVec_sub, dotProduct_sub]
 
+/- English proof (translation)
+Establish `h0 : ιᵀ *ᵥ (J *ᵥ fun i => σ (x i)) = 0` using `transpose_mulVec_eq_zero ι _ hx`. Establish `hs : star (fun i => e (x i)) = fun i => e (σ (x i))` using `funext fun i => by simp [h.2.2.2 e]`. Establish `e2 : (J.map e *ᵥ fun i => e (σ (x i))) = fun i => e ((J *ᵥ fun i => σ (x i)) i)`. Use function extensionality and compare the values at `fun i => (RingHom.map_mulVec e J _ i).symm`. Establish `e3 : (ιᵀ.map e *ᵥ fun i => e ((J *ᵥ fun i => σ (x i)) i)) = fun k => e ((ιᵀ *ᵥ (J *ᵥ fun i => σ (x i))) k)`.
+
+Use function extensionality and compare the values at `fun k => (RingHom.map_mulVec e ιᵀ _ k).symm`. Rewrite using `[hs, ← Matrix.transpose_map, e2, e3, h0]`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+-/
 theorem map_orth (h : IsCMExt F E σ) (e : E →+* ℂ) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (ι : Matrix (Fin n) (Fin n₁) E) (x : Fin n → E) (hx : ∀ u, form σ J (ι *ᵥ u) x = 0) :
     (ι.map e)ᵀ *ᵥ (J.map e *ᵥ star (fun i => e (x i))) = 0 := by
@@ -84,11 +125,17 @@ theorem map_orth (h : IsCMExt F E σ) (e : E →+* ℂ) {n n₁ : ℕ} (J : Matr
   funext k
   simp
 
+/- English proof (translation)
+Establish `: (ι.map e).map star = (ι.map σ).map e` using `by ext i j; simp [h.2.2.2 e]`. Rewrite using `[this, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`.
+-/
 theorem map_gram (h : IsCMExt F E σ) (e : E →+* ℂ) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (ι : Matrix (Fin n) (Fin n₁) E) : (ι.map e)ᵀ * J.map e * (ι.map e).map star = (ιᵀ * J * ι.map σ).map e := by
   have : (ι.map e).map star = (ι.map σ).map e := by ext i j; simp [h.2.2.2 e]
   rw [this, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]
 
+/- English proof (translation)
+Establish `: (fun k => σ ((Pi.single j (1 : E) : Fin n → E) k)) = Pi.single j 1`. Apply the tactic sequence `funext k; by_cases h : k = j <;> simp [h]`. Simplify using `[form, this, Matrix.mulVec_single, single_dotProduct]`.
+-/
 theorem form_single {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (i j : Fin n) :
     form σ J (Pi.single i 1) (Pi.single j 1) = J i j := by
   have : (fun k => σ ((Pi.single j (1 : E) : Fin n → E) k)) = Pi.single j 1 := by
@@ -102,6 +149,9 @@ def formL {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) : (Fin n �
 
 def conjInt (σ : E →ₐ[F] E) (o : 𝓞 E) : 𝓞 E := RingOfIntegers.mapRingHom (σ : E →+* E) o
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_conjInt (o : 𝓞 E) : (conjInt σ o : E) = σ o := rfl
 
 end PositivityTheory.ThKG.Tow.Pln

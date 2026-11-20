@@ -10,6 +10,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Two
 open scoped Classical
 
+/- English proof (translation)
+Use `haveI := c.fin`. Apply `RingHom.IsIntegral.isLocalHom` to reduce the goal to its premises. Conclude with `(Algebra.IsIntegral.of_finite ℤ_[l] c.O).isIntegral`. Introduce `a b h`. Establish `h'` using `congrArg (fun x : c.O => (x : PadicAlgCl l)) h`.
+
+Simplify using `only [Subalgebra.coe_algebraMap] at h'`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] (PadicAlgCl l))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `(algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp (fun a b h => Subtype.ext h)`. Conclude with `hinj h'`.
+-/
 private theorem isLocalHom_algebraMap_padicInt_coef_O {l : ℕ} [Fact l.Prime] (c : Coef l) :
     IsLocalHom (algebraMap ℤ_[l] c.O) := by
   haveI := c.fin
@@ -23,12 +28,20 @@ private theorem isLocalHom_algebraMap_padicInt_coef_O {l : ℕ} [Fact l.Prime] (
       exact (algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp (fun a b h => Subtype.ext h)
     exact hinj h'
 
+/- English proof (translation)
+Use `haveI := c.fin`. Use `haveI := isLocalHom_algebraMap_padicInt_coef_O c`. Conclude with `IsLocalRing.ResidueField.finite_of_finite (R := ℤ_[l]) inferInstance`.
+-/
 private theorem finite_residueField_coef {l : ℕ} [Fact l.Prime] (c : Coef l) :
     Finite (ResidueField c.O) := by
   haveI := c.fin
   haveI := isLocalHom_algebraMap_padicInt_coef_O c
   exact IsLocalRing.ResidueField.finite_of_finite (R := ℤ_[l]) inferInstance
 
+/- English proof (translation)
+Use `haveI := isLocalHom_algebraMap_padicInt_coef_O c`. Establish `h0 : IsLocalRing.residue c.O (algebraMap ℤ_[l] c.O (l : ℤ_[l])) = 0`. Rewrite using `[IsLocalRing.residue_eq_zero_iff]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 (fun hu => PadicInt.p_nonunit (isUnit_of_map_unit (algebraMap ℤ_[l] c.O) _ hu))`. Establish `h1 : ((l : ResidueField c.O)) = 0`.
+
+Rewrite `h0` using `[map_natCast]`. Rewrite using `[← map_natCast (IsLocalRing.residue c.O)]`. Conclude with `h0`. Rewrite using `[nsmul_eq_mul, h1, zero_mul]`.
+-/
 private theorem prime_nsmul_residueField_coef_eq_zero {l : ℕ} [Fact l.Prime] (c : Coef l) (m : ResidueField c.O) :
     l • m = 0 := by
   haveI := isLocalHom_algebraMap_padicInt_coef_O c
@@ -42,6 +55,23 @@ private theorem prime_nsmul_residueField_coef_eq_zero {l : ℕ} [Fact l.Prime] (
     exact h0
   rw [nsmul_eq_mul, h1, zero_mul]
 
+/- English proof (translation)
+Introduce `hP Ω _ _ _ l _ c D hD T r g hg hX`. Take `⟨hN, hO, hI, hC, hK, hU, ⟨hS0, hSl⟩, hIne, -⟩` from `residualKernel_properties D hD T`. Use `haveI := finite_residueField_coef c`. Establish `tor` using `prime_nsmul_residueField_coef_eq_zero c`. Establish `triv : ∀ (w : ℤ × ℤ), ∀ σ ∈ T.Kr, ∀ m : ResidueField c.O, (charRep (T.rbU w)) σ m = m`.
+
+Introduce `w σ hσ m`. Simplify using `[charRep, hU w σ (hK σ hσ)]`. Establish `hinf : ∀ (w : ℤ × ℤ), ∀ σ ∈ ineOff (↥T.F) Ω (prodS D), ∀ m : ResidueField c.O, (charRep (T.rbU w)) σ m = m`. Introduce `w σ hσ m`. Simplify using `[charRep, hU w σ (hIne σ hσ).2]`.
+
+Establish `sub : ∀ (w : ℤ × ℤ), (T.fr ∅).Zgl (residue c.O) w ≤ cocOff (charRep (T.rbU w)) (ineOff (↥T.F) Ω (prodS D))`. Introduce `w z hz`. Take `⟨h1, h2, h3, -⟩` from `hz`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`.
+
+Rewrite using `[h2 a b]`. Simplify using `[charRep, Tower.rbU]`. Introduce `a ha`. Conclude with `h3 a (hIne a ha).1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `w`. Establish `h` using `card_cocycles_vanishing_on_inertia_le_pow T.F Ω l (ResidueField c.O) (ResidueField c.O) tor (charRep (T.rbU w)) T.Kr r hI (triv w) hX`. Use `le_trans (Submodule.rank_mono (str_residue_le_cocycles_vanishing_on_inertia_kernel D hD T w)) ?_` and prove the remaining obligations. Use `haveI := h.1`. Conclude with `rank_le_of_card_le_pow_card_field _ _ _ h`.
+
+Introduce `w hw`. Establish `h` using `(card_globalCocycles_le_of_iwasawaRank hP T.F Ω l _ _ tor (charRep (T.rbU w)) T.Kr (prodS D) r g hD.l_odd hS0 hSl hg (hinf w) hN hO hI (triv w) hC hX).2 T.realF (fun σ hσ m => by simp [charRep, residualCharacter_complexConjugation_eq_one D hD T σ hσ w hw])`. Use `le_trans (Submodule.rank_mono (sub w)) ?_` and prove the remaining obligations. Use `haveI := h.1`. Conclude with `rank_le_of_card_le_pow_card_field _ _ _ h`.
+
+Introduce `w`. Establish `h` using `(card_globalCocycles_le_of_iwasawaRank hP T.F Ω l _ _ tor (charRep (T.rbU w)) T.Kr (prodS D) r g hD.l_odd hS0 hSl hg (hinf w) hN hO hI (triv w) hC hX).1`. Use `le_trans (Submodule.rank_mono (sub w)) ?_` and prove the remaining obligations. Use `haveI := h.1`. Establish `h2` using `rank_le_of_card_le_pow_card_field _ _ _ h`.
+
+Use `le_trans h2 (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Tower.d]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Ws.rank_cocycleSpaces_le_of_towerIwasawaRank :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (T : Tower D) (r g : ℕ), (plDvd T.F (prodS D)).ncard ≤ g → XRk l 1 T.Kr r → (∀ w, Module.rank (ResidueField c.O) ((T.fr ∅).Str (residue c.O) w) ≤ (r + 1 : ℕ)) ∧ (∀ w ∈ [0, wPs, -wPs], Module.rank (ResidueField c.O) ((T.fr ∅).Zgl (residue c.O) w) ≤ (r + 2 + g : ℕ)) ∧ ∀ w, Module.rank (ResidueField c.O) ((T.fr ∅).Zgl (residue c.O) w) ≤ T.d + (r + 2 + g : ℕ) := by
   intro hP Ω _ _ _ l _ c D hD T r g hg hX

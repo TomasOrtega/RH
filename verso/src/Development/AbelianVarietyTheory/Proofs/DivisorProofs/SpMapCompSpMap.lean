@@ -20,6 +20,9 @@ abbrev genCx (σ : c.F →+* ℂ) : Scheme.{0} := pullback (genStr Z) (spMap σ)
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
@@ -51,10 +54,16 @@ def bdCx (σ : c.F →+* ℂ) : Set (genCx Z σ) := pullback.fst (genStr Z) (spM
 
 variable (Z) in
 
+/- English proof (translation)
+Conclude with `congrArg (fun g : Sp ℂ ⟶ gen Z => g (IsLocalRing.closedPoint ℂ)) (pullback.lift_fst _ _ _)`.
+-/
 theorem fst_ptOf {σ : c.F →+* ℂ} (x : CxPts (genStr Z) σ) :
     pullback.fst (genStr Z) (spMap σ) (ptOf Z x) = x.1 (IsLocalRing.closedPoint ℂ) := by
   exact congrArg (fun g : Sp ℂ ⟶ gen Z =>  g (IsLocalRing.closedPoint ℂ)) (pullback.lift_fst _ _ _)
 
+/- English proof (translation)
+Simplify using `only [ptsOf, bdCx, Set.mem_setOf_eq, Set.mem_preimage, fst_ptOf]`.
+-/
 theorem mem_ptsOf_bdCx {σ : c.F →+* ℂ} (x : CxPts (genStr Z) σ) :
     x ∈ ptsOf Z (bdCx Z σ) ↔ x.1 (IsLocalRing.closedPoint ℂ) ∈ (genBd Z : Set (gen Z)) := by
   simp only [ptsOf, bdCx, Set.mem_setOf_eq, Set.mem_preimage, fst_ptOf]

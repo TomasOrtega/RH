@@ -24,6 +24,11 @@ def scalGL (c c' : A) (h : c * c' = 1) : GL n A where
   val_inv := by rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, h, one_smul]
   inv_val := by rw [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, smul_smul, mul_comm, h, one_smul]
 
+/- English proof (translation)
+Use `show Formalism.UG.cT σ (c • (1 : Matrix n n A)) * J * (c • (1 : Matrix n n A)) = J`. Establish `hm : Formalism.UG.cT σ (c • (1 : Matrix n n A)) = σ c • (1 : Matrix n n A)`. Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Distinguish the cases in `h1 : j = i`.
+
+Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h1, if_neg (Ne.symm h1)]`. Simplify using the standard rewrite rules. Rewrite using `[hm, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, h, one_smul]`.
+-/
 theorem scalGL_mem (σ : A →+* A) (J : Matrix n n A) (c : A) (h : c * σ c = 1) :
     scalGL (n := n) c (σ c) h ∈ Formalism.UG.UJ σ J := by
   show Formalism.UG.cT σ (c • (1 : Matrix n n A)) * J * (c • (1 : Matrix n n A)) = J
@@ -42,9 +47,15 @@ variable {D : D7}
 def scalGA (S : HSp D) (c : AE D) (hc : c * cA D c = 1) : GA D S :=
   ⟨scalGL c (cA D c) hc, by exact scalGL_mem _ _ c hc⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_scalGA (S : HSp D) (c : AE D) (hc : c * cA D c = 1) :
     Formalism.L2.Theta.mt S (scalGA S c hc) = c • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) := rfl
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_center_iff]`. Introduce `g`. Apply `GlobalTheory.FinPlLoc.mt_inj` to reduce the goal to its premises. Rewrite using `[GlobalTheory.FinPlLoc.mt_mul, GlobalTheory.FinPlLoc.mt_mul, mt_scalGA, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul]`.
+-/
 theorem scalGA_mem_center (S : HSp D) (c : AE D) (hc : c * cA D c = 1) :
     scalGA S c hc ∈ Subgroup.center (GA D S) := by
   rw [Subgroup.mem_center_iff]
@@ -53,6 +64,9 @@ theorem scalGA_mem_center (S : HSp D) (c : AE D) (hc : c * cA D c = 1) :
   rw [GlobalTheory.FinPlLoc.mt_mul, GlobalTheory.FinPlLoc.mt_mul, mt_scalGA, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul,
     Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `grpAt`. Rewrite using `[GlobalTheory.FinPlLoc.mem_congGrp]`. Introduce `i j`. Rewrite using `[mt_scalGA, Matrix.smul_apply, smul_eq_mul, ← sub_one_mul]`. Conclude with `Ideal.mul_mem_right _ _ hc.2`.
+-/
 theorem scalGA_mem_grpAt (S : HSp D) (v : GlobalTheory.FinPl.Pl D) (c : AE D) (hc : NormOneAt v c) :
     scalGA S c hc.1 ∈ grpAt S (· = v) := by
   unfold grpAt
@@ -61,6 +75,9 @@ theorem scalGA_mem_grpAt (S : HSp D) (v : GlobalTheory.FinPl.Pl D) (c : AE D) (h
   rw [mt_scalGA, Matrix.smul_apply, smul_eq_mul, ← sub_one_mul]
   exact Ideal.mul_mem_right _ _ hc.2
 
+/- English proof (translation)
+Introduce `D S v c hc`. Conclude with `⟨scalGA S c hc.1, ⟨scalGA_mem_grpAt S v c hc, scalGA_mem_center S c hc.1⟩, mt_scalGA S c hc.1⟩`.
+-/
 theorem exists_cenAt_scalar : ∀ (D : D7) (S : HSp D) (v : GlobalTheory.FinPl.Pl D) (c : AE D), NormOneAt v c → ∃ z : GA D S, CenAt S v z ∧ Formalism.L2.Theta.mt S z = c • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) := by
   intro D S v c hc
   exact ⟨scalGA S c hc.1, ⟨scalGA_mem_grpAt S v c hc, scalGA_mem_center S c hc.1⟩, mt_scalGA S c hc.1⟩

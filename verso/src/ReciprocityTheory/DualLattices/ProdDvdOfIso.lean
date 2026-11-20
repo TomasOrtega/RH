@@ -6,6 +6,11 @@ open Matrix
 
 namespace ReciprocityTheory.PGsh.Up
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i'`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single i']`. Rewrite using `[Pi.smul_apply, Pi.single_eq_same, Algebra.smul_def, mul_one, Ideal.Quotient.algebraMap_eq, ha]`. Introduce `j _ hj`. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne (Ne.symm hj), smul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ i') h`.
+-/
 private lemma pi_quotient_eq_sum_smul_single {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
     (I : ι → Ideal R) (y : (i : ι) → R ⧸ I i) (a : ι → R)
     (ha : ∀ i, Ideal.Quotient.mk (I i) (a i) = y i) : y = ∑ i, a i • Pi.single i 1 := by
@@ -18,6 +23,15 @@ private lemma pi_quotient_eq_sum_smul_single {R : Type} [CommRing R] {ι : Type}
   · intro h
     exact absurd (Finset.mem_univ i') h
 
+/- English proof (translation)
+Establish `hsub : ∀ i, a i ∉ IsLocalRing.maximalIdeal R → ∀ x : R ⧸ Ideal.span {a i}, x = 0`. Introduce `i hi x`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Establish `hu : IsUnit (a i)`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hi ((IsLocalRing.mem_maximalIdeal _).mpr h)`. Rewrite using `[Ideal.span_singleton_eq_top.mpr hu]`. Conclude with `Submodule.mem_top`. Set `g : ((i : ι) → R ⧸ Ideal.span {a i}) →ₗ[R] ((i : {i // a i ∈ IsLocalRing.maximalIdeal R}) → R ⧸ Ideal.span {a i})` to `{ toFun := fun x i => x i map_add' := fun x y => rfl map_smul' := fun r x => rfl }`.
+
+Use `⟨LinearEquiv.ofBijective g ⟨fun x y hxy => ?_, fun z => ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : a i ∈ IsLocalRing.maximalIdeal R`. Conclude with `congrFun hxy ⟨i, hi⟩`. Rewrite using `[hsub i hi (x i), hsub i hi (y i)]`.
+
+Use `⟨fun i => if hi : a i ∈ IsLocalRing.maximalIdeal R then z ⟨i, hi⟩ else 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `dif_pos i.2`.
+-/
 private lemma nonempty_pi_quotient_equiv_maximal_restrict {R : Type} [CommRing R] [IsLocalRing R] {ι : Type} [Fintype ι]
     [DecidableEq ι] (a : ι → R) :
     Nonempty (((i : ι) → R ⧸ Ideal.span {a i}) ≃ₗ[R]
@@ -46,6 +60,47 @@ private lemma nonempty_pi_quotient_equiv_maximal_restrict {R : Type} [CommRing R
     funext i
     exact dif_pos i.2
 
+/- English proof (translation)
+Set `A : Matrix κ ι R` to `fun j i => Function.surjInv (f := Ideal.Quotient.mk (Ideal.span {d j})) Ideal.Quotient.mk_surjective (f (Pi.single i 1) j)`. Set `B : Matrix ι κ R` to `fun i j => Function.surjInv (f := Ideal.Quotient.mk (Ideal.span {c i})) Ideal.Quotient.mk_surjective (f.symm (Pi.single j 1) i)`. Establish `hA : ∀ j i, Ideal.Quotient.mk (Ideal.span {d j}) (A j i) = f (Pi.single i 1) j` using `fun j i => Function.surjInv_eq _ _`. Establish `hB : ∀ i j, Ideal.Quotient.mk (Ideal.span {c i}) (B i j) = f.symm (Pi.single j 1) i` using `fun i j => Function.surjInv_eq _ _`. Establish `hsing : ∀ i, c i • (Pi.single i 1 : (i : ι) → R ⧸ Ideal.span {c i}) = 0`.
+
+Introduce `i`. Use function extensionality and compare the values at `i'`. Rewrite using `[Pi.smul_apply, Pi.zero_apply]`. Distinguish the cases in `h : i' = i`. Substitute `h` using the available equality.
+
+Rewrite using `[Pi.single_eq_same, Algebra.smul_def, mul_one, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite using `[Pi.single_eq_of_ne h, smul_zero]`. Establish `relA : ∀ j i, c i * A j i ∈ Ideal.span {d j}`. Introduce `j i`.
+
+Establish `h1 : f (c i • Pi.single i 1) j = 0` using `by simp [hsing]`. Rewrite `h1` using `[map_smul, Pi.smul_apply, ← hA, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h1`. Establish `relBA : ∀ i' i, (∑ j, B i' j * A j i) - (if i' = i then 1 else 0) ∈ Ideal.span {c i'}`. Introduce `i' i`.
+
+Establish `h1 : (∑ j, Ideal.Quotient.mk (Ideal.span {c i'}) (B i' j * A j i)) = (Pi.single i 1 : (i : ι) → R ⧸ Ideal.span {c i}) i'`. Establish `h0` using `congrArg (fun y => y i') (f.symm_apply_apply (Pi.single i 1))`. Rewrite using `[← h0, pi_quotient_eq_sum_smul_single _ (f (Pi.single i 1)) (fun j => A j i) (fun j => hA j i), map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, ← hB, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, mul_comm]`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, sub_eq_zero, map_sum, h1]`. Distinguish the cases in `h : i' = i`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, if_pos rfl, map_one]`. Rewrite using `[Pi.single_eq_of_ne h, if_neg h, map_zero]`.
+
+Establish `relAB : ∀ j j', (∑ i, A j i * B i j') - (if j = j' then 1 else 0) ∈ Ideal.span {d j}`. Introduce `j j'`. Establish `h1 : (∑ i, Ideal.Quotient.mk (Ideal.span {d j}) (A j i * B i j')) = (Pi.single j' 1 : (j : κ) → R ⧸ Ideal.span {d j}) j`. Establish `h0` using `congrArg (fun y => y j) (f.apply_symm_apply (Pi.single j' 1))`. Rewrite using `[← h0, pi_quotient_eq_sum_smul_single _ (f.symm (Pi.single j' 1)) (fun i => B i j') (fun i => hB i j'), map_sum, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, ← hA, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, mul_comm]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, sub_eq_zero, map_sum, h1]`. Distinguish the cases in `h : j = j'`. Substitute `h` using the available equality.
+
+Rewrite using `[Pi.single_eq_same, if_pos rfl, map_one]`. Rewrite using `[Pi.single_eq_of_ne h, if_neg h, map_zero]`. Establish `hBA : (B * A).map (IsLocalRing.residue R) = 1`. Use extensionality with `i' i`. Rewrite using `[Matrix.map_apply, Matrix.mul_apply, Matrix.one_apply]`.
+
+Establish `h3 : IsLocalRing.residue R ((∑ j, B i' j * A j i) - if i' = i then 1 else 0) = 0` using `(IsLocalRing.residue_eq_zero_iff _).mpr ((Ideal.span_singleton_le_iff_mem _).mpr (hc i') (relBA i' i))`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Rewrite using `[h3]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hAB : (A * B).map (IsLocalRing.residue R) = 1`.
+
+Use extensionality with `j j'`. Rewrite using `[Matrix.map_apply, Matrix.mul_apply, Matrix.one_apply]`. Establish `h3 : IsLocalRing.residue R ((∑ i, A j i * B i j') - if j = j' then 1 else 0) = 0` using `(IsLocalRing.residue_eq_zero_iff _).mpr ((Ideal.span_singleton_le_iff_mem _).mpr (hd j) (relAB j j'))`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Rewrite using `[h3]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hcard : Fintype.card ι = Fintype.card κ`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul]`.
+
+Use `_ ≤ (A.map (IsLocalRing.residue R)).rank := Matrix.rank_mul_le_right _ _`. Use `_ ≤ Fintype.card κ := Matrix.rank_le_card_height _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul]`. Use `_ ≤ (B.map (IsLocalRing.residue R)).rank := Matrix.rank_mul_le_right _ _`.
+
+Use `_ ≤ Fintype.card ι := Matrix.rank_le_card_height _`. Set `e : ι ≃ κ` to `Fintype.equivOfCardEq hcard`. Use `choose X hX using fun j i => Ideal.mem_span_singleton'.mp (relA j i)`. Set `A' : Matrix κ κ R` to `fun j j' => A j (e.symm j')`. Set `B' : Matrix κ κ R` to `fun j' j => B (e.symm j') j`.
+
+Set `X' : Matrix κ κ R` to `fun j j' => X j (e.symm j')`. Establish `hmat : A' * Matrix.diagonal (fun j => c (e.symm j)) = Matrix.diagonal d * X'`. Use extensionality with `j j'`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `show A j (e.symm j') * c (e.symm j') = d j * X j (e.symm j')`.
+
+Rewrite using `[mul_comm (A _ _), ← hX, mul_comm]`. Establish `hprod : ∏ j, c (e.symm j) = ∏ i, c i` using `Equiv.prod_comp e.symm c`. Establish `hdet : A'.det * ∏ i, c i = (∏ j, d j) * X'.det`. Establish `h` using `congrArg Matrix.det hmat`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, hprod]`. Then use the resulting hypothesis.
+
+Establish `hdetBA : IsUnit (B * A).det`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det, RingHom.mapMatrix_apply, hBA, Matrix.det_one]`. Conclude with `one_ne_zero`. Establish `hBA' : B' * A' = (B * A).submatrix e.symm e.symm`. Use extensionality with `j1 j2`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply]`. Both sides reduce to the same expression. Establish `hdetA' : IsUnit A'.det`. Establish `h` using `congrArg Matrix.det hBA'`. Rewrite `h` using `[Matrix.det_submatrix_equiv_self, Matrix.det_mul]`.
+
+Rewrite `hdetBA` using `[← h]`. Conclude with `isUnit_of_mul_isUnit_right hdetBA`. Take `⟨u, hu⟩` from `hdetA'`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨↑u⁻¹ * X'.det, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma prod_mem_span_prod_of_linearEquiv_pi_quotient {R : Type} [CommRing R] [IsLocalRing R] {ι κ : Type}
     [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (c : ι → R) (d : κ → R)
     (hc : ∀ i, c i ∈ IsLocalRing.maximalIdeal R) (hd : ∀ j, d j ∈ IsLocalRing.maximalIdeal R)
@@ -177,6 +232,11 @@ private lemma prod_mem_span_prod_of_linearEquiv_pi_quotient {R : Type} [CommRing
   calc ↑u⁻¹ * X'.det * ∏ j, d j = ↑u⁻¹ * (A'.det * ∏ i, c i) := by rw [hdet]; ring
     _ = ∏ i, c i := by rw [← hu, ← mul_assoc, Units.inv_mul, one_mul]
 
+/- English proof (translation)
+Take `⟨gc⟩` from `nonempty_pi_quotient_equiv_maximal_restrict c`. Take `⟨gd⟩` from `nonempty_pi_quotient_equiv_maximal_restrict d`. Establish `core` using `prod_mem_span_prod_of_linearEquiv_pi_quotient (fun i : {i // c i ∈ IsLocalRing.maximalIdeal R} => c i) (fun j : {j // d j ∈ IsLocalRing.maximalIdeal R} => d j) (fun i => i.2) (fun j => j.2) ((gc.symm.trans f).trans gd)`. Establish `hunit : ∀ {k : ℕ} (a : Fin k → R), IsUnit (∏ i : {i // ¬ a i ∈ IsLocalRing.maximalIdeal R}, a i)`. Introduce `k a`.
+
+Use `Finset.prod_induction _ IsUnit (fun x y hx hy => hx.mul hy) isUnit_one fun i _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `i.2 ((IsLocalRing.mem_maximalIdeal _).mpr h)`. Rewrite using `[← Fintype.prod_subtype_mul_prod_subtype (fun i => c i ∈ IsLocalRing.maximalIdeal R) c, ← Fintype.prod_subtype_mul_prod_subtype (fun j => d j ∈ IsLocalRing.maximalIdeal R) d, Ideal.span_singleton_mul_right_unit (hunit d)]`. Conclude with `Ideal.mul_mem_right _ _ core`.
+-/
 lemma prod_dvd_of_iso {R : Type} [CommRing R] [IsLocalRing R] {m n : ℕ} (c : Fin m → R)
     (d : Fin n → R)
     (f : ((i : Fin m) → R ⧸ Ideal.span {c i}) ≃ₗ[R] ((j : Fin n) → R ⧸ Ideal.span {d j})) :
@@ -198,6 +258,15 @@ lemma prod_dvd_of_iso {R : Type} [CommRing R] [IsLocalRing R] {m n : ℕ} (c : F
     Ideal.span_singleton_mul_right_unit (hunit d)]
   exact Ideal.mul_mem_right _ _ core
 
+/- English proof (translation)
+Take `⟨m, c, ⟨φ⟩, rfl⟩` from `hx`. Take `⟨n, d, ⟨ψ⟩, rfl⟩` from `hy`. Use `haveI : Nontrivial R := by`. Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h'` using `congrArg (algebraMap R C) h`.
+
+Rewrite `h'` using `[map_zero, map_one]`. Conclude with `zero_ne_one h'`. Establish `hlt : ∀ z : R, ¬ IsUnit z → v (algebraMap R C z) < 1` using `fun z hz => lt_of_le_of_ne (hv.map_le_one z) fun h1 => hz (hv.isUnit_iff_valuation_eq_one.mpr h1)`. Use `haveI : IsLocalRing R := by`. Use `IsLocalRing.of_nonunits_add fun a b ha hb hab => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hv.isUnit_iff_valuation_eq_one.mp hab`. Rewrite `h1` using `[map_add]`. Establish `h2` using `(v.map_add _ _).trans_lt (max_lt (hlt a ha) (hlt b hb))`. Rewrite `h2` using `[h1]`. Conclude with `lt_irrefl _ h2`.
+
+Establish `h1` using `prod_dvd_of_iso c d (φ.symm.trans ψ)`. Establish `h2` using `prod_dvd_of_iso d c (ψ.symm.trans φ)`. Rewrite `h1`, `h2` using `[Ideal.mem_span_singleton, hv.dvd_iff_le]`. Simplify using `only [map_prod] at h1 h2`. Conclude with `le_antisymm h1 h2`.
+-/
 theorem hasLen_unique {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R]
     [Algebra R C] (hv : v.Integers R) {M : Type} [AddCommGroup M] [Module R M] {x y : NNReal}
     (hx : HasLen v R M x) (hy : HasLen v R M y) : x = y := by

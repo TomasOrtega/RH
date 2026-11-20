@@ -23,6 +23,9 @@ namespace GlobalTheory.VacShiftB
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hJ j i]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap_herm {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (a b : Fin n → E) : form σ J a b = σ (form σ J b a) := by
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]
@@ -31,6 +34,15 @@ theorem form_swap_herm {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : �
   rw [← hJ j i]
   ring
 
+/- English proof (translation)
+Distinguish the cases in `h0 : H.𝔟 = 0`. Rewrite `hp` using `[h0, inv_zero, FractionalIdeal.mem_zero_iff]`. Rewrite using `[hp, map_zero, zero_smul]`. Conclude with `V.L.zero_mem`. Use `(hV.dual _).2 fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨s, t, u, hs, -, -, rfl⟩` from `hH.split x hx`. Establish `hs' : s ∈ H.𝔟` using `(hH.ideal s).2 hs`. Establish `hyx : form σ V.J H.y H.x = 1` using `by rw [form_swap_herm hσ _ hV.herm, hH.xy, map_one]`. Establish `hyι : form σ V.J H.y (H.ι *ᵥ u) = 0`. Rewrite using `[form_swap_herm hσ _ hV.herm, (hH.orth u).2, map_zero]`.
+
+Establish `e : form σ V.J (σ p • H.y) (s • H.x + H.ι *ᵥ u + t • H.y) = σ (p * s)`. Rewrite using `[GlobalTheory.VacShift.form_smul_left, GlobalTheory.VacShift.form_add_right, GlobalTheory.VacShift.form_add_right, GlobalTheory.VacShift.form_smul_right, GlobalTheory.VacShift.form_smul_right, hyx, hyι, hH.yy, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : p * s ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Establish `h2` using `FractionalIdeal.mul_mem_mul hp hs'`.
+
+Rewrite `h2` using `[inv_mul_cancel₀ h0]`. Then use the resulting hypothesis. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 hmem`. Rewrite using `[e, ← ho]`. Conclude with `(o.isIntegral_coe).map (σ : E →+* E).toIntAlgHom`.
+-/
 theorem smul_y_mem {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {B : Base F E} {n n₁ : ℕ} {V : Spc F E n}
     {V₁ : Spc F E n₁} {H : Plane E n n₁} {i₀ i₁ r s : ℕ} (hV : V.IsHerm σ B r s)
     (hH : H.IsAdapted σ B V V₁ i₀ i₁) {p : E} (hp : p ∈ H.𝔟⁻¹) : σ p • H.y ∈ V.L := by
@@ -55,6 +67,9 @@ theorem smul_y_mem {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {B : Base F
   rw [e, ← ho]
   exact (o.isIntegral_coe).map (σ : E →+* E).toIntAlgHom
 
+/- English proof (translation)
+Rewrite using `[conjI, FractionalIdeal.mem_extended_iff]`. Establish `h : (IsLocalization.map E (conjO σ) (conjO_le σ) : E →+* E) = (σ : E →+* E)` using `IsLocalization.ringHom_ext (𝓞 E)⁰ (RingHom.ext fun x => by`. Simplify using `[IsLocalization.map_eq, conjO, RingOfIntegers.mapRingHom_apply])`. Establish `h' : (IsLocalization.map E (conjO σ) (conjO_le σ) : E → E) = σ` using `congrArg DFunLike.coe h`. Rewrite using `[h']`.
+-/
 theorem mem_conjI_iff_span (σ : E →ₐ[F] E) (𝔠 : FractionalIdeal (𝓞 E)⁰ E) (q : E) :
     q ∈ conjI σ 𝔠 ↔ q ∈ Submodule.span (𝓞 E) (σ '' (𝔠 : Set E)) := by
   rw [conjI, FractionalIdeal.mem_extended_iff]
@@ -64,6 +79,9 @@ theorem mem_conjI_iff_span (σ : E →ₐ[F] E) (𝔠 : FractionalIdeal (𝓞 E)
   have h' : (IsLocalization.map E (conjO σ) (conjO_le σ) : E → E) = σ := congrArg DFunLike.coe h
   rw [h']
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+-/
 theorem compFin_cA (σ : E →ₐ[F] E) (v : Pl F) (x : AE F E) :
     compFin F E v (cA σ x) = TensorProduct.map LinearMap.id σ.toLinearMap (compFin F E v x) := by
   induction x using TensorProduct.induction_on with
@@ -73,14 +91,43 @@ theorem compFin_cA (σ : E →ₐ[F] E) (v : Pl F) (x : AE F E) :
 
 variable {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM]`.
+-/
 theorem incM_add {n d : ℕ} (A C : Matrix (Fin n) (Fin d) E) : incM F (A + C) = incM F A + incM F C := by
   ext i j
   simp [incM]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM]`.
+-/
 theorem incM_zero {n d : ℕ} : incM F (0 : Matrix (Fin n) (Fin d) E) = 0 := by
   ext i j
   simp [incM]
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, x, hx, rfl⟩` from `hy`. Rewrite using `[TensorProduct.map_tmul, LinearMap.rTensor_tmul]`. Establish `claim : ∀ q ∈ Submodule.span (𝓞 E) (σ '' (H'.𝔟 : Set E)), ∀ p ∈ H.𝔟⁻¹, GlobalTheory.LatVac.liftV v c • incM F (Matrix.vecMulVec (σ (p * q) • H.y) H'.x) ∈ latAtV V W v`.
+
+Introduce `q hq`. Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem q hq`. Take `⟨c', hc', rfl⟩` from `hq`. Introduce `p hp`.
+
+Establish `e : Matrix.vecMulVec (σ (p * σ c') • H.y) H'.x = Matrix.vecMulVec (σ p • H.y) (c' • H'.x)`. Use extensionality with `i j`. Simplify using `only [Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul, map_mul, hσ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `AddSubgroup.subset_closure ⟨_, GlobalTheory.LatVac.at_liftV v c, by rw [GlobalTheory.LatVac.evFin_liftV]; exact hc, _, smul_y_mem hσ hV hH hp, _, (hH'.ideal c').1 hc', rfl⟩`. Consider the case `zero`. Introduce `p _`. Rewrite using `[mul_zero, map_zero, zero_smul, Matrix.zero_vecMulVec, incM_zero, smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy`. Introduce `p hp`. Rewrite using `[mul_add, map_add, add_smul, Matrix.add_vecMulVec, incM_add, smul_add]`. Conclude with `add_mem (hx p hp) (hy p hp)`. Consider the case `smul o x _ hx`.
+
+Introduce `p hp`. Establish `e : p * (o • x) = (o • p) * x` using `by rw [mul_smul_comm, smul_mul_assoc]`. Rewrite using `[e]`. Conclude with `hx _ (Submodule.smul_mem ((H.𝔟⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) o hp)`. Establish `key : ∀ x ∈ H.𝔟⁻¹ * conjI σ H'.𝔟, GlobalTheory.LatVac.liftV v c • incM F (Matrix.vecMulVec (σ x • H.y) H'.x) ∈ latAtV V W v`.
+
+Introduce `x hx`. Use `FractionalIdeal.mul_induction_on hx (fun p hp q hq => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[mul_comm]`. Rewrite `hq` using `[mem_conjI_iff_span]`. Rewrite using `[mul_comm]`.
+
+Conclude with `claim q hq p hp`. Rewrite using `[map_add, add_smul, Matrix.add_vecMulVec, incM_add, smul_add]`. Conclude with `add_mem hp hq`. Establish `e : (GlobalTheory.LatVac.liftV v c ⊗ₜ[F] σ x) • Matrix.vecMulVec (incV F H.y) (incV F H'.x) = GlobalTheory.LatVac.liftV v c • incM F (Matrix.vecMulVec (σ x • H.y) H'.x)`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.smul_apply, Matrix.vecMulVec_apply, incV, incM, Matrix.map_apply, inclR, Pi.smul_apply, smul_eq_mul, RingHom.coe_coe, AlgHom.toRingHom_eq_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul', mul_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[LinearMap.id_apply, AlgHom.toLinearMap_apply, e]`. Conclude with `key x hx`.
+
+Consider the case `zero => rw [map_zero, map_zero, zero_smul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, add_smul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg, map_neg, neg_smul]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem lift_smul_mem (hσ : ∀ x, σ (σ x) = x) {B : Base F E} {n d n₁ d₁ : ℕ} {V : Spc F E n} {W : Spc F E d}
     {V₁ : Spc F E n₁} {W₁ : Spc F E d₁} {H : Plane E n n₁} {H' : Plane E d d₁} {i₀ i₁ j₀ j₁ r s : ℕ}
     (hV : V.IsHerm σ B r s) (hH : H.IsAdapted σ B V V₁ j₀ j₁) (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (v : Pl F)
@@ -143,6 +190,15 @@ theorem lift_smul_mem (hσ : ∀ x, σ (σ x) = x) {B : Base F E} {n d n₁ d₁
   | add x y _ _ hx hy => rw [map_add, map_add, add_smul]; exact add_mem hx hy
   | neg x _ hx => rw [map_neg, map_neg, neg_smul]; exact neg_mem hx
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hB hG hC v l hl hloc`. Establish `hσ` using `GlobalTheory.VacShift.sigma_invol hB.cm`. Use `set u := shiftB σ H H' l with hu`. Establish `hpart : partFin v u = ((GlobalTheory.LatVac.liftV v).rTensor E (TensorProduct.map LinearMap.id σ.toLinearMap (compFin F E v l.1))) • Matrix.vecMulVec (incV F H.y) (incV F H'.x)`. Rewrite using `[partFin, hu, smul_shiftB, map_smul, GlobalTheory.VacShift.liftV_one_smul_eq, compFin_cA]`.
+
+Establish `hγ : partFin v u ∈ latAtV G.V' G.W v`. Rewrite using `[hpart]`. Conclude with `lift_smul_mem hσ hG.hV' hC.hH hC.hH' v hloc`. Take `⟨hSB, -, θ, -, hvac⟩` from `hG.hM'.vac v`. Establish `h1` using `hvac _ hγ`.
+
+Establish `hz : symp (R` using `AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) (partFin v u) (partFin v u) = 0 := by`. Rewrite using `[hpart]`. Conclude with `GlobalTheory.VacShift.symp_shift_zero σ _ _ hC.hH'.xx _ _ _`. Rewrite `h1` using `[hz, mul_zero, AddChar.map_zero_eq_one, one_smul]`. Establish `h2` using `GlobalTheory.VacBridge.rho_acts_locCo G.M'.co B.ψ v _ (at_partFin v u) (G.M'.vac v)`.
+
+Establish `e : GlobalTheory.LatVac.locCo G.M'.co v (partFin v u) = GlobalTheory.LatVac.locCo G.M'.co v u`. Apply the tactic sequence `refine Prod.ext (funext fun k => ?_) (funext fun k => ?_) <;>`. Simplify using `[GlobalTheory.LatVac.locCo, partFin, GlobalTheory.LatVac.evFin_liftV]`. Rewrite `h2` using `[e]`. Conclude with `GlobalTheory.TensUniq.eq_of_tens_eq v (G.M'.vac v) _ _ hSB fun r hr => (h2 r hr).symm.trans (h1 r hr)`.
+-/
 theorem vac_fixed : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) {a b : ℕ} (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), B.IsGood σ → G.IsGood B → CfgB B G G₁ H H' →

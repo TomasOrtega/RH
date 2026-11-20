@@ -28,13 +28,22 @@ attribute [local instance] integerAction
 
 variable {E F}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_integer_smul (σ : F ≃ₐ[E] F) (x : 𝒪[F]) : ((σ • x : 𝒪[F]) : F) = σ (x : F) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_integerUnits_smul (σ : F ≃ₐ[E] F) (u : 𝒪[F]ˣ) :
     ((σ • u : 𝒪[F]ˣ) : 𝒪[F]) = σ • (u : 𝒪[F]) :=
   rfl
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Use `h.map (MulSemiringAction.toRingHom (F ≃ₐ[E] F) 𝒪[F] σ⁻¹)` as an intermediate fact. Simplify `this` using `[MulSemiringAction.toRingHom_apply, smul_smul]`.
+-/
 theorem smul_mem_maximalIdeal (σ : F ≃ₐ[E] F) {x : 𝒪[F]} (hx : x ∈ 𝓂[F]) : σ • x ∈ 𝓂[F] := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff] at hx ⊢
   intro h
@@ -42,6 +51,9 @@ theorem smul_mem_maximalIdeal (σ : F ≃ₐ[E] F) {x : 𝒪[F]} (hx : x ∈ �
   have := h.map (MulSemiringAction.toRingHom (F ≃ₐ[E] F) 𝒪[F] σ⁻¹)
   simpa [MulSemiringAction.toRingHom_apply, smul_smul] using this
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Take `⟨a, rfl⟩` from `(mem_maximalIdeal_pow_iff hϖ).mp hx`. Rewrite using `[smul_mul', smul_pow']`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (smul_mem_maximalIdeal σ (uniformizer_mem_maximalIdeal hϖ)) k)`.
+-/
 theorem smul_mem_maximalIdeal_pow (σ : F ≃ₐ[E] F) {k : ℕ} {x : 𝒪[F]} (hx : x ∈ 𝓂[F] ^ k) :
     σ • x ∈ 𝓂[F] ^ k := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[F]
@@ -50,6 +62,9 @@ theorem smul_mem_maximalIdeal_pow (σ : F ≃ₐ[E] F) {k : ℕ} {x : 𝒪[F]} (
   exact Ideal.mul_mem_right _ _
     (Ideal.pow_mem_pow (smul_mem_maximalIdeal σ (uniformizer_mem_maximalIdeal hϖ)) k)
 
+/- English proof (translation)
+Rewrite using `[mem_unitFiltration, coe_integerUnits_smul, ← smul_one σ, ← smul_sub]`. Conclude with `smul_mem_maximalIdeal_pow σ hu`.
+-/
 theorem smul_mem_unitFiltration (σ : F ≃ₐ[E] F) {k : ℕ} {u : 𝒪[F]ˣ}
     (hu : u ∈ unitFiltration F k) : σ • u ∈ unitFiltration F k := by
   rw [mem_unitFiltration, coe_integerUnits_smul, ← smul_one σ, ← smul_sub]
@@ -61,6 +76,9 @@ section ModN
 
 variable {G : Type*} [AddCommGroup G]
 
+/- English proof (translation)
+Simplify using `[LinearMap.mem_range, natCast_zsmul]`.
+-/
 theorem mem_range_lsmul_iff {n : ℕ} {x : G} :
     x ∈ LinearMap.range (LinearMap.lsmul ℤ G n) ↔ ∃ y : G, n • y = x := by
   simp [LinearMap.mem_range, natCast_zsmul]
@@ -96,6 +114,9 @@ attribute [local instance] unitFiltrationAction maxPowAction
 
 variable {E F}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_maxPow_smul (σ : F ≃ₐ[E] F) {k : ℕ} (x : maxPow F k) :
     ((σ • x : maxPow F k) : 𝒪[F]) = σ • (x : 𝒪[F]) :=
   rfl
@@ -104,6 +125,13 @@ variable {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {p : ℕ} {e : ℕ} {ε : 𝒪[F]
   (hpe : (p : 𝒪[F]) = ϖ ^ e * ε)
 include hϖ hpe
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, rfl⟩` from `(mem_maximalIdeal_pow_iff hϖ).mp h`. Use `⟨ϖ ^ k * a * ((ε⁻¹ : 𝒪[F]ˣ) : 𝒪[F]), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_maximalIdeal_pow_iff hϖ, mul_assoc]`.
+
+Conclude with `dvd_mul_right _ _`. Rewrite using `[hpe]`. Use `ε.mul_inv` as an intermediate fact. Take the linear combination `(-(ϖ ^ (k + e)) * a) * this`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Take `⟨b, rfl⟩` from `(mem_maximalIdeal_pow_iff hϖ).mp hy`. Rewrite using `[mem_maximalIdeal_pow_iff hϖ, hpe]`. Conclude with `⟨ε * b, by ring⟩`.
+-/
 theorem mem_maximalIdeal_pow_add_iff {k : ℕ} {x : 𝒪[F]} :
     x ∈ 𝓂[F] ^ (k + e) ↔ ∃ y ∈ 𝓂[F] ^ k, x = p * y := by
   constructor
@@ -121,6 +149,9 @@ theorem mem_maximalIdeal_pow_add_iff {k : ℕ} {x : 𝒪[F]} :
     exact ⟨ε * b, by ring⟩
 
 omit hϖ hpe in
+/- English proof (translation)
+The claim follows from `u.2`.
+-/
 theorem sub_one_mem_maxPow {k : ℕ} (u : unitFiltration F k) :
     ((u : 𝒪[F]ˣ) : 𝒪[F]) - 1 ∈ maxPow F k :=
   u.2
@@ -155,12 +186,22 @@ noncomputable def unitToModN {k : ℕ} (hk : e ≤ k) :
 
 omit hϖ hpe in
 variable (ϖ) in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitToModN_apply (hϖ : Irreducible ϖ) (hpe : (p : 𝒪[F]) = ϖ ^ e * ε) {k : ℕ} (hk : e ≤ k)
     (u : Additive (unitFiltration F k)) :
     unitToModN hϖ hpe hk u =
       Submodule.Quotient.mk ⟨((u.toMul : 𝒪[F]ˣ) : 𝒪[F]) - 1, sub_one_mem_maxPow u.toMul⟩ :=
   rfl
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `hx : (x : 𝒪[F]) ∈ 𝓂[F]` using `Ideal.pow_le_self (by omega) x.2`. Establish `hu` using `isUnit_unit_add (η := 1) hx`. Establish `hmem : hu.unit ∈ unitFiltration F k`.
+
+Rewrite using `[mem_unitFiltration, IsUnit.unit_spec, Units.val_one, add_sub_cancel_left]`. Conclude with `x.2`. Use `⟨Additive.ofMul ⟨hu.unit, hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[unitToModN_apply]`. Use `congr 1`.
+
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem unitToModN_surjective {k : ℕ} (hk : e + 1 ≤ k) :
     Function.Surjective (unitToModN hϖ hpe (Nat.le_of_succ_le hk)) := by
   intro y
@@ -176,6 +217,15 @@ theorem unitToModN_surjective {k : ℕ} (hk : e + 1 ≤ k) :
   ext
   simp
 
+/- English proof (translation)
+Rewrite using `[unitToModN_apply, Submodule.Quotient.mk_eq_zero, mem_range_lsmul_iff, mem_range_lsmul_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `hy' : ((u.toMul : 𝒪[F]ˣ) : 𝒪[F]) - 1 = p * (y : 𝒪[F])`. Use `congrArg Subtype.val hy` as an intermediate fact.
+
+Simplify `this.symm` using `[nsmul_eq_mul]`. Establish `h1 : (u.toMul : 𝒪[F]ˣ) ∈ unitFiltration F (k + e)` using `(mem_maximalIdeal_pow_add_iff hϖ hpe).mpr ⟨y, y.2, hy'⟩`. Take `⟨v, hv, hvp⟩` from `exists_pow_eq_of_mem_unitFiltration hϖ hp hpe hk h1`. Use `⟨Additive.ofMul ⟨v, hv⟩, ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises.
+
+Use `ext`. Simplify using `[hvp]`. Introduce and unpack `⟨v, rfl⟩`. Establish `h1 : ((v.toMul : 𝒪[F]ˣ)) ^ p ∈ unitFiltration F (k + e)` using `pow_mem_unitFiltration hϖ hp hpe hk v.toMul.2`. Take `⟨y, hy, hyp⟩` from `(mem_maximalIdeal_pow_add_iff hϖ hpe).mp h1`.
+
+Use `⟨⟨y, hy⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [AddSubgroup.coe_nsmul, nsmul_eq_mul, toMul_nsmul, SubmonoidClass.coe_pow, Units.val_pow_eq_pow_val] at hyp ⊢`. Conclude with `hyp.symm`.
+-/
 theorem unitToModN_eq_zero_iff (hp : p.Prime) {k : ℕ} (hk : e + 1 ≤ k)
     (u : Additive (unitFiltration F k)) :
     unitToModN hϖ hpe (Nat.le_of_succ_le hk) u = 0 ↔
@@ -205,6 +255,9 @@ theorem unitToModN_eq_zero_iff (hp : p.Prime) {k : ℕ} (hk : e + 1 ≤ k)
 omit hϖ hpe in
 variable (ϖ) in
 
+/- English proof (translation)
+Rewrite using `[unitToModN_apply, unitToModN_apply, modNRep_mk]`. Use `congr 1`. Use `ext`. Rewrite using `[coe_maxPow_smul, smul_sub, smul_one]`. Both sides reduce to the same expression.
+-/
 theorem unitToModN_smul (hϖ : Irreducible ϖ) (hpe : (p : 𝒪[F]) = ϖ ^ e * ε) {k : ℕ}
     (hk : e ≤ k) (σ : F ≃ₐ[E] F) (u : Additive (unitFiltration F k)) :
     unitToModN hϖ hpe hk (σ • u) =
@@ -228,17 +281,26 @@ noncomputable def normalSub (θ : F) : AddSubgroup 𝒪[F] :=
   (normalLattice (1 : 𝒪[E]) θ 0).toAddSubgroup.comap (𝒪[F].subtype : 𝒪[F] →+* F).toAddMonoidHom
 
 omit [FiniteDimensional E F] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_normalSub {θ : F} {x : 𝒪[F]} :
     x ∈ normalSub E θ ↔ (x : F) ∈ normalLattice (1 : 𝒪[E]) θ 0 :=
   Iff.rfl
 
 omit [ValuativeRel F] [FiniteDimensional E F] in
 
+/- English proof (translation)
+Simplify using `[normalLattice]`.
+-/
 theorem normalLattice_zero_eq (π : 𝒪[E]) (θ : F) :
     normalLattice π θ 0 = normalLattice (1 : 𝒪[E]) θ 0 := by
   simp [normalLattice]
 
 omit [ValuativeRel F] in
+/- English proof (translation)
+The claim follows from `(mem_normalLattice_iff 1 θ).mpr ⟨c, by simp⟩`.
+-/
 theorem sum_smul_mem_normalLattice {θ : F} (c : (F ≃ₐ[E] F) → 𝒪[E]) :
     ∑ σ, c σ • σ θ ∈ normalLattice (1 : 𝒪[E]) θ 0 :=
   (mem_normalLattice_iff 1 θ).mpr ⟨c, by simp⟩
@@ -255,6 +317,9 @@ noncomputable abbrev normalSubAction (θ : F) : DistribMulAction (F ≃ₐ[E] F)
 
 attribute [local instance] normalSubAction
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_normalSub_smul {θ : F} (σ : F ≃ₐ[E] F) (x : normalSub E θ) :
     (((σ • x : normalSub E θ) : 𝒪[F]) : F) = σ ((x : 𝒪[F]) : F) :=
   rfl
@@ -265,6 +330,9 @@ variable {θ : F} (hθ : LinearIndependent E fun σ : F ≃ₐ[E] F ↦ σ θ)
 omit [TopologicalSpace E] [IsNonarchimedeanLocalField E] [TopologicalSpace F]
   [IsNonarchimedeanLocalField F] in
 include hθO in
+/- English proof (translation)
+The claim follows from `mem_integer_of_mem_normalLattice 1 θ hθO (sum_smul_mem_normalLattice c)`.
+-/
 theorem sum_smul_mem_integer (c : (F ≃ₐ[E] F) → 𝒪[E]) : ∑ σ, c σ • σ θ ∈ 𝒪[F] :=
   mem_integer_of_mem_normalLattice 1 θ hθO (sum_smul_mem_normalLattice c)
 
@@ -275,6 +343,9 @@ noncomputable def normalSubOfCoeff : ((F ≃ₐ[E] F) → 𝒪[E]) →+ normalSu
 
 omit [TopologicalSpace E] [IsNonarchimedeanLocalField E] [TopologicalSpace F]
   [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_normalSubOfCoeff (c : (F ≃ₐ[E] F) → 𝒪[E]) :
     ((normalSubOfCoeff hθO c : 𝒪[F]) : F) = ∑ σ, c σ • σ θ :=
   rfl
@@ -282,6 +353,11 @@ theorem coe_normalSubOfCoeff (c : (F ≃ₐ[E] F) → 𝒪[E]) :
 omit [TopologicalSpace E] [IsNonarchimedeanLocalField E] [TopologicalSpace F]
   [IsNonarchimedeanLocalField F] in
 include hθ in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `c d h`. Use `congrArg (fun x : normalSub E θ ↦ ((x : 𝒪[F]) : F)) h` as an intermediate fact. Conclude with `coeff_injective θ hθ this`. Introduce `x`.
+
+Take `⟨c, hc⟩` from `(mem_normalLattice_iff 1 θ).mp (mem_normalSub.mp x.2)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use `ext`. Rewrite using `[coe_normalSubOfCoeff, ← hc]`. Simplify using the standard rewrite rules.
+-/
 theorem normalSubOfCoeff_bijective : Function.Bijective (normalSubOfCoeff hθO) := by
   constructor
   · intro c d h
@@ -299,10 +375,16 @@ noncomputable def normalSubEquiv : ((F ≃ₐ[E] F) → 𝒪[E]) ≃+ normalSub 
 
 omit [TopologicalSpace E] [IsNonarchimedeanLocalField E] [TopologicalSpace F]
   [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem normalSubEquiv_apply (c : (F ≃ₐ[E] F) → 𝒪[E]) :
     normalSubEquiv hθ hθO c = normalSubOfCoeff hθO c :=
   rfl
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[coe_normalSub_smul, coe_normalSubOfCoeff, coe_normalSubOfCoeff]`. Use `algEquiv_smul_sum (1 : 𝒪[E]) θ τ 0 c` as an intermediate fact. Simplify using `using this`.
+-/
 theorem smul_normalSubOfCoeff (τ : F ≃ₐ[E] F) (c : (F ≃ₐ[E] F) → 𝒪[E]) :
     τ • normalSubOfCoeff hθO c = normalSubOfCoeff hθO (fun σ ↦ c (τ⁻¹ * σ)) := by
   ext
@@ -326,11 +408,23 @@ noncomputable def coeffToRegular : (Γ → O) →+ (Fin n → MonoidAlgebra (ZMo
     funext i
     simp [Finset.sum_add_distrib, MonoidAlgebra.single_add]
 
+/- English proof (translation)
+Simplify using `[coeffToRegular, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.single_apply]`.
+-/
 theorem coeff_coeffToRegular (c : Γ → O) (i : Fin n) (τ : Γ) :
     (coeffToRegular b c i).coeff τ = b.repr (Submodule.Quotient.mk (c τ)) i := by
   classical
   simp [coeffToRegular, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.single_apply]
 
+/- English proof (translation)
+Rewrite using `[mem_range_lsmul_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0 : ∀ τ, (Submodule.Quotient.mk (c τ) : ModN O p) = 0`. Introduce `τ`.
+
+Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Use `congrArg (fun x ↦ (x i).coeff τ) h` as an intermediate fact. Simplify `this` using `[coeff_coeffToRegular]`. Use `choose y hy using fun τ ↦ (mem_range_lsmul_iff).mp ((Submodule.Quotient.mk_eq_zero _).mp (h0 τ))`.
+
+Conclude with `⟨y, funext fun τ ↦ by simpa using hy τ⟩`. Introduce and unpack `⟨y, rfl⟩`. Use function extensionality and compare the values at `i`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `τ`.
+
+Rewrite using `[coeff_coeffToRegular]`. Simplify using the standard rewrite rules.
+-/
 theorem coeffToRegular_eq_zero_iff (c : Γ → O) :
     coeffToRegular b c = 0 ↔ c ∈ LinearMap.range (LinearMap.lsmul ℤ (Γ → O) p) := by
   rw [mem_range_lsmul_iff]
@@ -352,6 +446,11 @@ theorem coeffToRegular_eq_zero_iff (c : Γ → O) :
     simp
 
 variable (Γ) in
+/- English proof (translation)
+Introduce `f`. Use `choose c hc using fun τ : Γ ↦ Submodule.Quotient.mk_surjective _ (b.repr.symm ((Finsupp.equivFunOnFinite (α := Fin n)).symm fun i ↦ (f i).coeff τ))`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises.
+
+Use extensionality with `τ`. Rewrite using `[coeff_coeffToRegular, hc τ]`. Simplify using the standard rewrite rules.
+-/
 theorem coeffToRegular_surjective : Function.Surjective (coeffToRegular (Γ := Γ) b) := by
   intro f
   choose c hc using fun τ : Γ ↦ Submodule.Quotient.mk_surjective _
@@ -363,6 +462,13 @@ theorem coeffToRegular_surjective : Function.Surjective (coeffToRegular (Γ := �
   rw [coeff_coeffToRegular, hc τ]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `ρ`. Rewrite using `[piRep_apply, coeff_coeffToRegular]`. Simplify using `only [coeffToRegular, AddMonoidHom.coe_mk, ZeroHom.coe_mk, map_sum, Representation.ofMulAction_single, smul_eq_mul, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finset.sum_apply', Finsupp.single_apply]`.
+
+Rewrite using `[Finset.sum_eq_single (τ⁻¹ * ρ)]`. Simplify using the standard rewrite rules. Introduce `σ _ hσ`. Rewrite using `[if_neg]`. Introduce `h`.
+
+Apply `hσ` to reduce the goal to its premises. Rewrite using `[← h]`. Use `group`. Simplify using the standard rewrite rules.
+-/
 theorem coeffToRegular_perm [Group Γ] (τ : Γ) (c : Γ → O) :
     coeffToRegular b (fun σ ↦ c (τ⁻¹ * σ)) =
       piRep (Fin n) (Representation.leftRegular (ZMod p) Γ) τ (coeffToRegular b c) := by

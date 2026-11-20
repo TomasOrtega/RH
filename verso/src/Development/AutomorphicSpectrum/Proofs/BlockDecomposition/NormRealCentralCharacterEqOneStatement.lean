@@ -11,5 +11,8 @@ open scoped NumberField.AdeleRing ValuativeRel
 open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.CenTheta
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CenTheta.norm_omR | exact GlobalTheory.CompanionTheory.CenTheta.norm_omR | (intros; apply GlobalTheory.CompanionTheory.CenTheta.norm_omR <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.norm_real_central_character_eq_one : ∀ (n : ℤ) (t : ℝ) (a : ℝˣ), ‖omR n t a‖ = 1 := by
   first | exact @GlobalTheory.CompanionTheory.CenTheta.norm_omR | exact GlobalTheory.CompanionTheory.CenTheta.norm_omR | (intros; apply GlobalTheory.CompanionTheory.CenTheta.norm_omR <;> assumption)

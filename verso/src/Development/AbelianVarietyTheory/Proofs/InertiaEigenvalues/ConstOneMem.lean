@@ -45,6 +45,9 @@ def iotaG (T : Submodule O V) (T' : Submodule O V') (j : V →ₗ[O] V') (hj : �
     ↥T ⊗[O] (LL ⧸ intO (O := O) LL) →ₗ[O] V' ⧸ T' :=
   TensorProduct.lift (scalB T T' j hj)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iotaG_tmul (T : Submodule O V) (T' : Submodule O V') (j : V →ₗ[O] V') (hj : ∀ v ∈ T, j v ∈ T')
     (t : ↥T) (s : LL) :
     iotaG T T' j hj (t ⊗ₜ Submodule.Quotient.mk s) = Submodule.Quotient.mk (s • j t) := rfl
@@ -61,6 +64,9 @@ def iotaW (lam : O) (a k : ℕ) :
 
 def constOne : LL →ₗ[O] (Fin 1 → LL) := LinearMap.pi fun _ => LinearMap.id
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨c, rfl⟩`. Simplify using `only [constOne, stdG]`. Use `⟨fun _ => c, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem constOne_mem : ∀ v ∈ intO (O := O) LL, constOne (O := O) LL v ∈ stdG O LL 1 := by
   rintro _ ⟨c, rfl⟩
   simp only [constOne, stdG]

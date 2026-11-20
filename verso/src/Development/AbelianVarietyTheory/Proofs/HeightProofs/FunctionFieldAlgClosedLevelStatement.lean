@@ -7,5 +7,8 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor F
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinalJoin.FieldAlg.fnAlgClosed_of_pins | exact GlobalTheory.FinalJoin.FieldAlg.fnAlgClosed_of_pins | (intros; apply GlobalTheory.FinalJoin.FieldAlg.fnAlgClosed_of_pins <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.function_field_alg_closed_level : ∀ (D : D7) (Q : Par D), Q.Pins → Q.Canon → ∀ n : ℕ, 0 < n → CurveOver (hostOfRecord D) (FO D) n → ∀ j, InR D j → ∀ (l₂ : Level Q.H) (Xo₂ : Moduli (Q.Dw j) l₂) (c₂ : Coeff l₂), l₂.A = 1 → l₂.M ∣ n → c₂.F = Q.c.F → FnAlgClosed Xo₂ c₂ := by
   first | exact @GlobalTheory.FinalJoin.FieldAlg.fnAlgClosed_of_pins | exact GlobalTheory.FinalJoin.FieldAlg.fnAlgClosed_of_pins | (intros; apply GlobalTheory.FinalJoin.FieldAlg.fnAlgClosed_of_pins <;> assumption)

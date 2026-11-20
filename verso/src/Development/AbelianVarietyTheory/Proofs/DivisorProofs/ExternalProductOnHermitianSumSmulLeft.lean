@@ -17,10 +17,16 @@ def adjM (S B : HSp D) (y : Mx D B.rank S.rank) : Mx D S.rank B.rank :=
   HMul.hMul (HMul.hMul ((S.gram⁻¹).map (incA D) : Matrix (Fin S.rank) (Fin S.rank) (AE D))
     ((y.map (cA D))ᵀ : Matrix (Fin S.rank) (Fin B.rank) (AE D))) (B.gram.map (incA D) : Matrix (Fin B.rank) (Fin B.rank) (AE D))
 
+/- English proof (translation)
+Establish `e : ((0 : Mx D B.rank S.rank).map (cA D)) = 0` using `by ext a b; simp`. Simplify using `only [adjM, e, transpose_zero, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem adjM_zero (S B : HSp D) : adjM S B 0 = 0 := by
   have e : ((0 : Mx D B.rank S.rank).map (cA D)) = 0 := by ext a b; simp
   simp only [adjM, e, transpose_zero, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Establish `e : (y + z).map (cA D) = y.map (cA D) + z.map (cA D)`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Simplify using `only [adjM, e, transpose_add, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem adjM_add (S B : HSp D) (y z : Mx D B.rank S.rank) : adjM S B (y + z) = adjM S B y + adjM S B z := by
   have e : (y + z).map (cA D) = y.map (cA D) + z.map (cA D) := by
     ext a b; simp
@@ -35,14 +41,23 @@ def botR {A B : HSp D} {n : ℕ} (x : Matrix (Fin (A.rank + B.rank)) (Fin n) (AE
 def box2 {S A B : HSp D} (φ : WO S A → ℂ) (φ' : WO S B → ℂ) : WO S (GlobalTheory.Doubling.hsum A B) → ℂ :=
   fun x => φ (topR (A := A) (B := B) x) * φ' (botR (A := A) (B := B) x)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[box2, add_mul]`.
+-/
 theorem externalProductOnHermitianSum_add_left {S A B : HSp D} (φ₁ φ₂ : WO S A → ℂ) (φ' : WO S B → ℂ) :
     box2 (φ₁ + φ₂) φ' = box2 φ₁ φ' + box2 φ₂ φ' := by
   funext x; simp [box2, add_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[box2, mul_assoc]`.
+-/
 theorem externalProductOnHermitianSum_smul_left {S A B : HSp D} (c : ℂ) (φ : WO S A → ℂ) (φ' : WO S B → ℂ) :
     box2 (c • φ) φ' = c • box2 φ φ' := by
   funext x; simp [box2, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `mul_one _`.
+-/
 example {S A B : HSp D} (φ : WO S A → ℂ) (x : WO S (GlobalTheory.Doubling.hsum A B)) :
     box2 (A := A) (B := B) φ (fun _ => 1) x = φ (topR (A := A) (B := B) x) := mul_one _
 

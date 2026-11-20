@@ -12,6 +12,9 @@ variable {k r : ℕ}
 
 def sgI (k r : ℕ) (i : ℕ) : ℕ := if i < r ∨ r + k < i then 2 * r + k - i else i
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `hl` using `l.isLt`. Simplify using `only [Hpk, sgI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | norm_num`.
+-/
 lemma hpk_apply (i l : Fin (2 * r + k + 1)) :
     Hpk k r i l = if l.val = sgI k r i.val then (if i.val = r + k then -1 else 1) else 0 := by
   have hi := i.isLt
@@ -19,21 +22,39 @@ lemma hpk_apply (i l : Fin (2 * r + k + 1)) :
   simp only [Hpk, sgI, Fin.ext_iff]
   split_ifs <;> first | rfl | omega | norm_num
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Unfold `sgI`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 lemma sgI_lt (i : Fin (2 * r + k + 1)) : sgI k r i.val < 2 * r + k + 1 := by
   have hi := i.isLt
   unfold sgI
   split_ifs <;> omega
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Unfold `sgI`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 lemma sgI_sgI (i : Fin (2 * r + k + 1)) : sgI k r (sgI k r i.val) = i.val := by
   have hi := i.isLt
   unfold sgI
   split_ifs <;> omega
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Unfold `sgI`. Apply the tactic sequence `split_ifs <;> constructor <;> intro h <;> omega`.
+-/
 lemma sgI_eq_iff (i : Fin (2 * r + k + 1)) : sgI k r i.val = r + k ↔ i.val = r + k := by
   have hi := i.isLt
   unfold sgI
   split_ifs <;> constructor <;> intro h <;> omega
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (⟨sgI k r i.val, sgI_lt i⟩ : Fin (2 * r + k + 1))]`. Rewrite using `[hpk_apply, hpk_apply]`. Simplify using `only [Fin.val_mk, sgI_sgI, sgI_eq_iff, eq_self_iff_true, if_true]`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [eq_self_iff_true, if_true]`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hji : j.val ≠ i.val` using `fun h => hij (Fin.ext h).symm`.
+
+Simplify using `[hij, hji]`. Introduce `l _ hl`. Rewrite using `[hpk_apply i l, if_neg, zero_mul]`. Introduce `h`. Conclude with `hl (Fin.ext h)`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem hpk_mul_self : Hpk k r * Hpk k r = 1 := by
   ext i j
   rw [Matrix.mul_apply, Matrix.one_apply]
@@ -53,18 +74,27 @@ theorem hpk_mul_self : Hpk k r * Hpk k r = 1 := by
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Introduce `h`. Establish `e` using `congrArg Matrix.det (hpk_mul_self (k := k) (r := r))`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_one, h, zero_mul]`. Conclude with `zero_ne_one e`.
+-/
 theorem hpk_det_ne : (Hpk k r).det ≠ 0 := by
   intro h
   have e := congrArg Matrix.det (hpk_mul_self (k := k) (r := r))
   rw [Matrix.det_mul, Matrix.det_one, h, zero_mul] at e
   exact zero_ne_one e
 
+/- English proof (translation)
+Introduce `h`. Establish `e` using `hpk_det_ne (k := k) (r := r)`. Rewrite `e` using `[h, Matrix.det_zero]`. Conclude with `e rfl`.
+-/
 theorem hpk_ne_zero : Hpk k r ≠ 0 := by
   intro h
   have e := hpk_det_ne (k := k) (r := r)
   rw [h, Matrix.det_zero] at e
   exact e rfl
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hb' : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul, show bᴴ * aᴴ * Hpk k r * (a * b) = bᴴ * (aᴴ * Hpk k r * a) * b by simp only [Matrix.mul_assoc], ha', hb']`.
+-/
 theorem mul_mem_GV {a b : B.Mat k r} (ha : a ∈ B.GV k r) (hb : b ∈ B.GV k r) : a * b ∈ B.GV k r := by
   have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
   have hb' : bᴴ * Hpk k r * b = Hpk k r := hb
@@ -73,10 +103,22 @@ theorem mul_mem_GV {a b : B.Mat k r} (ha : a ∈ B.GV k r) (hb : b ∈ B.GV k r)
     show bᴴ * aᴴ * Hpk k r * (a * b) = bᴴ * (aᴴ * Hpk k r * a) * b by simp only [Matrix.mul_assoc],
     ha', hb']
 
+/- English proof (translation)
+Unfold `B.inLie at *`. Rewrite using `[Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, hX, neg_zero]`.
+-/
 theorem inLie_neg {X : B.Mat k r} (hX : B.inLie k r X) : B.inLie k r (-X) := by
   unfold B.inLie at *
   rw [Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, hX, neg_zero]
 
+/- English proof (translation)
+Establish `hH2 : Hpk k r * Hpk k r = 1` using `hpk_mul_self`. Establish `hU : IsUnit (Hpk k r)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hpk_det_ne)`. Establish `hinv : (Hpk k r)⁻¹ = Hpk k r` using `Matrix.inv_eq_left_inv hH2`. Establish `hX' : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Establish `e1 : Xᴴ * Hpk k r = -(Hpk k r * X)` using `eq_neg_of_add_eq_zero_left hX'`.
+
+Establish `hXa : Xᴴ = -(Hpk k r * X * Hpk k r)`. Combine the equalities or inequalities in the displayed calculation. Establish `hAa : ((t : ℂ) • X)ᴴ = Hpk k r * (-((t : ℂ) • X)) * (Hpk k r)⁻¹`. Rewrite using `[hinv, Matrix.conjTranspose_smul, hXa, Complex.star_def, Complex.conj_ofReal]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_neg, Matrix.mul_neg, Matrix.neg_mul]`.
+
+Establish `hE : (NormedSpace.exp ((t : ℂ) • X))ᴴ = Hpk k r * NormedSpace.exp (-((t : ℂ) • X)) * (Hpk k r)⁻¹`. Rewrite using `[← Matrix.exp_conjTranspose, hAa, Matrix.exp_conj _ _ hU]`. Establish `hN : NormedSpace.exp (-((t : ℂ) • X)) * NormedSpace.exp ((t : ℂ) • X) = 1`. Establish `hc : Commute (-((t : ℂ) • X)) ((t : ℂ) • X)` using `(Commute.refl _).neg_left`. Rewrite using `[← Matrix.exp_add_of_commute _ _ hc, neg_add_cancel, NormedSpace.exp_zero]`.
+
+Use `show (NormedSpace.exp ((t : ℂ) • X))ᴴ * Hpk k r * NormedSpace.exp ((t : ℂ) • X) = Hpk k r`. Rewrite using `[hE, hinv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exp_mem_GV {X : B.Mat k r} (hX : B.inLie k r X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ B.GV k r := by
   have hH2 : Hpk k r * Hpk k r = 1 := hpk_mul_self
@@ -109,6 +151,11 @@ section gN
 
 open scoped Matrix.Norms.Frobenius
 
+/- English proof (translation)
+Rewrite using `[Matrix.frobenius_norm_def]`. Unfold `B.gN`. Rewrite using `[Real.sqrt_eq_rpow]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Complex.normSq_eq_norm_sq, Real.rpow_two]`.
+-/
 theorem gN_eq_frob (g : B.Mat k r) : B.gN g = ‖g‖ := by
   rw [Matrix.frobenius_norm_def]
   unfold B.gN
@@ -117,6 +164,11 @@ theorem gN_eq_frob (g : B.Mat k r) : B.gN g = ‖g‖ := by
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [Complex.normSq_eq_norm_sq, Real.rpow_two]
 
+/- English proof (translation)
+Rewrite using `[gN_eq_frob]`. Establish `hH : (0 : ℝ) < ‖Hpk k r‖` using `norm_pos_iff.mpr hpk_ne_zero`. Establish `h1 : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `h2 : ‖Hpk k r‖ ≤ ‖g‖ * ‖Hpk k r‖ * ‖g‖`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `Matrix.frobenius_norm_mul _ _`. Use `_ = ‖g‖ * ‖Hpk k r‖ * ‖g‖ := by rw [Matrix.frobenius_norm_conjTranspose]`. Establish `h3 : 1 ≤ ‖g‖ * ‖g‖` using `by nlinarith`. Use polynomial arithmetic with `[norm_nonneg g]`.
+-/
 theorem one_le_gN {g : B.Mat k r} (hg : g ∈ B.GV k r) : 1 ≤ B.gN g := by
   rw [gN_eq_frob]
   have hH : (0 : ℝ) < ‖Hpk k r‖ := norm_pos_iff.mpr hpk_ne_zero
@@ -140,6 +192,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 open scoped Matrix.Norms.Operator in
+/- English proof (translation)
+Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Use `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h` as an intermediate fact. Simplify using `only [Complex.coe_smul]`.
+
+Conclude with `this`.
+-/
 theorem exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)) i j) (X i j) 0 := by
   have h := hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)
@@ -149,6 +206,11 @@ theorem exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
   simp only [Complex.coe_smul]
   exact this
 
+/- English proof (translation)
+Establish `: HasDerivAt (fun t : ℝ => (fun i j => (NormedSpace.exp ((t : ℂ) • X)) i j : Fin n → Fin n → ℂ)) (fun i j => X i j) 0`. Rewrite using `[hasDerivAt_pi]`. Introduce `i`. Rewrite using `[hasDerivAt_pi]`. Introduce `j`.
+
+Apply the tactic sequence `exact exp_entry X i j`. Conclude with `this`.
+-/
 theorem exp_deriv (X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 := by
   have : HasDerivAt (fun t : ℝ => (fun i j => (NormedSpace.exp ((t : ℂ) • X)) i j : Fin n → Fin n → ℂ))
@@ -166,7 +228,13 @@ def mulL (a : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ →L[ℝ]
 def mulR (a : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ :=
   LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulL_apply (a x : Matrix (Fin n) (Fin n) ℂ) : mulL a x = a * x := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulR_apply (a x : Matrix (Fin n) (Fin n) ℂ) : mulR a x = x * a := rfl
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
@@ -183,13 +251,24 @@ def D : Bool → B.Mat k r → (B.Mat k r → E) → (B.Mat k r → E)
   | true, X, f => B.LdV X f
   | false, X, f => Formalism.REAL.RdV X f
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> rfl`.
+-/
 theorem D_eq (b : Bool) (X : B.Mat k r) (f : B.Mat k r → E) (g : B.Mat k r) :
     D b X f g = deriv (fun t : ℝ => f (cv b X g t)) 0 := by
   cases b <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> simp [cv]`.
+-/
 theorem cv_zero (b : Bool) (X g : B.Mat k r) : cv b X g 0 = g := by
   cases b <;> simp [cv]
 
+/- English proof (translation)
+Consider the cases of `b with`. Consider the case `true => show NormedSpace.exp (-((t : ℂ) • X)) * g ∈ B.GV k r`. Rewrite using `[← smul_neg]`. Conclude with `mul_mem_GV (exp_mem_GV (inLie_neg hX) t) hg`. Consider the case `false => show g * NormedSpace.exp ((t : ℂ) • X) ∈ B.GV k r`.
+
+Conclude with `mul_mem_GV hg (exp_mem_GV hX t)`.
+-/
 theorem cv_mem {b : Bool} {X g : B.Mat k r} (hg : g ∈ B.GV k r) (hX : B.inLie k r X) (t : ℝ) :
     cv b X g t ∈ B.GV k r := by
   cases b with
@@ -201,6 +280,15 @@ theorem cv_mem {b : Bool} {X g : B.Mat k r} (hg : g ∈ B.GV k r) (hX : B.inLie 
     show g * NormedSpace.exp ((t : ℂ) • X) ∈ B.GV k r
     exact mul_mem_GV hg (exp_mem_GV hX t)
 
+/- English proof (translation)
+Consider the cases of `b with`. Consider the case `true => show HasDerivAt (fun t : ℝ => NormedSpace.exp (-((t : ℂ) • X)) * g) (-(X * g)) 0`. Establish `h` using `(mulR g).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (exp_deriv (-X))`. Establish `e1 : (⇑(mulR g) ∘ fun t : ℝ => NormedSpace.exp ((t : ℂ) • -X)) = fun t : ℝ => NormedSpace.exp (-((t : ℂ) • X)) * g`. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [Function.comp, mulR_apply, smul_neg]`. Establish `e2 : (mulR g) (-X) = -(X * g)`. Rewrite using `[mulR_apply]`. Conclude with `neg_mul X g`. Rewrite `h` using `[e1]`.
+
+Conclude with `h.congr_deriv e2`. Consider the case `false => show HasDerivAt (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) (g * X) 0`. Establish `h` using `(mulL g).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (exp_deriv X)`. Establish `e1 : (⇑(mulL g) ∘ fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) = fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)`. Use function extensionality and compare the values at `t`.
+
+Both sides reduce to the same expression. Rewrite `h` using `[e1]`. Conclude with `h.congr_deriv (mulL_apply g X)`.
+-/
 theorem cv_deriv (b : Bool) (X g : B.Mat k r) : HasDerivAt (cv b X g) (vel b X g) 0 := by
   cases b with
   | true =>
@@ -225,6 +313,9 @@ theorem cv_deriv (b : Bool) (X g : B.Mat k r) : HasDerivAt (cv b X g) (vel b X g
     rw [e1] at h
     exact h.congr_deriv (mulL_apply g X)
 
+/- English proof (translation)
+Consider the cases of `b with`. Consider the case `true => show ContDiff ℝ m (fun h : B.Mat k r => -(X * h))`. Conclude with `(mulL X).contDiff.neg`. Consider the case `false => show ContDiff ℝ m (fun h : B.Mat k r => h * X)`. Conclude with `(mulR X).contDiff`.
+-/
 theorem contDiff_vel (b : Bool) (X : B.Mat k r) {m : WithTop ℕ∞} :
     ContDiff ℝ m (fun h : B.Mat k r => vel b X h) := by
   cases b with
@@ -235,6 +326,9 @@ theorem contDiff_vel (b : Bool) (X : B.Mat k r) {m : WithTop ℕ∞} :
     show ContDiff ℝ m (fun h : B.Mat k r => h * X)
     exact (mulR X).contDiff
 
+/- English proof (translation)
+Consider the cases of `b with`. Consider the case `true`. Simplify using `only [vel, Finset.sum_mul, smul_mul_assoc, ← Finset.sum_neg_distrib, smul_neg]`. Consider the case `false`. Simplify using `only [vel, Finset.mul_sum, mul_smul_comm]`.
+-/
 theorem vel_sum (b : Bool) {N : ℕ} (c : Fin N → ℝ) (e : Fin N → B.Mat k r) (g : B.Mat k r) :
     vel b (∑ i, c i • e i) g = ∑ i, c i • vel b (e i) g := by
   cases b with
@@ -243,6 +337,11 @@ theorem vel_sum (b : Bool) {N : ℕ} (c : Fin N → ℝ) (e : Fin N → B.Mat k 
   | false =>
     simp only [vel, Finset.mul_sum, mul_smul_comm]
 
+/- English proof (translation)
+Establish `hc` using `cv_deriv b X g`. Establish `h0 : cv b X g 0 = g` using `cv_zero b X g`. Establish `hf' : HasFDerivAt f' (fderiv ℝ f' g) (cv b X g 0)`. Rewrite using `[h0]`. Conclude with `hd.hasFDerivAt`.
+
+Establish `h1` using `hf'.comp_hasDerivAt (0 : ℝ) hc`. Use `h1.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hU' : cv b X g ⁻¹' U ∈ nhds (0 : ℝ)` using `hc.continuousAt.preimage_mem_nhds (by rw [h0]; exact hU.mem_nhds hgU)`. Use `filter_upwards [hU'] with t ht`. Conclude with `hfe _ ht (cv_mem hgG hX t)`.
+-/
 theorem hasDerivAt_D {b : Bool} {X g : B.Mat k r} {f f' : B.Mat k r → E} {U : Set (B.Mat k r)}
     (hU : IsOpen U) (hgU : g ∈ U) (hgG : g ∈ B.GV k r) (hfe : ∀ h ∈ U, h ∈ B.GV k r → f h = f' h)
     (hd : DifferentiableAt ℝ f' g) (hX : B.inLie k r X) :
@@ -259,6 +358,9 @@ theorem hasDerivAt_D {b : Bool} {X g : B.Mat k r} {f f' : B.Mat k r → E} {U : 
   filter_upwards [hU'] with t ht
   exact hfe _ ht (cv_mem hgG hX t)
 
+/- English proof (translation)
+Rewrite using `[D_eq]`. Conclude with `(hasDerivAt_D hU hgU hgG hfe hd hX).deriv`.
+-/
 theorem D_eq_fderiv {b : Bool} {X g : B.Mat k r} {f f' : B.Mat k r → E} {U : Set (B.Mat k r)}
     (hU : IsOpen U) (hgU : g ∈ U) (hgG : g ∈ B.GV k r) (hfe : ∀ h ∈ U, h ∈ B.GV k r → f h = f' h)
     (hd : DifferentiableAt ℝ f' g) (hX : B.inLie k r X) :
@@ -268,12 +370,20 @@ theorem D_eq_fderiv {b : Bool} {X g : B.Mat k r} {f f' : B.Mat k r → E} {U : S
 
 abbrev SS (k r : ℕ) (f : B.Mat k r → E) : Prop := B.CkOn (⊤ : ℕ∞) (B.GV k r) f
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hcd, hfe⟩` from `hf g hg`. Conclude with `⟨U, f', hU, hgU, (hcd.contDiffAt (hU.mem_nhds hgU)).differentiableAt (by simp), hfe⟩`.
+-/
 theorem ss_rep {f : B.Mat k r → E} (hf : SS k r f) {g : B.Mat k r} (hg : g ∈ B.GV k r) :
     ∃ (U : Set (B.Mat k r)) (f' : B.Mat k r → E), IsOpen U ∧ g ∈ U ∧ DifferentiableAt ℝ f' g ∧
       ∀ h ∈ U, h ∈ B.GV k r → f h = f' h := by
   obtain ⟨U, f', hU, hgU, hcd, hfe⟩ := hf g hg
   exact ⟨U, f', hU, hgU, (hcd.contDiffAt (hU.mem_nhds hgU)).differentiableAt (by simp), hfe⟩
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hcd, hfe⟩` from `hf g₀ hg₀`. Use `⟨U, fun h => fderiv ℝ f' h (vel b X h), hU, hgU, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hcd.fderiv_of_isOpen hU (by simp)).clm_apply (contDiff_vel b X).contDiffOn`. Introduce `h hU' hG`.
+
+Conclude with `D_eq_fderiv hU hU' hG hfe ((hcd.contDiffAt (hU.mem_nhds hU')).differentiableAt (by simp)) hX`.
+-/
 theorem ss_D {b : Bool} {X : B.Mat k r} {f : B.Mat k r → E} (hf : SS k r f) (hX : B.inLie k r X) :
     SS k r (D b X f) := by
   intro g₀ hg₀
@@ -284,6 +394,9 @@ theorem ss_D {b : Bool} {X : B.Mat k r} {f : B.Mat k r → E} (hf : SS k r f) (h
     exact D_eq_fderiv hU hU' hG hfe
       ((hcd.contDiffAt (hU.mem_nhds hU')).differentiableAt (by simp)) hX
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hd, hfe⟩` from `ss_rep hf hg`. Rewrite using `[D_eq_fderiv hU hgU hg hfe hd hX]`. Conclude with `hasDerivAt_D hU hgU hg hfe hd hX`.
+-/
 theorem hasDerivAt_D_of {b : Bool} {X g : B.Mat k r} {f : B.Mat k r → E} (hf : SS k r f)
     (hg : g ∈ B.GV k r) (hX : B.inLie k r X) :
     HasDerivAt (fun t : ℝ => f (cv b X g t)) (D b X f g) 0 := by
@@ -291,6 +404,9 @@ theorem hasDerivAt_D_of {b : Bool} {X g : B.Mat k r} {f : B.Mat k r → E} (hf :
   rw [D_eq_fderiv hU hgU hg hfe hd hX]
   exact hasDerivAt_D hU hgU hg hfe hd hX
 
+/- English proof (translation)
+Rewrite using `[D_eq, D_eq]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `h _ (cv_mem hg hX t)`.
+-/
 theorem D_congr {b : Bool} {X g : B.Mat k r} {f₁ f₂ : B.Mat k r → E}
     (h : ∀ y ∈ B.GV k r, f₁ y = f₂ y) (hg : g ∈ B.GV k r) (hX : B.inLie k r X) :
     D b X f₁ g = D b X f₂ g := by
@@ -299,18 +415,27 @@ theorem D_congr {b : Bool} {X g : B.Mat k r} {f₁ f₂ : B.Mat k r → E}
   funext t
   exact h _ (cv_mem hg hX t)
 
+/- English proof (translation)
+Rewrite using `[D_eq]`. Conclude with `((hasDerivAt_D_of h₁ hg hX).add (hasDerivAt_D_of h₂ hg hX)).deriv`.
+-/
 theorem D_add {b : Bool} {X g : B.Mat k r} {f₁ f₂ : B.Mat k r → E} (h₁ : SS k r f₁) (h₂ : SS k r f₂)
     (hg : g ∈ B.GV k r) (hX : B.inLie k r X) :
     D b X (f₁ + f₂) g = D b X f₁ g + D b X f₂ g := by
   rw [D_eq]
   exact ((hasDerivAt_D_of h₁ hg hX).add (hasDerivAt_D_of h₂ hg hX)).deriv
 
+/- English proof (translation)
+Rewrite using `[D_eq]`. Conclude with `((hasDerivAt_D_of hf hg hX).const_smul c).deriv`.
+-/
 theorem D_smul {b : Bool} {X g : B.Mat k r} (c : ℝ) {f : B.Mat k r → E} (hf : SS k r f)
     (hg : g ∈ B.GV k r) (hX : B.inLie k r X) :
     D b X (c • f) g = c • D b X f g := by
   rw [D_eq]
   exact ((hasDerivAt_D_of hf hg hX).const_smul c).deriv
 
+/- English proof (translation)
+Take `⟨U, f', hU, hgU, hd, hfe⟩` from `ss_rep hf hg`. Rewrite using `[D_eq_fderiv hU hgU hg hfe hd hX, hXe, vel_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, D_eq_fderiv hU hgU hg hfe hd (he i)]`.
+-/
 theorem D_letter {b : Bool} {N : ℕ} {e : Fin N → B.Mat k r} {c : Fin N → ℝ} {X g : B.Mat k r}
     {f : B.Mat k r → E} (hf : SS k r f) (hg : g ∈ B.GV k r) (he : ∀ i, B.inLie k r (e i))
     (hX : B.inLie k r X) (hXe : X = ∑ i, c i • e i) :
@@ -320,6 +445,11 @@ theorem D_letter {b : Bool} {N : ℕ} {e : Fin N → B.Mat k r} {c : Fin N → �
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_smul, D_eq_fderiv hU hgU hg hfe hd (he i)]
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U₁, f₁', hU₁, hg₁, hc₁, he₁⟩` from `h₁ g₀ hg₀`. Take `⟨U₂, f₂', hU₂, hg₂, hc₂, he₂⟩` from `h₂ g₀ hg₀`. Use `⟨U₁ ∩ U₂, fun h => f₁' h + f₂' h, hU₁.inter hU₂, ⟨hg₁, hg₂⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hc₁.mono Set.inter_subset_left).add (hc₂.mono Set.inter_subset_right)`.
+
+Introduce `g hg hG`. Simplify using `only [Pi.add_apply, he₁ g hg.1 hG, he₂ g hg.2 hG]`.
+-/
 theorem ss_add {f₁ f₂ : B.Mat k r → E} (h₁ : SS k r f₁) (h₂ : SS k r f₂) : SS k r (f₁ + f₂) := by
   intro g₀ hg₀
   obtain ⟨U₁, f₁', hU₁, hg₁, hc₁, he₁⟩ := h₁ g₀ hg₀
@@ -329,6 +459,9 @@ theorem ss_add {f₁ f₂ : B.Mat k r → E} (h₁ : SS k r f₁) (h₂ : SS k r
   · intro g hg hG
     simp only [Pi.add_apply, he₁ g hg.1 hG, he₂ g hg.2 hG]
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hc, he⟩` from `hf g₀ hg₀`. Use `⟨U, fun h => c • f' h, hU, hgU, hc.const_smul c, ?_⟩` and prove the remaining obligations. Introduce `g hg hG`. Simplify using `only [Pi.smul_apply, he g hg hG]`.
+-/
 theorem ss_smul (c : ℝ) {f : B.Mat k r → E} (hf : SS k r f) : SS k r (c • f) := by
   intro g₀ hg₀
   obtain ⟨U, f', hU, hgU, hc, he⟩ := hf g₀ hg₀
@@ -336,6 +469,9 @@ theorem ss_smul (c : ℝ) {f : B.Mat k r → E} (hf : SS k r f) : SS k r (c • 
   intro g hg hG
   simp only [Pi.smul_apply, he g hg hG]
 
+/- English proof (translation)
+Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+-/
 theorem ss_zero : SS k r (0 : B.Mat k r → E) := by
   intro g₀ _
   exact ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩

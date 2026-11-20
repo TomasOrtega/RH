@@ -20,6 +20,9 @@ namespace GlobalTheory.Unf.FB
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hb : Matrix.BlockTriangular u.1 id` using `fun i j h => (hu i j).1 h`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Units.val_one]`. Rewrite using `[Matrix.det_of_upperTriangular hb]`. Conclude with `Finset.prod_eq_one fun i _ => (hu i i).2`.
+-/
 theorem det_of_mem_UX {ρ : ℕ} {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) :
     Matrix.GeneralLinearGroup.det u = 1 := by
   have hb : Matrix.BlockTriangular u.1 id := fun i j h => (hu i j).1 h
@@ -28,11 +31,23 @@ theorem det_of_mem_UX {ρ : ℕ} {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) :
   rw [Matrix.det_of_upperTriangular hb]
   exact Finset.prod_eq_one fun i _ => (hu i i).2
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, det_of_mem_UX hu, map_one]`. Simplify using the standard rewrite rules.
+-/
 theorem halfMod_of_mem_UX {ρ : ℕ} (m : ℕ) {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) :
     GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod m u = 1 := by
   rw [GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, det_of_mem_UX hu, map_one]
   simp
 
+/- English proof (translation)
+Take `⟨u, hu, b, c, rfl⟩` from `((flag_jacobi_structure D T T₀ σ d).1 n).1 hn`. Establish `e : ((1 : GA D S), d.levi u * (d.nB b * d.nC c)) = (1, d.levi u) * ((1, d.nB b) * (1, d.nC c))`. Simplify using the standard rewrite rules. Establish `h3` using `hpres (1, d.nC c) f hf`. Establish `h2` using `hpres (1, d.nB b) _ h3`.
+
+Establish `hq : d.qT S c 0 = 0`. Simplify using `[HypDec.qT, map_zero, symplOH_zero_left]`. Establish `ha : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj S T₀ 0 = 0`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj]`. Rewrite using `[e, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, (hF _ h2).levi, Matrix.zero_mul, det_of_mem_UX hu, map_one, halfMod_of_mem_UX _ hu, (hF _ h3).unip, Matrix.zero_mul, ha, (hF _ hf).centre, hq]`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[AddChar.map_zero_eq_one, one_smul]`. Simplify using `only [Circle.coe_one, Complex.ofReal_one, mul_one, one_smul]`. Express the relevant statement in the definitionally equal form `ψ (symplOH S T₀ w 0) * _ = _`. Rewrite using `[add_zero]`.
+
+Rewrite using `[show symplOH S T₀ w 0 = 0 by first`. Consider the case `exact symplOH_zero_right S T₀ w`. Consider the case `exact GlobalTheory.MixModel.symplOH_zero_right S T₀ w`. Consider the case `simp [symplOH, symplO, hO]]`. Rewrite using `[AddChar.map_zero_eq_one, one_mul]`.
+-/
 theorem mixT_zero_flagN {S T T₀ : HSp D} {σ : ℕ} (d : HypDec T T₀ σ) (ψ : AddChar (AF D.host.F) ℂ)
     (χS : (AE D)ˣ →* Circle) (om : Om S T) (om₀ : Om S T₀) (μ : Measure (Mx D σ S.rank)) (𝓕 : Set (Mx D σ S.rank))
     (hpres : ∀ p f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (om p f))
@@ -62,6 +77,15 @@ theorem mixT_zero_flagN {S T T₀ : HSp D} {σ : ℕ} (d : HypDec T T₀ σ) (ψ
     | simp [symplOH, symplO, hO]]
   rw [AddChar.map_zero_eq_one, one_mul]
 
+/- English proof (translation)
+Introduce `D hD ψ σ J B s Ψ hΨ g n hn h x`. Take `⟨om₁, hom₁⟩` from `(hD ψ J.W B.V s.χV s.χW s.om s.weil).1 J.W₀ (σ + 1) J.d`. Establish `hS` using `GlobalTheory.T.mixedModelFormulasWittSource_proof D ψ J.W J.W₀ B.V (σ + 1) J.d s.χV s.χW s.om om₁ s.weil hom₁ s.vS.μ s.vS.𝓕 s.vS.covol`. Establish `hT` using `GlobalTheory.T.mixedModelFormulas_wittTarget D ψ J.W₀ B.V B.V₀ σ B.d s.χV s.χW om₁ s.om₀ hom₁ s.weil₀ s.vT.μ s.vT.𝓕 s.vT.covol`. Establish `hV` using `(GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ s.weil.std).1 J.W J.W₀ B.V (σ + 1) J.d s.vS.μ s.vS.𝓕 s.vS.covol Ψ hΨ`.
+
+Establish `hΨk` using `s.weil.om_pres (1, n * embA B.d B.o h) Ψ hΨ`. Simplify using `only [evalAt]`. Rewrite using `[show s.om (J.d.emb0 g, n * embA B.d B.o h) = s.om (J.d.emb0 g, 1) * s.om (1, n * embA B.d B.o h) by`. Rewrite using `[← map_mul]`. Use the proof step `simp]`.
+
+Rewrite using `[Module.End.mul_apply, (hS _ hΨk).core, (hS _ hΨ).target]`. Establish `hFt` using `hV (mt B.V (n * embA B.d B.o h)⁻¹ ⬝ x)`. Generalize the expression as in `J.d.mixS B.V ψ s.vS.μ s.vS.𝓕 Ψ (mt B.V (n * embA B.d B.o h)⁻¹ ⬝ x) = F at hFt ⊢`. Establish `hF1` using `hom₁.om_pres (1, B.d.emb0 (B.o.emb (h, 1))) F hFt`. Establish `hF2` using `hom₁.om_pres (1, n) _ hF1`.
+
+Rewrite using `[show om₁ (1, n * embA B.d B.o h) = om₁ (1, n) * om₁ (1, B.d.emb0 (B.o.emb (h, 1))) by`. Rewrite using `[← map_mul, embA_apply]`. Use the proof step `simp]`. Rewrite using `[Module.End.mul_apply, (hT _ hF2).source, Matrix.mul_zero, mixT_zero_flagN B.d ψ s.χV om₁ s.om₀ s.vT.μ s.vT.𝓕 hom₁.om_pres hT _ hF1 n hn, (hT _ hFt).core, show s.om₀ (g, B.o.emb (h, 1)) = s.om₀ (g, 1) * s.om₀ (1, B.o.emb (h, 1)) by rw [← map_mul]; simp, Module.End.mul_apply]`.
+-/
 theorem evalAt_zero_equivariant : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (J : JacLev D (σ + 1))
     (B : BesLev D σ) (s : StepFB ψ J B), ∀ (Ψ : WO J.W B.V → ℂ), IsThetaFunO ψ J.W B.V Ψ → ∀ (g : GA D J.W₀),
     ∀ n ∈ flagN B.d, ∀ (h : GA D B.A) (x : Mx D B.V.rank (σ + 1)),

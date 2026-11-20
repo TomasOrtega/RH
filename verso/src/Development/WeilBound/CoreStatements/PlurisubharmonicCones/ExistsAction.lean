@@ -19,6 +19,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {P : AbPart 𝔐.t (spMap (algebraMap (𝓞 L) L) ≫ z)} {V : Type} [AddCommGroup V] [Module L V] [Module (𝓞 L) V]
   [IsScalarTower (𝓞 L) L V] {MV : LieModel P.tK.G (𝟙 (Sp L)) V} {A : LinPt E L (CMType H) V}
 
+/- English proof (translation)
+Take `⟨U, hU, b, -, hb⟩` from `𝔐.vb s ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), 𝔐.all _⟩ trivial`. Establish `h1` using `hb _ trivial hU`. Establish `h2 : (𝔐.dR s).IsFrameAt b ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), 𝔐.all _⟩` using `⟨h1.1, (Lat.patch_of_not _ _ _ fun p hp => PtHt.FrameVal.not_inFibre _ _ p (𝔐.S_prime p hp)).symm.trans h1.2⟩`. Take `⟨sL, -, hi, hs⟩` from `GlobalTheory.T.abelian_part_integral_point_alt E H D l Xo c Y S Ω K J y 𝔐 L z P V MV A s _ b h h2`. Rewrite using `[← hs, finrank_span_eq_card hi, Fintype.card_fin]`.
+-/
 theorem finrank_eig' (h : 𝔐.IsLinPtOf z P MV A) (s : CMType H ⊕ CMType H) :
     Module.finrank L (eigSp A.ρ (A.σ s)) = labelRk D s := by
   obtain ⟨U, hU, b, -, hb⟩ := 𝔐.vb s ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), 𝔐.all _⟩ trivial
@@ -29,6 +32,15 @@ theorem finrank_eig' (h : 𝔐.IsLinPtOf z P MV A) (s : CMType H ⊕ CMType H) :
   rw [← hs, finrank_span_eq_card hi, Fintype.card_fin]
 
 omit [∀ k, Fintype (J k)] in
+/- English proof (translation)
+Take `⟨hact, -, -, -, -, t', m', MB, hfib, hl⟩` from `h`. Take `⟨ρM, hρ, -⟩` from `lieModel_exists_unique_act _ t'.G (𝓞 L) (𝟙 _) _ MB (𝓞 E) t'.act.act t'.act.hom t'.act.one t'.act.mul t'.act.add`. Use `⟨t', m', MB, ρM, hfib, hρ, fun a x => ?_⟩` and prove the remaining obligations. Use `t'.semi.separated` as an intermediate fact. Use `MB.inj (Over.OverMorphism.ext (LieHomOk.ext_of_spMap_injective (dualMap (algebraMap (𝓞 L) L)) (LieTangent.dualMap_injective (IsFractionRing.injective _ _)) t'.G.hom _ _ ((Over.w (MB.pt _)).trans (Over.w (MB.pt _)).symm) ?_))` and prove the remaining obligations.
+
+Establish `h1 : (MV.pt (A.ρ a x) ≫ P.τ.q ≫ P.e.hom).left ≫ m'.φ = _` using `hl ⟨A.ρ a x, A.stable a x x.2⟩`. Establish `h2 : (MV.pt x ≫ P.τ.q ≫ P.e.hom).left ≫ m'.φ = _` using `hl x`. Establish `h3 : MV.pt (A.ρ a x) ≫ P.τ.q ≫ P.e.hom = (MV.pt x ≫ P.τ.q ≫ P.e.hom) ≫ P.tB.act.act a`. Rewrite using `[hact a x, Category.assoc, P.act a]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[← h1, h3, hρ a (A.f x)]`. Generalize the expression as in `MV.pt x ≫ P.τ.q ≫ P.e.hom = w at h2`. Establish `h4 : (P.tB.act.act a).left ≫ m'.φ = m'.φ ≫ (t'.act.act a).left` using `m'.act a`. Express the relevant statement in the definitionally equal form `(w.left ≫ (P.tB.act.act a).left) ≫ m'.φ = spMap (dualMap (algebraMap (𝓞 L) L)) ≫ (MB.pt (A.f x)).left ≫ (t'.act.act a).left`. Rewrite using `[Category.assoc, h4]`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (t'.act.act a).left) h2).trans (Category.assoc _ _ _))`.
+-/
 theorem exists_action (h : 𝔐.IsLinPtOf z P MV A) :
     ∃ (t' : SAB H (Sp (𝓞 L))) (_ : SABMap P.tB t' (spMap (algebraMap (𝓞 L) L)))
       (MB : LieModel t'.G (𝟙 _) A.Bq.carrier) (ρM : 𝓞 E →+* Module.End (𝓞 L) A.Bq.carrier),

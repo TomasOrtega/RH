@@ -14,6 +14,25 @@ section Alg
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Establish `hle : C₁.map prL ≤ C₂`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `hmap v hv`. Take `⟨o, n, snf⟩` from `Submodule.smithNormalFormOfLE (Pi.basisFun O (Fin r₂)) (C₁.map prL) C₂ hle`. Take `⟨f, hf0, hf1⟩` from `exists_proj_of_saturated ϖ hϖ C₂ hsat`.
+
+Set `P : (Fin r₂ → O) →ₗ[O] C₂` to `(LinearMap.id - f).codRestrict C₂ (fun v => hf1 v)`. Establish `hP : ∀ (v : Fin r₂ → O) (hv : v ∈ C₂), P v = ⟨v, hv⟩`. Introduce `v hv`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[P, hf0 v hv]`.
+
+Establish `hmem : ∀ (v : Fin r₁ → O) (hv : v ∈ C₁), (⟨prL v, hmap v hv⟩ : C₂) ∈ (C₁.map prL).comap C₂.subtype` using `fun v hv => ⟨v, hv, rfl⟩`. Establish `hbasis : ∀ i : Fin o, t • snf.bM i ∈ (C₁.map prL).comap C₂.subtype`. Introduce `i`. Establish `h1 : (snf.bM.coord i ∘ₗ P) (snf.bM i : Fin r₂ → O) = 1`. Rewrite using `[LinearMap.comp_apply, hP _ (snf.bM i).2]`.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `hi : i ∈ Set.range snf.f`. Take `⟨j, rfl⟩` from `hi`. Take `⟨q, hq⟩` from `hcore _ (snf.bM (snf.f j)).2 _ h1 (snf.a j) (by`. Introduce `v hv`.
+
+Rewrite using `[LinearMap.comp_apply, hP _ (hmap v hv)]`. Establish `h2` using `snf.repr_apply_embedding_eq_repr_smul ⟨_, hmem v hv⟩ (i := j)`. Rewrite using `[Module.Basis.coord_apply, h2, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mem_span_singleton.2 ⟨_, rfl⟩)`. Establish `h3 : t • snf.bM (snf.f j) = q • (snf.bN j : C₂)`.
+
+Rewrite using `[snf.snf, smul_smul, hq, mul_comm]`. Rewrite using `[h3]`. Conclude with `Submodule.smul_mem _ _ (snf.bN j).2`. Establish `h0` using `hcore _ (snf.bM i).2 _ h1 0 (by`. Introduce `v hv`.
+
+Rewrite using `[LinearMap.comp_apply, hP _ (hmap v hv)]`. Establish `h2` using `snf.repr_eq_zero_of_notMem_range ⟨_, hmem v hv⟩ hi`. Rewrite using `[Module.Basis.coord_apply, h2]`. Conclude with `zero_mem _)`. Rewrite `h0` using `[zero_dvd_iff]`.
+
+Rewrite using `[h0, zero_smul]`. Conclude with `zero_mem _`. Introduce `v hv`. Establish `hall : t • (⟨v, hv⟩ : C₂) ∈ (C₁.map prL).comap C₂.subtype`. Rewrite using `[← snf.bM.sum_repr ⟨v, hv⟩, Finset.smul_sum]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ _ (hbasis i)`. Take `⟨v₁, hv₁, h⟩` from `hall`. Conclude with `⟨v₁, hv₁, by simpa using h⟩`.
+-/
 theorem lift_of_forms (ϖ : O) (hϖ : Irreducible ϖ) {r₁ r₂ : ℕ} (C₁ : Submodule O (Fin r₁ → O))
     (C₂ : Submodule O (Fin r₂ → O)) (hsat : Saturated ϖ C₂)
     (prL : (Fin r₁ → O) →ₗ[O] (Fin r₂ → O)) (hmap : CMap C₁ C₂ prL) (t : O)
@@ -68,6 +87,11 @@ theorem lift_of_forms (ϖ : O) (hϖ : Irreducible ϖ) {r₁ r₂ : ℕ} (C₁ : 
   obtain ⟨v₁, hv₁, h⟩ := hall
   exact ⟨v₁, hv₁, by simpa using h⟩
 
+/- English proof (translation)
+Unfold `abelian₂`. Apply `prod_dvd_of_coprimeRat ϖ (Finset.range ell) (fun s => p s ^ K s)` to reduce the goal to its premises. Introduce `s hs`. Conclude with `isSat_pow_of_unitDist ϖ hϖ _ _ (hp.1 s (Finset.mem_range.1 hs)) _`. Introduce `s hs t ht hne`.
+
+Conclude with `coprimeRat₂_pow_pow ϖ _ _ (hp.2 s (Finset.mem_range.1 hs) t (Finset.mem_range.1 ht) hne) _ _`. Introduce `s hs`. Conclude with `h s (Finset.mem_range.1 hs)`.
+-/
 theorem lam_dvd (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ → PowerSeries O}
     (hp : DistinguishedFamily ϖ ℓ ell p) (K : ℕ → ℕ) (Y : PowerSeries O) (h : ∀ s < ell, p s ^ K s ∣ Y) :
     abelian₂ p K ell ∣ Y := by
@@ -80,6 +104,9 @@ theorem lam_dvd (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ → Pow
   · intro s hs
     exact h s (Finset.mem_range.1 hs)
 
+/- English proof (translation)
+Unfold `abelian₂`. Apply `isSat_prod ϖ (Finset.range ell) (fun s => p s ^ K s)` to reduce the goal to its premises. Introduce `s hs`. Conclude with `isSat_pow_of_unitDist ϖ hϖ _ _ (hp.1 s (Finset.mem_range.1 hs)) _`.
+-/
 theorem lam_isSat (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ → PowerSeries O}
     (hp : DistinguishedFamily ϖ ℓ ell p) (K : ℕ → ℕ) : IsSat ϖ (abelian₂ p K ell) := by
   unfold abelian₂
@@ -87,6 +114,9 @@ theorem lam_isSat (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ → P
   intro s hs
   exact isSat_pow_of_unitDist ϖ hϖ _ _ (hp.1 s (Finset.mem_range.1 hs)) _
 
+/- English proof (translation)
+Unfold `abelian₂`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `s hs`. Conclude with `pow_ne_zero _ (ne_zero_of_unitDist ϖ hϖ _ _ (hp.1 s (Finset.mem_range.1 hs)))`.
+-/
 theorem lam_ne_zero (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ → PowerSeries O}
     (hp : DistinguishedFamily ϖ ℓ ell p) (K : ℕ → ℕ) : abelian₂ p K ell ≠ 0 := by
   unfold abelian₂
@@ -94,6 +124,9 @@ theorem lam_ne_zero (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ →
   intro s hs
   exact pow_ne_zero _ (ne_zero_of_unitDist ϖ hϖ _ _ (hp.1 s (Finset.mem_range.1 hs)))
 
+/- English proof (translation)
+Rewrite using `[lam_eq_pow_mul p _ ell s₁ hs, LamLess, Function.update_self]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `t ht`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase ht)]`.
+-/
 theorem lamLess_eq (p : ℕ → PowerSeries O) (H : ℕ → ℕ) (ell s₁ b : ℕ) (hs : s₁ < ell) :
     LamLess p H ell s₁ b = abelian₂ p (Function.update H s₁ (H s₁ - b)) ell := by
   rw [lam_eq_pow_mul p _ ell s₁ hs, LamLess, Function.update_self]
@@ -102,6 +135,9 @@ theorem lamLess_eq (p : ℕ → PowerSeries O) (H : ℕ → ℕ) (ell s₁ b : �
   intro t ht
   rw [Function.update_of_ne (Finset.ne_of_mem_erase ht)]
 
+/- English proof (translation)
+Rewrite using `[lam_eq_pow_mul p H ell s₁ hs, LamLess]`. Establish `h1 : p s₁ ^ H s₁ = p s₁ ^ (H s₁ - b) * p s₁ ^ b`. Rewrite using `[← pow_add, Nat.sub_add_cancel hb]`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lam_eq_lamLess (p : ℕ → PowerSeries O) (H : ℕ → ℕ) (ell s₁ b : ℕ) (hs : s₁ < ell)
     (hb : b ≤ H s₁) : abelian₂ p H ell = LamLess p H ell s₁ b * p s₁ ^ b := by
   rw [lam_eq_pow_mul p H ell s₁ hs, LamLess]
@@ -112,6 +148,17 @@ theorem lam_eq_lamLess (p : ℕ → PowerSeries O) (H : ℕ → ℕ) (ell s₁ b
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Establish `hd : p ^ (H - b) ∣ p ^ H` using `pow_dvd_pow p (Nat.sub_le H b)`. Consider the cases of `k with`. Consider the case `thin`. Take `⟨N, z, hz⟩` from `h`. Apply `isSat_pow_of_unitDist ϖ hϖ d p hp _ N` to reduce the goal to its premises.
+
+Establish `h1` using `congrArg (linExt g) hz`. Rewrite `h1` using `[map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Rewrite using `[h1]`. Conclude with `dvd_mul_of_dvd_left hd _`. Consider the case `up`.
+
+Take `⟨N, c, z, _, hz⟩` from `h`. Apply `isSat_pow_of_unitDist ϖ hϖ d p hp _ N` to reduce the goal to its premises. Establish `h1` using `congrArg (linExt g) hz`. Rewrite `h1` using `[map_smul, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul, smul_eq_mul]`. Rewrite using `[h1]`.
+
+Conclude with `dvd_add (dvd_mul_right _ _) (dvd_mul_of_dvd_left hd _)`. Consider the case `down`. Take `⟨N, c, z, _, hz⟩` from `h`. Apply `isSat_pow_of_unitDist ϖ hϖ d p hp _ N` to reduce the goal to its premises. Establish `h1` using `congrArg (linExt g) hz`.
+
+Rewrite `h1` using `[map_smul, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul, smul_eq_mul]`. Rewrite using `[h1]`. Conclude with `dvd_add (dvd_mul_of_dvd_left hd _) (dvd_mul_of_dvd_left (hd.trans (pow_dvd_pow p (Nat.le_add_right H b))) _)`.
+-/
 theorem levelCond_dvd_sub (ϖ : O) (hϖ : Irreducible ϖ) {d : ℕ} {p : PowerSeries O}
     (hp : UnitDist ϖ d p) (H b : ℕ) (k : Kind) (V : Submodule O (Fin r → O))
     (y : Fin r → PowerSeries O) (h : LevelCond ϖ p H b k V y) (g : (Fin r → O) →ₗ[O] O) :
@@ -141,6 +188,17 @@ theorem levelCond_dvd_sub (ϖ : O) (hϖ : Irreducible ϖ) {d : ℕ} {p : PowerSe
     exact dvd_add (dvd_mul_of_dvd_left hd _)
       (dvd_mul_of_dvd_left (hd.trans (pow_dvd_pow p (Nat.le_add_right H b))) _)
 
+/- English proof (translation)
+Consider the cases of `k with`. Consider the case `thin`. Take `⟨N, z, hz⟩` from `h`. Apply `isSat_pow_of_unitDist ϖ hϖ d p hp _ N` to reduce the goal to its premises. Establish `h1` using `congrArg (linExt g) hz`.
+
+Rewrite `h1` using `[map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Rewrite using `[h1]`. Conclude with `dvd_mul_right _ _`. Consider the case `up`. Take `⟨N, c, z, hc, hz⟩` from `h`.
+
+Apply `isSat_pow_of_unitDist ϖ hϖ d p hp _ N` to reduce the goal to its premises. Establish `h1` using `congrArg (linExt g) hz`. Rewrite `h1` using `[map_smul, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul, smul_eq_mul, linExt_eq_zero_of_mem_ext g V (hg rfl) c hc, mul_zero, zero_add]`. Rewrite using `[h1]`. Conclude with `dvd_mul_right _ _`.
+
+Consider the case `down`. Take `⟨N, c, z, _, hz⟩` from `h`. Apply `isSat_pow_of_unitDist ϖ hϖ d p hp _ N` to reduce the goal to its premises. Establish `h1` using `congrArg (linExt g) hz`. Rewrite `h1` using `[map_smul, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul, smul_eq_mul]`.
+
+Rewrite using `[h1]`. Conclude with `dvd_add (dvd_mul_right _ _) (dvd_mul_of_dvd_left (pow_dvd_pow p (Nat.le_add_right H b)) _)`.
+-/
 theorem levelCond_dvd (ϖ : O) (hϖ : Irreducible ϖ) {d : ℕ} {p : PowerSeries O}
     (hp : UnitDist ϖ d p) (H b : ℕ) (k : Kind) (V : Submodule O (Fin r → O))
     (y : Fin r → PowerSeries O) (h : LevelCond ϖ p H b k V y) (g : (Fin r → O) →ₗ[O] O)
@@ -169,6 +227,11 @@ theorem levelCond_dvd (ϖ : O) (hϖ : Irreducible ϖ) {d : ℕ} {p : PowerSeries
     rw [h1]
     exact dvd_add (dvd_mul_right _ _) (dvd_mul_of_dvd_left (pow_dvd_pow p (Nat.le_add_right H b)) _)
 
+/- English proof (translation)
+Rewrite using `[lamLess_eq p H ell s₁ (b s₁) hs₁]`. Apply `lam_dvd ϖ hϖ hp` to reduce the goal to its premises. Introduce `s hs`. Distinguish the cases in `h1 : s = s₁`. Substitute `h1` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `levelCond_dvd_sub ϖ hϖ (hp.1 s hs) _ _ _ _ y (hy s hs) g`. Rewrite using `[Function.update_of_ne h1]`. Conclude with `levelCond_dvd ϖ hϖ (hp.1 s hs) _ _ _ _ y (hy s hs) g (fun hk => absurd hk (honly s hs h1))`.
+-/
 theorem NN_dvd_lamLess (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ → PowerSeries O}
     (hp : DistinguishedFamily ϖ ℓ ell p) (H b : ℕ → ℕ) (kind : ℕ → Kind) (V : ℕ → Submodule O (Fin r → O))
     (y : Fin r → PowerSeries O) (hy : NN ϖ p H b kind V ell y) (s₁ : ℕ) (hs₁ : s₁ < ell)
@@ -185,6 +248,11 @@ theorem NN_dvd_lamLess (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ 
     exact levelCond_dvd ϖ hϖ (hp.1 s hs) _ _ _ _ y (hy s hs) g
       (fun hk => absurd hk (honly s hs h1))
 
+/- English proof (translation)
+Apply `lam_dvd ϖ hϖ hp` to reduce the goal to its premises. Introduce `s hs`. Use `levelCond_dvd ϖ hϖ (hp.1 s hs) _ _ _ _ y (hy s hs) g (fun hk => ?_)` and prove the remaining obligations. Distinguish the cases in `h1 : s = s₁`. Substitute `h1` using the available equality.
+
+Conclude with `hg`. Conclude with `absurd hk (honly s hs h1)`.
+-/
 theorem NN_dvd_lam (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ → PowerSeries O}
     (hp : DistinguishedFamily ϖ ℓ ell p) (H b : ℕ → ℕ) (kind : ℕ → Kind) (V : ℕ → Submodule O (Fin r → O))
     (y : Fin r → PowerSeries O) (hy : NN ϖ p H b kind V ell y) (s₁ : ℕ)
@@ -198,6 +266,23 @@ theorem NN_dvd_lam (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ → 
     exact hg
   · exact absurd hk (honly s hs h1)
 
+/- English proof (translation)
+Take `⟨f, hf0, hf1⟩` from `exists_proj_of_saturated ϖ hϖ (V s₁) hsat`. Take `⟨Y'', hY''⟩` from `NN_dvd_lam ϖ hϖ hp H b kind V y hy s₁ honly (μ ∘ₗ f) (fun v hv => by rw [LinearMap.comp_apply, hf0 v hv, map_zero])`. Establish `hG` using `NN_dvd_lamLess ϖ hϖ hp H b kind V y hy s₁ hs₁ honly (μ - μ ∘ₗ f)`. Establish `hCa : C a ∣ linExt (μ - μ ∘ₗ f) y`. Rewrite using `[linExt_apply]`.
+
+Use `Finset.dvd_sum fun i _ => dvd_mul_of_dvd_right ?_ _` and prove the remaining obligations. Establish `h1 : (μ - μ ∘ₗ f) (Pi.single i 1) = μ (Pi.single i 1 - f (Pi.single i 1))`. Rewrite using `[LinearMap.sub_apply, LinearMap.comp_apply, map_sub]`. Rewrite using `[h1]`. Take `⟨q, hq⟩` from `Ideal.mem_span_singleton.1 (ha _ (hf1 (Pi.single i 1)))`.
+
+Rewrite using `[hq, map_mul]`. Conclude with `dvd_mul_right _ _`. Take `⟨Y₀, hY₀⟩` from `hCa`. Establish `hsplit : linExt μ y = linExt (μ - μ ∘ₗ f) y + linExt (μ ∘ₗ f) y`. Rewrite using `[linExt_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `ha0 : a = 0`. Use `⟨0, Y'', ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, hY₀, hY'', ha0]`. Simplify using the standard rewrite rules.
+
+Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 hϖ`. Establish `hdvd : LamLess p H ell s₁ (b s₁) ∣ Y₀`. Establish `hS : IsSat ϖ (LamLess p H ell s₁ (b s₁))`. Rewrite using `[lamLess_eq p H ell s₁ (b s₁) hs₁]`. Conclude with `lam_isSat ϖ hϖ hp _`.
+
+Establish `h2 : LamLess p H ell s₁ (b s₁) ∣ C (ϖ ^ k) * (C (u : O) * Y₀)`. Establish `h3 : C (ϖ ^ k) * (C (u : O) * Y₀) = C a * Y₀`. Rewrite using `[hu, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, ← hY₀]`.
+
+Conclude with `hG`. Establish `h4` using `hS k _ h2`. Establish `hunit : IsUnit (C (u : O) : PowerSeries O)` using `u.isUnit.map C`. Conclude with `(hunit.dvd_mul_left).1 h4`. Take `⟨Y', hY'⟩` from `hdvd`.
+
+Use `⟨Y', Y'', ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, hY₀, hY'', hY']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem NN_form (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ → PowerSeries O}
     (hp : DistinguishedFamily ϖ ℓ ell p) (H b : ℕ → ℕ) (kind : ℕ → Kind) (V : ℕ → Submodule O (Fin r → O))
     (y : Fin r → PowerSeries O) (hy : NN ϖ p H b kind V ell y) (s₁ : ℕ) (hs₁ : s₁ < ell)
@@ -245,6 +330,11 @@ theorem NN_form (ϖ : O) (hϖ : Irreducible ϖ) {ℓ ell : ℕ} {p : ℕ → Pow
     rw [hsplit, hY₀, hY'', hY']
     ring
 
+/- English proof (translation)
+Establish `hy : y = ∑ i, y i • cst (Pi.single i (1 : O))`. Use function extensionality and compare the values at `j`. Simplify using `[cst, Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hy]`. Rewrite using `[map_sum, map_sum, linExt_apply]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[map_smul, map_smul, CL.extL_cst, linExt_cst]`. Both sides reduce to the same expression.
+-/
 theorem linExt_extL {r₁ r₂ : ℕ} (lam : (Fin r₂ → O) →ₗ[O] O)
     (prL : (Fin r₁ → O) →ₗ[O] (Fin r₂ → O)) (y : Fin r₁ → PowerSeries O) :
     linExt lam (extL prL y) = linExt (lam ∘ₗ prL) y := by
@@ -259,6 +349,17 @@ theorem linExt_extL {r₁ r₂ : ℕ} (lam : (Fin r₂ → O) →ₗ[O] O)
   rw [map_smul, map_smul, CL.extL_cst, linExt_cst]
   rfl
 
+/- English proof (translation)
+Introduce `s hs`. Distinguish the cases in `h1 : s = s₁`. Substitute `h1` using the available equality. Rewrite using `[hk1]`. Use `⟨0, (p s₀ ^ b s₀ * ∏ t ∈ (Finset.range ell).erase s, p t ^ H t) • cst e, 0, Submodule.smul_mem _ _ (Submodule.subset_span ⟨e, he, rfl⟩), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [pow_zero, map_one, smul_zero, add_zero, smul_smul, LamLess]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : p s ^ H s ∣ LamLess p H ell s₁ (b s₁)` using `dvd_mul_of_dvd_right (Finset.dvd_prod_of_mem (fun t => p t ^ H t) (Finset.mem_erase.2 ⟨h1, Finset.mem_range.2 hs⟩)) _`. Take `⟨q, hq⟩` from `hd`.
+
+Distinguish the cases in `h0 : s = s₀`. Substitute `h0` using the available equality. Rewrite using `[hk0]`. Use `⟨0, 0, q • cst e, zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[hq]`.
+
+Simplify using `only [pow_zero, map_one, smul_zero, zero_add, smul_smul]`. Use `congr 1`. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hthin s hs h0 h1]`.
+
+Use `⟨0, (p s₀ ^ b s₀ * q) • cst e, ?_⟩` and prove the remaining obligations. Rewrite using `[hq]`. Simplify using `only [pow_zero, map_one, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lattice_condition_up_down_pair (ϖ : O) (p : ℕ → PowerSeries O) (H b : ℕ → ℕ) (kind : ℕ → Kind)
     (V : ℕ → Submodule O (Fin r → O)) (ell s₀ s₁ : ℕ) (hk1 : kind s₁ = Kind.up)
     (hk0 : kind s₀ = Kind.down) (hthin : ∀ s < ell, s ≠ s₀ → s ≠ s₁ → kind s = Kind.thin)
@@ -302,6 +403,27 @@ variable {O : Type} [CommRing O] {B : Base O} {n : ℕ} {V₁ V₂ : Type} [AddC
   {L₁ : Lat B n V₁} {L₂ : Lat B n V₂} {h : LatHom L₁ L₂} {c : ZMod n} {ell : ℕ}
   {Λ : PowerSeries O} {r₁ r₂ : ℕ} {S₁ : LevelData L₁ c ell Λ r₁} {S₂ : LevelData L₂ c ell Λ r₂}
 
+/- English proof (translation)
+Establish `hb₂` using `(hBr₂.1 y₂).2 hy₂`. Take `⟨w, hw⟩` from `hPa₂.2 y₂`. Establish `hw1 : ∀ s < ell, S₂.loc s w ∈ dv (B.p s ^ g) (S₂.Nl s)`. Introduce `s hs`. Establish `h1 : B.lc ^ sig • S₂.locL s y₂ ∈ dv (B.p s ^ g) (S₂.Nl s)` using `Submodule.smul_mem _ _ ((hRD₂ s hs).1 (hb₂ s hs))`.
+
+Establish `h2 : S₂.loc s w - B.lc ^ sig • S₂.locL s y₂ ∈ dv (B.p s ^ g) (S₂.Nl s)` using `IteratedPhiHomomorphisms.le_dv _ _ ((hP3₂ s hs).1 (hw s hs))`. Establish `h3` using `Submodule.add_mem _ h2 h1`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hwΘ : (w : V₂) ∈ dv (B.Th ell g) (L₂.N c)` using `(hP4a₂.2 w).2 hw1`. Take `⟨x₁, hx₁, hfx⟩` from `hP4d _ hwΘ`.
+
+Establish `hx₁W : x₁ ∈ L₁.W c ell Λ` using `hP4a₁.1 hx₁`. Establish `hx₁l` using `(hP4a₁.2 ⟨x₁, hx₁W⟩).1 hx₁`. Take `⟨y₁, hy₁⟩` from `hPa₁.1 ⟨x₁, hx₁W⟩`. Use `⟨y₁, ?_, ?_⟩` and prove the remaining obligations. Apply `(hBr₁.1 _).1` to reduce the goal to its premises.
+
+Introduce `s hs`. Establish `h1 : S₁.locL s y₁ ∈ dv (B.p s ^ g) (S₁.Nl s)`. Establish `a1` using `IteratedPhiHomomorphisms.le_dv (B.p s ^ g) _ ((hP3₁ s hs).1 (hy₁ s hs))`. Establish `a2` using `Submodule.smul_mem _ (B.lc ^ sig) (hx₁l s hs)`. Establish `a3` using `Submodule.add_mem _ a1 a2`.
+
+Rewrite `a3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `h2 : B.p s ^ g • (B.p s ^ g • S₁.locL s y₁) ∈ S₁.Nb s` using `IteratedPhiHomomorphisms.mem_dv.1 ((hRD₁ s hs).2 (IteratedPhiHomomorphisms.mem_dv.1 h1))`. Establish `hΘ : B.Th ell g = B.p s ^ g * ∏ t ∈ (Finset.range ell).erase s, B.p t ^ g` using `(Finset.mul_prod_erase _ (fun t => B.p t ^ g) (Finset.mem_range.2 hs)).symm`. Establish `h3 : (B.p s ^ g * ∏ t ∈ (Finset.range ell).erase s, B.p t ^ g) ^ 2 • S₁.locL s y₁ = (∏ t ∈ (Finset.range ell).erase s, B.p t ^ g) ^ 2 • (B.p s ^ g • (B.p s ^ g • S₁.locL s y₁))`. Rewrite using `[smul_smul, smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_smul, hΘ, h3]`. Conclude with `Submodule.smul_mem _ _ h2`. Introduce `s hs`.
+
+Apply `hFl s hs` to reduce the goal to its premises. Establish `hfW : h.f x₁ ∈ L₂.W c ell Λ`. Rewrite using `[hfx]`. Conclude with `Submodule.smul_mem _ _ w.2`. Establish `e1` using `m.loc_comm s hs x₁ hx₁W hfW`.
+
+Establish `e2 : S₂.loc s ⟨h.f x₁, hfW⟩ = B.lc ^ rr • S₂.loc s w`. Rewrite using `[← map_smul]`. Use `congr 1`. Conclude with `Subtype.ext hfx`. Establish `a1` using `hMap s hs _ (hy₁ s hs)`.
+
+Rewrite `a1` using `[map_sub, map_smul, e1, e2, m.locL_comm s hs]`. Establish `a2` using `Submodule.smul_mem _ (B.lc ^ (sig + rr)) (hw s hs)`. Establish `a3` using `Submodule.add_mem _ a1 a2`. Rewrite using `[map_sub, map_smul]`. Use `a3 using 1` and compare the differences between its conclusion and the goal.
+
+Establish `hexp : 2 * sig + rr = sig + rr + sig` using `by ring`. Rewrite using `[← IteratedPhiHomomorphisms.lc_pow, smul_sub, smul_smul, smul_smul, ← pow_add, ← pow_add, hexp]`. Normalize the expressions using the abelian group laws.
+-/
 theorem levels (m : LevelMap h S₁ S₂) (ϖ : O) (H b : ℕ → ℕ) (kind : ℕ → Kind)
     (U₁ : ℕ → Submodule O (Fin r₁ → O)) (U₂ : ℕ → Submodule O (Fin r₂ → O)) (g sig rr : ℕ)
     (hRD₁ : S₁.RD g) (hRD₂ : S₂.RD g) (hPa₁ : S₁.Partner sig) (hPa₂ : S₂.Partner sig)
@@ -381,6 +503,21 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : B
   {ell : ℕ} {Λ : PowerSeries O} {r₁ r₂ : ℕ} {S₁ : LevelData L₁ c ell Λ r₁}
   {S₂ : LevelData L₂ c ell Λ r₂}
 
+/- English proof (translation)
+Take `⟨_, hp, hsat₁, _, hbH⟩` from `hset`. Establish `honly : ∀ s < ell, s ≠ s₁ → kind s ≠ Kind.up`. Introduce `s hs h1 hk`. Distinguish the cases in `h0 : s = s₀`. Rewrite `hk` using `[h0, hk0]`.
+
+Conclude with `Kind.noConfusion hk`. Rewrite `hk` using `[hthin s hs h0 h1]`. Conclude with `Kind.noConfusion hk`. Take `⟨y₁, hNN₁, hδ⟩` from `levels m ϖ H b kind U₁ U₂ g sig rr hRD₁ hRD₂ hPa₁ hPa₂ hP3₁ hP3₂ hP4a₁ hP4a₂ hBr₁ hBr₂ hFl hMap hP4d _ (lattice_condition_up_down_pair ϖ B.p H b kind U₂ ell s₀ s₁ hk1 hk0 hthin e he)`. Establish `hd : abelian₂ B.p H ell ∣ linExt lam (extL m.prL y₁ - C ((B.ℓ : O) ^ (2 * sig + rr)) • ((B.p s₀ ^ b s₀ * LamLess B.p H ell s₁ (b s₁)) • cst e))`.
+
+Apply `lam_dvd ϖ hϖ hp` to reduce the goal to its premises. Introduce `s hs`. Take `⟨N, z, hz⟩` from `hδ s hs`. Apply `isSat_pow_of_unitDist ϖ hϖ _ _ (hp.1 s hs) _ N` to reduce the goal to its premises. Establish `h1` using `congrArg (linExt lam) hz`.
+
+Rewrite `h1` using `[map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Rewrite using `[h1]`. Conclude with `dvd_mul_right _ _`. Take `⟨d', hd'⟩` from `hd`. Take `⟨Y', Y'', hY⟩` from `NN_form ϖ hϖ hp H b kind U₁ _ hNN₁ s₁ hs₁ honly (hsat₁ s₁ hs₁) (lam ∘ₗ m.prL) a ha`.
+
+Rewrite `hY` using `[map_smul, ← linExt_extL, smul_eq_mul]`. Rewrite `hd'` using `[map_sub, map_smul, map_smul, linExt_cst, smul_eq_mul, smul_eq_mul]`. Establish `hΛ` using `lam_eq_lamLess B.p H ell s₁ (b s₁) hs₁ (hbH s₁ hs₁ hk1)`. Establish `hG : LamLess B.p H ell s₁ (b s₁) ≠ 0`. Rewrite using `[lamLess_eq B.p H ell s₁ (b s₁) hs₁]`.
+
+Conclude with `lam_ne_zero ϖ hϖ hp _`. Rewrite `hY`, `hd'` using `[hΛ]`. Establish `key : LamLess B.p H ell s₁ (b s₁) * (C (lam e) * (C ((B.ℓ : O) ^ (2 * sig + rr)) * B.Th ell g ^ 2 * B.p s₀ ^ b s₀)) = LamLess B.p H ell s₁ (b s₁) * (Y' * C a + (Y'' - B.Th ell g ^ 2 * d') * B.p s₁ ^ b s₁)`. Take the linear combination `hY - B.Th ell g ^ 2 * hd'`. Rewrite using `[Ideal.mem_span_pair]`.
+
+Conclude with `⟨Y', Y'' - B.Th ell g ^ 2 * d', (mul_left_cancel₀ hG key).symm⟩`.
+-/
 theorem core (ϖ : O) (hϖ : Irreducible ϖ) (m : LevelMap h S₁ S₂) (H b : ℕ → ℕ) (kind : ℕ → Kind)
     (U₁ : ℕ → Submodule O (Fin r₁ → O)) (U₂ : ℕ → Submodule O (Fin r₂ → O)) (g sig rr : ℕ)
     (hset : LevelModelSetting ϖ B.ℓ ell B.p H b kind U₁ U₂)
@@ -434,6 +571,13 @@ theorem core (ϖ : O) (hϖ : Irreducible ϖ) (m : LevelMap h S₁ S₂) (H b : �
 
 end Core
 
+/- English proof (translation)
+Establish `hall : ∀ s, ∃ (E : Polynomial O) (u : PowerSeries O), E.Monic ∧ E.natDegree = B.ℓ ^ s ∧ (∀ i < B.ℓ ^ s, (B.ℓ : O) ∣ E.coeff i) ∧ Associated (E.coeff 0) (B.ℓ : O) ∧ IsUnit u ∧ (s < ell → B.p s = u * (E : PowerSeries O))`. Introduce `s`. Distinguish the cases in `hs : s < ell`. Take `⟨E, u, h1, h2, h3, h4, h5, h6⟩` from `hsh s hs`. Conclude with `⟨E, u, h1, h2, h3, h4, h5, fun _ => h6⟩`.
+
+Establish `hpos : B.ℓ ^ s ≠ 0` using `pow_ne_zero _ (by omega)`. Use `⟨Polynomial.X ^ (B.ℓ ^ s) + Polynomial.C (B.ℓ : O), 1, Polynomial.monic_X_pow_add_C _ hpos, Polynomial.natDegree_X_pow_add_C, ?_, ?_, isUnit_one, fun h => absurd h hs⟩` and prove the remaining obligations. Introduce `i hi`. Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_X_pow, if_neg (by omega), zero_add, Polynomial.coeff_C]`. Use `split_ifs`.
+
+Conclude with `dvd_rfl`. Conclude with `dvd_zero _`. Rewrite using `[Polynomial.coeff_add, Polynomial.coeff_X_pow, if_neg (fun h => hpos h.symm), zero_add, Polynomial.coeff_C_zero]`. Use `choose E u h1 h2 h3 h4 h5 h6 using hall`. Conclude with `⟨E, u, h1, h2, h3, h4, h5, h6⟩`.
+-/
 theorem shape_ext {O : Type} [CommRing O] [Nontrivial O] (B : Base O) (ell : ℕ) (hℓ : 2 ≤ B.ℓ)
     (hsh : B.PShape ell) :
     ∃ (E : ℕ → Polynomial O) (u : ℕ → PowerSeries O), (∀ s, (E s).Monic) ∧
@@ -468,6 +612,23 @@ namespace Formalism.ExponentWindows.E
 
 open PowerSeries
 
+/- English proof (translation)
+Introduce `hVal O _ _ _ ϖ hϖ B e he hℓe n V₁ V₂ _ _ _ _ L₁ L₂ h c ell Λ r₁ r₂ S₁ S₂ m H b kind U₁ U₂ g sig rr a₀ _ hsh hset hRD₁ hRD₂ hPa₁ hPa₂ hP3₁ hP3₂ hP4a₁ hP4a₂ hBr₁ hBr₂ hFl hMap hP4d s₀ s₁ h01 hs₁ hk1 hk0 hthin hC hA hB1 hB0`. Establish `hs₀ : s₀ < ell` using `h01.trans hs₁`. Take `⟨E, u, hE1, hE2, hE3, hE4, hu, hpE⟩` from `LC.shape_ext B ell hset.1 hsh`. Use `LC.lift_of_forms ϖ hϖ (U₁ s₁) (U₂ s₁) (hset.2.2.2.1 s₁ hs₁) m.prL hC _ ?_` and prove the remaining obligations. Introduce `v hv lam hlam a ha`.
+
+Establish `hc` using `LC.core ϖ hϖ m H b kind U₁ U₂ g sig rr hset hRD₁ hRD₂ hPa₁ hPa₂ hP3₁ hP3₂ hP4a₁ hP4a₂ hBr₁ hBr₂ hFl hMap hP4d s₀ s₁ hs₁ hk1 hk0 hthin v hv lam a ha`. Rewrite `hc` using `[hlam, map_one, one_mul]`. Establish `hTh : B.Th ell g = ∏ s ∈ Finset.range ell, (u s * (E s : PowerSeries O)) ^ g`. Unfold `Base.Th`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+
+Introduce `s hs`. Rewrite using `[hpE s (Finset.mem_range.1 hs)]`. Rewrite `hc` using `[hTh, hpE s₀ hs₀, hpE s₁ hs₁]`. Establish `hA' : (((2 * sig + rr : ℕ) : ℝ) + 2 * g * ell) ≤ a₀` using `by exact_mod_cast hA`. Establish `hB1' : 2 * (a₀ : ℝ) < b s₁` using `by exact_mod_cast hB1`.
+
+Establish `hbound : ∀ k : ℕ, C ((B.ℓ : O) ^ (2 * sig + rr)) * (∏ s ∈ Finset.range ell, (u s * (E s : PowerSeries O)) ^ g) ^ 2 * (u s₀ * (E s₀ : PowerSeries O)) ^ b s₀ ∈ Ideal.span {C (ϖ ^ k), (u s₁ * (E s₁ : PowerSeries O)) ^ b s₁} → k ≤ e * (2 * a₀)`. Introduce `k hk`. Establish `h2` using `(hVal O ϖ hϖ B.ℓ e hset.1 he hℓe E u hE1 hE2 hE3 hE4 hu ell g (2 * sig + rr) (b s₀) (b s₁) s₀ s₁ k h01 (by linarith) hB0 hk).2`. Establish `he0 : (0 : ℝ) ≤ e` using `Nat.cast_nonneg e`. Establish `h3 : (k : ℝ) ≤ ((e * (2 * a₀) : ℕ) : ℝ)`.
+
+Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `h3` after adjusting the coercions. Take `⟨x, y, hxy⟩` from `Ideal.mem_span_pair.1 hc`. Distinguish the cases in `ha0 : a = 0`.
+
+It suffices to derive a contradiction. Establish `h1` using `hbound (e * (2 * a₀) + 1) (Ideal.mem_span_pair.2 ⟨0, y, by`. Rewrite using `[← hxy, ha0]`. Use the proof step `simp⟩)`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨k, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 hϖ`. Establish `h1` using `hbound k (Ideal.mem_span_pair.2 ⟨x * C (w : O), y, by`. Rewrite using `[← hxy, hw, map_mul]`. Use the proof step `ring⟩)`. Establish `h2 : ϖ ^ k ∣ (ϖ ^ e) ^ (2 * a₀)`.
+
+Rewrite using `[← pow_mul]`. Conclude with `pow_dvd_pow _ h1`. Rewrite using `[hw]`. Conclude with `Units.mul_left_dvd.2 (h2.trans (hℓe.pow_pow (n := 2 * a₀)).symm.dvd)`.
+-/
 theorem lemma_C_full_holds : LemmaCFull := by
   intro hVal O _ _ _ ϖ hϖ B e he hℓe n V₁ V₂ _ _ _ _ L₁ L₂ h c ell Λ r₁ r₂ S₁ S₂ m H b kind U₁ U₂
     g sig rr a₀ _ hsh hset hRD₁ hRD₂ hPa₁ hPa₂ hP3₁ hP3₂ hP4a₁ hP4a₂ hBr₁ hBr₂ hFl hMap hP4d

@@ -9,6 +9,13 @@ namespace GlobalTheory.LipschitzTR.LhsSum
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ x`. Rewrite using `[show ((Algebra.norm ℚ x : ℚ) : ℂ) = algebraMap ℚ ℂ (Algebra.norm ℚ x) from rfl, h]`. Establish `hb : Function.Bijective (fun τ : F →+* ℝ => Complex.ofRealHom.comp τ)`.
+
+Use `⟨fun τ τ' h => ?_, fun φ => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `Complex.ofReal_injective (RingHom.congr_fun h x)`. Conclude with `⟨(IsTotallyReal.complexEmbedding_isReal φ).embedding, RingHom.ext fun x => (IsTotallyReal.complexEmbedding_isReal φ).coe_embedding_apply x⟩`. Use `Fintype.prod_bijective (fun τ : F →+* ℝ => RingHom.equivRatAlgHom F ℂ (Complex.ofRealHom.comp τ)) ((RingHom.equivRatAlgHom F ℂ).bijective.comp hb) _ _ (fun τ => ?_)` and prove the remaining obligations.
+
+Both sides reduce to the same expression.
+-/
 theorem prod_realEmb_eq_norm [IsTotallyReal F] (x : F) :
     (∏ τ : F →+* ℝ, τ x) = ((Algebra.norm ℚ x : ℚ) : ℝ) := by
   apply Complex.ofReal_injective
@@ -25,6 +32,11 @@ theorem prod_realEmb_eq_norm [IsTotallyReal F] (x : F) :
     ((RingHom.equivRatAlgHom F ℂ).bijective.comp hb) _ _ (fun τ => ?_)
   rfl
 
+/- English proof (translation)
+Rewrite using `[prod_realEmb_eq_norm, ← Algebra.coe_norm_int]`. Establish `h : Algebra.norm ℤ y ≠ 0` using `Algebra.norm_ne_zero_iff.2 hy`. Establish `h1 : (1 : ℤ) ≤ |Algebra.norm ℤ y|` using `Int.one_le_abs h`. Establish `h2 : (((Algebra.norm ℤ y : ℤ) : ℚ) : ℝ) = ((Algebra.norm ℤ y : ℤ) : ℝ)` using `by push_cast; rfl`. Rewrite using `[h2]`.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 theorem one_le_abs_prod_int [IsTotallyReal F] (y : 𝓞 F) (hy : y ≠ 0) :
     1 ≤ |∏ τ : F →+* ℝ, τ (y : F)| := by
   rw [prod_realEmb_eq_norm, ← Algebra.coe_norm_int]
@@ -34,6 +46,15 @@ theorem one_le_abs_prod_int [IsTotallyReal F] (y : 𝓞 F) (hy : y ≠ 0) :
   rw [h2]
   exact_mod_cast h1
 
+/- English proof (translation)
+Take `⟨d, hd, hint⟩` from `M.isFractional`. Establish `hd0 : (d : F) ≠ 0`. Use `nonZeroDivisors.ne_zero hd` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hP : 0 < |∏ τ : F →+* ℝ, τ (d : F)|` using `abs_pos.2 (Finset.prod_ne_zero_iff.2 fun τ _ => (map_ne_zero τ).2 hd0)`.
+
+Use `⟨1 / |∏ τ : F →+* ℝ, τ (d : F)|, by positivity, fun a ha ha0 => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hint a ha`. Establish `hy' : (y : F) = (d : F) * a`. Rewrite using `[← Algebra.smul_def]`. Conclude with `hy`.
+
+Establish `hy0 : y ≠ 0`. Introduce `h`. Apply `mul_ne_zero hd0 ha0` to reduce the goal to its premises. Rewrite using `[← hy', h]`. Simplify using the standard rewrite rules.
+
+Establish `h1` using `one_le_abs_prod_int y hy0`. Rewrite `h1` using `[hy']`. Simplify using `only [map_mul, Finset.prod_mul_distrib, abs_mul] at h1`. Rewrite using `[div_le_iff₀ hP]`. Combine the linear relations using `[mul_comm (|∏ τ : F →+* ℝ, τ (d : F)|) (|∏ τ : F →+* ℝ, τ a|)]`.
+-/
 theorem exists_lower_norm [IsTotallyReal F] (M : FractionalIdeal (𝓞 F)⁰ F) :
     ∃ ν : ℝ, 0 < ν ∧ ∀ a ∈ M, a ≠ 0 → ν ≤ |∏ τ : F →+* ℝ, τ a| := by
   obtain ⟨d, hd, hint⟩ := M.isFractional
@@ -54,6 +75,13 @@ theorem exists_lower_norm [IsTotallyReal F] (M : FractionalIdeal (𝓞 F)⁰ F) 
   rw [div_le_iff₀ hP]
   linarith [mul_comm (|∏ τ : F →+* ℝ, τ (d : F)|) (|∏ τ : F →+* ℝ, τ a|)]
 
+/- English proof (translation)
+Establish `him : 0 < |w.im|` using `abs_pos.2 hw`. Use `⟨|w.im| / (|w.im| + 1 + ‖w‖), by positivity, fun t => ?_⟩` and prove the remaining obligations. Establish `h1 : |w.im| ≤ ‖w + (t : ℂ)‖`. Use `Complex.abs_im_le_norm (w + (t : ℂ))` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2 : |t| ≤ ‖w + (t : ℂ)‖ + ‖w‖`. Use `norm_sub_le (w + (t : ℂ)) w` as an intermediate fact. Simplify using `only [add_sub_cancel_left, Complex.norm_real, Real.norm_eq_abs] at this`. Conclude with `this`. Establish `hn : 0 ≤ ‖w‖` using `norm_nonneg _`.
+
+Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_lower_one_add (w : ℂ) (hw : w.im ≠ 0) :
     ∃ c : ℝ, 0 < c ∧ ∀ t : ℝ, c * (1 + |t|) ≤ ‖w + (t : ℂ)‖ := by
   have him : 0 < |w.im| := abs_pos.2 hw
@@ -69,6 +97,15 @@ theorem exists_lower_one_add (w : ℂ) (hw : w.im ≠ 0) :
   rw [div_mul_eq_mul_div, div_le_iff₀ (by positivity)]
   nlinarith
 
+/- English proof (translation)
+Use `set n : ℤ := ⌊x / s⌋ with hn`. Establish `h1 : (n : ℝ) ≤ x / s` using `Int.floor_le _`. Establish `h2 : x / s < (n : ℝ) + 1` using `Int.lt_floor_add_one _`. Establish `h1' : (n : ℝ) * s ≤ x` using `by rwa [le_div_iff₀ hs0] at h1`. Establish `h2' : x < ((n : ℝ) + 1) * s` using `by rwa [div_lt_iff₀ hs0] at h2`.
+
+Break down `le_or_gt 0 (n : ℝ) with hn0 | hn0` into its components or cases. Rewrite using `[abs_of_nonneg hn0, abs_of_nonneg (by nlinarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hn1 : (n : ℝ) ≤ -1`. Establish `: n ≤ -1`.
+
+Establish `: n < 0` using `by exact_mod_cast hn0`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Rewrite using `[abs_of_neg hn0]`. Establish `: |x| ≥ -x` using `neg_le_abs x`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem floor_bound {s : ℝ} (hs0 : 0 < s) (hs1 : s ≤ 1) (x : ℝ) :
     s / 2 * (1 + |((⌊x / s⌋ : ℤ) : ℝ)|) ≤ 1 + |x| := by
   set n : ℤ := ⌊x / s⌋ with hn
@@ -90,8 +127,18 @@ theorem floor_bound {s : ℝ} (hs0 : 0 < s) (hs1 : s ≤ 1) (x : ℝ) :
 
 def wt (m : ℤ) : ℝ := ((1 + |(m : ℝ)|) ^ 2)⁻¹
 
+/- English proof (translation)
+Unfold `wt`. Check the signs of the components of the expression.
+-/
 theorem wt_nonneg (m : ℤ) : 0 ≤ wt m := by unfold wt; positivity
 
+/- English proof (translation)
+Establish `hA : Summable (fun m : ℤ => |(m : ℝ)| ^ (-(2 : ℝ)))` using `Real.summable_abs_int_rpow (by norm_num)`. Establish `hB : Summable (fun m : ℤ => if m = 0 then (1 : ℝ) else 0)` using `(hasSum_ite_eq (0 : ℤ) (1 : ℝ)).summable`. Use `Summable.of_nonneg_of_le wt_nonneg (fun m => ?_) (hA.add hB)` and prove the remaining obligations. Distinguish the cases in `hm : m = 0`. Substitute `hm` using the available equality.
+
+Simplify using `[wt, Real.zero_rpow]`. Simplify using `only [hm, if_false, add_zero]`. Establish `hm1 : (1 : ℝ) ≤ |(m : ℝ)|`. Establish `: (1 : ℤ) ≤ |m|` using `Int.one_le_abs hm`. Conclude with `this` after adjusting the coercions.
+
+Rewrite using `[Real.rpow_neg (abs_nonneg _), wt]`. Rewrite using `[show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Use polynomial arithmetic with `[abs_nonneg (m : ℝ)]`.
+-/
 theorem summable_wt : Summable wt := by
   have hA : Summable (fun m : ℤ => |(m : ℝ)| ^ (-(2 : ℝ))) := Real.summable_abs_int_rpow (by norm_num)
   have hB : Summable (fun m : ℤ => if m = 0 then (1 : ℝ) else 0) := (hasSum_ite_eq (0 : ℤ) (1 : ℝ)).summable
@@ -108,6 +155,15 @@ theorem summable_wt : Summable wt := by
     apply inv_anti₀ (by positivity)
     nlinarith [abs_nonneg (m : ℝ)]
 
+/- English proof (translation)
+Use `summable_of_sum_le (c := ∏ _i : ι, ∑' m, wt m) (fun n => Finset.prod_nonneg fun i _ => wt_nonneg _) (fun u => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `n hn`. Rewrite using `[Fintype.mem_piFinset]`.
+
+Introduce `i`. Conclude with `Finset.mem_image_of_mem _ hn`. Introduce `n _ _`. Conclude with `Finset.prod_nonneg fun i _ => wt_nonneg _`. Use `_ = ∏ i, ∑ m ∈ u.image (fun n : ι → ℤ => n i), wt m := (Finset.prod_univ_sum _ _).symm`.
+
+Use `_ ≤ ∏ _i : ι, ∑' m, wt m := by`. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `i _`. Conclude with `Finset.sum_nonneg fun m _ => wt_nonneg m`. Introduce `i _`.
+
+Conclude with `summable_wt.sum_le_tsum _ (fun m _ => wt_nonneg m)`.
+-/
 theorem summable_prod_wt (ι : Type) [Fintype ι] [DecidableEq ι] :
     Summable (fun n : ι → ℤ => ∏ i, wt (n i)) := by
   refine summable_of_sum_le (c := ∏ _i : ι, ∑' m, wt m)
@@ -131,6 +187,23 @@ end GlobalTheory.LipschitzTR.LhsSum
 
 open GlobalTheory.LipschitzTR.LhsSum in
 
+/- English proof (translation)
+Introduce `F _ _ _ M _ k hk z hz`. Take `⟨ν, hν0, hν⟩` from `exists_lower_norm M`. Establish `hcard : 0 < Fintype.card (F →+* ℝ)`. Rewrite using `[card_realEmb]`. Conclude with `Module.finrank_pos`.
+
+Use `set s : ℝ := min 1 (ν / 2) with hs`. Establish `hs0 : 0 < s` using `lt_min one_pos (by positivity)`. Establish `hs1 : s ≤ 1` using `min_le_left _ _`. Establish `hsν : s ^ Fintype.card (F →+* ℝ) < ν` using `lt_of_le_of_lt (pow_le_of_le_one hs0.le hs1 hcard.ne') (lt_of_le_of_lt (min_le_right _ _) (by linarith))`. Set `N : ↥(M : Set F) → ((F →+* ℝ) → ℤ)` to `fun a τ => ⌊τ (a : F) / s⌋`.
+
+Establish `hN : Function.Injective N`. Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Establish `hne' : (a : F) - b ≠ 0` using `sub_ne_zero.2 (fun h => hne (Subtype.ext h))`. Establish `hmem : (a : F) - b ∈ M` using `(M : Submodule (𝓞 F) F).sub_mem a.2 b.2`.
+
+Establish `h1` using `hν _ hmem hne'`. Establish `h2 : |∏ τ : F →+* ℝ, τ ((a : F) - b)| ≤ s ^ Fintype.card (F →+* ℝ)`. Rewrite using `[Finset.abs_prod, ← Finset.card_univ, ← Finset.prod_const]`. Use `Finset.prod_le_prod (fun _ _ => abs_nonneg _) (fun τ _ => ?_)` and prove the remaining obligations. Establish `hf` using `Int.abs_sub_lt_one_of_floor_eq_floor (congrFun hab τ)`.
+
+Rewrite `hf` using `[← sub_div, abs_div, abs_of_pos hs0, div_lt_one hs0]`. Rewrite using `[map_sub]`. Conclude with `hf.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : ∀ τ : F →+* ℝ, ∃ c : ℝ, 0 < c ∧ ∀ t : ℝ, c * (1 + |t|) ≤ ‖z τ + (t : ℂ)‖` using `fun τ => exists_lower_one_add (z τ) (hz τ)`.
+
+Use `choose c hc0 hc using hc`. Use `set C : ℝ := ∏ τ : F →+* ℝ, ((c τ * (s / 2)) ^ k)⁻¹ with hC`. Use `Summable.of_norm_bounded (g := fun a => C * ∏ τ, wt (N a τ)) (((summable_prod_wt (F →+* ℝ)).comp_injective hN).mul_left C) (fun a => ?_)` and prove the remaining obligations. Simplify using `only [lhsTerm, zpow_neg, zpow_natCast, ← Finset.prod_pow, ← Finset.prod_inv_distrib, norm_prod, norm_inv, norm_pow]`. Rewrite using `[hC, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_le_prod (fun _ _ => by positivity) (fun τ _ => ?_)` and prove the remaining obligations. Establish `hD : 0 < c τ * (s / 2)` using `by have := hc0 τ; positivity`. Establish `hfl` using `floor_bound hs0 hs1 (τ (a : F))`. Establish `he : c τ * (s / 2) * (1 + |((N a τ : ℤ) : ℝ)|) ≤ ‖z τ + ((τ (a : F) : ℝ) : ℂ)‖`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hone : (1 : ℝ) ≤ 1 + |((N a τ : ℤ) : ℝ)|` using `by linarith [abs_nonneg ((N a τ : ℤ) : ℝ)]`. Rewrite using `[wt, ← mul_inv]`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.LipschitzTR.summable_lhsTerm_ideal :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (M : FractionalIdeal (𝓞 F)⁰ F), M ≠ 0 →
       ∀ (k : ℕ), 2 ≤ k → ∀ (z : (F →+* ℝ) → ℂ), (∀ τ, (z τ).im ≠ 0) →

@@ -14,10 +14,16 @@ namespace PositivityTheory.RgGu.NR
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `redCl_ofC k (someRed_of k (complementary_of signature) (compact k) (boundB k) (herm_ofB k (conjProd k) (conjDual k)) (prodModel k)) (cuspUnit k) (cuspPairIrr k)`.
+-/
 theorem redClC : RedCl k :=
   redCl_ofC k (someRed_of k (complementary_of signature) (compact k) (boundB k) (herm_ofB k (conjProd k) (conjDual k))
     (prodModel k)) (cuspUnit k) (cuspPairIrr k)
 
+/- English proof (translation)
+The claim follows from `rhoNuRho_ofC fun k _ _ _ _ => redClC k`.
+-/
 theorem rhoNuRhoReducibleC : PositivityTheory.Pf1.SegRepC.SegTwo.RhoNuRhoReducible := rhoNuRho_ofC fun k _ _ _ _ => redClC k
 
 end PositivityTheory.RgGu.NR

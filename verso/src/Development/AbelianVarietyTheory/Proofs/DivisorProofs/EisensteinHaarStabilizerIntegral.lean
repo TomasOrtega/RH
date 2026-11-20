@@ -15,17 +15,40 @@ namespace GlobalTheory.ConeSmallLawC
 
 open GlobalTheory.ConeSmallLaw
 
+/- English proof (translation)
+Rewrite using `[map_mul, NNReal.coe_mul, Complex.ofReal_mul]`. Conclude with `Complex.mul_cpow_ofReal_nonneg (absE F E x).2 (absE F E y).2 z`.
+-/
 theorem absE_cpow_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (x y : (AE F E)ˣ) (z : ℂ) :
     ((absE F E (x * y) : ℝ) : ℂ) ^ z = ((absE F E x : ℝ) : ℂ) ^ z * ((absE F E y : ℝ) : ℂ) ^ z := by
   rw [map_mul, NNReal.coe_mul, Complex.ofReal_mul]
   exact Complex.mul_cpow_ofReal_nonneg (absE F E x).2 (absE F E y).2 z
 
+/- English proof (translation)
+Rewrite using `[Ne, Complex.cpow_eq_zero_iff, not_and_or]`. Conclude with `Or.inl (Complex.ofReal_ne_zero.mpr (absE_pos x).ne')`.
+-/
 theorem absE_cpow_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (x : (AE F E)ˣ) (z : ℂ) : ((absE F E x : ℝ) : ℂ) ^ z ≠ 0 := by
   rw [Ne, Complex.cpow_eq_zero_iff, not_and_or]
   exact Or.inl (Complex.ofReal_ne_zero.mpr (absE_pos x).ne')
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' he' K μK μ hK hμK hμ X om om' om₁ om₁' T T₁ Φ' hΦ' z t m hL h`. Establish `hS : Φ' ∈ schA F (Fin (b + 2) × Fin (a + (b + 2)))`. Use `Submodule.span_le.mpr ?_ hΦ'.2` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, hφ, hv, -, rfl⟩`. Use `GlobalTheory.TensUniq.pure_mem_schA f φ hφ ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hv, T.geo.hM'.std] with v h1 h2`. Rewrite using `[h1, h2]`. Take `⟨u, hu⟩ : ∃ u : (AE F E)ˣ, u = (Units.map (cA σ).toMonoidHom t)⁻¹` from `⟨_, rfl⟩`. Establish `hν0 : ∀ l : (AE F E)ˣ, (X.ν l : ℂ) ≠ 0` using `fun l => Circle.coe_ne_zero _`. Establish `hin : ∀ k : K, (∫ l, G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, m * h) Φ'))) 1 * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z ∂μ) = ((X.α t : ℂ) * (((absE F E t : ℝ) ^ ((b : ℝ) / 2) : ℝ) : ℂ)) * ((X.ν u : ℂ) * ((absE F E u : ℝ) : ℂ) ^ z)⁻¹ * ∫ l, G₁.M'.I om₁' (e' …`.
+
+Introduce `k`. Rewrite using `[← integral_mul_right_eq_self (μ := μ) (fun l => G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ'))) 1 * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z) u, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun l => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integrand_levi hKP cfg he' T T₁ t m hL k.1 h Φ' hS l, ← hu, absE_cpow_mul, map_mul, Circle.coe_mul]`.
+
+Establish `h1` using `hν0 u`. Establish `h2` using `absE_cpow_ne_zero u z`. Clear the denominators using the available nonvanishing facts. Establish `hα` using `GlobalTheory.chrX_conj_inv F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' T) t`. Establish `hβ` using `GlobalTheory.chrX_conj_inv F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV T) t`.
+
+Establish `hνu : X.ν u = X.α t / X.β t`. Rewrite using `[hu, map_inv, Chars.ν, MonoidHom.div_apply, hα, hβ, inv_div_inv, inv_div]`. Establish `hr` using `absE_pos t`. Establish `habsu : ((absE F E u : ℝ) : ℂ) ^ z = (((absE F E t : ℝ) : ℂ) ^ z)⁻¹`. Rewrite using `[hu, map_inv, absE_cA, NNReal.coe_inv, Complex.ofReal_inv, Complex.inv_cpow]`.
+
+Rewrite using `[Complex.arg_ofReal_of_nonneg hr.le]`. Conclude with `Real.pi_ne_zero.symm`. Use `show GlobalTheory.ConeSmall.coneI B G G₁ H H' e' K μK μ X.ν om' om₁' Φ' z (m * h) = _`. Unfold `GlobalTheory.ConeSmall.coneI`. Rewrite using `[integral_congr_ae (Eventually.of_forall hin), integral_const_mul]`.
+
+Use `congr 1`. Establish `hc0 : ((absE F E t : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hr.ne'`. Establish `hz0` using `absE_cpow_ne_zero t z`. Rewrite using `[Complex.cpow_add _ _ hc0, show ((b : ℂ) / 2) = (((b : ℝ) / 2 : ℝ) : ℂ) by push_cast; ring, ← Complex.ofReal_cpow hr.le, hνu, habsu, Circle.coe_div]`. Establish `hA` using `Circle.coe_ne_zero (X.α t)`.
+
+Establish `hB` using `Circle.coe_ne_zero (X.β t)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem coneI_lawC : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ),

@@ -25,6 +25,9 @@ abbrev sB {n : ℕ} (χ : Fin n → kˣ →* ℂˣ) : Representation ℂ (parab 
 def dg {n : ℕ} : parab k (points (Fin n)) →* (Fin n → kˣ) :=
   (leviTorus k (Fin n)).symm.toMonoidHom.comp (leviProj k (points (Fin n)))
 
+/- English proof (translation)
+Use `show ((Matrix.GeneralLinearGroup.det (leviProj k (points (Fin n)) p i) : kˣ) : k) = _`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_unique]`. Both sides reduce to the same expression.
+-/
 theorem val_dg {n : ℕ} (p : parab k (points (Fin n))) (i : Fin n) :
     (dg p i : k) = (p : GL (Fin n) k).val i i := by
   show ((Matrix.GeneralLinearGroup.det (leviProj k (points (Fin n)) p i) : kˣ) : k) = _
@@ -40,8 +43,16 @@ variable (k) in
 def midPar (r t : ℕ) : Subgroup (GL (Fin (r + t)) k) :=
   ((parab k (points (Fin r))).comap (twoBlockParabolicFirstBlock k r t)).map (parab k (two (eSt r t))).subtype
 
+/- English proof (translation)
+The claim follows from `Subgroup.map_subtype_le _`.
+-/
 theorem midPar_le (r t : ℕ) : midPar k r t ≤ parab k (two (eSt r t)) := Subgroup.map_subtype_le _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxq⟩`. Take `rfl : x = q` from `Subtype.ext hxq`. Conclude with `hx`. Introduce `h`.
+
+Conclude with `⟨q, h, rfl⟩`.
+-/
 theorem mem_midPar (r t : ℕ) (q : parab k (two (eSt r t))) :
     (q : GL (Fin (r + t)) k) ∈ midPar k r t ↔ twoBlockParabolicFirstBlock k r t q ∈ parab k (points (Fin r)) := by
   constructor
@@ -66,6 +77,9 @@ def fstB : midPar k r t →* parab k (points (Fin r)) :=
 def rho1 (ψ₁ : Fin r → kˣ →* ℂˣ) (ψ₂ : Fin t → kˣ →* ℂˣ) :=
   Representation.tprod ((sB ψ₁).comp fstB) ((Stages.tauSnd (eSt r t) (prinSeries ψ₂)).comp incl)
 
+/- English proof (translation)
+The claim follows from `Stages.stage (midPar_le r t) (twoBlockParabolicFirstBlock k r t) ((Stages.sec _).comp (MonoidHom.inl _ _)) ((Stages.continuous_sec _).comp (Continuous.prodMk_left 1)) (fun m => congrArg Prod.fst (Stages.pr_sec _ (m, 1))) (mem_midPar r t) SplitFlip.isCompact_KO (fun m => MultiIrr. …`.
+-/
 theorem stage_one (ψ₁ : Fin r → kˣ →* ℂˣ) (ψ₂ : Fin t → kˣ →* ℂˣ) :
     Nonempty ((prod₂ (prinSeries ψ₁) (prinSeries ψ₂)).Equiv (smInd (midPar k r t) (rho1 ψ₁ ψ₂))) :=
   Stages.stage (midPar_le r t) (twoBlockParabolicFirstBlock k r t) ((Stages.sec _).comp (MonoidHom.inl _ _))
@@ -89,11 +103,19 @@ variable {r t : ℕ}
 def cB {n : ℕ} (χ : Fin n → kˣ →* ℂˣ) (p : parab k (points (Fin n))) : ℂˣ :=
   deltaHalf k (fun _ : Fin n => Unit) (leviProj k (points (Fin n)) p) * torusChar χ (dg p)
 
+/- English proof (translation)
+Use `show (deltaHalf k (fun _ : Fin n => Unit) (leviProj k (points (Fin n)) p) : ℂ) • ((torusChar χ (dg p) : ℂ) * c) = _`. Rewrite using `[smul_eq_mul, cB, Units.val_mul, mul_assoc]`.
+-/
 theorem sB_apply {n : ℕ} (χ : Fin n → kˣ →* ℂˣ) (p : parab k (points (Fin n))) (c : ℂ) :
     sB χ p c = (cB χ p : ℂ) * c := by
   show (deltaHalf k (fun _ : Fin n => Unit) (leviProj k (points (Fin n)) p) : ℂ) • ((torusChar χ (dg p) : ℂ) * c) = _
   rw [smul_eq_mul, cB, Units.val_mul, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[cB, deltaHalf_apply, torusChar_apply]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[modExp_fin _ (fun _ => by simp)]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem cB_eq {n : ℕ} (χ : Fin n → kˣ →* ℂˣ) (p : parab k (points (Fin n))) :
     cB χ p = (∏ i : Fin n, absPow k (((n : ℂ) - 1 - 2 * ((i : ℕ) : ℂ)) / 2) (dg p i)) * ∏ i, χ i (dg p i) := by
   rw [cB, deltaHalf_apply, torusChar_apply]
@@ -103,6 +125,13 @@ theorem cB_eq {n : ℕ} (χ : Fin n → kˣ →* ℂˣ) (p : parab k (points (Fi
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ i : Fin r, absPow k ((((r + t : ℕ) : ℂ) - 1 - 2 * (((Fin.castAdd t i : Fin (r + t)) : ℕ) : ℂ)) / 2) (x (Fin.castAdd t i)) = absPow k (((r : ℂ) - 1 - 2 * ((i : ℕ) : ℂ)) / 2) (x (Fin.castAdd t i)) * absPow k ((t : ℂ) / 2) (x (Fin.castAdd t i))` using `fun i => by`. Rewrite using `[← MonoidHom.mul_apply, ← absPow_add]`. Use `congr 2`. Simplify using `only [Fin.coe_castAdd]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ j : Fin t, absPow k ((((r + t : ℕ) : ℂ) - 1 - 2 * (((Fin.natAdd r j : Fin (r + t)) : ℕ) : ℂ)) / 2) (x (Fin.natAdd r j)) = absPow k (((t : ℂ) - 1 - 2 * ((j : ℕ) : ℂ)) / 2) (x (Fin.natAdd r j)) * absPow k (-(r : ℂ) / 2) (x (Fin.natAdd r j))` using `fun j => by`. Rewrite using `[← MonoidHom.mul_apply, ← absPow_add]`. Use `congr 2`. Simplify using `only [Fin.coe_natAdd]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Fin.prod_univ_add, Fin.prod_univ_add, Finset.prod_congr rfl fun i _ => h1 i, Finset.prod_congr rfl fun j _ => h2 j, map_prod, map_prod]`. Simplify using `only [Fin.append_left, Fin.append_right, Finset.prod_mul_distrib]`. Simplify using `only [mul_comm, mul_left_comm, mul_assoc]`.
+-/
 theorem char_split (ψ₁ : Fin r → kˣ →* ℂˣ) (ψ₂ : Fin t → kˣ →* ℂˣ) (x : Fin (r + t) → kˣ) :
     (∏ i : Fin (r + t), absPow k ((((r + t : ℕ) : ℂ) - 1 - 2 * ((i : ℕ) : ℂ)) / 2) (x i)) *
         ∏ i, Fin.append ψ₁ ψ₂ i (x i) =
@@ -140,12 +169,21 @@ namespace GlobalTheory.SmGL.PrinProd
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {r t : ℕ}
 
+/- English proof (translation)
+The claim follows from `Fin.ext (by simp [eSt])`.
+-/
 theorem eSt_inl (i : Fin r) : eSt r t (.inl i) = Fin.castAdd t i := Fin.ext (by simp [eSt])
 
+/- English proof (translation)
+The claim follows from `Fin.ext (by simp [eSt])`.
+-/
 theorem eSt_inr (j : Fin t) : eSt r t (.inr j) = Fin.natAdd r j := Fin.ext (by simp [eSt])
 
 def sndB : midPar k r t →* GL (Fin t) k := (MonoidHom.snd _ _).comp ((Stages.pr (eSt r t)).comp incl)
 
+/- English proof (translation)
+The claim follows from `(mem_midPar r t _).2 (by show (Stages.pr (eSt r t) (Stages.sec (eSt r t) (1, m))).1 ∈ _ rw [Stages.pr_sec]; exact one_mem _)`.
+-/
 theorem sec_mem (m : GL (Fin t) k) :
     ((Stages.sec (eSt r t) (1, m) : parab k (two (eSt r t))) : GL (Fin (r + t)) k) ∈ midPar k r t :=
   (mem_midPar r t _).2 (by
@@ -156,23 +194,44 @@ def secS : GL (Fin t) k →* midPar k r t :=
   ((parab k (two (eSt r t))).subtype.comp ((Stages.sec (eSt r t)).comp (MonoidHom.inr _ _))).codRestrict _
     sec_mem
 
+/- English proof (translation)
+The claim follows from `(continuous_subtype_val.comp ((Stages.continuous_sec _).comp (Continuous.prodMk_right 1))).subtype_mk _`.
+-/
 theorem continuous_secS : Continuous (secS (k := k) (r := r) (t := t)) :=
   (continuous_subtype_val.comp ((Stages.continuous_sec _).comp (Continuous.prodMk_right 1))).subtype_mk _
 
+/- English proof (translation)
+The claim follows from `congrArg Prod.snd (Stages.pr_sec (eSt r t) (1, m))`.
+-/
 theorem sndB_secS (m : GL (Fin t) k) : sndB (secS (r := r) m) = m :=
   congrArg Prod.snd (Stages.pr_sec (eSt r t) (1, m))
 
+/- English proof (translation)
+The claim follows from `(mem_parab_two k).2 fun j i => (mem_borel _).1 hg _ _ (by rw [eSt_inl, eSt_inr, Fin.lt_def, Fin.coe_castAdd, Fin.coe_natAdd]; omega)`.
+-/
 theorem mem_parab_of_borel {g : GL (Fin (r + t)) k} (hg : g ∈ parab k (points (Fin (r + t)))) :
     g ∈ parab k (two (eSt r t)) :=
   (mem_parab_two k).2 fun j i => (mem_borel _).1 hg _ _ (by
     rw [eSt_inl, eSt_inr, Fin.lt_def, Fin.coe_castAdd, Fin.coe_natAdd]; omega)
 
+/- English proof (translation)
+Introduce `g hg` and use `(mem_midPar r t ⟨g, mem_parab_of_borel hg⟩).2 ((mem_borel _).2 fun i j hij => by show ((Stages.pr (eSt r t) ⟨g, mem_parab_of_borel hg⟩).1 : Matrix (Fin r) (Fin r) k) i j = 0 rw [Stages.pr_fst, eSt_inl, eSt_inl] exact (mem_borel _).1 hg _ _ (by rw [Fin.lt_def, Fin.coe_castAdd, Fin …`.
+-/
 theorem borel_le_midPar : parab k (points (Fin (r + t))) ≤ midPar k r t := fun g hg =>
   (mem_midPar r t ⟨g, mem_parab_of_borel hg⟩).2 ((mem_borel _).2 fun i j hij => by
     show ((Stages.pr (eSt r t) ⟨g, mem_parab_of_borel hg⟩).1 : Matrix (Fin r) (Fin r) k) i j = 0
     rw [Stages.pr_fst, eSt_inl, eSt_inl]
     exact (mem_borel _).1 hg _ _ (by rw [Fin.lt_def, Fin.coe_castAdd, Fin.coe_castAdd]; exact hij))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(mem_borel _).2 fun i j hij => ?_` and prove the remaining obligations. Use `show ((Stages.pr (eSt r t) (incl q)).2 : Matrix (Fin t) (Fin t) k) i j = 0`. Rewrite using `[Stages.pr_snd, eSt_inr, eSt_inr]`.
+
+Conclude with `(mem_borel _).1 h _ _ (by rw [Fin.lt_def, Fin.coe_natAdd, Fin.coe_natAdd]; have := Fin.lt_def.1 hij; omega)`. Introduce `h`. Establish `h1 : twoBlockParabolicFirstBlock k r t (incl q) ∈ parab k (points (Fin r))` using `(mem_midPar r t (incl q)).1 q.2`. Use `(mem_borel _).2 fun a b hab => ?_` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨a | a, rfl⟩ := (eSt r t).surjective a <;> obtain ⟨b | b, rfl⟩ := (eSt r t).surjective b`.
+
+Use `(mem_borel _).1 h1 a b (by rw [eSt_inl, eSt_inl, Fin.lt_def, Fin.coe_castAdd, Fin.coe_castAdd] at hab; exact Fin.lt_def.2 hab)` as an intermediate fact. Rewrite `this` using `[twoBlockParabolicFirstBlock, MonoidHom.comp_apply, MonoidHom.coe_fst, Stages.pr_fst]`. Then use the resulting hypothesis. It suffices to derive a contradiction. Rewrite `hab` using `[eSt_inl, eSt_inr, Fin.lt_def, Fin.coe_castAdd, Fin.coe_natAdd]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `(mem_parab_two k).1 (incl q).2 a b`. Use `(mem_borel _).1 h a b (by rw [eSt_inr, eSt_inr, Fin.lt_def, Fin.coe_natAdd, Fin.coe_natAdd] at hab; exact Fin.lt_def.2 (by omega))` as an intermediate fact. Rewrite `this` using `[sndB, MonoidHom.comp_apply, MonoidHom.comp_apply, MonoidHom.coe_snd, Stages.pr_snd]`. Then use the resulting hypothesis.
+-/
 theorem mem_borel_iff (q : midPar k r t) :
     (q : GL (Fin (r + t)) k) ∈ parab k (points (Fin (r + t))) ↔ sndB q ∈ parab k (points (Fin t)) := by
   constructor
@@ -194,6 +253,9 @@ theorem mem_borel_iff (q : midPar k r t) :
     · have := (mem_borel _).1 h a b (by rw [eSt_inr, eSt_inr, Fin.lt_def, Fin.coe_natAdd, Fin.coe_natAdd] at hab; exact Fin.lt_def.2 (by omega))
       rwa [sndB, MonoidHom.comp_apply, MonoidHom.comp_apply, MonoidHom.coe_snd, Stages.pr_snd] at this
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [val_dg, val_dg] show ((Stages.pr (eSt r t) (incl q)).1 : Matrix (Fin r) (Fin r) k) i i = _ rw [Stages.pr_fst, eSt_inl] rfl)`.
+-/
 theorem dg_fstB (q : midPar k r t) (h : (q : GL (Fin (r + t)) k) ∈ parab k (points (Fin (r + t)))) (i : Fin r) :
     dg (fstB q) i = dg (⟨q, h⟩ : parab k (points (Fin (r + t)))) (Fin.castAdd t i) := Units.ext (by
   rw [val_dg, val_dg]
@@ -201,6 +263,9 @@ theorem dg_fstB (q : midPar k r t) (h : (q : GL (Fin (r + t)) k) ∈ parab k (po
   rw [Stages.pr_fst, eSt_inl]
   rfl)
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [val_dg, val_dg] show ((Stages.pr (eSt r t) (incl q)).2 : Matrix (Fin t) (Fin t) k) j j = _ rw [Stages.pr_snd, eSt_inr] rfl)`.
+-/
 theorem dg_sndB (q : midPar k r t) (h : (q : GL (Fin (r + t)) k) ∈ parab k (points (Fin (r + t))))
     (hs : sndB q ∈ parab k (points (Fin t))) (j : Fin t) :
     dg (⟨sndB q, hs⟩ : parab k (points (Fin t))) j =
@@ -210,6 +275,9 @@ theorem dg_sndB (q : midPar k r t) (h : (q : GL (Fin (r + t)) k) ∈ parab k (po
   rw [Stages.pr_snd, eSt_inr]
   rfl)
 
+/- English proof (translation)
+Establish `d1 : Matrix.GeneralLinearGroup.det (Stages.pr (eSt r t) (incl q)).1 = ∏ i, dg (fstB q) i` using `det_parab k (points (Fin r)) (fstB q)`. Establish `d2 : Matrix.GeneralLinearGroup.det (Stages.pr (eSt r t) (incl q)).2 = ∏ j, dg (⟨sndB q, hs⟩ : parab k (points (Fin t))) j` using `det_parab k (points (Fin t)) ⟨sndB q, hs⟩`. Rewrite using `[cB_eq, cB_eq, cB_eq, Stages.dl_apply, d1, d2, Fintype.card_fin, Fintype.card_fin]`. Simplify using `only [dg_fstB q h, dg_sndB q h hs]`. Conclude with `char_split ψ₁ ψ₂ _`.
+-/
 theorem cB_split (ψ₁ : Fin r → kˣ →* ℂˣ) (ψ₂ : Fin t → kˣ →* ℂˣ) (q : midPar k r t)
     (h : (q : GL (Fin (r + t)) k) ∈ parab k (points (Fin (r + t)))) (hs : sndB q ∈ parab k (points (Fin t))) :
     cB (Fin.append ψ₁ ψ₂) ⟨q, h⟩ = cB ψ₂ ⟨sndB q, hs⟩ * Stages.dl (eSt r t) (incl q) * cB ψ₁ (fstB q) := by
@@ -224,6 +292,9 @@ theorem cB_split (ψ₁ : Fin r → kˣ →* ℂˣ) (ψ₂ : Fin t → kˣ →* 
 def tau2 (ψ₁ : Fin r → kˣ →* ℂˣ) : Representation ℂ (midPar k r t) ℂ :=
   twist ((sB ψ₁).comp fstB) ((Stages.dl (eSt r t)).comp incl)
 
+/- English proof (translation)
+The claim follows from `Stages.stage borel_le_midPar sndB secS continuous_secS sndB_secS mem_borel_iff SplitFlip.isCompact_KO (fun m => MultiIrr.exists_parab_mul (points (Fin t)) m) (sB ψ₂) (tau2 ψ₁) ((((Continuous.prodMk_right 1).tendsto 1).eventually (Stages.dl_sec (eSt r t))).mono fun u hu => by refi …`.
+-/
 theorem stage_two (ψ₁ : Fin r → kˣ →* ℂˣ) (ψ₂ : Fin t → kˣ →* ℂˣ) :
     Nonempty ((smInd (midPar k r t) (rho1 ψ₁ ψ₂)).Equiv (prinSeries (Fin.append ψ₁ ψ₂))) :=
   Stages.stage borel_le_midPar sndB secS continuous_secS sndB_secS mem_borel_iff SplitFlip.isCompact_KO
@@ -259,6 +330,9 @@ end GlobalTheory.SmGL.PrinProd
 
 namespace GlobalTheory.SmGL.PrinProd
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r t ψ₁ ψ₂ V _ _ W _ _ A B ⟨φA⟩ ⟨φB⟩`. Take `⟨E1⟩` from `stage_one (k := k) ψ₁ ψ₂`. Take `⟨E2⟩` from `stage_two (k := k) ψ₁ ψ₂`. Set `E` to `(GlobalTheory.LocGL.prod₂Equiv φA φB).trans (E1.trans E2)`. Conclude with `IsSubquotient.of_injective E.symm.toIntertwiningMap E.symm.toLinearEquiv.injective`.
+-/
 theorem prinSeries_append : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (ψ₁ : Fin r → kˣ →* ℂˣ) (ψ₂ : Fin t → kˣ →* ℂˣ) (V : Type) [AddCommGroup V] [Module ℂ V] (W : Type) [AddCommGroup W] [Module ℂ W] (A : Representation ℂ (GL (Fin r) k) V) (B : Representation ℂ (GL (Fin t) k) W), Nonempty (A.Equiv (prinSeries ψ₁)) → Nonempty (B.Equiv (prinSeries ψ₂)) → IsSubquotient (prinSeries (Fin.append ψ₁ ψ₂)) (prod₂ A B) := by
   intro k _ _ _ _ r t ψ₁ ψ₂ V _ _ W _ _ A B ⟨φA⟩ ⟨φB⟩
   obtain ⟨E1⟩ := stage_one (k := k) ψ₁ ψ₂

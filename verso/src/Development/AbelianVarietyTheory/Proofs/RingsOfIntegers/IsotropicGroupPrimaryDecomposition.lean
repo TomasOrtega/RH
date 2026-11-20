@@ -20,6 +20,15 @@ namespace GlobalTheory
 
 namespace IsotropicPrimary
 
+/- English proof (translation)
+Use `haveI : Fact ℓ.Prime := ⟨hℓ⟩`. Take `⟨S⟩ : Nonempty (Sylow ℓ Z)` from `inferInstance`. Use `haveI : (S : Subgroup Z).Normal := Subgroup.normal_of_isMulCommutative _`. Take `⟨Q, hQ⟩` from `Subgroup.exists_right_complement'_of_coprime (N := (S : Subgroup Z)) S.card_coprime_index`. Use `⟨S, Q, fun u => ⟨fun hu => ?_, fun hu => ?_⟩, ?_, hQ, S.card_eq_multiplicity⟩` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `S.isPGroup' ⟨u, hu⟩`. Conclude with `⟨k, by simpa using congrArg Subtype.val hk⟩`. Take `⟨j, hj⟩` from `hu`. Establish `hp : IsPGroup ℓ (Subgroup.zpowers u)` using `IsPGroup.of_card_dvd_pow (n := j) (by rw [Nat.card_zpowers]; exact orderOf_dvd_of_pow_eq_one hj)`. Take `⟨T, hT⟩` from `hp.exists_le_sylow`.
+
+Use `letI := Sylow.unique_of_normal S ‹_›`. Establish `hTS : T = S` using `Subsingleton.elim _ _`. Substitute `hTS` using the available equality. Conclude with `hT (Subgroup.mem_zpowers u)`. Rewrite using `[← hQ.symm.index_eq_card]`.
+
+Conclude with `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hℓ).2 S.not_dvd_index)`.
+-/
 theorem exists_primary_complement (Z : Type) [CommGroup Z] [Finite Z] (ℓ : ℕ) (hℓ : ℓ.Prime) :
     ∃ P Q : Subgroup Z, (∀ u, u ∈ P ↔ ∃ j : ℕ, u ^ (ℓ ^ j) = 1) ∧ Nat.Coprime (Nat.card Q) ℓ ∧
       (Function.Bijective fun y : P × Q => (y.1 : Z) * (y.2 : Z)) ∧
@@ -42,6 +51,11 @@ theorem exists_primary_complement (Z : Type) [CommGroup Z] [Finite Z] (ℓ : ℕ
   · rw [← hQ.symm.index_eq_card]
     exact Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hℓ).2 S.not_dvd_index)
 
+/- English proof (translation)
+Use `letI : Algebra K k := β.toAlgebra`. Establish `hff : (CommRingCat.ofHom β).hom.FaithfullyFlat`. Express the relevant statement in the definitionally equal form `Module.FaithfullyFlat K k`. Use `infer_instance`. Take `⟨h1, h2⟩` from `(flat_and_surjective_SpecMap_iff (CommRingCat.ofHom β)).2 hff`.
+
+Conclude with `Flat.epi_of_flat_of_surjective _`.
+-/
 theorem epi_spMap_of_fields {K k : Type} [Field K] [Field k] (β : K →+* k) : Epi (spMap β) := by
   letI : Algebra K k := β.toAlgebra
   have hff : (CommRingCat.ofHom β).hom.FaithfullyFlat := by
@@ -76,6 +90,13 @@ def zhSubgroup (Xo : Moduli Dw l) {n : ℕ} (Λ : GenLat E n) (N : ℕ) (hN : 0 
       rw [h2]
       exact hpow a ha _ }
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Set `g : ptO Xo (spMap (RingHom.id K) ≫ x) ⟶ ptO Xo x` to `Over.homMk (spMap (RingHom.id K)) rfl`. Use `hinj K (RingHom.id K) g rfl ?_` and prove the remaining obligations. Use `show (fun b => g ≫ z i b) = fun b => g ≫ z j b`. Rewrite using `[hij]`.
+
+Set `ψ : K →+* AlgebraicClosure K` to `algebraMap K (AlgebraicClosure K)`. Set `g : ptO Xo (spMap ψ ≫ x) ⟶ ptO Xo x` to `Over.homMk (spMap ψ) rfl`. Establish `hw : ∀ i, InZh Xo Λ N (fun b => g ≫ z i b)` using `fun i => ZhStable.inZh_comp Xo Λ N g (z i) (hz i)`. Take `⟨i, hi⟩` from `IsotropicEnum.exists_eq_of_isAlgClosed Xo (spMap ψ ≫ x) Λ hΛ hN hle (fun i b => g ≫ z i b) hw (hinj (AlgebraicClosure K) ψ g rfl) (fun b => g ≫ a b) (ZhStable.inZh_comp Xo Λ N g a ha)`. Use `⟨i, funext fun b => ?_⟩` and prove the remaining obligations.
+
+Use `haveI := epi_spMap_of_fields ψ`. Establish `hb` using `congrArg CommaMorphism.left (congrFun hi b)`. Simplify using `only [Over.comp_left] at hb`. Conclude with `Over.OverMorphism.ext ((cancel_epi (spMap ψ)).1 hb)`.
+-/
 theorem enumeration_bijective (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X)
     {n : ℕ} (Λ : GenLat E n) {N : ℕ} (hΛ : Λ.Unimod) (hN : 0 < N)
     (hle : Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ.La)
@@ -102,6 +123,21 @@ end IsotropicPrimary
 
 open IsotropicPrimary in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo K _ x n Λ N M ℓ hΛ hlev hℓ z hz hinj`. Establish `hN : 0 < N` using `hlev.1.pos`. Establish `hle : Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ.La` using `hlev.2.2.trans inf_le_left`. Take `⟨hzinj, hzon⟩` from `enumeration_bijective Xo x Λ hΛ hN hle z hz hinj`. Set `e : Fin (Λ.zCard N (Dw.p + Dw.q)) → zhSubgroup Xo Λ N hN (ptO Xo x)` to `fun i => ⟨z i, hz i⟩`.
+
+Establish `he : Function.Bijective e` using `⟨fun i j h => hzinj (congrArg Subtype.val h), fun u => by`. Take `⟨i, hi⟩` from `hzon u.1 u.2`. Conclude with `⟨i, Subtype.ext hi⟩⟩`. Use `haveI : Finite (zhSubgroup Xo Λ N hN (ptO Xo x)) := Finite.of_surjective e he.2`. Take `⟨P, Q, hP, hQ, hPQ, hcard⟩` from `exists_primary_complement (zhSubgroup Xo Λ N hN (ptO Xo x)) ℓ hℓ`.
+
+Use `⟨P, Q, Fintype.ofFinite _, Fintype.ofFinite _, fun p => ((p : zhSubgroup Xo Λ N hN (ptO Xo x)) : Fin n → _), fun q => ((q : zhSubgroup Xo Λ N hN (ptO Xo x)) : Fin n → _), (Equiv.ofBijective _ hPQ).trans (Equiv.ofBijective e he).symm, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun p p' h => Subtype.ext (Subtype.ext h)`. Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`.
+
+Use `⟨(p : zhSubgroup Xo Λ N hN (ptO Xo x)).2, fun b => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `(hP _).1 p.2`. Use `⟨j, ?_⟩` and prove the remaining obligations. Use `congrArg (fun w : zhSubgroup Xo Λ N hN (ptO Xo x) => w.1 b) hj` as an intermediate fact. Simplify using `using this`.
+
+Introduce and unpack `⟨hu, hpow⟩ choose j hj using hpow`. Use `⟨⟨⟨u, hu⟩, (hP _).2 ⟨∑ b, j b, Subtype.ext (funext fun b => ?_)⟩⟩, rfl⟩` and prove the remaining obligations. Take `⟨c, hc⟩ : ℓ ^ j b ∣ ℓ ^ (∑ b, j b)` from `pow_dvd_pow ℓ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ b))`. Simplify using `only [Subgroup.coe_pow, Pi.pow_apply, Subgroup.coe_one, Pi.one_apply]`. Rewrite using `[hc, pow_mul, hj b, one_pow]`.
+
+Use `⟨Nat.card Q, hQ, fun i b => ⟨?_, ((i : zhSubgroup Xo Λ N hN (ptO Xo x)).2 : InZh Xo Λ N _).1 b⟩⟩` and prove the remaining obligations. Use `congrArg (fun w : Q => (w : zhSubgroup Xo Λ N hN (ptO Xo x)).1 b) (pow_card_eq_one' (G := Q) (x := i))` as an intermediate fact. Simplify using `only [Subgroup.coe_pow, Pi.pow_apply, Subgroup.coe_one, Pi.one_apply] at this`. Conclude with `this`. Introduce `i i' b`.
+
+Establish `h1 : e ((Equiv.ofBijective e he).symm ((i : zhSubgroup Xo Λ N hN (ptO Xo x)) * (i' : zhSubgroup Xo Λ N hN (ptO Xo x)))) = (i : zhSubgroup Xo Λ N hN (ptO Xo x)) * (i' : zhSubgroup Xo Λ N hN (ptO Xo x))` using `Equiv.ofBijective_apply_symm_apply e he _`. Simplify using `only [Equiv.trans_apply, Equiv.ofBijective_apply]`. Conclude with `congrFun (congrArg Subtype.val h1) b`. Rewrite using `[@Fintype.card_eq_nat_card P (Fintype.ofFinite P), hcard, ← Nat.card_eq_of_bijective e he, Nat.card_fin]`.
+-/
 theorem isotropic_primary_decomposition :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (K : Type) [Field K] (x : Sp K ⟶ Xo.X) (n : ℕ) (Λ : GenLat E n) (N M ℓ : ℕ), Λ.Unimod → Λ.LevOK N M → ℓ.Prime → ∀ z : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo x ⟶ Xo.univ.t.G), (∀ i, InZh Xo Λ N (z i)) → GeoInj Xo x z → ∃ (J J' : Type) (_ : Fintype J) (_ : Fintype J') (a : J → Fin n → (ptO Xo x ⟶ Xo.univ.t.G)) (a' : J' → Fin n → (ptO Xo x ⟶ Xo.univ.t.G)) (σ : J × J' ≃ Fin (Λ.zCard N (Dw.p + Dw.q))), Function.Injective a ∧ (∀ u, (∃ i, a i = u) ↔ (InZh Xo Λ N u ∧ ∀ b, ∃ j : ℕ, u b ^ (ℓ ^ j) = 1)) ∧ (∃ m : ℕ, Nat.Coprime m ℓ ∧ ∀ i b, a' i b ^ m = 1 ∧ a' i b ^ (N ^ 2) = 1) ∧ (∀ i i' b, z (σ (i, i')) b = a i b * a' i' b) ∧ Fintype.card J = ℓ ^ (Λ.zCard N (Dw.p + Dw.q)).factorization ℓ := by
   intro E _ _ _ H Dw l Xo K _ x n Λ N M ℓ hΛ hlev hℓ z hz hinj

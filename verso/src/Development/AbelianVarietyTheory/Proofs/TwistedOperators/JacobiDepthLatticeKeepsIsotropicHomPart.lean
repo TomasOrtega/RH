@@ -20,6 +20,11 @@ namespace GlobalTheory.AscFin.SplitX
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.LatVHat.latV_mem_hatL D S L _ _ h`. Establish `e : (fun i => Formalism.IndefR.Lev.swapAE D (finPart D (pairA D.host.F 0 (1 : Af D.host.F) ⊗ₜ[D.host.F] (1 * r i)))) = fun i => Formalism.L2.Col.iA D.host.F D.host.E (r i)`. Use function extensionality and compare the values at `i`. Rewrite using `[GlobalTheory.FinPlLoc.finPart_pair, one_mul]`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[e]`. Conclude with `(GlobalTheory.CongStdLoc.incl_mem_hatL_iff hL.fg hL.span_eq_top r).1 h1`.
+-/
 theorem mem_of_latV_top {S : HSp D} {L : Lat S} (hL : Submodule.IsLattice D.host.E L) (r : Fin S.rank → D.host.E)
     (h : (fun i => pairA D.host.F 0 (1 : Af D.host.F) ⊗ₜ[D.host.F] (1 * r i)) ∈ latV S L fun _ => True) : r ∈ L := by
   have h1 := GlobalTheory.LatVHat.latV_mem_hatL D S L _ _ h
@@ -33,6 +38,11 @@ theorem mem_of_latV_top {S : HSp D} {L : Lat S} (hL : Submodule.IsLattice D.host
 
 variable {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) {L : Lat V} {L₀ : Lat V₀}
 
+/- English proof (translation)
+Establish `h` using `((hm y).1 hy).1`. Establish `e : rat (d.e * d.qX) *ᵥ y = ∑ i, GlobalTheory.FinPl.colMul d.jX i ((d.pX *ᵥ y) i)`. Rewrite using `[show rat (d.e * d.qX) = d.jX ⬝ d.pX from rat_mul _ _, ← Matrix.mulVec_mulVec]`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply]`.
+
+Simplify using `only [GlobalTheory.FinPl.colMul, Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[e]`. Conclude with `sum_mem fun i _ => h i`.
+-/
 theorem proj_latV_at {v : GlobalTheory.FinPl.Pl D} (hm : MonoAt d L L₀ v) {y : Fin V.rank → AE D} (hy : y ∈ latV V L (· = v)) :
     rat (d.e * d.qX) *ᵥ y ∈ latV V L (· = v) := by
   have h := ((hm y).1 hy).1
@@ -45,6 +55,11 @@ theorem proj_latV_at {v : GlobalTheory.FinPl.Pl D} (hm : MonoAt d L L₀ v) {y :
   rw [e]
   exact sum_mem fun i _ => h i
 
+/- English proof (translation)
+Apply `mem_of_latV_top hL` to reduce the goal to its premises. Establish `hy : (fun i => pairA D.host.F 0 (1 : Af D.host.F) ⊗ₜ[D.host.F] (1 * x i)) ∈ latV V L fun _ => True` using `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact (v.adicCompletionIntegers D.host.F).one_mem, fun v hv => (hv trivial).elim, 1, rfl, x, hx, rfl⟩`. Establish `hz : rat (d.e * d.qX) *ᵥ (fun i => pairA D.host.F 0 (1 : Af D.host.F) ⊗ₜ[D.host.F] (1 * x i)) ∈ latV V L fun _ => True`. Use `(GlobalTheory.FinPlLoc.part_lat _ V L _ hL).2 ⟨fun i => mulVec_idAt _ (GlobalTheory.FinPlLoc.latV_idAt hy) i, fun v _ e he => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul]`.
+
+Conclude with `proj_latV_at d (hm v) (GlobalTheory.FinPlLoc.smul_latV v he hy)`. Rewrite `hz` using `[GlobalTheory.SeeSaw.SplitLat.rat_mulVec_gen]`. Then use the resulting hypothesis.
+-/
 theorem proj_mem (hL : Submodule.IsLattice D.host.E L) (hm : ∀ v, MonoAt d L L₀ v) (x : Fin V.rank → D.host.E)
     (hx : x ∈ L) : (d.e * d.qX) *ᵥ x ∈ L := by
   apply mem_of_latV_top hL
@@ -64,6 +79,13 @@ namespace GlobalTheory.AscFin.SplitX
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, x, hx, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨α, hα, x * π, hM x hx, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply, rat, Matrix.map_apply, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 α ⊗ₜ[D.host.F] x i k) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] π k j) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Consider the case `zero => rw [Matrix.zero_mul]`.
+
+Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [Matrix.add_mul]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [Matrix.neg_mul]`. Conclude with `neg_mem ha`.
+-/
 theorem hatMx_mul {m n : ℕ} {M : Submodule (𝓞 D.host.E) (Matrix (Fin m) (Fin n) D.host.E)} (π : Matrix (Fin n) (Fin n) D.host.E)
     (hM : ∀ x ∈ M, x * π ∈ M) {z : Mx D m n} (hz : z ∈ hatMx M) : z ⬝ rat π ∈ hatMx M := by
   induction hz using AddSubgroup.closure_induction with
@@ -79,6 +101,11 @@ theorem hatMx_mul {m n : ℕ} {M : Submodule (𝓞 D.host.E) (Matrix (Fin m) (Fi
   | add a b _ _ ha hb => rw [Matrix.add_mul]; exact add_mem ha hb
   | neg a _ ha => rw [Matrix.neg_mul]; exact neg_mem ha
 
+/- English proof (translation)
+Introduce `x hx`. Use `Submodule.smul_induction_on hx (fun r hr n hn => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul]`. Use `Submodule.smul_mem_smul hr (fun y hy => ?_)` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`.
+
+Conclude with `hn _ (hπ y hy)`. Rewrite using `[Matrix.add_mul]`. Conclude with `add_mem hx hy`.
+-/
 theorem smul_homLat_mul {m n : ℕ} (I : Ideal (𝓞 D.host.E)) {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} (π : Matrix (Fin n) (Fin n) D.host.E) (hπ : ∀ y ∈ Λ, π *ᵥ y ∈ Λ) :
     ∀ x ∈ I • homLat Λ Λ', x * π ∈ I • homLat Λ Λ' := by
@@ -94,6 +121,13 @@ end GlobalTheory.AscFin.SplitX
 
 open GlobalTheory.AscFin.SplitX in
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM F hF σ h u hu`. Establish `hmono : ∀ v, MonoAt (F.dJ (σ + 1) h) (G.Λ (.grid (2 * (σ + 1) + 1) 0)) (G.Λ (.core (2 * (σ + 1) + 1))) v` using `fun v => (((GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hq T L μ0 hL sc G W M hM F hF).2.1 (σ + 1) h).2.1 v).2`. Establish `hV : IsSelfDualC (G.V (.grid (2 * (σ + 1) + 1) 0)) (G.Λ (.grid (2 * (σ + 1) + 1) 0))` using `(G.sp.V_is (2 * (σ + 1) + 1) 0 (by omega) (by omega) (Nat.zero_le _)).sd`. Establish `hW : IsSelfDualC (G.V (.grid (2 * σ + 2) 0)) (G.Λ (.grid (2 * σ + 2) 0))` using `(G.sp.V_is (2 * σ + 2) 0 (by omega) (by omega) (Nat.zero_le _)).sd`. Establish `hπ` using `proj_mem (F.dJ (σ + 1) h) hV.1 hmono`.
+
+Establish `hext : (F.dJ (σ + 1) h).extX (G.V (.grid (2 * σ + 2) 0)) (u ⬝ (F.dJ (σ + 1) h).jX) = u ⬝ rat ((F.dJ (σ + 1) h).e * (F.dJ (σ + 1) h).qX)`. Rewrite using `[HypDec.extX_apply, rat_mul, Matrix.mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[hext]`. Use `⟨GlobalTheory.AscFinWit.latO_right (GlobalTheory.ChiGrid.isSelfDualC_neg hV) (GlobalTheory.ChiGrid.isSelfDualC_neg hV) hW _ hπ hu.1, fun e he => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.smul_mul]`. Conclude with `hatMx_mul _ (smul_homLat_mul _ _ hπ) (hu.2 e he)`.
+-/
 theorem GlobalTheory.AscFin.SplitX.latRow_extX : OnStd fun {D} _ _ {sc} {G} _ F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m), ∀ u ∈ latRow G (2 * σ + 2), (F.dJ (σ + 1) h).extX _ (u ⬝ (F.dJ (σ + 1) h).jX) ∈ latRow G (2 * σ + 2) := by
   intro D hq T L μ0 hL sc G W M hM F hF σ h u hu
   have hmono : ∀ v, MonoAt (F.dJ (σ + 1) h) (G.Λ (.grid (2 * (σ + 1) + 1) 0)) (G.Λ (.core (2 * (σ + 1) + 1))) v :=

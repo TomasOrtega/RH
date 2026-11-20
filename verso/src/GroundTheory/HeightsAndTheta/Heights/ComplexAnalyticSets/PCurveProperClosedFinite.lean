@@ -6,6 +6,13 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial ComplexSets Filter Topology
 
+/- English proof (translation)
+Set `a : PrimeSpectrum.zeroLocus (R` to `R) (W : Set R) := ⟨⟨W, hW⟩, (PrimeSpectrum.mem_zeroLocus _ _).2 le_rfl⟩`. Set `b : PrimeSpectrum.zeroLocus (R` to `R) (W : Set R) := ⟨⟨P, hP⟩, (PrimeSpectrum.mem_zeroLocus _ _).2 hWP.le⟩`. Set `c : PrimeSpectrum.zeroLocus (R` to `R) (W : Set R) := ⟨⟨Q, hQ⟩, (PrimeSpectrum.mem_zeroLocus _ _).2 (hWP.trans hPQ).le⟩`. Establish `hab : a < b` using `hWP`. Establish `hbc : b < c` using `hPQ`.
+
+Set `p0 : LTSeries (PrimeSpectrum.zeroLocus (R` to `R) (W : Set R)) := RelSeries.singleton _ a`. Establish `h2` using `Order.LTSeries.length_le_krullDim ((p0.snoc b hab).snoc c hbc)`. Rewrite `h2` using `[← ringKrullDim_quotient, hdim]`. Establish `hl : ((p0.snoc b hab).snoc c hbc).length = 2`. Both sides reduce to the same expression.
+
+Rewrite `h2` using `[hl]`. Evaluate the numerical expressions using `at h2`.
+-/
 theorem CurveProperClosedFinite.no_chain_two {R : Type*} [CommRing R] {W P Q : Ideal R}
     (hW : W.IsPrime) (hP : P.IsPrime) (hQ : Q.IsPrime) (hdim : ringKrullDim (R ⧸ W) = 1)
     (hWP : W < P) (hPQ : P < Q) : False := by
@@ -25,6 +32,17 @@ theorem CurveProperClosedFinite.no_chain_two {R : Type*} [CommRing R] {W P Q : I
   rw [hl] at h2
   norm_num at h2
 
+/- English proof (translation)
+Introduce `n W K hW hdim hK`. Set `m : (Fin n → ℂ) → Ideal (MvPolynomial (Fin n) ℂ)` to `fun x => RingHom.ker (eval x)`. Establish `hinj : Function.Injective m`. Introduce `x y hxy`. Use function extensionality and compare the values at `i`.
+
+Establish `hx : X i - C (x i) ∈ m x` using `by simp [m, RingHom.mem_ker]`. Establish `hy : X i - C (x i) ∈ m y` using `hxy ▸ hx`. Establish `hy' : y i - x i = 0` using `by simpa [m, RingHom.mem_ker] using hy`. Conclude with `(sub_eq_zero.1 hy').symm`. Establish `hsub : m '' (zeroSet W ∩ zeroSet K) ⊆ (W ⊔ K).minimalPrimes`.
+
+Introduce and unpack `_ ⟨x, ⟨hxW, hxK⟩, rfl⟩`. Establish `hmax : (m x).IsMaximal` using `RingHom.ker_isMaximal_of_surjective (eval x) (fun c => ⟨C c, by simp⟩)`. Establish `hle : W ⊔ K ≤ m x` using `sup_le (fun q hq => hxW q hq) (fun q hq => hxK q hq)`. Use `⟨⟨hmax.isPrime, hle⟩, fun Q ⟨hQ, hJQ⟩ hQm => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hmQ`.
+
+Establish `hWQ : W < Q`. Use `lt_of_le_of_ne (le_sup_left.trans hJQ) ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hK (le_sup_right.trans hJQ)`. Conclude with `CurveProperClosedFinite.no_chain_two hW hQ hmax.isPrime hdim hWQ (lt_of_le_of_ne hQm (fun h => hmQ (h ▸ le_rfl)))`.
+
+Conclude with `Set.Finite.of_finite_image ((Ideal.finite_minimalPrimes_of_isNoetherianRing _ _).subset hsub) hinj.injOn`.
+-/
 theorem CurveProperClosedFinite.proof : CurveProperClosedFinite.Statement := by
   intro n W K hW hdim hK
   let m : (Fin n → ℂ) → Ideal (MvPolynomial (Fin n) ℂ) := fun x => RingHom.ker (eval x)

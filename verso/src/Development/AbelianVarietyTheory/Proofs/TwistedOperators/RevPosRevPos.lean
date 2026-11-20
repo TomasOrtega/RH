@@ -40,6 +40,11 @@ def LowKilled (θ : InfFam D) (V : HSp D) (B : D.what₂.Tau → Matrix (Fin V.r
 def revPos {n : ℕ} (p : ℕ) (a : Fin n) : Fin n :=
   if h : (a : ℕ) < p ∧ p ≤ n then ⟨p - 1 - a, by omega⟩ else a
 
+/- English proof (translation)
+Distinguish the cases in `h : (a : ℕ) < p ∧ p ≤ n`. Establish `h' : p - 1 - (a : ℕ) < p ∧ p ≤ n` using `⟨by omega, h.2⟩`. Use `ext`. Simplify using `only [revPos, dif_pos h, Fin.val_mk, dif_pos h']`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [revPos, dif_neg h]`.
+-/
 theorem revPos_revPos {n : ℕ} (p : ℕ) (a : Fin n) : revPos p (revPos p a) = a := by
   by_cases h : (a : ℕ) < p ∧ p ≤ n
   · have h' : p - 1 - (a : ℕ) < p ∧ p ≤ n := ⟨by omega, h.2⟩
@@ -73,9 +78,15 @@ def reW (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (x : WO (reS 
 def reF (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) : (WO S T → ℂ) →ₗ[ℂ] (WO (reS S b) T → ℂ) :=
   LinearMap.funLeft ℂ ℂ (reW S T b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reF_apply (b : Module.Basis (Fin S.rank) D.host.E S.V) (f : WO S T → ℂ) (x : WO (reS S b) T) :
     reF S T b f x = f (reW S T b x) := rfl
 
+/- English proof (translation)
+Rewrite using `[reF_apply]`. Use `congr 1`. Conclude with `Matrix.zero_mul _`.
+-/
 theorem reF_zero (b : Module.Basis (Fin S.rank) D.host.E S.V) (f : WO S T → ℂ) : reF S T b f 0 = f 0 := by
   rw [reF_apply]
   congr 1

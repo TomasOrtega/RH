@@ -21,6 +21,35 @@ open GlobalTheory.ClosedMatGroup
 
 variable {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
 
+/- English proof (translation)
+Set `_ : NormedAlgebra ℚ 𝔸` to `NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Take `⟨W, hW⟩` from `(lieSub S hc h1 hm).exists_isCompl`. Set `L` to `lieSub S hc h1 hm`. Set `d` to `Module.finrank ℝ L`. Set `bL` to `Module.finBasis ℝ L`.
+
+Set `Z : Fin d → 𝔸` to `fun i => (bL i : 𝔸)`. Establish `hZ : ∀ i, ∀ t : ℝ, NormedSpace.exp (t • Z i) ∈ S` using `fun i t => (bL i).2 t`. Set `c : 𝔸 →L[ℝ] (Fin d → ℝ)` to `LinearMap.toContinuousLinearMap (bL.equivFun.toLinearMap ∘ₗ L.projectionOnto W hW)`. Set `p : 𝔸 →L[ℝ] 𝔸` to `LinearMap.toContinuousLinearMap (L.projection W hW)`. Establish `hpc : ∀ z, ∑ i, c z i • Z i = p z`.
+
+Introduce `z`. Use `show ∑ i, (bL.equivFun (L.projectionOnto W hW z)) i • (bL i : 𝔸) = ((L.projectionOnto W hW z : L) : 𝔸)`. Use `conv_rhs => rw [← bL.sum_equivFun (L.projectionOnto W hW z)]`. Rewrite using `[Submodule.coe_sum]`. Both sides reduce to the same expression.
+
+Establish `hqW : ∀ z, z - p z ∈ W` using `fun z => by`. Establish `h` using `Submodule.projection_add_projection_eq_self hW z`. Establish `e : z - p z = W.projection _ hW.symm z`. Rewrite using `[sub_eq_iff_eq_add']`. Conclude with `h.symm`.
+
+Rewrite using `[e]`. Conclude with `Submodule.projection_apply_mem hW.symm z`. Set `P : 𝔸 → 𝔸` to `fun z => (List.ofFn fun i => NormedSpace.exp (c z i • Z i)).prod`. Set `Φ : 𝔸 → 𝔸` to `fun z => P z * NormedSpace.exp (z - p z)`. Establish `hexp : HasStrictFDerivAt NormedSpace.exp (1 : 𝔸 →L[ℝ] 𝔸) (0 : 𝔸)` using `hasStrictFDerivAt_exp_zero`.
+
+Establish `hf : ∀ i, HasStrictFDerivAt (fun z => NormedSpace.exp (c z i • Z i)) ((1 : 𝔸 →L[ℝ] 𝔸).comp (((ContinuousLinearMap.proj i).comp c).smulRight (Z i))) 0` using `fun i => HasStrictFDerivAt.comp (0 : 𝔸) (g := NormedSpace.exp) (by rw [map_zero, Pi.zero_apply, zero_smul]; exact hexp) (((ContinuousLinearMap.proj i).comp c).smulRight (Z i)).hasStrictFDerivAt`. Establish `hP` using `hasStrictFDerivAt_ofFn_prod d (fun i z => NormedSpace.exp (c z i • Z i)) _ 0 (fun i => by simp) hf`. Establish `h2 : HasStrictFDerivAt (fun z => NormedSpace.exp (z - p z)) ((1 : 𝔸 →L[ℝ] 𝔸).comp (ContinuousLinearMap.id ℝ 𝔸 - p)) 0` using `HasStrictFDerivAt.comp (0 : 𝔸) (f := fun z => z - p z) (by rw [map_zero, sub_zero]; exact hexp) (ContinuousLinearMap.id ℝ 𝔸 - p).hasStrictFDerivAt`. Establish `hP0 : P 0 = 1` using `by simp [P]`. Establish `h4 : HasStrictFDerivAt Φ ((ContinuousLinearEquiv.refl ℝ 𝔸 : 𝔸 ≃L[ℝ] 𝔸) : 𝔸 →L[ℝ] 𝔸) 0`.
+
+Use `(hP.mul' h2).congr_fderiv ?_` and prove the remaining obligations. Use `ext1 z`. Establish `e1 : (List.ofFn fun i => NormedSpace.exp ((0 : Fin d → ℝ) i • Z i)).prod = 1` using `by simp`. Simplify using `[e1, hpc]`. Establish `hΦ0 : Φ 0 = 1` using `by show P 0 * NormedSpace.exp (0 - p 0) = 1`.
+
+Rewrite using `[hP0, map_zero, sub_zero, NormedSpace.exp_zero, one_mul]`. Set `Ψ` to `h4.localInverse Φ _ 0`. Establish `hΨ : Tendsto Ψ (𝓝 1) (𝓝 0)`. Establish `h` using `h4.localInverse_tendsto`. Rewrite `h` using `[hΦ0]`.
+
+Conclude with `h`. Establish `hΨ1 : Ψ 1 = 0`. Establish `h` using `h4.localInverse_apply_image`. Rewrite `h` using `[hΦ0]`. Conclude with `h`.
+
+Establish `hΨd : HasFDerivAt Ψ (ContinuousLinearMap.id ℝ 𝔸) 1`. Establish `h` using `h4.to_localInverse.hasFDerivAt`. Rewrite `h` using `[hΦ0]`. Conclude with `h`. Establish `hR : ∀ᶠ X in 𝓝 (1 : 𝔸), Φ (Ψ X) = X`.
+
+Establish `h` using `h4.eventually_right_inverse`. Rewrite `h` using `[hΦ0]`. Conclude with `h`. Establish `hp0 : Tendsto p (𝓝 0) (𝓝 0)` using `by simpa using p.continuous.tendsto 0`. Establish `hq0 : Tendsto (fun z => z - p z) (𝓝 0) (𝓝 (0 : 𝔸))`.
+
+Simplify using `using (tendsto_id (x := 𝓝 (0 : 𝔸))).sub hp0`. Use `⟨d, Z, fun X => c (Ψ X), c, fun i => (bL i).2, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hΨ1, map_zero]`. Conclude with `c.hasFDerivAt.comp 1 hΨd`. Use `filter_upwards [hR, hΨ.eventually (hq0.eventually (eventually_eq_zero hc h1 hm hi hW.disjoint))] with X hX1 hX2 hXS`.
+
+Take `⟨Q, hQ, hQe⟩` from `exists_left_inv_ofFn_prod h1 hm d (fun i => c (Ψ X) i • Z i) (fun i => by rw [← neg_smul]; exact hZ i _)`. Establish `hE : NormedSpace.exp (Ψ X - p (Ψ X)) = Q * X` using `by conv_rhs => rw [← hX1] show _ = Q * ((List.ofFn fun i => NormedSpace.exp (c (Ψ X) i • Z i)).prod * NormedSpace.exp (Ψ X - p (Ψ X)))`. Rewrite using `[← mul_assoc, hQe, one_mul]`. Establish `hw` using `hX2 (hqW _) (by rw [hE]; exact hm _ hQ _ hXS)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hw, NormedSpace.exp_zero, mul_one]`.
+-/
 theorem exists_coords_deriv [FiniteDimensional ℝ 𝔸] {S : Set 𝔸} (hc : IsClosed S)
     (h1 : (1 : 𝔸) ∈ S) (hm : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S)
     (hi : ∀ Z : 𝔸, NormedSpace.exp Z ∈ S → NormedSpace.exp (-Z) ∈ S) :
@@ -109,6 +138,11 @@ theorem exists_coords_deriv [FiniteDimensional ℝ 𝔸] {S : Set 𝔸} (hc : Is
 
 omit [CompleteSpace 𝔸] in
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x _`. Simplify using `only [List.ofFn_zero, List.prod_nil]`. Conclude with `⟨contDiff_const, contDiff_const⟩`.
+
+Consider the case `succ k ih`. Introduce `x hx`. Take `⟨h1, h2⟩` from `ih (fun i => x i.succ) fun i => hx _`. Simplify using `only [List.ofFn_succ, List.prod_cons, mul_inv_rev, map_mul]`. Conclude with `⟨(hx 0).1.mul h1, h2.mul (hx 0).2⟩`.
+-/
 theorem contDiff_ofFn_prod {G X : Type} [Group G] [NormedAddCommGroup X] [NormedSpace ℝ X] (φ : G →* 𝔸) :
     ∀ (k : ℕ) (x : Fin k → X → G), (∀ i, ContDiff ℝ ∞ (fun t => φ (x i t)) ∧ ContDiff ℝ ∞ fun t => φ (x i t)⁻¹) →
       ContDiff ℝ ∞ (fun t => φ (List.ofFn fun i => x i t).prod) ∧
@@ -124,6 +158,11 @@ theorem contDiff_ofFn_prod {G X : Type} [Group G] [NormedAddCommGroup X] [Normed
 
 end Banach
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single`. Consider the case `exact _root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single`. Consider the case `(apply _root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single ..)`.
+-/
 theorem prod_ofFn_single {M : Type*} [Monoid M] : ∀ {d : ℕ} (g : Fin d → M) (j : Fin d),
     (∀ i, i ≠ j → g i = 1) → (List.ofFn g).prod = g j := by
   first
@@ -134,6 +173,9 @@ theorem prod_ofFn_single {M : Type*} [Monoid M] : ∀ {d : ℕ} (g : Fin d → M
   | (intros; apply @_root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ProductOfFnSingle.prod_ofFn_eq_single ..)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Finset.univ_sum_single v, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show Pi.single i (v i) = v i • (Pi.single i 1 : Fin k → ℝ) by rw [← Pi.single_smul', smul_eq_mul, mul_one], map_smul, Complex.real_smul]`.
+-/
 theorem clm_expand {k : ℕ} (L : (Fin k → ℝ) →L[ℝ] ℂ) (v : Fin k → ℝ) :
     L v = ∑ i, (v i : ℂ) * L (Pi.single i 1) := by
   conv_lhs => rw [← Finset.univ_sum_single v, map_sum]
@@ -141,6 +183,9 @@ theorem clm_expand {k : ℕ} (L : (Fin k → ℝ) →L[ℝ] ℂ) (v : Fin k → 
   rw [show Pi.single i (v i) = v i • (Pi.single i 1 : Fin k → ℝ) by rw [← Pi.single_smul', smul_eq_mul, mul_one],
     map_smul, Complex.real_smul]
 
+/- English proof (translation)
+Establish `hl : HasDerivAt (fun u : ℝ => t + u • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const v).const_add t`. Conclude with `HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) h hl (by simp)`.
+-/
 theorem hasDerivAt_dir {X Y : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] [NormedAddCommGroup Y] [NormedSpace ℝ Y]
     {Φ : X → Y} {L : X →L[ℝ] Y} {t : X} (h : HasFDerivAt Φ L t) (v : X) :
     HasDerivAt (fun u : ℝ => Φ (t + u • v)) (L v) 0 := by
@@ -148,6 +193,17 @@ theorem hasDerivAt_dir {X Y : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] [
     simpa using ((hasDerivAt_id (0 : ℝ)).smul_const v).const_add t
   exact HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) h hl (by simp)
 
+/- English proof (translation)
+Establish `key : ∀ l x₀, HasFDerivAt (fun x => ∫ θ in p..q, φ l x θ) (∑ j, (∫ θ in p..q, φ (nxt j l) x₀ θ) • a j x₀) x₀`. Introduce `l x₀`. Use `choose C hC using fun j => hb (nxt j l) x₀`. Use `choose A hA using fun j => (isCompact_closedBall x₀ 1).exists_bound_of_continuousOn (ha j).continuous.continuousOn`. Establish `hc' : ∀ x, Continuous fun θ => ∑ j, φ (nxt j l) x θ • a j x` using `fun x => continuous_finset_sum _ fun j _ => (hc _ x).smul continuous_const`.
+
+Establish `h` using `intervalIntegral.hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := volume) (a := p) (b := q) (F := φ l) (F' := fun x θ => ∑ j, φ (nxt j l) x θ • a j x) (x₀ := x₀) (bound := fun _ => ∑ j, C j * A j) (Metric.closedBall_mem_nhds x₀ one_pos) (Eventually.of_forall fun x => (hc l x) …`. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul (hC j x hx θ) (hA j x hx) (norm_nonneg _) ((norm_nonneg _).trans (hC j x hx θ))))`. Use `intervalIntegrable_const (ae_of_all _ fun θ _ x _ => hd l x θ)`. Rewrite `h` using `[intervalIntegral.integral_finset_sum (f := fun j θ => φ (nxt j l) x₀ θ • a j x₀) fun j _ => ((hc _ x₀).smul continuous_const).intervalIntegrable _ _]`.
+
+Simplify `h` using `only [intervalIntegral.integral_smul_const]`. Establish `ind : ∀ m : ℕ, ∀ l, ContDiff ℝ m fun x => ∫ θ in p..q, φ l x θ`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro l`.
+
+Conclude with `contDiff_zero.2 (continuous_iff_continuousAt.2 fun x => (key l x).continuousAt)`. Consider the case `succ m ih`. Introduce `l`. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_fderiv]`. Use `⟨fun x => (key l x).differentiableAt, by simp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show fderiv ℝ (fun x => ∫ θ in p..q, φ l x θ) = fun x₀ => ∑ j, (∫ θ in p..q, φ (nxt j l) x₀ θ) • a j x₀ from`. Use function extensionality and compare the values at `fun x => (key l x).fderiv]`. Conclude with `ContDiff.sum fun j _ => (ih _).smul ((ha j).of_le (by exact_mod_cast le_top))`. Conclude with `contDiff_infty.2 fun m => ind m l`.
+-/
 theorem contDiff_integral_of_closed {k : ℕ} {Λ ι : Type} [Fintype ι] (nxt : ι → Λ → Λ)
     (φ : Λ → (Fin k → ℝ) → ℝ → ℂ) (a : ι → (Fin k → ℝ) → ((Fin k → ℝ) →L[ℝ] ℂ)) (ha : ∀ j, ContDiff ℝ ∞ (a j))
     (hc : ∀ l x, Continuous (φ l x))
@@ -186,6 +242,17 @@ theorem contDiff_integral_of_closed {k : ℕ} {Λ ι : Type} [Fintype ι] (nxt :
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Set `S` to `{X : Matrix (Fin m) (Fin m) ℂ | Xᴴ * A * X = A}`. Establish `hc : IsClosed S` using `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Establish `h1 : (1 : Matrix (Fin m) (Fin m) ℂ) ∈ S` using `by simp [S]`. Establish `hm : ∀ a ∈ S, ∀ b ∈ S, a * b ∈ S`. Introduce `a ha b hb`.
+
+Simplify using `only [S, Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hi : ∀ Z : Matrix (Fin m) (Fin m) ℂ, NormedSpace.exp Z ∈ S → NormedSpace.exp (-Z) ∈ S`. Introduce `Z hZ`.
+
+Simplify using `only [S, Set.mem_setOf_eq] at hZ ⊢`. Establish `hXY : NormedSpace.exp Z * NormedSpace.exp (-Z) = 1`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.refl Z).neg_right, add_neg_cancel, NormedSpace.exp_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hZ]`.
+
+Use `_ = (NormedSpace.exp Z * NormedSpace.exp (-Z))ᴴ * A * (NormedSpace.exp Z * NormedSpace.exp (-Z)) := by`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = A := by rw [hXY]; simp`. Establish `_ : CompleteSpace (Matrix (Fin m) (Fin m) ℂ)` using `FiniteDimensional.complete ℝ _`.
+
+Take `⟨d, Z, s, c, hZ, hs, hd, hev⟩` from `exists_coords_deriv hc h1 hm hi`. Conclude with `⟨d, Z, s, c, fun i => GlobalTheory.ClosedMatGroup.skew_of_exp_smul_mem A (Z i) (hZ i), hs, hd, hev⟩`.
+-/
 theorem coords_unitary {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) : ∃ (d : ℕ)
     (Z : Fin d → Matrix (Fin m) (Fin m) ℂ) (s : Matrix (Fin m) (Fin m) ℂ → Fin d → ℝ)
     (c : Matrix (Fin m) (Fin m) ℂ →L[ℝ] (Fin d → ℝ)),
@@ -225,11 +292,35 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open GlobalTheory.Orb (archMat)
 open GlobalTheory.UAut (IsSm)
 
+/- English proof (translation)
+Use `(GlobalTheory.CircleDop.realLine_hom h hγ).1 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+-/
 theorem realLine_zero (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) : γ 0 = 1 := by
   have := (GlobalTheory.CircleDop.realLine_hom h hγ).1 0 0
   rw [add_zero] at this
   exact mul_eq_left.1 this.symm
 
+/- English proof (translation)
+Use `set A : Matrix (Fin n) (Fin n) ℂ := J.map τ.1 with hA`. Take `⟨d, Z, s, c, hZ, hs, hsd, hev⟩` from `coords_unitary A`. Establish `hd : IsUnit A.det`. Rewrite using `[hA, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(IsUnit.mk0 _ hJ.2).map _`.
+
+Establish `hx : ∀ (i : Fin d) (t : ℝ), ∃ y : GArch σ J w, archMat σ J τ y = NormedSpace.exp (t • Z i)`. Introduce `i t`. Take `⟨u, hu⟩` from `Matrix.isUnit_exp (t • Z i)`. Establish `h1` using `GlobalTheory.SmoothForms.exp_mem_UH (X := t • Z i) hd (by`. Rewrite using `[Matrix.conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hZ i, smul_zero])`.
+
+Use `⟨(archEquiv J h τ).symm ⟨u, show _ * _ * _ = _ from hu ▸ h1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Orb.archMat_eq_archEquiv J h, MulEquiv.apply_symm_apply]`. Conclude with `hu`. Use `choose x hx using hx`. Establish `hS : ∀ g : GArch σ J w, (archMat σ J τ g)ᴴ * A * archMat σ J τ g = A` using `fun g => (archEquiv J h τ g).2`.
+
+Establish `hinj : Function.Injective (archMat σ J τ)` using `fun a b e => (GlobalTheory.Orb.isEmbedding_archMat J h τ).injective (by show (fun i j => archMat σ J τ a i j) = fun i j => archMat σ J τ b i j`. Rewrite using `[e])`. Set `η : Fin d → ℝ → GAd σ J` to `fun i t => embArch σ J w (x i t)`. Establish `hη : ∀ i, IsRealLine σ J (η i)` using `fun i => ⟨w, τ, Z i, hZ i, fun t => ⟨x i t, rfl, hx i t⟩⟩`. Use `⟨d, η, c, hη, fun f hf g y M hy0 hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hy1 : archMat σ J τ (y 0) = 1` using `by rw [hy0, map_one]`. Set `Φ : (Fin d → ℝ) → ℂ` to `fun t => f (g * (List.ofFn fun i => η i (t i)).prod)`. Establish `hΦ : HasFDerivAt Φ (fderiv ℝ Φ 0) 0` using `((hf d η hη g).differentiable (by simp) 0).hasFDerivAt`. Establish `h1 : HasDerivAt (fun u => s (archMat σ J τ (y u))) (c M) 0` using `HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hsd hy hy1.symm`. Establish `h2 : HasDerivAt (fun u => Φ (s (archMat σ J τ (y u)))) (fderiv ℝ Φ 0 (c M)) 0` using `HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hΦ h1 (by rw [hy1, hs])`.
+
+Establish `h3 : ∀ i, fderiv ℝ Φ 0 (Pi.single i 1) = lineDer (η i) f g` using `fun i => by`. Rewrite using `[← (hasDerivAt_dir hΦ (Pi.single i 1)).deriv]`. Unfold `lineDer`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+
+Simplify using `only [Φ]`. Rewrite using `[prod_ofFn_single _ i fun j hj => by simp [Pi.single_eq_of_ne hj, realLine_zero h (hη j)]]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[clm_expand]`. Simplify using `only [h3] at h2`.
+
+Use `h2.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `ht : Tendsto (fun u => archMat σ J τ (y u)) (𝓝 0) (𝓝 1)` using `hy1 ▸ hy.continuousAt.tendsto`. Use `filter_upwards [ht.eventually hev] with u hu`. Establish `e1 : (List.ofFn fun i => η i (s (archMat σ J τ (y u)) i)).prod = embArch σ J w (List.ofFn fun i => x i (s (archMat σ J τ (y u)) i)).prod`. Rewrite using `[map_list_prod, List.map_ofFn]`.
+
+Both sides reduce to the same expression. Simplify using `only [Φ]`. Rewrite using `[e1]`. Use `congr 3`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[map_list_prod, List.map_ofFn]`. Use `(hu (hS _)).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `List.ofFn_inj.2 (funext fun i => (hx i _).symm)`.
+-/
 theorem exists_lines_curve (h : IsCMExt F E σ) (hJ : IsHermND σ J) (w : InfinitePlace F) (τ : EmbOver E w) :
     ∃ (d : ℕ) (η : Fin d → ℝ → GAd σ J) (c : Matrix (Fin n) (Fin n) ℂ →L[ℝ] (Fin d → ℝ)),
       (∀ i, IsRealLine σ J (η i)) ∧ ∀ f, IsSm σ J f → ∀ (g : GAd σ J) (y : ℝ → GArch σ J w)
@@ -289,6 +380,11 @@ theorem exists_lines_curve (h : IsCMExt F E σ) (hJ : IsHermND σ J) (w : Infini
   congr 1
   exact List.ofFn_inj.2 (funext fun i => (hx i _).symm)
 
+/- English proof (translation)
+Take `⟨hadd, hc⟩` from `GlobalTheory.CircleDop.realLine_hom h hγ`. Take `⟨Z, hZ⟩` from `GlobalTheory.OneParamMatrix.eq_exp_of_continuous_oneParameter (fun t => archMat σ J τ (projArch σ J w (γ t))) ((GlobalTheory.Orb.continuous_archMat σ J τ).comp ((continuous_projArch σ J w).comp hc)) (by simp only [realLine_zero h hγ, map_one]) (fun s t => by simp only [hadd, map_ …`. Simplify using `only [hZ]`. Establish `_ : CompleteSpace (Matrix (Fin n) (Fin n) ℂ)` using `FiniteDimensional.complete ℝ _`. Establish `he : ContDiff ℝ ∞ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _)` using `contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt`.
+
+Conclude with `he.comp (contDiff_id.smul contDiff_const)`.
+-/
 theorem contDiff_archMat_line (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) {w : InfinitePlace F}
     (τ : EmbOver E w) : ContDiff ℝ ∞ fun t => archMat σ J τ (projArch σ J w (γ t)) := by
   obtain ⟨hadd, hc⟩ := GlobalTheory.CircleDop.realLine_hom h hγ
@@ -302,6 +398,23 @@ theorem contDiff_archMat_line (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ 
     contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt
   exact he.comp (contDiff_id.smul contDiff_const)
 
+/- English proof (translation)
+Take `⟨w, τ, Z, -, hw⟩` from `hγ i`. Take `⟨d, η, c, hη, hc⟩` from `exists_lines_curve h hJ w τ`. Set `P : (Fin k → ℝ) → GAd σ J` to `fun t => (List.ofFn fun j => γ j (t j)).prod`. Set `φ : GAd σ J →* Matrix (Fin n) (Fin n) ℂ` to `(archMat σ J τ).comp (projArch σ J w)`. Take `⟨hm, hm'⟩` from `contDiff_ofFn_prod φ k (fun j (t : Fin k → ℝ) => γ j (t j)) fun j => ⟨(contDiff_archMat_line h (hγ j) τ).comp (contDiff_apply ℝ ℝ j), by`.
+
+Establish `e : ∀ u, (γ j u)⁻¹ = γ j (-u)` using `fun u => inv_eq_of_mul_eq_one_right (by`. Rewrite using `[← (GlobalTheory.CircleDop.realLine_hom h (hγ j)).1, add_neg_cancel, realLine_zero h (hγ j)])`. Simplify using `only [e]`. Conclude with `(contDiff_archMat_line h (hγ j) τ).comp (contDiff_apply ℝ ℝ j).neg⟩`. Set `e : Fin k → ℝ` to `Pi.single i 1`.
+
+Set `M : (Fin k → ℝ) → Matrix (Fin n) (Fin n) ℂ` to `fun t => φ (P t)⁻¹ * fderiv ℝ (fun t => φ (P t)) t e`. Establish `hM : ContDiff ℝ ∞ M` using `hm'.mul ((hm.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const)`. Use `⟨d, η, fun a t => c (M t) a, hη, fun a => (contDiff_apply ℝ ℝ a).comp (c.contDiff.comp hM), fun f hf g t => ?_⟩` and prove the remaining obligations. Establish `key` using `hc f hf (g * P t) (fun u => projArch σ J w ((P t)⁻¹ * P (t + u • e))) (M t) (by simp) (by`. Use `(hasDerivAt_dir ((hm.differentiable (by simp)) t).hasFDerivAt e).const_mul (φ (P t)⁻¹)` as an intermediate fact.
+
+Simplify using `only [← map_mul] at this`. Conclude with `this)`. Use `key using 3 with u` and compare the differences between its conclusion and the goal. Establish `aux : ∀ {H : Type} [Group H] (ψ : GAd σ J →* H), (∀ y, ψ (embArch σ J w y) = 1) → ψ ((P t)⁻¹ * P (t + u • e)) = 1` using `fun ψ hψ => by`. Rewrite using `[map_mul, map_inv, inv_mul_eq_one]`.
+
+Simplify using `only [P, map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Take `⟨y1, e1, -⟩` from `hw (t j)`. Take `⟨y2, e2, -⟩` from `hw ((t + u • e) j)`. Simplify using `only [Function.comp_apply, e1, e2, hψ]`. Simplify using `[e, Pi.single_eq_of_ne hj]`. Establish `e2 : embArch σ J w (projArch σ J w ((P t)⁻¹ * P (t + u • e))) = (P t)⁻¹ * P (t + u • e)`.
+
+Use `GAd_ext σ J (fun v => ?_) fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[projArch_embArch_self]`. Rewrite using `[projArch_embArch_ne σ J hv, aux _ (projArch_embArch_ne σ J hv)]`.
+
+Rewrite using `[aux (proj σ J v) (by simp)]; simp`. Rewrite using `[e2, mul_assoc, mul_inv_cancel_left]`.
+-/
 theorem exists_lines_partial (h : IsCMExt F E σ) (hJ : IsHermND σ J) {k : ℕ} {γ : Fin k → ℝ → GAd σ J}
     (hγ : ∀ i, IsRealLine σ J (γ i)) (i : Fin k) :
     ∃ (d : ℕ) (η : Fin d → ℝ → GAd σ J) (b : Fin d → (Fin k → ℝ) → ℝ),
@@ -347,6 +460,11 @@ theorem exists_lines_partial (h : IsCMExt F E σ) (hJ : IsHermND σ J) {k : ℕ}
     · rw [aux (proj σ J v) (by simp)]; simp
   rw [e2, mul_assoc, mul_inv_cancel_left]
 
+/- English proof (translation)
+Use `choose d η b hη hb hd using exists_lines_partial h hJ hγ`. Use `⟨Σ i, Fin (d i), inferInstance, fun j => η j.1 j.2, fun j t => b j.1 j.2 t • (Complex.ofRealCLM.comp (ContinuousLinearMap.proj j.1)), fun j => hη _ _, fun j => (hb _ _).smul contDiff_const, fun f hf g t => ?_⟩` and prove the remaining obligations. Establish `hD` using `((hf k γ hγ g).differentiable (by simp) t).hasFDerivAt`. Use `hD.congr_fderiv (Eq.symm (ContinuousLinearMap.ext fun v => ?_))` and prove the remaining obligations. Rewrite using `[clm_expand (fderiv ℝ _ t), ContinuousLinearMap.sum_apply, Fintype.sum_sigma]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(hasDerivAt_dir hD (Pi.single i 1)).unique (hd i f hf g t), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_lines_fderiv (h : IsCMExt F E σ) (hJ : IsHermND σ J) {k : ℕ} {γ : Fin k → ℝ → GAd σ J}
     (hγ : ∀ i, IsRealLine σ J (γ i)) :
     ∃ (ι : Type) (_ : Fintype ι) (δ : ι → ℝ → GAd σ J) (a : ι → (Fin k → ℝ) → ((Fin k → ℝ) →L[ℝ] ℂ)),
@@ -366,6 +484,21 @@ theorem exists_lines_fderiv (h : IsCMExt F E σ) (hJ : IsHermND σ J) {k : ℕ} 
   simp
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ H₀ s₀ r V hV hr hsub hH hμ j k γ hγ g`. Take `⟨ι, _, δ, a, hδ, ha, hd⟩` from `exists_lines_fderiv h hJ hγ`. Establish `hS : Metric.sphere s₀ r ⊆ V` using `Metric.sphere_subset_closedBall.trans hsub`. Establish `hmem : ∀ θ, circleMap s₀ r θ ∈ Metric.sphere s₀ r` using `fun θ => circleMap_mem_sphere s₀ hr.le θ`. Set `P : (Fin k → ℝ) → GAd σ J` to `fun t => (List.ofFn fun i => γ i (t i)).prod`.
+
+Establish `hP : Continuous P`. Simplify using `only [P, List.ofFn_eq_map]`. Conclude with `continuous_list_prod _ fun i _ => (GlobalTheory.CircleDop.realLine_hom h (hγ i)).2.comp (continuous_apply i)`. Set `c : ℝ → ℂ` to `fun θ => deriv (circleMap s₀ r) θ * (circleMap s₀ r θ - s₀) ^ j`. Establish `hc : Continuous c`.
+
+Establish `h1 : Continuous fun θ => deriv (circleMap s₀ r) θ`. Simplify using `only [deriv_circleMap]`. Conclude with `(continuous_circleMap 0 r).mul continuous_const`. Conclude with `h1.mul (((continuous_circleMap s₀ r).sub continuous_const).zpow₀ j fun θ => Or.inl (sub_ne_zero.2 (Metric.ne_of_mem_sphere (hmem θ) hr.ne')))`. Establish `hcb : ∀ θ, ‖c θ‖ = |r| * |r| ^ j` using `fun θ => by`.
+
+Simplify using `only [c, deriv_circleMap, norm_mul, norm_zpow, circleMap_sub_center, norm_circleMap_zero, Complex.norm_I, mul_one]`. Establish `W` using `fun l : {l : List (ℝ → GAd σ J) // ∀ γ ∈ l, IsRealLine σ J γ} => GlobalTheory.WeakHolFamily.word_holomorphic_and_uniform F E σ n J H₀ V (Metric.sphere s₀ r) hV (isCompact_sphere s₀ r) hS hH hμ l.1 l.2`. Establish `key` using `contDiff_integral_of_closed (Λ := {l : List (ℝ → GAd σ J) // ∀ γ ∈ l, IsRealLine σ J γ}) (fun i l => ⟨δ i :: l.1, List.forall_mem_cons.2 ⟨hδ i, l.2⟩⟩) (fun l t θ => c θ * l.1.foldr lineDer (H₀ (circleMap s₀ r θ)) (g * P t)) a ha (fun l t => hc.mul ((((W l).1 (g * P t)).continuous …`. Take `⟨N, C, hC⟩` from `(W l).2`. Establish `hh : Continuous fun t => C * (height σ J (g * P t) : ℝ) ^ N` using `continuous_const.mul ((NNReal.continuous_coe.comp ((continuous_height_GAd σ J).comp (continuous_const.mul hP))).pow N)`.
+
+Take `⟨B, hB⟩` from `(isCompact_closedBall t₀ 1).exists_bound_of_continuousOn hh.continuousOn`. Use `⟨|r| * |r| ^ j * B, fun t ht θ => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, hcb]`. Conclude with `mul_le_mul_of_nonneg_left ((hC _ (hmem θ) _).trans ((le_abs_self _).trans (hB t ht))) (by positivity))`. Use the proof step `(fun l t θ => by`.
+
+Establish `h1` using `(hd _ (GlobalTheory.WeakHolFamily.smoothLines_foldr (hH _ (hS (hmem θ))).smooth l.1 l.2) g t).const_mul (c θ)`. Rewrite `h1` using `[Finset.smul_sum]`. Simplify using `only [smul_smul] at h1`. Conclude with `h1)`. Use `0 (2 * Real.pi) ⟨[], by simp⟩`.
+
+Simplify using `only [c, mul_assoc] at key`. Conclude with `key`.
+-/
 theorem isSm_circleIntegral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (H₀ : ℂ → GAd σ J → ℂ) (s₀ : ℂ) (r : ℝ) (V : Set ℂ),
     IsOpen V → 0 < r → Metric.closedBall s₀ r ⊆ V → (∀ s ∈ V, IsSmoothModerate σ J (H₀ s)) →

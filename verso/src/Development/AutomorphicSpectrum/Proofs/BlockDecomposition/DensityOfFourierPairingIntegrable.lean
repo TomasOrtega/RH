@@ -13,6 +13,11 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
 
 def chf (m : Measure V) (ξ : V) : ℂ := ∫ y, Complex.exp (2 * π * I * ((⟪y, ξ⟫ : ℝ) : ℂ)) ∂m
 
+/- English proof (translation)
+Establish `h : (𝓕⁻ (𝓕 g)) y = g y` using `by rw [FourierTransform.fourierInv_fourier_eq]`. Rewrite using `[← h, SchwartzMap.fourierInv_coe, Real.fourierInv_eq']`. Use `integral_congr_ae (Filter.Eventually.of_forall fun ξ => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Use `congr 2`.
+
+Rewrite using `[real_inner_comm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schwartz_inv (g : 𝓢(V, ℂ)) (y : V) :
     g y = ∫ ξ, Complex.exp (2 * π * I * ((⟪y, ξ⟫ : ℝ) : ℂ)) * (𝓕 g) ξ := by
   have h : (𝓕⁻ (𝓕 g)) y = g y := by rw [FourierTransform.fourierInv_fourier_eq]
@@ -24,6 +29,9 @@ theorem schwartz_inv (g : 𝓢(V, ℂ)) (y : V) :
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[SchwartzMap.fourier_coe, Real.fourier_eq']`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[norm_smul, Complex.norm_exp_ofReal_mul_I, one_mul]`.
+-/
 theorem norm_fourier_le (g : 𝓢(V, ℂ)) (ξ : V) : ‖(𝓕 g) ξ‖ ≤ ∫ x, ‖g x‖ := by
   rw [SchwartzMap.fourier_coe, Real.fourier_eq']
   refine (norm_integral_le_integral_norm _).trans (le_of_eq ?_)
@@ -31,6 +39,13 @@ theorem norm_fourier_le (g : 𝓢(V, ℂ)) (ξ : V) : ‖(𝓕 g) ξ‖ ≤ ∫ 
   beta_reduce
   rw [norm_smul, Complex.norm_exp_ofReal_mul_I, one_mul]
 
+/- English proof (translation)
+Establish `hc : Continuous fun p : V × V => Complex.exp (2 * π * I * ((⟪p.1, p.2⟫ : ℝ) : ℂ)) * (𝓕 g) p.2`. Use `(𝓕 g).continuous` as an intermediate fact. Use `fun_prop`. Establish `hint : Integrable (fun p : V × V => Complex.exp (2 * π * I * ((⟪p.1, p.2⟫ : ℝ) : ℂ)) * (𝓕 g) p.2) (m.prod volume)`. Use `((𝓕 g).integrable (μ := volume)).norm.comp_snd m |>.mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations.
+
+Establish `: ‖Complex.exp (2 * π * I * ((⟪p.1, p.2⟫ : ℝ) : ℂ))‖ = 1`. Establish `: 2 * π * I * ((⟪p.1, p.2⟫ : ℝ) : ℂ) = ((2 * π * ⟪p.1, p.2⟫ : ℝ) : ℂ) * I` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`. Simplify using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun ξ => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[chf, integral_mul_const, mul_comm]`.
+-/
 theorem integral_schwartz_eq (m : Measure V) [IsFiniteMeasure m] (g : 𝓢(V, ℂ)) :
     ∫ y, g y ∂m = ∫ ξ, (𝓕 g) ξ * chf m ξ := by
   have hc : Continuous fun p : V × V => Complex.exp (2 * π * I * ((⟪p.1, p.2⟫ : ℝ) : ℂ)) * (𝓕 g) p.2 := by
@@ -54,6 +69,11 @@ theorem integral_schwartz_eq (m : Measure V) [IsFiniteMeasure m] (g : 𝓢(V, �
         beta_reduce
         rw [chf, integral_mul_const, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[integral_schwartz_eq]`. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => norm_nonneg _) (hi.norm.const_mul _) (Filter.Eventually.of_forall fun ξ => ?_)` and prove the remaining obligations. Use `beta_reduce`.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_fourier_le g ξ) (norm_nonneg _)`.
+-/
 theorem norm_integral_schwartz_le (m : Measure V) [IsFiniteMeasure m] (hi : Integrable (chf m)) (g : 𝓢(V, ℂ)) :
     ‖∫ y, g y ∂m‖ ≤ (∫ x, ‖g x‖) * ∫ ξ, ‖chf m ξ‖ := by
   rw [integral_schwartz_eq]
@@ -65,6 +85,25 @@ theorem norm_integral_schwartz_le (m : Measure V) [IsFiniteMeasure m] (hi : Inte
   rw [norm_mul]
   exact mul_le_mul_of_nonneg_right (norm_fourier_le g ξ) (norm_nonneg _)
 
+/- English proof (translation)
+Take `⟨K', hK', hKi, hKU'⟩` from `exists_compact_between hK hU hKU`. Take `⟨f, hf0, hf1, hf01⟩` from `exists_contMDiffMap_zero_one_of_isClosed (n := (⊤ : ℕ∞)) (𝓘(ℝ, V)) (isOpen_interior (s := K')).isClosed_compl hK.isClosed (s := (interior K')ᶜ) (t := K) (Set.disjoint_left.2 fun x hx hxK => hx (hKi hxK))`. Establish `hχ : ContDiff ℝ ∞ (f : V → ℝ)` using `f.contMDiff.contDiff`. Establish `hsupp : Function.support (f : V → ℝ) ⊆ K'`. Introduce `x hx`.
+
+Assume the negation of the conclusion as `hxK`. Conclude with `hx (hf0 (fun h => hxK (interior_subset h)))`. Establish `hcs : HasCompactSupport (f : V → ℝ)` using `HasCompactSupport.of_support_subset_isCompact hK' hsupp`. Establish `hcs' : HasCompactSupport fun z => ((f z : ℝ) : ℂ)` using `hcs.comp_left Complex.ofReal_zero`. Set `g : 𝓢(V, ℂ)` to `hcs'.toSchwartzMap (Complex.ofRealCLM.contDiff.comp hχ)`.
+
+Establish `hg : ∀ z, g z = ((f z : ℝ) : ℂ)` using `fun z => rfl`. Establish `hbound` using `norm_integral_schwartz_le m hi g`. Establish `hmono : Integrable (f : V → ℝ) m` using `(integrable_const (1 : ℝ)).mono' hχ.continuous.aestronglyMeasurable (Filter.Eventually.of_forall fun z => by`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (hf01 z).1]`. Conclude with `(hf01 z).2)`.
+
+Establish `hvol : Integrable (f : V → ℝ) volume` using `hχ.continuous.integrable_of_hasCompactSupport hcs`. Establish `h0 : ∀ z, 0 ≤ f z` using `fun z => (hf01 z).1`. Establish `hint : ∫ y, g y ∂m = ((∫ y, f y ∂m : ℝ) : ℂ)`. Simplify using `only [hg]`. Conclude with `integral_ofReal`.
+
+Establish `hnorm : ∫ x, ‖g x‖ = ∫ x, f x`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hg, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (h0 x)]`. Rewrite `hbound` using `[hint, hnorm, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (integral_nonneg h0)]`.
+
+Establish `e1 : m K ≤ ENNReal.ofReal (∫ y, f y ∂m)`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal hmono (Filter.Eventually.of_forall h0), ← lintegral_indicator_one hK.measurableSet]`. Use `lintegral_mono fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ K`. Simplify using `[hz, hf1 hz]`.
+
+Simplify using `[hz]`. Establish `e2 : ENNReal.ofReal (∫ y, f y) ≤ volume U`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal hvol (Filter.Eventually.of_forall h0), ← lintegral_indicator_one hU.measurableSet]`. Use `lintegral_mono fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ U`.
+
+Simplify `(hf01 z).2` using `[hz]`. Establish `: f z = 0`. Assume the negation of the conclusion as `h`. Conclude with `hz (hKU' (hsupp h))`. Simplify using `[hz, this]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (integral_nonneg h0), mul_comm]`. Use `_ ≤ _ := by gcongr`.
+-/
 theorem compact_le (m : Measure V) [IsFiniteMeasure m] (hi : Integrable (chf m)) {K U : Set V}
     (hK : IsCompact K) (hU : IsOpen U) (hKU : K ⊆ U) :
     m K ≤ ENNReal.ofReal (∫ ξ, ‖chf m ξ‖) * volume U := by
@@ -118,6 +157,11 @@ theorem compact_le (m : Measure V) [IsFiniteMeasure m] (hi : Integrable (chf m))
         rw [ENNReal.ofReal_mul (integral_nonneg h0), mul_comm]
     _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Establish `hC : ENNReal.ofReal (∫ ξ, ‖chf m ξ‖) ≠ ⊤` using `ENNReal.ofReal_ne_top`. Use `haveI : (ENNReal.ofReal (∫ ξ, ‖chf m ξ‖) • (volume : Measure V)).OuterRegular := Measure.OuterRegular.smul _ hC`. Rewrite using `[hY.measure_eq_iSup_isCompact]`. Use `iSup_le fun K => iSup_le fun hKY => iSup_le fun hK => ?_` and prove the remaining obligations. Establish `: ENNReal.ofReal (∫ ξ, ‖chf m ξ‖) * volume Y = (ENNReal.ofReal (∫ ξ, ‖chf m ξ‖) • (volume : Measure V)) Y`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, Y.measure_eq_iInf_isOpen]`. Use `le_iInf fun U => le_iInf fun hYU => le_iInf fun hU => ?_` and prove the remaining obligations. Simplify using `using compact_le m hi hK hU (hKY.trans hYU)`.
+-/
 theorem measure_le (m : Measure V) [IsFiniteMeasure m] (hi : Integrable (chf m)) {Y : Set V}
     (hY : MeasurableSet Y) : m Y ≤ ENNReal.ofReal (∫ ξ, ‖chf m ξ‖) * volume Y := by
   have hC : ENNReal.ofReal (∫ ξ, ‖chf m ξ‖) ≠ ⊤ := ENNReal.ofReal_ne_top
@@ -137,6 +181,29 @@ variable {T : Type} [AddCommGroup T] [Module ℝ T] [FiniteDimensional ℝ T] [T
   [IsTopologicalAddGroup T] [ContinuousSMul ℝ T] [T2Space T] [LocallyCompactSpace T]
   [SecondCountableTopology T] [MeasurableSpace T] [BorelSpace T]
 
+/- English proof (translation)
+Set `eC : T ≃L[ℝ] V` to `e.toContinuousLinearEquiv`. Establish `hDinj : Function.Injective B`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `u hu`. Conclude with `hB u fun v => by rw [hu]; rfl`.
+
+Set `D : T ≃ₗ[ℝ] Module.Dual ℝ T` to `LinearMap.linearEquivOfInjective B hDinj (Subspace.dual_finrank_eq).symm`. Set `L0 : V →ₗ[ℝ] T` to `D.symm.toLinearMap ∘ₗ ((innerₗ V).compl₂ e.toLinearMap)`. Establish `hL0 : ∀ ξ y, B (L0 ξ) y = ⟪ξ, e y⟫`. Introduce `ξ y`. Establish `h : B (L0 ξ) = (innerₗ V).compl₂ e.toLinearMap ξ` using `D.apply_symm_apply _`.
+
+Rewrite using `[h]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective L0`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `ξ hξ`.
+
+Establish `h` using `hL0 ξ (e.symm ξ)`. Rewrite `h` using `[hξ, map_zero, LinearMap.zero_apply, e.apply_symm_apply]`. Conclude with `inner_self_eq_zero.1 h.symm`. Set `L : V ≃ₗ[ℝ] T` to `LinearMap.linearEquivOfInjective L0 hinj e.finrank_eq.symm`. Set `LC : V ≃L[ℝ] T` to `L.toContinuousLinearEquiv`.
+
+Establish `hLC : ∀ ξ y, B (LC ξ) y = ⟪ξ, e y⟫` using `hL0`. Use `set G : T → ℂ := fun u => ∫ y, Complex.exp (2 * π * I * ((B u y : ℝ) : ℂ)) ∂m with hG`. Set `m' : Measure V` to `m.map eC`. Use `haveI : IsFiniteMeasure m' := Measure.isFiniteMeasure_map m _`. Establish `hchf : chf m' = fun ξ => G (LC ξ)`.
+
+Use function extensionality and compare the values at `ξ`. Rewrite using `[chf, integral_map eC.continuous.measurable.aemeasurable (by fun_prop)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hLC, real_inner_comm]`.
+
+Both sides reduce to the same expression. Establish `hint : Integrable (chf m')`. Establish `h1 : ((volume : Measure V).map LC).IsAddHaarMeasure` using `LC.isAddHaarMeasure_map _`. Establish `h2` using `Measure.isAddLeftInvariant_eq_smul ((volume : Measure V).map LC) ν`. Establish `h3 : Integrable G ((volume : Measure V).map LC)`.
+
+Rewrite using `[h2]`. Conclude with `hi.smul_measure_nnreal`. Establish `h4` using `(LC.toHomeomorph.measurableEmbedding.integrable_map_iff).1 h3`. Rewrite using `[hchf]`. Conclude with `h4`.
+
+Use `⟨ENNReal.ofReal (∫ ξ, ‖chf m' ξ‖) * (Measure.addHaarScalarFactor ((volume : Measure V).map eC.symm) ν : ℝ≥0∞), ?_, fun Y hY => ?_⟩` and prove the remaining obligations. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.coe_ne_top`. Establish `h1 : ((volume : Measure V).map eC.symm).IsAddHaarMeasure` using `eC.symm.isAddHaarMeasure_map _`. Establish `h2` using `Measure.isAddLeftInvariant_eq_smul ((volume : Measure V).map eC.symm) ν`. Establish `hY' : MeasurableSet (eC.symm ⁻¹' Y)` using `eC.symm.continuous.measurable hY`.
+
+Establish `h3 : m Y = m' (eC.symm ⁻¹' Y)`. Rewrite using `[Measure.map_apply eC.continuous.measurable hY']`. Use `congr 1`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+
+Establish `h4 : volume (eC.symm ⁻¹' Y) = (Measure.addHaarScalarFactor ((volume : Measure V).map eC.symm) ν : ℝ≥0∞) * ν Y`. Rewrite using `[← Measure.map_apply eC.symm.continuous.measurable hY]`. Conclude with `(congrArg (fun μ : Measure T => μ Y) h2).trans (Measure.nnreal_smul_coe_apply _ _ _)`. Rewrite using `[h3, mul_assoc, ← h4]`. Conclude with `measure_le m' hint hY'`.
+-/
 theorem density_of_fourier_pairing_integrable (e : T ≃ₗ[ℝ] V) (B : T →ₗ[ℝ] T →ₗ[ℝ] ℝ) (hB : ∀ u, (∀ v, B u v = 0) → u = 0)
     (m : Measure T) [IsFiniteMeasure m] (ν : Measure T) [ν.IsAddHaarMeasure]
     (hi : Integrable (fun u => ∫ y, Complex.exp (2 * π * I * ((B u y : ℝ) : ℂ)) ∂m) ν) :
@@ -199,6 +266,9 @@ theorem density_of_fourier_pairing_integrable (e : T ≃ₗ[ℝ] V) (B : T →�
   rw [h3, mul_assoc, ← h4]
   exact measure_le m' hint hY'
 
+/- English proof (translation)
+The claim follows from `density_of_fourier_pairing_integrable (V := EuclideanSpace ℝ (Fin (Module.finrank ℝ T))) (LinearEquiv.ofFinrankEq _ _ (by simp)) B hB m ν hi`.
+-/
 theorem density_of_pairing (B : T →ₗ[ℝ] T →ₗ[ℝ] ℝ) (hB : ∀ u, (∀ v, B u v = 0) → u = 0)
     (m : Measure T) [IsFiniteMeasure m] (ν : Measure T) [ν.IsAddHaarMeasure]
     (hi : Integrable (fun u => ∫ y, Complex.exp (2 * π * I * ((B u y : ℝ) : ℂ)) ∂m) ν) :
@@ -215,6 +285,23 @@ variable {T : Type} [AddCommGroup T] [Module ℝ T] [FiniteDimensional ℝ T] [T
   [SecondCountableTopology T] [MeasurableSpace T] [BorelSpace T]
   {X H : Type} [MeasurableSpace X] [MeasurableSpace H]
 
+/- English proof (translation)
+Establish `hΨq : Measurable fun x => Ψ (q x)` using `Ψ.measurable.comp hq`. Set `μP : Measure X` to `μ.withDensity fun x => (P x : ℝ≥0∞)`. Set `m : Measure T` to `μP.map fun x => Ψ (q x)`. Use `haveI : IsFiniteMeasure μP := isFiniteMeasure_withDensity hfin`. Use `haveI : IsFiniteMeasure m := Measure.isFiniteMeasure_map μP _`.
+
+Establish `hcont : ∀ u : T, Continuous fun y : T => Complex.exp (2 * π * I * ((B u y : ℝ) : ℂ))`. Introduce `u`. Establish `: Continuous fun y : T => B u y` using `(B u).continuous_of_finiteDimensional`. Use `fun_prop`. Establish `hG : ∀ b : H, ∫ y, Complex.exp (2 * π * I * ((B (Ψ b) y : ℝ) : ℂ)) ∂m = ∫ x, (P x : ℂ) * Complex.exp (2 * π * I * ((B (Ψ b) (Ψ (q x)) : ℝ) : ℂ)) ∂μ`.
+
+Introduce `b`. Rewrite using `[integral_map hΨq.aemeasurable (hcont _).aestronglyMeasurable, integral_withDensity_eq_integral_smul hP]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[NNReal.smul_def, Complex.real_smul]`.
+
+Establish `hint : Integrable (fun u => ∫ y, Complex.exp (2 * π * I * ((B u y : ℝ) : ℂ)) ∂m) (ν.map Ψ)`. Rewrite using `[Ψ.measurableEmbedding.integrable_map_iff]`. Use `hi.congr (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Conclude with `(hG b).symm`. Take `⟨C, hC, h⟩` from `density_of_pairing B hB m (ν.map Ψ) hint`.
+
+Use `⟨C, hC, fun Y hY => ?_⟩` and prove the remaining obligations. Establish `hY' : MeasurableSet (Ψ.symm ⁻¹' Y)` using `Ψ.symm.measurable hY`. Establish `h1` using `h _ hY'`. Rewrite `h1` using `[Measure.map_apply Ψ.measurable hY', Measure.map_apply hΨq hY']`. Establish `e1 : Ψ ⁻¹' (Ψ.symm ⁻¹' Y) = Y` using `by ext y; simp`.
+
+Establish `e2 : (fun x => Ψ (q x)) ⁻¹' (Ψ.symm ⁻¹' Y) = q ⁻¹' Y` using `by ext y; simp`. Rewrite `h1` using `[e1, e2]`. Use `le_trans ?_ h1` and prove the remaining obligations. Establish `hYq : MeasurableSet (q ⁻¹' Y)` using `hq hY`. Rewrite using `[withDensity_apply _ hYq, ← lintegral_indicator hYq]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ {x | 1 ≤ P x} ∩ q ⁻¹' Y`. Establish `hx1 : (1 : ℝ≥0∞) ≤ P x` using `by exact_mod_cast hx.1`. Simplify `hx1` using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx.2]`.
+
+Simplify using `[Set.indicator_of_notMem hx]`.
+-/
 theorem density_transport (B : T →ₗ[ℝ] T →ₗ[ℝ] ℝ) (hB : ∀ u, (∀ v, B u v = 0) → u = 0)
     (μ : Measure X) (ν : Measure H) (Ψ : H ≃ᵐ T) (hν : (ν.map Ψ).IsAddHaarMeasure)
     (q : X → H) (hq : Measurable q) (P : X → ℝ≥0) (hP : Measurable P)
@@ -273,6 +360,9 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch
 instance moduleHermC (n : ℕ) : Module ℝ (hermC n) :=
   inferInstanceAs (Module ℝ (selfAdjoint (Matrix (Fin n) (Fin n) ℂ)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_smul_hermC {n : ℕ} (r : ℝ) (b : hermC n) :
     ((r • b : hermC n) : Matrix (Fin n) (Fin n) ℂ) = r • (b : Matrix (Fin n) (Fin n) ℂ) := rfl
 
@@ -287,6 +377,9 @@ instance finiteHermC (n : ℕ) : FiniteDimensional ℝ (hermC n) :=
 instance contSMulHermC (n : ℕ) : ContinuousSMul ℝ (hermC n) :=
   ⟨Continuous.subtype_mk (continuous_fst.smul (continuous_subtype_val.comp continuous_snd)) _⟩
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h : A j i = (starRingEnd ℂ) (A i j)`. Simplify `(congrFun (congrFun hA j) i).symm` using `[Matrix.conjTranspose_apply]`. Rewrite using `[h, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+-/
 theorem re_trace_mul_self {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
     (Matrix.trace (A * A)).re = ∑ i, ∑ j, ‖A i j‖ ^ 2 := by
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Complex.re_sum]
@@ -313,10 +406,20 @@ def pairC (n : ℕ) (c : W → ℝ) : (W → hermC n) →ₗ[ℝ] (W → hermC n
       refine Finset.sum_congr rfl fun w _ => ?_
       ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairC_apply (n : ℕ) (c : W → ℝ) (u v : W → hermC n) :
     pairC n c u v = ∑ w, c w * (Matrix.trace ((u w : Matrix (Fin n) (Fin n) ℂ) *
       (v w : Matrix (Fin n) (Fin n) ℂ))).re := rfl
 
+/- English proof (translation)
+Establish `h1` using `h fun w => (c w)⁻¹ • u w`. Establish `h2 : ∑ w, ∑ i, ∑ j, ‖(u w : Matrix (Fin n) (Fin n) ℂ) i j‖ ^ 2 = 0`. Rewrite using `[← h1, pairC_apply]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[coe_smul_hermC, Matrix.mul_smul, Matrix.trace_smul, Complex.real_smul, Complex.re_ofReal_mul, ← mul_assoc, mul_inv_cancel₀ (hc w), one_mul, re_trace_mul_self (mem_hermC.1 (u w).2)]`.
+
+Establish `hnn : ∀ w ∈ Finset.univ, 0 ≤ ∑ i, ∑ j, ‖(u w : Matrix (Fin n) (Fin n) ℂ) i j‖ ^ 2` using `fun w _ => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => by positivity`. Use function extensionality and compare the values at `w`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 h2 w (Finset.mem_univ w)`.
+
+Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => Finset.sum_nonneg fun j _ => by positivity).1 h3 i (Finset.mem_univ i)`. Establish `h5` using `(Finset.sum_eq_zero_iff_of_nonneg fun j _ => by positivity).1 h4 j (Finset.mem_univ j)`. Simplify using `using h5`.
+-/
 theorem pairC_nondeg {n : ℕ} {c : W → ℝ} (hc : ∀ w, c w ≠ 0) (u : W → hermC n)
     (h : ∀ v, pairC n c u v = 0) : u = 0 := by
   have h1 := h fun w => (c w)⁻¹ • u w

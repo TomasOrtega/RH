@@ -19,6 +19,15 @@ def colsTo (j : Fin n) : Matrix (Fin n) (Fin n) F := diagonal fun c => if c ≤ 
 noncomputable def llRank (i j : Fin n) (g : GL (Fin n) F) : ℕ :=
   (rowsFrom i * (g : Matrix (Fin n) (Fin n) F) * colsTo j).rank
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hk`. Take `⟨V, U, e, -, -, hVU⟩` from `exists_rank_normal_form M`. Set `f : Fin k → m` to `fun a => e.symm (Sum.inl (Fin.castLE hk a))`. Use `⟨V.submatrix f id, U.submatrix id f, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : V.submatrix f id * M * U.submatrix id f = (V * M * U).submatrix f f`. Rewrite using `[submatrix_mul _ _ f id f Function.bijective_id, submatrix_mul _ _ f id id Function.bijective_id, submatrix_id_id]`. Establish `h2 : (V * M * U).submatrix f f = 1`. Rewrite using `[hVU, submatrix_submatrix]`. Use extensionality with `a b`.
+
+Simplify using `[f, Matrix.one_apply, Fin.castLE_inj]`. Rewrite using `[h1, h2, det_one]`. Conclude with `one_ne_zero`. Introduce and unpack `⟨A, B, hAB⟩`. Establish `h` using `rank_of_det_ne_zero hAB`.
+
+Rewrite `h` using `[Fintype.card_fin]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_rank_iff_exists_det_ne_zero {m : Type*} [Fintype m] [DecidableEq m]
     (M : Matrix m m F) (k : ℕ) :
     k ≤ M.rank ↔ ∃ (A : Matrix (Fin k) m F) (B : Matrix m (Fin k) F), (A * M * B).det ≠ 0 := by
@@ -43,6 +52,9 @@ theorem le_rank_iff_exists_det_ne_zero {m : Type*} [Fintype m] [DecidableEq m]
       _ ≤ (A * M).rank := rank_mul_le_left _ _
       _ ≤ M.rank := rank_mul_le_right _ _
 
+/- English proof (translation)
+Use `rank_le_card_width (rowsFrom i * (g : Matrix (Fin n) (Fin n) F) * colsTo j)` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Then use the resulting hypothesis.
+-/
 theorem llRank_le (i j : Fin n) (g : GL (Fin n) F) : llRank i j g ≤ n := by
   have := rank_le_card_width (rowsFrom i * (g : Matrix (Fin n) (Fin n) F) * colsTo j)
   rwa [Fintype.card_fin] at this
@@ -51,6 +63,11 @@ section Topology
 
 variable [TopologicalSpace F] [IsTopologicalRing F] [T1Space F]
 
+/- English proof (translation)
+Establish `e : {g : GL (Fin n) F | k ≤ llRank i j g} = ⋃ (A : Matrix (Fin k) (Fin n) F) (B : Matrix (Fin n) (Fin k) F), {g | (A * (rowsFrom i * (g : Matrix (Fin n) (Fin n) F) * colsTo j) * B).det ≠ 0}`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iUnion, llRank]`. Conclude with `le_rank_iff_exists_det_ne_zero _ k`. Rewrite using `[e]`.
+
+Use `isOpen_iUnion fun A => isOpen_iUnion fun B => ?_` and prove the remaining obligations. Establish `hc : Continuous fun g : GL (Fin n) F => (A * (rowsFrom i * (g : Matrix (Fin n) (Fin n) F) * colsTo j) * B).det` using `((continuous_const.matrix_mul ((continuous_const.matrix_mul Units.continuous_val).matrix_mul continuous_const)).matrix_mul continuous_const).matrix_det`. Conclude with `isOpen_compl_singleton.preimage hc`.
+-/
 theorem isOpen_setOf_le_llRank (i j : Fin n) (k : ℕ) :
     IsOpen {g : GL (Fin n) F | k ≤ llRank i j g} := by
   have e : {g : GL (Fin n) F | k ≤ llRank i j g} =
@@ -67,12 +84,20 @@ theorem isOpen_setOf_le_llRank (i j : Fin n) (k : ℕ) :
       continuous_const)).matrix_mul continuous_const).matrix_det
   exact isOpen_compl_singleton.preimage hc
 
+/- English proof (translation)
+Simplify using `only [Set.ofPred_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_setOf_le_llRank i j (r i j)`.
+-/
 theorem isOpen_setOf_forall_le_llRank (r : Fin n → Fin n → ℕ) :
     IsOpen {g : GL (Fin n) F | ∀ i j, r i j ≤ llRank i j g} := by
   simp only [Set.ofPred_forall]
   exact isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j =>
     isOpen_setOf_le_llRank i j (r i j)
 
+/- English proof (translation)
+Simplify using `only [Set.ofPred_forall]`. Use `isClosed_iInter fun i => isClosed_iInter fun j => ?_` and prove the remaining obligations. Establish `: {g : GL (Fin n) F | llRank i j g ≤ r i j} = {g | r i j + 1 ≤ llRank i j g}ᶜ`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_compl_iff, not_le]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`. Conclude with `(isOpen_setOf_le_llRank i j (r i j + 1)).isClosed_compl`.
+-/
 theorem isClosed_setOf_forall_llRank_le (r : Fin n → Fin n → ℕ) :
     IsClosed {g : GL (Fin n) F | ∀ i j, llRank i j g ≤ r i j} := by
   simp only [Set.ofPred_forall]
@@ -86,6 +111,9 @@ theorem isClosed_setOf_forall_llRank_le (r : Fin n → Fin n → ℕ) :
 
 end Topology
 
+/- English proof (translation)
+Simplify using `only [rowsFrom, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `r`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem rowsFrom_mul_self (i : Fin n) :
     rowsFrom i * rowsFrom i = (rowsFrom i : Matrix (Fin n) (Fin n) F) := by
   simp only [rowsFrom, diagonal_mul_diagonal]
@@ -93,6 +121,9 @@ theorem rowsFrom_mul_self (i : Fin n) :
   funext r
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [colsTo, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `r`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem colsTo_mul_self (j : Fin n) :
     colsTo j * colsTo j = (colsTo j : Matrix (Fin n) (Fin n) F) := by
   simp only [colsTo, diagonal_mul_diagonal]
@@ -100,6 +131,11 @@ theorem colsTo_mul_self (j : Fin n) :
   funext r
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `r c`. Simplify using `only [rowsFrom, diagonal_mul, mul_diagonal]`. Apply the tactic sequence `by_cases h1 : i ≤ r <;> by_cases h2 : i ≤ c`. Simplify using `[h1, h2]`. Rewrite using `[hb (show id c < id r from lt_of_lt_of_le (not_le.1 h2) h1)]`.
+
+Simplify using the standard rewrite rules. Simplify using `[h1]`. Simplify using `[h1]`.
+-/
 theorem rowsFrom_mul_mul_rowsFrom {b : Matrix (Fin n) (Fin n) F} (hb : b.IsUpperTriangular)
     (i : Fin n) : rowsFrom i * b * rowsFrom i = rowsFrom i * b := by
   ext r c
@@ -111,6 +147,11 @@ theorem rowsFrom_mul_mul_rowsFrom {b : Matrix (Fin n) (Fin n) F} (hb : b.IsUpper
   · simp [h1]
   · simp [h1]
 
+/- English proof (translation)
+Use extensionality with `r c`. Simplify using `only [colsTo, diagonal_mul, mul_diagonal]`. Apply the tactic sequence `by_cases h1 : r ≤ j <;> by_cases h2 : c ≤ j`. Simplify using `[h1, h2]`. Simplify using `[h2]`.
+
+Rewrite using `[hb (show id c < id r from lt_of_le_of_lt h2 (not_le.1 h1))]`. Simplify using the standard rewrite rules. Simplify using `[h2]`.
+-/
 theorem colsTo_mul_mul_colsTo {b : Matrix (Fin n) (Fin n) F} (hb : b.IsUpperTriangular)
     (j : Fin n) : colsTo j * b * colsTo j = b * colsTo j := by
   ext r c
@@ -122,11 +163,27 @@ theorem colsTo_mul_mul_colsTo {b : Matrix (Fin n) (Fin n) F} (hb : b.IsUpperTria
     simp
   · simp [h2]
 
+/- English proof (translation)
+Rewrite using `[det_of_isUpperTriangular hX, isUnit_iff_ne_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 fun r _ => hd r`.
+-/
 theorem isUnit_det_of_isUpperTriangular {X : Matrix (Fin n) (Fin n) F} (hX : X.IsUpperTriangular)
     (hd : ∀ r, X r r ≠ 0) : IsUnit X.det := by
   rw [det_of_isUpperTriangular hX, isUnit_iff_ne_zero]
   exact Finset.prod_ne_zero_iff.2 fun r _ => hd r
 
+/- English proof (translation)
+Establish `hbu : (b : Matrix (Fin n) (Fin n) F).IsUpperTriangular` using `hb`. Establish `hbu' : (b' : Matrix (Fin n) (Fin n) F).IsUpperTriangular` using `hb'`. Use `set P : Matrix (Fin n) (Fin n) F := rowsFrom i with hP`. Use `set E : Matrix (Fin n) (Fin n) F := colsTo j with hE`. Use `set X : Matrix (Fin n) (Fin n) F := P * (b : Matrix (Fin n) (Fin n) F) + (1 - P) with hXdef`.
+
+Use `set Y : Matrix (Fin n) (Fin n) F := (b' : Matrix (Fin n) (Fin n) F) * E + (1 - E) with hYdef`. Establish `hXP : X * P = P * (b : Matrix (Fin n) (Fin n) F)`. Rewrite using `[hXdef, add_mul, sub_mul, one_mul, hP, rowsFrom_mul_self, sub_self, add_zero, rowsFrom_mul_mul_rowsFrom hbu]`. Establish `hEY : E * Y = (b' : Matrix (Fin n) (Fin n) F) * E`. Rewrite using `[hYdef, mul_add, mul_sub, mul_one, hE, colsTo_mul_self, sub_self, add_zero, ← mul_assoc, colsTo_mul_mul_colsTo hbu']`.
+
+Establish `key : P * ((b * g * b' : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * E = X * (P * (g : Matrix (Fin n) (Fin n) F) * E) * Y`. Simplify using `only [Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hXu : X.IsUpperTriangular` using `((blockTriangular_diagonal _).mul hbu).add (blockTriangular_one.sub (blockTriangular_diagonal _))`. Establish `hYu : Y.IsUpperTriangular` using `(hbu'.mul (blockTriangular_diagonal _)).add (blockTriangular_one.sub (blockTriangular_diagonal _))`.
+
+Establish `hX : IsUnit X.det`. Use `isUnit_det_of_isUpperTriangular hXu fun r => ?_` and prove the remaining obligations. Rewrite using `[hXdef, hP, rowsFrom, Matrix.add_apply, Matrix.sub_apply, diagonal_mul, one_apply_eq, diagonal_apply_eq]`. Use `split_ifs`. Simplify using `using borel_diag_ne_zero hb r`.
+
+Simplify using the standard rewrite rules. Establish `hY : IsUnit Y.det`. Use `isUnit_det_of_isUpperTriangular hYu fun r => ?_` and prove the remaining obligations. Rewrite using `[hYdef, hE, colsTo, Matrix.add_apply, Matrix.sub_apply, mul_diagonal, one_apply_eq, diagonal_apply_eq]`. Use `split_ifs`.
+
+Simplify using `using borel_diag_ne_zero hb' r`. Simplify using the standard rewrite rules. Unfold `llRank`. Rewrite using `[← hP, ← hE, key, rank_mul_eq_left_of_isUnit_det Y _ hY, rank_mul_eq_right_of_isUnit_det X _ hX]`.
+-/
 theorem llRank_mul_mul {b b' : GL (Fin n) F} (hb : b ∈ borel n F) (hb' : b' ∈ borel n F)
     (i j : Fin n) (g : GL (Fin n) F) : llRank i j (b * g * b') = llRank i j g := by
   classical
@@ -171,6 +228,15 @@ theorem llRank_mul_mul {b b' : GL (Fin n) F} (hb : b ∈ borel n F) (hb' : b' �
   rw [← hP, ← hE, key, rank_mul_eq_left_of_isUnit_det Y _ hY,
     rank_mul_eq_right_of_isUnit_det X _ hX]
 
+/- English proof (translation)
+Establish `hW : IsUnit ((permGL F w⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)`. Unfold `llRank`. Rewrite using `[← rank_mul_eq_left_of_isUnit_det _ _ hW]`. Establish `e : rowsFrom i * (permGL F w : Matrix (Fin n) (Fin n) F) * colsTo j * (permGL F w⁻¹ : Matrix (Fin n) (Fin n) F) = diagonal fun r => if i ≤ r ∧ w⁻¹ r ≤ j then (1 : F) else 0`. Use extensionality with `r c`.
+
+Rewrite using `[mul_permGL_apply]`. Simplify using `only [rowsFrom, colsTo]`. Rewrite using `[mul_diagonal, diagonal_mul, permGL_apply, diagonal_apply]`. Establish `hwc : w (w⁻¹ c) = c` using `by rw [Equiv.Perm.inv_def, Equiv.apply_symm_apply]`. Rewrite using `[hwc]`.
+
+Distinguish the cases in `hrc : r = c`. Substitute `hrc` using the available equality. Apply the tactic sequence `by_cases h1 : i ≤ r <;> simp [h1]`. Simplify using `[hrc]`. Rewrite using `[e, rank_diagonal, Fintype.card_subtype]`.
+
+Use `congr 1`. Use extensionality with `r`. Simplify using the standard rewrite rules.
+-/
 theorem llRank_permGL (w : Equiv.Perm (Fin n)) (i j : Fin n) :
     llRank i j (permGL F w) = (Finset.univ.filter fun r : Fin n => i ≤ r ∧ w⁻¹ r ≤ j).card := by
   classical
@@ -196,6 +262,19 @@ theorem llRank_permGL (w : Equiv.Perm (Fin n)) (i j : Fin n) :
   ext r
   simp
 
+/- English proof (translation)
+Establish `hsplit : (Finset.univ.filter fun x : Fin n => r ≤ x ∧ w⁻¹ x ≤ j) = (Finset.univ.filter fun x : Fin n => x = r ∧ w⁻¹ x ≤ j) ∪ (Finset.univ.filter fun x : Fin n => r < x ∧ w⁻¹ x ≤ j)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Break down `eq_or_lt_of_le h1 with h | h` into its components or cases. Conclude with `Or.inl ⟨h.symm, h2⟩`. Conclude with `Or.inr ⟨h, h2⟩`. Introduce and unpack `(⟨rfl, h⟩ | ⟨h1, h2⟩)`. Conclude with `⟨le_rfl, h⟩`.
+
+Conclude with `⟨h1.le, h2⟩`. Establish `hdisj : Disjoint (Finset.univ.filter fun x : Fin n => x = r ∧ w⁻¹ x ≤ j) (Finset.univ.filter fun x : Fin n => r < x ∧ w⁻¹ x ≤ j)`. Rewrite using `[Finset.disjoint_filter]`. Introduce and unpack `x - ⟨rfl, -⟩ ⟨h, -⟩`. Conclude with `lt_irrefl _ h`.
+
+Rewrite using `[hsplit, Finset.card_union_of_disjoint hdisj]`. Use `congr 1`. Use `split_ifs with h`. Rewrite using `[Finset.card_eq_one]`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl, -⟩`. Both sides reduce to the same expression.
+
+Introduce and unpack `rfl`. Conclude with `⟨rfl, h⟩`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce and unpack `x - ⟨rfl, hx⟩`. Conclude with `h hx`.
+-/
 theorem card_filter_le_eq (w : Equiv.Perm (Fin n)) (r j : Fin n) :
     (Finset.univ.filter fun x : Fin n => r ≤ x ∧ w⁻¹ x ≤ j).card =
       (if w⁻¹ r ≤ j then 1 else 0) + (Finset.univ.filter fun x : Fin n => r < x ∧ w⁻¹ x ≤ j).card := by
@@ -234,6 +313,11 @@ theorem card_filter_le_eq (w : Equiv.Perm (Fin n)) (r j : Fin n) :
     rintro x - ⟨rfl, hx⟩
     exact h hx
 
+/- English proof (translation)
+Use `split_ifs with h`. Rewrite using `[llRank_permGL]`. Use `congr 1`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce and unpack `x - ⟨hx, -⟩`.
+
+Rewrite `hx` using `[Fin.lt_def]`. Use `x.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_filter_lt_eq (w : Equiv.Perm (Fin n)) (r j : Fin n) :
     (Finset.univ.filter fun x : Fin n => r < x ∧ w⁻¹ x ≤ j).card =
       if h : r.val + 1 < n then llRank ⟨r.val + 1, h⟩ j (permGL F w) else 0 := by
@@ -246,6 +330,17 @@ theorem card_filter_lt_eq (w : Equiv.Perm (Fin n)) (r j : Fin n) :
     have := x.isLt
     omega
 
+/- English proof (translation)
+Establish `key : ∀ r j, (w⁻¹ r ≤ j ↔ w'⁻¹ r ≤ j)`. Introduce `r j`. Establish `hA : (Finset.univ.filter fun x : Fin n => r ≤ x ∧ w⁻¹ x ≤ j).card = (Finset.univ.filter fun x : Fin n => r ≤ x ∧ w'⁻¹ x ≤ j).card`. Rewrite using `[← llRank_permGL (F := F), ← llRank_permGL (F := F), h]`. Establish `hB : (Finset.univ.filter fun x : Fin n => r < x ∧ w⁻¹ x ≤ j).card = (Finset.univ.filter fun x : Fin n => r < x ∧ w'⁻¹ x ≤ j).card`.
+
+Rewrite using `[card_filter_lt_eq (F := F), card_filter_lt_eq (F := F)]`. Use `split_ifs with hr`. Conclude with `h _ _`. Both sides reduce to the same expression. Establish `e1` using `card_filter_le_eq w r j`.
+
+Rewrite `e1` using `[hA, card_filter_le_eq w' r j, hB]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Assume the negation of the conclusion as `hw'`. Rewrite `e1` using `[if_pos hw, if_neg hw']`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `hw'`. Assume the negation of the conclusion as `hw`. Rewrite `e1` using `[if_pos hw', if_neg hw]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hinv : w⁻¹ = w'⁻¹`. Use extensionality with `r`. Conclude with `congrArg Fin.val (le_antisymm ((key r (w'⁻¹ r)).2 le_rfl) ((key r (w⁻¹ r)).1 le_rfl))`. Conclude with `inv_injective hinv`.
+-/
 theorem perm_eq_of_llRank {w w' : Equiv.Perm (Fin n)}
     (h : ∀ i j, llRank i j (permGL F w) = llRank i j (permGL F w')) : w = w' := by
   have key : ∀ r j, (w⁻¹ r ≤ j ↔ w'⁻¹ r ≤ j) := by
@@ -282,10 +377,16 @@ section Cell
 noncomputable def bruhatCell (g : GL (Fin n) F) : Equiv.Perm (Fin n) :=
   (exists_mem_doubleCoset_permGL g).choose
 
+/- English proof (translation)
+The claim follows from `(exists_mem_doubleCoset_permGL g).choose_spec`.
+-/
 theorem mem_doubleCoset_bruhatCell (g : GL (Fin n) F) :
     g ∈ doubleCoset (permGL F (bruhatCell g)) (borel n F) (borel n F) :=
   (exists_mem_doubleCoset_permGL g).choose_spec
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `mem_doubleCoset_bruhatCell g`. Introduce `h`. Conclude with `doubleCoset_permGL_injective (mem_doubleCoset_bruhatCell g) h`.
+-/
 theorem bruhatCell_eq_iff {g : GL (Fin n) F} {w : Equiv.Perm (Fin n)} :
     bruhatCell g = w ↔ g ∈ doubleCoset (permGL F w) (borel n F) (borel n F) := by
   constructor
@@ -294,9 +395,15 @@ theorem bruhatCell_eq_iff {g : GL (Fin n) F} {w : Equiv.Perm (Fin n)} :
   · intro h
     exact doubleCoset_permGL_injective (mem_doubleCoset_bruhatCell g) h
 
+/- English proof (translation)
+The claim follows from `bruhatCell_eq_iff.2 (mem_doubleCoset_self _ _ _)`.
+-/
 theorem bruhatCell_permGL (w : Equiv.Perm (Fin n)) : bruhatCell (permGL F w) = w :=
   bruhatCell_eq_iff.2 (mem_doubleCoset_self _ _ _)
 
+/- English proof (translation)
+Rewrite using `[bruhatCell_eq_iff]`. Take `⟨x, hx, y, hy, hg⟩` from `mem_doubleCoset.1 (mem_doubleCoset_bruhatCell g)`. Use `mem_doubleCoset.2 ⟨a * x, (borel n F).mul_mem ha hx, y * b, (borel n F).mul_mem hy hb, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bruhatCell_mul_mul {a b : GL (Fin n) F} (ha : a ∈ borel n F) (hb : b ∈ borel n F)
     (g : GL (Fin n) F) : bruhatCell (a * g * b) = bruhatCell g := by
   rw [bruhatCell_eq_iff]
@@ -305,12 +412,20 @@ theorem bruhatCell_mul_mul {a b : GL (Fin n) F} (ha : a ∈ borel n F) (hb : b �
   calc a * g * b = a * (x * permGL F (bruhatCell g) * y) * b := by rw [← hg]
     _ = a * x * permGL F (bruhatCell g) * (y * b) := by group
 
+/- English proof (translation)
+Take `⟨x, hx, y, hy, hg⟩` from `mem_doubleCoset.1 (mem_doubleCoset_bruhatCell g)`. Use `conv_lhs => rw [hg]`. Conclude with `llRank_mul_mul hx hy i j _`.
+-/
 theorem llRank_eq_llRank_bruhatCell (i j : Fin n) (g : GL (Fin n) F) :
     llRank i j g = llRank i j (permGL F (bruhatCell g)) := by
   obtain ⟨x, hx, y, hy, hg⟩ := mem_doubleCoset.1 (mem_doubleCoset_bruhatCell g)
   conv_lhs => rw [hg]
   exact llRank_mul_mul hx hy i j _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Rewrite using `[llRank_eq_llRank_bruhatCell i j g, llRank_eq_llRank_bruhatCell i j g', h]`. Introduce `h`. Apply `perm_eq_of_llRank (F := F)` to reduce the goal to its premises.
+
+Introduce `i j`. Rewrite using `[← llRank_eq_llRank_bruhatCell, ← llRank_eq_llRank_bruhatCell]`. Conclude with `h i j`.
+-/
 theorem bruhatCell_eq_iff_llRank {g g' : GL (Fin n) F} :
     bruhatCell g = bruhatCell g' ↔ ∀ i j, llRank i j g = llRank i j g' := by
   constructor
@@ -326,8 +441,14 @@ end Cell
 
 section NormalForm
 
+/- English proof (translation)
+Introduce `_ hg` and use `hg.1`.
+-/
 theorem unipotent_le_borel : Iwasawa.unipotent F n ≤ borel n F := fun _ hg => hg.1
 
+/- English proof (translation)
+Use `show ((Iwasawa.diagGL F n t : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).IsUpperTriangular`. Rewrite using `[Iwasawa.coe_diagGL]`. Conclude with `blockTriangular_diagonal _`.
+-/
 theorem diagGL_mem_borel (t : Fin n → Fˣ) : Iwasawa.diagGL F n t ∈ borel n F := by
   show ((Iwasawa.diagGL F n t : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).IsUpperTriangular
   rw [Iwasawa.coe_diagGL]
@@ -336,6 +457,11 @@ theorem diagGL_mem_borel (t : Fin n → Fˣ) : Iwasawa.diagGL F n t ∈ borel n 
 noncomputable def borelDiag {b : GL (Fin n) F} (hb : b ∈ borel n F) : Fin n → Fˣ :=
   fun i => Units.mk0 _ (borel_diag_ne_zero hb i)
 
+/- English proof (translation)
+Establish `hbu : (b : Matrix (Fin n) (Fin n) F).IsUpperTriangular` using `hb`. Rewrite using `[Iwasawa.mem_unipotent F n, ← map_inv, Units.val_mul, Iwasawa.coe_diagGL]`. Use `⟨hbu.mul (blockTriangular_diagonal _), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_diagonal]`. Simplify using `only [borelDiag, Pi.inv_apply, Units.val_inv_eq_inv_val, Units.val_mk0]`.
+
+Conclude with `mul_inv_cancel₀ (borel_diag_ne_zero hb i)`.
+-/
 theorem mul_inv_borelDiag_mem {b : GL (Fin n) F} (hb : b ∈ borel n F) :
     b * (Iwasawa.diagGL F n (borelDiag hb))⁻¹ ∈ Iwasawa.unipotent F n := by
   have hbu : (b : Matrix (Fin n) (Fin n) F).IsUpperTriangular := hb
@@ -345,6 +471,11 @@ theorem mul_inv_borelDiag_mem {b : GL (Fin n) F} (hb : b ∈ borel n F) :
   simp only [borelDiag, Pi.inv_apply, Units.val_inv_eq_inv_val, Units.val_mk0]
   exact mul_inv_cancel₀ (borel_diag_ne_zero hb i)
 
+/- English proof (translation)
+Establish `hbu : (b : Matrix (Fin n) (Fin n) F).IsUpperTriangular` using `hb`. Rewrite using `[Iwasawa.mem_unipotent F n, ← map_inv, Units.val_mul, Iwasawa.coe_diagGL]`. Use `⟨(blockTriangular_diagonal _).mul hbu, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[diagonal_mul]`. Simplify using `only [borelDiag, Pi.inv_apply, Units.val_inv_eq_inv_val, Units.val_mk0]`.
+
+Conclude with `inv_mul_cancel₀ (borel_diag_ne_zero hb i)`.
+-/
 theorem inv_borelDiag_mul_mem {b : GL (Fin n) F} (hb : b ∈ borel n F) :
     (Iwasawa.diagGL F n (borelDiag hb))⁻¹ * b ∈ Iwasawa.unipotent F n := by
   have hbu : (b : Matrix (Fin n) (Fin n) F).IsUpperTriangular := hb
@@ -354,6 +485,11 @@ theorem inv_borelDiag_mul_mem {b : GL (Fin n) F} (hb : b ∈ borel n F) :
   simp only [borelDiag, Pi.inv_apply, Units.val_inv_eq_inv_val, Units.val_mk0]
   exact inv_mul_cancel₀ (borel_diag_ne_zero hb i)
 
+/- English proof (translation)
+Use extensionality with `r c`. Rewrite using `[Units.val_mul, Units.val_mul, Iwasawa.coe_diagGL, Iwasawa.coe_diagGL, permGL_mul_apply, diagonal_apply, diagonal_mul, permGL_apply]`. Distinguish the cases in `h : r = w c`. Establish `: w⁻¹ r = c` using `Equiv.Perm.inv_eq_iff_eq.2 h`. Rewrite using `[if_pos this, if_pos h, mul_one]`.
+
+Establish `: w⁻¹ r ≠ c` using `fun e => h (Equiv.Perm.inv_eq_iff_eq.1 e)`. Rewrite using `[if_neg this, if_neg h, mul_zero]`.
+-/
 theorem permGL_mul_diagGL (w : Equiv.Perm (Fin n)) (d : Fin n → Fˣ) :
     permGL F w * Iwasawa.diagGL F n d = Iwasawa.diagGL F n (fun r => d (w⁻¹ r)) * permGL F w := by
   ext r c
@@ -365,6 +501,11 @@ theorem permGL_mul_diagGL (w : Equiv.Perm (Fin n)) (d : Fin n → Fˣ) :
   · have : w⁻¹ r ≠ c := fun e => h (Equiv.Perm.inv_eq_iff_eq.1 e)
     rw [if_neg this, if_neg h, mul_zero]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨x, hx, y, hy, rfl⟩` from `mem_doubleCoset.1 h`. Use `⟨x * (Iwasawa.diagGL F n (borelDiag hx))⁻¹, mul_inv_borelDiag_mem hx, borelDiag hx * (fun r => borelDiag hy (w⁻¹ r)), (Iwasawa.diagGL F n (borelDiag hy))⁻¹ * y, inv_borelDiag_mul_mem hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Establish `e` using `permGL_mul_diagGL (F := F) w (borelDiag hy)`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨u, hu, t, v, hv, rfl⟩`. Conclude with `mem_doubleCoset.2 ⟨u * Iwasawa.diagGL F n t, (borel n F).mul_mem (unipotent_le_borel hu) (diagGL_mem_borel t), v, unipotent_le_borel hv, rfl⟩`.
+-/
 theorem mem_doubleCoset_iff_normalForm {g : GL (Fin n) F} {w : Equiv.Perm (Fin n)} :
     g ∈ doubleCoset (permGL F w) (borel n F) (borel n F) ↔
       ∃ u ∈ Iwasawa.unipotent F n, ∃ t : Fin n → Fˣ, ∃ v ∈ Iwasawa.unipotent F n,
@@ -386,16 +527,25 @@ theorem mem_doubleCoset_iff_normalForm {g : GL (Fin n) F} {w : Equiv.Perm (Fin n
       (borel n F).mul_mem (unipotent_le_borel hu) (diagGL_mem_borel t), v, unipotent_le_borel hv,
       rfl⟩
 
+/- English proof (translation)
+The claim follows from `mem_doubleCoset_iff_normalForm.1 (mem_doubleCoset_bruhatCell g)`.
+-/
 theorem exists_normalForm (g : GL (Fin n) F) :
     ∃ u ∈ Iwasawa.unipotent F n, ∃ t : Fin n → Fˣ, ∃ v ∈ Iwasawa.unipotent F n,
       g = u * Iwasawa.diagGL F n t * permGL F (bruhatCell g) * v :=
   mem_doubleCoset_iff_normalForm.1 (mem_doubleCoset_bruhatCell g)
 
+/- English proof (translation)
+The claim follows from `bruhatCell_eq_iff.2 (mem_doubleCoset_iff_normalForm.2 ⟨u, hu, t, v, hv, rfl⟩)`.
+-/
 theorem bruhatCell_normalForm {u v : GL (Fin n) F} (hu : u ∈ Iwasawa.unipotent F n)
     (hv : v ∈ Iwasawa.unipotent F n) (t : Fin n → Fˣ) (w : Equiv.Perm (Fin n)) :
     bruhatCell (u * Iwasawa.diagGL F n t * permGL F w * v) = w :=
   bruhatCell_eq_iff.2 (mem_doubleCoset_iff_normalForm.2 ⟨u, hu, t, v, hv, rfl⟩)
 
+/- English proof (translation)
+Use `bruhatCell_normalForm (Iwasawa.unipotent F n).one_mem (Iwasawa.unipotent F n).one_mem t w` as an intermediate fact. Rewrite `this` using `[one_mul, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem bruhatCell_diag_perm (t : Fin n → Fˣ) (w : Equiv.Perm (Fin n)) :
     bruhatCell (Iwasawa.diagGL F n t * permGL F w) = w := by
   have := bruhatCell_normalForm (Iwasawa.unipotent F n).one_mem (Iwasawa.unipotent F n).one_mem t w
@@ -408,11 +558,19 @@ section Minor
 def bottomRows (k : Fin n) (a : Fin (k.val + 1)) : Fin n :=
   ⟨n - (k.val + 1) + a.val, by have := a.isLt; have := k.isLt; omega⟩
 
+/- English proof (translation)
+Introduce `a b h`. Simplify using `only [bottomRows, Fin.ext_iff] at h`. Conclude with `Fin.ext (by omega)`.
+-/
 theorem bottomRows_injective (k : Fin n) : Function.Injective (bottomRows k) := by
   intro a b h
   simp only [bottomRows, Fin.ext_iff] at h
   exact Fin.ext (by omega)
 
+/- English proof (translation)
+Rewrite `h` using `[Fin.le_def]`. Simplify using `only [bottomRows] at h`. Use `⟨⟨s.val - (n - (k.val + 1)), by have := s.isLt; have := k.isLt; omega⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `only [bottomRows]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_bottomRows_eq {k : Fin n} {a : Fin (k.val + 1)} {s : Fin n}
     (h : bottomRows k a ≤ s) : ∃ b, bottomRows k b = s := by
   rw [Fin.le_def] at h
@@ -425,10 +583,18 @@ theorem exists_bottomRows_eq {k : Fin n} {a : Fin (k.val + 1)} {s : Fin n}
 noncomputable def cellMinor (w : Equiv.Perm (Fin n)) (g : GL (Fin n) F) (k : Fin n) : F :=
   ((g : Matrix (Fin n) (Fin n) F).submatrix (bottomRows k) fun a => w⁻¹ (bottomRows k a)).det
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun _ => (Units.continuous_val.matrix_submatrix _ _).matrix_det`.
+-/
 theorem continuous_cellMinor [TopologicalSpace F] [IsTopologicalRing F]
     (w : Equiv.Perm (Fin n)) : Continuous (cellMinor (F := F) w) :=
   continuous_pi fun _ => (Units.continuous_val.matrix_submatrix _ _).matrix_det
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [submatrix_apply, mul_apply]`. Rewrite using `[← Finset.sum_image (s := Finset.univ) (g := r) (fun x _ y _ h => hr h) (f := fun s => u (r a) s * M s (c b))]`. Use `symm`. Use `Finset.sum_subset (Finset.subset_univ _) fun s _ hs => ?_` and prove the remaining obligations.
+
+Establish `hlt : s < r a`. Assume the negation of the conclusion as `h`. Take `⟨b', rfl⟩` from `hup a s (not_lt.1 h)`. Conclude with `hs (Finset.mem_image_of_mem _ (Finset.mem_univ _))`. Rewrite using `[hu (show id s < id (r a) from hlt), zero_mul]`.
+-/
 theorem submatrix_mul_of_isUpperTriangular {u M : Matrix (Fin n) (Fin n) F}
     (hu : u.IsUpperTriangular) {m p : ℕ} {r : Fin m → Fin n} (hr : Function.Injective r)
     (hup : ∀ a s, r a ≤ s → ∃ b, r b = s) (c : Fin p → Fin n) :
@@ -446,6 +612,11 @@ theorem submatrix_mul_of_isUpperTriangular {u M : Matrix (Fin n) (Fin n) F}
     exact hs (Finset.mem_image_of_mem _ (Finset.mem_univ _))
   rw [hu (show id s < id (r a) from hlt), zero_mul]
 
+/- English proof (translation)
+Establish `hbt : ((v : Matrix (Fin n) (Fin n) F).submatrix c c).BlockTriangular (id ∘ c)` using `((Iwasawa.mem_unipotent F n).1 hv).1.submatrix`. Rewrite using `[hbt.det]`. Use `Finset.prod_eq_one fun a ha => ?_` and prove the remaining obligations. Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 ha`. Establish `: Unique {y // (id ∘ c) y = (id ∘ c) x}` using `⟨⟨⟨x, rfl⟩⟩, fun y => Subtype.ext (hc y.2)⟩`.
+
+Rewrite using `[det_unique, toSquareBlock_def, of_apply, ← Unique.eq_default (⟨x, rfl⟩ : {y // (id ∘ c) y = (id ∘ c) x})]`. Simplify using `only [submatrix_apply]`. Conclude with `((Iwasawa.mem_unipotent F n).1 hv).2 (c x)`.
+-/
 theorem det_submatrix_of_mem_unipotent {v : GL (Fin n) F} (hv : v ∈ Iwasawa.unipotent F n)
     {m : ℕ} {c : Fin m → Fin n} (hc : Function.Injective c) :
     ((v : Matrix (Fin n) (Fin n) F).submatrix c c).det = 1 := by
@@ -462,6 +633,11 @@ theorem det_submatrix_of_mem_unipotent {v : GL (Fin n) F} (hv : v ∈ Iwasawa.un
   simp only [submatrix_apply]
   exact ((Iwasawa.mem_unipotent F n).1 hv).2 (c x)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Unfold `cellMinor`. Establish `hX : ((Iwasawa.diagGL F n t * permGL F w * v : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).submatrix (bottomRows k) (fun a => w⁻¹ (bottomRows k a)) = diagonal (fun a => (t (bottomRows k a) : F)) * (v : Matrix (Fin n) (Fin n) F).submatrix (fun a => w⁻¹ (bottomRows k a)) (fun a => w⁻ …`. Use extensionality with `a b`. Simplify using `only [Units.val_mul, Iwasawa.coe_diagGL, submatrix_apply, diagonal_mul, mul_assoc, permGL_mul_apply]`.
+
+Establish `hinj : Function.Injective fun a => w⁻¹ (bottomRows k a)` using `(Equiv.injective _).comp (bottomRows_injective k)`. Rewrite using `[show u * Iwasawa.diagGL F n t * permGL F w * v = u * (Iwasawa.diagGL F n t * permGL F w * v) by group, Units.val_mul, submatrix_mul_of_isUpperTriangular ((Iwasawa.mem_unipotent F n).1 hu).1 (bottomRows_injective k) (fun a s h => exists_bottomRows_eq h), det_mul, hX, det_mul, det …`.
+-/
 theorem cellMinor_normalForm (w : Equiv.Perm (Fin n)) {u v : GL (Fin n) F}
     (hu : u ∈ Iwasawa.unipotent F n) (hv : v ∈ Iwasawa.unipotent F n) (t : Fin n → Fˣ) :
     cellMinor w (u * Iwasawa.diagGL F n t * permGL F w * v) =
@@ -488,6 +664,11 @@ theorem cellMinor_normalForm (w : Equiv.Perm (Fin n)) {u v : GL (Fin n) F}
 noncomputable def prodFrom (t : Fin n → Fˣ) (s : ℕ) : F :=
   ∏ x ∈ Finset.univ.filter (fun x : Fin n => s ≤ x.val), (t x : F)
 
+/- English proof (translation)
+Unfold `prodFrom`. Rewrite using `[← Finset.prod_image (s := Finset.univ) (g := bottomRows k) (fun x _ y _ h => bottomRows_injective k h) (f := fun x => (t x : F))]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_filter]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Simplify using `[bottomRows]`. Introduce `hx`. Conclude with `exists_bottomRows_eq (a := ⟨0, Nat.succ_pos _⟩) (by rw [Fin.le_def]; simp only [bottomRows]; omega)`.
+-/
 theorem prod_bottomRows_eq_prodFrom (t : Fin n → Fˣ) (k : Fin n) :
     ∏ a : Fin (k.val + 1), (t (bottomRows k a) : F) = prodFrom t (n - (k.val + 1)) := by
   classical
@@ -503,6 +684,11 @@ theorem prod_bottomRows_eq_prodFrom (t : Fin n → Fˣ) (k : Fin n) :
   · intro hx
     exact exists_bottomRows_eq (a := ⟨0, Nat.succ_pos _⟩) (by rw [Fin.le_def]; simp only [bottomRows]; omega)
 
+/- English proof (translation)
+Unfold `prodFrom`. Establish `e : (Finset.univ.filter fun y : Fin n => x.val ≤ y.val) = insert x (Finset.univ.filter fun y : Fin n => x.val + 1 ≤ y.val)`. Use extensionality with `y`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[e, Finset.prod_insert (by simp)]`.
+-/
 theorem prodFrom_eq_mul (t : Fin n → Fˣ) (x : Fin n) :
     prodFrom t x.val = (t x : F) * prodFrom t (x.val + 1) := by
   classical
@@ -514,13 +700,26 @@ theorem prodFrom_eq_mul (t : Fin n → Fˣ) (x : Fin n) :
     omega
   rw [e, Finset.prod_insert (by simp)]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun x _ => (t x).ne_zero`.
+-/
 theorem prodFrom_ne_zero (t : Fin n → Fˣ) (s : ℕ) : prodFrom t s ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun x _ => (t x).ne_zero
 
+/- English proof (translation)
+Unfold `prodFrom`. Rewrite using `[Finset.filter_false_of_mem fun x _ => by have := x.isLt; omega, Finset.prod_empty]`.
+-/
 theorem prodFrom_of_le (t : Fin n → Fˣ) {s : ℕ} (hs : n ≤ s) : prodFrom t s = 1 := by
   unfold prodFrom
   rw [Finset.filter_false_of_mem fun x _ => by have := x.isLt; omega, Finset.prod_empty]
 
+/- English proof (translation)
+Establish `hall : ∀ s, prodFrom t s = prodFrom (F` using `F) t' s := by`. Introduce `s`. Distinguish the cases in `hs : s < n`. Use `h ⟨n - 1 - s, by omega⟩` as an intermediate fact. Rewrite `this` using `[prod_bottomRows_eq_prodFrom, prod_bottomRows_eq_prodFrom]`.
+
+Establish `e : n - (n - 1 - s + 1) = s` using `by omega`. Simplify `this` using `only [e]`. Rewrite using `[prodFrom_of_le t (by omega), prodFrom_of_le t' (by omega)]`. Use function extensionality and compare the values at `x`. Establish `h1` using `prodFrom_eq_mul (F := F) t x`.
+
+Establish `h2` using `prodFrom_eq_mul (F := F) t' x`. Rewrite `h1` using `[hall, h2, hall (x.val + 1)]`. Conclude with `Units.ext (mul_right_cancel₀ (prodFrom_ne_zero t' _) h1.symm)`.
+-/
 theorem eq_of_prod_bottomRows_eq {t t' : Fin n → Fˣ}
     (h : ∀ k : Fin n, ∏ a : Fin (k.val + 1), (t (bottomRows k a) : F) =
       ∏ a : Fin (k.val + 1), (t' (bottomRows k a) : F)) : t = t' := by
@@ -538,12 +737,18 @@ theorem eq_of_prod_bottomRows_eq {t t' : Fin n → Fˣ}
   rw [hall, h2, hall (x.val + 1)] at h1
   exact Units.ext (mul_right_cancel₀ (prodFrom_ne_zero t' _) h1.symm)
 
+/- English proof (translation)
+Use `cellMinor_normalForm w (Iwasawa.unipotent F n).one_mem (Iwasawa.unipotent F n).one_mem t` as an intermediate fact. Rewrite `this` using `[one_mul, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem cellMinor_diag_perm (w : Equiv.Perm (Fin n)) (t : Fin n → Fˣ) :
     cellMinor w (Iwasawa.diagGL F n t * permGL F w) =
       fun k => ∏ a : Fin (k.val + 1), (t (bottomRows k a) : F) := by
   have := cellMinor_normalForm w (Iwasawa.unipotent F n).one_mem (Iwasawa.unipotent F n).one_mem t
   rwa [one_mul, mul_one] at this
 
+/- English proof (translation)
+Take `⟨u, hu, t, v, hv, hg'⟩` from `exists_normalForm g`. Rewrite `hg'` using `[hg]`. Rewrite using `[hg', show a * (u * Iwasawa.diagGL F n t * permGL F w * v) * b = (a * u) * Iwasawa.diagGL F n t * permGL F w * (v * b) by group, cellMinor_normalForm w ((Iwasawa.unipotent F n).mul_mem ha hu) ((Iwasawa.unipotent F n).mul_mem hv hb), cellMinor_normalForm w hu hv]`.
+-/
 theorem cellMinor_mul_mul {g : GL (Fin n) F} {w : Equiv.Perm (Fin n)} (hg : bruhatCell g = w)
     {a b : GL (Fin n) F} (ha : a ∈ Iwasawa.unipotent F n) (hb : b ∈ Iwasawa.unipotent F n) :
     cellMinor w (a * g * b) = cellMinor w g := by
@@ -555,6 +760,11 @@ theorem cellMinor_mul_mul {g : GL (Fin n) F} {w : Equiv.Perm (Fin n)} (hg : bruh
       ((Iwasawa.unipotent F n).mul_mem hv hb),
     cellMinor_normalForm w hu hv]
 
+/- English proof (translation)
+Take `⟨u, hu, t, v, hv, e⟩` from `exists_normalForm g`. Take `⟨u', hu', t', v', hv', e'⟩` from `exists_normalForm g'`. Rewrite `e` using `[hg]`. Rewrite `e'` using `[hg']`. Rewrite `h` using `[e, e', cellMinor_normalForm w hu hv, cellMinor_normalForm w hu' hv']`.
+
+Establish `ht : t = t'` using `eq_of_prod_bottomRows_eq fun k => congrFun h k`. Substitute `ht` using the available equality. Use `⟨u' * u⁻¹, (Iwasawa.unipotent F n).mul_mem hu' ((Iwasawa.unipotent F n).inv_mem hu), v⁻¹ * v', (Iwasawa.unipotent F n).mul_mem ((Iwasawa.unipotent F n).inv_mem hv) hv', ?_⟩` and prove the remaining obligations. Rewrite using `[e, e']`. Use `group`.
+-/
 theorem exists_eq_mul_mul_of_cellMinor_eq {g g' : GL (Fin n) F} {w : Equiv.Perm (Fin n)}
     (hg : bruhatCell g = w) (hg' : bruhatCell g' = w) (h : cellMinor w g = cellMinor w g') :
     ∃ a ∈ Iwasawa.unipotent F n, ∃ b ∈ Iwasawa.unipotent F n, g' = a * g * b := by
@@ -570,6 +780,9 @@ theorem exists_eq_mul_mul_of_cellMinor_eq {g g' : GL (Fin n) F} {w : Equiv.Perm 
   rw [e, e']
   group
 
+/- English proof (translation)
+Take `⟨u, hu, t, v, hv, e⟩` from `exists_normalForm g`. Rewrite `e` using `[hg]`. Conclude with `⟨t, u, hu, v, hv, by rw [e]; group⟩`.
+-/
 theorem exists_eq_mul_diag_perm_mul {g : GL (Fin n) F} {w : Equiv.Perm (Fin n)}
     (hg : bruhatCell g = w) :
     ∃ t : Fin n → Fˣ, ∃ a ∈ Iwasawa.unipotent F n, ∃ b ∈ Iwasawa.unipotent F n,

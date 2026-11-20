@@ -8,6 +8,27 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 
 namespace GlobalTheory.OrdLoc
 
+/- English proof (translation)
+Introduce `hP l _ O _ _ _ _ _ _ _ D U`. Establish `hi : Function.Injective (algebraMap ℤ_[l] O)`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Assume the negation of the conclusion as `h`. Establish `hp : (Ideal.comap (algebraMap ℤ_[l] O) ⊥).IsPrime` using `inferInstance`.
+
+Establish `hm : (Ideal.comap (algebraMap ℤ_[l] O) ⊥).IsMaximal` using `hp.isMaximal h`. Establish `h2 : (⊥ : Ideal O).IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := ℤ_[l]) _ hm`. Conclude with `IsDiscreteValuationRing.not_a_field O (IsLocalRing.eq_maximalIdeal h2).symm`. Use `haveI : FaithfulSMul ℤ_[l] O := (faithfulSMul_iff_algebraMap_injective _ _).2 hi`. Establish `hi2 : Function.Injective (algebraMap ℤ_[l] (FractionRing O))`.
+
+Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] O (FractionRing O)]`. Conclude with `(IsFractionRing.injective O _).comp hi`. Use `letI : Algebra ℚ_[l] (FractionRing O) := (IsFractionRing.lift hi2).toAlgebra`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] (FractionRing O) := IsScalarTower.of_algebraMap_eq fun x => (IsFractionRing.lift_algebraMap hi2 x).symm`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid O (nonZeroDivisors ℤ_[l])) (FractionRing O) := inferInstance`.
+
+Use `haveI : Module.Finite ℚ_[l] (FractionRing O) := Module.Finite.of_isLocalization ℤ_[l] O (nonZeroDivisors ℤ_[l])`. Take `⟨x, hx, hxu⟩` from `univEx D U`. Take `⟨-, n, P, φ, hφ, hIP, ⟨y, hy, hyP⟩, hPI, h0, hdim⟩` from `GlobalTheory.T.exists_unique_ordinaryPrime_dim_succ_near_base hP D U (FractionRing O) x hx`. Establish `hmem : P ∈ primesAt0 D U` using `by rw [h0]; rfl`. Establish `hmin` using `hmem.1`.
+
+Establish `hPx : P ≤ RingHom.ker x` using `hmem.2 x hx`. Set `T : Submodule (FractionRing O) (U.R →ₗ[O] FractionRing O)` to `{ carrier := {δ | (∀ a b, δ (a * b) = algebraMap O _ (x a) * δ b + algebraMap O _ (x b) * δ a) ∧ ∀ a ∈ IY D U, δ a = 0} zero_mem' := ⟨fun a b => by simp, fun a _ => rfl⟩ add_mem' := by`. Introduce and unpack `δ δ' ⟨h1, h2⟩ ⟨h3, h4⟩`. Use `⟨fun a b => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, h1 a b, h3 a b]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.add_apply, h2 a ha, h4 a ha, add_zero]`. Use the proof step `smul_mem' := by`. Introduce and unpack `c δ ⟨h1, h2⟩`. Use `⟨fun a b => ?_, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.smul_apply, h1 a b, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.smul_apply, h2 a ha, smul_zero] }`. Establish `hT : ∀ δ, δ ∈ T ↔ (∀ a b, δ (a * b) = algebraMap O _ (x a) * δ b + algebraMap O _ (x b) * δ a) ∧ ∀ a ∈ IY D U, δ a = 0` using `fun δ => Iff.rfl`. Establish `h1` using `GlobalTheory.T.saturatedOrdinaryIdeal_tangent_finrank_eq_twelve hP D U (FractionRing O) x hx T hT`.
+
+Establish `h2 : finrank (FractionRing O) ↥T = n` using `UpperTheory.finrank_pointDerivations_vanishing_eq_of_isCompl n P x φ hφ T fun δ => by`. Rewrite using `[hT]`. Use `and_congr_right fun h => ⟨fun h' a ha => ?_, fun h' a ha => h' a (hIP ha)⟩` and prove the remaining obligations. Establish `e` using `h y a`. Rewrite `e` using `[h' _ (hyP a ha), show x a = 0 from hPx ha, map_zero, zero_mul, add_zero]`.
+
+Conclude with `(mul_eq_zero.1 e.symm).resolve_left fun h0 => hy (IsFractionRing.injective O (FractionRing O) (h0.trans (map_zero _).symm))`. Take `rfl : n = 12` from `by rw [← h2, h1]`. Substitute `hPI` using the available equality. Use `⟨h0, hmin.1.1, fun hl => ?_, hmin.1.2, hdim, ⟨x, hx, hPx⟩, fun x' hx' => ?_⟩` and prove the remaining obligations. Establish `h2 : x (l : U.R) = 0` using `hPx hl`.
+
+Rewrite `h2` using `[map_natCast]`. Conclude with `(Fact.out : l.Prime).ne_zero (Nat.cast_eq_zero.1 h2)`. Rewrite using `[hxu x' hx']`. Conclude with `⟨y, hy, fun a ha => Ideal.le_radical (hyP a ha)⟩`.
+-/
 theorem component_basic : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : D.Univ), GlobalTheory.OrdLoc.primesAt0 D U = {GlobalTheory.OrdLoc.It D U} ∧ (GlobalTheory.OrdLoc.It D U).IsPrime ∧ (l : U.R) ∉ GlobalTheory.OrdLoc.It D U ∧ GlobalTheory.OrdLoc.Icr D U ≤ GlobalTheory.OrdLoc.It D U ∧ ringKrullDim (GlobalTheory.OrdLoc.Rt D U) = 13 ∧ GlobalTheory.OrdLoc.On D U (r0 D.η D.Ψ) ∧ ∀ x, IsBase D.η D.Ψ U.r.hom x → ∃ y, x y ≠ 0 ∧ ∀ a ∈ GlobalTheory.OrdLoc.It D U, y * a ∈ GlobalTheory.OrdLoc.Icr D U := by
   intro hP l _ O _ _ _ _ _ _ _ D U
   have hi : Function.Injective (algebraMap ℤ_[l] O) := by

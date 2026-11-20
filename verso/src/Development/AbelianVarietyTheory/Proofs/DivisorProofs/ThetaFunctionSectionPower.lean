@@ -13,6 +13,9 @@ open GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `A _ L g u Hm χ hL hAH N s`. Take `⟨θ, hd, hfn, -, hper⟩` from `GlobalTheory.ThetaBundleSec.exists_fn u hL N s`. Use `⟨θ, hfn, hd, fun l z => hper z (z + l) _ ?_ fun i hi => hAH.2.2.2 l i z hi⟩` and prove the remaining obligations. Rewrite using `[u.ex_add, (u.ker l).2 l.2, _root_.mul_one]`.
+-/
 theorem exists_isFnPow_isThetaFn_of_isAH :
     ∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (g : ℕ) (u : HolUnif A L g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ), L.IsLB → u.IsAH Hm χ → ∀ (N : ℕ) (s : (lbPow L N).Sec), ∃ θ : (Fin g → ℂ) → ℂ, u.IsFnPow N s θ ∧ u.IsThetaFn Hm χ N θ := by
   intro A _ L g u Hm χ hL hAH N s

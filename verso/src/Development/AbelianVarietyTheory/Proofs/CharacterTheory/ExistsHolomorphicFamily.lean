@@ -10,6 +10,17 @@ open KaehlerDifferential
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+Take `⟨κ, a, b, hb⟩` from `Module.exists_basis_of_span_of_flat _ (span_range_map_derivation_of_isLocalization R _ (Localization.AtPrime p) p.primeCompl)`. Set `e : (κ →₀ S) →ₗ[S] Ω[S⁄R]` to `Finsupp.linearCombination S fun i : κ ↦ D R S (a i)`. Set `l₁ : (κ →₀ S) →ₗ[S] (κ →₀ Localization.AtPrime p)` to `Finsupp.mapRange.linearMap (Algebra.linearMap S (Localization.AtPrime p))`. Set `l₂ : Ω[S⁄R] →ₗ[S] Ω[Localization.AtPrime p⁄R]` to `map R R S (Localization.AtPrime p)`. Set `eₚ : (κ →₀ Localization.AtPrime p) →ₗ[Localization.AtPrime p] Ω[Localization.AtPrime p⁄R]` to `IsLocalizedModule.mapExtendScalars p.primeCompl l₁ l₂ (Localization.AtPrime p) e`.
+
+Establish `: eₚ = b.repr.symm`. Use extensionality with `i`. Use `trans IsLocalizedModule.map p.primeCompl l₁ l₂ e <| l₁ <| Finsupp.single i 1`. Simplify using `[eₚ, -IsLocalizedModule.map_apply, l₁]`. Simplify using `[l₂, e, hb]`.
+
+Establish `heₚ : Function.Bijective eₚ` using `this ▸ b.repr.symm.bijective`. Establish `: Finite κ` using `Module.Finite.finite_basis b`. Take `⟨g, hg, h⟩` from `Module.FinitePresentation.exists_notMem_bijective e p l₁ l₂ heₚ`. Set `l₁ₜ : (κ →₀ S) →ₗ[S] (κ →₀ Localization.Away g)` to `Finsupp.mapRange.linearMap (Algebra.linearMap S _)`. Set `l₂ₜ : Ω[S⁄R] →ₗ[S] Ω[Localization.Away g⁄R]` to `map R R S (Localization.Away g)`.
+
+Rewrite `h` using `[← IsLocalizedModule.map_bijective_iff_localizedModuleMap_bijective l₁ₜ l₂ₜ]`. Set `eₜ' : (κ →₀ Localization.Away g) →ₗ[Localization.Away g] Ω[Localization.Away g⁄R]` to `IsLocalizedModule.mapExtendScalars (Submonoid.powers g) l₁ₜ l₂ₜ (Localization.Away g) e`. Take `⟨m, ⟨u⟩⟩` from `Finite.exists_equiv_fin κ`. Set `b' : Module.Basis κ (Localization.Away g) Ω[Localization.Away g⁄R]` to `.ofRepr (LinearEquiv.ofBijective eₜ' h).symm`. Establish `hb' : ∀ i, b' i = D R (Localization.Away g) (algebraMap S _ (a i))` using `fun i => by`.
+
+Simplify using `+zetaDelta [IsLocalizedModule.map_linearCombination]`. Conclude with `⟨g, m, fun i => a (u.symm i), b'.reindex u, hg, fun i => by`. Rewrite using `[Module.Basis.reindex_apply, hb']⟩`.
+-/
 theorem exists_basis_away {R S : Type} [CommRing R] [CommRing S] [Algebra R S] [Algebra.Smooth R S]
     (p : Ideal S) [p.IsPrime] :
     ∃ (g : S) (m : ℕ) (s : Fin m → S)
@@ -47,6 +58,13 @@ theorem exists_basis_away {R S : Type} [CommRing R] [CommRing S] [Algebra R S] [
   exact ⟨g, m, fun i => a (u.symm i), b'.reindex u, hg, fun i => by
     rw [Module.Basis.reindex_apply, hb']⟩
 
+/- English proof (translation)
+Take `⟨g, m, s, b, hg, hb⟩` from `exists_basis_away (R := R) p`. Use `⟨g, m, s, hg, ?_⟩` and prove the remaining obligations. Use `letI : Algebra (MvPolynomial (Fin m) R) (Localization.Away g) := (MvPolynomial.eval₂Hom (algebraMap R (Localization.Away g)) fun i => algebraMap S (Localization.Away g) (s i)).toAlgebra`. Use `haveI : IsScalarTower R (MvPolynomial (Fin m) R) (Localization.Away g) := IsScalarTower.of_algebraMap_eq fun r => by`. Rewrite using `[RingHom.algebraMap_toAlgebra]`.
+
+Simplify using the standard rewrite rules. Use `haveI : Algebra.Smooth S (Localization.Away g) := Algebra.Smooth.of_isLocalization_Away g`. Use `haveI : Algebra.Smooth R (Localization.Away g) := Algebra.Smooth.comp R S _`. Use `GlobalTheory.EtaleCoordJacobian.etale_of_basis R (Localization.Away g) (Fin m) b fun i => ?_` and prove the remaining obligations. Rewrite using `[hb, RingHom.algebraMap_toAlgebra]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_etale_away {R S : Type} [CommRing R] [CommRing S] [Algebra R S] [Algebra.Smooth R S]
     (p : Ideal S) [p.IsPrime] :
     ∃ (g : S) (m : ℕ) (s : Fin m → S), g ∉ p ∧
@@ -67,6 +85,11 @@ theorem exists_etale_away {R S : Type} [CommRing R] [CommRing S] [Algebra R S] [
   rw [hb, RingHom.algebraMap_toAlgebra]
   simp
 
+/- English proof (translation)
+Rewrite `hU` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hI⟩` from `hU`. Use `choose δ hδ hδt using fun a => Metric.mem_nhds_iff.1 (ht a)`. Establish `h1 : ∀ᶠ ε in 𝓝[>] (0 : ℝ), ∀ a ∈ I, ε < δ a` using `(Filter.eventually_all_finset I).2 fun a _ => nhdsWithin_le_nhds (gt_mem_nhds (hδ a))`. Take `⟨ε, h2, h3⟩` from `(h1.and self_mem_nhdsWithin).exists`.
+
+Use `⟨I, ε, h3, fun y hy => hI fun a ha => hδt a ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_eq_norm]`. Conclude with `(hy a ha).trans (h2 a ha)`.
+-/
 theorem exists_finset_of_mem_nhds {A : Type} {x : A → ℂ} {U : Set (A → ℂ)} (hU : U ∈ 𝓝 x) :
     ∃ (S : Finset A) (ε : ℝ), 0 < ε ∧ ∀ y : A → ℂ, (∀ a ∈ S, ‖y a - x a‖ < ε) → y ∈ U := by
   rw [nhds_pi, Filter.mem_pi'] at hU
@@ -80,6 +103,23 @@ theorem exists_finset_of_mem_nhds {A : Type} {x : A → ℂ} {U : Set (A → ℂ
   rw [Metric.mem_ball, dist_eq_norm]
   exact (hy a ha).trans (h2 a ha)
 
+/- English proof (translation)
+Introduce `K A _ _ _ _ _ σ φ₀ h₀`. Use `haveI : (RingHom.ker φ₀).IsPrime := RingHom.ker_isPrime φ₀`. Take `⟨g, m, s, hg, het⟩` from `exists_etale_away (R := K) (RingHom.ker φ₀)`. Establish `hg₀ : φ₀ g ≠ 0` using `hg`. Set `R` to `Localization.Away g`.
+
+Set `ι : A →+* R` to `algebraMap A R`. Set `L : (ψ : A →+* ℂ) → ψ g ≠ 0 → (R →+* ℂ)` to `fun ψ h => IsLocalization.Away.lift g (g := ψ) (isUnit_iff_ne_zero.2 h)`. Establish `hL : ∀ ψ h a, L ψ h (ι a) = ψ a` using `fun ψ h a => IsLocalization.Away.lift_eq g _ a`. Set `P : MvPolynomial (Fin m) K →+* R` to `MvPolynomial.eval₂Hom (algebraMap K R) fun i => ι (s i)`. Establish `hPC : ∀ k, P (MvPolynomial.C k) = ι (algebraMap K A k)` using `fun k => by`.
+
+Simplify using `only [P, MvPolynomial.eval₂Hom_C]`. Conclude with `IsScalarTower.algebraMap_apply K A R k`. Establish `hPX : ∀ i, P (MvPolynomial.X i) = ι (s i)` using `fun i => by simp [P]`. Establish `hLC : ∀ (ψ : A →+* ℂ) h, ψ.comp (algebraMap K A) = σ → ∀ k, L ψ h (P (MvPolynomial.C k)) = σ k` using `fun ψ h hψ k => by`. Rewrite using `[hPC, hL ψ h, ← hψ]`.
+
+Both sides reduce to the same expression. Take `⟨N, τ, n, f, O, hN, hO, hO₀, hd, hτ, hrec⟩` from `GlobalTheory.EtaleFamily.exists_holomorphic_sections 0 m K R P Set.univ (fun _ => σ) 0 (L φ₀ hg₀) het isOpen_univ trivial (fun a => differentiableOn_const _) (hLC φ₀ hg₀ h₀)`. Use `choose k c hc using fun j => IsLocalization.Away.surj g (f j)`. Establish `hval : ∀ ψ h j, L ψ h (f j) = ψ (c j) / ψ g ^ k j` using `fun ψ h j => by`. Use `congrArg (L ψ h) (hc j)` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_pow, hL ψ h, hL ψ h]`. Rewrite using `[← this, mul_div_cancel_right₀ _ (pow_ne_zero _ h)]`. Establish `hcont : ContinuousAt (fun y : A → ℂ => ((0 : Fin 0 → ℂ), fun j => y (c j) / y g ^ k j)) φ₀` using `continuousAt_const.prodMk (continuousAt_pi.2 fun j => (continuous_apply (c j)).continuousAt.div ((continuous_apply g).pow _).continuousAt (pow_ne_zero _ hg₀))`. Establish `hU : {y : A → ℂ | y g ≠ 0 ∧ ((0 : Fin 0 → ℂ), fun j => y (c j) / y g ^ k j) ∈ O} ∈ 𝓝 (φ₀ : A → ℂ)`. Use `Filter.Eventually.and ((continuous_apply g).continuousAt.eventually_ne hg₀) (hcont (hO.mem_nhds ?_))` and prove the remaining obligations.
+
+Simplify `hO₀` using `only [hval]`. Take `⟨S, ε, hε, hS⟩` from `exists_finset_of_mem_nhds hU`. Establish `hin : Differentiable ℂ fun b : Fin m → ℂ => ((0 : Fin 0 → ℂ), b)` using `(differentiable_const _).prodMk differentiable_id`. Use `⟨m, s, (fun b => ((0 : Fin 0 → ℂ), b)) ⁻¹' N, fun b => (τ (0, b)).comp ι, S, ε, hN.preimage hin.continuous, hε, fun b hb => ⟨RingHom.ext fun a => ?_, fun i => ?_⟩, fun a => (hd (ι a)).comp hin.differentiableOn fun _ h => h, fun ψ hψ hψS => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ← hPC]`.
+
+Conclude with `(hτ _ hb).2.1 a`. Rewrite using `[RingHom.comp_apply, ← hPX]`. Conclude with `(hτ _ hb).2.2 i`. Take `⟨h1, h2⟩` from `hS ψ hψS`. Take `⟨h3, h4⟩` from `hrec 0 (L ψ h1) (hLC ψ h1 hψ) (by simpa only [hval] using h2)`.
+
+Simplify using `only [hPX, hL ψ h1] at h3 h4`. Use `⟨h3, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, h4, hL ψ h1]`.
+-/
 theorem exists_holomorphic_family : ∀ (K A : Type) [Field K] [CharZero K] [CommRing A] [Algebra K A] [Algebra.Smooth K A] (σ : K →+* ℂ) (φ₀ : A →+* ℂ), φ₀.comp (algebraMap K A) = σ → ∃ (m : ℕ) (s : Fin m → A) (B : Set (Fin m → ℂ)) (φ : (Fin m → ℂ) → (A →+* ℂ)) (S : Finset A) (ε : ℝ), IsOpen B ∧ 0 < ε ∧ (∀ b ∈ B, (φ b).comp (algebraMap K A) = σ ∧ ∀ i, φ b (s i) = b i) ∧ (∀ a : A, DifferentiableOn ℂ (fun b => φ b a) B) ∧ ∀ ψ : A →+* ℂ, ψ.comp (algebraMap K A) = σ → (∀ a ∈ S, ‖ψ a - φ₀ a‖ < ε) → (fun i => ψ (s i)) ∈ B ∧ φ (fun i => ψ (s i)) = ψ := by
   intro K A _ _ _ _ _ σ φ₀ h₀
   haveI : (RingHom.ker φ₀).IsPrime := RingHom.ker_isPrime φ₀

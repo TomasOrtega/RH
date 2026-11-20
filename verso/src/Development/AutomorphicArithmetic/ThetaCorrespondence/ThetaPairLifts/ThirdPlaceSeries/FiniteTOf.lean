@@ -33,6 +33,9 @@ def DefRowsFAlt (selI : _root_.Formalism.L2.Top4.IndefiniteRealisationChoice' �
       (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks (selI Fm hc x hx h i) hok1 hsep C CH hP hI).core.cols.toIndefData (Fm.ex x hx i).p0 (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks (selI Fm hc x hx h i) hok1 hsep C CH hP hI).core.cols.col NuC I →
     HEq I (selP Fm hc x hx h i).1.I → ∀ u, RowsU (selC Fm hc x hx h i).c (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks (selI Fm hc x hx h i) hok1 hsep C CH hP hI) (RecNums.ofNum (ofRecord (Fm.D x i) (Fm.L x i) (selDH Fm hc x hx h i).1.1 (selDH Fm hc x hx h i).1.2) (Equiv.refl _)
           (letterOf (Fm.D x i) (Fm.L x i) (selDH Fm hc x hx h i).1.1 (selDH Fm hc x hx h i).1.2 u) ((Fm.D x i).mem u).A.T (Fm.L x i).Nc lam0 C0 ce Fm.Csz Sw C1 (H u)) (I.wU u) (Cons.nuOf (Fm.L x i) u (I.eNu u))
+/- English proof (translation)
+Rewrite using `[K.tEq]`. Conclude with `((Finset.finite_toSet K.TU).insert _).to_subtype`.
+-/
 theorem finite_T_of_squareIntegrableColumns {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst D L} {Gl : MainNotions.G.LatInst D} {Kc : MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {T : _root_.Formalism.L2.TiedDataSKAlt ex} {P : RowSideFamily ex}
     (K : _root_.Formalism.L2.DIV.SquareIntegrableColumns T P) : Finite P.T := by

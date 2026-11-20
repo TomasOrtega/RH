@@ -21,6 +21,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.WeilUnitaryTransport
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unitaryPair_partner_inverse_transpose`.
+-/
 theorem pair_of_ug : ∀ (D : D7) (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E)
     (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →
     ξ • incM D.host.F JB = incM D.host.F (D.host.xi0 • S.gram⁻¹) →
@@ -29,6 +32,9 @@ theorem pair_of_ug : ∀ (D : D7) (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T
       ∃ (g : GA D S) (h : GA D T), mt T h = a.1.1 ∧ mt S g = (b⁻¹).1.1ᵀ :=
   GlobalTheory.T.unitaryPair_partner_inverse_transpose
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.thetaTransform_rational_translate_quasiInvariant`.
+-/
 theorem theta_quasi : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
       (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →
@@ -41,6 +47,9 @@ theorem theta_quasi : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D
           GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ (ratW T S γ + w) = ψ (-(Formalism.IndefR.Datum.symplOH S T (ratW T S γ) w)) * GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ w :=
   GlobalTheory.T.thetaTransform_rational_translate_quasiInvariant
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.thetaTransform_fixed_by_small_finiteHeisenberg`.
+-/
 theorem theta_level : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
       (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →
@@ -53,6 +62,9 @@ theorem theta_level : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D
           ∀ u ∈ U, u.map (infPart D) = 0 → Formalism.IndefR.Datum.heisO ψ S T u (GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ) = GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ :=
   GlobalTheory.T.thetaTransform_fixed_by_small_finiteHeisenberg
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.continuous_thetaTransform_adelicSchwartz`.
+-/
 theorem theta_cont : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
       (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →
@@ -64,6 +76,9 @@ theorem theta_cont : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D 
         ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ, Continuous (GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ) :=
   GlobalTheory.T.continuous_thetaTransform_adelicSchwartz
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.contDiff_thetaTransform_adelicSchwartz_realDirections`.
+-/
 theorem theta_smooth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
       (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →
@@ -76,6 +91,9 @@ theorem theta_smooth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar 
           (∀ t, (L t).map (finPart D) = 0) → ∀ w, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ (w + L t) :=
   GlobalTheory.T.contDiff_thetaTransform_adelicSchwartz_realDirections
 
+/- English proof (translation)
+Introduce `D ψ hψ S T JA JB ξ hA hB κ _ co hrat Φ hΦ`. Conclude with `⟨theta_quasi D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, theta_level D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, theta_cont D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, theta_smooth D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ⟩`.
+-/
 theorem isThetaFunO_thetaTr : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
       (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →
@@ -89,6 +107,9 @@ theorem isThetaFunO_thetaTr : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsS
   exact ⟨theta_quasi D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, theta_level D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ,
     theta_cont D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ, theta_smooth D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_lintegral_sq_eq_mul_setLIntegral_thetaTransform`.
+-/
 theorem theta_isometry_coord : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ →
     ∀ (κ : Type) [Fintype κ] (μ : @Measure (κ → AF F) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
     ∀ (ν : @Measure ((κ → AF F) × (κ → AF F)) (borel _)), @Measure.IsAddHaarMeasure _ _ _ (borel _) ν →
@@ -98,6 +119,9 @@ theorem theta_isometry_coord : ∀ (F : Type) [Field F] [NumberField F] (ψ : Ad
         ∫⁻ x, ‖Φ x‖ₑ ^ 2 ∂μ = c * ∫⁻ w in 𝓕, ‖GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr ψ w Φ)‖ₑ ^ 2 ∂ν :=
   GlobalTheory.T.exists_lintegral_sq_eq_mul_setLIntegral_thetaTransform
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.rationalDarboux_transfers_haar_fundamentalDomain`.
+-/
 theorem theta_transfer : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
       (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →
@@ -115,6 +139,11 @@ theorem theta_transfer : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdCha
               ∫⁻ w in 𝓕, ‖f (co.e w)‖ₑ ^ 2 ∂ν = ∫⁻ w in 𝓕', ‖f w‖ₑ ^ 2 ∂ν' :=
   GlobalTheory.T.rationalDarboux_transfers_haar_fundamentalDomain
 
+/- English proof (translation)
+Introduce `D ψ hψ S T JA JB ξ hA hB κ _ co hrat μ hμ ν 𝓕 hν h𝓕`. Take `⟨ν', 𝓕', hν', h𝓕', heq⟩` from `theta_transfer D ψ hψ S T JA JB ξ hA hB κ co hrat ν 𝓕 hν h𝓕`. Take `⟨c, hc⟩` from `theta_isometry_coord D.host.F ψ hψ.1 κ μ hμ ν' hν' 𝓕' h𝓕'`. Use `⟨c, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[hc Φ hΦ, ← heq]`.
+
+Both sides reduce to the same expression.
+-/
 theorem theta_isometry : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
       (ξ : AF D.host.F ⊗[D.host.F] D.host.E), JA = T.gramᵀ →
@@ -134,6 +163,11 @@ theorem theta_isometry : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdCha
   rw [hc Φ hΦ, ← heq]
   rfl
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ _ co hrat ω hω om hom`. Introduce and unpack `μ hμ ⟨a, b⟩ Φ hΦ`. Take `⟨g, h, hh, hg⟩` from `pair_of_ug D S T JA JB ξ hA hB a b`. Take `⟨ν, 𝓕, hν, h𝓕⟩` from `GlobalTheory.TowerRestrictScalar.exists_fd S T`. Apply the tactic sequence `obtain ⟨c, hc⟩ := theta_isometry D ψ hψ S T JA JB ξ hA hB κ co hrat μ hμ ν 𝓕 hν h𝓕`.
+
+Establish `ht` using `hom a b g h hh hg Φ hΦ`. Rewrite using `[hc _ ht.1, hc _ hΦ, ht.2, hω.om_unit ν 𝓕 hν h𝓕 _ _ (isThetaFunO_thetaTr D ψ hψ S T JA JB ξ hA hB κ co hrat Φ hΦ)]`.
+-/
 theorem isUnitaryOn_transport : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

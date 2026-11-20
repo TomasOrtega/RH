@@ -21,6 +21,27 @@ open GlobalTheory.FlatPlace GlobalTheory.LocMod GlobalTheory.SplitWeil
 noncomputable section
 namespace GlobalTheory.LastStepOne
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch hChr hArr hLoc hBes hJac t w hw p hp β r r₀ h hpts M hM φ v f hvf j hj vN h₁ h₂`. Establish `hm` using `D.R.two_le_m`. Establish `hjm : j < D.R.m` using `by omega`. Establish `hj1 : j + 1 < D.R.m` using `by omega`. Establish `hev : Even j`.
+
+Take `⟨a, ha⟩` from `D.R.m_even`. Conclude with `⟨a - 1, by omega⟩`. Establish `hL` using `hLoc t w hw p hp β r r₀ h hpts j hjm.le`. Establish `hc` using `hChr t w hw p hp`. Establish `hone : p.IsLoc (frRow ch.S.B t w (j + 1) hjm) 1 ((epsV ch.G t w * (repsAt ch.G t w).elt β) (D.R.m, j + 1))`.
+
+Establish `e1 : (epsV ch.G t w * (repsAt ch.G t w).elt β) (D.R.m, j + 1) = 1`. Rewrite using `[Pi.mul_apply, epsV_eq_one t w (by omega), elt_eq_one t w β (by omega), one_mul]`. Establish `hmt : Formalism.L2.Theta.mt (ch.G.V (.grid D.R.m (j + 1))) 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Use `⟨fun a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmt, sub_self]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e1, hmt, Matrix.map_one _ (map_zero _) (map_one _), Units.val_one, Matrix.mul_one, (frRow ch.S.B t w (j + 1) hjm).βγ]`. Take `⟨Tm, hTm, hTmO, Φ, hΦ, hTmΦ⟩` from `hArr t w hw p hp φ j hjm (v ⟨j, hjm⟩) (f ⟨j, hjm⟩) (hvf ⟨j, hjm⟩) (epsV ch.G t w) ((repsAt ch.G t w).elt β) (epsV_mem t w) (h j * r₀ j) ((r₀ j)⁻¹ * r j) 1 1 hL.1 hone _ _ (frame h₂) (frame h₁)`. Establish `hB` using `hBes t w hw p hp M hM j 0 hj vN (h j * r₀ j) (hL.2.1 hev) (0 + 1) h₂`. Establish `hJ` using `hJac t w hw p hp M hM j 0 hj vN 1 (Or.inl ⟨rfl, rfl⟩) 0 h₁`.
+
+Establish `hs : ((p.xi ^ 0)⁻¹ : Kw w) ≠ 0` using `by simp`. Take `⟨F₀, hF₀⟩` from `GlobalTheory.LocMod.Witness.exists_core p (besAt ch.G hM j 0 hj vN) hs (frTop ch.S.toGridChoice t w j (by omega))`. Establish `hBF` using `GlobalTheory.FlatBFLoc.flatBF_of_laws D (GlobalTheory.Unf.Flat.flatLaw D) (GlobalTheory.FinPl.flatLaws_all D) (GlobalTheory.LocOm.omLoc D)`. Take `⟨T₀, hT₀, hT₀e⟩` from `hBF (Kw w) p (unitVol w) (isUnitVol_unitVol w).1 ch.W.ψ (psiAt ch.W w) hc.1 0 (besAt ch.G hM j 0 hj vN) (lastAt ch.G ch.W t hM j hj vN).J (lastAt ch.G ch.W t hM j hj vN).s (p.xi ^ 0)⁻¹ hs _ _ 0 (frTop ch.S.toGridChoice t w j (by omega)) F₀ _ (frTop ch.S.toGridChoice t w (j + 1) ( …`. Establish `hψc : Continuous (psiAt ch.W w)` using `hc.2.1.continuous`.
+
+Establish `hfl` using `GlobalTheory.LocFlat.flat_SB_onto (Kw w) (psiAt ch.W w) (unitVol w) hψc (isUnitVol_unitVol w).1 (Fin (topRank (locGrid ch.G t w) (j + 1))) (Fin (topRank (locGrid ch.G t w) j)) 0 (0 + 1) le_rfl`. Establish `hun` using `GlobalTheory.LocFlat.flat_contr_intIndicator (Kw w) (psiAt ch.W w) (unitVol w) hc.2.1 (isUnitVol_unitVol w) (Fin (topRank (locGrid ch.G t w) (j + 1))) (Fin (topRank (locGrid ch.G t w) j)) (Fin (topRank (locGrid ch.G t w) j)) 0 (0 + 1)`. Use `⟨F₀, T₀, hF₀, hT₀, fun O hO => ?_, ⟨_, (hfl.1 le_rfl).1 Φ.1 Φ.2⟩, ?_, ?_⟩` and prove the remaining obligations. Set `Ob : SB (Matrix (Fin (topRank (locGrid ch.G t w) (j + 1)) ⊕ Fin 0) (Fin (topRank (locGrid ch.G t w) j) ⊕ Fin (0 + 1)) (Kw w))` to `⟨_, GlobalTheory.LastTwoSteps.intInd_mem_SB _ _⟩`. Establish `hOb : GlobalTheory.LocMod.IsOne Ob` using `rfl`.
+
+Establish `e : O.1 = GlobalTheory.LocFlat.flCol (psiAt ch.W w) (unitVol w) (0 + 1) Ob.1`. Rewrite using `[hO]`. Use `show _ = GlobalTheory.LocFlat.flCol (psiAt ch.W w) (unitVol w) (0 + 1) (Set.indicator _ _)`. Rewrite using `[hun.1, if_neg (by omega)]`. Use `(hT₀e Ob O e).symm.trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg _ (hTmO Ob hOb)`. Use `show GlobalTheory.LocFlat.flCol _ _ _ Φ.1 = _`. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `hΦ z`.
+
+Use `(hT₀e Φ ⟨_, (hfl.1 le_rfl).1 Φ.1 Φ.2⟩ rfl).symm.trans ?_` and prove the remaining obligations. Use `congrArg _ (hTmΦ.trans ?_)` and prove the remaining obligations. Establish `e : (h j * r₀ j * ((r₀ j)⁻¹ * r j), (1 : GA D (ch.G.V (.grid D.R.m (j + 1)))) * 1) = (h j * r j, 1)`. Rewrite using `[mul_one, mul_assoc, mul_inv_cancel_left]`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem first_step_flat : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (hChr : ChrP ch) (hArr : ArrP ch) (hLoc : LocP ch) (hBes : BesP ch) (hJac : JacP ch)
     (t : T) (w : Pl D.host.E) (hw : w ∈ locPl ch.G t) (p : Place D (Kw w)) (hp : IsPlc w p)
     (β : Cosets (G := locGrid ch.G t w) one_le_sLen (givenLevel ch.G t w)) (r r₀ h : Pts ch.G)

@@ -13,6 +13,27 @@ open GlobalTheory.RealLift
 
 namespace GlobalTheory.ConjLineSecond
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hb hX hW _hM hw g _hg h _hh T hT hTs γ hγ f hf f₁ hf₁`. Establish `hder` using `GlobalTheory.RealLift.Main.i_derex`. Establish `hvl` using `GlobalTheory.RealLift.Main.i_vacline hder`. Establish `hfe` using `GlobalTheory.RealLift.Main.i_fockex hder`. Use `choose A hA hAθ using fun w => GlobalTheory.RealLift.Main.i_frameex _ _ _ _ _ (hX.sig w) (hX.cartan w)`.
+
+Use `choose C hC hCθ using fun w => GlobalTheory.RealLift.Main.i_frameex _ _ _ _ _ (hW.sig w) (hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[GlobalTheory.RealLift.Main.incM_map_piInf, one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`.
+
+Rewrite using `[GlobalTheory.RealLift.Main.incM_map_piInf]`. Conclude with `hC w`. Establish `fr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hr` using `GlobalTheory.RealLift.Main.i_polrange GlobalTheory.RealLift.actsLaws hder hvl F E σ _ _ _ _ _ _ X W M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`.
+
+Establish `hsp : IsUSplitting (adeleClass F) B.ψ M.co (actAB (cA σ)) om` using `IsUWeilPair.isUSplitting hw`. Establish `hsp2` using `GlobalTheory.WeilSchrodinger.isUSplitting_inr hsp`. Take `⟨c, hc⟩` from `GlobalTheory.RealLift.Main.i_liescalar hK.base hder hvl F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C Φ _ hb.cm hb.std fr hΦ hsp2`. Take `⟨Yg, -, hY⟩` from `GlobalTheory.RealLift.Main.i_genex F E σ (Fin d) _ _ B.emb (incM F W.J) Complex.I C hb.cm hC1 γ hγ`. Take `⟨T0, rfl⟩` from `GlobalTheory.RealLift.Main.pol_eq B M Φ hr hf`.
+
+Take `⟨D, hSD⟩ : ∃ D, SD (fun t => om (1, γ (Multiplicative.ofAdd t))) (Φ T0) D` from `⟨_, hc γ hγ Yg hY T0⟩`. Establish `hAD : ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) (Φ T0) D` using `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) (Φ T0) D D).1 _ (fun t => map_zero _) hSD`. Establish `e0 : f₁ = D` using `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) (Φ T0) f₁ D).2.2.1 _ hf₁ hAD`. Substitute `e0` using the available equality. Establish `hSD2 : SD (fun t => om (1, h * γ (Multiplicative.ofAdd t) * h⁻¹)) (T (Φ T0)) (T f₁)`.
+
+Introduce `g' hg' l hl`. Establish `hl' : l ∘ₗ om (g, h) ∈ (adeleClass F).adm (Fin n × Fin d)` using `hsp.adm (g, h) l hl`. Establish `hrest : ∀ f0 : SInf F (Fin n × Fin d), Rest (evI F) (⇑f0) (fun x => g' fun i => (x i).2)` using `fun f0 => ⟨fun x z hz => by show g' (fun i => (x i + z i).2) = g' (fun i => (x i).2)`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[GlobalTheory.RealLift.fin_eq_zero_of_at hz i, add_zero], Submodule.subset_span ⟨f0, g', hg', rfl⟩⟩`. Establish `hpure : ∀ f0 : SInf F (Fin n × Fin d), pureA F (⇑f0) g' = tens (evI F) (⇑f0) (fun x => g' fun i => (x i).2)` using `fun _ => rfl`. Establish `e1 : om (g⁻¹, h⁻¹) (pureA F (⇑(T (Φ T0))) g') = pureA F (⇑(Φ T0)) g'`. Rewrite using `[hpure, hTs _ _ (hrest _), LinearEquiv.symm_apply_apply]`.
+
+Both sides reduce to the same expression. Establish `e2 : om (g, h) (pureA F (⇑f₁) g') = pureA F (⇑(T f₁)) g'`. Rewrite using `[hpure, hT _ _ (hrest _)]`. Both sides reduce to the same expression. Establish `e3 : ∀ t : ℝ, om (1, h * γ (Multiplicative.ofAdd t) * h⁻¹) (pureA F (⇑(T (Φ T0))) g') = om (g, h) (om (1, γ (Multiplicative.ofAdd t)) (pureA F (⇑(Φ T0)) g'))`.
+
+Introduce `t`. Establish `hp : ((1 : UA σ X.J), h * γ (Multiplicative.ofAdd t) * h⁻¹) = (g, h) * (1, γ (Multiplicative.ofAdd t)) * (g⁻¹, h⁻¹)` using `Prod.ext (by simp) (by simp)`. Rewrite using `[hp, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, e1]`. Simplify using `only [e3]`. Use `hSD g' hg' _ hl'` as an intermediate fact.
+
+Simplify `this` using `only [LinearMap.comp_apply, e2]`. Conclude with `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) (T (Φ T0)) (T f₁) (T f₁)).1 _ (fun t => map_zero _) hSD2`.
+-/
 theorem actsD_conj : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
     (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' → M.IsGood B.ψ → M.IsWeil B.ψ χX χW om →

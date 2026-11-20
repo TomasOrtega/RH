@@ -9,6 +9,11 @@ namespace PositivityTheory.KReal
 
 variable {p q r s : ℕ}
 
+/- English proof (translation)
+Unfold `minusPart`. Establish `h : ∀ e : ℕ, homogeneousComponent e (A (homogeneousComponent (e + 2) g)) = 0`. Introduce `e`. Rewrite using `[homogeneousComponent_of_mem hg, if_neg (by omega)]`. Simplify using the standard rewrite rules.
+
+Simplify using `[h]`.
+-/
 theorem gen_minus_small {σ : Type} (A : Module.End ℂ (MvPolynomial σ ℂ)) {d : ℕ} (hd : d < 2)
     {g : MvPolynomial σ ℂ} (hg : g ∈ homog σ d) : minusPart A g = 0 := by
   unfold minusPart
@@ -18,6 +23,27 @@ theorem gen_minus_small {σ : Type} (A : Module.End ℂ (MvPolynomial σ ℂ)) {
     simp
   simp [h]
 
+/- English proof (translation)
+Establish `hharm : ∀ d, ∀ g ∈ homog (Ix p q × Ix r s) d, g ∈ jHarm p q r s → thMkC p q r s c g ∈ N`. Introduce `d g hg hj`. Establish `h1` using `charSplit c c0 hc d (jHarm p q r s ⊓ homog (Ix p q × Ix r s) d) inf_le_right (fun a b hab x hx => ⟨jHarmonic_stable_first_action a b hab x hx.1, homogeneous_stable_first_action d a b hab x hx.2⟩)`. Use `hH (Submodule.map_mono ?_ (h1 (Submodule.mem_map_of_mem (show g ∈ _ from ⟨hj, hg⟩))))` and prove the remaining obligations. Conclude with `inf_le_inf_right _ inf_le_left`.
+
+Establish `key : ∀ d, ∀ g ∈ homog (Ix p q × Ix r s) d, thMkC p q r s c g ∈ N`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `g hg`.
+
+Distinguish the cases in `hd : d < 2`. Conclude with `hharm d g hg (Submodule.subset_span ⟨fun X _ => gen_minus_small _ hd hg, fun Y _ => gen_minus_small _ hd hg⟩)`. Take `⟨e, rfl⟩ : ∃ e, d = e + 2` from `⟨d - 2, by omega⟩`. Establish `hmin : ∀ (A : Module.End ℂ (Pol p q r s)), ∀ Q ∈ homog (Ix p q × Ix r s) e, thMkC p q r s c (minusPart A Q) ∈ N`. Introduce `A Q hQ`.
+
+Distinguish the cases in `he : e < 2`. Rewrite using `[gen_minus_small A he hQ, map_zero]`. Conclude with `N.zero_mem`. Take `⟨e', rfl⟩ : ∃ e', e = e' + 2` from `⟨e - 2, by omega⟩`. Rewrite using `[PI.FHS.minusPart_of_mem hQ]`.
+
+Conclude with `ih e' (by omega) _ (homogeneousComponent_mem e' _)`. Establish `hs` using `harmonicSplitting_holds p q r s true true rfl e`. Rewrite `hg` using `[hs]`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hg`. Rewrite using `[map_add]`.
+
+Use `N.add_mem (hharm _ y hy.1 (Submodule.span_mono ?_ hy.2)) ?_` and prove the remaining obligations. Introduce `P hP`. Conclude with `⟨hP.1 rfl, hP.2 rfl⟩`. Establish `: Submodule.span ℂ (raised p q r s true true e) ≤ N.comap (thMkC p q r s c)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `R ⟨Q, hQ, ⟨-, Z, hZ, rfl⟩ | ⟨-, Z, hZ, rfl⟩⟩`. Use `show thMkC p q r s c _ ∈ N`. Rewrite using `[th_plus1 c hZ]`. Conclude with `N.neg_mem (hmin _ Q hQ)`. Use `show thMkC p q r s c _ ∈ N`.
+
+Establish `h4` using `(gradedOscillatorProperty p q r s).2.2.2.1 Z hZ Q`. Establish `h5 : plusPart (fockAct2 p q r s Z) Q = twAct p q r s τ Z Q - (τ * Z.trace) • Q - minusPart (fockAct2 p q r s Z) Q`. Rewrite using `[twAct_apply, add_sub_cancel_right]`. Conclude with `eq_sub_of_add_eq h4.symm`. Establish `hQN` using `ih e (by omega) Q hQ`.
+
+Rewrite using `[h5, map_sub, map_sub, map_smul, ← thAct_mk]`. Conclude with `N.sub_mem (N.sub_mem (hN _ _ hQN) (N.smul_mem _ hQN)) (hmin _ Q hQ)`. Conclude with `this hz`. Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`.
+
+Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Express the relevant statement in the definitionally equal form `thMkC p q r s c f ∈ N`. Rewrite using `[← sum_homogeneousComponent f, map_sum]`. Conclude with `N.sum_mem fun d _ => key d _ (homogeneousComponent_mem d f)`.
+-/
 theorem th_gen_harm (c τ : ℂ) (c0 : ℚ) (hc : c = c0) (N : Submodule ℂ (ThC p q r s c))
     (hH : (jHarm p q r s ⊓ polChi p q r s c).map (thMkC p q r s c) ≤ N)
     (hN : ∀ W, ∀ x ∈ N, thAct p q r s c τ W x ∈ N) : N = ⊤ := by
@@ -74,6 +100,15 @@ theorem th_gen_harm (c τ : ℂ) (c0 : ℚ) (hc : c = c0) (N : Submodule ℂ (Th
   rw [← sum_homogeneousComponent f, map_sum]
   exact N.sum_mem fun d _ => key d _ (homogeneousComponent_mem d f)
 
+/- English proof (translation)
+Establish `hJ : g ∈ Jset p q r s` using `PI.FJMF.span_jset g hj`. Use `(fock_degree_one p q r s).1 _ g h0 ⟨Submodule.span ℂ {g}, inferInstance, Submodule.mem_span_singleton_self g, ?_, ?_⟩ hJ.2` and prove the remaining obligations. Introduce `X hX w hw`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Establish `h1 : fockAct1 p q r s X g = chiTr c X • g`.
+
+Use `(Submodule.mem_iInf _).1 hχ ⟨X, hX⟩` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker]`. Conclude with `sub_eq_zero.1 this`. Rewrite using `[map_smul, h1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self g))`.
+
+Introduce `ν w hw hhw`. Establish `hwχ : w ∈ polChi p q r s c` using `(Submodule.span_singleton_le_iff_mem _ _).2 hχ hw`. Establish `h1` using `(hwK_of_hwSub.1 ((mem_polChi_iff_hw c c0 hc w).1 hwχ)).1`. Establish `h2` using `(hwK_of_hwSub.1 hhw.2).1`. Use function extensionality and compare the values at `a`.
+
+Establish `h3 : ((ν a : ℚ) : ℂ) • w = ((c0 : ℚ) : ℂ) • w` using `(h2 a).symm.trans (h1 a)`. Establish `h4` using `smul_left_injective ℂ hhw.1 h3`. Conclude with `h4` after adjusting the coercions.
+-/
 theorem gen_oneDeg (c : ℂ) (c0 : ℚ) (hc : c = c0) {g : Pol p q r s} (h0 : g ≠ 0)
     (hj : g ∈ jHarm p q r s) (hχ : g ∈ polChi p q r s c) :
     ∃ d : ℕ, (d : ℚ) = degW (cPair r s) (fun _ : Ix p q => c0) ∧ g ∈ homog (Ix p q × Ix r s) d := by
@@ -97,6 +132,11 @@ theorem gen_oneDeg (c : ℂ) (c0 : ℚ) (hc : c = c0) {g : Pol p q r s} (h0 : g 
     have h4 := smul_left_injective ℂ hhw.1 h3
     exact_mod_cast h4
 
+/- English proof (translation)
+Introduce `g hg`. Distinguish the cases in `h0 : g = 0`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Take `⟨d, h1, h2⟩` from `gen_oneDeg c c0 hc h0 hg.1 hg.2`.
+
+Establish `: d = d0` using `by exact_mod_cast h1.trans hd.symm`. Rewrite `h2` using `[this]`. Then use the resulting hypothesis.
+-/
 theorem jHarm_polChi_homog (c : ℂ) (c0 : ℚ) (hc : c = c0) (d0 : ℕ)
     (hd : (d0 : ℚ) = degW (cPair r s) (fun _ : Ix p q => c0)) :
     jHarm p q r s ⊓ polChi p q r s c ≤ homog (Ix p q × Ix r s) d0 := by
@@ -107,6 +147,25 @@ theorem jHarm_polChi_homog (c : ℂ) (c0 : ℚ) (hc : c = c0) (d0 : ℕ)
     have : d = d0 := by exact_mod_cast h1.trans hd.symm
     rwa [this] at h2
 
+/- English proof (translation)
+Take `⟨⟨f, hf⟩, hf0, hline⟩` from `finrank_eq_one_iff'.1 ((fock_joint_multiplicity p q r s _ La).1 hJ)`. Establish `hf0' : f ≠ 0` using `fun h => hf0 (Subtype.ext h)`. Establish `hfχ : f ∈ polChi p q r s c` using `(mem_polChi_iff_hw c c0 hc f).2 hf.1.1`. Establish `hfj : f ∈ jHarm p q r s` using `hf.2`. Take `⟨d0, hd, hfd⟩` from `gen_oneDeg c c0 hc hf0' hfj hfχ`.
+
+Use `⟨d0, f, hd, hfd, hwK_of_hwSub.1 hf.1.2, fun U hfU hUK => ?_⟩` and prove the remaining obligations. Establish `hVd` using `jHarm_polChi_homog (p := p) (q := q) (r := r) (s := s) c c0 hc d0 hd`. Use `set V := jHarm p q r s ⊓ polChi p q r s c with hV`. Establish `hVK : KSt (units (fockAct2 p q r s)) V` using `fun a b hab x hx => ⟨jHarmonic_stable_second_action a b hab x hx.1, polChi_stable_second_action c _ hx.2⟩`. Set `Z : Submodule ℂ (Pol p q r s)` to `{ carrier := {z | z ∈ V ∧ ∀ x ∈ U ⊓ V, fockInner x z = 0} zero_mem' := ⟨V.zero_mem, fun x _ => PI.FHS.fockInner_zero_right x⟩ add_mem' := fun {a b} ha hb => ⟨V.add_mem ha.1 hb.1, fun x hx => by`.
+
+Rewrite using `[PI.FHS.fockInner_add_right, ha.2 x hx, hb.2 x hx, add_zero]⟩`. Use the proof step `smul_mem' := fun t a ha => ⟨V.smul_mem t ha.1, fun x hx => by`. Rewrite using `[PI.FHS.fockInner_smul_right, ha.2 x hx, mul_zero]⟩ }`. Establish `hZ : Z = ⊥`. Assume the negation of the conclusion as `hne`.
+
+Establish `: FiniteDimensional ℂ (homog (Ix p q × Ix r s) d0)` using `Module.Finite.iff_fg.2 (homogeneousSubmodule_fg _ ℂ d0)`. Establish `: FiniteDimensional ℂ Z` using `Submodule.finiteDimensional_of_le (S₂ := homog (Ix p q × Ix r s) d0) fun z hz => hVd hz.1`. Establish `hZK : KSt (units (fockAct2 p q r s)) Z`. Introduce `a b hab z hz`. Use `⟨hVK a b hab z hz.1, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hba` using `PI.FHS.sameBlock_symm hab`. Establish `h1 : fockInner (fockAct2 p q r s (Eab b a) x) z = epsB b a * fockInner x (fockAct2 p q r s (Eab a b) z)` using `adj2 p q r s b a x z`. Establish `h2` using `hz.2 _ (show units (fockAct2 p q r s) b a x ∈ U ⊓ V from ⟨hUK b a hba x hx.1, hVK b a hba x hx.2⟩)`. Rewrite `h1` using `[epsB, if_pos hba, one_mul]`. Conclude with `h1.symm.trans h2`.
+
+Take `⟨ν, g, hgZ, hg0, hgw⟩` from `hwExist2 Z hne hZK`. Establish `hg1` using `(mem_polChi_iff_hw c c0 hc g).1 hgZ.1.2`. Establish `hsh : JointShape p q r s (fun _ => c0) ν`. Assume the negation of the conclusion as `hn`. Establish `h` using `(fock_joint_multiplicity p q r s _ ν).2 hn`.
+
+Establish `: g ∈ (⊥ : Submodule ℂ (Pol p q r s))` using `h ▸ ⟨⟨hg1, hgw⟩, hgZ.1.1⟩`. Conclude with `hg0 ((Submodule.mem_bot ℂ).1 this)`. Take `rfl` from `hU ν hsh`. Take `⟨t, ht⟩` from `hline ⟨g, ⟨hg1, hgw⟩, hgZ.1.1⟩`. Establish `ht' : t • f = g` using `congrArg Subtype.val ht`.
+
+Establish `hgU : g ∈ U ⊓ V` using `⟨ht' ▸ U.smul_mem t hfU, hgZ.1⟩`. Conclude with `hg0 (PI.FHS.fockInner_self_eq_zero (hgZ.2 g hgU))`. Introduce `v hv`. Take `⟨y, hy, hperp⟩` from `PI.FHS.exists_orth (U ⊓ V) d0 (inf_le_right.trans hVd) v`. Establish `hz : v - y ∈ Z` using `⟨V.sub_mem hv hy.2, hperp⟩`.
+
+Rewrite `hz` using `[hZ, Submodule.mem_bot, sub_eq_zero]`. Conclude with `hz ▸ hy.1`.
+-/
 theorem exists_gen (c : ℂ) (c0 : ℚ) (hc : c = c0) (La : Ix r s → ℚ)
     (hJ : JointShape p q r s (fun _ => c0) La) (hU : ∀ ν, JointShape p q r s (fun _ => c0) ν → ν = La) :
     ∃ (d0 : ℕ) (f : Pol p q r s), (d0 : ℚ) = degW (cPair r s) (fun _ : Ix p q => c0) ∧

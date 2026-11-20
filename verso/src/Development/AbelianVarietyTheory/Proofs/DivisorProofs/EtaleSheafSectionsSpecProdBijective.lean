@@ -9,6 +9,9 @@ namespace GlobalTheory.EtC.SecProd
 
 variable (A B : Type) [CommRing A] [CommRing B]
 
+/- English proof (translation)
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Rewrite using `[PrimeSpectrum.primeSpectrumProd_symm_inl_asIdeal]`. Express the relevant statement in the definitionally equal form `Ideal.comap _ _ = _`. Use `ext`. Simplify using `[Ideal.prod, CommRingCat.ofHom]`.
+-/
 theorem pt_fst (y : Spec (CommRingCat.of A)) :
     (Spec.map (CommRingCat.ofHom (RingHom.fst A B))) y =
       (PrimeSpectrum.primeSpectrumProd A B).symm (.inl (show PrimeSpectrum A from y)) := by
@@ -17,6 +20,9 @@ theorem pt_fst (y : Spec (CommRingCat.of A)) :
   change Ideal.comap _ _ = _
   ext; simp [Ideal.prod, CommRingCat.ofHom]
 
+/- English proof (translation)
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Rewrite using `[PrimeSpectrum.primeSpectrumProd_symm_inr_asIdeal]`. Express the relevant statement in the definitionally equal form `Ideal.comap _ _ = _`. Use `ext`. Simplify using `[Ideal.prod, CommRingCat.ofHom]`.
+-/
 theorem pt_snd (y : Spec (CommRingCat.of B)) :
     (Spec.map (CommRingCat.ofHom (RingHom.snd A B))) y =
       (PrimeSpectrum.primeSpectrumProd A B).symm (.inr (show PrimeSpectrum B from y)) := by
@@ -25,6 +31,13 @@ theorem pt_snd (y : Spec (CommRingCat.of B)) :
   change Ideal.comap _ _ = _
   ext; simp [Ideal.prod, CommRingCat.ofHom]
 
+/- English proof (translation)
+Establish `hx` using `(PrimeSpectrum.primeSpectrumProd A B).symm_apply_apply (show PrimeSpectrum (A × B) from x)`. Break down `h : PrimeSpectrum.primeSpectrumProd A B x with y | y` into its components or cases. Use `left`. Use `⟨y, (pt_fst A B y).trans ?_⟩` and prove the remaining obligations. Simplify using `only at hx ⊢`.
+
+Rewrite `hx` using `[h]`. Conclude with `hx`. Use `right`. Use `⟨y, (pt_snd A B y).trans ?_⟩` and prove the remaining obligations. Simplify using `only at hx ⊢`.
+
+Rewrite `hx` using `[h]`. Conclude with `hx`.
+-/
 theorem pt_cover (x : Spec (CommRingCat.of (A × B))) :
     x ∈ Set.range (Spec.map (CommRingCat.ofHom (RingHom.fst A B))) ∨
       x ∈ Set.range (Spec.map (CommRingCat.ofHom (RingHom.snd A B))) := by
@@ -33,6 +46,9 @@ theorem pt_cover (x : Spec (CommRingCat.of (A × B))) :
   · left; refine ⟨y, (pt_fst A B y).trans ?_⟩; dsimp only at hx ⊢; rw [h] at hx; exact hx
   · right; refine ⟨y, (pt_snd A B y).trans ?_⟩; dsimp only at hx ⊢; rw [h] at hx; exact hx
 
+/- English proof (translation)
+Rewrite using `[pt_fst, pt_snd]`. Introduce `h`. Conclude with `Sum.inl_ne_inr ((PrimeSpectrum.primeSpectrumProd A B).symm.injective h)`.
+-/
 theorem pt_disj (y : Spec (CommRingCat.of A)) (z : Spec (CommRingCat.of B)) :
     (Spec.map (CommRingCat.ofHom (RingHom.fst A B))) y ≠ (Spec.map (CommRingCat.ofHom (RingHom.snd A B))) z := by
   rw [pt_fst, pt_snd]
@@ -47,10 +63,16 @@ instance : IsOpenImmersion (Spec.map (CommRingCat.ofHom (RingHom.snd A B))) := b
   let := (RingHom.snd A B).toAlgebra
   exact IsOpenImmersion.of_isLocalization (0, 1)
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_comp {R : Type} [CommRing R] (F : Shv R) {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
     Sec.res (k ≫ g) a = Sec.res k (Sec.res g a) := by
   simp [Sec.res]
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_id {R : Type} [CommRing R] (F : Shv R) {U : Scheme.{0}} (a : Sec F U) :
     Sec.res (𝟙 U) a = a := by
   simp [Sec.res]
@@ -61,12 +83,20 @@ namespace GlobalTheory.EtC.SecProd
 
 variable (A B : Type) [CommRing A] [CommRing B]
 
+/- English proof (translation)
+Apply `(sec_ext_glue R F W).1 a b` to reduce the goal to its premises. Rewrite using `[loc_iff_etale_affine_points]`. Introduce `x`. Conclude with `isEmptyElim x`. Introduce `V W' g k h`.
+
+Rewrite using `[res_comp, res_comp, h]`.
+-/
 theorem sec_empty {R : Type} [CommRing R] (F : Shv R) (W : Scheme.{0}) [IsEmpty W] (a b : Sec F W) : a = b := by
   apply (sec_ext_glue R F W).1 a b
   rw [loc_iff_etale_affine_points]
   · intro x; exact isEmptyElim x
   · intro V W' g k h; rw [res_comp, res_comp, h]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => pt_disj A B (w₁ x) (w₂ x) (by rw [← Scheme.Hom.comp_apply, h, Scheme.Hom.comp_apply])⟩`.
+-/
 theorem empty_of_fac {W : Scheme.{0}} (w₁ : W ⟶ Spec (CommRingCat.of A)) (w₂ : W ⟶ Spec (CommRingCat.of B))
     (h : w₁ ≫ Spec.map (CommRingCat.ofHom (RingHom.fst A B)) = w₂ ≫ Spec.map (CommRingCat.ofHom (RingHom.snd A B))) :
     IsEmpty W :=
@@ -80,6 +110,11 @@ def facSieve : Sieve (Spec (CommRingCat.of (A × B))) where
     · exact Or.inl ⟨k ≫ w, by simp⟩
     · exact Or.inr ⟨k ≫ w, by simp⟩
 
+/- English proof (translation)
+Establish `hL : Loc _ fun _ g => (facSieve A B).arrows g`. Rewrite using `[loc_iff_etale_affine_points]`. Introduce `x`. Break down `pt_cover A B x with ⟨y, hy⟩ | ⟨y, hy⟩` into its components or cases. Conclude with `⟨_, _, inferInstance, inferInstance, ⟨y, hy⟩, Or.inl ⟨𝟙 _, by simp⟩⟩`.
+
+Conclude with `⟨_, _, inferInstance, inferInstance, ⟨y, hy⟩, Or.inr ⟨𝟙 _, by simp⟩⟩`. Introduce `V W g k h`. Conclude with `(facSieve A B).downward_closed h k`. Take `⟨S, hS, hSP⟩` from `hL`. Conclude with `Scheme.etaleTopology.superset_covering (fun W g hg => hSP W g hg) hS`.
+-/
 theorem facSieve_mem : facSieve A B ∈ Scheme.etaleTopology (Spec (CommRingCat.of (A × B))) := by
   have hL : Loc _ fun _ g => (facSieve A B).arrows g := by
     rw [loc_iff_etale_affine_points]
@@ -97,6 +132,25 @@ namespace GlobalTheory.EtC
 
 open SecProd in
 
+/- English proof (translation)
+Introduce `R _ A B _ _ F`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Simplify using `only [Prod.mk.injEq] at hab`. Apply `(sec_ext_glue R F _).1 a b` to reduce the goal to its premises.
+
+Use `⟨facSieve A B, facSieve_mem A B, ?_⟩` and prove the remaining obligations. Introduce and unpack `W g (⟨w, rfl⟩ | ⟨w, rfl⟩)`. Rewrite using `[res_comp, res_comp, hab.1]`. Rewrite using `[res_comp, res_comp, hab.2]`. Introduce and unpack `⟨s1, s2⟩ classical`.
+
+Set `i1` to `Spec.map (CommRingCat.ofHom (RingHom.fst A B))`. Set `i2` to `Spec.map (CommRingCat.ofHom (RingHom.snd A B))`. Set `s : ∀ (V : Scheme.{0}) (g : V ⟶ Spec (CommRingCat.of (A × B))), (facSieve A B).arrows g → Sec F V` to `fun V g hg => if h : ∃ w, g = w ≫ i1 then Sec.res h.choose s1 else Sec.res (hg.resolve_left h).choose s2`. Establish `key1 : ∀ V g (w : V ⟶ Spec (CommRingCat.of A)) (e : g = w ≫ i1) hg, s V g hg = Sec.res w s1`. Introduce `V g w e hg`.
+
+Establish `h : ∃ w', g = w' ≫ i1` using `⟨w, e⟩`. Simplify using `only [s, dif_pos h]`. Use `congr 1`. Conclude with `(cancel_mono i1).1 (h.choose_spec.symm.trans e)`. Establish `key2 : ∀ V g (w : V ⟶ Spec (CommRingCat.of B)) (e : g = w ≫ i2) hg, s V g hg = Sec.res w s2`.
+
+Introduce `V g w e hg`. Distinguish the cases in `h : ∃ w', g = w' ≫ i1`. Use `haveI := empty_of_fac A B h.choose w (h.choose_spec.symm.trans e)`. Conclude with `sec_empty F V _ _`. Simplify using `only [s, dif_neg h]`.
+
+Use `congr 1`. Conclude with `(cancel_mono i2).1 ((hg.resolve_left h).choose_spec.symm.trans e)`. Establish `hs : ∀ (V W : Scheme.{0}) (g : V ⟶ _) (k : W ⟶ V) (hg : (facSieve A B).arrows g), Sec.res k (s V g hg) = s W (k ≫ g) ((facSieve A B).downward_closed hg k)`. Introduce `V W g k hg`. Establish `hg'` using `hg`.
+
+Break down `hg' with ⟨w, e⟩ | ⟨w, e⟩` into its components or cases. Rewrite using `[key1 V g w e hg, key1 W _ (k ≫ w) (by rw [e, Category.assoc]) ((facSieve A B).downward_closed hg k), res_comp]`. Rewrite using `[key2 V g w e hg, key2 W _ (k ≫ w) (by rw [e, Category.assoc]) ((facSieve A B).downward_closed hg k), res_comp]`. Take `⟨a, ha⟩` from `(sec_ext_glue R F _).2 _ (facSieve_mem A B) s hs`. Use `⟨a, Prod.ext ?_ ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Sec.res i1 a = s1`. Establish `h1 : (facSieve A B).arrows i1` using `Or.inl ⟨𝟙 _, (Category.id_comp _).symm⟩`. Rewrite using `[ha _ i1 h1, key1 _ i1 (𝟙 _) (Category.id_comp _).symm h1, res_id]`. Express the relevant statement in the definitionally equal form `Sec.res i2 a = s2`. Establish `h2 : (facSieve A B).arrows i2` using `Or.inr ⟨𝟙 _, (Category.id_comp _).symm⟩`.
+
+Rewrite using `[ha _ i2 h2, key2 _ i2 (𝟙 _) (Category.id_comp _).symm h2, res_id]`.
+-/
 theorem sec_prod : ∀ (R : Type) [CommRing R] (A B : Type) [CommRing A] [CommRing B] (F : Shv R),
     Function.Bijective fun s : Sec F (Spec (CommRingCat.of (A × B))) =>
       (Sec.res (Spec.map (CommRingCat.ofHom (RingHom.fst A B))) s,

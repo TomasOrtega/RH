@@ -13,6 +13,23 @@ open Formalism.MainNotions Formalism.FrobeniusOrbits
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `set T : (Fin 4 × D.what₂.Tau → D.host.K) →ₗ[D.host.K] (Fin 4 × D.what₂.Tau → D.host.K) := ((γ₀.g.symm.trans γ.g : (Fin 4 × D.what₂.Tau → D.host.K) ≃ₗ[D.host.K] _) : (Fin 4 × D.what₂.Tau → D.host.K) →ₗ[D.host.K] (Fin 4 × D.what₂.Tau → D.host.K)) with hT`. Set `f : D.host.K →+* ℂ` to `D.host.φ₀.comp (algebraMap D.host.K D.host.E)`. Establish `hform : ∀ v v' : Fin 4 × D.what₂.Tau → D.host.K, ∑ w, f (T v w) * conj (f (T v' w)) = ∑ w, f (v w) * conj (f (v' w))`. Introduce `v v'`. Establish `h1` using `γ.isom (γ₀.g.symm v) (γ₀.g.symm v')`.
+
+Establish `h2` using `γ₀.isom (γ₀.g.symm v) (γ₀.g.symm v')`. Rewrite `h1` using `[← h2]`. Simplify using `only [LinearEquiv.apply_symm_apply] at h1`. Establish `h3` using `congrArg D.host.φ₀ h1`. Simplify using `only [map_sum, map_mul, phi_conj] at h3`.
+
+Conclude with `h3`. Use `set M : Matrix (Fin 4 × D.what₂.Tau) (Fin 4 × D.what₂.Tau) D.host.K := LinearMap.toMatrix' T with hM`. Establish `hdet : f (γ.detRel γ₀) = (f.mapMatrix M).det`. Rewrite using `[← RingHom.map_det, hM, LinearMap.det_toMatrix']`. Both sides reduce to the same expression.
+
+Establish `hone : (f.mapMatrix M).transpose * ((f.mapMatrix M).map (starRingEnd ℂ)) = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Establish `h` using `hform (Pi.single i 1) (Pi.single j 1)`. Establish `e1 : ∀ w, (f.mapMatrix M).transpose i w * ((f.mapMatrix M).map (starRingEnd ℂ)) w j = f (T (Pi.single i 1) w) * conj (f (T (Pi.single j 1) w))`.
+
+Introduce `w`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, RingHom.mapMatrix_apply, hM, LinearMap.toMatrix'_apply]`. Rewrite using `[Finset.sum_congr rfl fun w _ => e1 w, h, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single i]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Introduce `w _ hw`. Simplify using `[Pi.single_apply, hw]`.
+
+Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Establish `h4` using `congrArg Matrix.det hone`. Rewrite `h4` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_one]`. Establish `h5 : ((f.mapMatrix M).map (starRingEnd ℂ)).det = conj ((f.mapMatrix M).det)`.
+
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite `h4` using `[h5, ← hdet]`. Conclude with `h4`.
+-/
 theorem detRel_unitary (γ γ₀ : IsoK D) :
     D.host.φ₀ ((γ.detRel γ₀ : D.host.K) : D.host.E) *
       (starRingEnd ℂ) (D.host.φ₀ ((γ.detRel γ₀ : D.host.K) : D.host.E)) = 1 := by
@@ -57,6 +74,9 @@ theorem detRel_unitary (γ γ₀ : IsoK D) :
   rw [h5, ← hdet] at h4
   exact h4
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℤ (D.host.conj ((a : D.host.K) : D.host.E))`. Establish `h1 : IsIntegral ℤ ((a : D.host.K) : D.host.E)` using `map_isIntegral_int (algebraMap D.host.K D.host.E) (NumberField.RingOfIntegers.isIntegral_coe a)`. Conclude with `map_isIntegral_int D.host.conj.toRingEquiv.toRingHom h1`. Establish `hk : IsIntegral ℤ (⟨D.host.conj ((a : D.host.K) : D.host.E), conj_mem_K D.host (a : D.host.K)⟩ : D.host.K)` using `(isIntegral_algebraMap_iff (A := D.host.K) (B := D.host.E) (algebraMap D.host.K D.host.E).injective).1 hi`. Conclude with `⟨⟨_, hk⟩, rfl⟩`.
+-/
 theorem exists_conj (a : 𝓞 D.host.K) :
     ∃ b : 𝓞 D.host.K, ((b : D.host.K) : D.host.E) = D.host.conj ((a : D.host.K) : D.host.E) := by
   have hi : IsIntegral ℤ (D.host.conj ((a : D.host.K) : D.host.E)) := by
@@ -67,6 +87,21 @@ theorem exists_conj (a : 𝓞 D.host.K) :
     (isIntegral_algebraMap_iff (A := D.host.K) (B := D.host.E) (algebraMap D.host.K D.host.E).injective).1 hi
   exact ⟨⟨_, hk⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hsq : D.host.sqd * D.host.sqd = -(D.host.d : D.host.E)`. Rewrite using `[← sq]`. Conclude with `bE_sq D.host`. Use `K_induction D.host (p := fun x => ∃ r s : ℚ, x = algebraMap ℚ D.host.E r + algebraMap ℚ D.host.E s * D.host.sqd) ?_ ?_ ?_ ?_ ?_ x` and prove the remaining obligations. Conclude with `⟨0, 1, by simp⟩`.
+
+Introduce `r; exact ⟨r, 0, by simp⟩`. Introduce and unpack `_ _ ⟨r, s, rfl⟩ ⟨r', s', rfl⟩`. Conclude with `⟨r + r', s + s', by simp only [map_add]; ring⟩`. Introduce and unpack `_ ⟨r, s, rfl⟩`. Distinguish the cases in `h0 : r = 0 ∧ s = 0`.
+
+Conclude with `⟨0, 0, by rw [h0.1, h0.2]; simp⟩`. Establish `hd : (0 : ℚ) < D.host.d` using `by exact_mod_cast d_pos D.host`. Establish `hN : r ^ 2 + (D.host.d : ℚ) * s ^ 2 ≠ 0`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+
+Establish `h3 : 0 ≤ (D.host.d : ℚ) * s ^ 2` using `mul_nonneg hd.le (sq_nonneg s)`. Establish `h1 : r ^ 2 = 0` using `le_antisymm (by linarith) (sq_nonneg r)`. Establish `h2 : (D.host.d : ℚ) * s ^ 2 = 0` using `by linarith`. Establish `h4 : s ^ 2 = 0` using `(mul_eq_zero.1 h2).resolve_left hd.ne'`. Conclude with `⟨by simpa using h1, by simpa using h4⟩`.
+
+Use `⟨r / (r ^ 2 + (D.host.d : ℚ) * s ^ 2), -s / (r ^ 2 + (D.host.d : ℚ) * s ^ 2), ?_⟩` and prove the remaining obligations. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Establish `q1 : r * (r / (r ^ 2 + (D.host.d : ℚ) * s ^ 2)) + s * (-s / (r ^ 2 + (D.host.d : ℚ) * s ^ 2)) * (-(D.host.d : ℚ)) = 1`. Clear the denominators using the available nonvanishing facts. Establish `q2 : r * (-s / (r ^ 2 + (D.host.d : ℚ) * s ^ 2)) + s * (r / (r ^ 2 + (D.host.d : ℚ) * s ^ 2)) = 0`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `congrArg (algebraMap ℚ D.host.E) q1`. Establish `h2` using `congrArg (algebraMap ℚ D.host.E) q2`. Simplify using `only [map_add, map_mul, map_neg, map_natCast, map_one, map_zero] at h1 h2`.
+
+Take the linear combination `(algebraMap ℚ D.host.E s * algebraMap ℚ D.host.E (-s / (r ^ 2 + (D.host.d : ℚ) * s ^ 2))) * hsq + h1 + D.host.sqd * h2`. Introduce and unpack `_ _ ⟨r, s, rfl⟩ ⟨r', s', rfl⟩`. Use `⟨r * r' - (D.host.d : ℚ) * (s * s'), r * s' + s * r', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_sub, map_mul, map_natCast]`. Take the linear combination `(algebraMap ℚ D.host.E s * algebraMap ℚ D.host.E s') * hsq`.
+-/
 theorem repr_K (x : D.host.K) : ∃ r s : ℚ, (x : D.host.E) =
     algebraMap ℚ D.host.E r + algebraMap ℚ D.host.E s * D.host.sqd := by
   have hsq : D.host.sqd * D.host.sqd = -(D.host.d : D.host.E) := by
@@ -107,6 +142,17 @@ theorem repr_K (x : D.host.K) : ∃ r s : ℚ, (x : D.host.E) =
     simp only [map_add, map_sub, map_mul, map_natCast]
     linear_combination (algebraMap ℚ D.host.E s * algebraMap ℚ D.host.E s') * hsq
 
+/- English proof (translation)
+Establish `hsq : D.host.sqd * D.host.sqd = -(D.host.d : D.host.E)`. Rewrite using `[← sq]`. Conclude with `bE_sq D.host`. Take `⟨r, s, hrs⟩` from `repr_K (t : D.host.K)`. Establish `hc : ((t' : D.host.K) : D.host.E) = algebraMap ℚ D.host.E r - algebraMap ℚ D.host.E s * D.host.sqd`.
+
+Rewrite using `[h, hrs, map_add, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, conj_b]`. Expand and normalize the polynomial expressions, which then agree. Establish `hprod : (((t * t' : 𝓞 D.host.K) : D.host.K) : D.host.E) = algebraMap ℚ D.host.E (r ^ 2 + (D.host.d : ℚ) * s ^ 2)`. Establish `e : (((t * t' : 𝓞 D.host.K) : D.host.K) : D.host.E) = ((t : D.host.K) : D.host.E) * ((t' : D.host.K) : D.host.E)` using `by push_cast; rfl`. Rewrite using `[e, hrs, hc]`.
+
+Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Take the linear combination `(-(algebraMap ℚ D.host.E s * algebraMap ℚ D.host.E s)) * hsq`. Establish `hi : IsIntegral ℤ (algebraMap ℚ D.host.E (r ^ 2 + (D.host.d : ℚ) * s ^ 2))`. Rewrite using `[← hprod]`. Conclude with `map_isIntegral_int (algebraMap D.host.K D.host.E) (NumberField.RingOfIntegers.isIntegral_coe (t * t'))`.
+
+Establish `hq : IsIntegral ℤ (r ^ 2 + (D.host.d : ℚ) * s ^ 2)` using `(isIntegral_algebraMap_iff (A := ℚ) (B := D.host.E) (algebraMap ℚ D.host.E).injective).1 hi`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hq`. Use `⟨n, ?_⟩` and prove the remaining obligations. Apply `NumberField.RingOfIntegers.coe_injective` to reduce the goal to its premises. Apply `Subtype.val_injective` to reduce the goal to its premises.
+
+Use `show (((t * t' : 𝓞 D.host.K) : D.host.K) : D.host.E) = (((n : 𝓞 D.host.K) : D.host.K) : D.host.E)`. Rewrite using `[hprod, ← hn]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_int (t t' : 𝓞 D.host.K) (h : ((t' : D.host.K) : D.host.E) = D.host.conj ((t : D.host.K) : D.host.E)) :
     ∃ n : ℤ, t * t' = (n : 𝓞 D.host.K) := by
   have hsq : D.host.sqd * D.host.sqd = -(D.host.d : D.host.E) := by
@@ -135,6 +181,13 @@ theorem norm_int (t t' : 𝓞 D.host.K) (h : ((t' : D.host.K) : D.host.E) = D.ho
   rw [hprod, ← hn]
   simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hnd`. Establish `hc : IsCoprime (p : ℤ) n` using `((Nat.prime_iff_prime_int.1 hp).coprime_iff_not_dvd).2 hnd`. Take `⟨u, v, huv⟩` from `hc`. Apply `hQ.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Establish `h1 : ((u : 𝓞 D.host.K)) * ((p : ℕ) : 𝓞 D.host.K) + (v : 𝓞 D.host.K) * (n : 𝓞 D.host.K) = 1`. Use `congrArg (Int.cast : ℤ → 𝓞 D.host.K) huv` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[← h1]`.
+
+Conclude with `Q.add_mem (Q.mul_mem_left _ hpQ) (Q.mul_mem_left _ hn)`.
+-/
 theorem dvd_of_mem (Q : Ideal (𝓞 D.host.K)) (hQ : Q.IsPrime) (p : ℕ) (hp : p.Prime) (hpQ : ((p : ℕ) : 𝓞 D.host.K) ∈ Q)
     (n : ℤ) (hn : (n : 𝓞 D.host.K) ∈ Q) : (p : ℤ) ∣ n := by
   by_contra hnd
@@ -155,11 +208,27 @@ variable {γ₀ : IsoK D} (k : KapChoice γ₀) (p : ℕ) (hp : p.Prime) (hs : S
 
 include hp hs
 
+/- English proof (translation)
+Establish `h : k.pi p ∈ Ideal.span {k.pi p}` using `Ideal.mem_span_singleton_self _`. Rewrite `h` using `[← k.pi_gen p hp hs]`. Conclude with `Ideal.pow_le_self (classNumber_ne D) h`.
+-/
 theorem pi_mem : k.pi p ∈ (k.pp p).asIdeal := by
   have h : k.pi p ∈ Ideal.span {k.pi p} := Ideal.mem_span_singleton_self _
   rw [← k.pi_gen p hp hs] at h
   exact Ideal.pow_le_self (classNumber_ne D) h
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `exists_conj (k.pi p)`. Take `⟨n, hn⟩` from `norm_int (k.pi p) b hb`. Establish `hmem : (n : 𝓞 D.host.K) ∈ (k.pp p).asIdeal`. Rewrite using `[← hn]`. Conclude with `Ideal.mul_mem_right _ _ (pi_mem k p hp hs)`.
+
+Establish `hdvd` using `dvd_of_mem (k.pp p).asIdeal (k.pp p).isPrime p hp (k.pp_over p hp hs) n hmem`. Establish `hlt : ‖((n : ℤ) : ℂ_[p])‖ < 1`. Take `⟨m, hm⟩` from `hdvd`. Establish `hp1 : ‖((p : ℕ) : ℂ_[p])‖ < 1`. Establish `e : (((p : ℕ) : ℚ_[p]) : ℂ_[p]) = ((p : ℕ) : ℂ_[p])` using `by simp`.
+
+Rewrite using `[← e, PadicComplex.norm_extends']`. Conclude with `Padic.norm_p_lt_one`. Establish `hm1 : ‖((m : ℤ) : ℂ_[p])‖ ≤ 1`. Establish `h` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.norm_le_one_of_int (map_isIntegral_int (Int.castRingHom ℂ_[p]) (isIntegral_algebraMap (R := ℤ) (A := ℤ) (x := m)))`. Simplify using `using h`.
+
+Rewrite using `[hm]`. Use `push_cast`. Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) hp1 hm1`. Establish `hprod : ι (D.host.φ₀ (((k.pi p : 𝓞 D.host.K) : D.host.K) : D.host.E)) * ι (D.host.φ₀ (D.host.conj (((k.pi p : 𝓞 D.host.K) : D.host.K) : D.host.E))) = ((n : ℤ) : ℂ_[p])`.
+
+Rewrite using `[← hb, ← map_mul, ← map_mul]`. Establish `e : ((k.pi p : D.host.K) : D.host.E) * ((b : D.host.K) : D.host.E) = (((k.pi p * b : 𝓞 D.host.K) : D.host.K) : D.host.E)` using `by push_cast; rfl`. Rewrite using `[e, hn]`. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hcon`.
+
+Take `⟨hc1, hc2⟩` from `not_or.1 hcon`. Establish `h3` using `mul_le_mul (not_lt.1 hc1) (not_lt.1 hc2) zero_le_one (norm_nonneg _)`. Rewrite `h3` using `[← norm_mul, hprod, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pi_dichotomy [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) :
     ‖ι (D.host.φ₀ (((k.pi p : 𝓞 D.host.K) : D.host.K) : D.host.E))‖ < 1 ∨
       ‖ι (D.host.φ₀ (D.host.conj (((k.pi p : 𝓞 D.host.K) : D.host.K) : D.host.E)))‖ < 1 := by
@@ -195,6 +264,25 @@ theorem pi_dichotomy [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) :
   rw [← norm_mul, hprod, one_mul] at h3
   linarith
 
+/- English proof (translation)
+Introduce `hbm`. Establish `hinj : ∀ x y : 𝓞 D.host.K, ((x : D.host.K) : D.host.E) = ((y : D.host.K) : D.host.E) → x = y` using `fun x y h => NumberField.RingOfIntegers.coe_injective (Subtype.val_injective h)`. Establish `hstab : ∀ t t' : 𝓞 D.host.K, ((t' : D.host.K) : D.host.E) = D.host.conj ((t : D.host.K) : D.host.E) → t ∈ (k.pp p).asIdeal → t' ∈ (k.pp p).asIdeal`. Introduce `t t' ht htm`. Establish `h1 : t ^ classNumber D.host.K ∈ Ideal.span {k.pi p}`.
+
+Rewrite using `[← k.pi_gen p hp hs]`. Conclude with `Ideal.pow_mem_pow htm _`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 h1`. Take `⟨r', hr'⟩` from `exists_conj r`. Establish `h2 : t' ^ classNumber D.host.K = r' * b`.
+
+Apply `hinj` to reduce the goal to its premises. Establish `e1 : (((t' ^ classNumber D.host.K : 𝓞 D.host.K) : D.host.K) : D.host.E) = ((t' : D.host.K) : D.host.E) ^ classNumber D.host.K` using `by push_cast; rfl`. Establish `e2 : (((r' * b : 𝓞 D.host.K) : D.host.K) : D.host.E) = ((r' : D.host.K) : D.host.E) * ((b : D.host.K) : D.host.E)` using `by push_cast; rfl`. Establish `e3 : (((r * k.pi p : 𝓞 D.host.K) : D.host.K) : D.host.E) = ((r : D.host.K) : D.host.E) * ((k.pi p : D.host.K) : D.host.E)` using `by push_cast; rfl`. Establish `e4 : (((t ^ classNumber D.host.K : 𝓞 D.host.K) : D.host.K) : D.host.E) = ((t : D.host.K) : D.host.E) ^ classNumber D.host.K` using `by push_cast; rfl`.
+
+Rewrite using `[e1, e2, ht, hr', hb, ← map_pow, ← map_mul, ← e3, ← e4, hr]`. Establish `h3 : t' ^ classNumber D.host.K ∈ (k.pp p).asIdeal`. Rewrite using `[h2]`. Conclude with `Ideal.mul_mem_left _ _ hbm`. Conclude with `(k.pp p).isPrime.mem_of_pow_mem _ h3`.
+
+Take `⟨P, hP, hpP, a₁, b₁, hab, ha₁, hb₁⟩` from `splitKSplits D p hp hs`. Establish `hle : P ≤ (k.pp p).asIdeal`. Introduce `t ht`. Take `⟨t', ht'⟩` from `exists_conj t`. Take `⟨n, hn⟩` from `norm_int t t' ht'`.
+
+Establish `hnP : (n : 𝓞 D.host.K) ∈ P` using `by rw [← hn]; exact Ideal.mul_mem_right _ _ ht`. Take `⟨m, hm⟩` from `dvd_of_mem P hP p hp hpP n hnP`. Establish `hnp : t * t' ∈ (k.pp p).asIdeal`. Rewrite using `[hn, hm]`. Use `push_cast`.
+
+Conclude with `Ideal.mul_mem_right _ _ (k.pp_over p hp hs)`. Break down `(k.pp p).isPrime.mem_or_mem hnp with h | h` into its components or cases. Conclude with `h`. Use `hstab t' t ?_ h` and prove the remaining obligations. Rewrite using `[ht', conj_conj]`.
+
+Establish `hPne : P ≠ ⊥`. Introduce `h0`. Rewrite `hpP` using `[h0, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hpP)`. Establish `hmax : P.IsMaximal` using `hP.isMaximal hPne`.
+
+Establish `hPeq : P = (k.pp p).asIdeal` using `hmax.eq_of_le (k.pp p).isPrime.ne_top hle`. Apply `hb₁` to reduce the goal to its premises. Rewrite using `[hPeq]`. Conclude with `hstab a₁ b₁ hab.symm (hPeq ▸ ha₁)`.
+-/
 theorem conj_pi_not_mem (b : 𝓞 D.host.K)
     (hb : ((b : D.host.K) : D.host.E) = D.host.conj (((k.pi p : 𝓞 D.host.K) : D.host.K) : D.host.E)) :
     b ∉ (k.pp p).asIdeal := by

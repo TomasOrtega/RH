@@ -4,6 +4,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `S G _ R _ x E E' _ _ _ _ M M'`. Use `choose f hf using fun e => M'.onto (M.pt e) (M.tan e)`. Use `choose g hg using fun e' => M.onto (M'.pt e') (M'.tan e')`. Set `φ : E ≃ₗ[R] E'` to `{ toFun := f invFun := g map_add' := fun e e' => M'.inj (by rw [M'.add, hf, hf, hf, M.add]) map_smul' := fun c e => by show f (c • e) = c • f e`. Apply `M'.inj` to reduce the goal to its premises.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[M'.smul, hf, hf, M.smul]`. Use `left_inv := fun e => M.inj (by rw [hg, hf])`. Use `right_inv := fun e' => M'.inj (by rw [hf, hg]) }`. Use `⟨φ, fun e => hf e, fun ψ hψ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `LinearEquiv.ext fun e => M'.inj ((hψ e).trans (hf e).symm)`.
+-/
 theorem lieModel_existsUnique_equiv :
     ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R : Type) [CommRing R] (x : Spec (CommRingCat.of R) ⟶ S) (E E' : Type) [AddCommGroup E] [Module R E] [AddCommGroup E'] [Module R E'] (M : LieModel G x E) (M' : LieModel G x E'), ∃! f : E ≃ₗ[R] E', ∀ e, M'.pt (f e) = M.pt e := by
   intro S G _ R _ x E E' _ _ _ _ M M'

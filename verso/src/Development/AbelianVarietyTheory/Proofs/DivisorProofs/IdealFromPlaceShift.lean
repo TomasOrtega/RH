@@ -15,6 +15,17 @@ open GlobalTheory.LieIndex GlobalTheory.HTLat.OmegaRank
 
 namespace GlobalTheory.CMIdeal
 
+/- English proof (translation)
+Establish `key : ∀ P : Ideal (𝓞 K), Prime P → emultiplicity P I = emultiplicity P J` using `fun P hP => by`. Set `𝔭 : HeightOneSpectrum (𝓞 K)` to `⟨P, Ideal.isPrime_of_prime hP, hP.ne_zero⟩`. Choose the witnesses or unpack the hypotheses as in `⟨ℓ, hℓ, hm⟩ : ∃ ℓ : ℕ, ℓ.Prime ∧ (ℓ : 𝓞 K) ∈ P := by`. Establish `h0 : Ideal.absNorm P ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.2 hP.ne_zero`. Establish `h1` using `Ideal.absNorm_mem P`.
+
+Rewrite `h1` using `[← Nat.prod_primeFactorsList h0, Nat.cast_list_prod, ← Ideal.Quotient.eq_zero_iff_mem, map_list_prod]`. Use `haveI := 𝔭.isPrime`. Use `haveI : IsDomain (𝓞 K ⧸ P) := Ideal.Quotient.isDomain 𝔭.asIdeal`. Take `⟨_, h2, h3⟩` from `List.mem_map.1 (List.prod_eq_zero_iff.1 h1)`. Take `⟨ℓ, h4, rfl⟩` from `List.mem_map.1 h2`.
+
+Conclude with `⟨ℓ, Nat.prime_of_mem_primeFactorsList h4, Ideal.Quotient.eq_zero_iff_mem.1 h3⟩`. Use `haveI : Fact ℓ.Prime := ⟨hℓ⟩`. Take `⟨i, he, hi⟩` from `GlobalTheory.PrimeEmbedding.exists_embedding_norm_eq K 𝔭 ℓ hm`. Take `⟨d, h1, h2⟩` from `h ℓ i`. Establish `e` using `(norm_of_map_eq_span he hi (algebraMap_embO _ i) hI h1).symm.trans (norm_of_map_eq_span he hi (algebraMap_embO _ i) hJ h2)`.
+
+Establish `hℓ' : (1 : ℝ) < ℓ` using `by exact_mod_cast hℓ.one_lt`. Establish `he' : (Formalism.BasicNotions.vAdd 𝔭 (ℓ : K) : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`. Establish `e'` using `(Real.strictMono_rpow_of_base_gt_one hℓ').injective e`. Rewrite `e'` using `[neg_inj, div_left_inj' he', Nat.cast_inj]`. Rewrite using `[(FiniteMultiplicity.of_prime_left hP hI).emultiplicity_eq_multiplicity, (FiniteMultiplicity.of_prime_left hP hJ).emultiplicity_eq_multiplicity]`.
+
+Conclude with `congrArg _ e'`. Conclude with `le_antisymm (Ideal.le_of_dvd ((UniqueFactorizationMonoid.dvd_iff_emultiplicity_le hJ).2 fun P hP => (key P hP).ge)) (Ideal.le_of_dvd ((UniqueFactorizationMonoid.dvd_iff_emultiplicity_le hI).2 fun P hP => (key P hP).le))`.
+-/
 theorem ideal_eq_of_map_eq {K : Type} [Field K] [NumberField K] {I J : Ideal (𝓞 K)} (hI : I ≠ ⊥) (hJ : J ≠ ⊥)
     (h : ∀ (ℓ : ℕ) [Fact ℓ.Prime] (i : K →+* ℂ_[ℓ]), ∃ d : 𝓞_ℂ_[ℓ],
       I.map (embO (PadicComplexInt.integers ℓ) i) = Ideal.span {d} ∧
@@ -46,6 +57,11 @@ theorem ideal_eq_of_map_eq {K : Type} [Field K] [NumberField K] {I J : Ideal (�
     (Ideal.le_of_dvd ((UniqueFactorizationMonoid.dvd_iff_emultiplicity_le hJ).2 fun P hP => (key P hP).ge))
     (Ideal.le_of_dvd ((UniqueFactorizationMonoid.dvd_iff_emultiplicity_le hI).2 fun P hP => (key P hP).le))
 
+/- English proof (translation)
+Establish `e : c ^ p * g' = c' ^ q * g`. Use `NNReal.coe_injective (Real.log_injOn_pos (Set.mem_Ioi.2 (by positivity)) (Set.mem_Ioi.2 (by positivity)) ?_)` and prove the remaining obligations. Use `push_cast`. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow]`. Substitute `h₁ h₂` using the available equality.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h` using `[e]`. Conclude with `mul_left_cancel₀ (mul_ne_zero (pow_ne_zero _ hc') hg) h`.
+-/
 theorem cancel_shift {p q : ℕ} {κ₁ κ₂ : ℝ} {g g' c c' a b : ℝ≥0} (hg : g ≠ 0) (hg' : g' ≠ 0) (hc : c ≠ 0) (hc' : c' ≠ 0)
     (h₀ : Real.log g - Real.log g' = p * κ₁ + q * κ₂) (h₁ : Real.log c = κ₁) (h₂ : -Real.log c' = κ₂)
     (h : c ^ p * g' * a = c' ^ q * g * b) : a = b := by
@@ -59,6 +75,9 @@ theorem cancel_shift {p q : ℕ} {κ₁ κ₂ : ℝ} {g g' c c' a b : ℝ≥0} (
   rw [e] at h
   exact mul_left_cancel₀ (mul_ne_zero (pow_ne_zero _ hc') hg) h
 
+/- English proof (translation)
+Use `choose m hm using fun a => (Submodule.mem_span_range_iff_exists_fun C).1 (Submodule.span_le_restrictScalars O C _ (h a))`. Conclude with `⟨m, fun a => (hm a).symm⟩`.
+-/
 theorem exists_matrix_of_mem {O C U : Type} [CommRing O] [Field C] [Algebra O C] [AddCommGroup U] [Module C U]
     [Module O U] [IsScalarTower O C U] {n : ℕ} {x u : Fin n → U} (h : ∀ a, u a ∈ Submodule.span O (Set.range x)) :
     ∃ m : Matrix (Fin n) (Fin n) C, ∀ a, u a = ∑ k, m a k • x k := by
@@ -79,6 +98,15 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] {C : Type} [Field C] [IsAlgClosed C] [Char
 
 open Classical in
 
+/- English proof (translation)
+Use `letI := H.starRing`. Introduce and unpack `⟨b0, x, x', g, g', b1, b2, b3, b4, b5, b6, -, -, b7, b8, b9, b10⟩ ⟨p0, y, y₀, c, c₀, p1, p2, p3, p4, p5, -, -, -, -, -, p9, -⟩ ⟨q0, z₀, z, e₀, e, q1, q2, q3, q4, -, q6, -, -, -, -, -, q10⟩ hS`. Establish `sB` using `hS _ p q b0 x x' g g' b1 b2 b3 b4`. Establish `sP` using `hS _ 1 0 p0 y y₀ c c₀ p1 p2 p3 p4`. Establish `sQ` using `hS _ 0 1 q0 z₀ z e₀ e q1 q2 q3 q4`.
+
+Simplify using `only [Matrix.det_isEmpty, map_one, NNReal.coe_one, Real.log_one, sub_zero, zero_sub, Nat.cast_one, Nat.cast_zero, one_mul, zero_mul, add_zero, zero_add] at sP sQ`. Take `⟨m, hm⟩` from `exists_matrix_of_mem (C := C) fun a => b1.ge (patV_mem_wRec (T := X.A true) hv ε i (X.lin (.inl a)) _ _ (p1.le (Submodule.subset_span ⟨0, rfl⟩)))`. Take `⟨m', hm'⟩` from `exists_matrix_of_mem (C := C) fun a => b2.ge (patV_mem_wRec (T := X.A false) hv ε i (X.lin (.inr a)) _ _ (q2.le (Submodule.subset_span ⟨0, rfl⟩)))`. Establish `e₁` using `hR.val_det x x' y z g m g' m' c e b5 b6 p5 q6 b9 b10 p9 q10 b3 b4 p3 q4 hm hm'`. Take `⟨-, hP, hQ⟩` from `lie_index hv ε i hD hτ`.
+
+Rewrite `p1`, `q2` using `[Set.range_unique]`. Take `⟨d₁, hd₁, f₁⟩` from `hP _ hφ x (fun _ => y 0) m b7 b1 (fun _ => p1) hm`. Take `⟨d₂, hd₂, f₂⟩` from `hQ ((embO hv φ).comp (starRingEnd (𝓞 E))) (by rw [hφ]; rfl) x' (fun _ => z 0) m' b8 b2 (fun _ => q2) hm'`. Establish `e₂ : v (algebraMap O C (d₁ * δ)) = v (algebraMap O C (n * d₂))`. Use `cancel_shift ((map_ne_zero v).2 b5) ((map_ne_zero v).2 b6) ((map_ne_zero v).2 p5) ((map_ne_zero v).2 q6) sB sP sQ ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, map_mul, map_mul, hd₁, hd₂]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨d₁ * δ, by rw [f₁, Ideal.span_singleton_mul_span_singleton], ?_⟩` and prove the remaining obligations. Rewrite using `[f₂, Ideal.span_singleton_mul_span_singleton]`. Conclude with `le_antisymm (Ideal.span_singleton_le_span_singleton.2 (hv.le_iff_dvd.1 e₂.ge)) (Ideal.span_singleton_le_span_singleton.2 (hv.le_iff_dvd.1 e₂.le))`.
+-/
 theorem map_eq_at (hD : IsDiffs FP FQ FB MP MQ) (hτ : τ H.rt = ρ) {φ : E →+* C} (hφ : embO hv φ = (embO hv i).comp τ)
     {n δ : O} (hR : IsIndexRel hv ε i X φ (Ideal.span {n}) δ) {κ₁ κ₂ : ℝ} : letI := H.starRing
     HasSigFrames (pointB hv ε i X) H.rt φ p q → HasSigFrames (pointA hv ε i X true) H.rt φ 1 0 →
@@ -128,6 +156,23 @@ theorem map_eq_at (hD : IsDiffs FP FQ FB MP MQ) (hτ : τ H.rt = ρ) {φ : E →
 
 end At
 
+/- English proof (translation)
+Take `⟨𝔫, h1, h2⟩` from `index_ideal X h`. Use `⟨𝔫, h1, fun FP FQ FB MP MQ hD τ hτ => ?_⟩` and prove the remaining obligations. Take `⟨n1, n2⟩` from `idx_sub_ne_bot hD hτ`. Take `⟨g1, g2, -⟩` from `GlobalTheory.GramAt.gram_det X h`. Establish `hinj : Function.Injective τ`.
+
+Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Assume the negation of the conclusion as `h0`. Establish `h` using `Ideal.absNorm_mem (RingHom.ker τ)`. Rewrite `h` using `[RingHom.mem_ker, map_natCast, Nat.cast_eq_zero]`. Conclude with `h0 (Ideal.absNorm_eq_zero_iff.1 h)`.
+
+Establish `h𝔫 : 𝔫 ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `h1` using `[Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`. Conclude with `mul_ne_zero g1 g2 h1`. Use `ideal_eq_of_map_eq (mul_ne_zero n1 (Ideal.span_singleton_eq_bot.not.2 ((map_ne_zero_iff τ hinj).2 g2))) (mul_ne_zero ((Ideal.map_eq_bot_iff_of_injective hinj).not.2 h𝔫) n2) fun ℓ _ i => ?_` and prove the remaining obligations.
+
+Use `letI := H.starRing`. Use `letI := algPadicInt ℓ`. Use `letI := algPadicField ℓ`. Use `haveI := towerPadic ℓ`. Use `haveI := factPadic ℓ`.
+
+Use `haveI := PadicComplexHost.isAdicComplete ℓ`. Take `⟨ε⟩ : Nonempty (Eps ℓ ℂ_[ℓ])` from `inferInstance`. Take `⟨φ, hφ, hI⟩` from `h2 ℓ ε i τ`. Establish `hrt : φ (H.rt : E) = i (ρ : K)`. Rewrite using `[← algebraMap_embO (PadicComplexInt.integers ℓ) φ, hφ, RingHom.comp_apply, hτ, algebraMap_embO]`.
+
+Take `⟨fB, fP, fQ⟩` from `hF ℓ ε i φ hrt`. Establish `hR` using `isIndexRel_of_hasSigFrames (PadicComplexInt.integers ℓ) ε i X h φ fB fP fQ _ hI`. Take `⟨-, n, -, -, -, -, hn⟩` from `hI`. Take `⟨κ₁, κ₂, hκ⟩` from `PlaceShiftModel.pointShiftSt_of_placeShiftSt hS E H hH ℓ φ`. Rewrite `hR` using `[← hn]`.
+
+Establish `hn' : ∀ x : ℂ_[ℓ], ‖x‖ = ((Valued.v x : ℝ≥0) : ℝ)` using `fun x => by`. Rewrite using `[PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`. Take `⟨d, e₁, e₂⟩` from `map_eq_at (PadicComplexInt.integers ℓ) ε i hD hτ hφ hR fB fP fQ fun P p q a x x' g g' b c d e => by rw [← hn', ← hn']; exact hκ P p q a x x' g g' b c d e`. Use `⟨d, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.map_mul, Ideal.map_span, Set.image_singleton, ← e₁, hφ]`.
+
+Both sides reduce to the same expression. Rewrite using `[Ideal.map_mul, Ideal.map_map, ← hn, e₂]`.
+-/
 theorem ideal_of_frames (hS : PlaceShiftSt) (hH : GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H) (X : CMObj H K ρ σ₁ p q)
     {gP : Matrix (Fin p) (Fin p) (𝓞 E)} {gQ : Matrix (Fin q) (Fin q) (𝓞 E)} (h : IsGram X gP gQ)
     (hF : ∀ (ℓ : ℕ) [Fact ℓ.Prime] [IsAdicComplete (Ideal.span {(ℓ : 𝓞_ℂ_[ℓ])}) 𝓞_ℂ_[ℓ]] (ε : Eps ℓ ℂ_[ℓ])
@@ -181,6 +226,9 @@ theorem ideal_of_frames (hS : PlaceShiftSt) (hH : GlobalTheory.IndefiniteRowSide
     rfl
   · rw [Ideal.map_mul, Ideal.map_map, ← hn, e₂]
 
+/- English proof (translation)
+Introduce `hS _ _ _ _ H hH _ _ _ _ _ _ _ X _ _ h` and use `ideal_of_frames hS hH X h fun ℓ _ _ ε i τ hτ => by letI := algPadicInt ℓ; letI := algPadicField ℓ; haveI := towerPadic ℓ; haveI := factPadic ℓ exact CMKernel.hasSigFrames_of_isGram _ ε i X h τ hτ`.
+-/
 theorem idealSt_of_placeShiftSt : PlaceShiftSt → IdealSt := fun hS _ _ _ _ H hH _ _ _ _ _ _ _ X _ _ h =>
   ideal_of_frames hS hH X h fun ℓ _ _ ε i τ hτ => by
     letI := algPadicInt ℓ; letI := algPadicField ℓ; haveI := towerPadic ℓ; haveI := factPadic ℓ

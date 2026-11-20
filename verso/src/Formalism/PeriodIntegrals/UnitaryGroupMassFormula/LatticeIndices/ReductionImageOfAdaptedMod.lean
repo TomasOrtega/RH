@@ -18,14 +18,27 @@ variable {D : D7} (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p]
 abbrev mQJ : Matrix (IdxD D) (IdxD D) (FpX X p) :=
   (Q : Matrix (IdxD D) (IdxD D) (FpX X p))ᵀ * (Matrix.reindex (idxEquiv X) (idxEquiv X) (jm1 X.B.I.J θ))ᵀ
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_transpose, Matrix.det_reindex_self]`. Conclude with `(Units.isUnit (Matrix.GeneralLinearGroup.det Q)).mul (isUnit_det_split_form X p θ)`.
+-/
 theorem mQJ_unit : IsUnit (mQJ X p θ Q).det := by
   rw [Matrix.det_mul, Matrix.det_transpose, Matrix.det_transpose, Matrix.det_reindex_self]
   exact (Units.isUnit (Matrix.GeneralLinearGroup.det Q)).mul (isUnit_det_split_form X p θ)
 
+/- English proof (translation)
+Unfold `crd2`. Rewrite using `[Matrix.mulVec_mulVec]`.
+-/
 theorem secondCoords_eq_mulVec (v : Fin X.B.I.n → TpX X p) :
     crd2 X p θ Q v = mQJ X p θ Q *ᵥ (pr2 θ v ∘ (idxEquiv X).symm) := by
   unfold crd2; rw [Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Use `set w1 := (Q : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ a`. Use `set w2 := (mQJ X p θ Q)⁻¹ *ᵥ b`. Use `⟨fun j => θ.symm (w1 (idxEquiv X j), w2 (idxEquiv X j)), ?_, ?_⟩` and prove the remaining obligations. Establish `: pr1 θ (fun j => θ.symm (w1 (idxEquiv X j), w2 (idxEquiv X j))) ∘ (idxEquiv X).symm = w1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[pr1]`. Unfold `crd1`. Rewrite using `[this, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `: pr2 θ (fun j => θ.symm (w1 (idxEquiv X j), w2 (idxEquiv X j))) ∘ (idxEquiv X).symm = w2`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[pr2]`. Rewrite using `[secondCoords_eq_mulVec, this, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (mQJ_unit X p θ Q), Matrix.one_mulVec]`.
+-/
 theorem crd_surj (a b : IdxD D → FpX X p) : ∃ x, crd1 X p θ Q x = a ∧ crd2 X p θ Q x = b := by
   set w1 := (Q : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ a
   set w2 := (mQJ X p θ Q)⁻¹ *ᵥ b
@@ -38,6 +51,13 @@ theorem crd_surj (a b : IdxD D → FpX X p) : ∃ x, crd1 X p θ Q x = a ∧ crd
       funext i; simp [pr2]
     rw [secondCoords_eq_mulVec, this, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (mQJ_unit X p θ Q), Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `e1 : pr1 θ x ∘ (idxEquiv X).symm = 0`. Use `congrArg (fun v => (Q : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ v) h1` as an intermediate fact. Simplify using `only [crd1, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec, Matrix.mulVec_zero] at this`. Conclude with `this`. Establish `e2 : pr2 θ x ∘ (idxEquiv X).symm = 0`.
+
+Use `congrArg (fun v => (mQJ X p θ Q)⁻¹ *ᵥ v) h2` as an intermediate fact. Simplify using `only [secondCoords_eq_mulVec, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (mQJ_unit X p θ Q), Matrix.one_mulVec, Matrix.mulVec_zero] at this`. Conclude with `this`. Use function extensionality and compare the values at `j`. Establish `a1` using `congrFun e1 (idxEquiv X j)`.
+
+Establish `a2` using `congrFun e2 (idxEquiv X j)`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, Pi.zero_apply] at a1 a2`. Establish `: θ (x j) = 0` using `Prod.ext a1 a2`. Simplify using `using congrArg θ.symm this`.
+-/
 theorem crd_inj (x : Fin X.B.I.n → TpX X p) (h1 : crd1 X p θ Q x = 0) (h2 : crd2 X p θ Q x = 0) : x = 0 := by
   have e1 : pr1 θ x ∘ (idxEquiv X).symm = 0 := by
     have := congrArg (fun v => (Q : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ v) h1
@@ -56,6 +76,15 @@ theorem crd_inj (x : Fin X.B.I.n → TpX X p) (h1 : crd1 X p θ Q x = 0) (h2 : c
   have : θ (x j) = 0 := Prod.ext a1 a2
   simpa using congrArg θ.symm this
 
+/- English proof (translation)
+Take `⟨j⟩ : Nonempty (IdxD D)` from `⟨zI⟩`. Take `⟨x1, hx1a, hx1b⟩` from `crd_surj X p θ Q (Pi.single j 1) 0`. Take `⟨x2, hx2a, hx2b⟩` from `crd_surj X p θ Q 0 (Pi.single j 1)`. Establish `hint : IntVec (OvA X p) (Pi.single j (1 : FpX X p))` using `fun i => by`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using `[ValuationSubring.one_mem]`. Simplify using `[h, ValuationSubring.zero_mem]`. Establish `hz : IntVec (OvA X p) (0 : IdxD D → FpX X p)` using `fun _ => ValuationSubring.zero_mem _`. Establish `l1` using `imA_lat_OEp X p ht ((latCrd_of X p θ Q hL x1).2 ⟨hx1a ▸ hint, hx1b ▸ hz⟩)`.
+
+Establish `l2` using `imA_lat_OEp X p ht ((latCrd_of X p θ Q hL x2).2 ⟨hx2a ▸ hz, hx2b ▸ hint⟩)`. Establish `c1` using `((latCrd_of X p θ Q hL _).1 l1).1 j`. Establish `c2` using `((latCrd_of X p θ Q hL _).1 l2).2 j`. Rewrite `c1` using `[firstCoords_tensor_smul, hx1a]`. Rewrite `c2` using `[secondCoords_tensor_smul, hx2b]`.
+
+Simplify using `at c1 c2`. Conclude with `⟨c1, c2⟩`.
+-/
 theorem oEp_int (hL : LatBasis X p θ (reindex₂ X p Q)) (t : TpX X p) (ht : t ∈ OEp X p) :
     (θ t).1 ∈ OvA X p ∧ (θ t).2 ∈ OvA X p := by
   obtain ⟨j⟩ : Nonempty (IdxD D) := ⟨zI⟩
@@ -77,9 +106,15 @@ theorem oEp_int (hL : LatBasis X p θ (reindex₂ X p Q)) (t : TpX X p) (ht : t 
 
 def OEpSplit : Prop := θ.symm (1, 0) ∈ OEp X p ∧ θ.symm (0, 1) ∈ OEp X p
 
+/- English proof (translation)
+The claim follows from `splitA_of X p θ Q (oEp_int X p θ Q hL) hO.1 hO.2 (latCrd_of X p θ Q hL) (crd_inj X p θ Q) (crd_surj X p θ Q)`.
+-/
 theorem splitA_of_lat (hL : LatBasis X p θ (reindex₂ X p Q)) (hO : OEpSplit X p θ) : SplitA X p θ Q :=
   splitA_of X p θ Q (oEp_int X p θ Q hL) hO.1 hO.2 (latCrd_of X p θ Q hL) (crd_inj X p θ Q) (crd_surj X p θ Q)
 
+/- English proof (translation)
+Take `⟨θ, hθ, hO, Q, hL, hA⟩` from `h`. Conclude with `reduction_image_of_adapted X p hb hC ⟨θ, hθ, Q, hL, splitA_of_lat X p θ Q hL hO, hA⟩`.
+-/
 theorem reduction_image_of_adapted_mod (hb : AdBridgeIso X.B.I) (hC : LatCoreX)
     (h : ∃ θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p, IsSplitEquiv X p θ ∧ OEpSplit X p θ ∧
       ∃ Q : GL (IdxD D) (FpX X p), LatBasis X p θ (reindex₂ X p Q) ∧ AdaptA X p θ Q) : LevelReductionImage X hb p := by

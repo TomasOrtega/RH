@@ -21,6 +21,9 @@ def lieParabolic : Submodule F (Matrix (Fin n) (Fin n) F) where
   smul_mem' c A hA i j hij := by
     simp [hA hij]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lieParabolic {A : Matrix (Fin n) (Fin n) F} :
     A ∈ lieParabolic F n β ↔ A.BlockTriangular β :=
   Iff.rfl
@@ -42,6 +45,9 @@ noncomputable def parabolicCoord : lieParabolic F n β ≃ₗ[F] (ParabolicIndex
     funext s
     simp [s.2]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem parabolicCoord_apply (A : lieParabolic F n β) (s : ParabolicIndex n β) :
     parabolicCoord F n β A s = (A : Matrix (Fin n) (Fin n) F) s.1.1 s.1.2 :=
   rfl
@@ -62,6 +68,11 @@ noncomputable def parabolicCoordHomeomorph : lieParabolic F n β ≃ₜ (Parabol
 def toLie (p : blockUpper F n β) : lieParabolic F n β :=
   ⟨((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F), p.2⟩
 
+/- English proof (translation)
+Establish `: (blockUpper F n β : Set (GL (Fin n) F)) = ⋂ i, ⋂ j, ⋂ (_ : β j < β i), (fun g : GL (Fin n) F => g i j) ⁻¹' {0}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_blockUpper, Set.mem_iInter, Set.mem_preimage, Set.mem_singleton_iff]`. Conclude with `⟨fun h i j hij => h hij, fun h i j hij => h i j hij⟩`. Rewrite using `[this]`.
+
+Apply the tactic sequence `exact isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_singleton.preimage (GLnLocal.continuous_entry F n i j)`.
+-/
 theorem isClosed_blockUpper : IsClosed (blockUpper F n β : Set (GL (Fin n) F)) := by
   have : (blockUpper F n β : Set (GL (Fin n) F)) =
       ⋂ i, ⋂ j, ⋂ (_ : β j < β i), (fun g : GL (Fin n) F => g i j) ⁻¹' {0} := by
@@ -79,6 +90,13 @@ instance locallyCompactSpace_blockUpper : LocallyCompactSpace (blockUpper F n β
 instance locallyCompactSpace_borel : LocallyCompactSpace (borel F n) :=
   locallyCompactSpace_blockUpper F n id
 
+/- English proof (translation)
+Establish `hemb : IsEmbedding (toLie F n β)` using `((isOpenEmbedding_val F n).isEmbedding.comp IsEmbedding.subtypeVal).codRestrict (lieParabolic F n β : Set (Matrix (Fin n) (Fin n) F)) fun p : blockUpper F n β => p.2`. Use `⟨hemb, ?_⟩` and prove the remaining obligations. Establish `: Set.range (toLie F n β) = Subtype.val ⁻¹' Set.range (Units.val : GL (Fin n) F → Matrix (Fin n) (Fin n) F)`. Use extensionality with `A`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨p, rfl⟩`. Conclude with `⟨p, rfl⟩`. Introduce and unpack `⟨u, hu⟩`. Use `⟨⟨u, ?_⟩, Subtype.ext hu⟩` and prove the remaining obligations. Use `show (u : Matrix (Fin n) (Fin n) F).BlockTriangular β`.
+
+Rewrite using `[hu]`. Conclude with `A.2`. Rewrite using `[this]`. Conclude with `(isOpenEmbedding_val F n).isOpen_range.preimage continuous_subtype_val`.
+-/
 theorem isOpenEmbedding_toLie : IsOpenEmbedding (toLie F n β) := by
   have hemb : IsEmbedding (toLie F n β) :=
     ((isOpenEmbedding_val F n).isEmbedding.comp IsEmbedding.subtypeVal).codRestrict
@@ -115,11 +133,17 @@ noncomputable def mulRightLie (p : blockUpper F n β) :
     · refine ⟨A * ((p⁻¹ : blockUpper F n β) : GL (Fin n) F), hA.mul (p⁻¹).2, ?_⟩
       simp [mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_mulLeftLie (p : blockUpper F n β) (A : lieParabolic F n β) :
     ((mulLeftLie F n β p A : lieParabolic F n β) : Matrix (Fin n) (Fin n) F) =
       ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * A :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_mulRightLie (p : blockUpper F n β) (A : lieParabolic F n β) :
     ((mulRightLie F n β p A : lieParabolic F n β) : Matrix (Fin n) (Fin n) F) =
       A * ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) :=
@@ -128,6 +152,9 @@ noncomputable def mulRightLie (p : blockUpper F n β) :
 noncomputable def adLie (p : blockUpper F n β) : lieParabolic F n β ≃ₗ[F] lieParabolic F n β :=
   (mulLeftLie F n β p).trans (mulRightLie F n β p⁻¹)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_adLie (p : blockUpper F n β) (A : lieParabolic F n β) :
     ((adLie F n β p A : lieParabolic F n β) : Matrix (Fin n) (Fin n) F) =
       ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * A *
@@ -150,6 +177,9 @@ noncomputable def parabolicChart : LinearChart F (ParabolicIndex n β) (blockUpp
 
 variable {F n β}
 
+/- English proof (translation)
+Rewrite using `[LinearChart.leftModulus, distribHaarChar_pi_eq]`. Use `congr 1`. Conclude with `LinearEquiv.det_conj (mulLeftLie F n β p) (parabolicCoord F n β)`.
+-/
 theorem parabolicChart_leftModulus (p : blockUpper F n β) :
     (parabolicChart F n β).leftModulus p =
       distribHaarChar F (LinearEquiv.det (mulLeftLie F n β p)) := by
@@ -157,6 +187,9 @@ theorem parabolicChart_leftModulus (p : blockUpper F n β) :
   congr 1
   exact LinearEquiv.det_conj (mulLeftLie F n β p) (parabolicCoord F n β)
 
+/- English proof (translation)
+Rewrite using `[LinearChart.rightModulus, distribHaarChar_pi_eq]`. Use `congr 1`. Conclude with `LinearEquiv.det_conj (mulRightLie F n β p) (parabolicCoord F n β)`.
+-/
 theorem parabolicChart_rightModulus (p : blockUpper F n β) :
     (parabolicChart F n β).rightModulus p =
       distribHaarChar F (LinearEquiv.det (mulRightLie F n β p)) := by
@@ -164,6 +197,9 @@ theorem parabolicChart_rightModulus (p : blockUpper F n β) :
   congr 1
   exact LinearEquiv.det_conj (mulRightLie F n β p) (parabolicCoord F n β)
 
+/- English proof (translation)
+Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Use extensionality with `A : 2`. Use `show (A : Matrix (Fin n) (Fin n) F) * ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * (((p⁻¹ : blockUpper F n β) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = A`. Simplify using `[mul_assoc]`.
+-/
 theorem mulRightLie_inv (p : blockUpper F n β) :
     mulRightLie F n β p⁻¹ = (mulRightLie F n β p)⁻¹ := by
   refine eq_inv_of_mul_eq_one_left ?_
@@ -172,6 +208,9 @@ theorem mulRightLie_inv (p : blockUpper F n β) :
       (((p⁻¹ : blockUpper F n β) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = A
   simp [mul_assoc]
 
+/- English proof (translation)
+Use `borelize F ↥(blockUpper F n β)`. Rewrite using `[(parabolicChart F n β).modularCharacter_eq p, parabolicChart_leftModulus, parabolicChart_rightModulus]`. Establish `: adLie F n β p = mulRightLie F n β p⁻¹ * mulLeftLie F n β p` using `rfl`. Rewrite using `[this, mulRightLie_inv, map_mul, map_inv, map_mul, map_inv, div_eq_mul_inv, mul_comm]`.
+-/
 theorem modularCharacter_blockUpper (p : blockUpper F n β) :
     modularCharacter p = distribHaarChar F (LinearEquiv.det (adLie F n β p)) := by
   borelize F ↥(blockUpper F n β)
@@ -182,6 +221,13 @@ theorem modularCharacter_blockUpper (p : blockUpper F n β) :
 
 section Triangular
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show (if h : ¬ β j < β i then (Pi.single t (1 : F) : ParabolicIndex n β → F) ⟨(i, j), h⟩ else 0) = _`. Rewrite using `[Matrix.single_apply]`. Distinguish the cases in `hij : t.1.1 = i ∧ t.1.2 = j`. Take `⟨h1, h2⟩` from `hij`.
+
+Establish `ht : (⟨(i, j), h1 ▸ h2 ▸ t.2⟩ : ParabolicIndex n β) = t`. Apply the tactic sequence `ext <;> simp [← h1, ← h2]`. Rewrite using `[dif_pos (h1 ▸ h2 ▸ t.2), if_pos ⟨h1, h2⟩, ht, Pi.single_eq_same]`. Rewrite using `[if_neg hij] split_ifs with h`. Both sides reduce to the same expression.
+
+Rewrite using `[Pi.single_apply, if_neg]`. Introduce and unpack `rfl`. Conclude with `hij ⟨rfl, rfl⟩`.
+-/
 theorem coe_parabolicCoord_symm_single (t : ParabolicIndex n β) :
     (((parabolicCoord F n β).symm (Pi.single t 1) : lieParabolic F n β) :
       Matrix (Fin n) (Fin n) F) = Matrix.single t.1.1 t.1.2 1 := by
@@ -201,10 +247,28 @@ theorem coe_parabolicCoord_symm_single (t : ParabolicIndex n β) :
       rintro rfl
       exact hij ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, ite_mul]`.
+-/
 theorem mul_single_mul_apply (A B : Matrix (Fin n) (Fin n) F) (a b i j : Fin n) :
     (A * Matrix.single a b (1 : F) * B) i j = A i a * B b j := by
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, ite_mul]
 
+/- English proof (translation)
+Use `set P : Matrix (Fin n) (Fin n) F := ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Use `set Q : Matrix (Fin n) (Fin n) F := (((p : GL (Fin n) F)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Establish `hP : P.IsUpperTriangular` using `hp`. Establish `hQ : Q.IsUpperTriangular` using `(borel F n).inv_mem hp`. Set `A : (ParabolicIndex n β → F) →ₗ[F] (ParabolicIndex n β → F)` to `(((parabolicCoord F n β).symm.trans ((adLie F n β p).trans (parabolicCoord F n β))) : (ParabolicIndex n β → F) →ₗ[F] (ParabolicIndex n β → F))`.
+
+Establish `hdet : (LinearEquiv.det (adLie F n β p) : F) = LinearMap.det A`. Rewrite using `[← LinearEquiv.det_conj (adLie F n β p) (parabolicCoord F n β), LinearEquiv.coe_det]`. Both sides reduce to the same expression. Establish `hM : ∀ s t, LinearMap.toMatrix' A s t = P s.1.1 t.1.1 * Q t.1.2 s.1.2`. Introduce `s t`.
+
+Rewrite using `[LinearMap.toMatrix'_apply]`. Use `show ((adLie F n β p ((parabolicCoord F n β).symm (Pi.single t 1)) : lieParabolic F n β) : Matrix (Fin n) (Fin n) F) s.1.1 s.1.2 = _`. Rewrite using `[coe_adLie, coe_parabolicCoord_symm_single, mul_single_mul_apply]`. Set `κ : ParabolicIndex n β → Lex (Fin n × (Fin n)ᵒᵈ)` to `fun s => toLex (s.1.1, OrderDual.toDual s.1.2)`. Establish `hκ : Function.Injective κ`.
+
+Introduce `s t h`. Simplify using `only [κ, toLex_inj, Prod.mk.injEq, OrderDual.toDual_inj] at h`. Conclude with `Subtype.ext (Prod.ext h.1 h.2)`. Establish `hBT : (LinearMap.toMatrix' A).BlockTriangular κ`. Introduce `s t hts`.
+
+Rewrite using `[hM]`. Break down `Prod.Lex.lt_iff.1 hts with h | ⟨h1, h2⟩` into its components or cases. Establish `h' : t.1.1 < s.1.1` using `h`. Rewrite using `[hP h', zero_mul]`. Establish `h' : s.1.2 < t.1.2` using `h2`.
+
+Rewrite using `[hQ h', mul_zero]`. Rewrite using `[hdet, ← LinearMap.det_toMatrix', hBT.det, Finset.prod_image fun s _ t _ h => hκ h]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Set `: Unique {t // κ t = κ s}` to `⟨⟨⟨s, rfl⟩⟩, fun t => Subtype.ext (hκ t.2)⟩`. Rewrite using `[Matrix.det_unique]`.
+
+Use `show LinearMap.toMatrix' A (default : {t // κ t = κ s}).1 (default : {t // κ t = κ s}).1 = _`. Rewrite using `[hM]`. Both sides reduce to the same expression.
+-/
 theorem det_adLie_of_mem_borel (p : blockUpper F n β) (hp : (p : GL (Fin n) F) ∈ borel F n) :
     (LinearEquiv.det (adLie F n β p) : F) = ∏ s : ParabolicIndex n β,
       ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) s.1.1 s.1.1 *
@@ -250,6 +314,9 @@ theorem det_adLie_of_mem_borel (p : blockUpper F n β) (hp : (p : GL (Fin n) F) 
   rw [hM]
   rfl
 
+/- English proof (translation)
+Rewrite using `[modularCharacter_blockUpper, ← modulus_units, det_adLie_of_mem_borel p hp, map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, inv_apply_self_of_mem_borel F n hp, map_inv₀, div_eq_mul_inv]`.
+-/
 theorem modularCharacter_blockUpper_of_mem_borel (p : blockUpper F n β)
     (hp : (p : GL (Fin n) F) ∈ borel F n) :
     modularCharacter p = ∏ s : ParabolicIndex n β,
@@ -259,6 +326,19 @@ theorem modularCharacter_blockUpper_of_mem_borel (p : blockUpper F n β)
   refine Finset.prod_congr rfl fun s _ => ?_
   rw [map_mul, inv_apply_self_of_mem_borel F n hp, map_inv₀, div_eq_mul_inv]
 
+/- English proof (translation)
+Rewrite using `[modularCharacter_blockUpper_of_mem_borel p hp]`. Use `set f : Fin n → ℝ≥0 := fun i => modulus (((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i)`. Establish `hf : ∀ i, f i ≠ 0` using `fun i => modulus_ne_zero (apply_self_ne_zero_of_mem_borel F n hp i)`. Express the relevant statement in the definitionally equal form `∏ s : ParabolicIndex n β, f s.1.1 / f s.1.2 = ∏ s : {ij : Fin n × Fin n // β ij.1 < β ij.2}, f s.1.1 / f s.1.2`. Set `g : Fin n × Fin n → ℝ≥0` to `fun ij => f ij.1 / f ij.2`.
+
+Rewrite using `[← Finset.prod_subtype (Finset.univ.filter fun ij : Fin n × Fin n => ¬ β ij.2 < β ij.1) (by simp) g, ← Finset.prod_subtype (Finset.univ.filter fun ij : Fin n × Fin n => β ij.1 < β ij.2) (by simp) g]`. Establish `hsplit : (Finset.univ.filter fun ij : Fin n × Fin n => ¬ β ij.2 < β ij.1) = (Finset.univ.filter fun ij : Fin n × Fin n => β ij.1 < β ij.2) ∪ (Finset.univ.filter fun ij : Fin n × Fin n => β ij.1 = β ij.2)`. Use extensionality with `ij`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union, not_lt]`. Conclude with `le_iff_lt_or_eq`.
+
+Establish `hdisj : Disjoint (Finset.univ.filter fun ij : Fin n × Fin n => β ij.1 < β ij.2) (Finset.univ.filter fun ij : Fin n × Fin n => β ij.1 = β ij.2)`. Rewrite using `[Finset.disjoint_filter]`. Introduce `ij _ h1 h2`. Conclude with `h1.ne h2`. Rewrite using `[hsplit, Finset.prod_union hdisj]`.
+
+Use `set S := Finset.univ.filter fun ij : Fin n × Fin n => β ij.1 = β ij.2`. Establish `hswap : ∏ ij ∈ S, f ij.2 = ∏ ij ∈ S, f ij.1`. Use `Finset.prod_nbij' Prod.swap Prod.swap (fun ij hij => ?_) (fun ij hij => ?_) (fun _ _ => rfl) (fun _ _ => rfl) (fun _ _ => rfl)` and prove the remaining obligations. Simplify using `only [S, Finset.mem_filter, Finset.mem_univ, true_and, Prod.fst_swap, Prod.snd_swap] at hij ⊢`. Conclude with `hij.symm`.
+
+Simplify using `only [S, Finset.mem_filter, Finset.mem_univ, true_and, Prod.fst_swap, Prod.snd_swap] at hij ⊢`. Conclude with `hij.symm`. Establish `hone : ∏ ij ∈ S, g ij = 1`. Rewrite using `[Finset.prod_div_distrib, hswap, div_self]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hf _`.
+
+Rewrite using `[hone, mul_one]`.
+-/
 theorem modularCharacter_blockUpper_of_mem_borel' (p : blockUpper F n β)
     (hp : (p : GL (Fin n) F) ∈ borel F n) :
     modularCharacter p = ∏ s : {ij : Fin n × Fin n // β ij.1 < β ij.2},
@@ -302,6 +382,17 @@ theorem modularCharacter_blockUpper_of_mem_borel' (p : blockUpper F n β)
     exact Finset.prod_ne_zero_iff.2 fun i _ => hf _
   rw [hone, mul_one]
 
+/- English proof (translation)
+Rewrite using `[modularCharacter_blockUpper_of_mem_borel b b.2]`. Use `set f : Fin n → ℝ≥0 := fun i => modulus (((b : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i)`. Establish `hf : ∀ i, f i ≠ 0` using `fun i => modulus_ne_zero (apply_self_ne_zero_of_mem_borel F n b.2 i)`. Establish `hsub : ∀ g : Fin n × Fin n → ℝ≥0, ∏ s : ParabolicIndex n (id : Fin n → Fin n), g s.1 = ∏ i : Fin n, ∏ j : Fin n, if i ≤ j then g (i, j) else 1`. Introduce `g`.
+
+Rewrite using `[← Finset.prod_subtype (Finset.univ.filter fun ij : Fin n × Fin n => ¬ ij.2 < ij.1) (by simp), Finset.prod_filter, Fintype.prod_prod_type]`. Simplify using `only [not_lt]`. Express the relevant statement in the definitionally equal form `∏ s : ParabolicIndex n (id : Fin n → Fin n), f s.1.1 / f s.1.2 = _`. Rewrite using `[Finset.prod_div_distrib, hsub (fun ij => f ij.1), hsub (fun ij => f ij.2), Finset.prod_comm (f := fun i j => if i ≤ j then f j else 1)]`. Establish `h1 : ∀ i : Fin n, (∏ j : Fin n, if i ≤ j then f i else 1) = f i ^ (n - i)`.
+
+Introduce `i`. Rewrite using `[← Finset.prod_filter, Finset.prod_const, Finset.filter_le_eq_Ici, Fin.card_Ici]`. Establish `h2 : ∀ j : Fin n, (∏ i : Fin n, if i ≤ j then f j else 1) = f j ^ ((j : ℕ) + 1)`. Introduce `j`. Rewrite using `[← Finset.prod_filter, Finset.prod_const, Finset.filter_ge_eq_Iic, Fin.card_Iic]`.
+
+Simplify using `only [h1, h2]`. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_sub₀ (hf i)]`. Use `congr 1`.
+
+Use `i.is_lt` as an intermediate fact. Move the coercions through the operations in `[Nat.cast_sub this.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem modularCharacter_borel (b : blockUpper F n (id : Fin n → Fin n)) :
     modularCharacter b = ∏ i : Fin n,
       modulus (((b : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i) ^ ((n : ℤ) - 1 - 2 * i) := by
@@ -334,6 +425,9 @@ theorem modularCharacter_borel (b : blockUpper F n (id : Fin n → Fin n)) :
   push_cast [Nat.cast_sub this.le]
   ring
 
+/- English proof (translation)
+The claim follows from `modularCharacter_borel b`.
+-/
 theorem modularCharacter_borel' (b : borel F n) :
     modularCharacter b = ∏ i : Fin n,
       modulus (((b : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i) ^ ((n : ℤ) - 1 - 2 * i) :=
@@ -372,6 +466,11 @@ noncomputable def unipotentCoord : lieUnipotent F n β ≃ₗ[F] (UnipotentIndex
 
 variable {F n β}
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hik : β k < β i`. Rewrite using `[hp hik, zero_mul]`.
+
+Rewrite using `[hX k j fun hkj => hij (lt_of_le_of_lt (not_lt.1 hik) hkj), mul_zero]`.
+-/
 theorem mul_mem_lieUnipotent {p X : Matrix (Fin n) (Fin n) F} (hp : p.BlockTriangular β)
     (hX : X ∈ lieUnipotent F n β) : p * X ∈ lieUnipotent F n β := by
   intro i j hij
@@ -381,6 +480,11 @@ theorem mul_mem_lieUnipotent {p X : Matrix (Fin n) (Fin n) F} (hp : p.BlockTrian
   · rw [hp hik, zero_mul]
   · rw [hX k j fun hkj => hij (lt_of_le_of_lt (not_lt.1 hik) hkj), mul_zero]
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hik : β i < β k`. Rewrite using `[hp (lt_of_le_of_lt (not_lt.1 hij) hik), mul_zero]`.
+
+Rewrite using `[hX i k hik, zero_mul]`.
+-/
 theorem mem_lieUnipotent_mul {p X : Matrix (Fin n) (Fin n) F} (hX : X ∈ lieUnipotent F n β)
     (hp : p.BlockTriangular β) : X * p ∈ lieUnipotent F n β := by
   intro i j hij
@@ -401,6 +505,9 @@ noncomputable def adUnipotent (p : blockUpper F n β) :
         mem_lieUnipotent_mul (mul_mem_lieUnipotent (p⁻¹).2 hA) p.2, ?_⟩
       simp [mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_adUnipotent (p : blockUpper F n β) (A : lieUnipotent F n β) :
     ((adUnipotent p A : lieUnipotent F n β) : Matrix (Fin n) (Fin n) F) =
       ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * A *
@@ -416,10 +523,20 @@ noncomputable def adUnipotentHom :
       ((adUnipotent p (adUnipotent q A) : lieUnipotent F n β) : Matrix (Fin n) (Fin n) F)
     simp [mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem adUnipotentHom_apply (p : blockUpper F n β) :
     adUnipotentHom p = adUnipotent p :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show (if h : β i < β j then (Pi.single t (1 : F) : UnipotentIndex n β → F) ⟨(i, j), h⟩ else 0) = _`. Rewrite using `[Matrix.single_apply]`. Distinguish the cases in `hij : t.1.1 = i ∧ t.1.2 = j`. Take `⟨h1, h2⟩` from `hij`.
+
+Establish `hlt : β i < β j` using `h1 ▸ h2 ▸ t.2`. Establish `ht : (⟨(i, j), hlt⟩ : UnipotentIndex n β) = t`. Apply the tactic sequence `ext <;> simp [← h1, ← h2]`. Rewrite using `[dif_pos hlt, if_pos ⟨h1, h2⟩, ht, Pi.single_eq_same]`. Rewrite using `[if_neg hij] split_ifs with h`.
+
+Rewrite using `[Pi.single_apply, if_neg]`. Introduce and unpack `rfl`. Conclude with `hij ⟨rfl, rfl⟩`. Both sides reduce to the same expression.
+-/
 theorem coe_unipotentCoord_symm_single (t : UnipotentIndex n β) :
     (((unipotentCoord F n β).symm (Pi.single t 1) : lieUnipotent F n β) :
       Matrix (Fin n) (Fin n) F) = Matrix.single t.1.1 t.1.2 1 := by
@@ -440,6 +557,21 @@ theorem coe_unipotentCoord_symm_single (t : UnipotentIndex n β) :
       exact hij ⟨rfl, rfl⟩
     · rfl
 
+/- English proof (translation)
+Use `set P : Matrix (Fin n) (Fin n) F := ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Use `set Q : Matrix (Fin n) (Fin n) F := (((p : GL (Fin n) F)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Establish `hP : P.IsUpperTriangular` using `hp`. Establish `hQ : Q.IsUpperTriangular` using `(borel F n).inv_mem hp`. Set `A : (UnipotentIndex n β → F) →ₗ[F] (UnipotentIndex n β → F)` to `(((unipotentCoord F n β).symm.trans ((adUnipotent p).trans (unipotentCoord F n β))) : (UnipotentIndex n β → F) →ₗ[F] (UnipotentIndex n β → F))`.
+
+Establish `hdet : (LinearEquiv.det (adUnipotent p) : F) = LinearMap.det A`. Rewrite using `[← LinearEquiv.det_conj (adUnipotent p) (unipotentCoord F n β), LinearEquiv.coe_det]`. Both sides reduce to the same expression. Establish `hM : ∀ s t, LinearMap.toMatrix' A s t = P s.1.1 t.1.1 * Q t.1.2 s.1.2`. Introduce `s t`.
+
+Rewrite using `[LinearMap.toMatrix'_apply]`. Use `show ((adUnipotent p ((unipotentCoord F n β).symm (Pi.single t 1)) : lieUnipotent F n β) : Matrix (Fin n) (Fin n) F) s.1.1 s.1.2 = _`. Rewrite using `[coe_adUnipotent, coe_unipotentCoord_symm_single, mul_single_mul_apply]`. Set `κ : UnipotentIndex n β → Lex (Fin n × (Fin n)ᵒᵈ)` to `fun s => toLex (s.1.1, OrderDual.toDual s.1.2)`. Establish `hκ : Function.Injective κ`.
+
+Introduce `s t h`. Simplify using `only [κ, toLex_inj, Prod.mk.injEq, OrderDual.toDual_inj] at h`. Conclude with `Subtype.ext (Prod.ext h.1 h.2)`. Establish `hBT : (LinearMap.toMatrix' A).BlockTriangular κ`. Introduce `s t hts`.
+
+Rewrite using `[hM]`. Break down `Prod.Lex.lt_iff.1 hts with h | ⟨h1, h2⟩` into its components or cases. Establish `h' : t.1.1 < s.1.1` using `h`. Rewrite using `[hP h', zero_mul]`. Establish `h' : s.1.2 < t.1.2` using `h2`.
+
+Rewrite using `[hQ h', mul_zero]`. Rewrite using `[hdet, ← LinearMap.det_toMatrix', hBT.det, Finset.prod_image fun s _ t _ h => hκ h]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Set `: Unique {t // κ t = κ s}` to `⟨⟨⟨s, rfl⟩⟩, fun t => Subtype.ext (hκ t.2)⟩`. Rewrite using `[Matrix.det_unique]`.
+
+Use `show LinearMap.toMatrix' A (default : {t // κ t = κ s}).1 (default : {t // κ t = κ s}).1 = _`. Rewrite using `[hM]`. Both sides reduce to the same expression.
+-/
 theorem det_adUnipotent_of_mem_borel (p : blockUpper F n β)
     (hp : (p : GL (Fin n) F) ∈ borel F n) :
     (LinearEquiv.det (adUnipotent p) : F) = ∏ s : UnipotentIndex n β,
@@ -486,6 +618,9 @@ theorem det_adUnipotent_of_mem_borel (p : blockUpper F n β)
   rw [hM]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Subring.sum_mem _ fun b _ => Subring.mul_mem _ ?_ (hB b j)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun a _ => Subring.mul_mem _ (hA i a) (hM a b)`.
+-/
 theorem mul_mul_apply_mem_integer {A M B : Matrix (Fin n) (Fin n) F} (hA : ∀ i j, A i j ∈ 𝒪[F])
     (hM : ∀ i j, M i j ∈ 𝒪[F]) (hB : ∀ i j, B i j ∈ 𝒪[F]) (i j : Fin n) :
     (A * M * B) i j ∈ 𝒪[F] := by
@@ -494,12 +629,24 @@ theorem mul_mul_apply_mem_integer {A M B : Matrix (Fin n) (Fin n) F} (hA : ∀ i
   rw [Matrix.mul_apply]
   exact Subring.sum_mem _ fun a _ => Subring.mul_mem _ (hA i a) (hM a b)
 
+/- English proof (translation)
+Use `LinearEquiv.ext fun A => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use `Subtype.ext ?_` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+-/
 theorem adUnipotent_symm (p : blockUpper F n β) : (adUnipotent p).symm = adUnipotent p⁻¹ := by
   refine LinearEquiv.ext fun A => ?_
   rw [LinearEquiv.symm_apply_eq]
   refine Subtype.ext ?_
   simp [mul_assoc]
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `(GLnLocal.mem_integralGL_iff F n).1 hp`. Establish `hint : ∀ (q : blockUpper F n β), (∀ i j, ((q : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j ∈ 𝒪[F]) → (∀ i j, (((q : GL (Fin n) F)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j ∈ 𝒪[F]) → ∀ x ∈ box F (UnipotentIndex n β), unipotentCoord F n β (adUnipotent q ((unipotentCoord F …`. Introduce `q hq hq' x hx`. Use `mem_box.2 fun s => ?_` and prove the remaining obligations. Use `show ((adUnipotent q ((unipotentCoord F n β).symm x) : lieUnipotent F n β) : Matrix (Fin n) (Fin n) F) s.1.1 s.1.2 ∈ 𝒪[F]`.
+
+Rewrite using `[coe_adUnipotent]`. Use `mul_mul_apply_mem_integer hq (fun i j => ?_) hq' _ _` and prove the remaining obligations. Use `show (if h : β i < β j then x ⟨(i, j), h⟩ else 0) ∈ 𝒪[F]`. Use `split_ifs`. Conclude with `mem_box.1 hx _`.
+
+Conclude with `Subring.zero_mem _`. Rewrite using `[← LinearEquiv.det_conj (adUnipotent p) (unipotentCoord F n β), ← distribHaarChar_pi_eq]`. Use `distribHaarChar_eq_one_of_mapsTo_box (fun x hx => hint p h₁ h₂ x hx) fun x hx => ?_` and prove the remaining obligations. Use `show unipotentCoord F n β ((adUnipotent p).symm ((unipotentCoord F n β).symm x)) ∈ _`. Rewrite using `[adUnipotent_symm]`.
+
+Use `hint p⁻¹ (fun i j => ?_) (fun i j => ?_) x hx` and prove the remaining obligations. Simplify using `using h₂ i j`. Simplify using `using h₁ i j`.
+-/
 theorem distribHaarChar_det_adUnipotent_of_mem_integralGL (p : blockUpper F n β)
     (hp : (p : GL (Fin n) F) ∈ GLnLocal.integralGL F n) :
     distribHaarChar F (LinearEquiv.det (adUnipotent p)) = 1 := by
@@ -528,6 +675,9 @@ theorem distribHaarChar_det_adUnipotent_of_mem_integralGL (p : blockUpper F n β
   · simpa using h₂ i j
   · simpa using h₁ i j
 
+/- English proof (translation)
+Use `borelize F ↥(blockUpper F n β)`. Set `V : OpenSubgroup (blockUpper F n β)` to `⟨(GLnLocal.integralGL F n).subgroupOf (blockUpper F n β), (GLnLocal.isOpen_integralGL F n).preimage continuous_subtype_val⟩`. Establish `hV : IsCompact (V : Set (blockUpper F n β))` using `(isClosed_blockUpper F n β).isClosedEmbedding_subtypeVal.isCompact_preimage (GLnLocal.isCompact_integralGL F n)`. Take `⟨h1, h2⟩` from `(parabolicChart F n β).modulus_eq_one_of_mem hV (v := p) hp`. Rewrite using `[(parabolicChart F n β).modularCharacter_eq, h1, h2, div_one]`.
+-/
 theorem modularCharacter_eq_one_of_mem_integralGL (p : blockUpper F n β)
     (hp : (p : GL (Fin n) F) ∈ GLnLocal.integralGL F n) : modularCharacter p = 1 := by
   borelize F ↥(blockUpper F n β)
@@ -540,6 +690,15 @@ theorem modularCharacter_eq_one_of_mem_integralGL (p : blockUpper F n β)
   obtain ⟨h1, h2⟩ := (parabolicChart F n β).modulus_eq_one_of_mem hV (v := p) hp
   rw [(parabolicChart F n β).modularCharacter_eq, h1, h2, div_one]
 
+/- English proof (translation)
+Take `⟨b, hb, k, hk, hbk⟩` from `exists_borel_mul_integralGL F n (p : GL (Fin n) F)`. Set `b' : blockUpper F n β` to `⟨b, borel_le_blockUpper F n hβ hb⟩`. Establish `hkP : k ∈ blockUpper F n β`. Establish `: k = b⁻¹ * (p : GL (Fin n) F)`. Rewrite using `[hbk]`.
+
+Use `group`. Rewrite using `[this]`. Conclude with `mul_mem (inv_mem b'.2) p.2`. Set `k' : blockUpper F n β` to `⟨k, hkP⟩`. Establish `hp : p = b' * k'` using `Subtype.ext hbk`.
+
+Establish `hχ : distribHaarChar F (LinearEquiv.det (adUnipotent p)) = distribHaarChar F (LinearEquiv.det (adUnipotent b')) * distribHaarChar F (LinearEquiv.det (adUnipotent k'))`. Rewrite using `[← adUnipotentHom_apply, hp, map_mul, map_mul, map_mul]`. Both sides reduce to the same expression. Rewrite using `[hχ, hp, map_mul, modularCharacter_eq_one_of_mem_integralGL k' hk, distribHaarChar_det_adUnipotent_of_mem_integralGL k' hk, mul_one, mul_one, modularCharacter_blockUpper_of_mem_borel' b' hb, ← modulus_units, det_adUnipotent_of_mem_borel b' hb, map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, inv_apply_self_of_mem_borel F n hb, map_inv₀, div_eq_mul_inv]`.
+-/
 theorem modularCharacter_blockUpper_eq_det_adUnipotent (hβ : Monotone β) (p : blockUpper F n β) :
     modularCharacter p = distribHaarChar F (LinearEquiv.det (adUnipotent p)) := by
   obtain ⟨b, hb, k, hk, hbk⟩ := exists_borel_mul_integralGL F n (p : GL (Fin n) F)
@@ -578,6 +737,9 @@ variable (μ₀ : Measure (ParabolicIndex n β → F)) [μ₀.IsAddHaarMeasure]
 instance isHaarMeasure_haarParabolic : (haarParabolic μ₀).IsHaarMeasure :=
   LinearChart.isHaarMeasure_haar _ μ₀
 
+/- English proof (translation)
+Rewrite using `[haarParabolic, LinearChart.haar]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[parabolicChart_leftModulus]`.
+-/
 theorem haarParabolic_eq :
     haarParabolic μ₀ = (μ₀.comap fun (p : blockUpper F n β) (s : ParabolicIndex n β) =>
       ((p : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) s.1.1 s.1.2).withDensity
@@ -587,6 +749,9 @@ theorem haarParabolic_eq :
   funext p
   rw [parabolicChart_leftModulus]
 
+/- English proof (translation)
+Rewrite using `[haarParabolic, (parabolicChart F n β).map_mul_right_haar, ← (parabolicChart F n β).modularCharacter_eq, modularCharacter_blockUpper]`.
+-/
 theorem map_mul_right_haarParabolic (p : blockUpper F n β) :
     map (· * p) (haarParabolic μ₀) =
       distribHaarChar F (LinearEquiv.det (adLie F n β p)) • haarParabolic μ₀ := by

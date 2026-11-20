@@ -21,6 +21,13 @@ noncomputable section
 
 namespace GlobalTheory.GlobalSectionsPullback
 
+/- English proof (translation)
+Introduce `F _ M W _ _ p f hp hfp _ hdeg`. Take `⟨r, co, hco, hinj⟩` from `GlobalTheory.T.exists_coordinateFunctionals_functionField_extension M W f hdeg`. Take `⟨hpp, H, hH⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp`. Take `⟨hfpp, L, hL⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB (f ≫ p)).1 hfp`. Use `haveI := hpp`.
+
+Use `haveI := hfpp`. Use `haveI : IsProper f := IsProper.of_comp f p`. Use `haveI : IsNoetherian W := isNoetherian_of_isProjOver hp`. Take `⟨n, hn, t, ht, htP⟩` from `GlobalTheory.T.exists_section_pow_ample_forall_local_condition W H hH (fun y c => ∀ (V' : W.Opens), y ∈ V' → ∀ (h : genericPoint M ∈ f ⁻¹ᵁ V') (z : Γ(M, f ⁻¹ᵁ V')) (j : Fin r), RegAt y (c * co j (fnOf (f ⁻¹ᵁ V') h z))) (fun y c c' hc hc' V' hy h z j => by rw [mul_assoc]; exact hc …`. Take `⟨V, hy, d, hd, hd'⟩` from `GlobalTheory.T.exists_open_trace_coefficients_nonvanishing M W f L hL co hco y`.
+
+Conclude with `⟨V, hy, d, hd, fun y' hy' V' hV' h z j => hd' y' hy' V' hV' h z j⟩)`. Conclude with `⟨r, lbPow H n, (isAmpleLB_pow_iff hH.isLB hn).2 hH, fun B hB => GlobalTheory.T.finrank_sections_pullback_le_mul_twist_of_dominant F M W p f hp co hco hinj (lbPow H n) (isLB_lbPow hH.isLB n) t ht (fun y i hi V' hV' h z j => htP y i hi V' hV' h z j) B hB⟩`.
+-/
 theorem globalSectionsDim_pullback_le_generically_finite : ∀ (F : Type) [Field F] (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W]
     (p : W ⟶ Sp F) (f : M ⟶ W), IsProjOver p → IsProjOver (f ≫ p) → Surjective f →
     f.residueDegree (genericPoint M) ≠ 0 → ∃ (r : ℕ) (A : LB W), IsAmpleLB A ∧

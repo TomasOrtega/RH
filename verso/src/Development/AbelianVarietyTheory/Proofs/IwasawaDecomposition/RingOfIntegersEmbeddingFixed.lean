@@ -7,6 +7,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.HeightCounting.Up
 
+/- English proof (translation)
+Introduce `_`. Use `Step.of_all fun K B f T _ _ _ _ w _ P x => ?_` and prove the remaining obligations. Use `⟨B.OtoLL_injective, B.Ks.toSubfield, fun y => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`.
+
+Conclude with `⟨((show B.O from z) : B.Ks).2, B.O_int z⟩`. Introduce and unpack `⟨hy, hi⟩`. Conclude with `B.O_full y hy hi`.
+-/
 theorem rows_O_integers : PrN → AllSt fun _ _ _ _ _ _ x => Function.Injective (Dof x).what₂.OtoLL ∧
     ∃ F : Subfield (Dof x).what₂.LL, ∀ y, y ∈ (Dof x).what₂.OtoLL.range ↔ y ∈ F ∧ IsIntegral ℤ y := by
   intro _

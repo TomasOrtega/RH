@@ -13,6 +13,11 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Mem GlobalTheory.
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Use function extensionality and compare the values at `x`. Conclude with `h x x fun a a' e => by rw [Fin.ext e]`. Introduce and unpack `rfl`.
+
+Conclude with `⟨rfl, fun x x' h => congrArg j (funext fun a => h a a rfl)⟩`.
+-/
 theorem sameOn_iff {K V : Type} {n : ℕ} (j j' : (Fin n → K) → V) : SameOn j j' ↔ j = j' := by
   constructor
   · rintro ⟨-, h⟩
@@ -21,10 +26,16 @@ theorem sameOn_iff {K V : Type} {n : ℕ} (j j' : (Fin n → K) → V) : SameOn 
   · rintro rfl
     exact ⟨rfl, fun x x' h => congrArg j (funext fun a => h a a rfl)⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨j', (sameOn_iff _ _).2 rfl⟩`.
+-/
 theorem exists_sameOn {K V : Type} {n n' : ℕ} (h : n = n') (j' : (Fin n' → K) → V) : ∃ j : (Fin n → K) → V, SameOn j j' := by
   subst h
   exact ⟨j', (sameOn_iff _ _).2 rfl⟩
 
+/- English proof (translation)
+Introduce `h` and use `absurd h.1 (by decide)`.
+-/
 example : ¬ SameOn (fun _ : Fin 1 → ℚ => (0 : ℚ)) (fun _ : Fin 2 → ℚ => (0 : ℚ)) := fun h => absurd h.1 (by decide)
 
 section Forms
@@ -38,11 +49,17 @@ def frm (y : Fin ((MtildeKCSD W Ch sel mu (mtildeKOk W Ch sel mu hX)).lvlDim (g0
   (MtildeKCSD W Ch sel mu (mtildeKOk W Ch sel mu hX)).basis.equivFun.symm
     (((MtildeKCSD W Ch sel mu (mtildeKOk W Ch sel mu hX)).lvlE (g0Act W Ch sel mu (mtildeKOk W Ch sel mu hX)) P.grp P.chr).mulVec y)
 
+/- English proof (translation)
+The claim follows from `(image_idempotent_spec X.K _ _).2.trans (level_part_spec X.K _ _ _ _ _)`.
+-/
 theorem range_lvl : LinearMap.range ((MtildeKCSD W Ch sel mu (mtildeKOk W Ch sel mu hX)).lvlE
     (g0Act W Ch sel mu (mtildeKOk W Ch sel mu hX)) P.grp P.chr).mulVecLin =
     (MtildeKCSD W Ch sel mu (mtildeKOk W Ch sel mu hX)).lvlPart (g0Act W Ch sel mu (mtildeKOk W Ch sel mu hX)) P.grp P.chr :=
   (image_idempotent_spec X.K _ _).2.trans (level_part_spec X.K _ _ _ _ _)
 
+/- English proof (translation)
+Take `⟨F, hF, e, rfl⟩` from `h`. Take `⟨F', hF', e', rfl⟩` from `h'`. Use `((mtildeKGSD W Ch sel mu).res (mtildeKOk W Ch sel mu hX)).injective (eq_of_heq (e.trans e'.symm))` as an intermediate fact. Substitute `this` using the available equality. Both sides reduce to the same expression.
+-/
 theorem isFormOf_unique {V : Type} {y : V} {x x' : MtildeV W Ch sel mu P} (h : IsFormOf W Ch sel mu hX P x y)
     (h' : IsFormOf W Ch sel mu hX P x' y) : x = x' := by
   obtain ⟨F, hF, e, rfl⟩ := h
@@ -51,6 +68,11 @@ theorem isFormOf_unique {V : Type} {y : V} {x x' : MtildeV W Ch sel mu P} (h : I
   subst this
   rfl
 
+/- English proof (translation)
+Set `F` to `((mtildeKGSD W Ch sel mu).res (mtildeKOk W Ch sel mu hX)).symm (frm W Ch sel mu hX P y)`. Establish `hF : F.1 ∈ (mtildeGSD W Ch sel mu P).EqFun`. Rewrite using `[← mem_lvlPartX_iff W Ch sel mu P (mtildeKOk W Ch sel mu hX), ← range_lvl W Ch sel mu hX]`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `symm`.
+
+Use `show (MtildeKCSD W Ch sel mu (mtildeKOk W Ch sel mu hX)).basis.equivFun (((mtildeKGSD W Ch sel mu).res (mtildeKOk W Ch sel mu hX)) F) = _`. Rewrite using `[LinearEquiv.apply_symm_apply, frm, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Conclude with `⟨_, F, hF, heq_of_eq (LinearEquiv.apply_symm_apply _ _), rfl⟩`.
+-/
 theorem exists_isFormOf (y) : ∃ x, IsFormOf W Ch sel mu hX P x (frm W Ch sel mu hX P y) := by
   let F := ((mtildeKGSD W Ch sel mu).res (mtildeKOk W Ch sel mu hX)).symm (frm W Ch sel mu hX P y)
   have hF : F.1 ∈ (mtildeGSD W Ch sel mu P).EqFun := by
@@ -63,6 +85,11 @@ theorem exists_isFormOf (y) : ∃ x, IsFormOf W Ch sel mu hX P x (frm W Ch sel m
     rfl
   exact ⟨_, F, hF, heq_of_eq (LinearEquiv.apply_symm_apply _ _), rfl⟩
 
+/- English proof (translation)
+Take `⟨hK, -⟩` from `(mem_MtildeV_iff W Ch sel mu P x.1).1 x.2`. Establish `h` using `(mem_lvlPartX_iff W Ch sel mu P (mtildeKOk W Ch sel mu hX) ⟨x.1, hK⟩).2 x.2`. Rewrite `h` using `[← range_lvl W Ch sel mu hX]`. Take `⟨y, hy⟩` from `h`. Use `⟨y, ⟨x.1, hK⟩, x.2, heq_of_eq ?_, rfl⟩` and prove the remaining obligations.
+
+Unfold `frm`. Rewrite using `[LinearEquiv.eq_symm_apply]`. Conclude with `hy.symm`.
+-/
 theorem isFormOf_onto (x : MtildeV W Ch sel mu P) : ∃ y, IsFormOf W Ch sel mu hX P x (frm W Ch sel mu hX P y) := by
   obtain ⟨hK, -⟩ := (mem_MtildeV_iff W Ch sel mu P x.1).1 x.2
   have h := (mem_lvlPartX_iff W Ch sel mu P (mtildeKOk W Ch sel mu hX) ⟨x.1, hK⟩).2 x.2
@@ -81,8 +108,14 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 variable (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hX : X.B.fields.Ok)
 
+/- English proof (translation)
+The claim follows from `R3.tup_ixOf I s`.
+-/
 theorem tAll_ixOf (U : Set I.ι) (s : R3.TupU I U) : (tAll I (R3.ixOf I U s)).1 = s.1 := R3.tup_ixOf I s
 
+/- English proof (translation)
+Establish `key : ∀ (t : R3.TupU I Set.univ), t.1 = s.1 → rDim X.toD7 (R3.famR X I hX Set.univ Xg tr).A P ψ t = rDim X.toD7 (R3.famR X I hX U Xg tr).A P ψ s`. Take `⟨s, hs⟩` from `s`. Introduce and unpack `⟨t, ht⟩ (rfl : t = s)`. Both sides reduce to the same expression. Conclude with `key _ (tAll_ixOf X I U s)`.
+-/
 theorem rDim_eq (U : Set I.ι) (Xg tr) (s : R3.TupU I U) (P ψ) :
     rDim X.toD7 (R3.famR X I hX Set.univ Xg tr).A P ψ (tAll I (R3.ixOf I U s)) = rDim X.toD7 (R3.famR X I hX U Xg tr).A P ψ s := by
   have key : ∀ (t : R3.TupU I Set.univ), t.1 = s.1 →
@@ -92,6 +125,9 @@ theorem rDim_eq (U : Set I.ι) (Xg tr) (s : R3.TupU I U) (P ψ) :
     rfl
   exact key _ (tAll_ixOf X I U s)
 
+/- English proof (translation)
+Establish `key : ∀ (t : R3.TupU I Set.univ), t.1 = s.1 → lDim X.toD7 (R3.famR X I hX Set.univ Xg tr).A P ψ i t = lDim X.toD7 (R3.famR X I hX U Xg tr).A P ψ i s`. Take `⟨s, hs⟩` from `s`. Introduce and unpack `⟨t, ht⟩ (rfl : t = s)`. Both sides reduce to the same expression. Conclude with `key _ (tAll_ixOf X I U s)`.
+-/
 theorem lDim_eq (U : Set I.ι) (Xg tr) (s : R3.TupU I U) (P ψ) (i) :
     lDim X.toD7 (R3.famR X I hX Set.univ Xg tr).A P ψ i (tAll I (R3.ixOf I U s)) =
       lDim X.toD7 (R3.famR X I hX U Xg tr).A P ψ i s := by
@@ -102,10 +138,16 @@ theorem lDim_eq (U : Set I.ι) (Xg tr) (s : R3.TupU I U) (P ψ) (i) :
     rfl
   exact key _ (tAll_ixOf X I U s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rowForm_eq (Xg tr) (a : I.ι) (y) :
     R3.rowForm (D := X.toD7) (R3.famR X I hX Set.univ Xg tr).A (R3.lev1 I) (R3.chr1 I) (tAll I a) y =
       frm (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX (TC.Ps I) y := rfl
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_isFormOf (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX (TC.Ps I) y`. Use `⟨_, ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `v ⟨x', hx', rfl⟩`. Rewrite using `[isFormOf_unique (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX (TC.Ps I) hx' hx]`.
+-/
 theorem existsUnique_isCrd (Xg tr) (a : I.ι) {M : Type} [AddCommGroup M] [Module ℂ M] (e : Df.MtCx I a ≃ₗ[ℂ] M) (y) :
     ∃! v, IsCrd I hX a e (R3.rowForm (D := X.toD7) (R3.famR X I hX Set.univ Xg tr).A (R3.lev1 I) (R3.chr1 I) (tAll I a) y) v := by
   obtain ⟨x, hx⟩ := exists_isFormOf (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX (TC.Ps I) y
@@ -113,6 +155,9 @@ theorem existsUnique_isCrd (Xg tr) (a : I.ι) {M : Type} [AddCommGroup M] [Modul
   rintro v ⟨x', hx', rfl⟩
   rw [isFormOf_unique (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX (TC.Ps I) hx' hx]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `isFormOf_onto (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX (TC.Ps I) F`. Take `⟨u, hu, q⟩` from `h y`. Take `⟨u', hu', q'⟩` from `h' y`. Rewrite using `[← isFormOf_unique (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX (TC.Ps I) hu hy, ← q, isFormOf_unique (Pr := X.B.primes px) X.B.wts I.Ch I.sel (I.tup a) hX (TC.Ps I) hu hu', ← q']`.
+-/
 theorem isCrd_determines (Xg tr) (a : I.ι) {M : Type} [AddCommGroup M] [Module ℂ M] (e e' : Df.MtCx I a ≃ₗ[ℂ] M) (j : _ → M)
     (h : ∀ y, IsCrd I hX a e (R3.rowForm (D := X.toD7) (R3.famR X I hX Set.univ Xg tr).A (R3.lev1 I) (R3.chr1 I) (tAll I a) y) (j y))
     (h' : ∀ y, IsCrd I hX a e' (R3.rowForm (D := X.toD7) (R3.famR X I hX Set.univ Xg tr).A (R3.lev1 I) (R3.chr1 I) (tAll I a) y) (j y))
@@ -129,12 +174,23 @@ section Core
 
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)}
 
+/- English proof (translation)
+The claim follows from `t.r.z.geo.fw.laws.toLawsM`.
+-/
 theorem lawsM (t : RowsT K w Z Wt p0) : Formalism.L2.Pj.LawsM t.r.z.core.toCore := t.r.z.geo.fw.laws.toLawsM
 
+/- English proof (translation)
+The claim follows from `let h := (lawsM t).pins.2.2.2 j hj; ⟨h.1, h.2.1⟩`.
+-/
 theorem rank_inR (t : RowsT K w Z Wt p0) (j : ℕ) (hj : Formalism.L2.Pj.InR (w.st Z).toD7 j) :
     (t.r.z.core.Q.Dw j).p = (B.R.sigW j).1 ∧ (t.r.z.core.Q.Dw j).q = (B.R.sigW j).2 :=
   let h := (lawsM t).pins.2.2.2 j hj; ⟨h.1, h.2.1⟩
 
+/- English proof (translation)
+Establish `hm : 0 < (w.D Z).R.m` using `t.r.Y.hm`. Establish `: ∀ n, 0 < n → p0.s.downTo μ n = 0`. Introduce and unpack `(_ | n) hn`. Use linear arithmetic over natural numbers and integers. Rewrite using `[RowSide.downTo, (x.io μ n h).2, LinearMap.comp_zero]`.
+
+Rewrite using `[RowSide.iota, this _ hm, LinearMap.zero_comp, LinearMap.comp_zero]`.
+-/
 theorem rx_io {t : RowsT K w Z Wt p0} (x : RXs t) (μ) (h : ¬ Formalism.IndefR.RecTie.Used0 (w.D Z) μ) : p0.s.iota μ = 0 := by
   have hm : 0 < (w.D Z).R.m := t.r.Y.hm
   have : ∀ n, 0 < n → p0.s.downTo μ n = 0 := by
@@ -149,6 +205,17 @@ section Standard
 
 open Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR Formalism.IndefR.Links
 
+/- English proof (translation)
+Take `⟨hc, c, ha, hm, hw⟩` from `h`. Take `⟨hc', c', ha', hm', hw'⟩` from `h'`. Take `rfl : N = N'` from `hc.symm.trans hc'`. Take `rfl : i = i'` from `Fin.ext e`. Establish `key : ∀ (d : Fin N → ℚ), StrictAnti d → (∀ i, ∃ s, (d i, s) ∈ S) → Set.range d = {y | (y, true) ∈ S}`.
+
+Introduce `d hd hmem`. Establish `h1 : (Finset.univ.image fun i => (d i, true)) = S`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `x hx`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`.
+
+Take `⟨s, hs⟩` from `hmem i`. Use `hS _ hs` as an intermediate fact. Simplify using `only at this`. Conclude with `this ▸ hs`. Rewrite using `[Finset.card_image_of_injective _ (fun a b q => hd.injective (Prod.ext_iff.1 q).1), hc]`.
+
+Simplify using the standard rewrite rules. Use extensionality with `y`. Simplify using `[← h1]`. Establish `: c = c'` using `(ha.range_inj ha').1 ((key c ha hm).trans (key c' ha' hm').symm)`. Establish `q` using `(hw i).trans (this ▸ (hw' i).symm)`.
+
+Conclude with `q` after adjusting the coercions.
+-/
 theorem isWtOfPar_unique {N N' : ℕ} {S : SPar} (hS : ∀ x ∈ S, x.2 = true) {lam : DomWeight N} {lam' : DomWeight N'}
     (h : Bridge.IsWtOfPar lam S) (h' : Bridge.IsWtOfPar lam' S) (i : Fin N) (i' : Fin N') (e : (i : ℕ) = i') :
     lam.w i = lam'.w i' := by
@@ -174,6 +241,19 @@ theorem isWtOfPar_unique {N N' : ℕ} {S : SPar} (hS : ∀ x ∈ S, x.2 = true) 
   have q := (hw i).trans (this ▸ (hw' i).symm)
   exact_mod_cast q
 
+/- English proof (translation)
+Establish `hk` using `D.R.m_add_three_le_k`. Establish `hr : D.sp.X'.rank = D.R.N D.R.m - 1` using `by rw [D.sp.X'_rank, rank_X'_eq]; rfl`. Use `⟨hr ▸ (GlobalTheory.ForcedWeights.lamRForced D τ).1, fun i => (RowPar.of (D.hc τ)).sgHC i.1 - RowPar.sh D.R, ?_, ?_, fun i => RowPar.sgTrue_eq _ i⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `h1` using `RowPar.sgTrue_eq (D.hc τ) i`.
+
+Establish `h2` using `RowPar.sgTrue_eq (D.hc τ) j`. Establish `h3 : (((RowPar.of (D.hc τ)).sgTrue.w j : ℤ) : ℚ) ≤ (RowPar.of (D.hc τ)).sgTrue.w i`. Conclude with `(RowPar.of (D.hc τ)).sgTrue.anti hij.le` after adjusting the coercions. Establish `h4 : ((i : ℕ) : ℚ) < (j : ℕ)` using `by exact_mod_cast hij`. Simplify using `only [rhoVec] at h1 h2`.
+
+Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i`. Use `⟨true, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ForcedWeights.dpar_eq, Finset.mem_image]`.
+
+Establish `hi` using `i.2`. Unfold `Ranks.N at hi`. Distinguish the cases in `h1 : i.1 < D.R.k - 1`. Conclude with `⟨.inl ⟨i.1, h1⟩, Finset.mem_univ _, by simp [GlobalTheory.ForcedWeights.entry, RowPar.sgHC, RowPar.sh, h1, RowPar.of]⟩`. Establish `hq : (i.1 - (D.R.k - 1)) / (D.R.t + 1) < D.R.m`.
+
+Rewrite using `[Nat.div_lt_iff_lt_mul (by omega)]; omega`. Distinguish the cases in `h2 : (i.1 - (D.R.k - 1)) % (D.R.t + 1) = 0`. Conclude with `⟨.inr (.inl ⟨_, hq⟩), Finset.mem_univ _, by`. Simplify using `[GlobalTheory.ForcedWeights.entry, RowPar.sgHC, RowPar.sh, h1, h2, RowPar.of, RowPar.bAt, hq]⟩`. Establish `h3 : (i.1 - (D.R.k - 1)) % (D.R.t + 1) < D.R.t + 1` using `Nat.mod_lt _ (by omega)`.
+
+Use `⟨.inr (.inr (⟨_, hq⟩, ⟨(i.1 - (D.R.k - 1)) % (D.R.t + 1) - 1, by omega⟩)), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.ForcedWeights.entry, RowPar.sgHC, RowPar.sh, h1, h2, RowPar.of, RowPar.eAt, hq, dite_true, dite_false, if_false, Prod.mk.injEq, and_true]`. Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isWtOfPar_sgTrue (D : D7) (τ : D.what₂.Tau) :
     Bridge.IsWtOfPar (RowPar.of (D.hc τ)).sgTrue ((Ptw D).Dpar D.R.m τ) := by
   have hk := D.R.m_add_three_le_k
@@ -209,6 +289,9 @@ theorem isWtOfPar_sgTrue (D : D7) (τ : D.what₂.Tau) :
         push_cast
         ring
 
+/- English proof (translation)
+Use `isWtOfPar_unique ?_ (GlobalTheory.ForcedWeights.lamRForced X.toD7 τ) (isWtOfPar_sgTrue X.toD7 τ) i i' e` and prove the remaining obligations. Rewrite using `[GlobalTheory.ForcedWeights.dpar_eq]`. Introduce `x hx`. Take `⟨_, -, rfl⟩` from `Finset.mem_image.1 hx`. Both sides reduce to the same expression.
+-/
 theorem lamRdef_eq (X : Stages) (τ) (i : Fin X.toD7.sp.X'.rank) (i' : Fin (X.B.R.N X.B.R.m - 1)) (e : (i : ℕ) = i') :
     (Bridge.lamRdef (Ptw X.toD7) τ).w i = (X.B.wts.sgTrue τ).w i' := by
   refine isWtOfPar_unique ?_ (GlobalTheory.ForcedWeights.lamRForced X.toD7 τ) (isWtOfPar_sgTrue X.toD7 τ) i i' e
@@ -217,8 +300,16 @@ theorem lamRdef_eq (X : Stages) (τ) (i : Fin X.toD7.sp.X'.rank) (i' : Fin (X.B.
   obtain ⟨_, -, rfl⟩ := Finset.mem_image.1 hx
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem labLL_eq (X : Stages) : labLL X.toD7 = X.B.fields.emb := rfl
 
+/- English proof (translation)
+Take `⟨_, g, rfl⟩` from `h`. Use `⟨⟨_, GlobalTheory.Mem.ColAd.finN_mem hn hG g⟩, ?_⟩` and prove the remaining obligations. Substitute `hn` using the available equality. Use `⟨rfl, fun i j i' j' a b => ?_⟩` and prove the remaining obligations. Take `rfl` from `Fin.ext a`.
+
+Take `rfl` from `Fin.ext b`. Unfold `R3.matIn`. Rewrite using `[mul_one]`. Both sides reduce to the same expression.
+-/
 theorem exists_matEq {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (hG : V.gram = 1) (h : Bridge.Gf V) :
     ∃ x : UAd D.sp.cm n, R3.MatEq (R3.matIn V 1 h) (x : GL (Fin n) _) := by
   obtain ⟨_, g, rfl⟩ := h
@@ -231,6 +322,9 @@ theorem exists_matEq {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (hG : V.gr
   rw [mul_one]
   rfl
 
+/- English proof (translation)
+Take `⟨hs, -, h2, -⟩` from `w.ok.spaces`. Rewrite using `[h2]`. Use `Matrix.ext fun i i' => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ i i').trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]`.
+-/
 theorem gram_X' {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) : B.sp.X'.gram = 1 := by
   obtain ⟨hs, -, h2, -⟩ := w.ok.spaces
   rw [h2]
@@ -239,6 +333,11 @@ theorem gram_X' {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) : B.s
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨c, -, hc, -⟩` from `x.std.1`. Use `⟨c, fun h => ?_⟩` and prove the remaining obligations. Establish `hr : (w.st Z).toD7.sp.X'.rank = B.R.N B.R.m - 1` using `by rw [(w.st Z).toD7.sp.X'_rank, rank_X'_eq]; rfl`. Take `⟨y, hy⟩` from `exists_matEq (D := (w.st Z).toD7) _ hr (gram_X' w) h`. Use `⟨y, fun s φ => hc B.sp.cm s (⟨mtildeKOk _ _ _ _ t.hX⟩, φ) h y ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[t.r.z.lev.beta.2]`. Conclude with `hy`.
+-/
 theorem rx_std_read {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     {p0 : BaseLevelRowSide (w.D Z)} {t : RowsT K w Z Wt p0} (x : RXs t) :
     ∃ c : VV B.LL B.wts.sgTrue → t.r.z.R.cX.W, ∀ (h : Bridge.Gf (w.st Z).toD7.sp.X'), ∃ y : UAd B.sp.cm (B.R.N B.R.m - 1),
@@ -253,6 +352,21 @@ theorem rx_std_read {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : Col
   rw [t.r.z.lev.beta.2]
   exact hy
 
+/- English proof (translation)
+Take `⟨hj, W, hk, hm, ht, hjj, he, hv, hb, hw⟩` from `GlobalTheory.ForcedWeights.lamLForced X.toD7 j h1 h2 τ`. Establish `hk : W.k = X.B.R.k` using `hk`. Establish `hm : W.m = X.B.R.m` using `hm`. Establish `ht : W.t = X.B.R.t` using `ht`. Establish `he : (W.e : ℚ) = (X.B.hc τ).e ⟨j - 1, hj.2⟩` using `he`.
+
+Establish `hv : ∀ a : Fin (X.B.R.k - 1), (W.v (a + 2) : ℚ) = (X.B.hc τ).v a` using `hv`. Establish `hb : ∀ a : Fin X.B.R.m, (W.b (a + 1) : ℚ) = (X.B.hc τ).b a` using `hb`. Establish `hkm` using `X.B.R.m_add_three_le_k`. Establish `q` using `RowPar.lamV_eq (X.B.hc τ) h1 h2 i'`. Establish `hi` using `i'.2`.
+
+Establish `hE : (RowPar.of (X.B.hc τ)).eAt (j - 1) = W.e`. Rewrite using `[he]`. Conclude with `dif_pos hj.2`. Establish `hB : ∀ n, n < X.B.R.m → (RowPar.of (X.B.hc τ)).bAt n = W.b (n + 1)` using `fun n hn => by`. Rewrite using `[hb ⟨n, hn⟩]`.
+
+Conclude with `dif_pos hn`. Establish `key : W.lamPrime (i'.1 + 1) = (RowPar.of (X.B.hc τ)).lamVQ j i'`. Unfold `Ranks.nV Ranks.r at hi`. Unfold `IndefiniteWeightData.WeightData.lamPrime IndefiniteWeightData.WeightData.thetaWt IndefiniteWeightData.WeightData.dTau IndefiniteWeightData.WeightData.aPlus IndefiniteWeightData.WeightData.aMinus IndefiniteWeightData.WeightData.lam IndefiniteWeightData.WeightData.nV IndefiniteWeig …`. Rewrite using `[hk, hm, ht, hjj, hE]`.
+
+Use `congr 1`. Distinguish the cases in `a : i'.1 < X.B.R.k + j - 1`. Rewrite using `[if_pos a, if_pos (show i'.1 + 1 ≤ _ from a), Nat.add_sub_cancel]`. Distinguish the cases in `b : i'.1 < X.B.R.k - 1`. Rewrite using `[dif_pos b, if_pos (show i'.1 + 1 ≤ _ from b), hv ⟨_, b⟩]`.
+
+Both sides reduce to the same expression. Rewrite using `[dif_neg b, if_neg (show ¬ i'.1 + 1 ≤ _ from b), hB _ (by omega), Int.cast_neg, show i'.1 + 1 - (X.B.R.k - 1) = i'.1 - (X.B.R.k - 1) + 1 by omega]`. Both sides reduce to the same expression. Rewrite using `[if_neg a, if_neg (show ¬ i'.1 + 1 ≤ _ from a)]`. Distinguish the cases in `b : i'.1 < X.B.R.k + j - 1 + X.B.R.t`.
+
+Rewrite using `[if_pos b, if_pos (show i'.1 + 1 ≤ _ from b)]`. Rewrite using `[if_neg b, if_neg (show ¬ i'.1 + 1 ≤ _ from b), hB _ (by omega), show X.B.R.m - j + 1 - (X.B.R.m - j + 1 - (i'.1 + 1 - (X.B.R.k + j - 1) - X.B.R.t)) = i'.1 - (X.B.R.k + j - 1 + X.B.R.t) + 1 by omega, show j + (i'.1 - (X.B.R.k + j - 1 + X.B.R.t) + 1) - 1 + 1 = j + (i'.1 - (X.B.R.k …`. Use `(hw i).trans ((e ▸ key).trans q.symm)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem lamLdef_eq (X : Stages) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ X.B.R.m) (τ) (i : Fin (X.toD7.sp.V j).rank) (i' : Fin X.B.R.nV)
     (e : (i : ℕ) = i') : (Bridge.lamLdef (D := X.toD7) (X.toD7.sp.V j).rank j τ).w i = (X.B.wts.lamV j τ).w i' := by
   obtain ⟨hj, W, hk, hm, ht, hjj, he, hv, hb, hw⟩ := GlobalTheory.ForcedWeights.lamLForced X.toD7 j h1 h2 τ
@@ -294,6 +408,9 @@ theorem lamLdef_eq (X : Stages) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ X.B.R.m) (�
   have := (hw i).trans ((e ▸ key).trans q.symm)
   exact_mod_cast this
 
+/- English proof (translation)
+Take `⟨hs, -, -, -, -, h5⟩` from `w.ok.spaces`. Establish `hn : B.sp.Vneg j = false` using `B.V_pos j h1 h2`. Rewrite using `[h5 j]`. Use `Matrix.ext fun i i' => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ i i').trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn, hn]`.
+-/
 theorem gram_V {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ B.R.m) :
     (B.sp.V j).gram = 1 := by
   obtain ⟨hs, -, -, -, -, h5⟩ := w.ok.spaces
@@ -302,6 +419,9 @@ theorem gram_V {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (j : �
   refine Matrix.ext fun i i' => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ i i').trans ?_
   simp [Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn, hn]
 
+/- English proof (translation)
+Take `⟨hs, -, -, -, -, h5⟩` from `w.ok.spaces`. Rewrite using `[h5 j]`. Both sides reduce to the same expression.
+-/
 theorem rank_V {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (j : ℕ) : (B.sp.V j).rank = B.R.nV := by
   obtain ⟨hs, -, -, -, -, h5⟩ := w.ok.spaces
   rw [h5 j]
@@ -309,6 +429,11 @@ theorem rank_V {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (j : �
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨c, -, hc, -⟩` from `x.std.2 i`. Use `⟨c, fun h => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_matEq (D := (w.st Z).toD7) _ (rank_V w _) (gram_V w _ (Nat.succ_pos _) i.2) h`. Use `⟨y, fun s φ => hc B.sp.cm s (⟨mtKOk _ _ _ _ t.hX _⟩, φ) h y ?_⟩` and prove the remaining obligations. Rewrite using `[t.r.z.lev.beta.1 i]`.
+
+Conclude with `hy`.
+-/
 theorem rx_std_readL {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     {p0 : BaseLevelRowSide (w.D Z)} {t : RowsT K w Z Wt p0} (x : RXs t) (i : Fin (w.st Z).toD7.R.m) :
     ∃ c : VV B.LL (B.wts.lamV ((i : ℕ) + 1)) → (t.r.z.R.cV i).W, ∀ (h : Bridge.Gf (Vc (w.st Z).toD7 i)), ∃ y : UAd B.sp.cm B.R.nV,

@@ -12,14 +12,25 @@ variable {K K₂ : Type*} [Field K] [Field K₂] [Algebra K K₂] {V : Type*} [A
 noncomputable def trT [FiniteDimensional K K₂] : K₂ ⊗[K] V →ₗ[K] V :=
   TensorProduct.lid K V ∘ₗ LinearMap.rTensor V (Algebra.trace K K₂)
 
+/- English proof (translation)
+Simplify using `[trT]`.
+-/
 lemma trT_tmul [FiniteDimensional K K₂] (x : K₂) (v : V) :
     trT (x ⊗ₜ[K] v) = Algebra.trace K K₂ x • v := by
   simp [trT]
 
+/- English proof (translation)
+Simplify using `[galAct]`.
+-/
 lemma galAct_tmul (σ : K₂ ≃ₐ[K] K₂) (x : K₂) (v : V) :
     galAct σ (x ⊗ₜ[K] v) = σ x ⊗ₜ[K] v := by
   simp [galAct]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x v`. Simplify using `only [galAct_tmul, trT_tmul]`. Rewrite using `[← TensorProduct.sum_tmul, ← trace_eq_sum_automorphisms, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+
+Consider the case `add y z hy hz`. Simplify using `only [map_add, Finset.sum_add_distrib, hy, hz, TensorProduct.tmul_add]`.
+-/
 lemma sum_galAct [FiniteDimensional K K₂] [IsGalois K K₂] (y : K₂ ⊗[K] V) :
     ∑ σ : K₂ ≃ₐ[K] K₂, galAct σ y = (1 : K₂) ⊗ₜ[K] trT y := by
   induction y using TensorProduct.induction_on with
@@ -31,6 +42,13 @@ lemma sum_galAct [FiniteDimensional K K₂] [IsGalois K K₂] (y : K₂ ⊗[K] V
   | add y z hy hz =>
     simp only [map_add, Finset.sum_add_distrib, hy, hz, TensorProduct.tmul_add]
 
+/- English proof (translation)
+Use `set d := (Algebra.traceForm K K₂).dualBasis (traceForm_nondegenerate (K := K) (L := K₂)) b`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x v`. Establish `hx : x = ∑ i, Algebra.trace K K₂ (b i * x) • d i` using `by conv_lhs => rw [← d.sum_repr x]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply, mul_comm]`. Use `conv_lhs => rw [hx]`. Rewrite using `[TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [TensorProduct.smul_tmul', smul_eq_mul, mul_one, trT_tmul]`. Conclude with `TensorProduct.smul_tmul _ _ _`. Consider the case `add y z hy hz`. Simplify using `only [smul_add, map_add, TensorProduct.tmul_add, Finset.sum_add_distrib]`. Rewrite using `[← hy, ← hz]`.
+-/
 lemma expand [FiniteDimensional K K₂] [Algebra.IsSeparable K K₂] {ι : Type*} [Fintype ι]
     [DecidableEq ι] (b : Module.Basis ι K K₂) (w : K₂ ⊗[K] V) :
     w = ∑ i, ((Algebra.traceForm K K₂).dualBasis
@@ -54,6 +72,13 @@ lemma expand [FiniteDimensional K K₂] [Algebra.IsSeparable K K₂] {ι : Type*
 
 end DescPf
 
+/- English proof (translation)
+Introduce `K K₂ V _ _ _ _ _ _ _ W hW`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `w hw`. Rewrite using `[DescPf.expand (Module.finBasis K K₂) w]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ?_, rfl⟩)` and prove the remaining obligations.
+
+Simplify using `only [SetLike.mem_coe, kPoints, Submodule.mem_comap, Submodule.restrictScalars_mem, TensorProduct.mk_apply]`. Rewrite using `[← DescPf.sum_galAct]`. Conclude with `Submodule.sum_mem _ fun σ _ => hW σ _ (W.smul_mem _ hw)`. Rewrite using `[baseSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`.
+
+Simplify `hu` using `only [SetLike.mem_coe, kPoints, Submodule.mem_comap, Submodule.restrictScalars_mem, TensorProduct.mk_apply]`.
+-/
 theorem galoisDescent_holds : GaloisDescentStatement := by
   intro K K₂ V _ _ _ _ _ _ _ W hW
   classical

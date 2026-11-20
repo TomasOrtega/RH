@@ -56,6 +56,9 @@ def cmp : (UnifPre.GF (R := R) (G := G) F).left ⟶ (TF (R := R) F ⊗ G).left :
     show _ ≫ jFK (R := R) F ≫ jK R = (_ ≫ pullback.fst G.hom (jK R)) ≫ G.hom
     rw [← Category.assoc, h, Category.assoc, Category.assoc, pullback.condition])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem cmp_snd : cmp G F ≫ (snd (TF (R := R) F) G).left = UnifPre.gFK (R := R) (G := G) F :=
   pullback.lift_snd _ _ _
 
@@ -77,6 +80,9 @@ variable {Xo : Moduli Dw l} {c : Coeff l}
 def normaliser (Dw : Datum H) (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) (α : 𝓞 E) : c.F :=
   ∏ τ : E →+* ℂ, embK c τ α ^ ∑ i : Fin (Dw.mult τ), a (τ, i)
 
+/- English proof (translation)
+Simplify using `[normaliser]`.
+-/
 example (α : 𝓞 E) : normaliser Dw c 0 α = 1 := by simp [normaliser]
 
 variable [StarRing (𝓞 E)] {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io}

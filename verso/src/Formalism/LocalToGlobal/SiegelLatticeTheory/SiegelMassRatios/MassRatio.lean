@@ -64,6 +64,15 @@ def FormsEq : Prop :=
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E],
     IsCMPair F E → ∀ M : ℕ, 3 ≤ M → rText F E M = Formalism.HermitianLatticesTheory.massRatioRightSide E M
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hFE M hM`. Establish `hf : fF F = Formalism.HermitianLatticesTheory.fDeg E` using `hD F E hFE`. Establish `hd : |((discr E : ℤ) : ℝ)| = dF F ^ 2` using `hS F E hFE`. Establish `hl : lText F E M = Formalism.HermitianLatticesTheory.lValEta E M` using `hL F E hFE M hM`. Establish `h0 : (0 : ℝ) ≤ dF F` using `abs_nonneg _`.
+
+Establish `hfpos : 0 < fF F` using `Module.finrank_pos`. Establish `hfR : (fF F : ℝ) ≠ 0` using `by exact_mod_cast hfpos.ne'`. Establish `hv : Formalism.HermitianLatticesTheory.vInv E = vF F`. Unfold `Formalism.HermitianLatticesTheory.vInv vF`. Rewrite using `[hd, ← hf, ← Real.rpow_natCast (dF F) 2, ← Real.rpow_mul h0]`.
+
+Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h2v : (2 * vF F) ^ fF F = dF F`. Unfold `vF`.
+
+Rewrite using `[mul_div_cancel₀ _ (two_ne_zero), ← Real.rpow_natCast, ← Real.rpow_mul h0, one_div_mul_cancel hfR, Real.rpow_one]`. Unfold `rText Formalism.HermitianLatticesTheory.massRatioRightSide`. Rewrite using `[hv, ← hf, h2v, hl, Real.sqrt_eq_rpow, show (-(1 : ℝ) / 2) = -(1 / 2) by ring, Real.rpow_neg h0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem formsEq_of (hD : DegEq) (hS : DiscSq) (hL : EulerEq) : FormsEq := by
   intro F E _ _ _ _ _ _ hFE M hM
   have hf : fF F = Formalism.HermitianLatticesTheory.fDeg E := hD F E hFE
@@ -117,6 +126,9 @@ def fixFld (K : Type) [Field K] [NumberField K] [StarRing K] : IntermediateField
     change star (algebraMap ℚ K q) = algebraMap ℚ K q
     rw [eq_ratCast, star_ratCast])
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hFE M hM V V' _ _ _ _ _ _ _ _ h h' L L' hh hh' hL hL'`. Rewrite using `[hE F E hFE M hM]`. Conclude with `hS E hFE.1 M hM V V' h h' L L' hh hh' hL hL'`.
+-/
 theorem massRatio_of_siegel (hE : FormsEq) (hS : Formalism.HermitianLatticesTheory.SiegelMassRatio) : MassRatio := by
   intro F E _ _ _ _ _ _ hFE M hM V V' _ _ _ _ _ _ _ _ h h' L L' hh hh' hL hL'
   rw [hE F E hFE M hM]

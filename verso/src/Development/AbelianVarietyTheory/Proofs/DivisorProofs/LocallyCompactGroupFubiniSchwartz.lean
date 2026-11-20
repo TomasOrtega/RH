@@ -11,6 +11,27 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G V Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ νV νZ hV hZ Φ β hβ hΦ f A C a c ha hc hA hC hf μ hμ S`. Use `set P : Measure (V × Z) := νV.prod νZ with hPdef`. Use `haveI : LocallyCompactSpace G := Φ.isOpenEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology G := Φ.isEmbedding.secondCountableTopology`. Set `e : G ≃ᵐ V × Z` to `Φ.toMeasurableEquiv`.
+
+Use `set ρ : Measure G := P.map e.symm with hρdef`. Establish `hρapp : ∀ T : Set G, ρ T = P (e.symm ⁻¹' T)` using `fun T => e.symm.map_apply T`. Establish `hinv : ρ.IsMulLeftInvariant`. Prove the components needed by the constructor for the conclusion. Introduce `g`.
+
+Use `set a0 := (Φ g).1`. Use `set b0 := (Φ g).2`. Establish `hskew : MeasurePreserving (fun p : V × Z => (a0 + p.1, b0 + p.2 + β a0 p.1)) P P`. Establish `h1 : MeasurePreserving (fun v : V => a0 + v) νV νV` using `measurePreserving_add_left νV a0`. Establish `hm : Measurable (Function.uncurry fun (v : V) (z : Z) => b0 + z + β a0 v)`.
+
+Apply `Continuous.measurable` to reduce the goal to its premises. Conclude with `(continuous_const.add continuous_snd).add (hβ.comp (continuous_const.prodMk continuous_fst))`. Use `h1.skew_product (μc := νZ) (μd := νZ) hm (Filter.Eventually.of_forall fun v => by` as an intermediate fact. Establish `: (fun z : Z => b0 + z + β a0 v) = fun z => (b0 + β a0 v) + z`. Use function extensionality and compare the values at `z`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `(measurePreserving_add_left νZ _).map_eq)`. Conclude with `this`. Establish `hconj : (fun x : G => g * x) ∘ e.symm = e.symm ∘ (fun p : V × Z => (a0 + p.1, b0 + p.2 + β a0 p.1))`.
+
+Use function extensionality and compare the values at `p`. Apply `Φ.injective` to reduce the goal to its premises. Simplify using `only [Function.comp_apply]`. Express the relevant statement in the definitionally equal form `Φ (g * Φ.symm p) = Φ (Φ.symm _)`. Rewrite using `[hΦ, Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply]`.
+
+Rewrite using `[hρdef, Measure.map_map (measurable_const_mul g) e.symm.measurable, hconj, ← Measure.map_map e.symm.measurable hskew.measurable, hskew.map_eq]`. Use `haveI : IsFiniteMeasureOnCompacts ρ := Measure.IsFiniteMeasureOnCompacts.map P Φ.symm`. Use `haveI : ρ.IsOpenPosMeasure := Φ.symm.continuous.isOpenPosMeasure_map Φ.symm.surjective`. Use `haveI : ρ.IsHaarMeasure := { }`. Establish `hμρ` using `Measure.isMulLeftInvariant_eq_smul μ ρ`.
+
+Set `D : V × Z ≃ᵐ V × Z` to `(A.prodCongr C).toMeasurableEquiv`. Establish `hD : P.map D = (a * c) • P`. Express the relevant statement in the definitionally equal form `P.map (Prod.map A C) = _`. Rewrite using `[hPdef, ← Measure.map_prod_map νV νZ A.measurable C.measurable, hA, hC, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul]`. Establish `hpre : e.symm ⁻¹' (f ⁻¹' S) = D ⁻¹' (e.symm ⁻¹' S)`.
+
+Use extensionality with `p`. Simplify using `only [Set.mem_preimage]`. Establish `: f (e.symm p) = e.symm (D p)`. Apply `Φ.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Φ (f (Φ.symm p)) = Φ (Φ.symm (A p.1, C p.2))`.
+
+Rewrite using `[hf, Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply]`. Rewrite using `[this]`. Rewrite using `[hμρ, Measure.smul_apply, Measure.smul_apply, hρapp, hρapp, hpre, ← D.map_apply, hD, Measure.smul_apply]`. Simplify using `only [ENNReal.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisenberg_preimage_haar : ∀ {G V Z : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
   [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V]
   [AddCommGroup Z] [TopologicalSpace Z] [IsTopologicalAddGroup Z] [LocallyCompactSpace Z] [SecondCountableTopology Z] [T2Space Z] [MeasurableSpace Z] [BorelSpace Z]

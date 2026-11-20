@@ -15,20 +15,40 @@ variable {D : D7}
 def PhiM (m n : ℕ) (x : Mx D m n) : Fin m → Fin n → Fin (nE D) → AF D.host.F :=
   fun i j => cE D.host.F D.host.E (x i j)
 
+/- English proof (translation)
+Simplify using `[PhiM]`.
+-/
 theorem PhiM_add (m n : ℕ) (x y : Mx D m n) (i j k) : PhiM m n (x + y) i j k = PhiM m n x i j k + PhiM m n y i j k := by
   simp [PhiM]
 
+/- English proof (translation)
+Use `show cE D.host.F D.host.E (incA D (e i j)) k = _`. Conclude with `cE_tmul (e i j) k`.
+-/
 theorem PhiM_rat (m n : ℕ) (e : Matrix (Fin m) (Fin n) D.host.E) (i j k) :
     PhiM m n (e.map (incA D)) i j k =
       algebraMap D.host.F (AF D.host.F) ((Module.finBasis D.host.F D.host.E).repr (e i j) k) := by
   show cE D.host.F D.host.E (incA D (e i j)) k = _
   exact cE_tmul (e i j) k
 
+/- English proof (translation)
+The claim follows from `(continuous_apply k).comp ((cE D.host.F D.host.E).continuous.comp (continuous_id.matrix_elem i j))`.
+-/
 theorem cont_PhiM (m n : ℕ) (i j k) : Continuous fun x : Mx D m n => PhiM m n x i j k :=
   (continuous_apply k).comp ((cE D.host.F D.host.E).continuous.comp (continuous_id.matrix_elem i j))
 
 def FDM (D : D7) (m n : ℕ) : Set (Mx D m n) := {x | ∀ i j k, PhiM m n x i j k ∈ F0 D.host.F}
 
+/- English proof (translation)
+Use `choose q hq using fun i j k => (ad_exU D.host.F (PhiM m n x i j k)).exists`. Set `b` to `Module.finBasis D.host.F D.host.E`. Set `e : Matrix (Fin m) (Fin n) D.host.E` to `fun i j => b.equivFun.symm (q i j)`. Establish `hr : ∀ v k, b.repr (b.equivFun.symm v) k = v k` using `fun v k => by`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+
+Use `⟨⟨_, ⟨e, rfl⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j k show PhiM m n (e.map (incA D) + x) i j k ∈ F0 D.host.F`. Rewrite using `[PhiM_add, PhiM_rat, show e i j = b.equivFun.symm (q i j) from rfl, hr]`. Conclude with `hq i j k`. Introduce and unpack `⟨g, e', rfl⟩ hg`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show e'.map (incA D) = e.map (incA D)`. Use `congr 1`. Use function extensionality and compare the values at `i j`. Use `b.ext_elem fun k => ?_` and prove the remaining obligations.
+
+Establish `h1 : algebraMap D.host.F (AF D.host.F) (b.repr (e' i j) k) + PhiM m n x i j k ∈ F0 D.host.F`. Use `hg i j k` as an intermediate fact. Establish `e2 : PhiM m n (e'.map (incA D) + x) i j k = algebraMap D.host.F (AF D.host.F) (b.repr (e' i j) k) + PhiM m n x i j k`. Rewrite using `[PhiM_add, PhiM_rat]`. Rewrite using `[← e2]`.
+
+Conclude with `this`. Establish `h2` using `(ad_exU D.host.F (PhiM m n x i j k)).unique h1 (hq i j k)`. Rewrite using `[h2, show e i j = b.equivFun.symm (q i j) from rfl, hr]`.
+-/
 theorem exUM (m n : ℕ) (x : Mx D m n) : ∃! g : ratMx D m n, g +ᵥ x ∈ FDM D m n := by
   classical
   choose q hq using fun i j k => (ad_exU D.host.F (PhiM m n x i j k)).exists
@@ -57,6 +77,11 @@ theorem exUM (m n : ℕ) (x : Mx D m n) : ∃! g : ratMx D m n, g +ᵥ x ∈ FDM
     rw [h2, show e i j = b.equivFun.symm (q i j) from rfl, hr]
 
 open scoped Classical in
+/- English proof (translation)
+Establish `h : FDM D m n = ⋂ i, ⋂ j, ⋂ k, ((fun x => eM D.host.F (PhiM m n x i j k).1) ⁻¹' ZSpan.fundamentalDomain (mixedEmbedding.latticeBasis D.host.F) ∩ (fun x => (PhiM m n x i j k).2) ⁻¹' Ohat D.host.F)`. Use extensionality with `x`. Simplify using `[FDM, F0, Pinf]`. Rewrite using `[h]`. Use `MeasurableSet.iInter fun i => MeasurableSet.iInter fun j => MeasurableSet.iInter fun k => ?_` and prove the remaining obligations.
+
+Use `MeasurableSet.inter ?_ ?_` and prove the remaining obligations. Conclude with `((continuous_eM _).comp (continuous_fst.comp (cont_PhiM m n i j k))).measurable (measurableSet_Pinf _)`. Conclude with `((isOpen_Ohat _).preimage (continuous_snd.comp (cont_PhiM m n i j k))).measurableSet`.
+-/
 theorem meas_FDM (m n : ℕ) : MeasurableSet (FDM D m n) := by
   have h : FDM D m n = ⋂ i, ⋂ j, ⋂ k,
       ((fun x => eM D.host.F (PhiM m n x i j k).1) ⁻¹' ZSpan.fundamentalDomain (mixedEmbedding.latticeBasis D.host.F) ∩
@@ -68,6 +93,11 @@ theorem meas_FDM (m n : ℕ) : MeasurableSet (FDM D m n) := by
   · exact ((continuous_eM _).comp (continuous_fst.comp (cont_PhiM m n i j k))).measurable (measurableSet_Pinf _)
   · exact ((isOpen_Ohat _).preimage (continuous_snd.comp (cont_PhiM m n i j k))).measurableSet
 
+/- English proof (translation)
+Take `⟨K0, hK0, hsub⟩` from `fundamental_set_subset_compact D.host.F`. Set `Ps : (Fin m → Fin n → Fin (nE D) → AF D.host.F) → Mx D m n` to `fun y => Matrix.of fun i j => (cE D.host.F D.host.E).symm (y i j)`. Establish `hc : Continuous Ps` using `continuous_matrix fun i j => (cE D.host.F D.host.E).symm.continuous.comp ((continuous_apply j).comp (continuous_apply i))`. Use `⟨Ps '' Set.pi Set.univ (fun _ => Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => K0), (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hK0).image hc, fun x hx => ⟨PhiM m n x, fun i _ j _ k _ => hsub (hx i j k), ?_⟩⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `[Ps, PhiM]`.
+-/
 theorem FDM_sub_compact (m n : ℕ) : ∃ K : Set (Mx D m n), IsCompact K ∧ FDM D m n ⊆ K := by
   obtain ⟨K0, hK0, hsub⟩ := fundamental_set_subset_compact D.host.F
   let Ps : (Fin m → Fin n → Fin (nE D) → AF D.host.F) → Mx D m n :=
@@ -83,9 +113,17 @@ theorem FDM_sub_compact (m n : ℕ) : ∃ K : Set (Mx D m n), IsCompact K ∧ FD
 instance lcMx (m n : ℕ) : LocallyCompactSpace (Mx D m n) :=
   inferInstanceAs (LocallyCompactSpace (Fin m → Fin n → AE D))
 
+/- English proof (translation)
+The claim follows from `IsAddFundamentalDomain.mk' (meas_FDM m n).nullMeasurableSet (exUM m n)`.
+-/
 theorem isAddFD_FDM (m n : ℕ) (μ : Measure (Mx D m n)) : IsAddFundamentalDomain (ratMx D m n) (FDM D m n) μ :=
   IsAddFundamentalDomain.mk' (meas_FDM m n).nullMeasurableSet (exUM m n)
 
+/- English proof (translation)
+Use `countable_ratMx (D := D) m n` as an intermediate fact. Establish `: MeasurableConstVAdd (ratMx D m n) (Mx D m n)` using `⟨fun c => (continuous_const.add continuous_id).measurable⟩`. Establish `: VAddInvariantMeasure (ratMx D m n) (Mx D m n) μ` using `⟨fun c s _ => measure_preimage_add μ (c : Mx D m n) s⟩`. Take `⟨K, hK, hsub⟩` from `FDM_sub_compact (D := D) m n`. Use `⟨?_, h𝓕.measure_ne_zero (NeZero.ne μ)⟩` and prove the remaining obligations.
+
+Rewrite using `[h𝓕.measure_eq (isAddFD_FDM m n μ)]`. Conclude with `lt_of_le_of_lt (measure_mono hsub) hK.measure_lt_top`.
+-/
 theorem covolM (m n : ℕ) (μ : Measure (Mx D m n)) [hμ : μ.IsAddHaarMeasure] (𝓕 : Set (Mx D m n))
     (h𝓕 : IsAddFundamentalDomain (ratMx D m n) 𝓕 μ) : μ 𝓕 < ⊤ ∧ μ 𝓕 ≠ 0 := by
   have := countable_ratMx (D := D) m n

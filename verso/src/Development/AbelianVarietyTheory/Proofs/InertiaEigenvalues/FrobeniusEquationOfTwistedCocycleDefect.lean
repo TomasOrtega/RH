@@ -6,19 +6,31 @@ open Matrix
 
 variable {R : Type} [CommRing R] {d : ℕ}
 
+/- English proof (translation)
+Introduce `x h` and use `hb x (ha _ (by rw [← mul_assoc]; exact h))`.
+-/
 theorem nzd_mul {a b : R} (ha : ∀ x : R, a * x = 0 → x = 0) (hb : ∀ x : R, b * x = 0 → x = 0) :
     ∀ x : R, (a * b) * x = 0 → x = 0 :=
   fun x h => hb x (ha _ (by rw [← mul_assoc]; exact h))
 
+/- English proof (translation)
+The claim follows from `| 0 => fun x h => by simpa using h | n + 1 => by rw [pow_succ]; exact nzd_mul (nzd_pow ha n) ha`.
+-/
 theorem nzd_pow {a : R} (ha : ∀ x : R, a * x = 0 → x = 0) :
     ∀ n : ℕ, ∀ x : R, a ^ n * x = 0 → x = 0
   | 0 => fun x h => by simpa using h
   | n + 1 => by rw [pow_succ]; exact nzd_mul (nzd_pow ha n) ha
 
+/- English proof (translation)
+The claim follows from `nzd_mul ha (fun x h => by simpa using congrArg (fun y => (↑v⁻¹ : R) * y) h)`.
+-/
 theorem nzd_unit {a : R} (ha : ∀ x : R, a * x = 0 → x = 0) (v : Rˣ) :
     ∀ x : R, (a * v) * x = 0 → x = 0 :=
   nzd_mul ha (fun x h => by simpa using congrArg (fun y => (↑v⁻¹ : R) * y) h)
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrArg (fun P => P i j) h` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `sub_eq_zero.mp (hc _ (by rw [mul_sub, this, sub_self]))`.
+-/
 theorem smul_cancel {c : R} (hc : ∀ x : R, c * x = 0 → x = 0)
     {M N : Matrix (Fin d) (Fin d) R} (h : c • M = c • N) : M = N := by
   ext i j
@@ -26,15 +38,28 @@ theorem smul_cancel {c : R} (hc : ∀ x : R, c * x = 0 → x = 0)
   simp only [Matrix.smul_apply, smul_eq_mul] at this
   exact sub_eq_zero.mp (hc _ (by rw [mul_sub, this, sub_self]))
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, h, Matrix.smul_mul, Matrix.one_mul]`.
+-/
 theorem mul_left_of {c : R} {P P' : Matrix (Fin d) (Fin d) R} (h : P * P' = c • 1)
     (X : Matrix (Fin d) (Fin d) R) : P * (P' * X) = c • X := by
   rw [← Matrix.mul_assoc, h, Matrix.smul_mul, Matrix.one_mul]
 
+/- English proof (translation)
+The claim follows from `smul_cancel hc (by rw [← mul_left_of h X, ← mul_left_of h Y, hXY])`.
+-/
 theorem left_cancel {c : R} (hc : ∀ x : R, c * x = 0 → x = 0)
     {P P' : Matrix (Fin d) (Fin d) R} (h : P' * P = c • 1)
     {X Y : Matrix (Fin d) (Fin d) R} (hXY : P * X = P * Y) : X = Y :=
   smul_cancel hc (by rw [← mul_left_of h X, ← mul_left_of h Y, hXY])
 
+/- English proof (translation)
+Establish `hdet : M.det * M'.det = c ^ d`. Rewrite using `[← Matrix.det_mul, h, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Establish `hdM : ∀ x : R, M.det * x = 0 → x = 0` using `fun x hx => nzd_pow hc d x (by rw [← hdet, mul_comm M.det, mul_assoc, hx, mul_zero])`. Establish `h0 : M * (M' * M - c • 1) = 0`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, h, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, sub_self]`.
+
+Establish `h1 : M.det • (M' * M - c • 1) = M.det • (0 : Matrix (Fin d) (Fin d) R)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.smul_mul, Matrix.one_mul]`. Use `_ = M.adjugate * M * (M' * M - c • 1) := by rw [Matrix.adjugate_mul]`. Use `_ = M.det • (0 : Matrix (Fin d) (Fin d) R) := by rw [Matrix.mul_assoc, h0, Matrix.mul_zero, smul_zero]`.
+
+Conclude with `sub_eq_zero.mp (smul_cancel hdM h1)`.
+-/
 theorem mul_comm_of_nzd {c : R} (hc : ∀ x : R, c * x = 0 → x = 0)
     {M M' : Matrix (Fin d) (Fin d) R} (h : M * M' = c • 1) : M' * M = c • 1 := by
   have hdet : M.det * M'.det = c ^ d := by
@@ -52,16 +77,47 @@ theorem mul_comm_of_nzd {c : R} (hc : ∀ x : R, c * x = 0 → x = 0)
       _ = M.det • (0 : Matrix (Fin d) (Fin d) R) := by rw [Matrix.mul_assoc, h0, Matrix.mul_zero, smul_zero]
   exact sub_eq_zero.mp (smul_cancel hdM h1)
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+-/
 theorem map_smul_one (f : R →+* R) (c : R) :
     (c • (1 : Matrix (Fin d) (Fin d) R)).map f = f c • (1 : Matrix (Fin d) (Fin d) R) := by
   ext i j
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem map_smul' (f : R →+* R) (c : R) (M : Matrix (Fin d) (Fin d) R) :
     (c • M).map f = f c • M.map f := by
   ext i j
   simp
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `hev`. Take `⟨v₀, hv₀⟩` from `he₀v`. Establish `he : ∀ x : R, e * x = 0 → x = 0` using `by rw [hv]; exact nzd_unit hlr v`. Establish `he₀ : ∀ x : R, e₀ * x = 0 → x = 0` using `by rw [hv₀]; exact nzd_unit hlr v₀`. Establish `hσe : ∀ x : R, σ e * x = 0 → x = 0`.
+
+Establish `: σ e = lr * ((Units.map (σ : R →* R) v : Rˣ) : R)`. Rewrite using `[hv, map_mul, hσlr]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `nzd_unit hlr _`.
+
+Establish `hL` using `nzd_pow hlr (2 * k)`. Establish `hB'B : B' * B = e ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) R)` using `mul_comm_of_nzd (nzd_pow he _) hBB'`. Establish `hσBB' : B.map σ * B'.map σ = σ e ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) R)`. Rewrite using `[← Matrix.map_mul, hBB', map_smul_one, map_pow]`. Establish `hφQ'Q : Q'.map φ * Q.map φ = lr ^ (2 * k) • (1 : Matrix (Fin d) (Fin d) R)`.
+
+Rewrite using `[← Matrix.map_mul, mul_comm_of_nzd hL hQQ', map_smul_one, map_pow, hφlr]`. Establish `h1 : B' * (Q * A₀) = (e * e₀) ^ N • Q.map φ`. Apply `smul_cancel (nzd_pow he N)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (e * e₀) ^ N • Q'.map φ = A₀' * (Q' * B)`.
+
+Apply `left_cancel hL hφQ'Q` to reduce the goal to its premises. Apply `smul_cancel (nzd_pow (nzd_mul he he₀) N)` to reduce the goal to its premises. Establish `lhs : (e * e₀) ^ N • (Q.map φ * ((e * e₀) ^ N • Q'.map φ)) = ((e * e₀) ^ (2 * N) * lr ^ (2 * k)) • (1 : Matrix (Fin d) (Fin d) R)`. Rewrite using `[Matrix.mul_smul, ← Matrix.map_mul, hQQ', map_smul_one, map_pow, hφlr, smul_smul, smul_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `rhs : (e * e₀) ^ N • (Q.map φ * (A₀' * (Q' * B))) = ((e * e₀) ^ (2 * N) * lr ^ (2 * k)) • (1 : Matrix (Fin d) (Fin d) R)`. Rewrite using `[← Matrix.smul_mul, ← h1, Matrix.mul_assoc, Matrix.mul_assoc, mul_left_of hAA', Matrix.mul_smul, Matrix.mul_smul, mul_left_of hQQ', Matrix.mul_smul, hB'B, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[lhs, rhs]`. Establish `hcomm : (Q.map φ).map σ = (Q.map σ).map φ`. Use extensionality with `i j`. Simplify using `[hφσ]`. Establish `h3 : B'.map σ * (Q.map σ * A₀) = (σ e * e₀) ^ N • (Q.map σ).map φ`.
+
+Use `congrArg (fun M => M.map σ) h1` as an intermediate fact. Simplify using `only [Matrix.map_mul, map_smul', map_pow, map_mul, hA₀σ, hσe₀, hcomm] at this`. Conclude with `this`. Establish `h4 : B' * (ε * B.map σ) = (σ e * e) ^ N • ε.map φ`. Apply `smul_cancel (nzd_pow he N)` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h5 : A₀ * (Q' * ε * Q.map σ).map φ * A₀' = e₀ ^ (2 * N) • (Q' * ε * Q.map σ)`. Establish `hc` using `nzd_mul (nzd_mul (nzd_pow (nzd_mul he he₀) N) (nzd_pow (nzd_mul hσe he) N)) (nzd_pow (nzd_mul hσe he₀) N)`. Apply `smul_cancel hc` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.map_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = A₀ * ((A₀' * (Q' * B)) * ((B' * (ε * B.map σ)) * ((B'.map σ * (Q.map σ * A₀)) * A₀'))) := by`. Rewrite using `[h2, h4, h3]`.
+
+Use `_ = ((e * e₀) ^ N * (σ e * e) ^ N * (σ e * e₀) ^ N) • (e₀ ^ (2 * N) • (Q' * ε * Q.map σ)) := by`. Simplify using `only [Matrix.mul_assoc, mul_left_of hAA', mul_left_of hBB', mul_left_of hσBB', hAA', Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hLφ : A₀ * (lr ^ (2 * k) • (1 : Matrix (Fin d) (Fin d) R)).map φ * A₀' = e₀ ^ (2 * N) • (lr ^ (2 * k) • (1 : Matrix (Fin d) (Fin d) R))`.
+
+Rewrite using `[map_smul_one, map_pow, hφlr, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hAA', smul_smul, smul_smul, mul_comm]`. Establish `hsub : (Q' * ε * Q.map σ - lr ^ (2 * k) • (1 : Matrix (Fin d) (Fin d) R)).map φ = (Q' * ε * Q.map σ).map φ - (lr ^ (2 * k) • (1 : Matrix (Fin d) (Fin d) R)).map φ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.sub_apply, map_sub]`. Rewrite using `[hsub, Matrix.mul_sub, Matrix.sub_mul, h5, hLφ, smul_sub]`.
+-/
 theorem frobenius_defect_eq (R : Type) [CommRing R] (φ σ : R →+* R) (d N k : ℕ) (lr e e₀ : R)
     (Q Q' B B' A₀ A₀' ε : Matrix (Fin d) (Fin d) R)
     (hlr : ∀ x : R, lr * x = 0 → x = 0) (hev : ∃ v : Rˣ, e = lr * v) (he₀v : ∃ v : Rˣ, e₀ = lr * v)

@@ -16,6 +16,11 @@ open Classical
 variable {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ}
 
+/- English proof (translation)
+Take `⟨y, hy, hY⟩` from `q.mem_ybSet h`. Use `⟨y, fun w hw => ?_, ?_, fun z hz w hw => ?_⟩` and prove the remaining obligations. Use `(Formalism.L2.Col.mem_locLat _ _ _ _).1 hy ⟨w, Finset.mem_union_left _ hw⟩` as an intermediate fact. Simplify `this` using `[hw]`. Rewrite using `[hY, Set.mem_setOf_eq, sub_self]`.
+
+Conclude with `zero_mem _`. Rewrite `hz` using `[hY, Set.mem_setOf_eq, Formalism.L2.Col.mem_locLat]`. Simplify `hz ⟨w, Finset.mem_union_left _ hw⟩` using `[hw]`.
+-/
 theorem ptAt_cosetG (q : PtAt R sel mu cst u j) (h : j + 1 = R.m) :
     ∃ y : Sp X.E (R.N j), (∀ w ∈ Pr.vGs, ((qOf w : ℕ) : X.E) • y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal q.1.1.deco.1.N) ∧ y ∈ q.1.2 ∧
       ∀ z ∈ q.1.2, ∀ w ∈ Pr.vGs, z - y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal q.1.1.deco.1.N := by
@@ -28,6 +33,13 @@ theorem ptAt_cosetG (q : PtAt R sel mu cst u j) (h : j + 1 = R.m) :
   · rw [hY, Set.mem_setOf_eq, Formalism.L2.Col.mem_locLat] at hz
     simpa [hw] using hz ⟨w, Finset.mem_union_left _ hw⟩
 
+/- English proof (translation)
+Establish `hf` using `GlobalTheory.TopStep.liftFr_spec q.1.1.deco.2 ⟨P.1, hP⟩`. Establish `hfr : frsF sel mu q.1.1 P = q.1.1.deco.1.liftFr ⟨P.1, hP⟩`. Unfold `frsF`. Rewrite using `[dif_pos hP]`. Use extensionality with `z`.
+
+Simplify using `only [cosetIn, Set.mem_setOf_eq, if_pos hP, pow_zero, inv_one, one_smul, hfr]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', hy', hz⟩`. Establish `h1 : (q.1.1.deco.1.liftFr ⟨P.1, hP⟩).symm y' - (q.1.1.deco.1.liftFr ⟨P.1, hP⟩).symm y ∈ stdAt X.E (R.N j) P.1`. Rewrite using `[← map_sub]`.
+
+Conclude with `(hf.1 _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hY y' hy' P.1 hP)`. Use `add_mem hz h1` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce `hz`. Conclude with `⟨y, hy0, hz⟩`.
+-/
 theorem cosetIn_eqG (q : PtAt R sel mu cst u j) {y : Sp X.E (R.N j)} (hy0 : y ∈ q.1.2)
     (hY : ∀ z ∈ q.1.2, ∀ w ∈ Pr.vGs, z - y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal q.1.1.deco.1.N) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) :
     cosetIn q P = {z | z - (q.1.1.deco.1.liftFr ⟨P.1, hP⟩).symm y ∈ stdAt X.E (R.N j) P.1} := by
@@ -47,6 +59,15 @@ theorem cosetIn_eqG (q : PtAt R sel mu cst u j) {y : Sp X.E (R.N j)} (hy0 : y �
   · intro hz
     exact ⟨y, hy0, hz⟩
 
+/- English proof (translation)
+Establish `hd` using `q.1.1.deco.2`. Establish `hf` using `GlobalTheory.TopStep.liftFr_spec hd w`. Establish `hq` using `hy w.1 w.2`. Establish `key : q.1.1.deco.1.be w (((qOf w.1 : ℕ) : X.E) • y) = redV w.1 (((qOf w.1 : ℕ) : X.E) • (q.1.1.deco.1.liftFr w).symm y)`. Rewrite using `[← map_smul]`.
+
+Establish `hs : (q.1.1.deco.1.liftFr w).symm (((qOf w.1 : ℕ) : X.E) • y) ∈ stdAt X.E _ w.1` using `(hf.1 _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hq)`. Rewrite using `[← hf.2 _ hs, LinearEquiv.apply_symm_apply]`. Use extensionality with `v`. Simplify using `only [bar, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[← key]`. Establish `ht : z - y ∈ q.1.1.deco.1.at w.1` using `hY z hz w.1 w.2`. Establish `e : ((qOf w.1 : ℕ) : X.E) • z = ((qOf w.1 : ℕ) : X.E) • y + ((qOf w.1 : ℕ) : X.E) • (z - y)`. Rewrite using `[← smul_add, add_sub_cancel]`.
+
+Rewrite using `[e, hd.be_add w _ hq _ (GlobalTheory.TopStep.smul_mem_locP (GlobalTheory.TopStep.intAt_nat _) ht), GlobalTheory.TopStep.be_smul_int hd w (GlobalTheory.TopStep.intAt_nat _) ht, GlobalTheory.TopStep.reduction_absNorm_eq_zero, zero_smul, add_zero]`. Introduce and unpack `rfl`. Conclude with `⟨y, hy0, key.symm⟩`.
+-/
 theorem bar_eqG (q : PtAt R sel mu cst u j) {y : Sp X.E (R.N j)}
     (hy : ∀ w ∈ Pr.vGs, ((qOf w : ℕ) : X.E) • y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal q.1.1.deco.1.N) (hy0 : y ∈ q.1.2)
     (hY : ∀ z ∈ q.1.2, ∀ w ∈ Pr.vGs, z - y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal q.1.1.deco.1.N) (w : Pr.vGs) :
@@ -73,6 +94,25 @@ theorem bar_eqG (q : PtAt R sel mu cst u j) {y : Sp X.E (R.N j)}
   · rintro rfl
     exact ⟨y, hy0, key.symm⟩
 
+/- English proof (translation)
+Introduce `X Pr R sel S mu cst u j _ hq q q'`. Distinguish the cases in `h : j + 1 = R.m`. Take `⟨y, hy, hy0, hY⟩` from `ptAt_cosetG q h`. Take `⟨y', hy', hy0', hY'⟩` from `ptAt_cosetG q' h`. Establish `hA : ∀ (p : PtAt R sel mu cst u j) (y : Sp X.E (R.N j)), (∀ w ∈ Pr.vGs, ((qOf w : ℕ) : X.E) • y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal p.1.1.deco.1.N) → ∀ w : Pr.vGs, ((qOf w.1 : ℕ) : X.E) • (p.1.1.deco.1.liftFr w).symm y ∈ stdAt X.E (R.N j) w.1`.
+
+Introduce `p y hy w`. Establish `hf` using `GlobalTheory.TopStep.liftFr_spec p.1.1.deco.2 w`. Rewrite using `[← map_smul]`. Conclude with `(hf.1 _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hy w.1 w.2)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H`. Use `⟨funext fun w => ?_, funext fun P => ?_⟩` and prove the remaining obligations. Use `congrFun H ⟨w.1, Finset.mem_union_left _ w.2⟩` as an intermediate fact. Rewrite `this` using `[cosetIn_eqG q hy0 hY _ w.2, cosetIn_eqG q' hy0' hY' _ w.2]`. Rewrite using `[bar_eqG q hy hy0 hY, bar_eqG q' hy' hy0' hY', Set.singleton_eq_singleton_iff]`.
+
+Conclude with `(coset_eq_iff_redV (hq w.1 w.2) (hA q y hy w) (hA q' y' hy' w)).1 this`. Unfold `cqOf`. Rewrite using `[H]`. Introduce and unpack `⟨H1, H2⟩`. Use function extensionality and compare the values at `P`.
+
+Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Use `congrFun H1 ⟨P.1, hP⟩` as an intermediate fact. Rewrite `this` using `[bar_eqG q hy hy0 hY, bar_eqG q' hy' hy0' hY', Set.singleton_eq_singleton_iff]`. Rewrite using `[cosetIn_eqG q hy0 hY P hP, cosetIn_eqG q' hy0' hY' P hP]`. Conclude with `(coset_eq_iff_redV (hq P.1 hP) (hA q y hy ⟨P.1, hP⟩) (hA q' y' hy' ⟨P.1, hP⟩)).2 this`.
+
+Establish `hQ : P.1 ∈ QE sel (mu : Chr X.F X.E X.K)` using `(Finset.mem_union.mp P.2).resolve_left hP`. Use `congrFun H2 ⟨P.1, hQ⟩` as an intermediate fact. Conclude with `this`. Establish `e : ∀ p : PtAt R sel mu cst u j, p.1.2 = ∅` using `fun p => by`. Use `p.2` as an intermediate fact.
+
+Rewrite `this` using `[ysAt_ys_of_ne sel mu cst h]`. Conclude with `this`. Establish `h1 : ∀ p : PtAt R sel mu cst u j, cosetIn p = fun _ => ∅` using `fun p => by`. Use function extensionality and compare the values at `P`. Use extensionality with `z`.
+
+Simplify using `[cosetIn, e p]`. Establish `h2 : ∀ p : PtAt R sel mu cst u j, bar p = fun _ => ∅` using `fun p => by`. Use function extensionality and compare the values at `w`. Use extensionality with `v`. Simplify using `[bar, e p]`.
+
+Establish `h3 : ∀ p : PtAt R sel mu cst u j, cqOf p = fun _ => ∅` using `fun p => by`. Use function extensionality and compare the values at `P`. Conclude with `congrFun (h1 p) _`. Rewrite using `[h1 q, h1 q', h2 q, h2 q', h3 q, h3 q']`. Simplify using the standard rewrite rules.
+-/
 theorem cosetIn_eq_iff_bar_cq : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
     {S : Set ℕ} {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ},
     (∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) → (∀ w ∈ Pr.vGs, ((Formalism.L2.Col.qOf w : ℕ) : 𝓞 X.E) ∉ w.asIdeal ^ 2) →

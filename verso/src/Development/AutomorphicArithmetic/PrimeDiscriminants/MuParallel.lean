@@ -30,18 +30,27 @@ def psiEquiv : R.Psi ≃ (H.E ≃ₐ[H.K] H.E) where
     rw [MulEquiv.symm_apply_apply]
     rfl
 
+/- English proof (translation)
+Use `H.hostE_isGalois` as an intermediate fact. Rewrite using `[Algebra.norm_eq_prod_automorphisms]`. Conclude with `Fintype.prod_equiv (psiEquiv H) _ _ fun g => rfl`.
+-/
 theorem prod_sigmaOf [Fintype R.Psi] (x : H.E) :
     ∏ g : R.Psi, H.sigmaOf (g : R.GG) x = algebraMap H.K H.E (Algebra.norm H.K x) := by
   have := H.hostE_isGalois
   rw [Algebra.norm_eq_prod_automorphisms]
   exact Fintype.prod_equiv (psiEquiv H) _ _ fun g => rfl
 
+/- English proof (translation)
+Introduce `z hz`. Establish `h1 : ∀ g : R.Psi, H.emb (g : R.GG) z ^ (1 : ℤ) = H.φ₀ (H.sigmaOf (g : R.GG) z)` using `fun g => zpow_one _`. Simplify using `only [h1]`. Rewrite using `[← map_prod, prod_sigmaOf, H.der.norm_mu z hz, map_one, map_one]`.
+-/
 theorem mu_one [Fintype R.Psi] : UpperTheory.MU (fun g : R.Psi => H.emb (g : R.GG)) (fun _ => 1) := by
   intro z hz
   have h1 : ∀ g : R.Psi, H.emb (g : R.GG) z ^ (1 : ℤ) = H.φ₀ (H.sigmaOf (g : R.GG) z) := fun g => zpow_one _
   simp only [h1]
   rw [← map_prod, prod_sigmaOf, H.der.norm_mu z hz, map_one, map_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => c, h, (mu_one H).const c⟩`.
+-/
 theorem muQ_const [Fintype R.Psi] {e : R.Psi → ℚ} {c : ℤ} (h : ∀ g, e g = c) :
     UpperTheory.MUQ (fun g : R.Psi => H.emb (g : R.GG)) e :=
   ⟨fun _ => c, h, (mu_one H).const c⟩

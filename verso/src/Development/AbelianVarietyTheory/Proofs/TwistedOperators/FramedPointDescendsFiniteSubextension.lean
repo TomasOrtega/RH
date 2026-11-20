@@ -15,6 +15,15 @@ open GlobalTheory.HkIntegral
 
 namespace GlobalTheory.HkIntegral
 
+/- English proof (translation)
+Use `letI : Algebra K L := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower F K L := IsScalarTower.of_algebraMap_eq fun a => (φ.commutes a).symm`. Take `⟨s, hs⟩` from `(inferInstance : Algebra.FiniteType F R).out`. Set `M : IntermediateField K L` to `IntermediateField.adjoin K ((s.image ψ : Finset L) : Set L)`. Use `haveI hM : FiniteDimensional K M := IntermediateField.finiteDimensional_adjoin fun x _ => hφ x`.
+
+Establish `hmem : ∀ r : R, ψ r ∈ M.toSubalgebra.restrictScalars F`. Introduce `r`. Establish `hr : r ∈ Algebra.adjoin F (s : Set R)` using `hs ▸ Algebra.mem_top`. Establish `: Algebra.adjoin F (s : Set R) ≤ (M.toSubalgebra.restrictScalars F).comap ψ`. Use `Algebra.adjoin_le fun x hx => ?_` and prove the remaining obligations.
+
+Conclude with `IntermediateField.subset_adjoin K _ (by simpa using ⟨x, hx, rfl⟩)`. Conclude with `this hr`. Use `⟨M, inferInstance, inferInstance, IsScalarTower.toAlgHom F K M, M.val.restrictScalars F, ψ.codRestrict (M.toSubalgebra.restrictScalars F) hmem, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Both sides reduce to the same expression.
+
+Conclude with `RingHom.finite_algebraMap.2 hM`. Use extensionality with `a`. Both sides reduce to the same expression.
+-/
 theorem exists_finite_factor {F R K L : Type} [Field F] [CommRing R] [Field K] [Field L] [Algebra F R]
     [Algebra F K] [Algebra F L] [Algebra.FiniteType F R] (φ : K →ₐ[F] L) (hφ : φ.toRingHom.IsIntegral)
     (ψ : R →ₐ[F] L) :
@@ -40,6 +49,11 @@ theorem exists_finite_factor {F R K L : Type} [Field F] [CommRing R] [Field K] [
   · exact RingHom.finite_algebraMap.2 hM
   · ext a; rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c K L _ _ _ _ φ z hφ`. Take `⟨p, ψ, u, hu⟩` from `GlobalTheory.FlagTan.fromTest_of_isLocalRing z`. Use `haveI : Algebra.FiniteType c.F p.R := inferInstance`. Take `⟨M, _, _, i, j, χ, h1, h2, h3⟩` from `exists_finite_factor φ hφ ψ`. Take `⟨z₁, hz⟩` from `GlobalTheory.FlagTan.exists_frMap χ u`.
+
+Conclude with `⟨M, inferInstance, inferInstance, i, j, z₁, h1, h2, GlobalTheory.FlagTan.frMap_of_comp hz hu fun a => DFunLike.congr_fun h3 a⟩`.
+-/
 theorem frPt_descends_finite :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K L : Type) [Field K] [Field L] [Algebra c.F K] [Algebra c.F L] (φ : K →ₐ[c.F] L) (z : FrPt Xo c L), φ.toRingHom.IsIntegral → ∃ (M : Type) (_ : Field M) (_ : Algebra c.F M) (i : K →ₐ[c.F] M) (j : M →ₐ[c.F] L) (z₁ : FrPt Xo c M), j.comp i = φ ∧ i.toRingHom.Finite ∧ FrMap j z₁ z := by
   intro E _ _ _ H Dw l Xo c K L _ _ _ _ φ z hφ

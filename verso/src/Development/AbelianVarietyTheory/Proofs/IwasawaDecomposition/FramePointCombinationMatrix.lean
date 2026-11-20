@@ -22,6 +22,9 @@ section Generic
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X X' : Scheme.{0}}
   {t : SAB H X} {t' : SAB H X'} {S : Type} [CommRing S] {f : X' ⟶ X}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Substitute `hq` using the available equality. Substitute `hq'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem left_pushE_symm_congr (m : SABMap t' t f) {q q' : Sp S ⟶ X'} (e : q = q') {x₀ x₀' : Sp S ⟶ X}
     (hq : q ≫ f = x₀) (hq' : q' ≫ f = x₀') {v : Sp (DualNumber S) ⟶ t.G.left} (hv : IsTanAtG t x₀ v)
     (hv' : IsTanAtG t x₀' v) :
@@ -38,10 +41,16 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
+/- English proof (translation)
+The claim follows from `pullback.hom_ext ((ptF_fst y).trans (h.trans (ptF_fst y').symm)) ((ptF_snd y).trans (ptF_snd y').symm)`.
+-/
 theorem ptF_eq_of_x_eq {S : Type} [CommRing S] [Algebra c.F S] {y y' : FrPt Xo c S} (h : y.x = y'.x) :
     GlobalTheory.AllWt.ptF y = GlobalTheory.AllWt.ptF y' :=
   pullback.hom_ext ((ptF_fst y).trans (h.trans (ptF_fst y').symm)) ((ptF_snd y).trans (ptF_snd y').symm)
 
+/- English proof (translation)
+Use `show (tv (pushE Z.m (GlobalTheory.AllWt.ptF y) hx ((pushE Z.m0.toSABMap (GlobalTheory.AllWt.ptF y) (ptF_fst y)).symm (tanOf (t := Xo.univ.t) (y.tan τ i))))).left = (tv (pushE Z.m (GlobalTheory.AllWt.ptF y') hx' ((pushE Z.m0.toSABMap (GlobalTheory.AllWt.ptF y') (ptF_fst y')).symm …`. Rewrite using `[left_pushE, left_pushE, left_pushE_symm_congr Z.m0.toSABMap (ptF_eq_of_x_eq h) (ptF_fst y) (ptF_fst y') (y.tan τ i) hv]`.
+-/
 theorem ofFrPt_v_eq {S : Type} [CommRing S] [Algebra c.F S] {y y' : FrPt Xo c S} (h : y.x = y'.x)
     {x : Sp S ⟶ Z.X} (hx : GlobalTheory.AllWt.ptF y ≫ Z.jQ ≫ genι Z = x) {x' : Sp S ⟶ Z.X}
     (hx' : GlobalTheory.AllWt.ptF y' ≫ Z.jQ ≫ genι Z = x') (τ : E →+* ℂ) (i : Fin (Dw.mult τ))
@@ -54,6 +63,9 @@ theorem ofFrPt_v_eq {S : Type} [CommRing S] [Algebra c.F S] {y y' : FrPt Xo c S}
   rw [left_pushE, left_pushE,
     left_pushE_symm_congr Z.m0.toSABMap (ptF_eq_of_x_eq h) (ptF_fst y) (ptF_fst y') (y.tan τ i) hv]
 
+/- English proof (translation)
+Establish `e` using `(isComb_iff (t := Xo.univ.t) (x := y'.x) (fun b => tanOf (t := Xo.univ.t) (y'.tan τ b)) a (tanOf hv)).1 hc`. Use `(isComb_iff (t := Z.t) (x := x') (fun b => lieEquiv Z y' hx' (tanOf (t := Xo.univ.t) (y'.tan τ b))) a (lieEquiv Z y' hx' (tanOf hv))).2 ?_` and prove the remaining obligations. Rewrite using `[e, map_sum]`. Simplify using `only [map_smul]`.
+-/
 theorem isComb_ofFrPt {S : Type} [CommRing S] [Algebra c.F S] (y' : FrPt Xo c S) {x' : Sp S ⟶ Z.X}
     (hx' : GlobalTheory.AllWt.ptF y' ≫ Z.jQ ≫ genι Z = x') (τ : E →+* ℂ) (a : Fin (Dw.mult τ) → S)
     {w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left} (hv : IsTanAtG Xo.univ.t y'.x w)
@@ -67,6 +79,9 @@ theorem isComb_ofFrPt {S : Type} [CommRing S] [Algebra c.F S] (y' : FrPt Xo c S)
 
 variable [SmoothOfRelativeDimension Dw.dim (genStr Z)]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `x.gram_change G F τ T h`.
+-/
 theorem gram_transport (x : OddPrimesWithRootsOfUnity Z) {σ : c.F →+* ℂ} {p q : CxPts (genStr Z) σ} (e : p = q)
     (F : EigFrame Z σ (p.1 ≫ genι Z)) (G : EigFrame Z σ (q.1 ≫ genι Z)) (τ : E →+* ℂ)
     (T : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ)
@@ -75,6 +90,11 @@ theorem gram_transport (x : OddPrimesWithRootsOfUnity Z) {σ : c.F →+* ℂ} {p
   subst e
   exact x.gram_change G F τ T h
 
+/- English proof (translation)
+Use `gram_transport x (cxPt_congr h) _ _ τ K fun i => ?_` and prove the remaining obligations. Establish `hv : IsTanAtG Xo.univ.t y'.x (y.u τ i)` using `h ▸ y.tan τ i`. Establish `hx' : GlobalTheory.AllWt.ptF (S` using `CAt σ) y' ≫ Z.jQ ≫ genι Z = (cxPt Z y').1 ≫ genι Z := (Category.assoc _ _ _).symm`. Establish `hx : GlobalTheory.AllWt.ptF (S` using `CAt σ) y ≫ Z.jQ ≫ genι Z = (cxPt Z y).1 ≫ genι Z := (Category.assoc _ _ _).symm`. Establish `e1 : (cxFrame Z y).v τ i = (tv (lieEquiv Z y' hx' (tanOf hv))).left` using `ofFrPt_v_eq h hx hx' τ i hv`.
+
+Rewrite using `[e1]`. Conclude with `isComb_ofFrPt (S := CAt σ) y' hx' τ (fun b => (K b i : CAt σ)) hv (hK i)`.
+-/
 theorem gram_of_comb (x : OddPrimesWithRootsOfUnity Z) {σ : c.F →+* ℂ} (y y' : FrPt Xo c (CAt σ)) (h : y.x = y'.x) (τ : E →+* ℂ)
     (K : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ)
     (hK : ∀ i, Formalism.L2.Pj.IsCombAt y'.x (y'.u τ) (fun b => (K b i : CAt σ)) (y.u τ i)) :

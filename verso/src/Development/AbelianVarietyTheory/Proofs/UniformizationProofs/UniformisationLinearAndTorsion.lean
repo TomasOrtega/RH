@@ -21,6 +21,9 @@ open GlobalTheory.LN
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.uniformisation_triple_linear_torsionIso GlobalTheory.T.all_uniformization_laws_hold GlobalTheory.twistBaseChange_and_valuation_statements.2.1 GlobalTheory.twistBaseChange_and_valuation_statements.2.2.1 GlobalTheory.twistBaseChange_and_valuation_statements.2.2.2.1 G …`.
+-/
 theorem uniformisation_linear_and_torsion : PelSt :=
   GlobalTheory.T.uniformisation_triple_linear_torsionIso GlobalTheory.T.all_uniformization_laws_hold GlobalTheory.twistBaseChange_and_valuation_statements.2.1
     GlobalTheory.twistBaseChange_and_valuation_statements.2.2.1

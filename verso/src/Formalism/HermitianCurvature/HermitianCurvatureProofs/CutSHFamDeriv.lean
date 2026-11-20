@@ -11,6 +11,23 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P T j G hG v`. Take `⟨hloc, hsupp⟩` from `hG`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `t₀ ht₀ γ₀ hγ₀`. Take `⟨U, f, hU, hmem, hf, hGf⟩` from `hloc t₀ ht₀ γ₀ hγ₀`.
+
+Use `⟨U, fun p => fderiv ℝ f p ((v, 0) : ℂ × B.Mat P.k (P.r - (j + 1))), hU, hmem, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hf.fderiv_of_isOpen (m := ∞) hU (by simp)).clm_apply contDiffOn_const`. Introduce and unpack `⟨t, γ⟩ hp hγ`. Simplify using `only [famP, Set.indicator_of_mem hγ]`. Establish `hev : (fun u : ℂ => G u γ) =ᶠ[𝓝 t] fun u => f (u, γ)`.
+
+Establish `hc : Continuous fun u : ℂ => (u, γ)` using `continuous_id.prodMk continuous_const`. Establish `: ∀ᶠ u in 𝓝 t, (u, γ) ∈ U` using `hc.continuousAt.preimage_mem_nhds (hU.mem_nhds hp)`. Use `filter_upwards [this] with u hu`. Conclude with `hGf (u, γ) hu hγ`. Rewrite using `[hev.fderiv_eq]`.
+
+Establish `hfd : DifferentiableAt ℝ f (t, γ)` using `(hf.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hp)`. Establish `hin` using `hasFDerivAt_prodMk_left (𝕜 := ℝ) t γ`. Rewrite using `[show (fun u : ℂ => f (u, γ)) = f ∘ fun u => (u, γ) from rfl, (hfd.hasFDerivAt.comp t hin).fderiv]`. Both sides reduce to the same expression. Introduce `K hK hK0`.
+
+Take `⟨δ, hδ, hsub⟩` from `hK.exists_cthickening_subset_open (isOpen_compl_singleton (x := (0 : ℂ))) (fun t ht => by simpa using hK0 t ht)`. Take `⟨C, hC, ε, hε, hCε⟩` from `hsupp (Metric.cthickening δ K) hK.cthickening (fun t ht => by simpa using hsub ht)`. Use `⟨C, hC, ε, hε, fun t ht γ hne => ?_⟩` and prove the remaining obligations. Establish `hγ : γ ∈ B.GV P.k (P.r - (j + 1))`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hne (by simp [famP, Set.indicator_of_notMem h])`. Establish `hd : fderiv ℝ (fun u : ℂ => G u γ) t v ≠ 0`. Simplify `hne` using `[famP, Set.indicator_of_mem hγ]`. Establish `hex : ∃ u ∈ Metric.ball t δ, G u γ ≠ 0`. Assume the negation of the conclusion as `hno`.
+
+Use `push Not at hno`. Establish `hev : (fun u : ℂ => G u γ) =ᶠ[𝓝 t] fun _ => 0` using `by filter_upwards [Metric.ball_mem_nhds t hδ] with u hu using hno u hu`. Conclude with `hd (by rw [hev.fderiv_eq]; simp)`. Take `⟨u, hu, hGu⟩` from `hex`. Establish `huK : u ∈ Metric.cthickening δ K` using `Metric.mem_cthickening_of_dist_le u t δ K ht (le_of_lt (Metric.mem_ball.mp hu))`.
+
+Take `⟨hγC, hε'⟩` from `hCε u huK γ hGu`. Conclude with `⟨hγC, fun _ => hε' hγ⟩`.
+-/
 theorem family_derivative : CutSH.FamDeriv := by
   intro Wp Wq _ _ _ _ _ _ P T j G hG v
   obtain ⟨hloc, hsupp⟩ := hG

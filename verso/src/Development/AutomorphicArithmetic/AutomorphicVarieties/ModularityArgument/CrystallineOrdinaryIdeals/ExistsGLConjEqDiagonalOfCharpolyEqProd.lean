@@ -5,6 +5,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Establish `hm : (IsLocalRing.residue C).mapMatrix (Q - c • (1 : Matrix n n C)) = (-(IsLocalRing.residue C c)) • (1 : Matrix n n _)`. Use extensionality with `i j`. Establish `hq : IsLocalRing.residue C (Q i j) = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 ((IsLocalRing.mem_maximalIdeal _).2 (hQ i j))`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using `[hq]`. Simplify using `[hq, h]`. Rewrite using `[hm, Matrix.det_smul, Matrix.det_one, mul_one]`. Use `pow_ne_zero _ (neg_ne_zero.2 ?_)` and prove the remaining obligations.
+
+Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).2 hc`.
+-/
 theorem isUnit_det_sub_smul_one_of_forall_not_isUnit {C : Type} [CommRing C] [IsLocalRing C]
     {n : Type} [Fintype n] [DecidableEq n] (Q : Matrix n n C) (hQ : ∀ i j, ¬ IsUnit (Q i j))
     (c : C) (hc : IsUnit c) : IsUnit (Q - c • (1 : Matrix n n C)).det := by
@@ -21,6 +28,49 @@ theorem isUnit_det_sub_smul_one_of_forall_not_isUnit {C : Type} [CommRing C] [Is
   refine pow_ne_zero _ (neg_ne_zero.2 ?_)
   exact (IsLocalRing.residue_ne_zero_iff_isUnit _).2 hc
 
+/- English proof (translation)
+Introduce `C _ _ A p hp hchar`. Use `set P : Fin 3 → C[X] := fun a => ∏ b ∈ Finset.univ.erase a, (X - Polynomial.C (p b)) with hPdef`. Establish `hfull : ∀ a, (X - Polynomial.C (p a)) * P a = ∏ b, (X - Polynomial.C (p b))` using `fun a => Finset.mul_prod_erase _ (fun b => X - Polynomial.C (p b)) (Finset.mem_univ a)`. Establish `hz : aeval A (∏ b, (X - Polynomial.C (p b))) = 0`. Rewrite using `[← hchar]`.
+
+Conclude with `Matrix.aeval_self_charpoly A`. Establish `hsplit : ∀ (f : C[X]) a, f = Polynomial.C (f.eval (p a)) + (X - Polynomial.C (p a)) * (f /ₘ (X - Polynomial.C (p a)))`. Introduce `f a`. Establish `h` using `modByMonic_add_div f (X - Polynomial.C (p a))`. Rewrite `h` using `[modByMonic_X_sub_C_eq_C_eval]`.
+
+Conclude with `h.symm`. Establish `key : ∀ (f : C[X]) a, aeval A (f * P a) = f.eval (p a) • aeval A (P a)`. Introduce `f a`. Use `conv_lhs => rw [hsplit f a]`. Rewrite using `[add_mul, mul_comm (X - Polynomial.C (p a)), mul_assoc, hfull]`.
+
+Simplify using `only [map_add, map_mul, hz, mul_zero, add_zero, aeval_C, Algebra.smul_def]`. Establish `hq : ∀ a, IsUnit ((P a).eval (p a))`. Introduce `a`. Simplify using `only [hPdef, eval_prod, eval_sub, eval_X, eval_C]`. Conclude with `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one (fun b hb => hp a b (Finset.ne_of_mem_erase hb).symm)`.
+
+Establish `hq0 : ∀ a b, a ≠ b → (P a).eval (p b) = 0`. Introduce `a b hab`. Simplify using `only [hPdef, eval_prod, eval_sub, eval_X, eval_C]`. Conclude with `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hab.symm, Finset.mem_univ b⟩) (sub_self _)`. Establish `hBA : ∀ a, aeval A (P a) * A = p a • aeval A (P a)`.
+
+Introduce `a`. Establish `h` using `key X a`. Rewrite `h` using `[mul_comm, map_mul, aeval_X, eval_X]`. Then use the resulting hypothesis. Establish `hBB : ∀ a b, aeval A (P a) * aeval A (P b) = (P a).eval (p b) • aeval A (P b)`. Introduce `a b`.
+
+Rewrite using `[← map_mul]`. Conclude with `key (P a) b`. Establish `hex : ∀ a, ∃ i j, IsUnit (aeval A (P a) i j)`. Introduce `a`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Take `⟨u, hu⟩` from `hq a`. Use `set E := ((u⁻¹ : Cˣ) : C) • aeval A (P a) with hE`. Establish `hEn : ∀ i j, ¬ IsUnit (E i j)`. Introduce `i j h`.
+
+Apply `hne i j` to reduce the goal to its premises. Establish `h' : aeval A (P a) i j = (u : C) * E i j`. Rewrite using `[hE, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, Units.mul_inv, one_mul]`. Rewrite using `[h']`. Conclude with `(Units.isUnit u).mul h`.
+
+Establish `hEE : E * E = E`. Rewrite using `[hE, Matrix.smul_mul, Matrix.mul_smul, hBB, ← hu, smul_smul, smul_smul, mul_assoc, Units.inv_mul, mul_one]`. Establish `hdet` using `isUnit_det_sub_smul_one_of_forall_not_isUnit E hEn 1 isUnit_one`. Rewrite `hdet` using `[one_smul]`. Establish `hE0 : E = 0`.
+
+Establish `h1 : (E - 1) * E = 0` using `by rw [sub_mul, hEE, one_mul, sub_self]`. Take `⟨w, hw⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hdet`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← hw, Units.inv_mul, one_mul]`. Use `_ = 0 := by rw [h1, mul_zero]`.
+
+Establish `hB0 : aeval A (P a) = 0`. Establish `h' : aeval A (P a) = (u : C) • E` using `by rw [hE, smul_smul, Units.mul_inv, one_smul]`. Rewrite using `[h', hE0, smul_zero]`. Establish `hs` using `congrArg (aeval A) (hsplit (P a) a)`. Rewrite `hs` using `[hB0, map_add, aeval_C, map_mul, ← hu]`.
+
+Establish `hinv : aeval A (X - Polynomial.C (p a)) * (-(((u⁻¹ : Cˣ) : C) • aeval A (P a /ₘ (X - Polynomial.C (p a))))) = 1`. Establish `h2 : aeval A (X - Polynomial.C (p a)) * aeval A (P a /ₘ (X - Polynomial.C (p a))) = -algebraMap C _ (u : C)`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Conclude with `hs.symm`. Rewrite using `[mul_neg, Matrix.mul_smul, h2, smul_neg, neg_neg, Algebra.smul_def, ← map_mul, Units.inv_mul, map_one]`.
+
+Establish `hdx : IsUnit (aeval A (X - Polynomial.C (p a))).det` using `IsUnit.of_mul_eq_one _ (by rw [← Matrix.det_mul, hinv, Matrix.det_one])`. Establish `hev : A.charpoly.eval (p a) = 0`. Rewrite using `[hchar, eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ a) (by simp)`. Rewrite `hev` using `[Matrix.eval_charpoly]`.
+
+Establish `hneg : Matrix.scalar (Fin 3) (p a) - A = -(aeval A (X - Polynomial.C (p a)))`. Simplify using `[Algebra.algebraMap_eq_smul_one, Matrix.scalar_apply, Matrix.smul_one_eq_diagonal]`. Rewrite `hev` using `[hneg, Matrix.det_neg]`. Establish `hu2 : IsUnit ((-1 : C) ^ Fintype.card (Fin 3) * (aeval A (X - Polynomial.C (p a))).det)` using `((isUnit_neg_one).pow _).mul hdx`. Rewrite `hu2` using `[hev]`.
+
+Conclude with `not_isUnit_zero hu2`. Use `choose i j hij using hex`. Set `H : Matrix (Fin 3) (Fin 3) C` to `Matrix.of fun a k => aeval A (P a) (i a) k`. Set `Q : Matrix (Fin 3) (Fin 3) C` to `Matrix.of fun k b => aeval A (P b) k (j b)`. Establish `hHQ : H * Q = Matrix.diagonal fun a => (P a).eval (p a) * aeval A (P a) (i a) (j a)`.
+
+Use extensionality with `a b`. Establish `h' : (H * Q) a b = (aeval A (P a) * aeval A (P b)) (i a) (j b)`. Simplify using `[H, Q, Matrix.mul_apply]`. Rewrite using `[h', hBB, Matrix.smul_apply, smul_eq_mul]`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hq0 a b hab, zero_mul, Matrix.diagonal_apply_ne _ hab]`. Establish `hdetH : IsUnit H.det`. Establish `h2 : IsUnit (H * Q).det`.
+
+Rewrite using `[hHQ, Matrix.det_diagonal]`. Conclude with `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one (fun a _ => (hq a).mul (hij a))`. Rewrite `h2` using `[Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left h2`. Establish `hHA : H * A = Matrix.diagonal p * H`.
+
+Use extensionality with `a k`. Establish `h' : (H * A) a k = (aeval A (P a) * A) (i a) k` using `by simp [H, Matrix.mul_apply]`. Rewrite using `[h', hBA, Matrix.diagonal_mul]`. Simplify using `[H]`. Establish `hU` using `(Matrix.isUnit_iff_isUnit_det H).2 hdetH`.
+
+Use `⟨hU.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, hHA, mul_assoc, hU.mul_val_inv, mul_one]`.
+-/
 theorem exists_GL_conj_eq_diagonal_of_charpoly_eq_prod :
     ∀ {C : Type} [CommRing C] [IsLocalRing C] (A : Matrix (Fin 3) (Fin 3) C) (p : Fin 3 → C),
       (∀ a b, a ≠ b → IsUnit (p a - p b)) → A.charpoly = ∏ a, (X - Polynomial.C (p a)) →

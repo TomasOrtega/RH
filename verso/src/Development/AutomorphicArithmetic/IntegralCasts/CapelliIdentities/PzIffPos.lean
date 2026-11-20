@@ -7,6 +7,25 @@ noncomputable def UpperTheory.Reformulated.B.Qh60.Pz :
         (∀ l ∈ s, (0 : ℝ) < l) ∧
           (Polynomial.aeval t : Polynomial ℝ → R) (∏ l ∈ s, (Polynomial.X - (Polynomial.C : ℝ → Polynomial ℝ) l)) = (0 : R)
 
+/- English proof (translation)
+Establish `hn : Module.finrank ℝ W = Module.finrank ℝ W` using `rfl`. Use `set b := hT.eigenvectorBasis hn with hb`. Use `set μ := hT.eigenvalues hn with hμ`. Establish `hev : ∀ i, Module.End.HasEigenvector T (μ i) (b i)` using `fun i => by`. Simplify using `using hT.hasEigenvector_eigenvectorBasis hn i`.
+
+Establish `happ : ∀ i, T (b i) = μ i • b i` using `fun i => (hev i).apply_eq_smul`. Establish `hne : ∀ i, b i ≠ 0` using `fun i => (hev i).2`. Establish `haev : ∀ (s : Finset ℝ) i, (Polynomial.aeval T (∏ l ∈ s, (Polynomial.X - Polynomial.C l))) (b i) = (∏ l ∈ s, (μ i - l)) • b i` using `fun s i => by`. Rewrite using `[Module.End.aeval_apply_of_hasEigenvector (hev i)]`. Simplify using `[Polynomial.eval_prod]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h0⟩ x hx`. Establish `hpos : ∀ i, 0 < μ i` using `fun i => by`. Establish `h1` using `haev s i`. Rewrite `h1` using `[h0, LinearMap.zero_apply, eq_comm, smul_eq_zero]`.
+
+Take `⟨l, hl, h2⟩` from `Finset.prod_eq_zero_iff.1 (h1.resolve_right (hne i))`. Rewrite using `[sub_eq_zero.1 h2]`. Conclude with `hs l hl`. Establish `hsum : inner ℝ (T x) x = ∑ i, μ i * (inner ℝ (b i) x) ^ 2`. Rewrite using `[← b.sum_inner_mul_inner (T x) x]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hT x (b i), happ i, real_inner_smul_right, real_inner_comm (b i) x]`. Expand and normalize the polynomial expressions, which then agree. Establish `hex : ∃ i, inner ℝ (b i) x ≠ 0`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← b.sum_repr' x]`. Simplify using `[hc]`. Take `⟨i, hi⟩` from `hex`.
+
+Rewrite using `[hsum]`. Conclude with `Finset.sum_pos' (fun j _ => mul_nonneg (hpos j).le (sq_nonneg _)) ⟨i, Finset.mem_univ i, mul_pos (hpos i) (by positivity)⟩`. Introduce `h`. Use `⟨Finset.univ.image μ, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`.
+
+Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hl`. Establish `h1` using `h (b i) (hne i)`. Rewrite `h1` using `[happ i, real_inner_smul_left]`. Conclude with `(pos_iff_pos_of_mul_pos h1).2 (real_inner_self_pos.2 (hne i))`. Use `b.toBasis.ext fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[OrthonormalBasis.coe_toBasis, haev, LinearMap.zero_apply, Finset.prod_eq_zero (Finset.mem_image_of_mem μ (Finset.mem_univ i)) (sub_self _), zero_smul]`.
+-/
 private theorem UpperTheory.Reformulated.B.Qh60.aux {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℝ W]
     [FiniteDimensional ℝ W] (T : Module.End ℝ W) (hT : LinearMap.IsSymmetric T) :
     UpperTheory.Reformulated.B.Qh60.Pz T ↔ ∀ x : W, x ≠ 0 → 0 < inner ℝ (T x) x := by
@@ -57,6 +76,13 @@ private theorem UpperTheory.Reformulated.B.Qh60.aux {W : Type} [NormedAddCommGro
       rw [OrthonormalBasis.coe_toBasis, haev, LinearMap.zero_apply,
         Finset.prod_eq_zero (Finset.mem_image_of_mem μ (Finset.mem_univ i)) (sub_self _), zero_smul]
 
+/- English proof (translation)
+Introduce `W _ _ _ Q hsymm hpos T hT`. Set `c : InnerProductSpace.Core ℝ W` to `{ inner := fun x y => Q x y conj_inner_symm := fun x y => by simpa using hsymm y x re_inner_nonneg := fun x => by`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Simplify using `using (hpos x hx).le`.
+
+Use `add_left := fun x y z => by simp`. Use `smul_left := fun x y r => by simp`. Use `definite := fun x hx => by`. Assume the negation of the conclusion as `h`. Conclude with `(hpos x h).ne' hx }`.
+
+Use `letI : NormedAddCommGroup W := @InnerProductSpace.Core.toNormedAddCommGroup ℝ W _ _ _ c`. Use `letI : InnerProductSpace ℝ W := InnerProductSpace.ofCore c.toCore`. Conclude with `UpperTheory.Reformulated.B.Qh60.aux T (fun x y => hT x y)`.
+-/
 theorem UpperTheory.Reformulated.B.Qh60.Pz_iff_pos :
     ∀ {W : Type} [inst : AddCommGroup W] [inst_1 : _root_.Module ℝ W] [FiniteDimensional ℝ W] (Q : W →ₗ[ℝ] W →ₗ[ℝ] ℝ),
       (∀ (x y : W), ((Q : W → W →ₗ[ℝ] ℝ) x : W → ℝ) y = ((Q : W → W →ₗ[ℝ] ℝ) y : W → ℝ) x) →

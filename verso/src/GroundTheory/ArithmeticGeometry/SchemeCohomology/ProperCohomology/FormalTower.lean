@@ -24,6 +24,9 @@ abbrev formalα (n : ℕ) : Sheaf.H.{u} (modulesAb (idealPow I F (n + 1))) q →
 def formalK (n : ℕ) : Submodule A (Sheaf.H.{u} (modulesAb F) q) :=
   LinearMap.range (formalα I F q n)
 
+/- English proof (translation)
+Use `antitone_nat_of_succ_le fun n => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨H.linearMap A (idealPowSucc I F (n + 1)) q x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sheaf.H.map.{u} (modulesAbMap (idealPowι I F (n + 1))) q (Sheaf.H.map.{u} (modulesAbMap (idealPowSucc I F (n + 1))) q x) = Sheaf.H.map.{u} (modulesAbMap (idealPowι I F (n + 1 + 1))) q x`. Rewrite using `[← Sheaf.H.map_comp_apply, ← modulesAbMap_comp, idealPowSucc_ι]`.
+-/
 lemma formalK_antitone : Antitone (formalK I F q) := by
   refine antitone_nat_of_succ_le fun n => ?_
   rintro _ ⟨x, rfl⟩
@@ -41,9 +44,17 @@ abbrev formalτE (n : ℕ) : Sheaf.H.{u} (modulesAb (quotPow I F (n + 1))) q →
     Sheaf.H.{u} (modulesAb (quotPow I F n)) q :=
   H.linearMap A (quotPowMap I F n) q
 
+/- English proof (translation)
+The claim follows from `shortExact_abSC (quotPowSC_shortExact I F n)`.
+-/
 lemma shortExact_abSC_quotPow (n : ℕ) : (abSC (quotPowSC I F n)).ShortExact :=
   shortExact_abSC (quotPowSC_shortExact I F n)
 
+/- English proof (translation)
+Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Conclude with `H.exact₂ (shortExact_abSC_quotPow I F n) h hh`. Introduce and unpack `⟨x, rfl⟩`.
+
+Conclude with `H.map_g_map_f (S := abSC (quotPowSC I F n)) x`.
+-/
 lemma ker_formalβ (n : ℕ) : LinearMap.ker (formalβ I F q n) = formalK I F q n := by
   ext h
   constructor
@@ -63,15 +74,26 @@ def formalι (n : ℕ) : (Sheaf.H.{u} (modulesAb F) q ⧸ formalK I F q n) →�
     Sheaf.H.{u} (modulesAb (quotPow I F n)) q :=
   (formalK I F q n).liftQ (formalβ I F q n) (ker_formalβ I F q n).ge
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma formalι_mk (n : ℕ) (h : Sheaf.H.{u} (modulesAb F) q) :
     formalι I F q n (Submodule.Quotient.mk h) = formalβ I F q n h := rfl
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, formalι, Submodule.ker_liftQ, ker_formalβ, Submodule.mkQ_map_self]`.
+-/
 lemma formalι_injective (n : ℕ) : Function.Injective (formalι I F q n) := by
   rw [← LinearMap.ker_eq_bot, formalι, Submodule.ker_liftQ, ker_formalβ, Submodule.mkQ_map_self]
 
 def formalπ (n : ℕ) : Sheaf.H.{u} (modulesAb (quotPow I F n)) q →ₗ[A] formalQ I F q n :=
   (formalδ I F q n).rangeRestrict
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Take `⟨h, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `H.δ_map_g (shortExact_abSC_quotPow I F n) rfl h`. Introduce `hy`. Establish `hy' : formalδ I F q n y = 0` using `congrArg Subtype.val hy`. Take `⟨h, rfl⟩` from `H.exact₃ (shortExact_abSC_quotPow I F n) rfl y hy'`. Conclude with `⟨Submodule.Quotient.mk h, rfl⟩`.
+-/
 lemma range_formalι (n : ℕ) :
     LinearMap.range (formalι I F q n) = LinearMap.ker (formalπ I F q n) := by
   ext y
@@ -107,6 +129,9 @@ def quotPowSCMap (n : ℕ) : quotPowSC I F (n + 1) ⟶ quotPowSC I F n where
     change 𝟙 F ≫ quotPowπ I F n = quotPowπ I F (n + 1) ≫ quotPowMap I F n
     rw [quotPowπ_map, Category.id_comp]
 
+/- English proof (translation)
+Simplify using `only [formalδ, formalτE, H.δLinear_apply, H.linearMap_apply]`. Conclude with `H.δ_naturality (shortExact_abSC_quotPow I F (n + 1)) (shortExact_abSC_quotPow I F n) (abSCHom (quotPowSCMap I F n)) q (q + 1) rfl x`.
+-/
 lemma formalδ_naturality (n : ℕ) (x : Sheaf.H.{u} (modulesAb (quotPow I F (n + 1))) q) :
     formalδ I F q n (formalτE I F q n x) =
       H.linearMap A (idealPowSucc I F (n + 1)) (q + 1) (formalδ I F q (n + 1) x) := by

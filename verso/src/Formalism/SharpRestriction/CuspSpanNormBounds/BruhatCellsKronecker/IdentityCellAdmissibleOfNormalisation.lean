@@ -11,6 +11,9 @@ section Rec
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `cIdFlag_of_lift X (id_lift D) hTg`.
+-/
 theorem cIdFlag_of_tie (X : TermTie D)
     (hTg : ∀ u : D.what₂.Word, (D.mem u).A.T ≠ D.host.g 0 ∧ (D.mem u).A.T ≠ D.host.g 1) : UnitaryVolumeMass.cIdFlag D X :=
   cIdFlag_of_lift X (id_lift D) hTg

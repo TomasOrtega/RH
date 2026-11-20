@@ -13,10 +13,18 @@ variable {G : Over X} [GrpObj G] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {E : Type
 variable (M : LieModel G ξ E) (L : LB G.left) (n : ℕ) {O : Type} [CommRing O] (ρ : O →+* Module.End Ω E)
   (σ : O →+* Ω)
 
+/- English proof (translation)
+Simplify using `[secVal]`.
+-/
 theorem secVal_one {B : Type} [CommRing B] {Z : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ Z) (W : Z.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ W) : secVal x W h 1 = 1 := by
   simp [secVal]
 
+/- English proof (translation)
+Introduce `k _ i g hg`. Rewrite `hg` using `[pow_one]`. Substitute `hg` using the available equality. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `h` using `MonObj.comp_one (M := G) (Over.homMk (spMap i) rfl : Over.mk (spMap i ≫ ξ) ⟶ Over.mk ξ)`.
+
+Rewrite using `[← h]`. Both sides reduce to the same expression.
+-/
 theorem fullTorsion_one : FullTorsion G ξ 1 := by
   intro k _ i g hg
   rw [pow_one] at hg
@@ -25,6 +33,11 @@ theorem fullTorsion_one : FullTorsion G ξ 1 := by
   have h := MonObj.comp_one (M := G) (Over.homMk (spMap i) rfl : Over.mk (spMap i ≫ ξ) ⟶ Over.mk ξ)
   rw [← h]; rfl
 
+/- English proof (translation)
+Take `⟨h1, W, f, hW, hv, hd⟩` from `hw`. Use `⟨(M.omLat q).add_mem h1 ((M.omLat q).toAddSubmonoid.nsmul_mem hw' n), W, f, hW, hv, fun e v he h => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hre⟩` from `hd e v he h`. Use `⟨r + w' e, (regAt ξ q).add_mem hr (hw' e (Submodule.subset_span ⟨v, he⟩)), ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul, hre]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isHTAt_add_nsmul {x : Over.mk ξ ⟶ G} {q : Cpt ξ} {w w' : Module.Dual Ω E}
     (hw : M.IsHTAt L n x q w) (hw' : w' ∈ M.omLat q) : M.IsHTAt L n x q (w + n • w') := by
   obtain ⟨h1, W, f, hW, hv, hd⟩ := hw
@@ -33,6 +46,13 @@ theorem isHTAt_add_nsmul {x : Over.mk ξ ⟶ G} {q : Cpt ξ} {w w' : Module.Dual
   refine ⟨r + w' e, (regAt ξ q).add_mem hr (hw' e (Submodule.subset_span ⟨v, he⟩)), ?_⟩
   simp only [LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul, hre]; ring
 
+/- English proof (translation)
+Use `⟨Submodule.zero_mem _, ⊤, 1, trivial, fun k _ _ i xk g c h hx _ hc => ?_, fun e v _ h => ⟨0, (regAt ξ q).zero_mem, ?_⟩⟩` and prove the remaining obligations. Establish `hx1 : xk = 1`. Establish `h` using `MonObj.comp_one (M := G) (Over.homMk (spMap i) rfl : Over.mk (spMap i ≫ ξ) ⟶ Over.mk ξ)`. Use `ext1`. Rewrite using `[hx, ← h]`.
+
+Both sides reduce to the same expression. Substitute `hx1` using the available equality. Rewrite using `[secVal_one, h1 k i g c hc]`. Both sides reduce to the same expression. Rewrite using `[secVal_one]`.
+
+Simplify using `only [TrivSqZeroExt.snd_one, LinearMap.zero_apply, mul_zero, add_zero]`. Conclude with `(RingHom.map_zero (genMap ξ q)).symm`.
+-/
 theorem isHTAt_one_zero (q : Cpt ξ)
     (h1 : ∀ (k : Type) [Field k] [IsAlgClosed k] (i : Ω →+* k) (g : Over.mk (spMap i ≫ ξ) ⟶ G) (c : kˣ),
       Out.WeilIs G L n 1 g (unitOn c) → c = 1) : M.IsHTAt L n 1 q 0 := by
@@ -46,6 +66,9 @@ theorem isHTAt_one_zero (q : Cpt ξ)
   · rw [secVal_one]; simp only [TrivSqZeroExt.snd_one, LinearMap.zero_apply, mul_zero, add_zero]
     exact (RingHom.map_zero (genMap ξ q)).symm
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, one_pow _, by simpa using isHTAt_add_nsmul M L n (isHTAt_one_zero M L n q h1) hw⟩`.
+-/
 theorem nsmul_mem_htOm (q : Cpt ξ)
     (h1 : ∀ (k : Type) [Field k] [IsAlgClosed k] (i : Ω →+* k) (g : Over.mk (spMap i ≫ ξ) ⟶ G) (c : kˣ),
       Out.WeilIs G L n 1 g (unitOn c) → c = 1) {w : Module.Dual Ω E} (hw : w ∈ M.omLat q) :
@@ -53,6 +76,13 @@ theorem nsmul_mem_htOm (q : Cpt ξ)
   Submodule.subset_span ⟨1, one_pow _, by
     simpa using isHTAt_add_nsmul M L n (isHTAt_one_zero M L n q h1) hw⟩
 
+/- English proof (translation)
+Use `⟨fun he => ⟨M.mem_eigSp_of_mem_htW L n ρ σ 𝔡 he, ?_⟩, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.2`. Consider the case `zero => intro d _`. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy => intro d hd`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ (hx d hd) (hy d hd)`. Consider the case `smul c x _ hx`. Introduce `d hd`.
+
+Establish `: σ d • (c • x) = c • (σ d • x)` using `by show σ d • ((c : Ω) • x) = (c : Ω) • (σ d • x)`. Conclude with `smul_comm _ _ _`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c (hx d hd)`.
+-/
 theorem mem_htW_iff (𝔡 : Ideal O) (q : Cpt ξ) (e : E) :
     e ∈ M.htW L n ρ σ 𝔡 q ↔ e ∈ eigSp ρ σ ∧ ∀ d ∈ 𝔡, σ d • e ∈ M.htDual L n ρ σ q := by
   refine ⟨fun he => ⟨M.mem_eigSp_of_mem_htW L n ρ σ 𝔡 he, ?_⟩, fun h => Submodule.subset_span h⟩
@@ -67,6 +97,15 @@ theorem mem_htW_iff (𝔡 : Ideal O) (q : Cpt ξ) (e : E) :
       exact smul_comm _ _ _
     rw [this]; exact Submodule.smul_mem _ c (hx d hd)
 
+/- English proof (translation)
+Use extensionality with `e`. Rewrite using `[mem_htW_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Use `Submodule.mem_map.2 ⟨σ d • e, h d (Ideal.mem_span_singleton_self d), ?_⟩` and prove the remaining obligations.
+
+Simplify using `[smul_smul, inv_mul_cancel₀ hd]`. Introduce `h`. Take `⟨u, hu, rfl⟩` from `Submodule.mem_map.1 h`. Establish `hue` using `M.mem_eigSp_of_mem_htDual L n ρ σ hu`. Use `⟨(eigSp ρ σ).smul_mem _ hue, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Establish `: σ (b * d) • ((σ d)⁻¹ • u) = (⟨σ b, hσ b⟩ : regAt ξ q) • u` using `by show _ = σ b • u`. Rewrite using `[smul_smul, map_mul, mul_inv_cancel_right₀ hd]`. Use `show σ (b * d) • ((σ d)⁻¹ • u) ∈ _`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ hu`.
+-/
 theorem htW_span_singleton (d : O) (hd : σ d ≠ 0) (q : Cpt ξ) (hσ : ∀ a, σ a ∈ regAt ξ q) :
     M.htW L n ρ σ (Ideal.span {d}) q = (M.htDual L n ρ σ).scale (σ d)⁻¹ q := by
   ext e
@@ -86,6 +125,9 @@ theorem htW_span_singleton (d : O) (hd : σ d ≠ 0) (q : Cpt ξ) (hσ : ∀ a, 
     show σ (b * d) • ((σ d)⁻¹ • u) ∈ _
     rw [this]; exact Submodule.smul_mem _ _ hu
 
+/- English proof (translation)
+Use `((M.mem_htDual_iff L n ρ σ q e).1 he).2 _ (hn w hw)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem htDual_bounded (q : Cpt ξ) (hn : ∀ w ∈ M.omLat q, n • w ∈ M.htOm L n q) {e : E}
     (he : e ∈ M.htDual L n ρ σ q) {w : Module.Dual Ω E} (hw : w ∈ M.omLat q) : w (n • e) ∈ regAt ξ q := by
   have := ((M.mem_htDual_iff L n ρ σ q e).1 he).2 _ (hn w hw)

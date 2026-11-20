@@ -12,6 +12,11 @@ namespace GlobalTheory.RealGal.SignChar
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 
+/- English proof (translation)
+Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+
+Conclude with `τ.commutes (⟨x, hx⟩ : K)`. Introduce `hσ`. Conclude with `⟨IntermediateField.fixingSubgroupEquiv K ⟨σ, hσ⟩, by ext x; rfl⟩`.
+-/
 theorem range_res (K : IntermediateField F Ω) :
     (res F Ω ↥K).range = K.fixingSubgroup := by
   ext σ
@@ -23,6 +28,9 @@ theorem range_res (K : IntermediateField F Ω) :
   · intro hσ
     exact ⟨IntermediateField.fixingSubgroupEquiv K ⟨σ, hσ⟩, by ext x; rfl⟩
 
+/- English proof (translation)
+Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Use `haveI : FiniteDimensional F Q.K := Module.finite_of_finrank_eq_succ Q.two`. Conclude with `⟨by rw [← IntermediateField.finrank_eq_fixingSubgroup_index, Q.two], Q.K.fixingSubgroup_isOpen⟩`.
+-/
 theorem index_fix [IsAlgClosure F Ω] (Q : QCM F Ω) :
     Q.K.fixingSubgroup.index = 2 ∧ IsOpen (Q.K.fixingSubgroup : Set (G F Ω)) := by
   haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω
@@ -42,6 +50,11 @@ noncomputable def sign [IsAlgClosure F Ω] (Q : QCM F Ω) : G F Ω →* ℤˣ wh
     · rw [if_neg (fun hab => ha ((h.1 hab).2 hb)), if_neg ha, if_pos hb, mul_one]
     · rw [if_pos (h.2 (iff_of_false ha hb)), if_neg ha, if_neg hb]; decide
 
+/- English proof (translation)
+Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker]`. Simplify using `only [sign, MonoidHom.coe_mk, OneHom.coe_mk]`. Use `split_ifs with h`. Simplify using `[h]`.
+
+Simplify using `only [h, iff_false]`. Evaluate the decidable proposition.
+-/
 theorem ker_sign [IsAlgClosure F Ω] (Q : QCM F Ω) : (sign Q).ker = Q.K.fixingSubgroup := by
   ext σ
   rw [MonoidHom.mem_ker]
@@ -51,9 +64,17 @@ theorem ker_sign [IsAlgClosure F Ω] (Q : QCM F Ω) : (sign Q).ker = Q.K.fixingS
   · simp only [h, iff_false]
     decide
 
+/- English proof (translation)
+Consider the cases of `Q`. Consider the cases of `Q'`. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem QCM.ext' {Q Q' : QCM F Ω} (h : Q.K = Q'.K) : Q = Q' := by
   cases Q; cases Q'; cases h; rfl
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _`. Use `⟨sign, ?_, fun Q => ⟨by rw [ker_sign, range_res], by rw [ker_sign]; exact (index_fix Q).2⟩⟩` and prove the remaining obligations. Introduce `Q Q' h`. Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Establish `hk : Q.K.fixingSubgroup = Q'.K.fixingSubgroup` using `by rw [← ker_sign, ← ker_sign, h]`.
+
+Apply `QCM.ext'` to reduce the goal to its premises. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup Q.K, ← InfiniteGalois.fixedField_fixingSubgroup Q'.K, hk]`.
+-/
 theorem main : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω], ∃ η : QCM F Ω → (G F Ω →* ℤˣ), Function.Injective η ∧ ∀ Q, (η Q).ker = (res F Ω ↥Q.K).range ∧ IsOpen ((η Q).ker : Set (G F Ω)) := by
   intro F Ω _ _ _ _ _
   refine ⟨sign, ?_, fun Q => ⟨by rw [ker_sign, range_res], by rw [ker_sign]; exact (index_fix Q).2⟩⟩

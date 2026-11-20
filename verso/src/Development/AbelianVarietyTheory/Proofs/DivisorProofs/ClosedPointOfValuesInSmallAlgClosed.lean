@@ -5,6 +5,11 @@ open IsLocalRing NumberField
 
 namespace GlobalTheory.PointAlg
 
+/- English proof (translation)
+Use `letI : Algebra ℚ Z := (e.comp (algebraMap ℚ Y)).toAlgebra`. Establish `h1 : Algebra.trdeg ℚ X ≤ Algebra.trdeg ℚ (AlgebraicClosure Z)` using `trdeg_le_of_injective f.toRatAlgHom f.injective`. Establish `h2 : Algebra.trdeg ℚ Z ≤ Algebra.trdeg ℚ Y` using `trdeg_le_of_surjective e.toRatAlgHom he`. Establish `h3` using `trdeg_add_eq ℚ Z (A := AlgebraicClosure Z)`. Rewrite `h3` using `[trdeg_eq_zero (R := Z) (A := AlgebraicClosure Z), add_zero]`.
+
+Conclude with `h1.trans (h3.ge.trans h2)`.
+-/
 theorem trdeg_le_of_hom_algClosure (X Y Z : Type) [Field X] [Field Y] [Field Z] [Algebra ℚ X] [Algebra ℚ Y]
     (f : X →+* AlgebraicClosure Z) (e : Y →+* Z) (he : Function.Surjective e) :
     Algebra.trdeg ℚ X ≤ Algebra.trdeg ℚ Y := by
@@ -17,6 +22,33 @@ theorem trdeg_le_of_hom_algClosure (X Y Z : Type) [Field X] [Field Y] [Field Z] 
   rw [trdeg_eq_zero (R := Z) (A := AlgebraicClosure Z), add_zero] at h3
   exact h1.trans (h3.ge.trans h2)
 
+/- English proof (translation)
+Take `⟨j⟩` from `hk`. Take `⟨-, -, -, hmap, hres⟩` from `hψ`. Use `set q : Ideal A := (maximalIdeal R).comap ψ with hq`. Use `haveI hqp : q.IsPrime := Ideal.comap_isPrime ψ _`. Set `L` to `Localization.AtPrime q`.
+
+Establish `hu : ∀ y : q.primeCompl, IsUnit (ψ y)` using `fun y => by`. Assume the negation of the conclusion as `h`. Conclude with `y.2 ((mem_maximalIdeal _).mpr h)`. Set `Φ : L →+* R` to `IsLocalization.lift (M := q.primeCompl) hu`. Establish `hΦ : ∀ a, Φ (algebraMap A L a) = ψ a` using `fun a => IsLocalization.lift_eq hu a`.
+
+Establish `hne : ∀ a, IsUnit (ψ a) → ev (ψ a) ≠ 0` using `fun a h => (h.map ev).ne_zero`. Establish `hΦk : ∀ x, ev (Φ x) ∈ k₀`. Introduce `x`. Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj q.primeCompl x`. Establish `h2` using `congrArg (fun t => ev (Φ t)) h`.
+
+Simplify using `only [map_mul, hΦ] at h2`. Rewrite using `[eq_div_of_mul_eq (hne _ (hu s)) h2]`. Conclude with `k₀.div_mem (hev _) (hev _)`. Use `haveI : IsLocalHom Φ := by`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj q.primeCompl x`. Establish `h2` using `congrArg Φ h`. Simplify using `only [map_mul, hΦ] at h2`. Establish `ha : IsUnit (ψ a)` using `h2 ▸ hx.mul (hu s)`. Establish `ha' : a ∈ q.primeCompl` using `fun h => (mem_maximalIdeal _).mp h ha`.
+
+Use `IsLocalization.map_units L ⟨a, ha'⟩` as an intermediate fact. Simplify using `only at h`. Conclude with `isUnit_of_mul_isUnit_left (h ▸ this)`. Establish `hsurj : Function.Surjective (ResidueField.map Φ)`. Introduce `z`.
+
+Take `⟨r, rfl⟩` from `residue_surjective z`. Take `⟨a, s, hs, h⟩` from `hres r`. Rewrite `h` using `[← residue_eq_zero_iff, map_sub, map_mul, sub_eq_zero]`. Use `⟨residue L (algebraMap A L a) / residue L (algebraMap A L s), ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, ResidueField.map_residue, ResidueField.map_residue, hΦ, hΦ, ← h]`.
+
+Conclude with `mul_div_cancel_right₀ _ (hs.map (residue R)).ne_zero`. Set `g : L →+* AlgebraicClosure (ResidueField R)` to `j.comp ((ev.comp Φ).codRestrict k₀ hΦk)`. Use `haveI hP : (RingHom.ker g).IsPrime := RingHom.ker_isPrime g`. Establish `hE : ((algebraMap A L).comp (b.comp (algebraMap ℚ F))).EssFiniteType`. Use `RingHom.EssFiniteType.comp (RingHom.EssFiniteType.comp ?_ hb) ?_` and prove the remaining obligations.
+
+Conclude with `RingHom.essFiniteType_algebraMap.mpr inferInstance`. Conclude with `RingHom.essFiniteType_algebraMap.mpr (Algebra.EssFiniteType.of_isLocalization L q.primeCompl)`. Use `letI : Algebra ℚ L := ((algebraMap A L).comp (b.comp (algebraMap ℚ F))).toAlgebra`. Establish `hmax : RingHom.ker g = maximalIdeal L` using `GlobalTheory.eq_maximalIdeal_of_trdeg_le ℚ L hE _ hP (trdeg_le_of_hom_algClosure _ _ _ (IsFractionRing.lift (K := FractionRing (L ⧸ RingHom.ker g)) (RingHom.kerLift_injective g)) (ResidueField.map Φ) hsurj)`. Establish `h0 : ∀ r ∈ maximalIdeal R, ev r = 0`.
+
+Establish `: maximalIdeal R ≤ RingHom.ker ev`. Rewrite using `[← hmap, Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Establish `h1 : algebraMap A L a ∈ RingHom.ker g`. Rewrite using `[hmax]`.
+
+Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff L q a).mpr ha`. Rewrite `h1` using `[RingHom.mem_ker]`. Establish `h2` using `congrArg Subtype.val (j.injective (h1.trans (map_zero j).symm))`. Express the relevant statement in the definitionally equal form `ev (Φ (algebraMap A L a)) = 0 at h2`. Rewrite `h2` using `[hΦ]`.
+
+Conclude with `h2`. Conclude with `fun r hr => this hr`. Use `⟨h0, fun r => ?_⟩` and prove the remaining obligations. Take `⟨a, s, hs, h⟩` from `hres r`. Establish `h2` using `h0 _ h`.
+
+Rewrite `h2` using `[map_sub, map_mul, sub_eq_zero]`. Rewrite using `[eq_div_of_mul_eq (hne _ hs) h2]`. Conclude with `k₀.div_mem (hev _) (hev _)`.
+-/
 theorem closed_point_of_values (F A R K : Type) [Field F] [NumberField F] [CommRing A] [IsDomain A] [CommRing R]
     [IsLocalRing R] [Field K] (b : F →+* A) (hb : b.EssFiniteType) (ψ : A →+* R) (hψ : GlobalTheory.TChart.IsComplAt ψ)
     (ev : R →+* K) (k₀ : Subfield K) (hk : Nonempty (k₀ →+* AlgebraicClosure (ResidueField R)))

@@ -11,6 +11,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 
 namespace GlobalTheory.CompanionTheory.Ar.FrameUnit
 
+/- English proof (translation)
+Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct, Finset.sum_smul]`.
+-/
 theorem sum_smul_comb {R U : Type} [CommRing R] [AddCommGroup U] [Module R U] {n : ℕ}
     (C : Matrix (Fin n) (Fin n) R) (b : Fin n → U) (a : Fin n → R) :
     ∑ i, a i • ∑ k, C i k • b k = ∑ k, (Matrix.vecMul a C) k • b k := by
@@ -19,6 +22,19 @@ theorem sum_smul_comb {R U : Type} [CommRing R] [AddCommGroup U] [Module R U] {n
   refine Finset.sum_congr rfl fun k _ => ?_
   simp only [Matrix.vecMul, dotProduct, Finset.sum_smul]
 
+/- English proof (translation)
+Establish `hDC : C⁻¹ * C = 1` using `Matrix.nonsing_inv_mul C hC`. Use `⟨?_, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Rewrite `hg` using `[sum_smul_comb]`.
+
+Establish `h0 : Matrix.vecMul g C = 0`. Use function extensionality and compare the values at `k`. Conclude with `(Fintype.linearIndependent_iff.1 hb) _ hg k`. Establish `h1 : g = Matrix.vecMul (Matrix.vecMul g C) C⁻¹`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv C hC, Matrix.vecMul_one]`.
+
+Rewrite using `[h1, h0, Matrix.zero_vecMul]`. Both sides reduce to the same expression. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h : b j = ∑ i, (C⁻¹ j i) • ∑ k, C i k • b k`. Rewrite using `[sum_smul_comb]`. Establish `: Matrix.vecMul (C⁻¹ j) C = Pi.single j 1`.
+
+Use `congrFun (congrArg (fun A : Matrix (Fin n) (Fin n) R => A) hDC) j` as an intermediate fact. Use function extensionality and compare the values at `k`. Establish `h2` using `congrFun this k`. Simplify `h2` using `[Matrix.mul_apply, Matrix.vecMul, dotProduct, Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[this]`.
+
+Simplify using `[Pi.single_apply]`. Rewrite using `[SetLike.mem_coe, h]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem comb_basis {R U : Type} [CommRing R] [AddCommGroup U] [Module R U] {n : ℕ}
     (C : Matrix (Fin n) (Fin n) R) (hC : IsUnit C.det) (b : Fin n → U) (hb : LinearIndependent R b) :
     LinearIndependent R (fun i => ∑ k, C i k • b k) ∧
@@ -52,6 +68,13 @@ theorem comb_basis {R U : Type} [CommRing R] [AddCommGroup U] [Module R U] {n : 
     rw [SetLike.mem_coe, h]
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Introduce `S R _ G _ _ x O _ act σ n u v C hu hv hC`. Take `⟨L, _, _, ⟨M⟩⟩` from `lieModel_exists S G R x`. Take `⟨ρ, hρ, -⟩` from `lieModel_exists_unique_act S G R x L M O act.act act.hom act.one act.mul act.add`. Take `⟨hc, hf⟩` from `GlobalTheory.T.lie_model_eigenvectors_action S R G x L M`. Establish `hf'` using `(hf O act ρ σ hρ).2 n`.
+
+Establish `hex : ∀ k, ∃ e, M.pt e = u k` using `fun k => M.onto _ (hu.1 k).1`. Use `choose b hb using hex`. Take `rfl : u = fun k => M.pt (b k)` from `funext fun k => (hb k).symm`. Establish `hvv : v = fun i => M.pt (∑ k, C i k • b k)`. Use function extensionality and compare the values at `fun i => (hc n (C i) b (v i)).1 (hv i)`.
+
+Substitute `hvv` using the available equality. Take `⟨hli, hsp⟩` from `(hf' b).1 hu`. Take `⟨h1, h2⟩` from `comb_basis C hC b hli`. Conclude with `(hf' _).2 ⟨h1, h2.trans hsp⟩`.
+-/
 theorem isEigFrame_of_isUnit_det : ∀ (S : Scheme.{0}) (R : Type) [CommRing R] (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Sp R ⟶ S) (O : Type) [CommRing O] (act : OAct O G) (σ : O →+* R) (n : ℕ) (u v : Fin n → (epsAt x ⟶ G)) (C : Matrix (Fin n) (Fin n) R), IsEigFrame act x σ u → (∀ i, IsComb (C i) u (v i)) → IsUnit C.det → IsEigFrame act x σ v := by
   intro S R _ G _ _ x O _ act σ n u v C hu hv hC
   obtain ⟨L, _, _, ⟨M⟩⟩ := lieModel_exists S G R x

@@ -10,6 +10,11 @@ open GlobalTheory.Toroidal
 
 namespace GlobalTheory.LocM.FJ
 
+/- English proof (translation)
+Take `⟨a, φ, e, hfr, hfl⟩` from `h`. Use `⟨a, s.comp φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, Category.assoc]`. Use `GlobalTheory.LocM.isFrame_bc E H Dw _ _ _ _ _ _ _ s _ _ hfr` as an intermediate fact. Rewrite using `[Category.assoc]`.
+
+Conclude with `this`. Use `GlobalTheory.DRFlag.Spez.sameFlag_bc s hfl` as an intermediate fact. Rewrite `this` using `[Vecs.bc_bc]`. Rewrite using `[Category.assoc]` and apply the resulting hypothesis.
+-/
 theorem flagAt_bcField {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W}
     {i₀ : Idx H p} (Z : Mdl Y i₀) {k k' : Type} [Field k] [Field k'] (s : k →+* k') {x : Sp k ⟶ Z.X}

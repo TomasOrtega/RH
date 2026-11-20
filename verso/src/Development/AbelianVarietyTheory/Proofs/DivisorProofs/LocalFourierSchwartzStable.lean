@@ -17,6 +17,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `hc : Continuous (GlobalTheory.LatVac.psiAt ψ v)` using `GlobalTheory.VacAny.continuous_psiV hψ v`. Set `χ : AddChar (Fv F v) Circle` to `{ toFun := fun x => ⟨GlobalTheory.LatVac.psiAt ψ v x, mem_sphere_zero_iff_norm.2 (GlobalTheory.norm_addChar_nonarch _ hc x)⟩ map_zero_eq_one' := Circle.ext (by simp) map_add_eq_mul' := fun a b => Circle.ext (AddChar.map_add_eq_mul _ a b) }`. Establish `hχ : ∀ x, (χ x : ℂ) = GlobalTheory.LatVac.psiAt ψ v x` using `fun _ => rfl`. Establish `hχc : Continuous χ` using `continuous_induced_rng.2 hc`. Establish `hχ1 : χ ≠ 1` using `fun h => by`.
+
+Take `⟨x, hx⟩` from `h1`. Use `hx ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.LatVac.psiAt_apply, ← hχ, h]`. Simplify using the standard rewrite rules. Take `⟨c, hc0⟩` from `GlobalTheory.SplitWeil.exists_hasConductor_of_continuous χ hχc hχ1`.
+
+Conclude with `⟨χ, c, hc0, hχ⟩`.
+-/
 theorem exists_circle_conductor (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) (v : Pl F) (h1 : ∃ x, psiLoc ψ v x ≠ 1) :
     ∃ (χ : AddChar (Fv F v) Circle) (c : (Fv F v)ˣ), GlobalTheory.SplitWeil.HasConductor χ c ∧
       ∀ x, (χ x : ℂ) = GlobalTheory.LatVac.psiAt ψ v x := by
@@ -35,6 +42,11 @@ theorem exists_circle_conductor (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) 
   obtain ⟨c, hc0⟩ := GlobalTheory.SplitWeil.exists_hasConductor_of_continuous χ hχc hχ1
   exact ⟨χ, c, hc0, hχ⟩
 
+/- English proof (translation)
+Take `⟨χ, c, hc, hχ⟩` from `exists_circle_conductor ψ hψ v h1`. Establish `h : ∃ ν, IsSelfDualFor (GlobalTheory.LatVac.psiAt ψ v) ν` using `by haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨ν, hν⟩` from `GlobalTheory.SplitWeil.exists_isSelfDual_of_hasConductor hc`. Use `⟨ν, hν.1, fun f hf => ?_⟩` and prove the remaining obligations. Simplify `hν.2 f hf` using `only [hχ]`.
+
+Rewrite using `[measV, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem isSelfDualFor_measV (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) (v : Pl F) (h1 : ∃ x, psiLoc ψ v x ≠ 1) :
     IsSelfDualFor (GlobalTheory.LatVac.psiAt ψ v) (measV ψ v) := by
   obtain ⟨χ, c, hc, hχ⟩ := exists_circle_conductor ψ hψ v h1
@@ -46,6 +58,13 @@ theorem isSelfDualFor_measV (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) (v :
   rw [measV, dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ v h1 κ _`. Establish `hcont : Continuous (GlobalTheory.LatVac.psiAt ψ v)` using `GlobalTheory.VacAny.continuous_psiV hψ.1 v`. Take `⟨χ, c, hc, hχ⟩` from `exists_circle_conductor ψ hψ.1 v h1`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (Fv F v) := GlobalTheory.SplitWeil.secondCountable _`.
+
+Use `haveI := (isSelfDualFor_measV ψ hψ.1 v h1).1`. Use `⟨fun φ hφ => ?_, fun φ hφ φ' hφ' => ?_, fun w φ hφ => GlobalTheory.SchrSBFin.schr_mem_SB v _ hcont w φ hφ⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.SplitWeil.FourierPi.fourier_mem_SB (Measure.pi fun _ : κ => measV ψ v) hc hφ`. Simplify using `only [hχ] at h`. Conclude with `h`.
+
+Establish `hint : ∀ f ∈ SB (κ → Fv F v), ∀ y : κ → Fv F v, Integrable (fun x => f x * GlobalTheory.LatVac.psiAt ψ v (x ⬝ᵥ y)) (Measure.pi fun _ : κ => measV ψ v)` using `fun f hf y => Continuous.integrable_of_hasCompactSupport (hf.1.continuous.mul (hcont.comp (continuous_id.dotProduct continuous_const))) hf.2.mul_right`. Use function extensionality and compare the values at `y`. Simplify using `only [fourV, Pi.add_apply, add_mul]`. Conclude with `integral_add (hint φ hφ y) (hint φ' hφ' y)`.
+-/
 theorem fourV_sb : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ v : Pl F, (∃ x, psiLoc ψ v x ≠ 1) →
     ∀ (κ : Type) [Fintype κ],
     (∀ φ ∈ SB (κ → Fv F v), fourV ψ v φ ∈ SB (κ → Fv F v)) ∧

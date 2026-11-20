@@ -63,9 +63,15 @@ def LocA' : Prop :=
         PolMatch B G₁ X R₁ Rf₁ (cone B G.M om e K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) Φ) ((C * stepFac B X e₁ e₂ s H.𝔟 H'.𝔟 (1 - (((b + 2 - a') / 2 : ℕ) : ℤ)) *
           charL X.ν (X.S₀ : Set (Pl F)) (((b + 2 - a') / 2 : ℕ) : ℂ)) • e' Φ')
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf m q _` and use `h F E σ B a a' G X om om' R Rf m q`.
+-/
 theorem endB'_of (h : EndB) : EndB' := fun F E _ _ _ _ _ σ B a a' G X om om' R Rf m q _ =>
   h F E σ B a a' G X om om' R Rf m q
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf m q p _` and use `h F E σ B a a' G X om om' R Rf m q p`.
+-/
 theorem endA'_of (h : EndA) : EndA' := fun F E _ _ _ _ _ σ B a a' G X om om' R Rf m q p _ =>
   h F E σ B a a' G X om om' R Rf m q p
 

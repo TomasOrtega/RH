@@ -4,6 +4,9 @@ import Mathlib
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UniformLieDecomp.decomp | exact GlobalTheory.UniformLieDecomp.decomp | (intros; apply GlobalTheory.UniformLieDecomp.decomp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compact_isometry_lie_algebra_bound : ∀ (n : ℕ) (A R : Matrix (Fin n) (Fin n) ℂ) (ε : Fin n → Bool), Aᴴ = A →
     Rᴴ * A * R = Matrix.diagonal (fun i => if ε i then (1 : ℂ) else -1) →
     ∀ v : Fin n → ℂ, star v ⬝ᵥ A *ᵥ v = 0 →

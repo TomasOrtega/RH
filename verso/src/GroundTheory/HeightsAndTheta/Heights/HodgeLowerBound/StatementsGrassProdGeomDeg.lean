@@ -19,18 +19,33 @@ def GrassProdGeomDeg.Statement : Prop :=
     geomDeg (grassIdeal f j m) (GroundTheory.Heights₂.Heights.fsMulti (plBlocks f j m)) (f * j * m) =
       (grassProdDeg f j m : ℝ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨le_rfl, le_rfl, le_rfl⟩`.
+-/
 example : 1 ≤ (1 : ℕ) ∧ 1 ≤ (1 : ℕ) ∧ 1 ≤ (1 : ℕ) := ⟨le_rfl, le_rfl, le_rfl⟩
 
+/- English proof (translation)
+Simplify using `[grassProdDeg, grassDeg]`.
+-/
 example : grassProdDeg 1 1 1 = 1 := by
   simp [grassProdDeg, grassDeg]
 
+/- English proof (translation)
+Simplify using `[grassDeg, Fin.prod_univ_two, Nat.factorial]`. Evaluate the numerical expressions.
+-/
 example : grassDeg 2 2 = 2 := by
   simp [grassDeg, Fin.prod_univ_two, Nat.factorial]
   norm_num
 
+/- English proof (translation)
+Simplify using `[grassProdDeg, grassDeg, Nat.factorial]`.
+-/
 example : grassProdDeg 2 1 1 = 2 := by
   simp [grassProdDeg, grassDeg, Nat.factorial]
 
+/- English proof (translation)
+Simplify using `[grassDeg]`. Conclude with `mul_inv_cancel₀ (by exact_mod_cast (Nat.factorial_pos m).ne')`.
+-/
 example (m : ℕ) : grassDeg 1 m = 1 := by
   simp [grassDeg]
   exact mul_inv_cancel₀ (by exact_mod_cast (Nat.factorial_pos m).ne')

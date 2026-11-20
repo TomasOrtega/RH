@@ -9,6 +9,29 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MatchedMapsGauss
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open UpperTheory.Lit.HoweDuality GlobalTheory.HoweGlobalPair
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM v`. Establish `hz : ∀ (h : UA σ G.W.J), Acts (evFin F v) (om (1, h)) (0 : (Fin a × Fin (a + a') → Fv F v) → ℂ) 0`. Introduce `h r _`. Establish `h0 : tens (evFin F v) (0 : (Fin a × Fin (a + a') → Fv F v) → ℂ) r = 0`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[tens]`. Rewrite using `[h0, map_zero]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply]`.
+
+Conclude with `hM.fin.inv' v hx`. Introduce and unpack `g ⟨h, hh, hg⟩ x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker, LinearMap.comp_apply]`. Establish `e` using `hM.fin.equiv v h hh 0 (Submodule.zero_mem _) x x.2 0 (Submodule.zero_mem _) (g x) (g x).2 (hz h) (hg x) (by rw [map_zero]; exact hx.symm)`. Rewrite `e` using `[map_zero]`.
+
+Conclude with `e.symm`. Introduce `hK haveI := hM.fin.nontriv v`. Take `⟨y, hy⟩` from `exists_ne (0 : Rf.Pi v)`. Establish `hmem : y ∈ Submodule.map (Rf.p' v) (SB (Fin a' × Fin (a + a') → Fv F v))`. Rewrite using `[hM.fin.onto' v]`.
+
+Conclude with `Submodule.mem_top`. Take `⟨φ, hφ, rfl⟩` from `hmem`. Establish `hk : (⟨φ, hφ⟩ : SB (Fin a' × Fin (a + a') → Fv F v)) ∈ LinearMap.ker (Rf.p' v ∘ₗ (SB (Fin a' × Fin (a + a') → Fv F v)).subtype)`. Rewrite using `[hK]`. Conclude with `Submodule.mem_top`.
+
+Rewrite `hk` using `[LinearMap.mem_ker, LinearMap.comp_apply]`. Conclude with `hy hk`. Introduce `N hKN hN hNtop`. Establish `hst : ∀ h ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, h)) φ φ₁ → Rf.p v φ ∈ Submodule.map (Rf.p' v) (Submodule.map (SB (Fin a' × Fin (a + a') → Fv F v)).subtype N) → Rf.p v φ₁ ∈ Submodule.m …`. Introduce `h hh φ hφ φ₁ hφ₁ hact hp`.
+
+Take `⟨y, ⟨n, hn, rfl⟩, hpn⟩` from `hp`. Establish `hgn` using `hN _ (GlobalTheory.HoweGlobalPair.FinPlaceSmall.locOp_mem hM.triple v hh) n hn`. Establish `e` using `hM.fin.equiv v h hh φ hφ n n.2 φ₁ hφ₁ _ (GlobalTheory.HoweGlobalPair.FinPlaceSmall.locOp hM.triple v hh n).2 hact (GlobalTheory.HoweGlobalPair.FinPlaceSmall.locOp_acts hM.triple v hh n) hpn.symm`. Conclude with `⟨_, ⟨_, hgn, rfl⟩, e.symm⟩`. Break down `hM.fin.irred v _ hst with hbot | htop` into its components or cases.
+
+Introduce `x hx`. Establish `hm : Rf.p' v x ∈ Submodule.map (Rf.p' v) (Submodule.map (SB (Fin a' × Fin (a + a') → Fv F v)).subtype N)` using `⟨x, ⟨x, hx, rfl⟩, rfl⟩`. Rewrite `hm` using `[hbot, Submodule.mem_bot]`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply]`. Conclude with `hm`.
+
+It suffices to derive a contradiction. Apply `hNtop` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hm : Rf.p' v x ∈ Submodule.map (Rf.p' v) (Submodule.map (SB (Fin a' × Fin (a + a') → Fv F v)).subtype N)`.
+
+Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Take `⟨y, ⟨n, hn, rfl⟩, hpn⟩` from `hm`. Establish `hk : x - n ∈ N`. Apply `hKN` to reduce the goal to its premises.
+
+Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, map_sub, map_sub, sub_eq_zero]`. Conclude with `hpn.symm`. Use `N.add_mem hk hn` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Lit.HoweDuality.kerVp :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {Bs : Base F E} {a a' : ℕ} {G : Geo σ a a'} {Xc : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} {R : RealMaps F a a'} {Rf : FinMaps F a a'}, IsMatched Bs G Xc om om' R Rf → ∀ v : Pl F, relFin om' v ≤ LinearMap.ker (Rf.p' v ∘ₗ (SB (Fin a' × Fin (a + a') → Fv F v)).subtype) ∧ Stable (opFin om' v) (LinearMap.ker (Rf.p' v ∘ₗ (SB (Fin a' × Fin (a + a') → Fv F v)).subtype)) ∧ LinearMap.ker (Rf.p' v ∘ₗ (SB (Fin a' × Fin (a + a') → Fv F v)).subtype) ≠ ⊤ ∧ ∀ N : Submodule ℂ ↥(SB (Fin a' × Fin (a + a') → Fv F v)), LinearMap.ker (Rf.p' v ∘ₗ (SB (Fin a' × Fin (a + a') → Fv F v)).subtype) ≤ N → Stable (opFin om' v) N → N ≠ ⊤ → N ≤ LinearMap.ker (Rf.p' v ∘ₗ (SB (Fin a' × Fin (a + a') → Fv F v)).subtype) := by
   intro F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM v

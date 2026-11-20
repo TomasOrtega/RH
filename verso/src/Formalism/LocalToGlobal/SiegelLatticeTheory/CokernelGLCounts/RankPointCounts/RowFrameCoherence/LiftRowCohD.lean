@@ -22,11 +22,20 @@ def IotaDictIff : Prop :=
 
 variable {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
 
+/- English proof (translation)
+Introduce `s₁ s₂ h1 h2 g1 g2 hl hl' hc` and use `(hD D X Y u u' s₁ s₂ h1 h2 g1 g2 hl hl').2 hc`.
+-/
 theorem iotaDictNeed_of_iff (hD : IotaDictIff) : IotaDictNeed X Y u u' :=
   fun s₁ s₂ h1 h2 g1 g2 hl hl' hc => (hD D X Y u u' s₁ s₂ h1 h2 g1 g2 hl hl').2 hc
 
+/- English proof (translation)
+Introduce `n hn` and use `ratPt_holds D X n hn`.
+-/
 theorem ratPtNeed_holds : RatPtNeed X := fun n hn => ratPt_holds D X n hn
 
+/- English proof (translation)
+The claim follows from `liftRowCohC_of_frameFix X Y u u' (ratPtNeed_holds X) (toTermRel_holds (X := X) (u := u) (u' := u') (F0 := X.Fu u) (F0' := X.Fu u')) (frameCorrection_holds X Y u u') (iotaDictNeed_of_iff X Y u u' hD)`.
+-/
 theorem liftRowCohC_of_dict (hD : IotaDictIff) : LiftRowCohC X Y u u' :=
   liftRowCohC_of_frameFix X Y u u' (ratPtNeed_holds X)
     (toTermRel_holds (X := X) (u := u) (u' := u') (F0 := X.Fu u) (F0' := X.Fu u'))

@@ -13,6 +13,13 @@ namespace ReciprocityTheory.ChartRestriction.L3.WA
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Take `⟨s, hs, hsa⟩` from `(Formalism.HermitianLatticesTheory.locDual_mem_locR p a).mp ha`. Take `⟨r, hr⟩` from `Submodule.mem_one.mp hsa`. Take `⟨t, ht, htm⟩` from `hm`. Use `show ∃ u ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p, u • (a • m) ∈ L`. Use `⟨s * t, (Formalism.HermitianLatticesTheory.hcompl (K := K) p).mul_mem hs ht, ?_⟩` and prove the remaining obligations.
+
+Establish `key : (s * t) • (a • m) = r • (t • m)`. Rewrite using `[← algebraMap_smul K (s * t) (a • m), ← algebraMap_smul K r (t • m), ← algebraMap_smul K t m, smul_smul, smul_smul, hr, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+
+Conclude with `L.smul_mem r htm`.
+-/
 theorem smul_mem_loc {L : Submodule (𝓞 K) V} {p : Ideal (𝓞 K)} (hp : p.IsPrime) {a : K}
     (ha : a ∈ Formalism.HermitianLatticesTheory.locR (K := K) p) {m : V} (hm : m ∈ Formalism.HermitianLatticesTheory.loc (K := K) p L) :
     a • m ∈ Formalism.HermitianLatticesTheory.loc (K := K) p L := by
@@ -29,6 +36,11 @@ theorem smul_mem_loc {L : Submodule (𝓞 K) V} {p : Ideal (𝓞 K)} (hp : p.IsP
   rw [key]
   exact L.smul_mem r htm
 
+/- English proof (translation)
+Establish `hu' : Formalism.HermitianLatticesTheory.dualAt h p (Formalism.HermitianLatticesTheory.loc (K` using `K) p L) = Formalism.HermitianLatticesTheory.loc (K := K) p L := hu`. Establish `hy2 : y ∈ Formalism.HermitianLatticesTheory.dualAt h p (Formalism.HermitianLatticesTheory.loc (K` using `K) p L) := by`. Rewrite using `[hu']`. Conclude with `hy`. Simplify using `only [Formalism.HermitianLatticesTheory.dualAt, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply] at hy2`.
+
+Conclude with `hy2 x hx`.
+-/
 private theorem mem_locR_of_unimod_lemma {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     {p : Ideal (𝓞 K)} (hu : Formalism.HermitianLatticesTheory.IsUnimodularAt h p L) {x y : V}
     (hx : x ∈ Formalism.HermitianLatticesTheory.loc (K := K) p L) (hy : y ∈ Formalism.HermitianLatticesTheory.loc (K := K) p L) :
@@ -41,11 +53,23 @@ private theorem mem_locR_of_unimod_lemma {h : V →ₗ⋆[K] V →ₗ[K] K} {L :
     LinearMap.restrictScalars_apply] at hy2
   exact hy2 x hx
 
+/- English proof (translation)
+Use `show ∃ u ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p, u • x ∈ L`. Conclude with `⟨1, (Formalism.HermitianLatticesTheory.hcompl (K := K) p).one_mem, by rw [one_smul]; exact hx⟩`.
+-/
 private theorem mem_loc_of_mem_lemma_3 {L : Submodule (𝓞 K) V} (p : Ideal (𝓞 K)) {x : V}
     (hx : x ∈ L) : x ∈ Formalism.HermitianLatticesTheory.loc (K := K) p L := by
   show ∃ u ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p, u • x ∈ L
   exact ⟨1, (Formalism.HermitianLatticesTheory.hcompl (K := K) p).one_mem, by rw [one_smul]; exact hx⟩
 
+/- English proof (translation)
+Establish `hu' : ∀ x, x ∈ Formalism.HermitianLatticesTheory.loc (K` using `K) p L ↔ ∀ y ∈ Formalism.HermitianLatticesTheory.loc (K := K) p L, h y x ∈ Formalism.HermitianLatticesTheory.locR (K := K) p := by`. Introduce `x`. Rewrite using `[← Formalism.HermitianLatticesTheory.locDual_mem_dualAt]`. Unfold `Formalism.HermitianLatticesTheory.IsUnimodularAt at hu`. Rewrite using `[hu]`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha m hm`. Conclude with `smul_mem_loc hp ha hm`. Introduce `x hx y hy`. Conclude with `(hu' y).mp hy x hx`.
+
+Introduce `x hx`. Conclude with `(hu' x).mpr hx`. Introduce `x`. Take `⟨n, hn, hnx⟩` from `Formalism.HermitianLatticesTheory.traceReal_mult L hL x`. Use `⟨(n : K), by exact_mod_cast hn, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `Formalism.HermitianLatticesTheory.locBasic_le_locS _ L hnx`.
+-/
 theorem isSelfDualMod_loc {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) {p : Ideal (𝓞 K)} (hp : p.IsPrime)
     (hu : Formalism.HermitianLatticesTheory.IsUnimodularAt h p L) :
@@ -69,6 +93,9 @@ theorem isSelfDualMod_loc {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (�
     rw [Int.cast_smul_eq_zsmul]
     exact Formalism.HermitianLatticesTheory.locBasic_le_locS _ L hnx
 
+/- English proof (translation)
+Take `⟨t, ht, hty⟩` from `hy`. Use `show ∃ u ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p, u • y ∈ L`. Conclude with `⟨t * s, (Formalism.HermitianLatticesTheory.hcompl (K := K) p).mul_mem ht hs, by rw [mul_smul]; exact hty⟩`.
+-/
 private theorem mem_loc_of_smul_lemma_2 {L : Submodule (𝓞 K) V} {p : Ideal (𝓞 K)} {s : 𝓞 K}
     (hs : s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p) {y : V}
     (hy : s • y ∈ Formalism.HermitianLatticesTheory.loc (K := K) p L) : y ∈ Formalism.HermitianLatticesTheory.loc (K := K) p L := by
@@ -76,6 +103,21 @@ private theorem mem_loc_of_smul_lemma_2 {L : Submodule (𝓞 K) V} {p : Ideal (�
   show ∃ u ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p, u • y ∈ L
   exact ⟨t * s, (Formalism.HermitianLatticesTheory.hcompl (K := K) p).mul_mem ht hs, by rw [mul_smul]; exact hty⟩
 
+/- English proof (translation)
+Establish `hg' : ∀ x y, h (g x) (g y) = h x y` using `hg`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map] at hy`. Take `⟨x, hx, rfl⟩` from `hy`.
+
+Take `⟨s, hs, hsx⟩` from `hx`. Use `mem_loc_of_smul_lemma_2 hs ?_` and prove the remaining obligations. Establish `hN : Submodule.span (𝓞 K) (Set.range e) ≤ (Formalism.HermitianLatticesTheory.loc (K` using `K) p L).comap ((g : V →ₗ[K] V).restrictScalars (𝓞 K)) := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `hge i`. Establish `h1` using `hN hsx`. Rewrite `h1` using `[Submodule.mem_comap, map_smul ((g : V →ₗ[K] V).restrictScalars (𝓞 K)) s x]`. Conclude with `h1`. Introduce `y hy`.
+
+Establish `hz : g.symm y ∈ Submodule.span K (Set.range e)`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Rewrite `hz` using `[Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hz`.
+
+Establish `hcj : ∀ j, c j ∈ Formalism.HermitianLatticesTheory.locR (K` using `K) p := by`. Introduce `j`. Establish `e2 : h (g (e j)) y = h (e j) (g.symm y)` using `by conv_lhs => rw [← g.apply_symm_apply y]`. Conclude with `hg' _ _`. Establish `e1 : c j = h (g (e j)) y`.
+
+Rewrite using `[e2, ← hc]`. Simplify using `[map_sum, he]`. Rewrite using `[e1]`. Conclude with `mem_locR_of_unimod_lemma hu (hge j) hy`. Establish `hzN : g.symm y ∈ Formalism.HermitianLatticesTheory.loc (K` using `K) p (Submodule.span (𝓞 K) (Set.range e)) := by`.
+
+Rewrite using `[← hc]`. Use `sum_mem (fun i _ => ?_)` and prove the remaining obligations. Conclude with `smul_mem_loc hp (hcj i) (mem_loc_of_mem_lemma_3 p (Submodule.subset_span ⟨i, rfl⟩))`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]`. Conclude with `⟨g.symm y, hzN, by simp⟩`.
+-/
 theorem gmap_loc_eq_of_frame {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     {p : Ideal (𝓞 K)} (hp : p.IsPrime) (hu : Formalism.HermitianLatticesTheory.IsUnimodularAt h p L) {n : ℕ} {e : Fin n → V}
     (hspan : Submodule.span K (Set.range e) = ⊤)

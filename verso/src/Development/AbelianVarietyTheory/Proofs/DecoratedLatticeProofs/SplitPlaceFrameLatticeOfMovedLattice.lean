@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.FinPl
 
+/- English proof (translation)
+Take `⟨ε, hε, hsum⟩` from `p.above`. Establish `he : p.sec a = p.e * p.sec a`. Use `p.sec_pr (p.sec a)` as an intermediate fact. Rewrite `this` using `[p.pr_sec]`. Then use the resulting hypothesis. Rewrite using `[(placeIdem_acts D p.v ε hε).1, ← hsum, he, ← mul_assoc, add_mul, p.split.1, mul_comm (cA D p.e) p.e, p.split.2.1, add_zero]`.
+-/
 theorem SplitPt.sec_mem_idAt {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (p : SplitPt D k) (a : k) : p.sec a ∈ idAt D (· = p.v) := by
   obtain ⟨ε, hε, hsum⟩ := p.above
@@ -22,10 +25,18 @@ theorem SplitPt.sec_mem_idAt {D : D7} {k : Type} [Field k] [ValuativeRel k] [Top
   rw [(placeIdem_acts D p.v ε hε).1, ← hsum, he, ← mul_assoc, add_mul, p.split.1,
     mul_comm (cA D p.e) p.e, p.split.2.1, add_zero]
 
+/- English proof (translation)
+Unfold `Formalism.L2.Theta.mt`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+-/
 theorem mt_mul_mt_inv {D : D7} (S : HSp D) (γ : GA D S) : Formalism.L2.Theta.mt S γ * Formalism.L2.Theta.mt S γ⁻¹ = 1 := by
   unfold Formalism.L2.Theta.mt
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p S n _ _ β γ L M Λ hM hL x`. Establish `hsupp : ∀ i, (Formalism.L2.Theta.mt S γ⁻¹ *ᵥ fun i => p.sec ((β.b *ᵥ x) i)) i ∈ idAt D (· = p.v)`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (p.sec_mem_idAt _)`.
+
+Rewrite using `[hL x, hM _ hsupp, Matrix.mulVec_mulVec, mt_mul_mt_inv, Matrix.one_mulVec]`.
+-/
 theorem Frame.isLat_of_isLatMoved : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n]
     (β : Frame p S n) (γ : GA D S) (L M : Lat S) (Λ : Submodule 𝒪[k] (n → k)),

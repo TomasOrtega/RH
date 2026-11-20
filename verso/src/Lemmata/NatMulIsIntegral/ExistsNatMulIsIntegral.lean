@@ -2,6 +2,11 @@ import Mathlib
 
 namespace Bl.NatMulIsIntegral
 
+/- English proof (translation)
+Take `⟨y, hy, hint⟩` from `IsAlgebraic.exists_integral_multiple ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic c))`. Take `⟨m, hm⟩ : ∃ m : ℕ, m = y.natAbs` from `⟨_, rfl⟩`. Apply the tactic sequence `rcases Int.natAbs_eq y with h | h <;> rw [← hm] at h <;> subst h`. Use `⟨m, by omega, ?_⟩` and prove the remaining obligations. Simplify `hint` using `[zsmul_eq_mul]`.
+
+Use `⟨m, by omega, ?_⟩` and prove the remaining obligations. Establish `h2` using `hint.neg`. Simplify `h2` using `[zsmul_eq_mul]`.
+-/
 private theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ d : ℕ, 0 < d ∧ IsIntegral ℤ ((d : E) * c) := by
   obtain ⟨y, hy, hint⟩ := IsAlgebraic.exists_integral_multiple
@@ -14,6 +19,17 @@ private theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] (
     have h2 := hint.neg
     simpa [zsmul_eq_mul] using h2
 
+/- English proof (translation)
+Introduce `E _ _ n L z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_pos, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, Nat.mul_pos ha hb, ?_⟩` and prove the remaining obligations. Establish `key : (a * b) • (x + y) = b • (a • x) + a • (b • y)`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_comm b a]`.
+
+Rewrite using `[key]`. Conclude with `L.add_mem (nsmul_mem hax b) (nsmul_mem hby a)`. Consider the case `smul c x _ hx`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨d, hd, hdi⟩` from `exists_nat_mul_isIntegral c`.
+
+Use `⟨d * a, Nat.mul_pos hd ha, ?_⟩` and prove the remaining obligations. Establish `key : (⟨(d : E) * c, hdi⟩ : NumberField.RingOfIntegers E) • (a • x) = (d * a) • (c • x)`. Rewrite using `[algebra_compatible_smul E (⟨(d : E) * c, hdi⟩ : NumberField.RingOfIntegers E)]`. Use `show ((d : E) * c) • (a • x) = _`. Rewrite using `[mul_smul, smul_comm c a x, Nat.cast_smul_eq_nsmul E, smul_smul]`.
+
+Rewrite using `[← key]`. Conclude with `L.smul_mem _ hax`.
+-/
 theorem goal1 :
   ∀ {E : Type} [inst : Field.{0} E] [NumberField.{0} E] {n : Nat}
   {L : Submodule.{0, 0} (NumberField.RingOfIntegers.{0} E) (Fin n → E)} {z : Fin n → E},

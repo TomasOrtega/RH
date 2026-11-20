@@ -21,6 +21,13 @@ open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.FlagMod Glob
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c X Y ρ hY hρ W K _ g a y0 hga`. Establish `hLY : (detLie Y).IsLB` using `isLB_of_ev _ hY.cover fun i j k _ _ z => ev_detChg_mul i j k z`. Take `⟨t₀, n₁, n₂, -⟩` from `cmpSt_of_sabExtNormalSt (sabExtNormalSt_of_homExtNormalSt homExtNormal) E H D l Xo c (𝓞 c.F) c.F (algebraMap (𝓞 c.F) c.F) (RingHom.id c.F) X Y ρ hρ (GlobalTheory.GenFibre.gen_normal_reduced_noetherian E H D l Xo c Y).1`. Take `⟨tK, ⟨mK⟩⟩` from `exists_sabMap_pull (y0 ≫ genι X) X.t`. Take `⟨tW, ⟨mW⟩⟩` from `exists_sabMap_pull g t₀`.
+
+Take `⟨mY, -⟩` from `GlobalTheory.LevelCover.sab_comp mW n₁ (e := g ≫ genι Y) rfl`. Take `⟨mX, -⟩` from `GlobalTheory.LevelCover.sab_comp mW n₂ (e := g ≫ ρ ≫ genι X) rfl`. Take `⟨mA, -⟩` from `GlobalTheory.LevelCover.sab_cancel mK mX a ((reassoc_of% hga) (genι X)).symm`. Take `⟨d, B, hB⟩` from `GlobalTheory.T.tangent_basis_pullback_compatible E H K tK`. Establish `h0` using `GlobalTheory.T.det_lie_trivialized_by_tangent_basis E H D l Xo c c.F (RingHom.id c.F) Y hLY W (g ≫ genι Y) tW.G _ mY.cart d (fun S _ x => (B S (x ≫ a)).map (GlobalTheory.PolFin.tanEquiv mA.cart x).symm) (fun S S' _ _ φ x x' e j => by`.
+
+Establish `e' : spMap φ ≫ x ≫ a = x' ≫ a` using `by rw [← Category.assoc, e]`. Simplify using `only [Module.Basis.map_apply]`. Rewrite using `[LinearEquiv.eq_symm_apply, ← GlobalTheory.PolFin.tanPull_tanEquiv mA.cart φ e e', LinearEquiv.apply_symm_apply]`. Conclude with `hB S S' φ _ _ e' j)`. Rewrite using `[show GlobalTheory.CechPic.cls (detOm Y) hY = -GlobalTheory.CechPic.cls _ hLY from GlobalTheory.CechPic.cls_dual hLY hY, map_neg, h0, neg_zero]`.
+-/
 theorem detOm_trivial_of_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (ρ : gen Y ⟶ gen X)
     (hY : (GlobalTheory.FlagMod.detOm Y).IsLB), Y.jQ ≫ ρ = X.jQ →

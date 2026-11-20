@@ -8,6 +8,11 @@ open PositivityTheory.Rg.BcB.G8
 open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
+/- English proof (translation)
+Introduce `E _ _ _ N P z τ`. Establish `key : (P.twist (Model.absC E z)).infChar τ = (P.infChar τ).map (· + z)`. Establish `e` using `((ParLaws.hasInfChar_infChar P τ).twist (Model.absC E z)).infChar_eq`. Rewrite `e` using `[Model.expo_absC]`. Conclude with `e`.
+
+Conclude with `⟨key, key⟩`.
+-/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.absInf :
     AbsInf := by
   intro E _ _ _ N P z τ

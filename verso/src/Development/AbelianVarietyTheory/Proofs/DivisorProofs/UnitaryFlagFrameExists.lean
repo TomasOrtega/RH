@@ -15,6 +15,9 @@ def stepIdx (i : Fin n) : Fin i ⊕ Unit → Fin n := Sum.elim (Fin.castLE i.2.l
 def stepIncl (i : Fin n) : Matrix (Fin n) (Fin i ⊕ Unit) ℂ :=
   of fun a b => if stepIdx i b = a then 1 else 0
 
+/- English proof (translation)
+Introduce and unpack `(a | a) (b | b) hab`. Conclude with `congrArg _ (Fin.castLE_injective i.2.le hab)`. Conclude with `absurd (congrArg Fin.val hab) a.2.ne`. Conclude with `absurd (congrArg Fin.val hab) b.2.ne'`. Both sides reduce to the same expression.
+-/
 theorem stepIdx_injective (i : Fin n) : Function.Injective (stepIdx i) := by
   rintro (a | a) (b | b) hab
   · exact congrArg _ (Fin.castLE_injective i.2.le hab)
@@ -22,19 +25,31 @@ theorem stepIdx_injective (i : Fin n) : Function.Injective (stepIdx i) := by
   · exact absurd (congrArg Fin.val hab) b.2.ne'
   · rfl
 
+/- English proof (translation)
+Use extensionality with `b c`. Simplify using `[stepIncl, mul_apply, ite_mul, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Apply the tactic sequence `rcases b with b | b <;> rcases c with c | c <;> rfl`.
+-/
 theorem stepIncl_gram (i : Fin n) (K : Matrix (Fin n) (Fin n) ℂ) :
     (stepIncl i)ᵀ * K * (stepIncl i)ᴴᵀ = stepGram K i := by
   ext b c
   simp [stepIncl, mul_apply, ite_mul, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']
   rcases b with b | b <;> rcases c with c | c <;> rfl
 
+/- English proof (translation)
+Rewrite using `[form_mulVec, stepIncl_gram]`. Both sides reduce to the same expression.
+-/
 theorem form_stepIncl (i : Fin n) (K : Matrix (Fin n) (Fin n) ℂ) (u w : Fin i ⊕ Unit → ℂ) :
     form K (stepIncl i *ᵥ u) (stepIncl i *ᵥ w) = form (stepGram K i) u w := by
   rw [form_mulVec, stepIncl_gram]; rfl
 
+/- English proof (translation)
+The claim follows from `h.submatrix (stepIdx_injective i)`.
+-/
 theorem posDef_stepGram {K : Matrix (Fin n) (Fin n) ℂ} (h : K.PosDef) (i : Fin n) :
     (stepGram K i).PosDef := h.submatrix (stepIdx_injective i)
 
+/- English proof (translation)
+The claim follows from `(isUnit_iff_isUnit_det _).1 (posDef_subGram (posDef_stepGram h i)).isUnit`.
+-/
 theorem isUnit_subGram_stepGram {K : Matrix (Fin n) (Fin n) ℂ} (h : K.PosDef) (i : Fin n) :
     IsUnit (subGram (stepGram K i)).det :=
   (isUnit_iff_isUnit_det _).1 (posDef_subGram (posDef_stepGram h i)).isUnit
@@ -42,11 +57,17 @@ theorem isUnit_subGram_stepGram {K : Matrix (Fin n) (Fin n) ℂ} (h : K.PosDef) 
 def gsVec (K : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) : Fin n → ℂ :=
   stepIncl i *ᵥ (orthLift (stepGram K i) *ᵥ fun _ => 1)
 
+/- English proof (translation)
+Rewrite using `[gsVec, form_stepIncl, form_orthLift (isUnit_subGram_stepGram h i), gradedGram]`. Simplify using `[form_eq_sum]`.
+-/
 theorem form_gsVec_self {K : Matrix (Fin n) (Fin n) ℂ} (h : K.PosDef) (i : Fin n) :
     form K (gsVec K i) (gsVec K i) = gradedGram K i () () := by
   rw [gsVec, form_stepIncl, form_orthLift (isUnit_subGram_stepGram h i), gradedGram]
   simp [form_eq_sum]
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[stepIncl, incl, mulVec, dotProduct, Pi.single_apply, stepIdx, Fintype.sum_sum_type, one_apply, eq_comm]`. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem stepIncl_single (i : Fin n) (j : Fin i) :
     stepIncl i *ᵥ (incl (Fin i) Unit *ᵥ Pi.single j 1) = Pi.single (Fin.castLE i.2.le j) 1 := by
   ext a
@@ -55,12 +76,22 @@ theorem stepIncl_single (i : Fin n) (j : Fin i) :
   rw [Finset.sum_eq_single j (fun b _ hb => by simp [Ne.symm hb]) (by simp)]
   simp
 
+/- English proof (translation)
+Establish `: Pi.single j (1 : ℂ) = stepIncl i *ᵥ (incl (Fin i) Unit *ᵥ Pi.single ⟨j, hj⟩ 1)`. Rewrite using `[stepIncl_single]`. Both sides reduce to the same expression. Rewrite using `[this, gsVec, form_stepIncl, form_orthLift_incl (isUnit_subGram_stepGram h i)]`.
+-/
 theorem form_gsVec_single {K : Matrix (Fin n) (Fin n) ℂ} (h : K.PosDef) {i j : Fin n}
     (hj : j < i) : form K (gsVec K i) (Pi.single j 1) = 0 := by
   have : Pi.single j (1 : ℂ) = stepIncl i *ᵥ (incl (Fin i) Unit *ᵥ Pi.single ⟨j, hj⟩ 1) := by
     rw [stepIncl_single]; rfl
   rw [this, gsVec, form_stepIncl, form_orthLift_incl (isUnit_subGram_stepGram h i)]
 
+/- English proof (translation)
+Simplify using `only [gsVec, mulVec, dotProduct]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `: stepIdx i c ≠ b`. Break down `c with c | c` into its components or cases. Introduce `e`.
+
+Use `congrArg Fin.val e` as an intermediate fact. Simplify using `[stepIdx] at this`. Use linear arithmetic over natural numbers and integers. Introduce `e`. Conclude with `hb.ne e`.
+
+Simplify using `[stepIncl, this]`.
+-/
 theorem gsVec_eq_zero (K : Matrix (Fin n) (Fin n) ℂ) {i b : Fin n} (hb : i < b) :
     gsVec K i b = 0 := by
   simp only [gsVec, mulVec, dotProduct]
@@ -71,6 +102,11 @@ theorem gsVec_eq_zero (K : Matrix (Fin n) (Fin n) ℂ) {i b : Fin n} (hb : i < b
     · intro e; exact hb.ne e
   simp [stepIncl, this]
 
+/- English proof (translation)
+Simplify using `only [form_eq_sum, Pi.single_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Finset.sum_ite_eq', mul_ite]`.
+-/
 theorem form_expand (K : Matrix (Fin n) (Fin n) ℂ) (v w : Fin n → ℂ) :
     form K v w = ∑ b, form K v (Pi.single b 1) * conj (w b) := by
   simp only [form_eq_sum, Pi.single_apply]
@@ -80,6 +116,11 @@ theorem form_expand (K : Matrix (Fin n) (Fin n) ℂ) (v w : Fin n → ℂ) :
   refine Finset.sum_congr rfl fun b _ => ?_
   simp [Finset.sum_ite_eq', mul_ite]
 
+/- English proof (translation)
+Rewrite using `[form_expand]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Break down `lt_or_ge b k with hb | hb` into its components or cases. Rewrite using `[form_gsVec_single h hb, zero_mul]`. Rewrite using `[gsVec_eq_zero K (lt_of_lt_of_le hlk hb)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem form_gsVec_lt {K : Matrix (Fin n) (Fin n) ℂ} (h : K.PosDef) {k l : Fin n} (hlk : l < k) :
     form K (gsVec K k) (gsVec K l) = 0 := by
   rw [form_expand]
@@ -97,6 +138,9 @@ section Main
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
   [IsScalarTower ℝ ℂ E] {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Use `(posDef_iff.1 (posDef_gradedGram h i)).2 (fun _ => 1) (by intro e; simpa using congrFun e ())` as an intermediate fact. Simplify using `only [form_eq_sum, Finset.univ_unique, Finset.sum_singleton, one_mul, map_one, mul_one] at this`. Conclude with `⟨(Complex.pos_iff.1 this).1, (Complex.pos_iff.1 this).2.symm⟩`.
+-/
 theorem gradedGram_pos {K : Matrix (Fin n) (Fin n) ℂ} (h : K.PosDef) (i : Fin n) :
     0 < (gradedGram K i () ()).re ∧ (gradedGram K i () ()).im = 0 := by
   have := (posDef_iff.1 (posDef_gradedGram h i)).2 (fun _ => 1)
@@ -105,6 +149,11 @@ theorem gradedGram_pos {K : Matrix (Fin n) (Fin n) ℂ} (h : K.PosDef) (i : Fin 
     mul_one] at this
   exact ⟨(Complex.pos_iff.1 this).1, (Complex.pos_iff.1 this).2.symm⟩
 
+/- English proof (translation)
+Establish `hB : ((A y)ᴴᵀ)ᴴ = (A y)ᵀ` using `by ext a b; simp`. Establish `hu : IsUnit (A y)ᴴᵀ`. Rewrite using `[isUnit_iff_isUnit_det, det_transpose, det_conjTranspose]`. Conclude with `(hA.isUnit y hy).star`. Use `(hH.posDef _ (hA.mapsTo hy)).conjTranspose_mul_mul_same (mulVec_injective_of_isUnit hu)` as an intermediate fact.
+
+Rewrite `this` using `[hB]`. Then use the resulting hypothesis.
+-/
 theorem posDef_adaptedGram {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ}
     {Y : Set E} {π : E → ι → ℂ} {A : E → Matrix (Fin n) (Fin n) ℂ}
     (hH : IsPosFrame U H) (hA : IsFlagFamily Y U π A) {y : E} (hy : y ∈ Y) :
@@ -116,11 +165,17 @@ theorem posDef_adaptedGram {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (
   have := (hH.posDef _ (hA.mapsTo hy)).conjTranspose_mul_mul_same (mulVec_injective_of_isUnit hu)
   rwa [hB] at this
 
+/- English proof (translation)
+Rewrite using `[form_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem form_adapted (H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ) (π : E → ι → ℂ)
     (A : E → Matrix (Fin n) (Fin n) ℂ) (y : E) (u w : Fin n → ℂ) :
     form (H (π y)) (A y *ᵥ u) (A y *ᵥ w) = form (adaptedGram H π A y) u w := by
   rw [form_mulVec]; rfl
 
+/- English proof (translation)
+Establish `hc : MContDiffAt k (fun x => orthCoeff (S x)) y` using `by show MContDiffAt k (fun x => ((S x).submatrix Sum.inl Sum.inl)ᵀ⁻¹ * ((S x).submatrix Sum.inr Sum.inl)ᵀ) y`. Conclude with `((h.submatrix Sum.inl Sum.inl).transpose.inv (by rw [det_transpose]; exact hu)).mul (h.submatrix Sum.inr Sum.inl).transpose`. Introduce and unpack `(a | a) b`. Conclude with `(hc a b).neg`. Conclude with `contDiffAt_const`.
+-/
 theorem mContDiffAt_orthLift {m l : Type} [Fintype m] [DecidableEq m] [Fintype l]
     [DecidableEq l] {S : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {y : E} {k : WithTop ℕ∞}
     (h : MContDiffAt k S y) (hu : IsUnit (subGram (S y)).det) :
@@ -134,6 +189,9 @@ theorem mContDiffAt_orthLift {m l : Type} [Fintype m] [DecidableEq m] [Fintype l
   · exact (hc a b).neg
   · exact contDiffAt_const
 
+/- English proof (translation)
+Use `show MContDiffAt k (fun x => (S x).submatrix Sum.inr Sum.inr - (S x).submatrix Sum.inr Sum.inl * ((S x).submatrix Sum.inl Sum.inl)⁻¹ * (S x).submatrix Sum.inl Sum.inr) y`. Conclude with `(h.submatrix _ _).sub (((h.submatrix _ _).mul ((h.submatrix _ _).inv hu)).mul (h.submatrix _ _))`.
+-/
 theorem mContDiffAt_quotGram {m l : Type} [Fintype m] [DecidableEq m] [Fintype l]
     [DecidableEq l] {S : E → Matrix (m ⊕ l) (m ⊕ l) ℂ} {y : E} {k : WithTop ℕ∞}
     (h : MContDiffAt k S y) (hu : IsUnit (subGram (S y)).det) :
@@ -149,6 +207,9 @@ def gsFrame (H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ) (π : E → ι →
   of fun a i => (((√(gradedGram (adaptedGram H π A y) i () ()).re)⁻¹ : ℝ) : ℂ) *
     (A y *ᵥ gsVec (adaptedGram H π A y) i) a
 
+/- English proof (translation)
+Use extensionality with `a`. Both sides reduce to the same expression.
+-/
 theorem gsFrame_col (H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ) (π : E → ι → ℂ)
     (A : E → Matrix (Fin n) (Fin n) ℂ) (y : E) (i : Fin n) :
     (fun a => gsFrame H π A y a i) =
@@ -156,6 +217,27 @@ theorem gsFrame_col (H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ) (π : E �
         (A y *ᵥ gsVec (adaptedGram H π A y) i) := by
   ext a; rfl
 
+/- English proof (translation)
+Establish `hAd : ∀ y ∈ Y, MContDiffAt ∞ A y` using `fun y hy a b => ((hA.hol_frame a b).restrict_scalars ℝ).contDiffAt (hA.isOpen.mem_nhds hy)`. Establish `hHπ : ∀ y ∈ Y, MContDiffAt ∞ (fun x => H (π x)) y` using `fun y hy a b => ((hH.smooth a b).contDiffAt (hH.isOpen.mem_nhds (hA.mapsTo hy))).comp y ((hA.hol_proj.restrict_scalars ℝ).contDiffAt (hA.isOpen.mem_nhds hy))`. Establish `hG : ∀ y ∈ Y, MContDiffAt ∞ (adaptedGram H π A) y` using `fun y hy => ((hAd y hy).transpose.mul (hHπ y hy)).mul (hAd y hy).conjTranspose.transpose`. Establish `hS : ∀ y ∈ Y, ∀ i : Fin n, MContDiffAt ∞ (fun x => stepGram (adaptedGram H π A x) i) y` using `fun y hy i => (hG y hy).submatrix _ _`. Establish `hE : ∀ y ∈ Y, ∀ a i, ContDiffAt ℝ ∞ (fun x => gsFrame H π A x a i) y`.
+
+Introduce `y hy a i`. Establish `hP` using `posDef_adaptedGram hH hA hy`. Establish `hu` using `isUnit_subGram_stepGram hP i`. Establish `hL` using `mContDiffAt_orthLift (hS y hy i) hu`. Establish `hw : ∀ b, ContDiffAt ℝ ∞ (fun x => gsVec (adaptedGram H π A x) i b) y` using `fun b => by`.
+
+Simplify using `only [gsVec, mulVec, dotProduct]`. Conclude with `ContDiffAt.sum fun c _ => contDiffAt_const.mul (ContDiffAt.sum fun u _ => (hL c u).mul contDiffAt_const)`. Establish `hq : ContDiffAt ℝ ∞ (fun x => gradedGram (adaptedGram H π A x) i () ()) y` using `mContDiffAt_quotGram (hS y hy i) hu () ()`. Establish `hre : ContDiffAt ℝ ∞ (fun x => (gradedGram (adaptedGram H π A x) i () ()).re) y` using `reCLM.contDiff.contDiffAt.comp y hq`. Establish `hpos` using `(gradedGram_pos hP i).1`.
+
+Establish `hd : ContDiffAt ℝ ∞ (fun x => (((√(gradedGram (adaptedGram H π A x) i () ()).re)⁻¹ : ℝ) : ℂ)) y` using `ofRealCLM.contDiff.contDiffAt.comp y ((hre.sqrt hpos.ne').inv (Real.sqrt_pos.2 hpos).ne')`. Simplify using `only [gsFrame, of_apply, mulVec, dotProduct]`. Conclude with `hd.mul (ContDiffAt.sum fun b _ => (hAd y hy a b).mul (hw b))`. Use `⟨fun a b y hy => (hE y hy a b).contDiffWithinAt, fun y hy k l => ?_, fun y hy i => ?_, fun y hy i j hji => ?_⟩` and prove the remaining obligations. Establish `hP` using `posDef_adaptedGram hH hA hy`.
+
+Rewrite using `[gsFrame_col, gsFrame_col, form_smul_left, form_smul_right, form_adapted]`. Use `split_ifs with hkl`. Substitute `hkl` using the available equality. Rewrite using `[form_gsVec_self hP]`. Take `⟨hpos, him⟩` from `gradedGram_pos hP k`.
+
+Use `set g := gradedGram (adaptedGram H π A y) k () ()`. Use `set r := g.re`. Establish `hge : g = (r : ℂ)` using `Complex.ext rfl (by simp [him])`. Rewrite using `[conj_ofReal, hge, ← ofReal_mul, ← ofReal_mul]`. Establish `: (√r)⁻¹ * ((√r)⁻¹ * r) = 1`.
+
+Rewrite using `[← mul_assoc, ← mul_inv, Real.mul_self_sqrt hpos.le, inv_mul_cancel₀ hpos.ne']`. Conclude with `this` after adjusting the coercions. Break down `lt_or_gt_of_ne hkl with h | h` into its components or cases. Rewrite using `[← conj_form hP.isHermitian, form_gsVec_lt hP h, map_zero, mul_zero, mul_zero]`. Rewrite using `[form_gsVec_lt hP h, mul_zero, mul_zero]`.
+
+Rewrite using `[gsFrame_col]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `: A y *ᵥ gsVec (adaptedGram H π A y) i = ∑ b, gsVec (adaptedGram H π A y) i b • fun a => A y a b`. Use extensionality with `a`. Simplify using `[mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+
+Rewrite using `[this]`. Use `Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Break down `le_or_gt b i with hb | hb` into its components or cases. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`. Rewrite using `[gsVec_eq_zero _ hb, zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `hP` using `posDef_adaptedGram hH hA hy`. Establish `hc : (fun a => A y a j) = A y *ᵥ Pi.single j 1` using `by rw [mulVec_single_one]; rfl`. Rewrite using `[gsFrame_col, form_smul_left, hc, form_adapted, form_gsVec_single hP hji, mul_zero]`.
+-/
 theorem isUnitaryFlagFrame_gsFrame {U : Set (ι → ℂ)} {H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ}
     {Y : Set E} {π : E → ι → ℂ} {A : E → Matrix (Fin n) (Fin n) ℂ}
     (hH : IsPosFrame U H) (hA : IsFlagFamily Y U π A) :
@@ -222,6 +304,9 @@ theorem isUnitaryFlagFrame_gsFrame {U : Set (ι → ℂ)} {H : (ι → ℂ) → 
     have hc : (fun a => A y a j) = A y *ᵥ Pi.single j 1 := by rw [mulVec_single_one]; rfl
     rw [gsFrame_col, form_smul_left, hc, form_adapted, form_gsVec_single hP hji, mul_zero]
 
+/- English proof (translation)
+Introduce `E _ _ _ _ _ ι _ n U H Y π A hH hA`. Conclude with `⟨_, isUnitaryFlagFrame_gsFrame hH hA⟩`.
+-/
 theorem exists_unitaryFlagFrame :
     ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
     [FiniteDimensional ℂ E] (ι : Type) [Fintype ι] (n : ℕ) (U : Set (ι → ℂ))

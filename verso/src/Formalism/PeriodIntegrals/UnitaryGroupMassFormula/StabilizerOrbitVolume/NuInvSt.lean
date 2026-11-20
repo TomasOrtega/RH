@@ -21,6 +21,9 @@ def OmInv : Prop := InCtx fun F E _ _ _ _ _ σ M J _a X0 hT =>
   ∀ ψ, IsCharAF F ψ → ∀ νX, IsOmT F E σ M J ψ (gramE σ J X0) hT νX →
     ∀ g : HA (AF F) σ J, IsOmT F E σ M J ψ (gramE σ J X0) hT (νX.map fun y => g • y)
 
+/- English proof (translation)
+Use `continuous_pi fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun y : Fin a → Fin M → AF F ⊗[F] E => ((HA.mat (AF F) σ J g : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) _).mulVec (y x)`. Conclude with `continuous_const.matrix_mulVec (continuous_apply x)`.
+-/
 theorem continuous_smul_tup {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     [FiniteDimensional F E]
     (σ : E →ₐ[F] E) {M a : ℕ} (J : Matrix (Fin M) (Fin M) E) (g : HA (AF F) σ J) :
@@ -30,6 +33,9 @@ theorem continuous_smul_tup {F E : Type} [Field F] [NumberField F] [Field E] [Al
     ((HA.mat (AF F) σ J g : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) _).mulVec (y x)
   exact continuous_const.matrix_mulVec (continuous_apply x)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ νX hν g s hs`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hm : Measurable (fun y : Fin a → Fin M → AF F ⊗[F] E => g • y)` using `(continuous_smul_tup σ J g).measurable`. Rewrite using `[← Measure.map_apply hm hs, hU F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ _ _ (hI F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ νX hν g) hν]`.
+-/
 theorem nuInv_of (hU : OmUniq) (hI : OmInv) : NuInv := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ νX hν g s hs
   have : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)
@@ -39,6 +45,13 @@ theorem nuInv_of (hU : OmUniq) (hI : OmInv) : NuInv := by
     hU F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ _ _
       (hI F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ νX hν g) hν]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ ν1 ν2 h1 h2`. Use `hD F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ν1 ν2 (nuFin_holds F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ ν1 h1) (nuFin_holds F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ ν2 h2) fun Φ hΦ => ?_` and prove the remaining obligations. Take `⟨d, b, Φinf, Φf, Φv, hcΦ, hcs, hpure, hprod⟩` from `hΦ`. Take `⟨⟨μinf, hμinf⟩, a1⟩` from `h1.2`. Take `⟨⟨νinf, hνinf⟩, a2⟩` from `a1 μinf hμinf`.
+
+Take `⟨⟨μv, hμv⟩, a3⟩` from `a2 νinf hνinf`. Take `⟨⟨νv, hνv⟩, a4⟩` from `a3 μv hμv`. Take `⟨⟨fibInf, hfi⟩, a5⟩` from `a4 νv hνv`. Take `⟨⟨fibV, hfv⟩, a6⟩` from `a5 fibInf hfi`. Establish `e1` using `(a6 fibV hfv d b Φ Φinf Φf Φv hcΦ hcs hpure hprod).2.2`.
+
+Establish `e2` using `((((((h2.2.2 μinf hμinf).2 νinf hνinf).2 μv hμv).2 νv hνv).2 fibInf hfi).2 fibV hfv d b Φ Φinf Φf Φv hcΦ hcs hpure hprod).2.2`. Rewrite using `[e1, e2]`.
+-/
 theorem omUniq_of (hD : DetAdm) : OmUniq := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ ν1 ν2 h1 h2
   refine hD F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ν1 ν2

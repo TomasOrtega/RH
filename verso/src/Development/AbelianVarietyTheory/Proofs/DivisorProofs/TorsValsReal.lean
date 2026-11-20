@@ -18,6 +18,9 @@ def TorsVals {S : Scheme.{0}} (P : PolAV S) (rig : LB.Gen (P.L.pull (eSec P.A)))
     ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ T.left) (z : Over.mk (x ≫ T.hom) ⟶ P.A), z ^ m = 1 →
       ∃ a, z.left = x ≫ (pt a).left
 
+/- English proof (translation)
+Use `⟨ρ.pt, ρ.fr, ρ.fr_tors, ρ.th_val, fun K _ _ x z hz => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `ρ.pt_bij K (x ≫ (baseOver (Sp S.R)).hom) z hz`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha]`. Conclude with `congrArg (· ≫ (ρ.pt a).left) (Category.comp_id x)`.
+-/
 theorem torsVals_real {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} (ρ : S.Real) :
     TorsVals ρ.P ρ.rig (baseOver (Sp S.R)) ρ.th₁ (S.r * S.N) (fun a => fn (⟨S.th a, S.th_mem a⟩ : S.R)) := by
   refine ⟨ρ.pt, ρ.fr, ρ.fr_tors, ρ.th_val, fun K _ _ x z hz => ?_⟩
@@ -26,6 +29,9 @@ theorem torsVals_real {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : 
   rw [← ha]
   exact congrArg (· ≫ (ρ.pt a).left) (Category.comp_id x)
 
+/- English proof (translation)
+Introduce `s`. Take `⟨r, hr, -⟩` from `ρ.th₁_basis s`. Conclude with `⟨r 0, fun j => (hr j).trans (Fin.sum_univ_one _)⟩`.
+-/
 theorem isGenSec_real {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} (ρ : S.Real) :
     IsGenSec ρ.P.A ρ.P.L 1 ρ.th₁ := by
   intro s

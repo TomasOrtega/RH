@@ -15,6 +15,9 @@ namespace IsExpLieAlgebra
 
 variable (h : IsExpLieAlgebra G 𝔤)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [coe_expG, Submodule.coe_smul, Subgroup.coe_mul, Units.val_mul, add_smul]`. Conclude with `exp_add_of_commute' ℝ ((Commute.refl (X : 𝔸)).smul_left s |>.smul_right t)`.
+-/
 theorem expG_add_smul (X : 𝔤) (s t : ℝ) :
     h.expG ((s + t) • X) = h.expG (s • X) * h.expG (t • X) := by
   apply Subtype.ext; apply Units.ext
@@ -24,10 +27,18 @@ theorem expG_add_smul (X : 𝔤) (s t : ℝ) :
 noncomputable def prodExp {d : ℕ} (X : Fin d → 𝔤) (t : Fin d → ℝ) : G :=
   (List.ofFn fun i => h.expG (t i • X i)).prod
 
+/- English proof (translation)
+Use `show subspaceProj 𝔤 ((expPartialHomeomorph ℝ 𝔸).symm (((g⁻¹ * g : G) : 𝔸ˣ) : 𝔸)) = 0`. Simplify using `[expPartialHomeomorph_symm_one]`.
+-/
 theorem chart_self (g : G) : h.chart g g = 0 := by
   show subspaceProj 𝔤 ((expPartialHomeomorph ℝ 𝔸).symm (((g⁻¹ * g : G) : 𝔸ˣ) : 𝔸)) = 0
   simp [expPartialHomeomorph_symm_one]
 
+/- English proof (translation)
+Set `` to `h.chartedSpace`. Rewrite using `[contMDiffAt_iff_source, contMDiffWithinAt_iff_contDiffWithinAt]`. Establish `e1 : (extChartAt 𝓘(ℝ, 𝔤) g) g = 0`. Simplify using `only [extChartAt, OpenPartialHomeomorph.extend_coe, modelWithCornersSelf_coe, Function.id_comp]`. Conclude with `h.chart_self g`.
+
+Establish `e2 : f ∘ (extChartAt 𝓘(ℝ, 𝔤) g).symm = fun Y : 𝔤 => f (g * h.expG Y)`. Use function extensionality and compare the values at `Y`. Simplify using `only [extChartAt, OpenPartialHomeomorph.extend_coe_symm, modelWithCornersSelf_coe_symm, Function.comp_apply, id]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, modelWithCornersSelf_coe, range_id, contDiffWithinAt_univ]`.
+-/
 theorem contMDiffAt_iff_expG {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℝ E']
     {n : WithTop ℕ∞} {f : G → E'} {g : G} :
     (letI := h.chartedSpace; ContMDiffAt 𝓘(ℝ, 𝔤) 𝓘(ℝ, E') n f g) ↔
@@ -47,6 +58,9 @@ theorem contMDiffAt_iff_expG {E' : Type*} [NormedAddCommGroup E'] [NormedSpace �
 
 include h in
 
+/- English proof (translation)
+Set `` to `h.chartedSpace`. Conclude with `ChartedSpace.locallyCompactSpace 𝔤 G`.
+-/
 theorem locallyCompactSpace : LocallyCompactSpace G := by
   let := h.chartedSpace
   exact ChartedSpace.locallyCompactSpace 𝔤 G

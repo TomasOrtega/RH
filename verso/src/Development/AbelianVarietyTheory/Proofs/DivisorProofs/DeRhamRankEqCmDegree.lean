@@ -16,6 +16,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.DeRham
 
+/- English proof (translation)
+Introduce `H E _ _ _ 𝔠 R _ _ X n e`. Use `letI := X.grp`. Take `⟨hfin, hproj, hrk⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim H.1 X.ab X.dim`. Use `haveI := hfin`. Use `haveI := hproj`.
+
+Set `e1 : Module.Dual R (primDR X.A) ≃ₗ[R] (Fin n → R)` to `e`. Set `e2 : primDR X.A ≃ₗ[R] Module.Dual R (Fin n → R)` to `(Module.evalEquiv R (primDR X.A)).trans e1.symm.dualMap`. Establish `hP : ∀ p : PrimeSpectrum R, Module.rankAtStalk (primDR X.A) p = n`. Introduce `p`. Rewrite using `[Module.rankAtStalk_eq_of_equiv e2, Module.rankAtStalk_eq_finrank_of_free, Module.finrank_eq_card_basis (Pi.basisFun R (Fin n)).dualBasis, Fintype.card_fin]`.
+
+Both sides reduce to the same expression. Take `⟨p⟩ : Nonempty (PrimeSpectrum R)` from `inferInstance`. Establish `h1` using `hrk p`. Rewrite `h1` using `[hP p]`. Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`.
+
+Establish `h3` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `h3` using `[h2]`. Rewrite using `[h1, ← h3, mul_comm]`.
+-/
 theorem hdR_rank_eq_finrank_cm : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (𝔠 : FracId (FR E)) (R : Type)
     [CommRing R] [IsDomain R] (X : Obj (FR E) 𝔠 (Sp R)) (n : ℕ), (HdR X.A ≃ₗ[R] (Fin n → R)) → n = Module.finrank ℚ E := by
   intro H E _ _ _ 𝔠 R _ _ X n e

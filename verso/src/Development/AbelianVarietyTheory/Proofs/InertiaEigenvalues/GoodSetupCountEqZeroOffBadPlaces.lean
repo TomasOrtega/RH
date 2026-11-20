@@ -32,6 +32,13 @@ namespace GlobalTheory.TwInputs.SetupPin
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `i P hP P' hc`. Establish `hP' : P ∈ (D.ntw.S0 i : Set (HeightOneSpectrum (𝓞 D.host.E)))` using `hP`. Rewrite `hP'` using `[T.ringSpec_excludedPlaces_eq i]`. Use `show P' ∈ (D.ntw.S0 i : Set (HeightOneSpectrum (𝓞 D.host.E)))`. Rewrite using `[T.ringSpec_excludedPlaces_eq i]`.
+
+Break down `hP' with (((h | h) | h) | h) | h` into its components or cases. Conclude with `Or.inl (Or.inl (Or.inl (Or.inl (Formalism.L2.placesOver_conj D _ h hc))))`. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 h`. Conclude with `Or.inl (Or.inl (Or.inl (Or.inr (Set.mem_iUnion.2 ⟨k, Formalism.L2.placesOver_conj D _ hk hc⟩))))`. Conclude with `Or.inl (Or.inl (Or.inr (Formalism.L2.placesOver_conj D _ h hc)))`.
+
+Conclude with `Or.inl (Or.inr (Formalism.L2.placesOver_conj D _ h hc))`. Conclude with `Or.inr (T.concreteTwistFrame_extraExcludedPlaces_conj i P P' h hc)`.
+-/
 theorem goodSetup_badPlaces_conj (F : TwFrameC D) {low : Finset ℕ} (T : TwistFrameLowIndexCompatibility D F low) :
     ∀ i, ∀ P ∈ D.ntw.S0 i, ∀ P', Formalism.BasicNotions.IsConjPl D.host P P' → P' ∈ D.ntw.S0 i := by
   intro i P hP P' hc
@@ -47,6 +54,9 @@ theorem goodSetup_badPlaces_conj (F : TwFrameC D) {low : Finset ℕ} (T : TwistF
   · exact Or.inl (Or.inr (Formalism.L2.placesOver_conj D _ h hc))
   · exact Or.inr (T.concreteTwistFrame_extraExcludedPlaces_conj i P P' h hc)
 
+/- English proof (translation)
+Introduce `i P hP`. Use `show P ∈ (D.ntw.S0 i : Set (HeightOneSpectrum (𝓞 D.host.E)))`. Rewrite using `[T.ringSpec_excludedPlaces_eq i]`. Conclude with `Or.inr (T.concreteTwistFrame_extraExcluded_over_smallPrimes i 2 h2 hP)`.
+-/
 theorem goodSetup_placesOverTwo_subset (F : TwFrameC D) {low : Finset ℕ} (T : TwistFrameLowIndexCompatibility D F low) (h2 : 2 ∈ low) :
     ∀ i, placesOver D.host.E 2 ⊆ ↑(D.ntw.S0 i) := by
   intro i P hP
@@ -54,9 +64,21 @@ theorem goodSetup_placesOverTwo_subset (F : TwFrameC D) {low : Finset ℕ} (T : 
   rw [T.ringSpec_excludedPlaces_eq i]
   exact Or.inr (T.concreteTwistFrame_extraExcluded_over_smallPrimes i 2 h2 hP)
 
+/- English proof (translation)
+The claim follows from `Int.natCast_dvd.1 D.host.q_dvd_discr`.
+-/
 theorem q_dvd_discr (D : D7) : D.host.q ∣ (NumberField.discr D.host.E).natAbs :=
   Int.natCast_dvd.1 D.host.q_dvd_discr
 
+/- English proof (translation)
+Introduce `i P hP`. Assume the negation of the conclusion as `hA`. Establish `hb : ((GlobalTheory.HalfCompare.badInt D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Assume the negation of the conclusion as `hb`. Conclude with `hA (GlobalTheory.HalfCompare.primeToAA_of_not_mem hb)`.
+
+Take `⟨p, hp, hpP⟩` from `GlobalTheory.HalfCompare.exists_prime_under P`. Establish `hdiv : p ∣ GlobalTheory.HalfCompare.badInt D` using `(hpP _).1 hb`. Establish `hlow : p ∈ low`. Unfold `GlobalTheory.HalfCompare.badInt at hdiv`. Break down `hp.dvd_mul.1 hdiv with h | h` into its components or cases.
+
+Conclude with `hd (Nat.mem_primeFactors.2 ⟨hp, Int.natCast_dvd.1 ((D.host.dvd_discr_iff_dvd_condN hp).2 (h.mul_right D.host.d)), Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero _)⟩)`. Conclude with `hc (Nat.mem_primeFactors.2 ⟨hp, h, by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact D.host.ccK_ne_bot⟩)`. Apply `hP` to reduce the goal to its premises. Use `show P ∈ (D.ntw.S0 i : Set (HeightOneSpectrum (𝓞 D.host.E)))`. Rewrite using `[T.ringSpec_excludedPlaces_eq i]`.
+
+Conclude with `Or.inr (T.concreteTwistFrame_extraExcluded_over_smallPrimes i p hlow ((hpP p).2 dvd_rfl))`.
+-/
 theorem goodSetup_count_eq_zero_off_badPlaces (F : TwFrameC D) {low : Finset ℕ} (T : TwistFrameLowIndexCompatibility D F low) (h2 : 2 ∈ low)
     (hd : (NumberField.discr D.host.E).natAbs.primeFactors ⊆ low) (hc : (Ideal.absNorm D.host.ccK).primeFactors ⊆ low) :
     ∀ i P, P ∉ D.ntw.S0 i → FractionalIdeal.count D.host.E P D.host.AA = 0 := by
@@ -79,6 +101,11 @@ theorem goodSetup_count_eq_zero_off_badPlaces (F : TwFrameC D) {low : Finset ℕ
   rw [T.ringSpec_excludedPlaces_eq i]
   exact Or.inr (T.concreteTwistFrame_extraExcluded_over_smallPrimes i p hlow ((hpP p).2 dvd_rfl))
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (fun p : R × nonZeroDivisors R => IsLocalization.mk' (FractionRing R) p.1 p.2)` using `fun z => by`. Take `⟨⟨x, y⟩, hxy⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors R) z`. Conclude with `⟨(x, y), hxy⟩`. Use `(Cardinal.mk_le_of_surjective hs).trans ?_` and prove the remaining obligations. Rewrite using `[Cardinal.mk_prod, Cardinal.lift_id, Cardinal.lift_id]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mk_fractionRing_le {R : Type} [CommRing R] [IsDomain R] (h : Cardinal.mk R ≤ Cardinal.continuum) :
     Cardinal.mk (FractionRing R) ≤ Cardinal.continuum := by
   have hs : Function.Surjective
@@ -91,6 +118,11 @@ theorem mk_fractionRing_le {R : Type} [CommRing R] [IsDomain R] (h : Cardinal.mk
         mul_le_mul' h ((Cardinal.mk_subtype_le _).trans h)
     _ = Cardinal.continuum := Cardinal.continuum_mul_self
 
+/- English proof (translation)
+Introduce `i k`. Use `haveI := D.ntw.lPrime i`. Apply `mk_fractionRing_le` to reduce the goal to its premises. Establish `hinj : Function.Injective (fun x : D.ntw.Ok i k => ((F.eOk i k x : _) : ℂ_[D.ntw.l i]))` using `Subtype.val_injective.comp (F.eOk i k).injective`. Use `(Cardinal.mk_le_of_injective hinj).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[(GlobalTheory.PadicCard.card_padicAlgCl_padicComplex (D.ntw.l i)).2, Cardinal.mk_complex]`.
+-/
 theorem mk_frac_Ok (F : TwFrameC D) : ∀ i k, Cardinal.mk (FractionRing (D.ntw.Ok i k)) ≤ Cardinal.continuum := by
   intro i k
   haveI := D.ntw.lPrime i
@@ -100,6 +132,13 @@ theorem mk_frac_Ok (F : TwFrameC D) : ∀ i k, Cardinal.mk (FractionRing (D.ntw.
   refine (Cardinal.mk_le_of_injective hinj).trans ?_
   rw [(GlobalTheory.PadicCard.card_padicAlgCl_padicComplex (D.ntw.l i)).2, Cardinal.mk_complex]
 
+/- English proof (translation)
+Establish `hloc : IsLocallyConstant (f ∘ φ)`. Introduce `s`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `g hg`. Use `⟨(fun g' => g⁻¹ * g') ⁻¹' (φ.ker : Set Γ), fun g' hg' => ?_, h.preimage (continuous_const.mul continuous_id), ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : φ (g⁻¹ * g') = 1` using `hg'`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`. Use `show f (φ g') ∈ s`. Rewrite using `[← h1]`. Conclude with `hg`.
+
+Use `show φ (g⁻¹ * g) = 1`. Rewrite using `[inv_mul_cancel, map_one]`. Conclude with `hloc.continuous`.
+-/
 theorem continuous_comp_of_isOpen_ker {Γ B Y : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group B]
     [TopologicalSpace Y] (φ : Γ →* B) (f : B → Y) (h : IsOpen (φ.ker : Set Γ)) : Continuous (f ∘ φ) := by
   have hloc : IsLocallyConstant (f ∘ φ) := by
@@ -117,6 +156,11 @@ theorem continuous_comp_of_isOpen_ker {Γ B Y : Type} [Group Γ] [TopologicalSpa
       rw [inv_mul_cancel, map_one]
   exact hloc.continuous
 
+/- English proof (translation)
+Unfold `CharFrame.delAt`. Use `split_ifs`. Take `⟨n, h0, h⟩` from `C.isDel'.fin`. Conclude with `GlobalTheory.HeckeGal.isAlgPos_zero_of_orderDvd h0 h`. Take `⟨n, h0, h⟩` from `C.isDel.fin`.
+
+Conclude with `GlobalTheory.HeckeGal.isAlgPos_zero_of_orderDvd h0 h`.
+-/
 theorem delAt_alg (C : CharFrame D) (l : ℕ) : IsAlgPos (C.delAt l) 0 := by
   unfold CharFrame.delAt
   split_ifs
@@ -131,6 +175,29 @@ namespace GlobalTheory.TwInputs.SetupPin
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨art, hart⟩` from `hA D.host.E D.nd.Om`. Use `⟨art, hart, fun i b => ?_⟩` and prove the remaining obligations. Use `haveI := D.ntw.lPrime i`. Take `⟨ρ⟩` from `GlobalTheory.Triple.Reading.nonempty (X := D.ntw) i b`. Establish `hker : IsOpen ((Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker : Set (G D.host.E D.nd.Om))`.
+
+Establish `e : ((Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)).ker : Set (G D.host.E D.nd.Om)) = (D.ntw.delta i).ker`. Use extensionality with `g`. Apply the tactic sequence `cases b <;> simp [Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, MonoidHom.mem_ker]`. Rewrite using `[e]`. Conclude with `D.ntw.delta_open i`.
+
+Establish `hχ : IsAlgPos (cf.delAt (D.ntw.l i)) 0` using `delAt_alg cf _`. Take `⟨r0, hr0, hL⟩` from `hart.exists_isLAdicOf ρ.ι hχ`. Establish `hc : Continuous (GlobalTheory.GalChar.inQ ρ.κ (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)))` using `continuous_comp_of_isOpen_ker (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)) (Units.map (GlobalTheory.GalChar.toQ ρ.κ).toMonoidHom) hker`. Establish `hz : ∀ v, ‖(((cf.delAt (D.ntw.l i)).val v : ℂˣ) : ℂ)‖ = 1` using `fun v => cf.delAt_unitary _ _`. Establish `heq : GlobalTheory.GalChar.inQ ρ.κ (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)) = r0`.
+
+Use `GlobalTheory.GalChar.eq_of_frob hart hc hr0 ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.GalChar.away_ae (E := D.host.E) (D.ntw.l i) (Fact.out : (D.ntw.l i).Prime).ne_zero, GlobalTheory.GalChar.unr_ae (cf.delAt (D.ntw.l i))] with v hv hu A hA σ hσ`. Take `⟨x, hx, hd⟩` from `hR i v hv hu A σ hA hσ`. Establish `hx' : D.what₂.embLL (x : D.what₂.LL) = (((cf.delAt (D.ntw.l i)).val v : ℂˣ) : ℂ)⁻¹`. Rewrite using `[hx, Units.val_inv_eq_inv_val]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hL.frob_unr hart (Or.inr rfl) hu hA hσ, GlobalTheory.GalChar.inQ_val]`. Consider the cases of `b`. Establish `hstar : (x : D.what₂.LL) = star ((x⁻¹ : D.LL0) : D.what₂.LL)`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises.
+
+Rewrite using `[D.starLL_cx, IntermediateField.coe_inv, map_inv₀, hx', inv_inv, ← Complex.inv_eq_conj (hz v)]`. Establish `h1 : ρ.ι (ρ.κ (D.ntw.emb0 i x)) = (((cf.delAt (D.ntw.l i)).val v : ℂˣ) : ℂ)`. Rewrite using `[← D.ntw.restX_coefficientEmbedding_conj i x⁻¹ x hstar]`. Use `ρ.read x⁻¹` as an intermediate fact. Simplify using `only [GlobalTheory.Triple.embSide, Bool.false_eq_true, if_false] at this`.
+
+Rewrite using `[this]`. Use `show D.what₂.embLL ((x⁻¹ : D.LL0) : D.what₂.LL) = _`. Rewrite using `[IntermediateField.coe_inv, map_inv₀, hx', inv_inv]`. Use `show GlobalTheory.GalChar.toQ ρ.κ (((D.ntw.delta i)⁻¹ σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) = _`. Rewrite using `[MonoidHom.inv_apply, map_units_inv]`.
+
+Use `congr 1`. Use `show ρ.κ (algebraMap _ _ _) = _`. Rewrite using `[hd, ← h1, ρ.ι.symm_apply_apply]`. Establish `h1 : ρ.ι (ρ.κ (D.ntw.emb0 i x)) = (((cf.delAt (D.ntw.l i)).val v : ℂˣ) : ℂ)⁻¹`. Use `ρ.read x` as an intermediate fact.
+
+Simplify using `only [GlobalTheory.Triple.embSide, if_true] at this`. Rewrite using `[this]`. Conclude with `hx'`. Use `show ρ.κ (algebraMap _ _ ((D.ntw.delta i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)) = _`. Rewrite using `[hd, ← map_inv₀, ← h1, ρ.ι.symm_apply_apply]`.
+
+Use `⟨ρ.κ, ρ.ι, fun x => ?_, hχ, ?_, ?_⟩` and prove the remaining obligations. Use `ρ.read x` as an intermediate fact. Apply the tactic sequence `cases b <;> simpa [GlobalTheory.Triple.embSide] using this`. Conclude with `continuous_comp_of_isOpen_ker (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i)) Units.val hker`. Rewrite using `[heq]`.
+
+Conclude with `hL`.
+-/
 theorem exists_art_gal (hA : GlobalTheory.Published.GlobalArtinReciprocity) (cf : CharFrame D) (hR : DeltaRead D cf) :
     ∃ art : Ideles D.host.E →* Gab D.host.E D.nd.Om, IsGlobalArtin art ∧ ∀ i b,
       ∃ (κ : FractionRing (D.ntw.O0 i) →+* Qbar (D.ntw.l i)) (ι : Qbar (D.ntw.l i) ≃+* ℂ),

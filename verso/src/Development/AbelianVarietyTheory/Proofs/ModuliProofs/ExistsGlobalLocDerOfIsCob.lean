@@ -12,26 +12,45 @@ open GlobalTheory.KS
 
 namespace GlobalTheory.KS.GlueDer
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem rsT_eq {Y : Scheme.{0}} {O₀ O : Y.Opens} (h : O ≤ O₀) (s : Γ(Y, O₀)) : rsT s O = resG Y h s := dif_pos h
 
+/- English proof (translation)
+Simplify using `only [resG]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_res {Y : Scheme.{0}} {U V V' : Y.Opens} (h : V ≤ U) (h' : V' ≤ V) (s : Γ(Y, U)) :
     resG Y h' (resG Y h s) = resG Y (h'.trans h) s := by
   simp only [resG]
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Simplify using `only [resG]`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, m.naturality]`. Both sides reduce to the same expression.
+-/
 theorem res_app {Y X : Scheme.{0}} (m : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (h' : m ⁻¹ᵁ V ≤ m ⁻¹ᵁ U) (f : Γ(X, U)) :
     resG Y h' ((m.app U).hom f) = (m.app V).hom (resG X h f) := by
   simp only [resG]
   rw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, m.naturality]
   rfl
 
+/- English proof (translation)
+Simplify using `only [resG, constFn]`. Conclude with `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) (Scheme.Hom.appLE_map p (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op)`.
+-/
 theorem res_const {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {U V : X.Opens} (h : V ≤ U) (a : R) :
     resG X h (constFn p U a) = constFn p V a := by
   simp only [resG, constFn]
   exact congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a))
     (Scheme.Hom.appLE_map p (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op)
 
+/- English proof (translation)
+Establish `h1 : (m.app U).hom (constFn p U a) = constFn (m ≫ p) (m ⁻¹ᵁ U) a`. Simplify using `only [constFn]`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) (Scheme.Hom.appLE_comp_appLE m p ⊤ U (m ⁻¹ᵁ U) (fun _ _ => trivial) le_rfl)`. Rewrite using `[h1, hm]`.
+
+Simplify using `only [constFn]`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (x₀ a) = ((spMap x₀).appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)`. Use `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom x₀)` as an intermediate fact. Conclude with `congrArg (fun φ => φ.hom a) this`. Rewrite using `[h2]`.
+
+Conclude with `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) (Scheme.Hom.comp_appLE q (spMap x₀) ⊤ (m ⁻¹ᵁ U) (fun _ _ => trivial))`.
+-/
 theorem app_const {R K : Type} [CommRing R] [CommRing K] {X Y : Scheme.{0}} (x₀ : R →+* K) (p : X ⟶ Sp R)
     (q : Y ⟶ Sp K) (m : Y ⟶ X) (hm : m ≫ p = q ≫ spMap x₀) (U : X.Opens) (a : R) :
     (m.app U).hom (constFn p U a) = constFn q (m ⁻¹ᵁ U) (x₀ a) := by
@@ -50,9 +69,15 @@ theorem app_const {R K : Type} [CommRing R] [CommRing K] {X Y : Scheme.{0}} (x�
   exact congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a))
     (Scheme.Hom.comp_appLE q (spMap x₀) ⊤ (m ⁻¹ᵁ U) (fun _ _ => trivial))
 
+/- English proof (translation)
+Introduce `_ hx` and use `h hx`.
+-/
 theorem pre_mono {Y X : Scheme.{0}} (m : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) : m ⁻¹ᵁ V ≤ m ⁻¹ᵁ U :=
   fun _ hx => h hx
 
+/- English proof (translation)
+Introduce `y hy`. Establish `: m y ∈ ⨆ i, W i` using `by rw [hW]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp this`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨i, hy, hi⟩`.
+-/
 theorem pre_cover {Y X : Scheme.{0}} (m : Y ⟶ X) {I : Type} (W : I → X.Opens) (hW : ⨆ i, W i = ⊤) (O : X.Opens) :
     m ⁻¹ᵁ O ≤ ⨆ i, m ⁻¹ᵁ (O ⊓ W i) := by
   intro y hy
@@ -60,6 +85,19 @@ theorem pre_cover {Y X : Scheme.{0}} (m : Y ⟶ X) {I : Type} (W : I → X.Opens
   obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.mp this
   exact TopologicalSpace.Opens.mem_iSup.mpr ⟨i, hy, hi⟩
 
+/- English proof (translation)
+Establish `ex : ∀ (O : X.Opens) (f : Γ(X, O)), ∃ s : Γ(Y, m ⁻¹ᵁ O), ∀ i, resG Y (pre_mono m (inf_le_left : O ⊓ W i ≤ O)) s = e i (O ⊓ W i) (resG X inf_le_left f)`. Introduce `O f`. Take `⟨s, hs, -⟩` from `Y.sheaf.existsUnique_gluing' (fun i => m ⁻¹ᵁ (O ⊓ W i)) (m ⁻¹ᵁ O) (fun i => homOfLE (pre_mono m inf_le_left)) (pre_cover m W hW O) (fun i => e i (O ⊓ W i) (resG X inf_le_left f)) (by`. Introduce `i j`. Establish `hi` using `(he i).res (O ⊓ W i) ((O ⊓ W i) ⊓ (O ⊓ W j)) inf_le_left inf_le_right (resG X inf_le_left f)`.
+
+Establish `hj` using `(he j).res (O ⊓ W j) ((O ⊓ W i) ⊓ (O ⊓ W j)) inf_le_right inf_le_right (resG X inf_le_left f)`. Rewrite `hi` using `[rsT_eq (pre_mono m inf_le_left), res_res]`. Rewrite `hj` using `[rsT_eq (pre_mono m inf_le_right), res_res]`. Use `hc i j ((O ⊓ W i) ⊓ (O ⊓ W j)) (inf_le_inf inf_le_right inf_le_right) (resG X (inf_le_left.trans inf_le_left) f)` as an intermediate fact. Conclude with `hi.symm.trans (this.trans hj))`.
+
+Conclude with `⟨s, hs⟩`. Establish `ext : ∀ (O : X.Opens) (s t : Γ(Y, m ⁻¹ᵁ O)), (∀ i, resG Y (pre_mono m (inf_le_left : O ⊓ W i ≤ O)) s = resG Y (pre_mono m (inf_le_left : O ⊓ W i ≤ O)) t) → s = t` using `fun O s t h => Y.sheaf.eq_of_locally_eq' (fun i => m ⁻¹ᵁ (O ⊓ W i)) (m ⁻¹ᵁ O) (fun i => homOfLE (pre_mono m inf_le_left)) (pre_cover m W hW O) s t h`. Use `choose d₁ hd using ex`. Use `⟨d₁, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `O _ f f'`.
+
+Use `ext O _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[map_add, hd, hd, hd, map_add, (he i).add _ inf_le_right]`. Introduce `O _ f f'`. Use `ext O _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, hd, hd, hd, map_mul, (he i).mul _ inf_le_right, res_app m inf_le_left, res_app m inf_le_left]`.
+
+Introduce `O O' h _ f`. Use `ext O' _ _ fun i => ?_` and prove the remaining obligations. Establish `h' : O' ⊓ W i ≤ O ⊓ W i` using `inf_le_inf_right _ h`. Establish `h1` using `(he i).res (O ⊓ W i) (O' ⊓ W i) h' inf_le_right (resG X inf_le_left f)`. Rewrite `h1` using `[rsT_eq (pre_mono m h'), res_res, ← hd, res_res]`.
+
+Rewrite using `[hd, rsT_eq (pre_mono m h), res_res, res_res, h1]`. Introduce `O _ r`. Use `ext O _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[hd, res_const, res_const, (he i).base _ inf_le_right]`.
+-/
 theorem glue {K : Type} [Field K] {R : Type} [CommRing R] {Y X : Scheme.{0}} (q : Y ⟶ Sp K) (p : X ⟶ Sp R)
     (m : Y ⟶ X) (D : R → K) {I : Type} (W : I → X.Opens) (hW : ⨆ i, W i = ⊤)
     (e : I → ∀ O : X.Opens, Γ(X, O) → Γ(Y, m ⁻¹ᵁ O)) (he : ∀ i, LocDerK q p m D (W i) (e i))
@@ -107,6 +145,21 @@ end GlobalTheory.KS.GlueDer
 
 open GlobalTheory.KS.GlueDer in
 
+/- English proof (translation)
+Introduce `K _ A₀ _ g v dd _ hv hdd R _ x₀ X p m hm I W D d θ hW hc hb`. Use `choose b hb using hb`. Establish `H` using `fun a => (GlobalTheory.T.exists_unique_invariantVectorField_of_tangent K A₀ (v a) (hv.1 a)).2 (dd a) (hdd a)`. Use `glue A₀.hom p m D W hW (fun i O f => d i O f - ∑ a, rsT (b a i) (m ⁻¹ᵁ O) * dd a (m ⁻¹ᵁ O) ((m.app O).hom f)) (fun i => ?_) ?_` and prove the remaining obligations. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `O hO f f'`. Simplify using `only [(hc.der i).add O hO, map_add, fun a => (H a).1, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Introduce `O hO f f'`. Simplify using `only [(hc.der i).mul O hO, map_mul, fun a => (H a).2.1, mul_add, Finset.sum_add_distrib, mul_sub, Finset.mul_sum, mul_left_comm (rsT _ _)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `O O' h hO f`. Establish `h'` using `pre_mono m h`. Rewrite using `[(hc.der i).res O O' h hO, rsT_eq h', rsT_eq h', map_sub, map_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h2` using `(H a).2.2.1 _ _ ((m.app O).hom f) h'`. Rewrite `h2` using `[rsT_eq h', rsT_eq h', res_app m h]`. Rewrite using `[map_mul, h2, rsT_eq (pre_mono m hO), rsT_eq (pre_mono m (h.trans hO)), res_res]`. Introduce `O hO r`.
+
+Simplify using `only [(hc.der i).base O hO, app_const x₀ p A₀.hom m hm.w, fun a => (H a).2.2.2.1, mul_zero, Finset.sum_const_zero, sub_zero]`. Introduce `i j O hO f`. Establish `h1` using `hc.diff i j O hO f`. Establish `hi : m ⁻¹ᵁ O ≤ m ⁻¹ᵁ W i` using `pre_mono m (hO.trans inf_le_left)`. Establish `hj : m ⁻¹ᵁ O ≤ m ⁻¹ᵁ W j` using `pre_mono m (hO.trans inf_le_right)`.
+
+Establish `h2 : ∀ a, rsT (θ a i j) (m ⁻¹ᵁ O) = rsT (b a j) (m ⁻¹ᵁ O) - rsT (b a i) (m ⁻¹ᵁ O)`. Introduce `a`. Rewrite using `[hb, rsT_eq (le_inf hi hj), map_sub, rsT_eq inf_le_right, rsT_eq inf_le_left, res_res, res_res, rsT_eq hi, rsT_eq hj]`. Simplify using `only [h2, sub_mul, Finset.sum_sub_distrib] at h1`. Use `show _ - _ = _ - _`.
+
+Take the linear combination `-h1`.
+-/
 theorem GlobalTheory.KS.exists_global_locDer_of_isCob : ∀ (K : Type) [Field K] (A₀ : Over (Sp K)) [GrpObj A₀] (g : ℕ) (v : Fin g → (epsR K ⟶ A₀)) (dd : Fin g → ∀ O : A₀.left.Opens, Γ(A₀.left, O) → Γ(A₀.left, O)), Smooth A₀.hom → IsLieBasis v → (∀ a, IsInvDer (v a) (dd a)) → ∀ (R : Type) [CommRing R] (x₀ : R →+* K) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : A₀.left ⟶ X), IsPullback m A₀.hom p (spMap x₀) → ∀ (I : Type) (W : I → X.Opens) (D : R → K) d θ, ⨆ i, W i = ⊤ → KSCoc A₀.hom p m D W dd d θ → (∀ a, IsCob _ (θ a)) → ∃ d₁, LocDerK A₀.hom p m D ⊤ d₁ := by
   intro K _ A₀ _ g v dd _ hv hdd R _ x₀ X p m hm I W D d θ hW hc hb
   choose b hb using hb

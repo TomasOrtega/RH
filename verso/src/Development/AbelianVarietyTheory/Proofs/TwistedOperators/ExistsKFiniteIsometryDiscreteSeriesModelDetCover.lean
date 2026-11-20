@@ -27,9 +27,15 @@ section Semi
 variable {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup H'] [InnerProductSpace ℂ H']
   {cj : Bool} {U : H → H'}
 
+/- English proof (translation)
+Apply the tactic sequence `cases cj <;> simp [cjc]`.
+-/
 theorem cjc_ofReal (cj : Bool) (r : ℝ) : cjc cj (r : ℂ) = r := by
   cases cj <;> simp [cjc]
 
+/- English proof (translation)
+Set `L₀ : H →ₗᵢ[ℝ] H'` to `{ toFun := U map_add' := hadd map_smul' := fun r x => by`. Rewrite using `[← Complex.coe_smul, hs, cjc_ofReal, Complex.coe_smul, RingHom.id_apply]`. Use the proof step `norm_map' := hn }`. Conclude with `⟨LinearIsometryEquiv.ofSurjective L₀ hb.2, fun _ => rfl⟩`.
+-/
 theorem exists_real (hadd : ∀ x y, U (x + y) = U x + U y) (hs : ∀ (z : ℂ) x, U (z • x) = cjc cj z • U x)
     (hb : Function.Bijective U) (hn : ∀ x, ‖U x‖ = ‖x‖) : ∃ L : H ≃ₗᵢ[ℝ] H', ∀ x, L x = U x := by
   let L₀ : H →ₗᵢ[ℝ] H' :=
@@ -40,6 +46,13 @@ theorem exists_real (hadd : ∀ x y, U (x + y) = U x + U y) (hs : ∀ (z : ℂ) 
       norm_map' := hn }
   exact ⟨LinearIsometryEquiv.ofSurjective L₀ hb.2, fun _ => rfl⟩
 
+/- English proof (translation)
+Establish `hre : ∀ w x : H, (⟪U w, U x⟫_ℂ).re = (⟪w, x⟫_ℂ).re` using `fun w x => by`. Establish `h1` using `re_inner_eq_norm_add_mul_self_sub_norm_mul_self_sub_norm_mul_self_div_two (𝕜 := ℂ) (U w) (U x)`. Establish `h2` using `re_inner_eq_norm_add_mul_self_sub_norm_mul_self_sub_norm_mul_self_div_two (𝕜 := ℂ) w x`. Rewrite `h1` using `[← hadd, hn, hn, hn, ← h2]`. Conclude with `h1`.
+
+Establish `h1` using `hre w x`. Establish `h2` using `hre w (Complex.I • x)`. Rewrite `h2` using `[hs, inner_smul_right, inner_smul_right]`. Consider the cases of `cj`. Apply the tactic sequence `apply Complex.ext <;> simp_all [cjc]`.
+
+Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [cjc, if_true, Complex.conj_re]`. Conclude with `h1`. Simplify using `only [cjc, if_true, Complex.conj_im] at h2 ⊢`. Simplify using `using h2`.
+-/
 theorem inner_map (hadd : ∀ x y, U (x + y) = U x + U y) (hs : ∀ (z : ℂ) x, U (z • x) = cjc cj z • U x)
     (hn : ∀ x, ‖U x‖ = ‖x‖) (w x : H) : ⟪U w, U x⟫_ℂ = cjc cj ⟪w, x⟫_ℂ := by
   have hre : ∀ w x : H, (⟪U w, U x⟫_ℂ).re = (⟪w, x⟫_ℂ).re := fun w x => by
@@ -60,12 +73,38 @@ theorem inner_map (hadd : ∀ x y, U (x + y) = U x + U y) (hs : ∀ (z : ℂ) x,
 
 end Semi
 
+/- English proof (translation)
+Consider the cases of `br`. Conclude with `isFormIso_plainMat h`. Conclude with `isFormIso_barMat h`.
+-/
 theorem isFormIso_phi {p q n : ℕ} {ε : Fin n → Bool} {e : Ix p q ≃ Fin n} (h : SignCompat ε e) (br : Bool) :
     IsFormIso ε (phi br e) := by
   cases br
   · exact isFormIso_plainMat h
   · exact isFormIso_barMat h
 
+/- English proof (translation)
+Introduce `D V S M τ p q T R lam c br cj e m U hpar hord hm hT hhi`. Establish `hφ` using `isFormIso_phi hord.1 br`. Take `⟨L, hL⟩` from `exists_real hT.add hT.smul hT.bij hT.norm`. Establish `hr : ∀ v : kfin M τ, ∃ y, R.ι y = U v`. Introduce and unpack `⟨v, hv⟩`.
+
+Express the relevant statement in the definitionally equal form `U v ∈ LinearMap.range R.ι`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact (hT.kfin x).1 hx`. Consider the case `zero => rw [← hL, map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [hT.add]`. Conclude with `add_mem hx hy`. Consider the case `smul z x _ hx => rw [hT.smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Use `choose u hu using hr`.
+
+Establish `hmC : (m : ℂ) = 2 * (c : ℂ)` using `by exact_mod_cast hm`. Establish `hgrp : ∀ (g : T.G) (x : M.H τ), U (M.σ τ (phi br e ((T.cov g : GL (Ix p q) ℂ) : Mat p q)) x) = ((T.sq g : ℂˣ) : ℂ) ^ m • R.U.π g (U x)` using `fun g x => by`. Rewrite using `[hT.grp, smul_smul, ← zpow_add₀ (Units.ne_zero _), add_neg_cancel, zpow_zero, one_smul]`. Use `⟨u, hpar, hord, fun x y => R.ι_inj ?_, fun z x => R.ι_inj ?_, ⟨fun x y h => ?_, fun y => ?_⟩, ?_, fun Z hZ v v' => ?_, fun v => hhi _ _ (hu v).symm, fun m' hm' g v w => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hu, hu, hu, Submodule.coe_add, hT.add]`.
+
+Rewrite using `[map_smul, hu, hu, Submodule.coe_smul, hT.smul]`. Conclude with `Subtype.ext (hT.bij.1 (by rw [← hu, ← hu, h]))`. Take `⟨x, hx⟩` from `hT.bij.2 (R.ι y)`. Conclude with `⟨⟨x, Submodule.subset_span ((hT.kfin x).2 ⟨y, hx.symm⟩)⟩, R.ι_inj (by rw [hu]; exact hx)⟩`. Express the relevant statement in the definitionally equal form `(fun Z => toFrame M τ (phi br e Z)) '' _ = _`.
+
+Rewrite using `[← toFrame_image M τ, ← Set.image_image (toFrame M τ) (phi br e)]`. Use `congr 1`. Use extensionality with `Y`. Take `⟨Z, rfl⟩` from `hφ.bij.2 Y`. Rewrite using `[hφ.bij.1.mem_set_image, ← hφ.mem_lie]`.
+
+Both sides reduce to the same expression. Establish `h1` using `(hasDerivAt_sq_zpow T m hZ).fun_smul (R.der Z hZ (u v))`. Establish `h2 : HasDerivAt (fun t : ℝ => L (M.rep τ (NormedSpace.exp (t • phiFr (M.fr τ) br e Z)) (v : M.H τ))) (R.ι (R.HK.act Z (u v) + ((c : ℂ) * Z.trace) • u v)) 0`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+
+Establish `h3` using `rep_exp M τ (phi br e Z) t`. Rewrite using `[hL, show phiFr (M.fr τ) br e Z = toFrame M τ (phi br e Z) from rfl, h3, hφ.exp, ← T.expt_cov _ (GlobalTheory.RealPar.KStabLie.smul_mem_upq hZ t), hgrp, hu]`. Rewrite using `[hmC, show 2 * (c : ℂ) * (Z.trace / 2) = c * Z.trace by ring]`. Simplify using `[T.expt_zero]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h3` using `L.toContinuousLinearEquiv.toContinuousLinearMap.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`. Use `R.ι_inj ?_` and prove the remaining obligations. Rewrite using `[hu, ← hL]`. Conclude with `h3.unique h2`.
+
+Introduce `h`. Rewrite `h2` using `[← h, hu, ← hL]`. Establish `h3` using `L.symm.toContinuousLinearEquiv.toContinuousLinearMap.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h2`. Unfold `VecDer`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take `rfl : m' = m` from `by exact_mod_cast hm'.trans hm.symm`. Rewrite using `[← inner_map hT.add hT.smul hT.norm, hgrp, inner_smul_right, hu, hu]`.
+-/
 theorem exists_kTie : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (p q : ℕ) (T : GrpData p q) (R : DSRep T) (lam : Ix p q → ℚ) (c : ℚ) (br cj : Bool) (e : Ix p q ≃ Fin V.rank) (m : ℤ) (U : M.H τ → R.U.H), IsParam lam → IsOrd (M.ε τ) (M.lam τ) lam c (sg br cj) e → (m : ℚ) = 2 * c → Comparison₂ R M τ br cj e m U → (∀ x v, U x = R.ι v → (IsHighestUnit (M.ε τ) (M.lam τ) (M.σ τ) x ↔ UnitHW R (blattner lam) v)) → ∃ u, KTie R M τ lam c br cj e u := by
   intro D V S M τ p q T R lam c br cj e m U hpar hord hm hT hhi
   have hφ := isFormIso_phi hord.1 br

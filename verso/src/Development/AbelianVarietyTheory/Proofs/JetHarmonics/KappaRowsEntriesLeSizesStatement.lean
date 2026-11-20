@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff)
 open ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF (AvFSt HTFSt UpFSt)
 open GlobalTheory.RunDepth GlobalTheory.CharDepth
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeightRows.kappa_entries_le | exact GlobalTheory.WeightRows.kappa_entries_le | (intros; apply GlobalTheory.WeightRows.kappa_entries_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.kappaRows_entries_le_sizes : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (j : ℕ), InR D j → ∀ τ : D.what₂.Tau, (∀ i, i.1 < D.R.k - 1 → ((kaR Tp hK j).aP τ i : ℝ) ≤ wj D j τ + L.Sc) ∧ (∀ i, D.R.k - 1 ≤ i.1 → ((kaR Tp hK j).aP τ i : ℝ) ≤ L.etaSz) ∧ ∀ i, ((kaR Tp hK j).aM τ i : ℝ) ≤ L.etaSz := by
   first | exact @GlobalTheory.WeightRows.kappa_entries_le | exact GlobalTheory.WeightRows.kappa_entries_le | (intros; apply GlobalTheory.WeightRows.kappa_entries_le <;> assumption)

@@ -15,6 +15,9 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL MeasureT
 
 namespace GlobalTheory.CompanionTheory.ClozelHerm
 
+/- English proof (translation)
+Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lieS E a i j (-x) φ.1 = -(lieS E a i j x φ.1)`. Rewrite using `[map_neg]`. Both sides reduce to the same expression.
+-/
 theorem op_lie_single_neg {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (π : CuspSub E a)
     (i j : Fin a) (x : Cinf E) :
     π.op (.lie (toL (Matrix.single i j (-x)))) = -π.op (.lie (toL (Matrix.single i j x))) := by
@@ -23,6 +26,13 @@ theorem op_lie_single_neg {E : Type} [Field E] [NumberField E] [IsTotallyComplex
   rw [map_neg]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ a π B hB τ i j φ ψ`. Establish `e1 : atEmb (ComplexEmbedding.conjugate τ) 1 = atEmb τ 1` using `by rw [atEmb_conj, map_one]`. Establish `e2 : atEmb (ComplexEmbedding.conjugate τ) Complex.I = -atEmb τ Complex.I`. Rewrite using `[atEmb_conj, Complex.conj_I, atEmb_eq, atEmb_eq τ Complex.I]`. Simplify using the standard rewrite rules.
+
+Establish `c2 : (starRingEnd ℂ) (1 / 2 : ℂ) = 1 / 2`. Rewrite using `[show (1 / 2 : ℂ) = ((1 / 2 : ℝ) : ℂ) by norm_num]`. Conclude with `Complex.conj_ofReal _`. Establish `s1` using `hB.1 (toL (Matrix.single i j (atEmb τ 1))) φ ψ`. Establish `s2` using `hB.1 (toL (Matrix.single i j (atEmb τ Complex.I))) φ ψ`.
+
+Simplify using `only [EopV, e1, e2, op_lie_single_neg, LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.add_apply, map_smul, map_sub, map_neg, map_smulₛₗ, c2, Complex.conj_I, smul_eq_mul, s1, s2, RingHom.id_apply, smul_neg, sub_neg_eq_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem EopV_adjoint : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a)
     (B : π.V →ₗ[ℂ] π.V →ₗ⋆[ℂ] ℂ), IsHerm π B → ∀ (τ : E →+* ℂ) (i j : Fin a) (φ ψ : π.V),
     B (EopV π τ i j φ) ψ = -B φ (EopV π (NumberField.ComplexEmbedding.conjugate τ) i j ψ) := by

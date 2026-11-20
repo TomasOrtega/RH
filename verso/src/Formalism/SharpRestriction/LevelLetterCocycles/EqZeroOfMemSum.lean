@@ -20,12 +20,30 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
 
+/- English proof (translation)
+Establish `h` using `(Submodule.mem_iInf _).mp (Submodule.mem_inf.mp hy).2 c`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `h`.
+-/
 theorem mulVdR_of_mem {τ : K →ₐ[Qp] LL} {y : V ⊗[Qp] BdR} (hy : y ∈ DdRE PD ρ τ) (c : K) :
     mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c y = τ c • y := by
   have h := (Submodule.mem_iInf _).mp (Submodule.mem_inf.mp hy).2 c
   rw [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ y _ hy`. Simplify using `using hy`.
+
+Consider the case `insert a s ha ih`. Introduce `hτ y hyτ hy`. Establish `haτ : a ≠ τ` using `fun h => hτ (h ▸ Finset.mem_insert_self a s)`. Establish `hτs : τ ∉ s` using `fun h => hτ (Finset.mem_insert_of_mem h)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : K, τ c ≠ a c := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `haτ (AlgHom.ext fun c => (h c).symm)`. Set `φ : Module.End LL (V ⊗[Qp] BdR)` to `mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) c - a c • LinearMap.id`. Establish `hφ : ∀ τ', ∀ x ∈ DdRE PD ρ τ', φ x = (τ' c - a c) • x`.
+
+Introduce `τ' x hx`. Simplify using `only [φ, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, mulVdR_of_mem PD ρ hx c, sub_smul]`. Establish `hW : ∀ x ∈ ⨆ τ' ∈ s, DdRE PD ρ τ', φ x ∈ ⨆ τ' ∈ s, DdRE PD ρ τ'`. Introduce `x hx`. Establish `hle : (⨆ τ' ∈ s, DdRE PD ρ τ') ≤ (⨆ τ' ∈ s, DdRE PD ρ τ').comap φ`.
+
+Use `iSup₂_le fun τ' hτ' => fun z hz => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, hφ τ' z hz]`. Conclude with `Submodule.smul_mem _ _ ((le_iSup₂ (f := fun τ' _ => DdRE PD ρ τ') τ' hτ') hz)`. Conclude with `hle hx`. Rewrite `hy` using `[Finset.iSup_insert, Submodule.mem_sup]`.
+
+Take `⟨ya, hya, z, hz, hyz⟩` from `hy`. Establish `h1 : φ y ∈ ⨆ τ' ∈ s, DdRE PD ρ τ'`. Rewrite using `[← hyz, map_add, hφ a ya hya, sub_self, zero_smul, zero_add]`. Conclude with `hW z hz`. Rewrite `h1` using `[hφ τ y hyτ]`.
+
+Establish `h2` using `ih hτs _ (Submodule.smul_mem _ _ hyτ) h1`. Conclude with `(smul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hc)`.
+-/
 theorem eq_zero_of_mem_sum (τ : K →ₐ[Qp] LL) :
     ∀ (s : Finset (K →ₐ[Qp] LL)), τ ∉ s → ∀ y ∈ DdRE PD ρ τ,
       y ∈ ⨆ τ' ∈ s, DdRE PD ρ τ' → y = 0 := by
@@ -66,6 +84,13 @@ theorem eq_zero_of_mem_sum (τ : K →ₐ[Qp] LL) :
     have h2 := ih hτs _ (Submodule.smul_mem _ _ hyτ) h1
     exact (smul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hc)
 
+/- English proof (translation)
+Take `⟨f, hf, z, hz, hfz⟩` from `Submodule.mem_sup.mp h`. Take `⟨s, hs⟩` from `Submodule.mem_iSup_iff_exists_finset.mp hz`. Establish `hle : (⨆ τ' ∈ s, ⨆ (_ : τ' ≠ τ), DdRE PD ρ τ') ≤ ⨆ τ' ∈ s.filter (· ≠ τ), DdRE PD ρ τ'`. Use `iSup₂_le fun τ' hτ' => iSup_le fun hne => ?_` and prove the remaining obligations. Conclude with `le_iSup₂ (f := fun τ' _ => DdRE PD ρ τ') τ' (Finset.mem_filter.mpr ⟨hτ', hne⟩)`.
+
+Establish `hzτ : z ∈ DdRE PD ρ τ`. Establish `e : z = x - f` using `by rw [← hfz]; abel`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ hx (hF hf)`. Establish `hz0` using `eq_zero_of_mem_sum PD ρ τ (s.filter (· ≠ τ)) (by simp) z hzτ (hle hs)`.
+
+Rewrite using `[← hfz, hz0, add_zero]`. Conclude with `hf`.
+-/
 theorem mem_of_mem_filC (τ : K →ₐ[Qp] LL) (F : Submodule LL (V ⊗[Qp] BdR)) (hF : F ≤ DdRE PD ρ τ)
     {x : V ⊗[Qp] BdR} (hx : x ∈ DdRE PD ρ τ)
     (h : x ∈ F ⊔ ⨆ (τ' : K →ₐ[Qp] LL) (_ : τ' ≠ τ), DdRE PD ρ τ') : x ∈ F := by
@@ -83,6 +108,15 @@ theorem mem_of_mem_filC (τ : K →ₐ[Qp] LL) (F : Submodule LL (V ⊗[Qp] BdR)
   rw [← hfz, hz0, add_zero]
   exact hf
 
+/- English proof (translation)
+Introduce `a ha`. Take `⟨hi, hhi⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_fildR_hi (PD := PD) (ρ := ρ) τ`. Establish `hstep : ∀ c : ℤ, -b < c → FildR PD ρ τ c = FildR PD ρ τ (c + 1)`. Introduce `c hc`. Assume the negation of the conclusion as `h`.
+
+Establish `h2` using `hj c (fun h' => h h'.symm)`. Conclude with `absurd (Set.mem_Iic.1 h2) (not_le.2 hc)`. Establish `hk : ∀ k : ℕ, FildR PD ρ τ a = FildR PD ρ τ (a + k)`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[ih, hstep (a + k) (by omega)]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hk (hi - a).toNat]`. Conclude with `hhi _ (by omega)`.
+-/
 theorem fildR_eq_bot (τ : K →ₐ[Qp] LL) [FiniteDimensional LL ↥(DdRE PD ρ τ)] (b : ℤ)
     (hj : JumpsInV PD ρ τ (Set.Iic (-b))) : ∀ a : ℤ, -b < a → FildR PD ρ τ a = ⊥ := by
   intro a ha

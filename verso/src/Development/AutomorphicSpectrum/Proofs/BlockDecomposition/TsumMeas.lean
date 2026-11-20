@@ -42,6 +42,11 @@ def dsum (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (Φ : Mx D ρ p �
 def Ap (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (Φ φ : Mx D ρ p → ℂ) (v : Mx D ρ p × Mx D ρ p) : ℂ :=
   dsum ψ b₀ Φ v.2 v.1 * conj (dsum ψ b₀ φ v.2 v.1)
 
+/- English proof (translation)
+Establish `h0 : chz ψ b₀ (0 : hermA D ρ) = 1`. Establish `: (Matrix.trace (HMul.hMul (b₀.1.map (incA D)) (0 : hermA D ρ).1 : Mx D ρ ρ)) = 0`. Simplify using the standard rewrite rules. Rewrite using `[chz, this]`. Simplify using `[halfTr, trA]`.
+
+Rewrite using `[th, h0, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem th_zero (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (φ : Mx D ρ p → ℂ) (x y : Mx D ρ p) :
     th ψ b₀ φ 0 x y = dsum ψ b₀ φ x y := by
   have h0 : chz ψ b₀ (0 : hermA D ρ) = 1 := by
@@ -52,6 +57,9 @@ theorem th_zero (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (φ : Mx D 
   rw [th, h0, one_mul]
   rfl
 
+/- English proof (translation)
+Use `stronglyMeasurable_of_tendsto (u := (atTop : Filter (Finset ι))) (f := fun (s : Finset ι) a => ∑ i ∈ s, f i a) (fun s => ?_) ?_` and prove the remaining obligations. Conclude with `Finset.stronglyMeasurable_fun_sum _ fun i _ => hf i`. Conclude with `tendsto_pi_nhds.2 fun a => (hs a).hasSum`.
+-/
 theorem tsum_meas {ι X : Type} [Countable ι] [MeasurableSpace X] {f : ι → X → ℂ}
     (hf : ∀ i, StronglyMeasurable (f i)) (hs : ∀ a, Summable fun i => f i a) :
     StronglyMeasurable fun a => ∑' i, f i a := by

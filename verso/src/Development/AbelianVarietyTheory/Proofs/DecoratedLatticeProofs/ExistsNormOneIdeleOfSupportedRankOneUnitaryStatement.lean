@@ -9,5 +9,8 @@ open GlobalTheory.SeeSaw (idV dI FI)
 open ValuativeRel
 open GlobalTheory.Core.Mi.LatMatch
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Mi.LatMatch.exists_normOneAt_of_rank_one | exact GlobalTheory.Core.Mi.LatMatch.exists_normOneAt_of_rank_one | (intros; apply GlobalTheory.Core.Mi.LatMatch.exists_normOneAt_of_rank_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_normOneIdele_of_supported_rankOneUnitary : ∀ (D : D7) (L : HSp D) (v : GlobalTheory.FinPl.Pl D) (γ : GA D L), L.rank = 1 → γ ∈ grpAt L (· = v) → ∃ c : AE D, NormOneAt v c ∧ NormOneAt v (cA D c) ∧ Formalism.L2.Theta.mt L γ = c • (1 : Matrix (Fin L.rank) (Fin L.rank) (AE D)) := by
   first | exact @GlobalTheory.Core.Mi.LatMatch.exists_normOneAt_of_rank_one | exact GlobalTheory.Core.Mi.LatMatch.exists_normOneAt_of_rank_one | (intros; apply GlobalTheory.Core.Mi.LatMatch.exists_normOneAt_of_rank_one <;> assumption)

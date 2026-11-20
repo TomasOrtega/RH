@@ -6,6 +6,13 @@ namespace ReciprocityTheory.ChartRestriction.G.PullbackSections
 
 open Formalism.L2.Pj IsDedekindDomain
 
+/- English proof (translation)
+Unfold `vV valV`. Establish `h` using `HeightOneSpectrum.valuation_le_one (K := T.Fr) (IsDiscreteValuationRing.maximalIdeal T.V) r`. Generalize the expression as in `(HeightOneSpectrum.valuation T.Fr (IsDiscreteValuationRing.maximalIdeal T.V)) ((algebraMap T.V T.Fr) r) = x at h ⊢`. Proceed by induction on `x using WithZero.recZeroCoe with`. Consider the case `zero => simp`.
+
+Consider the case `coe a`. Establish `ha : a ≤ 1` using `WithZero.coe_le_one.mp h`. Establish `hl : (↑a : WithZero (Multiplicative ℤ)).log = Multiplicative.toAdd a`. Simplify using `[WithZero.log]`. Rewrite using `[hl]`.
+
+Establish `h2 : Multiplicative.toAdd a ≤ 0` using `ha`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_alg_nonneg (T : CDVR) (r : T.V) : 0 ≤ vV T.V (algebraMap T.V T.Fr r) := by
   unfold vV valV
   have h := HeightOneSpectrum.valuation_le_one (K := T.Fr) (IsDiscreteValuationRing.maximalIdeal T.V) r
@@ -25,6 +32,17 @@ variable {T T' : CDVR} (iT : T.Fr →+* T'.Fr) {e' : ℕ}
   (hv : ∀ a : T.Fr, a ≠ 0 → vV T'.V (iT a) = (e' : ℤ) * vV T.V a)
 
 include hv in
+/- English proof (translation)
+Establish `key : ∀ x : T'.Fr, 0 ≤ vV T'.V x → x ∈ (algebraMap T'.V T'.Fr).range`. Introduce `x hx`. Unfold `vV valV at hx`. Establish `hle : (HeightOneSpectrum.valuation T'.Fr (IsDiscreteValuationRing.maximalIdeal T'.V)) x ≤ 1`. Generalize the expression as in `(HeightOneSpectrum.valuation T'.Fr (IsDiscreteValuationRing.maximalIdeal T'.V)) x = y at hx ⊢`.
+
+Proceed by induction on `y using WithZero.recZeroCoe with`. Consider the case `zero => exact zero_le'`. Consider the case `coe a`. Establish `hl : (↑a : WithZero (Multiplicative ℤ)).log = Multiplicative.toAdd a`. Simplify using `[WithZero.log]`.
+
+Rewrite `hx` using `[hl]`. Establish `h2 : Multiplicative.toAdd a ≤ 0` using `by omega`. Conclude with `WithZero.coe_le_one.mpr h2`. Apply `HeightOneSpectrum.mem_integers_of_valuation_le_one` to reduce the goal to its premises. Introduce `w`.
+
+Establish `hw : w = IsDiscreteValuationRing.maximalIdeal T'.V` using `by ext1`. Rewrite using `[IsLocalRing.eq_maximalIdeal w.isMaximal, IsLocalRing.eq_maximalIdeal (IsDiscreteValuationRing.maximalIdeal T'.V).isMaximal]`. Rewrite using `[hw]`. Conclude with `hle`. Distinguish the cases in `hr : algebraMap T.V T.Fr r = 0`.
+
+Rewrite using `[hr, map_zero]`. Conclude with `zero_mem _`. Apply `key` to reduce the goal to its premises. Rewrite using `[hv _ hr]`. Conclude with `mul_nonneg (by positivity) (vV_alg_nonneg T r)`.
+-/
 theorem iT_int (r : T.V) : iT (algebraMap T.V T.Fr r) ∈ (algebraMap T'.V T'.Fr).range := by
   have key : ∀ x : T'.Fr, 0 ≤ vV T'.V x → x ∈ (algebraMap T'.V T'.Fr).range := by
     intro x hx

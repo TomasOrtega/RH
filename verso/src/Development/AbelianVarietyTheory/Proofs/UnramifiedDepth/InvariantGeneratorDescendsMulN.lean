@@ -15,6 +15,9 @@ namespace GlobalTheory
 
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Establish `e` using `(gs_res (𝟙 Y') x h hx ((τ.app W).hom a)).trans (gs_pull (𝟙 Y') τ x W (h hx) a)`. Rewrite `e` using `[Category.id_comp]`. Conclude with `e`.
+-/
 private theorem invGenDescent_gs_appLE {Y Y' : Scheme.{0}} (τ : Y' ⟶ Y) (W : Y.Opens) (W' : Y'.Opens)
     (h : W' ≤ τ ⁻¹ᵁ W) (a : Γ(Y, W)) (x : Y') (hx : x ∈ W') :
     gs (𝟙 Y') x W' ((τ.appLE W W' h).hom a) = gs τ x W a := by
@@ -24,6 +27,19 @@ private theorem invGenDescent_gs_appLE {Y Y' : Scheme.{0}} (τ : Y' ⟶ Y) (W : 
 
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Establish `inj : ∀ V : Y.Opens, Function.Injective (m.app V).hom`. Introduce `V a b e`. Take `⟨c, -, hc⟩` from `H V ((m.app V).hom a) (fun t h => fn_ext fun x hx => by`. Rewrite using `[invGenDescent_gs_appLE (τ t) _ _ h _ x hx, gs_pull (τ t) m x V (h hx), gs_pull (𝟙 Y') m x V hx, hτ, Category.id_comp])`. Conclude with `(hc a rfl).trans (hc b e.symm).symm`.
+
+Establish `injU : ∀ V : Y.Opens, Function.Injective (pullU m V)` using `fun V a b e => Units.ext (inj V (congrArg Units.val e))`. Establish `descU : ∀ (V : Y.Opens) (u : Γ(Y', m ⁻¹ᵁ V)ˣ), (∀ t x, x ∈ m ⁻¹ᵁ V → gm (τ t) x _ u = gm (𝟙 Y') x _ u) → ∃ v : Γ(Y, V)ˣ, pullU m V v = u`. Introduce `V u hu`. Establish `key : ∀ u : Γ(Y', m ⁻¹ᵁ V)ˣ, (∀ t x, x ∈ m ⁻¹ᵁ V → gm (τ t) x _ u = gm (𝟙 Y') x _ u) → ∃ a : Γ(Y, V), (m.app V).hom a = u.val` using `fun u hu => (H V u.val (fun t h => fn_ext fun x hx => by`. Rewrite using `[invGenDescent_gs_appLE (τ t) _ _ h _ x hx, gs_unit (τ t) x (m ⁻¹ᵁ V) (h hx), gs_unit (𝟙 Y') x (m ⁻¹ᵁ V) hx, hu t x hx])).exists`.
+
+Take `⟨a, ha⟩` from `key u hu`. Take `⟨b, hb⟩` from `key u⁻¹ (fun t x hx => by rw [map_inv, map_inv, hu t x hx])`. Establish `e : a * b = 1` using `inj V (by rw [map_mul, map_one, ha, hb]; exact u.mul_inv)`. Conclude with `⟨⟨a, b, e, (mul_comm _ _).trans e⟩, Units.ext ha⟩`. Establish `le : ∀ j : PUnit → M.ι, m ⁻¹ᵁ LB.wchart M (fun _ : PUnit => ψ) j ≤ LB.wchart M (fun _ : PUnit => m ≫ ψ) j` using `fun j x hx => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx k`.
+
+Establish `loc : ∀ j : PUnit → M.ι, ∃ v : Γ(Y, LB.wchart M (fun _ : PUnit => ψ) j)ˣ, pullU m _ v = res (le j) (σ.s j)`. Introduce `j`. Use `descU _ _ fun t x hx => ?_` and prove the remaining obligations. Establish `hx' : τ t x ∈ m ⁻¹ᵁ LB.wchart M (fun _ : PUnit => ψ) j` using `(congrArg (fun q : Y' ⟶ Y => q x ∈ LB.wchart M (fun _ : PUnit => ψ) j) (hτ t)).mpr hx`. Take `⟨J, hJ, e⟩` from `exists_good M hM x (fun _ : PUnit => m ≫ ψ) j (fun a b _ => rfl) (fun k => Set.mem_iInter.1 (le j hx) k)`.
+
+Use `inv t x J hJ` as an intermediate fact. Rewrite `this` using `[val_of σ _ x J j (fun k => by rw [Category.id_comp, ← Category.assoc, hτ]; exact e k), val_of σ _ x J j (fun k => by rw [Category.id_comp]; exact e k), Category.id_comp]`. Conclude with `(gm_res (τ t) x (le j) hx' _).trans (this.trans (gm_res (𝟙 Y') x (le j) hx _).symm)`. Use `choose v hv using loc`. Use `⟨⟨v⟩, fun i j => injU _ (unit_ext fun x hx => ?_)⟩` and prove the remaining obligations.
+
+Establish `hv' : ∀ j : PUnit → M.ι, m x ∈ LB.wchart M (fun _ : PUnit => ψ) j → gm (𝟙 Y' ≫ m) x _ (v j) = gm (𝟙 Y') x (LB.wchart M (fun _ : PUnit => m ≫ ψ) j) (σ.s j)` using `fun j hj => (gm_pull (𝟙 Y') m x _ hj _).symm.trans ((congrArg (gm (𝟙 Y') x _) (hv j)).trans (gm_res (𝟙 Y') x (le j) hj _))`. Establish `hx' : (𝟙 Y' ≫ m) x ∈ LB.wchart M (fun _ : PUnit => ψ) i ⊓ LB.wchart M (fun _ : PUnit => ψ) j` using `hx`. Use `(gm_pull (𝟙 Y') m x _ hx _).trans (Eq.trans ?_ (gm_pull (𝟙 Y') m x _ hx _).symm)` and prove the remaining obligations. Use `(gm_res _ x _ hx' _).trans ((hv' i hx.1).trans ((gen_trans hσ (𝟙 Y') x (le i hx.1) (le j hx.2)).trans (Eq.symm ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_linComb M (fun _ : PUnit => ψ) (fun _ => 1) (𝟙 Y' ≫ m) x i j hx'.1 hx'.2).trans ?_) ((gm_res _ x _ hx' _).trans (hv' j hx. …` and prove the remaining obligations. Simplify using `only [trF, Category.assoc]`.
+-/
 private theorem invariant_generator_descent {X Y Y' : Scheme.{0}} (m : Y' ⟶ Y) {T : Type} (τ : T → (Y' ⟶ Y'))
     (hτ : ∀ t, τ t ≫ m = m)
     (H : ∀ (V : Y.Opens) (a : Γ(Y', m ⁻¹ᵁ V)),
@@ -81,6 +97,11 @@ private theorem invariant_generator_descent {X Y Y' : Scheme.{0}} (m : Y' ⟶ Y)
       ((gm_res _ x _ hx' _).trans (hv' j hx.2)))))))
   simp only [trF, Category.assoc]
 
+/- English proof (translation)
+Introduce `H S G _ _ K _ _ f N hN h₁ h₂ h₃ h₄ X M hM ψ σ hσ inv`. Use `invariant_generator_descent (((𝟙 G) ^ N : G ⟶ G) ▷ Over.mk f).left (T := {y : Over.mk f ⟶ G // y ^ N = 1}) (fun y => (lift (fst G (Over.mk f) * (snd G (Over.mk f) ≫ y.1)) (snd G (Over.mk f))).left) (fun y => ?_) (fun V a ha => H S G K f N hN h₁ h₂ h₃ h₄ V a (fun y hy => ha ⟨y, hy …` and prove the remaining obligations. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Use `ext1`.
+
+Rewrite using `[lift_whiskerRight, lift_fst, whiskerRight_fst, MonObj.comp_pow, MonObj.comp_pow, Category.comp_id, Category.comp_id, mul_pow, ← MonObj.comp_pow, y.2, MonObj.comp_one, _root_.mul_one]`. Simplify using the standard rewrite rules.
+-/
 theorem invariantGenerator_descends_mulN :
   (∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (K : Type) [Field K] [IsAlgClosed K] (f : Spec (CommRingCat.of K) ⟶ S) (N : ℕ), (N : K) ≠ 0 → Smooth G.hom → IsFinite ((𝟙 G) ^ N : G ⟶ G).left → Flat ((𝟙 G) ^ N : G ⟶ G).left → Surjective ((𝟙 G) ^ N : G ⟶ G).left →
     ∀ (V : (G ⊗ Over.mk f).left.Opens) (a : Γ((G ⊗ Over.mk f).left, (((𝟙 G) ^ N : G ⟶ G) ▷ Over.mk f).left ⁻¹ᵁ V)),

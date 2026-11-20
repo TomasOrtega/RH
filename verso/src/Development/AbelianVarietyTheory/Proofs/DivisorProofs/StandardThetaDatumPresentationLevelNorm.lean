@@ -22,6 +22,31 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 namespace GlobalTheory.FunObj.StdDatum
 
+/- English proof (translation)
+Introduce `D δ t0 hc a d e0 hv had W 𝔪 h𝔪 hco hb _hchar R hR huniq _hfix`. Establish `he : e0 ∈ Th D (tor0 D ⊤ δ) (stdL D a) (stdL D d)` using `hv.1`. Establish `hN0 : 0 < Ideal.absNorm 𝔪` using `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 h𝔪)`. Establish `hidx` using `GlobalTheory.T.index_standard_inf_skewThetaLattice_eq_absNorm_pow D δ hc 𝔪 h𝔪 hco a d`. Use `haveI hfin : Finite (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d) ⧸ (La0 D (tor0 D ⊤ δ) a d).addSubgroupOf (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))) := AddSubgroup.index_ne_zero_iff_finite.1 (by rw [hidx]; positivity)`.
+
+Use `letI : Fintype (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d) ⧸ (La0 D (tor0 D ⊤ δ) a d).addSubgroupOf (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))) := Fintype.ofFinite _`. Establish `wsm : ∀ (x : VC D a d) (c : ℂ) (G : VC D a d → ℂ), Wd D (tor0 D ⊤ δ) x (c • G) = c • Wd D (tor0 D ⊤ δ) x G`. Introduce `x c G`. Use function extensionality and compare the values at `z`. Simplify using `only [Wd, U, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hr : ∀ i : R, ∃ (c : ℂ) (x : Matrix (Fin d) (Fin a) D.host.E), (∃ m : ℕ, 0 < m ∧ c ^ m = 1) ∧ pt D (tor0 D ⊤ δ) δ x ∈ La0 D (tor0 D ⊤ δ) a d ∧ (∀ i' j, (x.map (inc D) - (unitBlock D 0 a d).map (inc D) * ((((i : GA D a)⁻¹ : GA D a) : GL (Fin a) (AE D)) : Matrix (Fin a) (Fin a) (AE …`. Introduce `i`. Take `⟨c, hcm, hce⟩` from `GlobalTheory.T.weilOperator_integral_point_vacuum_rootOfUnity_smul D δ hc e0 he W i (hR i i.2)`. Take `⟨x, hx, hxc, hom⟩` from `GlobalTheory.T.weilAction_cosetVector_eq_translate_unitVector D δ hc e0 he W 𝔪 h𝔪 i (hR i i.2)`.
+
+Use `⟨c, x, hcm, hx, hxc, ?_⟩` and prove the remaining obligations. Rewrite using `[hom, GlobalTheory.T.weil_integralPoint_skewLatticeUnitVector_same_eigen D δ hc e0 he W 𝔪 h𝔪 i (hR i i.2) c hce, wsm]`. Use `choose c x hcm hx hxc hom using hr`. Use `choose χ hχ using fun i : R => GlobalTheory.T.exists_addChar_thetaCommutatorPhase_skewLattice D δ hc 𝔪 (pt D (tor0 D ⊤ δ) δ (x i)) (hx i)`. Establish `hone : ∀ k : GA D a, CongOne D 𝔪 (k⁻¹ * k)`.
+
+Introduce `k i' j`. Rewrite using `[inv_mul_cancel]`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective χ`. Introduce `i j hij`.
+
+Establish `hk : ∀ y ∈ La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d), Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (x i)) y = Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (x j)) y`. Introduce `y hy`. Rewrite using `[← hχ i ⟨y, hy⟩, ← hχ j ⟨y, hy⟩, hij]`. Establish `h1` using `GlobalTheory.T.stabilizer_congruent_of_commutatorPhase_eq D δ hc 𝔪 h𝔪 hco hb had i j (hR i i.2) (hR j j.2) (x i) (x j) (hx i) (hx j) (hxc i) (hxc j) hk`. Conclude with `Subtype.ext ((huniq j (hR j j.2)).unique ⟨i.2, h1⟩ ⟨j.2, hone j⟩)`.
+
+Establish `hcard : Fintype.card R ≤ Ideal.absNorm 𝔪 ^ (a * d)`. Rewrite using `[Fintype.card_coe]`. Use `(GlobalTheory.T.card_principalCongruence_transversal_le_absNorm_pow D 𝔪 h𝔪 a R hR huniq).trans (Nat.pow_le_pow_right hN0 ?_)` and prove the remaining obligations. Rewrite using `[pow_two]`. Conclude with `Nat.mul_le_mul_left a had`.
+
+Take `⟨rr, hrr, hint, hρ⟩` from `GlobalTheory.T.sum_norm_sq_le_of_rootOfUnity_addChar_combination (Ideal.absNorm 𝔪) (a * d) c χ hN0 hcm hinj (by rw [← hidx, AddSubgroup.index_eq_card, Nat.card_eq_fintype_card]) hcard`. Use `choose z hz hzN using fun q : (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d) ⧸ (La0 D (tor0 D ⊤ δ) a d).addSubgroupOf (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))) => GlobalTheory.T.skewIdealLattice_point_rational_normKills D δ hc 𝔪 h𝔪 _ (Quotient.out q).2`. Use `set e := Fintype.equivFin (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d) ⧸ (La0 D (tor0 D ⊤ δ) a d).addSubgroupOf (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)))`. Use `⟨_, fun i => rr (e.symm i), fun i => z (e.symm i), fun i => hzN _, fun i => hint _, fun ρ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e.symm.sum_comp (fun q => ‖ρ (rr q)‖)]`.
+
+Conclude with `hρ ρ`. Use function extensionality and compare the values at `y`. Rewrite using `[e.symm.sum_comp (fun q => ((rr q : Qbar) : ℂ) * Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (z q)) e0 y)]`. Simplify using `only [stdSum, Finset.sum_apply]`. Rewrite using `[← Finset.sum_coe_sort R]`.
+
+Simplify using `only [hom, Pi.smul_apply, smul_eq_mul, GlobalTheory.T.standardLattice_translate_unitVector_vacuum_expansion D δ hc 𝔪 h𝔪 e0 he _ (hx _), hidx, finsum_eq_sum_of_fintype, hrr, ← hz]`. Establish `hs : ((Real.sqrt ((Ideal.absNorm 𝔪 : ℝ) ^ (a * d)) : ℂ))⁻¹ * ((Real.sqrt (((Ideal.absNorm 𝔪 ^ (a * d) : ℕ) : ℝ)) : ℂ))⁻¹ = (((Ideal.absNorm 𝔪 : ℂ)) ^ (a * d))⁻¹`. Establish `h1 : (((Ideal.absNorm 𝔪 ^ (a * d) : ℕ) : ℝ)) = (Ideal.absNorm 𝔪 : ℝ) ^ (a * d)` using `by push_cast; rfl`. Rewrite using `[h1, ← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (by positivity)]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hχq : ∀ (i : R) q, χ i q = Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (x i)) ((Quotient.out q : La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) : VC D a d)`. Introduce `i q`. Rewrite using `[← hχ i, QuotientAddGroup.out_eq']`. Simplify using `only [hχq, Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pres_stdSum : ∀ (D : D7) (δ t0 : ℂ), Crv D ⊤ δ → ∀ {a d : ℕ} (e0 : VC D a d → ℂ), oddE0 D ⊤ δ t0 a d e0 → a ≤ d → ∀ (W : WeilO D ⊤ δ a d e0) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → IsCoprime 𝔪 (D.host.conj • 𝔪) → IsCoprime 𝔪 D.host.𝔟 → (∀ u, IntU D u → (u : AE D) - 1 ∈ hatId D (𝔪 * D.host.conj • 𝔪) → W.chV'.f u = 1) → ∀ R : Finset (GA D a), (∀ r ∈ R, r ∈ intG D a) → (∀ k ∈ intG D a, ∃! r, r ∈ R ∧ CongOne D 𝔪 (r⁻¹ * k)) → (∀ k ∈ intG D a, W.Om k 1 (stdSum W 𝔪 0 R) = stdSum W 𝔪 0 R) → Pres D ⊤ δ (Ideal.absNorm 𝔪) e0 (stdSum W 𝔪 0 R) := by
   intro D δ t0 hc a d e0 hv had W 𝔪 h𝔪 hco hb _hchar R hR huniq _hfix
   have he : e0 ∈ Th D (tor0 D ⊤ δ) (stdL D a) (stdL D d) := hv.1

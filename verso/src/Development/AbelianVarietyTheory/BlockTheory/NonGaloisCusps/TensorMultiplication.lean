@@ -22,6 +22,9 @@ variable {LL : Type} [Field LL] [Algebra Qp LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, mulVB]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem actVB_mulVB (ρ : Representation LL G V) (g : G) (c : K₀) (x : V ⊗[Qp] B) :
     actVB PD ρ g (mulVB (K₀ := K₀) (LL := LL) c x) = mulVB (K₀ := K₀) (LL := LL) c (actVB PD ρ g x) := by
   induction x using TensorProduct.induction_on with
@@ -31,6 +34,9 @@ theorem actVB_mulVB (ρ : Representation LL G V) (g : G) (c : K₀) (x : V ⊗[Q
 
 omit [IsScalarTower Qp K₀ B] in
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b v => simp [mulVB, TensorProduct.smul_tmul', Algebra.smul_def]`. Consider the case `add a b ha hb => simp only [smul_add, map_add, ha, hb]`.
+-/
 theorem comm_smul [SMulCommClass Qp K₀ B] (c : K₀) (x : B ⊗[Qp] V) :
     TensorProduct.comm Qp B V (c • x) =
       mulVB (K₀ := K₀) (LL := LL) c (TensorProduct.comm Qp B V x) := by
@@ -70,6 +76,9 @@ def mulTens : (V ⊗[Qp] B) ⊗[LL] (V' ⊗[Qp] B) →ₗ[LL] (V ⊗[LL] V') ⊗
   (AlgebraTensorModule.map (LinearMap.id : V ⊗[LL] V' →ₗ[LL] V ⊗[LL] V') (LinearMap.mul' Qp B)).comp
     (AlgebraTensorModule.tensorTensorTensorComm Qp Qp LL LL V B V' B).toLinearMap
 
+/- English proof (translation)
+Simplify using `[mulTens]`.
+-/
 theorem mulTens_tmul (v : V) (v' : V') (b b' : B) :
     mulTens Qp B LL V V' ((v ⊗ₜ[Qp] b) ⊗ₜ[LL] (v' ⊗ₜ[Qp] b')) = (v ⊗ₜ[LL] v') ⊗ₜ[Qp] (b * b') := by
   simp [mulTens]
@@ -89,6 +98,9 @@ end Maps
 
 def InvB : Prop := ∀ b : B, (∀ g, PD.actB g b = b) ↔ ∃ c : K₀, algebraMap K₀ B c = b
 
+/- English proof (translation)
+Introduce `b` and use `⟨PD.invB b, by rintro ⟨c, rfl⟩ g exact (PD.actB g).commutes c⟩`.
+-/
 theorem invB_holds : InvB PD := fun b =>
   ⟨PD.invB b, by
     rintro ⟨c, rfl⟩ g
@@ -178,6 +190,9 @@ end Generic
 def FontaineFormalism (l : ℕ) [Fact l.Prime] (P : LocPrime l) : Prop :=
   ∀ K LL : FinExt l, FormalismAt (P.PD K) ↥LL.1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(h K LL).2.2.1 T.V T.ρ hT, (h K LL).2.2.2.2.2.2.2.1 T.V T.ρ hT⟩`.
+-/
 example (l : ℕ) [Fact l.Prime] (P : LocPrime l) (h : FontaineFormalism l P) (K LL : FinExt l)
     (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (hT : IsCrys (P.PD K) T.ρ) :
     Function.Bijective (compMap (P.PD K) T.ρ) ∧ IsCrys (P.PD K) T.ρ.dual :=

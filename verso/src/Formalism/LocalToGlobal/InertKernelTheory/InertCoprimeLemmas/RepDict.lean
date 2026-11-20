@@ -19,23 +19,44 @@ section Scale
 
 variable (ν : ℂ_[p]) (hν : ν ≠ 0)
 
+/- English proof (translation)
+Simplify using `[scC]`.
+-/
 theorem scC_uinv : (((scC ν hν).u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) = ν⁻¹ := by simp [scC]
 
+/- English proof (translation)
+Rewrite using `[WeierstrassCurve.variableChange_a₁, scC_uinv]`. Simplify using `[scC]`.
+-/
 theorem scale_weierstrass_a1 (W : WeierstrassCurve ℂ_[p]) : (scC ν hν • W).a₁ = ν⁻¹ * W.a₁ := by
   rw [WeierstrassCurve.variableChange_a₁, scC_uinv]; simp [scC]
 
+/- English proof (translation)
+Rewrite using `[WeierstrassCurve.variableChange_a₂, scC_uinv]`. Simplify using `[scC]`.
+-/
 theorem scale_weierstrass_a2 (W : WeierstrassCurve ℂ_[p]) : (scC ν hν • W).a₂ = ν⁻¹ ^ 2 * W.a₂ := by
   rw [WeierstrassCurve.variableChange_a₂, scC_uinv]; simp [scC]
 
+/- English proof (translation)
+Rewrite using `[WeierstrassCurve.variableChange_a₃, scC_uinv]`. Simplify using `[scC]`.
+-/
 theorem scale_weierstrass_a3 (W : WeierstrassCurve ℂ_[p]) : (scC ν hν • W).a₃ = ν⁻¹ ^ 3 * W.a₃ := by
   rw [WeierstrassCurve.variableChange_a₃, scC_uinv]; simp [scC]
 
+/- English proof (translation)
+Rewrite using `[WeierstrassCurve.variableChange_a₄, scC_uinv]`. Simplify using `[scC]`.
+-/
 theorem scale_weierstrass_a4 (W : WeierstrassCurve ℂ_[p]) : (scC ν hν • W).a₄ = ν⁻¹ ^ 4 * W.a₄ := by
   rw [WeierstrassCurve.variableChange_a₄, scC_uinv]; simp [scC]
 
+/- English proof (translation)
+Rewrite using `[WeierstrassCurve.variableChange_a₆, scC_uinv]`. Simplify using `[scC]`.
+-/
 theorem scale_weierstrass_a6 (W : WeierstrassCurve ℂ_[p]) : (scC ν hν • W).a₆ = ν⁻¹ ^ 6 * W.a₆ := by
   rw [WeierstrassCurve.variableChange_a₆, scC_uinv]; simp [scC]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_rescale, PowerSeries.coeff_C]`. Use `split_ifs with hn`. Rewrite using `[hn, pow_zero, one_mul]`. Rewrite using `[mul_zero]`.
+-/
 theorem rescale_C' (c a : ℂ_[p]) : PowerSeries.rescale c (PowerSeries.C a) = PowerSeries.C a := by
   ext n
   rw [PowerSeries.coeff_rescale, PowerSeries.coeff_C]
@@ -43,15 +64,24 @@ theorem rescale_C' (c a : ℂ_[p]) : PowerSeries.rescale c (PowerSeries.C a) = P
   · rw [hn, pow_zero, one_mul]
   · rw [mul_zero]
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.algebraMap_eq]`. Conclude with `rescale_C' c a`.
+-/
 theorem rescale_alg (c a : ℂ_[p]) :
     PowerSeries.rescale c (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) a) = algebraMap ℂ_[p] (PowerSeries ℂ_[p]) a := by
   rw [PowerSeries.algebraMap_eq]; exact rescale_C' c a
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, pow_zero, one_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+-/
 theorem cc_rescale (c : ℂ_[p]) (f : PowerSeries ℂ_[p]) :
     PowerSeries.constantCoeff (PowerSeries.rescale c f) = PowerSeries.constantCoeff f := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_rescale, pow_zero, one_mul,
     PowerSeries.coeff_zero_eq_constantCoeff_apply]
 
+/- English proof (translation)
+Distinguish the cases in `hf : PowerSeries.constantCoeff f = 0`. Rewrite using `[PowerSeries.inv_eq_zero.mpr hf, map_zero, PowerSeries.inv_eq_zero.mpr ((cc_rescale c f).trans hf)]`. Rewrite using `[PowerSeries.eq_inv_iff_mul_eq_one (by rw [cc_rescale]; exact hf), ← map_mul, PowerSeries.inv_mul_cancel _ hf, map_one]`.
+-/
 theorem rescale_inv (c : ℂ_[p]) (f : PowerSeries ℂ_[p]) :
     PowerSeries.rescale c f⁻¹ = (PowerSeries.rescale c f)⁻¹ := by
   by_cases hf : PowerSeries.constantCoeff f = 0
@@ -59,6 +89,11 @@ theorem rescale_inv (c : ℂ_[p]) (f : PowerSeries ℂ_[p]) :
   · rw [PowerSeries.eq_inv_iff_mul_eq_one (by rw [cc_rescale]; exact hf), ← map_mul,
       PowerSeries.inv_mul_cancel _ hf, map_one]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_rescale]`. Consider the cases of `n with`. Consider the case `zero => simp [PowerSeries.coeff_zero_X_mul]`. Consider the case `succ n`.
+
+Rewrite using `[PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_succ_X_mul]`. Simplify using `only [dX, PowerSeries.coeff_mk, PowerSeries.coeff_rescale]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem X_dX_rescale (c : ℂ_[p]) (f : PowerSeries ℂ_[p]) :
     PowerSeries.X * dX (PowerSeries.rescale c f) = PowerSeries.rescale c (PowerSeries.X * dX f) := by
   ext n
@@ -70,6 +105,11 @@ theorem X_dX_rescale (c : ℂ_[p]) (f : PowerSeries ℂ_[p]) :
     simp only [dX, PowerSeries.coeff_mk, PowerSeries.coeff_rescale]
     ring
 
+/- English proof (translation)
+Unfold `IsWq at h ⊢`. Simplify using `only at h ⊢`. Use `conv_lhs => rw [h]`. Rewrite using `[scale_weierstrass_a1, scale_weierstrass_a2, scale_weierstrass_a3, scale_weierstrass_a4, scale_weierstrass_a6]`. Simplify using `only [map_add, map_mul, map_pow, map_one, PowerSeries.rescale_X, PowerSeries.algebraMap_eq, rescale_C']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isWq_scale (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) (h : IsWq W wq) :
     IsWq (scC ν hν • W) (PowerSeries.rescale ν⁻¹ wq) := by
   unfold IsWq at h ⊢
@@ -79,6 +119,13 @@ theorem isWq_scale (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) (h 
   simp only [map_add, map_mul, map_pow, map_one, PowerSeries.rescale_X, PowerSeries.algebraMap_eq, rescale_C']
   ring
 
+/- English proof (translation)
+Unfold `omegaW`. Simplify using `only`. Rewrite using `[scale_weierstrass_a1, scale_weierstrass_a3]`. Establish `hnum : (-(2 : PowerSeries ℂ_[p]) * PowerSeries.rescale ν⁻¹ wq - PowerSeries.X * dX (PowerSeries.rescale ν⁻¹ wq)) = PowerSeries.rescale ν⁻¹ (-(2 : PowerSeries ℂ_[p]) * wq - PowerSeries.X * dX wq)`. Rewrite using `[X_dX_rescale, map_sub]`.
+
+Use `congr 1`. Simplify using `only [map_mul, map_neg, map_ofNat]`. Establish `hden : PowerSeries.rescale ν⁻¹ wq * (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) (ν⁻¹ * W.a₁) * PowerSeries.X + algebraMap ℂ_[p] (PowerSeries ℂ_[p]) (ν⁻¹ ^ 3 * W.a₃) * PowerSeries.X ^ 3 * PowerSeries.rescale ν⁻¹ wq - 2) = PowerSeries.rescale ν⁻¹ (wq * (algebraMap ℂ_[p] (PowerSeries ℂ_[p …`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_ofNat, PowerSeries.rescale_X, PowerSeries.algebraMap_eq, rescale_C']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hnum, hden, ← rescale_inv, ← map_mul]`.
+-/
 theorem omegaW_scale (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     omegaW (scC ν hν • W) (PowerSeries.rescale ν⁻¹ wq) = PowerSeries.rescale ν⁻¹ (omegaW W wq) := by
   unfold omegaW
@@ -98,6 +145,11 @@ theorem omegaW_scale (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     ring
   rw [hnum, hden, ← rescale_inv, ← map_mul]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_rescale]`. Unfold `flog`. Rewrite using `[PowerSeries.coeff_mk, PowerSeries.coeff_mk, omegaW_scale]`. Break down `n with _ | n` into its components or cases.
+
+Simplify using the standard rewrite rules. Simplify using `only [Nat.add_one_ne_zero, if_false, Nat.add_sub_cancel, PowerSeries.coeff_rescale]`. Establish `h1 : ν * ν⁻¹ = 1` using `mul_inv_cancel₀ hν`. Rewrite using `[pow_succ]`. Take the linear combination `(-(ν⁻¹ ^ n * PowerSeries.coeff n (omegaW W wq) / ((n + 1 : ℕ) : ℂ_[p]))) * h1`.
+-/
 theorem flog_scale (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     flog (scC ν hν • W) (PowerSeries.rescale ν⁻¹ wq) = PowerSeries.C ν * PowerSeries.rescale ν⁻¹ (flog W wq) := by
   ext n
@@ -115,14 +167,23 @@ end Scale
 
 section Subst
 
+/- English proof (translation)
+The claim follows from `(PowerSeries.HasSubst.X' (R := ℂ_[p])).smul' c`.
+-/
 theorem hasSubst_cX (c : ℂ_[p]) : PowerSeries.HasSubst (c • (PowerSeries.X : PowerSeries ℂ_[p])) :=
   (PowerSeries.HasSubst.X' (R := ℂ_[p])).smul' c
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.rescale_eq_subst, PowerSeries.rescale_eq_subst, PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hA) (hasSubst_cX c)]`.
+-/
 theorem subst_rescale_arg (c : ℂ_[p]) (A f : PowerSeries ℂ_[p]) (hA : PowerSeries.constantCoeff A = 0) :
     PowerSeries.subst (PowerSeries.rescale c A) f = PowerSeries.rescale c (PowerSeries.subst A f) := by
   rw [PowerSeries.rescale_eq_subst, PowerSeries.rescale_eq_subst,
     PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hA) (hasSubst_cX c)]
 
+/- English proof (translation)
+Establish `h1 : PowerSeries.constantCoeff (PowerSeries.C a * h) = 0` using `by rw [map_mul, h0, mul_zero]`. Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero' h1`. Rewrite using `[PowerSeries.rescale_eq_subst, PowerSeries.subst_comp_subst_apply (hasSubst_cX a⁻¹) hs]`. Use `congr 1`. Rewrite using `[PowerSeries.subst_smul hs, PowerSeries.subst_X hs, PowerSeries.smul_eq_C_mul, ← mul_assoc, ← map_mul, inv_mul_cancel₀ ha, map_one, one_mul]`.
+-/
 theorem subst_Cmul_rescale (a : ℂ_[p]) (ha : a ≠ 0) (h f : PowerSeries ℂ_[p])
     (h0 : PowerSeries.constantCoeff h = 0) :
     PowerSeries.subst (PowerSeries.C a * h) (PowerSeries.rescale a⁻¹ f) = PowerSeries.subst h f := by
@@ -135,11 +196,21 @@ theorem subst_Cmul_rescale (a : ℂ_[p]) (ha : a ≠ 0) (h f : PowerSeries ℂ_[
 
 end Subst
 
+/- English proof (translation)
+Rewrite using `[WeierstrassCurve.VariableChange.mul_def]`. Simplify using `[scC, mul_comm]`.
+-/
 theorem scC_mul_uinv (ν : ℂ_[p]) (hν : ν ≠ 0) (C : WeierstrassCurve.VariableChange ℂ_[p]) :
     (((scC ν hν * C).u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) = ν⁻¹ * ((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) := by
   rw [WeierstrassCurve.VariableChange.mul_def]
   simp [scC, mul_comm]
 
+/- English proof (translation)
+Establish `hW : (scC ν hν * C) • wModel lam Λ = scC ν hν • (C • wModel lam Λ)` using `mul_smul _ _ _`. Use `set ep : ℂ_[p] := ((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) with hep`. Establish `hep0 : ep ≠ 0` using `Units.ne_zero _`. Use `set fl := flog (C • wModel lam Λ) wq with hfl`. Establish `hA0 : PowerSeries.constantCoeff (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) ep * fl) = 0`.
+
+Rewrite using `[map_mul, hfl, flog_constantCoeff, mul_zero]`. Establish `harg : algebraMap ℂ_[p] (PowerSeries ℂ_[p]) (ν⁻¹ * ep) * flog (scC ν hν • (C • wModel lam Λ)) (PowerSeries.rescale ν⁻¹ wq) = PowerSeries.rescale ν⁻¹ (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) ep * fl)`. Rewrite using `[flog_scale ν hν, map_mul (PowerSeries.rescale ν⁻¹) _ _, rescale_alg, PowerSeries.algebraMap_eq, ← hfl, ← mul_assoc, ← map_mul, show ν⁻¹ * ep * ν = ep by field_simp]`. Use extensionality with `n`. Unfold `ePhi1`.
+
+Simplify using `only`. Rewrite using `[hW, scC_mul_uinv, ← hep, harg, subst_rescale_arg _ _ _ hA0, PowerSeries.coeff_mk, PowerSeries.coeff_rescale, PowerSeries.coeff_rescale, PowerSeries.coeff_mk, mul_inv, inv_inv]`. Establish `h1 : ν * ν⁻¹ = 1` using `mul_inv_cancel₀ hν`. Rewrite using `[pow_succ]`. Take the linear combination `(ν⁻¹ ^ n * ep⁻¹ * PowerSeries.coeff (n + 1) (PowerSeries.subst (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) ep * fl) (sgSer lam Λ))) * h1`.
+-/
 theorem ePhi1_scale (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ) (C : WeierstrassCurve.VariableChange ℂ_[p])
     (wq : PowerSeries ℂ_[p]) (ν : ℂ_[p]) (hν : ν ≠ 0) :
     ePhi1 lam Λ (scC ν hν * C) (PowerSeries.rescale ν⁻¹ wq) = PowerSeries.rescale ν⁻¹ (ePhi1 lam Λ C wq) := by
@@ -163,6 +234,15 @@ theorem ePhi1_scale (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ) (C : Weier
   linear_combination (ν⁻¹ ^ n * ep⁻¹ * PowerSeries.coeff (n + 1)
     (PowerSeries.subst (algebraMap ℂ_[p] (PowerSeries ℂ_[p]) ep * fl) (sgSer lam Λ))) * h1
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h6, -⟩` from `hU`. Establish `hW : (scC ν hν * C) • wModel lam Λ = scC ν hν • (C • wModel lam Λ)` using `mul_smul _ _ _`. Establish `hn : ‖ν⁻¹‖ = 1` using `by rw [norm_inv, hν1, inv_one]`. Use `show IsIntP ((scC ν hν * C) • wModel lam Λ).a₁ ∧ IsIntP ((scC ν hν * C) • wModel lam Λ).a₂ ∧ IsIntP ((scC ν hν * C) • wModel lam Λ).a₃ ∧ IsIntP ((scC ν hν * C) • wModel lam Λ).a₄ ∧ IsIntP ((scC ν hν * C) • wModel lam Λ).a₆ ∧ ((scC ν hν * C) • wModel lam Λ).Δ = 1`. Rewrite using `[hW]`.
+
+Unfold `IsIntP at h1 h2 h3 h4 h6 ⊢`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[scale_weierstrass_a1, norm_mul, hn, one_mul]`. Conclude with `h1`. Rewrite using `[scale_weierstrass_a2, norm_mul, norm_pow, hn, one_pow, one_mul]`.
+
+Conclude with `h2`. Rewrite using `[scale_weierstrass_a3, norm_mul, norm_pow, hn, one_pow, one_mul]`. Conclude with `h3`. Rewrite using `[scale_weierstrass_a4, norm_mul, norm_pow, hn, one_pow, one_mul]`. Conclude with `h4`.
+
+Rewrite using `[scale_weierstrass_a6, norm_mul, norm_pow, hn, one_pow, one_mul]`. Conclude with `h6`. Rewrite using `[WeierstrassCurve.variableChange_Δ, scC_uinv, ← hν12, inv_pow, inv_mul_cancel₀ (pow_ne_zero _ hν)]`.
+-/
 theorem isModel_scale (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ) (C : WeierstrassCurve.VariableChange ℂ_[p])
     (hU : Formalism.MainNotions.GL3Theta.IsModelU lam Λ C) (ν : ℂ_[p]) (hν : ν ≠ 0) (hν1 : ‖ν‖ = 1)
     (hν12 : ν ^ 12 = (C • wModel lam Λ).Δ) : IsModel lam Λ (scC ν hν * C) := by
@@ -182,6 +262,33 @@ theorem isModel_scale (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ) (C : Wei
   · rw [scale_weierstrass_a6, norm_mul, norm_pow, hn, one_pow, one_mul]; exact h6
   · rw [WeierstrassCurve.variableChange_Δ, scC_uinv, ← hν12, inv_pow, inv_mul_cancel₀ (pow_ne_zero _ hν)]
 
+/- English proof (translation)
+Use `set S : Fin r → MvPowerSeries (Fin r) ℂ_[p] := fun i => PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) h with hS`. Establish `hS0 : ∀ i, MvPowerSeries.constantCoeff (S i) = 0` using `fun i => constantCoeff_inVar_eq_zero i h h0`. Establish `hSs : MvPowerSeries.HasSubst S` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hS0`. Establish `hSI : ∀ i, IntegralMv (S i)` using `fun i => integral_subst_single_variable i h hI`. Establish `hh : PowerSeries.HasSubst h` using `PowerSeries.HasSubst.of_constantCoeff_zero' h0`.
+
+Establish `hl0` using `flog_constantCoeff (C • wModel lam Λ) wq`. Use `set L : PowerSeries ℂ_[p] := PowerSeries.map (Formalism.L2.G.Pend.k0ToC p) (Formalism.MainNotions.FormalGroupSystem.logF p) with hL`. Establish `hL0 : PowerSeries.constantCoeff L = 0`. Rewrite using `[hL, Formalism.L2.KerInert.BeCob.lgF_eq_logF]`. Conclude with `Formalism.L2.KerInert.BeCob.cc_lgF' _ _`.
+
+Establish `hCalg : ∀ x : ℂ_[p], (MvPowerSeries.C x : MvPowerSeries (Fin r) ℂ_[p]) = algebraMap ℂ_[p] (MvPowerSeries (Fin r) ℂ_[p]) x` using `fun x => by rw [MvPowerSeries.algebraMap_apply]; rfl`. Establish `hA : MvPowerSeries.subst S (atLog D lam Λ C wq b G) = @Formalism.MainNotions.FormalGroupSystem.inParamK p _ (Fin r) ℂ_[p] _ (Formalism.L2.G.Pend.wittFractionAlgebraCp p) (Formalism.L2.KerInert.Rep.thOrth D lam (((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * κ) b G)`. Establish `hXfl : ∀ i : Fin r, MvPowerSeries.constantCoeff (PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) (flog (C • wModel lam Λ) wq)) = 0` using `fun i => constantCoeff_inVar_eq_zero i _ hl0`. Establish `hΦ : MvPowerSeries.HasSubst (fun k : D.what₂.Tau × Fin N' × Fin N => ∑ i, algebraMap ℂ_[p] (MvPowerSeries (Fin r) ℂ_[p]) (((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * lamC lam (embT D k.1 (b i k.2.1 k.2.2))) * PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) (flog (C • wModel …`. Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises.
+
+Introduce `k`. Simplify using `[map_sum, hXfl]`. Establish `hT : MvPowerSeries.HasSubst (fun k : D.what₂.Tau × Fin N' × Fin N => ∑ i, MvPowerSeries.C ((((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * κ) * lamC lam (embT D k.1 (b i k.2.1 k.2.2))) * (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]))`. Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises. Introduce `k`.
+
+Simplify using `[map_sum]`. Establish `hP : MvPowerSeries.HasSubst (fun i : Fin r => PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) L)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => constantCoeff_inVar_eq_zero i L hL0)`. Unfold `atLog Formalism.L2.KerInert.Rep.thOrth Formalism.MainNotions.FormalGroupSystem.inParamK`. Simplify using `only`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hΦ hSs]`.
+
+Use `erw [MvPowerSeries.subst_comp_subst_apply hT hP]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hSs, map_sum]`. Use `erw [← MvPowerSeries.coe_substAlgHom hP, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hCalg]`. Simplify using `only [map_mul, AlgHom.commutes, MvPowerSeries.coe_substAlgHom, subst_single_var S hSs, MvPowerSeries.subst_X hP]`. Rewrite using `[hS]`. Simplify using `only`.
+
+Rewrite using `[← PowerSeries.subst_comp_subst_apply hh (PowerSeries.HasSubst.X i), hlog, PowerSeries.subst_mul (PowerSeries.HasSubst.X i), PowerSeries.subst_C]`. Establish `hid : ∀ x : ℂ_[p], algebraMap ℂ_[p] ℂ_[p] x = x` using `fun _ => rfl`. Simplify using `only [MvPowerSeries.algebraMap_apply, hid]`. Rewrite using `[hL]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hB : MvPowerSeries.subst S (ePh lam Λ C wq r) = ∏ i, PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) (PowerSeries.subst h (ePhi1 lam Λ C wq))⁻¹`. Unfold `ePh`. Rewrite using `[if_neg hp2, ← MvPowerSeries.coe_substAlgHom hSs, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom, ← subst_inv _ (MvPowerSeries.constantCoeff_X i), subst_single_var S hSs, hS]`.
+
+Simplify using `only`. Rewrite using `[← subst_inv h h0, PowerSeries.subst_comp_subst_apply hh (PowerSeries.HasSubst.X i)]`. Establish `hE : Formalism.DworkPowerSeriesWeights.mvExp (Formalism.L2.Th1.E.phSum ph : MvPowerSeries (Fin r) ℂ_[p]) = (∏ i, PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) V) * MvPowerSeries.subst S (ePh lam Λ C wq r)`. Rewrite using `[hB, ← Finset.prod_mul_distrib]`. Express the relevant statement in the definitionally equal form `Formalism.L2.Th1.C.mvExp (∑ i, Formalism.InvariantFactorPaths.G7.at1 i ph) = _`.
+
+Simplify using `only [Formalism.InvariantFactorPaths.G7.at1]`. Rewrite using `[Formalism.L2.Th1.C.mvExp_sum _ _ (fun i _ => constantCoeff_inVar_eq_zero i ph hph0)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Formalism.L2.Th1.C.subst_mvExp hph0 (MvPowerSeries.constantCoeff_X i), hexp, PowerSeries.subst_mul (PowerSeries.HasSubst.X i)]`. Establish `hSG` using `integral_subst S hS0 hSI hInt`.
+
+Rewrite `hSG` using `[← MvPowerSeries.coe_substAlgHom hSs, map_mul, MvPowerSeries.coe_substAlgHom, hA]`. Establish `hU : IntegralMv (∏ i, PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) V)` using `integral_prod _ _ fun i _ => integral_subst_single_variable i V hV`. Establish `key` using `integral_mul hU hSG`. Rewrite using `[hE]`. Establish `e : (∏ i, PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]) V) * MvPowerSeries.subst S (ePh lam Λ C wq r) * @Formalism.MainNotions.FormalGroupSystem.inParamK p _ (Fin r) ℂ_[p] _ (Formalism.L2.G.Pend.wittFractionAlgebraCp p) (Formalism.L2.KerInert.Rep.thOrth D la …` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `key`.
+-/
 theorem dict_core (hp2 : p ≠ 2) (D : D7) {N N' r : ℕ} (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ)
     (C : WeierstrassCurve.VariableChange ℂ_[p]) (wq : PowerSeries ℂ_[p])
     (h : PowerSeries ℂ_[p]) (h0 : PowerSeries.constantCoeff h = 0) (hI : ∀ n, IsIntP (PowerSeries.coeff n h))
@@ -298,6 +405,107 @@ open Formalism.InvariantFactorPaths.G7 (cob lgF UnrOK IsLawOfLog at1)
 open Formalism.L2.Th1.CM (MaximalUnramifiedExtension omegaK)
 open Formalism.DworkPowerSeriesWeights (Integral)
 
+/- English proof (translation)
+Establish `hInv` using `Sigma.invAlg'`. Establish `hS2` using `Sigma.secondEisensteinAlgebraic`. Establish `hPhW : PhWAll` using `Dict.phWAll_of (Sigma.sigmaCurveInert_of Sigma.invAlg' Sigma.secondEisensteinAlgebraic)`. Establish `hBC` using `beta_coefficients`. Establish `hCE` using `coboundary_exact`.
+
+Establish `hCS` using `coboundary_equivalence`. Establish `hPT` using `phase_compatibility`. Establish `hTT` using `thetaTie_of short_exact_isomorphism`. Introduce `D cc δ l _ g hLT hAt h5 hIn hOW`. Establish `hp : l.Prime` using `Fact.out`.
+
+Take `⟨hcurve, -, hδ12, hLam, hOk⟩` from `id hAt`. Establish `hcc : cc ≠ ⊥` using `hcurve.1`. Establish `hδ : δ ≠ 0`. Introduce `h0`. Take `⟨⟨L1, hL1⟩, -⟩` from `Formalism.L2.Th1.F2.lamOfLat D cc 1 hcc one_ne_zero`.
+
+Take `⟨e2, e3⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.g2_g3_eq_periodPair _ L1 (congrArg (fun A : AddSubgroup ℂ => (A : Set ℂ)) hL1)`. Establish `hd` using `Formalism.L2.Th1.F.discNeZero L1`. Apply `hd` to reduce the goal to its premises. Establish `h12` using `hδ12`. Unfold `Formalism.MainNotions.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice Formalism.MainNotions.TaylorLogMetric.discr at h12`.
+
+Rewrite `h12` using `[h0, e2, e3]`. Rewrite using `[← h12]`. Evaluate the numerical expressions. Take `⟨⟨L, hL⟩, hCM⟩` from `Formalism.L2.Th1.F2.lamOfLat D cc δ hcc hδ`. Establish `hLg : g.abelian₂ = L.lattice.toAddSubgroup` using `hLam.trans hL.symm`.
+
+Take `⟨hg2, hg3⟩` from `hInv D cc δ hcurve hδ12 L hL`. Establish `hs` using `hS2 D cc δ hcurve hδ12 L hL`. Use `set a2 : Formalism.MainNotions.TaylorLogMetric.Qbar := ⟨L.g₂, hg2⟩ with ha2`. Use `set a3 : Formalism.MainNotions.TaylorLogMetric.Qbar := ⟨L.g₃, hg3⟩ with ha3`. Use `set s0 : Formalism.MainNotions.TaylorLogMetric.Qbar := ⟨Formalism.L2.Th1.F.s2 L, hs⟩ with hs0`.
+
+Take `⟨e2, e3⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.g2_g3_eq_periodPair _ L (congrArg (fun A : AddSubgroup ℂ => (A : Set ℂ)) hLg.symm)`. Establish `hser : Formalism.MainNotions.TaylorLogMetric.sgSer g.lam g.abelian₂ = Formalism.L2.Th1.B.sgStar (g.lam s0) (Formalism.L2.Th1.F.pOf (g.lam a2) (g.lam a3))`. Rewrite using `[hLg]`. Conclude with `Sigma.sgSer_eq g.lam L a2 a3 s0 rfl rfl rfl`. Establish `hW0` using `Sigma.wModel_g g.lam g.abelian₂ a2 a3 e2 e3`.
+
+Use `set εu : ℂ_[l] := ((g.C.u⁻¹ : ℂ_[l]ˣ) : ℂ_[l]) with hεu`. Establish `hεne : εu ≠ 0` using `Units.ne_zero _`. Take `⟨c2, c3⟩` from `Sigma.g_change g.C (Formalism.MainNotions.TaylorLogMetric.wModel g.lam g.abelian₂)`. Establish `gW2 : Formalism.L2.Th1.A.g₂ g.W = εu ^ 4 * g.lam a2` using `by rw [← hW0.1]; exact c2`. Establish `gW3 : Formalism.L2.Th1.A.g₃ g.W = εu ^ 6 * g.lam a3` using `by rw [← hW0.2]; exact c3`.
+
+Establish `hwp : Formalism.L2.Th1.A.wpReg g.W = PowerSeries.C (εu ^ 2) * PowerSeries.rescale εu (Formalism.L2.Th1.F.pOf (g.lam a2) (g.lam a3))`. Rewrite using `[Sigma.wpReg_eq, gW2, gW3]`. Conclude with `(Formalism.L2.Th1.F.seriesScale ℂ_[l] (g.lam a2) (g.lam a3) εu).2.2.2.1`. Use `set s2 : ℂ_[l] := εu ^ 2 * g.lam s0 with hs2def`. Establish `hR : PowerSeries.rescale εu (Formalism.MainNotions.TaylorLogMetric.sgSer g.lam g.abelian₂) = PowerSeries.C εu * Formalism.L2.Th1.B.sgW g.W s2`.
+
+Unfold `Formalism.L2.Th1.B.sgW`. Rewrite using `[hser, hwp]`. Conclude with `((Formalism.L2.Th1.F.sigmaScale ℂ_[l] (Formalism.L2.Th1.F.pOf (g.lam a2) (g.lam a3)) (g.lam s0) εu).2).symm`. Establish `hph : g.ph = Formalism.L2.Th1.B.phW g.W s2` using `Dict.formal_phase_agree l g s2 hOk hR`. Establish `hcc0 : PowerSeries.constantCoeff g.ph = 0`.
+
+Rewrite using `[hph]`. Conclude with `(Formalism.L2.Th1.B.curveSigma ℂ_[l] g.W s2).1`. Take `⟨ι, hι⟩` from `Formalism.L2.KerInert.lamExt l g.lam`. Establish `hdp : D.host.d.Prime` using `D.host.hyp.2.1`. Establish `hsqf : Squarefree D.host.d` using `hdp.squarefree`.
+
+Establish `hd4 : D.host.d % 4 = 3` using `by have := D.host.hyp.2.2.2.1; omega`. Establish `hns : ¬ IsSquare ((-(D.host.d : ℤ) : ℤ) : ZMod l)` using `ZMod.nonsquare_of_jacobiSym_eq_neg_one hIn`. Establish `hsq' : ¬ ∃ a : ZMod l, a ^ 2 = -(D.host.d : ZMod l)`. Introduce and unpack `⟨a, ha⟩; apply hns; exact ⟨a, by push_cast; rw [← ha]; ring⟩`. Establish `hpd : ¬ l ∣ D.host.d`.
+
+Introduce `h`. Apply `hsq'` to reduce the goal to its premises. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[(ZMod.natCast_eq_zero_iff _ _).2 h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hcmby : Formalism.L2.Th1.CM.HasCMBy D.host.d L`. Introduce `ω hω`. Establish `h1` using `hCM ω (by rw [← hL]; exact hω)`. Rewrite `h1` using `[← hL]`. Establish `e : Formalism.L2.Th1.CM.omegaK D.host.d = Formalism.L2.Th1.F.cmTheta 1 D.host.d`.
+
+Unfold `Formalism.L2.Th1.CM.omegaK Formalism.L2.Th1.F.cmTheta`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h1`.
+
+Establish `hιg2 : ι L.g₂ = g.lam a2` using `hι a2`. Establish `hιg3 : ι L.g₃ = g.lam a3` using `hι a3`. Establish `hιs : ι (Formalism.L2.Th1.F.s2 L) = g.lam s0` using `hι s0`. Take `⟨i1, i2, i3, i4, i6, hΔ⟩` from `hOk.1`. Take `⟨w1, w2, w3, w4, w6⟩` from `hOW`.
+
+Take `⟨k2, k3, n2, n3, nd⟩` from `Sigma.inv_good g.W h5 i1 i2 i3 i4 i6 hΔ w1 w2 w3 w4 w6`. Establish `ks : s2 ∈ MaximalUnramifiedExtension l`. Establish `k2'` using `k2`. Establish `k3'` using `k3`. Establish `n2'` using `n2`.
+
+Establish `n3'` using `n3`. Establish `nd'` using `nd`. Rewrite `k2'`, `n2'` using `[gW2, ← hιg2]`. Rewrite `k3'`, `n3'` using `[gW3, ← hιg3]`. Rewrite `nd'` using `[gW2, gW3, ← hιg2, ← hιg3]`.
+
+Rewrite using `[hs2def, ← hιs]`. Conclude with `Sigma.s2_in_unramified_closure D.host.d L hsqf hd4 hcmby l h5 hpd ι εu hεne k2' k3' n2' n3' nd'`. Establish `heW : eLT hLT ∈ Formalism.MainNotions.GL3Theta.Wp l` using `Formalism.L2.G.Pend.wToC_mem_Wp l _`. Establish `he1 : ‖eLT hLT‖ = 1` using `Formalism.L2.G.Pend.norm_wToC_unit l _`. Establish `ke : (eLT hLT)⁻¹ ∈ MaximalUnramifiedExtension l` using `inv_mem (Sigma.wp_sub_kur _ heW)`.
+
+Use `set G2 : MaximalUnramifiedExtension l := ⟨_, k2⟩ with hG2`. Use `set G3 : MaximalUnramifiedExtension l := ⟨_, k3⟩ with hG3`. Use `set S2 : MaximalUnramifiedExtension l := ⟨s2, ks⟩ with hS2d`. Use `set E : MaximalUnramifiedExtension l := ⟨(eLT hLT)⁻¹, ke⟩ with hEd`. Establish `hE1 : ‖E‖ = 1` using `by show ‖(eLT hLT)⁻¹‖ = 1`.
+
+Rewrite using `[norm_inv, he1, inv_one]`. Establish `hth : ∀ n, ‖PowerSeries.coeff n (thetaS l G2 G3 E)‖ ≤ 1`. Introduce `n`. Establish `hm` using `FAux.thetaS_map (MaximalUnramifiedExtension l).subtype (l := l) hp.two_le G2 G3 E`. Rewrite using `[← FAux.norm_coe l, ← PowerSeries.coeff_map, hm]`.
+
+Conclude with `hTT l h5 g hLT hOk n`. Establish `hgood : Formalism.L2.Th1.CM.IsGoodModel l L ι (G2 : ℂ_[l]) (G3 : ℂ_[l])`. Use `⟨k2, k3, n2, n3, nd, εu, hεne, ?_, ?_⟩` and prove the remaining obligations. Use `show Formalism.L2.Th1.A.g₂ g.W = _`. Rewrite using `[hιg2]`.
+
+Conclude with `gW2`. Use `show Formalism.L2.Th1.A.g₃ g.W = _`. Rewrite using `[hιg3]`. Conclude with `gW3`. Use `set c : ℂ := ι.symm εu⁻¹ with hcdef`.
+
+Establish `hιc : ι c = εu⁻¹` using `by rw [hcdef]; exact ι.apply_symm_apply _`. Establish `hc : c ≠ 0`. Introduce `h0`. Rewrite `hιc` using `[h0, map_zero]`. Conclude with `inv_ne_zero hεne hιc.symm`.
+
+Take `⟨-, -, -, -, -, -, hs2c, -, -, hg2c, hg3c⟩` from `Formalism.L2.Th1.F.homogeneity L c hc`. Establish `h2c : (G2 : ℂ_[l]) = ι (Formalism.L2.Th1.F.scalePair L c hc).g₂` using `by show Formalism.L2.Th1.A.g₂ g.W = _`. Rewrite using `[hg2c, map_mul, map_inv₀, map_pow, hιc, hιg2, gW2, inv_pow, inv_inv]`. Establish `h3c : (G3 : ℂ_[l]) = ι (Formalism.L2.Th1.F.scalePair L c hc).g₃` using `by show Formalism.L2.Th1.A.g₃ g.W = _`. Rewrite using `[hg3c, map_mul, map_inv₀, map_pow, hιc, hιg3, gW3, inv_pow, inv_inv]`.
+
+Establish `hsc : (S2 : ℂ_[l]) = ι (Formalism.L2.Th1.F.s2 (Formalism.L2.Th1.F.scalePair L c hc))` using `by show s2 = _`. Rewrite using `[hs2c, map_mul, map_inv₀, map_pow, hιc, hιs, hs2def, inv_pow, inv_inv]`. Establish `hNR : ∀ σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l, UnrOK (MaximalUnramifiedExtension l) l σ → ∀ α : MaximalUnramifiedExtension l, ‖α‖ = 1 → σ (σ α) = α → NormRel l σ (phFF l G2 G3 S2 E) α`. Introduce `σ hσ α hα hσα`. Establish `hw` using `(sqrtKur D.host.d hsqf hd4 l h5 hsq' ι).1`.
+
+Establish `hmem : ∀ m n : ℤ, ι ((m : ℂ) + (n : ℂ) * omegaK D.host.d) ∈ MaximalUnramifiedExtension l`. Introduce `m n`. Rewrite using `[map_add, map_mul, map_intCast, map_intCast]`. Conclude with `add_mem (intCast_mem _ m) (mul_mem (intCast_mem _ n) hw)`. Set `S : Set (MaximalUnramifiedExtension l)` to `{a | ∃ m n : ℤ, ¬ (l : ℤ) ∣ normInt D.host.d m n ∧ (a : ℂ_[l]) = ι ((m : ℂ) + (n : ℂ) * omegaK D.host.d)}`.
+
+Use `normUnits (MaximalUnramifiedExtension l) l σ hσ (phFF l G2 G3 S2 E) (FAux.cc_phFF (by omega) _ _ _ _) S ?_ α ?_` and prove the remaining obligations. Introduce and unpack `a ⟨m, n, hmn, ha⟩`. Conclude with `nrDense Formalism.L2.Th1.CM.cm4 D.host.d L hsqf hd4 hcmby l h5 hpd hsq' ι G2 G3 E S2 hgood hE1 hth c hc h2c h3c hsc σ hσ m n hmn a ha`. Introduce `e he`. Take `⟨m, n, hmn, hclose⟩` from `denseOK D.host.d hsqf hd4 l h5 hsq' ι σ hσ α hα hσα e he`.
+
+Conclude with `⟨⟨_, hmem m n⟩, ⟨m, n, hmn, rfl⟩, by simpa using hclose⟩`. Establish `hBR : BeRat g (eLT hLT)`. Establish `hphW` using `hPhW D l cc δ g hAt h5 hIn ⟨w1, w2, w3, w4, w6⟩`. Establish `hB` using `hBC l g hOk ⟨w1, w2, w3, w4, w6⟩ hphW`. Use `show BeRat g (wToC l (epOf hLT : Formalism.MainNotions.FormalGroupSystem.WW l))`.
+
+Rewrite using `[← Formalism.L2.G.Pend.witt_fraction_to_Cp_algebraMap l]`. Conclude with `Formalism.L2.G.Pend.beRat_of g hOk.2.2.1 hB (Formalism.L2.G.Pend.exRat_of g hOk ⟨w1, w2, w3, w4, w6⟩) _`. Take `⟨σ0, hσ0⟩` from `Formalism.L2.Th1.Top.frobExistsH l h5`. Take `⟨F0, hF0⟩` from `(Formalism.InvariantFactorPaths.G7.Top.lawExists (MaximalUnramifiedExtension l) l hσ0.1 hσ0.2.2.1).1`. Establish `tie : ∀ F : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension l), IsLawOfLog l F → Formalism.InvariantFactorPaths.G7.Simeq (MvPowerSeries.map (k0ToC l) (inParam l (beLT hLT))) (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype (cob F (phFF l G2 G3 S2 E)))`.
+
+Introduce `F hF`. Rewrite using `[hCE l g hLT hOk hBR F hF, map_cob (MaximalUnramifiedExtension l).subtype F hF.1, Formalism.L2.Th1.E.Joints.map_phFF (MaximalUnramifiedExtension l).subtype hp.two_le]`. Use `hCS ℂ_[l] _ (by rw [MvPowerSeries.constantCoeff_map, hF.1, map_zero]) ?_ _ _ (hPT l g hLT hOk s2 hph)` and prove the remaining obligations. Introduce `n`. Rewrite using `[MvPowerSeries.coeff_map]`.
+
+Conclude with `hF.2.1 n`. Establish `hlamg : g.abelian₂ = Formalism.MainNotions.TaylorLogMetric.lamOf D cc δ` using `hLam`. Establish `hΔW : g.W.Δ = εu ^ 12` using `by show (g.C • Formalism.MainNotions.TaylorLogMetric.wModel g.lam g.abelian₂).Δ = εu ^ 12`. Rewrite using `[WeierstrassCurve.variableChange_Δ, hlamg, Formalism.L2.KerInert.JetsModel.wModel_Δ D cc δ hcurve hδ12 g.lam, mul_one]`. Establish `hΔ1 : ‖g.W.Δ‖ = 1` using `hOk.1.2.2.2.2.2`.
+
+Establish `hεu1 : ‖εu‖ = 1`. Use `hΔ1` as an intermediate fact. Rewrite `this` using `[hΔW, norm_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).mp this`. Establish `hnorm : ‖εu * (eLT hLT)⁻¹‖ = 1` using `by rw [norm_mul, norm_inv, he1, hεu1, inv_one, one_mul]`.
+
+Take `⟨ν, hν⟩` from `IsAlgClosed.exists_pow_nat_eq g.W.Δ (show 0 < 12 by norm_num)`. Establish `hν1 : ‖ν‖ = 1`. Use `congrArg norm hν` as an intermediate fact. Rewrite `this` using `[norm_pow, hΔ1]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).mp this`.
+
+Establish `hν0 : ν ≠ 0`. Introduce `h`. Rewrite `hν1` using `[h, norm_zero]`. Conclude with `zero_ne_one hν1`. Establish `hp2 : l ≠ 2` using `by omega`.
+
+Use `set C' := Formalism.L2.KerInert.WeierstrassScaling.scC ν hν0 * g.C with hC'`. Use `set wq' := PowerSeries.rescale ν⁻¹ g.wq with hwq'`. Establish `hC'W : C' • Formalism.MainNotions.TaylorLogMetric.wModel g.lam g.abelian₂ = Formalism.L2.KerInert.WeierstrassScaling.scC ν hν0 • g.W` using `mul_smul _ _ _`. Establish `hM : Formalism.MainNotions.TaylorLogMetric.IsModel g.lam g.abelian₂ C'` using `Formalism.L2.KerInert.WeierstrassScaling.isModel_scale g.lam g.abelian₂ g.C hOk.1 ν hν0 hν1 hν`. Establish `hWq : Formalism.MainNotions.TaylorLogMetric.IsWq (C' • Formalism.MainNotions.TaylorLogMetric.wModel g.lam g.abelian₂) wq'`.
+
+Rewrite using `[hC'W]`. Conclude with `Formalism.L2.KerInert.WeierstrassScaling.isWq_scale ν hν0 _ _ hOk.2.1`. Establish `hex` using `hOk.2.2.1`. Establish `hinv` using `hOk.2.2.2`. Use `set v := vLT hLT with hvdef`.
+
+Use `set A : PowerSeries ℂ_[l] := PowerSeries.C (eLT hLT)⁻¹ * lgF ℂ_[l] l with hAdef`. Establish `hA0 : PowerSeries.constantCoeff A = 0` using `by rw [hAdef, map_mul, cc_lgF', mul_zero]`. Establish `hAs : PowerSeries.HasSubst A` using `PowerSeries.HasSubst.of_constantCoeff_zero' hA0`. Establish `hexs : PowerSeries.HasSubst g.ex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hex`. Establish `hv0 : PowerSeries.constantCoeff v = 0`.
+
+Rewrite using `[hvdef, vLT]`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero hA0 _ hex`. Establish `hvs : PowerSeries.HasSubst v` using `PowerSeries.HasSubst.of_constantCoeff_zero' hv0`. Establish `hvl : PowerSeries.subst v g.l = A`. Rewrite using `[hvdef, vLT, ← hAdef, ← PowerSeries.subst_comp_subst_apply hexs hAs, hinv, PowerSeries.subst_X hAs]`.
+
+Use `set hh : PowerSeries ℂ_[l] := PowerSeries.C ν * v with hhdef`. Establish `hh0 : PowerSeries.constantCoeff hh = 0` using `by rw [hhdef, map_mul, hv0, mul_zero]`. Establish `hhI : ∀ n, Formalism.MainNotions.TaylorLogMetric.IsIntP (PowerSeries.coeff n hh)`. Introduce `n`. Unfold `Formalism.MainNotions.TaylorLogMetric.IsIntP`.
+
+Rewrite using `[hhdef, PowerSeries.coeff_C_mul, norm_mul, hν1, one_mul]`. Conclude with `v_integral hOk hLT n`. Establish `hlog : PowerSeries.subst hh (Formalism.MainNotions.TaylorLogMetric.flog (C' • Formalism.MainNotions.TaylorLogMetric.wModel g.lam g.abelian₂) wq') = PowerSeries.C (ν * (eLT hLT)⁻¹) * PowerSeries.map (k0ToC l) (Formalism.MainNotions.FormalGroupSystem.logF l)`. Establish `hs : PowerSeries.HasSubst hh` using `PowerSeries.HasSubst.of_constantCoeff_zero' hh0`. Rewrite using `[hC'W, hwq', Formalism.L2.KerInert.WeierstrassScaling.flog_scale ν hν0, ← PowerSeries.smul_eq_C_mul, PowerSeries.subst_smul hs, hhdef, Formalism.L2.KerInert.WeierstrassScaling.subst_Cmul_rescale ν hν0 v _ hv0]`.
+
+Express the relevant statement in the definitionally equal form `ν • PowerSeries.subst v g.l = _`. Rewrite using `[hvl, hAdef, lgF_eq_logF, PowerSeries.smul_eq_C_mul, ← mul_assoc, ← map_mul]`. Use `set phC : PowerSeries ℂ_[l] := phFF l (Formalism.L2.Th1.A.g₂ g.W) (Formalism.L2.Th1.A.g₃ g.W) s2 (eLT hLT)⁻¹ with hphC`. Establish `hphL : Formalism.L2.Th1.Top.phL l G2 G3 S2 E = phC`. Unfold `Formalism.L2.Th1.Top.phL`.
+
+Rewrite using `[Formalism.L2.Th1.E.Joints.map_phFF (MaximalUnramifiedExtension l).subtype hp.two_le]`. Both sides reduce to the same expression. Establish `hphC0 : PowerSeries.constantCoeff phC = 0`. Rewrite using `[← hphL]`. Unfold `Formalism.L2.Th1.Top.phL`.
+
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, FAux.cc_phFF (by omega) _ _ _ _, map_zero]`. Use `set ψ : PowerSeries ℂ_[l] := psiLT hLT with hψdef`. Establish `hψ0 : PowerSeries.constantCoeff ψ = 0`. Rewrite using `[hψdef, psiLT]`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero hv0 _ hcc0`.
+
+Establish `hsym` using `(Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[l] Unit).2.1 _ _ (hPT l g hLT hOk s2 hph)`. Use `set V : PowerSeries ℂ_[l] := Formalism.L2.Th1.C.mvExp (phC - ψ) with hVdef`. Establish `hV : ∀ n, Formalism.MainNotions.TaylorLogMetric.IsIntP (PowerSeries.coeff n V)` using `fun n => ips hsym.2 n`. Establish `hsubE : PowerSeries.subst hh (Formalism.MainNotions.TaylorLogMetric.ePhi1 g.lam g.abelian₂ C' wq') = Formalism.L2.Th1.C.mvExp (-ψ)`. Rewrite using `[hC', hwq', Formalism.L2.KerInert.WeierstrassScaling.ePhi1_scale, hhdef, Formalism.L2.KerInert.WeierstrassScaling.subst_Cmul_rescale ν hν0 v _ hv0, Dict.ePhi1_eq g s2 hOk hR, ← hph]`.
+
+Establish `hn : PowerSeries.constantCoeff (-g.ph) = 0` using `by rw [map_neg, hcc0, neg_zero]`. Express the relevant statement in the definitionally equal form `PowerSeries.subst v (Formalism.L2.Th1.C.mvExp (-g.ph) : PowerSeries ℂ_[l]) = _`. Rewrite using `[Formalism.L2.Th1.C.subst_mvExp hn hv0, hψdef, psiLT, ← PowerSeries.coe_substAlgHom hvs, map_neg]`. Establish `hexp : (Formalism.L2.Th1.C.mvExp phC : PowerSeries ℂ_[l]) = V * (PowerSeries.subst hh (Formalism.MainNotions.TaylorLogMetric.ePhi1 g.lam g.abelian₂ C' wq'))⁻¹`. Establish `hn : PowerSeries.constantCoeff (Formalism.L2.Th1.C.mvExp (-ψ) : PowerSeries ℂ_[l]) ≠ 0`.
+
+Establish `h1` using `Formalism.L2.Th1.C.constantCoeff_mvExp (show MvPowerSeries.constantCoeff (-ψ : PowerSeries ℂ_[l]) = 0 by`. Rewrite using `[map_neg]`. Conclude with `(neg_eq_zero.mpr hψ0))`. Introduce `h0`. Conclude with `one_ne_zero (h1.symm.trans h0)`.
+
+Establish `hinvE : (Formalism.L2.Th1.C.mvExp ψ : PowerSeries ℂ_[l]) = (Formalism.L2.Th1.C.mvExp (-ψ) : PowerSeries ℂ_[l])⁻¹` using `(PowerSeries.eq_inv_iff_mul_eq_one hn).mpr (Formalism.L2.Th1.C.mvExp_mul_neg hψ0)`. Rewrite using `[hsubE, ← hinvE, hVdef]`. Conclude with `(Formalism.L2.Th1.C.mvExp_sub_mul hphC0 hψ0).symm`. Establish `hcEq : (((C'.u⁻¹ : ℂ_[l]ˣ) : ℂ_[l])) * (ν * (eLT hLT)⁻¹) = εu * (eLT hLT)⁻¹`. Rewrite using `[hC', Formalism.L2.KerInert.WeierstrassScaling.scC_mul_uinv, ← hεu]`.
+
+Clear the denominators using the available nonvanishing facts. Use `⟨G2, G3, E, S2, rfl, rfl, rfl, hR, hnorm, ⟨n2, n3, hE1, hth, hNR, cc_beLT hOk hLT hBR hcc0, F0, hF0, tie F0 hF0⟩, ?_⟩` and prove the remaining obligations. Introduce `D'`. Use `⟨C', wq', hM, hWq, ?_⟩` and prove the remaining obligations. Introduce `N N' r b G hInt`.
+
+Establish `key` using `Formalism.L2.KerInert.WeierstrassScaling.dict_core hp2 D' g.lam g.abelian₂ C' wq' hh hh0 hhI (ν * (eLT hLT)⁻¹) hlog phC V hphC0 hV hexp b G hInt`. Rewrite `key` using `[hcEq]`. Rewrite using `[hphL]`. Conclude with `key`.
+-/
 theorem rdictMain : Formalism.L2.KerInert.Rep.CurveDict := by
   have hInv := Sigma.invAlg'
   have hS2 := Sigma.secondEisensteinAlgebraic
@@ -560,6 +768,9 @@ end Formalism.L2.KerInert.BeCob
 
 namespace Formalism.L2.KerInert.Rep
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.KerInert.BeCob.rdictMain`.
+-/
 theorem curve_dictionary : CurveDict := Formalism.L2.KerInert.BeCob.rdictMain
 
 end Formalism.L2.KerInert.Rep

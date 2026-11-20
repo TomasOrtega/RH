@@ -7,6 +7,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
+/- English proof (translation)
+Introduce `Γ L _ _ M _ _ a h1 hmul U hU d b`. Set `f : Γ → (U →ₗ[L] U)` to `fun g => (a g).restrict (fun x hx => hU g x hx)`. Establish `hfv : ∀ g (x : U), ((f g x : U) : M) = a g (x : M)` using `fun g x => rfl`. Establish `hf1 : f 1 = LinearMap.id`. Use extensionality with `x`.
+
+Simplify using `[hfv, h1]`. Establish `hfm : ∀ g h, f (g * h) = f g ∘ₗ f h`. Introduce `g h`. Use extensionality with `x`. Simplify using `[hfv, hmul]`.
+
+Set `φ : Γ →* Matrix (Fin d) (Fin d) L` to `{ toFun := fun g => LinearMap.toMatrix b b (f g) map_one' := by`. Simplify using `only [hf1, LinearMap.toMatrix_id]`. Use the proof step `map_mul' := by`. Introduce `g h`. Simplify using `only [hfm]`.
+
+Conclude with `LinearMap.toMatrix_comp b b b (f g) (f h) }`. Set `ρ : Γ →* GL (Fin d) L` to `φ.toHomUnits`. Establish `hρ : ∀ g, ((ρ g : GL (Fin d) L) : Matrix (Fin d) (Fin d) L) = LinearMap.toMatrix b b (f g)` using `fun g => MonoidHom.coe_toHomUnits φ g`. Use `⟨ρ, ?_, ?_⟩` and prove the remaining obligations. Introduce `g j`.
+
+Simplify using `only [hρ, LinearMap.toMatrix_apply]`. Rewrite using `[← hfv]`. Establish `e` using `congrArg Subtype.val (b.sum_repr (f g (b j)))`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at e`. Conclude with `e.symm`.
+
+Introduce `i j`. Take `⟨μ, hμ⟩` from `LinearMap.exists_extend (b.coord i)`. Use `⟨μ, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, LinearMap.toMatrix_apply, ← hfv]`. Establish `hc : μ (U.subtype (f g (b j))) = b.coord i (f g (b j))`.
+
+Rewrite using `[← LinearMap.comp_apply, hμ]`. Rewrite `hc` using `[Module.Basis.coord_apply]`. Conclude with `hc.symm`.
+-/
 theorem UpperTheory.Gal.Int.Geo.matEx_of :
     MatEx := by
   intro Γ L _ _ M _ _ a h1 hmul U hU d b

@@ -14,6 +14,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AnVal
 
+/- English proof (translation)
+Introduce `S A _ _ L x0 g Φ hχ k n U x δ s s' θ hn hδ hnx hU hact hrd`. Take `⟨c, -, hc⟩` from `GlobalTheory.T.exists_thetaConstant_of_thetaGroup S A L x0 g Φ k U x hU.1`. Establish `hread` using `GlobalTheory.T.reading_of_thetaGroup_action S A L x0 g Φ k U x c s s' θ hc hact hrd`. Establish `hsq : c ^ 2 = 1` using `GlobalTheory.T.thetaConst_symmetric_square_eq_one S A L x0 g Φ k U x c hc hU.3`. Establish `hmem : (n : ℂ) • x ∈ Φ.lat`.
+
+Rewrite using `[hnx, two_smul]`. Conclude with `add_mem hδ hδ`. Establish `hχδ : Φ.χ ((2 : ℂ) • δ) = 1` using `(GlobalTheory.T.appellHumbert_frame_semicharacter S A L x0 g Φ).2.2 hχ δ hδ`. Establish `hpow` using `GlobalTheory.T.thetaConstant_pow_eq_one_of_power_trivial S A L x0 g Φ k n U x c hc hmem hU.2`. Rewrite `hpow` using `[hnx, hχδ, one_zpow, _root_.mul_one]`.
+
+Establish `hc1 : c = 1`. Take `⟨m, rfl⟩` from `hn`. Rewrite `hpow` using `[pow_succ, pow_mul, hsq, one_pow, _root_.one_mul]`. Conclude with `hpow`. Substitute `hc1` using the available equality.
+
+Simplify `hread` using `only [_root_.one_mul]`.
+-/
 theorem rd_fock_of_symLift : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (x0 : Sp ℂ ⟶ S) (g : ℕ) (Φ : AnFr A L x0 g), (∀ a ∈ Φ.lat, Φ.χ a ^ 2 = 1) → ∀ (k : ℤ) (n : ℕ) (U : ThetaGrp A L.L k (Over.mk x0)) (x δ : Fin g → ℂ) (s s' : LB.Sec (LPow A L.L k (Over.mk x0))) (θ : (Fin g → ℂ) → ℂ), Odd n → δ ∈ Φ.lat → (n : ℂ) • x = (2 : ℂ) • δ → SymLift A L.L k n (Φ.e x) U → IsActOf A L.L k U s s' → Φ.Rd k s θ → Φ.Rd k s' (fock Φ.Hm k x θ) := by
   intro S A _ _ L x0 g Φ hχ k n U x δ s s' θ hn hδ hnx hU hact hrd
 

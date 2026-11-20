@@ -8,6 +8,29 @@ noncomputable section
 
 namespace GlobalTheory.HilbertThetaSeries.GaussSum
 
+/- English proof (translation)
+Take `⟨r, hr⟩ : ∃ r, r = Real.exp (-s)` from `⟨_, rfl⟩`. Establish `hr0 : 0 ≤ r` using `hr ▸ (Real.exp_pos _).le`. Establish `hr1 : r < 1`. Rewrite using `[hr, ← Real.exp_zero]; exact Real.exp_lt_exp.mpr (by linarith)`. Establish `hg : ∀ n : ℤ, Real.exp (-s * (n : ℝ) ^ 2) ≤ r ^ n.natAbs`.
+
+Introduce `n`. Rewrite using `[hr, ← Real.exp_nat_mul]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h1 : ((n.natAbs : ℕ) : ℝ) ≤ (n : ℝ) ^ 2`. Establish `h2 : ((n.natAbs : ℕ) : ℝ) ^ 2 = (n : ℝ) ^ 2`.
+
+Rewrite using `[Nat.cast_natAbs, Int.cast_abs, sq_abs]`. Break down `Nat.eq_zero_or_pos n.natAbs with h | h` into its components or cases. Rewrite using `[h]`. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
+
+Establish `h3 : (1 : ℝ) ≤ ((n.natAbs : ℕ) : ℝ)` using `by exact_mod_cast h`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `hn : Summable (fun n : ℕ => r ^ (n : ℤ).natAbs)`. Simplify using `using summable_geometric_of_lt_one hr0 hr1`.
+
+Establish `hn' : Summable (fun n : ℕ => r ^ (-((n : ℤ) + 1)).natAbs)`. Use `(summable_geometric_of_lt_one hr0 hr1).mul_left r` as an intermediate fact. Use `this.congr fun n => ?_` and prove the remaining obligations. Establish `: (-((n : ℤ) + 1)).natAbs = n + 1` using `by omega`. Rewrite using `[this, pow_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsum : Summable (fun n : ℤ => r ^ n.natAbs)`. Conclude with `Summable.of_nat_of_neg_add_one (f := fun n : ℤ => r ^ n.natAbs) hn hn'`. Establish `hT : ∑' n : ℤ, r ^ n.natAbs = (1 - r)⁻¹ + r * (1 - r)⁻¹`. Rewrite using `[tsum_of_nat_of_neg_add_one (f := fun n : ℤ => r ^ n.natAbs) hn hn']`.
+
+Use `congr 1`. Simplify using `using tsum_geometric_of_lt_one hr0 hr1`. Rewrite using `[← tsum_geometric_of_lt_one hr0 hr1, ← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `n`.
+
+Establish `: (-((n : ℤ) + 1)).natAbs = n + 1` using `by omega`. Rewrite using `[this, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hes : 1 + s ≤ Real.exp s` using `by linarith [Real.add_one_le_exp s]`. Establish `hrs : r * (1 + s) ≤ 1`.
+
+Rewrite using `[hr, Real.exp_neg]`. Rewrite using `[inv_mul_le_iff₀ (Real.exp_pos s)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv : (1 - r)⁻¹ ≤ 1 + 1 / s`. Rewrite using `[inv_le_iff_one_le_mul₀ (by linarith)]`.
+
+Rewrite using `[show (1 + 1 / s) * (1 - r) = 1 + (1 - r * (1 + s)) / s by field_simp; ring]`. Establish `: 0 ≤ (1 - r * (1 + s)) / s` using `div_nonneg (by linarith) hs.le`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ (1 - r)⁻¹` using `inv_nonneg.mpr (by linarith)`.
+
+Establish `h2 : r * (1 - r)⁻¹ ≤ 1 * (1 + 1 / s)` using `mul_le_mul hr1.le hinv this zero_le_one`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = 2 + 2 / s := by ring`.
+-/
 theorem geo_bound {s : ℝ} (hs : 0 < s) (I : Finset ℤ) :
     ∑ n ∈ I, Real.exp (-s * (n : ℝ) ^ 2) ≤ 2 + 2 / s := by
   obtain ⟨r, hr⟩ : ∃ r, r = Real.exp (-s) := ⟨_, rfl⟩
@@ -61,6 +84,11 @@ theorem geo_bound {s : ℝ} (hs : 0 < s) (I : Finset ℤ) :
         linarith
     _ = 2 + 2 / s := by ring
 
+/- English proof (translation)
+Use `set I : Finset ℤ := S.biUnion (fun m => Finset.univ.image m)`. Establish `hsub : S ⊆ Fintype.piFinset (fun _ => I)`. Introduce `m hm`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `t`.
+
+Conclude with `Finset.mem_biUnion.mpr ⟨m, hm, Finset.mem_image_of_mem _ (Finset.mem_univ t)⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prod_bound {T : Type} [Fintype T] {s : ℝ} (hs : 0 < s) (S : Finset (T → ℤ)) :
     ∑ m ∈ S, ∏ t, Real.exp (-s * (m t : ℝ) ^ 2) ≤ (2 + 2 / s) ^ Fintype.card T := by
   classical
@@ -82,16 +110,27 @@ theorem prod_bound {T : Type} [Fintype T] {s : ℝ} (hs : 0 < s) (S : Finset (T 
 section
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Rewrite using `[reAt, ← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v), Complex.ofReal_re]`.
+-/
 theorem reAt_eq (v : InfinitePlace F) (x : F) :
     reAt v x = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) x := by
   rw [reAt, ← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v), Complex.ofReal_re]
 
+/- English proof (translation)
+Rewrite using `[ez, Complex.norm_exp]`. Use `congr 1`. Simplify using `[Complex.mul_re, Complex.mul_im, Complex.im_sum, Complex.re_sum, Finset.mul_sum]`.
+-/
 theorem norm_ez (ξ : F) (z : Hn F) :
     ‖ez ξ z‖ = Real.exp (-(2 * Real.pi) * ∑ v, reAt v ξ * (z v).im) := by
   rw [ez, Complex.norm_exp]
   congr 1
   simp [Complex.mul_re, Complex.mul_im, Complex.im_sum, Complex.re_sum, Finset.mul_sum]
 
+/- English proof (translation)
+Establish `hy` using `w.im_pos`. Rewrite using `[le_div_iff₀ hy, one_mul]`. Establish `: w.im ^ 2 ≤ ‖(w : ℂ)‖ ^ 2`. Establish `h` using `Complex.abs_im_le_norm (w : ℂ)`. Establish `: |w.im| ≤ ‖(w : ℂ)‖` using `by simpa using h`.
+
+Use polynomial arithmetic with `[abs_nonneg w.im, sq_abs w.im]`. Use polynomial arithmetic with `[sq_nonneg (w.im - 1)]`.
+-/
 theorem one_le_fac (w : UpperHalfPlane) : 1 ≤ (1 + ‖(w : ℂ)‖ ^ 2) / w.im := by
   have hy := w.im_pos
   rw [le_div_iff₀ hy, one_mul]
@@ -101,11 +140,17 @@ theorem one_le_fac (w : UpperHalfPlane) : 1 ≤ (1 + ‖(w : ℂ)‖ ^ 2) / w.im
     nlinarith [abs_nonneg w.im, sq_abs w.im]
   nlinarith [sq_nonneg (w.im - 1)]
 
+/- English proof (translation)
+Establish `hy` using `w.im_pos`. Use `gcongr`. Use polynomial arithmetic with `[sq_nonneg ‖(w : ℂ)‖]`.
+-/
 theorem inv_le_fac (w : UpperHalfPlane) : 1 / w.im ≤ (1 + ‖(w : ℂ)‖ ^ 2) / w.im := by
   have hy := w.im_pos
   gcongr
   nlinarith [sq_nonneg ‖(w : ℂ)‖]
 
+/- English proof (translation)
+Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ v)]`. Establish `h1 : 1 ≤ ∏ w ∈ Finset.univ.erase v, (1 + ‖(z w : ℂ)‖ ^ 2) / (z w).im` using `Finset.prod_induction _ (fun t : ℝ => 1 ≤ t) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl fun w _ => one_le_fac (z w)`. Establish `h0 : 0 ≤ (1 + ‖(z v : ℂ)‖ ^ 2) / (z v).im` using `le_trans zero_le_one (one_le_fac (z v))`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem fac_le_prod (z : Hn F) (v : InfinitePlace F) :
     (1 + ‖(z v : ℂ)‖ ^ 2) / (z v).im ≤ ∏ w, (1 + ‖(z w : ℂ)‖ ^ 2) / (z w).im := by
   classical
@@ -117,6 +162,13 @@ theorem fac_le_prod (z : Hn F) (v : InfinitePlace F) :
   nlinarith
 
 open scoped Classical in
+/- English proof (translation)
+Establish `hS : 0 ≤ ∑ v, reAt v x ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hR : ‖mixedEmbedding F x‖ ≤ Real.sqrt (∑ v, reAt v x ^ 2)`. Use `norm_prod_le_iff.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).mpr fun w => ?_` and prove the remaining obligations. Rewrite using `[mixedEmbedding.mixedEmbedding_apply_isReal, Real.norm_eq_abs]`.
+
+Establish `: InfinitePlace.embedding_of_isReal w.2 x = reAt w.1 x` using `by rw [reAt_eq]`. Rewrite using `[this]`. Conclude with `Real.abs_le_sqrt (Finset.single_le_sum (f := fun v => reAt v x ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ w.1))`. Use `haveI : IsEmpty {w : InfinitePlace F // w.IsComplex} := ⟨fun w => (InfinitePlace.not_isComplex_iff_isReal.mpr (IsTotallyReal.isReal w.1)) w.2⟩`. Rewrite using `[Subsingleton.elim (mixedEmbedding F x).2 0, norm_zero]`.
+
+Conclude with `Real.sqrt_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem normsq_mE_le (x : F) : ‖mixedEmbedding F x‖ ^ 2 ≤ ∑ v, reAt v x ^ 2 := by
   have hS : 0 ≤ ∑ v, reAt v x ^ 2 := Finset.sum_nonneg fun _ _ => sq_nonneg _
   have hR : ‖mixedEmbedding F x‖ ≤ Real.sqrt (∑ v, reAt v x ^ 2) := by
@@ -135,6 +187,21 @@ theorem normsq_mE_le (x : F) : ‖mixedEmbedding F x‖ ^ 2 ≤ ∑ v, reAt v x 
 
 variable (F) in
 open scoped Classical in
+/- English proof (translation)
+Use `set lb := mixedEmbedding.latticeBasis F`. Use `set f := LinearMap.toContinuousLinearMap lb.equivFun.toLinearMap`. Use `set K : ℝ := Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 F)) * ‖f‖ ^ 2`. Establish `hK : 0 ≤ K` using `by positivity`. Use `⟨1 / (K + 1), by positivity, fun m => ?_⟩` and prove the remaining obligations.
+
+Use `set x : F := ∑ j, m j • integralBasis F j`. Use `set t : Module.Free.ChooseBasisIndex ℤ (𝓞 F) → ℝ := fun j => (m j : ℝ)`. Establish `hx : mixedEmbedding F x = lb.equivFun.symm t`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Simplify using `only [x, t, lb, map_sum, map_zsmul, mixedEmbedding.latticeBasis_apply, Int.cast_smul_eq_zsmul]`.
+
+Establish `hft : f (mixedEmbedding F x) = t`. Rewrite using `[hx]`. Conclude with `lb.equivFun.apply_symm_apply t`. Establish `h1 : ‖t‖ ≤ ‖f‖ * ‖mixedEmbedding F x‖`. Rewrite using `[← hft]`.
+
+Conclude with `f.le_opNorm _`. Establish `h2 : ∑ j, t j ^ 2 ≤ Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 F)) * ‖t‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Use `norm_le_pi_norm t j` as an intermediate fact.
+
+Rewrite `this` using `[Real.norm_eq_abs]`. Use polynomial arithmetic with `[abs_nonneg (t j), sq_abs (t j)]`. Use `_ = _ := by simp`. Establish `h3` using `normsq_mE_le x`. Establish `h4 : ‖t‖ ^ 2 ≤ ‖f‖ ^ 2 * ‖mixedEmbedding F x‖ ^ 2`.
+
+Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Establish `h5 : ∑ j, t j ^ 2 ≤ K * ∑ v, reAt v x ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hS : 0 ≤ ∑ v, reAt v x ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+
+Use `show 1 / (K + 1) * ∑ j, t j ^ 2 ≤ _`. Rewrite using `[div_mul_eq_mul_div, one_mul, div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem coord_bound : ∃ μ : ℝ, 0 < μ ∧ ∀ m : Module.Free.ChooseBasisIndex ℤ (𝓞 F) → ℤ,
     μ * ∑ j, (m j : ℝ) ^ 2 ≤ ∑ v, reAt v (∑ j, m j • integralBasis F j) ^ 2 := by
   set lb := mixedEmbedding.latticeBasis F
@@ -172,6 +239,9 @@ theorem coord_bound : ∃ μ : ℝ, 0 < μ ∧ ∀ m : Module.Free.ChooseBasisIn
   nlinarith
 end
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ ∑ t, (f t)⁻¹` using `Finset.sum_nonneg fun t _ => (inv_pos.mpr (hf t)).le`. Use `⟨(1 + ∑ t, (f t)⁻¹)⁻¹, by positivity, fun t => ?_⟩` and prove the remaining obligations. Establish `h1 : (f t)⁻¹ ≤ ∑ t, (f t)⁻¹` using `Finset.single_le_sum (f := fun t => (f t)⁻¹) (fun t _ => (inv_pos.mpr (hf t)).le) (Finset.mem_univ t)`. Conclude with `inv_le_of_inv_le₀ (hf t) (by linarith)`.
+-/
 theorem exists_pos_le {T : Type} [Fintype T] (f : T → ℝ) (hf : ∀ t, 0 < f t) : ∃ α : ℝ, 0 < α ∧ ∀ t, α ≤ f t := by
   have h0 : 0 ≤ ∑ t, (f t)⁻¹ := Finset.sum_nonneg fun t _ => (inv_pos.mpr (hf t)).le
   refine ⟨(1 + ∑ t, (f t)⁻¹)⁻¹, by positivity, fun t => ?_⟩
@@ -182,6 +252,13 @@ theorem exists_pos_le {T : Type} [Fintype T] (f : T → ℝ) (hf : ∀ t, 0 < f 
 section
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] [DecidableEq κ]
 
+/- English proof (translation)
+Take `⟨l, hl, hlx⟩` from `AddSubgroup.mem_map.mp x.2`. Establish `hl' : ∀ i, l i ∈ integralClosure ℤ F` using `fun i => hl i (Set.mem_univ i)`. Set `o : κ → 𝓞 F` to `fun i => ⟨l i, hl' i⟩`. Use `⟨fun p => (RingOfIntegers.basis F).repr (o p.1) p.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hlx]`.
+
+Use function extensionality and compare the values at `i`. Establish `h1 : ∑ j, (RingOfIntegers.basis F).repr (o i) j • integralBasis F j = l i`. Establish `h2` using `congrArg (algebraMap (𝓞 F) F) ((RingOfIntegers.basis F).sum_repr (o i))`. Simplify using `only [map_sum, map_zsmul] at h2`. Simplify using `only [integralBasis_apply]`.
+
+Conclude with `h2`. Simplify using `only [h1]`. Both sides reduce to the same expression.
+-/
 theorem exists_coord (a : F) (x : aL κ a) : ∃ m : κ × Module.Free.ChooseBasisIndex ℤ (𝓞 F) → ℤ,
     (x : κ → F) = fun i => a * ∑ j, m (i, j) • integralBasis F j := by
   obtain ⟨l, hl, hlx⟩ := AddSubgroup.mem_map.mp x.2
@@ -200,10 +277,22 @@ theorem exists_coord (a : F) (x : aL κ a) : ∃ m : κ × Module.Free.ChooseBas
 
 variable [IsTotallyReal F]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction _ (fun t : ℝ => 1 ≤ t) (fun _ _ ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl fun w _ => one_le_fac (z w)`.
+-/
 theorem one_le_size (z : Hn F) : 1 ≤ ∏ w, (1 + ‖(z w : ℂ)‖ ^ 2) / (z w).im :=
   Finset.prod_induction _ (fun t : ℝ => 1 ≤ t) (fun _ _ ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl
     fun w _ => one_le_fac (z w)
 
+/- English proof (translation)
+Rewrite using `[norm_ez]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Take `⟨P, hP⟩ : ∃ P, P = ∏ w, (1 + ‖(z w : ℂ)‖ ^ 2) / (z w).im` from `⟨_, rfl⟩`. Establish `hP1 : 1 ≤ P` using `hP ▸ one_le_size z`. Establish `hP0 : 0 < P` using `by linarith`.
+
+Establish `hy : ∀ v, 1 / P ≤ (z v).im` using `fun v => by`. Establish `h1 : 1 / (z v).im ≤ P` using `hP ▸ (inv_le_fac (z v)).trans (fac_le_prod z v)`. Conclude with `(one_div_le hP0 (z v).im_pos).mpr h1`. Rewrite using `[← hP]`. Establish `h2 : (∑ v, reAt v ξ) * (1 / P) ≤ ∑ v, reAt v ξ * (z v).im`.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun v _ => mul_le_mul_of_nonneg_left (hy v) (hξ v)`. Establish `h3 : B * (1 / P) ≤ (∑ v, reAt v ξ) * (1 / P)` using `mul_le_mul_of_nonneg_right hB (by positivity)`. Establish `h4 : -(2 * Real.pi / P) * B = -(2 * Real.pi) * (B * (1 / P))` using `by ring`. Rewrite using `[h4]`.
+
+Use `Real.pi_pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_ez_le (ξ : F) (hξ : ∀ v, 0 ≤ reAt v ξ) (z : Hn F) (B : ℝ) (hB : B ≤ ∑ v, reAt v ξ) :
     ‖ez ξ z‖ ≤ Real.exp (-(2 * Real.pi / ∏ w, (1 + ‖(z w : ℂ)‖ ^ 2) / (z w).im) * B) := by
   rw [norm_ez]
@@ -224,6 +313,15 @@ theorem norm_ez_le (ξ : F) (hξ : ∀ v, 0 ≤ reAt v ξ) (z : Hn F) (B : ℝ) 
   have := Real.pi_pos
   nlinarith
 
+/- English proof (translation)
+Take `⟨-, ⟨c, hc, hcq⟩, -⟩` from `GlobalTheory.HilbertThetaSeries.qf_totPos_proper F κ G hG`. Take `⟨μ, hμ, hμb⟩` from `coord_bound F`. Take `⟨α, hα, hαb⟩` from `exists_pos_le (fun v : InfinitePlace F => reAt v a ^ 2) fun v => by`. Establish `: reAt v a ≠ 0` using `by rw [reAt_eq]; exact (map_ne_zero _).mpr ha`. Check the signs of the components of the expression.
+
+Use `⟨c * α * μ, by positivity, fun m => ?_⟩` and prove the remaining obligations. Use `le_trans ?_ (Finset.sum_le_sum fun v _ => hcq _ v)` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, Finset.sum_comm, Fintype.sum_prod_type, mul_assoc, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hc.le` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_left (hμb fun j => m (i, j)) hα.le).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Establish `h1 : ∀ y : F, reAt v (a * y) = reAt v a * reAt v y` using `fun y => by simp only [reAt_eq, map_mul]`.
+
+Rewrite using `[h1, mul_pow]`. Conclude with `mul_le_mul_of_nonneg_right (hαb v) (sq_nonneg _)`.
+-/
 theorem lower_bound (G : Matrix κ κ ℤ) (hG : EvenPos G) (a : F) (ha : a ≠ 0) :
     ∃ β : ℝ, 0 < β ∧ ∀ m : κ × Module.Free.ChooseBasisIndex ℤ (𝓞 F) → ℤ,
       β * ∑ p, (m p : ℝ) ^ 2 ≤ ∑ v, reAt v (QF G fun i => a * ∑ j, m (i, j) • integralBasis F j) := by
@@ -247,6 +345,27 @@ theorem lower_bound (G : Matrix κ κ ℤ) (hG : EvenPos G) (a : F) (ha : a ≠ 
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ _ κ _ _ G hG a`. It suffices to establish `h : ∃ (C : ℝ) (A : ℕ), ∀ z : Hn F, ∀ S : Finset (aL κ a), ∑ x ∈ S, ‖ez (QF G (x : κ → F)) z‖ ≤ C * (∏ v, (1 + ‖(z v : ℂ)‖ ^ 2) / (z v).im) ^ A by`. Take `⟨C, A, hCA⟩` from `h`. Use `⟨C, A, fun z => ?_⟩` and prove the remaining obligations. Establish `hs : Summable (fun x : aL κ a => ‖ez (QF G (x : κ → F)) z‖)` using `summable_of_sum_le (fun _ => norm_nonneg _) (hCA z)`.
+
+Conclude with `⟨hs, hs.tsum_le_of_sum_le (hCA z)⟩`. Distinguish the cases in `ha : a = 0`. Use `⟨1, 0, fun z S => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ x : aL κ a, (x : κ → F) = 0` using `fun x => by`. Take `⟨m, hm⟩` from `exists_coord a x`.
+
+Rewrite using `[hm]`. Use function extensionality and compare the values at `i`. Simplify using `[ha]`. Use `haveI : Subsingleton (aL κ a) := ⟨fun x y => Subtype.ext (by rw [hmem x, hmem y])⟩`. Establish `h1 : ∀ x : aL κ a, ‖ez (QF G (x : κ → F)) z‖ = 1` using `fun x => by`.
+
+Rewrite using `[hmem x, norm_ez]`. Simplify using `[QF, BF, reAt]`. Simplify using `only [h1, Finset.sum_const, pow_zero, mul_one, nsmul_eq_mul]`. Conclude with `Finset.card_le_one_of_subsingleton S` after adjusting the coercions. Take `⟨β, hβ, hβb⟩` from `lower_bound G hG a ha`.
+
+Take `⟨-, ⟨c, hc, hcq⟩, -⟩` from `GlobalTheory.HilbertThetaSeries.qf_totPos_proper F κ G hG`. Use `choose crd hcrd using exists_coord (κ := κ) a`. Establish `hinj : Function.Injective crd` using `fun x y h => Subtype.ext (by rw [hcrd x, hcrd y, h])`. Establish `hpi` using `Real.pi_pos`. Use `⟨(2 + 2 / (2 * Real.pi * β)) ^ Fintype.card (κ × Module.Free.ChooseBasisIndex ℤ (𝓞 F)), Fintype.card (κ × Module.Free.ChooseBasisIndex ℤ (𝓞 F)), fun z S => ?_⟩` and prove the remaining obligations.
+
+Establish `hterm` using `fun ξ hξ => norm_ez_le (F := F) ξ hξ z`. Establish `hP1` using `one_le_size z`. Generalize the expression as in `(∏ w, (1 + ‖(z w : ℂ)‖ ^ 2) / (z w).im) = P at hterm hP1 ⊢`. Establish `hP0 : 0 < P` using `by linarith`. Establish `hs : 0 < 2 * Real.pi * β / P` using `by positivity`.
+
+Establish `h1 : ∀ x : aL κ a, ‖ez (QF G (x : κ → F)) z‖ ≤ ∏ p, Real.exp (-(2 * Real.pi * β / P) * (crd x p : ℝ) ^ 2)` using `fun x => by`. Establish `h2` using `hβb (crd x)`. Rewrite `h2` using `[← hcrd x]`. Use `(hterm _ (fun v => le_trans ?_ (hcq _ v)) _ h2).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `mul_nonneg hc.le (Finset.sum_nonneg fun _ _ => sq_nonneg _)`.
+
+Rewrite using `[← Real.exp_sum, ← Finset.mul_sum]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_image fun x _ y _ h => hinj h]`.
+
+Use `_ ≤ (2 + 2 / (2 * Real.pi * β / P)) ^ Fintype.card (κ × Module.Free.ChooseBasisIndex ℤ (𝓞 F)) := prod_bound hs _`. Use `_ ≤ _ := by`. Rewrite using `[← mul_pow]`. Use `pow_le_pow_left₀ (by positivity) ?_ _` and prove the remaining obligations. Establish `h3 : 2 / (2 * Real.pi * β / P) = 2 / (2 * Real.pi * β) * P` using `by field_simp`.
+
+Rewrite using `[h3, add_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gauss_sum_bound : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → ∀ a : F, ∃ (C : ℝ) (A : ℕ), ∀ z : Hn F, Summable (fun x : aL κ a => ‖ez (QF G (x : κ → F)) z‖) ∧ ∑' x : aL κ a, ‖ez (QF G (x : κ → F)) z‖ ≤ C * (∏ v, (1 + ‖(z v : ℂ)‖ ^ 2) / (z v).im) ^ A := by
   intro F _ _ _ κ _ _ G hG a
   classical

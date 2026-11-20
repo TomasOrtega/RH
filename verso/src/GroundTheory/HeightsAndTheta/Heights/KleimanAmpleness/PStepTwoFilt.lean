@@ -11,6 +11,29 @@ noncomputable section
 
 universe u v w
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x E _ _ _ _ M₁ M₂ hle J hJ`. Take `⟨⟨F⟩, -⟩` from `h S Ω N x (quotLaurent M₁ M₂) (quotLaurentGraded M₁ M₂) (quotLaurent_finite M₁ M₂) fun p hp y => quotLaurent_smul_eq_zero M₁ M₂ hp y`. Establish `hrep : ∀ k, ∃ g : M₁.piece (F.deg k), quotIota M₁ M₂ (F.deg k) g = F.gen k` using `fun k => LinearMap.mem_range.mp (F.gen_mem k)`. Use `choose g hg using hrep`. Establish `hstab : ∀ k : Fin (F.n + 1), IsProjStable M₁ M₂ (F.step k)`.
+
+Introduce `k`. Proceed by induction on `k using Fin.induction with`. Consider the case `zero => rw [F.step_zero]`. Conclude with `isProjStable_bot`. Consider the case `succ k ih => rw [F.step_succ k, ← hg k]`.
+
+Conclude with `isProjStable_sup ih (g k)`. Establish `hfg : ∀ k : Fin (F.n + 1), ∃ (n : ℕ) (deg : Fin n → ℤ) (gen : Fin n → E), (∀ j, gen j ∈ filtPiece M₁ M₂ (F.step k) (deg j)) ∧ ∀ c, filtPiece M₁ M₂ (F.step k) c ≤ Submodule.span S {z | ∃ (j : Fin n) (f : Poly S N) (e : ℕ), f.IsHomogeneous e ∧ (e : ℤ) + deg j = c ∧ z = aeval x f • …`. Introduce `k`. Proceed by induction on `k using Fin.induction with`. Consider the case `zero`.
+
+Rewrite using `[F.step_zero]`. Simplify using `only [filtPiece_bot hle]`. Conclude with `M₂.fg`. Consider the case `succ k ih`. Take `⟨n, deg, gen, hmem, hspan⟩` from `ih`.
+
+Establish `hsup` using `filtPiece_sup (hstab k.castSucc) (g k)`. Rewrite using `[F.step_succ k, ← hg k]`. Use `⟨n + 1, Fin.cons (F.deg k) deg, Fin.cons (g k : E) gen, fun j => ?_, fun c => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.cons_zero, Fin.cons_zero, hsup]`.
+
+Use `Submodule.mem_sup_right (Submodule.subset_span ⟨1, 0, isHomogeneous_one _ _, by simp, ?_⟩)` and prove the remaining obligations. Rewrite using `[map_one, one_smul]`. Rewrite using `[Fin.cons_succ, Fin.cons_succ]`. Conclude with `filtPiece_mono le_sup_left _ (hmem j)`. Rewrite using `[hsup]`.
+
+Use `sup_le ((hspan c).trans (Submodule.span_mono ?_)) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, f, e, hf, he, rfl⟩`. Conclude with `⟨j.succ, f, e, hf, by rw [Fin.cons_succ]; exact he, by rw [Fin.cons_succ]⟩`. Introduce and unpack `_ ⟨f, d, hf, hd, rfl⟩`. Conclude with `⟨0, f, d, hf, by rw [Fin.cons_zero]; omega, by rw [Fin.cons_zero]⟩`.
+
+Use `⟨F.n, fun k => filtSub M₁ M₂ (F.step k) (hfg k), fun k => (g k : E), F.deg, F.prime, ?_, ?_, fun k => ⟨F.isPrime k, F.isHomogeneous k, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use `FinGradedSub.eq_of_piece_eq (funext fun c => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `filtPiece M₁ M₂ (F.step 0) c = _`. Rewrite using `[F.step_zero, filtPiece_bot hle]`. Use `FinGradedSub.eq_of_piece_eq (funext fun c => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `filtPiece M₁ M₂ (F.step (Fin.last F.n)) c = _`. Rewrite using `[F.step_last, filtPiece_top]`. Conclude with `fun p hp => F.ann_le k (Module.mem_annihilator.mpr fun y => quotLaurent_smul_eq_zero M₁ M₂ hp y)`. Conclude with `fun f e hf he => F.ann_le k (Module.mem_annihilator.mpr fun y => quotLaurent_smul_eq_zero_of M₁ M₂ he (hJ f e hf he) y)`. Express the relevant statement in the definitionally equal form `((g k : M₁.piece (F.deg k)) : E) ∈ filtPiece M₁ M₂ (F.step k.succ) (F.deg k)`.
+
+Rewrite using `[coe_mem_filtPiece, hg k, F.step_succ]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Introduce `c`. Express the relevant statement in the definitionally equal form `filtPiece M₁ M₂ (F.step k.succ) c = filtPiece M₁ M₂ (F.step k.castSucc) c ⊔ _`. Rewrite using `[F.step_succ, ← hg k, filtPiece_sup (hstab k.castSucc) (g k) c]`.
+
+Introduce `f d hf`. Rewrite using `[F.mem_prime, ← hg k, smul_quotIota M₁ M₂ hf]`. Conclude with `(coe_mem_filtPiece _).symm`.
+-/
 theorem StepTwo.Filt.proof (h : PrimeFiltration.Exists.Statement.{u, v, w}) :
     StepTwo.Filt.Statement.{u, v, w} := by
   intro S _ _ Ω _ _ N x E _ _ _ _ M₁ M₂ hle J hJ

@@ -15,6 +15,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ThetaRR
 
+/- English proof (translation)
+Introduce `k _ S p hS P L hT`. Use `haveI : IsLocallyNoetherian S := hS.toIsArithVar.isLocallyNoetherian`. Take `⟨α, hα⟩` from `GlobalTheory.abelianSchemeLaws_all.1.mulPull S hT.polAV 2`. Establish `hL : L.B.IsLB` using `hT.1`. Establish `hα' : ∃ t : LB.Gen (LB.LinComb L.B (K` using `Fin 2) ![𝟙 P.A.left, dbl P] ![4, -1]), t.IsGen := by`.
+
+Use `⟨α, ?_⟩` and prove the remaining obligations. Conclude with `hα`. Establish `h0` using `(CechPic.cls_eq_zero_iff (LB.isLB_linComb hL _ _)).2 hα'`. Rewrite `h0` using `[CechPic.cls_linComb hL]`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, CechPic.pull_id] at h0`.
+
+Use `(CechPic.cls_eq_iff (pull_isLB hL _) (isLB_lbPow hL 4)).1 ?_` and prove the remaining obligations. Rewrite using `[CechPic.cls_pull hL, CechPic.cls_lbPow hL]`. Rewrite `h0` using `[neg_smul, one_smul, ← sub_eq_add_neg, sub_eq_zero]`. Rewrite using `[← h0]`. Conclude with `natCast_zsmul (CechPic.cls L.B hL) 4`.
+-/
 theorem exists_iso_dbl_pull_pow_four : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k), IsRegSurf p → ∀ (P : PPAS S) (L : HermLB (P.A.hom ≫ p)), IsTheta P L.B → ∃ (w : LB.Iso (L.pull (dbl P) (dbl_comp P p)).B (L.pow 4).B), w.IsGen := by
   intro k _ S p hS P L hT
   haveI : IsLocallyNoetherian S := hS.toIsArithVar.isLocallyNoetherian

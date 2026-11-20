@@ -11,6 +11,27 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Introduce `K _ _ n m _ w _ _ mw _ J hJ ψ hψ R hR e₀ he₀`. Establish `hp` using `(UpperTheory.ConvolutionTheory.Tf.locEmb K n w).1`. Take `⟨g, hg, -, hop⟩` from `UpperTheory.ConvolutionTheory.Tf.homConv _ _ (AdelicGLn.localEmbedding w) hp m mw ψ e₀`. Establish `hJm : MeasurableSet (J : Set (Gw n w))` using `hJ.2.measurableSet`. Establish `hval : ∀ x, g x = (mw.real J : ℂ) * (R x * ψ (finAt w (finEmb K n x)))`.
+
+Introduce `x`. Use `set a := finAt w (finEmb K n x) with ha`. Establish `hfa : ∀ y, finAt w (finEmb K n ((AdelicGLn.localEmbedding w y)⁻¹ * x)) = y⁻¹ * a`. Introduce `y`. Rewrite using `[map_mul, finAt_mul, map_inv, finAt_inv, (UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.1]`.
+
+Establish `hRy : ∀ y, R ((AdelicGLn.localEmbedding w y)⁻¹ * x) = R x`. Introduce `y`. Rewrite using `[← map_inv, hR]`. Establish `hpt : ∀ y, ψ (a * y) * e₀ ((AdelicGLn.localEmbedding w (a * y))⁻¹ * x) = (J : Set (Gw n w)).indicator (fun _ => R x * ψ a) y`. Introduce `y`.
+
+Rewrite using `[he₀, hRy, hfa]`. Establish `e1 : (a * y)⁻¹ * a = y⁻¹` using `by group`. Rewrite using `[e1]`. Distinguish the cases in `hy : y ∈ J`. Establish `hy' : y⁻¹ ∈ J` using `J.inv_mem hy`.
+
+Rewrite using `[Set.indicator_of_mem (show y⁻¹ ∈ (J : Set (Gw n w)) from hy'), Set.indicator_of_mem (show y ∈ (J : Set (Gw n w)) from hy), hψ y hy, Pi.one_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy' : y⁻¹ ∉ J` using `fun h => hy (by simpa using J.inv_mem h)`. Rewrite using `[Set.indicator_of_notMem (show y⁻¹ ∉ (J : Set (Gw n w)) from hy'), Set.indicator_of_notMem (show y ∉ (J : Set (Gw n w)) from hy)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hg, ← integral_mul_left_eq_self _ a]`. Simplify using `only [hpt]`. Rewrite using `[integral_indicator hJm, setIntegral_const]`. Simplify using `[Measure.real, mul_comm]`. Establish `hint : ∫ x, g x ∂m = (∫ y, ψ y ∂mw) * ∫ x, e₀ x ∂m`.
+
+Establish `hf : IsCompact (tsupport ψ)` using `ψ.hasCompactSupport.isCompact`. Establish `hS : IsCompact ((AdelicGLn.localEmbedding w) '' tsupport ψ * tsupport e₀)` using `(hf.image hp).mul e₀.hasCompactSupport.isCompact`. Establish `hker : Continuous fun q : AdelicGLn.FiniteAdelicGL K n × Gw n w => ψ q.2 * e₀ ((AdelicGLn.localEmbedding w q.2)⁻¹ * q.1)` using `(ψ.continuous.comp continuous_snd).mul (e₀.continuous.comp ((hp.comp continuous_snd).inv.mul continuous_fst))`. Establish `hI : Integrable (Function.uncurry fun (x : AdelicGLn.FiniteAdelicGL K n) (y : Gw n w) => ψ y * e₀ ((AdelicGLn.localEmbedding w y)⁻¹ * x)) (m.prod mw)`. Use `Continuous.integrable_of_hasCompactSupport hker ?_` and prove the remaining obligations.
+
+Use `HasCompactSupport.intro (hS.prod hf) fun q hq => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ q.2 * e₀ ((AdelicGLn.localEmbedding w q.2)⁻¹ * q.1) = 0`. Assume the negation of the conclusion as `hne`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 hne`. Conclude with `hq ⟨⟨_, ⟨q.2, subset_tsupport _ h1, rfl⟩, _, subset_tsupport _ h2, mul_inv_cancel_left _ _⟩, subset_tsupport _ h1⟩`.
+
+Simplify using `only [hg]`. Rewrite using `[integral_integral_swap hI]`. Simplify using `only [integral_const_mul]`. Establish `hinv : ∀ y : Gw n w, ∫ x, e₀ ((AdelicGLn.localEmbedding w y)⁻¹ * x) ∂m = ∫ x, e₀ x ∂m` using `fun y => integral_mul_left_eq_self (fun x => e₀ x) _`. Simplify using `only [hinv]`.
+
+Rewrite using `[integral_mul_const]`. Conclude with `⟨g, hval, hint, hop⟩`.
+-/
 theorem UpperTheory.exists_testFunction_integral_local_factor :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure] (w : Pl K)
           [MeasurableSpace (Gw n w)] [BorelSpace (Gw n w)] (mw : Measure (Gw n w)) [mw.IsHaarMeasure] (J : Subgroup (Gw n w)), CO J →

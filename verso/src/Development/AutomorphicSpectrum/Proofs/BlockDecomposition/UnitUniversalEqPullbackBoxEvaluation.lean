@@ -11,6 +11,13 @@ namespace GlobalTheory.CompanionTheory.HopfC
 
 variable {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
 
+/- English proof (translation)
+Use `pure_induction (fun a : Fin (0 + 1) ⥤ C ↦ F.obj (a.obj (Fin.last 0))) (F.obj T) (P := fun u ↦ con (fun a : Fin (0 + 1) ⥤ C ↦ F.obj (a.obj (Fin.last 0))) (F.obj T) (evF F T₀ ε) u = evL F T₀ T ε (u ((Functor.const (Fin (0 + 1))).obj T₀))) ?_ ?_ ?_ u` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `(map_zero (evL F T₀ T ε)).symm`. Introduce `f m`. Rewrite using `[con_pure]`.
+
+Use `show evF F T₀ ε f • m = evL F T₀ T ε (f ((Functor.const (Fin (0 + 1))).obj T₀) ⊗ₜ m)`. Simplify using `only [evL, Algebra.TensorProduct.lift_tmul, AlgHom.comp_apply, Algebra.ofId_apply, AlgHom.id_apply, Algebra.smul_def]`. Both sides reduce to the same expression. Introduce `u v hu hv`. Rewrite using `[map_add, hu, hv]`.
+
+Conclude with `(map_add (evL F T₀ T ε) _ _).symm`.
+-/
 theorem con_evF_eq_evL [Finite (Fin (0 + 1) ⥤ C)] (T₀ : C) (ε : F.obj T₀ →ₐ[R] R) (T : C)
     (u : ∀ a : Fin (0 + 1) ⥤ C, F.obj (a.obj (Fin.last 0)) ⊗[R] F.obj T) :
     con (fun a : Fin (0 + 1) ⥤ C ↦ F.obj (a.obj (Fin.last 0))) (F.obj T) (evF F T₀ ε) u =
@@ -30,6 +37,9 @@ theorem con_evF_eq_evL [Finite (Fin (0 + 1) ⥤ C)] (T₀ : C) (ε : F.obj T₀ 
     rw [map_add, hu, hv]
     exact (map_add (evL F T₀ T ε) _ _).symm
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact map_zero _`. Consider the case `tmul x y => simp only [Algebra.TensorProduct.map_tmul, mp_id]`. Consider the case `add x y hx hy => rw [map_add, hx, hy]`.
+-/
 theorem tmap_mp_id {T T' : C} (t : F.obj T ⊗[R] F.obj T') :
     Algebra.TensorProduct.map (mp F (𝟙 T)) (mp F (𝟙 T')) t = t := by
   induction t using TensorProduct.induction_on with
@@ -37,6 +47,11 @@ theorem tmap_mp_id {T T' : C} (t : F.obj T ⊗[R] F.obj T') :
   | tmul x y => simp only [Algebra.TensorProduct.map_tmul, mp_id]
   | add x y hx hy => rw [map_add, hx, hy]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Establish `h1 : UU F (evF F T₀ ε) n w b = con (fun a : Fin (0 + 1) ⥤ C ↦ F.obj (a.obj (Fin.last 0))) (F.obj (b.obj (Fin.last n))) (evF F T₀ ε) (fun a ↦ S0 F n w a b)` using `rfl`. Establish `hb : b.map (homOfLE (Fin.le_last (Fin.last n))) = 𝟙 _`. Rewrite using `[show homOfLE (Fin.le_last (Fin.last n)) = 𝟙 _ from Subsingleton.elim _ _, b.map_id]`. Establish `h2 : S0 F n w ((Functor.const (Fin (0 + 1))).obj T₀) b = w (b ⋙ CategoryTheory.Prod.sectR T₀ C)` using `by show Algebra.TensorProduct.map (mp F (𝟙 T₀)) (mp F (b.map (homOfLE (Fin.le_last (Fin.last n))))) (w (b ⋙ CategoryTheory.Prod.sectR T₀ C)) = _`.
+
+Rewrite using `[hb]`. Conclude with `tmap_mp_id F _`. Rewrite using `[h1, con_evF_eq_evL, pulln_apply, h2]`. Both sides reduce to the same expression.
+-/
 theorem UU_evF [Finite (Fin (0 + 1) ⥤ C)] (T₀ : C) (ε : F.obj T₀ →ₐ[R] R) (n : ℕ) (w : Cn (box F) n) :
     UU F (evF F T₀ ε) n w = pulln (boxE F T₀ ε) n w := by
   funext b

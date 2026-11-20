@@ -8,6 +8,13 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Fins
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set Y : Matrix (Fin n) (Fin n) ℂ := (t : ℂ) • X with hYdef`. Establish `hHX : H * X = -(X.conjTranspose * H)` using `eq_neg_of_add_eq_zero_right hX`. Establish `hY : SemiconjBy H Y (-Y.conjTranspose)` using `by show H * Y = -Y.conjTranspose * H`. Rewrite using `[hYdef, Matrix.mul_smul, hHX, Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.neg_mul, Matrix.smul_mul, smul_neg]`. Establish `key : NormedSpace.exp (-(-Y.conjTranspose)) * H * NormedSpace.exp Y = H`.
+
+Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℚ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedSpace ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedSpace`. Use `letI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℂ _`. Conclude with `hY.exp_neg_mul_mul_exp_eq_self`.
+
+Rewrite `key` using `[neg_neg, Matrix.exp_conjTranspose]`. Then use the resulting hypothesis.
+-/
 private theorem exp_real_smul_mem_UJset_of_inG {n : ℕ} (H X : Matrix (Fin n) (Fin n) ℂ) (hX : X.conjTranspose * H + H * X = 0)
     (t : ℝ) : (NormedSpace.exp ((t : ℂ) • X)).conjTranspose * H * NormedSpace.exp ((t : ℂ) • X) = H := by
   set Y : Matrix (Fin n) (Fin n) ℂ := (t : ℂ) • X with hYdef
@@ -24,6 +31,9 @@ private theorem exp_real_smul_mem_UJset_of_inG {n : ℕ} (H X : Matrix (Fin n) (
     exact hY.exp_neg_mul_mul_exp_eq_self
   rwa [neg_neg, Matrix.exp_conjTranspose] at key
 
+/- English proof (translation)
+Establish `hg' : g.conjTranspose * Hpk k r * g = Hpk k r` using `hg`. Establish `hh' : h.conjTranspose * Hpk k r * h = Hpk k r` using `hh`. Use `show (g * h).conjTranspose * Hpk k r * (g * h) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul, show h.conjTranspose * g.conjTranspose * Hpk k r * (g * h) = h.conjTranspose * (g.conjTranspose * Hpk k r * g) * h by`. Simplify using `only [Matrix.mul_assoc], hg', hh']`.
+-/
 private theorem mul_mem_UH_Hpk' {k r : ℕ} {g h : B.Mat k r} (hg : g ∈ B.GV k r) (hh : h ∈ B.GV k r) :
     g * h ∈ B.GV k r := by
   have hg' : g.conjTranspose * Hpk k r * g = Hpk k r := hg
@@ -32,10 +42,16 @@ private theorem mul_mem_UH_Hpk' {k r : ℕ} {g h : B.Mat k r} (hg : g ∈ B.GV k
   rw [Matrix.conjTranspose_mul, show h.conjTranspose * g.conjTranspose * Hpk k r * (g * h) = h.conjTranspose * (g.conjTranspose * Hpk k r * g) * h by
     simp only [Matrix.mul_assoc], hg', hh']
 
+/- English proof (translation)
+The claim follows from `exp_real_smul_mem_UJset_of_inG (Hpk k r) X hX t`.
+-/
 private theorem exp_smul_mem_UJset' {k r : ℕ} {X : B.Mat k r} (hX : B.inLie k r X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ B.GV k r :=
   exp_real_smul_mem_UJset_of_inG (Hpk k r) X hX t
 
+/- English proof (translation)
+Introduce `g hg`. Simplify using `only [RdV]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `h _ (mul_mem_UH_Hpk' hg (exp_smul_mem_UJset' hX t))`.
+-/
 private theorem rdV_congr_on_GV {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {X : B.Mat k r} (hX : B.inLie k r X) {f f' : B.Mat k r → E}
     (h : ∀ g ∈ B.GV k r, f g = f' g) : ∀ g ∈ B.GV k r, RdV X f g = RdV X f' g := by
@@ -45,6 +61,11 @@ private theorem rdV_congr_on_GV {k r : ℕ} {E : Type} [NormedAddCommGroup E] [N
   funext t
   exact h _ (mul_mem_UH_Hpk' hg (exp_smul_mem_UJset' hX t))
 
+/- English proof (translation)
+Introduce `g hg`. Simplify using `only [B.LdV]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `hneg : -((t : ℂ) • X) = ((-t : ℝ) : ℂ) • X` using `by rw [Complex.ofReal_neg, neg_smul]`.
+
+Rewrite using `[hneg]`. Conclude with `h _ (mul_mem_UH_Hpk' (exp_smul_mem_UJset' hX (-t)) hg)`.
+-/
 private theorem ldV_congr_on_GV {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {X : B.Mat k r} (hX : B.inLie k r X) {f f' : B.Mat k r → E}
     (h : ∀ g ∈ B.GV k r, f g = f' g) : ∀ g ∈ B.GV k r, B.LdV X f g = B.LdV X f' g := by
@@ -56,6 +77,9 @@ private theorem ldV_congr_on_GV {k r : ℕ} {E : Type} [NormedAddCommGroup E] [N
   rw [hneg]
   exact h _ (mul_mem_UH_Hpk' (exp_smul_mem_UJset' hX (-t)) hg)
 
+/- English proof (translation)
+Proceed by induction on `v with`. Consider the case `nil => exact h`. Consider the case `cons X v ih`. Conclude with `rdV_congr_on_GV (hv X List.mem_cons_self) (ih fun Y hY => hv Y (List.mem_cons_of_mem X hY))`.
+-/
 private theorem rw_congr_on_GV {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (v : List (B.Mat k r)) (hv : ∀ X ∈ v, B.inLie k r X) {f f' : B.Mat k r → E}
     (h : ∀ g ∈ B.GV k r, f g = f' g) : ∀ g ∈ B.GV k r, B.Rw v f g = B.Rw v f' g := by
@@ -64,6 +88,9 @@ private theorem rw_congr_on_GV {k r : ℕ} {E : Type} [NormedAddCommGroup E] [No
   | cons X v ih =>
     exact rdV_congr_on_GV (hv X List.mem_cons_self) (ih fun Y hY => hv Y (List.mem_cons_of_mem X hY))
 
+/- English proof (translation)
+Proceed by induction on `u with`. Consider the case `nil => exact rw_congr_on_GV v hv h`. Consider the case `cons X u ih`. Conclude with `ldV_congr_on_GV (hu X List.mem_cons_self) (ih fun Y hY => hu Y (List.mem_cons_of_mem X hY))`.
+-/
 private theorem dLR_congr_on_GV {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (u v : List (B.Mat k r)) (hu : ∀ X ∈ u, B.inLie k r X) (hv : ∀ X ∈ v, B.inLie k r X)
     {f f' : B.Mat k r → E} (h : ∀ g ∈ B.GV k r, f g = f' g) :
@@ -73,6 +100,13 @@ private theorem dLR_congr_on_GV {k r : ℕ} {E : Type} [NormedAddCommGroup E] [N
   | cons X u ih =>
     exact ldV_congr_on_GV (hu X List.mem_cons_self) (ih fun Y hY => hu Y (List.mem_cons_of_mem X hY))
 
+/- English proof (translation)
+Introduce `k r E _ _ A F F' h`. Establish `hck : ∀ m : ℕ∞, B.CkOn m (B.GV k r) F → B.CkOn m (B.GV k r) F'`. Introduce `m hF g₀ hg₀`. Take `⟨U, f', hU, hg₀U, hf', hfU⟩` from `hF g₀ hg₀`. Conclude with `⟨U, f', hU, hg₀U, hf', fun g hgU hgG => (h g hgG).symm.trans (hfU g hgU hgG)⟩`.
+
+Use `⟨hck ⊤, fun m hF => ?_⟩` and prove the remaining obligations. Unfold `B.InCC B.CCle at hF ⊢`. Take `⟨c, hc1, hc2⟩` from `hF`. Use `⟨c, hck _ hc1, fun u v hu hv hlen g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← dLR_congr_on_GV u v (fun X hX => (hu X hX).1) (fun X hX => (hv X hX).1) h g hg]`.
+
+Conclude with `hc2 u v hu hv hlen g hg`.
+-/
 theorem ckOn_inCC_congr_on_group : ∀ (k r : ℕ) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (A : ℝ) (F F' : B.Mat k r → E), (∀ g ∈ B.GV k r, F g = F' g) → (B.CkOn ⊤ (B.GV k r) F → B.CkOn ⊤ (B.GV k r) F') ∧ ∀ m : ℕ, B.InCC A m F → B.InCC A m F' := by
   intro k r E _ _ A F F' h
   have hck : ∀ m : ℕ∞, B.CkOn m (B.GV k r) F → B.CkOn m (B.GV k r) F' := by

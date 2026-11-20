@@ -8,6 +8,19 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL.FrameClass
 
+/- English proof (translation)
+Set `M : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨A i j, hO i j⟩`. Establish `hM : M.BlockTriangular id` using `fun i j h => Subtype.ext (ht i j h)`. Establish `hMd : ∀ i, M i i = 1` using `fun i => Subtype.ext (hd i)`. Establish `hdet : M.det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular hM]`.
+
+Simplify using `[hMd]`. Establish `hu : IsUnit M.det` using `by rw [hdet]; exact isUnit_one`. Set `_ : Invertible M` to `Matrix.invertibleOfIsUnitDet M hu`. Establish `hI : (M⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hM`. Establish `h1 : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M hu`.
+
+Establish `h2 : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul M hu`. Establish `hA : M.map (SubringClass.subtype O) = A` using `rfl`. Use `⟨(M⁻¹).map (SubringClass.subtype O), fun i j => (M⁻¹ i j).2, fun i j h => ?_, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: M⁻¹ i j = 0` using `hI h`. Simplify using `[Matrix.map_apply, this]`.
+
+Establish `h` using `congrFun (congrFun h1 i) i`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single i, hMd, one_mul]`. Simplify using `[Matrix.map_apply, h]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hk | hk` into its components or cases.
+
+Establish `: M i k = 0` using `hM hk`. Rewrite using `[this, zero_mul]`. Establish `: M⁻¹ k i = 0` using `hI hk`. Rewrite using `[this, mul_zero]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← hA, ← Matrix.map_mul, h1]`. Simplify using the standard rewrite rules. Rewrite using `[← hA, ← Matrix.map_mul, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_inv {E : Type} [CommRing E] {σ : Type} [SetLike σ E] [SubringClass σ E] (O : σ) {n : ℕ}
     (A : Matrix (Fin n) (Fin n) E) (hO : ∀ i j, A i j ∈ O) (ht : ∀ i j, j < i → A i j = 0)
     (hd : ∀ i, A i i = 1) :
@@ -40,6 +53,9 @@ theorem exists_inv {E : Type} [CommRing E] {σ : Type} [SetLike σ E] [SubringCl
   · rw [← hA, ← Matrix.map_mul, h1]; simp
   · rw [← hA, ← Matrix.map_mul, h2]; simp
 
+/- English proof (translation)
+Rewrite using `[hq]`. Simplify using `only [hp, Finset.smul_sum, Matrix.mul_apply, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+-/
 theorem sum_comp {E V : Type} [CommRing E] [AddCommGroup V] [Module E V] {n : ℕ}
     (A B : Matrix (Fin n) (Fin n) E) (g p q : Fin n → V) (hp : ∀ j, p j = ∑ i, A i j • g i)
     (hq : ∀ j, q j = ∑ i, B i j • p i) (j : Fin n) : q j = ∑ i, (A * B) i j • g i := by
@@ -52,6 +68,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
+/- English proof (translation)
+Unfold `Frames.th`. Use `split_ifs`. Introduce `h`. Conclude with `S.ϖ_irr.ne_zero (Subtype.ext h)`. Conclude with `one_ne_zero`.
+-/
 theorem th_ne_zero : S.th ≠ 0 := by
   unfold Frames.th
   split_ifs
@@ -59,11 +78,17 @@ theorem th_ne_zero : S.th ≠ 0 := by
     exact S.ϖ_irr.ne_zero (Subtype.ext h)
   · exact one_ne_zero
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact sum_mem fun l _ => mul_mem (hA i l) (hB l j)`.
+-/
 theorem intM_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) E} (hA : IsIntM L A) (hB : IsIntM L B) :
     IsIntM L (A * B) := fun i j => by
   rw [Matrix.mul_apply]
   exact sum_mem fun l _ => mul_mem (hA i l) (hB l j)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h choose C hC hC' using h`. Conclude with `⟨C, hC, by ext i j; exact hC' i j⟩`. Introduce and unpack `⟨C, hC, h⟩ i j`. Conclude with `⟨C i j, hC i j, congrFun (congrFun h i) j⟩`.
+-/
 theorem cong_iff {n : ℕ} (t : E) (A A' : Matrix (Fin n) (Fin n) E) :
     (∀ i j, ∃ c ∈ L.O, A' i j - A i j = t * c) ↔ ∃ C, IsIntM L C ∧ A' - A = t • C := by
   constructor
@@ -73,6 +98,11 @@ theorem cong_iff {n : ℕ} (t : E) (A A' : Matrix (Fin n) (Fin n) E) :
   · rintro ⟨C, hC, h⟩ i j
     exact ⟨C i j, hC i j, congrFun (congrFun h i) j⟩
 
+/- English proof (translation)
+Establish `h1 : IsIntM L (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E)` using `fun i j => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Use `⟨1, 1, h1, h1, fun i j h => ?_, fun i => by simp, fun i j => ⟨0, zero_mem _, by simp⟩, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[Matrix.one_apply_ne h.ne']`. Simplify using `[Matrix.one_apply]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem refl_mem (g g' : Fin (r + 1) → S.V) : (g, g') ∈ S.frameCls g g' := by
   have h1 : IsIntM L (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) := fun i j => by
     rw [Matrix.one_apply]; split_ifs
@@ -84,6 +114,9 @@ theorem refl_mem (g g' : Fin (r + 1) → S.V) : (g, g') ∈ S.frameCls g g' := b
   · simp [Matrix.one_apply]
 
 omit [TopologicalSpace E] in
+/- English proof (translation)
+Introduce `i j h` and use `by have hA' : A.BlockTriangular id := fun i j h => hA i j h have hB' : B.BlockTriangular id := fun i j h => hB i j h exact hA'.mul hB' h`.
+-/
 theorem tri_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) E} (hA : ∀ i j, j < i → A i j = 0)
     (hB : ∀ i j, j < i → B i j = 0) : ∀ i j, j < i → (A * B) i j = 0 := fun i j h => by
   have hA' : A.BlockTriangular id := fun i j h => hA i j h
@@ -91,6 +124,11 @@ theorem tri_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) E} (hA : ∀ i j, j < i 
   exact hA'.mul hB' h
 
 omit [TopologicalSpace E] in
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with hl | hl` into its components or cases. Rewrite using `[hA i l hl, zero_mul]`. Rewrite using `[hB l i hl, mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem diag_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) E} (hA : ∀ i j, j < i → A i j = 0)
     (hB : ∀ i j, j < i → B i j = 0) (i : Fin n) : (A * B) i i = A i i * B i i := by
   rw [Matrix.mul_apply, Finset.sum_eq_single i]
@@ -100,6 +138,13 @@ theorem diag_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) E} (hA : ∀ i j, j < i
     · rw [hB l i hl, mul_zero]
   · simp
 
+/- English proof (translation)
+Take `⟨A, A', hA, hA', ht, hd, hc, h1, h2⟩` from `hp`. Take `⟨B, B', hB, hB', kt, kd, kc, k1, k2⟩` from `hq`. Take `⟨C, hC, hc⟩` from `(cong_iff _ _ _).1 hc`. Take `⟨D, hD, kc⟩` from `(cong_iff _ _ _).1 kc`. Use `⟨A * B, A' * B', intM_mul hA hB, intM_mul hA' hB', fun i j h => ⟨?_, ?_⟩, fun i => ⟨?_, ?_⟩, ?_, sum_comp A B g p.1 q.1 h1 k1, sum_comp A' B' g' p.2 q.2 h2 k2⟩` and prove the remaining obligations.
+
+Conclude with `tri_mul (fun i j h => (ht i j h).1) (fun i j h => (kt i j h).1) i j h`. Conclude with `tri_mul (fun i j h => (ht i j h).2) (fun i j h => (kt i j h).2) i j h`. Rewrite using `[diag_mul (fun i j h => (ht i j h).1) (fun i j h => (kt i j h).1), (hd i).1, (kd i).1, one_mul]`. Rewrite using `[diag_mul (fun i j h => (ht i j h).2) (fun i j h => (kt i j h).2), (hd i).2, (kd i).2, one_mul]`. Use `(cong_iff _ _ _).2 ⟨C * B' + A * D, fun i j => ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `add_mem (intM_mul hC hB' i j) (intM_mul hA hD i j)`. Rewrite using `[smul_add, ← Matrix.smul_mul, ← Matrix.mul_smul, ← hc, ← kc, sub_mul, mul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem trans_mem {g g' : Fin (r + 1) → S.V} {p q : S.FrP} (hp : p ∈ S.frameCls g g')
     (hq : q ∈ S.frameCls p.1 p.2) : q ∈ S.frameCls g g' := by
   obtain ⟨A, A', hA, hA', ht, hd, hc, h1, h2⟩ := hp
@@ -116,6 +161,13 @@ theorem trans_mem {g g' : Fin (r + 1) → S.V} {p q : S.FrP} (hp : p ∈ S.frame
     · exact add_mem (intM_mul hC hB' i j) (intM_mul hA hD i j)
     · rw [smul_add, ← Matrix.smul_mul, ← Matrix.mul_smul, ← hc, ← kc, sub_mul, mul_sub]; abel
 
+/- English proof (translation)
+Take `⟨A, A', hA, hA', ht, hd, hc, h1, h2⟩` from `hp`. Take `⟨C, hC, hc⟩` from `(cong_iff _ _ _).1 hc`. Take `⟨B, hB, bt, bd, hAB, hBA⟩` from `exists_inv L.O A hA (fun i j h => (ht i j h).1) (fun i => (hd i).1)`. Take `⟨B', hB', bt', bd', hAB', hBA'⟩` from `exists_inv L.O A' hA' (fun i j h => (ht i j h).2) (fun i => (hd i).2)`. Use `⟨B, B', hB, hB', fun i j h => ⟨bt i j h, bt' i j h⟩, fun i => ⟨bd i, bd' i⟩, ?_, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Use `(cong_iff _ _ _).2 ⟨-(B' * C * B), fun i j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `neg_mem (intM_mul (intM_mul hB' hC) hB i j)`. Rewrite using `[smul_neg, ← Matrix.smul_mul, ← Matrix.mul_smul, ← hc, mul_sub, sub_mul, hBA', mul_assoc, hAB]`. Simplify using the standard rewrite rules. Use `sum_comp A B g p.1 (fun j => ∑ i, B i j • p.1 i) h1 (fun _ => rfl) j` as an intermediate fact.
+
+Rewrite using `[this, hAB]`. Simplify using `[Matrix.one_apply]`. Use `sum_comp A' B' g' p.2 (fun j => ∑ i, B' i j • p.2 i) h2 (fun _ => rfl) j` as an intermediate fact. Rewrite using `[this, hAB']`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem symm_mem {g g' : Fin (r + 1) → S.V} {p : S.FrP} (hp : p ∈ S.frameCls g g') :
     (g, g') ∈ S.frameCls p.1 p.2 := by
   obtain ⟨A, A', hA, hA', ht, hd, hc, h1, h2⟩ := hp
@@ -134,6 +186,17 @@ theorem symm_mem {g g' : Fin (r + 1) → S.V} {p : S.FrP} (hp : p ∈ S.frameCls
   · have := sum_comp A' B' g' p.2 (fun j => ∑ i, B' i j • p.2 i) h2 (fun _ => rfl) j
     rw [this, hAB']; simp [Matrix.one_apply]
 
+/- English proof (translation)
+Take `⟨A, A', hA, hA', ht, hd, hc, h1, h2⟩` from `hp`. Establish `hsm : ∀ c ∈ L.O, ∀ v ∈ S.Mof g g', c • v ∈ S.Mof g g'` using `fun c hc v hv => (S.Mof g g').smul_mem ⟨c, hc⟩ hv`. Establish `hg : ∀ i, g i ∈ S.Mof g g'` using `fun i => Submodule.subset_span (Or.inl ⟨i, rfl⟩)`. Establish `hg' : ∀ i, algebraMap F E S.th⁻¹ • (g' i - g i) ∈ S.Mof g g'` using `fun i => Submodule.subset_span (Or.inr ⟨i, rfl⟩)`. Establish `hth : algebraMap F E S.th⁻¹ * algebraMap F E S.th = 1`.
+
+Rewrite using `[← map_mul, inv_mul_cancel₀ (th_ne_zero S), map_one]`. Use `choose C hC hC' using hc`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨j, rfl⟩ | ⟨j, rfl⟩)`. Rewrite using `[h1]`.
+
+Conclude with `sum_mem fun i _ => hsm _ (hA i j) _ (hg i)`. Establish `: algebraMap F E S.th⁻¹ • (p.2 j - p.1 j) = ∑ i, (A' i j • (algebraMap F E S.th⁻¹ • (g' i - g i)) + C i j • g i)`. Rewrite using `[h1, h2, ← Finset.sum_sub_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hCi : C i j = algebraMap F E S.th⁻¹ * (A' i j - A i j)`.
+
+Rewrite using `[hC', ← mul_assoc, hth, one_mul]`. Rewrite using `[hCi]`. Use `module`. Use `show algebraMap F E S.th⁻¹ • (p.2 j - p.1 j) ∈ S.Mof g g'`. Rewrite using `[this]`.
+
+Conclude with `sum_mem fun i _ => add_mem (hsm _ (hA' i j) _ (hg' i)) (hsm _ (hC i j) _ (hg i))`.
+-/
 theorem Mof_le {g g' : Fin (r + 1) → S.V} {p : S.FrP} (hp : p ∈ S.frameCls g g') :
     S.Mof p.1 p.2 ≤ S.Mof g g' := by
   obtain ⟨A, A', hA, hA', ht, hd, hc, h1, h2⟩ := hp
@@ -160,6 +223,11 @@ theorem Mof_le {g g' : Fin (r + 1) → S.V} {p : S.FrP} (hp : p ∈ S.frameCls g
     rw [this]
     exact sum_mem fun i _ => add_mem (hsm _ (hA' i j) _ (hg' i)) (hsm _ (hC i j) _ (hg i))
 
+/- English proof (translation)
+Take `⟨A, A', hA, hA', ht, hd, hc, h1, h2⟩` from `hp`. Use `⟨A, A', hA, hA', ht, hd, hc, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Use `show h (p.1 j) = _`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+
+Use `show h (p.2 j) = _`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+-/
 theorem smul_mem (h : S.GLV) {g g' : Fin (r + 1) → S.V} {p : S.FrP} (hp : p ∈ S.frameCls g g') :
     h • p ∈ S.frameCls (fun b => h (g b)) (fun b => h (g' b)) := by
   obtain ⟨A, A', hA, hA', ht, hd, hc, h1, h2⟩ := hp
@@ -169,6 +237,11 @@ theorem smul_mem (h : S.GLV) {g g' : Fin (r + 1) → S.V} {p : S.FrP} (hp : p �
   · show h (p.2 j) = _
     rw [h2]; simp
 
+/- English proof (translation)
+Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, rfl⟩`. Conclude with `smul_mem S h hq`. Introduce `hp`.
+
+Use `smul_mem S h⁻¹ hp` as an intermediate fact. Use `⟨h⁻¹ • p, ?_, smul_inv_smul h p⟩` and prove the remaining obligations. Establish `e : ∀ v : S.V, h⁻¹ (h v) = v` using `fun v => h.symm_apply_apply v`. Simplify `this` using `only [e]`.
+-/
 theorem smul_cls (h : S.GLV) (g g' : Fin (r + 1) → S.V) :
     h • S.frameCls g g' = S.frameCls (fun b => h (g b)) (fun b => h (g' b)) := by
   ext p
@@ -181,6 +254,9 @@ theorem smul_cls (h : S.GLV) (g g' : Fin (r + 1) → S.V) :
     have e : ∀ v : S.V, h⁻¹ (h v) = v := fun v => h.symm_apply_apply v
     simpa only [e] using this
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S g g'`. Use `⟨refl_mem S g g', fun p hp => ⟨?_, ?_⟩, fun h => smul_cls S h g g'⟩` and prove the remaining obligations. Use extensionality with `q`. Conclude with `⟨fun hq => trans_mem S hp hq, fun hq => trans_mem S (symm_mem S hp) hq⟩`. Conclude with `le_antisymm (Mof_le S hp) (Mof_le S (p := (g, g')) (symm_mem S hp))`.
+-/
 theorem frame_classes : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ g g' : Fin (r + 1) → S.V, (g, g') ∈ S.frameCls g g' ∧ (∀ p ∈ S.frameCls g g', S.frameCls p.1 p.2 = S.frameCls g g' ∧ S.Mof p.1 p.2 = S.Mof g g') ∧ ∀ h : S.GLV, h • S.frameCls g g' = S.frameCls (fun b => h (g b)) (fun b => h (g' b)) := by
   intro F _ _ _ _ _ E _ _ _ L r k S g g'
   refine ⟨refl_mem S g g', fun p hp => ⟨?_, ?_⟩, fun h => smul_cls S h g g'⟩

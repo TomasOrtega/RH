@@ -14,6 +14,15 @@ import Formalism.GaloisCohomology.GaloisCohomologyProofs.LdataNonempty
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
+/- English proof (translation)
+Establish `hx0 : 0 < x` using `by linarith`. Establish `hn' : (n : ℝ) ≤ n0` using `by exact_mod_cast hn`. Establish `hD' : (1 : ℝ) ≤ D` using `by exact_mod_cast hD`. Establish `h2 : Real.log 2 ≤ Real.log x` using `Real.log_le_log (by norm_num) hx`. Establish `hx1 : 0 ≤ Real.log x` using `Real.log_nonneg (by linarith)`.
+
+Establish `h3 : Real.log (2 * (D : ℝ)) ≤ ((n0 : ℝ) + 1) * Real.log x`. Rewrite using `[Real.log_mul (by norm_num) (by linarith)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hn' hx1]`. Establish `h4 : 0 ≤ Real.log (2 * (D : ℝ))` using `Real.log_nonneg (by linarith)`. Unfold `kBound`.
+
+Rewrite using `[← Real.exp_log (pow_pos hx0 _), Real.exp_le_exp, Real.log_pow, Real.rpow_natCast]`. Use `push_cast`. Rewrite using `[mul_assoc ((2 * (n0 : ℝ)) ^ K)]`. Use `mul_le_mul ?_ h3 h4 (by positivity)` and prove the remaining obligations. Rewrite using `[mul_one]`.
+
+Use `gcongr`.
+-/
 private theorem kBound_le (K n n0 D : ℕ) (x : ℝ) (hx : 2 ≤ x) (hn : n ≤ n0) (hD : 0 < D)
     (hl : Real.log (D : ℝ) ≤ (n : ℝ) * Real.log x) :
     kBound (K : ℝ) 1 n D ≤ x ^ ((2 * n0) ^ K * (n0 + 1)) := by
@@ -34,6 +43,13 @@ private theorem kBound_le (K n n0 D : ℕ) (x : ℝ) (hx : 2 ≤ x) (hn : n ≤ 
   rw [mul_one]
   gcongr
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `ENat.ne_top_iff_exists.1 hT`. Rewrite `h` using `[← hk]`. Establish `hmk : (m : ℕ∞) * (k : ℕ∞) = ((m * k : ℕ) : ℕ∞)` using `by push_cast; rfl`. Rewrite `h` using `[hmk]`. Establish `ha : a ≠ ⊤` using `ne_top_of_le_ne_top (ENat.coe_ne_top _) h`.
+
+Use `⟨ha, ?_⟩` and prove the remaining obligations. Use `lift a to ℕ using ha`. Establish `h' : a ≤ m * k` using `by exact_mod_cast h`. Unfold `Chr.nrm`. Rewrite using `[← hk]`.
+
+Simplify using `only [ENat.toNat_coe]`. Break down `Nat.eq_zero_or_pos k with hk0 | hk0` into its components or cases. Simplify using `[hk0]`. Rewrite using `[div_le_iff₀ (by exact_mod_cast hk0)]`. Conclude with `h'` after adjusting the coercions.
+-/
 private theorem nrm_le (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra ℤ_[l] O] (hT : eO l O ≠ ⊤)
     (a : ℕ∞) (m : ℕ) (h : a ≤ (m : ℕ∞) * eO l O) : a ≠ ⊤ ∧ Chr.nrm l O a ≤ m := by
   obtain ⟨k, hk⟩ := ENat.ne_top_iff_exists.1 hT
@@ -52,6 +68,17 @@ private theorem nrm_le (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [Algebra
   · rw [div_le_iff₀ (by exact_mod_cast hk0)]
     exact_mod_cast h'
 
+/- English proof (translation)
+Establish `h2n : ∀ m : ℕ, m + 1 ≤ 2 ^ m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hx2 : 2 ≤ x` using `by rw [hx]; nlinarith`. Establish `hx0 : 0 ≤ x` using `by linarith`. Establish `hlx : l ≤ x` using `by rw [hx]; nlinarith`. Establish `hX : x ≤ x ^ (A + 1)` using `le_self_pow₀ (by linarith) (by omega)`.
+
+Establish `hX0 : 0 ≤ x ^ (A + 1)` using `pow_nonneg hx0 _`. Establish `hn00 : (0 : ℝ) ≤ n0` using `Nat.cast_nonneg _`. Establish `hp2 : (1 : ℝ) ≤ 2 ^ n0` using `one_le_pow₀ (by norm_num)`. Establish `hn0 : (n0 : ℝ) + 1 ≤ 2 ^ n0` using `by exact_mod_cast h2n n0`. Establish `hpow : (2 : ℝ) ^ (n0 + 2) ≤ x ^ (n0 + 2)` using `pow_le_pow_left₀ (by norm_num) hx2 _`.
+
+Establish `hA0 : 0 ≤ x ^ A` using `pow_nonneg hx0 A`. Establish `hpos : 0 ≤ 2 * x ^ A + n0 * (2 * N)` using `by nlinarith`. Establish `e1 : x ^ A * l ≤ x ^ (A + 1)`. Rewrite using `[pow_succ]`. Conclude with `mul_le_mul_of_nonneg_left hlx hA0`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add (2 : ℝ) n0 2]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hn0 hX0, mul_le_mul_of_nonneg_left hp2 hX0]`. Use `_ ≤ x ^ (A + 1) * x ^ (n0 + 2) := mul_le_mul_of_nonneg_left hpow hX0`. Use `_ = x ^ (A + n0 + 3) := by rw [← pow_add]; congr 1; omega`.
+-/
 private theorem final_le (A n0 : ℕ) (x v y l N : ℝ) (hl : 1 ≤ l) (hN : 2 ≤ N) (hx : x = l * N)
     (hy0 : 0 ≤ y) (hy : y ≤ l) (hv : v ≤ 2 * x ^ A + n0 * (2 * N)) :
     v * y ≤ x ^ (A + n0 + 3) := by
@@ -83,6 +110,37 @@ private theorem final_le (A n0 : ℕ) (x v y l N : ℝ) (hl : 1 ≤ l) (hN : 2 �
     _ ≤ x ^ (A + 1) * x ^ (n0 + 2) := mul_le_mul_of_nonneg_left hpow hX0
     _ = x ^ (A + n0 + 3) := by rw [← pow_add]; congr 1; omega
 
+/- English proof (translation)
+Introduce `hPT hLF hLT CK hK χ`. Take `⟨M, hM⟩ : ∃ M : ℕ, M = (Bchi χ).sup id` from `⟨_, rfl⟩`. Take `⟨n0, hn0⟩ : ∃ n0 : ℕ, n0 = 2 * ordC χ * (16 * ordC χ * (M * χ.N) ^ 2 * M ^ (2 * (4 * ordC χ).totient)) * M` from `⟨_, rfl⟩`. Establish `hK' : LemmaK (⌈CK⌉₊ : ℝ)` using `Win.kmono CK _ (Nat.le_ceil CK) hK`. Use `⟨(2 * n0) ^ ⌈CK⌉₊ * (n0 + 1) + n0 + 3, ?_⟩` and prove the remaining obligations.
+
+Introduce `h hχ t hbig Ω _ _ _ l _ c e hl2 he0 het ψ hψX hP`. Take `⟨⟨hlB, he1⟩, hR⟩` from `hP`. Substitute `he1` using the available equality. Substitute `hχ` using the available equality. Use `haveI := c.dvr`.
+
+Use `haveI := c.fin`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hl2' : 2 ≤ l` using `hlp.two_le`. Take `⟨hIs, -⟩` from `(Host.mem_X h).1 hψX`. Establish `hNpos : 0 < h.N` using `Host.N_pos h`.
+
+Establish `hN2 : 2 ≤ h.N` using `le_trans (by norm_num) (Nat.le_of_dvd hNpos (hostIndex h).2.2.1)`. Establish `hlM : l ≤ M` using `by rw [hM]; exact Finset.le_sup (f := id) hlB`. Establish `hord` using `vsOrd h c.O ψ hIs l hlp hl2 hR`. Establish `hordM : orderOf ψ * l ≤ n0`. Rewrite using `[hn0]`.
+
+Use `Nat.mul_le_mul (le_trans hord ?_) hlM` and prove the remaining obligations. Use `show 2 * ordC h.chi * (16 * ordC h.chi * (l * h.chi.N) ^ 2 * l ^ (2 * (4 * ordC h.chi).totient)) ≤ _`. Use `gcongr`. Take `⟨L, _, _, _, _, _, hMu, hdeg, hcyc, hgal⟩` from `vsField Ω l hl2 c.O h.N ψ`. Take `⟨D⟩` from `ldata_nonempty (F := L) (Ω := Ω) l`.
+
+Establish `hdegn : Module.finrank ℚ L ≤ n0` using `le_trans hdeg hordM`. Establish `hT : Subgroup.closure ((Finset.univ : Finset (L ≃ₐ[ℚ] L)) : Set (L ≃ₐ[ℚ] L)) = ⊤` using `by simp`. Establish `hcard : (Finset.univ : Finset (L ≃ₐ[ℚ] L)).card ≤ n0`. Rewrite using `[Finset.card_univ, ← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]`. Conclude with `hdegn`.
+
+Establish `hclsker : (Chr.cls ℚ Ω h.N).ker ≤ (Chr.dirG ℚ Ω ψ).ker`. Introduce `σ hσ`. Rewrite `hσ`, the goal using `[MonoidHom.mem_ker]`. Simplify using `[Chr.dirG, hσ]`. Establish `hsha : shaLen D ((1 : ℕ) : ℤ) ≤ VLen D ((1 : ℕ) : ℤ)` using `PropA.shaLeV hPT hLF hLT L Ω l (Or.inl hl2) D _`.
+
+Establish `hkl` using `Win.klen _ hK' l L Ω D hMu 1 le_rfl`. Take `⟨m1, hm1⟩ : ∃ m1 : ℕ, VLen D ((1 : ℕ) : ℤ) = m1` from `⟨_, (ENat.coe_toNat hkl.1).symm⟩`. Establish `hup` using `Chr.upV ℚ Ω L l c.O D 1 (Chr.dirG ℚ Ω ψ) hgal Finset.univ hT`. Establish `hh0` using `(Chr.H0_local_card_bounded_of_cls_ker_le_ker Ω l c.O h.N 1 (Chr.dirG ℚ Ω ψ) one_ne_zero hclsker).2`. Establish `heO : eO l c.O ≠ ⊤` using `ne_top_of_le_ne_top (ENat.coe_ne_top _) (dvrFacts l c.O).2.2.2.2.2.2.1`.
+
+Establish `hV : Vlen Ω c 1 ψ ≤ ((m1 + (Finset.univ : Finset (L ≃ₐ[ℚ] L)).card * LDataCardLeFinrank.nuBound l h.N 1 : ℕ) : ℕ∞) * eO l c.O`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hne, hnrm⟩` from `nrm_le l c.O heO _ _ hV`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Establish `hD : 0 < (discr L).natAbs` using `Int.natAbs_pos.2 (discr_ne_zero L)`.
+
+Establish `hx2 : (2 : ℝ) ≤ (l : ℝ) * h.N`. Establish `: (2 : ℝ) ≤ l` using `by exact_mod_cast hl2'`. Establish `: (2 : ℝ) ≤ h.N` using `by exact_mod_cast hN2`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlogD : Real.log ((discr L).natAbs : ℝ) ≤ (Module.finrank ℚ L : ℝ) * Real.log ((l : ℝ) * h.N)`.
+
+Use `Win.disc L (l * h.N) (Nat.mul_pos (by omega) hNpos) hcyc` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hkb` using `kBound_le ⌈CK⌉₊ (Module.finrank ℚ L) n0 (discr L).natAbs ((l : ℝ) * h.N) hx2 hdegn hD hlogD`. Establish `hnu : LDataCardLeFinrank.nuBound l h.N 1 ≤ 2 * h.N * 1` using `(lossLe l h.N 0 1 hlp hl2 hN2 (Nat.zero_le _) le_rfl).2`.
+
+Establish `hv : Vn Ω c 1 ψ ≤ 2 * ((l : ℝ) * h.N) ^ ((2 * n0) ^ ⌈CK⌉₊ * (n0 + 1)) + n0 * (2 * (h.N : ℝ))`. Establish `hc1 : ((Finset.univ : Finset (L ≃ₐ[ℚ] L)).card : ℝ) ≤ n0` using `by exact_mod_cast hcard`. Establish `hc2 : (LDataCardLeFinrank.nuBound l h.N 1 : ℝ) ≤ 2 * h.N`. Establish `: (LDataCardLeFinrank.nuBound l h.N 1 : ℝ) ≤ ((2 * h.N * 1 : ℕ) : ℝ)` using `by exact_mod_cast hnu`. Move the coercions through the operations in `at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc3 : (m1 : ℝ) ≤ 2 * kBound (⌈CK⌉₊ : ℝ) 1 (Module.finrank ℚ L) (discr L).natAbs`. Use `hkl.2` as an intermediate fact. Rewrite `this` using `[hm1, ENat.toNat_coe]`. Conclude with `this`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast hlp.one_lt.le`. Establish `hy0 : 0 ≤ Real.log (l : ℝ)` using `Real.log_nonneg hl1`. Establish `hyl : Real.log (l : ℝ) ≤ l` using `(Real.log_le_sub_one_of_pos (by linarith)).trans (by linarith)`. Establish `hfin` using `final_le ((2 * n0) ^ ⌈CK⌉₊ * (n0 + 1)) n0 ((l : ℝ) * h.N) (Vn Ω c 1 ψ) (Real.log l) l h.N hl1 (by exact_mod_cast hN2) rfl hy0 hyl hv`.
+
+Simplify using `using hfin`.
+-/
 theorem UpperTheory.V.HV.countVs :
     GlobalTheory.Published.PoitouTateDuality → LocalFinitenessK → LocalTateDualityK → ∀ CK : ℝ, LemmaK CK → CountVs := by
   intro hPT hLF hLT CK hK χ

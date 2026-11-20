@@ -22,6 +22,13 @@ section Gen
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Establish `h` using `hs (Fin.castSucc b)`. Establish `e : F0 P (Fin.castSucc b) = P.e b` using `by simp [F0]`. Rewrite `h` using `[e]`. Use `(Submodule.span_le.2 ?_) h` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+
+Establish `hne : a ≠ Fin.last r` using `fun hl => by`. Rewrite `ha` using `[hl]`. Conclude with `absurd ha (not_lt.2 (Fin.castSucc_lt_last b).le)`. Take `⟨a', rfl⟩` from `Fin.exists_castSucc_eq.2 hne`. Establish `ha' : a' < b` using `Fin.castSucc_lt_castSucc_iff.1 ha`.
+
+Establish `e' : F0 P (Fin.castSucc a') = P.e a'` using `by simp [F0]`. Use `show ratV (F := F) R (F0 P (Fin.castSucc a')) ∈ spanR (F := F) R P.e {a | a < b}`. Rewrite using `[e']`. Conclude with `Submodule.subset_span ⟨a', ha', rfl⟩`.
+-/
 theorem parabolic_unipotent_on_flag {r : ℕ} (P : Frame E n r) {s : HA R σ J} (hs : s ∈ Ssub R σ J P) (b : Fin r) :
     lin R σ J s (ratV (F := F) R (P.e b)) - ratV (F := F) R (P.e b) ∈ spanR (F := F) R P.e {a | a < b} := by
   have h := hs (Fin.castSucc b)
@@ -39,6 +46,13 @@ theorem parabolic_unipotent_on_flag {r : ℕ} (P : Frame E n r) {s : HA R σ J} 
   rw [e']
   exact Submodule.subset_span ⟨a', ha', rfl⟩
 
+/- English proof (translation)
+Establish `hh' : h⁻¹ ∈ Hsub R σ J P` using `inv_mem hh`. Use `⟨fun b => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[lin_mul, stabilizer_fixes_isotropic_e P hh' b]`. Conclude with `parabolic_unipotent_on_flag P hs b`. Establish `hu : InXperp R σ J P (lin R σ J h⁻¹ v)`.
+
+Introduce `a`. Rewrite using `[← stabilizer_fixes_isotropic_e P hh' a, hR_lin]`. Conclude with `hv a`. Use `hsh _ hu` as an intermediate fact. Rewrite `this` using `[lin_lin_inv]`.
+
+Rewrite using `[lin_mul]`. Conclude with `this`.
+-/
 theorem mul_inv_mem_Nsub_of_same_perp_action {r : ℕ} (P : Frame E n r) {s h : HA R σ J} (hs : s ∈ Ssub R σ J P)
     (hh : h ∈ Hsub R σ J P)
     (hsh : ∀ u, InXperp R σ J P u → lin R σ J s u - lin R σ J h u ∈ spanR (F := F) R P.e Set.univ) :
@@ -58,11 +72,17 @@ theorem mul_inv_mem_Nsub_of_same_perp_action {r : ℕ} (P : Frame E n r) {s h : 
 
 end Gen
 
+/- English proof (translation)
+Introduce `D X w p s hs`. Take `⟨h, hh, hsh⟩` from `hc X w p s hs`. Conclude with `⟨s * h⁻¹, h, mul_inv_mem_Nsub_of_same_perp_action (frameOf X w) hs hh hsh, hh, by group⟩`.
+-/
 theorem leviRat_of (hc : LeviComp) : LeviRat := by
   intro D X w p s hs
   obtain ⟨h, hh, hsh⟩ := hc X w p s hs
   exact ⟨s * h⁻¹, h, mul_inv_mem_Nsub_of_same_perp_action (frameOf X w) hs hh hsh, hh, by group⟩
 
+/- English proof (translation)
+The claim follows from `locLevi_of (leviRat_of hc) leviIntH hN`.
+-/
 theorem locLevi_of_comp (hc : LeviComp) (hN : UnipotentIntegralInLevel) : LocLevi :=
   locLevi_of (leviRat_of hc) leviIntH hN
 

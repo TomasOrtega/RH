@@ -11,10 +11,16 @@ section General
 
 variable {G M : Type} [Group G] [CommGroup M] (φ : G →* Monoid.End M)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem d₁₂_intRepOfMonoidEnd (f : G → Additive M) :
     (d₁₂ (Rep.of (intRepOfMonoidEnd.{0} φ))).hom f = (d₁₂ (Rep.of (zRepOfMonoidEnd φ))).hom f :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem d₂₃_intRepOfMonoidEnd (f : G × G → Additive M) :
     (d₂₃ (Rep.of (intRepOfMonoidEnd.{0} φ))).hom f = (d₂₃ (Rep.of (zRepOfMonoidEnd φ))).hom f :=
   rfl
@@ -27,19 +33,35 @@ def cocycles₂IntRepAddEquiv :
   right_inv _ := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_coboundaries₂_intRepOfMonoidEnd_iff (f : G × G → Additive M) :
     f ∈ coboundaries₂ (Rep.of (intRepOfMonoidEnd.{0} φ)) ↔
       f ∈ coboundaries₂ (Rep.of (zRepOfMonoidEnd φ)) :=
   Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(ModuleCat.epi_iff_surjective _).1 inferInstance`.
+-/
 theorem h2π_intRepOfMonoidEnd_surjective :
     Function.Surjective (H2π (Rep.of (intRepOfMonoidEnd.{0} φ))).hom :=
   (ModuleCat.epi_iff_surjective _).1 inferInstance
 
+/- English proof (translation)
+The claim follows from `(ModuleCat.epi_iff_surjective _).1 inferInstance`.
+-/
 theorem h2π_zRepOfMonoidEnd_surjective :
     Function.Surjective (H2π (Rep.of (zRepOfMonoidEnd φ))).hom :=
   (ModuleCat.epi_iff_surjective _).1 inferInstance
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `(H2π _).hom _ = 0`. Express the relevant statement in the definitionally equal form `(H2π _).hom y = 0 at hy`.
+
+Rewrite `hy`, the goal using `[H2π_eq_zero_iff]`. Conclude with `hy`. Introduce `hx`. Use `⟨(cocycles₂IntRepAddEquiv φ).symm x, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(H2π _).hom x = 0 at hx`.
+
+Express the relevant statement in the definitionally equal form `(H2π _).hom _ = 0`. Rewrite `hx`, the goal using `[H2π_eq_zero_iff]`. Conclude with `hx`.
+-/
 theorem map_ker_h2π_intRepOfMonoidEnd :
     (H2π (Rep.of (intRepOfMonoidEnd.{0} φ))).hom.toAddMonoidHom.ker.map
         (cocycles₂IntRepAddEquiv φ : cocycles₂ (Rep.of (intRepOfMonoidEnd.{0} φ)) →+
@@ -68,6 +90,9 @@ noncomputable def h2IntRepAddEquiv :
       (map_ker_h2π_intRepOfMonoidEnd φ))).trans
     (QuotientAddGroup.quotientKerEquivOfSurjective _ (h2π_zRepOfMonoidEnd_surjective φ))
 
+/- English proof (translation)
+Establish `h1 : (QuotientAddGroup.quotientKerEquivOfSurjective (H2π (Rep.of (intRepOfMonoidEnd.{0} φ))).hom.toAddMonoidHom (h2π_intRepOfMonoidEnd_surjective φ)).symm ((H2π _).hom x) = (QuotientAddGroup.mk x : _ ⧸ _)`. Rewrite using `[AddEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[h2IntRepAddEquiv, AddEquiv.trans_apply, AddEquiv.trans_apply, h1]`. Both sides reduce to the same expression.
+-/
 theorem h2IntRepAddEquiv_H2_class (x : cocycles₂ (Rep.of (intRepOfMonoidEnd.{0} φ))) :
     h2IntRepAddEquiv φ ((H2π _).hom x) = (H2π _).hom (cocycles₂IntRepAddEquiv φ x) := by
   have h1 : (QuotientAddGroup.quotientKerEquivOfSurjective
@@ -88,6 +113,9 @@ noncomputable def h2GalUnitsAddEquiv :
     groupCohomology (galUnits K L) 2 ≃+ groupCohomology (galUnitsZ K L) 2 :=
   h2IntRepAddEquiv (galUnitsHom K L)
 
+/- English proof (translation)
+The claim follows from `h2IntRepAddEquiv_H2_class (galUnitsHom K L) x`.
+-/
 theorem h2GalUnitsAddEquiv_H2_class (x : cocycles₂ (galUnits K L)) :
     h2GalUnitsAddEquiv K L ((H2π _).hom x) =
       (H2π _).hom (cocycles₂IntRepAddEquiv (galUnitsHom K L) x) :=

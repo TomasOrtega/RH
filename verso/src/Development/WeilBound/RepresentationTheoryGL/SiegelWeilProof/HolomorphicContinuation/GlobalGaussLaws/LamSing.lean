@@ -37,6 +37,9 @@ def ChiPer : Prop :=
 
 namespace LamSingH
 
+/- English proof (translation)
+Rewrite using `[JJ, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, Matrix.one_mul]`. Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_neg, neg_zero]`.
+-/
 theorem JJ_sq : JJ n * JJ n = -1 := by
   rw [JJ, Matrix.fromBlocks_multiply]
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul,
@@ -60,11 +63,20 @@ def toGR (M : M2 n) (hM : InG M) : GR n :=
         simp [Matrix.det_neg] at this
       exact hJ e.symm), hM⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mR_toGR (M : M2 n) (hM : InG M) : mR (toGR M hM) = M := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+-/
 theorem toGR_mR (y : GR n) : toGR (mR y) y.2 = y := by
   apply Subtype.ext; apply Units.ext; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mR_mul (y y' : GR n) : mR (y * y') = mR y * mR y' := rfl
 
 end LamSingH
@@ -73,6 +85,99 @@ open LamSingH
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `D n ψ θ τ ι hψ hθ hι F hFc hF hΛ ψ₀ hψ₀ nb' hnb' g a b`. Take `⟨nb, lam, 𝓖, hcd⟩` from `hCD D n`. Take `⟨hnb, hlam, hfd, hvol⟩` from `hcd`. Take `⟨hcont, hadd, hrat⟩` from `hNb D n nb hnb`. Take `⟨hbx0, hchar⟩` from `hNt D n ψ θ τ ι hψ hθ hι nb hnb nb' hnb'`.
+
+Use `choose bx hbx using hbx0`. Take `⟨K, hK, hKc⟩` from `hCo D n`. Take `⟨hψ₀c, hψ₀s, hψ₀F⟩` from `hψ₀`. Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D n n`. Use `haveI : IsTopologicalAddGroup (Mx D n n) := i1`.
+
+Use `haveI : LocallyCompactSpace (Mx D n n) := i2`. Use `haveI : SecondCountableTopology (Mx D n n) := i3`. Use `haveI : T2Space (Mx D n n) := i4`. Use `haveI : SecondCountableTopology (hermA D n) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space (hermA D n) := Topology.IsEmbedding.subtypeVal.t2Space`.
+
+Use `haveI : BorelSpace (Mx D n n) := ⟨rfl⟩`. Use `haveI : Countable D.host.E := GlobalTheory.CompanionTheory.FourierComplete.countable_numberField D.host.E`. Use `haveI : Countable (Matrix (Fin n) (Fin n) D.host.E) := inferInstanceAs (Countable (Fin n → Fin n → D.host.E))`. Establish `hmem : ∀ q : ratHerm D n, q.1.1 ∈ ratMx D n n` using `fun q => AddSubgroup.mem_comap.1 q.2`. Use `haveI : Countable (ratHerm D n) := by choose g hg using fun q : ratHerm D n => mem_ratMx.1 (hmem q)`.
+
+Conclude with `Function.Injective.countable (f := g) fun a b h => Subtype.ext (Subtype.ext (by rw [← hg a, ← hg b, h]))`. Use `haveI := hlam`. Establish `hιc : Continuous ι` using `hι.1`. Establish `hnb'c : Continuous nb'`. Establish `hv : Continuous fun x => ((nb' x : GL (Fin n ⊕ Fin n) ℂ) : M2 n)`.
+
+Establish `e : (fun x => ((nb' x : GL (Fin n ⊕ Fin n) ℂ) : M2 n)) = fun x => nU (herm x)` using `funext hnb'`. Rewrite using `[e]`. Use `Continuous.matrix_fromBlocks continuous_const ?_ continuous_const continuous_const` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [herm]`.
+
+Use `fun_prop`. Establish `hinv : ∀ x, (((nb' x : GL (Fin n ⊕ Fin n) ℂ)⁻¹ : GL (Fin n ⊕ Fin n) ℂ) : M2 n) = nU (-herm x)`. Introduce `x`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `mR (nb' x) * nU (-herm x) = 1`.
+
+Rewrite using `[hnb' x, nU, nU, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_one, Matrix.mul_zero, add_zero, Matrix.one_mul, Matrix.zero_mul, zero_add, Matrix.mul_neg, add_neg_cancel, neg_add_cancel, neg_zero]`. Conclude with `(Matrix.fromBlocks_one : Matrix.fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) 0 0 1 = (1 : M2 n))`. Establish `hi : Continuous fun x => (((nb' x : GL (Fin n ⊕ Fin n) ℂ)⁻¹ : GL (Fin n ⊕ Fin n) ℂ) : M2 n)`. Rewrite using `[funext hinv]`.
+
+Use `Continuous.matrix_fromBlocks continuous_const ?_ continuous_const continuous_const` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [herm, Pi.neg_apply, Matrix.neg_apply]`. Use `fun_prop`. Conclude with `Continuous.subtype_mk (Units.continuous_iff.2 ⟨hv, hi⟩) _`.
+
+Establish `hcomm : ∀ x c, ι (nb' x) * nb c = nb c * ι (nb' x)`. Introduce `x c`. Rewrite using `[hbx x, ← hadd, ← hadd, add_comm]`. Establish `hper : ∀ (g' : G D n) (c : hermA D n), ∃ k ∈ K, F (nb c * g') = F (nb k * g')`. Introduce `g' c`.
+
+Take `⟨l, hl, hcl⟩` from `hKc c`. Use `⟨c - l, hcl, ?_⟩` and prove the remaining obligations. Establish `e : nb c = nb l * nb (c - l)` using `by rw [← hadd, add_sub_cancel]`. Rewrite using `[e, mul_assoc, hF _ (hrat l hl)]`. Establish `hA : ∀ g' : G D n, ∫ x, F (ι (nb' x) * g') * ψ₀ x = 0` using `by set h : G D n → ℂ := fun g' => ∫ x, F (ι (nb' x) * g') * ψ₀ x with hdef`.
+
+Establish `hΦc : Continuous fun z : G D n × (Fin n → Fin n → ℝ) => F (ι (nb' z.2) * z.1)` using `hFc.comp ((hιc.comp (hnb'c.comp continuous_snd)).mul continuous_fst)`. Establish `hint : ∀ g', Integrable (fun x => F (ι (nb' x) * g') * ψ₀ x)` using `fun g' => (((hFc.comp ((hιc.comp hnb'c).mul continuous_const))).mul hψ₀c).integrable_of_hasCompactSupport (hψ₀s.mul_left)`. Establish `hhc : Continuous h`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g0`.
+
+Rewrite using `[Metric.continuousAt_iff']`. Introduce `ε hε`. Use `set c1 : ℝ := ∫ x, ‖ψ₀ x‖ with hc1`. Establish `h0 : 0 ≤ c1` using `integral_nonneg fun x => norm_nonneg _`. Use `set c0 : ℝ := c1 + 1 with hc0`.
+
+Establish `hc0p : 0 < c0` using `by linarith`. Use `set δ := ε / c0`. Establish `hδ : 0 < δ` using `div_pos hε hc0p`. Establish `hev : ∀ᶠ g' in nhds g0, ∀ x ∈ tsupport ψ₀, ‖F (ι (nb' x) * g') - F (ι (nb' x) * g0)‖ < δ`. Use `hψ₀s.isCompact.eventually_forall_of_forall_eventually fun x _ => ?_` and prove the remaining obligations.
+
+Establish `h1` using `(hΦc.tendsto (g0, x)).eventually (Metric.ball_mem_nhds _ (half_pos hδ))`. Establish `h2` using `((hΦc.comp (Continuous.prodMk continuous_const continuous_snd : Continuous fun z : G D n × (Fin n → Fin n → ℝ) => (g0, z.2))).tendsto (g0, x)).eventually (Metric.ball_mem_nhds _ (half_pos hδ))`. Use `filter_upwards [h1, h2] with z hz1 hz2`. Simplify using `only [Metric.mem_ball, dist_eq_norm, Function.comp] at hz1 hz2`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `filter_upwards [hev] with g' hg'`. Rewrite using `[dist_eq_norm]`. Simplify using `only [hdef]`. Rewrite using `[← integral_sub (hint g') (hint g0)]`. Establish `hbd : ∀ x, ‖F (ι (nb' x) * g') * ψ₀ x - F (ι (nb' x) * g0) * ψ₀ x‖ ≤ δ * ‖ψ₀ x‖`.
+
+Introduce `x`. Rewrite using `[← sub_mul, norm_mul]`. Distinguish the cases in `hx : x ∈ tsupport ψ₀`. Conclude with `mul_le_mul_of_nonneg_right (hg' x hx).le (norm_nonneg _)`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, norm_zero, mul_zero, mul_zero]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hinv : ∀ b0 : hermA D n, (∃ β : HermE D n, b0.1 = β.1.map (incA D)) → ∀ g', h (nb b0 * g') = h g'`. Introduce and unpack `b0 ⟨β, hβ⟩ g'`. Establish `hb0 : b0 ∈ ratHerm D n` using `⟨β.1, hβ.symm⟩`. Simplify using `only [hdef]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← mul_assoc, hcomm x b0, mul_assoc, hF _ (hrat b0 hb0)]`. Establish `hcoef : ∀ β g', PositivityTheory.PfSWUS.fc ψ lam 𝓖 nb h β g' = 0`. Introduce `β g'`.
+
+Take `⟨β'', hβh, hβdet, hβchar⟩` from `hchar β`. Take `⟨hχc, hχn⟩` from `hCh D n ψ hψ β`. Use `set χ : hermA D n → ℂ := fun b => ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D n n))) with hχ`. Establish `hχadd : ∀ u v, χ (u + v) = χ u * χ v`. Introduce `u v`.
+
+Simplify using `only [hχ, AddSubgroup.coe_add, Matrix.mul_add, Matrix.trace_add, halfTr, map_add, mul_add, neg_add]`. Conclude with `AddChar.map_add_eq_mul ψ _ _`. Establish `hχper : ∀ l ∈ ratHerm D n, ∀ b, χ (l + b) = χ b`. Introduce `l hl b`. Establish `h1 : χ l = 1` using `hPer D n ψ hψ β l hl`.
+
+Rewrite using `[hχadd, h1, one_mul]`. Establish `hχneg : ∀ x, χ (-(bx x)) = eTr β'' x`. Introduce `x`. Rewrite using `[← hβchar x (bx x) (hbx x)]`. Simplify using `only [hχ, AddSubgroup.coe_neg, Matrix.mul_neg, Matrix.trace_neg, halfTr, map_neg, mul_neg, neg_neg]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M, ∀ c : hermA D n, ‖F (nb c * g')‖ ≤ M := by`. Take `⟨M, hM⟩` from `(hK.image (hcont.mul continuous_const : Continuous fun c => nb c * g')).exists_bound_of_continuousOn hFc.continuousOn`. Use `⟨M, fun c => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, e⟩` from `hper g' c`. Rewrite using `[e]`.
+
+Conclude with `hM _ ⟨k, hk, rfl⟩`. Use `haveI : IsFiniteMeasure (lam.restrict 𝓖) := ⟨by rw [Measure.restrict_apply_univ, hvol]; exact ENNReal.one_lt_top⟩`. Establish `hG : Integrable (fun p : hermA D n × (Fin n → Fin n → ℝ) => F (ι (nb' p.2) * (nb p.1 * g')) * ψ₀ p.2 * χ p.1) ((lam.restrict 𝓖).prod volume)`. Use `Integrable.mono' ((integrable_const M).mul_prod (hψ₀c.norm.integrable_of_hasCompactSupport hψ₀s.norm)) ?_ ?_` and prove the remaining obligations. Conclude with `(((hFc.comp ((hιc.comp (hnb'c.comp continuous_snd)).mul ((hcont.comp continuous_fst).mul continuous_const))).mul (hψ₀c.comp continuous_snd)).mul (hχc.comp continuous_fst)).aestronglyMeasurable`.
+
+Use `Filter.Eventually.of_forall fun p => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hχn, mul_one]`. Establish `e : ι (nb' p.2) * (nb p.1 * g') = nb (bx p.2 + p.1) * g'` using `by rw [← mul_assoc, hbx, hadd]`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right (hM _) (norm_nonneg _)`.
+
+Establish `step3 : ∀ x, ∫ b in 𝓖, F (ι (nb' x) * (nb b * g')) * ψ₀ x * χ b ∂lam = PositivityTheory.PfSWUS.fc ψ lam 𝓖 nb F β g' * (ψ₀ x * eTr β'' x)`. Introduce `x`. Establish `e1 : ∀ b, F (ι (nb' x) * (nb b * g')) * ψ₀ x * χ b = (F (nb (b + bx x) * g') * χ (b + bx x)) * (χ (-(bx x)) * ψ₀ x)`. Introduce `b`. Establish `e2 : χ b = χ (b + bx x) * χ (-(bx x))` using `by rw [← hχadd, add_neg_cancel_right]`.
+
+Rewrite using `[← mul_assoc, hbx, ← hadd, add_comm (bx x) b, e2]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e1]`. Rewrite using `[integral_mul_const]`. Establish `htr` using `Formalism.IndefR.Tow.fd_setIntegral_add hfd (f := fun b => F (nb b * g') * χ b) (fun l hl b => by rw [hadd, mul_assoc, hF _ (hrat l hl), hχper l hl b]) (bx x)`.
+
+Rewrite using `[htr, hχneg]`. Rewrite using `[show PositivityTheory.PfSWUS.fc ψ lam 𝓖 nb F β g' = ∫ b in 𝓖, F (nb b * g') * χ b ∂lam from rfl]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfc : PositivityTheory.PfSWUS.fc ψ lam 𝓖 nb h β g' = PositivityTheory.PfSWUS.fc ψ lam 𝓖 nb F β g' * ∫ x, ψ₀ x * eTr β'' x`. Establish `step1 : PositivityTheory.PfSWUS.fc ψ lam 𝓖 nb h β g' = ∫ b in 𝓖, ∫ x, F (ι (nb' x) * (nb b * g')) * ψ₀ x * χ b ∂volume ∂lam`.
+
+Simplify using `only [PositivityTheory.PfSWUS.fc, hdef, hχ]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[← integral_mul_const]`. Rewrite using `[step1, integral_integral_swap hG]`.
+
+Repeatedly rewrite using `[step3]`. Rewrite using `[integral_const_mul]`. Rewrite using `[hfc]`. Distinguish the cases in `hdet : β.1.det = 0`. Rewrite using `[hψ₀F β'' hβh (hβdet hdet), mul_zero]`.
+
+Rewrite using `[show PositivityTheory.PfSWUS.fc ψ lam 𝓖 nb F β g' = 0 from hΛ _ ⟨nb, lam, 𝓖, β, g', ⟨hnb, hlam, hfd, hvol⟩, hdet, rfl⟩, zero_mul]`. Introduce `g'`. Conclude with `congrFun (hFZ D n ψ hψ nb lam 𝓖 ⟨hnb, hlam, hfd, hvol⟩ h hhc hinv hcoef) g'`. Establish `hmRc : Continuous (mR : GR n → M2 n)` using `Units.continuous_val.comp continuous_subtype_val`. Set `Fam : G D n → M2 n → ℂ` to `fun h M => if hM : InG M then F (ι (toGR M hM) * h) else 0`.
+
+Establish `hFam : ∀ h M (hM : InG M), Fam h M = F (ι (toGR M hM) * h)` using `fun h M hM => dif_pos hM`. Set `Γ : Set (M2 n)` to `{M | ∃ hM : InG M, ∃ γ ∈ GF D n, ∃ x : G D n, γ = x * ι (toGR M hM) ∧ ∀ y'' : GR n, x * ι y'' = ι y'' * x}`. Establish `hFamc : ∀ h, ContinuousOn (Fam h) {M | InG M}`. Introduce `h`. Rewrite using `[continuousOn_iff_continuous_restrict]`.
+
+Establish `hc : Continuous fun M : ({M | InG M} : Set (M2 n)) => toGR M.1 M.2`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ M : ({M | InG M} : Set (M2 n)), (((toGR M.1 M.2 : GL (Fin n ⊕ Fin n) ℂ)⁻¹ : GL (Fin n ⊕ Fin n) ℂ) : M2 n) = -(JJ n * M.1ᴴ * JJ n)`. Introduce `M`.
+
+Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Use `show -(JJ n * M.1ᴴ * JJ n) * M.1 = 1`. Establish `h2 : M.1ᴴ * JJ n * M.1 = JJ n` using `M.2`. Rewrite using `[Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc M.1ᴴ, h2, JJ_sq, neg_neg]`. Conclude with `(((continuous_const.mul (continuous_subtype_val.matrix_conjTranspose)).mul continuous_const).neg).congr fun M => (hinv M).symm`.
+
+Conclude with `(hFc.comp ((hιc.comp hc).mul continuous_const)).congr fun M => (hFam h M.1 M.2).symm`. Establish `hΓ2 : {M | InG M} ⊆ closure Γ`. Introduce `M hM`. Rewrite using `[mem_closure_iff]`. Introduce `U hU hMU`.
+
+Take `⟨γ, hγ, y', hy'O, x, hγx, hxc⟩` from `hD D n θ τ ι hθ hι (toGR M hM) {y | mR y ∈ U} (hU.preimage hmRc) hMU`. Use `⟨mR y', hy'O, y'.2, γ, hγ, x, ?_, hxc⟩` and prove the remaining obligations. Rewrite using `[toGR_mR]`. Conclude with `hγx`. Establish `hΓ3 : ∀ γM ∈ Γ, ∀ h, ∃ h', ∀ M, InG M → Fam h (γM * M) = Fam h' M`.
+
+Introduce and unpack `γM ⟨hγM, γ, hγ, x, hγx, hxc⟩ h`. Use `⟨x⁻¹ * h, fun M hM => ?_⟩` and prove the remaining obligations. Establish `hprod : InG (γM * M)` using `(toGR γM hγM * toGR M hM).2`. Rewrite using `[hFam _ _ hprod, hFam _ _ hM]`. Establish `e : toGR (γM * M) hprod = toGR γM hγM * toGR M hM`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Establish `hy0 : ι (toGR γM hγM) = γ * x⁻¹` using `by rw [hγx, hxc, mul_inv_cancel_right]`. Establish `hxc' : x⁻¹ * ι (toGR M hM) = ι (toGR M hM) * x⁻¹`.
+
+Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, hxc, mul_assoc, mul_inv_cancel, mul_one]`. Rewrite using `[e, map_mul, hy0]`. Simplify using `only [mul_assoc]`. Rewrite using `[hF _ hγ, ← mul_assoc, hxc', mul_assoc]`. Establish `hB0 : ∀ h M, InG M → ∫ x, Fam h (nU (herm x) * M) * ψ₀ x = 0`.
+
+Introduce `h M hM`. Establish `e : ∀ x, Fam h (nU (herm x) * M) = F (ι (nb' x) * (ι (toGR M hM) * h))`. Introduce `x`. Establish `hp : InG (nU (herm x) * M)`. Establish `h2 : InG (mR (nb' x * toGR M hM))` using `(nb' x * toGR M hM).2`.
+
+Rewrite `h2` using `[mR_mul, hnb', mR_toGR]`. Then use the resulting hypothesis. Rewrite using `[hFam _ _ hp]`. Establish `e2 : toGR (nU (herm x) * M) hp = nb' x * toGR M hM`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `show nU (herm x) * M = mR (nb' x) * M`. Rewrite using `[hnb']`. Rewrite using `[e2, map_mul, mul_assoc]`. Repeatedly rewrite using `[e]`. Conclude with `hA _`.
+
+Establish `hB` using `hTS n (G D n) Fam Γ hFamc (fun γ hγ => hγ.1) hΓ2 hΓ3 ψ₀ hψ₀c hψ₀s hB0`. Take `⟨y, x0, hg, hx0⟩` from `hSp D n θ τ ι hθ hι g`. Establish `key : ∀ u : GR n, g * ι u = ι (y * u * y⁻¹) * g`. Introduce `u`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e : ∀ x, F (g * ι (a * nb' x * b)) = Fam g (mR (y * a) * nU (herm x) * mR (b * y⁻¹))`. Introduce `x`. Establish `hp : InG (mR (y * a) * nU (herm x) * mR (b * y⁻¹))`. Establish `h2 : InG (mR (y * a * nb' x * (b * y⁻¹)))` using `(y * a * nb' x * (b * y⁻¹)).2`. Rewrite `h2` using `[mR_mul, mR_mul, mR_mul, hnb']`. Then use the resulting hypothesis.
+
+Establish `e3 : toGR (mR (y * a) * nU (herm x) * mR (b * y⁻¹)) hp = y * (a * nb' x * b) * y⁻¹`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show mR (y * a) * nU (herm x) * mR (b * y⁻¹) = mR (y * (a * nb' x * b) * y⁻¹)`. Simplify using `only [mR_mul, hnb', Matrix.mul_assoc]`.
+
+Rewrite using `[hFam _ _ hp, key, e3]`. Repeatedly rewrite using `[e]`. Conclude with `hB g _ _ (y * a).2 (b * y⁻¹).2`.
+-/
 theorem gLsing_core (hFZ : FourierZeroN) (hTS : TwoSided) (hD : DenseTau) (hCD : PositivityTheory.PfSWUS.CoefDataExists)
     (hNb : NbFacts) (hCh : CharFacts) (hCo : HermCocompact) (hSp : SplitTauP) (hNt : NbTauP) (hPer : ChiPer) :
     GLsing := by

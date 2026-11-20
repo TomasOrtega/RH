@@ -20,6 +20,9 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheor
 
 variable {R : Type} [CommRing R] {d : ℕ}
 
+/- English proof (translation)
+Introduce `j i`. Use `fin_cases j`. Use `exacts [ha i, hb i, hc i]`.
+-/
 theorem noConst_three {n : ℕ} {a b c : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) (hc : ∀ i, constantCoeff (c i) = 0) :
     NoConst (![a, b, c] : Fin 3 → Pt R n d) := by
@@ -27,43 +30,74 @@ theorem noConst_three {n : ℕ} {a b c : Pt R n d} (ha : ∀ i, constantCoeff (a
   fin_cases j
   exacts [ha i, hb i, hc i]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem cc_zero {n : ℕ} (i : Fin d) : constantCoeff ((0 : Pt R n d) i) = 0 := by simp
 
+/- English proof (translation)
+Simplify using `[ptPow, hp]`.
+-/
 theorem cc_ptPow {n p : ℕ} (hp : p ≠ 0) (j : Fin n) (i : Fin d) :
     constantCoeff (ptPow R d p j i : PS R n d) = 0 := by
   simp [ptPow, hp]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.DerivEndo.cc_ev (noConst_one ha) _).trans (hV i)`.
+-/
 theorem cc_comp1 {n : ℕ} {V : Pt R 1 d} {a : Pt R n d} (hV : ∀ i, constantCoeff (V i) = 0)
     (ha : ∀ i, constantCoeff (a i) = 0) (i : Fin d) : constantCoeff (comp1 V a i) = 0 :=
   (GlobalTheory.DerivEndo.cc_ev (noConst_one ha) _).trans (hV i)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.DerivEndo.cc_ev (noConst_two ha hb) _).trans (hF i)`.
+-/
 theorem cc_addOf {n : ℕ} {F : Fin d → PS R 2 d} {a b : Pt R n d} (hF : ∀ i, constantCoeff (F i) = 0)
     (ha : ∀ i, constantCoeff (a i) = 0) (hb : ∀ i, constantCoeff (b i) = 0) (i : Fin d) :
     constantCoeff (addOf F a b i) = 0 :=
   (GlobalTheory.DerivEndo.cc_ev (noConst_two ha hb) _).trans (hF i)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, GlobalTheory.DerivEndo.ev_mul ha, ih]`.
+-/
 theorem ev_pow' {l m : ℕ} {a : Fin l → Pt R m d} (ha : NoConst a) (f : PS R l d) (n : ℕ) :
     ev a (f ^ n) = ev a f ^ n := by
   induction n with
   | zero => simp
   | succ n ih => rw [pow_succ, pow_succ, GlobalTheory.DerivEndo.ev_mul ha, ih]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `ev a ((pt R d j i) ^ p) = _`. Rewrite using `[ev_pow' ha, ev_pt ha]`.
+-/
 theorem ev_ptPow {l m p : ℕ} {a : Fin l → Pt R m d} (ha : NoConst a) (j : Fin l) (i : Fin d) :
     ev a (ptPow R d p j i) = a j i ^ p := by
   change ev a ((pt R d j i) ^ p) = _
   rw [ev_pow' ha, ev_pt ha]
 
+/- English proof (translation)
+Simplify using `only [expand, substAlgHom_apply]`. Both sides reduce to the same expression.
+-/
 theorem ev_ptPow_all {n p : ℕ} (hp : p ≠ 0) (f : PS R n d) :
     ev (fun j => ptPow R d p j) f = expand p hp f := by
   simp only [expand, substAlgHom_apply]
   rfl
 
+/- English proof (translation)
+Introduce `f g h`. Use extensionality with `m`. Rewrite using `[← coeff_expand_smul p hp f m, h, coeff_expand_smul]`.
+-/
 theorem expand_injective' {n p : ℕ} (hp : p ≠ 0) :
     Function.Injective (expand p hp : PS R n d → PS R n d) := by
   intro f g h
   ext m
   rw [← coeff_expand_smul p hp f m, h, coeff_expand_smul]
 
+/- English proof (translation)
+Establish `n1 : NoConst (![ptPow R d p 0, pt R d 1] : Fin 2 → Pt R 2 d)` using `noConst_two (cc_ptPow hp 0) (cc_pt 1)`. Establish `n2 : NoConst (![pt R d 0, ptPow R d p 1] : Fin 2 → Pt R 2 d)` using `noConst_two (cc_pt 0) (cc_ptPow hp 1)`. Establish `key : ∀ k : PS R 2 d, ev (n` using `2) ![pt R d 0, ptPow R d p 1] (ev (n := 2) ![ptPow R d p 0, pt R d 1] k) = expand p hp k := by`. Introduce `k`. Rewrite using `[GlobalTheory.DerivEndo.ev_ev n2 n1, ← ev_ptPow_all hp]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`. Conclude with `ev_ptPow n2 0 i`. Conclude with `ev_pt n2 1 i`.
+
+Conclude with `expand_injective' hp (by rw [← key, ← key, h])`.
+-/
 theorem inj2 {p : ℕ} (hp : p ≠ 0) {f g : PS R 2 d}
     (h : ev (n := 2) ![ptPow R d p 0, pt R d 1] f = ev (n := 2) ![ptPow R d p 0, pt R d 1] g) : f = g := by
   have n1 : NoConst (![ptPow R d p 0, pt R d 1] : Fin 2 → Pt R 2 d) :=
@@ -81,6 +115,13 @@ theorem inj2 {p : ℕ} (hp : p ≠ 0) {f g : PS R 2 d}
     · exact ev_pt n2 1 i
   exact expand_injective' hp (by rw [← key, ← key, h])
 
+/- English proof (translation)
+Establish `n1 : NoConst (![ptPow R d p 0, pt R d 1, pt R d 2] : Fin 3 → Pt R 3 d)` using `noConst_three (cc_ptPow hp 0) (cc_pt 1) (cc_pt 2)`. Establish `n2 : NoConst (![pt R d 0, ptPow R d p 1, ptPow R d p 2] : Fin 3 → Pt R 3 d)` using `noConst_three (cc_pt 0) (cc_ptPow hp 1) (cc_ptPow hp 2)`. Establish `key : ∀ k : PS R 3 d, ev (n` using `3) ![pt R d 0, ptPow R d p 1, ptPow R d p 2] (ev (n := 3) ![ptPow R d p 0, pt R d 1, pt R d 2] k) = expand p hp k := by`. Introduce `k`. Rewrite using `[GlobalTheory.DerivEndo.ev_ev n2 n1, ← ev_ptPow_all hp]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`. Conclude with `ev_ptPow n2 0 i`. Conclude with `ev_pt n2 1 i`.
+
+Conclude with `ev_pt n2 2 i`. Conclude with `expand_injective' hp (by rw [← key, ← key, h])`.
+-/
 theorem inj3 {p : ℕ} (hp : p ≠ 0) {f g : PS R 3 d}
     (h : ev (n := 3) ![ptPow R d p 0, pt R d 1, pt R d 2] f = ev (n := 3) ![ptPow R d p 0, pt R d 1, pt R d 2] g) :
     f = g := by
@@ -100,21 +141,36 @@ theorem inj3 {p : ℕ} (hp : p ≠ 0) {f g : PS R 3 d}
     · exact ev_pt n2 2 i
   exact expand_injective' hp (by rw [← key, ← key, h])
 
+/- English proof (translation)
+The claim follows from `noConst_three cc_zero (cc_pt 0) (cc_pt 1)`.
+-/
 theorem no_constant_evaluation_triple : NoConst (![0, pt R d 0, pt R d 1] : Fin 3 → Pt R 2 d) :=
   noConst_three cc_zero (cc_pt 0) (cc_pt 1)
 
+/- English proof (translation)
+The claim follows from `noConst_two cc_zero (cc_pt 0)`.
+-/
 theorem noConst_0x : NoConst (![0, pt R d 0] : Fin 2 → Pt R 1 d) :=
   noConst_two cc_zero (cc_pt 0)
 
+/- English proof (translation)
+The claim follows from `pderiv_X_of_ne h`.
+-/
 theorem pd_pt_ne {n : ℕ} {j j' : Fin n} {i i' : Fin d} (h : (j', i') ≠ (j, i)) :
     pderiv R (j, i) (pt R d j' i' : PS R n d) = 0 :=
   pderiv_X_of_ne h
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `pderiv R (j, i) ((pt R d j' i') ^ p) = 0`. Rewrite using `[Derivation.leibniz_pow, pd_pt_ne h, smul_zero, smul_zero]`.
+-/
 theorem pd_ptPow_ne {n p : ℕ} {j j' : Fin n} {i i' : Fin d} (h : (j', i') ≠ (j, i)) :
     pderiv R (j, i) (ptPow R d p j' i' : PS R n d) = 0 := by
   change pderiv R (j, i) ((pt R d j' i') ^ p) = 0
   rw [Derivation.leibniz_pow, pd_pt_ne h, smul_zero, smul_zero]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `pderiv R v ((pt R d j i) ^ p) = 0`. Establish `h : (p : PS R n d) = 0`. Rewrite using `[← map_natCast (C (σ := Fin n × Fin d) (R := R)), CharP.cast_eq_zero, map_zero]`. Rewrite using `[Derivation.leibniz_pow, nsmul_eq_mul, h, zero_mul]`.
+-/
 theorem pd_ptPow_char {n p : ℕ} [CharP R p] (v : Fin n × Fin d) (j : Fin n) (i : Fin d) :
     pderiv R v (ptPow R d p j i : PS R n d) = 0 := by
   change pderiv R v ((pt R d j i) ^ p) = 0
@@ -122,11 +178,19 @@ theorem pd_ptPow_char {n p : ℕ} [CharP R p] (v : Fin n × Fin d) (j : Fin n) (
     rw [← map_natCast (C (σ := Fin n × Fin d) (R := R)), CharP.cast_eq_zero, map_zero]
   rw [Derivation.leibniz_pow, nsmul_eq_mul, h, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem cc_pd {n : ℕ} (v : Fin n × Fin d) (f : PS R n d) :
     constantCoeff (pderiv R v f) = coeff (Finsupp.single v 1) f := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]
   simp
 
+/- English proof (translation)
+Establish `e : ∀ x : Fin d, pderiv R ((0 : Fin 1), j) (X ((0 : Fin 1), x) : PS R 1 d) = if x = j then 1 else 0`. Introduce `x`. Distinguish the cases in `hx : x = j`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg hx]`. Conclude with `pderiv_X_of_ne (by simpa using hx)`. Rewrite using `[pderiv_ev noConst_0x, Fin.sum_univ_two]`. Simplify using `[pt, e]`.
+-/
 theorem d_zero_pt (h : PS R 2 d) (j : Fin d) :
     pderiv R ((0 : Fin 1), j) (ev (n := 1) ![0, pt R d 0] h) =
       ev (n := 1) ![0, pt R d 0] (pderiv R ((1 : Fin 2), j) h) := by
@@ -140,6 +204,11 @@ theorem d_zero_pt (h : PS R 2 d) (j : Fin d) :
   rw [pderiv_ev noConst_0x, Fin.sum_univ_two]
   simp [pt, e]
 
+/- English proof (translation)
+Establish `key : ∀ k : PS R 2 d, coeff (Finsupp.single ((0 : Fin 1), j) 1) (ev (n` using `1) ![0, pt R d 0] k) = coeff (Finsupp.single ((1 : Fin 2), j) 1) k := by`. Introduce `k`. Rewrite using `[← cc_pd, d_zero_pt, GlobalTheory.DerivEndo.cc_ev noConst_0x, cc_pd]`. Rewrite using `[map_sum]`. Simplify using `only [coeff_C_mul, key, Matrix.mulVec, dotProduct, Matrix.transpose_apply]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_pderiv, bil, add_comm]`. Simplify using `[mul_comm]`.
+-/
 theorem linc (u : Fin d → R) (g : PS R 2 d) (j : Fin d) :
     coeff (Finsupp.single ((0 : Fin 1), j) 1)
         (∑ i, C (u i) * ev (n := 1) ![0, pt R d 0] (pderiv R ((0 : Fin 2), i) g)) =
@@ -154,6 +223,13 @@ theorem linc (u : Fin d → R) (g : PS R 2 d) (j : Fin d) :
   rw [coeff_pderiv, bil, add_comm]
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `nc : NoConst (![ptPow R d p 0, ptPow R d p 1] : Fin 2 → Pt R 2 d)` using `noConst_two (cc_ptPow hp 0) (cc_ptPow hp 1)`. Establish `hc : pderiv R ((1 : Fin 2), j) (ev (n` using `2) ![ptPow R d p 0, ptPow R d p 1] c) = 0 := by`. Rewrite using `[pderiv_ev nc]`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: pderiv R ((1 : Fin 2), j) ((![ptPow R d p 0, ptPow R d p 1] : Fin 2 → Pt R 2 d) a i) = 0` using `by fin_cases a`.
+
+Conclude with `pd_ptPow_char _ _ _`. Conclude with `pd_ptPow_char _ _ _`. Rewrite using `[this, mul_zero]`. Establish `hF : addOf G.F (pt R (n` using `2) d 0) (pt R d 1) = G.F := add_pt G`. Establish `h` using `congrArg (fun g => ev (n := 1) ![pt R d 0, 0] (pderiv R ((1 : Fin 2), j) g)) hadd`.
+
+Rewrite `h` using `[hF]`. Simplify using `only [map_add, GlobalTheory.DerivEndo.ev_add germPointsNoConstantTerm_first_zero, pderiv_second_of_ev_first_point, dy_y, hc, germ_ev_restrict_axis_second_point, GlobalTheory.DerivEndo.ev_zero germPointsNoConstantTerm_first_zero, zero_add, pderiv_ev (noConst_one G.const), Fin.sum_ …`. Conclude with `h.symm`.
+-/
 theorem dz {p : ℕ} [CharP R p] (G : FGLaw R d) (f : PS R 1 d) (c : PS R 2 d) (hp : p ≠ 0)
     (hadd : ev (n := 2) ![pt R d 0] f + ev (n := 2) ![pt R d 1] f =
       ev (n := 2) ![ptPow R d p 0, ptPow R d p 1] c + ev (n := 2) ![addOf G.F (pt R d 0) (pt R d 1)] f)
@@ -178,6 +254,15 @@ theorem dz {p : ℕ} [CharP R p] (G : FGLaw R d) (f : PS R 1 d) (c : PS R 2 d) (
     GlobalTheory.DerivEndo.ev_sum germPointsNoConstantTerm_first_zero, GlobalTheory.DerivEndo.ev_mul germPointsNoConstantTerm_first_zero, germ_ev_restrict_axis_groupLaw, cc_pd] at h
   exact h.symm
 
+/- English proof (translation)
+Set `A : Matrix (Fin d) (Fin d) (PS R 1 d)` to `fun k j => ev (n := 1) ![pt R d 0, 0] (pderiv R ((1 : Fin 2), j) (G.F k))`. Establish `hA : A.map constantCoeff = 1`. Use extensionality with `k j`. Express the relevant statement in the definitionally equal form `constantCoeff (ev (n := 1) ![pt R d 0, 0] (pderiv R ((1 : Fin 2), j) (G.F k))) = _`. Rewrite using `[GlobalTheory.DerivEndo.cc_ev germPointsNoConstantTerm_first_zero, ← GlobalTheory.DerivEndo.cc_ev noConst_0x, ← d_zero_pt, G.unit k]`.
+
+Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[pderiv_X_of_ne (by simpa using hk), Matrix.one_apply_ne hk, map_zero]`. Establish `hdet : IsUnit A.det`.
+
+Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, RingHom.map_det]`. Establish `: (constantCoeff (σ` using `Fin 1 × Fin d) (R := R)).mapMatrix A = 1 := hA`. Rewrite using `[this, Matrix.det_one]`. Conclude with `isUnit_one`. Establish `hv : Matrix.vecMul w A = 0` using `funext fun j => by`.
+
+Simplify `h j` using `[Matrix.vecMul, dotProduct, A]`. Establish `hw : w = 0`. Use `congrArg (fun v => Matrix.vecMul v A⁻¹) hv` as an intermediate fact. Simplify `this` using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hdet]`. Conclude with `congrFun hw k`.
+-/
 theorem inv (G : FGLaw R d) (w : Fin d → PS R 1 d)
     (h : ∀ j, ∑ k, w k * ev (n := 1) ![pt R d 0, 0] (pderiv R ((1 : Fin 2), j) (G.F k)) = 0) (k : Fin d) :
     w k = 0 := by
@@ -204,6 +289,9 @@ theorem inv (G : FGLaw R d) (w : Fin d → PS R 1 d)
     simpa [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hdet] using this
   exact congrFun hw k
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = i`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hx]`. Conclude with `pderiv_X_of_ne (by simpa using hx)`.
+-/
 theorem pd_pt_eq {n : ℕ} (j : Fin n) (i x : Fin d) :
     pderiv R (j, i) (X (j, x) : PS R n d) = if x = i then 1 else 0 := by
   by_cases hx : x = i
@@ -212,6 +300,9 @@ theorem pd_pt_eq {n : ℕ} (j : Fin n) (i x : Fin d) :
   · rw [if_neg hx]
     exact pderiv_X_of_ne (by simpa using hx)
 
+/- English proof (translation)
+Rewrite using `[pderiv_ev (noConst_two (cc_pt 0) hb0), Fin.sum_univ_two]`. Simplify using `[pt, pd_pt_eq, hb]`.
+-/
 theorem partial_derivative_first_evaluation (h : PS R 2 d) (b : Pt R 3 d) (hb0 : ∀ l, constantCoeff (b l) = 0)
     (hb : ∀ i l, pderiv R ((0 : Fin 3), i) (b l) = 0) (i : Fin d) :
     pderiv R ((0 : Fin 3), i) (ev (n := 3) ![pt R d 0, b] h) =
@@ -219,6 +310,11 @@ theorem partial_derivative_first_evaluation (h : PS R 2 d) (b : Pt R 3 d) (hb0 :
   rw [pderiv_ev (noConst_two (cc_pt 0) hb0), Fin.sum_univ_two]
   simp [pt, pd_pt_eq, hb]
 
+/- English proof (translation)
+Establish `nb : NoConst (![fun l => ev (n` using `2) ![0, pt R d 0, pt R d 1] (b l)] : Fin 1 → Pt R 2 d) := noConst_one fun l => (GlobalTheory.DerivEndo.cc_ev no_constant_evaluation_triple _).trans (hb0 l)`. Rewrite using `[GlobalTheory.DerivEndo.ev_ev no_constant_evaluation_triple (noConst_two (cc_pt 0) hb0), GlobalTheory.DerivEndo.ev_ev nb noConst_0x]`. Use `congr 1`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`.
+
+Conclude with `(ev_pt no_constant_evaluation_triple 0 i).trans (GlobalTheory.DerivEndo.ev_zero nb).symm`. Conclude with `(ev_pt nb 0 i).symm`.
+-/
 theorem evaluation_zero_first_variable (h : PS R 2 d) (b : Pt R 3 d) (hb0 : ∀ l, constantCoeff (b l) = 0) :
     ev (n := 2) ![0, pt R d 0, pt R d 1] (ev (n := 3) ![pt R d 0, b] h) =
       ev (n := 2) ![fun l => ev (n := 2) ![0, pt R d 0, pt R d 1] (b l)] (ev (n := 1) ![0, pt R d 0] h) := by
@@ -231,6 +327,9 @@ theorem evaluation_zero_first_variable (h : PS R 2 d) (b : Pt R 3 d) (hb0 : ∀ 
   · exact (ev_pt no_constant_evaluation_triple 0 i).trans (GlobalTheory.DerivEndo.ev_zero nb).symm
   · exact (ev_pt nb 0 i).symm
 
+/- English proof (translation)
+Establish `nb : NoConst (![fun l => ev (n` using `2) ![0, pt R d 0, pt R d 1] (b l)] : Fin 1 → Pt R 2 d) := noConst_one fun l => (GlobalTheory.DerivEndo.cc_ev no_constant_evaluation_triple _).trans (hb0 l)`. Simplify using `only [partial_derivative_first_evaluation _ b hb0 hb, evaluation_zero_first_variable _ b hb0]`. Rewrite using `[GlobalTheory.DerivEndo.ev_sum nb]`. Simplify using `only [GlobalTheory.DerivEndo.ev_mul nb, GlobalTheory.DerivEndo.ev_C]`.
+-/
 theorem dxFirst (u : Fin d → R) (h : PS R 2 d) (b : Pt R 3 d) (hb0 : ∀ l, constantCoeff (b l) = 0)
     (hb : ∀ i l, pderiv R ((0 : Fin 3), i) (b l) = 0) :
     ∑ i, C (u i) * ev (n := 2) ![0, pt R d 0, pt R d 1]
@@ -243,6 +342,15 @@ theorem dxFirst (u : Fin d → R) (h : PS R 2 d) (b : Pt R 3 d) (hb0 : ∀ l, co
   rw [GlobalTheory.DerivEndo.ev_sum nb]
   simp only [GlobalTheory.DerivEndo.ev_mul nb, GlobalTheory.DerivEndo.ev_C]
 
+/- English proof (translation)
+Establish `nA : NoConst (![pt R d 0, ptPow R d p 1, ptPow R d p 2] : Fin 3 → Pt R 3 d)` using `noConst_three (cc_pt 0) (cc_ptPow hp 1) (cc_ptPow hp 2)`. Establish `nS : NoConst (![ptPow R d p 0, ptPow R d p 1] : Fin 2 → Pt R 2 d)` using `noConst_two (cc_ptPow hp 0) (cc_ptPow hp 1)`. Establish `hd : ∀ (i : Fin d) (k : PS R 3 d), pderiv R ((0 : Fin 3), i) (ev (n` using `3) ![pt R d 0, ptPow R d p 1, ptPow R d p 2] k) = ev (n := 3) ![pt R d 0, ptPow R d p 1, ptPow R d p 2] (pderiv R ((0 : Fin 3), i) k) := by`. Introduce `i k`. Establish `e1 : ∀ l, pderiv R ((0 : Fin 3), i) (ptPow R d p (1 : Fin 3) l : PS R 3 d) = 0` using `fun l => pd_ptPow_ne (by simp)`.
+
+Establish `e2 : ∀ l, pderiv R ((0 : Fin 3), i) (ptPow R d p (2 : Fin 3) l : PS R 3 d) = 0` using `fun l => pd_ptPow_ne (by simp)`. Rewrite using `[pderiv_ev nA, Fin.sum_univ_three]`. Simplify using `[pt, pd_pt_eq, e1, e2]`. Establish `hv : ∀ k : PS R 3 d, ev (n` using `2) ![0, pt R d 0, pt R d 1] (ev (n := 3) ![pt R d 0, ptPow R d p 1, ptPow R d p 2] k) = ev (n := 2) ![ptPow R d p 0, ptPow R d p 1] (ev (n := 2) ![0, pt R d 0, pt R d 1] k) := by`. Introduce `k`.
+
+Rewrite using `[GlobalTheory.DerivEndo.ev_ev no_constant_evaluation_triple nA, GlobalTheory.DerivEndo.ev_ev nS no_constant_evaluation_triple]`. Use `congr 1`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`. Conclude with `(ev_pt no_constant_evaluation_triple 0 i).trans (GlobalTheory.DerivEndo.ev_zero nS).symm`.
+
+Conclude with `(ev_ptPow no_constant_evaluation_triple 1 i).trans (ev_pt nS 0 i).symm`. Conclude with `(ev_ptPow no_constant_evaluation_triple 2 i).trans (ev_pt nS 1 i).symm`. Simplify using `only [hd, hv]`. Rewrite using `[GlobalTheory.DerivEndo.ev_sum nS]`. Simplify using `only [GlobalTheory.DerivEndo.ev_mul nS, GlobalTheory.DerivEndo.ev_C]`.
+-/
 theorem dxFrob {p : ℕ} (hp : p ≠ 0) (u : Fin d → R) (φ : PS R 3 d) :
     ∑ i, C (u i) * ev (n := 2) ![0, pt R d 0, pt R d 1]
         (pderiv R ((0 : Fin 3), i) (ev (n := 3) ![pt R d 0, ptPow R d p 1, ptPow R d p 2] φ)) =
@@ -275,6 +383,13 @@ theorem dxFrob {p : ℕ} (hp : p ≠ 0) (u : Fin d → R) (φ : PS R 3 d) :
   rw [GlobalTheory.DerivEndo.ev_sum nS]
   simp only [GlobalTheory.DerivEndo.ev_mul nS, GlobalTheory.DerivEndo.ev_C]
 
+/- English proof (translation)
+Establish `nA : NoConst (![comp1 V (pt R d 0), pt R d 1, pt R d 2] : Fin 3 → Pt R 3 d)` using `noConst_three (cc_comp1 hV (cc_pt 0)) (cc_pt 1) (cc_pt 2)`. Rewrite using `[GlobalTheory.DerivEndo.ev_ev no_constant_evaluation_triple nA]`. Use `congr 1`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`.
+
+Express the relevant statement in the definitionally equal form `ev (n := 2) ![0, pt R d 0, pt R d 1] (ev (n := 3) ![pt R d 0] (V i)) = (0 : PS R 2 d)`. Rewrite using `[GlobalTheory.DerivEndo.ev_ev no_constant_evaluation_triple (noConst_one (cc_pt 0))]`. Establish `e : (fun (j : Fin 1) (i' : Fin d) => ev (n` using `2) ![0, pt R d 0, pt R d 1] ((![pt R d 0] : Fin 1 → Pt R 3 d) j i')) = fun _ _ => (0 : PS R 2 d) := by`. Use function extensionality and compare the values at `j i'`. Use `fin_cases j`.
+
+Conclude with `ev_pt no_constant_evaluation_triple 0 i'`. Rewrite using `[e, ev_const, hV, map_zero]`. Conclude with `ev_pt no_constant_evaluation_triple 1 i`. Conclude with `ev_pt no_constant_evaluation_triple 2 i`.
+-/
 theorem evaluation_zero_composition_invariant (V : Pt R 1 d) (hV : ∀ i, constantCoeff (V i) = 0) (k : PS R 3 d) :
     ev (n := 2) ![0, pt R d 0, pt R d 1] (ev (n := 3) ![comp1 V (pt R d 0), pt R d 1, pt R d 2] k) =
       ev (n := 2) ![0, pt R d 0, pt R d 1] k := by
@@ -295,6 +410,13 @@ theorem evaluation_zero_composition_invariant (V : Pt R 1 d) (hV : ∀ i, consta
   · exact ev_pt no_constant_evaluation_triple 1 i
   · exact ev_pt no_constant_evaluation_triple 2 i
 
+/- English proof (translation)
+Establish `n1 : NoConst (![pt R d 0] : Fin 1 → Pt R 3 d)` using `noConst_one (cc_pt 0)`. Establish `h : pderiv R ((0 : Fin 3), i) (ev (n` using `3) ![pt R d 0] (V l)) = ev (n := 3) ![pt R d 0] (pderiv R ((0 : Fin 1), i) (V l)) := by`. Rewrite using `[pderiv_ev n1, Fin.sum_univ_one]`. Simplify using `[pt, pd_pt_eq]`. Express the relevant statement in the definitionally equal form `ev (n := 2) ![0, pt R d 0, pt R d 1] (pderiv R ((0 : Fin 3), i) (ev (n := 3) ![pt R d 0] (V l))) = _`.
+
+Rewrite using `[h, GlobalTheory.DerivEndo.ev_ev no_constant_evaluation_triple n1]`. Establish `e : (fun (j : Fin 1) (i' : Fin d) => ev (n` using `2) ![0, pt R d 0, pt R d 1] ((![pt R d 0] : Fin 1 → Pt R 3 d) j i')) = fun _ _ => (0 : PS R 2 d) := by`. Use function extensionality and compare the values at `j i'`. Use `fin_cases j`. Conclude with `ev_pt no_constant_evaluation_triple 0 i'`.
+
+Rewrite using `[e, ev_const, cc_pd]`. Both sides reduce to the same expression.
+-/
 theorem evaluation_zero_derivative_linear_term (V : Pt R 1 d) (i l : Fin d) :
     ev (n := 2) ![0, pt R d 0, pt R d 1] (pderiv R ((0 : Fin 3), i) (comp1 V (pt R d 0) l)) =
       C (lin V 1 l i) := by
@@ -313,6 +435,17 @@ theorem evaluation_zero_derivative_linear_term (V : Pt R 1 d) (i l : Fin d) :
   rw [e, ev_const, cc_pd]
   rfl
 
+/- English proof (translation)
+Establish `nA : NoConst (![comp1 V (pt R d 0), pt R d 1, pt R d 2] : Fin 3 → Pt R 3 d)` using `noConst_three (cc_comp1 hV (cc_pt 0)) (cc_pt 1) (cc_pt 2)`. Establish `hd : ∀ i : Fin d, pderiv R ((0 : Fin 3), i) (ev (n` using `3) ![comp1 V (pt R d 0), pt R d 1, pt R d 2] k) = ∑ l, ev (n := 3) ![comp1 V (pt R d 0), pt R d 1, pt R d 2] (pderiv R ((0 : Fin 3), l) k) * pderiv R ((0 : Fin 3), i) (comp1 V (pt R d 0) l) := by`. Introduce `i`. Establish `e1 : ∀ l, pderiv R ((0 : Fin 3), i) (pt R d (1 : Fin 3) l : PS R 3 d) = 0` using `fun l => pd_pt_ne (by simp)`. Establish `e2 : ∀ l, pderiv R ((0 : Fin 3), i) (pt R d (2 : Fin 3) l : PS R 3 d) = 0` using `fun l => pd_pt_ne (by simp)`.
+
+Rewrite using `[pderiv_ev nA, Fin.sum_univ_three]`. Simplify using `[e1, e2]`. Simplify using `only [hd, GlobalTheory.DerivEndo.ev_sum no_constant_evaluation_triple, GlobalTheory.DerivEndo.ev_mul no_constant_evaluation_triple, evaluation_zero_composition_invariant V hV, evaluation_zero_derivative_linear_term, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+
+Establish `hl : ∑ i, (C (lin V 1 l i * u i) : PS R 2 d) = 0`. Rewrite using `[← map_sum]`. Use `congrFun hu l` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at this`. Rewrite using `[this, map_zero]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = 0 := by rw [hl, mul_zero]`.
+-/
 theorem dxV (u : Fin d → R) (V : Pt R 1 d) (k : PS R 3 d) (hV : ∀ i, constantCoeff (V i) = 0)
     (hu : (lin V 1).mulVec u = 0) :
     ∑ i, C (u i) * ev (n := 2) ![0, pt R d 0, pt R d 1]
@@ -347,6 +480,9 @@ theorem dxV (u : Fin d → R) (V : Pt R 1 d) (k : PS R 3 d) (hV : ∀ i, constan
 
 variable {O : Type} [CommRing O] [StarRing O]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `ev s (ev ![a, b] (F i)) = ev ![fun q => ev s (a q), fun q => ev s (b q)] (F i)`. Rewrite using `[GlobalTheory.DerivEndo.ev_ev ns (noConst_two ha hb)]`. Use `congr 1`. Use function extensionality and compare the values at `j q`. Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 theorem ev_addOf {l n : ℕ} {s : Fin l → Pt R n d} (ns : NoConst s) {F : Fin d → PS R 2 d}
     {a b : Pt R l d} (ha : ∀ i, constantCoeff (a i) = 0) (hb : ∀ i, constantCoeff (b i) = 0) (i : Fin d) :
     ev s (addOf F a b i) = addOf F (fun q => ev s (a q)) (fun q => ev s (b q)) i := by
@@ -356,6 +492,13 @@ theorem ev_addOf {l n : ℕ} {s : Fin l → Pt R n d} (ns : NoConst s) {F : Fin 
   funext j q
   fin_cases j <;> rfl
 
+/- English proof (translation)
+Establish `n1 : NoConst (![pt R d 0, b] : Fin 2 → Pt R 3 d)` using `noConst_two (cc_pt 0) hb`. Establish `n2 : NoConst (![comp1 a (pt R d 0), pt R d 0, pt R d 1] : Fin 3 → Pt R 2 d)` using `noConst_three (cc_comp1 ha (cc_pt 0)) (cc_pt 0) (cc_pt 1)`. Rewrite using `[GlobalTheory.DerivEndo.ev_ev n1 n2]`. Use `congr 1`. Use function extensionality and compare the values at `j i`.
+
+Use `fin_cases j`. Express the relevant statement in the definitionally equal form `ev (n := 3) ![pt R d 0, b] (ev (n := 2) ![pt R d 0] (a i)) = ev (n := 3) ![pt R d 0] (a i)`. Rewrite using `[GlobalTheory.DerivEndo.ev_ev n1 (noConst_one (cc_pt 0))]`. Use `congr 1`. Use function extensionality and compare the values at `j l`.
+
+Use `fin_cases j`. Conclude with `ev_pt n1 0 l`. Conclude with `ev_pt n1 0 i`. Conclude with `ev_pt n1 1 i`.
+-/
 theorem ev_step (a : Pt R 1 d) (ha : ∀ i, constantCoeff (a i) = 0) (b : Pt R 3 d)
     (hb : ∀ l, constantCoeff (b l) = 0) (k : PS R 3 d) :
     ev (n := 3) ![pt R d 0, b] (ev (n := 2) ![comp1 a (pt R d 0), pt R d 0, pt R d 1] k) =
@@ -376,6 +519,41 @@ theorem ev_step (a : Pt R 1 d) (ha : ∀ i, constantCoeff (a i) = 0) (b : Pt R 3
   · exact ev_pt n1 0 i
   · exact ev_pt n1 1 i
 
+/- English proof (translation)
+Take `⟨h0, hs, -, -⟩` from `GlobalTheory.T.formal_module_action_laws R d O B`. Establish `cadd : ∀ i, constantCoeff (B.G.add (pt R (n` using `3) d 1) (pt R d 2) i) = 0 := cc_addOf B.G.const (cc_pt 1) (cc_pt 2)`. Proceed by induction on `m with`. Consider the case `zero`. Establish `e0 : comp1 (B.A.act ((0 : ℕ) : O)) (pt R (n` using `3) d 0) = 0 := by`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Nat.cast_zero, h0]`. Conclude with `GlobalTheory.DerivEndo.ev_zero (noConst_one (cc_pt 0))`. Establish `n1 : NoConst (![pt R d 1, pt R d 2] : Fin 2 → Pt R 3 d)` using `noConst_two (cc_pt 1) (cc_pt 2)`. Establish `e1 : ev (n` using `3) ![(0 : Pt R 3 d), pt R d 1, pt R d 2] B.ph2 = 1 := by`.
+
+Use `congrArg (ev (n := 3) ![pt R d 1, pt R d 2]) B.cocycleRight_zero_fst` as an intermediate fact. Rewrite `this` using `[GlobalTheory.DerivEndo.ev_ev n1 (noConst_three cc_zero (cc_pt 0) (cc_pt 1)), ev_one]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `j i`.
+
+Use `fin_cases j`. Conclude with `(GlobalTheory.DerivEndo.ev_zero n1).symm`. Conclude with `(ev_pt n1 0 i).symm`. Conclude with `(ev_pt n1 1 i).symm`. Rewrite using `[e0, e1]`.
+
+Simplify using `[pow1]`. Consider the case `succ m ih => set a := B.A.act (m : O) with ha set T : Pt R 3 d := comp1 a (pt R d 0) with hT`. Establish `a0 : ∀ i, constantCoeff (a i) = 0` using `B.A.const _`. Establish `cT : ∀ i, constantCoeff (T i) = 0` using `cc_comp1 a0 (cc_pt 0)`. Establish `ns : NoConst (![T, pt R d 0, pt R d 1, pt R d 2] : Fin 4 → Pt R 3 d)`.
+
+Introduce `j i`. Use `fin_cases j`. Use `exacts [cT i, cc_pt 0 i, cc_pt 1 i, cc_pt 2 i]`. Establish `E : ∀ (c : Fin 3 → Pt R 4 d) (c' : Fin 3 → Pt R 3 d), NoConst c → (∀ j i, ev (n` using `3) ![T, pt R d 0, pt R d 1, pt R d 2] (c j i) = c' j i) → ∀ k : PS R 3 d, ev (n := 3) ![T, pt R d 0, pt R d 1, pt R d 2] (ev (n := 4) c k) = ev (n := 3) c' k := by`. Introduce `c c' hc h k`.
+
+Rewrite using `[GlobalTheory.DerivEndo.ev_ev ns hc]`. Use `congr 1`. Use function extensionality and compare the values at `j i`. Conclude with `h j i`. Establish `q0 : ∀ i, ev (n` using `3) ![T, pt R d 0, pt R d 1, pt R d 2] (pt R d (0 : Fin 4) i) = T i := ev_pt ns 0`.
+
+Establish `q1 : ∀ i, ev (n` using `3) ![T, pt R d 0, pt R d 1, pt R d 2] (pt R d (1 : Fin 4) i) = pt R d 0 i := ev_pt ns 1`. Establish `q2 : ∀ i, ev (n` using `3) ![T, pt R d 0, pt R d 1, pt R d 2] (pt R d (2 : Fin 4) i) = pt R d 1 i := ev_pt ns 2`. Establish `q3 : ∀ i, ev (n` using `3) ![T, pt R d 0, pt R d 1, pt R d 2] (pt R d (3 : Fin 4) i) = pt R d 2 i := ev_pt ns 3`. Establish `t1` using `E ![pt R d 0, pt R d 1, pt R d 2] ![T, pt R d 0, pt R d 1] (noConst_three (cc_pt _) (cc_pt _) (cc_pt _)) (by intro j i; fin_cases j; exacts [q0 i, q1 i, q2 i]) B.ph1`. Establish `t2` using `E ![pt R d 0, pt R d 1, pt R d 3] ![T, pt R d 0, pt R d 2] (noConst_three (cc_pt _) (cc_pt _) (cc_pt _)) (by intro j i; fin_cases j; exacts [q0 i, q1 i, q3 i]) B.ph1`.
+
+Establish `t3` using `E ![B.G.add (pt R d 0) (pt R d 1), pt R d 2, pt R d 3] ![B.G.add T (pt R d 0), pt R d 1, pt R d 2] (noConst_three (cc_addOf B.G.const (cc_pt _) (cc_pt _)) (cc_pt _) (cc_pt _)) (by`. Introduce `j i`. Use `fin_cases j`. Use `(ev_addOf ns (cc_pt _) (cc_pt _) i).trans ?_` and prove the remaining obligations. Simplify using `only [q0, q1]`.
+
+Both sides reduce to the same expression. Conclude with `q2 i`. Conclude with `q3 i) B.ph2`. Establish `t4` using `E ![pt R d 0, pt R d 2, pt R d 3] ![T, pt R d 1, pt R d 2] (noConst_three (cc_pt _) (cc_pt _) (cc_pt _)) (by intro j i; fin_cases j; exacts [q0 i, q2 i, q3 i]) B.ph2`. Establish `t5` using `E ![pt R d 1, pt R d 2, pt R d 3] ![pt R d 0, pt R d 1, pt R d 2] (noConst_three (cc_pt _) (cc_pt _) (cc_pt _)) (by intro j i; fin_cases j; exacts [q1 i, q2 i, q3 i]) B.ph2`.
+
+Establish `t6` using `E ![pt R d 0, pt R d 1, B.G.add (pt R d 2) (pt R d 3)] ![T, pt R d 0, B.G.add (pt R d 1) (pt R d 2)] (noConst_three (cc_pt _) (cc_pt _) (cc_addOf B.G.const (cc_pt _) (cc_pt _))) (by`. Introduce `j i`. Use `fin_cases j`. Conclude with `q0 i`. Conclude with `q1 i`.
+
+Use `(ev_addOf ns (cc_pt _) (cc_pt _) i).trans ?_` and prove the remaining obligations. Simplify using `only [q2, q3]`. Use the proof step `rfl) B.ph1`. Establish `I` using `congrArg (ev (n := 3) ![T, pt R d 0, pt R d 1, pt R d 2]) B.interchange`. Simplify using `only [GlobalTheory.DerivEndo.ev_mul ns] at I`.
+
+Apply the tactic sequence `have t7 : ev (n := 3) ![pt R d 0, pt R d 1, pt R d 2] B.ph2 = B.ph2 := ev_pt_self _ (fun j => by fin_cases j <;> rfl) _`. Rewrite `I` using `[t1, t2, t3, t4, t5, t6, t7]`. Establish `hpow : pow1 B (m + 1) = pow1 B m * ev (n` using `2) ![comp1 a (pt R d 0), pt R d 0, pt R d 1] B.ph1 := by`. Rewrite using `[pow1, Finset.prod_range_succ]`. Both sides reduce to the same expression.
+
+Establish `hact : comp1 (B.A.act ((m + 1 : ℕ) : O)) (pt R (n` using `3) d 0) = B.G.add T (pt R d 0) := by`. Rewrite using `[hs m]`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `ev (n := 3) ![pt R d 0] (ev (n := 1) ![a, pt R d 0] (B.G.F i)) = ev (n := 3) ![T, pt R d 0] (B.G.F i)`. Rewrite using `[GlobalTheory.DerivEndo.ev_ev (noConst_one (cc_pt 0)) (noConst_two a0 (cc_pt 0))]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j l`. Use `fin_cases j`. Both sides reduce to the same expression. Conclude with `ev_pt (noConst_one (cc_pt 0)) 0 l`.
+
+Establish `n1 : NoConst (![pt R d 0, pt R d 1] : Fin 2 → Pt R 3 d)` using `noConst_two (cc_pt 0) (cc_pt 1)`. Establish `n2 : NoConst (![pt R d 0, pt R d 2] : Fin 2 → Pt R 3 d)` using `noConst_two (cc_pt 0) (cc_pt 2)`. Establish `n3 : NoConst (![pt R d 0, B.G.add (pt R d 1) (pt R d 2)] : Fin 2 → Pt R 3 d)` using `noConst_two (cc_pt 0) cadd`. Rewrite using `[hact, hpow, GlobalTheory.DerivEndo.ev_mul n1, GlobalTheory.DerivEndo.ev_mul n2, GlobalTheory.DerivEndo.ev_mul n3, ev_step a a0 _ (cc_pt 1), ev_step a a0 _ (cc_pt 2), ev_step a a0 _ cadd]`. Rewrite using `[pow_succ]`.
+
+Take the linear combination `(ev (n := 3) ![pt R d 0, pt R d 1] (pow1 B m) * ev (n := 3) ![pt R d 0, pt R d 2] (pow1 B m)) * I + (B.ph2 * ev (n := 3) ![T, pt R d 0, B.G.add (pt R d 1) (pt R d 2)] B.ph1) * ih`.
+-/
 theorem inter2 (B : FB R d O) (m : ℕ) :
     ev (n := 3) ![pt R d 0, pt R d 1] (pow1 B m) * ev (n := 3) ![pt R d 0, pt R d 2] (pow1 B m) *
         ev (n := 3) ![comp1 (B.A.act (m : O)) (pt R d 0), pt R d 1, pt R d 2] B.ph2 =
@@ -487,6 +665,29 @@ theorem inter2 (B : FB R d O) (m : ℕ) :
       (ev (n := 3) ![pt R d 0, pt R d 1] (pow1 B m) * ev (n := 3) ![pt R d 0, pt R d 2] (pow1 B m)) * I +
       (B.ph2 * ev (n := 3) ![T, pt R d 0, B.G.add (pt R d 1) (pt R d 2)] B.ph1) * ih
 
+/- English proof (translation)
+Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `ns : NoConst (![ptPow R d p 0, pt R d 1, pt R d 2] : Fin 3 → Pt R 3 d)` using `noConst_three (cc_ptPow hp 0) (cc_pt 1) (cc_pt 2)`. Establish `s0 : ∀ i, ev (n` using `3) ![ptPow R d p 0, pt R d 1, pt R d 2] (pt R d (0 : Fin 3) i) = ptPow R d p 0 i := ev_pt ns 0`. Establish `s1 : ∀ i, ev (n` using `3) ![ptPow R d p 0, pt R d 1, pt R d 2] (pt R d (1 : Fin 3) i) = pt R d 1 i := ev_pt ns 1`. Establish `s2 : ∀ i, ev (n` using `3) ![ptPow R d p 0, pt R d 1, pt R d 2] (pt R d (2 : Fin 3) i) = pt R d 2 i := ev_pt ns 2`.
+
+Establish `np : NoConst (![ptPow R d p 0, pt R d 1] : Fin 2 → Pt R 2 d)` using `noConst_two (cc_ptPow hp 0) (cc_pt 1)`. Establish `A : ∀ b : Pt R 3 d, (∀ l, constantCoeff (b l) = 0) → (∀ l, ev (n` using `3) ![ptPow R d p 0, pt R d 1, pt R d 2] (b l) = b l) → ev (n := 3) ![pt R d 0, b] (pow1 B p) = ev (n := 3) ![ptPow R d p 0, pt R d 1, pt R d 2] (ev (n := 3) ![pt R d 0, b] g) := by`. Introduce `b hb0 hb`. Establish `n1 : NoConst (![pt R d 0, b] : Fin 2 → Pt R 3 d)` using `noConst_two (cc_pt 0) hb0`. Rewrite using `[hg, GlobalTheory.DerivEndo.ev_ev n1 np, GlobalTheory.DerivEndo.ev_ev ns n1]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`. Conclude with `(ev_ptPow n1 0 i).trans (s0 i).symm`. Conclude with `(ev_pt n1 1 i).trans (hb i).symm`.
+
+Establish `cadd : ∀ i, constantCoeff (addOf B.G.F (pt R (n` using `3) d 1) (pt R d 2) i) = 0 := cc_addOf B.G.const (cc_pt 1) (cc_pt 2)`. Establish `a3 : ∀ l, ev (n` using `3) ![ptPow R d p 0, pt R d 1, pt R d 2] (addOf B.G.F (pt R d 1) (pt R d 2) l) = addOf B.G.F (pt R d 1) (pt R d 2) l := by`. Introduce `l`. Use `(ev_addOf ns (cc_pt _) (cc_pt _) l).trans ?_` and prove the remaining obligations. Simplify using `only [s1, s2]`.
+
+Establish `A3 : ev (n` using `3) ![comp1 (B.A.act (p : O)) (pt R d 0), pt R d 1, pt R d 2] B.ph2 = ev (n := 3) ![ptPow R d p 0, pt R d 1, pt R d 2] (ev (n := 3) ![comp1 V (pt R d 0), pt R d 1, pt R d 2] B.ph2) := by`. Establish `n1 : NoConst (![comp1 V (pt R d 0), pt R d 1, pt R d 2] : Fin 3 → Pt R 3 d)` using `noConst_three (cc_comp1 hV0 (cc_pt 0)) (cc_pt 1) (cc_pt 2)`. Rewrite using `[GlobalTheory.DerivEndo.ev_ev ns n1, hV]`. Use `congr 1`. Use function extensionality and compare the values at `j i`.
+
+Use `fin_cases j`. Express the relevant statement in the definitionally equal form `ev (n := 3) ![pt R d 0] (ev (n := 1) ![ptPow R d p 0] (V i)) = ev (n := 3) ![ptPow R d p 0, pt R d 1, pt R d 2] (ev (n := 3) ![pt R d 0] (V i))`. Establish `m1 : NoConst (![pt R d 0] : Fin 1 → Pt R 3 d)` using `noConst_one (cc_pt 0)`. Rewrite using `[GlobalTheory.DerivEndo.ev_ev m1 (noConst_one (cc_ptPow hp 0)), GlobalTheory.DerivEndo.ev_ev ns m1]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j l`. Use `fin_cases j`. Conclude with `(ev_ptPow m1 0 l).trans (s0 l).symm`. Conclude with `(s1 i).symm`. Conclude with `(s2 i).symm`.
+
+Establish `A4 : B.ph2 ^ p = ev (n` using `3) ![ptPow R d p 0, pt R d 1, pt R d 2] (ev (n := 3) ![pt R d 0, ptPow R d p 1, ptPow R d p 2] (MvPowerSeries.map (frobenius R p) B.ph2)) := by`. Establish `n1 : NoConst (![pt R d 0, ptPow R d p 1, ptPow R d p 2] : Fin 3 → Pt R 3 d)` using `noConst_three (cc_pt 0) (cc_ptPow hp 1) (cc_ptPow hp 2)`. Rewrite using `[GlobalTheory.T.power_series_pow_p_frobenius R p d 3 B.ph2, GlobalTheory.DerivEndo.ev_ev ns n1]`. Use `congr 1`. Use function extensionality and compare the values at `j i`.
+
+Use `fin_cases j`. Conclude with `(s0 i).symm`. Conclude with `(ev_ptPow ns 1 i).symm`. Conclude with `(ev_ptPow ns 2 i).symm`. Apply `inj3 hp` to reduce the goal to its premises.
+
+Establish `I` using `inter2 B p`. Rewrite `I` using `[A _ (cc_pt 1) s1, A _ (cc_pt 2) s2, A3, A4]`. Establish `I2 : ev (n` using `3) ![pt R d 0, addOf B.G.F (pt R d 1) (pt R d 2)] (pow1 B p) = _ := A _ cadd a3`. Express the relevant statement in the definitionally equal form `_ = _ * ev (n := 3) ![pt R d 0, addOf B.G.F (pt R d 1) (pt R d 2)] (pow1 B p) at I`. Rewrite `I` using `[I2]`.
+
+Rewrite using `[GlobalTheory.DerivEndo.ev_mul ns, GlobalTheory.DerivEndo.ev_mul ns, GlobalTheory.DerivEndo.ev_mul ns]`. Conclude with `I`.
+-/
 theorem identity {p : ℕ} [Fact p.Prime] [CharP R p] (B : FB R d O) (V : Pt R 1 d) (g : PS R 2 d)
     (hV0 : ∀ i, constantCoeff (V i) = 0) (hV : B.A.act (p : O) = comp1 V (ptPow R d p 0))
     (hg : pow1 B p = ev (n := 2) ![ptPow R d p 0, pt R d 1] g) :
@@ -561,6 +762,27 @@ theorem identity {p : ℕ} [Fact p.Prime] [CharP R p] (B : FB R d O) (V : Pt R 1
   rw [GlobalTheory.DerivEndo.ev_mul ns, GlobalTheory.DerivEndo.ev_mul ns, GlobalTheory.DerivEndo.ev_mul ns]
   exact I
 
+/- English proof (translation)
+Set `Dl : PS R 3 d → PS R 2 d` to `fun h => ∑ i, C (u i) * ev (n := 2) ![0, pt R d 0, pt R d 1] (pderiv R ((0 : Fin 3), i) h)`. Establish `leib : ∀ a b : PS R 3 d, Dl (a * b) = ev (n` using `2) ![0, pt R d 0, pt R d 1] a * Dl b + ev (n := 2) ![0, pt R d 0, pt R d 1] b * Dl a := by`. Introduce `a b`. Simplify using `only [Dl, Derivation.leibniz, smul_eq_mul, GlobalTheory.DerivEndo.ev_add no_constant_evaluation_triple, GlobalTheory.DerivEndo.ev_mul no_constant_evaluation_triple, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `p1 : ∀ i l, pderiv R ((0 : Fin 3), i) (pt R d (1 : Fin 3) l : PS R 3 d) = 0` using `fun i l => pd_pt_ne (by simp)`. Establish `p2 : ∀ i l, pderiv R ((0 : Fin 3), i) (pt R d (2 : Fin 3) l : PS R 3 d) = 0` using `fun i l => pd_pt_ne (by simp)`. Establish `cadd : ∀ i, constantCoeff (addOf F (pt R (n` using `3) d 1) (pt R d 2) i) = 0 := cc_addOf hF (cc_pt 1) (cc_pt 2)`. Establish `p3 : ∀ i l, pderiv R ((0 : Fin 3), i) (addOf F (pt R (n` using `3) d 1) (pt R d 2) l) = 0 := by`.
+
+Introduce `i l`. Express the relevant statement in the definitionally equal form `pderiv R ((0 : Fin 3), i) (ev (n := 3) ![pt R d 1, pt R d 2] (F l)) = 0`. Rewrite using `[pderiv_ev (noConst_two (cc_pt 1) (cc_pt 2)), Fin.sum_univ_two]`. Simplify using `[p1, p2]`. Establish `f1 : (fun l => ev (n` using `2) ![0, pt R d 0, pt R d 1] (pt R d (1 : Fin 3) l)) = pt R d 0 :=`.
+
+Use function extensionality and compare the values at `fun l => ev_pt no_constant_evaluation_triple 1 l`. Establish `f2 : (fun l => ev (n` using `2) ![0, pt R d 0, pt R d 1] (pt R d (2 : Fin 3) l)) = pt R d 1 :=`. Use function extensionality and compare the values at `fun l => ev_pt no_constant_evaluation_triple 2 l`. Establish `f3 : (fun l => ev (n` using `2) ![0, pt R d 0, pt R d 1] (addOf F (pt R (n := 3) d 1) (pt R d 2) l)) = addOf F (pt R d 0) (pt R d 1) := by`. Use function extensionality and compare the values at `l`.
+
+Use `(ev_addOf no_constant_evaluation_triple (cc_pt _) (cc_pt _) l).trans ?_` and prove the remaining obligations. Rewrite using `[f1, f2]`. Establish `d1` using `dxFirst u g (pt R d 1) (cc_pt 1) (p1 ·)`. Establish `d2` using `dxFirst u g (pt R d 2) (cc_pt 2) (p2 ·)`. Establish `d4` using `dxFirst u g (addOf F (pt R d 1) (pt R d 2)) cadd p3`.
+
+Rewrite `d1` using `[f1]`. Rewrite `d2` using `[f2]`. Rewrite `d4` using `[f3]`. Establish `d3` using `dxV u V ph hV hu`. Establish `dQ` using `dxFrob (R := R) (d := d) hp u φ`.
+
+Establish `v1` using `evaluation_zero_first_variable g (pt R d 1) (cc_pt 1)`. Establish `v2` using `evaluation_zero_first_variable g (pt R d 2) (cc_pt 2)`. Establish `v4` using `evaluation_zero_first_variable g (addOf F (pt R d 1) (pt R d 2)) cadd`. Rewrite `v1`, `v2`, `v4` using `[hg, ev_one]`. Establish `v3` using `evaluation_zero_composition_invariant V hV ph`.
+
+Rewrite `v3` using `[hph]`. Establish `vQ` using `congrArg (ev (n := 2) ![0, pt R d 0, pt R d 1]) hid`. Rewrite `vQ` using `[GlobalTheory.DerivEndo.ev_mul no_constant_evaluation_triple, GlobalTheory.DerivEndo.ev_mul no_constant_evaluation_triple, GlobalTheory.DerivEndo.ev_mul no_constant_evaluation_triple, v1, v2, v3, v4, _root_.one_mul, _root_.one_mul, _root_.mul_one]`. Establish `h` using `congrArg Dl hid`. Rewrite `h` using `[leib, leib, leib, GlobalTheory.DerivEndo.ev_mul no_constant_evaluation_triple, v1, v2, v3, v4, ← vQ]`.
+
+Establish `d1' : Dl (ev (n` using `3) ![pt R d 0, pt R d 1] g) = _ := d1`. Establish `d2' : Dl (ev (n` using `3) ![pt R d 0, pt R d 2] g) = _ := d2`. Establish `d3' : Dl (ev (n` using `3) ![comp1 V (pt R d 0), pt R d 1, pt R d 2] ph) = _ := d3`. Establish `d4' : Dl (ev (n` using `3) ![pt R d 0, addOf F (pt R d 1) (pt R d 2)] g) = _ := d4`. Establish `dQ' : Dl (ev (n` using `3) ![pt R d 0, ptPow R d p 1, ptPow R d p 2] φ) = _ := dQ`.
+
+Rewrite `h` using `[d1', d2', d3', d4', dQ']`. Take the linear combination `h`.
+-/
 theorem additive {p : ℕ} (hp : p ≠ 0) (F : Fin d → PS R 2 d) (hF : ∀ i, constantCoeff (F i) = 0) (u : Fin d → R)
     (g : PS R 2 d) (ph φ : PS R 3 d) (V : Pt R 1 d) (hV : ∀ i, constantCoeff (V i) = 0)
     (hu : (lin V 1).mulVec u = 0) (hg : ev (n := 1) ![0, pt R d 0] g = 1)
@@ -631,6 +853,13 @@ theorem additive {p : ℕ} (hp : p ≠ 0) (F : Fin d → PS R 2 d) (hF : ∀ i, 
   rw [d1', d2', d3', d4', dQ'] at h
   linear_combination h
 
+/- English proof (translation)
+Introduce `R _ p _ _ d O _ _ B u g hal hg j`. Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Rewrite `hal` using `[alpha_apply]`. Establish `h1 : (hw B p).mulVec u = 0` using `congrArg Prod.fst hal`. Establish `h2 : (am B p).transpose.mulVec u = 0` using `congrArg Prod.snd hal`.
+
+Take `⟨V, hV0, hVact, hVlin⟩` from `GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B`. Take `⟨g₀, hax, hg₀, hbil⟩` from `GlobalTheory.T.pow_one_series_p_formula R p d O B`. Take `rfl : g = g₀` from `inj2 hp (hg.symm.trans hg₀)`. Establish `hid` using `identity B V g hV0 hVact hg`. Establish `hadd` using `additive hp B.G.F B.G.const u g B.ph2 (MvPowerSeries.map (frobenius R p) B.ph2) V hV0 (by rw [hVlin]; exact h1) hax.1 B.cocycleRight_zero_fst hid`.
+
+Establish `hz` using `dz B.G _ _ hp hadd`. Use `inv B.G (fun k => pderiv R ((0 : Fin 1), k) (∑ i, C (u i) * ev (n := 1) ![0, pt R d 0] (pderiv R ((0 : Fin 2), i) g))) (fun j' => ?_) j` and prove the remaining obligations. Rewrite using `[hz j', linc, hbil, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem germKill : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [CharP R p] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : Germ.FB R d O) (u : Fin d → R) (g : Germ.PS R 2 d), alpha B p u = 0 → pow1 B p = Germ.ev (n := 2) ![ptPow R d p 0, Germ.pt R d 1] g → ∀ j, MvPowerSeries.pderiv R ((0 : Fin 1), j) (∑ i, MvPowerSeries.C (u i) * Germ.ev (n := 1) ![0, Germ.pt R d 0] (MvPowerSeries.pderiv R ((0 : Fin 2), i) g)) = 0 := by
   intro R _ p _ _ d O _ _ B u g hal hg j
   have hp : p ≠ 0 := (Fact.out : p.Prime).ne_zero

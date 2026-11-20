@@ -14,14 +14,29 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 
 namespace UpperTheory.Gal.Seam
 
+/- English proof (translation)
+The claim follows from `hopExS trivial`.
+-/
 theorem hopEx_holds : HopEx := hopExS trivial
 
+/- English proof (translation)
+The claim follows from `G3.locTower_of G3.vBcS_holds hopEx_holds niceBc`.
+-/
 theorem locTower_holds : LocTower := G3.locTower_of G3.vBcS_holds hopEx_holds niceBc
 
+/- English proof (translation)
+The claim follows from `pieceInS G3.vInv_holds hopEx_holds`.
+-/
 theorem pieceIn_holds : PieceIn := pieceInS G3.vInv_holds hopEx_holds
 
+/- English proof (translation)
+The claim follows from `matInS G3.vFin_holds pieceIn_holds negVan`.
+-/
 theorem matIn_holds : MatIn := matInS G3.vFin_holds pieceIn_holds negVan
 
+/- English proof (translation)
+The claim follows from `crysStep h niceBc locTower_holds bcCover intMap goodOf matIn_holds subAdm grCrys`.
+-/
 theorem crysStep_of (h : CrystallineSemistableComparison.SmoothModelCrystalline) : UpperTheory.Gal.Int.Geo.CrysStep :=
   crysStep h niceBc locTower_holds bcCover intMap goodOf matIn_holds subAdm grCrys
 

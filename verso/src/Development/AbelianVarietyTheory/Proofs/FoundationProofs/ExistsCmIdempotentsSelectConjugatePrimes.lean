@@ -13,6 +13,11 @@ variable {R : Type*} [CommRing R]
 
 def LocDvd (P : Ideal R) (n x : R) : Prop := ∃ s, s ∉ P ∧ n ∣ s * x
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Set `I : Ideal R` to `Submodule.comap (LinearMap.toSpanSingleton R R x) (Ideal.span {n})`. Establish `hI : ∀ s, s ∈ I ↔ n ∣ s * x` using `fun s => by`. Simplify using `[I, Ideal.mem_span_singleton]`. Establish `hne : I ≠ ⊤` using `fun h1 => hx (by`.
+
+Establish `: (1 : R) ∈ I` using `h1 ▸ Submodule.mem_top`. Simplify using `using (hI 1).1 this)`. Take `⟨P, hP, hIP⟩` from `Ideal.exists_le_maximal I hne`. Take `⟨s, hs, hd⟩` from `h P hP`. Conclude with `hs (hIP ((hI s).2 hd))`.
+-/
 theorem dvd_of_locDvd {n x : R} (h : ∀ P : Ideal R, P.IsMaximal → LocDvd P n x) : n ∣ x := by
   by_contra hx
   let I : Ideal R := Submodule.comap (LinearMap.toSpanSingleton R R x) (Ideal.span {n})
@@ -25,6 +30,11 @@ theorem dvd_of_locDvd {n x : R} (h : ∀ P : Ideal R, P.IsMaximal → LocDvd P n
   obtain ⟨s, hs, hd⟩ := h P hP
   exact hs (hIP ((hI s).2 hd))
 
+/- English proof (translation)
+Take `⟨s, hs, hs'⟩` from `hx`. Take `⟨t, ht, ht'⟩` from `hy`. Use `⟨s * t, fun h => (hP.mem_or_mem h).elim hs ht, ?_⟩` and prove the remaining obligations. Establish `: s * t * z = (t * a) * (s * x) + (s * b) * (t * y)` using `by rw [hz]; ring`. Rewrite using `[this]`.
+
+Conclude with `dvd_add (hs'.mul_left _) (ht'.mul_left _)`.
+-/
 theorem LocDvd.comb {P : Ideal R} (hP : P.IsPrime) {n x y z : R} (a b : R)
     (hx : LocDvd P n x) (hy : LocDvd P n y) (hz : z = a * x + b * y) : LocDvd P n z := by
   obtain ⟨s, hs, hs'⟩ := hx
@@ -34,14 +44,41 @@ theorem LocDvd.comb {P : Ideal R} (hP : P.IsPrime) {n x y z : R} (a b : R)
   rw [this]
   exact dvd_add (hs'.mul_left _) (ht'.mul_left _)
 
+/- English proof (translation)
+Take `⟨s, hs, hs'⟩` from `hx`. Conclude with `⟨s, hs, h.trans hs'⟩`.
+-/
 theorem LocDvd.of_dvd {P : Ideal R} {n m x : R} (h : n ∣ m) (hx : LocDvd P m x) :
     LocDvd P n x := by
   obtain ⟨s, hs, hs'⟩ := hx
   exact ⟨s, hs, h.trans hs'⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨n, h, dvd_mul_right _ _⟩`.
+-/
 theorem LocDvd.of_not_mem {P : Ideal R} {n : R} (h : n ∉ P) (x : R) : LocDvd P n x :=
   ⟨n, h, dvd_mul_right _ _⟩
 
+/- English proof (translation)
+Establish `hn' : Ideal.span {n} ≠ (⊥ : Ideal R)` using `by simpa using hn`. Set `S : Finset (Ideal R)` to `(UniqueFactorizationMonoid.normalizedFactors (Ideal.span {n})).toFinset`. Establish `hS : ∀ P : Ideal R, P ∈ S ↔ P.IsPrime ∧ n ∈ P` using `fun P => by`. Simplify using `only [S, Multiset.mem_toFinset]`. Rewrite using `[Ideal.mem_normalizedFactors_iff hn', Ideal.span_singleton_le_iff_mem]`.
+
+Take `⟨b, hb⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := S) (fun P => P) (fun _ => 1) (fun P hP => by`. Take `⟨h1, h2⟩` from `(hS P).1 hP`. Use `Ideal.prime_of_isPrime ?_ h1` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hn (by simpa using h2))`.
+
+Use the proof step `(fun _ _ _ _ h => h) (fun P => if T P.1 then 1 else 0)`. Establish `hb' : ∀ P : Ideal R, P.IsPrime → n ∈ P → b - (if T P then 1 else 0) ∈ P` using `fun P h1 h2 => by`. Simplify using `using hb P ((hS P).2 ⟨h1, h2⟩)`. Establish `hrad : (1 - b) * b ∈ (Ideal.span {n}).radical`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`.
+
+Introduce and unpack `P ⟨h1, h2⟩`. Establish `h3` using `hb' P h2 ((Ideal.span_singleton_le_iff_mem _).1 h1)`. Distinguish the cases in `hT : T P`. Rewrite `h3` using `[if_pos hT]`. Establish `: (1 - b) * b = (-b) * (b - 1)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `P.mul_mem_left _ h3`. Rewrite `h3` using `[if_neg hT, sub_zero]`. Conclude with `P.mul_mem_left _ h3`. Take `⟨k, hk⟩` from `hrad`.
+
+Rewrite `hk` using `[Ideal.mem_span_singleton, mul_pow]`. Establish `hc : IsCoprime (1 - b) b` using `⟨1, 1, by ring⟩`. Take `⟨u, v, huv⟩` from `hc.pow (m := k) (n := k)`. Use `⟨v * b ^ k, fun P hP => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hnP : n ∈ P`.
+
+Establish `h3` using `hb' P hP.isPrime hnP`. Distinguish the cases in `hT : T P`. Rewrite `h3`, the goal using `[if_pos hT]`. Use `⟨b ^ k, fun h => ?_, ?_⟩` and prove the remaining obligations. Establish `h4` using `hP.isPrime.mem_of_pow_mem k h`.
+
+Establish `: (1 : R) ∈ P` using `by simpa using P.sub_mem h4 h3`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).2 this)`. Establish `: b ^ k * (v * b ^ k - 1) = (-u) * ((1 - b) ^ k * b ^ k)`. Take the linear combination `b ^ k * huv`. Rewrite using `[this]`.
+
+Conclude with `hk.mul_left _`. Rewrite `h3`, the goal using `[if_neg hT, sub_zero]`. Use `⟨(1 - b) ^ k, fun h => ?_, ?_⟩` and prove the remaining obligations. Establish `h4` using `hP.isPrime.mem_of_pow_mem k h`. Establish `: (1 : R) ∈ P` using `by simpa using P.add_mem h4 h3`.
+
+Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).2 this)`. Establish `: (1 - b) ^ k * (v * b ^ k) = v * ((1 - b) ^ k * b ^ k)` using `by ring`. Rewrite using `[this]`. Conclude with `hk.mul_left _`. Conclude with `LocDvd.of_not_mem hnP _`.
+-/
 theorem exists_loc [IsDedekindDomain R] {n : R} (hn : n ≠ 0) (T : Ideal R → Prop) :
     ∃ ε : R, ∀ P : Ideal R, P.IsMaximal → LocDvd P n (ε - if T P then 1 else 0) := by
   have hn' : Ideal.span {n} ≠ (⊥ : Ideal R) := by simpa using hn
@@ -93,6 +130,37 @@ theorem exists_loc [IsDedekindDomain R] {n : R} (hn : n ≠ 0) (T : Ideal R → 
         rw [this]; exact hk.mul_left _
   · exact LocDvd.of_not_mem hnP _
 
+/- English proof (translation)
+Set `T : Ideal R → Prop` to `fun P => WellOrderingRel P (c • P)`. Establish `hcc : ∀ P : Ideal R, c • c • P = P` using `fun P => by rw [smul_smul, hc, one_smul]`. Establish `hT1 : ∀ P, T P → ¬ T (c • P)` using `fun P h1 h2 => by`. Simplify using `only [T, hcc] at h1 h2`. Conclude with `asymm h1 h2`.
+
+Establish `hT2 : ∀ P, c • P ≠ P → ¬ T P → T (c • P)` using `fun P h1 h2 => by`. Simplify using `only [T, hcc] at h2 ⊢`. Break down `trichotomous_of WellOrderingRel P (c • P) with h | h | h` into its components or cases. Conclude with `(h2 h).elim`. Conclude with `(h1 h.symm).elim`.
+
+Conclude with `h`. Establish `hT3 : ∀ P, c • P = P → ¬ T P` using `fun P h1 h2 => hT1 P h2 (h1.symm ▸ h2)`. Establish `hex : ∀ N : ℕ, ∃ ε : R, 0 < N → ∀ P : Ideal R, P.IsMaximal → LocDvd P (N : R) (ε - if T P then 1 else 0)` using `fun N => by`. Distinguish the cases in `hN : 0 < N`. Take `⟨ε, h⟩` from `exists_loc (n := (N : R)) (by exact_mod_cast hN.ne') T`.
+
+Conclude with `⟨ε, fun _ => h⟩`. Conclude with `⟨0, fun h => (hN h).elim⟩`. Use `choose e he using hex`. Establish `he' : ∀ N : ℕ, 0 < N → ∀ P : Ideal R, P.IsMaximal → LocDvd P (N : R) (c • e N - if T (c • P) then 1 else 0)` using `fun N hN P hP => by`. Establish `hP' : (c • P).IsMaximal`.
+
+Break down `Ideal.map_eq_top_or_isMaximal_of_surjective (MulSemiringAction.toRingHom G R c) (MulAction.surjective c) hP with h | h` into its components or cases. Conclude with `absurd h (Ideal.IsPrime.smul (H := hP.isPrime) c).ne_top`. Conclude with `h`. Take `⟨s, hs, t, ht⟩` from `he N hN _ hP'`. Use `⟨c • s, fun h => hs ?_, c • t, ?_⟩` and prove the remaining obligations.
+
+Use `Ideal.smul_mem_pointwise_smul c _ _ h` as an intermediate fact. Rewrite `this` using `[smul_smul, hc, one_smul]`. Then use the resulting hypothesis. Establish `h` using `congrArg (MulSemiringAction.toRingHom G R c) ht`. Simplify using `only [map_mul, map_sub, map_natCast, MulSemiringAction.toRingHom_apply] at h`. Rewrite using `[← h]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use `⟨e, fun N m hN hm => ?_, fun N hN => ⟨?_, ?_⟩, fun N hN => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Use `dvd_of_locDvd fun P hP => ?_` and prove the remaining obligations. Conclude with `LocDvd.comb hP.isPrime 1 (-1) ((he (N * m) (Nat.mul_pos hN hm) P hP).of_dvd (by push_cast; exact dvd_mul_right _ _)) (he N hN P hP) (by ring)`. Use `dvd_of_locDvd fun P hP => ?_` and prove the remaining obligations.
+
+Establish `h` using `he N hN P hP`. Distinguish the cases in `hT : T P`. Rewrite `h` using `[if_pos hT]`. Conclude with `LocDvd.comb hP.isPrime (e N) 0 h h (by ring)`. Rewrite `h` using `[if_neg hT]`.
+
+Conclude with `LocDvd.comb hP.isPrime (e N - 1) 0 h h (by ring)`. Use `dvd_of_locDvd fun P hP => ?_` and prove the remaining obligations. Establish `h` using `he N hN P hP`. Establish `h'` using `he' N hN P hP`. Distinguish the cases in `hT : T P`.
+
+Rewrite `h'` using `[if_neg (hT1 P hT)]`. Conclude with `LocDvd.comb hP.isPrime (e N) 0 h' h' (by ring)`. Rewrite `h` using `[if_neg hT]`. Conclude with `LocDvd.comb hP.isPrime (c • e N) 0 h h (by ring)`. Use `dvd_of_locDvd fun P hP => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hNP : (N : R) ∈ P`. Establish `h1` using `he N hN P hP`. Establish `h2` using `he' N hN P hP`. Establish `h3` using `h P hP hNP`. Rewrite `h2` using `[h3]`.
+
+Rewrite `h1`, `h2` using `[if_neg (hT3 P h3)]`. Conclude with `LocDvd.comb hP.isPrime 1 1 h1 h2 (by ring)`. Conclude with `LocDvd.of_not_mem hNP _`. Use `dvd_of_locDvd fun P hP => ?_` and prove the remaining obligations. Distinguish the cases in `hNP : (N : R) ∈ P`.
+
+Establish `h1` using `he N hN P hP`. Establish `h2` using `he' N hN P hP`. Establish `h3` using `h P hP hNP`. Distinguish the cases in `hT : T P`. Rewrite `h1` using `[if_pos hT]`.
+
+Rewrite `h2` using `[if_neg (hT1 P hT)]`. Conclude with `LocDvd.comb hP.isPrime (-1) (-1) h1 h2 (by ring)`. Rewrite `h1` using `[if_neg hT]`. Rewrite `h2` using `[if_pos (hT2 P h3 hT)]`. Conclude with `LocDvd.comb hP.isPrime (-1) (-1) h1 h2 (by ring)`.
+
+Conclude with `LocDvd.of_not_mem hNP _`.
+-/
 theorem exists_select [IsDedekindDomain R] [CharZero R] {G : Type*} [Group G]
     [MulSemiringAction G R] (c : G) (hc : c * c = 1) :
     ∃ e : ℕ → R, (∀ N m : ℕ, 0 < N → 0 < m → (N : R) ∣ e (N * m) - e N) ∧
@@ -180,6 +248,11 @@ theorem exists_select [IsDedekindDomain R] [CharZero R] {G : Type*} [Group G]
 
 end Ring
 
+/- English proof (translation)
+Establish `hmax : (Ideal.span {(q : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hq).irreducible`. Establish `key : ∀ P : Ideal (𝓞 E), P.IsPrime → (q : 𝓞 E) ∈ P → P.LiesOver (Ideal.span {(q : ℤ)})` using `fun P hP h => ⟨hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) (by`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under, Ideal.mem_comap]`. Simplify using `using h)⟩`. Use `haveI := key P hP hqP`.
+
+Use `haveI := key Q hQ hqQ`. Take `⟨σ, rfl⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(q : ℤ)}) P Q (E ≃ₐ[ℚ] E)`. Rewrite using `[smul_smul, hcomm, ← smul_smul, h]`.
+-/
 theorem smul_eq_of_abelian {E : Type*} [Field E] [NumberField E] [IsGalois ℚ E]
     (hcomm : ∀ σ τ : E ≃ₐ[ℚ] E, σ * τ = τ * σ) (c : E ≃ₐ[ℚ] E) {q : ℕ} (hq : q.Prime)
     (P Q : Ideal (𝓞 E)) (hP : P.IsPrime) (hQ : Q.IsPrime) (hqP : (q : 𝓞 E) ∈ P)
@@ -195,6 +268,15 @@ theorem smul_eq_of_abelian {E : Type*} [Field E] [NumberField E] [IsGalois ℚ E
   obtain ⟨σ, rfl⟩ := Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(q : ℤ)}) P Q (E ≃ₐ[ℚ] E)
   rw [smul_smul, hcomm, ← smul_smul, h]
 
+/- English proof (translation)
+Introduce `D`. Use `haveI : IsGalois ℚ D.host.E := D.host.hostE_isGalois`. Establish `hcomm : ∀ σ τ : D.host.E ≃ₐ[ℚ] D.host.E, σ * τ = τ * σ` using `fun σ τ => D.host.galE_injective (by`. Rewrite using `[D.host.galE_mul, D.host.galE_mul, mul_comm])`. Establish `hc : D.host.conj * D.host.conj = 1`.
+
+Take `⟨φ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Use `AlgEquiv.ext fun x => φ.injective ?_` and prove the remaining obligations. Establish `h1` using `D.host.conjE_apply φ`. Conclude with `(h1 _).trans ((congrArg _ (h1 x)).trans (Complex.conj_conj _))`. Take `⟨e, h1, h2, h3⟩` from `exists_select (R := 𝓞 D.host.E) D.host.conj hc`.
+
+Use `⟨e, h1, h2, fun q k hq => ?_⟩` and prove the remaining obligations. Establish `hq' : ∀ P : Ideal (𝓞 D.host.E), P.IsMaximal → ((q ^ k : ℕ) : 𝓞 D.host.E) ∈ P → (q : 𝓞 D.host.E) ∈ P` using `fun P hP h => hP.isPrime.mem_of_pow_mem k (by simpa using h)`. Take `⟨h4, h5⟩` from `h3 (q ^ k) (pow_pos hq.pos k)`. Use `⟨fun hI => h4 fun P hP h => hI P hP.isPrime ?_ (hq' P hP h), fun hI => h5 fun P hP h hfix => hI ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Use `hq' _ hP h` as an intermediate fact. Rewrite `this` using `[Ideal.mem_bot]`. Conclude with `hq.ne_zero (by exact_mod_cast this)`. Introduce `Q hQ _ hqQ`. Conclude with `smul_eq_of_abelian hcomm _ hq P Q hP.isPrime hQ (hq' P hP h) hqQ hfix`.
+-/
 theorem exists_select_idem : ∀ (D : D7), ∃ e : ℕ → 𝓞 D.host.E, (∀ N m : ℕ, 0 < N → 0 < m → (N : 𝓞 D.host.E) ∣ e (N * m) - e N) ∧ (∀ N : ℕ, 0 < N → (N : 𝓞 D.host.E) ∣ e N * e N - e N ∧ (N : 𝓞 D.host.E) ∣ e N * (D.host.conj • e N)) ∧ ∀ q k : ℕ, q.Prime → (InertQ D q → ((q ^ k : ℕ) : 𝓞 D.host.E) ∣ e (q ^ k) + D.host.conj • e (q ^ k)) ∧ (¬ InertQ D q → ((q ^ k : ℕ) : 𝓞 D.host.E) ∣ 1 - (e (q ^ k) + D.host.conj • e (q ^ k))) := by
   intro D
   haveI : IsGalois ℚ D.host.E := D.host.hostE_isGalois

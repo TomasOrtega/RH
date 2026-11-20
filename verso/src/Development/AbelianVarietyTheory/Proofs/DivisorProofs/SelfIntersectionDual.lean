@@ -25,6 +25,9 @@ structure Anti (N L : HermLB p) (π : N.B.ι → L.B.ι) : Prop where
     gm r z (N.B.U c ⊓ N.B.U c') (N.B.g c c') = (gm r z (L.B.U (π c) ⊓ L.B.U (π c')) (L.B.g (π c) (π c')))⁻¹
   φ : ∀ σ c, ∀ y ∈ ptsIn p σ (N.B.U c), (N.φ σ).φ c y = -(L.φ σ).φ (π c) y
 
+/- English proof (translation)
+The claim follows from `le_rfl g Z r z c c' _ _ := (inv_inv _).symm.trans (congrArg (·⁻¹) (map_inv _ _).symm) φ σ c y _ := (neg_neg _).symm`.
+-/
 theorem anti_dual (L : HermLB p) : Anti L L.dual id where
   le _ := le_rfl
   g Z r z c c' _ _ := (inv_inv _).symm.trans (congrArg (·⁻¹) (map_inv _ _).symm)
@@ -32,6 +35,9 @@ theorem anti_dual (L : HermLB p) : Anti L L.dual id where
 
 variable {N L : HermLB p} {π : N.B.ι → L.B.ι}
 
+/- English proof (translation)
+The claim follows from `mem_iInter.2 fun a => h.le _ (mem_iInter.1 hy a) g Z r z c c' hc hc' := (gm_pull_g _ f r z c c' hc hc').trans ((h.g Z (r ≫ f) z _ _ (mem_iInter.1 hc PUnit.unit) (mem_iInter.1 hc' PUnit.unit)).trans (congrArg (·⁻¹) (gm_pull_g _ f r z (fun a => π (c a)) (fun a => π (c' a)) (mem_iIn …`.
+-/
 theorem Anti.pull (h : Anti N L π) {q : Y ⟶ Sp k} (f : Y ⟶ X) (hf : f ≫ p = q) :
     Anti (N.pull f hf) (L.pull f hf) (fun c a => π (c a)) where
   le c y hy := mem_iInter.2 fun a => h.le _ (mem_iInter.1 hy a)
@@ -44,6 +50,9 @@ theorem Anti.pull (h : Anti N L π) {q : Y ⟶ Sp k} (f : Y ⟶ X) (hf : f ≫ p
     (mem_of_mem_linComb (m := fun _ => Points.PtsOver.map f hf _ y) (fun _ => rfl) hy PUnit.unit)).trans
       (congrArg (- ·) ((L.φ σ).pull_φ f hf (fun a => π (c a)) y).symm))
 
+/- English proof (translation)
+The claim follows from `mem_iInter.2 fun a => h.le _ (mem_iInter.1 hy a) g Z r z c c' hc hc' := (gm_pow N m r z c c' hc hc').trans ((congrArg (· ^ m) (h.g Z r z _ _ (mem_iInter.1 hc PUnit.unit) (mem_iInter.1 hc' PUnit.unit))).trans ((inv_pow _ _).trans (congrArg (·⁻¹) (gm_pow L m r z (fun a => π (c a)) …`.
+-/
 theorem Anti.pow (h : Anti N L π) (m : ℕ) : Anti (N.pow m) (L.pow m) (fun c a => π (c a)) where
   le c y hy := mem_iInter.2 fun a => h.le _ (mem_iInter.1 hy a)
   g Z r z c c' hc hc' := (gm_pow N m r z c c' hc hc').trans
@@ -54,6 +63,15 @@ theorem Anti.pow (h : Anti N L π) (m : ℕ) : Anti (N.pow m) (L.pow m) (fun c a
   φ σ c y hy := ((N.φ σ).zpow_φ m c y).trans ((congrArg _ (h.φ σ _ _ (mem_pow_iff.1 hy))).trans
       ((mul_neg _ _).trans (congrArg (- ·) ((L.φ σ).zpow_φ m (fun a => π (c a)) y).symm)))
 
+/- English proof (translation)
+Establish `hi` using `mem_pick N.isLB y`. Establish `hj` using `ptsIn_mono (h.le _) hi`. Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (L.B.U (π (pick N.isLB y))))`. Establish `e` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho (contDiffOn_chart (L.cInf σ _) c) (contDiffOn_chart (L.cInf σ _) c) (-2) (mem_over c.e hy hj)`. Establish `e' : c.hess (N.φ σ) (pick N.isLB y) y = -c.hess (L.φ σ) (π (pick N.isLB y)) y`.
+
+Use `Eq.trans (ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_) (e.trans ?_)` and prove the remaining obligations. Use `filter_upwards [(isOpen_over c.e (isOpen_ptsIn _)).mem_nhds (mem_over c.e hy hi)] with w hw`. Rewrite using `[h.φ σ _ _ hw.2]`. Simplify using `only [Function.comp_apply]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[AlgChart.hess]`. Simplify using `only [Function.comp_apply]`. Use `push_cast`. Use `module`.
+
+Rewrite using `[c.chernDens_eq (N.cInf σ) hy hi, c.chernDens_eq (L.cInf σ) hy hj, e', Matrix.det_neg, Fintype.card_fin]`. Establish `: ((-1 : ℂ) ^ D) = (((-1 : ℝ) ^ D : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Anti.chernDens (h : Anti N L π) {σ : k →+* ℂ} {D : ℕ} (c : AlgChart p σ D) {y : CxPts p σ}
     (hy : y ∈ c.e.source) : c.chernDens (N.φ σ) y = (-1) ^ D * c.chernDens (L.φ σ) y := by
   have hi := mem_pick N.isLB y
@@ -77,6 +95,11 @@ theorem Anti.chernDens (h : Anti N L π) {σ : k →+* ℂ} {D : ℕ} (c : AlgCh
   rw [this, Complex.re_ofReal_mul]
   ring
 
+/- English proof (translation)
+Use `iSup_congr fun c => congrArg (Measure.map _) (withDensity_congr_ae ?_)` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem c.e.open_target.measurableSet] with v hv`. Simplify using `only [Function.comp_apply]`. Rewrite using `[h.chernDens c (c.e.map_target hv)]`. Use `push_cast`.
+
+Rewrite using `[mul_assoc]`.
+-/
 theorem Anti.chernPart (h : Anti N L π) (σ : k →+* ℂ) (D : ℕ) (ε : ℤˣ) :
     (N.φ σ).chernPart D ε = (L.φ σ).chernPart D (ε * (-1) ^ D) := by
   refine iSup_congr fun c => congrArg (Measure.map _) (withDensity_congr_ae ?_)
@@ -86,6 +109,9 @@ theorem Anti.chernPart (h : Anti N L π) (σ : k →+* ℂ) (D : ℕ) (ε : ℤ�
   push_cast
   rw [mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [Weight.chernInt, h.chernPart]`. Break down `Nat.even_or_odd D with hD | hD` into its components or cases. Simplify using `only [hD.neg_one_pow, mul_one, one_mul]`. Simplify using `only [hD.neg_one_pow, mul_neg, neg_mul, mul_one, one_mul, neg_neg, neg_sub]`.
+-/
 theorem Anti.chernInt (h : Anti N L π) (σ : k →+* ℂ) (D : ℕ) (S : Set (CxPts p σ)) (f : CxPts p σ → ℝ) :
     (N.φ σ).chernInt D S f = (-1) ^ D * (L.φ σ).chernInt D S f := by
   simp only [Weight.chernInt, h.chernPart]
@@ -93,6 +119,11 @@ theorem Anti.chernInt (h : Anti N L π) (σ : k →+* ℂ) (D : ℕ) (S : Set (C
   · simp only [hD.neg_one_pow, mul_one, one_mul]
   · simp only [hD.neg_one_pow, mul_neg, neg_mul, mul_one, one_mul, neg_neg, neg_sub]
 
+/- English proof (translation)
+Simplify using `only [Weight.ChernIntegrableOn, h.chernPart] at H`. Break down `Nat.even_or_odd D with hD | hD` into its components or cases. Simplify using `only [hD.neg_one_pow, mul_one] at H`. Conclude with `⟨H.1.neg, H.2.neg⟩`. Simplify using `only [hD.neg_one_pow, mul_neg, mul_one, neg_neg] at H`.
+
+Conclude with `⟨H.2.neg, H.1.neg⟩`.
+-/
 theorem Anti.chernIntegrableOn (h : Anti N L π) {σ : k →+* ℂ} {D : ℕ} {S : Set (CxPts p σ)} {f : CxPts p σ → ℝ}
     (H : (N.φ σ).ChernIntegrableOn D S f) : (L.φ σ).ChernIntegrableOn D S fun y => -f y := by
   simp only [Weight.ChernIntegrableOn, h.chernPart] at H
@@ -106,6 +137,9 @@ section Rat
 
 variable [IsIntegral X] {r : L.B.ι → X.functionFieldˣ}
 
+/- English proof (translation)
+Introduce `c c' hc` and use `by have h' : genericPoint X ∈ L.B.U (π c) ⊓ L.B.U (π c') := ⟨h.le _ hc.1, h.le _ hc.2⟩ have e := congrArg Units.val (eq_inv_iff_mul_eq_one.1 (h.g X (𝟙 X) _ c c' hc.1 hc.2)) rw [Units.val_mul, gm_val _ _ _ hc, gm_val _ _ _ h'] at e have e' : fnOf _ hc (N.B.g c c' : Γ(X, _)) * fnOf …`.
+-/
 theorem Anti.isRatSec (h : Anti N L π) (hr : IsRatSec L.B r) : IsRatSec N.B fun c => (r (π c))⁻¹ :=
   fun c c' hc => by
   have h' : genericPoint X ∈ L.B.U (π c) ⊓ L.B.U (π c') := ⟨h.le _ hc.1, h.le _ hc.2⟩
@@ -115,12 +149,18 @@ theorem Anti.isRatSec (h : Anti N L π) (hr : IsRatSec L.B r) : IsRatSec N.B fun
   simp only [Units.val_inv_eq_inv_val]
   rw [hr _ _ h', mul_inv, eq_inv_of_mul_eq_one_left e']
 
+/- English proof (translation)
+The claim follows from `CartierDiv.ext_of_isEqn fun z => have ⟨i, hi⟩ := exists_chart N.isLB z ⟨(r (π i))⁻¹, (presents_divOfRatSec _ (h.isRatSec hr)).isEqn i z hi, ((presents_divOfRatSec _ hr).isEqn _ z (h.le _ hi)).neg⟩`.
+-/
 theorem Anti.div (h : Anti N L π) (hr : IsRatSec L.B r) : N.div (h.isRatSec hr) = -L.div hr :=
   CartierDiv.ext_of_isEqn fun z =>
     have ⟨i, hi⟩ := exists_chart N.isLB z
     ⟨(r (π i))⁻¹, (presents_divOfRatSec _ (h.isRatSec hr)).isEqn i z hi,
       ((presents_divOfRatSec _ hr).isEqn _ z (h.le _ hi)).neg⟩
 
+/- English proof (translation)
+Establish `h₀` using `CartierDiv.mult_add (0 : CartierDiv X) 0 z`. Establish `h₁` using `CartierDiv.mult_add (-D) D z`. Rewrite `h₀` using `[add_zero]`. Rewrite `h₁` using `[neg_add_cancel]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mult_neg [IsLocallyNoetherian X] (D : CartierDiv X) (z : X) : (-D).mult z = -D.mult z := by
   have h₀ := CartierDiv.mult_add (0 : CartierDiv X) 0 z
   have h₁ := CartierDiv.mult_add (-D) D z
@@ -128,11 +168,21 @@ theorem mult_neg [IsLocallyNoetherian X] (D : CartierDiv X) (z : X) : (-D).mult 
   rw [neg_add_cancel] at h₁
   omega
 
+/- English proof (translation)
+Establish `key (E : CartierDiv X) (y : CxPts p σ) (hy : y ∈ offSupp p σ E) : y ∈ offSupp p σ (-E)` using `mem_offSupp.2 fun h => h (by simpa using (not_not.1 (mem_offSupp.1 hy) : E.IsEqn _ 1).neg)`. Conclude with `Set.ext fun y => ⟨fun hy => by simpa using key _ y hy, key _ y⟩`.
+-/
 theorem offSupp_neg (σ : k →+* ℂ) (D : CartierDiv X) : offSupp p σ (-D) = offSupp p σ D := by
   have key (E : CartierDiv X) (y : CxPts p σ) (hy : y ∈ offSupp p σ E) : y ∈ offSupp p σ (-E) :=
     mem_offSupp.2 fun h => h (by simpa using (not_not.1 (mem_offSupp.1 hy) : E.IsEqn _ 1).neg)
   exact Set.ext fun y => ⟨fun hy => by simpa using key _ y hy, key _ y⟩
 
+/- English proof (translation)
+Establish `hi` using `mem_pick N.isLB y`. Establish `hj` using `ptsIn_mono (h.le _) hi`. Establish `hu` using `hr.unitAt L.isLB hy hj`. Establish `hu'` using `(h.isRatSec hr).unitAt N.isLB (by rw [← HermLB.div, h.div hr, offSupp_neg]; exact hy) hi`. Establish `e` using `ratVal_mul (y := y) hu'.regAt hu.regAt`.
+
+Establish `e₁ : ratVal (1 : X.functionField) y = 1`. Use `ratVal_mul (y := y) (unitAt_one _).regAt (unitAt_one _).regAt` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `(mul_eq_left₀ (ratVal_ne_zero (unitAt_one _))).1 this.symm`. Rewrite `e` using `[← Units.val_mul, inv_mul_cancel, Units.val_one, e₁]`.
+
+Rewrite using `[logNorm_eq (L.φ σ) hr hy hj, Cartier.logNorm, h.φ σ _ y hi, eq_inv_of_mul_eq_one_left e.symm, norm_inv, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Anti.logNorm (h : Anti N L π) (hr : IsRatSec L.B r) {σ : k →+* ℂ} {y : CxPts p σ}
     (hy : y ∈ offSupp p σ (L.div hr)) : logNorm (N.φ σ) (fun c => (r (π c))⁻¹) y = -logNorm (L.φ σ) r y := by
   have hi := mem_pick N.isLB y
@@ -151,6 +201,13 @@ theorem Anti.logNorm (h : Anti N L π) (hr : IsRatSec L.B r) {σ : k →+* ℂ} 
 
 end Rat
 
+/- English proof (translation)
+Use `hX.finite` as an intermediate fact. Take `⟨hpr, H, hH⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hX.isProjOver`. Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`.
+
+Establish `e : strHom κ Z ≫ spMap (Int.castRingHom κ) = i ≫ p ≫ spMap (Int.castRingHom k)` using `specZIsTerminal.hom_ext _ _`. Establish `: IsProper (strHom κ Z ≫ spMap (Int.castRingHom κ))` using `by rw [e]; infer_instance`. Establish `hpr' : IsProper (strHom κ Z)` using `IsProper.of_comp _ (spMap (Int.castRingHom κ))`. Establish `hp` using `(isProjOver_iff_isProper_and_exists_isAmpleLB (strHom κ Z)).2 ⟨hpr', _, hH.pull_of_isClosedImmersion i⟩`. Establish `HD` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom κ Z) (structureModule Z) hp (d := d) (by rw [QCoh.suppDim_structureModule, hd])`.
+
+Establish `e` using `HD.interNum_of_cls_eq_zsmul (P := fun _ => L.B.pull i) (Q := fun _ => L.dual.B.pull i) (fun _ => LB.isLB_pull L.isLB i) (fun _ => LB.isLB_pull L.dual.isLB i) (fun _ => -1) fun _ => by`. Establish `e₂ : cls L.dual.B L.dual.isLB = -cls L.B L.isLB` using `cls_dual L.isLB _`. Rewrite using `[CechPic.cls_pull L.dual.isLB, CechPic.cls_pull L.isLB, e₂, map_neg, neg_one_zsmul]`. Rewrite using `[topSelf_def, topSelf_def, e]`. Simplify using the standard rewrite rules.
+-/
 theorem topSelf_dual {D : ℕ} (hX : IsArithVar p D) (L : HermLB p) (Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i]
     (κ : Type) [Field κ] [Finite κ] [Algebra κ Γ(Z, ⊤)] (d : ℕ) (hd : topologicalKrullDim Z = d) :
     topSelfIntersection κ (L.dual.B.pull i) d = (-1) ^ d * topSelfIntersection κ (L.B.pull i) d := by
@@ -176,6 +233,9 @@ theorem topSelf_dual {D : ℕ} (hX : IsArithVar p D) (L : HermLB p) (Z : Scheme.
 
 def cdim (x : X) : ℕ := ((topologicalKrullDim (closure {x} : Set X)).unbotD 0).toNat
 
+/- English proof (translation)
+Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[image_univ, i.isClosedEmbedding.isClosed_range.closure_eq]`. Rewrite using `[cdim, topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding h₁.def.symm, hd]`. Both sides reduce to the same expression.
+-/
 theorem cdim_eq {Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z] {d : ℕ}
     (hd : topologicalKrullDim Z = d) : cdim (i (genericPoint Z)) = d := by
   have h₁ := (genericPoint_spec Z).image i.continuous
@@ -183,6 +243,23 @@ theorem cdim_eq {Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral
   rw [cdim, topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding h₁.def.symm, hd]
   rfl
 
+/- English proof (translation)
+Rewrite using `[cdim_eq i hd, H.vertical Z i κ d hd, topSelf_dual hX L Z i κ d hd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `point Z i _ _ _ hc hd r hr := by`. Establish `h'` using `(anti_dual L).pull i rfl`.
+
+Rewrite using `[cdim_eq i (d := 1) hd, H.point Z i hc hd _ (h'.isRatSec hr), HermLB.curveDeg, HermLB.curveDeg, h'.div hr, pow_one, neg_one_mul, neg_sub', ← finsum_neg_distrib, ← finsum_neg_distrib]`. Use `congrArg₂ (· - ·) (finsum_congr fun z => ?_) (finsum_congr fun σ => ?_)` and prove the remaining obligations. Rewrite using `[mult_neg]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← finsum_neg_distrib]`. Use `finsum_congr fun y => neg_eq_iff_eq_neg.2 (h'.logNorm hr (mem_offSupp.2 ?_))` and prove the remaining obligations. Rewrite using `[under_eq_genericPoint (hX.of_isClosedImmersion i hc hd) y]`. Conclude with `CartierDiv.genericPoint_notMem_supp _`. Use `recursion Z i _ _ _ hc e he hd m r hr := by`.
+
+Establish `h'` using `(anti_dual L).pull i rfl`. Establish `h''` using `h'.pow m`. Establish `hZ` using `hX.of_isClosedImmersion i hc hd`. Take `⟨h₁, h₂⟩` from `H.recursion Z i hc e he hd m _ (h''.isRatSec hr)`. Unfold `HermLB.ArchIntegrable at h₁`.
+
+Unfold `HermLB.archInt at h₂`. Rewrite `h₁`, `h₂` using `[h''.div hr]`. Simplify using `only [offSupp_neg] at h₁ h₂`. Use `⟨fun σ => (h'.chernIntegrableOn (h₁ σ)).congr (isOpen_offSupp _).measurableSet fun y hy => neg_eq_iff_eq_neg.2 (h''.logNorm hr hy), ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit ((-1 : ℝ) ^ (e + 1))` using `isUnit_neg_one.pow _`.
+
+Establish `hm {ι : Type} (g : ι → ℝ) : (-1 : ℝ) ^ (e + 1) * ∑ᶠ a, g a = ∑ᶠ a, (-1 : ℝ) ^ (e + 1) * g a` using `mul_finsum _ _`. Rewrite using `[cdim_eq i hd, mul_left_comm, h₂, mul_sub, hm, hm, HermLB.archInt]`. Use `congrArg₂ (· - ·) (finsum_congr fun z => ?_) (finsum_congr fun σ => ?_)` and prove the remaining obligations. Rewrite using `[mult_neg]`. Distinguish the cases in `hz : (((L.dual.restr i).pow m).div hr).mult z = 0`.
+
+Simplify using `[hz]`. Take `⟨W, j, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint z`. Establish `hW` using `GlobalTheory.CodimOneDim.topologicalKrullDim_eq_of_coheight_eq_one k Z _ e hZ W j (CartierDiv.coheight_eq_one_of_mult_ne_zero hz)`. Establish `e₁ : cdim (i (j (genericPoint W))) = e` using `cdim_eq (j ≫ i) hW`. Rewrite using `[e₁]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h'.chernInt, Weight.chernInt_congr (isOpen_offSupp _).measurableSet (g := fun y => (-1) * logNorm (((L.dual.restr i).pow m).φ σ) r y) fun y hy => (h''.logNorm hr hy).trans (neg_one_mul _).symm, Weight.chernInt_const_mul]`. Establish `: (-1 : ℝ) ^ e * (-1) ^ e = 1` using `by rw [← mul_pow]; simp`. Take the linear combination `(((L.dual.restr i).φ σ).chernInt e (offSupp _ σ (((L.dual.restr i).pow m).div hr)) (logNorm (((L.dual.restr i).pow m).φ σ) r)) * this`.
+-/
 theorem isArithHeight_dual {D : ℕ} (hX : IsArithVar p D) {f : X → ℝ} (H : L.IsArithHeight f) :
     L.dual.IsArithHeight fun x => (-1) ^ cdim x * f x where
   vertical Z i _ _ κ _ _ _ d hd := by
@@ -234,6 +311,9 @@ theorem isArithHeight_dual {D : ℕ} (hX : IsArithVar p D) {f : X → ℝ} (H : 
       linear_combination (((L.dual.restr i).φ σ).chernInt e (offSupp _ σ (((L.dual.restr i).pow m).div hr))
         (logNorm (((L.dual.restr i).pow m).φ σ) r)) * this
 
+/- English proof (translation)
+Take `⟨f, H, rfl⟩` from `h`. Use `⟨_, isArithHeight_dual hX H, ?_⟩` and prove the remaining obligations. Establish `: cdim (genericPoint X) = D + 1` using `cdim_eq (𝟙 X) hX.dim_eq`. Simplify using `only [this]`.
+-/
 theorem isSelfInter_dual_of_isArithVar {D : ℕ} [IsIntegral X] (hX : IsArithVar p D) {x : ℝ} (h : L.IsSelfInter x) :
     L.dual.IsSelfInter ((-1) ^ (D + 1) * x) := by
   obtain ⟨f, H, rfl⟩ := h
@@ -241,6 +321,9 @@ theorem isSelfInter_dual_of_isArithVar {D : ℕ} [IsIntegral X] (hX : IsArithVar
   have : cdim (genericPoint X) = D + 1 := cdim_eq (𝟙 X) hX.dim_eq
   simp only [this]
 
+/- English proof (translation)
+Introduce `k _ X p _ L x hX h`. Simplify using `using isSelfInter_dual_of_isArithVar hX.toIsArithVar h`.
+-/
 theorem isSelfInter_dual : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (L : HermLB p)
     (x : ℝ), IsRegSurf p → L.IsSelfInter x → L.dual.IsSelfInter x := by
   intro k _ X p _ L x hX h

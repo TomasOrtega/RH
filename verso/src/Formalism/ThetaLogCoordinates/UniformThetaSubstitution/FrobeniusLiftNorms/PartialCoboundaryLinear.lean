@@ -21,15 +21,24 @@ section Alg
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Apply the tactic sequence `exact MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by fin_cases s <;> simp [hu, hv]`.
+-/
 theorem hasSubst_pair {κ : Type} {u v : MvPowerSeries κ K}
     (hu : MvPowerSeries.constantCoeff u = 0) (hv : MvPowerSeries.constantCoeff v = 0) :
     MvPowerSeries.HasSubst ![u, v] := by
   exact MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by fin_cases s <;> simp [hu, hv]
 
+/- English proof (translation)
+Conclude with `MvPowerSeries.HasSubst.X_pow hp`.
+-/
 theorem hasSubst_frob {ι : Type} {p : ℕ} (hp : p ≠ 0) :
     MvPowerSeries.HasSubst (fun i : ι => (MvPowerSeries.X i : MvPowerSeries ι K) ^ p) := by
   exact MvPowerSeries.HasSubst.X_pow hp
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.const ha) hb f`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply ha hb f`. Consider the case `exact MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.const_coeff ha) hb f`.
+-/
 theorem subst_psubst {ι κ : Type} {b : ι → MvPowerSeries κ K} (hb : MvPowerSeries.HasSubst b)
     {a : MvPowerSeries ι K} (ha : PowerSeries.HasSubst a) (f : PowerSeries K) :
     MvPowerSeries.subst b (PowerSeries.subst a f) =
@@ -39,26 +48,41 @@ theorem subst_psubst {ι κ : Type} {b : ι → MvPowerSeries κ K} (hb : MvPowe
     | exact MvPowerSeries.subst_comp_subst_apply ha hb f
     | exact MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.const_coeff ha) hb f
 
+/- English proof (translation)
+Unfold `at1`. Rewrite using `[subst_psubst hb (PowerSeries.HasSubst.X x), MvPowerSeries.subst_X hb]`.
+-/
 theorem subst_single_var {ι κ : Type} {b : ι → MvPowerSeries κ K} (hb : MvPowerSeries.HasSubst b)
     (x : ι) (f : PowerSeries K) :
     MvPowerSeries.subst b (at1 x f) = PowerSeries.subst (b x) f := by
   unfold at1
   rw [subst_psubst hb (PowerSeries.HasSubst.X x), MvPowerSeries.subst_X hb]
 
+/- English proof (translation)
+Unfold `frobVar`. Rewrite using `[← MvPowerSeries.coe_substAlgHom (hasSubst_frob (K := K) (ι := ι) hp), map_sub]`.
+-/
 theorem frobVar_sub {ι : Type} {p : ℕ} (hp : p ≠ 0) (f g : MvPowerSeries ι K) :
     frobVar p (f - g) = frobVar p f - frobVar p g := by
   unfold frobVar
   rw [← MvPowerSeries.coe_substAlgHom (hasSubst_frob (K := K) (ι := ι) hp), map_sub]
 
+/- English proof (translation)
+Unfold `frobVar`. Rewrite using `[← MvPowerSeries.coe_substAlgHom (hasSubst_frob (K := K) (ι := ι) hp), map_add]`.
+-/
 theorem frobVar_add {ι : Type} {p : ℕ} (hp : p ≠ 0) (f g : MvPowerSeries ι K) :
     frobVar p (f + g) = frobVar p f + frobVar p g := by
   unfold frobVar
   rw [← MvPowerSeries.coe_substAlgHom (hasSubst_frob (K := K) (ι := ι) hp), map_add]
 
+/- English proof (translation)
+Conclude with `MvPowerSeries.subst_X (hasSubst_frob hp) i`.
+-/
 theorem frobVar_X {ι : Type} {p : ℕ} (hp : p ≠ 0) (i : ι) :
     frobVar p (MvPowerSeries.X i : MvPowerSeries ι K) = MvPowerSeries.X i ^ p := by
   exact MvPowerSeries.subst_X (hasSubst_frob hp) i
 
+/- English proof (translation)
+Establish `e : frobVar p f = MvPowerSeries.expand p hp f` using `by first`. Consider the case `rfl`. Consider the case `(unfold frobVar; simp [MvPowerSeries.expand])`. Consider the case `(unfold frobVar; rw [MvPowerSeries.expand_apply])`. Rewrite using `[e, MvPowerSeries.constantCoeff_expand]`.
+-/
 theorem constantCoeff_frobVar {ι : Type} {p : ℕ} (hp : p ≠ 0) (f : MvPowerSeries ι K) :
     MvPowerSeries.constantCoeff (frobVar p f) = MvPowerSeries.constantCoeff f := by
   have e : frobVar p f = MvPowerSeries.expand p hp f := by
@@ -68,11 +92,17 @@ theorem constantCoeff_frobVar {ι : Type} {p : ℕ} (hp : p ≠ 0) (f : MvPowerS
       | (unfold frobVar; rw [MvPowerSeries.expand_apply])
   rw [e, MvPowerSeries.constantCoeff_expand]
 
+/- English proof (translation)
+Conclude with `subst_psubst (hasSubst_frob hp) ha f`.
+-/
 theorem frobVar_psubst {ι : Type} {p : ℕ} (hp : p ≠ 0) {a : MvPowerSeries ι K}
     (ha : PowerSeries.HasSubst a) (f : PowerSeries K) :
     frobVar p (PowerSeries.subst a f) = PowerSeries.subst (frobVar p a) f := by
   exact subst_psubst (hasSubst_frob hp) ha f
 
+/- English proof (translation)
+Unfold `frobVar`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply h (hasSubst_frob hp)]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> rfl`.
+-/
 theorem frobVar_pair {κ : Type} {p : ℕ} (hp : p ≠ 0) {u v : MvPowerSeries κ K}
     (h : MvPowerSeries.HasSubst ![u, v]) (H : MvPowerSeries (Fin 2) K) :
     frobVar p (MvPowerSeries.subst ![u, v] H) =
@@ -83,6 +113,11 @@ theorem frobVar_pair {κ : Type} {p : ℕ} (hp : p ≠ 0) {u v : MvPowerSeries �
   funext s
   fin_cases s <;> rfl
 
+/- English proof (translation)
+Unfold `frobVar`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSubst_frob hp) h]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[← MvPowerSeries.coe_substAlgHom h, map_pow, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X h]`.
+
+Apply the tactic sequence `fin_cases s <;> rfl`.
+-/
 theorem pair_frobVar {κ : Type} {p : ℕ} (hp : p ≠ 0) {u v : MvPowerSeries κ K}
     (h : MvPowerSeries.HasSubst ![u, v]) (H : MvPowerSeries (Fin 2) K) :
     MvPowerSeries.subst ![u, v] (frobVar p H) = MvPowerSeries.subst ![u ^ p, v ^ p] H := by
@@ -93,6 +128,9 @@ theorem pair_frobVar {κ : Type} {p : ℕ} (hp : p ≠ 0) {u v : MvPowerSeries �
   rw [← MvPowerSeries.coe_substAlgHom h, map_pow, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X h]
   fin_cases s <;> rfl
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.map_subst h]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> rfl`.
+-/
 theorem map_pair {κ : Type} (σ : K →+* K) {u v : MvPowerSeries κ K}
     (h : MvPowerSeries.HasSubst ![u, v]) (H : MvPowerSeries (Fin 2) K) :
     MvPowerSeries.map σ (MvPowerSeries.subst ![u, v] H) =
@@ -103,6 +141,9 @@ theorem map_pair {κ : Type} (σ : K →+* K) {u v : MvPowerSeries κ K}
   funext s
   fin_cases s <;> rfl
 
+/- English proof (translation)
+Establish `hsXp : PowerSeries.HasSubst (PowerSeries.X ^ p : PowerSeries K)` using `PowerSeries.HasSubst.X_pow (by omega)`. Rewrite using `[(g_zero_relation_holds K p hp hpK).1, PowerSeries.subst_mul ha, PowerSeries.subst_C, PowerSeries.subst_comp_subst_apply hsXp ha, PowerSeries.subst_pow ha, PowerSeries.subst_X ha]`.
+-/
 theorem subst_g_zero_eq_log {ι : Type} {p : ℕ} (hp : 2 ≤ p) (hpK : (p : K) ≠ 0) {a : MvPowerSeries ι K}
     (ha : PowerSeries.HasSubst a) :
     PowerSeries.subst a (g0F K p) =
@@ -112,6 +153,9 @@ theorem subst_g_zero_eq_log {ι : Type} {p : ℕ} (hp : 2 ≤ p) (hpK : (p : K) 
   rw [(g_zero_relation_holds K p hp hpK).1, PowerSeries.subst_mul ha, PowerSeries.subst_C,
     PowerSeries.subst_comp_subst_apply hsXp ha, PowerSeries.subst_pow ha, PowerSeries.subst_X ha]
 
+/- English proof (translation)
+Establish `hsXp : PowerSeries.HasSubst (PowerSeries.X ^ p : PowerSeries K)` using `PowerSeries.HasSubst.X_pow (by omega)`. Establish `h` using `congrArg (PowerSeries.subst a : PowerSeries K → MvPowerSeries ι K) (g_zero_relation_holds K p hp hpK).2`. Rewrite `h` using `[PowerSeries.subst_comp_subst_apply hsXp ha, PowerSeries.subst_pow ha, PowerSeries.subst_X ha, PowerSeries.subst_sub ha, PowerSeries.subst_X ha]`. Conclude with `h`.
+-/
 theorem subst_pow_g_zero {ι : Type} {p : ℕ} (hp : 2 ≤ p) (hpK : (p : K) ≠ 0) {a : MvPowerSeries ι K}
     (ha : PowerSeries.HasSubst a) :
     PowerSeries.subst (a ^ p) (g0F K p) = PowerSeries.subst a (lgF K p) - a := by
@@ -123,31 +167,49 @@ theorem subst_pow_g_zero {ι : Type} {p : ℕ} (hp : 2 ≤ p) (hpK : (p : K) ≠
     PowerSeries.subst_sub ha, PowerSeries.subst_X ha] at h
   exact h
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[lgF, map_sum, apply_ite]`.
+-/
 theorem map_lgF (σ : K →+* K) (p : ℕ) : PowerSeries.map σ (lgF K p) = lgF K p := by
   ext n
   simp [lgF, map_sum, apply_ite]
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[g0F, map_sum, apply_ite]`.
+-/
 theorem map_g0F (σ : K →+* K) (p : ℕ) : PowerSeries.map σ (g0F K p) = g0F K p := by
   ext n
   simp [g0F, map_sum, apply_ite]
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[PowerSeries.coeff_derivative]`.
+-/
 theorem map_derivative (σ : K →+* K) (f : PowerSeries K) :
     PowerSeries.map σ (PowerSeries.derivative K f) =
       PowerSeries.derivative K (PowerSeries.map σ f) := by
   ext n
   simp [PowerSeries.coeff_derivative]
 
+/- English proof (translation)
+Unfold `at1`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.X x), MvPowerSeries.map_X]`.
+-/
 theorem map_inVar {ι : Type} (σ : K →+* K) (x : ι) (f : PowerSeries K) :
     MvPowerSeries.map σ (at1 x f) = at1 x (PowerSeries.map σ f) := by
   unfold at1
   rw [PowerSeries.map_subst (PowerSeries.HasSubst.X x), MvPowerSeries.map_X]
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[MvPowerSeries.coeff_pderiv]`.
+-/
 theorem map_pderiv {ι : Type} (σ : K →+* K) (x : ι) (f : MvPowerSeries ι K) :
     MvPowerSeries.map σ (MvPowerSeries.pderiv K x f) =
       MvPowerSeries.pderiv K x (MvPowerSeries.map σ f) := by
   ext n
   simp [MvPowerSeries.coeff_pderiv]
 
+/- English proof (translation)
+Unfold `at1`. Rewrite using `[Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X x) f x]`. Use `first`. Consider the case `rw [MvPowerSeries.pderiv_X_self, mul_one]`. Consider the case `simp [MvPowerSeries.pderiv_X]`.
+-/
 theorem pderiv_single_self {ι : Type} [Finite ι] (x : ι) (f : PowerSeries K) :
     MvPowerSeries.pderiv K x (at1 x f) = at1 x (PowerSeries.derivative K f) := by
   unfold at1
@@ -156,6 +218,9 @@ theorem pderiv_single_self {ι : Type} [Finite ι] (x : ι) (f : PowerSeries K) 
     | rw [MvPowerSeries.pderiv_X_self, mul_one]
     | simp [MvPowerSeries.pderiv_X]
 
+/- English proof (translation)
+Unfold `at1`. Rewrite using `[Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X y) f x]`. Use `first`. Consider the case `rw [MvPowerSeries.pderiv_X_of_ne h, mul_zero]`. Consider the case `simp [MvPowerSeries.pderiv_X, h]`.
+-/
 theorem pderiv_single_ne {ι : Type} [Finite ι] {x y : ι} (h : y ≠ x) (f : PowerSeries K) :
     MvPowerSeries.pderiv K x (at1 y f) = 0 := by
   unfold at1
@@ -164,6 +229,11 @@ theorem pderiv_single_ne {ι : Type} [Finite ι] {x y : ι} (h : y ≠ x) (f : P
     | rw [MvPowerSeries.pderiv_X_of_ne h, mul_zero]
     | simp [MvPowerSeries.pderiv_X, h]
 
+/- English proof (translation)
+Establish `hC : MvPowerSeries.pderiv K (0 : Fin 2) (MvPowerSeries.C k) = 0`. Use extensionality with `n`. Simplify using `[MvPowerSeries.coeff_pderiv, MvPowerSeries.coeff_C]`. Establish `h10 : (1 : Fin 2) ≠ 0` using `by decide`. Simplify using `only [Derivation.leibniz, hC, pderiv_single_self, pderiv_single_ne h10, smul_zero, add_zero, zero_add, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pderiv_prod (k : K) (f g : PowerSeries K) :
     MvPowerSeries.pderiv K (0 : Fin 2) (MvPowerSeries.C k * (at1 0 f * at1 1 g)) =
       MvPowerSeries.C k * (at1 0 (PowerSeries.derivative K f) * at1 1 g) := by
@@ -175,6 +245,13 @@ theorem pderiv_prod (k : K) (f g : PowerSeries K) :
     smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `h1 : MvPowerSeries.HasSubst ![in3 F, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K)]` using `MvPowerSeries.HasSubst.cons_subst_zero_left 0 1 2 hF0`. Establish `h2 : MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2]` using `MvPowerSeries.HasSubst.X_X`. Establish `h3 : MvPowerSeries.HasSubst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2]` using `MvPowerSeries.HasSubst.X_X`. Establish `hc : ∀ (ψ : MvPowerSeries (Fin 2) K →ₐ[K] MvPowerSeries (Fin 3) K) (a : K), ψ (MvPowerSeries.C a) = MvPowerSeries.C a` using `fun ψ a => by first`. Consider the case `exact ψ.commutes a`.
+
+Consider the case `(have h := ψ.commutes a; rwa [MvPowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply] at h)`. Consider the case `simp`. Unfold `d1`. Rewrite using `[← MvPowerSeries.coe_substAlgHom h1, ← MvPowerSeries.coe_substAlgHom h2, ← MvPowerSeries.coe_substAlgHom h3]`. Simplify using `only [map_mul, map_sub, hc]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem partial_coboundary_linear {F : MvPowerSeries (Fin 2) K} (hF0 : MvPowerSeries.constantCoeff F = 0) (k q : K)
     (P G : MvPowerSeries (Fin 2) K) :
     d1 F (MvPowerSeries.C k * (P - MvPowerSeries.C q * G)) =
@@ -203,6 +280,9 @@ section Norm
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_sigma_le {p : ℕ} {σ : K →+* K}
     (hσ : ∀ a : K, ‖a‖ ≤ 1 → ‖σ a - a ^ p‖ ≤ (p : ℝ)⁻¹) (hp : 1 ≤ p) {a : K} (ha : ‖a‖ ≤ 1) :
     ‖σ a‖ ≤ 1 := by
@@ -211,6 +291,9 @@ theorem norm_sigma_le {p : ℕ} {σ : K →+* K}
     _ ≤ 1 := max_le ((hσ a ha).trans (inv_le_one_of_one_le₀ (by exact_mod_cast hp)))
         (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha)
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem integral_X {ι : Type} (i : ι) : Integral (MvPowerSeries.X i : MvPowerSeries ι K) := by
   classical
   intro n
@@ -222,6 +305,53 @@ end Norm
 end FrobeniusSubstitution
 
 open FrobeniusSubstitution in
+/- English proof (translation)
+Introduce `K _ _ _ p σ hU F hF G c _ hS hc hDer`. Take `⟨hp, -, hnp, -, hσ⟩` from `hU`. Establish `hσF : MvPowerSeries.map σ F = F` using `(hL K p hp hnp F hF).1 σ`. Establish `hδi : Integral (cob F (g0F K p))` using `hDe K p σ hp hnp hσ F hF`. Take `⟨hF0, hFi, hFc⟩` from `hF`.
+
+Establish `hp0 : p ≠ 0` using `hp.ne_zero`. Establish `hp2 : 2 ≤ p` using `hp.two_le`. Establish `hppos : (0 : ℝ) < (p : ℝ)` using `by exact_mod_cast hp.pos`. Establish `hpK : (p : K) ≠ 0`. Introduce `h`.
+
+Rewrite `hnp` using `[h, norm_zero]`. Conclude with `(inv_pos.mpr hppos).ne hnp`. Establish `hinv : ‖((p : K)⁻¹)‖ = (p : ℝ)` using `by rw [norm_inv, hnp, inv_inv]`. Establish `hscale : ∀ f : MvPowerSeries (Fin 3) K, Bd (p : ℝ)⁻¹ f → Integral (MvPowerSeries.C ((p : K)⁻¹) * f)`. Introduce `f hf n`.
+
+Rewrite using `[MvPowerSeries.coeff_C_mul, norm_mul, hinv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hX0 : ∀ i : Fin 3, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin 3) K) = 0` using `fun i => by simp`. Establish `hXp0 : ∀ i : Fin 3, MvPowerSeries.constantCoeff ((MvPowerSeries.X i : MvPowerSeries (Fin 3) K) ^ p) = 0` using `fun i => by simp [hp0]`. Establish `hsX : ∀ i : Fin 3, PowerSeries.HasSubst (MvPowerSeries.X i : MvPowerSeries (Fin 3) K)` using `fun i => PowerSeries.HasSubst.X i`.
+
+Establish `hin3 : MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 1]` using `hasSubst_pair (hX0 0) (hX0 1)`. Apply the tactic sequence `have hin3c : ∀ i : Fin 2, MvPowerSeries.constantCoeff (![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 1] i) = 0 := fun i => by fin_cases i <;> simp`. Establish `hin3i : ∀ i : Fin 2, Integral (![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 1] i)` using `fun i => by fin_cases i`. Conclude with `integral_X 0`. Conclude with `integral_X 1`.
+
+Establish `hA0 : MvPowerSeries.constantCoeff (in3 F) = 0` using `MvPowerSeries.constantCoeff_subst_eq_zero hin3 hin3c hF0`. Establish `hAi : Integral (in3 F)` using `LogarithmEquivalence.integral_subst' hin3c hin3i hFi`. Establish `hδ3i : Integral (in3 (cob F (g0F K p)))` using `LogarithmEquivalence.integral_subst' hin3c hin3i hδi`. Establish `hσA : MvPowerSeries.map σ (in3 F) = in3 F`. Unfold `in3`.
+
+Rewrite using `[map_pair σ hin3, hσF, MvPowerSeries.map_X, MvPowerSeries.map_X]`. Establish `hsA : PowerSeries.HasSubst (in3 F)` using `PowerSeries.HasSubst.of_constantCoeff_zero hA0`. Establish `hAp0 : MvPowerSeries.constantCoeff (in3 F ^ p) = 0`. Rewrite using `[map_pow, hA0, zero_pow hp0]`. Establish `hfA0 : MvPowerSeries.constantCoeff (frobVar p (in3 F)) = 0`.
+
+Rewrite using `[constantCoeff_frobVar hp0, hA0]`. Use `set r : MvPowerSeries (Fin 3) K := MvPowerSeries.C ((p : K)⁻¹) * (frobVar p (in3 F) - in3 F ^ p) with hr`. Establish `hCC : MvPowerSeries.C (p : K) * MvPowerSeries.C ((p : K)⁻¹) = (1 : MvPowerSeries (Fin 3) K)`. Rewrite using `[← map_mul, mul_inv_cancel₀ hpK, map_one]`. Establish `hFr : frobVar p (in3 F) = in3 F ^ p + MvPowerSeries.C (p : K) * r`.
+
+Rewrite using `[hr, ← mul_assoc, hCC]`. Expand and normalize the polynomial expressions, which then agree. Establish `hri : Integral r`. Use `hscale _ fun n => ?_` and prove the remaining obligations. Establish `h` using `frob_congr (σ := σ) hp hnp hσ (f := in3 F) hAi n`.
+
+Rewrite `h` using `[PhiH_apply, hσA, map_sub, norm_sub_rev, ← map_sub]`. Conclude with `h`. Establish `hr0 : MvPowerSeries.constantCoeff r = 0`. Rewrite using `[hr, map_mul, map_sub, hfA0, hAp0, sub_zero, mul_zero]`. Establish `h1 : MvPowerSeries.HasSubst ![in3 F, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K)]` using `hasSubst_pair hA0 (hX0 2)`.
+
+Establish `h2 : MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2]` using `hasSubst_pair (hX0 0) (hX0 2)`. Establish `h3 : MvPowerSeries.HasSubst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin 3) K), MvPowerSeries.X 2]` using `hasSubst_pair (hX0 1) (hX0 2)`. Use `set Gs : MvPowerSeries (Fin 2) K := MvPowerSeries.map σ G with hGs`. Establish `hd1P : d1 F (frobVar p Gs) = MvPowerSeries.subst ![in3 F ^ p, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] Gs - MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K) ^ p, MvPowerSeries.X 2 ^ p] Gs - MvPowerSeries.subst ![(MvPowerSeries.X 1 : MvPowerSeries (Fin …`. Unfold `d1`.
+
+Rewrite using `[pair_frobVar hp0 h1, pair_frobVar hp0 h2, pair_frobVar hp0 h3]`. Establish `hd1s : frobVar p (MvPowerSeries.map σ (d1 F G)) = MvPowerSeries.subst ![frobVar p (in3 F), (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] Gs - MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K) ^ p, MvPowerSeries.X 2 ^ p] Gs - MvPowerSeries.subst ![(MvPowerSe …`. Unfold `d1`. Rewrite using `[map_sub, map_sub, map_pair σ h1, map_pair σ h2, map_pair σ h3, hσA, MvPowerSeries.map_X, MvPowerSeries.map_X, MvPowerSeries.map_X, frobVar_sub hp0, frobVar_sub hp0, frobVar_pair hp0 h1, frobVar_pair hp0 h2, frobVar_pair hp0 h3, frobVar_X hp0, frobVar_X hp0, frobVar_X hp0]`. Establish `hE2 : Bd (p : ℝ)⁻¹ (frobVar p (MvPowerSeries.map σ (d1 F G)) - MvPowerSeries.C (p : K) * d1 F G)`.
+
+Take `⟨hS0, hS1⟩` from `hS`. Rewrite `hS0`, `hS1` using `[sub_zero]`. Conclude with `(hW K (Fin 3) p σ hp hnp hσ (d1 F G) hS0).1 hS1`. Use `set Φ : MvPowerSeries (Fin 2) K := Gs - MvPowerSeries.C (σ c) * (at1 0 (lgF K p) * at1 1 (g0F K p)) with hΦ`. Establish `hΦi : Integral (MvPowerSeries.pderiv (R` using `K) 0 Φ) := by`.
+
+Establish `e : MvPowerSeries.pderiv (R` using `K) 0 Φ = MvPowerSeries.map σ (MvPowerSeries.pderiv (R := K) 0 G - MvPowerSeries.C c * (at1 0 (PowerSeries.derivative K (lgF K p)) * at1 1 (g0F K p))) := by`. Rewrite using `[hΦ, map_sub, pderiv_prod, map_sub, map_mul, map_mul, MvPowerSeries.map_C, map_inVar, map_inVar, map_derivative, map_lgF, map_g0F, map_pderiv]`. Rewrite using `[e]`. Introduce `n`. Rewrite using `[MvPowerSeries.coeff_map]`.
+
+Conclude with `norm_sigma_le hσ hp.one_le (hDer n)`. Establish `hE1` using `hD K (Fin 2) (Fin 3) p hp hnp 0 Φ ![in3 F ^ p, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] r hΦi (fun i => by fin_cases i`. Conclude with `hAp0`. Conclude with `hXp0 2)`. Use the proof step `(fun i => by fin_cases i`.
+
+Conclude with `int_pow hAi p`. Conclude with `int_pow (integral_X 2) p) hr0 hri`. Establish `hupd : Function.update ![in3 F ^ p, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] 0 (![in3 F ^ p, (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p] 0 + MvPowerSeries.C (p : K) * r) = ![frobVar p (in3 F), (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Simplify using `[hFr]`. Simplify using the standard rewrite rules. Rewrite `hE1` using `[hupd]`. Establish `hSΦ : ∀ u v : MvPowerSeries (Fin 3) K, MvPowerSeries.HasSubst ![u, v] → MvPowerSeries.subst ![u, v] Φ = MvPowerSeries.subst ![u, v] Gs - MvPowerSeries.C (σ c) * (PowerSeries.subst u (lgF K p) * PowerSeries.subst v (g0F K p))`. Introduce `u v h`.
+
+Rewrite using `[hΦ, MvPowerSeries.subst_sub h, MvPowerSeries.subst_mul h, MvPowerSeries.subst_mul h, MvPowerSeries.subst_C, subst_single_var h, subst_single_var h]`. Both sides reduce to the same expression. Establish `hlog : PowerSeries.subst F (lgF K p) = at1 0 (lgF K p) + at1 1 (lgF K p)`. Unfold `cob at hFc`. Take the linear combination `hFc`.
+
+Establish `hsF : PowerSeries.HasSubst F` using `PowerSeries.HasSubst.of_constantCoeff_zero hF0`. Establish `hlogA : PowerSeries.subst (in3 F) (lgF K p) = (at1 0 (lgF K p) + at1 1 (lgF K p) : MvPowerSeries (Fin 3) K)`. Establish `h` using `congrArg in3 hlog`. Unfold `in3 at h ⊢`. Rewrite `h` using `[subst_psubst hin3 hsF, MvPowerSeries.subst_add hin3, subst_single_var hin3, subst_single_var hin3]`.
+
+Conclude with `h`. Establish `hat : ∀ i : Fin 3, at1 i (g0F K p) = MvPowerSeries.C ((p : K)⁻¹) * frobVar p (at1 i (lgF K p))` using `fun i => by`. Unfold `at1`. Rewrite using `[subst_g_zero_eq_log hp2 hpK (hsX i), frobVar_psubst hp0 (hsX i), frobVar_X hp0]`. Establish `hδ : in3 (cob F (g0F K p)) = MvPowerSeries.C ((p : K)⁻¹) * (PowerSeries.subst (in3 F ^ p) (lgF K p) - PowerSeries.subst (frobVar p (in3 F)) (lgF K p))`.
+
+Establish `e : in3 (cob F (g0F K p)) = PowerSeries.subst (in3 F) (g0F K p) - at1 0 (g0F K p) - at1 1 (g0F K p)`. Unfold `cob in3`. Rewrite using `[MvPowerSeries.subst_sub hin3, MvPowerSeries.subst_sub hin3, subst_psubst hin3 hsF, subst_single_var hin3, subst_single_var hin3]`. Both sides reduce to the same expression. Rewrite using `[e, subst_g_zero_eq_log hp2 hpK hsA, hat, hat, ← frobVar_psubst hp0 hsA, hlogA, frobVar_add hp0]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hgb : PowerSeries.subst ((MvPowerSeries.X 2 : MvPowerSeries (Fin 3) K) ^ p) (g0F K p) = at1 2 (lgF K p) - MvPowerSeries.X 2` using `subst_pow_g_zero hp2 hpK (hsX 2)`. Establish `key : d1 F (DeS p σ G) - MvPowerSeries.C (σ c) * (in3 (cob F (g0F K p)) * at1 2 (lgF K p)) = MvPowerSeries.C ((p : K)⁻¹) * ((frobVar p (MvPowerSeries.map σ (d1 F G)) - MvPowerSeries.C (p : K) * d1 F G) - (MvPowerSeries.subst ![frobVar p (in3 F), (MvPowerSeries.X 2 : MvPowerSeries …`. Unfold `DeS`. Rewrite using `[partial_coboundary_linear hF0, hd1P, hd1s, hSΦ _ _ (hasSubst_pair hfA0 (hXp0 2)), hSΦ _ _ (hasSubst_pair hAp0 (hXp0 2)), hgb, hδ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `bd_sub (hscale _ (bd_sub hE2 hE1)) (int_mul (bd_C zero_le_one (norm_sigma_le hσ hp.one_le hc)) (int_mul hδ3i (integral_X 2)))`.
+-/
 theorem StepII_of (hW : DworkMv) (hD : DivDeriv) (hDe : DeIntegral) (hL : LawSymm) : StepII := by
   intro K _ _ _ p σ hU F hF G c _ hS hc hDer
   obtain ⟨hp, -, hnp, -, hσ⟩ := hU

@@ -5,12 +5,54 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.DefU
 open UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Establish `: cInf c = 1` using `hc`. Simplify using `[cAll, cEmb, this]`.
+-/
 private theorem cAll_fin' {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {c : UA E n}
     (hc : c ∈ finU E n) : cAll c = 1 := by
   funext v
   have : cInf c = 1 := hc
   simp [cAll, cEmb, this]
 
+/- English proof (translation)
+Introduce `hK hD hR hL hE E _ _ _ l _ ι a W J t ht`. Establish `hlp : l.Prime` using `Fact.out`. Take `⟨κ, hκr, hκi, hκd⟩` from `hK E l ι a`. Set `ρ` to `Formalism.L2.DIV.rhoK (K := ℂ) (ι := InfinitePlace E) W`. Set `M : UA E a → (InfinitePlace E → GL (Fin a) ℂ)` to `fun g => (cAll g)⁻¹ * κ g`.
+
+Set `b : UA E a → {x : W.Sp // CoefLe ι 1 x.1} → W.Sp` to `fun g x => ρ (M g) x.1`. Establish `hl1 : (1 : ℝ) ≤ (l : ℝ)` using `by exact_mod_cast hlp.one_lt.le`. Establish `hpow : ∀ d : ℕ, (1 : ℝ) ≤ (l : ℝ) ^ d` using `fun d => one_le_pow₀ hl1`. Establish `hgrow : ∀ (c : UA E a) (d : ℕ), DenomLe l d c → ∀ x : W.Sp, CoefLe ι 1 x.1 → CoefLe ι (((l : ℝ) ^ d) ^ (a * GlobalTheory.CongW.wtSize W.at)) (ρ (κ c) x).1` using `fun c d hc x hx => hR E l ι a W (κ c) _ (hpow d) (fun τ i j => hκd c d hc τ i j) x hx`. Establish `hgrowInv : ∀ (c : UA E a) (d : ℕ), DenomLe l d c → ∀ x : W.Sp, CoefLe ι 1 x.1 → CoefLe ι (((l : ℝ) ^ d) ^ (a * GlobalTheory.CongW.wtSize W.at)) (ρ (κ c)⁻¹ x).1` using `fun c d hc x hx => hR E l ι a W (κ c)⁻¹ _ (hpow d) (fun τ i j => by`.
+
+Establish `h` using `hκd c d hc τ i j`. Simplify using `only [Pi.inv_apply, inv_inv]`. Conclude with `⟨h.2, h.1⟩) x hx`. Establish `hval : ∀ f : algForms W, ∀ γ ∈ ratU E a, ∀ s x, x ∈ infU E a → ∀ c : finU E a, (∀ v g, f.1 v (g * (c : UA E a)) = f.1 v g) → ∀ v, f.1 (ρ (M (γ * s * x * c)) v) (γ * s * x * c) = f.1 (ρ (M s) (ρ (κ (c : UA E a)) v)) s`. Introduce `f γ hγ s x hx c hf v`.
+
+Establish `hM : cAll x * M (γ * s * x * c) = M s * κ (c : UA E a)`. Simplify using `only [M, map_mul, hκr γ hγ, hκi x hx, cAll_fin' c.2, mul_one]`. Use `group`. Establish `hA : ∀ v, f.1 v (γ * s * x * c) = f.1 v (s * c * x)`. Introduce `v`.
+
+Rewrite using `[mul_assoc γ s, mul_assoc γ, (f.2.1 v).left γ hγ, mul_assoc s x, ← fin_mul_inf c.2 hx, ← mul_assoc]`. Establish `hB : ∀ v, f.1 v (s * c * x) = f.1 (W.rep ⟨x, hx⟩ v) (s * c)`. Introduce `v`. Rewrite using `[f.2.2 ⟨x, hx⟩ v]`. Both sides reduce to the same expression.
+
+Establish `e3 : W.rep ⟨x, hx⟩ (ρ (M (γ * s * x * c)) v) = ρ (M s) (ρ (κ (c : UA E a)) v)`. Express the relevant statement in the definitionally equal form `ρ (cAll x) (ρ (M _) v) = _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hM, map_mul, Module.End.mul_apply]`. Rewrite using `[hA, hB, hf, e3]`. Use `⟨{x : W.Sp // CoefLe ι 1 x.1}, b, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `f`. Take `⟨C, hC, hfC⟩` from `hE E a W f`. Take `⟨d, hd⟩` from `hD E l hlp a C hC.compact`. Set `C₃ : Subgroup (finU E a)` to `C.subgroupOf (finU E a)`. Establish `hC₃o : IsOpen (C₃ : Set (finU E a))`.
+
+Take `⟨N, hNo, hN1, hNC⟩` from `hC.isOpen`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hNo.preimage continuous_subtype_val).mem_nhds hN1) ?_)` and prove the remaining obligations. Introduce `x hx`. Conclude with `Subgroup.mem_subgroupOf.2 (hNC ⟨hx, x.2⟩)`. Take `⟨S, hS⟩` from `GlobalTheory.DefU.ClassFin.classSet_finite E a C₃ hC₃o`.
+
+Set `φ : UA E a → (W.Sp →ₗ[ℂ] ℂ)` to `fun s => (LinearMap.proj s) ∘ₗ f.1 ∘ₗ (ρ (M s))`. Establish `hφ : ∀ s, ∃ m : ℝ, 0 ≤ m ∧ ∀ (R : ℝ) (x : W.Sp), CoefLe ι R x.1 → ‖ι.symm (φ s x)‖ ≤ m * R` using `fun s => (hL l ι _ (Formalism.L2.DIV.VV ℂ W)).1 (φ s)`. Use `choose m hm0 hm using hφ`. Use `⟨(∑ s ∈ S, m s) * ((l : ℝ) ^ d) ^ (a * GlobalTheory.CongW.wtSize W.at), fun g i => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, s, hs, y, hy, c, hc, rfl⟩` from `hS g`.
+
+Establish `hcC : (c : UA E a) ∈ C` using `Subgroup.mem_subgroupOf.1 hc`. Establish `e` using `hval f γ hγ s y hy c (fun v g => hfC _ hcC v g) i.1`. Establish `hb : f.1 (b (γ * s * y * c) i) (γ * s * y * c) = φ s (ρ (κ (c : UA E a)) i.1)` using `e`. Rewrite using `[hb]`. Use `(hm s _ _ (hgrow _ d (hd _ hcC) i.1 i.2)).trans ?_` and prove the remaining obligations.
+
+Conclude with `mul_le_mul_of_nonneg_right (Finset.single_le_sum (fun q _ => hm0 q) hs) (by positivity)`. Introduce `f h0`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+
+Use function extensionality and compare the values at `g`. Take `⟨c, hc0, hc⟩` from `(hL l ι _ (Formalism.L2.DIV.VV ℂ W)).2 (ρ (M g)⁻¹ v)`. Establish `h1` using `h0 g ⟨c • ρ (M g)⁻¹ v, hc⟩`. Establish `h2 : b g ⟨c • ρ (M g)⁻¹ v, hc⟩ = c • v`. Express the relevant statement in the definitionally equal form `ρ (M g) (c • ρ (M g)⁻¹ v) = c • v`.
+
+Rewrite using `[map_smul, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite `h1` using `[h2, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left hc0`. Introduce `F R hF j g i`. Establish `hR0 : 0 ≤ R` using `(norm_nonneg _).trans (hF g i)`.
+
+Establish `e : opOf (RU E a) (t j) (F (b g i)) g = ∑ h ∈ (t j).support, t j h * F (b g i) (g * h)`. Simplify using `only [opOf, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, RU_apply, smul_eq_mul]`. Rewrite using `[e, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hR0 fun h hh => ?_` and prove the remaining obligations. Take `⟨hfin, d, hd, hn⟩` from `ht j h hh`.
+
+Establish `hMh : M g = M (g * h) * (κ h)⁻¹`. Simplify using `only [M, map_mul, cAll_fin' hfin, mul_one]`. Use `group`. Use `set y : W.Sp := ρ (κ h)⁻¹ i.1 with hy`. Establish `hyc` using `hgrowInv h d hd i.1 i.2`.
+
+Establish `hx : CoefLe ι 1 ((t j h • y : W.Sp) : Formalism.L2.DIV.Pol ℂ (InfinitePlace E) a)`. Introduce `q`. Establish `hq` using `hyc q`. Establish `e1 : MvPolynomial.coeff q ((t j h • y : W.Sp) : Formalism.L2.DIV.Pol ℂ (InfinitePlace E) a) = t j h * MvPolynomial.coeff q (y : Formalism.L2.DIV.Pol ℂ (InfinitePlace E) a)`. Simplify using `[MvPolynomial.coeff_smul]`.
+
+Rewrite using `[e1, map_mul, norm_mul]`. Establish `hlpos : (0 : ℝ) < (l : ℝ)` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_mul, inv_pow, show d * (a * GlobalTheory.CongW.wtSize W.at) = a * d * GlobalTheory.CongW.wtSize W.at by ring]`. Conclude with `inv_mul_cancel₀ (by positivity)`.
+
+Establish `hb : t j h * F (b g i) (g * h) = F (b (g * h) ⟨t j h • y, hx⟩) (g * h)`. Establish `: b g i = ρ (M (g * h)) y`. Express the relevant statement in the definitionally equal form `ρ (M g) i.1 = _`. Rewrite using `[hMh, map_mul, Module.End.mul_apply]`. Express the relevant statement in the definitionally equal form `_ = F (ρ (M (g * h)) (t j h • y)) (g * h)`.
+
+Rewrite using `[this, map_smul, map_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hb]`. Conclude with `hF _ _`.
+-/
 theorem UpperTheory.Gal.Gen.frameW_pf :
     UpperTheory.Gal.Gen.Kappa → UpperTheory.Gal.Gen.DenomBdd → UpperTheory.Gal.Gen.RhoBound → UpperTheory.Gal.Gen.LatFacts → UpperTheory.Gal.Gen.LevelEx → UpperTheory.Gal.Gen.FrameW := by
   intro hK hD hR hL hE E _ _ _ l _ ι a W J t ht

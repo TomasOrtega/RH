@@ -9,10 +9,20 @@ namespace GlobalTheory.CosetRow.ExtSB
 
 variable {D : D7} {m n : ℕ}
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.smul_apply, smul_eq_mul] linear_combination (t i j) * hb`.
+-/
 theorem half_of_idem' {b : AE D} (hb : b * b = b) (t : Mx D m n) : IsHalf b (b • t) := fun i j => by
   simp only [Matrix.smul_apply, smul_eq_mul]
   linear_combination (t i j) * hb
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `h1` using `h i j`. Establish `h2` using `hu i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, nsmul_eq_mul] at h1`.
+
+Take the linear combination `h1 - (k : AE D) * h2`. Introduce `h i j`. Establish `h1` using `h i j`. Establish `h2` using `hu i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, nsmul_eq_mul]`.
+
+Take the linear combination `h1 + (k : AE D) * h2`.
+-/
 theorem half_add_nsmul_iff {e : AE D} {t u : Mx D m n} (hu : IsHalf e u) (k : ℕ) :
     IsHalf e (t + k • u) ↔ IsHalf e t := by
   constructor
@@ -27,9 +37,29 @@ theorem half_add_nsmul_iff {e : AE D} {t u : Mx D m n} (hu : IsHalf e u) (k : �
     simp only [Matrix.add_apply, Matrix.smul_apply, nsmul_eq_mul]
     linear_combination h1 + (k : AE D) * h2
 
+/- English proof (translation)
+Rewrite using `[smul_add, smul_comm]`.
+-/
 theorem smul_add_nsmul (e : AE D) (t u : Mx D m n) (k : ℕ) : e • (t + k • u) = e • t + k • (e • u) := by
   rw [smul_add, smul_comm]
 
+/- English proof (translation)
+Introduce `D m n Λ e₀ e₁ Φ h0 h1 h01 hΛ0 hΛ1 hΦ`. Take `⟨sΦ, k, hk, iΦ, fΦ⟩` from `hΦ`. Use `⟨fun t ht => ?_, k, hk, fun u hu hue t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.CosetRow.extFn at ht`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `ht (if_neg hc)`. Establish `hhalf` using `half_add_nsmul_iff (t := t) hue k`. Establish `hA : Φ (e₀ • (t + k • u)) = Φ (e₀ • t)`. Rewrite using `[smul_add_nsmul]`. Conclude with `iΦ _ (hΛ0 u hu) (half_of_idem' h0 u) _`.
+
+Establish `hB : halfInd e₁ Λ (e₁ • (t + k • u)) = halfInd e₁ Λ (e₁ • t)`. Rewrite using `[smul_add_nsmul]`. Unfold `halfInd`. Establish `hm : e₁ • t + k • (e₁ • u) ∈ Λ ↔ e₁ • t ∈ Λ` using `Λ.add_mem_cancel_right (AddSubgroup.nsmul_mem Λ (hΛ1 u hu) k)`. Establish `hh : IsHalf e₁ (e₁ • t + k • (e₁ • u)) ↔ IsHalf e₁ (e₁ • t)` using `half_add_nsmul_iff (half_of_idem' h1 u) k`.
+
+Distinguish the cases in `hc : e₁ • t ∈ Λ ∧ IsHalf e₁ (e₁ • t)`. Rewrite using `[if_pos (And.intro (hm.2 hc.1) (hh.2 hc.2)), if_pos hc]`. Rewrite using `[if_neg (fun h => hc ⟨hm.1 h.1, hh.1 h.2⟩), if_neg hc]`. Unfold `GlobalTheory.CosetRow.extFn`. Rewrite using `[hA, hB]`.
+
+Distinguish the cases in `hc : IsHalf (e₀ + e₁) t`. Rewrite using `[if_pos (hhalf.2 hc), if_pos hc]`. Rewrite using `[if_neg (mt hhalf.1 hc), if_neg hc]`. Unfold `GlobalTheory.CosetRow.extFn at ht`. Distinguish the cases in `hc : IsHalf (e₀ + e₁) t`.
+
+Rewrite `ht` using `[if_pos hc]`. Establish `hΦt : Φ (e₀ • t) ≠ 0` using `left_ne_zero_of_mul ht`. Establish `hI : halfInd e₁ Λ (e₁ • t) ≠ 0` using `right_ne_zero_of_mul ht`. Establish `hI' : e₁ • t ∈ Λ`. Unfold `halfInd at hI`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hI (if_neg (fun h => hn h.1))`. Establish `hkt : k • t = k • (e₀ • t) + k • (e₁ • t)`. Use extensionality with `i j`. Use `hc i j` as an intermediate fact.
+
+Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul] at this ⊢`. Take the linear combination `-(k : AE D) * this`. Rewrite using `[hkt]`. Conclude with `Λ.add_mem (fΦ _ hΦt) (AddSubgroup.nsmul_mem Λ hI' k)`. Conclude with `absurd (if_neg hc) ht`.
+-/
 theorem isSBHalf_extFn : ∀ {D : D7} {m n : ℕ} {Λ : AddSubgroup (Mx D m n)} {e₀ e₁ : AE D} {Φ : Mx D m n → ℂ}, e₀ * e₀ = e₀ → e₁ * e₁ = e₁ → e₀ * e₁ = 0 → (∀ u ∈ Λ, e₀ • u ∈ Λ) → (∀ u ∈ Λ, e₁ • u ∈ Λ) → IsSBHalf e₀ Λ Φ → IsSBHalf (e₀ + e₁) Λ (GlobalTheory.CosetRow.extFn e₀ e₁ Λ Φ) := by
   intro D m n Λ e₀ e₁ Φ h0 h1 h01 hΛ0 hΛ1 hΦ
   obtain ⟨sΦ, k, hk, iΦ, fΦ⟩ := hΦ

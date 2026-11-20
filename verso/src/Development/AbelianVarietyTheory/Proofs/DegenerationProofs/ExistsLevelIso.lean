@@ -58,6 +58,11 @@ def GenericRel (Φ : (Over.pullback (jK R)).obj G' ≅ (Over.pullback (jK R)).ob
             (σ'.f (fun _ => jL'))
 
 open ThickIso TorusCoordPull in
+/- English proof (translation)
+Use `choose j hm hj using fun e : ℕ => exists_iso hD (U.gt e) (U'.gt e) hG`. Use `⟨j, fun e => ?_⟩` and prove the remaining obligations. Establish `h₀` using `hj e _ (𝟙 _)`. Establish `hp : (U'.gt e).pG.left ≫ abMap hD = (j e).hom.left ≫ (U.gt e).pG.left`. Simplify `h₀.1` using `only [Category.id_comp]`.
+
+Establish `hO` using `Oφ_pull hD (U.gt e).pG (U'.gt e).pG (j e).hom.left hp`. Use `⟨hm e, (hj (e + 1) _ (thickMap R I e G')).unique_right ?_, hp, fun x => ⟨hO x, pmaps_of_good ((isGen_iff hD.w).1 hD.w_gen) D.toPre.P.isLB D'.toPre.P.isLB (hO x) ((U'.gt e).t_gen x) ((U.gt e).t_gen _) fun y J J' hJ hJ' => h₀.2 x y J J' hJ hJ'⟩⟩` and prove the remaining obligations. Simplify `h₀.succ (U.gt_q e) (U.gt_t e) (U'.gt_q e) (U'.gt_t e)` using `only [Category.id_comp]`.
+-/
 theorem exists_levelIso (hG : GlobalFnsSt) : ∃ j, LevelIso U U' hD j := by
   choose j hm hj using fun e : ℕ => exists_iso hD (U.gt e) (U'.gt e) hG
   refine ⟨j, fun e => ?_⟩
@@ -72,6 +77,9 @@ theorem exists_levelIso (hG : GlobalFnsSt) : ∃ j, LevelIso U U' hD j := by
 
 variable {U U' hD j}
 
+/- English proof (translation)
+Introduce `e` and use `agree_of_expandsAt _ _ hD e k _ (hj e).2.2.1 (fun x => ((hj e).2.2.2 x).1) (fun x => ((hj e).2.2.2 x).2) (hE e) (hE' e) hf`.
+-/
 theorem LevelIso.agreeAll (hj : LevelIso U U' hD j) {k : ℕ} {σ : H0 U.LG.L k} {σ' : H0 U'.LG.L k}
     {f : ∀ α, D.toPre.SecB k α} {f' : ∀ α, D'.toPre.SecB k α} (hE : ∀ e, U.ExpandsAt e k σ f)
     (hE' : ∀ e, U'.ExpandsAt e k σ' f')
@@ -80,6 +88,13 @@ theorem LevelIso.agreeAll (hj : LevelIso U U' hD j) {k : ℕ} {σ : H0 U.LG.L k}
   agree_of_expandsAt _ _ hD e k _ (hj e).2.2.1 (fun x => ((hj e).2.2.2 x).1) (fun x => ((hj e).2.2.2 x).2)
     (hE e) (hE' e) hf
 
+/- English proof (translation)
+Introduce `k hk`. Prove the components needed by the constructor for the conclusion. Introduce `σ₀`. Take `⟨s, hs⟩` from `exists_restrict U k σ₀`. Take `⟨F, ⟨r, hr, σ, f, h₁, h₂, h₃⟩, -⟩` from `(hU k hk).1 s`.
+
+Take `⟨F', hF⟩` from `exists_pull hD _ hG k F`. Take `⟨s', ⟨r', hr', σ', f', h₁', h₂', h₃'⟩, -⟩` from `(hU' k hk).2 F'`. Conclude with `⟨r' * r, _, _, mul_ne_zero hr' hr, scale_of_restrict _ hs h₁ r', hj.agreeAll (fun e => expandsAt_scale _ (h₃ e) _) (fun e => expandsAt_scale _ (h₃' e) _) (integral_rel hD _ hF h₂ h₂')⟩`. Introduce `σ₀`. Take `⟨s', hs⟩` from `exists_restrict U' k σ₀`.
+
+Take `⟨F', ⟨r', hr', σ', f', h₁', h₂', h₃'⟩, -⟩` from `(hU' k hk).1 s'`. Take `⟨F, hF⟩` from `exists_push hD _ hG k F'`. Take `⟨s, ⟨r, hr, σ, f, h₁, h₂, h₃⟩, -⟩` from `(hU k hk).2 F`. Conclude with `⟨r * r', _, _, mul_ne_zero hr hr', scale_of_restrict _ hs h₁' r, hj.agreeAll (fun e => expandsAt_scale _ (h₃ e) _) (fun e => expandsAt_scale _ (h₃' e) _) (integral_rel hD _ hF h₂ h₂')⟩`.
+-/
 theorem LevelIso.enough (hj : LevelIso U U' hD j) (hG : GlobalFnsSt) (hU : ∀ k, 1 ≤ k → U.ExpBij k)
     (hU' : ∀ k, 1 ≤ k → U'.ExpBij k) : Enough U U' hD j := by
   intro k hk
@@ -101,6 +116,17 @@ theorem LevelIso.enough (hj : LevelIso U U' hD j) (hG : GlobalFnsSt) (hU : ∀ k
 
 open LinearUnifIso in
 
+/- English proof (translation)
+Establish `hs : specOf (RingHom.id R) = 𝟙 _` using `specOf_id R`. Use `hD.e_hom` as an intermediate fact. Take `⟨ψ, hψ, eψ⟩` from `exists_hom_of_pullback_id hs hD.e`. Establish `P : ∀ {S : Scheme.{0}} (t : S ⟶ Spec (CommRingCat.of R)) {X Y : Over (Spec (CommRingCat.of R))} (c : X ⟶ Y), ((Over.pullback t).map c).left ≫ pullback.fst Y.hom t = pullback.fst X.hom t ≫ c.left` using `fun e _ _ c => pullback.lift_fst _ _ _`. Establish `hψa : o'.onB.act a ≫ ψ = ψ ≫ o.onB.act a` using `Over.OverMorphism.ext (by`.
+
+Rewrite using `[Over.comp_left, Over.comp_left, eψ, Category.assoc, ← P, ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, hB])`. Take `⟨hm, -, hp, ht⟩` from `hj e`. Establish `hq : (j e).hom ≫ (U.gt e).q = (U'.gt e).q ≫ (Over.pullback (thick R I e)).map ψ`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono (pullback.fst D.toPre.P.A.hom (thick R I e)), Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, P, eψ]`.
+
+Conclude with `hp.symm.trans (Category.assoc _ _ _)`. Take `⟨s, hsi, hsx⟩` from `exists_torus_map (U.gt e) (U'.gt e) _ _ hq hD.w hD.xe (fun x => (ht x).1) (fun x => (ht x).2)`. Take `⟨t, tc, ti⟩` from `lin.i_lin e a`. Take `⟨t', tc', ti'⟩` from `lin'.i_lin e a`. Use `oG.hom a` as an intermediate fact.
+
+Use `oG'.hom a` as an intermediate fact. Establish `hts : t' ≫ s = s ≫ t`. Use `PowTorus.torus_ext _ _ fun χ z => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hD.xe.surjective χ`. Rewrite using `[Over.comp_left, Over.comp_left, gm_torusEnd tc, ← hx, hsx, gm_comp_of_id _ _ _ (hsx x), ← gm_torusEnd tc', Category.id_comp]`.
+
+Use `hom_ext_torus (U.gt e) (U'.gt e) hG _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, lin.q_lin, hq, reassoc_of% hq, reassoc_of% (lin'.q_lin e a), ← Functor.map_comp, ← Functor.map_comp, hψa]`. Rewrite using `[reassoc_of% ti', ← hsi, ← reassoc_of% hsi, ti, reassoc_of% hts]`.
+-/
 theorem LevelIso.act_comm (hj : LevelIso U U' hD j) (hG : GlobalFnsSt) {O : Type} [CommRing O] [StarRing O]
     [Module O D.toPre.X] [Module O D'.toPre.X] {o : D.OAct O} {o' : D'.OAct O} {oA : A.OAct O} {oA' : A'.OAct O}
     {oG : RingAct G O} {oG' : RingAct G' O} (lin : U.OLinear O o oA oG) (lin' : U'.OLinear O o' oA' oG')

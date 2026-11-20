@@ -13,6 +13,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.MBLow
 
+/- English proof (translation)
+Introduce `κ C _ _ _ _ e x g hg m ζ lev k X n π B a b hπ0 hπ1 hfin ha hb hJ hE`. Establish `hA` using `fun i => lattice_series_regroup C X n π (a i) B hπ0 hπ1 hfin (ha i)`. Establish `hB` using `fun i j => lattice_series_regroup C X n π (b i j) B hπ0 hπ1 hfin (hb i j)`. Use `choose Θ hΘb hΘs hΘc using hA`. Use `choose Γ hΓb hΓs hΓc using hB`.
+
+Take `⟨ε, hε, hu⟩` from `hE`. Establish `heπ : e π ≠ 0` using `(map_ne_zero e).2 hπ0`. Establish `hnπ : 0 < ‖e π‖` using `norm_pos_iff.2 heπ`. Use `⟨Θ, Γ, π, max B 0, hπ1, fun i l => ⟨hΘb i l, fun j => hΓb i j l⟩, ?_, ε * ‖e π‖, mul_pos hε hnπ, ?_⟩` and prove the remaining obligations. Establish `h1 : (fun i => ∑' l, PowerSeries.coeff l (Θ i) * π ^ l) = fun i => ∑' α, a i α` using `funext hΘs`.
+
+Establish `h2 : (fun i j => ∑' l, PowerSeries.coeff l (Γ i j) * π ^ l) = fun i j => ∑' α, b i j α`. Use function extensionality and compare the values at `fun i => funext (hΓs i)`. Rewrite using `[h1, h2]`. Conclude with `hJ`. Introduce `u hu0 hul`.
+
+Establish `hv0 : u / e π ≠ 0` using `div_ne_zero hu0 heπ`. Establish `hvl : ‖u / e π‖ < ε` using `by rw [norm_div, div_lt_iff₀ hnπ]; exact hul`. Take `⟨⟨hsa, hsb⟩, x₀, hg₀, lev₀, hJ₀, hk⟩` from `hu (u / e π) hv0 hvl`. Use `⟨fun i => ⟨(hΘc i e u (hsa i)).1, fun j => (hΓc i j e u (hsb i j)).1⟩, x₀, hg₀, lev₀, ?_, hk⟩` and prove the remaining obligations. Establish `h1 : (fun i => ∑' l, e (PowerSeries.coeff l (Θ i)) * u ^ l) = fun i => ∑' α, e (a i α) * (u / e π) ^ n α`.
+
+Use function extensionality and compare the values at `fun i => (hΘc i e u (hsa i)).2`. Establish `h2 : (fun i j => ∑' l, e (PowerSeries.coeff l (Γ i j)) * u ^ l) = fun i j => ∑' α, e (b i j α) * (u / e π) ^ n α`. Use function extensionality and compare the values at `fun i => funext fun j => (hΓc i j e u (hsb i j)).2`. Rewrite using `[h1, h2]`. Conclude with `hJ₀`.
+-/
 theorem deform_of_lattice_series : ∀ (κ : Rule) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C]
     [CharZero C] (e : C →+* ℂ) (x : KeyIn C) (g : ℕ) (hg : x.P.g = g) (m : ℕ) (ζ : Cˣ)
     (lev : Out.Level x.P (m ^ 2) (unitOn ζ)) (k : C) (X : Type) (n : X → ℕ) (π : C) (B : ℝ)

@@ -23,6 +23,13 @@ def Om (ξ : Fin r → E) (x : Frame X.Ψ r) {n : ℕ} (ω : Module.Basis (Fin n
 
 variable {ξ : Fin r → E} {x : Frame X.Ψ r} {n : ℕ} (ω : Module.Basis (Fin n) ℝ (X.Ψ → ℝ))
 
+/- English proof (translation)
+Take `⟨ho, hc⟩` from `AdmissibleHermitianColumns.admissibleImaginary_open_convex (X := X) (ξ := ξ) x hx`. Establish `hcont : Continuous (fun b : Fin n → ℝ => fun τ : X.Ψ => ∑ j, b j * ω j τ)`. Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Conclude with `continuous_finset_sum _ fun j _ => (continuous_apply j).mul continuous_const`. Use `⟨ho.preimage hcont, ?_⟩` and prove the remaining obligations.
+
+Establish `hconv : Convex ℝ (Om X ξ x ω)`. Introduce `a ha b hb s t hs ht hst`. Use `show (fun τ => ∑ j, (s • a + t • b) j * ω j τ) ∈ AdmissibleHermitianColumns.admissibleImaginary X ξ x`. Establish `e : (fun τ => ∑ j, (s • a + t • b) j * ω j τ) = s • (fun τ => ∑ j, a j * ω j τ) + t • (fun τ => ∑ j, b j * ω j τ)`. Use function extensionality and compare the values at `τ`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[e]`. Conclude with `hc ha hb hs ht hst`. Conclude with `hconv.isPreconnected`.
+-/
 theorem Om_open_conn (hx : x ∈ X.dom) : IsOpen (Om X ξ x ω) ∧ IsPreconnected (Om X ξ x ω) := by
   obtain ⟨ho, hc⟩ := AdmissibleHermitianColumns.admissibleImaginary_open_convex (X := X) (ξ := ξ) x hx
   have hcont : Continuous (fun b : Fin n → ℝ => fun τ : X.Ψ => ∑ j, b j * ω j τ) := by
@@ -41,6 +48,15 @@ theorem Om_open_conn (hx : x ∈ X.dom) : IsOpen (Om X ξ x ω) ∧ IsPreconnect
     exact hc ha hb hs ht hst
   exact hconv.isPreconnected
 
+/- English proof (translation)
+Establish `he : X.IsIsoV (fun τ => Data.emb τ.1 ξ)` using `fun τ => ⟨by rw [ReciprocityTheory.ChartRestriction.G.FD.hermC_emb, hξ.2.1, map_zero], ReciprocityTheory.ChartRestriction.G.FD.emb_ne_zero τ.1 hξ.2.2⟩`. Establish `h1` using `AdmissibleHermitianColumns.flow_mem_dom_iff (X := X) hξ.2.1 x hx (fun τ => (y τ : ℂ) * I)`. Establish `h1' : X.flow ξ (fun τ => (y τ : ℂ) * I) x ∈ X.dom ↔ y ∈ AdmissibleHermitianColumns.admissibleImaginary X ξ x`. Rewrite using `[h1]`. Apply `iff_of_eq` to reduce the goal to its premises.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules. Establish `h2` using `((flowDomainCriterion_holds (E := E)) r X (fun τ => Data.emb τ.1 ξ) he x hx (fun τ => (y τ : ℂ) * I)).1`. Establish `hfl : X.flow ξ (fun τ => (y τ : ℂ) * I) x = X.flowV (fun τ => Data.emb τ.1 ξ) (fun τ => (y τ : ℂ) * I) x` using `rfl`.
+
+Rewrite using `[← h1', hfl, h2]`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Simplify using `only [Data.ttV, Complex.mul_I_im, Complex.ofReal_re]`. Rewrite using `[div_div_eq_mul_div, div_one]`. Establish `e : y τ * (X.c τ * X.maj x τ (Data.emb τ.1 ξ)) = X.c τ * y τ * X.maj x τ (Data.emb τ.1 ξ)`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+-/
 theorem mem_admissibleImaginary_iff (hx : x ∈ X.dom) (hξ : X.IsIso ξ) (y : X.Ψ → ℝ) :
     y ∈ AdmissibleHermitianColumns.admissibleImaginary X ξ x ↔ ∀ τ, 0 < 1 + X.c τ * y τ * X.maj x τ (Data.emb τ.1 ξ) := by
   have he : X.IsIsoV (fun τ => Data.emb τ.1 ξ) := fun τ =>
@@ -64,6 +80,9 @@ theorem mem_admissibleImaginary_iff (hx : x ∈ X.dom) (hξ : X.IsIso ξ) (y : X
     ring
   rw [e]
 
+/- English proof (translation)
+Use `show (fun τ => ∑ j, (0 : Fin n → ℝ) j * ω j τ) ∈ AdmissibleHermitianColumns.admissibleImaginary X ξ x`. Simplify using `only [AdmissibleHermitianColumns.admissibleImaginary, Set.mem_setOf_eq]`. Introduce `τ i`. Establish `h` using `(hx τ).2 i`. Simplify `h` using `[dmin]`.
+-/
 theorem zero_mem_Om (hx : x ∈ X.dom) (hξ : X.IsIso ξ) : (0 : Fin n → ℝ) ∈ Om X ξ x ω := by
   show (fun τ => ∑ j, (0 : Fin n → ℝ) j * ω j τ) ∈ AdmissibleHermitianColumns.admissibleImaginary X ξ x
   simp only [AdmissibleHermitianColumns.admissibleImaginary, Set.mem_setOf_eq]
@@ -71,6 +90,11 @@ theorem zero_mem_Om (hx : x ∈ X.dom) (hξ : X.IsIso ξ) : (0 : Fin n → ℝ) 
   have h := (hx τ).2 i
   simpa [dmin] using h
 
+/- English proof (translation)
+Use `(AdmissibleHermitianColumns.flow_mem_dom_iff (X := X) hξ.2.1 x hx (fun τ => ∑ j, u j * (ω j τ : ℂ))).2 ?_` and prove the remaining obligations. Establish `e : (fun τ => (∑ j, u j * (ω j τ : ℂ)).im) = fun τ => ∑ j, (u j).im * ω j τ`. Use function extensionality and compare the values at `τ`. Simplify using `[Complex.im_sum, Complex.mul_im]`. Rewrite using `[e]`.
+
+Conclude with `hu`.
+-/
 theorem tube_dom (hx : x ∈ X.dom) (hξ : X.IsIso ξ) {u : Fin n → ℂ}
     (hu : u ∈ ReciprocityTheory.L2DbarEstimates.Y.tube n (Om X ξ x ω)) :
     X.flow ξ (fun τ => ∑ j, u j * (ω j τ : ℂ)) x ∈ X.dom := by
@@ -81,6 +105,9 @@ theorem tube_dom (hx : x ∈ X.dom) (hξ : X.IsIso ξ) {u : Fin n → ℂ}
   rw [e]
   exact hu
 
+/- English proof (translation)
+Establish `hL : Differentiable ℂ (fun t : Fin n → ℂ => fun τ : X.Ψ => ∑ j, t j * (ω j τ : ℂ))`. Use `differentiable_pi.2 fun τ => ?_` and prove the remaining obligations. Conclude with `Differentiable.fun_sum fun j _ => (differentiable_apply j).mul (differentiable_const _)`. Establish `hF : Differentiable ℂ (fun t : Fin n → ℂ => X.flow ξ (fun τ => ∑ j, t j * (ω j τ : ℂ)) x)` using `(FlowMeanContinuity.flow_differentiable X ξ x).comp hL`. Conclude with `hP.1.comp hF.differentiableOn (fun t ht => tube_dom X ω hx hξ ht)`.
+-/
 theorem hfun_diff (P : Frame X.Ψ r → ℂ) (la : Wt X.Ψ r) (hP : X.IsSec la P) (hx : x ∈ X.dom)
     (hξ : X.IsIso ξ) :
     DifferentiableOn ℂ (hfun X P ξ x ω) (ReciprocityTheory.L2DbarEstimates.Y.tube n (Om X ξ x ω)) := by
@@ -91,6 +118,17 @@ theorem hfun_diff (P : Frame X.Ψ r → ℂ) (la : Wt X.Ψ r) (hP : X.IsSec la P
     (FlowMeanContinuity.flow_differentiable X ξ x).comp hL
   exact hP.1.comp hF.differentiableOn (fun t ht => tube_dom X ω hx hξ ht)
 
+/- English proof (translation)
+Introduce `s hs m`. Establish `hS` using `tube_dom X ω hx hξ hs`. Establish `hp : (fun τ => ∑ j, (m j : ℝ) * ω j τ) ∈ X.periods la`. Establish `h1 : (fun τ => ∑ j, (m j : ℝ) * ω j τ) ∈ RealEmbeddingCharacters.perL X la`. Rewrite using `[← hω]`.
+
+Establish `e : (fun τ => ∑ j, (m j : ℝ) * ω j τ) = ∑ j, (m j) • ω j`. Use function extensionality and compare the values at `τ`. Simplify using `[Finset.sum_apply, zsmul_eq_mul]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+
+Use `first`. Consider the case `exact h1`. Consider the case `exact (AddSubgroup.mem_toIntSubmodule _).mp h1`. Establish `hsum : (fun τ => ∑ j, (s + fun k => (m k : ℂ)) j * (ω j τ : ℂ)) = TransvectionPeriodicity.cR X (fun τ => ∑ j, (m j : ℝ) * ω j τ) + fun τ => ∑ j, s j * (ω j τ : ℂ)`. Use function extensionality and compare the values at `τ`.
+
+Simplify using `only [Pi.add_apply, TransvectionPeriodicity.cR]`. Use `push_cast`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `show P (X.flow ξ (fun τ => ∑ j, (s + fun k => (m k : ℂ)) j * (ω j τ : ℂ)) x) = P (X.flow ξ (fun τ => ∑ j, s j * (ω j τ : ℂ)) x)`.
+
+Use `first`. Consider the case `rw [hsum, ← EmbeddingHermitianPairs.flow_flow (X := X) hξ.2.1]`. Consider the case `rw [hsum, ← AdmissibleHermitianColumns.flow_flow (X := X) hξ.2.1]`. Conclude with `TransvectionPeriodicity.sec_periodic X la P hP hξ.1 hξ.2.1 hp _ hS`.
+-/
 theorem hfun_periodic (P : Frame X.Ψ r → ℂ) (la : Wt X.Ψ r) (hP : X.IsSec la P) (hx : x ∈ X.dom)
     (hξ : X.IsIso ξ) (hω : Submodule.span ℤ (Set.range ω) = RealEmbeddingCharacters.perL X la) :
     ∀ s ∈ ReciprocityTheory.L2DbarEstimates.Y.tube n (Om X ξ x ω), ∀ m : Fin n → ℤ,
@@ -122,6 +160,11 @@ theorem hfun_periodic (P : Frame X.Ψ r → ℂ) (la : Wt X.Ψ r) (hP : X.IsSec 
     | rw [hsum, ← AdmissibleHermitianColumns.flow_flow (X := X) hξ.2.1]
   exact TransvectionPeriodicity.sec_periodic X la P hP hξ.1 hξ.2.1 hp _ hS
 
+/- English proof (translation)
+Establish `hmem : (fun k => (y k : ℂ) + (b k : ℂ) * I) ∈ ReciprocityTheory.L2DbarEstimates.Y.tube n (Om X ξ x ω)` using `by show (fun k => ((y k : ℂ) + (b k : ℂ) * I).im) ∈ Om X ξ x ω`. Simplify using `using hb`. Establish `h` using `hfun_periodic X ω P la hP hx hξ hω _ hmem (fun k => -⌊y k⌋)`. Rewrite using `[← h]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, Int.fract, Complex.ofReal_sub, Complex.ofReal_intCast, Int.cast_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem slice_fract (P : Frame X.Ψ r → ℂ) (la : Wt X.Ψ r) (hP : X.IsSec la P) (hx : x ∈ X.dom)
     (hξ : X.IsIso ξ) (hω : Submodule.span ℤ (Set.range ω) = RealEmbeddingCharacters.perL X la)
     {b : Fin n → ℝ} (hb : b ∈ Om X ξ x ω) (y : Fin n → ℝ) :
@@ -139,6 +182,9 @@ theorem slice_fract (P : Frame X.Ψ r → ℂ) (la : Wt X.Ψ r) (hP : X.IsSec la
 
 noncomputable def Bω : ℝ := ∑ τ : X.Ψ, ∑ j, |ω j τ|
 
+/- English proof (translation)
+The claim follows from `|∑ j, u j * ω j τ| ≤ Bω X ω := by unfold Bω calc |∑ j, u j * ω j τ| ≤ ∑ j, |u j * ω j τ| := Finset.abs_sum_le_sum_abs _ _ _ ≤ ∑ j, |ω j τ| := by refine Finset.sum_le_sum fun j _ => ?_ rw [abs_mul, abs_of_nonneg (hu j).1] exact mul_le_of_le_one_left (abs_nonneg _) (hu j).2 _ ≤ ∑ τ …`.
+-/
 theorem re_bound (u : Fin n → ℝ) (hu : ∀ j, 0 ≤ u j ∧ u j ≤ 1) (τ : X.Ψ) :
     |∑ j, u j * ω j τ| ≤ Bω X ω := by
   unfold Bω
@@ -151,6 +197,9 @@ theorem re_bound (u : Fin n → ℝ) (hu : ∀ j, 0 ≤ u j ∧ u j ≤ 1) (τ :
         Finset.single_le_sum (f := fun τ' => ∑ j, |ω j τ'|)
           (fun τ' _ => Finset.sum_nonneg fun j _ => abs_nonneg _) (Finset.mem_univ τ)
 
+/- English proof (translation)
+Unfold `Bω`. Conclude with `Finset.sum_nonneg fun τ _ => Finset.sum_nonneg fun j _ => abs_nonneg _`.
+-/
 theorem Bω_nonneg : 0 ≤ Bω X ω := by
   unfold Bω
   exact Finset.sum_nonneg fun τ _ => Finset.sum_nonneg fun j _ => abs_nonneg _

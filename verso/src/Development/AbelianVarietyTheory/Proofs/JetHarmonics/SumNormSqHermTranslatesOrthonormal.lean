@@ -7,6 +7,9 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.MomentParseval
 
+/- English proof (translation)
+Use `push_cast`. Unfold `dotProduct`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.mul_conj']`.
+-/
 lemma sum_norm_sq_eq {ι : Type} [Fintype ι] (v : ι → ℂ) :
     ((∑ i, ‖v i‖ ^ 2 : ℝ) : ℂ) = v ⬝ᵥ star v := by
   push_cast
@@ -14,12 +17,18 @@ lemma sum_norm_sq_eq {ι : Type} [Fintype ι] (v : ι → ℂ) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [Pi.star_apply, Complex.star_def, Complex.mul_conj']
 
+/- English proof (translation)
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[sum_norm_sq_eq, sum_norm_sq_eq, Matrix.star_vecMul, star_star, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hV, Matrix.one_mulVec, dotProduct_comm]`.
+-/
 lemma sum_vecMul {ι : Type} [Fintype ι] [DecidableEq ι] (V : Matrix ι ι ℂ) (hV : V * Vᴴ = 1) (y : ι → ℂ) :
     ∑ e, ‖(star y ᵥ* V) e‖ ^ 2 = ∑ i, ‖y i‖ ^ 2 := by
   apply Complex.ofReal_injective
   rw [sum_norm_sq_eq, sum_norm_sq_eq, Matrix.star_vecMul, star_star, ← Matrix.dotProduct_mulVec,
     Matrix.mulVec_mulVec, hV, Matrix.one_mulVec, dotProduct_comm]
 
+/- English proof (translation)
+Establish `e : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Establish `h1 : g * g⁻¹ = 1` using `PI.QuotSetU.UnitaryGroupMassFormula.SW.mul_inv_UH (k := k) (r := r) hg`. Establish `h2 : (g⁻¹)ᴴ * gᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Use `show (g⁻¹)ᴴ * Formalism.QuantumDeterminants.Hpk k r * g⁻¹ = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma inv_mem {k r : ℕ} {g : Mx k r} (hg : g ∈ GG k r) : g⁻¹ ∈ GG k r := by
   have e : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r := hg
   have h1 : g * g⁻¹ = 1 := PI.QuotSetU.UnitaryGroupMassFormula.SW.mul_inv_UH (k := k) (r := r) hg
@@ -29,6 +38,17 @@ lemma inv_mem {k r : ℕ} {g : Mx k r} (hg : g ∈ GG k r) : g⁻¹ ∈ GG k r :
     _ = ((g⁻¹)ᴴ * gᴴ) * Formalism.QuantumDeterminants.Hpk k r * (g * g⁻¹) := by simp only [Matrix.mul_assoc]
     _ = _ := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `k r ι _ _ ρ Γ U d om hρ hU g hg`. Take `⟨hΓ, hΓ2, h1, hmul, hinv, -⟩` from `hρ`. Establish `hg'` using `inv_mem hg`. Establish `hgg : g * g⁻¹ = 1` using `PI.QuotSetU.UnitaryGroupMassFormula.SW.mul_inv_UH (k := k) (r := r) hg`. Establish `hAB : ρ g * ρ g⁻¹ = 1` using `by rw [← hmul g hg _ hg', hgg, h1]`.
+
+Establish `hBA : (ρ g⁻¹)ᴴ * (ρ g)ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hAB, Matrix.conjTranspose_one]`. Establish `key : Γ * ρ g = (ρ g⁻¹)ᴴ * Γ`. Combine the equalities or inequalities in the displayed calculation. Establish `hUU : Uᵀ * (Uᵀ)ᴴ = 1`. Establish `h0 : Uᴴ * U = 1` using `(Matrix.mem_unitaryGroup_iff').1 hU`.
+
+Establish `h3` using `congrArg Matrix.transpose h0`. Rewrite `h3` using `[Matrix.transpose_mul, Matrix.transpose_one]`. Conclude with `h3`. Establish `hV : (Γ * Uᵀ) * (Γ * Uᵀ)ᴴ = 1`. Rewrite using `[Matrix.conjTranspose_mul, hΓ, Matrix.mul_assoc, ← Matrix.mul_assoc Uᵀ, hUU, Matrix.one_mul, hΓ2]`.
+
+Rewrite using `[← sum_vecMul (Γ * Uᵀ) hV (ρ g⁻¹ *ᵥ om)]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Use `congr 2`. Unfold `Formalism.QuantumDeterminants.herm`. Rewrite using `[Matrix.mulVec_mulVec, key, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec, Matrix.dotProduct_mulVec, ← Matrix.vecMul_vecMul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sum_herm_sq : ∀ (k r : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (ρ : Mx k r → Matrix ι ι ℂ) (Γ U : Matrix ι ι ℂ) (d : ℕ) (om : ι → ℂ), IsFRep ρ Γ d → U ∈ Matrix.unitaryGroup ι ℂ → ∀ g ∈ GG k r, ∑ e, ‖Formalism.QuantumDeterminants.herm Γ (ρ g *ᵥ (fun c => U e c)) om‖ ^ 2 = ∑ i, ‖(ρ g⁻¹ *ᵥ om) i‖ ^ 2 := by
   intro k r ι _ _ ρ Γ U d om hρ hU g hg
   obtain ⟨hΓ, hΓ2, h1, hmul, hinv, -⟩ := hρ

@@ -9,6 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `haveI := x.isPrime`. Use `haveI := y.isPrime`. Rewrite using `[IsLocalRing.eq_maximalIdeal (IsArtinianRing.isMaximal_of_isPrime x.asIdeal), IsLocalRing.eq_maximalIdeal (IsArtinianRing.isMaximal_of_isPrime y.asIdeal)]`.
+-/
 theorem spec_localArtinian_point_eq (P : CommRingCat.{0}) [IsLocalRing P] [IsArtinianRing P]
     (x y : Spec P) : x = y := by
   apply PrimeSpectrum.ext
@@ -17,10 +20,34 @@ theorem spec_localArtinian_point_eq (P : CommRingCat.{0}) [IsLocalRing P] [IsArt
   rw [IsLocalRing.eq_maximalIdeal (IsArtinianRing.isMaximal_of_isPrime x.asIdeal),
     IsLocalRing.eq_maximalIdeal (IsArtinianRing.isMaximal_of_isPrime y.asIdeal)]
 
+/- English proof (translation)
+Introduce `x y h` and use `PrimeSpectrum.comap_injective_of_surjective f.hom hf h`.
+-/
 theorem spec_map_injective_of_surjective {R S : CommRingCat.{0}} (f : R ⟶ S) (hf : Function.Surjective f) :
     Function.Injective (Spec.map f) := fun x y h =>
   PrimeSpectrum.comap_injective_of_surjective f.hom hf h
 
+/- English proof (translation)
+Introduce `P B₁ B₂ B₀ f₁ f₂ g₁ g₂ hP hloc hart hs₁ hs₂ hnt Z a b hab`. Establish `hnt₁ : Nontrivial B₁` using `RingHom.domain_nontrivial g₁.hom`. Establish `hnt₂ : Nontrivial B₂` using `RingHom.domain_nontrivial g₂.hom`. Take `⟨y₀⟩ : Nonempty (Spec B₀)` from `inferInstanceAs (Nonempty (PrimeSpectrum B₀))`. Establish `hone₁ : ∀ y y' : Spec B₁, y = y'` using `fun y y' => spec_map_injective_of_surjective f₁ hs₁ (spec_localArtinian_point_eq P _ _)`.
+
+Establish `hone₂ : ∀ y y' : Spec B₂, y = y'` using `fun y y' => spec_map_injective_of_surjective f₂ hs₂ (spec_localArtinian_point_eq P _ _)`. Take `⟨V, hV, hzV, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := a (Spec.map g₁ y₀)) trivial`. Establish `hza : Set.range a ⊆ Set.range hV.fromSpec`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[hV.range_fromSpec, hone₁ y (Spec.map g₁ y₀)]`.
+
+Conclude with `hzV`. Establish `hzb : Set.range b ⊆ Set.range hV.fromSpec`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[hV.range_fromSpec, hone₂ y (Spec.map g₂ y₀)]`. Establish `: b (Spec.map g₂ y₀) = a (Spec.map g₁ y₀)`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hab]`. Rewrite using `[this]`. Conclude with `hzV`. Use `haveI := hV.isOpenImmersion_fromSpec`. Use `set φ₁ := Spec.preimage (IsOpenImmersion.lift hV.fromSpec a hza) with hφ₁`.
+
+Use `set φ₂ := Spec.preimage (IsOpenImmersion.lift hV.fromSpec b hzb) with hφ₂`. Establish `ha : Spec.map φ₁ ≫ hV.fromSpec = a`. Rewrite using `[hφ₁, Spec.map_preimage, IsOpenImmersion.lift_fac]`. Establish `hb : Spec.map φ₂ ≫ hV.fromSpec = b`. Rewrite using `[hφ₂, Spec.map_preimage, IsOpenImmersion.lift_fac]`.
+
+Establish `hφ : φ₁ ≫ g₁ = φ₂ ≫ g₂`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono hV.fromSpec, Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, ha, hb, hab]`. Establish `key : ∀ w : Spec P ⟶ Z, Spec.map f₁ ≫ w = a → Spec.map f₂ ≫ w = b → w = Spec.map (hP.lift φ₁ φ₂ hφ) ≫ hV.fromSpec`. Introduce `w hw₁ hw₂`.
+
+Establish `hr : Set.range w ⊆ Set.range hV.fromSpec`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[spec_localArtinian_point_eq P x (Spec.map f₁ (Spec.map g₁ y₀)), ← Scheme.Hom.comp_apply, hw₁]`. Conclude with `hza ⟨_, rfl⟩`. Rewrite using `[← IsOpenImmersion.lift_fac hV.fromSpec w hr, ← Spec.map_preimage (IsOpenImmersion.lift hV.fromSpec w hr)]`.
+
+Use `congr 2`. Apply `hP.hom_ext` to reduce the goal to its premises. Rewrite using `[IsPullback.lift_fst]`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono hV.fromSpec, Spec.map_comp, Category.assoc, Spec.map_preimage, IsOpenImmersion.lift_fac, hw₁, ha]`.
+
+Rewrite using `[IsPullback.lift_snd]`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono hV.fromSpec, Spec.map_comp, Category.assoc, Spec.map_preimage, IsOpenImmersion.lift_fac, hw₂, hb]`. Use `⟨Spec.map (hP.lift φ₁ φ₂ hφ) ≫ hV.fromSpec, ⟨?_, ?_⟩, fun w hw => key w hw.1 hw.2⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp, IsPullback.lift_fst, ha]`.
+
+Rewrite using `[← Category.assoc, ← Spec.map_comp, IsPullback.lift_snd, hb]`.
+-/
 theorem spec_pullback_localArtinian_glue_existsUnique : ∀ (P B₁ B₂ B₀ : CommRingCat.{0}) (f₁ : P ⟶ B₁) (f₂ : P ⟶ B₂) (g₁ : B₁ ⟶ B₀) (g₂ : B₂ ⟶ B₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective f₁ → Function.Surjective f₂ → Nontrivial B₀ → ∀ (Z : Scheme.{0}) (a : Spec B₁ ⟶ Z) (b : Spec B₂ ⟶ Z), Spec.map g₁ ≫ a = Spec.map g₂ ≫ b → ∃! w : Spec P ⟶ Z, Spec.map f₁ ≫ w = a ∧ Spec.map f₂ ≫ w = b := by
   intro P B₁ B₂ B₀ f₁ f₂ g₁ g₂ hP hloc hart hs₁ hs₂ hnt Z a b hab
   have hnt₁ : Nontrivial B₁ := RingHom.domain_nontrivial g₁.hom

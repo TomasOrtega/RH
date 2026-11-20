@@ -16,10 +16,16 @@ namespace GlobalTheory.Core.Rk.VacBox
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (by rw [gram_hdbl, dblGram, blkMat_mul, neg_mul_neg, Matrix.nonsing_inv_mul _ (isHermND_gram A).2.isUnit, blkMat_one])`.
+-/
 theorem gram_dbl_inv (A : HSp D) : (dblSp A).gram⁻¹ = blkMat finSumFinEquiv A.gram⁻¹ (-A.gram⁻¹) :=
   Matrix.inv_eq_left_inv (by
     rw [gram_hdbl, dblGram, blkMat_mul, neg_mul_neg, Matrix.nonsing_inv_mul _ (isHermND_gram A).2.isUnit, blkMat_one])
 
+/- English proof (translation)
+Simplify using `only [hO]`. Rewrite using `[gram_dbl_inv]`. Simplify using `only [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, resL, resR, Matrix.of_apply, blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_ap …`.
+-/
 theorem hO_dbl (A B : HSp D) (x y : WO (dblSp A) B) :
     hO (dblSp A) B x y = hO A B (resL A B x) (resL A B y) - hO A B (resR A B x) (resR A B y) := by
   simp only [hO]
@@ -29,19 +35,34 @@ theorem hO_dbl (A B : HSp D) (x y : WO (dblSp A) B) :
     Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, map_zero,
     map_neg, zero_mul, Finset.sum_const_zero, add_zero, zero_add, neg_mul, Finset.sum_neg_distrib, sub_eq_add_neg]
 
+/- English proof (translation)
+Simplify using `only [hO, Matrix.neg_apply, map_neg, mul_neg, neg_mul, neg_neg]`.
+-/
 theorem hO_neg_neg (A B : HSp D) (x y : WO A B) : hO A B (-x) (-y) = hO A B x y := by
   simp only [hO, Matrix.neg_apply, map_neg, mul_neg, neg_mul, neg_neg]
 
+/- English proof (translation)
+Simplify using `only [symplOH, symplO, hO_dbl, mul_sub, map_sub]`.
+-/
 theorem symplOH_dbl (A B : HSp D) (x y : WO (dblSp A) B) :
     symplOH (dblSp A) B x y = symplOH A B (resL A B x) (resL A B y) - symplOH A B (resR A B x) (resR A B y) := by
   simp only [symplOH, symplO, hO_dbl, mul_sub, map_sub]
 
+/- English proof (translation)
+Simplify using `only [symplOH, symplO, hO_neg_neg]`.
+-/
 theorem symplOH_neg_neg (A B : HSp D) (x y : WO A B) : symplOH A B (-x) (-y) = symplOH A B x y := by
   simp only [symplOH, symplO, hO_neg_neg]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => rfl`.
+-/
 theorem resL_add (A B : HSp D) (x y : WO (dblSp A) B) : resL A B (x + y) = resL A B x + resL A B y :=
   Matrix.ext fun _ _ => rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => rfl`.
+-/
 theorem resR_add (A B : HSp D) (x y : WO (dblSp A) B) : resR A B (x + y) = resR A B x + resR A B y :=
   Matrix.ext fun _ _ => rfl
 
@@ -55,11 +76,17 @@ def resRHom (A B : HSp D) : WO (dblSp A) B →+ WO A B where
   map_zero' := Matrix.ext fun _ _ => rfl
   map_add' := resR_add A B
 
+/- English proof (translation)
+Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ, one_pow, inv_one, Complex.ofReal_one, mul_one]`.
+-/
 theorem conj_psi_eq {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ x, ‖ψ x‖ = 1) (z : AF D.host.F) :
     conj (ψ z) = ψ (-z) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ, one_pow, inv_one, Complex.ofReal_one,
     mul_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [heisO, GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.delta, resL_add, resR_add, map_mul, conj_psi_eq hψ, symplOH_dbl, symplOH_neg_neg, neg_add]`. Rewrite using `[sub_eq_add_neg, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_delta {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ x, ‖ψ x‖ = 1) (A B : HSp D) (w₀ : WO (dblSp A) B)
     (f₁ f₂ : WO A B → ℂ) :
     heisO ψ (dblSp A) B w₀ (delta A B f₁ f₂) =
@@ -69,6 +96,9 @@ theorem heisO_delta {ψ : AddChar (AF D.host.F) ℂ} (hψ : ∀ x, ‖ψ x‖ = 
   rw [sub_eq_add_neg, AddChar.map_add_eq_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[gram_hdbl]`. Simplify using `only [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, dblGram, blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero]`.
+-/
 theorem sum_dbl_gram_inl (A : HSp D) (s : Fin (dblSp A).rank → D.host.E) (j : Fin A.rank) :
     ∑ k, star (s k) * (dblSp A).gram k (finSumFinEquiv (Sum.inl j)) =
       ∑ k, star ((fun k => s (finSumFinEquiv (Sum.inl k))) k) * A.gram k j := by
@@ -77,6 +107,9 @@ theorem sum_dbl_gram_inl (A : HSp D) (s : Fin (dblSp A).rank → D.host.E) (j : 
     Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, mul_zero,
     Finset.sum_const_zero, add_zero]
 
+/- English proof (translation)
+Rewrite using `[gram_hdbl]`. Simplify using `only [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, dblGram, blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, zero_add, Matrix.neg_apply, Pi.neg_apply, star_neg, mu …`.
+-/
 theorem sum_dbl_gram_inr (A : HSp D) (s : Fin (dblSp A).rank → D.host.E) (j : Fin A.rank) :
     ∑ k, star (s k) * (dblSp A).gram k (finSumFinEquiv (Sum.inr j)) =
       ∑ k, star ((-fun k => s (finSumFinEquiv (Sum.inr k))) k) * A.gram k j := by
@@ -85,6 +118,13 @@ theorem sum_dbl_gram_inr (A : HSp D) (s : Fin (dblSp A).rank → D.host.E) (j : 
     Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero,
     Finset.sum_const_zero, zero_add, Matrix.neg_apply, Pi.neg_apply, star_neg, mul_neg, neg_mul]
 
+/- English proof (translation)
+Establish `key : latO (dblSp A) B (sumLat finSumFinEquiv LA LA : Lat (dblSp A)) LB P ≤ (latO A B LA LB P).comap (resLHom A B) ⊓ (latO A B LA LB P).comap (resRHom A B)`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩`. Use `⟨AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, fun k => s (finSumFinEquiv (Sum.inl k)), hs.1, t, ht, ?_⟩, AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, -fun k => s (finSumFinEquiv (Sum.inr k)), neg_mem hs.2, t, ht, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `only [resLHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, resL, Matrix.of_apply]`. Conclude with `congrArg (fun z => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * z)) (sum_dbl_gram_inl A s j)`. Use extensionality with `i j`. Simplify using `only [resRHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, resR, Matrix.of_apply]`. Conclude with `congrArg (fun z => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * z)) (sum_dbl_gram_inr A s j)`.
+
+Conclude with `key hu`.
+-/
 theorem res_mem_latO {A B : HSp D} {LA : Lat A} {LB : Lat B} {P : FinPl D → Prop} {u : WO (dblSp A) B}
     (hu : u ∈ latO (dblSp A) B (sumLat finSumFinEquiv LA LA : Lat (dblSp A)) LB P) :
     resL A B u ∈ latO A B LA LB P ∧ resR A B u ∈ latO A B LA LB P := by
@@ -104,12 +144,18 @@ theorem res_mem_latO {A B : HSp D} {LA : Lat A} {LB : Lat B} {P : FinPl D → Pr
       exact congrArg (fun z => pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * z)) (sum_dbl_gram_inr A s j)
   exact key hu
 
+/- English proof (translation)
+Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `w ⟨α, hα, hP, rest⟩`. Use `⟨α, hα, fun v' hv' => hP v' fun h => hv' (h ▸ hv), rest⟩` and prove the remaining obligations.
+-/
 theorem latO_mono_at {A B : HSp D} (LA : Lat A) (LB : Lat B) {Sf : Finset (FinPl D)} {v : FinPl D} (hv : v ∉ Sf) :
     latO A B LA LB (fun u => u = v) ≤ latO A B LA LB (fun u => u ∉ Sf) := by
   refine AddSubgroup.closure_mono ?_
   rintro w ⟨α, hα, hP, rest⟩
   refine ⟨α, hα, fun v' hv' => hP v' fun h => hv' (h ▸ hv), rest⟩
 
+/- English proof (translation)
+Rewrite using `[gram_hdbl]`. Simplify using `only [← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, dblGram, blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, mul_zero, zero_ …`.
+-/
 theorem pair_dbl (A : HSp D) (x y : Fin (dblSp A).rank → D.host.E) :
     ∑ i, ∑ j, star (x i) * (dblSp A).gram i j * y j =
       (∑ i, ∑ j, star (x (finSumFinEquiv (Sum.inl i))) * A.gram i j * y (finSumFinEquiv (Sum.inl j))) -
@@ -120,6 +166,17 @@ theorem pair_dbl (A : HSp D) (x y : Fin (dblSp A).rank → D.host.E) :
     Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, mul_zero, zero_mul, Finset.sum_const_zero,
     add_zero, zero_add, mul_neg, neg_mul, Finset.sum_neg_distrib, sub_eq_add_neg]
 
+/- English proof (translation)
+Use `haveI := hL.1`. Use `⟨isLattice_sumLat L L, fun y => ⟨fun hy x hx => ?_, fun H => ?_⟩⟩` and prove the remaining obligations. Take `⟨b₁, hb₁⟩` from `(hL.2 (fun i => y (finSumFinEquiv (Sum.inl i)))).1 hy.1 (fun i => x (finSumFinEquiv (Sum.inl i))) hx.1`. Take `⟨b₂, hb₂⟩` from `(hL.2 (fun i => y (finSumFinEquiv (Sum.inr i)))).1 hy.2 (fun i => x (finSumFinEquiv (Sum.inr i))) hx.2`. Use `⟨b₁ - b₂, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pair_dbl]`. Use `push_cast`. Take the linear combination `hb₁ - hb₂`. Use `⟨(hL.2 _).2 fun x hx => ?_, (hL.2 _).2 fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `H (pairVec finSumFinEquiv x 0) ((pairVec_mem_sumLat _).2 ⟨hx, zero_mem _⟩)`.
+
+Rewrite `hb` using `[pair_dbl]`. Simplify using `only [pairVec_inl, pairVec_inr, Pi.zero_apply, star_zero, zero_mul, Finset.sum_const_zero, sub_zero] at hb`. Use `⟨b, ?_⟩` and prove the remaining obligations. Use `show (b : D.host.E) = ∑ i, ∑ j, star (x i) * A.gram i j * y (finSumFinEquiv (Sum.inl j))`. Conclude with `hb`.
+
+Take `⟨b, hb⟩` from `H (pairVec finSumFinEquiv 0 x) ((pairVec_mem_sumLat _).2 ⟨zero_mem _, hx⟩)`. Rewrite `hb` using `[pair_dbl]`. Simplify using `only [pairVec_inl, pairVec_inr, Pi.zero_apply, star_zero, zero_mul, Finset.sum_const_zero, zero_sub] at hb`. Use `⟨-b, ?_⟩` and prove the remaining obligations. Use `show ((-b : 𝓞 D.host.E) : D.host.E) = ∑ i, ∑ j, star (x i) * A.gram i j * y (finSumFinEquiv (Sum.inr j))`.
+
+Use `push_cast`. Take the linear combination `-hb`.
+-/
 theorem selfDual_sumLat {A : HSp D} {L : Lat A} (hL : IsSelfDualC A L) :
     IsSelfDualC (dblSp A) (sumLat finSumFinEquiv L L) := by
   haveI := hL.1
@@ -147,6 +204,15 @@ theorem selfDual_sumLat {A : HSp D} {L : Lat A} (hL : IsSelfDualC A L) :
       push_cast
       linear_combination -hb
 
+/- English proof (translation)
+Introduce `D ψ A B LA LB hψ hLA`. Establish `hn : ∀ x, ‖ψ x‖ = 1` using `hψ.1.2.1`. Use `⟨selfDual_sumLat hLA, ?_⟩` and prove the remaining obligations. Introduce `Sf Φ₁ Φ₂ h₁ h₂ v hv`. Establish `mono` using `latO_mono_at LA LB hv`.
+
+Use `⟨fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations. Take `⟨hL, hR⟩` from `res_mem_latO hu`. Establish `eL : resL A B (2 • u) = 2 • resL A B u` using `by rw [two_nsmul, two_nsmul, resL_add]`. Establish `eR : -resR A B (2 • u) = 2 • (-resR A B u)`. Rewrite using `[two_nsmul, two_nsmul, resR_add, neg_add]`.
+
+Rewrite using `[heisO_delta hn, eL, eR, h₁.1 _ (mono hL), h₂.1 _ (neg_mem (mono hR))]`. Take `⟨hL, hR⟩` from `res_mem_latO hu`. Establish `hhL : IsHalf e (resL A B u)` using `fun i j => hh i (finSumFinEquiv (Sum.inl j))`. Establish `hhR : IsHalf e (-resR A B u)` using `fun i j => by show e * -(u i (finSumFinEquiv (Sum.inr j))) = -(u i (finSumFinEquiv (Sum.inr j)))`. Rewrite using `[mul_neg, hh]`.
+
+Rewrite using `[heisO_delta hn, h₁.2 e he _ (mono hL) hhL, h₂.2 e he _ (neg_mem (mono hR)) hhR]`.
+-/
 theorem doubling_isLatVac : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (LA : Lat A) (LB : Lat B), IsStdChar D ψ (-1) → IsSelfDualC A LA → IsSelfDualC (dblSp A) (sumLat finSumFinEquiv LA LA) ∧ ∀ (Sf : Finset (FinPl D)) (Φ₁ Φ₂ : WO A B → ℂ), IsSphOff ψ A B LA LB Sf Φ₁ → IsSphOff ψ A B LA LB Sf Φ₂ → ∀ v ∉ Sf, IsLatVac (heisO ψ (dblSp A) B) (latO (dblSp A) B (sumLat finSumFinEquiv LA LA : Lat (dblSp A)) LB fun u => u = v) (delta A B Φ₁ Φ₂) := by
   intro D ψ A B LA LB hψ hLA
   have hn : ∀ x, ‖ψ x‖ = 1 := hψ.1.2.1

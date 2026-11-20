@@ -18,6 +18,13 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {P : LB (G ⊗ G).left} (β : IsBiext G P)
 
+/- English proof (translation)
+Establish `e₀ : CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift x' y) ≫ CartesianMonoidalCategory.lift (padd G (x3 G 0) (x3 G 1)) (x3 G 2) = CartesianMonoidalCategory.lift (x * x') y`. Rewrite using `[comp_lift]`. Use `congr 1`. Conclude with `(MonObj.comp_mul _ _ _).trans (by simp [x3])`. Simplify using `[x3]`.
+
+Establish `e₁ : CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift x' y) ≫ CartesianMonoidalCategory.lift (x3 G 0) (x3 G 2) = CartesianMonoidalCategory.lift x y` using `by rw [comp_lift]; simp [x3]`. Establish `e₂ : CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift x' y) ≫ CartesianMonoidalCategory.lift (x3 G 1) (x3 G 2) = CartesianMonoidalCategory.lift x' y` using `by rw [comp_lift]; simp [x3]`. Use `(Fintype.prod_equiv (Equiv.ulift : ULift.{0} (Fin 3) ≃ Fin 3) _ (fun k => h ((CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift x' y)).left ≫ law1φ G (x3 G 0) (x3 G 1) (x3 G 2) ⟨k⟩) ^ lawε ⟨k⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_three]`. Use `show h (CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift x' y) ≫ CartesianMonoidalCategory.lift (padd G (x3 G 0) (x3 G 1)) (x3 G 2)).left ^ (1 : ℤ) * h (CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift x' y) ≫ CartesianMonoidalCategory.lift (x3 G 0 …`.
+
+Rewrite using `[e₀, e₁, e₂]`. Simplify using `only [_root_.zpow_neg, zpow_one]`.
+-/
 private theorem pfTie_prod1 {T : Over S} (x x' y : T ⟶ G) {U : Type} [CommGroup U] (h : (T.left ⟶ (G ⊗ G).left) → U) :
     ∏ k, h ((CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift x' y)).left ≫ law1φ G (x3 G 0) (x3 G 1) (x3 G 2) k) ^ lawε k =
       h (CartesianMonoidalCategory.lift (x * x') y).left * (h (CartesianMonoidalCategory.lift x y).left)⁻¹ * (h (CartesianMonoidalCategory.lift x' y).left)⁻¹ := by
@@ -37,6 +44,13 @@ private theorem pfTie_prod1 {T : Over S} (x x' y : T ⟶ G) {U : Type} [CommGrou
   rw [e₀, e₁, e₂]
   simp only [_root_.zpow_neg, zpow_one]
 
+/- English proof (translation)
+Establish `e₀ : CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift y y') ≫ CartesianMonoidalCategory.lift (x3 G 0) (padd G (x3 G 1) (x3 G 2)) = CartesianMonoidalCategory.lift x (y * y')`. Rewrite using `[comp_lift]`. Use `congr 1`. Simplify using `[x3]`. Conclude with `(MonObj.comp_mul _ _ _).trans (by simp [x3])`.
+
+Establish `e₁ : CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift y y') ≫ CartesianMonoidalCategory.lift (x3 G 0) (x3 G 1) = CartesianMonoidalCategory.lift x y` using `by rw [comp_lift]; simp [x3]`. Establish `e₂ : CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift y y') ≫ CartesianMonoidalCategory.lift (x3 G 0) (x3 G 2) = CartesianMonoidalCategory.lift x y'` using `by rw [comp_lift]; simp [x3]`. Use `(Fintype.prod_equiv (Equiv.ulift : ULift.{0} (Fin 3) ≃ Fin 3) _ (fun k => h ((CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift y y')).left ≫ law2φ G (x3 G 0) (x3 G 1) (x3 G 2) ⟨k⟩) ^ lawε ⟨k⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_three]`. Use `show h (CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift y y') ≫ CartesianMonoidalCategory.lift (x3 G 0) (padd G (x3 G 1) (x3 G 2))).left ^ (1 : ℤ) * h (CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift y y') ≫ CartesianMonoidalCategory.lift (x3 G 0 …`.
+
+Rewrite using `[e₀, e₁, e₂]`. Simplify using `only [_root_.zpow_neg, zpow_one]`.
+-/
 private theorem pfTie_prod2 {T : Over S} (x y y' : T ⟶ G) {U : Type} [CommGroup U] (h : (T.left ⟶ (G ⊗ G).left) → U) :
     ∏ k, h ((CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift y y')).left ≫ law2φ G (x3 G 0) (x3 G 1) (x3 G 2) k) ^ lawε k =
       h (CartesianMonoidalCategory.lift x (y * y')).left * (h (CartesianMonoidalCategory.lift x y).left)⁻¹ * (h (CartesianMonoidalCategory.lift x y').left)⁻¹ := by
@@ -56,6 +70,17 @@ private theorem pfTie_prod2 {T : Over S} (x y y' : T ⟶ G) {U : Type} [CommGrou
   rw [e₀, e₁, e₂]
   simp only [_root_.zpow_neg, zpow_one]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Take `⟨t, ht, hv⟩` from `exists_gen β.isLB (φ' := ![(CartesianMonoidalCategory.lift (x ^ 0) y).left, (CartesianMonoidalCategory.lift (1 : T ⟶ G) y).left, (CartesianMonoidalCategory.lift x (y ^ 0)).left, (CartesianMonoidalCategory.lift x (1 : T ⟶ G)).left]) (ε' := ![1, -1, -1, 1]) (fun U _ h => by simp [F …`. Conclude with `⟨t, ht, fun T' ρ z J hJ => ((hv _ _ z J hJ).trans (val_one _)).trans (by simp)⟩`. Consider the case `succ n ih`.
+
+Take `⟨t, ht, hv⟩` from `ih`. Take `⟨t', ht', hv'⟩` from `exists_gen β.isLB (φ' := ![(CartesianMonoidalCategory.lift (x ^ (n + 1)) y).left, (CartesianMonoidalCategory.lift (1 : T ⟶ G) y).left, (CartesianMonoidalCategory.lift x (y ^ (n + 1))).left, (CartesianMonoidalCategory.lift x (1 : T ⟶ G)).left]) (ε' := ![1, -1, -1, 1]) (fun U _ h = …`. Use `(DVR.prod_sum₂ (K := Fin 4) (K' := ULift.{0} (Fin 3) ⊕ ULift.{0} (Fin 3)) (U := U) _ (c := ∏ i, h ((![(CartesianMonoidalCategory.lift (x ^ n) y).left, (CartesianMonoidalCategory.lift (1 : T ⟶ G) y).left, (CartesianMonoidalCategory.lift x (y ^ n)).left, (CartesianMonoidalCategory. …` and prove the remaining obligations. Rewrite using `[pow_succ x, pow_succ y]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `[Fin.prod_univ_succ, ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use the proof step `(LB.mulGen P _ _ _ _ t (LB.mulGen P _ _ _ _ (LB.pullGen P _ _ β.law1 (CartesianMonoidalCategory.lift (x ^ n) (CartesianMonoidalCategory.lift x y)).left) (LB.invGen P _ _ (LB.pullGen P _ _ β.law2 (CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift (y ^ n) y)).left))) …`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ β.isGen1 _) (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ β.isGen2 _))))`. Use `⟨t', ht', fun T' ρ z J hJ => ?_⟩` and prove the remaining obligations.
+
+Establish `p₁ : ρ ≫ (x ^ n) = (ρ ≫ x) ^ n` using `map_pow (preHom ρ) _ _`. Establish `p₂ : ρ ≫ (y ^ n) = (ρ ≫ y) ^ n` using `map_pow (preHom ρ) _ _`. Establish `q₁ : ρ.left ≫ (CartesianMonoidalCategory.lift (x ^ n) (CartesianMonoidalCategory.lift x y)).left = (CartesianMonoidalCategory.lift ((ρ ≫ x) ^ n) (CartesianMonoidalCategory.lift (ρ ≫ x) (ρ ≫ y))).left`. Rewrite using `[← Over.comp_left, comp_lift, comp_lift, p₁]`. Establish `q₂ : ρ.left ≫ (CartesianMonoidalCategory.lift x (CartesianMonoidalCategory.lift (y ^ n) y)).left = (CartesianMonoidalCategory.lift (ρ ≫ x) (CartesianMonoidalCategory.lift ((ρ ≫ y) ^ n) (ρ ≫ y))).left`.
+
+Rewrite using `[← Over.comp_left, comp_lift, comp_lift, p₂]`. Use `((hv' _ _ z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (hv T' ρ z J hJ) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_pull hJ _ _ _).trans (congrArg (val β.law1 · z J) q₁)) ((val_inv _ _).trans (congrArg (·⁻¹) ((val_pull hJ _ _ _).trans (congrArg (val β.law2 · …` and prove the remaining obligations. Rewrite using `[Finset.prod_range_succ, Finset.prod_range_succ, mul_inv, _root_.mul_mul_mul_comm]`.
+-/
 private theorem pfTie_gen {T : Over S} (x y : T ⟶ G) (n : ℕ) :
     ∃ t : LB.Gen (LB.LinComb P (K := Fin 4) ![(CartesianMonoidalCategory.lift (x ^ n) y).left, (CartesianMonoidalCategory.lift (1 : T ⟶ G) y).left, (CartesianMonoidalCategory.lift x (y ^ n)).left,
         (CartesianMonoidalCategory.lift x (1 : T ⟶ G)).left] ![1, -1, -1, 1]), t.IsGen ∧
@@ -98,6 +123,11 @@ private theorem pfTie_gen {T : Over S} (x y : T ⟶ G) (n : ℕ) :
         ((val_inv _ _).trans (congrArg (·⁻¹) ((val_pull hJ _ _ _).trans (congrArg (val β.law2 · z J) q₂))))))))).trans ?_
     rw [Finset.prod_range_succ, Finset.prod_range_succ, mul_inv, _root_.mul_mul_mul_comm]
 
+/- English proof (translation)
+Take `⟨u, hu, hw⟩` from `pfTie_gen β x y n`. Take `⟨t, -, hv⟩` from `exists_gen β.isLB (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Use `Eq.trans ?_ (Fintype.prod_empty _).symm` and prove the remaining obligations. Rewrite using `[hx, hy]`. Simplify using `[Fin.prod_univ_succ]) u hu`.
+
+Establish `le : (⊤ : T.left.Opens) ≤ LB.wchart P (PEmpty.elim : PEmpty → (T.left ⟶ (G ⊗ G).left)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨res le (t.s PEmpty.elim), fun T' ρ z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hw T' ρ z J hJ, ← hv _ _ z J hJ, val_of t ρ.left z J PEmpty.elim (fun k => k.elim)]`. Conclude with `gm_res ρ.left z le trivial _`.
+-/
 private theorem pfTie_unit {T : Over S} (x y : T ⟶ G) (n : ℕ) (hx : x ^ n = 1) (hy : y ^ n = 1) :
     ∃ a : Γ(T.left, ⊤)ˣ, ∀ (T' : Over S) (ρ : T' ⟶ T) (z : T'.left) (J), Good P z J →
         gm ρ.left z ⊤ a = (∏ k ∈ Finset.range n, val β.law1 (CartesianMonoidalCategory.lift ((ρ ≫ x) ^ k) (CartesianMonoidalCategory.lift (ρ ≫ x) (ρ ≫ y))).left z J) *
@@ -113,6 +143,11 @@ private theorem pfTie_unit {T : Over S} (x y : T ⟶ G) (n : ℕ) (hx : x ^ n = 
   rw [← hw T' ρ z J hJ, ← hv _ _ z J hJ, val_of t ρ.left z J PEmpty.elim (fun k => k.elim)]
   exact gm_res ρ.left z le trivial _
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `e` using `congrArg (fun u => (stalkClosedPointIso (CommRingCat.of R)).hom.hom (Units.val u)) h`. Establish `g` using `congrArg (fun q => q.hom a.val) (germ_stalkClosedPointIso_hom (CommRingCat.of R))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at g`. Establish `e' : (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom a.val = 1` using `g.symm.trans ((congrArg (stalkClosedPointIso (CommRingCat.of R)).hom.hom (gm_val (𝟙 _) _ ⊤ trivial a)).symm.trans (e.trans (map_one _)))`.
+
+Conclude with `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.injective (e'.trans (map_one _).symm)`.
+-/
 private theorem pfTie_local (R : Type) [CommRing R] [IsLocalRing R] (a : Γ(Spec (CommRingCat.of R), ⊤)ˣ)
     (h : gm (𝟙 (Spec (CommRingCat.of R))) (IsLocalRing.closedPoint R) ⊤ a = 1) : a = 1 := by
   apply Units.ext
@@ -128,6 +163,25 @@ end Transfer
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Introduce `FRM PFF TORS BIV R₀ _ G _ _ P β B e b J hb hadd _ hJ h1 h2 O C _ _ _ v _ _ _ p hp hv hsm hfin hfl hsurj hnd x hx H`. Take `⟨N, rfl⟩ : ∃ N, p = N + 1` from `Nat.exists_eq_succ_of_ne_zero hp`. Establish `e0 : e O 0 = 1`. Use `hadd O 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+
+Conclude with `mul_eq_left.1 this.symm`. Establish `en : ∀ (k : ℕ) (w : B.G O), e O (k • w) = e O w ^ k` using `fun k w => by`. Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, pow_zero, e0]`. Consider the case `succ k ih => rw [succ_nsmul, hadd, ih, pow_succ]`.
+
+Take `⟨j, hj⟩ : ∃ j : sp (R₀` from `R₀) C ⟶ sp (R₀ := R₀) (O : Type), j = spMap (IsScalarTower.toAlgHom R₀ (O : Type) C) := ⟨_, rfl⟩`. Establish `T` using `(TORS G O C v (N + 1) hv hfin hsurj).2`. Rewrite `T` using `[← hj]`. Establish `hxp : e O x ^ (N + 1) = 1` using `by rw [← en, hx, e0]`. Establish `j1 : j ≫ (1 : sp (R₀` using `R₀) (O : Type) ⟶ G) = 1 := map_one (preHom j)`.
+
+Establish `key : j ≫ e O x = 1`. Use `PFF _ G P β C (Spec.map (CommRingCat.ofHom (algebraMap R₀ C))) (N + 1) (Nat.cast_ne_zero.2 hp) hsm hfin hfl hsurj hnd (j ≫ e O x) ((map_pow (preHom j) _ _).symm.trans ((congrArg (j ≫ ·) hxp).trans j1)) (fun y hy z Jc hJc => ?_)` and prove the remaining obligations. Take `⟨y₀, ⟨hy₀, rfl⟩, -⟩` from `T y hy`. Take `⟨y', rfl⟩` from `(hb O).2 y₀`. Establish `hy' : (N + 1) • y' = 0` using `(hb O).1 (by rw [en, hy₀, e0])`.
+
+Establish `F` using `(((FRM B b _ _ h1 h2).1 O N x y' 1).1 (H y' hy')).2.2`. Take `⟨a₁, -, a₂, -, -⟩` from `BIV _ G P β (sp (R₀ := R₀) (O : Type)) (IsLocalRing.closedPoint (O : Type)) (J O) (hJ O) _ _ (fun _ _ _ => rfl) (fun _ _ _ => rfl)`. Establish `b₁` using `a₁ 1 1 (e O x) (e O y')`. Establish `b₂` using `a₂ (e O x) 1 1 (e O y')`. Simplify using `only [_root_.one_mul] at b₁ b₂`.
+
+Establish `c₁` using `mul_left_cancel b₁`. Establish `c₂` using `mul_left_cancel b₂`. Take `⟨a, ha⟩` from `pfTie_unit β (e O x) (e O y') (N + 1) hxp hy₀`. Establish `a1 : a = 1`. Apply `pfTie_local (O : Type) a` to reduce the goal to its premises.
+
+Establish `g` using `ha _ (𝟙 _) (IsLocalRing.closedPoint (O : Type)) (J O) (hJ O)`. Use `Eq.trans g ?_` and prove the remaining obligations. Simplify using `only [Category.id_comp]`. Rewrite using `[Finset.prod_range_succ', Finset.prod_range_succ', pow_zero, pow_zero, ← c₁, ← c₂, mul_inv_eq_one]`. Simplify using `only [en, e0] at F`.
+
+Rewrite `F` using `[← map_prod, ← map_prod, ← map_mul, ← map_mul, eq_comm, div_eq_one]`. Establish `inj` using `Units.map_injective (f := (stalkClosedPointIso (CommRingCat.of (O : Type))).hom.hom.toMonoidHom) (stalkClosedPointIso (CommRingCat.of (O : Type))).commRingCatIsoToRingEquiv.injective F`. Conclude with `(mul_comm _ _).trans (inj.trans (mul_comm _ _))`. Establish `g` using `ha _ j z Jc hJc`. Rewrite `g` using `[a1, map_one, eq_comm, mul_inv_eq_one]`.
+
+Conclude with `g`. Take `⟨w, -, hw⟩` from `T 1 (one_pow _)`. Conclude with `(hb O).1 (((hw _ ⟨hxp, key⟩).trans (hw 1 ⟨one_pow _, j1⟩).symm).trans e0.symm)`.
+-/
 theorem pairing_nondegenerate_integral_torsion :
   (∀ {R₀ : Type} [CommRing R₀] (B : BX R₀) (b : ∀ R x y, B.P R x y) (t₁ t₂ : ∀ R : LAlg R₀, B.G R → B.G R → B.G R → (R : Type)ˣ),
     (∀ R x x' y, B.add1 (b R x y) (b R x' y) = B.smul (t₁ R x x' y) (b R (x + x') y)) →

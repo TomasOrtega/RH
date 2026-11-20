@@ -14,12 +14,22 @@ variable {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (𝓞 F))
   {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   (ι : F →+* K)
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff, ← map_one (valuation K), ← Valuation.Compatible.vle_iff_le, ← map_one ι, hv, map_one]`. Conclude with `p.valuation_le_one a`.
+-/
 theorem iota_mem_integer (hv : ∀ x y : F, (ι x ≤ᵥ ι y) ↔ p.valuation F x ≤ p.valuation F y)
     (a : 𝓞 F) : ι (a : F) ∈ 𝒪[K] := by
   rw [Valuation.mem_integer_iff, ← map_one (valuation K), ← Valuation.Compatible.vle_iff_le,
     ← map_one ι, hv, map_one]
   exact p.valuation_le_one a
 
+/- English proof (translation)
+Use `set t : 𝒪[K] := ⟨ι (a : F), iota_mem_integer p ι hv a⟩ with ht`. Establish `ht0 : t ≠ 0`. Introduce `h`. Establish `: ι (a : F) = 0` using `congrArg Subtype.val h`. Rewrite `this` using `[map_eq_zero_iff ι ι.injective]`.
+
+Conclude with `ha (by exact_mod_cast this)`. Establish `h1` using `hI K t ht0`. Rewrite `h1` using `[hC F p K ι hd hv a ha t rfl]`. Establish `h3` using `HeightOneSpectrum.embedding_mul_absNorm (K := F) p ha`. Rewrite `h3` using `[FinitePlace.norm_embedding]`.
+
+Establish `hN : ((Ideal.absNorm (p.maxPowDividing (Ideal.span {a})) : ℕ) : ℝ) ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, mul_zero]`. Conclude with `zero_ne_one h1`. Conclude with `mul_right_cancel₀ hN (h1.trans h3.symm)`.
+-/
 theorem modF_iota_int (hI : IndexFormula) (hC : CardStep) (hd : DenseRange ι)
     (hv : ∀ x y : F, (ι x ≤ᵥ ι y) ↔ p.valuation F x ≤ p.valuation F y) (a : 𝓞 F) (ha : a ≠ 0) :
     modF K (ι (a : F)) = HeightOneSpectrum.adicAbv F p (a : F) := by
@@ -37,6 +47,11 @@ theorem modF_iota_int (hI : IndexFormula) (hC : CardStep) (hd : DenseRange ι)
     intro h0; rw [h0, mul_zero] at h1; exact zero_ne_one h1
   exact mul_right_cancel₀ hN (h1.trans h3.symm)
 
+/- English proof (translation)
+Distinguish the cases in `hz : z = 0`. Simplify using `[hz, modF_zero]`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) z`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hz`.
+
+Rewrite using `[map_div₀, modF_div, map_div₀]`. Establish `e1` using `modF_iota_int p ι hI hC hd hv a ha0`. Establish `e2` using `modF_iota_int p ι hI hC hd hv b hb0`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap] at e1 e2 ⊢`. Rewrite using `[e1, e2]`.
+-/
 theorem modF_iota (hI : IndexFormula) (hC : CardStep) (hd : DenseRange ι)
     (hv : ∀ x y : F, (ι x ≤ᵥ ι y) ↔ p.valuation F x ≤ p.valuation F y) (z : F) :
     modF K (ι z) = HeightOneSpectrum.adicAbv F p z := by
@@ -64,6 +79,9 @@ section LocAt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E} {p : HeightOneSpectrum (𝓞 F)}
 
+/- English proof (translation)
+The claim follows from `modF_iota p L.ιF hI hC L.dense L.val z`.
+-/
 theorem modF_locAt (hI : IndexFormula) (hC : CardStep) (L : Formalism.MainNotions.S.Loc.LocAt F E sig p)
     [IsNonarchimedeanLocalField L.Fp] (z : F) :
     modF L.Fp (L.ιF z) = HeightOneSpectrum.adicAbv F p z :=
@@ -71,6 +89,9 @@ theorem modF_locAt (hI : IndexFormula) (hC : CardStep) (L : Formalism.MainNotion
 
 end LocAt
 
+/- English proof (translation)
+Rewrite using `[modF_iota p ι hI hC hd hv z, FinitePlace.mk_apply, FinitePlace.norm_embedding]`.
+-/
 theorem modF_iota_finitePlace {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (𝓞 F))
     {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     (ι : F →+* K) (hI : IndexFormula) (hC : CardStep) (hd : DenseRange ι)

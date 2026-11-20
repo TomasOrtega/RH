@@ -24,6 +24,15 @@ open GlobalTheory.Grid
 
 namespace GlobalTheory.SiegelTorusTheta
 
+/- English proof (translation)
+Introduce `D ψ θ hθ ε M X χ χ' ω hω r Xf Yf hW c hc K₀ hK₀ hK₀c μ 𝓕 hμ`. Take `⟨S₀, d, hA1⟩` from `GlobalTheory.T.wittFrame_torus_eq_levi_element θ hθ ε M r Xf Yf hW`. Take `⟨μ', 𝓕', hcov, hA2⟩` from `GlobalTheory.T.leviThetaValue_le_det_mul_rational_sum ψ (sgn ε M) S₀ X r d χ χ' (ω.toSgn ε) hω`. Take `⟨k, A, C, hC, hB⟩` from `GlobalTheory.T.torus_mixedCoordinate_sum_le_sobolev_seminorm ψ (IsWeilDatumO.std hω) θ hθ (sgn ε M) X S₀ r d μ' 𝓕' hcov c hc K₀ hK₀ hK₀c μ 𝓕 hμ`. Use `⟨k, A, C, hC, fun n hn Ψ hΨ hlev t ht a ha => ?_⟩` and prove the remaining obligations.
+
+Take `⟨α, hα1, hα2, hlevi⟩` from `hA1 t ht.1 a ha`. Establish `e : ω (a, 1) Ψ 0 = ω.toSgn ε (d.levi α, 1) Ψ 0`. Rewrite using `[← hlevi]`. Use `show ω (a, 1) Ψ 0 = ω ((ofSgn ε M) ((ofSgn ε M).symm a), 1) Ψ 0`. Rewrite using `[MulEquiv.apply_symm_apply]`.
+
+Establish `hle` using `hA2 Ψ hΨ α`. Rewrite `hle` using `[← e, GlobalTheory.T.halfPowerDetAbs_realDiagonal_torus θ hθ r X.rank t ht.1 α hα1 hα2]`. Establish `h2` using `hB n hn Ψ hΨ hlev t ht α.1 hα1 hα2`. Establish `hP : 0 ≤ ∏ i, t i ^ (Module.finrank ℚ D.host.F * X.rank)` using `Finset.prod_nonneg fun i _ => pow_nonneg (ht.1 i).le _`. Establish `hQ : 0 ≤ C * (n : ℝ) ^ A * (GlobalTheory.Size.sobO (V` using `sgn ε M) (W := X) ψ θ μ 𝓕 k Ψ).toReal := mul_nonneg (mul_nonneg hC (pow_nonneg n.cast_nonneg _)) ENNReal.toReal_nonneg`.
+
+Establish `h3 : ‖ω (a, 1) Ψ 0‖ₑ ≤ ENNReal.ofReal (C * (n : ℝ) ^ A * (GlobalTheory.Size.sobO (V` using `sgn ε M) (W := X) ψ θ μ 𝓕 k Ψ).toReal * ∏ i, t i ^ (Module.finrank ℚ D.host.F * X.rank)) := by`. Use `hle.trans ((mul_le_mul' le_rfl h2).trans_eq ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul hP, mul_comm]`. Rewrite `h3` using `[← ofReal_norm_eq_enorm]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (mul_nonneg hQ hP)).1 h3`.
+-/
 theorem torus_bound : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hθ : IsInfFam θ) (ε : Bool) (M X : HSp D)
     (χ χ' : (AE D)ˣ →* Circle) (ω : WRep M X) (hω : IsWeil ψ ε M X χ χ' ω) (r : ℕ)
     (Xf Yf : Matrix (Fin M.rank) (Fin r) D.host.E) (hW : GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig M.gram Xf Yf)

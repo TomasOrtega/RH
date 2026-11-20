@@ -9,6 +9,19 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR M G' _ _ hG E H' X'' ν i P'' a'' b'' hν hi hcomm hab hb ha hconn hH0 z hz w hw`. Use `haveI := hν`. Use `haveI := hb`. Use `haveI := ha`. Use `haveI := hi`.
+
+Establish `hsep : IsSeparated (a'' ≫ b'')` using `inferInstance`. Establish `hR' : IsNoetherianRing R` using `hR.1`. Establish `hog : i ≫ a'' ≫ b'' = H'.ι ≫ E.f`. Rewrite using `[hab, ← Category.assoc, hcomm, Category.assoc]`. Conclude with `congrArg (H'.ι ≫ ·) (pullback.lift_fst _ _ _)`.
+
+Establish `hy : PSpace.str R E.N (b'' (a'' (i z))) = closedPoint R`. Establish `h1 : i ≫ a'' ≫ b'' ≫ PSpace.str R E.N = H'.ι ≫ E.H.ι ≫ G'.hom ≫ M.π`. Rewrite using `[reassoc_of% hog, E.f_over]`. Establish `h2` using `congrArg (fun f => f.base z) h1`. Simplify using `only [Scheme.Hom.comp_base, ContinuousMap.comp_apply] at h2`.
+
+Conclude with `h2.trans hz`. Take `⟨C, hC, hCeq⟩` from `GlobalTheory.T.embeddedPart_points_over_closedProjPoint_closed R M.S M.π M.proper G' hG.smooth E H' X'' i (a'' ≫ b'') hsep hog hH0 (b'' (a'' (i z))) hy`. Establish `hfib : ∀ p : X'', a'' p = a'' (i z) → p ∈ (a'' ≫ b'') ⁻¹' {b'' (a'' (i z))}`. Introduce `p hp`. Use `show b'' (a'' p) = b'' (a'' (i z))`.
+
+Rewrite using `[hp]`. Establish `key : ∀ p : X'', a'' p = a'' (i z) → p ∈ C → p ∈ Set.range i` using `fun p hp hpC => (show p ∈ Set.range i ∩ (a'' ≫ b'') ⁻¹' {b'' (a'' (i z))} from hCeq ▸ ⟨hpC, hfib p hp⟩).1`. Assume the negation of the conclusion as `hwi`. Establish `hU : IsOpen (Set.range i)` using `i.isOpenEmbedding.isOpen_range`. Take `⟨p, hpF, hpU, hpC⟩` from `hconn (a'' (i z)) (Set.range i) Cᶜ hU hC.isOpen_compl (fun p hp => by`.
+
+Distinguish the cases in `h : p ∈ C`. Conclude with `Or.inl (key p hp h)`. Conclude with `Or.inr h)`. Use the proof step `⟨i z, rfl, z, rfl⟩ ⟨w, hw, fun h => hwi (key w hw h)⟩`. Conclude with `hpC (show p ∈ C ∩ (a'' ≫ b'') ⁻¹' {b'' (a'' (i z))} from hCeq.symm ▸ ⟨hpU, hfib p hpF⟩).1`.
+-/
 theorem steinFibre_subset_range : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ E : Emb M.π G', ∀ (H' : E.H.toScheme.Opens) (X'' : Scheme.{0}) (ν : X'' ⟶ pullback (PSpace.str R E.N) M.π) (i : H'.toScheme ⟶ X'') (P'' : Scheme.{0}) (a'' : X'' ⟶ P'') (b'' : P'' ⟶ PSpace R E.N), IsFinite ν → IsOpenImmersion i → i ≫ ν = H'.ι ≫ pullback.lift E.f (E.H.ι ≫ G'.hom) E.f_over → a'' ≫ b'' = ν ≫ pullback.fst (PSpace.str R E.N) M.π → IsFinite b'' → IsProper a'' → (∀ y : P'', _root_.IsPreconnected {x : X'' | a'' x = y}) → (∀ h : E.H.toScheme, M.π (G'.hom (E.H.ι h)) = closedPoint R → h ∈ H') → ∀ z : H'.toScheme, M.π (G'.hom (E.H.ι (H'.ι z))) = closedPoint R → ∀ w : X'', a'' w = a'' (i z) → w ∈ Set.range i := by
   intro R _ _ _ hR M G' _ _ hG E H' X'' ν i P'' a'' b'' hν hi hcomm hab hb ha hconn hH0 z hz w hw
   haveI := hν; haveI := hb; haveI := ha; haveI := hi

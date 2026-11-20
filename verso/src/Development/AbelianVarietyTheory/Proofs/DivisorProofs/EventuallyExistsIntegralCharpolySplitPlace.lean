@@ -8,10 +8,18 @@ noncomputable section
 
 namespace GlobalTheory.BCT
 
+/- English proof (translation)
+The claim follows from `(algebraMap E (FiniteAdeleRing (𝓞 E) E) x).eventually`.
+-/
 theorem ev_int_exsplit {E : Type} [Field E] [NumberField E] (x : E) :
     ∀ᶠ w : Pl E in cofinite, algebraMap E (w.adicCompletion E) x ∈ w.adicCompletionIntegers E :=
   (algebraMap E (FiniteAdeleRing (𝓞 E) E) x).eventually
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨hmon, -, -, hroots⟩` from `hP`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ)).toRingHom`. Establish `hne : P.map τ ≠ 0` using `(hmon.map τ).ne_zero`. Establish `hr : (0 : ℂ) ∈ (P.map τ).roots`.
+
+Rewrite using `[mem_roots hne, IsRoot.def, eval_map, eval₂_at_zero, h0, map_zero]`. Use `hroots τ 0 hr` as an intermediate fact. Simplify using `at this`.
+-/
 theorem coeff_zero_ne_zero_of_mem_ell {E : Type} [Field E] [NumberField E] {n : ℕ} {P : E[X]} (hP : P ∈ Ell E n) :
     P.coeff 0 ≠ 0 := by
   intro h0
@@ -23,6 +31,9 @@ theorem coeff_zero_ne_zero_of_mem_ell {E : Type} [Field E] [NumberField E] {n : 
   have := hroots τ 0 hr
   simp at this
 
+/- English proof (translation)
+Set `pb` to `AdjoinRoot.powerBasis hmon.ne_zero`. Establish `hdim : pb.dim = n` using `by rw [AdjoinRoot.powerBasis_dim, hdeg]`. Use `⟨Matrix.reindex (finCongr hdim) (finCongr hdim) (Algebra.leftMulMatrix pb.basis pb.gen), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.charpoly_reindex, charpoly_leftMulMatrix, AdjoinRoot.minpoly_powerBasis_gen_of_monic hmon]`.
+-/
 theorem exists_mat_charpoly {E : Type} [Field E] {n : ℕ} {P : E[X]} (hmon : P.Monic) (hdeg : P.natDegree = n) :
     ∃ M : Matrix (Fin n) (Fin n) E, M.charpoly = P := by
   let pb := AdjoinRoot.powerBasis hmon.ne_zero
@@ -30,6 +41,19 @@ theorem exists_mat_charpoly {E : Type} [Field E] {n : ℕ} {P : E[X]} (hmon : P.
   refine ⟨Matrix.reindex (finCongr hdim) (finCongr hdim) (Algebra.leftMulMatrix pb.basis pb.gen), ?_⟩
   rw [Matrix.charpoly_reindex, charpoly_leftMulMatrix, AdjoinRoot.minpoly_powerBasis_gen_of_monic hmon]
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n _ P hP`. Take `⟨M, hM⟩` from `exists_mat_charpoly hP.1 hP.2.1`. Establish `hdet : M.det ≠ 0`. Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, hM]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) (coeff_zero_ne_zero_of_mem_ell hP)`.
+
+Establish `hev1 : ∀ᶠ w : Pl E in cofinite, ∀ ij : Fin n × Fin n, algebraMap E (w.adicCompletion E) (M ij.1 ij.2) ∈ w.adicCompletionIntegers E` using `Filter.eventually_all.2 fun ij => ev_int_exsplit (M ij.1 ij.2)`. Establish `hev2` using `ev_int_exsplit (E := E) M.det⁻¹`. Use `filter_upwards [hev1, hev2] with w hent hinv hs`. Set `N : Matrix (Fin n) (Fin n) (Ov E w)` to `fun i j => ⟨_, hent (i, j)⟩`. Establish `hN : (Ov E w).subtype.mapMatrix N = M.map (algebraMap E (w.adicCompletion E))`.
+
+Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hdetN : ((N.det : Ov E w) : w.adicCompletion E) = algebraMap E (w.adicCompletion E) M.det`. Use `RingHom.map_det (Ov E w).subtype N` as an intermediate fact. Rewrite `this` using `[hN]`.
+
+Conclude with `this.trans (RingHom.map_det _ M).symm`. Establish `hu : IsUnit N.det`. Use `isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((N.det : Ov E w) : w.adicCompletion E) * algebraMap E (w.adicCompletion E) M.det⁻¹ = 1`. Rewrite using `[hdetN, ← map_mul, mul_inv_cancel₀ hdet, map_one]`.
+
+Set `g : GL (Fin n) (Ov E w)` to `((Matrix.isUnit_iff_isUnit_det N).2 hu).unit`. Establish `hmemU : bc (Ov E w).subtype g ∈ UL n w`. Simplify using `only [UL, if_pos hs]`. Conclude with `Subgroup.mem_top _`. Use `⟨⟨_, hmemU⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[KL, Subgroup.mem_subgroupOf]`. Conclude with `⟨g, rfl⟩`. Express the relevant statement in the definitionally equal form `((Ov E w).subtype.mapMatrix (g : Matrix (Fin n) (Fin n) (Ov E w))).charpoly = atPl w P`. Rewrite using `[IsUnit.unit_spec, hN, Matrix.charpoly_map, hM]`.
+-/
 theorem exists_int_charpoly_atPl_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
     ∀ P ∈ Ell E n, ∀ᶠ w in cofinite, IsSplitAt w → ∃ γ : UL n w, γ ∈ KL n w ∧ γ.1.val.charpoly = atPl w P := by
   intro E _ _ _ _ n _ P hP

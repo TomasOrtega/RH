@@ -8,6 +8,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+Introduce `n n' n'' L L' α` and use `GlobalTheory.CxForm.pull_comp n'' n' n L L' α`.
+-/
 theorem pull_comp_linear : ∀ (n n' n'' : ℕ) (L : V n →L[ℂ] V n') (L' : V n' →L[ℂ] V n'') (α : Alt n''),
     pull (L'.comp L) α = pull L (pull L' α) :=
   fun n n' n'' L L' α => GlobalTheory.CxForm.pull_comp n'' n' n L L' α

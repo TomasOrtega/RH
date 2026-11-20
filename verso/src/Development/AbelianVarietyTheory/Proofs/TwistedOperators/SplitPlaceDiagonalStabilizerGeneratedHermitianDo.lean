@@ -15,6 +15,11 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.DblVac
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d V r s hB hV v hv hψ h2 H hD hA g hg`. Take `⟨Y, hYat, hYlat, hYadm, M, hM, hMlat⟩` from `GlobalTheory.T.exists_admissible_unipotent_at_split_place GlobalTheory.T.exists_isUnit_det_add_mul_of_fromBlocks_localRing σ B V r s hB hV v hv hψ h2 g hg`. Take `⟨p, hpK, hpD, hp⟩` from `GlobalTheory.T.exists_unipotent_doubledStabilizer_adds_diagonalBlock σ V v h2 Y hYat hYlat hYadm`. Take `⟨hpgK, hpg⟩` from `hp g hg`. Establish `hbig : GlobalTheory.DblVac.BigCell V v (p * g)` using `⟨M, by rw [hpg]; exact hM, hMlat⟩`.
+
+Take `⟨q, hqK, hqA, p', hp'K, hp'D, he⟩` from `GlobalTheory.T.doubledVacuumStabilizer_gaussDecomposition_bigCell σ V v h2 (p * g) hpgK hbig`. Establish `hg' : g = p⁻¹ * (q * p')` using `by rw [← he]; group`. Rewrite using `[hg']`. Conclude with `H.mul_mem (H.inv_mem (hD p hpK hpD)) (H.mul_mem (hA q hqK hqA) (hD p' hp'K hp'D))`.
+-/
 theorem gen_diag_anti_split_herm : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {d : ℕ} (V : Spc F E d) (r s : ℕ), B.IsGood σ → V.IsHerm σ B r s →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →

@@ -25,6 +25,13 @@ section General
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨-, -, hfg, hsp, -⟩` from `StdInhab.main E H n`. Take `⟨Λ, hΛ, -⟩` from `exists_lattice_latOf (maximalRealSubfield E) E n (Formalism.L2.Pj.stdLat E n) h hfg hsp`. Take `⟨e, -, -, he, hcut⟩` from `hs`. Establish `hcut'` using `cut_inv h _ hcut`. Establish `he' : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), ((bad : ℕ) : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal → e v = 0` using `fun v hv => by`.
+
+Assume the negation of the conclusion as `h0`. Conclude with `(he v h0).2 hv`. Take `⟨t, ht, hb⟩` from `exists_nat_bd _ hfg hsp _ e he' _ hcut`. Take `⟨t', ht', hb'⟩` from `exists_nat_bd _ hfg hsp _ e he' _ hcut'`. Use `⟨Λ, t' * t, hΛ, conjLat_unimod H hh hΛ, Nat.Coprime.mul_left ht' ht, fun u => ?_⟩` and prove the remaining obligations.
+
+Use `conjLat_le H (by rw [← H.bar_eq, map_natCast]) (smul_mem_of_bd hfg hsp hΛ ?_ ?_)` and prove the remaining obligations. Use `hb.mul ((u * t' : ℕ) : 𝓞 E)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_mul, mul_assoc]`. Then use the resulting hypothesis. Use `hb'.mul ((u * t : ℕ) : 𝓞 E)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_mul, mul_assoc, mul_comm t]`. Then use the resulting hypothesis.
+-/
 theorem exists_conjLat_unimod_bd (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (bad : ℕ)
     (h : GL (Fin n) (RA (maximalRealSubfield E) E)) (hh : IsUnA (IsCMField.complexConj E) 1 h.1)
     (hs : SuppSplit (IsCMField.complexConj E) bad h.1) :
@@ -55,6 +62,15 @@ end GlobalTheory.ConjLatSplit
 
 open GlobalTheory.ConjLatSplit in
 
+/- English proof (translation)
+Introduce `D V hg hL0 bad M p hM h2 hMb hpb h hs`. Establish `hL : Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank` using `SetLike.coe_injective ((GlobalTheory.Equiv.StdSpace.identityClassLattice_eq_selfDualFrameLattice V).trans hL0)`. Establish `hc : GlobalTheory.Member.cF D = IsCMField.complexConj D.host.E` using `AlgEquiv.ext fun _ => rfl`. Establish `hu` using `GlobalTheory.UnRep.Space.isUnA_finHom V h`. Rewrite `hu` using `[show (HSpace.gram V)ᵀ = 1 by rw [hg, Matrix.transpose_one], hc]`.
+
+Establish `hs' : GlobalTheory.UnRep.SuppSplit (GlobalTheory.Member.cF D) bad (finHom V h).1` using `(GlobalTheory.RepsCompare.suppSplitOff_iff _ _ _).1 (GlobalTheory.RepsCompare.suppSplitOff_of_splitOffBad _ _ _ hs)`. Rewrite `hs'` using `[hc]`. Take `⟨Λ, k, h1, hU, hk, hnat⟩` from `exists_conjLat_unimod_bd (Formalism.L2.Pj.hostOfRecord D) bad (finHom V h) hu hs'`. Rewrite `hL` using `[GlobalTheory.SplitReps.hLat_one]`. Establish `e` using `GlobalTheory.SplitReps.hLat_eq V (FWT.fin V h) Λ (by rw [hL]; exact h1)`.
+
+Establish `hk1` using `hnat 1`. Rewrite `hk1` using `[one_mul]`. Use `⟨GlobalTheory.UnRep.FullReps.conjLat (Formalism.L2.Pj.hostOfRecord D) Λ, k, fun v => ?_, hU, ⟨k, hk.coprime_dvd_right hMb, hk1⟩, hk.coprime_dvd_right hpb, ⟨hM.mul (Nat.Coprime.odd_of_right (hk.coprime_dvd_right h2)), dvd_mul_right _ _, le_inf (hnat M).2 Submodule.smul_le_right⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ _ ∈ Bridge.hLat V (FWT.fin V h)`. Rewrite using `[e]`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem GlobalTheory.SingleDatum.exists_conjLat_levOK : ∀ (D : D7) (V : HSp D), V.gram = 1 → L0c D V = (Formalism.L2.Pj.stdLat D.host.E V.rank : Set (Fin V.rank → D.host.E)) → ∀ (bad M p : ℕ), Odd M → 2 ∣ bad → M ∣ bad → p ∣ bad → ∀ h : GA D V, SplitOffBad V bad h → ∃ (Λ : GenLat D.host.E V.rank) (u : ℕ), (∀ v, v ∈ Λ.La ↔ (fun j => star (v j)) ∈ Bridge.hLat V (finPt V h)) ∧ Λ.Unimod ∧ Λ.TrivAt M ∧ Nat.Coprime u p ∧ Λ.LevOK (M * u) M := by
   intro D V hg hL0 bad M p hM h2 hMb hpb h hs
   have hL : Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank :=

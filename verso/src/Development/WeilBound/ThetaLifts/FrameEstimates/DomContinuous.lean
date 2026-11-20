@@ -16,6 +16,15 @@ section
 variable {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
   {r s r' s' : ℕ}
 
+/- English proof (translation)
+Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Take `⟨hJ', -, -⟩` from `hE F E σ B hp.base d W r' s' (Or.inr hp.skew)`. Take `⟨i1, i2, -, -, -, -, -, hb⟩` from `hT F E σ hp.base.cm d W.J hJ'`. Take `⟨p, k, G, -, hG, hfin, hbd⟩` from `hD φ hφ`. Establish `hc` using `((hB F E σ B n d X W M χX χW om r s r' s' hp).1 _ (pureA_mem f hsb)).1`.
+
+Use `haveI : FirstCountableTopology (UA σ W.J) := @TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ i2`. Use `continuous_iff_continuousAt.2 fun h₀ => ?_` and prove the remaining obligations. Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds h₀`. Take `⟨C, hC⟩` from `hb K hK`. Establish `hpf : 0 ≤ p f` using `apply_nonneg p f`.
+
+Use `continuousAt_of_dominated (bound := fun g => p f * (C : ℝ) ^ k * (G g).toReal) (Eventually.of_forall fun h => (hc.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable) ?_ ((integrable_toReal_of_lintegral_ne_top hG.aemeasurable hfin.ne).const_mul _) (Eventually.of_fo …` and prove the remaining obligations. Use `filter_upwards [hK0] with h hh`. Use `filter_upwards [ae_lt_top hG hfin.ne] with g hg`. Establish `e` using `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hg.ne) (hbd f g h)`. Rewrite `e` using `[toReal_enorm, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`.
+
+Use `e.trans ?_` and prove the remaining obligations. Establish `: (ht h : ℝ) ≤ C` using `hC h hh`. Use `gcongr`.
+-/
 theorem dom_continuous (hB : ThetaBasic) (hT : GrpTop) (hE : EpsOf) (hp : IsPair B M χX χW om r s r' s') {𝓕}
     (hD : Dom M om 𝓕) {φ} (hφ : φ ∈ 𝓕) (hsb : φ ∈ SB _) (f : SInf F (Fin n × Fin d)) :
     Continuous (M.I om (pureA F f φ)) := by
@@ -41,6 +50,11 @@ theorem dom_continuous (hB : ThetaBasic) (hT : GrpTop) (hE : EpsOf) (hp : IsPair
   have : (ht h : ℝ) ≤ C := hC h hh
   gcongr
 
+/- English proof (translation)
+Take `⟨p, k, G, -, hG, hfin, hb⟩` from `hD φ hφ`. Use `⟨k, fun f => ⟨p f * (∫⁻ g in M.dom, G g ∂M.μ).toReal, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : ‖M.I om (pureA F f φ) h‖ₑ ≤ ENNReal.ofReal (p f * (ht h : ℝ) ^ k) * ∫⁻ g in M.dom, G g ∂M.μ`. Rewrite using `[← lintegral_const_mul _ hG]`. Conclude with `(enorm_integral_le_lintegral_enorm _).trans (lintegral_mono fun g => hb f g h)`.
+
+Establish `e` using `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hfin.ne) h1`. Rewrite `e` using `[toReal_enorm, ENNReal.toReal_mul, ENNReal.toReal_ofReal (mul_nonneg (apply_nonneg p f) (by positivity))]`. Conclude with `e.trans (le_of_eq (by ring))`.
+-/
 theorem dom_bound (hp : IsPair B M χX χW om r s r' s') {𝓕} (hD : Dom M om 𝓕) {φ} (hφ : φ ∈ 𝓕) :
     ∃ k : ℕ, ∀ f : SInf F (Fin n × Fin d), ∃ C : ℝ, ∀ h, ‖M.I om (pureA F f φ) h‖ ≤ C * (ht h : ℝ) ^ k := by
   obtain ⟨p, k, G, -, hG, hfin, hb⟩ := hD φ hφ
@@ -54,6 +68,11 @@ theorem dom_bound (hp : IsPair B M χX χW om r s r' s') {𝓕} (hD : Dom M om �
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp 𝓕 hdom φ hφ hsb f hf`. Take `⟨k, hk⟩` from `dom_bound hp hdom hφ`. Use `⟨⟨k, {u | ∃ f₁ ∈ M.Pol B.ψ B.emb, u = M.I om (pureA F f₁ φ)}, ⟨f, hf, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f₁, hf₁, rfl⟩`. Use `⟨dom_continuous hB hT hE hp hdom hφ hsb f₁, hk f₁, fun γ hγ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨f₂, hf₂, -, hd⟩` from `(hD F E σ B n d X W M χX χW om r s r' s' hp 𝓕 hdom φ hφ hsb f₁ hf₁).1 γ hγ`. Conclude with `⟨_, ⟨f₂, hf₂, rfl⟩, hd⟩`. Take `⟨U, hU, hu⟩` from `hL F E σ B n d X W M χX χW om r s r' s' hp φ hsb`. Use `⟨U, hU, fun u huU h1 h => ?_⟩` and prove the remaining obligations. Rewrite using `[← (hI F E σ B n d X W M χX χW om r s r' s' hp _ (pureA_mem f hsb)).2.2 h u, hu u huU h1]`.
+-/
 theorem iUMG_of (hB : ThetaBasic) (hT : GrpTop) (hE : EpsOf) (hD : IDer) (hL : Level) (hI : IInv) : IUMG := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp 𝓕 hdom φ hφ hsb f hf
   obtain ⟨k, hk⟩ := dom_bound hp hdom hφ

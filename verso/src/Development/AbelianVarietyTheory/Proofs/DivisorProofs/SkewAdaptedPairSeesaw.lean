@@ -13,6 +13,23 @@ noncomputable section
 
 namespace GlobalTheory.EvZeroAdm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he y`. Take `⟨ei, ev, -, -, hloc⟩` from `he.loc`. Set `δ : SInf F (Fin n × Fin d₁) →L[ℂ] ℂ` to `(BoundedContinuousFunction.evalCLM ℂ (fun i => evI F (y i))).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)`. Establish `hδ : ∀ h : SInf F (Fin n × Fin d₁), δ h = h (fun i => evI F (y i))` using `fun _ => rfl`. Establish `hev : ∀ (v : Pl F) (a : AF F), evFin F v a = evalV F v a.2` using `fun _ _ => rfl`.
+
+Introduce `g hg`. Use `Submodule.span_induction (p := fun g _ => ∃ T : SInf F (Fin n × Fin d) →L[ℂ] ℂ, ∀ f : SInf F (Fin n × Fin d), ((LinearMap.proj y : Fn F n d₁ →ₗ[ℂ] ℂ).comp e) (pureA F f g) = T f) ?_ ?_ ?_ ?_ (GlobalTheory.T.schwartzBruhat_finiteAdeles_mem_span_restrictedProducts F (Fin n × Fin d) …` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, hφstd, rfl⟩`. Establish `hvac : ∀ᶠ v in cofinite, φ v = M.vac v` using `by filter_upwards [hφstd, hP.good.std] with v h1 h2`. Rewrite using `[h1, h2]`.
+
+Establish `hpure : ∀ f : SInf F (Fin n × Fin d), pureA F f (fun x => ∏ᶠ v, φ v fun i => evalV F v (x i)) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ`. Introduce `f`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, hev, evI]`. Use `⟨(∏ᶠ v, ev v (φ v) (fun i => evFin F v (y i))) • (δ.comp ei), fun f => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.comp_apply, hpure f, hloc f φ hφ hvac]`. Simplify using `only [LinearMap.proj_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, hδ, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨0, fun f => ?_⟩` and prove the remaining obligations. Establish `: pureA F f (0 : (Fin n × Fin d → Af F) → ℂ) = 0`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[pureA]`. Rewrite using `[this, map_zero, ContinuousLinearMap.zero_apply]`. Introduce and unpack `g₁ g₂ - - ⟨T₁, h₁⟩ ⟨T₂, h₂⟩`. Use `⟨T₁ + T₂, fun f => ?_⟩` and prove the remaining obligations.
+
+Establish `: pureA F f (g₁ + g₂) = pureA F f g₁ + pureA F f g₂`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_add]`. Rewrite using `[this, map_add, h₁, h₂, ContinuousLinearMap.add_apply]`. Introduce and unpack `a g₁ - ⟨T₁, h₁⟩`.
+
+Use `⟨a • T₁, fun f => ?_⟩` and prove the remaining obligations. Establish `: pureA F f (a • g₁) = a • pureA F f g₁`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, map_smul, h₁, ContinuousLinearMap.smul_apply]`.
+-/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),

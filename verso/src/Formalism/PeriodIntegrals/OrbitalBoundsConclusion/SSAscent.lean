@@ -6,6 +6,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.Sem
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.TraceNilpotentAscent
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemisimpleTraceForm.TraceFormNondegenerateBaseChange
 
+/- English proof (translation)
+The claim follows from `PI.SSAscent.UnitaryGroupMassFormula.ssAscent_of (PI.SSAscent.UnitaryGroupMassFormula.downStep_of PI.SSAscent.UnitaryGroupMassFormula.trace_nilpotent_ascent) PI.SSAscent.UnitaryGroupMassFormula.traceFormNondegenerate_baseChange PI.SSAscent.UnitaryGroupMassFormula.semisimpleOfTrace …`.
+-/
 theorem ssAscent : PI.SSAscent :=
   PI.SSAscent.UnitaryGroupMassFormula.ssAscent_of
     (PI.SSAscent.UnitaryGroupMassFormula.downStep_of PI.SSAscent.UnitaryGroupMassFormula.trace_nilpotent_ascent)

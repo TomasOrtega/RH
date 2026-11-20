@@ -21,6 +21,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {P : WtPar Dw} (R : Choice TF.X Z U P)
 end GlobalTheory.HSApp.Sandwich
 open GlobalTheory.HSApp.Sandwich in
+/- English proof (translation)
+Introduce `hP hG E _ _ _ H Dw l Xo c TF Z r U P R ω hF h₁`. Establish `key` using `fun (j : ℕ) m => _root_.GlobalTheory.T.log_canonical_criterion_boundary hP hG E H Dw l Xo c TF Z hF R.toModif ω _ _ (P.kap_add j) m`. Use `⟨fun j hj => ?_, fun hj => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Set `e` to `R.adjEquiv ω.ω ω.unit h₁ j (P.kap_add j)`.
+
+Take `⟨m, hm⟩` from `(R.bijective_pullOff (isLB_L₀ TF.X Z (P.wt j))).2 (e.symm (H0.restr le_top f))`. Establish `hmul : H0.restr le_top (R.mulPole j ⊤ f) = (((common₀ TF.X Z).pull R.σ).canChart R.K.isLB (P.kap_add j)).mul ω.ω (R.pullOff m)`. Rewrite using `[restr_mulPole, hm]`. Use `R.mulPole_adjEquiv ω.ω ω.unit h₁ j (P.kap_add j) (e.symm (H0.restr le_top f))` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`.
+
+Conclude with `this`. Take `⟨g, hg, hgm⟩` from `(key j m).2 ⟨R.mulPole j ⊤ f, hmul⟩`. Take `⟨c', hc'⟩` from `hj.2 hg`. Use `⟨c', ?_⟩` and prove the remaining obligations. Use `show e (R.pullOff (cuspSec TF.X Z U _ c')) = _`.
+
+Rewrite using `[hc', hgm, hm, LinearEquiv.apply_symm_apply]`. Introduce and unpack `_ ⟨c', rfl⟩`. Take `⟨s, hs, hsr⟩` from `hj.1 c'`. Take `⟨g, hg⟩` from `(key 0 _).1 ⟨s, hs, hsr⟩`. Take `⟨f, hf⟩` from `((R.com.poleChart R.K.isLB R.Δ₁.isLB rfl).mulEquiv (nowhereZero_pow_zero R)).surjective g`.
+
+Use `⟨f, mulPole_injective R h₁ 0 ?_⟩` and prove the remaining obligations. Rewrite using `[← restr_mulPole, mulPole_adjSec]`. Conclude with `(congrArg (H0.restr le_top) hf).trans hg`.
+-/
 theorem GlobalTheory.HSApp.hodge_bundle_sandwich_bound : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)
     (TF : TorFlag Xo c) (Z : Comp Xo c) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (P : WtPar Dw) (R : Choice TF.X Z U P)
@@ -64,6 +75,9 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.HSApp.hodge_bundle_sandwich_bound | exact _root_.GlobalTheory.HSApp.hodge_bundle_sandwich_bound | (intros; apply _root_.GlobalTheory.HSApp.hodge_bundle_sandwich_bound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hodge_bundle_degree_squeeze : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (P : WtPar Dw) (R : Choice TF.X Z U P) (ω : CanId R.toModif), FnAlgClosed Xo c → ∀ h₁ : FreeOnOpen TF.X Z U P.u₁, (∀ j, CuspIso TF.X Z U (P.wt j) → adjGlobal R j ≤ LinearMap.range (adjSec R ω h₁ j)) ∧ (CuspIso TF.X Z U (P.wt 0) → LinearMap.range (adjSec R ω h₁ 0) ≤ adjGlobal R 0) := by
   first | exact @_root_.GlobalTheory.HSApp.hodge_bundle_sandwich_bound | exact _root_.GlobalTheory.HSApp.hodge_bundle_sandwich_bound | (intros; apply _root_.GlobalTheory.HSApp.hodge_bundle_sandwich_bound <;> assumption)
 end

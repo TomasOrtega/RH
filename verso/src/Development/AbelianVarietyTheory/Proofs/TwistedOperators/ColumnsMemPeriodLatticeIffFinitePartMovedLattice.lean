@@ -14,6 +14,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩ set w := v - (Wt.φ k a : Fin r → D.host.E) with hw`. Establish `hpw : pv Wt w = 0`. Establish `e1 : pv Wt w = pv Wt v - pv Wt (Wt.φ k a : Fin r → D.host.E)` using `map_sub (pvHom Wt) _ _`. Rewrite using `[e1, pv_lat]`.
+
+Express the relevant statement in the definitionally equal form `perVec Wt v - Wt.Pm a = 0`. Rewrite using `[← ha, sub_self]`. Take `⟨N, hN, hNw⟩` from `exists_nsmul_mem (U.X k) w`. Use `set c' := (Wt.φ k).symm ⟨N • w, hNw⟩ with hc'`. Establish `hc : (Wt.φ k c' : Fin r → D.host.E) = (N : D.host.E) • w`.
+
+Rewrite using `[hc', LinearEquiv.apply_symm_apply, Nat.cast_smul_eq_nsmul]`. Establish `hP : Wt.Pm c' = Wt.Pm 0`. Rewrite using `[← pv_lat, hc, pv_nsmul, hpw, smul_zero, map_zero]`. Establish `h0 : c' = 0` using `Wt.per.2.1 hP`. Establish `hw0 : (N : D.host.E) • w = 0` using `by rw [← hc, h0, map_zero]; rfl`.
+
+Establish `hw0' : w = 0`. Break down `smul_eq_zero.1 hw0 with h | h` into its components or cases. Conclude with `absurd (Nat.cast_eq_zero.1 h) hN`. Conclude with `h`. Establish `: v = (Wt.φ k a : Fin r → D.host.E)` using `sub_eq_zero.1 hw0'`.
+
+Rewrite using `[this]`. Conclude with `(Wt.φ k a).2`. Introduce `hv`. Use `⟨(Wt.φ k).symm ⟨v, hv⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← perVec_lat, LinearEquiv.apply_symm_apply]`.
+-/
 theorem perVec_mem_range_iff (Wt : UnfAt U k x) (v : Fin r → D.host.E) :
     perVec Wt v ∈ Set.range Wt.Pm ↔ v ∈ (U.X k).Λ := by
   constructor
@@ -45,6 +56,11 @@ theorem perVec_mem_range_iff (Wt : UnfAt U k x) (v : Fin r → D.host.E) :
 
 end GlobalTheory.AHPhase
 
+/- English proof (translation)
+Introduce `D hHk hSL hVF G _ _ Pl0 T0 A T _ R F κ v₀ hLev hGrp hFam hMod hThP hTie i σ hσ hV ph b hph hb γ hγ g hfr hx Wt Y hp Yr`. Rewrite using `[← GlobalTheory.T.rationalMap_columns_mem_latG_iff_moved_finitePart D G Pl0 T0 A T.Q.c.F R hLev i b hb (γ * g) Yr]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.AHPhase.perVec_mem_range_iff, GlobalTheory.T.thetaDictionary_lattice_of_frameCoordinates D G Pl0 T0 A T R F κ v₀ hLev hGrp hFam hMod hThP hTie i σ hσ hV γ hγ g hfr]`. Establish `e : (fun m : Fin (Wc D i).rank => GlobalTheory.AHPhase.colB b Yr a (Fin.cast (rank_Wc i) m)) = fun m => ∑ n, Yr m n * b n a`.
+
+Use function extensionality and compare the values at `m`. Simplify using `[GlobalTheory.AHPhase.colB]`. Rewrite using `[e]`.
+-/
 theorem GlobalTheory.AHPhase.cols_per_iff_latO : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.SplitLinearModel D → GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.VacFixed D →
     ∀ (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)

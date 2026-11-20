@@ -8,6 +8,11 @@ open scoped Classical TensorProduct
 namespace PositivityTheory.Rg.BcB.G3.SuppP
 end PositivityTheory.Rg.BcB.G3.SuppP
 
+/- English proof (translation)
+Introduce `G _ _ θ K y f h`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `h` to reduce the goal to its premises. Unfold `twOrb avg`.
+
+Simplify using `only [hne, finsum_zero, mul_zero]`.
+-/
 theorem PositivityTheory.Rg.BcB.G3.supp_pf : PositivityTheory.Rg.BcB.G3.Supp := by
   intro G _ _ θ K y f h
   by_contra hne

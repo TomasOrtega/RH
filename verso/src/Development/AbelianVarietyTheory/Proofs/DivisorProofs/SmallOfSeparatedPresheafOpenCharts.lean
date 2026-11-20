@@ -6,6 +6,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PicGlue
 
+/- English proof (translation)
+Introduce `F hsep Ix U x hchart hcov T`. Set `S : F.obj T → Set (Σ (i : Ix) (V : T.unop.Opens), (V.toScheme ⟶ U i))` to `fun y => {q | F.map q.2.1.ι.op y = F.map q.2.2.op (x q.1)}`. Use `small_of_injective (f := S) ?_` and prove the remaining obligations. Introduce `y y' h`. Apply `hsep T.unop y y'` to reduce the goal to its premises.
+
+Introduce `p`. Take `⟨i, Y, a, u, hp, ha⟩` from `hcov T.unop y p`. Take `⟨W, hW⟩` from `hchart i T.unop y`. Establish `hpW : p ∈ W`. Take `⟨q, rfl⟩` from `hp`.
+
+Conclude with `(hW Y a).1 ⟨u, ha⟩ q`. Take `⟨u', hu'⟩` from `(hW W.toScheme W.ι).2 (fun q => by`. Establish `hq : W.ι q ∈ Set.range W.ι` using `Set.mem_range_self q`. Rewrite using `[W.range_ι] at hq)` and apply the resulting hypothesis. Establish `hmem : (⟨i, W, u'⟩ : Σ (i : Ix) (V : T.unop.Opens), (V.toScheme ⟶ U i)) ∈ S y` using `hu'`.
+
+Rewrite `hmem` using `[h]`. Use `⟨W.toScheme, W.ι, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[W.range_ι]`. Conclude with `hpW`. Conclude with `hu'.trans hmem.symm`.
+-/
 theorem small_of_separated_of_open_charts : ∀ (F : Scheme.{0}ᵒᵖ ⥤ Type 1), (∀ (T : Scheme.{0}) (y y' : F.obj (op T)), (∀ p : T, ∃ (Z : Scheme.{0}) (z : Z ⟶ T), IsOpenImmersion z ∧ p ∈ Set.range z ∧ F.map z.op y = F.map z.op y') → y = y') → ∀ (Ix : Type) (U : Ix → Scheme.{0}) (x : ∀ i, F.obj (op (U i))), (∀ (i : Ix) (T : Scheme.{0}) (y : F.obj (op T)), ∃ W : T.Opens, ∀ (Y : Scheme.{0}) (a : Y ⟶ T), (∃ u : Y ⟶ U i, F.map a.op y = F.map u.op (x i)) ↔ ∀ q, a q ∈ W) → (∀ (T : Scheme.{0}) (y : F.obj (op T)) (p : T), ∃ (i : Ix) (Y : Scheme.{0}) (a : Y ⟶ T) (u : Y ⟶ U i), p ∈ Set.range a ∧ F.map a.op y = F.map u.op (x i)) → ∀ T : Scheme.{0}ᵒᵖ, Small.{0} (F.obj T) := by
   intro F hsep Ix U x hchart hcov T
   let S : F.obj T → Set (Σ (i : Ix) (V : T.unop.Opens), (V.toScheme ⟶ U i)) :=

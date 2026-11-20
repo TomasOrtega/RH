@@ -26,11 +26,19 @@ def mulRep (γ : G →* Rˣ) : Representation (ZMod n) G R where
   map_mul' g h := by ext; simp [mul_assoc]
 
 omit [NeZero n] [TopologicalSpace G] [Finite R] [TopologicalSpace R] [DiscreteTopology R] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mulRep_apply (γ : G →* Rˣ) (g : G) (x : R) : mulRep n γ g x = (γ g : R) * x := rfl
 
 end Abstract
 
 open NumberField IsDedekindDomain in
+/- English proof (translation)
+Establish `hZ : (Ideal.span {((l : ℕ) : ℤ)}).IsMaximal` using `Int.ideal_span_isMaximal_of_prime l`. Establish `hc` using `Ideal.comap_isMaximal_of_surjective (Rat.ringOfIntegersEquiv : 𝓞 ℚ ≃+* ℤ).toRingHom (Rat.ringOfIntegersEquiv).surjective (K := Ideal.span {((l : ℕ) : ℤ)})`. Establish `heq : Ideal.comap (Rat.ringOfIntegersEquiv : 𝓞 ℚ ≃+* ℤ).toRingHom (Ideal.span {((l : ℕ) : ℤ)}) = Ideal.span {((l : ℕ) : 𝓞 ℚ)}`. Express the relevant statement in the definitionally equal form `Ideal.comap (Rat.ringOfIntegersEquiv : 𝓞 ℚ ≃+* ℤ) _ = _`. Rewrite using `[← Ideal.map_symm, Ideal.map_span]`.
+
+Simplify using the standard rewrite rules. Rewrite `hc` using `[heq]`. Then use the resulting hypothesis.
+-/
 private lemma span_prime_isMaximal_ratRingOfIntegers {l : ℕ} [hl : Fact l.Prime] :
     (Ideal.span {((l : ℕ) : 𝓞 ℚ)}).IsMaximal := by
   have hZ : (Ideal.span {((l : ℕ) : ℤ)}).IsMaximal := Int.ideal_span_isMaximal_of_prime l
@@ -44,12 +52,22 @@ private lemma span_prime_isMaximal_ratRingOfIntegers {l : ℕ} [hl : Fact l.Prim
   rwa [heq] at hc
 
 open NumberField IsDedekindDomain in
+/- English proof (translation)
+The claim follows from `(span_prime_isMaximal_ratRingOfIntegers.eq_of_le w.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hw)).symm`.
+-/
 private lemma asIdeal_eq_span_of_prime_mem {l : ℕ} [Fact l.Prime] {w : HeightOneSpectrum (𝓞 ℚ)}
     (hw : ((l : ℕ) : 𝓞 ℚ) ∈ w.asIdeal) : w.asIdeal = Ideal.span {((l : ℕ) : 𝓞 ℚ)} :=
   (span_prime_isMaximal_ratRingOfIntegers.eq_of_le w.isPrime.ne_top
     ((Ideal.span_singleton_le_iff_mem _).2 hw)).symm
 
 open NumberField IsDedekindDomain in
+/- English proof (translation)
+Establish `hT : ∀ w : HeightOneSpectrum (𝓞 ℚ), w ∈ ({v} : Finset _) ↔ ((l : ℕ) : 𝓞 ℚ) ∈ w.asIdeal`. Introduce `w`. Rewrite using `[Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+
+Conclude with `hv`. Introduce `hw`. Conclude with `HeightOneSpectrum.ext ((asIdeal_eq_span_of_prime_mem hw).trans (asIdeal_eq_span_of_prime_mem hv).symm)`. Establish `h` using `_root_.ReciprocityTheory.Gal.sum_locDegree (F := ℚ) l {v} hT`. Rewrite `h` using `[Finset.sum_singleton, Module.finrank_self]`.
+
+Conclude with `h`.
+-/
 theorem _root_.GlobalTheory.OrdLoc.Dcmp.locDeg_rat {l : ℕ} [Fact l.Prime] {v : HeightOneSpectrum (𝓞 ℚ)}
     (hv : ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal) :
     _root_.ReciprocityTheory.Gal.locDeg v = 1 := by

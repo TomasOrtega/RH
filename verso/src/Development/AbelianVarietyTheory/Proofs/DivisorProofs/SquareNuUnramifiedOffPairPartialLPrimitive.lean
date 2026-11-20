@@ -28,6 +28,33 @@ noncomputable section
 
 namespace GlobalTheory.NuOffPair
 
+/- English proof (translation)
+Introduce `D T L sc μ₀ hL hF G t i j χ hχ`. Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hm : 1 ≤ D.R.m - (i : ℕ) ∧ D.R.m - (i : ℕ) ≤ D.R.m` using `⟨by omega, by omega⟩`. Establish `hunr : ∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) ∉ sfB G t → (nuH G t i j).UnrAt w`. Introduce `w hw`.
+
+Establish `hv : w.under (𝓞 D.host.F) ∉ G.pl.S0` using `fun h => hw (GlobalTheory.BottomIPData.mem_bottomPairFinitePlacesBelow_of_mem_exceptional G t h)`. Establish `hQ : ∀ P ∈ L.Q t, P.under (𝓞 D.host.F) ≠ w.under (𝓞 D.host.F)` using `fun P hP e => hw (e ▸ GlobalTheory.BottomIPData.under_mem_sfB G t (by unfold locPl; exact Finset.mem_union_right _ hP))`. Establish `hchi : (G.ch.chiH (D.R.m - i)).UnrAt w` using `G.ch.unr _ hm.1 hm.2 w hv`. Establish `hmu : (L.C.mu0 j).UnrAt w` using `(L.C.isMu0 j).unr _ fun k hk => hv (by`. Establish `h : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (w.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap _ (𝓞 D.host.E) _ ∈ w.asIdeal`.
+
+Rewrite using `[map_natCast]`. Conclude with `hk`. Use `G.pl.mem_S0_of_sum_eq.2 (Or.inr ((S1_mem_OmF D).2 ?_))` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl h`.
+
+Conclude with `Or.inr (Or.inl h))`. Establish `hxi : (L.xiH t).UnrAt w`. Assume the negation of the conclusion as `hn`. Break down `(hL.Q_ram t w).1 hn with hq | ⟨P', hq, hc⟩` into its components or cases. Conclude with `hQ w hq rfl`.
+
+Conclude with `hQ P' hq (GlobalTheory.BotTripleUnr.under_eq_of_isConjPl hc)`. Rewrite using `[nuH, div_eq_mul_inv]`. Conclude with `(hmu.mul hxi).mul hchi.inv`. Establish `hram : ∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) ∈ sfB G t → ¬ (nuH G t i j).UnrAt w`. Introduce `w hw`.
+
+Distinguish the cases in `h0 : w.under (𝓞 D.host.F) ∈ G.pl.S0`. Conclude with `GlobalTheory.SqStep.nuH_not_unrAt_above hL G t i j w h0`. Unfold `GlobalTheory.BottomIPData.sfB at hw`. Take `⟨P, hP, hPw⟩` from `Finset.mem_image.1 hw`. Establish `hP' : P ∈ L.Q t`.
+
+Unfold `locPl GlobalTheory.ChiGrid.Places.W0 at hP`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`. Apply `h0` to reduce the goal to its premises.
+
+Rewrite using `[← hPw, G.pl.under_w hv]`. Conclude with `hv`. Conclude with `h`. Use `GlobalTheory.TwistRam.not_unrAt_alpha_div_beta hL t i j w P hP' hPw h0` as an intermediate fact. Establish `e0 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j / GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j = G.nu t i (j + 1)` using `mul_div_mul_right_eq_div _ _ _`.
+
+Rewrite `this` using `[e0, GlobalTheory.LFun.unrAt_iff_of_chrEq (GlobalTheory.FunObj.SqNum.chrEq_nu G t i j hL)]`. Then use the resulting hypothesis. Use `⟨fun w hw => (GlobalTheory.LFun.unrAt_iff_of_chrEq hχ w).2 (hunr w ?_), fun Λ hΛ s => ?_⟩` and prove the remaining obligations. Conclude with `hw`. Establish `hT : GlobalTheory.CMVal.TrivOnF (nuH G t i j)`. Establish `h` using `((L.C.isMu0 j).triv.mul (hL.xi_triv t)).mul (G.ch.triv _ hm.1 hm.2).inv`.
+
+Rewrite using `[nuH, div_eq_mul_inv]`. Conclude with `h`. Establish `hu : ∀ w, GlobalTheory.LFun.UnrAt χ⁻¹ w ↔ (nuH G t i j)⁻¹.UnrAt w` using `fun w => by`. Rewrite using `[GlobalTheory.UnrCharZeta.unrAt_inv, ← GlobalTheory.LFun.unrAt_iff_of_chrEq hχ w]`. Conclude with `⟨fun h => inv_inv χ ▸ h.inv, fun h => h.inv⟩`.
+
+Establish `hfam : GlobalTheory.LFun.charFam χ⁻¹ = GlobalTheory.LFun.heckeFam (nuH G t i j)⁻¹` using `funext fun w => by`. Distinguish the cases in `h : (nuH G t i j)⁻¹.UnrAt w`. Rewrite using `[GlobalTheory.LFun.heckeFam_of_unrAt h, GlobalTheory.LFun.charFam, if_pos ((hu w).2 h), GlobalTheory.LFun.val_inv, GlobalTheory.LFun.val_eq_of_chrEq hχ, GlobalTheory.UnrCharZeta.val_inv]`. Rewrite using `[GlobalTheory.LFun.heckeFam_of_not_unrAt h, GlobalTheory.LFun.charFam, if_neg (mt (hu w).1 h)]`. Establish `hΛ'` using `GlobalTheory.CMVal.isHeckeL_inv_of_trivOnF D.host.E (nuH G t i j) Λ hT hΛ`.
+
+Establish `hr' : ∀ w ∈ GlobalTheory.LFun.above D.host.E ((sfB G t : Finset (FinPl D)) : Set (FinPl D)), ¬ (nuH G t i j)⁻¹.UnrAt w` using `fun w hw h => hram w hw ((GlobalTheory.UnrCharZeta.unrAt_inv _ w).1 h)`. Establish `heq : GlobalTheory.Cont.EqRight Λ (GlobalTheory.LFun.charL χ⁻¹ ((sfB G t : Finset (FinPl D)) : Set (FinPl D)))` using `⟨1, fun z hz => by`. Express the relevant statement in the definitionally equal form `Λ z = GlobalTheory.LFun.eulerProd _ (GlobalTheory.LFun.charFam χ⁻¹) z`. Rewrite using `[hfam]`. Conclude with `(GlobalTheory.SqStep.heckeL_eq_of_ram hr' hΛ' hz).symm⟩`.
+
+Conclude with `(GlobalTheory.Cont.holValueAt_self (σ := s.re - 1) (fun z _ => hΛ.1.analyticAt z) (by linarith)).congr heq`.
+-/
 theorem main : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → D.host.F = maximalRealSubfield D.host.E →
   ∀ (G : GridData L sc) (t : T) (i j : Fin D.R.m) (χ : (AE D)ˣ →* Circle), ChrEq χ (nuH G t i j) →
     GlobalTheory.LFun.UnrOff χ ((sfB G t : Finset (FinPl D)) : Set (FinPl D)) ∧

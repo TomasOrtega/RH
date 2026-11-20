@@ -16,18 +16,33 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.GoodStep
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockOne_zero_zero {K : Type} [Zero K] {M : ℕ} (t : K) (A : Matrix (Fin M) (Fin M) K) :
     blockOne t A 0 0 = t := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockOne_zero_succ {K : Type} [Zero K] {M : ℕ} (t : K) (A : Matrix (Fin M) (Fin M) K) (j : Fin M) :
     blockOne t A 0 j.succ = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockOne_succ_zero {K : Type} [Zero K] {M : ℕ} (t : K) (A : Matrix (Fin M) (Fin M) K) (i : Fin M) :
     blockOne t A i.succ 0 = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockOne_succ_succ {K : Type} [Zero K] {M : ℕ} (t : K) (A : Matrix (Fin M) (Fin M) K) (i j : Fin M) :
     blockOne t A i.succ j.succ = A i j := rfl
 
+/- English proof (translation)
+Establish `hs : (blockOne t A).submatrix Fin.succ (Fin.succAbove 0) = A`. Use extensionality with `i j`. Simplify using `[blockOne_succ_succ]`. Rewrite using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ, hs]`. Simplify using `[blockOne_zero_zero, blockOne_zero_succ]`.
+-/
 theorem det_blockOne {K : Type} [CommRing K] {M : ℕ} (t : K) (A : Matrix (Fin M) (Fin M) K) :
     (blockOne t A).det = t * A.det := by
   have hs : (blockOne t A).submatrix Fin.succ (Fin.succAbove 0) = A := by
@@ -36,6 +51,11 @@ theorem det_blockOne {K : Type} [CommRing K] {M : ℕ} (t : K) (A : Matrix (Fin 
   rw [Matrix.det_succ_row_zero, Fin.sum_univ_succ, hs]
   simp [blockOne_zero_zero, blockOne_zero_succ]
 
+/- English proof (translation)
+Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `[blockOne_zero_zero]`. Simplify using `[blockOne_zero_succ, blockOne_succ_zero]`. Simplify using `[blockOne_zero_succ, blockOne_succ_zero]`.
+
+Simplify `hJ.1 i j` using `[blockOne_succ_succ]`. Rewrite using `[det_blockOne]`. Conclude with `mul_ne_zero (by simpa using ht) hJ.2`.
+-/
 theorem isHermND_blockOne {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (t : F) (ht : t ≠ 0) :
     IsHermND σ (blockOne (algebraMap F E t) J) := by
@@ -48,6 +68,9 @@ theorem isHermND_blockOne {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E
   · rw [det_blockOne]
     exact mul_ne_zero (by simpa using ht) hJ.2
 
+/- English proof (translation)
+Use extensionality with `a c`. Use `show hR R σ _ _ _ = algebraMap F R t ⊗ₜ[F] (1 : E)`. Simplify using `only [hR, hform, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ, map_one, map_zero, one_mul, mul_zero, zero_mul, mul_one, Finset.sum_const_zero, add_zero, JR, Matrix.map_apply, blockOne_zero_zero]`. Use `show (1 : R) ⊗ₜ[F] (algebraMap F E t) = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`.
+-/
 theorem gram_mulVec_e0 {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (t : F) :
     gramR R σ (blockOne (algebraMap F E t) J)
@@ -66,6 +89,13 @@ section Place
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a i k`. Conclude with `h a.succ i.succ k`. Introduce `h a i k`. Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) a <;> refine Fin.cases ?_ (fun i => ?_) i`.
+
+Conclude with `h1 k`. Use `show (Algebra.TensorProduct.basis (Fv F v) b).repr (0 : Fv F v ⊗[F] E) k ∈ _`. Simplify using `[zero_mem]`. Use `show (Algebra.TensorProduct.basis (Fv F v) b).repr (0 : Fv F v ⊗[F] E) k ∈ _`. Simplify using `[zero_mem]`.
+
+Conclude with `h a i k`.
+-/
 theorem consTup_mem_latV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (h1 : ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr (1 : Fv F v ⊗[F] E) k ∈
       v.adicCompletionIntegers F) {n M : ℕ} (X : Fin n → Fin M → Fv F v ⊗[F] E) :
@@ -82,6 +112,9 @@ theorem consTup_mem_latV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOne
       simp [zero_mem]
     · exact h a i k
 
+/- English proof (translation)
+Introduce `a i k`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Conclude with `h1 k`. Use `show (Algebra.TensorProduct.basis (Fv F v) b).repr (0 : Fv F v ⊗[F] E) k ∈ _`. Simplify using `[zero_mem]`.
+-/
 theorem e0_mem_latV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (h1 : ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr (1 : Fv F v ⊗[F] E) k ∈
       v.adicCompletionIntegers F) {M : ℕ} :
@@ -92,6 +125,9 @@ theorem e0_mem_latV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpect
   · show (Algebra.TensorProduct.basis (Fv F v) b).repr (0 : Fv F v ⊗[F] E) k ∈ _
     simp [zero_mem]
 
+/- English proof (translation)
+Establish `: inclR R (algebraMap F E t) = algebraMap F R t • (1 : R ⊗[F] E)` using `by show (1 : R) ⊗ₜ[F] (algebraMap F E t) = _`. Rewrite using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Simplify using the standard rewrite rules. Rewrite using `[this, smul_mul_assoc, one_mul]`.
+-/
 theorem incl_mul_eq_smul (R : Type) [CommRing R] [Algebra F R] (t : F) (y : R ⊗[F] E) :
     inclR R (algebraMap F E t) * y = algebraMap F R t • y := by
   have : inclR R (algebraMap F E t) = algebraMap F R t • (1 : R ⊗[F] E) := by
@@ -101,6 +137,31 @@ theorem incl_mul_eq_smul (R : Type) [CommRing R] [Algebra F R] (t : F) (y : R �
     simp
   rw [this, smul_mul_assoc, one_mul]
 
+/- English proof (translation)
+Take `⟨r1, r2, r3, r4, -⟩` from `GlobalTheory.T.completion_is_local_ring F v`. Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`. Use `haveI := r4`.
+
+Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨i1, i2, i3, i4, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Fv F v)`. Use `haveI := i1`. Use `haveI := i2`. Use `haveI := i3`.
+
+Use `haveI := i4`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI := hlam.1`. Use `haveI := (GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b lam hlam.1).1`. Establish `hinv : inclR (F` using `F) (Fv F v) (algebraMap F E t) * inclR (F := F) (Fv F v) (algebraMap F E t⁻¹) = 1 := by`.
+
+Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ ht, map_one, map_one]`. Set `e : (Fv F v ⊗[F] E) ≃+ (Fv F v ⊗[F] E)` to `{ toFun := fun y => inclR (F := F) (Fv F v) (algebraMap F E t) * y invFun := fun y => inclR (F := F) (Fv F v) (algebraMap F E t⁻¹) * y left_inv := fun y => by show _ * (_ * y) = y`. Rewrite using `[← mul_assoc, mul_comm (inclR (F := F) (Fv F v) (algebraMap F E t⁻¹)), hinv, one_mul]`. Use `right_inv := fun y => by show _ * (_ * y) = y`. Rewrite using `[← mul_assoc, hinv, one_mul]`.
+
+Use the proof step `map_add' := fun x y => mul_add _ x y }`. Establish `he : Continuous e` using `continuous_const.mul continuous_id`. Establish `he' : Continuous e.symm` using `continuous_const.mul continuous_id`. Set `L : Set (Fv F v ⊗[F] E)` to `{y | ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F}`. Take `⟨c1, c2, c3, -⟩` from `GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b 1 1 v`.
+
+Establish `hLc : IsCompact L`. Establish `: L = (fun X : Fin 1 → Fin 1 → Fv F v ⊗[F] E => X 0 0) '' latV b v`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Conclude with `⟨fun _ _ => y, fun _ _ k => hy k, rfl⟩`. Introduce and unpack `⟨X, hX, rfl⟩`. Conclude with `fun k => hX 0 0 k`. Rewrite using `[this]`. Conclude with `c1.image (by fun_prop)`.
+
+Establish `hLo : IsOpen L`. Establish `: L = (fun (y : Fv F v ⊗[F] E) (_ : Fin 1) (_ : Fin 1) => y) ⁻¹' latV b v`. Use extensionality with `y`. Conclude with `⟨fun hy _ _ k => hy k, fun hy k => hy 0 0 k⟩`. Rewrite using `[this]`.
+
+Conclude with `c2.preimage (by fun_prop)`. Establish `hL0 : L.Nonempty` using `⟨0, fun k => c3 0 0 k⟩`. Establish `hmem : ∀ x : Fv F v, algebraMap F (Fv F v) t * x ∈ v.adicCompletionIntegers F ↔ x ∈ v.adicCompletionIntegers F`. Introduce `x`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, htv, one_mul]`.
+
+Establish `hL : ∀ y, e y ∈ L ↔ y ∈ L`. Introduce `y`. Establish `hk : ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr (e y) k = algebraMap F (Fv F v) t * (Algebra.TensorProduct.basis (Fv F v) b).repr y k`. Introduce `k`. Use `show (Algebra.TensorProduct.basis (Fv F v) b).repr (inclR (F := F) (Fv F v) (algebraMap F E t) * y) k = _`.
+
+Rewrite using `[incl_mul_eq_smul, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h k`. Conclude with `(hmem _).1 (hk k ▸ h k)`. Introduce `h k`.
+
+Conclude with `hk k ▸ (hmem _).2 (h k)`. Use `(GlobalTheory.T.map_addHaar_addEquiv_eq_smul_and_eq_of_compact_open _ _ (coordK (Fv F v) b lam) (coordK (Fv F v) b lam) e he he').2 L L hLc hLo hL0 hL rfl` as an intermediate fact. Rewrite using `[one_smul]`. Conclude with `this`.
+-/
 theorem coordK_map_unit [NumberField E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ)
     (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)) (hlam : IsStdV v lam) (t : F) (ht : t ≠ 0)
     (htv : Valued.v (algebraMap F (Fv F v) t) = 1) (d : ℕ) (b : Module.Basis (Fin d) F E) :
@@ -177,6 +238,29 @@ theorem coordK_map_unit [NumberField E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E 
 
 end Place
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ t ht n T hT hdet hT' d b`. Establish `hJ'` using `isHermND_blockOne σ J hJ t ht`. Use `filter_upwards [GlobalTheory.T.lattice_gram_scalar_almost_all F E σ hCM (M + 1) _ hJ' t ht d b, (GlobalTheory.T.integral_almost_all_places F E σ hCM d b).1 1, (GlobalTheory.T.integral_almost_all_places F E σ hCM d b).2 t ht] with v hgt h1' htv`. Introduce `lam hlam m m₁ m' hm hm₁ hm'`. Establish `h1 : ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr (1 : Fv F v ⊗[F] E) k ∈ v.adicCompletionIntegers F`.
+
+Introduce `k`. Simplify using `using h1' k`. Establish `hlocR` using `GlobalTheory.T.completion_is_local_ring F v`. Take `⟨r1, r2, r3, r4, -⟩` from `id hlocR`. Use `haveI := r1`.
+
+Use `haveI := r2`. Use `haveI := r3`. Use `haveI := r4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨-, -, -, -, -, -, -, hB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Fv F v)`.
+
+Establish `hmeas : ∀ p q : ℕ, MeasurableSet (latV (M` using `q) (n := p) b v) := by`. Introduce `p q`. Use `haveI := hB p q`. Conclude with `(GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b p q v).2.1.measurableSet`. Establish `hc` using `coordK_map_unit σ hCM v lam hlam t ht htv d b`.
+
+Set `φ : (Fin (n + 1) → Fin (M + 1) → Fv F v ⊗[F] E) → ℝ≥0∞` to `(latV b v).indicator 1`. Establish `hφ : Measurable φ` using `measurable_one.indicator (hmeas _ _)`. Take `⟨Ψ, -, hΨ, hint⟩` from `GlobalTheory.T.local_density_block_one_product F E σ hCM M J hJ t ht n T hT hdet hT' (Fv F v) hlocR d b lam hlam.1 m m₁ m' hm hm₁ hm' 1 hc φ hφ`. Establish `hae : Ψ =ᵐ[m₁ (hermScal (Fv F v) σ (algebraMap F _ t))] (latV b v).indicator (fun _ => m' (hermOf (Fv F v) σ T hT) (latV b v))` using `by filter_upwards [mem_ae_iff.2 (hm₁.1 (hermScal (Fv F v) σ (algebraMap F _ t)))] with y hy`. Establish `hg : gramR (Fv F v) σ (blockOne (algebraMap F E t) J) y = (hermScal (Fv F v) σ (algebraMap F _ t) : HermR (Fv F v) σ 1)` using `hy.1`.
+
+Establish `hu : IsUnit (gramR (Fv F v) σ (blockOne (algebraMap F E t) J) y).det` using `hy.2`. Establish `hg0` using `gram_mulVec_e0 (Fv F v) σ J t`. Distinguish the cases in `hyL : y ∈ latV b v`. Take `⟨h, hh, hpres⟩` from `hgt _ y (e0_mem_latV b v h1) hyL hg0 (hg.trans hg0.symm)`. Rewrite using `[Set.indicator_of_mem hyL, ← hh, hΨ h]`.
+
+Establish `: (fun X => φ (actW (Fv F v) σ _ h (consTup X))) = (latV b v).indicator 1`. Use function extensionality and compare the values at `X`. Distinguish the cases in `hX : X ∈ latV b v`. Rewrite using `[Set.indicator_of_mem hX]`. Conclude with `Set.indicator_of_mem ((hpres _ _).2 ((consTup_mem_latV b v h1 X).2 hX)) _`.
+
+Rewrite using `[Set.indicator_of_notMem hX]`. Conclude with `Set.indicator_of_notMem (fun hc' => hX ((consTup_mem_latV b v h1 X).1 ((hpres _ _).1 hc'))) _`. Rewrite using `[this, lintegral_indicator_one (hmeas _ _)]`. Take `⟨h, hh⟩` from `GlobalTheory.T.witt_extension_artinian_ring F E σ hCM (M + 1) _ hJ' (Fv F v) 1 _ y (hg0.trans hg.symm) (by rw [hg0, ← hg]; exact hu)`. Rewrite using `[Set.indicator_of_notMem hyL, ← hh, hΨ h]`.
+
+Establish `: (fun X => φ (actW (Fv F v) σ _ h (consTup X))) = 0`. Use function extensionality and compare the values at `X`. Use `Set.indicator_of_notMem (fun hc' => hyL ?_) _` and prove the remaining obligations. Introduce `a i k`. Establish `ha : a = 0` using `Subsingleton.elim _ _`.
+
+Substitute `ha` using the available equality. Rewrite using `[← hh]`. Conclude with `hc' 0 i k`. Rewrite using `[this, lintegral_zero_fun]`. Establish `e1 : ∫⁻ X, φ X ∂(m (hermOf (Fv F v) σ _ hT')) = m (hermOf (Fv F v) σ _ hT') (latV b v)` using `lintegral_indicator_one (hmeas _ _)`.
+
+Rewrite using `[← e1, hint, lintegral_congr_ae hae, lintegral_indicator_const (hmeas _ _)]`. Simplify using `[mul_comm]`.
+-/
 theorem blockFibre_mass : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (t : F), t ≠ 0 → ∀ (n : ℕ) (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (hT' : ∀ a b, σ (blockOne (algebraMap F E t) T b a) = blockOne (algebraMap F E t) T a b), ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ lam, IsStdV v lam → ∀ m m₁ m', IsGramFib (Fv F v) σ (blockOne (algebraMap F E t) J) (n + 1) (coordW (Fv F v) b lam (n + 1) (M + 1)) (coordHerm (Fv F v) σ b lam (n + 1)) m → IsGramFib (Fv F v) σ (blockOne (algebraMap F E t) J) 1 (coordW (Fv F v) b lam 1 (M + 1)) (coordHerm (Fv F v) σ b lam 1) m₁ → IsGramFib (Fv F v) σ J n (coordW (Fv F v) b lam n M) (coordHerm (Fv F v) σ b lam n) m' → m (hermOf (Fv F v) σ _ hT') (latV b v) = m₁ (hermScal (Fv F v) σ (algebraMap F _ t)) (latV b v) * m' (hermOf (Fv F v) σ T hT) (latV b v) := by
   intro F E _ _ _ _ _ σ hCM M J hJ t ht n T hT hdet hT' d b
   have hJ' := isHermND_blockOne σ J hJ t ht

@@ -10,16 +10,33 @@ open scoped nonZeroDivisors Matrix TensorProduct
 noncomputable section
 namespace GlobalTheory.SkewPlaneIdeal
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.valuation_le_one_of_integral_trace`.
+-/
 theorem codiff_le_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ → ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∈ B.P →
     ∀ c : E, (∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E ((o : E) * c))) → w.valuation E c ≤ 1 :=
   GlobalTheory.T.valuation_le_one_of_integral_trace
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_unit_denominator_integral`.
+-/
 theorem exists_unit_mul_integral : ∀ (K : Type) [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K))
     (T : Set K) (d : 𝓞 K), d ≠ 0 → (∀ t ∈ T, IsIntegral ℤ ((d : K) * t)) → (∀ t ∈ T, P.valuation K t ≤ 1) →
     ∃ s : 𝓞 K, P.valuation K (s : K) = 1 ∧ ∀ t ∈ T, IsIntegral ℤ ((s : K) * t) :=
   GlobalTheory.T.exists_unit_denominator_integral
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v τ n L c S h0 hS u hu`. Take `⟨y, hy, rfl⟩` from `hu`. Use `latLoc_induction (p := fun y => ∃ s ∈ S, Valued.v (splitVec τ y ⬝ᵥ fun i => τ (c i)) ≤ Valued.v (τ s)) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `a ha z hz`. Use `⟨z ⬝ᵥ c, hS z hz, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (splitVec τ fun i => a ⊗ₜ[F] z i) ⬝ᵥ (fun i => τ (c i)) = a * τ (z ⬝ᵥ c)`. Simplify using `[splitVec, dotProduct, map_sum, Finset.mul_sum, mul_assoc]`. Rewrite using `[e, map_mul]`. Conclude with `mul_le_of_le_one_left' ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ha)`. Use `⟨0, h0, ?_⟩` and prove the remaining obligations.
+
+Establish `: splitVec τ (0 : Fin n → Fv F v ⊗[F] E) = 0` using `funext fun i => map_zero _`. Rewrite using `[this, zero_dotProduct, map_zero]`. Conclude with `zero_le`. Introduce and unpack `y z ⟨s1, hs1, h1⟩ ⟨s2, hs2, h2⟩`. Rewrite using `[splitVec_add, add_dotProduct]`.
+
+Break down `le_total (Valued.v (τ s1)) (Valued.v (τ s2)) with h | h` into its components or cases. Conclude with `⟨s2, hs2, (Valuation.map_add _ _ _).trans (max_le (h1.trans h) h2)⟩`. Conclude with `⟨s1, hs1, (Valuation.map_add _ _ _).trans (max_le h1 (h2.trans h))⟩`. Introduce and unpack `y ⟨s1, hs1, h1⟩`. Use `⟨s1, hs1, ?_⟩` and prove the remaining obligations.
+
+Establish `: splitVec τ (-y) = -splitVec τ y` using `funext fun i => map_neg _ _`. Rewrite using `[this, neg_dotProduct, Valuation.map_neg]`. Conclude with `h1`.
+-/
 theorem exists_valued_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (τ : E →ₐ[F] Fv F v) (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (c : Fin n → E)
     (S : Set E), (0 : E) ∈ S → (∀ z ∈ L, z ⬝ᵥ c ∈ S) → ∀ u ∈ splitLat τ L,
@@ -49,6 +66,11 @@ theorem exists_valued_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
     rw [this, neg_dotProduct, Valuation.map_neg]
     exact h1
 
+/- English proof (translation)
+Introduce `E _ _ n L hL c`. Set `f : (Fin n → E) →ₗ[𝓞 E] E` to `{ toFun := fun z => z ⬝ᵥ c map_add' := fun a b => add_dotProduct a b c map_smul' := fun o a => by simp [smul_dotProduct] }`. Take `⟨a, ha, hint⟩` from `FractionalIdeal.isFractional_of_fg (S := (𝓞 E)⁰) (P := E) (hL.map f)`. Use `⟨a, nonZeroDivisors.ne_zero ha, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hint _ (Submodule.mem_map_of_mem hz)`.
+
+Rewrite `hb` using `[Algebra.smul_def]`. Establish `e : (a : E) * (z ⬝ᵥ c) = (b : E)` using `hb.symm`. Rewrite using `[e]`. Conclude with `RingOfIntegers.isIntegral_coe b`.
+-/
 theorem exists_denom : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)),
     L.FG → ∀ c : Fin n → E, ∃ d : 𝓞 E, d ≠ 0 ∧ ∀ z ∈ L, IsIntegral ℤ ((d : E) * (z ⬝ᵥ c)) := by
   intro E _ _ n L hL c
@@ -66,22 +88,37 @@ theorem exists_denom : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (L : S
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+The claim follows from `add_dotProduct _ _ _`.
+-/
 lemma form_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b c : Fin n → E) :
     form σ J (a + b) c = form σ J a c + form σ J b c := add_dotProduct _ _ _
 
+/- English proof (translation)
+The claim follows from `smul_dotProduct _ _ _`.
+-/
 lemma form_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (t : E) (a c : Fin n → E) :
     form σ J (t • a) c = t * form σ J a c := smul_dotProduct _ _ _
 
+/- English proof (translation)
+Establish `e : (fun i => σ ((b + c) i)) = (fun i => σ (b i)) + fun i => σ (c i)` using `funext fun i => map_add σ _ _`. Simplify using `only [form, e, Matrix.mulVec_add, dotProduct_add]`.
+-/
 lemma form_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b c : Fin n → E) :
     form σ J a (b + c) = form σ J a b + form σ J a c := by
   have e : (fun i => σ ((b + c) i)) = (fun i => σ (b i)) + fun i => σ (c i) := funext fun i => map_add σ _ _
   simp only [form, e, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Establish `e : (fun i => σ ((t • b) i)) = σ t • fun i => σ (b i)` using `funext fun i => by simp`. Simplify using `only [form, e, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 lemma form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (t : E) (a b : Fin n → E) :
     form σ J a (t • b) = σ t * form σ J a b := by
   have e : (fun i => σ ((t • b) i)) = σ t • fun i => σ (b i) := funext fun i => by simp
   simp only [form, e, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma form_swap (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = -J i j) (a b : Fin n → E) : form σ J a b = -σ (form σ J b a) := by
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]
@@ -89,10 +126,18 @@ lemma form_swap (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {n : ℕ} (J :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [hJ]; ring
 
+/- English proof (translation)
+Simplify using `[dotProduct, map_sum, map_mul]`.
+-/
 lemma map_dotProduct {K : Type} [Field K] [Algebra F K] (τ : E →ₐ[F] K) {n : ℕ} (a c : Fin n → E) :
     (fun i => τ (a i)) ⬝ᵥ (fun i => τ (c i)) = τ (a ⬝ᵥ c) := by
   simp [dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Take `⟨y, hy, hvy⟩` from `GlobalTheory.Idele.exists_mem_valuation_eq hI w`. Take `⟨s, hs, hvs⟩` from `h2`. Establish `a` using `h1 y hy`. Establish `b` using `(GlobalTheory.Idele.mem_iff_valuation_le hI s).1 hs w`. Rewrite `a` using `[hvy, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+
+Establish `c` using `hvs.trans b`. Rewrite `c` using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem count_eq_zero_of_valuation {K : Type} [Field K] [NumberField K] {I : FractionalIdeal (𝓞 K)⁰ K} (hI : I ≠ 0)
     (w : HeightOneSpectrum (𝓞 K)) (h1 : ∀ s ∈ I, w.valuation K s ≤ 1) (h2 : ∃ s ∈ I, 1 ≤ w.valuation K s) :
     FractionalIdeal.count K w I = 0 := by
@@ -105,10 +150,20 @@ theorem count_eq_zero_of_valuation {K : Type} [Field K] [NumberField K] {I : Fra
   rw [← WithZero.exp_zero, WithZero.exp_le_exp] at c
   omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i => (1 : Fv F v) ⊗ₜ[F] z i, tmul_mem_latLoc (one_mem _) hz, funext fun i => by simp [splitVec]⟩`.
+-/
 lemma mem_splitLat_of_mem {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) {n : ℕ}
     {L : Submodule (𝓞 E) (Fin n → E)} {z : Fin n → E} (hz : z ∈ L) : (fun i => τ (z i)) ∈ splitLat τ L :=
   ⟨fun i => (1 : Fv F v) ⊗ₜ[F] z i, tmul_mem_latLoc (one_mem _) hz, funext fun i => by simp [splitVec]⟩
 
+/- English proof (translation)
+Establish `hcol : β.1 *ᵥ Pi.single j 1 = fun r => τ (z r)`. Rewrite using `[Matrix.mulVec_single_one]`. Use function extensionality and compare the values at `r`. Conclude with `hz r`. Use `⟨hcol ▸ (hβ _).1 fun i => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `e : β.1 *ᵥ (t • Pi.single j 1) = fun r => t * τ (z r)`.
+
+Rewrite using `[Matrix.mulVec_smul, hcol]`. Both sides reduce to the same expression. Use `(hβ _).2 (e ▸ ht) j` as an intermediate fact. Simplify `this` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+-/
 lemma col_prim {v : HeightOneSpectrum (𝓞 F)} {τ : E →ₐ[F] Fv F v} {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)}
     {β : GL (Fin n) (Fv F v)} (hβ : IsSplitBasis τ L β) (j : Fin n) (z : Fin n → E) (hz : ∀ r, β.1 r j = τ (z r)) :
     (fun r => τ (z r)) ∈ splitLat τ L ∧ ∀ t : Fv F v, (fun r => t * τ (z r)) ∈ splitLat τ L → Valued.v t ≤ 1 := by
@@ -124,6 +179,47 @@ lemma col_prim {v : HeightOneSpectrum (𝓞 F)} {τ : E →ₐ[F] Fv F v} {n : �
     have := (hβ _).2 (e ▸ ht) j
     simpa [HeightOneSpectrum.mem_adicCompletionIntegers] using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n n₁ H Y Y₁ i₀ i₁ r s hB hY hH hi₀ hi₁`. Establish `hσ : ∀ z, σ (σ z) = z` using `cm_conj_conj hB.cm`. Establish `hyx : form σ Y.J H.y H.x = -1` using `by rw [form_swap σ hσ Y.J hY.skew, hH.xy, map_one]`. Establish `hxι : ∀ u, form σ Y.J H.x (H.ι *ᵥ u) = 0` using `fun u => by`. Rewrite using `[form_swap σ hσ Y.J hY.skew, (hH.orth u).1, map_zero, neg_zero]`.
+
+Establish `hco : ∀ z ∈ Y.L, form σ Y.J z H.y • H.x ∈ Y.L ∧ (-form σ Y.J z H.x) • H.y ∈ Y.L ∧ ∀ a : E, form σ Y.J (a • H.x) z = a * σ (-form σ Y.J z H.x)`. Introduce `z hz`. Take `⟨a, t, u, ha, ht, _, rfl⟩` from `hH.split z hz`. Establish `e1 : form σ Y.J (a • H.x + H.ι *ᵥ u + t • H.y) H.y = a`. Rewrite using `[form_add_left, form_add_left, form_smul_left, form_smul_left, hH.xy, hH.yy, (hH.orth u).2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : -form σ Y.J (a • H.x + H.ι *ᵥ u + t • H.y) H.x = t`. Rewrite using `[form_add_left, form_add_left, form_smul_left, form_smul_left, hH.xx, hyx, (hH.orth u).1]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨by rw [e1]; exact ha, by rw [e2]; exact ht, fun b => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e2, form_smul_left, form_add_right, form_add_right, form_smul_right, form_smul_right, hH.xx, hH.xy, hxι]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : H.𝔟 ≠ 0`. Introduce `h0`. Set `f : (Fin n → E) →ₗ[E] E` to `{ toFun := fun z => form σ Y.J z H.y map_add' := fun a b => form_add_left σ Y.J a b H.y map_smul' := fun t a => form_smul_left σ Y.J t a H.y }`.
+
+Establish `hle : Submodule.span E (Y.L : Set (Fin n → E)) ≤ LinearMap.ker f`. Rewrite using `[Submodule.span_le]`. Introduce `z hz`. Use `(hH.ideal _).2 (hco z hz).1` as an intermediate fact. Rewrite `this` using `[h0]`.
+
+Conclude with `(FractionalIdeal.mem_zero_iff _).1 this`. Use `haveI := hY.lat`. Rewrite `hle` using `[Submodule.IsLattice.span_eq_top]`. Establish `: f H.x = 0` using `hle Submodule.mem_top`. Express the relevant statement in the definitionally equal form `form σ Y.J H.x H.y = 0 at this`.
+
+Rewrite `this` using `[hH.xy]`. Conclude with `one_ne_zero this`. Use `⟨h0, fun w hw => ?_⟩` and prove the remaining obligations. Use `set v : B.P := ⟨w.under (𝓞 F), hw⟩ with hv`. Use `set τ := B.τ v with hτ`.
+
+Establish `hβ` using `hY.bas v`. Take `⟨hxL, hxp⟩` from `col_prim hβ ⟨i₀, hi₀⟩ H.x fun r => (hH.bas v ⟨i₀, hi₀⟩).1 rfl r`. Take `⟨hyL, hyp⟩` from `col_prim hβ ⟨i₁, hi₁⟩ H.y fun r => (hH.bas v ⟨i₁, hi₁⟩).2.1 rfl r`. Establish `hτs : ∀ a : E, ∀ z : Fin n → E, (fun i => τ ((a • z) i)) = fun i => τ a * τ (z i)` using `fun a z =>`. Use function extensionality and compare the values at `fun i => by simp`.
+
+Establish `hxw : ∀ a : E, a • H.x ∈ Y.L → Valued.v (τ a) ≤ 1` using `fun a ha => hxp _ (hτs a H.x ▸ mem_splitLat_of_mem τ ha)`. Establish `hyw : ∀ a : E, a • H.y ∈ Y.L → Valued.v (τ a) ≤ 1` using `fun a ha => hyp _ (hτs a H.y ▸ mem_splitLat_of_mem τ ha)`. Establish `hxu : ∃ a : E, a • H.x ∈ Y.L ∧ 1 ≤ Valued.v (τ a)`. Take `⟨a, ha, hle⟩` from `exists_valued_le F E v.1 τ n Y.L (Y.J *ᵥ fun i => σ (H.y i)) {a | a • H.x ∈ Y.L} (by simp) (fun z hz => (hco z hz).1) _ hxL`. Use `⟨a, ha, le_of_eq_of_le ?_ hle⟩` and prove the remaining obligations.
+
+Rewrite using `[map_dotProduct τ]`. Express the relevant statement in the definitionally equal form `1 = Valued.v (τ (form σ Y.J H.x H.y))`. Rewrite using `[hH.xy, map_one, map_one]`. Establish `hyu : ∃ a : E, a • H.y ∈ Y.L ∧ 1 ≤ Valued.v (τ a)`. Take `⟨a, ha, hle⟩` from `exists_valued_le F E v.1 τ n Y.L (-(Y.J *ᵥ fun i => σ (H.x i))) {a | a • H.y ∈ Y.L} (by simp) (fun z hz => by show (z ⬝ᵥ -(Y.J *ᵥ _)) • H.y ∈ Y.L; rw [dotProduct_neg]; exact (hco z hz).2.1) _ hyL`.
+
+Use `⟨a, ha, le_of_eq_of_le ?_ hle⟩` and prove the remaining obligations. Rewrite using `[map_dotProduct τ, dotProduct_neg]`. Express the relevant statement in the definitionally equal form `1 = Valued.v (τ (-form σ Y.J H.y H.x))`. Rewrite using `[hyx, neg_neg, map_one, map_one]`. Establish `hwP : w.asIdeal ∈ v.1.asIdeal.primesOver (𝓞 E)` using `⟨w.isPrime, ⟨rfl⟩⟩`.
+
+Rewrite `hwP` using `[primesOver_eq_split hB.cm τ]`. Break down `hwP with hw1 | hw1` into its components or cases. Establish `hw2 : w = splitPrime τ` using `HeightOneSpectrum.ext hw1`. Establish `hval : ∀ a : E, w.valuation E a = Valued.v (τ a)` using `fun a => (congrArg (fun u : HeightOneSpectrum (𝓞 E) => u.valuation E a) hw2).trans (valued_apply_eq_valuation τ a).symm`. Use `count_eq_zero_of_valuation h0 _ (fun a ha => ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[hval]`. Conclude with `hxw a ((hH.ideal a).1 ha)`. Take `⟨a, ha, h1⟩` from `hxu`. Conclude with `⟨a, (hH.ideal a).2 ha, by rw [hval]; exact h1⟩`. Establish `hw2 : w = splitPrime (τ.comp σ)` using `HeightOneSpectrum.ext (Set.mem_singleton_iff.1 hw1)`.
+
+Establish `hval : ∀ a : E, w.valuation E a = Valued.v (τ (σ a))` using `fun a => (congrArg (fun u : HeightOneSpectrum (𝓞 E) => u.valuation E a) hw2).trans (valued_apply_eq_valuation _ a).symm`. Establish `hwP' : w.under (𝓞 F) ∈ B.P` using `hw`. Use `count_eq_zero_of_valuation h0 _ (fun a ha => ?_) ?_` and prove the remaining obligations. Take `⟨t, ht, h1⟩` from `hyu`. Establish `hd` using `(hY.dual (a • H.x)).1 ((hH.ideal a).1 ha) (t • H.y) ht`.
+
+Establish `e : form σ Y.J (a • H.x) (t • H.y) = a * σ t`. Rewrite using `[form_smul_left, form_smul_right, hH.xy]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hd` using `[e]`. Establish `h2` using `codiff_le_one F E σ B hB w hwP' _ hd`.
+
+Rewrite `h2` using `[hval, map_mul, hσ, map_mul, map_mul]`. Rewrite using `[hval]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨d, hd0, hd⟩` from `exists_denom E n Y.L hY.lat.fg (-(Y.J *ᵥ fun i => σ (H.x i)))`. Establish `hdt : ∀ t : E, t • H.y ∈ Y.L → IsIntegral ℤ ((d : E) * t)` using `fun t ht => by`.
+
+Use `hd _ ht` as an intermediate fact. Rewrite `this` using `[dotProduct_neg]`. Express the relevant statement in the definitionally equal form `IsIntegral ℤ ((d : E) * -form σ Y.J (t • H.y) H.x) at this`. Rewrite `this` using `[form_smul_left, hyx, mul_neg_one, neg_neg]`. Then use the resulting hypothesis. Set `σZ : E →ₐ[ℤ] E` to `(σ : E →+* E).toIntAlgHom`.
+
+Establish `hd1 : RingOfIntegers.mapRingHom (σ : E →+* E) d ≠ 0` using `fun h => hd0 (by`. Establish `h'` using `congrArg (fun x : 𝓞 E => (x : E)) h`. Simplify using `at h'`. Conclude with `h')`. Take `⟨s', hs'1, hs'2⟩` from `exists_unit_mul_integral E w {u | ∃ t, t • H.y ∈ Y.L ∧ u = σ t} (RingOfIntegers.mapRingHom (σ : E →+* E) d) hd1 (by`.
+
+Introduce and unpack `_ ⟨t, ht, rfl⟩`. Use `show IsIntegral ℤ (σ (d : E) * σ t)`. Rewrite using `[← map_mul]`. Conclude with `(hdt t ht).map σZ) (by`. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+
+Rewrite using `[hval, hσ]`. Conclude with `hyw t ht)`. Use `⟨s', (hH.ideal _).2 ((hY.dual _).2 fun z hz o => ?_), by rw [hs'1]⟩` and prove the remaining obligations. Rewrite using `[(hco z hz).2.2]`. Conclude with `Algebra.isIntegral_trace ((RingOfIntegers.isIntegral_coe o).mul (hs'2 _ ⟨_, (hco z hz).2.1, rfl⟩))`.
+-/
 theorem skewPlaneIdeal_ne_zero_and_count_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) {n n₁ : ℕ} (H : Plane E n n₁) (Y : Spc F E n) (Y₁ : Spc F E n₁) (i₀ i₁ r s : ℕ),
     B.IsGood σ → Y.IsSkew σ B r s → H.IsAdapted σ B Y Y₁ i₀ i₁ → i₀ < n → i₁ < n →

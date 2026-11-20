@@ -25,10 +25,16 @@ def ExpBall : Prop :=
     (haveI := FiniteDimensional.complete ℂ Wp; PI.CapelliEig.IsKFinCoefT (k := P.k) (r := P.r) R0.σ f) →
     CutBP.BigCellDerivativeExpansion p f b (C / 2 + 6) a₁
 
+/- English proof (translation)
+Introduce `C hC P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 a₁ R0 f ν₀` and use `Ball.wave_ball_estimate_dual H C hC P Wp Wq p lam b bv ga h q0 a₁ R0 f ν₀`.
+-/
 theorem expBall_of_hyps (H : BranchingSupport.Hyps) : ExpBall :=
   fun C hC P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 a₁ R0 f ν₀ =>
     Ball.wave_ball_estimate_dual H C hC P Wp Wq p lam b bv ga h q0 a₁ R0 f ν₀
 
+/- English proof (translation)
+Introduce `γ hγ hG`. Use `(h γ hγ hG).trans (mul_le_mul' (ENNReal.ofReal_le_ofReal ?_) le_rfl)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le hb (mul_le_mul_of_nonneg_right hC (by positivity))) (pow_nonneg (inv_nonneg.2 hG.le) _)`.
+-/
 theorem thmBpAt_mono {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
     {p : KB.Pl P Wp Wq} {f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} {b C C' : ℝ} {n₀ p₀ : ℕ} (hb : 1 ≤ b) (hC : C ≤ C')
@@ -47,10 +53,16 @@ def gapY (k r : ℕ) : ℝ :=
   ((2 * r + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) *
     (((3 * (r + 1) : ℕ) : ℝ) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + ((2 * r + k + 1 : ℕ) : ℝ) ^ 3)
 
+/- English proof (translation)
+Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (by omega : 1 ≤ 2 * r + 2)) (by norm_num)`.
+-/
 theorem pow_four_le_rpow_nine_halves (r : ℕ) : ((2 * r + 2 : ℕ) : ℝ) ^ 4 ≤ ((2 * r + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) := by
   rw [← Real.rpow_natCast]
   exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast (by omega : 1 ≤ 2 * r + 2)) (by norm_num)
 
+/- English proof (translation)
+Unfold `thrX gapY`. Establish `h1 : ((r : ℝ) + 1) ^ 4 ≤ ((2 * r + 2 : ℕ) : ℝ) ^ 4` using `pow_le_pow_left₀ (by positivity) (by push_cast; linarith [(Nat.cast_nonneg r : (0 : ℝ) ≤ r)]) 4`. Establish `e : ((2 * r + k + 1 : ℕ) : ℝ) = 2 * (r : ℝ) + k + 1` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right (h1.trans (pow_four_le_rpow_nine_halves r)) (by positivity)`.
+-/
 theorem thrX_le_gapY (k r : ℕ) : thrX k r ≤ gapY k r := by
   unfold thrX gapY
   have h1 : ((r : ℝ) + 1) ^ 4 ≤ ((2 * r + 2 : ℕ) : ℝ) ^ 4 :=
@@ -59,17 +71,29 @@ theorem thrX_le_gapY (k r : ℕ) : thrX k r ≤ gapY k r := by
   rw [e]
   exact mul_le_mul_of_nonneg_right (h1.trans (pow_four_le_rpow_nine_halves r)) (by positivity)
 
+/- English proof (translation)
+The claim follows from `mul_le_mul (pow_four_le_rpow_nine_halves r) (le_add_of_nonneg_left (by positivity)) (by positivity) (by positivity)`.
+-/
 theorem mul_le_gapY (k r : ℕ) : ((2 * r + 2 : ℕ) : ℝ) ^ 4 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 ≤ gapY k r :=
   mul_le_mul (pow_four_le_rpow_nine_halves r) (le_add_of_nonneg_left (by positivity)) (by positivity) (by positivity)
 
+/- English proof (translation)
+The claim follows from `le_trans (le_mul_of_one_le_right (by positivity) (one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ 2 * r + k + 1)))) (mul_le_gapY k r)`.
+-/
 theorem fourth_power_le_gap (k r : ℕ) : ((2 * r + 2 : ℕ) : ℝ) ^ 4 ≤ gapY k r :=
   le_trans (le_mul_of_one_le_right (by positivity)
     (one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ 2 * r + k + 1)))) (mul_le_gapY k r)
 
+/- English proof (translation)
+The claim follows from `le_trans (le_mul_of_one_le_left (by positivity) (one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ 2 * r + 2)))) (mul_le_gapY k r)`.
+-/
 theorem cube_le_gap (k r : ℕ) : ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 ≤ gapY k r :=
   le_trans (le_mul_of_one_le_left (by positivity)
     (one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ 2 * r + 2)))) (mul_le_gapY k r)
 
+/- English proof (translation)
+Introduce `i h1 h2` and use `by obtain ⟨j, rfl⟩ : ∃ j, i = j + 1 := ⟨i - 1, by omega⟩ rw [lamN_succ u ⟨j, by omega⟩] exact hu.2 _ inter := by refine ⟨fun s t hst => hlam.1 (by simpa using hst), fun s => ⟨fun hs => ?_, fun hs => ?_⟩⟩ · have hs' : (s : ℕ) < k := by simpa using hs rw [lamN_succ u ⟨s, hs'⟩] by_c …`.
+-/
 theorem hypType_of (hk : 1 ≤ k) {lam : Fin (2 * r + k + 1) → ℝ} {u : Fin k → ℝ} {b : ℝ} (hlam : IsHCParam lam)
     (hu : IsHCParam u) (hI : InterlaceS (by omega) u lam) (hb : ∀ i, |u i| ≤ b) : HypType k r lam (lamN u) b where
   half := fun i h1 h2 => by
@@ -96,11 +120,19 @@ theorem hypType_of (hk : 1 ≤ k) {lam : Fin (2 * r + k + 1) → ℝ} {u : Fin k
     rw [lamN_succ u ⟨j, by omega⟩]
     exact hb _
 
+/- English proof (translation)
+Establish `h1` using `hg a c h.ne`. Rewrite `h1` using `[abs_of_pos (sub_pos.2 (hlam.1 h))]`. Then use the resulting hypothesis.
+-/
 theorem gap_of_lt {n : ℕ} {lam : Fin n → ℝ} {g : ℝ} (hlam : IsHCParam lam) (hg : AllGaps lam g) {a c : Fin n}
     (h : a < c) : g ≤ lam a - lam c := by
   have h1 := hg a c h.ne
   rwa [abs_of_pos (sub_pos.2 (hlam.1 h))] at h1
 
+/- English proof (translation)
+Use `⟨fun a ha => (hS a).1 ⟨⟨_, (hI.1 a ha).1⟩, ⟨_, (hI.1 a ha).2⟩⟩, fun a ha => (hS a).2 ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨-, i, hi⟩`. Establish `h1` using `hI.2 (by omega)`. Establish `h2 : lam a ≤ lam ⟨k - 1, by omega⟩` using `hlam.1.antitone (by rw [Fin.le_def]; simp only; omega)`. Establish `h3 : u ⟨k - 1, by omega⟩ ≤ u i` using `hu.1.antitone (by rw [Fin.le_def]; simp only; omega)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem shape_of (hk : 1 ≤ k) {lam : Fin (2 * r + k + 1) → ℝ} {u : Fin k → ℝ} {bv : ℝ} (hlam : IsHCParam lam)
     (hu : IsHCParam u) (hI : InterlaceS (by omega) u lam) (hS : ShapeS u lam bv) :
     (∀ a : Fin (2 * r + k + 1), a.val + 1 < k → 0 ≤ lam a ∧ lam a ≤ bv / 8) ∧
@@ -112,6 +144,11 @@ theorem shape_of (hk : 1 ≤ k) {lam : Fin (2 * r + k + 1) → ℝ} {u : Fin k �
   have h3 : u ⟨k - 1, by omega⟩ ≤ u i := hu.1.antitone (by rw [Fin.le_def]; simp only; omega)
   linarith
 
+/- English proof (translation)
+Use `⟨hk, hlam, fun a i hi => ?_, fun a ha => ?_, fun a ha => ?_, hc, hn, hb, fun i hi => hu.u_le i (Finset.mem_Icc.1 hi).1 (Finset.mem_Icc.1 hi).2, fun a c hac _ => gap_of_lt hlam hg hac, hh, hok, h1, h2, h3⟩` and prove the remaining obligations. Take `⟨m1, e1⟩` from `hlam.2 a`. Take `⟨m2, e2⟩` from `hu.half i (Finset.mem_Icc.1 hi).1 (Finset.mem_Icc.1 hi).2`. Use `⟨m1 - m2 + r, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at e1 ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hu.inter.2 (a.cast (by ring))).1 (by simpa using ha)`. Conclude with `(hu.inter.2 (a.cast (by ring))).2 (show a.val + 2 ≤ k by omega)`.
+-/
 theorem num_of (hk : 1 ≤ k) {lam : Fin (2 * r + k + 1) → ℝ} {u : ℕ → ℝ} {b bv ga h : ℝ} {q0 : ℕ}
     (hlam : IsHCParam lam) (hu : HypType k r lam u b)
     (hc : ∀ a : Fin (2 * r + k + 1), a.val + 1 < k → 0 ≤ lam a ∧ lam a ≤ bv / 8)
@@ -130,6 +167,11 @@ theorem num_of (hk : 1 ≤ k) {lam : Fin (2 * r + k + 1) → ℝ} {u : ℕ → �
   · exact (hu.inter.2 (a.cast (by ring))).1 (by simpa using ha)
   · exact (hu.inter.2 (a.cast (by ring))).2 (show a.val + 2 ≤ k by omega)
 
+/- English proof (translation)
+Establish `key : ∀ a, ∃ m : ℤ, lam' a = lam a + m` using `fun a => by`. Take `⟨m1, e1⟩` from `h.2 a`. Take `⟨m2, e2⟩` from `h'.2 a`. Conclude with `⟨m2 - m1, by push_cast; linarith⟩`. Use `choose ν hν using key`.
+
+Use `⟨ν, funext hν, ?_⟩` and prove the remaining obligations. Unfold `BranchingSupport.n1 l1`. Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hν a, add_sub_cancel_left, Nat.cast_natAbs, Int.cast_abs]`.
+-/
 theorem exists_shift {n : ℕ} {lam lam' : Fin n → ℝ} (h : IsHCParam lam) (h' : IsHCParam lam') :
     ∃ ν : Fin n → ℤ, lam' = (fun a => lam a + (ν a : ℝ)) ∧ (BranchingSupport.n1 ν : ℝ) = l1 lam' lam := by
   have key : ∀ a, ∃ m : ℤ, lam' a = lam a + m := fun a => by
@@ -143,6 +185,11 @@ theorem exists_shift {n : ℕ} {lam lam' : Fin n → ℝ} (h : IsHCParam lam) (h
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [hν a, add_sub_cancel_left, Nat.cast_natAbs, Int.cast_abs]
 
+/- English proof (translation)
+Establish `hb0 : 0 < b` using `by linarith`. Establish `e : T = T * (1 / ka) ^ (2 * r) * ka ^ (2 * r)`. Rewrite using `[mul_assoc, ← mul_pow, one_div, inv_mul_cancel₀ hka.ne', one_pow, mul_one]`. Establish `h2 : ka ^ (2 * r) ≤ b ^ (|Ch| * ((2 * r + 2 : ℕ) : ℝ))`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : b ^ (Ch * ((2 * r + 2 : ℕ) : ℝ)) ≤ b ^ (|Ch| * ((2 * r + 2 : ℕ) : ℝ))` using `Real.rpow_le_rpow_of_exponent_le hb (mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem scaled_le {T ka b Ch : ℝ} (r : ℕ) (hb : 1 ≤ b) (hka : 0 < ka) (h1 : ka ≤ b ^ Ch)
     (hT : T * (1 / ka) ^ (2 * r) ≤ b ^ (Ch * ((2 * r + 2 : ℕ) : ℝ))) : T ≤ b ^ (2 * |Ch| * ((2 * r + 2 : ℕ) : ℝ)) := by
   have hb0 : 0 < b := by linarith
@@ -164,6 +211,15 @@ end num
 
 open CompanionTheory.LimBd.Main (ZuckT CoefCC) in
 
+/- English proof (translation)
+Introduce `k r L f _ hf hgap`. Establish `hfK : CutBP.KFinDSCoef L.ε L.lam f`. Take `⟨Pm, Qm, h1, h2, h3⟩` from `hf`. Conclude with `⟨L.Hs, _, _, _, L.σ, Pm, Qm, L.hlam, L.hσ, h1, h2, fun g _ => h3 g⟩`. Establish `hc` using `abs_nonneg Formalism.MainNotions.BigCellDensity.c3`.
+
+Establish `hX` using `thrX_nonneg k r`. Establish `hY1` using `thrX_le_gapY k r`. Establish `hY2` using `fourth_power_le_gap k r`. Establish `hY3` using `cube_le_gap k r`. Establish `hm : (1 : ℝ) ≤ ((2 * r + 2 : ℕ) : ℝ) ^ 4` using `one_le_pow₀ (by exact_mod_cast (by omega : 1 ≤ 2 * r + 2))`.
+
+Establish `h1` using `ht (2 * r + k + 1) L.ε (by omega)`. Establish `h2` using `mul_le_mul_of_nonneg_left hY3 hCt`. Establish `h3` using `mul_le_mul_of_nonneg_left hY1 hc`. Establish `hD` using `kDecay_of_gap hZ k r L.ε (X := |Formalism.MainNotions.BigCellDensity.c3| * thrX k r) (d := 0) (h := (Ct + |Formalism.MainNotions.BigCellDensity.c3| + 2) * gapY k r) (mul_nonneg hc hX) le_rfl (by nlinarith)`. Establish `hg : PI.ZuckTensor.GapAtLeast L.ε L.lam ((Ct + |Formalism.MainNotions.BigCellDensity.c3| + 2) * gapY k r - 2 * 0)`.
+
+Rewrite using `[mul_zero, sub_zero, gapY, ← mul_assoc]`. Conclude with `hgap`. Conclude with `JCx2.sq_inCC_mono (thr_conv k r (le_abs_self _) hc (by linarith)) le_rfl (kfin_inCC hK hC hD hg hfK 1)`.
+-/
 theorem coefCC1_of {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} {Ct : ℝ} (hCt : 0 ≤ Ct)
     (ht : ∀ n ε, 1 ≤ n → t n ε ≤ Ct * (n : ℝ) ^ 3) (hZ : ZuckT t) (hK : PI.KFinSmooth) (hC : CoefCC) :
     CoefCC1 (Ct + |Formalism.MainNotions.BigCellDensity.c3| + 2) := by

@@ -12,6 +12,25 @@ noncomputable section
 
 namespace GlobalTheory.TopForm
 
+/- English proof (translation)
+Use `letI := α.toAlgebra`. Use `letI : Algebra B F := φ.toAlgebra`. Use `letI : Algebra k F := (φ.comp α).toAlgebra`. Use `haveI : IsScalarTower k B F := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Nontrivial B := φ.domain_nontrivial`.
+
+Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension D k B := hα`. Use `haveI := Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth D (R := k) (S := B)`. Establish `hr : Module.finrank B Ω[B⁄k] = D` using `Module.finrank_eq_of_rank_eq (Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential (R := k) (S := B) D)`. Set `e` to `Module.finBasisOfFinrankEq B Ω[B⁄k] hr`. Set `δ' : Derivation k B F` to `Derivation.mk' { toFun := δ map_add' := hadd map_smul' := fun c x => by`.
+
+Simplify using `only [RingHom.id_apply]`. Rewrite using `[Algebra.smul_def, hmul]`. Rewrite using `[show δ (algebraMap k B c) = 0 from hc c, mul_zero, add_zero, Algebra.smul_def]`. Use `rfl }`. Use the proof step `(fun x y => hmul x y)`.
+
+Set `ℓ` to `δ'.liftKaehlerDifferential`. Establish `hℓ (x : B) : ℓ (KaehlerDifferential.D k B x) = δ x` using `Derivation.liftKaehlerDifferential_comp_D δ' x`. Set `m : Matrix (Fin D) (Fin D) B` to `Matrix.of fun a c => e.repr (KaehlerDifferential.D k B (g a)) c`. Establish `hsum (a : Fin D) : KaehlerDifferential.D k B (g a) = ∑ c, m a c • e c` using `(e.sum_repr _).symm`. Take `⟨c, hc'⟩` from `hω.2 (exteriorPower.ιMulti B D e)`.
+
+Establish `h1 : dForm α g = m.det • exteriorPower.ιMulti B D e`. Rewrite using `[dForm_eq, ← alternating_map_sum_smul_eq_det_smul]`. Conclude with `congrArg _ (funext hsum)`. Establish `h2 : J = m.det * c`. Apply `hω.1` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `J • ω = (m.det * c) • ω`. Rewrite using `[hJ, h1, mul_smul]`. Conclude with `congrArg _ hc'.symm`. Establish `h3 : (φ.mapMatrix m).det ≠ 0`. Rewrite using `[← RingHom.map_det]`.
+
+Introduce `h0`. Conclude with `hJ0 (by rw [h2, map_mul, h0, zero_mul])`. Establish `h4 : (φ.mapMatrix m).mulVec (fun c => ℓ (e c)) = 0`. Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.mulVec, dotProduct, Pi.zero_apply, ← hg a, ← hℓ, hsum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def]`. Both sides reduce to the same expression. Establish `h5` using `Matrix.eq_zero_of_mulVec_eq_zero h3 h4`. Establish `h6 : ℓ = 0` using `e.ext fun c => congrFun h5 c`.
+
+Rewrite using `[← hℓ, h6, LinearMap.zero_apply]`.
+-/
 theorem derivation_eq_zero_of_jacobian {k B F : Type} [CommRing k] [CommRing B] [Field F]
     {D : ℕ} {α : k →+* B} (hα : α.IsStandardSmoothOfRelativeDimension D) {ω : Forms α D}
     (hω : IsFreeGen B ω) (g : Fin D → B) {J : B} (hJ : J • ω = dForm α g) (φ : B →+* F)
@@ -74,6 +93,15 @@ namespace GlobalTheory.CanonLB
 open TopForm
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 
+/- English proof (translation)
+Introduce `p`. Use `⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum F), ?_⟩` and prove the remaining obligations. Use `PrimeSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.fst ∈ (⊥ : Ideal F) ↔ x ∈ PrimeSpectrum.asIdeal p`. Rewrite using `[Ideal.mem_bot]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Apply `p.isPrime.mem_of_pow_mem 2` to reduce the goal to its premises. Establish `: x ^ 2 = 0`. Rewrite using `[pow_two, show x = TrivSqZeroExt.inr x.snd from TrivSqZeroExt.ext hx rfl, TrivSqZeroExt.inr_mul_inr]`.
+
+Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Introduce `hx`. Assume the negation of the conclusion as `h0`. Establish `hu : IsUnit x` using `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)`.
+
+Conclude with `p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hx hu)`.
+-/
 theorem spMap_fst_surjective_field (F : Type) [Field F] :
     Function.Surjective (spMap (TrivSqZeroExt.fstHom F F F).toRingHom) := by
   intro p
@@ -94,6 +122,27 @@ theorem spMap_fst_surjective_field (F : Type) [Field F] :
     have hu : IsUnit x := TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)
     exact p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hx hu)
 
+/- English proof (translation)
+Establish `hU : IsAffineOpen (K.bundle.U i)` using `K.affine i`. Use `haveI : Subsingleton (Sp F) := inferInstanceAs (Subsingleton (PrimeSpectrum F))`. Set `y0 : Sp F` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum F)`. Establish `hx : z y0 ∈ K.bundle.U i` using `hz (Set.mem_univ y0)`. Establish `h` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension D) p ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨K.bundle.U i, hU⟩ le_top`.
+
+Take `⟨s, hs, h⟩` from `(RingHom.locally_iff_isLocalization RingHom.isStandardSmoothOfRelativeDimension_respectsIso _).1 h`. Take `⟨t, hxt⟩ : ∃ t : (s : Set Γ(Y, K.bundle.U i)), z y0 ∈ Y.basicOpen (t : Γ(Y, K.bundle.U i))` from `Opens.mem_iSup.1 (((IsAffineOpen.iSup_basicOpen_eq_self_iff hU).2 hs).ge hx)`. Use `IsAffineOpen.isLocalization_basicOpen hU (t : Γ(Y, K.bundle.U i))` as an intermediate fact. Establish `h₁` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv (h t t.2 Γ(Y, Y.basicOpen (t : Γ(Y, K.bundle.U i))))`. Establish `hVU : Y.basicOpen (t : Γ(Y, K.bundle.U i)) ≤ K.bundle.U i` using `Y.basicOpen_le _`.
+
+Establish `h₂ : (algX p (Y.basicOpen (t : Γ(Y, K.bundle.U i)))).IsStandardSmoothOfRelativeDimension D`. Rewrite using `[← resG_comp_algX p hVU]`. Conclude with `h₁`. Establish `hV : IsAffineOpen (Y.basicOpen (t : Γ(Y, K.bundle.U i)))` using `hU.basicOpen _`. Generalize the expression as in `Y.basicOpen (t : Γ(Y, K.bundle.U i)) = V at hxt hVU h₂ hV`.
+
+Establish `hzV : ⊤ ≤ z ⁻¹ᵁ V` using `fun y _ => by`. Take `rfl : y = y0` from `Subsingleton.elim _ _`. Conclude with `hxt`. Establish `hwV : ⊤ ≤ w ⁻¹ᵁ V` using `fun y _ => by`. Take `⟨y', rfl⟩` from `spMap_fst_surjective_field F y`.
+
+Use `hzV (Set.mem_univ y')` as an intermediate fact. Rewrite `this` using `[← hfst]`. Conclude with `this`. Establish `hinlV : ⊤ ≤ (spMap (TrivSqZeroExt.inlHom F F) ≫ z) ⁻¹ᵁ V` using `fun y _ => hzV (Set.mem_univ _)`. Establish `key : ∀ (y : Sp F ⟶ Y) (hy : ⊤ ≤ y ⁻¹ᵁ V), spMap (TrivSqZeroExt.fstHom F F F).toRingHom ≫ w = y → ∀ b, (evalPt w V hwV b).fst = evalPt y V hy b`.
+
+Introduce and unpack `y hy rfl b`. Conclude with `(evalPt_spMap_comp _ w V hwV hy b).symm`. Establish `hfstV` using `key z hzV hfst`. Establish `hconst (c : k) : (evalPt w V hwV (algX p V c)).snd = 0`. Establish `e1 : evalPt w V hwV (algX p V c) = evalPt (w ≫ p) ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom c)` using `evalPt_constFn p w V hwV c`.
+
+Establish `key2 : ∀ (q : Sp (DualNumber F) ⟶ Sp k), q = spMap (TrivSqZeroExt.inlHom F F) ≫ z ≫ p → (evalPt q ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom c)).snd = 0`. Introduce and unpack `q rfl`. Rewrite using `[evalPt_spMap_comp _ (z ≫ p) ⊤ le_rfl le_rfl]`. Simplify using the standard rewrite rules. Rewrite using `[e1]`.
+
+Conclude with `key2 _ hp`. Establish `hJV : evalPt z V hzV (K.jacobian i hVU fun a => resG Y hVU (g a)) ≠ 0`. Rewrite using `[show (K.jacobian i hVU fun a => resG Y hVU (g a)) = resG Y hVU (K.jacobian i le_rfl g) from (K.resG_jacobian i le_rfl hVU g).symm, evalPt_res z hVU hz hzV]`. Conclude with `hJ`. Establish `hδ` using `derivation_eq_zero_of_jacobian h₂ ((K.isFrame i).res hV hVU).gen (fun a => resG Y hVU (g a)) (K.jacobian_smul_om i hV hVU _) (evalPt z V hzV) hJV (fun b => (evalPt w V hwV b).snd) (fun x y => by simp) (fun x y => by`.
+
+Simplify using `only [map_mul, TrivSqZeroExt.snd_mul, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, hfstV]`. Use the proof step `ring)`. Use `hconst (fun a => by rw [evalPt_res w hVU hw hwV]; exact hg a)`. Use `ext_evalPt hV hwV hinlV (RingHom.ext fun b => ?_)` and prove the remaining obligations. Rewrite using `[evalPt_spMap_comp _ z V hzV hinlV]`.
+
+Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[hfstV]`. Both sides reduce to the same expression. Rewrite using `[hδ b]`. Both sides reduce to the same expression.
+-/
 theorem eq_zero_tangent_of_jacobian {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k}
     {D : ℕ} [SmoothOfRelativeDimension D p] (K : GlobalTheory.CanonLB p D) (i : K.bundle.ι) {F : Type}
     [Field F] (z : Sp F ⟶ Y) (hz : ⊤ ≤ z ⁻¹ᵁ K.bundle.U i) (g : Fin D → Γ(Y, K.bundle.U i))

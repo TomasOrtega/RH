@@ -6,6 +6,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountable
 open Matrix MeasureTheory PositivityTheory.Rg.BcB PositivityTheory.Rg.Tf.Loc GlobalTheory.CompanionTheory.LocVan
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LocVan.Slice.slice_measure_ne_top | exact GlobalTheory.CompanionTheory.LocVan.Slice.slice_measure_ne_top | (intros; apply GlobalTheory.CompanionTheory.LocVan.Slice.slice_measure_ne_top <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.conj_compact_of_diagonal_nilradical : ∀ (n : ℕ) [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)] (d : GL (Fin n) ℂ)
   (μd : Measure (twCent (thC n) d)) [μd.IsHaarMeasure] (W₁ W₂ : Submodule ℂ (Fin n → ℂ))
   (P : GL (Fin n) ℂ), W₁ ≤ W₂ →

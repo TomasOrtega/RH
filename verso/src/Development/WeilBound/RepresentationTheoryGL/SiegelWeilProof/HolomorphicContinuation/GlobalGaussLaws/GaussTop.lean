@@ -8,6 +8,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.Glob
 
+/- English proof (translation)
+Establish `hT : TensInj` using `tensInj_of awayIn`. Conclude with `gaussLaw_of hT (lawN_of unipTau hT) (lawM_of hT) hV (locMul_of hT) hG lNe`.
+-/
 theorem gaussLaw_of' (hV : VacK) (hG : GZSch) : GaussLaw := by
   have hT : TensInj := tensInj_of awayIn
   exact gaussLaw_of hT (lawN_of unipTau hT) (lawM_of hT) hV (locMul_of hT) hG lNe

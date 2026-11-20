@@ -8,6 +8,23 @@ namespace PositivityTheory.KB.JoinReconstruction
 
 open PositivityTheory.KB
 
+/- English proof (translation)
+Set `E : (HS L N [⋀^Fin (k + 1)]→L[ℝ] ℝ) →L[ℝ] ℝ` to `(ContinuousMultilinearMap.apply ℝ (fun _ : Fin (k + 1) => HS L N) ℝ u).comp (ContinuousAlternatingMap.toContinuousMultilinearMapCLM ℝ)`. Establish `hE : ∀ F, E F = F u` using `fun F => rfl`. Establish `hf : IntegrableOn (fun y => fr ω' (ofS L N y) u) d.D d.μ` using `E.integrable_comp hint'`. Use `set c : ℝ := (d.μ.real d.D)⁻¹ * ∫ y in d.D, fr ω' (ofS L N y) u ∂d.μ with hcdef`. Establish `hc : ∀ x, fr ωb x u = c`.
+
+Introduce `x`. Rewrite using `[hωbfr x, ContinuousAlternatingMap.smul_apply, smul_eq_mul, ← hE, ← ContinuousLinearMap.integral_comp_comm E hint']`. Both sides reduce to the same expression. Establish `hfun : ∀ x, fr (ω' - ωb) x u = fr ω' x u - c`. Introduce `x`.
+
+Rewrite using `[fr_sub, ContinuousAlternatingMap.sub_apply, hc]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fr_comp_cont (hω'c.sub hωbc) u`. Introduce `γ x`. Simplify using `only [fr_inv (hγ γ) x]`.
+
+Introduce `s x`. Simplify using `only [fr_inv (hs s) x]`. Simplify using `only [hfun]`. Establish `hg : IntegrableOn (fun x => 2 * ‖E‖ ^ 2 * ‖fr ω' (ofS L N x)‖ ^ 2 + 2 * c ^ 2) d.D d.μ` using `(hsq'.const_mul (2 * ‖E‖ ^ 2)).add (integrableOn_const d.fin.ne)`. Use `Integrable.mono' hg ?_ ?_` and prove the remaining obligations.
+
+Conclude with `((continuous_id.sub continuous_const).pow 2).comp_aestronglyMeasurable (E.integrable_comp hint').aestronglyMeasurable`. Use `Filter.Eventually.of_forall (fun x => ?_)` and prove the remaining obligations. Establish `h1 : |E (fr ω' (ofS L N x))| ≤ ‖E‖ * ‖fr ω' (ofS L N x)‖`. Rewrite using `[← Real.norm_eq_abs]`. Conclude with `E.le_opNorm _`.
+
+Establish `h2 : (fr ω' (ofS L N x) u) ^ 2 ≤ (‖E‖ * ‖fr ω' (ofS L N x)‖) ^ 2`. Rewrite using `[← hE, ← sq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) h1 2`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]`. Use polynomial arithmetic with `[sq_nonneg (fr ω' (ofS L N x) u + c)]`.
+
+Simplify using `only [hfun]`. Rewrite using `[integral_sub hf (integrableOn_const d.fin.ne), setIntegral_const, smul_eq_mul]`. Break down `eq_or_ne (d.μ.real d.D) 0 with h0 | h0` into its components or cases. Establish `hz : d.μ d.D = 0` using `(measureReal_eq_zero_iff d.fin.ne).mp h0`. Rewrite using `[setIntegral_measure_zero _ hz, h0, zero_mul, sub_zero]`.
+
+Rewrite using `[hcdef, mul_inv_cancel_left₀ h0, sub_self]`.
+-/
 theorem lem_Lz {L : Type} [Field L] [NumberField L] {N k : ℕ} (d : Dom L N) {ω' ωb : Form (HS L N) (k + 1)}
     (hω'c : ContinuousOn ω' (Pos L N)) (hωbc : ContinuousOn ωb (Pos L N))
     (hγ : ∀ γ, FInv (ω' - ωb) (emb L N γ)) (hs : ∀ s, FInv (ω' - ωb) (scal L N s))

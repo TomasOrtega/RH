@@ -5,6 +5,37 @@ open ReciprocityTheory.Gal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hT p _ K hK O _ M _ _ _ _ _ _ G _ _ e ρ hρ ϖ hp hN`. Use `set N : Submodule O M := LinearMap.range (LinearMap.lsmul O M ϖ) with hNdef`. Establish `hmemN : ∀ m : M, ϖ • m ∈ N` using `fun m => ⟨m, rfl⟩`. Establish `hstab : ∀ g : G, N ≤ N.comap (ρ g)`. Introduce and unpack `g _ ⟨m, rfl⟩`.
+
+Use `show ρ g (ϖ • m) ∈ N`. Rewrite using `[map_smul]`. Conclude with `hmemN _`. Use `haveI hdisc : DiscreteTopology (M ⧸ N) := QuotientAddGroup.discreteTopology (N := N.toAddSubgroup) hN`. Use `haveI : CompactSpace (M ⧸ N) := (Submodule.Quotient.mk_surjective N).compactSpace (Submodule.isOpenQuotientMap_mkQ N).continuous`.
+
+Use `haveI : Finite (M ⧸ N) := finite_of_compact_of_discrete`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hp`. Take `⟨k, hk1⟩ : ∃ k : ℕ, k = 1` from `⟨1, rfl⟩`. Establish `hkill : ∀ q : M ⧸ N, (p ^ k : ℕ) • q = 0`. Introduce `q`.
+
+Substitute `hk1` using the available equality. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective N q`. Rewrite using `[pow_one, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Establish `: (p • m : M) = ϖ • (r • m)`. Rewrite using `[← Nat.cast_smul_eq_nsmul O, ← hr, smul_smul, mul_comm]`.
+
+Rewrite using `[this]`. Conclude with `hmemN _`. Use `haveI : Module (ZMod (p ^ k)) (M ⧸ N) := AddCommGroup.zmodModule (n := p ^ k) hkill`. Use `haveI : ContinuousConstSMul (ZMod (p ^ k)) (M ⧸ N) := ⟨fun _ => continuous_of_discreteTopology⟩`. Set `f : Formalism.GaloisCohomology.GK p K → Module.End (ZMod (p ^ k)) (M ⧸ N)` to `fun h => (N.mapQ N (ρ (e.symm h)) (hstab _)).toAddMonoidHom.toZModLinearMap (p ^ k)`.
+
+Establish `hf1 : f 1 = 1`. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective N q`. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Simplify using the standard rewrite rules.
+
+Establish `hfm : ∀ a b, f (a * b) = f a * f b`. Introduce `a b`. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective N q`. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk _`.
+
+Simplify using the standard rewrite rules. Set `ρ' : Representation (ZMod (p ^ k)) (Formalism.GaloisCohomology.GK p K) (M ⧸ N)` to `MonoidHom.mk (OneHom.mk f hf1) hfm`. Establish `hρ'mk : ∀ h m, ρ' h (Submodule.Quotient.mk m) = Submodule.Quotient.mk (ρ (e.symm h) m)` using `fun h m => rfl`. Establish `hρ' : ContAction ρ'`. Establish `hq : Topology.IsQuotientMap (Prod.map (id : Formalism.GaloisCohomology.GK p K → Formalism.GaloisCohomology.GK p K) (N.mkQ))` using `(IsOpenQuotientMap.id.prodMap (Submodule.isOpenQuotientMap_mkQ N)).isQuotientMap`.
+
+Use `show Continuous _`. Rewrite using `[hq.continuous_iff]`. Establish `: ((fun x : Formalism.GaloisCohomology.GK p K × (M ⧸ N) => ρ' x.1 x.2) ∘ Prod.map id N.mkQ) = fun x => Submodule.Quotient.mk (p` using `N) (ρ (e.symm x.1) x.2) := by`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `(Submodule.isOpenQuotientMap_mkQ N).continuous.comp (hρ.comp ((e.symm.continuous.comp continuous_fst).prodMk continuous_snd))`. Establish `hfin` using `(GlobalTheory.finite_H1_H2_of_localTateDuality hT p K hK k (M ⧸ N) ρ' (by omega) hρ').1`. Set `cb : Z1 ρ → (Formalism.GaloisCohomology.GK p K → M ⧸ N)` to `fun c h => Submodule.Quotient.mk ((c : G → M) (e.symm h))`. Establish `hcb : ∀ c, cb c ∈ Z1 ρ'`.
+
+Introduce `c`. Use `⟨(Submodule.isOpenQuotientMap_mkQ N).continuous.comp (c.2.1.comp e.symm.continuous), ?_⟩` and prove the remaining obligations. Introduce `a b`. Simplify using `only [cb, map_mul, c.2.2, Submodule.Quotient.mk_add, hρ'mk]`. Set `κ : Z1 ρ → H1 ρ'` to `fun c => Submodule.Quotient.mk ⟨cb c, hcb c⟩`.
+
+Use `haveI := Fintype.ofFinite (H1 ρ')`. Set `pick : H1 ρ' → Z1 ρ` to `fun y => if hy : ∃ c, κ c = y then hy.choose else 0`. Use `⟨Finset.univ.image pick, fun c => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ c', κ c' = κ c` using `⟨c, rfl⟩`. Establish `hpick : pick (κ c) = hex.choose` using `dif_pos hex`.
+
+Use `⟨pick (κ c), Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩` and prove the remaining obligations. Use `set c₀ := pick (κ c)`. Establish `heq : κ c₀ = κ c` using `by rw [hpick]; exact hex.choose_spec`. Establish `hB` using `(Submodule.Quotient.eq _).mp heq.symm`. Rewrite `hB` using `[Submodule.mem_comap]`.
+
+Take `⟨q, hq⟩` from `(mem_coboundaries1 ρ' _).mp hB`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective N q`. Use `⟨x, fun g => ?_⟩` and prove the remaining obligations. Use `hq (e g)` as an intermediate fact. Simplify using `only [Submodule.coe_subtype, Submodule.coe_sub, Pi.sub_apply, cb, hρ'mk, MulEquiv.symm_apply_apply, ContinuousMulEquiv.symm_apply_apply] at this`.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Simplify using `only [Submodule.Quotient.mk_sub]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem modpi_cocycles_finite_classes : Formalism.GaloisCohomology.LocalTateDualityK → ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}, FiniteDimensional ℚ_[p] K → ∀ {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Module O M] [TopologicalSpace M] [IsTopologicalAddGroup M] [ContinuousConstSMul O M] [CompactSpace M] {G : Type} [Group G] [TopologicalSpace G] (i : G ≃ₜ* Formalism.GaloisCohomology.GK p K) (ρ : Representation O G M), ContAction ρ → ∀ (ϖ : O), (p : O) ∈ Ideal.span {ϖ} → IsOpen (LinearMap.range (LinearMap.lsmul O M ϖ) : Set M) → ∃ s : Finset (Z1 ρ), ∀ c : Z1 ρ, ∃ i ∈ s, ∃ x : M, ∀ g, (c : G → M) g - (i : G → M) g - (ρ g x - x) ∈ LinearMap.range (LinearMap.lsmul O M ϖ) := by
   classical
   intro hT p _ K hK O _ M _ _ _ _ _ _ G _ _ e ρ hρ ϖ hp hN

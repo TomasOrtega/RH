@@ -3,6 +3,21 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.Div
 
+/- English proof (translation)
+Use `haveI hPp : P.IsPrime := hP.1.1`. Establish `hinj : Function.Injective (algebraMap R (D ⧸ P))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Assume the negation of the conclusion as `h0`.
+
+Establish `hreg : IsSMulRegular D r` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero h0)`. Establish `hnz : algebraMap R D r ∈ nonZeroDivisors D`. Rewrite using `[mem_nonZeroDivisors_iff_left]`. Introduce `x hx`. Apply `hreg` to reduce the goal to its premises.
+
+Simplify using `only [smul_zero]`. Rewrite using `[Algebra.smul_def]`. Conclude with `hx`. Establish `hmem : algebraMap R D r ∈ P`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `hr`. Conclude with `Set.disjoint_left.mp (Ideal.disjoint_nonZeroDivisors_of_mem_minimalPrimes hP) hmem hnz`. Use `haveI : FaithfulSMul R (D ⧸ P) := (faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`. Use `haveI : FaithfulSMul R K := (faithfulSMul_iff_algebraMap_injective _ _).mpr (IsFractionRing.injective R K)`. Use `haveI : Algebra.IsAlgebraic R (D ⧸ P) := ⟨fun x => by`.
+
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := R) y).algHom (Ideal.Quotient.mkₐ R P)⟩`. Use `haveI : Module.IsTorsionFree R (D ⧸ P) := Module.isTorsionFree_iff_algebraMap_injective.mpr hinj`. Use `haveI : Module.IsTorsionFree R K := Module.isTorsionFree_iff_algebraMap_injective.mpr (IsFractionRing.injective R K)`. Set `f : D ⧸ P →ₐ[R] K` to `IsAlgClosed.lift`.
+
+Use `⟨f, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Choose the witnesses or unpack the hypotheses as in `⟨y, r, hr, hy⟩ : ∃ y : D ⧸ P, ∃ r : R, r ≠ 0 ∧ x * y = algebraMap R _ r := by`.
+
+Take `⟨r, hr, y, hy⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := R) x).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero h0)`. Conclude with `⟨y, r, hr, hy.symm⟩`. Use `congrArg f hy` as an intermediate fact. Rewrite `this` using `[map_mul, hx, zero_mul, AlgHom.commutes]`. Conclude with `hr (IsFractionRing.injective R K (by rw [← this, map_zero]))`.
+-/
 theorem exists_algHom_quotient_minimalPrime_injective (R K : Type) [CommRing R] [IsDomain R] [Field K] [IsAlgClosed K] [Algebra R K] [IsFractionRing R K] (D : Type) [CommRing D] [Algebra R D] [Module.Flat R D] [Algebra.IsAlgebraic R D] (P : Ideal D) (hP : P ∈ minimalPrimes D) : ∃ em : D ⧸ P →ₐ[R] K, Function.Injective em := by
   haveI hPp : P.IsPrime := hP.1.1
   have hinj : Function.Injective (algebraMap R (D ⧸ P)) := by

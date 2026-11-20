@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.RatEntry
 
+/- English proof (translation)
+The claim follows from `tqk_unitV_one χ (by rw [(det_glint k).2, ← redGL_val, hk, Units.val_one, Matrix.det_one])`.
+-/
 theorem unitV_det_red_one {X : Fields} {n : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (χ : (𝓞 X.E ⧸ P.asIdeal)ˣ →* X.Kˣ)
     (k : GLint X.E n P) (hk : redGL n P k = 1) : LocE.unitV χ ((LinearEquiv.det k.1 : X.Eˣ) : X.E) = 1 :=
   tqk_unitV_one χ (by rw [(det_glint k).2, ← redGL_val, hk, Units.val_one, Matrix.det_one])
@@ -19,6 +22,17 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
   {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
 
+/- English proof (translation)
+Establish `h` using `hκ P`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Establish `e : κ P = passG ((g, 1, 1) : FrmG Λ Θ) p ⟨P.1, hP⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Unfold `frsF at h`.
+
+Simplify using `only [dif_pos hP] at h`. Use `show (κ P).1 = ((((g, 1, 1) : FrmG Λ Θ) • p).deco.1.liftFr ⟨P.1, hP⟩)⁻¹ * g.1 * p.deco.1.liftFr ⟨P.1, hP⟩`. Rewrite using `[h, Subgroup.coe_inv]`. Use `group`. Rewrite using `[e]`.
+
+Conclude with `redGL_passG ((g, 1, 1) : FrmG Λ Θ) p ⟨P.1, hP⟩`. Unfold `frsF at h`. Simplify using `only [dif_neg hP] at h`. Establish `h1 : ((κ P)⁻¹).1 = 1`. Establish `h' : g.1 * (p.fr ⟨P.1, (Finset.mem_union.mp P.2).resolve_left hP⟩ * ((κ P)⁻¹).1) = g.1 * (p.fr ⟨P.1, (Finset.mem_union.mp P.2).resolve_left hP⟩ * 1)`.
+
+Rewrite using `[← h]`. Use `show g.1 * p.fr _ * (((1 : GLQ X.E (R.N j) (QE sel (mu : Chr X.F X.E X.K))) _)⁻¹).1 = _`. Simplify using `[mul_assoc]`. Conclude with `mul_left_cancel (mul_left_cancel h')`. Establish `h2 : κ P = 1` using `inv_eq_one.1 (Subtype.ext h1)`.
+
+Rewrite using `[h2, map_one]`.
+-/
 theorem red_pass_one {u : Pr.Word} {j : ℕ} {Λ : LevFam X.E X.K (R.N j) Pr.vGs} {Θ : LevQFam X.E X.K (R.N j) (QE sel (mu : Chr X.F X.E X.K))}
     (g : UF X.E (R.N j)) (p : ChPt (R := R) sel mu u j) (κ : GLQ X.E (R.N j) (rowSG Pr sel mu))
     (hκ : ∀ P, frsF sel mu (((g, 1, 1) : FrmG Λ Θ) • p) P = g.1 * (frsF sel mu p P * ((κ P)⁻¹).1)) (P : rowSG Pr sel mu) :
@@ -47,6 +61,11 @@ theorem red_pass_one {u : Pr.Word} {j : ℕ} {Λ : LevFam X.E X.K (R.N j) Pr.vGs
     have h2 : κ P = 1 := inv_eq_one.1 (Subtype.ext h1)
     rw [h2, map_one]
 
+/- English proof (translation)
+Use `Finset.prod_eq_one fun P _ => ?_` and prove the remaining obligations. Establish `h1 : redGL _ P.1 ((κ P)⁻¹) = 1` using `by rw [map_inv, hκ P, inv_one]`. Establish `h2 : redGL _ P.1 ((κ' P)⁻¹) = 1` using `by rw [map_inv, hκ' P, inv_one]`. Rewrite using `[Pi.inv_apply, Pi.inv_apply]`. Unfold `rhoS rhoT`.
+
+Rewrite using `[unitV_det_red_one _ ((κ P)⁻¹) h1, unitV_det_red_one _ ((κ' P)⁻¹) h2, mul_one]`.
+-/
 theorem rho_pass_one (i : ℕ) (κ : GLQ X.E (R.N i) (rowSG Pr sel mu)) (κ' : GLQ X.E (R.N (i + 1)) (rowSG Pr sel mu))
     (hκ : ∀ P : rowSG Pr sel mu, redGL (R.N i) P.1 (κ P) = 1) (hκ' : ∀ P : rowSG Pr sel mu, redGL (R.N (i + 1)) P.1 (κ' P) = 1) :
     ∏ P : rowSG Pr sel mu, (rhoS Ch sel mu i P ((LinearEquiv.det (κ⁻¹ P).1 : X.Eˣ) : X.E) *
@@ -58,6 +77,11 @@ theorem rho_pass_one (i : ℕ) (κ : GLQ X.E (R.N i) (rowSG Pr sel mu)) (κ' : G
   unfold rhoS rhoT
   rw [unitV_det_red_one _ ((κ P)⁻¹) h1, unitV_det_red_one _ ((κ' P)⁻¹) h2, mul_one]
 
+/- English proof (translation)
+Establish `hd` using `(tilOk_of_avoid (mu := mu) hPr hsel u hS).2.2`. Establish `e1 : (((g, 1, 1) : UF X.E (R.N i) × GLG X.E (R.N i) Pr.vGs × GLQ X.E (R.N i) (QE sel (mu : Chr X.F X.E X.K))) • p) = ((g, 1, 1) : FrmG (L.levG i al) (L.levQ i al)) • p` using `rfl`. Establish `e2 : (((g', 1, 1) : UF X.E (R.N (i + 1)) × GLG X.E (R.N (i + 1)) Pr.vGs × GLQ X.E (R.N (i + 1)) (QE sel (mu : Chr X.F X.E X.K))) • p') = ((g', 1, 1) : FrmG (L.levG (i + 1) be) (L.levQ (i + 1) be)) • p'` using `rfl`. Rewrite using `[e1, e2]`. Take `⟨κ, c, hκ, hc, ec⟩` from `exists_pass hd ((g, 1, 1) : FrmG (L.levG i al) (L.levQ i al)) p`.
+
+Take `⟨κ', c', hκ', hc', ec'⟩` from `exists_pass hd ((g', 1, 1) : FrmG (L.levG (i + 1) be) (L.levQ (i + 1) be)) p'`. Establish `key` using `GlobalTheory.MatLaw.xiEntry_law hX hPr hsel hL hi hκ hκ' hc hc' x (phiT_act _ _ _ _ _ _ _)`. Rewrite `key` using `[rho_pass_one i κ κ' (red_pass_one g p κ hκ) (red_pass_one g' p' κ' hκ'), mul_one, ec, ec']`. Rewrite using `[key]`. Simplify using the standard rewrite rules.
+-/
 theorem xiEntry_rat {u : Pr.Word} (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hS : Pr.T u ∈ S ∧ ∀ k, Pr.g k ∈ S)
     (hL : L.Ok Ch sel mu cst G m2) {i : ℕ} (hi : i < m2) (al : L.β i) (be : L.β (i + 1))
     (g : UF X.E (R.N i)) (g' : UF X.E (R.N (i + 1))) (p : ChPt (R := R) sel mu u i) (p' : ChPt (R := R) sel mu u (i + 1))
@@ -83,6 +107,9 @@ end GlobalTheory.RatEntry
 
 namespace GlobalTheory.RatEntry
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP _hT i hi hlt β β' x x' p p' _hp _hp' g g' w`. Unfold `xiPt`. Rewrite using `[dif_pos hlt, dif_pos hlt]`. Conclude with `GlobalTheory.RatEntry.xiEntry_rat hP.fields.ok t.pr_ok hP.sel ⟨hP.avoid.2, hP.avoid.1⟩ (t.idx_ok μ) hlt _ _ g g' p p' w`.
+-/
 theorem xiPt_rat : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     ∀ i (hi : i + 1 ≤ D.R.m), i < t.m2 → ∀ β β' (x : UA D i (Nat.le_of_succ_le hi)) (x' : UA D (i + 1) hi) p p',
       IsPtAd A a i (Nat.le_of_succ_le hi) β x p → IsPtAd A a (i + 1) hi β' x' p' →

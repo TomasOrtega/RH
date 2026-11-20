@@ -27,6 +27,9 @@ instance : IsTopologicalAddGroup (QO l O) where
 
 def QO.incl : QZ l →ₗ[ℤ_[l]] QO l O := TensorProduct.mk ℤ_[l] O (QZ l) 1
 
+/- English proof (translation)
+The claim follows from `TensorProduct.isBaseChange ℤ_[l] (QZ l) O`.
+-/
 theorem QO.isBaseChange : IsBaseChange O (QO.incl l O) := TensorProduct.isBaseChange ℤ_[l] (QZ l) O
 
 def eO : ℕ∞ := Module.length O (O ⧸ Ideal.span {(l : O)})
@@ -46,12 +49,21 @@ def galOf : Subgroup (G k Ω) where
   mul_mem' {a b} ha hb x := by rw [AlgEquiv.mul_apply, hb, ha]
   inv_mem' {a} ha x := a.symm_apply_eq.2 (ha x).symm
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_galOf {σ : G k Ω} : σ ∈ galOf k E Ω ↔ ∀ x : E, σ (algebraMap E Ω x) = algebraMap E Ω x := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `σ`. Conclude with `⟨fun _ => Subgroup.mem_top σ, fun _ => (mem_galOf k k Ω).2 fun x => σ.commutes x⟩`.
+-/
 theorem galOf_self : galOf k k Ω = ⊤ := by
   ext σ
   exact ⟨fun _ => Subgroup.mem_top σ, fun _ => (mem_galOf k k Ω).2 fun x => σ.commutes x⟩
 
+/- English proof (translation)
+Introduce `σ hσ`. Rewrite `hσ`, the goal using `[mem_galOf]`. Introduce `x`. Rewrite using `[IsScalarTower.algebraMap_apply E E' Ω]`. Conclude with `hσ _`.
+-/
 theorem galOf_le (E' : Type) [Field E'] [Algebra E E'] [Algebra E' Ω] [IsScalarTower E E' Ω] :
     galOf k E' Ω ≤ galOf k E Ω := by
   intro σ hσ
@@ -64,10 +76,21 @@ variable [Algebra k E] [IsScalarTower k E Ω]
 
 def galEmb : G E Ω →* G k Ω := AlgEquiv.restrictScalarsHom k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galEmb_apply (σ : G E Ω) (x : Ω) : galEmb k E Ω σ x = σ x := rfl
 
+/- English proof (translation)
+Introduce `x` and use `σ.commutes x`.
+-/
 theorem galEmb_mem (σ : G E Ω) : galEmb k E Ω σ ∈ galOf k E Ω := fun x => σ.commutes x
 
+/- English proof (translation)
+Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩`. Conclude with `galEmb_mem k E Ω τ`. Introduce `h`.
+
+Use `⟨{ σ.toRingEquiv with commutes' := fun x => (mem_galOf k E Ω).1 h x }, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Both sides reduce to the same expression.
+-/
 theorem range_galEmb : (galEmb k E Ω).range = galOf k E Ω := by
   ext σ
   constructor
@@ -95,6 +118,11 @@ def shaFam : Set (Subgroup (G k Ω)) :=
   {D | (∃ A : ValuationSubring Ω, A.valuation (l : Ω) < 1 ∧ D = Dec (F := k) A) ∨
     ∃ A : ValuationSubring Ω, D = Ine (F := k) A}
 
+/- English proof (translation)
+Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Simplify using the standard rewrite rules. Establish `h0 : 0 < A.valuation z`. Rewrite using `[zero_lt_iff]`. Simplify using `using hz`.
+
+Rewrite using `[← A.valuation_le_one_iff, ← A.valuation_le_one_iff, map_inv₀, inv_le_one₀ h0]`. Simplify using `only [hz, false_or, not_le]`. Conclude with `⟨fun h => ⟨h.le, h⟩, fun h => h.2⟩`.
+-/
 private theorem valuation_lt_one_iff_mem_and_inv_not_mem {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (z : Ω) :
     A.valuation z < 1 ↔ z ∈ A ∧ (z = 0 ∨ z⁻¹ ∉ A) := by
   rcases eq_or_ne z 0 with rfl | hz
@@ -106,11 +134,25 @@ private theorem valuation_lt_one_iff_mem_and_inv_not_mem {Ω : Type} [Field Ω] 
     simp only [hz, false_or, not_le]
     exact ⟨fun h => ⟨h.le, h⟩, fun h => h.2⟩
 
+/- English proof (translation)
+Rewrite using `[valuation_lt_one_iff_mem_and_inv_not_mem, valuation_lt_one_iff_mem_and_inv_not_mem, ValuationSubring.mem_comap, ValuationSubring.mem_comap, map_inv₀, map_eq_zero]`.
+-/
 private theorem comap_valuation_lt_one_iff_selmer_transport {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (f : Ω →+* Ω) (z : Ω) :
     (A.comap f).valuation z < 1 ↔ A.valuation (f z) < 1 := by
   rw [valuation_lt_one_iff_mem_and_inv_not_mem, valuation_lt_one_iff_mem_and_inv_not_mem, ValuationSubring.mem_comap, ValuationSubring.mem_comap,
     map_inv₀, map_eq_zero]
 
+/- English proof (translation)
+Simplify using `only [ValuationSubring.decompositionSubgroup, MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h y`. Establish `e` using `SetLike.ext_iff.1 h (x y)`. Rewrite `e` using `[ValuationSubring.mem_smul_pointwise_iff_exists]`.
+
+Rewrite using `[← e]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hs'⟩`. Rewrite `hs'` using `[AlgEquiv.smul_def]`. Rewrite using `[← x.injective hs']` and apply the resulting hypothesis.
+
+Introduce `hy`. Conclude with `⟨y, hy, rfl⟩`. Introduce `h`. Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_smul_pointwise_iff_exists]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, rfl⟩`. Rewrite using `[AlgEquiv.smul_def]`. Conclude with `(h s).2 hs`. Introduce `hy`.
+
+Use `⟨x.symm y, (h _).1 (by simpa using hy), by simp [AlgEquiv.smul_def]⟩` and prove the remaining obligations.
+-/
 private theorem mem_decompositionSubgroup_iff_selmer_transport {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (A : ValuationSubring Ω)
     (x : G k Ω) : x ∈ ValuationSubring.decompositionSubgroup k A ↔ ∀ y : Ω, x y ∈ A ↔ y ∈ A := by
   simp only [ValuationSubring.decompositionSubgroup, MulAction.mem_stabilizer_iff]
@@ -135,6 +177,17 @@ private theorem mem_decompositionSubgroup_iff_selmer_transport {k Ω : Type} [Fi
     · intro hy
       refine ⟨x.symm y, (h _).1 (by simpa using hy), by simp [AlgEquiv.smul_def]⟩
 
+/- English proof (translation)
+Introduce `D hD g`. Establish `key : ∀ x : G k Ω, ∀ y, g ((g⁻¹ * x * g) y) = x (g y)`. Introduce `x y`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, ← AlgEquiv.mul_apply g g⁻¹, mul_inv_cancel, AlgEquiv.one_apply]`. Break down `hD with ⟨A, hl, rfl⟩ | ⟨A, rfl⟩` into its components or cases.
+
+Use `⟨Dec (F := k) (A.comap (g : Ω →+* Ω)), Or.inl ⟨_, ?_, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[comap_valuation_lt_one_iff_selmer_transport]`. Simplify using `using hl`. Simplify using `only [Dec, mem_decompositionSubgroup_iff_selmer_transport, ValuationSubring.mem_comap, RingHom.coe_coe, key]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h y`. Conclude with `h (g y)`. Introduce `h y`. Simplify using `using h (g.symm y)`. Use `⟨Ine (F := k) (A.comap (g : Ω →+* Ω)), Or.inr ⟨_, rfl⟩, fun x => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `x ∈ Inertia (F := k) A ↔ g⁻¹ * x * g ∈ Inertia (F := k) (A.comap (g : Ω →+* Ω))`. Simplify using `only [Inertia, Set.mem_setOf_eq, mem_decompositionSubgroup_iff_selmer_transport, ValuationSubring.valuation_le_one_iff, ValuationSubring.mem_comap, RingHom.coe_coe, comap_valuation_lt_one_iff_selmer_transport, map_sub, key]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun y => h1 (g y), fun y hy => h2 (g y) hy⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun y => by simpa using h1 (g.symm y), fun y hy => by simpa using h2 (g.symm y) (by simpa using hy)⟩` and prove the remaining obligations.
+-/
 theorem conjStable_shaFam : ConjStable (shaFam k Ω l) := by
   intro D hD g
   have key : ∀ x : G k Ω, ∀ y, g ((g⁻¹ * x * g) y) = x (g y) := by
@@ -198,14 +251,26 @@ instance (U : Subgroup (G k Ω)) [U.Normal] (n : ℕ) : (levU l U n).Normal := b
 instance (U : Subgroup (G k Ω)) [U.Normal] : (cycU l U).Normal := by unfold cycU; infer_instance
 instance (U : Subgroup (G k Ω)) [U.Normal] : (delU l U).Normal := by unfold delU; infer_instance
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem levU_le (U : Subgroup (G k Ω)) (n : ℕ) : levU l U n ≤ U := inf_le_left
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem cycU_le (U : Subgroup (G k Ω)) : cycU l U ≤ U := inf_le_left
 
+/- English proof (translation)
+Introduce `σ hσ`. Simplify using `only [cycU, levU, Subgroup.mem_inf, Subgroup.mem_comap, MonoidHom.mem_ker] at hσ ⊢`. Conclude with `⟨hσ.1, by rw [hσ.2]; exact Subgroup.one_mem _⟩`.
+-/
 theorem cycU_le_levU (U : Subgroup (G k Ω)) (n : ℕ) : cycU l U ≤ levU l U n := by
   intro σ hσ
   simp only [cycU, levU, Subgroup.mem_inf, Subgroup.mem_comap, MonoidHom.mem_ker] at hσ ⊢
   exact ⟨hσ.1, by rw [hσ.2]; exact Subgroup.one_mem _⟩
 
+/- English proof (translation)
+The claim follows from `le_antisymm (inf_le_inf_right _ (levU_le l U n)) (le_inf (cycU_le_levU l U n) inf_le_right)`.
+-/
 theorem cycU_levU (U : Subgroup (G k Ω)) (n : ℕ) : cycU l (levU l U n) = cycU l U :=
   le_antisymm (inf_le_inf_right _ (levU_le l U n)) (le_inf (cycU_le_levU l U n) inf_le_right)
 

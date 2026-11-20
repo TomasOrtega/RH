@@ -13,11 +13,19 @@ variable {E : Type} [Field E] [NumberField E] {n nb : ℕ}
 section Count
 variable {dim : (E →+* ℂ) → ℕ} (bs : Fin nb → Block E n dim)
 
+/- English proof (translation)
+Unfold `DF`. Conclude with `le_trans (Nat.le_mul_of_pos_left _ hi) (Finset.single_le_sum (f := fun j => (bs j).i * (bs j).c) (fun j _ => Nat.zero_le _) (Finset.mem_univ j))`.
+-/
 theorem c_le_DF (j : Fin nb) (hi : 1 ≤ (bs j).i) : (bs j).c ≤ DF bs := by
   unfold DF
   exact le_trans (Nat.le_mul_of_pos_left _ hi)
     (Finset.single_le_sum (f := fun j => (bs j).i * (bs j).c) (fun j _ => Nat.zero_le _) (Finset.mem_univ j))
 
+/- English proof (translation)
+Unfold `DF`. Rewrite using `[Fintype.card_pi, ← Finset.prod_pow_eq_pow_sum]`. Apply `Finset.prod_le_prod (fun _ _ => Nat.zero_le _)` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[Fintype.card_fun, Fintype.card_perm, Fintype.card_fin, Fintype.card_fin, pow_mul]`.
+
+Conclude with `Nat.pow_le_pow_left (le_trans (Nat.factorial_le_pow _) (Nat.pow_le_pow_left (hr j) _)) _`.
+-/
 theorem card_choice_le (r : ℕ) (hr : ∀ j, (bs j).i ≤ r) :
     Fintype.card (Choice bs) ≤ r ^ DF bs := by
   unfold DF
@@ -27,6 +35,11 @@ theorem card_choice_le (r : ℕ) (hr : ∀ j, (bs j).i ≤ r) :
   rw [Fintype.card_fun, Fintype.card_perm, Fintype.card_fin, Fintype.card_fin, pow_mul]
   exact Nat.pow_le_pow_left (le_trans (Nat.factorial_le_pow _) (Nat.pow_le_pow_left (hr j) _)) _
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_sigma]`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul]`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Unfold `DF`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)`.
+-/
 theorem prod_two_pow :
     ∏ p : (Σ j : Fin nb, Fin (bs j).i), (2 : ℝ) ^ (bs p.1).c = 2 ^ DF bs := by
   rw [Fintype.prod_sigma]
@@ -36,11 +49,19 @@ theorem prod_two_pow :
   congr 1
   exact Finset.sum_congr rfl (fun j _ => mul_comm _ _)
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_sigma]`. Unfold `DF`. Conclude with `Finset.sum_le_sum (fun j _ => by rw [Fintype.card_fin]; exact Nat.le_mul_of_pos_right _ (bs j).hc)`.
+-/
 theorem card_pos_le : Fintype.card (Σ j : Fin nb, Fin (bs j).i) ≤ DF bs := by
   rw [Fintype.card_sigma]
   unfold DF
   exact Finset.sum_le_sum (fun j _ => by rw [Fintype.card_fin]; exact Nat.le_mul_of_pos_right _ (bs j).hc)
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_sigma]`. Simplify using `only [Fintype.card_fin]`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h0 : ∀ j, (bs j).i = 0`.
+
+Introduce `j`. Use `Finset.single_le_sum (f := fun j => (bs j).i) (fun j _ => Nat.zero_le _) (Finset.mem_univ j)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Unfold `DF at h`. Simplify using `[h0] at h`.
+-/
 theorem card_pos_pos (h : 1 ≤ DF bs) : 1 ≤ Fintype.card (Σ j : Fin nb, Fin (bs j).i) := by
   rw [Fintype.card_sigma]
   simp only [Fintype.card_fin]
@@ -53,6 +74,11 @@ theorem card_pos_pos (h : 1 ≤ DF bs) : 1 ≤ Fintype.card (Σ j : Fin nb, Fin 
   unfold DF at h
   simp [h0] at h
 
+/- English proof (translation)
+Unfold `DF`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Apply `Finset.prod_le_prod (fun j _ => pow_nonneg hδ0 _)` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `hi : (bs j).i = 0`.
+
+Rewrite using `[hi, zero_mul, pow_zero, hd1 j hi, one_pow]`. Establish `hi1 : 1 ≤ (bs j).i` using `Nat.one_le_iff_ne_zero.mpr hi`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prod_det_ge (d : ∀ j : Fin nb, ℝ) (δ : ℝ) (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1)
     (hd : ∀ j, 1 ≤ (bs j).i → δ ≤ d j) (hd1 : ∀ j, (bs j).i = 0 → d j = 1) :
     δ ^ DF bs ≤ ∏ j, d j ^ (bs j).c := by
@@ -73,6 +99,11 @@ section Data
 variable [IsCMField E] (X : PT E) (bs : Fin nb → Block E n X.dim)
 
 open Classical in
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos (bs j).i with h0 | hpos` into its components or cases. Use `haveI : IsEmpty (Fin (bs j).i) := by rw [h0]; infer_instance`. Use `⟨isEmptyElim, isEmptyElim, isEmptyElim, isEmptyElim, fun b => isEmptyElim b, isEmptyElim, isEmptyElim, ?_, isEmptyElim⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_isEmpty, norm_one]`. Establish `h1 : (2 : ℝ) ^ (-(X.r : ℝ) / 2) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by`.
+
+Use `Nat.cast_nonneg (α := ℝ) X.r` as an intermediate fact. Use the proof step `linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `block_data hx hc ht ha X P I hI (bs j).τ (bs j).i (bs j).hi (bs j).c (c_le_DF bs j hpos)`.
+-/
 theorem block_data_all (hx : Ext.All) (hc : CharStatement) (ht : ColTorusStatement)
     (ha : ColAbelStatement) (P : Par X (DF bs)) (I : Submodule ℤ (Vsp X.dim)) (hI : IsSplit P I)
     (j : Fin nb) :

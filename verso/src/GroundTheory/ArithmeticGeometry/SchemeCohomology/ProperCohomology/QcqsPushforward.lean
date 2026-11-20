@@ -12,11 +12,17 @@ noncomputable section
 
 variable {Y : Scheme.{u}} (G : Y.Modules)
 
+/- English proof (translation)
+The claim follows from `TopCat.Sheaf.eq_of_locally_eq' (modulesAb G) W U (fun k => homOfLE (hle k)) hcov m m' h`.
+-/
 lemma eq_of_forall_resF {κ : Type u} (W : κ → Y.Opens) {U : Y.Opens} (hle : ∀ k, W k ≤ U)
     (hcov : U ≤ iSup W) (m m' : Γ(G, U)) (h : ∀ k, resF G (hle k) m = resF G (hle k) m') :
     m = m' :=
   TopCat.Sheaf.eq_of_locally_eq' (modulesAb G) W U (fun k => homOfLE (hle k)) hcov m m' h
 
+/- English proof (translation)
+Take `⟨m, hm, -⟩` from `TopCat.Sheaf.existsUnique_gluing' (modulesAb G) W U (fun k => homOfLE (hle k)) hcov σ (fun k l => hσ k l)`. Conclude with `⟨m, hm⟩`.
+-/
 lemma exists_resF_eq_of_compatible {κ : Type u} (W : κ → Y.Opens) {U : Y.Opens}
     (hle : ∀ k, W k ≤ U) (hcov : U ≤ iSup W) (σ : ∀ k, Γ(G, W k))
     (hσ : ∀ k l, resF G (inf_le_left : W k ⊓ W l ≤ W k) (σ k) =
@@ -29,11 +35,19 @@ lemma exists_resF_eq_of_compatible {κ : Type u} (W : κ → Y.Opens) {U : Y.Ope
 
 variable [G.IsQuasicoherent]
 
+/- English proof (translation)
+Rewrite using `[Scheme.basicOpen_res]`. Conclude with `inf_le_right`.
+-/
 lemma basicOpen_resO_le {U W : Y.Opens} (hWU : W ≤ U) (h : Γ(Y, U)) :
     Y.basicOpen (resO hWU h) ≤ Y.basicOpen h := by
   rw [Scheme.basicOpen_res]
   exact inf_le_right
 
+/- English proof (translation)
+Take `⟨Us, hUs, hfin, hUeq⟩` from `Y.isBasis_affineOpens.exists_finite_of_isCompact hU`. Use `hfin.to_subtype` as an intermediate fact. Establish `hle : ∀ k : Us, (k : Y.Opens) ≤ U` using `fun k => hUeq ▸ le_sSup k.2`. Establish `key : ∀ k : Us, ∃ e : ℕ, resO (hle k) h ^ e • resF G (hle k) m = 0` using `fun k => qcoh_exists_pow_smul_eq_zero G (hUs k.2) (resO (hle k) h) (resF G (hle k) m) (by`. Rewrite using `[resF_resF, ← resF_resF G (Y.basicOpen_le h) (basicOpen_resO_le (hle k) h), hm, map_zero])`.
+
+Use `choose e he using key`. Use `Fintype.ofFinite Us` as an intermediate fact. Use `⟨Finset.univ.sup e, eq_of_forall_resF G (fun k : Us => (k : Y.Opens)) hle (by rw [hUeq, sSup_eq_iSup']) _ _ fun k => ?_⟩` and prove the remaining obligations. Establish `hk : e k ≤ Finset.univ.sup e` using `Finset.le_sup (Finset.mem_univ k)`. Rewrite using `[map_zero, resF_smul, map_pow, ← Nat.sub_add_cancel hk, pow_add, mul_smul, he k, smul_zero]`.
+-/
 theorem qcoh_exists_pow_smul_eq_zero_of_isCompact {U : Y.Opens} (hU : IsCompact (U : Set Y))
     (h : Γ(Y, U)) (m : Γ(G, U)) (hm : resF G (Y.basicOpen_le h) m = 0) :
     ∃ e : ℕ, h ^ e • m = 0 := by
@@ -51,6 +65,25 @@ theorem qcoh_exists_pow_smul_eq_zero_of_isCompact {U : Y.Opens} (hU : IsCompact 
   have hk : e k ≤ Finset.univ.sup e := Finset.le_sup (Finset.mem_univ k)
   rw [map_zero, resF_smul, map_pow, ← Nat.sub_add_cancel hk, pow_add, mul_smul, he k, smul_zero]
 
+/- English proof (translation)
+Take `⟨Us, hUs, hfin, hUeq⟩` from `Y.isBasis_affineOpens.exists_finite_of_isCompact hU`. Use `hfin.to_subtype` as an intermediate fact. Use `Fintype.ofFinite Us` as an intermediate fact. Set `W : Us → Y.Opens` to `fun k => k`. Establish `hle : ∀ k, W k ≤ U` using `fun k => hUeq ▸ le_sSup k.2`.
+
+Establish `hcov : U ≤ iSup W` using `by rw [hUeq, sSup_eq_iSup']`. Establish `loc : ∀ k, ∃ (e : ℕ) (mk : Γ(G, W k)), resF G (Y.basicOpen_le (resO (hle k) h)) mk = resO (Y.basicOpen_le (resO (hle k) h)) (resO (hle k) h) ^ e • resF G (basicOpen_resO_le (hle k) h) m` using `fun k => qcoh_exists_res_eq G (hUs k.2) (resO (hle k) h) (resF G (basicOpen_resO_le (hle k) h) m)`. Use `choose e mk hmk using loc`. Use `set N := Finset.univ.sup e`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ : ∀ k, Γ(G, W k), ∀ k, resF G (Y.basicOpen_le (resO (hle k) h)) (σ k) = resO ((basicOpen_resO_le (hle k) h).trans (Y.basicOpen_le h)) h ^ N • resF G (basicOpen_resO_le (hle k) h) m := by`.
+
+Use `⟨fun k => resO (hle k) h ^ (N - e k) • mk k, fun k => ?_⟩` and prove the remaining obligations. Establish `hk : e k ≤ N` using `Finset.le_sup (Finset.mem_univ k)`. Rewrite using `[resF_smul, hmk, smul_smul]`. Simplify using `only [map_pow, resO_resO]`. Rewrite using `[← pow_add, Nat.sub_add_cancel hk]`.
+
+Establish `pair : ∀ k l, ∃ e' : ℕ, resO (inf_le_left.trans (hle k) : W k ⊓ W l ≤ U) h ^ e' • (resF G (inf_le_left : W k ⊓ W l ≤ W k) (σ k) - resF G (inf_le_right : W k ⊓ W l ≤ W l) (σ l)) = 0`. Introduce `k l`. Establish `hkl : IsCompact ((W k ⊓ W l : Y.Opens) : Set Y)` using `hU' _ _ (hle k) (W k).2 (hUs k.2).isCompact (hle l) (W l).2 (hUs l.2).isCompact`. Use `qcoh_exists_pow_smul_eq_zero_of_isCompact G hkl _ _ ?_` and prove the remaining obligations. Establish `hb : Y.basicOpen (resO (inf_le_left.trans (hle k) : W k ⊓ W l ≤ U) h) ≤ Y.basicOpen (resO (hle k) h)`.
+
+Rewrite using `[Scheme.basicOpen_res, Scheme.basicOpen_res]`. Conclude with `inf_le_inf_right _ inf_le_left`. Establish `hb' : Y.basicOpen (resO (inf_le_left.trans (hle k) : W k ⊓ W l ≤ U) h) ≤ Y.basicOpen (resO (hle l) h)`. Rewrite using `[Scheme.basicOpen_res, Scheme.basicOpen_res]`. Conclude with `inf_le_inf_right _ inf_le_right`.
+
+Rewrite using `[map_sub, resF_resF, resF_resF, sub_eq_zero, ← resF_resF G (Y.basicOpen_le (resO (hle k) h)) hb, ← resF_resF G (Y.basicOpen_le (resO (hle l) h)) hb', hσ k, hσ l, resF_smul, resF_smul, resF_resF, resF_resF, map_pow, map_pow, resO_resO, resO_resO]`. Use `choose e' he' using pair`. Use `set N' := Finset.univ.sup (fun kl : Us × Us => e' kl.1 kl.2)`. Take `⟨τ, hτdef⟩ : ∃ τ : ∀ k, Γ(G, W k), ∀ k, τ k = resO (hle k) h ^ N' • σ k` from `⟨fun k => resO (hle k) h ^ N' • σ k, fun _ => rfl⟩`. Establish `hτ : ∀ k l, resF G (inf_le_left : W k ⊓ W l ≤ W k) (τ k) = resF G (inf_le_right : W k ⊓ W l ≤ W l) (τ l)`.
+
+Introduce `k l`. Establish `hkl : e' k l ≤ N'` using `Finset.le_sup (f := fun kl : Us × Us => e' kl.1 kl.2) (Finset.mem_univ (k, l))`. Rewrite using `[hτdef, hτdef, resF_smul, resF_smul, map_pow, map_pow, resO_resO, resO_resO, ← sub_eq_zero, ← smul_sub, ← Nat.sub_add_cancel hkl, pow_add, mul_smul, he' k l, smul_zero]`. Take `⟨m', hm'⟩` from `exists_resF_eq_of_compatible G W hle hcov τ hτ`. Use `⟨N' + N, m', ?_⟩` and prove the remaining obligations.
+
+Use `eq_of_forall_resF G (fun k => Y.basicOpen (resO (hle k) h)) (fun k => basicOpen_resO_le (hle k) h) ?_ _ _ fun k => ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 (hcov (Y.basicOpen_le h hx))`. Use `Opens.mem_iSup.2 ⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.basicOpen_res]`.
+
+Conclude with `⟨hk, hx⟩`. Rewrite using `[resF_resF, ← resF_resF G (hle k) (Y.basicOpen_le (resO (hle k) h)), hm', hτdef, resF_smul, hσ k, resF_smul, smul_smul]`. Simplify using `only [map_pow, resO_resO, ← pow_add]`.
+-/
 theorem qcoh_exists_res_eq_of_qcqs {U : Y.Opens} (hU : IsCompact (U : Set Y))
     (hU' : IsQuasiSeparated (U : Set Y)) (h : Γ(Y, U)) (m : Γ(G, Y.basicOpen h)) :
     ∃ (e : ℕ) (m' : Γ(G, U)), resF G (Y.basicOpen_le h) m' = resO (Y.basicOpen_le h) h ^ e • m := by
@@ -123,6 +156,17 @@ theorem qcoh_exists_res_eq_of_qcqs {U : Y.Opens} (hU : IsCompact (U : Set Y))
       hσ k, resF_smul, smul_smul]
     simp only [map_pow, resO_resO, ← pow_add]
 
+/- English proof (translation)
+Use `isQuasicoherent_of_affineCover _ (fun V : Y.affineOpens => (V : Y.Opens)) (fun V => V.2) (iSup_affineOpens_eq_top Y) ?_ ?_` and prove the remaining obligations. Introduce `V g`. Establish `hc : IsCompact ((f ⁻¹ᵁ (V : Y.Opens) : X.Opens) : Set X)` using `f.isCompact_preimage V.2.isCompact`. Establish `hqs : IsQuasiSeparated ((f ⁻¹ᵁ (V : Y.Opens) : X.Opens) : Set X)` using `f.isQuasiSeparated_preimage V.2.isQuasiSeparated`. Establish `hb : f ⁻¹ᵁ Y.basicOpen g = X.basicOpen (f.app V g)` using `Scheme.preimage_basicOpen f g`.
+
+Use `show ∀ m : Γ(F, f ⁻¹ᵁ Y.basicOpen g), ∃ (e : ℕ) (m' : Γ(F, f ⁻¹ᵁ (V : Y.Opens))), resF F ((Opens.map f.base).monotone (Y.basicOpen_le g)) m' = f.app (Y.basicOpen g) (resO (Y.basicOpen_le g) g ^ e) • m`. Introduce `m`. Take `⟨e, m', hm'⟩` from `qcoh_exists_res_eq_of_qcqs F hc hqs (f.app V g) (resF F hb.ge m)`. Use `⟨e, m', ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (resF F hb.le) hm'`.
+
+Rewrite `h2` using `[resF_resF, resF_smul, resF_resF, resF_self, map_pow, resO_resO]`. Rewrite using `[h2, map_pow, app_resO]`. Introduce `V g`. Establish `hc : IsCompact ((f ⁻¹ᵁ (V : Y.Opens) : X.Opens) : Set X)` using `f.isCompact_preimage V.2.isCompact`. Establish `hb : f ⁻¹ᵁ Y.basicOpen g = X.basicOpen (f.app V g)` using `Scheme.preimage_basicOpen f g`.
+
+Use `show ∀ m : Γ(F, f ⁻¹ᵁ (V : Y.Opens)), resF F ((Opens.map f.base).monotone (Y.basicOpen_le g)) m = 0 → ∃ e : ℕ, f.app V (g ^ e) • m = 0`. Introduce `m hm`. Take `⟨e, he⟩` from `qcoh_exists_pow_smul_eq_zero_of_isCompact F hc (f.app V g) m (by`. Establish `h2` using `congrArg (resF F hb.ge) hm`. Rewrite `h2` using `[resF_resF, map_zero]`.
+
+Conclude with `h2)`. Conclude with `⟨e, by rw [map_pow]; exact he⟩`.
+-/
 theorem isQuasicoherent_pushforward_of_qcqs {X : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f]
     [QuasiSeparated f] (F : X.Modules) [F.IsQuasicoherent] :
     ((Scheme.Modules.pushforward f).obj F).IsQuasicoherent := by

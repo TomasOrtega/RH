@@ -19,6 +19,23 @@ noncomputable section
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Set `A` to `MvPolynomial (Fin n) ℂ`. Set `B` to `Γ(Y, U)`. Set `φ : A →+* B` to `MvPolynomial.eval₂Hom (cstOn q U) z`. Use `letI : Algebra A B := φ.toAlgebra`. Use `haveI : Algebra.Etale A B := RingHom.etale_algebraMap.1 hE`.
+
+Set `I : Ideal A` to `Ideal.span (MvPolynomial.X '' (J : Set (Fin n)))`. Establish `hI : I.map (algebraMap A B) = Ideal.span (z '' (J : Set (Fin n)))`. Rewrite using `[Ideal.map_span, Set.image_image]`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using `only [RingHom.algebraMap_toAlgebra, φ, Set.mem_image, Finset.mem_coe]`. Apply the tactic sequence `constructor <;> rintro ⟨j, hj, rfl⟩ <;> exact ⟨j, hj, by rw [MvPolynomial.eval₂Hom_X']⟩`. Establish `h1 : (algebraMap ℂ (A ⧸ I)).Smooth`. Rewrite using `[RingHom.smooth_algebraMap]`. Use `haveI : Algebra.Smooth ℂ (MvPolynomial {x // x ∉ (J : Set (Fin n))} ℂ) := ⟨inferInstance, inferInstance⟩`.
+
+Conclude with `Algebra.Smooth.of_equiv (quotientSpanXEquiv ℂ (J : Set (Fin n))).symm`. Establish `h2 : (algebraMap (A ⧸ I) ((A ⧸ I) ⊗[A] B)).Smooth`. Rewrite using `[RingHom.smooth_algebraMap]`. Use `infer_instance`. Set `e : ((A ⧸ I) ⊗[A] B) ≃+* B ⧸ Ideal.span (z '' (J : Set (Fin n)))` to `((Algebra.TensorProduct.comm A (A ⧸ I) B).toRingEquiv.trans (Algebra.TensorProduct.quotIdealMapEquivTensorQuot B I).symm.toRingEquiv).trans (Ideal.quotEquivOfEq hI)`.
+
+Establish `h12 : ((algebraMap (A ⧸ I) ((A ⧸ I) ⊗[A] B)).comp (algebraMap ℂ (A ⧸ I))).Smooth` using `RingHom.Smooth.comp h1 h2`. Establish `h3 : (e.toRingHom.comp ((algebraMap (A ⧸ I) ((A ⧸ I) ⊗[A] B)).comp (algebraMap ℂ (A ⧸ I)))).Smooth`. Establish `he : e.toRingHom.Smooth` using `RingHom.Smooth.of_bijective e.bijective`. Use the proof step `RingHom.Smooth.comp h12 he`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `c`. Simplify using `only [RingHom.comp_apply]`. Establish `k1 : algebraMap ℂ (A ⧸ I) c = Ideal.Quotient.mk I (MvPolynomial.C c)` using `rfl`. Establish `k2 : algebraMap (A ⧸ I) ((A ⧸ I) ⊗[A] B) (Ideal.Quotient.mk I (MvPolynomial.C c)) = (1 : A ⧸ I) ⊗ₜ[A] (algX q U c)`. Establish `hm : Ideal.Quotient.mk I (MvPolynomial.C c) = (MvPolynomial.C c : A) • (1 : A ⧸ I)`.
+
+Rewrite using `[Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, hm, TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`. Use `congr 1`. Simplify using `[RingHom.algebraMap_toAlgebra, φ]`.
+
+Both sides reduce to the same expression. Establish `k3 : (Algebra.TensorProduct.quotIdealMapEquivTensorQuot B I).symm (algX q U c ⊗ₜ[A] (1 : A ⧸ I)) = Ideal.Quotient.mk _ (algX q U c)`. Rewrite using `[AlgEquiv.symm_apply_eq, Algebra.TensorProduct.quotIdealMapEquivTensorQuot_mk]`. Rewrite using `[k1, k2]`. Simplify using `only [e, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.trans_apply, AlgEquiv.toRingEquiv_eq_coe, AlgEquiv.coe_ringEquiv, Algebra.TensorProduct.comm_tmul, k3, Ideal.quotEquivOfEq_mk]`.
+-/
 theorem smooth_quotient_of_isEtCoord (Y : Scheme.{0}) (q : Y ⟶ Sp ℂ) (n : ℕ) (U : Y.Opens) (z : Fin n → Γ(Y, U)) (J : Finset (Fin n))
     (hE : IsEtCoord q U z) :
     ((Ideal.Quotient.mk (Ideal.span (z '' (J : Set (Fin n))))).comp (algX q U)).Smooth := by
@@ -70,6 +87,9 @@ theorem smooth_quotient_of_isEtCoord (Y : Scheme.{0}) (q : Y ⟶ Sp ℂ) (n : �
     AlgEquiv.toRingEquiv_eq_coe, AlgEquiv.coe_ringEquiv, Algebra.TensorProduct.comm_tmul, k3,
     Ideal.quotEquivOfEq_mk]
 
+/- English proof (translation)
+Introduce `Y _ _ q n _ U z hF J`. Conclude with `smooth_quotient_of_isEtCoord Y q n U z J (GlobalTheory.T.isEtaleCoordinatesOnOpen_of_isTopFormFrame ℂ Y q n U z hF).2`.
+-/
 theorem smooth_coordStratum : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp ℂ) (n : ℕ) [SmoothOfRelativeDimension n q], ∀ (U : Y.Opens) (z : Fin n → Γ(Y, U)), IsFrame (dOn q z) → ∀ J : Finset (Fin n), ((Ideal.Quotient.mk (Ideal.span (z '' (J : Set (Fin n))))).comp (algX q U)).Smooth := by
   intro Y _ _ q n _ U z hF J
   exact smooth_quotient_of_isEtCoord Y q n U z J (GlobalTheory.T.isEtaleCoordinatesOnOpen_of_isTopFormFrame ℂ Y q n U z hF).2

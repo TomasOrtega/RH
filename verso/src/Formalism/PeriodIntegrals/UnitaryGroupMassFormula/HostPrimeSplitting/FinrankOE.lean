@@ -11,6 +11,9 @@ variable {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R)
 
 abbrev cj : H.E ≃ₐ[ℚ] H.E := H.conj
 
+/- English proof (translation)
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `show (cj H) ((algebraMap (𝓞 H.F) (𝓞 H.E) a : 𝓞 H.E) : H.E) = _`. Establish `hc : ((algebraMap (𝓞 H.F) (𝓞 H.E) a : 𝓞 H.E) : H.E) = (((a : H.F)) : H.E)` using `rfl`. Rewrite using `[hc]`. Conclude with `(H.conjE_mem_hostF_iff _).mp (a : H.F).2`.
+-/
 theorem cj_fix (a : 𝓞 H.F) :
     (cj H) • (algebraMap (𝓞 H.F) (𝓞 H.E) a) = algebraMap (𝓞 H.F) (𝓞 H.E) a := by
   apply RingOfIntegers.coe_injective
@@ -19,11 +22,25 @@ theorem cj_fix (a : 𝓞 H.F) :
   rw [hc]
   exact (H.conjE_mem_hostF_iff _).mp (a : H.F).2
 
+/- English proof (translation)
+Use `conv_lhs => rw [← cj_fix H a]`. Conclude with `inv_smul_smul _ _`.
+-/
 theorem cj_inv_fix (a : 𝓞 H.F) :
     (cj H)⁻¹ • (algebraMap (𝓞 H.F) (𝓞 H.E) a) = algebraMap (𝓞 H.F) (𝓞 H.E) a := by
   conv_lhs => rw [← cj_fix H a]
   exact inv_smul_smul _ _
 
+/- English proof (translation)
+Establish `hne : (cj H) • P.asIdeal ≠ ⊥`. Introduce `h`. Apply `P.ne_bot` to reduce the goal to its premises. Establish `h'` using `congrArg (fun I : Ideal (𝓞 H.E) => (cj H)⁻¹ • I) h`. Simplify `h'` using `only [inv_smul_smul, Ideal.smul_bot]`.
+
+Use `haveI := P.isPrime`. Set `Q : HeightOneSpectrum (𝓞 H.E)` to `⟨(cj H) • P.asIdeal, Ideal.IsPrime.smul (cj H), hne⟩`. Establish `hunder : Q.under (𝓞 H.F) = P.under (𝓞 H.F)`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `a`.
+
+Simplify using `only [HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap]`. Use `show algebraMap (𝓞 H.F) (𝓞 H.E) a ∈ (cj H) • P.asIdeal ↔ _`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, cj_inv_fix]`. Establish `hP : P ∈ aboveF (L` using `H.E) H.F (P.under (𝓞 H.F)) := by`. Simplify using `only [aboveF, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`.
+
+Establish `hQ : Q ∈ aboveF (L` using `H.E) H.F (P.under (𝓞 H.F)) := by`. Simplify using `only [aboveF, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Conclude with `hunder`. Take `⟨x, hx⟩` from `Finset.card_eq_one.mp h1`. Rewrite `hP`, `hQ` using `[hx, Finset.mem_singleton]`.
+
+Conclude with `congrArg HeightOneSpectrum.asIdeal (hQ.trans hP.symm)`.
+-/
 theorem cj_smul_P (P : HeightOneSpectrum (𝓞 H.E))
     (h1 : (aboveF (L := H.E) H.F (P.under (𝓞 H.F))).card = 1) :
     (cj H) • P.asIdeal = P.asIdeal := by
@@ -49,11 +66,19 @@ theorem cj_smul_P (P : HeightOneSpectrum (𝓞 H.E))
   rw [hx, Finset.mem_singleton] at hP hQ
   exact congrArg HeightOneSpectrum.asIdeal (hQ.trans hP.symm)
 
+/- English proof (translation)
+Use `haveI := H.isCMField_hostE`. Rewrite using `[← IsFractionRing.finrank_eq (𝓞 H.F) H.F (𝓞 H.E) H.E]`. Conclude with `Algebra.IsQuadraticExtension.finrank_eq_two _ _`.
+-/
 theorem finrank_OE : Module.finrank (𝓞 H.F) (𝓞 H.E) = 2 := by
   haveI := H.isCMField_hostE
   rw [← IsFractionRing.finrank_eq (𝓞 H.F) H.F (𝓞 H.E) H.E]
   exact Algebra.IsQuadraticExtension.finrank_eq_two _ _
 
+/- English proof (translation)
+Use `set v := P.under (𝓞 H.F)`. Use `haveI := v.isPrime`. Use `haveI : Fintype (v.asIdeal.primesOver (𝓞 H.E)) := Fintype.ofFinite _`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 H.E)`. Rewrite `hsum` using `[finrank_OE]`.
+
+Use `haveI : P.asIdeal.LiesOver v.asIdeal := ⟨rfl⟩`. Establish `hmem : P.asIdeal ∈ v.asIdeal.primesOver (𝓞 H.E)` using `⟨P.isPrime, inferInstance⟩`. Establish `hle` using `Finset.single_le_sum (f := fun q : v.asIdeal.primesOver (𝓞 H.E) => q.1.ramificationIdx (𝓞 H.F) * q.1.inertiaDeg (𝓞 H.F)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ ⟨P.asIdeal, hmem⟩)`. Simplify using `only at hle`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ef_le_two (P : HeightOneSpectrum (𝓞 H.E)) :
     P.asIdeal.ramificationIdx (𝓞 H.F) * P.asIdeal.inertiaDeg (𝓞 H.F) ≤ 2 := by
   set v := P.under (𝓞 H.F)
@@ -69,6 +94,13 @@ theorem ef_le_two (P : HeightOneSpectrum (𝓞 H.E)) :
   simp only at hle
   omega
 
+/- English proof (translation)
+Use `set v := P.under (𝓞 H.F)`. Use `haveI : P.asIdeal.LiesOver v.asIdeal := ⟨rfl⟩`. Use `haveI := v.isMaximal`. Use `haveI := P.isMaximal`. Rewrite `hf` using `[Ideal.inertiaDeg_eq_of_isMaximal v.asIdeal P.asIdeal]`.
+
+Use `letI : Field (𝓞 H.F ⧸ v.asIdeal) := Ideal.Quotient.field _`. Use `letI : Field (𝓞 H.E ⧸ P.asIdeal) := Ideal.Quotient.field _`. Establish `htop : (⊥ : Subalgebra (𝓞 H.F ⧸ v.asIdeal) (𝓞 H.E ⧸ P.asIdeal)) = ⊤` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.mpr hf`. Establish `hx : Ideal.Quotient.mk P.asIdeal x ∈ (⊥ : Subalgebra (𝓞 H.F ⧸ v.asIdeal) (𝓞 H.E ⧸ P.asIdeal))` using `htop ▸ Algebra.mem_top`. Take `⟨y, hy⟩` from `Algebra.mem_bot.mp hx`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, ← hy]`. Both sides reduce to the same expression.
+-/
 theorem approx (P : HeightOneSpectrum (𝓞 H.E)) (hf : P.asIdeal.inertiaDeg (𝓞 H.F) = 1)
     (x : 𝓞 H.E) : ∃ a : 𝓞 H.F, x - algebraMap (𝓞 H.F) (𝓞 H.E) a ∈ P.asIdeal := by
   set v := P.under (𝓞 H.F)
@@ -88,6 +120,15 @@ theorem approx (P : HeightOneSpectrum (𝓞 H.E)) (hf : P.asIdeal.inertiaDeg (�
   rw [← Ideal.Quotient.eq, ← hy]
   rfl
 
+/- English proof (translation)
+Introduce `R H P h1`. Use `haveI := P.isPrime`. Establish `he` using `Ideal.ramificationIdx_pos P.asIdeal (𝓞 H.F)`. Establish `hf` using `Ideal.inertiaDeg_pos P.asIdeal (𝓞 H.F)`. Establish `hef` using `ef_le_two H P`.
+
+Assume the negation of the conclusion as `hne`. Establish `h2 : 2 * P.asIdeal.inertiaDeg (𝓞 H.F) ≤ P.asIdeal.ramificationIdx (𝓞 H.F) * P.asIdeal.inertiaDeg (𝓞 H.F)` using `Nat.mul_le_mul_right _ (by omega)`. Establish `hf1 : P.asIdeal.inertiaDeg (𝓞 H.F) = 1`. Generalize the expression as in `P.asIdeal.ramificationIdx (𝓞 H.F) * P.asIdeal.inertiaDeg (𝓞 H.F) = m at *`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hfix` using `cj_smul_P H P h1`. Apply `H.der.unramEF P.asIdeal P.isPrime P.ne_bot` to reduce the goal to its premises. Introduce `x`. Use `show (cj H) • x - x ∈ P.asIdeal`. Take `⟨a, ha⟩` from `approx H P hf1 x`.
+
+Establish `h3 : (cj H) • (x - algebraMap (𝓞 H.F) (𝓞 H.E) a) ∈ (cj H) • P.asIdeal` using `Ideal.smul_mem_pointwise_smul _ _ _ ha`. Rewrite `h3` using `[hfix, smul_sub, cj_fix]`. Establish `h4 : (cj H) • x - x = ((cj H) • x - algebraMap (𝓞 H.F) (𝓞 H.E) a) - (x - algebraMap (𝓞 H.F) (𝓞 H.E) a)` using `by ring`. Rewrite using `[h4]`. Conclude with `sub_mem h3 ha`.
+-/
 theorem unram : PI.EtaHostFacts.Unram := by
   intro R H P h1
   haveI := P.isPrime

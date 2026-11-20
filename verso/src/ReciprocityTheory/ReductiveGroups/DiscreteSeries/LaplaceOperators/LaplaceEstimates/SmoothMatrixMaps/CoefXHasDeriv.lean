@@ -15,12 +15,21 @@ namespace TDAux
 
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (Formalism.REAL.indefinite_unitary_inv_closed _ ε x hx).2`.
+-/
 theorem inv_eq {x : Mat k r} (hx : Formalism.REAL.inUJ ε x) : x⁻¹ = Formalism.REAL.Jm ε * xᴴ * Formalism.REAL.Jm ε :=
   Matrix.inv_eq_left_inv (Formalism.REAL.indefinite_unitary_inv_closed _ ε x hx).2
 
+/- English proof (translation)
+Rewrite using `[inv_eq hx]`. Conclude with `(Formalism.REAL.indefinite_unitary_inv_closed _ ε x hx).1`.
+-/
 theorem mul_inv_self' {x : Mat k r} (hx : Formalism.REAL.inUJ ε x) : x * x⁻¹ = 1 := by
   rw [inv_eq hx]; exact (Formalism.REAL.indefinite_unitary_inv_closed _ ε x hx).1
 
+/- English proof (translation)
+Establish `hxx` using `mul_inv_self' hx`. Unfold `Formalism.REAL.inUJ at hx ⊢`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hxx]; simp`.
+-/
 theorem inv_mem {x : Mat k r} (hx : Formalism.REAL.inUJ ε x) : Formalism.REAL.inUJ ε x⁻¹ := by
   have hxx := mul_inv_self' hx
   unfold Formalism.REAL.inUJ at hx ⊢
@@ -29,14 +38,25 @@ theorem inv_mem {x : Mat k r} (hx : Formalism.REAL.inUJ ε x) : Formalism.REAL.i
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Formalism.REAL.Jm ε := by rw [hxx]; simp
 
+/- English proof (translation)
+Simplify using `only [actM, Matrix.add_apply, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem actM_add {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ M)
     (X Y : Mat k r) : actM E (X + Y) = actM E X + actM E Y := by
   simp only [actM, Matrix.add_apply, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [actM, Matrix.smul_apply, smul_eq_mul, Finset.smul_sum, smul_smul]`.
+-/
 theorem actM_smul {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ M)
     (c : ℂ) (X : Mat k r) : actM E (c • X) = c • actM E X := by
   simp only [actM, Matrix.smul_apply, smul_eq_mul, Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Simplify using `only [actM, Matrix.single_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `b' _ hb`.
+
+Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Introduce `a' _ ha`. Simplify using `[Ne.symm ha]`. Simplify using the standard rewrite rules.
+-/
 theorem actM_single {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ M)
     (a b : Fin (2 * r + k + 1)) : actM E (Matrix.single a b (1 : ℂ)) = E a b := by
   classical
@@ -51,10 +71,16 @@ theorem actM_single {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin (2 * r 
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Simplify using `only [coefX, map_add, map_smul, inner_add_right, inner_smul_right]`.
+-/
 theorem coefX_add_smul (σ : Mat k r → (H →L[ℂ] H)) (x₀ : Mat k r) (w m₁ m₂ : H) (c : ℂ) (g : Mat k r) :
     coefX σ x₀ w (m₁ + c • m₂) g = coefX σ x₀ w m₁ g + c * coefX σ x₀ w m₂ g := by
   simp only [coefX, map_add, map_smul, inner_add_right, inner_smul_right]
 
+/- English proof (translation)
+Simplify using `only [coefX, map_sub, inner_sub_right]`.
+-/
 theorem coefX_sub (σ : Mat k r → (H →L[ℂ] H)) (x₀ : Mat k r) (w m₁ m₂ : H) (g : Mat k r) :
     coefX σ x₀ w (m₁ - m₂) g = coefX σ x₀ w m₁ g - coefX σ x₀ w m₂ g := by
   simp only [coefX, map_sub, inner_sub_right]
@@ -65,6 +91,13 @@ namespace TDAux
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Establish `hy : Formalism.REAL.inUJ ε (x₀⁻¹ * g)` using `Formalism.REAL.indefinite_unitary_mul_mem ε (inv_mem hx₀) hg`. Establish `he : ∀ t : ℝ, σ (x₀⁻¹ * (g * NormedSpace.exp ((t : ℂ) • X))) = (σ (x₀⁻¹ * g)).comp (σ (NormedSpace.exp ((t : ℂ) • X)))`. Introduce `t`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `hσ.1.2 _ hy _ (Formalism.REAL.exp_indefinite_unitary_holds _ ε X hX t)`.
+
+Establish `hd` using `hE.deriv X hX m`. Use `set Lm : H →L[ℂ] ℂ := (innerSL ℂ w).comp (σ (x₀⁻¹ * g)) with hLm`. Establish `h2` using `(Lm.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Establish `e : (fun t : ℝ => coefX σ x₀ w (m : H) (g * NormedSpace.exp ((t : ℂ) • X))) = (⇑(Lm.restrictScalars ℝ) ∘ fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (m : H))`. Use function extensionality and compare the values at `t`.
+
+Simplify using `only [coefX, Function.comp_apply, he t, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.comp_apply, hLm, innerSL_apply_apply]`. Establish `e2 : coefX σ x₀ w ((actM E X m : D) : H) g = (Lm.restrictScalars ℝ) ((actM E X m : D) : H)`. Simplify using `only [coefX, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.comp_apply, hLm, innerSL_apply_apply]`. Rewrite using `[e, e2]`. Conclude with `h2`.
+-/
 theorem coefX_hasDeriv {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
     {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D}
     (hσ : IsURepOn (UJset ε) σ) (hE : IsDerivedOn ε σ D E) {x₀ g X : Mat k r}
@@ -91,6 +124,11 @@ theorem coefX_hasDeriv {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
   rw [e, e2]
   exact h2
 
+/- English proof (translation)
+Rewrite using `[Formalism.REAL.lie_derivative_def]`. Unfold `Formalism.REAL.Rd`. Rewrite using `[(coefX_hasDeriv hσ hE hx₀ hg (Formalism.REAL.real_part_single_mem ε a b) w m).deriv, (coefX_hasDeriv hσ hE hx₀ hg (Formalism.REAL.imaginary_part_single_mem ε a b) w m).deriv, ← coefX_add_smul]`. Use `congr 1`. Establish `hZ` using `(Formalism.REAL.complex_parts_mem_lie_algebra_holds _ ε (Matrix.single a b (1 : ℂ))).2.2.1`.
+
+Use `conv_rhs => rw [← actM_single E a b, hZ, actM_add, actM_smul]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul]`.
+-/
 theorem coefX_Eab {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
     {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D}
     (hσ : IsURepOn (UJset ε) σ) (hE : IsDerivedOn ε σ D E) {x₀ g : Mat k r}
@@ -112,21 +150,33 @@ namespace TDAux
 section Words
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+The claim follows from `| [], g, hg => e g hg | p :: wd, _, hg => Formalism.REAL.lie_derivative_congr p.1 p.2 (fun x hx => eword_congr e wd x hx) hg`.
+-/
 theorem eword_congr {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (e : ∀ x, Formalism.REAL.inUJ ε x → f x = h x) :
     ∀ (wd : List (Fin n × Fin n)) (g : Matrix (Fin n) (Fin n) ℂ), Formalism.REAL.inUJ ε g →
       Formalism.REAL.Eword ε wd f g = Formalism.REAL.Eword ε wd h g
   | [], g, hg => e g hg
   | p :: wd, _, hg => Formalism.REAL.lie_derivative_congr p.1 p.2 (fun x hx => eword_congr e wd x hx) hg
 
+/- English proof (translation)
+Simplify using `only [Formalism.REAL.Rd, Matrix.mul_assoc]`.
+-/
 theorem rd_left (X x : Matrix (Fin n) (Fin n) ℂ) (F : Matrix (Fin n) (Fin n) ℂ → ℂ) (g : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.Rd X (fun y => F (x * y)) g = Formalism.REAL.Rd X F (x * g) := by
   simp only [Formalism.REAL.Rd, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [Formalism.REAL.Eab, Formalism.REAL.Ec, rd_left]`.
+-/
 theorem eab_left (a b : Fin n) (x : Matrix (Fin n) (Fin n) ℂ) (F : Matrix (Fin n) (Fin n) ℂ → ℂ) :
     Formalism.REAL.Eab ε a b (fun y => F (x * y)) = fun g => Formalism.REAL.Eab ε a b F (x * g) := by
   funext g
   simp only [Formalism.REAL.Eab, Formalism.REAL.Ec, rd_left]
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | p :: wd => by simp only [Formalism.REAL.Eword] rw [eword_left x F wd] exact eab_left p.1 p.2 x _`.
+-/
 theorem eword_left (x : Matrix (Fin n) (Fin n) ℂ) (F : Matrix (Fin n) (Fin n) ℂ → ℂ) :
     ∀ wd : List (Fin n × Fin n),
       Formalism.REAL.Eword ε wd (fun y => F (x * y)) = fun g => Formalism.REAL.Eword ε wd F (x * g)
@@ -146,6 +196,9 @@ end Words
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+The claim follows from `| [], _, _ => rfl | p :: wd, g, hg => by show Formalism.REAL.Eab ε p.1 p.2 (Formalism.REAL.Eword ε wd (coefX σ x₀ w (m : H))) g = _ rw [Formalism.REAL.lie_derivative_congr p.1 p.2 (fun x hx => coefX_Eword hσ hE hx₀ w m wd x hx) hg] exact coefX_Eab hσ hE hx₀ hg w _ p.1 p.2`.
+-/
 theorem coefX_Eword {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
     {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D}
     (hσ : IsURepOn (UJset ε) σ) (hE : IsDerivedOn ε σ D E) {x₀ : Mat k r}
@@ -158,6 +211,11 @@ theorem coefX_Eword {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
       rw [Formalism.REAL.lie_derivative_congr p.1 p.2 (fun x hx => coefX_Eword hσ hE hx₀ w m wd x hx) hg]
       exact coefX_Eab hσ hE hx₀ hg w _ p.1 p.2
 
+/- English proof (translation)
+Establish `hJ` using `Formalism.REAL.Jm_mul_self ε`. Establish `h1 : Xᴴ * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X)` using `eq_neg_of_add_eq_zero_left hX`. Establish `h2 : Formalism.REAL.Jm ε * Xᴴ * Formalism.REAL.Jm ε = -X`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε), hJ, Matrix.one_mul]`. Use `_ = _ := by rw [h2, Matrix.neg_mul]`.
+-/
 theorem jX {g X : Mat k r} (hX : Formalism.REAL.inG ε X) :
     Formalism.REAL.Jm ε * (g * X)ᴴ * Formalism.REAL.Jm ε = -(X * (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε)) := by
   have hJ := Formalism.REAL.Jm_mul_self ε
@@ -174,6 +232,9 @@ theorem jX {g X : Mat k r} (hX : Formalism.REAL.inG ε X) :
 def cL (ε : Fin (2 * r + k + 1) → Bool) (x₁ β : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) : ℂ :=
   β ⬝ᵥ ((Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) *ᵥ x₁)
 
+/- English proof (translation)
+Rewrite using `[cJd, cL, inv_eq hg]`.
+-/
 theorem cJd_eq (x₁ β : Fin (2 * r + k + 1) → ℂ) {g : Mat k r} (hg : Formalism.REAL.inUJ ε g) :
     cJd x₁ β g = cL ε x₁ β g := by
   rw [cJd, cL, inv_eq hg]
@@ -199,8 +260,14 @@ variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 def cLclm (ε : Fin (2 * r + k + 1) → Bool) (x₁ β : Fin (2 * r + k + 1) → ℂ) : Mat k r →L[ℝ] ℂ :=
   LinearMap.toContinuousLinearMap (cLlin ε x₁ β)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cLclm_apply (x₁ β : Fin (2 * r + k + 1) → ℂ) (g : Mat k r) : cLclm ε x₁ β g = cL ε x₁ β g := rfl
 
+/- English proof (translation)
+Introduce `g₀ _`. Use `⟨Set.univ, cLclm ε x₁ β, isOpen_univ, trivial, (cLclm ε x₁ β).contDiff.contDiffOn, ?_⟩` and prove the remaining obligations. Introduce `g _ hg`. Rewrite using `[cLclm_apply]`. Conclude with `cJd_eq x₁ β hg`.
+-/
 theorem cJd_smooth (x₁ β : Fin (2 * r + k + 1) → ℂ) : Formalism.REAL.SmoothOnG ε (cJd x₁ β) := by
   intro g₀ _
   refine ⟨Set.univ, cLclm ε x₁ β, isOpen_univ, trivial, (cLclm ε x₁ β).contDiff.contDiffOn, ?_⟩
@@ -208,6 +275,11 @@ theorem cJd_smooth (x₁ β : Fin (2 * r + k + 1) → ℂ) : Formalism.REAL.Smoo
   rw [cLclm_apply]
   exact cJd_eq x₁ β hg
 
+/- English proof (translation)
+Establish `h1` using `(cLclm ε x₁ β).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (Formalism.REAL.hasDerivAt_mul_exp_smul_zero g X)`. Establish `e : (fun t : ℝ => cJd x₁ β (g * NormedSpace.exp ((t : ℂ) • X))) = (⇑(cLclm ε x₁ β) ∘ fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X))`. Use function extensionality and compare the values at `t`. Rewrite using `[Function.comp_apply, cLclm_apply]`. Conclude with `cJd_eq x₁ β (Formalism.REAL.curve_mem_indefinite_unitary hg hX t)`.
+
+Establish `e2 : cLclm ε x₁ β (g * X) = -(β ⬝ᵥ (X *ᵥ ((Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) *ᵥ x₁)))`. Rewrite using `[cLclm_apply, cL, jX hX, Matrix.neg_mulVec, dotProduct_neg, Matrix.mulVec_mulVec]`. Rewrite using `[e, ← e2]`. Conclude with `h1`.
+-/
 theorem cJd_hasDeriv (x₁ β : Fin (2 * r + k + 1) → ℂ) {g X : Mat k r} (hg : Formalism.REAL.inUJ ε g)
     (hX : Formalism.REAL.inG ε X) :
     HasDerivAt (fun t : ℝ => cJd x₁ β (g * NormedSpace.exp ((t : ℂ) • X)))
@@ -223,6 +295,11 @@ theorem cJd_hasDeriv (x₁ β : Fin (2 * r + k + 1) → ℂ) {g X : Mat k r} (hg
   rw [e, ← e2]
   exact h1
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, G, hU, hgU, hG, hFG⟩` from `hF (x * g₀) (Formalism.REAL.indefinite_unitary_mul_mem ε hx hg₀)`. Use `set Lx : Mat k r →L[ℝ] Mat k r := LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ x) with hLx`. Establish `hLxa : ∀ y, Lx y = x * y` using `fun y => rfl`. Use `⟨Lx ⁻¹' U, fun y => G (Lx y), hU.preimage Lx.continuous, by simpa [hLxa] using hgU, hG.comp Lx.contDiff.contDiffOn (fun y hy => hy), ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg hgJ`. Simplify using `only [hLxa]`. Conclude with `hFG _ (by simpa [hLxa] using hg) (Formalism.REAL.indefinite_unitary_mul_mem ε hx hgJ)`.
+-/
 theorem smooth_left {F : Mat k r → ℂ} (hF : Formalism.REAL.SmoothOnG ε F) {x : Mat k r}
     (hx : Formalism.REAL.inUJ ε x) : Formalism.REAL.SmoothOnG ε (fun y => F (x * y)) := by
   intro g₀ hg₀
@@ -235,6 +312,11 @@ theorem smooth_left {F : Mat k r → ℂ} (hF : Formalism.REAL.SmoothOnG ε F) {
   simp only [hLxa]
   exact hFG _ (by simpa [hLxa] using hg) (Formalism.REAL.indefinite_unitary_mul_mem ε hx hgJ)
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hPF⟩` from `S7.psiM_smooth T μ hμ g₀ hg₀`. Use `set Φ : (T.V →L[ℂ] T.V) →L[ℂ] ℂ := (innerSL ℂ u₂).comp (ContinuousLinearMap.apply ℂ T.V u₁) with hΦ`. Use `⟨U, fun y => Φ (F y), hU, hgU, (Φ.restrictScalars ℝ).contDiff.comp_contDiffOn hF, ?_⟩` and prove the remaining obligations. Introduce `g hg hgJ`.
+
+Simplify using `only [hΦ, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, innerSL_apply_apply]`. Rewrite using `[hPF g hg hgJ]`.
+-/
 theorem psi_smooth {lam : Fin (2 * r + k + 1) → ℝ} (T : S7.KType ε (lowK ε lam)) (μ : Fin (2 * r + k + 1) → ℤ)
     (hμ : S7.IsMu lam μ) (u₁ u₂ : T.V) :
     Formalism.REAL.SmoothOnG ε (fun y => ⟪u₂, S7.PsiM T μ y u₁⟫_ℂ) := by
@@ -255,6 +337,9 @@ namespace TDAux
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Rewrite using `[← coefX_add_smul]`. Use `congr 1`. Establish `hZ` using `(Formalism.REAL.complex_parts_mem_lie_algebra_holds _ ε (Matrix.single a b (1 : ℂ))).2.2.1`. Use `conv_rhs => rw [← actM_single E a b, hZ, actM_add, actM_smul]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul]`.
+-/
 theorem coefX_cp (σ : Mat k r → (H →L[ℂ] H)) {D : Submodule ℂ H}
     (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D) (x₀ g : Mat k r) (w : H) (m : D)
     (a b : Fin (2 * r + k + 1)) :
@@ -267,6 +352,9 @@ theorem coefX_cp (σ : Mat k r → (H →L[ℂ] H)) {D : Submodule ℂ H}
   conv_rhs => rw [← actM_single E a b, hZ, actM_add, actM_smul]
   simp only [LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul]
 
+/- English proof (translation)
+Establish `h` using `HasDerivAt.fun_sum (u := Finset.univ) (fun c _ => (cJd_hasDeriv (ε := ε) x₁ (Pi.single c 1) hg hX).mul (coefX_hasDeriv hσ hE hx₀ hg hX w (f c)))`. Simplify using `only [Formalism.REAL.mul_exp_zero_smul_eq] at h`. Conclude with `h`.
+-/
 theorem tMapD_hasDeriv {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
     {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D}
     (hσ : IsURepOn (UJset ε) σ) (hE : IsDerivedOn ε σ D E) {x₀ g X : Mat k r}
@@ -281,12 +369,34 @@ theorem tMapD_hasDeriv {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
   simp only [Formalism.REAL.mul_exp_zero_smul_eq] at h
   exact h
 
+/- English proof (translation)
+Apply the tactic sequence `by_cases h : c = b <;> simp [LemK.tensVd, LemK.prj, h]`.
+-/
 theorem tensVd_apply {M : Type*} [AddCommGroup M] [Module ℂ M]
     (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ M) (a b : Fin (2 * r + k + 1))
     (f : Fin (2 * r + k + 1) → M) (c : Fin (2 * r + k + 1)) :
     LemK.tensVd E a b f c = E a b (f c) - (if c = b then f a else 0) := by
   by_cases h : c = b <;> simp [LemK.tensVd, LemK.prj, h]
 
+/- English proof (translation)
+Rewrite using `[Formalism.REAL.lie_derivative_def]`. Unfold `Formalism.REAL.Rd`. Rewrite using `[(tMapD_hasDeriv hσ hE hx₀ hg (Formalism.REAL.real_part_single_mem ε a b) x₁ w f).deriv, (tMapD_hasDeriv hσ hE hx₀ hg (Formalism.REAL.imaginary_part_single_mem ε a b) x₁ w f).deriv]`. Use `set y := (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) *ᵥ x₁ with hy`. Establish `hZ` using `(Formalism.REAL.complex_parts_mem_lie_algebra_holds _ ε (Matrix.single a b (1 : ℂ))).2.2.1`.
+
+Use `set X1 := Formalism.REAL.cpart1 ε (Matrix.single a b (1 : ℂ))`. Use `set X2 := Formalism.REAL.cpart2 ε (Matrix.single a b (1 : ℂ))`. Establish `hyb : cJd x₁ (Pi.single b 1) g = y b`. Rewrite using `[cJd_eq x₁ _ hg, cL, hy, single_dotProduct, one_mul]`. Establish `hL : ∀ c, (-(Pi.single c 1 ⬝ᵥ (X1 *ᵥ y)) * coefX σ x₀ w (f c : H) g + cJd x₁ (Pi.single c 1) g * coefX σ x₀ w ((actM E X1 (f c) : D) : H) g) + Complex.I * (-(Pi.single c 1 ⬝ᵥ (X2 *ᵥ y)) * coefX σ x₀ w (f c : H) g + cJd x₁ (Pi.single c 1) g * coefX σ x₀ w ((actM E X2 (f c) : D) : …`.
+
+Introduce `c`. Rewrite using `[← coefX_cp σ E x₀ g w (f c) a b]`. Establish `e1 : Pi.single c 1 ⬝ᵥ (X1 *ᵥ y) + Complex.I * (Pi.single c 1 ⬝ᵥ (X2 *ᵥ y)) = if c = a then y b else 0`. Establish `h3 : X1 *ᵥ y + Complex.I • (X2 *ᵥ y) = (Matrix.single a b (1 : ℂ)) *ᵥ y`. Rewrite using `[hZ, Matrix.add_mulVec, Matrix.smul_mulVec]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[dotProduct_add, dotProduct_smul, smul_eq_mul]`. Use `_ = Pi.single c 1 ⬝ᵥ ((Matrix.single a b (1 : ℂ)) *ᵥ y) := by rw [h3]`. Use `_ = _ := ?_`. Rewrite using `[single_dotProduct, one_mul]`.
+
+Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply, h, Ne.symm h]`. Establish `e2 : (if c = a then y b * coefX σ x₀ w (f a : H) g else 0) = (if c = a then y b else 0) * coefX σ x₀ w (f c : H) g`.
+
+Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[e2, ← e1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_congr rfl (fun c _ => hL c), Finset.sum_sub_distrib, Finset.sum_ite_eq' Finset.univ a]`. Simplify using `only [Finset.mem_univ, if_true]`. Unfold `tMapD`. Establish `hR : ∀ c, cJd x₁ (Pi.single c 1) g * coefX σ x₀ w ((LemK.tensVd E a b f c : D) : H) g = cJd x₁ (Pi.single c 1) g * coefX σ x₀ w ((E a b (f c) : D) : H) g - (if c = b then cJd x₁ (Pi.single b 1) g * coefX σ x₀ w (f a : H) g else 0)`.
+
+Introduce `c`. Rewrite using `[tensVd_apply]`. Distinguish the cases in `h : c = b`. Substitute `h` using the available equality. Simplify using `[coefX_sub, mul_sub]`.
+
+Simplify using `[h]`. Rewrite using `[Finset.sum_congr rfl (fun c _ => hR c), Finset.sum_sub_distrib, Finset.sum_ite_eq' Finset.univ b]`. Simplify using `only [Finset.mem_univ, if_true, hyb]`.
+-/
 theorem tMapD_Eab {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
     {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D}
     (hσ : IsURepOn (UJset ε) σ) (hE : IsDerivedOn ε σ D E) {x₀ g : Mat k r}

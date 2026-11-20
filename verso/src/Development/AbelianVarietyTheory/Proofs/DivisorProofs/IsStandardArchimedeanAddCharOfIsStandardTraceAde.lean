@@ -9,6 +9,11 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 namespace GlobalTheory.WeilL2Words.StdArch
 
+/- English proof (translation)
+Introduce `u hu`. Establish `h : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hu`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`. Rewrite using `[h, zero_mul]`.
+
+Conclude with `mul_zero u.2`.
+-/
 theorem supportedAtArchimedean_adeleOfMixedSpaceComponent (F : Type) [Field F] [NumberField F] (z : mixedEmbedding.mixedSpace F) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (GlobalTheory.WeilL2Words.arch1 F z) := by
   intro u hu
@@ -18,10 +23,18 @@ theorem supportedAtArchimedean_adeleOfMixedSpaceComponent (F : Type) [Field F] [
     rw [h, zero_mul]
   · exact mul_zero u.2
 
+/- English proof (translation)
+The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply z`.
+-/
 theorem evI_arch1 (F : Type) [Field F] [NumberField F] (z : mixedEmbedding.mixedSpace F) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (GlobalTheory.WeilL2Words.arch1 F z) = z :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply z
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ`. Use `⟨-(Algebra.trace ℝ (mixedEmbedding.mixedSpace F)), fun z hz => ?_, fun z => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h push_neg at h`. Conclude with `hz (GlobalTheory.ArchUniq.Coord.eq_zero_of_trace z fun b => by`. Use `h b` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.neg_apply, neg_eq_zero]`. Conclude with `this)`. Rewrite using `[hψ.2.2 _ (supportedAtArchimedean_adeleOfMixedSpaceComponent F z), evI_arch1]`. Simplify using `only [LinearMap.neg_apply, Complex.ofReal_neg]`. Put the polynomial expressions in normal form.
+-/
 theorem isStdInf_of_isStd : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → GlobalTheory.WeilL2Words.IsStdInf F ψ := by
   intro F _ _ ψ hψ

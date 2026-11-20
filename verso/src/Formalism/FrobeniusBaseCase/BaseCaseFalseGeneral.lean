@@ -6,13 +6,34 @@ namespace Formalism.BaseCaseIdentities.Final
 
 open Formalism.BaseCaseIdentities
 
+/- English proof (translation)
+The claim follows from `id20_statement`.
+-/
 theorem identity_twenty : Id20 := id20_statement
+/- English proof (translation)
+The claim follows from `slopeSumIdentity_statement`.
+-/
 theorem identity_twenty_a : SlopeSumIdentity := slopeSumIdentity_statement
+/- English proof (translation)
+The claim follows from `geomSlopeIdentity_statement`.
+-/
 theorem identity_twenty_b : GeomSlopeIdentity := geomSlopeIdentity_statement
+/- English proof (translation)
+The claim follows from `sqMulIdentity_statement`.
+-/
 theorem identity_twenty_c : SqMulIdentity := sqMulIdentity_statement
+/- English proof (translation)
+The claim follows from `identity_twenty_d`.
+-/
 theorem identity_of_base_case : PowMulThreeEighthsIdentity := identity_twenty_d
+/- English proof (translation)
+The claim follows from `identity_e alias frobenius_spectrum := frobeniusSubstSpec`.
+-/
 theorem identity_E : IdE := identity_e
 alias frobenius_spectrum := frobeniusSubstSpec
+/- English proof (translation)
+The claim follows from `base_case_false_holds alias psi_is_limit := Data.opIsLimit alias chainI := Data.chainI_holds alias contractionAlt := Data.contracts alias fixed_point_alt := Data.hasUniqueFixedPoint alias start_in_W := Data.start_in_W_holds alias psi_in_W := Data.psi_in_W_holds alias chainII := D …`.
+-/
 theorem base_case_false : BaseCaseFalse := base_case_false_holds
 alias psi_is_limit := Data.opIsLimit
 alias chainI := Data.chainI_holds

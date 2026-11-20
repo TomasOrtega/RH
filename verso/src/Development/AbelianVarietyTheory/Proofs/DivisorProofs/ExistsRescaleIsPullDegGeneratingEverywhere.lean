@@ -25,6 +25,17 @@ open GlobalTheory.ArcPull GlobalTheory.ArcQ GlobalTheory.PreLift
 
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
 
+/- English proof (translation)
+Take `⟨e, e_hom, he⟩` from `grpPullback_iso gp (isGrpPullback_pullback D.P.A (specOf i))`. Substitute `he` using the available equality. Establish `hE : eSec D'.P.A ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf i) = specOf i ≫ eSec D.P.A` using `(cubeMapOf gp).e_comm`. Establish `hx : ∀ x, g ≫ (toUnit (TW W) ≫ D.c (xe x)).left = D'.xK x ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf i)` using `fun x => by show g ≫ W.ι ≫ (D.c (xe x)).left = (jK R' ≫ (D'.c x).left) ≫ _`. Rewrite using `[Category.assoc, hc, ← Category.assoc, hg, Category.assoc]`.
+
+Use `choose b hb vb using fun x => exists_gen D.P.isLB (K' := PUnit) (φ' := fun _ => D'.xK x ≫ e.hom.left ≫ pullback.fst D.P.A.hom (specOf i)) (ε' := fun _ => -1) (fun U _ h => Finset.prod_congr rfl fun _ _ => congrArg (fun q => h q ^ (-1 : ℤ)) (hx x)) (LB.pullGen D.P.L _ _ (ψW.psi (x …`. Use `choose psi hpsi vpsi using fun x => DegPull.exists_down_val hw D.P.isLB D'.P.isLB (K := PUnit) (φ' := fun _ => D'.xK x) (ε := fun _ => -1) (fun _ => rfl) (b x) (hb x)`. Use `choose u hu using GlobalTheory.FieldPull.exists_psi_ratio D' psi hpsi`. Use `⟨fun x => (u x)⁻¹, ?_⟩` and prove the remaining obligations. Establish `eψ : ∀ x, psi x = (GlobalTheory.PolDeg.rescale D' fun x => (u x)⁻¹).psi x` using `fun x => GlobalTheory.TorusExt.gen_ext_val D'.P.isLB (hpsi x) ((GlobalTheory.PolDeg.rescale D' fun x => (u x)⁻¹).psi_gen x) fun y J' hJ' => by`.
+
+Use `Eq.trans ?_ (GlobalTheory.UU.val_scaleGen _ _ _ hJ').symm` and prove the remaining obligations. Establish `h1 : unitOn (u x)⁻¹ * unitOn (u x) = 1` using `(map_mul _ _ _).symm.trans ((congrArg unitOn (inv_mul_cancel (u x))).trans (map_one _))`. Rewrite using `[hu x y J' hJ', GlobalTheory.TauTwist.unitAt_apply, ← _root_.mul_assoc, ← map_mul]`. Use `erw [h1]`. Rewrite using `[map_one, _root_.one_mul]`.
+
+Establish `key : ∀ x, GeneratorPullback.MapsAt D.P.L D'.P.L (J` using `PUnit) (fun _ => e.hom.left ≫ pullback.fst D.P.A.hom (specOf i)) w (D'.xK x) (-1) (psi x) (b x) := fun x jN jL => by`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `v` using `vpsi x _ (𝟙 _) y jN (fun _ => jL) (GeneratorPullback.mapsAt_le_b _ _ _ _ jN jL hy) (GeneratorPullback.mapsAt_le_a _ _ _ _ jN jL hy)`. Use `(gm_res _ y _ hy _).trans (v.trans (Eq.symm ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (gm_res _ y _ hy _)))))` and prove the remaining obligations. Rewrite using `[pw, Fintype.prod_unique]`.
+
+Conclude with `(map_zpow _ _ _).trans (congrArg (· ^ (-1 : ℤ)) (gm_pull (𝟙 _) _ y _ hy _))`. Use `⟨⟨e, e_hom, w, (isGen_iff w).2 hw, hE, ?_, xe, hc, W, ψW, g, hg, fun x => ⟨b x, eψ x ▸ key x, corr_of_val D.P.isLB fun y J hJ => vb x _ _ y J hJ⟩⟩, fun _ => rfl, rfl, rfl⟩` and prove the remaining obligations. Conclude with `(maps_iff w _ (fun _ => eSec D.P.A) _ D'.rig D.rig (specOf i) _ (rigPull_le (G' := D'.P.A) (G := D.P.A) _ (specOf i) hE D.P.L) (fun _ => rfl)).2 hr`.
+-/
 theorem exists_rescale_isPullDeg_data {i : R →+* R'} (D : DegPre R) (D' : DegPre R')
     {W : (Sp R).Opens} (ψW : PsiOn D W) (g : (TK R').left ⟶ (TW W).left) (hg : g ≫ W.ι = jK R' ≫ specOf i)
     {Φ : D'.P.A.left ⟶ D.P.A.left} (gp : IsGrpPullback D'.P.A D.P.A (spMap i) Φ)
@@ -71,6 +82,11 @@ theorem exists_rescale_isPullDeg_data {i : R →+* R'} (D : DegPre R) (D' : DegP
   exact (maps_iff w _ (fun _ => eSec D.P.A) _ D'.rig D.rig (specOf i) _
     (rigPull_le (G' := D'.P.A) (G := D.P.A) _ (specOf i) hE D.P.L) (fun _ => rfl)).2 hr
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ θ₀ D₀ Q e β hU gp hL hc`. Take `⟨ψW⟩` from `GlobalTheory.ArcPull.nonempty_psiOn_top D₀ hU`. Set `gg : (TK _).left ⟶ (TW (⊤ : (Sp _).Opens)).left` to `(jK _ ≫ specOf θ₀) ≫ (Sp _).topIso.inv`. Establish `hg : gg ≫ (⊤ : (Sp _).Opens).ι = jK _ ≫ specOf θ₀`. Rewrite using `[Category.assoc, ← Scheme.topIso_hom, Iso.inv_hom_id, Category.comp_id]`.
+
+Take `⟨w₀, hw₀⟩` from `hL`. Establish `he : eSec Q.P.A ≫ β = spMap θ₀ ≫ eSec D₀.P.A` using `(cubeMapOf gp).e_comm`. Establish `hσ : eSec Q.P.A ≫ Q.P.A.hom = 𝟙 _` using `Over.w η[Q.P.A]`. Take `⟨w, hw, hr⟩` from `GlobalTheory.UnifPreCompare.exists_rigidified D₀.P.isLB Q.P.isLB Q.P.A.hom (eSec Q.P.A) hσ w₀ hw₀ Q.rig Q.rig_gen (φ := eSec D₀.P.A) D₀.rig D₀.rig_gen (spMap θ₀) he`. Conclude with `exists_rescale_isPullDeg_data (i := θ₀) D₀ Q ψW gg hg gp w ((isGen_iff w).1 hw) hr e hc`.
+-/
 theorem exists_rescale_isPullDeg_top : ∀ {W V : Type} [CommRing W] [IsDomain W] [CommRing V] [IsDomain V] (θ₀ : W →+* V) (D₀ : DegPre W) (Q : DegPre V) (e : Q.X ≃+ D₀.X) (β : Q.P.A.left ⟶ D₀.P.A.left), (∀ y, PsiUnitOn D₀ y Set.univ) → IsGrpPullback Q.P.A D₀.P.A (spMap θ₀) β → LBIso Q.P.L (D₀.P.L.pull β) → (∀ y, (Q.c y).left ≫ β = spMap θ₀ ≫ (D₀.c (e y)).left) → ∃ (g : Q.X → (FractionRing V)ˣ) (hD : IsPullDeg θ₀ D₀ (GlobalTheory.PolDeg.rescale Q g)), (∀ y, hD.xe y = e y) ∧ hD.e.hom.left ≫ pullback.fst D₀.P.A.hom (specOf θ₀) = β ∧ hD.W = ⊤ := by
   intro _ _ _ _ _ _ θ₀ D₀ Q e β hU gp hL hc
   obtain ⟨ψW⟩ := GlobalTheory.ArcPull.nonempty_psiOn_top D₀ hU

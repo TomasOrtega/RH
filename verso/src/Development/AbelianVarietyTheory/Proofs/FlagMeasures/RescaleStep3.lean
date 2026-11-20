@@ -19,6 +19,27 @@ open scoped TensorProduct ENNReal
 
 namespace GlobalTheory.St.Rescale
 
+/- English proof (translation)
+Introduce `hSW D X hb hM`. Take `⟨hCM, hH, hsize, hfr⟩` from `GlobalTheory.CmHermitianRankFrames.cm_herm_rank_frames D X`. Take `⟨hA, hC⟩` from `GlobalTheory.St.siegelWeil_volumes hSW X.B.I.F X.B.I.E X.B.I.cm.sig hCM X.B.I.n X.B.I.J hH`. Take `⟨ψ, hψ, hstd⟩` from `Formalism.L2.SG.Pf.standard_character_exists X.B.I.F hCM.1`. Establish `hstd' : Formalism.L2.SG.LocVol.IsStdChar ψ` using `hstd`.
+
+Establish `hG` using `X.measG_norm`. Establish `hμG : X.measG.μG.IsHaarMeasure` using `hG.1`. Establish `hherm : ∀ {a : ℕ} (X0 : Fin a → Fin X.B.I.n → X.B.I.E) (i j : Fin a), X.B.I.cm.sig (gramE X.B.I.cm.sig X.B.I.J X0 j i) = gramE X.B.I.cm.sig X.B.I.J X0 i j` using `fun X0 i j => GlobalTheory.FrameGram.hE_swap (GlobalTheory.FrameGram.conj_invol hCM) hH.1 _ _`. Establish `hB : ∀ X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E, ∃ μ' : Measure (stabT (AF X.B.I.F) X.B.I.cm.sig X.B.I.J X0), μ'.IsHaarMeasure ∧ ((gramE X.B.I.cm.sig X.B.I.J X0).det ≠ 0 → ∃ (hTB : ∀ i j, X.B.I.cm.sig (gramE X.B.I.cm.sig X.B.I.J X0 j i) = gramE X.B.I.cm.sig X.B.I.J X0 i …`. Introduce `X0`.
+
+Distinguish the cases in `hdet : (gramE X.B.I.cm.sig X.B.I.J X0).det ≠ 0`. Take `⟨νX, μ', h1, h2, h3⟩` from `GlobalTheory.T.exists_adelicTorusMeasure_stabiliserHaar X.B.I.F X.B.I.E X.B.I.cm.sig hCM X.B.I.n X.B.I.J hH hA hC ψ hψ (2 * D.R.rS + 2) (by omega) (by omega) X0 (hherm X0) hdet X.measG.μG hμG`. Conclude with `⟨μ', h2, fun _ => ⟨hherm X0, νX, h1, h3⟩⟩`. Conclude with `⟨X.measG.μB X0, hG.2.2.2.2.1 X0, fun h => absurd h hdet⟩`. Use `choose μB' hμB' hBc using hB`.
+
+Establish `hW : ∀ u, ∃ W : MeasW X.B.I.cm.sig X.B.I.J (Formalism.L2.SG.TypedSets.frameOf X u), W.IsTextNorm ∧ W.μNinf = (X.measW u).μNinf ∧ W.μHinf = (X.measW u).μHinf ∧ (∃ (hT1 : ∀ i j, X.B.I.cm.sig (gramE X.B.I.cm.sig X.B.I.J (tupH (Formalism.L2.SG.TypedSets.frameOf X u)) j i) = gramE X.B …`. Introduce `u`. Take `⟨T, hP⟩` from `hfr u`. Take `⟨hdet, hT1, -⟩` from `GlobalTheory.FrameGram.std_frame_gram X.B.I.F X.B.I.E X.B.I.cm.sig hCM X.B.I.n X.B.I.J hH D.R.rS (Formalism.L2.SG.TypedSets.frameOf X u) T hP`. Take `⟨νH, μH, h1, h2, h3⟩` from `GlobalTheory.T.exists_adelicTorusMeasure_stabiliserHaar X.B.I.F X.B.I.E X.B.I.cm.sig hCM X.B.I.n X.B.I.J hH hA hC ψ hψ (D.R.rS + 1 + D.R.rS) (by omega) (by omega) (tupH (Formalism.L2.SG.TypedSets.frameOf X u)) hT1 hdet X.measG.μG hμG`.
+
+Take `⟨μN, hN, hN1⟩` from `GlobalTheory.T.exists_haarMeasure_unipotentRadical_covolume_one X.B.I.F X.B.I.E X.B.I.cm.sig hCM X.B.I.n X.B.I.J hH D.R.rS (Formalism.L2.SG.TypedSets.frameOf X u) T hP`. Establish `hS : ∀ v : HeightOneSpectrum (𝓞 X.B.I.F), ∃ μS : Measure (Ssub (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (Formalism.L2.SG.TypedSets.frameOf X u)), μS.IsHaarMeasure ∧ Formalism.L2.SG.LocVol.LocTieW X.B.I.cm.sig X.B.I.J ψ v (Formalism.L2.SG.TypedSets.frameOf X u) (X.measG.μGv v) μS` using `fun v => GlobalTheory.T.exists_frameStabilizerHaar_normalised_fibreMeasure X.B.I.F X.B.I.E X.B.I.cm.sig hCM X.B.I.n X.B.I.J hH hA hC ψ hψ hstd' v D.R.rS (Formalism.L2.SG.TypedSets.frameOf X u) T hP (by omega) (X.measG.μGv v) (hG.2.2.2.1 v)`. Use `choose μSv hSv hSt using hS`. Establish `hWn` using `X.measW_norm u`. Take `⟨W, hWt, e1, e2, e3, e4, e5⟩` from `GlobalTheory.St.MeasWord.exists_measW_prescribed X.B.I.F X.B.I.E X.B.I.cm.sig hCM X.B.I.n X.B.I.J hH D.R.rS (Formalism.L2.SG.TypedSets.frameOf X u) T hP (X.measW u).μNinf (X.measW u).μHinf μN μH μSv hWn.2.2.2.2.1 hWn.2.1 hN h2 hSv`.
+
+Use `⟨W, hWt, e1, e2, ⟨hT1, νH, h1, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e4]`. Conclude with `h3`. Rewrite using `[e3]`. Conclude with `hN1`.
+
+Introduce `v`. Rewrite using `[e5]`. Conclude with `hSt v`. Use `choose mw hw hNinf hHinf hOm hCov hLoc using hW`. Set `mg : MeasG X.B.I.cm.sig X.B.I.J D.R.rS` to `{ X.measG with μB := μB' }`.
+
+Establish `hg : mg.IsTextNorm` using `⟨hG.1, hG.2.1, hG.2.2.1, hG.2.2.2.1, hμB', hG.2.2.2.2.2⟩`. Use `⟨mg, hg, mw, hw, ?_, ψ, hψ, hstd', ?_, ?_⟩` and prove the remaining obligations. Use `⟨hM.1, hM.2.1, hM.2.2.1, fun u => ?_⟩` and prove the remaining obligations. Establish `h` using `hM.2.2.2 u`. Prove the components needed by the constructor for the conclusion.
+
+Use `show amb (mw u).μNinf = _`. Rewrite using `[hNinf u]`. Conclude with `h.1`. Use `show amb (mw u).μHinf = _`. Rewrite using `[hHinf u]`.
+
+Conclude with `h.2`. Conclude with `⟨fun u => ⟨hOm u, hCov u⟩, hBc⟩`. Introduce `w v`. Conclude with `hLoc w v`.
+-/
 theorem rescaleStep3 :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → ∀ D : Formalism.BasicNotions.D7, GlobalTheory.St.RescaleStep3 D := by
   intro hSW D X hb hM

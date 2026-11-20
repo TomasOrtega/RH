@@ -14,6 +14,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Crv.SubFrob
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Establish `hx : F x = ∑ k, σ (b.repr x k) • b' k` using `by conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [LinearMap.map_smulₛₗ, h]`. Rewrite using `[hx, b'.repr_sum_self]`.
+-/
 theorem repr_semilinear {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
     {σ : K →+* K} (F : V →ₛₗ[σ] V') {n : ℕ} (b : Module.Basis (Fin n) K V)
     (b' : Module.Basis (Fin n) K V') (h : ∀ j, b' j = F (b j)) (x : V) (j : Fin n) :
@@ -24,6 +27,9 @@ theorem repr_semilinear {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGrou
     exact Finset.sum_congr rfl fun k _ => by rw [LinearMap.map_smulₛₗ, h]
   rw [hx, b'.repr_sum_self]
 
+/- English proof (translation)
+Rewrite using `[Module.Basis.det_apply, Module.Basis.det_apply, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Module.Basis.toMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, hc]`. Conclude with `repr_semilinear F b b' h _ _`.
+-/
 theorem det_semilinear {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V']
     {σ : K →+* K} (F : V →ₛₗ[σ] V') {n : ℕ} (b c : Module.Basis (Fin n) K V)
     (b' c' : Module.Basis (Fin n) K V') (h : ∀ j, b' j = F (b j)) (hc : ∀ j, c' j = F (c j)) :
@@ -34,6 +40,19 @@ theorem det_semilinear {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGroup
   simp only [Module.Basis.toMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply, hc]
   exact repr_semilinear F b b' h _ _
 
+/- English proof (translation)
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+
+Take `⟨a, x, ha, hx, rfl⟩` from `hy`. Introduce `q`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, repr_semilinear F b b' h]`. Conclude with `mul_le_one' ha (hσ _ ((hL x).1 hx q))`. Consider the case `zero => intro q`.
+
+Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Introduce `q`. Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `(C.v i).map_add_le (hx q) (hy q)`.
+
+Consider the case `neg x _ hx`. Introduce `q`. Rewrite using `[map_neg, Finsupp.neg_apply, Valuation.map_neg]`. Conclude with `hx q`. Introduce `hy`.
+
+Rewrite using `[← b'.sum_repr y]`. Use `AddSubgroup.sum_mem _ fun k _ => AddSubgroup.subset_closure ⟨_, b k, hy k, ?_, by rw [h]⟩` and prove the remaining obligations. Rewrite using `[hL]`. Introduce `q`. Rewrite using `[b.repr_self, Finsupp.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem isLatOf_spanLat (C : ACurve K) {V V' : Type} [AddCommGroup V] [Module K V]
     [AddCommGroup V'] [Module K V'] {σ : K →+* K} (F : V →ₛₗ[σ] V') {n : ℕ}
     (L : C.I → AddSubgroup V) (i : C.I) (hσ : ∀ a, C.v i a ≤ 1 → C.v i (σ a) ≤ 1)
@@ -65,6 +84,17 @@ theorem isLatOf_spanLat (C : ACurve K) {V V' : Type} [AddCommGroup V] [Module K 
     rw [b.repr_self, Finsupp.single_apply]
     split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `x`. Establish `hx : (x : V) = ∑ k, (Fin.addCases (motive` using `fun _ => K) (fun j => c.repr x j) (fun _ => 0) k) • b k := by`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.addCases_left, Fin.addCases_right, zero_smul, Finset.sum_const_zero, add_zero, h]`. Use `congrArg W.subtype (c.sum_repr x)` as an intermediate fact.
+
+Rewrite `this` using `[map_sum]`. Conclude with `this.symm`. Establish `hr : ∀ k, b.repr (x : V) k = Fin.addCases (motive` using `fun _ => K) (fun j => c.repr x j) (fun _ => 0) k := by`. Introduce `k`. Use `conv_lhs => rw [hx, b.repr_sum_self]`.
+
+Rewrite using `[AddSubgroup.mem_comap]`. Express the relevant statement in the definitionally equal form `(x : V) ∈ L ↔ _`. Rewrite using `[hL]`. Prove the components needed by the constructor for the conclusion. Introduce `H q`.
+
+Use `H (Fin.castAdd _ q)` as an intermediate fact. Rewrite `this` using `[hr, Fin.addCases_left]`. Then use the resulting hypothesis. Introduce `H q`. Rewrite using `[hr]`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) q` and prove the remaining obligations.
+
+Rewrite using `[Fin.addCases_left]`. Conclude with `H j`. Rewrite using `[Fin.addCases_right]`. Simplify using the standard rewrite rules.
+-/
 theorem isLatOf_comap (C : ACurve K) {V : Type} [AddCommGroup V] [Module K V] (i : C.I)
     {m r : ℕ} (L : AddSubgroup V) (W : Submodule K V) (b : Module.Basis (Fin (m + r)) K V)
     (c : Module.Basis (Fin m) K W) (h : ∀ j, b (Fin.castAdd _ j) = c j) (hL : IsLatOf C i b L) :
@@ -98,6 +128,19 @@ def mapVec (σ : K →+* K) (d : ℕ) : (Fin d → K) →ₛₗ[σ] (Fin d → K
   map_add' x y := by ext; simp
   map_smul' a x := by ext; simp
 
+/- English proof (translation)
+Establish `h1 : Function.Injective (Matrix.of v).vecMulLinear`. Use `Matrix.vecMul_injective_iff.2 (show LinearIndependent K (Matrix.of v).row from hv)` as an intermediate fact. Conclude with `this`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ (LinearMap.ker_eq_bot.2 h1)`. Use `set B : Matrix (Fin d) (Fin n) K := LinearMap.toMatrixRight' g with hB`.
+
+Establish `hgB : ∀ x, g x = Matrix.vecMul x B`. Introduce `x`. Establish `: Matrix.toLinearMapRight' B = g`. Rewrite using `[hB]`. Conclude with `LinearMap.toMatrixRight'.symm_apply_apply g`.
+
+Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `h2 : Matrix.of v * B = 1`. Use extensionality with `a b`. Use `congrFun (LinearMap.congr_fun hg (Pi.single a 1)) b` as an intermediate fact.
+
+Simplify using `only [LinearMap.comp_apply, hgB, Matrix.vecMulLinear_apply, Matrix.vecMul_vecMul, LinearMap.id_apply, Matrix.single_one_vecMul] at this`. Rewrite using `[Matrix.one_apply]`. Express the relevant statement in the definitionally equal form `Matrix.vecMul (v a) B b = _`. Simplify `this` using `[Pi.single_apply, eq_comm]`. Establish `h3 : (Matrix.of v).map σ * B.map σ = 1`.
+
+Rewrite using `[← Matrix.map_mul, h2, Matrix.map_one _ σ.map_zero σ.map_one]`. Establish `h4 : LinearIndependent K ((Matrix.of v).map σ).row`. Rewrite using `[← Matrix.vecMul_injective_iff]`. Introduce `x y hxy`. Use `congrArg (fun z => Matrix.vecMul z (B.map σ)) hxy` as an intermediate fact.
+
+Simplify `this` using `[Matrix.vecMul_vecMul, h3]`. Conclude with `h4`.
+-/
 theorem linearIndependent_mapVec (σ : K →+* K) {d n : ℕ} (v : Fin n → Fin d → K)
     (hv : LinearIndependent K v) : LinearIndependent K (fun j => mapVec σ d (v j)) := by
   have h1 : Function.Injective (Matrix.of v).vecMulLinear := by
@@ -127,11 +170,23 @@ theorem linearIndependent_mapVec (σ : K →+* K) {d n : ℕ} (v : Fin n → Fin
     simpa [Matrix.vecMul_vecMul, h3] using this
   exact h4
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨basisOfLinearIndependentOfCardEqFinrank' _ (linearIndependent_mapVec σ b b.linearIndependent) (Module.finrank_eq_card_basis b).symm, fun j => by simp⟩`.
+-/
 theorem exists_basis_top (σ : K →+* K) {d n : ℕ} (b : Module.Basis (Fin n) K (Fin d → K)) :
     ∃ b' : Module.Basis (Fin n) K (Fin d → K), ∀ j, b' j = mapVec σ d (b j) :=
   ⟨basisOfLinearIndependentOfCardEqFinrank' _ (linearIndependent_mapVec σ b b.linearIndependent)
     (Module.finrank_eq_card_basis b).symm, fun j => by simp⟩
 
+/- English proof (translation)
+Establish `hli` using `linearIndependent_mapVec σ (fun j => (c j : Fin d → K)) (c.linearIndependent.map' W.subtype W.ker_subtype)`. Establish `hs : Submodule.span K (Set.range fun j => mapVec σ d (c j)) = Submodule.span K (mapVec σ d '' (W : Set (Fin d → K)))`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Conclude with `⟨c j, (c j).2, rfl⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `: x = ∑ k, c.repr ⟨x, hx⟩ k • (c k : Fin d → K)`. Use `congrArg W.subtype (c.sum_repr ⟨x, hx⟩)` as an intermediate fact.
+
+Rewrite `this` using `[map_sum]`. Conclude with `this.symm`. Rewrite using `[this, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Use `⟨(Module.Basis.span hli).map (LinearEquiv.ofEq _ _ hs), fun j => ?_⟩` and prove the remaining obligations. Simplify using `[Module.Basis.span_apply]`.
+-/
 theorem exists_basis_sub (σ : K →+* K) {d n : ℕ} (W : Submodule K (Fin d → K))
     (c : Module.Basis (Fin n) K W) :
     ∃ c' : Module.Basis (Fin n) K (Submodule.span K (mapVec σ d '' (W : Set (Fin d → K)))),
@@ -157,6 +212,19 @@ theorem exists_basis_sub (σ : K →+* K) {d n : ℕ} (W : Submodule K (Fin d �
   refine ⟨(Module.Basis.span hli).map (LinearEquiv.ofEq _ _ hs), fun j => ?_⟩
   simp [Module.Basis.span_apply]
 
+/- English proof (translation)
+Introduce `K _ C p _ _ d L W hL`. Use `set σ := frobenius K p with hσ`. Establish `hL' : IsBun C (frobLat C p L)` using `(GlobalTheory.T.frobenius_lattice_degree_mul_p K C p d L hL).1`. Establish `hS` using `(GlobalTheory.T.sub_and_quotient_bundles K C _ L W hL).1`. Establish `hS'` using `(GlobalTheory.T.sub_and_quotient_bundles K C _ _ (frobSub p W) hL').1`.
+
+Establish `hv : ∀ i a, C.v i (σ a) = C.v i a ^ p` using `fun i a => by rw [hσ, frobenius_def, map_pow]`. Establish `key : ∀ i, ∃ (c : Module.Basis (Fin (Module.finrank K W)) K W) (c' : Module.Basis (Fin (Module.finrank K W)) K (frobSub p W)), IsLatOf C i c (sub C L W i) ∧ IsLatOf C i c' (sub C (frobLat C p L) (frobSub p W) i) ∧ ∀ j, (c' j : Fin d → K) = mapVec σ d (c j)`. Introduce `i`. Take `⟨b, hb⟩` from `hL.1 i`. Take `⟨c, -, b₁, hb₁, hc, -, hbc, -⟩` from `GlobalTheory.T.lattice_basis_adapted_to_subspace K C _ i _ b (L i) W hb`.
+
+Take `⟨b', hb'⟩` from `exists_basis_top σ b₁`. Take `⟨c', hc'⟩` from `exists_basis_sub σ W c`. Use `⟨c, c', hc, ?_, hc'⟩` and prove the remaining obligations. Use `isLatOf_comap C i _ _ b' c' (fun j => by rw [hb', hbc]; exact (hc' j).symm) ?_` and prove the remaining obligations. Conclude with `isLatOf_spanLat C (mapVec σ d) L i (fun a ha => by rw [hv]; exact pow_le_one' ha p) b₁ b' hb' hb₁`.
+
+Use `choose c c' hc hc' hcc using key`. Take `⟨e', he'⟩ : ∃ e' : Module.Basis (Fin (Module.finrank K W)) K (frobSub p W), ∀ j, (e' j : Fin d → K) = mapVec σ d (Module.finBasis K W j)` from `exists_basis_sub σ W (Module.finBasis K W)`. Set `G : W →ₛₗ[σ] frobSub p W` to `((mapVec σ d).domRestrict W).codRestrict (frobSub p W) (fun x => Submodule.subset_span ⟨x, x.2, rfl⟩)`. Take `⟨-, h1⟩` from `GlobalTheory.T.bundle_degree_eq_sum_valuations K C _ _ _ (Module.finBasis K W) c hS hc`. Take `⟨-, h2⟩` from `GlobalTheory.T.bundle_degree_eq_sum_valuations K C _ _ _ e' c' hS' hc'`.
+
+Unfold `subDeg`. Rewrite using `[h1, h2, mul_finsum]`. Use `finsum_congr fun i => ?_` and prove the remaining obligations. Establish `hd` using `det_semilinear G (Module.finBasis K W) (c i) e' (c' i) (fun j => Subtype.ext (he' j)) (fun j => Subtype.ext (hcc i j))`. Rewrite using `[hd, hv, WithZero.log_pow]`.
+
+Simplify using `only [nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem subDeg_frob : ∀ (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p] (d : ℕ) (L : C.I → AddSubgroup (Fin d → K)) (W : Submodule K (Fin d → K)), IsBun C L → subDeg C (frobLat C p L) (frobSub p W) = p * subDeg C L W := by
   intro K _ C p _ _ d L W hL
   set σ := frobenius K p with hσ

@@ -11,5 +11,8 @@ open GlobalTheory.FlagFibre (Low uni dens)
 open ReciprocityTheory.L2DbarEstimates (V cHess)
 open scoped ContDiff ComplexOrder Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GenSmoothCover.exists_isCov_genSmooth | exact GlobalTheory.GenSmoothCover.exists_isCov_genSmooth | (intros; apply GlobalTheory.GenSmoothCover.exists_isCov_genSmooth <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.principalisation_generic_smooth_cover : GlobalTheory.Published.Principalisation → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (D : ℕ), IsArithVar p D → ∃ (Y : Scheme.{0}) (ρ : Y ⟶ X) (_ : IsIntegral Y), FlagChain.IsCov p D ρ ∧ GenSmooth (ρ ≫ p) D := by
   first | exact @GlobalTheory.GenSmoothCover.exists_isCov_genSmooth | exact GlobalTheory.GenSmoothCover.exists_isCov_genSmooth | (intros; apply GlobalTheory.GenSmoothCover.exists_isCov_genSmooth <;> assumption)

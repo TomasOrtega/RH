@@ -21,6 +21,15 @@ def FormulaCT : Prop :=
     Formula T.Y.δ Lsp u u' (T.X.Fu u) (T.Y.what₂ u) (cExpl D (T.X.Fu u) (T.Y.what₂ u))
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
+/- English proof (translation)
+Introduce `D T u u' Lsp hLT _ hT`. Establish `hη : AtD.EtaLocAt D` using `fun p => Formalism.L2.SG.Pf.AlTieLG.etaLoc_of_tied hLT p`. Establish `hDA` using `AtD.densAllAt_of D hF hη`. Establish `hFE` using `Formalism.L2.SG.Pf.formulaExplicitAt_of D hDA`. Establish `hR` using `T.Y.rowsOK u`.
+
+Take `⟨Λ0, hΛ0⟩` from `lattice_exists_holds D T u`. Establish `hne : (T.Y.what₂ u).Nonempty`. Take `⟨Λ', ⟨hΛ', -⟩, -⟩` from `hR.2 Λ0 hΛ0`. Conclude with `⟨Λ', hΛ'⟩`. Use `⟨cExpl_pos' D u (T.X.Fu u) (T.Y.what₂ u) hR hne, fun ϖ hϖ Z => ⟨orbitFiniteR_of counting_iso_inverse D T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR Z, fun hP => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations.
+
+Take `⟨F', hz, hZ⟩` from `rational_pair_holds D u u' hT (T.X.Fu u) (T.Y.what₂ u) hR Z hP`. Take `⟨h1, h2⟩` from `hDA T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR ϖ hϖ Z F' hz hZ hP`. Distinguish the cases in `hI : Formalism.HermitianLatticesTheory.IsIntegralLat (VS D).hT (MMof D (T.X.Fu u) F')`. Conclude with `(h1 hI).2`. Take `⟨p, hp⟩` from `h2 hI`.
+
+Conclude with `(hasProd_zero_of_exists_eq_zero ⟨p, hp⟩).multipliable`. Conclude with `hFE T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR ϖ hϖ Z hP`.
+-/
 theorem formulaCT_of (hF : DualityBasisChange.FrameBasisL) : FormulaCT := by
   intro D T u u' Lsp hLT _ hT
   have hη : AtD.EtaLocAt D := fun p => Formalism.L2.SG.Pf.AlTieLG.etaLoc_of_tied hLT p

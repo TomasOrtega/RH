@@ -14,6 +14,11 @@ namespace GlobalTheory.SeeSaw
 
 variable {D : D7}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Finsupp.sum _ (fun z r => r • R z) = _`. Rewrite using `[← Finsupp.sum_finsetSum_index (by simp) (by intros; exact add_smul _ _ _)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.sum_finsetSum_index (by simp) (by intros; exact add_smul _ _ _)]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.sum_smul_index' (by simp)]`. Simplify using `only [Finsupp.sum, Finset.smul_sum, smul_smul, smul_eq_mul]`.
+-/
 theorem sum_support_comb {Y Z G : Type*} [AddCommMonoid G] [Module ℂ G] (n : ℕ) (a : Fin n → Y →₀ ℂ)
     (b : Fin n → Y → Z →₀ ℂ) (R : Z → G) :
     ∑ z ∈ (∑ i, ∑ y ∈ (a i).support, a i y • b i y).support, (∑ i, ∑ y ∈ (a i).support, a i y • b i y) z • R z =
@@ -26,6 +31,25 @@ theorem sum_support_comb {Y Z G : Type*} [AddCommMonoid G] [Module ℂ G] (n : �
   rw [Finsupp.sum_smul_index' (by simp)]
   simp only [Finsupp.sum, Finset.smul_sum, smul_smul, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `D c 𝒯 t hBi hCen hLS hc ht hreal hker hrd`. Introduce `j hj C hC y`. Establish `hj0 : j < D.R.m` using `by omega`. Establish `hj1 : j + 1 < D.R.m` using `by omega`. Take `⟨χ, hχ⟩` from `hrd j (by omega)`.
+
+Establish `step1 : ∃ (n : ℕ) (P : Fin n → PolF D (c.X (j + 1)).rank (c.X j).rank) (P' : Fin n → PolF D (c.X (j + 1 + 1)).rank (c.X (j + 1)).rank), ∀ s, ∀ ψ ∈ (t s).Ram j, ∀ β, (t s).two j (fun α => (t s).rd j α ψ y) C β = ∑ i, ∑ γ, ((t s).ker (j + 1) γ β).lift c.ψ c.θ (c.x (j + 1)) (c.x (j …`. Distinguish the cases in `hex : ∃ (s : 𝒯) (_ : (t s).Ch j) (γ : (t s).Ch (j + 1)) (_ : (t s).Ch (j + 1 + 1)), True`. Take `⟨s₀, α₀, γ₀, β₀, -⟩` from `hex`. Take `⟨n, P, P', hF⟩` from `GlobalTheory.T.doubleLift_reduction_to_fockVectors_uniform D hBi hCen hLS c.ψ c.θ hc.inf (c.X j) (c.X (j + 1)) (c.X (j + 1 + 1)) (c.x j) (c.x (j + 1)) (c.x (j + 1 + 1)) (hc.x j (by omega)) (hc.x (j + 1) (by omega)) (hc.x (j + 1 + 1) (by omega)) ((t s₀).ker j α₀ γ₀) ((t s₀).ker (j …`. Use `⟨n, P, P', fun s ψ hψ β => ?_⟩` and prove the remaining obligations.
+
+Establish `hrdψ` using `fun α => hχ s ψ hψ α y`. Establish `e1 : ∀ α γ, biLift ((t s).kom j) ((t s).kom (j + 1)) (c.x j).vol (c.x (j + 1)).vol ((t s).rd j α ψ y) (biComb c.ψ _ _ _ ((t s).dd j α γ) ((t s).dd (j + 1) γ β) C) = ∑ i, ((t s).ker (j + 1) γ β).lift c.ψ c.θ (c.x (j + 1)) (c.x (j + 1 + 1)) (P' i) (((t s).ker j α γ).lift c.ψ c.θ (c …` using `fun α γ => hF ((t s).ker j α γ) ((t s).ker (j + 1) γ β) ((ht s).ker j hj0 α γ) ((ht s).ker (j + 1) hj1 γ β) rfl rfl (fun a ha b hb f hf => hreal j hj0 s s₀ a ha b hb f hf) (fun a ha b hb f hf => hreal (j + 1) hj1 s s₀ a ha b hb f hf) _ (hrdψ α).1 (hrdψ α).2`. Establish `e2 : ∀ i γ, ((t s).ker (j + 1) γ β).lift c.ψ c.θ (c.x (j + 1)) (c.x (j + 1 + 1)) (P' i) (∑ α, ((t s).ker j α γ).lift c.ψ c.θ (c.x j) (c.x (j + 1)) (P i) ((t s).rd j α ψ y)) = ∑ α, ((t s).ker (j + 1) γ β).lift c.ψ c.θ (c.x (j + 1)) (c.x (j + 1 + 1)) (P' i) (((t s).ker j α γ).lift …`. Introduce `i γ`. Establish `h` using `(hLS c.ψ c.θ hc.inf _ _ (c.x (j + 1)) (c.x (j + 1 + 1)) (hc.x _ (by omega)) (hc.x _ (by omega)) _ ((ht s).ker (j + 1) hj1 γ β) (P' i)).2.2 ((t s).Ch j) Finset.univ (fun _ => 1) (fun α => ((t s).ker j α γ).lift c.ψ c.θ (c.x j) (c.x (j + 1)) (P i) ((t s).rd j α ψ y)) (fun α _ => (h …`.
+
+Simplify using `using h`. Simplify using `only [Tup.two, e1, e2]`. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `push Not at hex`.
+
+Use `⟨0, Fin.elim0, Fin.elim0, fun s ψ _ β => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty]`. Use `Finset.sum_eq_zero fun α _ => Finset.sum_eq_zero fun γ _ => ?_` and prove the remaining obligations. Conclude with `((hex s α γ β).elim)`. Take `⟨n, P, P', hstep⟩` from `step1`.
+
+Use `choose a ha using fun i : Fin n => hker j hj0 y (P i)`. Use `choose b hb using fun (i : Fin n) (y' : c.Fr (j + 1)) => hker (j + 1) hj1 y' (P' i)`. Take `⟨χ', hχ'⟩` from `hrd (j + 1) (by omega)`. Use `⟨∑ i, ∑ y' ∈ (a i).support, a i y' • b i y', fun s ψ hψ β => ?_⟩` and prove the remaining obligations. Rewrite using `[hstep s ψ hψ β, sum_support_comb]`.
+
+Establish `hKψ` using `(ht s).stabK j hj0 ψ hψ`. Establish `e3 : ∀ i γ, ((t s).ker (j + 1) γ β).lift c.ψ c.θ (c.x (j + 1)) (c.x (j + 1 + 1)) (P' i) (∑ α, ((t s).ker j α γ).lift c.ψ c.θ (c.x j) (c.x (j + 1)) (P i) ((t s).rd j α ψ y)) = ∑ y' ∈ (a i).support, ((t s).cK j * a i y') • ((t s).ker (j + 1) γ β).lift c.ψ c.θ (c.x (j + 1)) (c.x (j …`. Introduce `i γ`. Rewrite using `[ha i s ψ hψ γ, Finset.smul_sum]`. Simplify using `only [smul_smul]`.
+
+Conclude with `(hLS c.ψ c.θ hc.inf _ _ (c.x (j + 1)) (c.x (j + 1 + 1)) (hc.x _ (by omega)) (hc.x _ (by omega)) _ ((ht s).ker (j + 1) hj1 γ β) (P' i)).2.2 _ _ _ _ (fun y' _ => (hχ' s _ hKψ γ y').1)`. Simplify using `only [e3]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun y' _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, hb i y' s _ hKψ β, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem twoX_of_laws : ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), BiAct D → CenFock D → LiftSum D → c.Is →
     (∀ s, (t s).Is) → RealEq t → KerX t → RdX t → TwoX t := by
   intro D c 𝒯 t hBi hCen hLS hc ht hreal hker hrd

@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBounds.ClsFacts
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.X
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `ZMod.intCast_surjective (PadicInt.toZModPow 1 x)`. Establish `h : x - n ∈ RingHom.ker (PadicInt.toZModPow (p` using `l) 1) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_intCast, hn, sub_self]`. Rewrite `h` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Take `⟨y, hy⟩` from `h`.
+
+Rewrite using `[← hn, map_intCast, sub_eq_iff_eq_add.1 hy, map_add, map_mul, map_pow, map_natCast, CharP.cast_eq_zero, map_intCast]`. Simplify using the standard rewrite rules.
+-/
 private theorem hom_eq {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] (f : ℤ_[l] →+* k) (x : ℤ_[l]) :
     ZMod.castHom (dvd_pow_self l one_ne_zero) k (PadicInt.toZModPow 1 x) = f x := by
   obtain ⟨n, hn⟩ := ZMod.intCast_surjective (PadicInt.toZModPow 1 x)
@@ -13,6 +18,11 @@ private theorem hom_eq {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l]
   rw [← hn, map_intCast, sub_eq_iff_eq_add.1 hy, map_add, map_mul, map_pow, map_natCast, CharP.cast_eq_zero, map_intCast]
   simp
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l hl k _ _`. Use `⟨fun σ hσ => ?_, fun c red g => hom_eq (red.comp (algebraMap ℤ_[l] c.O)) (cycZ ℚ Ω l g : ℤ_[l]ˣ)⟩` and prove the remaining obligations. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr hl.out.ne_zero⟩`. Establish `h1 : Chr.cls ℚ Ω (l ^ 1) σ = cycMod ℚ Ω l 1 σ` using `(Chr.clsFacts ℚ Ω (l ^ 1)).2.2.1 σ _ fun ζ hζ => cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (Ω ≃ₐ[ℚ] Ω) Ω σ) ζ hζ`.
+
+Establish `h2 : Chr.cls ℚ Ω (l ^ 1) σ = -1` using `(Chr.clsFacts ℚ Ω (l ^ 1)).2.2.2.1 σ hσ`. Use `Units.ext ?_` and prove the remaining obligations. Use `show ZMod.castHom (dvd_pow_self l one_ne_zero) k (cycMod ℚ Ω l 1 σ : (ZMod (l ^ 1))ˣ) = _`. Rewrite using `[← h1, h2]`. Simplify using `only [Units.val_neg, Units.val_one, map_neg, map_one]`.
+-/
 theorem UpperTheory.V.X.cycKFacts :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l], (∀ σ : G ℚ Ω, IsCC σ → cycK Ω l k σ = -1) ∧ ∀ (c : Coef l) (red : c.O →+* k) (g : G ℚ Ω), (cycK Ω l k g : k) = red (chiO ℚ Ω l c.O g : c.O) := by
   intro Ω _ _ _ l hl k _ _

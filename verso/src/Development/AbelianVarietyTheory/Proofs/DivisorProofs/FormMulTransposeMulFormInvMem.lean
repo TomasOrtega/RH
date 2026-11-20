@@ -10,10 +10,16 @@ namespace GlobalTheory.ZarhinFam
 def quat (d : ℕ) : Matrix (Fin 4) (Fin 4) ℤ :=
   Classical.choose (GlobalTheory.exists_int_matrix_transpose_mul_eq_smul_one (d - 1))
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (GlobalTheory.exists_int_matrix_transpose_mul_eq_smul_one (d - 1))).1`.
+-/
 theorem quat_transpose_mul (d : ℕ) :
     (quat d)ᵀ * quat d = ((d - 1 : ℕ) : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) :=
   (Classical.choose_spec (GlobalTheory.exists_int_matrix_transpose_mul_eq_smul_one (d - 1))).1
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (GlobalTheory.exists_int_matrix_transpose_mul_eq_smul_one (d - 1))).2`.
+-/
 theorem quat_mul_transpose (d : ℕ) :
     quat d * (quat d)ᵀ = ((d - 1 : ℕ) : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) :=
   (Classical.choose_spec (GlobalTheory.exists_int_matrix_transpose_mul_eq_smul_one (d - 1))).2
@@ -24,9 +30,17 @@ def form (d : ℕ) : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ :=
 def formInv (d : ℕ) : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ :=
   fromBlocks ((d : ℤ) • 1) (-(quat d)ᵀ) (-(quat d)) 1
 
+/- English proof (translation)
+Simplify using `[form, fromBlocks_transpose]`.
+-/
 theorem form_transpose (d : ℕ) : (form d)ᵀ = form d := by
   simp [form, fromBlocks_transpose]
 
+/- English proof (translation)
+Establish `h1 : ((d - 1 : ℕ) : ℤ) = (d : ℤ) - 1` using `by omega`. Rewrite using `[form, formInv, fromBlocks_multiply, ← fromBlocks_one]`. Use `congr 1`. Rewrite using `[Matrix.mul_neg, quat_transpose_mul, h1]`. Simplify using `[sub_smul]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_neg, smul_neg, add_neg_cancel]`. Rewrite using `[Matrix.mul_neg, quat_mul_transpose, h1]`. Simplify using `[sub_smul]`.
+-/
 theorem form_mul_formInv {d : ℕ} (hd : 0 < d) : form d * formInv d = 1 := by
   have h1 : ((d - 1 : ℕ) : ℤ) = (d : ℤ) - 1 := by omega
   rw [form, formInv, fromBlocks_multiply, ← fromBlocks_one]
@@ -36,6 +50,9 @@ theorem form_mul_formInv {d : ℕ} (hd : 0 < d) : form d * formInv d = 1 := by
   · simp only [Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_neg, smul_neg, add_neg_cancel]
   · rw [Matrix.mul_neg, quat_mul_transpose, h1]; simp [sub_smul]
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.mp (form_mul_formInv hd)`.
+-/
 theorem formInv_mul_form {d : ℕ} (hd : 0 < d) : formInv d * form d = 1 :=
   mul_eq_one_comm.mp (form_mul_formInv hd)
 
@@ -55,9 +72,15 @@ def ord (d : ℕ) : Subring (Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) whe
     simp only [Set.mem_setOf_eq] at hN
     simpa using hN i j
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ord {d : ℕ} {N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ} :
     N ∈ ord d ↔ ∀ i j, (d : ℤ) ∣ N (Sum.inr i) (Sum.inl j) := Iff.rfl
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `key : ∀ i j, ((N (Sum.inr i) (Sum.inl j) : ℤ) : ZMod d) = 0` using `fun i j => (ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr (hN i j)`. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, form, formInv, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, transpose_apply, Int.cast_add, Int.cast_sum, Int.cast_mul, Matrix.smul_apply, Matrix.neg_apply, Int.cast_neg, smul_eq_mul, Int.cast_natCast …`. Simplify using the standard rewrite rules.
+-/
 theorem form_mul_transpose_mul_formInv_mem {d : ℕ} {N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ}
     (hN : N ∈ ord d) : form d * Nᵀ * formInv d ∈ ord d := by
   intro i j
@@ -75,18 +98,30 @@ def barM (d : ℕ) (N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) : Matrix
 
 def bar (d : ℕ) (N : ord d) : ord d := ⟨barM d N, form_mul_transpose_mul_formInv_mem N.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem bar_coe (d : ℕ) (N : ord d) :
     ((bar d N : ord d) : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ) =
       form d * (N : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ)ᵀ * formInv d :=
   rfl
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem bar_add (d : ℕ) (a b : ord d) : bar d (a + b) = bar d a + bar d b := by
   ext1
   simp [Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Simplify using `[formInv, fromBlocks_transpose]`.
+-/
 theorem formInv_transpose (d : ℕ) : (formInv d)ᵀ = formInv d := by
   simp [formInv, fromBlocks_transpose]
 
+/- English proof (translation)
+Use `ext1`. Simplify using `only [bar_coe, Matrix.transpose_mul, Matrix.transpose_transpose, form_transpose, formInv_transpose]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bar_bar {d : ℕ} (hd : 0 < d) (a : ord d) : bar d (bar d a) = a := by
   ext1
   simp only [bar_coe, Matrix.transpose_mul, Matrix.transpose_transpose, form_transpose, formInv_transpose]
@@ -97,6 +132,9 @@ theorem bar_bar {d : ℕ} (hd : 0 < d) (a : ord d) : bar d (bar d a) = a := by
 def idem (d : ℕ) : ord d :=
   ⟨single (Sum.inl 0) (Sum.inl 0) 1, fun i j => by simp [single]⟩
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[idem]`.
+-/
 theorem idem_mul_self (d : ℕ) : idem d * idem d = idem d := by
   ext1
   simp [idem]

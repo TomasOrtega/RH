@@ -15,6 +15,21 @@ namespace GlobalTheory.MumFam
 
 open AdjComp in
 
+/- English proof (translation)
+Introduce `R _ _ Q₁ Q₂ a a₁ a₁' a' h h₁ h₁' h' ma ma' ca ca' H₁ H₂`. Take `⟨mb, mb', cb, cb', w₁, g₁, V₁⟩` from `H₁`. Take `⟨w₂, g₂, V₂⟩` from `H₂`. Set `m₂ : Q₁.B ⊗ Q₂.B ⟶ Q₁.B ⊗ Q₁.B` to `lift (fst _ _) (snd _ _ ≫ a')`. Establish `xB : ∀ i, (![fst Q₁.B Q₂.B ≫ a₁, snd Q₁.B Q₂.B ≫ a'] : Fin 2 → _) i = m₂ ≫ (![fst Q₁.B Q₁.B ≫ a₁, snd Q₁.B Q₁.B] : Fin 2 → _) i`.
+
+Apply the tactic sequence `intro i; fin_cases i <;> simp [m₂]`. Establish `xC : ∀ i, (![fst Q₁.B Q₂.B, snd Q₁.B Q₂.B ≫ a' ≫ a₁'] : Fin 2 → _) i = m₂ ≫ (![fst Q₁.B Q₁.B, snd Q₁.B Q₁.B ≫ a₁'] : Fin 2 → _) i`. Apply the tactic sequence `intro i; fin_cases i <;> simp [m₂]`. Set `cB` to `cubePull Q₁.M.L m₂ _ _ xB`. Set `cC` to `cubePull Q₁.M.L m₂ _ _ xC`.
+
+Establish `lA : (cubeLB Q₂.B ![fst Q₁.B Q₂.B ≫ a, snd Q₁.B Q₂.B] Q₂.M.L).IsLB` using `DVR.linComb_isLB _ Q₂.M.isLB _ _`. Establish `lB : (cubeLB Q₁.B ![fst Q₁.B Q₂.B ≫ a₁, snd Q₁.B Q₂.B ≫ a'] Q₁.M.L).IsLB` using `DVR.linComb_isLB _ Q₁.M.isLB _ _`. Establish `lC : (cubeLB Q₁.B ![fst Q₁.B Q₂.B, snd Q₁.B Q₂.B ≫ a' ≫ a₁'] Q₁.M.L).IsLB` using `DVR.linComb_isLB _ Q₁.M.isLB _ _`. Take `⟨w, gw, hw⟩` from `exists_comp lA lB lC w₂ g₂ (pullIso cB cC w₁) (pullIso_isGen cB cC g₁)`. Use `⟨ma, inferInstance, ca, fun y => ?_, w, gw, fun y y' z J₁ J₂ hJ₁ hJ₂ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[AddMonoidHom.comp_apply, cb', ca', Category.assoc]`. Establish `e₂` using `V₂ y y' z J₁ J₂ hJ₁ hJ₂`. Establish `e₁` using `V₁ y (h' y') z J₁ J₁ hJ₁ hJ₁`. Establish `hP : (lift (toUnit (TK R) ≫ Q₁.c y) (toUnit (TK R) ≫ Q₁.c (h' y'))).left = (lift (toUnit (TK R) ≫ Q₁.c y) (toUnit (TK R) ≫ Q₂.c y')).left ≫ m₂.left`. Rewrite using `[← Over.comp_left, comp_lift, lift_fst, lift_snd_assoc, ca', Category.assoc]`.
+
+Rewrite `e₁` using `[hP]`. Generalize the expression as in `(lift (toUnit (TK R) ≫ Q₁.c y) (toUnit (TK R) ≫ Q₂.c y')).left = P at e₂ e₁ ⊢`. Establish `mC` using `Good.mem hJ₁ (fun I : ULift (Finset (Fin 2)) => (psum Q₁.B ![fst Q₁.B Q₂.B, snd Q₁.B Q₂.B ≫ a' ≫ a₁'] I.down).left) P`. Establish `mB` using `Good.mem hJ₁ (fun I : ULift (Finset (Fin 2)) => (psum Q₁.B ![fst Q₁.B Q₂.B ≫ a₁, snd Q₁.B Q₂.B ≫ a'] I.down).left) P`. Establish `mA` using `Good.mem hJ₂ (fun I : ULift (Finset (Fin 2)) => (psum Q₂.B ![fst Q₁.B Q₂.B ≫ a, snd Q₁.B Q₂.B] I.down).left) P`.
+
+Establish `K : adjVal w P z J₁ J₂ = adjVal w₂ P z J₁ J₂ * adjVal w₁ (P ≫ m₂.left) z J₁ J₁`. Use `((adjVal_of w P z J₁ J₂ _ _ (fun _ => rfl) (fun _ => rfl)).trans ((hw _ P z _ _ _ mC mB mA).trans (congrArg₂ (· * ·) (gm_pullIso cB cC w₁ P z (_, _) ⟨mC, mB⟩) rfl))).trans ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `congrArg₂ (· * ·) (adjVal_of w₂ P z J₁ J₂ _ _ (fun _ => rfl) (fun _ => rfl)).symm (adjVal_of w₁ (P ≫ m₂.left) z J₁ J₁ _ _ (fun I => ?_) (fun I => ?_)).symm` and prove the remaining obligations. Use `show J₁ _ = J₁ _`.
+
+Rewrite using `[Category.assoc, ← psum_left_pull m₂ _ _ xC I]`. Use `show J₁ _ = J₁ _`. Rewrite using `[Category.assoc, ← psum_left_pull m₂ _ _ xB I]`. Rewrite using `[AddMonoidHom.comp_apply, e₂, e₁, K]`. Conclude with `(_root_.mul_assoc _ _ _).symm`.
+-/
 theorem Adj.of_twisted_comp : ∀ (R : Type) [CommRing R] [IsDomain R] (Q₁ Q₂ : Data R) (a : Q₁.B ⟶ Q₂.B) (a₁ a₁' : Q₁.B ⟶ Q₁.B) (a' : Q₂.B ⟶ Q₁.B) (h : Q₁.X →+ Q₂.X) (h₁ h₁' : Q₁.X →+ Q₁.X) (h' : Q₂.X →+ Q₁.X), IsMonHom a → IsMonHom a' → (∀ y, Q₂.c (h y) = Q₁.c y ≫ a) → (∀ z, Q₁.c (h' z) = Q₂.c z ≫ a') → Adj Q₁ Q₁ a₁ a₁' h₁ h₁' → (∃ w : LB.Iso (cubeLB Q₂.B ![fst Q₁.B Q₂.B ≫ a, snd Q₁.B Q₂.B] Q₂.M.L) (cubeLB Q₁.B ![fst Q₁.B Q₂.B ≫ a₁, snd Q₁.B Q₂.B ≫ a'] Q₁.M.L), w.IsGen ∧ ∀ y y' z J₁ J₂, Good Q₁.M.L z J₁ → Good Q₂.M.L z J₂ → val (Q₂.tau (h y) y') (𝟙 _) z J₂ = adjVal w (lift (toUnit (TK R) ≫ Q₁.c y) (toUnit (TK R) ≫ Q₂.c y')).left z J₁ J₂ * val (Q₁.tau (h₁ y) (h' y')) (𝟙 _) z J₁) → Adj Q₁ Q₂ a (a' ≫ a₁') h (h₁'.comp h') := by
   intro R _ _ Q₁ Q₂ a a₁ a₁' a' h h₁ h₁' h' ma ma' ca ca' H₁ H₂
   obtain ⟨mb, mb', cb, cb', w₁, g₁, V₁⟩ := H₁

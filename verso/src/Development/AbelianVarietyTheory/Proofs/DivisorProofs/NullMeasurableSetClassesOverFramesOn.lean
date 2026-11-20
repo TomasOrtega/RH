@@ -8,6 +8,23 @@ open NumberField IsDedekindDomain MeasureTheory ReciprocityTheory.ChartRestricti
 
 namespace GlobalTheory.ClassesMeas
 
+/- English proof (translation)
+Introduce `D H Dw l Xo c r U V dict hC σ hσ Z`. Take `⟨hU, ⟨Kf, th, hr, hK, _, hd⟩, _, _⟩` from `hC.2 σ hσ`. Take `⟨d1, d2, ⟨x0, _, d3⟩, d4, _, _⟩` from `hd`. Use `haveI : BorelSpace (GA D (V σ)) := ⟨rfl⟩`. Set `S : Set (U σ).Comp` to `{k | ∃ y, (⟨k, y⟩ : Σ k, Frame ((U σ).X k).Ψ r) ∈ framesOn (U σ) Z}`.
+
+Establish `key : ∀ g, dict σ g ∈ framesOn (U σ) Z ↔ (dict σ g).1 ∈ S`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨(dict σ g).2, h⟩`.
+
+Introduce and unpack `⟨y, hy⟩`. Conclude with `GlobalTheory.T.framePointsOverComponent_open_set D.host.E H Dw l Xo c r U σ hU Z _ y _ (d4 g) hy`. Establish `hP : IsOpen {g : GA D (V σ) | (dict σ g).1 ∈ S}`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `g₀ hg₀`.
+
+Use `Filter.mem_of_superset (GlobalTheory.LevelOpen.level_mem_nhds D (V σ) l.M Kf (by have := l.three_le; omega) hK g₀) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨k, hk, h, hh, rfl⟩`. Take `⟨γ, _, e1⟩` from `d2 k hk g₀`. Take `⟨γ', _, e2⟩` from `d3 (g₀ * k) h hh`. Establish `f1` using `congrArg Sigma.fst e1`.
+
+Establish `f2` using `congrArg Sigma.fst e2`. Use `show (dict σ (g₀ * k * h)).1 ∈ S`. Rewrite using `[f2, f1]`. Conclude with `hg₀`. Establish `hpre : (Quotient.mk'' ⁻¹' classesOver (V σ) (dict σ) (framesOn (U σ) Z) : Set (GA D (V σ))) = {g : GA D (V σ) | (dict σ g).1 ∈ S}`.
+
+Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq]`. Use `show dict σ (Quotient.mk'' g : AutQ (V σ)).out ∈ framesOn (U σ) Z ↔ _`. Rewrite using `[key]`. Establish `hrel : QuotientGroup.rightRel (GQ (V σ)) (Quotient.mk'' g : AutQ (V σ)).out g` using `Quotient.exact (Quotient.out_eq _)`.
+
+Rewrite `hrel` using `[QuotientGroup.rightRel_apply]`. Take `⟨γ', _, e⟩` from `d1 _ (inv_mem hrel) g`. Establish `f` using `congrArg Sigma.fst e`. Simplify using `only [mul_inv_rev, inv_inv, inv_mul_cancel_right] at f`. Rewrite using `[f]`.
+
+Use `MeasurableSet.nullMeasurableSet ?_` and prove the remaining obligations. Use `show MeasurableSet (Quotient.mk'' ⁻¹' classesOver (V σ) (dict σ) (framesOn (U σ) Z) : Set (GA D (V σ)))`. Rewrite using `[hpre]`. Conclude with `hP.measurableSet`.
+-/
 theorem nullMeasurableSet_classesOver_framesOn : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (V : (c.F →+* ℂ) → HSp D) (dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r), IsComplexData U V dict → ∀ σ, GoodEmb c σ → ∀ Z : Comp Xo c, NullMeasurableSet (classesOver (V σ) (dict σ) (framesOn (U σ) Z)) (muQ1 (V σ)) := by
   intro D H Dw l Xo c r U V dict hC σ hσ Z
   obtain ⟨hU, ⟨Kf, th, hr, hK, _, hd⟩, _, _⟩ := hC.2 σ hσ

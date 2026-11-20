@@ -1,17 +1,36 @@
 import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.LangPolynomials.FixedIntegersIsUnitOfNotMemPrimeSpan
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
 
+/- English proof (translation)
+Rewrite using `[← h, ZMod.val_natCast]`. Conclude with `(pow_eq_pow_mod a hz).symm`.
+-/
 private theorem ka_pw {Ω : Type} [Field Ω] {N : ℕ} [NeZero N] {z : Ω} (hz : z ^ N = 1) (a : ℕ) (k : ZMod N)
     (h : (a : ZMod N) = k) : z ^ k.val = z ^ a := by
   rw [← h, ZMod.val_natCast]
   exact (pow_eq_pow_mod a hz).symm
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih => rw [pow_succ', pow_mul, ← Nat.add_assoc, h, ih]`.
+-/
 private theorem ka_down {Ω : Type} [Field Ω] {l : ℕ} {ζ : ℕ → Ω} (h : ∀ m, ζ (m + 1) ^ l = ζ m) (n d : ℕ) :
     ζ (n + d) ^ l ^ d = ζ n := by
   induction d with
   | zero => simp
   | succ d ih => rw [pow_succ', pow_mul, ← Nat.add_assoc, h, ih]
 
+/- English proof (translation)
+Introduce `l hl _ Ω _ _ _ A _ ζ hζ m n _ s _`. Establish `hne : ∀ r : ℕ, NeZero (l ^ r)` using `fun r => ⟨(pow_pos hl.out.pos r).ne'⟩`. Establish `h1 : ∀ r, ζ r ^ l ^ r = 1` using `fun r => (hζ r).1.pow_eq_one`. Use `haveI := hne n`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `u u' k k' ⟨v, rfl, hv⟩ ⟨v', rfl, hv'⟩`. Use `⟨⟨v * v', mul_pow _ _ _, ?_⟩, ⟨v⁻¹, inv_pow _ _, ?_⟩, fun a => ⟨v ^ a, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_mul, hv, hv', ka_pw (h1 n) (k.val + k'.val) (k + k') (by simp), pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : ζ n ^ (-k).val * ζ n ^ k.val = 1`.
+
+Rewrite using `[← pow_add, ← ka_pw (h1 n) ((-k).val + k.val) 0 (by simp), ZMod.val_zero, pow_zero]`. Rewrite using `[map_inv₀, hv, mul_inv, eq_inv_of_mul_eq_one_left e]`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Rewrite using `[map_pow, hv, ka_pw (h1 n) (k.val * a) (a * k) (by simp [mul_comm]), mul_pow, pow_mul]`. Introduce and unpack `u k n' hn' - ⟨v, rfl, hv⟩`.
+
+Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hn'`. Use `haveI := hne n'`. Use `⟨v ^ l ^ d, by rw [← pow_mul, ← pow_add, add_comm], ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hv, ka_pw (h1 n') k.val _ rfl, mul_pow, ← pow_mul, mul_comm k.val, pow_mul, ka_down (fun r => (hζ r).2)]`. Introduce and unpack `u k t ⟨v, hu, hv⟩`.
+
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr hl.out.ne_zero⟩`. Establish `ht : t (ζ n) = ζ n ^ ((cycMod ℚ Ω l n t : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)).val` using `cyclotomicCharacter.spec (L := Ω) l (MulSemiringAction.toRingAut (G ℚ Ω) Ω t) (ζ n) (h1 n)`. Use `⟨t v, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_pow, hu, ← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Rewrite using `[← AlgEquiv.mul_apply, inv_mul_cancel_right, AlgEquiv.mul_apply, hv, map_mul, map_pow, ht, ← pow_mul, ka_pw (h1 n) (((cycMod ℚ Ω l n t : (ZMod (l ^ n))ˣ) : ZMod (l ^ n)).val * k.val) _ (by simp)]`.
+-/
 theorem UpperTheory.Kd.C7.pKumAlg :
     UpperTheory.Kd.C7.SKumAlg := by
   intro l hl _ Ω _ _ _ A _ ζ hζ m n _ s _

@@ -9,6 +9,27 @@ open scoped Classical
 
 namespace GlobalTheory.FinDiffPow
 
+/- English proof (translation)
+Introduce `A _ f d hf N g p hp hsum m D S hS P`. Establish `step1 : ∀ (n : ℤ) (c : A), ∑ i, f (n • g i + c) = (N : ℤ) * f c`. Introduce `n c`. Establish `hpoly : ∀ i, ∃ q : Polynomial ℚ, q.natDegree ≤ d ∧ ∀ n : ℤ, q.eval (n : ℚ) = f (c + n • g i)` using `fun i ↦ by`. Take `⟨q, h1, h2, -⟩` from `hf.exists_polynomial_int ℚ (g i) c`.
+
+Conclude with `⟨q, h1, h2⟩`. Use `choose q _ hq using hpoly`. Use `set Q : Polynomial ℚ := ∑ i, q i - Polynomial.C ((N : ℚ) * f c) with hQdef`. Establish `hQ : ∀ n : ℤ, Q.eval (n : ℚ) = ((∑ i, f (n • g i + c) - (N : ℤ) * f c : ℤ) : ℚ)`. Introduce `n`.
+
+Simplify using `only [hQdef, Polynomial.eval_sub, Polynomial.eval_finset_sum, hq, Polynomial.eval_C]`. Use `push_cast`. Simplify using `only [add_comm c]`. Establish `hQ0 : Q = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises.
+
+Use `Set.infinite_of_injective_forall_mem (f := fun a : ℕ ↦ (((p ^ a : ℕ) : ℤ) : ℚ)) ?_ ?_` and prove the remaining obligations. Introduce `a b hab`. Simplify using `only at hab`. Establish `: p ^ a = p ^ b` using `by exact_mod_cast hab`. Conclude with `Nat.pow_right_injective hp this`.
+
+Introduce `a show Q.IsRoot _`. Rewrite using `[Polynomial.IsRoot, hQ]`. Simplify using `only [natCast_zsmul, hsum a c, sub_self, Int.cast_zero]`. Use `hQ n` as an intermediate fact. Rewrite `this` using `[hQ0, Polynomial.eval_zero]`.
+
+Establish `h0 : (∑ i, f (n • g i + c) - (N : ℤ) * f c : ℤ) = 0` using `by exact_mod_cast this.symm`. Conclude with `sub_eq_zero.1 h0`. Establish `key : ∀ i (T : Finset (Fin D)), f (0 - ∑ j ∈ T, (if j ∈ S then m • g i else P j)) = f ((-(((T.filter (· ∈ S)).card * m : ℕ) : ℤ)) • g i + (0 - ∑ j ∈ T, (if j ∈ S then (0 : A) else P j)))`. Introduce `i T`. Use `congr 1`.
+
+Rewrite using `[Finset.sum_ite, Finset.sum_ite, Finset.sum_const, Finset.sum_const_zero, neg_smul, natCast_zsmul, Nat.mul_comm _ m, mul_nsmul]`. Normalize the expressions using the abelian group laws. Establish `hQ : multiDiff (fun j ↦ if j ∈ S then (0 : A) else P j) f = 0`. Rewrite using `[multiDiff_eq_shiftAct]`. Take `⟨j0, hj0⟩` from `hS`.
+
+Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ j0) (by simp [hj0, diffElt_zero]), map_zero]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [multiDiff_apply, key]`. Use `_ = ∑ T : Finset (Fin D), (-1 : ℤ) ^ T.card • ∑ i, f ((-(((T.filter (· ∈ S)).card * m : ℕ) : ℤ)) • g i + (0 - ∑ j ∈ T, (if j ∈ S then (0 : A) else P j))) := by`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.smul_sum]`. Use `_ = ∑ T : Finset (Fin D), (-1 : ℤ) ^ T.card • ((N : ℤ) * f (0 - ∑ j ∈ T, (if j ∈ S then (0 : A) else P j))) := by`. Simplify using `only [step1]`. Use `_ = (N : ℤ) * multiDiff (fun j ↦ if j ∈ S then (0 : A) else P j) f 0 := by`.
+
+Rewrite using `[multiDiff_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun T _ ↦ ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [hQ]; simp`.
+-/
 theorem sum_multiDiff_eq_zero : ∀ (A : Type 1) [AddCommGroup A] (f : A → ℤ) (d : ℕ), DiffVanish (d + 1) f → ∀ (N : ℕ) (g : Fin N → A) (p : ℕ), 2 ≤ p → (∀ (a : ℕ) (c : A), ∑ i, f (p ^ a • g i + c) = (N : ℤ) * f c) → ∀ (m D : ℕ) (S : Finset (Fin D)), S.Nonempty → ∀ P : Fin D → A, ∑ i, multiDiff (fun j => if j ∈ S then m • g i else P j) f 0 = 0 := by
   intro A _ f d hf N g p hp hsum m D S hS P
   have step1 : ∀ (n : ℤ) (c : A), ∑ i, f (n • g i + c) = (N : ℤ) * f c := by

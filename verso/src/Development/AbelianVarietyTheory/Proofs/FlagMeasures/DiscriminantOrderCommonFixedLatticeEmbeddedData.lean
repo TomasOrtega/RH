@@ -18,6 +18,11 @@ section Index
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Use `⟨hA.fg.of_le hle, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hA.span_eq_top, Submodule.span_le]`. Introduce `x hx`. Establish `h1 : idxN A B • x ∈ B` using `AddSubgroup.nsmul_relIndex_mem B.toAddSubgroup (K := A.toAddSubgroup) hx`. Establish `h2 : ((idxN A B : ℕ) : K) ≠ 0` using `by exact_mod_cast h`.
+
+Establish `h3 : x = ((idxN A B : ℕ) : K)⁻¹ • (idxN A B • x)`. Rewrite using `[← Nat.cast_smul_eq_nsmul K, smul_smul, inv_mul_cancel₀ h2, one_smul]`. Rewrite using `[h3]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+-/
 theorem lattice_of_idx {A B : Submodule (𝓞 K) V} (hA : Submodule.IsLattice K A) (hle : B ≤ A)
     (h : idxN A B ≠ 0) : Submodule.IsLattice K B := by
   refine ⟨hA.fg.of_le hle, ?_⟩
@@ -32,6 +37,9 @@ theorem lattice_of_idx {A B : Submodule (𝓞 K) V} (hA : Submodule.IsLattice K 
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use `⟨hA.fg.map _, ?_⟩` and prove the remaining obligations. Establish `: ((A.map (f.restrictScalars (𝓞 K)) : Submodule (𝓞 K) W) : Set W) = f '' A` using `rfl`. Rewrite using `[this, ← Submodule.map_span, hA.span_eq_top, Submodule.map_top, LinearMap.range_eq_top.2 hf]`.
+-/
 theorem lattice_map {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
     {A : Submodule (𝓞 K) V} (hA : Submodule.IsLattice K A) (f : V →ₗ[K] W) (hf : Function.Surjective f) :
     Submodule.IsLattice K (A.map (f.restrictScalars (𝓞 K))) := by
@@ -39,6 +47,19 @@ theorem lattice_map {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
   have : ((A.map (f.restrictScalars (𝓞 K)) : Submodule (𝓞 K) W) : Set W) = f '' A := rfl
   rw [this, ← Submodule.map_span, hA.span_eq_top, Submodule.map_top, LinearMap.range_eq_top.2 hf]
 
+/- English proof (translation)
+Establish `hfin : Module.Finite (𝓞 K) A` using `Module.Finite.iff_fg.mpr hA.fg`. Establish `hfinZ : Module.Finite ℤ A` using `Module.Finite.trans (𝓞 K) _`. Establish `hL : Submodule.IsLattice ℚ (A.restrictScalars ℤ)`. Use `⟨Module.Finite.iff_fg.mp hfinZ, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`.
+
+Introduce `x _`. Establish `h` using `idxN_ne_zero hA (Submodule.fg_span_singleton (R := 𝓞 K) x)`. Use `set n := idxN (Submodule.span (𝓞 K) {x}) A with hn`. Establish `h1 : n • x ∈ A` using `AddSubgroup.nsmul_relIndex_mem A.toAddSubgroup (K := (Submodule.span (𝓞 K) {x}).toAddSubgroup) (Submodule.mem_span_singleton_self x)`. Establish `h2 : (n : ℚ) ≠ 0` using `by exact_mod_cast h`.
+
+Establish `h3 : x = (n : ℚ)⁻¹ • (n • x)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul, inv_mul_cancel₀ h2, one_smul]`. Rewrite using `[h3]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`. Establish `hr : Module.finrank ℤ (A.restrictScalars ℤ) = Module.finrank ℚ V`.
+
+Unfold `Module.finrank`. Rewrite using `[Submodule.IsLattice.rank' ℚ]`. Set `b₀` to `Module.finBasisOfFinrankEq ℤ (A.restrictScalars ℤ) hr`. Use `⟨b₀.extendOfIsLattice ℚ, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure]`.
+
+Establish `e : Set.range (b₀.extendOfIsLattice ℚ) = (A.restrictScalars ℤ).subtype '' Set.range b₀`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, ← Submodule.map_span, b₀.span_eq, Submodule.map_top, Submodule.range_subtype]`. Both sides reduce to the same expression.
+-/
 theorem exists_rat_basis [Module ℚ V] [Module.Finite ℚ V] {A : Submodule (𝓞 K) V}
     (hA : Submodule.IsLattice K A) :
     ∃ b : Module.Basis (Fin (Module.finrank ℚ V)) ℚ V, A.toAddSubgroup = AddSubgroup.closure (Set.range b) := by
@@ -71,6 +92,15 @@ theorem exists_rat_basis [Module ℚ V] [Module.Finite ℚ V] {A : Submodule (�
   rw [e, ← Submodule.map_span, b₀.span_eq, Submodule.map_top, Submodule.range_subtype]
   rfl
 
+/- English proof (translation)
+Set `_ : Module ℚ V` to `Module.compHom V (algebraMap ℚ K)`. Establish `: IsScalarTower ℚ K V` using `IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Establish `: Module.Finite ℚ V` using `Module.Finite.trans K V`. Take `⟨a, ha⟩` from `exists_rat_basis hA`. Take `⟨b, hb⟩` from `exists_rat_basis hB`.
+
+Establish `hb' : (gmap F B).toAddSubgroup = AddSubgroup.closure (Set.range (b.map (F.restrictScalars ℚ)))`. Establish `e : (gmap F B).toAddSubgroup = B.toAddSubgroup.map (F : V →ₗ[K] V).toAddMonoidHom`. Use extensionality with `x`. Simplify using `[gmap]`. Rewrite using `[e, hb, AddMonoidHom.map_closure, ← Set.range_comp]`.
+
+Both sides reduce to the same expression. Establish `e1` using `AddSubgroup.relIndex_eq_abs_det _ _ ((Submodule.toAddSubgroup_le _ _).mpr h1) b a hb ha`. Establish `e2` using `AddSubgroup.relIndex_eq_abs_det _ _ ((Submodule.toAddSubgroup_le _ _).mpr h2) _ a hb' ha`. Unfold `idxN`. Rewrite using `[e1, e2, ← abs_mul, ← LinearMap.det_restrictScalars, ← a.det_comp ((F : V →ₗ[K] V).restrictScalars ℚ) b]`.
+
+Both sides reduce to the same expression.
+-/
 theorem idx_gmap [FiniteDimensional K V] {A B : Submodule (𝓞 K) V} (hA : Submodule.IsLattice K A)
     (hB : Submodule.IsLattice K B) (F : V ≃ₗ[K] V) (h1 : B ≤ A) (h2 : gmap F B ≤ A) :
     (idxN A (gmap F B) : ℚ) = |Algebra.norm ℚ (LinearMap.det (F : V →ₗ[K] V))| * idxN A B := by
@@ -92,6 +122,11 @@ theorem idx_gmap [FiniteDimensional K V] {A B : Submodule (𝓞 K) V} (hA : Subm
     ← a.det_comp ((F : V →ₗ[K] V).restrictScalars ℚ) b]
   rfl
 
+/- English proof (translation)
+Establish `hE : Submodule.IsLattice K (A ⊔ C)` using `Submodule.IsLattice.sup K A C`. Establish `e` using `idx_gmap hE hB F (hBC.trans le_sup_right) (h2.trans le_sup_left)`. Rewrite `e` using `[← idxN_mul h2 (le_sup_left : A ≤ A ⊔ C), ← idxN_mul hBC (le_sup_right : C ≤ A ⊔ C), hi, idxN_mul hDC (le_sup_right : C ≤ A ⊔ C), ← idxN_mul hDA (le_sup_left : A ≤ A ⊔ C)]`. Establish `h0 : ((idxN (A ⊔ C) A : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast idxN_ne_zero hA hE.fg`. Move the coercions through the operations in `at e`.
+
+Rewrite `e` using `[← mul_assoc]`. Conclude with `mul_right_cancel₀ h0 e`.
+-/
 theorem idx_gmap' [FiniteDimensional K V] {A B C D : Submodule (𝓞 K) V} (hA : Submodule.IsLattice K A)
     (hB : Submodule.IsLattice K B) (hC : Submodule.IsLattice K C) (F : V ≃ₗ[K] V) (hBC : B ≤ C)
     (hDC : D ≤ C) (hi : idxN C B = idxN C D) (hDA : D ≤ A) (h2 : gmap F B ≤ A) :
@@ -107,6 +142,9 @@ theorem idx_gmap' [FiniteDimensional K V] {A B C D : Submodule (𝓞 K) V} (hA :
 
 end Index
 
+/- English proof (translation)
+Establish `e` using `congrArg norm (Algebra.norm_eq_prod_embeddings ℚ ℂ a)`. Rewrite `e` using `[norm_prod, eq_ratCast, Complex.norm_ratCast]`. Rewrite using `[Rat.cast_abs, e, ← AlgHom.card ℚ K ℂ, ← Finset.card_univ, ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun _ _ => norm_nonneg _) (fun σ _ => h σ.toRingHom)`.
+-/
 theorem norm_le {K : Type} [Field K] [NumberField K] (a : K) (c : ℝ) (h : ∀ σ : K →+* ℂ, ‖σ a‖ ≤ c) :
     ((|Algebra.norm ℚ a| : ℚ) : ℝ) ≤ c ^ Module.finrank ℚ K := by
   have e := congrArg norm (Algebra.norm_eq_prod_embeddings ℚ ℂ a)
@@ -114,6 +152,19 @@ theorem norm_le {K : Type} [Field K] [NumberField K] (a : K) (c : ℝ) (h : ∀ 
   rw [Rat.cast_abs, e, ← AlgHom.card ℚ K ℂ, ← Finset.card_univ, ← Finset.prod_const]
   exact Finset.prod_le_prod (fun _ _ => norm_nonneg _) (fun σ _ => h σ.toRingHom)
 
+/- English proof (translation)
+Set `u` to `Module.finBasis K U`. Establish `hb` using `Formalism.HermitianLatticeCounting.P.det_form_bound_field K U σ h η hσ herm hpos hη _ u u`. Use `set G : Matrix (Fin (Module.finrank K U)) (Fin (Module.finrank K U)) K := Matrix.of fun a b => h (u a) (u b) with hG`. Use `set A := LinearMap.toMatrix u u (LinearMap.id - η) with hA`. Establish `e : (Matrix.of fun a b => bEta h η (u a) (u b)) = G * (A.conjTranspose).transpose`.
+
+Use extensionality with `a b`. Establish `h1 : u b - η (u b) = ∑ c, A c b • u c`. Simplify using `only [hA, LinearMap.toMatrix_apply]`. Conclude with `(u.sum_repr _).symm`. Simplify using `only [bEta, Matrix.of_apply, h1, map_sum, map_smulₛₗ, Matrix.mul_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply, hG, smul_eq_mul]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Establish `hG0 : G.det ≠ 0`. Introduce `h0`.
+
+Take `⟨v, hv, hvG⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Establish `h1 : ∀ b, h (∑ a, v a • u a) (u b) = 0`. Introduce `b`. Use `congrFun hvG b` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, hG, map_sum]`.
+
+Establish `h2 : h (∑ a, v a • u a) = 0` using `u.ext fun b => h1 b`. Establish `h3 : (∑ a, v a • u a) = 0`. Assume the negation of the conclusion as `hne`. Use `hpos _ hne` as an intermediate fact. Rewrite `this` using `[h2]`.
+
+Simplify using `at this`. Conclude with `hv (funext (Fintype.linearIndependent_iff.1 u.linearIndependent v h3))`. Establish `hp : 0 < ‖σ G.det‖` using `norm_pos_iff.2 ((map_ne_zero σ).2 hG0)`. Rewrite `hb` using `[e, Matrix.det_mul, Matrix.det_transpose, Matrix.det_conjTranspose, map_mul, norm_mul, hσ, norm_star, mul_assoc, Real.mul_self_sqrt hp.le, hA, LinearMap.det_toMatrix, mul_comm]`. Conclude with `le_of_mul_le_mul_right hb hp`.
+-/
 theorem det_one_sub_le {K U : Type} [Field K] [StarRing K] [AddCommGroup U] [Module K U]
     [FiniteDimensional K U] (σ : K →+* ℂ) (h : U →ₗ[K] U →ₗ⋆[K] K) (η : U →ₗ[K] U)
     (hσ : ∀ x : K, σ (star x) = star (σ x)) (herm : ∀ x y : U, star (h x y) = h y x)
@@ -156,6 +207,9 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 omit [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Take `⟨σ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Use `hP σ x h0` as an intermediate fact. Rewrite `this` using `[LinearMap.flip_apply, hx]`. Simplify using `at this`.
+-/
 theorem aniso {H : HermSpace K V} (hP : PD H.B.flip) (x : V) (hx : H.B x x = 0) : x = 0 := by
   by_contra h0
   obtain ⟨σ⟩ : Nonempty (K →+* ℂ) := inferInstance
@@ -164,11 +218,41 @@ theorem aniso {H : HermSpace K V} (hP : PD H.B.flip) (x : V) (hx : H.B x x = 0) 
   simp at this
 
 omit [NumberField K] [StarRing K] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Simplify using `[fixSp, sub_eq_zero]`.
+-/
 theorem mem_fixSp (η : V ≃ₗ[K] V) (x : V) : x ∈ fixSp η ↔ η x = x := by
   simp [fixSp, sub_eq_zero]
 
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Use `set S : Submodule K V := LinearMap.range ((η : V →ₗ[K] V) - LinearMap.id) with hS`. Establish `hrk : Module.finrank K S + Module.finrank K (fixSp η) = Module.finrank K V` using `LinearMap.finrank_range_add_finrank_ker _`. Establish `horth : ∀ t ∈ fixSp η, ∀ s ∈ S, H.B t s = 0`. Introduce and unpack `t ht _ ⟨y, rfl⟩`. Use `hη t y` as an intermediate fact.
+
+Rewrite `this` using `[(mem_fixSp η t).1 ht]`. Simplify using `[this]`. Establish `hdis : Disjoint (fixSp η) S`. Rewrite using `[Submodule.disjoint_def]`. Conclude with `fun x h1 h2 => aniso hP x (horth x h1 x h2)`.
+
+Establish `hc : IsCompl (fixSp η) S` using `⟨hdis, codisjoint_iff.2 (Submodule.eq_top_of_disjoint _ _ (by omega) hdis)⟩`. Use `set p := Submodule.projectionOnto (fixSp η) S hc with hp`. Establish `p1 : ∀ t : fixSp η, p t = t` using `Submodule.projectionOnto_apply_left hc`. Establish `p2 : ∀ x, p x = 0 ↔ x ∈ S` using `fun x => Submodule.projectionOnto_apply_eq_zero_iff hc`. Establish `p3 : ∀ x, x - p x ∈ S` using `fun x => by rw [← p2, map_sub, p1, sub_self]`.
+
+Establish `p4 : ∀ x, x - η x ∈ S` using `fun x => ⟨-x, by simp; abel⟩`. Establish `hg0 : (g : K) ≠ 0` using `by exact_mod_cast hg.ne'`. Use `set F₀ : V →ₗ[K] V := (fixSp η).subtype ∘ₗ p + (g : K)⁻¹ • (LinearMap.id - (η : V →ₗ[K] V)) with hF₀`. Establish `f1 : ∀ x, F₀ x = p x + (g : K)⁻¹ • (x - η x)` using `fun x => rfl`. Establish `hinj : Function.Injective F₀`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `a1` using `congrArg p hx`. Rewrite `a1` using `[f1, map_add, map_smul, (p2 _).2 (p4 x), p1, smul_zero, add_zero, map_zero]`. Rewrite `hx` using `[f1, a1, Submodule.coe_zero, zero_add, smul_eq_zero, sub_eq_zero]`.
+
+Establish `a2 : x ∈ fixSp η` using `(mem_fixSp η x).2 (hx.resolve_left (inv_ne_zero hg0)).symm`. Establish `a3` using `p1 ⟨x, a2⟩`. Rewrite `a3` using `[a1]`. Conclude with `(congrArg Subtype.val a3).symm`. Use `⟨p, LinearEquiv.ofInjectiveEndo F₀ hinj, p1, fun x t => ?_, fun x => (p2 _).2 (p4 x), f1, ?_⟩` and prove the remaining obligations.
+
+Use `horth t t.2 _ (p3 x)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this.symm`. Establish `hFF : ((LinearEquiv.ofInjectiveEndo F₀ hinj : V ≃ₗ[K] V) : V →ₗ[K] V) = F₀` using `rfl`. Establish `hd : Module.finrank ℚ K = 2 * Formalism.HermitianLatticesTheory.fDeg K`.
+
+Use `hK.1` as an intermediate fact. Rewrite using `[IsTotallyComplex.finrank, Formalism.HermitianLatticesTheory.fDeg, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, zero_add]`. Establish `hex : 2 * (Module.finrank K V - Module.finrank K (fixSp η)) * fDeg K = Module.finrank K S * Module.finrank ℚ K`. Rewrite using `[hd, ← hrk, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hFF, hex, pow_mul]`. Use `norm_le _ _ fun σ => ?_` and prove the remaining obligations. Establish `hηS : ∀ x ∈ S, (η : V →ₗ[K] V) x ∈ S` using `fun x hx => by`. Use `S.sub_mem hx (p4 x)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hFS : S ≤ S.comap F₀` using `fun x hx => by`. Rewrite using `[Submodule.mem_comap, f1, (p2 x).2 hx, Submodule.coe_zero, zero_add]`. Conclude with `S.smul_mem _ (p4 x)`. Establish `q1 : S.mapQ S F₀ hFS = LinearMap.id`. Use extensionality with `x`.
+
+Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.mapQ_apply, LinearMap.id_apply]`. Rewrite using `[Submodule.Quotient.eq, f1]`. Use `S.sub_mem (S.smul_mem (g : K)⁻¹ (p4 x)) (p3 x)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+
+Establish `q2 : F₀.restrict hFS = (g : K)⁻¹ • (LinearMap.id - (η : V →ₗ[K] V).restrict hηS)`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `F₀ x = (g : K)⁻¹ • ((x : V) - η x)`. Rewrite using `[f1, (p2 x).2 x.2, Submodule.coe_zero, zero_add]`. Establish `hb` using `det_one_sub_le σ (H.B.domRestrict₁₂ S S) ((η : V →ₗ[K] V).restrict hηS) (hK.2.1 σ) (fun x y => H.herm x y) (fun w hw => hP σ w (fun h0 => hw (Subtype.ext h0))) (fun x y => hη x y)`.
+
+Rewrite using `[LinearMap.det_eq_det_mul_det S F₀ hFS, q1, q2, LinearMap.det_id, mul_one, LinearMap.det_smul, map_mul, norm_mul, map_pow, norm_pow, map_inv₀, norm_inv, map_natCast, Complex.norm_natCast, div_eq_inv_mul, mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left hb (by positivity)`.
+-/
 theorem exists_proj_aut {H : HermSpace K V} (hK : IsCMUnram K) (hP : PD H.B.flip) {η : V ≃ₗ[K] V}
     (hη : ∀ x y, H.B (η x) (η y) = H.B x y) {g : ℕ} (hg : 0 < g) :
     ∃ (p : V →ₗ[K] fixSp η) (F : V ≃ₗ[K] V), (∀ t : fixSp η, p t = t) ∧
@@ -244,9 +328,23 @@ theorem exists_proj_aut {H : HermSpace K V} (hK : IsCMUnram K) (hP : PD H.B.flip
     norm_mul, map_pow, norm_pow, map_inv₀, norm_inv, map_natCast, Complex.norm_natCast, div_eq_inv_mul, mul_pow]
   exact mul_le_mul_of_nonneg_left hb (by positivity)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x hx => aniso hP x (hx x), fun x hx => aniso hP x (hx x)⟩`.
+-/
 theorem flip_nondeg {H : HermSpace K V} (hP : PD H.B.flip) : H.B.flip.Nondegenerate :=
   ⟨fun x hx => aniso hP x (hx x), fun x hx => aniso hP x (hx x)⟩
 
+/- English proof (translation)
+Establish `dl` using `dualLattice (𝓞 K) K V H.B.flip (flip_isSymm H) (flip_nondeg hP) star_algebraMap_ringOfIntegers_mem_range A hA`. Establish `hs : (hRes H.B.flip U).IsSymm` using `⟨fun x y => H.herm y x⟩`. Establish `hn : (hRes H.B.flip U).Nondegenerate` using `⟨fun x hx => Subtype.ext (aniso hP x (hx x)), fun x hx => Subtype.ext (aniso hP x (hx x))⟩`. Establish `hL` using `lattice_map dl.1 p (fun t => ⟨t, p1 t⟩)`. Establish `dl'` using `dualLattice (𝓞 K) K U (hRes H.B.flip U) hs hn star_algebraMap_ringOfIntegers_mem_range _ hL`.
+
+Establish `e : Formalism.HermitianLatticesTheory.dual (hRes H.B.flip U) ((Formalism.HermitianLatticesTheory.dual H.B.flip A).map (p.restrictScalars (𝓞 K))) = latIn U A`. Use extensionality with `t`. Express the relevant statement in the definitionally equal form `_ ↔ (t : V) ∈ A`. Establish `e0 : (t : V) ∈ A ↔ (t : V) ∈ Formalism.HermitianLatticesTheory.dual H.B.flip (Formalism.HermitianLatticesTheory.dual H.B.flip A)` using `by rw [dl.2.1]`. Rewrite using `[e0, dualBasic_mem_dual, dualBasic_mem_dual H.B.flip _ (t : V)]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Use `h (p y) ⟨y, hy, rfl⟩` as an intermediate fact. Express the relevant statement in the definitionally equal form `H.B t (p y) ∈ _ at this`. Rewrite `this` using `[p2]`.
+
+Conclude with `this`. Introduce and unpack `h _ ⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `H.B t (p y) ∈ _`. Rewrite using `[p2]`. Conclude with `h y hy`.
+
+Rewrite using `[discN, ← e, dl'.2.1, e]`. Conclude with `(AddSubgroup.relIndex_comap (latIn U A).toAddSubgroup (p.restrictScalars (𝓞 K)).toAddMonoidHom (Formalism.HermitianLatticesTheory.dual H.B.flip A).toAddSubgroup).symm`.
+-/
 theorem disc_latIn {H : HermSpace K V} (hP : PD H.B.flip) {U : Submodule K V} (p : V →ₗ[K] U)
     (p1 : ∀ t : U, p t = t) (p2 : ∀ (x : V) (t : U), H.B t (p x) = H.B t x) {A : Submodule (𝓞 K) V}
     (hA : Submodule.IsLattice K A) :
@@ -280,6 +378,21 @@ theorem disc_latIn {H : HermSpace K V} (hP : PD H.B.flip) {U : Submodule K V} (p
 
 omit [StarRing K] [FiniteDimensional K V] in
 
+/- English proof (translation)
+Use `set P : V →ₗ[𝓞 K] V := (U.subtype ∘ₗ p).restrictScalars (𝓞 K) with hP`. Establish `hPx : ∀ x, P x = p x` using `fun _ => rfl`. Use `set B : Submodule (𝓞 K) V := (D ⊓ U.restrictScalars (𝓞 K)) ⊔ D.map (LinearMap.id - P) with hB`. Establish `hBm : ∀ b ∈ B, ∃ m : U, (m : V) ∈ D ∧ ∃ y ∈ D, b = m + (y - p y)`. Introduce `b hb`.
+
+Take `⟨m, ⟨hm1, hm2⟩, _, ⟨y, hy, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hb`. Conclude with `⟨⟨m, hm2⟩, hm1, y, hy, rfl⟩`. Establish `hC : Submodule.IsLattice K (D.map P ⊔ D)` using `Submodule.IsLattice.of_le_of_isLattice_of_fg K le_sup_right ((hD.fg.map P).sup hD.fg)`. Establish `e1 : D.map P ⊔ B = D.map P ⊔ D`. Use `le_antisymm (sup_le le_sup_left (sup_le (inf_le_left.trans le_sup_right) ?_)) (sup_le le_sup_left fun y hy => ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_right hy) (Submodule.mem_sup_left ⟨y, hy, rfl⟩)`. Establish `: y = P y + (LinearMap.id - P : V →ₗ[𝓞 K] V) y` using `by simp`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup ⟨y, hy, rfl⟩ (Submodule.mem_sup_right ⟨y, hy, rfl⟩)`.
+
+Establish `e2 : B ⊓ D.map P = D ⊓ D.map P`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Introduce and unpack `b ⟨hb, z, hz, rfl⟩`. Use `⟨?_, z, hz, rfl⟩` and prove the remaining obligations. Take `⟨m, hm, y, hy, e⟩` from `hBm _ hb`.
+
+Use `congrArg p e` as an intermediate fact. Rewrite `this` using `[hPx, map_add, map_sub, p1, p1, p1, sub_self, add_zero]`. Rewrite using `[SetLike.mem_coe, hPx, this]`. Conclude with `hm`. Introduce and unpack `b ⟨hb, z, hz, rfl⟩`.
+
+Conclude with `⟨Submodule.mem_sup_left ⟨hb, (p z).2⟩, z, hz, rfl⟩`. Establish `k : ∀ X : Submodule (𝓞 K) V, idxN (D.map P ⊔ X) X = idxN (D.map P) (X ⊓ D.map P)`. Introduce `X`. Unfold `idxN`. Rewrite using `[Submodule.sup_toAddSubgroup, AddSubgroup.relIndex_sup_right]`.
+
+Conclude with `(AddSubgroup.inf_relIndex_right _ _).symm`. Establish `e3 : idxN (D.map P ⊔ D) B = idxN (D.map P ⊔ D) D`. Rewrite using `[k D, ← e1, k B, e2]`. Establish `hBC : B ≤ D.map P ⊔ D` using `e1 ▸ le_sup_right`. Conclude with `⟨B, _, lattice_of_idx hC hBC (e3 ▸ idxN_ne_zero hD hC.fg), hC, hBC, le_sup_right, e3, hBm⟩`.
+-/
 theorem exists_same_index {U : Submodule K V} (p : V →ₗ[K] U) (p1 : ∀ t : U, p t = t)
     {D : Submodule (𝓞 K) V} (hD : Submodule.IsLattice K D) :
     ∃ B C : Submodule (𝓞 K) V, Submodule.IsLattice K B ∧ Submodule.IsLattice K C ∧ B ≤ C ∧ D ≤ C ∧
@@ -322,6 +435,19 @@ theorem exists_same_index {U : Submodule K V} (p : V →ₗ[K] U) (p1 : ∀ t : 
   have hBC : B ≤ D.map P ⊔ D := e1 ▸ le_sup_right
   exact ⟨B, _, lattice_of_idx hC hBC (e3 ▸ idxN_ne_zero hD hC.fg), hC, hBC, le_sup_right, e3, hBm⟩
 
+/- English proof (translation)
+Take `⟨p, F, p1, p2, p3, hF, hN⟩` from `exists_proj_aut hK hP hη hg`. Take `⟨B, C, hB, hC, hBC, hDC, hi, hBm⟩` from `exists_same_index p p1 hD`. Establish `dl` using `(dualLattice (𝓞 K) K V H.B.flip (flip_isSymm H) (flip_nondeg hP) star_algebraMap_ringOfIntegers_mem_range A hA).1`. Establish `key : ∀ b ∈ gmap F B, ∃ m : fixSp η, (m : V) ∈ D ∧ ∃ y ∈ D, b = m + (g : K)⁻¹ • (y - η y)`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+
+Take `⟨m, hm, y, hy, rfl⟩` from `hBm b hb`. Use `⟨m, hm, y, hy, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F _ = _`. Rewrite using `[hF, map_add, map_sub, p1, p1, sub_self, add_zero, map_add, map_sub, (mem_fixSp η m).1 m.2, (mem_fixSp η (p y)).1 (p y).2]`. Use `congr 2`.
+
+Normalize the expressions using the abelian group laws. Establish `h1 : gmap F B ≤ Formalism.HermitianLatticesTheory.dual H.B.flip A`. Introduce `b hb`. Take `⟨m, hm, y, hy, rfl⟩` from `key b hb`. Conclude with `Submodule.add_mem _ (hle hm) (hpair y hy)`.
+
+Establish `h2 : gmap F B ≤ (latIn (fixSp η) A).comap (p.restrictScalars (𝓞 K))`. Introduce `b hb`. Take `⟨m, hm, y, hy, rfl⟩` from `key b hb`. Express the relevant statement in the definitionally equal form `((p _ : fixSp η) : V) ∈ A`. Rewrite using `[map_add, map_smul, p3, smul_zero, add_zero, p1]`.
+
+Conclude with `hfix m m.2 hm`. Establish `hFB : Submodule.IsLattice K (gmap F B)` using `lattice_map hB (F : V →ₗ[K] V) F.surjective`. Establish `h3 : idxN (Formalism.HermitianLatticesTheory.dual H.B.flip A) ((latIn (fixSp η) A).comap (p.restrictScalars (𝓞 K))) ≤ idxN (Formalism.HermitianLatticesTheory.dual H.B.flip A) (gmap F B)` using `AddSubgroup.relIndex_le_of_le_left ((Submodule.toAddSubgroup_le _ _).mpr h2) (idxN_ne_zero hFB dl.fg)`. Establish `h4` using `congrArg (fun q : ℚ => (q : ℝ)) (idx_gmap' dl hB hC F hBC hDC hi hle h1)`. Simplify using `only [Rat.cast_mul, Rat.cast_natCast] at h4`.
+
+Rewrite using `[disc_latIn hP p p1 p2 hA]`. Use `(Nat.cast_le.2 h3).trans ?_` and prove the remaining obligations. Rewrite using `[h4]`. Conclude with `mul_le_mul_of_nonneg_right hN (by positivity)`.
+-/
 theorem core {H : HermSpace K V} (hK : IsCMUnram K) (hP : PD H.B.flip) {η : V ≃ₗ[K] V}
     (hη : ∀ x y, H.B (η x) (η y) = H.B x y) {g : ℕ} (hg : 0 < g) {A D : Submodule (𝓞 K) V}
     (hA : Submodule.IsLattice K A) (hD : Submodule.IsLattice K D) (hle : D ≤ Formalism.HermitianLatticesTheory.dual H.B.flip A)
@@ -369,6 +495,21 @@ namespace GlobalTheory.DegCnt.FixDisc
 
 open GlobalTheory.Mass.DiscOrder
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H hK hP L₀ g j D₀ hL hD₀ _ hg x x' hx hx' p hp`. Take `⟨⟨-, -, m1, i1, -⟩, ⟨-, -, m2, i2, -⟩, hη, -, hΓ⟩` from `hp`. Establish `hη'` using `(mem_isomGrp H _).1 hη`. Establish `l1 : fixLat p.1.2 ≤ L₀` using `fun y hy => (m1.1 hy).2`. Establish `l2 : fixLat p.2.1.2 ≤ L₀` using `fun y hy => (m2.1 hy).2`.
+
+Express the relevant statement in the definitionally equal form `GlobalTheory.Mass.idxN L₀ (fixLat p.1.2) = x at i1`. Express the relevant statement in the definitionally equal form `GlobalTheory.Mass.idxN L₀ (fixLat p.2.1.2) = x' at i2`. Establish `hA` using `lattice_of_idx hL.1 l1 (by omega)`. Establish `hD` using `lattice_of_idx hL.1 l2 (by omega)`. Take `⟨an, -, -, hint, -⟩` from `Formalism.HermitianLatticesTheory.dualBasic (𝓞 K) K V H.B.flip (flip_isSymm H) Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range`.
+
+Establish `l3` using `(hint L₀).1 hL.2`. Establish `l4` using `an _ _ l1`. Establish `hg0 : (g : K) ≠ 0` using `by exact_mod_cast (by omega : g ≠ 0)`. Establish `hc` using `core hK hP hη' (by omega : 0 < g) hA hD (l2.trans (l3.trans l4)) (fun t ht hD => by`. Establish `h1 : (p.2.2 t, t) ∈ p.1.2` using `(hΓ t t).1 hD`.
+
+Rewrite `h1` using `[(mem_fixSp _ t).1 ht]`. Conclude with `h1)`. Use the proof step `(fun y hy => by`. Rewrite using `[Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Introduce `z hz`.
+
+Establish `h1 : (p.2.2 y, y) ∈ p.1.2` using `(hΓ y y).1 hy`. Establish `h2 : (z, z) ∈ p.1.2` using `hz`. Take `⟨t, ht⟩` from `m1.2.2.2.2.2.2 _ h1 _ h2`. Use `Submodule.mem_one.2 ⟨-t, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.flip_apply, map_smul, LinearMap.smul_apply, map_sub, LinearMap.sub_apply, ← neg_sub, ht, map_mul, map_natCast, map_neg, smul_eq_mul]`.
+
+Use the proof step `field_simp)`. Rewrite `hc` using `[← idxN_mul (l2.trans l3) l4, ← idxN_mul l2 l3, i2, idxN_dual H.B.flip (flip_isSymm H) (flip_nondeg hP) hA x L₀ hL.1 l1 i1]`. Express the relevant statement in the definitionally equal form `GlobalTheory.Mass.idxN _ _ = D₀ at hD₀`. Rewrite `hc` using `[hD₀]`. Use `hc.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → GlobalTheory.Mass.PD H.B.flip → ∀ (L₀ : Submodule (𝓞 K) V) (g j D₀ : ℕ), GlobalTheory.Mass.IsIntLat H.B.flip L₀ → GlobalTheory.Mass.discN H.B.flip L₀ = D₀ → GenBy (Formalism.HermitianLatticesTheory.dual H.B.flip L₀) L₀ 1 → 2 ≤ g → ∀ (x x' : ℕ), 1 ≤ x → 1 ≤ x' → ∀ p ∈ Trip H g L₀ j x x', (GlobalTheory.Mass.discN (GlobalTheory.Mass.hRes H.B.flip (fixSp p.2.2)) (GlobalTheory.Mass.latIn (fixSp p.2.2) (fixLat p.1.2)) : ℝ) ≤ (2 / (g : ℝ)) ^ (2 * ((Module.finrank K V) - Module.finrank K (fixSp p.2.2)) * (Formalism.HermitianLatticesTheory.fDeg K)) * D₀ * x * x' := by
   intro K V _ _ _ _ _ _ _ _ H hK hP L₀ g j D₀ hL hD₀ _ hg x x' hx hx' p hp
   obtain ⟨⟨-, -, m1, i1, -⟩, ⟨-, -, m2, i2, -⟩, hη, -, hΓ⟩ := hp

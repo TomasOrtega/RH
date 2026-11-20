@@ -15,12 +15,18 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.WeilDeligne.ConjDual
 
+/- English proof (translation)
+Rewrite using `[← ValuationSubring.mem_nonunits_iff, ← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or, ValuationSubring.mem_nonunits_iff_or, hA, map_inv₀, EmbeddingLike.map_eq_zero_iff]`.
+-/
 theorem valuation_lt_one_iff {Ω : Type} [Field Ω] {A A' : ValuationSubring Ω} (c : Ω ≃+* Ω)
     (hA : ∀ y, y ∈ A ↔ c y ∈ A') (y : Ω) : A.valuation y < 1 ↔ A'.valuation (c y) < 1 := by
   rw [← ValuationSubring.mem_nonunits_iff, ← ValuationSubring.mem_nonunits_iff,
     ValuationSubring.mem_nonunits_iff_or, ValuationSubring.mem_nonunits_iff_or, hA, map_inv₀,
     EmbeddingLike.map_eq_zero_iff]
 
+/- English proof (translation)
+Introduce `σ hσ`. Establish `h1 : a.ρ σ⁻¹ = 1` using `ha σ⁻¹ ((Wild E A).inv_mem hσ)`. Rewrite using `[WDRep.dual_ρ, h1]`. Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem tame_dual {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] {a : WDRep h V}
@@ -31,6 +37,17 @@ theorem tame_dual {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E 
   ext
   simp
 
+/- English proof (translation)
+Substitute `hb'` using the available equality. Proceed by induction on `x using WD.ind with`. Consider the case `hP m a`. Rewrite `hb` using `[WD.lpDual_mk]`. Use `⟨fun h0 => ?_, ?_, fun h0 => ?_⟩` and prove the remaining obligations.
+
+Rewrite `h0`, the goal using `[WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Rewrite using `[← hN, ← WD.monodromyZero_ofWeilDeligneRepClass_iff, hb, WD.monodromyZero_ofWeilDeligneRepClass_iff, WDRep.dual_N, h0]`. Use `ext`. Simplify using the standard rewrite rules. Establish `h1` using `congrArg WD.lpDim hb`.
+
+Rewrite `h1` using `[WD.lpDim_mk, WD.lpDim_mk, Subspace.dual_finrank_eq]`. Rewrite using `[WD.lpDim_mk, WD.lpDim_mk, h1]`. Rewrite `h0`, the goal using `[WD.tame_mk]`. Establish `h1 : b.Tame`. Rewrite using `[← WD.tame_mk, hb, WD.tame_mk]`.
+
+Conclude with `tame_dual h0`. Introduce `τ' hτ'`. Set `σ : G E Ω` to `{ (c.trans ((τ' : G E Ω) : Ω ≃+* Ω)).trans c.symm with commutes' := fun r => by show c.symm ((τ' : G E Ω) (c (algebraMap E Ω r))) = _`. Rewrite using `[hc, AlgEquiv.commutes, ← hc, RingEquiv.symm_apply_apply] }`. Establish `hσ : ∀ z, c (σ z) = (τ' : G E Ω) (c z)` using `fun z => c.apply_symm_apply _`.
+
+Establish `hw : σ ∈ Wild E A` using `fun y hy => by`. Rewrite using `[valuation_lt_one_iff c hA, map_sub, map_div₀, map_one, hσ]`. Conclude with `hτ' _ ((_root_.map_ne_zero c).2 hy)`. Rewrite using `[← hρ ⟨σ, Ine_le_Weil h (Wild_le_Ine hw)⟩ τ' hσ]`. Conclude with `h1 _ hw`.
+-/
 theorem transport_dual {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] {A A' : ValuationSubring Ω} {w w' : HeightOneSpectrum (𝓞 E)}
     {h : IsPlaceOver A w} {h' : IsPlaceOver A' w'} (s : E → E) (c : Ω ≃+* Ω)
@@ -70,6 +87,9 @@ theorem transport_dual {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algeb
       rw [← hρ ⟨σ, Ine_le_Weil h (Wild_le_Ine hw)⟩ τ' hσ]
       exact h1 _ hw
 
+/- English proof (translation)
+Introduce `D w w' c hc hA x x' n b b' hb hb' hN hρ`. Take `⟨h1, h2, h3⟩` from `transport_dual (fun y => D.host.conj y) c hc hA x x' n b b' hb hb' hN hρ`. Use `⟨h1, h2, fun H σ _ hσ => ?_⟩` and prove the remaining obligations. Conclude with `(WD.tame_iff_inePol x').mp (h3 ((WD.tame_iff_inePol x).mpr fun τ hτ => H τ (Wild_le_Ine hτ) hτ)) σ hσ`.
+-/
 theorem mono_dim_wild : ∀ (D : D7) (w w' : PlE D.host) (c : D.nd.Om ≃+* D.nd.Om),
     (∀ x : D.host.E, c (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x)) →
     (∀ y, y ∈ D.nd.plOm.1 w ↔ c y ∈ D.nd.plOm.1 w') →

@@ -25,6 +25,15 @@ def extendAddHom {K K' : Type} (j : K ↪ K') : (K → ℕ) →+ (K' → ℕ) wh
       simp [j.injective.extend_apply]
     · simp [Function.extend_apply' _ _ _ h]
 
+/- English proof (translation)
+Establish `key : (Finsupp.weight (R` using `ℕ) (blockWeight ι')).comp (Finsupp.mapDomain.addMonoidHom (M := ℕ) g) = (extendAddHom j).comp (Finsupp.weight (R := ℕ) (blockWeight ι)) := by`. Use extensionality with `v`. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, Finsupp.singleAddHom_apply, Finsupp.mapDomain.addMonoidHom_apply, Finsupp.mapDomain_single, Finsupp.weight_single, one_smul]`. Use `show blockWeight ι' (g v) _ = Function.extend j (blockWeight ι v) 0 _`. Name the introduced variables `k'`.
+
+Simplify using `only [blockWeight, hg v]`. Distinguish the cases in `h : ∃ a, j a = k'`. Take `⟨a, rfl⟩` from `h`. Rewrite using `[j.injective.extend_apply]`. Distinguish the cases in `hav : a = v.1`.
+
+Substitute `hav` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne (fun e => hav (j.injective e)), Pi.single_eq_of_ne hav]`. Rewrite using `[Function.extend_apply' _ _ _ h, Pi.single_eq_of_ne (fun e => h ⟨v.1, e.symm⟩)]`. Both sides reduce to the same expression.
+
+Conclude with `DFunLike.congr_fun key u`.
+-/
 theorem weight_mapDomain_blockWeight {K K' : Type} [DecidableEq K] [DecidableEq K'] (j : K ↪ K')
     (ι : K → Type) (ι' : K' → Type) (g : (Σ k, ι k) → (Σ k', ι' k'))
     (hg : ∀ v, (g v).1 = j v.1) (u : (Σ k, ι k) →₀ ℕ) :
@@ -50,6 +59,9 @@ theorem weight_mapDomain_blockWeight {K K' : Type} [DecidableEq K] [DecidableEq 
       rfl
   exact DFunLike.congr_fun key u
 
+/- English proof (translation)
+Introduce `R _ K K' _ _ j ι ι' g hg f d hf e he`. Take `⟨u, rfl, hu⟩` from `coeff_rename_ne_zero g f e he`. Rewrite using `[weight_mapDomain_blockWeight j ι ι' g hg u, hf hu]`.
+-/
 theorem RenameMultiHomog.proof : RenameMultiHomog.Statement.{u} := by
   intro R _ K K' _ _ j ι ι' g hg f d hf e he
   obtain ⟨u, rfl, hu⟩ := coeff_rename_ne_zero g f e he

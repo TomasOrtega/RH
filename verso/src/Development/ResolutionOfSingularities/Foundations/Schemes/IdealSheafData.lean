@@ -9,6 +9,9 @@ namespace AlgebraicGeometry.Scheme.IdealSheafData
 
 variable {X Y : Scheme.{u}}
 
+/- English proof (translation)
+Establish `hc : I.comap f = Scheme.Hom.ker (Limits.pullback.fst f I.subschemeι)` using `rfl`. Rewrite using `[hc, ← map_bot, ideal_map_of_isAffineHom, show ((⊥ : (Limits.pullback f I.subschemeι).IdealSheafData).ideal) = ⊥ from ideal_bot]`. Conclude with `(RingHom.ker_eq_comap_bot _).symm`.
+-/
 private theorem comap_ideal_eq_ker_pullbackFst (I : Y.IdealSheafData) (f : X ⟶ Y)
     (V : X.affineOpens) :
     (I.comap f).ideal V
@@ -18,11 +21,23 @@ private theorem comap_ideal_eq_ker_pullbackFst (I : Y.IdealSheafData) (f : X ⟶
     show ((⊥ : (Limits.pullback f I.subschemeι).IdealSheafData).ideal) = ⊥ from ideal_bot]
   exact (RingHom.ker_eq_comap_bot _).symm
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem appLE_congr_hom {Z W : Scheme.{u}} {g₁ g₂ : Z ⟶ W} (h : g₁ = g₂)
     (U : W.Opens) (V : Z.Opens) (e₁ : V ≤ g₁ ⁻¹ᵁ U) :
     g₁.appLE U V e₁ = g₂.appLE U V (h ▸ e₁) := by
   subst h; rfl
 
+/- English proof (translation)
+Establish `hcond : Limits.pullback.fst f I.subschemeι ≫ f = Limits.pullback.snd f I.subschemeι ≫ I.subschemeι` using `Limits.pullback.condition`. Establish `h2 : (Limits.pullback.fst f I.subschemeι) ⁻¹ᵁ (f ⁻¹ᵁ (U : Y.Opens)) = (Limits.pullback.snd f I.subschemeι) ⁻¹ᵁ (I.subschemeι ⁻¹ᵁ (U : Y.Opens))`. Establish `h3` using `congrArg (fun g : (Limits.pullback f I.subschemeι) ⟶ Y => g ⁻¹ᵁ (U : Y.Opens)) hcond`. Simplify using `using h3`. Establish `hle : (Limits.pullback.fst f I.subschemeι) ⁻¹ᵁ (V : X.Opens) ≤ (Limits.pullback.snd f I.subschemeι) ⁻¹ᵁ (I.subschemeι ⁻¹ᵁ (U : Y.Opens))`.
+
+Rewrite using `[← h2]`. Introduce `x hx`. Conclude with `e hx`. Establish `happ : f.appLE (U : Y.Opens) (V : X.Opens) e ≫ (Limits.pullback.fst f I.subschemeι).app (V : X.Opens) = I.subschemeι.app (U : Y.Opens) ≫ (Limits.pullback.snd f I.subschemeι).appLE (I.subschemeι ⁻¹ᵁ (U : Y.Opens)) ((Limits.pullback.fst f I.subschemeι) ⁻¹ᵁ (V : X.Opens)) hle`. Rewrite using `[← Scheme.Hom.appLE_eq_app (Limits.pullback.fst f I.subschemeι), ← Scheme.Hom.appLE_eq_app I.subschemeι, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE, appLE_congr_hom hcond]`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Establish `hker : (I.subschemeι.app (U : Y.Opens)).hom a = 0`. Establish `hd` using `I.ker_subschemeι_app U`. Rewrite using `[← RingHom.mem_ker, hd]`.
+
+Conclude with `ha`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, happ, CommRingCat.hom_comp, RingHom.comp_apply, hker, map_zero]`.
+-/
 private theorem map_appLE_le_ker_pullbackFst (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens) (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens)) :
     Ideal.map (f.appLE (U : Y.Opens) (V : X.Opens) e).hom (I.ideal U) ≤
@@ -57,6 +72,9 @@ private theorem map_appLE_le_ker_pullbackFst (I : Y.IdealSheafData) (f : X ⟶ Y
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, happ, CommRingCat.hom_comp,
     RingHom.comp_apply, hker, map_zero]
 
+/- English proof (translation)
+Establish `h1 : X.presheaf.map (homOfLE e0).op = 𝟙 Γ(X, ⊤)` using `X.presheaf.map_id (op (⊤ : X.Opens))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem appLE_top_eq_appTop (f : X ⟶ Y) (e0 : (⊤ : X.Opens) ≤ f ⁻¹ᵁ (⊤ : Y.Opens)) :
     f.appLE (⊤ : Y.Opens) (⊤ : X.Opens) e0 = f.appTop := by
   have h1 : X.presheaf.map (homOfLE e0).op = 𝟙 Γ(X, ⊤) := X.presheaf.map_id (op (⊤ : X.Opens))
@@ -65,12 +83,20 @@ private theorem appLE_top_eq_appTop (f : X ⟶ Y) (e0 : (⊤ : X.Opens) ≤ f �
     _ = f.app (⊤ : Y.Opens) ≫ 𝟙 Γ(X, ⊤) := by rw [h1]
     _ = f.appTop := Category.comp_id _
 
+/- English proof (translation)
+Establish `h` using `(equivOfIsAffine (X := Z)).apply_symm_apply J`. Rewrite `h` using `[equivOfIsAffine_symm_apply, equivOfIsAffine_apply]`. Conclude with `h`.
+-/
 theorem ofIdealTop_ideal_top {Z : Scheme.{u}} [IsAffine Z] (J : Ideal Γ(Z, ⊤)) :
     (ofIdealTop J).ideal ⟨⊤, isAffineOpen_top Z⟩ = J := by
   have h := (equivOfIsAffine (X := Z)).apply_symm_apply J
   rw [equivOfIsAffine_symm_apply, equivOfIsAffine_apply] at h
   exact h
 
+/- English proof (translation)
+Use `⟨(I.subschemeObjIso U).hom ≫ CommRingCat.ofHom (Ideal.Quotient.lift (I.ideal U) (q.hom.comp (f.appLE (U : Y.Opens) (V : X.Opens) e).hom) ?_), ?_⟩` and prove the remaining obligations. Introduce `a ha`. Establish `h` using `hq (Ideal.mem_map_of_mem _ ha)`. Rewrite `h` using `[RingHom.mem_ker]`. Conclude with `h`.
+
+Rewrite using `[subschemeι_app, Category.assoc, Iso.inv_hom_id_assoc]`. Use extensionality with `a`. Both sides reduce to the same expression.
+-/
 private theorem exists_hom_comp_eq_appLE_comp (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens) (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens))
     (C : CommRingCat.{u}) (q : Γ(X, (V : X.Opens)) ⟶ C)
@@ -89,6 +115,19 @@ private theorem exists_hom_comp_eq_appLE_comp (I : Y.IdealSheafData) (f : X ⟶ 
     ext a
     rfl
 
+/- English proof (translation)
+Establish `hV : IsAffineOpen (V : X.Opens)` using `V.2`. Establish `hU : IsAffineOpen (U : Y.Opens)` using `U.2`. Establish `hf` using `IsAffineOpen.SpecMap_appLE_fromSpec f hU hV e`. Establish `hι` using `IsAffineOpen.SpecMap_appLE_fromSpec I.subschemeι hU (hU.preimage I.subschemeι) (le_refl (I.subschemeι ⁻¹ᵁ (U : Y.Opens)))`. Establish `hsq : (Spec.map q ≫ hV.fromSpec) ≫ f = (Spec.map ψ ≫ (hU.preimage I.subschemeι).fromSpec) ≫ I.subschemeι`.
+
+Rewrite using `[Category.assoc, Category.assoc, ← hf, ← hι, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, Scheme.Hom.appLE_eq_app, hring]`. Take `⟨g, hlift⟩ : ∃ g : Spec C ⟶ Limits.pullback f I.subschemeι, g ≫ Limits.pullback.fst f I.subschemeι = Spec.map q ≫ hV.fromSpec` from `⟨Limits.pullback.lift _ _ hsq, Limits.pullback.lift_fst _ _ _⟩`. Establish `hpre : (⊤ : (Spec C).Opens) ≤ g ⁻¹ᵁ (Limits.pullback.fst f I.subschemeι ⁻¹ᵁ (V : X.Opens))`. Establish `h3` using `congrArg (fun h : Spec C ⟶ X => h ⁻¹ᵁ (V : X.Opens)) hlift`. Establish `h4 : g ⁻¹ᵁ (Limits.pullback.fst f I.subschemeι ⁻¹ᵁ (V : X.Opens)) = Spec.map q ⁻¹ᵁ (hV.fromSpec ⁻¹ᵁ (V : X.Opens))` using `by simpa using h3`.
+
+Rewrite using `[h4, hV.fromSpec_preimage_self]`. Simplify using the standard rewrite rules. Establish `e₁ : (⊤ : (Spec Γ(X, (V : X.Opens))).Opens) ≤ hV.fromSpec ⁻¹ᵁ (V : X.Opens)` using `le_of_eq (hV.fromSpec_preimage_self).symm`. Establish `e₂ : (⊤ : (Spec C).Opens) ≤ Spec.map q ⁻¹ᵁ (⊤ : (Spec Γ(X, (V : X.Opens))).Opens)` using `by simp`. Establish `hsplit` using `Scheme.Hom.appLE_comp_appLE (Spec.map q) hV.fromSpec (V : X.Opens) (⊤ : (Spec Γ(X, (V : X.Opens))).Opens) (⊤ : (Spec C).Opens) e₁ e₂`.
+
+Establish `h0 : ∀ i : (op (⊤ : (Spec Γ(X, (V : X.Opens))).Opens)) ⟶ op (⊤ : (Spec Γ(X, (V : X.Opens))).Opens), (Spec Γ(X, (V : X.Opens))).presheaf.map i = 𝟙 _`. Introduce `i`. Establish `hi : i = 𝟙 _` using `rfl`. Rewrite using `[hi, CategoryTheory.Functor.map_id]`. Establish `hdef : hV.fromSpec.appLE (V : X.Opens) (⊤ : (Spec Γ(X, (V : X.Opens))).Opens) e₁ = hV.fromSpec.app (V : X.Opens) ≫ (Spec Γ(X, (V : X.Opens))).presheaf.map (homOfLE e₁).op` using `rfl`.
+
+Establish `ha : hV.fromSpec.appLE (V : X.Opens) (⊤ : (Spec Γ(X, (V : X.Opens))).Opens) e₁ = (Scheme.ΓSpecIso Γ(X, (V : X.Opens))).inv`. Rewrite using `[hdef, hV.fromSpec_app_self, Category.assoc, ← Functor.map_comp, ← op_comp, h0, Category.comp_id]`. Establish `hb : (Spec.map q).appTop = (Scheme.ΓSpecIso Γ(X, (V : X.Opens))).hom ≫ q ≫ (Scheme.ΓSpecIso C).inv`. Rewrite using `[Scheme.ΓSpecIso_inv_naturality, Iso.hom_inv_id_assoc]`. Use `⟨g.appLE (Limits.pullback.fst f I.subschemeι ⁻¹ᵁ (V : X.Opens)) (⊤ : (Spec C).Opens) hpre ≫ (Scheme.ΓSpecIso C).hom, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, ← Scheme.Hom.appLE_eq_app (Limits.pullback.fst f I.subschemeι), Scheme.Hom.appLE_comp_appLE, appLE_congr_hom hlift, ← hsplit, ha, appLE_top_eq_appTop, hb]`. Simplify using the standard rewrite rules.
+-/
 private theorem exists_hom_pullbackFst_app_comp_eq (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens) (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens))
     (C : CommRingCat.{u}) (q : Γ(X, (V : X.Opens)) ⟶ C)
@@ -145,6 +184,11 @@ private theorem exists_hom_pullbackFst_app_comp_eq (I : Y.IdealSheafData) (f : X
     Scheme.Hom.appLE_comp_appLE, appLE_congr_hom hlift, ← hsplit, ha, appLE_top_eq_appTop, hb]
   simp
 
+/- English proof (translation)
+Take `⟨C, q, hq⟩ : ∃ (C : CommRingCat.{u}) (q : Γ(X, (V : X.Opens)) ⟶ C), RingHom.ker q.hom = Ideal.map (f.appLE (U : Y.Opens) (V : X.Opens) e).hom (I.ideal U)` from `⟨_, CommRingCat.ofHom (Ideal.Quotient.mk (Ideal.map (f.appLE (U : Y.Opens) (V : X.Opens) e).hom (I.ideal U))), Ideal.mk_ker⟩`. Take `⟨ψ, hψ⟩` from `exists_hom_comp_eq_appLE_comp I f U V e C q (le_of_eq hq.symm)`. Take `⟨θ, hθ⟩` from `exists_hom_pullbackFst_app_comp_eq I f U V e C q ψ hψ`. Rewrite using `[← hq]`. Introduce `x hx`.
+
+Rewrite `hx`, the goal using `[RingHom.mem_ker]`. Rewrite using `[← hθ, CommRingCat.hom_comp, RingHom.comp_apply, hx, map_zero]`.
+-/
 private theorem ker_pullbackFst_le_map_appLE (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens) (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens)) :
     RingHom.ker ((Limits.pullback.fst f I.subschemeι).app (V : X.Opens)).hom ≤
@@ -160,6 +204,9 @@ private theorem ker_pullbackFst_le_map_appLE (I : Y.IdealSheafData) (f : X ⟶ Y
   rw [RingHom.mem_ker] at hx ⊢
   rw [← hθ, CommRingCat.hom_comp, RingHom.comp_apply, hx, map_zero]
 
+/- English proof (translation)
+Rewrite using `[comap_ideal_eq_ker_pullbackFst I f V]`. Conclude with `le_antisymm (ker_pullbackFst_le_map_appLE I f U V e) (map_appLE_le_ker_pullbackFst I f U V e)`.
+-/
 theorem comap_ideal_eq_map_appLE (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens)
     (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens)) :
@@ -168,12 +215,18 @@ theorem comap_ideal_eq_map_appLE (I : Y.IdealSheafData) (f : X ⟶ Y)
   exact le_antisymm (ker_pullbackFst_le_map_appLE I f U V e)
     (map_appLE_le_ker_pullbackFst I f U V e)
 
+/- English proof (translation)
+The claim follows from `ge_of_eq (comap_ideal_eq_map_appLE I f U V e)`.
+-/
 theorem map_appLE_le_comap_ideal (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens)
     (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens)) :
     (I.ideal U).map (f.appLE (U : Y.Opens) (V : X.Opens) e).hom ≤ (I.comap f).ideal V :=
   ge_of_eq (comap_ideal_eq_map_appLE I f U V e)
 
+/- English proof (translation)
+Establish `e0 : (⊤ : X.Opens) ≤ f ⁻¹ᵁ (⊤ : Y.Opens)` using `by simp`. Rewrite using `[comap_ideal_eq_map_appLE I f ⟨⊤, isAffineOpen_top Y⟩ ⟨⊤, isAffineOpen_top X⟩ e0]`. Conclude with `congrArg (fun φ => Ideal.map (CommRingCat.Hom.hom φ) (I.ideal ⟨⊤, isAffineOpen_top Y⟩)) (appLE_top_eq_appTop f e0)`.
+-/
 theorem comap_ideal_top_eq_map_appTop [IsAffine X] [IsAffine Y]
     (I : Y.IdealSheafData) (f : X ⟶ Y) :
     (I.comap f).ideal ⟨⊤, isAffineOpen_top X⟩ =
@@ -184,6 +237,9 @@ theorem comap_ideal_top_eq_map_appTop [IsAffine X] [IsAffine Y]
     (fun φ => Ideal.map (CommRingCat.Hom.hom φ) (I.ideal ⟨⊤, isAffineOpen_top Y⟩))
     (appLE_top_eq_appTop f e0)
 
+/- English proof (translation)
+Establish `h : ((ofIdealTop J).comap f).ideal ⟨⊤, isAffineOpen_top X⟩ = (ofIdealTop (J.map f.appTop.hom)).ideal ⟨⊤, isAffineOpen_top X⟩`. Rewrite using `[comap_ideal_top_eq_map_appTop, ofIdealTop_ideal_top, ofIdealTop_ideal_top]`. Conclude with `(equivOfIsAffine (X := X)).injective h`.
+-/
 theorem comap_ofIdealTop [IsAffine X] [IsAffine Y] (J : Ideal Γ(Y, ⊤)) (f : X ⟶ Y) :
     (ofIdealTop J).comap f = ofIdealTop (J.map f.appTop.hom) := by
   have h : ((ofIdealTop J).comap f).ideal ⟨⊤, isAffineOpen_top X⟩
@@ -191,6 +247,9 @@ theorem comap_ofIdealTop [IsAffine X] [IsAffine Y] (J : Ideal Γ(Y, ⊤)) (f : X
     rw [comap_ideal_top_eq_map_appTop, ofIdealTop_ideal_top, ofIdealTop_ideal_top]
   exact (equivOfIsAffine (X := X)).injective h
 
+/- English proof (translation)
+The claim follows from `map_appLE_le_comap_ideal I f U V e (Ideal.mem_map_of_mem _ hx)`.
+-/
 theorem appLE_mem_comap_ideal (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens)
     (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens)) {x : Γ(Y, (U : Y.Opens))}
@@ -198,6 +257,9 @@ theorem appLE_mem_comap_ideal (I : Y.IdealSheafData) (f : X ⟶ Y)
     (f.appLE (U : Y.Opens) (V : X.Opens) e).hom x ∈ (I.comap f).ideal V :=
   map_appLE_le_comap_ideal I f U V e (Ideal.mem_map_of_mem _ hx)
 
+/- English proof (translation)
+Rewrite using `[comap_ideal_eq_map_appLE I f U V e, hs, Ideal.map_span]`.
+-/
 theorem comap_ideal_eq_span_image (I : Y.IdealSheafData) (f : X ⟶ Y)
     (U : Y.affineOpens) (V : X.affineOpens)
     (e : (V : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens)) (s : Set Γ(Y, (U : Y.Opens)))
@@ -206,10 +268,24 @@ theorem comap_ideal_eq_span_image (I : Y.IdealSheafData) (f : X ⟶ Y)
       = Ideal.span ((f.appLE (U : Y.Opens) (V : X.Opens) e).hom '' s) := by
   rw [comap_ideal_eq_map_appLE I f U V e, hs, Ideal.map_span]
 
+/- English proof (translation)
+The claim follows from `(map_gc f).l_iSup`.
+-/
 theorem comap_iSup {X Y : Scheme.{u}} (f : X ⟶ Y) {ι : Sort*} (I : ι → Y.IdealSheafData) :
     (⨆ i, I i).comap f = ⨆ i, (I i).comap f :=
   (map_gc f).l_iSup
 
+/- English proof (translation)
+Establish `hVaff : IsAffine V.toScheme` using `hV`. Establish `htop : ∀ U : V.toScheme.affineOpens, (⊤ : V.toScheme.IdealSheafData).ideal U = ⊤`. Introduce `U`. Simplify using the standard rewrite rules. Establish `e : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V` using `by simp`.
+
+Establish `himg : V.ι ''ᵁ (⊤ : V.toScheme.Opens) = V` using `by simp`. Establish `hiso : ∀ U : Y.Opens, U = V.ι ''ᵁ (⊤ : V.toScheme.Opens) → ∀ e' : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ U, IsIso (V.ι.appLE U (⊤ : V.toScheme.Opens) e')`. Introduce and unpack `U rfl e'`. Rewrite using `[← Scheme.Hom.appIso_hom' V.ι (⊤ : V.toScheme.Opens)]`. Use `infer_instance`.
+
+Take `⟨φ, hφ, hmap⟩ : ∃ φ : Γ(Y, V) ⟶ Γ(V.toScheme, ⊤), IsIso φ ∧ (I.comap V.ι).ideal ⟨⊤, isAffineOpen_top V.toScheme⟩ = (I.ideal ⟨V, hV⟩).map φ.hom` from `⟨V.ι.appLE V (⊤ : V.toScheme.Opens) e, hiso V himg.symm e, comap_ideal_eq_map_appLE I V.ι ⟨V, hV⟩ ⟨⊤, isAffineOpen_top V.toScheme⟩ e⟩`. Establish `hcomp : (CommRingCat.Hom.hom (CategoryTheory.inv φ)).comp (CommRingCat.Hom.hom φ) = RingHom.id _`. Rewrite using `[← CommRingCat.hom_comp, IsIso.hom_inv_id, CommRingCat.hom_id]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite `hmap` using `[h, htop]`. Establish `h3 : ((I.ideal ⟨V, hV⟩).map φ.hom).map (CategoryTheory.inv φ).hom = I.ideal ⟨V, hV⟩`. Rewrite using `[Ideal.map_map, hcomp, Ideal.map_id]`. Rewrite `h3` using `[← hmap, Ideal.map_top]`. Conclude with `h3.symm`.
+
+Introduce `h`. Establish `h2 : (I.comap V.ι).ideal ⟨⊤, isAffineOpen_top V.toScheme⟩ = (⊤ : V.toScheme.IdealSheafData).ideal ⟨⊤, isAffineOpen_top V.toScheme⟩`. Rewrite using `[hmap, h, Ideal.map_top, htop]`. Conclude with `(equivOfIsAffine (X := V.toScheme)).injective h2`.
+-/
 theorem comap_ι_eq_top_iff_ideal_eq_top {Y : Scheme.{u}} (I : Y.IdealSheafData) {V : Y.Opens}
     (hV : IsAffineOpen V) : I.comap V.ι = ⊤ ↔ I.ideal ⟨V, hV⟩ = ⊤ := by
   have hVaff : IsAffine V.toScheme := hV
@@ -246,11 +322,21 @@ theorem comap_ι_eq_top_iff_ideal_eq_top {Y : Scheme.{u}} (I : Y.IdealSheafData)
       rw [hmap, h, Ideal.map_top, htop]
     exact (equivOfIsAffine (X := V.toScheme)).injective h2
 
+/- English proof (translation)
+Use extensionality with `U : 2`. Conclude with `Ideal.map_mul _ _ _`.
+-/
 theorem ofIdealTop_mul [IsAffine X] (I J : Ideal Γ(X, ⊤)) :
     ofIdealTop (I * J) = ofIdealTop I * ofIdealTop J := by
   ext U : 2
   exact Ideal.map_mul _ _ _
 
+/- English proof (translation)
+Use `ext_of_iSup_eq_top (fun W : {W : X.affineOpens // ∃ U : Y.affineOpens, (W : X.Opens) ≤ f ⁻¹ᵁ (U : Y.Opens)} => W.1) ?_ ?_` and prove the remaining obligations. Use `TopologicalSpace.Opens.ext ?_` and prove the remaining obligations. Simplify using `only [TopologicalSpace.Opens.coe_iSup, TopologicalSpace.Opens.coe_top, Set.eq_univ_iff_forall, Set.mem_iUnion]`. Introduce `x`. Take `⟨W, hxW⟩` from `Scheme.exists_affineOpens_mem (f.base x)`.
+
+Take `⟨V, hxV, hVW⟩ : ∃ V : X.affineOpens, x ∈ (V : X.Opens) ∧ (V : X.Opens) ≤ f ⁻¹ᵁ (W : Y.Opens)` from `Scheme.exists_affineOpens_mem_le hxW`. Conclude with `⟨⟨V, W, hVW⟩, hxV⟩`. Introduce and unpack `⟨V, W, hVW⟩ show ((I * J).comap f).ideal V = (I.comap f * J.comap f).ideal V`. Rewrite using `[comap_ideal_eq_map_appLE (I * J) f W V hVW]`. Simplify using `only [ideal_mul, Pi.mul_apply]`.
+
+Rewrite using `[Ideal.map_mul, comap_ideal_eq_map_appLE I f W V hVW, comap_ideal_eq_map_appLE J f W V hVW]`.
+-/
 theorem comap_mul (I J : Y.IdealSheafData) (f : X ⟶ Y) :
     (I * J).comap f = I.comap f * J.comap f := by
   refine ext_of_iSup_eq_top
@@ -272,12 +358,20 @@ theorem comap_mul (I J : Y.IdealSheafData) (f : X ⟶ Y) :
     rw [Ideal.map_mul, comap_ideal_eq_map_appLE I f W V hVW,
       comap_ideal_eq_map_appLE J f W V hVW]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, comap_mul, ih]`.
+-/
 theorem comap_pow (I : Y.IdealSheafData) (f : X ⟶ Y) (n : ℕ) :
     (I ^ n).comap f = I.comap f ^ n := by
   induction n with
   | zero => simp
   | succ n ih => rw [pow_succ, pow_succ, comap_mul, ih]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`. Conclude with `hx`. Introduce `hx`.
+
+Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`. Conclude with `hx`.
+-/
 theorem mem_support_comap {f : X ⟶ Y} {I : Y.IdealSheafData} {x : X} :
     x ∈ (I.comap f).support ↔ f.base x ∈ I.support := by
   constructor
@@ -288,6 +382,9 @@ theorem mem_support_comap {f : X ⟶ Y} {I : Y.IdealSheafData} {x : X} :
     rw [AlgebraicGeometry.Scheme.IdealSheafData.support_comap]
     exact hx
 
+/- English proof (translation)
+Introduce `hc`. Establish `hb : J.support = ⊥` using `(AlgebraicGeometry.Scheme.IdealSheafData.support_eq_bot_iff J).mpr hc`. Establish `hx2 : x ∈ (J.support : Set ↥Y)` using `hx`. Rewrite `hx2` using `[hb]`. Simplify using `at hx2`.
+-/
 theorem ne_top_of_mem_support (J : Y.IdealSheafData) (x : ↥Y) (hx : x ∈ J.support) : J ≠ ⊤ := by
   intro hc
   have hb : J.support = ⊥ :=
@@ -296,15 +393,26 @@ theorem ne_top_of_mem_support (J : Y.IdealSheafData) (x : ↥Y) (hx : x ∈ J.su
   rw [hb] at hx2
   simp at hx2
 
+/- English proof (translation)
+Rewrite using `[← support_eq_bot_iff, SetLike.ext'_iff]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_top_iff_support_eq_empty {X : Scheme.{u}} (I : X.IdealSheafData) :
     I = ⊤ ↔ (I.support : Set X) = ∅ := by
   rw [← support_eq_bot_iff, SetLike.ext'_iff]
   simp
 
+/- English proof (translation)
+Rewrite using `[ne_eq, eq_top_iff_support_eq_empty, Set.nonempty_iff_ne_empty, ne_eq]`.
+-/
 theorem support_nonempty_iff_ne_top {X : Scheme.{u}} (I : X.IdealSheafData) :
     (I.support : Set X).Nonempty ↔ I ≠ ⊤ := by
   rw [ne_eq, eq_top_iff_support_eq_empty, Set.nonempty_iff_ne_empty, ne_eq]
 
+/- English proof (translation)
+Introduce `hx`. Establish `h1 : (⟨x, hxU⟩ : ↥U) ∈ (I.comap U.ι).support`. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.support_comap]`. Conclude with `hx`. Rewrite `h1` using `[h, AlgebraicGeometry.Scheme.IdealSheafData.support_top]`.
+
+Establish `h2 : (⟨x, hxU⟩ : ↥U) ∈ ((⊥ : TopologicalSpace.Closeds ↥U) : Set ↥U)` using `h1`. Simplify using `at h2`.
+-/
 theorem notMem_support_of_comap_ι_eq_top (I : Y.IdealSheafData) {U : Y.Opens}
     (h : I.comap U.ι = ⊤) {x : Y} (hxU : x ∈ U) : x ∉ I.support := by
   intro hx
@@ -315,6 +423,13 @@ theorem notMem_support_of_comap_ι_eq_top (I : Y.IdealSheafData) {U : Y.Opens}
   have h2 : (⟨x, hxU⟩ : ↥U) ∈ ((⊥ : TopologicalSpace.Closeds ↥U) : Set ↥U) := h1
   simp at h2
 
+/- English proof (translation)
+Establish `h1 : hU.fromSpec.base (hU.primeIdealOf ⟨x, hx⟩) = x` using `hU.fromSpec_primeIdealOf ⟨x, hx⟩`. Establish `h2 : hU.fromSpec ⁻¹ᵁ (X.basicOpen g) = PrimeSpectrum.basicOpen g` using `hU.fromSpec_preimage_basicOpen g`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[← h1]`.
+
+Establish `h3 : hU.primeIdealOf ⟨x, hx⟩ ∈ hU.fromSpec ⁻¹ᵁ (X.basicOpen g)` using `h`. Rewrite `h3` using `[h2]`. Conclude with `(PrimeSpectrum.mem_basicOpen g _).mp h3`. Introduce `h`. Establish `h3 : hU.primeIdealOf ⟨x, hx⟩ ∈ PrimeSpectrum.basicOpen g` using `(PrimeSpectrum.mem_basicOpen g _).mpr h`.
+
+Rewrite `h3` using `[← h2]`. Establish `h4 : hU.fromSpec.base (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen g` using `h3`. Rewrite `h4` using `[h1]`. Then use the resulting hypothesis.
+-/
 private theorem mem_basicOpen_iff_notMem_primeIdealOf {X : Scheme.{u}} {U : X.Opens}
     (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) (g : Γ(X, U)) :
     x ∈ X.basicOpen g ↔ g ∉ (hU.primeIdealOf ⟨x, hx⟩).asIdeal := by
@@ -334,6 +449,13 @@ private theorem mem_basicOpen_iff_notMem_primeIdealOf {X : Scheme.{u}} {U : X.Op
     have h4 : hU.fromSpec.base (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen g := h3
     rwa [h1] at h4
 
+/- English proof (translation)
+Rewrite using `[Scheme.IdealSheafData.mem_support_iff_of_mem (I := I) (U := ⟨U, hU⟩) hx, Scheme.mem_zeroLocus_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[SetLike.le_def]`. Introduce `f hf`.
+
+Establish `hb` using `h f hf`. Rewrite `hb` using `[mem_basicOpen_iff_notMem_primeIdealOf hU hx f]`. Conclude with `not_not.mp hb`. Introduce `h f hf`. Rewrite using `[mem_basicOpen_iff_notMem_primeIdealOf hU hx f]`.
+
+Conclude with `not_not.mpr (h hf)`.
+-/
 theorem mem_support_iff_ideal_le_primeIdealOf {X : Scheme.{u}} (I : X.IdealSheafData)
     {U : X.Opens} (hU : IsAffineOpen U) {x : X} (hx : x ∈ U) :
     x ∈ I.support ↔ I.ideal ⟨U, hU⟩ ≤ (hU.primeIdealOf ⟨x, hx⟩).asIdeal := by
@@ -350,6 +472,11 @@ theorem mem_support_iff_ideal_le_primeIdealOf {X : Scheme.{u}} (I : X.IdealSheaf
     rw [mem_basicOpen_iff_notMem_primeIdealOf hU hx f]
     exact not_not.mpr (h hf)
 
+/- English proof (translation)
+Establish `hfac : X.homOfLE hle ≫ ((f ∣_ V) ≫ V.ι) = U.ι ≫ f`. Rewrite using `[AlgebraicGeometry.morphismRestrict_ι, ← CategoryTheory.Category.assoc, AlgebraicGeometry.Scheme.homOfLE_ι]`. Establish `e : ∀ K : Y.IdealSheafData, ((K.comap V.ι).comap (f ∣_ V)).comap (X.homOfLE hle) = K.comap (U.ι ≫ f)`. Introduce `K`. Rewrite using `[← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, CategoryTheory.Category.assoc, hfac]`.
+
+Rewrite using `[← e I, ← e J, h]`.
+-/
 theorem comap_ι_comp_eq_of_comap_ι_eq (f : X ⟶ Y) (V : Y.Opens) (U : X.Opens)
     (hle : U ≤ f ⁻¹ᵁ V) (I J : Y.IdealSheafData)
     (h : I.comap V.ι = J.comap V.ι) : I.comap (U.ι ≫ f) = J.comap (U.ι ≫ f) := by
@@ -363,6 +490,9 @@ theorem comap_ι_comp_eq_of_comap_ι_eq (f : X ⟶ Y) (V : Y.Opens) (U : X.Opens
       ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, CategoryTheory.Category.assoc, hfac]
   rw [← e I, ← e J, h]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.prod_nil]`. Conclude with `comap_top f`. Consider the case `cons D E ih => simp only [List.map_cons, List.prod_cons, comap_mul, ih]`.
+-/
 theorem comap_listProd {X Y : Scheme.{u}} (f : X ⟶ Y) (L : List Y.IdealSheafData) :
     L.prod.comap f = (L.map (·.comap f)).prod := by
   induction L with
@@ -371,6 +501,9 @@ theorem comap_listProd {X Y : Scheme.{u}} (f : X ⟶ Y) (L : List Y.IdealSheafDa
     exact comap_top f
   | cons D E ih => simp only [List.map_cons, List.prod_cons, comap_mul, ih]
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.prod_empty]`. Conclude with `comap_top f`. Introduce `a t ha ih`. Simplify using `only [Finset.prod_insert ha, comap_mul, ih]`.
+-/
 theorem comap_finset_prod {X Y : Scheme.{u}} (f : X ⟶ Y) {ι : Type*} (s : Finset ι)
     (F : ι → Y.IdealSheafData) :
     (∏ i ∈ s, F i).comap f = ∏ i ∈ s, (F i).comap f := by
@@ -381,11 +514,21 @@ theorem comap_finset_prod {X Y : Scheme.{u}} (f : X ⟶ Y) {ι : Type*} (s : Fin
   · intro a t ha ih
     simp only [Finset.prod_insert ha, comap_mul, ih]
 
+/- English proof (translation)
+Use `h` as an intermediate fact. Conclude with `⟨fun a ha => e.injective (by simpa using (ha.map (e : A →+* B)).eq_zero)⟩`.
+-/
 private theorem isReduced_of_ringEquiv {A B : Type u} [CommRing A] [CommRing B]
     (e : A ≃+* B) (h : _root_.IsReduced B) : _root_.IsReduced A := by
   have := h
   exact ⟨fun a ha => e.injective (by simpa using (ha.map (e : A →+* B)).eq_zero)⟩
 
+/- English proof (translation)
+Take `⟨U, hU⟩` from `Scheme.exists_affineOpens_mem (I.subschemeι.base y)`. Establish `hUaff : IsAffineOpen (U : X.Opens)` using `U.2`. Establish `hy : y ∈ I.subschemeι ⁻¹ᵁ (U : X.Opens)` using `hU`. Establish `hV : IsAffineOpen (I.subschemeι ⁻¹ᵁ (U : X.Opens))` using `IsAffineOpen.preimage hUaff I.subschemeι`. Establish `hquot` using `(Ideal.isRadical_iff_quotient_reduced (I.ideal U)).mp (hrad U)`.
+
+Establish `hGamma` using `isReduced_of_ringEquiv (I.subschemeObjIso U).commRingCatIsoToRingEquiv hquot`. Establish `hTop` using `isReduced_of_ringEquiv (Scheme.Opens.topIso (I.subschemeι ⁻¹ᵁ (U : X.Opens))).commRingCatIsoToRingEquiv hGamma`. Establish `: IsAffine (↑(I.subschemeι ⁻¹ᵁ (U : X.Opens)) : Scheme.{u})` using `hV`. Use `hTop` as an intermediate fact. Establish `: IsReduced (↑(I.subschemeι ⁻¹ᵁ (U : X.Opens)) : Scheme.{u})` using `isReduced_of_isAffine_isReduced _`.
+
+Establish `key : _root_.IsReduced ((↑(I.subschemeι ⁻¹ᵁ (U : X.Opens)) : Scheme.{u}).presheaf.stalk (⟨y, hy⟩ : ↥(I.subschemeι ⁻¹ᵁ (U : X.Opens))))` using `isReduced_stalk_of_isReduced (↑(I.subschemeι ⁻¹ᵁ (U : X.Opens)) : Scheme.{u}) (⟨y, hy⟩ : ↥(I.subschemeι ⁻¹ᵁ (U : X.Opens)))`. Conclude with `isReduced_of_ringEquiv (Scheme.Opens.stalkIso (I.subschemeι ⁻¹ᵁ (U : X.Opens)) (⟨y, hy⟩ : ↥(I.subschemeι ⁻¹ᵁ (U : X.Opens)))).symm.commRingCatIsoToRingEquiv key`.
+-/
 private theorem isReduced_stalk_of_radical (I : X.IdealSheafData)
     (hrad : ∀ U : X.affineOpens, (I.ideal U).IsRadical) (y : ↥I.subscheme) :
     _root_.IsReduced (I.subscheme.presheaf.stalk y) := by
@@ -411,6 +554,11 @@ private theorem isReduced_stalk_of_radical (I : X.IdealSheafData)
     (Scheme.Opens.stalkIso (I.subschemeι ⁻¹ᵁ (U : X.Opens))
       (⟨y, hy⟩ : ↥(I.subschemeι ⁻¹ᵁ (U : X.Opens)))).symm.commRingCatIsoToRingEquiv key
 
+/- English proof (translation)
+Establish `: ∀ y : ↥((Scheme.IdealSheafData.vanishingIdeal Z).subscheme), _root_.IsReduced ((Scheme.IdealSheafData.vanishingIdeal Z).subscheme.presheaf.stalk y)`. Introduce `y`. Use `isReduced_stalk_of_radical _ ?_ y` and prove the remaining obligations. Introduce `U`. Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_ideal]`.
+
+Conclude with `PrimeSpectrum.isRadical_vanishingIdeal _`. Conclude with `isReduced_of_isReduced_stalk _`.
+-/
 theorem isReduced_subscheme_vanishingIdeal
     (W : Scheme.{u}) (Z : TopologicalSpace.Closeds W) :
     IsReduced (Scheme.IdealSheafData.vanishingIdeal Z).subscheme := by
@@ -424,6 +572,9 @@ theorem isReduced_subscheme_vanishingIdeal
     exact PrimeSpectrum.isRadical_vanishingIdeal _
   exact isReduced_of_isReduced_stalk _
 
+/- English proof (translation)
+Use `le_antisymm ?_ bot_le` and prove the remaining obligations. Establish `h` using `comap_map_le (⊥ : I.subscheme.IdealSheafData) I.subschemeι`. Rewrite `h` using `[map_bot, ker_subschemeι]`. Then use the resulting hypothesis.
+-/
 theorem comap_subschemeι_self {X : Scheme.{u}} (I : X.IdealSheafData) :
     I.comap I.subschemeι = ⊥ := by
   refine le_antisymm ?_ bot_le
@@ -434,6 +585,9 @@ end AlgebraicGeometry.Scheme.IdealSheafData
 
 namespace FunctorialResolution.Blowup
 
+/- English proof (translation)
+The claim follows from `(AlgebraicGeometry.Scheme.Hom.isClosedEmbedding I.subschemeι).toIsEmbedding.toIsInducing.noetherianSpace`.
+-/
 theorem noetherianSpace_subscheme {X : Scheme.{u}} (I : X.IdealSheafData)
     [TopologicalSpace.NoetherianSpace ↥X] :
     TopologicalSpace.NoetherianSpace ↥I.subscheme :=
@@ -445,15 +599,40 @@ instance instNoetherianSpaceSubscheme {X : Scheme.{u}} (I : X.IdealSheafData)
     TopologicalSpace.NoetherianSpace ↥I.subscheme :=
   noetherianSpace_subscheme I
 
+/- English proof (translation)
+Rewrite using `[List.prod_nil]`. Both sides reduce to the same expression.
+-/
 theorem idealSheafData_prod_nil (X : Scheme.{u}) :
     ([] : List X.IdealSheafData).prod = ⊤ := by
   rw [List.prod_nil]
   rfl
 
+/- English proof (translation)
+The claim follows from `List.prod_cons`.
+-/
 theorem idealSheafData_prod_cons (X : Scheme.{u}) (D : X.IdealSheafData)
     (E : List X.IdealSheafData) : (D :: E).prod = D * E.prod :=
   List.prod_cons
 
+/- English proof (translation)
+Use `Scheme.IdealSheafData.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `V`. Establish `hU : IsAffineOpen (f ''ᵁ V.1)` using `V.2.image_of_isOpenImmersion f`. Establish `hpre : f ⁻¹ᵁ (f ''ᵁ V.1) = V.1` using `f.preimage_image_eq V.1`. Establish `e : (V : B.Opens) ≤ f ⁻¹ᵁ (f ''ᵁ V.1)` using `hpre.ge`.
+
+Establish `hopeq : j ⁻¹ᵁ V.1 = (j ≫ f) ⁻¹ᵁ (f ''ᵁ V.1)` using `by show j ⁻¹ᵁ V.1 = j ⁻¹ᵁ (f ⁻¹ᵁ (f ''ᵁ V.1))`. Rewrite using `[hpre]`. Establish `hop : j ⁻¹ᵁ V.1 ≤ (j ≫ f) ⁻¹ᵁ (f ''ᵁ V.1)` using `hopeq.le`. Establish `key : f.appLE (f ''ᵁ V.1) V.1 e ≫ j.app V.1 = (j ≫ f).app (f ''ᵁ V.1) ≫ A.presheaf.map (homOfLE hop).op`. Rewrite using `[Scheme.Hom.app_eq_appLE j]`.
+
+Conclude with `Scheme.Hom.appLE_comp_appLE j f (f ''ᵁ V.1) V.1 (j ⁻¹ᵁ V.1) e le_rfl`. Establish `keyr : ∀ x, (CommRingCat.Hom.hom (j.app V.1)) ((CommRingCat.Hom.hom (f.appLE (f ''ᵁ V.1) V.1 e)) x) = (CommRingCat.Hom.hom (A.presheaf.map (homOfLE hop).op)) ((CommRingCat.Hom.hom ((j ≫ f).app (f ''ᵁ V.1))) x)`. Introduce `x`. Establish `h'` using `congrArg (fun m => (CommRingCat.Hom.hom m) x) key`. Simplify `h'` using `only [CommRingCat.hom_comp, RingHom.comp_apply]`.
+
+Establish `hρ : ∀ y, (CommRingCat.Hom.hom (A.presheaf.map (homOfLE hop).op)) y = 0 → y = 0`. Introduce `y hy`. Establish `hcomp : A.presheaf.map (homOfLE hop).op ≫ A.presheaf.map (homOfLE hopeq.ge).op = 𝟙 (A.presheaf.obj (Opposite.op ((j ≫ f) ⁻¹ᵁ (f ''ᵁ V.1))))`. Rewrite using `[← CategoryTheory.Functor.map_comp, ← op_comp, Subsingleton.elim (homOfLE hopeq.ge ≫ homOfLE hop) (𝟙 _), op_id, CategoryTheory.Functor.map_id]`. Establish `h2` using `congrArg (fun m => (CommRingCat.Hom.hom m) y) hcomp`.
+
+Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_id, RingHom.id_apply, hy, map_zero] at h2`. Conclude with `h2.symm`. Establish `hφ : Function.Surjective (CommRingCat.Hom.hom (f.appLE (f ''ᵁ V.1) V.1 e))`. Establish `: IsIso (f.appLE (f ''ᵁ V.1) V.1 e)`. Rewrite using `[← Scheme.Hom.appIso_hom' f V.1]`.
+
+Use `infer_instance`. Introduce `y`. Use `⟨(CommRingCat.Hom.hom (inv (f.appLE (f ''ᵁ V.1) V.1 e))) y, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (fun m => (CommRingCat.Hom.hom m) y) (IsIso.inv_hom_id (f.appLE (f ''ᵁ V.1) V.1 e))`. Simplify `h3` using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_id, RingHom.id_apply]`.
+
+Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE _ f ⟨f ''ᵁ V.1, hU⟩ V e, Scheme.Hom.ker_apply, Scheme.Hom.ker_apply]`. Simplify using `only`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`.
+
+Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, keyr x]`. Rewrite `hx` using `[RingHom.mem_ker]`. Rewrite using `[hx, map_zero]`. Introduce `y hy`. Take `⟨x, rfl⟩` from `hφ y`.
+
+Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Rewrite `hy`, the goal using `[RingHom.mem_ker]`. Conclude with `hρ _ ((keyr x).symm.trans hy)`.
+-/
 theorem comap_ker_comp_of_isOpenImmersion {A B C : Scheme.{u}} (j : A ⟶ B) (f : B ⟶ C)
     [IsOpenImmersion f] [QuasiCompact j] [QuasiCompact (j ≫ f)] :
     (j ≫ f).ker.comap f = j.ker := by
@@ -517,6 +696,13 @@ end FunctorialResolution.Blowup
 
 namespace AlgebraicGeometry.Scheme.IdealSheafData
 
+/- English proof (translation)
+Establish `: QuasiCompact (I.comap g).subschemeι` using `inferInstance`. Establish `: QuasiCompact ((I.comap g).subschemeι ≫ g)` using `inferInstance`. Establish `hq` using `FunctorialResolution.Blowup.comap_ker_comp_of_isOpenImmersion (I.comap g).subschemeι g`. Rewrite `hq` using `[Scheme.IdealSheafData.ker_subschemeι]`. Establish `e1 : ∀ J : Y'.IdealSheafData, (J.comap g).comap (inv g) = J`.
+
+Introduce `J`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, IsIso.inv_hom_id, Scheme.IdealSheafData.comap_id]`. Establish `hkk : ((I.comap g).subschemeι ≫ g).ker = I.subschemeι.ker`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι, ← e1 (((I.comap g).subschemeι ≫ g).ker), hq, e1]`. Use `⟨IsClosedImmersion.lift I.subschemeι ((I.comap g).subschemeι ≫ g) (le_of_eq hkk.symm), ?_, IsClosedImmersion.lift_fac _ _ _⟩` and prove the remaining obligations.
+
+Conclude with `IsClosedImmersion.isIso_of_ker_eq ((I.comap g).subschemeι ≫ g) I.subschemeι _ (IsClosedImmersion.lift_fac _ _ _) hkk`.
+-/
 theorem exists_iso_subscheme_comap_of_isIso {Y Y' : Scheme.{u}} (g : Y ⟶ Y') [IsIso g]
     (I : Y'.IdealSheafData) :
     ∃ m : (I.comap g).subscheme ⟶ I.subscheme,

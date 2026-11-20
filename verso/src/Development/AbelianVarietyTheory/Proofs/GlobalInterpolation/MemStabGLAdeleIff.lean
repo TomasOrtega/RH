@@ -19,9 +19,15 @@ def IsComb (u : n → E ⊗[F] R) : Prop :=
 
 variable {T N s}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ => zero_mem _, fun i => by simp⟩`.
+-/
 theorem isComb_zero : IsComb (F := F) T N s 0 :=
   ⟨0, fun _ => zero_mem _, fun i => by simp⟩
 
+/- English proof (translation)
+Take `⟨a, ha, ea⟩` from `hy`. Take `⟨b, hb, eb⟩` from `hz`. Conclude with `⟨a + b, fun j => add_mem (ha j) (hb j), fun i => by`. Simplify using `only [Pi.add_apply, ea, eb, TensorProduct.tmul_add, Finset.sum_add_distrib]⟩`.
+-/
 theorem IsComb.add {y z : n → E ⊗[F] R} (hy : IsComb T N s y) (hz : IsComb T N s z) :
     IsComb T N s (y + z) := by
   obtain ⟨a, ha, ea⟩ := hy
@@ -29,11 +35,19 @@ theorem IsComb.add {y z : n → E ⊗[F] R} (hy : IsComb T N s y) (hz : IsComb T
   exact ⟨a + b, fun j => add_mem (ha j) (hb j), fun i => by
     simp only [Pi.add_apply, ea, eb, TensorProduct.tmul_add, Finset.sum_add_distrib]⟩
 
+/- English proof (translation)
+Take `⟨a, ha, ea⟩` from `hy`. Conclude with `⟨-a, fun j => neg_mem (ha j), fun i => by`. Simplify using `only [Pi.neg_apply, ea, TensorProduct.tmul_neg, Finset.sum_neg_distrib]⟩`.
+-/
 theorem IsComb.neg {y : n → E ⊗[F] R} (hy : IsComb T N s y) : IsComb T N s (-y) := by
   obtain ⟨a, ha, ea⟩ := hy
   exact ⟨-a, fun j => neg_mem (ha j), fun i => by
     simp only [Pi.neg_apply, ea, TensorProduct.tmul_neg, Finset.sum_neg_distrib]⟩
 
+/- English proof (translation)
+Establish `: (⟨w, hw⟩ : N) ∈ Submodule.span ℤ (Set.range s)` using `hs ▸ Submodule.mem_top`. Take `⟨m, hm⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 this`. Establish `e : w = ∑ j, m j • (s j : n → E)` using `by simpa using (congrArg Subtype.val hm).symm`. Use `⟨fun j => m j • a, fun j => zsmul_mem ha _, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, TensorProduct.sum_tmul]`. Conclude with `Finset.sum_congr rfl fun j _ => TensorProduct.smul_tmul _ _ _`.
+-/
 theorem isComb_tmul (hs : Submodule.span ℤ (Set.range s) = ⊤) {w : n → E} (hw : w ∈ N) {a : R}
     (ha : a ∈ T) : IsComb (F := F) T N s (fun i => w i ⊗ₜ[F] a) := by
   have : (⟨w, hw⟩ : N) ∈ Submodule.span ℤ (Set.range s) := hs ▸ Submodule.mem_top
@@ -44,6 +58,19 @@ theorem isComb_tmul (hs : Submodule.span ℤ (Set.range s) = ⊤) {w : n → E} 
   simp only [Finset.sum_apply, Pi.smul_apply, TensorProduct.sum_tmul]
   exact Finset.sum_congr rfl fun j _ => TensorProduct.smul_tmul _ _ _
 
+/- English proof (translation)
+Use `Subring.closure_induction (p := fun t _ => ∀ {y : n → E ⊗[F] R}, IsComb T N s y → IsComb T N s (t • y)) ?_ ?_ ?_ ?_ ?_ ?_ ht` and prove the remaining obligations. Introduce and unpack `x (⟨⟨e, ⟨e', rfl⟩⟩, rfl⟩ | ⟨⟨b, hb⟩, rfl⟩) y ⟨a, ha, ea⟩`. Establish `: ((algebraMap (𝓞 E) E e' ⊗ₜ[F] (1 : R)) • y : n → E ⊗[F] R) = ∑ j, fun i => (e' • (s j : n → E)) i ⊗ₜ[F] a j`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, ea, smul_eq_mul, Finset.mul_sum, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, Pi.smul_apply, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `IsComb T N s ((algebraMap (𝓞 E) E e' ⊗ₜ[F] (1 : R)) • y)`. Rewrite using `[this]`. Conclude with `Finset.sum_induction _ (IsComb T N s) (fun _ _ hx hy => hx.add hy) isComb_zero fun j _ => isComb_tmul hs (N.smul_mem e' (s j).2) (ha j)`.
+
+Use `⟨fun j => b * a j, fun j => mul_mem hb (ha j), fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((1 : E) ⊗ₜ[F] b) * y i = _`. Rewrite using `[ea, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+
+Introduce `y _`. Rewrite using `[zero_smul]`. Conclude with `isComb_zero`. Introduce `y hy`. Rewrite using `[one_smul]` and apply the resulting hypothesis.
+
+Introduce `a b _ _ ha hb y hy`. Rewrite using `[add_smul]`. Conclude with `(ha hy).add (hb hy)`. Introduce `a _ ha y hy`. Rewrite using `[neg_smul]`.
+
+Conclude with `(ha hy).neg`. Introduce `a b _ _ ha hb y hy`. Rewrite using `[mul_smul]`. Conclude with `ha (hb hy)`.
+-/
 theorem IsComb.smul (hs : Submodule.span ℤ (Set.range s) = ⊤) {t : E ⊗[F] R}
     (ht : t ∈ tensInt (F := F) R (intOE E) T) :
     ∀ {y : n → E ⊗[F] R}, IsComb T N s y → IsComb T N s (t • y) := by
@@ -72,6 +99,15 @@ theorem IsComb.smul (hs : Submodule.span ℤ (Set.range s) = ⊤) {t : E ⊗[F] 
   · intro a _ ha y hy; rw [neg_smul]; exact (ha hy).neg
   · intro a b _ _ ha hb y hy; rw [mul_smul]; exact ha (hb hy)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hu`. Unfold `latS at hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨w, hw, rfl⟩` from `hx`. Conclude with `isComb_tmul hs hw (one_mem T)`. Consider the case `zero => exact isComb_zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul t x _ hx => exact IsComb.smul hs t.2 hx`.
+
+Introduce and unpack `⟨a, ha, ea⟩`. Establish `e : u = ∑ j, (⟨(1 : E) ⊗ₜ[F] a j, Subring.subset_closure (Or.inr ⟨⟨a j, ha j⟩, rfl⟩)⟩ : tensInt (F` using `F) R (intOE E) T) • fun i => inclE (F := F) R ((s j : n → E) i) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[ea, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = ((1 : E) ⊗ₜ[F] a j) * ((s j : n → E) i ⊗ₜ[F] (1 : R))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Rewrite using `[e]`. Conclude with `sum_mem fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨s j, (s j).2, rfl⟩)`.
+-/
 theorem mem_latS_iff_isComb (hs : Submodule.span ℤ (Set.range s) = ⊤) (u : n → E ⊗[F] R) :
     u ∈ latS R (tensInt (F := F) R (intOE E) T) N ↔ IsComb T N s u := by
   constructor
@@ -103,6 +139,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 
+/- English proof (translation)
+Establish `: Module.Finite ℤ N` using `Module.Finite.trans (𝓞 E) N`. Take `⟨k, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ) (M := N)`. Simplify using `only [mem_latS_iff_isComb hs]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, ea⟩ v`.
+
+Use `⟨fun j => a j v, fun j => ha j v, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [ea, map_sum]`. Both sides reduce to the same expression. Introduce `h choose a ha ea using h`. Set `A : Fin k → 𝔸` to `fun j => ⟨fun v => a v j, Filter.Eventually.of_forall fun v => ha v j⟩`.
+
+Use `⟨A, fun j v => ha v j, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `Formalism.UG.P.afsplit_inj _ fun v => ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero, map_sum]`. Conclude with `ea v i`.
+-/
 theorem mem_latS_adele_iff [Module.Finite (𝓞 E) N] (u : n → E ⊗[F] 𝔸) :
     u ∈ latS 𝔸 (tensInt (F := F) 𝔸 (intOE E) (intAd F)) N ↔
       ∀ v : HeightOneSpectrum (𝓞 F), (fun i => prV (E := E) v (u i)) ∈
@@ -125,6 +168,9 @@ theorem mem_latS_adele_iff [Module.Finite (𝓞 E) N] (u : n → E ⊗[F] 𝔸) 
     rw [map_sub, sub_eq_zero, map_sum]
     exact ea v i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ M u i`.
+-/
 theorem prV_mulVec [Fintype n] (v : HeightOneSpectrum (𝓞 F)) (M : Matrix n n (E ⊗[F] 𝔸))
     (u : n → E ⊗[F] 𝔸) :
     (fun i => prV (E := E) v ((M *ᵥ u) i)) =
@@ -132,6 +178,21 @@ theorem prV_mulVec [Fintype n] (v : HeightOneSpectrum (𝓞 F)) (M : Matrix n n 
   funext i
   exact RingHom.map_mulVec _ M u i
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg v x`. Establish `key` using `hg fun i => Formalism.UG.P.afsplitIE v (x i)`. Rewrite `key` using `[mem_latS_adele_iff, mem_latS_adele_iff]`. Simplify using `only [prV_mulVec] at key`.
+
+Establish `h0 : ∀ w, w ≠ v → (fun i => prV (E` using `E) w (Formalism.UG.P.afsplitIE v (x i))) = 0 := fun w hw => funext fun i => Formalism.UG.P.afsplit_prV_IE_ne v w hw _`. Establish `h1 : (fun i => prV (E` using `E) v (Formalism.UG.P.afsplitIE v (x i))) = x :=`. Use function extensionality and compare the values at `fun i => Formalism.UG.P.afsplit_prV_IE v _`. Rewrite using `[Formalism.UG.P.afsplit_coe_bc_prV]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Use `key.1 (fun w => by` as an intermediate fact. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[h1]`.
+
+Conclude with `hx`. Rewrite using `[h0 w hw]`. Conclude with `zero_mem _) v`. Rewrite `this` using `[h1]`. Then use the resulting hypothesis. Introduce `hx`.
+
+Use `key.2 (fun w => by` as an intermediate fact. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[h1]`. Conclude with `hx`.
+
+Rewrite using `[h0 w hw, Matrix.mulVec_zero]`. Conclude with `zero_mem _) v`. Rewrite `this` using `[h1]`. Then use the resulting hypothesis. Introduce `h u`. Rewrite using `[mem_latS_adele_iff, mem_latS_adele_iff]`.
+
+Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[prV_mulVec]`. Conclude with `h v _`.
+-/
 theorem mem_stabGL_adele_iff [Fintype n] [DecidableEq n] [Module.Finite (𝓞 E) N]
     (g : GL n (E ⊗[F] 𝔸)) :
     g ∈ stabGL (latS 𝔸 (tensInt (F := F) 𝔸 (intOE E) (intAd F)) N) ↔
@@ -169,6 +230,11 @@ theorem mem_stabGL_adele_iff [Fintype n] [DecidableEq n] [Module.Finite (𝓞 E)
 
 end Adelic
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J N hN g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨h1, h2⟩` from `Subgroup.mem_inf.1 hg`. Conclude with `⟨h1, fun v => Subgroup.mem_inf.2 ⟨Formalism.UG.P.afsplit_bc_mem σ J v g h1, (mem_stabGL_adele_iff N g).1 h2 v⟩⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `Subgroup.mem_inf.2 ⟨h1, (mem_stabGL_adele_iff N g).2 fun v => (Subgroup.mem_inf.1 (h2 v)).2⟩`.
+-/
 theorem mem_levelAfL_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (N : Submodule (𝓞 E) (Fin n → E)), Module.Finite (𝓞 E) N → ∀ g, g ∈ levelAfL σ J N ↔ g ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) ∧ ∀ v : HeightOneSpectrum (𝓞 F), bc (prV (E := E) v) g ∈ levelVL σ J v N := by
   intro F E _ _ _ _ _ σ n J N hN g
   constructor

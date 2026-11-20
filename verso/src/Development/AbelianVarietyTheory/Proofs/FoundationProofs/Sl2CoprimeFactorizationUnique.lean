@@ -6,6 +6,23 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.StabHecke
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `a c hac hc y y' β β' hy hy' hβ hβ' hyβ`. Use `set P : Matrix (Fin 2) (Fin 2) ℤ := β' * adjugate β with hP`. Use `set Q : Matrix (Fin 2) (Fin 2) ℤ := adjugate y' * y with hQ`. Establish `hPQ : a • P = c • Q`. Establish `h1 : adjugate y' * y * β = a • β'`.
+
+Rewrite using `[Matrix.mul_assoc, hyβ, ← Matrix.mul_assoc, adjugate_mul, hy', Matrix.smul_mul, Matrix.one_mul]`. Establish `h2 : β * adjugate β = c • (1 : Matrix (Fin 2) (Fin 2) ℤ)`. Rewrite using `[mul_adjugate, hβ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hdiv : ∀ i j, c ∣ P i j`.
+
+Introduce `i j`. Use `congrFun (congrFun hPQ i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `hac.symm.dvd_of_dvd_mul_left ⟨Q i j, this⟩`. Use `choose M hM using hdiv`.
+
+Use `set Mm : Matrix (Fin 2) (Fin 2) ℤ := Matrix.of M with hMm`. Establish `hPM : P = c • Mm`. Use extensionality with `i j`. Simplify using `[hMm, hM i j]`. Establish `hMβ : Mm * β = β'`.
+
+Establish `: c • (Mm * β) = c • β'`. Rewrite using `[← Matrix.smul_mul, ← hPM, hP, Matrix.mul_assoc, adjugate_mul, hβ, Matrix.mul_smul, Matrix.mul_one]`. Use extensionality with `i j`. Use `congrFun (congrFun this i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`.
+
+Conclude with `mul_left_cancel₀ hc this`. Establish `hdet : Mm.det = 1`. Establish `h1 : P.det = c * c`. Rewrite using `[hP, det_mul, det_adjugate, hβ, hβ']`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[hPM, det_smul]`. Simplify using `at h1`. Establish `hc2 : c ^ 2 ≠ 0` using `pow_ne_zero 2 hc`. Establish `: c ^ 2 * Mm.det = c ^ 2 * 1` using `by rw [h1]; ring`. Conclude with `mul_left_cancel₀ hc2 this`.
+
+Conclude with `⟨⟨Mm, hdet⟩, hMβ⟩`.
+-/
 theorem sl2_right_factor_of_coprime_factorizations :
     ∀ (a c : ℤ), IsCoprime a c → c ≠ 0 → ∀ (y y' β β' : Matrix (Fin 2) (Fin 2) ℤ),
       y.det = a → y'.det = a → β.det = c → β'.det = c → y * β = y' * β' →

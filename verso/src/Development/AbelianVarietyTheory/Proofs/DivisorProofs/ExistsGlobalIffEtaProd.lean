@@ -11,6 +11,9 @@ namespace GlobalTheory.QuadRecip
 
 open GlobalTheory.QuadSymbol
 
+/- English proof (translation)
+The claim follows from `(exactSequence K L).2.2.1 x y hx`.
+-/
 theorem exists_global_iff_etaProd (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L]
     [Algebra K L] [Algebra.IsQuadraticExtension K L] (x : FinFam K) (y : InfFam K)
     (hx : AlmostNorm K L x) :
@@ -19,12 +22,18 @@ theorem exists_global_iff_etaProd (K L : Type) [Field K] [NumberField K] [Field 
       etaProd K L x y = 1 :=
   (exactSequence K L).2.2.1 x y hx
 
+/- English proof (translation)
+The claim follows from `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw ((WithAbs.equiv _).symm (t : K))`.
+-/
 theorem ringEquivReal_infDiag {K : Type} [Field K] [NumberField K] {w : InfinitePlace K}
     (hw : w.IsReal) (t : Kˣ) :
     InfinitePlace.Completion.ringEquivRealOfIsReal hw ((infDiag K t w : (w.Completion)ˣ) : w.Completion) =
       InfinitePlace.embedding_of_isReal hw (t : K) :=
   InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw ((WithAbs.equiv _).symm (t : K))
 
+/- English proof (translation)
+Take `⟨δ, b, -, h0, h1⟩` from `AlmostNorm.exists_basis_sq K L`. Rewrite using `[mem_normGroup_iff_form b h0 h1]`. Use `set e := InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Use `⟨e.symm (Real.sqrt (e z)), 0, e.injective ?_⟩` and prove the remaining obligations. Simplify using `[Real.sq_sqrt hz.le]`.
+-/
 theorem mem_normGroup_of_pos {K L : Type} [Field K] [NumberField K] [Field L] [Algebra K L]
     [Algebra.IsQuadraticExtension K L] {w : InfinitePlace K} (hw : w.IsReal) (z : (w.Completion)ˣ)
     (hz : 0 < InfinitePlace.Completion.ringEquivRealOfIsReal hw (z : w.Completion)) :
@@ -35,6 +44,11 @@ theorem mem_normGroup_of_pos {K L : Type} [Field K] [NumberField K] [Field L] [A
   refine ⟨e.symm (Real.sqrt (e z)), 0, e.injective ?_⟩
   simp [Real.sq_sqrt hz.le]
 
+/- English proof (translation)
+Use `set e := InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Use `⟨fun hz => ?_, mem_normGroup_of_pos hw z⟩` and prove the remaining obligations. Establish `hne : e (z : w.Completion) ≠ 0` using `(map_ne_zero e).2 z.ne_zero`. Use `lt_of_le_of_ne (not_lt.1 fun hlt => ?_) hne.symm` and prove the remaining obligations. Establish `hm : (-z) ∈ normGroup K L w.Completion` using `mem_normGroup_of_pos hw (-z) (by rw [Units.val_neg, map_neg]; exact neg_pos.2 hlt)`.
+
+Establish `h1 : (-1 : (w.Completion)ˣ) = z * (-z)⁻¹` using `by rw [inv_neg, mul_neg, mul_inv_cancel]`. Conclude with `SignCount.neg_one_not_mem_normGroup hL hw (h1 ▸ mul_mem hz (inv_mem hm))`.
+-/
 theorem mem_normGroup_iff_pos {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L]
     [Algebra K L] [Algebra.IsQuadraticExtension K L] (hL : IsTotallyComplex L)
     {w : InfinitePlace K} (hw : w.IsReal) (z : (w.Completion)ˣ) :
@@ -57,6 +71,13 @@ open GlobalTheory.QuadSymbol
 
 open Classical in
 
+/- English proof (translation)
+Repeatedly rewrite using `[hf]`. Rewrite using `[Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]`. Use `congr 1`. Establish `: (Finset.univ.filter fun w : InfinitePlace K => ∃ hw : w.IsReal, (⟨w, hw⟩ : {w : InfinitePlace K // w.IsReal}) ∈ S) = S.map (Function.Embedding.subtype _)`. Use extensionality with `w`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map, Function.Embedding.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, h⟩`. Conclude with `⟨_, h, rfl⟩`. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Conclude with `⟨u.2, hu⟩`. Rewrite using `[this, Finset.card_map]`.
+-/
 theorem prod_sign_eq {K : Type} [Field K] [NumberField K] (S : Finset {w : InfinitePlace K // w.IsReal})
     (f : InfinitePlace K → ℤˣ)
     (hf : ∀ w, f w = if (∃ hw : w.IsReal, (⟨w, hw⟩ : {w : InfinitePlace K // w.IsReal}) ∈ S) then -1 else 1) :
@@ -80,6 +101,31 @@ theorem prod_sign_eq {K : Type} [Field K] [NumberField K] (S : Finset {w : Infin
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨δ, b, -, h0, h1⟩` from `AlmostNorm.exists_basis_sq K L`. Establish `hneg1 : ((-1 : ℤˣ) ≠ 1)` using `by decide`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hsgn, hfin⟩`. Establish `hpf` using `(productFormula K L h).2`.
+
+Unfold `etaProd at hpf`. Establish `hf1 : ∀ v : HeightOneSpectrum (𝓞 K), eta K L (v.adicCompletion K) (finDiag K h v) = 1` using `fun v => eta_eq_one_iff.2 (hfin v)`. Simplify using `only [hf1, finprod_one, one_mul] at hpf`. Rewrite `hpf` using `[prod_sign_eq S _ (fun w => ?_)]`. Conclude with `(neg_one_pow_eq_one_iff_even hneg1).1 hpf`.
+
+Distinguish the cases in `hw : w.IsReal`. Establish `key` using `mem_normGroup_iff_pos hL hw (infDiag K h w)`. Rewrite `key` using `[ringEquivReal_infDiag hw h]`. Distinguish the cases in `hS : (⟨w, hw⟩ : {w : InfinitePlace K // w.IsReal}) ∈ S`. Rewrite using `[if_pos ⟨hw, hS⟩, eta_eq_neg_one_iff, key]`.
+
+Conclude with `not_lt.2 ((hsgn ⟨w, hw⟩).1 hS).le`. Rewrite using `[if_neg (by rintro ⟨hw', h'⟩; exact hS h'), eta_eq_one_iff, key]`. Conclude with `(hsgn ⟨w, hw⟩).2 hS`. Rewrite using `[if_neg (by rintro ⟨hw', _⟩; exact hw hw'), eta_eq_one_iff]`. Conclude with `Converse.mem_normGroup_of_isComplex b h0 h1 (InfinitePlace.not_isReal_iff_isComplex.1 hw) _`.
+
+Introduce `hS`. Set `P : InfinitePlace K → Prop` to `fun w => ∃ hw : w.IsReal, (⟨w, hw⟩ : {w : InfinitePlace K // w.IsReal}) ∈ S`. Set `y : InfFam K` to `fun w => if P w then -1 else 1`. Establish `hy : ∀ w, eta K L w.Completion (y w) = if P w then -1 else 1`. Introduce `w`.
+
+Distinguish the cases in `hP : P w`. Simplify using `only [y, if_pos hP]`. Conclude with `eta_eq_neg_one_iff.2 (SignCount.neg_one_not_mem_normGroup hL hP.1)`. Simplify using `only [y, if_neg hP]`. Conclude with `eta_eq_one_iff.2 (one_mem _)`.
+
+Establish `hx : AlmostNorm K L (1 : FinFam K)`. Use `Set.Finite.subset Set.finite_empty fun v hv => hv ?_` and prove the remaining obligations. Conclude with `one_mem _`. Establish `hprod : etaProd K L 1 y = 1`. Unfold `etaProd`.
+
+Establish `hf1 : ∀ v : HeightOneSpectrum (𝓞 K), eta K L (v.adicCompletion K) ((1 : FinFam K) v) = 1` using `fun v => eta_eq_one_iff.2 (one_mem _)`. Simplify using `only [hf1, finprod_one, one_mul]`. Rewrite using `[prod_sign_eq S _ hy]`. Conclude with `hS.neg_one_pow`. Take `⟨t, htf, hti⟩` from `(exists_global_iff_etaProd K L 1 y hx).2 hprod`.
+
+Use `⟨t, fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `key` using `(mem_normGroup_iff_pos hL w.2 _).1 (hti w.1)`. Rewrite `key` using `[Units.val_div_eq_div_val, map_div₀, ringEquivReal_infDiag w.2 t]`. Establish `hP : P w.1 ↔ w ∈ S` using `⟨by rintro ⟨_, h⟩; exact h, fun h => ⟨w.2, h⟩⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hw`. Establish `hyw : y w.1 = -1` using `if_pos (hP.2 hw)`. Rewrite `key` using `[hyw, Units.val_neg, Units.val_one, map_neg, map_one]`. Use `(div_pos_iff.1 key)` as an intermediate fact. Break down `this with ⟨h1, -⟩ | ⟨-, h2⟩` into its components or cases.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h2`. Introduce `hw`. Establish `hyw : y w.1 = 1` using `if_neg (fun h => hw (hP.1 h))`. Rewrite `key` using `[hyw, Units.val_one, map_one]`.
+
+Conclude with `(one_div_pos).1 key`. Use `htf v` as an intermediate fact. Rewrite `this` using `[Pi.one_apply, one_div, inv_mem_iff]`. Conclude with `this`.
+-/
 theorem exists_signs_iff_even (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L]
     [Algebra K L] [Algebra.IsQuadraticExtension K L] (hL : IsTotallyComplex L)
     (S : Finset {w : InfinitePlace K // w.IsReal}) :
@@ -152,6 +198,11 @@ theorem exists_signs_iff_even (K L : Type) [Field K] [NumberField K] [Field L] [
       rw [Pi.one_apply, one_div, inv_mem_iff] at this
       exact this
 
+/- English proof (translation)
+Set `S' : Finset {w : InfinitePlace K // w.IsReal}` to `S.subtype _`. Establish `hc : S'.card = S.card`. Rewrite using `[Finset.card_subtype]`. Use `congr 1`. Conclude with `Finset.filter_true_of_mem fun w _ => hK.isReal w`.
+
+Take `⟨h, hsgn, hfin⟩` from `(exists_signs_iff_even K L hL S').2 (hc ▸ hS)`. Use `⟨h, fun w hw => (hsgn ⟨w, hK.isReal w⟩).1 ?_, fun w hw => (hsgn ⟨w, hK.isReal w⟩).2 ?_, hfin⟩` and prove the remaining obligations. Simplify `hw` using `[S']`. Simplify `hw` using `[S']`.
+-/
 theorem exists_signs_of_even (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L]
     [Algebra K L] [Algebra.IsQuadraticExtension K L] (hK : IsTotallyReal K) (hL : IsTotallyComplex L)
     (S : Finset (InfinitePlace K)) (hS : Even S.card) :

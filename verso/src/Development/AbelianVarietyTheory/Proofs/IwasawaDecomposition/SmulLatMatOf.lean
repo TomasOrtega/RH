@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 variable {D : D7} {X : Fields} (s : Seam D X)
 
+/- English proof (translation)
+Use `D.host.isCMField_hostE` as an intermediate fact. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `D.host.φ₀ (NumberField.IsCMField.complexConj D.host.E x) = D.host.φ₀ (D.host.conj x)`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+-/
 theorem star_conj (x : D.host.E) : (letI := D.host.cmStar; star x) = D.host.conj x := by
   have := D.host.isCMField_hostE
   apply D.host.φ₀.injective
@@ -18,6 +21,11 @@ theorem star_conj (x : D.host.E) : (letI := D.host.cmStar; star x) = D.host.conj
 
 def vec {n : ℕ} (x : Sp X.E n) : Fin n → D.host.E := fun i => s.iE (x i)
 
+/- English proof (translation)
+Establish `h1 : ∀ w : D.host.E, w ∈ (algebraMap (𝓞 D.host.E) D.host.E).range ↔ IsIntegral ℤ w` using `fun w => (IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).symm`. Establish `h2 : ∀ w : X.E, w ∈ (algebraMap (𝓞 X.E) X.E).range ↔ IsIntegral ℤ w` using `fun w => (IsIntegralClosure.isIntegral_iff (A := 𝓞 X.E)).symm`. Rewrite using `[h1, h2]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `map_isIntegral_int s.iE.symm.toRingHom h` as an intermediate fact. Simplify using `using this`. Introduce `h`. Conclude with `map_isIntegral_int s.iE.toRingHom h`.
+-/
 theorem int_iff (z : X.E) : s.iE z ∈ (algebraMap (𝓞 D.host.E) D.host.E).range ↔ z ∈ (algebraMap (𝓞 X.E) X.E).range := by
   have h1 : ∀ w : D.host.E, w ∈ (algebraMap (𝓞 D.host.E) D.host.E).range ↔ IsIntegral ℤ w := fun w =>
     (IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).symm
@@ -31,14 +39,25 @@ theorem int_iff (z : X.E) : s.iE z ∈ (algebraMap (𝓞 D.host.E) D.host.E).ran
   · intro h
     exact map_isIntegral_int s.iE.toRingHom h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[vec]`.
+-/
 theorem vec_add {n : ℕ} (x y : Sp X.E n) : vec s (x + y) = vec s x + vec s y := by
   funext i
   simp [vec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[vec]`.
+-/
 theorem vec_smulE {n : ℕ} (c : X.E) (x : Sp X.E n) : vec s (c • x) = s.iE c • vec s x := by
   funext i
   simp [vec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show s.iE ((r • x) i) = (r' • vec s x) i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Algebra.smul_def, Algebra.smul_def, map_mul]`. Use `show s.iE (r : X.E) * _ = (r' : D.host.E) * _`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem vec_smulO {n : ℕ} (r : 𝓞 X.E) (r' : 𝓞 D.host.E) (h : s.iE (r : X.E) = (r' : D.host.E)) (x : Sp X.E n) : vec s (r • x) = r' • vec s x := by
   funext i
   show s.iE ((r • x) i) = (r' • vec s x) i
@@ -47,6 +66,13 @@ theorem vec_smulO {n : ℕ} (r : 𝓞 X.E) (r' : 𝓞 D.host.E) (h : s.iE (r : X
   rw [h]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact Submodule.subset_span ⟨x, h, rfl⟩`. Consider the case `zero`. Establish `: vec s (0 : Sp X.E n) = 0` using `by funext i; simp [vec]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [vec_add s]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`. Take `⟨r', hr'⟩` from `(int_iff s (r : X.E)).2 ⟨r, rfl⟩`.
+
+Rewrite using `[vec_smulO s r r' hr'.symm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem vec_span {n : ℕ} (T : Set (Sp X.E n)) {x : Sp X.E n} (hx : x ∈ Submodule.span (𝓞 X.E) T) :
     vec s x ∈ Submodule.span (𝓞 D.host.E) (vec s '' T) := by
   induction hx using Submodule.span_induction with
@@ -60,6 +86,11 @@ theorem vec_span {n : ℕ} (T : Set (Sp X.E n)) {x : Sp X.E n} (hx : x ∈ Submo
     rw [vec_smulO s r r' hr'.symm]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact Submodule.subset_span ⟨x, h, rfl⟩`. Consider the case `zero`. Establish `: vec s (0 : Sp X.E n) = 0` using `by funext i; simp [vec]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [vec_add s]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [vec_smulE s]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem vec_spanE {n : ℕ} (T : Set (Sp X.E n)) {x : Sp X.E n} (hx : x ∈ Submodule.span X.E T) :
     vec s x ∈ Submodule.span D.host.E (vec s '' T) := by
   induction hx using Submodule.span_induction with
@@ -70,10 +101,22 @@ theorem vec_spanE {n : ℕ} (T : Set (Sp X.E n)) {x : Sp X.E n} (hx : x ∈ Subm
   | add x y _ _ hx hy => rw [vec_add s]; exact Submodule.add_mem _ hx hy
   | smul c x _ hx => rw [vec_smulE s]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[vec]`.
+-/
 theorem vec_surj {n : ℕ} (y : Fin n → D.host.E) : vec s (fun i => s.iE.symm (y i) : Sp X.E n) = y := by
   funext i
   simp [vec]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y h => exact h`. Consider the case `zero => exact ⟨0, N.zero_mem, by funext i; simp [vec]⟩`.
+
+Consider the case `add y y' _ _ hy hy'`. Take `⟨x, hx, rfl⟩` from `hy`. Take `⟨x', hx', rfl⟩` from `hy'`. Conclude with `⟨x + x', N.add_mem hx hx', vec_add s x x'⟩`. Consider the case `smul r y _ hy`.
+
+Take `⟨x, hx, rfl⟩` from `hy`. Take `⟨r₀, hr₀⟩` from `(int_iff s (s.iE.symm (r : D.host.E))).1 ⟨r, by simp⟩`. Use `⟨r₀ • x, N.smul_mem _ hx, vec_smulO s r₀ r ?_ x⟩` and prove the remaining obligations. Use `show s.iE (algebraMap (𝓞 X.E) X.E r₀) = _`. Rewrite using `[hr₀]`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+-/
 theorem mem_lat {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (y : Fin n → D.host.E) : y ∈ s.lat N ↔ ∃ x ∈ N, vec s x = y := by
   constructor
   · intro hy
@@ -94,6 +137,9 @@ theorem mem_lat {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (y : Fin n → D
   · rintro ⟨x, hx, rfl⟩
     exact Submodule.subset_span ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Use `show ∑ i, (letI := D.host.cmStar; star (s.iE (x i))) * s.iE (y i) = s.iE (∑ i, star (x i) * y i)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hok.2, star_conj]`.
+-/
 theorem stdH_vec (hok : s.Ok) {n : ℕ} (x y : Sp X.E n) :
     (letI := D.host.cmStar; stdH D.host.E n (vec s x) (vec s y)) = s.iE (hStd X.E n x y) := by
   show ∑ i, (letI := D.host.cmStar; star (s.iE (x i))) * s.iE (y i) = s.iE (∑ i, star (x i) * y i)
@@ -101,6 +147,23 @@ theorem stdH_vec (hok : s.Ok) {n : ℕ} (x y : Sp X.E n) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_mul, hok.2, star_conj]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hN.1.fg`. Establish `h : s.lat N = Submodule.span (𝓞 D.host.E) (vec s '' (S : Set (Sp X.E n)))`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `vec_span s _ (by rw [hS]; exact hx)`. Use `Submodule.span_mono (Set.image_mono ?_)` and prove the remaining obligations. Rewrite using `[← hS]`. Conclude with `Submodule.subset_span`.
+
+Rewrite using `[h]`. Conclude with `Submodule.fg_span (S.finite_toSet.image _)`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `h1 : (fun i => s.iE.symm (y i) : Sp X.E n) ∈ Submodule.span X.E (N : Set (Sp X.E n))`.
+
+Rewrite using `[hN.1.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Establish `h2` using `vec_spanE s _ h1`. Rewrite `h2` using `[vec_surj s]`. Conclude with `Submodule.span_mono (fun z hz => Submodule.subset_span hz) h2`.
+
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Take `⟨y₀, hy₀, rfl⟩` from `(mem_lat s N y).1 hy`. Take `⟨x₀, hx₀, rfl⟩` from `(mem_lat s N x).1 hx`.
+
+Rewrite using `[stdH_vec s hok, int_iff s]`. Establish `h1 : y₀ ∈ dual (hStd X.E n) N` using `by rw [hN.2]; exact hy₀`. Conclude with `Submodule.mem_one.1 ((mem_dual N y₀).1 h1 x₀ hx₀)`. Introduce `h`. Use `(mem_lat s N y).2 ⟨fun i => s.iE.symm (y i), ?_, vec_surj s y⟩` and prove the remaining obligations.
+
+Establish `hd : IsUnimodular (hStd X.E n) N` using `hN.2`. Unfold `IsUnimodular at hd`. Rewrite using `[← hd, mem_dual]`. Introduce `x₀ hx₀`. Establish `h1` using `h (vec s x₀) ((mem_lat s N _).2 ⟨x₀, hx₀, rfl⟩)`.
+
+Rewrite `h1` using `[← vec_surj s y, stdH_vec s hok, int_iff s]`. Conclude with `Submodule.mem_one.2 h1`.
+-/
 theorem sd_lat (hok : s.Ok) {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} (hN : IsSdLat N) :
     (letI := D.host.cmStar; IsSDLat D.host.E n (s.lat N)) := by
   refine ⟨?_, ?_, ?_⟩
@@ -143,6 +206,11 @@ theorem sd_lat (hok : s.Ok) {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} (hN 
 def matOf {n : ℕ} (γ : Sp X.E n ≃ₗ[X.E] Sp X.E n) : Matrix (Fin n) (Fin n) D.host.E :=
   fun i j => s.iE (γ (Pi.single j 1) i)
 
+/- English proof (translation)
+Establish `h : x = ∑ j, x j • (Pi.single j 1 : Sp X.E n)`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [h, map_sum]`. Rewrite using `[Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+-/
 theorem apply_eq_sum {n : ℕ} (γ : Sp X.E n ≃ₗ[X.E] Sp X.E n) (x : Sp X.E n) (i : Fin n) :
     γ x i = ∑ j, γ (Pi.single j 1) i * x j := by
   have h : x = ∑ j, x j • (Pi.single j 1 : Sp X.E n) := by
@@ -153,6 +221,9 @@ theorem apply_eq_sum {n : ℕ} (γ : Sp X.E n ≃ₗ[X.E] Sp X.E n) (x : Sp X.E 
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show ∑ j, s.iE (γ (Pi.single j 1) i) * s.iE (x j) = s.iE (γ x i)`. Rewrite using `[apply_eq_sum γ x i, map_sum]`. Simplify using `only [map_mul]`.
+-/
 theorem matOf_mulVec {n : ℕ} (γ : Sp X.E n ≃ₗ[X.E] Sp X.E n) (x : Sp X.E n) :
     (matOf s γ).mulVec (vec s x) = vec s (γ x) := by
   funext i
@@ -160,6 +231,11 @@ theorem matOf_mulVec {n : ℕ} (γ : Sp X.E n ≃ₗ[X.E] Sp X.E n) (x : Sp X.E 
   rw [apply_eq_sum γ x i, map_sum]
   simp only [map_mul]
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_lat s]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨x, hx, rfl⟩` from `(mem_lat s N w).1 hw`.
+
+Conclude with `⟨γ x, ⟨x, hx, rfl⟩, (matOf_mulVec s γ x).symm⟩`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨vec s x, (mem_lat s N _).2 ⟨x, hx, rfl⟩, matOf_mulVec s γ x⟩`.
+-/
 theorem smulLat_matOf {n : ℕ} (γ : Sp X.E n ≃ₗ[X.E] Sp X.E n) (N : Submodule (𝓞 X.E) (Sp X.E n)) :
     (letI := D.host.cmStar; SDLat.smulLat (matOf s γ) (s.lat N)) = s.lat (gmap γ N) := by
   ext y
@@ -171,6 +247,9 @@ theorem smulLat_matOf {n : ℕ} (γ : Sp X.E n ≃ₗ[X.E] Sp X.E n) (N : Submod
   · rintro ⟨_, ⟨x, hx, rfl⟩, rfl⟩
     exact ⟨vec s x, (mem_lat s N _).2 ⟨x, hx, rfl⟩, matOf_mulVec s γ x⟩
 
+/- English proof (translation)
+Establish `h : ∑ l, star (γ.1 (Pi.single i 1) l) * γ.1 (γ.1.symm (Pi.single k 1)) l = ∑ l, star ((Pi.single i 1 : Sp X.E n) l) * γ.1.symm (Pi.single k 1) l` using `γ.2 (Pi.single i 1) (γ.1.symm (Pi.single k 1))`. Rewrite `h` using `[LinearEquiv.apply_symm_apply]`. Simplify `h.symm` using `[Pi.single_apply, apply_ite star]`.
+-/
 theorem symm_single {n : ℕ} (γ : UF X.E n) (i k : Fin n) :
     γ.1.symm (Pi.single k 1) i = star (γ.1 (Pi.single i 1) k) := by
   have h : ∑ l, star (γ.1 (Pi.single i 1) l) * γ.1 (γ.1.symm (Pi.single k 1)) l =
@@ -178,6 +257,13 @@ theorem symm_single {n : ℕ} (γ : UF X.E n) (i k : Fin n) :
   rw [LinearEquiv.apply_symm_apply] at h
   simpa [Pi.single_apply, apply_ite star] using h.symm
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h1` using `stdH_vec s hok (γ.1 (Pi.single i 1)) (γ.1 (Pi.single j 1))`. Rewrite `h1` using `[γ.2]`.
+
+Establish `h2 : hStd X.E n (Pi.single i 1) (Pi.single j 1) = if i = j then 1 else 0` using `by show ∑ l, star ((Pi.single i 1 : Sp X.E n) l) * (Pi.single j 1 : Sp X.E n) l = _`. Simplify using `[Pi.single_apply, apply_ite star, eq_comm]`. Rewrite `h1` using `[h2]`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `have h3 : s.iE (if i = j then 1 else 0) = if i = j then 1 else 0 := by split_ifs <;> simp`.
+
+Rewrite `h1` using `[h3]`. Conclude with `h1`.
+-/
 theorem matOf_unitary (hok : s.Ok) {n : ℕ} (γ : UF X.E n) :
     letI := D.host.cmStar
     matOf s γ.1 ∈ Matrix.unitaryGroup (Fin n) D.host.E := by
@@ -195,6 +281,15 @@ theorem matOf_unitary (hok : s.Ok) {n : ℕ} (γ : UF X.E n) :
   rw [h3] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `D X s cc δ B χ cD a b hok hE ha hb γ γ' N N' hN hN' z`. Use `letI := D.host.cmStar`. Establish `h` using `hE.1 a b ⟨s.lat N, sd_lat s hok hN⟩ ⟨s.lat N', sd_lat s hok hN'⟩ ha hb ⟨matOf s γ.1, matOf_unitary s hok γ⟩ ⟨matOf s γ'.1, matOf_unitary s hok γ'⟩`. Establish `h1` using `smulLat_matOf s γ.1 N`. Establish `h2` using `smulLat_matOf s γ'.1 N'`.
+
+Use `show B.eNat χ a b (s.lat (gmap γ.1 N)) (s.lat (gmap γ'.1 N')) (fun τ => z (s.iT.symm τ)) = B.eNat χ a b (s.lat N) (s.lat N') (fun τ => (ambOf s B χ cD : Amb X).pullV a b γ.1 γ'.1 z (s.iT.symm τ))`. Rewrite using `[← h1, ← h2]`. Use `(congrFun h _).symm.trans ?_` and prove the remaining obligations. Use `show B.eNat χ a b (s.lat N) (s.lat N') _ = _`. Use `congr 1`.
+
+Use function extensionality and compare the values at `τ i j`. Use `show ∑ l, (∑ k, star (TaylorLogMetric.embT D τ (s.iE (γ'.1 (Pi.single i 1) k))) * z (s.iT.symm τ) k l) * TaylorLogMetric.embT D τ (s.iE (γ.1 (Pi.single j 1) l)) = ∑ k : Fin b, ∑ l : Fin a, s.σ₀ (X.emb (s.iT.symm τ) (γ'.1.symm (Pi.single k 1) i)) * z (s.iT.symm τ) k l * s.σ₀ (X.em …`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hok.1, hok.1, Equiv.apply_symm_apply, symm_single, hok.2, show ∀ x, TaylorLogMetric.embT D τ (D.host.conj x) = starRingEnd ℂ (TaylorLogMetric.embT D τ x) from D.host.conjE_apply (TaylorLogMetric.embT D τ)]`. Both sides reduce to the same expression.
+-/
 theorem vacEq_ambOf : ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Formalism.L2.Ker.Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (a b : ℕ), s.Ok → B.EqP χ → Even a → Even b → VacEq (ambOf s B χ cD) a b := by
   intro D X s cc δ B χ cD a b hok hE ha hb γ γ' N N' hN hN' z
   letI := D.host.cmStar

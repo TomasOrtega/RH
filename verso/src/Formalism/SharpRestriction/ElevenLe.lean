@@ -137,6 +137,9 @@ def SizesAt : Prop :=
   SizeLstar L ∧ SizeDel L ∧ SizeW L ∧ SizeBm L ∧ SizeXpp L ∧ SizeG L ∧ SizePde L ∧
   SizeWords L ∧ 11 ≤ D.host.splitBound
 
+/- English proof (translation)
+The claim follows from `S.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2`.
+-/
 theorem SizesAt.eleven_le {D : D7} {L : SizeData₂ D} (S : SizesAt L) : 11 ≤ D.host.splitBound :=
   S.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2
 

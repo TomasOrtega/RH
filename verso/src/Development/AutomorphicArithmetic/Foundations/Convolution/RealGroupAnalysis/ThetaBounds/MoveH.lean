@@ -8,6 +8,13 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D O W M π f hf φ hφ w h`. Take `⟨G, c, hP, hG, hD⟩` from `curveH F E D O W w`. Establish `hF` using `opsFock F E D O`. Establish `hh : O.h w φ ∈ Fock D.δ`. Establish `h2 : O.h w φ = (∑ i, O.x w i (O.d w i φ)) + (2 : ℂ) • φ`.
+
+Simplify using `[Fo.Ops.h, LinearMap.sum_apply, two_smul, LinearMap.add_apply, Module.End.mul_apply, one_add_one_eq_two.symm, add_mul, Module.End.one_apply]`. Rewrite using `[add_smul, one_smul]`. Rewrite using `[h2]`. Conclude with `add_mem (sum_mem fun i _ => (hF w i _ (hF w i φ hφ).2).1) (Submodule.smul_mem _ _ hφ)`. Establish `hm` using `congrFun (mov F E D W M π f hf φ hφ (O.h w φ) hh G c _ hP hG (hD φ)) h`.
+
+Rewrite using `[hm, map_sub, LinearMap.sub_apply]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.moveH :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Fo.Ops F) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), MoveH O W M π := by
   intro F E _ _ _ _ _ _ _ D O W M π f hf φ hφ w h

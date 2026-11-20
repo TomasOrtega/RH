@@ -17,6 +17,11 @@ open IsDedekindDomain NumberField
 
 namespace PositivityTheory.Rg.Rsw.L.LApproxId
 
+/- English proof (translation)
+Establish `: (Measure.pi fun _ : ι => ν).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Take `⟨c, hc, hmap⟩` from `haar_map_eq Θ lam (Measure.pi fun _ : ι => ν)`. Establish `hemb : MeasurableEmbedding Θ` using `Θ.toHomeomorph.measurableEmbedding`. Use `⟨c, hc, fun f => ⟨?_, fun hf => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hemb.integral_map (μ := lam) (fun v : ι → K => ∏ i, f i (v i))`.
+
+Rewrite using `[← h1, hmap, integral_smul_nnreal_measure, integral_fintype_prod_eq_prod, NNReal.smul_def, Complex.real_smul]`. Establish `h2 : Integrable (fun v : ι → K => ∏ i, f i (v i)) (lam.map Θ)`. Rewrite using `[hmap]`. Conclude with `(Integrable.fintype_prod (μ := fun _ => ν) hf).smul_measure ENNReal.coe_ne_top`. Conclude with `hemb.integrable_map_iff.mp h2`.
+-/
 theorem transfer {H K ι : Type} [AddCommGroup H] [TopologicalSpace H] [IsTopologicalAddGroup H] [MeasurableSpace H]
     [BorelSpace H] [AddCommGroup K] [TopologicalSpace K] [IsTopologicalAddGroup K] [LocallyCompactSpace K]
     [SecondCountableTopology K] [T2Space K] [MeasurableSpace K] [BorelSpace K] [Fintype ι]
@@ -36,6 +41,9 @@ theorem transfer {H K ι : Type} [AddCommGroup H] [TopologicalSpace H] [IsTopolo
 
 open GlobalTheory.CompanionTheory.SiegelND.Coef.TestN in
 
+/- English proof (translation)
+Break down `i with i | q` into its components or cases. Simplify using `only [hCo, Sum.elim_inl, h, Matrix.smul_apply, smul_eq_mul, ← Algebra.smul_def, map_smul]`. Conclude with `(mul_smul_comm _ _ _).symm`. Simplify using `only [hCo, Sum.elim_inr, h, Matrix.smul_apply, smul_eq_mul, ← Algebra.smul_def, map_smul, Finsupp.smul_apply]`.
+-/
 theorem hCo_smul {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R] (σ : E →ₐ[F] E)
     {d n : ℕ} (b : Module.Basis (Fin d) F E) (r : R) (X X' : HermR R σ n)
     (h : X'.1 = algebraMap R (R ⊗[F] E) r • X.1) (i : Idx n d) : hCo R σ b X' i = r * hCo R σ b X i := by
@@ -45,6 +53,9 @@ theorem hCo_smul {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [
   · simp only [hCo, Sum.elim_inr, h, Matrix.smul_apply, smul_eq_mul, ← Algebra.smul_def, map_smul,
       Finsupp.smul_apply]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, AddChar.map_add_eq_mul, ih]`.
+-/
 theorem char_sum {A ι : Type} [AddCommMonoid A] (ψ : AddChar A ℂ) (s : Finset ι) (a : ι → A) :
     ψ (∑ i ∈ s, a i) = ∏ i ∈ s, ψ (a i) := by
   classical

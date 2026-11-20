@@ -3,5 +3,8 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RankTwoDimensionFormula
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RankTwoDimensionFormula.StabBoundHolds
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RankTwoDimensionFormula.IndexGeFull
 
+/- English proof (translation)
+The claim follows from `PI.UnitaryDimensionFormula.dimFormC_of_three PI.UnitaryDimensionFormula.transport_holds PI.UnitaryDimensionFormula.stabBound_holds PI.UnitaryDimensionFormula.indexGe`.
+-/
 theorem kappa_off_diagonal_dim_form_C : Formalism.L2.SG.KappaOffDiagonal.DimFormC :=
   PI.UnitaryDimensionFormula.dimFormC_of_three PI.UnitaryDimensionFormula.transport_holds PI.UnitaryDimensionFormula.stabBound_holds PI.UnitaryDimensionFormula.indexGe

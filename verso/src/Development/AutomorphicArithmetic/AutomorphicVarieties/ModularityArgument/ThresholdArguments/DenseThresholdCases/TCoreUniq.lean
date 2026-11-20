@@ -9,6 +9,11 @@ section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Polynomial ValuativeRel IsLocalRing GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V UpperTheory.V.Hi
 open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `IsHausdorff.eq_iff_smodEq (I := I).2 fun N => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Use `letI : TopologicalSpace (R ⧸ I ^ N) := ⊥`. Use `haveI : DiscreteTopology (R ⧸ I ^ N) := ⟨rfl⟩`.
+
+Conclude with `congrFun (Continuous.ext_on hS (hf N).continuous (hg N).continuous fun y hy => by simp only [h y hy]) x`.
+-/
 private theorem cu_ext {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (I : Ideal R) [IsHausdorff I R] {S : Set Γ}
     (hS : Dense S) {f g : Γ → R} (hf : Alg.AdicCont I f) (hg : Alg.AdicCont I g) (h : ∀ x ∈ S, f x = g x) : f = g := by
   funext x
@@ -17,6 +22,11 @@ private theorem cu_ext {Γ R : Type} [TopologicalSpace Γ] [CommRing R] (I : Ide
   letI : TopologicalSpace (R ⧸ I ^ N) := ⊥
   haveI : DiscreteTopology (R ⧸ I ^ N) := ⟨rfl⟩
   exact congrFun (Continuous.ext_on hS (hf N).continuous (hg N).continuous fun y hy => by simp only [h y hy]) x
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j using WellFoundedLT.induction with`. Consider the case `ind j ih`. Establish `hj : j ∈ Finset.univ.filter fun i => i ≤ j` using `by simp`. Establish `e` using `h j`.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ hj, ← Finset.mul_prod_erase _ g hj, Finset.prod_congr rfl (g := g) fun i hi => ih i (by`. Rewrite `hi` using `[Finset.mem_erase, Finset.mem_filter]`. Conclude with `lt_of_le_of_ne hi.2.2 hi.1)] at e`. Conclude with `mul_right_cancel e`.
+-/
 private theorem cu_prod {n : ℕ} {M : Type} [CommGroup M] (f g : Fin n → M)
     (h : ∀ j, ∏ i with i ≤ j, f i = ∏ i with i ≤ j, g i) : ∀ j, f j = g j := by
   intro j
@@ -29,6 +39,11 @@ private theorem cu_prod {n : ℕ} {M : Type} [CommGroup M] (f g : Fin n → M)
         rw [Finset.mem_erase, Finset.mem_filter] at hi
         exact lt_of_le_of_ne hi.2.2 hi.1)] at e
     exact mul_right_cancel e
+/- English proof (translation)
+Take `⟨p, hp⟩` from `ha (unif k)`. Establish `e` using `h1 (s * (p ^ ord k (a s))⁻¹) ⟨_, GlAx.val_div_ord (a s)⟩ (by`. Rewrite using `[map_mul, map_inv, map_zpow, hp]`. Conclude with `(div_eq_mul_inv _ _).symm)`. Rewrite `e` using `[map_mul, map_mul, map_inv, map_inv, map_zpow, map_zpow, h2 p hp]`.
+
+Conclude with `mul_right_cancel e`.
+-/
 private theorem cu_gen {W M k : Type} [Group W] [Group M] [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a : W →* kˣ) (ha : Function.Surjective a) (f g : W →* M)
     (h1 : ∀ s (y : Uo k), a s = y → f s = g s) (h2 : ∀ s, a s = unif k → f s = g s) (s : W) : f s = g s := by
@@ -38,6 +53,13 @@ private theorem cu_gen {W M k : Type} [Group W] [Group M] [Field k] [ValuativeRe
     exact (div_eq_mul_inv _ _).symm)
   rw [map_mul, map_mul, map_inv, map_inv, map_zpow, map_zpow, h2 p hp] at e
   exact mul_right_cancel e
+/- English proof (translation)
+Introduce `_ L Ω _ _ _ _ _ l _ n c H hA A _ _ _ θ _ a K _ _ D ψ hU D' ψ' hU'`. Use `⟨UpperTheory.V.CA.d_gext D' D fun g i _ _ => congrFun (cu_ext _ hA.dense (hU'.cont i) (hU.cont i) ?_) g, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, B, σ, hB, hσ, rfl⟩`. Simplify using `only [W.GDet.lam, hU.frob ⟨w, hw⟩ B σ hB hσ, hU'.frob ⟨w, hw⟩ B σ hB hσ]`. Use function extensionality and compare the values at `v i`.
+
+Establish `hd : DenseRange (Subgroup.inclusion (Weil_le_Dec (H.ovr v)))` using `UpperTheory.weil_group_dense_in_galois_group L Ω _ _ (H.ovr v)`. Use `MonoidHom.ext fun g => Units.ext (congrFun (cu_ext _ hd (hU'.ψ_cont v i) (hU.ψ_cont v i) ?_) g)` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Use `congrArg Units.val (cu_gen (H.art v) (hA.art_spec v).surj ((ψ' v i).comp _) ((ψ v i).comp _) (fun s y hy => ?_) (fun s hs => ?_) s)` and prove the remaining obligations. Establish `e` using `(hU'.ψ_unit v i s (Subgroup.inclusion (Weil_le_Dec (H.ovr v)) s) y rfl hy)`.
+
+Establish `e'` using `(hU.ψ_unit v i s (Subgroup.inclusion (Weil_le_Dec (H.ovr v)) s) y rfl hy)`. Conclude with `mul_right_cancel (inv_injective (Units.ext ((Units.eq_inv_of_mul_eq_one_left e).symm.trans (Units.eq_inv_of_mul_eq_one_left e'))))`. Conclude with `mul_right_cancel (cu_prod _ _ (fun j => Units.ext ((hU'.ψ_unif v j s (Subgroup.inclusion (Weil_le_Dec (H.ovr v)) s) rfl hs).trans (hU.ψ_unif v j s (Subgroup.inclusion (Weil_le_Dec (H.ovr v)) s) rfl hs).symm)) i)`.
+-/
 theorem UpperTheory.V.Hi.core_unique_of_axioms_weight_char :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →
     ∀ (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ), H.IsWt θ →

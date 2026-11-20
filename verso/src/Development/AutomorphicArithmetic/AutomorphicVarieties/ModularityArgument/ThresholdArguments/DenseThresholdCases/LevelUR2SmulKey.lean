@@ -14,6 +14,11 @@ open UpperTheory.V.HV (Coef)
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
+/- English proof (translation)
+Establish `hle : Y₀ ≤ Y` using `fun f hf => (hm f).2 hf`. Take `⟨φ, h1, h2⟩` from `levelUR2HeckeMap A M M ι₀ ι Y₀ Y op₀ op (Submodule.inclusion hle) j (Submodule.inclusion_injective hle) fun i y => by`. Rewrite using `[hop]`. Both sides reduce to the same expression. Use `⟨φ, h1, fun t y y₀ e => ?_⟩` and prove the remaining obligations.
+
+Establish `e' : y = Submodule.inclusion hle y₀` using `Subtype.ext e`. Rewrite using `[e', ← h2]`. Both sides reduce to the same expression.
+-/
 private theorem sk_hecke {A M ι ι₀ : Type} [CommRing A] [AddCommGroup M] [Module A M] (Y Y₀ : Submodule A M)
     (op : ι → Module.End A M) (op₀ : ι₀ → Module.End A M) [h : Fact (CommOn Y op)] [h₀ : Fact (CommOn Y₀ op₀)] (j : ι → ι₀)
     (hop : ∀ i, op i = op₀ (j i)) (hm : ∀ f, f ∈ Y ↔ f ∈ Y₀) :
@@ -29,9 +34,15 @@ private theorem sk_hecke {A M ι ι₀ : Type} [CommRing A] [AddCommGroup M] [Mo
   have e' : y = Submodule.inclusion hle y₀ := Subtype.ext e
   rw [e', ← h2]
   rfl
+/- English proof (translation)
+Rewrite using `[Submodule.ext hm]`.
+-/
 private theorem sk_bot {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {Y Y₀ : Submodule A M}
     (hm : ∀ f, f ∈ Y ↔ f ∈ Y₀) : Y = ⊥ ↔ Y₀ = ⊥ := by
   rw [Submodule.ext hm]
+/- English proof (translation)
+Establish `h : y = 0` using `Subtype.ext ((Submodule.eq_bot_iff _).1 hY _ y.2)`. Establish `h₀ : y₀ = 0` using `Subtype.ext (e.symm.trans (congrArg Subtype.val h))`. Rewrite using `[h, h₀, hν, map_zero]`. Both sides reduce to the same expression.
+-/
 private theorem sk_zero {A M R : Type} [CommRing A] [AddCommGroup M] [Module A M] {Y Y₀ : Submodule A M}
     (hY : Y = ⊥) (ν : R → Y → M) (hν : ∀ t, ν t 0 = 0) (μ : Module.End A Y₀) (t : R) (y : Y) (y₀ : Y₀) (e : y.1 = y₀.1) :
     ν t y = (μ y₀).1 := by
@@ -39,6 +50,13 @@ private theorem sk_zero {A M R : Type} [CommRing A] [AddCommGroup M] [Module A M
   have h₀ : y₀ = 0 := Subtype.ext (e.symm.trans (congrArg Subtype.val h))
   rw [h, h₀, hν, map_zero]
   rfl
+/- English proof (translation)
+Take `rfl : φ = Φ.toRingHom` from `RingHom.ext fun x => (hφ x).symm`. Establish `e : Φ.comp f = f₀.comp β`. Use `hu _ _ ?_ fun v i => ?_` and prove the remaining obligations. Establish `e1 : D.map (Φ.comp f).toRingHom = (D.map f.toRingHom).map Φ.toRingHom` using `((CA.d_gmap D).2.1 _ _).symm`. Establish `e2 : D.map (f₀.comp β).toRingHom = (D.map β.toRingHom).map f₀.toRingHom` using `((CA.d_gmap D).2.1 _ _).symm`.
+
+Rewrite using `[e1, e2, h.1, hD]`. Both sides reduce to the same expression. Establish `e` using `h.2 v i`. Rewrite `e` using `[← hψ]`. Conclude with `e`.
+
+Conclude with `DFunLike.congr_fun e t`.
+-/
 private theorem sk_comp {O : Type} [CommRing O] {R R₀ T T₀ : Type} [CommRing R] [Algebra O R] [CommRing R₀] [Algebra O R₀]
     [CommRing T] [Algebra O T] [CommRing T₀] [Algebra O T₀] (f : R →ₐ[O] T) (f₀ : R₀ →ₐ[O] T₀) (β : R →ₐ[O] R₀)
     (Φ : T →ₐ[O] T₀) (φ : T →+* T₀) (hφ : ∀ x, Φ x = φ x) {n : ℕ} {G G₀ V : Type} {Γ : V → Type} [Group G] [Group G₀]
@@ -62,6 +80,13 @@ private theorem sk_comp {O : Type} [CommRing O] {R R₀ T T₀ : Type} [CommRing
       exact e
   exact DFunLike.congr_fun e t
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `hN l _ L Ω _ _ _ _ _ _ s n hn V₀ V Q₀ Q c m τ₀ A _ _ _ θ hθ a K₀ K p hp hps hpr j hj1 hj2 θ' a' hθ' hθθ ha hop hm R₀ R _ _ _ _ D₀ ψ₀ D ψ β hD hψ hu μ hμ ν hν0 hν t y y₀ hy`. Distinguish the cases in `hne : (hset Q τ₀).MK θ' a' K = ⊥`. Conclude with `sk_zero hne ν hν0 (μ (β t)) t y y₀ hy`. Establish `hAx` using `_root_.UpperTheory.V.Hi.axU_s hN l L Ω s n hn V Q c m τ₀`. Use `haveI hF : Fact (CommOn ((hset Q τ₀).MK θ' a' K) ((hset Q τ₀).op A)) := ⟨((hiComm L Ω l n c _ hAx A θ' hθ' K).2.2.2 a').1⟩`.
+
+Take `⟨hCO, -⟩` from `hiAlg L Ω l n c _ hAx A θ' hθ' a' K hne`. Take `⟨f, hf, hνf⟩` from `hν`. Take `⟨hF₀, hCO₀, f₀, hf₀, hμf⟩` from `hμ.resolve_left fun h => hne ((sk_bot hm).2 h)`. Take `⟨φ, hg, hφ⟩ : ∃ φ : (hset Q τ₀).TK θ' a' K →ₐ[A] (hset Q₀ τ₀).TK θ a K₀, (∀ i, φ ((hset Q τ₀).gen θ' a' K i) = (hset Q₀ τ₀).gen θ a K₀ (j i)) ∧ ∀ (t : (hset Q τ₀).TK θ' a' K) (y : (hset Q τ₀).MK θ' a' K) (y₀ : (hset Q₀ τ₀).MK θ a K₀), y.1 = y₀.1 → ((t : Module.End A ((hset Q τ₀). …` from `sk_hecke _ _ _ _ (h := hF) (h₀ := hF₀) j hop hm`. Establish `hB` using `_root_.UpperTheory.V.Hi.levelUR2BaseEq_alt hN l L Ω s n hn V₀ V Q₀ Q c m τ₀ A θ hθ a K₀ K p hp hps hpr j hj1 hj2 θ' a' hθ' hθθ ha _ _ hf₀ _ _ hf φ hg`.
+
+Take `⟨Φ, hΦ⟩ : ∃ Φ : (hset Q τ₀).TK θ' a' K →ₐ[c.O] (hset Q₀ τ₀).TK θ a K₀, ∀ x, Φ x = φ x` from `⟨φ.restrictScalars c.O, fun _ => rfl⟩`. Establish `e` using `sk_comp f f₀ β Φ φ.toRingHom hΦ p D ψ D₀ ψ₀ hD hψ (hu _) hB t`. Use `(hνf t y).trans ((hφ (f t) y y₀ hy).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun u : Module.End A ((hset Q₀ τ₀).MK θ a K₀) => (u y₀).1) ((congrArg Subtype.val e).trans (hμf (β t)).symm)`.
+-/
 theorem UpperTheory.V.Hi.levelUR2SmulKey_alt :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n → ∀ (V₀ V : s.Lev) (Q₀ : QData V₀) (Q : QData V) (c : Coef l) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O) (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : (hset Q₀ τ₀).X.I.T →* Aˣ), (hset Q₀ τ₀).IsWt θ →  ∀ (a : (hset Q₀ τ₀).Op → c.O) (K₀ : (hset Q₀ τ₀).Lev) (K : (hset Q τ₀).Lev), ∀ (p : V.frame.G₀ →* V₀.frame.G₀), Continuous p → Function.Surjective p → (∀ g, p (V.pr g) = V₀.pr g) → ∀ j : (hset Q τ₀).Op → (hset Q₀ τ₀).Op, (∀ x : Vl l L × Fin n, j (.inr x) = .inr x) → (∀ (w : (hset Q τ₀).Wp) (k : Fin n), ∃ hw, j (.inl (w, k)) = .inl (⟨w.1, hw⟩, k)) → ∀ (θ' : (hset Q τ₀).X.I.T →* Aˣ) (a' : (hset Q τ₀).Op → c.O), (hset Q τ₀).IsWt θ' → @Eq ((hset Q τ₀).X.I.T →* Aˣ) θ' θ → (∀ i, a' i = a (j i)) → (∀ i, (hset Q τ₀).op A i = (hset Q₀ τ₀).op A (j i)) → (∀ f : (hset Q₀ τ₀).X.Fn A m, f ∈ (hset Q τ₀).MK θ' a' K ↔ f ∈ (hset Q₀ τ₀).MK θ a K₀) → ∀ (R₀ R : Type) [CommRing R₀] [Algebra c.O R₀] [CommRing R] [Algebra c.O R] (D₀ : W.GDet n R₀ V₀.frame.G₀) (ψ₀ : ∀ v : Vl l L, Fin n → Dec (F := L) (s.A v.1) →* R₀ˣ) (D : W.GDet n R V.frame.G₀) (ψ : ∀ v : Vl l L, Fin n → Dec (F := L) (s.A v.1) →* Rˣ) (β : R →ₐ[c.O] R₀), D.map β.toRingHom = D₀.comap p → (∀ v i, W.pushCh β.toRingHom (ψ v i) = ψ₀ v i) → (∀ (T : Type) [CommRing T] [Algebra c.O T] [Alg.IsCO c.O T] (f g : R →ₐ[c.O] T), D.map f.toRingHom = D.map g.toRingHom → (∀ v i, W.pushCh f.toRingHom (ψ v i) = W.pushCh g.toRingHom (ψ v i)) → f = g) → ∀ μ : R₀ →+* Module.End A ((hset Q₀ τ₀).MK θ a K₀), ((hset Q₀ τ₀).MK θ a K₀ = ⊥ ∨ ∃ (_ : Fact (CommOn ((hset Q₀ τ₀).MK θ a K₀) ((hset Q₀ τ₀).op A))) (_ : Alg.IsCO c.O ((hset Q₀ τ₀).TK θ a K₀)) (f : R₀ →ₐ[c.O] (hset Q₀ τ₀).TK θ a K₀), (hset Q₀ τ₀).IsMap θ a K₀ D₀ ψ₀ f ∧ ∀ t, μ t = (f t : Module.End A ((hset Q₀ τ₀).MK θ a K₀))) → ∀ ν : R → (hset Q τ₀).MK θ' a' K → (hset Q₀ τ₀).X.Fn A m, (∀ t, ν t 0 = 0) → (∀ [Fact (CommOn ((hset Q τ₀).MK θ' a' K) ((hset Q τ₀).op A))] [Alg.IsCO c.O ((hset Q τ₀).TK θ' a' K)], ∃ f : R →ₐ[c.O] (hset Q τ₀).TK θ' a' K, (hset Q τ₀).IsMap θ' a' K D ψ f ∧ ∀ t y, ν t y = ((f t : Module.End A ((hset Q τ₀).MK θ' a' K)) y).1) → ∀ t (y : (hset Q τ₀).MK θ' a' K) (y₀ : (hset Q₀ τ₀).MK θ a K₀), y.1 = y₀.1 → ν t y = (μ (β t) y₀).1 := by
   intro hN l _ L Ω _ _ _ _ _ _ s n hn V₀ V Q₀ Q c m τ₀ A _ _ _ θ hθ a K₀ K p hp hps hpr j hj1 hj2 θ' a' hθ' hθθ ha hop hm

@@ -14,6 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.GeoLevel
 
+/- English proof (translation)
+Take `⟨a₀, b₀, c₀⟩` from `h₀`. Take `⟨a, b, c⟩` from `h`. Establish `e : finR V hr (κ₀⁻¹ * κ) = (finR V hr κ₀)⁻¹ * finR V hr κ` using `by rw [map_mul, map_inv]`. Establish `hb : finR V hr (κ₀⁻¹ * κ) ∈ Formalism.L2.DIV.St β`. Rewrite using `[e]`.
+
+Conclude with `mul_mem (inv_mem b₀) b`. Use `⟨mul_mem (inv_mem a₀) a, hb, fun w => ?_⟩` and prove the remaining obligations. Establish `e2 : (⟨finR V hr (κ₀⁻¹ * κ), hb⟩ : Formalism.L2.DIV.St β) = (⟨finR V hr κ₀, b₀⟩ : Formalism.L2.DIV.St β)⁻¹ * ⟨finR V hr κ, b⟩` using `Subtype.ext e`. Rewrite using `[e2, map_mul, map_inv, c₀, c, inv_mul_cancel]`. Both sides reduce to the same expression.
+-/
 theorem isLift_inv_mul {D : D7} {V : HSp D} {r : ℕ} {hr : V.rank = r} {β : GL (Fin r) (EAf D)}
     {Pg : Finset (Formalism.L2.DIV.Pl D.host.E)} {g : Formalism.L2.DIV.G0 Pg r} {κ₀ κ : GA D V}
     (h₀ : IsLift V hr β Pg g κ₀) (h : IsLift V hr β Pg g κ) : IsLift V hr β Pg 1 (κ₀⁻¹ * κ) := by
@@ -28,6 +33,9 @@ theorem isLift_inv_mul {D : D7} {V : HSp D} {r : ℕ} {hr : V.rank = r} {β : GL
   rw [e2, map_mul, map_inv, c₀, c, inv_mul_cancel]
   rfl
 
+/- English proof (translation)
+Use `((GlobalTheory.Member.AALev.congruences_agree D V k).2 M ⊤).1 (fun b _ z hz => hk _ ?_) a (by rwa [Submodule.top_smul])` and prove the remaining obligations. Rewrite `hz`, the goal using `[GlobalTheory.Member.AALev.latHat_eq]`. Conclude with `GlobalTheory.Member.AALev.hat_smul_int _ b hz`.
+-/
 theorem cong_latG_of_finCong {D : D7} {V : HSp D} {M : ℕ} {k : GA D V} (hk : FinCong V M k)
     {a : Fin V.rank → D.host.E} (ha : a ∈ latG V 1) :
     ∃ w ∈ latGHat V 1, (finHom V k).1 *ᵥ finVec V a - finVec V a = M • w := by
@@ -35,6 +43,13 @@ theorem cong_latG_of_finCong {D : D7} {V : HSp D} {M : ℕ} {k : GA D V} (hk : F
   rw [GlobalTheory.Member.AALev.latHat_eq] at hz ⊢
   exact GlobalTheory.Member.AALev.hat_smul_int _ b hz
 
+/- English proof (translation)
+Introduce `D H l V r hr β Pg hβ hPg hrad Dw ι₀ hι g`. Take `⟨κ₀, h₀⟩` from `GlobalTheory.T.level_group_lift_exists D H l V r hr β Pg hβ hPg g`. Take `⟨c1, c2⟩` from `GlobalTheory.T.level_lift_finite_congruence D H l V r hr β Pg hβ hPg`. Establish `hk₀` using `c1 g κ₀ h₀`. Take `⟨γ₀, hγ⟩` from `GlobalTheory.T.lattice_congruence_endomorphism D V Dw.La _ hι l.M (lt_of_lt_of_le (by norm_num) l.three_le) κ₀ hk₀`.
+
+Use `⟨γ₀, fun κ hκ a _ => ?_⟩` and prove the remaining obligations. Take `⟨w', hw', e'⟩` from `hγ a`. Take `⟨w, hw, e⟩` from `cong_latG_of_finCong (c2 hrad _ (isLift_inv_mul h₀ hκ)) (hι.2 ▸ LinearMap.mem_range_self _ a : (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ ι₀) a ∈ latG V 1)`. Use `⟨(finHom V κ₀).1 *ᵥ w + w', add_mem ((GlobalTheory.Member.AALev.congruences_agree D V κ₀).1.2 hk₀ w hw) hw', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(finHom V κ).1 *ᵥ finVec V ((LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ ι₀) a) - finVec V ((LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ ι₀) (γ₀ a)) = _`.
+
+Establish `e1 : (finHom V κ).1 = (finHom V κ₀).1 * (finHom V (κ₀⁻¹ * κ)).1`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel_left]`. Establish `e3 : (finHom V κ₀).1 *ᵥ (l.M • w) = l.M • (finHom V κ₀).1 *ᵥ w` using `map_nsmul (finHom V κ₀).1.mulVecLin l.M w`. Rewrite using `[nsmul_add, ← e', ← e3, ← e, Matrix.mulVec_sub, Matrix.mulVec_mulVec, ← e1, sub_add_sub_cancel]`.
+-/
 theorem exists_induces : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (l : Level H) (V : HSp D) (r : ℕ) (hr : V.rank = r) (β : GL (Fin r) (EAf D)) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)), IsLatBasis V hr β → (∀ w, w ∈ Pg ↔ l.Mb ≤ w.asIdeal) → l.Mb.IsRadical → ∀ (Dw : Datum H) (ι₀ : Dw.La →ₗ[𝓞 D.host.E] (Fin r → D.host.E)), LatEmb V (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ ι₀) → ∀ g : Formalism.L2.DIV.G0 Pg r, ∃ γ₀, Induces Dw l V hr ι₀ β Pg g γ₀ := by
   intro D H l V r hr β Pg hβ hPg hrad Dw ι₀ hι g
   obtain ⟨κ₀, h₀⟩ := GlobalTheory.T.level_group_lift_exists D H l V r hr β Pg hβ hPg g

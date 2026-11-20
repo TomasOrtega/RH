@@ -47,6 +47,11 @@ def indPull {P : Subgroup G} {Q : Subgroup H}
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use `⟨.mk (LinearEquiv.ofLinear (indPull φ' hφ' h) (indPull φ hφ h') ?_ ?_) fun g => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => ?_)) show f.1.1 (φ (φ' x)) = f.1.1 x` and prove the remaining obligations. Rewrite using `[h1]`. Use `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => ?_)) show f.1.1 (φ' (φ x)) = f.1.1 x` and prove the remaining obligations. Rewrite using `[h2]`.
+
+Use `LinearMap.ext fun f => Subtype.ext (Subtype.ext (funext fun x => ?_)) show f.1.1 (φ' x * g) = f.1.1 (φ' (x * φ g))` and prove the remaining obligations. Rewrite using `[map_mul, h2]`.
+-/
 theorem smInd_equiv_comp {P : Subgroup G} {Q : Subgroup H}
     {σ : Representation F P V} {τ : Representation F Q V} (φ : G →* H) (φ' : H →* G)
     (hφ : Continuous φ) (hφ' : Continuous φ') (h1 : ∀ x, φ (φ' x) = x) (h2 : ∀ x, φ' (φ x) = x)
@@ -72,11 +77,17 @@ open GlobalTheory.EmptyFirstBlock
 
 variable {R : Type} [CommRing R] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_pi fun i => continuous_pi fun j => continuous_apply_apply (ψ.symm i) (ψ.symm j))`.
+-/
 theorem continuous_reindexGL [TopologicalSpace R] (ψ : n ≃ n') :
     Continuous (reindexGL (R := R) ψ) :=
   Continuous.units_map _ (continuous_pi fun i => continuous_pi fun j =>
     continuous_apply_apply (ψ.symm i) (ψ.symm j))
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun i j => by simp [val_reindexGL])`.
+-/
 theorem reindexGL_symm_reindexGL (ψ : n ≃ n') (g : GL n R) :
     reindexGL ψ.symm (reindexGL ψ g) = g :=
   Units.ext (Matrix.ext fun i j => by simp [val_reindexGL])
@@ -84,6 +95,11 @@ theorem reindexGL_symm_reindexGL (ψ : n ≃ n') (g : GL n R) :
 variable {α : Type} {m : α → Type} [Fintype α] [LinearOrder α]
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
 
+/- English proof (translation)
+Use `⟨⟨reindexGL ψ p, mem_parab_iff.2 fun a b i j hab => ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[val_reindexGL, h, h]`. Conclude with `mem_parab_iff.1 p.2 a b i j hab`. Use function extensionality and compare the values at `a`. Use extensionality with `i j`.
+
+Use `show (reindexGL ψ (p : GL n R) : Matrix n' n' R) (e' ⟨a, i⟩) (e' ⟨a, j⟩) = ((p : GL n R) : Matrix n n R) (e ⟨a, i⟩) (e ⟨a, j⟩)`. Rewrite using `[val_reindexGL, h, h]`.
+-/
 theorem exists_parab_reindexGL {e : (Σ a, m a) ≃ n} {e' : (Σ a, m a) ≃ n'} (ψ : n ≃ n')
     (h : ∀ x, ψ.symm (e' x) = e x) (p : parab R e) :
     ∃ q : parab R e', (q : GL n' R) = reindexGL ψ p ∧ leviProj R e' q = leviProj R e p := by
@@ -98,6 +114,11 @@ theorem exists_parab_reindexGL {e : (Σ a, m a) ≃ n} {e' : (Σ a, m a) ≃ n'}
 
 end Blocks
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α _ _ m _ _ n n' _ _ _ _ e ψ W _ _ ρ`. Use `smInd_equiv_comp _ (GlobalTheory.EmptyFirstBlock.reindexGL (R := k) ψ.symm) (continuous_reindexGL ψ) (continuous_reindexGL ψ.symm) (reindexGL_symm_reindexGL ψ.symm) (reindexGL_symm_reindexGL ψ) (fun q => ?_) (fun p => ?_)` and prove the remaining obligations. Take `⟨p, hp, hl⟩` from `exists_parab_reindexGL (e' := e) ψ.symm (fun x => rfl) q`. Conclude with `⟨p, hp, congrArg (twist ρ (deltaHalf k m)) hl⟩`. Take `⟨q, hq, hl⟩` from `exists_parab_reindexGL (e' := e.trans ψ) ψ (fun x => by simp) p`.
+
+Conclude with `⟨q, hq, congrArg (twist ρ (deltaHalf k m)) hl⟩`.
+-/
 theorem parInd_reindex : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (α : Type) [Fintype α] [LinearOrder α] (m : α → Type) [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
     (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (e : (Σ a, m a) ≃ n) (ψ : n ≃ n')

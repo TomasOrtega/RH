@@ -12,6 +12,9 @@ noncomputable abbrev Obar : ValuationSubring (PadicAlgCl p) := (PadicAlgCl.value
 abbrev kbar : Type := IsLocalRing.ResidueField (Obar p)
 
 variable {p} in
+/- English proof (translation)
+Rewrite using `[Valuation.mem_valuationSubring_iff, ← NNReal.coe_le_coe, PadicAlgCl.valuation_coe]`. Both sides reduce to the same expression.
+-/
 theorem mem_Obar_iff {x : PadicAlgCl p} : x ∈ Obar p ↔ ‖x‖ ≤ 1 := by
   rw [Valuation.mem_valuationSubring_iff, ← NNReal.coe_le_coe, PadicAlgCl.valuation_coe]
   rfl

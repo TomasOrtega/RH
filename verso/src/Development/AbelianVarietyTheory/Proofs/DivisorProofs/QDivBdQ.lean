@@ -19,6 +19,11 @@ def bdQ (P : PolDat s Φ hm h0) (k : s.Comp) : Adl (cxSt D.what₂.LL) (Φ.C k).
       adlOf (Φ.C k) (fun _ => h0 k) (rootSym S.Dw (fun _ => false) none (DV.tauEmb D x.1) x.2))
     (fun o => o.elim (-1) fun x => -P.dirQ x.1 x.2) fun _ _ => 0
 
+/- English proof (translation)
+Establish `e (x : DV.Rt D.what₂.Tau N) : qDiv (adlOf (Φ.C k) (fun _ => h0 k) (rootSym S.Dw (fun _ => false) none (DV.tauEmb D x.1) x.2)) = 1 ⊗ₜ divOf (Φ.C k) (rootExp S x)`. Simplify using `[qDiv, adlOf, expo_rootSym]`. Rewrite using `[bdQ, qDiv_comb, Fintype.sum_option]`. Simplify using `only [Option.elim]`. Rewrite using `[PolDat.qDiv_ab]`.
+
+Simplify using `only [e, qL, PolDat.dirQ, TensorProduct.smul_tmul', smul_eq_mul, mul_one, neg_smul, one_smul, neg_sub, neg_neg, TensorProduct.neg_tmul, Finset.sum_neg_distrib, sub_neg_eq_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem qDiv_bdQ (P : PolDat s Φ hm h0) (k : s.Comp) : qDiv (bdQ P k) = 1 ⊗ₜ P.bd k := by
   have e (x : DV.Rt D.what₂.Tau N) : qDiv (adlOf (Φ.C k) (fun _ => h0 k)
       (rootSym S.Dw (fun _ => false) none (DV.tauEmb D x.1) x.2)) = 1 ⊗ₜ divOf (Φ.C k) (rootExp S x) := by

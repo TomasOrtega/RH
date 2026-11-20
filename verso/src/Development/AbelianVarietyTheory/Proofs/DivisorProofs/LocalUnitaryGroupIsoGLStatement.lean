@@ -9,6 +9,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open Formalism.L2.Host (aboveF)
 open Formalism.UG (IsUnifV qV)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SplitChart.chart | exact GlobalTheory.SplitChart.chart | (intros; apply GlobalTheory.SplitChart.chart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_unitary_group_iso_GL : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (Y : Spc F E n), IsCMExt F E σ → IsHermND σ Y.J → Y.L.IsLattice E →
     ∀ v : Pl F, IsSelfDualAt σ Y.Jᵀ Y.L v → ∀ K : Subgroup (UA σ Y.J), IsStab B K →
     ∀ (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)), IsSplitBasis t Y.L b →

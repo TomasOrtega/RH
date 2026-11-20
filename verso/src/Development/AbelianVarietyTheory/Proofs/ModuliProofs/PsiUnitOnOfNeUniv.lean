@@ -21,8 +21,14 @@ section Ext
 
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨W.inj, W.fin, W.unram⟩`.
+-/
 theorem isFinUnram_of (W : UnramExt V) : DVRSplitting.IsFinUnram V W.W := ⟨W.inj, W.fin, W.unram⟩
 
+/- English proof (translation)
+Use `h.2.1` as an intermediate fact. Rewrite using `[← h.map_maximalIdeal.2]`. Conclude with `isAdicComplete_map_of_finite (maximalIdeal V) W`.
+-/
 theorem complete_of (hV : IsAdicComplete (maximalIdeal V) V) {W : Type} [CommRing W] [IsDomain W]
     [IsDiscreteValuationRing W] [Algebra V W] (h : DVRSplitting.IsFinUnram V W) : IsAdicComplete (maximalIdeal W) W := by
   have := h.2.1
@@ -47,6 +53,23 @@ section Move
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
 
+/- English proof (translation)
+Introduce `j V _ hVU _ h`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `: IsLocalization.Away ϖ (FractionRing R)`. Use `(isLocalization_iff _ _).2 ⟨?_, fun z => ?_, fun {x y} e => ⟨1, by rw [IsFractionRing.injective R _ e]⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`.
+
+Conclude with `IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective R _)).2 (pow_ne_zero n hϖ.ne_zero))`. Take `⟨⟨a, b⟩, e⟩` from `IsLocalization.surj (nonZeroDivisors R) z`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero b.2) hϖ`. Use `⟨⟨a * (u⁻¹ : Rˣ), ⟨ϖ ^ n, n, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Establish `e₁ : ϖ ^ n = (b : R) * (u⁻¹ : Rˣ)` using `by rw [hu, _root_.mul_right_comm, Units.mul_inv, _root_.one_mul]`.
+
+Use `show z * algebraMap R _ (ϖ ^ n) = algebraMap R _ (a * (u⁻¹ : Rˣ))`. Rewrite using `[e₁, map_mul, map_mul, ← _root_.mul_assoc]`. Conclude with `congrArg (· * _) e`. Establish `: IsOpenImmersion (jK R)` using `IsOpenImmersion.of_isLocalization ϖ`. Establish `hV : V ≤ (jK R).opensRange`.
+
+Introduce `x hx`. Establish `hx' : x ≠ closedPoint R` using `fun e => hU (Set.eq_univ_of_univ_subset (by`. Establish `: V = ⊤` using `(closedPoint_mem_iff V).1 (e ▸ hx)`. Rewrite `hVU` using `[this]`. Conclude with `hVU))`.
+
+Establish `hb : x.asIdeal = ⊥`. Assume the negation of the conclusion as `hb`. Use `x.isPrime` as an intermediate fact. Conclude with `hx' (PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal (x.isPrime.isMaximal hb)))`. Use `⟨(⊥ : PrimeSpectrum (FractionRing R)), PrimeSpectrum.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hb]`. Conclude with `Ideal.comap_bot_of_injective (algebraMap R (FractionRing R)) (IsFractionRing.injective R _)`. Use `(jK R).isIso_app V hV` as an intermediate fact. Establish `hb` using `ConcreteCategory.bijective_of_isIso ((jK R).app V)`. Take `⟨r, hr⟩` from `hb.2 (((TK R).left.presheaf.map (homOfLE h).op).hom ((D.psi χ).s j).val)`.
+
+Use `⟨r, ?_, hr⟩` and prove the remaining obligations. Establish `hu : IsUnit (((jK R).app V).hom r)`. Establish `: ((jK R).app V).hom r = _` using `hr`. Rewrite using `[this]`. Conclude with `(Units.isUnit _).map _`.
+
+Conclude with `(MulEquiv.isUnit_map (RingEquiv.ofBijective ((jK R).app V).hom hb)).1 hu`.
+-/
 theorem psiUnitOn_of_ne_univ (D : DegPre R) (χ : D.X) {U : Set (Sp R)} (hU : U ≠ Set.univ) : PsiUnitOn D χ U := by
   intro j V _ hVU _ h
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible R
@@ -92,6 +115,9 @@ end Move
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, m, -⟩` from `sabPull allSixLaws.2.2.1.cubePull (P.ξ W) Y.t`. Conclude with `⟨_, ⟨m⟩⟩`.
+-/
 theorem exists_pull (P : ValPt Y) (W : UnramExt P.V) : ∃ t : SAB H (Sp W.W), Nonempty (SABMap t Y.t (P.ξ W)) := by
   obtain ⟨_, _, _, _, _, m, -⟩ := sabPull allSixLaws.2.2.1.cubePull (P.ξ W) Y.t
   exact ⟨_, ⟨m⟩⟩

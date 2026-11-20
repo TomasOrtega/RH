@@ -18,6 +18,11 @@ set_option linter.unusedSectionVars false
 
 section Second
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hneg`. Use `push Not at hneg`. Establish `hmax` using `isLocalMax_of_deriv_deriv_neg hneg hg.deriv_eq_zero hc`. Establish `hev : g =ᶠ[𝓝 0] fun _ => g 0` using `by filter_upwards [hg, hmax] with s h1 h2`. Conclude with `le_antisymm h2 h1`.
+
+Establish `h2 : deriv (deriv g) 0 = 0`. Rewrite using `[hev.deriv.deriv_eq]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem deriv_deriv_nonneg_of_isLocalMin {g : ℝ → ℝ} (hg : IsLocalMin g 0) (hc : ContinuousAt g 0) :
     0 ≤ deriv (deriv g) 0 := by
   by_contra hneg
@@ -33,6 +38,15 @@ theorem deriv_deriv_nonneg_of_isLocalMin {g : ℝ → ℝ} (hg : IsLocalMin g 0)
 
 variable {J : Type} [Fintype J]
 
+/- English proof (translation)
+Establish `hline : ∀ s : ℝ, HasDerivAt (fun s : ℝ => z + s • e) e s` using `fun s => (((hasDerivAt_id s).smul_const e).const_add z).congr_deriv (one_smul ℝ e)`. Establish `hz0 : z + (0 : ℝ) • e = z` using `by rw [zero_smul, add_zero]`. Establish `hcont : Tendsto (fun s : ℝ => z + s • e) (𝓝 0) (𝓝 z)`. Establish `h` using `(hline 0).continuousAt.tendsto`. Rewrite `h` using `[hz0]`. Then use the resulting hypothesis.
+
+Establish `hfe : ∀ᶠ y in 𝓝 z, ContDiffAt ℝ 2 f y` using `hf.eventually (by simp)`. Establish `hev : deriv (fun s : ℝ => f (z + s • e)) =ᶠ[𝓝 0] fun s => fderiv ℝ f (z + s • e) e` using `by filter_upwards [hcont.eventually hfe] with s hs`. Establish `h` using `(hs.differentiableAt (by norm_num)).hasFDerivAt.comp_hasDerivAt s (hline s)`. Conclude with `h.deriv`. Establish `hH : HasFDerivAt (fderiv ℝ f) (fderiv ℝ (fderiv ℝ f) z) z` using `((hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`.
+
+Establish `hA : HasFDerivAt (fun y => fderiv ℝ f y e) ((fderiv ℝ (fderiv ℝ f) z).flip e) z`. Establish `h` using `hH.clm_apply (hasFDerivAt_const e z)`. Simplify using `using h`. Establish `hd : HasDerivAt (fun s : ℝ => fderiv ℝ f (z + s • e) e) (fderiv ℝ (fderiv ℝ f) z e e) 0` using `hA.comp_hasDerivAt_of_eq (0 : ℝ) (hline 0) hz0.symm`. Rewrite using `[hev.deriv_eq]`.
+
+Conclude with `hd.deriv`.
+-/
 theorem deriv_deriv_line {f : (J → ℂ) → ℝ} {z : J → ℂ} (hf : ContDiffAt ℝ 2 f z) (e : J → ℂ) :
     deriv (deriv fun s : ℝ => f (z + s • e)) 0 = fderiv ℝ (fderiv ℝ f) z e e := by
   have hline : ∀ s : ℝ, HasDerivAt (fun s : ℝ => z + s • e) e s := fun s =>
@@ -56,6 +70,11 @@ theorem deriv_deriv_line {f : (J → ℂ) → ℝ} {z : J → ℂ} (hf : ContDif
   rw [hev.deriv_eq]
   exact hd.deriv
 
+/- English proof (translation)
+Rewrite using `[← deriv_deriv_line hf e]`. Establish `hc : Continuous fun s : ℝ => z + s • e` using `continuous_const.add (continuous_id.smul continuous_const)`. Establish `hz : z + (0 : ℝ) • e = z` using `by simp`. Use `deriv_deriv_nonneg_of_isLocalMin ?_ ?_` and prove the remaining obligations. Establish `h : IsLocalMin f (z + (0 : ℝ) • e)` using `by rw [hz]; exact hmin`.
+
+Conclude with `IsLocalMin.comp_continuous (g := fun s : ℝ => z + s • e) (b := 0) h hc.continuousAt`. Conclude with `ContinuousAt.comp_of_eq hf.continuousAt hc.continuousAt hz`.
+-/
 theorem sndDeriv_nonneg_of_isLocalMin {f : (J → ℂ) → ℝ} {z : J → ℂ} (hf : ContDiffAt ℝ 2 f z)
     (hmin : IsLocalMin f z) (e : J → ℂ) : 0 ≤ fderiv ℝ (fderiv ℝ f) z e e := by
   rw [← deriv_deriv_line hf e]
@@ -66,6 +85,13 @@ theorem sndDeriv_nonneg_of_isLocalMin {f : (J → ℂ) → ℝ} {z : J → ℂ} 
     exact IsLocalMin.comp_continuous (g := fun s : ℝ => z + s • e) (b := 0) h hc.continuousAt
   · exact ContinuousAt.comp_of_eq hf.continuousAt hc.continuousAt hz
 
+/- English proof (translation)
+Establish `hf : ContDiffAt ℝ 2 (fun y => φ y + (-1) * ψ y) z` using `hφ.add (contDiffAt_const.mul hψ)`. Establish `hmin : IsLocalMin (fun y => φ y + (-1) * ψ y) z` using `by filter_upwards [hle] with y hy`. Simplify using `only [heq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `sndDeriv_nonneg_of_isLocalMin hf hmin w`.
+
+Establish `h2` using `sndDeriv_nonneg_of_isLocalMin hf hmin (Complex.I • w)`. Establish `h3 : 0 ≤ ReciprocityTheory.AnForm.levi (fun y => φ y + (-1) * ψ y) z w`. Unfold `ReciprocityTheory.AnForm.levi`. Conclude with `div_nonneg (add_nonneg h1 h2) (by norm_num)`. Rewrite `h3` using `[ReciprocityTheory.AnForm.levi_add_smul (-1) hφ hψ w]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem levi_le_of_le {φ ψ : (J → ℂ) → ℝ} {z : J → ℂ} (hφ : ContDiffAt ℝ 2 φ z) (hψ : ContDiffAt ℝ 2 ψ z)
     (hle : ∀ᶠ y in 𝓝 z, ψ y ≤ φ y) (heq : ψ z = φ z) (w : J → ℂ) :
     ReciprocityTheory.AnForm.levi ψ z w ≤ ReciprocityTheory.AnForm.levi φ z w := by
@@ -82,6 +108,9 @@ theorem levi_le_of_le {φ ψ : (J → ℂ) → ℝ} {z : J → ℂ} (hφ : ContD
   rw [ReciprocityTheory.AnForm.levi_add_smul (-1) hφ hψ w] at h3
   linarith
 
+/- English proof (translation)
+Simplify using `[ReciprocityTheory.AnForm.levi]`.
+-/
 theorem levi_const (c : ℝ) (z w : J → ℂ) : ReciprocityTheory.AnForm.levi (fun _ : J → ℂ => c) z w = 0 := by
   simp [ReciprocityTheory.AnForm.levi]
 
@@ -91,6 +120,11 @@ section Holo
 
 variable {J : Type} [Fintype J]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [MvPolynomial.map_C, MvPolynomial.eval_C]`. Conclude with `analyticAt_const`. Consider the case `add p q hp hq`.
+
+Simplify using `only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, MvPolynomial.map_X, MvPolynomial.eval_X]`. Conclude with `hp.mul ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : J => ℂ) v).analyticAt z)`.
+-/
 theorem analyticAt_eval_map (p : MvPolynomial J ℤ) (z : J → ℂ) :
     AnalyticAt ℂ (fun y : J → ℂ => MvPolynomial.eval y (MvPolynomial.map (Int.castRingHom ℂ) p)) z := by
   induction p using MvPolynomial.induction_on with
@@ -104,6 +138,15 @@ theorem analyticAt_eval_map (p : MvPolynomial J ℤ) (z : J → ℂ) :
     simp only [map_mul, MvPolynomial.map_X, MvPolynomial.eval_X]
     exact hp.mul ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : J => ℂ) v).analyticAt z)
 
+/- English proof (translation)
+Establish `hG : AnalyticAt ℂ (fun y => Complex.log (T y / T z)) z`. Use `(hT.div analyticAt_const h0).clog ?_` and prove the remaining obligations. Use `show T z / T z ∈ Complex.slitPlane`. Rewrite using `[div_self h0]`. Conclude with `Complex.one_mem_slitPlane`.
+
+Establish `hev : (fun y => Real.log ‖T y‖) =ᶠ[𝓝 z] fun y => (Complex.log (T y / T z)).re + Real.log ‖T z‖ * (fun _ : J → ℂ => (1 : ℝ)) y` using `by filter_upwards [hT.continuousAt.eventually_ne h0] with y hy`. Rewrite using `[Complex.log_re, norm_div, Real.log_div (norm_ne_zero_iff.mpr hy) (norm_ne_zero_iff.mpr h0)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hre : ContDiffAt ℝ 2 (fun y => (Complex.log (T y / T z)).re) z`. Establish `h` using `(Complex.reCLM.contDiff (n := 2)).contDiffAt.comp z (hG.restrictScalars.contDiffAt (n := 2))`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Establish `hc : ContDiffAt ℝ 2 (fun _ : J → ℂ => (1 : ℝ)) z` using `contDiffAt_const`. Use `⟨(hre.add (contDiffAt_const.mul hc)).congr_of_eventuallyEq hev, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ReciprocityTheory.AnForm.levi_congr hev w, ReciprocityTheory.AnForm.levi_add_smul _ hre hc w, ReciprocityTheory.AnForm.levi_re_analytic hG w, levi_const]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_norm_pluriharmonic {T : (J → ℂ) → ℂ} {z : J → ℂ} (hT : AnalyticAt ℂ T z) (h0 : T z ≠ 0)
     (w : J → ℂ) : ContDiffAt ℝ 2 (fun y => Real.log ‖T y‖) z ∧
       ReciprocityTheory.AnForm.levi (fun y => Real.log ‖T y‖) z w = 0 := by
@@ -132,6 +175,13 @@ end Holo
 
 section LogSum
 
+/- English proof (translation)
+Establish `hS : 0 < x0 + ε` using `by linarith`. Establish `hl : 0 < x0 / (x0 + ε)` using `div_pos hx0 hS`. Establish `hm : 0 < ε / (x0 + ε)` using `div_pos hε hS`. Establish `hlm : x0 / (x0 + ε) + ε / (x0 + ε) = 1`. Rewrite using `[← add_div, div_self hS.ne']`.
+
+Establish `hconc` using `strictConcaveOn_log_Ioi.concaveOn.2 (Set.mem_Ioi.mpr (div_pos hx hx0)) (Set.mem_Ioi.mpr one_pos) hl.le hm.le hlm`. Establish `harg : x0 / (x0 + ε) * (x / x0) + ε / (x0 + ε) * 1 = (x + ε) / (x0 + ε)`. Clear the denominators using the available nonvanishing facts. Simplify using `only [smul_eq_mul, Real.log_one, mul_zero, add_zero] at hconc`. Rewrite `hconc` using `[harg, Real.log_div (by linarith) hS.ne', Real.log_div hx.ne' hx0.ne']`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem log_sum_ineq {x x0 ε : ℝ} (hx : 0 < x) (hx0 : 0 < x0) (hε : 0 < ε) :
     Real.log (x0 + ε) - x0 / (x0 + ε) * Real.log x0 ≤
       Real.log (x + ε) - x0 / (x0 + ε) * Real.log x := by
@@ -150,6 +200,25 @@ theorem log_sum_ineq {x x0 ε : ℝ} (hx : 0 < x) (hx0 : 0 < x0) (hε : 0 < ε) 
 
 variable {J : Type} [Fintype J]
 
+/- English proof (translation)
+Establish `hc1 : ContDiffAt ℝ 2 (fun _ : J → ℂ => (1 : ℝ)) z` using `contDiffAt_const`. Distinguish the cases in `h0 : T z = 0`. Use `⟨1, zero_le_one, le_rfl, ?_⟩` and prove the remaining obligations. Establish `hψ : ContDiffAt ℝ 2 (fun y => Real.log (h y) + Real.log ε / 2 * (fun _ : J → ℂ => (1 : ℝ)) y) z` using `hφ.add (contDiffAt_const.mul hc1)`. Establish `hle` using `levi_le_of_le hΦ hψ (Eventually.of_forall fun y => by`.
+
+Rewrite using `[hform y]`. Establish `: Real.log ε ≤ Real.log ((‖T y‖ / h y) ^ 2 + ε)` using `Real.log_le_log hε (by nlinarith [sq_nonneg (‖T y‖ / h y)])`. Use the proof step `linarith) (by rw [hform z, h0]; simp) w`. Rewrite `hle` using `[ReciprocityTheory.AnForm.levi_add_smul _ hφ hc1 w, levi_const]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨hg1, hlg⟩` from `log_norm_pluriharmonic hT h0 w`. Establish `hz : 0 < h z` using `hpos.self_of_nhds`. Use `set x0 : ℝ := (‖T z‖ / h z) ^ 2 with hx0`. Establish `hx0p : 0 < x0` using `pow_pos (div_pos (norm_pos_iff.mpr h0) hz) 2`. Establish `hS : 0 < x0 + ε` using `by linarith`.
+
+Use `set l : ℝ := x0 / (x0 + ε) with hl`. Use `set m : ℝ := ε / (x0 + ε) with hm`. Establish `hlm : l + m = 1` using `by rw [hl, hm, ← add_div, div_self hS.ne']`. Establish `hm0 : 0 < m` using `div_pos hε hS`. Establish `hl0 : 0 < l` using `div_pos hx0p hS`.
+
+Use `set c : ℝ := Φ z - m * Real.log (h z) - l * Real.log ‖T z‖ with hc`. Use `⟨m, hm0.le, by linarith, ?_⟩` and prove the remaining obligations. Establish `hA : ContDiffAt ℝ 2 (fun y => c + m * Real.log (h y)) z` using `contDiffAt_const.add (contDiffAt_const.mul hφ)`. Establish `hψ : ContDiffAt ℝ 2 (fun y => (c + m * Real.log (h y)) + l * Real.log ‖T y‖) z` using `hA.add (contDiffAt_const.mul hg1)`. Establish `hid : ∀ y, 0 < h y → T y ≠ 0 → Φ y - m * Real.log (h y) - l * Real.log ‖T y‖ = (Real.log ((‖T y‖ / h y) ^ 2 + ε) - l * Real.log ((‖T y‖ / h y) ^ 2)) / 2`.
+
+Introduce `y hy hTy`. Rewrite using `[hform y, Real.log_pow, Real.log_div (norm_ne_zero_iff.mpr hTy) hy.ne']`. Establish `: m = 1 - l` using `by linarith`. Rewrite using `[this]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hle` using `levi_le_of_le hΦ hψ (by filter_upwards [hpos, hT.continuousAt.eventually_ne h0] with y hy hTy`. Establish `hxy : 0 < (‖T y‖ / h y) ^ 2` using `pow_pos (div_pos (norm_pos_iff.mpr hTy) hy) 2`. Establish `e1` using `hid y hy hTy`. Establish `e2` using `hid z hz h0`.
+
+Establish `key` using `log_sum_ineq hxy hx0p hε`. Rewrite `e2` using `[← hx0]`. Rewrite using `[hc]`. Use the proof step `linarith) (by rw [hc]; ring) w`. Establish `hlevi : ReciprocityTheory.AnForm.levi (fun y => (c + m * Real.log (h y)) + l * Real.log ‖T y‖) z w = m * ReciprocityTheory.AnForm.levi (fun y => Real.log (h y)) z w`.
+
+Rewrite using `[ReciprocityTheory.AnForm.levi_add_smul (f := fun y => c + m * Real.log (h y)) l hA hg1 w, hlg, ReciprocityTheory.AnForm.levi_add_smul (f := fun _ => c) m contDiffAt_const hφ w, levi_const]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hle` using `[hlevi]`. Conclude with `hle`.
+-/
 theorem levi_logSum {h : (J → ℂ) → ℝ} {T : (J → ℂ) → ℂ} {Φ : (J → ℂ) → ℝ} {z : J → ℂ} {ε : ℝ}
     (hφ : ContDiffAt ℝ 2 (fun y => Real.log (h y)) z) (hpos : ∀ᶠ y in 𝓝 z, 0 < h y)
     (hT : AnalyticAt ℂ T z) (hε : 0 < ε) (hΦ : ContDiffAt ℝ 2 Φ z)
@@ -217,6 +286,9 @@ section Blocks
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+-/
 theorem isOpen_noZeroBlock : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0} := by
     ext z
@@ -232,15 +304,24 @@ def blk (k : K) : ((Σ k, ι k) → ℂ) →L[ℂ] (ι k → ℂ) :=
 def F (k : K) (y : (Σ k, ι k) → ℂ) : ℝ :=
   Real.log ((fsMetric (ι k)).ρ (fun i => y ⟨k, i⟩))
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `hz k`. Conclude with `fun h0 => hi (congrFun h0 i)`.
+-/
 theorem blk_ne {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K) :
     (fun i => z ⟨k, i⟩ : ι k → ℂ) ≠ 0 := by
   obtain ⟨i, hi⟩ := hz k
   exact fun h0 => hi (congrFun h0 i)
 
+/- English proof (translation)
+The claim follows from `(fsMetric (ι k)).pos _ (blk_ne hz k)`.
+-/
 theorem rho_pos {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K) :
     0 < (fsMetric (ι k)).ρ (fun i => z ⟨k, i⟩) :=
   (fsMetric (ι k)).pos _ (blk_ne hz k)
 
+/- English proof (translation)
+Establish `hφ` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_contDiffAt_logρ_id (GroundTheory.Heights₂.Heights.HilbertSamuel.ProjLine.isSmoothMetric_fs (J := ι k)) (blk_ne hz k)`. Establish `hFk : F k = (fun u => Real.log ((fsMetric (ι k)).ρ u)) ∘ blk (ι` using `ι) k := rfl`. Rewrite using `[hFk]`. Conclude with `hφ.comp z ((blk (ι := ι) k).restrictScalars ℝ).contDiff.contDiffAt`.
+-/
 theorem contDiffAt_F {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K) :
     ContDiffAt ℝ 2 (F k) z := by
   have hφ := ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_contDiffAt_logρ_id
@@ -249,6 +330,9 @@ theorem contDiffAt_F {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩
   rw [hFk]
   exact hφ.comp z ((blk (ι := ι) k).restrictScalars ℝ).contDiff.contDiffAt
 
+/- English proof (translation)
+Establish `hφ` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_contDiffAt_logρ_id (GroundTheory.Heights₂.Heights.HilbertSamuel.ProjLine.isSmoothMetric_fs (J := ι k)) (blk_ne hz k)`. Establish `hFk : F k = (fun u => Real.log ((fsMetric (ι k)).ρ u)) ∘ blk (ι` using `ι) k := rfl`. Rewrite using `[hFk, ReciprocityTheory.AnForm.levi_comp w ((blk (ι := ι) k).analyticAt z) hφ]`. Conclude with `GroundTheory.Heights₂.Heights.HilbertSamuel.ProjLine.leviForm_log_fs_nonneg (blk_ne hz k) _`.
+-/
 theorem levi_F_nonneg {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K)
     (w : (Σ k, ι k) → ℂ) : 0 ≤ ReciprocityTheory.AnForm.levi (F k) z w := by
   have hφ := ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_contDiffAt_logρ_id
@@ -263,6 +347,11 @@ section Levi
 
 variable {J : Type} [Fintype J]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hg`. Consider the case `insert a s ha ih`. Establish `heq : (fun y => g y + ∑ k ∈ insert a s, c k * f k y) = fun y => (fun y' => g y' + ∑ k ∈ s, c k * f k y') y + c a * f a y`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[Finset.sum_insert ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq, ReciprocityTheory.AnForm.levi_add_smul (c a) ih.1 (hf a) w, ih.2, Finset.sum_insert ha]`. Conclude with `⟨ih.1.add (contDiffAt_const.mul (hf a)), by ring⟩`.
+-/
 theorem levi_add_sum {K : Type} {z : J → ℂ} (g : (J → ℂ) → ℝ) (f : K → (J → ℂ) → ℝ) (c : K → ℝ)
     (hg : ContDiffAt ℝ 2 g z) (hf : ∀ k, ContDiffAt ℝ 2 (f k) z) (w : J → ℂ) (s : Finset K) :
     ContDiffAt ℝ 2 (fun y => g y + ∑ k ∈ s, c k * f k y) z ∧
@@ -280,6 +369,15 @@ theorem levi_add_sum {K : Type} {z : J → ℂ} (g : (J → ℂ) → ℝ) (f : K
     rw [heq, ReciprocityTheory.AnForm.levi_add_smul (c a) ih.1 (hf a) w, ih.2, Finset.sum_insert ha]
     exact ⟨ih.1.add (contDiffAt_const.mul (hf a)), by ring⟩
 
+/- English proof (translation)
+Establish `h1 : ReciprocityTheory.AnForm.levi (fun w : Fin 1 → ℂ => φ (z + w 0 • v)) (fun _ => 0) (Pi.single 0 1) = Δ (fun t : ℂ => φ (z + t • v)) 0 / 4` using `ReciprocityTheory.AnForm.A.leviOne (fun t : ℂ => φ (z + t • v)) 0`. Use `set L : (Fin 1 → ℂ) →L[ℂ] (J → ℂ) := (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).smulRight v with hL`. Establish `hτ : AnalyticAt ℂ (fun w => z + L w) (fun _ => 0)` using `analyticAt_const.add (L.analyticAt _)`. Establish `hτ0 : z + L (fun _ => (0 : ℂ)) = z`. Simplify using `[hL]`.
+
+Establish `hcomp : (fun w : Fin 1 → ℂ => φ (z + w 0 • v)) = φ ∘ fun w => z + L w`. Use function extensionality and compare the values at `w`. Simplify using `[hL]`. Establish `hD : fderiv ℂ (fun w => z + L w) (fun _ => 0) (Pi.single 0 1) = v`. Rewrite using `[((L.hasFDerivAt).const_add z).fderiv]`.
+
+Simplify using `[hL]`. Establish `hφ' : ContDiffAt ℝ 2 φ (z + L (fun _ => 0))`. Rewrite using `[hτ0]`. Conclude with `hφ`. Rewrite `h1` using `[hcomp, ReciprocityTheory.AnForm.levi_comp _ hτ hφ', hτ0, hD]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem laplacian_line_eq_levi {φ : (J → ℂ) → ℝ} {z : J → ℂ} (hφ : ContDiffAt ℝ 2 φ z) (v : J → ℂ) :
     Δ (fun t : ℂ => φ (z + t • v)) 0 = 4 * ReciprocityTheory.AnForm.levi φ z v := by
   have h1 : ReciprocityTheory.AnForm.levi (fun w : Fin 1 → ℂ => φ (z + w 0 • v)) (fun _ => 0) (Pi.single 0 1) =

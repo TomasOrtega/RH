@@ -12,6 +12,11 @@ variable {O S : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [CommRin
 
 omit [IsNoetherianRing O] in
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_pow, hm]`. Establish `hle : maximalIdeal S ^ (n + 1) ≤ maximalIdeal S` using `Ideal.pow_le_self n.succ_ne_zero`. Use `Module.finite_of_surjective_of_ker_le_nilradical (Ideal.Quotient.factorₐ O hle) (Ideal.Quotient.factor_surjective hle) ?_ (IsNoetherian.noetherian _)` and prove the remaining obligations. Introduce `x hx`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+
+Establish `hx' : x ∈ maximalIdeal S` using `Ideal.Quotient.eq_zero_iff_mem.1 hx`. Conclude with `mem_nilradical.2 ⟨n + 1, by rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]; exact Ideal.pow_mem_pow hx' _⟩`.
+-/
 theorem finite_quotient (hm : (maximalIdeal O).map (algebraMap O S) = maximalIdeal S)
     [Module.Finite O (S ⧸ maximalIdeal S)] (n : ℕ) :
     Module.Finite O (S ⧸ (maximalIdeal O ^ (n + 1)).map (algebraMap O S)) := by
@@ -26,6 +31,19 @@ theorem finite_quotient (hm : (maximalIdeal O).map (algebraMap O S) = maximalIde
 
 omit [IsNoetherianRing O] in
 
+/- English proof (translation)
+Use `finite_quotient hm n` as an intermediate fact. Use `set J := (maximalIdeal O ^ (n + 1)).map (algebraMap O S) with hJ`. Establish `hle : J ≤ maximalIdeal S`. Rewrite using `[hJ, Ideal.map_pow, hm]`. Conclude with `Ideal.pow_le_self n.succ_ne_zero`.
+
+Establish `: Nontrivial (S ⧸ J)` using `Ideal.Quotient.nontrivial_iff.mpr <| ne_top_of_le_ne_top (maximalIdeal.isMaximal S).ne_top hle`. Establish `: IsLocalRing (S ⧸ J)` using `.of_surjective' _ Ideal.Quotient.mk_surjective`. Establish `hmk : IsLocalHom (Ideal.Quotient.mk J)` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hmap : (maximalIdeal S).map (Ideal.Quotient.mk J) = maximalIdeal (S ⧸ J)` using `IsLocalRing.map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `H : (maximalIdeal O).map (algebraMap O (S ⧸ J)) = maximalIdeal (S ⧸ J)`.
+
+Rewrite using `[← hmap, ← hm, Ideal.map_map]`. Both sides reduce to the same expression. Establish `: IsLocalHom (algebraMap O (S ⧸ J))` using `((local_hom_TFAE (algebraMap O (S ⧸ J))).out 2 0 rfl rfl).mp H.le`. Set `g : (S ⧸ maximalIdeal S) →ₐ[O] ResidueField (S ⧸ J)` to `Ideal.Quotient.liftₐ _ ((IsScalarTower.toAlgHom O (S ⧸ J) (ResidueField (S ⧸ J))).comp (Ideal.Quotient.mkₐ O J)) fun a ha => by`. Express the relevant statement in the definitionally equal form `residue (S ⧸ J) (Ideal.Quotient.mk J a) = 0`.
+
+Rewrite using `[residue_eq_zero_iff, ← hmap]`. Conclude with `Ideal.mem_map_of_mem _ ha`. Establish `hg : Function.Surjective g`. Introduce `x`. Take `⟨x, rfl⟩` from `residue_surjective x`.
+
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨Ideal.Quotient.mk _ x, rfl⟩`. Establish `: Algebra.FormallyUnramified O (ResidueField (S ⧸ J))` using `.of_surjective g hg`. Establish `: Algebra.FormallyUnramified (ResidueField O) (ResidueField (S ⧸ J))` using `.of_restrictScalars O _ _`. Establish `: Module.Finite O (ResidueField (S ⧸ J))` using `.of_surjective g.toLinearMap hg`.
+
+Establish `: Module.Finite (ResidueField O) (ResidueField (S ⧸ J))` using `.of_restrictScalars_finite O _ _`. Establish `: Algebra.IsSeparable (ResidueField O) (ResidueField (S ⧸ J))` using `Algebra.FormallyUnramified.isSeparable _ _`. Conclude with `Algebra.FormallyUnramified.of_map_maximalIdeal H`.
+-/
 theorem formallyUnramified_quotient (hm : (maximalIdeal O).map (algebraMap O S) = maximalIdeal S)
     [Module.Finite O (S ⧸ maximalIdeal S)] [Algebra.FormallyUnramified O (S ⧸ maximalIdeal S)] (n : ℕ) :
     Algebra.FormallyUnramified O (S ⧸ (maximalIdeal O ^ (n + 1)).map (algebraMap O S)) := by
@@ -61,6 +79,11 @@ theorem formallyUnramified_quotient (hm : (maximalIdeal O).map (algebraMap O S) 
   have : Algebra.IsSeparable (ResidueField O) (ResidueField (S ⧸ J)) := Algebra.FormallyUnramified.isSeparable _ _
   exact Algebra.FormallyUnramified.of_map_maximalIdeal H
 
+/- English proof (translation)
+Use `finite_quotient hm n` as an intermediate fact. Use `formallyUnramified_quotient hm n` as an intermediate fact. Use `set I := maximalIdeal O ^ (n + 1)`. Establish `: Module.Finite (O ⧸ I) (S ⧸ I.map (algebraMap O S))` using `.of_restrictScalars_finite O _ _`. Establish `: Algebra.FormallyUnramified (O ⧸ I) (S ⧸ I.map (algebraMap O S))` using `.of_restrictScalars O _ _`.
+
+Establish `: Algebra.FinitePresentation (O ⧸ I) (S ⧸ I.map (algebraMap O S))` using `Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Establish `: Module.Flat (O ⧸ I) (S ⧸ I.map (algebraMap O S))` using `.of_linearEquiv (Algebra.TensorProduct.quotIdealMapEquivQuotTensor S I).toLinearEquiv`. Conclude with `.of_formallyUnramified_of_flat`.
+-/
 theorem etale_quotient (hm : (maximalIdeal O).map (algebraMap O S) = maximalIdeal S) [Module.Flat O S]
     [Module.Finite O (S ⧸ maximalIdeal S)] [Algebra.FormallyUnramified O (S ⧸ maximalIdeal S)] (n : ℕ) :
     Algebra.Etale (O ⧸ maximalIdeal O ^ (n + 1)) (S ⧸ (maximalIdeal O ^ (n + 1)).map (algebraMap O S)) := by
@@ -75,6 +98,19 @@ theorem etale_quotient (hm : (maximalIdeal O).map (algebraMap O S) = maximalIdea
     .of_linearEquiv (Algebra.TensorProduct.quotIdealMapEquivQuotTensor S I).toLinearEquiv
   exact .of_formallyUnramified_of_flat
 
+/- English proof (translation)
+Use `etale_quotient hm n` as an intermediate fact. Use `set I := maximalIdeal O ^ (n + 1)`. Use `letI : Algebra (O ⧸ I) B := (Ideal.Quotient.lift I χ hχ).toAlgebra`. Establish `desc : ∀ {C : Type} [CommRing C] [Algebra (O ⧸ I) C] (f : S →+* C), (∀ x, f (algebraMap O S x) = algebraMap (O ⧸ I) C (Ideal.Quotient.mk I x)) → ∃ f' : (S ⧸ I.map (algebraMap O S)) →ₐ[O ⧸ I] C, ∀ x, f' (Ideal.Quotient.mk _ x) = f x`. Introduce `C _ _ f hf`.
+
+Establish `h0 : I.map (algebraMap O S) ≤ RingHom.ker f`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `f (algebraMap O S x) = 0`. Rewrite using `[hf, Ideal.Quotient.eq_zero_iff_mem.2 hx, map_zero]`.
+
+Use `⟨⟨Ideal.Quotient.lift _ f fun a ha => h0 ha, fun r => ?_⟩, fun x => rfl⟩` and prove the remaining obligations. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Conclude with `hf r`. Take `⟨g', hg'⟩` from `desc g fun x => congr($hg x)`. Set `F` to `Algebra.FormallySmooth.lift K hK g'`.
+
+Use `⟨F.toRingHom.comp (Ideal.Quotient.mk _), ⟨RingHom.ext fun x => ?_, RingHom.ext fun x => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `F.commutes (Ideal.Quotient.mk I x)`. Conclude with `(Algebra.FormallySmooth.mk_lift K hK g' _).trans (hg' x)`. Introduce and unpack `G ⟨h1, h2⟩`. Take `⟨G', hG'⟩` from `desc G fun x => congr($h1 x)`.
+
+Establish `: G' = F` using `Algebra.FormallyUnramified.ext K hK fun x => by`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Algebra.FormallySmooth.mk_lift K hK g', hg', hG']`. Conclude with `congr($h2 x)`. Use extensionality with `x`.
+
+Rewrite using `[← hG', this]`. Both sides reduce to the same expression.
+-/
 theorem existsUnique_lift (hm : (maximalIdeal O).map (algebraMap O S) = maximalIdeal S) [Module.Flat O S]
     [Module.Finite O (S ⧸ maximalIdeal S)] [Algebra.FormallyUnramified O (S ⧸ maximalIdeal S)] (n : ℕ)
     {B : Type} [CommRing B] (χ : O →+* B) (hχ : ∀ x ∈ maximalIdeal O ^ (n + 1), χ x = 0) (K : Ideal B)
@@ -110,6 +146,11 @@ theorem existsUnique_lift (hm : (maximalIdeal O).map (algebraMap O S) = maximalI
     rw [← hG', this]
     rfl
 
+/- English proof (translation)
+Set `e` to `RingHom.quotientKerEquivOfSurjective hw`. Use `existsUnique_lift hm n χ hχ _ hK (e.symm.toRingHom.comp g) (by` as an intermediate fact. Use extensionality with `x`. Conclude with `e.symm_apply_eq.2 congr($hg x))`. Use `(existsUnique_congr fun F => and_congr Iff.rfl ?_).1 this` and prove the remaining obligations.
+
+Simplify using `only [RingHom.ext_iff]`. Conclude with `forall_congr' fun x => e.eq_symm_apply`.
+-/
 theorem existsUnique_lift_of_surjective (hm : (maximalIdeal O).map (algebraMap O S) = maximalIdeal S)
     [Module.Flat O S] [Module.Finite O (S ⧸ maximalIdeal S)] [Algebra.FormallyUnramified O (S ⧸ maximalIdeal S)]
     (n : ℕ) {B C : Type} [CommRing B] [CommRing C] (χ : O →+* B) (hχ : ∀ x ∈ maximalIdeal O ^ (n + 1), χ x = 0)
@@ -126,6 +167,11 @@ theorem existsUnique_lift_of_surjective (hm : (maximalIdeal O).map (algebraMap O
 
 end Etale
 
+/- English proof (translation)
+Take `⟨hfl, hm, hfin⟩` from `h`. Use `letI := φ.toAlgebra`. Establish `: Module.Flat O S` using `hfl`. Establish `: Module.Finite O (S ⧸ maximalIdeal S)` using `RingHom.finite_algebraMap.1 hfin`. Establish `: Algebra.FormallyUnramified O (S ⧸ maximalIdeal S)` using `RingHom.formallyUnramified_algebraMap.1 hun`.
+
+Conclude with `existsUnique_lift_of_surjective hm n χ hχ w hw hK g hg`.
+-/
 theorem existsUnique_lift_of_isEtaleCompletion {O S : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [CommRing S] [IsLocalRing S] [IsNoetherianRing S] {φ : O →+* S} (h : IsEtaleCompletion φ)
     (hun : ((residue S).comp φ).FormallyUnramified)
@@ -140,6 +186,11 @@ theorem existsUnique_lift_of_isEtaleCompletion {O S : Type} [CommRing O] [IsLoca
   have : Algebra.FormallyUnramified O (S ⧸ maximalIdeal S) := RingHom.formallyUnramified_algebraMap.1 hun
   exact existsUnique_lift_of_surjective hm n χ hχ w hw hK g hg
 
+/- English proof (translation)
+Establish `: RingHom.ker w ≤ I.map (Ideal.Quotient.mk (I ^ (n + 1)))` using `fun x hx => by`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Rewrite using `[← hv, RingHom.mem_ker, ← hw]`. Conclude with `hx`.
+
+Use `⟨n + 1, le_bot_iff.1 ((Ideal.pow_right_mono this _).trans ?_)⟩` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, Ideal.map_quotient_self]`.
+-/
 theorem isNilpotent_ker {E C : Type} [CommRing E] [CommRing C] {I : Ideal E} {v : E →+* C} (hv : RingHom.ker v = I)
     (n : ℕ) (w : E ⧸ I ^ (n + 1) →+* C) (hw : ∀ x, w (Ideal.Quotient.mk _ x) = v x) :
     IsNilpotent (RingHom.ker w) := by
@@ -151,6 +202,21 @@ theorem isNilpotent_ker {E C : Type} [CommRing E] [CommRing C] {I : Ideal E} {v 
   refine ⟨n + 1, le_bot_iff.1 ((Ideal.pow_right_mono this _).trans ?_)⟩
   rw [← Ideal.map_pow, Ideal.map_quotient_self]
 
+/- English proof (translation)
+Establish `hle : ∀ n : ℕ, m ^ (n + 1) ≤ RingHom.ker v` using `fun n => (Ideal.pow_le_self n.succ_ne_zero).trans hv.ge`. Take `⟨w, hw⟩ : ∃ w : ∀ n : ℕ, E ⧸ m ^ (n + 1) →+* C, ∀ n x, w n (Ideal.Quotient.mk _ x) = v x` from `⟨fun n => Ideal.Quotient.lift _ v fun a ha => hle n ha, fun n x => Ideal.Quotient.lift_mk _ _ _⟩`. Establish `hws : ∀ n, Function.Surjective (w n)` using `fun n y => by`. Take `⟨x, rfl⟩` from `hs y`. Conclude with `⟨_, hw n x⟩`.
+
+Establish `key : ∀ n, ∃! F : S →+* E ⧸ m ^ (n + 1), F.comp φ = (Ideal.Quotient.mk _).comp ψ ∧ (w n).comp F = u` using `fun n => by`. Use `existsUnique_lift_of_isEtaleCompletion het hun n _ (fun x hx => ?_) _ (hws n) (isNilpotent_ker hv n _ (hw n)) _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Use `Ideal.pow_right_mono h1 _ ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow]`.
+
+Conclude with `Ideal.mem_map_of_mem _ hx`. Use extensionality with `x`. Rewrite using `[hc, RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, hw]`. Use `choose F hF hU using key`. Establish `hF1 : ∀ n x, F n (φ x) = Ideal.Quotient.mk _ (ψ x)` using `fun n x => RingHom.congr_fun (hF n).1 x`.
+
+Establish `hF2 : ∀ n x, w n (F n x) = u x` using `fun n x => RingHom.congr_fun (hF n).2 x`. Establish `ha : StrictMono (fun n : ℕ => n + 1)` using `strictMono_id.add_const 1`. Establish `hcomp : ∀ {k : ℕ}, (Ideal.Quotient.factorPow m (ha.monotone k.le_succ)).comp (F (k + 1)) = F k`. Introduce `k`. Use `hU k _ ⟨RingHom.ext fun x => ?_, RingHom.ext fun x => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply, hF1, Ideal.Quotient.factor_mk]`. Rewrite using `[← hF2 (k + 1), RingHom.comp_apply, RingHom.comp_apply]`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (F (k + 1) x)`. Rewrite using `[← hy, hw]`. Conclude with `(congrArg (w k) (Ideal.Quotient.factor_mk _ y)).trans (hw k y)`.
+
+Take `⟨b, hb⟩ : ∃ b : S →+* E, ∀ n x, Ideal.Quotient.mk (m ^ (n + 1)) (b x) = F n x` from `⟨_, fun n x => IsAdicComplete.StrictMono.mk_liftRingHom m ha F hcomp x⟩`. Use `⟨b, ?_, ?_⟩` and prove the remaining obligations. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Apply `IsHausdorff.StrictMono.funext' m ha` to reduce the goal to its premises. Introduce `n x`.
+
+Conclude with `(hb n _).trans (hF1 n x)`. Use extensionality with `x`. Rewrite using `[RingHom.comp_apply, ← hw 0, hb, hF2]`.
+-/
 theorem exists_extension_of_surjective {O S : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [CommRing S] [IsLocalRing S] [IsNoetherianRing S] {φ : O →+* S} (het : IsEtaleCompletion φ)
     (hun : ((residue S).comp φ).FormallyUnramified) {E C : Type} [CommRing E] [CommRing C] (m : Ideal E)
@@ -195,6 +261,9 @@ theorem exists_extension_of_surjective {O S : Type} [CommRing O] [IsLocalRing O]
   · ext x
     rw [RingHom.comp_apply, ← hw 0, hb, hF2]
 
+/- English proof (translation)
+Introduce `O R' E Ω _ _ _ _ _ _ _ _ _ φ' ψ u' v het hun hE hψ _ hv hc hr`. Take `⟨b, h1, h2⟩` from `exists_extension_of_surjective het hun (maximalIdeal E) ψ (((local_hom_TFAE ψ).out 0 2 rfl rfl).mp hψ) v.rangeRestrict v.rangeRestrict_surjective (v.ker_rangeRestrict.trans hv) (u'.codRestrict v.range hr) (RingHom.ext fun x => Subtype.ext (RingHom.congr_fun hc x).symm)`. Conclude with `⟨b, h1, RingHom.ext fun x => congrArg Subtype.val (RingHom.congr_fun h2 x)⟩`.
+-/
 theorem exists_extension : ∀ (O R' E Ω : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [CommRing R']
     [IsLocalRing R'] [IsNoetherianRing R'] [CommRing E] [IsLocalRing E] [Field Ω] (φ' : O →+* R') (ψ : O →+* E)
     (u' : R' →+* Ω) (v : E →+* Ω), IsEtaleCompletion φ' → ((residue R').comp φ').FormallyUnramified →

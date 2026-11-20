@@ -6,6 +6,31 @@ open MeasureTheory Pointwise
 
 namespace GlobalTheory.InertZeta
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ μ _ K hK hμK F Z hF hZ`. Use `set f : G ⧸ K → ℂ := fun x => F x.out with hf`. Set `A : G ⧸ K → Set G` to `fun x => QuotientGroup.mk ⁻¹' {x}`. Establish `hA : ∀ x, A x = x.out • (K : Set G)`. Introduce `x`.
+
+Use extensionality with `g`. Simplify using `only [A, Set.mem_preimage, Set.mem_singleton_iff, mem_leftCoset_iff]`. Use `conv_lhs => rw [← QuotientGroup.out_eq' x]`. Rewrite using `[eq_comm, QuotientGroup.eq]`. Both sides reduce to the same expression.
+
+Establish `hAm : ∀ x, MeasurableSet (A x)` using `fun x => by`. Rewrite using `[hA]`. Conclude with `(hK.smul x.out).measurableSet`. Establish `hAμ : ∀ x, μ (A x) = 1` using `fun x => by rw [hA, measure_smul]; exact hμK`. Establish `hconst : ∀ x, ∀ g ∈ A x, F g = f x`.
+
+Introduce `x g hg`. Rewrite `hg` using `[hA, mem_leftCoset_iff]`. Use `hF x.out _ hg` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Establish `hself : ∀ g : G, g ∈ A (QuotientGroup.mk g)` using `fun g => rfl`.
+
+Establish `hdisj : Pairwise (Function.onFun Disjoint A)`. Introduce `x y hxy`. Conclude with `(Set.disjoint_singleton.mpr hxy).preimage _`. Use `set S := Function.support f with hSdef`. Establish `hS : S.Countable` using `hZ.summable.countable_support`.
+
+Use `haveI : Countable S := hS.to_subtype`. Set `B : S → Set G` to `fun i => A i.1`. Establish `hBint : ∀ i : S, ∫ g in B i, F g ∂μ = f i.1`. Introduce `i`. Rewrite using `[setIntegral_congr_fun (hAm i.1) (fun g hg => hconst i.1 g hg), setIntegral_const]`.
+
+Simplify using `[Measure.real, hAμ]`. Establish `hBnorm : ∀ i : S, ∫ g in B i, ‖F g‖ ∂μ = ‖f i.1‖`. Introduce `i`. Rewrite using `[setIntegral_congr_fun (g := fun _ => ‖f i.1‖) (hAm i.1) (fun g hg => by simp only [hconst i.1 g hg]), setIntegral_const]`. Simplify using `[Measure.real, hAμ]`.
+
+Establish `hBon : ∀ i : S, IntegrableOn F (B i) μ`. Introduce `i`. Establish `h1 : IntegrableOn (fun _ : G => f i.1) (B i) μ` using `integrableOn_const (by simp [B, hAμ]) (by simp)`. Conclude with `h1.congr_fun (fun g hg => (hconst i.1 g hg).symm) (hAm i.1)`. Establish `hsumm : Summable fun i : S => ∫ g in B i, ‖F g‖ ∂μ`.
+
+Simplify using `only [hBnorm]`. Conclude with `(summable_norm_iff.mpr hZ.summable).subtype S`. Establish `hU : IntegrableOn F (Set.iUnion B) μ` using `integrableOn_iUnion_of_summable_integral_norm hBon hsumm`. Establish `hzero : ∀ g ∉ Set.iUnion B, F g = 0`. Introduce `g hg`.
+
+Establish `hnot : (QuotientGroup.mk g : G ⧸ K) ∉ S`. Introduce `hm`. Conclude with `hg (Set.mem_iUnion.mpr ⟨⟨_, hm⟩, hself g⟩)`. Rewrite using `[hconst _ g (hself g)]`. Simplify `hnot` using `[hSdef]`.
+
+Establish `hInt : Integrable F μ` using `hU.integrable_of_forall_notMem_eq_zero hzero`. Use `⟨hInt, ?_⟩` and prove the remaining obligations. Establish `h1` using `hasSum_integral_iUnion (fun i : S => hAm i.1) (fun i j hij => hdisj (fun h => hij (Subtype.ext h))) hU`. Establish `hfun : (fun i : S => ∫ g in B i, F g ∂μ) = fun i => f i.1` using `funext hBint`. Rewrite `h1` using `[hfun]`.
+
+Establish `h2 : HasSum (fun i : S => f i.1) Z` using `(hasSum_subtype_iff_of_support_subset (s := S) subset_rfl).mpr hZ`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero hzero]`. Conclude with `h1.unique h2`.
+-/
 theorem cosetIntegral_holds : CosetIntegral := by
   intro G _ _ _ _ _ μ _ K hK hμK F Z hF hZ
   classical

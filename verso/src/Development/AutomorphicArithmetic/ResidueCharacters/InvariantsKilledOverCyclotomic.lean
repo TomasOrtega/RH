@@ -11,6 +11,13 @@ namespace UpperTheory.N
 
 set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `N h n K LL hC T U hn hb hc hj h0 x hx`. Take `⟨K', hKK, hg, hKs, hnor, hidx⟩` from `LocNum.exists_up hC`. Establish `hle : GK K' ≤ GK K` using `GK_le hKK`. Take `⟨r1, j1⟩` from `LocRes.res_crys D.loc hres hF hKK hle T hc`. Establish `hsub` using `LocRes.jset_sub D HW hres hF hKK hle hg T hc U hj`.
+
+Establish `hWT` using `hW K' _ LL hg (LocRes.res hle T) h h r1 fun a ha => hb a (hsub ha)`. Establish `hk` using `hH0 K' _ LL hg h h (LocRes.res hle T) hWT (fun τ hτ => h0 _ ((j1 τ 0).1 hτ)) x fun g => hx _`. Establish `hvd` using `LocRes.vdeg_le K' (s := sN l N) (m := LocalSituation.mN l (sN l N) (h + h)) (le_max_left _ _) (by unfold LocalSituation.mN; omega)`. Rewrite `hvd` using `[hKs]`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (LocNum.latticeExponent_one_le_invariantsKillingExponent l N h n _ Fact.out U _ hsub hn hb hvd)`.
+
+Rewrite `hk` using `[(D.loc l).PD_p]`. Rewrite using `[hd, pow_add, mul_comm, mul_smul]`. Use `erw [hk]`. Conclude with `smul_zero _`.
+-/
 theorem invariants_killed_over_cyclotomic_subfield_of_admissible (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime]
     (hW : ∀ (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL),
       EmbeddingTypeJumps.WachHypothesisLocal (LocalSituation.sit D.loc HW l (D.locA l) K s LL h) ((F l).E K s LL h).tie)

@@ -11,6 +11,21 @@ open GlobalTheory.UPel.HT.MapComp
 
 namespace GlobalTheory.UPel.HT.LiftUniq
 
+/- English proof (translation)
+Introduce `p _ D R _ b N N' hd hc S s o M' π hπ om T g₁ g₂ hg hη`. Take `⟨o₁, ⟨m₁⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N' M'.X T M'.s g₁ M'.univ`. Take `⟨ψ, ψ₂, hcart, hsq, hact0, hpol, hη'⟩ : ∃ (ψ : M'.univ.A.left ⟶ o.A.left) (ψ₂ : (M'.univ.A ⊗ M'.univ.A).left ⟶ (o.A ⊗ o.A).left), IsGrpPullback M'.univ.A o.A π ψ ∧ IsSquare ψ ψ₂ ∧ (∀ c, (M'.univ.act.act c).left ≫ ψ = ψ ≫ (o.act.act c).left) ∧ Nonempty (LBIso M'.univ.P (o.P.pull ψ …` from `⟨om.φ, om.φ₂, om.cart, om.sq, om.act, ⟨om.pol⟩, hη⟩`. Take `⟨hpol⟩` from `hpol`. Use `clear hη`.
+
+Establish `hpb : IsPullback ψ M'.univ.A.hom o.A.hom π` using `hcart.1`. Establish `w : (m₁.φ ≫ ψ) ≫ o.A.hom = (o₁.A.hom ≫ g₂) ≫ π`. Establish `h2 : m₁.φ ≫ M'.univ.A.hom = o₁.A.hom ≫ g₁` using `m₁.cart.1.w`. Rewrite using `[Category.assoc, hpb.w, ← Category.assoc, h2, Category.assoc, hg, Category.assoc]`. Take `⟨φ, hφ, hφ'⟩ : ∃ φ : o₁.A.left ⟶ M'.univ.A.left, φ ≫ ψ = m₁.φ ≫ ψ ∧ φ ≫ M'.univ.A.hom = o₁.A.hom ≫ g₂` from `⟨hpb.lift _ _ w, hpb.lift_fst _ _ _, hpb.lift_snd _ _ _⟩`.
+
+Establish `n : IsGrpPullback o₁.A o.A (g₂ ≫ π) (φ ≫ ψ)`. Rewrite using `[hφ, ← hg]`. Conclude with `m₁.cart.comp hcart`. Take `⟨φ₂, sq⟩` from `exists_isSquare hφ'`. Establish `e : m₁.φ₂ ≫ ψ₂ = φ₂ ≫ ψ₂` using `isSquare_unique (isSquare_comp m₁.sq hsq) (hφ ▸ isSquare_comp sq hsq)`.
+
+Establish `hact : ∀ c, (o₁.act.act c).left ≫ φ = φ ≫ (M'.univ.act.act c).left`. Introduce `c`. Apply `hpb.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hφ, ← Category.assoc, m₁.act, Category.assoc, hact0, Category.assoc, hact0, ← Category.assoc, ← Category.assoc, hφ]`. Rewrite using `[Category.assoc, hφ', ← Category.assoc, Over.w, Category.assoc, Over.w, hφ']`.
+
+Establish `heta : ∀ y, (o₁.eta y).left ≫ φ = g₂ ≫ (M'.univ.eta y).left`. Introduce `y`. Apply `hpb.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hφ, ← Category.assoc, m₁.eta, Category.assoc, Category.assoc]`. Conclude with `hη' y`.
+
+Rewrite using `[Category.assoc, hφ', ← Category.assoc, Over.w, Category.assoc, Over.w] show 𝟙 _ ≫ g₂ = g₂ ≫ 𝟙 _`. Rewrite using `[Category.id_comp, Category.comp_id]`. Establish `pol : LBIso o₁.P (M'.univ.P.pull φ₂)` using `LBIso.trans o₁.isLB (pull_isLB o.isLB _) (pull_isLB M'.univ.isLB _) (LBIso.trans o₁.isLB (pull_isLB M'.univ.isLB _) (pull_isLB o.isLB _) m₁.pol (lbIso_pull_comp hpol m₁.φ₂ rfl)) (LBIso.symm (lbIso_pull_comp hpol φ₂ e))`. Set `m₂ : ObjMap o₁ M'.univ g₂` to `{ φ := φ, φ₂ := φ₂, cart := hcart.cancel n hφ', sq := sq, act := hact, pol := pol, eta := heta }`. Establish `h2 : g₂ ≫ M'.s = g₁ ≫ M'.s` using `by rw [← hπ, ← Category.assoc, ← hg, Category.assoc]`.
+
+Conclude with `((M'.rep T (g₁ ≫ M'.s) o₁).unique ⟨rfl, ⟨m₁⟩⟩ ⟨h2, ⟨m₂⟩⟩)`.
+-/
 theorem eq_of_same_image : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N N' : ℕ) (hd : N ∣ N') (hc : N'.Coprime p) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (M' : Model b N') (π : M'.X ⟶ S), π ≫ s = M'.s → ∀ (om : ObjMap (M'.univ.forget N hd hc) o π) (T : Scheme.{0}) (g₁ g₂ : T ⟶ M'.X), g₁ ≫ π = g₂ ≫ π → (∀ a, g₁ ≫ (M'.univ.eta a).left ≫ om.φ = g₂ ≫ (M'.univ.eta a).left ≫ om.φ) → g₁ = g₂ := by
   intro p _ D R _ b N N' hd hc S s o M' π hπ om T g₁ g₂ hg hη
   obtain ⟨o₁, ⟨m₁⟩⟩ := GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N' M'.X T M'.s g₁ M'.univ

@@ -26,6 +26,13 @@ namespace GlobalTheory.CovTop.DgShare
 section Weights
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 end Weights
+/- English proof (translation)
+Introduce `hX hP hG hQ hSi hKS hSA _ hS _`. Establish `hFa` using `hKS.toroidalChartsForFan`. Establish `h4` using `_root_.GlobalTheory.T.size_bounds_for_family_alt hS`. Establish `h5` using `_root_.GlobalTheory.T.birOn_weightPair_both_components_alt hX hG hQ hSi hP hS`. Unfold `_root_.GlobalTheory.CovTop.CoversCondition at h4 h5`.
+
+Establish `all` using `_root_.GlobalTheory.CovTop.DgShare.lifts_and_alt (_root_.GlobalTheory.CovTop.DgShare.lifts_and_alt (_root_.GlobalTheory.T.weight_parameter_strict_antitone_alt hS) _root_.GlobalTheory.HSApp.wtBig_run_alt) (_root_.GlobalTheory.CovTop.DgShare.lifts_and_alt h4 h5)`. Use `clear h4 h5`. Use `Closed.imp all fun Fm _ _ ⟨C, hC, x0, h⟩ => ⟨C, hC, x0, fun x hx hle ι p hp i hi Y hY Z => ?_⟩` and prove the remaining obligations. Take `⟨⟨_, ⟨_, hq⟩, _, hB⟩, _, ⟨_, hz⟩, _, hb⟩` from `h x hx hle ι p hp i`. Take `⟨hp1, hq1, hf, -⟩` from `hq hi`.
+
+Take `⟨hT, hj, -⟩` from `hz hi Y hY`. Conclude with `_root_.GlobalTheory.CovTop.DgShare.nef_share_lower_bound hP hG hQ hSi hFa hSA hT hp1 hq1 hf hj Y hY.1 _ (hB hi) Z (hb hi Y hY Z).1`.
+-/
 theorem choose_mul_compDeg_le_alt_alt : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted →
     GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition →
     _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => ∀ Z, (lenT p i PP - 1).choose (GlobalTheory.CompHt.dimFlag (dat p i)) *
@@ -59,6 +66,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt_alt | exact _root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt_alt | (intros; apply _root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.binomial_flag_dimension_degree_bound_alt_alt : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => ∀ Z, (lenT p i PP - 1).choose (GlobalTheory.CompHt.dimFlag (dat p i)) * GlobalTheory.CompHt.compDeg Y.U Z (wtOf (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ 0) ≤ Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf (dat p i) ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) 0)) := by
   first | exact @_root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt_alt | exact _root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt_alt | (intros; apply _root_.GlobalTheory.CovTop.DgShare.choose_mul_compDeg_le_alt_alt <;> assumption)
 end

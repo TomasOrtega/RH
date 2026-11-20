@@ -24,9 +24,21 @@ section
 variable {A X X' : Type} [CommRing A] [CommRing X] [CommRing X'] [Algebra A X] [Algebra A X'] (g : ℕ) (f : X →ₐ[A] X')
   (x : DD X g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem DD.map_a : (DD.map g f x).a = f x.a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem DD.map_ep (j) : (DD.map g f x).ep j = f (x.ep j) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem DD.map_ep' (j) : (DD.map g f x).ep' j = f (x.ep' j) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem DD.map_eta : (DD.map g f x).eta = f x.eta := rfl
 
 instance [Finite X] : Finite (DD X g) := Finite.of_equiv _ (DD.equiv (X := X) (g := g)).symm

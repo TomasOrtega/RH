@@ -18,11 +18,20 @@ namespace GlobalTheory.FlagCell
 def uniR {R : Type*} [CommRing R] {m : ℕ} (n : Low m → R) : Matrix (Fin m) (Fin m) R :=
   Matrix.of fun a b => if h : b < a then n ⟨(a, b), h⟩ else if a = b then 1 else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uniR_eq_uni {m : ℕ} (n : Low m → ℂ) : uniR n = uni n := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uniR_apply {R : Type*} [CommRing R] {m : ℕ} (n : Low m → R) (a b : Fin m) :
     uniR n a b = if h : b < a then n ⟨(a, b), h⟩ else if a = b then 1 else 0 := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, uniR_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_uniR {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) {m : ℕ} (n : Low m → R) :
     (uniR n).map f = uniR fun s => f (n s) := by
   ext a b

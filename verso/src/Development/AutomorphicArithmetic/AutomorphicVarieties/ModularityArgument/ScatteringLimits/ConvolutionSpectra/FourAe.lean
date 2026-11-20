@@ -6,6 +6,13 @@ import Mathlib.Analysis.Distribution.AEEqOfIntegralContDiff
 open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology UpperTheory.V.Z.IntegralApplyAeEq
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
+/- English proof (translation)
+Introduce `V _ _ _ _ u hu`. Establish `hc : Continuous (𝓕 (u : ℝ → V))` using `VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar (by fun_prop) hu`. Use `ae_eq_of_integral_contDiff_smul_eq ((Lp.memLp _).locallyIntegrable (by norm_num)) hc.locallyIntegrable ?_` and prove the remaining obligations. Introduce `g hg hgc`. Establish `hs : HasCompactSupport (fun x => ((g x : ℝ) : ℂ))` using `hgc.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`.
+
+Set `φ : SchwartzMap ℝ ℂ` to `hs.toSchwartzMap (Complex.ofRealCLM.contDiff.comp hg)`. Establish `hφ : ∀ x, φ x = (g x : ℂ)` using `fun x => rfl`. Establish `h1` using `congrArg (fun T : TemperedDistribution ℝ V => T φ) (Lp.fourier_toTemperedDistribution_eq u)`. Simplify using `only [TemperedDistribution.fourier_apply, Lp.toTemperedDistribution_apply] at h1`. Establish `h2` using `VectorFourier.integral_fourierIntegral_smul_eq_flip (e := Real.fourierChar) (L := innerₗ ℝ) (μ := volume) (ν := volume) (f := (φ : ℝ → ℂ)) (g := (u : ℝ → V)) Real.continuous_fourierChar (by fun_prop) φ.integrable hu`.
+
+Establish `h3 : (innerₗ ℝ).flip = innerₗ ℝ` using `by ext; simp`. Rewrite `h2` using `[h3]`. Establish `e : ∀ (x : ℝ) (v : V), g x • v = φ x • v` using `fun x v => by rw [hφ, Complex.coe_smul]`. Simplify using `only [e]`. Conclude with `h1.symm.trans h2`.
+-/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.fourAe :
     ∀ {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] (u : L V), Integrable (u : ℝ → V) → ∀ᵐ ξ : ℝ, Lp.fourierTransformₗᵢ ℝ V u ξ = 𝓕 (u : ℝ → V) ξ := by
   intro V _ _ _ _ u hu

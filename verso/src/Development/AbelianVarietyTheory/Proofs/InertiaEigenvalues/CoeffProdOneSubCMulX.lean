@@ -8,6 +8,13 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `α using Multiset.induction_on generalizing k with`. Consider the case `empty`. Consider the cases of `k with`. Consider the case `zero => simp [Multiset.esymm]`. Consider the case `succ k => simp [Multiset.esymm, Polynomial.coeff_one, Multiset.powersetCard_zero_right]`.
+
+Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, sub_mul, one_mul, mul_assoc, Polynomial.coeff_sub, Polynomial.coeff_C_mul]`. Consider the cases of `k with`. Consider the case `zero => rw [ih]`. Simplify using `[Multiset.esymm]`.
+
+Consider the case `succ k`. Establish `h : (a ::ₘ s).esymm (k + 1) = s.esymm (k + 1) + a * s.esymm k`. Simplify using `[Multiset.esymm, Multiset.powersetCard_cons, Multiset.sum_map_mul_left]`. Rewrite using `[Polynomial.coeff_X_mul, ih, ih, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_prod_one_sub_C_mul_X (c : ℂ) (α : Multiset ℂ) (k : ℕ) :
     ((α.map fun a => (1 : Polynomial ℂ) - Polynomial.C (c * a) * Polynomial.X).prod).coeff k
       = (-1 : ℂ) ^ k * c ^ k * α.esymm k := by
@@ -27,6 +34,13 @@ theorem coeff_prod_one_sub_C_mul_X (c : ℂ) (α : Multiset ℂ) (k : ℕ) :
       rw [Polynomial.coeff_X_mul, ih, ih, h]
       ring
 
+/- English proof (translation)
+Introduce `r q hq α _ k _`. Rewrite using `[coeff_prod_one_sub_C_mul_X]`. Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Establish `hk : ((k * (k - 1) / 2 : ℕ) : ℂ) = (k : ℂ) * ((k : ℂ) - 1) / 2`. Rewrite using `[← Nat.choose_two_right, Nat.cast_choose_two]`.
+
+Establish `h : (q : ℂ) ^ (k * (k - 1) / 2) * (q : ℂ) ^ (((k : ℂ) * ((r : ℂ) - k)) / 2) = ((q : ℂ) ^ (((r : ℂ) - 1) / 2)) ^ k`. Rewrite using `[← Complex.cpow_natCast (q : ℂ) (k * (k - 1) / 2), ← Complex.cpow_add _ _ hq0, hk, ← Complex.cpow_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normalised_esymm_eq_coeff :
     ∀ (r : ℕ) (q : ℝ), 0 < q → ∀ (α : Multiset ℂ), Multiset.card α = r → ∀ k, k ≤ r → (-1 : ℂ) ^ k * (q : ℂ) ^ (k * (k - 1) / 2) * ((q : ℂ) ^ (((k : ℂ) * ((r : ℂ) - k)) / 2) * α.esymm k) = ((α.map fun a => (1 : Polynomial ℂ) - Polynomial.C ((q : ℂ) ^ (((r : ℂ) - 1) / 2) * a) * Polynomial.X).prod).coeff k := by
   intro r q hq α _ k _

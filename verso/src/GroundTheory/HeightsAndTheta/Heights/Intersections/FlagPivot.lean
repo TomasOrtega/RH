@@ -20,6 +20,11 @@ def leadMinor {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) (
 def pivotMatrix {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) : Matrix (Fin n) (Fin n) R :=
   Matrix.of fun r b => if h : (r : ℕ) < n - 1 then pivotMinor M ⟨r, h⟩ b else 0
 
+/- English proof (translation)
+Introduce `c d hcd`. Establish `hcd' : (c : ℕ) < d` using `hcd`. Simplify using `only [pivotCols]`. Use `split_ifs with h1 h2 h2`. Conclude with `Fin.mk_lt_mk.mpr hcd'`.
+
+Conclude with `Fin.mk_lt_mk.mpr (by omega)`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem pivotCols_strictMono {n : ℕ} (a : Fin (n - 1)) (b : Fin n) (hab : (a : ℕ) ≤ b) :
     StrictMono (pivotCols a b) := by
   intro c d hcd
@@ -31,10 +36,16 @@ theorem pivotCols_strictMono {n : ℕ} (a : Fin (n - 1)) (b : Fin n) (hab : (a :
   · omega
   · omega
 
+/- English proof (translation)
+Rewrite using `[Finset.card_image_of_injective _ (pivotCols_strictMono a b hab).injective, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem card_image_pivotCols {n : ℕ} (a : Fin (n - 1)) (b : Fin n) (hab : (a : ℕ) ≤ b) :
     (Finset.univ.image (pivotCols a b)).card = a + 1 := by
   rw [Finset.card_image_of_injective _ (pivotCols_strictMono a b hab).injective, Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+Unfold `pivotMinor flagMinor`. Use `congr 2`. Conclude with `(Finset.orderEmbOfFin_unique (card_image_pivotCols a b hab) (fun c => Finset.mem_image_of_mem _ (Finset.mem_univ c)) (pivotCols_strictMono a b hab))`.
+-/
 theorem pivotMinor_eq_flagMinor {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) (a : Fin (n - 1))
     (b : Fin n) (hab : (a : ℕ) ≤ b) :
     pivotMinor M a b = flagMinor M a ⟨Finset.univ.image (pivotCols a b), card_image_pivotCols a b hab⟩ := by
@@ -43,6 +54,11 @@ theorem pivotMinor_eq_flagMinor {R : Type} [CommRing R] {n : ℕ} (M : Matrix (F
   exact (Finset.orderEmbOfFin_unique (card_image_pivotCols a b hab) (fun c => Finset.mem_image_of_mem _ (Finset.mem_univ c))
     (pivotCols_strictMono a b hab))
 
+/- English proof (translation)
+Unfold `pivotMinor`. Use `Matrix.det_zero_of_column_eq (i := ⟨b, by omega⟩) (j := Fin.last a) (fun h => by` and prove the remaining obligations. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use the proof step `omega) fun k => ?_`.
+
+Simplify using `[pivotCols, hba]`.
+-/
 theorem pivotMinor_eq_zero {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) (a : Fin (n - 1))
     (b : Fin n) (hba : (b : ℕ) < a) : pivotMinor M a b = 0 := by
   unfold pivotMinor

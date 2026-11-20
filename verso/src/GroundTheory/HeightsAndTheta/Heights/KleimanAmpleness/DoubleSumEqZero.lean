@@ -15,6 +15,11 @@ variable {K : Type} [Fintype K] [LinearOrder K] {ι : K → Type} [∀ k, Linear
 def rem (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) : ∀ k, Finset (ι k) :=
   Function.update I p.1 ((I p.1).erase p.2)
 
+/- English proof (translation)
+Take `⟨k₀, i₀⟩` from `p`. Use extensionality with `⟨k, i⟩`. Simplify using `only [Finset.mem_sigma, Finset.mem_univ, true_and, Finset.mem_erase, rem]`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality.
+
+Simplify using `[Finset.mem_erase]`. Rewrite using `[Function.update_of_ne hk]`. Simplify using `[hk]`.
+-/
 theorem sigma_rem (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) :
     Finset.univ.sigma (rem I p) = (Finset.univ.sigma I).erase p := by
   obtain ⟨k₀, i₀⟩ := p
@@ -28,6 +33,11 @@ theorem sigma_rem (I : ∀ k, Finset (ι k)) (p : Σ k, ι k) :
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Take `⟨k, i⟩` from `p`. Take `⟨k', i'⟩` from `q`. Distinguish the cases in `hk : k' = k`. Substitute `hk` using the available equality. Simplify using `only [rem, Function.update_self, Function.update_idem, Finset.erase_right_comm]`.
+
+Simplify using `only [rem]`. Rewrite using `[Function.update_of_ne hk, Function.update_of_ne (Ne.symm hk), Function.update_comm (Ne.symm hk)]`.
+-/
 theorem rem_rem_comm (I : ∀ k, Finset (ι k)) (p q : Σ k, ι k) :
     rem (rem I p) q = rem (rem I q) p := by
   obtain ⟨k, i⟩ := p
@@ -41,12 +51,22 @@ theorem rem_rem_comm (I : ∀ k, Finset (ι k)) (p q : Σ k, ι k) :
 
 omit [∀ k, LinearOrder (ι k)] in
 
+/- English proof (translation)
+The claim follows from `Finset.sum_congr rfl fun l hl => by rw [Function.update_of_ne (ne_of_lt (Finset.mem_filter.1 hl).2)]`.
+-/
 theorem offset_update (I : ∀ k, Finset (ι k)) (k : K) (X : Finset (ι k)) :
     ∑ l ∈ Finset.univ.filter (· < k), ((Function.update I k X l).card - 1) =
       ∑ l ∈ Finset.univ.filter (· < k), ((I l).card - 1) :=
   Finset.sum_congr rfl fun l hl => by
     rw [Function.update_of_ne (ne_of_lt (Finset.mem_filter.1 hl).2)]
 
+/- English proof (translation)
+Establish `h1 : ((I k).erase i').filter (· < i) = (I k).filter (· < i)`. Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, hz⟩, hzi⟩`.
+
+Conclude with `⟨hz, hzi⟩`. Introduce and unpack `⟨hz, hzi⟩`. Conclude with `⟨⟨(hzi.trans hlt).ne, hz⟩, hzi⟩`. Establish `h3 : i ∈ (I k).filter (· < i')` using `Finset.mem_filter.2 ⟨hi, hlt⟩`. Establish `h2 : (((I k).erase i).filter (· < i')).card + 1 = ((I k).filter (· < i')).card`.
+
+Rewrite using `[Finset.filter_erase, Finset.card_erase_add_one h3]`. Unfold `faceSign rem`. Simplify using `only [Function.update_self, offset_update]`. Rewrite using `[h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sign_swap_same {I : ∀ k, Finset (ι k)} {k : K} {i i' : ι k} (hi : i ∈ I k) (hlt : i < i') :
     faceSign I k i' * faceSign (rem I ⟨k, i'⟩) k i = -(faceSign I k i * faceSign (rem I ⟨k, i⟩) k i') := by
   have h1 : ((I k).erase i').filter (· < i) = (I k).filter (· < i) := by
@@ -63,6 +83,11 @@ theorem sign_swap_same {I : ∀ k, Finset (ι k)} {k : K} {i i' : ι k} (hi : i 
   rw [h1, ← h2]
   ring
 
+/- English proof (translation)
+Establish `hmem : k ∈ Finset.univ.filter (· < k')` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, hk⟩`. Establish `hoff : ∑ l ∈ Finset.univ.filter (· < k'), ((Function.update I k ((I k).erase i) l).card - 1) + 1 = ∑ l ∈ Finset.univ.filter (· < k'), ((I l).card - 1)`. Rewrite using `[← Finset.add_sum_erase _ _ hmem, ← Finset.add_sum_erase _ _ hmem, Function.update_self, Finset.sum_congr rfl fun l hl => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hl)], Finset.card_erase_of_mem hi]`. Use linear arithmetic over natural numbers and integers. Establish `hlow : ∑ l ∈ Finset.univ.filter (· < k), ((Function.update I k' ((I k').erase i') l).card - 1) = ∑ l ∈ Finset.univ.filter (· < k), ((I l).card - 1)` using `Finset.sum_congr rfl fun l hl => by`.
+
+Rewrite using `[Function.update_of_ne (ne_of_lt ((Finset.mem_filter.1 hl).2.trans hk))]`. Unfold `faceSign rem`. Simplify using `only [Function.update_of_ne hk.ne, Function.update_of_ne hk.ne', hlow]`. Rewrite using `[← hoff]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sign_swap_lt {I : ∀ k, Finset (ι k)} {k k' : K} (i : ι k) (i' : ι k') (hi : i ∈ I k)
     (hk : k < k') (h2 : 2 ≤ (I k).card) :
     faceSign I k' i' * faceSign (rem I ⟨k', i'⟩) k i =
@@ -84,22 +109,38 @@ theorem sign_swap_lt {I : ∀ k, Finset (ι k)} {k k' : K} (i : ι k) (i' : ι k
   ring
 
 omit [Fintype K] in
+/- English proof (translation)
+The claim follows from `Function.update_of_ne h _ _`.
+-/
 theorem rem_apply_of_ne {I : ∀ k, Finset (ι k)} {k l : K} (i : ι k) (h : l ≠ k) :
     rem I ⟨k, i⟩ l = I l :=
   Function.update_of_ne h _ _
 
 omit [Fintype K] in
+/- English proof (translation)
+The claim follows from `Function.update_self _ _ _`.
+-/
 theorem rem_apply_self (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) :
     rem I ⟨k, i⟩ k = (I k).erase i :=
   Function.update_self _ _ _
 
 omit [Fintype K] [LinearOrder K] in
+/- English proof (translation)
+Use `h.card_pos` as an intermediate fact. Rewrite `this` using `[Finset.card_erase_of_mem hi]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_le_card {I : ∀ k, Finset (ι k)} {k : K} {i : ι k} (hi : i ∈ I k)
     (h : ((I k).erase i).Nonempty) : 2 ≤ (I k).card := by
   have := h.card_pos
   rw [Finset.card_erase_of_mem hi] at this
   omega
 
+/- English proof (translation)
+Take `⟨k, i⟩` from `p`. Take `⟨k', i'⟩` from `q`. Break down `lt_trichotomy k k' with h | rfl | h` into its components or cases. Establish `hb` using `hJ k`. Rewrite `hb` using `[rem_apply_of_ne _ h.ne, rem_apply_self]`.
+
+Rewrite using `[sign_swap_lt i i' hp h (two_le_card hp hb), neg_neg]`. Establish `hii : i' ≠ i` using `fun e => hne (by rw [e])`. Break down `lt_or_gt_of_ne hii with h | h` into its components or cases. Conclude with `sign_swap_same hq h`. Rewrite using `[sign_swap_same hp h, neg_neg]`.
+
+Establish `hb` using `hJ k'`. Rewrite `hb` using `[rem_apply_self, rem_apply_of_ne _ h.ne]`. Conclude with `sign_swap_lt i' i hq h (two_le_card hq hb)`.
+-/
 theorem sign_swap {I : ∀ k, Finset (ι k)} {p q : Σ k, ι k} (hp : p.2 ∈ I p.1) (hq : q.2 ∈ I q.1)
     (hne : q ≠ p) (hJ : ∀ l, (rem (rem I p) q l).Nonempty) :
     faceSign I p.1 p.2 * faceSign (rem I p) q.1 q.2 =
@@ -118,6 +159,19 @@ theorem sign_swap {I : ∀ k, Finset (ι k)} {p q : Σ k, ι k} (hp : p.2 ∈ I 
     rw [rem_apply_self, rem_apply_of_ne _ h.ne] at hb
     exact sign_swap_lt i' i hq h (two_le_card hq hb)
 
+/- English proof (translation)
+Set `f : (Σ _ : (Σ k, ι k), Σ k, ι k) → Ω` to `fun x => (faceSign I x.1.1 x.1.2 * faceSign (rem I x.1) x.2.1 x.2.2) • g (rem (rem I x.1) x.2)`. Establish `step : ∀ k, ∀ i ∈ I k, faceSign I k i • ∑ k', ∑ i' ∈ rem I ⟨k, i⟩ k', faceSign (rem I ⟨k, i⟩) k' i' • g (rem (rem I ⟨k, i⟩) ⟨k', i'⟩) = ∑ q ∈ (Finset.univ.sigma I).erase ⟨k, i⟩, f ⟨⟨k, i⟩, q⟩`. Introduce `k i _`. Rewrite using `[← sigma_rem, Finset.sum_sigma, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Rewrite using `[Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl (step k), ← Finset.sum_sigma Finset.univ I (fun p => ∑ q ∈ (Finset.univ.sigma I).erase p, f ⟨p, q⟩), Finset.sum_sigma' (Finset.univ.sigma I) (fun p => (Finset.univ.sigma I).erase p) (fun p q => f ⟨p, q⟩)]`. Use `Finset.sum_involution (fun x _ => ⟨x.2, x.1⟩) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨p, q⟩ hx`. Take `⟨hp, hq⟩` from `Finset.mem_sigma.1 hx`. Take `⟨hne, hq⟩` from `Finset.mem_erase.1 hq`. Simplify using `only [f]`. Rewrite using `[rem_rem_comm I q p]`.
+
+Distinguish the cases in `h0 : g (rem (rem I p) q) = 0`. Rewrite using `[h0, smul_zero, smul_zero, add_zero]`. Rewrite using `[sign_swap (Finset.mem_sigma.1 hp).2 (Finset.mem_sigma.1 hq).2 hne (hg _ h0), neg_smul]`. Conclude with `neg_add_cancel _`. Introduce and unpack `⟨p, q⟩ hx - h`.
+
+Take `⟨hne, -⟩` from `Finset.mem_erase.1 (Finset.mem_sigma.1 hx).2`. Conclude with `hne (congrArg Sigma.fst h)`. Introduce and unpack `⟨p, q⟩ hx`. Take `⟨hp, hq⟩` from `Finset.mem_sigma.1 hx`. Take `⟨hne, hq⟩` from `Finset.mem_erase.1 hq`.
+
+Conclude with `Finset.mem_sigma.2 ⟨hq, Finset.mem_erase.2 ⟨hne.symm, hp⟩⟩`. Introduce and unpack `⟨p, q⟩ -`. Both sides reduce to the same expression.
+-/
 theorem double_sum_eq_zero {Ω : Type} [AddCommGroup Ω] (I : ∀ k, Finset (ι k))
     (g : (∀ k, Finset (ι k)) → Ω) (hg : ∀ J, g J ≠ 0 → ∀ l, (J l).Nonempty) :
     ∑ k, ∑ i ∈ I k, faceSign I k i • ∑ k', ∑ i' ∈ rem I ⟨k, i⟩ k',
@@ -164,6 +218,9 @@ def ext (m : ℕ) (t : Cell K ι m → Ω) (J : ∀ k, Finset (ι k)) : Ω :=
   if h : (∀ l, (J l).Nonempty) ∧ ∑ l, ((J l).card - 1) = m then t ⟨J, h⟩ else 0
 
 omit [LinearOrder K] [∀ k, LinearOrder (ι k)] [∀ k, Fintype (ι k)] [Algebra S Ω] in
+/- English proof (translation)
+Unfold `ext at h`. Use `split_ifs at h with hc`. Conclude with `hc.1`. Conclude with `absurd rfl h`.
+-/
 theorem ext_ne_zero {m : ℕ} (t : Cell K ι m → Ω) (J : ∀ k, Finset (ι k)) (h : ext m t J ≠ 0) :
     ∀ l, (J l).Nonempty := by
   unfold ext at h
@@ -172,6 +229,11 @@ theorem ext_ne_zero {m : ℕ} (t : Cell K ι m → Ω) (J : ∀ k, Finset (ι k)
   · exact absurd rfl h
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Simplify using `only [cellD, LinearMap.pi_apply, if_pos hJ, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Unfold `ext rem`. Distinguish the cases in `h : (∀ l, (Function.update J.1 k ((J.1 k).erase i) l).Nonempty) ∧ ∑ l, ((Function.update J.1 k ((J.1 k).erase i) l).card - 1) = m`. Rewrite using `[dif_pos h, dif_pos h]`.
+
+Both sides reduce to the same expression. Rewrite using `[dif_neg h, dif_neg h, smul_zero]`. Both sides reduce to the same expression.
+-/
 theorem cellD_apply (y : (Σ k, ι k) → Ω) (m : ℕ) (t : Cell K ι m → Ω) (J : Cell K ι (m + 1))
     (hJ : CellMeets y J.1) :
     cellD S y m t J = ∑ k, ∑ i ∈ J.1 k, faceSign J.1 k i • ext m t (rem J.1 ⟨k, i⟩) := by
@@ -184,12 +246,20 @@ theorem cellD_apply (y : (Σ k, ι k) → Ω) (m : ℕ) (t : Cell K ι m → Ω)
   · rw [dif_neg h, dif_neg h, smul_zero]; rfl
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Simplify using `only [cellD, LinearMap.pi_apply, if_neg hJ, LinearMap.zero_apply]`.
+-/
 theorem cellD_apply_not (y : (Σ k, ι k) → Ω) (m : ℕ) (t : Cell K ι m → Ω) (J : Cell K ι (m + 1))
     (hJ : ¬ CellMeets y J.1) : cellD S y m t J = 0 := by
   simp only [cellD, LinearMap.pi_apply, if_neg hJ, LinearMap.zero_apply]
 
 omit [∀ k, Fintype (ι k)] [Fintype K] [Algebra S Ω] in
 
+/- English proof (translation)
+Take `⟨k, i⟩` from `p`. Introduce `l j hj`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite `hj` using `[rem_apply_self]`.
+
+Conclude with `hI l j (Finset.mem_of_mem_erase hj)`. Rewrite `hj` using `[rem_apply_of_ne _ hl]`. Conclude with `hI l j hj`.
+-/
 theorem meets_rem {y : (Σ k, ι k) → Ω} {I : ∀ k, Finset (ι k)} (hI : CellMeets y I) (p : Σ k, ι k) :
     CellMeets y (rem I p) := by
   obtain ⟨k, i⟩ := p
@@ -203,6 +273,13 @@ theorem meets_rem {y : (Σ k, ι k) → Ω} {I : ∀ k, Finset (ι k)} (hI : Cel
 
 omit [∀ k, Fintype (ι k)] [Algebra S Ω] in
 
+/- English proof (translation)
+Establish `hdeg` using `J.2.2`. Establish `hk` using `two_le_card hi hne`. Use `⟨fun l => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality.
+
+Rewrite using `[rem_apply_self]`. Conclude with `hne`. Rewrite using `[rem_apply_of_ne _ hl]`. Conclude with `J.2.1 l`. Rewrite `hdeg`, the goal using `[← Finset.add_sum_erase _ _ (Finset.mem_univ k)]`.
+
+Rewrite using `[rem_apply_self, Finset.card_erase_of_mem hi, Finset.sum_congr rfl fun l hl => by rw [rem_apply_of_ne _ (Finset.ne_of_mem_erase hl)]]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rem_isCell {m : ℕ} (J : Cell K ι (m + 1)) {k : K} {i : ι k} (hi : i ∈ J.1 k)
     (hne : ((J.1 k).erase i).Nonempty) :
     (∀ l, (rem J.1 ⟨k, i⟩ l).Nonempty) ∧ ∑ l, ((rem J.1 ⟨k, i⟩ l).card - 1) = m := by
@@ -218,6 +295,9 @@ theorem rem_isCell {m : ℕ} (J : Cell K ι (m + 1)) {k : K} {i : ι k} (hi : i 
     omega
 
 omit [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)] [LinearOrder K] [Algebra S Ω] in
+/- English proof (translation)
+Unfold `ext`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨hc, -⟩`. Simplify `hc k` using `[h]`.
+-/
 theorem ext_of_empty {m : ℕ} (t : Cell K ι m → Ω) {J : ∀ k, Finset (ι k)} {k : K} (h : J k = ∅) :
     ext m t J = 0 := by
   unfold ext
@@ -229,6 +309,17 @@ end CellDSq
 
 open CellDSq in
 
+/- English proof (translation)
+Introduce `S _ K _ _ ι _ _ Ω _ _ y n s`. Use function extensionality and compare the values at `I`. Use `show cellD S y (n + 1) (cellD S y n s) I = 0`. Distinguish the cases in `hI : CellMeets y I.1`. Rewrite using `[cellD_apply S y (n + 1) _ I hI]`.
+
+Establish `key : ∀ k, ∀ i ∈ I.1 k, ext (n + 1) (cellD S y n s) (rem I.1 ⟨k, i⟩) = ∑ k', ∑ i' ∈ rem I.1 ⟨k, i⟩ k', faceSign (rem I.1 ⟨k, i⟩) k' i' • ext n s (rem (rem I.1 ⟨k, i⟩) ⟨k', i'⟩)`. Introduce `k i hi`. Distinguish the cases in `hne : ((I.1 k).erase i).Nonempty`. Establish `hc` using `rem_isCell I hi hne`. Rewrite using `[ext, dif_pos hc, cellD_apply S y n s ⟨_, hc⟩ (meets_rem hI _)]`.
+
+Establish `h0 : rem I.1 ⟨k, i⟩ k = ∅`. Rewrite using `[rem_apply_self]`. Conclude with `Finset.not_nonempty_iff_eq_empty.1 hne`. Rewrite using `[ext_of_empty _ h0]`. Use `(Finset.sum_eq_zero fun k' _ => Finset.sum_eq_zero fun i' _ => ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[ext_of_empty (k := k), smul_zero]`. Distinguish the cases in `hk : k = k'`. Substitute `hk` using the available equality. Rewrite using `[rem_apply_self, h0, Finset.erase_empty]`. Rewrite using `[rem_apply_of_ne _ hk, h0]`.
+
+Rewrite using `[Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i hi => by rw [key k i hi]]`. Conclude with `double_sum_eq_zero I.1 (ext n s) (ext_ne_zero s)`. Conclude with `cellD_apply_not S y (n + 1) _ I hI`.
+-/
 theorem CellDSq.proof : CellDSq.Statement := by
   intro S _ K _ _ ι _ _ Ω _ _ y n s
   funext I

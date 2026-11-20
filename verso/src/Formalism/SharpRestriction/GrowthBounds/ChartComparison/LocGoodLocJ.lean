@@ -13,6 +13,9 @@ open scoped TensorProduct
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gramN_apply (D : D7) (i : ℕ) (hi : i ≤ D.R.m) (x y : Fin (D.R.N i)) :
     gramN D i hi x y = (D.sp.X i).gram (Fin.cast (rankN D i hi).symm x) (Fin.cast (rankN D i hi).symm y) := rfl
 
@@ -45,12 +48,18 @@ def FrRatJ : Prop :=
       bc (((RingHom.fst _ _).comp ((X.g u w hg).spl w' h).toRingHom).comp
         (inclE (F := D.host.F) (w'.adicCompletion D.host.F))) B
 
+/- English proof (translation)
+The claim follows from `reGL_mem_UJ (rankN D (i + 1) hi) _ (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) _ (t.gamI c γ).2`.
+-/
 theorem locJ_UJ (c : cmp) (γ : ((gatCh (gatJ Lv (i + 1)) em).lev c).Γ) :
     (locJ hi t B).gamI c γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D (i + 1) hi) :=
   reGL_mem_UJ (rankN D (i + 1) hi) _ (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) _ (t.gamI c γ).2
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `LocAt.actB_of (locJ hi t B) (rankN D (i + 1) hi) B (fun c γ => (t.gamI c γ).1) rfl (fun _ _ => rfl) ?_` and prove the remaining obligations. Introduce `c v γ a b a' b' ha hb`. Establish `h1` using `t.act_eq c v _ rfl ((X.g u w hg).pl v).2 γ a b a' b' ha hb`. Rewrite `h1` using `[hB _ ((X.g u w hg).pl v).2, bc_comp]`. Conclude with `h1`.
+-/
 theorem locJ_actB (hB : FrRatJ t B) : (locJ hi t B).ActB := by
   refine LocAt.actB_of (locJ hi t B) (rankN D (i + 1) hi) B (fun c γ => (t.gamI c γ).1) rfl (fun _ _ => rfl) ?_
   intro c v γ a b a' b' ha hb
@@ -60,6 +69,9 @@ theorem locJ_actB (hB : FrRatJ t B) : (locJ hi t B).ActB := by
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `isHerm_re (rankN D (i + 1) hi) _ (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) (gram_herm D.sp.cm (D.sp.X (i + 1))) det := det_re (rankN D (i + 1) hi) (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) (gram_det_unit D.sp.cm (D.sp.X (i + 1))) sig := fun v x => (X.g u w hg).s …`.
+-/
 theorem locGood_locJ : LocGood (sigD D) (gramN D (i + 1) hi) (locJ hi t B) where
   herm := isHerm_re (rankN D (i + 1) hi) _ (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) (gram_herm D.sp.cm (D.sp.X (i + 1)))
   det := det_re (rankN D (i + 1) hi) (D.sp.X (i + 1)).gram _ (gramN_apply D (i + 1) hi) (gram_det_unit D.sp.cm (D.sp.X (i + 1)))
@@ -71,6 +83,9 @@ theorem locGood_locJ : LocGood (sigD D) (gramN D (i + 1) hi) (locJ hi t B) where
     rw [h1, map_one] at h2
     exact h2
 
+/- English proof (translation)
+Introduce `v x` and use `(X.g u w hg).completion_integers_iff v _ rfl x`.
+-/
 theorem locInt_locJ : LocInt (locJ hi t B) :=
   fun v x => (X.g u w hg).completion_integers_iff v _ rfl x
 

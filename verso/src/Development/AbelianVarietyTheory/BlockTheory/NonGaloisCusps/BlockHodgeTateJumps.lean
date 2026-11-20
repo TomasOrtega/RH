@@ -28,11 +28,17 @@ end Jumps
 
 def blockJumps (t : ℕ) : Multiset ℤ := (Finset.Ico (0 : ℤ) (t : ℤ)).val
 
+/- English proof (translation)
+Rewrite using `[blockJumps, Multiset.count_eq_of_nodup (Finset.Ico _ _).nodup]`. Simplify using the standard rewrite rules.
+-/
 theorem count_blockJumps (t : ℕ) (a : ℤ) :
     (blockJumps t).count a = if 0 ≤ a ∧ a < (t : ℤ) then 1 else 0 := by
   rw [blockJumps, Multiset.count_eq_of_nodup (Finset.Ico _ _).nodup]
   simp
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : blockJumps 3 = {0, 1, 2} := by decide
 
 def SplitsAs {k Γ : Type} [Field k] [Group Γ] {n r t : ℕ} (M : Γ →* Matrix (Fin n) (Fin n) k)
@@ -40,6 +46,11 @@ def SplitsAs {k Γ : Type} [Field k] [Group Γ] {n r t : ℕ} (M : Γ →* Matri
   ∃ e : (Fin n → k) ≃ₗ[k] ((Fin r → k) × (Fin t → k)), ∀ (g : Γ) (u : Fin n → k),
     e ((M g).mulVec u) = ((P g).mulVec (e u).1, fun c => χ c g * (e u).2 c)
 
+/- English proof (translation)
+Use `⟨LinearEquiv.ofFinrankEq _ _ (by simp), fun g u => ?_⟩` and prove the remaining obligations. Establish `h : ∀ (m : ℕ) (v : Fin m → k), (twistM (1 : kˣ →* Matrix (Fin m) (Fin m) k) (MonoidHom.id kˣ) g).mulVec v = (g : k) • v`. Introduce `m v`. Express the relevant statement in the definitionally equal form `((g : k) • (1 : Matrix (Fin m) (Fin m) k)).mulVec v = _`. Rewrite using `[Matrix.smul_mulVec, Matrix.one_mulVec]`.
+
+Rewrite using `[h, h, map_smul]`. Both sides reduce to the same expression.
+-/
 example {k : Type} [Field k] (r t : ℕ) :
     SplitsAs (twistM (1 : kˣ →* Matrix (Fin (r + t)) (Fin (r + t)) k) (MonoidHom.id kˣ))
       (twistM (1 : kˣ →* Matrix (Fin r) (Fin r) k) (MonoidHom.id kˣ)) (fun (_ : Fin t) g => (g : k)) := by
@@ -75,6 +86,9 @@ def BlockJumpsAt (π : N.X i) (w : HeightOneSpectrum (𝓞 H.E)) (hw : w ∈ pla
     IsJumpMultiset (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (rTwO N i r π))) τ
       (J + blockJumps R.t)
 
+/- English proof (translation)
+Take `⟨J, h1, h2⟩` from `h`. Rewrite using `[h1.2, h2.2, Multiset.count_add, count_blockJumps]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem BlockJumpsAt.mult {π : N.X i} {w : HeightOneSpectrum (𝓞 H.E)} {hw : w ∈ placesOver H.E (N.l i)}
     {τ : Br.Kw nbr i w hw →ₐ[ℚ_[N.l i]] Br.LL nbr i w hw} (h : BlockJumpsAt i r ρ L nbr π w hw τ) (a : ℤ) :
     multV (Br.PD L nbr i w hw) (matRep (Br.loc nbr i w hw (rTwO N i r π))) τ a =
@@ -99,6 +113,9 @@ def BlockJumpsF {eps : ℝ} (Fm : FamP eps) : Prop :=
 
 def BlockJumpsClosed (𝒞 : FamClass) : Prop := Closed 𝒞 fun Fm _ => BlockJumpsF Fm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ _ => h _⟩⟩⟩`.
+-/
 theorem closed_of_all (h : ∀ D : D7, BlockJumps_at D) (𝒞 : FamClass) : BlockJumpsClosed 𝒞 :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩,
     fun _ _ _ _ => ⟨0, fun _ _ _ => h _⟩⟩⟩

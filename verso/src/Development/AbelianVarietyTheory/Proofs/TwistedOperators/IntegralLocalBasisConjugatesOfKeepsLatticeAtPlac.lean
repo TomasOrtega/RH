@@ -8,6 +8,11 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.IntKeepConj
 
+/- English proof (translation)
+Establish `h1 : (fun j => π ((A *ᵥ z) j)) = A.map π *ᵥ (fun j => π (z j))`. Use function extensionality and compare the values at `j`. Conclude with `RingHom.map_mulVec π A z j`. Rewrite using `[h1, hz, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.mulVec_single]`.
+-/
 theorem mulVec_conj_col {R S : Type} [CommRing R] [CommRing S] {d : ℕ} (π : R →+* S)
     (b : GL (Fin d) S) (A : Matrix (Fin d) (Fin d) R) (z : Fin d → R) (k : Fin d)
     (hz : (fun j => π (z j)) = (b : Matrix (Fin d) (Fin d) S) *ᵥ Pi.single k 1) :
@@ -20,6 +25,11 @@ theorem mulVec_conj_col {R S : Type} [CommRing R] [CommRing S] {d : ℕ} (π : R
   funext i
   simp [Matrix.mulVec_single]
 
+/- English proof (translation)
+Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `(v.adicCompletionIntegers F).one_mem`. Rewrite using `[Pi.single_eq_of_ne h]`.
+
+Conclude with `(v.adicCompletionIntegers F).zero_mem`.
+-/
 theorem single_mem {F : Type} [Field F] [NumberField F] (v : Pl F) {d : ℕ} (k i : Fin d) :
     (Pi.single k (1 : Fv F v) : Fin d → Fv F v) i ∈ v.adicCompletionIntegers F := by
   by_cases h : i = k
@@ -29,6 +39,23 @@ theorem single_mem {F : Type} [Field F] [NumberField F] (v : Pl F) {d : ℕ} (k 
 end GlobalTheory.IntKeepConj
 
 open GlobalTheory.IntKeepConj in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d W v π₁ π₂ b₁ b₂ hchar hsurj A hA`. Prove the components needed by the constructor for the conclusion. Introduce `i k choose z hzA hz1 hz2 using fun j => hsurj (((b₁ : Matrix (Fin d) (Fin d) (Fv F v)) *ᵥ Pi.single k 1) j) 0`. Establish `hzL : z ∈ GlobalTheory.InertSph.latAt W v`. Rewrite using `[hchar]`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Use function extensionality and compare the values at `j`. Conclude with `hzA j u hu`. Introduce `i'`.
+
+Establish `e : (fun j => π₁ (z j)) = (b₁ : Matrix (Fin d) (Fin d) (Fv F v)) *ᵥ Pi.single k 1` using `funext hz1`. Rewrite using `[e, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `single_mem v k i'`. Introduce `i'`. Establish `e : (fun j => π₂ (z j)) = 0` using `funext hz2`.
+
+Rewrite using `[e, Matrix.mulVec_zero]`. Conclude with `(v.adicCompletionIntegers F).zero_mem`. Establish `h` using `((hchar _).1 (hA z hzL)).2.1 i`. Rewrite `h` using `[mulVec_conj_col π₁ b₁ A z k (funext hz1)]`. Conclude with `h`.
+
+Introduce `i k choose z hzA hz1 hz2 using fun j => hsurj 0 (((b₂ : Matrix (Fin d) (Fin d) (Fv F v)) *ᵥ Pi.single k 1) j)`. Establish `hzL : z ∈ GlobalTheory.InertSph.latAt W v`. Rewrite using `[hchar]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`.
+
+Use function extensionality and compare the values at `j`. Conclude with `hzA j u hu`. Introduce `i'`. Establish `e : (fun j => π₁ (z j)) = 0` using `funext hz1`. Rewrite using `[e, Matrix.mulVec_zero]`.
+
+Conclude with `(v.adicCompletionIntegers F).zero_mem`. Introduce `i'`. Establish `e : (fun j => π₂ (z j)) = (b₂ : Matrix (Fin d) (Fin d) (Fv F v)) *ᵥ Pi.single k 1` using `funext hz2`. Rewrite using `[e, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `single_mem v k i'`.
+
+Establish `h` using `((hchar _).1 (hA z hzL)).2.2 i`. Rewrite `h` using `[mulVec_conj_col π₂ b₂ A z k (funext hz2)]`. Conclude with `h`.
+-/
 theorem GlobalTheory.IntKeepConj.conj_integral : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {d : ℕ} (W : Spc F E d) (v : Pl F) (π₁ π₂ : AE F E →+* Fv F v) (b₁ b₂ : GL (Fin d) (Fv F v)),
   (∀ z : Fin d → AE F E, z ∈ GlobalTheory.InertSph.latAt W v ↔ At (evFin F v) z ∧
       (∀ i, (((b₁⁻¹ : GL (Fin d) (Fv F v)) : Matrix (Fin d) (Fin d) (Fv F v)) *ᵥ fun j => π₁ (z j)) i ∈

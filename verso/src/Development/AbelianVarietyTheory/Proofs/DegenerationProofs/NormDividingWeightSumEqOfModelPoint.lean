@@ -8,6 +8,19 @@ open Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S M U₀ hO h0 h1 _ z p _ y y₀ τ hC hA`. Establish `hT : S.TT M z = S.perp τ.yy.ker`. Rewrite using `[ThetaSys.TT, (h0 z p y y₀ τ hC hA).2]`. Take `⟨hmem, -, hpp, -⟩` from `thetaSys_FF_mem_finite_perp_proj o Ω S`. Rewrite using `[hT]`.
+
+Introduce `c k α hdiv hα hc`. Establish `hcw : c = τ.wt α` using `AddMonoidHom.ext fun t => hc t.1 t.2 t.2`. Establish `hint : ∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1` using `fun a => by`. Rewrite using `[hA]`. Conclude with `hC.norm_val_le_one ((M.O z).algebraMap_mem a)`.
+
+Establish `hk : M.val (gPt p ≫ y) (S.FF _ c k) = y₀ ⟨_, hmem _ c k⟩` using `(hA ⟨_, hmem _ c k⟩).symm`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[hk]`. Conclude with `(h1 p y₀ τ hint _ c k (hmem _ c k) τ.isoFree).1 le_rfl (τ.isoFree.1.trans (hpp _).le) α hα hc`. Substitute `hcw` using the available equality.
+
+Take `⟨k₁, hk₁, he⟩` from `τ.eq α hα`. Rewrite using `[← he, hA]`. Set `w : Sp (PadicAlgCl p)` to `IsLocalRing.closedPoint (PadicAlgCl p)`. Establish `hw : ∀ w', (gPt p ≫ y) w' ⤳ (gPt p ≫ y) w` using `fun w' => by`. Establish `: (gPt p ≫ y) w' ∈ Set.range (gPt p ≫ y)` using `⟨w', rfl⟩`.
+
+Rewrite `this` using `[RatModel.range_eq_singleton _ w]`. Rewrite using `[this]`. Establish `hU : (gPt p ≫ y) w ∈ (U₀ : Set M.Z)` using `hC.2 ⟨w, rfl⟩`. Establish `hq` using `hdiv.2 k₁`. Establish `hmul` using `RatModel.val_mul hw (RatModel.O_le_of_specializes (RatModel.gPt_specializes hC.1 w) hq) (RatModel.ringOn_le_O hU (hO.le (hmem _ (τ.wt α) k)))`.
+
+Rewrite `hmul` using `[div_mul_cancel₀ _ hdiv.1]`. Express the relevant statement in the definitionally equal form `‖M.val (gPt p ≫ y) (S.FF _ (τ.wt α) k₁)‖ ≤ _`. Rewrite using `[hmul, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hC.norm_val_le_one hq)`.
+-/
 theorem norm_val_FF_eq_of_div :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (M : RatModel o Ω) (U₀ : M.Z.Opens), S.Over₀ M U₀ → (∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), M.Cen U₀ z y → S.At M y y₀ → (∀ x, x ∈ S.supI M z ↔ ‖M.val (gPt p ≫ y) (S.th x)‖ = τ.δ) ∧ S.HH M z = τ.yy.ker) → (∀ (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → ∀ (T : AddSubgroup S.Gam) (c : T →+ ZMod S.N) (k : _) (hk : S.FF T c k ∈ S.R), S.IsoFree T → (S.perp τ.yy.ker ≤ T → T ≤ τ.yy.ker → ∀ α : τ.X, (∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) → (∀ (t : S.Gam) (h₁ : t ∈ T) (h₂ : t ∈ S.perp τ.yy.ker), c ⟨t, h₁⟩ = τ.wt α ⟨t, h₂⟩) → ‖y₀ ⟨S.FF T c k, hk⟩‖ ≤ τ.δ * Real.exp (-(τ.q α / S.N))) ∧ (T ≤ S.perp τ.yy.ker → ∃ α : τ.X, (∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) ∧ (∀ (t : S.Gam) (h₁ : t ∈ T) (h₂ : t ∈ S.perp τ.yy.ker), c ⟨t, h₁⟩ = τ.wt α ⟨t, h₂⟩) ∧ ‖y₀ ⟨S.FF T c k, hk⟩‖ ≤ τ.δ * Real.exp (-(τ.q α / S.N)))) → (∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U₀ z y → ∃ y₀ : S.R →+* PadicAlgCl p, S.At M y y₀ ∧ (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) ∧ Nonempty (S.Test p y₀)) → (∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), M.Cen U₀ z y → S.At M y y₀ → ∀ (c : S.TT M z →+ ZMod S.N) (k : _) (α : τ.X), M.Div (S.FF (S.TT M z) c) k z → (∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) → (∀ (t : S.Gam) (h₁ : t ∈ S.TT M z) (h₂ : t ∈ S.perp τ.yy.ker), c ⟨t, h₁⟩ = τ.wt α ⟨t, h₂⟩) → ‖M.val (gPt p ≫ y) (S.FF (S.TT M z) c k)‖ = τ.δ * Real.exp (-(τ.q α / S.N))) := by
   intro o Ω _ _ _ _ S M U₀ hO h0 h1 _ z p _ y y₀ τ hC hA

@@ -29,6 +29,13 @@ noncomputable section
 
 namespace GlobalTheory.BadPlace
 
+/- English proof (translation)
+Unfold `datP at h`. Use `split_ifs at h with hc`. Use `⟨hc.2, fun PP hPP => ?_, fun PP hPP => ?_⟩` and prove the remaining obligations. Establish `hK` using `left_ne_zero_of_mul h`. Unfold `omegaK at hK`.
+
+Use `split_ifs at hK with hh`. Conclude with `(hh PP hPP).2`. Conclude with `absurd rfl hK`. Establish `hQ` using `right_ne_zero_of_mul h`. Unfold `omegaQ at hQ`.
+
+Use `split_ifs at hQ with hh`. Conclude with `(hh PP hPP).2`. Conclude with `absurd rfl hQ`. Conclude with `absurd rfl h`.
+-/
 theorem datP_ne_zero_unpack {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (ea : AE D)
     (y : WO (Vc D i) (Wc D i)) (h : datP R i t ea y ≠ 0) :
@@ -50,6 +57,23 @@ theorem datP_ne_zero_unpack {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : T
       · exact absurd rfl hQ
   · exact absurd rfl h
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL hFP i t ea hea P hP e f hpe k hk hkn x x' hxx h1 h2`. Apply `hkn` to reduce the goal to its premises. Establish `hPS : P ∈ R.Pg ∪ R.Q t` using `Finset.mem_union.2 hP`. Take `⟨heP, hfe, hcf, hinf, hcP⟩` from `GlobalTheory.T.primeIdempotent_of_idempotentSum_place_split D P e f ea (R.Pg ∪ R.Q t) hpe hea hPS`. Take `⟨hI1, hK1, hQ1⟩` from `datP_ne_zero_unpack R i t ea _ h1`.
+
+Take `⟨hI2, hK2, hQ2⟩` from `datP_ne_zero_unpack R i t ea _ h2`. Establish `hY` using `GlobalTheory.T.frameMapAdjoint_translate_inv_eq_mul_frameMatrix D (Vc D i) (Wc D i) (R.βV i) (R.βW i) k x`. Establish `hid` using `GlobalTheory.T.frameMapAdjoint_mul_frameMatrix_eq_idempotent_split D (Vc D i) (Wc D i) (R.βV i) (R.βW i) f hcf k hk x x' hxx`. Rewrite `hid` using `[← hY]`. Establish `he1` using `GlobalTheory.StdFrames.cpt_of_isIdemAt heP`.
+
+Establish `hcPP : GlobalTheory.IdemSupport.cP P ≠ P` using `hcP P hPS`. Establish `hfP : GlobalTheory.StdFrames.cpt P (toEAf D f) = 1`. Rewrite using `[hfe, RingHom.map_add, GlobalTheory.StdFrames.toEAf_cA, RingHom.map_add, he1.1, GlobalTheory.StdFrames.cpt_sg_eq_zero (he1.2 _ hcPP), add_zero]`. Establish `hfoff : ∀ PP ∈ R.Pg, PP ≠ P → GlobalTheory.StdFrames.cpt PP (toEAf D f) = 0`. Introduce `PP hPP hne`.
+
+Rewrite using `[hfe, RingHom.map_add, GlobalTheory.StdFrames.toEAf_cA, RingHom.map_add, he1.2 _ hne, GlobalTheory.StdFrames.cpt_sg_eq_zero (he1.2 _ (hcP PP (Finset.mem_union_left _ hPP))), add_zero]`. Establish `hu : ∀ (y : WO (Vc D i) (Wc D i)), (∀ PP ∈ R.Pg, topL (Wc D i).rank (redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) y)) = 1) → (∀ PP ∈ R.Q t, IsUnit (topL (Wc D i).rank (redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) y))).det) → IsUnit (topL (Wc D i).rank (redM P (f …`. Introduce `y hK hQ`. Break down `hP with hP | hP` into its components or cases. Rewrite using `[hK P hP, Matrix.det_one]`.
+
+Conclude with `isUnit_one`. Conclude with `hQ P hP`. Take `⟨hint, hdet, hone⟩` from `GlobalTheory.T.localFrameChange_mem_integralGL_at_place D P _ _ _ _ _ _ hfP hid hI2 hI1 (hu _ hK2 hQ2) (hu _ hK1 hQ1)`. Establish `hSt` using `GlobalTheory.T.finiteAdelic_mem_selfDualFrameStabilizer_of_splitSupport D (Wc D i) (R.βW i) (R.ΛW i) (hL.lev.βW i) e f P heP hfe hcPP k hk hint hdet`. Establish `hred : ∀ PP, PP ∈ (R.datWp i R.triv).Pg ∨ PP ∈ (R.datWp i R.triv).Q → redFn (R.βW i) PP (finE (Wc D i) k) = 1`.
+
+Introduce and unpack `PP (hPP | hPP)`. Express the relevant statement in the definitionally equal form `PP ∈ R.Pg at hPP`. Use `GlobalTheory.T.frameReduction_eq_one_of_frameMatrix_congruent_one D (Wc D i) (R.βW i) k PP hSt ?_` and prove the remaining obligations. Distinguish the cases in `hPe : PP = P`. Substitute `hPe` using the available equality.
+
+Conclude with `hone (hK2 PP hPP) (hK1 PP hPP)`. Introduce `a b`. Rewrite using `[GlobalTheory.T.frameMatrix_component_sub_one_eq_zero_off_idempotent D (Wc D i) (R.βW i) f k PP hk (hfoff PP hPP hPe) a b, map_zero]`. Conclude with `zero_lt_one`. Conclude with `absurd hPP (Finset.notMem_empty _)`.
+
+Conclude with `⟨GlobalTheory.IdemSupport.mem_GfC_of_suppF (Wc D i) hinf hk, GlobalTheory.LevSplit.mem_lev_of_red D.sp.cm (Wc D i).gram (R.βW i) (R.datWp i R.triv) _ (GlobalTheory.LevSplit.finE_mem_UA _ k) hSt hred⟩`.
+-/
 theorem disj_supp : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (ea : AE D), IsIdemSum ea (R.Pg ∪ R.Q t) → ∀ (P : Pl D.host.E), P ∈ R.Pg ∨ P ∈ R.Q t → ∀ e f, IsPrimeIdem P e f → ∀ k, SuppF (Wc D i) f k → k ∉ levW R i → ∀ x x' : WO (Vc D i) (Wc D i), (∀ a b, f * x a b = f * x' a b) → datP R i t ea (actO (Vc D i) (Wc D i) 1 k⁻¹ x) ≠ 0 → datP R i t ea x' ≠ 0 → False := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL hFP i t ea hea P hP e f hpe k hk hkn x x' hxx h1 h2
   apply hkn

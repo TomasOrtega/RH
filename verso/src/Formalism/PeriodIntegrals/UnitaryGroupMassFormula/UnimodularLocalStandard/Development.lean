@@ -37,6 +37,9 @@ def StepC : Prop :=
         ¬ l ∣ relIdx (stdLat (cmL a b d ha hd lam hlam) m) (imgLat (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λa) ∧
         relIdx (imgLat (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λa) (stdLat (cmL a b d ha hd lam hlam) m) ≠ 0
 
+/- English proof (translation)
+Introduce `a b c d ha hd lam hlam hok m _ _ Λa hsd hθ h1 h2 l hl`. Take `⟨g, hg, g1, g2, g3⟩` from `hB a b c d ha hd lam hlam hok m Λa hsd hθ h1 h2 l hl`. Conclude with `hC a b c d ha hd lam hlam hok m Λa g hθ l hl hg g1 g2 g3`.
+-/
 theorem target_of (hB : StepB) (hC : StepC) : PI.UnimodLocStd := by
   intro a b c d ha hd lam hlam hok m _ _ Λa hsd hθ h1 h2 l hl
   obtain ⟨g, hg, g1, g2, g3⟩ := hB a b c d ha hd lam hlam hok m Λa hsd hθ h1 h2 l hl

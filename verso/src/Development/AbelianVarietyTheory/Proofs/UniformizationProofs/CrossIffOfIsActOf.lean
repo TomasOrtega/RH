@@ -16,11 +16,19 @@ open GlobalTheory.UT
 
 namespace GlobalTheory.CrossTheta
 
+/- English proof (translation)
+Rewrite using `[gs_eq (r ≫ g) z U h, gs_eq g (r z) U h]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply r (g ⁻¹ᵁ U) z h _).symm`.
+-/
 theorem gs_comp_stalk {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U : X.Opens) (h : g (r z) ∈ U)
     (a : Γ(X, U)) : gs (r ≫ g) z U a = (r.stalkMap z).hom (gs g (r z) U a) := by
   rw [gs_eq (r ≫ g) z U h, gs_eq g (r z) U h]
   exact (Scheme.Hom.germ_stalkMap_apply r (g ⁻¹ᵁ U) z h _).symm
 
+/- English proof (translation)
+Take `⟨I, hI, e⟩` from `exists_good L hL (r z) (K := Bool) (fun c => cond c (b ≫ p) (𝟙 _ ≫ p)) (fun c => J (r ≫ cond c (b ≫ p) (𝟙 _ ≫ p))) (fun a c e => congrArg (fun q => J (r ≫ q)) e) (fun c => hJ (r ≫ cond c (b ≫ p) (𝟙 _ ≫ p)))`. Establish `v : ∀ (c : Y ⟶ Y) {m : ℤ} (s : LB.Sec (LB.LinComb L (fun _ : Fin 1 => p) (fun _ => m))), I (c ≫ p) = J (r ≫ c ≫ p) → sval s (r ≫ c) z J = (r.stalkMap z).hom (sval s c (r z) I)`. Introduce `c m s hc`. Rewrite using `[sval_of s (r ≫ c) z J (fun _ => I (c ≫ p)) (fun _ => by rw [Category.assoc, hc])]`. Conclude with `gs_comp_stalk r c z _ (hI.mem (fun _ : Fin 1 => p) c) _`.
+
+Establish `h` using `congrArg (r.stalkMap z).hom (H (r z) I hI)`. Rewrite `h` using `[map_mul, map_mul, ← v b s₁ (e true), ← v b s₂ (e true), ← v (𝟙 _) s₁' (e false), ← v (𝟙 _) s₂' (e false), Category.comp_id]`. Conclude with `h`.
+-/
 theorem cross_val {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (p : Y ⟶ X) (b : Y ⟶ Y) {k k' : ℤ}
     (s₁ s₂ : LB.Sec (LB.LinComb L (fun _ : Fin 1 => p) (fun _ => k)))
     (s₁' s₂' : LB.Sec (LB.LinComb L (fun _ : Fin 1 => p) (fun _ => k')))
@@ -40,6 +48,9 @@ theorem cross_val {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (p : Y ⟶ X) (b :
     Category.comp_id] at h
   exact h
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[translT]`. Simplify using `only [translT, Category.assoc, whiskerLeft_snd, lift_snd, lift_snd_assoc, ThetaPowOrder.translPt_eq, MonObj.comp_mul, MonObj.mul_comp, whiskerLeft_fst_assoc]`.
+-/
 theorem translT_whisker {S : Scheme.{0}} (A : Over S) [GrpObj A] {T : Over S} (a : A ⟶ A) [IsMonHom a] (x : T ⟶ A) :
     translT A x ≫ T ◁ a = T ◁ a ≫ translT A (x ≫ a) := by
   apply CartesianMonoidalCategory.hom_ext
@@ -47,6 +58,13 @@ theorem translT_whisker {S : Scheme.{0}} (A : Over S) [GrpObj A] {T : Over S} (a
   · simp only [translT, Category.assoc, whiskerLeft_snd, lift_snd, lift_snd_assoc, ThetaPowOrder.translPt_eq,
       MonObj.comp_mul, MonObj.mul_comp, whiskerLeft_fst_assoc]
 
+/- English proof (translation)
+Establish `c : (T ◁ a).left ≫ (translT A θ.pt).left = (translT A θ'.pt).left ≫ (T ◁ a).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, hp, translT_whisker]`. Establish `key : ∀ {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J}, Good L z J → (sval (L` using `L) T₁ (r ≫ (T ◁ a).left) z J * sval (L := L) T₂' r z J = sval (L := L) T₂ (r ≫ (T ◁ a).left) z J * sval (L := L) T₁' r z J ↔ sval (L := L) t₁ ((r ≫ (translT A θ'.pt).left) ≫ (T ◁ a).left) z J * sval (L := L) t₂' (r ≫ (translT A θ'.pt).left) z J = sval (L := L) t₂ ((r ≫ (translT A …`. Introduce `Z r z J hJ`. Rewrite using `[ThetaPowOrder.act_sval h₁ _ z hJ, ThetaPowOrder.act_sval h₂ _ z hJ, ThetaPowOrder.act_sval h₁' _ z hJ, ThetaPowOrder.act_sval h₂' _ z hJ, Category.assoc, c, ← Category.assoc, _root_.mul_mul_mul_comm, _root_.mul_mul_mul_comm _ (sval (L := L) t₂ _ z J), ← Units.val_mul, Units.mul_ …`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H y J hJ`. Establish `h` using `(key (𝟙 _) y hJ).2 (cross_val hL _ _ t₁ t₂ t₁' t₂' H _ y hJ)`. Rewrite `h` using `[Category.id_comp]`. Then use the resulting hypothesis. Introduce `H y J hJ`.
+
+Establish `h` using `(key (translT A θ'.pt⁻¹).left y hJ).1 (cross_val hL _ _ T₁ T₂ T₁' T₂' H _ y hJ)`. Rewrite `h` using `[← Over.comp_left, ThetaPowOrder.translT_comp, mul_inv_cancel, ThetaPowOrder.translT_one, Over.id_left, Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem cross_act {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {T : Over S}
     (a : A ⟶ A) [IsMonHom a] {k k' : ℤ} (θ : ThetaGrp A L k T) (θ' : ThetaGrp A L k' T) (hp : θ.pt = θ'.pt ≫ a)
     {t₁ t₂ T₁ T₂ : LB.Sec (LPow A L k T)} {t₁' t₂' T₁' T₂' : LB.Sec (LPow A L k' T)}
@@ -82,6 +100,9 @@ end GlobalTheory.CrossTheta
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `_ R _ _ A F _ _ a ha j j' θ θ' hp t₁ t₂ T₁ T₂ t₁' t₂' T₁' T₂' h₁ h₂ h₁' h₂'`. Conclude with `CrossTheta.cross_act A.isLB a θ θ' hp h₁ h₂ h₁' h₂'`.
+-/
 theorem cross_iff_of_isActOf : LL → ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (F : Type) [Field F] [Algebra (FractionRing R) F] (a : A.A ⟶ A.A), IsMonHom a → ∀ (j j' : ℕ) (θ : ThetaGrp A.A A.L (j : ℤ) (TFK (R := R) F)) (θ' : ThetaGrp A.A A.L (j' : ℤ) (TFK (R := R) F)), θ.pt = θ'.pt ≫ a → ∀ (t₁ t₂ T₁ T₂ : SecA A F j) (t₁' t₂' T₁' T₂' : SecA A F j'), IsActOf A.A A.L j θ t₁ T₁ → IsActOf A.A A.L j θ t₂ T₂ → IsActOf A.A A.L j' θ' t₁' T₁' → IsActOf A.A A.L j' θ' t₂' T₂' → (Cross a t₁ t₂ t₁' t₂' ↔ Cross a T₁ T₂ T₁' T₂') := by
   intro _ R _ _ A F _ _ a ha j j' θ θ' hp t₁ t₂ T₁ T₂ t₁' t₂' T₁' T₂' h₁ h₂ h₁' h₂'
   exact CrossTheta.cross_act A.isLB a θ θ' hp h₁ h₂ h₁' h₂'

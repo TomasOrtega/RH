@@ -13,5 +13,8 @@ open GlobalTheory.Mum
 open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MumValues.exists_values | exact GlobalTheory.MumValues.exists_values | (intros; apply GlobalTheory.MumValues.exists_values <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_degenerationValues_algClosed_field : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F], ∃ N : NumD F, Nonempty (NumOf D.toPre F N) := by
   first | exact @GlobalTheory.MumValues.exists_values | exact GlobalTheory.MumValues.exists_values | (intros; apply GlobalTheory.MumValues.exists_values <;> assumption)

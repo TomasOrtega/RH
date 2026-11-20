@@ -17,6 +17,13 @@ variable {F : Type} [Field F] {X : Scheme.{0}} {L : LB X}
   {J J' : (Sp F ⟶ X) → L.ι} (hJ : ∀ ψ : Sp F ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ)) (hJ' : ∀ ψ : Sp F ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ L.U (J' ψ))
 include hJ hJ'
 
+/- English proof (translation)
+Set `y : Sp F` to `IsLocalRing.closedPoint F`. Establish `hm : ∀ ψ : Sp F ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ (L.U (J ψ) ⊓ L.U (J' ψ))` using `fun ψ z hz => ⟨hJ ψ hz, hJ' ψ hz⟩`. Establish `hv : ∀ ψ : Sp F ⟶ X, (gm ψ y (L.U (J ψ) ⊓ L.U (J' ψ)) (L.g (J ψ) (J' ψ))).val = stalkConst y (valF ψ (L.U (J ψ) ⊓ L.U (J' ψ)) (L.g (J ψ) (J' ψ)).val)` using `fun ψ => (gs_unit ψ y _ (hm ψ trivial) _).symm.trans (gs_eq_stalkConst ψ y (hm ψ) _)`. Establish `hne : ∀ ψ : Sp F ⟶ X, valF ψ (L.U (J ψ) ⊓ L.U (J' ψ)) (L.g (J ψ) (J' ψ)).val ≠ 0` using `fun ψ h => (((Units.isUnit _).map _).map _).ne_zero ((dif_pos (hm ψ)).symm.trans h)`. Use `⟨fun ψ => Units.mk0 _ (hne ψ), fun Y K _ φ ε s r => (stalkConst y).injective ?_⟩` and prove the remaining obligations.
+
+Establish `e : ∀ ψ : Sp F ⟶ X, gm ψ y (L.U (J ψ) ⊓ L.U (J' ψ)) (L.g (J ψ) (J' ψ)) = Units.map (stalkConst y).toMonoidHom (Units.mk0 _ (hne ψ))` using `fun ψ => Units.ext (hv ψ)`. Establish `a` using `sec_trans s r y (top_le_chart hJ φ r trivial) (top_le_chart hJ' φ r trivial)`. Rewrite using `[map_mul]`. Use `(gs_eq_stalkConst r y (top_le_chart hJ φ r) _).symm.trans (a.trans (congrArg₂ (· * ·) ?_ (gs_eq_stalkConst r y (top_le_chart hJ' φ r) _)))` and prove the remaining obligations. Use `show _ = (Units.map (stalkConst y).toMonoidHom _).val`.
+
+Rewrite using `[map_prod, trF]`. Use `congrArg Units.val (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_zpow, e]`.
+-/
 theorem exists_trans : ∃ T : (Sp F ⟶ X) → Fˣ, ∀ (Y : Scheme.{0}) (K : Type) [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (s : LB.Sec (LB.LinComb L φ ε)) (r : Sp F ⟶ Y), sF s r J = (∏ k, T (r ≫ φ k) ^ ε k : Fˣ) * sF s r J' := by
   let y : Sp F := IsLocalRing.closedPoint F
@@ -40,6 +47,11 @@ theorem exists_trans : ∃ T : (Sp F ⟶ X) → Fˣ, ∀ (Y : Scheme.{0}) (K : T
 
 end Val
 
+/- English proof (translation)
+Take `⟨J₀, h₀, e₀⟩` from `exists_gauge f hL hJ`. Take `⟨T, hT⟩` from `exists_trans hJ' h₀`. Establish `k : ∀ (Y : Scheme.{0}) (K : Type) [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (s : LB.Sec (LB.LinComb L φ ε)) (r : Sp F ⟶ Y), sF s (spMap f ≫ r) J' = (∏ k, T (spMap f ≫ r ≫ φ k) ^ ε k : F'ˣ) * f (sF s r J)` using `fun Y K _ φ ε s r => by`. Rewrite using `[hT, sF_ext f hJ e₀]`. Simplify using `only [Category.assoc]`.
+
+Conclude with `⟨fun ψ => T (spMap f ≫ ψ), k, fun Y K _ φ ε t ht r => k Y K φ ε (genSec t ht) r⟩`.
+-/
 theorem exists_trans_ext {F F' : Type} [Field F] [Field F'] (f : F →+* F') {X : Scheme.{0}} {L : LB X} (hL : L.IsLB)
     {J : (Sp F ⟶ X) → L.ι} {J' : (Sp F' ⟶ X) → L.ι} (hJ : ∀ ψ : Sp F ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ))
     (hJ' : ∀ ψ : Sp F' ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ L.U (J' ψ)) : ∃ T : (Sp F ⟶ X) → F'ˣ,
@@ -58,6 +70,43 @@ theorem exists_trans_ext {F F' : Type} [Field F] [Field F'] (f : F →+* F') {X 
     simp only [Category.assoc]
   exact ⟨fun ψ => T (spMap f ≫ ψ), k, fun Y K _ φ ε t ht r => k Y K φ ε (genSec t ht) r⟩
 
+/- English proof (translation)
+Take `⟨T, hs, hg⟩` from `exists_trans_ext f D.P.isLB ν.good ν'.good`. Establish `hr : rigVal ν' = T (1 : TF (R` using `R) F ⟶ D.P.A).left * f (rigVal ν) := by`. Use `hg _ _ (fun _ : PUnit => eSec D.P.A) (fun _ => 1) D.rig D.rig_gen (TF (R := R) F).hom` as an intermediate fact. Rewrite `this` using `[Fintype.prod_unique, zpow_one]`. Use `Eq.trans ?_ this` and prove the remaining obligations.
+
+Conclude with `congrArg (fun r => vF (L := D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig r ν'.J) (Over.w (extMap (R := R) f hf)).symm`. Establish `h0 : rigVal ν ≠ 0` using `vF_ne_zero ν.good _ _`. Set `I : NumD.Hom f N N'` to `{ φ := ptHom f hf ν ν' h := fun x => T (ν.eA x).left / T (1 : TF (R := R) F ⟶ D.P.A).left h_one := by rw [map_one, div_self'] θ_eq := fun x y u => by`. Establish `e : N'.θ (ptHom f hf ν ν' x) (ptHom f hf ν ν' y) (ptHom f hf ν ν' u) = (∏ I : thK, T ((lift (ν.eA x) (lift (ν.eA y) (ν.eA u))).left ≫ thφ D.P.A (x3 D.P.A) I) ^ thε I) * Units.map f.toMonoidHom (N.θ x y u)`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Use `show _ = _ * f (N.θ x y u : F)`. Rewrite using `[ν'.θ_eq, ν.θ_eq, eA_ptHom, eA_ptHom, eA_ptHom, ← comp_lift, ← comp_lift]`. Conclude with `hg _ _ _ _ _ D.cub.isGen _`. Rewrite using `[e, prod_cub]`. Simplify using `only [map_mul]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_inv]`. Normalize the expressions using the abelian group laws. Use `σ_eq := fun x => by`. Establish `e : N'.σ (ptHom f hf ν ν' x) = (T (ν.eA x)⁻¹.left * (T (ν.eA x).left)⁻¹) * Units.map f.toMonoidHom (N.σ x)`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Use `show _ = _ * f (N.σ x : F)`. Rewrite using `[ν'.σ_eq, ν.σ_eq, eA_ptHom]`. Use `(hg _ _ _ _ _ D.sym_gen _).trans (congrArg (fun z : F'ˣ => z.val * _) ?_)` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`.
+
+Use `show T ((ν.eA x)⁻¹).left ^ (1 : ℤ) * T ((ν.eA x).left ≫ 𝟙 _) ^ (-1 : ℤ) = _`. Rewrite using `[Category.comp_id, zpow_one, zpow_neg, zpow_one]`. Rewrite using `[e, map_inv]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Use `lam := 1`. Use `th_eq := fun x => by`. Establish `a : N'.th (ptHom f hf ν ν' x) * rigVal ν' = _` using `ν'.th_eq _`. Establish `b : N.th x * rigVal ν = _` using `ν.th_eq _`.
+
+Establish `c` using `hs _ _ _ _ ν.th (ν.eA x).left`. Rewrite `c` using `[Fintype.prod_unique, Category.comp_id, ← b, zpow_natCast, pow_one, map_mul]`. Rewrite `a` using `[eA_ptHom, hth, hr]`. Establish `d` using `a.trans c`. Establish `h1 : f (rigVal ν) ≠ 0` using `(map_ne_zero f).2 h0`.
+
+Rewrite `d` using `[← _root_.mul_assoc, ← _root_.mul_assoc]`. Establish `d'` using `mul_right_cancel₀ h1 d`. Rewrite using `[_root_.one_mul, Units.val_div_eq_div_val, div_mul_eq_mul_div, ← d', mul_div_cancel_right₀ _ (Units.ne_zero _)]`. Use `e := ν.eX.trans ν'.eX.symm`. Use `c_eq := fun χ => ν'.eA.injective (by`.
+
+Rewrite using `[ν'.c_eq, eA_ptHom, ν.c_eq, AddEquiv.trans_apply, AddEquiv.apply_symm_apply]`. Conclude with `(DVR.comp_cP D (extMap f hf) _).symm)`. Use `ψ_eq := fun χ => by`. Establish `e : N'.ψ (ν.eX.trans ν'.eX.symm χ) = ((T (ν.eA (N.c χ)).left)⁻¹ * T (1 : TF (R` using `R) F ⟶ D.P.A).left) * Units.map f.toMonoidHom (N.ψ χ) := by`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Use `show _ = ((T (ν.eA (N.c χ)).left)⁻¹).val * (T (1 : TF (R := R) F ⟶ D.P.A).left).val * f (N.ψ χ : F)`. Rewrite using `[ν'.ψ_eq, ν.ψ_eq, map_mul, AddEquiv.trans_apply, AddEquiv.apply_symm_apply, _root_.mul_mul_mul_comm]`. Use `congrArg₂ (· * ·) ?_ hr` and prove the remaining obligations. Establish `c` using `hg _ _ _ _ _ (D.psi_gen (ν.eX χ)) (jFK (R := R) F)`. Rewrite `c` using `[Fintype.prod_unique, zpow_neg, zpow_one]`.
+
+Use `(congrArg (fun r => vF (D.psi (ν.eX χ)) r ν'.J) ((extMap_jFK f hf).trans (Category.id_comp _)).symm).trans (c.trans ?_)` and prove the remaining obligations. Use `congrArg (fun z => ((T z)⁻¹).val * _) ?_` and prove the remaining obligations. Rewrite using `[ν.c_eq]`. Conclude with `congrArg (fun z => z.left) (DVR.comp_cP D (Over.homMk (jFK (R := R) F) rfl : TF (R := R) F ⟶ TK R) _)`. Rewrite using `[e]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_inv]`. Use `abel }`. Establish `hX : ∀ y, ν'.eX (I.e y) = ν.eX y` using `fun y => ν'.eX.apply_symm_apply _`. Use `⟨I, rfl, hX, fun k p p' q q' h hq hq' => ⟨ν'.eX.injective (hq'.1.trans (h.1.trans (hq.1.symm.trans (hX _).symm))), ν'.eA.injective (hq'.2.1.trans (Over.OverMorphism.ext ?_)), fun χ => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[h.2.1, ← hq.2.1]`. Conclude with `(congrArg (fun z => z.left) (eA_ptHom f hf ν ν' _)).symm`. Establish `e : q'.1.2.s (I.e χ) = (∏ i, T (DegPre.gtφ D F p.g.b (ν.eX χ) i) ^ DegPre.gtε i) * Units.map f.toMonoidHom (q.1.2.s χ)`. Use `Units.ext ?_` and prove the remaining obligations. Use `show _ = _ * f (q.1.2.s χ : F)`.
+
+Rewrite using `[hq'.2.2, hq.2.2, hX]`. Establish `c` using `hg _ _ _ _ _ (p.g.isGen (ν.eX χ)) (𝟙 (Sp F))`. Simplify using `only [Category.id_comp, Category.comp_id] at c`. Use `Eq.trans ?_ c` and prove the remaining obligations. Set `y : Sp F'` to `IsLocalRing.closedPoint F'`.
+
+Establish `hJ : Good D.P.L y ν'.J` using `fun ψ => ν'.good ψ trivial`. Use `(stalkConst y).injective ((val_eq_vF ν'.good _ _ y).symm.trans (Eq.trans ?_ (val_eq_vF ν'.good _ _ y)))` and prove the remaining obligations. Use `congrArg Units.val ((val_corr hJ (h.2.2 _) _).trans ((val_pull hJ _ _ _).trans ?_))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Rewrite using `[e, prod_gt]`.
+
+Use `show _ * (T (ν.eA (N.c χ * q.1.2.b)).left / _) = _ * (T (ν.eA (N.c χ)).left / _) * (T (ν.eA q.1.2.b).left / _)`. Rewrite using `[map_mul, hq.2.1, ν.c_eq]`. Use `show _ * (T (DVR.cP D (TF (R := R) F) (ν.eX χ) * p.g.b).left / _) = _ * (T (DVR.cP D (TF (R := R) F) (ν.eX χ)).left / _) * _`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem exists_hom (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F F' : Type) [Field F]
     [Algebra (FractionRing R) F] [Field F'] [Algebra (FractionRing R) F'] (f : F →+* F')
     (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F') (N : NumD F) (N' : NumD F')

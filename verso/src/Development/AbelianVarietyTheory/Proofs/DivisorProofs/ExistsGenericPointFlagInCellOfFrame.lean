@@ -9,12 +9,20 @@ open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 
 namespace GlobalTheory.FlagCell2.GenericCell
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use extensionality with `a b`. Simplify using `only [upM, upU, Matrix.of_apply, Pi.zero_apply, Pi.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem upM_zero_eq {ι : Type} {m : ι → ℕ} {K : Type} [Field K] : upM (0 : Cell m → K) = 1 := by
   funext τ
   ext a b
   simp only [upM, upU, Matrix.of_apply, Pi.zero_apply, Pi.one_apply, Matrix.one_apply]
   split_ifs <;> simp_all
 
+/- English proof (translation)
+Introduce `F _ X Y ι _ m E E' φ f hR z A hA`. Establish `hgX : A ∈ E.S (genericPoint X.X)` using `Fr.mem_genericPoint hA`. Establish `hcp : (ratOf X).pt (IsLocalRing.closedPoint X.Fn) = genericPoint X.X` using `Scheme.fromSpecStalk_closedPoint`. Take `⟨p, ⟨hpf, hpb⟩, -⟩` from `hR.lifts X.Fn (ratOf X).pt A (hcp ▸ hgX) (upM 0) (by rw [upM_zero_eq]; exact Par.one)`. Establish `hfp : f (p (IsLocalRing.closedPoint X.Fn)) = genericPoint X.X`.
+
+Establish `h1` using `congrArg (fun g : Sp X.Fn ⟶ X.X => g (IsLocalRing.closedPoint X.Fn)) hpf`. Simplify using `only [Scheme.Hom.comp_apply] at h1`. Conclude with `h1.trans hcp`. Take `⟨u, hu, -⟩` from `(GlobalTheory.T.bearsFlag_unitriangular_iff_mem_cell F X Y ι m E E' φ f hR A X.Fn p (hfp ▸ hgX) 0).1 hpb`. Use `⟨u, Fr.mem_of_specializes (hfp ▸ hgX) ((genericPoint_specializes _).map f.continuous), Fr.mem_genericPoint hu⟩` and prove the remaining obligations.
+-/
 theorem exists_inCell_genericPoint : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ (z : X.X) (A : Mat m X.Fn), A ∈ E.S z → ∃ u : Cell m → Y.Fn, InCell E E' φ f A u (genericPoint Y.X) := by
   intro F _ X Y ι _ m E E' φ f hR z A hA
   have hgX : A ∈ E.S (genericPoint X.X) := Fr.mem_genericPoint hA

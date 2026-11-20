@@ -9,6 +9,9 @@ namespace GlobalTheory.TateSeq
 
 variable {M : Type} [AddCommGroup M]
 
+/- English proof (translation)
+Rewrite `h` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Take `⟨c, hc⟩` from `h`. Establish `: b = a + c * N` using `by linarith`. Rewrite using `[this, add_smul, mul_smul, natCast_zsmul, hm, smul_zero, add_zero]`.
+-/
 theorem zsmul_congr {N : ℕ} {m : M} (hm : N • m = 0) {a b : ℤ}
     (h : (a : ZMod N) = (b : ZMod N)) : a • m = b • m := by
   rw [ZMod.intCast_eq_intCast_iff_dvd_sub] at h
@@ -28,8 +31,26 @@ def tors (M : Type) [AddCommGroup M] (N : ℕ) : AddSubgroup M where
     simp only [Set.mem_setOf_eq] at *
     rw [smul_neg, ha, neg_zero]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_tors {N : ℕ} {x : M} : x ∈ tors M N ↔ N • x = 0 := Iff.rfl
 
+/- English proof (translation)
+Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `hc : ∀ n, Nat.card (tors M (l ^ n)) = l ^ (r * n)` using `h`. Set `f : tors M (l ^ (n + 1)) →+ tors M (l ^ n)` to `{ toFun := fun x => ⟨l • x.1, by`. Rewrite using `[mem_tors, ← mul_smul, ← pow_succ]`. Conclude with `x.2⟩`.
+
+Use the proof step `map_zero' := by ext; simp`. Use the proof step `map_add' := by intro a b; ext; simp }`. Establish `hker : Nat.card f.ker = l ^ r`. Establish `h1` using `hc 1`. Rewrite `h1` using `[mul_one, pow_one]`.
+
+Rewrite using `[← h1]`. Use `Nat.card_congr { toFun := fun x => ⟨x.1.1, by` and prove the remaining obligations. Conclude with `congrArg Subtype.val x.2⟩`. Use `invFun := fun x => ⟨⟨x.1, by`. Use `x.2` as an intermediate fact.
+
+Rewrite `this` using `[mem_tors]`. Rewrite using `[mem_tors, pow_succ, mul_smul, this, smul_zero]⟩, by`. Use `x.2` as an intermediate fact. Rewrite `this` using `[mem_tors]`. Conclude with `Subtype.ext this⟩`.
+
+Use `left_inv := fun x => rfl`. Use `right_inv := fun x => rfl }`. Establish `hr : Nat.card f.range = l ^ (r * n)`. Establish `h1` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup f.ker`. Rewrite `h1` using `[Nat.card_congr (QuotientAddGroup.quotientKerEquivRange f).toEquiv, hker, hc, mul_add, mul_one, pow_add]`.
+
+Conclude with `(Nat.eq_of_mul_eq_mul_right (pow_pos hl r) h1).symm`. Use `haveI : Finite (tors M (l ^ n)) := Nat.finite_of_card_ne_zero (by rw [hc]; positivity)`. Establish `htop : f.range = ⊤` using `AddSubgroup.eq_top_of_card_eq _ (by rw [hr, hc])`. Establish `: (⟨y, hy⟩ : tors M (l ^ n)) ∈ f.range` using `by rw [htop]; trivial`. Take `⟨x, hx⟩` from `this`.
+
+Conclude with `⟨x.1, congrArg Subtype.val hx⟩`.
+-/
 theorem exists_div (l r : ℕ) [Fact l.Prime]
     (h : ∀ n, Nat.card {x : M // l ^ n • x = 0} = l ^ (r * n)) (n : ℕ) (y : M)
     (hy : l ^ n • y = 0) : ∃ x : M, l • x = y := by
@@ -68,6 +89,17 @@ theorem exists_div (l r : ℕ) [Fact l.Prime]
   obtain ⟨x, hx⟩ := this
   exact ⟨x.1, congrArg Subtype.val hx⟩
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Use `haveI : NeZero l := ⟨hp.ne_zero⟩`. Use `haveI : Finite V := Nat.finite_of_card_ne_zero (by rw [hc]; exact pow_ne_zero _ hp.ne_zero)`. Use `letI := Fintype.ofFinite V`. Establish `hdim : Module.finrank (ZMod l) V = r`.
+
+Establish `h1` using `Module.card_eq_pow_finrank (K := ZMod l) (V := V)`. Rewrite `h1` using `[ZMod.card, ← Nat.card_eq_fintype_card, hc]`. Conclude with `(Nat.pow_right_injective hp.two_le h1).symm`. Set `B` to `Module.finBasisOfFinrankEq (ZMod l) V hdim`. Use `⟨fun i => B i, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a ha i`. Establish `h2 : ∑ j, (a j : ZMod l) • B j = 0`. Simplify `ha` using `only [Int.cast_smul_eq_zsmul]`. Establish `h3` using `Fintype.linearIndependent_iff.mp B.linearIndependent _ h2 i`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp h3`.
+
+Introduce `y`. Use `⟨fun i => ((B.repr y i).val : ℤ), ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← B.sum_repr y]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul (ZMod l)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_basis_adapted_lattice_subspace (l r : ℕ) [Fact l.Prime] (V : Type) [AddCommGroup V]
     [Module (ZMod l) V] (hc : Nat.card V = l ^ r) :
     ∃ b : Fin r → V,
@@ -98,6 +130,11 @@ theorem exists_basis_adapted_lattice_subspace (l r : ℕ) [Fact l.Prime] (V : Ty
     rw [← Int.cast_smul_eq_zsmul (ZMod l)]
     simp
 
+/- English proof (translation)
+Establish `hc : Nat.card (tors M l) = l ^ r` using `h`. Take `⟨b, h1, h2⟩` from `@exists_basis_adapted_lattice_subspace l r _ (tors M l) _ (AddCommGroup.zmodModule (fun x => Subtype.ext x.2)) hc`. Use `⟨fun i => (b i).1, fun i => (b i).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Use `h1 a (Subtype.ext ?_)` and prove the remaining obligations.
+
+Simplify using `using ha`. Introduce `y hy`. Take `⟨a, ha⟩` from `h2 ⟨y, hy⟩`. Conclude with `⟨a, by simpa using congrArg Subtype.val ha⟩`.
+-/
 theorem exists_basis (l r : ℕ) [Fact l.Prime]
     (h : Nat.card {x : M // l • x = 0} = l ^ r) :
     ∃ b : Fin r → M, (∀ i, l • b i = 0) ∧
@@ -114,6 +151,11 @@ theorem exists_basis (l r : ℕ) [Fact l.Prime]
     obtain ⟨a, ha⟩ := h2 ⟨y, hy⟩
     exact ⟨a, by simpa using congrArg Subtype.val ha⟩
 
+/- English proof (translation)
+Use `choose g hg using hd`. Set `E : (n : ℕ) → {x : M // l ^ (n + 1) • x = 0}` to `fun n => Nat.rec ⟨b, by simpa using hb⟩ (fun n x => ⟨g (n + 1) x.1 x.2, by`. Rewrite using `[pow_succ, mul_smul, hg]`. Conclude with `x.2⟩) n`. Use `⟨fun n => Nat.casesOn n 0 (fun k => (E k).1), rfl, rfl, ?_⟩` and prove the remaining obligations.
+
+Introduce `n`. Consider the cases of `n with`. Consider the case `zero => exact hb`. Consider the case `succ k => exact hg _ _ _`.
+-/
 theorem exists_tower (l : ℕ) (hd : ∀ (n : ℕ) (y : M), l ^ n • y = 0 → ∃ x : M, l • x = y)
     (b : M) (hb : l • b = 0) :
     ∃ e : ℕ → M, e 0 = 0 ∧ e 1 = b ∧ ∀ n, l • e (n + 1) = e n := by
@@ -128,12 +170,24 @@ theorem exists_tower (l : ℕ) (hd : ∀ (n : ℕ) (y : M), l ^ n • y = 0 → 
   | zero => exact hb
   | succ k => exact hg _ _ _
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, mul_smul, ← add_assoc, he, ih]`.
+-/
 theorem tower_pow {l : ℕ} {e : ℕ → M} (he : ∀ n, l • e (n + 1) = e n) (k n : ℕ) :
     l ^ k • e (n + k) = e n := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ, mul_smul, ← add_assoc, he, ih]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro a _ i`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `a ha`.
+
+Establish `h2 : ∑ i, a i • e 1 i = 0`. Use `congrArg (fun x => l ^ n • x) ha` as an intermediate fact. Simplify using `only [Finset.smul_sum, smul_zero] at this`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_comm, add_comm n 1, tower_pow (e := fun n => e n i) (fun n => he n i)]`. Use `choose c hc using h1 a h2`. Establish `h3 : ∑ i, c i • e n i = 0`. Rewrite using `[← ha]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hc, mul_comm, mul_smul, natCast_zsmul, he]`. Introduce `i`. Rewrite using `[hc, pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih c h3 i)`.
+-/
 theorem tower_indep {l r : ℕ} {e : ℕ → Fin r → M} (he : ∀ n i, l • e (n + 1) i = e n i)
     (h1 : ∀ a : Fin r → ℤ, ∑ i, a i • e 1 i = 0 → ∀ i, (l : ℤ) ∣ a i) (n : ℕ) :
     ∀ a : Fin r → ℤ, ∑ i, a i • e n i = 0 → ∀ i, (l : ℤ) ^ n ∣ a i := by
@@ -156,6 +210,13 @@ theorem tower_indep {l r : ℕ} {e : ℕ → Fin r → M} (he : ∀ n i, l • e
     rw [hc, pow_succ']
     exact mul_dvd_mul_left _ (ih c h3 i)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro y hy; exact ⟨0, by simpa using (by simpa using hy : y = 0).symm⟩`. Consider the case `succ n ih`. Introduce `y hy`. Take `⟨a, ha⟩` from `h1 (l ^ n • y) (by rw [← mul_smul, ← pow_succ']; exact hy)`.
+
+Take `⟨c, hc⟩` from `ih (y - ∑ i, a i • e (n + 1) i) (by`. Rewrite using `[smul_sub, ← ha, Finset.smul_sum, sub_eq_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, add_comm n 1, tower_pow (e := fun n => e n i) (fun n => he n i)])`. Use `⟨fun i => a i + c i * l, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [add_smul, mul_smul, natCast_zsmul, he, Finset.sum_add_distrib, hc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tower_span {l r : ℕ} {e : ℕ → Fin r → M} (he : ∀ n i, l • e (n + 1) i = e n i)
     (h1 : ∀ y : M, l • y = 0 → ∃ a : Fin r → ℤ, ∑ i, a i • e 1 i = y) (n : ℕ) :
     ∀ y : M, l ^ n • y = 0 → ∃ a : Fin r → ℤ, ∑ i, a i • e n i = y := by
@@ -177,6 +238,45 @@ end GlobalTheory.TateSeq
 namespace GlobalTheory
 open TateSeq
 
+/- English proof (translation)
+Introduce `M _ l r _ h`. Take `⟨b, hb0, hb1, hb2⟩` from `exists_basis (M := M) l r (by simpa using h 1)`. Use `choose e' he0 he1 he using fun i => exists_tower l (exists_div l r h) (b i) (hb0 i)`. Set `e : ℕ → Fin r → M` to `fun n i => e' i n`. Establish `he' : ∀ n i, l • e (n + 1) i = e n i` using `fun n i => he i n`.
+
+Establish `hind` using `tower_indep he' (by simpa [e, he1] using hb1)`. Establish `hspan` using `tower_span he' (by simpa [e, he1] using hb2)`. Establish `hkill : ∀ n i, l ^ n • e n i = 0` using `fun n i => by`. Use `tower_pow (he i) n 0` as an intermediate fact. Rewrite `this` using `[zero_add, he0]`. Then use the resulting hypothesis.
+
+Set `c : ℕ → ℤ_[l] → ℤ` to `fun n a => ((PadicInt.toZModPow n a).val : ℤ)`. Establish `hc : ∀ n a, ((c n a : ℤ) : ZMod (l ^ n)) = PadicInt.toZModPow n a` using `fun n a => by`. Simplify using `[c]`. Set `π : ℕ → (Fin r → ℤ_[l]) →+ M` to `fun n => { toFun := fun x => ∑ i, c n (x i) • e n i map_zero' := by simp [c] map_add' := fun x y => by`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← add_smul]`. Apply `zsmul_congr (hkill n i)` to reduce the goal to its premises. Use `push_cast`. Simplify using `only [hc, Pi.add_apply, map_add] }`.
+
+Establish `hπ : ∀ n (x : Fin r → ℤ_[l]) (a : Fin r → ℤ), (∀ i, PadicInt.toZModPow n (x i) = (a i : ZMod (l ^ n))) → π n x = ∑ i, a i • e n i`. Introduce `n x a ha`. Use `show ∑ i, c n (x i) • e n i = _`. Use `Finset.sum_congr rfl fun i _ => zsmul_congr (hkill n i) ?_` and prove the remaining obligations. Rewrite using `[hc, ha]`.
+
+Establish `hker : ∀ n x, π n x = 0 → ∀ i, PadicInt.toZModPow n (x i) = 0`. Introduce `n x hx i`. Rewrite using `[← hc, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Conclude with `hind n _ hx i`.
+
+Use `⟨Fin r → ℤ_[l], inferInstance, inferInstance, π, inferInstance, inferInstance, by simp, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n x`. Rewrite using `[hπ n x (fun i => c (n + 1) (x i))]`. Use `show l • ∑ i, c (n + 1) (x i) • e (n + 1) i = _`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, he']`. Introduce `i`. Rewrite using `[← PadicInt.cast_toZModPow n (n + 1) (Nat.le_succ n)]`. Simplify using `[c]`.
+
+Introduce `x show ∑ i, c 0 (x i) • e 0 i = 0`. Simplify using `[e, he0]`. Introduce `n a x`. Rewrite using `[hπ n (a • x) (fun i => c n a * c n (x i))]`. Use `show _ = _ • ∑ i, c n (x i) • e n i`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`. Simplify using `only [c, natCast_zsmul]`. Introduce `i`.
+
+Use `push_cast`. Simplify using `[hc]`. Introduce `n y hy`. Take `⟨a, ha⟩` from `hspan n y hy`. Conclude with `⟨fun i => (a i : ℤ_[l]), by rw [hπ n _ a (fun i => by simp), ha]⟩`.
+
+Introduce `n x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `: ∀ i, ∃ y : ℤ_[l], y * (l : ℤ_[l]) ^ n = x i` using `fun i => by`. Establish `h1 : x i ∈ RingHom.ker (PadicInt.toZModPow (p` using `l) n) := hker n x hx i`.
+
+Rewrite `h1` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton']`. Then use the resulting hypothesis. Use `choose y hy using this`. Use `⟨y, funext fun i => ?_⟩` and prove the remaining obligations. Simplify using `[← hy, mul_comm]`. Introduce and unpack `⟨y, rfl⟩`.
+
+Rewrite using `[map_nsmul]`. Use `show l ^ n • ∑ i, c n (y i) • e n i = 0`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, hkill, smul_zero]`.
+
+Introduce `s hs0 hs`. Establish `hsk : ∀ n, l ^ n • s n = 0` using `fun n => by`. Use `tower_pow hs n 0` as an intermediate fact. Rewrite `this` using `[zero_add, hs0]`. Then use the resulting hypothesis. Use `choose a ha using fun n => hspan n (s n) (hsk n)`.
+
+Establish `hdv : ∀ i n, (l : ℤ) ^ n ∣ a (n + 1) i - a n i`. Introduce `i n`. Use `hind n (fun i => a (n + 1) i - a n i) ?_ i` and prove the remaining obligations. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ha]`. Rewrite using `[sub_eq_zero, ← hs n, ← ha, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, he']`. Use `⟨fun i => PadicInt.ofIntSeq _ (PadicInt.isCauSeq_padicNorm_of_pow_dvd_sub (fun n => a n i) l (hdv i)), ?_, ?_⟩` and prove the remaining obligations. Introduce `n`. Rewrite using `[hπ n _ (a n) (fun i => PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub (fun n => a n i) l (hdv i) n), ha]`.
+
+Introduce `y hy`. Use function extensionality and compare the values at `i`. Rewrite using `[← PadicInt.ext_of_toZModPow]`. Introduce `n`. Rewrite using `[PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub (fun n => a n i) l (hdv i) n, ← hc, ZMod.intCast_eq_intCast_iff_dvd_sub]`.
+
+Use `push_cast`. Use `hind n (fun i => a n i - c n (y i)) ?_ i` and prove the remaining obligations. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ha]`. Rewrite using `[sub_eq_zero, ← hy n]`. Both sides reduce to the same expression.
+-/
 theorem exists_tateModule_of_card :
     ∀ (M : Type) [AddCommGroup M] (l r : ℕ) [Fact l.Prime], (∀ n, Nat.card {x : M // l ^ n • x = 0} = l ^ (r * n)) → ∃ (T : Type) (_ : AddCommGroup T) (_ : Module ℤ_[l] T) (π : ℕ → T →+ M), Module.Free ℤ_[l] T ∧ Module.Finite ℤ_[l] T ∧ Module.finrank ℤ_[l] T = r ∧ (∀ n x, l • π (n + 1) x = π n x) ∧ (∀ x, π 0 x = 0) ∧ (∀ n (a : ℤ_[l]) x, π n (a • x) = (PadicInt.toZModPow n a).val • π n x) ∧ (∀ n y, l ^ n • y = 0 → ∃ x, π n x = y) ∧ (∀ n x, π n x = 0 ↔ ∃ y, x = l ^ n • y) ∧ ∀ s : ℕ → M, s 0 = 0 → (∀ n, l • s (n + 1) = s n) → ∃! x, ∀ n, π n x = s n := by
   intro M _ l r _ h

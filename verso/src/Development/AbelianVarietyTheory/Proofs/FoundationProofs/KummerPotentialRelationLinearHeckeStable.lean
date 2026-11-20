@@ -11,6 +11,11 @@ namespace GlobalTheory.KZ.H3.RelOp
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+Establish `h1 : Units.map φ.toMonoidHom = MonoidHom.id X.Kˣ`. Use extensionality with `u`. Simplify using `[hφ]`. Establish `h2 : (AddMonoidHom.toIntLinearMap (MonoidHom.toAdditive (Units.map φ.toMonoidHom)) : Additive X.Kˣ →ₗ[ℤ] Additive X.Kˣ) = LinearMap.id`. Rewrite using `[h1]`.
+
+Use extensionality with `u`. Both sides reduce to the same expression. Unfold `Tower.kmap`. Rewrite using `[h2, LinearMap.baseChange_id, AdicCompletion.map_id]`. Both sides reduce to the same expression.
+-/
 theorem kmap_eq_self (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (φ : X.K ≃+* X.K) (hφ : ∀ f, φ f = f)
     (x : X.Khat l) : X.kmap l φ x = x := by
   have h1 : Units.map φ.toMonoidHom = MonoidHom.id X.Kˣ := by
@@ -22,6 +27,9 @@ theorem kmap_eq_self (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (φ : X.K ≃+* 
   rw [h2, LinearMap.baseChange_id, AdicCompletion.map_id]
   rfl
 
+/- English proof (translation)
+Simplify using `[mob, ent]`.
+-/
 theorem mob_one' (z : ℂ) : mob 1 z = z := by
   simp [mob, ent]
 
@@ -29,22 +37,38 @@ section Main
 
 variable (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Introduce `u`. Use `(GlobalTheory.T.r1_smul_and_kmap_of_r1_linear_laws Ω ε X l).1 _ _ _ _ (h u) (h' u)` as an intermediate fact. Apply the tactic sequence `convert this using 1 <;> first | rfl | (funext z; simp)`.
+-/
 theorem rel_add {b b' : X.Fn l} {F F' : ℂ → MvPolynomial (Fin 2) ℤ_[l]} (h : Rel X l b F) (h' : Rel X l b' F') :
     Rel X l (b + b') (F + F') := by
   intro u
   have := (GlobalTheory.T.r1_smul_and_kmap_of_r1_linear_laws Ω ε X l).1 _ _ _ _ (h u) (h' u)
   convert this using 1 <;> first | rfl | (funext z; simp)
 
+/- English proof (translation)
+Introduce `u`. Apply the tactic sequence `convert (GlobalTheory.T.r1_smul_and_kmap_of_r1_linear_laws Ω ε X l).2.1 using 1 <;> first | rfl | (funext z; simp)`.
+-/
 theorem rel_zero : Rel X l 0 0 := by
   intro u
   convert (GlobalTheory.T.r1_smul_and_kmap_of_r1_linear_laws Ω ε X l).2.1 using 1 <;> first | rfl | (funext z; simp)
 
+/- English proof (translation)
+Introduce `u`. Use `(GlobalTheory.T.r1_smul_and_kmap_of_r1_linear_laws Ω ε X l).2.2.1 c _ _ (h u)` as an intermediate fact. Apply the tactic sequence `convert this using 1 <;> first | rfl | (funext z; simp)`.
+-/
 theorem rel_smul (c : ℤ_[l]) {b : X.Fn l} {F : ℂ → MvPolynomial (Fin 2) ℤ_[l]} (h : Rel X l b F) :
     Rel X l (c • b) (c • F) := by
   intro u
   have := (GlobalTheory.T.r1_smul_and_kmap_of_r1_linear_laws Ω ε X l).2.2.1 c _ _ (h u)
   convert this using 1 <;> first | rfl | (funext z; simp)
 
+/- English proof (translation)
+Introduce `u`. Establish `e : (fun z => MvPolynomial.eval u (opP ℤ_[l] m F z)) = fun z => (fun z => MvPolynomial.eval (mZl l m *ᵥ u) (F z)) (mob (toGQ m) z)`. Use function extensionality and compare the values at `z`. Simplify using `only [opP, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[Betti.eval_slP]`.
+
+Both sides reduce to the same expression. Use `show R1 X l (X.kmap l (X.sl (toGQ m)).toRingEquiv (b (mZl l m *ᵥ u))) _`. Rewrite using `[e]`. Distinguish the cases in `hm : 0 < m.det`. Conclude with `(GlobalTheory.T.r1_smul_and_kmap_of_r1_linear_laws Ω ε X l).2.2.2 m _ _ hm (h _)`.
+
+Establish `h1 : toGQ m = 1` using `by unfold toGQ; rw [dif_neg hm]`. Rewrite using `[h1, kmap_eq_self X l _ (fun f => X.sl_one f)]`. Simplify using `only [mob_one']`. Conclude with `h _`.
+-/
 theorem rel_act (m : Matrix (Fin 2) (Fin 2) ℤ) {b : X.Fn l} {F : ℂ → MvPolynomial (Fin 2) ℤ_[l]} (h : Rel X l b F) :
     Rel X l (X.act l m b) (opP ℤ_[l] m F) := by
   intro u
@@ -62,6 +86,9 @@ theorem rel_act (m : Matrix (Fin 2) (Fin 2) ℤ) {b : X.Fn l} {F : ℂ → MvPol
     simp only [mob_one']
     exact h _
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using rel_zero X l`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, LinearMap.add_apply, LinearMap.add_apply]`. Conclude with `rel_add X l (rel_act X l _ h) ih`.
+-/
 theorem rel_sum {ι : Type} (s : Finset ι) (m : ι → Matrix (Fin 2) (Fin 2) ℤ) {b : X.Fn l}
     {F : ℂ → MvPolynomial (Fin 2) ℤ_[l]} (h : Rel X l b F) :
     Rel X l ((∑ j ∈ s, X.act l (m j)) b) ((∑ j ∈ s, opP ℤ_[l] (m j)) F) := by
@@ -78,6 +105,13 @@ end GlobalTheory.KZ.H3.RelOp
 
 open GlobalTheory.KZ.H3.RelOp in
 
+/- English proof (translation)
+Introduce `Ω _ _ ε X l _`. Use `⟨fun b b' F F' h h' => rel_add X l h h', rel_zero X l, fun c b F h => rel_smul X l c h, fun m b F h => rel_act X l m h, fun N T b F h => ?_⟩` and prove the remaining obligations. Consider the cases of `T with`. Consider the case `T q`. Simplify using `only [Tower.op, Tower.heckeT, opL, LinearMap.add_apply]`.
+
+Conclude with `rel_add X l (rel_sum X l _ _ h) (rel_act X l _ h)`. Consider the case `U`. Simplify using `only [Tower.op, Tower.heckeU, opL]`. Conclude with `rel_sum X l _ _ h`. Consider the case `D d`.
+
+Simplify using `only [Tower.op, Tower.diam, opL]`. Conclude with `rel_act X l _ h`.
+-/
 theorem GlobalTheory.KZ.H3.rel_ops : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime],
     (∀ b b' F F', Rel X l b F → Rel X l b' F' → Rel X l (b + b') (F + F')) ∧ Rel X l 0 0 ∧
     (∀ (c : ℤ_[l]) b F, Rel X l b F → Rel X l (c • b) (c • F)) ∧

@@ -19,6 +19,11 @@ namespace CuspPair
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hxc : ∀ a, (![x, y] a).IsCusp` using `Fin.forall_fin_two.2 ⟨hx, hy⟩`. Establish `hj'` using `GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient u hu τ _ (isSmooth_prodIrr ![x, y] hd) hτ`. Take `⟨e, he⟩` from `GlobalTheory.CompanionTheory.CuspPairSub.exists_equiv_of_jm_ne_zero ![x, y] u hd hu hxc hpos (ENat.one_le_iff_ne_zero.1 (hj.trans hj'))`. Establish `hee : e 0 ≠ e 1` using `fun h => by simpa using e.injective h`. Establish `k2 : ∀ a b : Fin 2, a ≠ b → (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0)` using `by decide`.
+
+Break down `k2 _ _ hee with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases. Conclude with `Or.inl (funext (Fin.forall_fin_two.2 ⟨(he 0).trans (by simp [a]), (he 1).trans (by simp [b])⟩))`. Conclude with `Or.inr (funext (Fin.forall_fin_two.2 ⟨(he 0).trans (by simp [a]), (he 1).trans (by simp [b])⟩))`.
+-/
 theorem key {x y : IrrGL k} (hx : x.IsCusp) (hy : y.IsCusp) {N : ℕ} (hd : ∑ a, (![x, y] a).1 = N)
     {V : Type} [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ (GL (Fin N) k) V)
     (hτ : IsSubquotient τ (prodIrr ![x, y] hd)) (u : Fin 2 → IrrGL k) (hu : ∑ a, (u a).1 = N)
@@ -37,6 +42,15 @@ end CuspPair
 
 open CuspPair in
 
+/- English proof (translation)
+Introduce `x y N hd hx hy h1 h2`. Assume the negation of the conclusion as `hred`. Take `⟨ψ, hc, hψ⟩` from `exists_continuous_addChar_ne_one k`. Take `⟨τ, hτ, hg⟩` from `GlobalTheory.T.reducible_cuspidal_pair_nongeneric_subquotient k (CompanionTheory.rg.gu.whit.whitRankIrr k) ψ hc hψ x y N hd hx hy hred`. Establish `hng : ¬ IsGeneric τ.ρ` using `fun hG => hg ((isGeneric_iff_isGenericFor hc hψ τ.ρ).1 hG)`.
+
+Take `⟨α, β, β', hd1, hd2, hα, hβ, hββ, j1, j2⟩` from `h N τ.V τ.ρ τ.smooth τ.irr hng`. Establish `hp1 : ∀ a, 0 < (![α, β] a).1` using `Fin.forall_fin_two.2 ⟨hα, hβ⟩`. Establish `hp2 : ∀ a, 0 < (![β', α.nu 1] a).1` using `Fin.forall_fin_two.2 ⟨hββ ▸ hβ, hα⟩`. Establish `c1` using `key hx hy hd τ.ρ hτ _ hd1 hp1 j1`. Establish `c2` using `key hx hy hd τ.ρ hτ _ hd2 hp2 j2`.
+
+Establish `e0 : ∀ {a b c d : IrrGL k}, ![a, b] = ![c, d] → a = c ∧ b = d` using `fun h => ⟨congrFun h 0, congrFun h 1⟩`. Apply the tactic sequence `rcases c1 with c1 | c1 <;> obtain ⟨rfl, -⟩ := e0 c1`. Apply the tactic sequence `rcases c2 with c2 | c2 <;> obtain ⟨-, h3⟩ := e0 c2`. Conclude with `h1 h3.symm`. Conclude with `GlobalTheory.CompanionTheory.CuspPairSub.nu_one_ne hx.1 h3`.
+
+Apply the tactic sequence `rcases c2 with c2 | c2 <;> obtain ⟨-, h3⟩ := e0 c2`. Conclude with `GlobalTheory.CompanionTheory.CuspPairSub.nu_one_ne hy.1 h3`. Conclude with `h2 h3.symm`.
+-/
 theorem cuspPairIrr_of (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (h : GlobalTheory.BZSeg.NuPair k) : GlobalTheory.BZSeg.CuspPairIrr k := by
   intro x y N hd hx hy h1 h2

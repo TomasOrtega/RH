@@ -8,6 +8,9 @@ open scoped nonZeroDivisors
 
 namespace PI.VolStabS
 
+/- English proof (translation)
+Establish `hnd` using `traceForm_nondegenerate ℚ F`. Take `⟨β, hβ⟩ : ∃ β, (LinearMap.BilinForm.toDual (Algebra.traceForm ℚ F) hnd) β = f` from `⟨_, LinearEquiv.apply_symm_apply _ f⟩`. Use `⟨β, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← hβ, LinearMap.BilinForm.toDual_def, Algebra.traceForm_apply]`.
+-/
 private theorem exists_trace_mul_eq_linearMap (F : Type) [Field F] [NumberField F] (f : F →ₗ[ℚ] ℚ) :
     ∃ β : F, ∀ y : F, f y = Algebra.trace ℚ F (β * y) := by
   have hnd := traceForm_nondegenerate ℚ F
@@ -16,6 +19,35 @@ private theorem exists_trace_mul_eq_linearMap (F : Type) [Field F] [NumberField 
   refine ⟨β, fun y => ?_⟩
   rw [← hβ, LinearMap.BilinForm.toDual_def, Algebra.traceForm_apply]
 
+/- English proof (translation)
+Introduce `F _ _ Λ ⟨c0, hc0, hc0Λ⟩ hnot g hg`. Establish `hmul : ∀ (r : 𝓞 F) (x : F), x ∈ Λ → algebraMap (𝓞 F) F r * x ∈ Λ`. Introduce `r x hx`. Establish `h1` using `Λ.smul_mem r hx`. Rewrite `h1` using `[Algebra.smul_def]`.
+
+Conclude with `h1`. Take `⟨bb, hbb⟩ : ∃ bb, bb = NumberField.integralBasis F` from `⟨_, rfl⟩`. Establish `hmem : ∀ i, c0 * bb i ∈ Λ`. Introduce `i`. Rewrite using `[hbb, NumberField.integralBasis_apply, mul_comm]`.
+
+Conclude with `hmul _ _ hc0Λ`. Use `choose n hn using fun i => hg _ (hmem i)`. Set `h0 : F →ₗ[ℚ] ℚ` to `bb.constr ℚ (fun i => (n i : ℚ))`. Establish `hh0 : ∀ y : F, g (c0 * y) = ((h0 y : ℚ) : ℂ)`. Set `L1 : F →+ ℂ` to `g.comp (AddMonoidHom.mulLeft c0)`.
+
+Set `L2 : F →+ ℂ` to `(Rat.castHom ℂ).toAddMonoidHom.comp h0.toAddMonoidHom`. Establish `hL : L1.toRatLinearMap = L2.toRatLinearMap`. Use `bb.ext (fun i => ?_)` and prove the remaining obligations. Simplify using `[L1, L2, h0, hn i]`. Introduce `y`.
+
+Establish `h1` using `congrArg (fun L : F →ₗ[ℚ] ℂ => L y) hL`. Simplify `h1` using `[L1, L2]`. Take `⟨β, hβ⟩` from `exists_trace_mul_eq_linearMap F h0`. Establish `hgx : ∀ x : F, g x = ((Algebra.trace ℚ F (β * c0⁻¹ * x) : ℚ) : ℂ)`. Introduce `x`.
+
+Establish `h1` using `hh0 (c0⁻¹ * x)`. Rewrite `h1` using `[← mul_assoc, mul_inv_cancel₀ hc0, one_mul]`. Rewrite using `[h1, hβ, mul_assoc]`. Introduce `a`. Assume the negation of the conclusion as `ha`.
+
+Establish `hβ0 : β * c0⁻¹ ≠ 0`. Introduce `h0'`. Apply `ha` to reduce the goal to its premises. Rewrite using `[hgx, h0', zero_mul, map_zero, Rat.cast_zero]`. Establish `h10 : (1 : FractionalIdeal (𝓞 F)⁰ F) ≠ 0`.
+
+Introduce `h`. Establish `h1 : (1 : F) ∈ (1 : FractionalIdeal (𝓞 F)⁰ F)`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Conclude with `⟨1, map_one _⟩`. Rewrite `h1` using `[h, FractionalIdeal.mem_zero_iff]`.
+
+Conclude with `one_ne_zero h1`. Establish `hdual : ∀ x ∈ Λ, β * c0⁻¹ * x ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 F)⁰ F)`. Introduce `x hx`. Rewrite using `[FractionalIdeal.mem_dual h10]`. Introduce `b hb`.
+
+Rewrite `hb` using `[FractionalIdeal.mem_one_iff]`. Take `⟨r, rfl⟩` from `hb`. Take `⟨m, hm⟩` from `hg _ (hmul r x hx)`. Rewrite using `[RingHom.mem_range]`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.traceForm_apply, eq_intCast]`. Establish `h1` using `hgx (algebraMap (𝓞 F) F r * x)`. Establish `h2 : ((Algebra.trace ℚ F (β * c0⁻¹ * (algebraMap (𝓞 F) F r * x)) : ℚ) : ℂ) = ((m : ℚ) : ℂ)`. Rewrite using `[← h1, hm, Rat.cast_intCast]`. Rewrite `h2` using `[Rat.cast_inj]`.
+
+Rewrite using `[← h2]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd, hdint⟩` from `(FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 F)⁰ F)).isFractional`. Establish `hd0 : algebraMap (𝓞 F) F d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`.
+
+Apply `hnot ((algebraMap (𝓞 F) F d * (β * c0⁻¹))⁻¹) (inv_ne_zero (mul_ne_zero hd0 hβ0))` to reduce the goal to its premises. Introduce `x hx`. Take `⟨r, hr⟩` from `hdint _ (hdual x hx)`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[Algebra.smul_def]`.
+
+Establish `hr' : (r : F) = algebraMap (𝓞 F) F r` using `rfl`. Rewrite using `[hr', hr, show algebraMap (𝓞 F) F d * (β * c0⁻¹ * x) = algebraMap (𝓞 F) F d * (β * c0⁻¹) * x by ring, inv_mul_cancel_left₀ (mul_ne_zero hd0 hβ0)]`.
+-/
 theorem addIntF_holds : AddIntF := by
   intro F _ _ Λ ⟨c0, hc0, hc0Λ⟩ hnot g hg
   have hmul : ∀ (r : 𝓞 F) (x : F), x ∈ Λ → algebraMap (𝓞 F) F r * x ∈ Λ := by
@@ -91,6 +123,9 @@ theorem addIntF_holds : AddIntF := by
       = algebraMap (𝓞 F) F d * (β * c0⁻¹) * x by ring,
     inv_mul_cancel_left₀ (mul_ne_zero hd0 hβ0)]
 
+/- English proof (translation)
+The claim follows from `chInf_of hL addIntF_holds`.
+-/
 theorem chInf_of_lift (hL : ChLift) : ChInf :=
   chInf_of hL addIntF_holds
 

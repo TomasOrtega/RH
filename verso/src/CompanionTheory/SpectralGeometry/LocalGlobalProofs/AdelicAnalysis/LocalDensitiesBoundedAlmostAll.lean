@@ -20,6 +20,13 @@ section Alg
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨-, htc, -, hconj⟩` from `hcm`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Establish `hc : w.IsComplex` using `htc.isComplex w`.
+
+Establish `hr : w.IsReal`. Rewrite using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Use `hconj w.embedding x` as an intermediate fact. Rewrite `this` using `[h x]`.
+
+Simplify using `only [ComplexEmbedding.conjugate_coe_eq]`. Conclude with `this.symm`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 hc hr`.
+-/
 theorem exists_moved (hcm : IsCMExt F E σ) : ∃ c : E, σ c ≠ c := by
   by_contra h
   push_neg at h
@@ -35,6 +42,11 @@ theorem exists_moved (hcm : IsCMExt F E σ) : ∃ c : E, σ c ≠ c := by
     exact this.symm
   exact InfinitePlace.not_isReal_iff_isComplex.2 hc hr
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_moved hcm`. Establish `hfr : Module.finrank F E = 2` using `hcm.2.2.1`. Use `haveI : IsSimpleOrder (Subalgebra F E) := Subalgebra.isSimpleOrder_of_finrank_prime F E (by rw [hfr]; exact Nat.prime_two)`. Break down `eq_bot_or_eq_top (AlgHom.equalizer σ (AlgHom.id F E)) with h | h` into its components or cases. Establish `hm : x ∈ AlgHom.equalizer σ (AlgHom.id F E)`.
+
+Simplify `hx` using `[AlgHom.mem_equalizer]`. Rewrite `hm` using `[h, Algebra.mem_bot]`. Conclude with `hm`. Establish `hm : c ∈ AlgHom.equalizer σ (AlgHom.id F E)` using `by rw [h]; trivial`. Conclude with `absurd (by simpa [AlgHom.mem_equalizer] using hm) hc`.
+-/
 theorem fixed_mem (hcm : IsCMExt F E σ) (x : E) (hx : σ x = x) : ∃ t : F, algebraMap F E t = x := by
   obtain ⟨c, hc⟩ := exists_moved hcm
   have hfr : Module.finrank F E = 2 := hcm.2.2.1
@@ -48,28 +60,46 @@ theorem fixed_mem (hcm : IsCMExt F E σ) (x : E) (hx : σ x = x) : ∃ t : F, al
   · have hm : c ∈ AlgHom.equalizer σ (AlgHom.id F E) := by rw [h]; trivial
     exact absurd (by simpa [AlgHom.mem_equalizer] using hm) hc
 
+/- English proof (translation)
+Simplify using `[hE, hform, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hE_add_left {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (x x' y : Fin n → E) :
     hE σ T (x + x') y = hE σ T x y + hE σ T x' y := by
   simp [hE, hform, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[hE, hform, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hE_add_right {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (x y y' : Fin n → E) :
     hE σ T x (y + y') = hE σ T x y + hE σ T x y' := by
   simp [hE, hform, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[hE, hform, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hE_smul_left {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n → E) :
     hE σ T (c • x) y = σ c * hE σ T x y := by
   simp [hE, hform, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [hE, hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_smul_right {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n → E) :
     hE σ T x (c • y) = c * hE σ T x y := by
   simp only [hE, hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `[hE, hform, Pi.single_apply]`.
+-/
 theorem hE_single {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (i j : Fin n) :
     hE σ T (Pi.single i 1) (Pi.single j 1) = T i j := by
   simp [hE, hform, Pi.single_apply]
 
+/- English proof (translation)
+Simplify using `only [hE, hform, map_sum, map_mul, RingHom.coe_coe]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hinv, hT]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hE_self_fixed {n : ℕ} (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b)
     (x : Fin n → E) (hinv : ∀ y, σ (σ y) = y) : σ (hE σ T x x) = hE σ T x x := by
   simp only [hE, hform, map_sum, map_mul, RingHom.coe_coe]
@@ -85,6 +115,21 @@ section Alg2
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hinv : ∀ y, σ (σ y) = y`. Introduce `y`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`.
+
+Apply `w.embedding.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2, hcm.2.2.2, star_star]`. Establish `h1 : ∀ x, hE σ T x x = 0`. Introduce `x`. Take `⟨t, ht⟩` from `fixed_mem hcm _ (hE_self_fixed T hT x hinv)`.
+
+Distinguish the cases in `h0 : t = 0`. Rewrite using `[← ht, h0, map_zero]`. Conclude with `absurd ht.symm (hno x t h0)`. Establish `h2 : ∀ x y, hE σ T x y + hE σ T y x = 0`. Introduce `x y`.
+
+Use `h1 (x + y)` as an intermediate fact. Rewrite `this` using `[hE_add_left, hE_add_right, hE_add_right, h1 x, h1 y]`. Take the linear combination `this`. Take `⟨c, hc⟩` from `exists_moved hcm`. Establish `h3 : ∀ x y, hE σ T x y = 0`.
+
+Introduce `x y`. Establish `e` using `h2 (c • x) y`. Rewrite `e` using `[hE_smul_left, hE_smul_right]`. Establish `e' : (σ c - c) * hE σ T x y = 0`. Take the linear combination `e - c * h2 x y`.
+
+Conclude with `(mul_eq_zero.1 e').resolve_left (sub_ne_zero.2 hc)`. Apply `hdet` to reduce the goal to its premises. Establish `hz : T = 0`. Use extensionality with `i j`. Rewrite using `[← hE_single (σ := σ) T i j, h3]`.
+
+Both sides reduce to the same expression. Rewrite using `[hz, Matrix.det_zero]`.
+-/
 theorem exists_aniso (hcm : IsCMExt F E σ) {n : ℕ} (T : Matrix (Fin (n + 1)) (Fin (n + 1)) E)
     (hT : ∀ a b, σ (T b a) = T a b) (hdet : T.det ≠ 0) :
     ∃ (x : Fin (n + 1) → E) (t : F), t ≠ 0 ∧ hE σ T x x = algebraMap F E t := by
@@ -121,6 +166,11 @@ theorem exists_aniso (hcm : IsCMExt F E σ) {n : ℕ} (T : Matrix (Fin (n + 1)) 
     rfl
   rw [hz, Matrix.det_zero]
 
+/- English proof (translation)
+Introduce `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j`. Simplify `ha` using `[blockOne]`. Simplify using `[blockOne]`. Simplify using `[blockOne]`.
+
+Simplify `hA i' j'` using `[blockOne]`.
+-/
 theorem blockOne_herm {M : ℕ} (a : E) (ha : σ a = a) (A : Matrix (Fin M) (Fin M) E)
     (hA : ∀ i j, σ (A j i) = A i j) : ∀ i j, σ (blockOne a A j i) = blockOne a A i j := by
   intro i j
@@ -130,12 +180,18 @@ theorem blockOne_herm {M : ℕ} (a : E) (ha : σ a = a) (A : Matrix (Fin M) (Fin
   · simp [blockOne]
   · simpa [blockOne] using hA i' j'
 
+/- English proof (translation)
+Use `⟨fun i j => ?_, by simp⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]`.
+-/
 theorem one_hermND (M : ℕ) : IsHermND σ (1 : Matrix (Fin M) (Fin M) E) := by
   refine ⟨fun i j => ?_, by simp⟩
   by_cases h : i = j
   · subst h; simp
   · simp [Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]
 
+/- English proof (translation)
+Use `⟨blockOne_herm _ (σ.commutes t) _ (one_hermND M).1, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgSplit.det_blockOne]`. Simplify using `using ht`.
+-/
 theorem blockOne_hermND {M : ℕ} (t : F) (ht : t ≠ 0) :
     IsHermND σ (blockOne (algebraMap F E t) (1 : Matrix (Fin M) (Fin M) E)) := by
   refine ⟨blockOne_herm _ (σ.commutes t) _ (one_hermND M).1, ?_⟩
@@ -144,6 +200,19 @@ theorem blockOne_hermND {M : ℕ} (t : F) (ht : t ≠ 0) :
 
 end Alg2
 
+/- English proof (translation)
+Establish `hq0 : 0 < q ^ 2` using `by positivity`. Use `set e : ℝ := 1 / q ^ 2 with he`. Establish `he0 : 0 < e` using `by positivity`. Establish `he1 : e ≤ 1`. Rewrite using `[he, div_le_one hq0]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hx' : |x - 1| ≤ 2 * e`. Use `hx.trans ?_` and prove the remaining obligations. Rewrite using `[he, mul_one_div]`. Conclude with `div_le_div_of_nonneg_left (by norm_num) hq0 (pow_le_pow_right₀ hq hk)`.
+
+Establish `hy' : |y - 1| ≤ |C| * e`. Use `hy.trans ?_` and prove the remaining obligations. Rewrite using `[he, mul_one_div]`. Conclude with `div_le_div_of_nonneg_right (le_abs_self C) hq0.le`. Establish `hC : 0 ≤ |C|` using `abs_nonneg C`.
+
+Establish `hdec : x * y - 1 = (x - 1) * (y - 1) + (x - 1) + (y - 1)` using `by ring`. Establish `hprod : |(x - 1) * (y - 1)| ≤ 2 * |C| * e`. Rewrite using `[abs_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul_of_nonneg_left he1 (by positivity)`.
+
+Use `_ = 2 * |C| * e := by ring`. Establish `htri : |x * y - 1| ≤ |(x - 1) * (y - 1)| + |x - 1| + |y - 1|`. Rewrite using `[hdec]`. Conclude with `(abs_add_le _ _).trans (add_le_add_left (abs_add_le _ _) _)`. Establish `hfin : (3 * |C| + 2) / q ^ 2 = (3 * |C| + 2) * e` using `by rw [he, mul_one_div]`.
+
+Rewrite using `[hfin]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem arith {x y q C : ℝ} {k : ℕ} (hq : 1 ≤ q) (hk : 2 ≤ k) (hx : |x - 1| ≤ 2 / q ^ k)
     (hy : |y - 1| ≤ C / q ^ 2) : |x * y - 1| ≤ (3 * |C| + 2) / q ^ 2 := by
   have hq0 : 0 < q ^ 2 := by positivity
@@ -182,6 +251,13 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Establish `hloc : IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F v`. Take `⟨h1, h2, h3, h4, -⟩` from `hloc`. Use `haveI := h1`. Use `haveI := h2`.
+
+Use `haveI := h3`. Use `haveI := h4`. Use `haveI := hl.1`. Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F v) d b lam hl.1`. Use `haveI := hW n M`.
+
+Use `haveI := hH n`. Conclude with `GlobalTheory.T.exists_gram_fiber_measures F E σ hcm M J hJ (Fv F v) (GlobalTheory.T.completion_is_local_ring F v) n _ _ (hW n M) (hH n)`.
+-/
 theorem exists_family (hcm : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (hJ : IsHermND σ J) {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
     (lam : Measure (Fv F v)) (hl : IsStdV v lam) (n : ℕ) :
@@ -199,11 +275,17 @@ theorem exists_family (hcm : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin 
   haveI := hH n
   exact GlobalTheory.T.exists_gram_fiber_measures F E σ hcm M J hJ (Fv F v) (GlobalTheory.T.completion_is_local_ring F v) n _ _ (hW n M) (hH n)
 
+/- English proof (translation)
+Establish `: 0 < Ideal.absNorm v.asIdeal` using `Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot)`. Conclude with `this` after adjusting the coercions.
+-/
 theorem absNorm_one_le (v : HeightOneSpectrum (𝓞 F)) : (1 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ) := by
   have : 0 < Ideal.absNorm v.asIdeal :=
     Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot)
   exact_mod_cast this
 
+/- English proof (translation)
+The claim follows from `|(m (hermOf (Fv F v) σ T hT) (latV b v)).toReal - 1| ≤ C / (Ideal.absNorm v.asIdeal : ℝ) ^ 2 := by intro n induction n with | zero => intro M J hJ _ T hT _ d b refine ⟨0, Filter.Eventually.of_forall ?_⟩ intro v lam hl m hm haveI : BorelSpace (Fv F v) := ⟨rfl⟩ have h0 := GlobalThe …`.
+-/
 theorem key (hcm : IsCMExt F E σ) : ∀ (n M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
     (n = 0 ∨ n + 2 ≤ M) → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b),
     T.det ≠ 0 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∃ C : ℝ,
@@ -267,6 +349,9 @@ theorem key (hcm : IsCMExt F E σ) : ∀ (n M : ℕ) (J : Matrix (Fin M) (Fin M)
 
 end Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hJ n hn T hT hdet d b`. Conclude with `key hcm n M J hJ hn T hT hdet d b`.
+-/
 theorem mass_fibre_good : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ), n = 0 ∨ n + 2 ≤ M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∃ C : ℝ, ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ lam, IsStdV v lam → ∀ m, IsGramFib (Fv F v) σ J n (coordW (Fv F v) b lam n M) (coordHerm (Fv F v) σ b lam n) m → |(m (hermOf (Fv F v) σ T hT) (latV b v)).toReal - 1| ≤ C / (Ideal.absNorm v.asIdeal : ℝ) ^ 2 := by
   intro F E _ _ _ _ _ σ hcm M J hJ n hn T hT hdet d b
   exact key hcm n M J hJ hn T hT hdet d b

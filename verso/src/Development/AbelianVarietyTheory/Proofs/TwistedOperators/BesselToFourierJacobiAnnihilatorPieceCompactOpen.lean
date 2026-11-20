@@ -21,10 +21,16 @@ namespace GlobalTheory.AnnPiece
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [symplO, hO, Matrix.add_apply, RingHom.map_add, mul_add, add_mul, Finset.sum_add_distrib, LinearMap.map_add]`.
+-/
 theorem symplO_add_right (S T : HSp D) (x y y' : WO S T) :
     symplO S T x (y + y') = symplO S T x y + symplO S T x y' := by
   simp only [symplO, hO, Matrix.add_apply, RingHom.map_add, mul_add, add_mul, Finset.sum_add_distrib, LinearMap.map_add]
 
+/- English proof (translation)
+Simplify using `only [symplO, hO, Matrix.add_apply, mul_add, Finset.sum_add_distrib, LinearMap.map_add]`.
+-/
 theorem symplO_add_left (S T : HSp D) (x x' y : WO S T) :
     symplO S T (x + x') y = symplO S T x y + symplO S T x' y := by
   simp only [symplO, hO, Matrix.add_apply, mul_add, Finset.sum_add_distrib, LinearMap.map_add]
@@ -35,10 +41,18 @@ def symplR (S T : HSp D) (x : WO S T) : WO S T →+ AF D.host.F :=
 def symplL (S T : HSp D) (y : WO S T) : WO S T →+ AF D.host.F :=
   AddMonoidHom.mk' (fun x => symplO S T x y) fun x x' => symplO_add_left S T x x' y
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.FinPl.idAt, Ideal.mem_inf, RingHom.mem_ker, Ideal.mem_iInf]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, fun w => absurd trivial w.2⟩⟩`.
+-/
 theorem mem_idAt_true (x : AE D) : x ∈ idAt D (fun _ => True) ↔ infPart D x = 0 := by
   simp only [GlobalTheory.FinPl.idAt, Ideal.mem_inf, RingHom.mem_ker, Ideal.mem_iInf]
   exact ⟨fun h => h.1, fun h => ⟨h, fun w => absurd trivial w.2⟩⟩
 
+/- English proof (translation)
+Establish `e : {a : Mx D m n | MxAt (fun _ => True) a} = ⋂ i, ⋂ j, {a : Mx D m n | infPart D (a i j) = 0}`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq, MxAt, mem_idAt_true, Set.mem_iInter]`. Rewrite using `[e]`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`.
+
+Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field D.host.F`. Take `⟨eh⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (Ainf D.host.F)`. Use `haveI : T2Space (Ainf D.host.F ⊗[D.host.F] D.host.E) := eh.isEmbedding.t2Space`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq ((GlobalTheory.Member.continuous_infPart D).comp ((continuous_apply j).comp (continuous_apply i))) continuous_const`.
+-/
 theorem isClosed_mxAt (m n : ℕ) : IsClosed {a : Mx D m n | MxAt (fun _ => True) a} := by
   have e : {a : Mx D m n | MxAt (fun _ => True) a} =
       ⋂ i, ⋂ j, {a : Mx D m n | infPart D (a i j) = 0} := by
@@ -52,11 +66,27 @@ theorem isClosed_mxAt (m n : ℕ) : IsClosed {a : Mx D m n | MxAt (fun _ => True
   exact isClosed_iInter fun i => isClosed_iInter fun j =>
     isClosed_eq ((GlobalTheory.Member.continuous_infPart D).comp ((continuous_apply j).comp (continuous_apply i))) continuous_const
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (ha i l)`.
+-/
 theorem mxAt_mul_rat {m n k : ℕ} {a : Mx D m n} (ha : MxAt (fun _ => True) a) (b : Mx D n k) :
     MxAt (fun _ => True) (a ⬝ b) := fun i j => by
   simp only [Matrix.mul_apply]
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (ha i l)
 
+/- English proof (translation)
+Establish `key : ∀ w : ℂ, ‖w‖ = 1 → ‖w - 1‖ < 1 → 3 / 2 ≤ ‖w + 1‖`. Introduce `w hw h1`. Establish `hp : ‖w + 1‖ ^ 2 + ‖w - 1‖ ^ 2 = 2 * ‖w‖ ^ 2 + 2`. Simplify using `only [Complex.sq_norm, Complex.normSq_apply, Complex.add_re, Complex.add_im, Complex.sub_re, Complex.sub_im, Complex.one_re, Complex.one_im]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hp` using `[hw]`. Use polynomial arithmetic with `[norm_nonneg (w + 1), norm_nonneg (w - 1)]`. Establish `ind : ∀ k : ℕ, (3 / 2 : ℝ) ^ k * ‖z - 1‖ ≤ ‖z ^ (2 ^ k) - 1‖`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `e : z ^ (2 ^ (k + 1)) - 1 = (z ^ (2 ^ k) - 1) * (z ^ (2 ^ k) + 1)`. Rewrite using `[pow_succ, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hn : ‖z ^ (2 ^ k)‖ = 1` using `by rw [norm_pow, hz, one_pow]`. Establish `h2` using `key _ hn (h _)`. Rewrite using `[e, norm_mul, pow_succ]`. Establish `h0 : 0 ≤ (3 / 2 : ℝ) ^ k * ‖z - 1‖` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖z - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hne)`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (1 / ‖z - 1‖) (by norm_num : (1 : ℝ) < 3 / 2)`. Establish `h3` using `ind k`. Establish `h4` using `h (2 ^ k)`.
+
+Establish `: 1 < (3 / 2 : ℝ) ^ k * ‖z - 1‖`. Rewrite `hk` using `[div_lt_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_one_of_pow_near (z : ℂ) (hz : ‖z‖ = 1) (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1) : z = 1 := by
   have key : ∀ w : ℂ, ‖w‖ = 1 → ‖w - 1‖ < 1 → 3 / 2 ≤ ‖w + 1‖ := by
     intro w hw h1
@@ -104,6 +134,9 @@ def ann : AddSubgroup (Mx D W.rank ρ) where
     rw [neg_add_cancel, AddChar.map_zero_eq_one, hx.2 a ha, mul_one] at h1
     rw [e, ← h1]⟩
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_eq (ann dV ψ Γ)`.
+-/
 theorem A₂_eq (dW : HypDec W W₀ σ) (Γ' : AddSubgroup (WO V W)) :
     (piecesOf dV dW ψ Γ Γ' : Pieces V₀ W W₀ ρ σ).A₂ = ann dV ψ Γ :=
   AddSubgroup.closure_eq (ann dV ψ Γ)
@@ -120,18 +153,38 @@ section Ann2
 
 variable {V V₀ W : HSp D} {ρ : ℕ} (dV : HypDec V V₀ ρ) (ψ : AddChar (AF D.host.F) ℂ) (Γ : AddSubgroup (WO V W))
 
+/- English proof (translation)
+Simplify using `only [HypDec.extX_apply]`. Conclude with `continuous_id.matrix_mul continuous_const`.
+-/
 theorem continuous_extX : Continuous fun x : Mx D W.rank ρ => dV.extX W x := by
   simp only [HypDec.extX_apply]; exact continuous_id.matrix_mul continuous_const
 
+/- English proof (translation)
+Simplify using `only [HypDec.extY_apply]`. Conclude with `continuous_id.matrix_mul continuous_const`.
+-/
 theorem continuous_extY : Continuous fun x : Mx D W.rank ρ => dV.extY W x := by
   simp only [HypDec.extY_apply]; exact continuous_id.matrix_mul continuous_const
 
+/- English proof (translation)
+The claim follows from `Formalism.IndefR.Eqv.continuous_trace.comp (continuous_const.mul Formalism.IndefR.Eqv.continuous_hO)`.
+-/
 theorem continuous_symplO : Continuous fun p : WO V W × WO V W => symplO V W p.1 p.2 :=
   Formalism.IndefR.Eqv.continuous_trace.comp (continuous_const.mul Formalism.IndefR.Eqv.continuous_hO)
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `h1 : Continuous fun p : Mx D W.rank ρ × Mx D W.rank ρ => (dV.extX W p.1, dV.extY W p.2)` using `((continuous_extX dV).comp continuous_fst).prodMk ((continuous_extY dV).comp continuous_snd)`. Establish `h2 : Continuous fun p : Mx D W.rank ρ × Mx D W.rank ρ => symplO V W (dV.extX W p.1) (dV.extY W p.2)` using `Continuous.comp (g := fun p : WO V W × WO V W => symplO V W p.1 p.2) (f := fun p : Mx D W.rank ρ × Mx D W.rank ρ => (dV.extX W p.1, dV.extY W p.2)) (continuous_symplO (V := V) (W := W)) h1`. Use `set Φ : Mx D W.rank ρ × Mx D W.rank ρ → ℂ := fun p => ψ (symplO V W (dV.extX W p.1) (dV.extY W p.2)) with hΦdef`. Establish `hΦ : Continuous Φ` using `Continuous.comp (g := ψ) (f := fun p : Mx D W.rank ρ × Mx D W.rank ρ => symplO V W (dV.extX W p.1) (dV.extY W p.2)) hψ h2`. Establish `hO : IsOpen {p | ‖Φ p - 1‖ < 1}` using `isOpen_lt (hΦ.sub continuous_const).norm continuous_const`.
+
+Establish `hsub : C ×ˢ ({0} : Set (Mx D W.rank ρ)) ⊆ {p | ‖Φ p - 1‖ < 1}`. Introduce and unpack `⟨a, b⟩ ⟨-, hb⟩`. Rewrite `hb` using `[Set.mem_singleton_iff]`. Substitute `hb` using the available equality. Simplify using `only [Set.mem_setOf_eq, hΦdef, map_zero]`.
+
+Rewrite using `[show symplO V W (dV.extX W a) 0 = 0 from map_zero (symplR V W (dV.extX W a)), AddChar.map_zero_eq_one, sub_self, norm_zero]`. Conclude with `one_pos`. Take `⟨u, v, -, hv, hCu, h0v, huv⟩` from `generalized_tube_lemma hC isCompact_singleton hO hsub`. Use `⟨v, hv, h0v rfl, fun a' ha' hfin => ⟨hfin, fun a ha => ?_⟩⟩` and prove the remaining obligations. Establish `hpow : ∀ n : ℕ, Φ (n • a, a') = Φ (a, a') ^ n`.
+
+Introduce `n`. Simplify using `only [hΦdef, map_nsmul]`. Rewrite using `[show symplO V W (n • dV.extX W a) (dV.extY W a') = n • symplO V W (dV.extX W a) (dV.extY W a') from map_nsmul (symplL V W (dV.extY W a')) n _, AddChar.map_nsmul_eq_pow]`. Use `eq_one_of_pow_near _ (hψ1 _) fun n => ?_` and prove the remaining obligations. Establish `hn : (n • a, a') ∈ u ×ˢ v` using `⟨hCu (hΓC _ (by rw [map_nsmul]; exact nsmul_mem ha n)), ha'⟩`.
+
+Use `huv hn` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq, hpow] at this`. Conclude with `this`.
+-/
 theorem ann_open (hψ : Continuous ψ) (hψ1 : ∀ x, ‖ψ x‖ = 1) (C : Set (Mx D W.rank ρ)) (hC : IsCompact C)
     (hΓC : ∀ a, dV.extX W a ∈ Γ → a ∈ C) :
     ∃ U : Set (Mx D W.rank ρ), IsOpen U ∧ (0 : Mx D W.rank ρ) ∈ U ∧ ∀ a' ∈ U, MxAt (fun _ => True) a' → a' ∈ ann dV ψ Γ := by
@@ -167,6 +220,13 @@ theorem ann_open (hψ : Continuous ψ) (hψ1 : ∀ x, ‖ψ x‖ = 1) (C : Set (
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hcl : IsClosed (ann dV ψ Γ : Set (Mx D W.rank ρ))`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `b hb`. Distinguish the cases in `hbF : MxAt (fun _ => True) b`. Use `⟨(fun x => x - b) ⁻¹' U, ?_, hU.preimage (continuous_id.sub continuous_const), by simpa using h0⟩` and prove the remaining obligations.
+
+Introduce `x hx hxS`. Apply `hb` to reduce the goal to its premises. Establish `h1 : x - b ∈ ann dV ψ Γ` using `hUS _ hx fun i j => sub_mem (hxS.1 i j) (hbF i j)`. Establish `h2` using `sub_mem hxS h1`. Rewrite `h2` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+
+Use `⟨{a | MxAt (fun _ => True) a}ᶜ, ?_, (isClosed_mxAt _ _).isOpen_compl, hbF⟩` and prove the remaining obligations. Introduce `x hx hxS`. Conclude with `hx hxS.1`. Conclude with `hK.of_isClosed_subset hcl hSK`.
+-/
 theorem ann_isCompact (K : Set (Mx D W.rank ρ)) (hK : IsCompact K) (hSK : ∀ a' ∈ ann dV ψ Γ, a' ∈ K)
     (U : Set (Mx D W.rank ρ)) (hU : IsOpen U) (h0 : (0 : Mx D W.rank ρ) ∈ U)
     (hUS : ∀ a' ∈ U, MxAt (fun _ => True) a' → a' ∈ ann dV ψ Γ) : IsCompact (ann dV ψ Γ : Set (Mx D W.rank ρ)) := by
@@ -185,6 +245,9 @@ theorem ann_isCompact (K : Set (Mx D W.rank ρ)) (hK : IsCompact K) (hSK : ∀ a
       exact hx hxS.1
   exact hK.of_isClosed_subset hcl hSK
 
+/- English proof (translation)
+Simplify using `only [symplO]`. Rewrite using `[dV.hO_coordS, dV.hO_coordS]`. Simplify using `only [HypDec.extX_apply, HypDec.extY_apply, Matrix.mul_assoc, HypDec.pX_jX, HypDec.pX_j0, HypDec.pX_jY, HypDec.pY_jX, HypDec.pY_j0, HypDec.pY_jY, Matrix.mul_one, Matrix.mul_zero]`. Simplify using `[hO, pairS]`.
+-/
 theorem symplO_extY (u : WO V W) (b : Mx D W.rank ρ) :
     symplO V W u (dV.extY W b) = symplO V W (dV.extX W (u ⬝ dV.jX)) (dV.extY W b) := by
   simp only [symplO]
@@ -202,6 +265,21 @@ namespace GlobalTheory.AnnPiece
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM F hF ρ h`. Establish `hi : 2 * ρ + 1 < D.R.m` using `by omega`. Take `⟨hR, -, hB, -⟩` from `(GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hq T L μ0 hL sc G W M hM F hF).1 (2 * ρ + 1) hi`. Take `⟨Na, hNa, hNa'⟩ : ∃ N : ℕ, 0 < N ∧ ∀ u ∈ latBig G (2 * ρ + 1), N • u ∈ latRow G (2 * ρ + 1)` from `GlobalTheory.T.exists_nsmul_selfDual_hom_lattice_mem_depth_lattice D hq T L μ0 hL sc G W M hM F hF (2 * ρ + 1) hi`. Take `⟨Nb, hNb, hNb'⟩ : ∃ N : ℕ, 0 < N ∧ ∀ u ∈ latBig G (2 * ρ + 1), N • (u ⬝ (F.dB ρ h).jX ⬝ (F.dB ρ h).pX) ∈ latBig G (2 * ρ + 1)` from `GlobalTheory.T.nsmul_projection_xColumns_mem_selfDual_lattice D hq T L μ0 hL sc G W M hM F hF ρ h`.
+
+Establish `hC : ∀ u' : WO (G.V (.grid (2 * ρ + 1 + 1) 0)) (G.V (.grid (2 * ρ + 1) 0)), MxAt (fun _ => True) u' → (∀ u ∈ latBig G (2 * ρ + 1), W.ψ (symplO _ _ u u') = 1) → u' ∈ latBig G (2 * ρ + 1)` using `GlobalTheory.T.selfDual_modulus_shift_hom_lattice_own_annihilator D hq T L μ0 hL sc G W M hM F hF (2 * ρ + 1) hi`. Rewrite using `[A₂_eq]`. Establish `hψ` using `W.ψ_std.1`. Take `⟨U, hU, h0, hUS⟩` from `ann_open (F.dB ρ h) W.ψ (latRow G (2 * ρ + 1)) hψ.1 hψ.2.1 ((fun w : WO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) => w ⬝ (F.dB ρ h).jX) '' (latRow G (2 * ρ + 1) : Set (WO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0))))) (hR.cpt.image (f := fun w : WO (G.V …`. Rewrite using `[Matrix.mul_assoc, HypDec.pX_jX, Matrix.mul_one]⟩)`.
+
+Use `⟨ann_isCompact (F.dB ρ h) W.ψ _ ((fun w : WO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) => algebraMap D.host.F (AE D) ((Na * Nb : ℕ) : D.host.F)⁻¹ • (w ⬝ (F.dB ρ h).jY)) '' (latBig G (2 * ρ + 1) : Set (WO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0))))) ?_ …` and prove the remaining obligations. Conclude with `hB.cpt.image (f := fun w : WO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) => algebraMap D.host.F (AE D) ((Na * Nb : ℕ) : D.host.F)⁻¹ • (w ⬝ (F.dB ρ h).jY)) (Continuous.comp (g := fun m : Mx D (G.V (.grid (2 * ρ + 1) 0)).rank ρ => algebraMap D.host.F (AE D) ((Na * Nb : …`. Introduce `a' ha'`. Take `⟨hfin, hann⟩` from `ha'`. Use `set N := Na * Nb with hN`.
+
+Establish `key : ∀ u ∈ latBig G (2 * ρ + 1), W.ψ (symplO _ _ u ((F.dB ρ h).extY _ (N • a'))) = 1`. Introduce `u hu`. Establish `h1 : (F.dB ρ h).extX _ (N • (u ⬝ (F.dB ρ h).jX)) ∈ latRow G (2 * ρ + 1)`. Rewrite using `[HypDec.extX_apply, Matrix.smul_mul, hN, mul_smul]`. Conclude with `hNa' _ (hNb' u hu)`.
+
+Establish `h2` using `hann _ h1`. Establish `e1 : symplO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) u ((F.dB ρ h).extY _ (N • a')) = symplO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) ((F.dB ρ h).extX _ (N • (u ⬝ (F.dB ρ h).jX))) ((F.dB ρ h).extY _ a')`. Rewrite using `[map_nsmul, map_nsmul]`. Rewrite using `[show symplO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) u (N • (F.dB ρ h).extY _ a') = N • symplO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) u ((F.dB ρ h).extY _ a') from map_nsmul (symplR (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) u) N _]`. Rewrite using `[show symplO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) (N • (F.dB ρ h).extX _ (u ⬝ (F.dB ρ h).jX)) ((F.dB ρ h).extY _ a') = N • symplO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0)) ((F.dB ρ h).extX _ (u ⬝ (F.dB ρ h).jX)) ((F.dB ρ h).extY _ a') from map_nsm …`.
+
+Rewrite using `[symplO_extY]`. Rewrite using `[e1]`. Conclude with `h2`. Establish `hmem` using `hC _ (mxAt_mul_rat (fun i j => nsmul_mem (hfin i j) N) _) key`. Use `⟨_, hmem, ?_⟩` and prove the remaining obligations.
+
+Use `show algebraMap D.host.F (AE D) ((Na * Nb : ℕ) : D.host.F)⁻¹ • ((F.dB ρ h).extY (G.V (.grid (2 * ρ + 1) 0)) (N • a') ⬝ (F.dB ρ h).jY) = a'`. Rewrite using `[HypDec.extY_apply, Matrix.mul_assoc, HypDec.pY_jY, Matrix.mul_one]`. Rewrite using `[← Nat.cast_smul_eq_nsmul (AE D) N a', smul_smul, ← map_natCast (algebraMap D.host.F (AE D)), ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 (Nat.mul_ne_zero hNa.ne' hNb.ne')), map_one, one_smul]`.
+-/
 theorem pcBF_A₂_compact_open : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m),
     IsCompact ((pcBF W F ρ h).A₂ : Set (Mx D (G.V (.grid (2 * ρ + 1) 0)).rank ρ)) ∧
     ∃ U : Set (Mx D (G.V (.grid (2 * ρ + 1) 0)).rank ρ), IsOpen U ∧ (0 : Mx D (G.V (.grid (2 * ρ + 1) 0)).rank ρ) ∈ U ∧

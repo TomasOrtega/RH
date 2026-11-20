@@ -5,6 +5,13 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.JR.ImgSec
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.JR.ImgSec.continuousStar (E := E) F`. Establish `hinv : ContinuousOn (fun a => (h a)⁻¹) Ω`. Introduce `a ha`. Conclude with `(continuousAt_matrix_inv (h a) (by rw [Ring.inverse_eq_inv']; exact continuousAt_inv₀ (hd a ha).ne_zero)).comp_continuousWithinAt (hc a ha)`. Establish `hmap : Continuous (fun a : Inv r F => (hankelShift a).map (algebraMap F E))` using `continuous_matrix fun i j => (continuous_algebraMap F E).comp ((continuous_apply_apply i j).comp continuous_hankelShift)`.
+
+Establish `h1 : ContinuousOn (fun a => star (h a)⁻¹ * (hankelShift a).map (algebraMap F E) * (h a)⁻¹) Ω` using `(hinv.star.mul hmap.continuousOn).mul hinv`. Establish `h2 : ContinuousOn (fun a => h a *ᵥ (e1 : Fin r → E)) Ω`. Conclude with `(continuous_id.matrix_mulVec continuous_const).comp_continuousOn hc`. Establish `h3 : Continuous (fun a : Inv r F => a.2.2)` using `continuous_snd.comp continuous_snd`. Establish `h1' : ContinuousOn (fun a => (GlobalTheory.JR.ImgSec.mkX a (h a)).1) Ω`.
+
+Introduce `a ha`. Conclude with `Topology.IsInducing.subtypeVal.continuousWithinAt_iff.2 (h1 a ha)`. Conclude with `h1'.prodMk (h2.prodMk h3.continuousOn)`.
+-/
 theorem continuousOn_mkX_of_isUnit_det (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) (Ω : Set (Inv r F)) (h : Inv r F → Matrix (Fin r) (Fin r) E)
     (hc : ContinuousOn h Ω) (hd : ∀ a ∈ Ω, IsUnit (h a).det) :

@@ -5,6 +5,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ThetaSeriesUniqueness.S
 
 namespace PI.SSU
 
+/- English proof (translation)
+The claim follows from `main_of (key_of siegel_set_shift_invariance siegel_set_completeness) h`.
+-/
 theorem sigmaStarUniq_of (h : AreaLat) : SigmaStarUniq :=
   main_of (key_of siegel_set_shift_invariance siegel_set_completeness) h
 

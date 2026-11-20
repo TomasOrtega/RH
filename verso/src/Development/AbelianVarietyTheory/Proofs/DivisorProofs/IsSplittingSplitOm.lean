@@ -10,6 +10,11 @@ namespace GlobalTheory.WeilM
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, Prod.fst_add, Prod.snd_add]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc x w.1 w'.1]`. Use `congr 2`. Simplify using `only [add_dotProduct, dotProduct_add]`.
+
+Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * (mul_invOf_self (2 : R))`.
+-/
 theorem schr_schr [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ] (w w' : (κ → R) × (κ → R))
     (φ : (κ → R) → ℂ) :
     schr ψ w (schr ψ w' φ) = ψ (⅟(2 : R) * (w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2)) • schr ψ (w + w') φ := by
@@ -24,12 +29,21 @@ variable (R) in
 
 def swapA : R × R →ₐ[R] R × R := { (RingEquiv.prodComm : R × R ≃+* R × R).toRingHom with commutes' := fun _ => rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem swapA_apply (x : R × R) : swapA R x = (x.2, x.1) := rfl
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_eq_matrix_det (Module.Basis.finTwoProd R), Matrix.det_fin_two]`. Simplify using `[Algebra.leftMulMatrix_eq_repr_mul]`.
+-/
 theorem norm_pair (x : R × R) : Algebra.norm R x = x.1 * x.2 := by
   rw [Algebra.norm_eq_matrix_det (Module.Basis.finTwoProd R), Matrix.det_fin_two]
   simp [Algebra.leftMulMatrix_eq_repr_mul]
 
+/- English proof (translation)
+The claim follows from `IsUnit.of_mul_eq_one ((1, -1) : R × R) (by ext <;> simp) anti := by ext <;> simp [swapA_apply] basis := by have hli : LinearIndependent R ![(1 : R × R), (1, -1)] := by rw [LinearIndependent.pair_iff] intro s t hst have h1 := congrArg Prod.fst hst have h2 := congrArg Prod.snd hst …`.
+-/
 theorem isQuad_split [Invertible (2 : R)] : IsQuad (swapA R) ((1, -1) : R × R) where
   unit := IsUnit.of_mul_eq_one ((1, -1) : R × R) (by ext <;> simp)
   anti := by ext <;> simp [swapA_apply]
@@ -82,8 +96,14 @@ def flat (σ : κ ≃ α × β) : Matrix α β R ≃ₗ[R] (κ → R) where
   left_inv X := by ext i j; simp
   right_inv u := by ext k; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flat_apply (σ : κ ≃ α × β) (X : Matrix α β R) (k : κ) : flat σ X k = X (σ k).1 (σ k).2 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem flat_symm_apply (σ : κ ≃ α × β) (u : κ → R) (i : α) (j : β) : (flat σ).symm u i j = u (σ.symm (i, j)) := rfl
 
 abbrev cmp₁ {m n : Type} (X : Matrix m n (R × R)) : Matrix m n R := X.map (RingHom.fst R R)
@@ -93,15 +113,24 @@ abbrev cmp₂ {m n : Type} (X : Matrix m n (R × R)) : Matrix m n R := X.map (Ri
 variable [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ]
 
 omit [DecidableEq α] [DecidableEq β] in
+/- English proof (translation)
+Simplify using `only [dotProduct, flat_apply, trace, diag_apply, mul_apply, transpose_apply]`. Rewrite using `[← Fintype.sum_prod_type']`. Conclude with `Equiv.sum_comp σ (fun p => X p.1 p.2 * Y p.1 p.2)`.
+-/
 theorem flat_dot (σ : κ ≃ α × β) (X Y : Matrix α β R) : flat σ X ⬝ᵥ flat σ Y = trace (X * Yᵀ) := by
   simp only [dotProduct, flat_apply, trace, diag_apply, mul_apply, transpose_apply]
   rw [← Fintype.sum_prod_type']
   exact Equiv.sum_comp σ (fun p => X p.1 p.2 * Y p.1 p.2)
 
+/- English proof (translation)
+Establish `hu` using `h.2.map (RingHom.fst R R)`. Rewrite `hu` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+-/
 theorem IsHerm.isUnit_cmp₁ {J : Matrix α α (R × R)} (h : IsHerm (swapA R) J) : IsUnit (cmp₁ J).det := by
   have hu := h.2.map (RingHom.fst R R)
   rwa [RingHom.map_det] at hu
 
+/- English proof (translation)
+Establish `hc` using `congrArg Prod.snd (h.1 i j)`. Rewrite `hc` using `[swapA_apply]`. Conclude with `hc.symm`.
+-/
 theorem IsHerm.snd_eq {J : Matrix α α (R × R)} (h : IsHerm (swapA R) J) (i j : α) : (J i j).2 = (J j i).1 := by
   have hc := congrArg Prod.snd (h.1 i j)
   rw [swapA_apply] at hc
@@ -150,6 +179,9 @@ def splitDarboux {JA : Matrix α α (R × R)} {JB : Matrix β β (R × R)} (hA :
     exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ =>
       Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem splitDarboux_e {JA : Matrix α α (R × R)} {JB : Matrix β β (R × R)} (hA : IsHerm (swapA R) JA)
     (hB : IsHerm (swapA R) JB) (σ : κ ≃ α × β) (x : Matrix α β (R × R)) :
     (splitDarboux hA hB σ).e x = (flat σ (cmp₁ x), flat σ (cmp₁ JA * cmp₂ x * (cmp₁ JB)ᵀ)) := rfl
@@ -157,9 +189,17 @@ theorem splitDarboux_e {JA : Matrix α α (R × R)} {JB : Matrix β β (R × R)}
 def ugFst (J : Matrix β β (R × R)) : UG (swapA R) J →* GL β R :=
   (GeneralLinearGroup.map (RingHom.fst R R)).comp (UG (swapA R) J).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ugFst_val {J : Matrix β β (R × R)} (h : UG (swapA R) J) :
     (ugFst J h).val = cmp₁ ((h : GL β (R × R)) : Matrix β β (R × R)) := rfl
 
+/- English proof (translation)
+Establish `hh : ((h : GL β (R × R)) : Matrix β β (R × R))ᵀ * J * ((h : GL β (R × R)) : Matrix β β (R × R)).map (swapA R) = J` using `h.2`. Establish `hm` using `congrArg (fun M => M.map (RingHom.fst R R)) hh`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map] at hm`. Rewrite using `[ugFst_val]`. Use `hm using 3` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `x`. Simplify using `[swapA_apply]`.
+-/
 theorem ug_rel {J : Matrix β β (R × R)} (h : UG (swapA R) J) :
     (ugFst J h).valᵀ * cmp₁ J * cmp₂ ((h : GL β (R × R)) : Matrix β β (R × R)) = cmp₁ J := by
   have hh : ((h : GL β (R × R)) : Matrix β β (R × R))ᵀ * J *
@@ -191,11 +231,29 @@ def splitOm (m : Rˣ →* ℝ≥0) (χ : (R × R)ˣ →* Circle) (J : Matrix β 
   map_mul' h h' := by simp only [map_mul, smul_mul_smul_comm]
 
 omit [DecidableEq α] [Fintype κ] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem splitOm_apply (m : Rˣ →* ℝ≥0) (χ : (R × R)ˣ →* Circle) (J : Matrix β β (R × R)) (σ : κ ≃ α × β)
     (h : UG (swapA R) J) (φ : (κ → R) → ℂ) (u : κ → R) :
     splitOm m χ J σ h φ u = splitChar m χ (Fintype.card α) (GeneralLinearGroup.det (ugFst J h)) *
       φ (flat σ ((flat σ).symm u * ((ugFst J h)⁻¹).valᵀ)) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Establish `rel` using `ug_rel h`. Establish `hv` using `ugFst_val h`. Establish `hmul : (ugFst JB h).val * ((ugFst JB h)⁻¹).val = 1` using `by simp`. Establish `hinv : ((ugFst JB h)⁻¹).val * (ugFst JB h).val = 1` using `by simp`.
+
+Establish `c1 : cmp₁ (actB (swapA R) h w) = cmp₁ w * (ugFst JB h).valᵀ`. Rewrite using `[hv]`. Simplify using `[actB, Matrix.map_mul, Matrix.transpose_map]`. Both sides reduce to the same expression. Establish `c2 : cmp₂ (actB (swapA R) h w) = cmp₂ w * (cmp₂ ((h : GL β (R × R)) : Matrix β β (R × R)))ᵀ`.
+
+Simplify using `[actB, Matrix.map_mul, Matrix.transpose_map]`. Both sides reduce to the same expression. Simplify using `only [splitOm_apply, Darboux.rho, schr, splitDarboux_e, c1, c2]`. Establish `key1 : cmp₁ JB * cmp₂ ((h : GL β (R × R)) : Matrix β β (R × R)) = ((ugFst JB h)⁻¹).valᵀ * cmp₁ JB`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hmul, Matrix.transpose_one, Matrix.one_mul]`. Use `_ = ((ugFst JB h)⁻¹).valᵀ * ((ugFst JB h).valᵀ * cmp₁ JB * cmp₂ ((h : GL β (R × R)) : Matrix β β (R × R))) := by`. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [rel]`.
+
+Establish `rel' : ∀ X : Matrix β α R, (ugFst JB h).valᵀ * (cmp₁ JB * (cmp₂ ((h : GL β (R × R)) : Matrix β β (R × R)) * X)) = cmp₁ JB * X`. Introduce `X`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, rel]`. Establish `m1 : (flat σ).symm u * (cmp₁ JA * (cmp₂ w * (cmp₂ ((h : GL β (R × R)) : Matrix β β (R × R)))ᵀ) * (cmp₁ JB)ᵀ)ᵀ = (flat σ).symm u * ((ugFst JB h)⁻¹).valᵀ * (cmp₁ JA * cmp₂ w * (cmp₁ JB)ᵀ)ᵀ`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc (cmp₁ JB) (cmp₂ ((h : GL β (R × R)) : Matrix β β (R × R))), key1, Matrix.mul_assoc]`. Establish `m2 : cmp₁ w * (ugFst JB h).valᵀ * (cmp₁ JA * (cmp₂ w * (cmp₂ ((h : GL β (R × R)) : Matrix β β (R × R)))ᵀ) * (cmp₁ JB)ᵀ)ᵀ = cmp₁ w * (cmp₁ JA * cmp₂ w * (cmp₁ JB)ᵀ)ᵀ`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[rel']`. Establish `eX : flat σ ((flat σ).symm (u + flat σ (cmp₁ w * (ugFst JB h).valᵀ)) * ((ugFst JB h)⁻¹).valᵀ) = flat σ ((flat σ).symm u * ((ugFst JB h)⁻¹).valᵀ) + flat σ (cmp₁ w)`.
+
+Rewrite using `[map_add, LinearEquiv.symm_apply_apply, Matrix.add_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, hinv, Matrix.transpose_one, Matrix.mul_one, map_add]`. Establish `eP : u ⬝ᵥ flat σ (cmp₁ JA * (cmp₂ w * (cmp₂ ((h : GL β (R × R)) : Matrix β β (R × R)))ᵀ) * (cmp₁ JB)ᵀ) + ⅟2 * flat σ (cmp₁ w * (ugFst JB h).valᵀ) ⬝ᵥ flat σ (cmp₁ JA * (cmp₂ w * (cmp₂ ((h : GL β (R × R)) : Matrix β β (R × R)))ᵀ) * (cmp₁ JB)ᵀ) = flat σ ((flat σ).symm u * ((ugFst JB …` using `by conv_lhs => rw [← LinearEquiv.apply_symm_apply (flat σ) u]`. Rewrite using `[flat_dot, flat_dot, flat_dot, flat_dot, m1, m2]`. Rewrite using `[eX, eP]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem splitOm_rho [Invertible (2 : R)] (m : Rˣ →* ℝ≥0) (χ : (R × R)ˣ →* Circle) {JA : Matrix α α (R × R)}
     {JB : Matrix β β (R × R)} (hA : IsHerm (swapA R) JA) (hB : IsHerm (swapA R) JB) (σ : κ ≃ α × β) (ψ : AddChar R ℂ)
     (h : UG (swapA R) JB) (w : Matrix α β (R × R)) (φ : (κ → R) → ℂ) :
@@ -243,6 +301,13 @@ theorem splitOm_rho [Invertible (2 : R)] (m : Rˣ →* ℝ≥0) (χ : (R × R)ˣ
   ring
 
 omit [DecidableEq α] [Fintype κ] in
+/- English proof (translation)
+Establish `hc : ∀ M : Matrix β β R, Continuous fun u : κ → R => flat σ ((flat σ).symm u * M)`. Introduce `M`. Use `continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [flat_apply, Matrix.mul_apply, flat_symm_apply]`. Conclude with `continuous_finsetSum _ fun l _ => (continuous_apply _).mul continuous_const`.
+
+Set `e : (κ → R) ≃ₜ (κ → R)` to `{ toFun := fun u => flat σ ((flat σ).symm u * ((ugFst J h)⁻¹).valᵀ) invFun := fun u => flat σ ((flat σ).symm u * (ugFst J h).valᵀ) left_inv := fun u => by simp [Matrix.mul_assoc, ← Matrix.transpose_mul] right_inv := fun u => by simp [Matrix.mul_assoc, ← Matrix.transpose_mul] cont …`. Establish `hφ' : IsLocallyConstant φ ∧ HasCompactSupport φ` using `hφ`. Establish `hφe : (φ ∘ e) ∈ SB (κ → R)` using `⟨hφ'.1.comp_continuous e.continuous, hφ'.2.comp_homeomorph e⟩`. Establish `hs : splitOm m χ J σ h φ = splitChar m χ (Fintype.card α) (GeneralLinearGroup.det (ugFst J h)) • (φ ∘ e)`. Use function extensionality and compare the values at `u`.
+
+Rewrite using `[splitOm_apply]`. Both sides reduce to the same expression. Rewrite using `[hs]`. Conclude with `(SB (κ → R)).smul_mem _ hφe`.
+-/
 theorem splitOm_mem_SB [TopologicalSpace R] [IsTopologicalRing R] (m : Rˣ →* ℝ≥0) (χ : (R × R)ˣ →* Circle)
     (J : Matrix β β (R × R)) (σ : κ ≃ α × β) (h : UG (swapA R) J) {φ : (κ → R) → ℂ} (hφ : φ ∈ SB (κ → R)) :
     splitOm m χ J σ h φ ∈ SB (κ → R) := by
@@ -268,6 +333,9 @@ theorem splitOm_mem_SB [TopologicalSpace R] [IsTopologicalRing R] (m : Rˣ →* 
   rw [hs]
   exact (SB (κ → R)).smul_mem _ hφe
 
+/- English proof (translation)
+The claim follows from `splitOm_mem_SB m χ JB σ g hφ impl g w φ _ := splitOm_rho m χ hA hB σ ψ g w φ adm _ _ _ := Set.mem_univ _`.
+-/
 theorem isSplitting_splitOm [Invertible (2 : R)] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R]
     (m : Rˣ →* ℝ≥0) (χ : (R × R)ˣ →* Circle) {JA : Matrix α α (R × R)}
     {JB : Matrix β β (R × R)} (hA : IsHerm (swapA R) JA) (hB : IsHerm (swapA R) JB) (σ : κ ≃ α × β) (ψ : AddChar R ℂ) :
@@ -276,6 +344,11 @@ theorem isSplitting_splitOm [Invertible (2 : R)] [TopologicalSpace R] [IsTopolog
   impl g w φ _ := splitOm_rho m χ hA hB σ ψ g w φ
   adm _ _ _ := Set.mem_univ _
 
+/- English proof (translation)
+Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c (Matrix.fromBlocks J 0 0 (-J) j i) = Matrix.fromBlocks J 0 0 (-J) i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [h.1]`. Express the relevant statement in the definitionally equal form `IsUnit (Matrix.fromBlocks J 0 0 (-J)).det`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁, Matrix.det_neg]`.
+
+Conclude with `h.2.mul ((isUnit_neg_one.pow _).mul h.2)`.
+-/
 theorem IsHerm.dbl {E : Type} [CommRing E] [Algebra R E] {c : E →ₐ[R] E} {J : Matrix β β E} (h : IsHerm c J) :
     IsHerm c (dbl J) := by
   refine ⟨fun i j => ?_, ?_⟩
@@ -288,11 +361,19 @@ theorem IsHerm.dbl {E : Type} [CommRing E] [Algebra R E] {c : E →ₐ[R] E} {J 
 def dblNum (σ : κ ≃ α × β) : κ ⊕ κ ≃ α × (β ⊕ β) := (σ.sumCongr σ).trans (Equiv.prodSumDistrib α β β).symm
 
 omit [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] in
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `cases k <;> rfl`.
+-/
 theorem flat_fromCols (σ : κ ≃ α × β) (X Y : Matrix α β R) :
     flat (dblNum σ) (fromCols X Y) = Sum.elim (flat σ X) (flat σ Y) := by
   funext k
   cases k <;> rfl
 
+/- English proof (translation)
+Introduce `w₁ w₂`. Establish `hd : (cmp₁ (dbl JB))ᵀ = fromBlocks (cmp₁ JB)ᵀ 0 0 (-(cmp₁ JB)ᵀ)`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl]`. Simplify using `only [splitDarboux_e]`. Rewrite using `[hd]`.
+
+Simplify using `only [Matrix.fromCols_map, Matrix.mul_fromCols, Matrix.fromCols_mul_fromBlocks, flat_fromCols, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, map_neg]`. Apply the tactic sequence `try rfl`.
+-/
 theorem isDblCoord_split {JA : Matrix α α (R × R)} {JB : Matrix β β (R × R)} (hA : IsHerm (swapA R) JA)
     (hB : IsHerm (swapA R) JB) (σ : κ ≃ α × β) :
     IsDblCoord (swapA R) (1, -1) JA JB (splitDarboux hA hB σ) (splitDarboux hA hB.dbl (dblNum σ)) := by
@@ -305,6 +386,29 @@ theorem isDblCoord_split {JA : Matrix α α (R × R)} {JB : Matrix β β (R × R
     Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, map_neg]
   try rfl
 
+/- English proof (translation)
+Establish `hD1 : (diagCols β : Matrix (β ⊕ β) β (R × R)).map (RingHom.fst R R) = diagCols β`. Rewrite using `[diagCols, diagCols, Matrix.fromRows_map, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hD2 : (diagCols β : Matrix (β ⊕ β) β (R × R)).map (RingHom.snd R R) = diagCols β`. Rewrite using `[diagCols, diagCols, Matrix.fromRows_map, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h1` using `congrArg (fun M => M.map (RingHom.fst R R)) h`.
+
+Establish `h2` using `congrArg (fun M => M.map (RingHom.snd R R)) h`. Simplify using `only [Matrix.map_mul] at h1 h2`. Rewrite `h1` using `[hD1]`. Rewrite `h2` using `[hD2]`. Establish `e1 : (ugFst _ p).val * diagCols β = diagCols β * cmp₁ t` using `by rw [ugFst_val]; exact h1`.
+
+Establish `e2 : cmp₂ ((p : GL (β ⊕ β) (R × R)) : Matrix (β ⊕ β) (β ⊕ β) (R × R)) * diagCols β = diagCols β * cmp₂ t` using `h2`. Use `⟨e1, ?_⟩` and prove the remaining obligations. Take `⟨a, b, c, d, hP⟩ : ∃ a b c d, (ugFst (dbl JB) p).val = fromBlocks a b c d` from `⟨_, _, _, _, (Matrix.fromBlocks_toBlocks _).symm⟩`. Establish `hdc : (diagCols β : Matrix (β ⊕ β) β R) = Matrix.fromRows 1 1` using `rfl`. Establish `e1' : fromBlocks a b c d * (Matrix.fromRows 1 1 : Matrix (β ⊕ β) β R) = Matrix.fromRows 1 1 * cmp₁ t`.
+
+Rewrite using `[← hP, ← hdc]`. Conclude with `e1`. Rewrite `e1'` using `[Matrix.fromBlocks_mul_fromRows]`. Take `⟨ha, hc⟩` from `Matrix.fromRows_inj (e1'.trans (Matrix.fromRows_mul (1 : Matrix β β R) 1 (cmp₁ t)))`. Simplify using `only [Matrix.mul_one, Matrix.one_mul] at ha hc`.
+
+Establish `hS : fromBlocks a b c d * fromBlocks (1 : Matrix β β R) 0 1 1 = fromBlocks (1 : Matrix β β R) 0 1 1 * fromBlocks (cmp₁ t) b 0 (d - b)`. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_one, Matrix.mul_zero, add_zero, Matrix.one_mul, Matrix.zero_mul, zero_add]`. Rewrite using `[ha, hc, add_sub_cancel]`. Establish `hdetP : (ugFst (dbl JB) p).val.det = (cmp₁ t).det * (d - b).det`.
+
+Establish `hd` using `congrArg Matrix.det hS`. Simplify using `only [Matrix.det_mul, Matrix.det_fromBlocks_zero₁₂, Matrix.det_one, mul_one, one_mul, Matrix.det_fromBlocks_zero₂₁] at hd`. Rewrite using `[hP, hd]`. Establish `rel` using `ug_rel p`. Establish `hK : (ugFst (dbl JB) p).valᵀ * (cmp₁ (dbl JB) * (diagCols β : Matrix (β ⊕ β) β R)) * cmp₂ t = cmp₁ (dbl JB) * (diagCols β : Matrix (β ⊕ β) β R)`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [rel]`. Establish `hDB : cmp₁ (dbl JB) * (diagCols β : Matrix (β ⊕ β) β R) = fromRows (cmp₁ JB) (-cmp₁ JB)`. Establish `hb : cmp₁ (dbl JB) = fromBlocks (cmp₁ JB) 0 0 (-cmp₁ JB)`.
+
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [dbl]`. Rewrite using `[hb, hdc, Matrix.fromBlocks_mul_fromRows]`. Simplify using the standard rewrite rules. Rewrite `hK` using `[hDB, hP, Matrix.fromBlocks_transpose, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul]`. Take `⟨-, hK2⟩` from `Matrix.fromRows_inj hK`.
+
+Establish `hY : (d - b)ᵀ * cmp₁ JB * cmp₂ t = cmp₁ JB`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_sub]`. Use `noncomm_ring`. Use `_ = cmp₁ JB := by rw [hK2, neg_neg]`.
+
+Establish `hdetY : (d - b).det * (cmp₂ t).det = 1`. Establish `hd` using `congrArg Matrix.det hY`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Use `hB.isUnit_cmp₁.mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[mul_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hdetP, mul_assoc, hdetY, mul_one]`.
+-/
 theorem det_siegel {JB : Matrix β β (R × R)} (hB : IsHerm (swapA R) JB) (p : UG (swapA R) (dbl JB))
     (t : Matrix β β (R × R))
     (h : ((p : GL (β ⊕ β) (R × R)) : Matrix (β ⊕ β) (β ⊕ β) (R × R)) * (diagCols β : Matrix (β ⊕ β) β (R × R)) =

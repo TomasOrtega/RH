@@ -13,6 +13,19 @@ open Formalism.MainNotions.N (twistRep coefRep GoodO)
 
 namespace GlobalTheory.TopVanish
 
+/- English proof (translation)
+Establish `h0 : ∀ φ : ReciprocityTheory.Gal.H0 ((ReciprocityTheory.Gal.twDual χ rho).comp (MonoidHom.id G)), φ = 0` using `fun φ => by`. Establish `h` using `hφ (show M →ₗ[ZMod N] ZMod N from φ.1).toAddMonoidHom fun g m => by`. Establish `h3` using `congrArg (fun f : ReciprocityTheory.Gal.TDual (ZMod N) M => f (π g m)) (φ.2 (Φ g))`. Express the relevant statement in the definitionally equal form `(χ (Φ g) : ZMod N) * φ.1 (rho (Φ g)⁻¹ (π g m)) = φ.1 (π g m) at h3`. Rewrite `h3` using `[hrho, map_inv, Φ.symm_apply_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+
+Conclude with `h3.symm`. Conclude with `Subtype.ext (ReciprocityTheory.Gal.TDual.ext fun m => DFunLike.congr_fun h m)`. Use `subsingleton_of_forall_eq 0 fun y => ?_` and prove the remaining obligations. Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `hz' : (fun p : G × G => z (Φ.symm p.1, Φ.symm p.2)) ∈ ReciprocityTheory.Gal.Z2 (rho.comp (MonoidHom.id G))`.
+
+Use `⟨hz.1.1.continuous.comp (h2.prodMap h2), fun g h k => ?_⟩` and prove the remaining obligations. Establish `h3` using `congrFun hz.2 (Φ.symm g, Φ.symm h, Φ.symm k)`. Express the relevant statement in the definitionally equal form `rho g _ - _ + _ - _ = 0`. Use `beta_reduce`. Rewrite using `[hrho, map_mul, map_mul]`.
+
+Conclude with `h3`. Establish `h4 : (Submodule.Quotient.mk ⟨_, hz'⟩ : ReciprocityTheory.Gal.H2 (rho.comp (MonoidHom.id G))) = 0`. Apply `hb` to reduce the goal to its premises. Use extensionality with `φ`. Rewrite using `[h0 φ, map_zero, map_zero]`.
+
+Take `⟨b, hb1, hb2⟩` from `(Submodule.Quotient.mk_eq_zero _).1 h4`. Use `(Submodule.Quotient.mk_eq_zero _).2 ⟨fun g => b (Φ g), ⟨(IsLocallyConstant.iff_continuous _).2 (Continuous.comp hb1 h1), fun _ => trivial⟩, funext fun p => ?_⟩` and prove the remaining obligations. Establish `h5` using `congrFun hb2 (Φ p.1, Φ p.2)`. Express the relevant statement in the definitionally equal form `rho (Φ p.1) (b (Φ p.2)) - b (Φ p.1 * Φ p.2) + b (Φ p.1) = z (Φ.symm (Φ p.1), Φ.symm (Φ p.2)) at h5`. Rewrite `h5` using `[hrho, ← map_mul, Φ.symm_apply_apply, Φ.symm_apply_apply]`.
+
+Conclude with `h5`.
+-/
 theorem subsingleton_H2 {N : ℕ} {G G' : Type} [Group G] [TopologicalSpace G] [Group G'] [TopologicalSpace G']
     (Φ : G' ≃* G) (h1 : Continuous Φ) (h2 : Continuous Φ.symm) {O M : Type} [CommRing O] [AddCommGroup M]
     [Module O M] [Module (ZMod N) M] [TopologicalSpace M] [DiscreteTopology M] (π : Representation O G' M)
@@ -49,6 +62,13 @@ theorem subsingleton_H2 {N : ℕ} {G G' : Type} [Group G] [TopologicalSpace G] [
   rw [hrho, ← map_mul, Φ.symm_apply_apply, Φ.symm_apply_apply] at h5
   exact h5
 
+/- English proof (translation)
+Set `N : Submodule k V` to `{ carrier := {x | ∀ a : k, φ (a • x) = 0} zero_mem' := fun a => by simp add_mem' := fun {x y} hx hy a => by rw [smul_add, map_add, hx, hy, add_zero] smul_mem' := fun b x hx a => by rw [smul_smul]; exact hx _ }`. Assume the negation of the conclusion as `hne`. Establish `hN : N < ⊤` using `lt_top_iff_ne_top.2 fun hN => hne (AddMonoidHom.ext fun x => by`. Establish `hx : x ∈ N` using `hN ▸ Submodule.mem_top`. Simplify using `using hx 1)`.
+
+Take `⟨p, hp, hNp⟩` from `Submodule.exists_le_ker_of_lt_top N hN`. Use `hp (h p fun g x => ?_)` and prove the remaining obligations. Establish `hx : ρ g x - c g • x ∈ N` using `fun a => by`. Rewrite using `[smul_sub, map_sub, ← map_smul, hφ, smul_comm, map_nsmul, sub_self]`. Establish `h1 : p (ρ g x - c g • x) = 0` using `hNp hx`.
+
+Rewrite `h1` using `[map_sub, map_nsmul, sub_eq_zero, nsmul_eq_mul]`. Then use the resulting hypothesis.
+-/
 theorem addHom_eq_zero {k G V A : Type} [Field k] [Group G] [AddCommGroup V] [Module k V] [AddCommGroup A]
     (ρ : Representation k G V) (c : G → ℕ)
     (h : ∀ p : V →ₗ[k] k, (∀ g x, p (ρ g x) = (c g : k) * p x) → p = 0)
@@ -69,6 +89,19 @@ theorem addHom_eq_zero {k G V A : Type} [Field k] [Group G] [AddCommGroup V] [Mo
   have h1 : p (ρ g x - c g • x) = 0 := hNp hx
   rwa [map_sub, map_nsmul, sub_eq_zero, nsmul_eq_mul] at h1
 
+/- English proof (translation)
+Establish `hc : ∀ m : N, lam • m = 0` using `fun m => by`. Take `⟨x, rfl⟩` from `hq m`. Rewrite using `[← map_smul]`. Conclude with `(hk _).2 ⟨x, rfl⟩`. Set `f : (T ⊗[O] (O ⧸ Ideal.span {lam})) →ₗ[O] N` to `TensorProduct.lift ((cycMap hc).comp q)`.
+
+Establish `hf : ∀ x, f (x ⊗ₜ 1) = q x` using `fun x => by`. Express the relevant statement in the definitionally equal form `cycMap hc (q x) (Ideal.Quotient.mk _ 1) = _`. Rewrite using `[cycMap_mk, one_smul]`. Establish `hs : ∀ y : T ⊗[O] (O ⧸ Ideal.span {lam}), ∃ x, y = x ⊗ₜ 1` using `fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul x a`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `⟨a • x, by rw [TensorProduct.smul_tmul, Algebra.smul_def, mul_one]; rfl⟩`. Consider the case `add a b ha hb`.
+
+Take `⟨x, rfl⟩` from `ha`. Take `⟨y, rfl⟩` from `hb`. Conclude with `⟨x + y, (TensorProduct.add_tmul _ _ _).symm⟩`. Use `⟨LinearEquiv.ofBijective f ⟨?_, fun m => ?_⟩, hf, hs⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `y hy`. Take `⟨x, rfl⟩` from `hs y`. Take `⟨x, rfl⟩` from `(hk x).1 ((hf x).symm.trans hy)`. Rewrite using `[TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`. Establish `: algebraMap O (O ⧸ Ideal.span {lam}) lam = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`.
+
+Rewrite using `[this, TensorProduct.tmul_zero]`. Take `⟨x, rfl⟩` from `hq m`. Conclude with `⟨_, hf x⟩`.
+-/
 theorem exists_equiv {O T N : Type} [CommRing O] [AddCommGroup T] [Module O T] [AddCommGroup N] [Module O N]
     {lam : O} (q : T →ₗ[O] N) (hq : Function.Surjective q) (hk : KerIs lam q) :
     ∃ E : (T ⊗[O] (O ⧸ Ideal.span {lam})) ≃ₗ[O] N, (∀ x, E (x ⊗ₜ 1) = q x) ∧
@@ -103,6 +136,13 @@ theorem exists_equiv {O T N : Type} [CommRing O] [AddCommGroup T] [Module O T] [
   · obtain ⟨x, rfl⟩ := hq m
     exact ⟨_, hf x⟩
 
+/- English proof (translation)
+Establish `hT` using `GlobalTheory.Cyc.locLat_isOpen hO T`. Take `⟨⟨_, _, _⟩, -⟩` from `hO`. Establish `hl : algebraMap O LL lam ≠ 0` using `fun h => hlam (IsFractionRing.injective O LL (by rw [h, map_zero]))`. Use `haveI := IsModuleTopology.topologicalAddGroup LL T.V`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+
+Introduce `g₀`. Establish `hc : Continuous fun g => (algebraMap O LL lam)⁻¹ • (T.ρ g x - T.ρ g₀ x)` using `((T.cont x).sub continuous_const).const_smul _`. Use `filter_upwards [(hT.preimage hc).mem_nhds (x := g₀) (by simp)] with g hg`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `(hk _).2 ⟨⟨_, hg⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `T.ρ g x - T.ρ g₀ x = lam • ((algebraMap O LL lam)⁻¹ • (T.ρ g x - T.ρ g₀ x))`. Rewrite using `[← algebraMap_smul LL lam, smul_smul, mul_inv_cancel₀ hl, one_smul]`.
+-/
 theorem lc_reduction {G : Type} [Group G] [TopologicalSpace G] {Qp : Type} [Field Qp] [TopologicalSpace Qp]
     {LL : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] {O : Type} [CommRing O] [Algebra O LL]
     (hO : GoodO (Qp := Qp) LL O) (T : LocLat G Qp LL O) {lam : O} (hlam : lam ≠ 0) {N : Type} [AddCommGroup N]
@@ -122,6 +162,11 @@ theorem lc_reduction {G : Type} [Group G] [TopologicalSpace G] {Qp : Type} [Fiel
   change T.ρ g x - T.ρ g₀ x = lam • ((algebraMap O LL lam)⁻¹ • (T.ρ g x - T.ρ g₀ x))
   rw [← algebraMap_smul LL lam, smul_smul, mul_inv_cancel₀ hl, one_smul]
 
+/- English proof (translation)
+Establish `: NeZero (l ^ 1)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `h : x - (((PadicInt.toZModPow 1 x).val : ℕ) : ℤ_[l]) ∈ Ideal.span {(l : ℤ_[l]) ^ 1}`. Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton.1 h`. Establish `h1` using `congrArg f hw`.
+
+Rewrite `h1` using `[map_sub, map_natCast, map_mul, map_pow, map_natCast, CharP.cast_eq_zero k l, zero_pow one_ne_zero, zero_mul, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem ringHom_eq_val {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] (f : ℤ_[l] →+* k) (x : ℤ_[l]) :
     f x = ((PadicInt.toZModPow 1 x).val : k) := by
   have : NeZero (l ^ 1) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
@@ -132,6 +177,23 @@ theorem ringHom_eq_val {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l]
   rwa [map_sub, map_natCast, map_mul, map_pow, map_natCast, CharP.cast_eq_zero k l, zero_pow one_ne_zero, zero_mul,
     sub_eq_zero] at h1
 
+/- English proof (translation)
+Use `⟨(Submodule.eq_bot_iff _).2 fun x hx => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hv : E x ≠ 0` using `fun h0 => hne (E.map_eq_zero_iff.1 h0)`. Establish `hinv : ∀ g, A.ρ g (E x) = E x` using `fun g => by rw [← hE, hx g]`. Establish `h1` using `h 0 (by norm_num) (by norm_num) (chr 1) ((LinearMap.toSpanSingleton k _ (E x)).comp (LinearMap.proj 0)) LinearMap.id (fun g y => by simp [chr, hinv]) (fun y z hyz => funext fun i => by`.
+
+Rewrite using `[Subsingleton.elim i 0]`. Conclude with `smul_left_injective k hv hyz)`. Use the proof step `(fun g y => by simp [chr])`. Conclude with `one_ne_zero (congrFun (DFunLike.congr_fun h1 (fun _ => 1)) 0)`. Take `⟨hΦ1, hΦ2⟩` from `GlobalTheory.Cyc.TwistLift.continuous_fixingSubgroupEquiv K.1`.
+
+Set `Φ : ↥(GK K) ≃* Formalism.GaloisCohomology.GK l K.1` to `K.1.fixingSubgroupEquiv`. Establish `_ : Finite M` using `Finite.of_equiv _ E.symm.toEquiv`. Set `_ : TopologicalSpace M` to `⊥`. Establish `_ : DiscreteTopology M` using `⟨rfl⟩`. Establish `_ : NeZero (l ^ 1)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+
+Establish `hr : ∀ m : M, l ^ 1 • m = 0` using `fun m => by`. Rewrite using `[pow_one, ← E.map_eq_zero_iff, map_nsmul, ← Nat.cast_smul_eq_nsmul k, CharP.cast_eq_zero, zero_smul]`. Take `⟨_⟩ : Nonempty (Module (ZMod (l ^ 1)) M)` from `⟨AddCommGroup.zmodModule hr⟩`. Set `rho : Representation (ZMod (l ^ 1)) (Formalism.GaloisCohomology.GK l K.1) M` to `{ toFun := fun g => AddMonoidHom.toZModLinearMap _ (π (Φ.symm g)).toAddMonoidHom map_one' := LinearMap.ext fun m => by`. Express the relevant statement in the definitionally equal form `π (Φ.symm 1) m = m`.
+
+Rewrite using `[map_one, map_one, Module.End.one_apply]`. Use the proof step `map_mul' := fun g g' => LinearMap.ext fun m => by`. Express the relevant statement in the definitionally equal form `π (Φ.symm (g * g')) m = π (Φ.symm g) (π (Φ.symm g') m)`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply] }`. Establish `hrho : ReciprocityTheory.Gal.ContAction rho` using `continuous_prod_of_discrete_right.2 fun m => (hlc m).continuous.comp hΦ1`.
+
+Use `subsingleton_H2 Φ hΦ2 hΦ1 π _ rho (fun _ _ => rfl) (hT l K.1 K.2 1 M rho one_pos hrho).2.2.2.2.1 fun φ hφ => ?_` and prove the remaining obligations. Establish `h1` using `addHom_eq_zero A.ρ (fun g => (Formalism.GaloisCohomology.cycK l K.1 1 (Φ g) : ZMod (l ^ 1)).val) (fun p hp => by`. Establish `h2` using `h (-1) le_rfl (by norm_num) A LinearMap.id (LinearMap.pi fun _ => p) (fun _ _ => rfl) Function.injective_id (fun g y => funext fun i => by`. Express the relevant statement in the definitionally equal form `p (A.ρ g y) = ((ω ^ (-(-1 : ℤ))) g : k) * p y`. Rewrite using `[neg_neg, zpow_one, hp, hω]`.
+
+Use the proof step `rfl)`. Conclude with `LinearMap.ext fun y => congrFun (DFunLike.congr_fun h2 y) 0)`. Use the proof step `(φ.comp E.symm.toAddMonoidHom) (fun g y => by`. Take `⟨m, rfl⟩` from `E.surjective y`. Express the relevant statement in the definitionally equal form `φ (E.symm (A.ρ g (E m))) = _ • φ (E.symm (E m))`.
+
+Rewrite using `[← hE, E.symm_apply_apply, E.symm_apply_apply, hφ, nsmul_eq_mul, ZMod.natCast_zmod_val])`. Use extensionality with `m`. Simplify using `using DFunLike.congr_fun h1 (E m)`.
+-/
 theorem vanish_of_model (hT : Formalism.GaloisCohomology.LocalTateDualityK) {l : ℕ} [Fact l.Prime] (K : FinExt l) {O M k : Type}
     [CommRing O] [AddCommGroup M] [Module O M] [Field k] [Finite k] [CharP k l]
     (π : Representation O ↥(GK K) M) (hlc : ∀ m, IsLocallyConstant fun g => π g m) (A : Ob k ↥(GK K))
@@ -188,6 +250,13 @@ theorem vanish_of_model (hT : Formalism.GaloisCohomology.LocalTateDualityK) {l :
     ext m
     simpa using DFunLike.congr_fun h1 (E m)
 
+/- English proof (translation)
+Take `⟨E, hE, hs⟩` from `exists_equiv q hq hk`. Establish `hE' : ∀ g m, E (GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.resRep Γ g m) = A.ρ g (E m)` using `fun g m => by`. Take `⟨x, rfl⟩` from `hs m`. Rewrite using `[coefRep_tmul, hE, hE, hqρ]`. Use `vanish_of_model hT K _ (fun m => ?_) A E.toAddEquiv hE' ω hω h` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `hs m`. Establish `hχ' : Continuous fun g => algebraMap O LL (Γ.χ₁⁻¹ g)`. Use `(hχ.comp continuous_inv).congr fun g => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, map_inv, MonoidHom.inv_apply]`. Establish `h1` using `lc_reduction hO (twLat Γ.T₀ Γ.χ₁⁻¹ hχ') hlam q hk x`.
+
+Use `IsLocallyConstant.desc _ E ?_ E.injective` and prove the remaining obligations. Establish `h2 : (E ∘ fun g => GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.resRep Γ g (x ⊗ₜ 1)) = fun g => q (latRep (twLattice Γ.T₀.L Γ.χ₁⁻¹) g x)` using `funext fun g => by`. Rewrite using `[Function.comp_apply, coefRep_tmul, hE, latRep_twLattice]`. Conclude with `h2 ▸ h1`.
+-/
 theorem vanish_of_lattice (hT : Formalism.GaloisCohomology.LocalTateDualityK) {l : ℕ} [Fact l.Prime] (K : FinExt l) {LL O k : Type}
     [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL] [Field k] [Finite k]
     [CharP k l] [Algebra O k] (hO : GoodO (Qp := ℚ_[l]) LL O) (Γ : GalData ↥(GK K) ℚ_[l] LL O) (hlam : Γ.lam ≠ 0)
@@ -215,6 +284,11 @@ theorem vanish_of_lattice (hT : Formalism.GaloisCohomology.LocalTateDualityK) {l
     rw [Function.comp_apply, coefRep_tmul, hE, latRep_twLattice]
   exact h2 ▸ h1
 
+/- English proof (translation)
+Establish `h0 : algebraMap O (IsLocalRing.ResidueField O) l = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 hl`. Use `⟨IsLocalRing.ResidueField O, inferInstance, inferInstance, (CharP.charP_iff_prime_eq_zero Fact.out).2 (by rwa [map_natCast] at h0), ?_, IsLocalRing.residue_surjective, fun x => ?_⟩` and prove the remaining obligations. Use `Finite.of_surjective (Ideal.Quotient.factor (S := Ideal.span {(l : O) ^ 1}) (T := IsLocalRing.maximalIdeal O) ?_) (Ideal.Quotient.factor_surjective _)` and prove the remaining obligations. Rewrite using `[pow_one, Ideal.span_singleton_le_iff_mem]`. Conclude with `hl`.
+
+Rewrite using `[← Ideal.mem_span_singleton, ← hlam.maximalIdeal_eq]`. Conclude with `IsLocalRing.residue_eq_zero_iff _`.
+-/
 theorem exists_residue {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {lam : O}
     (hlam : Irreducible lam) (l : ℕ) [Fact l.Prime] (hl : ¬ IsUnit (l : O))
     (hf : Finite (O ⧸ Ideal.span {(l : O) ^ 1})) :
@@ -231,6 +305,15 @@ theorem exists_residue {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuation
   · rw [← Ideal.mem_span_singleton, ← hlam.maximalIdeal_eq]
     exact IsLocalRing.residue_eq_zero_iff _
 
+/- English proof (translation)
+Introduce `hT l _ P S hS`. Take `⟨hst, ⟨-, -, hχ, hε⟩, h1, h2, h3⟩` from `S.hyp`. Establish `hlam : Irreducible S.Γ.lam` using `hst.2.2.2.2.2`. Take `⟨hO, hf⟩` from `GlobalTheory.LocalIntegers.good_integers l S.LL`. Take `⟨_, -, -, hl, -⟩` from `GlobalTheory.Per.integers_completeDVR l S.LL`.
+
+Take `⟨k, _, _, _, _, hres⟩` from `exists_residue hlam l hl (hf 1)`. Take `⟨R, -, -, F, M, hω, ⟨q, hq, hk, hqρ⟩, -⟩` from `hS k hres`. Use `vanish_of_lattice hT S.K hO S.Γ hlam.ne_zero hχ.1 M.T q hq hk hqρ M.ω (fun g => ?_) fun e he he' => GlobalTheory.T.hom_to_characterLine_eq_zero F M h1 h2 h3 e he (he'.trans_le (by exact_mod_cast S.D.one_le_letterBlockLength))` and prove the remaining obligations. Establish `hc : GlobalTheory.Cyc.IsCyc P.χQ` using `P.χQ_cyc`. Set `u : ℤ_[l]` to `(cyclotomicCharacter (PadicAlgCl l) l (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK l S.K.1) (PadicAlgCl l) (S.K.1.fixingSubgroupEquiv g)) : ℤ_[l]ˣ)`.
+
+Establish `hu : (u : ℚ_[l]) = (P.χQ (g : GQ l) : ℚ_[l])`. Rewrite using `[GlobalTheory.Cyc.TwistLift.isCyc_unique hc (GlobalTheory.Cyc.isCyc_cycChar l)]`. Both sides reduce to the same expression. Establish `h4 : (S.Γ.ε g : S.O) = algebraMap ℤ_[l] S.O u`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `(hε g).trans ?_` and prove the remaining obligations. Rewrite using `[P.PD_χ, ← hu]`. Both sides reduce to the same expression. Rewrite using `[hω, h4]`. Conclude with `ringHom_eq_val ((algebraMap S.O k).comp (algebraMap ℤ_[l] S.O)) u`.
+-/
 theorem vanish_of_real : Formalism.GaloisCohomology.LocalTateDualityK → ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P), S.Real → S.Vanish := by
   intro hT l _ P S hS
   obtain ⟨hst, ⟨-, -, hχ, hε⟩, h1, h2, h3⟩ := S.hyp

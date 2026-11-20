@@ -15,22 +15,36 @@ section Generic
 
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K]
 
+/- English proof (translation)
+Unfold `LocE.lamY LocE.sclLat`. Rewrite using `[Submodule.mem_comap]`. Conclude with `mem_localization_standardLattice P _`.
+-/
 theorem mem_lamY_iff (P : HeightOneSpectrum (𝓞 E)) (q n c : ℕ) (ex : ℕ → ℕ) (v : Sp E (n + c)) :
     v ∈ LocE.lamY P q n c ex ↔ ∀ l : Fin (n + c), Formalism.L2.Col.IntAt P (((q : E) ^ LocE.scE n ex l.1)⁻¹ * v l) := by
   unfold LocE.lamY LocE.sclLat
   rw [Submodule.mem_comap]
   exact mem_localization_standardLattice P _
 
+/- English proof (translation)
+Use `(mem_localization_standardLattice P _).2 fun i => ?_` and prove the remaining obligations. Establish `h` using `(mem_lamY_iff P q n c ex v).1 hv (Fin.castAdd c i)`. Simplify `h` using `[LocE.scE, LinearMap.funLeft_apply]`.
+-/
 theorem proj_mem {P : HeightOneSpectrum (𝓞 E)} {q n c : ℕ} {ex : ℕ → ℕ} {v : Sp E (n + c)} (hv : v ∈ LocE.lamY P q n c ex) :
     LinearMap.funLeft E E (Fin.castAdd c) v ∈ stdAt E n P := by
   refine (mem_localization_standardLattice P _).2 fun i => ?_
   have h := (mem_lamY_iff P q n c ex v).1 hv (Fin.castAdd c i)
   simpa [LocE.scE, LinearMap.funLeft_apply] using h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[LinearMap.funLeft_apply, Loc.inX]`.
+-/
 theorem proj_inX {n c : ℕ} (y : Sp E n) : LinearMap.funLeft E E (Fin.castAdd c) (Loc.inX E n c y) = y := by
   funext i
   simp [LinearMap.funLeft_apply, Loc.inX]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify `proj_mem h` using `[proj_inX]`. Introduce `h`. Use `(mem_lamY_iff P q n c ex _).2 fun l => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hl : l.1 < n`. Use `(mem_localization_standardLattice P _).1 h ⟨l.1, hl⟩` as an intermediate fact. Simplify `this` using `[LocE.scE, Loc.inX, hl]`. Use `Formalism.L2.Col.IntAt.coe P (0 : 𝓞 E)` as an intermediate fact. Simplify `this` using `[Loc.inX, hl]`.
+-/
 theorem inX_mem_iff (P : HeightOneSpectrum (𝓞 E)) (q n c : ℕ) (ex : ℕ → ℕ) (y : Sp E n) :
     Loc.inX E n c y ∈ LocE.lamY P q n c ex ↔ y ∈ stdAt E n P := by
   constructor
@@ -44,6 +58,11 @@ theorem inX_mem_iff (P : HeightOneSpectrum (𝓞 E)) (q n c : ℕ) (ex : ℕ →
     · have := Formalism.L2.Col.IntAt.coe P (0 : 𝓞 E)
       simpa [Loc.inX, hl] using this
 
+/- English proof (translation)
+Establish `h0 : atNL E (n' + c') n' (Loc.inX E n' c' y) = 0`. Unfold `atNL`. Use `split_ifs with h`. Simplify using `[Loc.inX]`. Both sides reduce to the same expression.
+
+Simplify using `[joinCol, proj_inX, h0]`.
+-/
 theorem joinCol_inX {n' c' n c : ℕ} (x₀ : HomE E n' n) (y' : Sp E n) (y : Sp E n') :
     (joinCol x₀ y' : HomE E (n' + c') (n + c)) (Loc.inX E n' c' y) = Loc.inX E n c (x₀ y) := by
   have h0 : atNL E (n' + c') n' (Loc.inX E n' c' y) = 0 := by
@@ -53,6 +72,9 @@ theorem joinCol_inX {n' c' n c : ℕ} (x₀ : HomE E n' n) (y' : Sp E n) (y : Sp
     · rfl
   simp [joinCol, proj_inX, h0]
 
+/- English proof (translation)
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [joinCol, LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem joinCol_add {n' c' n c : ℕ} (x₀ z : HomE E n' n) (t : E) (y' : Sp E n) :
     (joinCol (x₀ + t • z) y' : HomE E (n' + c') (n + c)) =
       joinCol x₀ y' + t • (Loc.inX E n c ∘ₗ z ∘ₗ LinearMap.funLeft E E (Fin.castAdd c')) := by
@@ -60,6 +82,11 @@ theorem joinCol_add {n' c' n c : ℕ} (x₀ z : HomE E n' n) (t : E) (y' : Sp E 
   simp only [joinCol, LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul]
   abel
 
+/- English proof (translation)
+Use `⟨fun x hx y hy => ?_, fun x z hz => ?_, fun σ x => h.2.2 σ _⟩` and prove the remaining obligations. Use `h.1 _ hx _ ((inX_mem_iff P q n' c' ex' y).2 hy)` as an intermediate fact. Rewrite `this` using `[joinCol_inX]`. Conclude with `(inX_mem_iff P q n c ex _).1 this`. Use `show Φ (joinCol (x + (q : E) • z) y') = Φ (joinCol x y')`.
+
+Rewrite using `[joinCol_add]`. Conclude with `h.2.1 _ _ fun v hv => (inX_mem_iff P q n c ex _).2 (hz _ (proj_mem hv))`.
+-/
 theorem locSmall_joinCol {P : HeightOneSpectrum (𝓞 E)} {q n' c' n c : ℕ} {ex' ex : ℕ → ℕ} {Φ : HomE E (n' + c') (n + c) → K} {β : ℝ}
     (h : LocSmall q (LocE.lamY P q n' c' ex') (LocE.lamY P q n c ex) Φ β) (y' : Sp E n) :
     LocSmall q (stdAt E n' P) (stdAt E n P) (fun x₀ => Φ (joinCol x₀ y')) β := by
@@ -71,6 +98,25 @@ theorem locSmall_joinCol {P : HeightOneSpectrum (𝓞 E)} {q n' c' n c : ℕ} {e
     rw [joinCol_add]
     exact h.2.1 _ _ fun v hv => (inX_mem_iff P q n c ex _).2 (hz _ (proj_mem hv))
 
+/- English proof (translation)
+Use `⟨fun x hx P hP y hy => ?_, fun x y hy => ?_, fun σ x => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 hx`. Break down `Finset.mem_union.1 hP with hP | hP` into its components or cases. Unfold `phiT at h1 split_ifs at h1 with h`. Conclude with `(h ⟨P, hP⟩ y hy).1`.
+
+Conclude with `absurd rfl h1`. Establish `h3` using `Finset.prod_ne_zero_iff.1 h2 ⟨P, hP⟩ (Finset.mem_univ _)`. Establish `h4 : (f ⟨P, hP⟩).symm y ∈ stdAt E a P` using `(hf ⟨P, hP⟩ _).1 (by simpa using hy)`. Establish `h5` using `(hf' ⟨P, hP⟩ _).2 ((hΨ ⟨P, hP⟩).1 _ h3 _ h4)`. Simplify `h5` using `[inFr]`.
+
+Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.1 hy`. Establish `hz' : ∀ P ∈ ST ∪ SB, ∀ y ∈ d.at P, z y ∈ d'.1.at P` using `hz`. Establish `e0 : (((c : 𝓞 E) • (LinearMap.id : HomE E a b →ₗ[𝓞 E] HomE E a b)) z) = (c : 𝓞 E) • z` using `rfl`. Rewrite using `[e0]`. Use `show phiT K d d'.1 _ * _ = phiT K d d'.1 _ * _`.
+
+Use `congr 1`. Unfold `phiT classical`. Use `@if_congr _ _ _ (_) (_) _ _ _ _ (forall_congr' fun P => forall_congr' fun y => forall_congr' fun hy => ?_) rfl rfl` and prove the remaining obligations. Establish `hzy : z y ∈ d'.1.at P.1` using `hz' P.1 (Finset.mem_union_left _ P.2) y hy`. Establish `hc : (c : 𝓞 E) • z y ∈ d'.1.at P.1` using `Submodule.smul_mem _ _ hzy`.
+
+Establish `e : (x + (c : 𝓞 E) • z) y = x y + (c : 𝓞 E) • z y` using `rfl`. Rewrite using `[e, Submodule.add_mem_iff_left _ hc]`. Use `and_congr_right fun hx => ?_` and prove the remaining obligations. Rewrite using `[d'.2.f_add P _ hx _ hc, d'.2.f_smul P _ _ hzy, Ideal.Quotient.eq_zero_iff_mem.2 (hT P.1 P.2), zero_mul, add_zero]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `hq P`. Establish `e : inFr (f P) (f' P) (x + (c : 𝓞 E) • z) = inFr (f P) (f' P) x + (q P : E) • inFr (f P) (f' P) (k • z)`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `: (c : 𝓞 E) • z = (q P : E) • (k • z)`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, hk, mul_smul]`.
+
+Rewrite using `[this]`. Simplify using `[inFr]`. Rewrite using `[e]`. Use `(hΨ P).2.1 _ _ fun v hv => (hf' P _).1 ?_` and prove the remaining obligations. Use `nsmul_mem (hz' P.1 (Finset.mem_union_right _ P.2) _ ((hf P v).2 hv)) k` as an intermediate fact.
+
+Simplify `this` using `[inFr]`. Use `show ‖σ (phiT K d d'.1 x * _)‖ ≤ _`. Rewrite using `[map_mul, norm_mul, map_prod, norm_prod]`. Establish `h1 : ‖σ (phiT K d d'.1 x)‖ ≤ 1`. Unfold `phiT`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : ∏ P : SB, ‖σ (Ψ P (inFr (f P) (f' P) x))‖ ≤ ∏ P, β P` using `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun P _ => (hΨ P).2.2 σ _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem smallDatum_of_frames {a b : ℕ} {ST SG SG' SB : Finset (HeightOneSpectrum (𝓞 E))} [DecidableEq (HeightOneSpectrum (𝓞 E))]
     (d : Deco E a ST SG) (d' : DecoSet E b ST SG')
     (f : Frs E a SB) (f' : Frs E b SB) (hf : ∀ (P : SB) x, f P x ∈ d.at P.1 ↔ x ∈ stdAt E a P.1)

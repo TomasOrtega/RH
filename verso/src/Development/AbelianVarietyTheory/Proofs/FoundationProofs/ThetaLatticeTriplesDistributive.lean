@@ -11,6 +11,15 @@ namespace GlobalTheory.DistLa
 
 variable {D : D7} {N N' : ℕ}
 
+/- English proof (translation)
+Establish `h1 : ∀ A ∈ homL D L L', g A ∈ homL D M M'`. Introduce `A hA`. Establish `: homL D L L' ≤ (homL D M M').comap (g.restrictScalars (𝓞 D.host.E))` using `Submodule.span_le.2 fun B hB => Submodule.subset_span (hg B hB)`. Conclude with `this hA`. Establish `h2 : ∀ A ∈ YYl D L L', g A ∈ YYl D M M'`.
+
+Introduce `A hA`. Establish `: YYl D L L' ≤ (YYl D M M').comap (g.restrictScalars (𝓞 D.host.E))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `B ⟨a, ha, C, hC, rfl⟩`. Conclude with `Submodule.subset_span ⟨a, ha, g C, h1 C hC, map_smul g a C⟩`.
+
+Conclude with `this hA`. Establish `h3 : La D T L L' ≤ (La D T M M').comap f.toAddMonoidHom`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, A, hA, rfl⟩`. Use `AddSubgroup.subset_closure ⟨w, hw, g A, h2 A hA, ?_⟩` and prove the remaining obligations.
+
+Use `show f (w • embV D T A) = _`. Rewrite using `[map_smul, hfg]`. Conclude with `h3 hz`.
+-/
 theorem La_map (T : Tor D) (f : VC D N N' →ₗ[ℂ] VC D N N')
     (g : Matrix (Fin N') (Fin N) D.host.E →ₗ[D.host.E] Matrix (Fin N') (Fin N) D.host.E)
     (hfg : ∀ A, f (embV D T A) = embV D T (g A)) {L M : Lat D N} {L' M' : Lat D N'}
@@ -52,6 +61,9 @@ def rgt (P : Matrix (Fin N) (Fin N) D.host.E) : VC D N N' →ₗ[ℂ] VC D N N' 
     funext τ i j; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Use `show ∑ k, embT D τ (P i k) * z τ k j + ∑ k, embT D τ ((1 - P) i k) * z τ k j = z τ i j`. Rewrite using `[← Finset.sum_add_distrib]`. Simplify using `only [← add_mul, ← map_add, Matrix.sub_apply, add_sub_cancel, Matrix.one_apply]`. Simplify using `[apply_ite]`.
+-/
 theorem lft_add (P : Matrix (Fin N') (Fin N') D.host.E) (z : VC D N N') : lft P z + lft (1 - P) z = z := by
   funext τ i j
   show ∑ k, embT D τ (P i k) * z τ k j + ∑ k, embT D τ ((1 - P) i k) * z τ k j = z τ i j
@@ -59,6 +71,9 @@ theorem lft_add (P : Matrix (Fin N') (Fin N') D.host.E) (z : VC D N N') : lft P 
   simp only [← add_mul, ← map_add, Matrix.sub_apply, add_sub_cancel, Matrix.one_apply]
   simp [apply_ite]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Use `show ∑ k, z τ i k * embT D τ (P k j) + ∑ k, z τ i k * embT D τ ((1 - P) k j) = z τ i j`. Rewrite using `[← Finset.sum_add_distrib]`. Simplify using `only [← mul_add, ← map_add, Matrix.sub_apply, add_sub_cancel, Matrix.one_apply]`. Simplify using `[apply_ite]`.
+-/
 theorem rgt_add (P : Matrix (Fin N) (Fin N) D.host.E) (z : VC D N N') : rgt P z + rgt (1 - P) z = z := by
   funext τ i j
   show ∑ k, z τ i k * embT D τ (P k j) + ∑ k, z τ i k * embT D τ ((1 - P) k j) = z τ i j
@@ -66,6 +81,11 @@ theorem rgt_add (P : Matrix (Fin N) (Fin N) D.host.E) (z : VC D N N') : rgt P z 
   simp only [← mul_add, ← map_add, Matrix.sub_apply, add_sub_cancel, Matrix.one_apply]
   simp [apply_ite]
 
+/- English proof (translation)
+Use `La_map _ (lft P) { toFun := fun A => P * A, map_add' := fun A B => Matrix.mul_add P A B, map_smul' := fun c A => Matrix.mul_smul P c A } ?_ ?_ hz` and prove the remaining obligations. Introduce `A`. Use function extensionality and compare the values at `τ i j`. Use `show ∑ k, embT D τ (P i k) * embT D τ (A k j) = embT D τ ((P * A) i j)`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul]`.
+
+Introduce `A hA x hx show (P * A).mulVec x ∈ M'`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hP _ (hA x hx)`.
+-/
 theorem lft_mem (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (P : Matrix (Fin N') (Fin N') D.host.E) {L : Lat D N}
     {L' M' : Lat D N'} (hP : ∀ v ∈ L', P.mulVec v ∈ M') {z : VC D N N'} (hz : z ∈ La D (tor0 D cc δ) L L') :
     lft P z ∈ La D (tor0 D cc δ) L M' := by
@@ -81,6 +101,11 @@ theorem lft_mem (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (P : Matrix (Fin N') (Fi
     rw [← Matrix.mulVec_mulVec]
     exact hP _ (hA x hx)
 
+/- English proof (translation)
+Use `La_map _ (rgt P) { toFun := fun A => A * P, map_add' := fun A B => Matrix.add_mul A B P, map_smul' := fun c A => Matrix.smul_mul c A P } ?_ ?_ hz` and prove the remaining obligations. Introduce `A`. Use function extensionality and compare the values at `τ i j`. Use `show ∑ k, embT D τ (A i k) * embT D τ (P k j) = embT D τ ((A * P) i j)`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul]`.
+
+Introduce `A hA x hx show (A * P).mulVec x ∈ L'`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hA _ (hP x hx)`.
+-/
 theorem rgt_mem (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (P : Matrix (Fin N) (Fin N) D.host.E) {L M : Lat D N}
     {L' : Lat D N'} (hP : ∀ v ∈ M, P.mulVec v ∈ L) {z : VC D N N'} (hz : z ∈ La D (tor0 D cc δ) L L') :
     rgt P z ∈ La D (tor0 D cc δ) M L' := by
@@ -96,10 +121,18 @@ theorem rgt_mem (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (P : Matrix (Fin N) (Fin
     rw [← Matrix.mulVec_mulVec]
     exact hA _ (hP x hx)
 
+/- English proof (translation)
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+-/
 theorem one_sub_mulVec {n : ℕ} (P : Matrix (Fin n) (Fin n) D.host.E) (v : Fin n → D.host.E) :
     (1 - P).mulVec v = v - P.mulVec v := by
   rw [Matrix.sub_mulVec, Matrix.one_mulVec]
 
+/- English proof (translation)
+Take `⟨a, ⟨ha1, ha2⟩, b, ⟨hb2, hb3⟩, rfl⟩` from `Submodule.mem_sup.1 (hb.1 hv)`. Establish `pa` using `h1 a (Submodule.mem_sup_left ha1)`. Establish `pb` using `h1 b (Submodule.mem_sup_right hb3)`. Rewrite using `[Matrix.mulVec_add]`. Use `⟨L₁.add_mem pa pb, L₂.add_mem ?_ (hb.2 ⟨pb, h2 b hb3⟩), ?_⟩` and prove the remaining obligations.
+
+Use `L₂.sub_mem ha2 (hb.2 ⟨L₁.sub_mem ha1 pa, h3 a ha1⟩)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[add_sub_add_comm]`. Conclude with `L₃.add_mem (h3 a ha1) (L₃.sub_mem hb3 (h2 b hb3))`.
+-/
 theorem bet_proj {n : ℕ} {L₁ L₂ L₃ : Lat D n} (hb : Bet D L₁ L₂ L₃) {P : Matrix (Fin n) (Fin n) D.host.E}
     (h1 : ∀ v ∈ L₁ ⊔ L₃, P.mulVec v ∈ L₁) (h2 : ∀ v ∈ L₃, P.mulVec v ∈ L₃)
     (h3 : ∀ v ∈ L₁, v - P.mulVec v ∈ L₃) (v : Fin n → D.host.E) (hv : v ∈ L₂) :
@@ -114,6 +147,23 @@ theorem bet_proj {n : ℕ} {L₁ L₂ L₃ : Lat D n} (hb : Bet D L₁ L₂ L₃
   · rw [add_sub_add_comm]
     exact L₃.add_mem (h3 a ha1) (L₃.sub_mem hb3 (h2 b hb3))
 
+/- English proof (translation)
+Introduce `D cc δ N N'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `L L₁ L₂ L₃ s1 s3 hb x hx y _ _`. Take `⟨P, h1, h2, h3⟩` from `GlobalTheory.T.exists_matrix_projection_selfDual_lattices D N' L₁ L₃ s1 s3`. Establish `k` using `bet_proj hb h1 h2 h3`.
+
+Rewrite using `[← lft_add P x]`. Use `add_mem (AddSubgroup.mem_sup_left ⟨lft_mem cc δ P (fun v hv => (k v hv).1) hx, lft_mem cc δ P (fun v hv => (k v hv).2.1) hx⟩) (AddSubgroup.mem_sup_right ⟨lft_mem cc δ _ (fun v hv => ?_) hx, lft_mem cc δ _ (fun v hv => ?_) hx⟩)` and prove the remaining obligations. Rewrite using `[one_sub_mulVec]`. Conclude with `L₂.sub_mem hv (k v hv).2.1`. Rewrite using `[one_sub_mulVec]`.
+
+Conclude with `(k v hv).2.2`. Introduce `L₁ L₂ L₃ L' s1 s3 hb x hx y _ _`. Take `⟨P, h1, h2, h3⟩` from `GlobalTheory.T.exists_matrix_projection_selfDual_lattices D N L₁ L₃ s1 s3`. Establish `k` using `bet_proj hb h1 h2 h3`. Rewrite using `[← rgt_add P x, add_comm]`.
+
+Use `add_mem (AddSubgroup.mem_sup_left ⟨rgt_mem cc δ _ (fun v hv => ?_) hx, rgt_mem cc δ _ (fun v hv => ?_) hx⟩) (AddSubgroup.mem_sup_right ⟨rgt_mem cc δ P (fun v hv => (k v hv).2.1) hx, rgt_mem cc δ P (fun v hv => hb.2 ⟨h1 v (Submodule.mem_sup_right hv), h2 v hv⟩) hx⟩)` and prove the remaining obligations. Rewrite using `[one_sub_mulVec]`. Conclude with `hb.2 ⟨L₁.sub_mem hv (h1 v (Submodule.mem_sup_left hv)), h3 v hv⟩`. Rewrite using `[one_sub_mulVec]`. Conclude with `L₂.sub_mem hv (k v hv).2.1`.
+
+Introduce `L₀ L L₀' L' s1 s3 x hx y hy hu`. Take `⟨P, h1, h2, h3⟩` from `GlobalTheory.T.exists_matrix_projection_selfDual_lattices D N' L₀' L' s1 s3`. Establish `q1 : ∀ v ∈ L₀', (1 - P).mulVec v ∈ L₀'` using `fun v hv => by`. Rewrite using `[one_sub_mulVec]`. Conclude with `L₀'.sub_mem hv (h1 v (Submodule.mem_sup_left hv))`.
+
+Establish `q2 : ∀ v ∈ L₀', (1 - P).mulVec v ∈ L'` using `fun v hv => by`. Rewrite using `[one_sub_mulVec]`. Conclude with `h3 v hv`. Establish `q3 : ∀ v ∈ L', (1 - P).mulVec v ∈ L'` using `fun v hv => by`. Rewrite using `[one_sub_mulVec]`.
+
+Conclude with `L'.sub_mem hv (h2 v hv)`. Establish `e : x = lft P x + lft (1 - P) (x + y) - lft (1 - P) y`. Rewrite using `[map_add, ← add_assoc, lft_add, add_sub_cancel_right]`. Establish `e2 : lft (1 - P) y = lft (1 - P) (x + y) - lft (1 - P) x`. Rewrite using `[map_add, add_sub_cancel_left]`.
+
+Rewrite using `[e]`. Use `sub_mem (AddSubgroup.mem_sup_left (add_mem ⟨lft_mem cc δ P (fun v hv => h1 v (Submodule.mem_sup_right hv)) hx, lft_mem cc δ P h2 hx⟩ ⟨lft_mem cc δ _ q1 hu, lft_mem cc δ _ q2 hu⟩)) (AddSubgroup.mem_sup_right ⟨?_, lft_mem cc δ _ q3 hy⟩)` and prove the remaining obligations. Rewrite using `[e2]`. Conclude with `AddSubgroup.sub_mem _ (lft_mem cc δ _ q2 hu) (lft_mem cc δ _ q3 hx)`.
+-/
 theorem dist_La : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (N N' : ℕ), (∀ (L : Lat D N) (L₁ L₂ L₃ : Lat D N'), SD D L₁ → SD D L₃ → Bet D L₁ L₂ L₃ → Dist (La D (tor0 D cc δ) L L₁) (La D (tor0 D cc δ) L L₂) (La D (tor0 D cc δ) L L₃)) ∧ (∀ (L₁ L₂ L₃ : Lat D N) (L' : Lat D N'), SD D L₁ → SD D L₃ → Bet D L₁ L₂ L₃ → Dist (La D (tor0 D cc δ) L₁ L') (La D (tor0 D cc δ) L₂ L') (La D (tor0 D cc δ) L₃ L')) ∧ ∀ (L₀ L : Lat D N) (L₀' L' : Lat D N'), SD D L₀' → SD D L' → Dist (La D (tor0 D cc δ) L₀ L₀') (La D (tor0 D cc δ) L₀ L') (La D (tor0 D cc δ) L L') := by
   intro D cc δ N N'
   refine ⟨?_, ?_, ?_⟩

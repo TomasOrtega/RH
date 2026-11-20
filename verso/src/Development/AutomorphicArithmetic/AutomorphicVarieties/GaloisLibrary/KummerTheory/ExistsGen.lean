@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Tota
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 open KStar.TotallyRealRoots in
+/- English proof (translation)
+Rewrite `hu`, the goal using `[mem_princ]`. Take `⟨c, hc⟩` from `hu`. Take `⟨f, hf⟩` from `sq_dvd_add_pow_sub_sub ((l : ℤ_[l]) ^ a * c) 1 l`. Establish `hw : (u : ℤ_[l]) = 1 + (l : ℤ_[l]) ^ a * c` using `by rw [← hc]; ring`. Take `⟨m, rfl⟩ : ∃ m, a = m + 1` from `⟨a - 1, by omega⟩`.
+
+Use `⟨c + (l : ℤ_[l]) ^ m * c ^ 2 * f, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, hw]`. Simplify using `only [one_pow, one_mul] at hf`. Take the linear combination `hf`.
+-/
 private theorem eg_pow_mem {l : ℕ} [Fact l.Prime] {a : ℕ} (ha : 1 ≤ a) {u : ℤ_[l]ˣ} (hu : u ∈ princ l a) :
     u ^ l ∈ princ l (a + 1) := by
   rw [mem_princ] at hu ⊢
@@ -17,6 +22,11 @@ private theorem eg_pow_mem {l : ℕ} [Fact l.Prime] {a : ℕ} (ha : 1 ≤ a) {u 
   linear_combination hf
 
 open KStar.TotallyRealRoots in
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hu` to reduce the goal to its premises. Establish `hb : IsClosed ((⊥ : Subgroup ℤ_[l]ˣ) : Set ℤ_[l]ˣ)`. Rewrite using `[Subgroup.coe_bot]`.
+
+Conclude with `isClosed_singleton`. Use `mem_of_isClosed hb (x := u) fun b => ⟨1, Subgroup.one_mem _, by` as an intermediate fact. Rewrite using `[map_one]`. Conclude with `(MonoidHom.mem_ker.1 (h b)).symm⟩`. Conclude with `Subgroup.mem_bot.1 this`.
+-/
 private theorem eg_exists_not_mem {l : ℕ} [Fact l.Prime] {u : ℤ_[l]ˣ} (hu : u ≠ 1) :
     ∃ a, u ∉ princ l a := by
   by_contra h
@@ -29,6 +39,29 @@ private theorem eg_exists_not_mem {l : ℕ} [Fact l.Prime] {u : ℤ_[l]ˣ} (hu :
     rw [map_one]; exact (MonoidHom.mem_ker.1 (h b)).symm⟩
   exact Subgroup.mem_bot.1 this
 
+/- English proof (translation)
+Introduce `l _ V _ hl`. Establish `hp : l.Prime` using `Fact.out`. Take `⟨⟨_, g, hg, rfl⟩, hgen⟩` from `IsCyclic.exists_generator (α := V.map (KStar.TotallyRealRoots.red l))`. Establish `key : ∀ γ ∈ V, KStar.TotallyRealRoots.red l γ = KStar.TotallyRealRoots.red l g → V ⊓ KStar.TotallyRealRoots.princ l 1 ≤ (Subgroup.zpowers γ).topologicalClosure → V ≤ (Subgroup.zpowers γ).topologicalClosure`. Introduce `γ hγ e h v hv`.
+
+Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 (hgen ⟨_, Subgroup.mem_map_of_mem _ hv⟩)`. Establish `hk' : KStar.TotallyRealRoots.red l g ^ k = KStar.TotallyRealRoots.red l v` using `congrArg Subtype.val hk`. Establish `h1 : v * (γ ^ k)⁻¹ ∈ V ⊓ KStar.TotallyRealRoots.princ l 1`. Use `Subgroup.mem_inf.2 ⟨V.mul_mem hv (V.inv_mem (V.zpow_mem hγ k)), ?_⟩` and prove the remaining obligations. Rewrite using `[KStar.TotallyRealRoots.princ_one_eq_ker, MonoidHom.mem_ker, map_mul, map_inv, map_zpow, e, hk', mul_inv_cancel]`.
+
+Establish `h2 : γ ^ k ∈ (Subgroup.zpowers γ).topologicalClosure` using `Subgroup.le_topologicalClosure _ (Subgroup.zpow_mem_zpowers γ k)`. Simplify using `using Subgroup.mul_mem _ (h h1) h2`. Distinguish the cases in `hW : V ⊓ KStar.TotallyRealRoots.princ l 1 = ⊥`. Conclude with `⟨g, hg, key g hg rfl (by rw [hW]; exact bot_le)⟩`. Establish `hex : ∃ b, ¬ V ⊓ KStar.TotallyRealRoots.princ l 1 ≤ KStar.TotallyRealRoots.princ l b`.
+
+Take `⟨⟨w, hw⟩, hw1⟩` from `(Subgroup.ne_bot_iff_exists_ne_one).1 hW`. Take `⟨b, hb⟩` from `eg_exists_not_mem (u := w) (fun h => hw1 (Subtype.ext h))`. Conclude with `⟨b, fun h => hb (h hw)⟩`. Establish `hspec` using `Nat.find_spec hex`. Establish `hmin : ∀ m, m < Nat.find hex → V ⊓ KStar.TotallyRealRoots.princ l 1 ≤ KStar.TotallyRealRoots.princ l m` using `fun m hm => not_not.1 (Nat.find_min hex hm)`.
+
+Establish `h1 : 1 < Nat.find hex`. Assume the negation of the conclusion as `h`. Conclude with `hspec (inf_le_right.trans (KStar.TotallyRealRoots.princ_anti (by omega)))`. Establish `h2 : l = 2 → 2 < Nat.find hex`. Introduce `h2`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hspec (inf_le_left.trans ((hl.resolve_left (not_not.2 h2)).trans (KStar.TotallyRealRoots.princ_anti (by omega))))`. Take `⟨a, ha⟩ : ∃ a, Nat.find hex = a + 1` from `⟨Nat.find hex - 1, by omega⟩`. Rewrite `hspec`, `hmin`, `h1`, `h2` using `[ha]`. Establish `hle` using `hmin a (Nat.lt_succ_self a)`.
+
+Take `⟨u, hu, hua⟩` from `SetLike.not_le_iff_exists.1 hspec`. Establish `fin : ∀ γ ∈ V, KStar.TotallyRealRoots.red l γ = KStar.TotallyRealRoots.red l g → γ ^ (l - 1) ∉ KStar.TotallyRealRoots.princ l (a + 1) → V ≤ (Subgroup.zpowers γ).topologicalClosure`. Introduce `γ hγ e h`. Use `key γ hγ e (hle.trans ?_)` and prove the remaining obligations. Establish `hm : γ ^ (l - 1) ∈ KStar.TotallyRealRoots.princ l a`.
+
+Use `hle (Subgroup.mem_inf.2 ⟨V.pow_mem hγ _, ?_⟩)` and prove the remaining obligations. Rewrite using `[KStar.TotallyRealRoots.princ_one_eq_ker, MonoidHom.mem_ker, map_pow, ZMod.units_pow_card_sub_one_eq_one]`. Use `KStar.TotallyRealRoots.princ_le_of_isClosed (u := γ ^ (l - 1)) (by omega) (fun h => by have := h2 h; omega) (Subgroup.isClosed_topologicalClosure _) (Subgroup.le_topologicalClosure _ (Subgroup.npow_mem_zpowers γ _)) ?_` and prove the remaining obligations. Conclude with `emultiplicity_eq_coe.2 ⟨KStar.TotallyRealRoots.mem_princ.1 hm, fun h' => h (KStar.TotallyRealRoots.mem_princ.2 h')⟩`. Distinguish the cases in `hga : g ^ (l - 1) ∈ KStar.TotallyRealRoots.princ l (a + 1)`.
+
+Use `⟨g * u, V.mul_mem hg hu.1, fin _ (V.mul_mem hg hu.1) ?_ ?_⟩` and prove the remaining obligations. Establish `: u ∈ (KStar.TotallyRealRoots.red l).ker`. Rewrite using `[← KStar.TotallyRealRoots.princ_one_eq_ker]`. Conclude with `(Subgroup.mem_inf.1 hu).2`. Rewrite using `[map_mul, MonoidHom.mem_ker.1 this, mul_one]`.
+
+Introduce `h`. Rewrite `h` using `[mul_pow]`. Establish `h3` using `(mul_mem_cancel_left hga).1 h`. Establish `h4` using `eg_pow_mem (by omega) (hle hu)`. Establish `h5 : u ^ l = u ^ (l - 1) * u`.
+
+Rewrite using `[← pow_succ, Nat.sub_add_cancel hp.one_le]`. Rewrite `h4` using `[h5]`. Conclude with `hua ((mul_mem_cancel_left h3).1 h4)`. Conclude with `⟨g, hg, fin g hg rfl hga⟩`.
+-/
 theorem UpperTheory.V.Kum.existsGen :
     ∀ (l : ℕ) [Fact l.Prime] (V : Subgroup ℤ_[l]ˣ), IsClosed (V : Set ℤ_[l]ˣ) → (l ≠ 2 ∨ V ≤ KStar.TotallyRealRoots.princ l 2) → ∃ γ ∈ V, V ≤ (Subgroup.zpowers γ).topologicalClosure := by
   classical

@@ -7,6 +7,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountNonIntegrality.T2S
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountNonIntegrality.DApprox
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountNonIntegrality.NormGOfLocDiff
 
+/- English proof (translation)
+The claim follows from `have hD : PI.CntNotIntW.LocDiff := PI.CntNotIntW.locDiff_of PI.CntNotIntW.trace_dual_lattice (PI.CntNotIntW.dualApprox_of PI.CntNotIntW.small_powers_bound PI.CntNotIntW.tensorLiftSurjective) PI.CntNotIntW.small_powers_bound PI.CntNotIntW.notIntAll_of_loc (PI.CntNotIntW.locGen_of …`.
+-/
 theorem count_not_integral : PI.CntLocalParts.NotIntAll :=
   have hD : PI.CntNotIntW.LocDiff :=
     PI.CntNotIntW.locDiff_of PI.CntNotIntW.trace_dual_lattice

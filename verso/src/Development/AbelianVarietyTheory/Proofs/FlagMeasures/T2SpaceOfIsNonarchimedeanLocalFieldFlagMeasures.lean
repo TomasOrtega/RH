@@ -9,6 +9,15 @@ namespace GlobalTheory.SgLoc.Top
 section Field
 variable (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `hZ : Countable (WithZero (Multiplicative ℤ))`. Establish `: Countable (Multiplicative ℤ)` using `inferInstanceAs (Countable ℤ)`. Conclude with `inferInstanceAs (Countable (Option (Multiplicative ℤ)))`. Establish `hcount : Countable (ValueGroupWithZero F)` using `(IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt F).injective.countable`. Establish `: Countable (ValueGroupWithZero F)ˣ` using `Units.val_injective.countable`.
+
+Establish `hsig : SigmaCompactSpace F`. Use `SigmaCompactSpace.of_countable (Set.range fun γ : ValueGroupWithZero F => {x : F | valuation F x ≤ γ}) (Set.countable_range _) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, rfl⟩`. Conclude with `IsNonarchimedeanLocalField.isCompact_closedBall F γ`. Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations.
+
+Conclude with `Set.mem_sUnion.mpr ⟨_, ⟨valuation F x, rfl⟩, show valuation F x ≤ valuation F x from le_rfl⟩`. Set `` to `IsTopologicalAddGroup.rightUniformSpace F`. Use `isUniformAddGroup_of_addCommGroup (G := F)` as an intermediate fact. Establish `: (nhds (0 : F)).IsCountablyGenerated` using `(IsValuativeTopology.hasBasis_nhds_zero F).isCountablyGenerated`. Use `IsUniformAddGroup.uniformity_countably_generated (α := F)` as an intermediate fact.
+
+Use `infer_instance`.
+-/
 theorem localField_secondCountable : SecondCountableTopology F := by
   have hZ : Countable (WithZero (Multiplicative ℤ)) := by
     have : Countable (Multiplicative ℤ) := inferInstanceAs (Countable ℤ)
@@ -30,23 +39,41 @@ theorem localField_secondCountable : SecondCountableTopology F := by
   have := IsUniformAddGroup.uniformity_countably_generated (α := F)
   infer_instance
 
+/- English proof (translation)
+Use `IsTopologicalAddGroup.t2Space_of_zero_sep fun x hx => ?_` and prove the remaining obligations. Use `⟨{y | valuation F y < valuation F x}, (IsValuativeTopology.hasBasis_nhds_zero' F).mem_of_mem (by simpa using hx), ?_⟩` and prove the remaining obligations. Conclude with `lt_irrefl (valuation F x)`.
+-/
 theorem t2Space_of_isNonarchimedeanLocalField_flag_measures : T2Space F := by
   refine IsTopologicalAddGroup.t2Space_of_zero_sep fun x hx => ?_
   refine ⟨{y | valuation F y < valuation F x},
     (IsValuativeTopology.hasBasis_nhds_zero' F).mem_of_mem (by simpa using hx), ?_⟩
   exact lt_irrefl (valuation F x)
 
+/- English proof (translation)
+The claim follows from `(valuation F).isOpen_integer`.
+-/
 theorem localField_isOpen_integer : IsOpen (𝒪[F] : Set F) := (valuation F).isOpen_integer
 
+/- English proof (translation)
+The claim follows from `IsNonarchimedeanLocalField.isCompact_closedBall F 1`.
+-/
 theorem localField_isCompact_integer : IsCompact (𝒪[F] : Set F) := IsNonarchimedeanLocalField.isCompact_closedBall F 1
 
 variable {F}
 
+/- English proof (translation)
+The claim follows from `(Homeomorph.mulLeft₀ c hc).isOpenMap _ (localField_isOpen_integer F)`.
+-/
 theorem isOpen_mul_integer {c : F} (hc : c ≠ 0) : IsOpen ((fun x => c * x) '' (𝒪[F] : Set F)) := (Homeomorph.mulLeft₀ c hc).isOpenMap _ (localField_isOpen_integer F)
 
+/- English proof (translation)
+The claim follows from `(localField_isCompact_integer F).image (continuous_const.mul continuous_id)`.
+-/
 theorem isCompact_mul_integer (c : F) : IsCompact ((fun x => c * x) '' (𝒪[F] : Set F)) := (localField_isCompact_integer F).image (continuous_const.mul continuous_id)
 
 omit [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+The claim follows from `(Valuation.integer.integers (valuation F)).mem_of_integral h`.
+-/
 theorem mem_integer_of_isIntegral {a : F} (h : IsIntegral 𝒪[F] a) : a ∈ 𝒪[F] := (Valuation.integer.integers (valuation F)).mem_of_integral h
 
 end Field
@@ -54,10 +81,28 @@ end Field
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Use `L.free` as an intermediate fact. Conclude with `Module.nontrivial_of_finrank_pos (R := F) (by rw [L.rank]; norm_num)`.
+-/
 theorem locE_nontrivial (L : LocE F E) : Nontrivial E := by
   have := L.free
   exact Module.nontrivial_of_finrank_pos (R := F) (by rw [L.rank]; norm_num)
 
+/- English proof (translation)
+Use `L.free` as an intermediate fact. Use `L.reduced` as an intermediate fact. Establish `hnt` using `locE_nontrivial L`. Take `⟨x, hx⟩ : ∃ x : E, ∀ a : F, algebraMap F E a ≠ x` from `by by_contra! h`. Establish `e` using `LinearEquiv.ofBijective (Algebra.linearMap F E) ⟨(algebraMap F E).injective, fun y => h y⟩`.
+
+Use `e.finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_self, L.rank]`. Evaluate the numerical expressions using `at this`. Use `set d0 := x - L.cj x with hd0def`. Establish `hcj0 : L.cj d0 = -d0`.
+
+Rewrite using `[hd0def, map_sub, L.cj_cj]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd0 : d0 ≠ 0`. Introduce `h0`. Take `⟨a, ha⟩` from `(L.cj_fix x).mp (by rw [hd0def, sub_eq_zero] at h0; exact h0.symm)`.
+
+Conclude with `hx a ha`. Take `⟨D0, hD0⟩` from `(L.cj_fix (d0 * d0)).mp (by rw [map_mul, hcj0, neg_mul_neg])`. Establish `hD0ne : D0 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hD0` using `[map_zero]`.
+
+Conclude with `hd0 (IsReduced.eq_zero d0 ⟨2, by rw [pow_two, ← hD0]⟩)`. Distinguish the cases in `hD : D0 ∈ 𝒪[F]`. Conclude with `⟨d0, D0, hD0ne, hD, hcj0, hD0.symm⟩`. Use `⟨algebraMap F E D0⁻¹ * d0, D0⁻¹, inv_ne_zero hD0ne, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hD`, the goal using `[Valuation.mem_integer_iff]`.
+
+Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ (le_of_lt (not_le.mp hD))`. Rewrite using `[map_mul, AlgEquiv.commutes, hcj0, mul_neg]`. Rewrite using `[show (algebraMap F E D0⁻¹ * d0) * (algebraMap F E D0⁻¹ * d0) = algebraMap F E (D0⁻¹ * D0⁻¹ * D0) by rw [map_mul, map_mul, hD0]; ring]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem locE_exists_pure [CharZero F] (L : LocE F E) :
     ∃ (d : E) (D : F), D ≠ 0 ∧ D ∈ 𝒪[F] ∧ L.cj d = -d ∧ d * d = algebraMap F E D := by
   have := L.free
@@ -93,6 +138,31 @@ theorem locE_exists_pure [CharZero F] (L : LocE F E) :
       congr 1
       field_simp
 
+/- English proof (translation)
+Take `⟨d, D, hD0, hDO, hcj, hdd⟩` from `locE_exists_pure L`. Use `L.free` as an intermediate fact. Establish `hnt` using `locE_nontrivial L`. Establish `hfin : FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)`. Set `φ : (F × F) →ₗ[F] E` to `(LinearMap.fst F F F).smulRight (1 : E) + (LinearMap.snd F F F).smulRight d`.
+
+Establish `hφ : ∀ p : F × F, φ p = algebraMap F E p.1 + algebraMap F E p.2 * d`. Introduce `p`. Simplify using `[φ, Algebra.smul_def]`. Establish `hinjA` using `(algebraMap F E).injective`. Establish `hinj : Function.Injective φ`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `p hp`. Rewrite `hp` using `[hφ]`. Establish `hc : algebraMap F E p.1 - algebraMap F E p.2 * d = 0`. Establish `h'` using `congrArg L.cj hp`.
+
+Rewrite `h'` using `[map_add, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, hcj, map_zero]`. Rewrite using `[← h']`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : algebraMap F E (2 * p.2 * D) = 0`. Rewrite using `[map_mul, map_mul, ← hdd, map_ofNat]`.
+
+Take the linear combination `d * hp - d * hc`. Establish `hb' : p.2 = 0`. Establish `h2` using `(map_eq_zero_iff _ hinjA).mp hb`. Simplify `h2` using `[hD0]`. Establish `ha : p.1 = 0`.
+
+Rewrite `hp` using `[hb', map_zero, zero_mul, add_zero]`. Conclude with `(map_eq_zero_iff _ hinjA).mp hp`. Conclude with `Prod.ext ha hb'`. Establish `hdim : Module.finrank F (F × F) = Module.finrank F E`. Rewrite using `[Module.finrank_prod, Module.finrank_self, L.rank]`.
+
+Establish `hA : ∀ a ∈ 𝒪[F], IsIntegral 𝒪[F] (algebraMap F E a)`. Introduce `a ha`. Rewrite using `[isIntegral_algebraMap_iff hinjA]`. Conclude with `(show IsIntegral 𝒪[F] (algebraMap 𝒪[F] F ⟨a, ha⟩) from isIntegral_algebraMap)`. Establish `hdI : IsIntegral 𝒪[F] d`.
+
+Use `⟨Polynomial.X ^ 2 - Polynomial.C ⟨D, hDO⟩, Polynomial.monic_X_pow_sub_C _ two_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_C, IsScalarTower.algebraMap_apply 𝒪[F] F E, pow_two, hdd]`. Conclude with `sub_self _`. Use `⟨LinearMap.linearEquivOfInjective φ hinj hdim, D, hD0, ?_, ?_⟩` and prove the remaining obligations. Introduce `p h1 h2`.
+
+Rewrite using `[LinearMap.linearEquivOfInjective_apply, hφ, L.O_def]`. Conclude with `(hA _ h1).add ((hA _ h2).mul hdI)`. Introduce `p hp`. Rewrite `hp` using `[LinearMap.linearEquivOfInjective_apply, hφ, L.O_def]`. Establish `hq` using `hp.map (L.cj.toAlgHom.restrictScalars 𝒪[F])`.
+
+Establish `hcx : (L.cj.toAlgHom.restrictScalars 𝒪[F]) (algebraMap F E p.1 + algebraMap F E p.2 * d) = algebraMap F E p.1 - algebraMap F E p.2 * d`. Express the relevant statement in the definitionally equal form `L.cj _ = _`. Rewrite using `[map_add, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, hcj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hq` using `[hcx]`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h'` using `hp.add hq`. Rewrite `h'` using `[show algebraMap F E p.1 + algebraMap F E p.2 * d + (algebraMap F E p.1 - algebraMap F E p.2 * d) = algebraMap F E (2 * p.1) by rw [map_mul, map_ofNat]; ring, isIntegral_algebraMap_iff hinjA]`. Conclude with `mem_integer_of_isIntegral h'`. Establish `h'` using `(hp.sub hq).mul hdI`.
+
+Rewrite `h'` using `[show (algebraMap F E p.1 + algebraMap F E p.2 * d - (algebraMap F E p.1 - algebraMap F E p.2 * d)) * d = algebraMap F E (2 * D * p.2) by rw [map_mul, map_mul, map_ofNat, ← hdd]; ring, isIntegral_algebraMap_iff hinjA]`. Conclude with `mem_integer_of_isIntegral h'`.
+-/
 theorem locE_exists_coords [CharZero F] (L : LocE F E) :
     ∃ (ψ : (F × F) ≃ₗ[F] E) (D : F), D ≠ 0 ∧
       (∀ p : F × F, p.1 ∈ 𝒪[F] → p.2 ∈ 𝒪[F] → ψ p ∈ L.O) ∧
@@ -157,6 +227,9 @@ theorem locE_exists_coords [CharZero F] (L : LocE F E) :
         algebraMap F E (2 * D * p.2) by rw [map_mul, map_mul, map_ofNat, ← hdd]; ring, isIntegral_algebraMap_iff hinjA] at h'
       exact mem_integer_of_isIntegral h'
 
+/- English proof (translation)
+Use `L.top` as an intermediate fact. Use `IsModuleTopology.toContinuousAdd F E` as an intermediate fact. Conclude with `⟨{ toEquiv := ψ.toEquiv continuous_toFun := IsModuleTopology.continuous_of_linearMap ψ.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap ψ.symm.toLinearMap }, fun _ => rfl⟩`.
+-/
 theorem locE_homeo [IsNonarchimedeanLocalField F] (L : LocE F E) (ψ : (F × F) ≃ₗ[F] E) :
     ∃ h : (F × F) ≃ₜ E, ∀ p, h p = ψ p := by
   have := L.top
@@ -165,12 +238,26 @@ theorem locE_homeo [IsNonarchimedeanLocalField F] (L : LocE F E) (ψ : (F × F) 
            continuous_toFun := IsModuleTopology.continuous_of_linearMap ψ.toLinearMap
            continuous_invFun := IsModuleTopology.continuous_of_linearMap ψ.symm.toLinearMap }, fun _ => rfl⟩
 
+/- English proof (translation)
+Use `L.top` as an intermediate fact. Use `L.free` as an intermediate fact. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)`. Conclude with `IsModuleTopology.isTopologicalRing F E`.
+-/
 theorem locE_topRing [IsNonarchimedeanLocalField F] (L : LocE F E) : IsTopologicalRing E := by
   have := L.top
   have := L.free
   have : Module.Finite F E := Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)
   exact IsModuleTopology.isTopologicalRing F E
 
+/- English proof (translation)
+Take `⟨ψ, D, hD0, h1, h2⟩` from `locE_exists_coords L`. Take `⟨h, hh⟩` from `locE_homeo L ψ`. Use `locE_topRing L` as an intermediate fact. Establish `hAo : IsOpen (h '' ((𝒪[F] : Set F) ×ˢ (𝒪[F] : Set F)))` using `h.isOpenMap _ ((localField_isOpen_integer F).prod (localField_isOpen_integer F))`. Establish `hAO : h '' ((𝒪[F] : Set F) ×ˢ (𝒪[F] : Set F)) ⊆ (L.O : Set E)`.
+
+Introduce and unpack `_ ⟨p, ⟨hp1, hp2⟩, rfl⟩`. Rewrite using `[hh]`. Conclude with `h1 p hp1 hp2`. Establish `h0 : (0 : E) ∈ h '' ((𝒪[F] : Set F) ×ˢ (𝒪[F] : Set F))` using `⟨0, ⟨zero_mem _, zero_mem _⟩, by rw [hh, map_zero]⟩`. Establish `hOo : IsOpen (L.O : Set E)` using `AddSubgroup.isOpen_of_mem_nhds L.O.toAddSubgroup (g := 0) (Filter.mem_of_superset (hAo.mem_nhds h0) hAO)`.
+
+Establish `hOc : IsClosed (L.O : Set E)` using `AddSubgroup.isClosed_of_isOpen L.O.toAddSubgroup hOo`. Establish `h2ne : (2 : F) ≠ 0` using `two_ne_zero`. Establish `hBc : IsCompact (h '' (((fun x => (2 : F)⁻¹ * x) '' (𝒪[F] : Set F)) ×ˢ ((fun x => (2 * D)⁻¹ * x) '' (𝒪[F] : Set F))))` using `((isCompact_mul_integer _).prod (isCompact_mul_integer _)).image h.continuous`. Establish `hOB : (L.O : Set E) ⊆ h '' (((fun x => (2 : F)⁻¹ * x) '' (𝒪[F] : Set F)) ×ˢ ((fun x => (2 * D)⁻¹ * x) '' (𝒪[F] : Set F)))`. Introduce `x hx`.
+
+Establish `hx'` using `h2 (ψ.symm x) (by rw [LinearEquiv.apply_symm_apply]; exact hx)`. Use `⟨ψ.symm x, ⟨⟨2 * (ψ.symm x).1, hx'.1, ?_⟩, ⟨2 * D * (ψ.symm x).2, hx'.2, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts. Rewrite using `[hh, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `⟨hBc.of_isClosed_subset hOc hOB, hOo⟩`.
+-/
 theorem locE_integers [IsNonarchimedeanLocalField F] [CharZero F] (L : LocE F E) :
     IsCompact (L.O : Set E) ∧ IsOpen (L.O : Set E) := by
   obtain ⟨ψ, D, hD0, h1, h2⟩ := locE_exists_coords L
@@ -203,6 +290,13 @@ theorem locE_integers [IsNonarchimedeanLocalField F] [CharZero F] (L : LocE F E)
 
 variable [MeasurableSpace E]
 
+/- English proof (translation)
+Simplify using `only [Model.R, hg]`. Rewrite using `[Subring.mem_comap, Subring.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Use `⟨y.1, y.2, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]`. Conclude with `hy`. Conclude with `hyx.symm`. Introduce and unpack `⟨a, b, hab, hx⟩`. Use `⟨(a, b), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show Ideal.Quotient.mk _ a = Ideal.Quotient.mk _ b`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `hab`. Conclude with `hx.symm`.
+-/
 theorem mem_R_split (M : Model F E) (g : SplitG M.L) (hg : M.split = some g) (x : E) :
     x ∈ M.R ↔ ∃ a b : 𝒪[F], g.q ∣ a - b ∧ g.e x = ((a : F), (b : F)) := by
   simp only [Model.R, hg]
@@ -220,6 +314,15 @@ theorem mem_R_split (M : Model F E) (g : SplitG M.L) (hg : M.split = some g) (x 
       exact hab
     · exact hx.symm
 
+/- English proof (translation)
+Introduce `x hx`. Consider the cases of `hs : M.split with`. Consider the case `none`. Simplify using `only [Model.R, hs] at hx`. Conclude with `hx`.
+
+Consider the case `some g`. Take `⟨a, b, -, hx'⟩` from `(mem_R_split M g hs x).mp hx`. Rewrite using `[M.L.O_def]`. Establish `hab : IsIntegral 𝒪[F] ((a : F), (b : F))`. Use `⟨(Polynomial.X - Polynomial.C a) * (Polynomial.X - Polynomial.C b), (Polynomial.monic_X_sub_C a).mul (Polynomial.monic_X_sub_C b), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Polynomial.eval₂_mul, Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_C, IsScalarTower.algebraMap_apply 𝒪[F] F (F × F), Prod.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Use `ext`. Simplify using `left`. Conclude with `sub_self _`. Simplify using `right`.
+
+Conclude with `sub_self _`. Establish `hxe : x = g.e.symm ((a : F), (b : F))` using `by rw [← hx', AlgEquiv.symm_apply_apply]`. Rewrite using `[hxe]`. Conclude with `hab.map (g.e.symm.toAlgHom.restrictScalars 𝒪[F])`.
+-/
 theorem R_le_O (M : Model F E) : M.R ≤ M.L.O := by
   intro x hx
   cases hs : M.split with
@@ -246,6 +349,17 @@ theorem R_le_O (M : Model F E) : M.R ≤ M.L.O := by
     rw [hxe]
     exact hab.map (g.e.symm.toAlgHom.restrictScalars 𝒪[F])
 
+/- English proof (translation)
+Use `locE_topRing M.L` as an intermediate fact. Consider the cases of `hs : M.split with`. Consider the case `none`. Establish `hR : (M.R : Set E) = M.L.O` using `by simp only [Model.R, hs]`. Rewrite using `[hR]`.
+
+Conclude with `(locE_integers M.L).2`. Consider the case `some g`. Use `M.L.top` as an intermediate fact. Use `IsModuleTopology.toContinuousAdd F E` as an intermediate fact. Establish `hec : Continuous (g.e : E → F × F)` using `IsModuleTopology.continuous_of_linearMap g.e.toLinearEquiv.toLinearMap`.
+
+Establish `hq : (g.q : F) ≠ 0` using `fun h => g.q_irr.ne_zero (Subtype.ext h)`. Establish `hU : IsOpen (((fun x => (g.q : F) * x) '' (𝒪[F] : Set F)) ×ˢ ((fun x => (g.q : F) * x) '' (𝒪[F] : Set F)))` using `(isOpen_mul_integer hq).prod (isOpen_mul_integer hq)`. Establish `hsub : (g.e : E → F × F) ⁻¹' (((fun x => (g.q : F) * x) '' (𝒪[F] : Set F)) ×ˢ ((fun x => (g.q : F) * x) '' (𝒪[F] : Set F))) ⊆ (M.R : Set E)`. Introduce and unpack `x ⟨⟨a, ha, h1⟩, ⟨b, hb, h2⟩⟩`. Rewrite using `[SetLike.mem_coe, mem_R_split M g hs]`.
+
+Use `⟨⟨g.q * a, mul_mem g.q.2 ha⟩, ⟨g.q * b, mul_mem g.q.2 hb⟩, ⟨⟨a, ha⟩ - ⟨b, hb⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (by simp [mul_sub])`. Conclude with `Prod.ext h1.symm h2.symm`. Establish `h0 : (0 : E) ∈ (g.e : E → F × F) ⁻¹' (((fun x => (g.q : F) * x) '' (𝒪[F] : Set F)) ×ˢ ((fun x => (g.q : F) * x) '' (𝒪[F] : Set F)))`. Rewrite using `[Set.mem_preimage, map_zero]`.
+
+Conclude with `⟨⟨0, zero_mem _, mul_zero _⟩, ⟨0, zero_mem _, mul_zero _⟩⟩`. Conclude with `AddSubgroup.isOpen_of_mem_nhds M.R.toAddSubgroup (g := 0) (Filter.mem_of_superset ((hU.preimage hec).mem_nhds h0) hsub)`.
+-/
 theorem isOpen_R [IsNonarchimedeanLocalField F] [CharZero F] (M : Model F E) :
     IsOpen (M.R : Set E) := by
   have := locE_topRing M.L
@@ -276,6 +390,13 @@ theorem isOpen_R [IsNonarchimedeanLocalField F] [CharZero F] (M : Model F E) :
     exact AddSubgroup.isOpen_of_mem_nhds M.R.toAddSubgroup (g := 0)
       (Filter.mem_of_superset ((hU.preimage hec).mem_nhds h0) hsub)
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM`. Use `hM.loc` as an intermediate fact. Use `hM.char0` as an intermediate fact. Take `⟨ψ, -, -, -, -⟩` from `locE_exists_coords M.L`. Take `⟨h, -⟩` from `locE_homeo M.L ψ`.
+
+Establish `hTR` using `locE_topRing M.L`. Use `t2Space_of_isNonarchimedeanLocalField_flag_measures F` as an intermediate fact. Use `localField_secondCountable F` as an intermediate fact. Use `M.L.top` as an intermediate fact. Establish `hRo` using `isOpen_R M`.
+
+Establish `hO` using `locE_integers M.L`. Establish `hRc : IsClosed (M.R : Set E)` using `AddSubgroup.isClosed_of_isOpen M.R.toAddSubgroup hRo`. Conclude with `⟨hTR, h.symm.isEmbedding.t2Space, h.symm.isClosedEmbedding.locallyCompactSpace, h.symm.isEmbedding.secondCountableTopology, inferInstance, hO.1.of_isClosed_subset hRc (R_le_O M), hRo, hO.1, hO.2, R_le_O M⟩`.
+-/
 theorem model_topology : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type}
     [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK →
     IsTopologicalRing E ∧ T2Space E ∧ LocallyCompactSpace E ∧ SecondCountableTopology E ∧

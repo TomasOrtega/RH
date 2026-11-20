@@ -20,6 +20,9 @@ open GlobalTheory.FinPl GlobalTheory.FinPl.SetCut
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[mem_congGrp_iff]`. Introduce `i j`. Rewrite using `[mt_cutG, cut_sub_one, Matrix.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_left _ _ (hg i j)`.
+-/
 theorem cutG_mem_congGrp (V : HSp D) (I : Ideal (AE D)) (ε : AF D.host.F) (hε : ε * ε = ε) {g : GA D V}
     (hg : g ∈ congGrp V I) : cutG V ε hε g ∈ congGrp V I := by
   rw [mem_congGrp_iff] at hg ⊢
@@ -27,11 +30,19 @@ theorem cutG_mem_congGrp (V : HSp D) (I : Ideal (AE D)) (ε : AF D.host.F) (hε 
   rw [mt_cutG, cut_sub_one, Matrix.smul_apply, smul_eq_mul]
   exact Ideal.mul_mem_left _ _ (hg i j)
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite `hg`, the goal using `[mem_grpAt_iff_parts]`. Conclude with `fun i j => ⟨(hg i j).1, fun w hw => (hg i j).2 w fun h' => hw (h w h')⟩`.
+-/
 theorem grpAt_mono (V : HSp D) {P P' : Pl D → Prop} (h : ∀ p, P p → P' p) : grpAt V P ≤ grpAt V P' := by
   intro g hg
   rw [mem_grpAt_iff_parts] at hg ⊢
   exact fun i j => ⟨(hg i j).1, fun w hw => (hg i j).2 w fun h' => hw (h w h')⟩
 
+/- English proof (translation)
+Rewrite `h1`, `h2`, the goal using `[mem_grpAt_iff_parts]`. Use `fun i j => ⟨(h1 i j).1, fun w hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hQ : Q w`. Distinguish the cases in `hP : P w`. Conclude with `(h2 i j).2 w (not_not.2 hP)`.
+
+Conclude with `absurd (h w hQ hP) hw`. Conclude with `(h1 i j).2 w hQ`.
+-/
 theorem grpAt_inf_le (V : HSp D) (Q P R : Pl D → Prop) (h : ∀ p, Q p → ¬ P p → R p) {g : GA D V}
     (h1 : g ∈ grpAt V Q) (h2 : g ∈ grpAt V fun p => ¬ P p) : g ∈ grpAt V R := by
   rw [mem_grpAt_iff_parts] at h1 h2 ⊢
@@ -42,6 +53,9 @@ theorem grpAt_inf_le (V : HSp D) (Q P R : Pl D → Prop) (h : ∀ p, Q p → ¬ 
     · exact absurd (h w hQ hP) hw
   · exact (h1 i j).2 w hQ
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[GlobalTheory.LevIdx.locHom_val, GlobalTheory.LocMod.PinInhab.map_mt_eq_one_of_off q hP hg, Matrix.mul_one, F.γβ]`. Both sides reduce to the same expression.
+-/
 theorem locHom_eq_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {Y : Type} [Fintype Y] [DecidableEq Y] (q : SplitPt D k) (V : HSp D) (F : GlobalTheory.LocMod.Frame k V.rank Y)
     {P : Pl D → Prop} (hP : P q.v) {g : GA D V} (hg : g ∈ grpOff V P) : GlobalTheory.LevIdx.locHom q V F g = 1 := by
@@ -55,6 +69,31 @@ end
 noncomputable section
 open GlobalTheory.FinPl GlobalTheory.FinPl.SetCut GlobalTheory.PenLev.CongruenceSubgroupLevelSupport in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj t J hJ α t' J' hJ' α' g hg`. Rewrite `hg` using `[mem_relax_iff]`. Take `⟨hsup, -, hint⟩` from `hg`. Set `QJ : Finset (Pl (I.rec7 l Z))` to `Finset.univ.image fun i => (J.G i).q.v`. Set `QJ' : Finset (Pl (I.rec7 l Z))` to `Finset.univ.image fun i => (J'.G i).q.v`.
+
+Establish `hQJ : ∀ p, GlobalTheory.PenBridge.plF J p ↔ p ∈ QJ` using `fun p => by simp [QJ, GlobalTheory.PenBridge.plF]`. Establish `hQJ' : ∀ p, GlobalTheory.PenBridge.plF J' p ↔ p ∈ QJ'` using `fun p => by simp [QJ', GlobalTheory.PenBridge.plF]`. Use `set Q := QJ ∪ QJ' with hQ`. Use `set P := QJ \ QJ' with hP`. Establish `hN : (grpAt ((I.rec7 l Z).sp.X j) (GlobalTheory.PenBridge.plF J)).Normal`.
+
+Unfold `grpAt congGrp`. Use `infer_instance`. Establish `hmul` using `Subgroup.mul_normal (J.A.U j (J.ι j α)) (grpAt ((I.rec7 l Z).sp.X j) (GlobalTheory.PenBridge.plF J))`. Establish `hg' : g ∈ ((J.A.U j (J.ι j α) ⊔ grpAt ((I.rec7 l Z).sp.X j) (GlobalTheory.PenBridge.plF J) : Subgroup _) : Set (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)))` using `hsup`. Rewrite `hg'` using `[hmul]`.
+
+Take `⟨x, hx, n, hn, rfl⟩` from `hg'`. Use `beta_reduce at hint ⊢`. Establish `hxf : x ∈ GfC ((I.rec7 l Z).sp.X j)` using `((hJ.is.U j (by omega) _ x).1 hx).1`. Establish `huo : cutG ((I.rec7 l Z).sp.X j) _ (one_sub_idemQ_mul_self Q) x ∈ J'.A.U j (J'.ι j α')` using `GlobalTheory.T.true_geometry_row_step_value W hW u a ha hat j hj t J hJ α t' J' hJ' α' Q (fun p hp => Finset.mem_union_left _ ((hQJ p).1 hp)) (fun p hp => Finset.mem_union_right _ ((hQJ' p).1 hp)) x hx`. Use `set uo := cutG ((I.rec7 l Z).sp.X j) _ (one_sub_idemQ_mul_self Q) x`.
+
+Use `set uq := cutG ((I.rec7 l Z).sp.X j) _ (idemQ_mul_self Q) x`. Establish `huq : uq ∈ grpAt ((I.rec7 l Z).sp.X j) (· ∈ Q)` using `cutG_mem_Q ((I.rec7 l Z).sp.X j) Q x`. Establish `huoQ : uo ∈ grpAt ((I.rec7 l Z).sp.X j) (· ∉ Q)` using `cutG_mem_Qc ((I.rec7 l Z).sp.X j) Q hxf`. Establish `hnQ : n ∈ grpAt ((I.rec7 l Z).sp.X j) (· ∈ Q)` using `grpAt_mono ((I.rec7 l Z).sp.X j) (fun p hp => Finset.mem_union_left _ ((hQJ p).1 hp)) hn`. Use `set w := uq * n`.
+
+Establish `hw : w ∈ grpAt ((I.rec7 l Z).sp.X j) (· ∈ Q)` using `mul_mem huq hnQ`. Establish `hgw : uq * uo * n = uo * w`. Rewrite using `[comm_Q ((I.rec7 l Z).sp.X j) Q huq huoQ, mul_assoc]`. Establish `hx' : x = uq * uo` using `(cutG_mul_cutG ((I.rec7 l Z).sp.X j) Q x).symm`. Use `set wp := cutG ((I.rec7 l Z).sp.X j) _ (idemQ_mul_self P) w`.
+
+Use `set wr := cutG ((I.rec7 l Z).sp.X j) _ (one_sub_idemQ_mul_self P) w`. Establish `hwp : wp ∈ grpAt ((I.rec7 l Z).sp.X j) (· ∈ P)` using `cutG_mem_Q ((I.rec7 l Z).sp.X j) P w`. Establish `hwrP : wr ∈ grpAt ((I.rec7 l Z).sp.X j) (· ∉ P)` using `cutG_mem_Qc ((I.rec7 l Z).sp.X j) P (grpAt_le_GfC ((I.rec7 l Z).sp.X j) _ hw)`. Establish `hwrQ : wr ∈ grpAt ((I.rec7 l Z).sp.X j) (· ∈ Q)` using `cutG_mem_congGrp ((I.rec7 l Z).sp.X j) _ _ _ hw`. Establish `hwr : wr ∈ grpAt ((I.rec7 l Z).sp.X j) (GlobalTheory.PenBridge.plF J')` using `grpAt_inf_le ((I.rec7 l Z).sp.X j) (· ∈ Q) (· ∈ P) _ (fun p h1 h2 => by`.
+
+Rewrite using `[hQJ']`. Rewrite `h1` using `[hQ, Finset.mem_union]`. Rewrite `h2` using `[hP, Finset.mem_sdiff]`. Use the proof step `tauto) hwrQ hwrP`. Establish `hww : w = wp * wr` using `(cutG_mul_cutG ((I.rec7 l Z).sp.X j) P w).symm`.
+
+Establish `hgeq : x * n = uo * wp * wr`. Rewrite using `[hx', hgw, hww, mul_assoc]`. Establish `hwp' : wp ∈ J'.A.U j (J'.ι j α')`. Use `GlobalTheory.T.true_geometry_row_step_relation W hW u a ha hat j hj t J hJ t' J' hJ' α' P (fun p hp => ?_) wp hwp (fun i hi => ?_)` and prove the remaining obligations. Rewrite `hp` using `[hP, Finset.mem_sdiff]`.
+
+Conclude with `⟨(hQJ p).2 hp.1, fun h => hp.2 ((hQJ' p).1 h)⟩`. Establish `hiQ : (J.G i).q.v ∈ Q`. Rewrite `hi` using `[hP, Finset.mem_sdiff]`. Conclude with `Finset.mem_union_left _ hi.1`. Establish `e1 : GlobalTheory.PenBridge.rd J j hj uo i = 1` using `by show GlobalTheory.PenBridge.rdAt J j i _ uo = 1`.
+
+Rewrite using `[GlobalTheory.PenBridge.rdAt_apply, locHom_eq_one (J.G i).q ((I.rec7 l Z).sp.X j) _ (P := (· ∈ Q)) hiQ (grpAt_le_grpOff ((I.rec7 l Z).sp.X j) (· ∉ Q) (· ∈ Q) (fun p h h' => h h') huoQ), map_one]`. Establish `e2 : GlobalTheory.PenBridge.rd J j hj wr i = 1` using `by show GlobalTheory.PenBridge.rdAt J j i _ wr = 1`. Rewrite using `[GlobalTheory.PenBridge.rdAt_apply, locHom_eq_one (J.G i).q ((I.rec7 l Z).sp.X j) _ (P := (· ∈ P)) hi (grpAt_le_grpOff ((I.rec7 l Z).sp.X j) (· ∉ P) (· ∈ P) (fun p h h' => h h') hwrP), map_one]`. Establish `h` using `hint i`. Rewrite `h` using `[hgeq, map_mul, map_mul, Pi.mul_apply, Pi.mul_apply, e1, e2, one_mul, mul_one]`.
+
+Conclude with `h`. Rewrite using `[hgeq]`. Conclude with `mul_mem (Subgroup.mem_sup_left (mul_mem huo hwp')) (Subgroup.mem_sup_right hwr)`.
+-/
 theorem GlobalTheory.PenLev.relax_le_sup : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) t' (J' : QJ a t'), J'.Reads → ∀ (α' : J'.Ch j), ∀ g ∈ GlobalTheory.PenLev.relax J j hj α, g ∈ J'.A.U j (J'.ι j α') ⊔ GlobalTheory.FinPl.grpAt _ (GlobalTheory.PenBridge.plF J') := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj t J hJ α t' J' hJ' α' g hg
   classical

@@ -18,6 +18,43 @@ namespace DiscreteGroups.sglob.DzType
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Use `set k := v.adicCompletion L`. Establish `hq : normV w = g` using `normV_eq_of_padic w g i hi`. Establish `hgw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal` using `natCast_mem_of_normV w g 1 one_pos (by rw [hq, pow_one])`. Establish `hgw2 : ((g : ℕ) : 𝓞 E) ∉ w.asIdeal ^ 2` using `g_not_mem_sq w g i hi`. Establish `hgw' : ((g : ℕ) : 𝓞 E') ∈ w'.asIdeal` using `natCast_mem_of_normV w' g n hn hN`.
+
+Establish `hcardK : Nat.card K = g ^ n`. Establish `e : (𝓞 E' ⧸ w'.asIdeal) ≃+* K` using `(Ideal.quotEquivOfEq hk.symm).trans (RingHom.quotientKerEquivOfSurjective hr)`. Rewrite using `[← hN, normV, Nat.card_congr e.toEquiv]`. Use `set u : kˣ := Units.map (algebraMap 𝒪[k] k : 𝒪[k] →* k) x with hu`. Establish `hu1 : Valued.v (u : k) = 1`.
+
+Establish `h1 : valuation k ((x : 𝒪[k]) : k) = 1` using `((Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one).mp x.isUnit`. Conclude with `(val_eq_one_iff (u : k)).mp h1`. Take `⟨t, ht⟩` from `exists_ine_of_v_eq_one haL u hu1`. Use `set s := r (ineIncl hv t) with hs`. Establish `hsI : (s : G E Ω) ∈ Ine (F` using `E) A := ⟨Weil_le_Dec h s.2, fun z hz => by rw [hs, hrr]; exact t.2.2 z hz⟩`.
+
+Take `⟨t'0, ht'0, hres⟩` from `ine_lift g A w h w' h' n hn hg hN (s : G E Ω) hsI`. Set `t' : Ine (F` to `E') A := ⟨t'0, ht'0⟩`. Establish `htt : ∀ z : Ω, (t : G L Ω) z = (t' : G E' Ω) z` using `fun z => by`. Establish `e1` using `hrr (ineIncl hv t) z`. Establish `e2 : (r (ineIncl hv t) : G E Ω) z = t'0 z` using `by show (s : G E Ω) z = t'0 z`.
+
+Rewrite using `[← hres]`. Both sides reduce to the same expression. Conclude with `e1.symm.trans e2`. Establish `hrt : r (ineIncl hv t) = ineIncl h (resI t')` using `Subtype.ext (by show (s : G E Ω) = AlgEquiv.restrictScalars E t'0`. Conclude with `hres.symm)`.
+
+Take `⟨x', hx'⟩` from `exists_int_approx_compl w' _ (val_artin_ine ha' t').le`. Establish `hx0 : red x' ≠ 0` using `red_ne_zero_of_approx ha' hk hx'`. Use `⟨t, t', x', hx0, ht, hrt, hx', ?_, ?_⟩` and prove the remaining obligations. Take `⟨yL, hyL⟩` from `exists_int_approx_compl v ((aL (ineIncl hv t) : kˣ) : k) (by rw [ht, hu1])`. Establish `hm` using `tr_match hTR g n A v hv w' h' hgv hgv2 hgw' hg hvN hN aL haL a' ha' π hπ t t' htt yL hyL x' hx'`.
+
+Establish `hyL' : Valued.v (((x : 𝒪[k]) : k) - algebraMap L k (yL : L)) < 1`. Establish `e : ((x : 𝒪[k]) : k) = ((aL (ineIncl hv t) : kˣ) : k)` using `by rw [ht]; rfl`. Rewrite using `[e]`. Conclude with `hyL`. Conclude with `Units.ext (hκ (x : 𝒪[k]) yL x' hyL' hm)`.
+
+Set `sI : Ine (F` to `E) A := ⟨s, hsI⟩`. Establish `hsi : s = ineIncl h sI` using `Subtype.ext rfl`. Establish `hva : Valued.v ((a s : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1`. Rewrite using `[hsi]`. Conclude with `val_artin_ine ha sI`.
+
+Use `set xq := i.symm ((a s : (w.adicCompletion E)ˣ) : w.adicCompletion E) with hxq`. Establish `hixq : i xq = ((a s : (w.adicCompletion E)ˣ) : w.adicCompletion E)`. Rewrite using `[hxq, RingEquiv.apply_symm_apply]`. Establish `hnorm1 : ‖xq‖ = 1`. Establish `h1 : ‖i xq‖ ≤ 1` using `by rw [hixq, Valued.toNormedField.norm_le_one_iff, hva]`.
+
+Establish `h2 : ¬ ‖i xq‖ < 1` using `by rw [hixq, Valued.toNormedField.norm_lt_one_iff, hva]; exact lt_irrefl _`. Rewrite `h1` using `[DiscreteGroups.sglob.DzIso.norm_le_iff i hi]`. Rewrite `h2` using `[DiscreteGroups.sglob.DzIso.norm_lt_iff i hi]`. Conclude with `le_antisymm h1 (not_lt.mp h2)`. Use `set uq : ℤ_[g]ˣ := PadicInt.mkUnits hnorm1 with huq`.
+
+Establish `huqv : ((uq : ℤ_[g]) : ℚ_[g]) = xq` using `PadicInt.mkUnits_eq hnorm1`. Establish `hχs : χ (a s) = χ₀ (Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom uq) := hlc.1 uq (a s) (by rw [huqv, hixq])`. Use `set a₀ : ℕ := (PadicInt.toZMod ((uq : ℤ_[g]))).val with ha₀`. Establish `happ : Valued.v (((a (ineIncl h sI)) : w.adicCompletion E) - algebraMap E (w.adicCompletion E) (((a₀ : 𝓞 E)) : E)) < 1`. Establish `hmem : (uq : ℤ_[g]) - (a₀ : ℤ_[g]) ∈ IsLocalRing.maximalIdeal ℤ_[g]`.
+
+Rewrite using `[← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_natCast, ha₀, ZMod.natCast_zmod_val, sub_self]`. Establish `h5 : ‖xq - (a₀ : ℚ_[g])‖ < 1`. Establish `h` using `(PadicInt.mem_nonunits).mp hmem`. Rewrite `h` using `[PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast, huqv]`. Conclude with `h`.
+
+Establish `h6` using `val_lt_one_of_norm_lt_one w g i hi _ h5`. Rewrite `h6` using `[map_sub, hixq, map_natCast]`. Rewrite using `[← hsi, show algebraMap E (w.adicCompletion E) (((a₀ : 𝓞 E)) : E) = (a₀ : w.adicCompletion E) by simp]`. Conclude with `h6`. Establish `htt' : ∀ z : Ω, (sI : G E Ω) z = (t' : G E' Ω) z` using `fun z => by show (s : G E Ω) z = t'0 z`.
+
+Rewrite using `[← hres]`. Both sides reduce to the same expression. Establish `hb` using `tr_base hTR g n hn A w h w' h' hgw hgw2 hgw' hg hq hN a ha a' ha' π hπ sI t' htt' (a₀ : 𝓞 E) happ x' hx'`. Use `set e := (g ^ n - 1) / (g - 1) with he`. Establish `hmem' : ((a₀ : 𝓞 E') - x' ^ e) ∈ w'.asIdeal`.
+
+Rewrite using `[← h']`. Establish `e1 : algebraMap E' Ω ((((a₀ : 𝓞 E') - x' ^ e : 𝓞 E')) : E') = algebraMap E Ω (((a₀ : 𝓞 E)) : E) - algebraMap E' Ω (x' : E') ^ e`. Rewrite using `[show ((((a₀ : 𝓞 E') - x' ^ e : 𝓞 E')) : E') = (a₀ : E') - (x' : E') ^ e by push_cast; ring, map_sub, map_pow, map_natCast, show (((a₀ : 𝓞 E)) : E) = (a₀ : E) by push_cast; rfl, map_natCast]`. Rewrite using `[e1]`. Conclude with `hb`.
+
+Establish `hred : ((a₀ : K)) = red x' ^ e`. Establish `h7 : red ((a₀ : 𝓞 E') - x' ^ e) = 0` using `by rw [← RingHom.mem_ker, hk]; exact hmem'`. Rewrite `h7` using `[map_sub, map_pow, map_natCast, sub_eq_zero]`. Conclude with `h7`. Establish `hnm` using `algebraMap_norm_eq_pow hcardK (red x')`.
+
+Establish `hinj : Function.Injective (algebraMap (ZMod g) K)` using `(algebraMap (ZMod g) K).injective`. Establish `hnorm : Algebra.norm (ZMod g) (red x') = PadicInt.toZMod (uq : ℤ_[g])`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hnm, ← he, ← hred, ← ZMod.natCast_zmod_val (PadicInt.toZMod (uq : ℤ_[g])), map_natCast, ← ha₀]`. Rewrite using `[hχs]`.
+
+Use `congr 1`. Conclude with `Units.ext (by simp [hnorm])`.
+-/
 theorem gal_unit_compat (hTR : TameRec) {E E' L Ω : Type} [Field E] [NumberField E] [IsTotallyComplex E]
     [Field E'] [NumberField E'] [IsTotallyComplex E'] [Field L] [NumberField L] [IsTotallyComplex L] [Field Ω]
     [Algebra E E'] [Algebra E Ω] [Algebra E' Ω] [IsScalarTower E E' Ω] [Algebra L Ω]

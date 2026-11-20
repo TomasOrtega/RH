@@ -13,10 +13,16 @@ variable {R : Type u} [CommRing R] {n : ℕ}
 
 def lowSet (n i : ℕ) : Set (Fin n) := {j | (j : ℕ) < i}
 
+/- English proof (translation)
+Rewrite using `[Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression.
+-/
 theorem isHom_iff {σ : Type*} {F : MvPolynomial σ R} {k : ℕ} :
     F.IsHomogeneous k ↔ ∀ d, F.coeff d ≠ 0 → Finsupp.degree d = k := by
   rw [Finsupp.degree_eq_weight_one]; rfl
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `(supported R s).algebraMap_mem c`.
+-/
 theorem C_mem_sup {σ : Type*} {s : Set σ} (c : R) : (C c : MvPolynomial σ R) ∈ supported R s := by
   rw [← MvPolynomial.algebraMap_eq]; exact (supported R s).algebraMap_mem c
 

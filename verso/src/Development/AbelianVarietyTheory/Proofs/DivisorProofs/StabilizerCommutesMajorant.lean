@@ -15,18 +15,27 @@ open GlobalTheory.KBridge GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a e => rfl`.
+-/
 theorem finT_ofFinT (a : Af F ⊗[F] E) : finT F E (ofFinT F E a) = a := by
   induction a using TensorProduct.induction_on with
   | zero => simp
   | add x y hx hy => rw [map_add, map_add, hx, hy]
   | tmul a e => rfl
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Consider the case `tmul a e => exact TensorProduct.zero_tmul _ _`.
+-/
 theorem infT_ofFinT (a : Af F ⊗[F] E) : infT F E (ofFinT F E a) = 0 := by
   induction a using TensorProduct.induction_on with
   | zero => simp
   | add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]
   | tmul a e => exact TensorProduct.zero_tmul _ _
 
+/- English proof (translation)
+Rewrite using `[KBridge.mem_latHat_iff]`. Use `⟨fun i => infT_ofFinT _, ?_⟩` and prove the remaining obligations. Establish `e : (fun i => finT F E (ofFinT F E (y i))) = y` using `funext fun i => finT_ofFinT _`. Rewrite using `[e]`. Conclude with `hy`.
+-/
 theorem ofFinT_mem_latHat {n : ℕ} (X : Spc F E n) {y : Fin n → Af F ⊗[F] E}
     (hy : y ∈ Formalism.MainNotions.StandardLattice.latHat F E (X.L : Set (Fin n → E))) : (fun i => ofFinT F E (y i)) ∈ latHat X := by
   rw [KBridge.mem_latHat_iff]
@@ -34,6 +43,23 @@ theorem ofFinT_mem_latHat {n : ℕ} (X : Spc F E n) {y : Fin n → Af F ⊗[F] E
   have e : (fun i => finT F E (ofFinT F E (y i))) = y := funext fun i => finT_ofFinT _
   rw [e]; exact hy
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n X hL g hK`. Take `⟨h1, h2⟩` from `hK`. Use `⟨fun w => h1 w, ?_⟩` and prove the remaining obligations. Establish `hfg : X.L.FG` using `hL.fg`. Establish `hMM : (matHom (AF F) σ X.Jᵀ g⁻¹).1 * (matHom (AF F) σ X.Jᵀ g).1 = 1`.
+
+Rewrite using `[map_inv]`. Conclude with `Units.inv_mul _`. Establish `hfin : ∀ z : Fin n → AE F E, (fun i => finT F E (((matHom (AF F) σ X.Jᵀ g).1 *ᵥ z) i)) = Formalism.MainNotions.StandardLattice.finMat σ X.Jᵀ g *ᵥ fun i => finT F E (z i)` using `fun z => funext fun i => RingHom.map_mulVec (finT F E).toRingHom _ _ i`. Establish `hinf : ∀ z : Fin n → AE F E, (∀ i, infT F E (z i) = 0) → ∀ i, infT F E (((matHom (AF F) σ X.Jᵀ g).1 *ᵥ z) i) = 0`. Introduce `z hz i`.
+
+Establish `e : ((infT F E).toRingHom ∘ z) = 0` using `funext fun j => hz j`. Use `(RingHom.map_mulVec (infT F E).toRingHom (matHom (AF F) σ X.Jᵀ g).1 z i).trans ?_` and prove the remaining obligations. Rewrite using `[e, Matrix.mulVec_zero]`. Both sides reduce to the same expression. Establish `hg : g ∈ levelOpen σ X.Jᵀ X.L`.
+
+Use `(mem_levelOpen_iff_latHat σ X.Jᵀ hfg g).2 fun y => ?_` and prove the remaining obligations. Set `z : Fin n → AE F E` to `fun i => ofFinT F E (y i)`. Establish `hzy : (fun i => finT F E (z i)) = y` using `funext fun i => finT_ofFinT _`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Establish `hzL : z ∈ latHat X` using `ofFinT_mem_latHat X hy`. Use `(h2 z hzL).1` as an intermediate fact. Rewrite `this` using `[GlobalTheory.IwLine.mat_ofGAd]`. Establish `h` using `((KBridge.mem_latHat_iff X _).1 this).2`. Rewrite `h` using `[hfin, hzy]`.
+
+Conclude with `h`. Introduce `hy`. Establish `hw : (matHom (AF F) σ X.Jᵀ g).1 *ᵥ z ∈ latHat X`. Rewrite using `[KBridge.mem_latHat_iff]`. Use `⟨hinf z (fun i => infT_ofFinT _), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hfin, hzy]`. Conclude with `hy`. Use `(h2 _ hw).2` as an intermediate fact. Rewrite `this` using `[← map_inv, GlobalTheory.IwLine.mat_ofGAd, Matrix.mulVec_mulVec, hMM, Matrix.one_mulVec]`. Establish `h` using `((KBridge.mem_latHat_iff X _).1 this).2`.
+
+Rewrite `h` using `[hzy]`. Conclude with `h`. Conclude with `mem_levelOpen.1 hg`.
+-/
 theorem local_of_ofGAd_mem_stabK : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n : ℕ) (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n), X.L.IsLattice E →
     ∀ g : GAd σ X.Jᵀ, GlobalTheory.IwLine.ofGAd σ X.J g ∈ GlobalTheory.StabHaar.stabK (σ := σ) B X →

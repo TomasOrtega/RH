@@ -19,9 +19,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {b : GL (Fin n) (Fv F v)} {c : GL (Fin d) (Fv F v)} {b₁ : GL (Fin n₁) (Fv F v)} {c₁ : GL (Fin d₁) (Fv F v)}
   [SecondCountableTopology (Fv F v)] [MeasurableSpace (Fv F v)] [BorelSpace (Fv F v)] {m : Measure (Fv F v)}
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem ext_neg {k : Type} [Field k] (jr : Fin n₁ → Fin n) (jc : Fin d₁ → Fin d) (y : Matrix (Fin n₁) (Fin d₁) k) :
     -(emb k jr * y * (emb k jc)ᵀ) = emb k jr * (-y) * (emb k jc)ᵀ := by simp
 
+/- English proof (translation)
+Use `haveI := hm.haar`. Take `⟨f, hf⟩` from `exists_sinf F (Fin n × Fin d)`. Establish `hl : IsEvLoc M M LinearMap.id (ContinuousLinearMap.id _ _) fun _ => LinearMap.id` using `⟨fun e => by`. Establish `: f = 0` using `DFunLike.congr_fun e f`. Simplify using `[this] at hf, fun _ => ⟨rfl, Submodule.map_id _⟩, fun _ _ _ _ => rfl⟩`.
+
+Establish `o : ∀ k, incM F (1 : Matrix (Fin k) (Fin k) E) = 1` using `fun k => Matrix.map_one _ (map_zero _) (map_one _)`. Establish `he : IsEv B M M 1 1 ∅ LinearMap.id` using `⟨fun _ h => h, fun z Φ _ => by simp [o], fun _ h => h.elim, _, _, hl.ne, hl.vac, hl.pure⟩`. Establish `x : ∀ y : Matrix (Fin n) (Fin d) (Fv F v), ext id id y = y` using `fun y => Matrix.ext fun i j => ext_mid Function.injective_id Function.injective_id y i j`. Use function extensionality and compare the values at `y`. Use `(ev_model hm hB.std hu g g he hl L L' id id ∅ (fun z => by simp [o, x]) (fun _ h => by simp at h) (fun p _ => Or.inl ⟨p.1, p.2, rfl⟩) hφ y).trans ?_` and prove the remaining obligations.
+
+Establish `: ∀ Z : Fin n × Fin d → Fv F v, tm (cut ∅ Z) = 0` using `fun Z => by ext i j; simp [tm, cut]`. Simplify using `only [this, zero_add, x, wt, Finset.notMem_empty, if_false]`. Rewrite using `[integral_const_mul, integral_fintype_prod_eq_prod (fun _ : Fin n × Fin d => ind (1 : Fv F v))]`. Simplify using `[int_ind_one hm]`.
+-/
 theorem lin_uniq {M : Model σ X W} (hm : IsVol m) (hB : B.IsGood σ) (hu : PsiUnr B.ψ v) (g : M.IsGood B.ψ) {c₁ c₂ ι ι'}
     (L : Lin M B.ψ v c₁ c₂ ι) (L' : Lin M B.ψ v c₁ c₂ ι') {φ : Fl F v n d} (hφ : φ ∈ SB _) : ι' φ = ι φ := by
   haveI := hm.haar
@@ -46,6 +56,11 @@ section
 variable {X₀ : Spc F E n} {b₀ : GL (Fin n) (Fv F v)} {M : Model σ X W} {M₁ : Model σ X₀ W₁} {H' : Plane E d d₁} {jc : Fin d₁ → Fin d}
   {j₀ j₁ : Fin d}
 
+/- English proof (translation)
+Establish `el : ∀ i s s', ∃ u ∈ iso0 (F` using `F) n H', At (evFin F v) u ∧ cW t b c u = single i j₀ s ∧ cB σ t X W b c u = single i j₁ s' := fun i s s' => let ⟨p, a, x, y⟩ := vec_ex (b := b) h hJ (Pi.single i s) (Pi.single i s')`. Use the proof step `⟨_, ⟨p, rfl⟩, at_l a _, col_el h px' x y⟩`. Use `ev_model hm hB.std hu g g₁ he hl L L₁ id jc _ (emb_c h pe pe') (fun p hp s => ?_) (fun p hp => ?_) hφ y` and prove the remaining obligations. Simplify `el p.1 s 0` using `[(Finset.mem_filter.1 hp).2]`. Break down `hc p.2 with a | a | ⟨j, a⟩` into its components or cases.
+
+Conclude with `absurd (by simp [a]) hp`. Conclude with `Or.inr fun s => by simpa [a] using el p.1 0 s`. Conclude with `Or.inl ⟨p.1, j, Prod.ext rfl a⟩`.
+-/
 theorem ev0W (hm : IsVol m) (hB : B.IsGood σ) (hu : PsiUnr B.ψ v) (h : IsSec σ t sec) (g : M.IsGood B.ψ) (g₁ : M₁.IsGood B.ψ) {e ei ev}
     (he : IsEv B M M₁ 1 H'.ι (iso0 n H') e) (hl : IsEvLoc M M₁ e ei ev) {ι ι₁} (L : Lin M B.ψ v (cW t b c) (cB σ t X W b c) ι)
     (L₁ : Lin M₁ B.ψ v (cW t b₀ c₁) (cB σ t X₀ W₁ b₀ c₁) ι₁) (hJ : IsUnit (X.J.map t)) (pe : PE σ t X.J X₀.J b b₀ 1 id)
@@ -61,6 +76,11 @@ theorem ev0W (hm : IsVol m) (hB : B.IsGood σ) (hu : PsiUnr B.ψ v) (h : IsSec �
     · exact Or.inr fun s => by simpa [a] using el p.1 0 s
     · exact Or.inl ⟨p.1, j, Prod.ext rfl a⟩
 
+/- English proof (translation)
+Establish `el : ∀ i s s', ∃ u ∈ iso0 (F` using `F) n H', At (evFin F v) u ∧ cB σ t X W b c u = single i j₁ s' ∧ -cW t b c u = single i j₀ s := fun i s s' => let ⟨p, a, x, y⟩ := vec_ex (b := b) h hJ (Pi.single i (-s)) (Pi.single i s') ⟨_, ⟨p, rfl⟩, at_l a _, (col_el h px' x y).2, by rw [(col_el h px' x y).1, sneg, neg_neg]⟩`. Use `ev_model hm hB.std hu g g₁ he hl L L₁ id jc _ (fun z => ⟨(emb_c h pe pe' z).2, by` and prove the remaining obligations. Rewrite using `[(emb_c h pe pe' z).1]`. Conclude with `ext_neg _ _ _⟩) (fun p hp s => ?_) (fun p hp => ?_) hφ y`. Simplify `el p.1 0 s` using `[(Finset.mem_filter.1 hp).2]`.
+
+Break down `hc p.2 with a | a | ⟨j, a⟩` into its components or cases. Conclude with `Or.inr fun s => by simpa [a] using el p.1 s 0`. Conclude with `absurd (by simp [a]) hp`. Conclude with `Or.inl ⟨p.1, j, Prod.ext rfl a⟩`.
+-/
 theorem ev0B (hm : IsVol m) (hB : B.IsGood σ) (hu : PsiUnr B.ψ v) (h : IsSec σ t sec) (g : M.IsGood B.ψ) (g₁ : M₁.IsGood B.ψ) {e ei ev}
     (he : IsEv B M M₁ 1 H'.ι (iso0 n H') e) (hl : IsEvLoc M M₁ e ei ev) {ι ι₁}
     (L : Lin M B.ψ v (cB σ t X W b c) (fun u => -cW t b c u) ι)
@@ -85,6 +105,15 @@ section
 variable {M : Model σ X W} {M₁ : Model σ X₁ W₁} {H : Plane E n n₁} {H' : Plane E d d₁} {jr : Fin n₁ → Fin n} {jc : Fin d₁ → Fin d}
   {i₀ i₁ : Fin n} {j₀ j₁ : Fin d}
 
+/- English proof (translation)
+Establish `el : ∀ i s s', ∃ u ∈ isoA (F` using `F) H H', At (evFin F v) u ∧ cW t b c u = single i j₀ s ∧ cB σ t X W b c u = single i j₁ s' := fun i s s' => let ⟨p, a, x, y⟩ := vec_ex (b := b) h hJ (Pi.single i s) (Pi.single i s') ⟨_, Or.inl ⟨p, rfl⟩, at_l a _, col_el h px' x y⟩`. Establish `el' : ∀ j s s', ∃ u ∈ isoA (F` using `F) H H', At (evFin F v) u ∧ cW t b c u = single i₀ (jc j) s ∧ cB σ t X W b c u = single i₁ (jc j) s' := fun j s s' => let ⟨p, a, x, y⟩ := vec_ex' h pe' hJ' j s (-s') ⟨_, Or.inr ⟨p, rfl⟩, at_r _ a, (row_el h px x y).1, by rw [(row_el h px x y).2, neg_neg]⟩`. Use `ev_model hm hB.std hu g g₁ he hl L L₁ jr jc _ (emb_c h pe pe') (fun p hp s => ?_) (fun p hp => ?_) hφ y` and prove the remaining obligations. Break down `hc p.2 with a | a | ⟨j, a⟩` into its components or cases. Simplify `el p.1 s 0` using `[a]`.
+
+Break down `(hP p).1 hp with x | x` into its components or cases. Simplify `el p.1 s 0` using `[x]`. Conclude with `absurd a x.2`. Break down `(hP p).1 hp with x | x` into its components or cases. Simplify `el p.1 s 0` using `[x]`.
+
+Simplify `el' j s 0` using `[x.1, a]`. Distinguish the cases in `a1 : p.2 = j₁`. Conclude with `Or.inr fun s => by simpa [a1] using el p.1 0 s`. Break down `hc p.2 with a | a | ⟨j, a⟩` into its components or cases. Conclude with `absurd ((hP p).2 (Or.inl a)) hp`.
+
+Conclude with `absurd a a1`. Break down `hr p.1 with x | x | ⟨i, x⟩` into its components or cases. Conclude with `absurd ((hP p).2 (Or.inr ⟨x, a1⟩)) hp`. Conclude with `Or.inr fun s => by simpa [a, x] using el' j 0 s`. Conclude with `Or.inl ⟨i, j, Prod.ext x a⟩`.
+-/
 theorem evA (hm : IsVol m) (hB : B.IsGood σ) (hu : PsiUnr B.ψ v) (h : IsSec σ t sec) (g : M.IsGood B.ψ) (g₁ : M₁.IsGood B.ψ) {e ei ev}
     (he : IsEv B M M₁ H.ι H'.ι (isoA H H') e) (hl : IsEvLoc M M₁ e ei ev) {ι ι₁} (L : Lin M B.ψ v (cW t b c) (cB σ t X W b c) ι)
     (L₁ : Lin M₁ B.ψ v (cW t b₁ c₁) (cB σ t X₁ W₁ b₁ c₁) ι₁) (hJ : IsUnit (X.J.map t)) (hJ' : IsUnit (W₁.J.map t))
@@ -119,6 +148,15 @@ theorem evA (hm : IsVol m) (hB : B.IsGood σ) (hu : PsiUnr B.ψ v) (h : IsSec σ
       · exact Or.inr fun s => by simpa [a, x] using el' j 0 s
       · exact Or.inl ⟨i, j, Prod.ext x a⟩
 
+/- English proof (translation)
+Establish `el : ∀ j s s', ∃ u ∈ isoB (F` using `F) H H', At (evFin F v) u ∧ cB σ t X W b c u = single i₁ j s' ∧ -cW t b c u = single i₀ j s := fun j s s' => let ⟨p, a, x, y⟩ := vec_ex (b := c) h hJ' (Pi.single j (-s)) (Pi.single j (-s')) ⟨_, Or.inl ⟨p, rfl⟩, at_r _ a, by rw [(row_el h px x y).2, neg_neg], by rw [(row_el h px x …`. Establish `el' : ∀ i s s', ∃ u ∈ isoB (F` using `F) H H', At (evFin F v) u ∧ cB σ t X W b c u = single (jr i) j₁ s' ∧ -cW t b c u = single (jr i) j₀ s := fun i s s' => let ⟨p, a, x, y⟩ := vec_ex' h pe hJ i (-s) s' ⟨_, Or.inr ⟨p, rfl⟩, at_l a _, (col_el h px' x y).2, by rw [(col_el h px' x y).1, sneg, neg_neg]⟩`. Use `ev_model hm hB.std hu g g₁ he hl L L₁ jr jc _ (fun z => ⟨(emb_c h pe pe' z).2, by` and prove the remaining obligations. Rewrite using `[(emb_c h pe pe' z).1]`. Conclude with `ext_neg _ _ _⟩) (fun p hp s => ?_) (fun p hp => ?_) hφ y`.
+
+Break down `(hP p).1 hp with x | x` into its components or cases. Simplify `el p.2 0 s` using `[x]`. Break down `hr p.1 with a | a | ⟨i, a⟩` into its components or cases. Conclude with `absurd a x.2`. Simplify `el p.2 0 s` using `[a]`.
+
+Simplify `el' i 0 s` using `[x.1, a]`. Distinguish the cases in `a1 : p.1 = i₀`. Conclude with `Or.inr fun s => by simpa [a1] using el p.2 s 0`. Break down `hr p.1 with a | a | ⟨i, a⟩` into its components or cases. Conclude with `absurd a a1`.
+
+Conclude with `absurd ((hP p).2 (Or.inl a)) hp`. Break down `hc p.2 with x | x | ⟨j, x⟩` into its components or cases. Conclude with `Or.inr fun s => by simpa [a, x] using el' i s 0`. Conclude with `absurd ((hP p).2 (Or.inr ⟨x, a1⟩)) hp`. Conclude with `Or.inl ⟨i, j, Prod.ext a x⟩`.
+-/
 theorem evB (hm : IsVol m) (hB : B.IsGood σ) (hu : PsiUnr B.ψ v) (h : IsSec σ t sec) (g : M.IsGood B.ψ) (g₁ : M₁.IsGood B.ψ) {e ei ev}
     (he : IsEv B M M₁ H.ι H'.ι (isoB H H') e) (hl : IsEvLoc M M₁ e ei ev) {ι ι₁}
     (L : Lin M B.ψ v (cB σ t X W b c) (fun u => -cW t b c u) ι)
@@ -155,6 +193,17 @@ theorem evB (hm : IsVol m) (hB : B.IsGood σ) (hu : PsiUnr B.ψ v) (h : IsSec σ
 
 end
 
+/- English proof (translation)
+Establish `dms : ∀ (Y : Matrix (Fin (β + 2)) (Fin d) (Fv F v)) i j s, dm Y (single i j s) = Y i j * s` using `fun Y i j s => by`. Simplify using `[dm, dotProduct, ofM, single_apply, Fintype.sum_prod_type, ite_and]`. Establish `l0 : (0 : Fin (β + 2)) ≠ Fin.last _` using `by simp [Fin.ext_iff]`. Establish `key : ∀ k ∈ kAt K (evFin F v), ∀ l, ev (opF v (fun Φ => M.co.rho B.ψ (idem F v • u l) (om (k, 1) Φ)) φ) = ((((GlobalTheory.SplitWeil.resCard (Fv F v) : ℂ) ^ (κ + 1))⁻¹) ^ r * (dl (chrW χ t) (piW t l) * gI m (psiV B.ψ v) (chrW χ t) (piW (t.comp σ) l))) • φ₁` using `fun k hk l => by`. Establish `at' : At (evFin F v) (idem F v • u l)` using `at_sgl_smul 1 _`.
+
+Establish `sb` using `Hv_mem (M := M) hB.std (idem F v • u l) hφ`. Rewrite using `[opF_eq hφ sb fun r hr => by show M.co.rho B.ψ _ (om (k, 1) _) = _`. Rewrite using `[hK k hk r hr]`. Conclude with `acts_Hv at' φ r hr]`. Use `L₁.bij.2.1 (em ▸ Submodule.mem_map_of_mem sb) ((SB _).smul_mem _ hφ₁) (funext fun y => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hev _ sb, L.act _ at' (by rw [(hs l).1, (hs l).2, dms, single_apply_of_ne _ _ _ _ _ fun h => l0 h.1, zero_mul]) φ hφ, (hs l).1, (hs l).2, a, map_smul, a₁, Pi.smul_apply, smul_eq_mul, ← int_cone hm hϖ hc hei he h0 h1 P hP ha hb hAB g hg h]`. Use `congr 1`. Use function extensionality and compare the values at `Z`. Use `beta_reduce`. Rewrite using `[dms, add_assoc, Matrix.add_apply, ext_off y (Or.inr h0), add_zero, mul_neg, mul_comm (tm _ _ _)]`.
+
+Simplify using `[tm, cut, ha]`. Use function extensionality and compare the values at `y`. Establish `i1` using `idele_int (t := t) hB.cm hm (isPsi hB.std hu) hϖ χ hχ hν hν' (μ.xf v) (hμ.xf v).1 (hμ.xf v).2 ((((GlobalTheory.SplitWeil.resCard (Fv F v) : ℂ) ^ (κ + 1))⁻¹) ^ r * φ₁ y) z`. Rewrite using `[coneF, integral_congr_ae (Filter.Eventually.of_forall fun k => (congrArg _ (funext fun l => by`. Rewrite using `[key k.1 k.2, Pi.smul_apply, smul_eq_mul]`.
+
+Use the proof step `ring)).trans i1), integral_const, Measure.real, (hμ.kf v).2]`. Simplify using `[mul_assoc]`.
+-/
 theorem cone_val {β : ℕ} {X : Spc F E (β + 2)} {X₁ : Spc F E β} {M : Model σ X W} {M₁ : Model σ X₁ W₁} (hm : IsVol m) (hB : B.IsGood σ)
     (hu : PsiUnr B.ψ v) {c₁ c₂ ι c₁' c₂' ι₁} (L : Lin M B.ψ v c₁ c₂ ι) (L₁ : Lin M₁ B.ψ v c₁' c₂' ι₁)
     {ev : Fl F v (β + 2) d →ₗ[ℂ] Fl F v β d₁} (em : (SB _).map ev = SB _) {jc : Fin d₁ → Fin d} {P : Finset (Fin (β + 2) × Fin d)}

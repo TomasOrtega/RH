@@ -27,7 +27,13 @@ def FullBase (D : D7) (Sig : List (Formalism.BasicNotions.Part D.naut.CG)) : Pro
 def FullLabS (D : D7) (Sig : List (Formalism.BasicNotions.Part D.naut.CG)) : Prop :=
   FullBase D Sig ∧ ∀ (k : Fin 2) (v : D.nd.PlG k), Nc D.nd D.naut (isoLoc D.nd D.naut Sig (D.naut.plGw k v))
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem fl0' {D : D7} {Sig : List (Formalism.BasicNotions.Part D.naut.CG)} (h : FullLabS D Sig) : FullBase D Sig := h.1
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem fullLabS_of_fullLabS_trivial {D : D7} {Sig : List (Formalism.BasicNotions.Part D.naut.CG)} (h : FullLabS D Sig) : FullLabS D Sig := h
 
 def ResidualTameEigenvalueCondition (D : D7) (i : D.nd.Loc) (Sig : List (Formalism.BasicNotions.Part D.naut.CG))
@@ -64,7 +70,13 @@ def AdmissibleResidualTameEigenvalues (D : D7) : Prop :=
     (∀ k v, Squarefree (labSig D Sig k v)) → IsCuspIso D.nd D.naut Sig →
     ∀ ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i), IsRepOfSig D.nd D.naut i Sig ρ → ResidualTameEigenvalueCondition D i Sig ρ
 
+/- English proof (translation)
+Introduce `i Sig hx hf _` and use `h i Sig hx hf`.
+-/
 theorem g3p {D : D7} (h : LabelDegreeHypotheses D) : AdmissibleResidualTameEigenvalues D := fun i Sig hx hf _ => h i Sig hx hf
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem g3p' {D : D7} (h : AdmissibleResidualTameEigenvalues D) : AdmissibleResidualTameEigenvalues D := h
 
 end UpperTheory.GalS

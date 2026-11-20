@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 
 section
 namespace GlobalTheory
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14` and use `_root_.GlobalTheory.T.twisted_siegel_weil_identity h1 h2 h3 h4 h5 h6 h7 (GlobalTheory.T.siegelWeil_doubledSpace_of_standardUnitary h8) h9 h10 h11 h12 h13 h14`.
+-/
 theorem twisted_siegel_weil_identity_of_siegel_weil_formula :
     GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite →
     GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach →

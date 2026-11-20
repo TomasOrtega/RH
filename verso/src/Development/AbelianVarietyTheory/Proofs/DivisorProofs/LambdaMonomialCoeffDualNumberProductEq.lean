@@ -5,6 +5,9 @@ open MvPolynomial GlobalTheory.PsCo.Pc1 GlobalTheory.PsCo.Pc1.A
 
 namespace GlobalTheory.PsCo.Cw2a
 
+/- English proof (translation)
+Introduce `n L m a`. Conclude with `GlobalTheory.coeff_allOnes_prod_one_add_mul (σ := EntIdx n) m a`.
+-/
 theorem t_exL_dual : T_exL_dual := by
   intro n L m a
   exact GlobalTheory.coeff_allOnes_prod_one_add_mul (σ := EntIdx n) m a

@@ -9,6 +9,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RatLat
 
+/- English proof (translation)
+Unfold `Seam.lat Formalism.HermitianLatticesTheory.gmap Formalism.MainNotions.G.KAat.mvL`. Rewrite using `[Submodule.map_span, Submodule.map_coe, Set.image_image, Set.image_image]`. Use `congr 1`. Use `Set.image_congr fun x _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`.
+
+Rewrite using `[Formalism.MainNotions.G.KAat.toLE_apply, seamGL_mulVec]`.
+-/
 theorem lat_gmap {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (g : Sp X.E n ≃ₗ[X.E] Sp X.E n)
     (N : Submodule (𝓞 X.E) (Sp X.E n)) :
     s.lat (Formalism.HermitianLatticesTheory.gmap g N) = Formalism.MainNotions.G.KAat.mvL (seamGL s g) (s.lat N) := by

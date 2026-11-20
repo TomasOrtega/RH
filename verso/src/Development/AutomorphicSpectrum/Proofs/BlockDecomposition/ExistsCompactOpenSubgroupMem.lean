@@ -4,6 +4,11 @@ open Matrix ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.LatticePoint
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `valuation k x ≤ γ at hx`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Use `⟨Units.mk0 γ hγ, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `valuation k (y - x) < ((Units.mk0 γ hγ : (ValueGroupWithZero k)ˣ) : ValueGroupWithZero k) at hy`. Rewrite `hy` using `[Units.val_mk0]`. Use `show valuation k y ≤ γ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isOpen_valBall {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (γ : ValueGroupWithZero k) (hγ : γ ≠ 0) :
     IsOpen {x : k | valuation k x ≤ γ} := by
@@ -19,6 +24,17 @@ theorem isOpen_valBall {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k
     _ ≤ max (valuation k (y - x)) (valuation k x) := Valuation.map_add _ _ _
     _ ≤ γ := max_le hy.le hx
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n x`. Set `γ : ValueGroupWithZero k` to `Finset.univ.sup (fun i => valuation k (x i)) ⊔ 1`. Establish `hγ : γ ≠ 0` using `ne_of_gt (lt_of_lt_of_le zero_lt_one le_sup_right)`. Set `S : AddSubgroup k` to `{ carrier := {y | valuation k y ≤ γ} add_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `valuation k a ≤ γ at ha`.
+
+Express the relevant statement in the definitionally equal form `valuation k b ≤ γ at hb`. Use `show valuation k (a + b) ≤ γ`. Conclude with `(Valuation.map_add _ _ _).trans (max_le ha hb)`. Use the proof step `zero_mem' := by show valuation k 0 ≤ γ`. Simplify using the standard rewrite rules.
+
+Use the proof step `neg_mem' := fun {a} ha => by`. Express the relevant statement in the definitionally equal form `valuation k a ≤ γ at ha`. Use `show valuation k (-a) ≤ γ`. Rewrite using `[Valuation.map_neg] }` and apply the resulting hypothesis. Establish `hS : (S : Set k) = {y | valuation k y ≤ γ}` using `rfl`.
+
+Use `⟨AddSubgroup.pi Set.univ (fun _ => S), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.coe_pi, hS]`. Conclude with `isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k γ`. Rewrite using `[AddSubgroup.coe_pi, hS]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_valBall γ hγ`.
+
+Rewrite using `[AddSubgroup.mem_pi]`. Introduce `i _`. Use `show valuation k (x i) ≤ γ`. Conclude with `le_sup_of_le_left (Finset.le_sup (f := fun i => valuation k (x i)) (Finset.mem_univ i))`.
+-/
 theorem exists_compact_open_addSubgroup_mem :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
       (n : ℕ) (x : Fin n → k),

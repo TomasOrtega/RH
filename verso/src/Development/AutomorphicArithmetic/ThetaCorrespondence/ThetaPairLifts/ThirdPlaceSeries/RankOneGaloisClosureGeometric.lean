@@ -15,6 +15,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 noncomputable section
 namespace GlobalTheory.GalClose
 open GlobalTheory.CuspRep
+/- English proof (translation)
+Establish `h0 : (1 - ((1 : ℕ) : ℝ)) / 2 = 0` using `by norm_num`. Take `⟨ρ, hc, h1, h2⟩` from `_root_.GlobalTheory.T.exists_galois_character_of_algebraic_alt hPr.fin hPr.art hPr.chA hPr.chP hL D P i π 0 (fun τ z hz => by`. Take `⟨n, hn⟩` from `((D.naut.ralg_def π).1 hr τ).2 z hz`. Conclude with `⟨n, by rw [hn]; simp⟩)`. Use `⟨ρ, hc, isSSRep_rankOne ρ, fun w hw => ⟨by rw [h0]; exact h1 w hw, ?_⟩, fun w hw => ⟨(h2 w hw).1, fun τ hτ => ?_, by rw [h0]; exact (h2 w hw).2.1⟩⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.RowTie.tempered_of_rank_le_one D P.T (_root_.GlobalTheory.TempClose.rankOneUnitary_of_charSide hPr.fin hL D P) 1 π le_rfl w`. Apply `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective` to reduce the goal to its premises. Rewrite using `[(h2 w hw).2.2 τ hτ, D.naut.jumpsInf_def i π τ hr]`. Simplify using the standard rewrite rules.
+-/
 theorem rankOne_galois_closure_geometric_alt (hPr : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (i : D.nd.Loc)
     (π : D.naut.CG 1) (hr : D.naut.ralg π) :
     ∃ ρ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin 1) (Qbar (D.nd.l i)),

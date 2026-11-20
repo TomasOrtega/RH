@@ -7,6 +7,9 @@ set_option maxSynthPendingDepth 1
 
 noncomputable section
 
+/- English proof (translation)
+Use extensionality with `U x`. Both sides reduce to the same expression.
+-/
 private theorem smulHom_eq {X : Scheme.{0}} (F : X.Modules) (r : Γ(X, ⊤)) :
     GlobalTheory.smulHom F r = GroundTheory.Arith.SchemeCoh.smulHom F r := by
   ext U x
@@ -22,6 +25,11 @@ private def cohEquiv {X : Scheme.{0}} (R : Type) [CommRing R] [Algebra R Γ(X, �
       rw [smulHom_eq]
       rfl }
 
+/- English proof (translation)
+Establish `h` using `HasRingHomProperty.appLE @LocallyOfFiniteType s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Establish `h2 : (CechDR.secMap s U).hom.FiniteType`. Express the relevant statement in the definitionally equal form `((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv ≫ s.appLE ⊤ U le_top).hom.FiniteType`. Rewrite using `[CommRingCat.hom_comp]`. Conclude with `RingHom.FiniteType.comp h (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv).2)`.
+
+Conclude with `h2`.
+-/
 private theorem finiteType_sec {Z : Scheme.{0}} (s : Z ⟶ Sp ℂ) [LocallyOfFiniteType s]
     {U : Z.Opens} (hU : IsAffineOpen U) : Algebra.FiniteType ℂ (CechDR.Sec s U) := by
   have h := HasRingHomProperty.appLE @LocallyOfFiniteType s inferInstance
@@ -33,6 +41,9 @@ private theorem finiteType_sec {Z : Scheme.{0}} (s : Z ⟶ Sp ℂ) [LocallyOfFin
       (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv).2)
   exact h2
 
+/- English proof (translation)
+Use `⟨inferInstance, fun U hU => ?_⟩` and prove the remaining obligations. Use `haveI := finiteType_sec s hU`. Establish `h : Module.Finite (CechDR.Sec s U) (CechDR.OmU s U a)` using `inferInstance`. Establish `h' : Module.Finite (CechDR.Sec s U) Γ(Omega s a, U)` using `Module.Finite.equiv (toOmEquiv s a hU)`. Conclude with `h'`.
+-/
 private theorem isCoherent_Omega {Z : Scheme.{0}} (s : Z ⟶ Sp ℂ) [LocallyOfFiniteType s] (a : ℕ) :
     GroundTheory.Arith.SchemeCoh.IsCoherent (Omega s a) := by
   refine ⟨inferInstance, fun U hU => ?_⟩
@@ -41,6 +52,13 @@ private theorem isCoherent_Omega {Z : Scheme.{0}} (s : Z ⟶ Sp ℂ) [LocallyOfF
   have h' : Module.Finite (CechDR.Sec s U) Γ(Omega s a, U) := Module.Finite.equiv (toOmEquiv s a hU)
   exact h'
 
+/- English proof (translation)
+Introduce `Z _ s d _ hp a b`. Take `⟨N, i, hi, his⟩` from `hp`. Use `haveI : IsProper (PSpace.str ℂ N) := inferInstanceAs (IsProper (GroundTheory.Arith.SchemeCoh.ProjSpace.toSpecBase ℂ N))`. Use `haveI : IsProper s := by rw [← his]; infer_instance`. Use `letI : Z.Over (Spec (.of ℂ)) := ⟨s⟩`.
+
+Use `haveI : IsProper (Z ↘ Spec (.of ℂ)) := inferInstanceAs (IsProper s)`. Establish `hc : GroundTheory.Arith.SchemeCoh.IsCoherent (Omega s a)` using `isCoherent_Omega s a`. Establish `h` using `@GroundTheory.Arith.SchemeCoh.finite_H_of_isProper ℂ _ _ Z _ _ (Omega s a) hc b`. Use `letI := algΓ s`. Establish `h' : Module.Finite ℂ (coh (Omega s a) b)` using `by haveI : Module.Finite ℂ (Sheaf.H.{0} (GroundTheory.Arith.SchemeCoh.modulesAb (Omega s a)) b) := h`.
+
+Conclude with `Module.Finite.equiv (cohEquiv ℂ (Omega s a) b).symm`. Conclude with `h'`.
+-/
 theorem UpperTheory.finiteDimensional_hodgeCohomology_of_smooth_proj :
     ∀ (Z : Scheme.{0}) [IsIntegral Z] (s : Z ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d s], IsProjOver s → ∀ a b : ℕ, FiniteDimensional ℂ (hodgeH s a b) := by
   intro Z _ s d _ hp a b

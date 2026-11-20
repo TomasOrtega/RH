@@ -14,17 +14,26 @@ section Abstract
 
 variable {H J : Type} [Group H] {K : Subgroup H}
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons j w ih => exact Formalism.UG.Final.HeckeConvMem H K ℂ hK _ (hψ j) _ ih`.
+-/
 private theorem word_mem (hK : IsCommensurated K) {ψ : J → H → ℂ} (hψ : ∀ j, ψ j ∈ Hecke ℂ K) {f : H → ℂ}
     (hf : f ∈ Hecke ℂ K) (w : List J) : wordFn K ψ w f ∈ Hecke ℂ K := by
   induction w with
   | nil => exact hf
   | cons j w ih => exact Formalism.UG.Final.HeckeConvMem H K ℂ hK _ (hψ j) _ ih
 
+/- English proof (translation)
+Unfold `UpperTheory.Gal.LocalSmoothExtension.polyFn`. Conclude with `Submodule.sum_mem _ fun w _ => Submodule.smul_mem _ _ (word_mem hK hψ hf w)`.
+-/
 private theorem poly_mem (hK : IsCommensurated K) {ψ : J → H → ℂ} (hψ : ∀ j, ψ j ∈ Hecke ℂ K) {f : H → ℂ}
     (hf : f ∈ Hecke ℂ K) (s : List J →₀ ℂ) : polyFn K ψ s f ∈ Hecke ℂ K := by
   unfold UpperTheory.Gal.LocalSmoothExtension.polyFn
   exact Submodule.sum_mem _ fun w _ => Submodule.smul_mem _ _ (word_mem hK hψ hf w)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact he`. Consider the case `succ n ih`. Rewrite using `[powFn, Function.iterate_succ_apply']`. Conclude with `Formalism.UG.Final.HeckeConvMem H K ℂ hK _ hu _ ih`.
+-/
 private theorem pow_mem (hK : IsCommensurated K) {u e : H → ℂ} (hu : u ∈ Hecke ℂ K) (he : e ∈ Hecke ℂ K) (n : ℕ) :
     powFn K u e n ∈ Hecke ℂ K := by
   induction n with
@@ -33,6 +42,9 @@ private theorem pow_mem (hK : IsCommensurated K) {u e : H → ℂ} (hu : u ∈ H
     rw [powFn, Function.iterate_succ_apply']
     exact Formalism.UG.Final.HeckeConvMem H K ℂ hK _ hu _ ih
 
+/- English proof (translation)
+Establish `A` using `Formalism.UG.Final.HeckeAssoc H K ℂ hK`. Establish `M` using `Formalism.UG.Final.HeckeConvMem H K ℂ hK`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem fix_step (hK : IsCommensurated K) {e t x : H → ℂ} (he : e ∈ Hecke ℂ K) (ht : t ∈ Hecke ℂ K)
     (hx : x ∈ Hecke ℂ K) (hte : conv K e (conv K t e) = conv K t e) (hex : conv K e x = x) :
     conv K e (conv K t x) = conv K t x := by
@@ -45,6 +57,9 @@ private theorem fix_step (hK : IsCommensurated K) {e t x : H → ℂ} (he : e �
     _ = conv K t (conv K e x) := by rw [A t ht e he x hx]
     _ = conv K t x := by rw [hex]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact hidem`. Consider the case `succ n ih`. Rewrite using `[powFn, Function.iterate_succ_apply']`. Conclude with `fix_step hK he hu (pow_mem hK hu he n) heu ih`.
+-/
 private theorem pow_fix (hK : IsCommensurated K) {u e : H → ℂ} (hu : u ∈ Hecke ℂ K) (he : e ∈ Hecke ℂ K)
     (hidem : conv K e e = e) (heu : conv K e (conv K u e) = conv K u e) (n : ℕ) :
     conv K e (powFn K u e n) = powFn K u e n := by
@@ -54,6 +69,9 @@ private theorem pow_fix (hK : IsCommensurated K) {u e : H → ℂ} (hu : u ∈ H
     rw [powFn, Function.iterate_succ_apply']
     exact fix_step hK he hu (pow_mem hK hu he n) heu ih
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hef`. Consider the case `cons j w ih => exact fix_step hK he (hψ j) (word_mem hK hψ hf w) (heT j) ih`.
+-/
 private theorem word_fix (hK : IsCommensurated K) {ψ : J → H → ℂ} (hψ : ∀ j, ψ j ∈ Hecke ℂ K) {e f : H → ℂ}
     (he : e ∈ Hecke ℂ K) (hf : f ∈ Hecke ℂ K) (heT : ∀ j, conv K e (conv K (ψ j) e) = conv K (ψ j) e)
     (hef : conv K e f = f) (w : List J) : conv K e (wordFn K ψ w f) = wordFn K ψ w f := by
@@ -61,6 +79,9 @@ private theorem word_fix (hK : IsCommensurated K) {ψ : J → H → ℂ} (hψ : 
   | nil => exact hef
   | cons j w ih => exact fix_step hK he (hψ j) (word_mem hK hψ hf w) (heT j) ih
 
+/- English proof (translation)
+Establish `A` using `Formalism.UG.Final.HeckeAssoc H K ℂ hK`. Establish `M` using `Formalism.UG.Final.HeckeConvMem H K ℂ hK`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem comm_fix (hK : IsCommensurated K) {e a b x : H → ℂ} (he : e ∈ Hecke ℂ K) (ha : a ∈ Hecke ℂ K)
     (hb : b ∈ Hecke ℂ K) (hx : x ∈ Hecke ℂ K) (hab : conv K a (conv K b e) = conv K b (conv K a e))
     (hex : conv K e x = x) : conv K a (conv K b x) = conv K b (conv K a x) := by
@@ -74,6 +95,11 @@ private theorem comm_fix (hK : IsCommensurated K) {e a b x : H → ℂ} (he : e 
     _ = conv K b (conv K a (conv K e x)) := by rw [A a ha e he x hx]
     _ = conv K b (conv K a x) := by rw [hex]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Unfold `Formalism.UG.conv`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+
+Introduce `q`. Distinguish the cases in `ha : a (Quotient.out q) = 0`. Rewrite using `[ha, zero_mul]`. Rewrite using `[hc _ ha, mul_zero]`.
+-/
 private theorem conv_supp {a f : H → ℂ} {g : H} (h : conv K a f g ≠ 0) : ∃ x : H, a x ≠ 0 ∧ f (x⁻¹ * g) ≠ 0 := by
   by_contra hc
   push_neg at hc
@@ -85,6 +111,11 @@ private theorem conv_supp {a f : H → ℂ} {g : H} (h : conv K a f g ≠ 0) : �
   · rw [ha, zero_mul]
   · rw [hc _ ha, mul_zero]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons j w ih`. Introduce `g hg`. Take `⟨x, hx1, hx2⟩` from `conv_supp (K := K) (a := ψ j) (f := wordFn K ψ w f) hg`.
+
+Establish `hx` using `hR j x hx1 _ (ih _ hx2)`. Simplify using `using hx`.
+-/
 private theorem word_supp {ψ : J → H → ℂ} {f : H → ℂ} {R : Set H} (hR : ∀ j a, ψ j a ≠ 0 → ∀ g ∈ R, a * g ∈ R)
     (hf : ∀ g, f g ≠ 0 → g ∈ R) (w : List J) : ∀ g, wordFn K ψ w f g ≠ 0 → g ∈ R := by
   induction w with
@@ -95,6 +126,13 @@ private theorem word_supp {ψ : J → H → ℂ} {f : H → ℂ} {R : Set H} (hR
     have hx := hR j x hx1 _ (ih _ hx2)
     simpa using hx
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hgR`. Apply `hg` to reduce the goal to its premises. Unfold `UpperTheory.Gal.LocalSmoothExtension.polyFn`. Rewrite using `[Finsupp.sum, Finset.sum_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `w _`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Establish `hw : wordFn K ψ w f g = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hgR (word_supp (K := K) hR hf w g hne)`.
+
+Rewrite using `[hw, mul_zero]`.
+-/
 private theorem poly_supp {ψ : J → H → ℂ} {f : H → ℂ} {R : Set H} (hR : ∀ j a, ψ j a ≠ 0 → ∀ g ∈ R, a * g ∈ R)
     (hf : ∀ g, f g ≠ 0 → g ∈ R) (s : List J →₀ ℂ) (g : H) (hg : polyFn K ψ s f g ≠ 0) : g ∈ R := by
   by_contra hgR
@@ -111,6 +149,11 @@ private theorem poly_supp {ψ : J → H → ℂ} {f : H → ℂ} {R : Set H} (hR
 
 end Abstract
 
+/- English proof (translation)
+Introduce `p _ G Lv J ψ e u u' hψ he hu hrel n`. Establish `hK : IsCommensurated (Lv.K : Subgroup G.GAf)` using `PI.UnitaryGroupMassFormula.AdIndexEq.commensurated_of_isOpen_isCompact _ Lv.K.isOpen Lv.compact`. Establish `hP` using `pow_mem hK hu he n`. Establish `hfix` using `pow_fix hK hu he hrel.idem hrel.eu n`. Use `⟨hP, fun s => poly_mem hK hψ hP s, fun j j' w => ?_, fun R hR hf s g hg => poly_supp hR hf s g hg⟩` and prove the remaining obligations.
+
+Conclude with `comm_fix hK he (hψ j) (hψ j') (word_mem hK hψ hP w) (hrel.TT j j') (word_fix hK hψ he hP hrel.eT hfix w)`.
+-/
 theorem words : Words := by
   intro p _ G Lv J ψ e u u' hψ he hu hrel n
   have hK : IsCommensurated (Lv.K : Subgroup G.GAf) :=

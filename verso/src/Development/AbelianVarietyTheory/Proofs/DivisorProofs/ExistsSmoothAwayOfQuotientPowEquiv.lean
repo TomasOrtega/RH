@@ -11,6 +11,13 @@ namespace GlobalTheory.SmoothAdic
 
 open TensorProduct
 
+/- English proof (translation)
+Introduce `R _ _ _ O C _ _ _ _ hO hC hiso q hq hqm`. Establish `hsm : ∀ e : ℕ, Algebra.Smooth (R ⧸ maximalIdeal R ^ (e + 1)) (TensorProduct R (R ⧸ maximalIdeal R ^ (e + 1)) C)`. Introduce `e`. Take `⟨φ⟩` from `hiso e`. Set `J` to `maximalIdeal R ^ (e + 1)`.
+
+Set `φ' : (O ⧸ J.map (algebraMap R O)) ≃ₐ[R ⧸ J] (C ⧸ J.map (algebraMap R C))` to `AlgEquiv.extendScalarsOfSurjective Ideal.Quotient.mk_surjective φ`. Set `ψ : ((R ⧸ J) ⊗[R] O) ≃ₐ[R ⧸ J] ((R ⧸ J) ⊗[R] C)` to `((Algebra.TensorProduct.quotIdealMapEquivQuotTensor O J).symm.trans φ').trans (Algebra.TensorProduct.quotIdealMapEquivQuotTensor C J)`. Conclude with `Algebra.Smooth.of_equiv ψ`. Use `haveI := hq`. Use `haveI : Algebra.IsSmoothAt R q := isSmoothAt_of_smooth_quotient_pow R (maximalIdeal R) (maximalIdeal.isMaximal R).ne_top C hsm q hqm`.
+
+Use `haveI : Algebra.FinitePresentation R C := Algebra.FinitePresentation.of_finiteType.mp hC`. Take `⟨g, hg, hs⟩` from `Algebra.IsSmoothAt.exists_notMem_smooth R q`. Conclude with `⟨g, hg, hs⟩`.
+-/
 theorem exists_smooth_away_of_quotient_pow_equiv : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (O C : Type) [CommRing O] [Algebra R O] [CommRing C] [Algebra R C], Algebra.Smooth R O → Algebra.FiniteType R C → (∀ e : ℕ, Nonempty ((O ⧸ (maximalIdeal R ^ (e + 1)).map (algebraMap R O)) ≃ₐ[R] (C ⧸ (maximalIdeal R ^ (e + 1)).map (algebraMap R C)))) → ∀ q : Ideal C, q.IsPrime → q.comap (algebraMap R C) = maximalIdeal R → ∃ g : C, g ∉ q ∧ Algebra.Smooth R (Localization.Away g) := by
   intro R _ _ _ O C _ _ _ _ hO hC hiso q hq hqm
   have hsm : ∀ e : ℕ, Algebra.Smooth (R ⧸ maximalIdeal R ^ (e + 1))

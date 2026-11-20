@@ -30,6 +30,9 @@ def framepf_gco (x : ↥(NcS W T (c - 1))) : Fin Bs.r → PowerSeries O :=
   then Classical.choose h else 0
 
 include hπ0 hR2 in
+/- English proof (translation)
+Establish `h` using `framepf_coord Bs π' (c - 1) hπ0 hR2 x.2`. Unfold `framepf_gco`. Rewrite using `[dif_pos h]`. Conclude with `Classical.choose_spec h`.
+-/
 theorem framepf_gco_spec (x : ↥(NcS W T (c - 1))) :
     (x : W.DD T) = ∑ k, framepf_ι π' (c - 1) (framepf_gco Bs π' c x k) • Bs.b k := by
   have h := framepf_coord Bs π' (c - 1) hπ0 hR2 x.2
@@ -38,12 +41,18 @@ theorem framepf_gco_spec (x : ↥(NcS W T (c - 1))) :
   exact Classical.choose_spec h
 
 include hπ0 hΔπ hR2 γ0 in
+/- English proof (translation)
+The claim follows from `framepf_coord_uniq Bs π' (c - 1) hπ0 hΔπ hR2 γ0 ((framepf_gco_spec Bs π' c hπ0 hR2 x).symm.trans hg)`.
+-/
 theorem framepf_gco_eq (x : ↥(NcS W T (c - 1))) (g : Fin Bs.r → PowerSeries O)
     (hg : (x : W.DD T) = ∑ k, framepf_ι π' (c - 1) (g k) • Bs.b k) : framepf_gco Bs π' c x = g :=
   framepf_coord_uniq Bs π' (c - 1) hπ0 hΔπ hR2 γ0
     ((framepf_gco_spec Bs π' c hπ0 hR2 x).symm.trans hg)
 
 include hπ0 in
+/- English proof (translation)
+Rewrite using `[framepf_ι_mul π' (c - 1) (hπ0 _), framepf_ι_C π' (c - 1) (hπ0 _), mul_comm (letE (c - 1)), mul_assoc, framepf_letE_ι π' (c - 1) hπ0]`.
+-/
 theorem framepf_ι_C_mul (o : O) (g : PowerSeries O) :
     framepf_ι π' (c - 1) (PowerSeries.C o * g) = algebraMap O (LetA O n) o * framepf_ι π' (c - 1) g := by
   rw [framepf_ι_mul π' (c - 1) (hπ0 _), framepf_ι_C π' (c - 1) (hπ0 _), mul_comm (letE (c - 1)),
@@ -71,6 +80,9 @@ def framepf_coordL : ↥(NcS W T (c - 1)) →ₗ[O] (Fin Bs.r → O) where
     rw [e, map_mul, PowerSeries.constantCoeff_C]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem framepf_coordL_apply (x : ↥(NcS W T (c - 1))) (k : Fin Bs.r) :
     framepf_coordL Bs π' c hπ0 hΔπ hR2 γ0 x k = PowerSeries.constantCoeff (framepf_gco Bs π' c x k) := rfl
 
@@ -78,6 +90,23 @@ variable (hu : IsUnit (algebraMap (LetA O n) W.EE π'))
 
 include hπ0 hΔπ hR2 γ0 hu in
 
+/- English proof (translation)
+Establish `hx` using `framepf_gco_spec Bs π' c hπ0 hR2 x`. Establish `hxc` using `(mem_NcS W T (c - 1) x).1 x.2`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hX : ∀ k, ∃ hk : PowerSeries O, framepf_gco Bs π' c x k = PowerSeries.X * hk`.
+
+Introduce `k`. Use `congrFun h0 k` as an intermediate fact. Rewrite `this` using `[framepf_coordL_apply]`. Conclude with `PowerSeries.X_dvd_iff.2 this`. Use `choose hk hhk using hX`.
+
+Rewrite using `[mem_PiNS]`. Use `⟨⟨∑ k, framepf_ι π' (c - 1) (hk k) • Bs.b k, Submodule.sum_mem _ fun k _ => (W.N T).smul_mem _ (Bs.mem k).1, ?_⟩, hxc.2.1⟩` and prove the remaining obligations. Rewrite using `[pow_one, hx, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hhk k, smul_smul, framepf_ι_mul π' (c - 1) (hπ0 _), framepf_ι_X π' (c - 1) (hπ0 _), mul_comm (letE (c - 1)) π', mul_assoc, framepf_letE_ι π' (c - 1) hπ0]`.
+
+Introduce `h`. Take `⟨⟨d, hdN, hd⟩, -⟩` from `(mem_PiNS W T π' 1 _).1 h`. Rewrite `hd` using `[pow_one]`. Establish `hdc : d ∈ NcS W T (c - 1)`. Rewrite using `[mem_NcS]`.
+
+Use `⟨hdN, fun δ hδ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `gradNPf_tf W T π' hu` to reduce the goal to its premises. Rewrite using `[smul_sub, ← hΔπ δ hδ, ← gradNPf_γD_smul, hΔπ δ hδ, hd, hxc.2.1 δ hδ, sub_self]`. Rewrite using `[← sub_eq_zero]`.
+
+Apply `gradNPf_tf W T π' hu` to reduce the goal to its premises. Rewrite using `[smul_sub, smul_smul, mul_comm, ← smul_smul, hd, hxc.2.2, sub_self]`. Establish `hdd` using `framepf_gco_spec Bs π' c hπ0 hR2 ⟨d, hdc⟩`. Establish `e : framepf_gco Bs π' c x = fun k => PowerSeries.X * framepf_gco Bs π' c ⟨d, hdc⟩ k`. Apply `framepf_gco_eq Bs π' c hπ0 hΔπ hR2 γ0` to reduce the goal to its premises.
+
+Rewrite using `[← hd]`. Use `conv_lhs => rw [show d = ((⟨d, hdc⟩ : ↥(NcS W T (c - 1))) : W.DD T) from rfl, hdd]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, framepf_ι_mul π' (c - 1) (hπ0 _), framepf_ι_X π' (c - 1) (hπ0 _), mul_comm (letE (c - 1)) π', mul_assoc, framepf_letE_ι π' (c - 1) hπ0]`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[framepf_coordL_apply, e]`. Simplify using the standard rewrite rules.
+-/
 theorem framepf_coordL_ker (x : ↥(NcS W T (c - 1))) :
     framepf_coordL Bs π' c hπ0 hΔπ hR2 γ0 x = 0 ↔ (x : W.DD T) ∈ PiNS W T π' 1 := by
   have hx := framepf_gco_spec Bs π' c hπ0 hR2 x
@@ -123,6 +152,11 @@ theorem framepf_coordL_ker (x : ↥(NcS W T (c - 1))) :
     simp
 
 include hπ0 hΔπ hR2 γ0 in
+/- English proof (translation)
+Introduce `o`. Establish `hmem : ∑ k, framepf_ι π' (c - 1) (PowerSeries.C (o k)) • Bs.b k ∈ NcS W T (c - 1)`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[framepf_ι_C π' (c - 1) (hπ0 _), mul_comm, mul_smul, algebraMap_smul]`. Conclude with `(NcS W T (c - 1)).smul_mem _ (framepf_letE_mem Bs (c - 1) k)`.
+
+Use `⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Establish `e` using `framepf_gco_eq Bs π' c hπ0 hΔπ hR2 γ0 ⟨_, hmem⟩ (fun k => PowerSeries.C (o k)) rfl`. Use function extensionality and compare the values at `k`. Rewrite using `[framepf_coordL_apply, e, PowerSeries.constantCoeff_C]`.
+-/
 theorem framepf_coordL_surj : Function.Surjective (framepf_coordL Bs π' c hπ0 hΔπ hR2 γ0) := by
   intro o
   have hmem : ∑ k, framepf_ι π' (c - 1) (PowerSeries.C (o k)) • Bs.b k ∈ NcS W T (c - 1) := by
@@ -141,6 +175,9 @@ def framepf_Lbas : LcQ W T π' c ≃ₗ[O] (Fin Bs.r → O) :=
       framepf_coordL_ker Bs π' c hπ0 hΔπ hR2 γ0 hu])).trans
     (LinearMap.quotKerEquivOfSurjective _ (framepf_coordL_surj Bs π' c hπ0 hΔπ hR2 γ0))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem framepf_Lbas_mk (x : ↥(NcS W T (c - 1))) :
     framepf_Lbas Bs π' c hπ0 hΔπ hR2 γ0 hu (Submodule.Quotient.mk x) =
       framepf_coordL Bs π' c hπ0 hΔπ hR2 γ0 x := rfl

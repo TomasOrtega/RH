@@ -9,6 +9,9 @@ open Formalism.BasicNotions GlobalTheory.Mem GlobalTheory.MemN NumberField IsDed
 
 namespace GlobalTheory.MemN
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun v => (exists_valuationSubring_over (Ω := Ω) v).choose, fun v => (exists_valuationSubring_over (Ω := Ω) v).choose_spec⟩⟩`.
+-/
 theorem nonempty_places_closure (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] :
     Nonempty (Formalism.GaloisCohomology.Places E Ω) :=
   ⟨⟨fun v => (exists_valuationSubring_over (Ω := Ω) v).choose,
@@ -103,6 +106,9 @@ def emptyLayer (B : Base) (C : Cols B) (W : RowsRest B C) (χ : Chi B.toPre)
   chiT := χ
   restN_card_levelGroup_eq := rfl
 
+/- English proof (translation)
+Introduce `B C W χ hS`. Take `⟨ldat, h⟩` from `hS`. Use `⟨emptyLayer B C W χ ldat h, ?_, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Conclude with `inferInstanceAs (IsEmpty Empty)`. Conclude with `⟨fun _ => Equiv.refl _, fun _ _ => rfl⟩`.
+-/
 theorem exists_emptyLayer : ∀ (B : Base) (C : Cols B) (W : RowsRest B C) (χ : Chi B.toPre), ShaOK B.toPre W.shaLen → ∃ nd : NData B.R B.host W.what₂, IsEmpty nd.Loc ∧ HasChi nd χ ∧ ∀ k σ v, nd.lab k σ v = (X - 1) ^ B.R.r := by
   intro B C W χ hS
   obtain ⟨ldat, h⟩ := hS

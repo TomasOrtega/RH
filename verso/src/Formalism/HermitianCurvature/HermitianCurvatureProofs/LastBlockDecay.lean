@@ -11,6 +11,11 @@ noncomputable section
 
 section dil
 
+/- English proof (translation)
+Establish `hdet : LinearMap.det (LinearMap.mulLeft ℝ ρ) = ‖ρ‖ ^ 2`. Rewrite using `[← Complex.normSq_eq_norm_sq, ← Algebra.norm_complex_apply, Algebra.norm_apply]`. Both sides reduce to the same expression. Establish `hne : LinearMap.det (LinearMap.mulLeft ℝ ρ) ≠ 0`. Rewrite using `[hdet]`.
+
+Check the signs of the components of the expression. Establish `h` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure ℂ) hne`. Rewrite `h` using `[hdet, abs_of_nonneg (by positivity)]`. Conclude with `h`.
+-/
 theorem map_mul_volume (ρ : ℂ) (hρ : ρ ≠ 0) :
     Measure.map (fun z : ℂ => ρ * z) volume = ENNReal.ofReal ((‖ρ‖ ^ 2)⁻¹) • (volume : Measure ℂ) := by
   have hdet : LinearMap.det (LinearMap.mulLeft ℝ ρ) = ‖ρ‖ ^ 2 := by
@@ -25,8 +30,14 @@ theorem map_mul_volume (ρ : ℂ) (hρ : ρ ≠ 0) :
 
 def mulEquiv (ρ : ℂ) (hρ : ρ ≠ 0) : ℂ ≃ᵐ ℂ := (Homeomorph.mulLeft₀ ρ hρ).toMeasurableEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulEquiv_apply (ρ : ℂ) (hρ : ρ ≠ 0) (z : ℂ) : mulEquiv ρ hρ z = ρ * z := rfl
 
+/- English proof (translation)
+Establish `h : ⇑(mulEquiv ρ hρ) = fun z => ρ * z` using `funext (mulEquiv_apply ρ hρ)`. Rewrite using `[h]`. Conclude with `map_mul_volume ρ hρ`.
+-/
 theorem map_mulEquiv (ρ : ℂ) (hρ : ρ ≠ 0) :
     Measure.map (mulEquiv ρ hρ) volume = ENNReal.ofReal ((‖ρ‖ ^ 2)⁻¹) • (volume : Measure ℂ) := by
   have h : ⇑(mulEquiv ρ hρ) = fun z => ρ * z := funext (mulEquiv_apply ρ hρ)
@@ -35,12 +46,18 @@ theorem map_mulEquiv (ρ : ℂ) (hρ : ρ ≠ 0) :
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Establish `h` using `integral_map_equiv (μ := (volume : Measure ℂ)) (mulEquiv ρ hρ) g`. Rewrite `h` using `[map_mulEquiv, integral_smul_measure, ENNReal.toReal_ofReal (by positivity)]`. Conclude with `h.symm`.
+-/
 theorem integral_comp_mul_C (g : ℂ → E) (ρ : ℂ) (hρ : ρ ≠ 0) :
     ∫ z, g (ρ * z) = (‖ρ‖ ^ 2)⁻¹ • ∫ z, g z := by
   have h := integral_map_equiv (μ := (volume : Measure ℂ)) (mulEquiv ρ hρ) g
   rw [map_mulEquiv, integral_smul_measure, ENNReal.toReal_ofReal (by positivity)] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `h1 : MemLp f p (Measure.map (mulEquiv ρ hρ) volume)`. Rewrite using `[map_mulEquiv]`. Conclude with `hf.smul_measure ENNReal.ofReal_ne_top`. Conclude with `h1.comp_of_map (mulEquiv ρ hρ).measurable.aemeasurable`.
+-/
 theorem memLp_comp_mul {p : ENNReal} {f : ℂ → E} (hf : MemLp f p volume) (ρ : ℂ) (hρ : ρ ≠ 0) :
     MemLp (fun z => f (ρ * z)) p volume := by
   have h1 : MemLp f p (Measure.map (mulEquiv ρ hρ) volume) := by
@@ -48,6 +65,9 @@ theorem memLp_comp_mul {p : ENNReal} {f : ℂ → E} (hf : MemLp f p volume) (ρ
     exact hf.smul_measure ENNReal.ofReal_ne_top
   exact h1.comp_of_map (mulEquiv ρ hρ).measurable.aemeasurable
 
+/- English proof (translation)
+Establish `hρ0 : 0 < ‖ρ‖` using `norm_pos_iff.mpr hρ`. Establish `e : (fun z => ‖‖ρ‖ • f (ρ * z)‖ ^ 2) = fun z => ‖ρ‖ ^ 2 * ‖f (ρ * z)‖ ^ 2`. Use function extensionality and compare the values at `z`. Rewrite using `[norm_smul, norm_norm, mul_pow]`. Rewrite using `[e, integral_const_mul, integral_comp_mul_C (fun z => ‖f z‖ ^ 2) ρ hρ, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ (by positivity), one_mul]`.
+-/
 theorem integral_norm_dil_sq (f : ℂ → E) (ρ : ℂ) (hρ : ρ ≠ 0) :
     ∫ z, ‖‖ρ‖ • f (ρ * z)‖ ^ 2 = ∫ z, ‖f z‖ ^ 2 := by
   have hρ0 : 0 < ‖ρ‖ := norm_pos_iff.mpr hρ
@@ -57,13 +77,42 @@ theorem integral_norm_dil_sq (f : ℂ → E) (ρ : ℂ) (hρ : ρ ≠ 0) :
   rw [e, integral_const_mul, integral_comp_mul_C (fun z => ‖f z‖ ^ 2) ρ hρ, smul_eq_mul, ← mul_assoc,
     mul_inv_cancel₀ (by positivity), one_mul]
 
+/- English proof (translation)
+The claim follows from `(memLp_comp_mul hf ρ hρ).const_smul ‖ρ‖`.
+-/
 theorem memLp_dil {f : ℂ → E} (hf : MemLp f 2 volume) (ρ : ℂ) (hρ : ρ ≠ 0) :
     MemLp (fun z => ‖ρ‖ • f (ρ * z)) 2 volume :=
   (memLp_comp_mul hf ρ hρ).const_smul ‖ρ‖
 
+/- English proof (translation)
+The claim follows from `(memLp_two_iff_integrable_sq_norm hu.1).1 hu`.
+-/
 theorem integrable_sq_of_memLp {u : ℂ → E} (hu : MemLp u 2 volume) : Integrable (fun z => ‖u z‖ ^ 2) volume :=
   (memLp_two_iff_integrable_sq_norm hu.1).1 hu
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `hgc.bounded_above_of_compact_support hgs`. Take `⟨R, hR⟩` from `hgs.isCompact.isBounded.subset_closedBall (0 : ℂ)`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 0)`. Establish `hζ0 : 0 < ‖ζ‖` using `norm_pos_iff.mpr hζ`. Establish `hzero : ∀ w : ℂ, max R 0 < ‖w‖ → g w = 0`.
+
+Introduce `w hw`. Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hmem`. Establish `h1` using `hR hmem`. Rewrite `h1` using `[Metric.mem_closedBall, dist_zero_right]`.
+
+Combine the linear relations using `[le_max_left R 0]`. Establish `hR0 : 0 ≤ max R 0` using `le_max_right R 0`. Establish `hr0 : 0 ≤ 2 * max R 0 / ‖ζ‖` using `by positivity`. Establish `hlim` using `tendsto_integral_filter_of_dominated_convergence (F := fun ρ z => ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2) (f := fun z => ‖‖ζ‖ • g (ζ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2) (μ := volume) (l := 𝓝 ζ) ((Metric.closedBall (0 : ℂ) (2 * max R 0 / ‖ζ‖)).indicator fun _ => (3 * ‖ζ‖ * M) ^ 2) ?_ ?_ …`. Simplify using `using hlim`.
+
+Use `Filter.Eventually.of_forall fun ρ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun z => ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2` using `by fun_prop`. Conclude with `hc.aestronglyMeasurable`. Establish `hball : Metric.ball ζ (‖ζ‖ / 2) ∈ 𝓝 ζ` using `Metric.ball_mem_nhds ζ (by positivity) filter_upwards [hball] with ρ hρ`. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations.
+
+Rewrite `hρ` using `[Metric.mem_ball, dist_eq_norm]`. Establish `hρlo : ‖ζ‖ / 2 ≤ ‖ρ‖`. Establish `h1` using `norm_sub_norm_le ζ ρ`. Rewrite `h1` using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hρhi : ‖ρ‖ ≤ 2 * ‖ζ‖`. Establish `h1` using `norm_le_insert' ρ ζ`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Distinguish the cases in `hz : z ∈ Metric.closedBall (0 : ℂ) (2 * max R 0 / ‖ζ‖)`.
+
+Rewrite using `[Set.indicator_of_mem hz]`. Establish `h1 : ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ≤ 3 * ‖ζ‖ * M`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul, norm_smul, norm_norm, norm_norm]`. Use `_ ≤ 2 * ‖ζ‖ * M + ‖ζ‖ * M := add_le_add (mul_le_mul hρhi (hM _) (norm_nonneg _) (by positivity)) (mul_le_mul_of_nonneg_left (hM _) (norm_nonneg _))`.
+
+Use `_ = 3 * ‖ζ‖ * M := by ring`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Rewrite using `[Set.indicator_of_notMem hz]`. Rewrite `hz` using `[Metric.mem_closedBall, dist_zero_right, not_le]`. Establish `e1 : g (ρ * z) = 0`.
+
+Apply `hzero` to reduce the goal to its premises. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : g (ζ * z) = 0`. Apply `hzero` to reduce the goal to its premises.
+
+Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2]`. Simplify using the standard rewrite rules. Conclude with `(integrableOn_const measure_closedBall_lt_top.ne).integrable_indicator Metric.isClosed_closedBall.measurableSet`.
+
+Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations. Establish `hc : Continuous fun ρ : ℂ => ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2` using `by fun_prop`. Conclude with `hc.tendsto ζ`.
+-/
 theorem tendsto_dil_cpt (g : ℂ → E) (hgc : Continuous g) (hgs : HasCompactSupport g) (ζ : ℂ) (hζ : ζ ≠ 0) :
     Tendsto (fun ρ : ℂ => ∫ z, ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2) (𝓝 ζ) (𝓝 0) := by
   obtain ⟨M, hM⟩ := hgc.bounded_above_of_compact_support hgs
@@ -134,6 +183,27 @@ theorem tendsto_dil_cpt (g : ℂ → E) (hgc : Continuous g) (hgs : HasCompactSu
     have hc : Continuous fun ρ : ℂ => ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2 := by fun_prop
     exact hc.tendsto ζ
 
+/- English proof (translation)
+Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Establish `hf' : MemLp f (ENNReal.ofReal 2) volume` using `by simpa using hf`. Take `⟨g, hgs, hfg, hgc, hgm⟩` from `hf'.exists_hasCompactSupport_integral_rpow_sub_le two_pos (ε := ε / 12) (by positivity)`. Establish `hfg' : ∫ z, ‖f z - g z‖ ^ 2 ≤ ε / 12`.
+
+Establish `e : (fun z => ‖f z - g z‖ ^ (2 : ℝ)) = fun z => ‖f z - g z‖ ^ 2`. Use function extensionality and compare the values at `z`. Conclude with `Real.rpow_two _`. Rewrite `hfg` using `[e]`. Conclude with `hfg`.
+
+Establish `hgm2 : MemLp g 2 volume` using `by simpa using hgm`. Establish `hT` using `tendsto_dil_cpt g hgc hgs ζ hζ`. Rewrite `hT` using `[Metric.tendsto_nhds]`. Use `filter_upwards [hT (ε / 6) (by positivity), eventually_ne_nhds hζ] with ρ hρT hρ0`. Establish `hnn : ∀ (h : ℂ → ℝ), 0 ≤ ∫ z, ‖h z‖ ^ 2` using `fun h => integral_nonneg fun _ => by positivity`.
+
+Rewrite `hρT`, the goal using `[Real.dist_eq, sub_zero, abs_of_nonneg (integral_nonneg fun _ => by positivity)]`. Establish `h3 : ∀ a b c : E, ‖a + b + c‖ ^ 2 ≤ 3 * (‖a‖ ^ 2 + ‖b‖ ^ 2 + ‖c‖ ^ 2)`. Introduce `a b c`. Establish `h1` using `norm_add₃_le (a := a) (b := b) (c := c)`. Establish `h2 : ‖a + b + c‖ ^ 2 ≤ (‖a‖ + ‖b‖ + ‖c‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`.
+
+Use polynomial arithmetic with `[sq_nonneg (‖a‖ - ‖b‖), sq_nonneg (‖b‖ - ‖c‖), sq_nonneg (‖a‖ - ‖c‖)]`. Establish `hdfg : MemLp (fun z => f z - g z) 2 volume` using `hf.sub hgm2`. Establish `hdgf : MemLp (fun z => g z - f z) 2 volume` using `hgm2.sub hf`. Establish `iA` using `integrable_sq_of_memLp (memLp_dil hdfg ρ hρ0)`. Establish `iB` using `integrable_sq_of_memLp ((memLp_dil hgm2 ρ hρ0).sub (memLp_dil hgm2 ζ hζ))`.
+
+Establish `iC` using `integrable_sq_of_memLp (memLp_dil hdgf ζ hζ)`. Establish `iL` using `integrable_sq_of_memLp ((memLp_dil hf ρ hρ0).sub (memLp_dil hf ζ hζ))`. Establish `hA` using `integral_norm_dil_sq (fun w => f w - g w) ρ hρ0`. Establish `hC` using `integral_norm_dil_sq (fun w => g w - f w) ζ hζ`. Establish `hgf : ∫ z, ‖g z - f z‖ ^ 2 = ∫ z, ‖f z - g z‖ ^ 2`.
+
+Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[norm_sub_rev]`. Establish `hmono : ∫ z, ‖‖ρ‖ • f (ρ * z) - ‖ζ‖ • f (ζ * z)‖ ^ 2 ≤ ∫ z, 3 * (‖‖ρ‖ • (f (ρ * z) - g (ρ * z))‖ ^ 2 + ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2 + ‖‖ζ‖ • (g (ζ * z) - f (ζ * z))‖ ^ 2)`. Use `integral_mono iL (((iA.add iB).add iC).const_mul 3) fun z => ?_` and prove the remaining obligations.
+
+Establish `e : ‖ρ‖ • f (ρ * z) - ‖ζ‖ • f (ζ * z) = ‖ρ‖ • (f (ρ * z) - g (ρ * z)) + (‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)) + ‖ζ‖ • (g (ζ * z) - f (ζ * z))`. Rewrite using `[smul_sub, smul_sub]`. Normalize the expressions using the abelian group laws. Simplify using `only`. Rewrite using `[e]`.
+
+Conclude with `h3 _ _ _`. Establish `hs1 : ∫ z, (‖‖ρ‖ • (f (ρ * z) - g (ρ * z))‖ ^ 2 + ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2 + ‖‖ζ‖ • (g (ζ * z) - f (ζ * z))‖ ^ 2) = (∫ z, (‖‖ρ‖ • (f (ρ * z) - g (ρ * z))‖ ^ 2 + ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2)) + ∫ z, ‖‖ζ‖ • (g (ζ * z) - f (ζ * z))‖ ^ 2` using `integral_add (iA.add iB) iC`. Establish `hs2 : ∫ z, (‖‖ρ‖ • (f (ρ * z) - g (ρ * z))‖ ^ 2 + ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2) = (∫ z, ‖‖ρ‖ • (f (ρ * z) - g (ρ * z))‖ ^ 2) + ∫ z, ‖‖ρ‖ • g (ρ * z) - ‖ζ‖ • g (ζ * z)‖ ^ 2` using `integral_add iA iB`. Rewrite `hmono` using `[integral_const_mul, hs1, hs2]`. Rewrite `hmono` using `[hA, hC, hgf]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tendsto_dil (f : ℂ → E) (hf : MemLp f 2 volume) (ζ : ℂ) (hζ : ζ ≠ 0) :
     Tendsto (fun ρ : ℂ => ∫ z, ‖‖ρ‖ • f (ρ * z) - ‖ζ‖ • f (ζ * z)‖ ^ 2) (𝓝 ζ) (𝓝 0) := by
   rw [Metric.tendsto_nhds]
@@ -193,6 +263,17 @@ theorem tendsto_dil (f : ℂ → E) (hf : MemLp f 2 volume) (ζ : ℂ) (hζ : ζ
   rw [hA, hC, hgf] at hmono
   linarith
 
+/- English proof (translation)
+Establish `hT` using `tendsto_dil c hc ζ hζ`. Use `set K : ℝ := (∫ z, ‖b z‖ ^ (2 : ℝ)) ^ (1 / (2 : ℝ))`. Establish `hG : Tendsto (fun ρ : ℂ => K * (∫ z, ‖‖ρ‖ • c (ρ * z) - ‖ζ‖ • c (ζ * z)‖ ^ 2) ^ (1 / (2 : ℝ))) (𝓝 ζ) (𝓝 0)`. Establish `h1` using `((Real.continuous_rpow_const (by norm_num : (0 : ℝ) ≤ 1 / 2)).tendsto 0).comp hT`. Rewrite `h1` using `[Real.zero_rpow (by norm_num)]`.
+
+Simplify using `using h1.const_mul K`. Use `squeeze_zero' (Filter.Eventually.of_forall fun ρ => integral_nonneg fun _ => norm_nonneg _) ?_ hG` and prove the remaining obligations. Use `filter_upwards [eventually_ne_nhds hζ] with ρ hρ0`. Establish `hb2 : MemLp b (ENNReal.ofReal 2) volume` using `by simpa using hb`. Establish `hd : MemLp (fun z => ‖ρ‖ • c (ρ * z) - ‖ζ‖ • c (ζ * z)) 2 volume` using `(memLp_dil hc ρ hρ0).sub (memLp_dil hc ζ hζ)`.
+
+Establish `hd2 : MemLp (fun z => ‖ρ‖ • c (ρ * z) - ‖ζ‖ • c (ζ * z)) (ENNReal.ofReal 2) volume`. Simplify using `using hd`. Establish `hint : Integrable (fun z => ‖b z‖ * ‖‖ρ‖ • c (ρ * z) - ‖ζ‖ • c (ζ * z)‖) volume` using `hb.norm.integrable_mul hd.norm`. Establish `hpt : ∀ z, ‖⟪b z, ((‖ρ‖ : ℝ) : ℂ) • c (ρ * z)⟫_ℂ - ⟪b z, ((‖ζ‖ : ℝ) : ℂ) • c (ζ * z)⟫_ℂ‖ ≤ ‖b z‖ * ‖‖ρ‖ • c (ρ * z) - ‖ζ‖ • c (ζ * z)‖`. Introduce `z`.
+
+Rewrite using `[← inner_sub_right, Complex.coe_smul, Complex.coe_smul]`. Conclude with `norm_inner_le_norm _ _`. Combine the equalities or inequalities in the displayed calculation. Use `congr 2`. Use `congr 1`.
+
+Use function extensionality and compare the values at `z`. Conclude with `Real.rpow_two _`.
+-/
 theorem tendsto_inner_dil {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (b c : ℂ → H)
     (hb : MemLp b 2 volume) (hc : MemLp c 2 volume) (ζ : ℂ) (hζ : ζ ≠ 0) :
     Tendsto (fun ρ : ℂ => ∫ z, ‖⟪b z, ((‖ρ‖ : ℝ) : ℂ) • c (ρ * z)⟫_ℂ - ⟪b z, ((‖ζ‖ : ℝ) : ℂ) • c (ζ * z)⟫_ℂ‖)
@@ -230,6 +311,9 @@ theorem tendsto_inner_dil {H : Type} [NormedAddCommGroup H] [InnerProductSpace �
         funext z
         exact Real.rpow_two _
 
+/- English proof (translation)
+Establish `h` using `tendsto_dil ab hab 1 one_ne_zero`. Use `h.congr fun ρ => ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[Real.norm_eq_abs, sq_abs, norm_one, one_smul, one_mul, smul_eq_mul]`.
+-/
 theorem tendsto_dil_real (ab : ℂ → ℝ) (hab : MemLp ab 2 volume) :
     Tendsto (fun ρ : ℂ => ∫ z, (‖ρ‖ * ab (ρ * z) - ab z) ^ 2) (𝓝 1) (𝓝 0) := by
   have h := tendsto_dil ab hab 1 one_ne_zero

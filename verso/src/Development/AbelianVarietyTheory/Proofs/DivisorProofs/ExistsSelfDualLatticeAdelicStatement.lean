@@ -5,6 +5,9 @@ import Formalism.SatakeDualWeyl.Statement
 open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MaxEvenLat.exists_maximal_even_lattice | exact GlobalTheory.MaxEvenLat.exists_maximal_even_lattice | (intros; apply GlobalTheory.MaxEvenLat.exists_maximal_even_lattice <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_self_dual_lattice_adelic : ∀ (A : Type) [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [T2Space A] (σ : A →+* A), (∀ a, σ (σ a) = a) →
     ∀ R : Subring A, IsCompact (R : Set A) → IsOpen (R : Set A) → (∀ a ∈ R, σ a ∈ R) → (∀ a : A, ∃ N : ℕ, N ≠ 0 ∧ (N : A) * a ∈ R) →
     (∀ N : ℕ, N ≠ 0 → IsUnit (N : A)) →

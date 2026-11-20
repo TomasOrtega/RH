@@ -9,6 +9,17 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hequiv : Equivalence fun x y : G => ∃ g, y = g⁻¹ * x * θ g`. Use `⟨fun x => ⟨1, by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x y ⟨g, rfl⟩`. Conclude with `⟨g⁻¹, by simp [mul_assoc]⟩`. Introduce and unpack `x y z ⟨g, rfl⟩ ⟨h, rfl⟩`.
+
+Conclude with `⟨g * h, by simp [mul_assoc]⟩`. Establish `hrep : ∀ c : TwCl θ, (Quot.mk _ c.rep : TwCl θ) = c` using `fun c => Quot.out_eq c`. Establish `hex : ∀ x y : G, (Quot.mk _ x : TwCl θ) = Quot.mk _ y → ∃ g, y = g⁻¹ * x * θ g` using `fun x y h => hequiv.eqvGen_iff.1 (Quot.eqvGen_exact h)`. Take `⟨c₀, hc₀⟩ : ∃ c₀ : TwCl θ, c₀ = Quot.mk _ x₀` from `⟨_, rfl⟩`. Rewrite using `[finsum_eq_single _ c₀]`.
+
+Take `⟨g, hg⟩` from `hex _ _ ((hrep c₀).trans hc₀).symm`. Establish `hm : c₀.rep ∈ S` using `hg ▸ hS g`. Rewrite using `[if_pos hm, hT _ hm, if_pos ⟨g, hg⟩]`. Simplify using the standard rewrite rules. Introduce `c hc`.
+
+Distinguish the cases in `hm : c.rep ∈ S`. Rewrite using `[if_pos hm, hT _ hm, if_neg, mul_zero]`. Introduce and unpack `⟨g, hg⟩`. Apply `hc` to reduce the goal to its premises. Rewrite using `[← hrep c, hc₀]`.
+
+Conclude with `(Quot.sound ⟨g, hg⟩).symm`. Rewrite using `[if_neg hm]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.G2.sum_one {G : Type} [Group G] (θ : G →* G) (S : Set G) (T : G → ℂ) (x₀ : G)
     (hS : ∀ g, g⁻¹ * x₀ * θ g ∈ S)
     (hT : ∀ y ∈ S, T y = if ∃ g, y = g⁻¹ * x₀ * θ g then 1 else 0) :
@@ -37,12 +48,24 @@ private theorem UpperTheory.ConvolutionTheory.G2.sum_one {G : Type} [Group G] (�
       exact (Quot.sound ⟨g, hg⟩).symm
     · rw [if_neg hm]
 
+/- English proof (translation)
+Unfold `UpperTheory.ConvolutionTheory.G3.lpol`. Rewrite using `[GlobalTheory.BCT.ThBasic.nrmL_twist hU, Units.val_mul, Matrix.charpoly_mul_comm, ← Units.val_mul, mul_inv_cancel_left]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.G2.lpol_twist {E : Type} [Field E] [NumberField E] [IsCMField E] (hU : Unr E) (n : ℕ)
     (w : Pl E) (g y : GLw n w) :
     UpperTheory.ConvolutionTheory.G3.lpol w (g⁻¹ * y * thL n w g) = UpperTheory.ConvolutionTheory.G3.lpol w y := by
   unfold UpperTheory.ConvolutionTheory.G3.lpol
   rw [GlobalTheory.BCT.ThBasic.nrmL_twist hU, Units.val_mul, Matrix.charpoly_mul_comm, ← Units.val_mul, mul_inv_cancel_left]
 
+/- English proof (translation)
+Introduce `E _ _ _ hU a b P₁ P₂ h₁ h₂`. Take `⟨δ₁, e₁⟩` from `GlobalTheory.BCT.KapMul.exists_norm E h₁`. Take `⟨δ₂, e₂⟩` from `GlobalTheory.BCT.KapMul.exists_norm E h₂`. Establish `g₁ : UpperTheory.ConvolutionTheory.G3.gpol δ₁ = P₁` using `e₁`. Establish `g₂ : UpperTheory.ConvolutionTheory.G3.gpol δ₂ = P₂` using `e₂`.
+
+Substitute `g₁ g₂` using the available equality. Use `filter_upwards [UpperTheory.ConvolutionTheory.G3.unitAe E hU a b δ₁ δ₂ h₁.2.2.1 h₂.2.2.1] with w hw`. Establish `l₁ : UpperTheory.ConvolutionTheory.G3.lpol w (locEl a w δ₁) = atPl w (UpperTheory.ConvolutionTheory.G3.gpol δ₁)` using `GlobalTheory.BCT.ThBasic.charpoly_nrmL hU a w δ₁`. Establish `l₂ : UpperTheory.ConvolutionTheory.G3.lpol w (locEl b w δ₂) = atPl w (UpperTheory.ConvolutionTheory.G3.gpol δ₂)` using `GlobalTheory.BCT.ThBasic.charpoly_nrmL hU b w δ₂`. Unfold `stTw2 clSum`.
+
+Use `UpperTheory.ConvolutionTheory.G2.sum_one ((thL a w).prodMap (thL b w)) _ (fun y => twOrb ((thL a w).prodMap (thL b w)) ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) y (UpperTheory.ConvolutionTheory.G2.unit2 a b w)) (locEl a w δ₁, locEl b w δ₂) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨k₁, k₂⟩`. Conclude with `⟨(UpperTheory.ConvolutionTheory.G2.lpol_twist hU a w k₁ _).trans l₁, (UpperTheory.ConvolutionTheory.G2.lpol_twist hU b w k₂ _).trans l₂⟩`. Introduce and unpack `⟨y₁, y₂⟩ ⟨hy₁, hy₂⟩`. Use `(hw y₁ y₂ hy₁ hy₂).trans (if_congr ?_ rfl rfl)` and prove the remaining obligations.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨k₁, r₁⟩, ⟨k₂, r₂⟩⟩`. Conclude with `⟨(k₁, k₂), Prod.ext r₁ r₂⟩`. Introduce and unpack `⟨k, r⟩`. Conclude with `⟨⟨k.1, congrArg Prod.fst r⟩, ⟨k.2, congrArg Prod.snd r⟩⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.G2.stAA :
     UpperTheory.ConvolutionTheory.G2.StAA := by
   intro E _ _ _ hU a b P₁ P₂ h₁ h₂

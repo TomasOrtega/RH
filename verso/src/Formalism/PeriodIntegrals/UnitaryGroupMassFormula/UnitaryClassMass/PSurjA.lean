@@ -13,6 +13,9 @@ section Fam
 variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι] {n : Type} [Fintype n]
   [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Repeatedly rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, he i, ite_smul, zero_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem fam_mul (e : ι → R) (he : ∀ i j, e i * e j = if i = j then e i else 0)
     (A B : ι → Matrix n n R) :
     (∑ i, e i • A i) * (∑ j, e j • B j) = ∑ i, e i • (A i * B i) := by
@@ -22,9 +25,15 @@ theorem fam_mul (e : ι → R) (he : ∀ i j, e i * e j = if i = j then e i else
   simp_rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, he i, ite_smul, zero_smul]
   simp
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_smul, hs, one_smul]`.
+-/
 theorem fam_one (e : ι → R) (hs : ∑ i, e i = 1) (X : Matrix n n R) : ∑ i, e i • X = X := by
   rw [← Finset.sum_smul, hs, one_smul]
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `[cT, Matrix.sum_apply, map_sum, Matrix.smul_apply, map_mul]`.
+-/
 theorem cT_fam (s : R →+* R) (e : ι → R) (A : ι → Matrix n n R) :
     cT s (∑ i, e i • A i) = ∑ i, s (e i) • cT s (A i) := by
   ext a c
@@ -45,16 +54,25 @@ abbrev finE : AF F ⊗[F] E →ₐ[F] Af F ⊗[F] E := Algebra.TensorProduct.map
 def incM (U : GL (Fin M) E) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E) :=
   (U : Matrix (Fin M) (Fin M) E).map (inclR (AF F))
 
+/- English proof (translation)
+Unfold `incM`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem incM_mul_inv (U : GL (Fin M) E) : incM (F := F) U * incM (F := F) U⁻¹ = 1 := by
   unfold incM
   rw [← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Unfold `incM`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem incM_inv_mul (U : GL (Fin M) E) : incM (F := F) U⁻¹ * incM (F := F) U = 1 := by
   unfold incM
   rw [← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Use `PI.UnitaryGroupMassFormula.UJClassFin.bc_mem (F := F) σ J U hU` as an intermediate fact. Conclude with `this`.
+-/
 theorem incM_unitary (U : GL (Fin M) E) (hU : U ∈ UJ (σ : E →+* E) J) :
     cT (sigR (AF F) σ) (incM (F := F) U) * JR (AF F) J * incM (F := F) U = JR (AF F) J := by
   have := PI.UnitaryGroupMassFormula.UJClassFin.bc_mem (F := F) σ J U hU
@@ -73,6 +91,11 @@ def patchGL (e : ι → AF F ⊗[F] E) (he : ∀ i j, e i * e j = if i = j then 
     simp_rw [incM_inv_mul]
     exact fam_one e hs 1
 
+/- English proof (translation)
+Use `show cT (sigR (AF F) σ) (∑ i, e i • incM (γ i)) * JR (AF F) J * (∑ i, e i • incM (γ i)) = JR (AF F) J`. Rewrite using `[cT_fam]`. Repeatedly rewrite using `[hσe]`. Use `conv_lhs => rw [← fam_one e hs (JR (AF F) J)]`. Rewrite using `[fam_mul e he, fam_mul e he]`.
+
+Repeatedly rewrite using `[incM_unitary σ J _ (hγ _)]`. Conclude with `fam_one e hs _`.
+-/
 theorem patchGL_mem (e : ι → AF F ⊗[F] E) (he : ∀ i j, e i * e j = if i = j then e i else 0)
     (hs : ∑ i, e i = 1) (hσe : ∀ i, sigR (AF F) σ (e i) = e i) (γ : ι → GL (Fin M) E)
     (hγ : ∀ i, γ i ∈ UJ (σ : E →+* E) J) : patchGL e he hs γ ∈ HR (AF F) σ J := by
@@ -89,11 +112,17 @@ def patchHA (e : ι → AF F ⊗[F] E) (he : ∀ i j, e i * e j = if i = j then 
     (hγ : ∀ i, γ i ∈ UJ (σ : E →+* E) J) : HA (AF F) σ J :=
   (⟨patchGL e he hs γ, patchGL_mem σ J e he hs hσe γ hγ⟩ : HR (AF F) σ J)
 
+/- English proof (translation)
+Use `show Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) ((1 : AF F) ⊗ₜ[F] x) = (1 : Af F) ⊗ₜ[F] x`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+-/
 theorem finE_inclR (x : E) : finE F E (inclR (AF F) x) = inclR (Af F) x := by
   show Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) ((1 : AF F) ⊗ₜ[F] x) = (1 : Af F) ⊗ₜ[F] x
   rw [Algebra.TensorProduct.map_tmul, map_one]
   rfl
 
+/- English proof (translation)
+Establish `h0 : finMat σ J (patchHA σ J e he hs hσe γ hγ)⁻¹ = (∑ i, e i • incM (F` using `F) (γ i)⁻¹).map (finE F E) := rfl`. Rewrite using `[h0]`. Use extensionality with `a c`. Simplify using `[Matrix.map_apply, Matrix.sum_apply, incM, map_sum, map_mul, finE_inclR]`.
+-/
 theorem finMat_patch_inv (e : ι → AF F ⊗[F] E) (he : ∀ i j, e i * e j = if i = j then e i else 0)
     (hs : ∑ i, e i = 1) (hσe : ∀ i, sigR (AF F) σ (e i) = e i) (γ : ι → GL (Fin M) E)
     (hγ : ∀ i, γ i ∈ UJ (σ : E →+* E) J) :
@@ -105,6 +134,9 @@ theorem finMat_patch_inv (e : ι → AF F ⊗[F] E) (he : ∀ i j, e i * e j = i
   ext a c
   simp [Matrix.map_apply, Matrix.sum_apply, incM, map_sum, map_mul, finE_inclR]
 
+/- English proof (translation)
+Rewrite using `[finMat_patch_inv, Matrix.sum_mulVec]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec, PI.UnitaryGroupMassFormula.UJClassFin.map_mulVec_vinc]`.
+-/
 theorem patch_mulVec (e : ι → AF F ⊗[F] E) (he : ∀ i j, e i * e j = if i = j then e i else 0)
     (hs : ∑ i, e i = 1) (hσe : ∀ i, sigR (AF F) σ (e i) = e i) (γ : ι → GL (Fin M) E)
     (hγ : ∀ i, γ i ∈ UJ (σ : E →+* E) J) (x : Fin M → E) :
@@ -120,6 +152,17 @@ section Split
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {M : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, t, ht, rfl⟩` from `hz`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+
+Take `⟨c, hc, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨a * c, PI.UnitaryGroupMassFormula.UJClassFin.intAf_mul ha hc, t • x, hL t ht x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, smul_eq_mul]`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add y w _ _ h1 h2 => rw [smul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h1 => rw [smul_neg]`. Conclude with `neg_mem h1`.
+
+Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add z w _ _ h1 h2 => rw [add_smul]`. Conclude with `add_mem h1 h2`. Consider the case `neg z _ h1 => rw [neg_smul]`.
+
+Conclude with `neg_mem h1`.
+-/
 theorem Oh_smul_latHat (L : Set (Fin M → E)) (hL : ∀ e : E, IsIntegral ℤ e → ∀ x ∈ L, e • x ∈ L)
     {z : Af F ⊗[F] E} (hz : z ∈ PI.UnitaryGroupMassFormula.UJClassFin.Oh F E) {y : Fin M → Af F ⊗[F] E}
     (hy : y ∈ latHat F E L) : z • y ∈ latHat F E L := by
@@ -141,6 +184,11 @@ theorem Oh_smul_latHat (L : Set (Fin M → E)) (hL : ∀ e : E, IsIntegral ℤ e
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h j`. Establish `h1` using `Oh_smul_latHat L hL (hO j) h`. Establish `e : f j • ∑ i, f i • y i = f j • y j`. Rewrite using `[Finset.smul_sum]`.
+
+Repeatedly rewrite using `[smul_smul, hf j, ite_smul, zero_smul]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `AddSubgroup.sum_mem _ (fun i _ => h i)`.
+-/
 theorem latHat_split (L : Set (Fin M → E)) (hL : ∀ e : E, IsIntegral ℤ e → ∀ x ∈ L, e • x ∈ L)
     (f : ι → Af F ⊗[F] E) (hf : ∀ i j, f i * f j = if i = j then f i else 0)
     (hO : ∀ i, f i ∈ PI.UnitaryGroupMassFormula.UJClassFin.Oh F E) (y : ι → Fin M → Af F ⊗[F] E) :
@@ -158,6 +206,11 @@ theorem latHat_split (L : Set (Fin M → E)) (hL : ∀ e : E, IsIntegral ℤ e �
 
 end Split
 
+/- English proof (translation)
+Introduce `e he x hx`. Use `show ∑ i, (e • x) i • b i ∈ L0`. Establish `: ∑ i, (e • x) i • b i = e • ∑ i, x i • b i`. Rewrite using `[Finset.smul_sum]`. Simplify using `[smul_smul]`.
+
+Rewrite using `[this]`. Conclude with `int_smul_mem L0 he hx`.
+-/
 theorem crd_int_smul {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Module E V]
     [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V] {M : ℕ} (b : Module.Basis (Fin M) E V)
     (L0 : Submodule (𝓞 E) V) : ∀ e : E, IsIntegral ℤ e → ∀ x ∈ crdOf b L0, e • x ∈ crdOf b L0 := by
@@ -169,12 +222,18 @@ theorem crd_int_smul {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGro
   rw [this]
   exact int_smul_mem L0 he hx
 
+/- English proof (translation)
+Rewrite using `[Matrix.toLin_apply, ← Module.Basis.equivFun_symm_apply, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem equivFun_toLin {E : Type} [Field E] {V : Type} [AddCommGroup V] [Module E V] {M : ℕ}
     (b : Module.Basis (Fin M) E V) (A : Matrix (Fin M) (Fin M) E) (v : V) :
     b.equivFun (Matrix.toLin b b A v) = A.mulVec (b.equivFun v) := by
   rw [Matrix.toLin_apply, ← Module.Basis.equivFun_symm_apply, LinearEquiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← equivFun_toLin]`. Both sides reduce to the same expression.
+-/
 theorem equivFun_linOf_symm {E : Type} [Field E] {V : Type} [AddCommGroup V] [Module E V] {M : ℕ}
     (b : Module.Basis (Fin M) E V) (U : GL (Fin M) E) (v : V) :
     b.equivFun ((linOf b U).symm v) = ((U⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E).mulVec (b.equivFun v) := by

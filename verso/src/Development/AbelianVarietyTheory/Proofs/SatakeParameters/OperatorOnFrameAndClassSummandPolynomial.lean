@@ -8,6 +8,13 @@ namespace GlobalTheory.TwV.DelA
 
 open MvPolynomial
 
+/- English proof (translation)
+Use `set v : GL3Theta.FrV D N' → ℂ := fun k => y' k.1 k.2.1 k.2.2`. Establish `hmap : ∀ P : MvPolynomial (GL3Theta.Idx D N N') (MvPolynomial (GL3Theta.FrV D N') ℂ), MvPolynomial.map (MvPolynomial.eval v) P = MvPolynomial.mapAlgHom (MvPolynomial.aeval v) P` using `fun P => rfl`. Rewrite using `[hmap]`. Unfold `GL3Theta.polD polDY`. Rewrite using `[← AlgHom.comp_apply]`.
+
+Use `congr 1`. Use `MvPolynomial.algHom_ext fun k => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, MvPolynomial.aeval_X, MvPolynomial.aeval_X, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.mapAlgHom_apply]`.
+
+Use `split_ifs with h`. Simplify using `only [map_mul, MvPolynomial.map_C, MvPolynomial.map_X, MvPolynomial.C_mul]`. Simplify using `[v]`. Simplify using the standard rewrite rules.
+-/
 theorem polD_eq_map_polDY (D : D7) {N N' : ℕ} (s : D.what₂.Tau → ℂ) (Q : MvPolynomial (GL3Theta.FrV D N) ℂ)
     (y' : D.what₂.Tau → Matrix (Fin N') (Fin N') ℂ) :
     GL3Theta.polD D s Q y' =
@@ -28,6 +35,13 @@ theorem polD_eq_map_polDY (D : D7) {N N' : ℕ} (s : D.what₂.Tau → ℂ) (Q :
     simp [v]
   · simp
 
+/- English proof (translation)
+Introduce `D N N' s Q G y'`. Rewrite using `[polD_eq_map_polDY]`. Unfold `GL3Theta.applyAt0 framePol GL3Theta.evFr`. Rewrite using `[map_sum]`. Use `symm`.
+
+Rewrite using `[← Finset.sum_subset (MvPolynomial.support_map_subset (MvPolynomial.eval fun k : GL3Theta.FrV D N' => y' k.1 k.2.1 k.2.2) (polDY D s Q))]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map, map_mul, MvPolynomial.eval_C, mul_assoc]`. Introduce `α _ hα`. Rewrite `hα` using `[MvPolynomial.notMem_support_iff]`.
+
+Rewrite `hα` using `[MvPolynomial.coeff_map]`. Rewrite using `[map_mul, hα, zero_mul]`.
+-/
 theorem applyFrame : Formalism.L2.KerInert.SecondKernelDifference.ApplyFrame := by
   intro D N N' s Q G y'
   rw [polD_eq_map_polDY]
@@ -43,12 +57,18 @@ theorem applyFrame : Formalism.L2.KerInert.SecondKernelDifference.ApplyFrame := 
     rw [MvPolynomial.coeff_map] at hα
     rw [map_mul, hα, zero_mul]
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc0 Dx cX ex t u μ i c Q c' y'`. Unfold `Formalism.L2.KerInert.SecondKernelDifference.entQ`. Rewrite using `[applyFrame]`. Both sides reduce to the same expression.
+-/
 theorem entQFrame : Formalism.L2.KerInert.SecondKernelDifference.EntQFrame := by
   intro D L hT Gi Gl Kc0 Dx cX ex t u μ i c Q c' y'
   unfold Formalism.L2.KerInert.SecondKernelDifference.entQ
   rw [applyFrame]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨applyFrame, entQFrame⟩`.
+-/
 theorem applyFrame_and_entQFrame : Formalism.L2.KerInert.SecondKernelDifference.ApplyFrame ∧ Formalism.L2.KerInert.SecondKernelDifference.EntQFrame :=
   ⟨applyFrame, entQFrame⟩
 

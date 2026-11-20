@@ -9,12 +9,20 @@ open MeasureTheory NumberField Matrix Finset
 open scoped InnerProductSpace ComplexOrder ENNReal
 open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData
 
+/- English proof (translation)
+Use `⟨1, one_mem _, fun v => ?_, ?_⟩` and prove the remaining obligations. Establish `hP : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Simplify using `[uMat, Matrix.nonsing_inv_mul _ hP]`. Simplify using `[AutInst.fmat]`.
+-/
 theorem one_mem_rational_points (I : AutInst) : (1 : I.GA) ∈ I.GFset := by
   refine ⟨1, one_mem _, fun v => ?_, ?_⟩
   · have hP : IsUnit (I.P v).det := (Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)
     simp [uMat, Matrix.nonsing_inv_mul _ hP]
   · simp [AutInst.fmat]
 
+/- English proof (translation)
+Unfold `AutInst.rd`. Apply `Real.one_le_rpow` to reduce the goal to its premises. Establish `h : (1 : ℤ) ≤ |discr I.E|` using `Int.one_le_abs (NumberField.discr_ne_zero I.E)`. Establish `h2 : ((1 : ℤ) : ℝ) ≤ ((|discr I.E| : ℤ) : ℝ)` using `by exact_mod_cast h`. Simplify using `using h2`.
+
+Check the signs of the components of the expression.
+-/
 theorem one_le_discriminant_root (I : AutInst) : 1 ≤ I.rd := by
   unfold AutInst.rd
   apply Real.one_le_rpow
@@ -23,6 +31,9 @@ theorem one_le_discriminant_root (I : AutInst) : 1 ≤ I.rd := by
     simpa using h2
   · positivity
 
+/- English proof (translation)
+The claim follows from `Module.finrank_pos`.
+-/
 theorem one_le_autInst_f (I : AutInst) : 1 ≤ I.f := Module.finrank_pos
 
 structure CData : Type 1 where
@@ -101,6 +112,9 @@ def ConC (c : ℝ) : Prop :=
 
 end CData
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h X hX`. Conclude with `h X.I X.b X.lam X.g X.g₀ X.e X.H X.σ X.w X.Hs X.σs X.tens X.μf X.fund X.R X.Re X.h hX.1 hX.2.1 hX.2.2`. Introduce `h I b lam g g₀ e H _ _ _ σ w Hs _ _ _ σs tens μf _ fund R Re hh hS hC hG`. Conclude with `h { I := I, b := b, lam := lam, g := g, g₀ := g₀, e := e, H := H, σ := σ, w := w, Hs := Hs, σs := σs, tens := tens, μf := μf, fund := fund, R := R, Re := Re, h := hh } ⟨hS, hC, hG⟩`.
+-/
 theorem second_part_iff_bundles (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (A C : ℝ) :
     Conclusion2 D n₀ A C ↔ ∀ X : CData, X.HypB n₀ A → X.ConB C := by
   constructor
@@ -110,6 +124,9 @@ theorem second_part_iff_bundles (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (A 
     exact h { I := I, b := b, lam := lam, g := g, g₀ := g₀, e := e, H := H, σ := σ, w := w, Hs := Hs, σs := σs,
               tens := tens, μf := μf, fund := fund, R := R, Re := Re, h := hh } ⟨hS, hC, hG⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h X hX`. Conclude with `h X.I X.b X.lam X.g X.g₀ X.e X.H X.σ X.w X.Hs X.σs X.tens X.μf X.fund X.R X.Re X.h hX.1.1 hX.1.2.1 hX.1.2.2 hX.2.1 hX.2.2.1 hX.2.2.2`. Introduce `h I b lam g g₀ e H _ _ _ σ w Hs _ _ _ σs tens μf _ fund R Re hh hS hC hG h1 h2 h3`. Conclude with `h { I := I, b := b, lam := lam, g := g, g₀ := g₀, e := e, H := H, σ := σ, w := w, Hs := Hs, σs := σs, tens := tens, μf := μf, fund := fund, R := R, Re := Re, h := hh } ⟨⟨hS, hC, hG⟩, h1, h2, h3⟩`.
+-/
 theorem third_part_iff_bundles (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (A C c cb : ℝ) :
     PointsLemma D n₀ A C c cb ↔ ∀ X : CData, X.HypC n₀ A C cb → X.ConC c := by
   constructor
@@ -133,6 +150,11 @@ def CountedStep : Prop := ∀ T : X.L2 →L[ℂ] X.L2, X.IsOp T → IsStarProjec
 def CuspStep : Prop := ∀ T : X.L2 →L[ℂ] X.L2, X.IsOp T → IsStarProjection T →
   ∀ Fv ∈ X.rg T, X.I.IsCuspFn (X.I.muA X.μf) (X.I.ext Fv)
 
+/- English proof (translation)
+Unfold `phOf phLoc fdegAll`. Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Use `push_cast`. Both sides reduce to the same expression.
+
+Conclude with `map_prod (starRingEnd ℂ) _ _`.
+-/
 theorem phOf_eq_prod (g : X.I.Ginf) :
     phOf X.I X.σ X.w g = ∏ v, phLoc (X.I.ε v) (X.σ v) (X.w v) (g v) := by
   unfold phOf phLoc fdegAll
@@ -141,6 +163,9 @@ theorem phOf_eq_prod (g : X.I.Ginf) :
   · push_cast; rfl
   · exact map_prod (starRingEnd ℂ) _ _
 
+/- English proof (translation)
+Establish `h` using `Integrable.fintype_prod_dep (μ := fun v => Formalism.REAL.muG (X.I.ε v)) (f := fun v => phLoc (X.I.ε v) (X.σ v) (X.w v)) hloc`. Conclude with `h.congr (Filter.Eventually.of_forall fun g => (X.phOf_eq_prod g).symm)`.
+-/
 theorem phOf_integrable
     (hloc : ∀ v, Integrable (phLoc (X.I.ε v) (X.σ v) (X.w v)) (Formalism.REAL.muG (X.I.ε v))) :
     Integrable (phOf X.I X.σ X.w) (Measure.pi fun v => Formalism.REAL.muG (X.I.ε v)) := by
@@ -153,6 +178,9 @@ end CData
 def StepsB (n₀ : ℕ) (A C : ℝ) : Prop :=
   ∀ X : CData, X.HypB n₀ A → X.GapAboveThreeHalvesPower → X.GapAboveSquareRootThreshold C → X.ProjStep ∧ X.CountedStep ∧ X.CuspStep
 
+/- English proof (translation)
+Apply `X.phOf_integrable` to reduce the goal to its premises. Introduce `v`. Conclude with `hL X.I.n (X.I.ε v) (X.lam v) (hX.1.2.2.2.2.1 v) (X.H v) (X.σ v) (hX.2.1.1 v) (X.w v) (hX.2.1.2.1 v) X.h (hX.2.2 v) (h1 v)`.
+-/
 theorem spherical_function_integrable_of_local (D : Formalism.BasicNotions.D7) (hL : MatrixCoefficientIntegrable D) (n₀ : ℕ) (A : ℝ) (X : CData) (hX : X.HypB n₀ A)
     (h1 : X.GapAboveThreeHalvesPower) : Integrable (phOf X.I X.σ X.w) (Measure.pi fun v => Formalism.REAL.muG (X.I.ε v)) := by
   apply X.phOf_integrable
@@ -160,6 +188,13 @@ theorem spherical_function_integrable_of_local (D : Formalism.BasicNotions.D7) (
   exact hL X.I.n (X.I.ε v) (X.lam v) (hX.1.2.2.2.2.1 v) (X.H v) (X.σ v) (hX.2.1.1 v) (X.w v) (hX.2.1.2.1 v) X.h
     (hX.2.2 v) (h1 v)
 
+/- English proof (translation)
+Introduce `hadm hdec hloc`. Rewrite using `[second_part_iff_bundles]`. Introduce `X hX`. Use `⟨fun h1 => ?_, fun hP T hT => ?_⟩` and prove the remaining obligations. Apply `X.phOf_integrable` to reduce the goal to its premises.
+
+Introduce `v`. Conclude with `(hloc X.I.n (X.I.ε v) (X.lam v) (hX.1.2.2.2.2.1 v) (X.H v) (X.σ v) (hX.2.1.1 v) (X.w v) (hX.2.1.2.1 v) X.h (hX.2.2 v) (h1 v)).1`. Take `⟨s1, s2, s3⟩` from `hS hadm hdec hloc X hX hP.1 hP.2`. Establish `hp` using `s1 T hT`. Take `⟨κ, -⟩` from `s2 T hT hp`.
+
+Establish `hfd : FiniteDimensional ℂ (X.I.eHom X.σs X.μf X.fund X.R X.Re)` using `hadm.2.2 X.I n₀ A X.b X.lam X.g X.g₀ X.e X.H X.σ X.w X.Hs X.σs X.tens X.μf X.fund X.R X.Re hX.1 hX.2.1`. Conclude with `⟨hp, Module.Finite.equiv κ, κ.finrank_eq.symm, s3 T hT hp⟩`.
+-/
 theorem hodgeTateFromSandwich_of_admissibility_implication (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (A Cb : ℝ)
     (hS : (adm1 D ∧ adm6 D ∧ adm8 D) → DiscreteSeriesDecayBound D → LocalProjectorRealPlace D → StepsB n₀ A Cb) : HodgeTateFromSandwich D n₀ A Cb := by
   intro hadm hdec hloc
@@ -177,6 +212,9 @@ theorem hodgeTateFromSandwich_of_admissibility_implication (D : Formalism.BasicN
       hadm.2.2 X.I n₀ A X.b X.lam X.g X.g₀ X.e X.H X.σ X.w X.Hs X.σs X.tens X.μf X.fund X.R X.Re hX.1 hX.2.1
     exact ⟨hp, Module.Finite.equiv κ, κ.finrank_eq.symm, s3 T hT hp⟩
 
+/- English proof (translation)
+Introduce `A hA`. Take `⟨n₀, C₀, h⟩` from `hS A hA`. Conclude with `⟨n₀, C₀, fun Cb hCb D => hodgeTateFromSandwich_of_admissibility_implication D n₀ A Cb (h Cb hCb D)⟩`.
+-/
 theorem closed_second_part_of_estimates
     (hS : ∀ A : ℝ, 1 ≤ A → ∃ (n₀ : ℕ) (C₀ : ℝ), ∀ Cb ≥ C₀, ∀ D : Formalism.BasicNotions.D7,
       (adm1 D ∧ adm6 D ∧ adm8 D) → DiscreteSeriesDecayBound D → LocalProjectorRealPlace D → StepsB n₀ A Cb) : ClosedFormProjectorBound := by
@@ -210,6 +248,11 @@ def DeepInt (A₁ : ℝ) (Mod : Set X.I.GA) : Prop :=
 def Regions (c₁ A₁ : ℝ) : Prop :=
   ∃ Mod : Set X.I.GA, MeasurableSet Mod ∧ X.ProbMod c₁ Mod ∧ X.ModerateSum c₁ A₁ Mod ∧ X.DeepInt A₁ Mod
 
+/- English proof (translation)
+Unfold `φ phe phOf`. Establish `h1 : ∀ v, coefOn (X.σ v) (X.w v) (X.w v) ((1 : X.I.GA).1 v) = 1`. Introduce `v`. Establish `hσ : X.σ v 1 = 1` using `(hDS v).2.2.1.1.1`. Establish `hu : umat ((1 : X.I.GA).1 v) = 1` using `rfl`.
+
+Unfold `coefOn`. Rewrite using `[hu, hσ, one_apply_eq_self, inner_self_eq_norm_sq_to_K, hw v]`. Simplify using the standard rewrite rules. Simplify using `only [h1, Finset.prod_const_one, star_one, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem φ_one (hDS : ∀ v, IsDS (X.I.ε v) (X.lam v) (X.σ v)) (hw : ∀ v, ‖X.w v‖ = 1) :
     X.φ 1 = ((fdegAll X.I X.σ X.w : ℝ) : ℂ) * X.e 1 := by
   unfold φ phe phOf
@@ -223,27 +266,68 @@ theorem φ_one (hDS : ∀ v, IsDS (X.I.ε v) (X.lam v) (X.σ v)) (hw : ∀ v, �
   simp only [h1, Finset.prod_const_one, star_one, mul_one]
   rfl
 
+/- English proof (translation)
+Unfold `fdegAll`. Use `Finset.prod_nonneg fun v _ => ?_` and prove the remaining obligations. Unfold `fdegOf`. Conclude with `div_nonneg (by positivity) (integral_nonneg fun g => by positivity)`.
+-/
 theorem fdegAll_nonneg : 0 ≤ fdegAll X.I X.σ X.w := by
   unfold fdegAll
   refine Finset.prod_nonneg fun v _ => ?_
   unfold fdegOf
   exact div_nonneg (by positivity) (integral_nonneg fun g => by positivity)
 
+/- English proof (translation)
+Establish `h` using `hp 1 (fun _ => 1) (fun _ => 1)`. Simplify using `at h`. Conclude with `(Complex.le_def.1 h).1`.
+-/
 theorem e_one_nonneg (hp : X.I.IsPosType X.e) : 0 ≤ (X.e 1).re := by
   have h := hp 1 (fun _ => 1) (fun _ => 1)
   simp at h
   exact (Complex.le_def.1 h).1
 
+/- English proof (translation)
+Unfold `Ds AutInst.Dstar AutInst.vol`. Conclude with `mul_nonneg (mul_nonneg X.fdegAll_nonneg ENNReal.toReal_nonneg) (X.e_one_nonneg hp)`.
+-/
 theorem Ds_nonneg (hp : X.I.IsPosType X.e) : 0 ≤ X.Ds := by
   unfold Ds AutInst.Dstar AutInst.vol
   exact mul_nonneg (mul_nonneg X.fdegAll_nonneg ENNReal.toReal_nonneg) (X.e_one_nonneg hp)
 
+/- English proof (translation)
+Unfold `AutInst.vol μ Measure.real`. Rewrite using `[Measure.restrict_apply_univ]`.
+-/
 theorem vol_eq : X.I.vol X.μf X.fund = X.μ.real Set.univ := by
   unfold AutInst.vol μ Measure.real
   rw [Measure.restrict_apply_univ]
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `hT`. Take `⟨hP, hfd, hrk⟩` from `hproj T hT`. Use `hfd` as an intermediate fact. Use `set F := stdOrthonormalBasis ℂ (X.rg T) with hF`. Establish `hae` using `hK T hT hP _ F`.
+
+Use `set Fn : Fin (Module.finrank ℂ (X.rg T)) → X.I.GA → ℂ := fun w => (((F w : X.rg T) : X.L2) : X.I.GA → ℂ) with hFn`. Establish `horth : ∀ w w', (∫ x, star (Fn w x) * Fn w' x ∂X.μ) = if w = w' then 1 else 0`. Introduce `w w'`. Establish `h1` using `orthonormal_iff_ite.1 F.orthonormal w w'`. Rewrite `h1` using `[Submodule.coe_inner, MeasureTheory.L2.inner_def]`.
+
+Rewrite using `[← h1]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hFn, RCLike.inner_apply]`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+
+Establish `htr` using `Formalism.HermitianLatticeCounting.Final.S7.traceDiag X.I.GA _ X.μ Fn horth`. Use `set S : X.I.GA → ℝ := fun x => ∑ w, ‖Fn w x‖ ^ 2 with hS`. Establish `hSint : Integrable S X.μ`. Use `integrable_finsetSum _ fun w _ => ?_` and prove the remaining obligations. Conclude with `(memLp_two_iff_integrable_sq_norm (Lp.aestronglyMeasurable _)).1 (Lp.memLp _)`.
+
+Use `set k0 : ℝ := fdegAll X.I X.σ X.w * (X.e 1).re with hk0`. Use `set K : X.I.GA → ℝ := fun x => k0 + (X.kerR x).re with hKdef`. Establish `hsplit1 : ∀ᵐ x ∂X.μ, (X.kerD x).re = K x ∧ K x = S x` using `by filter_upwards [hae] with x hx`. Establish `h2 : X.kerD x = X.φ (x⁻¹ * ((X.one' : X.I.GFset) : X.I.GA) * x) + X.kerR x` using `hx.1.tsum_eq_add_tsum_ite X.one'`. Establish `h3 : x⁻¹ * ((X.one' : X.I.GFset) : X.I.GA) * x = 1` using `by show x⁻¹ * 1 * x = 1 group`.
+
+Rewrite `h2` using `[h3, X.φ_one hDS hw]`. Establish `h4 : (X.kerD x).re = K x`. Rewrite using `[h2, Complex.add_re, Complex.re_ofReal_mul]`. Use `⟨h4, ?_⟩` and prove the remaining obligations. Rewrite using `[← h4, hx.2, Complex.ofReal_re]`.
+
+Establish `hKint : Integrable K X.μ` using `hSint.congr (hsplit1.mono fun x hx => hx.2.symm)`. Establish `hKtot : ∫ x, K x ∂X.μ = X.Dc`. Rewrite using `[integral_congr_ae (hsplit1.mono fun x hx => hx.2), htr, Fintype.card_fin, hrk]`. Both sides reduce to the same expression. Take `⟨Mod, hM, hprob, hmod, hdeep⟩` from `hR`.
+
+Establish `: IsFiniteMeasure X.μ` using `⟨by`. Unfold `μ`. Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `lt_top_iff_ne_top.2 hV⟩`. Establish `hsp` using `Formalism.HermitianLatticeCounting.Final.S7.diagSplit X.I.GA X.μ K (fun x => (X.kerR x).re) Mod k0 hM hKint (fun x _ => rfl)`.
+
+Establish `hE2 : ∫ x in Modᶜ, K x ∂X.μ = ∫ x in Modᶜ, (X.kerD x).re ∂X.μ` using `integral_congr_ae (ae_restrict_of_ae (hsplit1.mono fun x hx => hx.1.symm))`. Rewrite `hsp` using `[hKtot, hE2]`. Establish `hvol` using `X.vol_eq`. Establish `hDs : X.Ds = k0 * X.μ.real Set.univ`. Unfold `Ds AutInst.Dstar`.
+
+Rewrite using `[hvol, hk0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hle : X.μ.real Mod ≤ X.μ.real Set.univ` using `measureReal_mono (Set.subset_univ _)`. Establish `h0 : 0 ≤ X.μ.real Mod` using `measureReal_nonneg`. Establish `hconv : ∀ c : ℝ, Real.exp (-c * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ)) = Real.exp (-(c * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ)))` using `fun c => by`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Unfold `ConC`. Rewrite using `[hconv]`. Unfold `ProbMod at hprob`.
+
+Rewrite `hprob` using `[hvol]`. Distinguish the cases in `hv0 : X.μ.real Set.univ = 0`. Use `hFS X.I.n X.I.f X.Dc X.Ds 1 _ _ hn (one_le_autInst_f X.I) (Nat.cast_nonneg _) (X.Ds_nonneg hp) le_rfl ?_ hmod hdeep ?_` and prove the remaining obligations. Use `Real.exp_pos (-(c₁ * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ)))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hm0 : X.μ.real Mod = 0` using `le_antisymm (hv0 ▸ hle) h0`. Rewrite using `[hsp, hDs, hv0, hm0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hvpos : 0 < X.μ.real Set.univ` using `lt_of_le_of_ne measureReal_nonneg (Ne.symm hv0)`. Use `hFS X.I.n X.I.f X.Dc X.Ds (X.μ.real Mod / X.μ.real Set.univ) _ _ hn (one_le_autInst_f X.I) (Nat.cast_nonneg _) (X.Ds_nonneg hp) ((div_le_one hvpos).2 hle) ?_ hmod hdeep ?_` and prove the remaining obligations.
+
+Rewrite using `[le_div_iff₀ hvpos]`. Conclude with `hprob`. Rewrite using `[hsp, hDs]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem count_of_steps {c₁ A₁ c' : ℝ} {n₁ : ℕ}
     (hFS : ∀ (n f : ℕ) (D Ds pr E₁ E₂ : ℝ), n₁ ≤ n → 1 ≤ f → 0 ≤ D → 0 ≤ Ds → pr ≤ 1 →
       1 - Real.exp (-(c₁ * n * f * Real.log n)) ≤ pr →
@@ -336,6 +420,15 @@ end CData
 def StepsC (n₀ : ℕ) (A C cb c₁ A₁ : ℝ) : Prop :=
   ∀ X : CData, X.HypC n₀ A C cb → X.OpExists ∧ X.KernelDiag ∧ X.FinVol ∧ X.Regions c₁ A₁
 
+/- English proof (translation)
+Take `⟨⟨⟨hn, ⟨p, q, hpq, hq⟩, hb, -⟩, -, -⟩, hh, -, -⟩` from `hX`. Establish `hrd` using `one_le_discriminant_root X.I`. Establish `hlog : 0 ≤ Real.log (X.b * X.I.rd)` using `Real.log_nonneg (by nlinarith)`. Establish `hle : Ch * (X.I.n : ℝ) ^ 19 * (X.I.f : ℝ) ^ 5 * Real.log (X.b * X.I.rd) ≤ X.h`. Use `le_trans ?_ hh` and prove the remaining obligations.
+
+Establish `: 0 ≤ (X.I.n : ℝ) ^ 19 * (X.I.f : ℝ) ^ 5 * Real.log (X.b * X.I.rd)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `key : ∀ v, 120 * (X.I.n : ℝ) * (q0At X.I v : ℝ) ^ ((3 : ℝ) / 2) ≤ X.h ∧ Cb * (X.I.n : ℝ) ^ 2 * Real.sqrt (q0At X.I v : ℝ) ≤ X.h`. Introduce `v`. Establish `hq0 : q0At X.I v ≤ q`.
+
+Unfold `q0At`. Rewrite using `[(hpq v).2]`. Conclude with `min_le_right _ _`. Use `hH X.I.n (q0At X.I v) X.I.f X.b X.I.rd X.h (le_trans h1 hn) (one_le_autInst_f X.I) (le_trans (Nat.pow_le_pow_left hq0 2) hq) hb hrd hle` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`.
+
+Conclude with `⟨fun v => (key v).1, fun v => (key v).2⟩`.
+-/
 theorem gap_thresholds_of_height_bound {Cb Ch : ℝ}
     (hH : ∀ (n q f : ℕ) (b rd h : ℝ), 1 ≤ n → 1 ≤ f → q ^ 2 ≤ n → 2 ≤ b → 1 ≤ rd →
       Ch * (n : ℝ) ^ 19 * (f : ℝ) ^ 5 * Real.log (b * rd) ≤ h →
@@ -361,6 +454,13 @@ theorem gap_thresholds_of_height_bound {Cb Ch : ℝ}
     exact ⟨this.1, this.2.1⟩
   exact ⟨fun v => (key v).1, fun v => (key v).2⟩
 
+/- English proof (translation)
+Take `⟨c', hc', n₁, hFS⟩` from `Formalism.HermitianLatticeCounting.Final.S7.finalSum c₁ A₁ hc₁ hA₁`. Use `⟨c', hc', max n₁ 1, fun Cb => ?_⟩` and prove the remaining obligations. Take `⟨Ch, -, hH⟩` from `Formalism.HermitianLatticeCounting.Final.S7.threshHead Cb`. Use `⟨Ch, fun D n₀ A C cb hn hC hb hS => ?_⟩` and prove the remaining obligations. Rewrite using `[third_part_iff_bundles]`.
+
+Introduce `X hX`. Take `⟨s1, s2, s3, s4⟩` from `hS X hX`. Establish `hthr` using `gap_thresholds_of_height_bound hH X (le_trans (le_max_right _ _) hn) hC hX`. Establish `hB` using `((second_part_iff_bundles D n₀ A Cb).1 hb X hX.1).2 hthr`. Use `X.count_of_steps hFS (le_trans (le_trans (le_max_left _ _) hn) hX.1.1.1) hX.1.2.1.1 (fun v => (hX.1.2.1.2.1 v).1) hX.1.1.2.2.2.2.2.2.1.2.2.2.1 (fun T hT => ?_) s1 s2 s3 s4` and prove the remaining obligations.
+
+Take `⟨a, b, c, -⟩` from `hB T hT`. Conclude with `⟨a, b, c⟩`.
+-/
 theorem third_part_of_estimates (c₁ A₁ : ℝ) (hc₁ : 0 < c₁) (hA₁ : 0 ≤ A₁) :
     ∃ c' : ℝ, 0 < c' ∧ ∃ n₁ : ℕ, ∀ Cb : ℝ, ∃ C₁ : ℝ, ∀ (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (A C cb : ℝ),
       n₁ ≤ n₀ → C₁ ≤ C → Conclusion2 D n₀ A Cb → StepsC n₀ A C cb c₁ A₁ → PointsLemma D n₀ A C c' cb := by
@@ -378,6 +478,9 @@ theorem third_part_of_estimates (c₁ A₁ : ℝ) (hc₁ : 0 < c₁) (hA₁ : 0 
   obtain ⟨a, b, c, -⟩ := hB T hT
   exact ⟨a, b, c⟩
 
+/- English proof (translation)
+Take `⟨c', hc', n₁, h⟩` from `third_part_of_estimates c₁ A₁ hc₁ hA₁`. Use `⟨c', hc', n₁, fun Cb => ?_⟩` and prove the remaining obligations. Take `⟨C₁, h⟩` from `h Cb`. Conclude with `⟨C₁, fun D Cres n₀ A C cb hn hC hS hadm hdec hb => h D n₀ A C cb hn hC hb (hS hadm hdec hb)⟩`.
+-/
 theorem third_bound_of_estimates (c₁ A₁ : ℝ) (hc₁ : 0 < c₁) (hA₁ : 0 ≤ A₁) :
     ∃ c' : ℝ, 0 < c' ∧ ∃ n₁ : ℕ, ∀ Cb : ℝ, ∃ C₁ : ℝ, ∀ (D : Formalism.BasicNotions.D7) (Cres : ℝ) (n₀ : ℕ) (A C cb : ℝ),
       n₁ ≤ n₀ → C₁ ≤ C →
@@ -395,6 +498,11 @@ def ClosedThirdTermEstimates : Prop :=
       (ArchimedeanSignatureMatching D ∧ adm5 D ∧ adm6 D ∧ adm7 D Cres ∧ adm8 D) → DiscreteSeriesDecayBound D → Conclusion2 D n₀' A Cb →
         StepsC n₀' A C cb c₁ A₁
 
+/- English proof (translation)
+Take `⟨c₁, cb, A₁, hc₁, hcb, hA₁, hS⟩` from `hS`. Take `⟨c', hc', n₁, h⟩` from `third_bound_of_estimates c₁ A₁ hc₁ hA₁`. Use `⟨c', cb, hc', hcb, fun Cres A Cb hA => ?_⟩` and prove the remaining obligations. Take `⟨C₁, h⟩` from `h Cb`. Take `⟨n₀, C₀, hS⟩` from `hS Cres A Cb hA`.
+
+Use `⟨max n₀ n₁, max C₀ C₁, fun C hC D => ?_⟩` and prove the remaining obligations. Conclude with `h D Cres _ A C cb (le_max_right _ _) (le_trans (le_max_right _ _) hC) (hS _ (le_max_left _ _) C (le_trans (le_max_left _ _) hC) D)`.
+-/
 theorem closed_third_part_of_estimates (hS : ClosedThirdTermEstimates) : ClosedFormWordCount := by
   obtain ⟨c₁, cb, A₁, hc₁, hcb, hA₁, hS⟩ := hS
   obtain ⟨c', hc', n₁, h⟩ := third_bound_of_estimates c₁ A₁ hc₁ hA₁
@@ -434,6 +542,9 @@ def FarPoint (εN δ : ℝ) (Mod : Set X.I.GA) : Prop :=
   ∀ x ∈ Mod, X.farS εN x ≤ ENNReal.ofReal (fdegAll X.I X.σ X.w * (X.e 1).re * δ)
 
 open Classical in
+/- English proof (translation)
+Unfold `kerR nearS farS`. Use `le_trans enorm_tsum_le_tsum_enorm ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_add]`. Use `le_of_eq (tsum_congr fun γ => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : γ = X.one' <;> by_cases h2 : (∀ v, X.dist x γ v ≤ εN) <;> simp [h1, h2]`.
+-/
 theorem enorm_kerR_le (εN : ℝ) (x : X.I.GA) : ‖X.kerR x‖ₑ ≤ X.nearS εN x + X.farS εN x := by
   unfold kerR nearS farS
   refine le_trans enorm_tsum_le_tsum_enorm ?_
@@ -441,6 +552,23 @@ theorem enorm_kerR_le (εN : ℝ) (x : X.I.GA) : ‖X.kerR x‖ₑ ≤ X.nearS �
   refine le_of_eq (tsum_congr fun γ => ?_)
   by_cases h1 : γ = X.one' <;> by_cases h2 : (∀ v, X.dist x γ v ≤ εN) <;> simp [h1, h2]
 
+/- English proof (translation)
+Establish `: IsFiniteMeasure X.μ` using `⟨by`. Unfold `μ`. Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `lt_top_iff_ne_top.2 hV⟩`. Use `set Ex := Real.exp (-(c₁ * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))) with hEx`.
+
+Use `set k0 : ℝ := fdegAll X.I X.σ X.w * (X.e 1).re with hk0`. Establish `hk0n : 0 ≤ k0` using `mul_nonneg X.fdegAll_nonneg (X.e_one_nonneg hp)`. Establish `hDs : X.Ds = k0 * X.μ.real Set.univ`. Unfold `Ds AutInst.Dstar`. Rewrite using `[X.vol_eq, hk0]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hDsn` using `X.Ds_nonneg hp`. Establish `hle : X.μ.real Mod ≤ X.μ.real Set.univ` using `measureReal_mono (Set.subset_univ _)`. Establish `h0 : 0 ≤ X.μ.real Mod` using `measureReal_nonneg`. Establish `hExp : 0 < Ex` using `Real.exp_pos _`.
+
+Unfold `ModerateSum`. Rewrite using `[← Real.norm_eq_abs]`. Use `le_trans (norm_integral_le_lintegral_norm _) ?_` and prove the remaining obligations. Establish `hb : ∫⁻ x in Mod, ENNReal.ofReal ‖(X.kerR x).re‖ ∂X.μ ≤ ENNReal.ofReal (A₂ * Ex * X.Ds + k0 * δ * X.μ.real Mod)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `setLIntegral_mono' hM fun x hx => ?_` and prove the remaining obligations. Establish `h1 : ENNReal.ofReal ‖(X.kerR x).re‖ ≤ ‖X.kerR x‖ₑ`. Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (by rw [Real.norm_eq_abs]; exact Complex.abs_re_le_norm _)`. Conclude with `le_trans h1 (le_trans (X.enorm_kerR_le εN x) (by gcongr; exact hF x hx))`.
+
+Use `_ = ∫⁻ x in Mod, X.nearS εN x ∂X.μ + ENNReal.ofReal (k0 * δ) * X.μ Mod := by`. Rewrite using `[lintegral_add_right _ measurable_const, lintegral_const, Measure.restrict_apply_univ]`. Use `_ ≤ ENNReal.ofReal (A₂ * Ex * X.Ds) + ENNReal.ofReal (k0 * δ * X.μ.real Mod) := by gcongr`. Conclude with `hN`. Rewrite using `[ENNReal.ofReal_mul (show 0 ≤ k0 * δ by positivity) (q := X.μ.real Mod), Measure.real, ENNReal.ofReal_toReal (measure_ne_top _ _)]`.
+
+Use `_ = ENNReal.ofReal (A₂ * Ex * X.Ds + k0 * δ * X.μ.real Mod) := by`. Rewrite using `[ENNReal.ofReal_add (by positivity) (by positivity)]`. Use `le_trans (ENNReal.toReal_mono ENNReal.ofReal_ne_top hb) ?_` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_ofReal (by positivity)]`. Establish `h3 : k0 * δ * X.μ.real Mod ≤ Ex * X.Ds`.
+
+Rewrite using `[hDs]`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem moderate_of_near_far {εN c₁ A₂ δ : ℝ} {Mod : Set X.I.GA} (hM : MeasurableSet Mod) (hV : X.FinVol)
     (hp : X.I.IsPosType X.e) (hA₂ : 0 ≤ A₂) (h0δ : 0 ≤ δ)
     (hδ : δ ≤ Real.exp (-(c₁ * (X.I.n : ℝ) * (X.I.f : ℝ) * Real.log (X.I.n : ℝ))))
@@ -491,15 +619,24 @@ theorem moderate_of_near_far {εN c₁ A₂ δ : ℝ} {Mod : Set X.I.GA} (hM : M
 
 end CData
 
+/- English proof (translation)
+Apply `Real.sInf_nonneg` to reduce the goal to its premises. Introduce and unpack `t ⟨k, Y, -, -, -, rfl⟩`. Conclude with `Real.sqrt_nonneg _`.
+-/
 theorem cartan_distance_nonneg {n : ℕ} (ε : Fin n → Bool) (g : Formalism.REAL.UJ ε) : 0 ≤ cartanDistance ε g := by
   apply Real.sInf_nonneg
   rintro t ⟨k, Y, -, -, -, rfl⟩
   exact Real.sqrt_nonneg _
 
+/- English proof (translation)
+Unfold `Formalism.REAL.hs`. Check the signs of the components of the expression.
+-/
 theorem hilbert_schmidt_nonneg {n : ℕ} (Y : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ Formalism.REAL.hs Y := by
   unfold Formalism.REAL.hs
   positivity
 
+/- English proof (translation)
+Unfold `decBound Formalism.HermitianLatticeCounting.S7.decExp`. Rewrite using `[Real.sq_sqrt (hilbert_schmidt_nonneg Y)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem decay_bound_notation_eq {n : ℕ} (q : ℕ) (h : ℝ) (Y : Matrix (Fin n) (Fin n) ℂ) :
     decBound q h Y = Real.exp (-(Formalism.HermitianLatticeCounting.S7.decExp h q (Real.sqrt (Formalism.REAL.hs Y)))) := by
   unfold decBound Formalism.HermitianLatticeCounting.S7.decExp
@@ -507,6 +644,9 @@ theorem decay_bound_notation_eq {n : ℕ} (q : ℕ) (h : ℝ) (Y : Matrix (Fin n
   congr 1
   ring
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticeCounting.S7.decExp`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Apply `min_le_min` to reduce the goal to its premises. Conclude with `pow_le_pow_left₀ hs hst 2`. Conclude with `div_le_div_of_nonneg_right hst (Real.sqrt_nonneg _)`.
+-/
 theorem decay_exponent_monotone {h : ℝ} (hh : 0 ≤ h) (q : ℕ) {s t : ℝ} (hs : 0 ≤ s) (hst : s ≤ t) :
     Formalism.HermitianLatticeCounting.S7.decExp h q s ≤ Formalism.HermitianLatticeCounting.S7.decExp h q t := by
   unfold Formalism.HermitianLatticeCounting.S7.decExp
@@ -515,6 +655,23 @@ theorem decay_exponent_monotone {h : ℝ} (hh : 0 ≤ h) (q : ℕ) {s t : ℝ} (
   · exact pow_le_pow_left₀ hs hst 2
   · exact div_le_div_of_nonneg_right hst (Real.sqrt_nonneg _)
 
+/- English proof (translation)
+Establish `hh : 0 ≤ h` using `le_trans (by positivity) hthr`. Distinguish the cases in `hne : {t | ∃ k Y : Matrix (Fin n) (Fin n) ℂ, k ∈ Formalism.REAL.Kset ε ∧ Formalism.REAL.inP ε Y ∧ umat g = k * NormedSpace.exp Y ∧ t = Real.sqrt (Formalism.REAL.hs Y)}.Nonempty`. Take `⟨t, k, Y, hk, hY, hg, rfl⟩` from `hne`. Establish `hEw : E w = w`. Establish `hwr : w ∈ LinearMap.range (E : H →ₗ[ℂ] H)` using `by rw [hE.2.2]; exact hw.2`.
+
+Take `⟨u, hu⟩` from `hwr`. Establish `hu' : E u = w` using `hu`. Rewrite using `[← hu']`. Conclude with `congrArg (fun T : H →L[ℂ] H => T u) hE.1`. Establish `h1 : coefOn σ w w g = ⟪w, (E.comp ((σ (k * NormedSpace.exp Y)).comp E)) w⟫_ℂ`.
+
+Unfold `coefOn`. Rewrite using `[hg]`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[← hE.2.1, hEw]`. Establish `h2 : ‖coefOn σ w w g‖ ≤ decBound (min (pOf ε) (qOf ε)) h Y`.
+
+Rewrite using `[h1]`. Use `le_trans (norm_inner_le_norm _ _) ?_` and prove the remaining obligations. Use `le_trans (mul_le_mul_of_nonneg_left (ContinuousLinearMap.le_opNorm _ _) (norm_nonneg _)) ?_` and prove the remaining obligations. Rewrite using `[hw.1, one_mul, mul_one]`. Conclude with `hdec n ε lam hlam H σ hDS E hE h hgap hthr k Y hk hY`.
+
+Rewrite `h2` using `[decay_bound_notation_eq]`. Use `le_trans h2 (Real.exp_le_exp.2 (neg_le_neg ?_))` and prove the remaining obligations. Use `decay_exponent_monotone hh _ (cartan_distance_nonneg ε g) ?_` and prove the remaining obligations. Use `csInf_le ⟨0, ?_⟩ ⟨k, Y, hk, hY, hg, rfl⟩` and prove the remaining obligations. Introduce and unpack `t ⟨_, Y', -, -, -, rfl⟩`.
+
+Conclude with `Real.sqrt_nonneg _`. Establish `h0 : cartanDistance ε g = 0`. Unfold `cartanDistance`. Rewrite using `[Set.not_nonempty_iff_eq_empty.1 hne, Real.sInf_empty]`. Establish `h1 : Formalism.HermitianLatticeCounting.S7.decExp h (min (pOf ε) (qOf ε)) 0 = 0`.
+
+Unfold `Formalism.HermitianLatticeCounting.S7.decExp`. Simplify using the standard rewrite rules. Rewrite using `[h0, h1, neg_zero, Real.exp_zero]`. Unfold `coefOn`. Use `le_trans (norm_inner_le_norm _ _) ?_` and prove the remaining obligations.
+
+Rewrite using `[hDS.2.2.1.2.1 _ g.2 w, hw.1, one_mul]`.
+-/
 theorem coefficient_le_decay_bound (D : Formalism.BasicNotions.D7) (hdec : DiscreteSeriesDecayBound D) {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ}
     (hlam : Formalism.QuantumDeterminants.IsHCParam lam) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hDS : IsDS ε lam σ) {E : H →L[ℂ] H}
@@ -560,6 +717,11 @@ theorem coefficient_le_decay_bound (D : Formalism.BasicNotions.D7) (hdec : Discr
     refine le_trans (norm_inner_le_norm _ _) ?_
     rw [hDS.2.2.1.2.1 _ g.2 w, hw.1, one_mul]
 
+/- English proof (translation)
+Introduce `s c`. Establish `h` using `hp s.card (fun i => ((s.equivFin.symm i : s) : I.Gf)) (fun i => c ((s.equivFin.symm i : s) : I.Gf))`. Establish `e1 : ∀ F : I.Gf → ℂ, ∑ i : Fin s.card, F ((s.equivFin.symm i : s) : I.Gf) = ∑ x ∈ s, F x`. Introduce `F`. Rewrite using `[Equiv.sum_comp s.equivFin.symm (fun x : s => F (x : I.Gf))]`.
+
+Conclude with `Finset.sum_coe_sort s F`. Rewrite `h` using `[e1 (fun x => ∑ j : Fin s.card, star (c x) * c ((s.equivFin.symm j : s) : I.Gf) * e (x⁻¹ * ((s.equivFin.symm j : s) : I.Gf)))]`. Use `le_of_le_of_eq h (Finset.sum_congr rfl fun x _ => ?_)` and prove the remaining obligations. Conclude with `e1 (fun y => star (c x) * c y * e (x⁻¹ * y))`.
+-/
 theorem positive_type_notation_eq (I : AutInst) {e : I.Gf → ℂ} (hp : I.IsPosType e) : Formalism.HermitianLatticeCounting.S7.IsPosType e := by
   intro s c
   have h := hp s.card (fun i => ((s.equivFin.symm i : s) : I.Gf)) (fun i => c ((s.equivFin.symm i : s) : I.Gf))
@@ -579,6 +741,13 @@ variable (X : CData)
 def LowProj : Prop :=
   ∀ v, ∃ E : X.H v →L[ℂ] X.H v, IsOrthProjOnto E (lowKSub (X.I.ε v) (X.lam v) (X.σ v))
 
+/- English proof (translation)
+Establish `hp : X.I.IsPosType X.e` using `hX.1.2.2.2.2.2.2.1.2.2.2.1`. Establish `he : ‖X.e y.2‖ ≤ (X.e 1).re` using `Formalism.HermitianLatticeCounting.Final.S7.posTypeBound X.I.Gf X.e (positive_type_notation_eq X.I hp) y.2`. Establish `hm : ∀ v, ‖coefOn (X.σ v) (X.w v) (X.w v) (y.1 v)‖ ≤ Real.exp (-(Formalism.HermitianLatticeCounting.S7.decExp X.h q₀ (cartanDistance (X.I.ε v) (y.1 v))))`. Introduce `v`. Take `⟨E, hEv⟩` from `hE v`.
+
+Use `coefficient_le_decay_bound D hdec (hX.1.2.2.2.2.1 v) (hX.2.1.1 v) hEv (hX.2.1.2.1 v) (hX.2.2 v) (h1 v) (y.1 v)` as an intermediate fact. Rewrite using `[← hq v]`. Conclude with `this`. Unfold `φ phe phOf`. Rewrite using `[norm_mul, norm_mul, norm_star, norm_prod, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg X.fdegAll_nonneg]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `X.fdegAll_nonneg` as an intermediate fact. Use `gcongr with v _`. Conclude with `hm v`. Use `_ = fdegAll X.I X.σ X.w * (X.e 1).re * ∏ v, Real.exp (-(Formalism.HermitianLatticeCounting.S7.decExp X.h q₀ (cartanDistance (X.I.ε v) (y.1 v)))) := by ring`.
+-/
 theorem norm_φ_le (D : Formalism.BasicNotions.D7) (hdec : DiscreteSeriesDecayBound D) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (h1 : X.GapAboveThreeHalvesPower)
     (hE : X.LowProj) {q₀ : ℕ} (hq : ∀ v, q0At X.I v = q₀) (y : X.I.GA) :
     ‖X.φ y‖ ≤ fdegAll X.I X.σ X.w * (X.e 1).re *
@@ -616,6 +785,19 @@ def FarCount (Ac B : ℝ) (Mod : Set X.I.GA) : Prop :=
 
 open Classical in
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hp : X.I.IsPosType X.e` using `hX.1.2.2.2.2.2.2.1.2.2.2.1`. Use `set k0 : ℝ := fdegAll X.I X.σ X.w * (X.e 1).re with hk0`. Establish `hk0n : 0 ≤ k0` using `mul_nonneg X.fdegAll_nonneg (X.e_one_nonneg hp)`. Use `set bd : X.I.GFset → ℝ := fun γ => ∏ v, Real.exp (-(Formalism.HermitianLatticeCounting.S7.decExp X.h q₀ (X.dist x γ v))) with hbd`.
+
+Establish `hbdn : ∀ γ, 0 ≤ bd γ` using `fun γ => Finset.prod_nonneg fun v _ => (Real.exp_pos _).le`. Unfold `farS`. Rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations. Use `set S := s.filter (fun γ => (γ ≠ X.one' ∧ ¬ ∀ v, X.dist x γ v ≤ εN) ∧ X.φ (x⁻¹ * (γ : X.I.GA) * x) ≠ 0) with hS`.
+
+Establish `hterm : ∀ γ ∈ s, (if γ ≠ X.one' ∧ ¬ ∀ v, X.dist x γ v ≤ εN then ‖X.φ (x⁻¹ * (γ : X.I.GA) * x)‖ₑ else 0) ≤ (if (γ ≠ X.one' ∧ ¬ ∀ v, X.dist x γ v ≤ εN) ∧ X.φ (x⁻¹ * (γ : X.I.GA) * x) ≠ 0 then ENNReal.ofReal (k0 * bd γ) else 0)`. Introduce `γ _`. Distinguish the cases in `hP : γ ≠ X.one' ∧ ¬ ∀ v, X.dist x γ v ≤ εN`. Distinguish the cases in `h0 : X.φ (x⁻¹ * (γ : X.I.GA) * x) = 0`. Simplify using `[h0]`.
+
+Rewrite using `[if_pos hP, if_pos ⟨hP, h0⟩, ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (X.norm_φ_le D hdec hX h1 hE hq _)`. Rewrite using `[if_neg hP]`. Conclude with `zero_le`. Use `le_trans (Finset.sum_le_sum hterm) ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_filter, ← ENNReal.ofReal_sum_of_nonneg (fun γ _ => mul_nonneg hk0n (hbdn γ)), ← Finset.mul_sum]`. Use `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_left ?_ hk0n)` and prove the remaining obligations. Use `Formalism.HermitianLatticeCounting.Final.S7.farSum (InfinitePlace X.I.F) X.I.GFset S (X.dist x) Ac B X.h εN q₀ hq1 hAc hB hε hεq hBε h32 h16 (fun γ _ v => cartan_distance_nonneg _ _) (fun γ hγ => ?_) (fun r hr => ?_)` and prove the remaining obligations. Establish `h2` using `(Finset.mem_filter.1 hγ).2.1.2`. Take `⟨v, hv⟩` from `not_forall.1 h2`.
+
+Conclude with `⟨v, not_le.1 hv⟩`. Use `hcnt x hx r hr _ fun γ hγ => ?_` and prove the remaining obligations. Establish `h3` using `Finset.mem_filter.1 hγ`. Conclude with `⟨(Finset.mem_filter.1 h3.1).2.2, h3.2⟩`.
+-/
 theorem farPoint_of_count (D : Formalism.BasicNotions.D7) (hdec : DiscreteSeriesDecayBound D) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (h1 : X.GapAboveThreeHalvesPower)
     (hE : X.LowProj) {q₀ : ℕ} (hq : ∀ v, q0At X.I v = q₀) (hq1 : 1 ≤ q₀) {Ac B εN : ℝ} {Mod : Set X.I.GA}
     (hAc : 0 ≤ Ac) (hB : 0 ≤ B) (hε : 0 < εN) (hεq : εN * Real.sqrt (2 * (q₀ : ℝ)) ≤ 1) (hBε : B * εN ≤ 1)
@@ -661,6 +843,9 @@ section Numbers
 
 open Formalism.HermitianLatticeCounting.S7 (Ydat epsN)
 
+/- English proof (translation)
+Establish `hfR : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Unfold `Ydat`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem two_mul_le_height_parameter {n f : ℕ} {rd g b : ℝ} (hn : 1 ≤ n) (hf : 1 ≤ f) (hrd : 1 ≤ rd) (hg : 1 ≤ g) (hb : 2 ≤ b) :
     2 * (n : ℝ) ≤ Ydat n f rd g b := by
   have hfR : (1 : ℝ) ≤ f := by exact_mod_cast hf
@@ -668,6 +853,11 @@ theorem two_mul_le_height_parameter {n f : ℕ} {rd g b : ℝ} (hn : 1 ≤ n) (h
   calc 2 * (n : ℝ) = (n : ℝ) * 1 * 1 * 1 * 2 := by ring
     _ ≤ (n : ℝ) * f * rd * g * b := by gcongr
 
+/- English proof (translation)
+Establish `hnR : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hfR : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hn0 : (0 : ℝ) < n` using `lt_of_lt_of_le one_pos hnR`. Establish `hf0 : (0 : ℝ) < f` using `lt_of_lt_of_le one_pos hfR`. Unfold `epsN`.
+
+Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_assoc', div_le_one (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul (pow_le_pow_right₀ hnR (by norm_num)) (one_le_pow₀ hfR) zero_le_one (by positivity)`.
+-/
 theorem epsilon_small_bounds {cε : ℝ} (hcε : 0 < cε) (hcε2 : cε ≤ 1 / 2) {n f : ℕ} (hn : 1 ≤ n) (hf : 1 ≤ f) :
     0 < epsN cε n f ∧ 2 * (n : ℝ) ^ 2 * epsN cε n f ≤ 1 := by
   have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn
@@ -682,6 +872,11 @@ theorem epsilon_small_bounds {cε : ℝ} (hcε : 0 < cε) (hcε2 : cε ≤ 1 / 2
     _ ≤ (n : ℝ) ^ 8 * (f : ℝ) ^ 2 := by
         exact mul_le_mul (pow_le_pow_right₀ hnR (by norm_num)) (one_le_pow₀ hfR) zero_le_one (by positivity)
 
+/- English proof (translation)
+Establish `hε1 : ε ≤ 1` using `by nlinarith`. Establish `hh : 0 ≤ h`. Assume the negation of the conclusion as `hneg`. Establish `: h * ε ^ 2 ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg (le_of_not_ge hneg) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2 : ε ^ 2 ≤ ε` using `by nlinarith`. Establish `h3 : h * ε ^ 2 ≤ h * ε` using `mul_le_mul_of_nonneg_left h2 hh`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem far_region_inequalities {ε h N : ℝ} (hε : 0 < ε) (h1 : 2 * N * ε ≤ 1) (hN : 1 ≤ N) (hb : 64 * N ≤ h * ε ^ 2) :
     32 * (2 * N) ≤ h * ε ∧ 16 ≤ h * ε ^ 2 := by
   have hε1 : ε ≤ 1 := by nlinarith
@@ -693,6 +888,13 @@ theorem far_region_inequalities {ε h N : ℝ} (hε : 0 < ε) (h1 : 2 * N * ε �
   have h3 : h * ε ^ 2 ≤ h * ε := mul_le_mul_of_nonneg_left h2 hh
   constructor <;> linarith
 
+/- English proof (translation)
+Establish `hnR : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Rewrite using `[Real.sqrt_le_iff]`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Establish `h1 : (q : ℝ) ≤ n`. Establish `: q ≤ n` using `le_trans (Nat.le_self_pow (by norm_num) q) hq2`.
+
+Conclude with `this` after adjusting the coercions. Establish `h2 : (n : ℝ) ≤ (n : ℝ) ^ 4`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `: (0 : ℝ) ≤ (n : ℝ) ^ 4` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sqrt_two_mul_le_two_sq {n q : ℕ} (hn : 1 ≤ n) (hq2 : q ^ 2 ≤ n) : Real.sqrt (2 * (q : ℝ)) ≤ 2 * (n : ℝ) ^ 2 := by
   have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn
   rw [Real.sqrt_le_iff]
@@ -708,6 +910,11 @@ theorem sqrt_two_mul_le_two_sq {n q : ℕ} (hn : 1 ≤ n) (hq2 : q ^ 2 ≤ n) : 
         have : (0 : ℝ) ≤ (n : ℝ) ^ 4 := by positivity
         nlinarith
 
+/- English proof (translation)
+Establish `hnR : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hqR : (1 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hYpos : 0 < Y` using `by linarith`. Use `⟨Real.rpow_pos_of_pos hYpos _, ?_⟩` and prove the remaining obligations. Establish `h0 : (1 : ℝ) ≤ C₁ * q` using `by nlinarith`.
+
+Establish `h1 : Y ^ (-(C₁ * q)) ≤ Y ^ (-1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Rewrite `h1` using `[Real.rpow_neg_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← div_eq_mul_inv, div_le_one hYpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pow_neg_pos_and_mul_le_one {n q : ℕ} {Y C₁ : ℝ} (hq : 1 ≤ q) (hC₁ : 1 ≤ C₁) (hn : 1 ≤ n) (hY : 2 * (n : ℝ) ≤ Y) :
     0 < Y ^ (-(C₁ * q)) ∧ (n : ℝ) * Y ^ (-(C₁ * q)) ≤ 1 := by
   have hnR : (1 : ℝ) ≤ n := by exact_mod_cast hn
@@ -723,6 +930,9 @@ theorem pow_neg_pos_and_mul_le_one {n q : ℕ} {Y C₁ : ℝ} (hq : 1 ≤ q) (hC
         rw [← div_eq_mul_inv, div_le_one hYpos]
         linarith
 
+/- English proof (translation)
+Establish `hqR : (1 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hfR : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Use `le_trans ?_ hx` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sixty_four_sq_le_of_threshold {n q f : ℕ} {K L x : ℝ} (hn : 1 ≤ n) (hq : 1 ≤ q) (hf : 1 ≤ f) (hK : 128 ≤ K) (hL : 1 / 2 ≤ L)
     (hx : K * (n : ℝ) ^ 2 * q * f * L ≤ x) : 64 * (n : ℝ) ^ 2 ≤ x := by
   have hqR : (1 : ℝ) ≤ q := by exact_mod_cast hq
@@ -731,6 +941,19 @@ theorem sixty_four_sq_le_of_threshold {n q f : ℕ} {K L x : ℝ} (hn : 1 ≤ n)
   calc 64 * (n : ℝ) ^ 2 = 128 * (n : ℝ) ^ 2 * 1 * 1 * (1 / 2) := by ring
     _ ≤ K * (n : ℝ) ^ 2 * q * f * L := by gcongr
 
+/- English proof (translation)
+Take `⟨C', hC', hneg⟩` from `Formalism.HermitianLatticeCounting.Final.S7.farNegligible 3 C₁ c₁ 5 (by norm_num) hC₁ hc₁`. Take `⟨C₀, hC₀, hthr⟩` from `Formalism.HermitianLatticeCounting.Final.S7.threshFar (max C' 128) cε A (lt_of_lt_of_le hC' (le_max_left _ _)) hcε hA`. Use `⟨C₀, hC₀, fun n q f np rd g b h hn hq hq2 hf hnp hlf hb hrd hg hgb hh => ?_⟩` and prove the remaining obligations. Establish `hnR : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hx` using `hthr n q f rd g b h hn hf hq2 hlf hb hrd hg hgb hh`.
+
+Take `⟨hεpos, hε2n⟩` from `epsilon_small_bounds hcε hcε2 hn hf`. Establish `hYn` using `two_mul_le_height_parameter (rd := rd) (g := g) (b := b) hn hf hrd hg hb`. Establish `hlogY : 1 / 2 ≤ Real.log (Ydat n f rd g b)`. Establish `h1 : Real.log 2 ≤ Real.log (Ydat n f rd g b)` using `Real.log_le_log (by norm_num) (by linarith)`. Establish `h2` using `Real.log_two_gt_d9`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbig` using `sixty_four_sq_le_of_threshold hn hq hf (le_max_right C' 128) hlogY hx`. Take `⟨h32, h16⟩` from `far_region_inequalities hεpos hε2n (one_le_pow₀ hnR) hbig`. Use `⟨hεpos, ?_, hε2n, h32, h16, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨hτpos, hnτ⟩` from `pow_neg_pos_and_mul_le_one hq hC₁ hn hYn`. Establish `hpre` using `Formalism.HermitianLatticeCounting.Final.S7.farPrefactor n f _ hn hf hτpos hnτ`. Establish `hx' : C' * (n : ℝ) ^ 2 * q * f * Real.log (Ydat n f rd g b) ≤ h * epsN cε n f ^ 2`. Use `le_trans ?_ hx` and prove the remaining obligations. Establish `hl : 0 ≤ Real.log (Ydat n f rd g b)` using `by linarith`.
+
+Use `gcongr`. Conclude with `le_max_left _ _`. Establish `hfin` using `hneg n q f rd g b (h * epsN cε n f ^ 2) hn hq hf hrd hg hb hx'`. Establish `hnpR : (np : ℝ) ≤ f` using `by exact_mod_cast hnp`. Establish `h4 : (4 : ℝ) ^ np ≤ 4 ^ f` using `pow_le_pow_right₀ (by norm_num) hnp`.
+
+Use `le_trans ?_ hfin` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (Real.exp_pos _).le` and prove the remaining obligations. Establish `hA0 : 0 ≤ (3 * Real.sqrt n / (Ydat n f rd g b ^ (-(C₁ * q))) ^ 2) ^ (2 * n ^ 2 * f)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem far_region_numerics (cε C₁ c₁ A : ℝ) (hcε : 0 < cε) (hcε2 : cε ≤ 1 / 2) (hC₁ : 1 ≤ C₁) (hc₁ : 0 < c₁) (hA : 1 ≤ A) :
     ∃ C₀ : ℝ, 0 < C₀ ∧ ∀ (n q f np : ℕ) (rd g b h : ℝ), 1 ≤ n → 1 ≤ q → q ^ 2 ≤ n → 1 ≤ f → np ≤ f →
       Real.log f ≤ Real.sqrt n → 2 ≤ b → 1 ≤ rd → 1 ≤ g → g ≤ b ^ A →
@@ -779,6 +1002,25 @@ theorem far_region_numerics (cε C₁ c₁ A : ℝ) (hcε : 0 < cε) (hcε2 : c�
 
 end Numbers
 
+/- English proof (translation)
+Establish `hsame : ∃ s : ℂ, s ≠ 0 ∧ ∀ a, (if ε a then (1 : ℂ) else -1) = s`. Break down `Nat.min_eq_zero_iff.1 h0 with h | h` into its components or cases. Use `⟨-1, by norm_num, fun a => ?_⟩` and prove the remaining obligations. Establish `: a ∉ univ.filter fun a => ε a = true`. Rewrite using `[Finset.card_eq_zero.1 h]`.
+
+Conclude with `Finset.notMem_empty a`. Establish `h2 : ε a ≠ true` using `fun hh => this (Finset.mem_filter.2 ⟨Finset.mem_univ a, hh⟩)`. Simplify using `[h2]`. Use `⟨1, one_ne_zero, fun a => ?_⟩` and prove the remaining obligations. Establish `: a ∉ univ.filter fun a => ε a = false`.
+
+Rewrite using `[Finset.card_eq_zero.1 h]`. Conclude with `Finset.notMem_empty a`. Establish `h2 : ε a ≠ false` using `fun hh => this (Finset.mem_filter.2 ⟨Finset.mem_univ a, hh⟩)`. Simplify using `[h2]`. Take `⟨s, hs, hall⟩` from `hsame`.
+
+Establish `hJ : Formalism.REAL.Jm ε = Matrix.diagonal fun _ => s`. Unfold `Formalism.REAL.Jm`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `hall a`.
+
+Establish `hY0 : ∀ Y : Matrix (Fin n) (Fin n) ℂ, Formalism.REAL.inP ε Y → Y = 0`. Introduce `Y hY`. Establish `h1` using `hY.2`. Rewrite `h1` using `[hJ]`. Use extensionality with `i j`.
+
+Establish `h2` using `congrFun (congrFun h1 i) j`. Rewrite `h2` using `[Matrix.mul_diagonal, Matrix.neg_apply, Matrix.diagonal_mul]`. Establish `h3 : (2 * s) * Y i j = 0` using `by linear_combination h2`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `absurd h4 (mul_ne_zero two_ne_zero hs)`.
+
+Simplify using `using h4`. Apply `le_antisymm _ (cartan_distance_nonneg ε g)` to reduce the goal to its premises. Unfold `cartanDistance`. Distinguish the cases in `hne : {t | ∃ k Y : Matrix (Fin n) (Fin n) ℂ, k ∈ Formalism.REAL.Kset ε ∧ Formalism.REAL.inP ε Y ∧ umat g = k * NormedSpace.exp Y ∧ t = Real.sqrt (Formalism.REAL.hs Y)}.Nonempty`. Take `⟨t, k, Y, hk, hY, hg, rfl⟩` from `hne`.
+
+Use `le_trans (csInf_le ⟨0, ?_⟩ ⟨k, Y, hk, hY, hg, rfl⟩) ?_` and prove the remaining obligations. Introduce and unpack `t ⟨_, Y', -, -, -, rfl⟩`. Conclude with `Real.sqrt_nonneg _`. Rewrite using `[hY0 Y hY]`. Simplify using `[Formalism.REAL.hs]`.
+
+Rewrite using `[Set.not_nonempty_iff_eq_empty.1 hne, Real.sInf_empty]`.
+-/
 theorem cartan_distance_eq_zero_of_definite {n : ℕ} {ε : Fin n → Bool} (h0 : min (pOf ε) (qOf ε) = 0) (g : Formalism.REAL.UJ ε) : cartanDistance ε g = 0 := by
   have hsame : ∃ s : ℂ, s ≠ 0 ∧ ∀ a, (if ε a then (1 : ℂ) else -1) = s := by
     rcases Nat.min_eq_zero_iff.1 h0 with h | h
@@ -821,6 +1063,9 @@ theorem cartan_distance_eq_zero_of_definite {n : ℕ} {ε : Fin n → Bool} (h0 
       simp [Formalism.REAL.hs]
   · rw [Set.not_nonempty_iff_eq_empty.1 hne, Real.sInf_empty]
 
+/- English proof (translation)
+Establish `h1` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces I.F`. Establish `h2` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank I.F`. Unfold `AutInst.f`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_infinite_places_le_degree (I : AutInst) : Fintype.card (InfinitePlace I.F) ≤ I.f := by
   have h1 := NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces I.F
   have h2 := NumberField.InfinitePlace.card_add_two_mul_card_eq_rank I.F
@@ -837,6 +1082,13 @@ def Acnt (C₁ : ℝ) : ℝ :=
   (3 * Real.sqrt (X.I.n : ℝ) /
     (Formalism.HermitianLatticeCounting.S7.Ydat X.I.n X.I.f X.I.rd (X.g : ℝ) X.b ^ (-(C₁ * (X.qq : ℝ)))) ^ 2) ^ (2 * X.I.n ^ 2 * X.I.f)
 
+/- English proof (translation)
+Take `⟨p, q, hpq, hq⟩` from `hX.1.2.1`. Establish `h1 : ∀ v, q0At X.I v = min p q` using `fun v => by`. Unfold `q0At`. Rewrite using `[(hpq v).1, (hpq v).2]`. Establish `h2 : X.qq = min p q`.
+
+Unfold `qq`. Rewrite using `[show (fun v => q0At X.I v) = fun _ => min p q from funext h1]`. Conclude with `Finset.sup_const Finset.univ_nonempty _`. Use `⟨fun v => by rw [h1 v, h2], ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`.
+
+Conclude with `le_trans (Nat.pow_le_pow_left (min_le_right _ _) 2) hq`.
+-/
 theorem qq_spec {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) : (∀ v, q0At X.I v = X.qq) ∧ X.qq ^ 2 ≤ X.I.n := by
   obtain ⟨p, q, hpq, hq⟩ := hX.1.2.1
   have h1 : ∀ v, q0At X.I v = min p q := fun v => by
@@ -859,6 +1111,21 @@ def StepsC' (n₀ : ℕ) (A C cb c₁ A₂ cε C₁ : ℝ) : Prop :=
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨Cf, -, hnum⟩` from `far_region_numerics cε C₁ c₁ A hcε hcε2 hC₁ hc₁ hA`. Take `⟨Ch, -, hH⟩` from `Formalism.HermitianLatticeCounting.Final.S7.threshHead 0`. Use `⟨max Cf Ch, fun D n₀ C cb hn₀ hC hdec hS X hX => ?_⟩` and prove the remaining obligations. Take `⟨s1, s2, s3, s4, Mod, hM, hpr, hnear, hcnt, hdeep⟩` from `hS X hX`. Use `⟨s1, s2, s3, Mod, hM, hpr, ?_, hdeep⟩` and prove the remaining obligations.
+
+Establish `hthr` using `(gap_thresholds_of_height_bound hH X hn₀ (le_trans (le_max_right _ _) hC) hX).1`. Establish `hp : X.I.IsPosType X.e` using `hX.1.1.2.2.2.2.2.2.1.2.2.2.1`. Take `⟨hq, hq2⟩` from `X.qq_spec hX.1`. Establish `hn1 : 1 ≤ X.I.n` using `le_trans hn₀ hX.1.1.1`. Distinguish the cases in `hq0 : X.qq = 0`.
+
+Use `X.moderate_of_near_far hM s3 hp hA₂ le_rfl (Real.exp_pos _).le hnear fun x _ => ?_` and prove the remaining obligations. Establish `hε` using `(epsilon_small_bounds hcε hcε2 hn1 (one_le_autInst_f X.I)).1`. Establish `: X.farS (Formalism.HermitianLatticeCounting.S7.epsN cε X.I.n X.I.f) x = 0`. Unfold `CData.farS`. Use `ENNReal.tsum_eq_zero.2 fun γ => if_neg fun hh => hh.2 fun v => ?_` and prove the remaining obligations.
+
+Unfold `CData.dist`. Rewrite using `[cartan_distance_eq_zero_of_definite (by have := hq v; unfold q0At AutInst.pAt AutInst.qAt at this; rw [hq0] at this; exact this)]`. Conclude with `hε.le`. Rewrite using `[this]`. Conclude with `zero_le`.
+
+Establish `hq1 : 1 ≤ X.qq` using `Nat.one_le_iff_ne_zero.2 hq0`. Establish `hrd` using `one_le_discriminant_root X.I`. Establish `hb : 2 ≤ X.b` using `hX.1.1.2.2.1`. Establish `hlog : 0 ≤ Real.log (X.b * X.I.rd)` using `Real.log_nonneg (by nlinarith)`. Establish `hle : Cf * (X.I.n : ℝ) ^ 19 * (X.I.f : ℝ) ^ 5 * Real.log (X.b * X.I.rd) ≤ X.h`.
+
+Use `le_trans ?_ hX.2.1` and prove the remaining obligations. Use `gcongr`. Conclude with `le_trans (le_max_left _ _) hC`. Establish `hg1 : (1 : ℝ) ≤ (X.g : ℝ)` using `by exact_mod_cast hX.1.1.2.2.2.2.2.2.2.1`. Take `⟨n1, n2, n3, n4, n5, n6⟩` from `hnum X.I.n X.qq X.I.f (Fintype.card (InfinitePlace X.I.F)) X.I.rd X.g X.b X.h hn1 hq1 hq2 (one_le_autInst_f X.I) (card_infinite_places_le_degree X.I) hX.2.2.1 hb hrd hg1 hX.1.1.2.2.2.2.2.2.2.2.1 hle`.
+
+Establish `hAc : 0 ≤ X.Acnt C₁` using `by unfold CData.Acnt; positivity`. Establish `hfar` using `X.farPoint_of_count D hdec hX.1 hthr s4 hq hq1 hAc (by positivity) n1 n2 n3 n4 n5 hcnt`. Conclude with `X.moderate_of_near_far hM s3 hp hA₂ (by positivity) n6 hnear hfar`.
+-/
 theorem StepsC_of_refined (cε C₁ c₁ A A₂ : ℝ) (hcε : 0 < cε) (hcε2 : cε ≤ 1 / 2) (hC₁ : 1 ≤ C₁) (hc₁ : 0 < c₁)
     (hA : 1 ≤ A) (hA₂ : 0 ≤ A₂) :
     ∃ C₀ : ℝ, ∀ (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (C cb : ℝ), 1 ≤ n₀ → C₀ ≤ C → DiscreteSeriesDecayBound D →
@@ -899,6 +1166,11 @@ theorem StepsC_of_refined (cε C₁ c₁ A A₂ : ℝ) (hcε : 0 < cε) (hcε2 :
     have hfar := X.farPoint_of_count D hdec hX.1 hthr s4 hq hq1 hAc (by positivity) n1 n2 n3 n4 n5 hcnt
     exact X.moderate_of_near_far hM s3 hp hA₂ (by positivity) n6 hnear hfar
 
+/- English proof (translation)
+Take `⟨c', hc', n₁, h⟩` from `third_bound_of_estimates c₁ (A₂ + 1) hc₁ (by linarith)`. Take `⟨C₀, hR⟩` from `StepsC_of_refined cε C₁ c₁ A A₂ hcε hcε2 hC₁ hc₁ hA hA₂`. Use `⟨c', hc', max n₁ 1, fun Cb => ?_⟩` and prove the remaining obligations. Take `⟨C₁', h⟩` from `h Cb`. Use `⟨max C₁' C₀, fun D Cres n₀ C cb hn hC hS => ?_⟩` and prove the remaining obligations.
+
+Conclude with `h D Cres n₀ A C cb (le_trans (le_max_left _ _) hn) (le_trans (le_max_left _ _) hC) fun hadm hdec hb => hR D n₀ C cb (le_trans (le_max_right _ _) hn) (le_trans (le_max_right _ _) hC) hdec (hS hadm hdec hb)`.
+-/
 theorem third_bound_of_refined_estimates (cε C₁ c₁ A A₂ : ℝ) (hcε : 0 < cε) (hcε2 : cε ≤ 1 / 2) (hC₁ : 1 ≤ C₁) (hc₁ : 0 < c₁)
     (hA : 1 ≤ A) (hA₂ : 0 ≤ A₂) :
     ∃ c' : ℝ, 0 < c' ∧ ∃ n₁ : ℕ, ∀ Cb : ℝ, ∃ C₂ : ℝ, ∀ (D : Formalism.BasicNotions.D7) (Cres : ℝ) (n₀ : ℕ) (C cb : ℝ),
@@ -915,6 +1187,11 @@ theorem third_bound_of_refined_estimates (cε C₁ c₁ A A₂ : ℝ) (hcε : 0 
     fun hadm hdec hb => hR D n₀ C cb (le_trans (le_max_right _ _) hn) (le_trans (le_max_right _ _) hC) hdec
       (hS hadm hdec hb)
 
+/- English proof (translation)
+Introduce `v`. Establish `hfd : FiniteDimensional ℂ (lowKSub (X.I.ε v) (X.lam v) (X.σ v))` using `(h2 X.I.n (X.I.ε v) (X.lam v) (hX.1.2.2.2.2.1 v) (X.H v) (X.σ v) (hX.2.1.1 v)).1.1`. Use `⟨(lowKSub (X.I.ε v) (X.lam v) (X.σ v)).starProjection, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(lowKSub (X.I.ε v) (X.lam v) (X.σ v)).isIdempotentElem_starProjection`. Introduce `x y`.
+
+Conclude with `Submodule.inner_starProjection_left_eq_right _ x y`. Conclude with `Submodule.range_starProjection _`.
+-/
 theorem lowest_K_type_projector_exists (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) :
     X.LowProj := by
   intro v
@@ -926,6 +1203,9 @@ theorem lowest_K_type_projector_exists (D : Formalism.BasicNotions.D7) (h2 : adm
     exact Submodule.inner_starProjection_left_eq_right _ x y
   · exact Submodule.range_starProjection _
 
+/- English proof (translation)
+Establish `he : Integrable X.e X.μf` using `hX.2.1.2.2.2.2.2.2.1`. Conclude with `hph.mul_prod he`.
+-/
 theorem φ_integrable (X : CData) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A)
     (hph : Integrable (phOf X.I X.σ X.w) (Measure.pi fun v => Formalism.REAL.muG (X.I.ε v))) :
     Integrable X.φ (X.I.muA X.μf) := by
@@ -938,6 +1218,11 @@ def StepsU3' : Prop :=
       (ArchimedeanSignatureMatching D ∧ adm5 D ∧ adm6 D ∧ adm7 D Cres ∧ adm8 D) → DiscreteSeriesDecayBound D → Conclusion2 D n₀' A Cb →
         StepsC' n₀' A C cb c₁ A₂ cε C₁
 
+/- English proof (translation)
+Take `⟨c₁, cb, A₂, cε, hc₁, hcb, hA₂, hcε, hcε2, hS⟩` from `hS`. Use `closed_third_part_of_estimates ⟨c₁, cb, A₂ + 1, hc₁, hcb, by linarith, fun Cres A Cb hA => ?_⟩` and prove the remaining obligations. Take `⟨C₁, n₀, C₀, hC₁, hS⟩` from `hS Cres A Cb hA`. Take `⟨C₂, hR⟩` from `StepsC_of_refined cε C₁ c₁ A A₂ hcε hcε2 hC₁ hc₁ hA hA₂`. Use `⟨max n₀ 1, max C₀ C₂, fun n₀' hn C hC D hadm hdec hb => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hR D n₀' C cb (le_trans (le_max_right _ _) hn) (le_trans (le_max_right _ _) hC) hdec (hS n₀' (le_trans (le_max_left _ _) hn) C (le_trans (le_max_left _ _) hC) D hadm hdec hb)`.
+-/
 theorem closed_third_part_of_refined (hS : StepsU3') : ClosedFormWordCount := by
   obtain ⟨c₁, cb, A₂, cε, hc₁, hcb, hA₂, hcε, hcε2, hS⟩ := hS
   refine closed_third_part_of_estimates ⟨c₁, cb, A₂ + 1, hc₁, hcb, by linarith, fun Cres A Cb hA => ?_⟩
@@ -947,6 +1232,11 @@ theorem closed_third_part_of_refined (hS : StepsU3') : ClosedFormWordCount := by
   exact hR D n₀' C cb (le_trans (le_max_right _ _) hn) (le_trans (le_max_right _ _) hC) hdec
     (hS n₀' (le_trans (le_max_left _ _) hn) C (le_trans (le_max_left _ _) hC) D hadm hdec hb)
 
+/- English proof (translation)
+Take `⟨c', hc', n₁, h⟩` from `third_part_of_estimates c₁ (A₂ + 1) hc₁ (by linarith)`. Take `⟨C₀, hR⟩` from `StepsC_of_refined cε C₁ c₁ A A₂ hcε hcε2 hC₁ hc₁ hA hA₂`. Use `⟨c', hc', max n₁ 1, fun Cb => ?_⟩` and prove the remaining obligations. Take `⟨C₁', h⟩` from `h Cb`. Use `⟨max C₁' C₀, fun D n₀ C cb hn hC hdec hb hS => ?_⟩` and prove the remaining obligations.
+
+Conclude with `h D n₀ A C cb (le_trans (le_max_left _ _) hn) (le_trans (le_max_left _ _) hC) hb (hR D n₀ C cb (le_trans (le_max_right _ _) hn) (le_trans (le_max_right _ _) hC) hdec hS)`.
+-/
 theorem third_part_of_refined_estimates (cε C₁ c₁ A A₂ : ℝ) (hcε : 0 < cε) (hcε2 : cε ≤ 1 / 2) (hC₁ : 1 ≤ C₁) (hc₁ : 0 < c₁)
     (hA : 1 ≤ A) (hA₂ : 0 ≤ A₂) :
     ∃ c' : ℝ, 0 < c' ∧ ∃ n₁ : ℕ, ∀ Cb : ℝ, ∃ C₂ : ℝ, ∀ (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (C cb : ℝ),
@@ -959,6 +1249,11 @@ theorem third_part_of_refined_estimates (cε C₁ c₁ A A₂ : ℝ) (hcε : 0 <
   exact h D n₀ A C cb (le_trans (le_max_left _ _) hn) (le_trans (le_max_left _ _) hC) hb
     (hR D n₀ C cb (le_trans (le_max_right _ _) hn) (le_trans (le_max_right _ _) hC) hdec hS)
 
+/- English proof (translation)
+Introduce and unpack `⟨a1, a2, a3, a4, a5, a6, a7, a8⟩`. Establish `p0` using `i0 ⟨a2, a3⟩`. Establish `p1` using `i1 p0`. Establish `p2` using `i2 p1`. Establish `p4` using `i4 a1 p2 i3`.
+
+Establish `p5` using `i5 ⟨a1, a6, a8⟩ p1 p4`. Conclude with `⟨p0, p1, p2, i3, p4, p5, i6 ⟨a4, a5, a6, a7, a8⟩ p1 p5⟩`.
+-/
 theorem full_statement_of_parts (D : Formalism.BasicNotions.D7) (Cres : ℝ) (n₀ : ℕ) (A Cb C c cb : ℝ) (i0 : HarishChandraFormulaStatement D) (i1 : IntegralityFromMetric D)
     (i2 : IntegrabilityFromDecay D) (i3 : AbstractGroupProjectorForDatum D) (i4 : LocalProjectorFromSchur D) (i5 : HodgeTateFromSandwich D n₀ A Cb)
     (i6 : TowerRallisLemma D Cres n₀ A Cb C c cb) : Stmt D Cres n₀ A Cb C c cb := by
@@ -970,6 +1265,13 @@ theorem full_statement_of_parts (D : Formalism.BasicNotions.D7) (Cres : ℝ) (n�
   have p5 := i5 ⟨a1, a6, a8⟩ p1 p4
   exact ⟨p0, p1, p2, i3, p4, p5, i6 ⟨a4, a5, a6, a7, a8⟩ p1 p5⟩
 
+/- English proof (translation)
+Introduce `hA`. Establish `a1 : admF1 Fm` using `fun x i => (hA x i).1`. Establish `a2 : admF2 Fm` using `fun x i => (hA x i).2.1`. Establish `a3 : admF3 Fm` using `fun x i => (hA x i).2.2.1`. Establish `a4 : admF4 Fm` using `fun x i => (hA x i).2.2.2.1`.
+
+Establish `a5 : admF5 Fm` using `fun x i => (hA x i).2.2.2.2.1`. Establish `a6 : admF6 Fm` using `fun x i => (hA x i).2.2.2.2.2.1`. Establish `a7 : admF7 Fm Cres` using `fun x i => (hA x i).2.2.2.2.2.2.1`. Establish `a8 : admF8 Fm` using `fun x i => (hA x i).2.2.2.2.2.2.2`. Establish `p0` using `i0 ⟨a2, a3⟩`.
+
+Establish `p1` using `i1 p0`. Establish `p2` using `i2 p1`. Establish `p4` using `i4 a1 p2 i3`. Establish `p5` using `i5 ⟨a1, a6, a8⟩ p1 p4`. Conclude with `⟨p0, p1, p2, i3, p4, p5, i6 ⟨a4, a5, a6, a7, a8⟩ p1 p5⟩`.
+-/
 theorem family_full_statement_of_parts {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Cres : ℝ) (n₀ : ℕ) (A Cb C c cb : ℝ)
     (i0 : FamilyFormulaStatement Fm) (i1 : PeriodFamilyStatement Fm) (i2 : FamilyIntegrabilityOfDecay Fm) (i3 : FamilyAbstractProjector Fm) (i4 : FamilyLocalProjectorOfAbstractProjector Fm)
     (i5 : DeterminantValueFamily Fm n₀ A Cb) (i6 : FlatLineDegreeFamilyStatement Fm Cres n₀ A Cb C c cb) : KudlaFamilyStatement Fm Cres n₀ A Cb C c cb := by
@@ -989,10 +1291,16 @@ theorem family_full_statement_of_parts {eps : ℝ} (Fm : Formalism.MainNotions.F
   have p5 := i5 ⟨a1, a6, a8⟩ p1 p4
   exact ⟨p0, p1, p2, i3, p4, p5, i6 ⟨a4, a5, a6, a7, a8⟩ p1 p5⟩
 
+/- English proof (translation)
+Introduce `ha h1 h2 x i` and use `h x i ⟨ha.1 x i, ha.2.1 x i, ha.2.2 x i⟩ (h1 x i) (h2 x i)`.
+-/
 theorem family_second_part_of_local {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (n₀ : ℕ) (A Cb : ℝ)
     (h : ∀ x (i : Fm.Ix x), HodgeTateFromSandwich (Fm.D x i) n₀ A Cb) : DeterminantValueFamily Fm n₀ A Cb :=
   fun ha h1 h2 x i => h x i ⟨ha.1 x i, ha.2.1 x i, ha.2.2 x i⟩ (h1 x i) (h2 x i)
 
+/- English proof (translation)
+Introduce `ha h1 h2` and use `⟨hc, hcb, fun x i => h x i ⟨ha.1 x i, ha.2.1 x i, ha.2.2.1 x i, ha.2.2.2.1 x i, ha.2.2.2.2 x i⟩ (h1 x i) (h2 x i)⟩`.
+-/
 theorem family_third_part_of_local {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Cres : ℝ) (n₀ : ℕ) (A Cb C c cb : ℝ) (hc : 0 < c)
     (hcb : 0 < cb) (h : ∀ x (i : Fm.Ix x), TowerRallisLemma (Fm.D x i) Cres n₀ A Cb C c cb) :
     FlatLineDegreeFamilyStatement Fm Cres n₀ A Cb C c cb :=
@@ -1007,6 +1315,19 @@ def RegRep : Prop :=
   (∀ g (F : X.L2), ‖X.R g F‖ = ‖F‖) ∧
     ∀ x y : X.L2, AEStronglyMeasurable (fun g => ⟪x, X.R g y⟫_ℂ) (X.I.muA X.μf)
 
+/- English proof (translation)
+Establish `hbd : ∀ (x y : X.L2) g, ‖⟪x, X.R g y⟫_ℂ‖ ≤ ‖x‖ * ‖y‖` using `fun x y g => by`. Use `le_trans (norm_inner_le_norm _ _) ?_` and prove the remaining obligations. Rewrite using `[hR.1]`. Establish `hint : ∀ x y : X.L2, Integrable (fun g => X.φ g * ⟪x, X.R g y⟫_ℂ) (X.I.muA X.μf)` using `fun x y => hφ.mul_bdd (c := ‖x‖ * ‖y‖) (hR.2 x y) (Filter.Eventually.of_forall (hbd x y))`. Set `f : X.L2 →ₗ⋆[ℂ] X.L2 →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x y => ∫ g, X.φ g * ⟪x, X.R g y⟫_ℂ ∂(X.I.muA X.μf)) (fun x x' y => by`.
+
+Simplify using `only [inner_add_left, mul_add]`. Conclude with `integral_add (hint x y) (hint x' y))`. Use the proof step `(fun c x y => by`. Simplify using `only [inner_smul_left, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`.
+
+Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun g => by ring))`. Use the proof step `(fun x y y' => by`. Simplify using `only [map_add, inner_add_right, mul_add]`. Conclude with `integral_add (hint x y) (hint x y'))`. Use the proof step `(fun c x y => by`.
+
+Simplify using `only [map_smul, inner_smul_right, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun g => by ring))`. Establish `hf : ∀ x y, f x y = ∫ g, X.φ g * ⟪x, X.R g y⟫_ℂ ∂(X.I.muA X.μf)` using `fun x y => rfl`. Establish `hbound : ∀ x y, ‖f x y‖ ≤ (∫ g, ‖X.φ g‖ ∂(X.I.muA X.μf)) * ‖x‖ * ‖y‖`.
+
+Introduce `x y`. Rewrite using `[hf, mul_assoc, ← integral_mul_const]`. Use `norm_integral_le_of_norm_le (hφ.norm.mul_const _) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hbd x y g) (norm_nonneg _)`.
+
+Set `B : X.L2 →L⋆[ℂ] X.L2 →L[ℂ] ℂ` to `f.mkContinuous₂ _ hbound`. Use `⟨ContinuousLinearMap.adjoint (InnerProductSpace.continuousLinearMapOfBilin B), hφ, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.adjoint_inner_right, InnerProductSpace.continuousLinearMapOfBilin_apply]`. Both sides reduce to the same expression.
+-/
 theorem opExists_of_regRep (hR : X.RegRep) (hφ : Integrable X.φ (X.I.muA X.μf)) : X.OpExists := by
   have hbd : ∀ (x y : X.L2) g, ‖⟪x, X.R g y⟫_ℂ‖ ≤ ‖x‖ * ‖y‖ := fun x y g => by
     refine le_trans (norm_inner_le_norm _ _) ?_
@@ -1049,6 +1370,11 @@ def StepsC'' (n₀ : ℕ) (A C cb c₁ A₂ cε C₁ : ℝ) : Prop :=
       X.NearStep (Formalism.HermitianLatticeCounting.S7.epsN cε X.I.n X.I.f) c₁ A₂ Mod ∧
       X.FarCount (X.Acnt C₁) (2 * (X.I.n : ℝ) ^ 2) Mod ∧ X.DeepInt (A₂ + 1) Mod
 
+/- English proof (translation)
+Take `⟨Ch, -, hH⟩` from `Formalism.HermitianLatticeCounting.Final.S7.threshHead 0`. Use `⟨Ch, fun D n₀ A Cb C cb c₁ A₂ cε C₁ hn hC h2 hb hS X hX => ?_⟩` and prove the remaining obligations. Take `⟨s1, s2, s3, s4⟩` from `hS X hX`. Establish `hthr` using `(gap_thresholds_of_height_bound hH X hn hC hX).1`. Establish `hph` using `((second_part_iff_bundles D n₀ A Cb).1 hb X hX.1).1 hthr`.
+
+Conclude with `⟨X.opExists_of_regRep s1 (φ_integrable X hX.1 hph), s2, s3, lowest_K_type_projector_exists D h2 X hX.1, s4⟩`.
+-/
 theorem StepsC'_of_last : ∃ C₃ : ℝ, ∀ (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (A Cb C cb c₁ A₂ cε C₁ : ℝ), 1 ≤ n₀ → C₃ ≤ C →
     adm2 D → Conclusion2 D n₀ A Cb → StepsC'' n₀ A C cb c₁ A₂ cε C₁ → StepsC' n₀ A C cb c₁ A₂ cε C₁ := by
   obtain ⟨Ch, -, hH⟩ := Formalism.HermitianLatticeCounting.Final.S7.threshHead 0
@@ -1058,6 +1384,11 @@ theorem StepsC'_of_last : ∃ C₃ : ℝ, ∀ (D : Formalism.BasicNotions.D7) (n
   have hph := ((second_part_iff_bundles D n₀ A Cb).1 hb X hX.1).1 hthr
   exact ⟨X.opExists_of_regRep s1 (φ_integrable X hX.1 hph), s2, s3, lowest_K_type_projector_exists D h2 X hX.1, s4⟩
 
+/- English proof (translation)
+Take `⟨c', hc', n₁, h⟩` from `third_part_of_refined_estimates cε C₁ c₁ A A₂ hcε hcε2 hC₁ hc₁ hA hA₂`. Take `⟨C₃, h3⟩` from `StepsC'_of_last`. Use `⟨c', hc', max n₁ 1, fun Cb => ?_⟩` and prove the remaining obligations. Take `⟨C₂, h⟩` from `h Cb`. Use `⟨max C₂ C₃, fun D n₀ C cb hn hC h2 hdec hb hS => ?_⟩` and prove the remaining obligations.
+
+Conclude with `h D n₀ C cb (le_trans (le_max_left _ _) hn) (le_trans (le_max_left _ _) hC) hdec hb (h3 D n₀ A Cb C cb c₁ A₂ cε C₁ (le_trans (le_max_right _ _) hn) (le_trans (le_max_right _ _) hC) h2 hb hS)`.
+-/
 theorem third_part_of_final_estimates (cε C₁ c₁ A A₂ : ℝ) (hcε : 0 < cε) (hcε2 : cε ≤ 1 / 2) (hC₁ : 1 ≤ C₁) (hc₁ : 0 < c₁)
     (hA : 1 ≤ A) (hA₂ : 0 ≤ A₂) :
     ∃ c' : ℝ, 0 < c' ∧ ∃ n₁ : ℕ, ∀ Cb : ℝ, ∃ C₂ : ℝ, ∀ (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (C cb : ℝ),

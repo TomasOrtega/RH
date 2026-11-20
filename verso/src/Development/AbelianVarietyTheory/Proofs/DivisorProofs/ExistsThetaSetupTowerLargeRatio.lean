@@ -29,27 +29,78 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Sep.TowerLarge
 
+/- English proof (translation)
+Take `⟨c, hc, pr, hpr, hu, hL, hact⟩` from `h`. Conclude with `⟨c, hc, pr, hpr, hu, hL, fun E a => by simpa [List.ofFn_eq_map] using hact E a⟩`.
+-/
 theorem isDiagEnd_of_isAct {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}}
     {i : F.X ⟶ Z} (X₁ : Setup F W i) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (h : IsAct X₁ act) :
     IsDiagEnd F W X₁.ρ.P X₁.u act := by
   obtain ⟨c, hc, pr, hpr, hu, hL, hact⟩ := h
   exact ⟨c, hc, pr, hpr, hu, hL, fun E a => by simpa [List.ofFn_eq_map] using hact E a⟩
 
+/- English proof (translation)
+Take `⟨c, hc, pr, hpr, hu, hL, hact⟩` from `h`. Conclude with `⟨c, hc, pr, hpr, hu, hL, fun E a => by simpa [List.ofFn_eq_map] using hact E a⟩`.
+-/
 theorem isAct_of_isDiagEnd {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}}
     {i : F.X ⟶ Z} (X₁ : Setup F W i) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A))
     (h : IsDiagEnd F W X₁.ρ.P X₁.u act) : IsAct X₁ act := by
   obtain ⟨c, hc, pr, hpr, hu, hL, hact⟩ := h
   exact ⟨c, hc, pr, hpr, hu, hL, fun E a => by simpa [List.ofFn_eq_map] using hact E a⟩
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M j j rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h`.
+-/
 theorem lbIso_pull_comp' {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {a : Y ⟶ X} (h : LBIso M (L.pull a)) (j : Z ⟶ Y)
     {a' : Z ⟶ X} (e : a' = j ≫ a) : LBIso (M.pull j) (L.pull a') :=
   LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M j j rfl)
     (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) :=
   (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
+/- English proof (translation)
+Introduce `g _ n _ _ F Z z i _ _ _ _ _ W _ _ X₁ _ act hact N₀`. Establish `hε₁` using `isDiagEnd_of_isAct X₁ act hact`. Establish `hℓp : X₁.ρ.n.Prime` using `X₁.ρ.n_prime`. Establish `hℓ2 : 2 ≤ X₁.ρ.n` using `hℓp.two_le`. Take `⟨j₁, hj₁, hr⟩` from `X₁.ρ.r_eq`.
+
+Establish `hL₁ : X₁.S.r * X₁.S.N = X₁.ρ.n ^ (j₁ + 2 * X₁.ρ.k)`. Rewrite using `[hr, X₁.ρ.N_eq, ← pow_mul, ← pow_add, mul_comm X₁.ρ.k 2]`. Take `⟨k, j₀, hk, hBk, hj₀, big⟩` from `GSetup.exists_big_ge X₁.ρ.P.g X₁.ρ.n hℓ2 N₀`. Establish `hun1 : IsUnit (X₁.ρ.n : X₁.o₁)`. Establish `hd : X₁.ρ.n ∣ X₁.S.r * X₁.S.N`.
+
+Rewrite using `[hL₁]; exact dvd_pow_self _ (by omega)`. Conclude with `isUnit_of_dvd_unit (Nat.cast_dvd_cast hd) X₁.S.unit`. Use `haveI : CharZero X₁.Ω₁ := ArithBase.char (o := X₁.o₁)`. Establish `hM : 0 < X₁.S.r * X₁.S.N` using `by rw [hL₁]; exact pow_pos hℓp.pos _`. Establish `hζ₀ : ∃ ζ₀ : X₁.Ω₁, IsPrimitiveRoot ζ₀ (X₁.S.r * X₁.S.N)` using `⟨_, (X₁.S.prim.pow (by positivity) (sq _)).map_of_injective (ArithBase.inj (o := X₁.o₁) (Ω := X₁.Ω₁))⟩`.
+
+Establish `htors : ∀ (E : Type) [Field E] [IsAlgClosed E] (x : Sp E ⟶ Sp X₁.S.R) (z : Over.mk x ⟶ X₁.ρ.P.A), z ^ (X₁.S.r * X₁.S.N) = 1 → ∃ y : baseOver (Sp X₁.S.R) ⟶ X₁.ρ.P.A, (Over.homMk x (by simp) : Over.mk x ⟶ baseOver (Sp X₁.S.R)) ≫ y = z`. Introduce `E _ _ x z hz`. Take `⟨a, ha, -⟩` from `X₁.ρ.pt_bij E x z hz`. Conclude with `⟨_, ha⟩`. Use `set j := j₀ + (j₁ + 2 * X₁.ρ.k) with hj`.
+
+Use `set K := (X₁.ρ.n ^ j * (X₁.ρ.n ^ k) ^ 2) ^ 2 with hK`. Establish `hKpos : 0 < K` using `by have := hℓp.pos; positivity`. Take `⟨Ω₂, _, _, Q, φQ, ζ, fd, gal, deg, hζ, hQg, hQpb, hQlb, ⟨levQ⟩⟩` from `GlobalTheory.T.exists_primePower_galois_ext_symplecticLevel X₁.S.R.val.toRingHom X₁.ρ.P X₁.ρ.n (X₁.S.r * X₁.S.N) K hℓp hM (by rw [hL₁]; exact dvd_pow_self _ (by omega)) ⟨2 * (j + 2 * k), by rw [hK]; ring⟩ hζ₀ htors`. Use `haveI := fd`. Take `⟨o₂, _, _, _, κ, ze, hκ, hc, hze⟩` from `GlobalTheory.Poinc.exists_arithBase_rootOfUnity (o₁ := X₁.o₁) (Ω₁ := X₁.Ω₁) Ω₂ K ζ hKpos hζ`.
+
+Take `⟨R, h, hfg, hfr, hh, hfin, hic, hstab⟩` from `GlobalTheory.T.exists_integralClosure_finite_galoisStable_thetaRing X₁.S.R X₁.S.fg X₁.S.frac κ hκ hc`. Use `haveI := GlobalTheory.ThetaReal.isNoetherian_of_fg hfg`. Use `haveI := GlobalTheory.GenSpread.isFractionRing_of_forall_div hfr`. Establish `hun2 : IsUnit (X₁.ρ.n : o₂)` using `by simpa using hun1.map κ`. Establish `hKunit : IsUnit (K : R)`.
+
+Use `(hun2.map (algebraMap o₂ R))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Rewrite using `[hK]`. Use `push_cast`. Conclude with `((this.pow _).mul ((this.pow _).pow _)).pow _`.
+
+Set `zeR : (↥R)ˣ` to `Units.map (algebraMap o₂ R).toMonoidHom ze`. Establish `hzeR : Units.map (algebraMap R Ω₂).toMonoidHom zeR = ζ`. Rewrite using `[← hze]`. Use `ext`. Both sides reduce to the same expression.
+
+Establish `hQpb' : IsGrpPullback Q.A X₁.ρ.P.A (spMap ((algebraMap R Ω₂).comp h)) φQ`. Establish `e : (algebraMap R Ω₂).comp h = (algebraMap X₁.Ω₁ Ω₂).comp X₁.S.R.val.toRingHom` using `RingHom.ext hh`. Rewrite using `[e]`. Conclude with `hQpb`. Take `⟨P, ψ, hPg, hpb, hlb, ⟨lev⟩⟩` from `GlobalTheory.T.symplecticLevel_extends_noetherian_normalDomain X₁.ρ.P R Ω₂ h Q φQ K zeR hKpos hKunit hQg hQpb' hQlb ⟨by rw [hzeR]; exact levQ⟩`.
+
+Establish `hS` using `GlobalTheory.Poinc.hypS_polAV_pullback X₁.ρ.P P (spMap h) ψ hpb hlb X₁.ρ.hypS`. Take `⟨th, hth⟩` from `GlobalTheory.T.exists_polarization_sectionBasis_pullback_affine X₁.ρ.P P h ψ hpb hlb X₁.ρ.th₁ X₁.ρ.th₁_basis`. Take `⟨S₂, ρ₂, hR, φ₂, hSR, -, -, hN₂, hr₂, hg₂, hpb₂, hlb₂⟩` from `GlobalTheory.T.exists_realisedThetaSystem_of_universalSectionBasis o₂ Ω₂ R hfg hfr P X₁.ρ.n k j ze hℓp X₁.ρ.n_odd hk (by omega) hun2 hS th hth lev`. Use `set om : X₁.S.R →+* S₂.R := (Subalgebra.inclusion hR).toRingHom.comp h with hom`. Establish `hval : ∀ a, ((om a : S₂.R) : Ω₂) = algebraMap X₁.Ω₁ Ω₂ a` using `fun a => hh a`.
+
+Establish `hcart : IsGrpPullback ρ₂.P.A X₁.ρ.P.A (spMap om) (φ₂ ≫ ψ)`. Rewrite using `[hom, ← spMap_comp']`. Conclude with `hpb₂.comp hpb`. Establish `hlbc : LBIso ρ₂.P.L (X₁.ρ.P.L.pull (φ₂ ≫ ψ))` using `LBIso.trans ρ₂.P.isLB (pull_isLB P.isLB _) (pull_isLB X₁.ρ.P.isLB _) hlb₂ (lbIso_pull_comp' hlb φ₂ rfl)`. Take `⟨ε₂, hε₂, hεc⟩` from `GlobalTheory.Poinc.isDiagEnd_pullback F W X₁.ρ.P ρ₂.P X₁.u (spMap om) (φ₂ ≫ ψ) act hε₁ hcart hlbc`.
+
+Establish `hsharp : SharpOver F W ρ₂.P (spMap om ≫ X₁.u)`. Take `⟨c, hc₁, pr, hpr, hun, hLc, -⟩` from `hε₂`. Conclude with `⟨c, hc₁, pr, hpr, hun, hLc⟩`. Establish `key : spMap S₂.R.val.toRingHom ≫ spMap om = spMap (algebraMap X₁.Ω₁ Ω₂) ≫ spMap X₁.S.R.val.toRingHom`. Rewrite using `[spMap_comp', spMap_comp']`.
+
+Use `congr 1`. Use extensionality with `a`. Conclude with `hval a`. Establish `hgen : ∀ w, (spMap S₂.R.val.toRingHom ≫ spMap om ≫ X₁.u) w ∈ genericPoints F.X`. Introduce `w`.
+
+Rewrite using `[← Category.assoc, key, Category.assoc, Scheme.Hom.comp_apply]`. Conclude with `X₁.gen _`. Take `⟨M₂, q, hMn, hq, hqgen⟩` from `GlobalTheory.Poinc.Setup.exists_model_of_finiteDimensional X₁ o₂ Ω₂ κ hκ hc`. Use `haveI := hq`. Use `haveI := X₁.fin`.
+
+Establish `hcomp : M₂.pt ≫ q ≫ X₁.π = spMap S₂.R.val.toRingHom ≫ (spMap om ≫ X₁.u) ≫ i`. Rewrite using `[← Category.assoc, hqgen, Category.assoc, X₁.comp, Category.assoc, ← Category.assoc (spMap S₂.R.val.toRingHom), key, Category.assoc]`. Establish `hbase : spMap S₂.R.val.toRingHom ≫ (spMap om ≫ X₁.u) ≫ F.s = spMap ((algebraMap o₂ Ω₂).comp (κ.comp X₁.κ))`. Rewrite using `[← Category.assoc, ← Category.assoc, key, Category.assoc, Category.assoc, X₁.base, spMap_comp', ← RingHom.comp_assoc, ← hc]`. Establish `hbig : S₂.Big` using `big j (by omega) o₂ Ω₂ S₂ (hg₂.trans hPg) hN₂ hr₂`.
+
+Set `X₂ : Setup F W i` to `Setup.mk o₂ Ω₂ S₂ ρ₂ hbig (spMap om ≫ X₁.u) hsharp hgen M₂ hMn (q ≫ X₁.π) inferInstance hcomp X₁.one_le X₁.three_le X₁.odd X₁.z X₁.proj X₁.normalZ X₁.imm X₁.thetaSetup_structureMap_comp X₁.dense X₁.e8 X₁.thetaInt (κ.comp X₁.κ) hbase`. Use `set d := X₁.ρ.n ^ (j₀ + 2 * k) with hd`. Establish `hlev : S₂.r * S₂.N = X₁.S.r * X₁.S.N * d`. Rewrite using `[hr₂, hN₂, hL₁, hd, hj, ← pow_mul, ← pow_add, ← pow_add, mul_comm k 2]`. Put the polynomial expressions in normal form.
+
+Take `⟨lam, hlam, hlamr⟩` from `GlobalTheory.T.exists_thetaRealisation_labels_of_grpPullback X₁.S S₂ X₁.ρ ρ₂ om (φ₂ ≫ ψ) d hcart hlev`. Establish `hRS : ∀ x : Ω₂, x ∈ S₂.R ↔ x ∈ R` using `fun x => by rw [hSR]`. Set `sR : (Ω₂ ≃ₐ[X₁.Ω₁] Ω₂) → (S₂.R →+* S₂.R)` to `fun σ => RingHom.codRestrict (((σ : Ω₂ ≃+* Ω₂) : Ω₂ →+* Ω₂).comp S₂.R.val.toRingHom) S₂.R (fun x => (hRS _).2 (hstab σ x ((hRS _).1 x.2)))`. Establish `hsR : ∀ σ, (sR σ).comp om = om` using `fun σ => RingHom.ext fun a => Subtype.ext ((congrArg σ (hval a)).trans ((σ.commutes _).trans (hval a).symm))`. Use `choose gl hgl using fun σ => GlobalTheory.T.exists_thetaRealisation_label_perm_of_ringEndo X₁.S S₂ X₁.ρ ρ₂ om (φ₂ ≫ ψ) hcart (sR σ) (hsR σ)`.
+
+Establish `hgll : ∀ σ a, gl σ (lam a) = lam a` using `fun σ a => GlobalTheory.T.thetaRealisation_labels_injective_of_grpPullback S₂ ρ₂ X₁.ρ.P.A (spMap om) (φ₂ ≫ ψ) hcart _ _ (by`. Rewrite using `[hgl, hlam, ← Category.assoc, spMap_comp', hsR])`. Set `𝔗 : Tower X₁ act` to `{ X₂ := X₂ act₂ := ε₂ isAct := isAct_of_isDiagEnd X₂ ε₂ hε₂ alg := inferInstance fd := fd gal := gal deg := deg d := d lev := hlev om := om om_eq := hval om_fin := RingHom.Finite.comp (RingHom.Finite.of_surjective _ fun x => ⟨⟨x.1, (hRS _).1 x.2⟩, rfl⟩) hfin sR := sR sR_eq := fun …`. Use `⟨𝔗, ?_⟩` and prove the remaining obligations. Use `show N₀ ≤ S₂.r * S₂.N`.
+
+Rewrite using `[hN₂, hr₂]`. Conclude with `hBk.trans (Nat.le_mul_of_pos_left _ (by have := hℓp.pos; positivity))`.
+-/
 theorem exists_tower_ge : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) [IsOpenImmersion i], IsProjOver z → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → i ≫ z = F.s → Dense (Set.range i) → ∀ W : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W → ThetaInt F W i → ∀ (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsAct X₁ act → ∀ N₀ : ℕ, ∃ 𝔗 : Tower X₁ act, N₀ ≤ 𝔗.X₂.S.r * 𝔗.X₂.S.N := by
   intro g _ n _ _ F Z z i _ _ _ _ _ W _ _ X₁ _ act hact N₀
   have hε₁ := isDiagEnd_of_isAct X₁ act hact

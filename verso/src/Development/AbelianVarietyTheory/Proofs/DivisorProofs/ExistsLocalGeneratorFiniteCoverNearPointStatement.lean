@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Pinch.locGen_near_fibre_of_finite | exact GlobalTheory.Pinch.locGen_near_fibre_of_finite | (intros; apply GlobalTheory.Pinch.locGen_near_fibre_of_finite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_local_generator_finite_cover_near_point : (∀ (X : Scheme.{0}) (L : LB X), L.IsLB → ∀ (W : X.Opens), IsAffineOpen W → ∀ F : Set X, F.Finite → F ⊆ W → ∃ (V : X.Opens) (a : ∀ k, Γ(X, V ⊓ L.U k)ˣ), F ⊆ V ∧ GlobalTheory.Pinch.LocGen L V a) → ∀ (X X' : Scheme.{0}) (p : X' ⟶ X), IsFinite p → ∀ (L : LB X'), L.IsLB → ∀ x : X, ∃ (W : X.Opens) (a : ∀ k, Γ(X', p ⁻¹ᵁ W ⊓ L.U k)ˣ), x ∈ W ∧ GlobalTheory.Pinch.LocGen L (p ⁻¹ᵁ W) a := by
   first | exact @GlobalTheory.Pinch.locGen_near_fibre_of_finite | exact GlobalTheory.Pinch.locGen_near_fibre_of_finite | (intros; apply GlobalTheory.Pinch.locGen_near_fibre_of_finite <;> assumption)

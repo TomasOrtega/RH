@@ -16,6 +16,13 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 
 namespace GlobalTheory.ZH.AbelianLocus
 
+/- English proof (translation)
+Establish `hi` using `D.i_hom`. Establish `h1` using `GlobalTheory.splitTorus_hom_proper_trivial_field k E.X G D.i hi`. Establish `h2 : 𝟙 (splitTorus (Sp k) E.X) = toUnit _ ≫ η[splitTorus (Sp k) E.X]`. Use `D.isKernel.hom_ext ?_ (toUnit_unique _ _)` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.assoc, IsMonHom.one_hom]`.
+
+Conclude with `h1`. Establish `h3` using `Rosenlicht.torusGamma_chi k E.X a`. Rewrite `h3` using `[Rosenlicht.chi, h2, Rosenlicht.coord_toUnit_comp, Rosenlicht.torusGamma_const]`. Assume the negation of the conclusion as `ha`. Establish `h4` using `congrArg (fun f : AddMonoidAlgebra k E.X => f.coeff a) h3`.
+
+Simplify using `[Ne.symm ha] at h4`.
+-/
 theorem char_eq_zero_of_isProper {k : Type} [Field k] (E : SplitExt (Sp k)) (G : Over (Sp k)) [GrpObj G]
     (D : E.GtDatum G) [IsProper G.hom] (a : E.X) : a = 0 := by
   have hi := D.i_hom
@@ -32,6 +39,11 @@ theorem char_eq_zero_of_isProper {k : Type} [Field k] (E : SplitExt (Sp k)) (G :
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω}
 
+/- English proof (translation)
+Use `(AddSubgroup.eq_bot_iff_forall _).2 fun a ha => ?_` and prove the remaining obligations. Establish `ha' : ∀ h : S.Gam, eStd S.g _ a h = 0` using `fun h => ha h trivial`. Use function extensionality and compare the values at `k`. Break down `k with i | i` into its components or cases. Use `ha' (Pi.single (Sum.inr i) 1)` as an intermediate fact.
+
+Simplify `this` using `[eStd, Pi.single_apply]`. Use `ha' (Pi.single (Sum.inl i) 1)` as an intermediate fact. Simplify `this` using `[eStd, Pi.single_apply]`.
+-/
 theorem perp_top_eq_bot (S : ThetaSys o Ω) : S.perp ⊤ = ⊥ := by
   refine (AddSubgroup.eq_bot_iff_forall _).2 fun a ha => ?_
   have ha' : ∀ h : S.Gam, eStd S.g _ a h = 0 := fun h => ha h trivial
@@ -42,6 +54,9 @@ theorem perp_top_eq_bot (S : ThetaSys o Ω) : S.perp ⊤ = ⊥ := by
   · have := ha' (Pi.single (Sum.inl i) 1)
     simpa [eStd, Pi.single_apply] using this
 
+/- English proof (translation)
+Substitute `h` using the available equality. Unfold `ThetaSys.proj`. Rewrite using `[finsum_unique, S.ρ_one _ (by rw [AddSubgroup.mem_bot.1 (Subtype.prop _), smul_zero])]`. Simplify using the standard rewrite rules.
+-/
 theorem proj_eq_one {T : AddSubgroup S.Gam} (h : T = ⊥) : S.proj T 0 = 1 := by
   subst h
   unfold ThetaSys.proj
@@ -50,6 +65,23 @@ theorem proj_eq_one {T : AddSubgroup S.Gam} (h : T = ⊥) : S.proj T 0 = 1 := by
 
 variable {ρ : S.Real} {M : RatModel o Ω} {U₀ : M.Z.Opens} {EE : M.Lat S.J}
 
+/- English proof (translation)
+Establish `hxz : ∀ s, Q.P.hom (x s) = z` using `fun s => by`. Establish `: (x ≫ Q.P.hom) s ∈ Set.range (x ≫ Q.P.hom)` using `⟨_, rfl⟩`. Rewrite `this` using `[hz]`. Conclude with `this`. Take `⟨l, hl⟩ : ∃ l, z ∈ Q.W l` from `TopologicalSpace.Opens.mem_iSup.1 (by rw [Q.cover]; trivial)`.
+
+Establish `hr : Set.range x ⊆ Set.range (Q.P.hom ⁻¹ᵁ Q.W l).ι`. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `Q.P.hom (x s) ∈ Q.W l`. Rewrite using `[hxz]` and apply the resulting hypothesis.
+
+Take `⟨x', rfl⟩ : ∃ x', x' ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι = x` from `⟨_, IsOpenImmersion.lift_fac _ x hr⟩`. Establish `hcov` using `(Q.imm l).1`. Establish `hm : x' (IsLocalRing.closedPoint K) ∈ ⨆ i ∈ (Set.univ : Set S.J), nonzeroLocus (Q.σ l i)`. Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`.
+
+Simplify using `only [TopologicalSpace.Opens.mem_iSup] at hm`. Take `⟨i, -, hi⟩` from `hm`. Take `⟨m, hm⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Take `⟨w, hw⟩ : ∃ w, Crd _ (Q.σ l) x' w` from `⟨_, m, 1, (CrdCalc.top_le_iff x' _).2 (Scheme.basicOpen_le _ _ hm), fun _ => rfl⟩`. Establish `hwi` using `((CrdCalc.crd_isUnit_iff i hw).2 ((CrdCalc.top_le_iff x' _).2 hi)).ne_zero`.
+
+Use `⟨_, Q.rel l K x' _ hw, fun h0 => hwi ?_⟩` and prove the remaining obligations. Establish `hBm : ∀ a b, Q.B l a b ∈ M.O z` using `fun a => hB.zero z hc _ (by rw [Q.basis l z hl]; exact Submodule.subset_span ⟨a, rfl⟩) (by rw [proj_eq_one hT, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec])`. Set `B' : Matrix S.J S.J (M.O z)` to `fun a b => ⟨_, hBm a b⟩`. Set `C' : Matrix S.J S.J (M.O z)` to `fun a b => ⟨_, RatModel.valF_mem_O hl (Q.c l a b)⟩`. Establish `h1 : C' * B' = 1`.
+
+Apply `Matrix.map_injective (f := (M.O z).val.toRingHom) Subtype.val_injective` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Q.c_inv l`. Establish `h2` using `congrArg (fun A => A.map (RatModel.valHom _ z hz)) (mul_eq_one_comm.1 h1)`.
+
+Use `beta_reduce at h2`. Rewrite `h2` using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h3 : C'.map (RatModel.valHom _ z hz) = (Q.c l).map (valR (x' ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι ≫ Q.P.hom) (Q.W l))`. Use extensionality with `a b`. Rewrite using `[← Category.assoc]`.
+
+Conclude with `RatModel.val_valF (by rw [hz]; exact Set.singleton_subset_iff.2 hl) _`. Establish `h4 : w = 0`. Rewrite using `[← Matrix.one_mulVec w, ← h2, ← Matrix.mulVec_mulVec, h3, h0, Matrix.mulVec_zero]`. Rewrite using `[h4]`. Both sides reduce to the same expression.
+-/
 theorem exists_crd_ne_zero (hB : BaseFacts S M U₀ EE) (Q : Clos ρ M U₀ EE) {K : Type} [Field K]
     (x : Sp K ⟶ Q.P.left) {z : M.Z} (hz : Set.range (x ≫ Q.P.hom) = {z}) (hc : IsClosed ({z} : Set M.Z))
     (hT : S.TT M z = ⊥) : ∃ v, Crd Q.O1 Q.st x v ∧ v ≠ 0 := by
@@ -97,6 +129,15 @@ theorem exists_crd_ne_zero (hB : BaseFacts S M U₀ EE) (Q : Clos ρ M U₀ EE) 
     rw [← Matrix.one_mulVec w, ← h2, ← Matrix.mulVec_mulVec, h3, h0, Matrix.mulVec_zero]
   rw [h4]; rfl
 
+/- English proof (translation)
+Use `Q.proper` as an intermediate fact. Establish `hc : IsClosed ({Q.P.hom w} : Set M.Z)`. Rewrite using `[← Set.image_singleton]`. Conclude with `Q.P.hom.isClosedMap _ hw`. Set `x : Sp (Q.P.left.residueField w) ⟶ Q.P.left` to `Q.P.left.fromSpecResidueField w`.
+
+Establish `hx : ∀ s, x s = w` using `fun s => Scheme.fromSpecResidueField_apply w s`. Establish `hz : Set.range (x ≫ Q.P.hom) = {Q.P.hom w}`. Rewrite using `[RatModel.range_eq_singleton _ (IsLocalRing.closedPoint _)]`. Conclude with `congrArg (fun a => {Q.P.hom a}) (hx _)`. Take `⟨v, hv, hv0⟩` from `exists_crd_ne_zero hB Q x hz hc hT`.
+
+Establish `h` using `(OpenPart.le_preimage_G_iff o Ω S ρ M U₀ EE hB Q _ x _ (Spec.preimage (x ≫ Q.P.hom ≫ M.s)).hom v hz (Or.inl hc) (Spec.map_preimage _).symm hv).2 (by`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hv0`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[proj_eq_one hT, Finset.sum_eq_single i]`. Simplify using `using hi`.
+
+Introduce `j _ hj`. Simplify using `[hj]`. Use the proof step `simp)`. Rewrite using `[← hx (IsLocalRing.closedPoint _)]`. Conclude with `(CrdCalc.top_le_iff x _).1 h`.
+-/
 theorem mem_G [ArithBase o Ω] (hB : BaseFacts S M U₀ EE) (Q : Clos ρ M U₀ EE) (w : Q.P.left)
     (hw : IsClosed ({w} : Set Q.P.left)) (hT : S.TT M (Q.P.hom w) = ⊥) : w ∈ Q.G := by
   have := Q.proper
@@ -121,6 +162,15 @@ theorem mem_G [ArithBase o Ω] (hB : BaseFacts S M U₀ EE) (Q : Clos ρ M U₀ 
   rw [← hx (IsLocalRing.closedPoint _)]
   exact (CrdCalc.top_le_iff x _).1 h
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ M U₀ EE hB Q ex hbig hgeo _`. Use `⟨isOpen_iff_forall_mem_open.2 fun z hz => ⟨_, fun z' h => ?_, OpenPart.isOpen_supI_subset (S := S) z, fun _ h => h⟩, mem_G hB Q, fun z hz hT => ?_⟩` and prove the remaining obligations. Conclude with `le_bot_iff.1 ((OpenPart.TT_le_TT h).trans (le_of_eq hz))`. Take `⟨h1, h2⟩` from `GlobalTheory.T.exists_geometricTest_map_classicalPoint hL o Ω S ρ M U₀ EE hB Q hbig hgeo`. Take `⟨p, hp, y, hy⟩` from `h2 z hz`.
+
+Take `⟨y₀, t, c, ⟨tm⟩⟩` from `h1 p y hy.2`. Take `⟨τ, e, he, -⟩` from `GlobalTheory.T.exists_uniformisationTest_of_geometricTest hL o Ω S ρ M U₀ EE hB Q ex p y y₀ t c tm hbig`. Use `⟨p, hp, y, τ, hy.1, fun hpr => hT ?_⟩` and prove the remaining obligations. Establish `: IsProper t.mod.Φ.G.hom`. Rewrite `hpr` using `[← he]`.
+
+Conclude with `(MorphismProperty.cancel_left_of_respectsIso @IsProper _ _).1 hpr`. Establish `h0` using `char_eq_zero_of_isProper t.mod.Φ.E t.mod.Φ.G t.mod.Φ.D`. Take `⟨e', -⟩` from `t.mt`. Establish `hk : t.τ.yy.ker = ⊤`. Use `top_unique fun a _ => ?_` and prove the remaining obligations.
+
+Take `⟨α, hα⟩` from `QuotientAddGroup.mk_surjective (t.τ.yy a)`. Establish `: α = 0` using `(e'.trans t.mod.xe.symm).map_eq_zero_iff.1 (h0 _)`. Rewrite using `[AddMonoidHom.mem_ker, ← hα, this]`. Both sides reduce to the same expression. Rewrite using `[ThetaSys.TT, hB.atTest z p y y₀ t.τ hy c.at_, hk, perp_top_eq_bot]`.
+-/
 theorem abelian_locus : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (ex : Q.Ext), S.Big → ρ.HasGeo → ex.core.Fib → IsOpen {z : M.Z | S.TT M z = ⊥} ∧ (∀ w : Q.P.left, IsClosed ({w} : Set Q.P.left) → S.TT M (Q.P.hom w) = ⊥ → w ∈ Q.G) ∧ ∀ z : M.Z, IsClosed ({z} : Set M.Z) → S.TT M z ≠ ⊥ → ∃ (p : ℕ) (_ : Fact p.Prime) (y : Sp (GlobalTheory.ZJ.OO p) ⟶ ex.core.Z) (τ : ex.core.Test y), y (GlobalTheory.ZJ.cPt p) = z ∧ ¬ IsProper (pullback.snd τ.H.hom (GlobalTheory.ZJ.rPt p ≫ spMap τ.j)) := by
   intro hL o Ω _ _ _ _ S ρ M U₀ EE hB Q ex hbig hgeo _
   refine ⟨isOpen_iff_forall_mem_open.2 fun z hz => ⟨_, fun z' h => ?_, OpenPart.isOpen_supI_subset (S := S) z,

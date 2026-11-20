@@ -10,6 +10,17 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions
 
 variable {r : ℕ} {κ τ : ℝ}
 
+/- English proof (translation)
+Establish `hJ` using `jacBig_pos (r := r) hκ hτ`. Establish `hS` using `lintegral_sBig (r := r) hκ hτ A₁`. Use `set I := ∫⁻ p, A p`. Use `set I₁ := ∫⁻ p, A₁ (sBig r κ τ p)`. Establish `e : ENNReal.ofReal (jacBig r κ τ) * I₁ = ENNReal.ofReal K * I` using `by rw [← hS, hint]`.
+
+Establish `a1 : I₁ ≤ ENNReal.ofReal (K * F) * I`. Combine the equalities or inequalities in the displayed calculation. Establish `a2 : ENNReal.ofReal K * I ≤ ENNReal.ofReal F * I₁`. Combine the equalities or inequalities in the displayed calculation. Prove the components needed by the constructor for the conclusion.
+
+Establish `b : ENNReal.ofReal (jacBig r κ τ * K) * I ≤ ENNReal.ofReal (F * K) * I`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul hJ.le, mul_assoc]`. Use `_ ≤ ENNReal.ofReal (jacBig r κ τ) * (ENNReal.ofReal F * I₁) := by gcongr`. Use `_ = ENNReal.ofReal F * (ENNReal.ofReal K * I) := by rw [mul_left_comm, e]`.
+
+Use `_ = ENNReal.ofReal (F * K) * I := by rw [ENNReal.ofReal_mul hF, mul_assoc]`. Establish `c` using `(ENNReal.mul_le_mul_iff_left h0 htop).mp b`. Rewrite `c` using `[ENNReal.ofReal_le_ofReal_iff (mul_nonneg hF hK.le)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `b : ENNReal.ofReal K * I ≤ ENNReal.ofReal (jacBig r κ τ * K * F) * I`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul hJ.le, mul_assoc (jacBig r κ τ)]`. Establish `c` using `(ENNReal.mul_le_mul_iff_left h0 htop).mp b`. Rewrite `c` using `[ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem frame_factor_ge (hκ : 0 < κ) (hτ : 0 < τ) (A A₁ : (Fin r → ℂ) × ℂ → ENNReal) (K F : ℝ) (hK : 0 < K)
     (hF : 0 ≤ F)
     (h1 : ∀ p, A₁ (sBig r κ τ p) ≤ ENNReal.ofReal (K * F) * A p)
@@ -48,11 +59,21 @@ theorem frame_factor_ge (hκ : 0 < κ) (hτ : 0 < τ) (A A₁ : (Fin r → ℂ) 
     rw [ENNReal.ofReal_le_ofReal_iff (by positivity)] at c
     nlinarith
 
+/- English proof (translation)
+Unfold `jacBig tF`. Simplify using `only [one_pow, mul_one, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← pow_mul, ← pow_add]`. Put the polynomial expressions in normal form.
+-/
 theorem jacBig_one (τ : ℝ) : jacBig r 1 τ = τ ^ (4 * (r + 1)) := by
   unfold jacBig tF
   simp only [one_pow, mul_one, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
   rw [← pow_mul, ← pow_add]; ring_nf
 
+/- English proof (translation)
+Establish `hτ0 : 0 < τ` using `by linarith`. Establish `hmax : max τ τ⁻¹ = τ` using `max_eq_left (by`. Establish `: τ⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hτ`. Use the proof step `linarith)`. Rewrite `h1`, `h2` using `[hmax]`.
+
+Establish `hF : 0 ≤ τ ^ (Cf * ((2 * r + 2 : ℕ) : ℝ))` using `Real.rpow_nonneg hτ0.le _`. Use `(frame_factor_ge one_pos hτ0 A A₁ K _ hK hF h1 h2 hint h0 htop).1` as an intermediate fact. Rewrite `this` using `[jacBig_one, ← Real.rpow_natCast]`. Establish `h` using `(Real.rpow_le_rpow_left_iff hτ).mp this`. Move the coercions through the operations in `at h`.
+
+Establish `hr : (0 : ℝ) < 2 * r + 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem cf_ge_two (hτ : 1 < τ) (Cf : ℝ) (A A₁ : (Fin r → ℂ) × ℂ → ENNReal) (K : ℝ) (hK : 0 < K)
     (h1 : ∀ p, A₁ (sBig r 1 τ p) ≤
       ENNReal.ofReal (K * (max τ τ⁻¹ ^ (Cf * ((2 * r + 2 : ℕ) : ℝ)))) * A p)
@@ -73,6 +94,13 @@ theorem cf_ge_two (hτ : 1 < τ) (Cf : ℝ) (A A₁ : (Fin r → ℂ) × ℂ →
   have hr : (0 : ℝ) < 2 * r + 2 := by positivity
   nlinarith
 
+/- English proof (translation)
+Establish `hF : 0 < F` using `lt_of_lt_of_le hρ h1`. Rewrite using `[← mul_assoc (ENNReal.ofReal pw₁), ← ENNReal.ofReal_mul' hs, he]`. Distinguish the cases in `hp : pw ≤ 0`. Establish `h0 : K * ρ * pw ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (mul_nonneg hK hρ.le) hp`. Rewrite using `[ENNReal.ofReal_of_nonpos h0, ENNReal.ofReal_of_nonpos hp]`.
+
+Simplify using the standard rewrite rules. Use `push Not at hp`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (mul_nonneg hK hF.le)] gcongr ENNReal.ofReal ?_ * _`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h1 hK) hp.le`.
+
+Rewrite using `[← mul_assoc, ← mul_assoc, ← ENNReal.ofReal_mul hK, ← ENNReal.ofReal_mul hF.le] gcongr ENNReal.ofReal ?_ * _`. Establish `: 1 ≤ F * ρ`. Use `mul_le_mul_of_nonneg_right h2 hρ.le` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ hρ.ne']`. Then use the resulting hypothesis. Use polynomial arithmetic with `[mul_nonneg hK hp.le]`.
+-/
 theorem frames_ineqs {pw pw₁ s K ρ F : ℝ} (X : ENNReal) (hs : 0 ≤ s) (hK : 0 ≤ K) (hρ : 0 < ρ)
     (h1 : ρ ≤ F) (h2 : ρ⁻¹ ≤ F) (he : pw₁ * s = K * ρ * pw) :
     ENNReal.ofReal pw₁ * (ENNReal.ofReal s * X) ≤ ENNReal.ofReal (K * F) * (ENNReal.ofReal pw * X) ∧

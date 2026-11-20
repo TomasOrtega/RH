@@ -17,29 +17,58 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+The claim follows from `(Formalism.FourierDecayAlt.P.norm_of_inverse k r g hg).2`.
+-/
 lemma one_le_gN {g : Mat k r} (hg : g ∈ GV k r) : 1 ≤ gN g := (Formalism.FourierDecayAlt.P.norm_of_inverse k r g hg).2
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le one_pos (one_le_gN hg)`.
+-/
 lemma gN_pos {g : Mat k r} (hg : g ∈ GV k r) : 0 < gN g := lt_of_lt_of_le one_pos (one_le_gN hg)
 
+/- English proof (translation)
+The claim follows from `Real.rpow_le_rpow_of_exponent_le (one_le_gN hg) h`.
+-/
 lemma rpow_mono_G {g : Mat k r} (hg : g ∈ GV k r) {a b : ℝ} (h : a ≤ b) : gN g ^ a ≤ gN g ^ b :=
   Real.rpow_le_rpow_of_exponent_le (one_le_gN hg) h
 
+/- English proof (translation)
+Unfold `C2.B0`. Check the signs of the components of the expression.
+-/
 lemma loss_bound_nonneg (r : ℕ) : 0 ≤ C2.B0 r := by unfold C2.B0; positivity
 
+/- English proof (translation)
+The claim follows from `WithTop.coe_le_coe.2 le_top`.
+-/
 lemma top_ge_nat (m : ℕ) : (((m : ℕ) : ℕ∞) : WithTop ℕ∞) ≤ (((⊤ : ℕ∞)) : WithTop ℕ∞) :=
   WithTop.coe_le_coe.2 le_top
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hc, hff⟩` from `hf g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hc.of_le (top_ge_nat m), hff⟩`.
+-/
 lemma ckOn_top_nat {f : Mat k r → E} (hf : CkOn (⊤ : ℕ∞) (GV k r) f) (m : ℕ) :
     CkOn ((m : ℕ) : ℕ∞) (GV k r) f := by
   intro g₀ hg₀
   obtain ⟨U, f', hU, hgU, hc, hff⟩ := hf g₀ hg₀
   exact ⟨U, f', hU, hgU, hc.of_le (top_ge_nat m), hff⟩
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 lemma top_ne_zero' : (((⊤ : ℕ∞)) : WithTop ℕ∞) ≠ 0 := by simp
 
+/- English proof (translation)
+Conclude with `(le_top : ((⊤ : ℕ∞) + 1 : ℕ∞) ≤ ⊤)` after adjusting the coercions.
+-/
 lemma top_succ_le : (((⊤ : ℕ∞)) : WithTop ℕ∞) + 1 ≤ (((⊤ : ℕ∞)) : WithTop ℕ∞) := by
   exact_mod_cast (le_top : ((⊤ : ℕ∞) + 1 : ℕ∞) ≤ ⊤)
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hc, hff⟩` from `hf g₀ hg₀`. Use `⟨U, op' b X f', hU, hgU, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hc.fderiv_of_isOpen hU top_succ_le).clm_apply (vf b X).contDiff.contDiffOn`. Introduce `g hg hgG`.
+
+Establish `hd : DifferentiableAt ℝ f' g` using `(hc.differentiableOn top_ne_zero').differentiableAt (hU.mem_nhds hg)`. Conclude with `(hasDerivAt_ext b hU hg hgG hd hff hX).deriv`.
+-/
 lemma ckOn_op_top {f : Mat k r → E} {X : Mat k r} (b : Bool) (hf : CkOn (⊤ : ℕ∞) (GV k r) f)
     (hX : inLie k r X) : CkOn (⊤ : ℕ∞) (GV k r) (op b X f) := by
   intro g₀ hg₀
@@ -51,6 +80,9 @@ lemma ckOn_op_top {f : Mat k r → E} {X : Mat k r} (b : Bool) (hf : CkOn (⊤ :
       (hc.differentiableOn top_ne_zero').differentiableAt (hU.mem_nhds hg)
     exact (hasDerivAt_ext b hU hg hgG hd hff hX).deriv
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons x w ih`. Rewrite using `[W_cons]`. Conclude with `ckOn_op_top x.1 (ih fun y hy => hw y (List.mem_cons_of_mem _ hy)) (hw x List.mem_cons_self)`.
+-/
 lemma ckOn_W_top {f : Mat k r → E} (w : List (Bool × Mat k r)) (hw : AllLie w)
     (hf : CkOn (⊤ : ℕ∞) (GV k r) f) : CkOn (⊤ : ℕ∞) (GV k r) (W w f) := by
   induction w with
@@ -59,12 +91,21 @@ lemma ckOn_W_top {f : Mat k r → E} (w : List (Bool × Mat k r)) (hw : AllLie w
     rw [W_cons]
     exact ckOn_op_top x.1 (ih fun y hy => hw y (List.mem_cons_of_mem _ hy)) (hw x List.mem_cons_self)
 
+/- English proof (translation)
+Rewrite using `[← dLR_eq]`. Both sides reduce to the same expression.
+-/
 lemma right_word_eq_word (v : List (Mat k r)) (f : Mat k r → E) : Rw v f = W (lr [] v) f := by
   rw [← dLR_eq]; rfl
 
+/- English proof (translation)
+Rewrite using `[← dLR_eq]`. Both sides reduce to the same expression.
+-/
 lemma foldr_LdV_eq_W_lr (u : List (Mat k r)) (f : Mat k r → E) : u.foldr LdV f = W (lr u []) f := by
   rw [← dLR_eq]; rfl
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [lr, List.mem_append, List.mem_map] at hx`. Break down `hx with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `hu X hX`. Conclude with `hv X hX`.
+-/
 lemma allLie_lr' {u v : List (Mat k r)} (hu : ∀ X ∈ u, inLie k r X) (hv : ∀ X ∈ v, inLie k r X) :
     AllLie (lr u v) := by
   intro x hx
@@ -73,6 +114,13 @@ lemma allLie_lr' {u v : List (Mat k r)} (hu : ∀ X ∈ u, inLie k r X) (hv : �
   · exact hu X hX
   · exact hv X hX
 
+/- English proof (translation)
+Introduce `v`. Proceed by induction on `v with`. Consider the case `nil => intro _ K _ g _`. Both sides reduce to the same expression. Consider the case `cons Y v ih`.
+
+Introduce `hv K hK g hg`. Establish `hv' : ∀ Z ∈ v, inLie k r Z` using `fun Z hZ => hv Z (List.mem_cons_of_mem _ hZ)`. Establish `hY` using `hv Y List.mem_cons_self`. Use `show op false Y (Rw v (LdV X K)) g = op true X (op false Y (Rw v K)) g`. Rewrite using `[op_congr false hY (ih hv' K hK) g hg]`.
+
+Establish `hc : CkOn (⊤ : ℕ∞) (GV k r) (Rw v K)`. Rewrite using `[right_word_eq_word]; exact ckOn_W_top _ (allLie_lr' (by simp) hv') hK`. Conclude with `op_comm (ckOn_top_nat hc 2) hX hY hg`.
+-/
 lemma L_Rw_comm {X : Mat k r} (hX : inLie k r X) : ∀ (v : List (Mat k r)), (∀ Y ∈ v, inLie k r Y) →
     ∀ K : Mat k r → E, CkOn (⊤ : ℕ∞) (GV k r) K → ∀ g ∈ GV k r,
       Rw v (LdV X K) g = LdV X (Rw v K) g := by
@@ -89,10 +137,20 @@ lemma L_Rw_comm {X : Mat k r} (hX : inLie k r X) : ∀ (v : List (Mat k r)), (�
       rw [right_word_eq_word]; exact ckOn_W_top _ (allLie_lr' (by simp) hv') hK
     exact op_comm (ckOn_top_nat hc 2) hX hY hg
 
+/- English proof (translation)
+Unfold `dLR Rw`. Rewrite using `[List.foldr_append]`. Both sides reduce to the same expression.
+-/
 lemma dLR_R (u v : List (Mat k r)) (X : Mat k r) (F : Mat k r → E) :
     dLR u v (RdV X F) = dLR u (v ++ [X]) F := by
   unfold dLR Rw; rw [List.foldr_append]; rfl
 
+/- English proof (translation)
+Introduce `g hg`. Establish `e1 : dLR u v (LdV X F) = W (lr u []) (Rw v (LdV X F))`. Rewrite using `[← foldr_LdV_eq_W_lr]`. Both sides reduce to the same expression. Establish `e2 : dLR (u ++ [X]) v F = W (lr u []) (LdV X (Rw v F))`.
+
+Rewrite using `[← foldr_LdV_eq_W_lr]`. Unfold `dLR`. Rewrite using `[List.foldr_append]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`.
+
+Conclude with `W_congr _ (allLie_lr' hu (by simp)) (L_Rw_comm hX v hv F hF) g hg`.
+-/
 lemma dLR_L {u v : List (Mat k r)} {X : Mat k r} (hu : ∀ Y ∈ u, inLie k r Y) (hv : ∀ Y ∈ v, inLie k r Y)
     (hX : inLie k r X) {F : Mat k r → E} (hF : CkOn (⊤ : ℕ∞) (GV k r) F) :
     ∀ g ∈ GV k r, dLR u v (LdV X F) g = dLR (u ++ [X]) v F g := by
@@ -104,6 +162,9 @@ lemma dLR_L {u v : List (Mat k r)} {X : Mat k r} (hu : ∀ Y ∈ u, inLie k r Y)
   rw [e1, e2]
   exact W_congr _ (allLie_lr' hu (by simp)) (L_Rw_comm hX v hv F hF) g hg
 
+/- English proof (translation)
+Establish `hgu : IsUnit g0.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg0`. Establish `hh : x * g0⁻¹ ∈ GV k r` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul hxG (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hg0)`. Take `⟨hl, -, hk⟩` from `iot_facts hh hx`. Use `show kap (prj (Mv (co (iot (x * g0⁻¹))))) * g0 = x`. Rewrite using `[Mv_co, prj_of_lie hl, hk, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hgu, Matrix.mul_one]`.
+-/
 lemma chart_rho {g0 x : Mat k r} (hg0 : g0 ∈ GV k r) (hx : x ∈ Sr g0) (hxG : x ∈ GV k r) :
     chart g0 (rho g0 x) = x := by
   have hgu : IsUnit g0.det := Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg0
@@ -112,6 +173,9 @@ lemma chart_rho {g0 x : Mat k r} (hg0 : g0 ∈ GV k r) (hx : x ∈ Sr g0) (hxG :
   show kap (prj (Mv (co (iot (x * g0⁻¹))))) * g0 = x
   rw [Mv_co, prj_of_lie hl, hk, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hgu, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hgu : IsUnit g0.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg0`. Establish `hg1 : g0 * g0⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hgu`. Use function extensionality and compare the values at `i`. Simplify using `only [Ux10.rho, hg1, iot, sub_self, Matrix.zero_mul]`. Conclude with `co_zero i`.
+-/
 lemma rho_self {g0 : Mat k r} (hg0 : g0 ∈ GV k r) : rho g0 g0 = 0 := by
   have hgu : IsUnit g0.det := Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg0
   have hg1 : g0 * g0⁻¹ = 1 := Matrix.mul_nonsing_inv _ hgu
@@ -119,6 +183,11 @@ lemma rho_self {g0 : Mat k r} (hg0 : g0 ∈ GV k r) : rho g0 g0 = 0 := by
   simp only [Ux10.rho, hg1, iot, sub_self, Matrix.zero_mul]
   exact co_zero i
 
+/- English proof (translation)
+Establish `hgu : IsUnit g0.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg0`. Establish `hg1 : g0 * g0⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hgu`. Establish `h2 : (1 + 1 : Mat k r) = (2 : ℂ) • (1 : Mat k r)` using `by rw [two_smul]`. Use `show IsUnit (g0 * g0⁻¹ + 1).det`. Rewrite using `[hg1, h2, Matrix.det_smul, Matrix.det_one, mul_one]`.
+
+Conclude with `(isUnit_iff_ne_zero.2 two_ne_zero).pow _`.
+-/
 lemma self_mem_Sr {g0 : Mat k r} (hg0 : g0 ∈ GV k r) : g0 ∈ Sr g0 := by
   have hgu : IsUnit g0.det := Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg0
   have hg1 : g0 * g0⁻¹ = 1 := Matrix.mul_nonsing_inv _ hgu
@@ -127,6 +196,11 @@ lemma self_mem_Sr {g0 : Mat k r} (hg0 : g0 ∈ GV k r) : g0 ∈ Sr g0 := by
   rw [hg1, h2, Matrix.det_smul, Matrix.det_one, mul_one]
   exact (isUnit_iff_ne_zero.2 two_ne_zero).pow _
 
+/- English proof (translation)
+Introduce `Y hY`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Take `⟨U, f', hU, hcU, hcd, hff⟩` from `hF _ (chart_mem hg0 hY)`. Establish `hchc : ContinuousAt (chart g0) Y` using `(chart_diff g0 hY).continuousAt`. Establish `h1 : ContDiffAt ℝ ((m : ℕ) : WithTop ℕ∞) (fun Y' => f' (chart g0 Y')) Y` using `(hcd.contDiffAt (hU.mem_nhds hcU)).comp Y (((chart_cd g0).contDiffAt (dom_open.mem_nhds hY)).of_le (top_ge_nat m))`.
+
+Use `h1.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hchc.preimage_mem_nhds (hU.mem_nhds hcU), dom_open.mem_nhds hY] with Y' h1 h2`. Conclude with `hff _ h1 (chart_mem hg0 h2)`.
+-/
 lemma chart_comp_cd {F : Mat k r → E} {g0 : Mat k r} (hg0 : g0 ∈ GV k r) (m : ℕ)
     (hF : CkOn ((m : ℕ) : ℕ∞) (GV k r) F) :
     ContDiffOn ℝ ((m : ℕ) : WithTop ℕ∞) (fun Y => F (chart g0 Y)) (Dom k r) := by
@@ -141,6 +215,11 @@ lemma chart_comp_cd {F : Mat k r → E} {g0 : Mat k r} (hg0 : g0 ∈ GV k r) (m 
   filter_upwards [hchc.preimage_mem_nhds (hU.mem_nhds hcU), dom_open.mem_nhds hY] with Y' h1 h2
   exact hff _ h1 (chart_mem hg0 h2)
 
+/- English proof (translation)
+Introduce `g0 hg0`. Establish `hAL : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun Y => F (chart g0 Y)) (Dom k r)` using `contDiffOn_infty.2 fun m => chart_comp_cd hg0 m (hF m)`. Use `set U := Sr g0 ∩ rho g0 ⁻¹' Dom k r with hUdef`. Establish `hUo : IsOpen U` using `(rho_cd g0).continuousOn.isOpen_inter_preimage (sr_open g0) dom_open`. Establish `hg0U : g0 ∈ U` using `⟨self_mem_Sr hg0, by show rho g0 g0 ∈ Dom k r; rw [rho_self hg0]; exact zero_mem_dom⟩`.
+
+Use `⟨U, fun x => F (chart g0 (rho g0 x)), hUo, hg0U, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hAL.comp ((rho_cd g0).mono Set.inter_subset_left) (fun x hx => hx.2)`. Introduce `x hx hxG show F x = F (chart g0 (rho g0 x))`. Rewrite using `[chart_rho hg0 hx.1 hxG]`.
+-/
 theorem ckOn_top_of_all {F : Mat k r → E} (hF : ∀ m : ℕ, CkOn ((m : ℕ) : ℕ∞) (GV k r) F) :
     CkOn (⊤ : ℕ∞) (GV k r) F := by
   intro g0 hg0
@@ -155,6 +234,11 @@ theorem ckOn_top_of_all {F : Mat k r → E} (hF : ∀ m : ℕ, CkOn ((m : ℕ) :
     show F x = F (chart g0 (rho g0 x))
     rw [chart_rho hg0 hx.1 hxG]
 
+/- English proof (translation)
+Introduce `k r E _ _ A F hF`. Use `⟨ckOn_top_of_all fun m => (hF m).choose_spec.1, ?_⟩` and prove the remaining obligations. Introduce `u v hu hv`. Take `⟨c, hc⟩` from `hF (u.length + v.length)`. Use `⟨c, fun g hg => le_trans ?_ (hc.2 u v hu hv le_rfl g hg)⟩` and prove the remaining obligations.
+
+Use `mul_le_mul_of_nonneg_right (rpow_mono_G hg ?_) (norm_nonneg _)` and prove the remaining obligations. Establish `: 0 ≤ C2.B0 r * ((u.length : ℝ) + v.length)` using `mul_nonneg (loss_bound_nonneg r) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rule_A1_derivatives : C2.FiniteOrderIntersectionInSmooth := by
   intro k r E _ _ A F hF
   refine ⟨ckOn_top_of_all fun m => (hF m).choose_spec.1, ?_⟩
@@ -165,6 +249,21 @@ theorem rule_A1_derivatives : C2.FiniteOrderIntersectionInSmooth := by
   have : 0 ≤ C2.B0 r * ((u.length : ℝ) + v.length) := mul_nonneg (loss_bound_nonneg r) (by positivity)
   linarith
 
+/- English proof (translation)
+Introduce `k r E _ _ A F hF X hX`. Use `⟨⟨ckOn_op_top false hF.1 hX.1, ?_⟩, ⟨ckOn_op_top true hF.1 hX.1, ?_⟩⟩` and prove the remaining obligations. Introduce `u v hu hv`. Take `⟨C, hC⟩` from `hF.2 u (v ++ [X]) hu (by`. Introduce `Y hY`.
+
+Break down `List.mem_append.1 hY with h | h` into its components or cases. Conclude with `hv Y h`. Rewrite using `[List.mem_singleton.1 h]`. Conclude with `hX)`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `e : A - C2.B0 r - C2.B0 r * ((u.length : ℝ) + v.length) = A - C2.B0 r * ((u.length : ℝ) + (v ++ [X]).length)`. Rewrite using `[List.length_append, List.length_singleton]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `hC g hg` as an intermediate fact.
+
+Rewrite `this` using `[← e, ← dLR_R]`. Conclude with `this`. Introduce `u v hu hv`. Take `⟨C, hC⟩` from `hF.2 (u ++ [X]) v (by`. Introduce `Y hY`.
+
+Break down `List.mem_append.1 hY with h | h` into its components or cases. Conclude with `hu Y h`. Rewrite using `[List.mem_singleton.1 h]`. Conclude with `hX) hv`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `e : A - C2.B0 r - C2.B0 r * ((u.length : ℝ) + v.length) = A - C2.B0 r * (((u ++ [X]).length : ℝ) + v.length)`. Rewrite using `[List.length_append, List.length_singleton]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `hC g hg` as an intermediate fact.
+
+Rewrite `this` using `[← e, ← dLR_L (fun Y hY => (hu Y hY).1) (fun Y hY => (hv Y hY).1) hX.1 hF.1 g hg]`. Conclude with `this`.
+-/
 theorem ruleB : C2.RuleB := by
   intro k r E _ _ A F hF X hX
   refine ⟨⟨ckOn_op_top false hF.1 hX.1, ?_⟩, ⟨ckOn_op_top true hF.1 hX.1, ?_⟩⟩
@@ -197,8 +296,14 @@ end Formalism.FourierDecayAlt.P.SmoothnessOrderArithmetic
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `SmoothnessOrderArithmetic.rule_A1_derivatives`.
+-/
 theorem rule_A1_of_derivatives : C2.FiniteOrderIntersectionInSmooth := SmoothnessOrderArithmetic.rule_A1_derivatives
 
+/- English proof (translation)
+The claim follows from `SmoothnessOrderArithmetic.ruleB`.
+-/
 theorem rule_B_derivatives : C2.RuleB := SmoothnessOrderArithmetic.ruleB
 
 end Formalism.FourierDecayAlt.P

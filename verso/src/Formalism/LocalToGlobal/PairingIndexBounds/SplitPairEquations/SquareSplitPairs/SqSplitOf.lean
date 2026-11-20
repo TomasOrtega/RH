@@ -9,6 +9,9 @@ open Formalism.MainNotions Formalism.L2.PairingIndexBounds.Eq Formalism.L2.Th1.H
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `ha`. Take `⟨y, rfl⟩` from `hb`. Take `⟨z, rfl⟩` from `hc`. Conclude with `⟨x + y + z, by rw [h]; push_cast; ring⟩`.
+-/
 theorem good3 {a b c t : ℝ} (h : t = a + b + c) (ha : ∃ k : ℤ, a = 2 * k) (hb : ∃ k : ℤ, b = 2 * k)
     (hc : ∃ k : ℤ, c = 2 * k) : ∃ k : ℤ, t = 2 * k := by
   obtain ⟨x, rfl⟩ := ha
@@ -16,6 +19,49 @@ theorem good3 {a b c t : ℝ} (h : t = a + b + c) (ha : ∃ k : ℤ, a = 2 * k) 
   obtain ⟨z, rfl⟩ := hc
   exact ⟨x + y + z, by rw [h]; push_cast; ring⟩
 
+/- English proof (translation)
+Introduce `N N' L L₁ L' L'' hN hN' h1 h2 h3 h4`. Take `⟨n, hn0, hnL, hnL1⟩` from `exists_n h1 h2`. Take `⟨e, heL', heL'', hM⟩` from `hP N' L' L'' hN' h3 h4 n hn0`. Establish `hAdm : ∀ i : Bool × Bool, TaylorLogMetric.admitted D N N' (if i.1 then L₁ else L) (if i.2 then L'' else L')`. Introduce and unpack `⟨a, b⟩`.
+
+Apply the tactic sequence `cases a <;> cases b`. Conclude with `admissible_of_integral_conj_le hN hN' h1 h3`. Conclude with `admissible_of_integral_conj_le hN hN' h1 h4`. Conclude with `admissible_of_integral_conj_le hN hN' h2 h3`. Conclude with `admissible_of_integral_conj_le hN hN' h2 h4`.
+
+Establish `hq : ∀ i, ∀ z ∈ Sq.sqFam B.tor L L₁ L' L'' i, ∃ m : ℤ, qq D cc δ N N' z = m` using `fun i z hz => Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.rational_integrality_link D cc hcc δ hδ B N N' _ _ (hAdm i) z hz`. Establish `hsc : ∀ i, IsSemiChar (HH D cc δ N N') (Sq.sqFam B.tor L L₁ L' L'' i) (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ))` using `fun i => ((B.latAll hcc hδ hδ0).1 N N' _ _ (hAdm i)).2`. Establish `hn : ∀ a c : Bool, ∀ u ∈ (if c then L₁ else L), (n : D.host.E) • u ∈ (if a then L₁ else L)`. Introduce `a c u hu`. Apply the tactic sequence `cases a <;> cases c <;> simp only [Bool.false_eq_true, ↓reduceIte] at hu ⊢`.
+
+Rewrite using `[← osmul]`. Conclude with `L.smul_mem n hu`. Conclude with `hnL1 u hu`. Conclude with `hnL u hu`. Rewrite using `[← osmul]`.
+
+Conclude with `L₁.smul_mem n hu`. Establish `hor : ∀ b : Bool, ∀ y ∈ (if b then L'' else L'), y ∈ L' ∨ y ∈ L''`. Introduce `b y hy`. Apply the tactic sequence `cases b <;> simp only [Bool.false_eq_true, ↓reduceIte] at hy`. Conclude with `Or.inl hy`.
+
+Conclude with `Or.inr hy`. Establish `hin : ∀ d : Bool, ∀ m, m ∈ L' → m ∈ L'' → m ∈ (if d then L'' else L')`. Introduce `d m hm1 hm2`. Apply the tactic sequence `cases d <;> simp only [Bool.false_eq_true, ↓reduceIte]`. Conclude with `hm1`.
+
+Conclude with `hm2`. Establish `he : ∀ b : Bool, ∀ y ∈ (if b then L'' else L'), e *ᵥ y ∈ (if b then L'' else L')`. Introduce `b y hy`. Apply the tactic sequence `cases b <;> simp only [Bool.false_eq_true, ↓reduceIte] at hy ⊢`. Conclude with `heL' y hy`.
+
+Conclude with `heL'' y hy`. Establish `hpres : ∀ i, ∀ z ∈ Sq.sqFam B.tor L L₁ L' L'' i, phi e z ∈ Sq.sqFam B.tor L L₁ L' L'' i`. Introduce `i z hz`. Conclude with `phi_La (yy_mul fun A hA => homL_mul_pres (he i.2) hA) z hz`. Establish `hMin : ∀ M ∈ ({e * e - e, (letI` using `D.host.cmStar; eᴴ) * e, (letI := D.host.cmStar; (1 - e)ᴴ) * (1 - e)} : Set (Matrix (Fin N') (Fin N') D.host.E)), ∀ i j, ∀ z ∈ Sq.sqFam B.tor L L₁ L' L'' i, phi M z ∈ Sq.sqFam B.tor L L₁ L' L'' j := by`.
+
+Introduce `M hMs i j z hz`. Use `phi_La (yy_mul fun A hA => homL_mul_min hn0 (hn i.1 j.1) ?_ hA) z hz` and prove the remaining obligations. Introduce `y hy`. Take `⟨m, hm1, hm2, hm⟩` from `hM M hMs y (hor i.2 y hy)`. Conclude with `⟨m, hin j.2 m hm1 hm2, hm⟩`.
+
+Establish `hM1 : e * e - e ∈ ({e * e - e, (letI` using `D.host.cmStar; eᴴ) * e, (letI := D.host.cmStar; (1 - e)ᴴ) * (1 - e)} : Set (Matrix (Fin N') (Fin N') D.host.E)) := Set.mem_insert _ _`. Establish `hM2 : (letI` using `D.host.cmStar; eᴴ) * e ∈ ({e * e - e, (letI := D.host.cmStar; eᴴ) * e, (letI := D.host.cmStar; (1 - e)ᴴ) * (1 - e)} : Set (Matrix (Fin N') (Fin N') D.host.E)) := Set.mem_insert_of_mem _ (Set.mem_insert _ _)`. Establish `hM3 : (letI` using `D.host.cmStar; (1 - e)ᴴ) * (1 - e) ∈ ({e * e - e, (letI := D.host.cmStar; eᴴ) * e, (letI := D.host.cmStar; (1 - e)ᴴ) * (1 - e)} : Set (Matrix (Fin N') (Fin N') D.host.E)) := Set.mem_insert_of_mem _ (Set.mem_insert_of_mem _ rfl)`. Establish `hidem : ∀ x : TaylorLogMetric.VC D N N', phi e x - phi e (phi e x) = -(phi (e * e - e) x)`. Introduce `x`.
+
+Rewrite using `[phi_sub, phi_mul]`. Normalize the expressions using the abelian group laws. Establish `hone : ∀ x : TaylorLogMetric.VC D N N', x - phi e x = phi (1 - e) x`. Introduce `x`. Rewrite using `[phi_sub, phi_one]`.
+
+Use `⟨AddSubgroup.comap (AddMonoidHom.id _ - phi e) (⨅ i, Sq.sqFam B.tor L L₁ L' L'' i), AddSubgroup.comap (phi e) (⨅ i, Sq.sqFam B.tor L L₁ L' L'' i), ?_⟩` and prove the remaining obligations. Establish `hA : ∀ x, x ∈ AddSubgroup.comap (AddMonoidHom.id _ - phi e) (⨅ i, Sq.sqFam B.tor L L₁ L' L'' i) ↔ ∀ i, x - phi e x ∈ Sq.sqFam B.tor L L₁ L' L'' i`. Introduce `x`. Simplify using `[AddSubgroup.mem_iInf]`. Establish `hA' : ∀ x, x ∈ AddSubgroup.comap (phi e) (⨅ i, Sq.sqFam B.tor L L₁ L' L'' i) ↔ ∀ i, phi e x ∈ Sq.sqFam B.tor L L₁ L' L'' i`.
+
+Introduce `x`. Simplify using `[AddSubgroup.mem_iInf]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx hx' i`. Use `(Sq.sqFam B.tor L L₁ L' L'' i).add_mem ((hA x).1 hx i) ((hA' x).1 hx' i)` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `i x hx`. Use `⟨phi e x, (hA _).2 fun j => ?_, x - phi e x, (hA' _).2 fun j => ?_, hpres i x hx, (Sq.sqFam B.tor L L₁ L' L'' i).sub_mem hx (hpres i x hx), (add_sub_cancel _ _).symm⟩` and prove the remaining obligations. Rewrite using `[hidem]`. Conclude with `(Sq.sqFam B.tor L L₁ L' L'' j).neg_mem (hMin _ hM1 i j x hx)`.
+
+Rewrite using `[map_sub, hidem]`. Conclude with `(Sq.sqFam B.tor L L₁ L' L'' j).neg_mem (hMin _ hM1 i j x hx)`. Introduce `x y hx hy i j k hxi hyj hxy`. Take `⟨mx, hmx⟩` from `hq i x hxi`. Take `⟨my, hmy⟩` from `hq j y hyj`.
+
+Take `⟨mxy, hmxy⟩` from `hq k (x + y) hxy`. Use `law_of_good hmx hmy hmxy ?_` and prove the remaining obligations. Establish `key : bet D cc δ N N' x y = bet D cc δ N N' (phi e x) (phi e y) + bet D cc δ N N' (phi e x) (y - phi e y) + bet D cc δ N N' (x - phi e x) y`. Establish `h` using `bet_add_left (cc := cc) (δ := δ) (phi e x) (x - phi e x) y`. Establish `h'` using `bet_add_right (cc := cc) (δ := δ) (phi e x) (phi e y) (y - phi e y)`.
+
+Rewrite `h`, `h'` using `[add_sub_cancel]`. Rewrite using `[h, h']`. Use `good3 key ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[bet_phi]`. Conclude with `good_of_lat (hsc i) (hq i) hxi (hMin _ hM2 j i y hyj)`.
+
+Conclude with `good_of_lat (hsc i) (hq i) (hpres i x hxi) ((hA y).1 hy i)`. Conclude with `good_of_lat (hsc j) (hq j) ((hA x).1 hx j) hyj`. Introduce `x y hx hy i j k hxi hyj hxy`. Take `⟨mx, hmx⟩` from `hq i x hxi`. Take `⟨my, hmy⟩` from `hq j y hyj`.
+
+Take `⟨mxy, hmxy⟩` from `hq k (x + y) hxy`. Use `law_of_good hmx hmy hmxy ?_` and prove the remaining obligations. Establish `key : bet D cc δ N N' x y = bet D cc δ N N' (x - phi e x) (y - phi e y) + bet D cc δ N N' (x - phi e x) (phi e y) + bet D cc δ N N' (phi e x) y`. Establish `h` using `bet_add_left (cc := cc) (δ := δ) (x - phi e x) (phi e x) y`. Establish `h'` using `bet_add_right (cc := cc) (δ := δ) (x - phi e x) (y - phi e y) (phi e y)`.
+
+Rewrite `h`, `h'` using `[sub_add_cancel]`. Rewrite using `[h, h']`. Use `good3 key ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hone x, hone y, bet_phi]`. Conclude with `good_of_lat (hsc i) (hq i) hxi (hMin _ hM3 j i y hyj)`.
+
+Conclude with `good_of_lat (hsc i) (hq i) ((Sq.sqFam B.tor L L₁ L' L'' i).sub_mem hxi ((hA' x).1 hx i)) ((hA' y).1 hy i)`. Conclude with `good_of_lat (hsc j) (hq j) ((hA' x).1 hx j) hyj`.
+-/
 theorem sqSplit_of (B : Ker.Base D cc δ) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hδ0 : δ ≠ 0)
     (hP : SplitPair D) : Sq.SqSplit B := by
   intro N N' L L₁ L' L'' hN hN' h1 h2 h3 h4

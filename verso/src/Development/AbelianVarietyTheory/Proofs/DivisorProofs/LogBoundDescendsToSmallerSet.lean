@@ -6,6 +6,9 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `|ReciprocityTheory.AnForm.A.poissonInt (fun ζ => f (Function.update z i ζ)) r (z i)| ≤ K - ε * ∑ k ∈ S, Real.log ‖z k‖ := by intro ε hε obtain ⟨K, hK⟩ := hb ε hε refine ⟨K - ε * Real.log r, fun z hz hzS => ?_⟩ set M := K - ε * Real.log r - ε * ∑ k ∈ S, Real.log ‖z k‖ with hM have …`.
+-/
 theorem poissonInt_update_bound (e : ℕ) (S : Finset (Fin e)) (i : Fin e) (c : Fin e → ℂ) (R r : ℝ)
     (f : (Fin e → ℂ) → ℝ) (hr : 0 < r) (hrR : r < R) (hci : c i = 0) (hiS : i ∉ S)
     (hf : ContinuousOn f {z | z ∈ Metric.ball c R ∧ ∀ k ∈ insert i S, z k ≠ 0})

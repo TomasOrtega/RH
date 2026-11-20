@@ -29,6 +29,9 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 
 namespace GlobalTheory.Pass
 
+/- English proof (translation)
+Introduce `hA` and use `⟨GlobalTheory.CentralIdem.centralIdemCoeff, GlobalTheory.T.central_elements_from_idempotent_coeffs, GlobalTheory.T.typePrimeCompletionDegreeOneCount_proof, GlobalTheory.T.type_parameter_squarefree, GlobalTheory.T.typeFamily_potentiallyCrystalline_common_tame_extension, GlobalTheo …`.
+-/
 theorem stepsNoCut_of_artin : GlobalTheory.Published.GlobalArtinReciprocity → StepsNoCut := fun hA =>
   ⟨GlobalTheory.CentralIdem.centralIdemCoeff, GlobalTheory.T.central_elements_from_idempotent_coeffs, GlobalTheory.T.typePrimeCompletionDegreeOneCount_proof, GlobalTheory.T.type_parameter_squarefree, GlobalTheory.T.typeFamily_potentiallyCrystalline_common_tame_extension,
     GlobalTheory.PotDual.stepPotDual, GlobalTheory.T.jump_range_positive_sign_place, GlobalTheory.T.dualJumpRangeNegativeSignPlace_proof, GlobalTheory.StepLiftPf.main, GlobalTheory.T.twisted_galois_rep_character_blocks, GlobalTheory.T.twisted_dual_families_continuous,

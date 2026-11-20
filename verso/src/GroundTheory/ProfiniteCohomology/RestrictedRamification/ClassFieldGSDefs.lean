@@ -17,6 +17,9 @@ def unitsOutside : Subgroup (IdeleGroup K) :=
     ⨅ (v : HeightOneSpectrum (𝓞 K)) (_ : v ∉ S), (unitsLevel v 0).comap (finiteProj v)
 
 variable {S} in
+/- English proof (translation)
+Simplify using `only [unitsOutside, Subgroup.mem_inf, Subgroup.mem_iInf, MonoidHom.mem_ker, Subgroup.mem_comap]`.
+-/
 theorem mem_unitsOutside {x : IdeleGroup K} :
     x ∈ unitsOutside S ↔
       (∀ v ∈ S, finiteProj v x = 1) ∧ ∀ v ∉ S, finiteProj v x ∈ unitsLevel v 0 := by
@@ -27,6 +30,9 @@ def unitsOutsidePos : Subgroup (IdeleGroup K) :=
   unitsOutside S ⊓ positiveAt Set.univ
 
 variable {S} in
+/- English proof (translation)
+Rewrite using `[unitsOutsidePos, Subgroup.mem_inf, mem_positiveAt]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_unitsOutsidePos {x : IdeleGroup K} :
     x ∈ unitsOutsidePos S ↔
       x ∈ unitsOutside S ∧ ∀ w : {w : InfinitePlace K // w.IsReal},
@@ -35,6 +41,9 @@ theorem mem_unitsOutsidePos {x : IdeleGroup K} :
   rw [unitsOutsidePos, Subgroup.mem_inf, mem_positiveAt]
   simp
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem unitsOutsidePos_le : unitsOutsidePos S ≤ unitsOutside S := inf_le_left
 
 def sIdeleSubgroup : Subgroup (IdeleGroup K) :=
@@ -43,6 +52,9 @@ def sIdeleSubgroup : Subgroup (IdeleGroup K) :=
 def sIdeleSubgroupPos : Subgroup (IdeleGroup K) :=
   (diagonal K).range ⊔ unitsOutsidePos S
 
+/- English proof (translation)
+The claim follows from `sup_le_sup_left (unitsOutsidePos_le S) _`.
+-/
 theorem sIdeleSubgroupPos_le : sIdeleSubgroupPos S ≤ sIdeleSubgroup S :=
   sup_le_sup_left (unitsOutsidePos_le S) _
 
@@ -54,14 +66,26 @@ namespace SIdeleClassGroup
 
 def mk : IdeleGroup K →* SIdeleClassGroup S := QuotientGroup.mk' _
 
+/- English proof (translation)
+The claim follows from `QuotientGroup.mk'_surjective _`.
+-/
 theorem mk_surjective : Function.Surjective (mk S) := QuotientGroup.mk'_surjective _
 
+/- English proof (translation)
+The claim follows from `(QuotientGroup.eq_one_iff _).2 (Subgroup.mem_sup_left ⟨a, rfl⟩)`.
+-/
 theorem mk_diagonal (a : Kˣ) : mk S (diagonal K a) = 1 :=
   (QuotientGroup.eq_one_iff _).2 (Subgroup.mem_sup_left ⟨a, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `(QuotientGroup.eq_one_iff _).2 (Subgroup.mem_sup_right hx)`.
+-/
 theorem mk_eq_one_of_mem {x : IdeleGroup K} (hx : x ∈ unitsOutside S) : mk S x = 1 :=
   (QuotientGroup.eq_one_iff _).2 (Subgroup.mem_sup_right hx)
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem diagonal_range_le : (diagonal K).range ≤ sIdeleSubgroup S := le_sup_left
 
 def ofIdeleClass : IdeleClassGroup K →* SIdeleClassGroup S :=
@@ -73,17 +97,29 @@ namespace SIdeleClassGroupPos
 
 def mk : IdeleGroup K →* SIdeleClassGroupPos S := QuotientGroup.mk' _
 
+/- English proof (translation)
+The claim follows from `QuotientGroup.mk'_surjective _`.
+-/
 theorem mk_surjective : Function.Surjective (mk S) := QuotientGroup.mk'_surjective _
 
+/- English proof (translation)
+The claim follows from `(QuotientGroup.eq_one_iff _).2 (Subgroup.mem_sup_left ⟨a, rfl⟩)`.
+-/
 theorem mk_diagonal (a : Kˣ) : mk S (diagonal K a) = 1 :=
   (QuotientGroup.eq_one_iff _).2 (Subgroup.mem_sup_left ⟨a, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `(QuotientGroup.eq_one_iff _).2 (Subgroup.mem_sup_right hx)`.
+-/
 theorem mk_eq_one_of_mem {x : IdeleGroup K} (hx : x ∈ unitsOutsidePos S) : mk S x = 1 :=
   (QuotientGroup.eq_one_iff _).2 (Subgroup.mem_sup_right hx)
 
 def toSIdeleClassGroup : SIdeleClassGroupPos S →* SIdeleClassGroup S :=
   QuotientGroup.map _ _ (MonoidHom.id _) (sIdeleSubgroupPos_le S)
 
+/- English proof (translation)
+The claim follows from `fun y ↦ by obtain ⟨x, rfl⟩ := SIdeleClassGroup.mk_surjective S y exact ⟨mk S x, rfl⟩`.
+-/
 theorem toSIdeleClassGroup_surjective : Function.Surjective (toSIdeleClassGroup S) := fun y ↦ by
   obtain ⟨x, rfl⟩ := SIdeleClassGroup.mk_surjective S y
   exact ⟨mk S x, rfl⟩
@@ -98,6 +134,9 @@ def localUniformizer (v : HeightOneSpectrum (𝓞 K)) : (v.adicCompletion K)ˣ :
       (v.valuation_exists_uniformizer K).choose_spec, map_zero] at h'
     exact WithZero.exp_ne_zero h')
 
+/- English proof (translation)
+Rewrite using `[localUniformizer, Units.val_mk0, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', (v.valuation_exists_uniformizer K).choose_spec]`.
+-/
 theorem valued_localUniformizer (v : HeightOneSpectrum (𝓞 K)) :
     Valued.v ((localUniformizer v : (v.adicCompletion K)ˣ) : v.adicCompletion K) =
       WithZero.exp (-1 : ℤ) := by
@@ -108,6 +147,9 @@ def divisorIdele : sDivisor S →+ Additive (IdeleGroup K) :=
   Finsupp.liftAddHom fun v ↦
     zmultiplesHom _ (Additive.ofMul (finiteEmbedding v.1 (localUniformizer v.1)))
 
+/- English proof (translation)
+Simplify using `[divisorIdele]`.
+-/
 theorem divisorIdele_single (v : {v : HeightOneSpectrum (𝓞 K) // v ∉ S}) (k : ℤ) :
     Additive.toMul (divisorIdele S (Finsupp.single v k)) =
       finiteEmbedding v.1 (localUniformizer v.1) ^ k := by
@@ -126,6 +168,9 @@ def sPresentation [Finite S] :
   (SIdeleClassGroup.mk S).comp
     ((placesIdele S).coprod (AddMonoidHom.toMultiplicativeLeft (divisorIdele S)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sPresentation_apply [Finite S] (a : ∀ w : S, (w.1.adicCompletion K)ˣ)
     (D : Multiplicative (sDivisor S)) :
     sPresentation S (a, D) =

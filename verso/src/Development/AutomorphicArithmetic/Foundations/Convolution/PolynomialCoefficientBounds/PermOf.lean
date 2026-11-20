@@ -2,12 +2,22 @@ import Mathlib
 
 open MvPolynomial Filter Topology
 
+/- English proof (translation)
+Use `MvPolynomial.aeval_esymm_eq_multiset_esymm (Fin n) ℂ k x` as an intermediate fact. Rewrite using `[← this]`. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.ConvolutionTheory.FX.eval_esymm_eq {n : ℕ} (x : Fin n → ℂ) (k : ℕ) :
     eval x (esymm (Fin n) ℂ k) = (Finset.univ.val.map x).esymm k := by
   have := MvPolynomial.aeval_esymm_eq_multiset_esymm (Fin n) ℂ k x
   rw [← this]
   rfl
 
+/- English proof (translation)
+Establish `hc : ∀ c : ℂ, Fintype.card {i // y i = c} = Fintype.card {i // x i = c}`. Introduce `c`. Establish `h1` using `congrArg (Multiset.count c) h`. Rewrite `h1` using `[Multiset.count_map, Multiset.count_map]`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`.
+
+Establish `e1 : ∀ z : Fin n → ℂ, (Finset.univ.filter (fun i => z i = c)).card = (Multiset.filter (fun a => c = z a) Finset.univ.val).card`. Introduce `z`. Simplify using `only [Finset.card, Finset.filter_val, eq_comm]`. Rewrite using `[e1, e1, h1]`. Set `e : ∀ c : ℂ, {i // y i = c} ≃ {i // x i = c}` to `fun c => Fintype.equivOfCardEq (hc c)`.
+
+Use `⟨Equiv.ofFiberEquiv e, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `(Equiv.ofFiberEquiv_map e i).symm`.
+-/
 private theorem UpperTheory.ConvolutionTheory.FX.perm_of_multiset {n : ℕ} (x y : Fin n → ℂ)
     (h : Finset.univ.val.map x = Finset.univ.val.map y) :
     ∃ w : Equiv.Perm (Fin n), y = x ∘ w := by
@@ -27,6 +37,19 @@ private theorem UpperTheory.ConvolutionTheory.FX.perm_of_multiset {n : ℕ} (x y
   funext i
   exact (Equiv.ofFiberEquiv_map e i).symm
 
+/- English proof (translation)
+Introduce `n x y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `UpperTheory.ConvolutionTheory.FX.perm_of_multiset` to reduce the goal to its premises. Use `set s := Finset.univ.val.map x with hs`.
+
+Use `set t := Finset.univ.val.map y with ht`. Establish `hsc : s.card = n` using `by simp [hs]`. Establish `htc : t.card = n` using `by simp [ht]`. Establish `he : ∀ k, k ≤ n → s.esymm k = t.esymm k`. Introduce `k hk`.
+
+Break down `k with _ | k` into its components or cases. Simplify using `[Multiset.esymm]`. Use `h ⟨k, hk⟩` as an intermediate fact. Rewrite `this` using `[UpperTheory.ConvolutionTheory.FX.eval_esymm_eq, UpperTheory.ConvolutionTheory.FX.eval_esymm_eq]`. Conclude with `this`.
+
+Establish `hp : (s.map fun a => Polynomial.X - Polynomial.C a).prod = (t.map fun a => Polynomial.X - Polynomial.C a).prod`. Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, Multiset.prod_X_sub_X_eq_sum_esymm, hsc, htc]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `j hj`. Rewrite using `[he j (Nat.lt_succ_iff.mp (Finset.mem_range.mp hj))]`.
+
+Use `congrArg Polynomial.roots hp` as an intermediate fact. Rewrite `this` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Then use the resulting hypothesis. Introduce and unpack `⟨w, rfl⟩ i`. Rewrite using `[UpperTheory.ConvolutionTheory.FX.eval_esymm_eq, UpperTheory.ConvolutionTheory.FX.eval_esymm_eq]`. Use `congr 1`.
+
+Rewrite using `[← Multiset.map_map]`. Use `congr 1`. Conclude with `(Multiset.map_univ_val_equiv w).symm`.
+-/
 theorem UpperTheory.ConvolutionTheory.FX.perm_of_esymm :
     ∀ (n : ℕ) (x y : Fin n → ℂ), (∀ i : Fin n, eval x (esymm (Fin n) ℂ (i + 1)) = eval y (esymm (Fin n) ℂ (i + 1))) ↔ ∃ w : Equiv.Perm (Fin n), y = x ∘ w := by
   intro n x y

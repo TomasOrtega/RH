@@ -4,6 +4,15 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `σ g hg Q`. Proceed by induction on `Q using MvPolynomial.induction_on`. Name the introduced variables `c`. Conclude with `⟨0, Polynomial.C c, fun t _ => by simp⟩`. Name the introduced variables `p q hp hq`.
+
+Take `⟨N₁, P₁, h₁⟩` from `hp`. Take `⟨N₂, P₂, h₂⟩` from `hq`. Use `⟨N₁ + N₂, Polynomial.X ^ N₂ * P₁ + Polynomial.X ^ N₁ * P₂, fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_X]`. Rewrite using `[← h₁ t ht, ← h₂ t ht]`.
+
+Expand and normalize the polynomial expressions, which then agree. Name the introduced variables `p a hp`. Take `⟨N, P, h⟩` from `hp`. Take `⟨N', P', h'⟩` from `hg a`. Use `⟨N + N', P * P', fun t ht => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, MvPolynomial.eval_X, Polynomial.eval_mul]`. Rewrite using `[← h t ht, ← h' t ht]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem laurent_poly_eval_of_laurent :
     ∀ (σ : Type) (g : σ → ℂ → ℂ), (∀ a, ∃ (N : ℕ) (p : Polynomial ℂ), ∀ t : ℂ, t ≠ 0 → t ^ N * g a t = p.eval t) →
       ∀ Q : MvPolynomial σ ℂ, ∃ (N : ℕ) (p : Polynomial ℂ), ∀ t : ℂ, t ≠ 0 →

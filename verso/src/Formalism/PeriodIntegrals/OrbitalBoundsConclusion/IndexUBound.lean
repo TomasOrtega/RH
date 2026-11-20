@@ -2,6 +2,11 @@ import Mathlib
 import Formalism.PeriodIntegrals.IndexUBound
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.IndexUpperBound.OneSubSumLeProd
 
+/- English proof (translation)
+Introduce `ι S g r y hg hy`. Establish `h2 : ∀ v ∈ S, (2 : ℝ) ≤ g v` using `fun v hv => by exact_mod_cast hg v hv`. Establish `hfac : ∀ v ∈ S, ∏ i ∈ Finset.Ico 1 r, ((g v : ℝ) ^ i - 1) = (g v : ℝ) ^ (r * (r - 1) / 2) * ∏ i ∈ Finset.Ico 1 r, (1 - (g v : ℝ)⁻¹ ^ i)` using `fun v hv => PI.UnitaryGroupMassFormula.IndexUBound.prod_factor _ (by linarith [h2 v hv] : (0 : ℝ) < g v).ne' r`. Rewrite using `[Finset.prod_congr rfl hfac, Finset.prod_mul_distrib]`. Establish `hQ` using `PI.UnitaryGroupMassFormula.IndexUBound.one_sub_sum_le_prod S (fun v => ∏ i ∈ Finset.Ico 1 r, (1 - (g v : ℝ)⁻¹ ^ i)) (fun v => 1 / ((g v : ℝ) - 1)) (fun v hv => (PI.UnitaryGroupMassFormula.IndexUBound.inner_bounds _ (h2 v hv) r).1) (fun v hv => (PI.UnitaryGroupMassFormula.IndexUBo …`.
+
+Use `beta_reduce at hQ`. Establish `hpos : 0 ≤ ∏ v ∈ S, (g v : ℝ) ^ (r * (r - 1) / 2)` using `Finset.prod_nonneg fun v _ => by positivity`. Establish `key` using `mul_le_mul_of_nonneg_right (show 1 - y ≤ ∏ v ∈ S, ∏ i ∈ Finset.Ico 1 r, (1 - (g v : ℝ)⁻¹ ^ i) by linarith) hpos`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem product_lowerBound : PI.IndexUBound.IndexUBound := by
   classical
   intro ι S g r y hg hy

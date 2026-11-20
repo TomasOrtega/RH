@@ -13,6 +13,11 @@ namespace GlobalTheory.HilbFam.TwistMem
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Introduce `j _`. Establish `h0` using `hy 0 (Set.mem_univ _)`. Establish `h1` using `hy 1 (Set.mem_univ _)`. Establish `: Matrix.vecMul y (B.map (Int.cast : ℤ → F)) j = B 0 j • y 0 + B 1 j • y 1`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, mul_comm]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (Submodule.smul_of_tower_mem _ _ h0) (Submodule.smul_of_tower_mem _ _ h1)`.
+-/
 theorem vecMul_mem_std (B : Matrix (Fin 2) (Fin 2) ℤ) {y : Fin 2 → F} (hy : y ∈ stdLat F) :
     Matrix.vecMul y (B.map (Int.cast : ℤ → F)) ∈ stdLat F := by
   intro j _
@@ -23,6 +28,13 @@ theorem vecMul_mem_std (B : Matrix (Fin 2) (Fin 2) ℤ) {y : Fin 2 → F} (hy : 
   rw [this]
   exact Submodule.add_mem _ (Submodule.smul_of_tower_mem _ _ h0) (Submodule.smul_of_tower_mem _ _ h1)
 
+/- English proof (translation)
+Establish `h : ∀ a : ℤ, ∃ b : ℤ, (ZMod.cast (a : ZMod N) : ℤ) = a + N * b`. Introduce `a`. Establish `h1 : ((a : ℤ) : ZMod N) = (((ZMod.cast (a : ZMod N) : ℤ) : ℤ) : ZMod N)`. Simplify using the standard rewrite rules. Take `⟨b, hb⟩` from `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ N).1 h1`.
+
+Conclude with `⟨b, by linarith⟩`. Use `choose f hf using h`. Use `⟨A.map f, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, hf]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_lift_diff (N : ℕ) (A : Matrix (Fin 2) (Fin 2) ℤ) :
     ∃ B : Matrix (Fin 2) (Fin 2) ℤ,
       ((A.map (Int.cast : ℤ → ZMod N)).map (ZMod.cast : ZMod N → ℤ)).map (Int.cast : ℤ → F)
@@ -40,11 +52,21 @@ theorem exists_lift_diff (N : ℕ) (A : Matrix (Fin 2) (Fin 2) ℤ) :
   push_cast
   ring
 
+/- English proof (translation)
+Use extensionality with `j`. Apply the tactic sequence `fin_cases j <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.one_apply, Matrix.natCast_apply, mul_comm]`.
+-/
 theorem vecMul_scalar (N : ℕ) (w : Fin 2 → F) :
     Matrix.vecMul w ((((N : ℤ) • (1 : Matrix (Fin 2) (Fin 2) ℤ))).map (Int.cast : ℤ → F)) = (N : F) • w := by
   ext j
   fin_cases j <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.one_apply, Matrix.natCast_apply, mul_comm]
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `exists_lift_diff (F := F) N A`. Unfold `twist mulMat`. Simplify using `only [Submodule.mem_sup, Submodule.mem_map, LinearMap.restrictScalars_apply, Matrix.vecMulLinear_apply, hB, vecMul_scalar, Matrix.vecMul_add, Matrix.vecMul_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, _, ⟨w, hw, rfl⟩, rfl⟩`.
+
+Use `⟨y, hy, Matrix.vecMul y (B.map (Int.cast : ℤ → F)) + w, Submodule.add_mem _ (vecMul_mem_std B (hL hy)) hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, add_assoc]`. Introduce and unpack `⟨y, hy, w, hw, rfl⟩`. Use `⟨_, ⟨y, hy, rfl⟩, _, ⟨w - Matrix.vecMul y (B.map (Int.cast : ℤ → F)), Submodule.sub_mem _ hw (vecMul_mem_std B (hL hy)), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem mem_twist_iff (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (N : ℕ) (L : Lat F)
     (A : Matrix (Fin 2) (Fin 2) ℤ) (v : Fin 2 → F) (hL : L ≤ stdLat F) :
     (v ∈ twist N L (A.map (Int.cast : ℤ → ZMod N)) ↔

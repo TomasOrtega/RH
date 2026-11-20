@@ -15,6 +15,9 @@ section General
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n c : ℕ}
 
 omit [StarRing E] in
+/- English proof (translation)
+Introduce `l`. Unfold `Loc.eN`. Use `split_ifs`. Conclude with `intAt_one P`. Conclude with `IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P`.
+-/
 theorem intV_eN (P : HeightOneSpectrum (𝓞 E)) (N s : ℕ) : IntV P (Loc.eN E N s) := by
   intro l
   unfold Loc.eN
@@ -22,6 +25,21 @@ theorem intV_eN (P : HeightOneSpectrum (𝓞 E)) (N s : ℕ) : IntV P (Loc.eN E 
   · exact intAt_one P
   · exact IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_zero P
 
+/- English proof (translation)
+Establish `hq` using `Proof.NormalFormAtPrime.qOf_ne_zero P`. Establish `hmem : ∀ v, IntV P v → ρ v ∈ nfLat P n c e z` using `fun v hv => by`. Rewrite using `[← hL]`. Use `⟨h.symm v, h1 v hv, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ (h (h.symm v)) = ρ v`.
+
+Rewrite using `[h.apply_symm_apply]`. Use `⟨fun i => ⟨?_, ?_⟩, fun hc a => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hrv⟩ : nfGen (qOf P) n c e z i ∈ (ρ * h) '' {v | IntV P v}` from `hL ▸ nfGen_mem P e z i`. Express the relevant statement in the definitionally equal form `ρ (h v) = _ at hrv`. Establish `hU : h v ∈ Loc.Ufl E n c (i.1 + 1)`.
+
+Use `hρ.2.1 _ _ (hrv ▸ nfGen_mem_Ufl (qOf P) e z i)` as an intermediate fact. Express the relevant statement in the definitionally equal form `ρ.symm (ρ (h v)) ∈ _ at this`. Rewrite `this` using `[ρ.symm_apply_apply]`. Then use the resulting hypothesis. Establish `h3 : h v (Fin.natAdd n i) = (qOf P : E) ^ e i`. Rewrite using `[← atN_natAdd (h v) i, ← atN_of_R1cond hρ.1 hU, hrv, atN_natAdd, nfGen_natAdd, if_pos rfl]`.
+
+Establish `h4 : IntAt P ((qOf P : E) ^ j * h v (Fin.natAdd n i))` using `h2 v hv (Fin.natAdd n i)`. Rewrite `h4` using `[h3, ← zpow_natCast, ← zpow_add₀ hq]`. Use `nonneg_of_intAt_zpow h4` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hc : 1 ≤ c` using `by have := i.2; omega`.
+
+Take `⟨u, hu, h'⟩` from `(coords_of_mem hc (hmem _ (intV_eN P (n + c) (n + i.1)))).1 i`. Use `le_of_zpow_eq hu ?_` and prove the remaining obligations. Rewrite using `[← h', ← atN_natAdd (ρ _) i, atN_of_R1cond hρ.1 (eN_mem_Ufl (by omega)), atN_natAdd]`. Simplify using `[Loc.eN]`. Establish `h3` using `(coords_of_mem hc (hmem _ (intV_eN P (n + c) n))).2 a`.
+
+Establish `h4 : Loc.eN E (n + c) n (Fin.castAdd c a) = 0`. Unfold `Loc.eN`. Rewrite using `[if_neg (by have := a.2; simp; omega)]`. Establish `h5 : Loc.eN E (n + c) n (Fin.natAdd n ⟨0, hc⟩) = 1` using `by simp [Loc.eN]`. Rewrite `h3` using `[hρ.1.2.1, h4, h5, one_mul, zero_sub]`.
+
+Simplify using `using IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg h3`.
+-/
 theorem read_bounds (P : HeightOneSpectrum (𝓞 E)) (j : ℕ) (h ρ : (Fin (n + c) → E) ≃ₗ[E] (Fin (n + c) → E))
     (e : Fin c → ℤ) (z : Fin n → E) (hρ : ρ ∈ Loc.R1 E n c) (h1 : IntHom P h.symm.toLinearMap)
     (h2 : IntHom P (((qOf P : E) ^ j) • h.toLinearMap)) (hL : (ρ * h) '' {v | IntV P v} = nfLat P n c e z) :
@@ -58,6 +76,9 @@ theorem read_bounds (P : HeightOneSpectrum (𝓞 E)) (j : ℕ) (h ρ : (Fin (n +
     rw [hρ.1.2.1, h4, h5, one_mul, zero_sub] at h3
     simpa using IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg h3
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Simplify using `[nfLat]`.
+-/
 theorem nfLat_of_eq_zero (P : HeightOneSpectrum (𝓞 E)) (hc : c = 0) (e : Fin c → ℤ) (z z' : Fin n → E) :
     nfLat P n c e z = nfLat P n c e z' := by
   subst hc
@@ -65,6 +86,9 @@ theorem nfLat_of_eq_zero (P : HeightOneSpectrum (𝓞 E)) (hc : c = 0) (e : Fin 
 
 end General
 
+/- English proof (translation)
+Introduce `X Pr R j P hP h ρ e z hρ hb hL`. Take `⟨he, hz⟩` from `read_bounds P j h ρ e z hρ hb.1 hb.2 hL`. Break down `Nat.eq_zero_or_pos (cOf R j) with hc | hc` into its components or cases. Conclude with `⟨e, 0, he, zero_mem _, by rw [lamYat_coe hP, hL, nfLat_of_eq_zero P hc e z 0]⟩`. Conclude with `⟨e, z, he, (mem_stdAt_iff _).2 (hz hc), by rw [lamYat_coe hP, hL]⟩`.
+-/
 theorem nf_of_between : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)), P ∉ Pr.vGs → ∀ (h ρ : AutY X R j) (e : Fin (cOf R j) → ℤ) (z : Sp X.E (R.N j)), ρ ∈ Loc.R1 X.E (R.N j) (cOf R j) → Between j P h → (ρ * h) '' {v | IntV P v} = GlobalTheory.IndefiniteRowSideFullHecke.SandwichNormalForm.nfLat P (R.N j) (cOf R j) e z → GlobalTheory.IndefiniteRowSideFullHecke.SandwichNormalForm.NF Pr j P (ρ * h) := by
   intro X Pr R j P hP h ρ e z hρ hb hL
   obtain ⟨he, hz⟩ := read_bounds P j h ρ e z hρ hb.1 hb.2 hL

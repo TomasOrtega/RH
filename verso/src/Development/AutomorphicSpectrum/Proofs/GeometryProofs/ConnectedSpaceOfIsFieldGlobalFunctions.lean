@@ -12,6 +12,17 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
+/- English proof (translation)
+Establish `hne : Nonempty Z`. Assume the negation of the conclusion as `hZ`. Establish `hb : (⊤ : Z.Opens) = ⊥`. Use extensionality with `x`. Conclude with `(hZ ⟨x⟩).elim`.
+
+Establish `hs : Subsingleton Γ(Z, ⊤)`. Rewrite using `[hb]`. Use `infer_instance`. Take `⟨a, b, hab⟩` from `h.exists_pair_ne`. Conclude with `hab (Subsingleton.elim a b)`.
+
+Establish `hp : PreconnectedSpace Z`. Use `preconnectedSpace_iff_clopen.2 fun U hU => ?_` and prove the remaining obligations. Take `⟨e, he, hUe⟩` from `GlobalTheory.exists_idempotent_basicOpen_eq_of_isClopen Z U hU`. Distinguish the cases in `h0 : e = 0`. Use `left`.
+
+Rewrite using `[← hUe, h0, Z.basicOpen_zero]`. Both sides reduce to the same expression. Use `right`. Take `⟨b, hb⟩` from `h.mul_inv_cancel h0`. Establish `h1 : e = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hUe, h1, Z.basicOpen_of_isUnit isUnit_one]`. Both sides reduce to the same expression. Conclude with `{ toPreconnectedSpace := hp, toNonempty := hne }`.
+-/
 theorem connectedSpace_of_isField_globalFunctions (Z : Scheme.{0}) (h : IsField Γ(Z, ⊤)) :
     ConnectedSpace Z := by
   have hne : Nonempty Z := by
@@ -41,6 +52,13 @@ theorem connectedSpace_of_isField_globalFunctions (Z : Scheme.{0}) (h : IsField 
       rfl
   exact { toPreconnectedSpace := hp, toNonempty := hne }
 
+/- English proof (translation)
+Introduce `K _ X p _ _ _`. Use `⟨fun L _ y Z a q H => ?_⟩` and prove the remaining obligations. Establish `hy : Flat y`. Take `⟨φ, rfl⟩` from `Spec.map_surjective y`. Rewrite using `[Flat.SpecMap_iff]`.
+
+Use `algebraize [φ.hom]`. Conclude with `inferInstanceAs (Module.Flat K L)`. Establish `hq : IsIso q.appTop` using `GlobalTheory.ProperFunctions.isIso_appTop_of_isPullback H`. Set `e₁ : Γ(Spec (.of L), ⊤) ≃+* Γ(Z, ⊤)` to `(asIso q.appTop).commRingCatIsoToRingEquiv`. Set `e₂ : Γ(Spec (.of L), ⊤) ≃+* L` to `(Scheme.ΓSpecIso (.of L)).commRingCatIsoToRingEquiv`.
+
+Establish `hL : IsField Γ(Spec (.of L), ⊤)` using `MulEquiv.isField (Field.toIsField L) e₂.toMulEquiv`. Conclude with `connectedSpace_of_isField_globalFunctions Z (MulEquiv.isField hL e₁.symm.toMulEquiv)`.
+-/
 theorem geometricallyConnected_of_isIso_appTop :
     ∀ (K : Type) [Field K] (X : Scheme.{0}) (p : X ⟶ Sp K), QuasiCompact p → QuasiSeparated p →
       IsIso p.appTop → GeometricallyConnected p := by

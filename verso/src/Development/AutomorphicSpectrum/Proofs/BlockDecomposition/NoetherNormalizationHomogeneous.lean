@@ -7,6 +7,9 @@ open MvPolynomial
 
 namespace GlobalTheory.CompanionTheory.ConeNoether
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yra8.main s e g c hd hc`.
+-/
 theorem prod_pow_lead {R ι : Type*} [CommRing R] (s : Finset ι) (e : ι → ℕ)
     (g : ι → Polynomial R) (c : ι → R) (hd : ∀ i, (g i).natDegree ≤ 1)
     (hc : ∀ i, (g i).coeff 1 = c i) :
@@ -14,6 +17,23 @@ theorem prod_pow_lead {R ι : Type*} [CommRing R] (s : Finset ι) (e : ι → �
       (∏ i ∈ s, g i ^ e i).coeff (∑ i ∈ s, e i) = ∏ i ∈ s, c i ^ e i :=
   _root_.UpperTheory.Reformulated.B.Yra8.main s e g c hd hc
 
+/- English proof (translation)
+Set `g : ι → Polynomial R` to `fun i => Polynomial.C (v i) + Polynomial.C (algebraMap K R (a i)) * Polynomial.X`. Establish `hgd : ∀ i, (g i).natDegree ≤ 1` using `fun i => by`. Simplify `Polynomial.natDegree_linear_le (a := algebraMap K R (a i)) (b := v i)` using `[g, add_comm]`. Establish `hgc : ∀ i, (g i).coeff 1 = algebraMap K R (a i)` using `fun i => by`. Simplify using `[g, Polynomial.coeff_C]`.
+
+Establish `hdeg : ∀ d ∈ F.support, ∑ i, d i = n` using `fun d hd => by`. Use `hF (mem_support_iff.1 hd)` as an intermediate fact. Simplify `this` using `[Finsupp.degree_eq_sum, Finsupp.weight_apply, Finsupp.sum_fintype]`. Set `p : Polynomial R` to `aeval g F`. Establish `hp : p = ∑ d ∈ F.support, Polynomial.C (algebraMap K R (coeff d F)) * ∏ i, g i ^ d i`.
+
+Simplify using `only [p, aeval_def, eval₂_eq']`. Both sides reduce to the same expression. Establish `hpd : p.natDegree ≤ n`. Rewrite using `[hp]`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun d hd => ?_` and prove the remaining obligations.
+
+Use `(Polynomial.natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Use `(prod_pow_lead Finset.univ d g _ hgd hgc).1` as an intermediate fact. Rewrite `this` using `[hdeg d hd]`. Then use the resulting hypothesis. Establish `hpc : p.coeff n = algebraMap K R (eval a F)`. Rewrite using `[hp, eval_eq', map_sum, Polynomial.finset_sum_coeff]`.
+
+Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Use `(prod_pow_lead Finset.univ d g _ hgd hgc).2` as an intermediate fact. Rewrite `this` using `[hdeg d hd]`. Rewrite using `[Polynomial.coeff_C_mul, this]`. Simplify using the standard rewrite rules.
+
+Establish `hpe : Polynomial.eval₂ (algebraMap R S) u p = 0`. Establish `h1` using `comp_aeval_apply (R := K) (f := g) ((Polynomial.aeval (R := R) u).restrictScalars K) F`. Establish `h2 : (fun i => ((Polynomial.aeval (R` using `R) u).restrictScalars K) (g i)) = fun i => algebraMap R S (v i) + algebraMap K S (a i) * u := by`. Use function extensionality and compare the values at `i`. Simplify using `[g, IsScalarTower.algebraMap_apply K R S]`.
+
+Rewrite `h1` using `[h2, h0]`. Simplify `h1` using `[Polynomial.aeval_def, p]`. Set `b : R` to `algebraMap K R (eval a F)⁻¹`. Establish `hb : b * algebraMap K R (eval a F) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ ha, map_one]`.
+
+Use `⟨Polynomial.C b * p, ?_, ?_⟩` and prove the remaining obligations. Use `Polynomial.monic_of_natDegree_le_of_coeff_eq_one n ((Polynomial.natDegree_C_mul_le _ _).trans hpd) ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_C_mul, hpc, hb]`. Rewrite using `[Polynomial.eval₂_mul, hpe, mul_zero]`.
+-/
 theorem isIntegral_of_homogeneous_relation {K R S ι : Type*} [Field K] [CommRing R] [CommRing S]
     [Algebra K R] [Algebra K S] [Algebra R S] [IsScalarTower K R S] [Fintype ι]
     (F : MvPolynomial ι K) {n : ℕ} (hF : F.IsHomogeneous n) (a : ι → K) (ha : eval a F ≠ 0)
@@ -67,6 +87,11 @@ theorem isIntegral_of_homogeneous_relation {K R S ι : Type*} [Field K] [CommRin
     rw [Polynomial.coeff_C_mul, hpc, hb]
   · rw [Polynomial.eval₂_mul, hpe, mul_zero]
 
+/- English proof (translation)
+Establish `key : ∀ k, homogeneousComponent n (aeval l (homogeneousComponent k F)) = if n = k then aeval l (homogeneousComponent k F) else 0` using `fun k => by`. Establish `h` using `(homogeneousComponent_isHomogeneous k F).aeval l hl`. Rewrite `h` using `[one_mul]`. Conclude with `homogeneousComponent_of_mem h`. Use `conv_lhs => rw [← sum_homogeneousComponent F]`.
+
+Rewrite using `[map_sum, map_sum]`. Simplify using `only [key, Finset.sum_ite_eq, Finset.mem_range]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[homogeneousComponent_eq_zero _ _ (by omega), map_zero]`.
+-/
 theorem homogeneousComponent_aeval {K σ ι : Type*} [Field K] (l : ι → MvPolynomial σ K)
     (hl : ∀ i, (l i).IsHomogeneous 1) (F : MvPolynomial ι K) (n : ℕ) :
     homogeneousComponent n (aeval l F) = aeval l (homogeneousComponent n F) := by
@@ -83,6 +108,13 @@ theorem homogeneousComponent_aeval {K σ ι : Type*} [Field K] (l : ι → MvPol
   · rfl
   · rw [homogeneousComponent_eq_zero _ _ (by omega), map_zero]
 
+/- English proof (translation)
+Rewrite `h` using `[algebraicIndependent_iff]`. Use `push_neg at h`. Take `⟨F, hF, hF0⟩` from `h`. Establish `hmem : aeval l F ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← hF]`.
+
+Use `comp_aeval_apply (R := K) (f := l) (Ideal.Quotient.mkₐ K I) F` as an intermediate fact. Simplify using `using this`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, homogeneousComponent n F ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hF0 (by rw [← sum_homogeneousComponent F]; simp [hc])`. Conclude with `⟨n, _, hn, homogeneousComponent_isHomogeneous n F, by`. Rewrite using `[← homogeneousComponent_aeval l hl]`. Conclude with `hI _ hmem n⟩`.
+-/
 theorem exists_homogeneous_relation {K σ ι : Type*} [Field K] (I : Ideal (MvPolynomial σ K))
     (hI : ∀ f ∈ I, ∀ n : ℕ, homogeneousComponent n f ∈ I) (l : ι → MvPolynomial σ K)
     (hl : ∀ i, (l i).IsHomogeneous 1)
@@ -102,6 +134,9 @@ theorem exists_homogeneous_relation {K σ ι : Type*} [Field K] (I : Ideal (MvPo
   exact ⟨n, _, hn, homogeneousComponent_isHomogeneous n F, by
     rw [← homogeneousComponent_aeval l hl]; exact hI _ hmem n⟩
 
+/- English proof (translation)
+Set `φ : A →+* integralClosure R S` to `{ toFun := fun x => ⟨x.1, h x.1 x.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `h1 : IsIntegral (integralClosure R S) s` using `IsIntegral.map_of_comp_eq φ (RingHom.id S) (by ext; rfl) hs`. Conclude with `isIntegral_trans s h1`.
+-/
 theorem isIntegral_trans_subalgebra {K S : Type*} [Field K] [CommRing S] [Algebra K S]
     (A R : Subalgebra K S) (h : ∀ x ∈ A, IsIntegral R x) (s : S) (hs : IsIntegral A s) :
     IsIntegral R s := by
@@ -115,6 +150,35 @@ theorem isIntegral_trans_subalgebra {K S : Type*} [Field K] [CommRing S] [Algebr
     IsIntegral.map_of_comp_eq φ (RingHom.id S) (by ext; rfl) hs
   exact isIntegral_trans s h1
 
+/- English proof (translation)
+Establish `hnt : Nontrivial (MvPolynomial σ K ⧸ I)` using `Ideal.Quotient.nontrivial_iff.2 hne`. Establish `done : ∀ (ι : Type) [Fintype ι] (l : ι → MvPolynomial σ K), (∀ i, (l i).IsHomogeneous 1) → (∀ s : MvPolynomial σ K ⧸ I, IsIntegral (Algebra.adjoin K (Set.range fun i => Ideal.Quotient.mk I (l i))) s) → AlgebraicIndependent K (fun i => Ideal.Quotient.mk I (l i)) → ∃ (m : ℕ) (y : F …`. Introduce `ι _ l hl hs hind`. Set `e` to `Fintype.equivFin ι`. Use `⟨_, fun i => l (e.symm i), fun i => hl _, hind.comp _ e.symm.injective, ?_⟩` and prove the remaining obligations.
+
+Establish `hr : (Set.range fun i => Ideal.Quotient.mk I (l (e.symm i))) = Set.range fun i => Ideal.Quotient.mk I (l i)` using `e.symm.surjective.range_comp fun i => Ideal.Quotient.mk I (l i)`. Rewrite using `[hr]`. Conclude with `hs`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `ι _ l hc hl hs`. Establish `: IsEmpty ι` using `Fintype.card_eq_zero_iff.1 hc`. Conclude with `done ι l hl hs (algebraicIndependent_empty_type_iff.2 (algebraMap K _).injective)`. Consider the case `succ n ih`. Introduce `ι _ l hc hl hs`.
+
+Distinguish the cases in `hind : AlgebraicIndependent K fun i => Ideal.Quotient.mk I (l i)`. Conclude with `done ι l hl hs hind`. Take `⟨d, F, hF0, hFd, hFI⟩` from `exists_homogeneous_relation I hI l hl hind`. Establish `: Nonempty ι` using `Fintype.card_pos_iff.1 (by omega)`. Take `⟨j⟩` from `this`.
+
+Establish `hGd : (X j * F).IsHomogeneous (1 + d)` using `(isHomogeneous_X K j).mul hFd`. Establish `hG0 : (X j * F : MvPolynomial ι K) ≠ 0` using `mul_ne_zero (X_ne_zero j) hF0`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : ι → K, eval a (X j * F) ≠ 0 := by`. Assume the negation of the conclusion as `hc'`. Use `push_neg at hc'`.
+
+Conclude with `hG0 (MvPolynomial.funext fun x => by simpa using hc' x)`. Establish `haj : a j ≠ 0` using `fun h0 => ha (by simp [h0])`. Establish `hGI : aeval l (X j * F) ∈ I`. Rewrite using `[map_mul]`. Conclude with `I.mul_mem_left _ hFI`.
+
+Set `u : MvPolynomial σ K` to `C (a j)⁻¹ * l j`. Set `v : ι → MvPolynomial σ K` to `fun i => l i - C (a i) * u`. Establish `hvj : v j = 0`. Simplify using `only [v, u]`. Rewrite using `[← mul_assoc, ← C_mul, mul_inv_cancel₀ haj, C_1, one_mul, sub_self]`.
+
+Establish `hvh : ∀ i, (v i).IsHomogeneous 1` using `fun i => (hl i).sub (((hl j).C_mul _).C_mul _)`. Set `R` to `Algebra.adjoin K (Set.range fun i : {i // i ≠ j} => Ideal.Quotient.mk I (v i.1))`. Establish `hmem : ∀ i, Ideal.Quotient.mk I (v i) ∈ R` using `fun i => by`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Rewrite using `[hvj, map_zero]`. Conclude with `zero_mem _`. Conclude with `Algebra.subset_adjoin ⟨⟨i, h⟩, rfl⟩`. Establish `hdec : ∀ i, Ideal.Quotient.mk I (v i) + algebraMap K (MvPolynomial σ K ⧸ I) (a i) * Ideal.Quotient.mk I u = Ideal.Quotient.mk I (l i)` using `fun i => by`. Establish `: algebraMap K (MvPolynomial σ K ⧸ I) (a i) = Ideal.Quotient.mk I (C (a i))` using `rfl`.
+
+Rewrite using `[this, ← map_mul, ← map_add]`. Simplify using `only [v, sub_add_cancel]`. Establish `hu : IsIntegral R (Ideal.Quotient.mk I u)`. Use `isIntegral_of_homogeneous_relation (X j * F) hGd a ha (fun i => (⟨_, hmem i⟩ : R)) _ ?_` and prove the remaining obligations. Establish `h1 : (fun i => algebraMap R (MvPolynomial σ K ⧸ I) ⟨_, hmem i⟩ + algebraMap K (MvPolynomial σ K ⧸ I) (a i) * Ideal.Quotient.mk I u) = fun i => Ideal.Quotient.mkₐ K I (l i)`.
+
+Use function extensionality and compare the values at `i`. Conclude with `hdec i`. Rewrite using `[h1, ← comp_aeval_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hGI`. Establish `hA : ∀ x ∈ Algebra.adjoin K (Set.range fun i => Ideal.Quotient.mk I (l i)), IsIntegral R x`.
+
+Establish `hle : Algebra.adjoin K (Set.range fun i => Ideal.Quotient.mk I (l i)) ≤ (integralClosure R (MvPolynomial σ K ⧸ I)).restrictScalars K`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Express the relevant statement in the definitionally equal form `IsIntegral R _`. Simplify using `only []`.
+
+Rewrite using `[← hdec i]`. Use `IsIntegral.add ?_ (IsIntegral.mul ?_ hu)` and prove the remaining obligations. Conclude with `isIntegral_algebraMap (x := (⟨_, hmem i⟩ : R))`. Rewrite using `[IsScalarTower.algebraMap_apply K R]`. Conclude with `isIntegral_algebraMap`.
+
+Conclude with `fun x hx => hle hx`. Use `ih {i // i ≠ j} (fun i => v i.1) ?_ (fun i => hvh _) fun s => isIntegral_trans_subalgebra _ R hA s (hs s)` and prove the remaining obligations. Simplify using `[Fintype.card_subtype_compl, hc]`.
+-/
 theorem exists_linear_of_integral {K σ : Type} [Field K] [Infinite K]
     (I : Ideal (MvPolynomial σ K)) (hI : ∀ f ∈ I, ∀ n : ℕ, homogeneousComponent n f ∈ I)
     (hne : I ≠ ⊤) (n : ℕ) :
@@ -215,6 +279,15 @@ theorem exists_linear_of_integral {K σ : Type} [Field K] [Infinite K]
       isIntegral_trans_subalgebra _ R hA s (hs s)
     simp [Fintype.card_subtype_compl, hc]
 
+/- English proof (translation)
+Introduce `K _ _ N I hne hI`. Establish `htop : ∀ s : MvPolynomial (Fin (N + 1)) K ⧸ I, s ∈ Algebra.adjoin K (Set.range fun i => Ideal.Quotient.mk I (X i))`. Introduce `s`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective s`. Proceed by induction on `f using MvPolynomial.induction_on with`.
+
+Consider the case `C a => exact Subalgebra.algebraMap_mem _ a`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p i hp => rw [map_mul]`. Conclude with `mul_mem hp (Algebra.subset_adjoin ⟨i, rfl⟩)`.
+
+Take `⟨m, y, hy, hind, hint⟩` from `exists_linear_of_integral I hI hne _ (Fin (N + 1)) X rfl (fun i => isHomogeneous_X K i) (fun s => isIntegral_algebraMap (x := (⟨s, htop s⟩ : Algebra.adjoin K (Set.range fun i => Ideal.Quotient.mk I (X i)))))`. Use `⟨1, m, y, one_pos, hy, hind, ?_⟩` and prove the remaining obligations. Establish `: Algebra.IsIntegral (Algebra.adjoin K (Set.range fun i => Ideal.Quotient.mk I (y i))) (MvPolynomial (Fin (N + 1)) K ⧸ I)` using `⟨hint⟩`. Establish `: Algebra.FiniteType K (MvPolynomial (Fin (N + 1)) K ⧸ I)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ K I) (Ideal.Quotient.mkₐ_surjective K I)`. Establish `: Algebra.FiniteType (Algebra.adjoin K (Set.range fun i => Ideal.Quotient.mk I (y i))) (MvPolynomial (Fin (N + 1)) K ⧸ I)` using `Algebra.FiniteType.of_restrictScalars_finiteType K _ _`.
+
+Conclude with `Algebra.IsIntegral.finite`.
+-/
 theorem main : ∀ (K : Type) [Field K] [Infinite K] (N : ℕ)
     (I : Ideal (MvPolynomial (Fin (N + 1)) K)), I ≠ ⊤ →
     (∀ f ∈ I, ∀ n : ℕ, MvPolynomial.homogeneousComponent n f ∈ I) →

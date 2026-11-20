@@ -12,14 +12,26 @@ variable {M : Model F E} {g : SplitG M.L} {r : ℕ}
 
 def ind (r : ℕ) (a b : Fin (r + 1)) : F := if a = Fin.last r ∧ b = Fin.last r then 1 else 0
 
+/- English proof (translation)
+Apply the tactic sequence `unfold cor ind; split_ifs <;> simp <;> rfl`.
+-/
 theorem e_cor (x : E) (a b : Fin (r + 1)) :
     g.e (cor r a b x) = (ind r a b * (g.e x).1, ind r a b * (g.e x).2) := by
   unfold cor ind; split_ifs <;> simp <;> rfl
 
+/- English proof (translation)
+The claim follows from `g.e_cj x`.
+-/
 theorem e_cjR (x : E) : g.e ((M.L.cj : E →+* E) x) = ((g.e x).2, (g.e x).1) := g.e_cj x
 
+/- English proof (translation)
+The claim follows from `g.e_cj x`.
+-/
 theorem e_cjA (x : E) : g.e (M.L.cj x) = ((g.e x).2, (g.e x).1) := g.e_cj x
 
+/- English proof (translation)
+The claim follows from `| Sum.inl a, Sum.inl b => (ind r a b * (-T), ind r a b * (-T)) | Sum.inl a, Sum.inr b => ((g.q : F)⁻¹ * ((g.e (Zh a b)).2 + ind r a b * T), (g.q : F)⁻¹ * ((g.e (Zh a b)).1 + ind r a b * T)) | Sum.inr a, Sum.inl b => ((g.q : F)⁻¹ * ((g.e (Zh b a)).1 + ind r a b * T), (g.q : F)⁻¹ * …`.
+-/
 theorem e_gram (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (i j : Ix r) :
     g.e (gramG (M.L.cj : E →+* E) (algebraMap F E ((g.q : F)⁻¹)) Zh (algebraMap F E T) (algebraMap F E T') i j) =
       match i, j with
@@ -37,6 +49,9 @@ theorem e_gram (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (i j : Ix 
       Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.e_alg, e_cjR, e_cjA] <;>
     refine Prod.ext ?_ ?_ <;> simp [e_cjR, e_cjA] <;> ring
 
+/- English proof (translation)
+Unfold `ind`. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hb]`.
+-/
 theorem sum_ind_l (x : Fin (r + 1) → F) (b : Fin (r + 1)) :
     ∑ a, x a * ind r a b = if b = Fin.last r then x (Fin.last r) else 0 := by
   unfold ind
@@ -52,6 +67,11 @@ def mOf1 (c : Ix r → M.L.O) : Fin (r + 1) → M.R :=
 def mOf2 (c : Ix r → M.L.O) : Fin (r + 1) → M.R :=
   fun a => rOf hs (c2 g (c (Sum.inr a))) (-(c2 g (c (Sum.inl a))))
 
+/- English proof (translation)
+Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;>`. Simplify using `[llMap, Matrix.mulVec, dotProduct, map_sum, Prod.fst_sum, Prod.snd_sum, e_dgR, trO_coe]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;>`.
+
+Simplify using `[hb, llMap, Matrix.mulVec, dotProduct, map_sum, Prod.fst_sum, Prod.snd_sum, e_dgR, trO_coe]`.
+-/
 theorem e_llMap (Z : M.Mat (r + 1)) (TT : M.R) (m : Fin (r + 1) → M.R) (b : Fin (r + 1)) :
     g.e ((llMap hs Z TT m b : M.R) : E) =
       (∑ a, (g.e (Z.Z b a : E)).1 * (g.e (m a : E)).1 -

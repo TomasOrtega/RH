@@ -22,6 +22,11 @@ section General
 variable {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {H K : Subgroup (GAd σ J)}
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons γ l ih`. Simplify using `only [List.foldr_cons, ih]`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [lineDer, mul_assoc]`.
+-/
 theorem foldr_left (g₀ : GAd σ J) (f : GAd σ J → ℂ) (l : List (ℝ → GAd σ J)) :
     l.foldr lineDer (fun x => f (g₀ * x)) = fun x => l.foldr lineDer f (g₀ * x) := by
   induction l with
@@ -31,6 +36,15 @@ theorem foldr_left (g₀ : GAd σ J) (f : GAd σ J → ℂ) (l : List (ℝ → G
     funext g
     simp only [lineDer, mul_assoc]
 
+/- English proof (translation)
+Use `⟨fun γ hγ g => ?_, ?_, h.cont.comp (continuous_const.mul continuous_id), fun k γ hγ g => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `h.left _ (hg γ hγ) (g₀ * g)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Take `⟨U, hU, hk⟩` from `h.level`. Conclude with `⟨U, hU, fun k h1 h2 g => by simpa only [mul_assoc] using hk k h1 h2 (g₀ * g)⟩`.
+
+Simplify `h.smooth k γ hγ (g₀ * g)` using `only [mul_assoc]`. Take `⟨N, hN⟩` from `h.growth`. Use `⟨N, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN l hl`. Use `⟨|C| * (height σ J g₀ : ℝ) ^ N, fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[foldr_left, mul_assoc, ← mul_pow]`. Use `(hC _).trans (mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (NNReal.coe_nonneg _) ?_ _) (pow_nonneg (NNReal.coe_nonneg _) _) (abs_nonneg _))` and prove the remaining obligations. Conclude with `height_mul_le σ J g₀ g` after adjusting the coercions. Take `⟨W, hW, e⟩` from `GlobalTheory.Doubling.isKFinite_iff.1 h.kfin`. Conclude with `GlobalTheory.Doubling.isKFinite_iff.2 ⟨W.map (LinearMap.funLeft ℂ ℂ (g₀ * ·)), inferInstance, fun k hk => ⟨_, e k hk, funext fun x => by simp [LinearMap.funLeft_apply, mul_assoc]⟩⟩`.
+
+Use `haveI := h.zfin`. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ {f' | ∃ z, IsCentral σ J z ∧ f' = dop z f}).map (LinearMap.funLeft ℂ ℂ (g₀ * ·))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `⟨_, Submodule.subset_span ⟨z, hz, rfl⟩, funext fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.funLeft_apply, dop, foldr_left]`.
+-/
 theorem isAutOn_left {f : GAd σ J → ℂ} (h : IsAutOn σ J H K f) (g₀ : GAd σ J) (hg : ∀ γ ∈ H, g₀ * γ * g₀⁻¹ ∈ H) :
     IsAutOn σ J H K fun x => f (g₀ * x) := by
   refine ⟨fun γ hγ g => ?_, ?_, h.cont.comp (continuous_const.mul continuous_id), fun k γ hγ g => ?_, ?_, ?_, ?_⟩
@@ -57,6 +71,17 @@ theorem isAutOn_left {f : GAd σ J → ℂ} (h : IsAutOn σ J H K f) (g₀ : GAd
     refine ⟨_, Submodule.subset_span ⟨z, hz, rfl⟩, funext fun x => ?_⟩
     simp only [LinearMap.funLeft_apply, dop, foldr_left]
 
+/- English proof (translation)
+Use `⟨fun γ hγ g => ?_, ?_, h.cont.add h'.cont, isSm_add h.smooth h'.smooth, ?_, h.kfin.add h'.kfin, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, h.left γ hγ g, h'.left γ hγ g]`. Take `⟨U, hU, hk⟩` from `h.level`. Take `⟨U', hU', hk'⟩` from `h'.level`. Conclude with `⟨U ⊓ U', hU.inter hU', fun k h1 h2 g => by simp only [Pi.add_apply, hk k h1.1 h2 g, hk' k h1.2 h2 g]⟩`.
+
+Take `⟨N, hN⟩` from `h.growth`. Take `⟨N', hN'⟩` from `h'.growth`. Use `⟨max N N', fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN l hl`. Take `⟨C', hC'⟩` from `hN' l hl`.
+
+Use `⟨|C| + |C'|, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ height σ J g` using `by exact_mod_cast one_le_height σ J g`. Establish `h0 : (0 : ℝ) ≤ height σ J g` using `zero_le_one.trans h1`. Rewrite using `[foldr_add hl h.smooth h'.smooth, Pi.add_apply, add_mul]`. Use `(norm_add_le _ _).trans (add_le_add ((hC g).trans ?_) ((hC' g).trans ?_))` and prove the remaining obligations.
+
+Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_right₀ h1 (le_max_left _ _)) (pow_nonneg h0 _) (abs_nonneg _)`. Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_right₀ h1 (le_max_right _ _)) (pow_nonneg h0 _) (abs_nonneg _)`. Use `haveI := h.zfin haveI := h'.zfin`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {f | ∃ z, IsCentral σ J z ∧ f = dop z φ} ⊔ Submodule.span ℂ {f | ∃ z, IsCentral σ J z ∧ f = dop z ψ}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Rewrite using `[dop_add hz.1 h.smooth h'.smooth]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨z, hz, rfl⟩) (Submodule.subset_span ⟨z, hz, rfl⟩)`.
+-/
 theorem isAutOn_add {φ ψ : GAd σ J → ℂ} (h : IsAutOn σ J H K φ) (h' : IsAutOn σ J H K ψ) : IsAutOn σ J H K (φ + ψ) := by
   refine ⟨fun γ hγ g => ?_, ?_, h.cont.add h'.cont, isSm_add h.smooth h'.smooth, ?_, h.kfin.add h'.kfin, ?_⟩
   · simp only [Pi.add_apply, h.left γ hγ g, h'.left γ hγ g]
@@ -83,6 +108,15 @@ theorem isAutOn_add {φ ψ : GAd σ J → ℂ} (h : IsAutOn σ J H K φ) (h' : I
     rw [dop_add hz.1 h.smooth h'.smooth]
     exact Submodule.add_mem_sup (Submodule.subset_span ⟨z, hz, rfl⟩) (Submodule.subset_span ⟨z, hz, rfl⟩)
 
+/- English proof (translation)
+Use `⟨fun γ hγ g => ?_, ?_, h.cont.const_smul a, isSm_smul a h.smooth, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, h.left γ hγ g]`. Take `⟨U, hU, hk⟩` from `h.level`. Conclude with `⟨U, hU, fun k h1 h2 g => by simp only [Pi.smul_apply, hk k h1 h2 g]⟩`. Take `⟨N, hN⟩` from `h.growth`.
+
+Use `⟨N, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN l hl`. Use `⟨‖a‖ * C, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[foldr_smul, Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC g) (norm_nonneg a)`.
+
+Take `⟨W, hW, e⟩` from `GlobalTheory.Doubling.isKFinite_iff.1 h.kfin`. Conclude with `GlobalTheory.Doubling.isKFinite_iff.2 ⟨W, hW, fun k hk => W.smul_mem a (e k hk)⟩`. Use `haveI := h.zfin`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {f | ∃ z, IsCentral σ J z ∧ f = dop z φ}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Rewrite using `[dop_smul]`. Conclude with `Submodule.smul_mem _ a (Submodule.subset_span ⟨z, hz, rfl⟩)`.
+-/
 theorem isAutOn_smul (a : ℂ) {φ : GAd σ J → ℂ} (h : IsAutOn σ J H K φ) : IsAutOn σ J H K (a • φ) := by
   refine ⟨fun γ hγ g => ?_, ?_, h.cont.const_smul a, isSm_smul a h.smooth, ?_, ?_, ?_⟩
   · simp only [Pi.smul_apply, h.left γ hγ g]
@@ -105,6 +139,15 @@ theorem isAutOn_smul (a : ℂ) {φ : GAd σ J → ℂ} (h : IsAutOn σ J H K φ)
 
 end General
 
+/- English proof (translation)
+Take `⟨h1, -, h2⟩` from `hm`. Establish `hmul : ∀ a b : UA σ Y.J, mat (a * b) = mat a * mat b` using `fun _ _ => rfl`. Establish `hone : mat (1 : UA σ Y.J) = 1` using `rfl`. Establish `h2' : mat m * incM F P.ι = incM F P.ι` using `h2.trans (Matrix.mul_one _)`. Establish `hinv : mat m⁻¹ * mat m = 1` using `by rw [← hmul, inv_mul_cancel, hone]`.
+
+Establish `h3 : mat m⁻¹ * incM F P.ι = incM F P.ι` using `by conv_lhs => rw [← h2', ← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Establish `h4 : mat m⁻¹ *ᵥ incV F P.x = (t⁻¹).1 • incV F P.x`. Use `congrArg (fun v => (t⁻¹).1 • (mat m⁻¹ *ᵥ v)) h1` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec, Matrix.mulVec_smul, smul_smul, Units.inv_mul, one_smul] at this`. Conclude with `this.symm`.
+
+Establish `: unip σ Y P ≤ (unip σ Y P).comap (MulAut.conj m).toMonoidHom`. Use `(Subgroup.closure_le _).2 fun v hv => Subgroup.subset_closure ⟨?_, fun z => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mat (m * v * m⁻¹) *ᵥ _ = _`. Rewrite using `[hmul, hmul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h4, Matrix.mulVec_smul, hv.1, Matrix.mulVec_smul, h1, smul_smul, Units.inv_mul, one_smul]`. Take `⟨a, ha⟩` from `hv.2 z`.
+
+Use `⟨a * t.1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mat (m * v * m⁻¹) *ᵥ _ = _`. Rewrite using `[hmul, hmul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z, h3, ha, Matrix.mulVec_add, Matrix.mulVec_mulVec z, h2', Matrix.mulVec_smul, h1, smul_smul]`. Conclude with `this hu`.
+-/
 theorem conj_mem_unip {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {P : Plane E n n₁} {t : (AE F E)ˣ} {m : UA σ Y.J}
     (hm : IsLevi (W₁ := Y₁) P t 1 m) {u : UA σ Y.J} (hu : u ∈ unip σ Y P) : m * u * m⁻¹ ∈ unip σ Y P := by
   obtain ⟨h1, -, h2⟩ := hm
@@ -130,6 +173,11 @@ theorem conj_mem_unip {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {P : 
         Matrix.mulVec_mulVec z, h2', Matrix.mulVec_smul, h1, smul_smul]
   exact this hu
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n n₁ Y Y₁ P c hc t m hm φ a b K h`. Establish `h1` using `isAutOn_left h (toGAd hσ Y.J hc m) (by`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `⟨m * u * m⁻¹, conj_mem_unip hm hu, by simp⟩)`. Establish `h2` using `isAutOn_add (isAutOn_smul a h1) (isAutOn_smul b h)`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem isAutOn_levi_comb : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (P : Plane E n n₁) (c : E) (hc : c ≠ 0)
     (t : (AE F E)ˣ) (m : UA σ Y.J), IsLevi (W₁ := Y₁) P t 1 m →

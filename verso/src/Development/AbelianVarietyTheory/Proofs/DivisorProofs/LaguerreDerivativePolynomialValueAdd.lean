@@ -9,6 +9,15 @@ open scoped Classical MatrixGroups nonZeroDivisors
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Introduce `k n c s y`. Establish `hR : ∑ m ∈ Finset.range (n + 1), (rco k n m : ℂ) * s ^ (n - m) * lag k m c y = ∑ j ∈ Finset.range (n + 1), ∑ m ∈ Finset.Ico j (n + 1), (rco k n m : ℂ) * s ^ (n - m) * ((rco k m j : ℂ) * c ^ (m - j) * y ^ j)`. Simplify using `only [lag, Finset.mul_sum, Finset.range_eq_Ico]`. Conclude with `(Finset.sum_Ico_Ico_comm 0 (n + 1) (fun j m ↦ (rco k n m : ℂ) * s ^ (n - m) * ((rco k m j : ℂ) * c ^ (m - j) * y ^ j))).symm`. Rewrite using `[hR, lag]`.
+
+Use `Finset.sum_congr rfl fun j hj ↦ ?_` and prove the remaining obligations. Establish `hjn : j ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`. Rewrite using `[Finset.sum_Ico_eq_sum_range, add_pow, show n + 1 - j = n - j + 1 by omega, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p hp ↦ ?_` and prove the remaining obligations. Establish `hp' : p ≤ n - j` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hp)`.
+
+Establish `h` using `GlobalTheory.T.laguerreSignedBinomCoeff_mul k n (j + p) j (by omega) (by omega)`. Establish `e1 : j + p - j = p` using `by omega`. Establish `e2 : n - (j + p) = n - j - p` using `by omega`. Rewrite `h` using `[e1]`. Establish `h' : (rco k n (j + p) : ℂ) * (rco k (j + p) j : ℂ) = (rco k n j : ℂ) * ((n - j).choose p : ℂ)` using `by exact_mod_cast h`.
+
+Rewrite using `[e1, e2]`. Take the linear combination `(-(s ^ (n - j - p) * c ^ p * y ^ j)) * h'`.
+-/
 theorem lag_add : ∀ (k n : ℕ) (c s y : ℂ), lag k n (c + s) y =
     ∑ m ∈ Finset.range (n + 1), (rco k n m : ℂ) * s ^ (n - m) * lag k m c y := by
   intro k n c s y

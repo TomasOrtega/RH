@@ -16,6 +16,9 @@ noncomputable def entryEquiv (ι : Type) : Matrix ι ι ℂ ≃ₗ[ℂ] (ι × �
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Rewrite using `[Module.Basis.ofEquivFun_repr_apply]`. Both sides reduce to the same expression.
+-/
 theorem repr_entry (w : Matrix ι ι ℂ) (k : ι × ι) :
     (Module.Basis.ofEquivFun (entryEquiv ι)).repr w k = w k.1 k.2 := by
   rw [Module.Basis.ofEquivFun_repr_apply]; rfl
@@ -30,12 +33,20 @@ noncomputable def linExtLin (c : ι × ι → ι × ι → ℚ) : Matrix ι ι �
   map_add' X Y := by ext i j; simp [linExt, mul_add, Finset.sum_add_distrib]
   map_smul' a X := by ext i j; simp [linExt, Finset.mul_sum, mul_left_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[linExt, castLin, Matrix.sum_apply, mul_comm]`.
+-/
 theorem linExt_eq_sum (p : Matrix ι ι ℚ →ₗ[ℚ] Matrix ι ι ℚ) (X : Matrix ι ι ℂ) :
     linExt (fun ij kl => p (single kl.1 kl.2 1) ij.1 ij.2) X =
       ∑ kl : ι × ι, X kl.1 kl.2 • castLin ι (p (single kl.1 kl.2 1)) := by
   ext i j
   simp [linExt, castLin, Matrix.sum_apply, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[linExt_eq_sum]`. Establish `hY : Y = ∑ kl : ι × ι, Y kl.1 kl.2 • single kl.1 kl.2 (1 : ℚ)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Y]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `[Matrix.smul_single]`. Use `conv_rhs => rw [hY]`.
+
+Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun kl _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul]`. Use extensionality with `i j`. Simplify using `[castLin, Rat.smul_def]`.
+-/
 theorem linExt_cast (p : Matrix ι ι ℚ →ₗ[ℚ] Matrix ι ι ℚ) (Y : Matrix ι ι ℚ) :
     linExt (fun ij kl => p (single kl.1 kl.2 1) ij.1 ij.2) (castLin ι Y) = castLin ι (p Y) := by
   rw [linExt_eq_sum]
@@ -50,6 +61,19 @@ theorem linExt_cast (p : Matrix ι ι ℚ →ₗ[ℚ] Matrix ι ι ℚ) (Y : Mat
   ext i j
   simp [castLin, Rat.smul_def]
 
+/- English proof (translation)
+Introduce `ι _ _ E hE`. Set `E₀ : Submodule ℚ (Matrix ι ι ℚ)` to `(E.restrictScalars ℚ).comap (castLin ι)`. Choose the witnesses or unpack the hypotheses as in `⟨π, hπ⟩ : ∃ π : Matrix ι ι ℚ →ₗ[ℚ] E₀, ∀ x : E₀, π x = x := by`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective E₀.subtype E₀.ker_subtype`. Conclude with `⟨g, fun x => LinearMap.congr_fun hg x⟩`.
+
+Set `p : Matrix ι ι ℚ →ₗ[ℚ] Matrix ι ι ℚ` to `E₀.subtype ∘ₗ π`. Use `⟨fun ij kl => p (single kl.1 kl.2 1) ij.1 ij.2, fun X => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[linExt_eq_sum]`. Conclude with `E.sum_mem fun kl _ => E.smul_mem _ (π (single kl.1 kl.2 1)).2`. Establish `hd` using `GlobalTheory.T.galoisStable_submodule_le_span_rational (Matrix ι ι ℂ) (ι × ι) (Module.Basis.ofEquivFun (entryEquiv ι)) E (fun σ w hw => ⟨w.map σ, hE σ w hw, fun k => by`.
+
+Rewrite using `[repr_entry, repr_entry]`. Use the proof step `rfl⟩) hx`. Establish `key : Set.EqOn (linExtLin fun ij kl => p (single kl.1 kl.2 1) ij.1 ij.2) (LinearMap.id (R` using `ℂ)) {w | w ∈ E ∧ ∀ k, ∃ q : ℚ, (Module.Basis.ofEquivFun (entryEquiv ι)).repr w k = q} := by`. Introduce and unpack `w ⟨hw, hq⟩`. Use `choose q hq using hq`.
+
+Establish `hwq : w = castLin ι (Matrix.of fun i j => q (i, j))`. Use extensionality with `i j`. Use `hq (i, j)` as an intermediate fact. Rewrite `this` using `[repr_entry]`. Simplify `this` using `[castLin]`.
+
+Establish `hmem : (Matrix.of fun i j => q (i, j)) ∈ E₀`. Express the relevant statement in the definitionally equal form `castLin ι _ ∈ E`. Rewrite using `[← hwq]`. Conclude with `hw`. Establish `h1 : p (Matrix.of fun i j => q (i, j)) = Matrix.of fun i j => q (i, j)` using `congrArg Subtype.val (hπ ⟨_, hmem⟩)`.
+
+Establish `h2` using `linExt_cast p (Matrix.of fun i j => q (i, j))`. Rewrite `h2` using `[h1, ← hwq]`. Conclude with `h2`. Conclude with `LinearMap.eqOn_span key hd`.
+-/
 theorem exists_rat_projector : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (E : Submodule ℂ (Matrix ι ι ℂ)), (∀ σ : ℂ ≃+* ℂ, ∀ x ∈ E, x.map σ ∈ E) → ∃ c : ι × ι → ι × ι → ℚ, (∀ X : Matrix ι ι ℂ, linExt c X ∈ E) ∧ ∀ x ∈ E, linExt c x = x := by
   intro ι _ _ E hE
   let E₀ : Submodule ℚ (Matrix ι ι ℚ) := (E.restrictScalars ℚ).comap (castLin ι)

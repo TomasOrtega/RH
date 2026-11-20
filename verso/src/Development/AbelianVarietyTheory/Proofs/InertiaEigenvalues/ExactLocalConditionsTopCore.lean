@@ -29,6 +29,13 @@ namespace GlobalTheory.TopDict
 open ReciprocityTheory.Def (Z1 B1 H1)
 open TensorProduct
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z', ⟨b, hb⟩, h⟩`. Take `⟨b', -, hb'⟩` from `(Submodule.Quotient.eq _).mp h`. Use `⟨b - b', fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : π g b' - b' = (z' : G → M) g - (z : G → M) g` using `congrFun hb' g`.
+
+Rewrite `h1` using `[hb g hg]`. Establish `h2 : (z : G → M) g = π g b - b - (π g b' - b')` using `by rw [h1]; abel`. Rewrite using `[h2, map_sub]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨b, hb⟩`.
+
+Conclude with `⟨z, ⟨b, hb⟩, rfl⟩`.
+-/
 theorem mk_mem_unr_iff {O G M : Type} [CommRing O] [Group G] [TopologicalSpace G] [AddCommGroup M] [Module O M]
     (π : Representation O G M) (I : Subgroup G) (z : ↥(Z1 π ⊤)) :
     (Submodule.Quotient.mk z : H1 π ⊤) ∈ unr π I ↔ ∃ b, ∀ g ∈ I, (z : G → M) g = π g b - b := by
@@ -44,6 +51,9 @@ theorem mk_mem_unr_iff {O G M : Type} [CommRing O] [Group G] [TopologicalSpace G
   · rintro ⟨b, hb⟩
     exact ⟨z, ⟨b, hb⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `(GlobalTheory.T.equivariantIso_transport_cocycles_extensions W W' e he χ X z z' hzz).2.1 hz hz' hc`. Establish `hf' : ∀ g x, f.symm (Ea W' χ hc ⟨z', hz'⟩ g x) = Ea W χ hc ⟨z, hz⟩ g (f.symm x)` using `fun g x => f.injective (by rw [hf, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply])`. Conclude with `⟨fun h => h.of_equiv f hf, fun h => h.of_equiv f.symm hf'⟩`.
+-/
 theorem admissibleExtension_iff_equivariantCoefIso {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
     {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
@@ -62,6 +72,9 @@ theorem admissibleExtension_iff_equivariantCoefIso {G : Type} [Group G] [Topolog
     fun g x => f.injective (by rw [hf, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply])
   exact ⟨fun h => h.of_equiv f hf, fun h => h.of_equiv f.symm hf'⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, -, rfl⟩`. Conclude with `⟨m, fun g => rfl⟩`. Introduce and unpack `⟨m, hm⟩`. Conclude with `⟨m, Submodule.mem_top, funext fun g => (hm g).symm⟩`.
+-/
 theorem WachMod_mem_B1_iff {O G M : Type} [CommRing O] [Group G] [AddCommGroup M] [Module O M]
     (π : Representation O G M) (z : G → M) : z ∈ B1 π ⊤ ↔ ∃ m, ∀ g, z g = π g m - m := by
   constructor
@@ -72,6 +85,37 @@ theorem WachMod_mem_B1_iff {O G M : Type} [CommRing O] [Group G] [AddCommGroup M
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `l _ P AI hT H hSA hSB hSC K LL hA lam hlam h5 t h w η typ U V _ _ _ _ _ _ _ _ _ _ _ ρ T₀ χ hyp X _ _ _`. Set `T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)` to `LocLat.mk V ρ hyp.2.2.1 T₀`. Establish `hcard` using `GlobalTheory.T.card_hodgeTate_jumps_crystalline_eq_dim P AI hT H K LL hA V ρ U hyp.2.2.2.1 hyp.2.2.2.2.1`. Take `⟨r, D, ε, hHyp, hDt, hcount, hchi⟩` from `GlobalTheory.T.exists_numerical_galoisData_localSituation P H K LL hA lam hlam h5 t h w η typ U T χ hyp hcard`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.letters_ne_zero hHyp.1⟩`.
+
+Set `S : TopSit P` to `⟨K, LL, _, r, (H.W K 1 LL hA.2.2).emb, D, ⟨lam, T, χ 1, ε⟩, hHyp⟩`. Establish `hkill : ∃ a : ℕ, ∀ x : X, S.Γ.lam ^ a • x = 0`. Take `⟨_, -⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Conclude with `GlobalTheory.T.exists_pow_smul_eq_zero_of_finite_of_not_isUnit (↥(OL LL)) lam hlam.not_isUnit X`. Establish `hCl` using `GlobalTheory.AdmClosure.admissible_closed S`.
+
+Take `⟨hL0, hLc⟩` from `GlobalTheory.AdmClasses.admissibleLocalSituation_admissible_classes S hCl (StdAdm.stdAdm S (CrysRules.crysCalc AI hT S) hCl)`. Establish `hpoly : tableLineDegreeTwo.resPoly ρ χ t = tableLineDegreeTwo.resPoly S.Γ.T₀.ρ S.Γ.chi S.D.t`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `tableLineDegreeTwo.resPoly ρ χ t g = tableLineDegreeTwo.resPoly ρ S.Γ.chi D.t g`. Rewrite using `[hDt]`.
+
+Unfold `tableLineDegreeTwo.resPoly`. Use `congr 1`. Use `Finset.prod_congr rfl fun c hc => ?_` and prove the remaining obligations. Rewrite using `[hchi c hc]`. Establish `key : ∀ (T' : LocLat S.G ℚ_[l] ↥S.LL.1 S.O) (L : Lattice (O` using `S.O) T'.ρ) (z : S.G → ↥L.T ⊗[S.O] X) (hz : z ∈ Z1 (twCoef (latRep L) S.Γ.χ₁ X) ⊤), tableLineDegreeTwo.IsAdmCoc (P.PD K) (H.W K 1 LL hA.2.2).emb lam (tableLineDegreeTwo.jTil U w t) (tableLineDegreeTwo.resPoly ρ χ t) L X (χ 1) z ↔ ∃ a₀ : ℕ, ∀ a ≥ a₀, ∀ ha : (∀ x : X, S.Γ.lam ^ a • …`.
+
+Introduce `T' L z hz`. Rewrite using `[hpoly]`. Conclude with `exists_congr fun a₀ => forall_congr' fun a => forall_congr' fun _ => forall_congr' fun ha => GlobalTheory.T.admissible_quotientExtension_iff_admissible_ext S (tableLineDegreeTwo.jTil U w t) hcount T' L X z hz a ha`. Establish `ext_iff : ∀ (c : ℕ) {Mc : Type} [AddCommGroup Mc] [Module S.O Mc] (Wc : Representation S.O S.G Mc) (e : S.O ≃ₗ[S.O] Mc), (∀ g x, e (S.Γ.Wchi c g x) = Wc g (e x)) → ∀ (z₀ : S.G → S.O ⊗[S.O] X) (z : S.G → Mc ⊗[S.O] X), (∀ g, z g = LinearEquiv.rTensor X e (z₀ g)) → ∀ (hz₀ : z₀ ∈ Z1 …`. Introduce `c Mc _ _ Wc e he z₀ z hzz hz₀ hz`.
+
+Use `exists_congr fun a₀ => forall_congr' fun a => forall_congr' fun _ => forall_congr' fun ha => ?_` and prove the remaining obligations. Conclude with `(admissibleExtension_iff_equivariantCoefIso (P.PD S.K) S.emb S.Γ S.D.t S.D.Ut (S.Γ.Wchi c) Wc e he S.Γ.χ₁ X z₀ z hzz hz₀ hz ha).symm`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ρ' T₀' hρ' hTT z hz`. Establish `hz' : z ∈ Z1 (twCoef (latRep T₀) (χ 1) X) ⊤` using `((GlobalTheory.T.twistedAction_eq_twistedCoefficients_cocycle_iff T₀ X (χ 1)).2 z).1 hz`.
+
+Rewrite using `[key T T₀ z hz', GlobalTheory.T.cocycle_class_admissible S S.Γ.W₀ X hkill (hL0 X).2.1 ⟨z, hz'⟩]`. Establish `hA'` using `((hSA K LL _ r (H.W K 1 LL hA.2.2).emb D S.Γ hHyp.1 hHyp.2.1 hHyp.2.2.1 hHyp.2.2.2.1 hHyp.2.2.2.2).2.2.2.2 X).2`. Conclude with `(Set.ext_iff.1 hA' (Submodule.Quotient.mk ⟨z, hz'⟩)).trans (SetLike.mem_coe.trans (GlobalTheory.T.period_data_dual_exact (P.PD K) T₀ ρ' T₀' X (χ 1) hρ' hTT z hz'))`. Introduce `c hc Lc z hz`. Establish `hc'` using `Finset.mem_Icc.1 hc`.
+
+Establish `hc1 : c ∈ Finset.Icc 1 t` using `Finset.mem_Icc.2 ⟨by omega, hc'.2⟩`. Establish `hχc : S.Γ.chi c = χ c` using `hchi c hc1`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_equiv_stableLattice_integralCharacter LL (χ c) Lc`. Establish `he' : ∀ g x, e (S.Γ.Wchi c g x) = latRep Lc g (e x)` using `fun g x => (congrArg (fun θ : S.G →* S.Oˣ => e (Formalism.GaloisCohomology.scalRep S.O θ g x)) hχc).trans (he g x)`. Set `z₀ : S.G → S.O ⊗[S.O] X` to `fun g => (LinearEquiv.rTensor X e).symm (z g)`.
+
+Establish `hzz : ∀ g, z g = LinearEquiv.rTensor X e (z₀ g)` using `fun g => (LinearEquiv.apply_symm_apply _ _).symm`. Take `⟨hZ, -, hB, -⟩` from `GlobalTheory.T.equivariantIso_transport_cocycles_extensions (S.Γ.Wchi c) (latRep Lc) e he' (χ 1) X z₀ z hzz`. Establish `hz' : z ∈ Z1 (twCoef (latRep Lc) (χ 1) X) ⊤` using `((GlobalTheory.T.twistedAction_eq_twistedCoefficients_cocycle_iff Lc X (χ 1)).2 z).1 hz`. Establish `hz₀` using `hZ.2 hz'`. Establish `hcont` using `(hyp.2.2.2.2.2 c hc1).2.1`.
+
+Set `Tc : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)` to `LocLat.mk ↥LL.1 (charRep (tableLineDegreeTwo.charL (LL := ↥LL.1) (χ c))) (fun x => hcont.mul continuous_const) Lc`. Rewrite using `[key Tc Lc z hz', ext_iff c (latRep Lc) e he' z₀ z hzz hz₀ hz', GlobalTheory.T.cocycle_class_admissible S (S.Γ.Wchi c) X hkill ((hLc c (by omega) (by rw [hDt]; exact hc'.2)) X).2.1 ⟨z₀, hz₀⟩]`. Establish `hB'` using `hSB K LL _ r (H.W K 1 LL hA.2.2).emb D S.Γ hHyp c hc'.1 (by rw [hDt]; exact hc'.2) X`. Express the relevant statement in the definitionally equal form `_ ∈ adm (P.PD K) (H.W K 1 LL hA.2.2).emb S.Γ D.t D.Ut (S.Γ.Wchi c) X ↔ _`. Rewrite using `[show adm (P.PD K) (H.W K 1 LL hA.2.2).emb S.Γ D.t D.Ut (S.Γ.Wchi c) X = {0} from hB', Set.mem_singleton_iff, Submodule.Quotient.mk_eq_zero]`.
+
+Express the relevant statement in the definitionally equal form `z₀ ∈ B1 (twCoef (S.Γ.Wchi c) S.Γ.χ₁ X) ⊤ ↔ _`. Rewrite using `[hB, WachMod_mem_B1_iff]`. Conclude with `exists_congr fun m => forall_congr' fun g => iff_of_eq (congrArg (fun y => z g = y - m) ((GlobalTheory.T.twistedAction_eq_twistedCoefficients_cocycle_iff Lc X (χ 1)).1 g m).symm)`. Introduce `L₁ z hz`. Establish `h1 : 1 ∈ Finset.Icc 1 t` using `Finset.mem_Icc.2 ⟨le_rfl, hyp.1⟩`.
+
+Establish `hχc : S.Γ.chi 1 = χ 1` using `hchi 1 h1`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_equiv_stableLattice_integralCharacter LL (χ 1) L₁`. Establish `he' : ∀ g x, e (S.Γ.Wchi 1 g x) = latRep L₁ g (e x)` using `fun g x => (congrArg (fun θ : S.G →* S.Oˣ => e (Formalism.GaloisCohomology.scalRep S.O θ g x)) hχc).trans (he g x)`. Set `z₀ : S.G → S.O ⊗[S.O] X` to `fun g => (LinearEquiv.rTensor X e).symm (z g)`. Establish `hzz : ∀ g, z g = LinearEquiv.rTensor X e (z₀ g)` using `fun g => (LinearEquiv.apply_symm_apply _ _).symm`.
+
+Take `⟨hZ, -, -, hU⟩` from `GlobalTheory.T.equivariantIso_transport_cocycles_extensions (S.Γ.Wchi 1) (latRep L₁) e he' (χ 1) X z₀ z hzz`. Establish `hz' : z ∈ Z1 (twCoef (latRep L₁) (χ 1) X) ⊤` using `((GlobalTheory.T.twistedAction_eq_twistedCoefficients_cocycle_iff L₁ X (χ 1)).2 z).1 hz`. Establish `hz₀` using `hZ.2 hz'`. Establish `hcont` using `(hyp.2.2.2.2.2 1 h1).2.1`. Set `Tc : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)` to `LocLat.mk ↥LL.1 (charRep (tableLineDegreeTwo.charL (LL := ↥LL.1) (χ 1))) (fun x => hcont.mul continuous_const) L₁`.
+
+Rewrite using `[key Tc L₁ z hz', ext_iff 1 (latRep L₁) e he' z₀ z hzz hz₀ hz', GlobalTheory.T.cocycle_class_admissible S (S.Γ.Wchi 1) X hkill ((hLc 1 le_rfl (by rw [hDt]; exact hyp.1)) X).2.1 ⟨z₀, hz₀⟩]`. Establish `hC'` using `hSC K LL _ r (H.W K 1 LL hA.2.2).emb D S.Γ hHyp.1 hHyp.2.1 hHyp.2.2.1 hHyp.2.2.2.1 hHyp.2.2.2.2 X`. Express the relevant statement in the definitionally equal form `_ ∈ adm (P.PD K) (H.W K 1 LL hA.2.2).emb S.Γ D.t D.Ut (S.Γ.Wchi 1) X ↔ _`. Rewrite using `[hC', GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleCharUnramified.homModInertia_eq_unr]`. Rewrite using `[SetLike.mem_coe, mk_mem_unr_iff, hU]`.
+
+Conclude with `exists_congr fun m => forall_congr' fun g => forall_congr' fun _ => iff_of_eq (congrArg (fun y => z g = y - m) ((GlobalTheory.T.twistedAction_eq_twistedCoefficients_cocycle_iff L₁ X (χ 1)).1 g m).symm)`.
+-/
 theorem topCore_of_typings : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ (H : LocHW l P), GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.ErrorExponentStatement P → GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleTwistedCharClasses.Stmt P →
     GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleCharUnramified.AdmChiOneUnramified P → ∀ (K LL : FinExt l) (hA : CaseA K LL) (lam : ↥(OL LL)),

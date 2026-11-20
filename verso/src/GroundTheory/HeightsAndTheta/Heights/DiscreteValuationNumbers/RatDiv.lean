@@ -8,6 +8,15 @@ open MvPolynomial
 
 universe u
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ _ K _ _ ι _ P d hP b f g q s hf hg hq _ hH c L`. Establish `hrat : ∀ W : Ideal (MRing ι O), W.IsPrime → f ∉ W → g ∉ W → q ∉ W → ratDiv W (f * q) (g * q) = ratDiv W f g`. Introduce `W hW hfW hgW hqW`. Use function extensionality and compare the values at `G`. Simplify using `only [ratDiv, hmul O K ι W f q hW hfW hqW, hmul O K ι W g q hW hgW hqW, Pi.add_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `cutIdentityLeftSide`. Rewrite using `[hrat P hP.multiProj.isPrime hf hg hq]`. Unfold `cutIdentityRightSide cycEval`.
+
+Use `congr 1`. Use function extensionality and compare the values at `W`. Distinguish the cases in `hW : divCycle P s W = 0`. Simplify using `[hW]`. Simplify using `only split_ifs with hϖ`.
+
+Both sides reduce to the same expression. Take `⟨h1, h2, h3⟩` from `hH W hW hϖ`. Rewrite using `[hrat W (isPrime_of_divCycle_ne_zero hW) h1 h2 h3]`.
+-/
 theorem CommonFactorRemoval.proof (hmul : DivCycleMul.Statement.{u}) : CommonFactorRemoval.Statement.{u} := by
   intro O _ _ _ ϖ _ K _ _ ι _ P d hP b f g q s hf hg hq _ hH c L
 

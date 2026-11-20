@@ -18,6 +18,25 @@ set_option maxHeartbeats 1600000
 open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
+/- English proof (translation)
+Introduce `D X X0 Y S YS Z c w j H ι hι u hu κ hκ hsc F hF`. Establish `hkey` using `UpperTheory.KN.scaled_fock_form_mem_mtLat_iff D X X0 Y S YS Z c w j H ι hι u hu κ hκ hsc`. Take `⟨gramR, c0R, c0L, hft, u', hu', hscale⟩` from `hsc`. Take `rfl : u' = u` from `funext fun τ => Subtype.ext ((hu' τ).trans (hu τ).symm)`. Establish `hcoef` using `UpperTheory.KN.scaled_fock_form_coefficients_integral D X X0 Y S YS Z c w j H ι hι u' hu gramR c0R c0L hft κ hκ hscale`.
+
+Take `⟨hinj, hrange⟩` from `GlobalTheory.T.definiteComplexForms_eq_twistComplexForms_fockModel D X X0 Y S YS Z c w j H ι hι u' hu`. Take `⟨hio, -⟩` from `UpperTheory.KN.ioP_tprod_injective_and_range_eq_valSpace D X X0 Y S YS Z c w j H ι hι u' hu`. Take `⟨-, -, -, hspan⟩` from `UpperTheory.KN.exists_rational_structure_lowest_form_space D X X0 Y (D.what₂.muTw w) (used_of_tw H.tw) j`. Establish `hli : LinearIndependent ℂ fun i => (c0L j (bVV D.what₂.LL (FWT.lamV D j) i) : (X.R.cV j).W)` using `(hft.mapL j).2.1`. Set `ev` to `(X.R.HV j (Y.tupT (D.what₂.muTw w))).e ∘ₗ formOf Y (used_of_tw H.tw) j`.
+
+Establish `hev : ∀ x h, fockOf Y (used_of_tw H.tw) j u' x h = X.R.ioP j (PiTensorProduct.tprod ℂ u') (ev x h)` using `fun _ _ => rfl`. Establish `hevinj : Function.Injective ev` using `fun x y hxy => hinj (funext fun h => by rw [hev, hev, hxy])`. Establish `hval : ∀ g, κ⁻¹ • fockOf Y (used_of_tw H.tw) j u' g ∈ (baseOf Z c w j).mtLat D.what₂.embLL (labLL D) (intLL D) (twVia Z.ρ ι) → ∀ h, ev g h ∈ Set.range (c0L j)`. Introduce `g hg h`. Take `⟨G, -, hG⟩` from `(hcoef h _).1 (((Base.mem_mtLat _ _ _ _).1 hg).2 h)`.
+
+Rewrite `hG` using `[Pi.smul_apply, hev]`. Conclude with `⟨G, (hio (smul_right_injective _ (inv_ne_zero hκ) hG)).symm⟩`. Establish `hsp : Submodule.span D.what₂.LL {x | D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) x ∈ ((D.what₂.MtLat (D.what₂.muTw w) (j.1 + 1)).gen : Set _)} = ⊤` using `GlobalTheory.T.rationalLatticeTwistedTuple_span_top D w (j.1 + 1)`. Establish `hall : ∀ m h, ev (D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) m) h ∈ Set.range (c0L j)`. Introduce `m h`.
+
+Establish `hm : m ∈ Submodule.span D.what₂.LL {x | D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) x ∈ ((D.what₂.MtLat (D.what₂.muTw w) (j.1 + 1)).gen : Set _)}`. Rewrite using `[hsp]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Use `hval _ ((hkey x).2 ⟨fun v => if v = D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) x then 1 else 0, ?_⟩) h` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single_of_mem _ (Finset.mem_coe.1 hx)]`. Simplify using the standard rewrite rules. Introduce `v _ hv`. Simplify using `[hv]`.
+
+Consider the case `zero => exact ⟨0, by rw [map_zero, map_zero, map_zero]; rfl⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, map_add, map_add, Pi.add_apply, ← ha, ← hb]; rfl⟩`.
+
+Consider the case `smul s x _ hx`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨s • a, by rw [LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, map_smul, Pi.smul_apply, ← ha]; rfl⟩`. Establish `hF1 : κ • F ∈ LinearMap.range (fockOf Y (used_of_tw H.tw) j u')`. Rewrite using `[hrange]`.
+
+Conclude with `Submodule.smul_mem _ _ ((Base.mem_mtLat _ _ _ _).1 hF).1`. Take `⟨f, hf⟩` from `hF1`. Establish `hFf : F = κ⁻¹ • fockOf Y (used_of_tw H.tw) j u' f` using `by rw [hf, smul_smul, inv_mul_cancel₀ hκ, one_smul]`. Take `⟨m, hm⟩` from `UpperTheory.KN.mem_range_semilinear_of_values_mem_range _ _ _ _ _ _ _ D.what₂.embLL (D.what₂.jMt (D.what₂.muTw w) (j.1 + 1)) ev (c0L j) (bVV D.what₂.LL (FWT.lamV D j)) hspan hevinj hli hall f (hval f (hFf ▸ hF))`. Conclude with `⟨m, by rw [hm]; exact hFf⟩`.
+-/
 theorem _root_.UpperTheory.KN.exists_fock_form_eq_of_mem_mtLat :
     ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),
       ∀ ι : KE c w →+* ℂ, (∀ x, ι (c.embW w x) = D.what₂.embLL x) →

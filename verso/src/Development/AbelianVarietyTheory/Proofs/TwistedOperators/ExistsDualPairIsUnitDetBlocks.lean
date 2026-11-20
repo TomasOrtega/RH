@@ -3,6 +3,33 @@ open scoped Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set a := Matrix.toLin' A with ha`. Use `set c := Matrix.toLin' C with hc`. Take `⟨L', hL'⟩` from `Submodule.exists_isCompl (LinearMap.ker c)`. Take `⟨U, hU⟩` from `Submodule.exists_isCompl ((LinearMap.ker c).map a)`. Establish `hkey : ∀ x ∈ LinearMap.ker c, a x = 0 → x = 0`.
+
+Introduce `x hx hax`. Rewrite `hx` using `[LinearMap.mem_ker]`. Conclude with `h x (by simpa [ha] using hax) (by simpa [hc] using hx)`. Establish `hinj : Function.Injective (a.domRestrict (LinearMap.ker c))`. Introduce `x y hxy`.
+
+Establish `hxy' : a ((x : Fin n → k) - y) = 0`. Rewrite using `[map_sub]; exact sub_eq_zero.mpr (by simpa using hxy)`. Use `hkey _ (Submodule.sub_mem _ x.2 y.2) hxy'` as an intermediate fact. Conclude with `Subtype.ext (sub_eq_zero.mp this)`. Establish `hrank : Module.finrank k L' = Module.finrank k U`.
+
+Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hL'`. Establish `h2` using `Submodule.finrank_add_eq_of_isCompl hU`. Establish `h3 : Module.finrank k ((LinearMap.ker c).map a) = Module.finrank k (LinearMap.ker c)`. Rewrite using `[← LinearMap.range_domRestrict, LinearMap.finrank_range_of_inj hinj]`. Use linear arithmetic over natural numbers and integers.
+
+Set `e : L' ≃ₗ[k] U` to `LinearEquiv.ofFinrankEq L' U hrank`. Set `g : (Fin n → k) →ₗ[k] (Fin n → k)` to `LinearMap.ofIsCompl hL' (a.domRestrict (LinearMap.ker c)) (U.subtype ∘ₗ e.toLinearMap)`. Establish `hgL : ∀ x (hx : x ∈ LinearMap.ker c), g x = a x` using `fun x hx => LinearMap.ofIsCompl_apply_left hL' ⟨x, hx⟩`. Establish `hgL' : ∀ y (hy : y ∈ L'), g y = (e ⟨y, hy⟩ : Fin n → k)` using `fun y hy => LinearMap.ofIsCompl_apply_right hL' ⟨y, hy⟩`. Establish `hg_inj : ∀ v, g v = 0 → v = 0`.
+
+Introduce `v hv`. Establish `hvmem : v ∈ LinearMap.ker c ⊔ L'` using `by rw [hL'.sup_eq_top]; exact Submodule.mem_top`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.mp hvmem`. Rewrite `hv` using `[map_add, hgL x hx, hgL' y hy]`. Establish `hax : a x ∈ (LinearMap.ker c).map a ⊓ U`.
+
+Use `⟨Submodule.mem_map_of_mem hx, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_neg_of_add_eq_zero_left hv]`. Conclude with `U.neg_mem (e ⟨y, hy⟩).2`. Rewrite `hax` using `[hU.inf_eq_bot, Submodule.mem_bot]`. Establish `hx0` using `hkey x hx hax`.
+
+Rewrite `hv` using `[hax, zero_add]`. Establish `hy0 : e ⟨y, hy⟩ = 0` using `Subtype.ext hv`. Rewrite `hy0` using `[LinearEquiv.map_eq_zero_iff]`. Rewrite using `[hx0, zero_add]`. Conclude with `congrArg Subtype.val hy0`.
+
+Establish `hle : LinearMap.ker c ≤ LinearMap.ker (g - a)` using `fun x hx => by`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, hgL x hx, sub_self]`. Set `f0 : LinearMap.range c →ₗ[k] (Fin n → k)` to `((LinearMap.ker c).liftQ (g - a) hle) ∘ₗ (c.quotKerEquivRange.symm.toLinearMap)`. Take `⟨Y, hY⟩` from `LinearMap.exists_extend f0`. Establish `hfac : ∀ v, Y (c v) = g v - a v`.
+
+Introduce `v`. Establish `h0` using `LinearMap.congr_fun hY ⟨c v, LinearMap.mem_range_self c v⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h0`. Rewrite using `[h0]`. Simplify using `only [f0, LinearMap.comp_apply, LinearEquiv.coe_toLinearMap, LinearMap.quotKerEquivRange_symm_apply_image]`.
+
+Rewrite using `[Submodule.mkQ_apply, Submodule.liftQ_apply, LinearMap.sub_apply]`. Use `⟨LinearMap.toMatrix' Y, fun hdet => ?_⟩` and prove the remaining obligations. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Apply `hv0` to reduce the goal to its premises. Apply `hg_inj` to reduce the goal to its premises.
+
+Establish `hmv : (A + LinearMap.toMatrix' Y * C) *ᵥ v = g v`. Rewrite using `[Matrix.add_mulVec, ← Matrix.mulVec_mulVec, LinearMap.toMatrix'_mulVec]`. Establish `hcv : C *ᵥ v = c v` using `by rw [hc, Matrix.toLin'_apply]`. Establish `hav : A *ᵥ v = a v` using `by rw [ha, Matrix.toLin'_apply]`. Rewrite using `[hcv, hfac, hav]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[← hmv, hv]`.
+-/
 theorem exists_det_add_mul_ne_zero_of_ker_inf {k : Type} [Field k] {n : ℕ}
     (A C : Matrix (Fin n) (Fin n) k)
     (h : ∀ v : Fin n → k, A *ᵥ v = 0 → C *ᵥ v = 0 → v = 0) :
@@ -79,6 +106,19 @@ theorem exists_det_add_mul_ne_zero_of_ker_inf {k : Type} [Field k] {n : ℕ}
     abel
   rw [← hmv, hv]
 
+/- English proof (translation)
+Use `set Hb := H.map (IsLocalRing.residue R) with hHb_def`. Establish `hHb : Hb.det ≠ 0`. Rewrite using `[hHb_def, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(hH.map (IsLocalRing.residue R)).ne_zero`. Take `⟨Xb, hXb⟩` from `exists_det_add_mul_ne_zero_of_ker_inf Hb.toBlocks₁₁ Hb.toBlocks₂₁ (by`.
+
+Introduce `v h1 h2`. Assume the negation of the conclusion as `hv`. Apply `hHb` to reduce the goal to its premises. Use `Matrix.exists_mulVec_eq_zero_iff.mp ⟨Sum.elim v 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `using congrFun h0 (Sum.inl i)`. Use function extensionality and compare the values at `i`. Consider the cases of `i with`.
+
+Consider the case `inl i`. Simplify `congrFun h1 i` using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Matrix.toBlocks₁₁]`. Consider the case `inr i`. Simplify `congrFun h2 i)` using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Matrix.toBlocks₂₁]`. Use `choose X hX using fun i j => IsLocalRing.residue_surjective (R := R) (Xb i j)`.
+
+Use `⟨Matrix.of X, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Establish `hm : (IsLocalRing.residue R).mapMatrix (H.toBlocks₁₁ + Matrix.of X * H.toBlocks₂₁) = Hb.toBlocks₁₁ + Xb * Hb.toBlocks₂₁`. Use extensionality with `i j`. Simplify using `[RingHom.mapMatrix_apply, Matrix.mul_apply, map_sum, hX, hHb_def, Matrix.toBlocks₁₁, Matrix.toBlocks₂₁]`.
+
+Rewrite using `[hm]`. Conclude with `hXb`.
+-/
 theorem exists_isUnit_det_toBlocks_add_mul {R : Type} [CommRing R] [IsLocalRing R] {n : ℕ}
     (H : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R) (hH : IsUnit H.det) :
     ∃ X : Matrix (Fin n) (Fin n) R, IsUnit (H.toBlocks₁₁ + X * H.toBlocks₂₁).det := by
@@ -113,6 +153,13 @@ theorem exists_isUnit_det_toBlocks_add_mul {R : Type} [CommRing R] [IsLocalRing 
   rw [hm]
   exact hXb
 
+/- English proof (translation)
+Establish `hAt : IsUnit Aᵀ.det` using `by rwa [Matrix.det_transpose]`. Establish `hSC : S * C' = -(Aᵀ⁻¹ * (Cᵀ * (S * A')))`. Establish `h1' : Aᵀ * (S * C') = -(Cᵀ * (S * A'))` using `eq_neg_of_add_eq_zero_left h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hAt, Matrix.one_mul]`.
+
+Use `_ = -(Aᵀ⁻¹ * (Cᵀ * (S * A'))) := by rw [h1', Matrix.mul_neg]`. Establish `key : Bᵀ * (S * C') + Dᵀ * (S * A') = (Dᵀ - Bᵀ * Aᵀ⁻¹ * Cᵀ) * (S * A')`. Rewrite using `[hSC]`. Generalize the expression as in `Aᵀ⁻¹ = M`. Use `noncomm_ring`.
+
+Rewrite `h2` using `[key, Matrix.det_mul, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_right h2)`.
+-/
 theorem isUnit_det_of_dual_blocks {R : Type} [CommRing R] {n : ℕ}
     (S A B C D A' C' : Matrix (Fin n) (Fin n) R) (hA : IsUnit A.det)
     (h1 : Aᵀ * (S * C') + Cᵀ * (S * A') = 0)
@@ -130,6 +177,9 @@ theorem isUnit_det_of_dual_blocks {R : Type} [CommRing R] {n : ℕ}
   rw [key, Matrix.det_mul, Matrix.det_mul] at h2
   exact isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_right h2)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks G]`. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Apply the tactic sequence `congr 1 <;> noncomm_ring`.
+-/
 private lemma blocks_conj_eq_fromBlocks_sums {R : Type} [CommRing R] {n : ℕ}
     (G : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R) :
     Matrix.fromBlocks 1 1 1 (-1) * G * Matrix.fromBlocks 1 1 1 (-1) =
@@ -141,6 +191,9 @@ private lemma blocks_conj_eq_fromBlocks_sums {R : Type} [CommRing R] {n : ℕ}
   rw [Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]
   congr 1 <;> noncomm_ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.transpose_add, Matrix.transpose_sub, Matrix.transpose_mul]`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma H_affine_combination_eq_of_quadratic_relation {R : Type} [CommRing R] {n : ℕ}
     (S a11 a12 a21 a22 b11 b12 b21 b22 X₁ X₂ : Matrix (Fin n) (Fin n) R)
     (E11 : a11ᵀ * S * b11 - a21ᵀ * S * b21 = S) (E12 : a11ᵀ * S * b12 - a21ᵀ * S * b22 = 0)
@@ -170,6 +223,25 @@ private lemma H_affine_combination_eq_of_quadratic_relation {R : Type} [CommRing
           noncomm_ring
       _ = S + S + S + S := by rw [E11, E12, E21, E22, hX]; noncomm_ring
 
+/- English proof (translation)
+Introduce `R _ _ h2 n S hS G₁ G₂ hG₁ hG`. Establish `hKdet : IsUnit (Matrix.fromBlocks (1 : Matrix (Fin n) (Fin n) R) (1 : Matrix (Fin n) (Fin n) R) (1 : Matrix (Fin n) (Fin n) R) (-1 : Matrix (Fin n) (Fin n) R)).det`. Rewrite using `[Matrix.det_fromBlocks_one₁₁]`. Establish `e : (-1 - 1 * 1 : Matrix (Fin n) (Fin n) R) = (-2 : R) • (1 : Matrix (Fin n) (Fin n) R)`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.sub_apply, Matrix.neg_apply, Matrix.one_mul, Matrix.smul_apply, smul_eq_mul, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[e, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Conclude with `h2.neg.pow n`. Take `⟨X₁, hX₁⟩` from `exists_isUnit_det_toBlocks_add_mul (Matrix.fromBlocks 1 1 1 (-1) * G₁ * Matrix.fromBlocks 1 1 1 (-1)) (by rw [Matrix.det_mul, Matrix.det_mul]; exact (hKdet.mul hG₁).mul hKdet)`.
+
+Rewrite `hX₁` using `[blocks_conj_eq_fromBlocks_sums, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₂₁]`. Establish `hsum : X₁ᵀ * S + S * -(S⁻¹ * X₁ᵀ * S) = 0`. Rewrite using `[Matrix.mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hS, Matrix.one_mul, add_neg_cancel]`. Use `⟨X₁, -(S⁻¹ * X₁ᵀ * S), hsum, hX₁, ?_⟩` and prove the remaining obligations. Establish `hG'` using `hG`.
+
+Rewrite `hG'` using `[← Matrix.fromBlocks_toBlocks G₁, ← Matrix.fromBlocks_toBlocks G₂, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Take `⟨e11, e12, e21, e22⟩` from `Matrix.fromBlocks_inj.mp hG'`. Establish `E11 : G₁.toBlocks₁₁ᵀ * S * G₂.toBlocks₁₁ - G₁.toBlocks₂₁ᵀ * S * G₂.toBlocks₂₁ = S`. Use `e11 using 1` and compare the differences between its conclusion and the goal. Use `noncomm_ring`.
+
+Establish `E12 : G₁.toBlocks₁₁ᵀ * S * G₂.toBlocks₁₂ - G₁.toBlocks₂₁ᵀ * S * G₂.toBlocks₂₂ = 0`. Use `e12 using 1` and compare the differences between its conclusion and the goal. Use `noncomm_ring`. Establish `E21 : G₁.toBlocks₁₂ᵀ * S * G₂.toBlocks₁₁ - G₁.toBlocks₂₂ᵀ * S * G₂.toBlocks₂₁ = 0`. Use `e21 using 1` and compare the differences between its conclusion and the goal.
+
+Use `noncomm_ring`. Establish `E22 : G₁.toBlocks₁₂ᵀ * S * G₂.toBlocks₁₂ - G₁.toBlocks₂₂ᵀ * S * G₂.toBlocks₂₂ = -S`. Use `e22 using 1` and compare the differences between its conclusion and the goal. Use `noncomm_ring`. Take `⟨c1, c2⟩` from `H_affine_combination_eq_of_quadratic_relation S _ _ _ _ _ _ _ _ X₁ _ E11 E12 E21 E22 hsum`.
+
+Establish `h4 : IsUnit (4 : R)`. Use `h2.mul h2` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `this`. Establish `hU4 : IsUnit (S + S + S + S).det`.
+
+Establish `e : S + S + S + S = (4 : R) • S`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Matrix.det_smul]`.
+
+Conclude with `(h4.pow _).mul hS`. Rewrite `hU4` using `[← c2]`. Conclude with `isUnit_det_of_dual_blocks S _ _ _ _ _ _ hX₁ c1 hU4`.
+-/
 theorem exists_dual_pair_isUnit_det_blocks :
     ∀ {R : Type} [CommRing R] [IsLocalRing R], IsUnit (2 : R) → ∀ {n : ℕ} (S : Matrix (Fin n) (Fin n) R), IsUnit S.det →
     ∀ (G₁ G₂ : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R), IsUnit G₁.det →

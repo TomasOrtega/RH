@@ -25,13 +25,25 @@ def lowSpan (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (Λ : Ix p q → ℚ) :
 def wtOf (μ : Ix p q → ℚ) (l : List (Ix p q × Ix p q)) : Ix p q → ℚ :=
   l.foldr (fun c ν => addRoot ν c.2 c.1) μ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem wtOf_nil (μ : Ix p q → ℚ) : wtOf μ [] = μ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem wtOf_cons (μ : Ix p q → ℚ) (c : Ix p q × Ix p q) (l : List (Ix p q × Ix p q)) :
     wtOf μ (c :: l) = addRoot (wtOf μ l) c.2 c.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lowMono_nil (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (v : V) : lowMono act [] v = v := rfl
 
+/- English proof (translation)
+Simplify using `[lowMono]`.
+-/
 @[simp] theorem lowMono_cons (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (c : Ix p q × Ix p q) (l : List (Ix p q × Ix p q)) (v : V) :
     lowMono act (c :: l) v = act (Eab c.2 c.1) (lowMono act l v) := by
   simp [lowMono]
@@ -40,11 +52,20 @@ end Mono
 
 def shIx {R S : ℕ} : Ix R S → Ix (R + 1) (S + 1) := Sum.map Fin.succ Fin.succ
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rfl`.
+-/
 @[simp] theorem lowIx_shIx {R S : ℕ} (a : Ix R S) : lowIx (shIx a) = some a := by
   rcases a with a | a <;> rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lowIx_inl_zero {R S : ℕ} : lowIx (.inl 0 : Ix (R + 1) (S + 1)) = none := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lowIx_inr_zero {R S : ℕ} : lowIx (.inr 0 : Ix (R + 1) (S + 1)) = none := rfl
 
 def embLin (R S : ℕ) : Mat R S →ₗ[ℂ] Mat (R + 1) (S + 1) where

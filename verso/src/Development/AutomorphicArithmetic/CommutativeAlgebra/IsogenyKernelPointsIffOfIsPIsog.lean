@@ -24,6 +24,13 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 open GlobalTheory GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `Ω _ A B _ _ _ _ hA hB f g hf hg n hn hfg`. Take `⟨dA, hsA⟩` from `GlobalTheory.T.abelianScheme_field_smoothOfRelativeDimension_exists Ω A hA`. Take `⟨dB, hsB⟩` from `GlobalTheory.T.abelianScheme_field_smoothOfRelativeDimension_exists Ω B hB`. Set `A' : GlobalTheory.AV.AbVar Ω` to `⟨A, hA, dA, hsA⟩`. Set `B' : GlobalTheory.AV.AbVar Ω` to `⟨B, hB, dB, hsB⟩`.
+
+Set `F : A' ⟶ B'` to `GlobalTheory.AV.AbVar.Hom.mk (A := A') (B := B') f`. Set `G : A' ⟶ B'` to `GlobalTheory.AV.AbVar.Hom.mk (A := A') (B := B') g`. Establish `hFG : GlobalTheory.AV.AbVar.Hom.hom (F - G) = f / g` using `rfl`. Establish `key : GlobalTheory.AV.AbVar.Hom.hom ((n : ℤ) • (F - G)) = 1`. Rewrite using `[GlobalTheory.AV.AbVar.zsmul_hom, hFG, zpow_natCast, div_pow, hfg, div_self']`.
+
+Establish `h0 : (n : ℤ) • (F - G) = 0` using `GlobalTheory.AV.AbVar.hom_ext (by rw [key, GlobalTheory.AV.AbVar.zero_hom])`. Establish `h1` using `GlobalTheory.AV.AbVar.hom_torsionFree Ω A' B' n (F - G) (by exact_mod_cast hn.ne') h0`. Establish `h2 : F = G` using `sub_eq_zero.mp h1`. Conclude with `congrArg GlobalTheory.AV.AbVar.Hom.hom h2`.
+-/
 private theorem hom_cancel :
     ∀ (Ω : Type) [Field Ω] (A B : Over (Sp Ω)) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B], IsAbelianScheme A → IsAbelianScheme B →
       ∀ (f g : A ⟶ B), IsMonHom f → IsMonHom g → ∀ (n : ℕ), 0 < n → f ^ n = g ^ n → f = g := by
@@ -48,6 +55,13 @@ end
 section
 open GlobalTheory.AV GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Take `⟨A', P, hdual, -⟩` from `GlobalTheory.T.abelianVariety_exists_dual_pair K A`. Establish `hP` using `hdual.1`. Take `⟨ψ, hψ, -⟩` from `GlobalTheory.T.biadditiveClass_eq_poincarePullback_unique_hom K A A' B P hP β hadd hnorm`. Take `⟨ψ0, -, huniq⟩` from `GlobalTheory.T.biadditiveClass_eq_poincarePullback_unique_hom K A A' B P hP 0 (by intros; simp) (by simp)`. Establish `e1 : (0 : GlobalTheory.CechPic.Pic (A.X ⊗ B.X).left) = GlobalTheory.AbDual.evc hP.isLB (fst A.X B.X) (snd A.X B.X ≫ GlobalTheory.AV.AbVar.Hom.hom (m • ψ))`.
+
+Rewrite using `[GlobalTheory.AV.AbVar.zsmul_hom, GlobalTheory.AV.AbVar.AdjCalc.comp_zpow', (GlobalTheory.AdjCancel.evc_zpow hP _ _ m).1, ← hψ, hmβ]`. Establish `e2 : (0 : GlobalTheory.CechPic.Pic (A.X ⊗ B.X).left) = GlobalTheory.AbDual.evc hP.isLB (fst A.X B.X) (snd A.X B.X ≫ GlobalTheory.AV.AbVar.Hom.hom (0 : B ⟶ A'))`. Rewrite using `[GlobalTheory.AV.AbVar.zero_hom, MonObj.comp_one, (GlobalTheory.AdjCancel.evc_zpow hP (fst A.X B.X) (snd A.X B.X ≫ GlobalTheory.AV.AbVar.Hom.hom ψ) 0).2]`. Establish `hm0 : m • ψ = 0` using `(huniq _ e1).trans (huniq _ e2).symm`. Establish `hψ0` using `GlobalTheory.AV.AbVar.hom_torsionFree K B A' m ψ hm hm0`.
+
+Rewrite using `[hψ, hψ0, GlobalTheory.AV.AbVar.zero_hom, MonObj.comp_one, (GlobalTheory.AdjCancel.evc_zpow hP (fst A.X B.X) (snd A.X B.X ≫ GlobalTheory.AV.AbVar.Hom.hom ψ) 0).2]`.
+-/
 private theorem eq_zero_of_zsmul_eq_zero {K : Type} [Field K] (A B : AbVar K)
     (β : GlobalTheory.CechPic.Pic (A.X ⊗ B.X).left)
     (hadd : ∀ (Y : Over (Sp K)) (a a' : Y ⟶ A.X) (t : Y ⟶ B.X),
@@ -73,6 +87,11 @@ private theorem eq_zero_of_zsmul_eq_zero {K : Type} [Field K] (A B : AbVar K)
 
 end
 
+/- English proof (translation)
+Introduce `Ω _ A B _ _ _ _ hA hB β hadd hnorm n hn hnβ`. Take `⟨dA, hsA⟩` from `GlobalTheory.T.abelianScheme_field_smoothOfRelativeDimension_exists Ω A hA`. Take `⟨dB, hsB⟩` from `GlobalTheory.T.abelianScheme_field_smoothOfRelativeDimension_exists Ω B hB`. Set `A' : GlobalTheory.AV.AbVar Ω` to `⟨A, hA, dA, hsA⟩`. Set `B' : GlobalTheory.AV.AbVar Ω` to `⟨B, hB, dB, hsB⟩`.
+
+Use `eq_zero_of_zsmul_eq_zero A' B' β hadd hnorm (n : ℤ) (by exact_mod_cast hn.ne') ?_` and prove the remaining obligations. Rewrite using `[natCast_zsmul]`. Conclude with `hnβ`.
+-/
 private theorem pic_eq_zero :
     ∀ (Ω : Type) [Field Ω] (A B : Over (Sp Ω)) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B], IsAbelianScheme A → IsAbelianScheme B → ∀ β : GlobalTheory.CechPic.Pic (A ⊗ B).left, (∀ (Y : Over (Sp Ω)) (a a' : Y ⟶ A) (t : Y ⟶ B), GlobalTheory.CechPic.pull (lift (a * a') t).left β = GlobalTheory.CechPic.pull (lift a t).left β + GlobalTheory.CechPic.pull (lift a' t).left β) → GlobalTheory.CechPic.pull (lift (𝟙 A) (1 : A ⟶ B)).left β = 0 → ∀ n : ℕ, 0 < n → n • β = 0 → β = 0 := by
   intro Ω _ A B _ _ _ _ hA hB β hadd hnorm n hn hnβ
@@ -84,6 +103,11 @@ private theorem pic_eq_zero :
   rw [natCast_zsmul]
   exact hnβ
 
+/- English proof (translation)
+Introduce `p _ D R _ b N Ω _ σ o`. Take `⟨e, he, hk⟩` from `o.kerP`. Use `⟨e, he, fun T x hx => hk T x ?_⟩` and prove the remaining obligations. Establish `h0` using `hx (o.A ⊗ T) (snd o.A T) (fst o.A T)`. Rewrite using `[← GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB o.isLB _), GlobalTheory.CechPic.cls_pull o.isLB _ (pull_isLB o.isLB _)]`.
+
+Conclude with `h0`.
+-/
 private theorem ker_pow :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (Ω : Type) [Field Ω] (σ : Sp Ω ⟶ Sp R) (o : Obj b N σ), ∃ e : ℕ, e.Coprime p ∧ ∀ (T : Over (Sp Ω)) (x : T ⟶ o.A), (∀ (Y : Over (Sp Ω)) (z : Y ⟶ T) (y : Y ⟶ o.A), GlobalTheory.BirigidPow.val o.isLB (z ≫ x) y = 0) → x ^ e = 1 := by
   intro p _ D R _ b N Ω _ σ o
@@ -93,6 +117,11 @@ private theorem ker_pow :
   rw [← GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB o.isLB _), GlobalTheory.CechPic.cls_pull o.isLB _ (pull_isLB o.isLB _)]
   exact h0
 
+/- English proof (translation)
+Introduce `p _ D R _ b N S s o T x y`. Establish `e : GlobalTheory.CechPic.cls o.P o.isLB = GlobalTheory.CechPic.pull (lift (snd o.A o.A) (fst o.A o.A)).left (GlobalTheory.CechPic.cls o.P o.isLB)`. Rewrite using `[← GlobalTheory.CechPic.cls_pull o.isLB _ (pull_isLB o.isLB _)]`. Conclude with `(GlobalTheory.CechPic.cls_eq_iff _ _).mpr o.symm`. Unfold `GlobalTheory.BirigidPow.val`.
+
+Use `conv_lhs => rw [e]`. Rewrite using `[← GlobalTheory.CechPic.pull_comp, ← Over.comp_left, comp_lift, lift_fst, lift_snd]`.
+-/
 private theorem val_symm :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (T : Over S) (x y : T ⟶ o.A), GlobalTheory.BirigidPow.val o.isLB x y = GlobalTheory.BirigidPow.val o.isLB y x := by
   intro p _ D R _ b N S s o T x y
@@ -105,6 +134,9 @@ private theorem val_symm :
   rw [← GlobalTheory.CechPic.pull_comp, ← Over.comp_left, comp_lift, lift_fst, lift_snd]
 
 open GlobalTheory.UPel.HT.ESDual in
+/- English proof (translation)
+Use `haveI := hφ`. Rewrite using `[val_symm p D R b N (Sp Ω) σ o' T (x ≫ ψ) y, GlobalTheory.UPel.HT.ESDual.val_adj hI h2 y x, val_symm p D R b N (Sp Ω) σ o T (y ≫ φ) x]`.
+-/
 private theorem val_adj_left (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (Ω : Type)
     [Field Ω] (σ : Sp Ω ⟶ Sp R) (o o' : Obj b N σ) (c : ℕ) (ψ : o.A ⟶ o'.A) (φ : o'.A ⟶ o.A)
     (hI : IsPIsog c o o' ψ) (hφ : IsMonHom φ) (_ : ψ ≫ φ = (𝟙 o.A) ^ c) (h2 : φ ≫ ψ = (𝟙 o'.A) ^ c)
@@ -114,6 +146,15 @@ private theorem val_adj_left (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [
   rw [val_symm p D R b N (Sp Ω) σ o' T (x ≫ ψ) y, GlobalTheory.UPel.HT.ESDual.val_adj hI h2 y x,
     val_symm p D R b N (Sp Ω) σ o T (y ≫ φ) x]
 
+/- English proof (translation)
+Introduce `p _ D R _ b N Ω _ σ o₁ o₂ f g hf hg hfg`. Take `⟨e, he, hk⟩` from `ker_pow p D R b N Ω σ o₂`. Establish `hd : (f * g⁻¹) ^ e = 1`. Apply `hk o₁.A (f * g⁻¹)` to reduce the goal to its premises. Introduce `Y z y`.
+
+Rewrite using `[val_symm p D R b N (Sp Ω) σ o₂ Y (z ≫ (f * g⁻¹)) y]`. Establish `h1` using `GlobalTheory.BirigidPow.val_mul_right o₂.isLB o₂.ab o₂.ample o₂.rig₁ o₂.rig₂ y (z ≫ (f * g⁻¹)) (z ≫ g)`. Rewrite `h1` using `[← MonObj.comp_mul, inv_mul_cancel_right, hfg Y z y]`. Simplify using `using h1`. Rewrite `hd` using `[mul_pow, inv_pow, mul_inv_eq_one]`.
+
+Establish `hpos : 0 < e`. Apply `Nat.pos_of_ne_zero` to reduce the goal to its premises. Introduce and unpack `rfl`. Rewrite `he` using `[Nat.coprime_zero_left]`. Conclude with `(Fact.out : p.Prime).ne_one he`.
+
+Conclude with `hom_cancel Ω o₁.A o₂.A o₁.ab o₂.ab f g hf hg e hpos hd`.
+-/
 private theorem hom_eq_of_val :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (Ω : Type) [Field Ω] (σ : Sp Ω ⟶ Sp R) (o₁ o₂ : Obj b N σ) (f g : o₁.A ⟶ o₂.A), IsMonHom f → IsMonHom g → (∀ (T : Over (Sp Ω)) (x : T ⟶ o₁.A) (y : T ⟶ o₂.A), GlobalTheory.BirigidPow.val o₂.isLB y (x ≫ f) = GlobalTheory.BirigidPow.val o₂.isLB y (x ≫ g)) → f = g := by
   intro p _ D R _ b N Ω _ σ o₁ o₂ f g hf hg hfg
@@ -150,16 +191,27 @@ private noncomputable def av (o : Obj b N σ) : GlobalTheory.AV.AbVar Ω :=
 private noncomputable def dg (o : Obj b N σ) : GlobalTheory.CechPic.Pic o.A.left :=
   val o.isLB (𝟙 o.A) (𝟙 o.A)
 
+/- English proof (translation)
+Unfold `GlobalTheory.BirigidPow.val`. Rewrite using `[← GlobalTheory.CechPic.pull_comp, ← Over.comp_left, comp_lift]`.
+-/
 private theorem val_comp {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
     {P : LB (G2 A).left} (hP : P.IsLB) {T T' : Over S} (z : T' ⟶ T) (x y : T ⟶ A) :
     GlobalTheory.CechPic.pull z.left (val hP x y) = val hP (z ≫ x) (z ≫ y) := by
   unfold GlobalTheory.BirigidPow.val
   rw [← GlobalTheory.CechPic.pull_comp, ← Over.comp_left, comp_lift]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left, pull_isLB o.isLB _, o.ample, GlobalTheory.CechPic.cls_pull o.isLB _ (pull_isLB o.isLB _)⟩`.
+-/
 private theorem dg_ample (o : Obj b N σ) : GlobalTheory.AV.AbVar.IsAmpleCls (A := av o) (dg o) :=
   ⟨o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left, pull_isLB o.isLB _, o.ample,
     GlobalTheory.CechPic.cls_pull o.isLB _ (pull_isLB o.isLB _)⟩
 
+/- English proof (translation)
+Establish `hv : ∀ z : Y ⟶ o.A, GlobalTheory.CechPic.pull z.left (dg o) = val o.isLB z z`. Introduce `z`. Unfold `dg GlobalTheory.BirigidPow.val`. Rewrite using `[← GlobalTheory.CechPic.pull_comp, ← Over.comp_left, comp_lift, Category.comp_id]`. Use `show GlobalTheory.CechPic.pull (x * y).left (dg o) - GlobalTheory.CechPic.pull x.left (dg o) - GlobalTheory.CechPic.pull y.left (dg o) = 2 • val o.isLB x y`.
+
+Rewrite using `[hv, hv, hv, val_mul_left o.isLB o.ab o.ample o.rig₁ o.rig₂, val_mul_right o.isLB o.ab o.ample o.rig₁ o.rig₂, val_mul_right o.isLB o.ab o.ample o.rig₁ o.rig₂, val_symm p D R b N _ σ o Y y x]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem lam_dg (o : Obj b N σ) {Y : Over (Sp Ω)} (x y : Y ⟶ o.A) :
     GlobalTheory.AV.AbVar.lam (A := av o) (dg o) x y = 2 • val o.isLB x y := by
   have hv : ∀ z : Y ⟶ o.A, GlobalTheory.CechPic.pull z.left (dg o) = val o.isLB z z := by
@@ -174,6 +226,15 @@ private theorem lam_dg (o : Obj b N σ) {Y : Over (Sp Ω)} (x y : Y ⟶ o.A) :
     val_symm p D R b N _ σ o Y y x]
   abel
 
+/- English proof (translation)
+Set `β : GlobalTheory.CechPic.Pic (o₂.A ⊗ o₁.A).left` to `l • val o₁.isLB (fst o₂.A o₁.A ≫ f) (snd o₂.A o₁.A) - val o₂.isLB (fst o₂.A o₁.A) (snd o₂.A o₁.A ≫ g)`. Establish `hpb : ∀ (Y : Over (Sp Ω)) (y : Y ⟶ o₂.A) (x : Y ⟶ o₁.A), GlobalTheory.CechPic.pull (lift y x).left β = l • val o₁.isLB (y ≫ f) x - val o₂.isLB y (x ≫ g)`. Introduce `Y y x`. Simplify using `only [β, map_sub, map_nsmul, val_comp, lift_fst_assoc, lift_fst, lift_snd, lift_snd_assoc]`. Establish `hβ : β = 0`.
+
+Use `pic_eq_zero Ω o₂.A o₁.A o₂.ab o₁.ab β ?_ ?_ m hm ?_` and prove the remaining obligations. Introduce `Y a a' t`. Rewrite using `[hpb, hpb, hpb, MonObj.mul_comp, val_mul_left o₁.isLB o₁.ab o₁.ample o₁.rig₁ o₁.rig₂, val_mul_left o₂.isLB o₂.ab o₂.ample o₂.rig₁ o₂.rig₂, smul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[hpb, Category.id_comp, MonObj.one_comp, val_one_right o₁.isLB o₁.rig₂, val_one_right o₂.isLB o₂.rig₂, smul_zero, sub_zero]`.
+
+Establish `hH` using `H (o₂.A ⊗ o₁.A) (fst o₂.A o₁.A) (snd o₂.A o₁.A)`. Simplify using `only [β, smul_sub, smul_smul]`. Rewrite using `[hH, sub_self]`. Use `hpb Y y x` as an intermediate fact. Rewrite `this` using `[hβ, map_zero]`.
+
+Conclude with `(sub_eq_zero.mp this.symm)`.
+-/
 private theorem cancel (o₁ o₂ : Obj b N σ) (f : o₂.A ⟶ o₁.A) [IsMonHom f] (g : o₁.A ⟶ o₂.A)
     [IsMonHom g] (m l : ℕ) (hm : 0 < m)
     (H : ∀ (Y : Over (Sp Ω)) (y : Y ⟶ o₂.A) (x : Y ⟶ o₁.A),
@@ -204,6 +265,27 @@ private theorem cancel (o₁ o₂ : Obj b N σ) (f : o₂.A ⟶ o₁.A) [IsMonHo
 end AdjointAveraging
 
 open AdjointAveraging in
+/- English proof (translation)
+Introduce `p _ D R _ b N Ω _ σ o₁ o₂ κ hκ`. Establish `hp` using `(Fact.out : p.Prime)`. Set `fκ : av o₂ ⟶ av o₁` to `@GlobalTheory.AV.AbVar.Hom.mk _ _ (av o₂) (av o₁) κ hκ`. Take `⟨n, h, hn, hadj⟩` from `GlobalTheory.T.exists_adjoint_up_to_integer Ω (av o₂) (av o₁) (dg o₂) (dg o₁) (dg_ample o₂) fκ`. Take `⟨ν₀, hν₀, hνdef⟩ : ∃ ν₀ : o₁.A ⟶ o₂.A, IsMonHom ν₀ ∧ ν₀ = GlobalTheory.AV.AbVar.Hom.hom h` from `⟨_, (Additive.toMul h).2, rfl⟩`.
+
+Establish `H1 : ∀ (Y : Over (Sp Ω)) (y : Y ⟶ o₂.A) (x : Y ⟶ o₁.A), (2 * n) • GlobalTheory.BirigidPow.val o₁.isLB (y ≫ κ) x = 2 • GlobalTheory.BirigidPow.val o₂.isLB y (x ≫ ν₀)`. Introduce `Y y x`. Establish `e` using `GlobalTheory.AV.AbVar.AdjCalc.isAdj_pt hadj (Y := Y) y x`. Establish `e' : (n : ℤ) • (2 • GlobalTheory.BirigidPow.val o₁.isLB (y ≫ κ) x) = 2 • GlobalTheory.BirigidPow.val o₂.isLB y (x ≫ ν₀)`. Rewrite using `[← lam_dg o₁ (y ≫ κ) x, ← lam_dg o₂ y (x ≫ ν₀), hνdef]`.
+
+Conclude with `e`. Rewrite `e'` using `[natCast_zsmul, smul_smul, mul_comm]`. Conclude with `e'`. Establish `H2 : ∀ (Y : Over (Sp Ω)) (y : Y ⟶ o₂.A) (x : Y ⟶ o₁.A), n • GlobalTheory.BirigidPow.val o₁.isLB (y ≫ κ) x = GlobalTheory.BirigidPow.val o₂.isLB y (x ≫ ν₀)` using `cancel o₁ o₂ κ ν₀ 2 n two_pos H1`. Take `⟨a, n', hn', hnn⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' p hp.one_lt.ne'`.
+
+Establish `hcop : n'.Coprime p` using `((Nat.Prime.coprime_iff_not_dvd hp).mpr hn').symm`. Take `⟨e₂, he₂, hker₂⟩` from `ker_pow p D R b N Ω σ o₂`. Establish `hkill : ∀ (T : Over (Sp Ω)) (x : T ⟶ o₁.A), x ^ (p ^ a) = 1 → x ≫ ν₀ = 1`. Introduce `T x hx`. Establish `h1 : (x ≫ ν₀) ^ e₂ = 1`.
+
+Apply `hker₂` to reduce the goal to its premises. Introduce `Y w y`. Rewrite using `[val_symm p D R b N _ σ o₂ Y, ← Category.assoc, ← H2, hnn, mul_comm, mul_smul, ← GlobalTheory.BirigidPow.val_pow_right o₁.isLB o₁.ab o₁.ample o₁.rig₁ o₁.rig₂, ← MonObj.comp_pow, hx, MonObj.comp_one, GlobalTheory.BirigidPow.val_one_right o₁.isLB o₁.rig₂, smul_zero]`. Establish `h2 : (x ≫ ν₀) ^ (p ^ a) = 1`. Rewrite using `[← MonObj.pow_comp, hx, MonObj.one_comp]`.
+
+Establish `hg : Nat.gcd e₂ (p ^ a) = 1` using `Nat.Coprime.pow_right a he₂`. Use `pow_gcd_eq_one.mpr ⟨h1, h2⟩` as an intermediate fact. Rewrite `this` using `[hg, pow_one]`. Then use the resulting hypothesis. Set `q : av o₁ ⟶ av o₁` to `((p ^ a : ℕ) : ℤ) • 𝟙 (av o₁)`. Establish `hq` using `(GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree Ω (av o₁) ((p ^ a : ℕ) : ℤ) (by exact_mod_cast (pow_pos hp.pos a).ne')).1`.
+
+Establish `hqhom : ∀ (T : Over (Sp Ω)) (x : T ⟶ o₁.A), x ≫ GlobalTheory.AV.AbVar.Hom.hom q = x ^ (p ^ a)`. Introduce `T x`. Establish `e1` using `congrArg (fun u => x ≫ u) (GlobalTheory.AV.AbVar.zsmul_hom (A := av o₁) (B := av o₁) ((p ^ a : ℕ) : ℤ) (𝟙 (av o₁)))`. Establish `e2` using `GlobalTheory.AV.AbVar.AdjCalc.comp_zpow' (G := o₁.A) x (𝟙 o₁.A) ((p ^ a : ℕ) : ℤ)`. Rewrite `e2` using `[Category.comp_id, zpow_natCast]`.
+
+Conclude with `e1.trans e2`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_factor_through_isogeny_of_kills_kernel Ω (av o₁) (av o₁) (av o₂) q h hq (fun T x hx => by`. Use `hkill T x ((hqhom T x).symm.trans hx)` as an intermediate fact. Rewrite `this` using `[hνdef]`. Conclude with `this)`.
+
+Take `⟨ν, hν, hνg⟩ : ∃ ν : o₁.A ⟶ o₂.A, IsMonHom ν ∧ ν = GlobalTheory.AV.AbVar.Hom.hom g` from `⟨_, (Additive.toMul g).2, rfl⟩`. Establish `key : ∀ (Y : Over (Sp Ω)) (x : Y ⟶ o₁.A), x ≫ ν₀ = (x ^ (p ^ a)) ≫ ν`. Introduce `Y x`. Rewrite using `[hνdef, hνg, ← hg, ← hqhom]`. Conclude with `(Category.assoc x (GlobalTheory.AV.AbVar.Hom.hom q) (GlobalTheory.AV.AbVar.Hom.hom g)).symm`.
+
+Use `⟨n', ν, hcop, hν, fun T x y => ?_⟩` and prove the remaining obligations. Establish `H3 : ∀ (Y : Over (Sp Ω)) (y : Y ⟶ o₂.A) (x : Y ⟶ o₁.A), (p ^ a * n') • GlobalTheory.BirigidPow.val o₁.isLB (y ≫ κ) x = p ^ a • GlobalTheory.BirigidPow.val o₂.isLB y (x ≫ ν)`. Introduce `Y y x`. Rewrite using `[← hnn, H2, key, MonObj.pow_comp, GlobalTheory.BirigidPow.val_pow_right o₂.isLB o₂.ab o₂.ample o₂.rig₁ o₂.rig₂]`. Conclude with `(cancel o₁ o₂ κ ν (p ^ a) n' (pow_pos hp.pos a) H3 T y x).symm`.
+-/
 private theorem exists_adjoint :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (Ω : Type) [Field Ω] (σ : Sp Ω ⟶ Sp R) (o₁ o₂ : Obj b N σ) (κ : o₂.A ⟶ o₁.A), IsMonHom κ → ∃ (e : ℕ) (ν : o₁.A ⟶ o₂.A), e.Coprime p ∧ IsMonHom ν ∧ ∀ (T : Over (Sp Ω)) (x : T ⟶ o₁.A) (y : T ⟶ o₂.A), GlobalTheory.BirigidPow.val o₂.isLB y (x ≫ ν) = e • GlobalTheory.BirigidPow.val o₁.isLB (y ≫ κ) x := by
   intro p _ D R _ b N Ω _ σ o₁ o₂ κ hκ
@@ -276,10 +358,18 @@ private noncomputable def avOf {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type}
     dim := (GlobalTheory.T.abelianScheme_field_smoothOfRelativeDimension_exists Ω o.A o.ab).choose
     smooth := (GlobalTheory.T.abelianScheme_field_smoothOfRelativeDimension_exists Ω o.A o.ab).choose_spec }
 
+/- English proof (translation)
+Rewrite using `[MonObj.pow_comp, Category.id_comp]`.
+-/
 private theorem idPow_comp {S : Scheme.{0}} {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     (f : A ⟶ B) [IsMonHom f] (n : ℕ) : ((𝟙 A) ^ n) ≫ f = f ^ n := by
   rw [MonObj.pow_comp, Category.id_comp]
 
+/- English proof (translation)
+Establish `h0 : o.act.act (0 : D.O) = 1`. Establish `h` using `o.act.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (a := o.act.act 0) (by rw [_root_.mul_one]; exact h.symm)`. Proceed by induction on `k with`.
+
+Consider the case `zero => rw [Nat.cast_zero, h0, _root_.pow_zero]`. Consider the case `succ k ih => rw [Nat.cast_succ, o.act.add, ih, o.act.one, _root_.pow_succ]`.
+-/
 private theorem act_natCast {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {Ω : Type} [Field Ω] {σ : Sp Ω ⟶ Sp R} (o : Obj b N σ) (k : ℕ) : o.act.act (k : D.O) = 𝟙 o.A ^ k := by
   have h0 : o.act.act (0 : D.O) = 1 := by
@@ -290,6 +380,23 @@ private theorem act_natCast {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [C
   | zero => rw [Nat.cast_zero, h0, _root_.pow_zero]
   | succ k ih => rw [Nat.cast_succ, o.act.add, ih, o.act.one, _root_.pow_succ]
 
+/- English proof (translation)
+Introduce `p _ D R _ b N E r Ω _ σ o₁ o₂ o' ψ₁ φ₁ φ₂ β h₁ hφ₁ hφ₂ e₁ e₁' hβ H`. Use `haveI := h₁.2.1`. Use `haveI := hφ₂`. Use `haveI := o₁.act.hom (algebraMap (𝓞 D.F) D.O β)`. Establish `hker' : ∀ (T : Over (Sp Ω)) (x : T ⟶ o₁.A), x ≫ (𝟙 o₁.A) ^ (p ^ E) = 1 → x ≫ o₁.act.act (algebraMap (𝓞 D.F) D.O β) ≫ ψ₁ ≫ φ₂ = 1`.
+
+Introduce `T x hx0`. Establish `hx : x ^ (p ^ E) = 1` using `by rw [← hx0, MonObj.comp_pow, Category.comp_id]`. Establish `hy1 : (x ≫ o₁.act.act (algebraMap (𝓞 D.F) D.O β) ≫ ψ₁) ≫ φ₁ = 1`. Rewrite using `[Category.assoc, Category.assoc, e₁, ← Category.assoc, MonObj.comp_pow, Category.comp_id, ← MonObj.pow_comp, hx, MonObj.one_comp]`. Establish `hkill : ∃ e : ℕ, KilledBy o' (uIdeal D r ^ e) (x ≫ o₁.act.act (algebraMap (𝓞 D.F) D.O β) ≫ ψ₁)`.
+
+Use `⟨E, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hβ a ha`. Use `haveI := o₁.act.hom (algebraMap (𝓞 D.F) D.O v)`. Rewrite using `[Category.assoc, Category.assoc, ← h₁.2.2.1, ← Category.assoc (o₁.act.act (algebraMap (𝓞 D.F) D.O β)), ← o₁.act.mul, ← map_mul, hv, map_mul, o₁.act.mul, map_pow, map_natCast, ← Nat.cast_pow, act_natCast]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[← Category.assoc x, MonObj.comp_pow, Category.comp_id, hx, MonObj.one_comp]`. Use `(H T _ hkill).mp hy1` as an intermediate fact. Simplify `this` using `only [Category.assoc]`. Establish `hmon : IsMonHom (o₁.act.act (algebraMap (𝓞 D.F) D.O β) ≫ ψ₁ ≫ φ₂)` using `inferInstance`. Set `f : avOf o₁ ⟶ avOf o₂` to `@GlobalTheory.AV.AbVar.Hom.mk _ _ (avOf o₁) (avOf o₂) (o₁.act.act (algebraMap (𝓞 D.F) D.O β) ≫ ψ₁ ≫ φ₂) hmon`.
+
+Set `q : avOf o₁ ⟶ avOf o₁` to `((p ^ E : ℕ) : ℤ) • 𝟙 (avOf o₁)`. Establish `hq : GlobalTheory.AV.AbVar.Hom.hom q = 𝟙 o₁.A ^ (p ^ E)`. Simplify using `only [q]`. Rewrite using `[GlobalTheory.AV.AbVar.zsmul_hom, GlobalTheory.AV.AbVar.id_hom, _root_.zpow_natCast]`. Both sides reduce to the same expression.
+
+Establish `hf : GlobalTheory.AV.AbVar.Hom.hom f = o₁.act.act (algebraMap (𝓞 D.F) D.O β) ≫ ψ₁ ≫ φ₂` using `rfl`. Establish `hqi : GlobalTheory.AV.AbVar.IsIsogeny q` using `(GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree Ω (avOf o₁) _ (Nat.cast_ne_zero.mpr (pow_ne_zero _ (Fact.out : p.Prime).ne_zero))).1`. Establish `hker : ∀ (T : Over (Sp Ω)) (x : T ⟶ (avOf o₁).X), x ≫ GlobalTheory.AV.AbVar.Hom.hom q = 1 → x ≫ GlobalTheory.AV.AbVar.Hom.hom f = 1`. Introduce `T x hx0`. Rewrite using `[hf]`.
+
+Conclude with `hker' T x (hq ▸ hx0)`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_factor_through_isogeny_of_kills_kernel Ω (avOf o₁) (avOf o₁) (avOf o₂) q f hqi hker`. Use `haveI hgm : IsMonHom (GlobalTheory.AV.AbVar.Hom.hom g) := (Additive.toMul g).property`. Use `⟨GlobalTheory.AV.AbVar.Hom.hom g, hgm, ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, ← hg, GlobalTheory.AV.AbVar.comp_hom, hq]`.
+
+Conclude with `idPow_comp _ _`.
+-/
 private theorem exists_div :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N E : ℕ) (r : ℤ) (Ω : Type) [Field Ω] (σ : Sp Ω ⟶ Sp R) (o₁ o₂ o' : Obj b N σ) (ψ₁ : o₁.A ⟶ o'.A) (φ₁ : o'.A ⟶ o₁.A) (φ₂ : o'.A ⟶ o₂.A) (β : 𝓞 D.F), IsPIsog (p ^ E) o₁ o' ψ₁ → IsMonHom φ₁ → IsMonHom φ₂ → ψ₁ ≫ φ₁ = (𝟙 o₁.A) ^ (p ^ E) → φ₁ ≫ ψ₁ = (𝟙 o'.A) ^ (p ^ E) → (∀ a ∈ uIdeal D r ^ E, ∃ v : 𝓞 D.F, a * β = v * (p : 𝓞 D.F) ^ E) → (∀ (T : Over (Sp Ω)) (x : T ⟶ o'.A), (∃ e : ℕ, KilledBy o' (uIdeal D r ^ e) x) → (x ≫ φ₁ = 1 ↔ x ≫ φ₂ = 1)) → ∃ κ : o₁.A ⟶ o₂.A, IsMonHom κ ∧ o₁.act.act (algebraMap (𝓞 D.F) D.O β) ≫ ψ₁ ≫ φ₂ = κ ^ (p ^ E) := by
   intro p _ D R _ b N E r Ω _ σ o₁ o₂ o' ψ₁ φ₁ φ₂ β h₁ hφ₁ hφ₂ e₁ e₁' hβ H
@@ -340,6 +447,11 @@ section
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {Ω : Type} [Field Ω]
   {σ : Sp Ω ⟶ Sp R}
 
+/- English proof (translation)
+Use `haveI := o.act.hom a`. Use `haveI := o'.act.hom a`. Apply `hom_cancel Ω o'.A o.A o'.ab o.ab _ _ inferInstance inferInstance c hc` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[MonObj.pow_comp, Category.id_comp]`.
+
+Use `_ = φ ≫ (ψ ≫ o'.act.act a) ≫ φ := by rw [← h2]; simp only [Category.assoc]`. Use `_ = φ ≫ o.act.act a ≫ ψ ≫ φ := by rw [← hψl a]; simp only [Category.assoc]`. Use `_ = (φ ≫ o.act.act a) ^ c := by rw [h1, MonObj.comp_pow, Category.comp_id, MonObj.comp_pow]`.
+-/
 private theorem lin {o o' : Obj b N σ} {c : ℕ} (hc : 0 < c) {ψ : o.A ⟶ o'.A} {φ : o'.A ⟶ o.A}
     (hψl : ∀ a : D.O, o.act.act a ≫ ψ = ψ ≫ o'.act.act a) (hφ : IsMonHom φ)
     (h1 : ψ ≫ φ = (𝟙 o.A) ^ c) (h2 : φ ≫ ψ = (𝟙 o'.A) ^ c) (a : D.O) :
@@ -353,6 +465,11 @@ private theorem lin {o o' : Obj b N σ} {c : ℕ} (hc : 0 < c) {ψ : o.A ⟶ o'.
     _ = φ ≫ o.act.act a ≫ ψ ≫ φ := by rw [← hψl a]; simp only [Category.assoc]
     _ = (φ ≫ o.act.act a) ^ c := by rw [h1, MonObj.comp_pow, Category.comp_id, MonObj.comp_pow]
 
+/- English proof (translation)
+Establish `hL1` using `pull_isLB o.isLB (lift (fst o.A o.A ≫ o.act.act c) (snd o.A o.A)).left`. Establish `hL2` using `pull_isLB o.isLB (lift (fst o.A o.A) (snd o.A o.A ≫ o.act.act (D.star c).unop)).left`. Establish `key` using `(GlobalTheory.CechPic.cls_eq_iff hL1 hL2).mpr (o.rosati c)`. Rewrite `key` using `[GlobalTheory.CechPic.cls_pull o.isLB _ hL1, GlobalTheory.CechPic.cls_pull o.isLB _ hL2]`. Establish `e1 : lift (x ≫ o.act.act c) y = lift x y ≫ lift (fst o.A o.A ≫ o.act.act c) (snd o.A o.A)`.
+
+Apply the tactic sequence `ext <;> simp`. Establish `e2 : lift x (y ≫ o.act.act (D.star c).unop) = lift x y ≫ lift (fst o.A o.A) (snd o.A o.A ≫ o.act.act (D.star c).unop)`. Apply the tactic sequence `ext <;> simp`. Unfold `GlobalTheory.BirigidPow.val`. Rewrite using `[e1, e2, Over.comp_left, Over.comp_left, GlobalTheory.CechPic.pull_comp, GlobalTheory.CechPic.pull_comp, key]`.
+-/
 private theorem rosVal (o : Obj b N σ) (c : D.O) {T : Over (Sp Ω)} (x y : T ⟶ o.A) :
     GlobalTheory.BirigidPow.val o.isLB (x ≫ o.act.act c) y =
       GlobalTheory.BirigidPow.val o.isLB x (y ≫ o.act.act (D.star c).unop) := by
@@ -368,6 +485,21 @@ private theorem rosVal (o : Obj b N σ) (c : D.O) {T : Over (Sp Ω)} (x y : T �
   unfold GlobalTheory.BirigidPow.val
   rw [e1, e2, Over.comp_left, Over.comp_left, GlobalTheory.CechPic.pull_comp, GlobalTheory.CechPic.pull_comp, key]
 
+/- English proof (translation)
+Establish `hprod : (D.ω - (r : 𝓞 D.F)) * (D.bar D.ω - (r : 𝓞 D.F)) = ((r ^ 2 - D.tr * r + D.nm : ℤ) : 𝓞 D.F)`. Use `push_cast`. Take the linear combination `D.nm_eq - (r : 𝓞 D.F) * D.tr_eq`. Establish `hpz : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp (Fact.out)`. Establish `hnd : ¬ (p : ℤ) ∣ D.tr - 2 * r`.
+
+Introduce `hd`. Apply `D.disc_p` to reduce the goal to its premises. Establish `e : D.tr ^ 2 - 4 * D.nm = (D.tr - 2 * r) ^ 2 - 4 * (r ^ 2 - D.tr * r + D.nm)` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_pow hd two_ne_zero) (dvd_mul_of_dvd_right hr 4)`.
+
+Take `⟨u, v, huv⟩` from `(Prime.coprime_iff_not_dvd hpz).mpr hnd`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.isCoprime_iff_exists]`. Use `⟨(u : 𝓞 D.F) * p + (v : 𝓞 D.F) * (D.ω - r), ?_, (v : 𝓞 D.F) * (D.bar D.ω - r), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (p_mem_uIdeal D r)) (Ideal.mul_mem_left _ _ (sub_mem_uIdeal D r))`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp))`. Establish `h1 : ((u * p + v * (D.tr - 2 * r) : ℤ) : 𝓞 D.F) = 1` using `by rw [huv]; simp`. Move the coercions through the operations in `at h1`. Take the linear combination `h1 + (v : 𝓞 D.F) * D.tr_eq`. Unfold `uIdeal`.
+
+Rewrite using `[Ideal.span_mul_span', Ideal.span_le]`. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy`. Establish `hp : (p : 𝓞 D.F) ∈ Ideal.span {(p : 𝓞 D.F)}` using `Ideal.mem_span_singleton_self _`. Apply the tactic sequence `rcases hx with rfl | rfl <;> rcases hy with rfl | rfl`.
+
+Conclude with `Ideal.mul_mem_right _ _ hp`. Conclude with `Ideal.mul_mem_right _ _ hp`. Conclude with `Ideal.mul_mem_left _ _ hp`. Use `show (D.ω - (r : 𝓞 D.F)) * (D.bar D.ω - (r : 𝓞 D.F)) ∈ Ideal.span {(p : 𝓞 D.F)}`. Rewrite using `[hprod]`.
+
+Take `⟨k, hk⟩` from `hr`. Rewrite using `[hk]`. Use `push_cast`. Conclude with `Ideal.mul_mem_right _ _ hp`.
+-/
 private theorem conj (D : Datum p) (r : ℤ) (hr : (p : ℤ) ∣ r ^ 2 - D.tr * r + D.nm) :
     IsCoprime (uIdeal D r) (Ideal.span {(p : 𝓞 D.F), D.bar D.ω - r}) ∧
       uIdeal D r * Ideal.span {(p : 𝓞 D.F), D.bar D.ω - r} ≤ Ideal.span {(p : 𝓞 D.F)} := by
@@ -408,6 +540,25 @@ private theorem conj (D : Datum p) (r : ℤ) (hr : (p : ℤ) ∣ r ^ 2 - D.tr * 
       push_cast
       exact Ideal.mul_mem_right _ _ hp
 
+/- English proof (translation)
+Take `⟨hcop, hle⟩` from `conj D r hr`. Establish `hcopE` using `hcop.pow (m := E) (n := E)`. Take `⟨a, ha, β, hβ, hab⟩` from `Ideal.isCoprime_iff_exists.mp hcopE`. Establish `hUJ : uIdeal D r ^ E * Ideal.span {(p : 𝓞 D.F), D.bar D.ω - r} ^ E ≤ Ideal.span {(p : 𝓞 D.F) ^ E}`. Rewrite using `[← mul_pow, ← Ideal.span_singleton_pow]`.
+
+Conclude with `Ideal.pow_right_mono hle E`. Establish `h1 : D.bar D.ω = (D.tr : 𝓞 D.F) - D.ω` using `by linear_combination D.tr_eq`. Establish `hbb : D.bar (D.bar D.ω) = D.ω`. Rewrite using `[h1, map_sub, map_intCast, h1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hJU : Ideal.span {(p : 𝓞 D.F), D.bar D.ω - r} ≤ (uIdeal D r).comap D.bar`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `x (rfl | rfl)`. Simplify `p_mem_uIdeal D r` using `[Ideal.mem_comap]`. Use `show D.bar (D.bar D.ω - r) ∈ uIdeal D r`.
+
+Rewrite using `[map_sub, map_intCast, hbb]`. Conclude with `sub_mem_uIdeal D r`. Establish `hUJ' : uIdeal D r ≤ (Ideal.span {(p : 𝓞 D.F), D.bar D.ω - r}).comap D.bar`. Unfold `uIdeal`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `x (rfl | rfl)`. Simplify `Ideal.subset_span (by simp : (p : 𝓞 D.F) ∈ ({(p : 𝓞 D.F), D.bar D.ω - r} : Set (𝓞 D.F)))` using `[Ideal.mem_comap]`. Use `show D.bar (D.ω - r) ∈ Ideal.span {(p : 𝓞 D.F), D.bar D.ω - r}`. Rewrite using `[map_sub, map_intCast]`. Conclude with `Ideal.subset_span (by simp)`.
+
+Establish `hJUE` using `(Ideal.pow_right_mono hJU E).trans (Ideal.le_comap_pow D.bar E)`. Establish `hUJE` using `(Ideal.pow_right_mono hUJ' E).trans (Ideal.le_comap_pow D.bar E)`. Use `⟨a, β, hab, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.mp (hUJ (Ideal.mul_mem_mul hx hβ))`.
+
+Conclude with `⟨v, hv.symm⟩`. Establish `hb : D.bar a + D.bar β = 1`. Use `congrArg D.bar hab` as an intermediate fact. Rewrite `this` using `[map_add, map_one]`. Then use the resulting hypothesis. Establish `m1 : a - D.bar β ∈ uIdeal D r ^ E` using `sub_mem ha (hJUE hβ)`.
+
+Establish `m2 : a - D.bar β ∈ Ideal.span {(p : 𝓞 D.F), D.bar D.ω - r} ^ E`. Establish `e : a - D.bar β = D.bar a - β` using `by linear_combination hab - hb`. Rewrite using `[e]`. Conclude with `sub_mem (hUJE ha) hβ`. Establish `m3 : a - D.bar β ∈ Ideal.span {(p : 𝓞 D.F) ^ E}`.
+
+Apply `hUJ` to reduce the goal to its premises. Rewrite using `[← Ideal.inf_eq_mul_of_isCoprime hcopE]`. Conclude with `⟨m1, m2⟩`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp m3`. Conclude with `⟨t, by rw [ht]; ring⟩`.
+-/
 private theorem exists_ab (D : Datum p) (r : ℤ) (hr : (p : ℤ) ∣ r ^ 2 - D.tr * r + D.nm) (E : ℕ) :
     ∃ a β : 𝓞 D.F, a + β = 1 ∧ (∀ x ∈ uIdeal D r ^ E, ∃ v : 𝓞 D.F, x * β = v * (p : 𝓞 D.F) ^ E) ∧
       ∃ t : 𝓞 D.F, a = D.bar β + t * (p : 𝓞 D.F) ^ E := by
@@ -481,6 +632,11 @@ private def homSub (A B : Over (Sp Ω)) [GrpObj A] [IsCommMonObj A] [GrpObj B] [
     change IsMonHom (f⁻¹)
     infer_instance
 
+/- English proof (translation)
+Establish `h0 : o.act.act 0 = 1`. Establish `h` using `o.act.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Proceed by induction on `k with`.
+
+Consider the case `zero => simpa using h0`. Consider the case `succ n ih => rw [Nat.cast_succ, o.act.add, ih, o.act.one, pow_succ]`.
+-/
 private theorem act_nat (o : Obj b N σ) (k : ℕ) : o.act.act (k : D.O) = 𝟙 o.A ^ k := by
   have h0 : o.act.act 0 = 1 := by
     have h := o.act.add 0 0
@@ -490,6 +646,31 @@ private theorem act_nat (o : Obj b N σ) (k : ℕ) : o.act.act (k : D.O) = 𝟙 
   | zero => simpa using h0
   | succ n ih => rw [Nat.cast_succ, o.act.add, ih, o.act.one, pow_succ]
 
+/- English proof (translation)
+Establish `hpE : 0 < p ^ E` using `pow_pos (Fact.out : p.Prime).pos E`. Use `haveI := h₁.2.1`. Use `haveI := h₂.2.1`. Use `haveI := hφ₁`. Use `haveI := hφ₂`.
+
+Take `⟨κ, hκ, eκ⟩` from `exists_div p D R b N E r Ω σ o₁ o₂ o' ψ₁ φ₁ φ₂ β h₁ hφ₁ hφ₂ e₁ e₁' hβ H`. Take `⟨κ₂, hκ₂, eκ₂⟩` from `exists_div p D R b N E r Ω σ o₂ o₁ o' ψ₂ φ₂ φ₁ β h₂ hφ₂ hφ₁ e₂ e₂' hβ (fun T x hx => (H T x hx).symm)`. Use `haveI := hκ₂`. Take `⟨e, ν, hcop, hν, eν⟩` from `exists_adjoint p D R b N Ω σ o₁ o₂ κ₂ hκ₂`. Use `haveI := hν`.
+
+Take `⟨bβ, hbβ⟩ : ∃ c : D.O, c = algebraMap (𝓞 D.F) D.O (D.bar β)` from `⟨_, rfl⟩`. Use `haveI : IsMonHom (o₁.act.act bβ) := o₁.act.hom _`. Use `haveI : IsMonHom (o₂.act.act bβ) := o₂.act.hom _`. Use `haveI : IsMonHom (o₂.act.act (algebraMap (𝓞 D.F) D.O β)) := o₂.act.hom _`. Take `⟨M, hMdef⟩ : ∃ M : o₁.A ⟶ o₂.A, M = o₁.act.act bβ ≫ ψ₁ ≫ φ₂` from `⟨_, rfl⟩`.
+
+Establish `hMcomm : M = ψ₁ ≫ φ₂ ≫ o₂.act.act bβ`. Rewrite using `[hMdef, ← Category.assoc, h₁.2.2.1 bβ, Category.assoc, lin hpE h₂.2.2.1 hφ₂ e₂ e₂' bβ]`. Establish `hMmon : IsMonHom M`. Rewrite using `[hMdef]`. Use `infer_instance`.
+
+Establish `hstar : (D.star (algebraMap (𝓞 D.F) D.O β)).unop = bβ`. Rewrite using `[D.star_F, hbβ]`. Both sides reduce to the same expression. Establish `hval : ∀ (T : Over (Sp Ω)) (x : T ⟶ o₁.A) (y : T ⟶ o₂.A), GlobalTheory.BirigidPow.val o₂.isLB y (x ≫ M) = (p ^ E) • GlobalTheory.BirigidPow.val o₁.isLB (y ≫ κ₂) x`. Introduce `T x y`.
+
+Establish `r1` using `rosVal o₂ (algebraMap (𝓞 D.F) D.O β) y (x ≫ ψ₁ ≫ φ₂)`. Rewrite `r1` using `[hstar]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hMcomm]`. Simplify using `only [Category.assoc]`.
+
+Use `_ = GlobalTheory.BirigidPow.val o₂.isLB (y ≫ o₂.act.act (algebraMap (𝓞 D.F) D.O β)) ((x ≫ ψ₁) ≫ φ₂) := by`. Rewrite using `[← r1, Category.assoc]`. Use `_ = GlobalTheory.BirigidPow.val o'.isLB ((y ≫ o₂.act.act (algebraMap (𝓞 D.F) D.O β)) ≫ ψ₂) (x ≫ ψ₁) := (val_adj_left p D R b N Ω σ o₂ o' (p ^ E) ψ₂ φ₂ h₂ hφ₂ e₂ e₂' T _ _).symm`. Use `_ = GlobalTheory.BirigidPow.val o'.isLB (x ≫ ψ₁) ((y ≫ o₂.act.act (algebraMap (𝓞 D.F) D.O β)) ≫ ψ₂) := val_symm p D R b N (Sp Ω) σ o' T _ _`. Use `_ = GlobalTheory.BirigidPow.val o₁.isLB x (((y ≫ o₂.act.act (algebraMap (𝓞 D.F) D.O β)) ≫ ψ₂) ≫ φ₁) := val_adj_left p D R b N Ω σ o₁ o' (p ^ E) ψ₁ φ₁ h₁ hφ₁ e₁ e₁' T _ _`.
+
+Use `_ = GlobalTheory.BirigidPow.val o₁.isLB x ((y ≫ κ₂) ^ (p ^ E)) := by`. Rewrite using `[← MonObj.comp_pow, ← eκ₂]`. Simplify using `only [Category.assoc]`. Use `_ = (p ^ E) • GlobalTheory.BirigidPow.val o₁.isLB x (y ≫ κ₂) := GlobalTheory.BirigidPow.val_pow_right o₁.isLB o₁.ab o₁.ample o₁.rig₁ o₁.rig₂ _ _ _`. Use `_ = (p ^ E) • GlobalTheory.BirigidPow.val o₁.isLB (y ≫ κ₂) x := by`.
+
+Rewrite using `[val_symm p D R b N (Sp Ω) σ o₁ T x]`. Establish `hMe : M ^ e = ν ^ (p ^ E)`. Use `hom_eq_of_val p D R b N Ω σ o₁ o₂ _ _ (by exact (homSub o₁.A o₂.A).pow_mem hMmon e) (by exact (homSub o₁.A o₂.A).pow_mem hν (p ^ E)) (fun T x y => ?_)` and prove the remaining obligations. Rewrite using `[MonObj.comp_pow, MonObj.comp_pow, GlobalTheory.BirigidPow.val_pow_right o₂.isLB o₂.ab o₂.ample o₂.rig₁ o₂.rig₂, GlobalTheory.BirigidPow.val_pow_right o₂.isLB o₂.ab o₂.ample o₂.rig₁ o₂.rig₂, hval, eν, smul_smul, smul_smul, mul_comm]`. Take `⟨u', w, huw⟩ : IsCoprime (e : ℤ) ((p ^ E : ℕ) : ℤ)` from `Nat.isCoprime_iff_coprime.mpr (Nat.Coprime.pow_right E hcop)`.
+
+Establish `hA : (ν ^ u' * M ^ w) ^ (p ^ E) = M`. Rewrite using `[mul_pow, ← zpow_natCast (ν ^ u'), ← zpow_natCast (M ^ w), ← zpow_mul, ← zpow_mul]`. Establish `h1 : ν ^ (u' * ((p ^ E : ℕ) : ℤ)) = M ^ (u' * (e : ℤ))`. Rewrite using `[mul_comm u', zpow_mul, zpow_natCast, ← hMe, ← zpow_natCast, ← zpow_mul, mul_comm]`. Rewrite using `[h1, ← zpow_add, huw, zpow_one]`.
+
+Use `haveI : IsMonHom (o₁.act.act (algebraMap (𝓞 D.F) D.O t)) := o₁.act.hom _`. Establish `hsplit : ψ₁ ≫ φ₂ = (o₁.act.act (algebraMap (𝓞 D.F) D.O a) ≫ ψ₁ ≫ φ₂) * (o₁.act.act (algebraMap (𝓞 D.F) D.O β) ≫ ψ₁ ≫ φ₂)`. Rewrite using `[← MonObj.mul_comp, ← o₁.act.add, ← map_add, hab, map_one, o₁.act.one, Category.id_comp]`. Establish `ha : o₁.act.act (algebraMap (𝓞 D.F) D.O a) ≫ ψ₁ ≫ φ₂ = M * (o₁.act.act (algebraMap (𝓞 D.F) D.O t) ≫ ψ₁ ≫ φ₂) ^ (p ^ E)`. Rewrite using `[ht, map_add, o₁.act.add, MonObj.mul_comp, map_mul, map_pow, map_natCast, ← Nat.cast_pow, o₁.act.mul, act_nat, idPow_comp, MonObj.pow_comp, ← hbβ, ← hMdef]`.
+
+Use `⟨ν ^ u' * M ^ w * (o₁.act.act (algebraMap (𝓞 D.F) D.O t) ≫ ψ₁ ≫ φ₂) * κ, ?_, ?_⟩` and prove the remaining obligations. Establish `hX : IsMonHom (o₁.act.act (algebraMap (𝓞 D.F) D.O t) ≫ ψ₁ ≫ φ₂)` using `inferInstance`. Conclude with `(homSub o₁.A o₂.A).mul_mem ((homSub o₁.A o₂.A).mul_mem ((homSub o₁.A o₂.A).mul_mem ((homSub o₁.A o₂.A).zpow_mem hν u') ((homSub o₁.A o₂.A).zpow_mem hMmon w)) hX) hκ`. Rewrite using `[mul_pow, mul_pow, hA, ← eκ, ← ha, ← hsplit]`.
+-/
 private theorem half {E : ℕ} {r : ℤ} (o₁ o₂ o' : Obj b N σ) (ψ₁ : o₁.A ⟶ o'.A) (ψ₂ : o₂.A ⟶ o'.A)
     (φ₁ : o'.A ⟶ o₁.A) (φ₂ : o'.A ⟶ o₂.A) (h₁ : IsPIsog (p ^ E) o₁ o' ψ₁) (h₂ : IsPIsog (p ^ E) o₂ o' ψ₂)
     (hφ₁ : IsMonHom φ₁) (hφ₂ : IsMonHom φ₂)
@@ -584,6 +765,11 @@ end UpperTheory.KEq
 
 namespace UpperTheory.KEq
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `haveI : IsSeparated B.hom := hs`. Use `haveI : Surjective V.hom := ⟨fun y => ⟨w, Subsingleton.elim _ _⟩⟩`. Use `ext_of_isDominant_of_isSeparated (X := Sp k) B.hom ?_ V.hom ?_` and prove the remaining obligations. Rewrite using `[Over.w f, Over.w g]`.
+
+Use `congrArg Over.Hom.left h` as an intermediate fact. Simplify using `only [Over.comp_left] at this`. Conclude with `this`.
+-/
 private theorem sec_ext {k : Type} [Field k] {B : Over (Sp k)} (hs : IsSeparated B.hom) (V : Over (Sp k))
     (w : V.left) (f g : 𝟙_ (Over (Sp k)) ⟶ B) (h : toUnit V ≫ f = toUnit V ≫ g) : f = g := by
   apply Over.OverMorphism.ext
@@ -595,6 +781,13 @@ private theorem sec_ext {k : Type} [Field k] {B : Over (Sp k)} (hs : IsSeparated
     simp only [Over.comp_left] at this
     exact this
 
+/- English proof (translation)
+Use `choose V i w' hi hiw hfg using h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Set `U : T.left → T.left.Opens` to `fun w => @Scheme.Hom.opensRange _ _ (i w).left (hi w)`. Establish `hU : TopologicalSpace.IsOpenCover U`. Rewrite using `[TopologicalSpace.IsOpenCover, eq_top_iff]`.
+
+Introduce `w _`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Conclude with `⟨w, w' w, hiw w⟩`. Use `(T.left.openCoverOfIsOpenCover U hU).hom_ext _ _ fun (w : T.left) => ?_` and prove the remaining obligations. Use `haveI := hi w`.
+
+Use `show (U w).ι ≫ f.left = (U w).ι ≫ g.left`. Establish `e : (U w).ι = ((i w).left.isoOpensRange).inv ≫ (i w).left`. Rewrite using `[Iso.eq_inv_comp]`. Conclude with `Scheme.Hom.isoOpensRange_hom_ι _`. Rewrite using `[e, Category.assoc, Category.assoc, ← Over.comp_left, hfg w, Over.comp_left]`.
+-/
 private theorem glue_ext {S : Scheme.{0}} {T B : Over S} (f g : T ⟶ B)
     (h : ∀ w : T.left, ∃ (V : Over S) (i : V ⟶ T) (w' : V.left), IsOpenImmersion i.left ∧ i.left w' = w ∧
       i ≫ f = i ≫ g) : f = g := by
@@ -616,6 +809,17 @@ private theorem glue_ext {S : Scheme.{0}} {T B : Over S} (f g : T ⟶ B)
 
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
 
+/- English proof (translation)
+Use `haveI := o.ab`. Use `haveI : IsProper o.A.hom := IsAbelianScheme.proper`. Establish `hsepA : IsSeparated o.A.hom` using `inferInstance`. Establish `hc0 : ((c : ℕ) : k) ≠ 0` using `Nat.cast_ne_zero.mpr hc.ne'`. Apply `glue_ext` to reduce the goal to its premises.
+
+Introduce `w`. Take `⟨V, i, y, w', hi, hiw, hyc, hix⟩` from `GlobalTheory.T.abelianScheme_torsionPoint_locally_constant_geomPoint (Sp k) o.A o.ab k (𝟙 (Sp k)) c hc0 T (toUnit T) x hxc w`. Use `⟨V, i, w', hi, hiw, ?_⟩` and prove the remaining obligations. Establish `hpt : i ≫ toUnit T = toUnit V` using `toUnit_unique _ _`. Establish `hVy : toUnit V ≫ y = i ≫ x`.
+
+Rewrite using `[← hpt, Category.assoc, ← hix]`. Establish `hy1 : y ≫ ψ₁ = 1`. Apply `sec_ext hs₁ V w'` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hVy, Category.assoc, h1]`. Simplify using `only [MonObj.comp_one]`.
+
+Establish `hyv : KilledBy o v y`. Introduce `a ha`. Apply `sec_ext hsepA V w'` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hVy, Category.assoc, hv a ha]`. Simplify using `only [MonObj.comp_one]`.
+
+Establish `hy2` using `hk y hy1 hyv`. Rewrite using `[← Category.assoc, hix, Category.assoc, Category.assoc, hy2]`. Simplify using `only [MonObj.comp_one]`.
+-/
 private theorem ker_le {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {σ : Sp k ⟶ Sp R} {o o₂ : Obj b N σ}
     (c : ℕ) (hc : 0 < c) (v : Ideal (𝓞 D.F)) {O₁ : Over (Sp k)} [GrpObj O₁] (hs₁ : IsSeparated O₁.hom)
     (ψ₁ : o.A ⟶ O₁) (ψ₂ : o.A ⟶ o₂.A)
@@ -652,6 +856,15 @@ namespace UpperTheory.KEq
 
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hnd`. Apply `hw` to reduce the goal to its premises. Establish `hq : ((r : 𝓞 D.F) ^ 2 - (D.tr : 𝓞 D.F) * r + (D.nm : 𝓞 D.F)) ∈ w`. Apply `hu` to reduce the goal to its premises. Establish `e : ((r : 𝓞 D.F) ^ 2 - (D.tr : 𝓞 D.F) * r + (D.nm : 𝓞 D.F)) = (D.ω - r) * (D.bar D.ω - r)`.
+
+Rewrite using `[← D.tr_eq, ← D.nm_eq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ (sub_mem_uIdeal D r)`. Establish `hp : ((p : ℕ) : 𝓞 D.F) ∈ w` using `hu (p_mem_uIdeal D r)`.
+
+Establish `hcop : IsCoprime (p : ℤ) (r ^ 2 - D.tr * r + D.nm)` using `(Irreducible.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp (Fact.out)).irreducible).mpr hnd`. Take `⟨a, c, hac⟩` from `hcop`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1` using `congrArg (Int.cast : ℤ → 𝓞 D.F) hac`. Move the coercions through the operations in `at h1`.
+
+Rewrite using `[← h1]`. Conclude with `w.add_mem (w.mul_mem_left _ hp) (w.mul_mem_left _ hq)`.
+-/
 private theorem root_dvd (D : Datum p) {r : ℤ} {w : Ideal (𝓞 D.F)} (hw : w ≠ ⊤) (hu : uIdeal D r ≤ w) :
     (p : ℤ) ∣ r ^ 2 - D.tr * r + D.nm := by
   by_contra hnd
@@ -674,6 +887,23 @@ private theorem root_dvd (D : Datum p) {r : ℤ} {w : Ideal (𝓞 D.F)} (hw : w 
   rw [← h1]
   exact w.add_mem (w.mul_mem_left _ hp) (w.mul_mem_left _ hq)
 
+/- English proof (translation)
+Take `⟨φ₁, hφ₁, e₁, e₁'⟩` from `h₁.2.2.2.2.2`. Take `⟨φ₂, hφ₂, e₂, e₂'⟩` from `h₂.2.2.2.2.2`. Establish `hq₁ : IsMonHom ψ₁ ∧ IsMonHom φ₁ ∧ ψ₁ ≫ φ₁ = 𝟙 o.A ^ (p ^ E) ∧ φ₁ ≫ ψ₁ = 𝟙 o₁.A ^ (p ^ E)` using `⟨h₁.2.1, hφ₁, e₁, e₁'⟩`. Establish `hq₂ : IsMonHom ψ₂ ∧ IsMonHom φ₂ ∧ ψ₂ ≫ φ₂ = 𝟙 o.A ^ (p ^ E) ∧ φ₂ ≫ ψ₂ = 𝟙 o₂.A ^ (p ^ E)` using `⟨h₂.2.1, hφ₂, e₂, e₂'⟩`. Use `haveI := hq₁.1`.
+
+Use `haveI := hq₁.2.1`. Use `haveI := hq₂.1`. Use `haveI := hq₂.2.1`. Use `haveI := o.ab`. Use `haveI := o₁.ab`.
+
+Use `haveI := o₂.ab`. Use `haveI : IsProper o₁.A.hom := IsAbelianScheme.proper`. Use `haveI : IsProper o₂.A.hom := IsAbelianScheme.proper`. Establish `hs₁ : IsSeparated o₁.A.hom` using `inferInstance`. Establish `hs₂ : IsSeparated o₂.A.hom` using `inferInstance`.
+
+Set `o' : Obj b N σ` to `ESDual.scale o E rfl`. Establish `dc₁` using `ESDual.dual_clauses h₁ hq₁.2.2.1 hq₁.2.2.2`. Establish `dc₂` using `ESDual.dual_clauses h₂ hq₂.2.2.1 hq₂.2.2.2`. Establish `g₁ : IsPIsog (p ^ E) o₁ o' φ₁` using `⟨⟨E, rfl⟩, hq₁.2.1, dc₁.1, fun x => dc₁.2.1 x, dc₁.2.2, ψ₁, hq₁.1, hq₁.2.2.2, hq₁.2.2.1⟩`. Establish `g₂ : IsPIsog (p ^ E) o₂ o' φ₂` using `⟨⟨E, rfl⟩, hq₂.2.1, dc₂.1, fun x => dc₂.2.1 x, dc₂.2.2, ψ₂, hq₂.1, hq₂.2.2.2, hq₂.2.2.1⟩`.
+
+Take `⟨a, β, hab, hβ, t, ht⟩` from `exists_ab D r hr E`. Establish `H : ∀ (T : Over (Sp k)) (x : T ⟶ o'.A), (∃ e : ℕ, KilledBy o' (uIdeal D r ^ e) x) → (x ≫ ψ₁ = 1 ↔ x ≫ ψ₂ = 1)`. Introduce and unpack `T (x : T ⟶ o.A) ⟨e, he⟩`. Establish `hxc : x ^ (p ^ e) = 1`. Establish `h0` using `he _ (Ideal.pow_mem_pow (p_mem_uIdeal D r) e)`.
+
+Express the relevant statement in the definitionally equal form `x ≫ o.act.act _ = 1 at h0`. Rewrite `h0` using `[map_pow, map_natCast, ← Nat.cast_pow, act_nat o (p ^ e), MonObj.comp_pow, Category.comp_id]`. Conclude with `h0`. Establish `hc : 0 < p ^ e` using `pow_pos (Fact.out : p.Prime).pos e`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h1`. Conclude with `ker_le (p ^ e) hc _ hs₁ ψ₁ ψ₂ (fun h hh hv => ((hk h).mp ⟨hh, e, hv⟩).1) T x he h1 hxc`. Introduce `h2`. Conclude with `ker_le (p ^ e) hc _ hs₂ ψ₂ ψ₁ (fun h hh hv => ((hk h).mpr ⟨hh, e, hv⟩).1) T x he h2 hxc`. Take `⟨τ, hτ, hτe⟩` from `half o₁ o₂ o' φ₁ φ₂ ψ₁ ψ₂ g₁ g₂ hq₁.1 hq₂.1 hq₁.2.2.2 hq₁.2.2.1 hq₂.2.2.2 hq₂.2.2.1 H a β t hab hβ ht`.
+
+Use `haveI := hτ`. Use `⟨τ, hτ, ?_⟩` and prove the remaining obligations. Use `hom_cancel k o.A o₂.A o.ab o₂.ab (ψ₁ ≫ τ) ψ₂ inferInstance hq₂.1 (p ^ E) (pow_pos (Fact.out : p.Prime).pos E) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem factor {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {σ : Sp k ⟶ Sp R} {o o₁ o₂ : Obj b N σ}
     (E : ℕ) (r : ℤ) (hr : (p : ℤ) ∣ r ^ 2 - D.tr * r + D.nm) (ψ₁ : o.A ⟶ o₁.A) (ψ₂ : o.A ⟶ o₂.A)
     (h₁ : IsPIsog (p ^ E) o o₁ ψ₁) (h₂ : IsPIsog (p ^ E) o o₂ ψ₂)
@@ -734,6 +964,13 @@ private theorem factor {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {σ : S
 
 end UpperTheory.KEq
 
+/- English proof (translation)
+Introduce `p _ D R _ b N hp r w c hw hu k _ _ σ o o₁ o₂ ψ₁ ψ₂ h₁ h₂ hk κ _ _ x g`. Use `haveI := GlobalTheory.UPel.HT.ES.TjExists.charZero_of_base b hp σ`. Take `⟨E, rfl⟩` from `h₁.1`. Establish `hr` using `UpperTheory.KEq.root_dvd D hw.ne_top hu`. Take `⟨τ, hτ, e⟩` from `UpperTheory.KEq.factor E r hr ψ₁ ψ₂ h₁ h₂ hk`.
+
+Take `⟨τ', hτ', e'⟩` from `UpperTheory.KEq.factor E r hr ψ₂ ψ₁ h₂ h₁ fun h => (hk h).symm`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← e, ← Category.assoc, h, MonObj.one_comp]`. Introduce `h`.
+
+Rewrite using `[← e', ← Category.assoc, h, MonObj.one_comp]`.
+-/
 theorem UpperTheory.isogeny_kernel_points_iff_of_isPIsog :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), IsUnit ((p : ℕ) : R) → ∀ (r : ℤ) (w : Ideal (𝓞 D.F)) (c : ℕ), w.IsMaximal → uIdeal D r ≤ w → ∀ (k : Type) [Field k] [IsAlgClosed k] (σ : Sp k ⟶ Sp R) (o o₁ o₂ : Obj b N σ) (ψ₁ : o.A ⟶ o₁.A) (ψ₂ : o.A ⟶ o₂.A), IsPIsog c o o₁ ψ₁ → IsPIsog c o o₂ ψ₂ → (∀ h : 𝟙_ (Over (Sp k)) ⟶ o.A, (h ≫ ψ₁ = 1 ∧ ∃ e : ℕ, KilledBy o (uIdeal D r ^ e) h) ↔ (h ≫ ψ₂ = 1 ∧ ∃ e : ℕ, KilledBy o (uIdeal D r ^ e) h)) → ∀ (κ : Type) [Field κ] [IsAlgClosed κ] (x : Sp κ ⟶ Sp k) (g : Over.mk x ⟶ o.A), g ≫ ψ₁ = 1 ↔ g ≫ ψ₂ = 1 := by
   intro p _ D R _ b N hp r w c hw hu k _ _ σ o o₁ o₂ ψ₁ ψ₂ h₁ h₂ hk κ _ _ x g

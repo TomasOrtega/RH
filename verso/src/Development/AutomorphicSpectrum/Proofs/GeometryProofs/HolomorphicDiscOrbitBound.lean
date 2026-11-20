@@ -15,24 +15,40 @@ open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.M.FinHolAtlas
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[← mul_assoc, inv_mul_cancel₀ (hc p.1)]`.
+-/
 theorem orbit_symm {u w : (Σ k, ι k) → ℂ} (h : SameOrbit u w) : SameOrbit w u := by
   obtain ⟨c, hc, rfl⟩ := h
   refine ⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩
   funext p
   simp [← mul_assoc, inv_mul_cancel₀ (hc p.1)]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Take `⟨d, hd, rfl⟩` from `h'`. Conclude with `⟨fun k => c k * d k, fun k => mul_ne_zero (hc k) (hd k), by funext p; simp [mul_assoc]⟩`.
+-/
 theorem orbit_trans {u v w : (Σ k, ι k) → ℂ} (h : SameOrbit u v) (h' : SameOrbit v w) :
     SameOrbit u w := by
   obtain ⟨c, hc, rfl⟩ := h
   obtain ⟨d, hd, rfl⟩ := h'
   exact ⟨fun k => c k * d k, fun k => mul_ne_zero (hc k) (hd k), by funext p; simp [mul_assoc]⟩
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Simplify using `only []`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem orbit_cross {u w : (Σ k, ι k) → ℂ} (h : SameOrbit u w) (k : K) (a b : ι k) :
     u ⟨k, a⟩ * w ⟨k, b⟩ = u ⟨k, b⟩ * w ⟨k, a⟩ := by
   obtain ⟨c, hc, rfl⟩ := h
   simp only []
   ring
 
+/- English proof (translation)
+Use `choose l hl using hw`. Use `⟨fun k => u ⟨k, l k⟩ / w ⟨k, l k⟩, fun k => ?_, ?_⟩` and prove the remaining obligations. Use `div_ne_zero (fun h0 => ?_) (hl k)` and prove the remaining obligations. Take `⟨i, hi⟩` from `hu k`. Use `h k i (l k)` as an intermediate fact.
+
+Rewrite `this` using `[h0, zero_mul]`. Conclude with `(mul_ne_zero hi (hl k)) this`. Use function extensionality and compare the values at `⟨k, a⟩`. Use `h k a (l k)` as an intermediate fact. Simplify using `only []`.
+
+Clear denominators, using `[hl k]` for the nonvanishing conditions. Take the linear combination `this`.
+-/
 theorem orbit_of_cross {u w : (Σ k, ι k) → ℂ} (hu : ∀ k, ∃ i, u ⟨k, i⟩ ≠ 0)
     (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0)
     (h : ∀ k (a b : ι k), u ⟨k, a⟩ * w ⟨k, b⟩ = u ⟨k, b⟩ * w ⟨k, a⟩) : SameOrbit u w := by
@@ -49,6 +65,9 @@ theorem orbit_of_cross {u w : (Σ k, ι k) → ℂ} (hu : ∀ k, ∃ i, u ⟨k, 
     field_simp [hl k]
     linear_combination this
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Use function extensionality and compare the values at `q`. Simplify using `only [affCoord]`. Conclude with `mul_div_mul_left _ _ (hc q.1)`.
+-/
 theorem affCoord_orbit {u w : (Σ k, ι k) → ℂ} (h : SameOrbit u w) (p : (k : K) → ι k) :
     affCoord p u = affCoord p w := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -60,6 +79,9 @@ section Atlas
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Establish `h1 : ContinuousAt ((g ∘ (A.chart j).symm) ∘ (A.chart j)) x` using `ContinuousAt.comp h ((A.chart j).continuousAt hj)`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+-/
 theorem continuousAt_of_chart {F : Type} [TopologicalSpace F] (A : FinHolAtlas e X) {g : X → F}
     {x : X} (j : Fin A.n) (hj : x ∈ (A.chart j).source)
     (h : ContinuousAt (g ∘ (A.chart j).symm) (A.chart j x)) : ContinuousAt g x := by
@@ -69,11 +91,21 @@ theorem continuousAt_of_chart {F : Type} [TopologicalSpace F] (A : FinHolAtlas e
   filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy
   simp [(A.chart j).left_inv hy]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩`.
+-/
 theorem chart_mem (A : FinHolAtlas e X) {U : Set X} {x : X} (hx : x ∈ U) (j : Fin A.n)
     (hj : x ∈ (A.chart j).source) :
     A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U :=
   ⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `A.cover (h y₀)`. Establish `hv` using `(B.chart j).map_source hj`. Establish `hl` using `(B.chart j).left_inv hj`. Establish `h1 : AnalyticAt ℂ (A.chart k ∘ h ∘ (B.chart j).symm) (B.chart j y₀)` using `hh.2 j k _ ⟨hv, by simpa [hl] using hk⟩`. Establish `h2 : AnalyticAt ℂ (G ∘ (A.chart k).symm) (A.chart k (h y₀))` using `hG k _ (chart_mem A hy k hk)`.
+
+Establish `h2' : AnalyticAt ℂ (G ∘ (A.chart k).symm) ((A.chart k ∘ h ∘ (B.chart j).symm) (B.chart j y₀))`. Simplify `h2` using `[hl]`. Establish `h3` using `h2'.comp h1`. Use `h3.congr ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (h ∘ (B.chart j).symm) (B.chart j y₀)` using `hh.1.continuousAt.comp ((B.chart j).continuousAt_symm hv)`.
+
+Establish `hs : (A.chart k).source ∈ 𝓝 ((h ∘ (B.chart j).symm) (B.chart j y₀))`. Simplify `(A.chart k).open_source.mem_nhds hk` using `[hl]`. Use `filter_upwards [hc.tendsto hs] with v hv'`. Conclude with `congrArg G ((A.chart k).left_inv hv')`.
+-/
 theorem analyticAt_comp {e' : ℕ} {Y : Type} [TopologicalSpace Y] {B : FinHolAtlas e' Y}
     {A : FinHolAtlas e X} {h : Y → X} (hh : HoloMap B A h) {V : Set X} {G : X → ℂ}
     (hG : A.HoloOn V G) {y₀ : Y} (hy : h y₀ ∈ V) (j : Fin B.n)
@@ -102,6 +134,9 @@ end Atlas
 
 variable {P J : Ideal (MRing ι)} {e : ℕ}
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `R.A.cover y`. Use `continuousAt_pi.2 fun p => ?_` and prove the remaining obligations. Use `continuousAt_of_chart R.A j hj ?_` and prove the remaining obligations. Conclude with `(R.holo x p j _ (chart_mem R.A hy j hj)).continuousAt`.
+-/
 theorem lift_continuousAt (R : AnLogRes P J e) (x : R.X) {y : R.X} (hy : y ∈ R.U x) :
     ContinuousAt (R.lift x) y := by
   obtain ⟨j, hj⟩ := R.A.cover y
@@ -109,6 +144,15 @@ theorem lift_continuousAt (R : AnLogRes P J e) (x : R.X) {y : R.X} (hy : y ∈ R
   refine continuousAt_of_chart R.A j hj ?_
   exact (R.holo x p j _ (chart_mem R.A hy j hj)).continuousAt
 
+/- English proof (translation)
+Rewrite using `[tendsto_iff_ultrafilter]`. Introduce `F hF`. Establish `hxs : Tendsto x F (𝓝 (F.map x).lim)` using `(F.map x).le_nhds_lim`. Use `set xs := (F.map x).lim with hxsdef`. Establish `hU : ∀ᶠ z in (F : Filter ℂ), x z ∈ R.U xs` using `hxs.eventually ((R.isOpen_U xs).mem_nhds (R.mem_U xs))`.
+
+Establish `hl : Tendsto (fun z => R.lift xs (x z)) F (𝓝 (R.lift xs xs))` using `(lift_continuousAt R xs (R.mem_U xs)).tendsto.comp hxs`. Establish `hZF : Tendsto Zf F (𝓝 (Zf 0))` using `hZ.tendsto.mono_left hF`. Establish `horb : ∀ᶠ z in (F : Filter ℂ), SameOrbit (R.lift xs (x z)) (Zf z)` using `by filter_upwards [hU, hF hx] with z h1 h2`. Conclude with `orbit_trans (R.compat xs (x z) (x z) ⟨h1, R.mem_U _⟩) h2`. Establish `hcross : ∀ k (a b : ι k), R.lift xs xs ⟨k, a⟩ * Zf 0 ⟨k, b⟩ = R.lift xs xs ⟨k, b⟩ * Zf 0 ⟨k, a⟩`.
+
+Introduce `k a b`. Establish `t1 : Tendsto (fun z => R.lift xs (x z) ⟨k, a⟩ * Zf z ⟨k, b⟩) F (𝓝 (R.lift xs xs ⟨k, a⟩ * Zf 0 ⟨k, b⟩))` using `((tendsto_pi_nhds.1 hl) _).mul ((tendsto_pi_nhds.1 hZF) _)`. Establish `t2 : Tendsto (fun z => R.lift xs (x z) ⟨k, b⟩ * Zf z ⟨k, a⟩) F (𝓝 (R.lift xs xs ⟨k, b⟩ * Zf 0 ⟨k, a⟩))` using `((tendsto_pi_nhds.1 hl) _).mul ((tendsto_pi_nhds.1 hZF) _)`. Use `tendsto_nhds_unique_of_eventuallyEq t1 t2 ?_` and prove the remaining obligations. Use `filter_upwards [horb] with z hz`.
+
+Conclude with `orbit_cross hz k a b`. Establish `hfin : SameOrbit (R.lift xs xs) (Zf 0)` using `orbit_of_cross (R.mem xs xs (R.mem_U xs)).1 hZ0 hcross`. Establish `: xs = x₀` using `R.inj xs x₀ (hJ _) (orbit_trans hfin (orbit_symm h0))`. Rewrite using `[← this]`. Conclude with `hxs`.
+-/
 theorem tendsto_center (R : AnLogRes P J e) (hJ : ∀ z, z ∉ mcPts J)
     {Zf : ℂ → (Σ k, ι k) → ℂ} (hZ : ContinuousAt Zf 0) (hZ0 : ∀ k, ∃ i, Zf 0 ⟨k, i⟩ ≠ 0)
     {x : ℂ → R.X} (hx : ∀ᶠ z in 𝓝 (0 : ℂ), SameOrbit (R.lift (x z) (x z)) (Zf z))
@@ -143,6 +187,29 @@ theorem tendsto_center (R : AnLogRes P J e) (hJ : ∀ z, z ∉ mcPts J)
   rw [← this]
   exact hxs
 
+/- English proof (translation)
+Use `choose p hp using (R.mem x₀ x₀ (R.mem_U x₀)).1`. Establish `hv₀` using `chart_mem R.A (R.mem_U x₀) j hj`. Establish `hl` using `(R.A.chart j).left_inv hj`. Set `a : (Fin e → ℂ) → (Σ k, ι k) → ℂ` to `fun v => affCoord p (R.lift x₀ ((R.A.chart j).symm v))`. Establish `hcoord : ∀ q, AnalyticAt ℂ (fun v => R.lift x₀ ((R.A.chart j).symm v) q) (R.A.chart j x₀)` using `fun q => R.holo x₀ q j _ hv₀`.
+
+Establish `hden : ∀ k, R.lift x₀ ((R.A.chart j).symm (R.A.chart j x₀)) ⟨k, p k⟩ ≠ 0`. Introduce `k`. Rewrite using `[hl]`. Conclude with `hp k`. Establish `ha : AnalyticAt ℂ a (R.A.chart j x₀)`.
+
+Use `analyticAt_pi_iff.2 fun q => ?_` and prove the remaining obligations. Conclude with `(hcoord q).div (hcoord _) (hden q.1)`. Establish `hker : ((fderiv ℂ a (R.A.chart j x₀) : (Fin e → ℂ) →L[ℂ] ((Σ k, ι k) → ℂ)) : (Fin e → ℂ) →ₗ[ℂ] ((Σ k, ι k) → ℂ)).ker = ⊥` using `R.immersion x₀ (hJ _) p hp j hj`. Take `⟨ρ, hρ⟩` from `LinearMap.exists_leftInverse_of_injective _ hker`. Set `ρc : ((Σ k, ι k) → ℂ) →L[ℂ] (Fin e → ℂ)` to `LinearMap.toContinuousLinearMap ρ`.
+
+Set `b : (Fin e → ℂ) → (Fin e → ℂ)` to `fun v => ρc (a v)`. Establish `hb : ContDiffAt ℂ 1 b (R.A.chart j x₀)` using `ρc.contDiff.contDiffAt.comp _ ha.contDiffAt`. Establish `hb' : HasFDerivAt b ((ContinuousLinearEquiv.refl ℂ (Fin e → ℂ) : (Fin e → ℂ) ≃L[ℂ] (Fin e → ℂ)) : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) (R.A.chart j x₀)`. Establish `h1` using `ρc.hasFDerivAt.comp (R.A.chart j x₀) ha.differentiableAt.hasFDerivAt`. Use `HasFDerivAt.congr_fderiv h1 (ContinuousLinearMap.ext fun v => ?_)` and prove the remaining obligations.
+
+Conclude with `LinearMap.congr_fun hρ v`. Establish `hn : (1 : WithTop ℕ∞) ≠ 0` using `one_ne_zero`. Set `Inv` to `hb.localInverse hb' hn`. Establish `hInv : ContDiffAt ℂ 1 Inv (b (R.A.chart j x₀))` using `hb.to_localInverse hb' hn`. Establish `hleft : ∀ᶠ v in 𝓝 (R.A.chart j x₀), Inv (b v) = v` using `(hb.hasStrictFDerivAt' hb' hn).eventually_left_inverse`.
+
+Set `c : ℂ → Fin e → ℂ` to `fun z => ρc (affCoord p (Zf z))`. Establish `hZp : ∀ k, Zf 0 ⟨k, p k⟩ ≠ 0`. Take `⟨d, -, hd⟩` from `h0`. Introduce `k h`. Conclude with `hp k (by rw [hd]; simp [h])`.
+
+Establish `hall : ∀ᶠ z in 𝓝 (0 : ℂ), ∀ q, DifferentiableAt ℂ (fun w => Zf w q) z` using `eventually_all.2 hZ`. Establish `hDen : ∀ᶠ z in 𝓝 (0 : ℂ), ∀ k, Zf z ⟨k, p k⟩ ≠ 0`. Use `eventually_all.2 fun k => ?_` and prove the remaining obligations. Conclude with `(hZ ⟨k, p k⟩).self_of_nhds.continuousAt.eventually_ne (hZp k)`. Establish `hcd : ∀ᶠ z in 𝓝 (0 : ℂ), DifferentiableAt ℂ c z` using `by filter_upwards [hall, hDen] with z h1 h2`.
+
+Use `ρc.differentiableAt.comp z (differentiableAt_pi.2 fun q => ?_)` and prove the remaining obligations. Conclude with `(h1 q).div (h1 _) (h2 q.1)`. Establish `hc0 : c 0 = b (R.A.chart j x₀)` using `by show ρc (affCoord p (Zf 0)) = ρc (affCoord p (R.lift x₀ ((R.A.chart j).symm (R.A.chart j x₀))))`. Rewrite using `[hl, affCoord_orbit h0]`. Establish `hcc : ContinuousAt c 0` using `hcd.self_of_nhds.continuousAt`.
+
+Establish `hInvd : ∀ᶠ y in 𝓝 (c 0), DifferentiableAt ℂ Inv y`. Rewrite using `[hc0]`. Conclude with `(hInv.eventually (by simp)).mono fun y hy => hy.differentiableAt (by simp)`. Establish `hdiff : ∀ᶠ z in 𝓝 (0 : ℂ), DifferentiableAt ℂ (fun w => Inv (c w)) z` using `by filter_upwards [hcc.tendsto.eventually hInvd, hcd] with z h1 h2`. Conclude with `h1.comp z h2`.
+
+Establish `hchart : Tendsto (fun z => R.A.chart j (x z)) (𝓝 0) (𝓝 (R.A.chart j x₀))` using `((R.A.chart j).continuousAt hj).tendsto.comp ht`. Establish `heq : ∀ᶠ z in 𝓝 (0 : ℂ), R.A.chart j (x z) = Inv (c z)` using `by filter_upwards [hchart.eventually hleft, ht.eventually ((R.A.chart j).open_source.mem_nhds hj), ht.eventually ((R.isOpen_U x₀).mem_nhds (R.mem_U x₀)), hx] with z h1 h2 h3 h4`. Establish `hbz : b (R.A.chart j (x z)) = c z` using `by show ρc (affCoord p (R.lift x₀ ((R.A.chart j).symm (R.A.chart j (x z))))) = ρc (affCoord p (Zf z))`. Rewrite using `[(R.A.chart j).left_inv h2, affCoord_orbit (orbit_trans (R.compat x₀ (x z) (x z) ⟨h3, R.mem_U _⟩) h4)]`. Rewrite using `[← hbz, h1]`.
+
+Use `filter_upwards [hdiff, heq.eventually_nhds] with z h1 h2`. Conclude with `h1.congr_of_eventuallyEq h2`.
+-/
 theorem chart_differentiable (R : AnLogRes P J e) (hJ : ∀ z, z ∉ mcPts J)
     {Zf : ℂ → (Σ k, ι k) → ℂ}
     (hZ : ∀ q, ∀ᶠ z in 𝓝 (0 : ℂ), DifferentiableAt ℂ (fun w => Zf w q) z)
@@ -221,6 +288,13 @@ theorem chart_differentiable (R : AnLogRes P J e) (hJ : ∀ z, z ∉ mcPts J)
   filter_upwards [hdiff, heq.eventually_nhds] with z h1 h2
   exact h1.congr_of_eventuallyEq h2
 
+/- English proof (translation)
+Establish `hnot : ¬ ∀ᶠ z in 𝓝 (0 : ℂ), g z = 0`. Introduce `h`. Establish `h1 : ∀ᶠ z in 𝓝[≠] (0 : ℂ), g z = 0` using `h.filter_mono nhdsWithin_le_nhds`. Take `⟨z, hz1, hz2⟩` from `(hne.and h1).exists`. Conclude with `hz1 hz2`.
+
+Take `⟨m, f, hf, hf0, hgf⟩` from `hg.exists_eventuallyEq_pow_smul_nonzero_iff.2 hnot`. Use `⟨‖f 0‖ / 2, m, by positivity, ?_⟩` and prove the remaining obligations. Establish `hlt : ∀ᶠ z in 𝓝 (0 : ℂ), ‖f 0‖ / 2 < ‖f z‖` using `hf.continuousAt.norm.eventually (lt_mem_nhds (by`. Establish `: 0 < ‖f 0‖` using `norm_pos_iff.2 hf0`. Use the proof step `linarith))`.
+
+Use `filter_upwards [hgf, hlt] with z h1 h2`. Rewrite using `[h1, norm_smul, norm_pow, sub_zero, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left h2.le (by positivity)`.
+-/
 theorem exists_lower_bound {g : ℂ → ℂ} (hg : AnalyticAt ℂ g 0)
     (hne : ∀ᶠ z in 𝓝[≠] (0 : ℂ), g z ≠ 0) :
     ∃ (c : ℝ) (m : ℕ), 0 < c ∧ ∀ᶠ z in 𝓝 (0 : ℂ), c * ‖z‖ ^ m ≤ ‖g z‖ := by
@@ -245,6 +319,39 @@ namespace GlobalTheory.CompanionTheory.Ar.Plug
 
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.M.FinHolAtlas GlobalTheory.CompanionTheory.Ar.Plug.Disc
 
+/- English proof (translation)
+Introduce `K _ ι _ D σ S P Re hJ Zf hZ hmem hopen`. Establish `hJ' : ∀ z, z ∉ mcPts Re.J`. Introduce `z hz`. Use `hz.2 1 (by rw [hJ]; trivial)` as an intermediate fact. Simplify using `at this`.
+
+Establish `h0b : (0 : ℂ) ∈ Metric.ball (0 : ℂ) 1` using `by simp`. Take `⟨x₀, h0⟩` from `Re.R.surj (Zf 0) (hmem 0 h0b) (hJ' _)`. Establish `hex : ∀ z, ∃ x : Re.R.X, z ∈ Metric.ball (0 : ℂ) 1 → SameOrbit (Re.R.lift x x) (Zf z)`. Introduce `z`. Distinguish the cases in `hz : z ∈ Metric.ball (0 : ℂ) 1`.
+
+Take `⟨x, hx⟩` from `Re.R.surj (Zf z) (hmem z hz) (hJ' _)`. Conclude with `⟨x, fun _ => hx⟩`. Conclude with `⟨x₀, fun h => absurd h hz⟩`. Use `choose x hxs using hex`. Establish `hball : ∀ᶠ z in 𝓝 (0 : ℂ), z ∈ Metric.ball (0 : ℂ) 1` using `Metric.ball_mem_nhds _ one_pos`.
+
+Establish `hx : ∀ᶠ z in 𝓝 (0 : ℂ), SameOrbit (Re.R.lift (x z) (x z)) (Zf z)` using `hball.mono hxs`. Establish `hZd : ∀ q, ∀ᶠ z in 𝓝 (0 : ℂ), DifferentiableAt ℂ (fun w => Zf w q) z` using `fun q => by filter_upwards [hball] with z hz`. Conclude with `(hZ q).differentiableAt (Metric.isOpen_ball.mem_nhds hz)`. Establish `hZc : ContinuousAt Zf 0` using `continuousAt_pi.2 fun q => (hZd q).self_of_nhds.continuousAt`. Establish `ht : Tendsto x (𝓝 0) (𝓝 x₀)` using `tendsto_center Re.R hJ' hZc (hmem 0 h0b).1 hx h0`.
+
+Take `⟨j, hj⟩` from `Re.R.A.cover x₀`. Establish `hv` using `chart_differentiable Re.R hJ' hZd hx h0 ht j hj`. Establish `hH : AnalyticAt ℂ (S.s (Re.π x₀) ∘ Re.π ∘ (Re.R.A.chart j).symm) (Re.R.A.chart j x₀)` using `analyticAt_comp Re.holo (S.sec.1 (Re.π x₀)) (S.L.mem_U _) j hj`. Establish `hvt : Tendsto (fun z => Re.R.A.chart j (x z)) (𝓝 0) (𝓝 (Re.R.A.chart j x₀))` using `((Re.R.A.chart j).continuousAt hj).tendsto.comp ht`. Establish `hsrc : ∀ᶠ z in 𝓝 (0 : ℂ), x z ∈ (Re.R.A.chart j).source` using `ht.eventually ((Re.R.A.chart j).open_source.mem_nhds hj)`.
+
+Establish `hg : AnalyticAt ℂ (fun z => S.s (Re.π x₀) (Re.π (x z))) 0`. Use `Complex.analyticAt_iff_eventually_differentiableAt.2 ?_` and prove the remaining obligations. Use `filter_upwards [hv, hvt.eventually hH.eventually_analyticAt, hsrc.eventually_nhds] with z h1 h2 h3`. Establish `h4` using `(h2.differentiableAt.comp z h1)`. Use `h4.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [h3] with w hw`. Simplify using `[(Re.R.A.chart j).left_inv hw]`. Establish `hyt : Tendsto (fun z => Re.π (x z)) (𝓝 0) (𝓝 (Re.π x₀))` using `(Re.holo.1.tendsto x₀).comp ht`. Establish `hLU : ∀ᶠ z in 𝓝 (0 : ℂ), Re.π (x z) ∈ S.L.U (Re.π x₀)` using `hyt.eventually ((S.L.isOpen_U _).mem_nhds (S.L.mem_U _))`. Establish `hkey : ∀ᶠ z in 𝓝 (0 : ℂ), z ≠ 0 → S.s (Re.π x₀) (Re.π (x z)) ≠ 0 ∧ logNormSec S.L S.s (Re.π (x z)) = Real.log ‖S.s (Re.π x₀) (Re.π (x z))‖ - S.L.φ (Re.π x₀) (Re.π (x z))` using `by filter_upwards [hball, hLU] with z hz hU hz0`.
+
+Establish `hop : S.s (Re.π (x z)) (Re.π (x z)) ≠ 0` using `hopen z hz hz0 (x z) (hxs z hz)`. Establish `hsec` using `S.sec.2 (Re.π x₀) (Re.π (x z)) (Re.π (x z)) ⟨hU, S.L.mem_U _⟩`. Establish `hne : S.s (Re.π x₀) (Re.π (x z)) ≠ 0`. Introduce `h`. Rewrite `hsec` using `[h, norm_zero, zero_mul]`.
+
+Conclude with `(mul_pos (norm_pos_iff.2 hop) (Real.exp_pos _)).ne hsec`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Rewrite using `[logNormSec, ← hsec, Real.log_mul (norm_ne_zero_iff.2 hne) (Real.exp_pos _).ne', Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : ∀ᶠ z in 𝓝[≠] (0 : ℂ), S.s (Re.π x₀) (Re.π (x z)) ≠ 0`.
+
+Rewrite using `[eventually_nhdsWithin_iff]`. Use `filter_upwards [hkey] with z hz hz0`. Conclude with `(hz hz0).1`. Take `⟨c, m, hc, hlow⟩` from `exists_lower_bound hg hne`. Establish `hφ : ContinuousAt (S.L.φ (Re.π x₀)) (Re.π x₀)`.
+
+Take `⟨k, hk⟩` from `S.A.cover (Re.π x₀)`. Use `continuousAt_of_chart S.A k hk ?_` and prove the remaining obligations. Establish `h1` using `S.potL.1 (Re.π x₀) k`. Use `h1.continuousOn.continuousAt ?_` and prove the remaining obligations. Conclude with `((S.A.chart k).isOpen_inter_preimage_symm (S.L.isOpen_U _)).mem_nhds (chart_mem S.A (S.L.mem_U _) k hk)`.
+
+Establish `hbd : ∀ᶠ z in 𝓝 (0 : ℂ), S.L.φ (Re.π x₀) (Re.π (x z)) < S.L.φ (Re.π x₀) (Re.π x₀) + 1` using `(hφ.tendsto.comp hyt).eventually_lt_const (lt_add_one _)`. Take `⟨ε, hε, hall⟩` from `Metric.eventually_nhds_iff.1 (hkey.and (hlow.and (hbd.and hball)))`. Use `set A : ℝ := Real.exp 1 + 2 * |Real.log c| + 2 * (|S.L.φ (Re.π x₀) (Re.π x₀)| + 1) with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`. Use `⟨A + 2 * m, min ε 1, lt_min hε one_pos, ?_⟩` and prove the remaining obligations.
+
+Introduce `z hz0 hzε y hy`. Establish `hz1 : ‖z‖ < 1` using `hzε.trans_le (min_le_right _ _)`. Establish `hzb : z ∈ Metric.ball (0 : ℂ) 1` using `by simpa using hz1`. Establish `hne0 : z ≠ 0` using `norm_pos_iff.1 hz0`. Take `⟨h1, h2, h3, -⟩` from `hall (y := z) (by simpa using hzε.trans_le (min_le_left _ _))`.
+
+Take `⟨h1a, h1b⟩` from `h1 hne0`. Establish `hyx : y = x z` using `Re.R.inj y (x z) (hJ' _) (orbit_trans hy (orbit_symm (hxs z hzb)))`. Substitute `hyx` using the available equality. Rewrite using `[ReciprocityTheory.AnForm.P.rW, h1b]`. Establish `hlog : Real.log c + m * Real.log ‖z‖ ≤ Real.log ‖S.s (Re.π x₀) (Re.π (x z))‖`.
+
+Use `Real.log_le_log (by positivity) h2` as an intermediate fact. Rewrite `this` using `[Real.log_mul hc.ne' (by positivity), Real.log_pow]`. Then use the resulting hypothesis. Establish `hlz : Real.log ‖z‖ = -|Real.log ‖z‖|`. Rewrite using `[abs_of_nonpos (Real.log_nonpos hz0.le hz1.le), neg_neg]`. Establish `hL : 0 ≤ |Real.log ‖z‖|` using `abs_nonneg _`.
+
+Establish `hc1` using `neg_abs_le (Real.log c)`. Establish `hc2` using `le_abs_self (S.L.φ (Re.π x₀) (Re.π x₀))`. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Rewrite `hlog` using `[hlz]`. Use polynomial arithmetic with `[mul_nonneg hA0 hL, mul_nonneg hm hL]`.
+-/
 theorem rW_le_log_disc : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (D : ℕ) (σ : Type) (S : PB.AnSys D σ) (P : Ideal (MRing ι)) (Re : PB.Realis S P), Re.J = ⊤ → ∀ Zf : ℂ → (Σ k, ι k) → ℂ, (∀ p, DifferentiableOn ℂ (fun z => Zf z p) (Metric.ball 0 1)) → (∀ z ∈ Metric.ball (0 : ℂ) 1, Zf z ∈ mcPts P) → (∀ z ∈ Metric.ball (0 : ℂ) 1, z ≠ 0 → ∀ x : Re.R.X, SameOrbit (Re.R.lift x x) (Zf z) → Re.π x ∈ S.open') → ∃ C ρ : ℝ, 0 < ρ ∧ ∀ z : ℂ, 0 < ‖z‖ → ‖z‖ < ρ → ∀ x : Re.R.X, SameOrbit (Re.R.lift x x) (Zf z) → ReciprocityTheory.AnForm.P.rW S.L S.s (Re.π x) ≤ C * (1 + |Real.log ‖z‖|) := by
   intro K _ ι _ D σ S P Re hJ Zf hZ hmem hopen
   have hJ' : ∀ z, z ∉ mcPts Re.J := by

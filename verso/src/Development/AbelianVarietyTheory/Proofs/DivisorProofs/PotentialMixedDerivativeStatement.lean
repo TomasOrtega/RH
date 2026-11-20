@@ -6,6 +6,9 @@ open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.T
 open scoped Real ContDiff
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorsionForm.FlatAcyc.dd_real_hessian | exact GlobalTheory.TorsionForm.FlatAcyc.dd_real_hessian | (intros; apply GlobalTheory.TorsionForm.FlatAcyc.dd_real_hessian <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.potential_mixed_derivative : ∀ {g : ℕ} (ψ : (Fin g → ℂ) → ℝ) (hψ : ContDiff ℝ 2 ψ)
     (Ω : (Fin g → ℂ) → (Fin g → ℂ) → ℝ) (z : Fin g → ℂ)
     (hΩ : ∀ v w, fderiv ℝ (fun z' => fderiv ℝ ψ z' (Complex.I • w)) z v -

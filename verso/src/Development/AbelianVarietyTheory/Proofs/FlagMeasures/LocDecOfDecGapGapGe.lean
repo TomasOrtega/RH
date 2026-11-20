@@ -10,6 +10,11 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory.Dec
 
+/- English proof (translation)
+Introduce `hD B d h hds hgap hh v g`. Take `⟨h1, h2, h3, -⟩` from `hds v`. Establish `hw : B.w v ∈ lowKSub (B.I.ε v) (B.lam v) (B.σ v)` using `h3.2`. Establish `hn : ‖B.w v‖ = 1` using `h3.1`. Use `(hD _ _ _ _ _ h1 h2 h (hgap v) (hh v) (uMat g) g.2 _ hw _ hw).2` as an intermediate fact.
+
+Simplify `this` using `[hn]`.
+-/
 theorem locDec_of_decGap_gapGe : DecGap → ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ), IsDSData B d → GapGe B h →
     (∀ v, 120 * (B.I.n : ℝ) * ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h) → LocDec B h := by
   intro hD B d h hds hgap hh v g

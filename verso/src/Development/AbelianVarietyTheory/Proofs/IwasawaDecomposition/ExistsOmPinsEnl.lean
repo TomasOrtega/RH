@@ -18,6 +18,21 @@ namespace GlobalTheory.Mem.R3.Rw.OmExt
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hf hp hS core' alg' eH el ec eD eX ex eι Xg tr R' cG' hP hL hB hW κ' v₀' ht`. Establish `hc` using `GlobalTheory.T.exists_coefficientMap_extension_over_enlarged_base z hE hf hp hS R' cG' hP hL hB hW`. Establish `a1 : HEq R'.C.mu0 f'.mu0 ∧ HEq R'.C.eta f'.eta`. Establish `e` using `hL.C`. Rewrite `e` using `[w'.C_eq]`.
+
+Rewrite using `[e]`. Conclude with `⟨HEq.rfl, HEq.rfl⟩`. Establish `a2 : HEq z.R.C.mu0 f.mu0 ∧ HEq z.R.C.eta f.eta`. Establish `e` using `z.lev.C`. Rewrite `e` using `[w.C_eq]`.
+
+Rewrite using `[e]`. Conclude with `⟨HEq.rfl, HEq.rfl⟩`. Take `⟨-, -, eβW, -, -, -, eβV, -, -, ePg, eG, -, hcV, -⟩` from `hW`. Establish `hcV'` using `fun i i' hi => (⟨(hcV i i' hi).1, (hcV i i' hi).2.2.1, (hcV i i' hi).2.2.2.1⟩ : _ ∧ _ ∧ _)`. Establish `h1` using `hP.char.base.lev`.
+
+Establish `h2` using `hP.char.base.models`. Establish `h3` using `hP.char.base.fam.tie`. Use `clear hcV hP hL hB hS`. Take `⟨hPre, -, -, hLL⟩` from `hE`. Break down `B' with ⟨P'⟩` into its components or cases.
+
+Express the relevant statement in the definitionally equal form `P' = B.toPre at hPre`. Substitute `hPre` using the available equality. Take `rfl` from `eq_of_heq hf`. Take `⟨px', I', ok', C_eq', S_eq', xi_range', pins', l', l0', δ', exact', fld', val'⟩` from `w'`. Simplify using `only at hp`.
+
+Take `rfl` from `eq_of_heq hp`. Establish `key` using `fun i => exists_bc_stages (w.st Z) _ ((by with_unfolding_all exact ((Eq.refl B.toPre) :))) hLL z.core core' z.R.toRealDat R'.toRealDat eH el ec eD eX ex eι ePg eβV eβW eG (a1.1.trans a2.1.symm) (a1.2.trans a2.2.symm) z.pins.char.base.lev z.pins.char.base.models.HV z.geo.fw.kap h1 …`. Use `choose O' k1 k2 k3 using key`. Use `⟨(by with_unfolding_all exact (O' :)), fun i => (by with_unfolding_all exact ((And.intro (k1 i) (k2 i)) :)), fun i i' hi => ?_⟩` and prove the remaining obligations. Take `rfl : i = i'` from `Fin.ext hi`.
+
+Conclude with `(by with_unfolding_all exact ((And.intro (k3 i).lev (k3 i)) :))`.
+-/
 theorem exists_omPins_enl : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T}
     {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl} {Wt' : Set B'.places.Pl}
     (z : Dat (w.st Z) w.I hX T Wt), Enl0 B B' → HEq f' f → HEq w'.px w.px → z.Std →

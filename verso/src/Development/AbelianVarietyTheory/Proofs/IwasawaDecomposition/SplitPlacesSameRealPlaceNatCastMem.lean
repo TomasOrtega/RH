@@ -12,6 +12,11 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `L _ _ _ s s' n hv hn`. Establish `e : ((n : ℕ) : 𝓞 L) = algebraMap (𝓞 (NumberField.maximalRealSubfield L)) (𝓞 L) (n : 𝓞 (NumberField.maximalRealSubfield L))` using `(map_natCast _ n).symm`. Rewrite `hn`, the goal using `[e]`. Establish `h1 : ((n : ℕ) : 𝓞 (NumberField.maximalRealSubfield L)) ∈ s.v.asIdeal`. Rewrite using `[← s.w_under]`.
+
+Conclude with `Ideal.mem_comap.mpr hn`. Rewrite `h1` using `[hv]`. Rewrite `h1` using `[← s'.w_under]`. Conclude with `Ideal.mem_comap.mp h1`.
+-/
 theorem split_places_same_natCast_mem : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s s' : SplitPlace L) (n : ℕ), s.v = s'.v →
     ((n : ℕ) : 𝓞 L) ∈ s.w.asIdeal → ((n : ℕ) : 𝓞 L) ∈ s'.w.asIdeal := by
   intro L _ _ _ s s' n hv hn

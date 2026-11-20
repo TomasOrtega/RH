@@ -9,6 +9,37 @@ noncomputable section
 
 namespace GlobalTheory.TiePlace
 
+/- English proof (translation)
+Use `haveI := S.frac_alt`. Use `haveI := S.frac_O`. Establish `h1 : ∀ z : Qq, z ∈ Set.range (algebraMap W Qq) → σ z ∈ Set.range (algebraMap W Qq)`. Introduce and unpack `_ ⟨t, rfl⟩`. Take `⟨t', ht'⟩` from `S.frob t`.
+
+Conclude with `⟨_, ht'.symm⟩`. Establish `hk : ∀ (k : ℕ) (z : Qq), z ∈ Set.range (algebraMap W Qq) → (σ ^ k) z ∈ Set.range (algebraMap W Qq)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro z hz`.
+
+Simplify using `using hz`. Consider the case `succ k ih`. Introduce `z hz`. Rewrite using `[pow_succ]`. Conclude with `ih _ (h1 z hz)`.
+
+Establish `hs : ∀ z : Qq, (σ ^ s) z ∈ Set.range (algebraMap W Qq) ↔ z ∈ Set.range (algebraMap W Qq)`. Introduce `z`. Use `⟨fun h => ?_, hk s z⟩` and prove the remaining obligations. Establish `hn : 1 ≤ n'` using `le_trans (by norm_num) S.two_le`. Establish `e : (σ ^ (s * (n' - 1))) ((σ ^ s) z) = z`.
+
+Establish `em : (σ ^ (s * (n' - 1))) ((σ ^ s) z) = (σ ^ (s * (n' - 1)) * σ ^ s) z` using `rfl`. Rewrite using `[em, ← pow_add]`. Establish `: s * (n' - 1) + s = n' * s`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Simplify using `only [Nat.add_sub_cancel_left]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, pow_mul, S.period, one_pow]`. Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `hk _ _ h`.
+
+Establish `hj : Function.Injective j`. Introduce `a b h`. Apply `IsFractionRing.injective W Qq` to reduce the goal to its premises. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[S.ι_comp, S.ι_comp, h]`.
+
+Establish `hnu : ¬ IsUnit (p : O)`. Use `letI := j.toAlgebra`. Use `haveI : Module.Finite W O := S.finite`. Use `haveI : FaithfulSMul W O := (faithfulSMul_iff_algebraMap_injective _ _).2 hj`. Introduce `h`.
+
+Conclude with `S.p_unif.not_isUnit ((isUnit_map_iff (algebraMap W O) _).1 (by simpa using h))`. Establish `hι : ∀ z : Qq, ι z ∈ Set.range (algebraMap O Kf) ↔ z ∈ Set.range (algebraMap W Qq)`. Introduce `z`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hz`.
+
+Take `⟨o, ho⟩` from `h`. Establish `hz0 : z ≠ 0` using `fun h0 => hz ⟨0, by rw [h0, map_zero]⟩`. Take `⟨t, ht⟩` from `(ValuationRing.isInteger_or_isInteger W z).resolve_left hz`. Establish `htu : ¬ IsUnit t`. Introduce and unpack `⟨u, rfl⟩`.
+
+Apply `hz` to reduce the goal to its premises. Use `⟨(u⁻¹ : Wˣ), ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv z, ← ht]`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+
+Establish `htm : t ∈ Ideal.span {(p : W)}`. Rewrite using `[← S.p_unif.maximalIdeal_eq]`. Conclude with `htu`. Take `⟨t', rfl⟩` from `Ideal.mem_span_singleton'.1 htm`. Establish `e1 : algebraMap O Kf (o * j (t' * p)) = 1`.
+
+Rewrite using `[map_mul, ho, ← S.ι_comp, ht, ← map_mul, mul_inv_cancel₀ hz0, map_one]`. Establish `e2 : o * j (t' * p) = 1`. Apply `IsFractionRing.injective O Kf` to reduce the goal to its premises. Rewrite using `[e1, map_one]`. Apply `hnu` to reduce the goal to its premises.
+
+Establish `: IsUnit (j (t' * p))` using `IsUnit.of_mul_eq_one o (by rw [mul_comm]; exact e2)`. Rewrite `this` using `[map_mul, map_natCast]`. Conclude with `isUnit_of_mul_isUnit_right this`. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨j t, (S.ι_comp t).symm⟩`.
+
+Rewrite using `[hι, hs]`.
+-/
 theorem iota_sigma_mem_range {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     [Field Qq] [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
     {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O} (S : HidaSetting p n' W Qq O Kf ι σ j w) (s : ℕ) (y : Qq) :
@@ -86,6 +117,11 @@ theorem iota_sigma_mem_range {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDom
       exact ⟨j t, (S.ι_comp t).symm⟩
   rw [hι, hs]
 
+/- English proof (translation)
+Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using the standard rewrite rules. Simplify using `only [hz, false_or, AddValuation.map_inv, not_le]`. Take `⟨n, hn⟩ : ∃ n : ℤ, val z = n` from `WithTop.ne_top_iff_exists.1 (fun h => hz ((AddValuation.top_iff val).1 h)) |>.imp fun _ h => h.symm`.
+
+Rewrite using `[hn, ← WithTop.LinearOrderedAddCommGroup.coe_neg]`. Use `norm_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem val_pos_iff {K : Type} [Field K] (val : AddValuation K (WithTop ℤ)) (z : K) :
     (0 : WithTop ℤ) < val z ↔ z = 0 ∨ ¬ (0 : WithTop ℤ) ≤ val z⁻¹ := by
   by_cases hz : z = 0
@@ -97,6 +133,11 @@ theorem val_pos_iff {K : Type} [Field K] (val : AddValuation K (WithTop ℤ)) (z
     norm_cast
     omega
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Simplify using `only [hx, false_or, HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, not_le]`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := K)]`.
+
+Establish `h1 : (algebraMap K (v.adicCompletion K) (algebraMap R K x)) = ((algebraMap R K x : K) : v.adicCompletion K)` using `rfl`. Rewrite using `[h1, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Establish `h0 : v.valuation K (algebraMap R K x) ≠ 0`. Simplify using `using hx`. Rewrite using `[one_lt_inv₀ (zero_lt_iff.2 h0)]`.
+-/
 theorem mem_asIdeal_iff_inv {R K : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] (v : HeightOneSpectrum R) (x : R) :
     x ∈ v.asIdeal ↔ x = 0 ∨ (algebraMap K (v.adicCompletion K) (algebraMap R K x))⁻¹ ∉ v.adicCompletionIntegers K := by
@@ -111,6 +152,9 @@ theorem mem_asIdeal_iff_inv {R K : Type} [CommRing R] [IsDedekindDomain R] [Fiel
       simpa using hx
     rw [one_lt_inv₀ (zero_lt_iff.2 h0)]
 
+/- English proof (translation)
+Rewrite using `[hint, map_inv₀, hk, ← map_inv₀, ← map_inv₀]`. Conclude with `(iota_sigma_mem_range (G.P.setting v) s y⁻¹).symm`.
+-/
 theorem inv_int_iff {p : ℕ} {G : GAtP p} (v : Fin G.P.nV) (s : ℕ) {LL : Type} [Field LL]
     (val : AddValuation LL (WithTop ℤ)) (emb : LL →+* G.Kf)
     (hint : ∀ z, (0 : WithTop ℤ) ≤ val z ↔ emb z ∈ Set.range (algebraMap G.O G.Kf)) (z : LL) (y : G.P.Qq v)
@@ -126,6 +170,9 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     {ι' : Type} [Fintype ι'] {hc : ι' → HCParam R} {C : ColumnChain R ι' hc} {A : ColumnsAtT R C}
     {clsLat : ∀ i, C.cls i → Submodule (𝓞 E) (sp.X i).V} {p : ℕ} {G : GAtP p}
 
+/- English proof (translation)
+Rewrite using `[t.spl_F, mem_asIdeal_iff_inv (K := F), t.completion_integers_iff v _ rfl, map_inv₀, RingEquiv.apply_symm_apply]`.
+-/
 theorem tie_mem_iff {L : ColLevel R F E sp gp C A clsLat} (t : Formalism.L2.Herm.GLevTie L G) (v : Fin G.P.nV) (x : 𝓞 F) :
     x ∈ (t.pl v).1.asIdeal ↔ x = 0 ∨
       ((t.eQ v _ rfl).symm ((t.spl _ (t.pl v).2 (inclE (F := F) ((t.pl v).1.adicCompletion F) (algebraMap F E (x : F)))).1))⁻¹ ∉
@@ -134,6 +181,9 @@ theorem tie_mem_iff {L : ColLevel R F E sp gp C A clsLat} (t : Formalism.L2.Herm
 
 end Comparison₂
 
+/- English proof (translation)
+Rewrite using `[map_eq_zero_iff f f.injective, map_eq_zero_iff g g.injective]`. Conclude with `RingOfIntegers.coe_eq_zero_iff`.
+-/
 theorem int_map_eq_zero_iff {F E L : Type} [Field F] [Field E] [Field L] (g : F →+* E) (f : E →+* L)
     (x : 𝓞 F) : f (g (x : F)) = 0 ↔ x = 0 := by
   rw [map_eq_zero_iff f f.injective, map_eq_zero_iff g g.injective]
@@ -141,6 +191,15 @@ theorem int_map_eq_zero_iff {F E L : Type} [Field F] [Field E] [Field L] (g : F 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D sc Ce Lc I ψ hd H0 hL B hBs hB iK lam hK hPos u w hg v s x`. Establish `hpos` using `pos_C D sc Ce Lc I ψ hd H0 hL B hBs hB iK lam hK hPos u w hg v s (algebraMap D.host.F D.host.E (x : D.host.F))`. Establish `hsig : sigD (recC D sc Ce Lc I ψ hd) (algebraMap D.host.F D.host.E (x : D.host.F)) = algebraMap D.host.F D.host.E (x : D.host.F)` using `AlgHom.commutes _ _`. Establish `key : (cmpInC D sc Ce Lc I ψ hd H0 hL B hBs hB).embW u w hg (tauLL (recC D sc Ce Lc I ψ hd) ((gatTiesC D sc Ce Lc I ψ hd).gat_pos u w hg ⟨v, s⟩) (algebraMap D.host.F D.host.E (x : D.host.F))) = ((recC D sc Ce Lc I ψ hd).gat u w hg).P.ι v ((((recC D sc Ce Lc I ψ hd).gat u w hg).P. …`. Establish `e : tauLL (recC D sc Ce Lc I ψ hd) ((gatTiesC D sc Ce Lc I ψ hd).gat_pos u w hg ⟨v, s⟩) (algebraMap D.host.F D.host.E (x : D.host.F)) = Cmp.tEL (recC D sc Ce Lc I ψ hd) ((gatTiesC D sc Ce Lc I ψ hd).gat_pos u w hg ⟨v, s⟩) (if Even s.val then algebraMap D.host.F D.host.E (x : D.ho …`.
+
+Distinguish the cases in `he : Even s.val`. Simplify using `only [he, if_true, ite_true, ↓reduceIte]`. Both sides reduce to the same expression. Simplify using `only [he, if_false, ite_false, ↓reduceIte, hsig]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `hpos`. Use `(tie_mem_iff ((hermitianLevelZeroOfRecursion D sc Ce Lc I ψ hd H0 hL).g u w hg) v x).trans ?_` and prove the remaining obligations. Establish `hz : x = 0 ↔ tauLL (recC D sc Ce Lc I ψ hd) ((gatTiesC D sc Ce Lc I ψ hd).gat_pos u w hg ⟨v, s⟩) (algebraMap D.host.F D.host.E (x : D.host.F)) = 0`. Conclude with `(int_map_eq_zero_iff (algebraMap D.host.F D.host.E) (Cmp.tEL (recC D sc Ce Lc I ψ hd) ((gatTiesC D sc Ce Lc I ψ hd).gat_pos u w hg ⟨v, s⟩)) x).symm`.
+
+Use `Iff.trans ?_ (val_pos_iff (D.what₂.places.val w) (tauLL (recC D sc Ce Lc I ψ hd) ((gatTiesC D sc Ce Lc I ψ hd).gat_pos u w hg ⟨v, s⟩) (algebraMap D.host.F D.host.E (x : D.host.F)))).symm` and prove the remaining obligations. Conclude with `or_congr hz (not_congr (inv_int_iff v s.val (D.what₂.places.val w) ((cmpInC D sc Ce Lc I ψ hd H0 hL B hBs hB).embW u w hg) ((cmpInC D sc Ce Lc I ψ hd H0 hL B hBs hB).embW_int u w hg) _ _ key))`.
+-/
 theorem place_of_tie : ∀ (D : D7) (sc : Scale) (Ce : ℝ)
     (Lc : ∀ u, ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u))
     (I : ∀ u (w : D.what₂.places.Pl), GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w) →

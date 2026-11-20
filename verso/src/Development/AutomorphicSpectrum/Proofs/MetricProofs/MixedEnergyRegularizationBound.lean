@@ -9,6 +9,17 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
+/- English proof (translation)
+Establish `hB` using `LeviFormBoundaryTopology.isClosed_bdry hS`. Establish `hAn : A.IsAnalyticSubset (bdry s)`. Introduce `x`. Use `⟨L.U x, L.isOpen_U x, L.mem_U x, 1, fun _ => s x, fun _ => hS.1 x, ?_⟩` and prove the remaining obligations. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hzU⟩`. Conclude with `⟨hzU, fun _ => (LeviFormBoundaryTopology.bdry_iff hS hzU).1 hz⟩`. Introduce and unpack `⟨hzU, hz⟩`. Conclude with `⟨(LeviFormBoundaryTopology.bdry_iff hS hzU).2 (hz 0), hzU⟩`.
+
+Establish `hInt : interior (bdry s) = ∅` using `LeviFormBoundaryTopology.interior_bdry_eq_empty hS hSNC`. Unfold `maMeasure`. Use `split_ifs with h`. Simplify using `only [Measure.coe_finsetSum, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Establish `hT` using `(A.chart j).open_target.measurableSet`. Rewrite using `[Measure.map_apply_of_aemeasurable (((A.chart j).continuousOn_symm.aemeasurable hT).mono_ac (withDensity_absolutelyContinuous _ _)) hB.measurableSet]`. Use `withDensity_absolutelyContinuous _ _ ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply' hT]`. Use `analyticNull A (bdry s) hAn hInt j` as an intermediate fact.
+
+Rewrite `this` using `[Set.inter_comm, (A.chart j).image_source_inter_eq']`. Rewrite using `[Set.inter_comm]` and apply the resulting hypothesis. Simplify using the standard rewrite rules.
+-/
 theorem maMeasure_bdry_eq_zero {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ) {n : ℕ}
     (m : Fin n → ℕ) (W : Fin n → Set X) (hS : IsSection A L s) (hSNC : IsSNC A L s m W)
@@ -38,6 +49,19 @@ theorem maMeasure_bdry_eq_zero {e : ℕ} {X : Type} [TopologicalSpace X] [Compac
     rwa [Set.inter_comm]
   · simp
 
+/- English proof (translation)
+Establish `hU : IsOpen (bdry s)ᶜ` using `(LeviFormBoundaryTopology.isClosed_bdry hS).isOpen_compl`. Take `⟨hbm, hrm⟩` from `TailBoundAlt.bdry_rW_meas A L s hL hS`. Set `Es : ℕ → Set X` to `fun N => ((bdry s)ᶜ ∩ {y | R ≤ rW L s y}) ∩ {y | rW L s y ≤ (N : ℝ)}`. Establish `hun : (bdry s)ᶜ ∩ {y | R ≤ rW L s y} = ⋃ N, Es N`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨N, hN⟩` from `exists_nat_ge (rW L s y)`. Conclude with `Set.mem_iUnion.2 ⟨N, h, hN⟩`. Introduce `h`.
+
+Take `⟨N, hN⟩` from `Set.mem_iUnion.1 h`. Conclude with `hN.1`. Establish `hmono : Monotone Es` using `fun a b hab y hy => ⟨hy.1, show rW L s y ≤ (b : ℝ) from le_trans (show rW L s y ≤ (a : ℝ) from hy.2) (Nat.cast_le.2 hab)⟩`. Rewrite using `[hun, setLIntegral_iUnion_of_directed _ hmono.directed_le]`. Use `iSup_le fun N => ?_` and prove the remaining obligations.
+
+Establish `hEm : MeasurableSet (Es N)` using `(hbm.compl.inter (measurableSet_le measurable_const hrm)).inter (measurableSet_le hrm measurable_const)`. Establish `hKU : {y | y ∉ bdry s ∧ rW L s y ≤ (N : ℝ)} ⊆ (bdry s)ᶜ` using `fun y hy => hy.1`. Establish `hEK : Es N ⊆ {y | y ∉ bdry s ∧ rW L s y ≤ (N : ℝ)}` using `fun y hy => ⟨hy.1.1, hy.2⟩`. Take `⟨-, hint, hlim⟩` from `compact_part_integrals_tendsto A (bdry s)ᶜ Φ ΦT hU hc hpot hunif g (fun _ => g) (fun _ => hgc) (fun u hu x _ => ⟨Set.univ, Filter.univ_mem, Eventually.of_forall fun t y _ => refl_mem_uniformity hu⟩) _ (Es N) (isCompact_rW_sublevel A L s hL hS (N : ℝ)) hKU hEm hEK`. Establish `hnn : ∀ μ : Measure X, 0 ≤ᵐ[μ.restrict (Es N)] g` using `fun μ => (ae_restrict_iff' hEm).2 (Eventually.of_forall fun y hy => hg1 y hy.1.1 hy.1.2)`.
+
+Establish `hle : ∫ y in Es N, g y ∂maMeasure A Φ ≤ max B 0`. Use `le_of_tendsto hlim ?_` and prove the remaining obligations. Use `filter_upwards [hB] with t ht`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (hnn _) hgm.aestronglyMeasurable, ← ENNReal.toReal_ofReal']`. Conclude with `ENNReal.toReal_mono ENNReal.ofReal_ne_top ((lintegral_mono_set (fun y hy => hy.1)).trans ht)`.
+
+Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (hint.mono_set hEK) (hnn _)]`. Use `(ENNReal.ofReal_le_ofReal hle).trans (le_of_eq ?_)` and prove the remaining obligations. Break down `le_total B 0 with h | h` into its components or cases. Rewrite using `[max_eq_right h, ENNReal.ofReal_zero, ENNReal.ofReal_of_nonpos h]`. Rewrite using `[max_eq_left h]`.
+-/
 theorem tail_lintegral_le_of_eventually {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X]
     [T2Space X] [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (L : LocPot X)
     (s : X → X → ℂ) (hL : IsPotential A L) (hS : IsSection A L s) (Φ : Fin e → LocPot X)
@@ -95,6 +119,23 @@ theorem tail_lintegral_le_of_eventually {e : ℕ} {X : Type} [TopologicalSpace X
   · rw [max_eq_right h, ENNReal.ofReal_zero, ENNReal.ofReal_of_nonpos h]
   · rw [max_eq_left h]
 
+/- English proof (translation)
+Introduce `hTB e X _ _ _ _ _ A Θ L s n m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR hC2`. Take `⟨K, t₁, ht₁, -, hT⟩` from `tail_uniform hTB A Θ L s m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR`. Establish `hB` using `LeviFormBoundaryTopology.isClosed_bdry hS`. Take `⟨-, hrm⟩` from `TailBoundAlt.bdry_rW_meas A L s hL hS`. Establish `hrc` using `(rW_open A L s hL hS).1`.
+
+Establish `hge` using `rW_ge L s hnorm`. Establish `hc` using `locDens_add_ofFun_continuousOn A (bdry s)ᶜ th ph Θ hB.isOpen_compl (fun i => (hW i).1) hΘ (fun i => (hW i).2.1)`. Establish `hsm : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ i, A.Smooth (phT i t)` using `eventually_all.2 fun i => by filter_upwards [Ioc_mem_nhdsGT (hR i).1] with t ht`. Conclude with `((hR i).2.2 t ht.1 ht.2).1`. Establish `hunif` using `conv_dens A Θ s th ph phT hB hΘ (fun i => (hW i).1) (fun i => (hW i).2.1) hsm hC2`.
+
+Establish `hbd : ∀ᶠ t in 𝓝[>] (0 : ℝ), t ∈ Set.Ioc 0 t₁` using `Ioc_mem_nhdsGT ht₁`. Establish `hpot : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ i, IsPotential A (th i + LocPot.ofFun (phT i t) + Θ)` using `by filter_upwards [hbd] with t ht`. Conclude with `fun i => ((hT (fun _ => t) fun _ => ht).1 i).1`. Establish `tail1 : ∀ R : ℝ, Real.exp 1 ≤ R → maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ) ((bdry s)ᶜ ∩ {y | R ≤ rW L s y}) ≤ ENNReal.ofReal (K * Real.log R / R)`. Introduce `R hRe`.
+
+Establish `h` using `tail_lintegral_le_of_eventually A L s hL hS (fun i => th i + LocPot.ofFun (ph i) + Θ) (fun t i => th i + LocPot.ofFun (phT i t) + Θ) hc hpot hunif (fun _ => 1) measurable_const continuousOn_const R (K * Real.log R / R) (fun _ _ _ => zero_le_one) (by filter_upwards [hbd] with t ht`. Establish `h1` using `((hT (fun _ => t) fun _ => ht).2 R hRe).1`. Simplify using `only [ENNReal.ofReal_one, lintegral_const, one_mul, Measure.restrict_apply, MeasurableSet.univ, Set.univ_inter]`. Conclude with `(measure_mono fun y hy => Or.inr hy.2).trans h1)`. Simplify using `using h`.
+
+Establish `tail : ∀ R : ℝ, Real.exp 1 ≤ R → maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ) (bdry s ∪ {y | R ≤ rW L s y}) ≤ ENNReal.ofReal (K * Real.log R / R)`. Introduce `R hRe`. Use `(measure_mono (t := bdry s ∪ ((bdry s)ᶜ ∩ {y | R ≤ rW L s y})) ?_).trans ((measure_union_le _ _).trans ?_)` and prove the remaining obligations. Introduce and unpack `y (hy | hy)`. Conclude with `Or.inl hy`.
+
+Distinguish the cases in `hb : y ∈ bdry s`. Conclude with `Or.inl hb`. Conclude with `Or.inr ⟨hb, hy⟩`. Rewrite using `[maMeasure_bdry_eq_zero A L s m W hS hSNC, zero_add]`. Conclude with `tail1 R hRe`.
+
+Use `⟨⟨?_⟩, K, fun R hRe => ⟨tail R hRe, ?_⟩⟩` and prove the remaining obligations. Use `lt_of_le_of_lt ((measure_mono fun y _ => Or.inr (hge y)).trans (tail _ le_rfl)) ENNReal.ofReal_lt_top` and prove the remaining obligations. Use `tail_lintegral_le_of_eventually A L s hL hS (fun i => th i + LocPot.ofFun (ph i) + Θ) (fun t i => th i + LocPot.ofFun (phT i t) + Θ) hc hpot hunif (fun y => Real.log (rW L s y)) hrm.log ?_ R _ ?_ ?_` and prove the remaining obligations. Conclude with `hrc.log fun y hy => ((Real.exp_pos 1).trans_le (hge y)).ne'`. Introduce `y _ _`.
+
+Conclude with `Real.log_nonneg (le_trans (by linarith [Real.add_one_le_exp (1 : ℝ)]) (hge y))`. Use `filter_upwards [hbd] with t ht`. Conclude with `((hT (fun _ => t) fun _ => ht).2 R hRe).2`.
+-/
 theorem limit_measure_tail : TailBoundStatement → ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (Θ L : LocPot X) (s : X → X → ℂ) {n : ℕ} (m : Fin n → ℕ) (W : Fin n → Set X), IsPotential A Θ → IsPosPot A Θ → IsPotential A L → IsSection A L s → IsSNC A L s m W → (∀ y, logNormSec L s y ≤ 0) → ∀ (th : Fin e → LocPot X) (ph : Fin e → X → ℝ) (phT : Fin e → ℝ → X → ℝ) (C₅ C t₀ : ℝ), (∀ i, IsSingWeight A L s (th i) (ph i) C₅) → (∀ i, IsRegFamily A Θ L s (th i) (ph i) (phT i) C t₀) → (∀ i, IsRegFamilyC2 A s (ph i) (phT i)) → IsFiniteMeasure (maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ)) ∧ ∃ K : ℝ, ∀ R : ℝ, Real.exp 1 ≤ R → maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ) (bdry s ∪ {y | R ≤ rW L s y}) ≤ ENNReal.ofReal (K * Real.log R / R) ∧ ∫⁻ y in (bdry s)ᶜ ∩ {y | R ≤ rW L s y}, ENNReal.ofReal (Real.log (rW L s y)) ∂maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ) ≤ ENNReal.ofReal (K * Real.log R ^ 2 / R) := by
   intro hTB e X _ _ _ _ _ A Θ L s n m W hΘ hpos hL hS hSNC hnorm th ph phT C₅ C t₀ hW hR hC2
   obtain ⟨K, t₁, ht₁, -, hT⟩ :=

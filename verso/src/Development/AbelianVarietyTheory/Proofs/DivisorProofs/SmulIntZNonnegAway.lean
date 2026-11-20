@@ -22,6 +22,39 @@ namespace GlobalTheory.CovInt
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D H Dw l Xo c n d _ hlev hnab hroot hwi hM0 Λ N hU hTM hN w P hP x0 g hsec hR la hla v hv`. Establish `hroot1 : ∀ (k : Type) [Field k] [Algebra d.c₂.F k] (y₂ : FrPt d.Xo₂ d.c₂ k), evR d.Xo₂ d.c₂ d.cδ y₂ ^ 1 = 1` using `fun k _ _ y₂ => by rw [pow_one]; exact hroot k y₂`. Establish `hβ : betaH (Dw` using `Dw) c Λ ≠ 0 := by`. Unfold `betaH`. Use `split_ifs with h`.
+
+Use `exacts [h.choose_spec.1, one_ne_zero]`. Establish `hc0 : Nat.card (Fin n → LevQ Dw d.l₂) ≠ 0`. Rewrite using `[GlobalTheory.PlaceInt.card_fun_levQ]`. Conclude with `pow_ne_zero _ hM0`. Take `⟨P₀, hP₀⟩ : ∃ P₀ : ℕ, P₀ = (NumberField.discr D.host.E).natAbs` from `⟨_, rfl⟩`.
+
+Establish `hP0 : P₀ ≠ 0` using `hP₀ ▸ Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero _)`. Take `⟨K, hK⟩ : ∃ K : ℕ, K = P₀ ^ Formalism.L2.Pj.DF Dw w * d.l₂.M ^ Formalism.L2.Pj.DF Dw w * Nat.card (Fin n → LevQ Dw d.l₂)` from `⟨_, rfl⟩`. Establish `hK0 : K ≠ 0` using `hK ▸ mul_ne_zero (mul_ne_zero (pow_ne_zero _ hP0) (pow_ne_zero _ hM0)) hc0`. Establish `hKZ : intZ D Dw d.l₂ n w = K` using `by rw [intZ, hK, hP₀]; ring`. Rewrite using `[hKZ, mul_comm]`.
+
+Take `⟨⟨_, Tc, io, e, ho, yI, hy, eta, heta, rfl⟩, rfl⟩` from `hv`. Use `show 0 ≤ nval Tc.V e (evI yI _)`. Rewrite using `[evI_smul]`. Take `⟨-, ef2, -⟩` from `GlobalTheory.PlaceInt.eF_transfer _ _ _ _ Xo c n d Λ`. Take `⟨T', iT, r, io₂, y₂, C, ζ, z, tp, F, hr, hiT, hfr, hio, hC, hrat, hζ, hz, hgi, htp, hF, hval⟩` from `GlobalTheory.PlaceInt.short_value_on_cover _ _ _ _ Xo c n d hlev hnab 1 hroot1 Λ N hU hTM hN w P hP x0 g hsec hR Tc io yI hy`.
+
+Use `haveI : CharZero T'.Fr := algebraRat.charZero _`. Establish `ho'` using `ho.bc iT hr hiT`. Establish `he' : 0 < r * e` using `ho'.1`. Establish `heR : (0 : ℝ) < ((r * e : ℕ) : ℝ)` using `by exact_mod_cast he'`. Rewrite using `[← nval_bc iT hr hiT e, map_mul, hval, ← hio]`.
+
+Take `⟨ℓ, hℓ, hu⟩` from `GlobalTheory.ShortBound.exists_resChar T' hfr`. Establish `hmem : (ℓ : 𝓞 c.F) ∈ la.asIdeal`. Assume the negation of the conclusion as `hnm`. Establish `h2` using `ho'.2 (ℓ : c.F)`. Establish `hv1 : la.valuation c.F (ℓ : c.F) = 1`.
+
+Rewrite using `[← map_natCast (algebraMap (𝓞 c.F) c.F)]`. Conclude with `la.valuation_eq_one_iff_notMem.2 hnm`. Establish `hv0 : vLa la (ℓ : c.F) = 0` using `by simp [vLa, hv1]`. Rewrite `h2` using `[map_natCast, hv0, mul_zero]`. Establish `h0 : (ℓ : T'.V) ≠ 0` using `fun h0 => by`.
+
+Establish `: algebraMap T'.V T'.Fr (ℓ : T'.V) = 0` using `by rw [h0, map_zero]`. Rewrite `this` using `[map_natCast]`. Conclude with `hℓ.ne_zero (by exact_mod_cast this)`. Establish `h3` using `GlobalTheory.PlaceExtField.vV_pos (K' := T'.Fr) h0 hu`. Rewrite `h3` using `[map_natCast]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hsq : ¬ ℓ ^ 2 ∣ d.l₂.M` using `hla ℓ hℓ hmem`. Choose the witnesses or unpack the hypotheses as in `⟨α, hαM, hα⟩ : ∃ α : ℕ, α ∣ d.l₂.M ∧ ((¬ ℓ ∣ d.l₂.M ∧ (α : 𝓞 D.host.E) = 1) ∨ (ℓ ∣ d.l₂.M ∧ (α : 𝓞 D.host.E) * H.bar α = (ℓ : 𝓞 D.host.E) ∧ d.l₂.Mb ≤ Ideal.span {H.bar α}) ∨ (ℓ ∣ d.l₂.M ∧ (α : 𝓞 D.host.E) = (ℓ : 𝓞 D.host.E))) := by`. Distinguish the cases in `hd : ℓ ∣ d.l₂.M`. Conclude with `⟨ℓ, hd, Or.inr (Or.inr ⟨hd, rfl⟩)⟩`.
+
+Conclude with `⟨1, one_dvd _, Or.inl ⟨hd, Nat.cast_one⟩⟩`. Take `⟨α', hα'⟩` from `hαM`. Establish `ha0 : α ≠ 0` using `left_ne_zero_of_mul (hα' ▸ hM0)`. Establish `ha0' : α' ≠ 0` using `right_ne_zero_of_mul (hα' ▸ hM0)`. Establish `hch` using `GlobalTheory.PlaceInt.HostChart.chBound_host D _ Dw _ d.Xo₂ d.c₂ hnab.1 T' io₂ y₂ C (r * e) he' w n _ le_rfl`.
+
+Use `haveI := Nat.finite_of_card_ne_zero hc0`. Establish `hu0 : io₂ (nrm Dw d.c₂ w (α : 𝓞 D.host.E)) ≠ 0` using `(map_ne_zero io₂).2 (nrm_ne_zero _ _ (Nat.cast_ne_zero.2 ha0))`. Establish `key` using `le_nval_avg (V := T'.V) (r * e) (fun q => io₂ (d.w x0 q)) _ ζ _ ((Nat.card (Fin n → LevQ Dw d.l₂) : ℕ) : T'.Fr) _ 1 one_pos hζ hu0 (by exact_mod_cast hc0) (fun q => map_isIntegral_int io₂ (hwi x0 q)) _ (fun q => GlobalTheory.SupFull.class_bound d.Xo₂ d.c₂ hnab.1 T' io₂ y₂ C hC _ …`. Establish `hb0 : io₂ (d.eF (betaH (Dw` using `Dw) c Λ)) ≠ 0 := (map_ne_zero io₂).2 ((map_ne_zero d.eF).2 hβ)`. Establish `hKv` using `add_le_add (le_refl (nval T'.V (r * e) (K : T'.Fr))) key`.
+
+Rewrite `hKv` using `[← nval_mul, nval_of_ne (Nat.cast_ne_zero.2 hK0), ← EReal.coe_add]`. Use `le_trans (EReal.coe_nonneg.2 ?_) (hKv.trans (le_of_eq ?_))` and prove the remaining obligations. Establish `b0 : ∀ p : ℕ, (0 : ℝ) ≤ vV T'.V (p : T'.Fr)` using `fun p => by`. Conclude with `GlobalTheory.PlaceInt.HostChart.vV_nat_nonneg T' p` after adjusting the coercions. Establish `b1 : (vV T'.V (K : T'.Fr) : ℝ) = (Formalism.L2.Pj.DF Dw w : ℕ) * (vV T'.V (P₀ : T'.Fr) : ℝ) + (Formalism.L2.Pj.DF Dw w : ℕ) * ((vV T'.V (α : T'.Fr) : ℝ) + vV T'.V (α' : T'.Fr)) + vV T'.V ((Nat.card (Fin n → LevQ Dw d.l₂) : ℕ) : T'.Fr)`.
+
+Rewrite using `[hK, Nat.cast_mul, Nat.cast_mul, Nat.cast_pow, Nat.cast_pow, vV_mul (mul_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 hP0)) (pow_ne_zero _ (Nat.cast_ne_zero.2 hM0))) (Nat.cast_ne_zero.2 hc0), vV_mul (pow_ne_zero _ (Nat.cast_ne_zero.2 hP0)) (pow_ne_zero _ (Nat.cast_ne_zero.2 hM0)), …`. Use `conv_lhs => rw [show ((d.l₂.M : ℕ) : T'.Fr) = (α : T'.Fr) * (α' : T'.Fr) by rw [hα', Nat.cast_mul], vV_mul (Nat.cast_ne_zero.2 ha0) (Nat.cast_ne_zero.2 ha0')]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `b2 : (vV T'.V (io₂ (nrm Dw d.c₂ w (α : 𝓞 D.host.E))) : ℝ) = (Formalism.L2.Pj.DF Dw w : ℕ) * vV T'.V (α : T'.Fr)`.
+
+Rewrite using `[nrm_nat, map_pow, map_natCast, vV_pow (Nat.cast_ne_zero.2 ha0)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `b3 : ∑ p ∈ D.host.condN.primeFactors, (vV T'.V (p : T'.Fr) : ℝ) / (r * e : ℕ) * D.host.vdH p * (Formalism.L2.Pj.DF Dw w : ℝ) / 2 ≤ (Formalism.L2.Pj.DF Dw w : ℕ) * (vV T'.V (P₀ : T'.Fr) : ℝ) / (r * e : ℕ)`. Establish `h` using `ram_sum_le_vV_discr D.host.E T' _ (fun p (hp : p ∈ D.host.condN.primeFactors) => Nat.prime_of_mem_primeFactors hp) (r * e) (Formalism.L2.Pj.DF Dw w)`.
+
+Rewrite `h` using `[← hP₀, Nat.cast_pow, vV_pow (Nat.cast_ne_zero.2 hP0), Int.cast_mul, Int.cast_natCast]`. Rewrite `h`, the goal using `[hP₀]`. Conclude with `h`. Establish `b4 : (0 : ℝ) ≤ (Formalism.L2.Pj.DF Dw w : ℕ) * (vV T'.V (α' : T'.Fr) : ℝ) / (r * e : ℕ)` using `div_nonneg (mul_nonneg (Nat.cast_nonneg _) (b0 _)) heR.le`. Rewrite using `[b1, b2, add_div, add_div, mul_add, add_div]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `congr 1`. Simplify using `only [map_mul, map_inv₀, map_natCast]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem smul_intZ_nonneg_away : ∀ (D : D7) (H : Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ)
     (d : DeltaDat Xo c n) [StarRing (𝓞 D.host.E)], d.IsLev → IsNab d.Xo₂ d.c₂ d.nab₂ →
     (∀ (k : Type) [Field k] [Algebra d.c₂.F k] (y₂ : FrPt d.Xo₂ d.c₂ k), evR d.Xo₂ d.c₂ d.cδ y₂ = 1) →

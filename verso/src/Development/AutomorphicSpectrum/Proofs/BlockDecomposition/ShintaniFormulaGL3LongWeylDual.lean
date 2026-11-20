@@ -12,6 +12,17 @@ open scoped NumberField.AdeleRing ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.SphericalDual
 
+/- English proof (translation)
+Introduce `F _ _ _ _ ψ₀ hψ₀ z a b`. Use `borelize F`. Take `⟨k, hk, hdg⟩` from `GlobalTheory.CompanionTheory.LocalUnramified.sDg F 1 (unifUnit F ^ (-b)) (unifUnit F ^ (-a))`. Establish `e1 : (GL2LocalData.w3 : GL (Fin 3) F) * GL2LocalData.tinv (dg (unifUnit F ^ a) (unifUnit F ^ b) 1) = dg 1 (unifUnit F ^ (-b)) (unifUnit F ^ (-a)) * GL2LocalData.w3`. Rewrite using `[GlobalTheory.CompanionTheory.GL2Factorization.DualGauge.weyl_transposeInv_diag_GL3, inv_one, _root_.zpow_neg, _root_.zpow_neg]`.
+
+Establish `o1 : ord (((1 : Fˣ)) : F) = 0` using `by simp [ord]`. Rewrite `hdg` using `[ord_unifUnit_zpow, ord_unifUnit_zpow, o1]`. Establish `hanti : Antitone (![0, -b, -a] : Fin 3 → ℤ) ↔ b ≤ a ∧ 0 ≤ b`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h1` using `h (show (0 : Fin 3) ≤ 1 by decide)`. Establish `h2` using `h (show (1 : Fin 3) ≤ 2 by decide)`. Simplify using `at h1 h2`. Conclude with `⟨h2, h1⟩`. Apply the tactic sequence `rintro ⟨h1, h2⟩ i j hij fin_cases i <;> fin_cases j <;> simp_all <;> omega`.
+
+Establish `hrho : Spherical.rhoPair (![0, -b, -a] : Fin 3 → ℤ) = 2 * a`. Simplify using `[Spherical.rhoPair, Fin.sum_univ_three]`. Establish `hq : Spherical.sqrtQ F ^ (-(2 * a)) = (residueCard F : ℂ) ^ (-a)`. Rewrite using `[show -(2 * a) = 2 * (-a) by ring, _root_.zpow_mul, zpow_ofNat, Spherical.sqrtQ_sq]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, hdg, mul_assoc, Spherical.sphericalWhittaker_mul_right hψ₀ z _ (mul_mem hk GlobalTheory.CompanionTheory.GL2Factorization.DualGauge.weyl_GL3_mem_integralGL), Spherical.sphericalWhittaker_torusPow hψ₀ z]`. Simplify using `only [hanti]`. Use `split_ifs with h`. Rewrite using `[Spherical.halfModulus_eq, hrho, hq]`. Both sides reduce to the same expression.
+-/
 theorem spherical_whittaker_long_weyl3_transpose_inv : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (ψ₀ : AddChar F ℂ), (∀ x ∈ 𝒪[F], ψ₀ x = 1) → ∀ (z : Fin 3 → ℂˣ) (a b : ℤ), Spherical.sphericalWhittaker ψ₀ z (GL2LocalData.w3 * GL2LocalData.tinv (dg (unifUnit F ^ a) (unifUnit F ^ b) 1)) = if b ≤ a ∧ 0 ≤ b then (residueCard F : ℂ) ^ (-a) * Spherical.evalAt z (Spherical.schur ![0, -b, -a]) else 0 := by
   intro F _ _ _ _ ψ₀ hψ₀ z a b
   borelize F

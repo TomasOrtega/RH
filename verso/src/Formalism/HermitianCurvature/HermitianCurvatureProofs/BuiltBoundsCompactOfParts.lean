@@ -116,6 +116,13 @@ def ThresholdsPositive : Prop :=
     KB.IsLeadingFormSetting Cb Cc S p f χ A₀ →
     ∀ b s v, 1 ≤ b → 1 ≤ s → 0 < J.thrS S.G S.CA S.de S.de' S.T S.T' S.l b s (S.pl v)
 
+/- English proof (translation)
+Rewrite using `[PBA.psd_iff_qf]`. Use `⟨fun x _ y _ => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `h1 : Tendsto (fun n => k n y x) atTop (𝓝 (conj (k0 x y)))`. Use `((Complex.continuous_conj.tendsto _).comp (hl x y))` as an intermediate fact. Use `this.congr fun n => ?_` and prove the remaining obligations.
+
+Conclude with `(((PBA.psd_iff_qf Y (k n)).1 (hk n)).1 x ‹_› y ‹_›).symm`. Conclude with `tendsto_nhds_unique (hl y x) h1`. Establish `hq : Tendsto (fun n => (PBA.qf Y (k n) c).re) atTop (𝓝 (PBA.qf Y k0 c).re)`. Use `(Complex.continuous_re.tendsto _).comp ?_` and prove the remaining obligations. Unfold `PBA.qf`.
+
+Use `tendsto_finsetSum _ fun x _ => tendsto_finsetSum _ fun y _ => ?_` and prove the remaining obligations. Conclude with `((tendsto_const_nhds.mul (hl x y)).mul tendsto_const_nhds)`. Conclude with `ge_of_tendsto' hq fun n => (((PBA.psd_iff_qf Y (k n)).1 (hk n)).2 c)`.
+-/
 theorem psd_of_tendsto {α : Type} (Y : Finset α) (k : ℕ → α → α → ℂ) (k0 : α → α → ℂ)
     (hk : ∀ n, TB.PSDOn Y (k n)) (hl : ∀ x y, Tendsto (fun n => k n x y) atTop (𝓝 (k0 x y))) :
     TB.PSDOn Y k0 := by
@@ -133,6 +140,39 @@ theorem psd_of_tendsto {α : Type} (Y : Finset α) (k : ℕ → α → α → �
       exact ((tendsto_const_nhds.mul (hl x y)).mul tendsto_const_nhds)
     exact ge_of_tendsto' hq fun n => (((PBA.psd_iff_qf Y (k n)).1 (hk n)).2 c)
 
+/- English proof (translation)
+Take `⟨c1, h1⟩` from `limit_of_module_forms Cb`. Take `⟨C₄, hC₄, hSF⟩` from `sum_form_of_local_statements`. Take `⟨c2, h2⟩` from `hW Cb`. Take `⟨c3, h3⟩` from `hL Cb`. Take `⟨c4, h4⟩` from `hG Cb`.
+
+Take `⟨c5, h5⟩` from `hP Cb`. Take `⟨c6, h6⟩` from `hI Cb`. Take `⟨c7, h7⟩` from `hD Cb`. Take `⟨c8, h8⟩` from `hTh Cb`. Use `set Cc : ℝ := max (max (max c1 c2) (max c3 c4)) (max (max c5 c6) (max c7 (max c8 (28 * Real.exp 1)))) with hCc`.
+
+Use `⟨Cc, C₄, hC₄, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB`. Establish `le1 : c1 ≤ Cc` using `by simp [hCc]`. Establish `le2 : c2 ≤ Cc` using `by simp [hCc]`. Establish `le3 : c3 ≤ Cc` using `by simp [hCc]`.
+
+Establish `le4 : c4 ≤ Cc` using `by simp [hCc]`. Establish `le5 : c5 ≤ Cc` using `by simp [hCc]`. Establish `le6 : c6 ≤ Cc` using `by simp [hCc]`. Establish `le7 : c7 ≤ Cc` using `by simp [hCc]`. Establish `le8 : c8 ≤ Cc` using `by simp [hCc]`.
+
+Establish `le9 : 28 * Real.exp 1 ≤ Cc` using `by simp [hCc]`. Establish `hB'` using `hB`. Take `⟨hg1, hg2, hU, hcut, -, -, -, -, -, -, hGo, -, -, -, hA, hv⟩` from `hB'`. Establish `hCI : KB.CutInside S` using `PBCut.cutInside_of_built hB`. Establish `hFL : ∀ v ε, 0 < ε → (∀ n, KB.CptCoef (p v).T.base (cutSeq S p f χ n v ε)) ∧ ∀ i w, KB.CutWord (D.parOf S v) (p v).l0 w → w.length ≤ S.Ntop → ∀ a b, Tendsto (fun n => (p v).RR (cutSeq S p f χ n v ε) i w a b) atTop (𝓝 ((p v).RR (D.cutF (p v).T.base χ (f v) ε) i w a b))`.
+
+Introduce `v ε hε`. Take `⟨hl0, hInD, -, hCk, hCC⟩` from `hv v`. Use `h1 (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) (f v) χ ε A₀ S.Ntop cutN (by rw [hl0]; exact hInD) hcut hε hCk hCC (le_trans ?_ hA) (fun n g => rfl)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right le1 (by positivity)) (by positivity)`. Establish `hcpt : ∀ n v ε, 0 < ε → KB.CptCoef (p v).T.base (cutSeq S p f χ n v ε)` using `fun n v ε hε => (hFL v ε hε).1 n`.
+
+Establish `hconv : ∀ v ε, 0 < ε → ∀ i a, D.AdmAt S v a → ∀ P Q, Tendsto (fun n => PBL.rrC S p (cutSeq S p f χ n) v ε i a P Q) atTop (𝓝 ((S.pd v).RR ε i a P Q))`. Introduce `v ε hε i a ha P Q`. Take `⟨hl0, -, hpd, -, -⟩` from `hv v`. Take `⟨w, rfl⟩` from `ha`. Establish `hcw : KB.CutWord (D.parOf S v) (p v).l0 (w.1 v)` using `by rw [hl0]; exact PBD.cutWord_of_adm S hGo hCI w v`.
+
+Establish `hlen : (w.1 v).length ≤ S.Ntop` using `le_trans (PBB.len_le_cnt S w v) w.2.2`. Establish `ht` using `((hFL v ε hε).2 i (w.1 v) hcw hlen (D.toStd S.G.r (S.g : ℝ) 1 P) (D.toStd S.G.r (S.g : ℝ) 1 Q)).const_mul (((1 / (D.bSt (D.kapG (S.g : ℝ) (S6.rd E)) P * D.bSt (D.kapG (S.g : ℝ) (S6.rd E)) Q * D.GamLev S.G.k S.G.r (D.kapG (S.g : ℝ) (S6.rd E)) (D.deG (S.g : ℝ) (S6.rd E)) i) : ℝ) : …`. Establish `hval : (S.pd v).RR ε i (w.1 v) P Q = (((1 / (D.bSt (D.kapG (S.g : ℝ) (S6.rd E)) P * D.bSt (D.kapG (S.g : ℝ) (S6.rd E)) Q * D.GamLev S.G.k S.G.r (D.kapG (S.g : ℝ) (S6.rd E)) (D.deG (S.g : ℝ) (S6.rd E)) i) : ℝ) : ℂ)) * (p v).RR (D.cutF (p v).T.base χ (f v) ε) i (w.1 v) (D.toStd S.G …`. Rewrite using `[hpd]`. Simplify using `only [D.componentFamilySetting_ofSetting, KB.Pl.RR, hl0, one_pow]`.
+
+Rewrite using `[hval]`. Conclude with `ht`. Use `set RR : ℕ → Fin S.f → ℝ → ℕ → List C.Letter → C.LPt → C.LPt → ℂ := fun n => PBL.rrC S p (cutSeq S p f χ n) with hRR`. Establish `hIn : ∀ n, KB.IntAll (KB.withRR S (RR n))` using `h6 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place le6 hB)`. Establish `hPn : ∀ n, C.ThmPPos (KB.withRR S (RR n))` using `fun n => h5 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place le5 hB) _ (hcpt n)`.
+
+Take `⟨hIS, hWL⟩` from `integral_formula_passes_to_limits E Wp Wq S RR hg1 hg2 hU hconv hIn (h7 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place le7 hB))`. Take `⟨hLC1, hLC2, hLC3⟩` from `PBA.limit_closed E Wp Wq S RR hconv`. Take `⟨X0, hXt0, hXl0⟩` from `h2 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place le2 hB)`. Use `set X : ℕ → Fin S.f → ℝ := fun i v => if 1 ≤ i ∧ i ≤ S.G.r + 1 then X0 i v else 0 with hXdef`. Establish `hX0 : ∀ i v, 0 ≤ X i v`.
+
+Introduce `i v`. Distinguish the cases in `hi : 1 ≤ i ∧ i ≤ S.G.r + 1`. Simplify using `only [hXdef, if_pos hi]`. Conclude with `(hXt0 i hi.1 hi.2 v).1`. Simplify using `only [hXdef, if_neg hi, le_refl]`.
+
+Establish `hXt : JC.HidaCurvatureBarriers S X`. Introduce `i hi1 hi2 v`. Simplify using `only [hXdef, if_pos (And.intro hi1 hi2)]`. Conclude with `hXt0 i hi1 hi2 v`. Establish `hXl : ∀ F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)), (∀ v ε, 0 < ε → KB.CptCoef (p v).T.base (F v ε)) → ∀ v, KB.WaveLoc (PBL.setC S p F) v fun i => X i v`.
+
+Introduce `F hF v i hi1 hi2`. Establish `hXi : X i v = X0 i v` using `by rw [hXdef]; exact if_pos ⟨hi1, hi2⟩`. Simplify using `only [hXi]`. Conclude with `hXl0 F hF v i hi1 hi2`. Take `⟨Λ, hΛ0, hΛs, hΛl⟩` from `h3 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place le3 hB)`.
+
+Take `⟨hTt, hTl⟩` from `hTL hDT hVT hTR Cb Cc E Wp Wq S p f χ A₀ le9 hB`. Establish `hGL` using `h4 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place le4 hB)`. Establish `hthr` using `h8 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place le8 hB)`. Establish `hWn : ∀ n, JC.WaveByPlaces (KB.withRR S (RR n)) X` using `fun n => plane_wave_bound_of_local_bounds E Wp Wq (KB.withRR S (RR n)) X hg1 hg2 hU hGo (hIn n) hX0 (hXl _ (hcpt n))`. Establish `hLn : ∀ n, JC.LiftBelowTop (KB.withRR S (RR n)) Λ` using `fun n => PBA.liftOfLoc_statement E Wp Wq (KB.withRR S (RR n)) Λ (hPn n) hGo hΛ0 (hΛl _ (hcpt n))`.
+
+Establish `hTn : ∀ n, JC.LiftTopDiag (KB.withRR S (RR n)) (fun b _ v => PBL.lamTop S b v)` using `fun n => PBA.top_of_local E Wp Wq (KB.withRR S (RR n)) _ (hPn n) hGo (hTl _ (hcpt n))`. Establish `hSn : ∀ n, JC.SumFormConcrete (KB.withRR S (RR n)) C₄` using `fun n => hSF E Wp Wq (KB.withRR S (RR n)) X Λ hg1 hg2 hU (hPn n) hGo (hIn n) (hXl _ (hcpt n)) hXt (hΛl _ (hcpt n)) (fun b s hb hs hbs v => ⟨hΛ0 b s v, hΛs b s hb hs hbs v⟩) hthr (hGL n)`. Establish `hpos : C.ThmPPos S`. Introduce `v ε hε i hi w Y`. Use `psd_of_tendsto Y (fun n => (KB.withRR S (RR n)).gramLoc v ε i (w.1 v)) _ (fun n => hPn n v ε hε i hi w Y) fun x y => ?_` and prove the remaining obligations.
+
+Conclude with `(hconv v ε hε i (w.1 v) ⟨w, rfl⟩ x y).const_mul _`. Conclude with `⟨hpos, hIS, ⟨X, hWL X hWn, hXt⟩, ⟨Λ, fun b _ v => PBL.lamTop S b v, hLC1 Λ hLn, hLC2 _ hTn, fun b s hb hs hbs v => ⟨hΛ0 b s v, hΛs b s hb hs hbs v⟩, hTt⟩, hLC3 C₄ hPn hGo hSn⟩`.
+-/
 theorem core (hW : WaveLocB) (hL : LiftLocB) (hTL : PBL.TopLocB) (hDT : KB.DegTop) (hVT : Top.VecVTypes)
     (hTR : PBL.TopRatio) (hG : GermLocB) (hP : PosB) (hI : IntB) (hD : DecayUnif) (hTh : ThresholdsPositive) (Cb : ℝ) :
     ∃ Cc C₄ : ℝ, 1 ≤ C₄ ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Wp Wq : InfinitePlace E → Type)
@@ -260,6 +300,9 @@ def BuiltBounds2OfParts : Prop :=
   (P5.ThmPActual → GermLocB) → (P5.ThmPActual → PosB) → (P5.ThmPActual → IntB) →
   (P5.ThmPActual → DecayUnif) → (P5.ThmPActual → ThresholdsPositive) → KB.BuiltBounds2
 
+/- English proof (translation)
+Introduce `hW hL hTL hDT hVT hTR hG hP hI hD hTh hA Cb`. Conclude with `core (hW hA) (hL hA) hTL (hDT hA) (hVT hA) (hTR hA) (hG hA) (hP hA) (hI hA) (hD hA) (hTh hA) Cb`.
+-/
 theorem builtBounds2CptOfParts : BuiltBounds2CptOfParts := by
   intro hW hL hTL hDT hVT hTR hG hP hI hD hTh hA Cb
   exact core (hW hA) (hL hA) hTL (hDT hA) (hVT hA) (hTR hA) (hG hA) (hP hA) (hI hA) (hD hA) (hTh hA) Cb

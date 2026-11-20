@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.IsoSplit
 
+/- English proof (translation)
+Establish `h : Matrix.fromBlocks A (A * X) (Y * A) (Y * A * X + M) = Matrix.fromBlocks 1 0 Y 1 * Matrix.fromBlocks A 0 0 M * Matrix.fromBlocks 1 X 0 1`. Simplify using `[Matrix.fromBlocks_multiply]`. Rewrite using `[h, Matrix.det_mul, Matrix.det_mul]`. Simplify using `[Matrix.det_fromBlocks_zero₁₂, Matrix.det_fromBlocks_zero₂₁]`.
+-/
 theorem det_fromBlocks_factor {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (A : Matrix m m ℂ) (X : Matrix m n ℂ) (Y : Matrix n m ℂ) (M : Matrix n n ℂ) :
     (Matrix.fromBlocks A (A * X) (Y * A) (Y * A * X + M)).det = A.det * M.det := by
@@ -29,24 +32,45 @@ section Riem
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
   (R : RiemLat E g Λ)
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip, add_dotProduct]`.
+-/
 theorem ip_add_right (x y y' : Fin g → ℂ) : R.ip x (y + y') = R.ip x y + R.ip x y' := by
   simp [RiemLat.ip, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip, smul_dotProduct]`.
+-/
 theorem ip_smul_right (x : Fin g → ℂ) (c : ℂ) (y : Fin g → ℂ) : R.ip x (c • y) = c * R.ip x y := by
   simp [RiemLat.ip, smul_dotProduct]
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip, star_add, mulVec_add, dotProduct_add]`.
+-/
 theorem ip_add_left (x x' y : Fin g → ℂ) : R.ip (x + x') y = R.ip x y + R.ip x' y := by
   simp [RiemLat.ip, star_add, mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip, star_smul, mulVec_smul, dotProduct_smul]`.
+-/
 theorem ip_smul_left (c : ℂ) (x y : Fin g → ℂ) : R.ip (c • x) y = starRingEnd ℂ c * R.ip x y := by
   simp [RiemLat.ip, star_smul, mulVec_smul, dotProduct_smul]
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip]`.
+-/
 theorem ip_zero_left (y : Fin g → ℂ) : R.ip 0 y = 0 := by
   simp [RiemLat.ip]
 
+/- English proof (translation)
+Simplify using `[RiemLat.ip]`.
+-/
 theorem ip_zero_right (x : Fin g → ℂ) : R.ip x 0 = 0 := by
   simp [RiemLat.ip]
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [ip_zero_right]`. Consider the case `insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, ip_add_right, ih]`.
+-/
 theorem ip_sum_right {ι : Type} (t : Finset ι) (x : Fin g → ℂ) (f : ι → Fin g → ℂ) :
     R.ip x (∑ i ∈ t, f i) = ∑ i ∈ t, R.ip x (f i) := by
   classical
@@ -54,6 +78,9 @@ theorem ip_sum_right {ι : Type} (t : Finset ι) (x : Fin g → ℂ) (f : ι →
   | empty => simp [ip_zero_right]
   | insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, ip_add_right, ih]
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [ip_zero_left]`. Consider the case `insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, ip_add_left, ih]`.
+-/
 theorem ip_sum_left {ι : Type} (t : Finset ι) (f : ι → Fin g → ℂ) (y : Fin g → ℂ) :
     R.ip (∑ i ∈ t, f i) y = ∑ i ∈ t, R.ip (f i) y := by
   classical
@@ -61,13 +88,34 @@ theorem ip_sum_left {ι : Type} (t : Finset ι) (f : ι → Fin g → ℂ) (y : 
   | empty => simp [ip_zero_left]
   | insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, ip_add_left, ih]
 
+/- English proof (translation)
+Use `show star (x ⬝ᵥ R.Hm *ᵥ star y) = y ⬝ᵥ R.Hm *ᵥ star x`. Rewrite using `[← star_dotProduct_star, star_mulVec, star_star, R.herm.eq, dotProduct_mulVec]`.
+-/
 theorem conj_ip (x y : Fin g → ℂ) : starRingEnd ℂ (R.ip y x) = R.ip x y := by
   show star (x ⬝ᵥ R.Hm *ᵥ star y) = y ⬝ᵥ R.Hm *ᵥ star x
   rw [← star_dotProduct_star, star_mulVec, star_star, R.herm.eq, dotProduct_mulVec]
 
+/- English proof (translation)
+Rewrite using `[← conj_ip R y x, h, map_zero]`.
+-/
 theorem ip_symm_zero {x y : Fin g → ℂ} (h : R.ip x y = 0) : R.ip y x = 0 := by
   rw [← conj_ip R y x, h, map_zero]
 
+/- English proof (translation)
+Use `set A := R.gram f with hA`. Use `set Y : Matrix (Fin k) (Fin r) ℂ := l.map (starRingEnd ℂ) with hY`. Establish `e2 : ∀ a c, R.ip (f a) (q c) = (A * lᵀ) a c`. Introduce `a c`. Rewrite using `[hq c, ip_add_right, ho, zero_add, ip_sum_right, Matrix.mul_apply]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[ip_smul_right, mul_comm]`. Both sides reduce to the same expression. Establish `e3 : ∀ c a, R.ip (q c) (f a) = (Y * A) c a`. Introduce `c a`.
+
+Rewrite using `[hq c, ip_add_left, ip_symm_zero R (ho c a), zero_add, ip_sum_left, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[ip_smul_left]`. Both sides reduce to the same expression. Establish `e4 : ∀ c c', R.ip (q c) (q c') = (Y * A * lᵀ + M) c c'`.
+
+Introduce `c c'`. Establish `h : R.ip (q c) (q c') = R.ip (p' c) (q c') + ∑ b, starRingEnd ℂ (l c b) * R.ip (f b) (q c')` using `by conv_lhs => rw [hq c]`. Rewrite using `[ip_add_left, ip_sum_left]`. Simplify using `only [ip_smul_left]`. Rewrite using `[h, hM, Matrix.add_apply, Matrix.mul_assoc, Matrix.mul_apply, add_comm]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[e2]`. Both sides reduce to the same expression. Establish `hblock : (R.gram (Fin.append f q)).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks A (A * lᵀ) (Y * A) (Y * A * lᵀ + M)`.
+
+Use extensionality with `(a | a) (b | b)`. Simplify using `[RiemLat.gram, hA]`. Simplify `e2 a b` using `[RiemLat.gram]`. Simplify `e3 a b` using `[RiemLat.gram]`. Simplify `e4 a b` using `[RiemLat.gram]`.
+
+Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv, hblock, det_fromBlocks_factor]`.
+-/
 theorem gram_append_of_frame {r k : ℕ} (f : Fin r → Fin g → ℂ) (q p' : Fin k → Fin g → ℂ)
     (l : Matrix (Fin k) (Fin r) ℂ) (M : Matrix (Fin k) (Fin k) ℂ)
     (hq : ∀ c, q c = p' c + ∑ b, l c b • f b) (ho : ∀ c a, R.ip (f a) (p' c) = 0)
@@ -107,6 +155,9 @@ theorem gram_append_of_frame {r k : ℕ} (f : Fin r → Fin g → ℂ) (q p' : F
     · simpa [RiemLat.gram] using e4 a b
   rw [← Matrix.det_submatrix_equiv_self finSumFinEquiv, hblock, det_fromBlocks_factor]
 
+/- English proof (translation)
+Take `⟨-, -, h1, -, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Establish `hl` using `(h1 s).2.2.1`. Establish `h0 : eigComp R.B s 0 = 0` using `by simpa using hl (-1) 0 0`. Conclude with `⟨{ toFun := eigComp R.B s map_add' := fun x y => by simpa using hl 1 x y map_smul' := fun c x => by simpa [h0] using hl c x 0 }, fun _ => rfl⟩`.
+-/
 theorem exists_eigLin (s : 𝓞 E →+* ℂ) :
     ∃ L : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), ∀ x, L x = eigComp R.B s x := by
   obtain ⟨-, -, h1, -, -⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
@@ -118,6 +169,9 @@ theorem exists_eigLin (s : 𝓞 E →+* ℂ) :
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `hc : (RingHom.ker s).comap (algebraMap ℤ (𝓞 E)) = ⊥`. Rewrite using `[RingHom.comap_ker]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (RingHom.injective_int _)`. Conclude with `(RingHom.injective_iff_ker_eq_bot s).2 (Ideal.eq_bot_of_comap_eq_bot hc)`.
+-/
 theorem emb_injective (s : 𝓞 E →+* ℂ) : Function.Injective s := by
   have hc : (RingHom.ker s).comap (algebraMap ℤ (𝓞 E)) = ⊥ := by
     rw [RingHom.comap_ker]
@@ -127,18 +181,32 @@ theorem emb_injective (s : 𝓞 E →+* ℂ) : Function.Injective s := by
 def extEmb (s : 𝓞 E →+* ℂ) : E →+* ℂ := IsFractionRing.lift (emb_injective s)
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap (emb_injective s) a`.
+-/
 theorem extEmb_apply (s : 𝓞 E →+* ℂ) (a : 𝓞 E) : extEmb s (algebraMap (𝓞 E) E a) = s a :=
   IsFractionRing.lift_algebraMap (emb_injective s) a
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨extEmb s, RingHom.ext (extEmb_apply s)⟩`.
+-/
 theorem exists_ext (s : 𝓞 E →+* ℂ) : ∃ t : E →+* ℂ, t.comp (algebraMap (𝓞 E) E) = s :=
   ⟨extEmb s, RingHom.ext (extEmb_apply s)⟩
 
+/- English proof (translation)
+Introduce `e` and use `h (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (e.trans h₀.symm))`.
+-/
 theorem comp_ne {s : 𝓞 E →+* ℂ} {t t₀ : E →+* ℂ} (h₀ : t₀.comp (algebraMap (𝓞 E) E) = s) (h : t ≠ t₀) :
     t.comp (algebraMap (𝓞 E) E) ≠ s := fun e =>
   h (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (e.trans h₀.symm))
 
+/- English proof (translation)
+Take `⟨-, -, h1, h2, h3⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Take `⟨t₀, ht₀⟩` from `exists_ext s`. Establish `hl : R.ip x (eigComp R.B s y) = R.ip (eigComp R.B s x) (eigComp R.B s y)`. Combine the equalities or inequalities in the displayed calculation. Establish `hr : R.ip (eigComp R.B s x) y = R.ip (eigComp R.B s x) (eigComp R.B s y)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hl, hr]`.
+-/
 theorem eigComp_adjoint (s : 𝓞 E →+* ℂ) (x y : Fin g → ℂ) :
     R.ip x (eigComp R.B s y) = R.ip (eigComp R.B s x) y := by
   obtain ⟨-, -, h1, h2, h3⟩ := GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R
@@ -161,6 +229,11 @@ theorem eigComp_adjoint (s : 𝓞 E →+* ℂ) (x y : Fin g → ℂ) :
       _ = R.ip (eigComp R.B s x) (eigComp R.B s y) := by rw [ht₀]
   rw [hl, hr]
 
+/- English proof (translation)
+Establish `hst : ∀ a, R.B a u ∈ Submodule.span ℂ (R.P '' (I : Set Λ))`. Introduce `a`. Establish `hle : (Submodule.span ℂ (R.P '' (I : Set Λ))).map (R.B a) ≤ Submodule.span ℂ (R.P '' (I : Set Λ))`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨v, hv, rfl⟩, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨a • v, I.smul_mem a hv, R.act a v⟩`. Conclude with `hle (Submodule.mem_map_of_mem hu)`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_eigenComponent_polynomial E s`. Rewrite using `[(hc (Fin g → ℂ) R.B).1 u]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (hst a)`.
+-/
 theorem eigComp_mem_span (I : Submodule (𝓞 E) Λ) (s : 𝓞 E →+* ℂ) {u : Fin g → ℂ}
     (hu : u ∈ Submodule.span ℂ (R.P '' (I : Set Λ))) :
     eigComp R.B s u ∈ Submodule.span ℂ (R.P '' (I : Set Λ)) := by
@@ -175,6 +248,13 @@ theorem eigComp_mem_span (I : Submodule (𝓞 E) Λ) (s : 𝓞 E →+* ℂ) {u :
   rw [(hc (Fin g → ℂ) R.B).1 u]
   exact Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (hst a)
 
+/- English proof (translation)
+Take `⟨-, -, h1, -, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Take `⟨L, hL⟩` from `exists_eigLin R s`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+
+Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Consider the case `zero`. Rewrite using `[map_zero, ← hL, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x x' _ _ hx hx'`.
+
+Rewrite using `[map_add, ← hL, map_add, hL, hL]`. Conclude with `Submodule.add_mem _ hx hx'`. Consider the case `smul a x _ hx`. Rewrite using `[R.act, (h1 s).2.2.2 a]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem eigComp_P_mem_span (s : 𝓞 E →+* ℂ) {r : ℕ} (y : Fin r → Λ) {z : Λ}
     (hz : z ∈ Submodule.span (𝓞 E) (Set.range y)) :
     eigComp R.B s (R.P z) ∈ Submodule.span ℂ (Set.range fun a => eigComp R.B s (R.P (y a))) := by
@@ -194,6 +274,15 @@ theorem eigComp_P_mem_span (s : 𝓞 E →+* ℂ) {r : ℕ} (y : Fin r → Λ) {
     rw [R.act, (h1 s).2.2.2 a]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `exists_eigLin R s`. Use `set W := Submodule.span ℂ (Set.range fun a => eigComp R.B s (R.P (y a))) with hW`. Establish `hle : Submodule.span ℂ (R.P '' (I : Set Λ)) ≤ W.comap L`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Take `⟨n, hn, -, hmem⟩` from `AddSubgroup.exists_nsmul_mem_of_relIndex_ne_zero hidx (a := x) hx`. Establish `h1 : eigComp R.B s (R.P (n • x)) ∈ W` using `eigComp_P_mem_span R s y hmem.1`. Rewrite `h1` using `[map_nsmul, ← hL, map_nsmul]`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `h2 : L (R.P x) = (n : ℂ)⁻¹ • (n • L (R.P x))`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hn', one_smul]`. Use `show L (R.P x) ∈ W`. Rewrite using `[h2]`. Conclude with `W.smul_mem _ h1`. Use `hle hu` as an intermediate fact.
+
+Rewrite `this` using `[Submodule.mem_comap, hL]`. Then use the resulting hypothesis.
+-/
 theorem eigComp_span_le (I : Submodule (𝓞 E) Λ) (s : 𝓞 E →+* ℂ) {r : ℕ} (y : Fin r → Λ)
     (hidx : (Submodule.span (𝓞 E) (Set.range y)).toAddSubgroup.relIndex I.toAddSubgroup ≠ 0)
     {u : Fin g → ℂ} (hu : u ∈ Submodule.span ℂ (R.P '' (I : Set Λ))) :
@@ -215,6 +304,13 @@ theorem eigComp_span_le (I : Submodule (𝓞 E) Λ) (s : 𝓞 E →+* ℂ) {r : 
   have := hle hu
   rwa [Submodule.mem_comap, hL] at this
 
+/- English proof (translation)
+Establish `hspan : ∀ v ∈ Submodule.span ℂ (R.P '' (I : Set Λ)), R.ip v z = 0`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, rfl⟩` from `hx`.
+
+Conclude with `hz w hw`. Consider the case `zero => exact ip_zero_left R z`. Consider the case `add x x' _ _ hx hx' => rw [ip_add_left, hx, hx', add_zero]`. Consider the case `smul c x _ hx => rw [ip_smul_left, hx, mul_zero]`. Rewrite using `[eigComp_adjoint]`.
+
+Conclude with `hspan _ (eigComp_mem_span R I s hu)`.
+-/
 theorem ip_eigComp_eq_zero (I : Submodule (𝓞 E) Λ) (s : 𝓞 E →+* ℂ) {z : Fin g → ℂ}
     (hz : ∀ x ∈ I, R.ip (R.P x) z = 0) {u : Fin g → ℂ}
     (hu : u ∈ Submodule.span ℂ (R.P '' (I : Set Λ))) : R.ip u (eigComp R.B s z) = 0 := by
@@ -232,6 +328,17 @@ theorem ip_eigComp_eq_zero (I : Submodule (𝓞 E) Λ) (s : 𝓞 E →+* ℂ) {z
 
 end Riem
 
+/- English proof (translation)
+Introduce `E _ _ _ g Λ _ _ R I s₀ r k y q p hy hidx hq hpq hp`. Take `⟨-, -, h1, -, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Take `⟨L, hL⟩` from `exists_eigLin R s₀`. Establish `hqfix : ∀ c, eigComp R.B s₀ (q c) = q c` using `fun c => (h1 s₀).2.1 _ (hq c)`. Establish `hdiff : ∀ c, q c - eigComp R.B s₀ (p c) ∈ Submodule.span ℂ (Set.range fun a => eigComp R.B s₀ (R.P (y a)))`.
+
+Introduce `c`. Establish `h` using `eigComp_span_le R I s₀ y hidx (hpq c)`. Establish `e : q c - eigComp R.B s₀ (p c) = -eigComp R.B s₀ (p c - q c)`. Rewrite using `[← hL (p c - q c), map_sub, hL, hL, hqfix, neg_sub]`. Rewrite using `[e]`.
+
+Conclude with `Submodule.neg_mem _ h`. Use `choose l hl using fun c => (Submodule.mem_span_range_iff_exists_fun ℂ).1 (hdiff c)`. Use `gram_append_of_frame R _ q (fun c => eigComp R.B s₀ (p c)) (Matrix.of l) _ ?_ ?_ ?_` and prove the remaining obligations. Introduce `c`. Simplify using `only [Matrix.of_apply]`.
+
+Rewrite using `[hl c, add_sub_cancel]`. Introduce `c a`. Conclude with `ip_eigComp_eq_zero R I s₀ (hp c) (eigComp_mem_span R I s₀ (Submodule.subset_span ⟨y a, hy a, rfl⟩))`. Introduce `c c'`. Rewrite using `[← eigComp_adjoint, hqfix]`.
+
+Both sides reduce to the same expression.
+-/
 theorem gram_append_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (R : RiemLat E g Λ) (I : Submodule (𝓞 E) Λ) (s₀ : 𝓞 E →+* ℂ) (r k : ℕ) (y : Fin r → Λ) (q p : Fin k → Fin g → ℂ), (∀ a, y a ∈ I) → (Submodule.span (𝓞 E) (Set.range y)).toAddSubgroup.relIndex I.toAddSubgroup ≠ 0 → (∀ c, q c ∈ eigSp R.B s₀) → (∀ c, p c - q c ∈ Submodule.span ℂ (R.P '' (I : Set Λ))) → (∀ c, ∀ x ∈ I, R.ip (R.P x) (p c) = 0) → (R.gram (Fin.append (fun a => eigComp R.B s₀ (R.P (y a))) q)).det = (R.gram fun a => eigComp R.B s₀ (R.P (y a))).det * (Matrix.of fun c c' => R.ip (p c) (q c')).det := by
   intro E _ _ _ g Λ _ _ R I s₀ r k y q p hy hidx hq hpq hp
   classical

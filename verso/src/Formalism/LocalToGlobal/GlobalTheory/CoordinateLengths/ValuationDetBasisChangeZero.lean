@@ -10,6 +10,11 @@ open scoped Matrix
 
 variable (D : D7) (u : D.what₂.Word)
 
+/- English proof (translation)
+Use `haveI : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩`. Introduce `h`. Apply `hs` to reduce the goal to its premises. Rewrite `h` using `[map_natCast]`. Establish `e : (D.mem u).A.Fv v ≃+* ZMod (D.mem u).A.T` using `FiniteField.ringEquivOfCardEq (by rw [(D.mem u).A.card_Fv v, ZMod.card])`.
+
+Establish `h2 : (s : ZMod (D.mem u).A.T) = 0`. Rewrite using `[← map_natCast e s, h, map_zero]`. Conclude with `(CharP.cast_eq_zero_iff (ZMod (D.mem u).A.T) (D.mem u).A.T s).mp h2`.
+-/
 theorem residue_nat_ne_zero_level_zero (Tt : Forms0 D u) (v : (D.mem u).A.vT) (s : ℕ) (hs : ¬ (D.mem u).A.T ∣ s) :
     Tt.atT.res v (s : 𝓞 D.host.E) ≠ 0 := by
   haveI : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩
@@ -22,10 +27,62 @@ theorem residue_nat_ne_zero_level_zero (Tt : Forms0 D u) (v : (D.mem u).A.vT) (s
     rw [← map_natCast e s, h, map_zero]
   exact (CharP.cast_eq_zero_iff (ZMod (D.mem u).A.T) (D.mem u).A.T s).mp h2
 
+/- English proof (translation)
+Conclude with `not_dvd_prod_of_not_dvd (D := D) (u := u) s f h`.
+-/
 theorem not_T_dvd_finset_prod {ι : Type} (s : Finset ι) (f : ι → ℕ) (h : ∀ i ∈ s, ¬ (D.mem u).A.T ∣ f i) :
     ¬ (D.mem u).A.T ∣ ∏ i ∈ s, f i := by
   exact not_dvd_prod_of_not_dvd (D := D) (u := u) s f h
 
+/- English proof (translation)
+Use `set M : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E := ((B⁻¹ * B' : GL (Fin (D.R.N i)) D.host.E) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) with hMdef`. Establish `hLk : Lk Tt.atT i hi v c ≤ Ld D u i hi c` using `sup_le (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0.bwL_lcInt0 D u Tt i hi h0 c) Submodule.smul_le_right`. Establish `hone : ¬ (D.mem u).A.T ∣ 1` using `(D.mem u).A.T_prime.not_dvd_one`. Use `choose sk hsk hskL using fun k => bwD_col_loc D u w hw hB' k`. Establish `hcolM : ∀ k a, (((B⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) *ᵥ (fun r => (B' : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) r k)) a = M a k`.
+
+Introduce `k a`. Rewrite using `[bwD_mulVec_col, ← Units.val_mul]`. Establish `hco : ∀ k, ∃ s' : ℕ, ¬ (D.mem u).A.T ∣ s' ∧ ∀ a, ((s' * sk k : ℕ) : D.host.E) * M a k ∈ (algebraMap (𝓞 D.host.E) D.host.E).range`. Introduce `k`. Take `⟨s', hs', hm⟩` from `(hB ((sk k : D.host.E) • fun r => (B' : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) r k)).1 ⟨1, hone, by rw [Nat.cast_one, one_smul]; exact hLk (hskL k)⟩`.
+
+Use `⟨s', hs', fun a => ?_⟩` and prove the remaining obligations. Use `hm a` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, hcolM]`. Rewrite using `[Nat.cast_mul, mul_assoc]`. Conclude with `this`.
+
+Use `choose s2 hs2 hs2m using hco`. Use `set S : ℕ := ∏ k, s2 k * sk k with hSdef`. Establish `hS : ¬ (D.mem u).A.T ∣ S` using `not_T_dvd_finset_prod D u _ _ (fun k _ => by`. Introduce `hd`. Break down `(Nat.Prime.dvd_mul (D.mem u).A.T_prime).1 hd with h | h` into its components or cases.
+
+Conclude with `hs2 k h`. Conclude with `hsk k h)`. Establish `hSM : ∀ a k, (S : D.host.E) * M a k ∈ (algebraMap (𝓞 D.host.E) D.host.E).range`. Introduce `a k`. Take `⟨q, hq⟩ : s2 k * sk k ∣ S` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ k)`.
+
+Rewrite using `[hq, Nat.cast_mul, mul_comm ((s2 k * sk k : ℕ) : D.host.E), mul_assoc]`. Conclude with `Subring.mul_mem _ ⟨(q : 𝓞 D.host.E), map_natCast _ _⟩ (hs2m k a)`. Use `choose m hm using hSM`. Use `choose tb htb htbL using fun a => bwD_col_loc D u w hw hB a`. Use `set t : ℕ := ∏ a, tb a with htdef`.
+
+Establish `ht : ¬ (D.mem u).A.T ∣ t` using `not_T_dvd_finset_prod D u _ _ (fun a _ => htb a)`. Establish `hbL : ∀ a, (t : D.host.E) • (fun r => (B : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) r a) ∈ (Ld D u i hi c : Set _)`. Introduce `a`. Take `⟨q, hq⟩ : tb a ∣ t` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ a)`. Establish `h1` using `(Ld D u i hi c).smul_mem (q : 𝓞 D.host.E) (htbL a)`.
+
+Establish `e : (q : 𝓞 D.host.E) • ((tb a : D.host.E) • fun r => (B : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) r a) = (t : D.host.E) • fun r => (B : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) r a`. Use extensionality with `r`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, hq, Nat.cast_mul, Algebra.smul_def, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e]`.
+
+Conclude with `h1`. Use `set eb : Fin (D.R.N i) → ↥(Ld D u i hi c) := fun a => ⟨_, hbL a⟩ with hebdef`. Use `set P := Tt.lv i hi h0`. Use `set φ : Fin (D.R.N i) → (D.mem u).A.Fv v := fun a => (D.fm u).fv i v c (P.pr v c (eb a)) with hφdef`. Establish `hexp : ∀ (z : Fin (D.R.N i) → D.host.E) (g : Fin (D.R.N i) → 𝓞 D.host.E) (s : ℕ), (∀ a, (algebraMap (𝓞 D.host.E) D.host.E (g a)) = (s : D.host.E) * (((B⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) *ᵥ z) a) → ((s * t : ℕ) : D.host.E) • z = ∑ …`.
+
+Introduce `z g s hg`. Use `set cz := ((B⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) *ᵥ z with hcz`. Establish `hz : z = (B : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) *ᵥ cz`. Rewrite using `[hcz, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Use extensionality with `r`.
+
+Simplify using `only [hebdef, Pi.smul_apply, smul_eq_mul, Finset.sum_apply, hg, Nat.cast_mul]`. Establish `hzr : z r = ∑ x, (B : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) r x * cz x` using `by conv_lhs => rw [hz]`. Both sides reduce to the same expression. Rewrite using `[hzr, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hprS : ∀ (z : ↥(Ld D u i hi c)) (g : Fin (D.R.N i) → 𝓞 D.host.E) (s : ℕ), (∀ a, (algebraMap (𝓞 D.host.E) D.host.E (g a)) = (s : D.host.E) * (((B⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) *ᵥ z.1) a) → Tt.atT.res v ((s * t : ℕ) : 𝓞 D.host.E …`. Introduce `z g s hg`. Establish `hz : ((s * t : ℕ) : 𝓞 D.host.E) • z = ∑ a, g a • eb a`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.coe_smul, Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`. Rewrite using `[show ((s * t : ℕ) : 𝓞 D.host.E) • z.1 = ((s * t : ℕ) : D.host.E) • z.1 by`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]]`. Rewrite using `[hexp z.1 g s hg]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Use `congrArg (fun y => (D.fm u).fv i v c (P.pr v c y)) hz` as an intermediate fact. Simplify using `only [P.pr_smul, map_smul, map_sum, smul_eq_mul] at this`.
+
+Conclude with `this`. Establish `hφ : φ ≠ 0`. Introduce `h0`. Apply `(D.fm u).fv_ne i v c` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `y`. Take `⟨z, rfl⟩` from `P.pr_surj v c y`. Take `⟨s3, hs3, hs3m⟩` from `(hB z.1).1 ⟨1, hone, by rw [Nat.cast_one, one_smul]; exact z.2⟩`. Use `choose g hg using hs3m`. Establish `h` using `hprS z g s3 (fun a => hg a)`.
+
+Simplify using `only [h0, Pi.zero_apply, mul_zero, Finset.sum_const_zero] at h`. Break down `mul_eq_zero.1 h with h1 | h1` into its components or cases. Conclude with `absurd h1 (residue_nat_ne_zero_level_zero D u Tt v _ (by`. Introduce `hd`. Break down `(Nat.Prime.dvd_mul (D.mem u).A.T_prime).1 hd with h | h` into its components or cases.
+
+Conclude with `hs3 h`. Conclude with `ht h))`. Rewrite using `[h1]`. Both sides reduce to the same expression. Establish `hrel : ∀ k, ∑ a, Tt.atT.res v (m a k) * φ a = 0`.
+
+Introduce `k`. Establish `hg : ∀ a, algebraMap (𝓞 D.host.E) D.host.E ((sk k : 𝓞 D.host.E) * m a k) = (S : D.host.E) * (((B⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) *ᵥ ((sk k : D.host.E) • fun r => (B' : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E) r k)) a`. Introduce `a`. Rewrite using `[map_mul, map_natCast, hm a k, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, hcolM]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h` using `hprS ⟨_, hLk (hskL k)⟩ (fun a => (sk k : 𝓞 D.host.E) * m a k) S hg`. Rewrite `h` using `[((P.fv_ker v c ⟨_, hLk (hskL k)⟩).2 (hskL k)), mul_zero]`. Simplify using `only [map_mul, mul_assoc] at h`. Rewrite `h` using `[← Finset.mul_sum]`. Break down `mul_eq_zero.1 h.symm with h1 | h1` into its components or cases.
+
+Conclude with `absurd h1 (residue_nat_ne_zero_level_zero D u Tt v _ (hsk k))`. Conclude with `h1`. Establish `hdetR : (Matrix.of fun a k => Tt.atT.res v (m a k)).det = 0`. Use `Matrix.exists_vecMul_eq_zero_iff.1 ⟨φ, hφ, funext fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.zero_apply]`.
+
+Rewrite using `[← hrel k]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Use `⟨S, (Matrix.of m).det, hS, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Conclude with `hdetR`.
+
+Use `show algebraMap (𝓞 D.host.E) D.host.E (Matrix.of m).det = _`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `e : (Matrix.of m).map (algebraMap (𝓞 D.host.E) D.host.E) = (S : D.host.E) • M`. Use extensionality with `a k`. Simplify using `[hm a k]`.
+
+Rewrite using `[e, Matrix.det_smul, Fintype.card_fin]`.
+-/
 theorem det_basis_change_mem_prime_zero (Tt : Forms0 D u) (w : D.what₂.places.Pl) (hw : OverT D u w) (v : (D.mem u).A.vT)
     (i : ℕ) (hi : i ≤ D.R.m) (h0 : i = 0) (c : (D.mem u).C.cls i) (B B' : GL (Fin (D.R.N i)) D.host.E)
     (hB : IsLocBasis (D.mem u).A.T (Ld D u i hi c : Set _) B)
@@ -160,6 +217,11 @@ theorem det_basis_change_mem_prime_zero (Tt : Forms0 D u) (w : D.what₂.places.
       ext a k; simp [hm a k]
     rw [e, Matrix.det_smul, Fintype.card_fin]
 
+/- English proof (translation)
+Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe b`. Establish `hb : e ≤ b` using `by exact_mod_cast h`. Establish `key : ((b : WithTop ℤ) + -(e : WithTop ℤ)) = ((b - e : ℤ) : WithTop ℤ)` using `by first`.
+
+Consider the case `rw [sub_eq_add_neg, WithTop.coe_add, WithTop.LinearOrderedAddCommGroup.coe_neg]`. Consider the case `norm_cast`. Consider the case `simp [sub_eq_add_neg]`. Rewrite using `[key]`. Conclude with `(show (0 : ℤ) ≤ b - e by omega)` after adjusting the coercions.
+-/
 theorem withTop_add_neg_nonneg (a : WithTop ℤ) (e : ℤ) (h : (e : WithTop ℤ) ≤ a) : 0 ≤ a + -(e : WithTop ℤ) := by
   induction a using WithTop.recTopCoe with
   | top => simp
@@ -173,6 +235,13 @@ theorem withTop_add_neg_nonneg (a : WithTop ℤ) (e : ℤ) (h : (e : WithTop ℤ
     rw [key]
     exact_mod_cast (show (0 : ℤ) ≤ b - e by omega)
 
+/- English proof (translation)
+Take `⟨S, x, hS, hx0, hxe⟩` from `det_basis_change_mem_prime_zero D u Tt w hw v i hi h0 c B B' hB hB'`. Establish `hv` using `hU w hw hs v x hx0`. Use `set σ := D.host.sigmaOf (D.eTau ((D.fm u).tauOf w v) : D.R.GG) with hσ`. Use `set δ := (((B⁻¹ * B' : GL (Fin (D.R.N i)) D.host.E) : Matrix (Fin (D.R.N i)) (Fin (D.R.N i)) D.host.E)).det with hδ`. Establish `hS0 : D.what₂.places.val w (S : D.what₂.LL) = 0` using `bwA_val_nat_eq_zero D.what₂.places w S (by rw [hw]; exact hS)`.
+
+Establish `hvx : D.what₂.places.val w (D.embE (σ (x : D.host.E))) = D.what₂.places.val w (D.embE (σ δ))`. Rewrite using `[hxe, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast, AddValuation.map_mul, AddValuation.map_pow, hS0, nsmul_zero, zero_add]`. Rewrite `hv` using `[hvx]`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Use `Subring.mem_map.2 ⟨D.embE (σ δ) * ((D.mem u).A.T : D.what₂.LL)⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (0 : WithTop ℤ) ≤ D.what₂.places.val w (D.embE (σ δ) * ((D.mem u).A.T : D.what₂.LL)⁻¹)`. Rewrite using `[AddValuation.map_mul, AddValuation.map_inv, ← hw, D.what₂.places.val_resChar]`. Conclude with `withTop_add_neg_nonneg _ _ hv`. Rewrite using `[map_mul, map_inv₀, map_natCast, bwA_embT_eq]`.
+-/
 theorem valuation_det_basis_change_zero (Tt : Forms0 D u) (hU : UnramifiedAtLevelPrimes D u Tt.atT) (w : D.what₂.places.Pl) (hw : OverT D u w)
     (hs : (D.fm u).seenP w = true) (v : (D.mem u).A.vT)
     (i : ℕ) (hi : i ≤ D.R.m) (h0 : i = 0) (c : (D.mem u).C.cls i) (B B' : GL (Fin (D.R.N i)) D.host.E)
@@ -197,6 +266,9 @@ theorem valuation_det_basis_change_zero (Tt : Forms0 D u) (hU : UnramifiedAtLeve
     exact withTop_add_neg_nonneg _ _ hv
   · rw [map_mul, map_inv₀, map_natCast, bwA_embT_eq]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨valuation_det_basis_change_zero D u Tt hU w hw hs v i hi h0 c B B' hB hB', (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0.basis_change_mem_elementary (D := D) (u := u) Tt w hw v ((D.fm u).tauOf w v) i hi h0 c B B' hB hB').2.2.2⟩`.
+-/
 theorem det_basis_change_unit_zero (Tt : Forms0 D u) (hU : UnramifiedAtLevelPrimes D u Tt.atT) (w : D.what₂.places.Pl) (hw : OverT D u w)
     (hs : (D.fm u).seenP w = true) (v : (D.mem u).A.vT)
     (i : ℕ) (hi : i ≤ D.R.m) (h0 : i = 0) (c : (D.mem u).C.cls i) (B B' : GL (Fin (D.R.N i)) D.host.E)

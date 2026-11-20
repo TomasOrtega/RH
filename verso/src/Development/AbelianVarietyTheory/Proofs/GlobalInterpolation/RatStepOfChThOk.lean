@@ -6,6 +6,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formal
 
 namespace GlobalTheory.KerT
 
+/- English proof (translation)
+Introduce `X Pr R W Ch sel S mu cst L G m2 u i A _ _ _ _ _ _ hL _ hT hi`. Establish `hq` using `Formalism.L2.Ker.muqTie_of_ok Ch sel mu cst L hL`. Establish `hm` using `hL.hm`. Establish `key : ∀ j, (j = i + 1 ∧ i ≤ m2) ∨ (j = R.m ∧ i = m2 + 1) → GlobalTheory.KerT.RatStep W Ch sel mu cst A u i j`. Introduce `j hj`.
+
+Unfold `RatStep`. Rewrite using `[← Formalism.L2.Ker.stepC_eq_stepT W Ch sel mu cst hq A u i hi]`. Break down `hj with ⟨rfl, h⟩ | ⟨rfl, rfl⟩` into its components or cases. Introduce `γ γ' N fr N' fr' c x h'`. Conclude with `(hT.th i h).equiv γ γ' N fr N' fr' c x h'.1 h'.2.1`.
+
+Introduce `γ γ' N fr N' fr' c x h'`. Conclude with `hT.top.equiv γ γ' N fr N' fr' c x h'.1 h'.2.1`. Conclude with `key _ (by omega)`.
+-/
 theorem ratStep_of_chTh_ok : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ) (u : Pr.Word) (i : ℕ) (A : Formalism.L2.Ker.Amb X), X.Ok → Pr.Ok → Ch.Ok → IsSel X sel → Pr.T u ∈ S → (∀ k, Pr.g k ∈ S) → L.Ok Ch sel mu cst G m2 → cst.sharp = true → ChTh.Ok (Ch := Ch) cst (Formalism.L2.Ker.chTh W Ch sel mu cst A u m2) → i < R.m → GlobalTheory.KerT.RatStep W Ch sel mu cst A u i (i + 1) := by
   intro X Pr R W Ch sel S mu cst L G m2 u i A _ _ _ _ _ _ hL _ hT hi
   have hq := Formalism.L2.Ker.muqTie_of_ok Ch sel mu cst L hL

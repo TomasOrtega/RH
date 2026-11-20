@@ -18,9 +18,15 @@ def evOneQ (LL : Type) [Field LL] [Algebra O LL] : ((Fin 1 → LL) ⧸ stdG O LL
 
 variable {LL : Type} [Field LL] [Algebra O LL]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evOneQ_mk (v : Fin 1 → LL) :
     evOneQ (O := O) LL (Submodule.Quotient.mk v) = Submodule.Quotient.mk (v 0) := rfl
 
+/- English proof (translation)
+Use `show (lam ^ a • (LinearMap.id : (LL ⧸ intO (O := O) LL) →ₗ[O] _)) (evOneQ LL q) = 0`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, ← map_smul, h, map_zero]`.
+-/
 theorem evOneQ_mem {lam : O} {a : ℕ} {q : (Fin 1 → LL) ⧸ stdG O LL 1} (h : lam ^ a • q = 0) :
     evOneQ LL q ∈ Xq LL lam a := by
   show (lam ^ a • (LinearMap.id : (LL ⧸ intO (O := O) LL) →ₗ[O] _)) (evOneQ LL q) = 0
@@ -28,6 +34,11 @@ theorem evOneQ_mem {lam : O} {a : ℕ} {q : (Fin 1 → LL) ⧸ stdG O LL 1} (h :
 
 def oneO : ↥(intO (O := O) LL) := ⟨1, 1, map_one (algebraMap O LL)⟩
 
+/- English proof (translation)
+Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H v => show iotaG (intO LL) (stdG O LL 1) (constOne LL) (constOne_mem LL) (oneO ⊗ₜ (evOneQ LL (Submodule.Quotient.mk v))) = _`. Rewrite using `[evOneQ_mk, iotaG_tmul]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Simplify using `[constOne, oneO]`.
+-/
 theorem iotaC_oneO (lam : O) (a : ℕ) (q : (Fin 1 → LL) ⧸ stdG O LL 1) (h : evOneQ LL q ∈ Xq LL lam a) :
     iotaC LL lam a (oneO ⊗ₜ ⟨evOneQ LL q, h⟩) = q := by
   induction q using Submodule.Quotient.induction_on with
@@ -43,6 +54,9 @@ theorem iotaC_oneO (lam : O) (a : ℕ) (q : (Fin 1 → LL) ⧸ stdG O LL 1) (h :
 def oneT (hinj : Function.Injective (algebraMap O LL)) {G : Type} [Group G] (ψ : G →* Oˣ) : ↥(latOne hinj ψ).T :=
   oneO
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((tableLineDegreeTwo.charL (LL := LL) ψ g : LLˣ) : LL) • (1 : LL) = ((ψ g : Oˣ) : O) • (1 : LL)`. Simplify using `[tableLineDegreeTwo.charL, Algebra.smul_def]`.
+-/
 theorem actT_latOne_oneT (hinj : Function.Injective (algebraMap O LL)) {G : Type} [Group G] (ψ : G →* Oˣ) (g : G) :
     actT (latOne hinj ψ) g (oneT hinj ψ) = ((ψ g : Oˣ) : O) • oneT hinj ψ := by
   apply Subtype.ext
@@ -54,12 +68,18 @@ end Gen1
 section Gen2
 variable {O : Type} [CommRing O] {LL : Type} [Field LL] [Algebra O LL]
 
+/- English proof (translation)
+Rewrite using `[tableLineDegreeTwo.actTw, LinearMap.smul_apply, LinearMap.rTensor_tmul, actT_latOne_oneT, TensorProduct.smul_tmul, ← TensorProduct.tmul_smul, Units.val_mul, mul_smul]`.
+-/
 theorem actTw_oneO (hinj : Function.Injective (algebraMap O LL)) {G : Type} [Group G] [TopologicalSpace G]
     (X : Type) [AddCommGroup X] [Module O X] (χ ψ : G →* Oˣ) (g : G) (x : X) :
     tableLineDegreeTwo.actTw (latOne hinj ψ) X χ g (oneT hinj ψ ⊗ₜ x) = oneT hinj ψ ⊗ₜ ((((χ g)⁻¹ * ψ g : Oˣ) : O) • x) := by
   rw [tableLineDegreeTwo.actTw, LinearMap.smul_apply, LinearMap.rTensor_tmul, actT_latOne_oneT, TensorProduct.smul_tmul,
     ← TensorProduct.tmul_smul, Units.val_mul, mul_smul]
 
+/- English proof (translation)
+Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H v => show evOneQ LL (Submodule.Quotient.mk (matRep (mapM (algebraMap O LL) N) g v)) = _`. Rewrite using `[evOneQ_mk, evOneQ_mk, ← Submodule.Quotient.mk_smul]`. Use `congr 1`. Simplify using `[matRep, mapM, Matrix.mulVec, dotProduct, Algebra.smul_def]`.
+-/
 theorem evOneQ_actD (hinj : Function.Injective (algebraMap O LL)) {G : Type} [Group G] [TopologicalSpace G]
     (N : G →* Matrix (Fin 1) (Fin 1) O) (g : G) (q : (Fin 1 → LL) ⧸ stdG O LL 1) :
     evOneQ LL (actD (stdLatG hinj N) g q) = N g 0 0 • evOneQ LL q := by
@@ -75,6 +95,15 @@ end Gen2
 section Gen3
 variable {O : Type} [CommRing O] {LL : Type} [Field LL] [Algebra O LL]
 
+/- English proof (translation)
+Take `⟨hlc, hco⟩` from `hf`. Set `F : ((Fin 1 → LL) ⧸ stdG O LL 1) → ↥(latOne hinj ψ).T ⊗[O] ↥(Xq LL lam a)` to `fun q => if hq : lam ^ a • q = 0 then oneT hinj ψ ⊗ₜ ⟨evOneQ LL q, evOneQ_mem hq⟩ else 0`. Use `⟨fun g => oneT hinj ψ ⊗ₜ ⟨evOneQ LL (f g), evOneQ_mem (htor g)⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hF : (fun g => oneT hinj ψ ⊗ₜ[O] (⟨evOneQ LL (f g), evOneQ_mem (htor g)⟩ : ↥(Xq LL lam a))) = F ∘ f`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [F, Function.comp_apply, dif_pos (htor g)]`. Rewrite using `[hF]`. Conclude with `hlc.comp F`. Introduce `g h beta_reduce`. Rewrite using `[actTw_oneO, ← TensorProduct.tmul_add]`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_add, Submodule.coe_smul]`. Rewrite using `[hco g h, hN g]`. Conclude with `((evOneQ LL).map_add _ _).trans (congrArg (evOneQ LL (f g) + ·) (evOneQ_actD hinj N g (f h)))`.
+
+Introduce `g`. Conclude with `iotaC_oneO lam a (f g) _`.
+-/
 theorem liftC_gen (hinj : Function.Injective (algebraMap O LL)) {G : Type} [Group G] [TopologicalSpace G]
     (N : G →* Matrix (Fin 1) (Fin 1) O) (χ ψ : G →* Oˣ) (hN : ∀ g, (((χ g)⁻¹ * ψ g : Oˣ) : O) = N g 0 0)
     (lam : O) (a : ℕ) (f : G → (Fin 1 → LL) ⧸ stdG O LL 1) (hf : f ∈ divisibleCocycles (stdLatG hinj N))
@@ -108,14 +137,23 @@ end Gen3
 section AtW
 variable {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)} {hw : w ∈ placesOver D.host.E (D.nd.l i)}
 
+/- English proof (translation)
+Simplify using `[locOC, chiOC, Br.locO, Br.iota, mapM, chiRatO, twistM]`.
+-/
 theorem locOC_chiRatO_apply (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (c : ℕ) (g : Br.G D.nbr i w hw) :
     locOC C (chiRatO D.nd i c) g 0 0 =
       ((chiOC C (chiU D.nd i c * (chiU D.nd i 1)⁻¹) g : (↥(OL C.LL))ˣ) : ↥(OL C.LL)) := by
   simp [locOC, chiOC, Br.locO, Br.iota, mapM, chiRatO, twistM]
 
+/- English proof (translation)
+Simplify using `[chiT, chiOC]`.
+-/
 theorem chiT_one_eq_theta (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (θ : Br.G D.nbr i w hw →* (↥(OL C.LL))ˣ) : chiT C θ 1 = θ := by
   simp [chiT, chiOC]
 
+/- English proof (translation)
+Rewrite using `[locOC_chiRatO_apply, chiT_one_eq_theta]`. Use `congr 1`. Simplify using `only [chiT, MonoidHom.mul_apply]`. Rewrite using `[mul_comm, mul_assoc, mul_inv_cancel, mul_one]`.
+-/
 theorem chiT_ratio (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (θ : Br.G D.nbr i w hw →* (↥(OL C.LL))ˣ) (c : ℕ)
     (g : Br.G D.nbr i w hw) :
     (((chiT C θ 1 g)⁻¹ * chiT C θ c g : (↥(OL C.LL))ˣ) : ↥(OL C.LL)) = locOC C (chiRatO D.nd i c) g 0 0 := by
@@ -126,6 +164,9 @@ theorem chiT_ratio (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (θ 
 
 end AtW
 
+/- English proof (translation)
+Introduce `D i w hw C lam _ θ c a f hf htor`. Conclude with `liftC_gen Subtype.val_injective (locOC C (chiRatO D.nd i c)) (chiT C θ 1) (chiT C θ c) (chiT_ratio C θ c) lam a f hf htor`.
+-/
 theorem liftC_main : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (lam : ↥(OL C.LL)), Irreducible lam →
     ∀ (θ : Br.G D.nbr i w hw →* (↥(OL C.LL))ˣ) (c a : ℕ) (f : Br.G D.nbr i w hw → (Fin 1 → ↥C.LL.1) ⧸ stdG ↥(OL C.LL) ↥C.LL.1 1),

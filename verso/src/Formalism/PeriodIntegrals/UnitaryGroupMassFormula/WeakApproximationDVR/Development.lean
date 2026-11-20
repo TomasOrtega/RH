@@ -4,6 +4,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeakApproximationDVR.Bi
 
 namespace PI.WA
 
+/- English proof (translation)
+Introduce `E _ ι _ W Q _ _ _ _ _ _ iw p hp hpu hloc hsep x N`. Use `choose ϖ hϖ using fun i => IsDiscreteValuationRing.exists_irreducible (W i)`. Conclude with `hA E ι W Q iw p hp hpu hloc ϖ hϖ (hB E ι W Q iw p hp hpu hloc hsep ϖ hϖ) x N`.
+-/
 theorem weakApproxDVR_of (hB : BigExists) (hA : Assembly) : PI.WeakApproxDVR := by
   intro E _ ι _ W Q _ _ _ _ _ _ iw p hp hpu hloc hsep x N
   choose ϖ hϖ using fun i => IsDiscreteValuationRing.exists_irreducible (W i)

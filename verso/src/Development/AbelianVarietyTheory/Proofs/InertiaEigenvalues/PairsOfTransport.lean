@@ -8,6 +8,49 @@ noncomputable section
 
 namespace GlobalTheory.ResLoc
 
+/- English proof (translation)
+Establish `h : i ∈ D.nd.locs (D.nd.j i) (D.nd.w i)` using `(D.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩`. Establish `hj1` using `(D.nd.j_range i).1`. Establish `hj2` using `(D.nd.j_range i).2`. Establish `hw : LocPl D (D.nd.j i) (D.nd.w i)` using `locPl_of_mem D h`. Establish `hμ : D.nd.mu i = D.what₂.muTw (D.nd.w i)` using `D.nd.mu_w i`.
+
+Take `⟨y0, hy0, hy0ne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (D.naut.typeV_ne i P)`. Establish `hr0 : (M.loc i).real y0 ≠ 0` using `fun h0 => hy0ne ((M.loc i).real_inj (h0.trans (map_zero _).symm))`. Establish `hinjO : Function.Injective (iotaO D.nd D.naut i)`. Unfold `iotaO`. Simplify using `only [RingHom.coe_comp]`.
+
+Conclude with `(D.naut.iotaQC i).injective.comp ((D.naut.iotaQ i).injective.comp (IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i))))`. Establish `hiotaC : ∀ z, iotaO D.nd D.naut i z = NL.iotaC _ _ (NL.phO _ _ i h z)` using `NL.iotaC_coh _ _ i h`. Establish `hinjC : Function.Injective (NL.iotaC (D.nd.j i) (D.nd.w i))`. Introduce `a b hab`. Establish `e2 : (NL.phO _ _ i h).symm a = (NL.phO _ _ i h).symm b` using `hinjO (by`.
+
+Rewrite using `[hiotaC, hiotaC, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Conclude with `hab)`. Simplify using `using congrArg (NL.phO _ _ i h) e2`. Set `φ : FractionRing (NL.B.Oc (D.nd.j i) (D.nd.w i)) →+* ℂ` to `IsFractionRing.lift hinjC`. Establish `hφalg : ∀ z, φ (algebraMap _ _ z) = NL.iotaC _ _ z` using `fun z => IsFractionRing.lift_algebraMap hinjC z`.
+
+Establish `hφK : φ.comp (NL.phK _ _ i h).toRingHom = (D.naut.iotaQC i).toRingHom.comp (D.naut.iotaQ i)`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (D.nd.O i))` to reduce the goal to its premises. Use extensionality with `z`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, NL.phK_alg, hφalg]`. Rewrite using `[← hiotaC]`.
+
+Both sides reduce to the same expression. Establish `hφ : ∀ y, φ (NL.B.ec _ _ y) = D.what₂.embLL y`. Introduce `y`. Rewrite using `[← NL.phK_emb _ _ i h y, ← D.naut.iota_LL i y]`. Conclude with `congrArg (fun f : FractionRing (D.nd.O i) →+* ℂ => f (D.nd.embK i y)) hφK`.
+
+Establish `HS` using `GlobalTheory.T.sphericalHeckeScalarOnTypeSpaces_all_places D M HT AV i`. Establish `key : ∀ v k, GenAt D (D.what₂.places.resChar (D.nd.w i)) (NL.B.Qc (D.nd.j i) (D.nd.w i)) v k → ∃ κ : NL.B.Oc (D.nd.j i) (D.nd.w i), ∀ (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host v s.w → IsUnif D.host.E s.v ϖ → ∀ y ∈ D.naut.ty …`. Introduce `v k hvk`. Take `⟨hv, hk1, hk2⟩` from `(genAt_iff NL h v k).2 hvk`. Take `⟨s, ϖ, hc, hu⟩` from `GlobalTheory.SplitConjPlace.splitEx_all D v hv.1`.
+
+Take `⟨c, hcP⟩` from `HS P v k s ϖ hv hc hu hk1 hk2`. Take `⟨tC, htC1, htC2⟩` from `tC_exists D M NL.B hstd (D.nd.j i) (D.nd.w i) (D.nd.mu i) hμ hj1 hj2 hw φ hφ v k hvk`. Establish `ht0 : tC y0 = c • y0`. Apply `(M.loc i).real_inj` to reduce the goal to its premises. Establish `e0` using `htC2 s ϖ hc hu (tN_lin D M HT NL h v k s ϖ hvk hc hu) y0`.
+
+Express the relevant statement in the definitionally equal form `NG.tN (M.loc i).J s ϖ k ((M.loc i).real y0) = (M.loc i).real (tC y0) at e0`. Rewrite using `[← e0, hcP y0 hy0, map_smul]`. Take `⟨κ, hκ⟩` from `htC1 c y0 hy0ne ht0`. Use `⟨κ, fun s' ϖ' hc' hu' y hy => ?_⟩` and prove the remaining obligations. Take `⟨c', hcP'⟩` from `HS P v k s' ϖ' hv hc' hu' hk1 hk2`.
+
+Establish `e1` using `htC2 s' ϖ' hc' hu' (tN_lin D M HT NL h v k s' ϖ' hvk hc' hu') y0`. Express the relevant statement in the definitionally equal form `NG.tN (M.loc i).J s' ϖ' k ((M.loc i).real y0) = (M.loc i).real (tC y0) at e1`. Rewrite `e1` using `[hcP' y0 hy0, ht0, map_smul]`. Establish `hcc : c' = c` using `smul_left_injective ℂ hr0 e1`. Rewrite using `[hcP' y hy, hcc, hκ]`.
+
+Set `κF : PlE D.host → ℕ → NL.B.Oc (D.nd.j i) (D.nd.w i)` to `fun v k => if hvk : GenAt D (D.what₂.places.resChar (D.nd.w i)) (NL.B.Qc (D.nd.j i) (D.nd.w i)) v k then Classical.choose (key v k hvk) else 0`. Establish `hκF : ∀ v k (hvk : GenAt D (D.what₂.places.resChar (D.nd.w i)) (NL.B.Qc (D.nd.j i) (D.nd.w i)) v k), ∀ (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host v s.w → IsUnif D.host.E s.v ϖ → ∀ y ∈ D.naut.typeV i P, NG.tN (M.loc i).J s ϖ …`. Introduce `v k hvk`. Simplify using `only [κF, dif_pos hvk]`. Conclude with `Classical.choose_spec (key v k hvk)`.
+
+Take `⟨e, hene, he⟩` from `GlobalTheory.PtLocalEig.eig_descends D M NL.B (D.nd.j i) (D.nd.w i) (D.nd.mu i) hj1 hj2 hμ φ hφ (fun v k => algebraMap _ _ (κF v k)) y0 hy0ne (by`. Introduce `v k hvk`. Take `⟨hv, -, -⟩` from `(genAt_iff NL h v k).2 hvk`. Take `⟨s, ϖ, hc, hu⟩` from `GlobalTheory.SplitConjPlace.splitEx_all D v hv.1`. Conclude with `⟨s, ϖ, hc, hu, tN_lin D M HT NL h v k s ϖ hvk hc hu, hκF v k hvk s ϖ hc hu y0 hy0⟩)`.
+
+Establish `hinjK : Function.Injective (algebraMap (NL.B.Oc (D.nd.j i) (D.nd.w i)) (FractionRing (NL.B.Oc (D.nd.j i) (D.nd.w i))))` using `IsFractionRing.injective _ _`. Take `⟨ψ, hψ, hψW⟩` from `GlobalTheory.PtLocalEig.pt_of_eigvec (heckeGens NL.B (D.nd.j i) (D.nd.w i)) e hene hinjK (by`. Introduce and unpack `_ ⟨v, k, hvk, rfl⟩`. Conclude with `⟨κF v k, he v k hvk⟩)`. Establish `hψv : ∀ v k (hvk : GenAt D (D.what₂.places.resChar (D.nd.w i)) (NL.B.Qc (D.nd.j i) (D.nd.w i)) v k), ψ ⟨NL.B.hK _ _ v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩ = κF v k`.
+
+Introduce `v k hvk`. Apply `hinjK` to reduce the goal to its premises. Establish `h1` using `hψ ⟨NL.B.hK _ _ v k, Algebra.subset_adjoin ⟨v, k, hvk, rfl⟩⟩`. Establish `h2` using `he v k hvk`. Express the relevant statement in the definitionally equal form `NL.B.hK _ _ v k e = _ at h1`.
+
+Rewrite `h1` using `[h2]`. Conclude with `(smul_left_injective _ hene h1).symm`. Establish `hW : NCov.W (heckeAlg NL.B _ _) (NCov.pt ψ) ≠ ⊥`. Introduce `h0`. Apply `hene` to reduce the goal to its premises.
+
+Establish `h3` using `hψW`. Rewrite `h3` using `[h0]`. Conclude with `(Submodule.mem_bot _).1 h3`. Take `⟨i', hi', hmx⟩` from `NL.mx_all (D.nd.j i) (D.nd.w i) hj1 hj2 (D.nd.w_tw i) (NCov.cls ψ) (NCov.cls_isMaximal ψ)`. Take `⟨e1, e2⟩` from `(D.nd.locs_mem _ _ i').1 hi'`.
+
+Establish `hμ' : D.nd.mu i = D.nd.mu i'` using `by rw [D.nd.mu_w i, D.nd.mu_w i', e2]`. Establish `hj' : D.nd.j i = D.nd.j i'` using `e1.symm`. Set `x' : D.nd.X i'` to `(NL.ptX _ _ i' hi').symm ⟨ψ, hmx.symm, hW⟩`. Take `⟨P', hP'⟩` from `GlobalTheory.EtaJoin.TypeSum.typeV_of_transport AV i' hμ' hj' hj1 hj2 (AV.S i P) (AV.irr i P) (by`. Express the relevant statement in the definitionally equal form `(NG.isoTyp (M.loc i).wt.ρ (AV.S i P)).comap (M.loc i).real ≠ ⊥`.
+
+Rewrite using `[← AV.typeV i P]`. Conclude with `D.naut.typeV_ne i P)`. Express the relevant statement in the definitionally equal form `Submodule.map _ ((NG.isoTyp (M.loc i).wt.ρ (AV.S i P)).comap (M.loc i).real) = _ at hP'`. Rewrite `hP'` using `[← AV.typeV i P]`. Use `⟨i', hi', hμ', hj', P', x', hP', ?_⟩` and prove the remaining obligations.
+
+Use `ptV_of_transport AV i' P' x' hμ' hj' hj1 hj2 _ hP' ?_` and prove the remaining obligations. Introduce `v k s ϖ hv' hc hu hk1 hk2 y hy`. Establish `hvk` using `(genAt_iff NL hi' v k).1 ⟨hv', hk1, hk2⟩`. Express the relevant statement in the definitionally equal form `NG.tN (M.loc i).J s ϖ k ((M.loc i).real y) = _ • (M.loc i).real y`. Rewrite using `[hκF v k hvk s ϖ hc hu y hy]`.
+
+Use `congr 1`. Rewrite using `[NL.iotaC_coh _ _ i' hi', NL.ptX_hT _ _ i' hi' x' v k hvk]`. Use `show φ (algebraMap _ _ (κF v k)) = NL.iotaC _ _ (((NL.ptX _ _ i' hi') ((NL.ptX _ _ i' hi').symm ⟨ψ, hmx.symm, hW⟩)).1 _)`. Rewrite using `[Equiv.apply_symm_apply, hφalg]`. Use `show NL.iotaC _ _ (κF v k) = NL.iotaC _ _ (ψ ⟨NL.B.hK _ _ v k, _⟩)`.
+
+Rewrite using `[hψv v k hvk]`.
+-/
 theorem exists_point (D : D7) (M : MtFam D) (HT : HeckeTied D M) (AV : AVTied D M) (NL : NormalizedLocalCompatibility D M) (hstd : HeckeStdTw NL.B)
     (i : D.nd.Loc) (P : D.naut.AV i) : ∃ i' ∈ D.nd.locs (D.nd.j i) (D.nd.w i),
       ∃ (hμ' : D.nd.mu i = D.nd.mu i') (hj' : D.nd.j i = D.nd.j i') (P' : D.naut.AV i') (x' : D.nd.X i'),
@@ -133,6 +176,9 @@ theorem exists_point (D : D7) (M : MtFam D) (HT : HeckeTied D M) (AV : AVTied D 
   show NL.iotaC _ _ (κF v k) = NL.iotaC _ _ (ψ ⟨NL.B.hK _ _ v k, _⟩)
   rw [hψv v k hvk]
 
+/- English proof (translation)
+Substitute `hμ` using the available equality. Substitute `hj` using the available equality. Rewrite `hV` using `[GlobalTheory.EtaJoin.TypeSum.map_eqvMt_self]`. Substitute `hV` using the available equality. Conclude with `h`.
+-/
 theorem pairs_of_transport {D : D7} (i' : D.nd.Loc) (P' : D.naut.AV i') {μ : D.what₂.Tup} {j : ℕ} (hμ : μ = D.nd.mu i')
     (hj : j = D.nd.j i') (V : Submodule ℂ (D.what₂.Mt μ j))
     (hV : V.map (GlobalTheory.EtaJoin.TypeSum.eqvMt hμ hj).toLinearMap = D.naut.typeV i' P') {σ : D.what₂.FT}
@@ -142,6 +188,9 @@ theorem pairs_of_transport {D : D7} (i' : D.nd.Loc) (P' : D.naut.AV i') {μ : D.
   subst hV
   exact h
 
+/- English proof (translation)
+Take `⟨f, hf, hθ⟩` from `h`. Take `⟨P, F, hF, hFf⟩` from `GlobalTheory.Proof.HoweThetaLiftComponents.exists_inner_ne_zero (D.naut.typeV i) (D.naut.typeV_top i) _ hθ`. Take `⟨i', hi', hμ, hj, P', x', hP', hx'⟩` from `exists_point D M HT AV NL hstd i P`. Take `⟨e1, e2⟩` from `(D.nd.locs_mem _ _ i').1 hi'`. Conclude with `⟨i', P', x', e1, e2, pairs_of_transport i' P' hμ hj _ hP' ⟨f, hf, F, hF, hFf⟩, hx'⟩`.
+-/
 theorem exists_pair_point (D : D7) (M : MtFam D) (HT : HeckeTied D M) (AV : AVTied D M) (NL : NormalizedLocalCompatibility D M)
     (hstd : HeckeStdTw NL.B) (i : D.nd.Loc) (σ : D.what₂.FT)
     (h : ∃ f ∈ D.what₂.isot (D.nd.j i) σ, D.what₂.thetaT (D.nd.mu i) (D.nd.j i) f ≠ 0) :
@@ -153,6 +202,9 @@ theorem exists_pair_point (D : D7) (M : MtFam D) (HT : HeckeTied D M) (AV : AVTi
   obtain ⟨e1, e2⟩ := (D.nd.locs_mem _ _ i').1 hi'
   exact ⟨i', P', x', e1, e2, pairs_of_transport i' P' hμ hj _ hP' ⟨f, hf, F, hF, hFf⟩, hx'⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Rewrite `hp` using `[hd μ j h1 h2 σ hσ, DV.lamTr_of_scalar D μ j σ 0 hσ fun x hx => by rw [hn x hx]; simp]`. Conclude with `lt_irrefl _ hp`.
+-/
 theorem exists_thetaT_ne {D : D7} (hd : DV.LamDef D) {μ : D.what₂.Tup} {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) {σ : D.what₂.FT}
     (hσ : D.what₂.isot j σ ≠ ⊥) (hp : 0 < D.what₂.lamP μ j σ) : ∃ f ∈ D.what₂.isot j σ, D.what₂.thetaT μ j f ≠ 0 := by
   by_contra hn

@@ -25,9 +25,19 @@ open Formalism.L2.SG.InstExistsPf
 def frP (D : D7) (τ : D.what₂.Tau) : Matrix (Fin (D.sp.Y 0).rank) (Fin (D.sp.Y 0).rank) ℂ :=
   (instOf D).P (Formalism.L2.Host.tauPl D τ)
 
+/- English proof (translation)
+The claim follows from `(Matrix.isUnit_iff_isUnit_det _).mp ((instOf D).P_unit _)`.
+-/
 theorem frP_unit (D : D7) (τ : D.what₂.Tau) : IsUnit (frP D τ).det :=
   (Matrix.isUnit_iff_isUnit_det _).mp ((instOf D).P_unit _)
 
+/- English proof (translation)
+Establish `h : (frP D τ)ᴴ * gramAt D (D.sp.Y 0) τ * frP D τ = Formalism.REAL.Jm (epsV D)`. Establish `h0` using `(instOf D).P_spec (Formalism.L2.Host.tauPl D τ)`. Establish `hJ : (instOf D).J.map ((instOf D).φ (Formalism.L2.Host.tauPl D τ)) = gramAt D (D.sp.Y 0) τ` using `by show (Jv D).map (embS D ((Formalism.L2.Host.tauPl D).symm (Formalism.L2.Host.tauPl D τ))) = _`. Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+
+Rewrite `h0` using `[hJ]`. Conclude with `h0`. Rewrite using `[← h]`. Establish `h1` using `Matrix.mul_nonsing_inv (frP D τ) (frP_unit D τ)`. Establish `h2 : ((frP D τ)⁻¹)ᴴ * (frP D τ)ᴴ = 1`.
+
+Rewrite using `[← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc _ (frP D τ), h1, Matrix.mul_one, ← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+-/
 theorem fr_gram (D : D7) (τ : D.what₂.Tau) :
     ((frP D τ)⁻¹)ᴴ * Formalism.REAL.Jm (epsV D) * (frP D τ)⁻¹ = gramAt D (D.sp.Y 0) τ := by
   have h : (frP D τ)ᴴ * gramAt D (D.sp.Y 0) τ * frP D τ = Formalism.REAL.Jm (epsV D) := by
@@ -43,6 +53,23 @@ theorem fr_gram (D : D7) (τ : D.what₂.Tau) :
     rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]
   rw [Matrix.mul_assoc, Matrix.mul_assoc _ (frP D τ), h1, Matrix.mul_one, ← Matrix.mul_assoc, h2, Matrix.one_mul]
 
+/- English proof (translation)
+Substitute `hI` using the available equality. Set `M0 : DSModel (D.sp.Y 0) (parA (tparRec D) 0)` to `{ H := fun τ => H (pl.symm τ) σ := fun τ => σ (pl.symm τ) lam := fun τ => lam (pl.symm τ) ε := fun τ => (instOf D).ε (pl.symm τ) fr := fun τ => (frP D τ)⁻¹ enum := fun τ => by`. Establish `e1 : lam (pl.symm τ) = fun i => lamS D.R (D.hc τ) (Fin.cast n_eq i)`. Use function extensionality and compare the values at `fun i => by rw [lam_eq, Equiv.apply_symm_apply]`. Establish `e2 : (instOf D).ε (pl.symm τ) = fun i => epsS D.R (Fin.cast n_eq i)` using `funext fun i => eps_eq _ i`.
+
+Rewrite using `[e1, e2]`. Conclude with `GlobalTheory.RowLev.isEnum_parA_zero D n_eq τ`. Use `ds := fun τ => ds _`. Use `fr_unit := fun τ => Matrix.isUnit_nonsing_inv_iff.mpr ((instOf D).P_unit _)`. Use `fr_gram := fun τ => fr_gram D τ }`.
+
+Take `⟨M', c, hc⟩` from `GlobalTheory.ConjDS.exists_conjModel M0`. Take `⟨U, hUi⟩` from `hU.exists_intertwiner (M := (M' : DSModel (D.sp.Y 0) (parB (tparRec D) 0))) (M' := N)`. Establish `key : ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D (D.sp.Y 0) τ), ∀ x, c τ (U τ (N.rep τ g x)) = M0.rep τ g (c τ (U τ x))`. Introduce `τ g hg x`. Conclude with `(congrArg (c τ) (hUi τ g hg x)).trans (hc τ g hg _)`.
+
+Use `⟨fun τ => (U τ).trans (c τ), ?_, ?_⟩` and prove the remaining obligations. Introduce `τ g hg m hm x`. Establish `hm' : m = (frP D τ)⁻¹ * g * frP D τ` using `eq_of_heq hm`. Use `show c τ (U τ (N.rep τ g x)) = σ (pl.symm τ) m (c τ (U τ x))`. Rewrite using `[key τ g hg x, hm']`.
+
+Use `show σ (pl.symm τ) ((frP D τ)⁻¹ * g * ((frP D τ)⁻¹)⁻¹) _ = _`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ (frP_unit D τ)]`. Introduce `τ`. Establish `hw : w (pl.symm τ) ∈ M0.sm τ`. Take `⟨S, hS, hSle⟩` from `GlobalTheory.SmoothLowType.exists_lowK_le_sm D _ _ M0 τ`.
+
+Establish `hHC` using `GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS (M0.enum τ).1 (M0.ds τ)`. Establish `: CompleteSpace (H (pl.symm τ))` using `(ds _).1`. Establish `h1` using `(hstrict _ _ _ hHC (H (pl.symm τ)) (σ (pl.symm τ)) (ds _)).1`. Establish `h2` using `hmult _ _ _ _ (σ (pl.symm τ)) hHC (ds _) _ _ h1 hS`. Conclude with `hSle (h2 ▸ (low _).2)`.
+
+Use `set e := (U τ).trans (c τ) with he`. Establish `hint : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D (D.sp.Y 0) τ), ∀ y, e.symm (M0.rep τ g y) = N.rep τ g (e.symm y)`. Introduce `g hg y`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearIsometryEquiv.apply_symm_apply]`.
+
+Use `key τ g hg (e.symm y)` as an intermediate fact. Express the relevant statement in the definitionally equal form `e (N.rep τ g (e.symm y)) = M0.rep τ g (e (e.symm y)) at this`. Rewrite using `[this, LinearIsometryEquiv.apply_symm_apply]`. Conclude with `GlobalTheory.ConjMult.span_conj (GlobalTheory.SmoothAutCheck.gramAt_unit _ τ) e.symm hint hw`.
+-/
 theorem exists_conj_intertwiner (hU : GlobalTheory.Published.DiscreteSeriesHermitianUnique) (hmult : GlobalTheory.Dec.LowKMultOne)
     (hstrict : GlobalTheory.DSId.StrictLow) {D : D7} (I : AutInst) (hI : I = instOf D)
     (pl : InfinitePlace I.F ≃ D.what₂.Tau) (n_eq : I.n = D.R.r)
@@ -107,6 +134,11 @@ theorem exists_conj_intertwiner (hU : GlobalTheory.Published.DiscreteSeriesHermi
 
 end Frame
 
+/- English proof (translation)
+Introduce `hcl D G _ _ Pl0 T A Ks _ _ _ R F X h hlev hgrp hmod _hhost hιE`. Take `⟨-, hreal, -⟩` from `GlobalTheory.T.adelicIdentification_respects_real_finite R F X h hlev hgrp hmod hιE`. Take `⟨-, -, -, -, hmult, -, hstrict⟩` from `GlobalTheory.ClassificationConsequences.consequences_of_dsClass hcl`. Establish `hU` using `GlobalTheory.Published.discreteSeriesHermitianUnique_of_classification hcl`. Take `⟨c, hc1, hc2⟩` from `exists_conj_intertwiner hU hmult hstrict X.B.I h X.pl X.n_eq X.eps_eq X.B.H X.B.σ X.B.w X.B.lam X.lam_eq X.ds X.low (MP R)`.
+
+Conclude with `⟨c, fun τ g hg x => hc1 τ g hg _ (hreal τ g hg).2.2 x, hc2⟩`.
+-/
 theorem conjModel_of_setting : GlobalTheory.Published.DiscreteSeriesClassification → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → HostHyp D → (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∃ (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)), (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D (D.sp.Y 0) τ), ∀ w, c τ ((MP R).rep τ g w) = X.B.σ (X.pl.symm τ) (uMat ((iotaX X h (atTau R.θ (D.sp.Y 0) τ g)).1 (X.pl.symm τ))) (c τ w)) ∧ ∀ τ, (c τ).symm (X.B.w (X.pl.symm τ)) ∈ (MP R).sm τ := by
   intro hcl D G _ _ Pl0 T A Ks _ _ _ R F X h hlev hgrp hmod _hhost hιE
   obtain ⟨-, hreal, -⟩ := GlobalTheory.T.adelicIdentification_respects_real_finite R F X h hlev hgrp hmod hιE

@@ -25,6 +25,11 @@ variable {d : ℕ} {I : Fin 2 → Type} (X : RawChart C d I (Fin dd))
   (hlg : X.lg = fun i => un1 (Y.lg i)) (hex : X.ex = fun i => un1 (Y.ex i)) (hh : X.h = Y.h)
 
 include hlg hex in
+/- English proof (translation)
+Establish `h0` using `gp_lg Y`. Establish `hs : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => a q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => ha q.2`. Establish `hL : GP (comp1 (LogExpAdaptedGauge.linMap M) Y.lg)` using `gp_comp1 _ _ (gp_linMap _) h0`. Establish `e0 : endP X M a i = MvPowerSeries.subst (fun x => ∑ y, M x y • MvPowerSeries.subst a (un1 (Y.lg y))) (un1 (Y.ex i))`. Unfold `endP`.
+
+Rewrite using `[hlg, hex]`. Rewrite using `[e0, funext (subst_linMap M Y.lg h0 a ha)]`. Generalize the expression as in `comp1 (LogExpAdaptedGauge.linMap M) Y.lg = L at hL ⊢`. Establish `hz : ∀ x, MvPowerSeries.constantCoeff (MvPowerSeries.subst (fun q : Fin 1 × Fin dd => a q.2) (L x)) = 0` using `fun x => Formalism.L2.FormalSeriesBounds.constantCoeff_subst_zero (fun q : Fin 1 × Fin dd => ha q.2) (hL x)`. Rewrite using `[subst_singlePointUncurry _ hz, germComp1_eq_subst, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun q : Fin 1 × Fin dd => hL q.2) hs]`.
+-/
 theorem matrixEnd_linearMap' (M : Matrix (Fin dd) (Fin dd) C)
     {τ : Type} (a : Fin dd → MvPowerSeries τ C) (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (i : Fin dd) :
     endP X M a i =
@@ -46,6 +51,9 @@ theorem matrixEnd_linearMap' (M : Matrix (Fin dd) (Fin dd) C)
     (MvPowerSeries.hasSubst_of_constantCoeff_zero fun q : Fin 1 × Fin dd => hL q.2) hs]
 
 include hlg hex in
+/- English proof (translation)
+Rewrite using `[matrixEnd_linearMap' Y X hlg hex _ a ha, ← eq_exp_lin_log Y e he hhom]`.
+-/
 theorem matrixEnd_eq_subst' (e : Pt C 1 dd) (he : GP e)
     (hhom : comp1 e (addOf Y.B.G.F (pt C (n := 2) dd 0) (pt C (n := 2) dd 1)) =
       addOf Y.B.G.F (comp1 e (pt C (n := 2) dd 0)) (comp1 e (pt C (n := 2) dd 1)))
@@ -54,6 +62,9 @@ theorem matrixEnd_eq_subst' (e : Pt C 1 dd) (he : GP e)
   rw [matrixEnd_linearMap' Y X hlg hex _ a ha, ← eq_exp_lin_log Y e he hhom]
 
 include hlg hex in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[matrixEnd_eq_subst' Y X hlg hex e he hhom a ha, germComp1_eq_subst]`.
+-/
 theorem matrixEnd_eq_comp' (e : Pt C 1 dd) (he : GP e)
     (hhom : comp1 e (addOf Y.B.G.F (pt C (n := 2) dd 0) (pt C (n := 2) dd 1)) =
       addOf Y.B.G.F (comp1 e (pt C (n := 2) dd 0)) (comp1 e (pt C (n := 2) dd 1)))
@@ -62,6 +73,11 @@ theorem matrixEnd_eq_comp' (e : Pt C 1 dd) (he : GP e)
   rw [matrixEnd_eq_subst' Y X hlg hex e he hhom a ha, germComp1_eq_subst]
 
 include hh in
+/- English proof (translation)
+Unfold `hAt`. Rewrite using `[hh]`. Use `show MvPowerSeries.subst _ Y.h = MvPowerSeries.subst _ Y.h`. Use `congr 1`. Use function extensionality and compare the values at `⟨s, x⟩`.
+
+Apply the tactic sequence `fin_cases s <;> rfl`.
+-/
 theorem hAt_eq_ev_raw {n : ℕ} (a b : Pt C n dd) : hAt X a b = ev ![a, b] Y.h := by
   unfold hAt
   rw [hh]
@@ -71,6 +87,13 @@ theorem hAt_eq_ev_raw {n : ℕ} (a b : Pt C n dd) : hAt X a b = ev ![a, b] Y.h :
   fin_cases s <;> rfl
 
 include hlg hex hh in
+/- English proof (translation)
+Establish `hX : ∀ i : Fin dd, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin dd) C) = 0` using `fun i => by simp`. Establish `hc : MvPowerSeries.constantCoeff Y.h = 0`. Rewrite using `[← gt_const_ev_eq _ (pair_points_zero_constant gp_zero₂ (gp_pt (0 : Fin 1))) Y.h, Y.gauge.ax0, map_zero]`. Use `⟨fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[matrixEnd_eq_subst' Y X hlg hex e he hhom _ hX, ← subst_singlePointUncurry _ hX, MvPowerSeries.subst_self]`.
+
+Conclude with `fun μ => hi i _`. Rewrite using `[matrixEnd_eq_subst' Y X hlg hex e' he' hhom' _ hX, ← subst_singlePointUncurry _ hX, MvPowerSeries.subst_self]`. Conclude with `fun μ => hi' i _`. Establish `g0 : gp C (Fin dd) (0 : Fin 2) = pt C dd 0` using `rfl`. Establish `g1 : gp C (Fin dd) (1 : Fin 2) = pt C dd 1` using `rfl`.
+
+Rewrite using `[g0, g1, matrixEnd_eq_comp' Y X hlg hex e he hhom _ (gp_pt 0), matrixEnd_eq_comp' Y X hlg hex e' he' hhom' _ (gp_pt 1), hAt_eq_ev_raw Y X hh, hAt_eq_ev_raw Y X hh, ← subst_exp_eq_mvExp]`. Conclude with `hx`. Rewrite using `[map_sub, gt_const_ev _ (pair_points_zero_constant (gp_comp1 _ _ he (gp_pt 0)) (gp_pt 1)) _ hc, gt_const_ev _ (pair_points_zero_constant (gp_pt 0) (gp_comp1 _ _ he' (gp_pt 1))) _ hc, sub_zero]`.
+-/
 theorem isEnd_of_hom_raw (e e' : Pt C 1 dd) (he : GP e) (he' : GP e')
     (hhom : comp1 e (addOf Y.B.G.F (pt C (n := 2) dd 0) (pt C (n := 2) dd 1)) =
       addOf Y.B.G.F (comp1 e (pt C (n := 2) dd 0)) (comp1 e (pt C (n := 2) dd 1)))
@@ -99,6 +122,13 @@ theorem isEnd_of_hom_raw (e e' : Pt C 1 dd) (he : GP e) (he' : GP e')
 
 end Chart
 
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd Y d I X hlg hex hh a ha`. Take `⟨c1, c2⟩` from `GlobalTheory.T.actionConverges_ladic_cauchy_and_star C V O dd Y a ha`. Take `⟨e, eb, i1, i2, l1, l2, h1, x1⟩` from `GlobalTheory.T.formalGroupAction_limits_integral_endomorphisms C V O dd Y a c1 c2`. Take `⟨f, fb, -, -, l3, l4, h2, x2⟩` from `GlobalTheory.T.formalGroupAction_limits_integral_endomorphisms C V O dd Y (fun n => star (a n)) c2 (by simpa only [star_star] using c1)`. Simplify using `only [star_star] at l4`.
+
+Take `rfl : f = eb` from `funext fun i => MvPowerSeries.ext fun μ => limit_unique V _ _ _ (fun N => l3 N i μ) (fun N => l2 N i μ)`. Take `rfl : fb = e` from `funext fun i => MvPowerSeries.ext fun μ => limit_unique V _ _ _ (fun N => l4 N i μ) (fun N => l1 N i μ)`. Establish `hz : ∀ (g : Pt C 1 dd) (s : ℕ → O), (∀ (N : ℕ) i μ, ∃ n0 : ℕ, ∀ n ≥ n0, V.Ge N (MvPowerSeries.coeff μ (g i) - MvPowerSeries.coeff μ (Y.B.A.act (s n) i))) → GP g`. Introduce `g s hg i`. Use `limit_unique V (fun n => MvPowerSeries.coeff 0 (Y.B.A.act (s n) i)) _ _ (fun N => hg N i 0) fun N => ⟨0, fun n _ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [MvPowerSeries.coeff_zero_eq_constantCoeff_apply, Y.B.A.const, sub_zero]`. Conclude with `VF.Ge.zero _`. Establish `g1` using `hz fb a l1`. Establish `g2` using `hz f (fun n => star (a n)) l2`. Conclude with `⟨dLin fb, dLin f, isEnd_of_hom_raw Y X hlg hex hh fb f g1 g2 h1 h2 i1 i2 x1, isEnd_of_hom_raw Y X hlg hex hh f fb g2 g1 h2 h1 i2 i1 x2, linear_limit V fb _ l1, linear_limit V f _ l2⟩`.
+-/
 theorem exists_isEnd_of_limit_raw : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) (I : Fin 2 → Type) (X : RawChart C d I (Fin dd)), (X.lg = fun i => un1 (Y.lg i)) → (X.ex = fun i => un1 (Y.ex i)) → X.h = Y.h → ∀ a : ℕ → O, (∀ n, ∃ y, a (n + 1) - a n = (V.l : O) ^ n * y) → ∃ M M' : Matrix (Fin dd) (Fin dd) C, IsEnd X V M M' ∧ IsEnd X V M' M ∧ (∀ (N : ℕ) (v : Fin dd → C) i, ∃ n0, ∀ n ≥ n0, V.Ge N (M.mulVec v i - linAct (Y.B.A.act (a n)) v i)) ∧ (∀ (N : ℕ) (v : Fin dd → C) i, ∃ n0, ∀ n ≥ n0, V.Ge N (M'.mulVec v i - linAct (Y.B.A.act (star (a n))) v i)) := by
   intro C _ _ V O _ _ dd Y d I X hlg hex hh a ha
   obtain ⟨c1, c2⟩ := GlobalTheory.T.actionConverges_ladic_cauchy_and_star C V O dd Y a ha

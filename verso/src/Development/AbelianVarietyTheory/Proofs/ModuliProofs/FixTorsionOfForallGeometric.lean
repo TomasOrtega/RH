@@ -13,6 +13,15 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `hA.proper` as an intermediate fact. Set `u : A ⟶ A` to `σ * (𝟙 A)⁻¹`. Establish `hu : ∀ {T : Over S} (x : T ⟶ A), x ≫ σ = x → x ≫ u = 1` using `fun x hx => by`. Simplify using `only [u, MonObj.comp_mul, GrpObj.comp_inv, hx, Category.comp_id, mul_inv_cancel]`. Establish `hη : (η[A] : 𝟙_ (Over S) ⟶ A).left ≫ A.hom = 𝟙 S` using `Over.w η[A]`.
+
+Establish `hfib : ∀ (t : S) (x : A.left), A.hom x = t → u.left x = (η[A] : 𝟙_ (Over S) ⟶ A).left t`. Introduce `t x hx`. Take `⟨S', X, f, g, q, y, hy, hg, e⟩` from `hσ t`. Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback hg x y (hx.trans hy.symm)`. Set `x₀ : Over.mk (g ≫ A.hom) ⟶ A` to `Over.homMk g rfl`.
+
+Establish `h₀ : g ≫ u.left = (g ≫ A.hom) ≫ (η[A] : 𝟙_ (Over S) ⟶ A).left` using `congrArg (fun q => q.left) (hu x₀ (Over.OverMorphism.ext e))`. Rewrite using `[← Scheme.Hom.comp_apply, h₀, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hx]`. Establish `key : u.left = A.hom ≫ (η[A] : 𝟙_ (Over S) ⟶ A).left ≫ u.left`. Use `Scheme.hom_ext_of_forall _ _ fun x => ?_` and prove the remaining obligations. Take `⟨V, hV, e⟩` from `local_rigidity _ _ _ A.hom _ u.left hη inferInstance (surjective_app_of_isAbelianScheme hG A hA) (A.hom x) _ (hfib _)`.
+
+Conclude with `⟨A.hom ⁻¹ᵁ V, hV, e⟩`. Establish `h₁ : u = toUnit A ≫ η[A] ≫ u` using `Over.OverMorphism.ext key`. Rewrite `h₁` using `[hu η[A] h0, MonObj.comp_one]`. Conclude with `mul_inv_eq_one.1 h₁`.
+-/
 theorem eq_id_of_forall_geometric_fibre (hG : Out.GlobalFnsSt) {S : Scheme.{0}} (A : Over S)
     [GrpObj A] (hA : IsAbelianScheme A) (σ : A ⟶ A) (h0 : η[A] ≫ σ = η[A])
     (hσ : ∀ t : S, ∃ (S' X : Scheme.{0}) (f : S' ⟶ S) (g : X ⟶ A.left) (q : X ⟶ S') (y : S'),
@@ -40,6 +49,9 @@ theorem eq_id_of_forall_geometric_fibre (hG : Out.GlobalFnsSt) {S : Scheme.{0}} 
   rw [hu η[A] h0, MonObj.comp_one] at h₁
   exact mul_inv_eq_one.1 h₁
 
+/- English proof (translation)
+Use `eq_id_of_forall_geometric_fibre hL.globalFns P.A P.isAb σ.hom (IsMonHom.one_hom σ.hom) fun t => ?_` and prove the remaining obligations. Take `⟨V, hV, c, hc⟩` from `hloc t`. Establish `hf : ∀ y, S.fromSpecResidueField t y = t` using `Scheme.fromSpecResidueField_apply t`. Take `⟨X, g, q, hg, e⟩` from `comp_aut_eq_of_serre_baseChange hL.polBaseChange (S.fromSpecResidueField t) P M (fun P' σ' h' ⟨c', hc'⟩ hx => hL.serre _ P' M hM σ' h' (fun _ => ⟨⊤, trivial, gen_chartPull (chartPullPull _ _ _ rfl) c' hc'⟩) hx) σ hσ V (fun y => by rw [hf]; exact hV) c hc hfix`. Conclude with `⟨_, X, _, g, q, (default : PrimeSpectrum (S.residueField t)), hf _, hg, e⟩`.
+-/
 theorem serre_any_base (hL : Out.Laws) {S : Scheme.{0}} (P : Out.PolAV S) (M : ℕ) (hM : 3 ≤ M)
     (σ : P.A ≅ P.A) (hσ : IsMonHom σ.hom)
     (hloc : ∀ p : S, ∃ V : S.Opens, p ∈ V ∧
@@ -57,6 +69,13 @@ theorem serre_any_base (hL : Out.Laws) {S : Scheme.{0}} (P : Out.PolAV S) (M : �
     σ hσ V (fun y => by rw [hf]; exact hV) c hc hfix
   exact ⟨_, X, _, g, q, (default : PrimeSpectrum (S.residueField t)), hf _, hg, e⟩
 
+/- English proof (translation)
+Establish `e : ∀ y : T ⟶ A, y ≫ Out.mulA A n = y ^ n` using `fun y => by`. Rewrite using `[Out.mulA, MonObj.comp_pow, Category.comp_id]`. Establish `hx' : (x ≫ σ) ^ n = 1`. Rewrite using `[← MonObj.pow_comp, hx, MonObj.one_comp]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Use `eq_of_range_equalizer_ι_eq_univ (Out.mulA A n).left (by rw [← Over.comp_left, ← Over.comp_left, e, e, hx, hx']) (Set.eq_univ_of_forall fun z => ?_)` and prove the remaining obligations. Set `K : Type` to `AlgebraicClosure (T.left.residueField z)`. Set `j : Sp K ⟶ T.left` to `Spec.map (CommRingCat.ofHom (algebraMap (T.left.residueField z) K)) ≫ T.left.fromSpecResidueField z`. Establish `hj : ∀ p, j p = z` using `fun p => (Scheme.Hom.comp_apply _ _ p).trans (Scheme.fromSpecResidueField_apply z _)`. Set `j' : Over.mk (j ≫ T.hom) ⟶ T` to `Over.homMk j rfl`.
+
+Establish `h₁` using `h K (j ≫ T.hom) (j' ≫ x) (by rw [← MonObj.comp_pow, hx, MonObj.comp_one])`. Use `replace h₁ := (Category.assoc _ _ _).symm.trans h₁`. Conclude with `range_subset_range_equalizer_ι j (congrArg (fun q => q.left) h₁) ⟨(default : PrimeSpectrum K), hj _⟩`.
+-/
 theorem fix_torsion_of_forall_geometric {S : Scheme.{0}} (A : Over S) [GrpObj A] (n : ℕ)
     [Etale (Out.mulA A n).left] (σ : A ⟶ A) [IsMonHom σ]
     (h : ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ S) (x : Over.mk t ⟶ A),
@@ -82,6 +101,11 @@ theorem fix_torsion_of_forall_geometric {S : Scheme.{0}} (A : Over S) [GrpObj A]
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hL`. Take `⟨-, I, -, -, hI⟩` from `o.geom k x (Spec.preimage (x ≫ s)).hom (Spec.map_preimage _).symm`. Use `ObjRigid.fix_torsion l I (IsMonHom.monoidHom θ.hom (Over.mk x)) (fun a z => ?_) (fun z z' c c' h h' => ?_) (fun a ha => ?_) y hy` and prove the remaining obligations. Use `show (z ≫ _) ≫ θ.hom = (z ≫ θ.hom) ≫ _`. Rewrite using `[Category.assoc, hact, Category.assoc]`.
+
+Establish `: Subsingleton (Over.mk x).left` using `inferInstanceAs (Subsingleton (Sp k))`. Conclude with `H1.unitOn_injective (ObjRigid.weil_eq_of_iso (T := Over.mk x) o.t.PP.isLB θ w hw _ z z' _ _ h h')`. Use `show _ ≫ θ.hom = _`. Rewrite using `[← hI a ha, Category.assoc, heta]`.
+-/
 theorem obj_aut_fix_geometric_torsion {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}}
     {s : S ⟶ Sp B} (o : Obj D l b s) (θ : o.t.G ≅ o.t.G) [IsMonHom θ.hom]
     (hact : ∀ a, o.t.act.act a ≫ θ.hom = θ.hom ≫ o.t.act.act a)
@@ -100,6 +124,17 @@ theorem obj_aut_fix_geometric_torsion {B : Type} [CommRing B] {b : Base l B} {S 
   · show _ ≫ θ.hom = _
     rw [← hI a ha, Category.assoc, heta]
 
+/- English proof (translation)
+Introduce `hL hpol E _ _ _ H D l B B' _ _ b b' S S' s s' o o' f m m' heta`. Take `⟨hA, hd, hr, hs⟩` from `hpol E H D l B' b' S' s' o'`. Take `⟨θ, hθ, hφ, hact, -, w, hw, -⟩` from `sabMap_iso m m' rfl rfl`. Establish `hη : ∀ a, o'.eta a ≫ θ.hom = o'.eta a` using `fun a => by`. Take `⟨σ, h₁, h₂⟩` from `heta a`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc]`. Conclude with `(congrArg _ hφ).trans (h₁.trans h₂.symm)`. Rewrite using `[Over.w, Over.w]`.
+
+Set `P : Out.PolAV S'` to `{ A := o'.t.G, g := _, smoothDim := hd, L := o'.t.PP.L, isLB := o'.t.PP.isLB, ample := o'.ample, ktriv := o'.ktriv, isAb := hA, rigid := hr, sym := hs }`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hMu : IsUnit (l.M : Γ(S', ⊤))`. Simplify using `using (b'.unit _ hM).map ((Scheme.ΓSpecIso (CommRingCat.of B')).inv ≫ s'.appTop).hom`. Use `hA.smooth` as an intermediate fact.
+
+Establish `: Etale (Out.mulA o'.t.G l.M).left` using `GrpTangent.etale_id_pow o'.t.G hMu`. Establish `h : θ.hom = 𝟙 _`. Use `serre_any_base hL P l.M l.three_le θ hθ (fun _ => ⟨⊤, trivial, ?_⟩) (fix_torsion_of_forall_geometric o'.t.G l.M θ.hom (obj_aut_fix_geometric_torsion o' θ hact ⟨w, hw⟩ hη))` and prove the remaining obligations. Take `⟨t, ht⟩` from `gen_of_iso ((isGen_iff w).1 hw) (o'.t.G.hom ⁻¹ᵁ ⊤).ι`. Use `gen_chartPull (chartPullOut o'.t.PP.L _ _ _ _ fun n => ?_) t ht` and prove the remaining obligations.
+
+Use `fin_cases n`. Use `exacts [rfl, (Category.comp_id _).symm]`. Rewrite using `[← hφ, h, Over.id_left, Category.id_comp]`.
+-/
 theorem obj_rigid_of_pol : Out.Laws → (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B : Type) [CommRing B] (b : Base l B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l b s), IsAbelianScheme o.t.G ∧ SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) o.t.G.hom ∧ Out.Rigidified o.t.G o.t.PP.L ∧ Out.Sym o.t.G o.t.PP.L) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B B' : Type) [CommRing B] [CommRing B'] (b : Base l B) (b' : Base l B') (S S' : Scheme.{0}) (s : S ⟶ Sp B) (s' : S' ⟶ Sp B') (o : Obj D l b s) (o' : Obj D l b' s') (f : S' ⟶ S), ∀ m m' : SABMap o'.t o.t f, (∀ a, ∃ σ, (o'.eta a).left ≫ m.φ = σ ∧ (o'.eta a).left ≫ m'.φ = σ) → m.φ = m'.φ := by
   intro hL hpol E _ _ _ H D l B B' _ _ b b' S S' s s' o o' f m m' heta
   obtain ⟨hA, hd, hr, hs⟩ := hpol E H D l B' b' S' s' o'

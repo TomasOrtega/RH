@@ -14,6 +14,11 @@ open MeasureTheory Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds (1 : X.B.I.Ginf)`. Use `⟨K, hK, ?_, hK.measure_lt_top⟩` and prove the remaining obligations. Use `first`. Consider the case `exact Measure.measure_pos_of_mem_nhds _ hKn`. Consider the case `exact MeasureTheory.Measure.measure_pos_of_mem_nhds _ hKn`.
+
+Consider the case `exact (measure_pos_of_nonempty_interior _ ⟨1, mem_interior_iff_mem_nhds.mpr hKn⟩)`.
+-/
 theorem muInf_compact_pos : ∃ K : Set X.B.I.Ginf, IsCompact K ∧ 0 < Formalism.L2.SG.ProjRows.muInf X.B.I K ∧
     Formalism.L2.SG.ProjRows.muInf X.B.I K < ⊤ := by
   obtain ⟨K, hK, hKn⟩ := exists_compact_mem_nhds (1 : X.B.I.Ginf)
@@ -23,6 +28,19 @@ theorem muInf_compact_pos : ∃ K : Set X.B.I.Ginf, IsCompact K ∧ 0 < Formalis
     | exact MeasureTheory.Measure.measure_pos_of_mem_nhds _ hKn
     | exact (measure_pos_of_nonempty_interior _ ⟨1, mem_interior_iff_mem_nhds.mpr hKn⟩)
 
+/- English proof (translation)
+Establish `hex : ∃ C, 0 < C ∧ Disint X u u' sc C` using `⟨C, hC, h⟩`. Unfold `DisintegrationConstant`. Rewrite using `[dif_pos hex]`. Take `⟨hC1, hD1⟩` from `hex.choose_spec`. Take `⟨K, hK, hK0, hKt⟩` from `muInf_compact_pos X`.
+
+Establish `hKm : MeasurableSet K` using `hK.measurableSet`. Take `⟨Iv, hIv⟩ : ∃ Iv : ENNReal, Iv = ∫⁻ c in Good X u u', ENNReal.ofReal (wt X u u' c) * ∫⁻ s, ∫⁻ s', K.indicator 1 (s * hOf X u u' sc c * s'⁻¹) ∂(muS X u') ∂(muS X u) ∂(dcInf X)` from `⟨_, rfl⟩`. Establish `key : ∀ C', 0 < C' → Disint X u u' sc C' → Formalism.L2.SG.ProjRows.muInf X.B.I K = ENNReal.ofReal C' * Iv`. Introduce `C' hC' hD`. Rewrite using `[hIv, ← lintegral_indicator_one hKm, hD _ (measurable_one.indicator hKm), ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+
+Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul hC'.le, mul_assoc]`. Establish `e1` using `key _ hC1 hD1`. Establish `e2` using `key C hC h`. Establish `hI0 : Iv ≠ 0` using `right_ne_zero_of_mul (e1 ▸ hK0.ne')`.
+
+Establish `hIt : Iv ≠ ⊤`. Introduce `hI`. Rewrite `hKt` using `[e1, hI, ENNReal.mul_top (by simpa using hC1)]`. Conclude with `lt_irrefl _ hKt`. Establish `e3 : ENNReal.ofReal hex.choose * Iv = ENNReal.ofReal C * Iv` using `e1.symm.trans e2`.
+
+Establish `e4 : ENNReal.ofReal hex.choose = ENNReal.ofReal C`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ENNReal.mul_inv_cancel hI0 hIt, mul_one]`. Use `_ = ENNReal.ofReal C * Iv * Iv⁻¹ := by rw [e3]`. Use `_ = ENNReal.ofReal C := by rw [mul_assoc, ENNReal.mul_inv_cancel hI0 hIt, mul_one]`.
+
+Conclude with `(ENNReal.ofReal_eq_ofReal_iff hC1.le hC.le).mp e4`.
+-/
 theorem cooOf_eq (u u' : D.what₂.Word) (sc C : ℝ) (hC : 0 < C) (h : Disint X u u' sc C) : DisintegrationConstant X u u' sc = C := by
   have hex : ∃ C, 0 < C ∧ Disint X u u' sc C := ⟨C, hC, h⟩
   unfold DisintegrationConstant
@@ -141,21 +159,51 @@ def PlaceSplit : Prop :=
     Formalism.L2.SG.TypedSets.HypX X hb FdN FdN' u u' → Formalism.L2.SG.MassDataConc.MeasCompatψ X ψ → Formalism.L2.SG.LocVol.IsStdChar ψ →
     (∀ v, Formalism.MainNotions.S.Gauge.GaugeDens (X.B.I.ε v)) → PlaceData X FdN FdN' u u'
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.UnitaryVolumeMass.volU`. Rewrite using `[Finset.prod_range_succ]`.
+-/
 theorem volU_succ (k : ℕ) : Formalism.MainNotions.S.UnitaryVolumeMass.volU (k + 1) =
     Formalism.MainNotions.S.UnitaryVolumeMass.volU k * ((2 * Real.pi) ^ (k + 1) / (k.factorial : ℝ)) := by
   unfold Formalism.MainNotions.S.UnitaryVolumeMass.volU
   rw [Finset.prod_range_succ]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.UnitaryVolumeMass.volU`. Conclude with `Finset.prod_pos fun i _ => div_pos (pow_pos (by positivity) _) (Nat.cast_pos.mpr (Nat.factorial_pos i))`.
+-/
 theorem volU_pos' (j : ℕ) : 0 < Formalism.MainNotions.S.UnitaryVolumeMass.volU j := by
   unfold Formalism.MainNotions.S.UnitaryVolumeMass.volU
   exact Finset.prod_pos fun i _ => div_pos (pow_pos (by positivity) _) (Nat.cast_pos.mpr (Nat.factorial_pos i))
 
+/- English proof (translation)
+Consider the cases of `k with`. Consider the case `zero => simp [Formalism.MainNotions.S.UnitaryVolumeMass.volU]`. Consider the case `succ j => rw [Nat.add_sub_cancel]`. Conclude with `volU_succ j`.
+-/
 private theorem prod_two_pi_pow_div_factorial_eq_two_pow_mul_prod (k : ℕ) : Formalism.MainNotions.S.UnitaryVolumeMass.volU k =
     Formalism.MainNotions.S.UnitaryVolumeMass.volU (k - 1) * ((2 * Real.pi) ^ k / ((k - 1).factorial : ℝ)) := by
   cases k with
   | zero => simp [Formalism.MainNotions.S.UnitaryVolumeMass.volU]
   | succ j => rw [Nat.add_sub_cancel]; exact volU_succ j
 
+/- English proof (translation)
+Introduce `D X hb FdN FdN' u u' ψ hX hM hs hT a' ha' hAc`. Establish `hGv : ∀ v : NumberField.InfinitePlace X.B.I.F, Formalism.MainNotions.S.Gauge.GaugeDens (X.B.I.ε v)` using `fun v => hG _ _`. Take `⟨μN, μN', μH, μH', a, b, κ, κ', cN, cN', hsN, hsN', hsH, hsH', hpos, hN, hN', hH, hH', haH, hbH, hloc, hvN, hvN', hcN⟩` from `hS X hb FdN FdN' u u' ψ hX hM hs hGv`. Establish `hA'` using `hA X hb FdN FdN' u u' ψ hX hM hs hGv hT a' ha' hAc`. Establish `hTu : 0 < Formalism.L2.SG.RealObj.Tw u` using `Formalism.L2.SG.RealObj.InfCut.ProductExactness.Tw_pos u`.
+
+Establish `hTu' : 0 < Formalism.L2.SG.RealObj.Tw u'` using `Formalism.L2.SG.RealObj.InfCut.ProductExactness.Tw_pos u'`. Establish `hV0` using `volU_pos' D.R.k`. Establish `hW0` using `volU_pos' (D.R.k - 1)`. Establish `hVW` using `prod_two_pi_pow_div_factorial_eq_two_pow_mul_prod D.R.k`. Use `set T := Formalism.L2.SG.RealObj.Tw u with hTd`.
+
+Use `set T' := Formalism.L2.SG.RealObj.Tw u' with hT'd`. Use `set V := Formalism.MainNotions.S.UnitaryVolumeMass.volU D.R.k with hVd`. Use `set W := Formalism.MainNotions.S.UnitaryVolumeMass.volU (D.R.k - 1) with hWd`. Use `set Cv : NumberField.InfinitePlace X.B.I.F → ℝ := fun v => Formalism.MainNotions.S.Gauge.gaugeU (X.B.I.ε v) * V ^ 2 / ((T * T') ^ D.R.k * W * a v * b v * (κ v * κ' v)) with hCvd`. Establish `hCv : ∀ v, 0 < Cv v`.
+
+Introduce `v`. Establish `hg` using `(hGv v).2`. Take `⟨h1, h2, h3, h4⟩` from `hpos v`. Simplify using `only [hCvd]`. Check the signs of the components of the expression.
+
+Establish `hDis` using `hP X u u' μN μN' μH μH' Cv hsN hsN' hsH hsH' hCv hN hN' hH hH' hloc`. Establish `hCoo` using `cooOf_eq X u u' 1 (∏ v, Cv v) (Finset.prod_pos fun v _ => hCv v) hDis`. Use `haveI := hsH`. Use `haveI := hsH'`. Establish `hAu : (X.muH u Set.univ).toReal = ∏ v, a v`.
+
+Rewrite using `[hH, Measure.pi_univ, ENNReal.toReal_prod]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [haH v, ENNReal.toReal_ofReal (hpos v).1.le]`. Establish `hBu : (X.muH u' Set.univ).toReal = ∏ v, b v`. Rewrite using `[hH', Measure.pi_univ, ENNReal.toReal_prod]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [hbH v, ENNReal.toReal_ofReal (hpos v).2.1.le]`.
+
+Establish `hB0 : 0 < ∏ v, b v` using `Finset.prod_pos fun v _ => (hpos v).2.1`. Establish `hprod : (∏ v, Cv v) * (∏ v, a v) * (∏ v, b v) * ((∏ v, κ v) * ∏ v, κ' v) = Formalism.MainNotions.S.AutInst.gaugeU X.B.I * (V ^ 2 / ((T * T') ^ D.R.k * W)) ^ Fintype.card (NumberField.InfinitePlace X.B.I.F)`. Simplify using `only [← Finset.prod_mul_distrib]`. Unfold `Formalism.MainNotions.S.AutInst.gaugeU`. Rewrite using `[← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `hpos v`. Simplify using `only [hCvd]`. Apply the tactic sequence `first | (field_simp; ring) | field_simp`. Establish `hF : (0 : ℝ) < ((D.R.k - 1).factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos _`.
+
+Establish `hY : V ^ 2 / ((T * T') ^ D.R.k * W) = V * 2 ^ D.R.k * (Real.pi ^ D.R.k / ((D.R.k - 1).factorial : ℝ)) * (T ^ D.R.k)⁻¹ * (T' ^ D.R.k)⁻¹`. Rewrite using `[hVW]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `hA'` using `[hBu]`.
+
+Rewrite using `[hCoo, hAu, hvN, hvN', hA']`. Apply the tactic sequence `have e1 : (∏ v, Cv v) * (∏ v, a v) * ((∏ v, κ v) * cN) * ((∏ v, κ' v) * cN') = ((∏ v, Cv v) * (∏ v, a v) * (∏ v, b v) * ((∏ v, κ v) * ∏ v, κ' v)) * (cN * cN') / ∏ v, b v := by first | (field_simp; ring) | field_simp`. Rewrite using `[e1, hprod, hcN, hY]`. Simplify using `only [_root_.zpow_neg, zpow_natCast, pow_mul, mul_pow, inv_pow]`. Apply the tactic sequence `first | (field_simp; ring) | field_simp | ring`.
+-/
 theorem realBracket_of (hP : ProdExact) (hA : AprimeInf) (hS : PlaceSplit)
     (hG : ∀ (n : ℕ) (ε : Fin n → Bool), Formalism.MainNotions.S.Gauge.GaugeDens ε) : RealBracket := by
   intro D X hb FdN FdN' u u' ψ hX hM hs hT a' ha' hAc

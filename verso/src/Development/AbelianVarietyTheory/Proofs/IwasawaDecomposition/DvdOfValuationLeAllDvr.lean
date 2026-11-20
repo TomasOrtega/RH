@@ -9,6 +9,31 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ r s hr H`. Distinguish the cases in `hs : s = 0`. Conclude with `hs ▸ dvd_zero r`. Use `dvd_of_forall_height_eq_one hr fun p _ hp hrp => ?_` and prove the remaining obligations. Establish `hp0 : p ≠ ⊥` using `p.ne_bot_of_height_eq_one hp`.
+
+Take `⟨O, _, _, hdvr, hcpl, φ, hker, hcomap⟩` from `exists_complete_discreteValuationRing_of_prime_lt (⊥ : Ideal R) p (bot_lt_iff_ne_bot.2 hp0)`. Establish `hinj : Function.Injective φ` using `(RingHom.injective_iff_ker_eq_bot φ).2 hker`. Establish `hch : CharZero O` using `(RingHom.charZero_iff hinj).1 inferInstance`. Establish `hC : CDvr O` using `⟨hdvr, hcpl, hch⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+
+Use `haveI : IsDiscreteValuationRing (Localization.AtPrime p) := isDiscreteValuationRing_of_height_eq_one p hp (Localization.AtPrime p)`. Establish `hinjB : Function.Injective (algebraMap R (Localization.AtPrime p))` using `IsLocalization.injective (Localization.AtPrime p) p.primeCompl_le_nonZeroDivisors`. Take `⟨c, hc'⟩` from `ValuationRing.cond (algebraMap R (Localization.AtPrime p) r) (algebraMap R (Localization.AtPrime p) s)`. Take `⟨⟨x, t⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl c`. Break down `hc' with h | h` into its components or cases.
+
+Use `⟨t, t.2, x, ?_⟩` and prove the remaining obligations. Apply `hinjB` to reduce the goal to its premises. Establish `h2` using `congrArg (· * algebraMap R (Localization.AtPrime p) t) h`. Simplify using `only at h2`. Rewrite `h2` using `[mul_assoc, IsLocalization.mk'_spec]`.
+
+Rewrite using `[map_mul, map_mul, mul_comm, ← h2]`. Establish `e : s * x = r * t`. Apply `hinjB` to reduce the goal to its premises. Establish `h2` using `congrArg (· * algebraMap R (Localization.AtPrime p) t) h`. Simplify using `only at h2`.
+
+Rewrite `h2` using `[mul_assoc, IsLocalization.mk'_spec]`. Rewrite using `[map_mul, map_mul, h2]`. Distinguish the cases in `hx : x ∈ p`. It suffices to derive a contradiction. Establish `ht0 : (t : R) ≠ 0` using `fun h0 => t.2 (h0 ▸ p.zero_mem)`.
+
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `e` using `[mul_zero]`. Conclude with `mul_ne_zero hr ht0 e.symm`. Establish `hmem : ∀ y : R, φ y ∈ maximalIdeal O ↔ y ∈ p` using `fun y => by`.
+
+Rewrite using `[← Ideal.mem_comap, hcomap]`. Establish `hφx : φ x ∈ maximalIdeal O` using `(hmem x).2 hx`. Establish `hφt : IsUnit (φ t)`. Assume the negation of the conclusion as `hu`. Conclude with `t.2 ((hmem t).1 ((mem_maximalIdeal _).2 hu))`.
+
+Establish `hφs : φ s ≠ 0` using `fun h0 => hs (hinj (h0.trans (map_zero φ).symm))`. Establish `hφx0 : φ x ≠ 0` using `fun h0 => hx0 (hinj (h0.trans (map_zero φ).symm))`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hφs hϖ`. Take `⟨k, hk⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hφx0 hϖ`. Establish `hk1 : k ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `(mem_maximalIdeal _).1 hφx (hk.isUnit_iff.2 (by simp))`. Establish `h1 : φ r * φ t = φ s * φ x` using `by rw [← map_mul, ← map_mul, e]`. Establish `hr' : Associated (φ r) (ϖ ^ (m + k))`. Establish `h3 : Associated (φ r) (φ s * φ x)`.
+
+Rewrite using `[← h1]`. Conclude with `associated_mul_unit_right _ _ hφt`. Rewrite using `[pow_add]`. Conclude with `h3.trans (hm.mul_mul hk)`. Use `H O hC ϖ hϖ φ hinj (m + k) m hr' hm` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `⟨x, hx, t, by rw [mul_comm x s, e]⟩`.
+-/
 theorem dvd_of_forall_complete_dvr_order_le :
     ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R], IsNoetherianRing R → IsIntegrallyClosed R →
     ∀ r s : R, r ≠ 0 →

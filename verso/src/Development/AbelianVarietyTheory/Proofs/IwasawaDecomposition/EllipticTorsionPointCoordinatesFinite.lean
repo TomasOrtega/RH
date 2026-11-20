@@ -10,6 +10,17 @@ open scoped nonZeroDivisors IntermediateField
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn`. Establish `hz : (0 : ℤ) < n` using `by exact_mod_cast Nat.pos_of_ne_zero hn`. Use `(((Set.finite_Ico (0 : ℤ) n).prod (Set.finite_Ico (0 : ℤ) n)).image (fun p : ℤ × ℤ => latticePoint L ((p.1 * L.ω₁ + p.2 * L.ω₂) / n))).subset ?_` and prove the remaining obligations. Introduce `P hP`. Take `⟨z, rfl⟩` from `latticePoint_surjective L P`.
+
+Establish `h1 : latticePoint L (n • z) = 0`. Rewrite using `[← latticePointHom_apply, map_nsmul, latticePointHom_apply]`. Conclude with `hP`. Rewrite `h1` using `[latticePoint_eq_zero_iff]`. Take `⟨a, b, hab⟩` from `PeriodPair.mem_lattice.1 h1`.
+
+Use `⟨(a % n, b % n), ⟨⟨Int.emod_nonneg _ hz.ne', Int.emod_lt_of_pos _ hz⟩, ⟨Int.emod_nonneg _ hz.ne', Int.emod_lt_of_pos _ hz⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[latticePoint_eq_iff, PeriodPair.mem_lattice]`. Use `⟨-(a / n), -(b / n), ?_⟩` and prove the remaining obligations. Establish `ea : (a : ℂ) = ((a % n : ℤ) : ℂ) + n * ((a / n : ℤ) : ℂ)`.
+
+Conclude with `(Int.emod_add_mul_ediv a n).symm` after adjusting the coercions. Establish `eb : (b : ℂ) = ((b % n : ℤ) : ℂ) + n * ((b / n : ℤ) : ℂ)`. Conclude with `(Int.emod_add_mul_ediv b n).symm` after adjusting the coercions. Rewrite `hab` using `[nsmul_eq_mul]`. Rewrite using `[Int.cast_neg, Int.cast_neg]`.
+
+Generalize the expression as in `((a % n : ℤ) : ℂ) = a₁, ((a / n : ℤ) : ℂ) = a₂, ((b % n : ℤ) : ℂ) = b₁, ((b / n : ℤ) : ℂ) = b₂ at ea eb ⊢`. Rewrite `hab` using `[ea, eb]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hab`.
+-/
 theorem finite_latticeCurve_torsion (L : PeriodPair) {n : ℕ} (hn : n ≠ 0) :
     {P : (latticeCurve L).toAffine.Point | n • P = 0}.Finite := by
   have hn' : (n : ℂ) ≠ 0 := by exact_mod_cast hn
@@ -39,6 +50,11 @@ theorem finite_latticeCurve_torsion (L : PeriodPair) {n : ℕ} (hn : n ≠ 0) :
   field_simp
   linear_combination -hab
 
+/- English proof (translation)
+Take `⟨L, C, hC⟩` from `exists_variableChange_eq_latticeCurve W`. Set `e` to `variableChangePointEquiv C hC`. Use `((finite_latticeCurve_torsion L hn).image e).subset ?_` and prove the remaining obligations. Introduce `P hP`. Use `⟨e.symm P, ?_, e.apply_symm_apply P⟩` and prove the remaining obligations.
+
+Establish `hP' : n • P = 0` using `hP`. Use `show n • e.symm P = 0`. Rewrite using `[← map_nsmul, hP', map_zero]`.
+-/
 theorem finite_complex_torsion_points (W : WeierstrassCurve ℂ) [W.IsElliptic] {n : ℕ} (hn : n ≠ 0) :
     {P : W.toAffine.Point | n • P = 0}.Finite := by
   obtain ⟨L, C, hC⟩ := exists_variableChange_eq_latticeCurve W
@@ -50,6 +66,13 @@ theorem finite_complex_torsion_points (W : WeierstrassCurve ℂ) [W.IsElliptic] 
   show n • e.symm P = 0
   rw [← map_nsmul, hP', map_zero]
 
+/- English proof (translation)
+Introduce `W _ n hn`. Establish `h` using `finite_complex_torsion_points W hn`. Set `fx : W.toAffine.Point → ℂ` to `fun P => match P with`. Consider the case `.zero => 0`. Consider the case `.some x _ _ => x`.
+
+Set `fy : W.toAffine.Point → ℂ` to `fun P => match P with`. Consider the case `.zero => 0`. Consider the case `.some _ y _ => y`. Use `((h.image fx).union (h.image fy)).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨x, y, hxy, h0, rfl | rfl⟩`.
+
+Conclude with `Or.inl ⟨_, h0, rfl⟩`. Conclude with `Or.inr ⟨_, h0, rfl⟩`.
+-/
 theorem finite_torsionCoords :
     ∀ (W : WeierstrassCurve ℂ) [W.IsElliptic] (n : ℕ), n ≠ 0 → (torsionCoords W n).Finite := by
   intro W _ n hn

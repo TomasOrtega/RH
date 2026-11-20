@@ -13,12 +13,18 @@ noncomputable section
 
 variable {m n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [HermNorm.pointOf]`. Rewrite using `[← Matrix.mulVec_add]`. Both sides reduce to the same expression.
+-/
 theorem HermNorm.pointOf_add' (h : HermNorm n) (v w : EuclideanSpace ℂ (Fin n)) :
     h.pointOf (v + w) = h.pointOf v + h.pointOf w := by
   simp only [HermNorm.pointOf]
   rw [← Matrix.mulVec_add]
   rfl
 
+/- English proof (translation)
+Simplify using `only [HermNorm.pointOf]`. Rewrite using `[← Matrix.mulVec_smul]`. Both sides reduce to the same expression.
+-/
 theorem HermNorm.pointOf_smul' (h : HermNorm n) (c : ℂ) (v : EuclideanSpace ℂ (Fin n)) :
     h.pointOf (c • v) = c • h.pointOf v := by
   simp only [HermNorm.pointOf]
@@ -98,6 +104,9 @@ def TangentGaussMoment.Statement : Prop :=
       0 < ∫⁻ r in Set.Ioi (0 : ℝ), tangentGaussProfile n m r * ENNReal.ofReal (2 * m * r ^ (2 * m - 1)) ∧
       ∫⁻ r in Set.Ioi (0 : ℝ), tangentGaussProfile n m r * ENNReal.ofReal (2 * m * r ^ (2 * m - 1)) < ⊤
 
+/- English proof (translation)
+Use `⟨isProjPrime_coordPlaneIdeal one_pos 1, one_pos, by norm_num, ?_, measurable_const⟩` and prove the remaining obligations. Use `filter_upwards [ae_coordPlaneBlock_det_ne_zero 1 1] with π hπ`. Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Rewrite using `[fibreCount_coordPlaneIdeal π hπ w]`. Conclude with `ENat.one_ne_top`.
+-/
 theorem ConeAreaFormula.hypotheses_inhabited :
     IsProjPrime (coordPlaneIdeal 1 1) ∧ 0 < 1 ∧ 1 ≤ 1 + 1 ∧
       (∀ᵐ π : Fin 1 → Fin (1 + 1) → ℂ, ∀ᵐ w : EuclideanSpace ℂ (Fin 1),
@@ -109,6 +118,9 @@ theorem ConeAreaFormula.hypotheses_inhabited :
   rw [fibreCount_coordPlaneIdeal π hπ w]
   exact ENat.one_ne_top
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, -⟩` from `ConeAreaFormula.hypotheses_inhabited`. Conclude with `⟨h1, h2, h3, h4⟩`.
+-/
 theorem ConeTangentAverage.hypotheses_inhabited :
     IsProjPrime (coordPlaneIdeal 1 1) ∧ 0 < 1 ∧ 1 ≤ 1 + 1 ∧
       (∀ᵐ π : Fin 1 → Fin (1 + 1) → ℂ, ∀ᵐ w : EuclideanSpace ℂ (Fin 1),
@@ -117,6 +129,9 @@ by
   obtain ⟨h1, h2, h3, h4, -⟩ := ConeAreaFormula.hypotheses_inhabited
   exact ⟨h1, h2, h3, h4⟩
 
+/- English proof (translation)
+Use `⟨one_pos, ?_, (coordBall_mass (by norm_num : 1 ≤ 1 + 1)).2, by fun_prop⟩` and prove the remaining obligations. Introduce `y hy t _ j hj`. Simplify using `[hy j hj]`.
+-/
 theorem ConeRadialIntegral.hypotheses_inhabited :
     0 < 1 ∧
       (∀ y ∈ {y : EuclideanSpace ℂ (Fin (1 + 1)) | ∀ j : Fin (1 + 1), 1 ≤ (j : ℕ) → y j = 0},
@@ -128,6 +143,9 @@ theorem ConeRadialIntegral.hypotheses_inhabited :
   intro y hy t _ j hj
   simp [hy j hj]
 
+/- English proof (translation)
+Evaluate the numerical expressions.
+-/
 theorem TangentGaussMoment.hypotheses_inhabited : 0 < 1 ∧ 1 ≤ 2 := by
   norm_num
 

@@ -17,6 +17,9 @@ section Lift
 
 variable {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {L : LB A.left} {L' : LB A'.left} {g g' : ℕ}
 
+/- English proof (translation)
+Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Take `⟨v, ⟨hv, hd⟩, -⟩` from `h₂ w`. Conclude with `(h₁ _ (HomLinear.isTangent_comp f hv)).unique (HomLinear.isDiff_comp u u' f F hF hv hd) (HomLinear.isDiff_comp u u' f F' hF' hv hd)`.
+-/
 theorem linear_lift_unique (u : HolUnif A L g) (u' : HolUnif A' L' g')
     (h₂ : ∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v) (h₁ : ∀ v, IsTangent v → ∃! w, u'.IsDiff w v)
     (f : A ⟶ A') [IsMonHom f] {F F' : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)}
@@ -35,6 +38,31 @@ def diagMul {E : Type} [Field E] {g : ℕ} (ty : Fin g → (E →+* ℂ)) (s : E
 
 open PureTriple in
 
+/- English proof (translation)
+Introduce `E _ _ _ H A B p q hpq hdet f₁ f₂ hf₁ hf₂`. Establish `hT : ThetaUnifAV` using `thetaUnifAV_all`. Establish `hL : Out.Laws` using `abelianSchemeLaws_all.1`. Take `⟨gA, ty, hty⟩` from `AllClasses.exists_isTypeFn H p q`. Take `⟨uA, HA, χA, -, hA, -⟩` from `PureType.exists_isThetaUnif hT A.pol`.
+
+Take `⟨uB, HB, χB, -, hB, -⟩` from `PureType.exists_isThetaUnif hT B.pol`. Take `⟨D, Pe, F, hp, hq, hP, hF, hE, hact⟩` from `exists_datum_period hT hL A hty hdet uA hA`. Take `⟨-, -, -, -, -, hA2, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hT A.pol _ uA HA χA hA`. Take `⟨EfB, hEB, -, -, hB1, hB2, -⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hT B.pol _ uB HB χB hB`. Take `⟨F₁, hF₁, hF₁Λ, -⟩` from `HomLinear.exists_linear_of_isMonHom A.t.G B.t.G A.ab B.ab _ _ _ _ uA uB hB1 hB2 f₁ hf₁.isMonHom`.
+
+Take `⟨F₂, hF₂, hF₂Λ, -⟩` from `HomLinear.exists_linear_of_isMonHom A.t.G B.t.G A.ab B.ab _ _ _ _ uA uB hB1 hB2 f₂ hf₂.isMonHom`. Use `choose ρB hρB using fun s : 𝓞 E => (HomLinear.exists_linear_of_isMonHom B.t.G B.t.G B.ab B.ab _ _ _ _ uB uB hB1 hB2 (B.t.act.act s) (B.t.act.hom s)).imp fun _ h => h.1`. Set `G : 𝓞 E → (Fin A.pol.g → ℂ) →ₗ[ℂ] (Fin A.pol.g → ℂ)` to `fun s => F.toLinearMap ∘ₗ diagMul ty (s : E) ∘ₗ F.symm.toLinearMap`. Establish `hG : ∀ s z, uA.ex (G s z) = uA.ex z ≫ A.t.act.act s` using `fun s z => by`. Establish `e` using `hact s (F.symm z)`.
+
+Rewrite `e` using `[F.apply_symm_apply]`. Conclude with `e`. Establish `hGP : ∀ s a, G s (F (Pe a)) = F (Pe (s • a))` using `fun s a => by`. Simplify using `only [G, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [diagMul, LinearMap.coe_mk, AddHom.coe_mk, hP.1]`. Establish `hcomm : ∀ (f : A.t.G ⟶ B.t.G), Serre.IsLinearHom A.t.act B.t.act f → ∀ Fl : (Fin A.pol.g → ℂ) →ₗ[ℂ] (Fin B.pol.g → ℂ), (∀ z, uB.ex (Fl z) = uA.ex z ≫ f) → ∀ s z, Fl (G s z) = ρB s (Fl z)`. Introduce `f hf Fl hFl s z`. Use `haveI := hf.isMonHom`.
+
+Use `haveI := A.t.act.hom s`. Establish `e` using `linear_lift_unique uA uB hA2 hB1 (A.t.act.act s ≫ f) (F := Fl ∘ₗ G s) (F' := ρB s ∘ₗ Fl) (fun z => by rw [LinearMap.comp_apply, hFl, hG, Category.assoc]) (fun z => by rw [LinearMap.comp_apply, hρB, hFl, hf.comm, Category.assoc])`. Conclude with `LinearMap.congr_fun e z`. Establish `hadj : ∀ s z w, hermForm HB (ρB s z) w = hermForm HB z (ρB (H.bar s) w)` using `fun a => (weilEq_iff_hermForm_eq hT hL B.pol B.pol B.pol B.pol uB uB uB uB HB HB χB χB hB hB (B.t.act.act a) (𝟙 _) (𝟙 _) (B.t.act.act (H.bar a)) (ρB a) LinearMap.id LinearMap.id (ρB (H.bar a)) (hρB a) (fun _ => (Category.comp_id _).symm) (fun _ => (Category.comp_id _).symm) (hρB …`. Unfold `LamEq`.
+
+Rewrite using `[Category.comp_id, Category.comp_id]`. Conclude with `B.t.adj a))`. Establish `mem₁ : ∀ a, F₁ (F (Pe a)) ∈ uB.Λ` using `fun a => hF₁Λ _ ((hF _).2 ⟨a, rfl⟩)`. Establish `mem₂ : ∀ a, F₂ (F (Pe a)) ∈ uB.Λ` using `fun a => hF₂Λ _ ((hF _).2 ⟨a, rfl⟩)`. Set `β : D.La → D.La → ℤ` to `fun a b => EfB ⟨_, mem₁ a⟩ ⟨_, mem₂ b⟩`.
+
+Establish `hβ : ∀ a b, (β a b : ℝ) = (hermForm HB (F₁ (F (Pe a))) (F₂ (F (Pe b)))).im` using `fun a b => hEB _ _`. Establish `hadd₁ : ∀ x y z, β (x + y) z = β x z + β y z` using `fun x y z => by`. Establish `e : (⟨_, mem₁ (x + y)⟩ : uB.Λ) = ⟨_, mem₁ x⟩ + ⟨_, mem₁ y⟩` using `Subtype.ext (by simp)`. Use `show EfB _ _ = EfB _ _ + EfB _ _`. Rewrite using `[e, map_add, LinearMap.add_apply]`.
+
+Establish `hadd₂ : ∀ x y z, β x (y + z) = β x y + β x z` using `fun x y z => by`. Establish `e : (⟨_, mem₂ (y + z)⟩ : uB.Λ) = ⟨_, mem₂ y⟩ + ⟨_, mem₂ z⟩` using `Subtype.ext (by simp)`. Use `show EfB _ _ = EfB _ _ + EfB _ _`. Rewrite using `[e, map_add]`. Establish `hadjβ : ∀ (s : 𝓞 E) x y, β (s • x) y = β x (H.bar s • y)` using `fun s x y => by`.
+
+Establish `e : (β (s • x) y : ℝ) = β x (H.bar s • y)`. Rewrite using `[hβ, hβ, ← hGP, ← hGP, hcomm f₁ hf₁ F₁ hF₁, hcomm f₂ hf₂ F₂ hF₂, hadj]`. Conclude with `e` after adjusting the coercions. Take `⟨γ, hγ, hβγ⟩` from `GlobalTheory.T.exists_linear_endomorphism_of_conjugate_adjoint_form E H D β hadd₁ hadd₂ hadjβ`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_smul_of_rank_one' E H D (by rw [hp, hq]; exact hpq) γ hγ`.
+
+Use `⟨c, (weilEq_iff_hermForm_eq hT hL A.pol A.pol B.pol A.pol uA uA uB uA HB HA χB χA hB hA f₁ f₂ (A.t.act.act c) (𝟙 _) F₁ F₂ (G c) LinearMap.id hF₁ hF₂ (hG c) (fun _ => (Category.comp_id _).symm)).2 ?_⟩` and prove the remaining obligations. Use `HermWeil.hermForm_eq_of_im HB HA F₁ F₂ (G c) LinearMap.id uA.full uA.full fun z hz w hw => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `AddMonoidHom.mem_range.1 ((hF (F.symm z)).1 (by rwa [F.apply_symm_apply]))`. Take `⟨b, hb⟩` from `AddMonoidHom.mem_range.1 ((hF (F.symm w)).1 (by rwa [F.apply_symm_apply]))`. Establish `ez : z = F (Pe a)` using `by rw [ha, F.apply_symm_apply]`.
+
+Establish `ew : w = F (Pe b)` using `by rw [hb, F.apply_symm_apply]`. Substitute `ez ew` using the available equality. Rewrite using `[← hβ, hβγ, hc, ← hE, LinearMap.id_apply, hGP]`.
+-/
 theorem exists_weilEq_smul_of_pure : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (A B : PAT H (Sp ℂ)) (p q : ℕ), p + q = 1 → (∀ τ : 𝓞 E →+* ℂ, (τ H.rt = H.rt0 → LieMult A.t.act (𝟙 (Sp ℂ)) τ p) ∧ (τ H.rt ≠ H.rt0 → LieMult A.t.act (𝟙 (Sp ℂ)) τ q)) → ∀ (f₁ f₂ : A.t.G ⟶ B.t.G), Serre.IsLinearHom A.t.act B.t.act f₁ → Serre.IsLinearHom A.t.act B.t.act f₂ → ∃ g : 𝓞 E, WeilEq B.t.PP.L f₁ f₂ A.t.PP.L (A.t.act.act g) (𝟙 _) (𝟙 (Sp ℂ)) := by
   intro E _ _ _ H A B p q hpq hdet f₁ f₂ hf₁ hf₂
   have hT : ThetaUnifAV := thetaUnifAV_all

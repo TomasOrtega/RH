@@ -14,6 +14,11 @@ open GlobalTheory GlobalTheory.AbLaw
 
 namespace GlobalTheory.SymVeryAmple
 
+/- English proof (translation)
+Establish `e` using `(CechPic.cls_eq_zero_iff (LB.isLB_linComb hH _ _)).2 h`. Rewrite `e` using `[CechPic.cls_linComb hH, Fin.sum_univ_two]`. Use `(CechPic.cls_eq_iff hH (LB.isLB_pull hH f)).1 ?_` and prove the remaining obligations. Rewrite using `[CechPic.cls_pull hH]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, CechPic.pull_id, one_smul, neg_smul] at e`.
+
+Conclude with `(add_neg_eq_zero.1 e).symm`.
+-/
 theorem exists_iso_pull_of_triv {X : Scheme.{0}} {H : LB X} (hH : H.IsLB) (f : X ⟶ X)
     (h : Triv (LB.LinComb H (K := Fin 2) ![f, 𝟙 X] ![1, -1])) : ∃ w : LB.Iso H (H.pull f), w.IsGen := by
   have e := (CechPic.cls_eq_zero_iff (LB.isLB_linComb hH _ _)).2 h
@@ -23,6 +28,9 @@ theorem exists_iso_pull_of_triv {X : Scheme.{0}} {H : LB X} (hH : H.IsLB) (f : X
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, CechPic.pull_id, one_smul, neg_smul] at e
   exact (add_neg_eq_zero.1 e).symm
 
+/- English proof (translation)
+Introduce `K _ _ B _ hB`. Use `hB.comm` as an intermediate fact. Take `⟨H, m, s, hH, hs, ht⟩` from `exists_symmetric_veryAmpleBy K B hB (GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety K B hB)`. Conclude with `⟨H, m, s, hH, hs, exists_iso_pull_of_triv hH _ ht⟩`.
+-/
 theorem exists_symmetric_veryAmple : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B], IsAbelianScheme B → ∃ (H : LB B.left) (m : ℕ) (s : Fin (m + 1) → LB.Sec H), H.IsLB ∧ VeryAmpleBy B.hom H s ∧ ∃ w : LB.Iso H (H.pull (GrpObj.inv : B ⟶ B).left), w.IsGen := by
   intro K _ _ B _ hB
   have := hB.comm

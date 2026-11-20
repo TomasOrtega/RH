@@ -14,6 +14,15 @@ section Gen
 variable {W B W' B' : Type} [CommRing W] [CommRing B] [Algebra ℚ B] [CommRing W'] [CommRing B'] [Algebra ℚ B']
   (f : W →+* B) (ξ : W) (f' : W' →+* B') (ξ' : W') (l M : ℕ)
 
+/- English proof (translation)
+Establish `hIB : ∀ x ∈ Lat.IB f ξ, g x ∈ Lat.IB f' ξ'`. Introduce `x hx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Rewrite using `[map_mul, hg]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Use `show Lat.ι f' ξ' l M (Lat.map f ξ f' ξ' l M g h a) ∈ Lat.IB f' ξ'`. Rewrite using `[Lat.ι_map]`.
+
+Conclude with `hIB _ ha`. Introduce `n a ha`. Establish `ha' : Lat.ι f ξ l M a ∈ Lat.IB f ξ` using `ha`. Establish `hb : Lat.map f ξ f' ξ' l M g h a ∈ Lat.I f' ξ' l M` using `by show Lat.ι f' ξ' l M (Lat.map f ξ f' ξ' l M g h a) ∈ Lat.IB f' ξ'`. Rewrite using `[Lat.ι_map]`.
+
+Conclude with `hIB _ ha'`. Apply `Lat.ι_injective f' ξ' l M` to reduce the goal to its premises. Rewrite using `[Lat.ι_γ _ _ _ _ _ hb, Lat.ι_map, Lat.ι_map, Lat.ι_γ _ _ _ _ _ ha, DividedPowers.RatAlgebra.dpow_eq_inv_fact_smul _ _ ha', DividedPowers.RatAlgebra.dpow_eq_inv_fact_smul _ _ (hIB _ ha'), map_rat_smul, map_pow]`.
+-/
 theorem map_isDPMorphism (g : B →+* B') (h : ∀ x ∈ Lat.sub f ξ l M, g x ∈ Lat.sub f' ξ' l M)
     (hg : g (f ξ) = f' ξ')
     (hc : DPClosed (Lat.ι f ξ l M) (Lat.γB f ξ)) (hc' : DPClosed (Lat.ι f' ξ' l M) (Lat.γB f' ξ')) :
@@ -43,9 +52,15 @@ end Gen
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dk_fk (k : ℕ) (w : Ainf l) : dk l k (fk l (k + 1) w) = fk l k w := by
   rfl
 
+/- English proof (translation)
+Conclude with `map_isDPMorphism (fk l (m + 2)) (xi0 l) (fk l (m + 1)) (xi0 l) l M (dk l (m + 1)) (fun x hx => h.dIn (m + 1) x hx) (dk_fk (m + 1) (xi0 l)) (h.hc (m + 2)) (h.hc (m + 1))`.
+-/
 theorem levSys_ddp {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ} (h : LevHyp l K M) (m : ℕ) :
     IsDPMorphism ((levSys h).L (m + 1)).γ ((levSys h).L m).γ ((levSys h).dA m) := by
   exact map_isDPMorphism (fk l (m + 2)) (xi0 l) (fk l (m + 1)) (xi0 l) l M (dk l (m + 1))

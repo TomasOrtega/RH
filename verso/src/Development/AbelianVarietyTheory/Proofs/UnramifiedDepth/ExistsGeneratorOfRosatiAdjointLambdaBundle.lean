@@ -19,6 +19,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RosGen
 
+/- English proof (translation)
+Take `⟨U, hs, t, ht⟩` from `h (IsLocalRing.closedPoint O)`. Establish `hU : U = ⊤` using `(IsLocalRing.closedPoint_mem_iff U).1 hs`. Take `⟨n, hn⟩ : ∃ n : (A ⊗ A).left ⟶ ((A ⊗ A).hom ⁻¹ᵁ U).toScheme, n ≫ ((A ⊗ A).hom ⁻¹ᵁ U).ι = 𝟙 _` from `⟨IsOpenImmersion.lift ((A ⊗ A).hom ⁻¹ᵁ U).ι (𝟙 _) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, hU]`.
+
+Use the proof step `trivial), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨u, hu, -⟩` from `Geo.Tor.exists_gen hL (φ' := Out.rosatiφ A f g) (ε' := Out.rosatiε) (fun V _ k => Finset.prod_congr rfl fun i _ => by show k (n ≫ _ ≫ _) ^ _ = k _ ^ _`. Rewrite using `[← Category.assoc, hn, Category.id_comp])`. Use the proof step `(LB.pullGen L _ _ t n) (DVR.pullGen_isGen _ _ _ _ ht n)`. Conclude with `GlobalTheory.RosLam.lbIso_of_gen hL f g u hu`.
+-/
 private theorem lbIso_of_local {O : Type} [CommRing O] [IsLocalRing O] {A : Over (Geo.Tor.Sp O)} [GrpObj A]
     [IsCommMonObj A] {L : LB A.left} (hL : L.IsLB) (f g : A ⟶ A) (h : Out.RosatiAdj A L f g) :
     Geo.Tor.LBIso (cubeLB A ![fst A A ≫ f, snd A A] L) (cubeLB A ![fst A A, snd A A ≫ g] L) := by
@@ -37,6 +42,9 @@ private theorem lbIso_of_local {O : Type} [CommRing O] [IsLocalRing O] {A : Over
     (LB.pullGen L _ _ t n) (DVR.pullGen_isGen _ _ _ _ ht n)
   exact GlobalTheory.RosLam.lbIso_of_gen hL f g u hu
 
+/- English proof (translation)
+Establish `key` using `GlobalTheory.NormRos.prod_square x y (U := Multiplicative (FreeAbelianGroup (T.left ⟶ G.left))) (fun ψ => Multiplicative.ofAdd (FreeAbelianGroup.of ψ))`. Establish `k` using `congrArg (AddMonoidHom.toMultiplicativeLeft (FreeAbelianGroup.lift fun ψ : T.left ⟶ G.left => Additive.ofMul (h ψ))) key`. Simplify `k` using `only [map_mul, map_inv, map_prod, map_zpow, AddMonoidHom.coe_toMultiplicativeLeft, Function.comp_apply, toAdd_ofAdd, FreeAbelianGroup.lift_apply_of, toMul_ofMul]`.
+-/
 private theorem prod_two {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {T : Over S} (x y : T ⟶ G)
     {U : Type 1} [CommGroup U] (h : (T.left ⟶ G.left) → U) :
     ∏ I : ULift.{0} (Finset (Fin 2)), h (psum G ![x, y] I.down).left ^ ((-1 : ℤ) ^ (2 - I.down.card)) =
@@ -48,6 +56,17 @@ private theorem prod_two {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj 
   simpa only [map_mul, map_inv, map_prod, map_zpow, AddMonoidHom.coe_toMultiplicativeLeft, Function.comp_apply,
     toAdd_ofAdd, FreeAbelianGroup.lift_apply_of, toMul_ofMul] using k
 
+/- English proof (translation)
+Introduce `O _ _ P Z Q ψ₂ hQ hI f f' _ _ h`. Use `P.isAb.comm` as an intermediate fact. Establish `H` using `lbIso_of_local P.isLB f f' h`. Take `⟨Pic, _, cl, pl, h₁, h₂, -, h₄, h₅, -⟩` from `GlobalTheory.CechPicMul.exists_picardGroup`. Take `⟨a, a'⟩ : (abelian₂ P.A P.L).IsLB ∧ cl (abelian₂ P.A P.L) = _` from `h₅ _ _ P.L P.isLB _ _ _`.
+
+Take `⟨q, q'⟩ : (Q.pull ψ₂).IsLB ∧ cl (Q.pull ψ₂) = _` from `h₅ _ _ Q hQ _ _ _`. Establish `e₀ : pl ψ₂ (cl Q) = cl (abelian₂ P.A P.L)`. Rewrite using `[(h₁ _ _ _ a q).2 hI, q']`. Simplify using the standard rewrite rules. Establish `key : ∀ x y : P.A ⊗ P.A ⟶ P.A, (cubeLB P.A ![x, y] P.L).IsLB ∧ pl ((lift x y).left ≫ ψ₂) (cl Q) = cl (cubeLB P.A ![x, y] P.L)` using `fun x y => by`.
+
+Take `⟨b, b'⟩ : (cubeLB P.A ![x, y] P.L).IsLB ∧ cl (cubeLB P.A ![x, y] P.L) = _` from `h₅ _ _ P.L P.isLB _ _ _`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[h₄, e₀, a', b']`. Establish `p₁` using `prod_two x y (fun φ => pl φ (cl P.L))`. Establish `p₂` using `prod_two (fst P.A P.A) (snd P.A P.A) (fun φ => pl φ (cl P.L))`.
+
+Use `Eq.trans (congrArg (pl (lift x y).left) p₂) (Eq.trans ?_ p₁.symm)` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, ← h₄, ← Over.comp_left, MonObj.comp_mul, MonObj.comp_one, lift_fst, lift_snd]`. Take `⟨c, c'⟩` from `h₅ _ _ Q hQ (Fin 2) ![(lift (fst P.A P.A ≫ f) (snd P.A P.A)).left ≫ ψ₂, (lift (fst P.A P.A) (snd P.A P.A ≫ f')).left ≫ ψ₂] ![1, -1]`. Use `(h₂ _ _ c).1 ?_` and prove the remaining obligations. Rewrite using `[c', Fin.prod_univ_two]`.
+
+Use `show pl ((lift (fst P.A P.A ≫ f) (snd P.A P.A)).left ≫ ψ₂) (cl Q) ^ (1 : ℤ) * pl ((lift (fst P.A P.A) (snd P.A P.A ≫ f')).left ≫ ψ₂) (cl Q) ^ (-1 : ℤ) = 1`. Rewrite using `[(key _ _).2, (key _ _).2, (h₁ _ _ _ (key _ _).1 (key _ _).1).2 H]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_gen_of_rosatiAdj : ∀ (O : Type) [CommRing O] [IsLocalRing O] (P : Out.PolAV (Geo.Tor.Sp O)) (Z : Scheme.{0}) (Q : LB Z) (ψ₂ : (P.A ⊗ P.A).left ⟶ Z), Q.IsLB → Geo.Tor.LBIso (abelian₂ P.A P.L) (Q.pull ψ₂) → ∀ f f' : P.A ⟶ P.A, IsMonHom f → IsMonHom f' → Out.RosatiAdj P.A P.L f f' → ∃ t : LB.Gen (LB.LinComb Q (K := Fin 2) ![(lift (fst P.A P.A ≫ f) (snd P.A P.A)).left ≫ ψ₂, (lift (fst P.A P.A) (snd P.A P.A ≫ f')).left ≫ ψ₂] ![1, -1]), t.IsGen := by
   intro O _ _ P Z Q ψ₂ hQ hI f f' _ _ h
   have := P.isAb.comm

@@ -32,6 +32,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 section Lattice
 
+/- English proof (translation)
+Establish `hM : (l.M : 𝓞 E) ∈ l.Mb`. Establish `: (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `Ideal.mul_le_left this`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Establish `key : ψ a - a ∈ (l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) • (⊤ : Submodule (𝓞 E) D'.La)`. Rewrite using `[mul_comm, Submodule.mul_smul]`. Use `Submodule.smul_induction_on ha (fun c hc x _ => ?_) fun x y hx hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, ← smul_sub]`. Conclude with `Submodule.smul_mem_smul hc (h x)`. Rewrite using `[map_add, add_sub_add_comm]`. Conclude with `add_mem hx hy`. Rewrite `key` using `[l.prod, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`.
+
+Take `⟨e, -, he⟩` from `key`. Conclude with `⟨e, by rw [← Nat.cast_smul_eq_nsmul (𝓞 E), he]; abel⟩`. Introduce `h x`. Take `⟨p, hp, q, hq, hpq⟩` from `Submodule.mem_sup.1 (l.coprime ▸ (Submodule.mem_top : (1 : 𝓞 E) ∈ ⊤))`. Take `⟨e, he⟩` from `h (q • x) (Submodule.smul_mem_smul hq trivial)`.
+
+Establish `: ψ x - x = p • (ψ x - x) + (l.M : 𝓞 E) • e`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← sub_eq_iff_eq_add'.2 he, map_smul, ← smul_sub, ← add_smul, hpq, one_smul]`. Rewrite using `[this]`. Conclude with `add_mem (Submodule.smul_mem_smul hp trivial) (Submodule.smul_mem_smul hM trivial)`.
+-/
 theorem fixes_iff (D' : Datum H) (l : Level H) (ψ : D'.La ≃ₗ[𝓞 E] D'.La) :
     (∀ x, ψ x - x ∈ l.Mb • (⊤ : Submodule (𝓞 E) D'.La)) ↔
       ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D'.La), ∃ e, ψ a = a + l.M • e := by
@@ -59,6 +70,9 @@ theorem fixes_iff (D' : Datum H) (l : Level H) (ψ : D'.La ≃ₗ[𝓞 E] D'.La)
     rw [this]
     exact add_mem (Submodule.smul_mem_smul hp trivial) (Submodule.smul_mem_smul hM trivial)
 
+/- English proof (translation)
+Simplify using `only [SamePoint, FixesLevel, fixes_iff, sub_eq_iff_eq_add', and_assoc]`.
+-/
 theorem samePoint_iff (D' : Datum H) (l : Level H) {g : ℕ} (P P' : D'.La →+ (Fin g → ℂ)) :
     SamePoint D' l P P' ↔ ∃ (gam : D'.La ≃ₗ[𝓞 E] D'.La) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)),
       (∀ a b, D'.EF (gam a) (gam b) = D'.EF a b) ∧
@@ -66,6 +80,15 @@ theorem samePoint_iff (D' : Datum H) (l : Level H) {g : ℕ} (P P' : D'.La →+ 
       (∀ a, ∃ e, gam a = a + l.A • e) ∧ ∀ a, P' (gam a) = h (P a) := by
   simp only [SamePoint, FixesLevel, fixes_iff, sub_eq_iff_eq_add', and_assoc]
 
+/- English proof (translation)
+Establish `tr : ∀ {Q : D'.La →+ (Fin g → ℂ)}, IsPeriod D' ty Q → IsPeriod D' ty (Q.comp gam.symm.toLinearMap.toAddMonoidHom)`. Introduce and unpack `Q ⟨h1, h2, h3, h4, Hm, h5, h6, h7⟩`. Establish `hr : (Q.comp gam.symm.toLinearMap.toAddMonoidHom).range = Q.range` using `SetLike.ext' (gam.symm.surjective.range_comp Q)`. Use `⟨fun a x i => ?_, h2.comp gam.symm.injective, by rw [hr]; exact h3, ?_, Hm, h5, h6, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `using h1 a (gam.symm x) i`.
+
+Rewrite using `[← h4, ← AddMonoidHom.coe_range, hr, AddMonoidHom.coe_range]`. Express the relevant statement in the definitionally equal form `(hermForm Hm (Q (gam.symm x)) (Q (gam.symm y))).im = _`. Rewrite using `[h7, ← hgam, gam.apply_symm_apply, gam.apply_symm_apply]`. Set `A` to `LinearMap.toMatrix' h.toLinearMap`. Establish `hA : A.mulVecLin = h.toLinearMap`.
+
+Rewrite using `[← Matrix.toLin'_apply', Matrix.toLin'_toMatrix']`. Establish `hdet : A.det ≠ 0`. Rewrite using `[LinearMap.det_toMatrix']`. Conclude with `h.isUnit_det'.ne_zero`. Rewrite using `[← hA]`.
+
+Use `PeriodConn.isPeriod_mulVec (tr hP) hdet (PeriodConn.entry_eq_zero (tr h₀) h₁ fun x => ?_)` and prove the remaining obligations. Rewrite using `[← Matrix.mulVecLin_apply, hA]`. Conclude with `(congrArg P₁ (gam.apply_symm_apply x)).symm.trans (hh _)`.
+-/
 theorem isPeriod_move {D' : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P₀ P₁ P : D'.La →+ (Fin g → ℂ)}
     (h₀ : IsPeriod D' ty P₀) (h₁ : IsPeriod D' ty P₁) (hP : IsPeriod D' ty P) (gam : D'.La ≃ₗ[𝓞 E] D'.La)
     (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (hgam : ∀ a b, D'.EF (gam a) (gam b) = D'.EF a b)
@@ -97,31 +120,54 @@ variable {g : ℕ}
 def swapHalves (g : ℕ) : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] (Fin g ⊕ Fin g → ℤ) :=
   LinearEquiv.funCongrLeft ℤ ℤ (Equiv.sumComm (Fin g) (Fin g))
 
+/- English proof (translation)
+Simplify using `only [omegaStd, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [swapHalves]`.
+-/
 theorem omegaStd_swap (u v : Fin g ⊕ Fin g → ℤ) : omegaStd (swapHalves g u) (swapHalves g v) = -omegaStd u v := by
   simp only [omegaStd, ← Finset.sum_neg_distrib]
   exact Finset.sum_congr rfl fun i _ => by simp [swapHalves]
 
+/- English proof (translation)
+Apply the tactic sequence `funext s; rcases s with s | s <;> simp [swapHalves, Pi.single_apply]`.
+-/
 theorem swap_inl (k : Fin g) : swapHalves g (Pi.single (.inl k) 1) = Pi.single (.inr k) 1 := by
   funext s; rcases s with s | s <;> simp [swapHalves, Pi.single_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `funext s; rcases s with s | s <;> simp [swapHalves, Pi.single_apply]`.
+-/
 theorem swap_inr (k : Fin g) : swapHalves g (Pi.single (.inr k) 1) = Pi.single (.inl k) 1 := by
   funext s; rcases s with s | s <;> simp [swapHalves, Pi.single_apply]
 
 def negHalf (g : ℕ) : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] (Fin g ⊕ Fin g → ℤ) :=
   LinearEquiv.piCongrRight fun s => Sum.elim (fun _ => LinearEquiv.refl ℤ ℤ) (fun _ => LinearEquiv.neg ℤ) s
 
+/- English proof (translation)
+Simplify using `only [omegaStd, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp [negHalf]; ring`.
+-/
 theorem omegaStd_neg (u v : Fin g ⊕ Fin g → ℤ) : omegaStd (negHalf g u) (negHalf g v) = -omegaStd u v := by
   simp only [omegaStd, ← Finset.sum_neg_distrib]
   exact Finset.sum_congr rfl fun i _ => by simp [negHalf]; ring
 
+/- English proof (translation)
+Apply the tactic sequence `funext s; rcases s with s | s <;> simp [negHalf, Pi.single_apply]`.
+-/
 theorem neg_inl (k : Fin g) : negHalf g (Pi.single (.inl k) 1) = Pi.single (.inl k) 1 := by
   funext s; rcases s with s | s <;> simp [negHalf, Pi.single_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `funext s; rcases s with s | s <;> simp [negHalf, Pi.single_apply]`.
+-/
 theorem neg_inr (k : Fin g) : negHalf g (Pi.single (.inr k) 1) = -Pi.single (.inr k) 1 := by
   funext s; rcases s with s | s <;> simp [negHalf, Pi.single_apply]
 
 variable {D' : Datum H} {ty : Fin g → (E →+* ℂ)}
 
+/- English proof (translation)
+Simplify using `only [LinearEquiv.trans_apply, swap_inl, swap_inr]`. Rewrite using `[RiemannRel.cols_iff]`. Express the relevant statement in the definitionally equal form `h * perF bas P = 1 ∧ τ = h * perE bas P ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Take `rfl` from `(Matrix.inv_eq_left_inv h1).symm`. Conclude with `⟨Matrix.isUnit_det_of_left_inverse h1, rfl, h2⟩`. Introduce and unpack `⟨h1, rfl, h2⟩`. Conclude with `⟨Matrix.nonsing_inv_mul _ h1, h2⟩`.
+-/
 theorem cols_swap_iff (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D'.La) (P : D'.La →+ (Fin g → ℂ))
     (h τ : Matrix (Fin g) (Fin g) ℂ) :
     (∀ k, h *ᵥ P (((swapHalves g).trans bas) (Pi.single (.inl k) 1)) = Pi.single k 1 ∧
@@ -137,10 +183,16 @@ theorem cols_swap_iff (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D'.La) (P : D
   · rintro ⟨h1, rfl, h2⟩
     exact ⟨Matrix.nonsing_inv_mul _ h1, h2⟩
 
+/- English proof (translation)
+The claim follows from `(hb _ _).trans (omegaStd_swap a b)`.
+-/
 theorem EF_swap {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D'.La} (hb : IsSympBasis D' bas) (a b : Fin g ⊕ Fin g → ℤ) :
     D'.EF (((swapHalves g).trans bas) a) (((swapHalves g).trans bas) b) = -omegaStd a b :=
   (hb _ _).trans (omegaStd_swap a b)
 
+/- English proof (translation)
+Take `⟨h, τ, hc, -, h1, h2, -⟩` from `(RiemannRel.riemann_relations E H D' g ty _ (EF_swap hb)).1 P hP`. Take `⟨h3, -, rfl⟩` from `(cols_swap_iff bas P h τ).1 hc`. Conclude with `⟨h3, h1, h2⟩`.
+-/
 theorem siegel {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D'.La} (hb : IsSympBasis D' bas) {P : D'.La →+ (Fin g → ℂ)}
     (hP : IsPeriod D' ty P) :
     IsUnit (perF bas P).det ∧ (perTau bas P).IsSymm ∧ ((perTau bas P).map Complex.im).PosDef := by
@@ -148,6 +200,13 @@ theorem siegel {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D'.La} (hb : IsSympB
   obtain ⟨h3, -, rfl⟩ := (cols_swap_iff bas P h τ).1 hc
   exact ⟨h3, h1, h2⟩
 
+/- English proof (translation)
+Break down `Int.units_eq_one_or sgn with rfl | rfl` into its components or cases. Take `⟨h', τ', -, -, -, h2, hu⟩` from `(RiemannRel.riemann_relations E H D' g ty ((negHalf g).trans bas) fun a b => by simpa [omegaStd_neg] using hb (negHalf g a) (negHalf g b)).1 P hP`. Take `⟨-, rfl⟩` from `hu h (-τ) fun k => by`. Simplify using `only [LinearEquiv.trans_apply, neg_inl, neg_inr, map_neg, Matrix.mulVec_neg, Matrix.neg_mulVec, hc k, and_self]`. Use `haveI : IsEmpty (Fin g) := ⟨fun k => by`.
+
+Establish `h3` using `h2.diag_pos (i := k)`. Establish `h4` using `hτ.diag_pos (i := k)`. Simplify using `at h3 h4`. Use the proof step `linarith⟩`. Simplify using `[hb, omegaStd]`.
+
+Simplify using `using hb a b`.
+-/
 theorem EF_eq_neg {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D'.La} {sgn : ℤˣ}
     (hb : ∀ a b, D'.EF (bas a) (bas b) = sgn * omegaStd a b) {P : D'.La →+ (Fin g → ℂ)} (hP : IsPeriod D' ty P)
     {h τ : Matrix (Fin g) (Fin g) ℂ} (hτ : (τ.map Complex.im).PosDef)
@@ -174,6 +233,13 @@ section Deriv
 
 variable {X S : Scheme.{0}} {g : ℕ}
 
+/- English proof (translation)
+Establish `h0 : spMap TangentOrigin.fstC ≫ spMap (epsScale c) ≫ v = spMap TangentOrigin.fstC ≫ v`. Rewrite using `[← Category.assoc, TanMod.spMap_comp']`. Use `congr 2`. Conclude with `RingHom.ext fun x => by simp [epsScale]`. Use `⟨h0.trans hv.1, fun U h f => ?_⟩` and prove the remaining obligations.
+
+Establish `h' : ⊤ ≤ v ⁻¹ᵁ U`. Rewrite `h`, the goal using `[TangentOrigin.top_le_preimage_iff]`. Conclude with `h0 ▸ h`. Use `(congrArg TrivSqZeroExt.snd (TangentOrigin.evalPt_spMap_comp (epsScale c) v U h' h f)).trans ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← hv.2 U h' f]`.
+
+Conclude with `TrivSqZeroExt.snd_map _ _`.
+-/
 theorem isDerivAt0_smul {F : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → ℂ} {v : Sp (DualNumber ℂ) ⟶ X}
     (hv : IsDerivAt0 F w v) (c : ℂ) : IsDerivAt0 F (c • w) (spMap (epsScale c) ≫ v) := by
   have h0 : spMap TangentOrigin.fstC ≫ spMap (epsScale c) ≫ v = spMap TangentOrigin.fstC ≫ v := by
@@ -188,6 +254,11 @@ theorem isDerivAt0_smul {F : (Fin g → ℂ) → (Sp ℂ ⟶ X)} {w : Fin g → 
   rw [map_smul, ← hv.2 U h' f]
   exact TrivSqZeroExt.snd_map _ _
 
+/- English proof (translation)
+Establish `t` using `TanMod.smT_zero_of y v (hv.1.trans h0)`. Establish `t'` using `TanMod.smT_zero_of y v' (hv'.1.trans h0)`. Establish `t'' : spMap TangentOrigin.fstC ≫ (v * v').left = F 0` using `(TanMod.unit_of_smT_zero y (v * v') (by rw [TanMod.smT_mul, t, t', _root_.mul_one])).trans h0.symm`. Use `⟨t'', fun U h f => ?_⟩` and prove the remaining obligations. Establish `hF : ⊤ ≤ F 0 ⁻¹ᵁ U` using `t'' ▸ (TangentOrigin.top_le_preimage_iff _ U).1 h`.
+
+Establish `h1` using `(TangentOrigin.top_le_preimage_iff v.left U).2 (hv.1.symm ▸ hF)`. Establish `h2` using `(TangentOrigin.top_le_preimage_iff v'.left U).2 (hv'.1.symm ▸ hF)`. Rewrite using `[map_add, ← hv.2 U h1 f, ← hv'.2 U h2 f]`. Conclude with `TanDeriv.snd_evAt_mul v v' t t' U h1 h2 h f`.
+-/
 theorem isDerivAt0_mul {G : Over S} [GrpObj G] {y : Sp ℂ ⟶ S} {F : (Fin g → ℂ) → (Sp ℂ ⟶ G.left)}
     (h0 : F 0 = (1 : Over.mk y ⟶ G).left) {w w' : Fin g → ℂ} {v v' : epsPt y ⟶ G}
     (hv : IsDerivAt0 F w v.left) (hv' : IsDerivAt0 F w' v'.left) : IsDerivAt0 F (w + w') (v * v').left := by
@@ -202,6 +273,11 @@ theorem isDerivAt0_mul {G : Over S} [GrpObj G] {y : Sp ℂ ⟶ S} {F : (Fin g �
   rw [map_add, ← hv.2 U h1 f, ← hv'.2 U h2 f]
   exact TanDeriv.snd_evAt_mul v v' t t' U h1 h2 h f
 
+/- English proof (translation)
+Establish `hd` using `isDerivAt0_iff Filter.univ_mem ((isHolTo_iff _ _).1 hol).2`. Establish `key : ∀ d : (Fin g → ℂ) → (epsPt y ⟶ univG Xo), (∀ w, IsDerivAt0 (fun z => (e z).left) w (d w).left) → ∀ w (v : epsPt y ⟶ univG Xo), IsDerivAt0 (fun z => (e z).left) w v.left ↔ d w = v` using `fun d h w v => ⟨fun hv => Over.OverMorphism.ext (VerticalDeriv.isDerivAt0_unique (h w) hv), fun hv => hv ▸ h w⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, h1, -, -, h4⟩`. Simplify using `only [key d fun w => (hd _ _).2 (h1 w)]`.
+
+Conclude with `⟨fun w => existsUnique_eq', fun v hv => h4 v (h0 ▸ hv)⟩`. Introduce and unpack `⟨h1, h2⟩ choose d h using fun w => (h1 w).exists`. Use `⟨d, fun w => (hd _ _).1 (h w), fun w w' => (key d h _ _).1 ?_, fun c w => VerticalDeriv.isDerivAt0_unique (h _) (isDerivAt0_smul (h w) c), fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `isDerivAt0_mul (congrArg (·.left) h0) (h w) (h w')`. Simplify `h2 v (h0 ▸ hv)` using `only [key d h]`.
+-/
 theorem isExpDeriv_iff {D : Datum H} {l : Level H} (Xo : Moduli D l) {y : Sp ℂ ⟶ Xo.X}
     {e : (Fin g → ℂ) → (Over.mk y ⟶ univG Xo)} (hol : IsHolTo Set.univ fun z => (e z).left) (h0 : e 0 = 1) :
     IsExpDeriv Xo y e ↔
@@ -231,6 +307,9 @@ variable {D : Datum H} {l : Level H} (Xo : Moduli D l) {g : ℕ} (ty : Fin g →
   (D' : Datum H) (u : (D'.La →+ (Fin g → ℂ)) → (Sp ℂ ⟶ Xo.X))
   (ex : ∀ P : D'.La →+ (Fin g → ℂ), (Fin g → ℂ) → (Over.mk (u P) ⟶ univG Xo))
 
+/- English proof (translation)
+Use `forall₄_congr fun m B P hB => ?_` and prove the remaining obligations. Rewrite using `[isHolPeriods_iff, isHolTo_iff_of_isOpen hB, isHolTo_iff_of_isOpen (hB.prod isOpen_univ)]`.
+-/
 theorem holInFamilies_iff : HolInFamilies Xo ty D' u ex ↔
     ∀ (m : ℕ) (B : Set (Fin m → ℂ)) (P : (Fin m → ℂ) → (D'.La →+ (Fin g → ℂ))), IsOpen B → IsHolPeriods D' ty B P →
       IsHolTo B (fun b => u (P b)) ∧
@@ -240,6 +319,9 @@ theorem holInFamilies_iff : HolInFamilies Xo ty D' u ex ↔
 
 variable {Xo ty D' u ex}
 
+/- English proof (translation)
+Establish `h` using `((holInFamilies_iff ..).1 hol 0 Set.univ (fun _ => P) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2`. Use `fun U f => ⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `using (h U f).1.preimage (f := fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z)) (by fun_prop)`. Conclude with `(h U f).2.comp (f := fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z)) (by fun_prop) fun z hz => ⟨⟨trivial, trivial⟩, hz.2⟩`.
+-/
 theorem isHolTo_ex (hol : HolInFamilies Xo ty D' u ex) {P : D'.La →+ (Fin g → ℂ)} (hP : IsPeriod D' ty P) :
     IsHolTo Set.univ fun z => (ex P z).left := by
   have h := ((holInFamilies_iff ..).1 hol 0 Set.univ (fun _ => P) isOpen_univ
@@ -249,6 +331,9 @@ theorem isHolTo_ex (hol : HolInFamilies Xo ty D' u ex) {P : D'.La →+ (Fin g �
   · exact (h U f).2.comp (f := fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z)) (by fun_prop)
       fun z hz => ⟨⟨trivial, trivial⟩, hz.2⟩
 
+/- English proof (translation)
+Take `⟨fr, h1, h2, h3, h4, h5⟩` from `hθ`. Conclude with `⟨fr, h1, h2, h3, h4, fun b hb => h b hb ▸ h5 b hb⟩`.
+-/
 theorem isThetaFrame_congr {m : ℕ} {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : RigLB G} {B : Set (Fin m → ℂ)}
     {y : (Fin m → ℂ) → (Sp ℂ ⟶ S)} {e : (Fin m → ℂ) → (Fin g → ℂ) → (Sp ℂ ⟶ G.left)}
     {θ θ' : (Fin m → ℂ) → (Fin g → ℂ) → ℂ} (h : ∀ b ∈ B, θ b = θ' b) (hθ : Tor.IsThetaFrame L B y e θ) :
@@ -256,6 +341,15 @@ theorem isThetaFrame_congr {m : ℕ} {S : Scheme.{0}} {G : Over S} [GrpObj G] {L
   obtain ⟨fr, h1, h2, h3, h4, h5⟩ := hθ
   exact ⟨fr, h1, h2, h3, h4, fun b hb => h b hb ▸ h5 b hb⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hθ m B P bas sgn h τ hB hc hP hbas hτ`. Break down `B.eq_empty_or_nonempty with rfl | ⟨b₀, hb₀⟩` into its components or cases. Conclude with `⟨0, 0, fun _ => .inl rfl, fun _ => .inl rfl, fun _ _ => 0, fun _ => differentiableOn_const _, fun _ _ _ h => h.elim, fun _ _ _ _ h => h.elim, fun _ _ h => h.elim, fun _ h => h.elim⟩`. Establish `hs : IsSympBasis D' ((swapHalves g).trans bas)` using `fun a b => (EF_eq_neg hbas (hP.1 b₀ hb₀) (hτ b₀ hb₀).1 (hτ b₀ hb₀).2 _ _).trans (neg_eq_iff_eq_neg.2 (omegaStd_swap a b))`.
+
+Take `⟨a, c, ha, hc', H'⟩` from `(hθ _ hs).2 m B P hB hc ((isHolPeriods_iff ..).1 hP)`. Use `⟨a, c, ha, hc', isThetaFrame_congr (fun b hb => ?_) ((isThetaFamily_iff ..).1 H').2.2⟩` and prove the remaining obligations. Take `⟨-, e1, e2⟩` from `(cols_swap_iff ((swapHalves g).trans bas) (P b) (h b) (τ b)).1 fun k => by`. Simplify `(hτ b hb).2 k` using `only [LinearEquiv.trans_apply, swap_inl, swap_inr]`. Rewrite using `[e1, e2]`.
+
+Introduce `hθ bas hs`. Use `⟨fun P hP => siegel hs ((isPeriod_iff ..).2 hP), fun m B P hB hc hP => ?_⟩` and prove the remaining obligations. Establish `hP'` using `(isHolPeriods_iff ..).2 hP`. Take `⟨a, c, ha, hc', H'⟩` from `hθ m B P ((swapHalves g).trans bas) (-1) (fun b => (perF bas (P b))⁻¹) (fun b => perTau bas (P b)) hB hc hP' (fun a b => by simpa using EF_swap hs a b) fun b hb => ⟨(siegel hs (hP'.1 b hb)).2.2, (cols_swap_iff ..).2 ⟨(siegel hs (hP'.1 b hb)).1, rfl, rfl⟩⟩`. Use `⟨a, c, ha, hc', (isThetaFamily_iff ..).2 ⟨(hol m B P hB hP).2, fun b hb => ?_, H'⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[h0 _ (hP'.1 b hb), Hom.one_def, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression.
+-/
 theorem thetaInFamilies_iff (hol : HolInFamilies Xo ty D' u ex) (h0 : ∀ P, IsPeriod D' ty P → ex P 0 = 1) :
     ThetaInFamilies Xo ty D' u ex ↔
     ∀ (m : ℕ) (B : Set (Fin m → ℂ)) (P : (Fin m → ℂ) → (D'.La →+ (Fin g → ℂ)))
@@ -331,6 +425,9 @@ def familyUnifOfPieces {n : ℕ} (hn : 0 < n) {Di : Fin n → Datum H} {mk : ∀
         ⟨hy, (isHolTo_iff_of_isOpen hB y).1 hol⟩ b₀ hb₀ P₀ hP₀ hu
       exact ⟨B', i, P, h1, h2, h3, (isHolPeriods_iff ..).2 h4, h5⟩ }
 
+/- English proof (translation)
+Take `⟨⟨g, ty, hty⟩, hper, -⟩` from `GlobalTheory.PeriodExists.typeFn_period_exist E H D`. Take `⟨-, P, hP⟩` from `hper g ty hty`. Take `⟨t, ht⟩` from `GlobalTheory.UnifParts.exists_inGenus D l σ fun l' N ν a b c => (GlobalTheory.SimMult.exists_sim_trivial_of_mult GlobalTheory.SimAlg.sim_group GlobalTheory.exists_sim_lift E H D l' N ν a b c).imp fun _ h => h.1`. Take `⟨y, e, hy, -⟩` from `GlobalTheory.Moduli.exists_point_of_isPeriod GlobalTheory.thetaUnifAV_closed GlobalTheory.abelianSchemeLaws_all.1 E H D l Xo σ g ty hD hσ hty D t P ht hP`. Conclude with `⟨y, hy⟩`.
+-/
 theorem exists_point (Xo : Moduli D l) (σ : KA l →+* ℂ) (hD : 1 ≤ D.p + D.q) (hσ : σ (baseKA l).ρ = H.rt0) :
     ∃ y : Sp ℂ ⟶ Xo.X, y ≫ Xo.s = spMap σ := by
   obtain ⟨⟨g, ty, hty⟩, hper, -⟩ := GlobalTheory.PeriodExists.typeFn_period_exist E H D

@@ -8,6 +8,9 @@ open ModularForm EisensteinSeries ModularFormClass UpperHalfPlane Formalism.L2.T
 
 namespace ReciprocityTheory.ChartRestriction.L1
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `simp [UpperHalfPlane.denom]`. Consider the case `(simp [UpperHalfPlane.denom]; norm_cast)`.
+-/
 theorem denom_SL_coe (γ : SL(2, ℤ)) (z : ℍ) :
     denom γ z = ((γ 1 0 : ℤ) : ℂ) * z + ((γ 1 1 : ℤ) : ℂ) := by
   first
@@ -15,6 +18,9 @@ theorem denom_SL_coe (γ : SL(2, ℤ)) (z : ℍ) :
   | simp [UpperHalfPlane.denom]
   | (simp [UpperHalfPlane.denom]; norm_cast)
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [UpperHalfPlane.coe_smul, UpperHalfPlane.num, denom_SL_coe]; simp)`. Consider the case `(rw [UpperHalfPlane.specialLinearGroup_apply]; simp)`. Consider the case `simp [UpperHalfPlane.coe_smul, UpperHalfPlane.num, UpperHalfPlane.denom]`.
+-/
 theorem smul_SL_coe (γ : SL(2, ℤ)) (z : ℍ) :
     ((γ • z : ℍ) : ℂ) = (((γ 0 0 : ℤ) : ℂ) * z + ((γ 0 1 : ℤ) : ℂ)) /
       (((γ 1 0 : ℤ) : ℂ) * z + ((γ 1 1 : ℤ) : ℂ)) := by
@@ -23,6 +29,25 @@ theorem smul_SL_coe (γ : SL(2, ℤ)) (z : ℍ) :
   | (rw [UpperHalfPlane.specialLinearGroup_apply]; simp)
   | simp [UpperHalfPlane.coe_smul, UpperHalfPlane.num, UpperHalfPlane.denom]
 
+/- English proof (translation)
+Establish `hm : ∀ i j, (Tmat t * (γ : Matrix (Fin 2) (Fin 2) ℤ)) i j = ((γ' : Matrix (Fin 2) (Fin 2) ℤ) * Tmat t') i j` using `fun i j => by rw [h]`. Establish `z00 : (t.1 : ℤ) * γ 0 0 + (t.2.1 : ℤ) * γ 1 0 = γ' 0 0 * (t'.1 : ℤ)`. Establish `hh` using `hm 0 0`. Simplify using `[Tmat, Matrix.mul_apply, Fin.sum_univ_two] at hh`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `z01 : (t.1 : ℤ) * γ 0 1 + (t.2.1 : ℤ) * γ 1 1 = γ' 0 0 * (t'.2.1 : ℤ) + γ' 0 1 * (t'.2.2 : ℤ)`. Establish `hh` using `hm 0 1`. Simplify using `[Tmat, Matrix.mul_apply, Fin.sum_univ_two] at hh`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `z10 : (t.2.2 : ℤ) * γ 1 0 = γ' 1 0 * (t'.1 : ℤ)`.
+
+Establish `hh` using `hm 1 0`. Simplify using `[Tmat, Matrix.mul_apply, Fin.sum_univ_two] at hh`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `z11 : (t.2.2 : ℤ) * γ 1 1 = γ' 1 0 * (t'.2.1 : ℤ) + γ' 1 1 * (t'.2.2 : ℤ)`. Establish `hh` using `hm 1 1`.
+
+Simplify using `[Tmat, Matrix.mul_apply, Fin.sum_univ_two] at hh`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c00 : (t.1 : ℂ) * ((γ 0 0 : ℤ) : ℂ) + (t.2.1 : ℂ) * ((γ 1 0 : ℤ) : ℂ) = ((γ' 0 0 : ℤ) : ℂ) * (t'.1 : ℂ)` using `by exact_mod_cast z00`. Establish `c01 : (t.1 : ℂ) * ((γ 0 1 : ℤ) : ℂ) + (t.2.1 : ℂ) * ((γ 1 1 : ℤ) : ℂ) = ((γ' 0 0 : ℤ) : ℂ) * (t'.2.1 : ℂ) + ((γ' 0 1 : ℤ) : ℂ) * (t'.2.2 : ℂ)` using `by exact_mod_cast z01`. Establish `c10 : (t.2.2 : ℂ) * ((γ 1 0 : ℤ) : ℂ) = ((γ' 1 0 : ℤ) : ℂ) * (t'.1 : ℂ)` using `by exact_mod_cast z10`.
+
+Establish `c11 : (t.2.2 : ℂ) * ((γ 1 1 : ℤ) : ℂ) = ((γ' 1 0 : ℤ) : ℂ) * (t'.2.1 : ℂ) + ((γ' 1 1 : ℤ) : ℂ) * (t'.2.2 : ℂ)` using `by exact_mod_cast z11`. Establish `he : (t.2.2 : ℂ) ≠ 0` using `by exact_mod_cast ht.2.ne'`. Establish `he' : (t'.2.2 : ℂ) ≠ 0` using `by exact_mod_cast ht'.2.ne'`. Establish `hD : ((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ) ≠ 0` using `by rw [← denom_SL_coe]; exact UpperHalfPlane.denom_ne_zero _ _`. Establish `hD' : ((γ' 1 0 : ℤ) : ℂ) * ((pt t'.1 t'.2.1 t'.2.2 τ : ℍ) : ℂ) + ((γ' 1 1 : ℤ) : ℂ) ≠ 0` using `by rw [← denom_SL_coe]; exact UpperHalfPlane.denom_ne_zero _ _`.
+
+Establish `hZ : ((γ • τ : ℍ) : ℂ) * (((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ)) = ((γ 0 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 0 1 : ℤ) : ℂ)`. Rewrite using `[smul_SL_coe γ τ]`. Conclude with `div_mul_cancel₀ _ hD`. Establish `hW : ((pt t'.1 t'.2.1 t'.2.2 τ : ℍ) : ℂ) * (t'.2.2 : ℂ) = (t'.1 : ℂ) * (τ : ℂ) + (t'.2.1 : ℂ)`. Rewrite using `[pt_coe ht'.1 ht'.2]`.
+
+Conclude with `div_mul_cancel₀ _ he'`. Establish `c2 : (((γ' 1 0 : ℤ) : ℂ) * ((pt t'.1 t'.2.1 t'.2.2 τ : ℍ) : ℂ) + ((γ' 1 1 : ℤ) : ℂ)) * (t'.2.2 : ℂ) = (t.2.2 : ℂ) * (((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ))`. Take the linear combination `((γ' 1 0 : ℤ) : ℂ) * hW - (τ : ℂ) * c10 - c11`. Use `⟨UpperHalfPlane.ext ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pt_coe ht.1 ht.2, smul_SL_coe γ' (pt t'.1 t'.2.1 t'.2.2 τ), div_eq_div_iff he hD']`.
+
+Establish `key : ((t'.2.2 : ℂ) * (((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ))) * (((t.1 : ℂ) * ((γ • τ : ℍ) : ℂ) + (t.2.1 : ℂ)) * (((γ' 1 0 : ℤ) : ℂ) * ((pt t'.1 t'.2.1 t'.2.2 τ : ℍ) : ℂ) + ((γ' 1 1 : ℤ) : ℂ)) - (((γ' 0 0 : ℤ) : ℂ) * ((pt t'.1 t'.2.1 t'.2.2 τ : ℍ) : ℂ) + ((γ' 0 1 : ℤ) …`. Take the linear combination `(((t.1 : ℂ) * ((γ • τ : ℍ) : ℂ) + (t.2.1 : ℂ)) * (((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ))) * c2 + ((t.2.2 : ℂ) * (((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ))) * ((t.1 : ℂ) * hZ - ((γ' 0 0 : ℤ) : ℂ) * hW + (τ : ℂ) * c00 + c01)`. Break down `mul_eq_zero.mp key with h0 | h0` into its components or cases. Conclude with `absurd h0 (mul_ne_zero he' hD)`. Conclude with `sub_eq_zero.mp h0`.
+
+Rewrite using `[denom_SL_coe, denom_SL_coe]`. Conclude with `c2`.
+-/
 theorem pt_smul {t t' : ℕ × ℕ × ℕ} (ht : 0 < t.1 ∧ 0 < t.2.2) (ht' : 0 < t'.1 ∧ 0 < t'.2.2)
     (γ γ' : SL(2, ℤ))
     (h : Tmat t * (γ : Matrix (Fin 2) (Fin 2) ℤ) = (γ' : Matrix (Fin 2) (Fin 2) ℤ) * Tmat t') (τ : ℍ) :
@@ -72,6 +97,11 @@ theorem pt_smul {t t' : ℕ × ℕ × ℕ} (ht : 0 < t.1 ∧ 0 < t.2.2) (ht' : 0
   · rw [denom_SL_coe, denom_SL_coe]
     exact c2
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `pt_smul ht ht' γ γ' h τ`. Establish `he' : ((t'.2.2 : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast ht'.2.ne'`. Establish `hd : denom γ' (pt t'.1 t'.2.1 t'.2.2 τ) = (t.2.2 : ℂ) / t'.2.2 * denom γ τ`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff he']`. Conclude with `h2`.
+
+Simplify using `only [fac]`. Rewrite using `[h1, AA_smul, DD_smul, AA_smul, DD_smul, hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fac_smul {t t' : ℕ × ℕ × ℕ} (ht : 0 < t.1 ∧ 0 < t.2.2) (ht' : 0 < t'.1 ∧ 0 < t'.2.2)
     (γ γ' : SL(2, ℤ))
     (h : Tmat t * (γ : Matrix (Fin 2) (Fin 2) ℤ) = (γ' : Matrix (Fin 2) (Fin 2) ℤ) * Tmat t') (τ : ℍ) :

@@ -18,6 +18,21 @@ open GlobalTheory.Dict GlobalTheory.Phase GlobalTheory.IndefiniteRowSideFullHeck
 
 namespace GlobalTheory.Phase
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx n hs hn w hw hw' L hL Λ hΛ v hv`. Establish `hA : TensVac.Good X w (tens Λ L)`. Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.T.tensorLattice_selfDual_semicharacter_index E r X g bas idx n hs hn w hw hw' L hL 1 Λ hΛ`. Conclude with `⟨h1, h2, h3⟩`. Set `e` to `AddEquiv.ofBijective _ (TensVac.crdHom_bijective (n := n) hs)`.
+
+Establish `he (y) : e.symm (TensVac.crdHom hs y) = y` using `e.symm_apply_apply y`. Establish `ho (y y' : Matrix (Fin n) (Fin r) E) : Phase.om (TensVac.crdHom hs y) (TensVac.crdHom hs y') = -∑ k, EF X (y k) (y' k)` using `TensVac.om_crdHom hs y y'`. Use `⟨(tens Λ L).map (TensVac.crdHom hs), fun p => epsW X w (e.symm p), Vac.fg_map hA.1 _, ?_, ?_, ?_, ⟨2, two_pos, ?_⟩, hv.1, ?_⟩` and prove the remaining obligations. Introduce `p`. Take `⟨y, rfl⟩` from `(TensVac.crdHom_bijective hs).2 p`.
+
+Rewrite using `[AddSubgroup.mem_map_iff_mem (TensVac.crdHom_bijective hs).1, hA.2.1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨y', hy', rfl⟩`. Take `⟨k, hk⟩` from `h y' hy'`. Conclude with `⟨-k, by rw [ho, hk, Int.cast_neg]⟩`.
+
+Introduce `h y' hy'`. Take `⟨k, hk⟩` from `h _ ⟨y', hy', rfl⟩`. Rewrite `hk` using `[ho]`. Conclude with `⟨-k, by rw [Int.cast_neg, ← hk, neg_neg]⟩`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Use `congrArg norm (TensVac.epsW_mul_conj (X := X) w (e.symm (TensVac.crdHom hs y)))` as an intermediate fact. Rewrite `this` using `[norm_mul, Complex.norm_conj, norm_one]`. Conclude with `(mul_self_eq_one_iff.1 this).resolve_right fun h => by`. Combine the linear relations using `[norm_nonneg (epsW X w (e.symm (TensVac.crdHom hs y)))]`. Introduce and unpack `_ ⟨y, hy, rfl⟩ _ ⟨y', hy', rfl⟩`.
+
+Rewrite using `[← map_add, he, he, he, ho, (hA.2.2 y hy).2 y' hy', Rat.cast_neg, mul_neg]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[← map_nsmul, he, hA.eps_two hs hy]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[he]`.
+
+Conclude with `hv.2.2 y hy`.
+-/
 theorem vacS_of_isVac : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ L : Lt E r, SelfD X L → ∀ Λ ∈ Vset E n 1, ∀ v : TF n g, IsVac X bas w (tens Λ L) v → ∃ A ε, VacS A ε v := by
   intro E _ _ _ r X g bas idx n hs hn w hw hw' L hL Λ hΛ v hv
   have hA : TensVac.Good X w (tens Λ L) := by

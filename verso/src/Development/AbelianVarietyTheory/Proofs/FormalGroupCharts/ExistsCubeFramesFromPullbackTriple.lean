@@ -18,6 +18,11 @@ noncomputable section
 
 namespace GlobalTheory.Chart.FrameUp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `J`. Set `U : Over.mk ((jOG (𝟙 (Sp S)) d m 2).hom ≫ x0) ⟶ jOG x0 d m 2` to `Over.homMk (𝟙 _) (by simp)`. Establish `key : ∀ i : Fin 2, pushPt mp.cart.1.w (jptG t' (𝟙 (Sp S)) d x' m i) = U ≫ jptG t x0 d x m i` using `fun i => Over.OverMorphism.ext (by show ((homAt (𝟙 (Sp S)) (jetCopy d m i)).left ≫ (x' m).left) ≫ mp.φ = 𝟙 _ ≫ (homAt x0 (jetCopy d m i)).left ≫ (x m).left`. Rewrite using `[Category.id_comp, Category.assoc, hx]`. Use the proof step `rfl)`.
+
+Use `((psum_push mp.cart ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)] ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)] U (fun i => ?_) J.down).trans (Category.id_comp _)).symm` and prove the remaining obligations. Use `fin_cases i`. Conclude with `key 0`. Conclude with `key 1`.
+-/
 theorem cube_points_push {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}}
     (t : SAB H X0) {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (t' : SAB H (Sp S)) (mp : SABMap t' t x0) (d : ℕ)
     (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG (𝟙 (Sp S)) d m 1 ⟶ t'.G)
@@ -41,6 +46,13 @@ theorem cube_points_push {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   · exact key 0
   · exact key 1
 
+/- English proof (translation)
+Introduce `E _ _ _ H X0 t S _ x0 t' mp w hw d x x' hx e' he'`. Establish `main : ∀ m, ∃ e : FrTyG t x0 d x m, e.IsGen ∧ ∃ c₁ : LB.Gen (LB.LinComb t.PP.L (fun J => cφG t' ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)] J ≫ mp.φ) (cε 2)), LB.Gen.Corr t.PP.L _ _ _ _ c₁ e ∧ LB.Gen.Maps (LB.linCombIso w (cφG t' ![jptG t' (𝟙 ( …` using `fun m => by`. Take `⟨c₁, hc₁, hv⟩` from `exists_up ((isGen_iff w).1 hw.1) t.PP.isLB t'.PP.isLB (φ' := cφG t' ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)]) (ε := cε 2) (e' m) (he' m)`. Establish `gen : ∀ (ψ : ULift (Finset (Fin 2)) → ((jOG x0 d m 2).left ⟶ t.G.left)) (c : LB.Gen (LB.LinComb t.PP.L ψ (cε 2))), c.IsGen → cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)] = ψ → ∃ e : FrTyG t x0 d x m, e.IsGen ∧ LB.Gen.Corr t.PP.L _ _ _ _ c e`. Introduce `ψ c hc h`.
+
+Substitute `h` using the available equality. Conclude with `⟨c, hc, ChartPrimTrPf.corr_self _ _ _ c⟩`. Take `⟨e, he, hce⟩` from `gen _ c₁ hc₁ (cube_points_push t x0 t' mp d x x' hx m)`. Conclude with `⟨e, he, c₁, hce, ChartPrimTrPf.maps_flat w _ _ (e' m) c₁ hv⟩`. Use `choose e he hc using main`.
+
+Conclude with `⟨e, he, hc⟩`.
+-/
 theorem exists_frames_up : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S : Type) [CommRing S] (x0 : Sp S ⟶ X0) (t' : SAB H (Sp S)) (mp : SABMap t' t x0) (w : LB.Iso t'.PP.L (t.PP.L.pull mp.φ)), RigIso mp w → ∀ (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG (𝟙 (Sp S)) d m 1 ⟶ t'.G), (∀ m, (x' m).left ≫ mp.φ = (x m).left) → ∀ e' : ∀ m, FrTyG t' (𝟙 (Sp S)) d x' m, (∀ m, (e' m).IsGen) → ∃ e : ∀ m, FrTyG t x0 d x m, (∀ m, (e m).IsGen) ∧ (∀ m, ∃ c₁ : LB.Gen (LB.LinComb t.PP.L (fun J => cφG t' ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)] J ≫ mp.φ) (cε 2)), LB.Gen.Corr t.PP.L _ _ _ _ c₁ (e m) ∧ LB.Gen.Maps (LB.linCombIso w (cφG t' ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)]) (cε 2)) (e' m) (flatGen t.PP.L mp.φ _ _ c₁)) := by
   intro E _ _ _ H X0 t S _ x0 t' mp w hw d x x' hx e' he'
   have main : ∀ m, ∃ e : FrTyG t x0 d x m, e.IsGen ∧

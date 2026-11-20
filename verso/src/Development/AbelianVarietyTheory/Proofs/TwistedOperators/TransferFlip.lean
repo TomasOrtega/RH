@@ -53,12 +53,18 @@ def cosSetGen {D : D7} (w : Pl D.host.E) (X1 X0 : LSp D) (b1 : GL (Fin X1.sp.ran
     x - ((((loc w b0)⁻¹).val * (y.1.map (algebraMap D.host.E (Kw w))) * (loc w b1).val).submatrix
       (Fin.cast h0) (Fin.cast h1))ᵀ ∈ matLat (Fin n1) (unifAt w ^ e • stdLat (Kw w) (Fin n0))}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cosetSet_eq_gen {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (B : Frames G) (t : T)
     (w : Pl D.host.E) {i : ℕ} (hi : i < D.R.m) (κ : G.CosAt i) :
     cosetSet t w B hi κ = cosSetGen w (G.node (.grid (i + 1) 0)) (G.node (.grid i 0)) (B.β (i + 1) 0) (B.β i 0) (cosExp G w)
       G.modul (rank_vertex G t w (X := (i + 1, 0)) ⟨hi, Nat.zero_le _⟩) (rank_vertex G t w (X := (i, 0)) ⟨hi.le, Nat.zero_le _⟩) κ :=
   rfl
 
+/- English proof (translation)
+Substitute `h1 h0 he hm` using the available equality. Consider the cases of `hb1`. Consider the cases of `hb0`. Consider the cases of `hκ`. Both sides reduce to the same expression.
+-/
 theorem cosSetGen_congr {D : D7} (w : Pl D.host.E) {X1 X1' X0 X0' : LSp D} (h1 : X1' = X1) (h0 : X0' = X0)
     {b1 : GL (Fin X1.sp.rank) (Formalism.IndefR.Lev.EAf D)} {b1' : GL (Fin X1'.sp.rank) (Formalism.IndefR.Lev.EAf D)} (hb1 : HEq b1' b1)
     {b0 : GL (Fin X0.sp.rank) (Formalism.IndefR.Lev.EAf D)} {b0' : GL (Fin X0'.sp.rank) (Formalism.IndefR.Lev.EAf D)} (hb0 : HEq b0' b0)
@@ -72,11 +78,17 @@ theorem cosSetGen_congr {D : D7} (w : Pl D.host.E) {X1 X1' X0 X0' : LSp D} (h1 :
   cases hκ
   rfl
 
+/- English proof (translation)
+Substitute `h1 h0` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cos_congr {D : D7} {X1 X1' X0 X0' : LSp D} (h1 : X1' = X1) (h0 : X0' = X0) (𝔪 : Ideal (𝓞 D.host.E)) :
     Cos X1'.lat X0'.lat 𝔪 = Cos X1.lat X0.lat 𝔪 := by
   subst h1 h0
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Consider the cases of `hl`. Consider the cases of `hd`. Both sides reduce to the same expression.
+-/
 theorem stage_heq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {Γ Γ' : SplitFlip.Grid k} (h : Γ = Γ') (p : List Edge) {l : Γ.Level} {l' : Γ'.Level} (hl : HEq l l')
     {d : ∀ b : Edge, Matrix (Fin (Γ.rank b.tgt)) (Fin (Γ.rank b.src)) k → ℂ}
@@ -90,6 +102,27 @@ theorem stage_heq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 abbrev gOf {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (_ : Frames G) : GridData L sc := G
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `D T T' L L' sc G G' B B' ι hY hY' hC hPg hxi hQ hv0 hw hchi hVs hβ Φ'`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Take `⟨κ0, hκ0⟩` from `hz G G' B B' hY hY' hv0 hw (hVs 0) (hβ 0) hm (Φ' ⟨0, hm⟩)`. Establish `hmod : G'.modul = G.modul`. Unfold `GridData.modul Places.modul Places.S0 Places.depth`.
+
+Rewrite using `[hv0, hw]`. Establish `hcos : ∀ w, cosExp G' w = cosExp G w` using `fun w => by`. Unfold `cosExp Places.W0 Places.S0 Places.depth`. Rewrite using `[hv0, hw]`. Establish `eC : ∀ i (h : i + 1 < D.R.m), G'.CosAt (i + 1) = G.CosAt (i + 1)` using `fun i h => by show Cos _ _ G'.modul = Cos _ _ G.modul; rw [hmod]; exact cos_congr (hVs (i + 1)) (hVs i) G.modul`.
+
+Take `⟨C, xiH, mu0, eta, xi, Pg, Q, chi, xiR, ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW⟩` from `L`. Take `⟨C', xiH', mu0', eta', xi', Pg', Q', chi', xiR', ΛY', ΛX', ΛV', ΛW', βY', βX', βV', βW'⟩` from `L'`. Simplify using `only at hC hPg hxi hQ`. Substitute `hC hPg` using the available equality. Take `rfl : xiH' = xiH ∘ ι` from `funext hxi`.
+
+Take `rfl : Q' = Q ∘ ι` from `funext hQ`. Take `⟨pl, ⟨chiH, chi₁, chi_eq, triv, inf, unr, lev1, wild, lev0⟩, sp⟩` from `G`. Take `⟨pl', ⟨chiH', chi₁', chi_eq', triv', inf', unr', lev1', wild', lev0'⟩, sp'⟩` from `G'`. Simplify using `only at hchi`. Substitute `chiH'` using the available equality.
+
+Set `Φ : (gOf B).Datum` to `fun i => match i with`. Consider the case `⟨0, _⟩ => κ0`. Consider the case `⟨i + 1, h⟩ => cast (eC i h) (Φ' ⟨i + 1, h⟩)`. Use `⟨Φ, fun t w _ => ?_⟩` and prove the remaining obligations. Establish `hloc : locGrid (gOf B') t w = locGrid (gOf B) (ι t) w` using `rfl`.
+
+Establish `hlev : givenLevel (gOf B') t w = givenLevel (gOf B) (ι t) w`. Use function extensionality and compare the values at `X`. Break down `X with ⟨_ | i, _ | j⟩` into its components or cases. Apply the tactic sequence `simp only [givenLevel, hcos w] try rfl`. Both sides reduce to the same expression.
+
+Apply the tactic sequence `simp only [givenLevel, hcos w] try rfl`. Both sides reduce to the same expression. Establish `hd : givenDatum t w B' Φ' = givenDatum (ι t) w B Φ`. Use function extensionality and compare the values at `b`. Break down `b with ⟨_ | i, j⟩ | ⟨_ | i, _ | j⟩` into its components or cases.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression. Simplify using `only [givenDatum, dif_pos hm]`. Conclude with `congrArg (fun s => Set.indicator s 1) (hκ0 t (ι t) w)`. Both sides reduce to the same expression.
+
+Simplify using `only [givenDatum] split_ifs with hi`. Rewrite using `[cosetSet_eq_gen, cosetSet_eq_gen]`. Conclude with `congrArg (fun s => Set.indicator s 1) (cosSetGen_congr w (hVs (i + 1)) (hVs i) (hβ (i + 1)) (hβ i) (hcos w) hmod _ _ _ _ (cast_heq _ _).symm)`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+
+Conclude with `⟨hloc, heq_of_eq hlev, hcos w, stage_heq hloc _ (heq_of_eq hlev) (heq_of_eq hd)⟩`.
+-/
 theorem sameD_of_cosZero (hz : CosZero) : SameD := by
   intro D T T' L L' sc G G' B B' ι hY hY' hC hPg hxi hQ hv0 hw hchi hVs hβ Φ'
   have hm : 0 < D.R.m := by have := D.R.two_le_m; omega
@@ -143,6 +176,9 @@ theorem sameD_of_cosZero (hz : CosZero) : SameD := by
     · rfl
   exact ⟨hloc, heq_of_eq hlev, hcos w, stage_heq hloc _ (heq_of_eq hlev) (heq_of_eq hd)⟩
 
+/- English proof (translation)
+Substitute `hΓ hψ he` using the available equality. Consider the cases of `hS`. Both sides reduce to the same expression.
+-/
 theorem flips_tensor_heq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] {Γ Γ' : SplitFlip.Grid k} (hΓ : Γ = Γ') {S : Γ.PiLocalization₂} {S' : Γ'.PiLocalization₂} (hS : HEq S S')
     (s : SplitFlip.Assignment) {ψ ψ' : AddChar k Circle} (hψ : ψ = ψ') (ϖ : kˣ) {e e' : ℕ} (he : e = e') (l : List (ℕ × ℕ)) :
@@ -151,11 +187,17 @@ theorem flips_tensor_heq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   cases hS
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tflip_eq {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (B : FunObj.Frames G)
     (t : T) (Φ : G.Datum) (w : Pl D.host.E) : FunObj.Tflip W B t Φ w =
       ((FunObj.givenStage t w B Φ).flips .one (FunObj.psiAt W w) (FunObj.unifAt w) (FunObj.depthAt G w)
         (FunObj.flipOrder D.R.m)).tensor := rfl
 
+/- English proof (translation)
+Consider the cases of `x`. Substitute `hs` using the available equality. Consider the cases of `hl`. Both sides reduce to the same expression.
+-/
 theorem lsp_eq {D : D7} {x : LSp D} {s : HSp D} {l : Submodule (𝓞 D.host.E) (Fin s.rank → D.host.E)} (hs : s = x.sp)
     (hl : HEq l x.lat) : (⟨s, l⟩ : LSp D) = x := by
   cases x
@@ -168,6 +210,31 @@ abbrev dOf {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (_ : GridData L sc)
 abbrev lOf {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (_ : GridData L sc) : LevCh D T := L
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `X X' T T' L L' sc G G' W W' S S' μ₀ μ₀' ι hA Φ'`. Take `⟨hl, hg, hw, hs⟩` from `hA`. Take `⟨hpre, hLis, hLis', hC, hbase, hxi, hQ, hβX, hβX'⟩` from `hl`. Take `⟨f, f', hff, hCf, hCf'⟩` from `hC`. Take `⟨C₁, xiH₁, mu0₁, eta₁, xi₁, Pg₁, Q₁, chi₁, xiR₁, ΛY₁, ΛX₁, ΛV₁, ΛW₁, βY₁, βX₁, βV₁, βW₁⟩` from `L`.
+
+Take `⟨C₂, xiH₂, mu0₂, eta₂, xi₂, Pg₂, Q₂, chi₂, xiR₂, ΛY₂, ΛX₂, ΛV₂, ΛW₂, βY₂, βX₂, βV₂, βW₂⟩` from `L'`. Simplify using `only at hCf hCf'`. Substitute `hCf hCf'` using the available equality. Take `⟨Bx, Cx, Wx, Vx, Sx, Nx, Gx⟩` from `X`. Take `⟨Bx', Cx', Wx', Vx', Sx', Nx', Gx'⟩` from `X'`.
+
+Take `⟨P⟩` from `Bx`. Take `⟨P'⟩` from `Bx'`. Simplify using `only at hpre`. Substitute `P'` using the available equality. Take `⟨R⟩` from `P`.
+
+Take `⟨re, rk, rm⟩` from `R`. Take `⟨m, rfl⟩ : ∃ m, rm = m + 1` from `⟨rm - 1, by omega⟩`. Establish `hff'` using `eq_of_heq hff`. Substitute `f'` using the available equality. Set `Lc : LevCh (dOf G) T'` to `{ C := (lOf G).C, xiH := (by with_unfolding_all exact (xiH₂ :)), mu0 := (by with_unfolding_all exact (mu0₂ :)), eta := (by with_unfolding_all exact (eta₂ :)), xi := (by with_unfolding_all exact (xi₂ :)), Pg := (by with_unfolding_all exact (Pg₂ :)), Q := (by with_unfolding_all exa …`.
+
+Set `plc : Places Lc` to `{ v0 := (by with_unfolding_all exact (G'.pl.v0 :)), basePlace_over_qZero := (by with_unfolding_all exact (G'.pl.basePlace_over_qZero :)), w := (by with_unfolding_all exact (G'.pl.w :)), w_over := (by with_unfolding_all exact (G'.pl.w_over :)), w_split := (by with_unfolding_all ex …`. Set `chc : Chars plc sc.cGap` to `{ chiH := (by with_unfolding_all exact (G'.ch.chiH :)), chi := (by with_unfolding_all exact (G'.ch.chi :)), chi_eq := (by with_unfolding_all exact (G'.ch.chi_eq :)), triv := (by with_unfolding_all exact (G'.ch.triv :)), inf := (by with_unfolding_all exact (G'.ch.inf :)), unr := ( …`. Set `spc : Vertices Lc (plc.stA sc) (plc.stAbar sc)` to `{ Vs := fun i j => ⟨(G'.sp.Vs i j).sp, (G'.sp.Vs i j).lat⟩ P := fun i => ⟨(G'.sp.P i).sp, (G'.sp.P i).lat⟩ Xs := fun j => ⟨(G'.sp.Xs j).sp, (G'.sp.Xs j).lat⟩ V_is := fun i j h1 h2 h3 => let v := G'.sp.V_is i j h1 h2 h3; ⟨(by with_unfolding_all exact (v.rank :)), (by with_unfoldin …`. Consider the case `0, h, _ => absurd h (by omega)`. Consider the case `i + 1, h, h' => let d := G'.sp.colDec (i + 1) h h'; ⟨d.ι, (by with_unfolding_all exact (d.isom :)), d.a, (by with_unfolding_all exact (d.gram :)), (by with_unfolding_all exact (d.perp :)), (by with_unfolding_all exact (d.rank :))⟩`.
+
+Use `colLat := fun i h h' => match i, h, h' with`. Consider the case `0, h, _ => absurd h (by omega)`. Consider the case `i + 1, h, h' => (by with_unfolding_all exact ((G'.sp.colLat (i + 1) h h') :))`. Use `rowDecS := fun j h => let d := G'.sp.rowDecS j h; ⟨d.ι, (by with_unfolding_all exact (d.isom :)), d.a, (by with_unfolding_all exact (d.gram :)), (by with_unfolding_all exact (d.perp :)), (by with_unfolding_all exact (d.rank :))⟩`. Use `rowLat := fun j h => (by with_unfolding_all exact ((G'.sp.rowLat j h) :))`.
+
+Use `topDec := let d := G'.sp.topDec; ⟨d.ι, (by with_unfolding_all exact (d.isom :)), d.a, (by with_unfolding_all exact (d.gram :)), (by with_unfolding_all exact (d.perp :)), (by with_unfolding_all exact (d.rank :))⟩`. Use `topLat := (by with_unfolding_all exact (G'.sp.topLat :)) }`. Set `Gc : GridData Lc sc` to `⟨plc, chc, spc⟩`. Set `Bc : FunObj.Frames Gc` to `⟨(by with_unfolding_all exact (S'.B.βs :)), (by with_unfolding_all exact (S'.B.isFrame :))⟩`. Set `Φc : Gc.Datum` to `fun i => match i with`.
+
+Consider the case `⟨0, h⟩ => (by with_unfolding_all exact ((Φ' ⟨0, h⟩) :))`. Consider the case `⟨i + 1, h⟩ => (by with_unfolding_all exact ((Φ' ⟨i + 1, h⟩) :))`. Establish `hPg : Lc.Pg = (lOf G).Pg` using `Finset.ext fun PP => ((by with_unfolding_all exact ((hLis'.Pg PP) :)) : PP ∈ Lc.Pg ↔ ∃ k, Lc.C.P.Div k PP).trans (hLis.Pg PP).symm`. Take `⟨Φ, hΦ⟩` from `hsame G Gc S.B Bc ι (hLis.βY 0 (Nat.succ_pos m)) ((by with_unfolding_all exact ((hLis'.βY 0 (Nat.succ_pos m)) :))) rfl hPg (fun t => (by with_unfolding_all exact ((eq_of_heq (hxi t)) :))) (fun t => (by with_unfolding_all exact ((eq_of_heq (hQ t)) :))) ((by with_unfolding_all exac …`. Use `⟨Φ, fun t w w' hww hw' => ?_⟩` and prove the remaining obligations.
+
+Establish `e : w' = w` using `(by with_unfolding_all exact ((eq_of_heq hww) :))`. Substitute `e` using the available equality. Take `⟨h1, h2, h3, h4⟩` from `hΦ t w' ((by with_unfolding_all exact (hw' :)))`. Establish `e1 : locGrid G' t w' = locGrid G (ι t) w'` using `(by with_unfolding_all exact (h1 :))`. Use `⟨heq_of_eq e1, (by with_unfolding_all exact (h2 :)), ?_⟩` and prove the remaining obligations.
+
+Establish `hd : givenDatum (G` using `G') t w' S'.B Φ' = (by with_unfolding_all exact ((givenDatum (G := Gc) t w' Bc Φc) :)) := by`. Use function extensionality and compare the values at `b`. Apply the tactic sequence `rcases b with ⟨_ | i, j⟩ | ⟨_ | i, _ | j⟩ <;> rfl`. Establish `T3 : HEq (givenStage (G` using `G') t w' S'.B Φ') (givenStage (G := Gc) t w' Bc Φc) := by`. Unfold `givenStage`.
+
+Rewrite using `[hd]`. Conclude with `(by with_unfolding_all exact ((HEq.refl (givenStage (G := Gc) t w' Bc Φc)) :))`. Establish `eψ` using `eq_of_heq hw.ψ`. Establish `hψ : psiAt W' w' = psiAt W w'`. Use extensionality with `x`.
+
+Express the relevant statement in the definitionally equal form `W'.ψ _ = W.ψ _`. Rewrite using `[eψ]`. Both sides reduce to the same expression. Establish `hdep : depthAt G' w' = depthAt G w'` using `(by with_unfolding_all exact ((congrArg (max · 1) h3) :))`. Conclude with `(by with_unfolding_all exact ((flips_tensor_heq e1 (T3.trans h4) .one hψ (unifAt w') hdep (flipOrder (m + 1))) :))`.
+-/
 theorem trFlip_of_same (hsame : SameD) : TrFlip := by
   intro X X' T T' L L' sc G G' W W' S S' μ₀ μ₀' ι hA Φ'
   obtain ⟨hl, hg, hw, hs⟩ := hA
@@ -251,6 +318,9 @@ theorem trFlip_of_same (hsame : SameD) : TrFlip := by
   have hdep : depthAt G' w' = depthAt G w' := (by with_unfolding_all exact ((congrArg (max · 1) h3) :))
   exact (by with_unfolding_all exact ((flips_tensor_heq e1 (T3.trans h4) .one hψ (unifAt w') hdep (flipOrder (m + 1))) :))
 
+/- English proof (translation)
+The claim follows from `trFlip_of_same (sameD_of_cosZero GlobalTheory.T.exists_coset_same_localCosetSets_other_baseLattice)`.
+-/
 theorem flippedTensorsTransferToGrid_proof : TrFlip := trFlip_of_same (sameD_of_cosZero GlobalTheory.T.exists_coset_same_localCosetSets_other_baseLattice)
 
 end GlobalTheory.RowEx.Carry

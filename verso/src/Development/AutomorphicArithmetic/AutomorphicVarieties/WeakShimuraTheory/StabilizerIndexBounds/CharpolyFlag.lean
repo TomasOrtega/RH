@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 
 open IsLocalRing Polynomial Matrix UpperTheory.V
 
+/- English proof (translation)
+Use `letI : Algebra A K[X] := ((algebraMap K K[X]).comp f).toAlgebra`. Rewrite using `[← Matrix.charpoly_map]`. Express the relevant statement in the definitionally equal form `(W.GDet.repAlg ρ K[X] _).det = (Matrix.charmatrix _).det`. Use `congr 1`. Use extensionality with `i j : 1`.
+
+Establish `h : ∀ a, algebraMap A K[X] a = C (f a)` using `fun _ => rfl`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[W.GDet.repAlg, h]`. Simplify using `[W.GDet.repAlg, h, hij]`.
+-/
 private theorem chi_map_ofRep {n : ℕ} {A K G : Type} [CommRing A] [CommRing K] [Group G] (f : A →+* K)
     (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
     ((W.GDet.ofRep ρ).map f).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly.map f := by
@@ -17,6 +22,13 @@ private theorem chi_map_ofRep {n : ℕ} {A K G : Type} [CommRing A] [CommRing K]
     simp [W.GDet.repAlg, h]
   · simp [W.GDet.repAlg, h, hij]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Establish `h1` using `Matrix.charpoly_units_conj g (W.mat r s)`. Establish `h2 : ((g * r s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).BlockTriangular id` using `fun i j hij => (hg s).1 i j hij`. Establish `h3` using `Matrix.charpoly_of_upperTriangular _ h2`. Rewrite using `[← h1]`.
+
+Simplify using `only [Units.val_mul, Matrix.coe_units_inv] at h3`. Use `h3.trans ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h4` using `(hg s).2 i`. Simplify using `only [Units.val_mul, Matrix.coe_units_inv] at h4`.
+
+Rewrite using `[h4]`.
+-/
 private theorem charpoly_flag {H k : Type} [Group H] [CommRing k] {n : ℕ} (r : H →* GL (Fin n) k)
     (κ : Fin n → H →* kˣ) (h : W.HasFlag r κ) (s : H) :
     (W.mat r s).charpoly = ∏ i, ((X : Polynomial k) - C ((κ i s : kˣ) : k)) := by
@@ -33,6 +45,13 @@ private theorem charpoly_flag {H k : Type} [Group H] [CommRing k] {n : ℕ} (r :
   simp only [Units.val_mul, Matrix.coe_units_inv] at h4
   rw [h4]
 
+/- English proof (translation)
+Introduce `l _ F O _ _ _ n r x`. Use `⟨fun g => ?_, fun v g => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun D => W.GDet.chi D (MonoidAlgebra.single g 1)) x.red`. Simplify using `only [W.Resid.Dbar, chi_map_ofRep] at h`. Rewrite using `[h]`.
+
+Express the relevant statement in the definitionally equal form `(Matrix.diagonal _).charpoly.map _ = _`. Rewrite using `[Matrix.charpoly_diagonal, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Apply `Polynomial.map_injective (algebraMap x.A x.Fr) (IsFractionRing.injective x.A x.Fr)` to reduce the goal to its premises. Rewrite using `[← Matrix.charpoly_map, Polynomial.map_prod]`.
+
+Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Conclude with `charpoly_flag _ _ (x.flag v) g`.
+-/
 theorem UpperTheory.V.Ws.h4Cp :
     ∀ (l : ℕ) [Fact l.Prime] (F : W.GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (n : ℕ)
       (r : W.Resid F O n) (x : W.Point r),

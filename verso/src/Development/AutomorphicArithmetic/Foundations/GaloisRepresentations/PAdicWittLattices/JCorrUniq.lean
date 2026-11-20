@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.Et GlobalTheory.GalV UpperTheory.Gal.G3
 universe u v
 
+/- English proof (translation)
+Establish `hq : ∀ n : ℤ, Subsingleton (HQ l E n 0)` using `fun n => by`. Use `h n` as an intermediate fact. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `z : ∀ c : HQ l E n 0, c = 0` using `fun c => by`. Proceed by induction on `c using TensorProduct.induction_on with`.
+
+Consider the case `zero => rfl`. Consider the case `tmul q y => rw [Subsingleton.elim y 0, TensorProduct.tmul_zero]`. Consider the case `add c d hc hd => rw [hc, hd, add_zero]`. Rewrite using `[z a, z b]`. Conclude with `⟨fun a b => DFinsupp.ext fun n => (hq n).elim _ _⟩`.
+-/
 private theorem htot_subsingleton (l : ℕ) [Fact l.Prime] (E : Spc)
     (h : ∀ n : ℤ, Subsingleton (Hl l E n 0)) : Subsingleton (Htot l E) := by
   have hq : ∀ n : ℤ, Subsingleton (HQ l E n 0) := fun n => by
@@ -15,6 +20,11 @@ private theorem htot_subsingleton (l : ℕ) [Fact l.Prime] (E : Spc)
     rw [z a, z b]
   exact ⟨fun a b => DFinsupp.ext fun n => (hq n).elim _ _⟩
 
+/- English proof (translation)
+Take `⟨W, c, G, _, _, a, J, _, σ, hgal, hsp, hx⟩` from `hA`. Establish `hσ : ∀ j, σ j ≫ s ≫ p = c ≫ p` using `fun j => by`. Rewrite using `[← Category.assoc, hsp.choose j]`. Establish `hinj` using `hT.inj p (c ≫ p) c rfl G a hgal`. Apply `hinj` to reduce the goal to its premises.
+
+Establish `e` using `htr W (c ≫ p) c rfl J σ hσ hsp (pullTot l (sch.map t) x)`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Use `(hx x).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Functor.map_comp, pullTot_comp]`. Both sides reduce to the same expression.
+-/
 private theorem op_eq (l : ℕ) [Fact l.Prime] (k : Type) [Field k] {Z Y Z' : Scheme.{0}} (p : Z ⟶ sp k)
     (s : Y ⟶ Z) (t : Y ⟶ Z') (hT : (et l (sp k)).Good)
     (tr : (et l (sp k)).H (s ≫ p) →ₗ[ℚ_[l]] (et l (sp k)).H p) (htr : (et l (sp k)).IsTr p (s ≫ p) s tr)
@@ -31,6 +41,13 @@ private theorem op_eq (l : ℕ) [Fact l.Prime] (k : Type) [Field k] {Z Y Z' : Sc
   rw [Functor.map_comp, pullTot_comp]
   rfl
 
+/- English proof (translation)
+Introduce `hG hD hV l _ k _ Z Y Z' p s t A A' hA hA'`. Distinguish the cases in `hl : (l : k) = 0`. Use `htot_subsingleton l (sch.obj Z) fun n => hV l k hl p n 0` as an intermediate fact. Conclude with `LinearMap.ext fun x => Subsingleton.elim _ _`. Establish `hu : IsUnit (l : Γ(sp k, ⊤))`.
+
+Establish `h : IsUnit ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom (l : k))` using `(IsUnit.mk0 _ hl).map _`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hT` using `hG l (sp k) hu`. Take `⟨W, c, G, _, _, a, J, _, σ, hgal, hsp, -⟩` from `id hA`. Take `⟨hf, he, hs, -, -, -⟩` from `hgal`.
+
+Take `⟨_, _⟩` from `@hD Z Y W s c hf he hs J _ σ hsp`. Take `⟨tr, htr⟩` from `hT.tr p (s ≫ p) s rfl`. Conclude with `LinearMap.ext fun x => (op_eq l k p s t hT tr htr A hA x).trans (op_eq l k p s t hT tr htr A' hA' x).symm`.
+-/
 theorem UpperTheory.Gal.G3.jCorrUniq :
     EtGood → SplitDesc → CharVan → CorrUniq := by
   intro hG hD hV l _ k _ Z Y Z' p s t A A' hA hA'

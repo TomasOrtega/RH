@@ -8,6 +8,17 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S A B _ _ _ _ u v hA hB hu hv t s hst H x hx`. Use `haveI := hA.smooth`. Use `haveI := hB.proper`. Establish `hη : (η[B]).left ≫ B.hom = 𝟙 S` using `by simpa using Over.w (η[B])`. Establish `hid : IsClosedImmersion (𝟙 S)` using `inferInstance`.
+
+Use `haveI : IsClosedImmersion ((η[B]).left ≫ B.hom) := by rw [hη]; exact hid`. Use `haveI : IsClosedImmersion (η[B]).left := IsClosedImmersion.of_comp _ B.hom`. Establish `hF : IsClosed ((u * v⁻¹).left ⁻¹' Set.range (η[B]).left)` using `(η[B]).left.isClosedEmbedding.isClosed_range.preimage (u * v⁻¹).left.continuous`. Establish `hcl : x ∈ closure (A.hom ⁻¹' {t})`. Rewrite using `[mem_closure_iff]`.
+
+Introduce `U hU hxU`. Establish `hO : IsOpen (A.hom '' U)` using `A.hom.isOpenMap U hU`. Take `⟨_, ⟨y, hyU, rfl⟩, hyt⟩` from `mem_closure_iff.mp hst _ hO ⟨x, hxU, hx⟩`. Conclude with `⟨y, hyU, hyt⟩`. Establish `hmem : x ∈ (u * v⁻¹).left ⁻¹' Set.range (η[B]).left` using `closure_minimal (fun z (hz : z ∈ A.hom ⁻¹' {t}) => (⟨t, (H z hz).symm⟩ : (u * v⁻¹).left z ∈ Set.range (η[B]).left)) hF hcl`.
+
+Take `⟨y, hy⟩` from `hmem`. Establish `hys : y = s`. Establish `e1` using `congrArg B.hom hy`. Rewrite `e1` using `[← Scheme.Hom.comp_apply, hη, ← Scheme.Hom.comp_apply, Over.w]`. Simplify `e1` using `[hx]`.
+
+Substitute `hys` using the available equality. Conclude with `hy.symm`.
+-/
 theorem hom_diff_unit_specialises : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (u v : A ⟶ B), IsAbelianScheme A → IsAbelianScheme B → IsMonHom u → IsMonHom v → ∀ t s : S, s ∈ closure {t} → (∀ x : A.left, A.hom x = t → (u * v⁻¹).left x = (η[B]).left t) → ∀ x : A.left, A.hom x = s → (u * v⁻¹).left x = (η[B]).left s := by
   intro S A B _ _ _ _ u v hA hB hu hv t s hst H x hx
   haveI := hA.smooth

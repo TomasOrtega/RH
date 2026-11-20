@@ -13,6 +13,9 @@ namespace GlobalTheory.KerJ.RatPts
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Host NumberField IsDedekindDomain Formalism.FrobeniusOrbits Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR
 open GlobalTheory.Mem.Chr (finPartI)
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem isFin_finPart {L : Type} [Field L] [NumberField L] (a : Ideles L) : IsFinIdele (finPartI L a) := fun _ => rfl
 
 end GlobalTheory.KerJ.RatPts

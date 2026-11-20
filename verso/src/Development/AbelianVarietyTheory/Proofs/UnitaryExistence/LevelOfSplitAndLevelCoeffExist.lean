@@ -15,6 +15,13 @@ open GlobalTheory.HostModel
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite using `[Set.mem_singleton_iff.mp hx, cmHost_bar_halfIntegerGenerator]`. Conclude with `sub_mem (one_mem _) (Algebra.self_mem_adjoin_singleton ℤ _)`. Consider the case `algebraMap r`.
+
+Rewrite using `[eq_intCast, map_intCast]`. Conclude with `intCast_mem _ r`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
+
+Conclude with `mul_mem hx hy`.
+-/
 theorem bar_mem_adjoin (H : Host E) {a : 𝓞 E} (ha : a ∈ Algebra.adjoin ℤ {H.w0}) :
     H.bar a ∈ Algebra.adjoin ℤ {H.w0} := by
   induction ha using Algebra.adjoin_induction with
@@ -27,6 +34,9 @@ theorem bar_mem_adjoin (H : Host E) {a : 𝓞 E} (ha : a ∈ Algebra.adjoin ℤ 
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_span, Set.image_singleton]`. Use `congr 2`. Conclude with `bar_bar H al`.
+-/
 theorem map_bar_span_bar (H : Host E) (al : 𝓞 E) :
     (Ideal.span {H.bar al}).map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {al} := by
   rw [Ideal.map_span, Set.image_singleton]
@@ -54,9 +64,19 @@ def levelOfSplit (H : Host E) (al : 𝓞 E) (M A : ℕ) (hal : al ∈ Algebra.ad
   A := A
   A_pos := hA
 
+/- English proof (translation)
+The claim follows from `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos`.
+-/
 theorem M'_pos {H : Host E} (l : Level H) : 0 < l.M' :=
   Nat.lcm_pos (by have := l.three_le; omega) l.A_pos
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Establish `ha : (a : ℂ) ≠ 0`. Establish `: a ≠ 0` using `by rintro rfl; simp at hn`. Conclude with `this` after adjusting the coercions. Establish `hk : (k : ℂ) ≠ 0`.
+
+Establish `: k ≠ 0` using `by rintro rfl; simp at hn`. Conclude with `this` after adjusting the coercions. Use `⟨k, ?_⟩` and prove the remaining obligations. Unfold `zeta`. Rewrite using `[← Complex.exp_nat_mul]`.
+
+Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem zeta_eq_pow_of_dvd {a n : ℕ} (hn : 0 < n) (h : a ∣ n) : ∃ k : ℕ, zeta a = zeta n ^ k := by
   obtain ⟨k, rfl⟩ := h
   have ha : (a : ℂ) ≠ 0 := by
@@ -72,9 +92,15 @@ theorem zeta_eq_pow_of_dvd {a n : ℕ} (hn : 0 < n) (h : a ∣ n) : ∃ k : ℕ,
   push_cast
   field_simp
 
+/- English proof (translation)
+The claim follows from `((Complex.isPrimitiveRoot_exp n hn.ne').isIntegral hn).tower_top`.
+-/
 theorem isIntegral_zeta {n : ℕ} (hn : 0 < n) : IsIntegral ℚ (zeta n) :=
   ((Complex.isPrimitiveRoot_exp n hn.ne').isIntegral hn).tower_top
 
+/- English proof (translation)
+Apply `sq_eq_sq_iff_eq_or_eq_neg.mp` to reduce the goal to its premises. Rewrite using `[H.sqrt_neg_disc_sq, ← map_pow, coe_rt_sq]`. Simplify using the standard rewrite rules.
+-/
 theorem hostRootValue_eq_or_neg_embedding (H : Host E) (τ : E →+* ℂ) : H.rt0 = τ (H.rt : E) ∨ H.rt0 = -τ (H.rt : E) := by
   apply sq_eq_sq_iff_eq_or_eq_neg.mp
   rw [H.sqrt_neg_disc_sq, ← map_pow, coe_rt_sq]
@@ -113,6 +139,9 @@ end GlobalTheory.LevelExist
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ H al M A h1 h2 h3 h4 h5 h6 => ⟨LevelExist.levelOfSplit H al M A h1 h2 h3 h4 h5 h6, rfl, rfl, rfl⟩, fun _ _ _ _ H => HostModel.instNonemptyLevel H, fun _ _ _ _ _ l => ⟨LevelExist.minCoeff l⟩⟩`.
+-/
 theorem level_of_split_and_level_coeff_exist :
     (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (al : 𝓞 E) (M A : ℕ),
       al ∈ Algebra.adjoin ℤ {H.w0} → al * H.bar al = (M : 𝓞 E) → IsCoprime al (H.bar al) → 3 ≤ M →

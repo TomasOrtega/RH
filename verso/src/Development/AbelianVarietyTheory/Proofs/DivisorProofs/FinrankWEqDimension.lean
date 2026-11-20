@@ -18,6 +18,11 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
   [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C]
   [IsScalarTower ℤ_[p] O C] {Λ : Type} [CommRing Λ] [StarRing Λ] (P : Point p v O Λ)
 
+/- English proof (translation)
+Establish `hp : ((p : C) ^ 2) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Use `eq_top_iff.2 fun y hy => ?_` and prove the remaining obligations. Use `clear hy`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`.
+
+Consider the case `add x y hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `tmul c f`. Take `⟨x, hx⟩` from `h f`. Use `⟨(c / (p : C) ^ 2) • P.inclT x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, P.alC_inclT, hx, Point.inclOm, TensorProduct.mk_apply, ← TensorProduct.smul_tmul, TensorProduct.smul_tmul', Algebra.smul_def ((p : O) ^ 2), map_pow, map_natCast, smul_eq_mul, _root_.mul_one, div_mul_cancel₀ _ hp]`.
+-/
 theorem range_alC (h : CokernelBound P) : LinearMap.range P.alC = ⊤ := by
   have hp : ((p : C) ^ 2) ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)
   refine eq_top_iff.2 fun y hy => ?_
@@ -32,6 +37,9 @@ theorem range_alC (h : CokernelBound P) : LinearMap.range P.alC = ⊤ := by
       TensorProduct.smul_tmul', Algebra.smul_def ((p : O) ^ 2), map_pow, map_natCast, smul_eq_mul,
       _root_.mul_one, div_mul_cancel₀ _ hp]
 
+/- English proof (translation)
+Use `haveI := P.isLocalRing`. Use `haveI := (Point.omega_free_finite_bijective p C v O Λ P).1`. Rewrite using `[Module.finrank_baseChange, OmegaRank.finrank_omega_Gt p C v O Λ P]`.
+-/
 theorem finrank_OmC : Module.finrank C P.OmC = P.A.g := by
   haveI := P.isLocalRing
   haveI := (Point.omega_free_finite_bijective p C v O Λ P).1
@@ -39,6 +47,9 @@ theorem finrank_OmC : Module.finrank C P.OmC = P.A.g := by
 
 end
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P h`. Establish `h₁` using `LinearMap.finrank_range_add_finrank_ker P.alC`. Rewrite `h₁` using `[range_alC P h, finrank_top, finrank_OmC, P.finrank_V]`. Express the relevant statement in the definitionally equal form `Module.finrank C (LinearMap.ker P.alC) = _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_W : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), CokernelBound P → Module.finrank C P.W = P.A.g := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P h
   have h₁ := LinearMap.finrank_range_add_finrank_ker P.alC

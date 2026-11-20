@@ -8,6 +8,25 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n V Q c r ι Λ R hAx T _ _ _ φ gen hgen ψ hc hu hϖ v`. Use `haveI : Finite (ResidueField c.O) := (UpperTheory.V.abelian₂.dvr_finite l c.O).2.1`. Use `haveI : Finite (ResidueField T) := Finite.of_surjective _ (Alg.resMap_bijective c.O T).2`. Establish `ha : IsLocalArtin (s.hw v.1) (artOf (s.hw v.1))` using `hAx.art_spec v`. Establish `hI : ∀ i (g : Dec (F` using `L) (s.A v.1)) (hg : g ∈ V.frame.Iv v), (ψ v i g : T) = φ (Λ.κ v i ⟨g, hg⟩) := by`.
+
+Introduce `i g hg`. Establish `h1` using `hu v i (ineIncl (s.hw v.1) ⟨g, hg⟩) g ⟨_, JEx.art_ine _ ha ⟨g, hg⟩⟩ rfl rfl`. Establish `h2` using `congrArg (fun z : Λ.Λˣ => φ z) (R.theta v i (ineIncl (s.hw v.1) ⟨g, hg⟩) g hg ⟨_, JEx.art_ine _ ha ⟨g, hg⟩⟩ rfl rfl)`. Establish `h3 : φ ((hset Q R.τ₀).epsV Λ.Λ v g) = (hset Q R.τ₀).epsV T v g` using `φ.commutes _`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, Units.val_one, map_one, h3, mul_assoc] at h1 h2`.
+
+Conclude with `(left_inv_eq_right_inv h1 ((mul_comm _ _).trans h2))`. Use `choose ψ₀ hψ₀ hκ using Λ.inert v`. Establish `hI' : ∀ i (g : Dec (F` using `L) (s.A v.1)), (g : G L Ω) ∈ Ine (F := L) (s.A v.1) → (ψ v i g : T) = φ (ψ₀ i g) := by`. Introduce `i g hg`. Rewrite using `[hI i g hg, hκ]`.
+
+Both sides reduce to the same expression. Take `⟨x, hx⟩` from `ha.surj (unif _)`. Set `p : T →+* ResidueField c.O` to `Alg.res c.O T`. Establish `hx' : ∀ i, W.pushCh p (ψ v i) (Subgroup.inclusion (Weil_le_Dec _) x) = r.psib v i (Subgroup.inclusion (Weil_le_Dec _) x)`. Introduce `i`.
+
+Use `mul_right_cancel (JEx.eq_of_prod (fun i : Fin n => W.pushCh p (ψ v i) (Subgroup.inclusion (Weil_le_Dec _) x) * (hset Q R.τ₀).epsV (ResidueField c.O) v (Subgroup.inclusion (Weil_le_Dec _) x) ^ (i : ℕ)) (fun i : Fin n => r.psib v i (Subgroup.inclusion (Weil_le_Dec _) x) * (hset Q R …` and prove the remaining obligations. Establish `h1` using `congrArg p (hϖ v j x (Subgroup.inclusion (Weil_le_Dec _) x) rfl hx)`. Establish `h2` using `R.res.unif v j x (Subgroup.inclusion (Weil_le_Dec _) x) rfl hx`. Establish `h3` using `(Alg.res_eq_zero_iff c.O T _).2 (hgen (.inr (v, j)))`. Rewrite `h3` using `[map_sub, AlgHom.commutes, sub_eq_zero]`.
+
+Establish `h4 : p ((hset Q R.τ₀).epsV T v (Subgroup.inclusion (Weil_le_Dec _) x)) = (hset Q R.τ₀).epsV (ResidueField c.O) v (Subgroup.inclusion (Weil_le_Dec _) x)` using `(Alg.res c.O T).commutes _`. Use `Eq.trans ?_ ((h1.trans h3).trans h2.symm)` and prove the remaining obligations. Simplify using `only [Units.coe_prod, map_prod, Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow]`. Conclude with `Finset.prod_congr rfl fun k _ => congrArg₂ (· * ·) rfl (congrArg (· ^ (k : ℕ)) h4.symm)`. Introduce `i`.
+
+Use `⟨⟨hc v i, fun g => ?_, fun g => ?_⟩, MonoidHom.ext fun g => Units.ext (hI i g.1 g.2).symm⟩` and prove the remaining obligations. Establish `h1 : IsLocallyConstant (W.pushCh p (ψ v i))` using `IsLocallyConstant.desc _ Units.val (JEx.res_lc (O := c.O) (hc v i)) Units.val_injective`. Set `β : Dec (F` to `L) (s.A v.1) →* (ResidueField c.O)ˣ := r.psib v i`. Establish `h2 : IsLocallyConstant β` using `JEx.lc_of_open _ (r.psib_open v i)`. Establish `h3` using `JEx.char_triv (s.hw v.1) ha (W.pushCh p (ψ v i) / β) (h1.div h2) (fun y hy => by`.
+
+Rewrite using `[MonoidHom.div_apply, div_eq_one]`. Use `Units.ext ?_` and prove the remaining obligations. Conclude with `(congrArg p (hI' i y hy)).trans ((Alg.res_map φ _).trans ((hψ₀ i).red y))) x hx (by rw [MonoidHom.div_apply, div_eq_one]; exact hx' i)`. Establish `h4 : W.pushCh p (ψ v i) g / β g = 1` using `DFunLike.congr_fun h3 g`. Conclude with `congrArg Units.val (div_eq_one.1 h4)`.
+
+Take `⟨k, hk⟩` from `g.2`. Establish `h1` using `JEx.eq_on_tors (s.hw v.1) (ψ v i) (W.pushCh (φ : Λ.Λ →+* T) (ψ₀ i)) (hc v i) (JEx.cont_map φ (hψ₀ i).cont) (fun y hy => Units.ext (hI' i y hy)) g.1 (l ^ k) (pow_pos (Fact.out : l.Prime).pos k) ((QuotientGroup.eq_one_iff _).1 ((map_pow (QuotientGroup.mk' _) _ _).trans hk))`. Conclude with `(congrArg Units.val h1).trans ((congrArg φ ((hψ₀ i).mu g)).trans (φ.commutes _))`.
+-/
 theorem UpperTheory.V.Hi.exists_ordinaryCharacters_heckeAlgebra :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ) (V : s.Lev) (Q : QData V) (c : Coef l) (r : Resid V.frame c.O n) (ι : Qbar l ≃+* ℂ) (Λ : LamObj r) (R : HD Q ι Λ), (hset Q R.τ₀).Ax →
     ∀ (T : Type) [CommRing T] [Algebra c.O T] [Alg.IsCO c.O T] (φ : Λ.Λ →ₐ[c.O] T) (gen : (hset Q R.τ₀).Op → T), (∀ i, gen i - algebraMap c.O T (R.a i) ∈ maximalIdeal T) →

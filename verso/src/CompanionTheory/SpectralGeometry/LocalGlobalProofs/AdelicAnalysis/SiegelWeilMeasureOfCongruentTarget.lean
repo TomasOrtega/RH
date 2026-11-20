@@ -30,22 +30,34 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E]
 def rE {M n : ℕ} (X : Fin n → Fin M → E) (G : Matrix (Fin n) (Fin n) E) : Fin n → Fin M → E :=
   fun a i => ∑ c, X c i * G c a
 
+/- English proof (translation)
+Use extensionality with `a i`. Simplify using `[rE, Matrix.mul_apply, mul_comm]`.
+-/
 theorem rE_eq {M n : ℕ} (X : Fin n → Fin M → E) (G : Matrix (Fin n) (Fin n) E) :
     Matrix.of (rE X G) = Gᵀ * Matrix.of X := by
   ext a i
   simp [rE, Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Establish `: Matrix.of (rE (rE X G) G') = Matrix.of (rE X (G * G'))`. Rewrite using `[rE_eq, rE_eq, rE_eq, Matrix.transpose_mul, Matrix.mul_assoc]`. Conclude with `Matrix.of.injective this`.
+-/
 theorem rE_rE {M n : ℕ} (X : Fin n → Fin M → E) (G G' : Matrix (Fin n) (Fin n) E) :
     rE (rE X G) G' = rE X (G * G') := by
   have : Matrix.of (rE (rE X G) G') = Matrix.of (rE X (G * G')) := by
     rw [rE_eq, rE_eq, rE_eq, Matrix.transpose_mul, Matrix.mul_assoc]
   exact Matrix.of.injective this
 
+/- English proof (translation)
+Establish `: Matrix.of (rE X (1 : Matrix (Fin n) (Fin n) E)) = Matrix.of X`. Rewrite using `[rE_eq, Matrix.transpose_one, Matrix.one_mul]`. Conclude with `Matrix.of.injective this`.
+-/
 theorem rE_one {M n : ℕ} (X : Fin n → Fin M → E) : rE X (1 : Matrix (Fin n) (Fin n) E) = X := by
   have : Matrix.of (rE X (1 : Matrix (Fin n) (Fin n) E)) = Matrix.of X := by
     rw [rE_eq, Matrix.transpose_one, Matrix.one_mul]
   exact Matrix.of.injective this
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gramE, hE, hform, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, Matrix.transpose_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gramE_eq (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (X : Fin n → Fin M → E) :
     gramE σ J X = (Matrix.of X).map (σ : E →+* E) * J * (Matrix.of X)ᵀ := by
   ext a b
@@ -53,6 +65,9 @@ theorem gramE_eq (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     Matrix.transpose_apply, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[gramE_eq, gramE_eq, rE_eq, Matrix.transpose_mul, Matrix.transpose_transpose, cT, Matrix.map_mul, Matrix.transpose_map]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem gramE_rE (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (X : Fin n → Fin M → E)
     (G : Matrix (Fin n) (Fin n) E) :
     gramE σ J (rE X G) = cT (σ : E →+* E) G * gramE σ J X * G := by
@@ -62,11 +77,17 @@ theorem gramE_rE (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 variable (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `[ratTup, rE, rmul, map_sum, map_mul]`.
+-/
 theorem ratTup_rE {M n : ℕ} (X : Fin n → Fin M → E) (G : Matrix (Fin n) (Fin n) E) :
     ratTup (F := F) R (rE X G) = rmul R (ratTup R X) (G.map (inclR R)) := by
   funext a i
   simp [ratTup, rE, rmul, map_sum, map_mul]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[cT, sigR, inclR]`.
+-/
 theorem cT_map_incl (σ : E →ₐ[F] E) {n : ℕ} (G : Matrix (Fin n) (Fin n) E) :
     cT (sigR R σ) (G.map (inclR R)) = (cT (σ : E →+* E) G).map (inclR R) := by
   ext a b
@@ -87,6 +108,9 @@ def tauH (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x) {n : ℕ}
     intro a b
     exact congrFun (congrFun key a) b⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `cT (sigR R σ) (H.map (inclR R)) * T'.map (inclR R) * H.map (inclR R) = T.map (inclR R)`. Rewrite using `[cT_map_incl, ← hrel, Matrix.map_mul, Matrix.map_mul]`.
+-/
 theorem tauH_hermOf (σ : E →ₐ[F] E) (hinv : ∀ x, σ (σ x) = x) {n : ℕ}
     (H T T' : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b)
     (hT' : ∀ a b, σ (T' b a) = T' a b) (hrel : cT (σ : E →+* E) H * T' * H = T) :
@@ -101,6 +125,11 @@ section Top
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨t1, -, t3, -, -, -, -, t8, -, -⟩` from `TopK.topTens_props F E σ hcm R`. Use `haveI := t8 n M`. Establish `hc : Continuous (fun X : Fin n → Fin M → R ⊗[F] E => rmul R X G)` using `continuous_pi fun a => continuous_pi fun i => continuous_finset_sum _ fun c _ => by`. Establish `h : Continuous fun X : Fin n → Fin M → R ⊗[F] E => X c i` using `(continuous_apply i).comp (continuous_apply c)`. Conclude with `h.mul continuous_const`.
+
+Conclude with `hc.measurable`.
+-/
 theorem measurable_rmul (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R]
     [T2Space R] (n M : ℕ) (G : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
@@ -114,6 +143,13 @@ theorem measurable_rmul (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (R : Type) [
       exact h.mul continuous_const
   exact hc.measurable
 
+/- English proof (translation)
+Establish `hR'` using `hR`. Take `⟨r1, r2, r3, r4, -⟩` from `hR'`. Take `⟨-, hW, hHm⟩` from `coord_measures_haar F E σ hcm R d b lam hlam`. Establish `hμ` using `hW n M`. Establish `hν` using `hHm n`.
+
+Establish `hdet : IsUnit (H.map (inclR (F` using `F) R)).det := by`. Establish `h1 : IsUnit ((inclR (F` using `F) R) H.det) := (IsUnit.mk0 _ hH).map (inclR (F := F) R)`. Rewrite `h1` using `[RingHom.map_det]`. Conclude with `h1`. Set `τ` to `tauH R σ hinv (H.map (inclR R))`.
+
+Establish `key` using `GlobalTheory.T.gram_fiber_measures_rmul_equivariant F E σ hcm M J hJ R hR n _ _ m hμ hν hm (H.map (inclR R)) hdet τ (fun S => rfl) a c (ha _ hμ) (hc' _ hν τ (fun S => rfl)) (hermOf R σ T' hT')`. Establish `hτ : τ (hermOf R σ T' hT') = hermOf R σ T hT` using `tauH_hermOf R σ hinv H T T' hT hT' hrel`. Rewrite `key` using `[hτ]`. Rewrite using `[div_eq_inv_mul, mul_smul, key, inv_smul_smul₀ hc]`.
+-/
 theorem unitary_conjugate_local (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (hinv : ∀ x, σ (σ x) = x) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (hR : IsLocR R) {n d : ℕ}
@@ -146,11 +182,17 @@ theorem unitary_conjugate_local (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (hin
   rw [hτ] at key
   rw [div_eq_inv_mul, mul_smul, key, inv_smul_smul₀ hc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `[projInf, rmul, map_sum, map_mul, inclR]`.
+-/
 theorem projInf_rmul {M n : ℕ} (X : Fin n → Fin M → AF F ⊗[F] E) (G : Matrix (Fin n) (Fin n) E) :
     projInf (rmul (AF F) X (G.map (inclR (AF F)))) = rmul (Ainf F) (projInf X) (G.map (inclR (Ainf F))) := by
   funext a i
   simp [projInf, rmul, map_sum, map_mul, inclR]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `[projV, projFin, rmul, map_sum, map_mul, inclR]`.
+-/
 theorem projV_rmul (v : HeightOneSpectrum (𝓞 F)) {M n : ℕ} (X : Fin n → Fin M → AF F ⊗[F] E)
     (G : Matrix (Fin n) (Fin n) E) :
     projV v (projFin (rmul (AF F) X (G.map (inclR (AF F))))) =
@@ -164,6 +206,17 @@ section Main
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `Measure.ext_of_lintegral _ fun Φ hΦ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hΦ he, GlobalTheory.T.siegel_mean_value_nonnegative F E σ hcm M J hJ μ 𝓕 hH hF n _ (fun X => Φ (rmul (AF F) X (H.map (inclR (F := F) (AF F))))) (hΦ.comp he), GlobalTheory.T.siegel_mean_value_nonnegative F E σ hcm M J hJ μ 𝓕 hH hF n _ Φ hΦ]`. Use `congr 1`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Set `eqv : ({X : Fin n → Fin M → E | gramE σ J X = T'} : Set _) ≃ ({X : Fin n → Fin M → E | gramE σ J X = T} : Set _)` to `{ toFun := fun X => ⟨rE X.1 H, by`.
+
+Establish `hX : gramE σ J X.1 = T'` using `X.2`. Express the relevant statement in the definitionally equal form `gramE σ J (rE X.1 H) = T`. Rewrite using `[gramE_rE, hX, h1]⟩`. Use `invFun := fun X => ⟨rE X.1 G, by`. Establish `hX : gramE σ J X.1 = T` using `X.2`.
+
+Express the relevant statement in the definitionally equal form `gramE σ J (rE X.1 G) = T'`. Rewrite using `[gramE_rE, hX, h2]⟩`. Use `left_inv := fun X => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `rE (rE X.1 H) G = X.1`. Rewrite using `[rE_rE, hHG, rE_one])`.
+
+Use `right_inv := fun X => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `rE (rE X.1 G) H = X.1`. Rewrite using `[rE_rE, hGH, rE_one]) }`. Rewrite using `[← eqv.tsum_eq (fun X => Φ (actW (AF F) σ J h⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))))]`. Use `tsum_congr fun X => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Φ (rmul (AF F) (actW (AF F) σ J h⁻¹ (ratTup (AF F) X.1)) (H.map (inclR (F := F) (AF F)))) = Φ (actW (AF F) σ J h⁻¹ (ratTup (AF F) (rE X.1 H)))`. Rewrite using `[ratTup_rE]`. Unfold `actW`. Rewrite using `[(GlobalTheory.T.gram_right_mul_action_laws F E σ hcm (AF F) M n J (ratTup (AF F) X.1) (H.map (inclR (F := F) (AF F))) 1).2.2.2 _]`.
+-/
 theorem theta_map (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (hJ : IsHermND σ J) (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J))
     (hH : IsHaarH F E σ M J μ) (hF : IsFDH F E σ M J μ 𝓕) {n : ℕ}
@@ -208,6 +261,27 @@ theorem theta_map (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {M : ℕ} (J : Mat
 
 end Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm M J hJ n T hT _ g T' hT' hrel hSW d b laminf lam hinf hv μ 𝓕 hH hF minf m hminf hm`. Establish `hinv` using `(HaarCoord.conj_facts hcm).1`. Take `⟨G, hG⟩ : ∃ G : Matrix (Fin n) (Fin n) E, G = (g : Matrix (Fin n) (Fin n) E)` from `⟨_, rfl⟩`. Take `⟨H, hHd⟩ : ∃ H : Matrix (Fin n) (Fin n) E, H = ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)` from `⟨_, rfl⟩`. Establish `hGH : G * H = 1` using `by rw [hG, hHd]; exact Units.mul_inv g`.
+
+Establish `hHG : H * G = 1` using `by rw [hG, hHd]; exact Units.inv_mul g`. Rewrite `hrel` using `[← hG]`. Establish `hdetH : H.det ≠ 0`. Introduce `h0`. Establish `: H.det * G.det = 1` using `by rw [← Matrix.det_mul, hHG, Matrix.det_one]`.
+
+Rewrite `this` using `[h0, zero_mul]`. Conclude with `zero_ne_one this`. Establish `hrel' : cT (σ : E →+* E) H * T' * H = T`. Rewrite using `[hrel]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = T := by rw [← cT_mul, hGH, cT_one, Matrix.one_mul, Matrix.mul_one]`. Take `⟨ai, a, hau, hai, hav⟩` from `GlobalTheory.T.right_multiplication_euler_product F E σ hcm n M H hdetH`. Take `⟨ci, c, hcu, hci, hcv⟩` from `GlobalTheory.T.hermitian_matrix_euler_product F E σ hcm n H hdetH`. Take `⟨-, -, -, -, hq, -⟩` from `GlobalTheory.T.unit_product_closure_properties F ai ci a c hau hcu`.
+
+Take `⟨hci0, hc0, -⟩` from `GlobalTheory.T.unit_product_closure_properties F ci ai c a hcu hau`. Establish `hrI : IsLocR (Ainf F)` using `isLocR_Ainf F hcm.1`. Establish `hrV : ∀ v, IsLocR (Fv F v)` using `fun v => LocFv.isLocR_Fv F v`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : ∀ v, BorelSpace (Fv F v) := fun _ => ⟨rfl⟩`.
+
+Establish `sInf` using `unitary_conjugate_local σ hcm hinv J hJ (Ainf F) hrI b laminf hinf.1 minf hminf H T T' hdetH hT hT' hrel' ai ci hci0 hai hci`. Establish `sV` using `fun v => unitary_conjugate_local σ hcm hinv J hJ (Fv F v) (hrV v) b (lam v) (hv v).1 (m v) (hm v) H T T' hdetH hT hT' hrel' (a v) (c v) (hc0 v) (hav v) (hcv v)`. Take `⟨⟨t1, t2, t3⟩, -⟩` from `AdeleTop.adele_top F`. Establish `me` using `measurable_rmul σ hcm (AF F) n M (H.map (inclR (F := F) (AF F)))`. Establish `mi : Measurable fun X : Fin n → Fin M → Ainf F ⊗[F] E => rmul (Ainf F) X (H.map (inclR (F` using `F) (Ainf F))) := by`.
+
+Take `⟨r1, r2, r3, r4, -⟩` from `hrI`. Conclude with `measurable_rmul σ hcm (Ainf F) n M _`. Establish `mv : ∀ v, Measurable fun X : Fin n → Fin M → Fv F v ⊗[F] E => rmul (Fv F v) X (H.map (inclR (F` using `F) (Fv F v))) := by`. Introduce `v`. Take `⟨r1, r2, r3, r4, -⟩` from `hrV v`.
+
+Conclude with `measurable_rmul σ hcm (Fv F v) n M _`. Establish `hE` using `hSW d b laminf lam hinf hv μ 𝓕 hH hF minf m hminf hm`. Establish `hth` using `theta_map σ hcm J hJ μ 𝓕 hH hF G H T T' hGH hHG hrel' hrel.symm me`. Establish `hlat` using `(GlobalTheory.T.adelic_tuple_projections F E σ hcm d b n M).2.2.2`. Establish `hfin : ∀ v, m v (hermOf (Fv F v) σ T hT) (latV b v) < ⊤`.
+
+Introduce `v`. Take `⟨r1, r2, r3, r4, -⟩` from `id (hrV v)`. Take `⟨-, hW, hHm⟩` from `coord_measures_haar F E σ hcm (Fv F v) d b (lam v) (hv v).1`. Use `haveI := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm M J hJ (Fv F v) (hrV v) n _ _ (m v) (hW n M) (hHm n) (hm v) (hermOf (Fv F v) σ T hT)).1`. Conclude with `(hlat.1 v).1.measure_lt_top`.
+
+Rewrite using `[← hth]`. Conclude with `GlobalTheory.T.euler_product_measure_transport F E σ hcm d b n M _ (minf (hermOf (Ainf F) σ T' hT')) (minf (hermOf (Ainf F) σ T hT)) (fun v => m v (hermOf (Fv F v) σ T' hT')) (fun v => m v (hermOf (Fv F v) σ T hT)) (fun X => rmul (AF F) X (H.map (inclR (F := F) (AF F)))) (fun X = …`.
+-/
 theorem sw_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (g : GL (Fin n) E) (T' : Matrix (Fin n) (Fin n) E) (hT' : ∀ a b, σ (T' b a) = T' a b), T' = cT (σ : E →+* E) (g : Matrix (Fin n) (Fin n) E) * T * g → SWMeas σ J T' hT' → SWMeas σ J T hT := by
   intro F E _ _ _ _ _ σ hcm M J hJ n T hT _ g T' hT' hrel hSW d b laminf lam hinf hv μ 𝓕 hH hF minf m
     hminf hm

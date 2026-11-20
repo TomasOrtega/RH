@@ -6,6 +6,11 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Use `IntermediateField.LinearDisjoint.isField_of_forall F A B ?_` and prove the remaining obligations. Introduce `K _ _ fa fb`. Apply `IntermediateField.LinearDisjoint.of_finrank_coprime` to reduce the goal to its premises. Establish `ha : Module.finrank F A = Module.finrank F fa.fieldRange` using `(AlgEquiv.ofInjectiveField fa).toLinearEquiv.finrank_eq`. Establish `hb : Module.finrank F B = Module.finrank F fb.fieldRange` using `(AlgEquiv.ofInjectiveField fb).toLinearEquiv.finrank_eq`.
+
+Rewrite using `[← ha, ← hb]` and apply the resulting hypothesis.
+-/
 theorem isField_tensor_of_coprime (F A B : Type) [Field F] [Field A] [Field B] [Algebra F A]
     [Algebra F B] (h : Nat.Coprime (Module.finrank F A) (Module.finrank F B)) :
     IsField (A ⊗[F] B) := by
@@ -18,6 +23,13 @@ theorem isField_tensor_of_coprime (F A B : Type) [Field F] [Field A] [Field B] [
     (AlgEquiv.ofInjectiveField fb).toLinearEquiv.finrank_eq
   rwa [← ha, ← hb]
 
+/- English proof (translation)
+Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Use `haveI : Module.Finite F A := IsCyclotomicExtension.finite {p} F A`. Establish `hζ` using `IsCyclotomicExtension.zeta_spec p F A`. Establish `hdvd : minpoly F (IsCyclotomicExtension.zeta p F A) ∣ cyclotomic p F`. Apply `minpoly.dvd` to reduce the goal to its premises.
+
+Rewrite using `[aeval_def, ← eval_map, map_cyclotomic]`. Use `haveI : NeZero (p : A) := hζ.neZero'`. Conclude with `(isRoot_cyclotomic_iff.mpr hζ)`. Establish `hle` using `natDegree_le_of_dvd hdvd (cyclotomic_ne_zero p F)`. Rewrite `hle` using `[natDegree_cyclotomic, Nat.totient_prime hp]`.
+
+Establish `hfr : Module.finrank F A = (minpoly F (IsCyclotomicExtension.zeta p F A)).natDegree`. Rewrite using `[(hζ.powerBasis F).finrank, ← (hζ.powerBasis F).natDegree_minpoly, IsPrimitiveRoot.powerBasis_gen]`. Establish `hpos : 0 < Module.finrank F A` using `Module.finrank_pos`. Establish `h1` using `hp.pos`. Conclude with `(Nat.coprime_of_lt_prime hpos.ne' (by omega) hp).symm`.
+-/
 theorem coprime_finrank_cyclotomic (p : ℕ) (hp : p.Prime) (F A : Type) [Field F] [Field A]
     [Algebra F A] [IsCyclotomicExtension {p} F A] : Nat.Coprime (Module.finrank F A) p := by
   haveI : NeZero p := ⟨hp.ne_zero⟩
@@ -37,6 +49,19 @@ theorem coprime_finrank_cyclotomic (p : ℕ) (hp : p.Prime) (F A : Type) [Field 
   have h1 := hp.pos
   exact (Nat.coprime_of_lt_prime hpos.ne' (by omega) hp).symm
 
+/- English proof (translation)
+Introduce `p F E _ _ _ _ _ _ hp h2 hdeg`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Set `A : Type` to `CyclotomicField p F`. Use `haveI : IsCyclotomicExtension {p} F A := CyclotomicField.isCyclotomicExtension p F`. Use `haveI : NumberField A := IsCyclotomicExtension.numberField {p} F A`.
+
+Establish `hco` using `coprime_finrank_cyclotomic p hp F A`. Establish `hf : IsField (A ⊗[F] E)` using `isField_tensor_of_coprime F A E (by rwa [hdeg])`. Use `letI : Field (A ⊗[F] E) := hf.toField`. Use `letI : Algebra E (A ⊗[F] E) := Algebra.TensorProduct.rightAlgebra`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`.
+
+Use `haveI : Module.Finite A (A ⊗[F] E) := inferInstance`. Use `haveI : NumberField (A ⊗[F] E) := NumberField.of_module_finite A (A ⊗[F] E)`. Establish `hζ` using `IsCyclotomicExtension.zeta_spec p F A`. Establish `hr : Module.finrank A (A ⊗[F] E) = p`. Rewrite using `[Module.finrank_baseChange, hdeg]`.
+
+Establish `h3 : 2 < p` using `lt_of_le_of_ne hp.two_le (Ne.symm h2)`. Use `⟨A, A ⊗[F] E, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, IsCyclotomicExtension.zeta p F A, inferInstance, ?_, ?_, hζ, hr, hco⟩` and prove the remaining obligations. Conclude with `NumberField.nrRealPlaces_eq_zero_iff.mp (InfinitePlace.IsPrimitiveRoot.nrRealPlaces_eq_zero_of_two_lt h3 hζ)`. Apply `IsGalois.of_card_aut_eq_finrank` to reduce the goal to its premises. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `AlgEquiv.card_le`. Rewrite using `[Module.finrank_baseChange, ← IsGalois.card_aut_eq_finrank]`. Use `Nat.card_le_card_of_injective (fun g : E ≃ₐ[F] E => (Algebra.TensorProduct.congr (AlgEquiv.refl : A ≃ₐ[A] A) g)) ?_` and prove the remaining obligations. Introduce `g h hgh`.
+
+Use extensionality with `x`. Use `DFunLike.congr_fun hgh ((1 : A) ⊗ₜ[F] x)` as an intermediate fact. Simplify using `only [Algebra.TensorProduct.congr_apply, Algebra.TensorProduct.map_tmul] at this`. Conclude with `(algebraMap E (A ⊗[F] E)).injective this`.
+-/
 theorem exists_pushout_primitiveRoot : ∀ (p : ℕ) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E], p.Prime → p ≠ 2 → Module.finrank F E = p → ∃ (F' E' : Type) (_ : Field F') (_ : NumberField F') (_ : Field E') (_ : NumberField E') (_ : Algebra F F') (_ : Algebra F' E') (_ : Algebra E E') (_ : Algebra F E') (_ : IsScalarTower F F' E') (_ : IsScalarTower F E E') (ζ : F'), Algebra.IsPushout F F' E E' ∧ IsTotallyComplex F' ∧ IsGalois F' E' ∧ IsPrimitiveRoot ζ p ∧ Module.finrank F' E' = p ∧ Nat.Coprime (Module.finrank F F') p := by
   intro p F E _ _ _ _ _ _ hp h2 hdeg
   haveI : NeZero p := ⟨hp.ne_zero⟩

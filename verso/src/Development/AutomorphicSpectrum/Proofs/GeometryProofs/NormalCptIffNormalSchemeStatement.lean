@@ -9,5 +9,8 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.XR
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.XR.component_whole_isIntegral_and_normal | exact GlobalTheory.CompanionTheory.Ar.XR.component_whole_isIntegral_and_normal | (intros; apply GlobalTheory.CompanionTheory.Ar.XR.component_whole_isIntegral_and_normal <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.normal_cpt_iff_normal_scheme : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X), IsCptGen ξ → (∀ q : X, GlobalTheory.CompanionTheory.Ar.genPt ξ ⤳ q) → IsIntegral X ∧ (Flat.NormalCpt ξ ↔ IsNormalScheme X) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.XR.component_whole_isIntegral_and_normal | exact GlobalTheory.CompanionTheory.Ar.XR.component_whole_isIntegral_and_normal | (intros; apply GlobalTheory.CompanionTheory.Ar.XR.component_whole_isIntegral_and_normal <;> assumption)

@@ -24,17 +24,28 @@ open GlobalTheory.VBExt (AdaptedChart)
 
 variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem chart_eq {F : X.Modules} {r : ℕ} {U : X.Opens} {e e' : Fin r → Γ(F, U)} (he : IsFrame e)
     (he' : IsFrame e') (h : e = e') : (⟨U, e, he⟩ : Chart F r) = ⟨U, e', he'⟩ := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Apply the tactic sequence `exact CurveDens.det_isometric_of_isIsometry k X p _ _ r _ _ H₁ H₂ (Iso.refl _) fun _ _ _ _ _ _ => rfl`.
+-/
 theorem isometric_det_of_eq {F : X.Modules} {r : ℕ} {h₁ h₂ : VMetric p F r} (H₁ : h₁.IsCInf)
     (H₂ : h₂.IsCInf) (e : h₁ = h₂) : (det H₁).Isometric (det H₂) := by
   subst e
   exact CurveDens.det_isometric_of_isIsometry k X p _ _ r _ _ H₁ H₂ (Iso.refl _)
     fun _ _ _ _ _ _ => rfl
 
+/- English proof (translation)
+Use `hF.isQuasicoherent` as an intermediate fact. Use `VMetric.ext (funext fun σ => Met.ext_of_exists fun z => ?_)` and prove the remaining obligations. Establish `hc` using `hF.mem_pick (PtsOver.map π w _ z)`. Use `⟨(hF.pick (PtsOver.map π w _ z)).pull hF π, hc, ?_⟩` and prove the remaining obligations. Use `(((h.met σ).restrict hj hF).pull_G π w _ hc).trans ?_` and prove the remaining obligations.
+
+Use extensionality with `a b`. Establish `e (a)` using `QCoh.pullback_map_app_pullbackSections π j (le_refl (π ⁻¹ᵁ (hF.pick (PtsOver.map π w _ z)).U)) ((hF.pick (PtsOver.map π w _ z)).e a)`. Conclude with `(((h.met σ).form_pull π w _ _ le_rfl hc).symm).trans (congrArg₂ (fun s t => ((h.met σ).pull π w).form s t z) (e a).symm (e b).symm)`.
+-/
 theorem pull_restrict {E F : X.Modules} {r s : ℕ} (h : VMetric p E r) {j : F ⟶ E}
     (hj : IsSubbundle j) (hF : IsVB F s) (π : Y ⟶ X) (w : π ≫ p = q)
     (hj' : IsSubbundle ((Scheme.Modules.pullback π).map j)) :
@@ -50,6 +61,17 @@ theorem pull_restrict {E F : X.Modules} {r s : ℕ} (h : VMetric p E r) {j : F �
   exact (((h.met σ).form_pull π w _ _ le_rfl hc).symm).trans
     (congrArg₂ (fun s t => ((h.met σ).pull π w).form s t z) (e a).symm (e b).symm)
 
+/- English proof (translation)
+Use `h₁.isQuasicoherent` as an intermediate fact. Use `h.isVB.isQuasicoherent` as an intermediate fact. Use `h₃.isQuasicoherent` as an intermediate fact. Use `VMetric.ext (funext fun σ => Met.ext_of_exists fun z => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `Met.exists_adapted hS h₁ h₃ (PtsOver.map π w _ z)`.
+
+Establish `eg : (fun j => ((Scheme.Modules.pullback π).map S.g).app (π ⁻¹ᵁ a.U) (pullbackSections π _ le_rfl (a.t j))) = fun j => pullbackSections π _ le_rfl (S.g.app a.U (a.t j))`. Use function extensionality and compare the values at `fun j => QCoh.pullback_map_app_pullbackSections π S.g _ _`. Set `a' : AdaptedChart (.mk _ _ w') r s` to `{ U := π ⁻¹ᵁ a.U e := fun j => pullbackSections π _ le_rfl (a.e j) t := fun j => pullbackSections π _ le_rfl (a.t j) he := a.he.pullback π ht := eg ▸ a.ht.pullback π }`. Establish `ha' : z ∈ ptsIn q σ a'.U` using `ha`. Establish `hq : a'.quot = a.quot.pull h₃ π` using `chart_eq _ _ eg`.
+
+Establish `hf (j) : a'.frame j = pullbackSections π _ le_rfl (a.frame j)`. Break down `j with j | j` into its components or cases. Conclude with `QCoh.pullback_map_app_pullbackSections π S.f _ _`. Both sides reduce to the same expression. Use `⟨a'.quot, ha', Eq.trans ?_ (Met.quot_G (S := .mk _ _ w') ((h.met σ).pull π w) hS' (h₁.pullback π) (h₃.pullback π) a' ha').symm⟩` and prove the remaining obligations.
+
+Rewrite using `[hq]`. Use `(((h.met σ).quot hS h₁ h₃).pull_G π w a.quot ha).trans ?_` and prove the remaining obligations. Rewrite using `[(h.met σ).quot_G hS h₁ h₃ a ha]`. Use `congr 1`. Use extensionality with `i j`.
+
+Conclude with `((h.met σ).form_pull π w _ _ le_rfl ha').symm.trans (congrArg₂ (fun s t => ((h.met σ).pull π w).form s t z) (hf i).symm (hf j).symm)`.
+-/
 theorem pull_quot {S : ShortComplex X.Modules} {r s : ℕ} (h : VMetric p S.X₂ (r + s))
     (hS : S.ShortExact) (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) (π : Y ⟶ X) (w : π ≫ p = q)
     (w' : (Scheme.Modules.pullback π).map S.f ≫ (Scheme.Modules.pullback π).map S.g = 0)
@@ -87,6 +109,13 @@ theorem pull_quot {S : ShortComplex X.Modules} {r s : ℕ} (h : VMetric p S.X₂
   exact ((h.met σ).form_pull π w _ _ le_rfl ha').symm.trans
     (congrArg₂ (fun s t => ((h.met σ).pull π w).form s t z) (hf i).symm (hf j).symm)
 
+/- English proof (translation)
+Rewrite using `[VMetric.isIsometry_iff]`. Use `VMetric.ext (funext fun σ => Met.ext_of_exists fun y => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `Met.exists_adapted hS h₁ h₃ y`. Establish `ht : IsFrame a.t`. Use `a.ht.map_iso (inv S.g) using 2 with j` and compare the differences between its conclusion and the goal.
+
+Conclude with `(congr(($(IsIso.hom_inv_id S.g)).app a.U (a.t j))).symm`. Set `c : Chart S.X₂ 1` to `⟨a.U, a.t, ht⟩`. Use `⟨a.quot, ha, ((h.met σ).quot_G hS h₁ h₃ a ha).trans ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (Met.map_G (r := 1) (h.met σ) (asIso S.g) c ha).symm` and prove the remaining obligations. Use extensionality with `i j`.
+
+Rewrite using `[← Met.form_frame (r := 1) (h.met σ) c ha]`. Simplify using `[quotGram, Matrix.mul_apply, Matrix.toBlocks₂₂, Met.gram, AdaptedChart.frame, c]`.
+-/
 theorem isIsometry_quot_zero {S : ShortComplex X.Modules} (h : VMetric p S.X₂ (0 + 1))
     (hS : S.ShortExact) (h₁ : IsVB S.X₁ 0) (h₃ : IsVB S.X₃ 1) [IsIso S.g] :
     VMetric.IsIsometry (r := 1) h (h.quot hS h₁ h₃) (asIso S.g) := by
@@ -103,6 +132,33 @@ theorem isIsometry_quot_zero {S : ShortComplex X.Modules} (h : VMetric p S.X₂ 
   rw [← Met.form_frame (r := 1) (h.met σ) c ha]
   simp [quotGram, Matrix.mul_apply, Matrix.toBlocks₂₂, Met.gram, AdaptedChart.frame, c]
 
+/- English proof (translation)
+Substitute `e₁` using the available equality. Set `i₀ : Fin r` to `⟨n, hn₀⟩`. Set `i₁ : Fin r` to `⟨n + 1, hn⟩`. Express the relevant statement in the definitionally equal form `eB.hom ≫ fl.ι i₁.succ = j at heB`. Express the relevant statement in the definitionally equal form `eA.hom ≫ fl.ι i₀.castSucc = u ≫ j at heA`.
+
+Express the relevant statement in the definitionally equal form `x ≫ j = fl.ι i₀.succ at hx`. Use `hj.mono` as an intermediate fact. Apply the tactic sequence `have res {F F' : X.Modules} {s : ℕ} {a : F ⟶ E} {b : F' ⟶ E} (ha : IsSubbundle a) (hb : IsSubbundle b) (hF : IsVB F s) (hF' : IsVB F' s) (e : F ≅ F') (he : e.hom ≫ b = a) : (h.restrict ha hF).IsIsometry (h.restrict hb hF') e := fun σ U s t y hy => by`. Use `((h.met σ).form_restrict hb hF' _ _ hy).trans (Eq.trans ?_ ((h.met σ).form_restrict ha hF s t hy).symm)` and prove the remaining obligations. Rewrite using `[← he]`.
+
+Both sides reduce to the same expression. Set `f : A ⟶ fl.F i₀.succ` to `eA.hom ≫ fl.step i₀`. Set `q₁ : B ⟶ fl.gr i₁` to `eB.hom ≫ fl.π i₁`. Establish `hxB : x ≫ eB.hom = fl.step i₁`. Rewrite using `[← cancel_mono (fl.ι i₁.succ), Category.assoc, heB, hx]`.
+
+Conclude with `(fl.step_ι i₁).symm`. Establish `w₀ : f ≫ fl.π i₀ = 0`. Simplify using `only [f, Category.assoc]`. Rewrite using `[show fl.step i₀ ≫ fl.π i₀ = 0 from cokernel.condition _, comp_zero]`. Establish `w₁ : x ≫ q₁ = 0`.
+
+Rewrite using `[← Category.assoc, hxB]`. Conclude with `cokernel.condition _`. Establish `hS₀ : (ShortComplex.mk f _ w₀).ShortExact` using `ShortComplex.shortExact_of_iso (ShortComplex.isoMk (S₁ := stepSeq fl i₀) eA.symm (Iso.refl _) (Iso.refl _) (by simp [f]) (by simp)) (stepSeq_shortExact fl i₀)`. Establish `hS₁ : (ShortComplex.mk x q₁ w₁).ShortExact` using `ShortComplex.shortExact_of_iso (ShortComplex.isoMk (S₁ := stepSeq fl i₁) (Iso.refl _) eB.symm (Iso.refl _) ((Category.id_comp _).trans ((Iso.eq_comp_inv _).2 hxB)) (by simp [q₁])) (stepSeq_shortExact fl i₁)`. Establish `hu : f ≫ x = u`.
+
+Rewrite using `[← cancel_mono j, Category.assoc, hx, Category.assoc, fl.step_ι, heA]`. Establish `hxs : IsSubbundle x` using `isSubbundle_of_shortExact hS₁ (fl.isVB_gr i₁)`. Take `⟨l, m, w₃, hS₃, el, em⟩` from `ThirdIso.abelian f x u (fl.π i₀) q₁ t w₀ w₁ w hS₀ hS₁ hS hu`. Establish `hl : IsSubbundle l` using `isSubbundle_of_shortExact hS₃ (fl.isVB_gr i₁)`. Establish `key (σ : k →+* ℂ)` using `MetStage.metStages k X p σ _ _ _ _ _ _ f x u (fl.π i₀) q₁ t w₀ w₁ w hS₀ hS₁ hS l m w₃ hS₃ n hA (fl.isVB i₀.succ) (fl.isVB_gr i₀) (fl.isVB_gr i₁) hV hxs ((h.restrict hj hB).met σ) hu el em hl`.
+
+Establish `hfg : fl.step i₀ ≫ g = 0`. Rewrite using `[← cancel_mono (fl₁.ι 1), ← cancel_epi eA.hom, zero_comp, comp_zero, Category.assoc, hg, ← Category.assoc, ← Category.assoc]`. Conclude with `(congrArg (· ≫ t) hu).trans w`. Set `e : fl.gr i₀ ⟶ fl₁.F 1` to `cokernel.desc _ g hfg`. Establish `he : fl.π i₀ ≫ e = g` using `cokernel.π_desc _ _ _`.
+
+Establish `hel : e ≫ fl₁.ι 1 = l`. Rewrite using `[← cancel_epi (fl.π i₀), ← Category.assoc, he, hg, el]`. Establish `: Mono l` using `hl.mono`. Establish `: Mono e` using `mono_of_mono_fac hel`. Establish `: Epi e` using `epi_of_epi_fac he`.
+
+Establish `: IsIso e` using `isIso_of_mono_of_epi e`. Establish `HB : (h.restrict hj hB).IsCInf` using `H.restrict hj hB`. Prove the components needed by the constructor for the conclusion. Establish `: IsIso (stepSeq fl₁ 0).g` using `(stepSeq_shortExact fl₁ 0).isIso_g_iff.2 (isVB_zero_iff.1 (fl₁.isVB 0))`. Apply the tactic sequence `have a₁ := CurveDens.det_isometric_of_isIsometry k X p _ _ 1 _ _ (H₁.restrict (fl₁.isSubbundle 1) (fl₁.isVB 1)) (H₁.grMet fl₁ 0) _ (isIsometry_quot_zero (S := stepSeq fl₁ 0) (stepMet _ fl₁ 0) (stepSeq_shortExact fl₁ 0) (fl₁.isVB 0) (fl₁.isVB_gr 0))`.
+
+Apply the tactic sequence `have a₂ := CurveDens.det_isometric_of_isIsometry k X p _ _ 1 _ _ (H₁.restrict hl (fl.isVB_gr i₀)) (H₁.restrict (fl₁.isSubbundle 1) (fl₁.isVB 1)) (asIso e) fun σ U s t y hy => by`. Use `(Met.form_restrict _ (fl₁.isSubbundle 1) (fl₁.isVB 1) _ _ hy).trans (Eq.trans ?_ (Met.form_restrict _ hl (fl.isVB_gr i₀) s t hy).symm)` and prove the remaining obligations. Rewrite using `[← hel]`. Both sides reduce to the same expression. Establish `a₃` using `isometric_det_of_eq (H₁.restrict hl (fl.isVB_gr i₀)) (IsCInf.quot (S := .mk f _ w₀) hS₀ hA (fl.isVB_gr i₀) (HB.restrict hxs (fl.isVB i₀.succ))) (VMetric.ext (funext fun σ => (key σ).1))`.
+
+Establish `a₄` using `(isometric_detQuot_and_bcInt_eq_of_iso k X p (.mk f _ w₀) (stepSeq fl i₀) n 1 _ (h.stepMet fl i₀) (HB.restrict hxs (fl.isVB i₀.succ)) (H.restrict _ _) hS₀ (stepSeq_shortExact fl i₀) hA (fl.isVB_gr i₀) (fl.isVB i₀.castSucc) (fl.isVB_gr i₀) eA (Iso.refl _) (Category.comp_id _).symm …`. Use `((h.met σ).form_restrict (fl.isSubbundle i₀.succ) (fl.isVB i₀.succ) _ _ hy).trans (Eq.trans ?_ ((Met.form_restrict _ hxs (fl.isVB i₀.succ) s t hy).trans ((h.met σ).form_restrict hj hB _ _ hy)).symm)` and prove the remaining obligations. Rewrite using `[← hx]`. Use the proof step `rfl).1`. Conclude with `a₁.symm.trans (a₂.symm.trans (a₃.trans a₄))`.
+
+Establish `: IsIso (fl₁.ι 2)` using `fl₁.isIso_last`. Establish `a₁` using `(isometric_detQuot_and_bcInt_eq_of_iso k X p (.mk l m w₃) (stepSeq fl₁ 1) 1 1 _ (stepMet _ fl₁ 1) H₁ (H₁.restrict _ _) hS₃ (stepSeq_shortExact fl₁ 1) (fl.isVB_gr i₀) (fl.isVB_gr i₁) (fl₁.isVB 1) (fl₁.isVB_gr 1) (asIso e) (asIso (fl₁.ι 2)).symm ((Iso.eq_comp_inv (asIso (fl₁.ι 2))) …`. Use `(Met.form_restrict _ (fl₁.isSubbundle 2) (fl₁.isVB 2) _ _ hy).trans ?_` and prove the remaining obligations. Establish `e (v : Γ(V, U)) : (fl₁.ι 2).app U ((inv (fl₁.ι 2)).app U v) = v` using `congr(($(IsIso.inv_hom_id (fl₁.ι 2))).app U v)`. Conclude with `congrArg₂ (fun s t => Met.form _ s t y) (e s) (e t)).1`.
+
+Establish `a₂` using `isometric_det_of_eq (IsCInf.quot (S := .mk l m w₃) hS₃ (fl.isVB_gr i₀) (fl.isVB_gr i₁) H₁) (IsCInf.quot (S := .mk x q₁ w₁) (r := n + 1) (s := 1) hS₁ (fl.isVB i₀.succ) (fl.isVB_gr i₁) HB) (VMetric.ext (funext fun σ => (key σ).2))`. Establish `a₃` using `(isometric_detQuot_and_bcInt_eq_of_iso k X p (.mk x q₁ w₁) (stepSeq fl i₁) (n + 1) 1 _ (h.stepMet fl i₁) HB (H.restrict _ _) hS₁ (stepSeq_shortExact fl i₁) (fl.isVB i₀.succ) (fl.isVB_gr i₁) (fl.isVB i₁.castSucc) (fl.isVB_gr i₁) (Iso.refl _) eB ((Category.id_comp _).trans hxB.symm …`. Conclude with `a₁.symm.trans (a₂.trans a₃)`.
+-/
 theorem isometric_pair {E A B V : X.Modules} {r n : ℕ} {h : VMetric p E r} (H : h.IsCInf)
     (fl : Vert.Flag E r) (hn₀ : n < r) (hn : n + 1 < r) {u : A ⟶ B} {t : B ⟶ V} {w : u ≫ t = 0}
     (hS : (ShortComplex.mk u t w).ShortExact) (hA : IsVB A n) (hB : IsVB B (n + (1 + 1)))
@@ -220,6 +276,19 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 
+/- English proof (translation)
+Introduce `k _ B Y Y₁ q p q₁ π σ ρ w wσ wρ wq E n h H fl i i' hi S P E₁ s j t wst fl₁ hS hs hj hSv hP hE₁ ⟨eP, heP⟩ ⟨eS, heS⟩ ⟨x, g, hx, hg, _⟩`. Take `⟨i, hi₀⟩` from `i`. Take `⟨i', hi₁⟩` from `i'`. Take `rfl : i' = i + 1` from `hi`. Substitute `wσ` using the available equality.
+
+Establish `H₁` using `VMetric.IsCInf.quot (S := .mk s t wst) (r := i) (s := 1 + 1) hS hSv hE₁ ((H.pull σ wq).restrict hj hP)`. Use `⟨_, H₁, ?_⟩` and prove the remaining obligations. Use `hS.epi_g` as an intermediate fact. Use `hSv.isQuasicoherent` as an intermediate fact. Use `hP.isQuasicoherent` as an intermediate fact.
+
+Establish `w' : (Scheme.Modules.pullback ρ).map s ≫ (Scheme.Modules.pullback ρ).map t = 0`. Rewrite using `[← Functor.map_comp, wst, Functor.map_zero]`. Establish `hS' : (ShortComplex.mk _ _ w').ShortExact` using `ShortComplex.ShortExact.mk' (QCoh.exact_map_pullback ρ hS.exact).1 (SubPull.isSubbundle_pullback _ _ ρ _ _ s i hSv hs).mono (QCoh.exact_map_pullback ρ hS.exact).2`. Establish `hj₁` using `SubPull.isSubbundle_pullback _ _ ρ _ _ j _ hP hj`. Set `φ` to `(Scheme.Modules.pullbackComp ρ σ).app E`.
+
+Establish `hj₂ : VB.IsSubbundle ((Scheme.Modules.pullback ρ).map j ≫ φ.hom)`. Take `⟨_, a, ha⟩` from `hj₁`. Conclude with `⟨inferInstance, a, ha.of_iso (Limits.cokernelCompIsIso _ _).symm⟩`. Use `GlobalTheory.SubqPair.isometric_pair (H.pull _ w) fl hi₀ hi₁ hS' (hSv.pullback ρ) (hP.pullback ρ) (hE₁.pullback ρ) hj₂ eP heP eS (heS.trans ?_) fl₁ x g hx hg (H₁.pull ρ wρ) ?_` and prove the remaining obligations. Rewrite using `[Functor.map_comp, Category.assoc]`.
+
+Both sides reduce to the same expression. Use `(GlobalTheory.SubqPair.pull_quot (S := .mk s t wst) (r := i) (s := 1 + 1) _ hS hSv hE₁ ρ wρ w' hS').trans ?_` and prove the remaining obligations. Use `congr 1`. Use `(GlobalTheory.SubqPair.pull_restrict _ hj hP ρ wρ hj₁).trans ?_` and prove the remaining obligations. Use `VMetric.ext (funext fun τ => Met.ext_form fun U a b y hy => ?_)` and prove the remaining obligations.
+
+Use `(Met.form_restrict _ hj₁ (hP.pullback ρ) a b hy).trans (Eq.trans ?_ (Met.form_restrict _ hj₂ (hP.pullback ρ) a b hy).symm)` and prove the remaining obligations. Conclude with `((VMetric.isIsometry_pull_id_comp k B q E n h).2 Y₁ Y q₁ p σ ρ wq wρ w τ U _ _ y hy).symm`.
+-/
 theorem GlobalTheory.SubqPair.exists_isometric_pair : ∀ (k : Type) [CommRing k] (B Y Y₁ : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (q₁ : Y₁ ⟶ Sp k)
     (π : Y ⟶ B) (σ : Y₁ ⟶ B) (ρ : Y ⟶ Y₁) (w : π ≫ q = p) (wσ : ρ ≫ σ = π) (wρ : ρ ≫ q₁ = p) (wq : σ ≫ q = q₁)
     (E : B.Modules) (n : ℕ) (h : VMetric q E n) (H : h.IsCInf) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) n)

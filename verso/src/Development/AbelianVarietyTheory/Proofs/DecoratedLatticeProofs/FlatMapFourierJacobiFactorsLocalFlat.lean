@@ -13,10 +13,16 @@ noncomputable section
 
 namespace GlobalTheory.FlatFactor
 
+/- English proof (translation)
+Simplify using `[ch, Finset.sum_add_distrib]`.
+-/
 theorem ch_add_mat {k : Type} [Field k] {n n' : Type} {c : ℕ} (a b : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) :
     ch (a + b) = ch a + ch b := by
   simp [ch, Finset.sum_add_distrib]
 
+/- English proof (translation)
+The claim follows from `continuous_finset_sum _ fun i _ => continuous_id.matrix_elem _ _`.
+-/
 theorem continuous_ch {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] {n n' : Type} {c : ℕ} :
     Continuous (ch : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → k) :=
   continuous_finset_sum _ fun i _ => continuous_id.matrix_elem _ _
@@ -25,6 +31,13 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k] {m m' : Type} [Fintype m] [DecidableEq m] [Fintype m'] [DecidableEq m']
 
+/- English proof (translation)
+Introduce `Θ h`. Establish `hΘ : Θ = 0`. Use extensionality with `t`. Establish `ht` using `h t`. Simplify using `only [red] at ht`.
+
+Use `haveI : IsEmpty {e : m × m' // e ∈ (∅ : Finset (m × m'))} := ⟨fun e => Finset.notMem_empty _ e.2⟩`. Rewrite `ht` using `[Measure.pi_of_empty (x := isEmptyElim), integral_dirac]`. Establish `hf : fill ∅ ∅ β t isEmptyElim = t` using `by ext r q; simp [fill]`. Rewrite `ht` using `[hf]`. Simplify using `using ht`.
+
+Rewrite using `[hΘ, map_zero]`.
+-/
 theorem kerRed_empty {M : Type} [AddCommGroup M] [Module ℂ M] (ν : Measure k) (β : Matrix m m' k)
     (l : SB (Matrix m m' k) →ₗ[ℂ] M) : KerRed ν ∅ ∅ β l := by
   intro Θ h
@@ -39,6 +52,9 @@ theorem kerRed_empty {M : Type} [AddCommGroup M] [Module ℂ M] (ν : Measure k)
     simpa using ht
   rw [hΘ, map_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((GlobalTheory.RootEx.OpenKernel.isLocallyConstant_coe_addChar ψ hψ).comp_continuous hf).mul hΘ.1, hΘ.2.mul_left⟩`.
+-/
 theorem mem_SB_addChar_mul (ψ : AddChar k Circle) (hψ : Continuous ψ) {X : Type} [TopologicalSpace X]
     (f : X → k) (hf : Continuous f) (Θ : X → ℂ) (hΘ : Θ ∈ SB X) :
     (fun t => (ψ (f t) : ℂ) * Θ t) ∈ SB X :=
@@ -50,6 +66,39 @@ end
 end GlobalTheory.FlatFactor
 
 open GlobalTheory.FlatFactor in
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ψ ν hψc hψ1 hν n n' _ _ _ _ c ρ M _ _ L hc H1 H2 H3 H4`. Use `set Mt := Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k`. Use `set β : Mt := basePt c (0 : Matrix n n' k)`. Establish `tw : ∀ (f : Mt → k), Continuous f → ∀ Θ : SB Mt, (fun t => (ψ (f t) : ℂ) * Θ.1 t) ∈ SB Mt` using `fun f hf Θ => mem_SB_addChar_mul ψ hψc f hf Θ.1 Θ.2`. Set `T : SB Mt → SB Mt` to `fun Θ => ⟨fun t => (ψ (ch t) : ℂ) * Θ.1 t, tw _ continuous_ch Θ⟩`.
+
+Set `L' : SB Mt →ₗ[ℂ] M` to `{ toFun := fun Θ => L (T Θ) map_add' := fun Θ₁ Θ₂ => by show L (T (Θ₁ + Θ₂)) = L (T Θ₁) + L (T Θ₂)`. Rewrite using `[← map_add]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `t`.
+
+Use `show (ψ (ch t) : ℂ) * (Θ₁.1 t + Θ₂.1 t) = (ψ (ch t) : ℂ) * Θ₁.1 t + (ψ (ch t) : ℂ) * Θ₂.1 t`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun a Θ => by show L (T (a • Θ)) = a • L (T Θ)`. Rewrite using `[← map_smul]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `t`. Use `show (ψ (ch t) : ℂ) * (a * Θ.1 t) = a * ((ψ (ch t) : ℂ) * Θ.1 t)`. Use `ring }`. Establish `hL' : ∀ Θ, L' Θ = L (T Θ)` using `fun _ => rfl`.
+
+Establish `hTw : TwLaw ρ ψ L'`. Introduce `u hN hblk Θ Θ' Θ'' h' h''`. Rewrite using `[hL', hL']`. Use `H4 u hN hblk (T Θ'') (T Θ') (fun t => by` as an intermediate fact. Simplify using `only [T, h', h'']`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[← mul_assoc, ← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Use `congr 3`. Use the proof step `ring)`. Conclude with `this`.
+
+Establish `hS1 : KerRed ν (evC n n' c ρ) (itB n n' c ρ) β L'`. Use `GlobalTheory.T.kernelReduction_extend_evaluated_integrated k ψ ν hψc hψ1 hν _ _ M L' β ∅ ∅ _ _ (Finset.empty_subset _) (Finset.empty_subset _) ?_ (kerRed_empty ν β L') ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.disjoint_left]`. Introduce and unpack `⟨r, q⟩ h1 h2`. Simplify using `only [evC, itB, Finset.mem_filter, Finset.mem_univ, true_and] at h1 h2`.
+
+Break down `h1 with ⟨i, hq, -, hfr⟩ | ⟨l, hr, hl, hq⟩` into its components or cases. Conclude with `hfr h2.1`. Substitute `hr` using the available equality. Break down `q with q | q` into its components or cases. Simplify using `[Free] at h2`.
+
+Use linear arithmetic over natural numbers and integers. Use `hq q rfl` as an intermediate fact. Simplify using `[Free] at h2`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨r, q⟩ he - b Θ Θ' hΘ`.
+
+Simplify using `only [evC, Finset.mem_filter, Finset.mem_univ, true_and] at he`. Rewrite using `[hL', hL']`. Break down `he with he | he` into its components or cases. Conclude with `H1 r q he b (T Θ) (T Θ') (fun t => by simp only [T, hΘ]; ring)`. Conclude with `H2 r q he b (T Θ) (T Θ') (fun t => by simp only [T, hΘ]; ring)`.
+
+Introduce and unpack `⟨r, q⟩ he - a Θ Θ' hΘ`. Simplify using `only [itB, Finset.mem_filter, Finset.mem_univ, true_and] at he`. Rewrite using `[hL', hL']`. Use `set E : Mt := Matrix.single r q a`. Set `Φ' : SB Mt` to `⟨fun t => (ψ (ch (t + E)) : ℂ) * Θ'.1 t, tw _ (continuous_ch.comp (continuous_add_right E)) Θ'⟩`.
+
+Establish `h3` using `H3 r q he.1 he.2 a (T Θ) Φ' (fun t => by show (ψ (ch (t + E)) : ℂ) * Θ'.1 t = (ψ (ch (t + E)) : ℂ) * Θ.1 (t + E)`. Rewrite using `[hΘ])`. Establish `hT : T Θ' = (ψ (-ch E) : ℂ) • Φ'`. Use extensionality with `t`. Use `show (ψ (ch t) : ℂ) * Θ'.1 t = (ψ (-ch E) : ℂ) * ((ψ (ch (t + E)) : ℂ) * Θ'.1 t)`.
+
+Establish `hm : ∀ x y : k, (ψ x : ℂ) * ψ y = ψ (x + y)`. Introduce `x y`. Rewrite using `[AddChar.map_add_eq_mul, Circle.coe_mul]`. Rewrite using `[← mul_assoc, hm, ch_add_mat, show -ch E + (ch t + ch E) = ch t by ring]`. Rewrite using `[hT, map_smul, h3, smul_smul, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, Circle.coe_one, one_smul]`.
+
+Establish `hS2` using `GlobalTheory.T.flatFactorReduction_kernel_all_nonFreeUnread_entries k ψ ν hψc hψ1 hν n n' c ρ M L' hc hTw hS1`. Establish `hS3` using `GlobalTheory.T.flatFactorReduction_kernel_integrates_free_entries k ψ ν hψc hψ1 hν n n' c ρ M L' hc hTw hS2`. Use `GlobalTheory.T.exists_factor_through_flatMapFourierJacobiColumn k ψ ν hψc hν n n' c (ρ + 1) (by omega) (by omega) M L ?_` and prove the remaining obligations. Introduce `Φ hΦ`. Set `Θ : SB Mt` to `⟨fun t => (ψ (-ch t) : ℂ) * Φ.1 t, tw _ continuous_ch.neg Φ⟩`.
+
+Establish `hΘ : T Θ = Φ`. Use extensionality with `t`. Simplify using `only [T, Θ]`. Rewrite using `[← mul_assoc, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one, Circle.coe_one, one_mul]`. Use `hS3 Θ (GlobalTheory.T.partialReduction_eq_zero_of_flatMapColumn_zero k ψ ν n n' c ρ hc Φ.1 hΦ)` as an intermediate fact.
+
+Rewrite `this` using `[hL', hΘ]`. Conclude with `this`.
+-/
 theorem GlobalTheory.FlatFactor.flCol_factor : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ψ ≠ 1 → ν.IsAddHaarMeasure → ∀ (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c ρ : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (L : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] M), c = 2 * ρ → (∀ (r : n ⊕ Fin c) (q : n' ⊕ Fin (c + 1)), (∃ i, q = Sum.inr i ∧ i.val < ρ ∧ ¬ Free (ρ + 1) (r, q)) → ∀ (b : k) (Φ Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), (∀ t, Φ'.1 t = (ψ (b * (t r q - basePt c (0 : Matrix n n' k) r q)) : ℂ) * Φ.1 t) → L Φ' = L Φ) → (∀ (r : n ⊕ Fin c) (q : n' ⊕ Fin (c + 1)), (∃ l, r = Sum.inr l ∧ ρ ≤ l.val ∧ ∀ i, q = Sum.inr i → i.val = ρ) → ∀ (b : k) (Φ Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), (∀ t, Φ'.1 t = (ψ (b * (t r q - basePt c (0 : Matrix n n' k) r q)) : ℂ) * Φ.1 t) → L Φ' = L Φ) → (∀ (r : n ⊕ Fin c) (q : n' ⊕ Fin (c + 1)), Free (ρ + 1) (r, q) → (∀ i, q = Sum.inr i → ρ ≤ i.val) → ∀ (a : k) (Φ Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), (∀ t, Φ'.1 t = Φ.1 (t + Matrix.single r q a)) → L Φ' = (ψ (ch (Matrix.single r q a)) : ℂ) • L Φ) → (∀ u : GL (Fin c) k, embA n u ∈ N k n c (ρ + 1) → (∀ l l' : Fin c, l.val < ρ → ρ ≤ l'.val → u.val l l' = 0) → ∀ (Φ Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), (∀ t, Φ'.1 t = Φ.1 (((embA n u)⁻¹).val * t)) → L Φ' = (ψ (-simpleSum (embA n u)) : ℂ) • L Φ) → ∃ L₀ : SB (Matrix n (n' ⊕ Unit) k) →ₗ[ℂ] M, ∀ Φ Ψ, Ψ.1 = GlobalTheory.LocFlat.flCol ψ ν (ρ + 1) Φ.1 → L Φ = L₀ Ψ := by
   intro k _ _ _ _ _ _ ψ ν hψc hψ1 hν n n' _ _ _ _ c ρ M _ _ L hc H1 H2 H3 H4
   set Mt := Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k

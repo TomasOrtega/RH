@@ -26,6 +26,15 @@ variable {D : D7}
 open Matrix in
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Take `⟨e, he, h1, -⟩` from `h`. Establish `h2 : Bᴴ * G * B = 1`. Rewrite using `[h1, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Break down `he a with h | h` into its components or cases. Simplify using `[h.1]`. Conclude with `absurd a.2 (not_lt.2 h.2)`. Establish `hu : IsUnit B` using `IsUnit.of_mul_eq_one_right _ h2`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hu`.
+
+Establish `h3 : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Establish `h4 : (B⁻¹)ᴴ * Bᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h3, Matrix.conjTranspose_one]`. Establish `hG : G = (B⁻¹)ᴴ * B⁻¹`. Combine the equalities or inequalities in the displayed calculation. Use `⟨by simp, by simp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_one, hG]`. Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_of_isUnit (Matrix.isUnit_nonsing_inv_iff.2 hu))`.
+-/
 theorem isCartanInv_one_of_onb {k : ℕ} {G B : Matrix (Fin k) (Fin k) ℂ} (h : IsONBasis G 1 B k) : IsCartanInv G 1 := by
   obtain ⟨e, he, h1, -⟩ := h
   have h2 : Bᴴ * G * B = 1 := by
@@ -48,6 +57,9 @@ theorem isCartanInv_one_of_onb {k : ℕ} {G B : Matrix (Fin k) (Fin k) ℂ} (h :
   exact Matrix.PosDef.conjTranspose_mul_self _
     (Matrix.mulVec_injective_of_isUnit (Matrix.isUnit_nonsing_inv_iff.2 hu))
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `hi : i.val < b`. Simplify using `[topL, Matrix.mul_apply, hi]`. Simplify using `[topL, Matrix.mul_apply, hi]`.
+-/
 theorem topL_mul_right {κ : Type} [CommRing κ] {a b : ℕ} (y : Matrix (Fin b) (Fin a) κ) (γ : Matrix (Fin a) (Fin a) κ) :
     topL a (y * γ) = topL a y * γ := by
   ext i j
@@ -55,6 +67,9 @@ theorem topL_mul_right {κ : Type} [CommRing κ] {a b : ℕ} (y : Matrix (Fin b)
   · simp [topL, Matrix.mul_apply, hi]
   · simp [topL, Matrix.mul_apply, hi]
 
+/- English proof (translation)
+Introduce `i j hi _`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun l _ => by rw [hy i l hi l.2, zero_mul]`.
+-/
 theorem lowZero_mul_right {κ : Type} [CommRing κ] {a b : ℕ} {y : Matrix (Fin b) (Fin a) κ} (hy : LowZero a y)
     (γ : Matrix (Fin a) (Fin a) κ) : LowZero a (y * γ) := by
   intro i j hi _
@@ -66,6 +81,11 @@ abbrev GCond {a b : ℕ} (L : LevDat D.host.E ℂ a) (y : ∀ PP : Pl D.host.E, 
     (∀ PP : ↥L.Pg, ((g PP : GL (Fin a) _) : Matrix (Fin a) (Fin a) _) = topL a (y PP.1)) ∧
     (∀ PP : ↥L.Pg, g PP ∈ blockTri (blkOf L.r L.t)) ∧ (fun PP => upperLeftBlock L.hr (g PP)) ∈ L.P.H
 
+/- English proof (translation)
+Take `⟨h1, g, h2, h3, h4⟩` from `h`. Use `⟨fun PP hP' => (hz PP).symm ▸ lowZero_mul_right (h1 PP hP') _, fun PP => g PP * γ PP.1, fun PP => ?_, fun PP => mul_mem (h3 PP) (hγ PP.1 PP.2), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, h2, hz, topL_mul_right]`. Establish `e : (fun PP : ↥L.Pg => upperLeftBlock L.hr (g PP * γ PP.1)) = (fun PP => upperLeftBlock L.hr (g PP)) * (fun PP : ↥L.Pg => upperLeftBlock L.hr (γ PP.1))`. Use function extensionality and compare the values at `PP`.
+
+Conclude with `extendMatrixByIdentityAlongIndices_mul _ (blockTri_blkOf_le _ _ (h3 PP)) (blockTri_blkOf_le _ _ (hγ PP.1 PP.2))`. Rewrite using `[e]`. Conclude with `mul_mem h4 hP`.
+-/
 theorem gCond_mul {a b : ℕ} (L : LevDat D.host.E ℂ a) (γ : ∀ PP : Pl D.host.E, GL (Fin a) (kP PP))
     (hγ : ∀ PP ∈ L.Pg, γ PP ∈ blockTri (blkOf L.r L.t)) (hP : (fun PP : ↥L.Pg => upperLeftBlock L.hr (γ PP.1)) ∈ L.P.H)
     (y z : ∀ PP : Pl D.host.E, Matrix (Fin b) (Fin a) (kP PP)) (hz : ∀ PP, z PP = y PP * (γ PP).val)
@@ -81,6 +101,17 @@ theorem gCond_mul {a b : ℕ} (L : LevDat D.host.E ℂ a) (γ : ∀ PP : Pl D.ho
     rw [e]
     exact mul_mem h4 hP
 
+/- English proof (translation)
+Establish `hγi : ∀ PP ∈ L.Pg, (γ PP)⁻¹ ∈ blockTri (blkOf L.r L.t)` using `fun PP h => inv_mem (hγ PP h)`. Establish `hPi : (fun PP : ↥L.Pg => upperLeftBlock L.hr (γ PP.1)⁻¹) ∈ L.P.H`. Establish `e : (fun PP : ↥L.Pg => upperLeftBlock L.hr (γ PP.1)⁻¹) = (fun PP : ↥L.Pg => upperLeftBlock L.hr (γ PP.1))⁻¹`. Use function extensionality and compare the values at `PP`. Conclude with `extendOne_inv _ (blockTri_blkOf_le _ _ (hγ PP.1 PP.2))`.
+
+Rewrite using `[e]`. Conclude with `inv_mem hP`. Unfold `omegaG`. Distinguish the cases in `hy : GCond L y`. Establish `hy' : GCond L (fun PP => y PP * (γ PP).val)` using `gCond_mul L γ hγ hP y _ (fun _ => rfl) hy`.
+
+Rewrite using `[dif_pos hy', dif_pos hy]`. Establish `key : ∀ PP : ↥L.Pg, hy'.2.choose PP = hy.2.choose PP * γ PP.1` using `fun PP => Units.ext (by`. Rewrite using `[Units.val_mul, hy'.2.choose_spec.1 PP, hy.2.choose_spec.1 PP, topL_mul_right])`. Establish `hc : (⟨fun PP => upperLeftBlock L.hr (hy'.2.choose PP), hy'.2.choose_spec.2.2⟩ : L.P.H) = ⟨fun PP => upperLeftBlock L.hr (hy.2.choose PP), hy.2.choose_spec.2.2⟩ * ⟨_, hP⟩` using `Subtype.ext (funext fun PP => by show upperLeftBlock L.hr (hy'.2.choose PP) = upperLeftBlock L.hr (hy.2.choose PP) * upperLeftBlock L.hr (γ PP.1)`. Rewrite using `[key]`.
+
+Conclude with `extendMatrixByIdentityAlongIndices_mul _ (blockTri_blkOf_le _ _ (hy.2.choose_spec.2.1 PP)) (blockTri_blkOf_le _ _ (hγ PP.1 PP.2)))`. Rewrite using `[hc, map_mul]`. Simplify using `only [hs, Finset.range_zero, Finset.prod_empty, Finset.prod_const_one, mul_one, key, map_mul, Units.val_mul, mul_inv]`. Rewrite using `[Finset.prod_mul_distrib, ← Finset.prod_coe_sort L.Pg (fun PP => ((χj PP (Matrix.GeneralLinearGroup.det (γ PP)) : ℂˣ) : ℂ)⁻¹)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hy' : ¬ GCond L (fun PP => y PP * (γ PP).val)` using `fun h => hy (gCond_mul L (fun PP => (γ PP)⁻¹) hγi hPi _ y (fun PP => by rw [Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]) h)`. Rewrite using `[dif_neg hy', dif_neg hy, mul_zero]`.
+-/
 theorem omegaG_mul_right {a b : ℕ} (L : LevDat D.host.E ℂ a) (hs : L.s = 0)
     (χj : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (γ : ∀ PP : Pl D.host.E, GL (Fin a) (kP PP))
     (hγ : ∀ PP ∈ L.Pg, γ PP ∈ blockTri (blkOf L.r L.t)) (hP : (fun PP : ↥L.Pg => upperLeftBlock L.hr (γ PP.1)) ∈ L.P.H)
@@ -115,6 +146,11 @@ theorem omegaG_mul_right {a b : ℕ} (L : LevDat D.host.E ℂ a) (hs : L.s = 0)
       (fun PP => by rw [Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]) h)
     rw [dif_neg hy', dif_neg hy, mul_zero]
 
+/- English proof (translation)
+Establish `h` using `omegaQ_mul hr Q ξ (fun PP => (1 : GL (Fin n) (kP PP))) (fun PP => (γ PP)⁻¹) (fun _ _ => one_mem _) u`. Simplify using `only [inv_inv, Units.val_one, Matrix.one_mul] at h`. Rewrite using `[h]`. Use `congr 1`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+
+Establish `e1 : upperLeftBlock hr (1 : GL (Fin n) (kP PP)) = 1` using `blockDiagonalExtendByOnePrimeField_one _ _`. Rewrite using `[e1, map_one, map_one, inv_one, one_mul, map_inv, map_inv, Units.val_inv_eq_inv_val]`.
+-/
 theorem omegaQ_mul_right {n r : ℕ} (hr : r ≤ n) (Q : Finset (Pl D.host.E)) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (γ : ∀ PP : Pl D.host.E, GL (Fin r) (kP PP)) (u : ∀ PP : Pl D.host.E, Matrix (Fin n) (Fin r) (kP PP)) :
     omegaQ Q r ξ (-1) (fun PP => u PP * (γ PP).val) =
@@ -129,6 +165,15 @@ theorem omegaQ_mul_right {n r : ℕ} (hr : r ≤ n) (Q : Finset (Pl D.host.E)) (
 
 open Formalism.IndefR.Lev (finE) in
 
+/- English proof (translation)
+Establish `s1 : finE S (1 : GA D S) ∈ St βS` using `by rw [map_one]; exact one_mem _`. Establish `s1' : finE S (1 : GA D S)⁻¹ ∈ St βS` using `by rw [inv_one]; exact s1`. Establish `sh' : finE T h⁻¹ ∈ St βT` using `by rw [map_inv]; exact inv_mem sh`. Establish `hG1 : ∀ PP, redFn βS PP (finE S (1 : GA D S)⁻¹) = 1` using `fun PP => by rw [inv_one, map_one, redFn_one]`. Establish `hH : ∀ PP, (redFn βT PP (finE T h⁻¹))⁻¹ = redFn βT PP (finE T h)` using `fun PP => by`.
+
+Rewrite using `[map_inv, redFn_inv sh, inv_inv]`. Unfold `levDatum`. Distinguish the cases in `hx : IsHalf (cA D e) x ∧ IsIntM (frMapAdj S T βS βT x)`. Establish `h1` using `red_actO S T βS βT s1' sh' hx.2`. Establish `h2 : ∀ PP, redM PP (frMapAdj S T βS βT (actO S T 1⁻¹ h⁻¹ x)) = redM PP (frMapAdj S T βS βT x) * (redFn βT PP (finE T h)).val` using `fun PP => by`.
+
+Rewrite using `[h1.2 PP, hG1 PP, hH PP, Units.val_one, Matrix.one_mul]`. Rewrite using `[if_pos hx, if_pos ⟨isHalf_actO' _ _ hx.1, h1.1⟩, funext h2, omegaG_mul_right L hs m (fun PP => redFn βT PP (finE T h)) hγ hP, omegaQ_mul_right hr Q m]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hx, if_neg, mul_zero]`. Introduce and unpack `⟨h1, h2⟩`.
+
+Establish `e'` using `GlobalTheory.AdelicLatMove.actO_actO_inv S T (1 : GA D S) h x`. Establish `h3` using `isHalf_actO' (1 : GA D S) h h1`. Establish `h4` using `(red_actO S T βS βT s1 sh h2).1`. Rewrite `h3`, `h4` using `[e']`. Conclude with `hx ⟨h3, h4⟩`.
+-/
 theorem levDatum_actO (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D))
     (L : LevDat D.host.E ℂ T.rank) (hs : L.s = 0) (Q : Finset (Pl D.host.E)) (m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     (e : AE D) (hr : T.rank ≤ S.rank) (h : GA D T) (sh : finE T h ∈ St βT)
@@ -165,6 +210,23 @@ theorem levDatum_actO (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (F
 open Formalism.IndefR.Lev (finE) in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F i t σ s P cμ cη m ω BW f₀ f c io h k hk`. Take `⟨hC, -, -, -, hch, hW, -, hlv, -, -, -⟩` from `h`. Rewrite `hlv` using `[GlobalTheory.FinZeta.isLevelVec_iff]`. Take `⟨hvac, e, he, hth⟩` from `hlv`. Establish `hL` using `hC.lev`.
+
+Establish `hkG : k ∈ GfC (Wc D i)` using `(Subgroup.mem_inf.1 hk).1`. Establish `hkL : finE (Wc D i) k ∈ lev D.sp.cm (Wc D i).gram (R.βW i) (R.datWp i P)` using `(Subgroup.mem_inf.1 hk).2`. Establish `sW : finE (Wc D i) k ∈ St (R.βW i)` using `parLev_St hkL.1`. Establish `sV : finE (Vc D i) 1 ∈ St (R.βV i)` using `by rw [map_one]; exact one_mem _`. Establish `dV` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βV i)`.
+
+Establish `dW` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βW i)`. Establish `fV` using `(hL.βV i).choose_spec.1`. Establish `fW` using `(hL.βW i).choose_spec.1`. Establish `hch'` using `GlobalTheory.T.conjugatedThetaCharacters_restriction_ramification R hL i t s cμ cη m hch`. Establish `hres : ∀ PP ∈ (R.datWp i P).Pg ∪ R.Q t, GlobalTheory.StepLaw.ResAt cμ PP (m PP) ∧ GlobalTheory.StepLaw.ResAt (cμ * cη⁻¹) PP (m PP)` using `fun PP hP => hch'.1 PP (Finset.mem_union.1 hP)`.
+
+Establish `hun` using `hch'.2.1 ((R.datWp i P).Pg ∪ R.Q t) (fun PP h => Finset.mem_union.2 h)`. Establish `hvac1` using `GlobalTheory.StepVecLaw.om_vac hW (D.sp.V_sig _) (D.sp.W_sig _) (fun τ => isCartanInv_one_of_onb (hC.models.BV i τ)) (GlobalTheory.Chain.VacVec.cart_isCartanInv (R.MW i σ)) dV dW fV fW hvac he (fun PP hP => (hres PP hP).1) (fun PP hP => (hres PP hP).2) hun.1 hun.2 (one_mem _) hkG …`. Establish `rV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`. Establish `rW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hr : (Wc D i).rank ≤ (Vc D i).rank` using `by omega`.
+
+Establish `hlaw` using `levDatum_actO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (R.datWp i P) rfl (R.Q t) m e hr k sW (fun PP hP => parLev_g hkL.1 hP) hkL.2`. Establish `hee` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Establish `hcc : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, hee]`. Establish `hinf` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart he)`. Establish `hfin` using `GlobalTheory.T.weilRep_theta_datum_half_eq_smul D R.ψ (Vc D i) (Wc D i) cμ (cμ * cη⁻¹) ω hW (cA D e) _ f₀ _ f (GlobalTheory.T.schrodingerIntertwiner_schwartzBruhat_isTheta D R.ψ hW.std (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) dV dW (cA D e) hcc hinf f₀ hvac.2.theta) hth 1 k (GlobalThe …`.
+
+Rewrite using `[hfin]`. Use `congr 1`. Establish `hd : Disjoint (R.datWp i P).Pg (R.Q t)` using `(GlobalTheory.T.levelCharacters_unramified_off_levelPlaces D T R.toLevCh A.μ0 hL t).1`. Establish `hone : ∀ PP, redFn (R.βV i) PP (finE (Vc D i) 1) = 1` using `fun PP => by rw [map_one, redFn_one]`. Unfold `levChi levFn`.
+
+Rewrite using `[extendOne_of_mem _ hkL.2]`. Establish `hs0 : (R.datWp i P).s = 0` using `rfl`. Establish `hQ0 : (R.datWp i P).Q = ∅` using `rfl`. Simplify using `only [map_one, redFn_one, inv_one, one_mul, hs0, hQ0, Finset.range_zero, Finset.prod_empty, Finset.prod_const_one, mul_one, Finset.prod_union hd, Units.val_mul, Units.coe_prod]`. Establish `hne : ∀ s : Finset (Pl D.host.E), (∏ PP ∈ s, ((m PP (Matrix.GeneralLinearGroup.det (redFn (R.βW i) PP (finE (Wc D i) k))) : ℂˣ) : ℂ)) ≠ 0` using `fun s => Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _`.
+
+Rewrite using `[Finset.prod_inv_distrib, Finset.prod_inv_distrib]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_comm (_ * _), mul_div_assoc, div_self (mul_ne_zero (hne _) (hne _)), mul_one]`. Both sides reduce to the same expression.
+-/
 theorem zeta_law : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) i t σ s P cμ cη m ω BW f₀ f c io, IsLiftDataC R F i t σ s P cμ cη m ω BW f₀ f c io → ∀ k ∈ levG (Wc D i) (R.βW i) (R.datWp i P), ω (1, k) f = levChi (Wc D i) (R.βW i) (R.datWp i P) k • f := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F i t σ s P cμ cη m ω BW f₀ f c io h k hk
   classical

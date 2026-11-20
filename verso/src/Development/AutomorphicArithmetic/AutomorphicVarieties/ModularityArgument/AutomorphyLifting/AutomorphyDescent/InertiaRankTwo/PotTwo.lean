@@ -13,6 +13,11 @@ section Abstract
 
 variable {Γ k : Type} [Group Γ] [Field k]
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun e 1) 0`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, ht, hm', h00, zero_mul, mul_zero, zero_add, add_zero] at h`. Establish `h2 : (t 1 1 - t 0 0) * m 1 0 = 0`. Rewrite using `[sub_mul, h, mul_comm, sub_self]`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases.
+
+Conclude with `absurd (sub_eq_zero.1 h3).symm hne`. Conclude with `h3`.
+-/
 private theorem low_zero {t m m' : Matrix (Fin 2) (Fin 2) k} (ht : t 1 0 = 0) (hm' : m' 1 0 = 0)
     (h00 : m' 0 0 = t 0 0) (hne : t 0 0 ≠ t 1 1) (e : t * m = m * m') : m 1 0 = 0 := by
   have h := congrFun (congrFun e 1) 0
@@ -36,10 +41,30 @@ private def diagChar (ρ : Γ →* GL (Fin 2) k) (D : Subgroup Γ)
         · simp [hy]
         · simp [hx] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem diagChar_val (ρ : Γ →* GL (Fin 2) k) (D : Subgroup Γ)
     (h0 : ∀ d : ↥D, (ρ d : Matrix (Fin 2) (Fin 2) k) 1 0 = 0) (i : Fin 2) (d : ↥D) :
     ((diagChar ρ D h0 i d : kˣ) : k) = (ρ d : Matrix (Fin 2) (Fin 2) k) i i := rfl
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `hfl`. Set `Q : GL (Fin 2) k` to `P * (r g)⁻¹`. Set `ρ : Γ →* GL (Fin 2) k` to `(MulAut.conj Q).toMonoidHom.comp r`. Establish `hρ : ∀ x, ρ x = Q * r x * Q⁻¹` using `fun _ => rfl`. Establish `hconj : ∀ (χ : Γ →* kˣ) (x y : Γ), χ (y⁻¹ * x * y) = χ x` using `fun χ x y => by`.
+
+Rewrite using `[map_mul, map_mul, map_inv, mul_comm (χ y)⁻¹, mul_assoc, mul_comm _ (χ y)]`. Simplify using the standard rewrite rules. Establish `hN : ∀ h (hh : h ∈ N), (ρ h : Matrix (Fin 2) (Fin 2) k) 1 0 = 0 ∧ ∀ i, (ρ h : Matrix (Fin 2) (Fin 2) k) i i = (α i h : k)` using `fun h hh => by`. Establish `e : ρ h = P * r (g⁻¹ * h * g) * P⁻¹`. Rewrite using `[hρ]`.
+
+Simplify using `only [Q, map_mul, map_inv]`. Use `group`. Take `⟨h1, h2⟩` from `hP ⟨_, hg h hh⟩`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `h1 1 0 (by decide)`. Rewrite using `[e]`. Use `(h2 i).trans ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype]`. Rewrite using `[hconj]`.
+
+Establish `h0 : ∀ d : ↥D, (ρ d : Matrix (Fin 2) (Fin 2) k) 1 0 = 0` using `fun d => by`. Establish `hd : (d : Γ)⁻¹ * s * d ∈ N` using `hD d d.2 s hs`. Use `low_zero (t := (ρ s : Matrix (Fin 2) (Fin 2) k)) (m' := (ρ ((d : Γ)⁻¹ * s * d) : Matrix (Fin 2) (Fin 2) k)) (hN s hs).1 (hN _ hd).1 ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[(hN _ hd).2 0, (hN s hs).2 0, hconj]`. Rewrite using `[(hN s hs).2 0, (hN s hs).2 1]`.
+
+Conclude with `fun e => hab (Units.ext e)`. Rewrite using `[← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`. Use `⟨diagChar ρ D h0, ⟨Q, fun u => ⟨fun i j hij => ?_, fun i => ?_⟩⟩, fun i d hd => ?_⟩` and prove the remaining obligations.
+
+Establish `hi : i = 1` using `by omega`. Establish `hj : j = 0` using `by omega`. Substitute `hi hj` using the available equality. Conclude with `h0 u`. Both sides reduce to the same expression.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[diagChar_val]`. Conclude with `(hN d hd).2 i`.
+-/
 private theorem flag_core (r : Γ →* GL (Fin 2) k) (α : Fin 2 → Γ →* kˣ) {N₀ N D : Subgroup Γ} (g : Γ)
     (hg : ∀ h ∈ N, g⁻¹ * h * g ∈ N₀)
     (hfl : IsFlagOn r N₀ fun i => (α i).comp N₀.subtype)
@@ -89,9 +114,17 @@ private theorem flag_core (r : Γ →* GL (Fin 2) k) (α : Fin 2 → Γ →* kˣ
 
 end Abstract
 
+/- English proof (translation)
+Introduce `e` and use `h (isOfFinOrder_iff_zpow_eq_one.2 ⟨z, hz, e⟩)`.
+-/
 private theorem ne_one_zpow {C : Type} [Group C] {x : C} (h : ¬ IsOfFinOrder x) {z : ℤ} (hz : z ≠ 0) : x ^ z ≠ 1 :=
   fun e => h (isOfFinOrder_iff_zpow_eq_one.2 ⟨z, hz, e⟩)
 
+/- English proof (translation)
+Establish `hp : Prime ((l : ℕ) : 𝓞 ℚ)`. Establish `e : ((l : ℕ) : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm ((l : ℕ) : ℤ)` using `by simp`. Rewrite using `[e]`. Conclude with `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm.toMulEquiv).2 (Nat.prime_iff_prime_int.1 hl.out)`. Establish `hq : (Ideal.span {((l : ℕ) : 𝓞 ℚ)}).IsPrime` using `(Ideal.span_singleton_prime hp.ne_zero).2 hp`.
+
+Establish `hm : (Ideal.span {((l : ℕ) : 𝓞 ℚ)}).IsMaximal` using `hq.isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hp.ne_zero)`. Use `HeightOneSpectrum.ext ?_` and prove the remaining obligations. Rewrite using `[← hm.eq_of_le v.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hv), ← hm.eq_of_le w.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hw)]`.
+-/
 private theorem place_eq {l : ℕ} [hl : Fact l.Prime] {v w : HeightOneSpectrum (𝓞 ℚ)}
     (hv : ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal) (hw : ((l : ℕ) : 𝓞 ℚ) ∈ w.asIdeal) : v = w := by
   have hp : Prime ((l : ℕ) : 𝓞 ℚ) := by
@@ -108,6 +141,21 @@ private theorem place_eq {l : ℕ} [hl : Fact l.Prime] {v w : HeightOneSpectrum 
 end UpperTheory.V.Z.Win.Dn.PotentialDiagonalRankTwo
 
 open UpperTheory.V.Z.Win.Dn.PotentialDiagonalRankTwo in
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ e he W B hB H hHo hHn hfl v hv A hA`. Establish `hBv : IsPlaceOver (F` using `ℚ) B v := by`. Take `⟨h1, h2, h3, -⟩` from `UpperTheory.V.Base.places ℚ Ω l B`. Take `⟨v', hv'⟩` from `h1 fun h => (h2 h).2 hB`. Establish `h4 : ((l : ℕ) : 𝓞 ℚ) ∈ v'.asIdeal` using `(h3 v' hv').1 hB`.
+
+Rewrite using `[← place_eq h4 hv]`. Conclude with `hv'`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := ℚ) hBv hA`. Establish `hAl : (g • B).valuation (l : Ω) < 1` using `((UpperTheory.V.Two.ineConj ℚ Ω g).2.1 B l).2 hB`. Take `⟨s, hs, hinf⟩` from `UpperTheory.V.Keep.infCyc ℚ Ω l (g • B) hAl H hHo`.
+
+Establish `he0 : (e : ℤ) ≠ 0` using `by omega`. Establish `hab : ((cycBar ℚ Ω l) ^ (![(e : ℤ), -(e : ℤ)] 0)) s ≠ ((cycBar ℚ Ω l) ^ (![(e : ℤ), -(e : ℤ)] 1)) s`. Introduce `h`. Use `ne_one_zpow hinf (z := 2 * (e : ℤ)) (by omega) ?_` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, MonoidHom.zpow_apply] at h`.
+
+Rewrite using `[two_mul, zpow_add]`. Use `nth_rewrite 1 [h]`. Simplify using the standard rewrite rules. Take `⟨κ, hκ, hval⟩` from `flag_core (N₀ := H ⊓ Ine (F := ℚ) B) (N := H ⊓ Ine (F := ℚ) (g • B)) (D := Dec (F := ℚ) (g • B)) W (fun i => (cycBar ℚ Ω l) ^ (![(e : ℤ), -(e : ℤ)] i)) g (fun h hh => ⟨hHn.conj_mem' h hh.1 g, (UpperTheory.V.Two.ineConj ℚ Ω g).1 B h hh.2⟩) hfl (fun d hd h hh => ⟨hHn.conj_mem' h hh …`. Use `⟨κ, hκ, fun i j m hm heq => ?_⟩` and prove the remaining obligations.
+
+Establish `hsD : s ∈ Dec (F` using `ℚ) (g • B) := hs.2.1`. Establish `h1` using `DFunLike.congr_fun heq ⟨s, hsD⟩`. Simplify using `only [MonoidHom.pow_apply, MonoidHom.mul_apply, MonoidHom.comp_apply, Subgroup.coe_subtype] at h1`. Rewrite `h1` using `[hval i ⟨s, hsD⟩ hs, hval j ⟨s, hsD⟩ hs]`. Simplify using `only [MonoidHom.zpow_apply] at h1`.
+
+Establish `hz : ((m : ℤ) * (![(e : ℤ), -(e : ℤ)] i - ![(e : ℤ), -(e : ℤ)] j - 1)) ≠ 0`. Use `mul_ne_zero (by omega) ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> omega`. Use `ne_one_zpow hinf hz ?_` and prove the remaining obligations. Establish `h2 : (cycBar ℚ Ω l s) ^ ((m : ℤ) * ![(e : ℤ), -(e : ℤ)] i) = (cycBar ℚ Ω l s) ^ ((m : ℤ) * (![(e : ℤ), -(e : ℤ)] j + 1))`.
+
+Rewrite using `[mul_comm (m : ℤ), mul_comm (m : ℤ), zpow_mul, zpow_mul, zpow_add_one, zpow_natCast, zpow_natCast]`. Conclude with `h1`. Rewrite using `[show (m : ℤ) * (![(e : ℤ), -(e : ℤ)] i - ![(e : ℤ), -(e : ℤ)] j - 1) = (m : ℤ) * ![(e : ℤ), -(e : ℤ)] i - (m : ℤ) * (![(e : ℤ), -(e : ℤ)] j + 1) by ring, zpow_sub, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Z.Win.Dn.potTwo_of :
     PotTwo := by
   intro Ω _ _ _ l _ e he W B hB H hHo hHn hfl v hv A hA

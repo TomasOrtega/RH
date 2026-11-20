@@ -30,6 +30,25 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.The
 noncomputable section
 noncomputable section
 namespace UpperTheory.One.M
+/- English proof (translation)
+Use `haveI := GlobalTheory.CuspRep.host_isCMField D.host`. Establish `L : _root_.UpperTheory.One.M.RecLawsH (_root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep hL D s.w)` using `(_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 s.w)).recLaws`. Use `set χ := cf.mu0 ⟨j - 1, by omega⟩ with hχ`. Establish `hμc : IsComp χ s.w (χ.loc s.w)` using `⟨GlobalTheory.CuspRep.ParLaws.isSmoothChar_loc χ s.w, fun _ => rfl⟩`. Take `⟨ξ₀, -, huniq, hunit⟩` from `GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary D.host.E χ s.w`.
+
+Establish `hχu : χ.IsUnitary` using `hμ ▸ (a.chr.e1 μ).2`. Establish `hμU : IsUnitaryChar (χ.loc s.w)` using `fun x => by`. Rewrite using `[huniq _ hμc]`. Conclude with `hunit hχu x`. Establish `hηc : IsComp cf.eta s.w (cf.eta.loc s.w)` using `⟨GlobalTheory.CuspRep.ParLaws.isSmoothChar_loc cf.eta s.w, fun _ => rfl⟩`.
+
+Establish `hηi : IsComp (a.chr.e1 D.naut.etaTinv).1 s.w ((cf.eta⁻¹).loc s.w)`. Rewrite using `[a.chr.etaTinv]`. Conclude with `⟨GlobalTheory.CuspRep.ParLaws.isSmoothChar_loc _ s.w, fun _ => rfl⟩`. Establish `hinv : (cf.eta⁻¹).loc s.w = (cf.eta.loc s.w)⁻¹` using `MonoidHom.ext (HChar.loc_inv _ _)`. Establish `hrt : D.R.r < D.R.t`.
+
+Use `D.R.rank_add_five_le` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Set `π₀ : Irr (s.w.adicCompletion D.host.E) (D.R.r + D.R.t)` to `Irr.ofIrrRep π`. Set `π'` to `GlobalTheory.SplitPairLift.twistIrr π₀ hηc.1`.
+
+Set `τ₀ : Irr (s.w.adicCompletion D.host.E) D.R.r` to `Irr.ofIrrRep τ`. Set `cμ` to `GlobalTheory.SplitPairLift.detIrr 1 hμc.1`. Set `τμ` to `GlobalTheory.SplitPairLift.detIrr D.R.t hμc.1`. Set `cη` to `Irr.ofDet 1 ((cf.eta⁻¹).loc s.w) hηi.1`. Establish `e1 : Nonempty (π'.π.Equiv (prod₂ τ₀.π τμ.π))` using `_root_.GlobalTheory.T.theta_lift_general_linear hBZ hB _ D.R.r D.R.t _ _ _ τ.ρ π'.π hrt hμc.1 hμU τ.smooth τ.irr hU π'.smooth π'.irr hP`.
+
+Establish `e2` using `L.prod _ _ τ₀ τμ π' e1`. Establish `e3` using `L.det D.R.t _ cμ τμ ⟨.refl _⟩ ⟨.refl _⟩`. Establish `hgπ : GoodI π'`. Establish `e : GlobalTheory.LocLanglands.cls (⟨π'.V, π'.π, π'.smooth, π'.irr⟩ : IrrRep (GL (Fin (D.R.r + D.R.t)) (s.w.adicCompletion D.host.E))) = (GlobalTheory.LocLanglands.cls (⟨π₀.V, π₀.π, π₀.smooth, π₀.irr⟩ : IrrRep (GL (Fin (D.R.r + D.R.t)) (s.w.adicCompletion D.host.E)))).tw (cf.eta.l …` using `(GlobalTheory.LocGL.IrrGL.tw_of π₀.π π₀.smooth π₀.irr (cf.eta.loc s.w) hηc.1).symm`. Use `show UpperTheory.Zero.LLC.Good _`.
+
+Rewrite using `[e]`. Conclude with `(GlobalTheory.RecT.good_tw_iff _ _ _).2 hgπ₀`. Establish `e4` using `_root_.UpperTheory.One.M.RecLawsH.twist L _ (cf.eta.loc s.w)⁻¹ cη π' π₀ hgπ (by rw [← hinv]; exact ⟨.refl _⟩) (by show Nonempty (π₀.π.Equiv (GlobalTheory.SmGL.twist (GlobalTheory.SmGL.twist π₀.π (GlobalTheory.SmGL.detChar _ (cf.eta.loc s.w))) (GlobalTheory.SmGL.detChar _ (cf.eta. …`. Rewrite using `[GlobalTheory.SplitPairLift.twist_twist_inv]`. Conclude with `⟨.refl _⟩)`.
+
+Establish `eμ` using `_root_.GlobalTheory.LiftSplitLoc.locG_rankOne_alt a.T a.cg a.chr μ s.w (χ.loc s.w) (hμ ▸ hμc)`. Establish `eη` using `_root_.GlobalTheory.LiftSplitLoc.locG_rankOne_alt a.T a.cg a.chr D.naut.etaTinv s.w _ hηi`. Establish `hau : a.T.e s.w (D.nbc.locAU j (a.A.cls j h1 h2 P) s.w) = _root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep hL D s.w _ π₀` using `a.au j h1 h2 P s π hπ`. Establish `hrow : a.T.e s.w (Rw.locR σ s.w) = _root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep hL D s.w _ τ₀` using `a.row.1 σ s τ hτ`. Establish `h7 : D.naut.lpDim (D.naut.locG D.naut.etaTinv s.w) = 1`.
+
+Rewrite using `[← a.T.dim, eη, L.dim]`. Apply `(a.T.e s.w).injective` to reduce the goal to its premises. Rewrite using `[a.T.char _ _ _ h7, a.T.sum, GlobalTheory.SplitPairLift.e_spehLoc, hau, hrow, e4, e2, e3, eη, eμ]`. Both sides reduce to the same expression.
+-/
 theorem localComponent_matches_of_howeDuality_alt (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible)
  (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {D : D7} {cf : CharFrame D}
     {rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r} {Rw : RowSide D} (a : _root_.GlobalTheory.HeightCounting.Up.ParityConditions hL D cf rep Rw) (j : ℕ) (h1 : 1 ≤ j)
@@ -93,6 +112,17 @@ theorem localComponent_matches_of_howeDuality_alt (hBZ : GlobalTheory.Published.
   rw [a.T.char _ _ _ h7, a.T.sum, GlobalTheory.SplitPairLift.e_spehLoc, hau, hrow, e4, e2, e3, eη, eμ]
   rfl
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hP hL`. Establish `hA` using `_root_.GlobalTheory.T.split_reference_pair_of_trivial_mu_alt hP hL`. Establish `hB` using `_root_.GlobalTheory.T.exists_unitarisable_local_component_at_split hP hL`. Establish `hC` using `_root_.UpperTheory.One.M.goodRef_alt hP hL`. Unfold `_root_.GlobalTheory.LiftRef.ForallRowSideParameters at hA hB hC ⊢`.
+
+Use `GlobalTheory.LiftRef.overRows_and_mono (GlobalTheory.LiftRef.overRows_and_mono hA hB fun _ _ _ _ _ _ _ _ _ _ _ a b => And.intro a b) hC fun K B f T w Z Wt hX z p0 Y HAB HC Rw a M tup Q hM hI j h1 h2 σ S hS hpair μ hμ v hv => ?_` and prove the remaining obligations. Take `⟨HA, HB⟩` from `HAB`. Take `⟨s, rfl⟩` from `GlobalTheory.PairReadPf.exists_splitPlace_w _ v hv`. Establish `hne : (w.st Z).toD7.what₂.isot j σ ≠ ⊥`. Take `⟨y, hy, F, -, hF⟩` from `hpair`.
+
+Introduce `hb`. Rewrite `hy` using `[hb, Submodule.mem_bot]`. Apply `hF` to reduce the goal to its premises. Rewrite using `[hy, map_zero, inner_zero_right]`. Take `⟨τ, hτ, hU⟩` from `HB Rw a M tup Q hM hI j σ hne s`.
+
+Take `⟨π, hπ⟩` from `GlobalTheory.LocCompSplit.exists_isLocS (GlobalTheory.LiftRef.autOf (M _ j h1 h2) S hS) s`. Establish `hne' : (NG.isoTyp (M _ j h1 h2).wt.ρ S).comap (M _ j h1 h2).real ≠ ⊥`. Take `⟨y, hy, F, hF, hF0⟩` from `hpair`. Introduce `hb`. Rewrite `hF` using `[hb, Submodule.mem_bot]`.
+
+Substitute `hF` using the available equality. Conclude with `hF0 (inner_zero_left _)`. Conclude with `_root_.UpperTheory.One.M.localComponent_matches_of_howeDuality_alt hP.what₂.bz hP.what₂.bern hL a j h1 h2 σ _ μ hμ s π τ hπ hτ hU (HA Rw a M tup Q hM hI j h1 h2 σ S hS hpair s π τ hπ hτ) (HC Rw a M tup Q hM hI j h1 h2 S hS hne' s π hπ)`.
+-/
 theorem liftSplitLocal_of_howeDuality_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.LiftRef.ForallRowSideParameters hL fun D cf _ Rw a M => ∀ (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (σ : D.what₂.FT) (S : Submodule ℂ (Formalism.AUTREP.GAf D.host.E D.R.nV → (M D.what₂.mu0 j h1 h2).wt.W)) (hS : NG.IsIrrRep (M D.what₂.mu0 j h1 h2).wt.ρ S), (∃ y ∈ D.what₂.isot j σ, ∃ F ∈ (NG.isoTyp (M D.what₂.mu0 j h1 h2).wt.ρ S).comap (M D.what₂.mu0 j h1 h2).real, inner ℂ F (D.what₂.thetaT D.what₂.mu0 j y) ≠ 0) → ∀ μ : D.naut.CG 1, (a.chr.e1 μ).1 = cf.mu0 ⟨j - 1, by omega⟩ → ∀ w, IsSplitPl D.host w → D.nbc.locAU j (a.A.cls j h1 h2 (GlobalTheory.LiftRef.autOf (M D.what₂.mu0 j h1 h2) S hS)) w = D.naut.lpChar (D.naut.lpSum (Rw.locR σ w) (spehLoc D.nd D.naut ⟨1, μ, D.R.t⟩ w)) (D.naut.locG D.naut.etaTinv w) := by
   intro hP hL
   have hA := _root_.GlobalTheory.T.split_reference_pair_of_trivial_mu_alt hP hL

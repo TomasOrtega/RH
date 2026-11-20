@@ -8,6 +8,29 @@ open scoped ComplexOrder Matrix
 
 namespace GlobalTheory.HSAmp
 
+/- English proof (translation)
+Introduce `ι _ _ A hA T ρ R hρ hR hT hTz hRρ`. Use `set n : ℕ := Fintype.card ι with hn`. Use `set s : ℝ := n * ρ with hs`. Establish `hs0 : 0 ≤ s` using `by positivity`. Establish `hsR : s ≤ R / 2` using `by rw [hs]; linarith`.
+
+Establish `hnear` using `exists_int_near_of_closure_short ι A hA T ρ hρ hT hTz`. Establish `hup` using `ellCount_volume ι A hA s R hs0 hR.le hnear`. Establish `hlo` using `(ellCount_volume ι A hA s (R - s) hs0 (by linarith) hnear).2.1`. Rewrite `hlo` using `[sub_add_cancel]`. Use `⟨hup.1, ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, hω0, hωt⟩` from `volume_ellipsoid ι A hA 0 le_rfl`. Use `set ω : ENNReal := volume {x : ι → ℝ | ∑ i, x i ^ 2 ≤ 1} with hω`. Establish `hVr : ∀ r : ℝ, 0 ≤ r → (volume {x : ι → ℝ | ∑ i, ∑ j, A i j * x i * x j ≤ r ^ 2}).toReal = r ^ n / Real.sqrt A.det * ω.toReal`. Introduce `r hr`. Rewrite using `[(volume_ellipsoid ι A hA r hr).1, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`.
+
+Establish `hVfin : ∀ r : ℝ, 0 ≤ r → volume {x : ι → ℝ | ∑ i, ∑ j, A i j * x i * x j ≤ r ^ 2} ≠ ⊤`. Introduce `r hr`. Rewrite using `[(volume_ellipsoid ι A hA r hr).1]`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hωt.ne`. Establish `hmono : ∀ r r' : ℝ, 0 ≤ r → r ≤ r' → volume {x : ι → ℝ | ∑ i, ∑ j, A i j * x i * x j ≤ r ^ 2} ≤ volume {x : ι → ℝ | ∑ i, ∑ j, A i j * x i * x j ≤ r' ^ 2}`.
+
+Introduce `r r' hr hrr`. Apply `measure_mono` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hlo'` using `(hmono (R / 2) (R - s) (by positivity) (by linarith)).trans hlo`. Establish `hup'` using `hup.2.2.trans (hmono (R + s) (2 * R) (by linarith) (by linarith))`. Establish `hloR : (R / 2) ^ n / Real.sqrt A.det * ω.toReal ≤ (ellCount A R : ℝ)`. Rewrite using `[← hVr _ (by positivity)]`. Use `ENNReal.toReal_mono (ENNReal.natCast_ne_top _) hlo'` as an intermediate fact.
+
+Simplify using `using this`. Establish `hupR : (ellCount A R : ℝ) ≤ (2 * R) ^ n / Real.sqrt A.det * ω.toReal`. Rewrite using `[← hVr _ (by positivity)]`. Use `ENNReal.toReal_mono (hVfin _ (by positivity)) hup'` as an intermediate fact. Simplify using `using this`.
+
+Establish `hdet` using `hA.det_pos`. Establish `hωr : 0 < ω.toReal` using `ENNReal.toReal_pos hω0.ne' hωt.ne`. Use `set K : ℝ := ω.toReal / Real.sqrt A.det with hK`. Establish `hK0 : 0 < K` using `by positivity`. Establish `hlogK : Real.log K = Real.log ω.toReal - Real.log A.det / 2`.
+
+Rewrite using `[hK, Real.log_div hωr.ne' (Real.sqrt_pos.2 hdet).ne', Real.log_sqrt hdet.le]`. Establish `e1 : (R / 2) ^ n / Real.sqrt A.det * ω.toReal = (R / 2) ^ n * K` using `by rw [hK]; ring`. Establish `e2 : (2 * R) ^ n / Real.sqrt A.det * ω.toReal = (2 * R) ^ n * K` using `by rw [hK]; ring`. Rewrite `hloR` using `[e1]`. Rewrite `hupR` using `[e2]`.
+
+Establish `hp1 : 0 < (R / 2) ^ n * K` using `by positivity`. Establish `hc : 0 < (ellCount A R : ℝ)` using `hp1.trans_le hloR`. Establish `l1` using `Real.log_le_log hp1 hloR`. Establish `l2` using `Real.log_le_log hc hupR`. Rewrite `l1` using `[Real.log_mul (by positivity) hK0.ne', Real.log_pow, Real.log_div hR.ne' two_ne_zero]`.
+
+Rewrite `l2` using `[Real.log_mul (by positivity) hK0.ne', Real.log_pow, Real.log_mul two_ne_zero hR.ne']`. Rewrite `l1` using `[mul_sub]`. Rewrite `l2` using `[mul_add]`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem log_ellCount_near : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℝ), A.PosDef → ∀ (T : Set (ι → ℤ)) (ρ R : ℝ), 0 ≤ ρ → 0 < R → AddSubgroup.closure T = ⊤ → (∀ z ∈ T, ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ ρ ^ 2) → 2 * Fintype.card ι * ρ ≤ R → {z : ι → ℤ | ∑ i, ∑ j, A i j * (z i : ℝ) * (z j : ℝ) ≤ R ^ 2}.Finite ∧ |Real.log (ellCount A R) - (Fintype.card ι * Real.log R - Real.log A.det / 2 + Real.log (volume {x : ι → ℝ | ∑ i, x i ^ 2 ≤ 1}).toReal)| ≤ Fintype.card ι * Real.log 2 := by
   intro ι _ _ A hA T ρ R hρ hR hT hTz hRρ
   set n : ℕ := Fintype.card ι with hn

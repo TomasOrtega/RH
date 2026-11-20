@@ -17,6 +17,27 @@ noncomputable section
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Use `letI : Module R (B' ⊗[R'] (R' ⊗[R] W)) := Module.compHom _ (algebraMap R R')`. Establish `hsm : ∀ (c : R) (z : B' ⊗[R'] (R' ⊗[R] W)), c • z = algebraMap R R' c • z` using `fun _ _ ↦ rfl`. Establish `hR : ∀ (c : R) (x : R' ⊗[R] B), c • x = algebraMap R R' c • x` using `fun c x ↦ (algebraMap_smul R' c x).symm`. Establish `hW : ∀ (c : R) (w : W), (1 : R') ⊗ₜ[R] (c • w) = algebraMap R R' c • ((1 : R') ⊗ₜ[R] w)`. Introduce `c w`.
+
+Rewrite using `[← TensorProduct.smul_tmul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one, Algebra.algebraMap_eq_smul_one]`. Set `bil : R' ⊗[R] B →ₗ[R] W →ₗ[R] B' ⊗[R'] (R' ⊗[R] W)` to `LinearMap.mk₂ R (fun x w ↦ liftSemi f x ⊗ₜ[R'] ((1 : R') ⊗ₜ[R] w)) (fun x y w ↦ by rw [map_add, TensorProduct.add_tmul]) (fun c x w ↦ by rw [hR, map_smul, hsm, TensorProduct.smul_tmul']) (fun x w w' ↦ by rw [TensorProduct.tmul_add, TensorProduct.tmul_add]) (fun c x w ↦ by rw [hW, …`. Set `Ψ : R' ⊗[R] (B ⊗[R] W) →ₗ[R] B' ⊗[R'] (R' ⊗[R] W)` to `TensorProduct.lift bil ∘ₗ (TensorProduct.assoc R R' B W).symm.toLinearMap`. Establish `hΨ : Function.Surjective Ψ`. It suffices to establish `hall : ∀ z, z ∈ LinearMap.range Ψ from LinearMap.range_eq_top.1 (eq_top_iff.2 fun z _ ↦ hall z)`.
+
+Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y hx hy => exact add_mem hx hy`. Consider the case `tmul b t`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [TensorProduct.tmul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y hx hy => rw [TensorProduct.tmul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `tmul r w`. Take `⟨x, hx⟩` from `h1 (r • b)`. Use `⟨TensorProduct.assoc R R' B W (x ⊗ₜ w), ?_⟩` and prove the remaining obligations. Establish `e1 : r ⊗ₜ[R] w = r • ((1 : R') ⊗ₜ[R] w)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+
+Simplify using `only [Ψ, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, TensorProduct.lift.tmul, bil, LinearMap.mk₂_apply, hx, e1, ← TensorProduct.smul_tmul]`. Set `Θ : R' ⊗[R] (B ⊗[R] W) ≃ₗ[R] R' ⊗[R] Ω` to `(he.equiv.restrictScalars R).lTensor R'`. Establish `hΘ : Function.Bijective (fun z ↦ liftSemi m (Θ z))` using `h2.comp Θ.bijective`. Establish `key : ∀ z, he'.equiv (LinearMap.lTensor B' (liftSemi p) (Ψ z)) = liftSemi m (Θ z)`. Introduce `z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy, map_add, map_add]`. Consider the case `tmul r t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[TensorProduct.tmul_add, map_add, map_add, map_add, hx, hy, map_add, map_add]`. Consider the case `tmul b w`. Simplify using `only [Ψ, Θ, bil, LinearMap.comp_apply, LinearEquiv.coe_coe, TensorProduct.assoc_symm_tmul, TensorProduct.lift.tmul, LinearMap.mk₂_apply, liftSemi_tmul, LinearMap.lTensor_tmul, LinearEquiv.lTensor_tmul, LinearEquiv.restrictScalars_apply, IsBaseChange.equiv_tmul, one_smul, hf, hp, …`.
+
+Use `⟨fun x y hxy ↦ ?_, fun q ↦ ?_⟩` and prove the remaining obligations. Take `⟨x0, rfl⟩` from `hΨ x`. Take `⟨y0, rfl⟩` from `hΨ y`. Use `hΘ.1 (show liftSemi m (Θ x0) = liftSemi m (Θ y0) by rw [← key, ← key, hxy])` as an intermediate fact. Rewrite using `[this]`.
+
+Take `⟨z, hz⟩` from `hΘ.2 (he'.equiv q)`. Use `⟨Ψ z, he'.equiv.injective ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `hz`.
+-/
 theorem lTensor_liftSemi_bijective_of_isBaseChange {R R' B B' W W' Ω Ω' : Type} [CommRing R]
     [CommRing R'] [Algebra R R'] [CommRing B] [Algebra R B] [CommRing B'] [Algebra R' B']
     [AddCommGroup W] [Module R W] [AddCommGroup W'] [Module R' W']
@@ -95,6 +116,13 @@ end GlobalTheory.AbCoh
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `R R' _ _ _ X X' s s' φ h hF hH hF' hH' U hU`. Set `U' : X'.affineOpens` to `⟨φ ⁻¹ᵁ U.1, hU⟩`. Set `pr : Pair φ` to `⟨(U', U), le_rfl⟩`. Establish `hsemi : SemiHom (algebraMap R R') (GlobalTheory.CechDR.secPull s s' pr)` using `GlobalTheory.CechDR.semiHom_secPull h.w pr`. Set `f : Sec s U.1 →ₛₗ[algebraMap R R'] Sec s' (φ ⁻¹ᵁ U.1)` to `{ toFun := GlobalTheory.CechDR.secPull s s' pr, map_add' := map_add _, map_smul' := hsemi }`.
+
+Establish `h1 : Function.Bijective (liftSemi f)` using `GlobalTheory.CechDR.bijective_liftSemi_secPull R R' X X' s s' φ h pr rfl f (fun _ ↦ rfl)`. Establish `h2 : Function.Bijective (liftSemi hsemi.m1)` using `GlobalTheory.kaehler_liftSemi_bijective R R' _ _ (GlobalTheory.CechDR.secPull s s' pr) hsemi f (fun _ ↦ rfl) h1`. Set `e : GlobForm s →ₗ[R] Ω[Sec s U.1⁄R]` to `{ toFun := fun w ↦ w.1 (Opposite.op U), map_add' := fun _ _ ↦ rfl, map_smul' := fun _ _ ↦ rfl }`. Establish `he : IsBaseChange (Sec s U.1) e` using `isBaseChange_glob1 R (AffOp X) (OAff s) hF hH (Opposite.op U) e (fun _ ↦ rfl)`. Set `e' : GlobForm s' →ₗ[R'] Ω[Sec s' (φ ⁻¹ᵁ U.1)⁄R']` to `{ toFun := fun w ↦ w.1 (Opposite.op U'), map_add' := fun _ _ ↦ rfl, map_smul' := fun _ _ ↦ rfl }`.
+
+Establish `he' : IsBaseChange (Sec s' (φ ⁻¹ᵁ U.1)) e'` using `isBaseChange_glob1 R' (AffOp X') (OAff s') hF' hH' (Opposite.op U') e' (fun _ ↦ rfl)`. Conclude with `lTensor_liftSemi_bijective_of_isBaseChange (GlobalTheory.CechDR.secPull s s' pr) f (fun _ ↦ rfl) h1.2 hsemi.m1 (fun b ω ↦ hsemi.oneFormMap_smul_semilinear b ω) h2 e he e' he' (pullForm h.w) (fun w ↦ ((isPullForm_iff.1 (isPullForm_pullForm h.w w)) pr).symm)`.
+-/
 theorem lTensor_liftSemi_pullForm_bijective : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (φ : X' ⟶ X) (h : IsPullback φ s' s (spMap (algebraMap R R'))), HasFrame (OAff s) → CohomZeroIsConstants (OAff s) → HasFrame (OAff s') → CohomZeroIsConstants (OAff s') → ∀ U : X.affineOpens, IsAffineOpen (φ ⁻¹ᵁ U.1) → Function.Bijective (LinearMap.lTensor (Sec s' (φ ⁻¹ᵁ U.1)) (liftSemi (pullForm h.w))) := by
   intro R R' _ _ _ X X' s s' φ h hF hH hF' hH' U hU
   let U' : X'.affineOpens := ⟨φ ⁻¹ᵁ U.1, hU⟩

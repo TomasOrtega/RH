@@ -8,6 +8,13 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 noncomputable section
 namespace GlobalTheory.RootExSource
 
+/- English proof (translation)
+Establish `hT : M.BlockTriangular b` using `fun r s hrs => by`. Rewrite using `[h r s hrs.le, Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hrs`. Rewrite using `[hT.det]`.
+
+Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `: M.toSquareBlock b a = 1`. Use extensionality with `r s`. Rewrite using `[Matrix.toSquareBlock_def, Matrix.of_apply, h _ _ (by rw [r.2, s.2])]`. Simplify using `[Matrix.one_apply, Subtype.ext_iff]`.
+
+Rewrite using `[this, det_one]`.
+-/
 theorem det_eq_one_of_unip {k ι : Type*} [Field k] [Fintype ι] [DecidableEq ι] (b : ι → ℕ)
     (M : Matrix ι ι k) (h : ∀ r s, b s ≤ b r → M r s = (1 : Matrix ι ι k) r s) : M.det = 1 := by
   have hT : M.BlockTriangular b := fun r s hrs => by
@@ -25,6 +32,11 @@ theorem det_eq_one_of_unip {k ι : Type*} [Field k] [Fintype ι] [DecidableEq ι
 variable {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
   {c p : ℕ}
 
+/- English proof (translation)
+Establish `: x r s = (x * (1 : Matrix (n' ⊕ Fin c) (n' ⊕ Fin c) k)) r s` using `by rw [Matrix.mul_one]`. Rewrite using `[this, Matrix.mul_apply, Matrix.mul_apply, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Matrix.one_apply_ne, mul_zero, zero_add]`.
+
+Introduce and unpack `rfl`. Conclude with `lt_irrefl _ h`. Rewrite using `[hg s' s (not_lt.1 h), add_zero]`.
+-/
 theorem mul_apply_of_inN {m : Type} {g : GL (n' ⊕ Fin c) k} (hg : InN p g)
     (x : Matrix m (n' ⊕ Fin c) k) (r : m) (s : n' ⊕ Fin c) :
     (x * g.val) r s = x r s + ∑ s', if lev p s' < lev p s then x r s' * g.val s' s else 0 := by
@@ -37,10 +49,18 @@ theorem mul_apply_of_inN {m : Type} {g : GL (n' ⊕ Fin c) k} (hg : InN p g)
     exact lt_irrefl _ h
   · rw [hg s' s (not_lt.1 h), add_zero]
 
+/- English proof (translation)
+Simplify using `[affPt, h]`.
+-/
 theorem affPt_nonfree (x₀ : Matrix n n' k) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k)
     (r s) (h : ¬ Free p (r, s)) : affPt p x₀ e r s = basePt c x₀ r s := by
   simp [affPt, h]
 
+/- English proof (translation)
+Rewrite using `[mul_apply_of_inN hg, affPt_nonfree _ _ _ _ h, Finset.sum_eq_zero, add_zero]`. Introduce `s' _`. Use `split_ifs with h'`. Establish `: ¬ Free p (r, s') ∧ basePt c x₀ r s' = 0`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> rcases s' with s' | s' <;>`.
+
+Apply the tactic sequence `simp [Free, lev, basePt] at h h' ⊢ <;> omega`. Rewrite using `[affPt_nonfree _ _ _ _ this.1, this.2, zero_mul]`. Both sides reduce to the same expression.
+-/
 theorem affPt_mul_nonfree {g : GL (n' ⊕ Fin (c + 1)) k} (hg : InN p g) (x₀ : Matrix n n' k)
     (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k)
     (r s) (h : ¬ Free p (r, s)) : (affPt p x₀ e * g.val) r s = basePt c x₀ r s := by
@@ -53,6 +73,13 @@ theorem affPt_mul_nonfree {g : GL (n' ⊕ Fin (c + 1)) k} (hg : InN p g) (x₀ :
     rw [affPt_nonfree _ _ _ _ this.1, this.2, zero_mul]
   · rfl
 
+/- English proof (translation)
+Unfold `simpleSum`. Rewrite using `[Fin.sum_univ_castSucc, Finset.sum_eq_zero (s := Finset.univ) (f := fun j : Fin (c + 1) => if j.val = (Fin.last c).val + 1 then g.val (Sum.inr (Fin.last c)) (Sum.inr j) else 0), add_zero]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single l.succ]`. Simplify using the standard rewrite rules.
+
+Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hj (Fin.ext (by simpa using h))`. Simplify using the standard rewrite rules.
+
+Introduce `j _`. Rewrite using `[if_neg]`. Use `j.2` as an intermediate fact. Simplify using `only [Fin.val_last]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem simpleSum_succ (g : GL (n' ⊕ Fin (c + 1)) k) :
     simpleSum g = ∑ l : Fin c, g.val (Sum.inr l.castSucc) (Sum.inr l.succ) := by
   unfold simpleSum
@@ -72,6 +99,13 @@ theorem simpleSum_succ (g : GL (n' ⊕ Fin (c + 1)) k) :
     simp only [Fin.val_last]
     omega
 
+/- English proof (translation)
+Rewrite using `[simpleSum_succ, ch, ch, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_apply_of_inN hg, Finset.sum_eq_single (Sum.inr l.castSucc)]`. Rewrite using `[if_pos (by simp [lev]), affPt_nonfree _ _ _ (Sum.inr l.castSucc) (by simp [Free])]`. Simplify using `[basePt]`.
+
+Introduce `s' _ hs split_ifs with h'`. Establish `: ¬ Free p ((Sum.inr l : n ⊕ Fin c), s') ∧ basePt c x₀ (Sum.inr l) s' = 0`. Apply the tactic sequence `rcases s' with s' | s' <;> simp [Free, lev, basePt, Fin.ext_iff] at hs h' ⊢ <;> omega`. Rewrite using `[affPt_nonfree _ _ _ _ this.1, this.2, zero_mul]`. Both sides reduce to the same expression.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ch_affPt_mul {g : GL (n' ⊕ Fin (c + 1)) k} (hg : InN p g) (x₀ : Matrix n n' k)
     (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) :
     ch (affPt p x₀ e * g.val) = ch (affPt p x₀ e) + simpleSum g := by
@@ -94,6 +128,11 @@ def linPart (n : Type) [DecidableEq n] (p : ℕ) (g : GL (n' ⊕ Fin (c + 1)) k)
   Matrix.of fun a b => if b.1.1 = a.1.1 then g.val b.1.2 a.1.2 else 0
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[← det_transpose]`. Use `det_eq_one_of_unip (fun a => lev p a.1.2) _ fun a b hab => ?_` and prove the remaining obligations. Break down `a with ⟨⟨r, s⟩, ha⟩` into its components or cases. Break down `b with ⟨⟨r', s'⟩, hb⟩` into its components or cases. Simplify using `only [linPart, transpose_apply, of_apply]`.
+
+Rewrite using `[hg _ _ hab]`. Apply the tactic sequence `by_cases h1 : r = r' <;> by_cases h2 : s = s' <;> simp [Matrix.one_apply, h1, h2]`.
+-/
 theorem det_linPart {g : GL (n' ⊕ Fin (c + 1)) k} (hg : InN p g) : (linPart n p g).det = 1 := by
   rw [← det_transpose]
   refine det_eq_one_of_unip (fun a => lev p a.1.2) _ fun a b hab => ?_
@@ -104,6 +143,15 @@ theorem det_linPart {g : GL (n' ⊕ Fin (c + 1)) k} (hg : InN p g) : (linPart n 
   by_cases h1 : r = r' <;> by_cases h2 : s = s' <;> simp [Matrix.one_apply, h1, h2]
 
 open Classical in
+/- English proof (translation)
+Use extensionality with `r s`. Distinguish the cases in `h : Free p (r, s)`. Establish `key : ((linPart n p g).mulVec e) ⟨(r, s), h⟩ = ∑ s', (if h : Free p (r, s') then e ⟨(r, s'), h⟩ else 0) * g.val s' s`. Establish `h1 : ((linPart n p g).mulVec e) ⟨(r, s), h⟩ = ∑ b : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)), (if b.1 = r then g.val b.2 s else 0) * (if h : Free p b then e ⟨b, h⟩ else 0)`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun b => Free p b)]`.
+
+Rewrite using `[Finset.sum_eq_zero (s := Finset.univ) (f := fun b : {b // ¬ Free p b} => _) (fun b _ => by rw [dif_neg b.2, mul_zero]), add_zero]`. Simplify using `only [Matrix.mulVec, dotProduct, linPart, of_apply]`. Use `Finset.sum_congr rfl fun b _ => by rw [dif_pos b.2]` and prove the remaining obligations. Rewrite using `[h1, Fintype.sum_prod_type, Finset.sum_eq_single r]`. Simplify using `[mul_comm]`.
+
+Introduce `r' _ hr`. Simplify using `[hr]`. Simplify using the standard rewrite rules. Unfold `affPt`. Rewrite using `[Matrix.add_mul, Matrix.add_apply, Matrix.add_apply, of_apply, dif_pos h, Pi.add_apply, key]`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.sub_apply, of_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[affPt_mul_nonfree hg _ _ _ _ h, affPt_nonfree _ _ _ _ h]`.
+-/
 theorem affPt_mul {g : GL (n' ⊕ Fin (c + 1)) k} (hg : InN p g) (x₀ : Matrix n n' k)
     (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) :
     affPt p x₀ e * g.val = affPt p x₀ ((linPart n p g).mulVec e +
@@ -131,6 +179,11 @@ theorem affPt_mul {g : GL (n' ⊕ Fin (c + 1)) k} (hg : InN p g) (x₀ : Matrix 
     ring
   · rw [affPt_mul_nonfree hg _ _ _ _ h, affPt_nonfree _ _ _ _ h]
 
+/- English proof (translation)
+Set `_` to `IsTopologicalAddGroup.rightUniformSpace k`. Use `isUniformAddGroup_of_addCommGroup (G := k)` as an intermediate fact. Set `_ : (Valued.v (R` to `k)).RankOne :=`. Use the proof step `{ hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `open scoped Valued in`.
+
+Establish `: ProperSpace k` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace k`. Use `open scoped Valued in`. Conclude with `secondCountable_of_proper`.
+-/
 private theorem secondCountable_local (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : SecondCountableTopology k := by
   let _ := IsTopologicalAddGroup.rightUniformSpace k
@@ -144,6 +197,21 @@ private theorem secondCountable_local (k : Type) [Field k] [ValuativeRel k] [Top
   open scoped Valued in
   exact secondCountable_of_proper
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n n' _ _ _ _ c p _ _ ψ ν _ μ Φ g hgN`. Use `secondCountable_local k` as an intermediate fact. Take `⟨h1, -, h3, -⟩` from `GlobalTheory.RootEx.Radical.unipotent_radical_basic k n' (c + 1) p`. Establish `hg : InN p g` using `(h1 g).1 hgN`. Establish `hdet` using `h3 g hgN`.
+
+Establish `hn1 : nabs k 1 = 1` using `by simp [nabs]`. Establish `hom : om μ g 1 Φ = fun x => Φ (x * g.val)`. Use function extensionality and compare the values at `x`. Simplify using `[om, hdet, hn1]`. Use function extensionality and compare the values at `x₀`.
+
+Rewrite using `[hom, Pi.smul_apply, smul_eq_mul]`. Unfold `opE`. Use `set v : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k := fun a => (basePt c x₀ * g.val - basePt c x₀) a.1.1 a.1.2 with hv`. Use `set F : ({rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) → ℂ := fun e => Φ (affPt p x₀ e) * (ψ (-ch (affPt p x₀ e)) : ℂ) with hF`. Set `G : GL {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (linPart n p g) (by rw [det_linPart hg]; exact one_ne_zero)`.
+
+Establish `hGval : G.val = linPart n p g` using `rfl`. Establish `hGdet : Matrix.GeneralLinearGroup.det G = 1`. Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hGval, det_linPart hg]`. Both sides reduce to the same expression.
+
+Establish `hcov` using `(GlobalTheory.SplitWeil.linear_change_of_variables k {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} n ν).1 G (fun e => F (e + v))`. Rewrite `hcov` using `[hGdet, hn1, inv_one, one_smul, hGval]`. Establish `hint : ∀ e, Φ (affPt p x₀ e * g.val) * (ψ (-ch (affPt p x₀ e)) : ℂ) = (ψ (simpleSum g) : ℂ) * F ((linPart n p g).mulVec e + v)`. Introduce `e`. Simplify using `only [hF]`.
+
+Rewrite using `[hv, ← affPt_mul hg, ch_affPt_mul hg, mul_left_comm, ← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hint]`. Rewrite using `[integral_const_mul, hcov]`.
+
+Use `congr 1`. Conclude with `integral_add_right_eq_self F v`.
+-/
 theorem opE_om_source : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c p : ℕ) (_ : 1 ≤ p) (_ : p ≤ c) (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure] (μ : kˣ →* ℂˣ) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ), ∀ g ∈ N k n' (c + 1) p, opE ψ ν p (om μ g 1 Φ) = (ψ (simpleSum g) : ℂ) • opE ψ ν p Φ := by
   intro k _ _ _ _ _ _ n n' _ _ _ _ c p _ _ ψ ν _ μ Φ g hgN
   classical

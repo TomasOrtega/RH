@@ -14,6 +14,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+Establish `hR : R ≤ 1.6 * K` using `(le_abs_self R).trans h3`. Establish `hfm : 1 ≤ f * m` using `by nlinarith`. Establish `hP : 0 < f * (K * m)` using `mul_pos (by linarith) (mul_pos hK (by linarith))`. Establish `hKfm : K ≤ K * (f * m)` using `by nlinarith`. Establish `key : x * (f * (K * m)) ≤ (C * L + l / 2 + 1.6) * (f * (K * m))`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `le_of_mul_le_mul_right key hP`.
+-/
 theorem lower_bound_key_inequality (K f m x L C h R : ℝ) (hK : 0 < K) (hf : 1 ≤ f) (hm : 1 ≤ m)
     (h1 : -(C * f * m * L) * K ≤ h - x * (f * (K * m)) + R) (l : ℝ) (h2 : h ≤ K * (f * (m / 2 * l)))
     (h3 : |R| ≤ 1.6 * K) : x ≤ C * L + l / 2 + 1.6 := by
@@ -25,10 +30,52 @@ theorem lower_bound_key_inequality (K f m x L C h R : ℝ) (hK : 0 < K) (hf : 1 
     nlinarith
   exact le_of_mul_le_mul_right key hP
 
+/- English proof (translation)
+Establish `h' : m * (-(2 * M)) ≤ m * A` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left h' hm`.
+-/
 theorem lower_bound_finite_arith (N m A M : ℝ) (hm : 0 < m) (hM : 0 ≤ M) (hN : N ≤ 2 * m) (h : -(N * M) ≤ m * A) : -(2 * M) ≤ A := by
   have h' : m * (-(2 * M)) ≤ m * A := by nlinarith
   exact le_of_mul_le_mul_left h' hm
 
+/- English proof (translation)
+Introduce `II Ψ _ _ N T _ hh frob C C' rd Lval hC hC' hrd hprop hI9 hPF hSL hhh B₀ A₀ b₀ hB128 hB4 hbad hId`. Establish `hj1` using `T.j_pos`. Establish `hjN` using `T.j_lt`. Take `⟨hhom, htd, hcase1, hcase2⟩` from `GlobalTheory.T.test_polynomial_shift_total Ψ N T.j hj1 hjN`. Take `⟨Q, hQ1, hQ2⟩` from `GlobalTheory.T.homogeneous_power_sum_decomposition Ψ N (testPoly T.j) (by omega) hhom`.
+
+Establish `hdec : IsDecomp (testPoly T.j) Q` using `⟨hQ1, hQ2⟩`. Establish `hPP` using `GlobalTheory.T.tower_height_identity_expansion II Ψ N T hh frob B₀ A₀ b₀ (testPoly T.j) Q hId hdec`. Establish `hR` using `GlobalTheory.T.test_polynomial_remainder_bound Ψ N T.j T.bad frob B₀ Q hj1 hjN hB4 hdec`. Establish `hAb` using `GlobalTheory.T.cutoff_coefficients_bound II Ψ N T hh frob C' rd Lval B₀ A₀ b₀ hprop hI9 hPF hB128 hbad hId`. Establish `hSL'` using `hSL B₀ hB128 hB4 hbad`.
+
+Establish `hvol : 0 < T.volT` using `by show 0 < ∑ c, T.vol c`. Conclude with `Finset.sum_pos (fun c _ => hprop.1 c) Finset.univ_nonempty`. Establish `hcard : 1 ≤ Fintype.card Ψ` using `Fintype.card_pos`. Establish `hf : (1:ℝ) ≤ (Fintype.card Ψ : ℝ)` using `by exact_mod_cast hcard`. Establish `hN1 : N + 1 ≤ B₀` using `by nlinarith`.
+
+Establish `hlogB : Real.log (B₀:ℝ) ≤ bigLam (B₀:ℝ) rd Lval` using `by show Real.log (B₀:ℝ) ≤ Real.log ((B₀:ℝ) * rd) + |Lval|`. Establish `hB0 : (0:ℝ) < B₀` using `by exact_mod_cast (show 0 < B₀ by omega)`. Use `Real.log_le_log hB0 (le_mul_of_one_le_right hB0.le hrd)` as an intermediate fact. Combine the linear relations using `[abs_nonneg Lval]`. Establish `hl : Real.log ((N:ℝ) + 1) ≤ Real.log (B₀:ℝ)` using `Real.log_le_log (by positivity) (by exact_mod_cast hN1)`.
+
+Establish `hl0 : 0 ≤ Real.log ((N:ℝ) + 1)` using `Real.log_nonneg (by linarith [(Nat.cast_nonneg N : (0:ℝ) ≤ N)])`. Establish `h16 : 1.6 ≤ Real.log (B₀:ℝ)`. Establish `h128 : Real.log 128 = 7 * Real.log 2`. Rewrite using `[show (128:ℝ) = 2 ^ 7 by norm_num, Real.log_pow]; norm_num`. Establish `: Real.log 128 ≤ Real.log (B₀:ℝ)` using `Real.log_le_log (by norm_num) (by exact_mod_cast hB128)`.
+
+Combine the linear relations using `[Real.log_two_gt_d9]`. Use `set Λ := bigLam (B₀:ℝ) rd Lval with hΛ`. Use `set R := ∑ τ, ∑ k ∈ Finset.Icc 1 N, restSum T.j T.bad frob B₀ τ k (Q τ k) with hRdef`. Use `set f : ℝ := (Fintype.card Ψ : ℝ) with hfdef`. Use `set D : ℝ := (dimX Ψ N T.j : ℝ) with hD`.
+
+Use `set td := testDeg Ψ N T.j with htddef`. Use `set l := Real.log ((N:ℝ) + 1) with hldef`. Establish `hK : 0 < (D + 1) * td` using `mul_pos (by positivity) htd`. Establish `hM0 : 0 ≤ C * Λ + l / 2 + 1.6 + C' * Λ`. Use `mul_nonneg hC (show 0 ≤ Λ by linarith)` as an intermediate fact.
+
+Use `mul_nonneg hC' (show 0 ≤ Λ by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfinal : ∀ A : ℝ, -(2 * (C * Λ + l / 2 + 1.6 + C' * Λ)) ≤ A → -((2 * (C + C') + 3) * Λ) ≤ A`. Introduce `A hA`. Use the polynomial consequences of the given equalities and inequalities.
+
+Apply `hfinal` to reduce the goal to its premises. Establish `hAb'` using `abs_le.mp hAb`. Distinguish the cases in `hc : N - T.j ≤ T.j`. Establish `hs` using `hcase1 hc`. Establish `hmin : min T.j (N - T.j) = N - T.j` using `min_eq_right hc`.
+
+Rewrite `hSL'`, `hhh` using `[hmin]`. Establish `hm1 : (1:ℝ) ≤ ((N - T.j : ℕ) : ℝ)`. Establish `: 1 ≤ N - T.j` using `by omega`. Conclude with `this` after adjusting the coercions. Use `set m : ℝ := ((N - T.j : ℕ) : ℝ) with hmdef`.
+
+Establish `hSh : ∑ σ : Ψ, Sh (N` using `N) T.j σ (testPoly T.j) = 0 := Finset.sum_eq_zero (fun σ _ => (hs σ).1)`. Establish `hTot : ∑ σ : Ψ, Tot (N` using `N) σ (testPoly T.j) = f * ((D + 1) * td * m) := by`. Rewrite using `[Finset.sum_congr rfl (fun σ _ => (hs σ).2), Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hSL'` using `[hPP, hSh, hTot]`.
+
+Establish `h1 : -(C * f * m * Λ) * ((D + 1) * td) ≤ hh (testPoly T.j) - b₀ * (f * ((D + 1) * td * m)) + R`. Use `le_of_mul_le_mul_left ?_ hvol` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hb` using `lower_bound_key_inequality ((D + 1) * td) f m b₀ Λ C (hh (testPoly T.j)) R hK hf hm1 h1 l hhh hR`. Establish `hj0 : (0:ℝ) < (T.j : ℝ)`.
+
+Establish `: 0 < T.j` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hNj : (N:ℝ) ≤ 2 * (T.j : ℝ)`. Establish `: N ≤ 2 * T.j` using `by omega`. Conclude with `this` after adjusting the coercions.
+
+Use `lower_bound_finite_arith (N:ℝ) (T.j:ℝ) A₀ _ hj0 hM0 hNj ?_` and prove the remaining obligations. Establish `hNb` using `mul_le_mul_of_nonneg_left hb (Nat.cast_nonneg (α := ℝ) N)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hs` using `hcase2 hc`. Establish `hmin : min T.j (N - T.j) = T.j` using `min_eq_left (by omega)`.
+
+Rewrite `hSL'`, `hhh` using `[hmin]`. Establish `hm1 : (1:ℝ) ≤ (T.j : ℝ)` using `by exact_mod_cast hj1`. Use `set m : ℝ := (T.j : ℝ) with hmdef`. Establish `hSh : ∑ σ : Ψ, Sh (N` using `N) T.j σ (testPoly T.j) = f * (-((D + 1) * m * td)) := by`. Rewrite using `[Finset.sum_congr rfl (fun σ _ => (hs σ).1), Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Establish `hTot : ∑ σ : Ψ, Tot (N` using `N) σ (testPoly T.j) = f * (-((D + 1) * m * td)) := by`. Rewrite using `[Finset.sum_congr rfl (fun σ _ => (hs σ).2), Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite `hSL'` using `[hPP, hSh, hTot]`. Establish `h1 : -(C * f * m * Λ) * ((D + 1) * td) ≤ hh (testPoly T.j) - (-(A₀ + b₀)) * (f * ((D + 1) * td * m)) + R`. Use `le_of_mul_le_mul_left ?_ hvol` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hb` using `lower_bound_key_inequality ((D + 1) * td) f m (-(A₀ + b₀)) Λ C (hh (testPoly T.j)) R hK hf hm1 h1 l hhh hR`. Establish `hcast : ((N - T.j : ℕ) : ℝ) = (N:ℝ) - (T.j:ℝ)`. Rewrite using `[Nat.cast_sub (by omega)]`. Establish `hpos : (0:ℝ) < ((N - T.j : ℕ) : ℝ)`.
+
+Establish `: 0 < N - T.j` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hNj : (N:ℝ) ≤ 2 * ((N - T.j : ℕ) : ℝ)`. Establish `: N ≤ 2 * (N - T.j)` using `by omega`. Conclude with `this` after adjusting the coercions.
+
+Use `lower_bound_finite_arith (N:ℝ) ((N - T.j : ℕ) : ℝ) A₀ _ hpos hM0 hNj ?_` and prove the remaining obligations. Rewrite using `[hcast]`. Establish `hNb` using `mul_le_mul_of_nonneg_left hb (Nat.cast_nonneg (α := ℝ) N)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem test_height_bound_slope_flat : ∀ II : IntersectionSystem, ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) [Nonempty Ψ] (hh : RP Ψ N →ₗ[ℝ] ℝ) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (C C' rd Lval : ℝ), 0 ≤ C → 0 ≤ C' → 1 ≤ rd → T.Proportional → I9 (Ψ := Ψ) (N := N) hh → T.PropF II C' rd Lval → T.SlopeLower II C rd Lval → hh (testPoly T.j) ≤ ((dimX Ψ N T.j : ℝ) + 1) * testDeg Ψ N T.j * (Fintype.card Ψ * ((min T.j (N - T.j) : ℕ) / 2 * Real.log (N + 1))) → T.LowerBoundAtBase II hh frob (2 * (C + C') + 3) rd Lval := by
   intro II Ψ _ _ N T _ hh frob C C' rd Lval hC hC' hrd hprop hI9 hPF hSL hhh B₀ A₀ b₀ hB128 hB4 hbad hId
   have hj1 := T.j_pos

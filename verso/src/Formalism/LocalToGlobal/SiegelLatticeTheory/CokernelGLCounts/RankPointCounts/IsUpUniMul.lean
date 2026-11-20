@@ -14,6 +14,13 @@ section Uni
 
 variable {R : Type*} [CommRing R] {n : ℕ}
 
+/- English proof (translation)
+Introduce `a b`. Use `⟨fun hab => ?_, fun hab => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `lt_or_ge a c with hc | hc` into its components or cases.
+
+Rewrite using `[(h a c).1 hc, zero_mul]`. Rewrite using `[(h' c b).1 (lt_of_le_of_lt hc hab), mul_zero]`. Substitute `hab` using the available equality. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[(h a a).2 rfl, (h' a a).2 rfl, mul_one]`.
+
+Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with hc' | hc'` into its components or cases. Rewrite using `[(h' c a).1 hc', mul_zero]`. Rewrite using `[(h a c).1 hc', zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem isLoUni_mul {l l' : Matrix (Fin n) (Fin n) R} (h : IsLoUni l) (h' : IsLoUni l') : IsLoUni (l * l') := by
   intro a b
   refine ⟨fun hab => ?_, fun hab => ?_⟩
@@ -31,15 +38,33 @@ theorem isLoUni_mul {l l' : Matrix (Fin n) (Fin n) R} (h : IsLoUni l) (h' : IsLo
       · rw [(h a c).1 hc', zero_mul]
     · simp
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul .. | (apply GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul <;> assumption) | (intros; apply GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul <;> assumption) | (apply @GlobalTheory.UpperUnipot …`.
+-/
 theorem isUpUni_mul {l l' : Matrix (Fin n) (Fin n) R} (h : IsUpUni l) (h' : IsUpUni l') : IsUpUni (l * l') := by
   first | exact GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul .. | (apply GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul <;> assumption) | (intros; apply GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul <;> assumption) | (apply @GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul <;> assumption) | (intros; apply @GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul <;> assumption) | (apply @GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul <;> first | assumption | infer_instance) | exact @GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul R ‹_› n l l' h h' | exact @GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul R ‹_› n l l' h | exact @GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul R ‹_› n l l' | exact @GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul R ‹_› n l | exact @GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul R ‹_› n | exact @GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul R ‹_› | exact @GlobalTheory.UpperUnipotentProductFlagMeasures.upUni_mul R
 
+/- English proof (translation)
+Introduce `a b` and use `⟨fun h => Matrix.one_apply_ne h.ne, fun h => by subst h; exact Matrix.one_apply_eq a⟩`.
+-/
 theorem isLoUni_one : IsLoUni (1 : Matrix (Fin n) (Fin n) R) := fun a b =>
   ⟨fun h => Matrix.one_apply_ne h.ne, fun h => by subst h; exact Matrix.one_apply_eq a⟩
 
+/- English proof (translation)
+Introduce `a b` and use `⟨fun h => Matrix.one_apply_ne h.ne', fun h => by subst h; exact Matrix.one_apply_eq a⟩`.
+-/
 theorem isUpUni_one : IsUpUni (1 : Matrix (Fin n) (Fin n) R) := fun a b =>
   ⟨fun h => Matrix.one_apply_ne h.ne', fun h => by subst h; exact Matrix.one_apply_eq a⟩
 
+/- English proof (translation)
+Establish `hd : l.det = 1` using `det_lo (fun a => (h a a).2 rfl) (fun a b hab => (h a b).1 hab)`. Establish `hu : IsUnit l.det` using `by rw [hd]; exact isUnit_one`. Establish `hli : l⁻¹ * l = 1` using `Matrix.nonsing_inv_mul l hu`. Establish `hil : l * l⁻¹ = 1` using `Matrix.mul_nonsing_inv l hu`. Use `Matrix.invertibleOfIsUnitDet l hu` as an intermediate fact.
+
+Establish `hb : l⁻¹.BlockTriangular OrderDual.toDual` using `Matrix.blockTriangular_inv_of_blockTriangular (fun i j hij => (h i j).1 hij)`. Use `⟨fun a b => ⟨fun hab => hb hab, fun hab => ?_⟩, hli, hil⟩` and prove the remaining obligations. Substitute `hab` using the available equality. Establish `e` using `congrFun (congrFun hil a) a`. Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single a, (h a a).2 rfl, one_mul]`.
+
+Simplify using `using e`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with hc' | hc'` into its components or cases. Rewrite using `[hb hc', mul_zero]`. Rewrite using `[(h a c).1 hc', zero_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isLoUni_inv {l : Matrix (Fin n) (Fin n) R} (h : IsLoUni l) : IsLoUni l⁻¹ ∧ l⁻¹ * l = 1 ∧ l * l⁻¹ = 1 := by
   have hd : l.det = 1 := det_lo (fun a => (h a a).2 rfl) (fun a b hab => (h a b).1 hab)
   have hu : IsUnit l.det := by rw [hd]; exact isUnit_one
@@ -59,6 +84,15 @@ theorem isLoUni_inv {l : Matrix (Fin n) (Fin n) R} (h : IsLoUni l) : IsLoUni l�
     · rw [(h a c).1 hc', zero_mul]
   · simp
 
+/- English proof (translation)
+Establish `hd : l.det = 1` using `det_up (fun a => (h a a).2 rfl) (fun a b hab => (h a b).1 hab)`. Establish `hu : IsUnit l.det` using `by rw [hd]; exact isUnit_one`. Establish `hli : l⁻¹ * l = 1` using `Matrix.nonsing_inv_mul l hu`. Establish `hil : l * l⁻¹ = 1` using `Matrix.mul_nonsing_inv l hu`. Use `Matrix.invertibleOfIsUnitDet l hu` as an intermediate fact.
+
+Establish `hb : l⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular (fun i j hij => (h i j).1 hij)`. Use `⟨fun a b => ⟨fun hab => hb hab, fun hab => ?_⟩, hli, hil⟩` and prove the remaining obligations. Substitute `hab` using the available equality. Establish `e` using `congrFun (congrFun hil a) a`. Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single a, (h a a).2 rfl, one_mul]`.
+
+Simplify using `using e`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with hc' | hc'` into its components or cases. Rewrite using `[(h a c).1 hc', zero_mul]`. Rewrite using `[hb hc', mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isUpUni_inv {l : Matrix (Fin n) (Fin n) R} (h : IsUpUni l) : IsUpUni l⁻¹ ∧ l⁻¹ * l = 1 ∧ l * l⁻¹ = 1 := by
   have hd : l.det = 1 := det_up (fun a => (h a a).2 rfl) (fun a b hab => (h a b).1 hab)
   have hu : IsUnit l.det := by rw [hd]; exact isUnit_one
@@ -151,6 +185,9 @@ def stZ (Z L : Formalism.L2.SG.PairVal.MatR D) (hL : IsUnit L.det) : Subgroup (F
       rw [hli1, Matrix.one_mul]
       simp only [Matrix.mul_assoc, hρi2, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `e : CZ M δ u u' Z L = stZ M δ u u' Z L hL`. Unfold `CZ`. Conclude with `Subgroup.closure_eq (stZ M δ u u' Z L hL)`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem mem_CZ (Z L : Formalism.L2.SG.PairVal.MatR D) (hL : IsUnit L.det) (a : Formalism.L2.SG.PairVal.GLR D) :
     a ∈ CZ M δ u u' Z L ↔ a ∈ stZSet M δ u u' Z L := by
   have e : CZ M δ u u' Z L = stZ M δ u u' Z L hL := by

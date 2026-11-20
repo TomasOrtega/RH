@@ -9,6 +9,15 @@ namespace PrimeCountingLemmas
 noncomputable def S (N : ℕ) : ℝ :=
   ∑ p ∈ (Finset.range (N + 1)).filter (fun p => p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N), (1 : ℝ) / p
 
+/- English proof (translation)
+Establish `hp2 : 2 ≤ p`. Break down `Nat.lt_or_ge r 1 with hr | hr` into its components or cases. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hnp`.
+
+Establish `hq` using `Nat.minFac_prime (by omega : p ≠ 1)`. Establish `hqd : p.minFac ∣ p` using `Nat.minFac_dvd p`. Establish `hqr : r < p.minFac`. Assume the negation of the conclusion as `hle`. Use `push_neg at hle`.
+
+Establish `h4 : p.minFac ∣ r.factorial` using `Nat.dvd_factorial hq.pos hle`. Establish `h5 : p.minFac ∣ Nat.gcd p r.factorial` using `Nat.dvd_gcd hqd h4`. Rewrite `h5` using `[h3]`. Conclude with `hq.one_lt.ne' (Nat.dvd_one.1 h5)`. Establish `hsq` using `Nat.minFac_sq_le_self (by omega) hnp`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem prime_of_gcd {r p : ℕ} (h1 : r < p) (h2 : p < (r + 1) * (r + 1))
     (h3 : Nat.gcd p (r.factorial) = 1) : p.Prime := by
   have hp2 : 2 ≤ p := by
@@ -32,6 +41,9 @@ def test (F r a b p : ℕ) : Bool :=
   Nat.ble (p + 3) a && Nat.blt b (2 * p) && Nat.blt r p && Nat.blt p ((r + 1) * (r + 1)) &&
     Nat.beq (Nat.gcd p F) 1
 
+/- English proof (translation)
+Simplify using `only [test, Bool.and_eq_true, Nat.ble_eq, Nat.blt_eq, Nat.beq_eq] at h`. Take `⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩` from `h`. Conclude with `⟨prime_of_gcd h3 h4 (hF ▸ h5), h2, h1⟩`.
+-/
 theorem test_spec {F r a b p : ℕ} (hF : F = r.factorial) (h : test F r a b p = true) :
     p.Prime ∧ b < 2 * p ∧ p + 3 ≤ a := by
   simp only [test, Bool.and_eq_true, Nat.ble_eq, Nat.blt_eq, Nat.beq_eq] at h
@@ -44,6 +56,11 @@ def bsum (t : ℕ → ℕ) : ℕ → ℕ → ℕ
   | 0, lo => t lo
   | k + 1, lo => bsum t k lo + bsum t k (lo + 2 ^ k)
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `lo`. Simplify using `[bsum]`.
+
+Consider the case `succ k ih`. Introduce `lo`. Rewrite using `[bsum, ih, ih, Finset.sum_Ico_consecutive _ (Nat.le_add_right _ _) (Nat.le_add_right _ _), pow_succ, show lo + 2 ^ k + 2 ^ k = lo + 2 ^ k * 2 by ring]`.
+-/
 theorem bsum_eq (t : ℕ → ℕ) : ∀ k lo, bsum t k lo = ∑ p ∈ Finset.Ico lo (lo + 2 ^ k), t p := by
   intro k
   induction k with
@@ -58,6 +75,19 @@ theorem bsum_eq (t : ℕ → ℕ) : ∀ k lo, bsum t k lo = ∑ p ∈ Finset.Ico
 def chk (M F r a b : ℕ) : Bool :=
   Nat.ble M (20 * bsum (term M F r a b) (Nat.log2 a) (b / 2))
 
+/- English proof (translation)
+Simplify using `only [chk, Nat.ble_eq] at h`. Rewrite `h` using `[bsum_eq]`. Generalize the expression as in `Finset.Ico (b / 2) (b / 2 + 2 ^ Nat.log2 a) = I at h`. Establish `hMr : (0 : ℝ) < M` using `by exact_mod_cast hM`. Establish `h1 : (M : ℝ) ≤ 20 * ∑ p ∈ I, (term M F r a b p : ℝ)`.
+
+Conclude with `h` after adjusting the coercions. Establish `h2 : ∑ p ∈ I, (term M F r a b p : ℝ) ≤ M * S N`. Unfold `S`. Rewrite using `[Finset.mul_sum]`. Establish `e : ∀ p, (term M F r a b p : ℝ) = if test F r a b p = true then ((M / p : ℕ) : ℝ) else 0`.
+
+Apply the tactic sequence `intro p; unfold term; cases test F r a b p <;> simp`. Simplify using `only [e]`. Rewrite using `[← Finset.sum_filter]`. Use `(Finset.sum_le_sum (fun p _ => (Nat.cast_div_le : ((M / p : ℕ) : ℝ) ≤ M / p))).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum_of_subset_of_nonneg (t := (Finset.range (N + 1)).filter (fun p => p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N)) ?_ ?_).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Introduce `p hp`. Take `⟨h3, h4, h5⟩` from `test_spec hF (Finset.mem_filter.mp hp).2`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Conclude with `⟨by omega, h3, by omega, by omega⟩`. Introduce `p _ _`.
+
+Check the signs of the components of the expression. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : (1 : ℝ) ≤ 20 * S N`. Assume the negation of the conclusion as `hc`.
+
+Use `mul_lt_mul_of_pos_left (not_le.mp hc) hMr` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem chk_sound {M F r a b : ℕ} (hM : 0 < M) (hF : F = r.factorial)
     (h : chk M F r a b = true) (N : ℕ)
     (haN : a ≤ N) (hNb : N ≤ b) : (1 : ℝ) / 20 ≤ S N := by
@@ -96,6 +126,13 @@ def ladder (M F r T : ℕ) : ℕ → ℕ → Bool
   | 0, a => Nat.ble T a
   | f + 1, a => Nat.ble T a || (chk M F r a (a + a / 10) && ladder M F r T f (a + a / 10 + 1))
 
+/- English proof (translation)
+Introduce `f`. Proceed by induction on `f with`. Consider the case `zero`. Introduce `a h N h1 h2`. Simplify using `only [ladder, Nat.ble_eq] at h`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ f ih`. Introduce `a h N h1 h2`. Simplify using `only [ladder, Bool.or_eq_true, Nat.ble_eq, Bool.and_eq_true] at h`. Break down `h with h | ⟨h3, h4⟩` into its components or cases.
+
+Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hN : N ≤ a + a / 10`. Conclude with `chk_sound hM hF h3 N h1 hN`. Conclude with `ih _ h4 N (by omega) h2`.
+-/
 theorem ladder_sound {M F r T : ℕ} (hM : 0 < M) (hF : F = r.factorial) :
     ∀ (f a : ℕ), ladder M F r T f a = true →
     ∀ N, a ≤ N → N < T → (1 : ℝ) / 20 ≤ S N := by
@@ -114,11 +151,23 @@ theorem ladder_sound {M F r T : ℕ} (hM : 0 < M) (hF : F = r.factorial) :
       · exact chk_sound hM hF h3 N h1 hN
       · exact ih _ h4 N (by omega) h2
 
+/- English proof (translation)
+Use `decide +kernel`.
+-/
 theorem factorial_ladder_thirteen : ladder 1000000000 (Nat.factorial 13) 13 196 60 100 = true := by decide +kernel
+/- English proof (translation)
+Use `decide +kernel`.
+-/
 theorem factorial_ladder_thirty_one : ladder 1000000000 (Nat.factorial 31) 31 1024 60 196 = true := by decide +kernel
+/- English proof (translation)
+Use `decide +kernel`.
+-/
 theorem factorial_ladder_one_forty_one : ladder 1000000000 (Nat.factorial 141) 141 20000 60 1024 = true := by
   decide +kernel
 
+/- English proof (translation)
+Distinguish the cases in `h3 : N < 196`. Conclude with `ladder_sound (by norm_num) rfl 60 100 factorial_ladder_thirteen N h1 h3`. Distinguish the cases in `h4 : N < 1024`. Conclude with `ladder_sound (by norm_num) rfl 60 196 factorial_ladder_thirty_one N (by omega) h4`. Conclude with `ladder_sound (by norm_num) rfl 60 1024 factorial_ladder_one_forty_one N (by omega) h2`.
+-/
 theorem S_small (N : ℕ) (h1 : 100 ≤ N) (h2 : N < 20000) : (1 : ℝ) / 20 ≤ S N := by
   by_cases h3 : N < 196
   · exact ladder_sound (by norm_num) rfl 60 100 factorial_ladder_thirteen N h1 h3
@@ -128,6 +177,29 @@ theorem S_small (N : ℕ) (h1 : 100 ≤ N) (h2 : N < 20000) : (1 : ℝ) / 20 ≤
 
 def upper (n : ℕ) : Finset ℕ := (Finset.range (2 * n + 1)).filter (fun p => p.Prime ∧ n < p)
 
+/- English proof (translation)
+Establish `n_pos : 0 < n` using `(Nat.zero_le _).trans_lt n_large`. Establish `n2_pos : 1 ≤ 2 * n` using `mul_pos (zero_lt_two' ℕ) n_pos`. Set `S0` to `{p ∈ Finset.range (2 * n + 1) | Nat.Prime p}`. Set `f x` to `x ^ n.centralBinom.factorization x`. Establish `hf : ∀ p, f p ≤ 2 * n` using `fun p => pow_factorization_choose_le (mul_pos two_pos n_pos)`.
+
+Establish `h0 : ∏ x ∈ S0, f x = centralBinom n`. Rewrite using `[← n.prod_pow_factorization_centralBinom]`. Use `Finset.prod_filter_of_ne fun p _ h => ?_` and prove the remaining obligations. Use `contrapose h`. Simplify using `only [f]`.
+
+Rewrite using `[factorization_eq_zero_of_not_prime n.centralBinom h, _root_.pow_zero]`. Rewrite using `[← h0, ← Finset.prod_filter_mul_prod_filter_not S0 (· ≤ 2 * n / 3)]`. Apply `mul_le_mul'` to reduce the goal to its premises. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not _ (· ≤ sqrt (2 * n))]`. Apply `mul_le_mul'` to reduce the goal to its premises.
+
+Use `(Finset.prod_le_prod' fun p _ => hf p).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_const]`. Use `pow_right_mono₀ n2_pos ?_` and prove the remaining obligations. Rewrite using `[← primesLE_card_eq_primeCounting]`. Use `Finset.card_le_card fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hx`. Take `⟨h3, _⟩` from `Finset.mem_filter.1 h1`. Conclude with `mem_primesLE.mpr ⟨h2, (Finset.mem_filter.1 h3).2⟩`. Use `le_trans ?_ (primorial_le_four_pow (2 * n / 3))` and prove the remaining obligations. Use `(Finset.prod_le_prod' fun p hp => (?_ : f p ≤ p)).trans ?_` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hp`. Take `⟨h3, _⟩` from `Finset.mem_filter.1 h1`. Use `(pow_right_mono₀ (Finset.mem_filter.1 h3).2.one_lt.le ?_).trans (pow_one p).le` and prove the remaining obligations. Conclude with `Nat.factorization_choose_le_one (sqrt_lt'.mp <| not_le.1 h2)`. Unfold `primorial`.
+
+Use `Finset.prod_le_prod_of_subset_of_one_le' ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Take `⟨h1, _⟩` from `Finset.mem_filter.1 hp`. Take `⟨h3, h4⟩` from `Finset.mem_filter.1 h1`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), (Finset.mem_filter.1 h3).2⟩`.
+
+Conclude with `fun p hp _ => (Finset.mem_filter.1 hp).2.one_lt.le`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not _ (· ≤ n)]`. Establish `h1 : ∏ x ∈ {x ∈ {x ∈ S0 | ¬ x ≤ 2 * n / 3} | x ≤ n}, f x = 1`. Use `Finset.prod_eq_one fun p hp => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hp`.
+
+Take `⟨_, h4⟩` from `Finset.mem_filter.1 h1`. Simplify using `only [f]`. Rewrite using `[factorization_centralBinom_of_two_mul_self_lt_three_mul n_large h2 (by omega), _root_.pow_zero]`. Rewrite using `[h1, one_mul]`. Use `(Finset.prod_le_prod' fun p _ => hf p).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_const]`. Use `pow_right_mono₀ n2_pos (Finset.card_le_card fun x hx => ?_)` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hx`. Take `⟨h3, _⟩` from `Finset.mem_filter.1 h1`. Take `⟨h5, h6⟩` from `Finset.mem_filter.1 h3`.
+
+Conclude with `Finset.mem_filter.2 ⟨h5, h6, by omega⟩`.
+-/
 theorem centralBinom_le (n : ℕ) (n_large : 2 < n) :
     centralBinom n ≤
       ((2 * n) ^ (primeCounting (sqrt (2 * n))) * 4 ^ (2 * n / 3)) * (2 * n) ^ (upper n).card := by
@@ -183,6 +255,13 @@ theorem centralBinom_le (n : ℕ) (n_large : 2 < n) :
     obtain ⟨h5, h6⟩ := Finset.mem_filter.1 h3
     exact Finset.mem_filter.2 ⟨h5, h6, by omega⟩
 
+/- English proof (translation)
+Establish `h` using `Nat.primeCounting_add_le (a := 6) (k := 6) (by norm_num) le_rfl (s - 6)`. Establish `e : 6 + (s - 6) = s` using `by omega`. Rewrite `h` using `[e]`. Establish `h6 : primeCounting 6 = 3` using `by decide`. Establish `t6 : totient 6 = 2` using `by decide`.
+
+Rewrite `h` using `[h6, t6]`. Establish `h2 : (((s - 6) / 6 : ℕ) : ℝ) ≤ ((s - 6 : ℕ) : ℝ) / 6` using `Nat.cast_div_le`. Establish `h3 : ((s - 6 : ℕ) : ℝ) = (s : ℝ) - 6`. Rewrite using `[Nat.cast_sub hs]`. Evaluate the numerical expressions.
+
+Establish `h4 : (primeCounting s : ℝ) ≤ 3 + 2 * ((((s - 6) / 6 : ℕ) : ℝ) + 1)` using `by exact_mod_cast h`. Rewrite `h2` using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem primeCounting_le (s : ℕ) (hs : 6 ≤ s) : (primeCounting s : ℝ) ≤ s / 3 + 3 := by
   have h := Nat.primeCounting_add_le (a := 6) (k := 6) (by norm_num) le_rfl (s - 6)
   have e : 6 + (s - 6) = s := by omega
@@ -197,6 +276,9 @@ theorem primeCounting_le (s : ℕ) (hs : 6 ≤ s) : (primeCounting s : ℝ) ≤ 
   rw [h3] at h2
   linarith
 
+/- English proof (translation)
+Establish `hy0 : (0 : ℝ) ≤ y` using `by linarith`. Break down `le_or_gt L 0 with hL0 | hL0` into its components or cases. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0 : ℝ) ≤ y / 3 + 7) (neg_nonneg.2 hL0), mul_le_mul_of_nonneg_left hl1.le (sq_nonneg y), mul_nonneg (by linarith : (0 : ℝ) ≤ y - 141) hy0]`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0 : ℝ) ≤ y / 3 + 7) (by linarith : (0 : ℝ) ≤ 2 * (7 * l + y / 128 - 1) - L), mul_le_mul_of_nonneg_left hl1.le (sq_nonneg y), mul_nonneg (by linarith : (0 : ℝ) ≤ y - 141) hy0, mul_le_mul_of_nonneg_left hl2.le hy0]`.
+-/
 theorem real_ineq {y l L k : ℝ} (hy : 141 ≤ y) (hl1 : 0.6931471803 < l) (hl2 : l < 0.6931471808)
     (hL : L ≤ 2 * (7 * l + y / 128 - 1))
     (h : y ^ 2 * l / 3 < (y / 3 + 4 + k) * L) : y ^ 2 + 1 ≤ 5 * (k - 3) * L := by
@@ -208,6 +290,29 @@ theorem real_ineq {y l L k : ℝ} (hy : 141 ≤ y) (hl1 : 0.6931471803 < l) (hl2
       mul_le_mul_of_nonneg_left hl1.le (sq_nonneg y), mul_nonneg (by linarith : (0 : ℝ) ≤ y - 141) hy0,
       mul_le_mul_of_nonneg_left hl2.le hy0]
 
+/- English proof (translation)
+Establish `h1 : 4 ^ n < n * centralBinom n` using `Nat.four_pow_lt_mul_centralBinom n (by omega)`. Establish `h2` using `centralBinom_le n (by omega)`. Use `set k := (upper n).card with hk`. Use `set s := sqrt (2 * n) with hs`. Use `set c := primeCounting s with hc`.
+
+Establish `h3 : 4 ^ n < n * (((2 * n) ^ c * 4 ^ (2 * n / 3)) * (2 * n) ^ k)` using `lt_of_lt_of_le h1 (Nat.mul_le_mul_left n h2)`. Establish `h4 : (4 : ℝ) ^ n < n * (((2 * n) ^ c * 4 ^ (2 * n / 3)) * (2 * n) ^ k)`. Conclude with `h3` after adjusting the coercions. Establish `hn1 : (10000 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hnpos : (0 : ℝ) < n` using `by linarith`.
+
+Establish `h2n : (0 : ℝ) < 2 * n` using `by linarith`. Establish `h5` using `Real.log_lt_log (by positivity) h4`. Rewrite `h5` using `[Real.log_mul hnpos.ne' (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow, Real.log_pow, Real.log_pow]`. Use `set L := Real.log (2 * n) with hLdef`. Establish `hl4 : Real.log 4 = 2 * Real.log 2`.
+
+Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Rewrite `h5` using `[hl4]`. Use `set l := Real.log 2 with hl`. Establish `hl1 : 0.6931471803 < l` using `Real.log_two_gt_d9`. Establish `hl2 : l < 0.6931471808` using `Real.log_two_lt_d9`.
+
+Use `set y := Real.sqrt (2 * n) with hy`. Establish `hy2 : y ^ 2 = 2 * n` using `Real.sq_sqrt h2n.le`. Establish `hy141 : 141 ≤ y`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hypos : 0 < y` using `by linarith`. Establish `hsy : (s : ℝ) ≤ y`. Use `Real.nat_sqrt_le_real_sqrt (a := 2 * n)` as an intermediate fact. Simplify `this` using `[hs, hy]`. Establish `hs6 : 6 ≤ s`.
+
+Rewrite using `[hs, Nat.le_sqrt]`. Use linear arithmetic over natural numbers and integers. Establish `hcs : (c : ℝ) ≤ s / 3 + 3` using `primeCounting_le s hs6`. Establish `hLy : L = 2 * Real.log y`. Rewrite using `[hLdef, ← hy2, Real.log_pow]`.
+
+Evaluate the numerical expressions. Establish `hlogy : Real.log y ≤ 7 * l + y / 128 - 1`. Establish `h` using `Real.log_le_sub_one_of_pos (show 0 < y / 128 by positivity)`. Rewrite `h` using `[Real.log_div hypos.ne' (by norm_num), show (128 : ℝ) = 2 ^ 7 by norm_num, Real.log_pow]`. Move the coercions through the operations in `at h`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL0 : 0 ≤ L` using `Real.log_nonneg (by linarith)`. Establish `hlogn : Real.log n ≤ L` using `Real.log_le_log hnpos (by linarith)`. Establish `hdiv : (((2 * n / 3 : ℕ)) : ℝ) ≤ (2 * n : ℝ) / 3`. Use `(Nat.cast_div_le : (((2 * n) / 3 : ℕ) : ℝ) ≤ ((2 * n : ℕ) : ℝ) / ((3 : ℕ) : ℝ))` as an intermediate fact.
+
+Simplify using `using this`. Establish `hcL : (c : ℝ) * L ≤ (y / 3 + 3) * L` using `mul_le_mul_of_nonneg_right (by linarith) hL0`. Establish `hdl : (((2 * n / 3 : ℕ)) : ℝ) * (2 * l) ≤ (2 * n : ℝ) / 3 * (2 * l)` using `mul_le_mul_of_nonneg_right hdiv (by linarith)`. Establish `key : y ^ 2 * l / 3 < (y / 3 + 4 + k) * L`. Rewrite using `[hy2]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `real_ineq hy141 hl1 hl2 (by linarith) key` as an intermediate fact. Rewrite `this` using `[hy2]`. Conclude with `this`.
+-/
 theorem upper_card (n : ℕ) (hn : 10000 ≤ n) :
     (2 * (n : ℝ) + 1) ≤ 5 * (((upper n).card : ℝ) - 3) * Real.log (2 * n) := by
   have h1 : 4 ^ n < n * centralBinom n := Nat.four_pow_lt_mul_centralBinom n (by omega)
@@ -268,6 +373,25 @@ theorem upper_card (n : ℕ) (hn : 10000 ≤ n) :
   rw [hy2] at this
   exact this
 
+/- English proof (translation)
+Take `⟨n, hn⟩ : ∃ n, n = N / 2` from `⟨_, rfl⟩`. Establish `hn1 : 10000 ≤ n` using `by omega`. Establish `hU` using `upper_card n hn1`. Use `set F := (Finset.range (N + 1)).filter (fun p => p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N) with hF`. Establish `hsub : upper n ⊆ F ∪ {N - 2, N - 1, N}`.
+
+Introduce `p hp`. Take `⟨h1, h2, h3⟩` from `Finset.mem_filter.1 hp`. Establish `h1'` using `Finset.mem_range.1 h1`. Distinguish the cases in `h4 : p + 3 ≤ N`. Conclude with `Finset.mem_union_left _ (Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), h2, by omega, h4⟩)`.
+
+Use `Finset.mem_union_right _ ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_insert, Finset.mem_singleton]`. Use linear arithmetic over natural numbers and integers. Establish `hcard : (upper n).card ≤ F.card + 3` using `(Finset.card_le_card hsub).trans ((Finset.card_union_le _ _).trans (Nat.add_le_add_left Finset.card_le_three _))`. Establish `hcardR : ((upper n).card : ℝ) ≤ (F.card : ℝ) + 3` using `by exact_mod_cast hcard`.
+
+Establish `hNpos : (0 : ℝ) < N`. Establish `: 0 < N` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hS : (F.card : ℝ) / N ≤ S N`. Establish `e : (F.card : ℝ) / N = ∑ _p ∈ F, (1 : ℝ) / N`.
+
+Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Finset.sum_le_sum fun p hp => ?_` and prove the remaining obligations. Take `⟨h1, h2, _, _⟩` from `Finset.mem_filter.1 hp`.
+
+Establish `h1' : p ≤ N` using `by have := Finset.mem_range.1 h1; omega`. Conclude with `one_div_le_one_div_of_le (by exact_mod_cast h2.pos) (by exact_mod_cast h1')`. Establish `hnR : (10000 : ℝ) ≤ n` using `by exact_mod_cast hn1`. Establish `h2nN : (2 * (n : ℝ)) ≤ N`. Establish `: 2 * n ≤ N` using `by omega`.
+
+Conclude with `this` after adjusting the coercions. Establish `hN2n : (N : ℝ) ≤ 2 * n + 1`. Establish `: N ≤ 2 * n + 1` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hL0 : 0 < Real.log (2 * n)` using `Real.log_pos (by linarith)`.
+
+Establish `hLN : Real.log (2 * n) ≤ Real.log N` using `Real.log_le_log (by linarith) h2nN`. Establish `hc0 : (0 : ℝ) ≤ F.card` using `Nat.cast_nonneg _`. Establish `h1 : 5 * (((upper n).card : ℝ) - 3) * Real.log (2 * n) ≤ 5 * (F.card : ℝ) * Real.log (2 * n)` using `mul_le_mul_of_nonneg_right (by linarith) hL0.le`. Establish `h2 : 5 * (F.card : ℝ) * Real.log (2 * n) ≤ 5 * (F.card : ℝ) * Real.log N` using `mul_le_mul_of_nonneg_left hLN (by linarith)`. Use `le_trans ?_ hS` and prove the remaining obligations.
+
+Rewrite using `[div_le_div_iff₀ (by linarith) hNpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem S_large (N : ℕ) (hN : 20000 ≤ N) : 1 / (5 * Real.log N) ≤ S N := by
   obtain ⟨n, hn⟩ : ∃ n, n = N / 2 := ⟨_, rfl⟩
   have hn1 : 10000 ≤ n := by omega
@@ -316,6 +440,11 @@ theorem S_large (N : ℕ) (hN : 20000 ≤ N) : 1 / (5 * Real.log N) ≤ S N := b
   rw [div_le_div_iff₀ (by linarith) hNpos]
   linarith
 
+/- English proof (translation)
+Establish `h1 : Real.exp 4 ≤ 100`. Establish `he` using `Real.exp_one_lt_d9`. Establish `h2 : Real.exp 4 = Real.exp 1 ^ 4`. Rewrite using `[show (4 : ℝ) = ((4 : ℕ) : ℝ) * 1 by norm_num, Real.exp_nat_mul]`. Rewrite using `[h2]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (100 : ℝ) ≤ N` using `by exact_mod_cast hN`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem four_le_log (N : ℕ) (hN : 100 ≤ N) : 4 ≤ Real.log N := by
   have h1 : Real.exp 4 ≤ 100 := by
     have he := Real.exp_one_lt_d9
@@ -330,6 +459,11 @@ theorem four_le_log (N : ℕ) (hN : 100 ≤ N) : 4 ≤ Real.log N := by
 
 end PrimeCountingLemmas
 
+/- English proof (translation)
+Introduce `N hN`. Express the relevant statement in the definitionally equal form `1 / (5 * Real.log N) ≤ PrimeCountingLemmas.S N`. Distinguish the cases in `h : N < 20000`. Establish `h4` using `PrimeCountingLemmas.four_le_log N hN`. Conclude with `(one_div_le_one_div_of_le (by norm_num) (by linarith)).trans (PrimeCountingLemmas.S_small N hN h)`.
+
+Conclude with `PrimeCountingLemmas.S_large N (by omega)`.
+-/
 theorem prime_reciprocal_sum_bound : PrimeRecipSum := by
   intro N hN
   change 1 / (5 * Real.log N) ≤ PrimeCountingLemmas.S N

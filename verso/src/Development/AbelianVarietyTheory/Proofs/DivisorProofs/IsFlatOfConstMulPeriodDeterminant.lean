@@ -20,6 +20,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.DetLine.FlatMul
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Establish `hc : Countable S` using `countable_of_Lindelof_of_discrete`. Establish `: Countable ℝ` using `Function.Injective.countable (f := fun t : ℝ => (⟨t • z, h t⟩ : S)) fun s t e => smul_left_injective ℝ h0 (congrArg Subtype.val e)`. Conclude with `not_countable this`.
+-/
 theorem eq_zero_of_real_smul_mem {g : ℕ} (S : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology S] {z : Fin g → ℂ}
     (h : ∀ t : ℝ, t • z ∈ S) : z = 0 := by
   by_contra h0
@@ -28,6 +31,9 @@ theorem eq_zero_of_real_smul_mem {g : ℕ} (S : Submodule ℤ (Fin g → ℂ)) [
     fun s t e => smul_left_injective ℝ h0 (congrArg Subtype.val e)
   exact not_countable this
 
+/- English proof (translation)
+Use `u.ex_add (z - w) w` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h]`. Conclude with `(u.ker _).1 (right_eq_mul.1 this)`.
+-/
 theorem sub_mem_of_ex_eq {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) {z w : Fin g → ℂ}
     (h : u.ex z = u.ex w) : z - w ∈ u.Λ := by
   have := u.ex_add (z - w) w
@@ -43,6 +49,23 @@ def Marked {s : Sp ℂ ⟶ Sp (KA l)} (o : Obj D l (baseKA l) s) {g : ℕ} (u : 
       ∀ v, P (a • v) = T (P v)) ∧
     ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), u.ex ((l.M : ℝ)⁻¹ • P (t a)) = o.eta a
 
+/- English proof (translation)
+Take `⟨i1, r1, a1, e1⟩` from `hP`. Take `⟨i2, r2, a2, e2⟩` from `hP'`. Take `⟨hΛ, hact, -, heta, -⟩` from `hφ`. Use `choose f hf using fun a => (r2 _).1 ((hΛ (P a)).2 ((r1 _).2 ⟨a, rfl⟩))`. Establish `hsm : ∀ (a : 𝓞 E) v, f (a • v) = a • f v` using `fun a v => by`.
+
+Take `⟨T, hT, hTP⟩` from `a1 a`. Take `⟨T', hT', hTP'⟩` from `a2 a`. Use `u'.discrete` as an intermediate fact. Use `i2 ?_` and prove the remaining obligations. Rewrite using `[hf, hTP, hTP', hf, ← sub_eq_zero]`.
+
+Use `eq_zero_of_real_smul_mem u'.Λ fun r => ?_` and prove the remaining obligations. Rewrite using `[smul_sub, ← map_smul φ, ← map_smul T, ← map_smul T', ← map_smul φ]`. Conclude with `sub_mem_of_ex_eq u' ((hact a _ _ (hT _)).trans (hT' _).symm)`. Set `F : Di.La →ₗ[𝓞 E] Di.La` to `⟨⟨f, fun a b => i2 (by rw [map_add, hf, hf, hf, map_add, map_add])⟩, hsm⟩`. Establish `hb : Function.Bijective F`.
+
+Use `⟨fun a b h => i1 (φ.injective ?_), fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, ← hf]`. Conclude with `congrArg P' h`. Take `⟨a, ha⟩` from `(r1 _).1 ((hΛ (φ.symm (P' b))).1 (by rw [φ.apply_symm_apply]; exact (r2 _).2 ⟨b, rfl⟩))`. Conclude with `⟨a, i2 ((hf a).trans (by rw [ha, φ.apply_symm_apply]))⟩`.
+
+Use `⟨LinearEquiv.ofBijective F hb, fun a ha => ?_, fun a => (hf a).symm⟩` and prove the remaining obligations. Establish `hM : (l.M : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (by have := l.three_le; omega)`. Use `show ∃ e, F a = a + l.M • e`. Use `Submodule.smul_induction_on ha (fun r hr b _ => ?_) ?_` and prove the remaining obligations. Take `⟨a₀, e₀, rfl⟩` from `ht b`.
+
+Establish `hm` using `Submodule.smul_mem_smul hr (Submodule.mem_top (R := 𝓞 E) (x := a₀))`. Take `⟨e, he⟩` from `(r2 _).1 (sub_mem_of_ex_eq u' ((heta _ _ (e1 _ hm)).trans (e2 _ hm).symm))`. Establish `h1 : F (t (r • a₀)) = t (r • a₀) + l.M • e` using `i2 (by`. Rewrite using `[map_add, map_nsmul, he, map_smul φ, ← hf, ← smul_sub, ← Nat.cast_smul_eq_nsmul ℝ, smul_inv_smul₀ hM, add_sub_cancel]`. Use the proof step `rfl)`.
+
+Take `⟨k, hk⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Use `⟨e + k • (F (r • e₀) - r • e₀), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← map_smul t, smul_comm r l.M', map_add, h1, map_nsmul, hk, mul_smul, mul_smul, smul_add, smul_sub, smul_sub]`. Normalize the expressions using the abelian group laws. Introduce and unpack `a b ⟨e, he⟩ ⟨e', he'⟩`.
+
+Conclude with `⟨e + e', by rw [map_add, he, he', smul_add]; abel⟩`.
+-/
 theorem exists_lev {s s' : Sp ℂ ⟶ Sp (KA l)} {o : Obj D l (baseKA l) s} {o' : Obj D l (baseKA l) s'} {g g' : ℕ}
     {u : HolUnif o.t.G o.t.PP.L g} {u' : HolUnif o'.t.G o'.t.PP.L g'} {Hm : Matrix (Fin g) (Fin g) ℂ}
     {Hm' : Matrix (Fin g') (Fin g') ℂ} {φ : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g' → ℂ)} (hφ : IsTransport o o' u u' Hm Hm' φ)
@@ -89,6 +112,15 @@ theorem exists_lev {s s' : Sp ℂ ⟶ Sp (KA l)} {o : Obj D l (baseKA l) s} {o' 
 
 variable {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Establish `inj : ∀ x y : 𝟙_ (Over (Sp ℂ)) ⟶ o.t.G, x.left ≫ m.toSABMap.φ = y.left ≫ m.toSABMap.φ → x = y` using `fun x y h => Over.OverMorphism.ext (m.cart.1.hom_ext h (by rw [Over.w x, Over.w y]))`. Use `⟨h.injective.comp hP.2.1, fun z => ?_, fun a => ?_, fun a ha => inj _ _ ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `h.surjective z`. Rewrite using `[h2]`.
+
+Conclude with `⟨fun ⟨a, ha⟩ => ⟨a, congrArg h ha⟩, fun ⟨a, ha⟩ => ⟨a, h.injective ha⟩⟩`. Use `⟨(h.toLinearMap ∘ₗ LinearMap.mulLeft ℂ (fun k => ty k (a : E)) ∘ₗ h.symm.toLinearMap).restrictScalars ℝ, fun z => inj _ _ ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `h.surjective z show (u.ex (h ((fun k => ty k (a : E)) * h.symm (h z)))).left ≫ _ = _`. Rewrite using `[h.symm_apply_apply, h1, Over.comp_left, Category.assoc, m.act, ← Category.assoc, h1]`. Conclude with `congrArg (fun z => z.left) (Fu.ex_lin i P hP a z)`.
+
+Use `show h (P (a • v)) = h ((fun k => ty k (a : E)) * h.symm (h (P v)))`. Rewrite using `[h.symm_apply_apply]`. Conclude with `congrArg h (funext (hP.1 a v))`. Establish `e : (l.M : ℝ)⁻¹ • (h.toLinearMap.toAddMonoidHom.comp P) (Fu.t i a) = h ((l.M : ℂ)⁻¹ • P (Fu.t i a))`. Rewrite using `[map_smul, ← Complex.coe_smul]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e, h1, ← Fu.ex_eta i P hP a ha, m.eta]`. Both sides reduce to the same expression.
+-/
 theorem marked_of_cmp {σ' : KA l →+* ℂ} {g₀ : ℕ} {ty : Fin g₀ → (E →+* ℂ)} (Fu : FamilyUnif Xo σ' ty) (i : Fin Fu.n)
     {P : (Fu.Di i).La →+ (Fin g₀ → ℂ)} (hP : IsPeriod (Fu.Di i) ty P) {y₀ : Sp ℂ ⟶ Xo.X} (hy : y₀ = Fu.u i P)
     {s : Sp ℂ ⟶ Sp (KA l)} {o : Obj D l (baseKA l) s} (m : ObjMap o Xo.univ y₀) {g : ℕ}
@@ -118,6 +150,13 @@ theorem marked_of_cmp {σ' : KA l →+* ℂ} {g₀ : ℕ} {ty : Fin g₀ → (E 
     rw [e, h1, ← Fu.ex_eta i P hP a ha, m.eta]
     rfl
 
+/- English proof (translation)
+Take `rfl : v₀ = v₁.left` from `Y.m.cart.1.hom_ext k2.symm (k1.trans (Over.w v₁).symm)`. Take `⟨t1, -, t3⟩` from `GlobalTheory.isDerivAt0_ex_isTanAt E H D l Xo _ g₀ _ Fu i P hP`. Establish `ht` using `t1 _ _ k3`. Establish `hv : IsTangent v'`. Use `(OpenReg.tan_iff m.toSABMap (x := 𝟙 _) ((Category.id_comp _).trans hy) (w := v'.left) ((Over.w v').trans (Category.comp_id _).symm)).1 (k4 ▸ ht)` as an intermediate fact.
+
+Use `this.2.trans ?_` and prove the remaining obligations. Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules. Take `⟨V, rfl⟩` from `h.surjective V`. Use `(h4 V v' hv).1 k5` as an intermediate fact.
+
+Rewrite `this` using `[k4]`. Rewrite using `[(t3 _ ht).unique this k3]`.
+-/
 theorem vec_eq {e : c.F →+* ℂ} {g₀ : ℕ} {en : Fin g₀ ≃ Pad.Letter D} (Fu : Fam Xo c e en) (i : Fin Fu.n)
     {P : (Fu.Di i).La →+ (Fin g₀ → ℂ)} (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.relab c e (en j).1) P)
     {y : Sp ℂ ⟶ Xo.XF c} (hy : y ≫ toX Xo c = Fu.u i P)
@@ -144,6 +183,19 @@ theorem vec_eq {e : c.F →+* ℂ} {g₀ : ℕ} {en : Fin g₀ ≃ Pad.Letter D}
   rw [k4] at this
   rw [(t3 _ ht).unique this k3]
 
+/- English proof (translation)
+Take `⟨vb, wb, hfb, sv, sw⟩` from `(frame_transfer E H D l Xo c O β Y U τ ℂ e y).1 v w hf`. Take `⟨f₀⟩` from `EigLoc.exists_eigFrame E H D l Xo c O β Y ℂ e (y ≫ Y.jQ) hfb.1`. Take `⟨f, hmat⟩` from `(EigParts.eigFrame_match E H D l Xo c O β Y τ hτ _ ℂ e _ hfb.1 hfb.2.1 f₀).2 vb wb hfb`. Set `a : CxFr Y e` to `⟨⟨y ≫ Y.jQ, hfb.1⟩, f⟩`. Take `⟨i, P, hP, hu⟩` from `Fu.onto (y ≫ toX Xo c) (by`.
+
+Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hf.1, OpenReg.spMap_comp])`. Take `⟨W, hW⟩` from `exists_dirs (a := a) hP hu.symm rfl`. Take `⟨b, rfl⟩` from `dirs_basis (a := a) hP hu.symm rfl hW`. Set `Q` to `b.equivFun.toLinearMap.toAddMonoidHom.comp P`. Establish `hPQ : ∀ v, P v = ∑ z, Q v z • b z` using `fun v => (b.sum_equivFun (P v)).symm`.
+
+Establish `hper : Per Fu a i Q` using `⟨P, b, y, hP, hu.symm, rfl, hW, hPQ⟩`. Establish `hgood` using `goodPer_of_per E H D l Xo c O β Y e g₀ en Fu τ a i Q _ _ hper (hx i)`. Take `⟨h, h1, h2, h3, h4⟩` from `FibreCmp.exists_equiv_of_isAH E H D l Xo _ g₀ _ Fu i P _ s o m g u Hm χ hP hu.symm hAH`. Establish `hmk` using `marked_of_cmp Fu i hP hu.symm m u h h1 h2`. Use `⟨i, P, _, fun z => h (b z), Q, hP, hu.symm, hmk, ⟨hAH.1, hAH.2.1, ?_, h3, b.linearIndependent.map' h.toLinearMap h.ker, fun v => ?_, hgood.1⟩, ⟨fun j k hk => ?_, fun j k hk => ?_⟩, hgood, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← u.full]`. Conclude with `congrArg _ (Set.ext fun z => (hmk.2.1 z).symm)`. Use `show h (P v) = _`. Rewrite using `[hPQ, map_sum]`. Simplify using `only [map_smul]`.
+
+Take `⟨v₀, k1, k2, k3⟩` from `hW ⟨τ, k⟩`. Take `⟨v₁, l1, l2⟩` from `sv j`. Take `⟨v', n1, n2⟩` from `hV j`. Conclude with `vec_eq Fu i hP hu.symm m u h h4 k1 (l2.trans ((hmat.1 j k hk).trans k2.symm)) k3 (n1.trans l1.symm) n2`. Take `⟨v₀, k1, k2, k3⟩` from `hW ⟨conjEmb τ, k⟩`.
+
+Take `⟨v₁, l1, l2⟩` from `sw j`. Take `⟨v', n1, n2⟩` from `hW₀ j`. Conclude with `vec_eq Fu i hP hu.symm m u h h4 k1 (l2.trans ((hmat.2 j k hk).trans k2.symm)) k3 (n1.trans l1.symm) n2`. Conclude with `(hres ℂ e y v w vb wb hf hfb sv sw).symm.trans (hval a vb wb i Q hper hfb hmat)`.
+-/
 theorem exists_data {U : Set (Xo.XF c)} {τ : E →+* ℂ} {e : c.F →+* ℂ} {g₀ : ℕ} {en : Fin g₀ ≃ Pad.Letter D}
     (Fu : Fam Xo c e en) {x : ∀ i, Hor.Idx D τ → (Fu.Di i).La}
     {hm : Fin Fu.n → Matrix (Hor.Idx D τ) (Hor.Idx D τ) E} {σb : RuleY Y} {σ : RuleU Xo c} {κ : ℂ}
@@ -191,6 +243,13 @@ theorem exists_data {U : Set (Xo.XF c)} {τ : E →+* ℂ} {e : c.F →+* ℂ} {
     exact vec_eq Fu i hP hu.symm m u h h4 k1 (l2.trans ((hmat.2 j k hk).trans k2.symm)) k3 (n1.trans l1.symm) n2
   · exact (hres ℂ e y v w vb wb hf hfb sv sw).symm.trans (hval a vb wb i Q hper hfb hmat)
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y U τ e g₀ en Fu x hm σb σ κ B io hU hio hr hs hτ hx hres hval y y' v w v' w' hf hf' o o' m m' g g' u u' Hm Hm' χ χ' φ V W₀ V' W₀' z Δ Δ' hAH hAH' hφ a1 a2 a3 a4 hΔ hΔ'`. Take `⟨i, P₀, P, W, Q, p1, p2, p3, p4, p5, p6, p7⟩` from `exists_data Fu hτ hx hres hval hf m hAH a1 a2`. Take `⟨i', P₀', P', W', Q', q1, q2, q3, q4, q5, q6, q7⟩` from `exists_data Fu hτ hx hres hval hf' m' hAH' a3 a4`. Take `rfl : i = i'` from `GlobalTheory.T.complexPoints_component_same_periodSpace E H D l Xo c O β Y U e g₀ _ Fu i i' P₀ P₀' y y' B io hU hio hr hs hf.1 hf'.1 hf.2.1 hf'.2.1 p1 q1 p2 q2`. Take `⟨gm, hlev, hgm⟩` from `exists_lev hφ (Fu.t_surj i) p3 q3`.
+
+Establish `hiso : IsIsom (Fu.Di i) gm` using `fun a b => by`. Use `hφ.2.2.1 (P a) (P b)` as an intermediate fact. Rewrite `this` using `[hgm, hgm, p4.2.2.2.1, q4.2.2.2.1]`. Conclude with `this` after adjusting the coercions. Take `⟨r1, r2, r3, r4, r5, r6, r7⟩` from `q4`.
+
+Establish `hpd : PerData c e (Fu.Di i) Hm' (P'.comp gm.toLinearMap.toAddMonoidHom) W' (Q'.comp gm.toLinearMap.toAddMonoidHom)` using `⟨r1, r2, by rw [← r3]; exact congrArg _ (gm.surjective.range_comp P'), fun a b => (r4 _ _).trans (congrArg _ (hiso a b)), r5, fun a => r6 _, fun a b k => (congrArg (Q' · k) (gm.map_smul a b)).trans (r7 a _ k)⟩`. Establish `key` using `perVal_mul_wedgeCoord E H D l c e τ (Fu.Di i) (x i) (hm i) g g' Hm Hm' P _ W W' Q _ φ V W₀ V' W₀' z Δ Δ' hτ (hx i) p4 hpd p6 (HorIso.perVal_isom E H D l c e _ τ _ _ Q' gm (hx i) q6 hiso).1 hgm p5 q5 hΔ hΔ'`. Rewrite `key` using `[perVal_isLev (hx i) q6 hiso hlev]`. Rewrite using `[p7, q7, _root_.mul_assoc, key, _root_.mul_assoc]`.
+-/
 theorem isFlatAt_of_eq_perVal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : (Xo.XF c).Opens) (τ : E →+* ℂ) (e : c.F →+* ℂ) (g : ℕ) (en : Fin g ≃ Pad.Letter D) (Fu : Fam Xo c e en) (x : ∀ i, Hor.Idx D τ → (Fu.Di i).La) (hm : Fin Fu.n → Matrix (Hor.Idx D τ) (Hor.Idx D τ) E) (σb : RuleY Y) (σ : RuleU Xo c) (κ : ℂ) (B : GlobalTheory.ProjVar.Var c.F) (io : B.X ⟶ gen Y), IsClosed (U : Set (Xo.XF c)) → IsOpenImmersion io → Set.range io = compactOf Y U → io ≫ genStr Y = B.str → τ (H.rt : E) = H.rt0 → (∀ i, IsPerBasis (Fu.Di i) (x i) (hm i)) → Restricts Y U τ σb σ → (∀ (a : CxFr Y e) v w i Q, Per Fu a i Q → FrY Y (compactOf Y U) τ e a.1.1 v w → Match τ a.2 v w → σb ℂ a.1.1 v w = κ * perVal c e τ (x i) (hm i) Q) → IsFlatAt Xo c U τ σ e := by
   intro E _ _ _ H D l Xo c O _ β Y U τ e g₀ en Fu x hm σb σ κ B io hU hio hr hs hτ hx hres hval
     y y' v w v' w' hf hf' o o' m m' g g' u u' Hm Hm' χ χ' φ V W₀ V' W₀' z Δ Δ' hAH hAH' hφ a1 a2 a3 a4 hΔ hΔ'

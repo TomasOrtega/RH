@@ -28,6 +28,9 @@ structure RowMatch (ch : Choice R) (G' : GlobalTheory.Grid.GridPre R) : Prop whe
       HEq (fun h g => thetaKO (G'.X i 0).ω h g (GlobalTheory.Grid.fock R.ψ R.θ true (G'.V ((i : ℕ) + 1) 0) (G'.V i 0) f p))
         (fun h g => ch.W.kerA (.right (i : ℕ) 0) (ch.W.datum ρ Φ i) g h)
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, hF => ⟨trivial, hF⟩ | n + 1, f, h, F, hF => by have ih := row_induction W M C n (fun i => f i.castSucc) (fun i F hF => h i.castSucc F hF) F hF have := h (Fin.last n) _ ih.2 exact ⟨⟨ih.1, this.1⟩, this.2⟩`.
+-/
 theorem row_induction {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G)
     (C : ∀ i, Set (Fn G (.grid i 0))) : ∀ (n : ℕ) (f : ∀ i : Fin n, Sch G (.right (i : ℕ) 0)),
     (∀ (i : Fin n) F, F ∈ C i → LiftConv W M (.right (i : ℕ) 0) (f i) F ∧
@@ -39,9 +42,15 @@ theorem row_induction {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.W
     have := h (Fin.last n) _ ih.2
     exact ⟨⟨ih.1, this.1⟩, this.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, ⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩, continuous_const⟩`.
+-/
 theorem isAutFun_zero (V : HSp D) : IsAutFun V (0 : GA D V → ℂ) :=
   ⟨fun _ _ _ => rfl, ⟨⊤, isOpen_univ, fun _ _ _ _ => rfl⟩, continuous_const⟩
 
+/- English proof (translation)
+Take `⟨U, hU, h⟩` from `hf.level`. Take `⟨U', hU', h'⟩` from `hg.level`. Use `⟨fun γ hγ x => by simp only [Pi.add_apply, hf.left γ hγ x, hg.left γ hγ x], ⟨U ⊓ U', hU.inter hU', fun k hk hf x => ?_⟩, hf.cont.add hg.cont⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, h k hk.1 hf x, h' k hk.2 hf x]`.
+-/
 theorem isAutFun_add {V : HSp D} {f g : GA D V → ℂ} (hf : IsAutFun V f) (hg : IsAutFun V g) : IsAutFun V (f + g) := by
   obtain ⟨U, hU, h⟩ := hf.level
   obtain ⟨U', hU', h'⟩ := hg.level
@@ -49,11 +58,21 @@ theorem isAutFun_add {V : HSp D} {f g : GA D V → ℂ} (hf : IsAutFun V f) (hg 
     hf.cont.add hg.cont⟩
   simp only [Pi.add_apply, h k hk.1 hf x, h' k hk.2 hf x]
 
+/- English proof (translation)
+Take `⟨U, hU, h⟩` from `hf.level`. Use `⟨fun γ hγ x => by simp only [Pi.smul_apply, hf.left γ hγ x], ⟨U, hU, fun k hk hf x => ?_⟩, hf.cont.const_smul a⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, h k hk hf x]`.
+-/
 theorem isAutFun_smul {V : HSp D} {f : GA D V → ℂ} (hf : IsAutFun V f) (a : ℂ) : IsAutFun V (a • f) := by
   obtain ⟨U, hU, h⟩ := hf.level
   refine ⟨fun γ hγ x => by simp only [Pi.smul_apply, hf.left γ hγ x], ⟨U, hU, fun k hk hf x => ?_⟩, hf.cont.const_smul a⟩
   simp only [Pi.smul_apply, h k hk hf x]
 
+/- English proof (translation)
+Take `⟨U, hU, rfl⟩` from `Submodule.mem_map.1 hΦ`. Use `clear hΦ`. Establish `hU' : ∀ w, IsAutFun N.V (U w)`. Proceed by induction on `hU using Submodule.span_induction with`. Consider the case `mem x hx => exact fun w => (hx.aut w).toIsAutFun`.
+
+Consider the case `zero => exact fun w => isAutFun_zero _`. Consider the case `add x y _ _ hx hy => exact fun w => isAutFun_add (hx w) (hy w)`. Consider the case `smul c x _ hx => exact fun w => isAutFun_smul (hx w) c`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f => simpa using isAutFun_smul (hU' f) r`.
+
+Consider the case `add x y hx hy => simpa using isAutFun_add hx hy`.
+-/
 theorem isAutFun_of_mem_cusp (N : GlobalTheory.Grid.Node D) (θ : InfFam D) {Φ : N.Maps} (hΦ : Φ ∈ N.Cusp θ) (v : SmT N.M) :
     IsAutFun N.V (Φ v) := by
   obtain ⟨U, hU, rfl⟩ := Submodule.mem_map.1 hΦ
@@ -68,12 +87,18 @@ theorem isAutFun_of_mem_cusp (N : GlobalTheory.Grid.Node D) (θ : InfFam D) {Φ 
   | smul_tprod r f => simpa using isAutFun_smul (hU' f) r
   | add x y hx hy => simpa using isAutFun_add hx hy
 
+/- English proof (translation)
+Establish `h1 : R.HE.e u ∈ R.EEat R.triv` using `h.models.HE.2.1 ▸ LinearMap.mem_range_self _ u`. Establish `h2` using `Formalism.IndefR.Mult.goodPart_le R.θ (R.MY 0) _ _ _ h1`. Conclude with `GlobalTheory.Grid.Node.multT_le_cusp (GlobalTheory.Grid.nodeY R 0) R.θ _ _ (Submodule.mem_map_of_mem h2)`.
+-/
 theorem start_mem {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (u : R.HE.H) :
     PiTensorProduct.lift (R.HE.e u) ∈ (GlobalTheory.Grid.nodeY R 0).Cusp R.θ := by
   have h1 : R.HE.e u ∈ R.EEat R.triv := h.models.HE.2.1 ▸ LinearMap.mem_range_self _ u
   have h2 := Formalism.IndefR.Mult.goodPart_le R.θ (R.MY 0) _ _ _ h1
   exact GlobalTheory.Grid.Node.multT_le_cusp (GlobalTheory.Grid.nodeY R 0) R.θ _ _ (Submodule.mem_map_of_mem h2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.lev, h.models.inf, h.models.νY, h.models.νY', h.models.νX⟩`.
+-/
 theorem rowBase_of_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R :=
   ⟨h.lev, h.models.inf, h.models.νY, h.models.νY', h.models.νX⟩
 

@@ -24,6 +24,15 @@ def idem (D : D7) : Pl D → AE D
   | .inl v => GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.idemFin D v
   | .inr τ => GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.idemInf D (InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E)))
 
+/- English proof (translation)
+Break down `v with v | τ` into its components or cases. Simplify using `only [idem, GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.idemFin]`. Rewrite using `[← map_mul]`. Use `congr 1`. Use `Prod.ext (mul_zero _) ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `singleV D.host.F v 1 * singleV D.host.F v 1 = singleV D.host.F v 1`. Use `DFunLike.ext _ _ fun u => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV D.host.F u (singleV D.host.F v 1 * singleV D.host.F v 1) = evalV D.host.F u (singleV D.host.F v 1)`. Rewrite using `[map_mul]`. Distinguish the cases in `h : u = v`.
+
+Substitute `h` using the available equality. Establish `: evalV D.host.F u (singleV D.host.F u 1) = 1` using `RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletionIntegers D.host.F) u 1`. Rewrite using `[this, mul_one]`. Establish `: evalV D.host.F u (singleV D.host.F v 1) = 0` using `RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletionIntegers D.host.F) 1 h`. Rewrite using `[this, mul_zero]`.
+
+Simplify using `only [idem, GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.idemInf]`. Rewrite using `[← map_mul]`. Use `congr 1`. Use `Prod.ext ?_ (mul_zero _)` and prove the remaining obligations. Conclude with `(Pi.single_mul (α := fun w : InfinitePlace D.host.F => w.Completion) _ 1 1).symm.trans (by rw [mul_one]; rfl)`.
+-/
 theorem idem_mul_self (v : Pl D) : idem D v * idem D v = idem D v := by
   rcases v with v | τ
   · simp only [idem, GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.idemFin]
@@ -48,9 +57,15 @@ theorem idem_mul_self (v : Pl D) : idem D v * idem D v = idem D v := by
     refine Prod.ext ?_ (mul_zero _)
     exact (Pi.single_mul (α := fun w : InfinitePlace D.host.F => w.Completion) _ 1 1).symm.trans (by rw [mul_one]; rfl)
 
+/- English proof (translation)
+Simplify using `[cA, sigR, Algebra.TensorProduct.algebraMap_apply]`.
+-/
 theorem cA_algebraMap (a : AF D.host.F) : cA D (algebraMap (AF D.host.F) (AE D) a) = algebraMap (AF D.host.F) (AE D) a := by
   simp [cA, sigR, Algebra.TensorProduct.algebraMap_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases v with v | τ <;> exact cA_algebraMap _`.
+-/
 theorem cA_idem (v : Pl D) : cA D (idem D v) = idem D v := by
   rcases v with v | τ <;> exact cA_algebraMap _
 
@@ -65,9 +80,19 @@ def cutGL {R : Type} [CommRing R] {n : ℕ} {e : R} (he : e * e = e) : GL (Fin n
           Matrix.one_mul, he, h1, h2, mul_comm (1 - e) e, zero_smul, add_zero, zero_add, smul_add] }
   Units.map f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cutGL_val {R : Type} [CommRing R] {n : ℕ} {e : R} (he : e * e = e) (g : GL (Fin n) R) :
     (cutGL he g).val = e • g.val + (1 - e) • (1 : Matrix (Fin n) (Fin n) R) := rfl
 
+/- English proof (translation)
+Establish `hg' : Formalism.UG.cT c g.val * J * g.val = J` using `hg`. Use `show Formalism.UG.cT c (cutGL he g).val * J * (cutGL he g).val = J`. Establish `h1 : e * (1 - e) = 0` using `by rw [mul_sub, he, mul_one, sub_self]`. Establish `h2 : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, one_mul, h1, sub_zero]`. Establish `e1 : Formalism.UG.cT c (cutGL he g).val = e • Formalism.UG.cT c g.val + (1 - e) • (1 : Matrix (Fin n) (Fin n) R)`.
+
+Use extensionality with `i j`. Simplify using `only [cutGL_val, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, hc, Matrix.one_apply, eq_comm (a := j)]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e1, cutGL_val]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_one, Matrix.one_mul, he, h1, h2, mul_comm (1 - e) e, zero_smul, add_zero, zero_add, smul_add, hg']`.
+
+Rewrite using `[← add_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem cutGL_mem {R : Type} [CommRing R] {n : ℕ} {e : R} (he : e * e = e) (c : R →+* R) (hc : c e = e)
     (J : Matrix (Fin n) (Fin n) R) {g : GL (Fin n) R} (hg : g ∈ Formalism.UG.UJ c J) : cutGL he g ∈ Formalism.UG.UJ c J := by
   have hg' : Formalism.UG.cT c g.val * J * g.val = J := hg
@@ -88,6 +113,9 @@ def comp (V : HSp D) (v : Pl D) : GA D V →* GA D V :=
   ((cutGL (idem_mul_self v)).comp (matHom V)).codRestrict (HR (AF D.host.F) D.sp.cm.sig V.gram) fun g =>
     cutGL_mem (idem_mul_self v) (cA D) (cA_idem v) _ g.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_comp (V : HSp D) (v : Pl D) (g : GA D V) :
     mt V (comp V v g) = idem D v • mt V g + (1 - idem D v) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := rfl
 
@@ -178,6 +206,9 @@ variable {X : ThetaX D} {T : ThetaTied D X}
 def orbit {M : Type} [AddCommGroup M] [Module ℂ M] (A : Subalgebra ℂ (Module.End ℂ M)) (f : M) : Submodule ℂ M :=
   (Subalgebra.toSubmodule A).map (LinearMap.applyₗ f)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_orbit {M : Type} [AddCommGroup M] [Module ℂ M] {A : Subalgebra ℂ (Module.End ℂ M)} {f x : M} :
     x ∈ orbit A f ↔ ∃ a ∈ A, a f = x := Iff.rfl
 

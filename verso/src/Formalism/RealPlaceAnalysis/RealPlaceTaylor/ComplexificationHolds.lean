@@ -6,6 +6,11 @@ noncomputable section
 
 namespace Formalism.REAL
 
+/- English proof (translation)
+Unfold `inG Jm`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify `this` using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, conjTranspose_apply, Matrix.zero_apply]`.
+
+Introduce `h`. Use extensionality with `i j`. Simplify `h i j` using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, conjTranspose_apply, Matrix.zero_apply]`.
+-/
 private lemma inG_iff_star_signed_entries_eq_zero {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) :
     inG ε X ↔ ∀ i j, star (X j i) * (if ε j then 1 else -1) + (if ε i then 1 else -1) * X i j = 0 := by
   unfold inG Jm
@@ -19,6 +24,9 @@ private lemma inG_iff_star_signed_entries_eq_zero {n : ℕ} (ε : Fin n → Bool
     simpa only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, conjTranspose_apply,
       Matrix.zero_apply] using h i j
 
+/- English proof (translation)
+Simplify using `only [hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, conjTranspose_apply, Complex.re_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `[Complex.star_def, Complex.mul_re]`.
+-/
 lemma f1auxiliary_hs_eq {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : hs g = (trace (gᴴ * g)).re := by
   simp only [hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, conjTranspose_apply, Complex.re_sum]
   conv_lhs => rw [Finset.sum_comm]
@@ -26,11 +34,19 @@ lemma f1auxiliary_hs_eq {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : hs g = (tra
   rw [Complex.sq_norm, Complex.normSq_apply]
   simp [Complex.star_def, Complex.mul_re]
 
+/- English proof (translation)
+Unfold `hs`. Conclude with `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ((continuous_apply j).comp (continuous_apply i)).norm.pow 2`.
+-/
 lemma continuous_hs_real_place_taylor {n : ℕ} : Continuous (hs : Matrix (Fin n) (Fin n) ℂ → ℝ) := by
   unfold hs
   exact continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ =>
     ((continuous_apply j).comp (continuous_apply i)).norm.pow 2
 
+/- English proof (translation)
+Simplify using `only [hs, Matrix.one_apply]`. Establish `key : ∀ i : Fin n, ∑ j, ‖(if i = j then (1 : ℂ) else 0)‖ ^ 2 = 1`. Introduce `i`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Simplify using the standard rewrite rules.
+
+Simplify using `[key]`.
+-/
 lemma f1auxiliary_hs_one (n : ℕ) : hs (1 : Matrix (Fin n) (Fin n) ℂ) = n := by
   simp only [hs, Matrix.one_apply]
   have key : ∀ i : Fin n, ∑ j, ‖(if i = j then (1 : ℂ) else 0)‖ ^ 2 = 1 := by
@@ -39,6 +55,9 @@ lemma f1auxiliary_hs_one (n : ℕ) : hs (1 : Matrix (Fin n) (Fin n) ℂ) = n := 
     simp
   simp [key]
 
+/- English proof (translation)
+Introduce `n R hR`. Use `⟨{g | hs g < R}, isOpen_lt continuous_hs_real_place_taylor continuous_const, ?_, fun g hg => hg⟩` and prove the remaining obligations. Use `show hs (1 : Matrix (Fin n) (Fin n) ℂ) < R`. Rewrite using `[f1auxiliary_hs_one]`. Conclude with `hR`.
+-/
 theorem ball_open_holds : BallOpen := by
   intro n R hR
   refine ⟨{g | hs g < R}, isOpen_lt continuous_hs_real_place_taylor continuous_const, ?_, fun g hg => hg⟩
@@ -46,10 +65,16 @@ theorem ball_open_holds : BallOpen := by
   rw [f1auxiliary_hs_one]
   exact hR
 
+/- English proof (translation)
+The claim follows from `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+-/
 lemma f1auxiliary_closed {n : ℕ} (ε : Fin n → Bool) : IsClosed {g : Matrix (Fin n) (Fin n) ℂ | inUJ ε g} :=
   isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id)
     continuous_const
 
+/- English proof (translation)
+Unfold `hs`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma f1auxiliary_entry_le {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖g i j‖ ^ 2 ≤ hs g := by
   unfold hs
   calc ‖g i j‖ ^ 2 ≤ ∑ j', ‖g i j'‖ ^ 2 :=
@@ -58,6 +83,15 @@ lemma f1auxiliary_entry_le {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin
         Finset.single_le_sum (f := fun i' => ∑ j', ‖g i' j'‖ ^ 2)
           (fun k _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i)
 
+/- English proof (translation)
+Introduce `n ε`. Use `⟨fun R => ?_, fun g k hk => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hcpt : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => Metric.closedBall (0 : ℂ) (Real.sqrt R))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Use `hcpt.of_isClosed_subset ((f1auxiliary_closed ε).inter (isClosed_le continuous_hs_real_place_taylor continuous_const)) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨_, hg⟩ i _ j _`.
+
+Establish `h1` using `(f1auxiliary_entry_le g i j).trans hg`. Simplify using `using Real.abs_le_sqrt h1`. Establish `hk1 : k * kᴴ = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff.1 hk.1`.
+
+Rewrite using `[f1auxiliary_hs_eq, f1auxiliary_hs_eq, conjTranspose_mul]`. Use `congr 1`. Rewrite using `[show kᴴ * gᴴ * (g * k) = kᴴ * (gᴴ * g * k) by simp only [Matrix.mul_assoc], Matrix.trace_mul_comm, Matrix.mul_assoc, hk1, Matrix.mul_one]`. Establish `hk2 : kᴴ * k = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`.
+
+Conclude with `Matrix.mem_unitaryGroup_iff'.1 hk.1`. Rewrite using `[f1auxiliary_hs_eq, f1auxiliary_hs_eq, conjTranspose_mul]`. Use `congr 1`. Rewrite using `[show gᴴ * kᴴ * (k * g) = gᴴ * (kᴴ * k) * g by simp only [Matrix.mul_assoc], hk2, Matrix.mul_one]`.
+-/
 theorem hermitian_small_ball : HSBall := by
   intro n ε
   refine ⟨fun R => ?_, fun g k hk => ⟨?_, ?_⟩⟩

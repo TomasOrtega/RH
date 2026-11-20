@@ -51,9 +51,15 @@ def PartsMatchChar : Prop :=
     Gap D → GlobalTheory.GLq.ESerTie D → R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → R.IsChain → R.IsThP → R.IsScal F →
       MatchAll R F
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hg he hl hG _ hM _ _ _` and use `h D G Pl0 T A Ks R F hg he hl hG hM.inf`.
+-/
 theorem PartsMatch.char (h : PartsMatch) : PartsMatchChar :=
   fun D G _ _ Pl0 T A Ks _ _ _ R F hg he hl hG _ hM _ _ _ => h D G Pl0 T A Ks R F hg he hl hG hM.inf
 
+/- English proof (translation)
+Unfold `finS`. Rewrite using `[mem_primesOf]`. Use `⟨fun h => h.2, fun h => ⟨?_, h⟩⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero` after adjusting the coercions.
+-/
 theorem mem_finS (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     v ∈ finS D ↔ ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal := by
   unfold finS

@@ -27,6 +27,27 @@ namespace GlobalTheory.BaseGoodPlace
 open GlobalTheory.Idele WithZero
 open GlobalTheory.StdDual (codiff codiff_ne_zero)
 
+/- English proof (translation)
+Introduce `x`. Establish `hc` using `GlobalTheory.SplitUnram.count_codiff_eq_zero v (fun h => hv (Ideal.le_of_dvd h))`. Use `set α : Af D.host.F := GlobalTheory.AdelicU.singleFin v x with hα`. Establish `hαv : α v = x` using `GlobalTheory.AdelicU.evalV_singleFin_self v x`. Establish `hαw : ∀ w, w ≠ v → α w = 0` using `fun w hw => GlobalTheory.AdelicU.evalV_singleFin_ne hw x`.
+
+Establish `h` using `GlobalTheory.SplitUnram.mem_adelicIdeal_codiff_iff hψ.1.1 (GlobalTheory.StdRat.stdChar_fin_rat D ψ hψ) α`. Establish `key : (∀ y ∈ v.adicCompletionIntegers D.host.F, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.psiLoc ψ v (x * y) = 1) ↔ ∀ β : Af D.host.F, (∀ w, β w ∈ w.adicCompletionIntegers D.host.F) → ψ (pairA D.host.F 0 (β * α)) = 1`. Prove the components needed by the constructor for the conclusion. Introduce `H β hβ`. Establish `e : β * α = GlobalTheory.AdelicU.singleFin v (x * β v)`.
+
+Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[map_mul, hα, GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self]`.
+
+Express the relevant statement in the definitionally equal form `β u * x = x * β u`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, hα, GlobalTheory.AdelicU.evalV_singleFin_ne hu, GlobalTheory.AdelicU.evalV_singleFin_ne hu, mul_zero]`. Rewrite using `[e]`. Conclude with `H _ (hβ v)`.
+
+Introduce `H y hy`. Establish `e : GlobalTheory.AdelicU.singleFin v y * α = GlobalTheory.AdelicU.singleFin v (x * y)`. Rewrite using `[hα, ← GlobalTheory.AdelicU.singleFin_mul, mul_comm]`. Use `H (GlobalTheory.AdelicU.singleFin v y) (fun w => by` as an intermediate fact. Distinguish the cases in `hw : w = v`.
+
+Substitute `hw` using the available equality. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV _ w (GlobalTheory.AdelicU.singleFin w y) ∈ _`. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self]`. Conclude with `hy`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV _ w (GlobalTheory.AdelicU.singleFin v y) ∈ _`.
+
+Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne hw]`. Conclude with `zero_mem _)`. Rewrite `this` using `[e]`. Conclude with `this`. Rewrite using `[key, ← h, mem_adelicIdeal_iff codiff_ne_zero, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `H v` as an intermediate fact. Rewrite `this` using `[hc, neg_zero, exp_zero, hαv]`. Then use the resulting hypothesis. Introduce `H w`.
+
+Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hc, neg_zero, exp_zero, hαv]`. Conclude with `H`. Rewrite using `[hαw w hw, map_zero]`.
+
+Conclude with `zero_le`.
+-/
 theorem psiUnr_of_not_le {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     (v : HeightOneSpectrum (𝓞 D.host.F)) (hv : ¬ differentIdeal ℤ (𝓞 D.host.F) ≤ v.asIdeal) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PsiUnr ψ v := by
@@ -83,6 +104,13 @@ end GlobalTheory.BaseGoodPlace
 
 namespace GlobalTheory.BaseGoodPlace
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_prod_apply, PI.ProdFormulaE.Tr.trace_pi, PI.ProdFormulaE.Tr.trace_pi, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Simplify using `only [Algebra.trace_complex_apply]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.trInf`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun w : InfinitePlace D.host.F => w.IsReal)]`. Use `congr 1`.
+
+Use `Fintype.sum_congr _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.mult_isReal, Nat.cast_one, one_mul, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply w.2, Complex.ofReal_re]`. Simplify using the standard rewrite rules. Use `Fintype.sum_equiv (Equiv.subtypeEquivRight fun w => InfinitePlace.not_isReal_iff_isComplex) _ _ fun w => ?_` and prove the remaining obligations. Establish `h` using `InfinitePlace.mult_isComplex ⟨w.1, InfinitePlace.not_isReal_iff_isComplex.1 w.2⟩`.
+
+Simplify using `only at h`. Rewrite using `[h]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem trInf_eq_trace (D : D7) (x : Ainf D.host.F) :
     GlobalTheory.IndefiniteRowSideFullHecke.HeisenbergWeilMatrices.trInf D x = Algebra.trace ℝ (mixedEmbedding.mixedSpace D.host.F)
       (InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F x) := by
@@ -108,6 +136,15 @@ end GlobalTheory.BaseGoodPlace
 
 namespace GlobalTheory.BaseGoodPlace
 
+/- English proof (translation)
+Use `⟨hψ.1.1, hψ.1.2.2.1, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h2 : a.2 = 0`. Establish `h0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F (pairA D.host.F 0 1) = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F (0 : Ainf D.host.F) = 0`. Conclude with `map_zero _`. Use `congrArg Prod.snd (ha (pairA D.host.F 0 1) h0)` as an intermediate fact.
+
+Rewrite `this` using `[smul_eq_mul]`. Establish `e : (1 : Af D.host.F) * a.2 = 0` using `this`. Simplify using `using e`. Establish `ha' : a = pairA D.host.F a.1 0` using `Prod.ext rfl h2`. Take `⟨θ, hθ⟩` from `hψ.2.1`.
+
+Establish `h` using `hψ.2.2 θ hθ a.1`. Rewrite `h` using `[GlobalTheory.DualPairCompare.sum_infFam θ hθ, trInf_eq_trace]`. Rewrite using `[ha']`. Express the relevant statement in the definitionally equal form `psiInf D.host.F ψ a.1 = _`. Rewrite using `[h]`.
+
+Use `congr 1`. Use `push_cast`. Express the relevant statement in the definitionally equal form `_ = -(2 * ↑Real.pi * Complex.I) * ((Algebra.trace ℝ (mixedEmbedding.mixedSpace D.host.F) (InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F a.1) : ℝ) : ℂ)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isStd_of_isStdChar {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ := by
   refine ⟨hψ.1.1, hψ.1.2.2.1, fun a ha => ?_⟩
@@ -136,6 +173,9 @@ end GlobalTheory.BaseGoodPlace
 
 namespace GlobalTheory.BaseGoodPlace
 
+/- English proof (translation)
+Take `⟨p, -, h1, h2⟩` from `UpperTheory.Ram.Fun.exists_prime_of_different_le D.host v hle`. Conclude with `⟨p, h1, h2⟩`.
+-/
 theorem exists_ram_prime_of_le (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F))
     (hle : differentIdeal ℤ (𝓞 D.host.F) ≤ v.asIdeal) :
     ∃ p : ℕ, p ∣ D.host.QS * D.host.q * D.host.d ∧ (p : 𝓞 D.host.F) ∈ v.asIdeal := by
@@ -146,6 +186,19 @@ end GlobalTheory.BaseGoodPlace
 
 namespace GlobalTheory.FunObj
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ _hL W t hS B hB hP`. Establish `hψ : IsStdChar D B.ψ (-1)` using `hB ▸ W.ψ_std`. Use `{ cm := GlobalTheory.AdelicU.isCMExt_host D galois := D.host.hostE_isGalois unram := GlobalTheory.InertOfConj.unram D std := GlobalTheory.BaseGoodPlace.isStd_of_isStdChar hψ inert := ?_ psiP := ?_ }` and prove the remaining obligations. Introduce `v w hw`. Establish `hns : ¬ Formalism.MainNotions.KudlaSiegelWeil.Split D v`.
+
+Introduce and unpack `⟨w1, w2, hne, h1, h2⟩`. Apply `hne` to reduce the goal to its premises. Establish `key : ∀ u : HeightOneSpectrum (𝓞 D.host.E), Formalism.MainNotions.KudlaSiegelWeil.Over D u v → u = w` using `fun u hu => by`. Establish `hle : w.asIdeal ≤ u.asIdeal`. Rewrite using `[← hw]`.
+
+Conclude with `Ideal.map_le_iff_le_comap.2 (le_of_eq hu.symm)`. Conclude with `HeightOneSpectrum.ext (w.isMaximal.eq_of_le u.isPrime.ne_top hle).symm`. Rewrite using `[key w1 h1, key w2 h2]`. Take `⟨h2, h3, hd, -⟩` from `Formalism.MainNotions.KudlaSiegelWeil.inert_conditions_hold D v hns`. Conclude with `⟨h2, h3, GlobalTheory.BaseGoodPlace.psiUnr_of_not_le hψ v hd⟩`.
+
+Introduce `v hv`. Take `⟨w, hw, rfl⟩` from `hP v hv`. Use `GlobalTheory.BaseGoodPlace.psiUnr_of_not_le hψ _ fun hle => ?_` and prove the remaining obligations. Take `⟨p, hp, hpv⟩` from `GlobalTheory.BaseGoodPlace.exists_ram_prime_of_le D _ hle`. Establish `hpw : (p : 𝓞 D.host.E) ∈ w.asIdeal`.
+
+Establish `h` using `hpv`. Express the relevant statement in the definitionally equal form `(p : 𝓞 D.host.F) ∈ w.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) at h`. Rewrite `h` using `[Ideal.mem_comap, map_natCast]`. Then use the resulting hypothesis. Apply `hS.2 w hw` to reduce the goal to its premises. Take `⟨c, hc⟩` from `hp`.
+
+Rewrite using `[hc]`. Use `push_cast`. Conclude with `w.asIdeal.mul_mem_right _ (w.asIdeal.mul_mem_right _ hpw)`.
+-/
 theorem base_isGood_of_standing : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (W : G.Weil) (t : T),
     SquareStanding G t → ∀ B : Base D.host.F D.host.E, B.ψ = W.ψ →
       (∀ v ∈ B.P, ∃ w ∈ locPl G t, w.under (𝓞 D.host.F) = v) → B.IsGood D.sp.cm.sig := by

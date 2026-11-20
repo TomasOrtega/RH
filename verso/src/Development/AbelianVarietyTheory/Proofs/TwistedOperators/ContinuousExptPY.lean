@@ -13,22 +13,37 @@ def sAd (Y V : Mat p q) : Mat p q := Matrix.of fun a b => (sinhcAd Y *ᵥ vecM V
 
 def pY (B : Fin p → Fin q → ℂ) : Mat p q := pOf (Matrix.of B)
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [pY, pOf]`.
+-/
 theorem pY_add (B C : Fin p → Fin q → ℂ) : pY (B + C) = pY B + pY C := by
   ext (i | i) (j | j) <;> simp [pY, pOf]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [pY, pOf, Complex.real_smul, mul_comm]`.
+-/
 theorem pY_smul (t : ℝ) (B : Fin p → Fin q → ℂ) : pY (t • B) = t • pY B := by
   ext (i | i) (j | j) <;> simp [pY, pOf, Complex.real_smul, mul_comm]
 
+/- English proof (translation)
+Use `show Continuous fun B : Fin p → Fin q → ℂ => Matrix.fromBlocks 0 (Matrix.of B) (Matrix.of B)ᴴ 0`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp <;> fun_prop`.
+-/
 theorem continuous_pY : Continuous (pY : (Fin p → Fin q → ℂ) → Mat p q) := by
   show Continuous fun B : Fin p → Fin q → ℂ => Matrix.fromBlocks 0 (Matrix.of B) (Matrix.of B)ᴴ 0
   refine continuous_pi fun a => continuous_pi fun b => ?_
   rcases a with a | a <;> rcases b with b | b <;> simp <;> fun_prop
 
+/- English proof (translation)
+Establish `h : vecM (V + W) = vecM V + vecM W` using `rfl`. Use extensionality with `a b`. Simplify using `[sAd, h, Matrix.mulVec_add]`.
+-/
 theorem sAd_add (Y V W : Mat p q) : sAd Y (V + W) = sAd Y V + sAd Y W := by
   have h : vecM (V + W) = vecM V + vecM W := rfl
   ext a b
   simp [sAd, h, Matrix.mulVec_add]
 
+/- English proof (translation)
+Establish `h : vecM (t • V) = (t : ℂ) • vecM V`. Use function extensionality and compare the values at `ab`. Simplify using `[vecM, Complex.real_smul]`. Use extensionality with `a b`. Simplify using `[sAd, h, Matrix.mulVec_smul, Complex.real_smul]`.
+-/
 theorem sAd_smul_real (Y V : Mat p q) (t : ℝ) : sAd Y (t • V) = t • sAd Y V := by
   have h : vecM (t • V) = (t : ℂ) • vecM V := by
     funext ab
@@ -41,6 +56,11 @@ def sP (Y : Mat p q) : (Fin p → Fin q → ℂ) →ₗ[ℝ] (Fin p → Fin q �
   map_add' B C := by funext i j; simp [pY_add, sAd_add]
   map_smul' t B := by funext i j; simp [pY_smul, sAd_smul_real]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨a, b⟩`. Establish `h1 : (Matrix.kroneckerMap (· * ·) Y (1 : Mat p q) *ᵥ vecM V) (a, b) = (Y * V) a b`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.one_apply, Matrix.mul_apply, vecM, mul_ite, ite_mul]`. Establish `h2 : (Matrix.kroneckerMap (· * ·) (1 : Mat p q) Yᵀ *ᵥ vecM V) (a, b) = (V * Y) a b`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_prod_type_right, Matrix.one_apply, Matrix.mul_apply, vecM, mul_ite, mul_comm]`.
+
+Simplify using `only [adMat, Matrix.sub_mulVec, Pi.sub_apply, h1, h2, vecM, Matrix.sub_apply]`.
+-/
 theorem adMat_mulVec (Y V : Mat p q) : adMat Y *ᵥ vecM V = vecM (Y * V - V * Y) := by
   funext ⟨a, b⟩
   have h1 : (Matrix.kroneckerMap (· * ·) Y (1 : Mat p q) *ᵥ vecM V) (a, b) = (Y * V) a b := by
@@ -51,9 +71,17 @@ theorem adMat_mulVec (Y V : Mat p q) : adMat Y *ᵥ vecM V = vecM (Y * V - V * Y
       vecM, mul_ite, mul_comm]
   simp only [adMat, Matrix.sub_mulVec, Pi.sub_apply, h1, h2, vecM, Matrix.sub_apply]
 
+/- English proof (translation)
+Simplify using `[pY, pOf, Matrix.fromBlocks_conjTranspose]`.
+-/
 theorem pY_conjTranspose (B : Fin p → Fin q → ℂ) : (pY B)ᴴ = pY B := by
   simp [pY, pOf, Matrix.fromBlocks_conjTranspose]
 
+/- English proof (translation)
+Use `show pY B ∈ upq p q ∧ IsPC (pY B)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (pY B)ᴴ * Jm p q + Jm p q * pY B = 0`. Rewrite using `[pY_conjTranspose]`. Simplify using `[pY, pOf, Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_add]`.
+
+Introduce `a b h`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [pY, pOf, sameBlock]`.
+-/
 theorem pY_mem (B : Fin p → Fin q → ℂ) : pY B ∈ pR p q := by
   show pY B ∈ upq p q ∧ IsPC (pY B)
   refine ⟨?_, ?_⟩
@@ -63,6 +91,13 @@ theorem pY_mem (B : Fin p → Fin q → ℂ) : pY B ∈ pR p q := by
   · intro a b h
     rcases a with a | a <;> rcases b with b | b <;> simp_all [pY, pOf, sameBlock]
 
+/- English proof (translation)
+Establish `hY' : Y ∈ upq p q ∧ IsPC Y` using `hY`. Take `⟨hu, hP⟩` from `hY'`. Establish `hu' : Yᴴ * Jm p q + Jm p q * Y = 0` using `hu`. Use `⟨Y.toBlocks₁₂, ?_⟩` and prove the remaining obligations. Use extensionality with `(i | i) (j | j)`.
+
+Simplify `hP (Sum.inl i) (Sum.inl j) (by simp [sameBlock])` using `[pY, pOf]`. Both sides reduce to the same expression. Establish `h` using `congrFun (congrFun hu' (Sum.inr i)) (Sum.inl j)`. Simplify using `[Matrix.mul_apply, Jm, Formalism.UG.Jpq, Fintype.sum_sum_type, Matrix.one_apply, mul_ite, ite_mul] at h`. Rewrite `h` using `[starRingEnd_apply]`.
+
+Use `show Y (Sum.inr i) (Sum.inl j) = star (Y (Sum.inl j) (Sum.inr i))`. Take the linear combination `-h`. Simplify `hP (Sum.inr i) (Sum.inr j) (by simp [sameBlock])` using `[pY, pOf]`.
+-/
 theorem exists_pY {Y : Mat p q} (hY : Y ∈ pR p q) : ∃ B, Y = pY B := by
   have hY' : Y ∈ upq p q ∧ IsPC Y := hY
   obtain ⟨hu, hP⟩ := hY'
@@ -93,6 +128,9 @@ def eigP (ab cd : Ix p q × Ix p q) : ℂ :=
     (if ab.1.isLeft then 1 else -1)
   else 0
 
+/- English proof (translation)
+Establish `hne : cd ≠ ab.1`. Introduce and unpack `rfl`. Conclude with `ab.2 h`. Simplify using `[eigP, hne, h]`.
+-/
 theorem eigenvectorMatrix_eq_zero_of_sameBlock (ab : PIx p q) (cd : Ix p q × Ix p q) (h : sameBlock cd.1 cd.2) :
     eigP ab.1 cd = 0 := by
   have hne : cd ≠ ab.1 := by
@@ -102,22 +140,39 @@ theorem eigenvectorMatrix_eq_zero_of_sameBlock (ab : PIx p q) (cd : Ix p q × Ix
 
 def matG (T : GrpData p q) (x : T.G) : Mat p q := ((T.cov x : GL (Ix p q) ℂ) : Mat p q)
 
+/- English proof (translation)
+Simplify using `only [matG, map_mul, Units.val_mul]`.
+-/
 theorem matG_mul (T : GrpData p q) (x y : T.G) : matG T (x * y) = matG T x * matG T y := by
   simp only [matG, map_mul, Units.val_mul]
 
+/- English proof (translation)
+Conclude with `T.expt_cov (pY B) (show pY B ∈ upq p q ∧ IsPC (pY B) from pY_mem B).1`.
+-/
 theorem matG_expt (T : GrpData p q) (B : Fin p → Fin q → ℂ) :
     matG T (T.expt (pY B)) = NormedSpace.exp (pY B) := by
   exact T.expt_cov (pY B) (show pY B ∈ upq p q ∧ IsPC (pY B) from pY_mem B).1
 
+/- English proof (translation)
+Conclude with `T.expt_cont.comp_continuous continuous_pY (fun B => (show pY B ∈ upq p q ∧ IsPC (pY B) from pY_mem B).1)`.
+-/
 theorem continuous_expt_pY (T : GrpData p q) :
     Continuous fun B : Fin p → Fin q → ℂ => T.expt (pY B) := by
   exact T.expt_cont.comp_continuous continuous_pY
     (fun B => (show pY B ∈ upq p q ∧ IsPC (pY B) from pY_mem B).1)
 
+/- English proof (translation)
+Use `show Continuous fun x => ((T.cov x : GL (Ix p q) ℂ) : Mat p q)`. Conclude with `Units.continuous_val.comp (continuous_fst.comp T.emb.continuous)`.
+-/
 theorem continuous_matG (T : GrpData p q) : Continuous (matG T) := by
   show Continuous fun x => ((T.cov x : GL (Ix p q) ℂ) : Mat p q)
   exact Units.continuous_val.comp (continuous_fst.comp T.emb.continuous)
 
+/- English proof (translation)
+Establish `h : Formalism.UG.cT (starRingEnd ℂ) (matG T x) * Formalism.UG.Jpq p q * matG T x = Formalism.UG.Jpq p q` using `T.cov_mem x`. Establish `hc : Formalism.UG.cT (starRingEnd ℂ) (matG T x) = (matG T x)ᴴ`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`. Rewrite `h` using `[hc]`.
+
+Conclude with `h`.
+-/
 theorem matG_J (T : GrpData p q) (x : T.G) : (matG T x)ᴴ * Jm p q * matG T x = Jm p q := by
   have h : Formalism.UG.cT (starRingEnd ℂ) (matG T x) * Formalism.UG.Jpq p q * matG T x = Formalism.UG.Jpq p q :=
     T.cov_mem x
@@ -127,13 +182,30 @@ theorem matG_J (T : GrpData p q) (x : T.G) : (matG T x)ᴴ * Jm p q * matG T x =
   rw [hc] at h
   exact h
 
+/- English proof (translation)
+Simplify using `[matG]`.
+-/
 theorem matG_one (T : GrpData p q) : matG T 1 = 1 := by
   simp [matG]
 
+/- English proof (translation)
+Simplify using `only [matG, map_inv]`.
+-/
 theorem matG_inv (T : GrpData p q) (x : T.G) :
     matG T x⁻¹ = (((T.cov x)⁻¹ : GL (Ix p q) ℂ) : Mat p q) := by
   simp only [matG, map_inv]
 
+/- English proof (translation)
+Establish `hK : IsKC (matG T k)` using `hk`. Establish `h12 : (matG T k).toBlocks₁₂ = 0`. Use extensionality with `i j`. Conclude with `hK (Sum.inl i) (Sum.inr j) (by simp [sameBlock])`. Establish `h21 : (matG T k).toBlocks₂₁ = 0`.
+
+Use extensionality with `i j`. Conclude with `hK (Sum.inr i) (Sum.inl j) (by simp [sameBlock])`. Establish `hMe : matG T k = Matrix.fromBlocks (matG T k).toBlocks₁₁ 0 0 (matG T k).toBlocks₂₂` using `by conv_lhs => rw [← Matrix.fromBlocks_toBlocks (matG T k)]`. Rewrite using `[h12, h21]`. Establish `hJ` using `matG_J T k`.
+
+Rewrite `hJ` using `[hMe]`. Generalize the expression as in `(matG T k).toBlocks₁₁ = A at hJ hMe`. Generalize the expression as in `(matG T k).toBlocks₂₂ = D at hJ hMe`. Simplify using `only [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply] at hJ`. Simplify using `[Matrix.fromBlocks_inj] at hJ`.
+
+Take `⟨hA, hD⟩` from `hJ`. Use `⟨A, ?_, D, ?_, hMe⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Conclude with `hA`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`.
+
+Conclude with `hD`.
+-/
 theorem exists_blocks (T : GrpData p q) {k : T.G} (hk : k ∈ T.Kset) :
     ∃ U ∈ Matrix.unitaryGroup (Fin p) ℂ, ∃ V ∈ Matrix.unitaryGroup (Fin q) ℂ,
       matG T k = Matrix.fromBlocks U 0 0 V := by
@@ -160,6 +232,9 @@ theorem exists_blocks (T : GrpData p q) {k : T.G} (hk : k ∈ T.Kset) :
   · rw [Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]
     exact hD
 
+/- English proof (translation)
+Take `⟨U, hU, V, hV, h⟩` from `exists_blocks T hk`. Rewrite `hU`, `hV` using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Rewrite using `[h, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply]`. Simplify using `[hU, hV]`.
+-/
 theorem matG_star_mul (T : GrpData p q) {k : T.G} (hk : k ∈ T.Kset) :
     (matG T k)ᴴ * matG T k = 1 := by
   obtain ⟨U, hU, V, hV, h⟩ := exists_blocks T hk
@@ -167,6 +242,9 @@ theorem matG_star_mul (T : GrpData p q) {k : T.G} (hk : k ∈ T.Kset) :
   rw [h, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply]
   simp [hU, hV]
 
+/- English proof (translation)
+Rewrite using `[matG_inv]`. Conclude with `Units.inv_eq_of_mul_eq_one_left (matG_star_mul T hk)`.
+-/
 theorem matG_inv_of_mem (T : GrpData p q) {k : T.G} (hk : k ∈ T.Kset) :
     matG T k⁻¹ = (matG T k)ᴴ := by
   rw [matG_inv]

@@ -10,6 +10,9 @@ namespace GlobalTheory.BottomWt
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `haveI : CompactSpace (KO k n) := isCompact_iff_compactSpace.1 SplitFlip.isCompact_KO`. Use `haveI : Finite ((KO k n) ⧸ J.subgroupOf (KO k n)) := Subgroup.quotient_finite_of_isOpen _ (ho.preimage continuous_subtype_val)`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_KO_ne_zero {n : Type} [Fintype n] [DecidableEq n] {J : Subgroup (GL n k)}
     (hJ : J ≤ KO k n) (ho : IsOpen (J : Set (GL n k))) : J.relIndex (KO k n) ≠ 0 := by
   haveI : CompactSpace (KO k n) := isCompact_iff_compactSpace.1 SplitFlip.isCompact_KO
@@ -17,23 +20,37 @@ theorem relIndex_KO_ne_zero {n : Type} [Fintype n] [DecidableEq n] {J : Subgroup
     Subgroup.quotient_finite_of_isOpen _ (ho.preimage continuous_subtype_val)
   exact Subgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+Use `GlobalTheory.RootEx.prodN_inN_of_mem hu (Sum.inl a) (Sum.inl b) le_rfl` as an intermediate fact. Simplify `this` using `[Matrix.one_apply]`.
+-/
 theorem N_one_apply_inl {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {u : GL (n ⊕ Fin c) k}
     (hu : u ∈ N k n c 1) (a b : n) : u.val (Sum.inl a) (Sum.inl b) = (1 : Matrix n n k) a b := by
   have := GlobalTheory.RootEx.prodN_inN_of_mem hu (Sum.inl a) (Sum.inl b) le_rfl
   simpa [Matrix.one_apply] using this
 
+/- English proof (translation)
+Simplify using `only [Units.val_mul, Matrix.mul_apply, Fintype.sum_sum_type, embX]`. Simplify using `[N_one_apply_inl hu, Matrix.one_apply]`.
+-/
 theorem mul_embX_inl {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {u : GL (n ⊕ Fin c) k}
     (hu : u ∈ N k n c 1) (g : GL n k) (a b : n) :
     (u * embX c g).val (Sum.inl a) (Sum.inl b) = g.val a b := by
   simp only [Units.val_mul, Matrix.mul_apply, Fintype.sum_sum_type, embX]
   simp [N_one_apply_inl hu, Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `only [Units.val_mul, Matrix.mul_apply, Fintype.sum_sum_type, embX]`. Simplify using `[N_one_apply_inl hu, Matrix.one_apply]`.
+-/
 theorem embX_mul_inl {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {u : GL (n ⊕ Fin c) k}
     (hu : u ∈ N k n c 1) (g : GL n k) (a b : n) :
     (embX c g * u).val (Sum.inl a) (Sum.inl b) = g.val a b := by
   simp only [Units.val_mul, Matrix.mul_apply, Fintype.sum_sum_type, embX]
   simp [N_one_apply_inl hu, Matrix.one_apply]
 
+/- English proof (translation)
+Introduce and unpack `(a | a) (b | b)`. Simplify `h a b` using `[embX]`. Simplify using `[embX]`. Simplify using `[embX]`. Distinguish the cases in `e : a = b`.
+
+Substitute `e` using the available equality. Simplify using `[embX]`. Simplify using `[embX, Matrix.one_apply, e]`.
+-/
 theorem intM_embX {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {g : GL n k} (h : IntM g.val) :
     IntM (embX c g : GL (n ⊕ Fin c) k).val := by
   rintro (a | a) (b | b)
@@ -44,6 +61,17 @@ theorem intM_embX {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {g : GL n k} 
     · subst e; simp [embX]
     · simp [embX, Matrix.one_apply, e]
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[mem_prX]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hC⟩`. Establish `hw : u * embX c g ∈ KO k (n ⊕ Fin c)` using `by simpa using (mem_Cgrp.1 hC).2`.
+
+Take `⟨h1, h2⟩` from `mem_KO.1 hw`. Use `mem_KO.2 ⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_embX_inl hu g a b]`. Conclude with `h1 _ _`. Establish `hu' : u⁻¹ ∈ N k n c 1` using `inv_mem hu`.
+
+Establish `e : (u * embX c g)⁻¹ = embX c g⁻¹ * u⁻¹` using `by rw [_root_.mul_inv_rev, map_inv]`. Rewrite using `[← embX_mul_inl hu' g⁻¹ a b, ← e]`. Conclude with `h2 _ _`. Introduce `hg`. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[one_mul, mem_Cgrp]`. Use `⟨Subgroup.mem_sup_left ⟨g, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [inv_one, one_mul, mul_one]`. Take `⟨h1, h2⟩` from `mem_KO.1 hg`. Use `mem_KO.2 ⟨intM_embX h1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_inv]`. Conclude with `intM_embX h2`.
+-/
 theorem prX_Cgrp_KO_one (n : Type) [Fintype n] [DecidableEq n] (c : ℕ) :
     prX (Cgrp (KO k (n ⊕ Fin c)) 1) = KO k n := by
   ext g
@@ -66,6 +94,11 @@ theorem prX_Cgrp_KO_one (n : Type) [Fintype n] [DecidableEq n] (c : ℕ) :
     refine mem_KO.2 ⟨intM_embX h1, ?_⟩
     rw [← map_inv]; exact intM_embX h2
 
+/- English proof (translation)
+Rewrite using `[mem_KO, mem_KO, ← map_inv, reGL_symm_val, reGL_symm_val]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `using h1 (e.symm i) (e.symm j)`.
+
+Simplify using `using h2 (e.symm i) (e.symm j)`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun i j => h1 _ _, fun i j => h2 _ _⟩`.
+-/
 theorem reGL_symm_mem_KO_iff {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (e : a ≃ b)
     {x : GL b k} : (reGL e).symm x ∈ KO k a ↔ x ∈ KO k b := by
   rw [mem_KO, mem_KO, ← map_inv, reGL_symm_val, reGL_symm_val]
@@ -77,6 +110,11 @@ theorem reGL_symm_mem_KO_iff {a b : Type} [Fintype a] [DecidableEq a] [Fintype b
   · rintro ⟨h1, h2⟩
     exact ⟨fun i j => h1 _ _, fun i j => h2 _ _⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(plainFrame (k := k) (stdOrd κ t 0 c h)).conj.symm x ∈ (parahoric (κ ⊕ Fin (s + 1)) (Fin 0 × t) δ hδ).J ↔ _`. Rewrite using `[mem_parahoric]`. Establish `e : (plainFrame (k` using `k) (stdOrd κ t 0 c h)).conj.symm x = (reGL (stdOrd κ t 0 c h)).symm x := by`. Simplify using `[LatFrame.conj, plainFrame]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, reGL_symm_mem_KO_iff]`. Conclude with `⟨fun H => H.1, fun H => ⟨H, fun i _ => i.1.elim0⟩⟩`.
+-/
 theorem twistChain_lev_zero {s : ℕ} {t κ : Type} [Fintype t] [DecidableEq t] [Fintype κ] [DecidableEq κ]
     (δ : kˣ →* ℂˣ) (hδ : IsTame δ) (η : ℕ → kˣ →* ℂˣ) (c : ℕ) (h : 0 + c = s + 1) :
     ((twistChain s t κ δ hδ η).lev 0 c h).J = KO k _ := by
@@ -94,6 +132,17 @@ end GlobalTheory.BottomWt
 namespace GlobalTheory.QTw
 open GlobalTheory.BottomWt
 
+/- English proof (translation)
+Introduce `D c v B PP G χ E`. Establish `hz : E.A 0 G.s (zero_add _) = {1}` using `E.reps.zero _ _`. Establish `hrep : ∀ α, E.rep 0 G.s (zero_add _) α = 1` using `fun α => by`. Use `(E.rep_bij 0 G.s (zero_add _)).mapsTo (Set.mem_univ α)` as an intermediate fact. Rewrite `this` using `[hz]`.
+
+Conclude with `this`. Establish `hJ0 : ∀ c h, ((G.T E.δ E.tame E.η).lev 0 c h).J = KO G.k _` using `fun c h => twistChain_lev_zero E.δ E.tame E.η c h`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_eq_one_iff]`. Establish `h1 : (1 : GL _ G.k) ∈ E.A 0 G.s (zero_add _)` using `by rw [hz]; rfl`.
+
+Take `⟨x, -, -⟩` from `(E.rep_bij 0 G.s (zero_add _)).surjOn h1`. Conclude with `⟨x, fun y => (E.rep_bij 0 G.s (zero_add _)).injOn (Set.mem_univ _) (Set.mem_univ _) ((hrep y).trans (hrep x).symm)⟩`. Introduce `α`. Rewrite using `[E.wt_mid 0 G.s (zero_add _) α, hrep α, hJ0, prX_Cgrp_KO_one, (E.haar 0).2]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[E.idx_mid 0 (G.s + 1) (zero_add _), hJ0]`. Conclude with `Subgroup.relIndex_self _`. Introduce `j hj`. Break down `Nat.lt_or_ge j (G.s + 2) with hl | hl` into its components or cases. Rewrite using `[E.idx_mid j (G.s + 1 - j) (by omega)]`.
+
+Conclude with `relIndex_KO_ne_zero (E.le _ _ _) (E.reg.2.2 _ _ _).1`. Take `rfl : j = G.s + 1 + 1` from `by omega`. Rewrite using `[E.idx_top]`. Conclude with `relIndex_KO_ne_zero E.leT E.openT`.
+-/
 theorem QExt.bottom_one : ∀ (D : D7) (c : Comm D) (v : VCom c) (B : GlobalTheory.Fam.Base c) (PP : Formalism.L2.DIV.Pl D.host.E) (G : QGeo v B PP) (χ : ℕ → (AE D)ˣ →* Circle) (E : QExt G χ), Fintype.card (E.Ch 0) = 1 ∧ (∀ α, E.wt 0 α = 1) ∧ E.idx 0 = 1 ∧ ∀ j, j ≤ G.s + 1 + 1 → E.idx j ≠ 0 := by
   intro D c v B PP G χ E
   have hz : E.A 0 G.s (zero_add _) = {1} := E.reps.zero _ _

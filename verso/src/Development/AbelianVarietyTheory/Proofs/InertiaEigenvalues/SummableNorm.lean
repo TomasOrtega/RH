@@ -17,10 +17,18 @@ def ev (c : K →+* N) (ν : N) (a : K⟦X⟧) : N := ∑' k : ℕ, c (coeff k a
 
 variable {c : K →+* N} {ν : N}
 
+/- English proof (translation)
+Take `⟨C, h⟩` from `hc`. Conclude with `AddMonoidHomClass.continuous_of_bound c C h`.
+-/
 theorem Bdd.continuous (hc : Bdd c) : Continuous c := by
   obtain ⟨C, h⟩ := hc
   exact AddMonoidHomClass.continuous_of_bound c C h
 
+/- English proof (translation)
+Take `⟨C, h⟩` from `hc`. Take `⟨D, r, h0, h1, h2⟩` from `hν`. Use `⟨|C| * |D|, r, by positivity, h0, h1, fun x k => (norm_mul_le _ _).trans ?_⟩` and prove the remaining obligations. Establish `e1 : ‖c x‖ ≤ |C| * ‖x‖` using `(h x).trans (by gcongr; exact le_abs_self C)`. Establish `e2 : ‖ν ^ k‖ ≤ |D| * r ^ k` using `(h2 k).trans (by gcongr; exact le_abs_self D)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_bound (hc : Bdd c) (hν : Small ν) :
     ∃ C r : ℝ, 0 ≤ C ∧ 0 < r ∧ r < 1 ∧ ∀ (x : K) (k : ℕ), ‖c x * ν ^ k‖ ≤ C * (‖x‖ * r ^ k) := by
   obtain ⟨C, h⟩ := hc
@@ -31,40 +39,66 @@ theorem exists_bound (hc : Bdd c) (hν : Small ν) :
   calc _ ≤ (|C| * ‖x‖) * (|D| * r ^ k) := by gcongr
     _ = _ := by ring
 
+/- English proof (translation)
+Take `⟨C, r, -, h0, h1, h⟩` from `exists_bound hc hν`. Conclude with `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun k => h _ k) ((ha r h0 h1).mul_left C)`.
+-/
 theorem summable_norm (hc : Bdd c) (hν : Small ν) {a : K⟦X⟧} (ha : SC a) :
     Summable fun k : ℕ => ‖c (coeff k a) * ν ^ k‖ := by
   obtain ⟨C, r, -, h0, h1, h⟩ := exists_bound hc hν
   exact Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun k => h _ k) ((ha r h0 h1).mul_left C)
 
+/- English proof (translation)
+Take `⟨D, r, h0, h1, h2⟩` from `hν`. Use `squeeze_zero_norm h2 ?_` and prove the remaining obligations. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one h0.le h1).const_mul D`.
+-/
 theorem Small.tendsto (hν : Small ν) : Tendsto (fun k : ℕ => ν ^ k) atTop (nhds 0) := by
   obtain ⟨D, r, h0, h1, h2⟩ := hν
   refine squeeze_zero_norm h2 ?_
   simpa using (tendsto_pow_atTop_nhds_zero_of_lt_one h0.le h1).const_mul D
 
+/- English proof (translation)
+Rewrite using `[ev, ev, ← (summable_norm hc hν ha).of_norm.tsum_mul_left]`. Simplify using `[mul_assoc]`.
+-/
 theorem ev_C_mul (hc : Bdd c) (hν : Small ν) [CompleteSpace N] (x : K) {a : K⟦X⟧} (ha : SC a) :
     ev c ν (x • a) = c x * ev c ν a := by
   rw [ev, ev, ← (summable_norm hc hν ha).of_norm.tsum_mul_left]
   simp [mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[eval₂_trunc_eq_sum_range]`.
+-/
 theorem sum_range_eq (a : K⟦X⟧) (m : ℕ) :
     ∑ k ∈ range m, c (coeff k a) * ν ^ k = Polynomial.eval₂ c ν (trunc m a) := by
   rw [eval₂_trunc_eq_sum_range]
 
 variable [CompleteSpace N]
 
+/- English proof (translation)
+The claim follows from `(summable_norm hc hν ha).of_norm.hasSum`.
+-/
 theorem hasSum_ev (hc : Bdd c) (hν : Small ν) {a : K⟦X⟧} (ha : SC a) :
     HasSum (fun k : ℕ => c (coeff k a) * ν ^ k) (ev c ν a) :=
   (summable_norm hc hν ha).of_norm.hasSum
 
+/- English proof (translation)
+Simplify `(hasSum_ev hc hν ha).tendsto_sum_nat` using `only [sum_range_eq]`.
+-/
 theorem tendsto_ev (hc : Bdd c) (hν : Small ν) {a : K⟦X⟧} (ha : SC a) :
     Tendsto (fun m : ℕ => Polynomial.eval₂ c ν (trunc m a)) atTop (nhds (ev c ν a)) := by
   simpa only [sum_range_eq] using (hasSum_ev hc hν ha).tendsto_sum_nat
 
+/- English proof (translation)
+Use `HasSum.tsum_eq ?_` and prove the remaining obligations. Simplify `(hasSum_ev hc hν ha).add (hasSum_ev hc hν hb)` using `only [map_add, add_mul]`.
+-/
 theorem ev_add (hc : Bdd c) (hν : Small ν) {a b : K⟦X⟧} (ha : SC a) (hb : SC b) :
     ev c ν (a + b) = ev c ν a + ev c ν b := by
   refine HasSum.tsum_eq ?_
   simpa only [map_add, add_mul] using (hasSum_ev hc hν ha).add (hasSum_ev hc hν hb)
 
+/- English proof (translation)
+Rewrite using `[ev, ev, ev, tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm (summable_norm hc hν ha) (summable_norm hc hν hb)]`. Use `tsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[coeff_mul, map_sum, sum_mul]`. Use `sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[← mem_antidiagonal.1 hp, map_mul, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ev_mul (hc : Bdd c) (hν : Small ν) {a b : K⟦X⟧} (ha : SC a) (hb : SC b) :
     ev c ν (a * b) = ev c ν a * ev c ν b := by
   rw [ev, ev, ev, tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm (summable_norm hc hν ha)
@@ -75,26 +109,47 @@ theorem ev_mul (hc : Bdd c) (hν : Small ν) {a b : K⟦X⟧} (ha : SC a) (hb : 
   rw [← mem_antidiagonal.1 hp, map_mul, pow_add]
   ring
 
+/- English proof (translation)
+Rewrite using `[ev, tsum_eq_single 0 fun k hk => by simp [coeff_one, hk]]`. Simplify using the standard rewrite rules.
+-/
 theorem ev_one : ev c ν 1 = 1 := by
   rw [ev, tsum_eq_single 0 fun k hk => by simp [coeff_one, hk]]
   simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using sc_coe (1 : Polynomial K)`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `ih.mul ha`.
+-/
 theorem sc_pow {a : K⟦X⟧} (ha : SC a) (k : ℕ) : SC (a ^ k) := by
   induction k with
   | zero => simpa using sc_coe (1 : Polynomial K)
   | succ k ih => rw [pow_succ]; exact ih.mul ha
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using ev_one`. Consider the case `succ k ih => rw [pow_succ, pow_succ, ev_mul hc hν (sc_pow ha k) ha, ih]`.
+-/
 theorem ev_pow (hc : Bdd c) (hν : Small ν) {a : K⟦X⟧} (ha : SC a) (k : ℕ) :
     ev c ν (a ^ k) = ev c ν a ^ k := by
   induction k with
   | zero => simpa using ev_one
   | succ k ih => rw [pow_succ, pow_succ, ev_mul hc hν (sc_pow ha k) ha, ih]
 
+/- English proof (translation)
+Use `(hasSum_ev hc hν ha).map f hf` as an intermediate fact. Simplify `this` using `only [Function.comp_def, map_mul, map_pow, hfc]`.
+-/
 theorem hasSum_map (hc : Bdd c) (hν : Small ν) {a : K⟦X⟧} (ha : SC a) (f : N →+* N) (hf : Continuous f)
     (hfc : ∀ x, f (c x) = c x) : HasSum (fun k : ℕ => c (coeff k a) * f ν ^ k) (f (ev c ν a)) := by
   have := (hasSum_ev hc hν ha).map f hf
   simpa only [Function.comp_def, map_mul, map_pow, hfc] using this
 
+/- English proof (translation)
+Use `tendsto_nhds_unique (hasSum_ev hc hν ha).tendsto_sum_nat ?_` and prove the remaining obligations. Establish `key : ∀ m : ℕ, ∑ k ∈ range m, c (coeff k (map j a)) * ν ^ k = f a - ν ^ m * f (mk fun i => coeff (i + m) a)`. Introduce `m`. Establish `e0` using `congrArg f (eq_X_pow_mul_shift_add_trunc m a)`. Rewrite using `[e0, map_add, map_mul, map_pow, hX, add_sub_cancel_left, trunc_apply, Polynomial.coe_def]`.
+
+Establish `e : (mk (∑ k ∈ Ico 0 m, Polynomial.monomial k (coeff k a)).coeff : O⟦X⟧) = ∑ k ∈ range m, C (coeff k a) * X ^ k`. Use extensionality with `n`. Simplify using `[coeff_X_pow, Polynomial.coeff_monomial, Polynomial.finset_sum_coeff]`. Rewrite using `[e, map_sum]`. Simplify using `only [map_mul, map_pow, hX, hC, coeff_map]`.
+
+Simplify using `only [key]`. Use `conv => rhs`. Rewrite using `[← sub_zero (f a)]`. Use `tendsto_const_nhds.sub (squeeze_zero_norm (a := fun m => ‖ν ^ m‖) (fun m => ?_) ?_)` and prove the remaining obligations. Conclude with `(norm_mul_le _ _).trans (mul_le_of_le_one_right (norm_nonneg _) (hf _))`.
+
+Simplify using `using hν.tendsto.norm`.
+-/
 theorem ev_map {O : Type} [CommRing O] (j : O →+* K) (hν : Small ν) (hc : Bdd c) (f : O⟦X⟧ →+* N)
     (hC : ∀ o, f (C o) = c (j o)) (hX : f X = ν) (hf : ∀ a, ‖f a‖ ≤ 1) (a : O⟦X⟧) (ha : SC (map j a)) :
     ev c ν (map j a) = f a := by
@@ -116,6 +171,21 @@ theorem ev_map {O : Type} [CommRing O] (j : O →+* K) (hν : Small ν) (hc : Bd
   · exact (norm_mul_le _ _).trans (mul_le_of_le_one_right (norm_nonneg _) (hf _))
   · simpa using hν.tendsto.norm
 
+/- English proof (translation)
+Take `⟨C, r, hC, h0, h1, h⟩` from `exists_bound hc hν`. Establish `hy' : SC y` using `sc_of_le 0 fun k => by simpa using hy k`. Establish `hp : ∀ k n, ‖coeff n (y ^ k)‖ ≤ 1` using `fun k n => by`. Simplify `hy i) k n le_rfl` using `using norm_coeff_pow_le y n (r := 1) (R := 1) zero_le_one zero_le_one (fun i _ => by simpa`. Establish `hz : ∀ k n, n < k → coeff n (y ^ k) = 0` using `fun k n hn => X_pow_dvd_iff.1 (pow_dvd_pow_of_dvd (X_dvd_iff.2 hy0) k) n hn`.
+
+Take `⟨ρ, hρ0, hρ1, hρ⟩ : ∃ ρ : ℝ, 0 < ρ ∧ ρ < 1 ∧ r = ρ * ρ` from `⟨√r, Real.sqrt_pos.2 h0, by rwa [Real.sqrt_lt' one_pos, one_pow], (Real.mul_self_sqrt h0.le).symm⟩`. Set `F : ℕ × ℕ → N` to `fun p => c (coeff p.1 a * coeff p.2 (y ^ p.1)) * ν ^ p.2`. Establish `hF : Summable F`. Use `Summable.of_norm_bounded (g := fun p : ℕ × ℕ => (C * (‖coeff p.1 a‖ * ρ ^ p.1)) * ρ ^ p.2) (Summable.mul_of_nonneg ((ha ρ hρ0 hρ1).mul_left C) (summable_geometric_of_lt_one hρ0.le hρ1) (fun _ => by positivity) fun _ => by positivity) fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hlt : p.2 < p.1`.
+
+Simplify using `only [F, hz _ _ hlt, mul_zero, map_zero, zero_mul, norm_zero]`. Check the signs of the components of the expression. Use `(h _ _).trans ?_` and prove the remaining obligations. Establish `e : ρ ^ p.2 ≤ ρ ^ p.1` using `pow_le_pow_of_le_one hρ0.le hρ1.le (not_lt.1 hlt)`. Rewrite using `[norm_mul, hρ, mul_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : HasSum (fun n : ℕ => c (coeff n (subst y a)) * ν ^ n) (∑' p, F p)`. Use `HasSum.prod_fiberwise ((Equiv.prodComm ℕ ℕ).hasSum_iff.2 hF.hasSum) fun n => ?_` and prove the remaining obligations. Establish `e : coeff n (subst y a) = ∑ k ∈ range (n + 1), coeff k a * coeff n (y ^ k)`. Rewrite using `[coeff_subst' (HasSubst.of_constantCoeff_zero' hy0), finsum_eq_sum_of_support_subset (s := range (n + 1))]`.
+
+Simplify using the standard rewrite rules. Introduce `k hk`. Assume the negation of the conclusion as `hk'`. Apply `hk` to reduce the goal to its premises. Simplify using `only [coe_range, Set.mem_Iio, not_lt] at hk'`.
+
+Simplify using `[hz k n hk']`. Rewrite using `[e, map_sum, sum_mul]`. Use `hasSum_sum_of_ne_finset_zero fun k hk => ?_` and prove the remaining obligations. Simplify using `only [mem_range, not_lt] at hk`. Simplify using `[F, hz k n hk]`.
+
+Rewrite using `[show ev c ν (subst y a) = _ from h2.tsum_eq]`. Use `HasSum.prod_fiberwise hF.hasSum fun k => ?_` and prove the remaining obligations. Rewrite using `[← ev_pow hc hν hy']`. Simplify `(hasSum_ev hc hν (sc_pow hy' k)).mul_left (c (coeff k a))` using `only [F, map_mul, mul_assoc]`.
+-/
 theorem hasSum_subst [IsUltrametricDist K] (hc : Bdd c) (hν : Small ν) {y a : K⟦X⟧} (hy0 : constantCoeff y = 0)
     (hy : ∀ k, ‖coeff k y‖ ≤ 1) (ha : SC a) :
     HasSum (fun k : ℕ => c (coeff k a) * ev c ν y ^ k) (ev c ν (subst y a)) := by

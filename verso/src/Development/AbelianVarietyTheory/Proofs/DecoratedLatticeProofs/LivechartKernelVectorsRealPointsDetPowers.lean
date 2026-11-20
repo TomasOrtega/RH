@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.KJRealLive
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Substitute `hq` using the available equality. Rewrite using `[Sized.castP_rank, Sized.castP_rank]`. Establish `h : ∀ n (N : Matrix (Fin n) (Fin n) ℂ), N.reindex (finCongr rfl) (finCongr rfl) = N` using `fun n N => by ext; simp`. Simplify using `only [h]`.
+-/
 theorem castP_mvZ {D : D7} {p q a b : ℕ} (hp : p = a) (hq : q = b) (M : D.what₂.Tau → Matrix (Fin p) (Fin p) ℂ)
     (M' : D.what₂.Tau → Matrix (Fin q) (Fin q) ℂ) (P : PolF D q p) :
     castP (D := D) hp hq (mvZ M M' P) =
@@ -24,6 +27,9 @@ theorem castP_mvZ {D : D7} {p q a b : ℕ} (hp : p = a) (hq : q = b) (M : D.what
   have h : ∀ n (N : Matrix (Fin n) (Fin n) ℂ), N.reindex (finCongr rfl) (finCongr rfl) = N := fun n N => by ext; simp
   simp only [h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Simplify using `only [GlobalTheory.FrComb.comb_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem comb_smul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (c : WO S T →₀ ℂ) (x : ℂ) (f : WO S T → ℂ) :
     comb ψ S T c (x • f) = x • comb ψ S T c f := by
   funext u
@@ -34,6 +40,21 @@ end GlobalTheory.KJRealLive
 
 open GlobalTheory.KJRealLive in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z u G _ _ Pl0 T F Ks _ _ _ R g c₀ s J hX hS hx P t r a k tl Ch₀ A ι w hP`. Introduce `j hj α γ k₁ hk₁ k₂ hk₂ P₁ P₂ hP₁₂`. Establish `hjle : j ≤ B.R.m` using `Nat.le_of_succ_le hj`. Establish `hjlt : j < B.R.m` using `hj`. Take `⟨e, he, hee⟩` from `GlobalTheory.T.exists_charExponent_infinity_kernel_shift I hOk hPins l Z u a Ch₀ A hP.is j hj`.
+
+Establish `hvac` using `hX.vc j hjlt`. Establish `hxj` using `hX.xs j hjle`. Establish `hxj1` using `hX.xs (j + 1) hj`. Establish `hW` using `hP.om j hjlt`. Establish `hfin` using `(hP.dat j hj α γ).1`.
+
+Establish `hstd` using `hX.std`. Establish `hth0 : IsThetaFunO R.ψ _ _ (g.vac j)` using `hvac.2.theta`. Establish `eS : Even ((I.rec7 l Z).sp.X j).rank` using `by rw [rankN (I.rec7 l Z) j hjle]; exact even_rankN _ j`. Establish `eT : Even ((I.rec7 l Z).sp.X (j + 1)).rank` using `by rw [rankN (I.rec7 l Z) (j + 1) hj]; exact even_rankN _ (j + 1)`. Establish `key` using `GlobalTheory.KJReal.om_pureTensorO_onb (I.rec7 l Z) R.ψ R.θ _ _ (g.x j) (g.x (j + 1)) (A.chr (j + 1)) (k.kom j) hX.inf (hx j hjle) (hx (j + 1) hj) hxj.1 hxj1.1 eS eT hW e he (g.vac j) hth0 hvac.2.fock k₁ hk₁ k₂ hk₂`.
+
+Establish `hPP : P₂ = mvZ (fun τ => (inB R.θ _ (g.x j).B k₁ τ)⁻¹) (inB R.θ _ (g.x (j + 1)).B k₂) P₁`. Apply `(Sized.castP_bijective (D := I.rec7 l Z) (rankN (I.rec7 l Z) j hjle) (rankN (I.rec7 l Z) (j + 1) hj)).1` to reduce the goal to its premises. Use `hP₁₂.trans ?_` and prove the remaining obligations. Rewrite using `[castP_mvZ]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `τ`. Conclude with `Matrix.inv_reindex _ _ _`. Establish `hs1 : ∀ τ, (realOf u R g s J).sS j τ = -e τ - (((I.rec7 l Z).sp.X (j + 1)).rank : ℤ) / 2` using `fun τ => (hee τ).1`. Establish `hs2 : ∀ τ, -(realOf u R g s J).sD j τ = e τ + (((I.rec7 l Z).sp.X j).rank : ℤ) / 2` using `fun τ => (hee τ).2.1`. Establish `hpt0 : IsThetaFunO R.ψ _ _ (pureTensorO R.ψ R.θ _ _ (g.x j).s (g.x (j + 1)).s (g.x j).B (g.x (j + 1)).B (g.vac j) P₁)` using `GlobalTheory.FockTheta.ptStable _ R.ψ R.θ hstd hX.inf _ _ _ _ _ _ _ P₁ hth0`.
+
+Use `show k.kom j (k₁, k₂) (pureTensorO R.ψ R.θ _ _ (g.x j).s (g.x (j + 1)).s (g.x j).B (g.x (j + 1)).B (comb R.ψ _ _ (k.dd j α γ) (g.vac j)) P₁) = _ • pureTensorO R.ψ R.θ _ _ (g.x j).s (g.x (j + 1)).s (g.x j).B (g.x (j + 1)).B (comb R.ψ _ _ (k.dd j α γ) (g.vac j)) P₂`. Rewrite using `[LiftsAtLevel.comb_pureTensorO hstd hX.inf _ _ _ _ hth0 hfin, GlobalTheory.FrComb.om_comb hW hk₁ hk₂ hfin hpt0, key, comb_smul, LiftsAtLevel.comb_pureTensorO hstd hX.inf _ _ _ _ hth0 hfin, hPP]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hs1 τ, hs2 τ]`.
+
+Use `show _ = ((inB R.θ _ (g.x j).B k₁ τ).reindex _ _).det ^ _ * ((inB R.θ _ (g.x (j + 1)).B k₂ τ).reindex _ _).det ^ _`. Rewrite using `[Matrix.det_reindex_self, Matrix.det_reindex_self]`.
+-/
 theorem GlobalTheory.KJRealLive.clsKL_real : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {F : FamIn (I.rec7 l Z).what₂.LL G Pl0 T (I.rec7 l Z).R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (I.rec7 l Z).what₂.LL] (R : RealDat (I.rec7 l Z) F Ks) (g : GlobalTheory.Fam.Geo (I.rec7 l Z)) (c₀ s : ℕ → ℂ) J, PinX I l Z R.ψ R.θ g.x g.vac c₀ → JetS I l Z R.ψ R.θ s → (∀ j, j ≤ B.R.m → (g.x j).Is) → ∀ (P : LevelP R.Pg (I.rec7 l Z).R.r ℂ) (t : T) (r : RowCh R P u g t) (a : I.ι) (k : ColCh (D := (I.rec7 l Z)) u ((I.rec7 l Z).chTw u a)) (tl : ColT I l u a B.R.m → CXP R P t → ℂ) (Ch₀ : ℕ → Type) (A : TwDat I l Z u a Ch₀) (ι : ∀ j, k.Ch j → Ch₀ j) w, PinChL R g k c₀ A ι w → (clsKL R g P r k tl s J A ι).Real := by
   intro B X I hOk hPins l Z u G _ _ Pl0 T F Ks _ _ _ R g c₀ s J hX hS hx P t r a k tl Ch₀ A ι w hP
   intro j hj α γ k₁ hk₁ k₂ hk₂ P₁ P₂ hP₁₂

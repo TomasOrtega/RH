@@ -25,6 +25,9 @@ def DensB : Prop :=
       MvPolynomial.eval (repPt Y) F = 0) →
     ∀ y, InV y → MvPolynomial.eval y F = 0
 
+/- English proof (translation)
+Introduce `L _ _ _ n F h` and use `hb L n F (ha L n F h)`.
+-/
 theorem densStep_of (ha : DensA) (hb : DensB) : DensStep :=
   fun L _ _ _ n F h => hb L n F (ha L n F h)
 

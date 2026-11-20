@@ -14,6 +14,13 @@ namespace GlobalTheory.TorsorFieldPoint
 open IsLocalRing Polynomial in
 open scoped TensorProduct in
 
+/- English proof (translation)
+Take `⟨-, -, hff, hbij⟩` from `h`. Use `haveI : NeZero q := ⟨hq.ne'⟩`. Set `g : D →ₐ[B] (Multiplicative (ZMod q) → D)` to `Pi.algHom B (fun _ ↦ D) fun σ ↦ (act σ : D →ₐ[B] D)`. Set `F : D ⊗[B] D →ₐ[D] (Multiplicative (ZMod q) → D)` to `Algebra.TensorProduct.productLeftAlgHom (Algebra.ofId D _) g`. Establish `hF : (F : D ⊗[B] D → _) = Algebra.TensorProduct.productMap (Pi.algHom B (fun _ ↦ D) fun _ ↦ AlgHom.id B D) g`.
+
+Use extensionality with `x : 1`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => simp_all`.
+
+Establish `hFb : Function.Bijective F` using `by rw [hF]; exact hbij`. Use `haveI : Algebra.FormallyUnramified D (Multiplicative (ZMod q) → D) := (Algebra.FormallyUnramified.pi_iff _).2 fun _ ↦ inferInstance`. Use `haveI : Algebra.FormallyUnramified D (D ⊗[B] D) := Algebra.FormallyUnramified.of_equiv (AlgEquiv.ofBijective F hFb).symm`. Conclude with `Algebra.FormallyUnramified.of_formallyUnramified_tensorProduct_of_faithfullyFlat D`.
+-/
 theorem _root_.GlobalTheory.TorsorFieldPoint.formallyUnramified_of_isZTorsor (B D : Type) [CommRing B] [CommRing D]
     [Algebra B D] (q : ℕ) (hq : 0 < q) (act : Multiplicative (ZMod q) →* (D ≃ₐ[B] D))
     (h : _root_.GlobalTheory.KeyOriginCut.IsZTorsor B D q act) : Algebra.FormallyUnramified B D := by
@@ -40,6 +47,13 @@ theorem _root_.GlobalTheory.TorsorFieldPoint.formallyUnramified_of_isZTorsor (B 
 open IsLocalRing Polynomial in
 open scoped TensorProduct in
 
+/- English proof (translation)
+Introduce `B K _ _ f D _ _ q hq act h`. Use `haveI := _root_.GlobalTheory.TorsorFieldPoint.formallyUnramified_of_isZTorsor B D q hq act h`. Take `⟨hfin, -, hff, -⟩` from `h`. Use `letI : Algebra B K := f.toAlgebra`. Use `haveI : Nontrivial (K ⊗[B] D) := Module.FaithfullyFlat.rTensor_nontrivial B D K`.
+
+Take `⟨m, hm⟩` from `Ideal.exists_maximal (K ⊗[B] D)`. Use `letI : Field (K ⊗[B] D ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite K (K ⊗[B] D ⧸ m) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ K m).toLinearMap Ideal.Quotient.mk_surjective`. Use `haveI : Algebra.FormallyUnramified K (K ⊗[B] D ⧸ m) := Algebra.FormallyUnramified.of_surjective (Ideal.Quotient.mkₐ K m) Ideal.Quotient.mk_surjective`. Use `⟨K ⊗[B] D ⧸ m, inferInstance, inferInstance, inferInstance, Algebra.FormallyUnramified.isSeparable K _, (Ideal.Quotient.mk m).comp Algebra.TensorProduct.includeRight.toRingHom, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `b`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Ideal.Quotient.algebraMap_eq]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.TorsorFieldPoint.exists_point_finite_separable : ∀ (B K : Type) [CommRing B] [Field K]
     (f : B →+* K) (D : Type) [CommRing D] [Algebra B D]
     (q : ℕ), 0 < q → ∀ (act : Multiplicative (ZMod q) →* (D ≃ₐ[B] D)),

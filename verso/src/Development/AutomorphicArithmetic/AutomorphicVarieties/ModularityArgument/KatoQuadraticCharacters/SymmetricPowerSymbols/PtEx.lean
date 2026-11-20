@@ -7,6 +7,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X m hm u v hu hv`. Establish `LG` using `lgB Ω ε X m hm`. Establish `KU` using `PE.kaU Ω ε X m hm`. Establish `hu0 : u ≠ 0` using `hu.1`. Take `⟨a, ha⟩` from `IsAlgClosed.exists_pow_nat_eq (io X u) hm`.
+
+Take `⟨b, hb⟩` from `IsAlgClosed.exists_pow_nat_eq (io X v) hm`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[zero_pow hm.ne']`. Conclude with `hu0 ((map_eq_zero_iff _ (io X).injective).mp ha.symm)`.
+
+Take `⟨η, hη, hlc, hunr⟩` from `PE.etaEx Ω ε X m hm u v a b hu hv ha hb`. Establish `hinU : ∀ g, InD X g → PE.InU X u v g` using `fun g hg => ⟨fun c => hg _, hg _, hg _, hg _⟩`. Use `⟨⟨a, b, η⟩, ⟨hu, hv, ha, hb, fun g h hg hh => hη g h (hinU g hg) (hinU h hh), hlc, hunr⟩, ?_⟩` and prove the remaining obligations. Introduce `γ hu' hv'`. Take `⟨σ, hσ⟩` from `(admB Ω ε X).2.2.2.2.2.2.1 (slR X (ofSL γ))`.
+
+Establish `hfix : ∀ f, X.sl (ofSL γ) f = f → σ (io X f) = io X f` using `fun f hf => by`. Rewrite using `[hσ f]`. Conclude with `congrArg _ hf`. Establish `hσU : PE.InU X u v σ` using `⟨fun c => hfix _ ((X.sl (ofSL γ)).commutes c), hfix _ (X.j_inv γ), hfix _ hu', hfix _ hv'⟩`. Establish `hinv : ∀ x, σ x = x → σ⁻¹ x = x` using `fun x hx => by conv_lhs => rw [← hx]`.
+
+Conclude with `σ.symm_apply_apply x`. Establish `hσiU : PE.InU X u v σ⁻¹` using `⟨fun c => hinv _ (hσU.1 c), hinv _ hσU.2.1, hinv _ hσU.2.2.1, hinv _ hσU.2.2.2⟩`. Establish `hz : ∀ g, PE.InU X u v g → g (zt X m) = zt X m` using `fun g hg => by`. Unfold `zt`. Conclude with `hg.1 _`.
+
+Establish `hka1 : ka X m a 1 = 0` using `by show lg X m a a = 0`. Conclude with `LG.2.2.1 a a 0 ha0 (by simp)`. Establish `hk1 : ∀ g : RingAut (Kb X), ka X m 1 g = 0` using `fun g => by show lg X m (g 1) 1 = 0`. Rewrite using `[map_one]`. Conclude with `LG.2.2.1 1 1 0 one_ne_zero (by simp)`.
+
+Establish `hcyc : cyc (Ω` using `Ω) m 1 = 1 := (LG.2.2.2.2.2.2 1 1).2.1`. Establish `hη1 : η 1 = 0`. Use `hη 1 1 (hinU 1 (fun _ => rfl)) (hinU 1 (fun _ => rfl))` as an intermediate fact. Rewrite `this` using `[mul_one, hka1]`. Take the linear combination `-this`.
+
+Unfold `Mv`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Simplify using `only [IsKum, dif, Pt.mv]`. Use `⟨1, by simp, fun h hh => ?_⟩` and prove the remaining obligations. Establish `hhU` using `hinU h hh`.
+
+Establish `E1` using `hη σ⁻¹ (h * σ) hσiU ⟨fun c => by show h (σ _) = _; rw [hσU.1 c, hhU.1 c], by show h (σ _) = _; rw [hσU.2.1, hhU.2.1], by show h (σ _) = _; rw [hσU.2.2.1, hhU.2.2.1], by show h (σ _) = _; rw [hσU.2.2.2, hhU.2.2.2]⟩`. Establish `E2` using `hη h σ hhU hσU`. Establish `E3` using `hη σ⁻¹ σ hσiU hσU`. Rewrite `E3` using `[inv_mul_cancel, hη1]`. Establish `K1` using `(KU b (by rintro rfl; rw [zero_pow hm.ne'] at hb; exact hv.1 ((map_eq_zero_iff _ (io X).injective).mp hb.symm)) h σ (hz h hhU) (hz σ hσU) (by rw [hb]; exact hhU.2.2.2) (by rw [hb]; exact hσU.2.2.2)).1`.
+
+Establish `K2` using `(KU a ha0 σ⁻¹ σ (hz _ hσiU) (hz σ hσU) (by rw [ha]; exact hσiU.2.2.1) (by rw [ha]; exact hσU.2.2.1)).1`. Rewrite `K2` using `[inv_mul_cancel, hka1]`. Rewrite using `[hk1, hcyc, mul_assoc]`. Use `show 0 = 1 ^ 2 * η (σ⁻¹ * (h * σ)) - η h + ka X m a h * ka X m b σ - ka X m a σ * ka X m b h`. Take the linear combination `(-1 : ZMod m) * E1 - E2 + E3 + ka X m a σ⁻¹ * K1 - ka X m b h * K2`.
+-/
 theorem UpperTheory.V.Z.Kato.Sym.ptEx :
     UpperTheory.V.Z.Kato.Sym.PtEx := by
   intro Ω _ _ _ ε X m hm u v hu hv

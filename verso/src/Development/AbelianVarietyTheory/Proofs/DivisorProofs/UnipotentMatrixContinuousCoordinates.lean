@@ -10,27 +10,45 @@ namespace GlobalTheory.ThK.UnipMat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Introduce `k`. Use `Fin.cases h0 (fun k => ?_) k` and prove the remaining obligations. Conclude with `Fin.lastCases hl hj k`.
+-/
 theorem cases3 {d₁ : ℕ} {motive : Fin (d₁ + 2) → Prop} (h0 : motive 0) (hj : ∀ j : Fin d₁, motive j.castSucc.succ)
     (hl : motive (Fin.last d₁).succ) : ∀ k, motive k := by
   intro k
   refine Fin.cases h0 (fun k => ?_) k
   exact Fin.lastCases hl hj k
 
+/- English proof (translation)
+Simplify using `[cA, inclR, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Simplify using `[fA, form, incV, incM, dotProduct, Matrix.mulVec, map_sum, map_mul, cA_inclR]`.
+-/
 theorem fA_incV (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
     fA σ J (incV F v) (incV F w) = inclR (F := F) (AF F) (form σ J v w) := by
   simp [fA, form, incV, incM, dotProduct, Matrix.mulVec, map_sum, map_mul, cA_inclR]
 
+/- English proof (translation)
+Simplify using `[fA, add_dotProduct]`.
+-/
 theorem fA_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v v' w : Fin n → AE F E) :
     fA σ J (v + v') w = fA σ J v w + fA σ J v' w := by
   simp [fA, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[fA, smul_dotProduct]`.
+-/
 theorem fA_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a : AE F E) (v w : Fin n → AE F E) :
     fA σ J (a • v) w = a * fA σ J v w := by
   simp [fA, smul_dotProduct]
 
+/- English proof (translation)
+Simplify using `only [fA]`. Rewrite using `[show (fun i => cA σ ((w - a • z) i)) = (fun i => cA σ (w i)) - cA σ a • fun i => cA σ (z i) by`. Use extensionality with `i`. Simplify using `[map_sub, map_mul]]`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_smul, dotProduct_sub, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem fA_sub_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a : AE F E) (v w z : Fin n → AE F E) :
     fA σ J v (w - a • z) = fA σ J v w - cA σ a * fA σ J v z := by
   simp only [fA]
@@ -38,6 +56,11 @@ theorem fA_sub_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fi
     ext i; simp [map_sub, map_mul]]
   rw [Matrix.mulVec_sub, Matrix.mulVec_smul, dotProduct_sub, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J` using `g.2`. Establish `hc : (fun i => cA σ ((mat g *ᵥ w) i)) = (mat g).map (cA σ) *ᵥ fun i => cA σ (w i)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (cA σ).toRingHom (mat g) w i`. Unfold `fA`.
+
+Rewrite using `[hc, dotProduct_comm, Matrix.dotProduct_mulVec, dotProduct_comm, ← Matrix.mulVec_transpose, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+-/
 theorem fA_mat (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) (v w : Fin n → AE F E) :
     fA σ J (mat g *ᵥ v) (mat g *ᵥ w) = fA σ J v w := by
   have hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J := g.2
@@ -47,10 +70,19 @@ theorem fA_mat (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g 
   rw [hc, dotProduct_comm, Matrix.dotProduct_mulVec, dotProduct_comm, ← Matrix.mulVec_transpose,
     Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (u v : UA σ J) : mat (u * v) = mat u * mat v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← mat_mul, inv_mul_cancel, mat_one]`.
+-/
 theorem mat_inv_mul {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (u : UA σ J) : mat u⁻¹ * mat u = 1 := by
   rw [← mat_mul, inv_mul_cancel, mat_one]
 
@@ -81,6 +113,9 @@ def unipS {d d₁ : ℕ} (J : Matrix (Fin d) (Fin d) E) (H' : Plane E d d₁) : 
       exact key _
     rw [h2, neg_smul, sub_eq_add_neg]
 
+/- English proof (translation)
+The claim follows from `Subgroup.closure_le _ |>.mpr fun _ hu => hu`.
+-/
 theorem unip_le {d d₁ : ℕ} (W : Spc F E d) (H' : Plane E d d₁) : unip σ W H' ≤ unipS σ W.J H' :=
   Subgroup.closure_le _ |>.mpr fun _ hu => hu
 
@@ -93,11 +128,20 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def colE {d₁ : ℕ} (H' : Plane E (d₁ + 2) d₁) : Fin (d₁ + 2) → Fin (d₁ + 2) → E :=
   Matrix.vecCons H'.x (Fin.snoc (α := fun _ => Fin (d₁ + 2) → E) (fun j => H'.ι.col j) H'.y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colE_zero {d₁ : ℕ} (H' : Plane E (d₁ + 2) d₁) : colE H' 0 = H'.x := rfl
 
+/- English proof (translation)
+Simplify using `only [colE, Matrix.cons_val_succ, Fin.snoc_castSucc]`.
+-/
 theorem colE_mid {d₁ : ℕ} (H' : Plane E (d₁ + 2) d₁) (j : Fin d₁) : colE H' j.castSucc.succ = H'.ι.col j := by
   simp only [colE, Matrix.cons_val_succ, Fin.snoc_castSucc]
 
+/- English proof (translation)
+Simplify using `only [colE, Matrix.cons_val_succ, Fin.snoc_last]`.
+-/
 theorem colE_last {d₁ : ℕ} (H' : Plane E (d₁ + 2) d₁) : colE H' (Fin.last d₁).succ = H'.y := by
   simp only [colE, Matrix.cons_val_succ, Fin.snoc_last]
 
@@ -106,6 +150,13 @@ def basM {d₁ : ℕ} (H' : Plane E (d₁ + 2) d₁) : Matrix (Fin (d₁ + 2)) (
 def gramM (σ : E →ₐ[F] E) {d₁ : ℕ} (J : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E) (H' : Plane E (d₁ + 2) d₁) :
     Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E := J * (basM H').map σ
 
+/- English proof (translation)
+Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin d` to `finSumFinEquiv.trans (finCongr hrs)`. Set `A' : Matrix (Fin d) (Fin d) ℂ` to `A.submatrix id e.symm`. Establish `h1 : A'ᵀ * M * A'.map star = (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ).submatrix e.symm e.symm`. Rewrite using `[← hA]`.
+
+Use extensionality with `i j`. Simplify using `[A', Matrix.mul_apply]`. Establish `h2 : (A'ᵀ * M * A'.map star).det ≠ 0`. Rewrite using `[h1, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `[Matrix.det_neg]`.
+
+Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `right_ne_zero_of_mul (left_ne_zero_of_mul h2)`.
+-/
 theorem det_ne_of_sig {d r s : ℕ} (M : Matrix (Fin d) (Fin d) ℂ) (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
   let e : Fin r ⊕ Fin s ≃ Fin d := finSumFinEquiv.trans (finCongr hrs)
@@ -120,6 +171,11 @@ theorem det_ne_of_sig {d r s : ℕ} (M : Matrix (Fin d) (Fin d) ℂ) (h : HasSig
 
 variable (σ : E →ₐ[F] E)
 
+/- English proof (translation)
+Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Establish `h` using `det_ne_of_sig _ (hW.sig w)`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem det_J_ne {B : Base F E} {d r s : ℕ} {W : Spc F E d} (hW : W.IsSkew σ B r s) : W.J.det ≠ 0 := by
   obtain ⟨w⟩ := (inferInstance : Nonempty (InfinitePlace F))
   have h := det_ne_of_sig _ (hW.sig w)
@@ -128,6 +184,17 @@ theorem det_J_ne {B : Base F E} {d r s : ℕ} {W : Spc F E d} (hW : W.IsSkew σ 
   rw [Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0]
   simp
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_surjective_iff_isUnit]`. Introduce `z`. Establish `hz : z ∈ LinearMap.range (basM H').mulVecLin`. Rewrite using `[Matrix.range_mulVecLin]`. Establish `htop` using `hW.lat.span_eq_top`.
+
+Establish `hle : Submodule.span E (W.L : Set (Fin (d₁ + 2) → E)) ≤ Submodule.span E (Set.range (basM H').col)`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Take `⟨s', t, u, -, -, -, rfl⟩` from `hA.split y hy`. Establish `hx : H'.x ∈ Submodule.span E (Set.range (basM H').col)` using `Submodule.subset_span ⟨0, rfl⟩`.
+
+Establish `hy' : H'.y ∈ Submodule.span E (Set.range (basM H').col)` using `Submodule.subset_span ⟨(Fin.last d₁).succ, colE_last H'⟩`. Establish `hι : H'.ι *ᵥ u ∈ Submodule.span E (Set.range (basM H').col)`. Establish `hm : H'.ι *ᵥ u ∈ LinearMap.range H'.ι.mulVecLin` using `⟨u, rfl⟩`. Rewrite `hm` using `[Matrix.range_mulVecLin]`. Use `Submodule.span_le.mpr ?_ hm` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `Submodule.subset_span ⟨j.castSucc.succ, colE_mid H' j⟩`. Conclude with `add_mem (add_mem (Submodule.smul_mem _ _ hx) hι) (Submodule.smul_mem _ _ hy')`. Rewrite `hle` using `[htop, top_le_iff]`. Rewrite using `[hle]`.
+
+Discharge the goal by the elementary cases of `trivial`. Take `⟨v, hv⟩` from `hz`. Conclude with `⟨v, hv⟩`.
+-/
 theorem basM_isUnit {B : Base F E} {d₁ r s i₀ i₁ : ℕ} {W : Spc F E (d₁ + 2)} {W₁ : Spc F E d₁} {H' : Plane E (d₁ + 2) d₁}
     (hW : W.IsSkew σ B r s) (hA : H'.IsAdapted σ B W W₁ i₀ i₁) : IsUnit (basM H') := by
   rw [← Matrix.mulVec_surjective_iff_isUnit]
@@ -154,6 +221,11 @@ theorem basM_isUnit {B : Base F E} {d₁ r s i₀ i₁ : ℕ} {W : Spc F E (d₁
   obtain ⟨v, hv⟩ := hz
   exact ⟨v, hv⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.isUnit_iff_isUnit_det, gramM, Matrix.det_mul, isUnit_iff_ne_zero]`. Use `mul_ne_zero (det_J_ne σ hW) ?_` and prove the remaining obligations. Establish `hP : (basM H').det ≠ 0` using `isUnit_iff_ne_zero.mp ((Matrix.isUnit_iff_isUnit_det _).mp (basM_isUnit σ hW hA))`. Use `AlgHom.map_det σ (basM H')` as an intermediate fact. Rewrite `this` using `[AlgHom.mapMatrix_apply]`.
+
+Rewrite using `[← this]`. Conclude with `(map_ne_zero σ).mpr hP`.
+-/
 theorem gramM_isUnit {B : Base F E} {d₁ r s i₀ i₁ : ℕ} {W : Spc F E (d₁ + 2)} {W₁ : Spc F E d₁} {H' : Plane E (d₁ + 2) d₁}
     (hW : W.IsSkew σ B r s) (hA : H'.IsAdapted σ B W W₁ i₀ i₁) : IsUnit (gramM σ W.J H') := by
   rw [Matrix.isUnit_iff_isUnit_det, gramM, Matrix.det_mul, isUnit_iff_ne_zero]
@@ -164,6 +236,9 @@ theorem gramM_isUnit {B : Base F E} {d₁ r s i₀ i₁ : ℕ} {W : Spc F E (d�
   rw [← this]
   exact (map_ne_zero σ).mpr hP
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[Matrix.vecMul, dotProduct, fA, Matrix.mulVec, incM, incV, gramM, basM, Matrix.mul_apply, map_sum, map_mul, cA_inclR, Finset.mul_sum]`.
+-/
 theorem vecMul_gramM {d₁ : ℕ} (J : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E) (H' : Plane E (d₁ + 2) d₁)
     (v : Fin (d₁ + 2) → AE F E) : v ᵥ* incM F (gramM σ J H') = fun k => fA σ J v (incV F (colE H' k)) := by
   funext k
@@ -184,6 +259,17 @@ def Psi {d₁ : ℕ} (J : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E) (H' : Plan
     (p : (Fin d₁ → AE F E) × AE F E) : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) (AE F E) :=
   Matrix.of (fun i k => qc σ J H' p.1 p.2 k i) * incM F (basM H')⁻¹
 
+/- English proof (translation)
+Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Establish `hcA : Continuous (cA σ)`. Use `IsModuleTopology.continuous_of_linearMap (R := AF F) (A := AE F E) (B := AE F E) (cA σ).toLinearMap` as an intermediate fact. Simplify using `using this`. Establish `hrv : Continuous fun p : (Fin d₁ → AE F E) × AE F E => rv σ J H' p.1 p.2`.
+
+Use `continuous_pi (cases3 ?_ (fun j => ?_) ?_)` and prove the remaining obligations. Simplify using `only [rv, Matrix.cons_val_zero]`. Conclude with `continuous_const`. Simplify using `only [rv, Matrix.cons_val_succ, Fin.snoc_castSucc]`. Conclude with `continuous_const.sub ((hcA.comp ((continuous_apply j).comp continuous_fst)).mul continuous_const)`.
+
+Simplify using `only [rv, Matrix.cons_val_succ, Fin.snoc_last]`. Conclude with `continuous_snd`. Establish `hq : Continuous fun p : (Fin d₁ → AE F E) × AE F E => Matrix.of (fun i k => qc σ J H' p.1 p.2 k i)`. Use `continuous_matrix fun i => cases3 ?_ (fun j => ?_) ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, qc, Matrix.cons_val_zero]`.
+
+Conclude with `continuous_const`. Simplify using `only [Matrix.of_apply, qc, Matrix.cons_val_succ, Fin.snoc_castSucc, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `continuous_const.add (((continuous_apply j).comp (continuous_fst : Continuous fun p : (Fin d₁ → AE F E) × AE F E => p.1)).mul continuous_const)`. Simplify using `only [Matrix.of_apply, qc, Matrix.cons_val_succ, Fin.snoc_last]`. Conclude with `(continuous_apply i).comp (hrv.matrix_vecMul continuous_const)`.
+
+Conclude with `hq.matrix_mul continuous_const`.
+-/
 theorem Psi_cont {d₁ : ℕ} (J : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E) (H' : Plane E (d₁ + 2) d₁) :
     Continuous (Psi σ J H') := by
   haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)
@@ -212,6 +298,31 @@ namespace GlobalTheory.ThK.UnipMat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hu`. Establish `hι : ∀ j, incM F H'.ι *ᵥ Pi.single j 1 = incV F (H'.ι.col j)` using `fun j => by`. Rewrite using `[Matrix.mulVec_single_one]`. Use extensionality with `i`. Simplify using `[incM, incV]`.
+
+Use `choose a ha using fun j => h2 (Pi.single j 1)`. Simplify using `only [hι] at ha`. Establish `hXY : fA σ W.J (incV F H'.x) (incV F H'.y) = 1` using `by rw [fA_incV, hA.xy, map_one]`. Establish `hιY : ∀ j, fA σ W.J (incV F (H'.ι.col j)) (incV F H'.y) = 0` using `fun j => by`. Rewrite using `[fA_incV, ← Matrix.mulVec_single_one, (hA.orth _).2, map_zero]`.
+
+Establish `hcoA : coA σ W.J H' u = a`. Use function extensionality and compare the values at `j`. Simplify using `only [coA]`. Rewrite using `[hι, ha, fA_add_left, fA_smul_left, hιY, hXY]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hP` using `(Matrix.isUnit_iff_isUnit_det _).mp (basM_isUnit σ hW hA)`. Establish `hN` using `(Matrix.isUnit_iff_isUnit_det _).mp (gramM_isUnit σ hW hA)`. Establish `hPA : incM F (basM H') * incM F (basM H')⁻¹ = 1`. Rewrite using `[incM, incM, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hP]`. Simplify using the standard rewrite rules.
+
+Establish `hNA : incM F (gramM σ W.J H') * incM F (gramM σ W.J H')⁻¹ = 1`. Rewrite using `[incM, incM, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hN]`. Simplify using the standard rewrite rules. Establish `hcol : ∀ k, mat u *ᵥ incV F (colE H' k) = qc σ W.J H' a (coC σ W.J H' u) k`. Use `cases3 ?_ (fun j => ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[colE_zero]`. Simplify using `only [qc, Matrix.cons_val_zero]`. Conclude with `h1`. Rewrite using `[colE_mid]`. Simplify using `only [qc, Matrix.cons_val_succ, Fin.snoc_castSucc]`.
+
+Conclude with `ha j`. Rewrite using `[colE_last]`. Simplify using `only [qc, Matrix.cons_val_succ, Fin.snoc_last]`. Establish `hr : (mat u *ᵥ incV F H'.y) ᵥ* incM F (gramM σ W.J H') = rv σ W.J H' a (coC σ W.J H' u)`. Rewrite using `[vecMul_gramM]`.
+
+Use `funext (cases3 ?_ (fun j => ?_) ?_)` and prove the remaining obligations. Simplify using `only [colE_zero, rv, Matrix.cons_val_zero]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [colE_mid, rv, Matrix.cons_val_succ, Fin.snoc_castSucc]`. Establish `he : incV F (H'.ι.col j) = mat u *ᵥ (incV F (H'.ι.col j) - a j • incV F H'.x)`.
+
+Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_smul, ha j, h1]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← he]`. Use `_ = fA σ W.J (incV F H'.y) (incV F (H'.ι.col j) - a j • incV F H'.x) := fA_mat σ u _ _`.
+
+Use `_ = _ := fA_sub_smul_right σ W.J _ _ _ _`. Simplify using `only [colE_last, rv, Matrix.cons_val_succ, Fin.snoc_last]`. Both sides reduce to the same expression. Rewrite using `[← hr, Matrix.vecMul_vecMul, hNA, Matrix.vecMul_one]`. Establish `hmul : mat u * incM F (basM H') = Matrix.of (fun i k => qc σ W.J H' a (coC σ W.J H' u) k i)`.
+
+Use extensionality with `i k`. Rewrite using `[Matrix.of_apply, ← hcol k]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, incM, incV, basM]`. Rewrite using `[hcoA]`. Simplify using `only [Psi]`.
+
+Rewrite using `[← hmul, Matrix.mul_assoc, hPA, Matrix.mul_one]`.
+-/
 theorem mat_eq_Psi {B : Base F E} {d₁ r s i₀ i₁ : ℕ} {W : Spc F E (d₁ + 2)} {W₁ : Spc F E d₁}
     {H' : Plane E (d₁ + 2) d₁} (hW : W.IsSkew σ B r s) (hA : H'.IsAdapted σ B W W₁ i₀ i₁) (u : UA σ W.J)
     (hu : u ∈ unipS σ W.J H') : mat u = Psi σ W.J H' (coA σ W.J H' u, coC σ W.J H' u) := by
@@ -267,6 +378,9 @@ end GlobalTheory.ThK.UnipMat
 
 namespace GlobalTheory.ThK.UnipDom
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' r s i₀ i₁ _ hW hA`. Take `rfl` from `hA.rank`. Conclude with `⟨UnipMat.Psi σ W.J H', UnipMat.Psi_cont σ W.J H', fun u hu => UnipMat.mat_eq_Psi σ hW hA u (UnipMat.unip_le σ W H' hu)⟩`.
+-/
 theorem matEq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (r s i₀ i₁ : ℕ), IsCMExt F E σ →
     W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ → ∃ Ψ : (Fin d₁ → AE F E) × AE F E → Matrix (Fin d) (Fin d) (AE F E),

@@ -6,6 +6,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Clas
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.UnitaryBC UpperTheory.V
 open UpperTheory.V.W (Plc Lp resP)
 
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ _ h w`. Take `⟨A, hA⟩` from `exists_valuationSubring_over (Ω := Ω) w`. Set `v : Plc (Lp L)` to `⟨w.asIdeal.comap (algebraMap (𝓞 (Lp L)) (𝓞 L)), inferInstance, by`. Conclude with `Ideal.IsMaximal.ne_bot_of_isIntegral_int (Ideal.comap (algebraMap (𝓞 (Lp L)) (𝓞 L)) w.asIdeal)⟩`. Establish `hv : IsPlaceOver A v`.
+
+Introduce `x`. Establish `h1` using `hA (algebraMap (𝓞 (Lp L)) (𝓞 L) x)`. Use `show _ ↔ algebraMap (𝓞 (Lp L)) (𝓞 L) x ∈ w.asIdeal`. Rewrite using `[← h1, IsScalarTower.algebraMap_apply (Lp L) L Ω]`. Both sides reduce to the same expression.
+
+Establish `hle` using `h A v hv`. Establish `hbot : Ideal.inertia Gal(L/(Lp L)) w.asIdeal = ⊥`. Rewrite using `[← UpperTheory.V.CF.ineAbs (Lp L) L Ω A w hA, eq_bot_iff]`. Introduce and unpack `_ ⟨σ, hσ, rfl⟩`. Take `⟨τ, rfl⟩` from `hle hσ`.
+
+Rewrite using `[Subgroup.mem_bot]`. Use extensionality with `x`. Apply `(algebraMap L Ω).injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.one_apply]`. Use `show algebraMap L Ω ((AlgEquiv.restrictScalars (Lp L) τ).restrictNormal L x) = _`.
+
+Rewrite using `[AlgEquiv.restrictNormal_commutes]`. Conclude with `τ.commutes x`. Use `Ideal.ramificationIdx_eq_one_iff.mp ?_` and prove the remaining obligations. Rewrite using `[← (UpperTheory.V.CF.ineCard).1 (Lp L) L w, hbot]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.isUnramifiedAt_totallyReal_of_inertia_le_restriction_range :
     ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω], (∀ (A : ValuationSubring Ω) (v : Plc (Lp L)), IsPlaceOver A v → Ine (F := Lp L) A ≤ (resP L Ω).range) → ∀ w : Plc L, Algebra.IsUnramifiedAt (𝓞 (Lp L)) w.asIdeal := by
   intro L Ω _ _ _ _ _ _ h w

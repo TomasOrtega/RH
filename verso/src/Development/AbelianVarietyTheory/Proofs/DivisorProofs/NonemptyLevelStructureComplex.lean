@@ -17,6 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RealMult.Obj
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.PolIsoDescent.flat_surjective t`. Establish `: Epi t` using `Flat.epi_of_flat_of_surjective _`. Establish `e : (toUnit (Over.mk t)).left = t`. Use `Over.w (toUnit (Over.mk t))` as an intermediate fact. Simplify using `using this`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `(cancel_epi t).1` to reduce the goal to its premises. Use `congrArg CommaMorphism.left h` as an intermediate fact. Simplify `this` using `[e]`.
+-/
 theorem toUnit_comp_injective {Ω : Type} [Field Ω] (t : Sp Ω ⟶ Sp ℂ) {A : Over (Sp ℂ)}
     {z z' : 𝟙_ (Over (Sp ℂ)) ⟶ A} (h : toUnit (Over.mk t) ≫ z = toUnit (Over.mk t) ≫ z') : z = z' := by
   obtain ⟨_, _⟩ := GlobalTheory.PolIsoDescent.flat_surjective t
@@ -29,6 +34,9 @@ theorem toUnit_comp_injective {Ω : Type} [Field Ω] (t : Sp Ω ⟶ Sp ℂ) {A :
   have := congrArg CommaMorphism.left h
   simpa [e] using this
 
+/- English proof (translation)
+Take `⟨L, u, Fa, h⟩` from `GlobalTheory.T.exists_real_multiplication_uniformization F 𝔠 X`. Conclude with `GlobalTheory.T.exists_torsion_basis_real_multiplication F X.A X.rm L u Fa h N hN`.
+-/
 theorem exists_torsion_basis (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (N : ℕ)
     (hN : 1 ≤ N) :
     ∃ pt : Fin 2 → (𝟙_ (Over (Sp ℂ)) ⟶ X.A), (∀ i, pt i ^ N = 1) ∧
@@ -37,6 +45,13 @@ theorem exists_torsion_basis (F : Type) [Field F] [NumberField F] (𝔠 : FracId
   obtain ⟨L, u, Fa, h⟩ := GlobalTheory.T.exists_real_multiplication_uniformization F 𝔠 X
   exact GlobalTheory.T.exists_torsion_basis_real_multiplication F X.A X.rm L u Fa h N hN
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔠 N hN X`. Take `⟨pt, htor, hinj, hsurj⟩` from `exists_torsion_basis F 𝔠 X N hN`. Use `⟨{ pt := pt, tors := htor, inj := ?_, surj := ?_ }⟩` and prove the remaining obligations. Introduce `Ω _ _ t a b h`. Apply `hinj a b` to reduce the goal to its premises.
+
+Apply `toUnit_comp_injective t` to reduce the goal to its premises. Rewrite using `[MonObj.comp_mul, MonObj.comp_one, ← Category.assoc, ← Category.assoc]`. Conclude with `h`. Introduce `Ω _ _ t y hy`. Take `⟨z, rfl⟩` from `GlobalTheory.T.torsion_point_defined_over_base F 𝔠 X N hN Ω t y hy`.
+
+Establish `hz : z ^ N = 1`. Apply `toUnit_comp_injective t` to reduce the goal to its premises. Rewrite using `[MonObj.comp_pow, hy, MonObj.comp_one]`. Take `⟨a, b, rfl⟩` from `hsurj z hz`. Conclude with `⟨a, b, by rw [MonObj.comp_mul]⟩`.
+-/
 theorem nonempty_level_complex : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ),
     1 ≤ N → ∀ X : Obj F 𝔠 (Sp ℂ), Nonempty (X.Level N) := by
   intro F _ _ _ 𝔠 N hN X

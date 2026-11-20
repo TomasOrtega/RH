@@ -12,6 +12,19 @@ namespace GlobalTheory.CoordsOfMemAdjoin
 
 open IntermediateField
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℚ s`. Apply `IsIntegral.of_pow (n := 2) (by norm_num)` to reduce the goal to its premises. Rewrite using `[hs]`. Conclude with `isIntegral_algebraMap`. Establish `hx' : x ∈ Algebra.adjoin ℚ ({s} : Set F)`.
+
+Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic]`. Conclude with `hx`. Use `clear hx`. Proceed by induction on `hx' using Algebra.adjoin_induction with`. Consider the case `mem y hy`.
+
+Use `⟨0, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff.mp hy]`. Simplify using the standard rewrite rules. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨a, b, rfl⟩` from `hy`. Take `⟨a', b', rfl⟩` from `hz`. Use `⟨a + a', b + b', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `mul y z _ _ hy hz`. Take `⟨a, b, rfl⟩` from `hy`. Take `⟨a', b', rfl⟩` from `hz`. Use `⟨a * a' + b * b' * c, a * b' + b * a', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, ← hs]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_coords_of_mem_adjoin {F : Type*} [Field F] [Algebra ℚ F] {s : F} {c : ℚ}
     (hs : s ^ 2 = algebraMap ℚ F c) {x : F} (hx : x ∈ ℚ⟮s⟯) :
     ∃ a b : ℚ, x = algebraMap ℚ F a + algebraMap ℚ F b * s := by
@@ -42,6 +55,11 @@ theorem exists_coords_of_mem_adjoin {F : Type*} [Field F] [Algebra ℚ F] {s : F
     simp only [map_add, map_mul, ← hs]
     ring
 
+/- English proof (translation)
+Establish `hb : H.sqd ^ 2 = -(H.d : H.E)` using `H.sqd_sq`. Establish `hs : H.sqrtMinusD ^ 2 = algebraMap ℚ H.E (-(H.d : ℚ))`. Rewrite using `[map_neg, map_natCast]`. Conclude with `hb`. Take `⟨a, b, h⟩` from `exists_coords_of_mem_adjoin hs hx`.
+
+Conclude with `⟨a, b, by simpa only [eq_ratCast] using h⟩`.
+-/
 theorem exists_rat_coords {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) {x : H.E} (hx : x ∈ H.K) :
     ∃ a b : ℚ, x = (a : H.E) + (b : H.E) * H.sqrtMinusD := by
   have hb : H.sqd ^ 2 = -(H.d : H.E) := H.sqd_sq

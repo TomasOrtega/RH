@@ -23,6 +23,9 @@ def projection_lemma_base_level (D : D7) : Prop :=
         (∀ τ, W'.sig τ = (if s then (P - 1, Q) else (P, Q - 1))) ∧
         D.vol W / D.vol W' = Formalism.HermitianLatticesTheory.massRatioRightSide D.host.E W.rank
 
+/- English proof (translation)
+Introduce `W P Q h1 h2 h3 s hs`. Take `⟨x, hx⟩` from `ha W P Q h1 h2 h3 s hs`. Conclude with `⟨x, hx, hE W P Q h1 h2 h3 s hs x hx⟩`.
+-/
 theorem mass_volume_of_all_x (D : D7) (ha : projection_sandwich_lattice D) (hE : projection_lemma_base_level D) : Conclusion2 D := by
   intro W P Q h1 h2 h3 s hs
   obtain ⟨x, hx⟩ := ha W P Q h1 h2 h3 s hs
@@ -88,6 +91,9 @@ def DstarM (D : D7) : ℝ := DstarP D (D.host.g 0) (D.host.g 1) (massI D D.R.r) 
 
 def BaseVolumeEqualsMass (D : D7) : Prop := volY0 D = massI D D.R.r
 
+/- English proof (translation)
+Unfold `DstarD DstarM`. Rewrite using `[h]`.
+-/
 theorem DstarD_eq_DstarM (D : D7) (h : BaseVolumeEqualsMass D) : DstarD D = DstarM D := by
   unfold DstarD DstarM; rw [h]
 
@@ -210,8 +216,14 @@ def FamilyVandermondeCountBound : Prop := FamilyMassVolumeBounds Fm → FamilySi
 
 end Fam
 
+/- English proof (translation)
+The claim follows from `Real.one_le_rpow sc.one_lt_alt.le sc.eps_pos.le`.
+-/
 theorem scale_one_le_L (sc : Scale) : 1 ≤ sc.L := Real.one_le_rpow sc.one_lt_alt.le sc.eps_pos.le
 
+/- English proof (translation)
+Establish `hL` using `scale_one_le_L sc`. Establish `h1 : 0 ≤ (D.R.m : ℝ) ^ 2 * sc.L / D.R.k` using `by positivity`. Establish `h2 : 11 * sc.L ≤ C * (sc.L + (D.R.m : ℝ) ^ 2 * sc.L / D.R.k)` using `by nlinarith`. Unfold `lowB lowS`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lowB_le_lowS (D : D7) (sc : Scale) (C : ℝ) (w : ℕ → D.what₂.Tau → ℝ) (hC : 11 ≤ C) :
     lowB D sc C w ≤ lowS D sc w := by
   have hL := scale_one_le_L sc
@@ -220,6 +232,11 @@ theorem lowB_le_lowS (D : D7) (sc : Scale) (C : ℝ) (w : ℕ → D.what₂.Tau 
   unfold lowB lowS
   linarith
 
+/- English proof (translation)
+Introduce `Δ w hB u`. Take `⟨h1, h2⟩` from `h Δ w ⟨hB, hR Δ w hB⟩ u`. Establish `hL` using `scale_one_le_L sc`. Use `⟨le_trans (lowB_le_lowS D sc C w hC) h1, le_trans h2 ?_⟩` and prove the remaining obligations. Establish `hm : (0 : ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`.
+
+Establish `: (15 + 3 * CY) * (D.R.m * sc.L) ≤ C * (D.R.m * sc.L)` using `mul_le_mul_of_nonneg_right hC' (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem part_five_bound_of_explicit (D : D7) (sc : Scale) (C0 CY C : ℝ) (h : Conclusion5Sharp D sc C0 CY)
     (hR : ∀ Δ w, DataB D sc C0 Δ w → RowsA D sc CY Δ) (hC : 11 ≤ C) (hC' : 15 + 3 * CY ≤ C) :
     Conclusion5 D sc C0 C := by
@@ -232,6 +249,21 @@ theorem part_five_bound_of_explicit (D : D7) (sc : Scale) (C0 CY C : ℝ) (h : C
     mul_le_mul_of_nonneg_right hC' (by positivity)
   nlinarith
 
+/- English proof (translation)
+Introduce `Δ w hA wpp hw0 hw hlog u`. Establish `hL` using `scale_one_le_L sc`. Establish `hA'` using `hA`. Take `⟨hB, -, -, h44, -⟩` from `hA'`. Establish `hpi : Real.pi ≤ D.host.v` using `hB.1`.
+
+Establish `hf : (0 : ℝ) < D.R.f`. Establish `h2 : 2 ≤ D.R.f` using `le_trans D.R.two_le_m D.R.m_le_f`. Conclude with `lt_of_lt_of_le two_pos h2` after adjusting the coercions. Establish `hm : (44 : ℝ) ≤ D.R.m` using `by exact_mod_cast h44`. Use `⟨le_trans ?_ (h Δ w hA u).1, ?_⟩` and prove the remaining obligations.
+
+Unfold `lowS`. Establish `key : (D.R.m : ℝ) * Real.log wpp ≤ ∑ j ∈ range D.R.m, (1 / (D.R.f : ℝ)) * ∑ ρ, Real.log (w j ρ * D.host.v / Real.pi)`. Establish `e : ∀ j ∈ range D.R.m, Real.log wpp ≤ (1 / (D.R.f : ℝ)) * ∑ ρ, Real.log (w j ρ * D.host.v / Real.pi)`. Introduce `j hj`. Establish `hj' : j < D.R.m` using `Finset.mem_range.1 hj`.
+
+Establish `e1 : ∀ ρ ∈ (Finset.univ : Finset D.what₂.Tau), Real.log wpp ≤ Real.log (w j ρ * D.host.v / Real.pi)`. Introduce `ρ _`. Apply `Real.log_le_log hw0` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ Real.pi_pos]`. Use `hw ρ j hj'` as an intermediate fact.
+
+Use polynomial arithmetic with `[Real.pi_pos]`. Establish `e2` using `Finset.card_nsmul_le_sum _ _ _ e1`. Rewrite `e2` using `[Finset.card_univ, D.what₂.card_Tau, nsmul_eq_mul]`. Rewrite using `[one_div, ← div_eq_inv_mul, le_div_iff₀ hf]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `e3` using `Finset.card_nsmul_le_sum _ _ _ e`. Rewrite `e3` using `[Finset.card_range, nsmul_eq_mul]`. Conclude with `e3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg : 0 ≤ ∑ i : Fin 2, Real.log (D.host.g i : ℝ)` using `Finset.sum_nonneg fun i _ => Real.log_nonneg (by exact_mod_cast (D.host.g_prime i).one_lt.le)`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem corollary_five_six_of_explicit (D : D7) (sc : Scale) (C0 CY : ℝ) (h : Conclusion5Sharp D sc C0 CY) : LogXuLowerBoundOfWeightFloor D sc C0 CY := by
   intro Δ w hA wpp hw0 hw hlog u
   have hL := scale_one_le_L sc
@@ -268,6 +300,13 @@ theorem corollary_five_six_of_explicit (D : D7) (sc : Scale) (C0 CY : ℝ) (h : 
       Finset.sum_nonneg fun i _ => Real.log_nonneg (by exact_mod_cast (D.host.g_prime i).one_lt.le)
     nlinarith
 
+/- English proof (translation)
+Introduce `Δ w hB`. Take `⟨h1, h2⟩` from `h Δ w ⟨hB, hR Δ w hB⟩`. Establish `hk : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast D.R.k_ge`. Establish `hl : 1 ≤ Real.log D.R.k`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`.
+
+Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkl : 5 ≤ (D.R.k : ℝ) * Real.log D.R.k` using `by nlinarith`. Use `⟨fun u u' ρ => le_trans (h1 u u' ρ) ?_, fun u u' => le_trans (h2 u u') ?_⟩` and prove the remaining obligations. Establish `: 3 * ((D.R.k : ℝ) * Real.log D.R.k) ≤ C * ((D.R.k : ℝ) * Real.log D.R.k)` using `mul_le_mul_of_nonneg_right hC (by linarith)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : 2 / (D.R.k : ℝ) ≤ 1` using `by rw [div_le_one (by linarith)]; linarith`. Establish `: 3 * Real.log D.R.k ≤ C * Real.log D.R.k` using `mul_le_mul_of_nonneg_right hC (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem variation_bound_of_explicit (D : D7) (sc : Scale) (C0 CY C : ℝ) (h : VandermondeVariationExplicitBound D sc C0 CY)
     (hR : ∀ Δ w, DataB D sc C0 Δ w → RowsA D sc CY Δ) (hC : 3 ≤ C) : VandermondeVariationBound D sc C0 C := by
   intro Δ w hB
@@ -286,6 +325,21 @@ theorem variation_bound_of_explicit (D : D7) (sc : Scale) (C0 CY C : ℝ) (h : V
     have : 3 * Real.log D.R.k ≤ C * Real.log D.R.k := mul_le_mul_of_nonneg_right hC (by linarith)
     linarith
 
+/- English proof (translation)
+Introduce `Δ w hB Γ hΓ u hT1 hT2`. Establish `hA : DataA D sc C0 CY Δ w` using `⟨hB, hR Δ w hB⟩`. Establish `hL` using `scale_one_le_L sc`. Establish `hfk : D.R.f ≤ 2 ^ (D.R.k - 1)`. Establish `h1 : D.R.f ≤ D.R.k` using `D.R.f_le_k`.
+
+Establish `h2 : D.R.k - 1 < 2 ^ (D.R.k - 1)` using `Nat.lt_two_pow_self`. Use linear arithmetic over natural numbers and integers. Take `⟨⟨a1, a2⟩, b, c, -⟩` from `h Δ w hA Γ hΓ u (D.mem u).A.T_prime.two_le hfk hT1 hT2`. Establish `hm : (44 : ℝ) ≤ D.R.m` using `by exact_mod_cast hA.2.2.2.1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `set D' := DstarD D * Γ ^ (-(2 : ℝ)) with hD' set dM := duStarU D u * (((D.mem u).A.T : ℝ) ^ D.R.k - 1) ^ D.R.f with hdM`. Establish `he : (1 : ℝ) < Real.exp 1` using `by have := Real.add_one_lt_exp (one_ne_zero); linarith`. Establish `hD0 : 0 ≤ D'` using `by nlinarith`. Break down `hD0.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0, div_zero, Real.log_zero, abs_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `r1 : 1 / 2 ≤ dM / D'` using `by rw [le_div_iff₀ h0]; linarith`. Establish `r2 : dM / D' ≤ Real.exp 1` using `by rw [div_le_iff₀ h0]; exact a2`. Establish `l1 : Real.log (1 / 2) ≤ Real.log (dM / D')` using `Real.log_le_log (by norm_num) r1`. Establish `l2 : Real.log (dM / D') ≤ 1`.
+
+Use `Real.log_le_log (by linarith) r2` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis. Establish `l3 : -1 ≤ Real.log (1 / 2 : ℝ)`. Rewrite using `[one_div, Real.log_inv]`. Use `Real.log_two_lt_d9` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Establish `h2` using `(h5 Δ w hA u).2`. Establish `hmL : 1 ≤ (D.R.m : ℝ) * sc.L` using `by nlinarith`.
+
+Establish `: (16 + 3 * CY) * (D.R.m * sc.L) ≤ C * (D.R.m * sc.L)` using `mul_le_mul_of_nonneg_right hC' (by linarith)`. Use the polynomial consequences of the given equalities and inequalities. Use `lowB_le_lowS D sc C w hC` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem part_five_count_of_explicit (D : D7) (sc : Scale) (C0 CY C : ℝ) (h5 : Conclusion5Sharp D sc C0 CY) (h : VandermondeCountExplicit D sc C0 CY)
     (hR : ∀ Δ w, DataB D sc C0 Δ w → RowsA D sc CY Δ) (hC : 11 ≤ C) (hC' : 16 + 3 * CY ≤ C) :
     TorusPairsWithVariant D sc C0 C := by
@@ -325,6 +379,9 @@ theorem part_five_count_of_explicit (D : D7) (sc : Scale) (C0 CY C : ℝ) (h5 : 
   · have := lowB_le_lowS D sc C w hC
     linarith
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨part_five_bound_of_explicit D sc C0 CY C h.1 hR hC (by linarith), part_five_count_of_explicit D sc C0 CY C h.1 h.2.2.1 hR hC hC', variation_bound_of_explicit D sc C0 CY C h.2.2.2 hR (by linarith)⟩`.
+-/
 theorem part_five_all_of_explicit (D : D7) (sc : Scale) (C0 CY C : ℝ) (h : VandermondeCountBound D sc C0 CY)
     (hR : ∀ Δ w, DataB D sc C0 Δ w → RowsA D sc CY Δ) (hC : 11 ≤ C) (hC' : 16 + 3 * CY ≤ C) :
     Conclusion5₂ D sc C0 C :=
@@ -335,6 +392,9 @@ def RowsAF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
   ∀ C0 : ℝ, ∃ x0 : ℝ, ∀ x, x0 ≤ x → Fm.x1 < x → ∀ (i : Fm.Ix x) (Δ : ℝ) (w : ℕ → (Fm.D x i).what₂.Tau → ℝ),
     DataB (Fm.D x i) (Fm.L x i).sc C0 Δ w → RowsA (Fm.D x i) (Fm.L x i).sc C0 Δ
 
+/- English proof (translation)
+Introduce `C0`. Take `⟨x0, hx0⟩` from `h C0 C0`. Take `⟨x1, hx1⟩` from `hR C0`. Use `⟨max 11 (16 + 3 * C0), max x0 x1, fun x hx hxx i => ?_⟩` and prove the remaining obligations. Conclude with `part_five_all_of_explicit _ _ C0 C0 _ (hx0 x (le_trans (le_max_left _ _) hx) hxx i) (fun Δ w hB => hx1 x (le_trans (le_max_right _ _) hx) hxx i Δ w hB) (le_max_left _ _) (le_max_right _ _)`.
+-/
 theorem part_five_family_of_explicit {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (h : FamilyVandermondeCountExplicit Fm) (hR : RowsAF Fm) : PartFiveFamilyBounds Fm := by
   intro C0
   obtain ⟨x0, hx0⟩ := h C0 C0
@@ -348,9 +408,31 @@ section DS
 open Formalism.MainNotions.S MeasureTheory Matrix
 open scoped InnerProductSpace ComplexOrder
 
+/- English proof (translation)
+The claim follows from `Real.iSup_nonneg fun _ => Real.iSup_nonneg fun _ => abs_nonneg _`.
+-/
 theorem lamAbs_nonneg {N : ℕ} (lam : Fin N → ℝ) : 0 ≤ lamAbs lam :=
   Real.iSup_nonneg fun _ => Real.iSup_nonneg fun _ => abs_nonneg _
 
+/- English proof (translation)
+Introduce `N ε lam ep0 h0 H _ _ σ w p q hHC hgap he1 he2 hh hDS hw`. Distinguish the cases in `hpq : (Finset.univ.filter (fun a => ε a = true)).card = 0 ∨ (Finset.univ.filter (fun a => ε a = false)).card = 0`. Take `⟨z1, z2⟩` from `hZ N ε lam ep0 H σ w hpq hHC he1 he2 hDS hw`. Use `⟨z1, le_trans z2 ?_⟩` and prove the remaining obligations. Establish `e : p * q = 0`.
+
+Break down `hpq with h | h` into its components or cases. Establish `: p = 0` using `by show ((Finset.univ.filter (fun a => ε a = true)).card : ℝ) = 0; rw [h]; simp`. Rewrite using `[this, zero_mul]`. Establish `: q = 0` using `by show ((Finset.univ.filter (fun a => ε a = false)).card : ℝ) = 0; rw [h]; simp`. Rewrite using `[this, mul_zero]`.
+
+Rewrite using `[e, Real.rpow_zero, mul_one]`. Rewrite `hpq` using `[not_or]`. Establish `hp : 1 ≤ p` using `by show (1 : ℝ) ≤ ((Finset.univ.filter (fun a => ε a = true)).card : ℝ)`. Conclude with `Nat.one_le_iff_ne_zero.2 hpq.1` after adjusting the coercions. Establish `hq : 1 ≤ q` using `by show (1 : ℝ) ≤ ((Finset.univ.filter (fun a => ε a = false)).card : ℝ)`.
+
+Conclude with `Nat.one_le_iff_ne_zero.2 hpq.2` after adjusting the coercions. Establish `hN : (1 : ℝ) ≤ N`. Establish `h1 : (Finset.univ.filter (fun a => ε a = true)).card ≤ N`. Simplify using `using Finset.card_filter_le (Finset.univ : Finset (Fin N)) (fun a => ε a = true)`. Establish `h2 : p ≤ N` using `by show ((Finset.univ.filter (fun a => ε a = true)).card : ℝ) ≤ N`.
+
+Conclude with `h1` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he : 0 < ep0` using `lt_of_lt_of_le (Real.exp_pos _) he1`. Establish `hm : 0 ≤ min p q` using `le_min (by linarith) (by linarith)`. Establish `hl : 0 ≤ Real.log N` using `Real.log_nonneg hN`.
+
+Establish `hyp : 8192 * min p q * (p * q) ^ 3 * Real.log N / ep0 ^ 2 ≤ h0`. Use `le_trans ?_ hh` and prove the remaining obligations. Apply `div_le_div_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Establish `h1 : 8192 * min p q * (p * q) ^ 3 ≤ C3 * min p q * (p * q) ^ 3 * N`. Establish `: 8192 * (min p q * (p * q) ^ 3) ≤ C3 * N * (min p q * (p * q) ^ 3)`.
+
+Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Conclude with `mul_le_mul_of_nonneg_right h1 hl`. Take `⟨s1, s2⟩` from `hS N ε lam ep0 h0 H σ w hp hq hHC hgap he1 he2 hyp hDS hw`.
+
+Use `⟨s1, le_trans s2 ?_⟩` and prove the remaining obligations. Establish `hla` using `lamAbs_nonneg lam`. Establish `hb : 3 * p * q * lamAbs lam ≤ C3 * p * q * N * lamAbs lam`. Establish `h3 : 3 ≤ C3 * N` using `by nlinarith`. Establish `: 3 * (p * q * lamAbs lam) ≤ C3 * N * (p * q * lamAbs lam)` using `mul_le_mul_of_nonneg_right h3 (by positivity)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `mul_le_mul_of_nonneg_left (Real.rpow_le_rpow (by positivity) hb (by positivity)) (by positivity)`.
+-/
 theorem theorem_three_of_explicit_and_compact (D : D7) (C3 : ℝ) (hC : 8192 ≤ C3) (hS : DiscreteSeriesDegreeBoundsOfGap D) (hZ : FormalDegreeComparisonCompactCase D) : RepresentationDimensionGeneral D C3 := by
   intro N ε lam ep0 h0 H _ _ σ w p q hHC hgap he1 he2 hh hDS hw
   by_cases hpq : (Finset.univ.filter (fun a => ε a = true)).card = 0 ∨

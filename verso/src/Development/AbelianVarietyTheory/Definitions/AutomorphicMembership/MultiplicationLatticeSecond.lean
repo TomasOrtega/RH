@@ -160,13 +160,25 @@ def mk (φ : F₁.toMod.restrict Z.genO.ι ≅ F₂.toMod.restrict Z.genO.ι) (h
 
 def iso (φ : a.GIso F₁ F₂) : F₁.toMod.restrict Z.genO.ι ≅ F₂.toMod.restrict Z.genO.ι := φ.1
 
+/- English proof (translation)
+The claim follows from `φ.2.1`.
+-/
 theorem isInv_left (φ : a.GIso F₁ F₂) : a.IsInv F₁ := φ.2.1
 
+/- English proof (translation)
+The claim follows from `φ.2.2`.
+-/
 theorem isInv_right (φ : a.GIso F₁ F₂) : a.IsInv F₂ := φ.2.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem iso_mk (φ : F₁.toMod.restrict Z.genO.ι ≅ F₂.toMod.restrict Z.genO.ι) (h₁ : a.IsInv F₁)
     (h₂ : a.IsInv F₂) : (mk φ h₁ h₂).iso = φ := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 theorem ext {φ ψ : a.GIso F₁ F₂} (h : φ.iso = ψ.iso) : φ = ψ := Subtype.ext h
 
 def refl (h : a.IsInv F₁) : a.GIso F₁ F₁ := mk (Iso.refl _) h h
@@ -175,12 +187,24 @@ def symm (φ : a.GIso F₁ F₂) : a.GIso F₂ F₁ := mk φ.iso.symm φ.isInv_r
 
 def trans (φ : a.GIso F₁ F₂) (ψ : a.GIso F₂ F₃) : a.GIso F₁ F₃ := mk (φ.iso ≪≫ ψ.iso) φ.isInv_left ψ.isInv_right
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem iso_refl (h : a.IsInv F₁) : (refl h).iso = Iso.refl _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem iso_symm (φ : a.GIso F₁ F₂) : φ.symm.iso = φ.iso.symm := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem iso_trans (φ : a.GIso F₁ F₂) (ψ : a.GIso F₂ F₃) : (φ.trans ψ).iso = φ.iso ≪≫ ψ.iso := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem symm_symm (φ : a.GIso F₁ F₂) : φ.symm.symm = φ := rfl
 
 def equivIso (h₁ : a.IsInv F₁) (h₂ : a.IsInv F₂) :
@@ -192,13 +216,22 @@ def equivIso (h₁ : a.IsInv F₁) (h₂ : a.IsInv F₂) :
 
 end GIso
 
+/- English proof (translation)
+Use `Real.sSup_nonneg ?_` and prove the remaining obligations. Introduce and unpack `r ⟨U, -, h, k, g, lam, -, rfl⟩`. Check the signs of the components of the expression.
+-/
 example {Z : a.Mdl} (F : a.Sh Z) (f : a.Sec F) (y : a.Pt Z) : 0 ≤ a.nrm F f y := by
   refine Real.sSup_nonneg ?_
   rintro r ⟨U, -, h, k, g, lam, -, rfl⟩
   positivity
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {Z : a.Mdl} (y : a.Pt Z) (c : 𝓞 D.host.E) (u : a.Ylat y) : c • a.phi y u = a.phi y (A.H.bar c • u) := rfl
 
+/- English proof (translation)
+Simplify using `[expo]`.
+-/
 example (σ : D.host.E →+* ℂ) (i : Fin (S.Dw.mult σ)) : a.expo 0 σ i = 0 := by simp [expo]
 
 end At
@@ -721,6 +754,9 @@ def loc : ModuliIntegralCharts.Loc D N j p where
   degLie := @CrDSt.degLie _ _ _ _ _ _ _ _ st.cd
   degLdR := @CrDSt.degLdR _ _ _ _ _ _ _ _ st.cd
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> rfl`.
+-/
 theorem bs_loc (b : Option ℕ) : bs st.loc b = ct.B.X b := by cases b <;> rfl
 
 def ex : ModuliIntegralCharts.ExtA D st.loc where

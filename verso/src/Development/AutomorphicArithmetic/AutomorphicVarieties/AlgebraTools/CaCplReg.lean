@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCpl
 
 open IsLocalRing UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Introduce `R _ _ p _ B _ _ _ hB hT`. Take `⟨e⟩` from `IsCplAt.nonempty_algEquiv R p B (CplAt R p) hB (isCplAt_cplAt R p)`. Establish `hC : IsRegularLocalRing (CplAt R p)` using `GlobalTheory.RegularCompletion.isRegularLocalRing_adicCompletion (Localization.AtPrime p)`. Use `⟨IsRegularLocalRing.of_ringEquiv e.toRingEquiv.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[ringKrullDim_eq_of_ringEquiv e.toRingEquiv, ← hC.spanFinrank_maximalIdeal, ← hT.spanFinrank_maximalIdeal]`.
+
+Conclude with `congrArg _ (AdicCompletion.spanFinrank_maximalIdeal_eq (R := Localization.AtPrime p))`.
+-/
 theorem UpperTheory.V.AlgebraTools.IsCplAt.regular :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (p : Ideal R) [p.IsPrime] (B : Type) [CommRing B] [IsLocalRing B]
       [Algebra R B], IsCplAt R p B → IsRegularLocalRing (Localization.AtPrime p) →

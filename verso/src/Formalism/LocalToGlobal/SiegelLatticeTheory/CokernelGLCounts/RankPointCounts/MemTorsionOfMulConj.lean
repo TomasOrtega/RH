@@ -12,8 +12,16 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 abbrev cO (E : Type) [Field E] [NumberField E] [IsCMField E] : 𝓞 E ≃+* 𝓞 E :=
   RingOfIntegers.mapRingEquiv (IsCMField.complexConj E).toRingEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cO_coe (y : 𝓞 E) : ((cO E y : 𝓞 E) : E) = IsCMField.complexConj E (y : E) := rfl
 
+/- English proof (translation)
+Rewrite using `[Units.mem_torsion]`. Introduce `w`. Establish `h1 : w.embedding ((u : 𝓞 E) : E) * w.embedding (IsCMField.complexConj E ((u : 𝓞 E) : E)) = 1`. Rewrite using `[← map_mul, hu, map_one]`. Rewrite `h1` using `[IsCMField.complexEmbedding_complexConj, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Establish `h2 : ‖w.embedding ((u : 𝓞 E) : E)‖ ^ 2 = 1` using `by exact_mod_cast h1`. Establish `key : ‖w.embedding ((u : 𝓞 E) : E)‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h2`. Conclude with `(InfinitePlace.norm_embedding_eq w _).symm.trans key`.
+-/
 theorem mem_torsion_of_mul_conj (u : (𝓞 E)ˣ)
     (hu : ((u : 𝓞 E) : E) * IsCMField.complexConj E ((u : 𝓞 E) : E) = 1) : u ∈ Units.torsion E := by
   rw [Units.mem_torsion]
@@ -27,6 +35,41 @@ theorem mem_torsion_of_mul_conj (u : (𝓞 E)ˣ)
     (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h2
   exact (InfinitePlace.norm_embedding_eq w _).symm.trans key
 
+/- English proof (translation)
+Use `haveI : Fintype (Units.torsion E) := Fintype.ofFinite _`. Break down `S.eq_empty_or_nonempty with hS0 | ⟨y0, hy0⟩` into its components or cases. Simplify using `[hS0]`. Establish `hNI' : Ideal.absNorm (I.map (cO E)) = Ideal.absNorm I` using `absNorm_map_equiv (cO E) I`. Establish `hI0 : Ideal.absNorm I ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`.
+
+Establish `hI'0 : I.map (cO E) ≠ ⊥`. Introduce `h`. Apply `hI0` to reduce the goal to its premises. Rewrite using `[← hNI']`. Conclude with `Ideal.absNorm_eq_zero_iff.mpr h`.
+
+Establish `hdvdI : ∀ y ∈ S, I ∣ Ideal.span {y}` using `fun y hy => Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem I).mpr (hS y hy).1)`. Establish `hdvdI' : ∀ y ∈ S, I.map (cO E) ∣ Ideal.span {cO E y}` using `fun y hy => Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr (Ideal.mem_map_of_mem (cO E) (hS y hy).1))`. Establish `hspan : ∀ y ∈ S, Ideal.span {y} * Ideal.span {cO E y} = Ideal.span {m}` using `fun y hy => by rw [Ideal.span_singleton_mul_span_singleton, (hS y hy).2]`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : I * I.map (cO E) ∣ Ideal.span {m} := by`. Rewrite using `[← hspan y0 hy0]`.
+
+Conclude with `mul_dvd_mul (hdvdI y0 hy0) (hdvdI' y0 hy0)`. Establish `hm0 : Ideal.span {m} ≠ ⊥` using `by rwa [Ne, Ideal.span_singleton_eq_bot]`. Establish `hM0 : M ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hM` using `[Ideal.mul_bot]`.
+
+Conclude with `hm0 hM`. Establish `hNm : (Algebra.norm ℤ m).natAbs = Ideal.absNorm I ^ 2 * Ideal.absNorm M`. Rewrite using `[← Ideal.absNorm_span_singleton, hM, map_mul, map_mul, hNI', sq]`. Establish `hII' : I * I.map (cO E) ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.mul_eq_bot, not_or]`.
+
+Conclude with `⟨hI, hI'0⟩`. Establish `hdiv : ∀ y ∈ S, ∃ K : Ideal (𝓞 E), Ideal.span {y} = I * K` using `fun y hy => by`. Take `⟨K, hK⟩` from `hdvdI y hy`. Conclude with `⟨K, hK⟩`. Use `choose! J hJ using hdiv`.
+
+Establish `hJM : ∀ y ∈ S, J y ∣ M` using `fun y hy => by`. Take `⟨K, hK⟩` from `hdvdI' y hy`. Use `⟨K, ?_⟩` and prove the remaining obligations. Establish `h` using `hspan y hy`. Rewrite `h` using `[hJ y hy, hK, hM]`.
+
+Apply `mul_left_cancel₀ hII'` to reduce the goal to its premises. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcardJ : (S.image J).card ≤ Ideal.absNorm M` using `card_dvd_le_absNorm M hM0 _ (fun K hK => by`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hK`.
+
+Conclude with `hJM y hy)`. Establish `hT : ∀ K ∈ S.image J, (S.filter fun y => J y = K).card ≤ Fintype.card (Units.torsion E)`. Introduce `K hK`. Take `⟨y1, hy1, rfl⟩` from `Finset.mem_image.mp hK`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[Finset.mem_filter]`. Take `⟨hyS, hyJ⟩` from `hy`. Establish `hsp : Ideal.span {y1} = Ideal.span {y}` using `by rw [hJ y hyS, hJ y1 hy1, hyJ]`.
+
+Take `⟨u, hu⟩` from `Ideal.span_singleton_eq_span_singleton.mp hsp`. Establish `hy1m` using `(hS y1 hy1).2`. Establish `hym` using `(hS y hyS).2`. Rewrite `hym` using `[← hu, map_mul]`. Establish `huu : (u : 𝓞 E) * cO E (u : 𝓞 E) = 1`.
+
+Apply `mul_left_cancel₀ hm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hy1m]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = m * 1 := by rw [hym, mul_one]`.
+
+Establish `htor : u ∈ Units.torsion E`. Apply `mem_torsion_of_mul_conj` to reduce the goal to its premises. Establish `h` using `congrArg (fun z : 𝓞 E => (z : E)) huu`. Simplify `h` using `[cO_coe]`. Rewrite using `[Finset.mem_image]`.
+
+Conclude with `⟨(⟨u, htor⟩ : Units.torsion E), Finset.mem_univ _, by show (u : 𝓞 E) * y1 = y`. Rewrite using `[mul_comm]`. Conclude with `hu⟩`. Use `_ ≤ Fintype.card (Units.torsion E) := by`. Rewrite using `[← Finset.card_univ]`.
+
+Conclude with `Finset.card_image_le`. Establish `hcard : S.card ≤ Fintype.card (Units.torsion E) * (S.image J).card` using `Finset.card_le_mul_card_image S _ hT`. Establish `htors : Fintype.card (Units.torsion E) ≤ 2 * (Module.finrank ℚ E) ^ 2`. Establish `h` using `torsionOrder_le E`. Use `first`.
+
+Consider the case `exact h`. Consider the case `(rw [← Nat.card_eq_fintype_card]; exact h)`. Consider the case `(rw [← Nat.card_eq_fintype_card]; unfold Units.torsionOrder at h; exact h)`. Consider the case `(simpa [Units.torsionOrder, Nat.card_eq_fintype_card] using h)`. Establish `hS' : S.card ≤ 2 * (Module.finrank ℚ E) ^ 2 * Ideal.absNorm M` using `hcard.trans (Nat.mul_le_mul htors hcardJ)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem count_int (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) (m : 𝓞 E) (hm : m ≠ 0) (S : Finset (𝓞 E))
     (hS : ∀ y ∈ S, y ∈ I ∧ y * cO E y = m) :
     S.card * Ideal.absNorm I ^ 2 ≤ 2 * (Module.finrank ℚ E) ^ 2 * (Algebra.norm ℤ m).natAbs := by

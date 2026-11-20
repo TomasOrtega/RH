@@ -7,6 +7,19 @@ open CategoryTheory AlgebraicGeometry Opposite CochainComplex CochainComplex.Hom
 
 namespace GlobalTheory.CompanionTheory.EtEdge
 
+/- English proof (translation)
+Introduce `hExt hNat hIn`. Unfold `CrystallineSemistableComparison.E.InSch at hIn`. Unfold `CrystallineSemistableComparison.E.RepBasic`. Introduce `R _ I X n`. Unfold `CrystallineSemistableComparison.E.Rep`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨α, rfl⟩` from `CohomologyClass.mk_surjective x`. Conclude with `⟨_, α, rfl, rfl⟩`. Introduce and unpack `x a ⟨α, -, rfl⟩ m`.
+
+Distinguish the cases in `hm : n + 1 = m`. Conclude with `((hIn R X I (n - 1) n m (by omega) hm).2 α).1`. Rewrite using `[HomologicalComplex.shape I n m (by simpa using hm)]`. Simplify using `[GlobalTheory.EtC.Sec.map]`. Introduce and unpack `x y a b ⟨α, rfl, rfl⟩ ⟨β, rfl, rfl⟩`.
+
+Establish `hs` using `(hExt R (sch.obj X) I n α β).2 0 n (by simp) X (𝟙 X : X ⟶ X)`. Conclude with `⟨⟨α + β, rfl, hs.1⟩, ⟨α - β, rfl, hs.2.1⟩⟩`. Introduce and unpack `a ⟨α, h0, rfl⟩ k hk`. Conclude with `((hIn R X I k n (n + 1) hk rfl).2 α).2.1 h0`. Introduce and unpack `Y f x a ⟨α, rfl, rfl⟩`.
+
+Use `⟨GlobalTheory.EtC.zcomp (Cocycle.ofHom ((chains R).map (sch.map f))) α (zero_add n), rfl, ?_⟩` and prove the remaining obligations. Establish `h2` using `(hNat R (sch.obj X) I n (α : Cochain _ I n) 0 n (by simp) Y).2 (sch.obj Y) (sch.map f) (𝟙 Y : Y ⟶ Y)`. Establish `h1` using `(hNat R (sch.obj X) I n (α : Cochain _ I n) 0 n (by simp) X).1 Y f (𝟙 X : X ⟶ X)`. Establish `e : (Sx.map (sch.map f) (𝟙 Y : Y ⟶ Y) : Sx (sch.obj X) 0 Y) = Sx.res f (𝟙 X : X ⟶ X)` using `by show 𝟙 Y ≫ f = f ≫ 𝟙 X`. Simplify using the standard rewrite rules.
+
+Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `h1`.
+-/
 theorem repBasic : CrystallineSemistableComparison.E.EvExt → CrystallineSemistableComparison.E.EvNat → CrystallineSemistableComparison.E.InSch → CrystallineSemistableComparison.E.RepBasic := by
   intro hExt hNat hIn
   unfold CrystallineSemistableComparison.E.InSch at hIn

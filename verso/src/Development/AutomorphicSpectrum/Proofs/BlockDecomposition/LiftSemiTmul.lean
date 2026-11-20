@@ -41,6 +41,9 @@ def liftSemi {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module
   LinearMap.liftBaseChange S
     { toFun := f, map_add' := f.map_add, map_smul' := fun r x ↦ f.map_smulₛₗ r x }
 
+/- English proof (translation)
+Simplify using `[liftSemi]`.
+-/
 theorem liftSemi_tmul {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module S N]
     (f : M →ₛₗ[algebraMap R S] N) (s : S) (x : M) : liftSemi f (s ⊗ₜ x) = s • f x := by
   simp [liftSemi]

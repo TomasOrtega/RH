@@ -11,5 +11,8 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 open ReciprocityTheory.ChartRestriction.G.AI.I4 (IsPullHerm imageZ blockFnField)
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Cmp.PairTop.cmpPair | exact GlobalTheory.CompanionTheory.Ar.Cmp.PairTop.cmpPair | (intros; apply GlobalTheory.CompanionTheory.Ar.Cmp.PairTop.cmpPair <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cmpPair_of_inputs : PB.Inputs → CmpSt → HodgeComparisonCompatibility → ThetaUnifAV → CmpPair := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Cmp.PairTop.cmpPair | exact GlobalTheory.CompanionTheory.Ar.Cmp.PairTop.cmpPair | (intros; apply GlobalTheory.CompanionTheory.Ar.Cmp.PairTop.cmpPair <;> assumption)

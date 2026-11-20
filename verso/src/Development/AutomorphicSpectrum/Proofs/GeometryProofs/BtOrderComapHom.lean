@@ -8,6 +8,9 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
 namespace GlobalTheory.CompanionTheory.Ar.BT.Funct
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Simplify using `only [valAt]`. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+-/
 theorem valAt_pullback {B : Type} [CommRing B] {X Y : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X) (a : X ⟶ Y)
     (y : Spec (CommRingCat.of B) ⟶ Y) (hy : x ≫ a = y) (U : Y.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U)
     (h' : ⊤ ≤ x ⁻¹ᵁ (a ⁻¹ᵁ U)) (s : Γ(Y, U)) :
@@ -17,6 +20,11 @@ theorem valAt_pullback {B : Type} [CommRing B] {X Y : Scheme.{0}} (x : Spec (Com
   rw [Scheme.Hom.comp_appLE]
   rfl
 
+/- English proof (translation)
+Take `⟨U, hU, s, hs⟩` from `hg`. Use `⟨a.left ⁻¹ᵁ U, hU, (a.left.app U).hom s, fun t h => ?_⟩` and prove the remaining obligations. Establish `hy : (Γ₁.pt t).left ≫ a.left = (Γ₂.pt (α t)).left`. Rewrite using `[← ha t, Over.comp_left]`. Establish `h₂ : ⊤ ≤ (Γ₂.pt (α t)).left ⁻¹ᵁ U`.
+
+Rewrite using `[← hy]`. Conclude with `h`. Rewrite using `[valAt_pullback _ _ _ hy U h₂ h s]`. Conclude with `hs (α t) h₂`.
+-/
 theorem regularAt_pullback {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ₁ : QFGroup R T)
     {T' : Type} [CommGroup T'] (Γ₂ : QFGroup R T') (a : Γ₁.G ⟶ Γ₂.G) (α : T →* T')
     (ha : ∀ t, Γ₁.pt t ≫ a = Γ₂.pt (α t)) (φ : T' → FractionRing R) (g : Γ₁.G.left)
@@ -31,6 +39,11 @@ theorem regularAt_pullback {R : Type} [CommRing R] [IsDomain R] {T : Type} [Comm
   rw [valAt_pullback _ _ _ hy U h₂ h s]
   exact hs (α t) h₂
 
+/- English proof (translation)
+Introduce `R _ _ T _ _ Γ T' _ _ Γ' a α ha f hf`. Set `Φ : (T' → R) →ₐ[R] (T → R)` to `{ toFun := fun f t => f (α t) map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl commutes' := fun _ => rfl }`. Establish `hle : Γ'.btOrder ⊤ ≤ (Γ.btOrder ⊤).comap Φ`. Use `Algebra.adjoin_le fun f hf => ?_` and prove the remaining obligations. Use `Algebra.subset_adjoin fun t g _ => ?_` and prove the remaining obligations.
+
+Establish `h` using `regularAt_pullback Γ Γ' a α ha _ g (hf (α t) (a.left g) trivial)`. Express the relevant statement in the definitionally equal form `Γ.RegularAt (fun x => algebraMap R (FractionRing R) (f (α (t * x)))) g`. Simplify `h` using `only [map_mul]`. Conclude with `hle hf`.
+-/
 theorem comp_mem_btOrder : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (T' : Type) [CommGroup T'] [Finite T'] (Γ' : QFGroup R T') (a : Γ.G ⟶ Γ'.G) (α : T →* T'), (∀ t, Γ.pt t ≫ a = Γ'.pt (α t)) → ∀ f ∈ Γ'.btOrder ⊤, (fun t => f (α t)) ∈ Γ.btOrder ⊤ := by
   intro R _ _ T _ _ Γ T' _ _ Γ' a α ha f hf
   let Φ : (T' → R) →ₐ[R] (T → R) :=

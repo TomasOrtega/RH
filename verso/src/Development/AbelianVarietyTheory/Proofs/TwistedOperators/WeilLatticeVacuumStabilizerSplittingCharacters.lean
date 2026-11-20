@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.VecInv.Vac
 
+/- English proof (translation)
+Use `set I : Ideal R := LinearMap.ker (LinearMap.mulLeft R (b - 1)) with hI`. Establish `mem : ∀ x, x ∈ I ↔ b * x = x`. Introduce `x`. Rewrite using `[hI, LinearMap.mem_ker, LinearMap.mulLeft_apply, sub_mul, one_mul, sub_eq_zero]`. Establish `hmap : M.map (Ideal.Quotient.mk I) = (1 : Matrix n n R).map (Ideal.Quotient.mk I)`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[Ideal.Quotient.eq, mem, ← Matrix.sub_apply]`. Conclude with `h i j`. Establish `hdet : Ideal.Quotient.mk I M.det = Ideal.Quotient.mk I (1 : Matrix n n R).det`.
+
+Rewrite using `[RingHom.map_det, RingHom.map_det, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, hmap]`. Rewrite `hdet` using `[Matrix.det_one]`. Conclude with `(mem _).1 (Ideal.Quotient.eq.1 hdet)`.
+-/
 theorem mul_det_sub_one {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] (b : R) (M : Matrix n n R)
     (h : ∀ i j, b * (M - 1) i j = (M - 1) i j) : b * (M.det - 1) = M.det - 1 := by
 
@@ -33,14 +40,27 @@ theorem mul_det_sub_one {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] (b
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Simplify using `[cA, sigR]`.
+-/
 theorem cA_alg (a : AF D.host.F) :
     cA D (algebraMap (AF D.host.F) (AE D) a) = algebraMap (AF D.host.F) (AE D) a := by
   rw [Algebra.TensorProduct.algebraMap_apply]
   simp [cA, sigR]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem detAt_val (e : AE D) (he : e * e = e) (V : HSp D) (g : GA D V) :
     ((detAt e he V g : (AE D)ˣ) : AE D) = e * (Formalism.L2.Theta.mt V g).det + (1 - e) := rfl
 
+/- English proof (translation)
+Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Establish `hf : (Units.val ∘ detAt e he V) = fun g => e * (Formalism.L2.Theta.mt V g).det + (1 - e)`. Use function extensionality and compare the values at `fun g => detAt_val e he V g`. Rewrite using `[hf]`.
+
+Conclude with `(continuous_const.mul (GlobalTheory.LatNhds.continuous_mt V).matrix_det).add continuous_const`. Establish `hf : (fun g => (((detAt e he V g)⁻¹ : (AE D)ˣ) : AE D)) = fun g => e * (Formalism.L2.Theta.mt V g⁻¹).det + (1 - e)`. Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv, detAt_val]`. Rewrite using `[hf]`.
+
+Conclude with `(continuous_const.mul (GlobalTheory.LatNhds.continuous_mt_inv V).matrix_det).add continuous_const`.
+-/
 theorem continuous_detAt (e : AE D) (he : e * e = e) (V : HSp D) : Continuous (detAt e he V) := by
   rw [Units.continuous_iff]
   constructor
@@ -55,6 +75,11 @@ theorem continuous_detAt (e : AE D) (he : e * e = e) (V : HSp D) : Continuous (d
     rw [hf]
     exact (continuous_const.mul (GlobalTheory.LatNhds.continuous_mt_inv V).matrix_det).add continuous_const
 
+/- English proof (translation)
+Take `⟨a, ha, -⟩` from `exists_det_int hg.2`. Establish `hd : finPart D (Formalism.L2.Theta.mt V g).det ∈ intAE D`. Apply `GlobalTheory.PlaceDatum.finPart_mem_of_toEAf` to reduce the goal to its premises. Rewrite using `[← ha]`. Conclude with `a.2`.
+
+Establish `hfe : finPart D e ∈ intAE D`. Apply `GlobalTheory.AdIdem.idempotent_mem_intAE` to reduce the goal to its premises. Rewrite using `[← map_mul, he]`. Rewrite using `[detAt_val, map_add, map_mul, map_sub, map_one]`. Conclude with `add_mem (GlobalTheory.IdemPrime.mul_mem_int hfe hd) (sub_mem GlobalTheory.VacInert.one_int hfe)`.
+-/
 theorem finPart_detAt {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {g : GA D V} (hg : Stab V β g) (e : AE D)
     (he : e * e = e) : finPart D ((detAt e he V g : (AE D)ˣ) : AE D) ∈ intAE D := by
   obtain ⟨a, ha, -⟩ := exists_det_int hg.2
@@ -68,6 +93,9 @@ theorem finPart_detAt {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {g : GA D V
   rw [detAt_val, map_add, map_mul, map_sub, map_one]
   exact add_mem (GlobalTheory.IdemPrime.mul_mem_int hfe hd) (sub_mem GlobalTheory.VacInert.one_int hfe)
 
+/- English proof (translation)
+Take `⟨α, rfl, -, -⟩` from `h`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Simplify using `only [infPart, pairA, fstA]`. Use `erw [Algebra.TensorProduct.map_tmul]`. Conclude with `TensorProduct.zero_tmul _ _`.
+-/
 theorem infPart_place {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) :
     infPart D (algebraMap (AF D.host.F) (AE D) ε) = 0 := by
   obtain ⟨α, rfl, -, -⟩ := h
@@ -76,9 +104,17 @@ theorem infPart_place {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F}
   erw [Algebra.TensorProduct.map_tmul]
   exact TensorProduct.zero_tmul _ _
 
+/- English proof (translation)
+Take the linear combination `(x - 1) * h - a * hx`.
+-/
 theorem mul_eq_self_of_orthogonal_supported_sub_one {R : Type} [CommRing R] {a b x : R} (h : b * a = 0) (hx : b * (x - 1) = x - 1) : a * x = a := by
   linear_combination (x - 1) * h - a * hx
 
+/- English proof (translation)
+Introduce `x hx hfin hfin'`. Use `hχ x ?_ hfin hfin' (mul_eq_self_of_orthogonal_supported_sub_one ha hx)` and prove the remaining obligations. Establish `h0 : infPart D ((x : AE D) - 1) = 0`. Rewrite using `[← hx, map_mul, infPart_place h, zero_mul]`. Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`.
+
+Conclude with `h0`.
+-/
 theorem unramAt_of_unrOff {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) {a : AE D}
     (ha : algebraMap (AF D.host.F) (AE D) ε * a = 0) {χ : (AE D)ˣ →* Circle} (hχ : UnrOff a χ) : UnramAt ε χ := by
   intro x hx hfin hfin'
@@ -88,18 +124,32 @@ theorem unramAt_of_unrOff {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.hos
   rw [map_sub, map_one, sub_eq_zero] at h0
   exact h0
 
+/- English proof (translation)
+Take the linear combination `(d - 1) * h - e * hd`.
+-/
 theorem idempotentInterpolation_eq_one_of_orthogonal_support {R : Type} [CommRing R] {b e d : R} (h : b * e = 0) (hd : b * (d - 1) = d - 1) :
     e * d + (1 - e) = 1 := by
   linear_combination (d - 1) * h - e * hd
 
+/- English proof (translation)
+Take the linear combination `(d - 1) * h - (d - 1) * h' - (e - e') * hd`.
+-/
 theorem idempotentInterpolation_eq_of_mul_supported {R : Type} [CommRing R] {b e e' d : R} (h : e * b = e') (h' : e' * b = e') (hd : b * (d - 1) = d - 1) :
     e * d + (1 - e) = e' * d + (1 - e') := by
   linear_combination (d - 1) * h - (d - 1) * h' - (e - e') * hd
 
+/- English proof (translation)
+Take the linear combination `(d - 1) * h`.
+-/
 theorem supported_sub_one_idempotentInterpolation {R : Type} [CommRing R] {b e d : R} (h : e * b = e) :
     b * (e * d + (1 - e) - 1) = e * d + (1 - e) - 1 := by
   linear_combination (d - 1) * h
 
+/- English proof (translation)
+Apply `hχ` to reduce the goal to its premises. Rewrite using `[detAt_val]`. Conclude with `supported_sub_one_idempotentInterpolation hs`. Conclude with `finPart_detAt hg e he`. Rewrite using `[← map_inv]`.
+
+Conclude with `finPart_detAt (hg.inv) e he`.
+-/
 theorem unram_detAt {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {g : GA D V} (hg : Stab V β g) {e : AE D}
     (he : e * e = e) {ε : AF D.host.F} (hs : e * algebraMap (AF D.host.F) (AE D) ε = e) {χ : (AE D)ˣ →* Circle}
     (hχ : UnramAt ε χ) : χ (detAt e he V g) = 1 := by
@@ -110,9 +160,29 @@ theorem unram_detAt {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {g : GA D V} 
   · rw [← map_inv]
     exact finPart_detAt (hg.inv) e he
 
+/- English proof (translation)
+Rewrite using `[mul_add, he.1, he.2.1, add_zero]`.
+-/
 theorem split_mul {e : AE D} (he : IsSplitIdem D e) : e * (e + cA D e) = e := by
   rw [mul_add, he.1, he.2.1, add_zero]
 
+/- English proof (translation)
+Establish `hee : e * e = e` using `GlobalTheory.PlaceModelSum.IsOrthSum.idem (GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he)`. Establish `hec : e * cA D e = 0` using `he.2`. Establish `hεε : ε * ε = ε` using `GlobalTheory.StabDense.placeIdem_idem h`. Use `set ι := algebraMap (AF D.host.F) (AE D) with hι`. Establish `hιε : ι ε * ι ε = ι ε` using `by rw [← map_mul, hεε]`.
+
+Use `set e' := e * ι ε with he'`. Establish `h1 : e' * e' = e'`. Rewrite using `[he']`. Take the linear combination `(ι ε * ι ε) * hee + e * hιε`. Establish `h2 : e' * cA D e' = 0`.
+
+Rewrite using `[he', map_mul, cA_alg]`. Take the linear combination `(ι ε * ι ε) * hec`. Establish `h3 : cA D e' * cA D e' = cA D e'` using `by rw [← map_mul, h1]`. Take `⟨t, ht⟩` from `GlobalTheory.PlaceModelSum.exists_add_conj e'`. Establish `htt : t * t = t`.
+
+Apply `GlobalTheory.VacInert.alg_inj` to reduce the goal to its premises. Rewrite using `[map_mul, ht]`. Take the linear combination `h1 + h3 + 2 * h2`. Establish `h4 : ι ε * e' = e'`. Rewrite using `[he']`.
+
+Take the linear combination `e * hιε`. Establish `h5 : ι ε * cA D e' = cA D e'`. Use `congrArg (cA D) h4` as an intermediate fact. Rewrite `this` using `[map_mul, cA_alg]`. Then use the resulting hypothesis. Establish `hεt : ε * t = t`.
+
+Apply `GlobalTheory.VacInert.alg_inj` to reduce the goal to its premises. Rewrite using `[map_mul, ht]`. Take the linear combination `h4 + h5`. Break down `GlobalTheory.PlaceModelSum.eq_zero_or_eq_of_placeIdem h htt hεt with h0 | h0` into its components or cases. Use `right`.
+
+Establish `h6 : e' + cA D e' = 0` using `by rw [← ht, h0, map_zero]`. Rewrite using `[mul_comm]`. Take the linear combination `e' * h6 - h1 - h2`. Use `left`. Establish `h7 : e' + cA D e' = ι ε` using `by rw [← ht, h0]`.
+
+Conclude with `⟨e', ⟨h1, h2, v, ε, h, h7⟩, h7, rfl⟩`.
+-/
 theorem place_cases {P : Finset (Pl D.host.E)} {e : AE D} (he : IsIdemSum e P)
     {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) :
     (∃ e', IsSplitIdem D e' ∧ e' + cA D e' = algebraMap (AF D.host.F) (AE D) ε ∧
@@ -173,6 +243,37 @@ def eigSub {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M] (om : G →* M
     rw [hp, map_smul] at h1
     rw [map_inv c, Circle.coe_inv, eq_inv_smul_iff₀ (Circle.coe_ne_zero _), h1]
 
+/- English proof (translation)
+Introduce `D ψ S T ΛS ΛT χS χT om hW hS hT hη βS βT hβS hβT P e he hsum hχS hχT g h hg hh f hf hvac`. Use `set c : GA D S × GA D T →* Circle := (χT.comp ((detAt e he S).comp (MonoidHom.fst _ _)))⁻¹ * χS.comp ((detAt e he T).comp (MonoidHom.snd _ _)) with hc`. Establish `hcv : ∀ p : GA D S × GA D T, c p = splitFacO χS χT (detAt e he S p.1) (detAt e he T p.2)` using `fun p => rfl`. Establish `hcont : Continuous fun p : GA D S × GA D T => c p`. Simplify using `only [hcv, splitFacO]`.
+
+Conclude with `((hW.hecT.1.comp ((continuous_detAt e he S).comp continuous_fst)).inv).mul (hW.hecS.1.comp ((continuous_detAt e he T).comp continuous_snd))`. Establish `hclosed : IsClosed ((eigSub om c f : Subgroup (GA D S × GA D T)) : Set (GA D S × GA D T))`. Establish `hset : ((eigSub om c f : Subgroup (GA D S × GA D T)) : Set (GA D S × GA D T)) = ⋂ w, {p | om p f w = ((c p : Circle) : ℂ) * f w}`. Use extensionality with `p`. Use `show om p f = ((c p : Circle) : ℂ) • f ↔ _`.
+
+Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hp w`. Rewrite using `[hp, Pi.smul_apply, smul_eq_mul]`. Introduce `hp`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[hp w, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hset]`. Conclude with `isClosed_iInter fun w => isClosed_eq (hW.om_cont f hf w) ((continuous_subtype_val.comp hcont).mul continuous_const)`. Establish `key : (g, h) ∈ eigSub om c f`.
+
+Use `GlobalTheory.T.mem_closedSubgroup_of_localStabilizerPairs D S T βS βT (eigSub om c f) hclosed ?_ g h hg hh` and prove the remaining obligations. Introduce `v ε hε g' h' hg' hh' hsg hsh`. Use `show om (g', h') f = ((c (g', h') : Circle) : ℂ) • f`. Rewrite using `[hcv]`. Establish `hlat` using `fun u => mem_latO_iff hβS hβT hg'.2 hh'.2 u`.
+
+Establish `hdS` using `mul_det_sub_one _ _ hsg`. Establish `hdT` using `mul_det_sub_one _ _ hsh`. Establish `hSupp : ∀ e' : AE D, e' + cA D e' = algebraMap (AF D.host.F) (AE D) ε → Formalism.L2.Theta.SuppAt e' S g' ∧ Formalism.L2.Theta.SuppAt e' T h'`. Introduce `e' he'`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he']`. Conclude with `hsg i j`. Rewrite using `[he']`. Conclude with `hsh i j`. Break down `place_cases hsum hε with ⟨e', he', hsum', hee'⟩ | horth` into its components or cases.
+
+Establish `hb : e' * algebraMap (AF D.host.F) (AE D) ε = e'`. Rewrite using `[← hsum']`. Conclude with `split_mul he'`. Establish `hx : detAt e he S g' = detAt e' he'.1 S g'`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[detAt_val, detAt_val]`. Conclude with `idempotentInterpolation_eq_of_mul_supported hee' hb hdS`. Establish `hy : detAt e he T h' = detAt e' he'.1 T h'`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[detAt_val, detAt_val]`.
+
+Conclude with `idempotentInterpolation_eq_of_mul_supported hee' hb hdT`. Rewrite using `[hx, hy]`. Conclude with `GlobalTheory.T.splitPlace_weilRep_latticeVacuum_character D ψ S T ΛS ΛT χS χT om hW hS hT e' he' g' h' (hSupp e' hsum').1 (hSupp e' hsum').2 hlat _ _ (isDetAt_detAt e' he'.1 S g') (isDetAt_detAt e' he'.1 T h') f hf hvac`. Establish `hx : detAt e he S g' = 1`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[detAt_val, Units.val_one]`. Conclude with `idempotentInterpolation_eq_one_of_orthogonal_support horth hdS`. Establish `hy : detAt e he T h' = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[detAt_val, Units.val_one]`.
+
+Conclude with `idempotentInterpolation_eq_one_of_orthogonal_support horth hdT`. Establish `horth' : algebraMap (AF D.host.F) (AE D) ε * (e + cA D e) = 0`. Establish `h2 : algebraMap (AF D.host.F) (AE D) ε * cA D e = 0`. Use `congrArg (cA D) horth` as an intermediate fact. Rewrite `this` using `[map_mul, cA_alg, map_zero]`. Then use the resulting hypothesis.
+
+Rewrite using `[mul_add, horth, h2, add_zero]`. Establish `huS : UnramAt ε χS` using `unramAt_of_unrOff hε horth' hχS`. Establish `huT : UnramAt ε χT` using `unramAt_of_unrOff hε horth' hχT`. Rewrite using `[hx, hy]`. Simplify using `only [splitFacO, map_one, inv_one, one_mul, Circle.coe_one, one_smul]`.
+
+Distinguish the cases in `hsp : ∃ e'', IsSplitIdem D e'' ∧ e'' + cA D e'' = algebraMap (AF D.host.F) (AE D) ε`. Take `⟨e'', he'', hs''⟩` from `hsp`. Establish `hb : e'' * algebraMap (AF D.host.F) (AE D) ε = e''`. Rewrite using `[← hs'']`. Conclude with `split_mul he''`.
+
+Rewrite using `[GlobalTheory.T.splitPlace_weilRep_latticeVacuum_character D ψ S T ΛS ΛT χS χT om hW hS hT e'' he'' g' h' (hSupp e'' hs'').1 (hSupp e'' hs'').2 hlat _ _ (isDetAt_detAt e'' he''.1 S g') (isDetAt_detAt e'' he''.1 T h') f hf hvac]`. Simplify using `only [splitFacO, unram_detAt hg' he''.1 hb huT, unram_detAt hh' he''.1 hb huS, inv_one, one_mul, Circle.coe_one, one_smul]`. Conclude with `GlobalTheory.T.weilOperator_lattice_stabiliser_fixes_vacuum_nonsplit D ψ S T ΛS ΛT χS χT om hW hS hT hη v ε ⟨hε, hsp⟩ huS huT g' h' hsg hsh hlat f hf hvac`. Rewrite using `[← hcv (g, h)]`. Conclude with `key`.
+-/
 theorem stab_vacuum : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → IsSelfDualC S ΛS → IsSelfDualC T ΛT → (∃ η, IsEtaTilde D η) → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), IsFrame βS ΛS → IsFrame βT ΛT → ∀ (P : Finset (Pl D.host.E)) (e : AE D) (he : e * e = e), IsIdemSum e P → UnrOff (e + cA D e) χS → UnrOff (e + cA D e) χT → ∀ g h, Stab S βS g → Stab T βT h → ∀ f, IsThetaFunO ψ S T f → IsLatVac (heisO ψ S T) (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) f → om (g, h) f = ((splitFacO χS χT (detAt e he S g) (detAt e he T h) : Circle) : ℂ) • f := by
   intro D ψ S T ΛS ΛT χS χT om hW hS hT hη βS βT hβS hβT P e he hsum hχS hχT g h hg hh f hf hvac
 

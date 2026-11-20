@@ -7,6 +7,13 @@ namespace Formalism.L2.GlobalTheoryTheory.Br
 
 open Formalism.BasicNotions Formalism.MainNotions.product_first_zeroth_parts Formalism.L2.Forms NumberField
 
+/- English proof (translation)
+Establish `hle : RatSpan D lam ≤ (MvPolynomial.map (σ` using `D.what₂.Tau × Fin n × Fin n) D.what₂.embLL).range.toAddSubgroup := by`. Unfold `RatSpan`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `q ⟨r, f, -, rfl⟩`. Use `RingHom.mem_range.2 ⟨MvPolynomial.C r * Formalism.L2.Forms.ten (fun τ => MvPolynomial.map (Int.castRingHom D.what₂.LL) (f τ)), ?_⟩` and prove the remaining obligations.
+
+Establish `hi : D.what₂.embLL.comp (Int.castRingHom D.what₂.LL) = Int.castRingHom ℂ` using `RingHom.ext_int _ _`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]`. Use `congr 1`. Unfold `Formalism.L2.Forms.ten`. Rewrite using `[map_prod]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_rename, MvPolynomial.map_map, hi]`. Take `⟨F, hF⟩` from `RingHom.mem_range.1 (hle hp)`. Conclude with `⟨F, hF⟩`.
+-/
 theorem exists_map_of_ratSpan (D : D7) {n : ℕ} {lam : D.what₂.Tau → DomWeight n}
     {p : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ} (hp : p ∈ RatSpan D lam) :
     ∃ F : MvPolynomial (D.what₂.Tau × Fin n × Fin n) D.what₂.LL, MvPolynomial.map D.what₂.embLL F = p := by
@@ -49,15 +56,24 @@ def NormClsAt : Prop :=
         (Formalism.L2.Forms.nfAll ((D.fm u).lam D.R.m) (subP o.1 (MvPolynomial.map s (Pc ((D.fm u).til c))))
           (subP o.1 (MvPolynomial.map s (Pc ((D.fm u).til c))))).re)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_nonneg fun _ _ => mul_nonneg (zpow_nonneg (Nat.cast_nonneg _) _) (sq_nonneg _)`.
+-/
 theorem ptB_nonneg (D : D7) (u : D.what₂.Word) : 0 ≤ ptB D u :=
   Finset.prod_nonneg fun _ _ => mul_nonneg (zpow_nonneg (Nat.cast_nonneg _) _) (sq_nonneg _)
 
+/- English proof (translation)
+Unfold `ColumnChain.wt`. Rewrite using `[show (((Nat.card ((D.mem u).C.stab i c) : ℕ) : ℂ))⁻¹ = ((((Nat.card ((D.mem u).C.stab i c) : ℕ) : ℝ)⁻¹ : ℝ) : ℂ) by push_cast; rfl, Complex.ofReal_re]`.
+-/
 theorem wt_re_eq (D : D7) (u : D.what₂.Word) (i : ℕ) (c : (D.mem u).C.cls i) :
     ((D.mem u).C.wt i c).re = ((Nat.card ((D.mem u).C.stab i c) : ℕ) : ℝ)⁻¹ := by
   unfold ColumnChain.wt
   rw [show (((Nat.card ((D.mem u).C.stab i c) : ℕ) : ℂ))⁻¹ = ((((Nat.card ((D.mem u).C.stab i c) : ℕ) : ℝ)⁻¹ : ℝ) : ℂ) by push_cast; rfl,
     Complex.ofReal_re]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_image (fun x _ y _ h => hf h), Finset.mul_sum]`. Use `_ ≤ B * ∑ y, b y := mul_le_mul_of_nonneg_left (Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun y _ _ => hb y) hB`.
+-/
 theorem sum_le_of_inj {α β : Type} [Fintype α] [Fintype β] (f : α → β) (hf : Function.Injective f) (a : α → ℝ) (b : β → ℝ)
     (B : ℝ) (hB : 0 ≤ B) (hb : ∀ y, 0 ≤ b y) (hab : ∀ x, a x ≤ B * b (f x)) : ∑ x, a x ≤ B * ∑ y, b y := by
   classical
@@ -67,6 +83,17 @@ theorem sum_le_of_inj {α β : Type} [Fintype α] [Fintype β] (f : α → β) (
     _ ≤ B * ∑ y, b y := mul_le_mul_of_nonneg_left
         (Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun y _ _ => hb y) hB
 
+/- English proof (translation)
+Introduce `D u Ch chOf Tf hL hB h v x`. Take `⟨s, rfl⟩ : ∃ s, InfinitePlace.mk s = v` from `⟨v.embedding, v.mk_embedding⟩`. Establish `hx` using `((Tf.val D.R.m le_rfl (Or.inr rfl)).rat ((D.fm u).emb D.R.m x)).1 ⟨x, rfl⟩`. Use `choose P hP hPz using hx.2`. Use `choose Pc hPc using fun c => exists_map_of_ratSpan D (hP c)`.
+
+Establish `hrep : ∀ c z, (D.fm u).emb D.R.m x c z = fnOf _ (shiftOf (lamT u D.R.m)) 1 (MvPolynomial.map D.what₂.embLL (Pc c)) ((Tf.val D.R.m le_rfl (Or.inr rfl)).eY z)` using `fun c z => by rw [hPc c]; exact hPz c z`. Establish `hy` using `(Tf.valP.rat ((D.fm u).ptEmb ((D.fm u).PtL h x))).1 ⟨_, rfl⟩`. Use `choose Q hQ hQz using hy.2`. Use `choose Qc hQc using fun c => exists_map_of_ratSpan D (hQ c)`. Establish `hrepP : ∀ c, Tf.valP.eW ((D.fm u).ptEmb ((D.fm u).PtL h x)) c = fnOf _ (shiftOf (sgT u)) 1 (MvPolynomial.map D.what₂.embLL (Qc c))` using `fun c => by rw [hQc c]; exact hQz c`.
+
+Take `⟨⟨o, ho⟩, ⟨o', ho'⟩⟩` from `hF D u Ch chOf Tf s`. Rewrite using `[Tf.normP s _ Qc hrepP o' ho', Tf.norm D.R.m le_rfl (Or.inr rfl) s x Pc hrep o ho]`. Use `sum_le_of_inj _ (h1 D u Ch chOf Tf) _ _ _ (ptB_nonneg D u) (fun c => ?_) (fun c => ?_)` and prove the remaining obligations. Use `mul_nonneg (mul_nonneg ?_ (Finset.prod_nonneg fun τ _ => zpow_nonneg (norm_nonneg _) _)) (Formalism.L2.Ker.ta_nfAll_nonneg ((D.fm u).lam D.R.m) _)` and prove the remaining obligations. Rewrite using `[wt_re_eq]`.
+
+Check the signs of the components of the expression. Establish `hcard : Nat.card ((D.fm u).stabilizer₂ c) = Nat.card ((D.mem u).C.stab D.R.m ((D.fm u).til c))` using `Nat.card_congr (Equiv.ofBijective _ (h2 D u Ch chOf Tf c))`. Establish `hk` using `hC D u Ch chOf Tf hL hB h s x Pc hrep Qc hrepP o ho o' ho' c`. Rewrite using `[wt_re_eq, ← hcard]`. Establish `hw : 0 ≤ ((Nat.card ((D.fm u).stabilizer₂ c) : ℕ) : ℝ)⁻¹` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_bound_of_classes_frames (h1 : ClassMapInjective) (h2 : StabiliserMapBijective) (hF : FramesAt) (hC : NormClsAt) : NormBoundAtInfinity := by
   intro D u Ch chOf Tf hL hB h v x
   obtain ⟨s, rfl⟩ : ∃ s, InfinitePlace.mk s = v := ⟨v.embedding, v.mk_embedding⟩

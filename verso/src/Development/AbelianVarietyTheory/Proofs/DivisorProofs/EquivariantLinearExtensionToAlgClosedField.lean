@@ -19,6 +19,11 @@ open GlobalTheory.UT GlobalTheory.ThetaScalar
 variable {R : Type} [CommRing R] [IsDomain R] {E F : Type} [Field F] [Algebra (FractionRing R) F] [Field E]
   [Algebra (FractionRing R) E] [Algebra E F] [IsScalarTower (FractionRing R) E F]
 
+/- English proof (translation)
+Take `⟨hy, hb, hs⟩` from `h`. Establish `h0 : (baseMap (R` using `R) E F).left ≫ (DegPre.zeroF D E).left = (DegPre.zeroF D F).left := congrArg (fun q : TF (R := R) F ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) (baseMap (R := R) E F))`. Take `⟨w', hw', hv⟩` from `exists_gen D.P.isLB (φ' := DegPre.lineφ D F p'.g.b) (ε' := DegPre.lineε k) (fun U _ h => Finset.prod_congr rfl fun i _ => by fin_cases i`. Conclude with `congrArg (fun q => h q ^ _) h0`. Conclude with `congrArg (fun q => h q ^ _) hb.symm)`.
+
+Use the proof step `(LB.pullGen D.P.L _ _ w (baseMap (R := R) E F).left) (pullGen_isGen _ _ _ _ hw _)`. Conclude with `⟨w', hw', fun Z r z J hJ => (hv Z r z J hJ).trans (val_pull hJ _ _ _)⟩`.
+-/
 theorem exists_frame_pull {D : DegPre R} {k : ℕ} {p : QkPt D E k} {p' : QkPt D F k}
     (h : QkExt (algebraMap E F) p p') {w : Frm D E k p.g.b} (hw : w.IsGen) :
     ∃ w' : Frm D F k p'.g.b, w'.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (TF (R := R) F).left) (z : Z) J, Good D.P.L z J →
@@ -34,6 +39,17 @@ theorem exists_frame_pull {D : DegPre R} {k : ℕ} {p : QkPt D E k} {p' : QkPt D
     (LB.pullGen D.P.L _ _ w (baseMap (R := R) E F).left) (pullGen_isGen _ _ _ _ hw _)
   exact ⟨w', hw', fun Z r z J hJ => (hv Z r z J hJ).trans (val_pull hJ _ _ _)⟩
 
+/- English proof (translation)
+Take `⟨hy, hb, hs⟩` from `h`. Establish `hL` using `D.P.isLB`. Establish `hb' : (𝟙 _ ≫ (baseMap (R` using `R) E F).left) ≫ p.g.b.left = p'.g.b.left := by`. Rewrite using `[Category.id_comp]`. Conclude with `hb.symm`.
+
+Use `⟨hw', fun ν hν z J hJ => ?_, fun κ hκ z J hJ => ?_⟩` and prove the remaining obligations. Establish `c : LB.Gen.Corr D.P.L _ _ _ _ (GeneratorPullback.powGen D.P.L _ _ w 2) (LB.mulGen D.P.L _ _ _ _ (p.g.s p.y) (LB.pullGen D.P.L _ _ ν p.g.b.left))` using `corr_of_val hL fun y I hI => (map_pow _ _ _).trans ((hw.2.1 ν hν y I hI).trans (by`. Rewrite using `[val_mul hI, val_pull hI, Category.id_comp]))`. Establish `e` using `val_corr hJ c (𝟙 _ ≫ (baseMap (R := R) E F).left)`. Rewrite `e` using `[val_mul hJ, val_pull hJ, hb']`.
+
+Rewrite using `[hv _ _ z J hJ, val_corr hJ (hs p'.y), val_pull hJ, hy]`. Conclude with `(map_pow _ _ _).symm.trans e`. Establish `c : LB.Gen.Corr D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (GeneratorPullback.powGen D.P.L _ _ w k) (LB.pullGen D.P.L _ _ κ p.g.b.left)) (LB.mulGen D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ (D.psi p.y) (jFK (R` using `R) E)) (LB.pullGen D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => 1) D.rig (TF (R := R) E).hom)) := corr_of_val hL fun y I hI => by`. Rewrite using `[val_mul hI, val_mul hI, val_pull hI, val_pull hI, val_pull hI, Category.id_comp, Category.id_comp, Category.id_comp]`. Conclude with `(congrArg (· * _) (map_pow _ _ _)).trans (hw.2.2 κ hκ y I hI)`.
+
+Establish `e` using `val_corr hJ c (𝟙 _ ≫ (baseMap (R := R) E F).left)`. Establish `e₁ : (𝟙 _ ≫ (baseMap (R` using `R) E F).left) ≫ jFK (R := R) E = jFK (R := R) F := by`. Rewrite using `[Category.id_comp]`. Conclude with `specMap_jFK E F`. Establish `e₂ : (𝟙 _ ≫ (baseMap (R` using `R) E F).left) ≫ (TF (R := R) E).hom = (TF (R := R) F).hom := by`.
+
+Rewrite using `[Category.id_comp]`. Conclude with `Over.w _`. Rewrite `e` using `[val_mul hJ, val_mul hJ, val_pull hJ, val_pull hJ, val_pull hJ, hb', e₁, e₂]`. Rewrite using `[hv _ _ z J hJ, hy]`. Conclude with `(congrArg (· * _) (map_pow _ _ _)).symm.trans e`.
+-/
 theorem txFrame_pull {D : DegPre R} {k : ℕ} {p : QkPt D E k} {p' : QkPt D F k}
     (h : QkExt (algebraMap E F) p p') {w : Frm D E k p.g.b} (hw : TXFrame k p w) {w' : Frm D F k p'.g.b} (hw' : w'.IsGen)
     (hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ (TF (R := R) F).left) (z : Z) J, Good D.P.L z J →
@@ -68,6 +84,15 @@ theorem txFrame_pull {D : DegPre R} {k : ℕ} {p : QkPt D E k} {p' : QkPt D F k}
     rw [hv _ _ z J hJ, hy]
     exact (congrArg (· * _) (map_pow _ _ _)).symm.trans e
 
+/- English proof (translation)
+Take `⟨hy, hb, hs⟩` from `h`. Establish `hb' : p'.g.b = baseMap (R` using `R) E F ≫ p.g.b := Over.OverMorphism.ext hb`. Introduce `α β hβ T ρ z J hJ`. Establish `e₁ : DegPre.trPt D F p'.g.b ≫ famMap D E F = famMap D E F ≫ DegPre.trPt D E p.g.b`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Category.assoc, famMap_fst, tr_fst, ← Category.assoc, tr_fst, famMap_fst]`. Use `((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (famMap_snd D E F)).trans (tr_pr D F _))).trans (Eq.symm ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (tr_pr D E _)).trans ?_)))` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, famMap_snd, ← Category.assoc, famMap_fst, hb', Category.assoc]`. Establish `e₂ : ((ρ ≫ famMap D E F) ≫ fst _ _).left = (ρ ≫ fst _ _).left ≫ (baseMap (R` using `R) E F).left := by`. Rewrite using `[Category.assoc, famMap_fst, ← Category.assoc]`.
+
+Both sides reduce to the same expression. Establish `e₃ : uVal D E k α p.g.b (ρ ≫ famMap D E F) z J = uVal D F k α p'.g.b ρ z J`. Establish `: famMap D E F ≫ fst _ _ ≫ p.g.b = fst _ _ ≫ p'.g.b`. Rewrite using `[← Category.assoc, famMap_fst, hb', Category.assoc]`. Simplify using `only [uVal, Category.assoc, famMap_snd, this]`.
+
+Use `(sval_pullOver _ _ _ _ hJ).trans ((H α β (hy ▸ hβ) T (ρ ≫ famMap D E F) z J hJ).trans (congrArg₂ (· * ·) (Eq.trans ?_ (sval_pullOver _ _ _ _ hJ).symm) (congrArg Units.val ?_)))` and prove the remaining obligations. Rewrite using `[Category.assoc, ← e₁, ← Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[e₃, val_mul hJ, val_mul hJ, hv _ _ z J hJ, val_corr hJ (hs α), val_pull hJ, e₂]`. Both sides reduce to the same expression.
+-/
 theorem phiVal_pull (hG : GlobalFnsSt) {D : DegPre R} {k : ℕ} {p : QkPt D E k} {p' : QkPt D F k}
     (h : QkExt (algebraMap E F) p p') {w : Frm D E k p.g.b} {w' : Frm D F k p'.g.b}
     (hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ (TF (R := R) F).left) (z : Z) J, Good D.P.L z J →
@@ -94,11 +119,21 @@ theorem phiVal_pull (hG : GlobalFnsSt) {D : DegPre R} {k : ℕ} {p : QkPt D E k}
   · rw [e₃, val_mul hJ, val_mul hJ, hv _ _ z J hJ, val_corr hJ (hs α), val_pull hJ, e₂]
     rfl
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[secMap_fst, whiskerRight_fst]`. Rewrite using `[secMap_snd, whiskerRight_snd]`.
+-/
 theorem secMap_eq (A : PolAV (Sp (FractionRing R))) : secMap A E F = baseK (R := R) E F ▷ A.A := by
   apply CartesianMonoidalCategory.hom_ext
   · rw [secMap_fst, whiskerRight_fst]
   · rw [secMap_snd, whiskerRight_snd]
 
+/- English proof (translation)
+Take `⟨ξ, Hξ, v⟩` from `SymLiftGlobal.exists_symLift_pull_val A.isLB (baseK (R := R) E F) H`. Establish `c` using `SymLiftOdd.symLift_unique GlobalTheory.globalFns_holds A.isAb A.isLB hN θ' ξ H' Hξ`. Introduce `Z r z J hJ`. Establish `h₂ : thetaVal θ' r z J = thetaVal θ (r ≫ (secMap A E F).left) z J`. Rewrite using `[secMap_eq]`.
+
+Conclude with `(val_corr hJ c _).trans (v _ _ z J hJ)`. Use `(sval_pullOver _ _ _ _ hJ).trans ((h _ _ z J hJ).trans (congrArg₂ (· * ·) (congrArg Units.val h₂.symm) (Eq.trans ?_ (sval_pullOver _ _ _ _ hJ).symm)))` and prove the remaining obligations. Establish `e : (translT A.A θ'.pt).left ≫ (secMap A E F).left = (secMap A E F).left ≫ (translT A.A θ.pt).left`. Rewrite using `[H'.pt_eq, H.pt_eq, secMap_eq]`. Conclude with `congrArg (fun q => q.left) (CommPairing.whisker_translT (baseK (R := R) E F) x)`.
+
+Rewrite using `[Category.assoc, Category.assoc, e]`. Both sides reduce to the same expression.
+-/
 theorem actVal_secPull {A : PolAV (Sp (FractionRing R))} {N : ℕ} (hN : Odd N) {x : TFK (R := R) E ⟶ A.A}
     {θ : ThetaGrp A.A A.L (N : ℤ) (TFK (R := R) E)} {θ' : ThetaGrp A.A A.L (N : ℤ) (TFK (R := R) F)}
     (H : SymLift A.A A.L N N x θ) (H' : SymLift A.A A.L N N (baseK (R := R) E F ≫ x) θ')
@@ -120,6 +155,19 @@ end GlobalTheory.Mum.UpAct
 
 open GlobalTheory.Mum.UpAct GlobalTheory.UT GlobalTheory.ThetaScalar in
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A N hN lab E₀ hE F _ _ _ _ _ lab' hlab E' hE' p w θ s s' hw hθ hs`. Establish `: CharZero R` using `hR.2`. Establish `hG` using `GlobalTheory.globalFns_holds`. Take `⟨p₀, hp, -⟩` from `(qkPt_algClosure_bijective R D.toPre F (IsScalarTower.toAlgHom (FractionRing R) (Kb R) F) N hN.pos).2 p`. Establish `hx : lab' p = baseK (R` using `R) (Kb R) F ≫ lab p₀ := Over.OverMorphism.ext (hlab p₀ p hp)`.
+
+Use `replace hp : QkExt (algebraMap (Kb R) F) p₀ p := hp`. Take `⟨w₀, hw₀⟩` from `hE.frame p₀`. Take `⟨θ₀, hθ₀⟩` from `hE.lift p₀`. Take `⟨w', hw', hv'⟩` from `exists_frame_pull hp hw₀.1`. Establish `hu` using `(GlobalTheory.UT.SymFrame.main GlobalTheory.firstFiveLaws R _ hR.1 D F N hN p).2 w w' hw (txFrame_pull hp hw₀ hw' hv')`.
+
+Establish `hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ (TF (R` using `R) F).left) (z : Z) J, Good D.toPre.P.L z J → val w r z J = val w₀ (r ≫ (baseMap (R := R) (Kb R) F).left) z J := fun Z r z J hJ => (val_corr hJ (corr_of_val D.toPre.P.isLB hu) r).trans (hv' Z r z J hJ)`. Take `⟨Φ₀, hΦ₀⟩` from `phiFun_of_globalFns hG R _ D (Kb R) N hN.pos p₀ w₀ hw₀.1`. Take `⟨Φ, hΦ⟩` from `phiFun_of_globalFns hG R _ D F N hN.pos p w hw.1`. Take `⟨Θ, hΘ⟩ : ∃ Θ : SecF A F N →ₗ[F] SecF A F N, ∀ t, ActVal θ t (Θ t)` from `GlobalTheory.TorsionExt.exists_act θ`. Rewrite `hθ` using `[hx]`.
+
+Establish `key : E' ∘ₗ Φ = Θ ∘ₗ E'` using `LinearMap.ext_on (isExtension_famPull D.toPre (Kb R) F GlobalTheory.globalFns_holds hN.pos).span (by`. Introduce and unpack `_ ⟨u, rfl⟩`. Establish `r₀ : PhiRel D.toPre (Kb R) N p₀ w₀ u (Φ₀ u)` using `(hΦ₀ u _).2 rfl`. Establish `r` using `(hΦ _ _).1 ((phiRel_iff hG p w hw.1 _ _).2 (phiVal_pull GlobalTheory.globalFns_holds hp hv u _ ((phiRel_iff hG p₀ w₀ hw₀.1 _ _).1 r₀)))`. Establish `a` using `actVal_secPull hN hθ₀ hθ (ThetaBaseChange.actVal_of_isActOf (hE.act p₀ w₀ θ₀ u _ hw₀ hθ₀ r₀))`.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, ← r, hE', hE']`. Conclude with `GlobalTheory.TorsionExt.actVal_unique a (hΘ _))`. Take `rfl` from `(hΦ _ _).1 hs`. Establish `e : E' (Φ s) = Θ (E' s)` using `LinearMap.congr_fun key s`. Rewrite using `[e]`.
+
+Conclude with `(hΘ _).isActOf A.isLB`.
+-/
 theorem GlobalTheory.Mum.UpAct.act_extension : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (N : ℕ), Odd N → ∀ (lab : QkPt D.toPre (Kb R) N → (TFK (R := R) (Kb R) ⟶ A.A)) (E₀ : Fam D.toPre (Kb R) N → SecK A.L (snd (TFK (R := R) (Kb R)) A.A).left N), Eqv D.toPre A (Kb R) N lab E₀ → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] [Algebra (Kb R) F] [IsScalarTower (FractionRing R) (Kb R) F] (lab' : QkPt D.toPre F N → (TFK (R := R) F ⟶ A.A)), LabExt (IsScalarTower.toAlgHom (FractionRing R) (Kb R) F) lab lab' → ∀ (E' : Fam D.toPre F N →ₗ[F] SecF A F N), (∀ s, E' (famPull D.toPre (Kb R) F GlobalTheory.globalFns_holds N s) = UpExt.secPull A (Kb R) F N (E₀ s)) → ∀ (p : QkPt D.toPre F N) w (θ : ThetaGrp A.A A.L (N : ℤ) (TFK (R := R) F)) (s s' : Fam D.toPre F N), GlobalTheory.UT.TXFrame N p w → SymLift A.A A.L N N (lab' p) θ → PhiRel D.toPre F N p w s s' → IsActOf A.A A.L N θ (E' s) (E' s') := by
   intro R _ _ _ hR D A N hN lab E₀ hE F _ _ _ _ _ lab' hlab E' hE' p w θ s s' hw hθ hs
   have : CharZero R := hR.2

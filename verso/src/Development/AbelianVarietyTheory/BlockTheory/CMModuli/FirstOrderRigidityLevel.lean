@@ -197,6 +197,9 @@ def Statement : Prop :=
   CoordTheta ∧ ThetaDetermines ∧ LevelSqDetermined ∧ ThetaDeterminesLevel ∧ EndDeterminedOnTorsion ∧
     ThetaDeterminesAction ∧ FirstOrderRigid
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by norm_num, by decide, le_rfl, by norm_num⟩`.
+-/
 example : Conv 2 3 2 := ⟨by norm_num, by decide, le_rfl, by norm_num⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.FirstOrderRigidityLevel

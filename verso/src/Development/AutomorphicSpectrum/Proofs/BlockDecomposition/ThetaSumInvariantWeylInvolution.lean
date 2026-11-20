@@ -26,6 +26,21 @@ variable {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup
 
 include hK hcov hc hsy hadd hn hker hinj hμ hF h1
 
+/- English proof (translation)
+Establish `: Countable Γ` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hc' : ∀ y, Continuous (B y)` using `fun y => (hc y).congr fun x => hsy x y`. Establish `hadd' : ∀ y x x', B y (x + x') = B y x * B y x'` using `fun y x x' => by`. Rewrite using `[hsy y, hadd, hsy x, hsy x']`. Establish `hU : GlobalTheory.CompanionTheory.Hypotheses₂.OneV.PoiAbs.UnifSummable Γ.subtype f` using `fun Q hQ => by`.
+
+Take `⟨b, hb1, hb2⟩` from `hb Q hQ`. Use `⟨b, hb1, fun c x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `hb2 x hx c`. Rewrite `h` using `[add_comm]`. Then use the resulting hypothesis. Establish `hfi : Integrable f μ` using `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.PoiAbs.integrable_of_unif hf hU μ hK fun x => by`.
+
+Take `⟨γ, hγ, h⟩` from `hcov x`. Use `⟨⟨-γ, Γ.neg_mem hγ⟩, ?_⟩` and prove the remaining obligations. Simplify `h` using `[sub_neg_eq_add, add_comm]`. Establish `hcont : Continuous fun x => ∑' ξ : Γ, f (ξ + x)`. Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations.
+
+Take `⟨Q, hQ, hxQ⟩` from `exists_compact_mem_nhds x`. Take `⟨b, hb1, hb2⟩` from `hb Q hQ`. Establish `h : ContinuousOn (fun x => ∑' ξ : Γ, f (ξ + x)) Q` using `continuousOn_tsum (fun ξ => (hf.comp (continuous_const.add continuous_id)).continuousOn) hb1 (fun ξ x hx => hb2 x hx ξ)`. Conclude with `h.continuousAt hxQ`. Establish `hcoef : ∀ γ : Γ, ∫ x in 𝓕, B γ x * (∑' ξ : Γ, f (ξ + x)) ∂μ = ∫ x, f x * B x γ ∂μ`.
+
+Introduce `γ`. Establish `hi : Integrable (fun x => f x * B x γ) μ` using `hfi.mul_bdd (c := 1) (hc γ).aestronglyMeasurable (Filter.Eventually.of_forall fun y => (hn y γ).le)`. Rewrite using `[(GlobalTheory.CovolumeOneSelfDual.unfold Γ μ 𝓕 hF _ hi).2]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[hadd, (hker γ).2 γ.2 ξ ξ.2, one_mul, mul_comm, hsy]`. Establish `key` using `GlobalTheory.CompactQuotientFourier.inversion_at_zero A Γ K hK hcov Γ (fun γ x => B γ x) (fun γ => hc' γ) (fun γ x y => hadd' γ x y) (fun a b x => hadd a b x) (fun a x => hn a x) (fun x => by rw [← hker x]; exact ⟨fun h γ hγ => h ⟨γ, hγ⟩, fun h γ => h γ γ.2⟩) (fun a h => Subtype. …`. Rewrite using `[← (Equiv.addRight (⟨γ, hγ⟩ : Γ)).tsum_eq fun ξ : Γ => f (ξ + x)]`.
+
+Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Simplify using `[add_assoc])`. Use the proof step `(by simp only [hcoef]; exact hsum)`. Simplify using `only [hcoef, add_zero] at key`. Conclude with `key`.
+-/
 theorem poisson_translates {f : A → ℂ} (hf : Continuous f)
     (hb : ∀ Q : Set A, IsCompact Q → ∃ b : Γ → ℝ, Summable b ∧ ∀ x ∈ Q, ∀ ξ : Γ, ‖f (ξ + x)‖ ≤ b ξ)
     (hsum : Summable fun γ : Γ => ‖∫ x, f x * B x γ ∂μ‖) :
@@ -84,10 +99,16 @@ def ratEquiv (D : D7) (m n : ℕ) : Matrix (Fin m) (Fin n) D.host.E ≃ ratMx D 
   Equiv.ofBijective (fun ξ => ⟨rat ξ, ⟨ξ, rfl⟩⟩)
     ⟨fun _ _ h => rat_injective (congrArg Subtype.val h), fun ⟨_, ξ, h⟩ => ⟨ξ, Subtype.ext h⟩⟩
 
+/- English proof (translation)
+The claim follows from `((ratEquiv D m n).tsum_eq fun γ : ratMx D m n => f γ).symm`.
+-/
 theorem tsum_ratMx (f : Mx D m n → ℂ) :
     ∑' γ : ratMx D m n, f γ = ∑' ξ : Matrix (Fin m) (Fin n) D.host.E, f (ξ.map (incA D)) :=
   ((ratEquiv D m n).tsum_eq fun γ : ratMx D m n => f γ).symm
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.trA`. Rewrite using `[← GlobalTheory.SiegelWeilLitCompare.gramQ_adj hT x y, ← GlobalTheory.DualPairCheck.trace_cA (Matrix.trace (GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.gramQ T x y))]`. Use `congr 2`. Simplify using `only [Matrix.trace, map_sum]`. Both sides reduce to the same expression.
+-/
 theorem pairing_symm {T : Matrix (Fin m) (Fin m) D.host.E} (hT : IsHermND D.sp.cm.sig T)
     (ψ : AddChar (AF D.host.F) ℂ) (x y : Mx D m n) :
     GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing T ψ x y = GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing T ψ y x := by
@@ -97,6 +118,13 @@ theorem pairing_symm {T : Matrix (Fin m) (Fin m) D.host.E} (hT : IsHermND D.sp.c
   simp only [Matrix.trace, map_sum]
   rfl
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `GlobalTheory.T.exists_summable_bound_schwartz_majorant_rational_translates D θ hθ m n`. Take `⟨-, K, hK, hC⟩` from `GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ m n φ.1 (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ m n φ.1 φ.2)`. Take `⟨C, hC⟩` from `hC N`. Take `⟨b, hb, hb'⟩` from `hN K Q hK hQ`. Use `⟨fun γ => |C| * b ((ratEquiv D m n).symm γ), ((ratEquiv D m n).symm.summable_iff.2 hb).mul_left |C|, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx γ`. Take `⟨ξ, rfl⟩` from `(ratEquiv D m n).surjective γ`. Establish `h1` using `hb' x hx ξ`. Establish `h2` using `hC (x + rat ξ)`. Establish `e : ((ratEquiv D m n ξ : Mx D m n) + x) = x + rat ξ` using `add_comm _ _`.
+
+Rewrite using `[e]`. Use `beta_reduce`. Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `h2.trans (mul_le_mul (le_abs_self C) h1 (GlobalTheory.Unf.maj_nonneg _ _ _ _) (abs_nonneg C))`.
+-/
 theorem translates_bound {θ : InfFam D} (hθ : IsInfFam θ) (φ : schwartzA θ m n) (Q : Set (Mx D m n)) (hQ : IsCompact Q) :
     ∃ b : ratMx D m n → ℝ, Summable b ∧ ∀ x ∈ Q, ∀ ξ : ratMx D m n, ‖φ.1 (ξ + x)‖ ≤ b ξ := by
   obtain ⟨N, hN⟩ := GlobalTheory.T.exists_summable_bound_schwartz_majorant_rational_translates D θ hθ m n
@@ -117,6 +145,19 @@ theorem translates_bound {θ : InfFam D} (hθ : IsInfFam θ) (φ : schwartzA θ 
 
 end Adelic
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω hS g hg Φ`. Take `⟨-, -, hψ, -, -, hθ, ⟨𝓕, hμ⟩, hω⟩` from `hS`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `lattice_Mx D V.rank n`. Use `haveI : BorelSpace (Mx D V.rank n) := ⟨rfl⟩`. Establish `hT` using `isHermND_gram V`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.T.rationalAdelicMatrices_self_annihilator D V.rank n V.gram hT ψ hψ`. Establish `hs` using `pairing_symm (n := n) hT ψ`. Establish `hval : ∀ x, (ω g Φ).1 x = ∫ y, Φ.1 y * GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing V.gram ψ y x ∂μ` using `fun x => by`. Rewrite using `[hω.weyl g hg Φ x]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[hs y x]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing, GlobalTheory.SiegelWeilLitCompare.gramQ_eq]`. Both sides reduce to the same expression. Use `haveI := hμ.1`.
+
+Establish `key` using `poisson_translates (ratMx D V.rank n) K hK hKc (GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing (n := n) V.gram ψ) (fun y => ?_) hs (fun x x' y => ?_) (fun x y => hψ.2.1 _) h1 h2 μ 𝓕 hμ.2.1 hμ.2.2 (f := Φ.1) ?_ (translates_bound hθ Φ) ?_`. Simplify using `only [← hval] at key`. Rewrite `key` using `[tsum_ratMx, tsum_ratMx (fun x => (ω g Φ).1 x)]`. Conclude with `key.symm`. Simplify using `only [hs _ y] haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F) haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`.
+
+Establish `ht : Continuous (GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.trA (D` using `D)) := IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`. Conclude with `hψ.1.comp (ht.comp (continuous_const.matrix_mul continuous_id).matrix_trace)`. Simplify using `only [hs _ y]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.trA GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.gramQ GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.mmul`. Rewrite using `[Matrix.mul_add, Matrix.trace_add, map_add, AddChar.map_add_eq_mul]`.
+
+Conclude with `(GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ _ n Φ.1 (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ _ n Φ.1 Φ.2)).1`. Simplify using `only [← hval]`. Conclude with `(ratEquiv D V.rank n).summable_iff.1 (GlobalTheory.SiegelWeilLitCompare.summable_rat hθ (ω g Φ))`.
+-/
 theorem theta_weyl : ∀ (D : D7) (n : ℕ) (V : HSp D) ψ χ θ μ ω, HidaSetting D n V ψ χ θ μ ω →
     ∀ g : G D n, mat g = blk4 0 1 (-1) 0 →
     ∀ Φ : schwartzA θ V.rank n,

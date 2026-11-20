@@ -5,6 +5,11 @@ open scoped Quaternion Topology
 
 namespace GlobalTheory.QSA
 
+/- English proof (translation)
+Introduce `F _ _ w`. Establish `hiso` using `InfinitePlace.Completion.isometry_extensionEmbedding w`. Establish `h2 : ‖(2 : w.Completion)‖ = 2`. Use `(AddMonoidHomClass.isometry_iff_norm _).1 hiso (2 : w.Completion)` as an intermediate fact. Rewrite using `[← this, map_ofNat]`.
+
+Simplify using the standard rewrite rules. Use `letI : NontriviallyNormedField w.Completion := { (inferInstance : NormedField w.Completion) with non_trivial := ⟨2, by rw [h2]; norm_num⟩ }`. Conclude with `NormedField.nhdsNE_neBot (0 : w.Completion)`.
+-/
 theorem infinitePlace_completion_nhdsNE_neBot : ∀ (F : Type) [Field F] [NumberField F] (w : InfinitePlace F), (𝓝[≠] (0 : w.Completion)).NeBot := by
   intro F _ _ w
   have hiso := InfinitePlace.Completion.isometry_extensionEmbedding w

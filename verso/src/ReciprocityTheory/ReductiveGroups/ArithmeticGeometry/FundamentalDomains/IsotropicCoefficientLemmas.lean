@@ -8,13 +8,22 @@ variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 namespace IsotropicCoefficientLemmas
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma smul_O {r : ℕ} (β : 𝓞 E) (v : Fin r → E) : β • v = (β : E) • v := by
   rfl
 
+/- English proof (translation)
+Simplify using `only [herm, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 lemma herm_add_left {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (x y z : Fin r → E) :
     herm G (x + y) z = herm G x z + herm G y z := by
   simp only [herm, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma herm_smul_left {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (e : E) (x z : Fin r → E) :
     herm G (e • x) z = e * herm G x z := by
   simp only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
@@ -38,6 +47,13 @@ def Nx {r : ℕ} (X : Data E r) (ξ : Fin r → E) : Submodule (𝓞 E) (Mp X ξ
     rintro β m ⟨e, he⟩
     exact ⟨(β : E) * e, by rw [Submodule.coe_smul, smul_O, he, smul_smul]⟩
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce `q hq`. Take `⟨⟨a, ha⟩, haq⟩` from `(Submodule.mem_torsion_iff q).1 hq`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `haq' : (a : 𝓞 E) • (Submodule.Quotient.mk m : Mp X ξ ⧸ Nx X ξ) = 0` using `haq`.
+
+Rewrite `haq'` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨e, he⟩` from `haq'`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`. Establish `ha0 : (a : E) ≠ 0` using `NumberField.RingOfIntegers.coe_ne_zero_iff.2 (nonZeroDivisors.ne_zero ha)`. Rewrite `he` using `[Submodule.coe_smul, smul_O]`.
+
+Use `show ∃ e : E, (m : Fin r → E) = e • ξ`. Use `⟨e / a, ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_inv_mul, mul_smul, ← he, smul_smul, inv_mul_cancel₀ ha0, one_smul]`.
+-/
 lemma torsion_bot {r : ℕ} (X : Data E r) (ξ : Fin r → E) :
     Submodule.torsion (𝓞 E) (Mp X ξ ⧸ Nx X ξ) = ⊥ := by
   rw [eq_bot_iff]
@@ -58,6 +74,29 @@ lemma torsion_bot {r : ℕ} (X : Data E r) (ξ : Fin r → E) :
 end IsotropicCoefficientLemmas
 
 open IsotropicCoefficientLemmas in
+/- English proof (translation)
+Introduce `r X ξ hξ`. Establish `hξ0 : ξ ≠ 0` using `hξ.2.2`. Establish `hle : Mp X ξ ≤ X.Λ` using `fun μ h => h.1`. Use `haveI : Module.Finite (𝓞 E) (Mp X ξ) := by haveI : Module.Finite (𝓞 E) X.Λ := Module.Finite.iff_fg.2 X.Λ_fg`. Establish `h1 : ((Mp X ξ).comap X.Λ.subtype).FG` using `IsNoetherian.noetherian _`.
+
+Establish `h2` using `h1.map X.Λ.subtype`. Rewrite `h2` using `[Submodule.map_comap_eq, Submodule.range_subtype, inf_eq_right.2 hle]`. Conclude with `Module.Finite.iff_fg.2 h2`. Use `haveI : Module.Flat (𝓞 E) (Mp X ξ ⧸ Nx X ξ) := IsDedekindDomain.flat_iff_torsion_eq_bot.2 (torsion_bot X ξ)`. Use `haveI : Module.FinitePresentation (𝓞 E) (Mp X ξ ⧸ Nx X ξ) := Module.finitePresentation_of_finite _ _`.
+
+Use `haveI : Module.Projective (𝓞 E) (Mp X ξ ⧸ Nx X ξ) := Module.Flat.projective_of_finitePresentation`. Take `⟨s, hs⟩` from `Module.projective_lifting_property (Nx X ξ).mkQ LinearMap.id (Submodule.mkQ_surjective _)`. Use `set ρ : Mp X ξ →ₗ[𝓞 E] Mp X ξ := LinearMap.id - s ∘ₗ (Nx X ξ).mkQ with hρdef`. Establish `hρN : ∀ m, ∃ e : E, ((ρ m : Mp X ξ) : Fin r → E) = e • ξ`. Introduce `m`.
+
+Establish `h1 : (Nx X ξ).mkQ (s ((Nx X ξ).mkQ m)) = (Nx X ξ).mkQ m` using `LinearMap.congr_fun hs _`. Establish `h2 : (Nx X ξ).mkQ (ρ m) = 0`. Rewrite using `[hρdef, LinearMap.sub_apply, map_sub, LinearMap.id_apply, LinearMap.comp_apply, h1, sub_self]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 h2`. Use `choose coef hcoef using hρN`.
+
+Establish `hρid : ∀ m ∈ Nx X ξ, ρ m = m`. Introduce `m hm`. Establish `: (Nx X ξ).mkQ m = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hm`. Simplify using `[hρdef, this]`. Establish `huniq : ∀ e e' : E, e • ξ = e' • ξ → e = e'` using `fun e e' h => smul_left_injective E hξ0 h`.
+
+Establish `hmemMp : ∀ μ ∈ X.Λp ξ, μ ∈ Mp X ξ` using `fun μ h => ⟨h.1, h.2⟩`. Use `⟨fun μ => if h : μ ∈ Mp X ξ then coef ⟨μ, h⟩ else 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `μ hμ`. Simplify using `only [dif_pos (hmemMp μ hμ)]`. Rewrite using `[← hcoef]`.
+
+Conclude with `(ρ _).2.1`. Introduce `μ hμ μ' hμ'`. Establish `hs'` using `(Mp X ξ).add_mem (hmemMp μ hμ) (hmemMp μ' hμ')`. Simplify using `only [dif_pos hs', dif_pos (hmemMp μ hμ), dif_pos (hmemMp μ' hμ')]`. Apply `huniq` to reduce the goal to its premises.
+
+Rewrite using `[← hcoef, add_smul, ← hcoef, ← hcoef]`. Establish `: (⟨μ + μ', hs'⟩ : Mp X ξ) = ⟨μ, hmemMp μ hμ⟩ + ⟨μ', hmemMp μ' hμ'⟩` using `rfl`. Rewrite using `[this, map_add]`. Both sides reduce to the same expression. Introduce `α μ hμ`.
+
+Establish `hs' : (α : E) • μ ∈ Mp X ξ`. Rewrite using `[← smul_O]`. Conclude with `(Mp X ξ).smul_mem α (hmemMp μ hμ)`. Simplify using `only [dif_pos hs', dif_pos (hmemMp μ hμ)]`. Apply `huniq` to reduce the goal to its premises.
+
+Rewrite using `[← hcoef, mul_smul, ← hcoef]`. Establish `: (⟨(α : E) • μ, hs'⟩ : Mp X ξ) = α • ⟨μ, hmemMp μ hμ⟩` using `Subtype.ext (smul_O α μ).symm`. Rewrite using `[this, map_smul, Submodule.coe_smul, smul_O]`. Introduce `e he`. Establish `hmem : e • ξ ∈ Mp X ξ` using `⟨he, by rw [herm_smul_left, hξ.2.1, mul_zero]⟩`.
+
+Simplify using `only [dif_pos hmem]`. Apply `huniq` to reduce the goal to its premises. Rewrite using `[← hcoef, hρid _ ⟨e, rfl⟩]`.
+-/
 theorem isotropicCoefficientSplitting_holds : IsotropicCoefficientSplitting (E := E) := by
   intro r X ξ hξ
   classical

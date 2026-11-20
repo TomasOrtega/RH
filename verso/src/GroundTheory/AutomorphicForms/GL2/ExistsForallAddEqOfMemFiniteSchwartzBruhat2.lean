@@ -17,6 +17,9 @@ def finiteSchwartzBruhat2 : Submodule ℂ ((Fin 2 → 𝔸ᶠ[K]) → ℂ) where
   add_mem' hf hg := ⟨hf.1.add hg.1, hf.2.add hg.2⟩
   smul_mem' c _ hf := ⟨hf.1.comp (c • ·), hf.2.comp_left (smul_zero c)⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_finiteSchwartzBruhat2 {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ} :
     f ∈ finiteSchwartzBruhat2 K ↔ IsLocallyConstant f ∧ HasCompactSupport f :=
   Iff.rfl
@@ -36,10 +39,18 @@ variable {K}
 def finiteTensor2 (g : Fin 2 → 𝔸ᶠ[K] → ℂ) : (Fin 2 → 𝔸ᶠ[K]) → ℂ :=
   fun x ↦ ∏ i, g i (x i)
 
+/- English proof (translation)
+The claim follows from `Fin.prod_univ_two _`.
+-/
 theorem finiteTensor2_apply (g : Fin 2 → 𝔸ᶠ[K] → ℂ) (x : Fin 2 → 𝔸ᶠ[K]) :
     finiteTensor2 g x = g 0 (x 0) * g 1 (x 1) :=
   Fin.prod_univ_two _
 
+/- English proof (translation)
+Establish `he : finiteTensor2 g = fun x ↦ g 0 (x 0) * g 1 (x 1)` using `funext (finiteTensor2_apply g)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `((hg 0).1.comp_continuous (continuous_apply 0)).mul ((hg 1).1.comp_continuous (continuous_apply 1))`. Use `HasCompactSupport.intro (isCompact_univ_pi fun i ↦ (hg i).2.isCompact) fun x hx ↦ ?_` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, not_forall] at hx`. Take `⟨i, hi⟩` from `hx`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (image_eq_zero_of_notMem_tsupport hi)`.
+-/
 theorem finiteTensor2_mem {g : Fin 2 → 𝔸ᶠ[K] → ℂ} (hg : ∀ i, g i ∈ finiteSchwartzBruhat K) :
     finiteTensor2 g ∈ finiteSchwartzBruhat2 K := by
   have he : finiteTensor2 g = fun x ↦ g 0 (x 0) * g 1 (x 1) := funext (finiteTensor2_apply g)
@@ -55,26 +66,43 @@ theorem finiteTensor2_mem {g : Fin 2 → 𝔸ᶠ[K] → ℂ} (hg : ∀ i, g i �
 def idealFiniteAdeles2 (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : AddSubgroup (Fin 2 → 𝔸ᶠ[K]) :=
   AddSubgroup.pi Set.univ fun _ ↦ idealFiniteAdeles I
 
+/- English proof (translation)
+Simplify using `[idealFiniteAdeles2, AddSubgroup.mem_pi]`.
+-/
 theorem mem_idealFiniteAdeles2 {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {x : Fin 2 → 𝔸ᶠ[K]} :
     x ∈ idealFiniteAdeles2 I ↔ ∀ i, x i ∈ idealFiniteAdeles I := by
   simp [idealFiniteAdeles2, AddSubgroup.mem_pi]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[mem_idealFiniteAdeles2]`.
+-/
 theorem coe_idealFiniteAdeles2 (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     (idealFiniteAdeles2 I : Set (Fin 2 → 𝔸ᶠ[K])) =
       Set.univ.pi fun _ ↦ (idealFiniteAdeles I : Set 𝔸ᶠ[K]) := by
   ext x
   simp [mem_idealFiniteAdeles2]
 
+/- English proof (translation)
+Rewrite using `[coe_idealFiniteAdeles2]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ ↦ isOpen_idealFiniteAdeles I`.
+-/
 theorem isOpen_idealFiniteAdeles2 (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     IsOpen (idealFiniteAdeles2 I : Set (Fin 2 → 𝔸ᶠ[K])) := by
   rw [coe_idealFiniteAdeles2]
   exact isOpen_set_pi Set.finite_univ fun _ _ ↦ isOpen_idealFiniteAdeles I
 
+/- English proof (translation)
+Rewrite using `[coe_idealFiniteAdeles2]`. Conclude with `isCompact_univ_pi fun _ ↦ isCompact_idealFiniteAdeles I`.
+-/
 theorem isCompact_idealFiniteAdeles2 (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     IsCompact (idealFiniteAdeles2 I : Set (Fin 2 → 𝔸ᶠ[K])) := by
   rw [coe_idealFiniteAdeles2]
   exact isCompact_univ_pi fun _ ↦ isCompact_idealFiniteAdeles I
 
+/- English proof (translation)
+Rewrite `hW` using `[nhds_pi, Filter.mem_pi]`. Take `⟨J, -, t, ht, hJt⟩` from `hW`. Establish `hU : (⋂ i, t i) ∈ 𝓝 (0 : 𝔸ᶠ[K])` using `Filter.iInter_mem.mpr fun i ↦ ht i`. Take `⟨I, hI⟩` from `exists_idealFiniteAdeles_subset hU`. Use `⟨I, fun x hx ↦ hJt fun i _ ↦ ?_⟩` and prove the remaining obligations.
+
+Conclude with `Set.mem_iInter.mp (hI ((mem_idealFiniteAdeles2.mp hx) i)) i`.
+-/
 theorem exists_idealFiniteAdeles2_subset {W : Set (Fin 2 → 𝔸ᶠ[K])} (hW : W ∈ 𝓝 0) :
     ∃ I : (FractionalIdeal (𝓞 K)⁰ K)ˣ, (idealFiniteAdeles2 I : Set (Fin 2 → 𝔸ᶠ[K])) ⊆ W := by
   rw [nhds_pi, Filter.mem_pi] at hW
@@ -86,6 +114,11 @@ theorem exists_idealFiniteAdeles2_subset {W : Set (Fin 2 → 𝔸ᶠ[K])} (hW : 
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[finiteTensor2_apply, cosetIndicator_apply, cosetIndicator_apply]`. Establish `h : x - a ∈ idealFiniteAdeles2 I ↔ x 0 - a 0 ∈ idealFiniteAdeles I ∧ x 1 - a 1 ∈ idealFiniteAdeles I`. Rewrite using `[mem_idealFiniteAdeles2, Fin.forall_fin_two]`. Both sides reduce to the same expression. Apply the tactic sequence `by_cases h0 : x 0 - a 0 ∈ idealFiniteAdeles I <;> by_cases h1 : x 1 - a 1 ∈ idealFiniteAdeles I <;>`.
+
+Simplify using `[h, h0, h1]`.
+-/
 theorem finiteTensor2_cosetIndicator_apply (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
     (a x : Fin 2 → 𝔸ᶠ[K]) :
     finiteTensor2 (fun i ↦ cosetIndicator I (a i)) x =
@@ -99,6 +132,21 @@ theorem finiteTensor2_cosetIndicator_apply (I : (FractionalIdeal (𝓞 K)⁰ K)�
   by_cases h0 : x 0 - a 0 ∈ idealFiniteAdeles I <;> by_cases h1 : x 1 - a 1 ∈ idealFiniteAdeles I <;>
     simp [h, h0, h1]
 
+/- English proof (translation)
+Establish `hloc : ∀ x : Fin 2 → 𝔸ᶠ[K], ∃ J : (FractionalIdeal (𝓞 K)⁰ K)ˣ, ∀ h ∈ idealFiniteAdeles2 J, f (x + h) = f x`. Introduce `x`. Establish `h1 : ∀ᶠ h in 𝓝 (0 : Fin 2 → 𝔸ᶠ[K]), f (x + h) = f x` using `((continuous_const_add x).tendsto' 0 x (add_zero x)).eventually (hf.1.eventually_eq x)`. Take `⟨J, hJ⟩` from `exists_idealFiniteAdeles2_subset h1`. Conclude with `⟨J, fun h hh ↦ hJ hh⟩`.
+
+Use `choose J hJ using hloc`. Take `⟨t, ht⟩` from `hf.2.isCompact.elim_finite_subcover (fun x ↦ x +ᵥ (idealFiniteAdeles2 (J x) : Set (Fin 2 → 𝔸ᶠ[K]))) (fun x ↦ (isOpen_idealFiniteAdeles2 (J x)).vadd x) (fun x _ ↦ Set.mem_iUnion.mpr ⟨x, by`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem, vadd_eq_add, neg_add_cancel]`. Conclude with `zero_mem _⟩)`. Establish `hW : (⋂ x ∈ t, (idealFiniteAdeles2 (J x) : Set (Fin 2 → 𝔸ᶠ[K]))) ∈ 𝓝 0` using `(biInter_finset_mem t).mpr fun x _ ↦ (isOpen_idealFiniteAdeles2 (J x)).mem_nhds (zero_mem _)`.
+
+Take `⟨I, hI⟩` from `exists_idealFiniteAdeles2_subset hW`. Establish `hmain : ∀ x ∈ tsupport f, ∀ h ∈ idealFiniteAdeles2 I, f (x + h) = f x`. Introduce `x hx h hh`. Take `⟨x₀, hx₀t, hxx₀⟩` from `Set.mem_iUnion₂.mp (ht hx)`. Rewrite `hxx₀` using `[Set.mem_vadd_set_iff_neg_vadd_mem, vadd_eq_add, neg_add_eq_sub, SetLike.mem_coe]`.
+
+Establish `hh' : h ∈ idealFiniteAdeles2 (J x₀)` using `Set.mem_iInter₂.mp (hI hh) x₀ hx₀t`. Establish `e1` using `hJ x₀ (x - x₀) hxx₀`. Establish `e2` using `hJ x₀ (x + h - x₀) (by`. Establish `: x + h - x₀ = (x - x₀) + h` using `by abel`. Rewrite using `[this]`.
+
+Conclude with `add_mem hxx₀ hh')`. Rewrite `e1`, `e2` using `[add_sub_cancel]`. Rewrite using `[e1, e2]`. Use `⟨I, fun x h hh ↦ ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport f`.
+
+Conclude with `hmain x hx h hh`. Distinguish the cases in `hxh : x + h ∈ tsupport f`. Use `hmain (x + h) hxh (-h) (neg_mem hh)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxh]`.
+-/
 theorem exists_forall_add_eq_of_mem_finiteSchwartzBruhat2 {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ}
     (hf : f ∈ finiteSchwartzBruhat2 K) :
     ∃ I : (FractionalIdeal (𝓞 K)⁰ K)ˣ, ∀ x, ∀ h ∈ idealFiniteAdeles2 I, f (x + h) = f x := by
@@ -141,6 +189,17 @@ theorem exists_forall_add_eq_of_mem_finiteSchwartzBruhat2 {f : (Fin 2 → 𝔸�
       exact this.symm
     · rw [image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hxh]
 
+/- English proof (translation)
+Take `⟨I, hI⟩` from `exists_forall_add_eq_of_mem_finiteSchwartzBruhat2 hf`. Set `H` to `idealFiniteAdeles2 I`. Establish `: DiscreteTopology ((Fin 2 → 𝔸ᶠ[K]) ⧸ H)` using `QuotientAddGroup.discreteTopology (isOpen_idealFiniteAdeles2 I)`. Establish `hS : ((QuotientAddGroup.mk : (Fin 2 → 𝔸ᶠ[K]) → (Fin 2 → 𝔸ᶠ[K]) ⧸ H) '' tsupport f).Finite` using `(hf.2.isCompact.image continuous_quotient_mk').finite_of_discrete`. Establish `hmk : ∀ a x : Fin 2 → 𝔸ᶠ[K], x - a ∈ idealFiniteAdeles2 I ↔ (QuotientAddGroup.mk x : (Fin 2 → 𝔸ᶠ[K]) ⧸ H) = QuotientAddGroup.mk a`.
+
+Introduce `a x`. Rewrite using `[QuotientAddGroup.eq, ← neg_mem_iff, neg_sub, sub_eq_neg_add]`. Establish `hinj : Set.InjOn (fun q : (Fin 2 → 𝔸ᶠ[K]) ⧸ H ↦ q.out) ↑hS.toFinset` using `fun q _ q' _ h ↦ by simpa using congrArg (QuotientAddGroup.mk (s := H)) h`. Use `⟨I, hS.toFinset.image fun q ↦ q.out, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_image hinj]`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, finiteTensor2_cosetIndicator_apply, mul_ite, mul_one, mul_zero, hmk, QuotientAddGroup.out_eq']`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hx`.
+
+Establish `hq` using `QuotientAddGroup.out_eq' (s := H) (QuotientAddGroup.mk x)`. Rewrite `hq` using `[← hmk]`. Use `hI x (Quotient.out (QuotientAddGroup.mk x : (Fin 2 → 𝔸ᶠ[K]) ⧸ H) - x) hq` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Conclude with `this.symm`.
+
+Conclude with `image_eq_zero_of_notMem_tsupport fun hx' ↦ hx ((Set.Finite.mem_toFinset hS).mpr ⟨x, hx', rfl⟩)`.
+-/
 theorem exists_eq_sum_finiteTensor2_cosetIndicator {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ}
     (hf : f ∈ finiteSchwartzBruhat2 K) :
     ∃ (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (s : Finset (Fin 2 → 𝔸ᶠ[K])),
@@ -174,6 +233,11 @@ theorem exists_eq_sum_finiteTensor2_cosetIndicator {f : (Fin 2 → 𝔸ᶠ[K]) �
   · exact image_eq_zero_of_notMem_tsupport fun hx' ↦ hx ((Set.Finite.mem_toFinset hS).mpr
       ⟨x, hx', rfl⟩)
 
+/- English proof (translation)
+Use `le_antisymm (fun f hf ↦ ?_) (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Take `⟨I, s, hs⟩` from `exists_eq_sum_finiteTensor2_cosetIndicator hf`. Rewrite using `[hs]`. Conclude with `Submodule.sum_mem _ fun a _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨(I, a), rfl⟩)`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Conclude with `finiteTensor2_mem fun i ↦ cosetIndicator_mem_finiteSchwartzBruhat p.1 (p.2 i)`.
+-/
 theorem finiteSchwartzBruhat2_eq_span :
     finiteSchwartzBruhat2 K = Submodule.span ℂ (Set.range fun p : (FractionalIdeal (𝓞 K)⁰ K)ˣ ×
       (Fin 2 → 𝔸ᶠ[K]) ↦ finiteTensor2 fun i ↦ cosetIndicator p.1 (p.2 i)) := by
@@ -185,21 +249,33 @@ theorem finiteSchwartzBruhat2_eq_span :
   · rintro _ ⟨p, rfl⟩
     exact finiteTensor2_mem fun i ↦ cosetIndicator_mem_finiteSchwartzBruhat p.1 (p.2 i)
 
+/- English proof (translation)
+The claim follows from `hf.1.continuous.integrable_of_hasCompactSupport hf.2`.
+-/
 theorem integrable_of_mem_finiteSchwartzBruhat2 {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ}
     (hf : f ∈ finiteSchwartzBruhat2 K) : Integrable f (finiteMeasure2 K) :=
   hf.1.continuous.integrable_of_hasCompactSupport hf.2
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp (continuous_finiteAdelicChar.comp (continuous_finsetSum _ fun i _ ↦ (continuous_apply i).mul continuous_const))`.
+-/
 theorem continuous_finiteAdelicChar_sum_mul (y : Fin 2 → 𝔸ᶠ[K]) :
     Continuous fun x : Fin 2 → 𝔸ᶠ[K] ↦ (finiteAdelicChar K (∑ i, x i * y i) : ℂ) :=
   continuous_subtype_val.comp (continuous_finiteAdelicChar.comp
     (continuous_finsetSum _ fun i _ ↦ (continuous_apply i).mul continuous_const))
 
+/- English proof (translation)
+The claim follows from `hf.mono (hf.1.mul (continuous_finiteAdelicChar_sum_mul y).aestronglyMeasurable) (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])`.
+-/
 theorem integrable_mul_finiteAdelicChar_sum {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ}
     (hf : Integrable f (finiteMeasure2 K)) (y : Fin 2 → 𝔸ᶠ[K]) :
     Integrable (fun x ↦ f x * (finiteAdelicChar K (∑ i, x i * y i) : ℂ)) (finiteMeasure2 K) :=
   hf.mono (hf.1.mul (continuous_finiteAdelicChar_sum_mul y).aestronglyMeasurable)
     (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [finiteFourier2, Pi.add_apply, add_mul]`. Conclude with `integral_add (integrable_mul_finiteAdelicChar_sum hf y) (integrable_mul_finiteAdelicChar_sum hg y)`.
+-/
 theorem finiteFourier2_add {f g : (Fin 2 → 𝔸ᶠ[K]) → ℂ} (hf : Integrable f (finiteMeasure2 K))
     (hg : Integrable g (finiteMeasure2 K)) :
     finiteFourier2 K (f + g) = finiteFourier2 K f + finiteFourier2 K g := by
@@ -208,16 +284,27 @@ theorem finiteFourier2_add {f g : (Fin 2 → 𝔸ᶠ[K]) → ℂ} (hf : Integrab
   exact integral_add (integrable_mul_finiteAdelicChar_sum hf y)
     (integrable_mul_finiteAdelicChar_sum hg y)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [finiteFourier2, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _`.
+-/
 theorem finiteFourier2_smul (c : ℂ) (f : (Fin 2 → 𝔸ᶠ[K]) → ℂ) :
     finiteFourier2 K (c • f) = c • finiteFourier2 K f := by
   funext y
   simp only [finiteFourier2, Pi.smul_apply, smul_eq_mul, mul_assoc]
   exact integral_const_mul c _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[finiteFourier2]`.
+-/
 theorem finiteFourier2_zero : finiteFourier2 K (0 : (Fin 2 → 𝔸ᶠ[K]) → ℂ) = 0 := by
   funext y
   simp [finiteFourier2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `h` using `integral_fintype_prod_eq_prod (μ := fun _ : Fin 2 ↦ finiteAdeleMeasure K) (fun i x ↦ g i x * (finiteAdelicChar K (x * y i) : ℂ))`. Rewrite using `[finiteFourier2, finiteTensor2]`. Simplify using `only [finiteFourier]`. Rewrite using `[← h]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Simplify using `only [finiteTensor2, Fin.prod_univ_two, Fin.sum_univ_two, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finiteFourier2_finiteTensor2 (g : Fin 2 → 𝔸ᶠ[K] → ℂ) :
     finiteFourier2 K (finiteTensor2 g) = finiteTensor2 fun i ↦ finiteFourier K (g i) := by
   funext y
@@ -231,12 +318,22 @@ theorem finiteFourier2_finiteTensor2 (g : Fin 2 → 𝔸ᶠ[K] → ℂ) :
     Circle.coe_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[finiteFourier2_finiteTensor2]`. Conclude with `finiteTensor2_mem fun i ↦ finiteFourier_mem_finiteSchwartzBruhat (hg i)`.
+-/
 theorem finiteFourier2_finiteTensor2_mem {g : Fin 2 → 𝔸ᶠ[K] → ℂ}
     (hg : ∀ i, g i ∈ finiteSchwartzBruhat K) :
     finiteFourier2 K (finiteTensor2 g) ∈ finiteSchwartzBruhat2 K := by
   rw [finiteFourier2_finiteTensor2]
   exact finiteTensor2_mem fun i ↦ finiteFourier_mem_finiteSchwartzBruhat (hg i)
 
+/- English proof (translation)
+Rewrite `hf` using `[finiteSchwartzBruhat2_eq_span]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨⟨I, a⟩, rfl⟩` from `hg`. Conclude with `finiteFourier2_finiteTensor2_mem fun i ↦ cosetIndicator_mem_finiteSchwartzBruhat I (a i)`.
+
+Consider the case `zero => rw [finiteFourier2_zero]`. Conclude with `zero_mem _`. Consider the case `add g h hg hh ihg ihh`. Rewrite `hg`, `hh` using `[← finiteSchwartzBruhat2_eq_span]`. Rewrite using `[finiteFourier2_add (integrable_of_mem_finiteSchwartzBruhat2 hg) (integrable_of_mem_finiteSchwartzBruhat2 hh)]`.
+
+Conclude with `add_mem ihg ihh`. Consider the case `smul c g _ ih`. Rewrite using `[finiteFourier2_smul]`. Conclude with `Submodule.smul_mem _ c ih`.
+-/
 theorem finiteFourier2_mem {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ} (hf : f ∈ finiteSchwartzBruhat2 K) :
     finiteFourier2 K f ∈ finiteSchwartzBruhat2 K := by
   rw [finiteSchwartzBruhat2_eq_span] at hf
@@ -254,6 +351,15 @@ theorem finiteFourier2_mem {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ} (hf : f ∈ fini
     rw [finiteFourier2_smul]
     exact Submodule.smul_mem _ c ih
 
+/- English proof (translation)
+Rewrite `hf` using `[finiteSchwartzBruhat2_eq_span]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨⟨I, a⟩, rfl⟩` from `hg`. Rewrite using `[finiteFourier2_finiteTensor2, finiteFourier2_finiteTensor2]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [finiteTensor2, Pi.neg_apply]`. Use `Finset.prod_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[finiteFourier_finiteFourier (cosetIndicator_mem_finiteSchwartzBruhat I (a i))]`. Consider the case `zero => funext x`.
+
+Simplify using `[finiteFourier2_zero]`. Consider the case `add g h hg hh ihg ihh`. Rewrite `hg`, `hh` using `[← finiteSchwartzBruhat2_eq_span]`. Rewrite using `[finiteFourier2_add (integrable_of_mem_finiteSchwartzBruhat2 hg) (integrable_of_mem_finiteSchwartzBruhat2 hh), finiteFourier2_add (integrable_of_mem_finiteSchwartzBruhat2 (finiteFourier2_mem hg)) (integrable_of_mem_finiteSchwartzBruhat2 (finiteFourier2_mem hh)), ihg, ihh]`. Both sides reduce to the same expression.
+
+Consider the case `smul c g _ ih`. Rewrite using `[finiteFourier2_smul, finiteFourier2_smul, ih]`. Both sides reduce to the same expression.
+-/
 theorem finiteFourier2_finiteFourier2 {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ}
     (hf : f ∈ finiteSchwartzBruhat2 K) :
     finiteFourier2 K (finiteFourier2 K f) = fun x ↦ f (-x) := by
@@ -291,6 +397,9 @@ def finiteVecMulHomeomorph (g : GL (Fin 2) 𝔸ᶠ[K]) : (Fin 2 → 𝔸ᶠ[K]) 
   continuous_toFun := continuous_id.matrix_vecMul continuous_const
   continuous_invFun := continuous_id.matrix_vecMul continuous_const
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp_continuous (finiteVecMulHomeomorph g).continuous, hf.2.comp_homeomorph (finiteVecMulHomeomorph g)⟩`.
+-/
 theorem comp_vecMul_mem_finiteSchwartzBruhat2 (g : GL (Fin 2) 𝔸ᶠ[K])
     {f : (Fin 2 → 𝔸ᶠ[K]) → ℂ} (hf : f ∈ finiteSchwartzBruhat2 K) :
     (fun x ↦ f (x ᵥ* (g : Matrix (Fin 2) (Fin 2) 𝔸ᶠ[K]))) ∈ finiteSchwartzBruhat2 K :=

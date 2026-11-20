@@ -34,6 +34,9 @@ def QuadraticExtensionCarry (J : _root_.GlobalTheory.Fam.QuadraticExtensionData 
           stdAt B.fields.E (B.R.N ((J.G i).s + 1)) (J.P i).1 →
         (J.E i).cos (J.π i ((J.G i).s + 1) β) = Submodule.Quotient.mk fun x => (ofSplit (J.G i).q).pr (y (e x))
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.QTw.exists_xOrd B.R ((J.G i).s + 1)`. Take `⟨r, hr, g, hg, h1, h2⟩` from `GlobalTheory.QPl.RatOrb.exists_rat_of_sameOrb (E := B.fields.E) (J.P i).1 ((J.G i).q.pr.comp (incA (I.rec7 l Z))) (J.G i).ϖ (hJ.tw i).compl e _ ((J.E i).reg.2.2 ((J.G i).s + 1) 0 rfl).1 ((J.E i).le ((J.G i).s + 1) 0 rfl) (J.E i).M _ (repY (J.A.p0 ((J.G i).s + 1) β).1.2) (hJ.orb i …`. Use `⟨r, hr, fun e' he' => ?_⟩` and prove the remaining obligations. Take `rfl : e = e'` from `Equiv.ext fun y => Fin.ext ((he y).trans (he' y).symm)`. Conclude with `⟨g, hg, h1, h2⟩`.
+-/
 theorem exists_GLint_carry {J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t} (hJ : J.ReadsStd) (i : Fin J.r) (β : J.Ch₀ ((J.G i).s + 1)) :
     ∃ r ∈ GLint B.fields.E (B.R.N ((J.G i).s + 1)) (J.P i).1, _root_.GlobalTheory.Fam.Rebase.QuadraticExtensionCarry J i β r := by
   obtain ⟨e, he⟩ := GlobalTheory.QTw.exists_xOrd B.R ((J.G i).s + 1)
@@ -43,13 +46,28 @@ theorem exists_GLint_carry {J : _root_.GlobalTheory.Fam.QuadraticExtensionData a
   refine ⟨r, hr, fun e' he' => ?_⟩
   obtain rfl : e = e' := Equiv.ext fun y => Fin.ext ((he y).trans (he' y).symm)
   exact ⟨g, hg, h1, h2⟩
+/- English proof (translation)
+Take `⟨i, hi⟩` from `hJ.surj P ((hW.tq.Q t P).2 hP)`. Conclude with `⟨i, (hJ.eq i).trans hi⟩`.
+-/
 theorem exists_index_place_eq_of_readsStd_of_mem (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) {J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t} (hJ : J.ReadsStd) {P : HeightOneSpectrum (𝓞 B.fields.E)}
     (hP : P ∈ I.Q (W.P.I.tup t)) : ∃ i, (J.P i).1 = P := by
   obtain ⟨i, hi⟩ := hJ.surj P ((hW.tq.Q t P).2 hP)
   exact ⟨i, (hJ.eq i).trans hi⟩
+/- English proof (translation)
+The claim follows from `(Finset.mem_union.1 (J.P i).2).resolve_left (hJ.tw i).nmem`.
+-/
 theorem P_mem_Q_of_readsStd {J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t} (hJ : J.ReadsStd) (i : Fin J.r) : (J.P i).1 ∈ I.Q (W.P.I.tup t) :=
   (Finset.mem_union.1 (J.P i).2).resolve_left (hJ.tw i).nmem
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Distinguish the cases in `hm : j + 1 = B.R.m`. Use `swap`. Conclude with `⟨(J.A.p0 j β).1.1, 1, fun h => absurd h hm⟩`. Establish `H : ∀ P : I.Q (W.P.I.tup t), ∃ r ∈ GLint B.fields.E (B.R.N j) P.1, ∀ i, (J.P i).1 = P.1 → ∀ β' r', HEq β' β → HEq r' r → _root_.GlobalTheory.Fam.Rebase.QuadraticExtensionCarry J i β' r'`. Introduce and unpack `⟨P, hP⟩`.
+
+Take `⟨i, rfl⟩` from `_root_.GlobalTheory.Fam.Rebase.exists_index_place_eq_of_readsStd_of_mem hW hJ hP`. Establish `hs : (J.G i).s + 1 + 1 = B.R.m` using `(J.G i).hs`. Take `rfl : j = (J.G i).s + 1` from `by omega`. Take `⟨r, hr, hc⟩` from `_root_.GlobalTheory.Fam.Rebase.exists_GLint_carry hJ i β`. Use `⟨r, hr, fun i' hi' β' r' h1 h2 => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : i' = i` from `hJ.inj ((hJ.eq i').symm.trans (hi'.trans (hJ.eq i)))`. Rewrite using `[eq_of_heq h1, eq_of_heq h2]`. Conclude with `hc`. Use `choose r hr hc using H`. Take `⟨hb1, hb2⟩` from `hJ.is.base j (by omega) β`.
+
+Take `⟨q, κ, h1, h2, h3, h4⟩` from `GlobalTheory.AdForm.Rebase.exists_frames hW.tr.ok (J.A.p0 j β).1.1 (J.A.kb j β) hb1 hb2 r hr`. Use `⟨q, κ, fun _ => ⟨h1, h3, h4, fun i β' r' e1 e2 => hc ⟨(J.P i).1, _root_.GlobalTheory.Fam.Rebase.P_mem_Q_of_readsStd hJ i⟩ i rfl β' r' e1 ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h2]`. Conclude with `e2`.
+-/
 theorem exists_chPt_moves_of_readsStd (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) {J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t} (hJ : J.ReadsStd) (j : ℕ) (β : J.Ch₀ j) :
     ∃ (q : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup (W.P.I.tup t)) u j) (κ : TC.GA B (B.R.N j)), j + 1 = B.R.m →
       q.deco = (J.A.p0 j β).1.1.deco ∧ (∀ v, ¬ I.UnderQ (W.P.I.tup t) v → Formalism.UG.bc (Formalism.UG.prV (E := B.host.E) v) κ = 1) ∧
@@ -76,6 +94,11 @@ theorem exists_chPt_moves_of_readsStd (hW : _root_.GlobalTheory.Fam.AllFamilyCon
   rw [← h2]
   exact e2
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hPn : (J.P i).1 ∉ (B.primes X).vGs` using `(hJ.tw i).nmem`. Establish `key : ∀ r' b' : Fin (B.R.N j), frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 j β).1.1 (J.P i) (Pi.single b' 1) r' = if r' = b' then (1 : B.host.E) else 0`. Introduce `r' b'`. Apply `(algebraMap B.host.E ((J.P i).1.adicCompletion B.host.E)).injective` to reduce the goal to its premises. Rewrite using `[← GlobalTheory.Fam.MovedJoin.adAt_kb_eq_frsF J.A hJ.is (J.P i) hPn j hj.le β r' b', hJ.std j hj β, GlobalTheory.Fam.MovedJoin.adAt_kStd_of_twist hW.tr.ok _ (J.P i) hPn u _ r' b']`.
+
+Use `LinearEquiv.toLinearMap_injective ((Pi.basisFun B.fields.E (Fin (B.R.N j))).ext fun b => funext fun r => ?_)` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply]`. Conclude with `(key r b).trans (Pi.single_apply b (1 : B.fields.E) r).symm`.
+-/
 theorem frsF_p0_eq_one_of_readsStd (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) {J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t} (hJ : J.ReadsStd) (i : Fin J.r) (j : ℕ) (hj : j < B.R.m) (β : J.Ch₀ j) :
     frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 j β).1.1 (J.P i) = 1 := by
   have hPn : (J.P i).1 ∉ (B.primes X).vGs := (hJ.tw i).nmem
@@ -89,6 +112,13 @@ theorem frsF_p0_eq_one_of_readsStd (hW : _root_.GlobalTheory.Fam.AllFamilyCondit
   rw [Pi.basisFun_apply]
   exact (key r b).trans (Pi.single_apply b (1 : B.fields.E) r).symm
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hs : (J.G i).s + 1 + 1 = B.R.m` using `(J.G i).hs`. Establish `hPn : (J.P i).1 ∉ (B.primes X).vGs` using `(hJ.tw i).nmem`. Take `⟨g, -, -, h⟩` from `hr e he`. Use `h _ ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.AdForm.Rebase.repY_cong hs (J.A.p0 ((J.G i).s + 1) β) p' hc (J.P i)`.
+
+Establish `h2 : frsF I.sel (I.tup (W.P.I.tup t)) p'.1.1 (J.P i) = p'.1.1.fr ⟨(J.P i).1, _root_.GlobalTheory.Fam.Rebase.P_mem_Q_of_readsStd hJ i⟩`. Unfold `frsF`. Conclude with `dif_neg hPn`. Rewrite `h1` using `[_root_.GlobalTheory.Fam.Rebase.frsF_p0_eq_one_of_readsStd hW hJ i _ (by omega) β, h2, if_neg hPn]`. Rewrite using `[hJ.M i]`.
+
+Conclude with `h1`.
+-/
 theorem cos_pi_eq_mk_pr_repY (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) {J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t} (hJ : J.ReadsStd) (i : Fin J.r) (β : J.Ch₀ ((J.G i).s + 1))
     (p' : PtAt B.R I.sel (I.tup (W.P.I.tup t)) (I.cst (W.P.I.tup t)) u ((J.G i).s + 1))
     (hc : cosetIn p' = cosetIn (J.A.p0 ((J.G i).s + 1) β)) (hr : _root_.GlobalTheory.Fam.Rebase.QuadraticExtensionCarry J i β (p'.1.1.fr ⟨(J.P i).1, _root_.GlobalTheory.Fam.Rebase.P_mem_Q_of_readsStd hJ i⟩))
@@ -106,6 +136,13 @@ theorem cos_pi_eq_mk_pr_repY (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W
   rw [hJ.M i]
   exact h1
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Establish `hP : (a.pl n).1 ∈ (B.primes X).vGs` using `(hW.lev.2.1 _).1 (a.pl n).2`. Set `P : rowSG (B.primes X) I.sel (I.tup b)` to `⟨(a.pl n).1, Finset.mem_union_left _ hP⟩`. Establish `hP' : P.1 ∈ (B.primes X).vGs` using `hP`. Establish `h1` using `GlobalTheory.AdForm.Rebase.repY_cong hs p p' hc P`.
+
+Establish `h2 : frsF I.sel (I.tup b) p'.1.1 P = frsF I.sel (I.tup b) p.1.1 P`. Unfold `frsF`. Rewrite using `[dif_pos hP', dif_pos hP', hd]`. Rewrite `h1` using `[h2, if_pos hP', pow_zero, inv_one, one_smul, ← map_sub]`. Establish `h3` using `(isFr_ptFr p.1.1 P.1 _).2 h1`.
+
+Rewrite `h3` using `[← frsF_eq_ptFr, LinearEquiv.apply_symm_apply, hN]`. Establish `h4` using `(mem_localization_standardLattice P.1 _).1 h3 x`. Establish `h5` using `pr_mem_of_intAt (D := I.rec7 l Z) (a.G n).q (_root_.GlobalTheory.Fam.TopLoc.LocalIdempotentDensity.isIdemAt_G_pl hW a ha n) h4`. Establish `h6` using `map_sub ((a.G n).q.pr.comp (incA (I.rec7 l Z))) (repY p'.1.2 x) (repY p.1.2 x)`. Conclude with `h6 ▸ h5`.
+-/
 theorem pr_repY_sub_mem_integers (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (ha : a.Is) (n : Fin a.n) {b : I.ι}
     (p p' : PtAt B.R I.sel (I.tup b) (I.cst b) u ((a.G n).s + 1)) (hc : cosetIn p' = cosetIn p) (hd : p'.1.1.deco = p.1.1.deco)
     (hN : p.1.1.deco.1.N = Formalism.L2.Col.stdLat B.fields.E (B.R.N ((a.G n).s + 1))) (x : Fin (B.R.N ((a.G n).s + 1))) :
@@ -126,6 +163,19 @@ theorem pr_repY_sub_mem_integers (hW : _root_.GlobalTheory.Fam.AllFamilyConditio
   have h6 := map_sub ((a.G n).q.pr.comp (incA (I.rec7 l Z))) (repY p'.1.2 x) (repY p.1.2 x)
   exact h6 ▸ h5
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Establish `hI` using `hW.tr.ok`. Establish `hle : j ≤ B.R.m` using `by omega`. Take `⟨k1, k2, -⟩` from `hJ.is.kA j hle β`. Establish `hstd` using `hJ.std j (by omega) β`. Establish `hidem : ∀ i, Formalism.L2.NTheta.IsIdemAt (J.G i).q.e (J.P i).1` using `fun i => by rw [hJ.eq i]; exact (J.G i).idem`.
+
+Establish `hfin : finM _ (rankN (I.rec7 l Z) j hle) ((J.A.kA j β)⁻¹ * kA) = κ.1`. Establish `e1` using `GlobalTheory.AdForm.StabMove.finM_mul _ (rankN (I.rec7 l Z) j hle) (J.A.kA j β) ((J.A.kA j β)⁻¹ * kA)`. Rewrite `e1` using `[mul_inv_cancel_left, h2, k2]`. Conclude with `((Units.mul_right_inj (J.A.kb j β)).1 e1).symm`. Use `⟨J.A.kA j β, (J.A.kA j β)⁻¹ * kA, k1, by rw [← hstd]; exact k2, (mul_inv_cancel_left _ _).symm, mem_grpAt_of_bc _ (rankN (I.rec7 l Z) j hle) _ _ (mul_mem (inv_mem k1) h1) κ hfin fun v hv => hoff v ?_, fun i e => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨P, hP, rfl⟩`. Take `⟨i, rfl⟩` from `_root_.GlobalTheory.Fam.Rebase.exists_index_place_eq_of_readsStd_of_mem hW hJ hP`. Conclude with `hv ⟨i, GlobalTheory.LocMod.LevelPlaces.splitPt_v_eq_under _ (hidem i)⟩`. Substitute `e` using the available equality. Take `⟨e, he⟩` from `GlobalTheory.QTw.exists_xOrd B.R ((J.G i).s + 1)`.
+
+Take `⟨g, hg, hgm, -⟩` from `hc i β _ HEq.rfl HEq.rfl e he`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[hgm]`. Use `map_pr_eq (J.G i).q (hidem i) _ (rankN (I.rec7 l Z) _ hle) _ _ (fun r s => ?_) xPos _ ((ha.stdQ (J.pl i) ⟨t, J.mem i⟩).1 _ le_rfl) e he` and prove the remaining obligations. Establish `hSQ : (J.P i).1 ∈ I.SQ` using `I.Q_subset_SQ _ (_root_.GlobalTheory.Fam.Rebase.P_mem_Q_of_readsStd hJ i)`.
+
+Establish `hTn` using `GlobalTheory.Mem.LevTwist.T_notMem_under_uSG B X I hI u (J.P i).1 (Finset.mem_union_right _ hSQ)`. Establish `hb` using `(GlobalTheory.Mem.Col2.MemChart.kStd_spec (X := X) l.pr u (B.R.N ((J.G i).s + 1))).2.1 _ hTn`. Establish `e1 : Formalism.UG.bc (Formalism.UG.prV (E` using `B.host.E) ((J.P i).1.under (𝓞 B.host.F))) κ = Formalism.UG.bc (Formalism.UG.prV (E := B.host.E) ((J.P i).1.under (𝓞 B.host.F))) (J.A.kb _ β * κ) := by`. Rewrite using `[map_mul, hstd, hb, one_mul]`. Establish `e2` using `GlobalTheory.Mem.Col2.ZeroMove.adAt_entry_of_bc (F := B.host.F) (E := B.host.E) (J.P i).1 e1 r s`.
+
+Establish `e3` using `hpt.fr ⟨(J.P i).1, hSQ⟩ r s`. Rewrite `e3` using `[extTo_fr, ptFr_of_mem q (hJ.tw i).nmem (_root_.GlobalTheory.Fam.Rebase.P_mem_Q_of_readsStd hJ i)]`. Rewrite using `[hfin]`. Conclude with `e2.trans e3`.
+-/
 theorem pen_moved_of_readsStd_at_last (hW : _root_.GlobalTheory.Fam.AllFamilyConditions W) (ha : a.Is) {J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t} (hJ : J.ReadsStd) (j : ℕ) (hj : j + 1 = B.R.m) (β : J.Ch₀ j)
     (q : ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup (W.P.I.tup t)) u j) (κ : TC.GA B (B.R.N j))
     (hoff : ∀ v, ¬ I.UnderQ (W.P.I.tup t) v → Formalism.UG.bc (Formalism.UG.prV (E := B.host.E) v) κ = 1)
@@ -175,6 +225,19 @@ end GlobalTheory.Fam.Rebase
 namespace GlobalTheory.Fam
 open GlobalTheory.Fam.Rebase
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha _ _ t J hJ`. Use `choose q κ hq using fun j β => _root_.GlobalTheory.Fam.Rebase.exists_chPt_moves_of_readsStd hW hJ j β`. Take `⟨A', hA', hchr, hb0, hne, heq⟩` from `GlobalTheory.AdForm.Rebase.exists_moved hW.tr.ok hW.tr.pins.some J.A hJ.is q κ (fun j hj β => (hq j β hj).2.1) (fun j hj β => (hq j β hj).2.2.1) (fun j hj β => by rw [(hq j β hj).1]; exact (hJ.is.base j (by omega) β).2)`. Establish `hdeco : ∀ j, j + 1 = B.R.m → ∀ β, (A'.p0 j β).1.1.deco = (J.A.p0 j β).1.1.deco` using `fun j hj β => by`. Rewrite using `[(heq j hj β).2.1]`.
+
+Conclude with `(hq j β hj).1`. Use `⟨{ J with A := A' }, hA', hJ.inj, hJ.surj, fun j hj => ?_, hJ.res, hJ.eq, hJ.sg, hJ.tw, hJ.M, fun i j d h hj β => ?_, fun i β e he => ?_, fun j hj β => ?_, fun j hj β => ?_, hJ.last, hJ.sec, fun n y e he r => ?_, ?_⟩` and prove the remaining obligations. Use `show A'.chr (j + 1) = _`. Rewrite using `[hchr]`. Conclude with `hJ.chr j hj`.
+
+Establish `h'` using `hJ.rep i j d h hj β`. Rewrite `h'` using `[← hb0]`. Conclude with `h'`. Establish `hs : (J.G i).s + 1 + 1 = B.R.m` using `(J.G i).hs`. Use `_root_.GlobalTheory.Fam.Rebase.cos_pi_eq_mk_pr_repY hW hJ i β (A'.p0 _ β) (heq _ hs β).2.2 ?_ e he` and prove the remaining obligations.
+
+Rewrite using `[(heq _ hs β).2.1]`. Conclude with `(hq _ β hs).2.2.2 i β _ HEq.rfl HEq.rfl`. Use `show A'.kb j β = _`. Rewrite using `[(hne j (by omega)).1]`. Conclude with `hJ.std j (by omega) β`.
+
+Take `⟨k1, k2, -⟩` from `hA'.kA j (by omega) β`. Rewrite `k2` using `[(heq j hj β).1]`. Conclude with `_root_.GlobalTheory.Fam.Rebase.pen_moved_of_readsStd_at_last hW ha hJ j hj β (q j β) (κ j β) (hq j β hj).2.1 (hq j β hj).2.2.1 (hq j β hj).2.2.2 (A'.kA j β) k1 k2`. Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Establish `h1` using `_root_.GlobalTheory.Fam.Rebase.pr_repY_sub_mem_integers hW ha n (J.A.p0 _ (J.ι _ y)) (A'.p0 _ (J.ι _ y)) (heq _ hs _).2.2 (hdeco _ hs _) (hJ.is.base _ (by omega) _).2 (e r)`.
+
+Establish `h2` using `add_mem h1 (hJ.cosG n y e he r)`. Rewrite `h2` using `[sub_add_sub_cancel]`. Conclude with `h2`. Conclude with `dead_moved hW.tr.ok hJ.live hb0 (fun j hj => (hne j hj).2) fun j hj β => ⟨hdeco j hj β, (heq j hj β).2.2⟩`.
+-/
 theorem readsOfStd_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → (commOf (_root_.GlobalTheory.Fam.pk_z W) u a.g).Is → ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.ReadsStd → ∃ J' : _root_.GlobalTheory.Fam.QuadraticExtensionData a t, J'.Reads := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha _ _ t J hJ
   choose q κ hq using fun j β => _root_.GlobalTheory.Fam.Rebase.exists_chPt_moves_of_readsStd hW hJ j β

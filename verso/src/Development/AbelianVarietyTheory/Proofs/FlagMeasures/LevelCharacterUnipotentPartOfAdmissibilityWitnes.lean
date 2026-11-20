@@ -25,6 +25,23 @@ namespace GlobalTheory.AdmWitChar
 open Formalism.L2.SG.Pf.unitaryCongruence Matrix
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h1mem : (1 : 𝓞 K) ∈ J ⊔ Ideal.span {((g : ℕ) : 𝓞 K)}` using `by rw [hJ]; exact Submodule.mem_top`. Take `⟨j, hj, y, hy, hjy⟩` from `Submodule.mem_sup.1 h1mem`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Apply `Nat.coprime_of_dvd` to reduce the goal to its premises. Introduce `p hp hpc hpg`.
+
+Take `⟨k, rfl⟩` from `hpg`. Distinguish the cases in `hJb : J = ⊥`. Establish `hj0 : j = 0` using `(Submodule.mem_bot _).1 (hJb ▸ hj)`. Establish `h1 : ((p * k : ℕ) : 𝓞 K) * r = 1` using `by rw [← hjy, hj0, zero_add, mul_comm]`. Establish `h2` using `congrArg (Algebra.norm ℤ) h1`.
+
+Rewrite `h2` using `[map_mul, map_one, ← map_natCast (algebraMap ℤ (𝓞 K)), Algebra.norm_algebraMap]`. Establish `hd : 0 < Module.finrank ℤ (𝓞 K)` using `Module.finrank_pos`. Establish `h3 : ((p : ℤ)) ∣ 1`. Rewrite using `[← h2]`. Apply `Dvd.dvd.mul_right` to reduce the goal to its premises.
+
+Apply `Dvd.dvd.pow _ hd.ne'` to reduce the goal to its premises. Use `push_cast`. Conclude with `dvd_mul_right _ _`. Establish `h4` using `Int.eq_one_of_dvd_one (by positivity) h3`. Normalize the coercions in `at h4`.
+
+Conclude with `hp.one_lt.ne' h4`. Use `haveI : Finite (𝓞 K ⧸ J) := J.finiteQuotientOfFreeOfNeBot hJb haveI : Fintype (𝓞 K ⧸ J) := Fintype.ofFinite _ haveI := Fact.mk hp`. Establish `hcard : p ∣ Fintype.card (𝓞 K ⧸ J)`. Rewrite using `[← Nat.card_eq_fintype_card, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]`. Conclude with `hpc`.
+
+Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card p hcard`. Establish `hpx : ((p : ℕ) : 𝓞 K ⧸ J) * x = 0`. Rewrite using `[← nsmul_eq_mul, ← hx, addOrderOf_nsmul_eq_zero]`. Establish `hunit : ((p : ℕ) : 𝓞 K ⧸ J) * Ideal.Quotient.mk J ((k : 𝓞 K) * r) = 1`. Rewrite using `[← map_natCast (Ideal.Quotient.mk J), ← map_mul, ← map_one (Ideal.Quotient.mk J), Ideal.Quotient.eq]`.
+
+Establish `: ((p : ℕ) : 𝓞 K) * ((k : 𝓞 K) * r) - 1 = -j`. Rewrite using `[← hjy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `J.neg_mem hj`. Establish `hx0 : x = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hx` using `[hx0, addOrderOf_zero]`. Conclude with `hp.one_lt.ne hx`.
+-/
 private theorem coprime_absNorm_of_isCoprime_span {K : Type} [Field K] [NumberField K] (J : Ideal (𝓞 K)) (g : ℕ)
     (hJ : J ⊔ Ideal.span {((g : ℕ) : 𝓞 K)} = ⊤) : Nat.Coprime (Ideal.absNorm J) g := by
   have h1mem : (1 : 𝓞 K) ∈ J ⊔ Ideal.span {((g : ℕ) : 𝓞 K)} := by rw [hJ]; exact Submodule.mem_top
@@ -70,6 +87,19 @@ private theorem coprime_absNorm_of_isCoprime_span {K : Type} [Field K] [NumberFi
     rw [hx0, addOrderOf_zero] at hx
     exact hp.one_lt.ne hx
 
+/- English proof (translation)
+Introduce `g1 Λ hΛ v hv`. Establish `hgg : X.B.g = gS D` using `X.g_eq`. Establish `hg0 : ((gS D : ℕ) : 𝓞 D.host.E) ≠ 0`. Establish `: (gS D) ≠ 0` using `hgg ▸ Formalism.L2.SG.Pf.modulus_g_ne_zero X`. Conclude with `this` after adjusting the coercions.
+
+Set `J : Ideal (𝓞 D.host.E)` to `Submodule.comap (LinearMap.toSpanSingleton (𝓞 D.host.E) (VS D).V v) (Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ)`. Establish `hJ : J ⊔ Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hgM : ((gS D : ℕ) : 𝓞 D.host.E) ∈ M` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`.
+
+Establish `hMb : M ≠ ⊥` using `fun h => hg0 (by rw [h] at hgM; exact (Submodule.mem_bot _).1 hgM)`. Take `⟨s, hs, hsv⟩` from `hv ⟨M, hM.isPrime, hMb⟩ hgM`. Conclude with `hs (hle (Ideal.mem_sup_left (show s ∈ J from hsv)))`. Establish `hcop : Nat.Coprime (Ideal.absNorm J) (gS D)` using `coprime_absNorm_of_isCoprime_span J (gS D) hJ`. Establish `hcJ : ((Ideal.absNorm J : ℕ) : 𝓞 D.host.E) ∈ J` using `Ideal.absNorm_mem J`.
+
+Establish `hcv : ((Ideal.absNorm J : ℕ) : 𝓞 D.host.E) • v ∈ Ideal.span {((gS D : ℕ) : 𝓞 D.host.E)} • Λ` using `hcJ`. Rewrite `hcv` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨w, hw, hwv⟩` from `hcv`. Establish `hlin : ∀ (n : ℕ) (y : (VS D).V), X.B.I.fmat g1⁻¹ *ᵥ incl X.B.I (X.crd (((n : 𝓞 D.host.E)) • y)) = (n : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (X.B.I.fmat g1⁻¹ *ᵥ incl X.B.I (X.crd y))`. Introduce `n y`.
+
+Establish `h1 : ((n : 𝓞 D.host.E)) • y = ((n : D.host.E)) • y`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[h1, Formalism.L2.SG.NormCut.crd_smul' X, map_natCast, Formalism.L2.SG.NormCut.incl_smul' X, map_natCast, Matrix.mulVec_smul]`. Use `⟨Ideal.absNorm J, hgg ▸ hcop, ?_⟩` and prove the remaining obligations. Rewrite using `[← hlin, ← hwv, hlin]`.
+
+Conclude with `Submodule.subset_span ⟨_, (hΛ w).1 hw, by rw [hgg]⟩`.
+-/
 private theorem hidaSetting_modGAt {D : D7} (X : HidaSetting D) : Formalism.L2.SG.NormCut.ModGAt X := by
   intro g1 Λ hΛ v hv
   have hgg : X.B.g = gS D := X.g_eq
@@ -101,6 +131,15 @@ private theorem hidaSetting_modGAt {D : D7} (X : HidaSetting D) : Formalism.L2.S
   rw [← hlin, ← hwv, hlin]
   exact Submodule.subset_span ⟨_, (hΛ w).1 hw, by rw [hgg]⟩
 
+/- English proof (translation)
+Establish `hg : X.B.g = gS D` using `X.g_eq`. Establish `hdiv : Formalism.L2.SG.HidaSetting.divN X.B.I X.B.g (Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) y) = Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (algebraMap X.B.I.F X.B.I.E ((X.B.g : X.B.I.F)⁻¹) * y) := by`. Unfold `Formalism.L2.SG.HidaSetting.divN`. Simplify using `[Formalism.UG.inclE, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[hdiv]`.
+
+Establish `h1` using `X.psiEf_rat (algebraMap X.B.I.F X.B.I.E ((X.B.g : X.B.I.F)⁻¹) * y)`. Establish `h2` using `Formalism.L2.SG.RealObj.PlaceEmbeddingTraceSums.TraceSum_holds D X X.B.g y`. Establish `h3 : Formalism.L2.SG.HidaSetting.psiEinf X.B.I (algebraMap X.B.I.F X.B.I.E ((X.B.g : X.B.I.F)⁻¹) * y) = Formalism.L2.SG.PairVal.psiInf X.B.g (X.ιE y)`. Rewrite using `[← h2]`. Unfold `Formalism.L2.SG.HidaSetting.psiEinf`.
+
+Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Use `congr 1`. Establish `hφ : X.B.I.φ v (algebraMap X.B.I.F X.B.I.E ((X.B.g : X.B.I.F)⁻¹)) = ((X.B.g : ℂ))⁻¹`. Rewrite using `[map_inv₀, map_natCast, map_inv₀, map_natCast]`. Rewrite using `[map_mul, hφ]`.
+
+Simplify using `[star_mul', div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h3]`. Rewrite using `[← hg]`. Conclude with `eq_inv_of_mul_eq_one_left h1`.
+-/
 private theorem psiEf_divN_eq {D : D7} (X : HidaSetting D) (y : X.B.I.E) :
     X.psiEf (Formalism.L2.SG.HidaSetting.divN X.B.I X.B.g (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) y)) =
       (Formalism.L2.SG.PairVal.psiInf (gS D) (X.ιE y))⁻¹ := by
@@ -127,6 +166,25 @@ private theorem psiEf_divN_eq {D : D7} (X : HidaSetting D) (y : X.B.I.E) :
   rw [← hg]
   exact eq_inv_of_mul_eq_one_left h1
 
+/- English proof (translation)
+Establish `hg : X.B.g ≠ 0` using `Formalism.L2.SG.Pf.modulus_g_ne_zero X`. Take `⟨hfe, hfz, -, -⟩` from `Formalism.L2.SG.Pf.reference_frame_congruences X`. Establish `hf0 : ∀ a, X.f0 a ∈ X.B.I.Lf` using `fun a => (X.vectorsInLattice.1 a).2`. Establish `hint : ∀ x : 𝓞 D.host.E, Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (X.ιE.symm (x : D.host.E)) ∈ IntAf X.B.I.F X.B.I.E := fun x => Formalism.L2.SG.NormCut.inclE_int X x`. Establish `hZ : ZMod' X.B.I X.B.g ((∑ a, hA X.B.I (X.f0 a) (X.B.I.fmat κ *ᵥ nxt X.e0 X.z0 a)) - Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (X.ιE.symm (∑ a : Fin D.R.rS, ((ξ a.castSucc a.succ : 𝓞 D.host.E) : D.host.E))) - 0) := by`.
+
+Rewrite using `[sub_zero, map_sum, map_sum, ← Finset.sum_sub_distrib]`. Use `Z_sum X.B.I X.B.g _ _ (fun a _ => ?_)` and prove the remaining obligations. Establish `hnxt : nxt X.e0 X.z0 a = Fin.snoc (α` using `fun _ => VA X.B.I) X.e0 X.z0 a.succ := by`. Unfold `nxt`. Use `split_ifs with h`.
+
+Establish `hs : (a.succ : Fin (D.R.rS + 1)) = Fin.castSucc ⟨a.1 + 1, h⟩` using `Fin.ext (by simp only [Fin.val_succ, Fin.val_castSucc])`. Rewrite using `[hs, Fin.snoc_castSucc]`. Establish `hs : (a.succ : Fin (D.R.rS + 1)) = Fin.last _` using `Fin.ext (by simp only [Fin.val_succ, Fin.val_last]; omega)`. Rewrite using `[hs, Fin.snoc_last]`. Rewrite using `[hnxt]`.
+
+Establish `hw : ZMod' X.B.I X.B.g (hA X.B.I (X.f0 a) (X.B.I.fmat κ *ᵥ Fin.snoc (α` using `fun _ => VA X.B.I) X.e0 X.z0 a.succ - ∑ c, Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm ((ξ c a.succ : 𝓞 D.host.E) : D.host.E)) • Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 c)) := mL_Qs X.B.I X.B.g (hf0 a) (key a.succ)`. Rewrite `hw` using `[hA_sub_right]`. Establish `hsum : hA X.B.I (X.f0 a) (∑ c, Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (X.ιE.symm ((ξ c a.succ : 𝓞 D.host.E) : D.host.E)) • Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 c) = ∑ c, Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm ((ξ c a.succ : 𝓞 D.host.E) : D.host.E)) * hA X.B.I (X.f0 a) (Fin.snoc (α := fun _ => VA X.B.I …`. Rewrite using `[← hL_apply, map_sum]`. Simplify using `[hL_apply]`.
+
+Rewrite `hw` using `[hsum]`. Establish `hrest : ZMod' X.B.I X.B.g ((∑ c, Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (X.ιE.symm ((ξ c a.succ : 𝓞 D.host.E) : D.host.E)) * hA X.B.I (X.f0 a) (Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 c)) - Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm ((ξ a.castSucc a.succ : 𝓞 D.host.E) : D.host.E))) := by`. Establish `he : (∑ c, Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (X.ιE.symm ((ξ c a.succ : 𝓞 D.host.E) : D.host.E)) * hA X.B.I (X.f0 a) (Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 c)) - Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) (X.ιE.symm ((ξ a.castSucc a.succ : 𝓞 D.host.E) : D.host.E)) = ∑ c, Formalism.UG.inclE (F …`. Simplify using `[mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[he]`.
+
+Use `Z_sum X.B.I X.B.g _ _ (fun c _ => Z_smul X.B.I X.B.g (hint _) ?_)` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun b => ?_) c` and prove the remaining obligations. Establish `hne : (Fin.last D.R.rS) ≠ a.castSucc` using `(Fin.castSucc_lt_last a).ne'`. Simplify `hfz a` using `[hne]`. Distinguish the cases in `hb : b = a`.
+
+Substitute `hb` using the available equality. Establish `h1` using `(X.gramIntegral b b).2.2`. Simplify using `only at h1`. Establish `h2` using `Z_sig X.B.I X.B.g h1`. Simplify `h2` using `[hA_symm X.B.I (X.e0 b) (X.f0 b), map_sub, map_one]`.
+
+Establish `hne : b.castSucc ≠ a.castSucc` using `fun h => hb (Fin.castSucc_injective _ h)`. Simplify `hfe a b (Ne.symm hb)` using `[hne]`. Use `Z_add X.B.I X.B.g hw hrest` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hmul` using `psi_mul_of_Z X.B.I X.B.g X.psiEf_add X.psiEf_int hg hZ`. Unfold `chiN`. Rewrite using `[hmul, psi_Z X.B.I X.B.g X.psiEf_add X.psiEf_int hg (Z_zero X.B.I X.B.g), mul_one]`.
+-/
 private theorem chiN_eq_of_fmat_mulVec_snoc {D : D7} (X : HidaSetting D) (κ : X.B.I.Gf)
     (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E))
     (key : ∀ c, X.B.I.fmat κ *ᵥ Fin.snoc (α := fun _ => VA X.B.I) X.e0 X.z0 c -
@@ -196,6 +254,15 @@ private theorem chiN_eq_of_fmat_mulVec_snoc {D : D7} (X : HidaSetting D) (κ : X
   unfold chiN
   rw [hmul, psi_Z X.B.I X.B.g X.psiEf_add X.psiEf_int hg (Z_zero X.B.I X.B.g), mul_one]
 
+/- English proof (translation)
+Introduce `D X Y u u' hS t ξ hξ`. Establish `hK` using `Formalism.L2.SG.NormCut.termK_car (Y.cs u) (Y.cs u') t.mem t.mem' t.rep`. Establish `hRL : Formalism.L2.SG.TermOp.RatLink X t.pt t.lin` using `t.rep.2.1`. Establish `hiso : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `hM : Formalism.L2.SG.NormCut.ModGAt X` using `hidaSetting_modGAt X`.
+
+Establish `hξm : ∀ c, ModG (VS D) t.lam (gS D) (t.lin (frame (lf D (X.Fu u')) c) - frameAct (frame (lf D (X.Fu u))) ξ c)`. Introduce `c`. Establish `h3` using `hξ.2.2 c`. Establish `h4` using `Formalism.L2.SG.NormCut.frame_mapLF hiso (lf D (X.Fu u')) c`. Unfold `GTerm.frame at h3`.
+
+Conclude with `h4 ▸ h3`. Establish `key` using `Formalism.L2.SG.NormCut.key_gen (Y.cs u) (Y.cs u') (Formalism.L2.SG.Full.Full.frameTie (X := X) u u') hM t.mem t.pt t.lin hRL ξ hξm hK`. Rewrite using `[chiN_eq_of_fmat_mulVec_snoc X _ ξ key, psiEf_divN_eq, RingEquiv.apply_symm_apply]`. Use `congr 2`. Rewrite using `[GlobalTheory.RatIsomPoint.sgUp_eq]`.
+
+Simplify using `[Matrix.map_apply]`.
+-/
 theorem chiN_kOf_eq_inv_psiInf_sgUp : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → ∀ (t : TauC Y u u') (ξ : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)), AdmWit t.lam (gS D) (lf D (X.Fu u)) t.frame ξ → chiN X (kOf X u u' ((Y.cs u).h ((Y.cs u).base t.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) t.pt) = (Formalism.L2.SG.PairVal.psiInf (gS D) (Formalism.L2.SG.PairVal.sgUp (ξ.map (algebraMap (𝓞 D.host.E) D.host.E))))⁻¹ := by
   intro D X Y u u' hS t ξ hξ
   have hK := Formalism.L2.SG.NormCut.termK_car (Y.cs u) (Y.cs u') t.mem t.mem' t.rep

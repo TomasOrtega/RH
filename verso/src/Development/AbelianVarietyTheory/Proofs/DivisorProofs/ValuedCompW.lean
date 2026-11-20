@@ -25,23 +25,42 @@ def ordW {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : w.under (𝓞 F) = v)
 def ordV (v : Pl F) (l : idelesAt E (evFin F v)) : aboveF (L := E) F v → ℤ :=
   fun w => ordW (mem_aboveF.1 w.2) l
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compW_apply {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : w.under (𝓞 F) = v) (l : idelesAt E (evFin F v)) :
     ((compW hw l : (w.adicCompletion E)ˣ) : w.adicCompletion E) = toCompl hw (compFin F E v (l.1 : AE F E)) := rfl
 
+/- English proof (translation)
+Rewrite using `[ordW, neg_neg, WithZero.exp_log]`. Conclude with `(Valuation.ne_zero_iff _).2 (Units.ne_zero _)`.
+-/
 theorem valued_compW {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : w.under (𝓞 F) = v) (l : idelesAt E (evFin F v)) :
     Valued.v ((compW hw l : (w.adicCompletion E)ˣ) : w.adicCompletion E) = WithZero.exp (-ordW hw l) := by
   rw [ordW, neg_neg, WithZero.exp_log]
   exact (Valuation.ne_zero_iff _).2 (Units.ne_zero _)
 
+/- English proof (translation)
+Simplify using `only [ordW, map_mul, Units.val_mul]`. Rewrite using `[WithZero.log_mul ((Valuation.ne_zero_iff _).2 (Units.ne_zero _)) ((Valuation.ne_zero_iff _).2 (Units.ne_zero _))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ordW_mul {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : w.under (𝓞 F) = v) (l m : idelesAt E (evFin F v)) :
     ordW hw (l * m) = ordW hw l + ordW hw m := by
   simp only [ordW, map_mul, Units.val_mul]
   rw [WithZero.log_mul ((Valuation.ne_zero_iff _).2 (Units.ne_zero _)) ((Valuation.ne_zero_iff _).2 (Units.ne_zero _))]
   ring
 
+/- English proof (translation)
+The claim follows from `funext fun w => ordW_mul _ l m`.
+-/
 theorem ordV_mul (v : Pl F) (l m : idelesAt E (evFin F v)) : ordV v (l * m) = ordV v l + ordV v m :=
   funext fun w => ordW_mul _ l m
 
+/- English proof (translation)
+Establish `h` using `ordV_mul v l⁻¹ l`. Rewrite `h` using `[inv_mul_cancel]`. Establish `h1 : ordV v (1 : idelesAt E (evFin F v)) = 0`. Use `ordV_mul (E := E) v 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+
+Use function extensionality and compare the values at `w`. Use `congrFun this w` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.zero_apply] at this ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[h1]`.
+
+Use function extensionality and compare the values at `w`. Use `congrFun h w` as an intermediate fact. Simplify using `only [Pi.add_apply, Pi.zero_apply, Pi.neg_apply] at this ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ordV_inv (v : Pl F) (l : idelesAt E (evFin F v)) : ordV v l⁻¹ = -ordV v l := by
   have h := ordV_mul v l⁻¹ l
   rw [inv_mul_cancel] at h

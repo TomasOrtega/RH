@@ -6,6 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
+/- English proof (translation)
+Establish `h1` using `cls_spec N σ ζ hζ.pow_eq_one`. Rewrite `h` using `[h1]`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h)`.
+-/
 private theorem cls_eq_of {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω]
     {N : ℕ} [NeZero N] {ζ : Ω} (hζ : IsPrimitiveRoot ζ N) (σ : G k Ω) (u : (ZMod N)ˣ)
     (h : σ ζ = ζ ^ (u : ZMod N).val) : cls k Ω N σ = u := by
@@ -14,6 +17,25 @@ private theorem cls_eq_of {k Ω : Type} [Field k] [NumberField k] [Field Ω] [Al
   apply Units.ext
   exact ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h)
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : Normal ℚ Ω := IsAlgClosure.normal ℚ Ω`. Set `ι : K →ₐ[ℚ] Ω` to `IsAlgClosed.lift`. Use `letI : Algebra K Ω := ι.toRingHom.toAlgebra`.
+
+Use `haveI : IsScalarTower ℚ K Ω := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `haveI : Algebra.IsAlgebraic K Ω := Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Use `haveI : IsAlgClosure K Ω := IsAlgClosure.mk ‹_› ‹_›`. Establish `hζK` using `IsCyclotomicExtension.zeta_spec N ℚ K`. Use `set ζ := IsCyclotomicExtension.zeta N ℚ K`.
+
+Establish `hζ : IsPrimitiveRoot (algebraMap K Ω ζ) N` using `hζK.map_of_injective (algebraMap K Ω).injective`. Establish `hker : ∀ τ : G K Ω, cls ℚ Ω N (galEmb ℚ K Ω τ) = 1`. Introduce `τ`. Apply `cls_eq_of hζ` to reduce the goal to its premises. Establish `hτ : galEmb ℚ K Ω τ (algebraMap K Ω ζ) = algebraMap K Ω ζ` using `τ.commutes ζ`.
+
+Rewrite using `[hτ, Units.val_one, ZMod.val_one_eq_one_mod]`. Use `conv_lhs => rw [← pow_one (algebraMap K Ω ζ), ← Nat.mod_add_div 1 N, pow_add, pow_mul, hζ.pow_eq_one, one_pow, mul_one]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `u`. Set `χ : K ≃ₐ[ℚ] K` to `(IsCyclotomicExtension.Rat.galEquivZMod N K).symm u`.
+
+Use `⟨χ.liftNormal Ω, cls_eq_of hζ _ u ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.liftNormal_commutes, IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq N K χ hζK.pow_eq_one]`. Establish `hχ : IsCyclotomicExtension.Rat.galEquivZMod N K χ = u` using `MulEquiv.apply_symm_apply _ u`. Rewrite using `[hχ, map_pow]`. Introduce `l _ A hA`.
+
+Establish `hA' : A ≠ ⊤`. Introduce `h`. Conclude with `((places K Ω l A).2.1 h).2 hA`. Take `⟨v, hv⟩` from `(places K Ω l A).1 hA'`. Establish `hvl` using `((places K Ω l A).2.2.1 v hv).mp hA`.
+
+Establish `h1` using `UpperTheory.V.LDataCardLeFinrank.princ_le_ineImage (F := K) (Ω := Ω) (N := N) (K := K) (AlgHom.id ℚ K) hvl hv`. Use `h1.trans ?_` and prove the remaining obligations. Unfold `UpperTheory.V.LDataCardLeFinrank.ineImage`. Establish `hfam` using `UpperTheory.V.Base.galEmbFam ℚ K Ω l`. Rewrite using `[← hfam.2.2.1, ← Subgroup.map_map]`.
+
+Apply `Subgroup.map_mono` to reduce the goal to its premises. Introduce and unpack `σ ⟨τ, hτ, rfl⟩`. Use `⟨?_, hker τ⟩` and prove the remaining obligations. Establish `hI` using `(hfam.1 A).2`. Rewrite `hτ` using `[← hI]`.
+
+Conclude with `hτ`.
+-/
 private theorem aux (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N]
     (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {N} ℚ K] :
     Function.Surjective (cls ℚ Ω N) ∧
@@ -65,6 +87,9 @@ private theorem aux (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (
     rw [← hI] at hτ
     exact hτ
 
+/- English proof (translation)
+Introduce `Ω _ _ _ N _`. Conclude with `aux Ω N (CyclotomicField N ℚ)`.
+-/
 theorem UpperTheory.V.Chr.clsOnto :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N], Function.Surjective (cls ℚ Ω N) ∧
           ∀ (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), A.valuation (l : Ω) < 1 →

@@ -17,6 +17,9 @@ set_option autoImplicit false
 
 noncomputable section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorusRM.char_axis_eq_one_of_herm_axis_zero | exact GlobalTheory.TorusRM.char_axis_eq_one_of_herm_axis_zero | (intros; apply GlobalTheory.TorusRM.char_axis_eq_one_of_herm_axis_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.product_torus_factor_appell_humbert : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L₀ : LB A.left) (g : ℕ) (u : HolUnif A L₀ g)
     (L : LB (A ⊗ A).left), L.IsLB → HasGen (L.pull (lift (𝟙 A) (1 : A ⟶ A)).left) →
     ∀ (U : HolUnif (A ⊗ A) L (g + g)) (H : Matrix (Fin (g + g)) (Fin (g + g)) ℂ) (χ' : U.Λ → ℂ),

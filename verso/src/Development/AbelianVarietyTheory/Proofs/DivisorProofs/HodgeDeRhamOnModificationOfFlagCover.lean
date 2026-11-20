@@ -42,18 +42,30 @@ def combDer {R : Type} [CommRing R] {ι : Type} [Fintype ι] (δ : ι → (R →
   map_add' x y := by
     ext <;> simp [Finset.sum_add_distrib, mul_add]
 
+/- English proof (translation)
+Simplify using `[combDer]`.
+-/
 theorem combDer_fst {R : Type} [CommRing R] {ι : Type} [Fintype ι] (δ : ι → (R →+* DualNumber R))
     (hδ : ∀ i s, (δ i s).fst = s) (A : ι → R) (s : R) : (combDer δ hδ A s).fst = s := by
   simp [combDer]
 
+/- English proof (translation)
+Simplify using `[combDer]`.
+-/
 theorem combDer_snd {R : Type} [CommRing R] {ι : Type} [Fintype ι] (δ : ι → (R →+* DualNumber R))
     (hδ : ∀ i s, (δ i s).fst = s) (A : ι → R) (s : R) :
     (combDer δ hδ A s).snd = ∑ i, A i * (δ i s).snd := by
   simp [combDer]
 
+/- English proof (translation)
+Simplify using `[dualMap]`.
+-/
 theorem fst_dualMap {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (x : DualNumber S) :
     (dualMap φ x).fst = φ x.fst := by simp [dualMap]
 
+/- English proof (translation)
+Simplify using `[dualMap]`.
+-/
 theorem snd_dualMap {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (x : DualNumber S) :
     (dualMap φ x).snd = φ x.snd := by simp [dualMap]
 
@@ -61,6 +73,37 @@ end GlobalTheory.HorFrame
 
 open GlobalTheory.HorFrame in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y X Z M hP hKS k W hW p hp`. Use `haveI := c.fin`. Take `⟨W₁, hW₁, d, hpW₁, hW₁W, hd, hspan⟩` from `GlobalTheory.T.exists_affine_cover_with_dual_number_derivations M W p hp`. Establish `hoff : W₁ ≤ M.off` using `fun x hx => (hW (hW₁W hx)).1`. Establish `hτ : ⊤ ≤ tau hW₁ ⁻¹ᵁ W₁` using `tau_le hW₁ le_rfl`.
+
+Establish `hk₁ : ⊤ ≤ (tau hW₁ ≫ toFlag M) ⁻¹ᵁ X.F.U k` using `fun s _ => (hW (hW₁W (hτ (Set.mem_univ s)))).2`. Establish `hF₁ : ⊤ ≤ (tau hW₁ ≫ toFlag M) ⁻¹ᵁ flagOpen X` using `fun s _ => by`. Use `hoff (hτ (Set.mem_univ s))` as an intermediate fact. Rewrite `this` using `[M.off_eq]`. Conclude with `this`.
+
+Take `⟨alg₁, hch⟩` from `GlobalTheory.CompHS.exists_chartFr (tau hW₁ ≫ toFlag M) hF₁`. Take `⟨Q₀, hQ₀⟩` from `hch k hk₁`. Establish `hdalg : ∀ b, (d b).comp (algebraMap c.F Γ(M.X, W₁)) = algebraMap c.F (DualNumber Γ(M.X, W₁))` using `fun b => RingHom.ext fun a => TrivSqZeroExt.ext (by rw [RingHom.comp_apply, hd]; rfl) (by`. Rewrite using `[GlobalTheory.T.ringHom_numberField_dualNumber_snd_eq_zero c.F ((d b).comp (algebraMap c.F _)) a]`. Use the proof step `rfl)`.
+
+Establish `hx1 : ∀ b, (spMap (d b) ≫ Q₀.x) ≫ Xo.s = sOf c (DualNumber Γ(M.X, W₁))` using `fun b => by`. Rewrite using `[Category.assoc, Q₀.x_over]`. Unfold `sOf`. Rewrite using `[spMap_comp', ← RingHom.comp_assoc, hdalg]`. Establish `hx2 : ∀ b, spMap (TrivSqZeroExt.fstHom Γ(M.X, W₁) Γ(M.X, W₁) Γ(M.X, W₁)).toRingHom ≫ spMap (d b) ≫ Q₀.x = Q₀.x` using `fun b => by`.
+
+Rewrite using `[← Category.assoc, spMap_comp']`. Establish `: (TrivSqZeroExt.fstHom Γ(M.X, W₁) Γ(M.X, W₁) Γ(M.X, W₁)).toRingHom.comp (d b) = RingHom.id _` using `RingHom.ext fun s => hd b s`. Rewrite using `[this]`. Conclude with `(congrArg (· ≫ Q₀.x) (Spec.map_id _)).trans (Category.id_comp _)`. Use `choose Mx hMx using fun b => GlobalTheory.T.exists_kodairaSpencerMatrix_firstOrderDeformation hP Q₀ (spMap (d b) ≫ Q₀.x) (hx1 b) (hx2 b)`.
+
+Take `⟨B, hB⟩` from `GlobalTheory.T.exists_basicOpen_kodairaSpencer_left_inverse M hKS k hW₁ hoff hk₁ Q₀ hQ₀ d hd hspan Mx hMx p hpW₁`. Use `set MxM : Matrix (Fin (dimFlag Dw)) (HIx Dw (psiSet H)) Γ(M.X, W₁) := Matrix.of (fun a h => Mx a h) with hMxM`. Use `set g : Γ(M.X, W₁) := (B * MxM).det with hg`. Establish `hW' : IsAffineOpen (M.X.basicOpen g)` using `hW₁.basicOpen g`. Establish `hW'W₁ : M.X.basicOpen g ≤ W₁` using `M.X.basicOpen_le g`.
+
+Use `haveI := hW₁.isLocalization_basicOpen g`. Use `set ρ := algebraMap Γ(M.X, W₁) Γ(M.X, M.X.basicOpen g) with hρ`. Use `choose d' hd'1 hd'2 using fun b => GlobalTheory.T.exists_dualNumber_deformation_extend_away (S' := Γ(M.X, M.X.basicOpen g)) g (d b) (hd b)`. Establish `hunit : IsUnit ((B * MxM).map ρ).det`. Establish `: ((B * MxM).map ρ).det = ρ (B * MxM).det` using `by rw [RingHom.map_det]; rfl`.
+
+Rewrite using `[this]`. Conclude with `IsLocalization.Away.algebraMap_isUnit g`. Use `set A := ((B * MxM).map ρ)⁻¹ * B.map ρ with hA`. Establish `hAM : A * MxM.map ρ = 1`. Rewrite using `[hA, Matrix.mul_assoc, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hunit]`.
+
+Establish `hτ' : spMap ρ ≫ tau hW₁ = tau hW'`. Establish `e1` using `spMap_ev (tau hW') hW₁ (tau_le hW' hW'W₁)`. Establish `e2 : ev (tau hW') W₁ (tau_le hW' hW'W₁) = ρ` using `RingHom.ext fun a => ev_tau hW' hW'W₁ _ a`. Rewrite using `[← e2]`. Conclude with `e1`.
+
+Use `⟨M.X.basicOpen g, hW', fun b => combDer d' hd'1 (fun a => A b a), hB, hW'W₁.trans hW₁W, fun b s => combDer_fst _ _ _ _, ?_⟩` and prove the remaining obligations. Introduce `K _ _ ψ hk Q hQ b`. Establish `ez : (spMap ψ ≫ tau hW') ≫ toFlag M = (spMap (ψ.comp ρ) ≫ tau hW₁) ≫ toFlag M`. Rewrite using `[← hτ', ← spMap_comp' ρ ψ]`. Simplify using `only [Category.assoc]`.
+
+Establish `hk' : ⊤ ≤ ((spMap (ψ.comp ρ) ≫ tau hW₁) ≫ toFlag M) ⁻¹ᵁ X.F.U k` using `ez ▸ hk`. Establish `hQ' : X.F.ChartFr k _ hk' Q` using `hQ.frMap (frMap_refl Q) ((spMap_algId _).trans ez) hk'`. Take `⟨w, hwD, hwKS, hwpt⟩` from `GlobalTheory.T.exists_chart_frame_deformation_of_derivation_combination M hKS k hW₁ hk₁ Q₀ hQ₀ d hd Mx hMx K (ψ.comp ρ) hk' Q hQ' ((dualMap ψ).comp ((combDer d' hd'1 (fun a => A b a)).comp ρ)) (fun a => ψ (A b a)) (fun s => by rw [RingHom.comp_apply, fst_dualMap, RingHom.comp_app …`. Rewrite using `[RingHom.comp_apply, snd_dualMap, RingHom.comp_apply, combDer_snd, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hd'2]`. Use the proof step `rfl)`. Use `⟨w, hwD, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ h, ∑ a, ψ (A b a) * ψ (ρ (Mx a h)) = (Pi.single b (1 : K) : HIx Dw (psiSet H) → K) h` using `fun h => by`. Establish `e` using `congrArg (fun N => ψ (N b h)) hAM`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.map_apply, hMxM, Matrix.of_apply, map_sum, map_mul] at e`. Rewrite using `[e, Matrix.one_apply, Pi.single_apply]`. Distinguish the cases in `hh : h = b`. Substitute `hh` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hh, Ne.symm hh]`. Use `hwKS using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `h`. Rewrite using `[Finset.sum_apply, ← key h]`. Both sides reduce to the same expression.
+
+Rewrite using `[← hwpt, ← hτ']`. Simplify using `only [← Category.assoc, spMap_comp']`.
+-/
 theorem GlobalTheory.HorFrame.exists_horizontal_lift : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y} {Z : Comp Xo c} (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)) (hP : GlobalTheory.Published.AbelianDeRham)
     (hKS : ∀ (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), KSIso (psiSet H) y) (k : X.F.J)
     (W : M.X.Opens) (hW : W ≤ M.off ⊓ (toFlag M) ⁻¹ᵁ X.F.U k) (p : M.X) (hp : p ∈ W), ∃ (W' : M.X.Opens) (hW' : IsAffineOpen W')

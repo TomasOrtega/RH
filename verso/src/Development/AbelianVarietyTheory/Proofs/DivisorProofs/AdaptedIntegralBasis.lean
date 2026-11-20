@@ -10,6 +10,17 @@ noncomputable def red {n : ℕ} (y : Fin n → PowerSeries F) : Fin n → F := f
 noncomputable def lift {n : ℕ} (y : Fin n → PowerSeries F) : Fin n → LaurentSeries F :=
   fun a => (y a : LaurentSeries F)
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, u l ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hu (funext h)`. Take `⟨i, -, hi⟩` from `Finset.exists_max_image Finset.univ (fun a => Valued.v (u a)) ⟨l, Finset.mem_univ _⟩`.
+
+Establish `hvl : Valued.v (u l) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hl`. Establish `hvi : 0 < Valued.v (u i)`. Use `hi l (Finset.mem_univ _)` as an intermediate fact. Conclude with `lt_of_lt_of_le (zero_lt_iff.mpr hvl) this`. Establish `hui : u i ≠ 0` using `(Valuation.ne_zero_iff _).mp hvi.ne'`.
+
+Establish `key : ∀ a, ∃ P : PowerSeries F, (P : LaurentSeries F) = (u i)⁻¹ * u a`. Introduce `a`. Use `(LaurentSeries.val_le_one_iff_eq_coe F ((u i)⁻¹ * u a)).mp (by` as an intermediate fact. Rewrite using `[map_mul, map_inv₀, inv_mul_le_one₀ hvi]`. Conclude with `hi a (Finset.mem_univ _))`.
+
+Conclude with `this`. Use `choose y hy using key`. Use `⟨i, y, funext fun a => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[lift, hy]`. Apply `HahnSeries.ofPowerSeries_injective (Γ := ℤ)` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `((y i : PowerSeries F) : LaurentSeries F) = ((1 : PowerSeries F) : LaurentSeries F)`. Rewrite using `[hy, inv_mul_cancel₀ hui, map_one]`.
+-/
 lemma exists_primitive {n : ℕ} (u : Fin n → LaurentSeries F) (hu : u ≠ 0) :
     ∃ (i : Fin n) (y : Fin n → PowerSeries F), lift y = (u i)⁻¹ • u ∧ y i = 1 := by
   obtain ⟨l, hl⟩ : ∃ l, u l ≠ 0 := by
@@ -34,6 +45,9 @@ lemma exists_primitive {n : ℕ} (u : Fin n → LaurentSeries F) (hu : u ≠ 0) 
     change ((y i : PowerSeries F) : LaurentSeries F) = ((1 : PowerSeries F) : LaurentSeries F)
     rw [hy, inv_mul_cancel₀ hui, map_one]
 
+/- English proof (translation)
+The claim follows from `| 0, U, _ => ⟨Fin.elim0, fun b => b.elim0, linearIndependent_empty_type⟩ | d+1, U, hd => by obtain ⟨u, huU, hu0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot (p := U) (by intro h; rw [h, finrank_bot] at hd; omega) obtain ⟨i, y0, hy0, hy0i⟩ := exists_primitive u hu0 let f : U →ₗ[Laur …`.
+-/
 lemma exists_indep {n : ℕ} : ∀ (d : ℕ) (U : Submodule (LaurentSeries F) (Fin n → LaurentSeries F)),
     d ≤ Module.finrank (LaurentSeries F) U →
     ∃ y : Fin d → (Fin n → PowerSeries F), (∀ b, lift (y b) ∈ U) ∧
@@ -83,6 +97,9 @@ lemma exists_indep {n : ℕ} : ∀ (d : ℕ) (U : Submodule (LaurentSeries F) (F
       have := hsub hmem
       simp [red, hy0i] at this
 
+/- English proof (translation)
+The claim follows from `| 0, _ => ⟨Fin.elim0, fun j => j.elim0, linearIndependent_empty_type⟩ | m+1, hm => by obtain ⟨c, hcV, hci⟩ := greedy V hV m (by omega) obtain ⟨y, hyV, hyi⟩ := exists_indep (Module.finrank (LaurentSeries F) (V m)) (V m) le_rfl have : ∃ b, red (y b) ∉ Submodule.span F (Set.range fu …`.
+-/
 lemma greedy {n : ℕ} (V : ℕ → Submodule (LaurentSeries F) (Fin n → LaurentSeries F))
     (hV : ∀ j, j < n → j < Module.finrank (LaurentSeries F) (V j)) :
     ∀ m, m ≤ n → ∃ c : Fin m → (Fin n → PowerSeries F), (∀ j : Fin m, lift (c j) ∈ V j) ∧
@@ -117,6 +134,19 @@ end GlobalTheory.LaurentFlagBasis
 
 open GlobalTheory.LaurentFlagBasis in
 
+/- English proof (translation)
+Introduce `F _ n R W hW`. Set `V : ℕ → Submodule (LaurentSeries F) (Fin n → LaurentSeries F)` to `fun j => ⨅ (k : Fin (R + 1)) (_ : j < Module.finrank (LaurentSeries F) (W k)), W k`. Establish `hV : ∀ j, j < n → j < Module.finrank (LaurentSeries F) (V j)`. Introduce `j hj`. Distinguish the cases in `h : ∃ k, j < Module.finrank (LaurentSeries F) (W k)`.
+
+Take `⟨k, hk⟩` from `h`. Take `⟨k0, hk0, hmin⟩` from `Finset.exists_min_image (Finset.univ.filter fun k => j < Module.finrank (LaurentSeries F) (W k)) id ⟨k, by simp [hk]⟩`. Establish `hle : W k0 ≤ V j` using `le_iInf₂ fun k hk => hW (hmin k (by simp [hk]))`. Use `Submodule.finrank_mono hle` as an intermediate fact. Simplify using `at hk0`.
+
+Use linear arithmetic over natural numbers and integers. Use `push_neg at h`. Establish `hle : ⊤ ≤ V j` using `le_iInf₂ fun k hk => absurd hk (not_lt.mpr (h k))`. Use `Submodule.finrank_mono hle` as an intermediate fact. Rewrite `this` using `[finrank_top, Module.finrank_fin_fun]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨c, hcV, hci⟩` from `greedy V hV n le_rfl`. Set `g : Matrix (Fin n) (Fin n) (PowerSeries F)` to `Matrix.of fun a j => c j a`. Establish `hunit : IsUnit g`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, PowerSeries.isUnit_iff_constantCoeff, RingHom.map_det, ← Matrix.isUnit_iff_isUnit_det, ← Matrix.linearIndependent_cols_iff_isUnit]`.
+
+Use `hci using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j a`. Simplify using `[g, red, Matrix.col]`. Use `⟨hunit.unit, fun k j hj => ?_⟩` and prove the remaining obligations. Establish `hmem` using `hcV j`.
+
+Establish `hVk : V j ≤ W k` using `iInf₂_le k hj`. Conclude with `hVk hmem`.
+-/
 theorem GlobalTheory.LaurentFlagBasis.adapted_integral_basis : ∀ (F : Type) [Field F] (n R : ℕ)
     (W : Fin (R + 1) → Submodule (LaurentSeries F) (Fin n → LaurentSeries F)), Monotone W →
     ∃ g : (Matrix (Fin n) (Fin n) (PowerSeries F))ˣ, ∀ (k : Fin (R + 1)) (j : Fin n),

@@ -21,6 +21,11 @@ def EtaSp : Prop :=
   StdHyp σ J ψ → UnramAt (E := E) v → ¬ (IE (E := E) v).IsPrime →
     ∃ x : Fv F v ⊗[F] E, x * x = x ∧ x ≠ 0 ∧ x ≠ 1
 
+/- English proof (translation)
+Introduce `hstd hun`. Unfold `etaV`. Prove the components needed by the constructor for the conclusion. Introduce `h hp split_ifs at h with hx`. Take `⟨x, h1, h2, h3⟩` from `hx`.
+
+Break down `hI hstd hun hp x h1 with h0 | h0` into its components or cases. Conclude with `h2 h0`. Conclude with `h3 h0`. Introduce `hp`. Rewrite using `[if_pos (hS hstd hun hp)]`.
+-/
 theorem etaLink_of (hI : EtaIn σ J ψ v) (hS : EtaSp σ J ψ v) : EtaLink σ J ψ v := by
   intro hstd hun
   unfold etaV
@@ -34,6 +39,9 @@ theorem etaLink_of (hI : EtaIn σ J ψ v) (hS : EtaSp σ J ψ v) : EtaLink σ J 
   · intro hp
     rw [if_pos (hS hstd hun hp)]
 
+/- English proof (translation)
+The claim follows from `resAlg_of_eta σ J ψ v (etaLink_of σ J ψ v hI hS)`.
+-/
 theorem resAlg_of_etaSp (hI : EtaIn σ J ψ v) (hS : EtaSp σ J ψ v) : ResAlg σ J ψ v :=
   resAlg_of_eta σ J ψ v (etaLink_of σ J ψ v hI hS)
 

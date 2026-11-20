@@ -19,16 +19,29 @@ noncomputable section
 
 namespace GlobalTheory.SizeSqIntegral
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.SizeRat.sz_ratCast l lam (D : ℚ) (-(padicValNat l D : ℝ)) (by`. Rewrite using `[padicValRat.of_nat]`. Use the proof step `simp)`. Simplify using `using h`.
+-/
 theorem sz_nat_val (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (D : ℕ) :
     Sz l lam (-(padicValNat l D : ℝ)) (D : ℂ) := by
   have h := GlobalTheory.SizeRat.sz_ratCast l lam (D : ℚ) (-(padicValNat l D : ℝ)) (by
     rw [padicValRat.of_nat]; simp)
   simpa using h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SzRules.sz_of_isIntegral 1 x (fun hd => hl.out.one_lt.ne' (Nat.dvd_one.1 hd)) (by simpa using h)`.
+-/
 theorem sz_zero_of_isIntegral (l : ℕ) [hl : Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (x : ℂ)
     (h : IsIntegral ℤ x) : Sz l lam 0 x :=
   GlobalTheory.SzRules.sz_of_isIntegral 1 x (fun hd => hl.out.one_lt.ne' (Nat.dvd_one.1 hd)) (by simpa using h)
 
+/- English proof (translation)
+Introduce `l hl lam D M x _ hx`. Prove the components needed by the constructor for the conclusion. Apply `GlobalTheory.SzRules.sz_of_sq` to reduce the goal to its premises. Establish `h` using `GlobalTheory.SzRules.sz_mul (sz_nat_val l lam D) (sz_zero_of_isIntegral l lam _ hx)`. Rewrite `h` using `[add_zero]`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `sz_nat_val l lam (l ^ padicValNat l D)`. Rewrite `h1` using `[padicValNat.prime_pow]`. Establish `h2 : Sz l lam 0 (M : ℂ)` using `sz_zero_of_isIntegral l lam _ (by simpa using (isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := (M : ℤ))))`.
+
+Establish `h` using `GlobalTheory.SzRules.sz_mul h2 h1`. Rewrite `h` using `[zero_add, ← Nat.cast_mul]`. Use `GlobalTheory.SzRules.sz_mono ?_ h` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ (padicValNat l D : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (D M : ℕ) (x : ℂ), 0 < D → IsIntegral ℤ ((D : ℂ) * x ^ 2) → Sz l lam (-(padicValNat l D : ℝ) / 2) ((D : ℂ) * x) ∧ Sz l lam (-(padicValNat l D : ℝ) / 2) ((M * l ^ padicValNat l D : ℕ) : ℂ) := by
   intro l hl lam D M x _ hx
   constructor

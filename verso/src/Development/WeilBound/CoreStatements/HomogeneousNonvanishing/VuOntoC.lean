@@ -17,6 +17,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 
 open GlobalTheory.CxPts
 
+/- English proof (translation)
+Use `letI := V.fin`. Take `⟨-, g1, g2, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H D l Xo c (CAt σ)`. Take `⟨d, hsm, hpr⟩` from `GlobalTheory.T.toroidal_flag_smooth_projective E H D l Xo c T`. Set `R : GlobalTheory.AnRead (flagStr T.X) σ d` to `GlobalTheory.AnRead.all _ _ _`. Use `choose hk hf hR hZ using fun k => open_secZ hU T (hT k) (hP k).1.1`.
+
+Establish `hh : ∀ k, hk k ∈ R.holSec (T.X.LL e)` using `fun k => ⟨hf k, holoOn_bdZ hσ hU T he (hP k) R (hR k) (hZ k) (open_holoZ hσ hU T (hT k) (hP k).1.1 R (hR k) (hZ k))⟩`. Set `h : (T.X.LL e).ι → GlobalTheory.CxPts (flagStr T.X) σ → ℂ` to `∑ k, hk k`. Establish `hh' : h ∈ R.holSec (T.X.LL e)` using `Submodule.sum_mem _ fun k _ => hh k`. Establish `hap : ∀ (i : (T.X.LL e).ι) y, h i y = ∑ k, hk k i y` using `fun i y => by simp only [h, Finset.sum_apply]`. Establish `hv : ∀ i y, y ∉ ptsIn (flagStr T.X) σ (flagOpen T.X) → h i y = 0` using `fun i y hy => by`.
+
+Simplify using `only [h, Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun k _ => hZ k i y fun x hx e' => hy (mem_open_of_ptY T _ _ e')`. Establish `hRh : ∀ k, Reads V T e k (P k) h` using `fun k x hx i y hz Q t hxy hQ ht => by`. Establish `e₁ : h i y = hk k i y`. Use `(hap i y).trans (Finset.sum_eq_single k (fun k' _ hne => hZ k' i y fun x' hx' e' => hne ?_) fun h' => (h' (Finset.mem_univ _)).elim)` and prove the remaining obligations.
+
+Establish `e'' : T.X.ptY (V.un k' ⟨x', hx'⟩) = zOf y` using `e'`. Establish `hlx : T.X.F.Lies (zOf y) (V.un k' ⟨x', hx'⟩)` using `e'' ▸ T.X.lies_ptY _`. Take `⟨t', ht'⟩` from `GlobalTheory.FlagMod.Frames.ChartFr.exists_frBor (z := zOf y) hQ hlx`. Take `⟨γ, -, β, -, h'⟩` from `(hU.2.2.2.1 k k' _ _).1 ⟨_, g1 _ _ _ _ _ (g2 _ _ _ ht) ht'⟩`. Conclude with `(Sigma.mk.inj h').1`.
+
+Rewrite using `[e₁]`. Conclude with `hR k x hx i y hz Q t hxy hQ ht`. Establish `hB` using `T.X.F.isLB_LL e`. Take `⟨xC, hx⟩` from `(GlobalTheory.AnRead.bijective_valC hpr R hB).2 ⟨h, hh'⟩`. Establish `hxv : GlobalTheory.SecC.val xC = h` using `congrArg Subtype.val hx`.
+
+Establish `hlft : LocallyOfFiniteType (flagStr T.X)` using `by haveI := hsm haveI : Smooth (flagStr T.X) := SmoothOfRelativeDimension.smooth d _ infer_instance`. Take `⟨m, as, ss, hss, hsum⟩` from `GlobalTheory.T.complex_section_finite_combination c.F T.X.YY (flagStr T.X) σ hlft _ hB (flagOpen T.X) xC (fun i y hy => by rw [hxv]; exact hv i y hy)`. Use `⟨m, as, fun j => ruleTop T.X _ (GlobalTheory.Vanishing.H0.ofSec (flagStr T.X) ⊤ (ss j)), fun j => ?_, fun k => GlobalTheory.T.holomorphic_extension_section_reading E H D l Xo c r σ V T e k (P k) h (hRh k) m as ss (hxv.symm.trans hsum)⟩` and prove the remaining obligations. Use `ruleTop_mem_extVanZ.2 (mem_vanOut_iff_le.2 ?_)` and prove the remaining obligations. Establish `e' : toSec (GlobalTheory.Vanishing.H0.ofSec (flagStr T.X) ⊤ (ss j)) = ss j` using `(Equiv.ofBijective _ GlobalTheory.Vanishing.H0.bijective_ofSec_top).symm_apply_apply (ss j)`.
+
+Rewrite using `[e']`. Conclude with `hss j`.
+-/
 theorem exists_comb {V : Unf Xo c σ r} (hσ : GoodEmb c σ) (hU : IsUnf V) (T : TorFlag Xo c)
     {e : Ix D → ℤ} (he : e none = 0) {la : ∀ k, ReciprocityTheory.ChartRestriction.G.FD.Wt (V.X k).Ψ r} (hT : ∀ k, Tw V e k (la k))
     {P : ∀ k, Frame (V.X k).Ψ r → ℂ} (hP : ∀ k, P k ∈ (V.X k).SS (la k)) :

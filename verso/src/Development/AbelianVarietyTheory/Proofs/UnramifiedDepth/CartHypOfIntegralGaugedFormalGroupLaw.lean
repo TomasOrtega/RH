@@ -16,6 +16,11 @@ open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formal
 
 namespace GlobalTheory.RowLaw
 
+/- English proof (translation)
+Introduce `C _ V d _ I _ κ _ X hL hP hT g`. Establish `hlg0 : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0` using `fun i => by`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hL.lin i 0 (by simp), MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.constantCoeff_X]`. Establish `hh` using `hL.axes 0`. Use `{ zero := X.zero_mem hlg0 hh V g add := X.add_mem V g (GlobalTheory.T.addCurveStable_of_integralGaugedFormalGroupLaw C V d I κ X hL) hL.uint neg := X.neg_mem V g hL.odd teich := X.teich_mem V g Vm := X.V_mem V g Fm := GlobalTheory.T.frobenius_mem_typicalCurveSet C V d I κ X hL g …` and prove the remaining obligations.
+
+Take `⟨w, hw, huw⟩` from `hL.sat g`. Use `⟨w, hw, fun c c' => ?_⟩` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `(huw c c').1 h`. Conclude with `(huw c c').2 h`.
+-/
 theorem cartHyp_of_rlaw : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (κ : Type) [Fintype κ] (X : RawChart C d I κ), RLaw X V → HasProj X V → (∀ g, HasTeich X V g) → ∀ g, X.CartHyp V g := by
   intro C _ V d _ I _ κ _ X hL hP hT g
   have hlg0 : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0 := fun i => by

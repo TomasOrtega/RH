@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.LBLift
 
+/- English proof (translation)
+Use extensionality with `r`. Establish `k1` using `congr($(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom σ)).hom r)`. Establish `k2` using `congr($(Scheme.Hom.comp_appLE s (spMap σ) ⊤ U le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r))`. Use `k2.trans ?_` and prove the remaining obligations. Conclude with `(congrArg (s.appLE ⊤ U le_top).hom k1).symm`.
+-/
 theorem appLE_comp_spMap_hom (R C : Type) [CommRing R] [CommRing C] (σ : R →+* C) (X : Scheme.{0})
     (s : X ⟶ Sp C) (U : X.Opens) :
     ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (s ≫ spMap σ).appLE ⊤ U le_top).hom =
@@ -22,6 +25,19 @@ theorem appLE_comp_spMap_hom (R C : Type) [CommRing R] [CommRing C] (σ : R →+
   refine k2.trans ?_
   exact (congrArg (s.appLE ⊤ U le_top).hom k1).symm
 
+/- English proof (translation)
+Introduce `R C _ _ σ J hJ X X₀ s s₀ i h`. Establish `hβ : Function.Surjective (CommRingCat.ofHom (Ideal.Quotient.mk J)).hom` using `Ideal.Quotient.mk_surjective`. Establish `hpo : ∀ U : X.affineOpens, IsPushout ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (s ≫ spMap σ).appLE ⊤ U.1 le_top) (CommRingCat.ofHom (Ideal.Quotient.mk J)) (i.app U.1) ((Scheme.ΓSpecIso (CommRingCat.of (R ⧸ J))).inv ≫ s₀.appLE ⊤ (i ⁻¹ᵁ U.1) le_top)`. Introduce `U`. Establish `hpo` using `(isIso_pushoutSection_iff h (US := ⊤) (UT := ⊤) (UX := U.1) (UY := i ⁻¹ᵁ U.1) le_top le_top (by simp)).1 (isIso_pushoutSection_of_isAffineOpen h _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) U.2)`.
+
+Use `hpo.of_iso (Scheme.ΓSpecIso _) (Iso.refl _) (Scheme.ΓSpecIso _) (Iso.refl _) (by simp) ?_ (by simp [Scheme.Hom.appLE_eq_app]) (by simp)` and prove the remaining obligations. Rewrite using `[← Scheme.ΓSpecIso_naturality]`. Use `congr 1`. Use `haveI := IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom (Ideal.Quotient.mk J)) Ideal.Quotient.mk_surjective`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `MorphismProperty.of_isPullback (P := @IsClosedImmersion) h.flip inferInstance`. Conclude with `LiftSys.surjective_of_isPullback_sqZero (I := J) (by rw [hJ]; rfl) Ideal.Quotient.mk_surjective (Ideal.mk_ker) h`. Introduce `U`. Establish `P` using `hpo U`. Establish `htop` using `CommRingCat.closure_range_union_range_eq_top_of_isPushout P`.
+
+Rewrite using `[← RingHom.range_eq_top, ← top_le_iff, ← htop, Subring.closure_le]`. Introduce and unpack `_ (⟨y, rfl⟩ | ⟨z, rfl⟩)`. Conclude with `⟨y, rfl⟩`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `⟨_, congr($(P.w).hom r)⟩`.
+
+Introduce `U b`. Establish `hk` using `GlobalTheory.PrimeSection.ker_eq_map_of_isPushout (hpo U) hβ`. Establish `hk' : RingHom.ker (CommRingCat.ofHom (Ideal.Quotient.mk J)).hom = J` using `Ideal.mk_ker`. Rewrite `hk` using `[hk', appLE_comp_spMap_hom]`. Rewrite using `[Ideal.map_map]`.
+
+Conclude with `RingHom.mem_ker.symm.trans (by rw [hk]; exact Iff.rfl)`.
+-/
 theorem isThick_of_isPullback_quotient : ∀ (R C : Type) [CommRing R] [CommRing C] (σ : R →+* C) (J : Ideal R),
     J ^ 2 = ⊥ → ∀ (X X₀ : Scheme.{0}) (s : X ⟶ Sp C) (s₀ : X₀ ⟶ Sp (R ⧸ J)) (i : X₀ ⟶ X),
     IsPullback i s₀ (s ≫ spMap σ) (spMap (Ideal.Quotient.mk J)) → IsThick (J.map σ) s i := by

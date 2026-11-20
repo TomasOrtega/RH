@@ -21,6 +21,9 @@ variable (Pr) in
 def admitted (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) (h : AutY X R j) : Prop :=
   (P ∈ Pr.vGs → h ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) j P)) ∧ (P ∉ Pr.vGs → Between j P h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => one_mem _, fun hP => between_of_nf hP (IndefiniteRowSideFullHecke.SandwichNormalForm.nf_one j hP)⟩`.
+-/
 theorem isAdmissibleIntegralBasisChange_one (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) : admitted Pr j P (1 : AutY X R j) :=
   ⟨fun _ => one_mem _, fun hP => between_of_nf hP (IndefiniteRowSideFullHecke.SandwichNormalForm.nf_one j hP)⟩
 
@@ -60,6 +63,11 @@ def ChrQ (j : ℕ) (P : rowSG Pr sel mu) (h : AutY X R j) (lev : LevI X.E X.K (R
     (∀ x, r (Loc.inX X.E (R.N j) (cOf R j) x) = Loc.inX X.E (R.N j) (cOf R j) (g.1.1 x)) →
     ((lev.lam g : X.Kˣ) : X.K) = chiInv Ch sel mu cst j P h r
 
+/- English proof (translation)
+Use `choose s hsC hsR using hs`. Use `⟨MonoidHom.mk' (fun h => Units.mk0 (χ (s h)) (hne _ (hsC h))) fun a b => Units.ext ?_, fun h r hr hR => ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mk0, Units.val_mul]`. Rewrite using `[← hmul _ (hsC a) _ (hsC b)]`. Conclude with `hw _ _ (hsC _) _ (mul_mem (hsC a) (hsC b)) (hsR _) (hm _ _ _ _ (hsR a) (hsR b))`.
+
+Conclude with `hw _ _ (hsC _) _ hr (hsR _) hR`.
+-/
 theorem exists_char {G H K : Type} [Group G] [Group H] [Field K] (C : Subgroup G) (χ : G → K) (Rel : G → H → Prop)
     (hne : ∀ r ∈ C, χ r ≠ 0) (hmul : ∀ r ∈ C, ∀ r' ∈ C, χ (r * r') = χ r * χ r')
     (hs : ∀ h, ∃ r ∈ C, Rel r h) (hm : ∀ r h r' h', Rel r h → Rel r' h' → Rel (r * r') (h * h'))

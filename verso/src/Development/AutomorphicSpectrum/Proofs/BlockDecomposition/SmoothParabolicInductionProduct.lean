@@ -7,6 +7,11 @@ open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.CompanionTheory.BZRes
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.BZRes.sQ`. Use `GlobalTheory.SmGL.isSmooth_comp ?_ _ (GlobalTheory.SmGL.ProdIrr.continuous_leviProj _)` and prove the remaining obligations. Use `GlobalTheory.SmGL.isSmooth_twist ?_ (GlobalTheory.SmGL.isSmoothChar_deltaHalf k)` and prove the remaining obligations. Use `GlobalTheory.SmGL.isSmooth_piTensor ?_` and prove the remaining obligations. Introduce `x`.
+
+Consider the cases of `x`. Conclude with `h₁`. Conclude with `h₂`.
+-/
 theorem isSmooth_sQ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] {r t N : ℕ} (h : r + t = N)
     (π₁ : Representation ℂ (GL (Fin r) k) V) (π₂ : Representation ℂ (GL (Fin t) k) W)

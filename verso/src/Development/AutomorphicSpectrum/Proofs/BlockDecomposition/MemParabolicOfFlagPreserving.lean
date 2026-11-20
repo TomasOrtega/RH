@@ -26,6 +26,19 @@ open GlobalTheory.SiegelSet GlobalTheory.CompanionTheory.RegInt
 noncomputable section
 namespace GlobalTheory.CompanionTheory.RegInt
 
+/- English proof (translation)
+Introduce `D V r X Y hW j δ h`. Establish `hcoord : ∀ c : Fin V.rank → D.host.E, ratAct D.sp.cm V δ (GlobalTheory.AutFunCompare.vecOf V c) = GlobalTheory.AutFunCompare.vecOf V (δ.1.1 *ᵥ c)`. Introduce `c`. Use `V.frame.ext_elem fun i => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.AutFunCompare.repr_vecOf, ratAct, Matrix.repr_toLin]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `GlobalTheory.AutFunCompare.repr_vecOf V c a`. Establish `hspan : ∀ x ∈ GlobalTheory.AutFunCompare.colSpan V (firstCols X j), ratAct D.sp.cm V δ x ∈ GlobalTheory.AutFunCompare.colSpan V (firstCols X j)`. Establish `hle : GlobalTheory.AutFunCompare.colSpan V (firstCols X j) ≤ (GlobalTheory.AutFunCompare.colSpan V (firstCols X j)).comap (ratAct D.sp.cm V δ)`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Take `⟨b, hb, hb0⟩` from `h (Fin.castLE j.2 k) (Nat.lt_succ_iff.1 k.2)`. Establish `hcol : (firstCols X j)ᵀ k = fun a => X a (Fin.castLE j.2 k)` using `rfl`. Express the relevant statement in the definitionally equal form `ratAct D.sp.cm V δ (GlobalTheory.AutFunCompare.vecOf V ((firstCols X j)ᵀ k)) ∈ GlobalTheory.AutFunCompare.colSpan V (firstCols X j)`.
+
+Rewrite using `[hcoord, hcol, hb]`. Establish `hsum : X *ᵥ b = ∑ l, b l • (fun a => X a l)`. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Rewrite using `[hsum, GlobalTheory.AutFunCompare.vecOf, map_sum]`.
+
+Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Distinguish the cases in `hl : l ≤ j`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨l.val, Nat.lt_succ_iff.2 hl⟩, rfl⟩)` and prove the remaining obligations. Rewrite using `[hb0 l (not_le.1 hl), zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`. Conclude with `fun x hx => hle hx`. Express the relevant statement in the definitionally equal form `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.diagH D.sp.cm.sig V.gram D.host.F δ ∈ IsoFlag.par _ D.sp.cm D.host.F`. Rewrite using `[frameFlag, IsoFlag.par_single, diagH_mem_parab]`. Conclude with `hspan`.
+-/
 theorem mem_parRat_frameFlag_firstCols : ∀ (D : D7) (V : HSp D) (r : ℕ) (X Y : Matrix (Fin V.rank) (Fin r) D.host.E)
     (hW : IsWittFrame D.sp.cm.sig V.gram X Y) (j : Fin r) (δ : GF V),
     (∀ l : Fin r, l ≤ j → ∃ b : Fin r → D.host.E, δ.1.1 *ᵥ (fun a => X a l) = X *ᵥ b ∧ ∀ m : Fin r, j < m → b m = 0) →

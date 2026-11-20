@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 noncomputable section
 namespace GlobalTheory.HeightCounting.Up.RealOfReading
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie
+/- English proof (translation)
+Substitute `hcf` using the available equality. Substitute `hC` using the available equality. Consider the cases of `eq_of_heq htp`. Substitute `hM` using the available equality. Consider the cases of `eq_of_heq hrep`.
+
+Conclude with `⟨⟨P, X, ag, e0⟩, rfl, HEq.rfl⟩`.
+-/
 theorem exists_linked_data_of_agreement {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) {cf : CharFrame D} {nch : NChoice D}
     {tp : TupTied D cf nch} (X : GlobalTheory.NJoin.RealAt D cf nch tp) (hcf : P.cf = cf) (hC : P.C = nch) (htp : HEq P.tp tp)
     {M : MtFam D} {rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r} (hM : P.M = M) (hrep : HEq P.rep rep)

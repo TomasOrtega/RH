@@ -17,11 +17,21 @@ def algAt (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (emb : ∀ w : InfinitePl
 
 variable (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (emb : ∀ w : InfinitePlace F, EmbOver E w)
 
+/- English proof (translation)
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, φ, hf, hφ, hv, rfl⟩`. Conclude with `⟨f, φ, hf, hφ, fun v hv' => hv v fun h' => hv' (h h'), rfl⟩`.
+-/
 theorem algAt_mono {T T' : Finset (Pl F)} (h : T ⊆ T') : algAt M ψ emb T ≤ algAt M ψ emb T' := by
   refine Submodule.span_mono ?_
   rintro Φ ⟨f, φ, hf, hφ, hv, rfl⟩
   exact ⟨f, φ, hf, hφ, fun v hv' => hv v fun h' => hv' (h h'), rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction generalizing T₀ with`. Consider the case `mem x hx`. Take `⟨f, φ, hf, hφ, hco, rfl⟩` from `hx`. Establish `hfin : {v | ¬ φ v = M.vac v}.Finite` using `Filter.eventually_cofinite.1 hco`. Use `⟨T₀ ∪ hfin.toFinset, Finset.subset_union_left, Submodule.subset_span ⟨f, φ, hf, hφ, fun v hv => ?_, rfl⟩⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 hne))`. Consider the case `zero => exact ⟨T₀, subset_rfl, zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨T₁, h₁, hx₁⟩` from `hx T₀`.
+
+Take `⟨T₂, h₂, hy₂⟩` from `hy T₁`. Conclude with `⟨T₂, h₁.trans h₂, add_mem (algAt_mono M ψ emb h₂ hx₁) hy₂⟩`. Consider the case `smul c x _ hx`. Take `⟨T₁, h₁, hx₁⟩` from `hx T₀`. Conclude with `⟨T₁, h₁, Submodule.smul_mem _ c hx₁⟩`.
+-/
 theorem exists_algAt {Φ : (Fin n × Fin d → AF F) → ℂ} (hΦ : Φ ∈ GlobalTheory.SquareAgree.algD M ψ emb)
     (T₀ : Finset (Pl F)) : ∃ T, T₀ ⊆ T ∧ Φ ∈ algAt M ψ emb T := by
   classical

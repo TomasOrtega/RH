@@ -6,6 +6,9 @@ namespace GroundTheory.Heights₂.Heights
 
 open Module
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, Ring.ord_mul' O (mem_nonZeroDivisors_of_ne_zero (ha j)), ih]`.
+-/
 theorem LengthQuotientDet.ord_prod {O : Type} [CommRing O] [IsDomain O] {ι : Type*} (s : Finset ι)
     (a : ι → O) (ha : ∀ i, a i ≠ 0) : Ring.ord O (∏ i ∈ s, a i) = ∑ i ∈ s, Ring.ord O (a i) := by
   classical
@@ -15,6 +18,19 @@ theorem LengthQuotientDet.ord_prod {O : Type} [CommRing O] [IsDomain O] {ι : Ty
     rw [Finset.prod_insert hj, Finset.sum_insert hj,
       Ring.ord_mul' O (mem_nonZeroDivisors_of_ne_zero (ha j)), ih]
 
+/- English proof (translation)
+Introduce `O _ _ _ M _ _ _ _ φ hdet`. Establish `hinj : Function.Injective φ` using `LinearMap.ker_eq_bot.mp (not_not.mp (mt LinearMap.det_eq_zero_iff_ker_ne_bot.mpr hdet))`. Use `set ι := Module.Free.ChooseBasisIndex O M`. Set `b` to `Module.Free.chooseBasis O M`. Establish `hrank : finrank O (LinearMap.range φ) = finrank O M` using `LinearMap.finrank_range_of_inj hinj`.
+
+Use `set a := Submodule.smithNormalFormCoeffs b hrank`. Set `b'` to `Submodule.smithNormalFormTopBasis b hrank`. Set `ab` to `Submodule.smithNormalFormBotBasis b hrank`. Establish `ha : ∀ i, a i ≠ 0` using `Submodule.smithNormalFormCoeffs_ne_zero b hrank`. Establish `hlen : Module.length O (M ⧸ LinearMap.range φ) = ∑ i, Ring.ord O (a i)`.
+
+Rewrite using `[(Submodule.quotientEquivPiSpan (LinearMap.range φ) b hrank).length_eq, Module.length_pi_of_fintype]`. Both sides reduce to the same expression. Set `v : Basis ι O M` to `ab.map (LinearEquiv.ofInjective φ hinj).symm`. Establish `hv : ∀ i, φ (v i) = a i • b' i`. Introduce `i`.
+
+Establish `h1 : φ (v i) = ((LinearEquiv.ofInjective φ hinj) (v i) : M)` using `(LinearEquiv.ofInjective_apply _ _).symm`. Rewrite using `[h1]`. Simplify using `only [v, Basis.map_apply, LinearEquiv.apply_symm_apply]`. Conclude with `Submodule.smithNormalFormBotBasis_def b hrank i`. Establish `hdetprod : LinearMap.det φ * b'.det v = ∏ i, a i`.
+
+Rewrite using `[← Basis.det_comp]`. Establish `: (⇑φ ∘ ⇑v) = fun i => a i • b' i` using `funext hv`. Rewrite using `[this, AlternatingMap.map_smul_univ, Basis.det_self, smul_eq_mul, mul_one]`. Establish `hassoc : Associated (LinearMap.det φ) (∏ i, a i)`. Take `⟨u, hu⟩` from `b'.isUnit_det v`.
+
+Conclude with `⟨u, by rw [hu]; exact hdetprod⟩`. Rewrite using `[hlen, Ring.ord_eq_of_associated hassoc, LengthQuotientDet.ord_prod _ _ ha]`.
+-/
 theorem LengthQuotientDet.proof : LengthQuotientDet.Statement := by
   intro O _ _ _ M _ _ _ _ φ hdet
   classical

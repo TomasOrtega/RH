@@ -25,6 +25,9 @@ def conjCLM (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] :
       rw [e, h]
       simpa using SchwartzMap.le_seminorm ℂ k n f x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjCLM_apply {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : SchwartzMap V ℂ) (x : V) :
     conjCLM V f x = star (f x) := rfl
 
@@ -35,11 +38,19 @@ def conjForm {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (T : Schwartz
   map_smul' c f := by simp [smul_eq_mul]
   cont := Complex.continuous_conj.comp (T.continuous.comp (conjCLM V).continuous)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjForm_apply {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (T : SchwartzMap V ℂ →L[ℂ] ℂ)
     (f : SchwartzMap V ℂ) : conjForm T f = starRingEnd ℂ (T (conjCLM V f)) := rfl
 
 end GlobalTheory.AdmConj
 
+/- English proof (translation)
+Introduce `F _ _ κ _ l hl l' hl' g hg`. Establish `hg' : (fun y => star (g y)) ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)` using `⟨hg.1.comp star, hg.2.comp_left (g := star) (star_zero ℂ)⟩`. Take `⟨T₀, hT₀⟩` from `hl _ hg'`. Use `⟨GlobalTheory.AdmConj.conjForm T₀, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[hl', GlobalTheory.AdmConj.conjForm_apply, ← hT₀]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, GlobalTheory.AdmConj.conjCLM_apply, star_mul']`.
+-/
 theorem GlobalTheory.AdmConj.conj_mem_adm : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∀ l ∈ (adeleClass F).adm κ,
     ∀ l' : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ, (∀ Φ, l' Φ = starRingEnd ℂ (l (fun x => starRingEnd ℂ (Φ x)))) →
     l' ∈ (adeleClass F).adm κ := by

@@ -16,6 +16,35 @@ namespace GlobalTheory.VacFixOpen
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ψ θ S T χS χT om hW hSs hTs sS sT hcS hcT ΛS ΛT hsdS hsdT f₀ hvac`. Establish `hθ : IsInfFam θ` using `hvac.2.inf`. Establish `hev` using `(GlobalTheory.LatNhds.eventually_actO D S T ΛS ΛT hsdS hsdT (GlobalTheory.LatFinGen.latO_finitely_generated D S T ΛS ΛT hsdS hsdT)).1`. Establish `hpair : Filter.Tendsto (fun x : GA D S => ((x, (1 : GA D T)) : GA D S × GA D T)) (𝓝 1) (𝓝 1)`. Use `((continuous_id.prodMk continuous_const : Continuous fun x : GA D S => ((x, (1 : GA D T)) : GA D S × GA D T))).tendsto 1` as an intermediate fact.
+
+Conclude with `this`. Establish `hev'` using `hpair.eventually hev`. Choose the witnesses or unpack the hypotheses as in `⟨n₁, hn₁⟩ : ∃ n : ℕ, ∀ x ∈ GfC S, GlobalTheory.Member.FinCong S n.factorial x → ∀ u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True), actO S T x 1 u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) f …`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Use `choose k hk hkc u hu hu' using hne`. Establish `ht` using `GlobalTheory.SplitCharTrivial.tendsto_one_of_finCong hk hkc`. Take `⟨n, hn⟩` from `(ht.eventually hev').exists`. Conclude with `hu' n (hn _ (hu n))`. Establish `hscal : ∀ k ∈ GfC S, GlobalTheory.Member.FinCong S n₁.factorial k → ∃ c : ℂ, ‖c‖ = 1 ∧ om (k, 1) f₀ = c • f₀`.
+
+Introduce `k hk hc`. Establish `hΛ : ∀ u : WO S T, u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) ↔ ∃ u₀ ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True), u = actO S T k 1 u₀`. Introduce `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+
+Use `⟨actO S T k⁻¹ 1 u, hn₁ k⁻¹ (inv_mem hk) (GlobalTheory.Member.PrincLevel.finCong_inv hc) u hu, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.WeilVacMove.actO_inv_actO k⁻¹ (1 : GA D T) u` as an intermediate fact. Rewrite `this` using `[inv_inv, inv_one]`. Conclude with `this.symm`. Introduce and unpack `⟨u₀, hu₀, rfl⟩`.
+
+Conclude with `hn₁ k hk hc u₀ hu₀`. Establish `hvac'` using `GlobalTheory.WeilVacMove.isVacO_om D ψ θ S T χS χT om hW hθ sS sS sT sT _ _ _ _ k 1 (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hk, Matrix.one_mul, Matrix.mul_one]) (fun τ => GlobalTheory.SmoothVac.comm_compAt_one T θ τ (sT τ)) hΛ f₀ hvac`. Conclude with `GlobalTheory.VacUnique.vacUniqueO D ψ θ hvac.1 hθ S T sS sT hSs hTs hcS hcT ΛS ΛT hsdS hsdT f₀ _ hvac hvac'`. Take `⟨w₀, hw₀⟩` from `GlobalTheory.SmoothVac.exists_ne_zero_of_isVacO hvac`. Establish `hcont : Continuous fun k : GA D S => om (k, 1) f₀ w₀` using `(hW.om_cont _ hvac.2.theta w₀).comp (continuous_id.prodMk continuous_const)`.
+
+Establish `key : ∃ n : ℕ, ∀ k ∈ GfC S, GlobalTheory.Member.FinCong S (n₁.factorial * n.factorial) k → om (k, 1) f₀ = f₀`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `choose k hk hkc hkne using hne`. Establish `hpow : ∀ n, ∃ m : ℕ, ∃ c : ℂ, om (k n ^ m, 1) f₀ = c • f₀ ∧ ¬ ‖c - 1‖ ≤ 1 / 2`.
+
+Introduce `n`. Take `⟨c, -, hc⟩` from `hscal (k n) (hk n) (GlobalTheory.SmoothVac.finCong_of_mul_left (hkc n))`. Establish `hc1 : c ≠ 1`. Introduce and unpack `rfl`. Conclude with `hkne n (by rw [hc, one_smul])`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hc1 (GlobalTheory.Doubling.eq_one_of_forall_norm_pow_sub_one_le (A := ℂ) fun m => h m (c ^ m) (GlobalTheory.SmoothVac.om_pow_eq om (k n) _ c hc m))`. Use `choose m c hmc hc using hpow`. Establish `hmem : ∀ n, k n ^ m n ∈ GlobalTheory.Member.PrincLevel.levelGroup S (n₁.factorial * n.factorial)` using `fun n => pow_mem (show k n ∈ GlobalTheory.Member.PrincLevel.levelGroup S (n₁.factorial * n.factorial) from ⟨hk n, hkc n⟩) _`.
+
+Establish `ht` using `GlobalTheory.SplitCharTrivial.tendsto_one_of_finCong (k := fun n => k n ^ m n) (fun n => (hmem n).1) (fun n => GlobalTheory.SmoothVac.finCong_of_mul_right (hmem n).2)`. Establish `h2` using `(hcont.tendsto 1).comp ht`. Establish `e1 : om ((1 : GA D S), (1 : GA D T)) f₀ w₀ = f₀ w₀` using `by show om 1 f₀ w₀ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+
+Rewrite `h2` using `[Function.comp_def, e1]`. Establish `hpos : 0 < ‖f₀ w₀‖ / 2` using `half_pos (norm_pos_iff.2 hw₀)`. Take `⟨n, hn⟩` from `(h2.eventually (Metric.ball_mem_nhds _ hpos)).exists`. Rewrite `hn` using `[hmc n, Pi.smul_apply, smul_eq_mul, dist_eq_norm, ← sub_one_mul, norm_mul]`. Use `hc n` as an intermediate fact.
+
+Use `push_neg at this`. Use polynomial arithmetic with `[norm_nonneg (f₀ w₀)]`. Take `⟨n, hn⟩` from `key`. Establish `hN : 0 < n₁.factorial * n.factorial` using `Nat.mul_pos n₁.factorial_pos n.factorial_pos`. Use `⟨(GlobalTheory.Member.PrincLevel.levelGroup S (n₁.factorial * n.factorial)).map (finHom S).rangeRestrict, GlobalTheory.SmoothVac.isOpen_map_levelGroup S hN, fun k hk hJ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨k', hk', e⟩` from `Subgroup.mem_map.1 hJ`. Establish `e' : finHom S k' = finHom S k` using `congrArg Subtype.val e`. Use `hn k hk ?_` and prove the remaining obligations. Establish `hc` using `hk'.2`. Unfold `GlobalTheory.Member.FinCong at hc ⊢`.
+
+Rewrite using `[← e']`. Conclude with `hc`.
+-/
 theorem exists_open_fix_vacO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → S.SigOK → T.SigOK →
     ∀ (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ),

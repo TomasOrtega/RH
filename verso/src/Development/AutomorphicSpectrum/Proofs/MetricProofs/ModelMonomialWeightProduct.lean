@@ -8,6 +8,29 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTh
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.FMX.StepMonomial
 
+/- English proof (translation)
+Introduce `Ψ _ p q Ω _ _ n A K₀ _ J₀ _ x₀ m h Φ _ y hy τ i`. Take `⟨hbase, hstep⟩` from `GlobalTheory.T.model_dy_weights Ψ p q Ω n A K₀ J₀ x₀ m h τ i`. Establish `hsplit : ∏ k, y k ^ (-((model A x₀ m h).dy (τ, i) k)) = (∏ k, y (.inl k)) ^ (rkW i * m (.inl τ) + rkO i * m (.inr τ)) * ∏ t, y (.inr t) ^ (-((model A x₀ m h).dy (τ, i) (.inr t)))`. Rewrite using `[Fintype.prod_sum_type, ← Finset.prod_pow]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hbase k, neg_neg, zpow_natCast]`. Establish `hval : ∀ t : StepIx Ψ p q, y (.inr t) ^ (-((model A x₀ m h).dy (τ, i) (.inr t))) = if (t = stepOf Ψ p q (τ, i) ∨ (t.1 = .inl τ ∧ (t.2 : ℕ) + 1 = p ∧ p ≤ (i : ℕ))) then (y (.inr t))⁻¹ else 1`. Introduce `t`. Use `split_ifs with hc`.
+
+Rewrite using `[(hstep t).1 hc, _root_.zpow_neg, zpow_one]`. Rewrite using `[(hstep t).2 hc, neg_zero, zpow_zero]`. Use `⟨fun h1 => ?_, fun h1 => ?_⟩` and prove the remaining obligations. Establish `hso : stepOf Ψ p q (τ, i) = ⟨.inl τ, ⟨i, h1⟩⟩`. Unfold `stepOf`.
+
+Conclude with `dif_pos h1`. Establish `hW : rkW i = (i : ℕ) + 1` using `by unfold rkW; omega`. Establish `hO : rkO i = 0` using `by unfold rkO; omega`. Rewrite using `[hsplit, hW, hO, zero_mul, add_zero, Fintype.prod_eq_single (stepOf Ψ p q (τ, i)), hval, if_pos (Or.inl rfl), hso, div_eq_mul_inv]`. Introduce `t ht`.
+
+Rewrite using `[hval, if_neg]`. Introduce and unpack `(h' | ⟨-, -, hp⟩)`. Conclude with `ht h'`. Use linear arithmetic over natural numbers and integers. Establish `hso : stepOf Ψ p q (τ, i) = ⟨.inr τ, ⟨(i : ℕ) - p, by have` using `i.2; show _ < q; omega⟩⟩ := by`.
+
+Unfold `stepOf`. Conclude with `dif_neg (not_lt.2 h1)`. Establish `hW : rkW i = p` using `by unfold rkW; omega`. Establish `hO : rkO i = (i : ℕ) - p + 1` using `by unfold rkO; omega`. Rewrite using `[hsplit, hW, hO]`.
+
+Distinguish the cases in `hp0 : 0 < p`. Rewrite using `[dif_pos hp0]`. Establish `hne : stepOf Ψ p q (τ, i) ≠ ⟨.inl τ, ⟨p - 1, by show _ < p; omega⟩⟩`. Rewrite using `[hso]`. Introduce `he`.
+
+Conclude with `Sum.inr_ne_inl (congrArg Sigma.fst he)`. Rewrite using `[Fintype.prod_eq_mul _ _ hne, hval, hval, if_pos (Or.inl rfl), if_pos (Or.inr ⟨rfl, show p - 1 + 1 = p by omega, h1⟩), hso]`. Rewrite using `[div_eq_mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `x ⟨hx1, hx2⟩`.
+
+Rewrite using `[hval, if_neg]`. Introduce and unpack `(h' | ⟨hs, hj, -⟩)`. Conclude with `hx1 h'`. Apply `hx2` to reduce the goal to its premises. Take `⟨s, j⟩` from `x`.
+
+Simplify using `only at hs hj`. Substitute `hs` using the available equality. Conclude with `Sigma.ext rfl (heq_of_eq (Fin.ext (by dsimp; omega)))`. Rewrite using `[dif_neg hp0, one_mul, Fintype.prod_eq_single (stepOf Ψ p q (τ, i)), hval, if_pos (Or.inl rfl), hso, div_eq_mul_inv]`. Introduce `t ht`.
+
+Rewrite using `[hval, if_neg]`. Introduce and unpack `(h' | ⟨-, hj, -⟩)`. Conclude with `ht h'`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem step_monomial : ∀ (Ψ : Type) [Fintype Ψ] (p q : ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (n : Ψ ⊕ Ψ → ℕ) (A : ∀ s, Matrix (Fin (n s)) (Fin (rk Ψ p q s)) Ω) (K₀ : Type) [Fintype K₀] (J₀ : K₀ → Type) [∀ k, Fintype (J₀ k)] (x₀ : (Σ k, J₀ k) → Ω) (m : Ψ ⊕ Ψ → ℕ) (h : ModelOK A x₀ m) (Φ : Type) [Field Φ] (y : K₀ ⊕ StepIx Ψ p q → Φ), (∀ k, y k ≠ 0) → ∀ (τ : Ψ) (i : Fin (p + q)), (∀ h1 : (i : ℕ) < p, ∏ k, y k ^ (-((model A x₀ m h).dy (τ, i) k)) = (∏ k, y (.inl k)) ^ (((i : ℕ) + 1) * m (.inl τ)) / y (.inr ⟨.inl τ, ⟨i, h1⟩⟩)) ∧ (∀ h1 : p ≤ (i : ℕ), ∏ k, y k ^ (-((model A x₀ m h).dy (τ, i) k)) = (∏ k, y (.inl k)) ^ (p * m (.inl τ) + ((i : ℕ) - p + 1) * m (.inr τ)) / ((if h0 : 0 < p then y (.inr ⟨.inl τ, ⟨p - 1, by show _ < p; omega⟩⟩) else 1) * y (.inr ⟨.inr τ, ⟨(i : ℕ) - p, by have := i.2; show _ < q; omega⟩⟩))) := by
   classical
   intro Ψ _ p q Ω _ _ n A K₀ _ J₀ _ x₀ m h Φ _ y hy τ i

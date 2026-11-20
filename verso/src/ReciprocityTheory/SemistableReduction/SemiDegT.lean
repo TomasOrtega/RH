@@ -11,9 +11,15 @@ def matLin {K : Type} [Field K] [NumberField K] {r : ℕ} (Q : Matrix (Fin r) (F
     (Fin r → K) →ₗ[𝓞 K] (Fin r → K) :=
   (Matrix.mulVecLin Q).restrictScalars (𝓞 K)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matLin_apply {K : Type} [Field K] [NumberField K] {r : ℕ}
     (Q : Matrix (Fin r) (Fin r) K) (x : Fin r → K) : matLin Q x = Q *ᵥ x := rfl
 
+/- English proof (translation)
+Introduce `x y hxy`. Rewrite `hxy` using `[matLin_apply, matLin_apply]`. Establish `hu : IsUnit Q` using `(Matrix.isUnit_iff_isUnit_det Q).2 (isUnit_iff_ne_zero.2 hQ)`. Conclude with `(Matrix.mulVec_injective_iff_isUnit.2 hu) hxy`.
+-/
 theorem matLin_injective {K : Type} [Field K] [NumberField K] {r : ℕ}
     (Q : Matrix (Fin r) (Fin r) K) (hQ : Q.det ≠ 0) : Function.Injective (matLin Q) := by
   intro x y hxy
@@ -21,6 +27,9 @@ theorem matLin_injective {K : Type} [Field K] [NumberField K] {r : ℕ}
   have hu : IsUnit Q := (Matrix.isUnit_iff_isUnit_det Q).2 (isUnit_iff_ne_zero.2 hQ)
   exact (Matrix.mulVec_injective_iff_isUnit.2 hu) hxy
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem span_mulVec {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (Q : Matrix (Fin r) (Fin r) K) (b : Fin k → Fin r → K) :
     Submodule.span (𝓞 K) (Set.range fun i => Q *ᵥ b i) =
@@ -28,6 +37,15 @@ theorem span_mulVec {K : Type} [Field K] [NumberField K] {r k : ℕ}
   rw [Submodule.map_span, ← Set.range_comp]
   rfl
 
+/- English proof (translation)
+Unfold `latDeg`. Establish `hinj : Function.Injective (matLin Q)` using `matLin_injective Q hQ`. Establish `h1 : (Submodule.span (𝓞 K) (Set.range fun i => Q *ᵥ b i)).toAddSubgroup.relIndex (B.map (matLin Q)).toAddSubgroup = (Submodule.span (𝓞 K) (Set.range b)).toAddSubgroup.relIndex B.toAddSubgroup`. Rewrite using `[span_mulVec, Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ hinj`.
+
+Establish `hemb : ∀ (σ : K →+* ℂ) (x : Fin r → K), embVec σ (Q *ᵥ x) = Q.map σ *ᵥ embVec σ x`. Introduce `σ x`. Use function extensionality and compare the values at `a`. Conclude with `RingHom.map_mulVec σ Q x a`. Establish `h2 : ∀ σ : K →+* ℂ, gramC ((Q.map σ)ᴴ * D σ * Q.map σ) σ b = gramC (D σ) σ (fun i => Q *ᵥ b i)`.
+
+Introduce `σ`. Use extensionality with `i j`. Simplify using `only [gramC, Matrix.of_apply, hemb]`. Simplify using `only [← Matrix.mulVec_mulVec, Matrix.star_mulVec, Matrix.dotProduct_mulVec]`. Rewrite using `[h1]`.
+
+Simplify using `only [h2]`.
+-/
 theorem latDeg_transport {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (D : (K →+* ℂ) → Matrix (Fin r) (Fin r) ℂ) (Q : Matrix (Fin r) (Fin r) K) (hQ : Q.det ≠ 0)
     (B : Submodule (𝓞 K) (Fin r → K)) (b : Fin k → Fin r → K) :
@@ -52,6 +70,11 @@ theorem latDeg_transport {K : Type} [Field K] [NumberField K] {r k : ℕ}
   rw [h1]
   simp only [h2]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hb`. Establish `hinj : Function.Injective (Matrix.mulVecLin Q)` using `fun x y h => matLin_injective Q hQ h`. Use `⟨fun i => ⟨b i, h1 i, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun i => Q *ᵥ b i) = (Matrix.mulVecLin Q) ∘ b` using `rfl`. Rewrite using `[e]`.
+
+Conclude with `h2.map' _ (LinearMap.ker_eq_bot.2 hinj)`. Introduce and unpack `x ⟨y, hy, rfl⟩`. Establish `h4` using `Submodule.mem_map_of_mem (f := Matrix.mulVecLin Q) (h3 y hy)`. Rewrite `h4` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h4`.
+-/
 theorem kBasisIn_map {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (Q : Matrix (Fin r) (Fin r) K) (hQ : Q.det ≠ 0) (B : Submodule (𝓞 K) (Fin r → K))
     (b : Fin k → Fin r → K) (hb : IsKBasisIn B b) :
@@ -71,11 +94,19 @@ def formM {K : Type} [Field K] {r : ℕ} (c : K →+* K) (M : Matrix (Fin r) (Fi
     (x y : Fin r → K) : K :=
   (fun a => c (x a)) ⬝ᵥ (M *ᵥ y)
 
+/- English proof (translation)
+Unfold `HermForm.h formM`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hermForm_h_eq {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x y : Fin r → K) : S.h x y = formM S.c S.G x y := by
   unfold HermForm.h formM
   simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[hermForm_h_eq]`. Unfold `formM`. Establish `e1 : (fun a => S.c ((P *ᵥ x) a)) = (P.map S.c) *ᵥ (fun a => S.c (x a))`. Use function extensionality and compare the values at `a`. Conclude with `RingHom.map_mulVec S.c P x a`.
+
+Rewrite using `[e1, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`.
+-/
 theorem formM_change {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (P : Matrix (Fin r) (Fin r) K) (x y : Fin r → K) :
     formM S.c ((P.map S.c)ᵀ * S.G * P) x y = S.h (P *ᵥ x) (P *ᵥ y) := by
@@ -86,6 +117,21 @@ theorem formM_change {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermFor
     exact RingHom.map_mulVec S.c P x a
   rw [e1, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]
 
+/- English proof (translation)
+Unfold `formM`. Simplify using `only [dotProduct]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Establish `ha` using `a.isLt`. Distinguish the cases in `h : (a : ℕ) < m ∨ r ≤ (a : ℕ) + m`. Establish `hw : wVal r m g a = 1` using `if_pos h`. Establish `hp : wPart r m a = Fin.rev a` using `if_pos h`. Rewrite using `[hw, hp, one_mul, Finset.sum_eq_single (Fin.rev a)]`.
+
+Rewrite using `[wittMat, Matrix.of_apply, if_pos, one_mul]`. Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Introduce `j _ hj`. Rewrite using `[wittMat, Matrix.of_apply, if_neg, if_neg, zero_mul]`.
+
+Introduce and unpack `⟨rfl, h2, h3⟩`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h1, -⟩`. Apply `hj` to reduce the goal to its premises. Use `ext`.
+
+Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish `hw : wVal r m g a = g a` using `if_neg h`. Establish `hp : wPart r m a = a` using `if_neg h`.
+
+Rewrite using `[hw, hp, Finset.sum_eq_single a]`. Rewrite using `[wittMat, Matrix.of_apply, if_neg, if_pos ⟨rfl, by omega, by omega⟩]`. Use linear arithmetic over natural numbers and integers. Introduce `j _ hj`. Rewrite using `[wittMat, Matrix.of_apply, if_neg, if_neg, zero_mul]`.
+
+Introduce and unpack `⟨rfl, -⟩`. Conclude with `hj rfl`. Establish `hj'` using `j.isLt`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+-/
 theorem formM_witt {K : Type} [Field K] {r : ℕ} (c : K →+* K) (m : ℕ) (g : Fin r → K)
     (x y : Fin r → K) :
     formM c (wittMat r m g) x y = ∑ a, c (x a) * (wVal r m g a * y (wPart r m a)) := by

@@ -6,6 +6,9 @@ open ReciprocityTheory.Ty.Fin
 
 namespace GlobalTheory.CompanionTheory.TyFin
 
+/- English proof (translation)
+Unfold `centralIdem`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => Representation.asAlgebraHom_single _ _ _`.
+-/
 theorem asAlgebraHom_centralIdem {Γ V W : Type} [Group Γ] [Fintype Γ] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ Γ V) (σ : Representation ℂ Γ W) :
     σ.asAlgebraHom (centralIdem ρ) =
@@ -14,6 +17,25 @@ theorem asAlgebraHom_centralIdem {Γ V W : Type} [Group Γ] [Fintype Γ] [AddCom
   rw [map_sum]
   exact Finset.sum_congr rfl fun g _ => Representation.asAlgebraHom_single _ _ _
 
+/- English proof (translation)
+Introduce `Γ _ _ V _ _ _ W _ _ _ ρ σ hρ hσ`. Take `⟨hVn, hρ'⟩` from `hρ`. Take `⟨hWn, hσ'⟩` from `hσ`. Use `haveI := hVn`. Use `haveI := hWn`.
+
+Use `haveI hirrρ : ρ.IsIrreducible := Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.isIrreducible_of ρ hρ'`. Use `haveI hirrσ : σ.IsIrreducible := Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.isIrreducible_of σ hσ'`. Establish `hc0 : (Fintype.card Γ : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Use `haveI : Invertible (Nat.card Γ : ℂ) := invertibleOfNonzero (by rw [Nat.card_eq_fintype_card]; exact hc0)`. Establish `hV0 : (Module.finrank ℂ V : ℂ) ≠ 0`.
+
+Conclude with `(Module.finrank_pos (R := ℂ) (M := V)).ne'` after adjusting the coercions. Establish `hW0 : (Module.finrank ℂ W : ℂ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℂ) (M := W)).ne'` after adjusting the coercions. Take `⟨μ, hμ⟩` from `Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.schur_scalar σ hσ' (fun g => (Module.finrank ℂ V : ℂ) / Fintype.card Γ * LinearMap.trace ℂ V (ρ g⁻¹)) (by`. Introduce `g k`.
+
+Establish `e : (k * g * k⁻¹)⁻¹ = k * g⁻¹ * k⁻¹` using `by group`. Use `Representation.char_conj ρ g⁻¹ k` as an intermediate fact. Simplify using `only [Representation.character] at this`. Simplify using `only [e, this])`. Establish `hT : σ.asAlgebraHom (centralIdem ρ) = μ • (1 : Module.End ℂ W)`.
+
+Rewrite using `[asAlgebraHom_centralIdem]`. Conclude with `hμ`. Establish `htr : μ * (Module.finrank ℂ W : ℂ) = (Module.finrank ℂ V : ℂ) * ((Nat.card Γ : ℂ)⁻¹ * ∑ g, σ.character g * ρ.character g⁻¹)`. Establish `h1` using `congrArg (LinearMap.trace ℂ W) hμ`. Simplify using `only [map_sum, map_smul, smul_eq_mul, LinearMap.trace_one] at h1`.
+
+Rewrite using `[← h1, Finset.mul_sum, Finset.mul_sum, Nat.card_eq_fintype_card]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [Representation.character]`. Clear the denominators using the available nonvanishing facts. Rewrite `htr` using `[Representation.char_orthonormal σ ρ]`.
+
+Rewrite using `[hT]`. Distinguish the cases in `h : Nonempty (Representation.Equiv ρ σ)`. Rewrite `htr`, the goal using `[if_pos h]`. Take `⟨φ⟩` from `h`. Establish `hd : Module.finrank ℂ V = Module.finrank ℂ W` using `φ.toLinearEquiv.finrank_eq`.
+
+Rewrite `htr` using `[hd]`. Establish `: μ = 1`. Apply `mul_right_cancel₀ hW0` to reduce the goal to its premises. Simplify using `using htr`. Rewrite using `[this, one_smul]`.
+
+Rewrite `htr`, the goal using `[if_neg h]`. Establish `: μ = 0`. Establish `h0 : μ * (Module.finrank ℂ W : ℂ) = 0` using `by simpa using htr`. Conclude with `(mul_eq_zero.mp h0).resolve_right hW0`. Rewrite using `[this, zero_smul]`.
+-/
 theorem centralIdemAct : ReciprocityTheory.Ty.Fin.St.CentralIdemAct := by
   intro Γ _ _ V _ _ _ W _ _ _ ρ σ hρ hσ
   obtain ⟨hVn, hρ'⟩ := hρ

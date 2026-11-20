@@ -11,10 +11,20 @@ namespace CompanionTheory.D.gk.RF
 
 open Formalism.MainNotions.S Formalism.MainNotions.LeviCoordinates Formalism.L2.SG.Pf.Tau PIW.AdelClassFin
 
+/- English proof (translation)
+Simplify using `only [atV, ← mulVec_smul, ← mulVec_sum]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[map_sum]`.
+-/
 theorem atV_sum (I : AutInst) (v : InfinitePlace I.F) {d : ℕ} (a : Fin d → I.E) (w : Fin d → Fin I.n → I.E) :
     atV I v (∑ i, a i • w i) = ∑ i, I.φ v (a i) • atV I v (w i) := by
   simp only [atV, ← mulVec_smul, ← mulVec_sum]; congr 1; funext i; simp [map_sum]
 
+/- English proof (translation)
+Set `b` to `embeddingBasis I`. Use `⟨∑ k, ‖b k‖ + 1, by positivity, fun β => ⟨∑ k, (⌊b.repr β k⌋ : I.E) * integralBasis I.E k, IsIntegral.sum _ fun k _ => (isIntegral_intCast _).mul ?_, fun v => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[integralBasis_apply]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Establish `e : β v - I.φ v (∑ k, (⌊b.repr β k⌋ : I.E) * integralBasis I.E k) = ∑ k, ((Int.fract (b.repr β k) : ℝ) : ℂ) * b k v`.
+
+Rewrite using `[show β v = (∑ k, b.repr β k • b k) v by rw [b.sum_repr β], map_sum, Finset.sum_apply, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Int.fract, map_mul, map_intCast, Pi.smul_apply, Complex.real_smul]`. Simplify using `only [b, embeddingBasis_apply]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum fun k _ => ?_).trans (le_add_of_nonneg_right zero_le_one))` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (Int.fract_nonneg _)]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (Int.fract_lt_one _).le).trans (norm_le_pi_norm _ v)`.
+-/
 theorem exists_near (I : AutInst) : ∃ C : ℝ, 0 < C ∧ ∀ β : InfinitePlace I.F → ℂ,
     ∃ a : I.E, IsIntegral ℤ a ∧ ∀ v, ‖β v - I.φ v a‖ ≤ C := by
   let b := embeddingBasis I
@@ -35,6 +45,17 @@ theorem exists_near (I : AutInst) : ∃ C : ℝ, 0 < C ∧ ∀ β : InfinitePlac
     rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg (Int.fract_nonneg _)]
     exact (mul_le_of_le_one_left (norm_nonneg _) (Int.fract_lt_one _).le).trans (norm_le_pi_norm _ v)
 
+/- English proof (translation)
+Introduce `I`. Take `⟨C, hC, hn⟩` from `exists_near I`. Use `⟨(I.n + 1) * C, by positivity, fun y d w s hd hs hw b hb => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ v, ∃ β : Fin d → ℂ, ∑ i, β i • atV I v (w i) = b v` using `fun v => by`. Use `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (Submodule.span_le.2 ?_ (hb v))` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨u, hu, rfl⟩`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun I.E).1 hu`. Rewrite using `[atV_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `choose β hβ using h1`.
+
+Use `choose a ha hae using fun i => hn fun v => β v i`. Use `⟨∑ i, a i • w i, fun j => ?_, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩), (pi_norm_le_iff_of_nonneg (by positivity)).2 fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Conclude with `IsIntegral.sum _ fun i _ => (ha i).mul ((hw i).1 j)`. Establish `e : ((fun v => uMat (y v)⁻¹ *ᵥ b v) - vecAt I y (∑ i, a i • w i)) v = ∑ i, (β v i - I.φ v (a i)) • vecAt I y (w i) v`.
+
+Simplify using `only [Pi.sub_apply, vecAt, ← hβ v, atV_sum, mulVec_sum, mulVec_smul, sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[e]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ (C * s) fun i _ => ?_).trans ?_)` and prove the remaining obligations. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul (hae i v) ((norm_le_pi_norm _ v).trans (hw i).2) (norm_nonneg _) hC.le`.
+
+Rewrite using `[Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_assoc]`. Establish `: (d : ℝ) ≤ I.n + 1` using `by exact_mod_cast hd.trans (Nat.le_succ _)`. Use `gcongr`.
+-/
 theorem covolume_span : CovSpan := by
   intro I
   obtain ⟨C, hC, hn⟩ := exists_near I
@@ -62,6 +83,19 @@ theorem covolume_span : CovSpan := by
       have : (d : ℝ) ≤ I.n + 1 := by exact_mod_cast hd.trans (Nat.le_succ _)
       gcongr
 
+/- English proof (translation)
+Take `⟨d, w, hw⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 I.L_fg`. Take `⟨c₁, hc₁, h₁⟩` from `exists_denD fun p : Fin d × Fin I.n => w p.1 p.2`. Use `choose e he he' using fun j : Fin I.n => TraceIntegralityAlt.exists_nat_smul_mem_L I (Pi.single j 1)`. Establish `hp : 1 ≤ ∏ j, e j` using `Finset.one_le_prod' fun j _ => he j`. Use `⟨c₁ * ∏ j, e j, Nat.mul_pos hc₁ hp, fun l hl i => ?_, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hl` using `[← hw]`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hl`. Rewrite using `[Pi.smul_apply, Finset.sum_apply, smul_eq_mul, Finset.mul_sum]`. Use `IsIntegral.sum _ fun k _ => ?_` and prove the remaining obligations. Establish `: ((c₁ * ∏ j, e j : ℕ) : I.E) * (a k • w k) i = ((∏ j, e j : ℕ) : I.E) * (a k : I.E) * (c₁ * w k i)`.
+
+Rewrite using `[Pi.smul_apply, Algebra.smul_def, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `((isIntegral_natCast _).mul (RingOfIntegers.isIntegral_coe _)).mul (h₁ (k, i))`. Use `conv => arg 2`.
+
+Rewrite using `[← Finset.univ_sum_single u, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem e (Finset.mem_univ j)`. Establish `h2` using `I.L.smul_mem (⟨u j, hu j⟩ : 𝓞 I.E) (TraceIntegralityAlt.natCast_smul_mem I (c₁ * q) (he' j))`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[hq]`. Use `show _ = u j * (((c₁ * q : ℕ) : I.E) * ((e j : I.E) * (Pi.single j (1 : I.E) : Fin I.n → I.E) i))`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Pi.single_eq_of_ne hi]`.
+-/
 theorem exists_sandwich (I : AutInst) : ∃ c : ℕ, 1 ≤ c ∧ (∀ l ∈ I.L, (c : I.E) • l ∈ IntV I) ∧
     ∀ u ∈ IntV I, (c : I.E) • u ∈ I.L := by
   classical
@@ -90,11 +124,25 @@ theorem exists_sandwich (I : AutInst) : ∃ c : ℕ, 1 ≤ c ∧ (∀ l ∈ I.L,
     · subst hi; simp; ring
     · simp [Pi.single_eq_of_ne hi]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[iv, mulVec, dotProduct, map_sum]`.
+-/
 theorem iv_mulVec (I : AutInst) (A : Matrix (Fin I.n) (Fin I.n) I.E) (l : Fin I.n → I.E) :
     A.map (Formalism.UG.inclE (F := I.F) (Af I.F)) *ᵥ iv I l = iv I (A *ᵥ l) := by
   funext i
   simp [iv, mulVec, dotProduct, map_sum]
 
+/- English proof (translation)
+Use `choose a ha ha' using hA`. Set `B : Matrix (Fin I.n) (Fin I.n) I.E` to `((c : I.E) * c) • Matrix.of a`. Establish `hB : I.L ≤ DictGen.lamM I (B.map (Formalism.UG.inclE (F` using `I.F) (Af I.F))) := fun l hl => by show _ ∈ I.Lf`. Rewrite using `[iv_mulVec]`. Use `DictGen.iv_mem I ?_` and prove the remaining obligations.
+
+Establish `: B *ᵥ l = (c : I.E) • (Matrix.of a *ᵥ ((c : I.E) • l))`. Simplify using `only [B, smul_mulVec, mulVec_smul, smul_smul]`. Rewrite using `[this]`. Use `h2 _ fun i => ?_` and prove the remaining obligations. Use `show IsIntegral ℤ (∑ j, a i j * ((c : I.E) • l) j)`.
+
+Conclude with `IsIntegral.sum _ fun j _ => (ha i j).mul (h1 l hl j)`. Use `fun y hy => ⟨_, DictGen.mulVec_mem_of_le I hB y hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_mulVec]`. Use `congr 1`. Use extensionality with `i j`.
+
+Use `congrArg (Formalism.UG.inclE (F := I.F) (Af I.F)) (ha' i j)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub]`. Rewrite using `[Matrix.sub_apply, Matrix.map_apply, Matrix.one_apply, Matrix.smul_apply, Matrix.map_apply]`. Rewrite `this` using `[Matrix.one_apply, apply_ite (Formalism.UG.inclE (F := I.F) (Af I.F)), map_one, map_zero]`. Rewrite using `[this]`.
+
+Simplify using `only [B, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, map_mul, map_natCast, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cong_Lf (I : AutInst) {c g : ℕ} (h1 : ∀ l ∈ I.L, (c : I.E) • l ∈ IntV I) (h2 : ∀ u ∈ IntV I, (c : I.E) • u ∈ I.L)
     {A : Matrix (Fin I.n) (Fin I.n) I.E} (hA : Cong I (g * c * c) A) : ∀ y ∈ I.Lf, ∃ z ∈ I.Lf,
       (A.map (Formalism.UG.inclE (F := I.F) (Af I.F)) - 1) *ᵥ y = (g : I.E ⊗[I.F] Af I.F) • z := by
@@ -122,6 +170,13 @@ theorem cong_Lf (I : AutInst) {c g : ℕ} (h1 : ∀ l ∈ I.L, (c : I.E) • l �
   simp only [B, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, map_mul, map_natCast, Nat.cast_mul]
   ring
 
+/- English proof (translation)
+Introduce `I U hU`. Take `⟨g, hg, hsub⟩` from `I.topf_basis U hU`. Take `⟨c, hc, h1, h2⟩` from `exists_sandwich I`. Use `⟨g * c * c, Nat.mul_pos (Nat.mul_pos hg hc) hc, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨γ, hγ, hx⟩`.
+
+Establish `hf : Formalism.UG.bc (Formalism.UG.inclE (F` using `I.F) (Af I.F)) γ ∈ Formalism.UG.UPts I.cm.sig I.J (Af I.F) := Formalism.UG.Final.RatPtsLe I.F I.E (Fin I.n) I.cm.sig I.J (Af I.F) (Subgroup.mem_map_of_mem _ hγ.1)`. Establish `st : ∀ {A : Matrix (Fin I.n) (Fin I.n) I.E}, Cong I (g * c * c) A → ∀ y ∈ I.Lf, A.map (Formalism.UG.inclE (F` using `I.F) (Af I.F)) *ᵥ y ∈ I.Lf := fun hA y hy => by`. Take `⟨z, hz, e⟩` from `cong_Lf I h1 h2 hA y hy`. Rewrite `e` using `[sub_mulVec, one_mulVec, sub_eq_iff_eq_add]`. Rewrite using `[e]`.
+
+Conclude with `I.Lf.add_mem (DictGen.natSmul_mem I g hz) hy`. Use `⟨⟨_, hf⟩, hsub ⟨fun y => ⟨st hγ.2.1 y, fun hy => ?_⟩, cong_Lf I h1 h2 hγ.2.1⟩, γ, hγ.1, hx, rfl⟩` and prove the remaining obligations. Use `st hγ.2.2 _ hy` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ *ᵥ ((γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F)) *ᵥ y) ∈ I.Lf at this`. Rewrite `this` using `[mulVec_mulVec, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _), one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem congruence_subgroup_compact_open : CongK := by
   intro I U hU
   obtain ⟨g, hg, hsub⟩ := I.topf_basis U hU

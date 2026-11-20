@@ -32,6 +32,11 @@ structure RowMatchS (ch : Choice R) (G' : GlobalTheory.Grid.GridPre R) : Prop wh
       HEq (fun h g => thetaKO (G'.X i 0).ω h g (GlobalTheory.Grid.fock R.ψ R.θ true (G'.V ((i : ℕ) + 1) 0) (G'.V i 0) f p))
         (fun h g => ch.W.kerA (.right (i : ℕ) 0) (ch.W.datum ρ Φ i) g h)
 
+/- English proof (translation)
+Take `⟨L, h1, h2, rfl⟩` from `eA`. Take `⟨L', h1', h2', rfl⟩` from `eB`. Take `rfl` from `eq_of_heq hν`. Take `rfl` from `eq_of_heq hfd`. Take `rfl` from `eq_of_heq hφ`.
+
+Take `rfl` from `eq_of_heq hK`. Conclude with `⟨hI, heq_of_eq (funext hE).symm⟩`.
+-/
 theorem transport_stepS {A A' B B' : HSp D} (eA : SameSp A' A) (eB : SameSp B' B)
     {ν : Measure (GA D A)} {fd : Set (GA D A)} {ν' : Measure (GA D A')} {fd' : Set (GA D A')}
     (hν : HEq ν ν') (hfd : HEq fd fd') {K : GA D B → GA D A → ℂ} {K' : GA D A' → GA D B' → ℂ}
@@ -46,6 +51,9 @@ theorem transport_stepS {A A' B B' : HSp D} (eA : SameSp A' A) (eB : SameSp B' B
   obtain rfl := eq_of_heq hK
   exact ⟨hI, heq_of_eq (funext hE).symm⟩
 
+/- English proof (translation)
+Take `⟨L, h1, h2, rfl⟩` from `e`. Take `rfl` from `eq_of_heq h`. Conclude with `⟨hφ.left, hφ.level, hφ.cont⟩`.
+-/
 theorem isAutFun_transportS {V V' : HSp D} (e : SameSp V' V) {φ : GA D V → ℂ} {φ' : GA D V' → ℂ} (h : HEq φ φ')
     (hφ : IsAutFun V φ) : IsAutFun V' φ' := by
   obtain ⟨L, h1, h2, rfl⟩ := e

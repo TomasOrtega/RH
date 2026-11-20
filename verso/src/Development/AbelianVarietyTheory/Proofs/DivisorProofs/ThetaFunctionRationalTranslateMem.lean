@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.FunObj.NormUniq
 
+/- English proof (translation)
+Introduce `D cc δ hc N N' x M hM hx F hF`. Take `⟨hd, m, hm, hFm⟩` from `hF`. Establish `hg` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `hint` using `(GlobalTheory.T.theta_space_selfDual_pair_at_most_line D hg cc δ hc N N' (La0 D (tor0 D cc δ) N N') (GlobalTheory.NormSum.VacMove.klat _ (GlobalTheory.NormSum.VacMove.moves_one D N) (GlobalTheory.NormSum.VacMove.moves_one D N'))).2.2.1`. Use `⟨GlobalTheory.FinWeil.RatTransl.differentiable_wd x hd, m * M, Nat.mul_pos hm hM, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : Wd D (tor0 D cc δ) ((m * M) • y) F = F`. Rewrite using `[mul_smul]`. Conclude with `hFm _ (AddSubgroup.nsmul_mem _ hy M)`. Take `⟨k, hk⟩` from `hint _ (AddSubgroup.nsmul_mem _ hy m) _ hx`. Establish `e : (m * M) • y = M • (m • y)` using `by rw [mul_comm, mul_smul]`.
+
+Use function extensionality and compare the values at `w`. Conclude with `GlobalTheory.FinWeil.RatTransl.wd_wd_of_int h0 k (by rw [e, GlobalTheory.FinWeil.RatTransl.hf_nsmul, hk]) w`.
+-/
 theorem wd_rat_mem_TT : ∀ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}, Crv D cc δ → ∀ {N N' : ℕ} {x : VC D N N'} {M : ℕ}, 0 < M → M • x ∈ La0 D (tor0 D cc δ) N N' → ∀ {F : VC D N N' → ℂ}, F ∈ TT D (tor0 D cc δ) N N' → Wd D (tor0 D cc δ) x F ∈ TT D (tor0 D cc δ) N N' := by
   intro D cc δ hc N N' x M hM hx F hF
   obtain ⟨hd, m, hm, hFm⟩ := hF

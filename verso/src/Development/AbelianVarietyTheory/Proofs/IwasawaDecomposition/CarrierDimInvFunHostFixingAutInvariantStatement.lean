@@ -5,5 +5,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PullLinInjec
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonnegSumSmulIntBilinFormToRealMemPsdCone
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolFan.CarDim
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PolFan.CarDim.isTwInv_carFun | exact GlobalTheory.PolFan.CarDim.isTwInv_carFun | (intros; apply GlobalTheory.PolFan.CarDim.isTwInv_carFun <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.carrierDimInvFun_hostFixingAut_invariant : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (ψ : InvFun (𝓞 E)), IsTwInv H ψ → IsTwInv H (carFun H.bar ψ) := by
   first | exact @GlobalTheory.PolFan.CarDim.isTwInv_carFun | exact GlobalTheory.PolFan.CarDim.isTwInv_carFun | (intros; apply GlobalTheory.PolFan.CarDim.isTwInv_carFun <;> assumption)

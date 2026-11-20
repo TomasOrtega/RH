@@ -14,10 +14,18 @@ section LeftTranslation
 variable {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
   {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
+/- English proof (translation)
+The claim follows from `Lp.coeFn_compMeasurePreserving u (measurePreserving_mul_left μ x⁻¹)`.
+-/
 theorem LT_coeFn (x : G n) (u : Lp V 2 μ) :
     (LT μ x u : G n → V) =ᵐ[μ] fun g => u (x⁻¹ * g) :=
   Lp.coeFn_compMeasurePreserving u (measurePreserving_mul_left μ x⁻¹)
 
+/- English proof (translation)
+Apply `Lp.ext` to reduce the goal to its premises. Establish `h1` using `LT_coeFn μ x (LT μ x⁻¹ u)`. Establish `h2` using `LT_coeFn μ x⁻¹ u`. Establish `h3` using `(measurePreserving_mul_left μ x⁻¹).quasiMeasurePreserving.ae_eq_comp h2`. Use `filter_upwards [h1, h3] with g e1 e3`.
+
+Rewrite using `[e1]`. Establish `e3' : (LT μ x⁻¹ u : G n → V) (x⁻¹ * g) = u (x⁻¹⁻¹ * (x⁻¹ * g))` using `e3`. Rewrite using `[e3']`. Simplify using the standard rewrite rules.
+-/
 theorem LT_LT_inv (x : G n) (u : Lp V 2 μ) : LT μ x (LT μ x⁻¹ u) = u := by
   apply Lp.ext
   have h1 := LT_coeFn μ x (LT μ x⁻¹ u)
@@ -29,10 +37,24 @@ theorem LT_LT_inv (x : G n) (u : Lp V 2 μ) : LT μ x (LT μ x⁻¹ u) = u := by
   rw [e3']
   simp
 
+/- English proof (translation)
+The claim follows from `(Lp.compMeasurePreservingₗᵢ ℂ (fun g : G n => x⁻¹ * g) (measurePreserving_mul_left μ x⁻¹)).inner_map_map u v`.
+-/
 theorem LT_inner (x : G n) (u v : Lp V 2 μ) : ⟪LT μ x u, LT μ x v⟫_ℂ = ⟪u, v⟫_ℂ :=
   (Lp.compMeasurePreservingₗᵢ ℂ (fun g : G n => x⁻¹ * g)
     (measurePreserving_mul_left μ x⁻¹)).inner_map_map u v
 
+/- English proof (translation)
+Use `⟨?_, fun u v => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Use `ext1 u`. Conclude with `LT_LT_inv μ x u`. Use `conv_lhs => rw [← LT_LT_inv μ x v]`. Conclude with `LT_inner μ x u _`.
+
+Establish `hfun : (fun y : G n => transl x f y.val) = (fun y : G n => f y.val) ∘ fun g : G n => x⁻¹ * g`. Use function extensionality and compare the values at `y`. Simplify using `[transl, Units.val_mul]`. Establish `hm : MemLp (fun y : G n => transl x f y.val) 2 μ`. Rewrite using `[hfun]`.
+
+Conclude with `hf.comp_measurePreserving (measurePreserving_mul_left μ x⁻¹)`. Apply `Lp.ext` to reduce the goal to its premises. Establish `h1` using `LT_coeFn μ x (toL μ f)`. Establish `h2 : (toL μ f : G n → V) =ᵐ[μ] fun g => f g.val` using `toL_coe hf`. Establish `h3` using `(measurePreserving_mul_left μ x⁻¹).quasiMeasurePreserving.ae_eq_comp h2`.
+
+Establish `h4 : (toL μ (transl x f) : G n → V) =ᵐ[μ] fun g => transl x f g.val` using `toL_coe hm`. Use `filter_upwards [h1, h3, h4] with g e1 e3 e4`. Rewrite using `[e1, e4]`. Establish `e3' : (toL μ f : G n → V) (x⁻¹ * g) = f (x⁻¹ * g).val` using `e3`. Rewrite using `[e3']`.
+
+Simplify using `[transl, Units.val_mul]`.
+-/
 theorem LT_facts (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (x : G n) :
     (LT μ x : Lp V 2 μ →L[ℂ] Lp V 2 μ) * LT μ x⁻¹ = 1 ∧
     (∀ u v : Lp V 2 μ, ⟪LT μ x u, v⟫_ℂ = ⟪u, LT μ x⁻¹ v⟫_ℂ) ∧

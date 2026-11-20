@@ -23,6 +23,13 @@ open Formalism.IndefR.Mult Matrix GlobalTheory.Grid
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hJ : uᴴ * Formalism.REAL.Jm (M.ε τ) * u = Formalism.REAL.Jm (M.ε τ)` using `hu`. Establish `e1 : M.fr τ * ((M.fr τ)⁻¹ * u * M.fr τ) = u * M.fr τ`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `((M.fr τ)⁻¹ * u * M.fr τ)ᴴ * gramAt D V τ * ((M.fr τ)⁻¹ * u * M.fr τ) = gramAt D V τ`.
+
+Rewrite using `[← M.fr_gram τ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul (M.fr τ)]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * M.fr τ := by`.
+
+Rewrite using `[e1, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hJ]`.
+-/
 theorem unframe_mem_UH {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
     {u : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hu : u ∈ Formalism.MainNotions.S.UJset (M.ε τ)) :
     (M.fr τ)⁻¹ * u * M.fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
@@ -41,6 +48,17 @@ theorem unframe_mem_UH {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S
               simp only [Matrix.mul_assoc]
           _ = _ := by rw [hJ]
 
+/- English proof (translation)
+Use `haveI : Nontrivial (M.H τ) := (M.ds τ).2.1`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Set `A : Module.End ℂ (M.H τ)` to `(M.rep τ a : M.H τ →ₗ[ℂ] M.H τ)`. Take `⟨c, hcA⟩` from `Module.End.exists_eigenvalue A`. Use `⟨c, fun w => ?_⟩` and prove the remaining obligations.
+
+Establish `hirr` using `(M.ds τ).2.2.2.1`. Establish `hinv : ∀ u ∈ Formalism.MainNotions.S.UJset (M.ε τ), ∀ v ∈ A.eigenspace c, M.σ τ u v ∈ A.eigenspace c`. Introduce `u hu v hv`. Establish `hg` using `unframe_mem_UH M τ hu`. Establish `e : M.σ τ u = M.rep τ ((M.fr τ)⁻¹ * u * M.fr τ)`.
+
+Unfold `DSModel.rep`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[e]`.
+
+Use `show M.rep τ a (M.rep τ _ v) = c • M.rep τ _ v`. Rewrite using `[← GlobalTheory.ConjMult.rep_mul M τ _ ha _ hg, ← hc _ hg, GlobalTheory.ConjMult.rep_mul M τ _ hg _ ha]`. Establish `hv' : M.rep τ a v = c • v` using `hv`. Rewrite using `[hv', map_smul]`. Break down `hirr (A.eigenspace c) (Submodule.closed_of_finiteDimensional _) hinv with h | h` into its components or cases.
+
+Conclude with `absurd h hcA`. Establish `hw : w ∈ A.eigenspace c` using `h ▸ Submodule.mem_top`. Conclude with `(Module.End.mem_eigenspace_iff).1 hw`.
+-/
 theorem rep_scalar {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) [FiniteDimensional ℂ (M.H τ)]
     {a : Matrix (Fin V.rank) (Fin V.rank) ℂ} (ha : a ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ))
     (hc : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), g * a = a * g) : ∃ c : ℂ, ∀ w, M.rep τ a w = c • w := by
@@ -69,6 +87,9 @@ theorem rep_scalar {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (�
   · have hw : w ∈ A.eigenspace c := h ▸ Submodule.mem_top
     exact (Module.End.mem_eigenspace_iff).1 hw
 
+/- English proof (translation)
+Establish `e` using `congrArg (infMat D.sp.cm.sig V.gram (θ τ)) (Subgroup.mem_center_iff.1 hzc (atTau θ V τ g))`. Rewrite `e` using `[GlobalTheory.PointAtPlaceHom.infMat_mul, GlobalTheory.PointAtPlaceHom.infMat_mul, (GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ hg).2.1]`. Conclude with `e`.
+-/
 theorem infMat_comm {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {z : GA D V} (hzc : z ∈ Subgroup.center (GA D V))
     (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
     g * infMat D.sp.cm.sig V.gram (θ τ) z = infMat D.sp.cm.sig V.gram (θ τ) z * g := by
@@ -77,6 +98,9 @@ theorem infMat_comm {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {z : GA D V}
     (GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ hg).2.1] at e
   exact e
 
+/- English proof (translation)
+Establish `e` using `hT.equiv τ g hg v (c • v τ) (by rw [hc]; rfl)`. Rewrite using `[← e, T.map_update_smul, Function.update_eq_self]`.
+-/
 theorem rTr_atTau_of_scalar {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {J : Set (GA D V)}
     {χ : GA D V → ℂ} {T : MMap M} (hT : IsMultMap θ M J χ T) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) {c : ℂ} (hc : ∀ w, M.rep τ g w = c • w) (v : M.Vec) :
@@ -85,6 +109,21 @@ theorem rTr_atTau_of_scalar {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → S
   have e := hT.equiv τ g hg v (c • v τ) (by rw [hc]; rfl)
   rw [← e, T.map_update_smul, Function.update_eq_self]
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset D.what₂.Tau, rTr V (GlobalTheory.RowReal.realAll θ V (fun ρ => if ρ ∈ s then Mz ρ else 1)) (T v) = (∏ ρ ∈ s, c ρ) • T v`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `e : (fun ρ : D.what₂.Tau => if ρ ∈ (∅ : Finset D.what₂.Tau) then Mz ρ else 1) = 1`.
+
+Use function extensionality and compare the values at `ρ`. Simplify using the standard rewrite rules. Rewrite using `[e, GlobalTheory.RowReal.realAll_one hθ, Finset.prod_empty, one_smul]`. Use function extensionality and compare the values at `x`. Simplify using `[rTr]`.
+
+Consider the case `insert τ s hτ ih`. Establish `hMs : ∀ ρ, (fun ρ => if ρ ∈ insert τ s then Mz ρ else 1) ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)` using `fun ρ => by dsimp only split_ifs`. Conclude with `hM ρ`. Conclude with `GlobalTheory.PointAtPlaceHom.one_mem_UH _`. Rewrite using `[GlobalTheory.RowReal.realAll_eq_atTau_mul hθ hMs τ]`.
+
+Establish `e : Function.update (fun ρ => if ρ ∈ insert τ s then Mz ρ else 1) τ 1 = fun ρ => if ρ ∈ s then Mz ρ else 1`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Simplify using `[hτ]`.
+
+Rewrite using `[Function.update_of_ne h]`. Simplify using `[Finset.mem_insert, h]`. Rewrite using `[e, Finset.prod_insert hτ]`. Simplify using `only [Finset.mem_insert_self, if_true]`. Use function extensionality and compare the values at `x`.
+
+Establish `i1` using `congrFun ih (x * atTau θ V τ (Mz τ))`. Establish `i2` using `congrFun (rTr_atTau_of_scalar hT τ (hM τ) (hc τ) v) x`. Simplify using `only [rTr, Pi.smul_apply, smul_eq_mul] at i1 i2 ⊢`. Rewrite using `[← mul_assoc, i1, i2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e : (fun ρ : D.what₂.Tau => if ρ ∈ (Finset.univ : Finset D.what₂.Tau) then Mz ρ else 1) = Mz`. Use function extensionality and compare the values at `ρ`. Simplify using the standard rewrite rules. Use `key Finset.univ` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem rTr_realAll {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
     {J : Set (GA D V)} {χ : GA D V → ℂ} {T : MMap M} (hT : IsMultMap θ M J χ T)
     (Mz : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hM : ∀ ρ, Mz ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ))
@@ -126,6 +165,29 @@ theorem rTr_realAll {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {S : D.what�
   have := key Finset.univ
   rwa [e] at this
 
+/- English proof (translation)
+Introduce `D θ hθ N ν P hN`. Establish `hs : N.V.SigOK` using `hN.sigOK`. Establish `hd : N.V.IsDefinite` using `fun τ => Or.inl (by rw [hN.sig, hN.rank]; simp)`. Establish `hfd : ∀ τ, FiniteDimensional ℂ (N.M.H τ)` using `fun τ => GlobalTheory.DefiniteEnd.finiteDimensional_model hs hd N.M τ`. Establish `key : ∀ (z : GA D N.V) (ρ : D.what₂.Tau), ∃ c : ℂ, z ∈ Subgroup.center (GA D N.V) → ∀ w, N.M.rep ρ (infMat D.sp.cm.sig N.V.gram (θ ρ) z) w = c • w`.
+
+Introduce `z ρ`. Distinguish the cases in `hz : z ∈ Subgroup.center (GA D N.V)`. Use `haveI := hfd ρ`. Take `⟨c, hc⟩` from `rep_scalar N.M ρ (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ N.V z ρ) (fun g hg => infMat_comm hθ hz ρ hg)`. Conclude with `⟨c, fun _ => hc⟩`.
+
+Conclude with `⟨0, fun h => absurd h hz⟩`. Use `choose c hc using key`. Use `⟨fun z => ∏ ρ, c z ρ, fun F v z hz hzc h => ?_⟩` and prove the remaining obligations. Establish `hreal : ∀ T : MMap N.M, IsMultMap θ N.M ∅ 1 T → ∀ (u : N.M.Vec) (g : GA D N.V), T u (g * z) = (∏ ρ, c z ρ) * T u g`. Introduce `T hT u g`.
+
+Establish `e : GlobalTheory.RowReal.realAll θ N.V (fun ρ => infMat D.sp.cm.sig N.V.gram (θ ρ) z) = z` using `GlobalTheory.RowReal.realAll_eq hθ (fun ρ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ N.V z ρ) ⟨hz, fun ρ => rfl⟩`. Use `rTr_realAll hθ hT _ (fun ρ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ N.V z ρ) (c z) (fun ρ => hc z ρ hzc) u` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `congrFun this g`. Establish `key2 : ∀ T ∈ Mult θ N.M ∅ 1, ∀ (x : SmT N.M) (g : GA D N.V), PiTensorProduct.lift T x (g * z) = (∏ ρ, c z ρ) * PiTensorProduct.lift T x g`.
+
+Introduce `T hT`. Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT`. Introduce `x`. Proceed by induction on `x using PiTensorProduct.induction_on with`.
+
+Consider the case `smul_tprod r f`. Introduce `g`. Simplify using `only [map_smul, PiTensorProduct.lift.tprod, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hreal T hT f g]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `add a b ha hb`. Introduce `g`. Simplify using `only [map_add, Pi.add_apply]`. Rewrite using `[ha g, hb g]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `zero => intro x g`. Simplify using the standard rewrite rules. Consider the case `add T T' _ _ h1 h2`. Introduce `x g`. Simplify using `only [map_add, LinearMap.add_apply, Pi.add_apply]`.
+
+Rewrite using `[h1 x g, h2 x g]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a T _ h`. Introduce `x g`. Simplify using `only [map_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[h x g]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm : PiTensorProduct.lift.symm F.1 ∈ Mult θ N.M ∅ 1` using `(mem_multT θ N.M ∅ 1 F.1).1 F.2`. Use `key2 _ hm v h` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`.
+
+Conclude with `this`.
+-/
 theorem cusp_hasCen : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (ν : ℕ) (P : D.what₂.Tau → SPar), N.Is ν 0 P → ∃ χ : GA D N.V → ℂ, ∀ (F : N.Cusp θ) (v : SmT N.M), GlobalTheory.SeeSaw.HasCen N.V χ (F.1 v) := by
   intro D θ hθ N ν P hN
   have hs : N.V.SigOK := hN.sigOK

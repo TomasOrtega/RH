@@ -7,6 +7,15 @@ open Polynomial GlobalTheory.CuspGL
 
 namespace GlobalTheory.CuspGL
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.T.apply_charpoly_eq_finsum_psi_invariant_submodules F A s (g.restrict hg)]`. Set `e : {W : Submodule F V // W ≤ A ∧ ∀ x ∈ W, g x ∈ W} ≃ {W' : Submodule F A // ∀ x ∈ W', g.restrict hg x ∈ W'}` to `{ toFun := fun W => ⟨W.1.comap A.subtype, fun x hx => by`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, LinearMap.coe_restrict_apply] at hx ⊢`. Conclude with `W.2.2 _ hx⟩`. Use `invFun := fun W' => ⟨W'.1.map A.subtype, Submodule.map_subtype_le _ _, fun x hx => by`.
+
+Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hx`. Conclude with `Submodule.mem_map.2 ⟨_, W'.2 y hy, rfl⟩⟩`. Use `left_inv := fun W => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(W.1.comap A.subtype).map A.subtype = W.1`. Rewrite using `[Submodule.map_comap_subtype]`.
+
+Conclude with `inf_eq_right.2 W.2.1)`. Use `right_inv := fun W' => Subtype.ext (Submodule.comap_map_eq_of_injective A.injective_subtype _) }`. Rewrite using `[← finsum_comp_equiv e]`. Use `congr 1`. Use function extensionality and compare the values at `W`.
+
+Establish `hc : (Submodule.comapSubtypeEquivOfLe W.2.1).conj ((g.restrict hg).restrict (e W).2) = g.restrict W.2.2`. Use extensionality with `x`. Simplify using `[LinearEquiv.conj_apply, Submodule.comapSubtypeEquivOfLe]`. Rewrite using `[← hc, GlobalTheory.T.invariantSubspaceMobiusInverseCharpoly_linearEquiv_conj]`. Both sides reduce to the same expression.
+-/
 theorem finsum_psi_le (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V] [Module F V]
     [FiniteDimensional F V] (s : F[X] → ℂ) (A : Submodule F V) (g : Module.End F V)
     (hg : ∀ x ∈ A, g x ∈ A) :

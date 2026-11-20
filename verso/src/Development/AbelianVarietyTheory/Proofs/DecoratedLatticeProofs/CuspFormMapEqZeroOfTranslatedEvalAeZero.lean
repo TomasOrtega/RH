@@ -14,6 +14,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `D X h θ S M J χ t v₀ _ hv₀ T hTm hae`. Set `T' : MMap M` to `PiTensorProduct.lift.symm T`. Establish `hT'm : T' ∈ Mult θ M J χ` using `(mem_multT θ M J χ T).1 hTm`. Establish `hT` using `(GlobalTheory.MultMem.mem_mult_iff D θ _ _ M J χ T').1 hT'm`. Establish `hval : T' v₀ = T (PiTensorProduct.tprod ℂ v₀)`.
+
+Simplify using `[T', PiTensorProduct.lift_symm]`. Establish `hf` using `(hT.aut v₀).cont`. Establish `hleft` using `(hT.aut v₀).left`. Set `ι : GA D (D.sp.Y 0) ≃ₜ* X.B.I.GA` to `iotaX X h`. Establish `hQ : ∀ γ ∈ X.B.I.GFset, ι.symm γ ∈ GQ (D.sp.Y 0)`.
+
+Introduce `γ hγ`. Use `(Formalism.IndefR.RationalEmbedding.iota_rat D (ι.symm γ)).2 ?_` and prove the remaining obligations. Use `show Formalism.IndefR.RationalEmbedding.iota D ((Formalism.IndefR.RationalEmbedding.iota D).symm ((castGA h.symm).symm γ)) ∈ _`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `GlobalTheory.TranslatedEvalInj.castGA_symm_mem _ γ hγ`.
+
+Set `φ : X.B.I.GA → ℂ` to `fun x => T' v₀ (ι.symm x * t)`. Establish `hφ : ∀ x, φ x = T' v₀ (ι.symm (x * ι t))` using `fun x => by`. Simplify using `only [φ, map_mul, ContinuousMulEquiv.symm_apply_apply]`. Establish `hφc : Continuous φ`. Establish `e : φ = fun x => T' v₀ (ι.symm (x * ι t))` using `funext hφ`.
+
+Rewrite using `[e]`. Conclude with `hf.comp (ι.symm.continuous.comp (continuous_mul_right _))`. Establish `hφi : ∀ γ ∈ X.B.I.GFset, ∀ y, φ (γ * y) = φ y`. Introduce `γ hγ y`. Use `show T' v₀ (ι.symm (γ * y) * t) = T' v₀ (ι.symm y * t)`.
+
+Rewrite using `[map_mul, mul_assoc]`. Conclude with `hleft _ (hQ γ hγ) _`. Establish `hae' : φ =ᵐ[(X.B.I.muA X.B.μf).restrict X.B.fund] 0`. Establish `e : φ = evS X h t (T (PiTensorProduct.tprod ℂ v₀))`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [φ, evS, hval]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hae`. Establish `hz` using `GlobalTheory.TranslatedEvalInj.eq_zero_of_ae_fund X.B.I X.B.μf X.B.fund_spec hφc hφi hae'`.
+
+Establish `hv : T' v₀ = 0`. Use function extensionality and compare the values at `g`. Establish `e` using `hz (ι (g * t⁻¹))`. Simplify `e` using `[φ]`. Establish `hT0 : T' = 0` using `GlobalTheory.TranslatedEvalInj.eq_zero_of_value hT v₀ hv₀ hv`.
+
+Establish `: T = PiTensorProduct.lift T'` using `(PiTensorProduct.lift.apply_symm_apply T).symm`. Rewrite using `[this, hT0, map_zero]`.
+-/
 theorem GlobalTheory.Core.Mi.multT_eq_zero_of_evS_ae : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (θ : InfFam D) (S : D.what₂.Tau → SPar) (M : DSModel (D.sp.Y 0) S) (J : Set (GA D (D.sp.Y 0))) (χ : GA D (D.sp.Y 0) → ℂ) (t : GA D (D.sp.Y 0)) (v₀ : M.Vec), IsInfFam θ → (∀ τ, (v₀ τ : M.H τ) ≠ 0) → ∀ T ∈ MultT θ M J χ, evS X h t (T (PiTensorProduct.tprod ℂ v₀)) =ᵐ[muX X] 0 → T = 0 := by
   intro D X h θ S M J χ t v₀ _ hv₀ T hTm hae
   let T' : MMap M := PiTensorProduct.lift.symm T

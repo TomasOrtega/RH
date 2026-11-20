@@ -8,6 +8,11 @@ open scoped TensorProduct ENNReal NNReal
 
 namespace GlobalTheory.GramFibreRescale
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hφ hc hU => ⟨fun b hb => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, h1 b, smul_zero]`. Simplify using `only [Measure.restrict_smul, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← mul_assoc, ← ENNReal.coe_mul, mul_div_cancel₀ _ hd, h2 φ hφ]`.
+
+Conclude with `((h3 φ hφ hc hU).1 b hb).smul_measure_nnreal`. Simplify using `only [integral_smul_nnreal_measure]`. Conclude with `(h3 φ hφ hc hU).2.const_smul (c / d)`.
+-/
 theorem isFibreFamily_smul {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V]
     [TopologicalSpace X] [MeasurableSpace X] {μ : Measure V} {f : V → Y} {ι : X → Y} {U : Set V}
     {ν : Measure X} {B : Set X} {fib : X → Measure V} (h : IsFibreFamily μ f ι U ν B fib)

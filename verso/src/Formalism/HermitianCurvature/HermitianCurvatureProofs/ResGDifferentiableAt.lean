@@ -8,6 +8,11 @@ noncomputable section
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Proceed by induction on `i using Fin.induction with`. Consider the case `zero`. Establish `e : resG k r 0 F = fun _ => F`. Use function extensionality and compare the values at `c g`. Conclude with `Formalism.FourierDecayAlt.P.Qx6.resG_zero F c g`.
+
+Rewrite using `[e, Formalism.FourierDecayAlt.P.Qx6.Dcell_zero]`. Conclude with `Formalism.FourierDecayAlt.P.Qx6.sf_const_fam hF`. Consider the case `succ l ih`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx6.resG_succ, Formalism.FourierDecayAlt.P.Qx6.Dcell_succ]`. Conclude with `Formalism.FourierDecayAlt.P.Qx6.sf_Res Formalism.FourierDecayAlt.P.weyl_level_element_properties l ih`.
+-/
 theorem sf_resG {D : Set (Mx k r)} {F : Mx k r → E} (hF : SmoothLev k r 0 D F) (i : Fin (r + 1)) :
     SmoothFam k r i (Formalism.FourierDecayAlt.P.Qx6.UU (Formalism.FourierDecayAlt.P.Qx6.Dcell D i)) (resG k r i F) := by
   induction i using Fin.induction with

@@ -8,6 +8,15 @@ open scoped ENNReal ComplexConjugate
 
 namespace GlobalTheory.CompanionTheory.KerAdj
 
+/- English proof (translation)
+Establish `hL : ∀ x, conj (∫ y, conj (k y x) * g y ∂ν) * f x = ∫ y, conj (g y) * k y x * f x ∂ν`. Introduce `x`. Rewrite using `[← integral_conj, ← integral_mul_const]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, Complex.conj_conj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∀ y, conj (g y) * ∫ x, k y x * f x ∂ν = ∫ x, conj (g y) * k y x * f x ∂ν`. Introduce `y`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only [mul_assoc]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[hL]`. Conclude with `h.swap.integral_prod_left`. Repeatedly rewrite using `[hR]`.
+
+Conclude with `h.integral_prod_left`. Repeatedly rewrite using `[hL, hR]`. Conclude with `(integral_integral_swap (f := fun y x => conj (g y) * k y x * f x) h).symm`.
+-/
 theorem pairing_swap {α : Type*} [MeasurableSpace α] {ν : Measure α} [SFinite ν]
     (k : α → α → ℂ) (g f : α → ℂ)
     (h : Integrable (fun p : α × α => conj (g p.1) * k p.1 p.2 * f p.2) (ν.prod ν)) :
@@ -36,12 +45,20 @@ theorem pairing_swap {α : Type*} [MeasurableSpace α] {ν : Measure α} [SFinit
   · simp_rw [hL, hR]
     exact (integral_integral_swap (f := fun y x => conj (g y) * k y x * f x) h).symm
 
+/- English proof (translation)
+Rewrite using `[L2.inner_def]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[mul_comm]`.
+-/
 theorem inner_eq_integral_conj_mul {α : Type*} [MeasurableSpace α] {ν : Measure α} (u v : Lp ℂ 2 ν) :
     inner ℂ u v = ∫ x, conj ((u : α → ℂ) x) * (v : α → ℂ) x ∂ν := by
   rw [L2.inner_def]
   refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
   simp [mul_comm]
 
+/- English proof (translation)
+Use `haveI : SFinite X.ν := by unfold Ctx.ν; infer_instance`. Take `⟨-, hc, -, -, hadj, -⟩` from `hK X φ hφ`. Take `⟨A, hA, h1, h2⟩` from `hR X φ hφ`. Establish `hg : MemLp (fun y => conj ((g : X.G → ℂ) y)) 2 X.ν` using `(Lp.memLp g).star`. Establish `hI` using `hS X.G X.ν (ker X.Γ φ) A hc.measurable hA h1 h2 _ _ hg (Lp.memLp f)`.
+
+Use `pairing_swap (ν := X.ν) (ker X.Γ φ) (g : X.G → ℂ) (f : X.G → ℂ) hI` as an intermediate fact. Simplify `this` using `only [hadj]`.
+-/
 theorem entry_pairing (hK : KerBasic) (hR : RowInt) (hS : SchurInt) (X : Ctx) (φ : X.G → ℂ)
     (hφ : Tst φ) (g f : Lp ℂ 2 X.ν) :
     Integrable (fun x => conj (∫ y, ker X.Γ (adj φ) x y * (g : X.G → ℂ) y ∂X.ν) * (f : X.G → ℂ) x) X.ν ∧
@@ -56,6 +73,17 @@ theorem entry_pairing (hK : KerBasic) (hR : RowInt) (hS : SchurInt) (X : Ctx) (�
   have := pairing_swap (ν := X.ν) (ker X.Γ φ) (g : X.G → ℂ) (f : X.G → ℂ) hI
   simpa only [hadj] using this
 
+/- English proof (translation)
+Introduce `hK hR hS hE X ι _ Φ T hΦ hT`. Establish `hadj : ∀ i j, Tst (adj (Φ j i))` using `fun i j => (hK X _ (hΦ j i)).2.2.2.1`. Take `⟨T', hT', -⟩` from `hE X ι (fun i j => adj (Φ j i)) hadj`. Establish `hEq : T' = ContinuousLinearMap.adjoint T`. Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`.
+
+Introduce `g f`. Establish `key` using `fun i j => entry_pairing hK hR hS X (Φ j i) (hΦ j i) (g j) (f i)`. Establish `hl : ∀ i, inner ℂ (T' g i) (f i) = ∑ j, ∫ x, conj (∫ y, ker X.Γ (adj (Φ j i)) x y * (g j : X.G → ℂ) y ∂X.ν) * (f i : X.G → ℂ) x ∂X.ν`. Introduce `i`. Rewrite using `[inner_eq_integral_conj_mul, ← integral_finset_sum _ fun j _ => (key i j).1]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hT' g i] with x hx`. Rewrite using `[hx, map_sum, Finset.sum_mul]`. Establish `hr : ∀ j, inner ℂ (g j) (T f j) = ∑ i, ∫ y, conj ((g j : X.G → ℂ) y) * ∫ x, ker X.Γ (Φ j i) y x * (f i : X.G → ℂ) x ∂X.ν ∂X.ν`. Introduce `j`.
+
+Rewrite using `[inner_eq_integral_conj_mul, ← integral_finset_sum _ fun i _ => (key i j).2.1]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hT f j] with y hy`. Rewrite using `[hy, Finset.mul_sum]`. Rewrite using `[PiLp.inner_apply, PiLp.inner_apply]`.
+
+Repeatedly rewrite using `[hl, hr]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => (key i j).2.2`. Rewrite using `[← hEq]`. Conclude with `hT'`.
+-/
 theorem opAdj_of : KerBasic → RowInt → SchurInt → OpExA → OpAdj := by
   intro hK hR hS hE X ι _ Φ T hΦ hT
   have hadj : ∀ i j, Tst (adj (Φ j i)) := fun i j => (hK X _ (hΦ j i)).2.2.2.1

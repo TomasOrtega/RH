@@ -15,11 +15,21 @@ namespace UpperTheory.Esk.DeterminantRepresentatives
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `(Valued.toNormedField.norm_le_one_iff (x := x)).2 h.le` as an intermediate fact. Establish `h2` using `(Valued.toNormedField.one_le_norm_iff (x := x)).2 h.ge`. Conclude with `le_antisymm this h2`.
+-/
 theorem norm_one' {w : Pl F} {x : w.adicCompletion F} (h : Valued.v x = 1) : ‖x‖ = 1 := by
   have := (Valued.toNormedField.norm_le_one_iff (x := x)).2 h.le
   have h2 := (Valued.toNormedField.one_le_norm_iff (x := x)).2 h.ge
   exact le_antisymm this h2
 
+/- English proof (translation)
+Establish `h1` using `Filter.eventually_cofinite.1 (y : Af F).2`. Establish `h2` using `Filter.eventually_cofinite.1 ((y⁻¹ : (Af F)ˣ) : Af F).2`. Use `(h1.union h2).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hc`.
+
+Establish `a1 : Valued.v (pLoc F w (y : Af F)) ≤ 1` using `hc.1`. Establish `a2 : Valued.v (pLoc F w ((y⁻¹ : (Af F)ˣ) : Af F)) ≤ 1` using `hc.2`. Establish `a3 : Valued.v (pLoc F w (y : Af F)) * Valued.v (pLoc F w ((y⁻¹ : (Af F)ˣ) : Af F)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Use `hw (norm_one' (le_antisymm a1 ?_))` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fin_supp (y : (Af F)ˣ) : Function.HasFiniteMulSupport fun w : Pl F => ‖pLoc F w (y : Af F)‖ := by
   have h1 := Filter.eventually_cofinite.1 (y : Af F).2
   have h2 := Filter.eventually_cofinite.1 ((y⁻¹ : (Af F)ˣ) : Af F).2
@@ -35,33 +45,54 @@ theorem fin_supp (y : (Af F)ˣ) : Function.HasFiniteMulSupport fun w : Pl F => �
     _ ≤ Valued.v (pLoc F w (y : Af F)) * 1 := mul_le_mul_right a2 _
     _ = _ := mul_one _
 
+/- English proof (translation)
+Unfold `absF`. Rewrite using `[← finprod_mul_distrib (fin_supp y) (fin_supp z)]`. Simplify using the standard rewrite rules.
+-/
 theorem absF_mul (y z : (Af F)ˣ) : absF (y * z) = absF y * absF z := by
   unfold absF
   rw [← finprod_mul_distrib (fin_supp y) (fin_supp z)]
   simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]`.
+-/
 theorem aff_mul {R : Type} [CommRing R] (y z : Rˣ) (x t : R) : aff y x * aff z t = aff (y * z) (x + y * t) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff]`.
+-/
 @[simp] theorem aff_one {R : Type} [CommRing R] : aff (1 : Rˣ) (0 : R) = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [aff]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, aff, Matrix.det_fin_two_of]`.
+-/
 theorem det_aff {R : Type} [CommRing R] (y : Rˣ) (x : R) : Matrix.GeneralLinearGroup.det (aff y x) = y := by
   ext
   simp [Matrix.GeneralLinearGroup.val_det_apply, aff, Matrix.det_fin_two_of]
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_inv, det_aff]`. Use `ext`. Simplify using `[pow_two]`.
+-/
 theorem det_centralSection {R : Type} [CommRing R] (y : Rˣ) :
     Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 2) y * (aff y 0)⁻¹) = y := by
   rw [map_mul, map_inv, det_aff]
   ext
   simp [pow_two]
 
+/- English proof (translation)
+Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`.
+-/
 theorem pLoc_det (v : Pl F) (g : GF F) : pLoc F v ((Matrix.GeneralLinearGroup.det g : (Af F)ˣ) : Af F) =
     ((Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (pLoc F v) g) : (v.adicCompletion F)ˣ) : v.adicCompletion F) := by
   simp [Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]
 
+/- English proof (translation)
+Rewrite using `[absF, finprod_eq_single _ w fun v hv => by rw [pLoc_det, pLoc_locGL_of_ne hv]; simp, pLoc_det, pLoc_locGL, hg, FinitePlace.norm_def, unif_spec, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`. Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[show Multiplicative.toAdd (WithZero.unzero _) = (-1 : ℤ) from rfl, zpow_neg_one]`.
+-/
 theorem absF_loc (w : Pl F) (g : GL (Fin 2) (w.adicCompletion F))
     (hg : Matrix.GeneralLinearGroup.det g = atFin w (unif w)) :
     absF (Matrix.GeneralLinearGroup.det (locGL F 2 w g)) = (normV w : ℝ)⁻¹ := by
@@ -71,6 +102,19 @@ theorem absF_loc (w : Pl F) (g : GL (Fin 2) (w.adicCompletion F))
   simp [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]
   rw [show Multiplicative.toAdd (WithZero.unzero _) = (-1 : ℤ) from rfl, zpow_neg_one]
 
+/- English proof (translation)
+Take `⟨hy, he⟩` from `hb.act V ρ x hx`. Establish `hy' : (∑ i, ρ (b i) x) ∈ Hi.fixd (ρ.comp (locGL F 2 w)) (K1 w (c w))` using `fun k hk => hy _ ((kcTop F).2.2.2.2.2 c w k hk)`. Establish `hs : ∑ p : κ × ι, ρ (locGL F 2 w (r p.1) * b p.2) x = Uop w (ρ.comp (locGL F 2 w)) (c w) (∑ i, ρ (b i) x)`. Rewrite using `[hr1 V (ρ.comp (locGL F 2 w)) _ hy', Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply]`. Both sides reduce to the same expression. Rewrite using `[hs]`.
+
+Use `⟨(hkComm (hkReps uopSum) kcTop F V ρ c _ hy w).1, ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, ← he]`. Use `det p := by`. Rewrite using `[map_mul, absF_mul, absF_loc w _ (hr2 p.1), hb.det, List.map_cons, List.prod_cons]`. Use `loc p w' hw' := by classical`.
+
+Take `⟨u', hu'⟩` from `hb.loc p.2 w' hw'`. Rewrite using `[map_mul]`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Take `⟨u, hu⟩` from `hr3 hw' p.1`.
+
+Establish `hm : ((atFin w' (unif w') : (w'.adicCompletion F)ˣ) : w'.adicCompletion F) ∈ w'.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, unif_spec, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Use `⟨u + ⟨_, hm⟩ * u', ?_⟩` and prove the remaining obligations. Rewrite using `[pLoc_locGL, hu, hu', aff_mul, List.count_cons_self, pow_succ']`.
+
+Use `push_cast`. Both sides reduce to the same expression. Use `⟨u', ?_⟩` and prove the remaining obligations. Rewrite using `[pLoc_locGL_of_ne h, one_mul, hu']`. Simplify using `[List.count_cons, Ne.symm h]`.
+-/
 theorem step {c : Pl F → ℕ} {w : Pl F} {W : List (Pl F)} {ι κ : Type} [Fintype ι] [Fintype κ] {b : ι → GF F}
     (hb : IsReps c W b) (r : κ → GL (Fin 2) (w.adicCompletion F))
     (hr1 : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin 2) (w.adicCompletion F)) V),
@@ -113,11 +157,17 @@ theorem step {c : Pl F → ℕ} {w : Pl F} {W : List (Pl F)} {ι κ : Type} [Fin
       rw [pLoc_locGL_of_ne h, one_mul, hu']
       simp [List.count_cons, Ne.symm h]
 
+/- English proof (translation)
+Simplify using `using hx det _ := by simp [absF] loc _ w _ := ⟨0, by simp⟩`.
+-/
 theorem base (c : Pl F → ℕ) : IsReps c ([] : List (Pl F)) (fun _ : Unit => (1 : GF F)) where
   act V _ _ ρ x hx := by simpa using hx
   det _ := by simp [absF]
   loc _ w _ := ⟨0, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[show ∑ i, ρ ((a ∘ e) i) x = ∑ i, ρ (a i) x from Equiv.sum_comp e (fun i => ρ (a i) x)]`. Conclude with `h.act V ρ x hx`. Use `det i := h.det (e i)`. Use `loc i := h.loc (e i)`.
+-/
 theorem reindex {c : Pl F → ℕ} {W : List (Pl F)} {ι κ : Type} [Fintype ι] [Fintype κ] (e : κ ≃ ι) {a : ι → GF F}
     (h : IsReps c W a) : IsReps c W (a ∘ e) where
   act V _ _ ρ x hx := by
@@ -126,6 +176,19 @@ theorem reindex {c : Pl F → ℕ} {W : List (Pl F)} {ι κ : Type} [Fintype ι]
   det i := h.det (e i)
   loc i := h.loc (e i)
 
+/- English proof (translation)
+Proceed by induction on `W with`. Consider the case `nil => exact ⟨Unit, inferInstance, _, base c⟩`. Consider the case `cons w W ih`. Take `⟨ι, _, b, hb⟩` from `ih`. Use `haveI := Formalism.UG.P.glint_finite_residueField w`.
+
+Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField (w.adicCompletionIntegers F))`. Use `choose s hs using (IsLocalRing.residue_surjective (R := w.adicCompletionIntegers F))`. Establish `hS : Set.BijOn (IsLocalRing.residue (w.adicCompletionIntegers F)) ((Finset.univ.image s : Finset (w.adicCompletionIntegers F)) : Set (w.adicCompletionIntegers F)) Set.univ`. Use `⟨fun _ _ => Set.mem_univ _, ?_, fun r _ => ⟨s r, by simp, hs r⟩⟩` and prove the remaining obligations. Introduce `x hx y hy h`.
+
+Take `⟨r, -, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hx)`. Take `⟨r', -, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hy)`. Rewrite `h` using `[hs, hs]`. Rewrite using `[h]`. Generalize the expression as in `Finset.univ.image s = S at hS`.
+
+Distinguish the cases in `hc : c w = 0`. Use `⟨Option S × ι, inferInstance, _, step hb (fun o => o.elim (Matrix.GeneralLinearGroup.scalar (Fin 2) (atFin w (unif w)) * (aff (atFin w (unif w)) 0)⁻¹) (fun u => aff (atFin w (unif w)) ((u : w.adicCompletionIntegers F) : w.adicCompletion F))) ?_ ?_ ?_⟩` and prove the remaining obligations. Introduce `V _ _ ρ x hx`. Rewrite using `[(uopSum F w V ρ (c w) x hx).2 S hS, if_pos hc, Fintype.sum_option, add_comm, ← Finset.sum_coe_sort S]`. Both sides reduce to the same expression.
+
+Introduce `j`. Consider the cases of `j with`. Consider the case `none => exact det_centralSection _`. Consider the case `some u => exact det_aff _ _`. Conclude with `fun h => absurd hc h`.
+
+Use `⟨S × ι, inferInstance, _, step hb (fun u : S => aff (atFin w (unif w)) ((u : w.adicCompletionIntegers F) : w.adicCompletion F)) ?_ (fun _ => det_aff _ _) (fun _ u => ⟨u, rfl⟩)⟩` and prove the remaining obligations. Introduce `V _ _ ρ x hx`. Rewrite using `[(uopSum F w V ρ (c w) x hx).2 S hS, if_neg hc, add_zero, ← Finset.sum_coe_sort S]`.
+-/
 theorem ex (c : Pl F → ℕ) (W : List (Pl F)) : ∃ (ι : Type) (_ : Fintype ι) (a : ι → GF F), IsReps c W a := by
   induction W with
   | nil => exact ⟨Unit, inferInstance, _, base c⟩
@@ -164,6 +227,9 @@ theorem ex (c : Pl F → ℕ) (W : List (Pl F)) : ∃ (ι : Type) (_ : Fintype �
 end UpperTheory.Esk.DeterminantRepresentatives
 
 open UpperTheory.Esk.DeterminantRepresentatives in
+/- English proof (translation)
+Introduce `F _ _ c W`. Take `⟨ι, _, a, ha⟩` from `ex c W`. Conclude with `⟨Fintype.card ι, a ∘ (Fintype.equivFin ι).symm, reindex _ ha⟩`.
+-/
 theorem UpperTheory.Esk.dReps : UpperTheory.Esk.DReps := by
   intro F _ _ c W
   obtain ⟨ι, _, a, ha⟩ := ex c W

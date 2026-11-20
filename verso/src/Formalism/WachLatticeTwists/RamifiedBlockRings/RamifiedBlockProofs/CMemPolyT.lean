@@ -36,6 +36,11 @@ def polyT : Subalgebra O[X] (Xs → O[X]) where
     rw [h]
     exact T.algebraMap_mem _
 
+/- English proof (translation)
+Use `show ∀ k, (fun x => (C (c x)).coeff k) ∈ T`. Introduce `k`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `using hc`. Establish `h0 : (fun x => (C (c x)).coeff k) = 0`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[Polynomial.coeff_C, hk.ne']`. Rewrite using `[h0]`. Conclude with `T.zero_mem`.
+-/
 theorem C_mem_polyT {c : Xs → O} (hc : c ∈ T) : (fun x => C (c x)) ∈ polyT T := by
   show ∀ k, (fun x => (C (c x)).coeff k) ∈ T
   intro k
@@ -52,6 +57,9 @@ def rPoly : G →* (Xs → Matrix d d O[X]) where
   map_one' := by funext x; simp
   map_mul' g h := by funext x; simp [Matrix.map_mul]
 
+/- English proof (translation)
+Take `⟨s, c, hc, rfl⟩` from `ha`. Use `⟨s, fun g x => C (c g x), fun g => C_mem_polyT T (hc g), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Use extensionality with `i j`. Simplify using `[rPoly, Finset.sum_apply, Matrix.sum_apply, map_sum]`.
+-/
 theorem lift_mem {a : Xs → Matrix d d O} (ha : a ∈ tSpan T r) :
     (fun x => (a x).map C) ∈ tSpan (polyT T) (rPoly r) := by
   obtain ⟨s, c, hc, rfl⟩ := ha
@@ -60,6 +68,11 @@ theorem lift_mem {a : Xs → Matrix d d O} (ha : a ∈ tSpan T r) :
   ext i j
   simp [rPoly, Finset.sum_apply, Matrix.sum_apply, map_sum]
 
+/- English proof (translation)
+Unfold `Matrix.charpolyRev`. Rewrite using `[← Polynomial.coe_mapRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using `[Matrix.one_apply]`. Simplify using `[Matrix.one_apply, h]`.
+-/
 private theorem matrix_charpolyRev_map {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
     (M : Matrix d d R) : (M.map f).charpolyRev = M.charpolyRev.map f := by
   unfold Matrix.charpolyRev
@@ -71,6 +84,15 @@ private theorem matrix_charpolyRev_map {R S : Type*} [CommRing R] [CommRing S] (
     simp [Matrix.one_apply]
   · simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Establish `h1 : ∀ (g : G) (k : ℕ), FromT (polyT T) (fun x => (Matrix.charpolyRev (rPoly r g x)).coeff k)`. Introduce `g k`. Use `⟨fun x => C ((Matrix.charpolyRev (r g x)).coeff k), C_mem_polyT T (hG1 g k), fun x => ?_⟩` and prove the remaining obligations. Establish `hx : rPoly r g x = (r g x).map C` using `rfl`. Simplify using `only`.
+
+Rewrite using `[hx, matrix_charpolyRev_map, Polynomial.coeff_map]`. Both sides reduce to the same expression. Take `⟨u, hu, hux⟩` from `det_poly_statement O[X] O[X] Xs G d (polyT T) (rPoly r) h1 1 (fun _ => M) (fun _ => hM) (Finsupp.single 0 (Fintype.card d))`. Establish `key : ∀ x, u x = (M x).det`. Introduce `x`.
+
+Establish `hx` using `hux x`. Simplify using `only at hx`. Rewrite `hx` using `[Fin.sum_univ_one, Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, mul_comm, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_X_pow]`. Simplify using `using hx`. Establish `hfun : (fun x => (M x).det.coeff k) = fun x => (u x).coeff k`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[key x]`. Rewrite using `[hfun]`. Conclude with `hu k`.
+-/
 theorem detT (hG1 : ∀ (g : G) (k : ℕ), (fun x => (Matrix.charpolyRev (r g x)).coeff k) ∈ T)
     (M : Xs → Matrix d d O[X]) (hM : M ∈ tSpan (polyT T) (rPoly r)) (k : ℕ) :
     (fun x => (M x).det.coeff k) ∈ T := by
@@ -98,6 +120,11 @@ theorem detT (hG1 : ∀ (g : G) (k : ℕ), (fun x => (Matrix.charpolyRev (r g x)
 
 end
 
+/- English proof (translation)
+Introduce `O _ X T d _ _ G _ r hG1 a ha k`. Establish `hA : (fun x => (a x).map C) ∈ spanSub (polyT T) (rPoly r)` using `lift_mem T r ha`. Establish `hM : (fun x => 1 - (Polynomial.X : O[X]) • (a x).map C) ∈ spanSub (polyT T) (rPoly r)`. Establish `he : (fun x => 1 - (Polynomial.X : O[X]) • (a x).map C) = 1 - algebraMap O[X] (X → Matrix d d O[X]) Polynomial.X * (fun x => (a x).map C)`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[Algebra.algebraMap_eq_smul_one, smul_mul_assoc]`. Rewrite using `[he]`. Conclude with `Subalgebra.sub_mem _ (Subalgebra.one_mem _) (Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) hA)`. Conclude with `detT T r hG1 _ hM k`.
+-/
 theorem charT : StatCharT := by
   intro O _ X T d _ _ G _ r hG1 a ha k
   have hA : (fun x => (a x).map C) ∈ spanSub (polyT T) (rPoly r) := lift_mem T r ha
@@ -111,6 +138,13 @@ theorem charT : StatCharT := by
       (Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) hA)
   exact detT T r hG1 _ hM k
 
+/- English proof (translation)
+Introduce `O _ X T d _ _ G _ r hG1 e he a ha k`. Establish `hE : (fun x => (e x).map C) ∈ spanSub (polyT T) (rPoly r)` using `lift_mem T r he`. Establish `hA : (fun x => (a x).map C) ∈ spanSub (polyT T) (rPoly r)` using `lift_mem T r ha`. Establish `hM : (fun x => (Polynomial.X : O[X]) • (e x).map C - (a x).map C + (1 - e x).map C) ∈ spanSub (polyT T) (rPoly r)`. Establish `hq : (fun x => (Polynomial.X : O[X]) • (e x).map C - (a x).map C + (1 - e x).map C) = algebraMap O[X] (X → Matrix d d O[X]) Polynomial.X * (fun x => (e x).map C) - (fun x => (a x).map C) + (1 - fun x => (e x).map C)`.
+
+Use function extensionality and compare the values at `x`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Algebra.algebraMap_eq_smul_one, smul_mul_assoc, Matrix.one_apply]`.
+
+Simplify using `[Algebra.algebraMap_eq_smul_one, smul_mul_assoc, Matrix.one_apply, h]`. Rewrite using `[hq]`. Conclude with `Subalgebra.add_mem _ (Subalgebra.sub_mem _ (Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) hE) hA) (Subalgebra.sub_mem _ (Subalgebra.one_mem _) hE)`. Conclude with `detT T r hG1 _ hM k`.
+-/
 theorem blockPolyT : StatBlockPolyT := by
   intro O _ X T d _ _ G _ r hG1 e he a ha k
   have hE : (fun x => (e x).map C) ∈ spanSub (polyT T) (rPoly r) := lift_mem T r he

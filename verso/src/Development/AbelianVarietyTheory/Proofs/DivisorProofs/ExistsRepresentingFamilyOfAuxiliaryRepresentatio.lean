@@ -37,6 +37,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.HTQuot
 
+/- English proof (translation)
+Establish `sq : IsSquare (h₁.φ ≫ h₂.φ) (h₁.φ₂ ≫ h₂.φ₂)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Category.assoc, h₂.sq.1, ← Category.assoc, h₁.sq.1, Category.assoc]`. Rewrite using `[Category.assoc, h₂.sq.2, ← Category.assoc, h₁.sq.2, Category.assoc]`. Establish `act : ∀ c, (o₁.act.act c).left ≫ (h₁.φ ≫ h₂.φ) = (h₁.φ ≫ h₂.φ) ≫ (o₃.act.act c).left`.
+
+Introduce `c`. Rewrite using `[← Category.assoc, h₁.act, Category.assoc, h₂.act, Category.assoc]`. Establish `eta : ∀ y, (o₁.eta y).left ≫ (h₁.φ ≫ h₂.φ) = (f ≫ g) ≫ (o₃.eta y).left`. Introduce `y`. Rewrite using `[← Category.assoc, h₁.eta, Category.assoc, h₂.eta, Category.assoc]`.
+
+Establish `H : LBIso (o₂.P.pull h₁.φ₂) ((o₃.P.pull h₂.φ₂).pull h₁.φ₂)` using `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull o₂.P h₁.φ₂ h₁.φ₂ rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull (o₃.P.pull h₂.φ₂) h₁.φ₂ h₁.φ₂ rfl) h₂.pol`. Establish `H' : LBIso (o₂.P.pull h₁.φ₂) (o₃.P.pull (h₁.φ₂ ≫ h₂.φ₂))` using `LBIso.chartPull (chartPullId _) (chartPullIn o₃.P (fun _ : PUnit => h₂.φ₂) (fun _ => 1) h₁.φ₂) H`. Establish `pol : LBIso o₁.P (o₃.P.pull (h₁.φ₂ ≫ h₂.φ₂))` using `LBIso.trans o₁.isLB (pull_isLB o₂.isLB _) (pull_isLB o₃.isLB _) h₁.pol H'`. Conclude with `⟨⟨h₁.φ ≫ h₂.φ, h₁.φ₂ ≫ h₂.φ₂, h₁.cart.comp h₂.cart, sq, act, pol, eta⟩, rfl⟩`.
+-/
 theorem objMap_comp_φ_of_comp {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R} {s₃ : S₃ ⟶ Sp R} {o₁ : Obj b N s₁} {o₂ : Obj b N s₂}
     {o₃ : Obj b N s₃} {f : S₁ ⟶ S₂} {g : S₂ ⟶ S₃} (h₁ : ObjMap o₁ o₂ f) (h₂ : ObjMap o₂ o₃ g) :
@@ -60,6 +67,23 @@ theorem objMap_comp_φ_of_comp {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type}
     LBIso.trans o₁.isLB (pull_isLB o₂.isLB _) (pull_isLB o₃.isLB _) h₁.pol H'
   exact ⟨⟨h₁.φ ≫ h₂.φ, h₁.φ₂ ≫ h₂.φ₂, h₁.cart.comp h₂.cart, sq, act, pol, eta⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `p _ D R _ _ b N hN hNp X Y π sY G _ ρ o hG hq hqY hmaps`. Establish `: IsLocallyNoetherian Y`. Take `⟨M, i, hi, -, hi'⟩` from `hqY`. Use `isProper_str R M` as an intermediate fact. Conclude with `LocallyOfFiniteType.isLocallyNoetherian (i ≫ PSpace.str R M)`.
+
+Establish `m : ∀ a, ObjMap o o (ρ a)` using `fun a => (hmaps a).some`. Set `ν : G → (o.A.left ⟶ o.A.left)` to `fun a => (m a).φ`. Establish `uniq : ∀ {f f' : X ⟶ X} (_ : f = f') (m₁ : ObjMap o o f) (m₂ : ObjMap o o f'), m₁.φ = m₂.φ`. Introduce and unpack `f f' rfl m₁ m₂`. Conclude with `GlobalTheory.UPel.HT.MapUniq.objMap_φ_unique p D R b N hN hNp X X _ _ o o f m₁ m₂`.
+
+Establish `ν1 : ν 1 = 𝟙 _`. Establish `key : ∀ {f : X ⟶ X} (_ : f = 𝟙 X) (m₁ : ObjMap o o f), m₁.φ = 𝟙 _`. Introduce and unpack `f rfl m₁`. Conclude with `GlobalTheory.UPel.HT.Rigid.eq_id p D R b N hN hNp X _ o m₁`. Conclude with `key hG.one (m 1)`.
+
+Establish `νmul : ∀ a c, ν (a * c) = ν a ≫ ν c`. Introduce `a c`. Take `⟨m', hm'⟩` from `objMap_comp_φ_of_comp (m a) (m c)`. Conclude with `(uniq (hG.mul a c) (m (a * c)) m').trans hm'`. Establish `hcart : ∀ a, IsGrpPullback o.A o.A (ρ a) (ν a)` using `fun a => (m a).cart`.
+
+Establish `hqA : IsQProjOver (o.A.hom ≫ π ≫ sY)` using `GlobalTheory.RelAmpleQProjNoeth.isQProjOver_of_relAmple_noeth R X (π ≫ sY) o.A _ hq (pull_isLB o.isLB _) o.ample`. Take `⟨A₀, _, φ, hA₀, gp, hφ⟩` from `GlobalTheory.abelianScheme_descends_galoisCover_noetherian R X Y π sY G ρ o.A ν hG hqA o.ab hcart ν1 νmul`. Use `hA₀.comm` as an intermediate fact. Take `⟨act₀, hact⟩` from `GlobalTheory.GaloisActDesc.exists_oActN_descend D.O X Y π G ρ o.A A₀ φ ν o.act hG o.ab hA₀ gp hφ hcart (fun a c => (m a).act c)`. Take `⟨P₀, φ₂, hP₀, hsq, iso, rig0⟩` from `GlobalTheory.SquareDescent.exists_bundle_descent X Y π G ρ o.A A₀ φ ν o.P hG o.ab hA₀ gp hφ hcart ν1 νmul o.isLB o.rig₁ (fun a => ⟨(m a).φ₂, (m a).sq, (m a).pol⟩)`.
+
+Take `⟨rig₁, rig₂⟩` from `GlobalTheory.T.descended_birigidified_bundle_trivial_on_axes X Y π G ρ o.A A₀ φ φ₂ o.P P₀ hG o.ab hA₀ gp hsq o.isLB hP₀ iso rig0 o.rig₁ o.rig₂`. Establish `symm` using `GlobalTheory.T.descended_birigidified_bundle_swap_symmetric X Y π G ρ o.A A₀ φ φ₂ o.P P₀ hG o.ab hA₀ gp hsq o.isLB hP₀ iso rig0 o.symm`. Establish `ample` using `GlobalTheory.T.relAmple_diagonal_descends_finiteEtaleGalois X Y π G ρ o.A A₀ φ φ₂ o.P P₀ hG o.ab hA₀ gp hsq o.isLB hP₀ iso o.ample`. Establish `kerP : ∃ e : ℕ, e.Coprime p ∧ ∀ (T : Over Y) (x : T ⟶ A₀), (∃ t : (P₀.pull (lift (snd A₀ T ≫ x) (fst A₀ T)).left).Gen, t.IsGen) → x ^ e = 1`. Take `⟨e, he, hk⟩` from `o.kerP`.
+
+Conclude with `⟨e, he, GlobalTheory.T.descended_polarisation_kernel_killed_same_integer X Y π G ρ o.A A₀ φ φ₂ o.P P₀ e hG o.ab hA₀ gp hsq o.isLB hP₀ iso hk⟩`. Establish `rosati` using `GlobalTheory.T.rosati_condition_descends_galois_cover D.O (fun c => (D.star c).unop) X Y π G ρ o.A A₀ φ φ₂ o.P P₀ o.act act₀ hG o.ab hA₀ gp hsq o.isLB hP₀ iso rig0 hact o.rosati`. Take `⟨eta₀, eta_add, eta_lin, eta_ker, heta⟩` from `GlobalTheory.LevelSecDesc.levelSections_descend D.O D.La N X Y π G ρ o.A A₀ φ ν o.act act₀ o.eta hG gp hφ hact (fun a y => (m a).eta y) o.eta_add o.eta_lin o.eta_ker`. Establish `lie` using `GlobalTheory.T.lie_condition_descends_finite_etale_galois_cover p D R b X Y π sY G ρ o.A A₀ φ o.act act₀ hG o.ab hA₀ gp hact o.lie`. Establish `lieRank` using `GlobalTheory.T.lie_multiplicities_geometric_points_descend p D R b X Y π sY G ρ o.A A₀ φ o.act act₀ hG o.ab hA₀ gp hact o.lieRank`.
+
+Establish `geom` using `GlobalTheory.T.geometric_tate_level_condition_descends_galois_cover p D R b X Y π sY G ρ o.A A₀ φ o.act act₀ N φ₂ o.P P₀ o.eta eta₀ hG o.ab hA₀ gp hact hsq o.isLB hP₀ iso heta o.geom`. Set `oY : Obj b N sY` to `{ A := A₀, ab := hA₀, act := act₀, P := P₀, isLB := hP₀, rig₁ := rig₁, rig₂ := rig₂, symm := symm ample := ample, kerP := kerP, rosati := rosati, lie := lie, lieRank := lieRank, eta := eta₀, eta_add := eta_add, eta_lin := eta_lin, eta_ker := eta_ker, geom := geom }`. Conclude with `⟨oY, ⟨⟨φ, φ₂, gp, hsq, hact, iso, heta⟩⟩⟩`.
+-/
 theorem obj_descends_galoisCover : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsNoetherianRing R]
     (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (X Y : Scheme.{0}) (π : X ⟶ Y) (sY : Y ⟶ Sp R) (G : Type)
     [Group G] (ρ : G → (X ⟶ X)) (o : Obj b N (π ≫ sY)), GlobalTheory.ZM.IsGaloisCover G ρ π → IsQProjOver (π ≫ sY) →
@@ -114,6 +138,23 @@ theorem obj_descends_galoisCover : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R
       eta_add := eta_add, eta_lin := eta_lin, eta_ker := eta_ker, geom := geom }
   exact ⟨oY, ⟨⟨φ, φ₂, gp, hsq, hact, iso, heta⟩⟩⟩
 
+/- English proof (translation)
+Introduce `p _ D R _ _ b N hN hNp X s u Ga _ _ ρ hq h1 hmul hbase hmaps hfree hcov huniq`. Take `⟨Y, π, sY, hπs, hgal, hsep, hlft, -⟩` from `GlobalTheory.ZM.exists_isGaloisCover_of_isQProjOver_noetherian R X s Ga ρ hq h1 hmul hbase hfree`. Establish `hqY : IsQProjOver sY` using `GlobalTheory.GaloisQuotientRing.isQProjOver_of_isGaloisCover R X Y π sY Ga ρ hgal hsep hlft (by rw [hπs]; exact hq)`. Substitute `hπs` using the available equality. Take `⟨uY, ⟨mu⟩⟩` from `obj_descends_galoisCover p D R b N hN hNp X Y π sY Ga ρ u hgal hq hqY hmaps`.
+
+Establish `hrep : ∀ (S : Scheme.{0}) (s' : S ⟶ Sp R) (o : Obj b N s'), ∃! f : S ⟶ Y, f ≫ sY = s' ∧ Nonempty (ObjMap o uY f)`. Introduce `S s' o`. Take `⟨S₁, π₁, ρ₁, y, o', hgal₁, hequi, hys, ⟨m₁⟩, ⟨m₂⟩⟩` from `hcov S s' o`. Establish `hinv : ∀ a, ρ₁ a ≫ (y ≫ π) = y ≫ π`. Introduce `a`.
+
+Rewrite using `[← Category.assoc, hequi a, Category.assoc, hgal.inv a]`. Take `⟨f, hf, hfu⟩` from `hgal₁.existsUnique_desc (y ≫ π) hinv`. Establish `canc : ∀ {Z : Scheme.{0}} (h₁ h₂ : S ⟶ Z), π₁ ≫ h₁ = π₁ ≫ h₂ → h₁ = h₂`. Introduce `Z h₁ h₂ e`. Take `⟨w, -, hwu⟩` from `hgal₁.existsUnique_desc (π₁ ≫ h₁) (fun a => by rw [← Category.assoc, hgal₁.inv a])`.
+
+Conclude with `(hwu h₁ rfl).trans (hwu h₂ e.symm).symm`. Establish `hfs : f ≫ sY = s'` using `canc _ _ (by rw [← Category.assoc, hf, Category.assoc, hys])`. Establish `hmf : Nonempty (ObjMap o uY f)`. Take `⟨m₃⟩` from `GlobalTheory.UPel.HT.objMap_comp p D R b N _ _ _ _ _ _ o' u uY y π m₂ mu`. Rewrite `m₃` using `[← hf]`.
+
+Conclude with `GlobalTheory.T.harrisTaylor_moduliMap_descends_galoisCover p D R b N S S₁ Y s' sY π₁ Ga ρ₁ f o o' uY hN hNp hgal₁ m₁ m₃`. Use `⟨f, ⟨hfs, hmf⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `f' ⟨hf's, ⟨m'⟩⟩`. Take `⟨m₄⟩` from `GlobalTheory.UPel.HT.objMap_comp p D R b N _ _ _ _ _ _ o' o uY π₁ f' m₁ m'`. Take `⟨oT, ⟨mT⟩⟩` from `GlobalTheory.HTPull.exists_objMap_pull p D R b N S₁ (pullback (π₁ ≫ f') π) (π₁ ≫ s') (pullback.fst (π₁ ≫ f') π) o'`.
+
+Take `⟨mT1⟩` from `GlobalTheory.UPel.HT.objMap_comp p D R b N _ _ _ _ _ _ oT o' u _ y mT m₂`. Take `⟨mT2⟩` from `GlobalTheory.UPel.HT.objMap_comp p D R b N _ _ _ _ _ _ oT o' uY _ _ mT m₄`. Rewrite `mT2` using `[pullback.condition]`. Take `⟨mT3⟩` from `(GlobalTheory.UPel.HT.objMap_comp_cancel p D R b N _ _ _ _ _ _ oT u uY (pullback.snd (π₁ ≫ f') π) π).2 ⟨mT2⟩ ⟨mu⟩`. Establish `key : y ≫ π = π₁ ≫ f'`.
+
+Apply `GlobalTheory.ZM.IsGaloisCover.eq_of_local_eq_pullback X Y S₁ Y π Ga ρ (π₁ ≫ f') (y ≫ π) (π₁ ≫ f') hgal` to reduce the goal to its premises. Introduce `q`. Take `⟨V, a, hqV, hV⟩` from `huniq _ _ oT (pullback.fst (π₁ ≫ f') π ≫ y) (pullback.snd (π₁ ≫ f') π) (by rw [Category.assoc, hys]) (by rw [← Category.assoc, ← pullback.condition]; simp [hf's]) ⟨mT1⟩ ⟨mT3⟩ q`. Use `⟨V, hqV, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hfu f' key.symm`. Conclude with `⟨⟨Y, sY, uY, hrep⟩, hqY⟩`.
+-/
 theorem exists_repFam_of_levelCover : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R]
     [IsNoetherianRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p →
     ∀ (X : Scheme.{0}) (s : X ⟶ Sp R) (u : Obj b N s) (Ga : Type) [Group Ga] [Finite Ga] (ρ : Ga → (X ⟶ X)),
@@ -175,6 +216,9 @@ theorem exists_repFam_of_levelCover : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p)
     exact hfu f' key.symm
   exact ⟨⟨Y, sY, uY, hrep⟩, hqY⟩
 
+/- English proof (translation)
+Introduce `p _ D R _ _ b N M e hN hNp hM hodd hMp hep hMe hperf hrep`. Take `⟨X, s, s₁, u, lev, hlev, hq, huniv⟩` from `hrep`. Use `haveI : NeZero M := ⟨by omega⟩`. Take `⟨ρ, h1, hmul, hact⟩` from `GlobalTheory.T.exists_symplecticSimilitude_action_on_levelFamily p D R b N _ M (by omega) X s s₁ u lev hlev huniv`. Conclude with `exists_repFam_of_levelCover p D R b N hN hNp X s u _ ρ hq h1 hmul (fun a => (hact a).1) (fun a => let ⟨m, _⟩ := (hact a).2.2; ⟨m⟩) (GlobalTheory.T.harrisTaylor_similitude_fixing_point_eq_one p D R b N _ M hN hNp (by omega) X s s₁ u lev hlev ρ hact) (GlobalTheory.T.symplectic_leve …`.
+-/
 theorem exists_representing_family_of_level_structure : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] [IsNoetherianRing R] (b : Base D R) (N M e : ℕ), 3 ≤ N → N.Coprime p → 3 ≤ M → Odd M → M.Coprime p → e.Coprime p → M.Coprime e → (∀ f : D.La →ₗ[ℤ] ℤ, ∃ x, D.EF x = e • f) → HasLevelStructureOfLevel b N (Module.finrank ℤ D.La / 2) M → ∃ F : RepFam b N, IsQProjOver F.s := by
   intro p _ D R _ _ b N M e hN hNp hM hodd hMp hep hMe hperf hrep
   obtain ⟨X, s, s₁, u, lev, hlev, hq, huniv⟩ := hrep

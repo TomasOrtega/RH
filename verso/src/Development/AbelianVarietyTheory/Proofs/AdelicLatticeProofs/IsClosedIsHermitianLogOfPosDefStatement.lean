@@ -4,5 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicP
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ClassFin.isClosed_isLog | exact GlobalTheory.ClassFin.isClosed_isLog | (intros; apply GlobalTheory.ClassFin.isClosed_isLog <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isClosed_isHermitianLogOfPosDef : ∀ (ι : Type) [Fintype ι] [DecidableEq ι], IsClosed {p : Matrix ι ι ℂ × Matrix ι ι ℂ | IsLog p.1 p.2} := by
   first | exact @GlobalTheory.ClassFin.isClosed_isLog | exact GlobalTheory.ClassFin.isClosed_isLog | (intros; apply GlobalTheory.ClassFin.isClosed_isLog <;> assumption)

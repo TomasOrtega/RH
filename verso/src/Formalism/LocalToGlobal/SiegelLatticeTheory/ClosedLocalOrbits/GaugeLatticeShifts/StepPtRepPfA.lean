@@ -14,32 +14,59 @@ section Calc
 
 variable {n : ℕ} (ε : Fin n → Bool)
 
+/- English proof (translation)
+Simplify using `[hJ, Formalism.REAL.Jm, dotProduct, mulVec_diagonal]`.
+-/
 theorem hJ_apply (x y : Fin n → ℂ) :
     hJ ε x y = ∑ i, star (x i) * ((if ε i then 1 else -1) * y i) := by
   simp [hJ, Formalism.REAL.Jm, dotProduct, mulVec_diagonal]
 
+/- English proof (translation)
+Rewrite using `[hJ_apply, hJ_apply, star_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : ε i <;> simp [h] <;> ring`.
+-/
 theorem hJ_conj (x y : Fin n → ℂ) : star (hJ ε x y) = hJ ε y x := by
   rw [hJ_apply, hJ_apply, star_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   by_cases h : ε i <;> simp [h] <;> ring
 
+/- English proof (translation)
+Simplify using `only [hJ, mulVec_add, dotProduct_add]`.
+-/
 theorem hJ_add_right (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   simp only [hJ, mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `only [hJ, star_add, add_dotProduct]`.
+-/
 theorem hJ_add_left (x x' y : Fin n → ℂ) : hJ ε (x + x') y = hJ ε x y + hJ ε x' y := by
   simp only [hJ, star_add, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `only [hJ, mulVec_sub, dotProduct_sub]`.
+-/
 theorem hJ_sub_right (x y y' : Fin n → ℂ) : hJ ε x (y - y') = hJ ε x y - hJ ε x y' := by
   simp only [hJ, mulVec_sub, dotProduct_sub]
 
+/- English proof (translation)
+Simplify using `only [hJ, mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem hJ_smul_right (c : ℂ) (x y : Fin n → ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   simp only [hJ, mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [hJ, star_smul, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem hJ_smul_left (c : ℂ) (x y : Fin n → ℂ) : hJ ε (c • x) y = star c * hJ ε x y := by
   simp only [hJ, star_smul, smul_dotProduct, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `[hJ]`.
+-/
 theorem hJ_zero_right (x : Fin n → ℂ) : hJ ε x 0 = 0 := by simp [hJ]
 
+/- English proof (translation)
+Simplify using `[hJ]`.
+-/
 theorem hJ_zero_left (y : Fin n → ℂ) : hJ ε 0 y = 0 := by simp [hJ]
 
 def formB : (Fin n → ℂ) →ₗ⋆[ℂ] (Fin n → ℂ) →ₗ[ℂ] ℂ :=
@@ -49,31 +76,54 @@ def formB : (Fin n → ℂ) →ₗ⋆[ℂ] (Fin n → ℂ) →ₗ[ℂ] ℂ :=
     (fun x y y' => hJ_add_right ε x y y')
     (fun c x y => by rw [hJ_smul_right, smul_eq_mul, RingHom.id_apply])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formB_apply (x y : Fin n → ℂ) : formB ε x y = hJ ε x y := rfl
 
+/- English proof (translation)
+Simplify using `only [← formB_apply, map_sum]`.
+-/
 theorem hJ_sum_right {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (y : ι → Fin n → ℂ) :
     hJ ε x (∑ i ∈ s, y i) = ∑ i ∈ s, hJ ε x (y i) := by
   simp only [← formB_apply, map_sum]
 
+/- English proof (translation)
+Simplify using `only [← formB_apply, map_sum, LinearMap.sum_apply]`.
+-/
 theorem hJ_sum_left {ι : Type*} (s : Finset ι) (x : ι → Fin n → ℂ) (y : Fin n → ℂ) :
     hJ ε (∑ i ∈ s, x i) y = ∑ i ∈ s, hJ ε (x i) y := by
   simp only [← formB_apply, map_sum, LinearMap.sum_apply]
 
+/- English proof (translation)
+Unfold `hJ`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`.
+-/
 theorem hJ_mulVec (A : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     hJ ε (A *ᵥ x) (A *ᵥ y) = star x ⬝ᵥ ((Aᴴ * Formalism.REAL.Jm ε * A) *ᵥ y) := by
   unfold hJ
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]
 
+/- English proof (translation)
+Rewrite using `[hJ_mulVec, show (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε from g.2]`. Both sides reduce to the same expression.
+-/
 theorem hJ_UJ (g : Formalism.REAL.UJ ε) (x y : Fin n → ℂ) :
     hJ ε (uMat g *ᵥ x) (uMat g *ᵥ y) = hJ ε x y := by
   rw [hJ_mulVec, show (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε from g.2]
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (h (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[mulVec_single_one]`.
+-/
 theorem mat_eq_of_mulVec {A B : Matrix (Fin n) (Fin n) ℂ} (h : ∀ v, A *ᵥ v = B *ᵥ v) : A = B := by
   ext i j
   have := congrFun (h (Pi.single j 1)) i
   simpa [mulVec_single_one] using this
 
+/- English proof (translation)
+Unfold `Formalism.REAL.inUJ`. Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hJ_mulVec]`. Unfold `hJ at this`.
+
+Simplify `this` using `[mulVec_single_one]`.
+-/
 theorem inUJ_of_iso (A : Matrix (Fin n) (Fin n) ℂ) (h : ∀ x y, hJ ε (A *ᵥ x) (A *ᵥ y) = hJ ε x y) :
     Formalism.REAL.inUJ ε A := by
   unfold Formalism.REAL.inUJ
@@ -83,12 +133,22 @@ theorem inUJ_of_iso (A : Matrix (Fin n) (Fin n) ℂ) (h : ∀ x y, hJ ε (A *ᵥ
   unfold hJ at this
   simpa [mulVec_single_one] using this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h1` using `h (Pi.single i 1)`. Rewrite `h1` using `[hJ_apply, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp)]`. Apply the tactic sequence `by_cases hi : ε i <;> simp_all`.
+-/
 theorem eq_zero_of_hJ (d : Fin n → ℂ) (h : ∀ x, hJ ε x d = 0) : d = 0 := by
   funext i
   have h1 := h (Pi.single i 1)
   rw [hJ_apply, Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp)] at h1
   by_cases hi : ε i <;> simp_all
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `hMc : M *ᵥ c = 0`. Use function extensionality and compare the values at `j`. Use `congrArg (hJ ε (d j)) hc` as an intermediate fact.
+
+Rewrite `this` using `[hJ_sum_right, hJ_zero_right]`. Simplify using `only [hJ_smul_right, h] at this`. Simplify `this` using `[mulVec, dotProduct, mul_comm]`. Establish `h0 : c = 0`. Use `congrArg (fun v => M⁻¹ *ᵥ v) hMc` as an intermediate fact.
+
+Simplify `this` using `[mulVec_mulVec, nonsing_inv_mul _ hM]`. Introduce `i`. Simplify using `[h0]`.
+-/
 theorem li_of_pair {ι : Type*} [Fintype ι] [DecidableEq ι] (s d : ι → Fin n → ℂ) (M : Matrix ι ι ℂ)
     (hM : IsUnit M.det) (h : ∀ j i, hJ ε (d j) (s i) = M j i) : LinearIndependent ℂ s := by
   rw [Fintype.linearIndependent_iff]
@@ -105,6 +165,15 @@ theorem li_of_pair {ι : Type*} [Fintype ι] [DecidableEq ι] (s d : ι → Fin 
   intro i
   simp [h0]
 
+/- English proof (translation)
+Establish `hli : LinearIndependent ℂ d` using `li_of_pair ε d φ 1 (by simp) (fun j i => by`. Rewrite using `[← hJ_conj, hd, one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hij, Ne.symm hij])`. Establish `hspan` using `hli.span_eq_top_of_card_eq_finrank' (by rw [hcard, Module.finrank_fin_fun])`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_hJ ε` to reduce the goal to its premises. Introduce `x`.
+
+Establish `hx : x ∈ Submodule.span ℂ (Set.range d)` using `by rw [hspan]; trivial`. Use `Submodule.span_induction (p := fun x _ => hJ ε x (v - ∑ i, hJ ε (d i) v • φ i) = 0) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[hJ_sub_right, hJ_sum_right]`. Simplify using `only [hJ_smul_right, hd, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`.
+
+Conclude with `hJ_zero_left ε _`. Introduce `x y _ _ hx hy`. Rewrite using `[hJ_add_left, hx, hy, add_zero]`. Introduce `c x _ hx`. Rewrite using `[hJ_smul_left, hx, mul_zero]`.
+-/
 theorem expand_of_dual {ι : Type*} [Fintype ι] [DecidableEq ι] (φ d : ι → Fin n → ℂ)
     (hcard : Fintype.card ι = n) (hd : ∀ j i, hJ ε (d j) (φ i) = if j = i then 1 else 0)
     (v : Fin n → ℂ) : v = ∑ i, hJ ε (d i) v • φ i := by
@@ -134,6 +203,29 @@ section Witt
 
 variable {n : ℕ} (ε : Fin n → Bool)
 
+/- English proof (translation)
+Set `U` to `Submodule.span ℂ (Set.range s)`. Set `bs : Module.Basis ι ℂ U` to `Module.Basis.span hs`. Set `f : U →ₗ[ℂ] (Fin n → ℂ)` to `bs.constr ℂ t`. Establish `hf : ∀ i, f (bs i) = t i` using `fun i => bs.constr_basis ℂ t i`. Establish `hsum : ∀ x : U, (x : Fin n → ℂ) = ∑ i, bs.repr x i • s i`.
+
+Introduce `x`. Use `congrArg (fun y : U => (y : Fin n → ℂ)) (bs.sum_repr x)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, bs] at this`. Use `this.symm.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Use `congr 1`.
+
+Conclude with `congrArg Subtype.val (Module.Basis.span_apply hs i)`. Establish `hfsum : ∀ x : U, f x = ∑ i, bs.repr x i • t i`. Introduce `x`. Use `congrArg f (bs.sum_repr x)` as an intermediate fact. Rewrite `this` using `[map_sum]`.
+
+Simplify using `only [map_smul, hf] at this`. Conclude with `this.symm`. Establish `e1 : ∀ x : U, Finsupp.linearCombination ℂ t (bs.repr x) = f x` using `fun x => by`. Rewrite using `[hfsum, Finsupp.linearCombination_apply, Finsupp.sum_fintype]`. Introduce `i`.
+
+Simplify using the standard rewrite rules. Establish `finj : Function.Injective f`. Introduce `x y hxy`. Apply `bs.repr.injective` to reduce the goal to its premises. Conclude with `(show Function.Injective (Finsupp.linearCombination ℂ t) from ht) (by rw [e1, e1, hxy])`.
+
+Establish `hiso : ∀ x y : U, formB ε (f x) (f y) = formB ε (x : Fin n → ℂ) y`. Introduce `x y`. Simplify using `only [formB_apply, hfsum, hsum, hJ_sum_left, hJ_sum_right, hJ_smul_left, hJ_smul_right, hG]`. Establish `hnd : ∀ x, (∀ y, formB ε x y = 0) → x = 0`. Introduce `x hx`.
+
+Apply `eq_zero_of_hJ ε` to reduce the goal to its premises. Introduce `y`. Rewrite using `[← hJ_conj ε x y, ← formB_apply, hx y, star_zero]`. Take `⟨g, hgiso, hgext⟩` from `witt_extension_theorem ℂ (Fin n → ℂ) (formB ε) (fun x y => hJ_conj ε x y) hnd U f finj hiso`. Set `A : Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toMatrix' (g : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ))`.
+
+Set `Ai : Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toMatrix' (g.symm : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ))`. Establish `hA : ∀ v, A *ᵥ v = g v` using `fun v => LinearMap.toMatrix'_mulVec _ v`. Establish `hAi : ∀ v, Ai *ᵥ v = g.symm v` using `fun v => LinearMap.toMatrix'_mulVec _ v`. Establish `h1 : A * Ai = 1` using `mat_eq_of_mulVec fun v => by`. Rewrite using `[← mulVec_mulVec, hAi, hA, one_mulVec, LinearEquiv.apply_symm_apply]`.
+
+Establish `h2 : Ai * A = 1` using `mat_eq_of_mulVec fun v => by`. Rewrite using `[← mulVec_mulVec, hA, hAi, one_mulVec, LinearEquiv.symm_apply_apply]`. Establish `hmem : Formalism.REAL.inUJ ε A` using `inUJ_of_iso ε A fun x y => by`. Rewrite using `[hA, hA, ← formB_apply, hgiso, formB_apply]`. Use `⟨⟨⟨A, Ai, h1, h2⟩, hmem⟩, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `show A *ᵥ s i = t i`. Rewrite using `[hA]`. Use `hgext (bs i)` as an intermediate fact. Rewrite `this` using `[Module.Basis.span_apply]`. Rewrite using `[this, ← Module.Basis.span_apply hs i]`.
+
+Conclude with `hf i`.
+-/
 theorem wittFam {ι : Type*} [Fintype ι] (s t : ι → Fin n → ℂ) (hs : LinearIndependent ℂ s)
     (ht : LinearIndependent ℂ t) (hG : ∀ i j, hJ ε (t i) (t j) = hJ ε (s i) (s j)) :
     ∃ g : Formalism.REAL.UJ ε, ∀ i, uMat g *ᵥ s i = t i := by
@@ -199,6 +291,9 @@ variable {n : ℕ} (ε : Fin n → Bool)
 def rotM (ω : Fin n → ℂ) (φ : ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of fun i j => (if i = j then 1 else 0) + (φ - 1) * ω i * (star (ω j) * (if ε j then 1 else -1))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [rotM, mulVec, dotProduct, of_apply, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.add_apply, Pi.smul_apply, smul_eq_mul, hJ_apply]`. Use `congr 1`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun j _ => by split_ifs <;> ring`.
+-/
 theorem rotM_mulVec (ω : Fin n → ℂ) (φ : ℂ) (v : Fin n → ℂ) :
     rotM ε ω φ *ᵥ v = v + ((φ - 1) * hJ ε ω v) • ω := by
   funext i
@@ -209,6 +304,9 @@ theorem rotM_mulVec (ω : Fin n → ℂ) (φ : ℂ) (v : Fin n → ℂ) :
   rw [Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun j _ => by split_ifs <;> ring
 
+/- English proof (translation)
+The claim follows from `mat_eq_of_mulVec fun v => by rw [← mulVec_mulVec, rotM_mulVec, rotM_mulVec, hJ_add_right, hJ_smul_right, hω, one_mulVec, add_assoc, ← add_smul] have e : ∀ c : ℂ, c = 0 → v + c • ω = v := fun c hc => by rw [hc, zero_smul, add_zero] apply e linear_combination (hJ ε ω v) * hab`.
+-/
 theorem rotM_mul (ω : Fin n → ℂ) (hω : hJ ε ω ω = 1) (α β : ℂ) (hab : α * β = 1) :
     rotM ε ω α * rotM ε ω β = 1 := mat_eq_of_mulVec fun v => by
   rw [← mulVec_mulVec, rotM_mulVec, rotM_mulVec, hJ_add_right, hJ_smul_right, hω, one_mulVec, add_assoc,
@@ -217,6 +315,9 @@ theorem rotM_mul (ω : Fin n → ℂ) (hω : hJ ε ω ω = 1) (α β : ℂ) (hab
   apply e
   linear_combination (hJ ε ω v) * hab
 
+/- English proof (translation)
+Simplify using `only [rotM_mulVec, hJ_add_left, hJ_add_right, hJ_smul_left, hJ_smul_right, hω, star_mul', star_sub, star_one]`. Rewrite using `[← hJ_conj ε ω x]`. Take the linear combination `(star (hJ ε ω x) * hJ ε ω y) * hφ`.
+-/
 theorem rotM_iso (ω : Fin n → ℂ) (hω : hJ ε ω ω = 1) (φ : ℂ) (hφ : star φ * φ = 1) (x y : Fin n → ℂ) :
     hJ ε (rotM ε ω φ *ᵥ x) (rotM ε ω φ *ᵥ y) = hJ ε x y := by
   simp only [rotM_mulVec, hJ_add_left, hJ_add_right, hJ_smul_left, hJ_smul_right, hω, star_mul', star_sub,
@@ -228,6 +329,9 @@ def rotU (ω : Fin n → ℂ) (hω : hJ ε ω ω = 1) (φ : ℂ) (hφ : star φ 
   ⟨⟨rotM ε ω φ, rotM ε ω (star φ), rotM_mul ε ω hω _ _ (by rw [mul_comm]; exact hφ),
     rotM_mul ε ω hω _ _ hφ⟩, inUJ_of_iso ε _ (rotM_iso ε ω hω φ hφ)⟩
 
+/- English proof (translation)
+The claim follows from `rotM_mulVec ε ω φ v`.
+-/
 theorem rotU_mulVec (ω : Fin n → ℂ) (hω : hJ ε ω ω = 1) (φ : ℂ) (hφ : star φ * φ = 1) (v : Fin n → ℂ) :
     uMat (rotU ε ω hω φ hφ) *ᵥ v = v + ((φ - 1) * hJ ε ω v) • ω :=
   rotM_mulVec ε ω φ v

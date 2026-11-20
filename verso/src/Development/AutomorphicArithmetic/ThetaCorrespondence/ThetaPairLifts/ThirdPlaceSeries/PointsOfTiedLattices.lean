@@ -36,12 +36,22 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.One.M GlobalTheory.RowsBClosing
+/- English proof (translation)
+Introduce `i w hw Q`. Take `⟨s, rfl⟩` from `GlobalTheory.PairReadPf.exists_splitPlace_w D w hw`. Conclude with `_root_.UpperTheory.One.M.good_cls_of_isLocS_av P i Q s _ (hT.rep i s hw Q)`.
+-/
 theorem UpperTheory.One.M.repGood_of_isTrue' {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) {S : Reading P.T} (hT : _root_.GlobalTheory.NPin.IsFaithfulReading P S) :
     RepGood S := by
   intro i w hw Q
   obtain ⟨s, rfl⟩ := GlobalTheory.PairReadPf.exists_splitPlace_w D w hw
   exact _root_.UpperTheory.One.M.good_cls_of_isLocS_av P i Q s _ (hT.rep i s hw Q)
 namespace UpperTheory.One.M
+/- English proof (translation)
+Introduce `hPr hL D P J hA h1 hpos`. Establish `hRM : ∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))` using `fun i => ⟨J.rowM i⟩`. Take `⟨S, hT, hLaws, -⟩` from `_root_.GlobalTheory.T.exists_true_reading_with_laws_suppLaws hPr.fin hL D P hRM`. Establish `hU : RowUnit S` using `_root_.GlobalTheory.RowUnitProof.rowUnit_of_isTrue_alt hL D P hRM S hT`. Establish `hPR : PairRead S` using `_root_.GlobalTheory.T.pairRead_of_join_isTrue_unit hPr.bz hL D P J S hT hU`.
+
+Establish `hpair : ∀ i, PairLift D.nd D.naut i` using `_root_.UpperTheory.One.M.pairLift_of_howeDuality_bernstein_alt hPr.bz hPr.bern _ _ _ D.nd D.naut P.T S hLaws hU hPR (_root_.UpperTheory.One.M.repGood_of_isTrue' P hT)`. Establish `hIf` using `_root_.GlobalTheory.AdmIface.main_alt_alt D`. Establish `hcheb : ChebSplit D.nd` using `(hIf.2.1 hA.a5).1`. Establish `hsplit : ∀ i, SplitBC D.nd D.naut i` using `fun i => _root_.UpperTheory.GalS.splitBC_of_galIso _ _ _ D.nd D.naut i (_root_.UpperTheory.GalS.galIsoN_of_tie0_adm2_adm7 D hA.tie0 hA.a2 hA.temp i) hcheb hA.an2`. Establish `hrep : ∀ i, RepOfLoc D.nd D.naut i` using `_root_.GlobalTheory.T.repOfLoc_of_isTrue_laws hL D P S hT hLaws`.
+
+Establish `hbc : ∀ i, BCEx D.nd D.naut i` using `hIf.1 h1`. Establish `horth : ∀ i, GlobalTheory.ThetaExh.TypeOrth D.nd D.naut i` using `fun i => _root_.GlobalTheory.T.type_orthogonality_of_form' hL D P i (J.form i)`. Use `⟨⟨?_, GlobalTheory.RowTie.split_theta_correspondence_of_local_pairings D hpair, _root_.GlobalTheory.T.archimedeanSignatureMatching_of_modules hPr hL D P hRM hA, GlobalTheory.Proof.ThetaOneGenusOne.thetaOne_of_ties D hpos hpair horth hbc hsplit hrep⟩, fun i => ⟨hpair i, hsplit i, …` and prove the remaining obligations. Conclude with `GlobalTheory.RowSizeClosing.rowSize_of_unitarySphericalComponent D (_root_.GlobalTheory.SplitRead.unitarySphericalComponent_of_reading_alt hPr.bz _ _ _ D.nd D.naut P.T S hLaws hU)`.
+-/
 theorem latticesB_closing_alt : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), _root_.GlobalTheory.NPin.CharacterChoiceJoin P →
     _root_.GlobalTheory.NRows.RowsAAlt D → Formalism.MainNotions.SumRepresentations.adm1 D → (∀ i : D.nd.Loc, GlobalTheory.RowCopy.LamPos D (D.nd.mu i) (D.nd.j i)) →
     GlobalTheory.NRows.RowsB D ∧ ∀ i, PairLift D.nd D.naut i ∧ SplitBC D.nd D.naut i ∧ RepOfLoc D.nd D.naut i := by
@@ -71,6 +81,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open GlobalTheory.EigTie (ResTied IsRowPar plRed resTied_of_plSide)
 open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf Zbar GalE OnW)
 open UpperTheory.One.M
+/- English proof (translation)
+Take `⟨J⟩` from `_root_.GlobalTheory.T.nonempty_join_of_agree hH hD hL D X.P X.X X.agree`. Establish `hRM : ∀ i : D.nd.Loc, Nonempty (GlobalTheory.NPin.RowMod D X.P.rep (D.nd.j i))` using `fun i => ⟨J.rowM i⟩`. Take `⟨S, hT, hLaws, -⟩` from `_root_.GlobalTheory.T.exists_true_reading_with_laws_suppLaws hP.fin hL D X.P hRM`. Establish `hU` using `_root_.GlobalTheory.RowUnitProof.rowUnit_of_isTrue_alt hL D X.P hRM S hT`. Establish `hPR` using `_root_.GlobalTheory.T.pairRead_of_join_isTrue_unit hP.bz hL D X.P J S hT hU`.
+
+Conclude with `⟨GlobalTheory.RowLaws.paramLaws_of_tie X.P.T, _root_.GlobalTheory.ResLoc.xi_over_o_of_adm2 D X.P.cf X.P.C X.P.tp X.P.chr X.P.val (_root_.GlobalTheory.AutomorphismSplitting.tieAut_and_split_alt hP.fin hL D X.P).1 (_root_.UpperTheory.GalS.galClose_alt hP hL D X.P) (GlobalTheory.Che …`.
+-/
 theorem exists_paired_point_of_thetaT_ne_zero (hP : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt) (hH : GlobalTheory.Published.HarishChandraFinite) (hD : GlobalTheory.Published.CuspRapidDecay)
     {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (X : _root_.GlobalTheory.NRows.LinkedData hL D) :
     GlobalTheory.ThetaExh.ParamLaws D.nd D.naut ∧ GlobalTheory.SplitRead.XiOverO D.nd D.naut ∧ (∀ i, GlobalTheory.RowTie.PairLift D.nd D.naut i) ∧

@@ -12,15 +12,24 @@ open NumberField IsDedekindDomain Matrix
 open scoped TensorProduct
 open Formalism.MainNotions.S
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matV_coe (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (g : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) :
     ((matV I v g : GL (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)) : Matrix _ _ _) =
       (g : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)).map (PI.FinKW.psiV I v).toRingHom := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun v => h v)`.
+-/
 private theorem eq_of_forall_evalV_eq {F : Type} [Field F] [NumberField F] (a b : Af F)
     (h : ∀ v, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v a = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v b) : a = b :=
   Subtype.ext (funext fun v => h v)
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e a`. Simplify using `[PI.FinKW.psiV, Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, map_mul, AlgHom.commutes]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+-/
 private theorem tensorBasis_repr_psiV_eq_evalV_repr_comm (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (z : I.E ⊗[I.F] Af I.F) (i : Module.Free.ChooseBasisIndex I.F I.E) :
     (Algebra.TensorProduct.basis (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (Module.Free.chooseBasis I.F I.E)).repr
@@ -35,6 +44,11 @@ private theorem tensorBasis_repr_psiV_eq_evalV_repr_comm (I : AutInst) (v : Heig
       Finsupp.mapRange_apply, map_mul, AlgHom.commutes]
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hij : ∀ v, PI.FinKW.psiV I v (M i j) = PI.FinKW.psiV I v (N i j)` using `fun v => by`. Use `congrFun (congrFun (h v) i) j` as an intermediate fact. Simplify `this` using `[Matrix.map_apply]`. Apply `(Algebra.TensorProduct.comm I.F I.E (Af I.F)).injective` to reduce the goal to its premises.
+
+Apply `(Algebra.TensorProduct.basis (Af I.F) (Module.Free.chooseBasis I.F I.E)).repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => ?_` and prove the remaining obligations. Apply `eq_of_forall_evalV_eq` to reduce the goal to its premises. Introduce `v`. Rewrite using `[← tensorBasis_repr_psiV_eq_evalV_repr_comm, ← tensorBasis_repr_psiV_eq_evalV_repr_comm, hij v]`.
+-/
 theorem mat_ext_of_psiV (I : AutInst) (M N : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F))
     (h : ∀ v, M.map (PI.FinKW.psiV I v).toRingHom = N.map (PI.FinKW.psiV I v).toRingHom) :
     M = N := by
@@ -49,6 +63,11 @@ theorem mat_ext_of_psiV (I : AutInst) (M N : Matrix (Fin I.n) (Fin I.n) (I.E ⊗
   intro v
   rw [← tensorBasis_repr_psiV_eq_evalV_repr_comm, ← tensorBasis_repr_psiV_eq_evalV_repr_comm, hij v]
 
+/- English proof (translation)
+Unfold `MatVInj`. Introduce `I y z h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Apply `mat_ext_of_psiV I` to reduce the goal to its premises.
+
+Introduce `v`. Use `congrArg Units.val (h v)` as an intermediate fact. Simplify `this` using `only [matV_coe]`.
+-/
 theorem matrix_v_injective : MatVInj := by
   unfold MatVInj
   intro I y z h
@@ -59,6 +78,9 @@ theorem matrix_v_injective : MatVInj := by
   have := congrArg Units.val (h v)
   simpa only [matV_coe] using this
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e a => simp [PI.FinKW.psiV, Formalism.UG.sigR, sigV]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem psiV_sigR (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (z : I.E ⊗[I.F] Af I.F) :
     PI.FinKW.psiV I v (Formalism.UG.sigR I.cm.sig (Af I.F) z) = sigV I v (PI.FinKW.psiV I v z) := by
   induction z using TensorProduct.induction_on with
@@ -66,16 +88,25 @@ theorem psiV_sigR (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (z : I.E ⊗[
   | tmul e a => simp [PI.FinKW.psiV, Formalism.UG.sigR, sigV]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Simplify using `[PI.FinKW.psiV, Formalism.UG.inclE, inclV]`.
+-/
 theorem psiV_inclE (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (e : I.E) :
     PI.FinKW.psiV I v (Formalism.UG.inclE (F := I.F) (Af I.F) e) = inclV I v e := by
   simp [PI.FinKW.psiV, Formalism.UG.inclE, inclV]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hf]`.
+-/
 theorem map_cT {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (σ : A →+* A) (τ : B →+* B)
     (hf : ∀ a, f (σ a) = τ (f a)) {m p : Type} (M : Matrix m p A) :
     (Formalism.UG.cT σ M).map f = Formalism.UG.cT τ (M.map f) := by
   ext i j
   simp [Formalism.UG.cT, hf]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `psiV_inclE I v _`.
+-/
 theorem mapJ (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) :
     (I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F))).map (PI.FinKW.psiV I v).toRingHom =
       I.J.map (inclV I v) := by
@@ -83,6 +114,9 @@ theorem mapJ (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) :
   simp only [Matrix.map_apply]
   exact psiV_inclE I v _
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_cT (PI.FinKW.psiV I v).toRingHom (Formalism.UG.sigR I.cm.sig (Af I.F)) (sigV I v) (fun a => psiV_sigR I v a), mapJ]`.
+-/
 theorem map_unitary (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) :
     (Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) M * I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) * M).map
@@ -93,15 +127,26 @@ theorem map_unitary (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     map_cT (PI.FinKW.psiV I v).toRingHom (Formalism.UG.sigR I.cm.sig (Af I.F)) (sigV I v)
       (fun a => psiV_sigR I v a), mapJ]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Uv_iff (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (g : GL (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v ⊗[I.F] I.E)) :
     g ∈ Uv I v ↔ Formalism.UG.cT (sigV I v) g.val * I.J.map (inclV I v) * g.val = I.J.map (inclV I v) := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Gf_iff (I : AutInst) (g : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) :
     g ∈ Formalism.UG.UPts I.cm.sig I.J (Af I.F) ↔
       Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) g.val * I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) *
         g.val = I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) := Iff.rfl
 
+/- English proof (translation)
+Unfold `MatVU`. Introduce `I v y`. Rewrite using `[mem_Uv_iff, matV_coe]`. Establish `hy` using `(mem_Gf_iff I y).1 y.2`. Rewrite using `[← map_unitary, hy]`.
+
+Conclude with `mapJ I v`.
+-/
 theorem matrix_v_unitary : MatVU := by
   unfold MatVU
   intro I v y
@@ -110,12 +155,30 @@ theorem matrix_v_unitary : MatVU := by
   rw [← map_unitary, hy]
   exact mapJ I v
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[PI.FinKW.vecV, Matrix.mulVec, dotProduct, map_sum]`.
+-/
 theorem vecV_mulVec' (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F))
     (M : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F)) (x : Fin I.n → I.E ⊗[I.F] Af I.F) :
     PI.FinKW.vecV I v (M *ᵥ x) = M.map (PI.FinKW.psiV I v).toRingHom *ᵥ PI.FinKW.vecV I v x := by
   funext i
   simp [PI.FinKW.vecV, Matrix.mulVec, dotProduct, map_sum]
 
+/- English proof (translation)
+Establish `hL : ∀ x, x ∈ I.Lf ↔ ∀ v, PI.FinKW.vecV I v x ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))` using `fun x => ⟨PI.FinKW.LocTo.mem_local_lattice_iff I x, PI.FinKW.memLocFrom_of PI.FinKW.local_vector_injective I x⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hst v y`. Take `⟨x, hxv, hxw⟩` from `PI.FinKW.local_vector_lift I v y`. Establish `ex : x ∈ I.Lf ↔ y ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))`.
+
+Rewrite using `[hL x]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `H v` as an intermediate fact. Rewrite `this` using `[hxv]`. Then use the resulting hypothesis.
+
+Introduce `H w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hxv]` and apply the resulting hypothesis. Rewrite using `[hxw w hw]`.
+
+Conclude with `zero_mem _`. Establish `egx : (g : Matrix _ _ _) *ᵥ x ∈ I.Lf ↔ ((matV I v g : GL (Fin I.n) _) : Matrix _ _ _) *ᵥ y ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))`. Rewrite using `[hL, matV_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+
+Use `H v` as an intermediate fact. Rewrite `this` using `[vecV_mulVec', hxv]`. Then use the resulting hypothesis. Introduce `H w`. Rewrite using `[vecV_mulVec']`. Distinguish the cases in `hw : w = v`.
+
+Substitute `hw` using the available equality. Rewrite using `[hxv]` and apply the resulting hypothesis. Rewrite using `[hxw w hw, Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Conclude with `ex.symm.trans ((hst x).trans egx)`.
+
+Introduce `hK x show x ∈ I.Lf ↔ (g : Matrix _ _ _) *ᵥ x ∈ I.Lf`. Rewrite using `[hL x, hL ((g : Matrix _ _ _) *ᵥ x)]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[vecV_mulVec', ← matV_coe]`. Conclude with `hK v (PI.FinKW.vecV I v x)`.
+-/
 theorem stab_iff_loc (I : AutInst) (g : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) :
     g ∈ Formalism.UG.stabGL I.Lf ↔ ∀ v, matV I v g ∈ Kv I v := by
   have hL : ∀ x, x ∈ I.Lf ↔
@@ -159,6 +222,9 @@ theorem stab_iff_loc (I : AutInst) (g : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) :
     rw [vecV_mulVec', ← matV_coe]
     exact hK v (PI.FinKW.vecV I v x)
 
+/- English proof (translation)
+Unfold `KLocGlob`. Introduce `I y`. Rewrite using `[PI.AdIndexEq.Ksub, Subgroup.mem_comap]`. Conclude with `stab_iff_loc I _`.
+-/
 theorem compact_local_global : KLocGlob := by
   unfold KLocGlob
   intro I y

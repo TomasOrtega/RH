@@ -7,6 +7,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Model
 
 namespace GlobalTheory.CoeffAway
 
+/- English proof (translation)
+Introduce `E _ _ _ H l c a ha ω hω`. Take `⟨b₀, hb₀⟩` from `(GlobalTheory.CoeffRings.coeff_isDedFrac E H l c).2.2.1 1 (one_dvd _)`. Take `⟨b₁, hb₁⟩` from `(GlobalTheory.T.cmModelCoefficient_inclusions_etale_openImmersion E H 1 a 1 1 0 ha Nat.one_pos (one_dvd _) dvd_rfl).1`. Use `letI := b₁.toAlgebra`. Use `haveI := GlobalTheory.GlobalModel.isLocalization_away ha b₁ hb₁`.
+
+Establish `hu : IsUnit (((algebraMap (𝓞 c.F) (Localization.Away (a : 𝓞 c.F))).comp b₀) (a : RZ H 1 1))`. Establish `h` using `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (a : 𝓞 c.F)) (a : 𝓞 c.F)`. Rewrite `h`, the goal using `[map_natCast]`. Conclude with `h`. Use `⟨IsLocalization.Away.lift (a : RZ H 1 1) hu, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `key : ((c.F.val.toRingHom.comp ω).comp (IsLocalization.Away.lift (S` using `RZ H a 1) (a : RZ H 1 1) hu)) = (RZ H a 1).subtype := by`. Use `IsLocalization.ringHom_ext (Submonoid.powers (a : RZ H 1 1)) (RingHom.ext fun y => ?_)` and prove the remaining obligations. Establish `h1 : (IsLocalization.Away.lift (S` using `RZ H a 1) (a : RZ H 1 1) hu) (algebraMap (RZ H 1 1) (RZ H a 1) y) = algebraMap (𝓞 c.F) (Localization.Away (a : 𝓞 c.F)) (b₀ y) := by`. Simplify using `[IsLocalization.Away.lift]`. Establish `h2 : ω (algebraMap (𝓞 c.F) (Localization.Away (a : 𝓞 c.F)) (b₀ y)) = algebraMap (𝓞 c.F) c.F (b₀ y)` using `congrArg (fun f => f (b₀ y)) hω`.
+
+Simplify using `only [RingHom.comp_apply, h1, h2]`. Conclude with `(hb₀ y).trans (hb₁ y).symm`. Conclude with `congrArg (fun f => f x) key`.
+-/
 theorem exists_isInc_away : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (a : ℕ), 0 < a → ∀ (ω : Localization.Away (a : 𝓞 c.F) →+* c.F), ω.comp (algebraMap (𝓞 c.F) (Localization.Away (a : 𝓞 c.F))) = algebraMap (𝓞 c.F) c.F → ∃ bR : RZ H a 1 →+* Localization.Away (a : 𝓞 c.F), IsInc (RZ H a 1).subtype (c.F.val.toRingHom.comp ω) bR := by
   intro E _ _ _ H l c a ha ω hω
   obtain ⟨b₀, hb₀⟩ := (GlobalTheory.CoeffRings.coeff_isDedFrac E H l c).2.2.1 1 (one_dvd _)

@@ -6,6 +6,15 @@ open Finset
 
 namespace PI.ProdFormulaE.Frac
 
+/- English proof (translation)
+Establish `hmul : padicNorm q r * padicNorm q (r.den : ℚ) = padicNorm q (r.num : ℚ)`. Rewrite using `[← padicNorm.mul, Rat.mul_den_eq_num]`. Prove the components needed by the constructor for the conclusion. Introduce `h hd`. Establish `h1 : padicNorm q (r.den : ℚ) < 1` using `(padicNorm.nat_lt_one_iff _).2 hd`.
+
+Establish `h2 : padicNorm q (r.num : ℚ) < 1`. Rewrite using `[← hmul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : q ∣ r.num.natAbs` using `Int.natCast_dvd.1 ((padicNorm.int_lt_one_iff _).1 h2)`. Establish `h5` using `Nat.dvd_gcd h4 hd`.
+
+Rewrite `h5` using `[r.reduced.gcd_eq_one]`. Conclude with `(Nat.Prime.not_dvd_one Fact.out) h5`. Introduce `hd`. Establish `h1 : padicNorm q (r.den : ℚ) = 1` using `(padicNorm.nat_eq_one_iff _).2 hd`. Rewrite `hmul` using `[h1, mul_one]`.
+
+Rewrite using `[hmul]`. Conclude with `padicNorm.of_int _`.
+-/
 private theorem padicNorm_le_one_iff_not_dvd_den {q : ℕ} [Fact q.Prime] (r : ℚ) :
     padicNorm q r ≤ 1 ↔ ¬ q ∣ r.den := by
   have hmul : padicNorm q r * padicNorm q (r.den : ℚ) = padicNorm q (r.num : ℚ) := by
@@ -28,12 +37,18 @@ private theorem padicNorm_le_one_iff_not_dvd_den {q : ℕ} [Fact q.Prime] (r : �
     rw [hmul]
     exact padicNorm.of_int _
 
+/- English proof (translation)
+Rewrite using `[padicNorm_le_one_iff_not_dvd_den, ha]`. Introduce `h`. Conclude with `hne ((Nat.prime_dvd_prime_iff_eq hq.out hl).1 (hq.out.dvd_of_dvd_pow h)).symm`.
+-/
 theorem padicNorm_le_one_of_den_pow {q l : ℕ} [hq : Fact q.Prime] (hl : l.Prime) (hne : l ≠ q)
     {a : ℚ} {n : ℕ} (ha : a.den = l ^ n) : padicNorm q a ≤ 1 := by
   rw [padicNorm_le_one_iff_not_dvd_den, ha]
   intro h
   exact hne ((Nat.prime_dvd_prime_iff_eq hq.out hl).1 (hq.out.dvd_of_dvd_pow h)).symm
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hd`. Take `⟨q, hq, hqd⟩` from `Nat.exists_prime_and_dvd hd`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Conclude with `(padicNorm_le_one_iff_not_dvd_den r).1 (h q hq) hqd`.
+-/
 theorem den_eq_one_of_forall_padicNorm_le_one {r : ℚ}
     (h : ∀ q : ℕ, q.Prime → padicNorm q r ≤ 1) : r.den = 1 := by
   by_contra hd
@@ -41,18 +56,34 @@ theorem den_eq_one_of_forall_padicNorm_le_one {r : ℚ}
   haveI : Fact q.Prime := ⟨hq⟩
   exact (padicNorm_le_one_iff_not_dvd_den r).1 (h q hq) hqd
 
+/- English proof (translation)
+Rewrite using `[padicNorm_le_one_iff_not_dvd_den, ha]`. Conclude with `Nat.Prime.not_dvd_one Fact.out`.
+-/
 theorem padicNorm_le_one_of_den_eq_one {q : ℕ} [Fact q.Prime] {a : ℚ} (ha : a.den = 1) :
     padicNorm q a ≤ 1 := by
   rw [padicNorm_le_one_iff_not_dvd_den, ha]
   exact Nat.Prime.not_dvd_one Fact.out
 
+/- English proof (translation)
+The claim follows from `le_trans padicNorm.nonarchimedean (max_le ha hb)`.
+-/
 theorem padicNorm_add_le_one {q : ℕ} [Fact q.Prime] {a b : ℚ} (ha : padicNorm q a ≤ 1)
     (hb : padicNorm q b ≤ 1) : padicNorm q (a + b) ≤ 1 := le_trans padicNorm.nonarchimedean (max_le ha hb)
 
+/- English proof (translation)
+Conclude with `le_trans padicNorm.sub (max_le ha hb)`.
+-/
 theorem padicNorm_sub_le_one {q : ℕ} [Fact q.Prime] {a b : ℚ} (ha : padicNorm q a ≤ 1)
     (hb : padicNorm q b ≤ 1) : padicNorm q (a - b) ≤ 1 := by
   exact le_trans padicNorm.sub (max_le ha hb)
 
+/- English proof (translation)
+Apply `den_eq_one_of_forall_padicNorm_le_one` to reduce the goal to its premises. Introduce `q hq`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Establish `hsum : ∀ s : Finset ι, (∀ i ∈ s, padicNorm q (a i) ≤ 1) → padicNorm q (∑ i ∈ s, a i) ≤ 1` using `fun s hs => Finset.sum_induction _ (fun x => padicNorm q x ≤ 1) (fun x y hx hy => padicNorm_add_le_one hx hy) (by simp) hs`. Establish `h1 : padicNorm q (∑ i ∈ fib q \ I, a i) ≤ 1` using `hsum _ (fun i hi => padicNorm_le_one_of_den_eq_one (hI i (Finset.mem_sdiff.1 hi).2))`.
+
+Establish `h2 : padicNorm q (∑ i ∈ I \ fib q, a i) ≤ 1` using `hsum _ (fun i hi => by`. Take `⟨n, hn⟩` from `ha i`. Establish `hne : ℓ i ≠ q` using `fun h => (Finset.mem_sdiff.1 hi).2 ((hfib i q).2 h)`. Conclude with `padicNorm_le_one_of_den_pow (hℓ i) hne hn)`. Establish `e : t - ∑ i ∈ I, a i = (t - ∑ i ∈ fib q, a i) + (∑ i ∈ fib q \ I, a i - ∑ i ∈ I \ fib q, a i)`.
+
+Rewrite using `[Finset.sum_sdiff_sub_sum_sdiff]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `padicNorm_add_le_one (ht q hq) (padicNorm_sub_le_one h1 h2)`.
+-/
 theorem den_sub_sum_eq_one {ι : Type*} (ℓ : ι → ℕ) (hℓ : ∀ i, (ℓ i).Prime) (a : ι → ℚ)
     (ha : ∀ i, ∃ n : ℕ, (a i).den = ℓ i ^ n) (fib : ℕ → Finset ι)
     (hfib : ∀ i q, i ∈ fib q ↔ ℓ i = q) (I : Finset ι) (hI : ∀ i, i ∉ I → (a i).den = 1)
@@ -79,10 +110,16 @@ theorem den_sub_sum_eq_one {ι : Type*} (ℓ : ι → ℕ) (hℓ : ∀ i, (ℓ i
   rw [e]
   exact padicNorm_add_le_one (ht q hq) (padicNorm_sub_le_one h1 h2)
 
+/- English proof (translation)
+Rewrite using `[show 2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) = n * (2 * Real.pi * Complex.I) by ring]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I n`.
+-/
 theorem exp_two_pi_int (n : ℤ) : Complex.exp (2 * Real.pi * Complex.I * (n : ℂ)) = 1 := by
   rw [show 2 * (Real.pi : ℂ) * Complex.I * (n : ℂ) = n * (2 * Real.pi * Complex.I) by ring]
   exact Complex.exp_int_mul_two_pi_mul_I n
 
+/- English proof (translation)
+Establish `h : (a : ℂ) = ((a.num : ℤ) : ℂ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h]`. Conclude with `exp_two_pi_int _`.
+-/
 theorem exp_two_pi_of_den_eq_one {a : ℚ} (ha : a.den = 1) :
     Complex.exp (2 * Real.pi * Complex.I * (a : ℂ)) = 1 := by
   have h : (a : ℂ) = ((a.num : ℤ) : ℂ) := by
@@ -92,6 +129,15 @@ theorem exp_two_pi_of_den_eq_one {a : ℚ} (ha : a.den = 1) :
   rw [h]
   exact exp_two_pi_int _
 
+/- English proof (translation)
+Use `set I := hfin.toFinset with hIdef`. Establish `hI : ∀ i, i ∉ I → (a i).den = 1`. Introduce `i hi`. Assume the negation of the conclusion as `h`. Conclude with `hi (hfin.mem_toFinset.2 h)`.
+
+Establish `hsub : (Function.mulSupport fun i => Complex.exp (2 * Real.pi * Complex.I * (a i : ℂ))) ⊆ (I : Set ι)`. Introduce `i hi`. Assume the negation of the conclusion as `h`. Conclude with `hi (exp_two_pi_of_den_eq_one (hI i h))`. Use `⟨I.finite_toSet.subset hsub, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub, ← Complex.exp_sum]`. Establish `h1` using `exp_two_pi_of_den_eq_one (den_sub_sum_eq_one ℓ hℓ a ha fib hfib I hI t ht)`. Establish `key : 2 * (Real.pi : ℂ) * Complex.I * (t : ℂ) = 2 * Real.pi * Complex.I * (((t - ∑ i ∈ I, a i : ℚ)) : ℂ) + ∑ i ∈ I, 2 * Real.pi * Complex.I * (a i : ℂ)`. Use `push_cast`. Rewrite using `[← Finset.mul_sum]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, Complex.exp_add, h1, one_mul]`.
+-/
 theorem finprod_exp_of_padicNorm {ι : Type*} (ℓ : ι → ℕ) (hℓ : ∀ i, (ℓ i).Prime) (a : ι → ℚ)
     (ha : ∀ i, ∃ n : ℕ, (a i).den = ℓ i ^ n) (fib : ℕ → Finset ι)
     (hfib : ∀ i q, i ∈ fib q ↔ ℓ i = q) (hfin : {i | (a i).den ≠ 1}.Finite)
@@ -121,6 +167,11 @@ theorem finprod_exp_of_padicNorm {ι : Type*} (ℓ : ι → ℕ) (hℓ : ∀ i, 
     ring
   rw [key, Complex.exp_add, h1, one_mul]
 
+/- English proof (translation)
+Use `finprod_exp_of_padicNorm ℓ hℓ a ha fib hfib hfin t ?_` and prove the remaining obligations. Introduce `q hq`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Establish `h` using `ht q`. Establish `e : ‖((t - ∑ i ∈ fib q, a i : ℚ) : ℚ_[q])‖ = _` using `Padic.eq_padicNorm (t - ∑ i ∈ fib q, a i)`.
+
+Establish `h' : ((padicNorm q (t - ∑ i ∈ fib q, a i) : ℚ) : ℝ) ≤ 1`. Rewrite using `[← e]`. Use `push_cast`. Conclude with `h`. Conclude with `h'` after adjusting the coercions.
+-/
 theorem finprod_exp {ι : Type*} (ℓ : ι → ℕ) (hℓ : ∀ i, (ℓ i).Prime) (a : ι → ℚ)
     (ha : ∀ i, ∃ n : ℕ, (a i).den = ℓ i ^ n) (fib : ℕ → Finset ι)
     (hfib : ∀ i q, i ∈ fib q ↔ ℓ i = q) (hfin : {i | (a i).den ≠ 1}.Finite) (t : ℚ)
@@ -139,6 +190,15 @@ theorem finprod_exp {ι : Type*} (ℓ : ι → ℕ) (hℓ : ∀ i, (ℓ i).Prime
     exact h
   exact_mod_cast h'
 
+/- English proof (translation)
+Establish `h1 : ‖(a : ℚ_[l])‖ ≤ 1`. Establish `e : (a : ℚ_[l]) = T + -(T - (a : ℚ_[l]))` using `by ring`. Rewrite using `[e]`. Use `le_trans (Padic.nonarchimedean _ _) (max_le hT ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`.
+
+Conclude with `hTa`. Establish `h2 : padicNorm l a ≤ 1`. Establish `e : ‖((a : ℚ) : ℚ_[l])‖ = _` using `Padic.eq_padicNorm a`. Establish `h' : ((padicNorm l a : ℚ) : ℝ) ≤ 1`. Rewrite using `[← e]`.
+
+Conclude with `h1`. Conclude with `h'` after adjusting the coercions. Establish `h3` using `(padicNorm_le_one_iff_not_dvd_den a).1 h2`. Rewrite `h3`, the goal using `[ha]`. Break down `n with _ | n` into its components or cases.
+
+Simplify using the standard rewrite rules. Conclude with `absurd (dvd_pow_self l (Nat.succ_ne_zero n)) h3`.
+-/
 theorem den_eq_one_of_norm_le_one {l : ℕ} [hl : Fact l.Prime] {a : ℚ} {n : ℕ}
     (ha : a.den = l ^ n) {T : ℚ_[l]} (hT : ‖T‖ ≤ 1) (hTa : ‖T - (a : ℚ_[l])‖ ≤ 1) :
     a.den = 1 := by
@@ -160,6 +220,9 @@ theorem den_eq_one_of_norm_le_one {l : ℕ} [hl : Fact l.Prime] {a : ℚ} {n : �
   · simp
   · exact absurd (dvd_pow_self l (Nat.succ_ne_zero n)) h3
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_induction _ (fun x : ℚ_[q] => ‖x‖ ≤ 1) (fun x y hx hy => le_trans (Padic.nonarchimedean x y) (max_le hx hy)) (by simp) h`.
+-/
 theorem norm_sum_sub_sum_le_one {q : ℕ} [Fact q.Prime] {ι : Type*} (s : Finset ι)
     (T b : ι → ℚ_[q]) (h : ∀ i ∈ s, ‖T i - b i‖ ≤ 1) :
     ‖∑ i ∈ s, T i - ∑ i ∈ s, b i‖ ≤ 1 := by

@@ -12,8 +12,20 @@ def stdE : LinearMap.BilinForm ℤ (Fin 2 → ℤ) :=
     (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring)
     (fun _ _ _ => by simp; ring) (fun _ _ _ => by simp; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stdE_apply (x y : Fin 2 → ℤ) : stdE x y = x 1 * y 0 - x 0 * y 1 := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Establish `h0` using `LinearMap.congr_fun h ![1, 0]`. Establish `h1` using `LinearMap.congr_fun h ![0, 1]`. Simplify using `[stdE_apply] at h0 h1`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [h0, h1]`. Introduce `f`. Use `⟨![-f ![0, 1], f ![1, 0]], ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations.
+
+Establish `hy : y = y 0 • ![1, 0] + y 1 • ![0, 1]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Use `conv_rhs => rw [hy, map_add, map_smul, map_smul]`. Simplify using `[stdE_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem stdE_bij : Function.Bijective stdE := by
   constructor
   · intro x y h
@@ -37,6 +49,9 @@ def per (w : Fin 1 → ℂ) : (Fin 2 → ℤ) →+ (Fin 1 → ℂ) where
   map_zero' := by funext; simp
   map_add' x y := by funext; simp; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem per_apply (w : Fin 1 → ℂ) (x : Fin 2 → ℤ) (j : Fin 1) :
     per w x j = (x 0 : ℂ) + (x 1 : ℂ) * (w 0 / (2 * Real.pi * Complex.I)) := rfl
 
@@ -45,6 +60,9 @@ def mon : (Fin 2 → ℤ) →ₗ[ℤ] (Fin 2 → ℤ) where
   map_add' x y := by funext i; fin_cases i <;> simp; ring
   map_smul' c x := by funext i; fin_cases i <;> simp; ring
 
+/- English proof (translation)
+Simplify using `[expCover, Complex.norm_exp]`.
+-/
 theorem log_exp (w : Fin 1 → ℂ) : Real.log ‖expCover 1 w 0‖ = (w 0).re := by
   simp [expCover, Complex.norm_exp]
 
@@ -118,11 +136,19 @@ def tate : LogPeriods 1 1 1 (Fin 2 → ℤ) where
     rw [this]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
+/- English proof (translation)
+Introduce `h`. Use `congrFun (LinearMap.congr_fun h ![0, 1]) 0` as an intermediate fact. Simplify using `[tate, mon] at this`.
+-/
 theorem tate_T_ne : tate.T 0 ≠ LinearMap.id := by
   intro h
   have := congrFun (LinearMap.congr_fun h ![0, 1]) 0
   simp [tate, mon] at this
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Apply `L.unimod.1` to reduce the goal to its premises. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Use `L.im w hw x y` as an intermediate fact.
+
+Rewrite `this` using `[hx]`. Simplify using `only [zero_dotProduct, Complex.zero_im] at this`. Simplify using `only [map_zero, LinearMap.zero_apply]`. Conclude with `this.symm` after adjusting the coercions.
+-/
 theorem P_injective {n a g : ℕ} {Λ : Type} [AddCommGroup Λ] (L : LogPeriods n a g Λ)
     {w : Fin n → ℂ} (hw : w ∈ logCover L.a_le) : Function.Injective (L.P w) := by
   rw [injective_iff_map_eq_zero]

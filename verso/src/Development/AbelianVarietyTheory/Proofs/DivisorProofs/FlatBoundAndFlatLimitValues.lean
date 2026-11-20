@@ -14,6 +14,25 @@ namespace GlobalTheory.FlatObj
 
 open Filter Topology in
 
+/- English proof (translation)
+Introduce `hX h2 hH hSW`. Take `⟨C₁, h1⟩` from `GlobalTheory.T.abs_degree_frame_le_log_discriminant h2 hH hSW`. Take `⟨C₂, hp⟩` from `GlobalTheory.PlaceBd.placeBd h2 hH`. Establish `hl` using `GlobalTheory.T.tendsto_arithmetic_degree_flag_homogeneous hX h2 hH hSW`. Use `⟨max C₁ 0 + max C₂ 0, fun D O hO hf A T H h hF => ⟨fun B hB c τ => ?_, fun Φ hL => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `a1` using `h1 D O hO hf A T H h c τ`. Establish `a2` using `hp D O hO hf A T H h hF B hB c τ`. Establish `hrd1 : 0 ≤ Real.log D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`. Use `Real.log_nonneg (Real.one_le_rpow ?_ (by positivity))` and prove the remaining obligations.
+
+Establish `h0 : (NumberField.discr D.host.E) ≠ 0` using `NumberField.discr_ne_zero _`. Establish `: (1 : ℤ) ≤ |NumberField.discr D.host.E|` using `Int.one_le_abs h0`. Conclude with `this` after adjusting the coercions. Establish `hrd : 0 < D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`.
+
+Conclude with `Real.rpow_pos_of_pos (abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero _)) _`. Establish `hlB : 0 ≤ Real.log B` using `Real.log_nonneg (by linarith)`. Establish `hlg : lg D B = Real.log B + Real.log D.host.rdE + |dlogL D 1|`. Unfold `lg`. Rewrite using `[Real.log_mul (by linarith) hrd.ne']`.
+
+Establish `hN : (0 : ℝ) ≤ O.Y.N` using `Nat.cast_nonneg _`. Establish `ha` using `abs_nonneg (dlogL D 1)`. Establish `b1 : |GlobalTheory.ShFam.Pad.degFrame O.s O.Φ O.met.hm c τ| ≤ max C₁ 0 * O.Y.N * lg D B`. Use `a1.trans ?_` and prove the remaining obligations. Rewrite using `[hlg]`.
+
+Establish `e1 : C₁ * O.Y.N ≤ max C₁ 0 * O.Y.N` using `mul_le_mul_of_nonneg_right (le_max_left _ _) hN`. Establish `e2 : 0 ≤ max C₁ 0 * O.Y.N` using `mul_nonneg (le_max_right _ _) hN`. Use the polynomial consequences of the given equalities and inequalities. Establish `b2 : |O.Y.htDetT B c τ - GlobalTheory.ShFam.Pad.degFrame O.s O.Φ O.met.hm c τ| ≤ max C₂ 0 * O.Y.N * lg D B`. Use `a2.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hlg]`. Establish `e1 : C₂ * O.Y.N ≤ max C₂ 0 * O.Y.N` using `mul_le_mul_of_nonneg_right (le_max_left _ _) hN`. Establish `e2 : 0 ≤ max C₂ 0 * O.Y.N` using `mul_nonneg (le_max_right _ _) hN`. Use the polynomial consequences of the given equalities and inequalities. Establish `htri` using `abs_sub_abs_le_abs_sub (O.Y.htDetT B c τ) (GlobalTheory.ShFam.Pad.degFrame O.s O.Φ O.met.hm c τ)`.
+
+Establish `: (max C₁ 0 + max C₂ 0) * O.Y.N * lg D B = max C₁ 0 * O.Y.N * lg D B + max C₂ 0 * O.Y.N * lg D B` using `by ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `B hB τ Q hQ`. Establish `h1` using `(hL B hB (GlobalTheory.FlagPoly.pSum τ 1 * Q)).sub_const (∑ c, O.Y.htDetT B c τ * (A.w c * Formalism.DegreeFormula.degFl D.what₂.Tau O.Y.N Q))`.
+
+Establish `h2` using `tendsto_nhds_unique h1 (hl D O hO hf A T H h B hB τ Q hQ)`. Rewrite `h2` using `[sub_eq_zero]`. Rewrite using `[h2, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+-/
 theorem flat_line_onObj : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∃ Cf : ℝ, OnObj fun _ O A _ _ _ =>
     FewBad O.Y → FlatBd O.Y Cf ∧ ∀ Φ : ℝ → Fn O.Y, LimFam Φ → FlatVal A Φ := by
   intro hX h2 hH hSW
@@ -62,6 +81,9 @@ theorem flat_line_onObj : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → H
     rw [h2, Finset.sum_mul]
     exact Finset.sum_congr rfl fun c _ => by ring
 
+/- English proof (translation)
+The claim follows from `flat_line_onObj`.
+-/
 example : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∃ Cf : ℝ, OnObj fun _ O A _ _ _ =>
     FewBad O.Y → FlatBd O.Y Cf ∧ ∀ Φ : ℝ → Fn O.Y, LimFam Φ → FlatVal A Φ := flat_line_onObj
 

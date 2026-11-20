@@ -11,6 +11,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.Hec
 noncomputable section
 namespace GlobalTheory.HeckeTwo.TermDecay
 
+/- English proof (translation)
+Establish `hQ : 0 < t ^ 2 + y ^ 2` using `by positivity`. Establish `hnu : ‖(t : ℂ) + (y : ℂ) * I‖ = Real.sqrt (t ^ 2 + y ^ 2)`. Rewrite using `[← Complex.normSq_add_mul_I, Complex.norm_def]`. Unfold `qZ`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_zpow, hnu, Complex.norm_cpow_eq_rpow_re_of_pos hQ, norm_pow, Complex.norm_real, Real.norm_eq_abs, Complex.norm_exp]`.
+
+Establish `hre : (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ))).re = 0` using `by simp`. Rewrite using `[hre, Real.exp_zero, mul_one, Real.sqrt_eq_rpow, ← Real.rpow_intCast, ← Real.rpow_mul hQ.le, ← Real.rpow_add hQ]`. Use `congr 2`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_qZ_mul_exp (σ : ℂ) (ν : ℝ) (a : ℤ) (b m : ℕ) {y : ℝ} (hy : y ≠ 0) (t : ℝ) :
     ‖qZ σ a b m y t * Complex.exp (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ)))‖ =
       (t ^ 2 + y ^ 2) ^ (-((a : ℝ) / 2 + b + σ.re)) * |y| ^ m := by
@@ -27,6 +32,13 @@ theorem norm_qZ_mul_exp (σ : ℂ) (ν : ℝ) (a : ℤ) (b m : ℕ) {y : ℝ} (h
   simp
   ring
 
+/- English proof (translation)
+Establish `hc : 0 < |y|` using `abs_pos.2 hy`. Establish `hpt : ∀ t : ℝ, (t ^ 2 + y ^ 2) ^ (-e) = |y| ^ (-2 * e) * (1 + (t / |y|) ^ 2) ^ (-e)`. Introduce `t`. Establish `h1 : t ^ 2 + y ^ 2 = |y| ^ 2 * (1 + (t / |y|) ^ 2)`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[sq_abs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, Real.mul_rpow (by positivity) (by positivity), ← Real.rpow_natCast, ← Real.rpow_mul hc.le]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hpt]`. Rewrite using `[MeasureTheory.integral_const_mul, MeasureTheory.Measure.integral_comp_div (fun s : ℝ => (1 + s ^ 2) ^ (-e)) |y|, abs_abs, smul_eq_mul, ← mul_assoc, show 1 - 2 * e = -2 * e + 1 by ring, Real.rpow_add_one hc.ne']`.
+-/
 theorem integral_rpow_sq_add_sq (e : ℝ) {y : ℝ} (hy : y ≠ 0) :
     ∫ t : ℝ, (t ^ 2 + y ^ 2) ^ (-e) = |y| ^ (1 - 2 * e) * ∫ s : ℝ, (1 + s ^ 2) ^ (-e) := by
   have hc : 0 < |y| := abs_pos.2 hy
@@ -45,6 +57,21 @@ theorem integral_rpow_sq_add_sq (e : ℝ) {y : ℝ} (hy : y ≠ 0) :
     MeasureTheory.Measure.integral_comp_div (fun s : ℝ => (1 + s ^ 2) ^ (-e)) |y|, abs_abs, smul_eq_mul,
     ← mul_assoc, show 1 - 2 * e = -2 * e + 1 by ring, Real.rpow_add_one hc.ne']
 
+/- English proof (translation)
+Introduce `K hK hKH a b m hab`. Break down `K.eq_empty_or_nonempty with rfl | hne` into its components or cases. Conclude with `⟨0, fun σ hσ => by simp at hσ⟩`. Take `⟨σ₀, hσ₀K, hmin⟩` from `hK.exists_isMinOn hne Complex.continuous_re.continuousOn`. Establish `hσ₀ : -1 / 2 < σ₀.re` using `hKH hσ₀K`.
+
+Establish `hab' : (2 : ℝ) ≤ a + 2 * b` using `by exact_mod_cast hab`. Use `set e₀ : ℝ := (a : ℝ) / 2 + b + σ₀.re with he₀`. Establish `he₀1 : 1 / 2 < e₀` using `by rw [he₀]; linarith`. Establish `hg₀ : MeasureTheory.Integrable (fun s : ℝ => (1 + s ^ 2) ^ (-e₀))`. Use `integrable_rpow_neg_one_add_norm_sq (E := ℝ) (μ := MeasureTheory.volume) (r := 2 * e₀) (by simp; linarith)` as an intermediate fact.
+
+Use `this.congr (MeasureTheory.ae_of_all _ fun s => ?_)` and prove the remaining obligations. Simplify using `only [Real.norm_eq_abs, sq_abs]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `⟨∫ s : ℝ, (1 + s ^ 2) ^ (-e₀), ?_⟩` and prove the remaining obligations.
+
+Introduce `σ hσ ν y hy`. Use `set e : ℝ := (a : ℝ) / 2 + b + σ.re with he`. Establish `hee : e₀ ≤ e`. Use `hmin hσ` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq] at this`.
+
+Rewrite using `[he, he₀]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : 0 < |y|` using `abs_pos.2 hy`. Establish `hmono : (∫ s : ℝ, (1 + s ^ 2) ^ (-e)) ≤ ∫ s : ℝ, (1 + s ^ 2) ^ (-e₀)` using `MeasureTheory.integral_mono_of_nonneg (MeasureTheory.ae_of_all _ fun s => by positivity) hg₀ (MeasureTheory.ae_of_all _ fun s => Real.rpow_le_rpow_of_exponent_le (by nlinarith [sq_nonneg s]) (by linarith))`. Combine the equalities or inequalities in the displayed calculation.
+
+Repeatedly rewrite using `[norm_qZ_mul_exp σ ν a b m hy]`. Rewrite using `[he]`. Use `_ = (|y| ^ (1 - 2 * e) * ∫ s : ℝ, (1 + s ^ 2) ^ (-e)) * |y| ^ m := by`. Rewrite using `[MeasureTheory.integral_mul_const, integral_rpow_sq_add_sq e hy]`. Use `_ ≤ (|y| ^ (1 - 2 * e) * ∫ s : ℝ, (1 + s ^ 2) ^ (-e₀)) * |y| ^ m := by gcongr`.
+
+Use `_ = (∫ s : ℝ, (1 + s ^ 2) ^ (-e₀)) * |y| ^ ((m : ℝ) + 1 - a - 2 * b - 2 * σ.re) := by`. Rewrite using `[← Real.rpow_natCast, mul_comm (|y| ^ (1 - 2 * e)), mul_assoc, ← Real.rpow_add hc, he]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_intZ_le : ∀ K : Set ℂ, IsCompact K → K ⊆ halfPlane → ∀ (a : ℤ) (b m : ℕ), 2 ≤ a + 2 * b → ∃ C : ℝ,
     ∀ σ ∈ K, ∀ ν y : ℝ, y ≠ 0 →
       ‖intZ σ ν a b m y‖ ≤ C * |y| ^ ((m : ℝ) + 1 - a - 2 * b - 2 * σ.re) := by

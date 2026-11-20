@@ -18,12 +18,18 @@ section ChangeOfGroup
 variable {k H G V W : Type*} [CommRing k] [Group H] [Group G] [AddCommGroup V] [Module k V]
   [AddCommGroup W] [Module k W] {ρ' : Representation k H V} {ρ : Representation k G W}
 
+/- English proof (translation)
+Rewrite using `[cycSubOne_apply, cycSubOne_apply, map_sub, hf]`.
+-/
 theorem cycSubOne_mulEquiv (e : H →* G) (f : V ≃+ W) (hf : ∀ h x, f (ρ' h x) = ρ (e h) (f x))
     (τ : H) (x : V) : f (cycSubOne ρ' τ x) = cycSubOne ρ (e τ) (f x) := by
   rw [cycSubOne_apply, cycSubOne_apply, map_sub, hf]
 
 variable [Fintype H] [Fintype G]
 
+/- English proof (translation)
+Rewrite using `[cycNorm_apply, cycNorm_apply, map_sum]`. Repeatedly rewrite using `[hf]`. Conclude with `Fintype.sum_equiv e.toEquiv _ _ fun _ ↦ rfl`.
+-/
 theorem cycNorm_mulEquiv (e : H ≃* G) (f : V ≃+ W) (hf : ∀ h x, f (ρ' h x) = ρ (e h) (f x))
     (x : V) : f (cycNorm ρ' x) = cycNorm ρ (f x) := by
   rw [cycNorm_apply, cycNorm_apply, map_sum]
@@ -39,6 +45,9 @@ def cycTateNegOneEquivOfMulEquiv (e : H ≃* G) (f : V ≃+ W)
     CycTateNegOne ρ' τ ≃+ CycTateNegOne ρ (e τ) :=
   kerModRangeCongr f (cycNorm_mulEquiv e f hf) (cycSubOne_mulEquiv e.toMonoidHom f hf τ)
 
+/- English proof (translation)
+Establish `e0` using `(cycTateZeroEquivOfMulEquiv e f hf τ).toEquiv`. Establish `e1` using `(cycTateNegOneEquivOfMulEquiv e f hf τ).toEquiv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨fun h ↦ ⟨Finite.of_equiv _ e0 (h := h.1), Finite.of_equiv _ e1 (h := h.2)⟩, fun h ↦ ⟨Finite.of_equiv _ e0.symm (h := h.1), Finite.of_equiv _ e1.symm (h := h.2)⟩⟩`. Rewrite using `[cycHerbrand_eq, cycHerbrand_eq, Nat.card_congr e0, Nat.card_congr e1]`.
+-/
 theorem cycHerbrand_eq_of_mulEquiv (e : H ≃* G) (f : V ≃+ W)
     (hf : ∀ h x, f (ρ' h x) = ρ (e h) (f x)) (τ : H) :
     (HasHerbrandQuotient (cycSubOne ρ' τ) (cycNorm ρ') ↔
@@ -53,6 +62,9 @@ theorem cycHerbrand_eq_of_mulEquiv (e : H ≃* G) (f : V ≃+ W)
 
 omit [Fintype H] [Fintype G] in
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `Subgroup.mem_zpowers_iff.1 (hτ (e.symm g))`. Use `Subgroup.mem_zpowers_iff.2 ⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_zpow, hn, MulEquiv.apply_symm_apply]`.
+-/
 theorem mem_zpowers_mulEquiv (e : H ≃* G) {τ : H} (hτ : ∀ h, h ∈ Subgroup.zpowers τ) (g : G) :
     g ∈ Subgroup.zpowers (e τ) := by
   obtain ⟨n, hn⟩ := Subgroup.mem_zpowers_iff.1 (hτ (e.symm g))
@@ -93,11 +105,17 @@ instance decompositionMulSemiringAction :
 
 variable {w}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem decomposition_smul_def (σ : MulAction.stabilizer Gal(L/K) w.asIdeal)
     (x : w.adicCompletion L) :
     σ • x = adicCompletionRingHomOf w σ.1 (smul_asIdeal_of_mem_stabilizer w σ) x :=
   rfl
 
+/- English proof (translation)
+The claim follows from `valued_adicCompletionRingHomOf _ _ x`.
+-/
 theorem valued_decomposition_smul (σ : MulAction.stabilizer Gal(L/K) w.asIdeal)
     (x : w.adicCompletion L) : Valued.v (σ • x) = Valued.v x :=
   valued_adicCompletionRingHomOf _ _ x
@@ -118,6 +136,9 @@ instance decompositionMulSemiringActionIntegers :
 
 variable {w} in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_decomposition_smul_integers (σ : MulAction.stabilizer Gal(L/K) w.asIdeal)
     (x : w.adicCompletionIntegers L) :
     ((σ • x : w.adicCompletionIntegers L) : w.adicCompletion L) = σ • (x : w.adicCompletion L) :=
@@ -134,12 +155,18 @@ instance decompositionIntegerUnitsAction :
 variable {w}
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem coe_decomposition_smul_units (σ : MulAction.stabilizer Gal(L/K) w.asIdeal)
     (u : (w.adicCompletion L)ˣ) : ((σ • u : (w.adicCompletion L)ˣ) : w.adicCompletion L) =
       σ • (u : w.adicCompletion L) :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_decomposition_smul_integerUnits (σ : MulAction.stabilizer Gal(L/K) w.asIdeal)
     (u : (w.adicCompletionIntegers L)ˣ) :
     (((σ • u : (w.adicCompletionIntegers L)ˣ) : w.adicCompletionIntegers L) :
@@ -157,6 +184,9 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   [ContinuousSMul (v.adicCompletion K) (w.adicCompletion L)]
   [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)]
 
+/- English proof (translation)
+Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+-/
 theorem ofMulDistribMulAction_decomposition_units (σ : MulAction.stabilizer Gal(L/K) w.asIdeal)
     (x : Additive (w.adicCompletion L)ˣ) :
     Representation.ofMulDistribMulAction (MulAction.stabilizer Gal(L/K) w.asIdeal)
@@ -167,6 +197,9 @@ theorem ofMulDistribMulAction_decomposition_units (σ : MulAction.stabilizer Gal
   apply Units.ext
   rfl
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `cycHerbrand_eq_of_mulEquiv (ρ' := Representation.ofMulDistribMulAction (MulAction.stabilizer Gal(L/K) w.asIdeal) (w.adicCompletion L)ˣ) (ρ := Representation.ofMulDistribMulAction Gal(w.adicCompletion L/v.adicCompletion K) (w.adicCompletion L)ˣ) (decompositionMulEquiv v w) (AddEqu …`. Take `⟨h3, h4⟩` from `GroundTheory.LocalField.cycHerbrand_units_eq_finrank (K := v.adicCompletion K) (L := w.adicCompletion L) (mem_zpowers_mulEquiv (decompositionMulEquiv v w) hτ)`. Conclude with `⟨h1.2 h3, h2.trans h4⟩`.
+-/
 theorem cycHerbrand_adicCompletion_units [Fintype (MulAction.stabilizer Gal(L/K) w.asIdeal)]
     (τ : MulAction.stabilizer Gal(L/K) w.asIdeal) (hτ : ∀ σ, σ ∈ Subgroup.zpowers τ) :
     HasHerbrandQuotient
@@ -211,6 +244,9 @@ def integerUnitsAddEquiv :
   MulEquiv.toAdditive (Units.mapEquiv (adicCompletionIntegersEquivInteger w).toMulEquiv)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_integerUnitsAddEquiv (x : Additive (w.adicCompletionIntegers L)ˣ) :
     ((((integerUnitsAddEquiv w x).toMul : 𝒪[w.adicCompletion L]ˣ) : 𝒪[w.adicCompletion L]) :
       w.adicCompletion L) = ((x.toMul : w.adicCompletionIntegers L) : w.adicCompletion L) :=
@@ -220,6 +256,11 @@ variable [Algebra (v.adicCompletion K) (w.adicCompletion L)]
   [ContinuousSMul (v.adicCompletion K) (w.adicCompletion L)]
   [IsScalarTower K (v.adicCompletion K) (w.adicCompletion L)]
 
+/- English proof (translation)
+Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `σ • ((x.toMul : w.adicCompletionIntegers L) : w.adicCompletion L) = ((GroundTheory.LocalField.integerAlgEquiv (v.adicCompletion K) (w.adicCompletion L) (decompositionMulEquiv v w σ) _ : 𝒪[w.adicCompletion L]) : w.adicCompletion L)`. Rewrite using `[GroundTheory.LocalField.coe_integerAlgEquiv_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem integerUnitsAddEquiv_decomposition (σ : MulAction.stabilizer Gal(L/K) w.asIdeal)
     (x : Additive (w.adicCompletionIntegers L)ˣ) :
     integerUnitsAddEquiv w (Representation.ofMulDistribMulAction
@@ -237,6 +278,9 @@ theorem integerUnitsAddEquiv_decomposition (σ : MulAction.stabilizer Gal(L/K) w
 
 omit [IsGalois K L] in
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.LocalField.isUnramified_iff _ _).2 (by rw [GroundTheory.LocalField.ramificationIndex, ramificationIdx_integer v w, he])`.
+-/
 theorem isUnramified_adicCompletion (he : w.asIdeal.ramificationIdx (𝓞 K) = 1) :
     GroundTheory.LocalField.IsUnramified (v.adicCompletion K) (w.adicCompletion L) :=
   (GroundTheory.LocalField.isUnramified_iff _ _).2 (by
@@ -253,6 +297,11 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
 open AdicLiesOver in
 include v in
 
+/- English proof (translation)
+Use `isUnramified_adicCompletion v w he` as an intermediate fact. Establish `hgen` using `mem_zpowers_mulEquiv (decompositionMulEquiv v w) hτ`. Establish `: Subsingleton (GroundTheory.LocalField.TateZero Gal(w.adicCompletion L/v.adicCompletion K) 𝒪[w.adicCompletion L]ˣ)` using `GroundTheory.LocalField.subsingleton_tateZero_integerUnits`. Establish `h1 : Nat.card (GroundTheory.LocalField.TateZero Gal(w.adicCompletion L/v.adicCompletion K) 𝒪[w.adicCompletion L]ˣ) = 1` using `Nat.card_eq_one_iff_unique.2 ⟨inferInstance, ⟨1⟩⟩`. Rewrite `h1` using `[GroundTheory.LocalField.natCard_tateZero_eq hgen, ← Nat.card_congr (cycTateZeroEquivOfMulEquiv (decompositionMulEquiv v w) (integerUnitsAddEquiv w) (integerUnitsAddEquiv_decomposition v w) τ).toEquiv]`.
+
+Conclude with `(Nat.card_eq_one_iff_unique.1 h1).1`.
+-/
 theorem subsingleton_cycTateZero_adicCompletionIntegers_units
     (he : w.asIdeal.ramificationIdx (𝓞 K) = 1)
     [Fintype (MulAction.stabilizer Gal(L/K) w.asIdeal)]
@@ -273,6 +322,11 @@ theorem subsingleton_cycTateZero_adicCompletionIntegers_units
 open AdicLiesOver in
 include v in
 
+/- English proof (translation)
+Use `isUnramified_adicCompletion v w he` as an intermediate fact. Establish `hgen` using `mem_zpowers_mulEquiv (decompositionMulEquiv v w) hτ`. Establish `: IsCyclic Gal(w.adicCompletion L/v.adicCompletion K)` using `⟨⟨decompositionMulEquiv v w τ, fun g ↦ Subgroup.mem_zpowers_iff.1 (hgen g)⟩⟩`. Establish `: Subsingleton (GroundTheory.LocalField.TateNegOne Gal(w.adicCompletion L/v.adicCompletion K) 𝒪[w.adicCompletion L]ˣ)` using `GroundTheory.LocalField.subsingleton_tateNegOne_integerUnits`. Establish `h1 : Nat.card (GroundTheory.LocalField.TateNegOne Gal(w.adicCompletion L/v.adicCompletion K) 𝒪[w.adicCompletion L]ˣ) = 1` using `Nat.card_eq_one_iff_unique.2 ⟨inferInstance, ⟨1⟩⟩`.
+
+Rewrite `h1` using `[GroundTheory.LocalField.natCard_tateNegOne_eq hgen, ← Nat.card_congr (cycTateNegOneEquivOfMulEquiv (decompositionMulEquiv v w) (integerUnitsAddEquiv w) (integerUnitsAddEquiv_decomposition v w) τ).toEquiv]`. Conclude with `(Nat.card_eq_one_iff_unique.1 h1).1`.
+-/
 theorem subsingleton_cycTateNegOne_adicCompletionIntegers_units
     (he : w.asIdeal.ramificationIdx (𝓞 K) = 1)
     [Fintype (MulAction.stabilizer Gal(L/K) w.asIdeal)]

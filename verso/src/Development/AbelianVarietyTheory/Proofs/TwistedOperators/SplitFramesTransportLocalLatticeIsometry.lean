@@ -24,11 +24,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.toMatrix'_comp, LinearEquiv.comp_coe, LinearEquiv.symm_trans_self, LinearEquiv.refl_toLinearMap, LinearMap.toMatrix'_id]`.
+-/
 theorem toMatrix'_mul_symm {R : Type} [CommRing R] (a : (Fin n → R) ≃ₗ[R] (Fin n → R)) :
     LinearMap.toMatrix' (a : (Fin n → R) →ₗ[R] (Fin n → R)) * LinearMap.toMatrix' (a.symm : (Fin n → R) →ₗ[R] (Fin n → R)) = 1 := by
   rw [← LinearMap.toMatrix'_comp, LinearEquiv.comp_coe, LinearEquiv.symm_trans_self, LinearEquiv.refl_toLinearMap,
     LinearMap.toMatrix'_id]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.toMatrix'_comp, LinearEquiv.comp_coe, LinearEquiv.self_trans_symm, LinearEquiv.refl_toLinearMap, LinearMap.toMatrix'_id]`.
+-/
 theorem toMatrix'_symm_mul {R : Type} [CommRing R] (a : (Fin n → R) ≃ₗ[R] (Fin n → R)) :
     LinearMap.toMatrix' (a.symm : (Fin n → R) →ₗ[R] (Fin n → R)) * LinearMap.toMatrix' (a : (Fin n → R) →ₗ[R] (Fin n → R)) = 1 := by
   rw [← LinearMap.toMatrix'_comp, LinearEquiv.comp_coe, LinearEquiv.self_trans_symm, LinearEquiv.refl_toLinearMap,
@@ -43,24 +49,39 @@ def compAt (τ : E →ₐ[F] Fv F v) (a : (Fin n → Fv F v ⊗[F] E) ≃ₗ[Fv 
   inv_val := by
     rw [← AlgHom.mapMatrix_apply, ← AlgHom.mapMatrix_apply, ← map_mul, toMatrix'_symm_mul, map_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compAt_val (τ : E →ₐ[F] Fv F v)
     (a : (Fin n → Fv F v ⊗[F] E) ≃ₗ[Fv F v ⊗[F] E] (Fin n → Fv F v ⊗[F] E)) :
     (compAt τ a).1 = (LinearMap.toMatrix' (a : (Fin n → Fv F v ⊗[F] E) →ₗ[Fv F v ⊗[F] E] _)).map (splitProj τ) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compAt_inv_val (τ : E →ₐ[F] Fv F v)
     (a : (Fin n → Fv F v ⊗[F] E) ≃ₗ[Fv F v ⊗[F] E] (Fin n → Fv F v ⊗[F] E)) :
     ((compAt τ a)⁻¹).1 = (LinearMap.toMatrix' (a.symm : (Fin n → Fv F v ⊗[F] E) →ₗ[Fv F v ⊗[F] E] _)).map (splitProj τ) := rfl
 
+/- English proof (translation)
+Rewrite using `[compAt_val, ← splitVec_mulVec, LinearMap.toMatrix'_mulVec, LinearEquiv.coe_coe]`.
+-/
 theorem splitVec_apply_equiv (τ : E →ₐ[F] Fv F v)
     (a : (Fin n → Fv F v ⊗[F] E) ≃ₗ[Fv F v ⊗[F] E] (Fin n → Fv F v ⊗[F] E)) (y : Fin n → Fv F v ⊗[F] E) :
     splitVec τ (a y) = (compAt τ a).1 *ᵥ splitVec τ y := by
   rw [compAt_val, ← splitVec_mulVec, LinearMap.toMatrix'_mulVec, LinearEquiv.coe_coe]
 
+/- English proof (translation)
+Rewrite using `[compAt_inv_val, ← splitVec_mulVec, LinearMap.toMatrix'_mulVec, LinearEquiv.coe_coe]`.
+-/
 theorem splitVec_symm_apply_equiv (τ : E →ₐ[F] Fv F v)
     (a : (Fin n → Fv F v ⊗[F] E) ≃ₗ[Fv F v ⊗[F] E] (Fin n → Fv F v ⊗[F] E)) (y : Fin n → Fv F v ⊗[F] E) :
     splitVec τ (a.symm y) = (compAt τ a)⁻¹.1 *ᵥ splitVec τ y := by
   rw [compAt_inv_val, ← splitVec_mulVec, LinearMap.toMatrix'_mulVec, LinearEquiv.coe_coe]
 
+/- English proof (translation)
+Use `Units.ext (Matrix.toLin'.injective (LinearMap.ext fun u => ?_))` and prove the remaining obligations. Take `⟨y, rfl⟩ : ∃ y, splitVec τ y = u` from `⟨splitIncl hc τ u, splitVec_splitIncl hc τ u⟩`. Simplify using `only [Matrix.toLin'_apply, Units.val_mul, ← Matrix.mulVec_mulVec]`. Rewrite using `[← splitVec_matHom_mulVec, ← splitVec_symm_apply_equiv, ← splitVec_matHom_mulVec, ← splitVec_apply_equiv, ← h3, LinearEquiv.apply_symm_apply]`.
+-/
 theorem splitHom_conj (hc : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {J J' : Matrix (Fin n) (Fin n) E}
     (j : GLoc σ J v ≃ₜ* GLoc σ J' v) (a : (Fin n → Fv F v ⊗[F] E) ≃ₗ[Fv F v ⊗[F] E] (Fin n → Fv F v ⊗[F] E))
     (h3 : ∀ g y, (matHom _ σ J' (j g)).1 *ᵥ a y = a ((matHom _ σ J g).1 *ᵥ y)) (g : GLoc σ J v) :
@@ -71,6 +92,11 @@ theorem splitHom_conj (hc : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {J J' : Ma
   rw [← splitVec_matHom_mulVec, ← splitVec_symm_apply_equiv, ← splitVec_matHom_mulVec, ← splitVec_apply_equiv, ← h3,
     LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[mem_stabLoc, mem_stabLoc]`. Prove the components needed by the constructor for the conclusion. Introduce `H y`. Use `H (a y)` as an intermediate fact. Rewrite `this` using `[h3, h2, h2]`. Then use the resulting hypothesis.
+
+Introduce `H y'`. Take `⟨y, rfl⟩` from `a.surjective y'`. Rewrite using `[h3, h2, h2]`. Conclude with `H y`.
+-/
 theorem conj_mem_stabLoc_iff {J J' : Matrix (Fin n) (Fin n) E} {L L' : Submodule (𝓞 E) (Fin n → E)}
     (j : GLoc σ J v ≃ₜ* GLoc σ J' v) (a : (Fin n → Fv F v ⊗[F] E) ≃ₗ[Fv F v ⊗[F] E] (Fin n → Fv F v ⊗[F] E))
     (h2 : ∀ y, a y ∈ latLoc F L' v ↔ y ∈ latLoc F L v)
@@ -86,6 +112,11 @@ theorem conj_mem_stabLoc_iff {J J' : Matrix (Fin n) (Fin n) E} {L L' : Submodule
     rw [h3, h2, h2]
     exact H y
 
+/- English proof (translation)
+Introduce `u`. Rewrite using `[hβ u, Units.val_mul, ← Matrix.mulVec_mulVec]`. Generalize the expression as in `β.1 *ᵥ u = z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `⟨a y, (h2 y).2 hy, splitVec_apply_equiv τ a y⟩`. Introduce and unpack `⟨y', hy', e⟩`. Use `⟨a.symm y', (h2 _).1 (by rwa [a.apply_symm_apply]), ?_⟩` and prove the remaining obligations. Rewrite using `[splitVec_symm_apply_equiv, e, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem isSplitBasis_conj {L L' : Submodule (𝓞 E) (Fin n → E)}
     (a : (Fin n → Fv F v ⊗[F] E) ≃ₗ[Fv F v ⊗[F] E] (Fin n → Fv F v ⊗[F] E))
     (h2 : ∀ y, a y ∈ latLoc F L' v ↔ y ∈ latLoc F L v) (τ : E →ₐ[F] Fv F v) {β : GL (Fin n) (Fv F v)}
@@ -101,6 +132,13 @@ theorem isSplitBasis_conj {L L' : Submodule (𝓞 E) (Fin n → E)}
     rw [splitVec_symm_apply_equiv, e, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one,
       Matrix.one_mulVec]
 
+/- English proof (translation)
+Take `⟨a, -, h2, h3⟩` from `hj`. Use `⟨conj_mem_stabLoc_iff j a h2 h3, fun s => ⟨⟨s.emb, compAt s.emb a * s.basis, s.cm, hJ', hL', isSplitBasis_conj a h2 s.emb s.isBasis⟩, ?_⟩⟩` and prove the remaining obligations. Establish `he : ∀ g, splitEquivIn s.cm hJ' s.emb (compAt s.emb a * s.basis) (j g) = s.equiv g` using `fun g => by`. Rewrite using `[splitEquivIn_apply, splitHom_conj s.cm s.emb j a h3, SplitAt.equiv, splitEquivIn_apply]`. Use `group`.
+
+Use `⟨he, fun k k' hk => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [SplitAt.red, splitRed_val]`. Use `congr 1`. Use extensionality with `i l`.
+
+Rewrite using `[coe_stabLocEquiv, coe_stabLocEquiv, hk]`. Conclude with `congrArg _ (congrArg (fun x => x.1 i l) (he k))`.
+-/
 theorem split_conj {J J' : Matrix (Fin n) (Fin n) E} {L L' : Submodule (𝓞 E) (Fin n → E)}
     (j : GLoc σ J v ≃ₜ* GLoc σ J' v) (hj : IsLatticeConj L L' j) (hJ' : IsHermND σ J')
     (hL' : IsSelfDualAt σ J' L' v) :
@@ -121,6 +159,9 @@ theorem split_conj {J J' : Matrix (Fin n) (Fin n) E} {L L' : Submodule (𝓞 E) 
   rw [coe_stabLocEquiv, coe_stabLocEquiv, hk]
   exact congrArg _ (congrArg (fun x => x.1 i l) (he k))
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨h1, h2⟩` from `split_conj j hj hJ' hL'`. Use `⟨h1, fun s => ?_⟩` and prove the remaining obligations. Take `⟨s', e1, e2⟩` from `h2 s`. Conclude with `⟨s', fun g a b => by rw [e1]; rfl, fun k k' hk a b => by rw [e2 k k' hk]; rfl⟩`.
+-/
 theorem split_conj_cast {n' : ℕ} (hr : n' = n) {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin n') (Fin n') E}
     {L : Submodule (𝓞 E) (Fin n → E)} {L' : Submodule (𝓞 E) (Fin n' → E)} (j : GLoc σ J v ≃ₜ* GLoc σ J' v)
     (hj : IsLatticeConj L L' j) (hJ' : IsHermND σ J') (hL' : IsSelfDualAt σ J' L' v) :
@@ -138,6 +179,9 @@ end
 
 end GlobalTheory.LatConjSplit
 
+/- English proof (translation)
+Introduce `D V V' hr v j hj`. Conclude with `GlobalTheory.LatConjSplit.split_conj_cast hr j hj (GlobalTheory.Orb.isHermND_gram V') (SelfDual.isSelfDualAt_frameLat D V' v)`.
+-/
 theorem GlobalTheory.LatConjSplit.splitAt_of_isLatticeConj : ∀ (D : D7) (V V' : HSp D) (hr : V'.rank = V.rank) (v : HeightOneSpectrum (𝓞 D.host.F)) (j : GLoc D.sp.cm.sig V.gram v ≃ₜ* GLoc D.sp.cm.sig V'.gram v), IsLatticeConj (frameLat V) (frameLat V') j → (∀ g, j g ∈ Kv V' v ↔ g ∈ Kv V v) ∧ ∀ s : SplitAt D.sp.cm.sig V.gram (frameLat V) v, ∃ s' : SplitAt D.sp.cm.sig V'.gram (frameLat V') v, (∀ g a b, (s'.equiv (j g)).1 a b = (s.equiv g).1 (a.cast hr) (b.cast hr)) ∧ ∀ (k : Kv V v) (k' : Kv V' v), (k' : GLoc D.sp.cm.sig V'.gram v) = j k → ∀ a b, (s'.red k').1 a b = (s.red k).1 (a.cast hr) (b.cast hr) := by
   intro D V V' hr v j hj
   exact GlobalTheory.LatConjSplit.split_conj_cast hr j hj (GlobalTheory.Orb.isHermND_gram V') (SelfDual.isSelfDualAt_frameLat D V' v)

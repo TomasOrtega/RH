@@ -11,6 +11,9 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 namespace GlobalTheory.LamF
 
+/- English proof (translation)
+Take `⟨⟨F', hF', -⟩, hmon⟩` from `existsUnique_hom_of_isGrpPullback _ _ f A.A B.A x.P.A y.P.A φ ψ hx.1 hy.1 F`. Establish `hm : IsMonHom F'` using `hmon F' hF' hF`. Establish `ht : IsTangent (x.v i ≫ F')` using `((GlobalTheory.LieCombHom.lieComb_add_pow_map R' x.P.A y.P.A x.P.g x.v x.basis.1).2.2.2 F' hm).1 i`. Take `⟨u, hu, -⟩` from `y.basis.2 _ ht`. Conclude with `⟨u, x.v i ≫ F', by rw [Over.comp_left, Category.assoc, hF'], hu⟩`.
+-/
 theorem exists_lieComb_image {R R' : Type} [CommRing R] [CommRing R'] (A B : Out.PolAV (Sp R)) (x y : KeyIn R')
     (f : Sp R' ⟶ Sp R) (φ : x.P.A.left ⟶ A.A.left) (ψ : y.P.A.left ⟶ B.A.left)
     (hx : IsFibreOf A x f φ) (hy : IsFibreOf B y f ψ) (F : A.A ⟶ B.A) (hF : IsMonHom F) (i : Fin x.P.g) :
@@ -43,6 +46,23 @@ def blockEquiv {T : Type} (p : T → Prop) [DecidablePred p] (a b : ℕ) {α β 
     · simp [dif_pos (s q.2).2]
     · simp [dif_neg (s' q.2).2]
 
+/- English proof (translation)
+Introduce `E _ _ _ _ H l c nΨ n' f o La hg`. Take `⟨-, -, -, hB, hΨ, h', g1, g2, g3, -, -, -, -, ⟨m1, m2, -⟩, -⟩` from `hg`. Set `p : (E →+* ℂ) → Prop` to `fun b => b (H.rt : E) = H.rt0`. Set `ε` to `blockEquiv p nΨ n' o.τΨ o.τ'`. Establish `hc : Fintype.card ((Fin nΨ × Fin o.xΨ.P.g) ⊕ (Fin n' × Fin o.x'.P.g)) = o.xB.P.g`.
+
+Simplify using `only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]`. Rewrite using `[g1, g2, g3]`. Expand and normalize the polynomial expressions, which then agree. Set `κ` to `Fintype.equivFinOfCardEq hc`. Establish `hU : ∀ q : (Fin nΨ × Fin o.xΨ.P.g) ⊕ (Fin n' × Fin o.x'.P.g), ∃ (u : Fin o.xB.P.g → o.K₁) (w : epsR o.K₁ ⟶ o.xB.P.A), (match q with`.
+
+Consider the case `Sum.inl q => w.left ≫ o.φB = (o.xΨ.v q.2).left ≫ o.φΨg ≫ (o.φΨ q.1).left`. Consider the case `Sum.inr q => w.left ≫ o.φB = (o.x'.v q.2).left ≫ o.φ'g ≫ (o.φ' q.1).left) ∧ IsLieComb u o.xB.v w := by`. Introduce and unpack `(q | q)`. Conclude with `exists_lieComb_image _ _ _ _ _ _ _ hΨ hB _ (m1 q.1) q.2`. Conclude with `exists_lieComb_image _ _ _ _ _ _ _ h' hB _ (m2 q.1) q.2`.
+
+Use `choose u w hw hu using hU`. Use `⟨⟨fun b => if p b then nΨ else n', ε.trans κ, κ.symm, fun k => u (κ.symm k), fun k => Sum.elim (fun q => o.ℓΨ q.2) (fun q => o.ℓ' q.2) (κ.symm k)⟩, ⟨κ.symm.bijective, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `b i`. Establish `: κ.symm ((ε.trans κ) ⟨b, i⟩) = ε ⟨b, i⟩` using `by simp`. Simplify using `only [this]`.
+
+Distinguish the cases in `h : p b`. Establish `e1 : ε ⟨b, i⟩ = Sum.inl (i.cast (if_pos h), o.τΨ.symm ⟨b, h⟩)` using `dif_pos h`. Rewrite using `[e1]`. Simplify using the standard rewrite rules. Establish `e1 : ε ⟨b, i⟩ = Sum.inr (i.cast (if_neg h), o.τ'.symm ⟨b, h⟩)` using `dif_neg h`.
+
+Rewrite using `[e1]`. Simplify using the standard rewrite rules. Introduce `k`. Use `⟨w (κ.symm k), ?_, hu _⟩` and prove the remaining obligations. Use `hw (κ.symm k)` as an intermediate fact.
+
+Unfold `LamLetters.IsLetter`. Simplify using `only`. Generalize the expression as in `κ.symm k = q at this ⊢`. Apply the tactic sequence `cases q <;> exact this`. Introduce `k dsimp only`.
+
+Generalize the expression as in `κ.symm k = q`. Apply the tactic sequence `cases q <;> rfl`. Introduce `b`. Conclude with `⟨fun h => if_pos h, fun h => if_neg h⟩`.
+-/
 theorem exists_lamLetters_isGood : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] (H : Host E) (l : Level H) (c : Coeff l) (nΨ n' f : ℕ) (o : LamObj c nΨ n') (La : ℝ), LamObjGood o f La → ∃ L : LamLetters o, L.IsGood ∧ ∀ b : E →+* ℂ, (b (H.rt : E) = H.rt0 → L.m b = nΨ) ∧ (b (H.rt : E) ≠ H.rt0 → L.m b = n') := by
   intro E _ _ _ _ H l c nΨ n' f o La hg
   classical

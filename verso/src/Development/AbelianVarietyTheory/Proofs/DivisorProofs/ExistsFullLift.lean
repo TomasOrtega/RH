@@ -23,6 +23,11 @@ namespace GlobalTheory.LowForm
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `set E : H →ₗ[ℂ] H := ∑ g, a g • ρ g with hE`. Establish `h1 : E u = ∑ g, ∑ h, (a h * a (h⁻¹ * g)) • ρ g u`. Simplify using `only [← Finset.sum_smul, ha.2, hE, LinearMap.sum_apply, LinearMap.smul_apply]`. Establish `h2 : E (E u) = ∑ h, ∑ g, (a h * a g) • ρ h (ρ g u)`. Simplify using `only [hE, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`. Rewrite using `[h2, h1, Finset.sum_comm (f := fun g h => (a h * a (h⁻¹ * g)) • ρ g u)]`. Use `Finset.sum_congr rfl fun h _ => Fintype.sum_equiv (Equiv.mulLeft h) _ _ fun g => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, inv_mul_cancel_left, map_mul, Module.End.mul_apply]`.
+-/
 theorem op_idem {G H : Type} [Group G] [Fintype G] [AddCommGroup H] [Module ℂ H] (ρ : Representation ℂ G H) {a : G → ℂ}
     (ha : GlobalTheory.IndefiniteRowSideFullHecke.GoodBasisCentralIdempotents.IsCentralIdem a) (u : H) :
     (∑ g, a g • ρ g : H →ₗ[ℂ] H) ((∑ g, a g • ρ g : H →ₗ[ℂ] H) u) = (∑ g, a g • ρ g : H →ₗ[ℂ] H) u := by
@@ -37,6 +42,9 @@ theorem op_idem {G H : Type} [Group G] [Fintype G] [AddCommGroup H] [Module ℂ 
   refine Finset.sum_congr rfl fun h _ => Fintype.sum_equiv (Equiv.mulLeft h) _ _ fun g => ?_
   simp only [Equiv.coe_mulLeft, inv_mul_cancel_left, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ext_inner_right ℂ fun y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.adjoint_inner_left, ← h2 _ (h1 x) y, ← inner_conj_symm, ← h2 _ (h1 y) x, inner_conj_symm]`.
+-/
 theorem adjoint_eq_self {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] (E : H →ₗ[ℂ] H)
     (h1 : ∀ u, E (E u) = E u) (h2 : ∀ x, E x = x → ∀ y, ⟪x, E y⟫_ℂ = ⟪x, y⟫_ℂ) : LinearMap.adjoint E = E := by
   refine LinearMap.ext fun x => ext_inner_right ℂ fun y => ?_
@@ -45,6 +53,11 @@ theorem adjoint_eq_self {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.LiftScalarCompare.eC_idem hr`. Unfold `RealDat.eC at h1 h2 ⊢`. Use `⟨fun g k => congrArg σ ((sg0 D A).injective (h1 g k)), fun g => ?_⟩` and prove the remaining obligations. Use `h2 g` as an intermediate fact. Simplify using `only [← map_mul, ← map_sum] at this ⊢`.
+
+Conclude with `congrArg σ ((sg0 D A).injective this)`.
+-/
 theorem eC_idem_at (hr : R.grp_record) (σ : D.what₂.LL →+* ℂ) : GlobalTheory.IndefiniteRowSideFullHecke.GoodBasisCentralIdempotents.IsCentralIdem (RealDat.eC (A := A) σ) := by
   obtain ⟨h1, h2⟩ := GlobalTheory.LiftScalarCompare.eC_idem hr
   unfold RealDat.eC at h1 h2 ⊢
@@ -53,9 +66,15 @@ theorem eC_idem_at (hr : R.grp_record) (σ : D.what₂.LL →+* ℂ) : GlobalThe
   simp only [← map_mul, ← map_sum] at this ⊢
   exact congrArg σ ((sg0 D A).injective this)
 
+/- English proof (translation)
+The claim follows from `op_idem (R.gW i σ) (eC_idem_at h.grp.record σ) x`.
+-/
 theorem projH_idem (h : R.Char F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (x : (R.HW i σ).H) :
     projH R i σ (projH R i σ x) = projH R i σ x := op_idem (R.gW i σ) (eC_idem_at h.grp.record σ) x
 
+/- English proof (translation)
+The claim follows from `adjoint_eq_self _ (projH_idem h i σ) fun _ hx y => GlobalTheory.LiftScalarCompare.adjoint_idem (R.gW i σ) (GlobalTheory.gW_norm_eq R h.models.HW h.models.gW h.models.νW i σ) (eC_idem_at h.grp.record σ) hx y`.
+-/
 theorem projH_adjoint (h : R.Char F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) :
     LinearMap.adjoint (projH R i σ) = projH R i σ :=
   adjoint_eq_self _ (projH_idem h i σ) fun _ hx y => GlobalTheory.LiftScalarCompare.adjoint_idem (R.gW i σ)
@@ -70,11 +89,19 @@ def blkChar (i : Fin D.R.m) : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ :=
 def conjChar (s : ℂ ≃+* ℂ) (m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ :=
   fun PP => (Units.map (s : ℂ →+* ℂ).toMonoidHom).comp (m PP)
 
+/- English proof (translation)
+Unfold `twVal`. Simplify using the standard rewrite rules.
+-/
 theorem twVal_zero {E : Type} [Field E] [NumberField E] (χ : Formalism.L2.Host.HChar E) (P : HeightOneSpectrum (𝓞 E)) (k : Eˣ) :
     twVal χ 0 P k = ((χ.locK P k : ℂˣ) : ℂ) := by
   unfold twVal
   simp
 
+/- English proof (translation)
+Take `⟨μH, a1, a2⟩` from `GlobalTheory.ConjMuChar.exists_galConj_chrEq R F h i σ s hσ μ' hμ`. Take `⟨ηH, b1, b2⟩` from `GlobalTheory.EtaConjChar.exists_galConj_eta R F h σ s hσ η' hη`. Take `⟨μB, -, c1, -, -, -, c2⟩` from `isConjChars_base R h i A.μ0`. Use `⟨μH, ηH, a1, b1, a2, b2, fun PP hP a k u hk hu => Units.ext ?_⟩` and prove the remaining obligations. Establish `e1` using `a1 PP k`.
+
+Establish `e2` using `c1 PP k`. Rewrite `e1`, `e2` using `[twVal_zero, twVal_zero]`. Establish `e3` using `c2 PP hP a k u hk hu`. Rewrite using `[e1]`. Conclude with `congrArg s ((congrArg Units.val e3).trans e2)`.
+-/
 theorem isConjChars_at (h : R.Char F) (i : Fin D.R.m) {σ : D.what₂.LL →+* ℂ} {s : ℂ ≃+* ℂ} (hσ : IsEmbOverK D σ s)
     {μ' η' : (AE D)ˣ →* Circle} (hμ : ChiAt R i σ μ') (hη : GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.IsEtaConj σ R.eta η') :
     IsConjChars R i A.μ0 s μ' η' (conjChar s (blkChar R i)) := by
@@ -89,6 +116,9 @@ theorem isConjChars_at (h : R.Char F) (i : Fin D.R.m) {σ : D.what₂.LL →+* �
   rw [e1]
   exact congrArg s ((congrArg Units.val e3).trans e2)
 
+/- English proof (translation)
+Unfold `levFn`. Establish `e : ∀ y, ext1 (LevelP.triv Pg r ℂ).H (LevelP.triv Pg r ℂ).chi y = 1` using `fun y => Lev.subgroupCharExtension_one_apply _ _`. Simplify using `only [e, one_mul, Units.val_mul, Units.coe_prod, map_mul, map_prod]`. Both sides reduce to the same expression.
+-/
 theorem levFn_conj {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (r : ℕ) (hr : r ≤ n) (t s' : ℕ) (Pg Q : Finset (Pl D.host.E))
     (s : ℂ ≃+* ℂ) (m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (x) :
     ((levFn β ⟨r, hr, t, s', Pg, Q, LevelP.triv _ _ _, fun _ => conjChar s m, conjChar s m⟩ x : ℂˣ) : ℂ) =
@@ -98,11 +128,19 @@ theorem levFn_conj {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (r : ℕ) (hr : r ≤
   simp only [e, one_mul, Units.val_mul, Units.coe_prod, map_mul, map_prod]
   rfl
 
+/- English proof (translation)
+The claim follows from `levFn_conj (R.βV i) D.R.r (r_le_V i) D.R.t 1 R.Pg (R.Q A.μ0) s m (Formalism.UG.bc (Lev.swapAE D) k.1.1)`.
+-/
 theorem chrOf_conj (i : Fin D.R.m) (s : ℂ ≃+* ℂ) (m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (k : levJ R i A.μ0) :
     ((chrOf (Vc D i) (R.βV i) (datV i R.Pg (R.Q A.μ0) R.triv (conjChar s m)) k : ℂˣ) : ℂ) =
       s ((chrOf (Vc D i) (R.βV i) (datV i R.Pg (R.Q A.μ0) R.triv m) k : ℂˣ) : ℂ) :=
   levFn_conj (R.βV i) D.R.r (r_le_V i) D.R.t 1 R.Pg (R.Q A.μ0) s m (Formalism.UG.bc (Lev.swapAE D) k.1.1)
 
+/- English proof (translation)
+Use `MonoidHom.ext fun k : levJ R i A.μ0 => Units.ext ?_` and prove the remaining obligations. Use `(hχ k).elim fun y hy => ?_` and prove the remaining obligations. Establish `h1` using `hy.1`. Establish `h2` using `hy.2`. Establish `e1` using `congrArg Units.val (DFunLike.congr_fun (chr_base R h i A.μ0) k)`.
+
+Establish `e2` using `chrOf_conj (R := R) i s (blkChar R i) k`. Establish `e3 : ((χ' k : ℂˣ) : ℂ) = s (((levEnv (Vc D i) (R.βV i) (R.datVt i A.μ0)).χ k : ℂˣ) : ℂ)` using `h2.symm.trans ((hσ.1 y).trans (congrArg s h1))`. Conclude with `e2.trans ((congrArg s e1).trans e3.symm)`.
+-/
 theorem chr_at (h : R.Char F) (i : Fin D.R.m) {σ : D.what₂.LL →+* ℂ} {s : ℂ ≃+* ℂ} (hσ : IsEmbOverK D σ s)
     (χ' : levJ R i A.μ0 →* ℂˣ)
     (hχ : ∀ k, GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.ConjVal σ (((levEnv (Vc D i) (R.βV i) (R.datVt i A.μ0)).χ k : ℂˣ) : ℂ) ((χ' k : ℂˣ) : ℂ)) :
@@ -117,6 +155,11 @@ theorem chr_at (h : R.Char F) (i : Fin D.R.m) {σ : D.what₂.LL →+* ℂ} {s :
     h2.symm.trans ((hσ.1 y).trans (congrArg s h1))
   exact e2.trans ((congrArg s e1).trans e3.symm)
 
+/- English proof (translation)
+Rewrite using `[Q_base h.lev]`. Unfold `Datum.IsThPVecOf at hf`. Unfold `IsLevelVec`. Establish `hQ : ∀ y : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP), Datum.omegaQ ∅ (Wc D i).rank m (-1) y = Datum.omegaQ ∅ (Wc D i).rank (fun _ => 1) (-1) y`. Introduce `y`.
+
+Unfold `Datum.omegaQ`. Simplify using the standard rewrite rules. Simplify using `only [omegaG_triv, hQ]`. Conclude with `hf`.
+-/
 theorem isLevelVec_at (h : R.Char F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     {f₀ f : Datum.WO (Vc D i) (Wc D i) → ℂ}
     (hf : Datum.IsThPVecOf R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i σ)) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i)
@@ -134,6 +177,11 @@ theorem isLevelVec_at (h : R.Char F) (i : Fin D.R.m) (σ : D.what₂.LL →+* �
   simp only [omegaG_triv, hQ]
   exact hf
 
+/- English proof (translation)
+Establish `e : mainTerm D i σ = GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.logHookSum i (lab σ)`. Unfold `mainTerm GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.logHookSum`. Simplify using `only [Nat.cast_mul]`. Both sides reduce to the same expression. Rewrite using `[e, h]`.
+
+Unfold `hookPlus GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.logHookSum`. Use `Finset.sum_le_sum fun ρ _ => Real.log_le_log (Nat.cast_pos.2 (hookProd_pos _)) (Nat.cast_le.2 ?_)` and prove the remaining obligations. Conclude with `Nat.le_mul_of_pos_right _ (hookProd_pos _)`.
+-/
 theorem hookPlus_le (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ)
     (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.logHookSum i (lab σ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.logHookSum i id) : hookPlus D i ≤ mainTerm D i σ := by
   have e : mainTerm D i σ = GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.logHookSum i (lab σ) := by
@@ -145,6 +193,11 @@ theorem hookPlus_le (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ)
   refine Finset.sum_le_sum fun ρ _ => Real.log_le_log (Nat.cast_pos.2 (hookProd_pos _)) (Nat.cast_le.2 ?_)
   exact Nat.le_mul_of_pos_right _ (hookProd_pos _)
 
+/- English proof (translation)
+Establish `h0 : (R.HW i σ).e (x - y) v = 0`. Rewrite using `[LinearMap.map_sub]`. Conclude with `sub_eq_zero.2 (h fun ρ => ⟨v ρ, (hv ρ).2.1⟩)`. Establish `h1` using `(hW i σ).2.2 (x - y) (x - y)`. Rewrite `h1` using `[ipAt, GlobalTheory.EvalAtUnitVector.ipM_self_eq_zero _ _ _ _ v (fun τ => (hv τ).1) h0, mul_zero]`.
+
+Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h1)`.
+-/
 theorem eq_of_low_at (hW : R.models_HW) {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} {v : (R.MW i σ).Vec} (hv : IsExtVec (R.MW i σ) v)
     {x y : (R.HW i σ).H}
     (h : ∀ w : ∀ ρ, lowT (R.MW i σ) ρ, (R.HW i σ).e x (fun ρ => w ρ) = (R.HW i σ).e y fun ρ => w ρ) : x = y := by
@@ -155,6 +208,11 @@ theorem eq_of_low_at (hW : R.models_HW) {i : Fin D.R.m} {σ : D.what₂.LL →+*
   rw [ipAt, GlobalTheory.EvalAtUnitVector.ipM_self_eq_zero _ _ _ _ v (fun τ => (hv τ).1) h0, mul_zero] at h1
   exact sub_eq_zero.1 (inner_self_eq_zero.1 h1)
 
+/- English proof (translation)
+Take `rfl : th = e ∘ₗ T` from `LinearMap.ext h5`. Use `GlobalTheory.mul_norm_sq_le_norm_proj_apply_sq_of_spanning_parts X Y ι T e P _ (Real.exp_pos a) h1 h2 ?_ fun k => ?_` and prove the remaining obligations. Conclude with `top_le_iff.1 (h3.ge.trans (iSup₂_le fun k _ => le_iSup P k))`. Distinguish the cases in `hk : P k = ⊥`. Use `⟨_, le_rfl, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hy` using `[hk, Submodule.mem_bot]`. Simplify using `[hy]`. Take `⟨l, a1, a2, a3⟩` from `h4 k hk`. Conclude with `⟨l, (Real.le_log_iff_exp_le a1).1 a3, a2⟩`.
+-/
 theorem lower_of_parts {X Y ι : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [FiniteDimensional ℂ X]
     [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [FiniteDimensional ℂ Y] (T th : X →ₗ[ℂ] Y) (e : Y →ₗ[ℂ] Y)
     (P : ι → Submodule ℂ Y) (S : ι → Prop) (a : ℝ) (h1 : LinearMap.adjoint e = e) (h2 : ∀ y, e (e y) = e y)
@@ -173,6 +231,13 @@ theorem lower_of_parts {X Y ι : Type} [NormedAddCommGroup X] [InnerProductSpace
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature in
 
+/- English proof (translation)
+Establish `hμ` using `hd.1`. Establish `hη` using `hd.2.1`. Establish `hF` using `hd.2.2.1`. Use `hd.2.2.2.elim fun ω a => a.elim fun f₀ a => a.elim fun f a => a.elim fun B a => a.elim fun io a => a.elim fun thP a => ?_` and prove the remaining obligations. Use `hF.model.elim fun χ' hχ => ?_` and prove the remaining obligations.
+
+Establish `hH` using `hχ.2`. Rewrite `hH` using `[← chr_at h i hσ χ' hχ.1]`. Establish `key` using `hA h i b hb A.μ0 ht σ s hσ R.triv (isLocal_triv R) _ _ _ (isConjChars_at h i hσ hμ hη) ω a.1 B a.2.2.1 f₀ f (isLevelVec_at h i σ _ a.2.1) a.2.2.2.1 c hF.coef io a.2.2.2.2.1 (R.νV i A.μ0) (R.fdV i A.μ0) (h.models.νV i A.μ0) _ (R.B.L i A.μ0).pres.y (R.B.L i A.μ0).pres.reps H hH`. Use `key.1.elim fun T hT => ⟨T, fun x => eq_of_low_at h.models.HW hv fun w => ?_, key.2 T hT⟩` and prove the remaining obligations. Establish `e1 : (R.HW i σ).e (T x) (fun ρ => w ρ) = thP ((c.ext ∘ₗ H.e).rangeRestrict x) (PiTensorProduct.tprod ℂ w)`.
+
+Use function extensionality and compare the values at `fun g => (hT x w g).2.trans (GlobalTheory.BaseScalar.integrableOn_of_isThetaLift a.2.2.2.2.2.1 x (PiTensorProduct.tprod ℂ w) g).2.symm`. Establish `e2 : (R.HW i σ).e (projH R i σ (T x)) (fun ρ => w ρ) = R.eWf i σ ((R.HW i σ).e (T x) fun ρ => w ρ)` using `congrArg (fun U : MMap (R.MW i σ) => U fun ρ => w ρ) (e_projH h.models.gW i σ (T x))`. Conclude with `(a.2.2.2.2.2.2 x w).trans (e2.trans (congrArg (R.eWf i σ) e1)).symm`.
+-/
 theorem exists_full_lift (hA : AdelicLiftScalar R F) (h : R.Char F) (i : Fin D.R.m) {b : ℝ} (hb : Sizes D i b)
     (ht : PrimeToHost R A.μ0) {σ : D.what₂.LL →+* ℂ} {s : ℂ ≃+* ℂ} (hσ : IsEmbOverK D σ s) {v : (R.MW i σ).Vec}
     (hv : IsExtVec (R.MW i σ) v) {c₀ μ' η' c c₁ H j th} (hd : IsConjDatum R i σ c₀ μ' η' c c₁ H j th) :
@@ -199,6 +264,11 @@ theorem exists_full_lift (hA : AdelicLiftScalar R F) (h : R.Char F) (i : Fin D.R
     congrArg (fun U : MMap (R.MW i σ) => U fun ρ => w ρ) (e_projH h.models.gW i σ (T x))
   exact (a.2.2.2.2.2.2 x w).trans (e2.trans (congrArg (R.eWf i σ) e1)).symm
 
+/- English proof (translation)
+Introduce `ev hev`. Establish `e` using `LiftLower.typePart_base h.lev i σ ev`. Use `(hT ev (fun h0 => hev (e.symm.trans h0))).elim fun l a => ?_` and prove the remaining obligations. Use `⟨l, a.1, fun y hy => ?_, le_trans (sub_le_sub_right (hookPlus_le i σ hlog) _) a.2.2⟩` and prove the remaining obligations. Establish `e1` using `LinearMap.congr_fun (GlobalTheory.BaseScalar.adjLev_triv R T) y`.
+
+Establish `e2` using `a.2.1 y (e.ge hy)`. Conclude with `(congrArg T e1).symm.trans e2`.
+-/
 theorem parts_scalar (h : R.Char F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) {b : ℝ}
     (hlog : GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.logHookSum i (lab σ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.logHookSum i id)
     {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [FiniteDimensional ℂ X] (T : X →ₗ[ℂ] (R.HW i σ).H)
@@ -217,6 +287,11 @@ theorem parts_scalar (h : R.Char F) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature in
 
+/- English proof (translation)
+Use `(exists_full_lift hA h i hb ht hσ hv hd).elim fun T hT => ?_` and prove the remaining obligations. Establish `p1` using `projH_adjoint h i σ`. Establish `p2` using `projH_idem h i σ`. Establish `p3` using `GlobalTheory.PrincipalDecomp.iSup_partH_eq_top R F h i σ (schurMult_of_models R h.models.HW i σ)`. Establish `p4` using `parts_scalar h i σ (b := b) hlog T hT.2`.
+
+Conclude with `lower_of_parts T th (projH R i σ) (partH R i σ) (IsNormSys R i) _ p1 p2 p3 p4 hT.1`.
+-/
 theorem conjLift_lower (hA : AdelicLiftScalar R F) (h : R.Char F) (i : Fin D.R.m) {b : ℝ} (hb : Sizes D i b)
     (ht : PrimeToHost R A.μ0) {σ : D.what₂.LL →+* ℂ} {s : ℂ ≃+* ℂ} (hσ : IsEmbOverK D σ s) {v : (R.MW i σ).Vec}
     (hv : IsExtVec (R.MW i σ) v) (hlog : logHookSum i (lab σ) = logHookSum i id) {c₀ μ' η' c c₁ H j th}

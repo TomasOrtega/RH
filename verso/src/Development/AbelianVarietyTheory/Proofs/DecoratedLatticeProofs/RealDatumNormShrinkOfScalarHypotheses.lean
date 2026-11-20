@@ -26,6 +26,25 @@ namespace GlobalTheory.ChainTw.RNrmProof
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG`. Establish `hL` using `hG.core.lev`. Establish `hC` using `hG.core.chain`. Establish `hQ : R.Q A.μ0 = ∅` using `GlobalTheory.ChainTw.RModel.Q_base R hL`. Establish `hm` using `D.R.two_le_m`.
+
+Introduce `t`. Use `⟨fun k hk m X hX => ?_, fun m X hX => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hL.βY k (by omega)`. Take `⟨c', hc'⟩` from `hL.βY (k + 1) hk`. Establish `h1` using `hC.vY t k hk`.
+
+Establish `h2` using `hC.vY A.μ0 k hk`. Rewrite `h2` using `[LevCh.datYt, hQ]`. Rewrite `h1` using `[LevCh.datYt]`. Establish `hb : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.IsBase R.ψ R.θ (Yc D k) (Yc D (k + 1)) (cart (R.MY k)) (cart (R.MY (k + 1))) (R.ΛY k) (R.ΛY (k + 1)) (R.vac k)` using `⟨GlobalTheory.Chain.VacVec.cart_isCartanInv _, GlobalTheory.Chain.VacVec.cart_isCartanInv _, GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ ⟨c, hc⟩, GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ ⟨c', hc'⟩, h1.1⟩`. Establish `hrk : (Yc D k).rank + D.R.t = (Yc D (k + 1)).rank`.
+
+Rewrite using `[GlobalTheory.Chain.StepVac.rank_Yc (by omega), GlobalTheory.Chain.StepVac.rank_Yc (by omega)]; ring`. Establish `key` using `GlobalTheory.T.nrm2_twisted_eq_untwisted_mul_prod_zinv D R.ψ R.θ (Yc D k) (Yc D (k + 1)) _ _ _ _ _ _ (R.vac k) m X hb hX hc.1 hc'.1 D.R.r D.R.t k D.R.t (r_le_Y k) hrk R.Pg (R.Q t) (GlobalTheory.ChainTw.RModel.disjoint_Pg_Q R.toLevCh hL t) (hG.guard.2 t) R.chi (R.chi (k + 1)) (R.x …`. Rewrite using `[key]`. Use `congr 1`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+
+Unfold `volOne`. Rewrite using `[GlobalTheory.Chain.StepVac.rank_Yc (by omega)]`. Use `congr 4`. Simplify using the standard rewrite rules. Take `⟨c, hc⟩` from `hL.βY (D.R.m - 1) (by omega)`.
+
+Take `⟨c', hc'⟩` from `hL.βX`. Establish `h1` using `hC.vX t`. Establish `h2` using `hC.vX A.μ0`. Rewrite `h2` using `[LevCh.datYt, hQ]`. Rewrite `h1` using `[LevCh.datYt]`.
+
+Establish `hb : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.IsBase R.ψ R.θ (Yc D (D.R.m - 1)) D.sp.X' (cart (R.MY (D.R.m - 1))) (cart R.MX) (R.ΛY (D.R.m - 1)) R.ΛX R.vacX` using `⟨GlobalTheory.Chain.VacVec.cart_isCartanInv _, GlobalTheory.Chain.VacVec.cart_isCartanInv _, GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ ⟨c, hc⟩, GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ ⟨c', hc'⟩, h1.1⟩`. Establish `hX' : D.sp.X'.rank = D.R.r + D.R.m * D.R.t` using `D.sp.X'_rank`. Establish `hrk : (Yc D (D.R.m - 1)).rank + D.R.t = D.sp.X'.rank`. Rewrite using `[GlobalTheory.Chain.StepVac.rank_Yc (by omega), hX']`. Take `⟨n, hn⟩ : ∃ n, D.R.m = n + 1` from `⟨D.R.m - 1, by omega⟩`.
+
+Rewrite using `[hn, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `GlobalTheory.T.nrm2_twisted_eq_untwisted_mul_prod_zinv D R.ψ R.θ (Yc D (D.R.m - 1)) D.sp.X' _ _ _ _ _ _ R.vacX m X hb hX hc.1 hc'.1 D.R.r D.R.t (D.R.m - 1) D.R.t (r_le_Y _) hrk R.Pg (R.Q t) (GlobalTheory.ChainTw.RModel.disjoint_Pg_Q R.toLevCh hL t) (hG.guard.2 t) R.chi (R.chi D.R …`. Rewrite using `[key]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Unfold `volOne`. Rewrite using `[hX']`. Use `congr 4`. Simplify using the standard rewrite rules.
+-/
 theorem rNrm_of_given : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → RNrm R := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG
   have hL := hG.core.lev

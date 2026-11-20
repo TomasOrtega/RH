@@ -8,6 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheaf
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsDeRhamSheafIff
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HodgeSub.main | exact GlobalTheory.HodgeSub.main | (intros; apply GlobalTheory.HodgeSub.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hodge_into_de_rham_injective : GlobalTheory.CovTop.Hypotheses2 → ∀ (T : Scheme.{0}) (A : Over T) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →
     ∀ (H : T.Modules) (e : ∀ (V : T.Opens) (hV : IsAffineOpen V),

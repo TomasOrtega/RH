@@ -24,6 +24,9 @@ open Matrix GlobalTheory.LieEigen MonObj
 open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G.Chart (prodPts)
 
+/- English proof (translation)
+Take `⟨k, U, hk, hU, hd, e⟩` from `GlobalTheory.ValIwasawa.iwasawa_matrix (V := V) Aᵀ (by rwa [det_transpose])`. Use `⟨kᵀ, Uᵀ, by rwa [det_transpose], fun i j h => hU h, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[← transpose_transpose A, e, transpose_mul, transpose_map]`.
+-/
 theorem iwasawa_lower {V F : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Field F] [Algebra V F]
     [IsFractionRing V F] {n : ℕ} (A : Matrix (Fin n) (Fin n) F) (hA : A.det ≠ 0) :
     ∃ (k : Matrix (Fin n) (Fin n) V) (L : Matrix (Fin n) (Fin n) F), IsUnit k.det ∧ (∀ i j, i < j → L i j = 0) ∧
@@ -37,6 +40,13 @@ section Lie
 variable {R O : Type} [CommRing R] [IsLocalRing R] [CommRing O] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
   [Smooth G.hom] (act : OAct O G) {n : ℕ} {v : Fin n → (epsR R ⟶ G)}
 
+/- English proof (translation)
+Use `act.hom x` as an intermediate fact. Establish `e : prodPts c v ≫ act.act x = prodPts c fun i => v i ≫ act.act x`. Use `(map_list_prod (IsMonHom.monoidHom (act.act x) _) _).trans ?_` and prove the remaining obligations. Rewrite using `[prodPts, List.map_ofFn]`. Conclude with `congrArg (fun f => (List.ofFn f).prod) (funext fun i => Category.assoc _ (v i) (act.act x))`.
+
+Establish `e₁ : ∀ i, v i ≫ act.act x = prodPts (s • Pi.single i 1) v` using `fun i => by`. Rewrite using `[prodPts_smul, ← (Chart.isLieComb_iff _ _ _).1 (IntModelExists.isLieComb_single hv i)]`. Conclude with `Over.OverMorphism.ext (he i)`. Establish `e₂ : ∑ i, c i • (s • Pi.single i (1 : R) : Fin n → R) = s • c`. Use extensionality with `j`.
+
+Simplify using `[Pi.single_apply, mul_comm]`. Rewrite using `[e, funext e₁, prodPts_prodPts hv, e₂, prodPts_smul]`. Both sides reduce to the same expression.
+-/
 theorem eig_prodPts (hv : ∀ i, IsTangent (v i)) (x : O) (s : R)
     (he : ∀ i, (v i ≫ act.act x).left = spMap (epsScaleR s) ≫ (v i).left) (c : Fin n → R) :
     (prodPts c v ≫ act.act x).left = spMap (epsScaleR s) ≫ (prodPts c v).left := by
@@ -55,6 +65,11 @@ theorem eig_prodPts (hv : ∀ i, IsTangent (v i)) (x : O) (s : R)
 
 omit [IsLocalRing R] [Smooth G.hom] in
 
+/- English proof (translation)
+Establish `key : ∀ cf : Fin n → R, IsLieComb cf (fun i => prodPts (k i) v) w ↔ IsLieComb (cf ᵥ* k) v w` using `fun cf => by`. Rewrite using `[Chart.isLieComb_iff, Chart.isLieComb_iff, vecMul_eq_sum]`. Conclude with `Eq.congr_right (prodPts_prodPts hv cf fun i => k i)`. Take `⟨d, hd, hu⟩` from `h`. Use `⟨d ᵥ* k⁻¹, (key _).2 ?_, fun cf hcf => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[vecMul_vecMul, nonsing_inv_mul _ hk, vecMul_one]` and apply the resulting hypothesis. Rewrite using `[← hu _ ((key _).1 hcf), vecMul_vecMul, mul_nonsing_inv _ hk, vecMul_one]`.
+-/
 theorem existsUnique_change (hv : ∀ i, IsTangent (v i)) (k : Matrix (Fin n) (Fin n) R) (hk : IsUnit k.det)
     {w : epsR R ⟶ G} (h : ∃! cf : Fin n → R, IsLieComb cf v w) :
     ∃! cf : Fin n → R, IsLieComb cf (fun i => prodPts (k i) v) w := by
@@ -71,6 +86,13 @@ end Lie
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
 
+/- English proof (translation)
+Take `⟨v, hi, hb⟩` from `h`. Use `W.t.semi.smooth` as an intermediate fact. Set `k' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (PowerSeries A)` to `fun τ => (k τ).map (PowerSeries.C (R := A))`. Establish `hk' : ∀ τ, IsUnit (k' τ).det` using `fun τ => by`. Use `(hk τ).map (PowerSeries.C (R := A))` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Establish `ht : ∀ τ i, IsTangent (v τ i)` using `fun τ i => ((hb τ).1 i).1`. Establish `img : ∀ τ i, LieImg W (e' τ i) (prodPts (k' τ i) (v τ))` using `fun τ i => (GlobalTheory.T.lieImg_iff_isLieComb_of_gtComb hG E H Dw l Xo c O β Y A b a χ W _ _ (e τ) _ (v τ) _ (hi τ) (he τ i)).2 ((Chart.isLieComb_iff _ _ _).2 rfl)`. Use `⟨⟨_, img, fun τ => ⟨fun i => ⟨isTangent_prodPts (ht τ) _, fun x => ?_⟩, fun w hw hw' => ?_⟩⟩, fun τ i => ((GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W _).2 _ (img τ i)).2 (isTangent_prodPts (ht τ) _)⟩` and prove the remaining obligations. Conclude with `eig_prodPts W.t.act (ht τ) x _ (fun j => ((hb τ).1 j).2 x) _`.
+
+Conclude with `existsUnique_change (ht τ) (k' τ) (hk' τ) ((hb τ).2 w hw hw')`.
+-/
 theorem arcBasis_change (hG : Out.GlobalFnsSt) {A : Type} [CommRing A] [IsDomain A] [IsLocalRing A]
     [IsNoetherianRing A] {b : O →+* A} {a : ArcIn Dw l β A b} {χ : Sp (PowerSeries A) ⟶ Y.X} (W : Wit Y a χ)
     {ρ : (E →+* ℂ) → (𝓞 E →+* A)} {e e' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR A)}
@@ -93,6 +115,11 @@ theorem arcBasis_change (hG : Out.GlobalFnsSt) {A : Type} [CommRing A] [IsDomain
   · exact eig_prodPts W.t.act (ht τ) x _ (fun j => ((hb τ).1 j).2 x) _
   · exact existsUnique_change (ht τ) (k' τ) (hk' τ) ((hb τ).2 w hw hw')
 
+/- English proof (translation)
+Establish `key : ∀ (x : c.F) (n : ℕ), 0 < n → ∀ m : ℤ, x ^ n = m → x ∈ V` using `fun x n hn m h => IntModelExists.mem_of_isIntegral _ (IsIntegral.of_pow hn (by`. Rewrite using `[h]`. Simplify using `using isIntegral_algebraMap (R := ℤ) (A := c.F) (x := m)))`. Use `⟨⟨⟨_, GlobalTheory.HostModel.sqrtNegDisc_mem_coeffField c⟩, key _ 2 two_pos (-(H.d : ℤ)) ?_⟩, ⟨⟨_, GlobalTheory.HostModel.zeta_A_mem_coeff c⟩, key _ l.A l.A_pos 1 ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `using H.sqrt_neg_disc_sq`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `(Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one` using `[zeta]`.
+-/
 theorem exists_values (c : Coeff l) (V : ValuationSubring c.F) :
     ∃ r z : V, ((V.subtype r : c.F) : ℂ) = H.rt0 ∧ ((V.subtype z : c.F) : ℂ) = zeta l.A := by
   have key : ∀ (x : c.F) (n : ℕ), 0 < n → ∀ m : ℤ, x ^ n = m → x ∈ V := fun x n hn m h =>
@@ -105,6 +132,23 @@ theorem exists_values (c : Coeff l) (V : ValuationSubring c.F) :
   · apply Subtype.ext
     simpa [zeta] using (Complex.isPrimitiveRoot_exp l.A l.A_pos.ne').pow_eq_one
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c V Y T io b a χ W ev z hP hb hχ hev hz hj`. Use `letI := io.toAlgebra`. Introduce `y hy`. Take `⟨hL, hL₂⟩` from `GlobalTheory.abelianSchemeLaws_all`. Establish `hG` using `hL.globalFns`.
+
+Establish `hinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective _ _`. Set `em : (E →+* ℂ) → (𝓞 E →+* V)` to `fun τ => (embK c τ).codRestrict V.toSubring fun x => IntModelExists.mem_of_isIntegral _ ((RingOfIntegers.isIntegral x).map (embK c τ).toIntAlgHom)`. Set `ρ : (E →+* ℂ) → (𝓞 E →+* T.V)` to `fun τ => b.comp (em τ)`. Establish `hρ : ∀ τ x, algebraMap T.V T.Fr (ρ τ x) = io (embK c τ x)` using `fun τ x => RingHom.congr_fun hb (em τ x)`. Establish `hC : ((algebraMap T.V T.Fr).comp ev).comp (PowerSeries.C (R` using `T.V)) = algebraMap T.V T.Fr := RingHom.ext fun x => congrArg (algebraMap T.V T.Fr) (hev x)`.
+
+Establish `hm : Mono Y.j`. Establish `: IsPreimmersion (spMap V.subtype)` using `IsPreimmersion.of_isLocalization (R := V) (S := c.F) (nonZeroDivisors V)`. Use `Y.jQ_open` as an intermediate fact. Unfold `Model.j`. Use `infer_instance`.
+
+Take `⟨e₁, -, he₁⟩` from `GlobalTheory.ConstBasis.exists_arcBasis hL hL₂ E H Dw l Xo c _ _ Y T.V b a χ W ρ io hb.symm hρ (exists_values c V)`. Take `⟨th, hth, -⟩` from `GlobalTheory.KeyOnPol.exists_generator hL.secBaseChange a.D₀.P`. Take `⟨y₁, hx₁, hy₁⟩` from `GlobalTheory.ArcQ.exists_isArcFr hL hL₂ E H Dw l Xo c _ _ Y T.V b a χ W ρ e₁ th he₁ hth (Or.inr hP) T.Fr ((algebraMap T.V T.Fr).comp ev) z (by rw [hC]; exact IntModelExists.flat_of_injective _ hinj) hj (by rw [← Category.assoc, hy]; exact y.2) (fun τ x => ((RingHom.congr_fun hC ( …`. Take `⟨g, s, hg⟩` from `(frChg_exists_unique_units E H Dw l Xo c T.Fr (fun _ => 1) 1 y₁).2.2.2 y (hx₁.trans hy).symm`. Take `⟨hgu, hsu⟩` from `(frChg_exists_unique_units E H Dw l Xo c T.Fr g s y₁).2.2.1 y hg`.
+
+Use `choose k L hk hL0 hLd hkL using fun τ => iwasawa_lower (V := T.V) (g τ) (hgu τ).ne_zero`. Use `choose e he using fun τ i => ConstLie.exists_gtComb (k τ i) (e₁ τ)`. Take `⟨hbe, hte⟩` from `arcBasis_change hG W he₁ k hk he`. Take `⟨y₀, hy₀⟩` from `(frChg_exists_unique_units E H Dw l Xo c T.Fr (fun τ => (k τ).map (algebraMap T.V T.Fr)) 1 y₁).1 (fun τ => by`. Use `(hk τ).map (algebraMap T.V T.Fr)` as an intermediate fact.
+
+Rewrite using `[RingHom.map_det] at this) isUnit_one` and apply the resulting hypothesis. Take `⟨hcomp, -, -, hbor⟩` from `frChg_calculus E H Dw l Xo c T.Fr`. Use `⟨ρ, e, th, y₀, fun i => match i with` and prove the remaining obligations. Consider the case `none => hsu.unit`. Consider the case `some p => Units.mk0 _ (hLd p.1 p.2), hbe, hth, hte, fun τ x => (hρ τ x).symm, ?_, ?_⟩`.
+
+Use `GlobalTheory.T.arcFrame_change_by_constants hL hL₂ E H Dw l Xo c _ _ Y T.V b a χ W e₁ e th th k 1 hth he (ThMul.refl th) T.Fr _ y₁ y₀ hm hy₁ ?_` and prove the remaining obligations. Rewrite using `[hC, map_one, map_one]`. Conclude with `hy₀`. Use `(hbor _ _ _).2 ⟨L, fun _ _ => rfl, hL0, (hcomp _ L _ _ y₁ y₀ y hy₀).2 ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_one, ← funext hkL]`.
+
+Conclude with `hg`.
+-/
 theorem exists_arcFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : ValuationSubring c.F) (Y : Model Xo c V.subtype) (T : CDVR) (io : c.F →+* T.Fr) (b : V →+* T.V) (a : ArcIn Dw l V.subtype T.V b) (χ : Sp (PowerSeries T.V) ⟶ Y.X) (W : Wit Y a χ) (ev : PowerSeries T.V →+* T.V) (z : Sp T.Fr ⟶ Xo.XF c), PushInvertible Y.t.G Y.t.PP.L → (algebraMap T.V T.Fr).comp b = io.comp V.subtype → χ ≫ Y.s = spMap (PowerSeries.C (R := T.V)) ≫ spMap b → (∀ x, ev (PowerSeries.C x) = x) → z ≫ pullback.snd _ _ = spMap io → z ≫ Y.j = spMap ((algebraMap T.V T.Fr).comp ev) ≫ χ → letI := io.toAlgebra; ∀ y : FrPt Xo c T.Fr, z ≫ pullback.fst _ _ = y.x → ∃ (ρ : (E →+* ℂ) → (𝓞 E →+* T.V)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR T.V)) (th : a.D₀.P.L.Sec) (y₀ : FrPt Xo c T.Fr) (t : Ix Dw → T.Frˣ), ArcBasis W ρ e ∧ ThNZ th ∧ (∀ τ k, GtTanR (e τ k)) ∧ (∀ τ x, io (embK c τ x) = algebraMap T.V T.Fr (ρ τ x)) ∧ IsArcFr W e th ((algebraMap T.V T.Fr).comp ev) y₀ ∧ FrBor t y₀ y := by
   intro E _ _ _ H Dw l Xo c V Y T io b a χ W ev z hP hb hχ hev hz hj
   letI := io.toAlgebra

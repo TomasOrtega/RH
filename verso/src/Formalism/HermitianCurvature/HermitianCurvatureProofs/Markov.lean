@@ -4,6 +4,9 @@ namespace Formalism.FourierDecayAlt.P.Markov
 
 open Polynomial Real Finset
 
+/- English proof (translation)
+The claim follows from `|r.eval y| ≤ K * (derivative (Lagrange.nodal s v)).eval y := by have hne : ∀ i ∈ s, y ≠ v i := fun i hi => (hy i hi).ne' have hNpos : 0 < (Lagrange.nodal s v).eval y := by rw [Lagrange.eval_nodal]; exact Finset.prod_pos fun i hi => sub_pos.mpr (hy i hi) have hd : (derivative (Lag …`.
+-/
 theorem abs_eval_le_of_nodes (s : Finset ℕ) (v : ℕ → ℝ) (hvs : Set.InjOn v s) (r : ℝ[X])
     (hr : r.degree < #s) (K : ℝ)
     (hK : ∀ i ∈ s, |r.eval (v i)| ≤ K * |(derivative (Lagrange.nodal s v)).eval (v i)|)
@@ -52,9 +55,19 @@ theorem abs_eval_le_of_nodes (s : Finset ℕ) (v : ℕ → ℝ) (hvs : Set.InjOn
 
 noncomputable def th (n k : ℕ) : ℝ := (2 * k + 1) * π / (2 * n)
 
+/- English proof (translation)
+The claim follows from `(Finset.range n).nodup_map_iff_injOn.mp (Chebyshev.roots_T_real_nodup n)`.
+-/
 theorem injOn_cos_th (n : ℕ) : Set.InjOn (fun k => cos (th n k)) (Finset.range n : Finset ℕ) :=
   (Finset.range n).nodup_map_iff_injOn.mp (Chebyshev.roots_T_real_nodup n)
 
+/- English proof (translation)
+Establish `h2 : ((2 : ℝ) ^ (n - 1)) ≠ 0` using `by positivity`. Apply `eq_of_degree_le_of_eval_index_eq (Finset.range n) (injOn_cos_th n)` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[degree_C_mul h2, Lagrange.degree_nodal]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[leadingCoeff_mul, leadingCoeff_C, Lagrange.nodal_monic.leadingCoeff]`. Simplify using the standard rewrite rules. Introduce `i hi`. Establish `h0 : eval (cos (th n i)) (Lagrange.nodal (Finset.range n) fun k => cos (th n k)) = 0` using `Lagrange.eval_nodal_at_node (v := fun k => cos (th n k)) hi`. Rewrite using `[eval_mul, h0, mul_zero, Chebyshev.T_real_cos, cos_eq_zero_iff]`.
+
+Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `: (n : ℝ) ≠ 0` using `by exact_mod_cast hn`. Simplify using `only [th]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem T_eq_nodal (n : ℕ) (hn : n ≠ 0) :
     Chebyshev.T ℝ n =
       C ((2 : ℝ) ^ (n - 1)) * Lagrange.nodal (Finset.range n) (fun k => cos (th n k)) := by
@@ -73,10 +86,16 @@ theorem T_eq_nodal (n : ℕ) (hn : n ≠ 0) :
     push_cast
     field_simp
 
+/- English proof (translation)
+Establish `: (0 : ℝ) < n` using `by exact_mod_cast Nat.pos_of_ne_zero hn`. Unfold `th`. Check the signs of the components of the expression.
+-/
 theorem th_pos (n k : ℕ) (hn : n ≠ 0) : 0 < th n k := by
   have : (0 : ℝ) < n := by exact_mod_cast Nat.pos_of_ne_zero hn
   unfold th; positivity
 
+/- English proof (translation)
+Establish `hn : (0 : ℝ) < n` using `by exact_mod_cast (Nat.zero_le k).trans_lt hk`. Establish `hk' : (k : ℝ) + 1 ≤ n` using `by exact_mod_cast hk`. Unfold `th`. Rewrite using `[div_lt_iff₀ (by positivity)]`. Use polynomial arithmetic with `[pi_pos]`.
+-/
 theorem th_lt_pi {n k : ℕ} (hk : k < n) : th n k < π := by
   have hn : (0 : ℝ) < n := by exact_mod_cast (Nat.zero_le k).trans_lt hk
   have hk' : (k : ℝ) + 1 ≤ n := by exact_mod_cast hk
@@ -84,6 +103,9 @@ theorem th_lt_pi {n k : ℕ} (hk : k < n) : th n k < π := by
   rw [div_lt_iff₀ (by positivity)]
   nlinarith [pi_pos]
 
+/- English proof (translation)
+The claim follows from `|(Chebyshev.U ℝ ((n : ℤ) - 1)).eval (cos (th n k))| * |sin (th n k)| = 1 := by have hn' : (n : ℝ) ≠ 0 := by exact_mod_cast hn rw [← abs_mul, Chebyshev.U_real_cos] have : ((((n : ℤ) - 1 : ℤ) : ℝ) + 1) * th n k = k * π + π / 2 := by push_cast; simp only [th]; field_simp; ring rw [t …`.
+-/
 theorem abs_U_mul_sin (n k : ℕ) (hn : n ≠ 0) :
     |(Chebyshev.U ℝ ((n : ℤ) - 1)).eval (cos (th n k))| * |sin (th n k)| = 1 := by
   have hn' : (n : ℝ) ≠ 0 := by exact_mod_cast hn
@@ -93,6 +115,23 @@ theorem abs_U_mul_sin (n k : ℕ) (hn : n ≠ 0) :
   rw [this, sin_add_pi_div_two, cos_nat_mul_pi]
   simp
 
+/- English proof (translation)
+Establish `hn0 : 0 < n` using `Nat.pos_of_ne_zero hn`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn0`. Establish `hc : 0 ≤ c` using `(abs_nonneg _).trans (hC 0 hn0)`. Establish `hym : -1 ≤ y` using `(neg_one_le_cos _).trans (hy 0 hn0).le`. Establish `hT' : derivative (Chebyshev.T ℝ n) = C ((2 : ℝ) ^ (n - 1)) * derivative (Lagrange.nodal (Finset.range n) (fun k => cos (th n k)))` using `by conv_lhs => rw [T_eq_nodal n hn, derivative_C_mul]`.
+
+Establish `hTe : ∀ x : ℝ, (derivative (Chebyshev.T ℝ n)).eval x = (2 : ℝ) ^ (n - 1) * (derivative (Lagrange.nodal (Finset.range n) (fun k => cos (th n k)))).eval x`. Introduce `x`. Rewrite using `[hT']`. Simplify using the standard rewrite rules. Establish `hUe : ∀ x : ℝ, (derivative (Chebyshev.T ℝ n)).eval x = n * (Chebyshev.U ℝ ((n : ℤ) - 1)).eval x`.
+
+Introduce `x`. Rewrite using `[Chebyshev.T_derivative_eq_U]`. Simplify using the standard rewrite rules. Establish `key` using `abs_eval_le_of_nodes (Finset.range n) (fun k => cos (th n k)) (injOn_cos_th n) r (by simpa using hr) (c / n * 2 ^ (n - 1)) ?_ y (by simpa using hy)`. Establish `h2 : (derivative (Chebyshev.T ℝ n)).eval y ≤ (n : ℝ) ^ 2`.
+
+Establish `h3` using `Chebyshev.abs_iterate_derivative_T_real_le n 1 (x := y) (abs_le.mpr ⟨hym, hy1⟩)`. Simplify using `only [Function.iterate_one, Chebyshev.derivative_T_eval_one] at h3`. Conclude with `(le_abs_self _).trans (by simpa using h3)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc]`.
+
+Conclude with `key`. Use `_ = c / n * (derivative (Chebyshev.T ℝ n)).eval y := by rw [hTe]`. Use `_ ≤ c / n * (n : ℝ) ^ 2 := mul_le_mul_of_nonneg_left h2 (by positivity)`. Use `_ = n * c := by field_simp`. Introduce `k hk`.
+
+Establish `hk' : k < n` using `Finset.mem_range.mp hk`. Establish `h1` using `abs_U_mul_sin n k hn`. Establish `h2` using `hC k hk'`. Rewrite `h2` using `[abs_mul]`. Establish `h3 : c / n * 2 ^ (n - 1) * |(derivative (Lagrange.nodal (Finset.range n) (fun k => cos (th n k)))).eval (cos (th n k))| = c * |(Chebyshev.U ℝ ((n : ℤ) - 1)).eval (cos (th n k))|`.
+
+Establish `h4` using `(hTe (cos (th n k))).symm.trans (hUe (cos (th n k)))`. Establish `h5` using `congrArg abs h4`. Rewrite `h5` using `[abs_mul, abs_mul, abs_of_pos hn', abs_of_pos (by positivity : (0 : ℝ) < 2 ^ (n - 1))]`. Rewrite using `[mul_assoc, h5]`. Clear the denominators using the available nonvanishing facts.
+
+Use `show |r.eval (cos (th n k))| ≤ _`. Rewrite using `[h3]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_right_comm, mul_comm |sin (th n k)|, h1, one_mul]`. Use `_ ≤ _ := mul_le_mul_of_nonneg_right h2 (abs_nonneg _)`.
+-/
 theorem schur (n : ℕ) (hn : n ≠ 0) (r : ℝ[X]) (hr : r.degree < n) (c : ℝ)
     (hC : ∀ k < n, |sin (th n k) * r.eval (cos (th n k))| ≤ c)
     (y : ℝ) (hy : ∀ k < n, cos (th n k) < y) (hy1 : y ≤ 1) : |r.eval y| ≤ n * c := by
@@ -146,6 +185,11 @@ noncomputable def rot (a b : ℝ) : ℕ → ℝ[X] × ℝ[X]
   | m + 1 => (C a * X * (rot a b m).1 + C b * ((1 - X ^ 2) * (rot a b m).2),
               C b * (rot a b m).1 + C a * X * (rot a b m).2)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [rot]`. Consider the case `succ m ih`. Rewrite using `[pow_succ, ih]`. Simplify using `only [rot, eval_add, eval_mul, eval_C, eval_X, eval_sub, eval_one, eval_pow]`.
+
+Take the linear combination `(b * (rot a b m).2.eval y) * h`.
+-/
 theorem rot_eval (a b : ℝ) (m : ℕ) (y z : ℝ) (h : y ^ 2 + z ^ 2 = 1) :
     (a * y + b * z) ^ m = (rot a b m).1.eval y + z * (rot a b m).2.eval y := by
   induction m with
@@ -155,6 +199,17 @@ theorem rot_eval (a b : ℝ) (m : ℕ) (y z : ℝ) (h : y ^ 2 + z ^ 2 = 1) :
     simp only [rot, eval_add, eval_mul, eval_C, eval_X, eval_sub, eval_one, eval_pow]
     linear_combination (b * (rot a b m).2.eval y) * h
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [rot]`. Consider the case `succ m ih`. Take `⟨h1, h2, h3⟩` from `ih`. Establish `hA : (rot a b (m + 1)).1.natDegree ≤ m + 1` using `by show (C a * X * (rot a b m).1 + C b * ((1 - X ^ 2) * (rot a b m).2)).natDegree ≤ m + 1`.
+
+Use `natDegree_add_le_of_degree_le ?_ ((natDegree_C_mul_le _ _).trans h3)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Use `natDegree_mul_le.trans ?_` and prove the remaining obligations. Rewrite using `[natDegree_X]`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨hA, ?_, ?_⟩` and prove the remaining obligations. Use `show (C b * (rot a b (m + 1)).1 + C a * X * (rot a b (m + 1)).2).natDegree ≤ m + 1`. Use `natDegree_add_le_of_degree_le ((natDegree_C_mul_le _ _).trans hA) ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+
+Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Use `natDegree_mul_le.trans ?_` and prove the remaining obligations. Rewrite using `[natDegree_X]`. Use linear arithmetic over natural numbers and integers. Use `natDegree_mul_le.trans ?_` and prove the remaining obligations.
+
+Establish `: ((1 : ℝ[X]) - X ^ 2).natDegree ≤ 2` using `by compute_degree`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rot_natDegree (a b : ℝ) (m : ℕ) :
     (rot a b m).1.natDegree ≤ m ∧ (rot a b (m + 1)).2.natDegree ≤ m ∧
       ((1 - X ^ 2) * (rot a b m).2).natDegree ≤ m + 1 := by
@@ -180,6 +235,15 @@ theorem rot_natDegree (a b : ℝ) (m : ℕ) :
       have : ((1 : ℝ[X]) - X ^ 2).natDegree ≤ 2 := by compute_degree
       omega
 
+/- English proof (translation)
+Use `⟨∑ m ∈ Finset.range (n + 1), C (p.coeff m) * (rot a b m).1, ∑ m ∈ Finset.range (n + 1), C (p.coeff m) * (rot a b m).2, ?_, ?_⟩` and prove the remaining obligations. Establish `h : (∑ m ∈ Finset.range (n + 1), C (p.coeff m) * (rot a b m).2).natDegree ≤ n - 1`. Use `natDegree_sum_le_of_forall_le _ _ fun m hm => ?_` and prove the remaining obligations. Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Break down `m with _ | m` into its components or cases.
+
+Simplify using `[rot]`. Use `(rot_natDegree a b m).2.1` as an intermediate fact. Use `Finset.mem_range.mp hm` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `lt_of_le_of_lt (degree_le_of_natDegree_le h) ?_` and prove the remaining obligations.
+
+Conclude with `Nat.sub_lt (Nat.pos_of_ne_zero hn) one_pos` after adjusting the coercions. Introduce `y z h`. Rewrite using `[eval_eq_sum_range' (Nat.lt_succ_of_le hp), eval_finsetSum, eval_finsetSum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[rot_eval a b m y z h, eval_mul, eval_mul, eval_C]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_rot (a b : ℝ) (p : ℝ[X]) (n : ℕ) (hn : n ≠ 0) (hp : p.natDegree ≤ n) :
     ∃ A B : ℝ[X], B.degree < n ∧ ∀ y z : ℝ, y ^ 2 + z ^ 2 = 1 →
       p.eval (a * y + b * z) = A.eval y + z * B.eval y := by
@@ -202,6 +266,9 @@ theorem exists_rot (a b : ℝ) (p : ℝ[X]) (n : ℕ) (hn : n ≠ 0) (hp : p.nat
     rw [rot_eval a b m y z h, eval_mul, eval_mul, eval_C]
     ring
 
+/- English proof (translation)
+The claim follows from `|sin θ * p.derivative.eval (cos θ)| ≤ n * M := by obtain ⟨A, B, hB, hAB⟩ := exists_rot (cos θ) (sin θ) p n hn hp have hB1 : B.eval 1 = sin θ * p.derivative.eval (cos θ) := by have h1 : HasDerivAt (fun φ : ℝ => p.eval (cos θ * cos φ + sin θ * sin φ)) (p.derivative.eval (cos θ * co …`.
+-/
 theorem bernstein (p : ℝ[X]) (n : ℕ) (hn : n ≠ 0) (hp : p.natDegree ≤ n) (M : ℝ)
     (hM : ∀ x ∈ Set.Icc (-1 : ℝ) 1, |p.eval x| ≤ M) (θ : ℝ) :
     |sin θ * p.derivative.eval (cos θ)| ≤ n * M := by
@@ -238,6 +305,9 @@ theorem bernstein (p : ℝ[X]) (n : ℕ) (hn : n ≠ 0) (hp : p.natDegree ≤ n)
   · rw [← cos_zero]
     exact cos_lt_cos_of_nonneg_of_le_pi le_rfl (th_lt_pi hk).le (th_pos n k hn)
 
+/- English proof (translation)
+The claim follows from `|p.derivative.eval x| ≤ (n : ℝ) ^ 2 * M := by have hn0 : 0 < n := Nat.pos_of_ne_zero hn have hn' : (0 : ℝ) < n := by exact_mod_cast hn0 by_cases hy : ∀ k < n, cos (th n k) < x · have hd : p.derivative.degree < n := by refine lt_of_le_of_lt (degree_le_of_natDegree_le ((natDegree_d …`.
+-/
 theorem markov_nonneg (p : ℝ[X]) (n : ℕ) (hn : n ≠ 0) (hp : p.natDegree ≤ n) (M : ℝ)
     (hM : ∀ x ∈ Set.Icc (-1 : ℝ) 1, |p.eval x| ≤ M) (x : ℝ) (hx0 : 0 ≤ x) (hx1 : x ≤ 1) :
     |p.derivative.eval x| ≤ (n : ℝ) ^ 2 * M := by
@@ -285,6 +355,15 @@ namespace Formalism.FourierDecayAlt.P
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `p d M hp hM x hx`. Break down `eq_or_ne d 0 with rfl | hd` into its components or cases. Rewrite using `[eq_C_of_natDegree_le_zero hp]`. Simplify using the standard rewrite rules. Break down `le_total 0 x with h | h` into its components or cases.
+
+Conclude with `Markov.markov_nonneg p d hd hp M hM x h hx.2`. Establish `hq : (p.comp (-X)).natDegree ≤ d`. Use `natDegree_comp_le.trans ?_` and prove the remaining obligations. Rewrite using `[natDegree_neg, natDegree_X, mul_one]`. Conclude with `hp`.
+
+Establish `hMq : ∀ y ∈ Set.Icc (-1 : ℝ) 1, |(p.comp (-X)).eval y| ≤ M`. Introduce `y hy`. Rewrite using `[eval_comp]`. Use `hM _ ?_` and prove the remaining obligations. Simplify using `only [eval_neg, eval_X]`.
+
+Conclude with `⟨by linarith [hy.2], by linarith [hy.1]⟩`. Use `Markov.markov_nonneg (p.comp (-X)) d hd hq M hMq (-x) (by linarith) (by linarith [hx.1])` as an intermediate fact. Rewrite `this` using `[derivative_comp]`. Simplify using `using this`.
+-/
 theorem markov_inequality : Formalism.FourierDecayAlt.E.AMarkov := by
   intro p d M hp hM x hx
   rcases eq_or_ne d 0 with rfl | hd
@@ -310,6 +389,23 @@ namespace Formalism.FourierDecayAlt.P.Markov
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `t ht`. Use `set l : ℝ[X] := C (t₀ + L / 2) + C (L / 2) * X with hl`. Establish `hldeg : l.natDegree ≤ 1`. Rewrite using `[hl]`. Use `compute_degree`.
+
+Establish `hdeg : (P.comp l).natDegree ≤ d`. Combine the equalities or inequalities in the displayed calculation. Establish `hleval : ∀ x : ℝ, l.eval x = t₀ + L / 2 + L / 2 * x`. Introduce `x`. Simplify using `[hl]`.
+
+Establish `hb : ∀ x ∈ Set.Icc (-1 : ℝ) 1, |(P.comp l).eval x| ≤ M`. Introduce `x hx`. Rewrite using `[eval_comp, hleval]`. Apply `hP` to reduce the goal to its premises. Apply the tactic sequence `constructor <;> nlinarith [hx.1, hx.2]`.
+
+Use `set x : ℝ := 2 * (t - t₀) / L - 1 with hx`. Establish `hxm : x ∈ Set.Icc (-1 : ℝ) 1`. Establish `h1 : 0 ≤ 2 * (t - t₀) / L`. Apply `div_nonneg _ hL.le` to reduce the goal to its premises. Combine the linear relations using `[ht.1]`.
+
+Establish `h2 : 2 * (t - t₀) / L ≤ 2`. Rewrite using `[div_le_iff₀ hL]`. Combine the linear relations using `[ht.2]`. Apply the tactic sequence `constructor <;> rw [hx] <;> linarith`. Establish `hlx : l.eval x = t`.
+
+Rewrite using `[hleval, hx]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hder : (P.comp l).derivative.eval x = L / 2 * P.derivative.eval t`. Rewrite using `[derivative_comp, eval_mul, eval_comp, hlx]`.
+
+Simplify using `[hl]`. Establish `key` using `hA (P.comp l) d M hdeg hb x hxm`. Rewrite `key` using `[hder, abs_mul, abs_of_pos (by positivity : 0 < L / 2)]`. Establish `: |P.derivative.eval t| ≤ ((d : ℝ) ^ 2 * M) / (L / 2)`. Rewrite using `[le_div_iff₀ (by positivity)]; linarith`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem interval_one (hA : Formalism.FourierDecayAlt.E.AMarkov) (P : ℝ[X]) (d : ℕ) (t₀ L M : ℝ) (hL : 0 < L)
     (hd : P.natDegree ≤ d) (hP : ∀ t ∈ Set.Icc t₀ (t₀ + L), |P.eval t| ≤ M) :
     ∀ t ∈ Set.Icc t₀ (t₀ + L), |P.derivative.eval t| ≤ (2 * (d : ℝ) ^ 2 / L) * M := by
@@ -349,6 +445,11 @@ theorem interval_one (hA : Formalism.FourierDecayAlt.E.AMarkov) (P : ℝ[X]) (d 
   calc |P.derivative.eval t| ≤ ((d : ℝ) ^ 2 * M) / (L / 2) := this
     _ = (2 * (d : ℝ) ^ 2 / L) * M := by field_simp
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => intro P M _ hP t ht`. Simplify using `using hP t ht`. Consider the case `succ q ih`. Introduce `P M hd hP t ht`.
+
+Rewrite using `[Function.iterate_succ_apply]`. Establish `h1` using `interval_one hA P d t₀ L M hL hd hP`. Establish `h2` using `ih P.derivative ((2 * (d : ℝ) ^ 2 / L) * M) ((natDegree_derivative_le P).trans ((Nat.sub_le _ _).trans hd)) h1 t ht`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem interval_iter (hA : Formalism.FourierDecayAlt.E.AMarkov) (d : ℕ) (t₀ L : ℝ) (hL : 0 < L) (q : ℕ) :
     ∀ (P : ℝ[X]) (M : ℝ), P.natDegree ≤ d → (∀ t ∈ Set.Icc t₀ (t₀ + L), |P.eval t| ≤ M) →
     ∀ t ∈ Set.Icc t₀ (t₀ + L), |(derivative^[q] P).eval t| ≤ (2 * (d : ℝ) ^ 2 / L) ^ q * M := by
@@ -363,6 +464,13 @@ theorem interval_iter (hA : Formalism.FourierDecayAlt.E.AMarkov) (d : ℕ) (t₀
     calc _ ≤ _ := h2
       _ = _ := by ring
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => intro P`. Simplify using the standard rewrite rules. Consider the case `succ q ih`. Introduce `P`.
+
+Rewrite using `[iteratedDeriv_succ, ih P]`. Use function extensionality and compare the values at `s`. Establish `: HasDerivAt (fun s : ℝ => ∑ k ∈ S, (derivative^[q] (P k)).eval s • a k) (∑ k ∈ S, (derivative (derivative^[q] (P k))).eval s • a k) s`. Apply `HasDerivAt.fun_sum` to reduce the goal to its premises. Introduce `k _`.
+
+Conclude with `((derivative^[q] (P k)).hasDerivAt s).smul_const (a k)`. Rewrite using `[this.deriv]`. Simplify using `only [Function.iterate_succ_apply']`.
+-/
 theorem iteratedDeriv_vec {H : Type} [NormedAddCommGroup H] [NormedSpace ℝ H] {ι : Type}
     (S : Finset ι) (a : ι → H) (q : ℕ) : ∀ (P : ι → ℝ[X]),
     iteratedDeriv q (fun s : ℝ => ∑ k ∈ S, (P k).eval s • a k) =
@@ -387,6 +495,19 @@ namespace Formalism.FourierDecayAlt.P
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `hA H _ _ d a t₀ L M hL hM q t ht`. Establish `hF : (fun s : ℝ => ∑ k : Fin (d + 1), s ^ (k : ℕ) • a k) = fun s : ℝ => ∑ k : Fin (d + 1), ((X : ℝ[X]) ^ (k : ℕ)).eval s • a k`. Use function extensionality and compare the values at `s`. Simplify using the standard rewrite rules. Rewrite using `[hF, Markov.iteratedDeriv_vec Finset.univ a q (fun k : Fin (d + 1) => (X : ℝ[X]) ^ (k : ℕ))]`.
+
+Take `⟨φ, hφ1, hφ2⟩` from `exists_dual_vector'' ℝ (∑ k : Fin (d + 1), (derivative^[q] ((X : ℝ[X]) ^ (k : ℕ))).eval t • a k)`. Use `set Q : ℝ[X] := ∑ k : Fin (d + 1), C (φ (a k)) * (X : ℝ[X]) ^ (k : ℕ) with hQ`. Establish `hQdeg : Q.natDegree ≤ d`. Rewrite using `[hQ]`. Apply `natDegree_sum_le_of_forall_le` to reduce the goal to its premises.
+
+Introduce `k _`. Conclude with `(natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.mp k.2)`. Establish `hQeval : ∀ s : ℝ, Q.eval s = φ (∑ k : Fin (d + 1), s ^ (k : ℕ) • a k)`. Introduce `s`. Rewrite using `[hQ, eval_finsetSum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[eval_mul, eval_C, eval_pow, eval_X, map_smul, smul_eq_mul, mul_comm]`. Establish `hQb : ∀ s ∈ Set.Icc t₀ (t₀ + L), |Q.eval s| ≤ M`. Introduce `s hs`. Rewrite using `[hQeval s, ← Real.norm_eq_abs]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hQder : (derivative^[q] Q).eval t = φ (∑ k : Fin (d + 1), (derivative^[q] ((X : ℝ[X]) ^ (k : ℕ))).eval t • a k)`. Rewrite using `[hQ, iterate_derivative_sum, eval_finsetSum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[iterate_derivative_C_mul, eval_mul, eval_C, map_smul, smul_eq_mul, mul_comm]`.
+
+Establish `key` using `Markov.interval_iter hA d t₀ L hL q Q M hQdeg hQb t ht`. Rewrite `key` using `[hQder, hφ2]`. Simplify using `using key`.
+-/
 theorem markovVector_of : Formalism.FourierDecayAlt.E.AMarkov → Formalism.FourierDecayAlt.E.MarkovVector := by
   intro hA H _ _ d a t₀ L M hL hM q t ht
   have hF : (fun s : ℝ => ∑ k : Fin (d + 1), s ^ (k : ℕ) • a k) =
@@ -426,6 +547,9 @@ end Formalism.FourierDecayAlt.P
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `markovVector_of markov_inequality`.
+-/
 theorem markov_inequality_vector : Formalism.FourierDecayAlt.E.MarkovVector := markovVector_of markov_inequality
 
 end Formalism.FourierDecayAlt.P

@@ -10,6 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UnramifiedClosure
 
+/- English proof (translation)
+Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Assume the negation of the conclusion as `hne`. Establish `hp : (RingHom.ker (algebraMap R W)).IsPrime` using `RingHom.ker_isPrime _`. Establish `hm : RingHom.ker (algebraMap R W) = maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (hp.isMaximal hne)`. Apply `IsDiscreteValuationRing.not_a_field W` to reduce the goal to its premises.
+
+Rewrite using `[← h, ← hm]`. Conclude with `(Ideal.map_eq_bot_iff_le_ker _).2 le_rfl`.
+-/
 theorem injective_of_map_maximalIdeal {R W : Type} [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Algebra R W]
     (h : (maximalIdeal R).map (algebraMap R W) = maximalIdeal W) :
@@ -27,6 +32,19 @@ variable (R K W K' : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
   [Field K'] [Algebra W K'] [IsFractionRing W K'] [Algebra R W] [Algebra K K'] [Algebra R K']
   [IsScalarTower R W K'] [IsScalarTower R K K']
 
+/- English proof (translation)
+Establish `hinj` using `injective_of_map_maximalIdeal h`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Establish `hϖW : Irreducible (algebraMap R W ϖ)`. Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer, ← h, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.map_span, Set.image_singleton]`. Rewrite using `[isLocalization_iff]`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, r, hr, rfl⟩`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Rewrite using `[ne_eq, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `fun h0 => nonZeroDivisors.ne_zero hr (hinj (by rw [map_zero]; exact h0))`.
+
+Introduce `z`. Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := W) z`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy0 hϖW`. Use `⟨⟨x * ↑u⁻¹, ⟨algebraMap R W (ϖ ^ n), ϖ ^ n, mem_nonZeroDivisors_of_ne_zero (pow_ne_zero _ hϖ.ne_zero), rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hu : algebraMap W K' ↑u * algebraMap W K' ↑u⁻¹ = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hp : algebraMap W K' (algebraMap R W ϖ) ≠ 0`. Rewrite using `[ne_eq, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `hϖW.ne_zero`.
+
+Establish `hu0 : algebraMap W K' ↑u ≠ 0`. Rewrite using `[ne_eq, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `u.ne_zero`. Simplify using `only [map_pow, map_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `(-(algebraMap W K' x)) * hu`. Introduce `x y hxy`. Conclude with `⟨1, by simpa using IsFractionRing.injective W K' hxy⟩`.
+-/
 theorem isLocalization (h : (maximalIdeal R).map (algebraMap R W) = maximalIdeal W) :
     IsLocalization (Algebra.algebraMapSubmonoid W (nonZeroDivisors R)) K' := by
   have hinj := injective_of_map_maximalIdeal h
@@ -59,6 +77,9 @@ theorem isLocalization (h : (maximalIdeal R).map (algebraMap R W) = maximalIdeal
   · intro x y hxy
     exact ⟨1, by simpa using IsFractionRing.injective W K' hxy⟩
 
+/- English proof (translation)
+Use `haveI := isLocalization R W K' h`. Prove the components needed by the constructor for the conclusion. Conclude with `(isLocalizedModule_iff_isBaseChange (nonZeroDivisors R) K _).1 (isLocalizedModule_iff_isLocalization.2 this)`.
+-/
 theorem isPushout (h : (maximalIdeal R).map (algebraMap R W) = maximalIdeal W) :
     Algebra.IsPushout R K W K' := by
   haveI := isLocalization R W K' h
@@ -66,12 +87,18 @@ theorem isPushout (h : (maximalIdeal R).map (algebraMap R W) = maximalIdeal W) :
   exact (isLocalizedModule_iff_isBaseChange (nonZeroDivisors R) K _).1
     (isLocalizedModule_iff_isLocalization.2 this)
 
+/- English proof (translation)
+Use `haveI := isPushout R K W K' h`. Conclude with `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_of_isPushout R K W K')`.
+-/
 theorem isPullback_spec (h : (maximalIdeal R).map (algebraMap R W) = maximalIdeal W) :
     IsPullback (spMap (algebraMap K K')) (spMap (algebraMap W K')) (spMap (algebraMap R K))
       (spMap (algebraMap R W)) := by
   haveI := isPushout R K W K' h
   exact isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_of_isPushout R K W K')
 
+/- English proof (translation)
+Establish `hinj` using `injective_of_map_maximalIdeal h`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Use `GlobalTheory.ringHom_flat_of_injective_of_isUnit (algebraMap R W) (algebraMap W (FractionRing W)) (IsFractionRing.injective W (FractionRing W)) fun t ht => IsUnit.mk0 _ ?_` and prove the remaining obligations. Rewrite using `[ne_eq, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `fun h0 => ht (hinj (by rw [h0, map_zero]))`.
+-/
 theorem flat_spec (h : (maximalIdeal R).map (algebraMap R W) = maximalIdeal W) :
     Flat (spMap (algebraMap R W)) := by
   have hinj := injective_of_map_maximalIdeal h
@@ -85,6 +112,11 @@ end GlobalTheory.UnramifiedClosure
 
 namespace GlobalTheory.UnramifiedClosure
 
+/- English proof (translation)
+Use `haveI : IsDominant (spMap φ) := by`. Rewrite using `[isDominant_iff]`. Use `show DenseRange (PrimeSpectrum.comap φ)`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot φ).1 hφ]`. Conclude with `bot_le`.
+
+Conclude with `IsSchemeTheoreticallyDominant.of_isDominant _`.
+-/
 theorem schDom_spMap {A B : Type} [CommRing A] [CommRing B] [IsReduced A] (φ : A →+* B)
     (hφ : Function.Injective φ) : IsSchemeTheoreticallyDominant (spMap φ) := by
   haveI : IsDominant (spMap φ) := by
@@ -98,6 +130,39 @@ theorem schDom_spMap {A B : Type} [CommRing A] [CommRing B] [IsReduced A] (φ : 
 end GlobalTheory.UnramifiedClosure
 
 open GlobalTheory.UnramifiedClosure in
+/- English proof (translation)
+Introduce `R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hm P hP A hAq G hGq hGf e iA hA hcA iG hG hcG hcomp`. Establish `hjp : IsPreimmersion (spMap (algebraMap R K))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `hjf : Flat (spMap (algebraMap R K))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat K (nonZeroDivisors R))`.
+
+Establish `hjW : Flat (spMap (algebraMap R W))` using `flat_spec R W hm`. Establish `hsq` using `isPullback_spec R K W K' hm`. Establish `hqc : QuasiCompact iA`. Establish `: QuasiCompact (iA ≫ P.hom)` using `by rw [hA]; infer_instance`. Conclude with `QuasiCompact.of_comp iA P.hom`.
+
+Establish `hdom : IsSchemeTheoreticallyDominant iA.toImage` using `GlobalTheory.isSchemeTheoreticallyDominant_toImage iA`. Set `X : Over (Sp R)` to `Over.mk (iA.imageι ≫ P.hom)`. Establish `hXh : X.hom = iA.imageι ≫ P.hom` using `rfl`. Establish `hXa : iA.toImage ≫ X.hom = A.hom ≫ spMap (algebraMap R K)`. Rewrite using `[hXh, Scheme.Hom.toImage_imageι_assoc, hA]`.
+
+Establish `: MorphismProperty.IsStableUnderComposition @IsClosedImmersion.{0}` using `⟨fun f g hf hg ↦ @IsClosedImmersion.comp _ _ _ f g hf hg⟩`. Set `t : A.left ⟶ pullback X.hom (spMap (algebraMap R K))` to `pullback.lift iA.toImage A.hom hXa`. Set `mK : pullback X.hom (spMap (algebraMap R K)) ⟶ pullback P.hom (spMap (algebraMap R K))` to `pullback.map _ _ _ _ iA.imageι (𝟙 _) (𝟙 _) (Category.comp_id _) (by simp)`. Establish `hmK : IsClosedImmersion mK` using `MorphismProperty.pullbackMap (P := @IsClosedImmersion.{0}) inferInstance inferInstance rfl (by simp)`. Establish `htm : t ≫ mK = pullback.lift iA A.hom hA`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_fst, Scheme.Hom.toImage_imageι]`. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_snd, Category.comp_id]`. Establish `: IsClosedImmersion (t ≫ mK)` using `htm ▸ hcA`. Establish `ht : IsClosedImmersion t` using `IsClosedImmersion.of_comp_isClosedImmersion t mK`.
+
+Establish `hpb : IsPullback (𝟙 A.left) t iA.toImage (pullback.fst X.hom (spMap (algebraMap R K)))` using `IsPullback.of_horiz_isIso_mono ⟨by rw [Category.id_comp, pullback.lift_fst]⟩`. Establish `htd : IsSchemeTheoreticallyDominant t` using `.of_isPullback hpb`. Establish `: IsIso t` using `IsClosedImmersion.isIso_iff_ker_eq_bot.mpr t.ker_eq_bot`. Establish `hIa : IsPullback iA.toImage A.hom X.hom (spMap (algebraMap R K))` using `IsPullback.of_iso_pullback ⟨hXa⟩ (asIso t) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)`. Establish `hAK : IsPullback (pullback.fst A.hom (spMap (algebraMap K K'))) (pullback.snd A.hom (spMap (algebraMap K K')) ≫ spMap (algebraMap W K')) (A.hom ≫ spMap (algebraMap R K)) (spMap (algebraMap R W))` using `(IsPullback.of_hasPullback A.hom (spMap (algebraMap K K'))).paste_vert hsq`.
+
+Set `mW : pullback X.hom (spMap (algebraMap R W)) ⟶ pullback P.hom (spMap (algebraMap R W))` to `pullback.map _ _ _ _ iA.imageι (𝟙 _) (𝟙 _) (Category.comp_id _) (by simp)`. Establish `hmW : IsClosedImmersion mW` using `MorphismProperty.pullbackMap (P := @IsClosedImmersion.{0}) inferInstance inferInstance rfl (by simp)`. Set `n : pullback (A.hom ≫ spMap (algebraMap R K)) (spMap (algebraMap R W)) ⟶ pullback X.hom (spMap (algebraMap R W))` to `pullback.map _ _ _ _ iA.toImage (𝟙 _) (𝟙 _) (by rw [Category.comp_id, hXa]) (by simp)`. Establish `hL : IsPullback (pullback.fst (A.hom ≫ spMap (algebraMap R K)) (spMap (algebraMap R W))) n iA.toImage (pullback.fst X.hom (spMap (algebraMap R W)))`. Use `IsPullback.of_bot ?_ (pullback.lift_fst _ _ _).symm (IsPullback.of_hasPullback X.hom (spMap (algebraMap R W)))` and prove the remaining obligations.
+
+Establish `h1 : n ≫ pullback.snd X.hom (spMap (algebraMap R W)) = pullback.snd (A.hom ≫ spMap (algebraMap R K)) (spMap (algebraMap R W))`. Rewrite using `[pullback.lift_snd, Category.comp_id]`. Rewrite using `[h1, hXa]`. Conclude with `IsPullback.of_hasPullback _ _`. Establish `hn : IsSchemeTheoreticallyDominant n` using `.of_isPullback hL`.
+
+Establish `hsd : IsSchemeTheoreticallyDominant (spMap (algebraMap W K'))` using `schDom_spMap _ (IsFractionRing.injective W K')`. Establish `hu : IsSchemeTheoreticallyDominant (pullback.fst G.hom (spMap (algebraMap W K')))` using `inferInstance`. Establish `he : IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.hom))`. Set `v : pullback G.hom (spMap (algebraMap W K')) ⟶ pullback X.hom (spMap (algebraMap R W))` to `e.hom.left ≫ hAK.isoPullback.hom ≫ n`. Establish `hv : IsSchemeTheoreticallyDominant v` using `inferInstance`.
+
+Set `cG : G.left ⟶ pullback P.hom (spMap (algebraMap R W))` to `pullback.lift iG G.hom hG`. Establish `hes : e.hom.left ≫ pullback.snd A.hom (spMap (algebraMap K K')) = pullback.snd G.hom (spMap (algebraMap W K'))` using `Over.w e.hom`. Establish `hcomm : pullback.fst G.hom (spMap (algebraMap W K')) ≫ cG = v ≫ mW`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, ← hcomp]`.
+
+Simplify using `only [v, mW, n, Category.assoc]`. Rewrite using `[pullback.lift_fst]`. Apply the tactic sequence `try simp only [Category.assoc]`. Rewrite using `[pullback.lift_fst_assoc]`. Apply the tactic sequence `try simp only [Category.assoc]`.
+
+Rewrite using `[IsPullback.isoPullback_hom_fst_assoc, Scheme.Hom.toImage_imageι]`. Rewrite using `[Category.assoc, pullback.lift_snd]`. Simplify using `only [v, mW, n, Category.assoc]`. Rewrite using `[pullback.lift_snd, Category.comp_id (pullback.snd X.hom (spMap (algebraMap R W))), pullback.lift_snd, Category.comp_id (pullback.snd (A.hom ≫ spMap (algebraMap R K)) (spMap (algebraMap R W))), IsPullback.isoPullback_hom_snd, reassoc_of% hes]`. Conclude with `pullback.condition`.
+
+Establish `hker : mW.ker = cG.ker`. Establish `h1 : (pullback.fst G.hom (spMap (algebraMap W K')) ≫ cG).ker = cG.ker`. Rewrite using `[Scheme.Hom.ker_comp, Scheme.Hom.ker_eq_bot, Scheme.IdealSheafData.map_bot]`. Establish `h2 : (v ≫ mW).ker = mW.ker`. Rewrite using `[Scheme.Hom.ker_comp, Scheme.Hom.ker_eq_bot, Scheme.IdealSheafData.map_bot]`.
+
+Rewrite using `[← h1, ← h2, hcomm]`. Set `ψ : G.left ⟶ pullback X.hom (spMap (algebraMap R W))` to `IsClosedImmersion.lift mW cG hker.le`. Establish `hψ : ψ ≫ mW = cG` using `IsClosedImmersion.lift_fac _ _ _`. Establish `: IsIso ψ` using `IsClosedImmersion.isIso_lift mW cG hker`. Establish `hψs : ψ ≫ pullback.snd X.hom (spMap (algebraMap R W)) = G.hom`.
+
+Establish `h` using `congrArg (· ≫ pullback.snd P.hom (spMap (algebraMap R W))) hψ`. Simplify using `only [Category.assoc] at h`. Rewrite `h` using `[pullback.lift_snd, Category.comp_id, pullback.lift_snd]`. Then use the resulting hypothesis. Establish `hIg : IsPullback (ψ ≫ pullback.fst X.hom (spMap (algebraMap R W))) G.hom X.hom (spMap (algebraMap R W))` using `IsPullback.of_iso_pullback ⟨by rw [Category.assoc, pullback.condition, reassoc_of% hψs]⟩ (asIso ψ) rfl hψs`. Use `⟨X, iA.toImage, ψ ≫ pullback.fst X.hom (spMap (algebraMap R W)), hIa, hIg, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← cancel_mono iA.imageι]`. Establish `h3 : pullback.fst X.hom (spMap (algebraMap R W)) ≫ iA.imageι = mW ≫ pullback.fst P.hom (spMap (algebraMap R W))` using `(pullback.lift_fst _ _ _).symm`. Simplify using `only [Category.assoc]`. Rewrite using `[Scheme.Hom.toImage_imageι, h3, reassoc_of% hψ, pullback.lift_fst, hcomp]`.
+-/
 theorem GlobalTheory.UnramifiedClosure.closure_baseChange : ∀ (R K W K' : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] [Algebra R W] [Algebra K K'] [Algebra R K'] [IsScalarTower R W K'] [IsScalarTower R K K'], (maximalIdeal R).map (algebraMap R W) = maximalIdeal W → ∀ (P : Over (Sp R)), QuasiSeparated P.hom → ∀ (A : Over (Sp K)), QuasiCompact A.hom → ∀ (G : Over (Sp W)), QuasiCompact G.hom → Flat G.hom → ∀ (e : (Over.pullback (spMap (algebraMap W K'))).obj G ≅ (Over.pullback (spMap (algebraMap K K'))).obj A) (iA : A.left ⟶ P.left) (hA : iA ≫ P.hom = A.hom ≫ spMap (algebraMap R K)), IsClosedImmersion (pullback.lift iA A.hom hA) → ∀ (iG : G.left ⟶ P.left) (hG : iG ≫ P.hom = G.hom ≫ spMap (algebraMap R W)), IsClosedImmersion (pullback.lift iG G.hom hG) → e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K')) ≫ iA = pullback.fst G.hom (spMap (algebraMap W K')) ≫ iG → ∃ (X : Over (Sp R)) (a : A.left ⟶ X.left) (g : G.left ⟶ X.left), IsPullback a A.hom X.hom (spMap (algebraMap R K)) ∧ IsPullback g G.hom X.hom (spMap (algebraMap R W)) ∧ e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K')) ≫ a = pullback.fst G.hom (spMap (algebraMap W K')) ≫ g := by
   intro R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hm P hP A hAq G hGq hGf e iA hA hcA iG hG hcG hcomp
 

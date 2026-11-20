@@ -16,12 +16,32 @@ private noncomputable def UpperTheory.canonicalEmbeddingVector (E : Type) [Field
   map_add' v w := by ext i φ; simp
   map_smul' n v := by ext i φ; simp
 
+/- English proof (translation)
+Introduce `v w h`. Use extensionality with `i`. Conclude with `canonicalEmbedding_injective E (congrFun h i)`.
+-/
 private theorem UpperTheory.canonicalEmbeddingVector_injective (E : Type) [Field E] [NumberField E] (d : ℕ) :
     Function.Injective (UpperTheory.canonicalEmbeddingVector E d) := by
   intro v w h
   ext i
   exact canonicalEmbedding_injective E (congrFun h i)
 
+/- English proof (translation)
+Introduce `E _ _ d s hs`. Establish `hs0 : 0 < s` using `lt_of_le_of_lt (Nat.cast_nonneg _) hs`. Set `L : Submodule ℤ (Fin d → ((E →+* ℂ) → ℂ))` to `LinearMap.range (UpperTheory.canonicalEmbeddingVector E d)`. Establish `hdisc : DiscreteTopology L`. Use `DiscreteTopology.of_forall_le_norm (r := 1) one_pos ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨_, v, rfl⟩ hx`. Establish `hv : v ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx (Subtype.ext (map_zero _))`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hv`.
+
+Establish `h1 : 1 ≤ house (v i : E)` using `one_le_house_of_isIntegral (v i).isIntegral_coe (by simpa using hi)`. Conclude with `h1.trans (norm_le_pi_norm (UpperTheory.canonicalEmbeddingVector E d v) i)`. Establish `hrank : Module.finrank ℤ L = d * Module.finrank ℚ E`. Rewrite using `[LinearMap.finrank_range_of_inj (UpperTheory.canonicalEmbeddingVector_injective E d), Module.finrank_pi_fintype]`. Simplify using `[RingOfIntegers.rank]`.
+
+Establish `hsum` using `ZLattice.summable_norm_rpow L (-s) (by rw [hrank]; linarith)`. Set `g : {v : Fin d → E // ∀ i, IsIntegral ℤ (v i)} → L` to `fun v => ⟨UpperTheory.canonicalEmbeddingVector E d (fun i => ⟨v.1 i, v.2 i⟩), LinearMap.mem_range_self _ _⟩`. Establish `hg : Function.Injective g`. Introduce `v w h`. Establish `h2` using `UpperTheory.canonicalEmbeddingVector_injective E d (congrArg Subtype.val h)`.
+
+Use extensionality with `i`. Conclude with `congrArg Subtype.val (congrFun h2 i)`. Use `Summable.of_nonneg_of_le (fun v => by positivity) (fun v => ?_) (hsum.comp_injective hg)` and prove the remaining obligations. Establish `hle : ‖g v‖ ≤ ∑ i, ∑ φ : E →+* ℂ, ‖φ (v.1 i)‖` using `by show ‖UpperTheory.canonicalEmbeddingVector E d (fun i => ⟨v.1 i, v.2 i⟩)‖ ≤ _`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations.
+
+Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun φ => ?_` and prove the remaining obligations. Use `show ‖φ (v.1 i)‖ ≤ _`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `h0 : ‖g v‖ = 0`. Establish `hz : g v = g ⟨0, fun _ => isIntegral_zero⟩`.
+
+Rewrite using `[norm_eq_zero.mp h0]`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i φ`. Use `show (0 : ℂ) = φ 0`. Simplify using the standard rewrite rules.
+
+Establish `hv` using `hg hz`. Substitute `hv` using the available equality. Simplify using `only [Pi.zero_apply, map_zero, norm_zero, Finset.sum_const_zero, Real.zero_rpow (neg_ne_zero.mpr hs0.ne')]`. Conclude with `Real.rpow_nonneg (norm_nonneg _) _`. Conclude with `Real.rpow_le_rpow_of_nonpos (lt_of_le_of_ne (norm_nonneg _) (Ne.symm h0)) hle (by linarith)`.
+-/
 theorem UpperTheory.integral_vectors_height_summable :
     ∀ (E : Type) [Field E] [NumberField E] (d : ℕ) (s : ℝ), ((d * Module.finrank ℚ E : ℕ) : ℝ) < s →
         Summable fun v : {v : Fin d → E // ∀ i, IsIntegral ℤ (v i)} => (∑ i, ∑ φ : E →+* ℂ, ‖φ (v.1 i)‖) ^ (-s) := by

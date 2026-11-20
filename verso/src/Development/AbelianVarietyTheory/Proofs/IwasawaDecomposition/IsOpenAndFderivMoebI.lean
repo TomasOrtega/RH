@@ -9,6 +9,11 @@ namespace GlobalTheory.HodgeDomain.ActionDeriv
 
 variable {ι : Type} [Fintype ι] {p q : ℕ}
 
+/- English proof (translation)
+Use `isOpen_iff_mem_nhds.2 fun x0 hx0 => ?_` and prove the remaining obligations. Establish `h : ∀ᶠ x in nhds x0, ∀ τ, (1 - (unflat x τ)ᴴ * unflat x τ).PosDef`. Use `Filter.eventually_all.2 fun τ => ExhB.posDef_eventually _ (fun a b => ?_) (fun x => isHermitian_one.sub (isHermitian_conjTranspose_mul_self _)) x0 (hx0 τ)` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply, unflat, Matrix.of_apply]`. Use `fun_prop`.
+
+Conclude with `h`.
+-/
 theorem isOpen_domFlat : IsOpen (DomFlat ι p q) := by
   refine isOpen_iff_mem_nhds.2 fun x0 hx0 => ?_
   have h : ∀ᶠ x in nhds x0, ∀ τ, (1 - (unflat x τ)ᴴ * unflat x τ).PosDef := by
@@ -18,12 +23,20 @@ theorem isOpen_domFlat : IsOpen (DomFlat ι p q) := by
     fun_prop
   exact h
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`. Conclude with `ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => h _ _)`.
+-/
 theorem diffOn_det {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {s : Set V} {n : ℕ}
     {M : V → Matrix (Fin n) (Fin n) ℂ} (h : ∀ a b, ContDiffOn ℂ 1 (fun z => M z a b) s) :
     ContDiffOn ℂ 1 (fun z => (M z).det) s := by
   simp only [Matrix.det_apply, Units.smul_def, zsmul_eq_mul]
   exact ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => h _ _)
 
+/- English proof (translation)
+Establish `hadj : ContDiffOn ℂ 1 (fun z => (M z).adjugate a b) s`. Simplify using `only [adjugate_apply]`. Use `diffOn_det fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `e : i = b`. Simplify using `only [e, updateRow_self]`.
+
+Conclude with `contDiffOn_const`. Simplify using `only [updateRow_ne e]`. Conclude with `h i j`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`. Conclude with `ContDiffOn.mul (ContDiffOn.inv (diffOn_det h) hd) hadj`.
+-/
 theorem diffOn_inv {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {s : Set V} {n : ℕ}
     {M : V → Matrix (Fin n) (Fin n) ℂ} (h : ∀ a b, ContDiffOn ℂ 1 (fun z => M z a b) s)
     (hd : ∀ z ∈ s, (M z).det ≠ 0) (a b : Fin n) : ContDiffOn ℂ 1 (fun z => (M z)⁻¹ a b) s := by
@@ -36,6 +49,13 @@ theorem diffOn_inv {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {s : Se
   simp only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]
   exact ContDiffOn.mul (ContDiffOn.inv (diffOn_det h) hd) hadj
 
+/- English proof (translation)
+Use `differentiableOn_pi.2 fun x => ?_` and prove the remaining obligations. Take `⟨τ, a, b⟩` from `x`. Use `ContDiffOn.differentiableOn (n := 1) ?_ one_ne_zero` and prove the remaining obligations. Establish `hinv : ∀ k, ContDiffOn ℂ 1 (fun v => (kapQ (g τ) (unflat v τ))⁻¹ k b) (DomFlat ι p q)`. Introduce `k`.
+
+Use `diffOn_inv (s := DomFlat ι p q) (M := fun v => kapQ (g τ) (unflat v τ)) (fun i j => ?_) (fun v hv => (kapQ_isUnit (hg τ (Set.mem_univ _)) (hv τ)).ne_zero) k b` and prove the remaining obligations. Simplify using `only [kapQ, Matrix.add_apply, Matrix.mul_apply, unflat, Matrix.of_apply]`. Use `fun_prop`. Simplify using `only [flat, moebI, moeb, Matrix.mul_apply]`. Use `ContDiffOn.sum fun k _ => ContDiffOn.mul ?_ (hinv k)` and prove the remaining obligations.
+
+Simplify using `only [Matrix.add_apply, Matrix.mul_apply, unflat, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem diffOn_moebI {g : ι → GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ UpqI ι p q) :
     DifferentiableOn ℂ (fun v => flat (moebI g (unflat v))) (DomFlat ι p q) := by
   refine differentiableOn_pi.2 fun x => ?_
@@ -51,6 +71,11 @@ theorem diffOn_moebI {g : ι → GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ UpqI ι p
   simp only [Matrix.add_apply, Matrix.mul_apply, unflat, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Establish `e : (fun t : ℂ => (A * (z + t • ξ) + B) a b) = fun t => t * (A * ξ) a b + (A * z + B) a b`. Use function extensionality and compare the values at `t`. Simplify using `only [Matrix.mul_add, Matrix.mul_smul, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const ((A * ξ) a b)).add_const ((A * z + B) a b)`.
+-/
 theorem hasDerivAt_affine {m n k : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) (B : Matrix (Fin m) (Fin k) ℂ)
     (z ξ : Matrix (Fin n) (Fin k) ℂ) (a : Fin m) (b : Fin k) :
     HasDerivAt (fun t : ℂ => (A * (z + t • ξ) + B) a b) ((A * ξ) a b) 0 := by
@@ -61,6 +86,17 @@ theorem hasDerivAt_affine {m n k : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) (B : Ma
   rw [e]
   simpa using ((hasDerivAt_id (0 : ℂ)).mul_const ((A * ξ) a b)).add_const ((A * z + B) a b)
 
+/- English proof (translation)
+Establish `hz' : flat z ∈ DomFlat ι p q` using `hz`. Establish `hn` using `isOpen_domFlat.mem_nhds hz'`. Establish `hF` using `((diffOn_moebI hg).differentiableAt hn).hasFDerivAt`. Use `set D := fderiv ℂ (fun v => flat (moebI g (unflat v))) (flat z) (flat ξ) with hD`. Establish `hc : HasDerivAt (fun t : ℂ => flat z + t • flat ξ) (flat ξ) 0`.
+
+Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const (flat ξ)).const_add (flat z)`. Establish `hW : HasDerivAt (fun t : ℂ => flat (moebI g (unflat (flat z + t • flat ξ)))) D 0` using `hF.comp_hasDerivAt_of_eq (0 : ℂ) hc (by simp)`. Establish `hev : ∀ᶠ t : ℂ in nhds 0, flat z + t • flat ξ ∈ DomFlat ι p q` using `hc.continuousAt.eventually_mem (by simpa using hn)`. Use function extensionality and compare the values at `x`. Take `⟨τ, a, b⟩` from `x`.
+
+Establish `hgτ` using `hg τ (Set.mem_univ _)`. Establish `key : unflat D τ * kapQ (g τ) (z τ) = jW (g τ) (z τ) * ξ τ`. Rewrite using `[jW, Matrix.sub_mul, eq_sub_iff_add_eq, Matrix.mul_assoc]`. Use extensionality with `i j`. Establish `h1` using `hasDerivAt_affine (g τ).1.toBlocks₁₁ (g τ).1.toBlocks₁₂ (z τ) (ξ τ) i j`.
+
+Establish `h2` using `HasDerivAt.fun_sum (u := Finset.univ) fun k _ => (hasDerivAt_pi.1 hW (τ, i, k)).mul (hasDerivAt_affine (g τ).1.toBlocks₂₁ (g τ).1.toBlocks₂₂ (z τ) (ξ τ) k j)`. Establish `h3` using `h2.congr_of_eventuallyEq (f₁ := fun t : ℂ => ((g τ).1.toBlocks₁₁ * (z τ + t • ξ τ) + (g τ).1.toBlocks₁₂) i j) (by filter_upwards [hev] with t ht`. Use `moeb_mul_kapQ hgτ (ht τ)` as an intermediate fact. Conclude with `(congrFun (congrFun this i) j).symm)`. Rewrite using `[h1.unique h3, Finset.sum_add_distrib, Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply]`.
+
+Simplify using `only [zero_smul, add_zero]`. Both sides reduce to the same expression. Establish `e : unflat D τ = tanAct (g τ) (z τ) (ξ τ)`. Rewrite using `[tanAct, ← key, mul_nonsing_inv_cancel_right _ _ (kapQ_isUnit hgτ (hz τ))]`. Conclude with `congrFun (congrFun e a) b`.
+-/
 theorem fderiv_moebI {g : ι → GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ UpqI ι p q) {z : Pt ι p q} (hz : z ∈ DomI ι p q)
     (ξ : Pt ι p q) :
     fderiv ℂ (fun v => flat (moebI g (unflat v))) (flat z) (flat ξ) =
@@ -96,6 +132,9 @@ theorem fderiv_moebI {g : ι → GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ UpqI ι p
     rw [tanAct, ← key, mul_nonsing_inv_cancel_right _ _ (kapQ_isUnit hgτ (hz τ))]
   exact congrFun (congrFun e a) b
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `⟨isOpen_domFlat, fun _ hg => ⟨diffOn_moebI hg, fun _ hz ξ => fderiv_moebI hg hz ξ⟩⟩`.
+-/
 theorem isOpen_and_fderiv_moebI : ∀ (ι : Type) [Fintype ι] (p q : ℕ), IsOpen (DomFlat ι p q) ∧ ∀ g ∈ UpqI ι p q, DifferentiableOn ℂ (fun v => flat (moebI g (unflat v))) (DomFlat ι p q) ∧ ∀ z ∈ DomI ι p q, ∀ ξ : Pt ι p q, fderiv ℂ (fun v => flat (moebI g (unflat v))) (flat z) (flat ξ) = flat (fun τ => tanAct (g τ) (z τ) (ξ τ)) :=
   fun _ _ _ _ => ⟨isOpen_domFlat, fun _ hg => ⟨diffOn_moebI hg, fun _ hz ξ => fderiv_moebI hg hz ξ⟩⟩
 

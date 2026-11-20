@@ -8,6 +8,23 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `M _ _ n ε E μ kk j bv b w hM hS hb hj hL`. Establish `hj' : j ≤ 4 * n ^ 2 + 2` using `by omega`. Take `⟨hbv, hpos, -⟩` from `GlobalTheory.shape_position n kk j ε μ bv hS hj'`. Establish `hoff` using `GlobalTheory.T.unitaryGlModule_level_offDiag_normSq_le M n ε E μ kk j bv w hM hS hj' hL`. Establish `hdiag` using `(GlobalTheory.T.weightNear_diagonalOperators_bounds M n ε E (lowK ε μ) (j : ℝ) w hM.2.1 hL.2).2.2`.
+
+Establish `hd : ∀ a, ‖E a a w‖ ^ 2 ≤ (3 * bv) ^ 2 * ‖w‖ ^ 2`. Introduce `a`. Use `hdiag a (3 * bv) ?_` and prove the remaining obligations. Introduce `ω hω`. Take `⟨h1, h2⟩` from `hpos ω hω a`.
+
+Rewrite using `[abs_le]`. Distinguish the cases in `h : a.val + 1 < kk`. Take `⟨h3, h4⟩` from `h1 h`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨h3, h4⟩` from `h2 (by omega)`.
+
+Apply the tactic sequence `constructor <;> linarith`. Establish `hn : (1 : ℝ) ≤ n`. Use `hS.1` as an intermediate fact. Use `hS.2.1` as an intermediate fact. Conclude with `(by omega : 1 ≤ n)` after adjusting the coercions.
+
+Establish `hbig : 10 ^ 6 * (n : ℝ) ^ 7 ≤ bv` using `hS.2.2.2.2.2`. Establish `hsplit : ∑ a, ∑ c, ‖E a c w‖ ^ 2 = ∑ a, ‖E a a w‖ ^ 2 + ∑ a, ∑ c ∈ univ.erase a, ‖E a c w‖ ^ 2`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Conclude with `(Finset.add_sum_erase univ (fun c => ‖E a c w‖ ^ 2) (Finset.mem_univ a)).symm`.
+
+Establish `hsum : ∑ a, ‖E a a w‖ ^ 2 ≤ n * ((3 * bv) ^ 2 * ‖w‖ ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Establish `hO : 0 ≤ ∑ a, ∑ c ∈ univ.erase a, ‖E a c w‖ ^ 2` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun c _ => sq_nonneg _`. Establish `hO' : ∑ a, ∑ c ∈ univ.erase a, ‖E a c w‖ ^ 2 ≤ (bv / 16) ^ 2 * ‖w‖ ^ 2` using `le_trans (le_mul_of_one_le_left hO hn) hoff`. Establish `hn7 : (n : ℝ) ≤ (n : ℝ) ^ 7` using `le_self_pow₀ hn (by norm_num)`.
+
+Establish `hb1 : 10 ^ 6 * (n : ℝ) ≤ bv` using `by linarith`. Establish `hb2 : 9 * (n : ℝ) + 1 ≤ bv ^ 2` using `by nlinarith`. Establish `hb4 : bv ^ 4 ≤ b ^ 4` using `pow_le_pow_left₀ hbv.le hb 4`. Establish `hc : (n : ℝ) * (3 * bv) ^ 2 + (bv / 16) ^ 2 ≤ b ^ 4`. Establish `h1 : (9 * (n : ℝ) + 1) * bv ^ 2 ≤ bv ^ 2 * bv ^ 2` using `mul_le_mul_of_nonneg_right hb2 (sq_nonneg _)`.
+
+Use polynomial arithmetic with `[sq_nonneg bv]`. Use `mul_le_mul_of_nonneg_right hc (sq_nonneg ‖w‖)` as an intermediate fact. Rewrite using `[hsplit]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem lev_gl_size : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ M) (μ : Fin n → ℝ) (kk j : ℕ) (bv b : ℝ) (w : M),
     IsMod ε E μ → Shape ε kk μ bv → bv ≤ b → j ≤ 4 * n ^ 2 → Lev ε E μ j w →

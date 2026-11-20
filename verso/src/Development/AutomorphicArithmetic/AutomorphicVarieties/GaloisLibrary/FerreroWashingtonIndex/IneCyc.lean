@@ -3,11 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Stick UpperTheory.V.FW
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Establish `h1 : A.valuation ζ ^ m = 1` using `by rw [← map_pow, h, map_one]`. Conclude with `(pow_eq_one_iff_left hm).1 h1`.
+-/
 private theorem iC_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0) {ζ : Ω}
     (h : ζ ^ m = 1) : A.valuation ζ = 1 := by
   have h1 : A.valuation ζ ^ m = 1 := by rw [← map_pow, h, map_one]
   exact (pow_eq_one_iff_left hm).1 h1
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `e : 1 - η ^ (i + 1) = η * (1 - η ^ i) - (η - 1)` using `by ring`. Rewrite using `[e]`.
+
+Use `A.valuation.map_sub_lt ?_ h` and prove the remaining obligations. Rewrite using `[map_mul, h1, one_mul]`. Conclude with `ih`.
+-/
 private theorem iC_pow {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {η : Ω} (h1 : A.valuation η = 1)
     (h : A.valuation (η - 1) < 1) (i : ℕ) : A.valuation (1 - η ^ i) < 1 := by
   induction i with
@@ -18,6 +26,13 @@ private theorem iC_pow {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {η : Ω
     refine A.valuation.map_sub_lt ?_ h
     rw [map_mul, h1, one_mul]; exact ih
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Apply `hv` to reduce the goal to its premises. Establish `hs : ∑ i ∈ Finset.range m, η ^ i = 0`. Use `mul_geom_sum η m` as an intermediate fact. Rewrite `this` using `[hη, sub_self]`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`. Establish `e : (m : Ω) = ∑ i ∈ Finset.range m, (1 - η ^ i)`. Rewrite using `[Finset.sum_sub_distrib, hs]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Conclude with `A.valuation.map_sum_lt one_ne_zero fun i _ => iC_pow A (iC_one A hm hη) h i`.
+-/
 private theorem iC_eta {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ} (hm : m ≠ 0)
     (hv : ¬ A.valuation (m : Ω) < 1) {η : Ω} (hη : η ^ m = 1) (h : A.valuation (η - 1) < 1) : η = 1 := by
   by_contra hne
@@ -31,6 +46,13 @@ private theorem iC_eta {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {m : ℕ
   rw [e]
   exact A.valuation.map_sum_lt one_ne_zero fun i _ => iC_pow A (iC_one A hm hη) h i
 
+/- English proof (translation)
+Establish `hm : l ^ k ≠ 0` using `pow_ne_zero _ hl.out.ne_zero`. Establish `hv` using `iC_one A hm hζ`. Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hv`.
+
+Establish `hl1 : A.valuation (l : Ω) = 1` using `le_antisymm ((A.valuation_le_one_iff _).2 (natCast_mem A l)) (not_lt.1 hA)`. Establish `hA' : ¬ A.valuation ((l ^ k : ℕ) : Ω) < 1`. Rewrite using `[Nat.cast_pow, map_pow, hl1, one_pow]`. Conclude with `lt_irrefl _`. Establish `e : g ζ / ζ - 1 = (g ζ - ζ) / ζ` using `by field_simp`.
+
+Establish `: g ζ / ζ = 1`. Use `iC_eta A hm hA' (by rw [div_pow, ← map_pow, hζ, map_one, div_one]) ?_` and prove the remaining obligations. Rewrite using `[e, map_div₀, hv, div_one]`. Conclude with `hg.2 ζ hv.le`. Conclude with `(div_eq_one_iff_eq h0).1 this`.
+-/
 private theorem iC_ine (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (l : ℕ) [hl : Fact l.Prime] (A : ValuationSubring Ω) (hA : ¬ A.valuation (l : Ω) < 1) (g : G F Ω)
     (hg : g ∈ Ine (F := F) A) (k : ℕ) (ζ : Ω) (hζ : ζ ^ l ^ k = 1) : g ζ = ζ := by
@@ -49,6 +71,13 @@ private theorem iC_ine (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algeb
     rw [e, map_div₀, hv, div_one]; exact hg.2 ζ hv.le
   exact (div_eq_one_iff_eq h0).1 this
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ n hc A hA g hg x`. Establish `hx` using `IsCyclotomicExtension.adjoin_roots (S := {l ^ n}) (A := F) (B := K) x`. Use `show g (algebraMap K Ω x) = algebraMap K Ω x`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy`.
+
+Take `⟨m, hm, -, hy⟩` from `hy`. Take `rfl : m = l ^ n` from `hm`. Conclude with `iC_ine F Ω l A hA g hg n _ (by rw [← map_pow, hy, map_one])`. Consider the case `algebraMap r => rw [← IsScalarTower.algebraMap_apply]`. Conclude with `g.commutes r`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add, map_add, ha, hb]`. Consider the case `mul a b _ _ ha hb => rw [map_mul, map_mul, ha, hb]`.
+-/
 theorem UpperTheory.V.FW.ineCyc :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) [IsCyclotomicExtension {l ^ n} F K] (A : ValuationSubring Ω), ¬ A.valuation (l : Ω) < 1 → Ine (F := F) A ≤ galOf F K Ω := by
   intro F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ n hc A hA g hg x

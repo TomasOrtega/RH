@@ -10,6 +10,11 @@ open NumberField MeasureTheory Topology GlobalTheory.AutomorphicL2Unitary Global
 
 namespace GlobalTheory.CompanionTheory.CuspidalCompact
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Conclude with `GlobalTheory.CompanionTheory.CuspRank.isCompactOperator_repOp_Rcusp_zero E μ f`. Set `ν : Measure (GroundTheory.Automorphic.Reduction.normOneGL E a)` to `Measure.haar`. Apply the tactic sequence `obtain ⟨Φ, c, hc0, hΦ, hint⟩ := GlobalTheory.T.cuspidal_L2_norm_one_isometry E a ha μ ν`. Take `⟨f₁, hf₁⟩` from `hint f hf hc`.
+
+Conclude with `GlobalTheory.CompanionTheory.CompactOperators.isCompactOperator_of_scaled_isometric_intertwiner (repOp (Rcusp μ) μ f) _ Φ c hc0 hΦ hf₁ (GroundTheory.Automorphic.CuspidalSpectrum.isCompactOperator_cuspRep ν f₁)`.
+-/
 theorem isCompactOperator_repOp_Rcusp (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
     (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (f : GA E a → ℂ)
     (hf : Continuous f) (hc : HasCompactSupport f) :

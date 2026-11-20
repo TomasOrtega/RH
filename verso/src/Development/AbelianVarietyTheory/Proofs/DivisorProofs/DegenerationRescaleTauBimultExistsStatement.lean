@@ -11,5 +11,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RescaleBimult.exists_rescale_tauBimult | exact GlobalTheory.RescaleBimult.exists_rescale_tauBimult | (intros; apply GlobalTheory.RescaleBimult.exists_rescale_tauBimult <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.degeneration_rescale_tau_bimult_exists : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), ∃ g : D.X → (FractionRing R)ˣ, (GlobalTheory.PolDeg.rescale D g).TauBimult := by
   first | exact @GlobalTheory.RescaleBimult.exists_rescale_tauBimult | exact GlobalTheory.RescaleBimult.exists_rescale_tauBimult | (intros; apply GlobalTheory.RescaleBimult.exists_rescale_tauBimult <;> assumption)

@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsPsCharOne
 
 namespace GlobalTheory.PsChar
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => by simp [alt] | n + 1, z, hz => by rw [alt, alt_pow_eq_prod T y hy n (Fin.tail z) (fun i => hz i.succ), Fin.prod_univ_succ] have hs : ∑ i : Fin n, alt T n (Function.update (Fin.tail z) i (z 0 * Fin.tail z i)) = 0 := by refine Finset.sum_eq_zero fun i _ => ?_ obtain ⟨ …`.
+-/
 theorem alt_pow_eq_prod {M A : Type*} [Monoid M] [CommRing A] (T : M → A) (y : M)
     (hy : ∀ m, 2 ≤ m → T (y ^ m) = 0) :
     ∀ (n : ℕ) (z : Fin n → M), (∀ i, ∃ a, 1 ≤ a ∧ z i = y ^ a) → alt T n z = ∏ i, T (z i)
@@ -29,6 +32,9 @@ theorem alt_pow_eq_prod {M A : Type*} [Monoid M] [CommRing A] (T : M → A) (y :
     rw [hs, sub_zero]
     rfl
 
+/- English proof (translation)
+Establish `h` using `alt_pow_eq_prod T y hy (d + 1) (fun _ => y) (fun _ => ⟨1, le_rfl, (pow_one y).symm⟩)`. Rewrite `h` using `[hT.alt_eq_zero]`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin] at h`. Conclude with `IsNilpotent.eq_zero ⟨d + 1, h.symm⟩`.
+-/
 theorem IsPsChar.apply_eq_zero_of_pow {M A : Type*} [Monoid M] [CommRing A] [IsReduced A] {d : ℕ} {T : M → A}
     (hT : IsPsChar d T) (y : M) (hy : ∀ m, 2 ≤ m → T (y ^ m) = 0) : T y = 0 := by
   have h := alt_pow_eq_prod T y hy (d + 1) (fun _ => y) (fun _ => ⟨1, le_rfl, (pow_one y).symm⟩)
@@ -36,6 +42,13 @@ theorem IsPsChar.apply_eq_zero_of_pow {M A : Type*} [Monoid M] [CommRing A] [IsR
   simp only [Finset.prod_const, Finset.card_univ, Fintype.card_fin] at h
   exact IsNilpotent.eq_zero ⟨d + 1, h.symm⟩
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `hx`. Establish `key : ∀ r j : ℕ, 1 ≤ j → N ≤ j + r → T (x ^ j) = 0`. Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`.
+
+Introduce `j _ hj`. Rewrite using `[pow_eq_zero_of_le (by simpa using hj) hN, map_zero]`. Consider the case `succ r ih`. Introduce `j h1 hj`. Use `hT.apply_eq_zero_of_pow (x ^ j) fun m hm => ?_` and prove the remaining obligations.
+
+Use `show T ((x ^ j) ^ m) = 0`. Rewrite using `[← pow_mul]`. Establish `: j * 2 ≤ j * m` using `Nat.mul_le_mul_left j hm`. Conclude with `ih _ (by omega) (by omega)`. Simplify using `using key N 1 le_rfl (by omega)`.
+-/
 theorem apply_eq_zero_of_isNilpotent (k R : Type) [Field k] [CharZero k] [Ring R] [Algebra k R] (d : ℕ)
     (T : R →ₗ[k] k) (hT : IsPsChar d (fun x => T x)) (x : R) (hx : IsNilpotent x) : T x = 0 := by
   obtain ⟨N, hN⟩ := hx

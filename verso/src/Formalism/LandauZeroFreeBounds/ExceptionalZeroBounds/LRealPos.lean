@@ -7,12 +7,20 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Establish `h` using `realCharConj q χ hχ hχ1 (σ : ℂ)`. Rewrite `h` using `[Complex.conj_ofReal]`. Conclude with `Complex.conj_eq_iff_im.1 h.symm`.
+-/
 lemma real_character_lfunction_im_eq_zero {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ^ 2 = 1) (hχ1 : χ ≠ 1)
     (σ : ℝ) : (DirichletCharacter.LFunction χ σ).im = 0 := by
   have h := realCharConj q χ hχ hχ1 (σ : ℂ)
   rw [Complex.conj_ofReal] at h
   exact Complex.conj_eq_iff_im.1 h.symm
 
+/- English proof (translation)
+Establish `ha : LSeries.abscissaOfAbsConv (fun n : ℕ => χ n) < ⊤`. Rewrite using `[DirichletCharacter.absicssaOfAbsConv_eq_one (NeZero.ne q) χ]`. Conclude with `EReal.coe_lt_top 1`. Establish `ht` using `LSeries.tendsto_atTop ha`. Simplify using `only [Nat.cast_one, map_one] at ht`.
+
+Use `ht.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 1] with x hx`. Conclude with `(DirichletCharacter.LFunction_eq_LSeries χ (by simpa using hx)).symm`.
+-/
 lemma lfunction_tendsto_one_atTop {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) :
     Tendsto (fun x : ℝ ↦ DirichletCharacter.LFunction χ x) atTop (𝓝 1) := by
   have ha : LSeries.abscissaOfAbsConv (fun n : ℕ => χ n) < ⊤ := by
@@ -24,6 +32,13 @@ lemma lfunction_tendsto_one_atTop {q : ℕ} [NeZero q] (χ : DirichletCharacter 
   filter_upwards [eventually_gt_atTop 1] with x hx
   exact (DirichletCharacter.LFunction_eq_LSeries χ (by simpa using hx)).symm
 
+/- English proof (translation)
+Introduce `q _ χ hχ hχ1 σ₀ hnz σ hσ`. Establish `him : ∀ t : ℝ, (DirichletCharacter.LFunction χ t).im = 0` using `real_character_lfunction_im_eq_zero χ hχ hχ1`. Use `⟨him σ, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hneg`. Rewrite `hneg` using `[not_lt]`.
+
+Establish `hcont : Continuous fun t : ℝ => (DirichletCharacter.LFunction χ t).re` using `Complex.continuous_re.comp ((DirichletCharacter.differentiable_LFunction hχ1).continuous.comp Complex.continuous_ofReal)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx1, hx⟩ : ∃ x : ℝ, σ ≤ x ∧ 0 < (DirichletCharacter.LFunction χ x).re := by`. Establish `hev : ∀ᶠ x : ℝ in atTop, 0 < (DirichletCharacter.LFunction χ x).re` using `((Complex.continuous_re.tendsto 1).comp (lfunction_tendsto_one_atTop χ)).eventually (lt_mem_nhds (by norm_num))`. Take `⟨x, hx⟩` from `(hev.and (eventually_ge_atTop σ)).exists`. Conclude with `⟨x, hx.2, hx.1⟩`.
+
+Take `⟨c, hc, hc0⟩` from `intermediate_value_Icc hx1 hcont.continuousOn ⟨hneg, hx.le⟩`. Apply `hnz c (le_trans hσ hc.1)` to reduce the goal to its premises. Conclude with `Complex.ext (by simpa using hc0) (by simpa using him c)`.
+-/
 theorem real_lfunction_real_on_reals : LRealPos := by
   intro q _ χ hχ hχ1 σ₀ hnz σ hσ
   have him : ∀ t : ℝ, (DirichletCharacter.LFunction χ t).im = 0 := real_character_lfunction_im_eq_zero χ hχ hχ1

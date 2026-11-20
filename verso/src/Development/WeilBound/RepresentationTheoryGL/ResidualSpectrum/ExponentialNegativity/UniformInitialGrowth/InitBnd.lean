@@ -13,25 +13,40 @@ variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 def ext0 (x : Fin n → ℝ) (j : ℕ) : ℝ := if h : j < n then x ⟨j, h⟩ else 0
 
+/- English proof (translation)
+Rewrite using `[An.sr, dif_pos ⟨h0, h1⟩, ext0, ext0, dif_pos (by omega : r - 1 < n), dif_pos h1]`.
+-/
 theorem sr_eq (x : Fin n → ℝ) {r : ℕ} (h0 : 0 < r) (h1 : r < n) : An.sr x r = ext0 x (r - 1) - ext0 x r := by
   rw [An.sr, dif_pos ⟨h0, h1⟩, ext0, ext0, dif_pos (by omega : r - 1 < n), dif_pos h1]
 
+/- English proof (translation)
+The claim follows from `|An.sr x r| ≤ An.sr x r + 2 * t₀ := by have h0 : -t₀ ≤ 0 := by simpa [An.sr] using hx 0 have := hx r rw [abs_le]; constructor <;> linarith`.
+-/
 theorem abs_sr_le (x : Fin n → ℝ) (t₀ : ℝ) (hx : ∀ r, -t₀ ≤ An.sr x r) (r : ℕ) :
     |An.sr x r| ≤ An.sr x r + 2 * t₀ := by
   have h0 : -t₀ ≤ 0 := by simpa [An.sr] using hx 0
   have := hx r
   rw [abs_le]; constructor <;> linarith
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_bound (x : Fin n → ℝ) (t₀ : ℝ) (hx : ∀ r, -t₀ ≤ An.sr x r) :
     ∑ r ∈ Finset.range n, |An.sr x r| ≤ ∑ r ∈ Finset.range n, An.sr x r + 2 * (n : ℝ) * t₀ := by
   calc ∑ r ∈ Finset.range n, |An.sr x r| ≤ ∑ r ∈ Finset.range n, (An.sr x r + 2 * t₀) :=
         Finset.sum_le_sum fun r _ => abs_sr_le x t₀ hx r
     _ = _ := by rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]; ring
 
+/- English proof (translation)
+The claim follows from `(Finset.sum_nonneg fun _ _ => abs_nonneg _).trans (sum_bound x t₀ hx)`.
+-/
 theorem bound_nonneg (x : Fin n → ℝ) (t₀ : ℝ) (hx : ∀ r, -t₀ ≤ An.sr x r) :
     0 ≤ ∑ r ∈ Finset.range n, An.sr x r + 2 * (n : ℝ) * t₀ :=
   (Finset.sum_nonneg fun _ _ => abs_nonneg _).trans (sum_bound x t₀ hx)
 
+/- English proof (translation)
+The claim follows from `|x i| ≤ ∑ r ∈ Finset.range n, An.sr x r + 2 * (n : ℝ) * t₀ := by have hXi : ext0 x i = x i := by rw [ext0, dif_pos i.2] have hXl : ext0 x (n - 1) = 0 := by rw [ext0]; split_ifs with h · exact hlast _ (by show n - 1 + 1 = n; omega) · rfl have tele : ext0 x i = ∑ k ∈ Finset.range ( …`.
+-/
 theorem abs_le_bound (x : Fin n → ℝ) (t₀ : ℝ) (hx : ∀ r, -t₀ ≤ An.sr x r)
     (hlast : ∀ i : Fin n, (i : ℕ) + 1 = n → x i = 0) (i : Fin n) :
     |x i| ≤ ∑ r ∈ Finset.range n, An.sr x r + 2 * (n : ℝ) * t₀ := by
@@ -57,6 +72,11 @@ theorem abs_le_bound (x : Fin n → ℝ) (t₀ : ℝ) (hx : ∀ r, -t₀ ≤ An.
           rw [Finset.mem_Ico] at hr; rw [Finset.mem_range]; exact hr.2) (fun _ _ _ => abs_nonneg _)
     _ ≤ _ := sum_bound x t₀ hx
 
+/- English proof (translation)
+Unfold `An.tor`. Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply]`.
+
+Rewrite using `[← GlobalTheory.CuspBoundSiegel.posIdele_mul]`. Conclude with `GlobalTheory.CuspBoundSiegel.posIdele_congr _ _ (by rw [Pi.add_apply, Real.exp_add])`.
+-/
 theorem tor_add (x y : Fin n → ℝ) : An.tor E (x + y) = An.tor E x * An.tor E y := by
   unfold An.tor
   rw [← map_mul]
@@ -66,12 +86,20 @@ theorem tor_add (x y : Fin n → ℝ) : An.tor E (x + y) = An.tor E x * An.tor E
   rw [← GlobalTheory.CuspBoundSiegel.posIdele_mul]
   exact GlobalTheory.CuspBoundSiegel.posIdele_congr _ _ (by rw [Pi.add_apply, Real.exp_add])
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Simplify using `only [An.tor, Units.val_mul, coe_diagUnits, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Conclude with `mul_comm _ _`.
+-/
 theorem tor_const_comm (c : ℝ) (g : AdelicGLn.AdelicGL E n) :
     An.tor E (fun _ : Fin n => c) * g = g * An.tor E (fun _ => c) := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   simp only [An.tor, Units.val_mul, coe_diagUnits, Matrix.diagonal_mul, Matrix.mul_diagonal]
   exact mul_comm _ _
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, coe_diagUnits, Matrix.diagonal_apply, Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Express the relevant statement in the definitionally equal form `((posIdele (K := E) (r i) (hr i) : IdeleGroup E) : AdeleRing (𝓞 E) E).2 = 1`. Conclude with `IsDedekindDomain.FiniteAdeleRing.ext _ fun v => by rw [posIdele_finite]; rfl`.
+
+Conclude with `map_zero _`.
+-/
 theorem pFin_diag (r : Fin n → ℝ) (hr : ∀ i, 0 < r i) :
     Matrix.GeneralLinearGroup.map (pFin E) (diagUnits n fun i => posIdele (K := E) (r i) (hr i)) = 1 := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -81,6 +109,9 @@ theorem pFin_diag (r : Fin n → ℝ) (hr : ∀ i, 0 < r i) :
     exact IsDedekindDomain.FiniteAdeleRing.ext _ fun v => by rw [posIdele_finite]; rfl
   · exact map_zero _
 
+/- English proof (translation)
+The claim follows from `pFin_diag (fun i => Real.exp (x i)) (fun i => Real.exp_pos _)`.
+-/
 theorem pFin_tor (x : Fin n → ℝ) : Matrix.GeneralLinearGroup.map (pFin E) (An.tor E x) = 1 :=
   pFin_diag (fun i => Real.exp (x i)) (fun i => Real.exp_pos _)
 
@@ -88,11 +119,17 @@ variable [IsTotallyComplex E]
 
 def dg (x : Fin n → ℝ) : GL (Fin n) (Cinf E) := diagUnits n fun i => expU fun _ : InfinitePlace E => ((x i : ℝ) : ℂ)
 
+/- English proof (translation)
+Establish `h : ∀ x, pInf E (sInf E x) = x` using `fun x => (infEq E).symm_apply_apply x`. Express the relevant statement in the definitionally equal form `pInf E (1 - sInf E 1 + sInf E _) = _`. Simplify using `only [map_add, map_sub, map_one, h, sub_self, zero_add]`.
+-/
 theorem pInf_infId (v : (Cinf E)ˣ) : pInf E (infId E v) = v := by
   have h : ∀ x, pInf E (sInf E x) = x := fun x => (infEq E).symm_apply_apply x
   change pInf E (1 - sInf E 1 + sInf E _) = _
   simp only [map_add, map_sub, map_one, h, sub_self, zero_add]
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, An.tor, dg, coe_diagUnits, coe_diagUnits, Matrix.diagonal_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Rewrite using `[GlobalTheory.CuspBoundSiegel.posIdele_exp, pInf_infId]`. Conclude with `map_zero _`.
+-/
 theorem pInf_tor (x : Fin n → ℝ) : Matrix.GeneralLinearGroup.map (pInf E) (An.tor E x) = dg x := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   rw [Matrix.GeneralLinearGroup.map_apply, An.tor, dg, coe_diagUnits, coe_diagUnits, Matrix.diagonal_apply,
@@ -102,10 +139,24 @@ theorem pInf_tor (x : Fin n → ℝ) : Matrix.GeneralLinearGroup.map (pInf E) (A
   · exact map_zero _
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Unfold `GlobalTheory.CuspRep.height`. Rewrite using `[inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem height_inv' (y : GL (Fin n) (Cinf E)) : GlobalTheory.CuspRep.height y⁻¹ = GlobalTheory.CuspRep.height y := by
   unfold GlobalTheory.CuspRep.height; rw [inv_inv]; ring
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Establish `he : 0 ≤ Real.exp R` using `(Real.exp_pos R).le`. Establish `h1 : ‖toL (dg (E` using `E) x).val‖ ≤ Real.exp R := by`. Use `(pi_norm_le_iff_of_nonneg he).2 fun i => (pi_norm_le_iff_of_nonneg he).2 fun j => (pi_norm_le_iff_of_nonneg he).2 fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(Matrix.diagonal (fun k => ((expU fun _ : InfinitePlace E => ((x k : ℝ) : ℂ) : (Cinf E)ˣ) : Cinf E)) i j) w‖ ≤ _`. Rewrite using `[Matrix.diagonal_apply]`.
+
+Use `split_ifs with h`. Express the relevant statement in the definitionally equal form `‖Complex.exp ((x i : ℝ) : ℂ)‖ ≤ _`. Rewrite using `[Complex.norm_exp_ofReal]`. Conclude with `Real.exp_le_exp.2 ((le_abs_self _).trans (hR i))`. Simplify using `only [Pi.zero_apply, norm_zero]`.
+
+Conclude with `he`. Establish `h2 : ‖toL ((dg (E` using `E) x)⁻¹).val‖ ≤ Real.exp R := by`. Use `(pi_norm_le_iff_of_nonneg he).2 fun i => (pi_norm_le_iff_of_nonneg he).2 fun j => (pi_norm_le_iff_of_nonneg he).2 fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(Matrix.diagonal (fun k => (((expU fun _ : InfinitePlace E => ((x k : ℝ) : ℂ) : (Cinf E)ˣ)⁻¹ : (Cinf E)ˣ) : Cinf E)) i j) w‖ ≤ _`. Rewrite using `[Matrix.diagonal_apply]`.
+
+Use `split_ifs with h`. Express the relevant statement in the definitionally equal form `‖Complex.exp (-((x i : ℝ) : ℂ))‖ ≤ _`. Rewrite using `[← Complex.ofReal_neg, Complex.norm_exp_ofReal]`. Conclude with `Real.exp_le_exp.2 ((neg_le_abs _).trans (hR i))`. Simplify using `only [Pi.zero_apply, norm_zero]`.
+
+Conclude with `he`. Establish `h3 : 1 ≤ Real.exp R` using `Real.one_le_exp hR0`. Unfold `GlobalTheory.CuspRep.height`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem height_dg (x : Fin n → ℝ) (R : ℝ) (hR : ∀ i, |x i| ≤ R) (hR0 : 0 ≤ R) :
     GlobalTheory.CuspRep.height (dg (E := E) x) ≤ 3 * Real.exp R := by
   have he : 0 ≤ Real.exp R := (Real.exp_pos R).le
@@ -136,18 +187,35 @@ theorem height_dg (x : Fin n → ℝ) (R : ℝ) (hR : ∀ i, |x i| ≤ R) (hR0 :
 
 abbrev mI (g : GA E n) : GL (Fin n) (Cinf E) := Matrix.GeneralLinearGroup.map (pInf E) g
 
+/- English proof (translation)
+Apply `ga_ext` to reduce the goal to its premises. Simplify using `only [mI, map_mul, pInf_infGL, mul_assoc, mul_inv_cancel_left]`. Simplify using `only [map_mul, pFin_infGL, hs, mul_one]`.
+-/
 theorem key (b s k : GA E n) (hs : Matrix.GeneralLinearGroup.map (pFin E) s = 1) (y : GL (Fin n) (Cinf E)) :
     b * s * k * infGL E n y = b * k * infGL E n ((mI k)⁻¹ * mI s * mI k * y) := by
   apply ga_ext
   · simp only [mI, map_mul, pInf_infGL, mul_assoc, mul_inv_cancel_left]
   · simp only [map_mul, pFin_infGL, hs, mul_one]
 
+/- English proof (translation)
+Apply `ga_ext` to reduce the goal to its premises. Simplify using `only [mI, map_mul, pInf_infGL, mul_assoc, mul_inv_cancel_left]`. Simplify using `only [map_mul, pFin_infGL, hs, mul_one]`.
+-/
 theorem key0 (b s k : GA E n) (hs : Matrix.GeneralLinearGroup.map (pFin E) s = 1) :
     b * s * k = b * k * infGL E n ((mI k)⁻¹ * mI s * mI k) := by
   apply ga_ext
   · simp only [mI, map_mul, pInf_infGL, mul_assoc, mul_inv_cancel_left]
   · simp only [map_mul, pFin_infGL, hs, mul_one]
 
+/- English proof (translation)
+Establish `hS : ∀ s : GL (Fin n) (Af E), finRep E n s φ = φ → ∀ x, φ.1 (x * finGL E n s) = φ.1 x` using `fun s hs x => by`. Use `congrFun (congrArg Subtype.val hs) x` as an intermediate fact. Conclude with `this`. Establish `hU : ∀ t : GL (Fin n) (Af E), IsOpen ((fun k => t⁻¹ * k) ⁻¹' {k | finRep E n k φ = φ})` using `fun t => hopen.preimage (continuous_const.mul continuous_id)`. Establish `hKf : IsCompact (Matrix.GeneralLinearGroup.map (n` using `Fin n) (pFin E) '' Ω) := hΩ.image GlobalTheory.ConstTermGrowth.continuous_mapFin`.
+
+Take `⟨T, hT⟩` from `hKf.elim_finite_subcover (fun t => (fun k => t⁻¹ * k) ⁻¹' {k | finRep E n k φ = φ}) hU (fun k _ => Set.mem_iUnion.2 ⟨k, by`. Express the relevant statement in the definitionally equal form `finRep E n (k⁻¹ * k) φ = φ`. Rewrite using `[inv_mul_cancel, map_one]`. Use the proof step `rfl⟩)`. Use `choose C hC using hgr`.
+
+Take `⟨B, hB0, hB⟩` from `GlobalTheory.ConstTermGrowth.height_mul_left_le (hΩ.image (GlobalTheory.ConstTermGrowth.continuous_mapInf (E := E) (a := n)))`. Use `⟨∑ t ∈ T, |C (finGL E n t)| * B ^ N0, Finset.sum_nonneg fun _ _ => mul_nonneg (abs_nonneg _) (pow_nonneg hB0 _), fun h hh y => ?_⟩` and prove the remaining obligations. Take `⟨t, htT, hkt⟩` from `Set.mem_iUnion₂.1 (hT ⟨h, hh, rfl⟩)`. Establish `e : h * infGL E n y = finGL E n t * infGL E n (Matrix.GeneralLinearGroup.map (pInf E) h * y) * finGL E n (t⁻¹ * Matrix.GeneralLinearGroup.map (pFin E) h)`. Apply `ga_ext` to reduce the goal to its premises.
+
+Simplify using `only [map_mul, pInf_infGL, pInf_finGL, one_mul, mul_one]`. Simplify using `only [map_mul, pFin_infGL, pFin_finGL, mul_one, mul_inv_cancel_left]`. Rewrite using `[e, hS _ hkt]`. Establish `hcy` using `hB _ ⟨h, hh, rfl⟩ y`. Establish `h0` using `one_le_height (Matrix.GeneralLinearGroup.map (pInf E) h * y)`.
+
+Establish `hy` using `one_le_height y`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem uniform_growth0 (φ : Sm E n) (hopen : IsOpen {k | finRep E n k φ = φ}) (N0 : ℕ)
     (hgr : ∀ g, ∃ C : ℝ, ∀ y, ‖φ.1 (g * infGL E n y)‖ ≤ C * GlobalTheory.CuspRep.height y ^ N0)
     {Ω : Set (GA E n)} (hΩ : IsCompact Ω) :
@@ -187,6 +255,15 @@ theorem uniform_growth0 (φ : Sm E n) (hopen : IsOpen {k | finRep E n k φ = φ}
         mul_le_mul_of_nonneg_right (Finset.single_le_sum (f := fun t => |C (finGL E n t)| * B ^ N0)
           (fun _ _ => mul_nonneg (abs_nonneg _) (pow_nonneg hB0 _)) htT) (pow_nonneg (by linarith) _)
 
+/- English proof (translation)
+Take `⟨ω0, hω0, -, t, -, hsieg⟩` from `exists_siegelSet (K := E) n`. Take `⟨C, N0, hC⟩` from `GlobalTheory.ConstTermGrowth.uniform_growth φ hA.level hA.growth (hω0.mul (isCompact_maxCompact (K := E) (n := n)))`. Use `⟨N0, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hmem⟩` from `hsieg g`. Take `⟨b, hb, a, ⟨r, hr, -, rfl⟩, k, hk, e⟩` from `hmem`.
+
+Take `⟨B, hB0, hB⟩` from `GlobalTheory.ConstTermGrowth.height_mul_left_le (E := E) (isCompact_singleton (x := (mI k)⁻¹ * mI (diagUnits n fun i => posIdele (K := E) (r i) (hr i)) * mI k))`. Use `⟨|C| * B ^ N0, fun y => ?_⟩` and prove the remaining obligations. Establish `e2 : φ.1 (g * infGL E n y) = φ.1 ((b * k) * infGL E n ((mI k)⁻¹ * mI (diagUnits n fun i => posIdele (K` using `E) (r i) (hr i)) * mI k * y)) := by`. Rewrite using `[← hA.left γ (g * infGL E n y), ← mul_assoc (ratGL E n γ) g]`. Express the relevant statement in the definitionally equal form `φ.1 (AdelicGLn.diagonal E n γ * g * infGL E n y) = _`.
+
+Rewrite using `[e, key b _ k (pFin_diag r hr) y]`. Rewrite using `[e2]`. Establish `h1` using `hC (b * k) (Set.mul_mem_mul hb hk) ((mI k)⁻¹ * mI (diagUnits n fun i => posIdele (K := E) (r i) (hr i)) * mI k * y)`. Establish `h2` using `hB _ rfl y`. Establish `hy` using `one_le_height y`.
+
+Establish `hcy` using `one_le_height ((mI k)⁻¹ * mI (diagUnits n fun i => posIdele (K := E) (r i) (hr i)) * mI k * y)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem uniform_exp (φ : Sm E n) (hA : IsAutForm φ) :
     ∃ N0 : ℕ, ∀ g : GA E n, ∃ C : ℝ, ∀ y, ‖φ.1 (g * infGL E n y)‖ ≤ C * GlobalTheory.CuspRep.height y ^ N0 := by
   obtain ⟨ω0, hω0, -, t, -, hsieg⟩ := exists_siegelSet (K := E) n
@@ -219,6 +296,27 @@ end PositivityTheory.Rg.Rs.JInitBnd
 namespace PositivityTheory.Rg.Rs
 
 open JInitBnd in
+/- English proof (translation)
+Introduce `E _ _ _ N φ hA hZ`. Take `⟨N0, hN0⟩` from `uniform_exp φ hA`. Use `⟨(N0 : ℝ), ?_⟩` and prove the remaining obligations. Introduce `ω hω _ t₀ Q hQ`. Take `⟨C1, hC10, hC1⟩` from `uniform_growth0 φ hA.level N0 hN0 (hω.mul hQ)`.
+
+Take `⟨B, hB0, hB⟩` from `GlobalTheory.ConstTermGrowth.height_mul_left_le (hQ.image (GlobalTheory.ConstTermGrowth.continuous_mapInf (E := E) (a := N)).inv)`. Use `⟨C1 * (3 * B * B * Real.exp (2 * (N : ℝ) * t₀)) ^ N0, fun b hb x hx q hq => ?_⟩` and prove the remaining obligations. Use `show ‖φ.1 (b * An.tor E x * q)‖ ≤ _ * Real.exp (∑ r ∈ Finset.range N, (N0 : ℝ) * An.sr x r)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ℝ, ∀ i : Fin N, (i : ℕ) + 1 = N → x i = c := by`. Distinguish the cases in `hN : 0 < N`.
+
+Conclude with `⟨x ⟨N - 1, by omega⟩, fun i hi => congrArg x (Fin.ext (by simp only; omega))⟩`. Conclude with `⟨0, fun i _ => by exfalso; have := i.2; omega⟩`. Use `set x' : Fin N → ℝ := fun i => x i - c with hx'`. Establish `hsr : ∀ r, An.sr x' r = An.sr x r` using `fun r => by`. Apply the tactic sequence `unfold An.sr; split_ifs <;> simp [hx']`.
+
+Establish `hx'' : ∀ r, -t₀ ≤ An.sr x' r` using `fun r => (hsr r).symm ▸ hx r`. Establish `hlast : ∀ i : Fin N, (i : ℕ) + 1 = N → x' i = 0` using `fun i hi => by simp only [hx', hc i hi, sub_self]`. Establish `hS : ∑ r ∈ Finset.range N, An.sr x' r = ∑ r ∈ Finset.range N, An.sr x r` using `Finset.sum_congr rfl fun r _ => hsr r`. Establish `hR0 : 0 ≤ ∑ r ∈ Finset.range N, An.sr x r + 2 * (N : ℝ) * t₀`. Rewrite using `[← hS]`.
+
+Conclude with `bound_nonneg x' t₀ hx''`. Establish `hxR : ∀ i, |x' i| ≤ ∑ r ∈ Finset.range N, An.sr x r + 2 * (N : ℝ) * t₀` using `fun i => by`. Rewrite using `[← hS]`. Conclude with `abs_le_bound x' t₀ hx'' hlast i`. Establish `hD` using `height_dg (E := E) x' _ hxR hR0`.
+
+Establish `e1 : φ.1 (b * An.tor E x * q) = φ.1 (b * An.tor E x' * q)`. Establish `htor : An.tor E x = An.tor E (fun _ : Fin N => c) * An.tor E x'`. Rewrite using `[← tor_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[hx']`. Rewrite using `[← hZ c (b * An.tor E x' * q)]`. Use `congrArg _ ?_` and prove the remaining obligations. Rewrite using `[htor, ← mul_assoc b, ← tor_const_comm c b]`. Simplify using `only [mul_assoc]`.
+
+Establish `e2 : φ.1 (b * An.tor E x' * q) = φ.1 ((b * q) * infGL E N ((mI q)⁻¹ * dg x' * mI q))`. Rewrite using `[key0 b _ q (pFin_tor x'), mI, mI, pInf_tor]`. Establish `hz : GlobalTheory.CuspRep.height ((mI q)⁻¹ * dg (E` using `E) x' * mI q) ≤ B * B * GlobalTheory.CuspRep.height (dg (E := E) x') := by`. Establish `h1` using `hB (mI q)⁻¹ ⟨q, hq, rfl⟩ (dg x' * mI q)`. Establish `h2` using `hB (mI q)⁻¹ ⟨q, hq, rfl⟩ (dg x')⁻¹`.
+
+Rewrite `h2` using `[← _root_.mul_inv_rev, height_inv', height_inv']`. Rewrite using `[mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2]`. Establish `hy1` using `one_le_height ((mI q)⁻¹ * dg (E := E) x' * mI q)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.mul_sum, Real.exp_nat_mul, Real.exp_add, mul_assoc C1, ← mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem initBnd_holds : InitBnd := by
   intro E _ _ _ N φ hA hZ
   obtain ⟨N0, hN0⟩ := uniform_exp φ hA

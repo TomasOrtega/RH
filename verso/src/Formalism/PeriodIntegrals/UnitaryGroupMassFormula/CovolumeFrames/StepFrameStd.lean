@@ -12,6 +12,9 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.TypedSet
 def StepFrameStd : Prop := ∀ {D : D7} (X : HidaSetting D) (u : D.what₂.Word),
   ∃ T : X.B.I.F, (frameOf X u).IsStd X.B.I.cm.sig X.B.I.J T
 
+/- English proof (translation)
+Unfold `StepGramH`. Introduce `D X u hT1`. Take `⟨T, hT⟩` from `h X u`. Conclude with `PI.VolNzeroOne.W.det_gram_tupH_ne_zero X.B.I.cm.sig X.B.I.J (frameOf X u) T hT hT1`.
+-/
 theorem stepGramH_of (h : StepFrameStd) : StepGramH := by
   unfold StepGramH
   intro D X u hT1

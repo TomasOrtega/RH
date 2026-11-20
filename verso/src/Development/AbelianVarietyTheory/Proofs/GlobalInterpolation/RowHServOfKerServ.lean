@@ -5,6 +5,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Forma
 
 namespace GlobalTheory.Fc.R1
 
+/- English proof (translation)
+Introduce `Q Lk h`. Use `Row.imp h fun 𝒜 σ _ hs => ?_` and prove the remaining obligations. Take `⟨⟨a, ha, hK⟩, hA⟩` from `hs`. Use `⟨⟨a, ha, fun e he hle => ?_⟩, ⟨a, ha, fun e he hle => ?_⟩⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hK e he hle`.
+
+Conclude with `⟨K, fun Fm CH hc hL => hK Fm CH (GlobalTheory.Cp.d3_a hc) hL⟩`. Take `⟨K, _⟩` from `hK e he hle`. Conclude with `⟨K, fun Fm _ _ _ hc x hx _ i => hA Fm (GlobalTheory.Cp.d3_a hc) x hx i⟩`.
+-/
 theorem row_hServ_of_kerServ : ∀ (Q : V4.Slot) (Lk : LkT Bundle),
     Row Q Lk (GlobalTheory.Svd.ServH fun _ _ _ (b : Bundle _ _ _) => b.R.T.ker) → R1.SerreConditionAtBundlePoints Q Lk := by
   intro Q Lk h

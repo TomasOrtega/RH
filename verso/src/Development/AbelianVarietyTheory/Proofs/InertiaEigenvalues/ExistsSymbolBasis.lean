@@ -21,11 +21,17 @@ open GlobalTheory.DeRhamSymbol
 
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (J : ThetaL P AI)
 
+/- English proof (translation)
+Establish `h` using `J.θ_add 0 (zero_mem _) 0 (zero_mem _)`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+-/
 theorem theta_zero : J.θ 0 = 0 := by
   have h := J.θ_add 0 (zero_mem _) 0 (zero_mem _)
   rw [add_zero] at h
   simpa using h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using theta_zero J`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, J.θ_add _ (hf a) _ (Submodule.sum_mem _ fun i _ => hf i), ih]`.
+-/
 theorem theta_sum {ι : Type} (s : Finset ι) (f : ι → P.R.BdR)
     (hf : ∀ i, f i ∈ (P.PD (botExt l)).Fil 0) : J.θ (∑ i ∈ s, f i) = ∑ i ∈ s, J.θ (f i) := by
   classical
@@ -35,10 +41,16 @@ theorem theta_sum {ι : Type} (s : Finset ι) (f : ι → P.R.BdR)
     rw [Finset.sum_insert ha, Finset.sum_insert ha,
       J.θ_add _ (hf a) _ (Submodule.sum_mem _ fun i _ => hf i), ih]
 
+/- English proof (translation)
+Simplify using `using (P.PD (botExt l)).Fil_mul _ _ _ _ (om_mem c) hx`.
+-/
 theorem om_mul_mem (c : Om l) {x : P.R.BdR} (hx : x ∈ (P.PD (botExt l)).Fil 0) :
     algebraMap (Om l) P.R.BdR c * x ∈ (P.PD (botExt l)).Fil 0 := by
   simpa using (P.PD (botExt l)).Fil_mul _ _ _ _ (om_mem c) hx
 
+/- English proof (translation)
+Rewrite using `[theta_sum J _ _ fun i => om_mul_mem (c i) (hf i)]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [J.θ_mul _ (om_mem _) _ (hf i), J.θ_Om]`.
+-/
 theorem theta_comb {n : ℕ} (c : Fin n → Om l) (f : Fin n → P.R.BdR)
     (hf : ∀ i, f i ∈ (P.PD (botExt l)).Fil 0) :
     J.θ (∑ i, algebraMap (Om l) P.R.BdR (c i) * f i) = ∑ i, (c i : PadicComplex l) * J.θ (f i) := by
@@ -46,6 +58,9 @@ theorem theta_comb {n : ℕ} (c : Fin n → Om l) (f : Fin n → P.R.BdR)
   exact Finset.sum_congr rfl fun i _ => by rw [J.θ_mul _ (om_mem _) _ (hf i), J.θ_Om]
 
 omit J in
+/- English proof (translation)
+Rewrite using `[map_mul, DeRhamSymbol.act_zpow, ← mul_assoc, ← mul_assoc, ← map_mul, ← Units.val_mul, ← zpow_add, add_neg_cancel, zpow_zero, Units.val_one, map_one, one_mul]`.
+-/
 theorem shift_act (a : ℤ) (g : GQ l) (x : P.R.BdR) :
     ((tU P ^ (-a) : P.R.BdRˣ) : P.R.BdR) * P.actQdR g x =
       algebraMap ℚ_[l] P.R.BdR ((P.χQ g ^ a : ℚ_[l]ˣ) : ℚ_[l]) *
@@ -55,6 +70,17 @@ theorem shift_act (a : ℤ) (g : GQ l) (x : P.R.BdR) :
     map_one, one_mul]
 
 omit J in
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Conclude with `⟨Fin.elim0, Fin.elim0, fun k => k.elim0, fun _ _ _ _ k => k.elim0⟩`. Use `haveI : Nontrivial V := ⟨⟨b ⟨0, hd⟩, 0, b.ne_zero _⟩⟩`. Use `haveI := PD.finK`. Establish `hfin : Module.Finite LL ↥(DdR PD ρ)`.
+
+Apply `Module.finite_of_finrank_pos` to reduce the goal to its premises. Rewrite using `[hDR]`. Conclude with `Nat.mul_pos Module.finrank_pos Module.finrank_pos`. Take `⟨Φ, -, hΦ⟩` from `GlobalTheory.exists_coord_tensor_dR PD ρ b`. Take `⟨D, hD, hDf, hDr⟩` from `GlobalTheory.deRham_invariants_coord_finrank PD ρ b hL hfin hDR Φ hΦ`.
+
+Take `⟨x, u, hx, hind⟩` from `GlobalTheory.exists_family_adapted_filtration K (Fin d → BdR) D (fun a => Submodule.pi Set.univ fun _ => PD.Fil a) d hDf hDr (fun a z hz i hi => PD.Fil_anti a (hz i hi)) (fun z => by`. Establish `anti : Antitone PD.Fil` using `antitone_int_of_succ_le PD.Fil_anti`. Use `choose f hf using fun i => PD.Fil_exh (z i)`. Take `⟨m, hm⟩` from `(Set.finite_range f).bddBelow`. Conclude with `⟨m, fun i _ => anti (hm ⟨i, rfl⟩) (hf i)⟩)`.
+
+Use the proof step `(fun z hz => funext fun i => PD.Fil_sep _ fun a => hz a i trivial)`. Use `⟨x, u, fun k => ⟨(hD _).1 (hx k).1, fun i => (hx k).2 i trivial⟩, fun a c hc hs => ?_⟩` and prove the remaining obligations. Use `hind a c hc fun i _ => ?_` and prove the remaining obligations. Use `hs i` as an intermediate fact. Simplify using `only [← Algebra.smul_def] at this`.
+
+Simplify `this` using `only [Finset.sum_apply, Pi.smul_apply, SetLike.mem_coe]`.
+-/
 theorem exists_adapted {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] (PD : PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] (ρ : Representation LL G V) {d : ℕ} (b : Module.Basis (Fin d) Qp V)
     (hL : FiniteDimensional Qp LL) (hV : FiniteDimensional LL V) (hDR : IsDR PD ρ) :
     ∃ (x : Fin d → Fin d → BdR) (u : Fin d → ℤ), (∀ k, (∀ g : G, (Matrix.of fun i j =>
@@ -87,6 +113,15 @@ theorem exists_adapted {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field
   simpa only [Finset.sum_apply, Pi.smul_apply, SetLike.mem_coe] using this
 
 omit J in
+/- English proof (translation)
+Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `g`. Establish `hact : ∀ (v : V) (y : BdR), actVdR PD ρ g (v ⊗ₜ y) = ρ g v ⊗ₜ PD.actdR g y`. Introduce `v y`. Unfold `actVdR`.
+
+Rewrite using `[TensorProduct.AlgebraTensorModule.map_tmul]`. Both sides reduce to the same expression. Take `⟨Φ, h, -⟩` from `GlobalTheory.exists_tensor_coord_of_basis (M := BdR) b`. Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_apply, Finset.sum_apply]`. Simplify using `only [hact, h, Module.Basis.repr_self]`. Establish `h1` using `congrFun (hx g) i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, ← Algebra.smul_def] at h1`. Rewrite using `[h1, Finset.sum_eq_single i]`.
+
+Simplify using the standard rewrite rules. Introduce `j _ hij`. Simplify using `[Finsupp.single_apply, hij]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_mem_DdR {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] (PD : PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] (ρ : Representation LL G V) {d : ℕ} (b : Module.Basis (Fin d) Qp V) (x : Fin d → BdR)
     (hx : ∀ g : G, (Matrix.of fun i j =>
       algebraMap Qp BdR (b.repr (ρ g (b j)) i)).mulVec (fun i => PD.actdR g (x i)) = x) :
@@ -115,6 +150,23 @@ theorem sum_mem_DdR {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K�
 
 omit J in
 
+/- English proof (translation)
+Introduce `l _ P AI J K LL T hDR d b M hM t ht`. Take `rfl : t = tU P` from `Units.ext ht`. Take `⟨x, u, hx, hind⟩` from `exists_adapted (P.PD K) T.ρ b LL.2 T.fdim hDR`. Establish `key : ∀ k i, ((tU P ^ (-u k) : P.R.BdRˣ) : P.R.BdR) * x k i ∈ (P.PD (botExt l)).Fil 0` using `fun k i => (shift_iff J (u k) 0 _).2 (by`. Rewrite using `[add_zero]`.
+
+Conclude with `(mem_iff K _ _).1 ((hx k).2 i))`. Establish `heq : ∀ σ ∈ GK K, ∀ k, twAct AI.actC P.χQ (u k) M σ (fun i => J.θ (((tU P ^ (-u k) : P.R.BdRˣ) : P.R.BdR) * x k i)) = fun i => J.θ (((tU P ^ (-u k) : P.R.BdRˣ) : P.R.BdR) * x k i)`. Introduce `σ hσ k`. Use function extensionality and compare the values at `i`. Generalize the expression as in `hN : (fun i j => b.repr (T.ρ ⟨σ, hσ⟩ (b j)) i : Fin d → Fin d → ℚ_[l]) = N`.
+
+Establish `hN' : ∀ i j, b.repr (T.ρ ⟨σ, hσ⟩ (b j)) i = N i j` using `fun i j => congrFun (congrFun hN i) j`. Establish `h1` using `congrFun ((hx k).1 ⟨σ, hσ⟩) i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, P.PD_actdR, hN'] at h1`. Establish `h2 : ((tU P ^ (-u k) : P.R.BdRˣ) : P.R.BdR) * x k i = ∑ j, algebraMap (Om l) P.R.BdR (algebraMap ℚ_[l] (Om l) (((P.χQ σ ^ u k : ℚ_[l]ˣ) : ℚ_[l]) * N i j)) * P.actQdR σ (((tU P ^ (-u k) : P.R.BdRˣ) : P.R.BdR) * x k j)` using `by conv_lhs => rw [← h1]`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, shift_act, ← IsScalarTower.algebraMap_apply, map_mul (algebraMap ℚ_[l] P.R.BdR), mul_left_comm, mul_assoc]`. Use `conv_rhs => rw [h2, theta_comb J _ _ fun j => act_mem σ (key k j)]`. Simplify using `only [twAct, Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[J.θ_act σ _ (key k j), hM ⟨σ, hσ⟩ i j, hN', ← mul_assoc, chiC, ← map_mul]`. Both sides reduce to the same expression. Use `⟨u, fun k i => ((tU P ^ (-u k) : P.R.BdRˣ) : P.R.BdR) * x k i, fun k i => (mem_iff K _ _).2 (key k i), fun k => ?_, ?_, heq⟩` and prove the remaining obligations. Establish `: ∀ i, ((tU P ^ (-u k) : P.R.BdRˣ) : P.R.BdR) * x k i * ((tU P ^ u k : P.R.BdRˣ) : P.R.BdR) = x k i` using `fun i => by`. Rewrite using `[mul_right_comm, ← Units.val_mul, ← zpow_add, neg_add_cancel, zpow_zero, Units.val_one, one_mul]`.
+
+Simplify using `only [this]`. Conclude with `sum_mem_DdR (P.PD K) T.ρ b _ (hx k).1`. Use `GlobalTheory.SerreTateIndep.linearIndependent_of_weightwise l AI.actC P.χQ (GK K) K.1 (tate_invariants_twist l AI.actC P.χQ ⟨AI.actC_ext, AI.actC_norm⟩ P.χQ_cyc K) d d M _ u heq ?_` and prove the remaining obligations. Introduce `a c hc hs`. Use `hind a c hc fun i => ?_` and prove the remaining obligations.
+
+Establish `h1` using `congrFun hs i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h1`. Rewrite `h1` using `[← theta_comb J (fun k => ((c k : ↥K.1) : Om l)) _ (fun k => key k i), J.θ_ker _ (Submodule.sum_mem _ fun k _ => om_mul_mem _ (key k i))]`. Rewrite using `[mem_iff K, ← shift_iff J, Finset.mul_sum]`. Use `h1 using 2 with k` and compare the differences between its conclusion and the goal.
+
+Distinguish the cases in `hk : u k = a`. Rewrite using `[hk, mul_left_comm]`. Both sides reduce to the same expression. Simplify using `[hc k hk]`.
+-/
 theorem exists_symbol_basis : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (θ : ThetaL P AI) (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)), IsDR (P.PD K) T.ρ → ∀ (d : ℕ) (b : Module.Basis (Fin d) ℚ_[l] T.V) (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)), (∀ (g : ↥(GK K)) (i j : Fin d), M (g : GQ l) i j = algebraMap ℚ_[l] (PadicComplex l) (b.repr (T.ρ g (b j)) i)) → ∀ t : (P.R.BdR)ˣ, (t : P.R.BdR) = P.ιB P.tB → ∃ (u : Fin d → ℤ) (y : Fin d → Fin d → P.R.BdR), (∀ k i, y k i ∈ (P.PD K).Fil 0) ∧ (∀ k, ∑ i, b i ⊗ₜ[ℚ_[l]] (y k i * ((t ^ u k : (P.R.BdR)ˣ) : P.R.BdR)) ∈ DdR (P.PD K) T.ρ) ∧ LinearIndependent (PadicComplex l) (fun k i => θ.θ (y k i)) ∧ ∀ σ ∈ GK K, ∀ k, twAct AI.actC P.χQ (u k) M σ (fun i => θ.θ (y k i)) = fun i => θ.θ (y k i) := by
   intro l _ P AI J K LL T hDR d b M hM t ht
   obtain rfl : t = tU P := Units.ext ht

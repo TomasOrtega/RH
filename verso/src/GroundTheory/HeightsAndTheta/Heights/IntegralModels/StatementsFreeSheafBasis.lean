@@ -20,6 +20,9 @@ def stdSection (Y : Scheme.{u}) (n : ℕ) (i : Fin n) : Γ(freeModule Y n, ⊤) 
 def FreeSheafBasis.Statement : Prop :=
   ∀ (Y : Scheme.{u}) (n : ℕ), IsBasisOn (freeModule Y n) ⊤ (stdSection Y n)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨Iso.refl _⟩, ⟨stdSection SpecZ 2⟩⟩`.
+-/
 theorem FreeSheafBasis.objects_inhabited :
     Nonempty ((freeModule SpecZ 2 : SpecZ.Modules) ≅ freeModule SpecZ 2) ∧
       Nonempty (Fin 2 → Γ(freeModule SpecZ 2, ⊤)) :=

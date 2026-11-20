@@ -12,11 +12,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {v : Pl F} (τ : E →ₐ[F] Fv F v)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i => (1 : Fv F v) ⊗ₜ[F] z i, AddSubgroup.subset_closure ⟨1, one_mem _, z, hz, rfl⟩, funext fun i => by simp [splitVec, splitProj_tmul]⟩`.
+-/
 theorem map_mem_splitLat {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} {z : Fin n → E} (hz : z ∈ L) :
     (fun i => τ (z i)) ∈ splitLat τ L :=
   ⟨fun i => (1 : Fv F v) ⊗ₜ[F] z i, AddSubgroup.subset_closure ⟨1, one_mem _, z, hz, rfl⟩,
     funext fun i => by simp [splitVec, splitProj_tmul]⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `latLoc_induction (p := fun y => splitVec τ y ∈ N) (fun a ha x hx => ?_) ?_ (fun y z hy hz => ?_) (fun y hy => ?_) hy` and prove the remaining obligations. Use `N.smul_mem ⟨a, ha⟩ (hN x hx)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [splitVec, splitProj_tmul]`. Both sides reduce to the same expression. Establish `: splitVec τ (0 : Fin n → Fv F v ⊗[F] E) = 0` using `funext fun _ => map_zero _`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+
+Rewrite using `[splitVec_add]`. Conclude with `add_mem hy hz`. Establish `: splitVec τ (-y) = -splitVec τ y` using `funext fun _ => map_neg _ _`. Rewrite using `[this]`. Conclude with `neg_mem hy`.
+-/
 theorem splitLat_le {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)}
     (N : Submodule (v.adicCompletionIntegers F) (Fin n → Fv F v)) (hN : ∀ z ∈ L, (fun i => τ (z i)) ∈ N) :
     splitLat τ L ≤ N := by
@@ -34,6 +44,11 @@ theorem splitLat_le {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)}
   · have : splitVec τ (-y) = -splitVec τ y := funext fun _ => map_neg _ _
     rw [this]; exact neg_mem hy
 
+/- English proof (translation)
+Establish `h0 : τ c ≠ 0` using `fun e => by simp [e] at hv`. Establish `h1 : a * (τ c)⁻¹ ∈ v.adicCompletionIntegers F` using `mul_mem ha (by rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hv, inv_one])`. Use `(splitLat τ L).smul_mem ⟨_, h1⟩ (map_mem_splitLat τ hc)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `a * τ (x i) = a * (τ c)⁻¹ * τ (c * x i)`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem map_mem_of_unit {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} {x : Fin n → E} {c : E} (hc : c • x ∈ L)
     (hv : Valued.v (τ c) = 1) {a : Fv F v} (ha : a ∈ v.adicCompletionIntegers F) :
     (a • fun i => τ (x i)) ∈ splitLat τ L := by
@@ -47,6 +62,41 @@ theorem map_mem_of_unit {n : ℕ} {L : Submodule (𝓞 E) (Fin n → E)} {x : Fi
   rw [map_mul]
   field_simp
 
+/- English proof (translation)
+Establish `hsk : ∀ j : Fin n₁, skip i₀ i₁ j < n` using `fun j => by`. Use `j.2` as an intermediate fact. Apply the tactic sequence `unfold skip; split_ifs <;> omega`. Set `f : Fin n₁ ⊕ Bool → Fin n` to `Sum.elim (fun j => ⟨skip i₀ i₁ j, hsk j⟩) fun b => cond b ⟨i₁, h1n⟩ ⟨i₀, h01.trans h1n⟩`. Establish `hf : Function.Bijective f`.
+
+Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨?_, by simp [hn]⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (a | _ | _) (b | _ | _) e <;>`. Apply the tactic sequence `simp only [f, Sum.elim_inl, Sum.elim_inr, cond, Fin.mk.injEq, skip, Sum.inl.injEq, Fin.ext_iff] at e ⊢ <;>`. Apply the tactic sequence `first | omega | (split_ifs at e <;> omega)`.
+
+Set `e` to `Equiv.ofBijective f hf`. Set `c : Fin n₁ ⊕ Bool → Fin n → Fv F v` to `Sum.elim (fun j r => (ι.map τ * β₁.1) r j) fun b => cond b (fun r => τ (y r)) fun r => τ (x r)`. Set `b : Matrix (Fin n) (Fin n) (Fv F v)` to `Matrix.of fun r i => c (e.symm i) r`. Establish `hb : ∀ u : Fin n → Fv F v, b *ᵥ u = (u (e (.inr false)) • fun r => τ (x r)) + ι.map τ *ᵥ β₁.1 *ᵥ (fun j => u (e (.inl j))) + u (e (.inr true)) • fun r => τ (y r)` using `fun u => by`. Use function extensionality and compare the values at `r`.
+
+Rewrite using `[Matrix.mulVec_mulVec]`. Simplify using `only [Matrix.mulVec, dotProduct, b, Matrix.of_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← e.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply, Fintype.sum_sum_type, Fintype.sum_bool, c, Sum.elim_inl, Sum.elim_inr, cond]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hmv : ∀ u : Fin n₁ → E, (fun i => τ ((ι *ᵥ u) i)) = ι.map τ *ᵥ fun j => τ (u j)` using `fun u =>`. Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (τ : E →+* Fv F v) ι u i`. Establish `hsurj : ∀ w ∈ splitLat τ L, ∃ u : Fin n → Fv F v, (∀ i, u i ∈ v.adicCompletionIntegers F) ∧ b *ᵥ u = w`. Set `N : Submodule (v.adicCompletionIntegers F) (Fin n → Fv F v)` to `{ carrier := {w | ∃ u : Fin n → Fv F v, (∀ i, u i ∈ v.adicCompletionIntegers F) ∧ b *ᵥ u = w} zero_mem' := ⟨0, fun _ => zero_mem _, Matrix.mulVec_zero _⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨u, hu, rfl⟩ ⟨u', hu', rfl⟩`.
+
+Conclude with `⟨u + u', fun i => add_mem (hu i) (hu' i), Matrix.mulVec_add _ _ _⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `a _ ⟨u, hu, rfl⟩`. Conclude with `⟨(a : Fv F v) • u, fun i => mul_mem a.2 (hu i), Matrix.mulVec_smul _ _ _⟩ }`. Use `fun w hw => splitLat_le τ N (fun z hz => ?_) hw` and prove the remaining obligations.
+
+Take `⟨s, t, u, hs, ht, hu, rfl⟩` from `hsplit z hz`. Establish `hu'` using `hβ₁.mem_iff.1 (map_mem_splitLat τ (L := L.comap ((Matrix.mulVecLin ι).restrictScalars (𝓞 E))) hu)`. Use `⟨fun i => Sum.elim ((β₁⁻¹).1 *ᵥ fun j => τ (u j)) (fun b => cond b (τ t) (τ s)) (e.symm i), fun i => ?_, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Break down `e.symm i with j | _ | _` into its components or cases.
+
+Conclude with `hu' j`. Conclude with `hx.1 s hs`. Conclude with `hy.1 t ht`. Rewrite using `[hb]`. Simplify using `only [Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr, cond]`.
+
+Rewrite using `[Matrix.mulVec_mulVec _ β₁.1, Units.mul_inv, Matrix.one_mulVec, ← hmv]`. Use function extensionality and compare the values at `r`. Simplify using the standard rewrite rules. Establish `hunit : IsUnit b`. Rewrite using `[← Matrix.mulVec_surjective_iff_isUnit]`.
+
+Establish `h1 : ∀ z : Fin n → E, (fun i => τ (z i)) ∈ LinearMap.range b.mulVecLin` using `fun z => by`. Establish `hz : z ∈ Submodule.span E (L : Set (Fin n → E))` using `by rw [hlat.span_eq_top]; trivial`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨u, -, hu⟩ := hsurj _ (map_mem_splitLat τ hz)`. Conclude with `⟨u, hu⟩`.
+
+Consider the case `zero => simp only [Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`. Consider the case `add a a' _ _ ha ha' => simp only [Pi.add_apply, map_add]`. Conclude with `add_mem ha ha'`. Consider the case `smul a z _ hz => simp only [Pi.smul_apply, smul_eq_mul, map_mul]`.
+
+Conclude with `Submodule.smul_mem _ (τ a) hz`. Introduce `w`. Establish `: w = ∑ i, w i • fun k => τ ((Pi.single i 1 : Fin n → E) k)`. Use function extensionality and compare the values at `k`. Simplify using `[Pi.single_apply, apply_ite]`.
+
+Rewrite using `[this]`. Conclude with `(Submodule.sum_mem (LinearMap.range b.mulVecLin) fun i _ => Submodule.smul_mem _ _ (h1 _))`. Take `⟨β, hβ⟩` from `hunit`. Establish `col : ∀ k r, β.1 r (e k) = c k r` using `fun k r => by rw [hβ]; simp [b]`. Use `⟨β, fun i => ⟨fun hi r => ?_, fun hi r => ?_, fun j hi r => ?_⟩, fun u => ⟨fun hu => ?_, fun hu => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[show i = e (.inr false) from Fin.ext hi, col]`. Both sides reduce to the same expression. Rewrite using `[show i = e (.inr true) from Fin.ext hi, col]`. Both sides reduce to the same expression. Rewrite using `[show i = e (.inl j) from Fin.ext hi, col]`.
+
+Both sides reduce to the same expression. Rewrite using `[hβ, hb]`. Take `⟨s, hs, hs'⟩` from `hx.2`. Take `⟨t, ht, ht'⟩` from `hy.2`. Use `add_mem (add_mem (map_mem_of_unit τ hs hs' (hu _)) ?_) (map_mem_of_unit τ ht ht' (hu _))` and prove the remaining obligations.
+
+Use `splitLat_le τ ((splitLat τ L).comap ((ι.map τ).mulVecLin.restrictScalars (v.adicCompletionIntegers F))) (fun z hz => ?_) ((hβ₁ _).1 fun j => hu _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι.map τ *ᵥ (fun j => τ (z j)) ∈ splitLat τ L`. Rewrite using `[← hmv]`. Conclude with `map_mem_splitLat τ hz`. Take `⟨u', hu', e'⟩` from `hsurj _ hu`.
+
+Rewrite `e'` using `[← hβ]`. Rewrite using `[← Matrix.mulVec_injective_iff_isUnit.2 β.isUnit e']`. Conclude with `hu'`.
+-/
 theorem exists_basis (n n₁ : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (x y : Fin n → E) (ι : Matrix (Fin n) (Fin n₁) E)
     (β₁ : GL (Fin n₁) (Fv F v)) (i₀ i₁ : ℕ) (hn : n = n₁ + 2) (h01 : i₀ < i₁) (h1n : i₁ < n) (hlat : L.IsLattice E)
     (hsplit : ∀ z ∈ L, ∃ (s t : E) (u : Fin n₁ → E), s • x ∈ L ∧ t • y ∈ L ∧ ι *ᵥ u ∈ L ∧ z = s • x + ι *ᵥ u + t • y)

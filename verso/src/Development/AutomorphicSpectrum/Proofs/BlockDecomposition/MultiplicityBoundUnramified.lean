@@ -8,10 +8,20 @@ namespace GlobalTheory.CompanionTheory.GunrNuBound
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Introduce `hm`. Conclude with `h (by simpa using Ideal.mem_span_singleton.1 hm)`.
+-/
 theorem not_mem_lev_one {ϖ a : R} (h : ¬ ϖ ∣ a) : a ∉ lev ϖ 1 := by
   intro hm
   exact h (by simpa using Ideal.mem_span_singleton.1 hm)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Take `⟨u, ⟨d, hd⟩, -⟩` from `h.basis`. Establish `h1 : ϖ ∣ 1 * c + σ (1 * c)` using `hall 1`. Establish `h2 : ϖ ∣ u * c + σ (u * c)` using `hall u`.
+
+Establish `h3 : ϖ ∣ (d : R) * σ c`. Establish `e : (d : R) * σ c = u * (1 * c + σ (1 * c)) - (u * c + σ (u * c))`. Rewrite using `[hd, map_mul, map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `dvd_sub (Dvd.dvd.mul_left h1 u) h2`. Establish `h4 : ϖ ∣ σ c` using `(Units.dvd_mul_left).1 h3`. Establish `h5 : σ ϖ ∣ σ (σ c)` using `map_dvd σ h4`. Rewrite `h5` using `[h.fix_ϖ, h.inv]`. Conclude with `hc h5`.
+-/
 theorem exists_trace_not_dvd {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (h : IsUnrQuad R σ ϖ q ε) {c : R}
     (hc : ¬ ϖ ∣ c) : ∃ t : R, ¬ ϖ ∣ (t * c + σ (t * c)) := by
   by_contra hall
@@ -32,14 +42,25 @@ theorem exists_trace_not_dvd {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (h :
 def bf (σ : R →+* R) {n : ℕ} (H : Matrix (Fin n) (Fin n) R) (w z : Fin n → R) : R :=
   ∑ i, ∑ l, w i * H i l * σ (z l)
 
+/- English proof (translation)
+Simplify using `[bf, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem bf_add_left (σ : R →+* R) {n : ℕ} (H : Matrix (Fin n) (Fin n) R) (w w' z : Fin n → R) :
     bf σ H (w + w') z = bf σ H w z + bf σ H w' z := by
   simp [bf, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[bf, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem bf_add_right (σ : R →+* R) {n : ℕ} (H : Matrix (Fin n) (Fin n) R) (w z z' : Fin n → R) :
     bf σ H w (z + z') = bf σ H w z + bf σ H w z' := by
   simp [bf, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `bf`. Rewrite using `[Finset.sum_eq_single a, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `l _ hl`. Simplify using `[Pi.single_eq_of_ne hl]`.
+
+Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[Pi.single_eq_of_ne hi]`. Simplify using the standard rewrite rules.
+-/
 theorem bf_single (σ : R →+* R) {n : ℕ} (H : Matrix (Fin n) (Fin n) R) (a b : Fin n) (s t : R) :
     bf σ H (Pi.single a s) (Pi.single b t) = s * H a b * σ t := by
   unfold bf
@@ -50,6 +71,11 @@ theorem bf_single (σ : R →+* R) {n : ℕ} (H : Matrix (Fin n) (Fin n) R) (a b
   · intro i _ hi; simp [Pi.single_eq_of_ne hi]
   · simp
 
+/- English proof (translation)
+Establish `hab : ∀ a b, σ (H b a) = H a b` using `fun a b => by`. Use `congrFun (congrFun hH a) b` as an intermediate fact. Simplify `this` using `[cT]`. Unfold `bf`. Rewrite using `[map_sum, Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hinv, hab]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bf_swap {σ : R →+* R} (hinv : ∀ a, σ (σ a) = a) {n : ℕ} {H : Matrix (Fin n) (Fin n) R}
     (hH : cT σ H = H) (w z : Fin n → R) : σ (bf σ H w z) = bf σ H z w := by
   have hab : ∀ a b, σ (H b a) = H a b := fun a b => by
@@ -63,6 +89,17 @@ theorem bf_swap {σ : R →+* R} (hinv : ∀ a, σ (σ a) = a) {n : ℕ} {H : Ma
   rw [map_mul, map_mul, hinv, hab]
   ring
 
+/- English proof (translation)
+Establish `key : ∀ w : Fin n → R, ¬ ϖ ∣ bf σ H w w → IsUnit (bf σ H w w)` using `fun w hw => h.fixLocal _ (bf_swap h.inv hH w w) (not_mem_lev_one hw)`. Distinguish the cases in `hd : ∃ a, ¬ ϖ ∣ H a a`. Take `⟨a, ha⟩` from `hd`. Use `⟨Pi.single a 1, key _ ?_⟩` and prove the remaining obligations. Simplify `ha` using `[bf_single]`.
+
+Use `push_neg at hd hnd`. Take `⟨a, b, hab⟩` from `hnd`. Take `⟨t, ht⟩` from `exists_trace_not_dvd h hab`. Use `⟨Pi.single a t + Pi.single b 1, key _ ?_⟩` and prove the remaining obligations. Introduce `hdiv`.
+
+Apply `ht` to reduce the goal to its premises. Establish `e : bf σ H (Pi.single a t + Pi.single b 1) (Pi.single a t + Pi.single b 1) = t * H a a * σ t + t * H a b + σ (t * H a b) + H b b`. Establish `e2 : bf σ H (Pi.single b 1) (Pi.single a t) = σ (t * H a b)`. Rewrite using `[← bf_swap h.inv hH, bf_single, map_one, mul_one]`. Rewrite using `[bf_add_left, bf_add_right, bf_add_right, e2, bf_single, bf_single, bf_single]`.
+
+Simplify using `only [map_one, mul_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hdiv` using `[e]`. Establish `e3 : t * H a b + σ (t * H a b) = (t * H a a * σ t + t * H a b + σ (t * H a b) + H b b) - (t * H a a * σ t + H b b)` using `by ring`. Rewrite using `[e3]`.
+
+Conclude with `dvd_sub hdiv (dvd_add (Dvd.dvd.mul_right (Dvd.dvd.mul_left (hd a) t) _) (hd b))`.
+-/
 theorem exists_form_unit {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (h : IsUnrQuad R σ ϖ q ε) {n : ℕ}
     {H : Matrix (Fin n) (Fin n) R} (hH : cT σ H = H) (hnd : ¬ ∀ a b, ϖ ∣ H a b) :
     ∃ w : Fin n → R, IsUnit (bf σ H w w) := by
@@ -91,12 +128,34 @@ theorem exists_form_unit {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (h : IsU
     rw [e3]
     exact dvd_sub hdiv (dvd_add (Dvd.dvd.mul_right (Dvd.dvd.mul_left (hd a) t) _) (hd b))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `[Matrix.vecMul, dotProduct, red, map_sum]`.
+-/
 theorem vecMul_red (ϖ : R) (k : ℕ) {n : ℕ} (x : Fin n → R) (H : Matrix (Fin n) (Fin n) R) :
     Matrix.vecMul (fun i => Ideal.Quotient.mk (lev ϖ k) (x i)) (red ϖ k H) =
       fun l => Ideal.Quotient.mk (lev ϖ k) (∑ i, x i * H i l) := by
   funext l
   simp [Matrix.vecMul, dotProduct, red, map_sum]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_form_unit h hH hnd`. Establish `hq : 0 < q` using `lt_trans Nat.zero_lt_one h.one_lt`. Establish `hfin : Finite (R ⧸ lev ϖ k)` using `Nat.finite_of_card_ne_zero (by rw [GlobalTheory.T.unramified_quotient_card R σ ϖ q ε h k]; exact (pow_pos hq _).ne')`. Use `set B := red ϖ k (ϖ ^ (k - j) • H) with hB`. Set `lift : R ⧸ lev ϖ j → R` to `Function.surjInv Ideal.Quotient.mk_surjective`.
+
+Establish `hlift : ∀ c, Ideal.Quotient.mk (lev ϖ j) (lift c) = c` using `Function.surjInv_eq _`. Set `f : R ⧸ lev ϖ j → Set.range (fun x : Fin n → R ⧸ lev ϖ k => Matrix.vecMul x B)` to `fun c => ⟨_, (fun i => Ideal.Quotient.mk (lev ϖ k) (lift c * w i)), rfl⟩`. Establish `hinj : Function.Injective f`. Introduce `c₁ c₂ hc`. Establish `hv` using `congrArg Subtype.val hc`.
+
+Simplify using `only [f] at hv`. Rewrite `hv` using `[hB, vecMul_red, vecMul_red]`. Establish `hl : ∀ l, ϖ ^ k ∣ ∑ i, (lift c₁ - lift c₂) * w i * (ϖ ^ (k - j) * H i l)`. Introduce `l`. Use `congrFun hv l` as an intermediate fact.
+
+Establish `h2` using `Ideal.Quotient.eq.1 this`. Establish `h3` using `Ideal.mem_span_singleton.1 h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ϖ ^ k ∣ ϖ ^ (k - j) * ((lift c₁ - lift c₂) * bf σ H w w)`. Establish `e : ϖ ^ (k - j) * ((lift c₁ - lift c₂) * bf σ H w w) = ∑ l, (∑ i, (lift c₁ - lift c₂) * w i * (ϖ ^ (k - j) * H i l)) * σ (w l)`. Unfold `bf`.
+
+Rewrite using `[Finset.sum_comm, Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `Finset.dvd_sum fun l _ => Dvd.dvd.mul_right (hl l) _`. Take `⟨e, he⟩` from `hs`. Establish `hk : ϖ ^ k = ϖ ^ (k - j) * ϖ ^ j` using `by rw [← pow_add, Nat.sub_add_cancel hjk]`. Establish `hreg : IsSMulRegular R (ϖ ^ (k - j))` using `h.reg.pow _`. Establish `h5 : (lift c₁ - lift c₂) * bf σ H w w = ϖ ^ j * e`.
+
+Apply `hreg` to reduce the goal to its premises. Simplify using `only [smul_eq_mul]`. Rewrite using `[he, hk]`. Expand and normalize the polynomial expressions, which then agree. Establish `h6 : ϖ ^ j ∣ lift c₁ - lift c₂` using `(hw.dvd_mul_right).1 ⟨e, h5⟩`.
+
+Rewrite using `[← hlift c₁, ← hlift c₂]`. Conclude with `Ideal.Quotient.eq.2 (Ideal.mem_span_singleton.2 h6)`. Use `Nat.card_le_card_of_injective f hinj` as an intermediate fact. Rewrite `this` using `[GlobalTheory.T.unramified_quotient_card R σ ϖ q ε h j]`. Then use the resulting hypothesis.
+-/
 theorem nu_lower {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (h : IsUnrQuad R σ ϖ q ε) {n j k : ℕ}
     (hjk : j ≤ k) {H : Matrix (Fin n) (Fin n) R} (hH : cT σ H = H) (hnd : ¬ ∀ a b, ϖ ∣ H a b) :
     q ^ (2 * j) ≤ nuAt ϖ (red ϖ k (ϖ ^ (k - j) • H)) := by
@@ -151,6 +210,17 @@ theorem nu_lower {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (h : IsUnrQuad R
 def lvl (σ : R →+* R) (ϖ : R) (n k j : ℕ) : Set (Matrix (Fin n) (Fin n) (R ⧸ lev ϖ k)) :=
   {B | ∃ H : Matrix (Fin n) (Fin n) R, cT σ H = H ∧ B = red ϖ k (ϖ ^ (k - j) • H)}
 
+/- English proof (translation)
+Establish `hq : 0 < q` using `lt_trans Nat.zero_lt_one h.one_lt`. Establish `hcard` using `GlobalTheory.CompanionTheory.UnrDens.card_hermMod R σ ϖ q ε h n j`. Establish `hfin : Finite (hermMod σ ϖ n j)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact (pow_pos hq _).ne')`. Establish `hS' : ∀ B ∈ S, ∃ H : Matrix (Fin n) (Fin n) R, cT σ H = H ∧ B.1 = red ϖ k (ϖ ^ (k - j) • H)` using `hS`. Use `choose! H hH using hS'`.
+
+Set `f : S → hermMod σ ϖ n j` to `fun B => ⟨red ϖ j (H B.1), H B.1, (hH B.1 B.2).1, rfl⟩`. Establish `hinj : Function.Injective f`. Introduce `B₁ B₂ hf`. Establish `hv : red ϖ j (H B₁.1) = red ϖ j (H B₂.1)` using `congrArg Subtype.val hf`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[(hH B₁.1 B₁.2).2, (hH B₂.1 B₂.2).2]`. Use extensionality with `a b`. Establish `h1` using `congrFun (congrFun hv a) b`. Simplify using `only [red, Matrix.map_apply] at h1`.
+
+Take `⟨e, he⟩` from `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 h1)`. Simplify using `only [red, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Use `Ideal.Quotient.eq.2 (Ideal.mem_span_singleton.2 ⟨e, ?_⟩)` and prove the remaining obligations. Establish `hk : ϖ ^ k = ϖ ^ (k - j) * ϖ ^ j` using `by rw [← pow_add, Nat.sub_add_cancel hjk]`. Rewrite using `[hk, ← mul_sub, he]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `Nat.card_le_card_of_injective f hinj` as an intermediate fact. Rewrite `this` using `[hcard]`. Simplify `this` using `[Nat.card_eq_fintype_card]`.
+-/
 theorem card_lvl_le {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (h : IsUnrQuad R σ ϖ q ε) {n j k : ℕ}
     (hjk : j ≤ k) (S : Finset (hermMod σ ϖ n k)) (hS : ∀ B ∈ S, B.1 ∈ lvl σ ϖ n k j) :
     S.card ≤ q ^ (j * n ^ 2) := by
@@ -182,6 +252,15 @@ theorem card_lvl_le {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (h : IsUnrQua
   rw [hcard] at this
   simpa [Nat.card_eq_fintype_card] using this
 
+/- English proof (translation)
+Introduce `hd`. Use `choose H' hH' using hd`. Apply `hn` to reduce the goal to its premises. Establish `hab : ∀ a b, σ (H b a) = H a b` using `fun a b => by`. Use `congrFun (congrFun hH a) b` as an intermediate fact.
+
+Simplify `this` using `[cT]`. Use `⟨Matrix.of H', ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a b show σ (H' b a) = H' a b`. Apply `h.reg` to reduce the goal to its premises. Simplify using `only [smul_eq_mul]`.
+
+Establish `e` using `hab a b`. Rewrite `e` using `[hH' b a, map_mul, h.fix_ϖ, hH' a b]`. Conclude with `e`. Rewrite using `[hB]`. Use `congr 1`.
+
+Use extensionality with `a b`. Establish `e : k - (j - 1) = (k - j) + 1` using `by omega`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]`. Rewrite using `[hH' a b, e, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem not_dvd_of_not_lvl {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (h : IsUnrQuad R σ ϖ q ε) {n j k : ℕ}
     (hj : 0 < j) (hjk : j ≤ k) {H : Matrix (Fin n) (Fin n) R} (hH : cT σ H = H)
     {B : Matrix (Fin n) (Fin n) (R ⧸ lev ϖ k)} (hB : B = red ϖ k (ϖ ^ (k - j) • H))
@@ -212,6 +291,25 @@ end GlobalTheory.CompanionTheory.GunrNuBound
 
 open GlobalTheory.CompanionTheory.GunrNuBound in
 
+/- English proof (translation)
+Introduce `R _ σ ϖ q ε h n k r hr hx`. Establish `hq : 0 < q` using `lt_trans Nat.zero_lt_one h.one_lt`. Establish `hfin : Finite (hermMod σ ϖ n k)` using `Nat.finite_of_card_ne_zero (by rw [GlobalTheory.CompanionTheory.UnrDens.card_hermMod R σ ϖ q ε h n k]; exact (pow_pos hq _).ne')`. Use `haveI := Fintype.ofFinite (hermMod σ ϖ n k)`. Rewrite using `[tsum_fintype]`.
+
+Establish `hq1 : (1 : ℝ) ≤ (q : ℝ) ^ (n ^ 2)` using `one_le_pow₀ (by exact_mod_cast hq)`. Establish `hr1 : r ≤ 1` using `by nlinarith`. Establish `hx0 : 0 ≤ (q : ℝ) ^ (n ^ 2) * r` using `by positivity`. Establish `hex : ∀ B : hermMod σ ϖ n k, ∃ j, j ≤ k ∧ B.1 ∈ lvl σ ϖ n k j`. Introduce and unpack `⟨_, H, hH, rfl⟩`.
+
+Conclude with `⟨k, le_rfl, H, hH, by simp⟩`. Set `lv : hermMod σ ϖ n k → ℕ` to `fun B => Nat.find (hex B)`. Establish `hlv_le : ∀ B, lv B ≤ k` using `fun B => (Nat.find_spec (hex B)).1`. Establish `hlv_mem : ∀ B, B.1 ∈ lvl σ ϖ n k (lv B)` using `fun B => (Nat.find_spec (hex B)).2`. Establish `hlog : ∀ B : hermMod σ ϖ n k, lv B ≤ Nat.log (q ^ 2) (nuAt ϖ B.1)`.
+
+Introduce `B`. Break down `Nat.eq_zero_or_pos (lv B) with h0 | hpos` into its components or cases. Rewrite using `[h0]`. Conclude with `Nat.zero_le _`. Take `⟨H, hH, hB⟩` from `hlv_mem B`.
+
+Establish `hn : B.1 ∉ lvl σ ϖ n k (lv B - 1)` using `fun hmem => Nat.find_min (hex B) (Nat.sub_lt hpos one_pos) ⟨(Nat.sub_le _ _).trans (hlv_le B), hmem⟩`. Establish `hnd` using `not_dvd_of_not_lvl h hpos (hlv_le B) hH hB hn`. Establish `hlow` using `nu_lower h (hlv_le B) hH hnd`. Rewrite `hlow` using `[← hB]`. Use `Nat.le_log_of_pow_le (Nat.one_lt_pow two_ne_zero h.one_lt) ?_` and prove the remaining obligations.
+
+Rewrite using `[← pow_mul]` and apply the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j hj => ?_` and prove the remaining obligations. Establish `hjk : j ≤ k` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)`. Establish `hc` using `card_lvl_le h hjk (Finset.univ.filter fun B => lv B = j) (by`.
+
+Introduce `B hB`. Use `(Finset.mem_filter.1 hB).2` as an intermediate fact. Rewrite using `[← this]`. Conclude with `hlv_mem B)`. Establish `e : ∑ B ∈ Finset.univ.filter (fun B => lv B = j), r ^ lv B = ((Finset.univ.filter fun B => lv B = j).card : ℝ) * r ^ j`.
+
+Rewrite using `[Finset.sum_congr rfl (g := fun _ => r ^ j) (fun B hB => by rw [(Finset.mem_filter.1 hB).2]), Finset.sum_const, nsmul_eq_mul]`. Rewrite using `[e, mul_pow, ← pow_mul, mul_comm (n ^ 2) j]`. Use `mul_le_mul_of_nonneg_right ?_ (pow_nonneg hr _)` and prove the remaining obligations. Conclude with `hc` after adjusting the coercions. Use `_ ≤ ∑' j : ℕ, ((q : ℝ) ^ (n ^ 2) * r) ^ j := (summable_geometric_of_lt_one hx0 hx).sum_le_tsum _ (fun _ _ => pow_nonneg hx0 _)`.
+
+Use `_ = 1 / (1 - (q : ℝ) ^ (n ^ 2) * r) := by`. Rewrite using `[tsum_geometric_of_lt_one hx0 hx, one_div]`.
+-/
 theorem GlobalTheory.CompanionTheory.GunrNuBound.nuBound : PositivityTheory.SiegelWeilFormula.Gunr.NuBound := by
   classical
   intro R _ σ ϖ q ε h n k r hr hx

@@ -12,6 +12,17 @@ namespace PositivityTheory.SiegelWeilFormula.Atop
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨Ê, ⟨t, hsum, -⟩, hw⟩` from `hBL F E σ d.B d.n d.Y r' s' d.ok.good d.ok.hn hY d.χ d.ok.hecke d.m d.ok.res d.b d.K d.a d.ok.frame d.ok.stdK d.ok.hgt (s0 d.m d.n) (d.sec0 Φ) (hSec F E σ d Φ hK)`. Introduce `x`. Establish `hfl : ∀ z, (fun y => ((d.Ht y : ℝ) : ℂ) ^ (z - s0 d.m d.n) * d.sec0 Φ y) = flat d.a (d.sec0 Φ) (s0 d.m d.n) z` using `fun z => funext fun y => by`. Simplify using `only [SD.Ht, flat]`. Rewrite using `[Real.coe_toNNReal _ (Khead.hgt_nonneg d.ok.hgt y)]`.
+
+Establish `Heisenberg₂ : ∀ z : ℂ, t < z.re → d.eis (d.sec0 Φ) (s0 d.m d.n) z x = Ê z x` using `fun z hz => by`. Simplify using `only [SD.eis]`. Rewrite using `[hfl z]`. Conclude with `(hsum z hz x).tsum_eq`. Establish `hmer` using `Khead.meromorphicOn_of_weak hw x`.
+
+Establish `hext : IsExtAt (fun z => d.eis (d.sec0 Φ) (s0 d.m d.n) z x) (s0 d.m d.n) (Ê · x)` using `⟨Set.univ, trivial, isRightDomain_univ, hmer, t, fun z hz => (Heisenberg₂ z hz).symm⟩`. Take `⟨H', hext', han, hval⟩` from `hM Φ hK x`. Establish `hev` using `hext'.eventuallyEq hext`. Establish `hloc : Function.update (Ê · x) (s0 d.m d.n) (c * d.I Φ x) =ᶠ[𝓝 (s0 d.m d.n)] H'` using `by filter_upwards [eventually_nhdsWithin_iff.1 hev] with z hz`. Distinguish the cases in `e : z = s0 d.m d.n`.
+
+Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hval.symm`. Rewrite using `[Function.update_of_ne e]`. Conclude with `(hz e).symm`.
+
+Use `⟨Function.update (Ê · x) (s0 d.m d.n) (c * d.I Φ x), fun z _ => (hmer z trivial).update _ _, ⟨max t (s0 d.m d.n).re, fun z hz => ?_⟩, han.congr hloc.symm, Function.update_self _ _ _⟩` and prove the remaining obligations. Establish `hz1 : t < z.re` using `lt_of_le_of_lt (le_max_left _ _) hz`. Establish `hz2 : z ≠ s0 d.m d.n` using `fun e => by subst e; exact lt_irrefl _ (lt_of_le_of_lt (le_max_right _ _) hz)`. Rewrite using `[Function.update_of_ne hz2]`. Conclude with `hsum z hz1 x`.
+-/
 theorem eisValue_of (hBL : EisBL) (hSec : SecK) (d : SD σ) {r' s' : ℕ}
     (hY : d.Y.IsHerm σ d.B r' s' ∨ d.Y.IsSkew σ d.B r' s') (c : ℂ) (hM : MainC c d) (Φ : d.Fn) (hK : d.KFin Φ) :
     EisValueAt (flat d.a (d.sec0 Φ) (s0 d.m d.n)) (s0 d.m d.n) (fun x => c * d.I Φ x) := by
@@ -47,6 +58,11 @@ end PositivityTheory.SiegelWeilFormula.Atop
 
 namespace PositivityTheory.SiegelWeilFormula
 
+/- English proof (translation)
+Introduce `hBL hSec hLt hLe F E _ _ _ _ _ σ B m n A Y r s r' s' h1 h2 h3 h4 h5 χ h6 h7 κ _ dd om S l h8 b K a h9 h10 h11 μ D h12 h13 Φ h14 h15`. Distinguish the cases in `hlt : n < m`. Conclude with `Khead.siegelWeilStd_lt hLt F E σ B m n A Y r s r' s' hlt h1 h2 h3 h4 h5 χ h6 h7 κ dd om S l h8 b K a h9 h10 h11 μ D h12 h13 Φ h14 h15`. Simplify using `only [if_neg hlt]`. Set `d : SD σ` to `{ B := B, m := m, n := n, A := A, Y := Y, r := r, s := s, χ := χ, κ := κ, dd := dd, om := om, S := S, l := l, b := b, K := K, a := a, μ := μ, D := D, bs := Khead.basis2 h1, ok := ⟨h1, h2, h3, h4, h5.imp (fun h => ⟨h.1, h.2.skew⟩) (fun h => ⟨h.1, h.2.herm⟩), h6, h7, h8, h9, h10, h …`.
+
+Establish `hY : d.Y.IsHerm σ d.B r' s' ∨ d.Y.IsSkew σ d.B r' s'` using `h5.elim (fun h => .inr h.2) (fun h => .inl h.2)`. Conclude with `Atop.eisValue_of hBL hSec d hY 2 (hLe F E σ d (not_lt.mp hlt)) Φ ⟨h14, h15⟩`.
+-/
 theorem Atop.fieldOf : FieldOf := by
   intro hBL hSec hLt hLe F E _ _ _ _ _ σ B m n A Y r s r' s' h1 h2 h3 h4 h5 χ h6 h7 κ _ dd om S l h8 b K a h9 h10 h11 μ D
     h12 h13 Φ h14 h15

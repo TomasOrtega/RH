@@ -14,6 +14,9 @@ section NeZero
 
 variable {k G V : Type*} [CommRing k] [Group G] [Fintype G] [AddCommGroup V] [Module k V]
 
+/- English proof (translation)
+Rewrite `h` using `[cycHerbrand_eq]`. Establish `h0 : Nat.card (CycTateZero ρ σ) ≠ 0` using `fun h' ↦ h (by rw [h', Nat.cast_zero, zero_div])`. Establish `h1 : Nat.card (CycTateNegOne ρ σ) ≠ 0` using `fun h' ↦ h (by rw [h', Nat.cast_zero, div_zero])`. Conclude with `⟨Nat.finite_of_card_ne_zero h0, Nat.finite_of_card_ne_zero h1⟩`.
+-/
 theorem hasHerbrandQuotient_of_cycHerbrand_ne_zero {ρ : Representation k G V} {σ : G}
     (h : cycHerbrand ρ σ ≠ 0) : HasHerbrandQuotient (cycSubOne ρ σ) (cycNorm ρ) := by
   rw [cycHerbrand_eq] at h
@@ -27,6 +30,9 @@ section Action
 
 variable {K L : Type*} [Field K] [Field L] [Algebra K L] (w : InfinitePlace L)
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun u : InfinitePlace L ↦ u (σ x)) (MulAction.mem_stabilizer_iff.1 hσ)`. Simplify using `only [InfinitePlace.smul_apply, AlgEquiv.symm_apply_apply] at h`. Conclude with `h.symm`.
+-/
 theorem apply_algEquiv_of_mem_stabilizer {σ : Gal(L/K)}
     (hσ : σ ∈ MulAction.stabilizer Gal(L/K) w) (x : L) : w (σ x) = w x := by
   have h := congrArg (fun u : InfinitePlace L ↦ u (σ x)) (MulAction.mem_stabilizer_iff.1 hσ)
@@ -36,12 +42,18 @@ theorem apply_algEquiv_of_mem_stabilizer {σ : Gal(L/K)}
 def withAbsMapOf (σ : Gal(L/K)) : WithAbs w.1 →+* WithAbs w.1 :=
   WithAbs.map w.1 w.1 (σ : L →+* L)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofAbs_withAbsMapOf (σ : Gal(L/K)) (x : WithAbs w.1) :
     (withAbsMapOf w σ x).ofAbs = σ x.ofAbs :=
   rfl
 
 variable {w}
 
+/- English proof (translation)
+The claim follows from `AddMonoidHomClass.isometry_of_norm _ fun x ↦ by rw [WithAbs.norm_eq_apply_ofAbs, WithAbs.norm_eq_apply_ofAbs, ofAbs_withAbsMapOf] exact apply_algEquiv_of_mem_stabilizer w hσ x.ofAbs`.
+-/
 theorem isometry_withAbsMapOf {σ : Gal(L/K)} (hσ : σ ∈ MulAction.stabilizer Gal(L/K) w) :
     Isometry (withAbsMapOf w σ) :=
   AddMonoidHomClass.isometry_of_norm _ fun x ↦ by
@@ -53,11 +65,17 @@ def completionRingHomOf {σ : Gal(L/K)} (hσ : σ ∈ MulAction.stabilizer Gal(L
   ((Completion.equiv w).symm.toRingHom.comp (isometry_withAbsMapOf hσ).mapRingHom).comp
     (Completion.equiv w).toRingHom
 
+/- English proof (translation)
+The claim follows from `(continuous_ofCompletion w).comp <| UniformSpace.Completion.continuous_map.comp (continuous_toCompletion w)`.
+-/
 theorem continuous_completionRingHomOf {σ : Gal(L/K)}
     (hσ : σ ∈ MulAction.stabilizer Gal(L/K) w) : Continuous (completionRingHomOf hσ) :=
   (continuous_ofCompletion w).comp <|
     UniformSpace.Completion.continuous_map.comp (continuous_toCompletion w)
 
+/- English proof (translation)
+The claim follows from `Completion.ext <| (isometry_withAbsMapOf hσ).mapRingHom_coe x`.
+-/
 theorem completionRingHomOf_coe {σ : Gal(L/K)} (hσ : σ ∈ MulAction.stabilizer Gal(L/K) w)
     (x : WithAbs w.1) :
     completionRingHomOf hσ (x : w.Completion) = ((withAbsMapOf w σ x : WithAbs w.1) :
@@ -66,6 +84,9 @@ theorem completionRingHomOf_coe {σ : Gal(L/K)} (hσ : σ ∈ MulAction.stabiliz
 
 variable (w) in
 
+/- English proof (translation)
+The claim follows from `RingHom.ext (congrFun ((denseRange_coe w).equalizer hf hg (funext h)))`.
+-/
 theorem ringHom_ext_completion {f g : w.Completion →+* w.Completion} (hf : Continuous f)
     (hg : Continuous g) (h : ∀ x : WithAbs w.1, f (x : w.Completion) = g (x : w.Completion)) :
     f = g :=
@@ -102,15 +123,24 @@ instance infiniteDecompositionUnitsAction :
 
 variable {w}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infiniteDecomposition_smul_def (σ : MulAction.stabilizer Gal(L/K) w) (x : w.Completion) :
     σ • x = completionRingHomOf σ.2 x :=
   rfl
 
+/- English proof (translation)
+The claim follows from `completionRingHomOf_coe σ.2 x`.
+-/
 theorem infiniteDecomposition_smul_coe (σ : MulAction.stabilizer Gal(L/K) w) (x : WithAbs w.1) :
     σ • (x : w.Completion) =
       ((withAbsMapOf w (σ : Gal(L/K)) x : WithAbs w.1) : w.Completion) :=
   completionRingHomOf_coe σ.2 x
 
+/- English proof (translation)
+The claim follows from `continuous_completionRingHomOf σ.2`.
+-/
 theorem continuous_infiniteDecomposition_smul (σ : MulAction.stabilizer Gal(L/K) w) :
     Continuous fun x : w.Completion ↦ σ • x :=
   continuous_completionRingHomOf σ.2
@@ -122,6 +152,11 @@ section Local
 variable {K L : Type*} [Field K] [Field L] [Algebra K L] (v : InfinitePlace K)
   (w : InfinitePlace L) [w.LiesOver v]
 
+/- English proof (translation)
+Establish `h` using `(denseRange_coe v).equalizer ((continuous_infiniteDecomposition_smul σ).comp (continuous_algebraMap v.Completion w.Completion)) (continuous_algebraMap v.Completion w.Completion) (funext fun x ↦ ?_)`. Conclude with `congrFun h c`. Simplify using `only [Function.comp_apply]`. Rewrite using `[Completion.algebraMap_coe, infiniteDecomposition_smul_coe]`. Use `congr 2`.
+
+Apply `(WithAbs.equiv w.1).injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `σ.1 (algebraMap (WithAbs v.1) (WithAbs w.1) x).ofAbs = (algebraMap (WithAbs v.1) (WithAbs w.1) x).ofAbs`. Rewrite using `[WithAbs.ofAbs_algebraMap, AlgEquiv.commutes]`.
+-/
 theorem infiniteDecomposition_smul_algebraMap (σ : MulAction.stabilizer Gal(L/K) w)
     (c : v.Completion) :
     σ • algebraMap v.Completion w.Completion c = algebraMap v.Completion w.Completion c := by
@@ -144,6 +179,9 @@ def infiniteDecompositionAlgEquiv (σ : MulAction.stabilizer Gal(L/K) w) :
     (infiniteDecomposition_smul_algebraMap v w σ)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infiniteDecompositionAlgEquiv_apply (σ : MulAction.stabilizer Gal(L/K) w)
     (x : w.Completion) : infiniteDecompositionAlgEquiv v w σ x = σ • x :=
   rfl
@@ -155,10 +193,20 @@ def infiniteDecompositionToLocal :
   map_mul' σ τ := AlgEquiv.ext fun x ↦ mul_smul σ τ x
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infiniteDecompositionToLocal_apply (σ : MulAction.stabilizer Gal(L/K) w)
     (x : w.Completion) : infiniteDecompositionToLocal v w σ x = σ • x :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`.
+
+Establish `h` using `congrArg (fun f : Gal(w.Completion/v.Completion) ↦ f ((WithAbs.toAbs w.1 x : WithAbs w.1) : w.Completion)) hσ`. Simplify using `only [AlgEquiv.one_apply] at h`. Rewrite `h` using `[infiniteDecompositionToLocal_apply, infiniteDecomposition_smul_coe]`. Establish `h'` using `UniformSpace.Completion.coe_injective (WithAbs w.1) (congrArg Completion.toCompletion h)`. Rewrite using `[OneMemClass.coe_one, AlgEquiv.one_apply]`.
+
+Conclude with `congrArg WithAbs.ofAbs h'`.
+-/
 theorem infiniteDecompositionToLocal_injective :
     Function.Injective (infiniteDecompositionToLocal v w) := by
   rw [injective_iff_map_eq_one]
@@ -177,6 +225,9 @@ theorem infiniteDecompositionToLocal_injective :
 
 variable [IsGalois K L]
 
+/- English proof (translation)
+Rewrite using `[NumberField.InfinitePlace.card_stabilizer]`. Distinguish the cases in `h : w.IsUnramified K`. Rewrite using `[if_pos h, h.finrank_eq_one v]`. Rewrite using `[if_neg h, NumberField.InfinitePlace.IsRamified.finrank_eq_two v h]`.
+-/
 theorem natCard_infiniteDecompositionGroup :
     Nat.card (MulAction.stabilizer Gal(L/K) w) = Module.finrank v.Completion w.Completion := by
   rw [NumberField.InfinitePlace.card_stabilizer]
@@ -184,6 +235,9 @@ theorem natCard_infiniteDecompositionGroup :
   · rw [if_pos h, h.finrank_eq_one v]
   · rw [if_neg h, NumberField.InfinitePlace.IsRamified.finrank_eq_two v h]
 
+/- English proof (translation)
+Use `(infiniteDecompositionToLocal_injective v w).bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[natCard_infiniteDecompositionGroup v w, InfinitePlace.natCard_gal_completion w]`.
+-/
 theorem infiniteDecompositionToLocal_bijective :
     Function.Bijective (infiniteDecompositionToLocal v w) := by
   refine (infiniteDecompositionToLocal_injective v w).bijective_of_nat_card_le ?_
@@ -195,6 +249,9 @@ def infiniteDecompositionMulEquiv :
     (infiniteDecompositionToLocal_bijective v w)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infiniteDecompositionMulEquiv_apply (σ : MulAction.stabilizer Gal(L/K) w)
     (x : w.Completion) : infiniteDecompositionMulEquiv v w σ x = σ • x :=
   rfl
@@ -206,6 +263,9 @@ section Herbrand
 variable {K L : Type*} [Field K] [Field L] [Algebra K L] (v : InfinitePlace K)
   (w : InfinitePlace L) [w.LiesOver v]
 
+/- English proof (translation)
+Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+-/
 theorem ofMulDistribMulAction_gal_completion_units (σ : Gal(w.Completion/v.Completion))
     (x : Additive w.Completionˣ) :
     Representation.ofMulDistribMulAction Gal(w.Completion/v.Completion) w.Completionˣ σ x =
@@ -214,6 +274,11 @@ theorem ofMulDistribMulAction_gal_completion_units (σ : Gal(w.Completion/v.Comp
   apply Units.ext
   rfl
 
+/- English proof (translation)
+Establish `h1` using `(cycHerbrand_eq_of_mulEquiv (ρ' := Representation.ofMulDistribMulAction Gal(w.Completion/v.Completion) w.Completionˣ) (ρ := InfinitePlace.unitsRep v w) (MulEquiv.refl _) (AddEquiv.refl _) (fun g x ↦ ofMulDistribMulAction_gal_completion_units v w g x) σ).2`. Establish `h2 : cycHerbrand (InfinitePlace.unitsRep v w) σ = Module.finrank v.Completion w.Completion` using `InfinitePlace.cyclicHerbrand_unitsRep_eq_finrank v w σ hσ`. Establish `h3 : cycHerbrand (Representation.ofMulDistribMulAction Gal(w.Completion/v.Completion) w.Completionˣ) σ = Module.finrank v.Completion w.Completion` using `h1.trans h2`. Use `⟨hasHerbrandQuotient_of_cycHerbrand_ne_zero ?_, h3⟩` and prove the remaining obligations. Rewrite using `[h3, Nat.cast_ne_zero]`.
+
+Conclude with `Module.finrank_pos.ne'`.
+-/
 theorem cycHerbrand_gal_completion_units (σ : Gal(w.Completion/v.Completion))
     (hσ : ∀ g, g ∈ Subgroup.zpowers σ) :
     HasHerbrandQuotient
@@ -237,6 +302,9 @@ theorem cycHerbrand_gal_completion_units (σ : Gal(w.Completion/v.Completion))
 
 variable [IsGalois K L]
 
+/- English proof (translation)
+Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+-/
 theorem ofMulDistribMulAction_infiniteDecomposition_units
     (σ : MulAction.stabilizer Gal(L/K) w) (x : Additive w.Completionˣ) :
     Representation.ofMulDistribMulAction (MulAction.stabilizer Gal(L/K) w) w.Completionˣ σ x =
@@ -246,6 +314,9 @@ theorem ofMulDistribMulAction_infiniteDecomposition_units
   apply Units.ext
   rfl
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `cycHerbrand_eq_of_mulEquiv (ρ' := Representation.ofMulDistribMulAction (MulAction.stabilizer Gal(L/K) w) w.Completionˣ) (ρ := Representation.ofMulDistribMulAction Gal(w.Completion/v.Completion) w.Completionˣ) (infiniteDecompositionMulEquiv v w) (AddEquiv.refl _) (fun σ x ↦ ofMulD …`. Take `⟨h3, h4⟩` from `cycHerbrand_gal_completion_units v w _ (mem_zpowers_mulEquiv (infiniteDecompositionMulEquiv v w) hτ)`. Conclude with `⟨h1.2 h3, h2.trans h4⟩`.
+-/
 theorem cycHerbrand_infiniteCompletion_units [Fintype (MulAction.stabilizer Gal(L/K) w)]
     (τ : MulAction.stabilizer Gal(L/K) w) (hτ : ∀ σ, σ ∈ Subgroup.zpowers τ) :
     HasHerbrandQuotient

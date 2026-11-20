@@ -24,6 +24,15 @@ noncomputable section
 
 namespace GlobalTheory.FamTrace.PairsFwd
 
+/- English proof (translation)
+Establish `hint : ∀ (N : Matrix n n k), (∀ r s, N r s ∈ 𝒪[k]) → ∀ w : n → k, (∀ r, w r ∈ 𝒪[k]) → ∀ r, (N *ᵥ w) r ∈ 𝒪[k]` using `fun N hN w hw r => Subring.sum_mem _ fun s _ => Subring.mul_mem _ (hN r s) (hw s)`. Use `⟨⟨fun h r => ?_, fun h => hint M' hM' z h⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `e : M *ᵥ (M' *ᵥ z) = z` using `by rw [Matrix.mulVec_mulVec, hMM, Matrix.one_mulVec]`. Rewrite using `[← e]`. Conclude with `hint M hM _ h r`.
+
+Establish `e : (M' *ᵥ z) r₀ - z r₀ = ∑ s, (M' r₀ s - (1 : Matrix n n k) r₀ s) * z s`. Establish `: z r₀ = ∑ s, (1 : Matrix n n k) r₀ s * z s` using `by simp [Matrix.one_apply]`. Rewrite using `[this]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Repeatedly rewrite using `[sub_mul]`. Rewrite using `[e]`. Use `Valuation.map_sum_lt _ one_ne_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Establish `h1` using `hr s`.
+
+Establish `h2 : valuation k (z s) ≤ 1` using `(Valuation.mem_integer_iff _ _).1 (h s)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem intMat_keeps {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : Type} [Fintype n] [DecidableEq n] (M M' : Matrix n n k) (hMM : M * M' = 1) (hM : ∀ r s, M r s ∈ 𝒪[k])
     (hM' : ∀ r s, M' r s ∈ 𝒪[k]) (r₀ : n) (hr : ∀ s, valuation k (M' r₀ s - (1 : Matrix n n k) r₀ s) < 1) (z : n → k) :
@@ -49,6 +58,23 @@ theorem intMat_keeps {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
         ≤ valuation k (M' r₀ s - (1 : Matrix n n k) r₀ s) * 1 := mul_le_mul' le_rfl h2
       _ < 1 := by rw [mul_one]; exact h1
 
+/- English proof (translation)
+Establish `hM'M : M' * M = 1` using `mul_eq_one_comm.1 hMM`. Establish `hK` using `intMat_keeps M M' hMM hM hM' r₀ hr`. Establish `hbg : ∀ x : Fin n → k, b *ᵥ (g⁻¹ • x) = M' *ᵥ (b *ᵥ x)`. Introduce `x`. Establish `e1 : b * g.val = M * b`.
+
+Rewrite using `[hg, Matrix.mul_assoc, Matrix.mul_assoc, hb, Matrix.mul_one]`. Establish `e2 : b *ᵥ x = M *ᵥ (b *ᵥ (g⁻¹ • x))`. Establish `e3 : x = g.val *ᵥ (g⁻¹ • x)`. Express the relevant statement in the definitionally equal form `x = g.val *ᵥ ((g⁻¹).val *ᵥ x)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Use `conv_lhs => rw [e3]`. Rewrite using `[Matrix.mulVec_mulVec, e1, ← Matrix.mulVec_mulVec]`. Rewrite using `[e2, Matrix.mulVec_mulVec, hM'M, Matrix.one_mulVec]`. Use `GlobalTheory.LatPair.Pair.ext fun x a' => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LatPair.Pair.smul_hasVal, hQ, hQ, hbg]`.
+
+Establish `hres : ∀ (s y₁ y₂ : 𝒪[k]), valuation k ((y₁ : k) - y₂) < 1 → residue 𝒪[k] (s * y₁) = residue 𝒪[k] (s * y₂)`. Introduce `s y₁ y₂ h`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ← mul_sub]`. Use `Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 ?_)` and prove the remaining obligations. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one.2 (by simpa using h)`.
+
+Take `⟨hiff, hlast⟩` from `hK (b *ᵥ x)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, s, hs, ha⟩`. Establish `hz : ∀ r, (b *ᵥ x) r ∈ 𝒪[k]` using `hiff.1 fun r => hy r ▸ (y r).2`. Use `⟨fun r => ⟨_, hz r⟩, fun r => rfl, s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ha]`. Use `hres s _ _ ?_` and prove the remaining obligations. Rewrite using `[hy r₀]`. Conclude with `hlast hz`. Introduce and unpack `⟨y, hy, s, hs, ha⟩`.
+
+Establish `hz : ∀ r, (b *ᵥ x) r ∈ 𝒪[k]` using `fun r => hy r ▸ (y r).2`. Use `⟨fun r => ⟨_, hiff.2 hz r⟩, fun r => rfl, s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Use `(hres s _ _ ?_).symm` and prove the remaining obligations. Rewrite using `[hy r₀]`.
+
+Conclude with `hlast hz`.
+-/
 theorem smul_pair_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (Q : GlobalTheory.LatPair.Pair k (Fin n)) (b b' M M' : Matrix (Fin n) (Fin n) k) (hb : b' * b = 1) (c : k) (r₀ : Fin n)
     (hQ : ∀ (x : Fin n → k) (a : 𝓀[k]), Q.HasVal x a ↔ ∃ y : Fin n → 𝒪[k], (∀ r, (y r : k) = (b *ᵥ x) r) ∧
@@ -93,6 +119,15 @@ theorem smul_pair_eq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
     rw [hy r₀]
     exact hlast hz
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Establish `hd : (Pi.single s 1 : Fin n → E) ∈ Formalism.BasicNotions.dualSet (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) Lb`. Introduce `z hz`. Take `⟨r, hr⟩` from `hL z hz s`. Rewrite using `[GlobalTheory.uLocDual_hform_one]`.
+
+Use `⟨RingOfIntegers.mapRingHom (σ : E →+* E) r, ?_⟩` and prove the remaining obligations. Simplify using `[Pi.single_apply, hr]`. Establish `h1` using `hx _ (Submodule.subset_span ⟨_, Submodule.subset_span hd, rfl⟩)`. Establish `e : (fun i => Formalism.UG.inclE (F` using `F) (v.adicCompletion F) ((Pi.single s 1 : Fin n → E) i)) = Pi.single s 1 := by`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.single_apply, Pi.single_apply]`. Use `split_ifs`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`. Use `beta_reduce at h1`.
+
+Rewrite `h1` using `[e, Matrix.mulVec_single_one]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`. Rewrite using `[Pi.sub_apply, Pi.single_apply, Matrix.one_apply]`. Both sides reduce to the same expression.
+-/
 theorem col_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} (hJ : J = 1) (Lb : Submodule (𝓞 E) (Fin n → E))
     (hL : ∀ x ∈ Lb, ∀ j, ∃ r : 𝓞 E, x j = (r : E)) (v : HeightOneSpectrum (𝓞 F))
@@ -124,6 +159,17 @@ theorem col_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Set `y : Fin V.rank → AE D` to `fun r' => mt V κ r' s - (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) r' s`. Establish `hy : (fun r' => Formalism.UG.prV (E` using `D.host.E) p.v (toEAf D (y r'))) = (fun r' => Formalism.UG.prV (E := D.host.E) p.v (GlobalTheory.AdForm.finM V rfl κ r' s) - (1 : Matrix (Fin V.rank) (Fin V.rank) (D.host.E ⊗[D.host.F] p.v.adicCompletion D.host.F)) r' s) := by`. Use function extensionality and compare the values at `r'`. Simplify using `only [y]`.
+
+Rewrite using `[RingHom.map_sub, RingHom.map_sub]`. Use `congr 1`. Distinguish the cases in `h : r' = s`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one, RingHom.map_one]`.
+
+Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne h, RingHom.map_zero, RingHom.map_zero]`. Establish `h4` using `GlobalTheory.T.splitPoint_baseLattice_coords_integral_last_in_prime D k p P hP _ t ht _ hLb y (by rw [hy]; exact h3 s) r`. Establish `h1 : p.pr ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) r s) = (1 : Matrix (Fin V.rank) (Fin V.rank) k) r s`. Apply the tactic sequence `simp only [Matrix.one_apply]; split_ifs <;> simp`. Simplify using `only [y] at h4`.
+
+Rewrite `h4` using `[map_sub, h1]`. Use `⟨?_, fun hr => h4.2 hr⟩` and prove the remaining obligations. Use `Subring.add_mem _ h4.1 (show (1 : Matrix (Fin V.rank) (Fin V.rank) k) r s ∈ 𝒪[k] by` as an intermediate fact. Simplify using `only [Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _)`. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem mat_int (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : GlobalTheory.FinPl.SplitPt D k) (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : Formalism.L2.NTheta.IsIdemAt p.e P) (V : HSp D) {n : ℕ}
     (hn : V.rank = n) (t : 𝓞 D.host.E) (ht : t ∈ P.asIdeal) (Lb : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
@@ -158,10 +204,18 @@ theorem mat_int (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace
     · exact Subring.zero_mem _)
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Theta.mt]`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+-/
 theorem mt_mul_inv {D : D7} (V : HSp D) (κ : GA D V) : mt V κ * mt V κ⁻¹ = 1 := by
   simp only [Formalism.L2.Theta.mt]
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `e : GlobalTheory.AdForm.finM V rfl κ * GlobalTheory.AdForm.finM V rfl κ⁻¹ = 1`. Establish `e1 : ∀ g, GlobalTheory.AdForm.finM V rfl g = (mt V g).map (toEAf D)` using `fun g => rfl`. Rewrite using `[e1, e1, ← Matrix.map_mul, mt_mul_inv]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Rewrite `e` using `[h]`. Conclude with `(Units.inv_eq_of_mul_eq_one_right e).symm`.
+-/
 theorem finM_inv {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (κ : GA D V) (x : GL (Fin n) (GlobalTheory.AdForm.EF D))
     (h : GlobalTheory.AdForm.finM V hn κ = x.1) : GlobalTheory.AdForm.finM V hn κ⁻¹ = (x⁻¹).1 := by
   subst hn
@@ -174,6 +228,15 @@ theorem finM_inv {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (κ : GA D V) 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hgram : Formalism.L2.Forms.gramN (I.rec7 l Z) i hi = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 i hi).1`. Use `haveI : NeZero ((I.rec7 l Z).R.N i) := ⟨by`. Use `(I.rec7 l Z).R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.N]`. Use the proof step `omega⟩`.
+
+Set `c : 𝓞 (I.rec7 l Z).host.E →+* 𝓞 (I.rec7 l Z).host.E` to `RingOfIntegers.mapRingHom (Formalism.L2.Forms.sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E)`. Establish `hsc : ∀ x, (c x : (I.rec7 l Z).host.E) = (I.rec7 l Z).host.conj (x : (I.rec7 l Z).host.E)` using `fun x => Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.forms_involution_eq_host_conj _`. Establish `hpq : ((F.atT.piU : 𝓞 (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E) * (c F.atT.piU : (I.rec7 l Z).host.E) = (((I.rec7 l Z).mem u).A.T : (I.rec7 l Z).host.E)`. Rewrite using `[hsc]`. Conclude with `F.atT.piU_norm`.
+
+Establish `hTp` using `((I.rec7 l Z).mem u).A.T_prime`. Establish `hp0 : ((F.atT.piU : 𝓞 (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E) ≠ 0` using `fun h => (Nat.cast_ne_zero.2 hTp.ne_zero) (by rw [← hpq, h, zero_mul])`. Establish `hL : S.Lb = Formalism.L2.Col.rll_dLat ((I.rec7 l Z).R.N i) (((F.atT.piU : 𝓞 (I.rec7 l Z).host.E) : (I.rec7 l Z).host.E)⁻¹)`. Use `GlobalTheory.Mem.Col2.Lv.baseL_eq B _ F.atT.piU hp0 S.Lb ?_` and prove the remaining obligations. Rewrite using `[hF.piU]`.
+
+Conclude with `hLb`. Establish `h1` using `(GlobalTheory.Mem.Col2.Lv.uloc_T_iff (Formalism.L2.Forms.sigD (I.rec7 l Z)) (I.rec7 l Z).sp.cm.deg2 (fun x => star_star x) (fun x hx => ((I.rec7 l Z).sp.cm.fixed x).1 hx) (I.rec7 l Z).sp.cm.cmUnram.2.2 hgram S F.atT.piU (c F.atT.piU) rfl hpq hTp hL v hv (GlobalTheory.T.levelPrime …`. Conclude with `col_mem _ hgram S.Lb (fun z hz j => let ⟨r, hr, _⟩ := (hLb z).1 hz j; ⟨r, hr⟩) v _ h1.2 s`.
+-/
 theorem col_mem_level {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i}
     (F : Formalism.L2.Forms.FormsTiedSym (I.rec7 l Z) u Ch chOf) (hF : I.StdF l Z u F) (i : ℕ) (hi : i ≤ (I.rec7 l Z).R.m)
@@ -210,6 +273,17 @@ theorem col_mem_level {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.t
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hv` using `GlobalTheory.AdForm.stdT_levelPrime_mem_v I hI hP l Z u k ι p β Q L hS i`. Take `⟨e, he⟩` from `hS.1`. Establish `hpi : X.piT u ∈ (e i).1.asIdeal`. Take `⟨-, hPr, -⟩` from `GlobalTheory.Mem.Col2.base_fields_primes_ok B X`. Establish `hcop : IsCoprime (X.piT u) (B.fields.conjO (X.piT u))` using `hPr.piT_cop u`.
+
+Establish `hne : X.piT u ≠ 0`. Introduce `h0`. Rewrite `hcop` using `[h0, map_zero, isCoprime_zero_left]`. Conclude with `not_isUnit_zero hcop`. Conclude with `(Formalism.L2.Col.mem_divs hne _).1 (e i).2`.
+
+Establish `key` using `fun (κ₀ : GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)) (x : GL (Fin ((I.rec7 l Z).R.N j)) (GlobalTheory.AdForm.EF (I.rec7 l Z))) (h : GlobalTheory.AdForm.finM _ (Formalism.L2.Forms.rankN (I.rec7 l Z) j hj) κ₀ = x.1) (hx : x ∈ S.U) => mat_int (I.rec7 l Z) k (p i) (e i).1 (he i) _ (Forma …`. Rewrite using `[h]`. Conclude with `col_mem_level I hI hP l Z u F hF j hj S hLb _ hv x hx s')`. Establish `k1` using `key κ y hy hU`. Establish `k2` using `key κ⁻¹ y⁻¹ (finM_inv _ _ κ y hy) (inv_mem hU)`.
+
+Break down `Nat.eq_zero_or_pos ((I.rec7 l Z).sp.X j).rank with h0 | hpos` into its components or cases. Establish `: g = 1` using `Units.ext (Matrix.ext fun b _ => absurd b.2 (by omega))`. Rewrite using `[this, one_smul]`. Set `r₀ : Fin ((I.rec7 l Z).sp.X j).rank` to `⟨((I.rec7 l Z).sp.X j).rank - 1, by omega⟩`. Establish `hr₀ : r₀.1 + 1 = ((I.rec7 l Z).sp.X j).rank` using `by simp only [r₀]; omega`.
+
+Use `smul_pair_eq _ _ _ _ ((mt _ κ⁻¹).map (p i).pr) (β j i).b'b _ r₀ (GlobalTheory.T.standardPair_frameCoordinates_integral_and_functional I l Z u k ι p β Q L hS j hj i r₀ hr₀) g hg ?_ (fun r s => (k1 r s).1) (fun r s => (k2 r s).1) (fun s => (k2 r₀ s).2 hr₀)` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, mt_mul_inv]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem stdPair_fixed {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} (I : TC B X) (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i}
     (F : Formalism.L2.Forms.FormsTiedSym (I.rec7 l Z) u Ch chOf) (hF : I.StdF l Z u F) (j : ℕ) (hj : j ≤ (I.rec7 l Z).R.m)
@@ -258,6 +332,11 @@ end GlobalTheory.FamTrace.PairsFwd
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a _ hat row col _ κ _ y hy hU i g hg`. Take `⟨hP⟩` from `hA.tr.pins`. Take `⟨hC⟩` from `hA.tr.std`. Establish `hF` using `hC u`. Take `⟨k₀, hR⟩` from `hF.ends 0 (Nat.zero_le _) (Or.inl rfl)`.
+
+Conclude with `@GlobalTheory.FamTrace.PairsFwd.stdPair_fixed B X I hA.tr.ok hP l Z u _ _ _ hF 0 (Nat.zero_le _) (F0 W u).cls0.lev (fun x => hR.lb () x) a.k a.fld a.val a.top a.loc a.ι _ _ _ _ hat.std κ y.1 hy hU i g hg`.
+-/
 theorem GlobalTheory.FamTrace.keepsPairs_of_mem_level : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ κ ∈ GfC ((I.rec7 l Z).sp.X 0), ∀ y : Formalism.UG.UPts (Formalism.L2.Forms.sigD (I.rec7 l Z)) (Formalism.L2.Forms.gramN (I.rec7 l Z) 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), GlobalTheory.AdForm.finM ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) κ = y.1.1 → (y : GL _ _) ∈ (F0 W u).cls0.lev.U → GlobalTheory.FamTrace.KeepsPairs a κ := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a _ hat row col _ κ _ y hy hU i g hg
   obtain ⟨hP⟩ := hA.tr.pins

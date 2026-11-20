@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.RealMult
 
+/- English proof (translation)
+Use `set I : Submodule R R := (Submodule.span R {d}).annihilator`. Distinguish the cases in `hI : I = ⊤`. Establish `h1 : (1 : R) ∈ I` using `hI ▸ Submodule.mem_top`. Simplify using `using (Submodule.mem_annihilator_span_singleton d 1).1 h1`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal I hI`.
+
+Take `⟨f, hf, hfd⟩` from `h ⟨m, hm.isPrime⟩`. Rewrite `hfd` using `[IsLocalization.map_eq_zero_iff (Submonoid.powers f)]`. Take `⟨⟨_, n, rfl⟩, hn⟩` from `hfd`. Establish `: f ^ n ∈ I` using `(Submodule.mem_annihilator_span_singleton d _).2 (by simpa [smul_eq_mul] using hn)`. Conclude with `(hf (hm.isPrime.mem_of_pow_mem n (hle this))).elim`.
+-/
 theorem eq_zero_of_forall_away {R : Type} [CommRing R] (d : R)
     (h : ∀ p : PrimeSpectrum R, ∃ f : R, f ∉ p.asIdeal ∧ algebraMap R (Localization.Away f) d = 0) : d = 0 := by
   set I : Submodule R R := (Submodule.span R {d}).annihilator
@@ -32,12 +37,22 @@ theorem eq_zero_of_forall_away {R : Type} [CommRing R] (d : R)
 
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
 
+/- English proof (translation)
+The claim follows from `fun B _ _ σ Y' _ hY' h δ ↦ hst B Y' h (hY'.isRapoport σ hY) δ`.
+-/
 theorem Rule.agreeOn_of_isRapoport {R₀ : Type} [CommRing R₀] {k : ℕ} (s t : Rule (unitObj 𝔠 6) R₀ k)
     (hst : ∀ (R : Type) [CommRing R] [Algebra R₀ R] (X : Obj F 𝔠 (Sp R)) (h : IsUnit ((6 : ℕ) : R)), X.IsRapoport →
       ∀ δ : X.DetGen, s.val R X h δ = t.val R X h δ)
     {A : Type} [CommRing A] (Y : Obj F 𝔠 (Sp A)) (hY : Y.IsRapoport) : s.AgreeOn t Y :=
   fun B _ _ σ Y' _ hY' h δ ↦ hst B Y' h (hY'.isRapoport σ hY) δ
 
+/- English proof (translation)
+Rewrite using `[Obj.isRapoport_iff]`. Use `Set.eq_univ_of_forall fun x K _ t hx Z ψ hZ ↦ ?_` and prove the remaining obligations. Establish `hmem : hW.fromSpec x ∈ U.rapLocus`. Rewrite using `[← hV]`. Apply `hle` to reduce the goal to its premises.
+
+Use `show hW.fromSpec x ∈ (W : Set M)`. Rewrite using `[← hW.range_fromSpec]`. Conclude with `⟨x, rfl⟩`. Use `hmem K (t ≫ hW.fromSpec) ?_ Z (ψ ≫ φ) (hZ.comp hY)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hx`.
+
+Conclude with `⟨y, rfl⟩`.
+-/
 theorem isRapoport_of_le_rapLocus {M : Scheme.{0}} (U : Obj F 𝔠 M) (V : M.Opens) (hV : (V : Set M) = U.rapLocus)
     (W : M.Opens) (hW : IsAffineOpen W) (hle : W ≤ V) (Y : Obj F 𝔠 (Sp Γ(M, W))) (φ : Y.A.left ⟶ U.A.left)
     (hY : Y.IsPullBy U hW.fromSpec φ) : Y.IsRapoport := by
@@ -49,6 +64,11 @@ theorem isRapoport_of_le_rapLocus {M : Scheme.{0}} (U : Obj F 𝔠 M) (V : M.Ope
   obtain ⟨y, rfl⟩ := hx
   exact ⟨y, rfl⟩
 
+/- English proof (translation)
+Establish `h12 : IsUnit (algebraMap ℤ (Localization.Away (12 : ℤ)) 12)` using `IsLocalization.Away.algebraMap_isUnit _`. Establish `h6 : IsUnit ((6 : ℕ) : Localization.Away (12 : ℤ))`. Establish `: algebraMap ℤ (Localization.Away (12 : ℤ)) 12 = ((6 : ℕ) : Localization.Away (12 : ℤ)) * 2` using `by simp; norm_num`. Rewrite `h12` using `[this]`. Conclude with `isUnit_of_mul_isUnit_left h12`.
+
+Set `g : Localization.Away (12 : ℤ) →+* Γ(M, W)` to `((Scheme.ΓSpecIso (CommRingCat.of (Localization.Away (12 : ℤ)))).inv ≫ sM.appTop ≫ M.presheaf.map (homOfLE le_top).op).hom`. Use `h6.map g` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_six_of_away {M : Scheme.{0}} (sM : M ⟶ Sp (Localization.Away (12 : ℤ))) (W : M.Opens) :
     IsUnit ((6 : ℕ) : Γ(M, W)) := by
   have h12 : IsUnit (algebraMap ℤ (Localization.Away (12 : ℤ)) 12) := IsLocalization.Away.algebraMap_isUnit _
@@ -67,6 +87,21 @@ end GlobalTheory.RealMult
 
 namespace GlobalTheory.RealMult
 
+/- English proof (translation)
+Introduce `hDP F _ _ _ 𝔠 R₀ _ k s t hst`. Take `⟨M, sM, U, αU, hfine, -, -, -, hflat, -, ⟨V, hV, -, -, hcod⟩, hnorm, -⟩` from `hDP F 𝔠 12 (by norm_num)`. Establish `hchart : ∀ (W : M.Opens) (hW : IsAffineOpen W) (Y : Obj F 𝔠 (Sp Γ(M, W))) (φ : Y.A.left ⟶ U.A.left), Y.IsPullBy U hW.fromSpec φ → Nonempty Y.DetGen → s.AgreeOn t Y`. Introduce `W hW Y φ hY hgen`. Conclude with `GlobalTheory.T.determinant_generator_rule_base_change F 𝔠 R₀ k s t Γ(M, W) Y hgen (GlobalTheory.T.flat_normal_fibers_open_extension F 𝔠 R₀ k s t 12 M sM U V hflat hnorm hcod W hW (fun W' hW' hle Y' φ' hY' ↦ Rule.agreeOn_of_isRapoport s t hst Y' (isRapoport_of_le_rapLocus U V hV W …`.
+
+Apply `GlobalTheory.T.modular_rule_ext_of_level_twelve F 𝔠 R₀ k s t` to reduce the goal to its premises. Introduce `R _ _ X h6 ⟨α⟩ δ`. Establish `h6' : IsUnit (6 : R)` using `by exact_mod_cast h6`. Establish `h2 : IsUnit (2 : R)` using `isUnit_of_mul_isUnit_left (y := (3 : R)) (by norm_num; exact h6')`. Establish `h12 : IsUnit ((Int.castRingHom R) 12)`.
+
+Establish `: (Int.castRingHom R) 12 = 6 * 2` using `by simp; norm_num`. Rewrite using `[this]`. Conclude with `h6'.mul h2`. Set `τ : Localization.Away (12 : ℤ) →+* R` to `IsLocalization.Away.lift (12 : ℤ) h12`. Take `⟨b, -, φ, hφ, -⟩` from `(hfine (Sp R) (spMap τ) X α).exists`.
+
+Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_forall_away` to reduce the goal to its premises. Introduce `p`. Take `⟨W, hW, hy, Y, ψ, hY, hgen⟩` from `GlobalTheory.T.local_affine_determinant_generator F 𝔠 M U (b p)`. Take `⟨f, g, hp, hg⟩` from `GlobalTheory.T.affine_open_local_factorization M W hW R b p hy`.
+
+Take `⟨Xf, φf, hXf⟩` from `Obj.exists_isPullBy X (spMap (algebraMap R (Localization.Away f)))`. Take `⟨δf, hδf, -⟩` from `hXf.existsUnique_detGen _ δ`. Establish `hXfU` using `hXf.comp hφ`. Rewrite `hXfU` using `[← hg]`. Take `⟨χ, hχ, -⟩` from `hXfU.cancel hY`.
+
+Establish `h6f : IsUnit ((6 : ℕ) : Localization.Away f)`. Use `h6.map (algebraMap R (Localization.Away f))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `⟨f, hp, ?_⟩` and prove the remaining obligations. Establish `e1` using `s.baseChange R (Localization.Away f) (IsScalarTower.toAlgHom R₀ R _) X h6 Xf h6f φf δ δf hXf hδf`.
+
+Establish `e2` using `t.baseChange R (Localization.Away f) (IsScalarTower.toAlgHom R₀ R _) X h6 Xf h6f φf δ δf hXf hδf`. Simplify using `only [IsScalarTower.coe_toAlgHom'] at e1 e2`. Rewrite using `[map_sub, ← e1, ← e2]`. Conclude with `sub_eq_zero.2 (hchart W hW Y ψ hY hgen _ g Xf χ hχ h6f δf)`.
+-/
 theorem Rule.eq_of_eq_on_rapoport_unit_six : GlobalTheory.Published.DelignePappasModel → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
   (R₀ : Type) [CommRing R₀] (k : ℕ) (s t : Rule (unitObj 𝔠 6) R₀ k),
   (∀ (R : Type) [CommRing R] [Algebra R₀ R] (X : Obj F 𝔠 (Sp R)) (h : IsUnit ((6 : ℕ) : R)), X.IsRapoport →

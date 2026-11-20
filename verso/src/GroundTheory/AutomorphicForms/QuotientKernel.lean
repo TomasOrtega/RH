@@ -18,6 +18,11 @@ variable {G : Type*} [Group G] [TopologicalSpace G] (Γ : Subgroup G)
 def automorphicKernel (f : CompactlySupportedContinuousMap G ℂ) (p : G × G) : ℂ :=
   ∑ᶠ γ : Γ, f (p.1⁻¹ * γ * p.2)
 
+/- English proof (translation)
+Unfold `automorphicKernel`. Rewrite using `[← finsum_comp_equiv (Equiv.mulLeft δ)]`. Use `finsum_congr fun γ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, Subgroup.smul_def, smul_eq_mul, Subgroup.coe_mul]`. Use `congr 1`.
+
+Use `group`.
+-/
 theorem automorphicKernel_smul_left (f : CompactlySupportedContinuousMap G ℂ) (δ : Γ) (a b : G) :
     automorphicKernel Γ f (δ • a, b) = automorphicKernel Γ f (a, b) := by
   unfold automorphicKernel
@@ -27,6 +32,11 @@ theorem automorphicKernel_smul_left (f : CompactlySupportedContinuousMap G ℂ) 
   congr 1
   group
 
+/- English proof (translation)
+Unfold `automorphicKernel`. Rewrite using `[← finsum_comp_equiv (Equiv.mulRight δ⁻¹)]`. Use `finsum_congr fun γ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, Subgroup.smul_def, smul_eq_mul, Subgroup.coe_mul, Subgroup.coe_inv]`. Use `congr 1`.
+
+Use `group`.
+-/
 theorem automorphicKernel_smul_right (f : CompactlySupportedContinuousMap G ℂ) (δ : Γ) (a b : G) :
     automorphicKernel Γ f (a, δ • b) = automorphicKernel Γ f (a, b) := by
   unfold automorphicKernel
@@ -39,6 +49,13 @@ theorem automorphicKernel_smul_right (f : CompactlySupportedContinuousMap G ℂ)
 
 variable [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [DiscreteTopology Γ]
 
+/- English proof (translation)
+Introduce `p`. Take `⟨A, hAc, hA⟩` from `exists_compact_mem_nhds p.1`. Take `⟨B, hBc, hB⟩` from `exists_compact_mem_nhds p.2`. Use `⟨A ×ˢ B, prod_mem_nhds hA hB, ?_⟩` and prove the remaining obligations. Establish `hAS : IsCompact (A * tsupport f)` using `hAc.mul f.hasCompactSupport`.
+
+Use `(ProperlyDiscontinuousSMul.finite_disjoint_inter_image hBc hAS).subset ?_` and prove the remaining obligations. Introduce and unpack `γ ⟨⟨a, b⟩, hq, hab⟩`. Simplify using `only [mem_prod] at hab`. Use `⟨γ • b, mem_image_of_mem _ hab.2, ?_⟩` and prove the remaining obligations. Use `⟨a, hab.1, a⁻¹ * γ * b, subset_tsupport _ hq, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Use `group`.
+-/
 theorem locallyFinite_support_automorphicKernel (f : CompactlySupportedContinuousMap G ℂ) :
     LocallyFinite fun γ : Γ => support fun p : G × G => f (p.1⁻¹ * γ * p.2) := by
   intro p
@@ -54,11 +71,17 @@ theorem locallyFinite_support_automorphicKernel (f : CompactlySupportedContinuou
   rw [Subgroup.smul_def, smul_eq_mul]
   group
 
+/- English proof (translation)
+The claim follows from `continuous_finsum (fun γ => f.continuous.comp (by fun_prop)) (locallyFinite_support_automorphicKernel Γ f)`.
+-/
 theorem continuous_automorphicKernel (f : CompactlySupportedContinuousMap G ℂ) :
     Continuous (automorphicKernel Γ f) :=
   continuous_finsum (fun γ => f.continuous.comp (by fun_prop))
     (locallyFinite_support_automorphicKernel Γ f)
 
+/- English proof (translation)
+Conclude with `(locallyFinite_support_automorphicKernel Γ f).point_finite p`.
+-/
 theorem finite_support_automorphicKernel (f : CompactlySupportedContinuousMap G ℂ) (p : G × G) :
     (support fun γ : Γ => f (p.1⁻¹ * γ * p.2)).Finite := by
   exact (locallyFinite_support_automorphicKernel Γ f).point_finite p
@@ -71,10 +94,16 @@ def quotientKernel (f : CompactlySupportedContinuousMap G ℂ)
     rw [automorphicKernel_smul_left, automorphicKernel_smul_right]) p.1 p.2
 
 omit [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [DiscreteTopology Γ] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem quotientKernel_mk (f : CompactlySupportedContinuousMap G ℂ) (a b : G) :
     quotientKernel Γ f (mk Γ a, mk Γ b) = ∑ᶠ γ : Γ, f (a⁻¹ * γ * b) :=
   rfl
 
+/- English proof (translation)
+Establish `hq : IsQuotientMap (Prod.map (mk Γ) (mk Γ))` using `((isOpenQuotientMap_mk Γ).prodMap (isOpenQuotientMap_mk Γ)).isQuotientMap`. Use `hq.continuous_iff.2 ?_` and prove the remaining obligations. Conclude with `continuous_automorphicKernel Γ f`.
+-/
 theorem continuous_quotientKernel (f : CompactlySupportedContinuousMap G ℂ) :
     Continuous (quotientKernel Γ f) := by
   have hq : IsQuotientMap (Prod.map (mk Γ) (mk Γ)) :=
@@ -90,16 +119,31 @@ variable [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 def rightRegularRep : UnitaryRep G (Lp ℂ 2 (quotientMeasure Γ μ)) :=
   UnitaryRep.ofLinearIsometryEquiv (rightRegular Γ μ) (continuous_rightRegular_apply Γ μ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rightRegularRep_apply (g : G) (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
     rightRegularRep Γ μ g φ = rightTranslate Γ μ g φ :=
   rfl
 
+/- English proof (translation)
+The claim follows from `coeFn_rightTranslate Γ μ g φ`.
+-/
 theorem coeFn_rightRegularRep (g : G) (φ : Lp ℂ 2 (quotientMeasure Γ μ)) :
     rightRegularRep Γ μ g φ =ᵐ[quotientMeasure Γ μ] fun x => φ (rightMul Γ g x) :=
   coeFn_rightTranslate Γ μ g φ
 
 omit [μ.IsMulRightInvariant] in
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `mk_surjective Γ x`. Establish `h1 : ∫ g, f g * φ (rightMul Γ g (mk Γ a)) ∂μ = ∫ g, φ (mk Γ g) * f (a⁻¹ * g) ∂μ`. Rewrite using `[← integral_mul_left_eq_self (fun g => φ (mk Γ g) * f (a⁻¹ * g)) a]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [rightMul_mk, inv_mul_cancel_left, mul_comm]`.
+
+Establish `hcs : HasCompactSupport fun g => f (a⁻¹ * g)` using `f.hasCompactSupport.comp_homeomorph (Homeomorph.mulLeft a⁻¹)`. Establish `hint : Integrable (fun g => φ (mk Γ g) * f (a⁻¹ * g)) μ` using `((φ.continuous.comp (continuous_mk Γ)).mul (f.continuous.comp (continuous_const.mul continuous_id))).integrable_of_hasCompactSupport hcs.mul_left`. Rewrite using `[h1, integral_mul_eq_integral_mul_automorphize μ hint]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Take `⟨b, rfl⟩` from `mk_surjective Γ y`.
+
+Simplify using `only`. Rewrite using `[quotientKernel_mk, mul_comm]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `∑' γ : Γ, f (a⁻¹ * (γ • b)) = _`. Repeatedly rewrite using `[Subgroup.smul_def, smul_eq_mul, ← mul_assoc]`.
+
+Conclude with `tsum_eq_finsum (finite_support_automorphicKernel Γ f (a, b))`.
+-/
 theorem integral_mul_rightMul_eq (f : CompactlySupportedContinuousMap G ℂ)
     (φ : C(RightCosetSpace Γ, ℂ)) (x : RightCosetSpace Γ) :
     ∫ g, f g * φ (rightMul Γ g x) ∂μ =
@@ -129,6 +173,9 @@ variable [CompactSpace (RightCosetSpace Γ)]
 
 omit [μ.IsMulRightInvariant] in
 
+/- English proof (translation)
+The claim follows from `(continuous_quotientKernel Γ f).memLp_of_hasCompactSupport (isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (subset_univ _))`.
+-/
 theorem memLp_quotientKernel (f : CompactlySupportedContinuousMap G ℂ) :
     MemLp (quotientKernel Γ f) 2 ((quotientMeasure Γ μ).prod (quotientMeasure Γ μ)) :=
   (continuous_quotientKernel Γ f).memLp_of_hasCompactSupport
@@ -136,6 +183,9 @@ theorem memLp_quotientKernel (f : CompactlySupportedContinuousMap G ℂ) :
 
 omit [Group G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
   [SecondCountableTopology G] [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] in
+/- English proof (translation)
+The claim follows from `MemLp.coeFn_toLp _`.
+-/
 theorem coeFn_compactSupportToL1 (f : CompactlySupportedContinuousMap G ℂ) :
     (UnitaryRep.ccToL1 μ f : G → ℂ) =ᵐ[μ] f :=
   MemLp.coeFn_toLp _
@@ -146,10 +196,28 @@ def kernelOperator (f : CompactlySupportedContinuousMap G ℂ) :
 
 omit [μ.IsMulRightInvariant] in
 
+/- English proof (translation)
+The claim follows from `L2Kernel.kernelOp_isHilbertSchmidt _`.
+-/
 theorem isHilbertSchmidt_kernelOperator (f : CompactlySupportedContinuousMap G ℂ) :
     IsHilbertSchmidt (kernelOperator Γ μ f) :=
   L2Kernel.kernelOp_isHilbertSchmidt _
 
+/- English proof (translation)
+Use `set ν := quotientMeasure Γ μ with hν`. Use `set Ψ := ContinuousMap.toLp 2 ν ℂ ψ`. Use `set Φ := ContinuousMap.toLp 2 ν ℂ φ`. Establish `hΨ : Ψ =ᵐ[ν] ψ` using `ContinuousMap.coeFn_toLp (p := 2) (μ := ν) (𝕜 := ℂ) ψ`. Establish `hΦ : Φ =ᵐ[ν] φ` using `ContinuousMap.coeFn_toLp (p := 2) (μ := ν) (𝕜 := ℂ) φ`.
+
+Establish `hcoef : ∀ g, ⟪Ψ, rightRegularRep Γ μ g Φ⟫_ℂ = ∫ x, conj (ψ x) * φ (rightMul Γ g x) ∂ν`. Introduce `g`. Rewrite using `[L2.inner_def]`. Establish `h2 : (fun x => Φ (rightMul Γ g x)) =ᵐ[ν] fun x => φ (rightMul Γ g x)` using `(measurePreserving_rightMul μ g).quasiMeasurePreserving.ae_eq_comp hΦ`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hΨ, coeFn_rightRegularRep Γ μ g Φ, h2] with x h1 h3 h4`. Rewrite using `[h1, h3, h4, RCLike.inner_apply']`. Establish `hF : Integrable (uncurry fun g x => f g * (conj (ψ x) * φ (rightMul Γ g x))) (μ.prod ν)`. Establish `hc : Continuous (uncurry fun g x => f g * (conj (ψ x) * φ (rightMul Γ g x)))`. Use `(f.continuous.comp continuous_fst).mul ((Complex.continuous_conj.comp (ψ.continuous.comp continuous_snd)).mul (φ.continuous.comp ?_))` and prove the remaining obligations.
+
+Conclude with `(continuous_rightMul_prod Γ).comp (continuous_snd.prodMk continuous_fst)`. Use `hc.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (f.hasCompactSupport.prod isCompact_univ) fun p hp => ?_` and prove the remaining obligations. Establish `: p.1 ∉ tsupport f` using `fun h => hp ⟨h, mem_univ _⟩`. Simplify using `[uncurry, image_eq_zero_of_notMem_tsupport this]`.
+
+Rewrite using `[UnitaryRep.inner_integrated]`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[← integral_const_mul]`. Use `_ = ∫ x, ∫ g, f g * (conj (ψ x) * φ (rightMul Γ g x)) ∂μ ∂ν := integral_integral_swap hF`. Use `_ = ∫ x, conj (ψ x) * ∫ g, f g * φ (rightMul Γ g x) ∂μ ∂ν := by`.
+
+Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use extensionality with `g`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_mul_rightMul_eq Γ μ f φ x]`.
+-/
 theorem inner_integrated_toLp (f : CompactlySupportedContinuousMap G ℂ)
     (φ ψ : C(RightCosetSpace Γ, ℂ)) :
     ⟪ContinuousMap.toLp 2 (quotientMeasure Γ μ) ℂ ψ,
@@ -201,6 +269,13 @@ theorem inner_integrated_toLp (f : CompactlySupportedContinuousMap G ℂ)
 
 omit [μ.IsMulRightInvariant] in
 
+/- English proof (translation)
+Use `set ν := quotientMeasure Γ μ with hν`. Use `set Ψ := ContinuousMap.toLp 2 ν ℂ ψ`. Use `set Φ := ContinuousMap.toLp 2 ν ℂ φ`. Establish `hΨ : Ψ =ᵐ[ν] ψ` using `ContinuousMap.coeFn_toLp (p := 2) (μ := ν) (𝕜 := ℂ) ψ`. Establish `hΦ : Φ =ᵐ[ν] φ` using `ContinuousMap.coeFn_toLp (p := 2) (μ := ν) (𝕜 := ℂ) φ`.
+
+Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hΨ, L2Kernel.kernelOp_toLp_apply_ae (memLp_quotientKernel Γ μ f) Φ] with x h1 h2`. Rewrite using `[kernelOperator, h1, h2, RCLike.inner_apply']`. Use `congr 1`.
+
+Conclude with `integral_congr_ae (hΦ.mono fun y hy => by dsimp only; rw [hy])`.
+-/
 theorem inner_kernelOperator_toLp (f : CompactlySupportedContinuousMap G ℂ)
     (φ ψ : C(RightCosetSpace Γ, ℂ)) :
     ⟪ContinuousMap.toLp 2 (quotientMeasure Γ μ) ℂ ψ,
@@ -219,6 +294,9 @@ theorem inner_kernelOperator_toLp (f : CompactlySupportedContinuousMap G ℂ)
   congr 1
   exact integral_congr_ae (hΦ.mono fun y hy => by dsimp only; rw [hy])
 
+/- English proof (translation)
+Use `set ν := quotientMeasure Γ μ`. Establish `hD : DenseRange (ContinuousMap.toLp 2 ν ℂ : C(RightCosetSpace Γ, ℂ) →L[ℂ] Lp ℂ 2 ν)` using `ContinuousMap.toLp_denseRange ℂ ν ℂ ENNReal.ofNat_ne_top`. Establish `h2 : ∀ φ : C(RightCosetSpace Γ, ℂ), (rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ f) (ContinuousMap.toLp 2 ν ℂ φ) = kernelOperator Γ μ f (ContinuousMap.toLp 2 ν ℂ φ)` using `fun φ => ext_inner_left ℂ fun w => hD.induction_on w (isClosed_eq (continuous_id.inner continuous_const) (continuous_id.inner continuous_const)) fun ψ => by rw [inner_integrated_toLp, inner_kernelOperator_toLp]`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Conclude with `congrFun (hD.equalizer (ContinuousLinearMap.continuous _) (ContinuousLinearMap.continuous _) (funext h2)) v`.
+-/
 theorem integrated_rightRegularRep_eq_kernelOperator (f : CompactlySupportedContinuousMap G ℂ) :
     (rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ f) = kernelOperator Γ μ f := by
   set ν := quotientMeasure Γ μ
@@ -234,11 +312,17 @@ theorem integrated_rightRegularRep_eq_kernelOperator (f : CompactlySupportedCont
   exact congrFun (hD.equalizer (ContinuousLinearMap.continuous _)
     (ContinuousLinearMap.continuous _) (funext h2)) v
 
+/- English proof (translation)
+Rewrite using `[integrated_rightRegularRep_eq_kernelOperator]`. Conclude with `isHilbertSchmidt_kernelOperator Γ μ f`.
+-/
 theorem isHilbertSchmidt_integrated_rightRegularRep (f : CompactlySupportedContinuousMap G ℂ) :
     IsHilbertSchmidt ((rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ f)) := by
   rw [integrated_rightRegularRep_eq_kernelOperator]
   exact isHilbertSchmidt_kernelOperator Γ μ f
 
+/- English proof (translation)
+The claim follows from `(isHilbertSchmidt_integrated_rightRegularRep Γ μ f).isCompactOperator`.
+-/
 theorem isCompactOperator_integrated_rightRegularRep (f : CompactlySupportedContinuousMap G ℂ) :
     IsCompactOperator ((rightRegularRep Γ μ).integrated μ (UnitaryRep.ccToL1 μ f)) :=
   (isHilbertSchmidt_integrated_rightRegularRep Γ μ f).isCompactOperator

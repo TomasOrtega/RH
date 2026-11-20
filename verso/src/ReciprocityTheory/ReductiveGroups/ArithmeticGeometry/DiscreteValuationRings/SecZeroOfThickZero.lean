@@ -16,6 +16,11 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
+/- English proof (translation)
+Use `haveI := hG.comm`. Use `haveI := hG.smooth`. Use `haveI := hG.separated`. Use `haveI := hG.quasiCompact`. Use `haveI := hG.geomConnected`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `hLB V G N hN x ϖ hϖ fun i e => ?_` and prove the remaining obligations. Break down `e with _ | e` into its components or cases. Simplify using the standard rewrite rules. Conclude with `mem_pow_of_thick_zero' G ϖ hϖ _ _ e (hx e i)`.
+-/
 theorem sec_zero_of_thick_zero' (hLB : lemmaBSt.{0}) (G : Over (Spec (CommRingCat.of V))) [GrpObj G]
     [hG : IsSemiAbelian G] (N : LB G.left) (hN : N.IsLB) (x : LB.Sec N)
     (hx : ∀ e i, ((fstG (maximalIdeal V) e G).left.app (N.U i)).hom (x.f i) = 0) : ∀ i, x.f i = 0 := by
@@ -32,6 +37,25 @@ theorem sec_zero_of_thick_zero' (hLB : lemmaBSt.{0}) (G : Over (Spec (CommRingCa
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `letI := H.starRing`. Establish `hL : P.D.toPre.P.L.IsLB` using `P.D.toPre.P.isLB`. Use `choose r hr σ f hsσ hsf hexp using hs`. Use `choose r'' hr'' σ'' f'' hsσ'' hsf'' hexp'' using hs''`. Take `⟨uΨ, huΨ, -, -⟩` from `P.w0`.
+
+Take `⟨X, hX, hXn⟩` from `exists_XB P.D hL P.oD H.w0 uΨ huΨ a N hN hN0 k`. Take `⟨uR, huR, huR0⟩` from `exists_uR P.D P.oD a`. Set `σn : Fin 2 → LB.Sec (LB.LinComb P.U.LG.L (K` to `Fin 1) (fun _ => 𝟙 t.G.left) (fun _ => ((k * N : ℕ) : ℤ))) := fun i => SecOps.secScale (scal t.G.hom (r i)) (σ'' i)`. Set `f''n : Fin 2 → ∀ α : P.D.toPre.X, P.D.toPre.SecB (k * N) α` to `fun i α => SecOps.secScale (scal P.D.toPre.P.A.hom (r i)) (f'' i α)`. Set `τn : Fin 2 → LB.Sec (LB.LinComb P.U.LG.L (K` to `Fin 1) (fun _ => 𝟙 t.G.left) (fun _ => (k : ℤ))) := fun i => SecOps.secScale (scal t.G.hom (r'' i)) (σ i)`.
+
+Set `fn : Fin 2 → ∀ α : P.D.toPre.X, P.D.toPre.SecB k α` to `fun i α => SecOps.secScale (scal P.D.toPre.P.A.hom (r'' i)) (f i α)`. Establish `hprB : (DegPre.prB P.D.toPre (FractionRing V)).left ≫ P.D.toPre.P.A.hom = (DegPre.BF P.D.toPre (FractionRing V)).hom` using `Over.w _`. Establish `hgK : pullback.fst t.G.hom (jK V) ≫ t.G.hom = pullback.snd t.G.hom (jK V) ≫ jK V` using `pullback.condition`. Establish `hfn : ∀ i α, GeneratorPullback.SecScal P.D.toPre.P.L (DegPre.famφ P.D.toPre (FractionRing V) α) (DegPre.famε k) ((F i).s α) (P.D.toPre.famφB α) (DegPre.famε k) (fn i α) (DegPre.prB P.D.toPre (FractionRing V)).left (scal (DegPre.BF P.D.toPre (FractionRing V)).hom (r i * r'' i))` using `fun i α => by`. Use `secScal_scale (hsf i α) (scal P.D.toPre.P.A.hom (r'' i))` as an intermediate fact.
+
+Rewrite `this` using `[scal_pull _ _ _ hprB, ← scal_mul, mul_comm]`. Then use the resulting hypothesis. Establish `hf''n : ∀ i α, GeneratorPullback.SecScal P.D.toPre.P.L (DegPre.famφ P.D.toPre (FractionRing V) α) (DegPre.famε (k * N)) ((F'' i).s α) (P.D.toPre.famφB α) (DegPre.famε (k * N)) (f''n i α) (DegPre.prB P.D.toPre (FractionRing V)).left (scal (DegPre.BF P.D.toPre (FractionRing V)).hom …` using `fun i α => by`. Use `secScal_scale (hsf'' i α) (scal P.D.toPre.P.A.hom (r i))` as an intermediate fact. Rewrite `this` using `[scal_pull _ _ _ hprB, ← scal_mul]`. Then use the resulting hypothesis. Establish `hσn : ∀ i, GeneratorPullback.SecScal P.U.LG.L (fun _ : Fin 1 => pullback.fst t.G.hom (jK V)) (fun _ => ((k * N : ℕ) : ℤ)) (s'' i) (fun _ : Fin 1 => 𝟙 t.G.left) (fun _ => ((k * N : ℕ) : ℤ)) (σn i) (pullback.fst t.G.hom (jK V)) (scal (pullback.snd t.G.hom (jK V) ≫ jK V) (r i * r'' …` using `fun i => by`.
+
+Use `secScal_scale (hsσ'' i) (scal t.G.hom (r i))` as an intermediate fact. Rewrite `this` using `[scal_pull _ _ _ hgK, ← scal_mul]`. Then use the resulting hypothesis. Establish `hτn : ∀ i, GeneratorPullback.SecScal P.U.LG.L (fun _ : Fin 1 => pullback.fst t.G.hom (jK V)) (fun _ => (k : ℤ)) (s i) (fun _ : Fin 1 => 𝟙 t.G.left) (fun _ => (k : ℤ)) (τn i) (pullback.fst t.G.hom (jK V)) (scal (pullback.snd t.G.hom (jK V) ≫ jK V) (r i * r'' i))` using `fun i => by`. Use `secScal_scale (hsσ i) (scal t.G.hom (r'' i))` as an intermediate fact. Rewrite `this` using `[scal_pull _ _ _ hgK, ← scal_mul, mul_comm]`. Then use the resulting hypothesis.
+
+Establish `hrel` using `fun i => hrel_integral_pf P.D hLaws.globalFns P.oD a N hN hN0 k X hX hXn uR huR huR0 (F i) (F'' i) (hPA i) (r i * r'' i) (fn i) (f''n i) (hfn i) (hf''n i)`. Establish `hinj : Function.Injective (fun χ : P.D.toPre.X => star a • χ)` using `fun _ _ h => smul_star_inj a N hN hN0 h`. Establish `hexpn'' : ∀ e i, P.U.ExpandsAt e (k * N) (σn i) (f''n i)` using `fun e i => expandsAt_scale P.U.toUnifPre e (k * N) (σ'' i) (f'' i) (r i) (hexp'' i e)`. Establish `hexpn : ∀ e i, P.U.ExpandsAt e k (τn i) (fn i)` using `fun e i => expandsAt_scale P.U.toUnifPre e k (σ i) (f i) (r'' i) (hexp i e)`. Establish `hv` using `fun e => hCV e X hX uR huR huR0 hinj σn τn f''n fn (hexpn'' e) (hexpn e) (fun i χ => (hrel i).1 χ) (fun i => (hrel i).2)`.
+
+Set `C` to `SecOps.secAdd (mulSec P.U.LG.L _ _ _ _ (σn 0) (pullSec P.U.LG.L _ _ (τn 1) (t.act.act a).left)) (SecOps.secNeg (mulSec P.U.LG.L _ _ _ _ (σn 1) (pullSec P.U.LG.L _ _ (τn 0) (t.act.act a).left)))`. Use `haveI := t.semi`. Establish `hC0` using `sec_zero_of_thick_zero' hLaws.lemmaB t.G _ (linComb_isLB P.U.LG.L P.U.LG.isLB _ _) C (fun e j => by`. Use `hv e j` as an intermediate fact. Simplify `this)` using `[C, SecOps.secAdd, SecOps.secNeg, sub_eq_add_neg]`.
+
+Establish `hrK : ∀ i, r i * r'' i ≠ 0` using `fun i => mul_ne_zero (hr i) (hr'' i)`. Use `cross_to_K P.U.LG.L P.U.LG.isLB (t.act.act a) k (k * N) σn τn s'' s (fun i => r i * r'' i) hrK hσn hτn ?_` and prove the remaining obligations. Introduce `j`. Use `hC0 j` as an intermediate fact. Simplify using `only [C, SecOps.secAdd, SecOps.secNeg] at this`.
+
+Conclude with `(add_neg_eq_zero).1 this`.
+-/
 theorem cross_global_of (hLaws : Laws) {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
     {H : Geo.Tor.Host E} {t : Geo.Tor.SAB H (Spec (CommRingCat.of V))} (P : Geo.Tor.PELUnif (maximalIdeal V) t)
     (a : NumberField.RingOfIntegers E) (N : ℕ)

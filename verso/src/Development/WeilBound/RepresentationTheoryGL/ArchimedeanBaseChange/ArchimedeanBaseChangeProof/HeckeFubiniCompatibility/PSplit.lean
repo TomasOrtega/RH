@@ -15,20 +15,35 @@ def infP (n : ℕ) (y : InfinitePlace E → G n) : GA E n :=
   infGL E n (Units.map (Matrix.piRingEquiv (n := Fin n) (β := fun _ : InfinitePlace E => ℂ)).symm.toMonoidHom
     (MulEquiv.piUnits.symm y))
 
+/- English proof (translation)
+Simplify using `only [infP, map_mul]`.
+-/
 theorem infinitePart_mul (n : ℕ) (y y' : InfinitePlace E → G n) : infP n (y * y') = infP n y * infP n y' := by
   simp only [infP, map_mul]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun y : GL (Fin n) (Cinf E) => y.val i j v) (pInf_infGL (E := E) (a := n) x)`.
+-/
 theorem gInf_infGL (n : ℕ) (v : InfinitePlace E) (x : GL (Fin n) (Cinf E)) (i j : Fin n) :
     (gInf v (infGL E n x)).val i j = x.val i j v :=
   congrArg (fun y : GL (Fin n) (Cinf E) => y.val i j v) (pInf_infGL (E := E) (a := n) x)
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `gInf_infGL n v _ i j`.
+-/
 theorem gInf_infP (n : ℕ) (y : InfinitePlace E → G n) (v : InfinitePlace E) : gInf v (infP n y) = y v := by
   ext i j
   exact gInf_infGL n v _ i j
 
+/- English proof (translation)
+The claim follows from `pFin_infGL _`.
+-/
 theorem gFin_infP (n : ℕ) (y : InfinitePlace E → G n) : gFin (infP n y) = 1 :=
   pFin_infGL _
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h2 : (GeneralLinearGroup.map (pInf E) (finGL E n k)).val i j = (1 : GL (Fin n) (Cinf E)).val i j` using `congrArg (fun y : GL (Fin n) (Cinf E) => y.val i j) (pInf_finGL (E := E) (a := n) k)`. Express the relevant statement in the definitionally equal form `(GeneralLinearGroup.map (pInf E) (finGL E n k)).val i j v = _`. Rewrite using `[h2]`. Apply the tactic sequence `by_cases h : i = j <;> simp [h]`.
+-/
 theorem gInf_finGL (n : ℕ) (v : InfinitePlace E) (k : GL (Fin n) (Af E)) : gInf v (finGL E n k) = 1 := by
   ext i j
   have h2 : (GeneralLinearGroup.map (pInf E) (finGL E n k)).val i j = (1 : GL (Fin n) (Cinf E)).val i j :=
@@ -38,36 +53,63 @@ theorem gInf_finGL (n : ℕ) (v : InfinitePlace E) (k : GL (Fin n) (Af E)) : gIn
   by_cases h : i = j <;> simp [h]
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `pFin_finGL k`.
+-/
 theorem gFin_finGL (n : ℕ) (k : GL (Fin n) (Af E)) : gFin (finGL E n k) = k :=
   pFin_finGL k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infinitePart_gInf (n : ℕ) (g : GA E n) : infP n (fun v => gInf v g) = infGL E n (GeneralLinearGroup.map (pInf E) g) := by
   rfl
 
+/- English proof (translation)
+Rewrite using `[infinitePart_gInf]`. Conclude with `infGL_mul_finGL g`.
+-/
 theorem infinitePart_mul_finGL (n : ℕ) (g : GA E n) : infP n (fun v => gInf v g) * finGL E n (gFin g) = g := by
   rw [infinitePart_gInf]; exact infGL_mul_finGL g
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp ((continuous_apply w).comp continuous_fst)`.
+-/
 theorem continuous_pInf' : Continuous (pInf E) :=
   continuous_pi fun w =>
     (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
       ((continuous_apply w).comp continuous_fst)
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map ((continuous_apply v).comp continuous_pInf'))`.
+-/
 theorem continuous_gInf (n : ℕ) (v : InfinitePlace E) : Continuous (gInf (n := n) v : GA E n → G n) :=
   Continuous.units_map _ (continuous_id.matrix_map ((continuous_apply v).comp continuous_pInf'))
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map continuous_snd)`.
+-/
 theorem continuous_gFin (n : ℕ) : Continuous (gFin : GA E n → GL (Fin n) (Af E)) :=
   Continuous.units_map _ (continuous_id.matrix_map continuous_snd)
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map ((continuous_infEq E).prodMk continuous_const : Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))))`.
+-/
 theorem continuous_infGL' (n : ℕ) : Continuous (infGL E n) :=
   Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map ((continuous_infEq E).prodMk continuous_const :
     Continuous fun x : Cinf E => ((infEq E x, 0) : InfiniteAdeleRing E × Af E))))
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map (continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))))`.
+-/
 theorem continuous_finGL' (n : ℕ) : Continuous (finGL E n) :=
   Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map (continuous_const.prodMk continuous_id :
     Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))))
 
+/- English proof (translation)
+Use `(continuous_infGL' n).comp ?_` and prove the remaining obligations. Use `Continuous.units_map _ ?_ |>.comp (ContinuousMulEquiv.piUnits (M := fun _ : InfinitePlace E => Matrix (Fin n) (Fin n) ℂ)).symm.continuous` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => continuous_pi fun v => (continuous_apply v).matrix_elem i j`.
+-/
 theorem continuous_infP (n : ℕ) : Continuous (infP (E := E) n) := by
   refine (continuous_infGL' n).comp ?_
   refine Continuous.units_map _ ?_ |>.comp (ContinuousMulEquiv.piUnits (M := fun _ : InfinitePlace E =>
@@ -91,13 +133,22 @@ def splitGA (n : ℕ) : (InfinitePlace E → G n) × GL (Fin n) (Af E) ≃ₜ* G
   continuous_toFun := ((continuous_infP n).comp continuous_fst).mul ((continuous_finGL' n).comp continuous_snd)
   continuous_invFun := (continuous_pi fun v => continuous_gInf n v).prodMk (continuous_gFin n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem splitGA_apply (n : ℕ) (p : (InfinitePlace E → G n) × GL (Fin n) (Af E)) :
     splitGA n p = infP n p.1 * finGL E n p.2 := rfl
 
+/- English proof (translation)
+Simplify using `[splitGA_apply, gInf_infP, gInf_finGL]`.
+-/
 theorem gInf_splitGA (n : ℕ) (p : (InfinitePlace E → G n) × GL (Fin n) (Af E)) (v : InfinitePlace E) :
     gInf v (splitGA n p) = p.1 v := by
   simp [splitGA_apply, gInf_infP, gInf_finGL]
 
+/- English proof (translation)
+Simplify using `[splitGA_apply, gFin_infP, gFin_finGL]`.
+-/
 theorem gFin_splitGA (n : ℕ) (p : (InfinitePlace E → G n) × GL (Fin n) (Af E)) : gFin (splitGA n p) = p.2 := by
   simp [splitGA_apply, gFin_infP, gFin_finGL]
 
@@ -111,15 +162,27 @@ def splitH (a b : ℕ) : (InfinitePlace E → G a) × ((InfinitePlace E → G b)
   continuous_toFun := by fun_prop
   continuous_invFun := by fun_prop
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem splitH_apply (a b : ℕ) (z : (InfinitePlace E → G a) × ((InfinitePlace E → G b) × Hf E a b)) :
     splitH a b z = (infP a z.1 * finGL E a z.2.2.1, infP b z.2.1 * finGL E b z.2.2.2) := rfl
 
+/- English proof (translation)
+The claim follows from `gInf_splitGA a _ v`.
+-/
 theorem gInf_splitH₁ {a b : ℕ} (z : (InfinitePlace E → G a) × ((InfinitePlace E → G b) × Hf E a b)) (v : InfinitePlace E) :
     gInf v (splitH a b z).1 = z.1 v := gInf_splitGA a _ v
 
+/- English proof (translation)
+The claim follows from `gInf_splitGA b _ v`.
+-/
 theorem gInf_splitH₂ {a b : ℕ} (z : (InfinitePlace E → G a) × ((InfinitePlace E → G b) × Hf E a b)) (v : InfinitePlace E) :
     gInf v (splitH a b z).2 = z.2.1 v := gInf_splitGA b _ v
 
+/- English proof (translation)
+The claim follows from `Prod.ext (gFin_splitGA a _) (gFin_splitGA b _)`.
+-/
 theorem hFin_splitH {a b : ℕ} (z : (InfinitePlace E → G a) × ((InfinitePlace E → G b) × Hf E a b)) :
     hFin (splitH a b z) = z.2.2 := Prod.ext (gFin_splitGA a _) (gFin_splitGA b _)
 

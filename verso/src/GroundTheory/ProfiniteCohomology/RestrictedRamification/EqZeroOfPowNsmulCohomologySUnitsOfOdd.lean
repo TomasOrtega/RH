@@ -16,6 +16,13 @@ section TwoTorsion
 
 variable {K : FiniteSubfield}
 
+/- English proof (translation)
+Take `⟨ι⟩` from `nonempty_localEmbeddings K`. Apply `(bijective_realLocalization ι hr).1` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero]`. Use function extensionality and compare the values at `v`. Rewrite using `[Pi.smul_apply]`.
+
+Break down `Nat.even_or_odd r with he | ho` into its components or cases. Establish `hc` using `natCard_localGaloisCohomology_of_isReal_of_even v.1 v.2 (by omega) he`. Rewrite using `[← hc]`. Conclude with `card_nsmul_eq_zero'`. Use `subsingleton_localGaloisCohomology_of_isReal_of_odd v.1 v.2 ho` as an intermediate fact.
+
+Conclude with `Subsingleton.elim _ _`.
+-/
 theorem two_nsmul_cohomology_unitsLimitRep {r : ℕ} (hr : 4 ≤ r) (y : cohomology (unitsLimitRep K) r) :
     2 • y = 0 := by
   obtain ⟨ι⟩ := nonempty_localEmbeddings K
@@ -30,6 +37,9 @@ theorem two_nsmul_cohomology_unitsLimitRep {r : ℕ} (hr : 4 ≤ r) (y : cohomol
   · have := subsingleton_localGaloisCohomology_of_isReal_of_odd v.1 v.2 ho
     exact Subsingleton.elim _ _
 
+/- English proof (translation)
+The claim follows from `eq_zero_of_coprime_nsmul_eq_zero ((Nat.coprime_primes Nat.prime_two hℓ).2 h2.symm) (two_nsmul_cohomology_unitsLimitRep hr y) hk`.
+-/
 theorem eq_zero_of_pow_nsmul_cohomology_unitsLimitRep_of_odd {ℓ : ℕ} (hℓ : ℓ.Prime) (h2 : ℓ ≠ 2) {r : ℕ}
     (hr : 4 ≤ r) (y : cohomology (unitsLimitRep K) r) {k : ℕ} (hk : ℓ ^ k • y = 0) : y = 0 :=
   eq_zero_of_coprime_nsmul_eq_zero ((Nat.coprime_primes Nat.prime_two hℓ).2 h2.symm)
@@ -42,6 +52,9 @@ variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) {ℓ : �
 
 include hℓ hS in
 
+/- English proof (translation)
+The claim follows from `eq_zero_of_pow_nsmul_cohomology_divFunRep (gsDecomp K S ιs) (continuous_gsDecomp K S ιs) hℓ (by omega) (fun v y hy => hy.elim fun j hj => eq_zero_of_pow_nsmul_cohomology_range_gsDecomp K S ιs v hℓ hS hp y j hj) x k hx`.
+-/
 theorem eq_zero_of_pow_nsmul_cohomology_gsDiv_QZ (ιs : LocalEmbeddings K) {p : ℕ} (hp : 2 ≤ p)
     (x : cohomology (gsDiv K S ιs QZ) p) (k : ℕ) (hx : ℓ ^ k • x = 0) : x = 0 :=
   eq_zero_of_pow_nsmul_cohomology_divFunRep (gsDecomp K S ιs) (continuous_gsDecomp K S ιs) hℓ (by omega)
@@ -50,6 +63,9 @@ theorem eq_zero_of_pow_nsmul_cohomology_gsDiv_QZ (ιs : LocalEmbeddings K) {p : 
 
 include hℓ hS in
 
+/- English proof (translation)
+The claim follows from `isIsoModCoprime_sUnitsToUnits K S (nonempty_localEmbeddings K).some hℓ hS (fun _ hp x k hx => eq_zero_of_pow_nsmul_cohomology_gsDiv_QZ K S hℓ hS _ hp x k hx) hr`.
+-/
 theorem isIsoModCoprime_sUnitsToUnits_of_four_le {r : ℕ} (hr : 4 ≤ r) :
     IsIsoModCoprime ℓ (cohomologyMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) r).hom.toAddMonoidHom :=
   isIsoModCoprime_sUnitsToUnits K S (nonempty_localEmbeddings K).some hℓ hS
@@ -57,6 +73,9 @@ theorem isIsoModCoprime_sUnitsToUnits_of_four_le {r : ℕ} (hr : 4 ≤ r) :
 
 include hℓ hS in
 
+/- English proof (translation)
+The claim follows from `(isIsoModCoprime_gsUnitsInfl K S hℓ hS (by omega)).comp (isIsoModCoprime_sUnitsToUnits_of_four_le K S hℓ hS hr)`.
+-/
 theorem isIsoModCoprime_sUnitsInfl {r : ℕ} (hr : 4 ≤ r) : IsIsoModCoprime ℓ (sUnitsInfl K S r) :=
   (isIsoModCoprime_gsUnitsInfl K S hℓ hS (by omega)).comp (isIsoModCoprime_sUnitsToUnits_of_four_le K S hℓ hS hr)
 
@@ -67,6 +86,9 @@ noncomputable def sUnitsToUnitsPrimaryEquiv {r : ℕ} (hr : 4 ≤ r) :
     ((isIsoModCoprime_sUnitsToUnits_of_four_le K S hℓ hS hr).bijective_primaryComponentMap hℓ
       (isTorsion_cohomology _ (by omega)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_sUnitsToUnitsPrimaryEquiv_apply {r : ℕ} (hr : 4 ≤ r)
     (x : AddCommGroup.primaryComponent (cohomology (galSUnitsMax K.1 ℚ̄ S) r) ℓ) :
     (sUnitsToUnitsPrimaryEquiv K S hℓ hS hr x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) =
@@ -79,6 +101,9 @@ noncomputable def sUnitsInflPrimaryEquiv {r : ℕ} (hr : 4 ≤ r) :
   AddEquiv.ofBijective _
     ((isIsoModCoprime_sUnitsInfl K S hℓ hS hr).bijective_primaryComponentMap hℓ (isTorsion_cohomology _ (by omega)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_sUnitsInflPrimaryEquiv_apply {r : ℕ} (hr : 4 ≤ r)
     (x : AddCommGroup.primaryComponent (cohomology (galSUnitsMax K.1 ℚ̄ S) r) ℓ) :
     (sUnitsInflPrimaryEquiv K S hℓ hS hr x : cohomology (unitsLimitRep K) r) = sUnitsInfl K S r x :=
@@ -88,6 +113,9 @@ section Odd
 
 include hℓ hS in
 
+/- English proof (translation)
+The claim follows from `eq_zero_of_gsUnitsInfl_eq_zero K S hℓ hS (by omega) x (eq_zero_of_pow_nsmul_cohomology_unitsLimitRep_of_odd hℓ h2 hr _ (k := k) ((map_nsmul _ _ _).symm.trans ((congrArg _ hk).trans (map_zero _)))) hk`.
+-/
 theorem eq_zero_of_pow_nsmul_cohomology_gsUnits_of_odd (h2 : ℓ ≠ 2) {r : ℕ} (hr : 4 ≤ r)
     (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) {k : ℕ} (hk : ℓ ^ k • x = 0) : x = 0 :=
   eq_zero_of_gsUnitsInfl_eq_zero K S hℓ hS (by omega) x
@@ -96,6 +124,9 @@ theorem eq_zero_of_pow_nsmul_cohomology_gsUnits_of_odd (h2 : ℓ ≠ 2) {r : ℕ
 
 include hℓ hS in
 
+/- English proof (translation)
+The claim follows from `(isIsoModCoprime_sUnitsInfl K S hℓ hS hr).eq_zero_of_pow_nsmul (eq_zero_of_pow_nsmul_cohomology_unitsLimitRep_of_odd hℓ h2 hr _ (k := k) ((map_nsmul _ _ _).symm.trans ((congrArg _ hk).trans (map_zero _)))) hk`.
+-/
 theorem eq_zero_of_pow_nsmul_cohomology_sUnits_of_odd (h2 : ℓ ≠ 2) {r : ℕ} (hr : 4 ≤ r)
     (x : cohomology (galSUnitsMax K.1 ℚ̄ S) r) {k : ℕ} (hk : ℓ ^ k • x = 0) : x = 0 :=
   (isIsoModCoprime_sUnitsInfl K S hℓ hS hr).eq_zero_of_pow_nsmul
@@ -108,10 +139,18 @@ section Real
 
 variable (ι : LocalEmbeddings K)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by rw [pow_one]; exact two_nsmul_cohomology_unitsLimitRep hr y⟩`.
+-/
 theorem mem_primaryComponent_two_unitsLimitRep {r : ℕ} (hr : 4 ≤ r) (y : cohomology (unitsLimitRep K) r) :
     y ∈ AddCommGroup.primaryComponent (cohomology (unitsLimitRep K) r) 2 :=
   ⟨1, by rw [pow_one]; exact two_nsmul_cohomology_unitsLimitRep hr y⟩
 
+/- English proof (translation)
+Establish `hb` using `hf.bijective_primaryComponentMap Nat.prime_two hX`. Establish `hR` using `bijective_realLocalization ι hr`. Use `⟨fun a b hab => hb.1 (Subtype.ext (hR.1 hab)), fun t => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hR.2 t`. Take `⟨a, ha⟩` from `hb.2 ⟨y, mem_primaryComponent_two_unitsLimitRep (K := K) hr y⟩`.
+
+Conclude with `⟨a, congrArg (realLocalization ι (r := r) (by omega)) (congrArg Subtype.val ha)⟩`.
+-/
 theorem bijective_realLocalization_comp_primaryComponent {X : Type*} [AddCommGroup X] {r : ℕ} (hr : 4 ≤ r)
     (f : X →+ cohomology (unitsLimitRep K) r) (hf : IsIsoModCoprime 2 f) (hX : IsAddTorsion X) :
     Function.Bijective ((realLocalization ι (r := r) (by omega)).comp
@@ -131,6 +170,9 @@ noncomputable def gsUnitsRealPrimaryEquiv {r : ℕ} (hr : 4 ≤ r) :
   AddEquiv.ofBijective _ (bijective_realLocalization_comp_primaryComponent K ι hr (gsUnitsInfl K S r)
     (isIsoModCoprime_gsUnitsInfl K S Nat.prime_two h2S (by omega)) (isTorsion_cohomology _ (by omega)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gsUnitsRealPrimaryEquiv_apply {r : ℕ} (hr : 4 ≤ r)
     (x : AddCommGroup.primaryComponent (cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) 2) :
     gsUnitsRealPrimaryEquiv K S ι h2S hr x = realLocalization ι (r := r) (by omega) (gsUnitsInfl K S r x) :=
@@ -142,6 +184,9 @@ noncomputable def sUnitsRealPrimaryEquiv {r : ℕ} (hr : 4 ≤ r) :
   AddEquiv.ofBijective _ (bijective_realLocalization_comp_primaryComponent K ι hr (sUnitsInfl K S r)
     (isIsoModCoprime_sUnitsInfl K S Nat.prime_two h2S hr) (isTorsion_cohomology _ (by omega)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sUnitsRealPrimaryEquiv_apply {r : ℕ} (hr : 4 ≤ r)
     (x : AddCommGroup.primaryComponent (cohomology (galSUnitsMax K.1 ℚ̄ S) r) 2) :
     sUnitsRealPrimaryEquiv K S ι h2S hr x = realLocalization ι (r := r) (by omega) (sUnitsInfl K S r x) :=

@@ -13,6 +13,11 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a r : ℕ}
 
 omit [NumberField E] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `hs : star (blkMat (Cinf E) hr (1, k.1)) = blkMat (Cinf E) hr (1, star k.1)`. Express the relevant statement in the definitionally equal form `Matrix.conjTranspose (Matrix.reindex (blkEquiv hr) (blkEquiv hr) (Matrix.fromBlocks 1 0 0 k.1)) = Matrix.reindex (blkEquiv hr) (blkEquiv hr) (Matrix.fromBlocks 1 0 0 (Matrix.conjTranspose k.1))`. Rewrite using `[Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mem_unitaryGroup_iff', hs, ← map_mul]`.
+
+Establish `: ((1 : Matrix (Fin r) (Fin r) (Cinf E)), star k.1) * (1, k.1) = 1` using `Prod.ext (mul_one _) (Matrix.mem_unitaryGroup_iff'.1 k.2)`. Rewrite using `[this, map_one]`.
+-/
 theorem blkMat_one_mem (hr : r ≤ a) (k : Kinf E (a - r)) :
     blkMat (Cinf E) hr (1, k.1) ∈ Matrix.unitaryGroup (Fin a) (Cinf E) := by
   have hs : star (blkMat (Cinf E) hr (1, k.1)) = blkMat (Cinf E) hr (1, star k.1) := by
@@ -28,6 +33,9 @@ theorem blkMat_one_mem (hr : r ≤ a) (k : Kinf E (a - r)) :
 def blkK (hr : r ≤ a) (k : Kinf E (a - r)) : Kinf E a := ⟨blkMat (Cinf E) hr (1, k.1), blkMat_one_mem hr k⟩
 
 omit [NumberField E] [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem toUnits_blkK (hr : r ≤ a) (k : Kinf E (a - r)) :
     Unitary.toUnits (blkK hr k) = blkGL hr (1, Unitary.toUnits k) := Units.ext rfl
 
@@ -41,6 +49,11 @@ def levelSub (hr : r ≤ a) (t : GL (Fin a) (Af E)) (L : Subgroup (GL (Fin a) (A
     Subgroup (GL (Fin (a - r)) (Af E)) :=
   (L.map (MulAut.conj t).toMonoidHom).comap ((blkGL hr).comp (MonoidHom.inr _ _))
 
+/- English proof (translation)
+Simplify using `only [levelSub, Subgroup.mem_comap, Subgroup.mem_map, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.inr_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, e⟩`. Rewrite using `[← e]`. Simplify `hk` using `[mul_assoc]`.
+
+Introduce `h`. Conclude with `⟨_, h, by group⟩`.
+-/
 theorem mem_levelSub (hr : r ≤ a) (t : GL (Fin a) (Af E)) (L : Subgroup (GL (Fin a) (Af E)))
     (l : GL (Fin (a - r)) (Af E)) : l ∈ levelSub hr t L ↔ t⁻¹ * blkGL hr (1, l) * t ∈ L := by
   simp only [levelSub, Subgroup.mem_comap, Subgroup.mem_map, MonoidHom.coe_comp, Function.comp_apply,
@@ -58,6 +71,15 @@ instance (hr : r ≤ a) (κ : Kinf E a) (W : Submodule ℂ (Kinf E a → ℂ)) [
     FiniteDimensional ℂ (ktypeSub hr κ W) := by
   unfold ktypeSub; infer_instance
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(blkEquiv hr).surjective i`. Take `⟨j, rfl⟩` from `(blkEquiv hr).surjective j`. Rewrite using `[blkGL_apply]`.
+
+Express the relevant statement in the definitionally equal form `_ = (1 : Matrix (Fin a) (Fin a) S) _ _ - s ((1 : Matrix (Fin a) (Fin a) R) _ _) + s ((blkGL hr (1, l) : Matrix (Fin a) (Fin a) R) _ _)`. Rewrite using `[blkGL_apply]`. Establish `e1 : ∀ {T : Type} [CommRing T] (i j : Fin r ⊕ Fin (a - r)), (1 : Matrix (Fin a) (Fin a) T) (blkEquiv hr i) (blkEquiv hr j) = (1 : Matrix (Fin r ⊕ Fin (a - r)) _ T) i j`. Introduce `T _ i j`. Simplify using `[Matrix.one_apply, (blkEquiv hr).injective.eq_iff]`.
+
+Rewrite using `[e1, e1]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `[Matrix.one_apply]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ S) i j - s ((1 : Matrix _ _ R) i j) + s (l i j) = _`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem blkGL_one_corner {R S : Type} [CommRing R] [CommRing S] (hr : r ≤ a) (s : R →ₙ+* S)
     (l : GL (Fin (a - r)) R) : blkGL hr (1, cornerGL (a - r) s l) = cornerGL a s (blkGL hr (1, l)) := by
   apply Units.ext
@@ -79,16 +101,29 @@ theorem blkGL_one_corner {R S : Type} [CommRing R] [CommRing S] (hr : r ≤ a) (
   · change (1 : Matrix _ _ S) i j - s ((1 : Matrix _ _ R) i j) + s (l i j) = _
     simp [Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[show (m₁, m₂ * finGL E (a - r) l) = (m₁, m₂) * (1, finGL E (a - r) l) by simp, map_mul]`. Conclude with `congrArg _ (blkGL_one_corner hr _ l)`.
+-/
 theorem blkGL_mul_finGL (hr : r ≤ a) (m₁ : GA E r) (m₂ : GA E (a - r)) (l : GL (Fin (a - r)) (Af E)) :
     blkGL hr (m₁, m₂ * finGL E (a - r) l) = blkGL hr (m₁, m₂) * finGL E a (blkGL hr (1, l)) := by
   rw [show (m₁, m₂ * finGL E (a - r) l) = (m₁, m₂) * (1, finGL E (a - r) l) by simp, map_mul]
   exact congrArg _ (blkGL_one_corner hr _ l)
 
+/- English proof (translation)
+Rewrite using `[show (m₁, m₂ * infGL E (a - r) y) = (m₁, m₂) * (1, infGL E (a - r) y) by simp, map_mul]`. Conclude with `congrArg _ (blkGL_one_corner hr _ y)`.
+-/
 theorem blkGL_mul_infGL (hr : r ≤ a) (m₁ : GA E r) (m₂ : GA E (a - r)) (y : GL (Fin (a - r)) (Cinf E)) :
     blkGL hr (m₁, m₂ * infGL E (a - r) y) = blkGL hr (m₁, m₂) * infGL E a (blkGL hr (1, y)) := by
   rw [show (m₁, m₂ * infGL E (a - r) y) = (m₁, m₂) * (1, infGL E (a - r) y) by simp, map_mul]
   exact congrArg _ (blkGL_one_corner hr _ y)
 
+/- English proof (translation)
+Unfold `slice`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `hk` using `hφ _ ((mem_levelSub hr t L l).1 hl) (unip x * (blkGL hr (m₁, g) * finGL E a t * infGL E a (Unitary.toUnits κ)))`. Rewrite using `[← hk, blkGL_mul_finGL]`.
+
+Use `congr 1`. Establish `e : finGL E a t * finGL E a (t⁻¹ * blkGL hr (1, l) * t) = finGL E a (blkGL hr (1, l)) * finGL E a t`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use `group`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem slice_mul_finGL [MeasurableSpace (BlockIx a r → Ad E)] (μ : Measure (BlockIx a r → Ad E))
     (𝓕 : Set (BlockIx a r → Ad E)) (hr : r ≤ a) (φ : GA E a → ℂ) (L : Subgroup (GL (Fin a) (Af E)))
     (hφ : ∀ k ∈ L, ∀ g, φ (g * finGL E a k) = φ g) (m₁ : GA E r) (t : GL (Fin a) (Af E)) (κ : Kinf E a)
@@ -110,6 +145,11 @@ theorem slice_mul_finGL [MeasurableSpace (BlockIx a r → Ad E)] (μ : Measure (
           finGL E a (t⁻¹ * blkGL hr (1, l) * t))) := by rw [infGL_comm]; simp only [mul_assoc]
     _ = _ := by simp only [mul_assoc]
 
+/- English proof (translation)
+Unfold `slice`. Use `congr 1`. Use function extensionality and compare the values at `x`. Use `congr 2`. Rewrite using `[blkGL_mul_infGL]`.
+
+Simplify using `only [map_mul, map_inv, toUnits_blkK]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Rewrite using `[← mul_assoc (infGL E a (blkGL hr (1, Unitary.toUnits k))) (finGL E a t), infGL_comm (blkGL hr (1, Unitary.toUnits k)) t]`. Simplify using `only [mul_assoc]`.
+-/
 theorem slice_mul_cpt [MeasurableSpace (BlockIx a r → Ad E)] (μ : Measure (BlockIx a r → Ad E))
     (𝓕 : Set (BlockIx a r → Ad E)) (hr : r ≤ a) (φ : GA E a → ℂ) (m₁ : GA E r) (t : GL (Fin a) (Af E))
     (κ : Kinf E a) (g : GA E (a - r)) (k : Kinf E (a - r)) :

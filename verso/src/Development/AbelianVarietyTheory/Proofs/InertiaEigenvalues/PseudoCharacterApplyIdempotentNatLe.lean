@@ -9,6 +9,9 @@ namespace GlobalTheory.PsChar
 section
 variable {M A : Type*} [Monoid M] [CommRing A]
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp [alt] | n + 1 => by have h1 : Fin.tail (fun _ : Fin (n + 1) => e) = fun _ : Fin n => e := rfl have h2 : ∀ i : Fin n, Function.update (fun _ : Fin n => e) i e = fun _ => e := by intro i; exact Function.update_eq_self i (fun _ : Fin n => e) rw [alt, h1] simp only [he …`.
+-/
 theorem alt_const_idem (T : M → A) (e : M) (he : e * e = e) :
     ∀ n : ℕ, alt T n (fun _ => e) = ∏ i ∈ Finset.range n, (T e - (i : A))
   | 0 => by simp [alt]
@@ -21,6 +24,9 @@ theorem alt_const_idem (T : M → A) (e : M) (he : e * e = e) :
       Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
     ring
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp [alt] | n + 1 => by have h1 : Fin.tail (fun i : Fin (n + 1 + 1) => if i.val = n + 1 then y else e) = fun i : Fin (n + 1) => if i.val = n then y else e := by funext i; simp [Fin.tail] have h2 : ∀ i : Fin (n + 1), Function.update (fun i : Fin (n + 1) => if i.val = n …`.
+-/
 theorem alt_idem_last (T : M → A) (e y : M) (he : e * e = e) (hy : e * y = y) (h0 : T e = 0) :
     ∀ n : ℕ, alt T (n + 1) (fun i => if i.val = n then y else e)
       = (-1) ^ n * (n.factorial : A) * T y
@@ -45,6 +51,13 @@ theorem alt_idem_last (T : M → A) (e y : M) (he : e * e = e) (hy : e * y = y) 
 
 end
 
+/- English proof (translation)
+Introduce `k R _ _ _ _ d T hT e he`. Establish `he' : e * e = e` using `he`. Use `⟨?_, fun h0 y => ?_⟩` and prove the remaining obligations. Establish `h` using `hT.alt_eq_zero (fun _ => e)`. Rewrite `h` using `[alt_const_idem _ e he', Finset.prod_eq_zero_iff]`.
+
+Take `⟨m, hm, h⟩` from `h`. Conclude with `⟨m, Nat.lt_succ_iff.mp (Finset.mem_range.mp hm), sub_eq_zero.mp h⟩`. Establish `h` using `hT.alt_eq_zero (fun i => if i.val = d then e * y else e)`. Rewrite `h` using `[alt_idem_last (fun x => T x) e (e * y) he' (by rw [← mul_assoc, he']) h0 d]`. Establish `h1 : ((-1 : k) ^ d * (d.factorial : k)) ≠ 0` using `mul_ne_zero (pow_ne_zero _ (by norm_num)) (Nat.cast_ne_zero.mpr d.factorial_ne_zero)`.
+
+Conclude with `(mul_eq_zero.mp h).resolve_left h1`.
+-/
 theorem isPsChar_idempotent : ∀ (k R : Type) [Field k] [CharZero k] [Ring R] [Algebra k R] (d : ℕ) (T : R →ₗ[k] k), IsPsChar d (fun x => T x) → ∀ e : R, IsIdempotentElem e → (∃ m : ℕ, m ≤ d ∧ T e = m) ∧ (T e = 0 → ∀ y : R, T (e * y) = 0) := by
   intro k R _ _ _ _ d T hT e he
   have he' : e * e = e := he

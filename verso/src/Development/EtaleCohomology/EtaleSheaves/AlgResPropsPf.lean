@@ -6,6 +6,11 @@ open CategoryTheory Limits
 namespace LateralTheory.E.AlgResPropsPf
 open LateralTheory.E.t_E3Cut
 
+/- English proof (translation)
+Introduce `Q hQ c`. Take `⟨p, ⟨n, hn⟩, hp⟩` from `h Q hQ c`. Use `⟨p.map f.hom, ⟨n, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map]`. Simplify using `using hn`.
+
+Rewrite using `[Polynomial.eval₂_map]`. Simplify using `using hp`.
+-/
 theorem cancel {A B C : CommRingCat.{0}} (f : A ⟶ B) (g : B ⟶ C) (h : AlgRes (f ≫ g)) : AlgRes g := by
   intro Q hQ c
   obtain ⟨p, ⟨n, hn⟩, hp⟩ := h Q hQ c
@@ -13,6 +18,11 @@ theorem cancel {A B C : CommRingCat.{0}} (f : A ⟶ B) (g : B ⟶ C) (h : AlgRes
   · rw [Polynomial.coeff_map]; simpa using hn
   · rw [Polynomial.eval₂_map]; simpa using hp
 
+/- English proof (translation)
+Introduce `Q hQ c`. Take `⟨p, hm, hp⟩` from `h c`. Use `⟨p, ⟨p.natDegree, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.leadingCoeff, hm.leadingCoeff, map_one]`. Conclude with `fun h1 => hQ.ne_top ((Ideal.eq_top_iff_one Q).2 h1)`.
+
+Rewrite using `[hp]`. Conclude with `Q.zero_mem`.
+-/
 theorem integral {A B : CommRingCat.{0}} (f : A ⟶ B) (h : f.hom.IsIntegral) : AlgRes f := by
   intro Q hQ c
   obtain ⟨p, hm, hp⟩ := h c
@@ -21,6 +31,13 @@ theorem integral {A B : CommRingCat.{0}} (f : A ⟶ B) (h : f.hom.IsIntegral) : 
     exact fun h1 => hQ.ne_top ((Ideal.eq_top_iff_one Q).2 h1)
   · rw [hp]; exact Q.zero_mem
 
+/- English proof (translation)
+Introduce `Q hQ c`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective S c`. Use `⟨Polynomial.C (s : A) * Polynomial.X - Polynomial.C a, ⟨1, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap A B s)` using `IsLocalization.map_units B s`. Introduce `hm`.
+
+Apply `hQ.ne_top` to reduce the goal to its premises. Apply `Q.eq_top_of_isUnit_mem hm` to reduce the goal to its premises. Simplify `hu` using `[Polynomial.coeff_C, Polynomial.coeff_X]`. Use `IsLocalization.mk'_spec B a s` as an intermediate fact. Simplify using `only [CommRingCat.hom_ofHom, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X]`.
+
+Rewrite using `[mul_comm, this, sub_self]`. Conclude with `Q.zero_mem`.
+-/
 theorem loc (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (S : Submonoid A) [IsLocalization S B] :
     AlgRes (CommRingCat.ofHom (algebraMap A B)) := by
   intro Q hQ c
@@ -43,6 +60,9 @@ def Push : Prop :=
 
 def EtAlg : Prop := ∀ {A B : CommRingCat.{0}} (f : A ⟶ B), Et f → AlgRes f
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun f g hf hg => h1 f g hf hg, fun f g h => cancel f g h, fun f g u v h hf => h2 f g u v h hf, fun f h => h3 f h, fun f h => integral f h, fun A B _ _ _ S _ => loc A B S⟩`.
+-/
 theorem AlgResProps_of (h1 : Comp) (h2 : Push) (h3 : EtAlg) : LateralTheory.E.t_E3Cut.AlgResProps :=
   ⟨fun f g hf hg => h1 f g hf hg, fun f g h => cancel f g h, fun f g u v h hf => h2 f g u v h hf,
     fun f h => h3 f h, fun f h => integral f h, fun A B _ _ _ S _ => loc A B S⟩

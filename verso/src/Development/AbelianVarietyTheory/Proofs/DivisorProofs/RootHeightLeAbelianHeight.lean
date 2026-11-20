@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.RootHtBound
 
+/- English proof (translation)
+Take `⟨w₀, h₀⟩` from `V.π.surjective b`. Establish `hc : IsClosed (V.π ⁻¹' {b})` using `hb.preimage V.π.continuous`. Establish `: CompactSpace V.G` using `QuasiCompact.compactSpace_of_compactSpace (V.π ≫ Y.str)`. Take `⟨w, hw, hw'⟩` from `hc.exists_closed_singleton ⟨w₀, h₀⟩`. Conclude with `⟨w, hw', hw⟩`.
+-/
 theorem exists_closed_over {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) {b : Y.X}
     (hb : IsClosed ({b} : Set Y.X)) : ∃ w : V.G, IsClosed ({w} : Set V.G) ∧ V.π w = b := by
   obtain ⟨w₀, h₀⟩ := V.π.surjective b
@@ -27,6 +30,13 @@ theorem exists_closed_over {F : Type} [Field F] [NumberField F] {Y : Var F} (V :
   obtain ⟨w, hw, hw'⟩ := hc.exists_closed_singleton ⟨w₀, h₀⟩
   exact ⟨w, hw', hw⟩
 
+/- English proof (translation)
+Establish `hKa : 0 ≤ K * |a|` using `mul_nonneg hK (abs_nonneg a)`. Establish `up (n : ℕ) (hn : n ≤ max n₁ n₂) : (n : ℝ) * (K * a) ≤ ((max n₁ n₂ : ℕ) : ℝ) * (K * |a|)` using `(mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (le_abs_self a) hK) (Nat.cast_nonneg n)).trans (mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hKa)`. Establish `u₁` using `up n₂ (le_max_right _ _)`. Establish `u₀` using `up n₁ (le_max_left _ _)`. Establish `hc₁` using `neg_abs_le c₁`.
+
+Establish `hc₂` using `le_abs_self c₂`. Establish `hc₁'` using `le_abs_self c₁`. Establish `hc₂'` using `neg_abs_le c₂`. Establish `hM : (0 : ℝ) ≤ ((max n₁ n₂ : ℕ) : ℝ) * K` using `mul_nonneg (Nat.cast_nonneg _) hK`. Establish `e : ((max n₁ n₂ : ℕ) * K + |c₁| + |c₂|) * (|a| + 1) = ((max n₁ n₂ : ℕ) : ℝ) * (K * |a|) + ((max n₁ n₂ : ℕ) * K) + (|c₁| + |c₂|) * |a| + |c₁| + |c₂|` using `by ring`.
+
+Establish `h3 : 0 ≤ (|c₁| + |c₂|) * |a|` using `by positivity`. Rewrite using `[e, abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem abs_le_of_two (n₁ n₂ : ℕ) (c₁ c₂ K a r : ℝ) (hK : 0 ≤ K) (e₁ : -c₁ ≤ n₁ * (K * a) + r)
     (e₂ : -c₂ ≤ n₂ * (K * a) + -r) : |r| ≤ ((max n₁ n₂ : ℕ) * K + |c₁| + |c₂|) * (|a| + 1) := by
   have hKa : 0 ≤ K * |a| := mul_nonneg hK (abs_nonneg a)
@@ -46,6 +56,13 @@ theorem abs_le_of_two (n₁ n₂ : ℕ) (c₁ c₂ K a r : ℝ) (hK : 0 ≤ K) (
   rw [e, abs_le]
   constructor <;> linarith
 
+/- English proof (translation)
+Introduce `hE F _ _ C Y V A L k hk hI hA M`. Take `⟨n, m, s, hs⟩` from `GlobalTheory.T.ample_sections_avoid_closed_points V L M (GlobalTheory.T.ample_pullback_of_induced_hermitian_bundle V A L k hk hI hA)`. Use `choose c hc using fun i => GlobalTheory.T.height_bounded_below_off_zero_locus (𝓞 F) V.X V.p Y.dim V.ar _ (s i)`. Use `⟨n, ∑ i, |c i|, fun w hw a b ha hb => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hs w hw`.
+
+Establish `halg` using `GlobalTheory.Mean4O.CoverHt.isAlgPt V w hw`. Apply the tactic sequence `have hcomb := (GlobalTheory.T.point_height_dual_and_linear_comb hE _ V.X V.p _ V.ar (V.j w) halg).2 (Fin 2) ![L, M] ![a, b] (fun j => by fin_cases j <;> assumption) ![(n : ℤ), 1]`. Establish `h1` using `hc i (V.j w) hi halg _ hcomb`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Int.cast_natCast, Int.cast_one, one_mul] at h1`. Establish `h2 : c i ≤ ∑ j, |c j|` using `(le_abs_self _).trans (Finset.single_le_sum (f := fun j => |c j|) (fun j _ => abs_nonneg _) (Finset.mem_univ i))`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem dom : GlobalTheory.Published.ArExists → ∀ {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} (V : Cover Y)
     (A : Adl C Y) (L : HermLB V.p) (k : ℕ), 0 < k → V.Induces A L k → Y.ample A.D → ∀ M : HermLB V.p,
     ∃ (n : ℕ) (c : ℝ), ∀ w : V.G, IsClosed ({w} : Set V.G) → ∀ a b : ℝ, IsPtHt L (V.j w) a → IsPtHt M (V.j w) b →
@@ -65,6 +82,15 @@ theorem dom : GlobalTheory.Published.ArExists → ∀ {F : Type} [Field F] [Numb
     (Finset.single_le_sum (f := fun j => |c j|) (fun j _ => abs_nonneg _) (Finset.mem_univ i))
   linarith
 
+/- English proof (translation)
+Introduce `hP _ D O hO mdl c x`. Establish `hE : GlobalTheory.Published.ArExists` using `hP.p4.arExists`. Use `set W := mdl ∅ c with hW`. Establish `hR : W.V.Induces (O.root0 c ∅ x) (W.root ∅ x) 1` using `GlobalTheory.T.lattice_model_induces_root_metric D O hO.dualRef ∅ c W ∅ subset_rfl x`. Take `⟨n₁, c₁, h₁⟩` from `dom hE W.V (O.met.ab c) W.amp W.k W.k_pos W.amp_spec (hO.ample_ab c) (W.root ∅ x)`.
+
+Take `⟨n₂, c₂, h₂⟩` from `dom hE W.V (O.met.ab c) W.amp W.k W.k_pos W.amp_spec (hO.ample_ab c) (W.root ∅ x).dual`. Use `set K : ℝ := (W.k : ℝ) * (((O.met.ab c).n : ℕ) : ℝ) with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `⟨((max n₁ n₂ : ℕ) : ℝ) * K + |c₁| + |c₂|, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hwb⟩` from `exists_closed_over W.V hb`.
+
+Establish `ha` using `(GlobalTheory.Mean4O.CoverHt.main hE _ _ _ W.V _ _ _ w hw W.amp_spec).2`. Establish `hr` using `GlobalTheory.Mean4O.CoverHt.main hE _ _ _ W.V _ _ _ w hw hR`. Establish `hd` using `(GlobalTheory.T.point_height_dual_and_linear_comb hE _ W.V.X W.V.p _ W.V.ar (W.V.j w) hr.1).1 _ _ hr.2`. Establish `e₁` using `h₁ w hw _ _ ha hr.2`. Establish `e₂` using `h₂ w hw _ _ ha hd`.
+
+Rewrite `e₁`, `e₂` using `[hwb]`. Establish `hn : ((O.root0 c ∅ x).n : ℕ) = 1` using `rfl`. Rewrite `e₁`, `e₂` using `[hn]`. Simplify using `only [Nat.cast_one, one_mul] at e₁ e₂`. Conclude with `abs_le_of_two n₁ n₂ c₁ c₂ K _ _ hK0 e₁ e₂`.
+-/
 theorem root_ht_le : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → (∀ (P : Finset ℕ) (c : O.s.Comp), O.LatModel P c) → ∀ (c : O.s.Comp) (x : DV.Rt D.what₂.Tau O.N), ∃ C : ℝ, ∀ b : (O.var c).X, IsClosed ({b} : Set (O.var c).X) → |(O.root0 c ∅ x).ht b| ≤ C * (|(O.met.ab c).ht b| + 1) := by
   intro hP _ D O hO mdl c x
   have hE : GlobalTheory.Published.ArExists := hP.p4.arExists

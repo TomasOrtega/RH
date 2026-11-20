@@ -23,6 +23,29 @@ namespace GlobalTheory.LieFilt
 attribute [local instance] Over.cartesianMonoidalCategory in
 open MonoidalCategory CartesianMonoidalCategory MonObj in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W q jB πB d hq hW M M' r τ t t' u hM hM' ht ht' hm`. Use `GlobalTheory.QCoh.mono_of_locally_app_injective u fun W₀ x hx => ?_` and prove the remaining obligations. Take `⟨V, f, f', hf, hf', -, hxV⟩` from `GlobalTheory.CommonFrames.exists_common_affine_frames X M M' r hM hM' x`. Use `⟨V ⊓ W₀, ⟨hxV, hx⟩, inf_le_right, ?_⟩` and prove the remaining obligations. Establish `hUV : V ⊓ W₀ ≤ V` using `inf_le_left`.
+
+Establish `hfU` using `hf.res hUV`. Establish `hf'U` using `hf'.res hUV`. Set `fU : Fin r → Γ(M, V ⊓ W₀)` to `fun i => Twist.resM M hUV (f i)`. Set `f'U : Fin r → Γ(M', V ⊓ W₀)` to `fun i => Twist.resM M' hUV (f' i)`. Set `A : Matrix (Fin r) (Fin r) Γ(X, V ⊓ W₀)` to `fun b i => (hf'U.basis le_rfl).repr (Twist.resM M' le_rfl (u.app (V ⊓ W₀) (fU i))) b`.
+
+Establish `key : ∀ a : Fin r → Γ(X, V ⊓ W₀), (∀ b, ∑ i, A b i * a i = 0) → a = 0`. Introduce `a ha`. Break down `((V ⊓ W₀ : X.Opens) : Set X).eq_empty_or_nonempty with hV | hV` into its components or cases. Establish `hb : V ⊓ W₀ = ⊥` using `TopologicalSpace.Opens.coe_eq_empty.1 hV haveI : Subsingleton Γ(X, V ⊓ W₀) := CommRingCat.subsingleton_of_isTerminal (X.sheaf.isTerminalOfEqEmpty hb)`. Conclude with `Subsingleton.elim _ _`.
+
+Take `⟨K, _, y, ψ, hψ, h, hinj⟩` from `GlobalTheory.ArLieBase.exists_generic_evalPt_injective hq hW _ hV`. Establish `bf` using `ht.1 _ fU hfU K y h ψ hψ`. Establish `bf'` using `ht'.1 _ f'U hf'U K y h ψ hψ`. Set `T` to `fun i => LieMet.tanOf (bf.1 i).1`. Set `T'` to `fun b => LieMet.tanOf (bf'.1 b).1`.
+
+Establish `hT : ∀ i, T i = ∑ b, TangentOrigin.evalPt (y ≫ jB) _ h (A b i) • T' b` using `fun i => (LieMet.isComb_iff T' _ (T i)).1 (hm _ fU f'U hfU hf'U K y h i)`. Establish `h0 : ∑ i, TangentOrigin.evalPt (y ≫ jB) _ h (a i) • T i = 0`. Simplify using `only [hT, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_smul]`. Establish `e1 : ∑ i, TangentOrigin.evalPt (y ≫ jB) _ h (a i) * TangentOrigin.evalPt (y ≫ jB) _ h (A b i) = TangentOrigin.evalPt (y ≫ jB) _ h (∑ i, A b i * a i)`. Simplify using `only [map_sum, map_mul, mul_comm]`. Rewrite using `[e1, ha b, map_zero, zero_smul]`. Use function extensionality and compare the values at `j`.
+
+Use `show a j = 0`. Establish `hj1 : IsCombAtG Z.t (y ≫ πB ≫ genι Z) (t _ fU hfU K y h) (Pi.single j 1) (t _ fU hfU K y h j)` using `(LieMet.isComb_iff T _ (T j)).2 (by simp [Pi.single_apply])`. Establish `hj2 : IsCombAtG Z.t (y ≫ πB ≫ genι Z) (t _ fU hfU K y h) (Pi.single j 1 + fun i => TangentOrigin.evalPt (y ≫ jB) _ h (a i)) (t _ fU hfU K y h j)` using `(LieMet.isComb_iff T _ (T j)).2 (by`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib, h0, add_zero]`. Simplify using `[Pi.single_apply])`.
+
+Establish `e2` using `congrFun ((bf.2 _ (bf.1 j)).unique hj1 hj2) j`. Establish `hz : TangentOrigin.evalPt (y ≫ jB) _ h (a j) = 0` using `by simpa using e2`. Conclude with `hinj (by rw [hz, map_zero])`. Introduce `s s' hss`. Rewrite using `[← sub_eq_zero]`.
+
+Set `a` to `(hfU.basis le_rfl).repr (s - s')`. Establish `hs : s - s' = ∑ i, a i • fU i` using `by conv_lhs => rw [← (hfU.basis le_rfl).sum_repr (s - s')]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [VB.IsFrame.basis_apply, Twist.resM_self]`. Establish `hd : u.app (V ⊓ W₀) (s - s') = 0` using `by simp [hss]`. Establish `hz : ∀ b, ∑ i, A b i * a i = 0`.
+
+Introduce `b`. Establish `e0 : (hf'U.basis le_rfl).repr (u.app (V ⊓ W₀) (s - s')) b = 0` using `by rw [hd, map_zero]; rfl`. Rewrite `e0` using `[hs]`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, smul_eq_mul] at e0`. Rewrite using `[← e0]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by simp only [A, Twist.resM_self]; exact mul_comm _ _`. Establish `ha` using `key a hz`. Rewrite using `[hs]`. Simplify using `[ha]`.
+-/
 theorem mono_of_matches : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]

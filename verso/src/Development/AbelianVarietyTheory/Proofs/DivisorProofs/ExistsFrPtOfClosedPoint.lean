@@ -21,6 +21,13 @@ noncomputable section
 
 namespace GlobalTheory.FlatDenom
 
+/- English proof (translation)
+Establish `hne : (Finset.univ : Finset ι).Nonempty`. Assume the negation of the conclusion as `h0`. Rewrite `h0` using `[Finset.not_nonempty_iff_eq_empty]`. Conclude with `h (by rw [h0, Finset.sum_empty])`. Establish `key : ∀ s : Finset ι, s.Nonempty → ∃ i, ∀ j ∈ s, d i ∣ d j`.
+
+Introduce `s hs`. Proceed by induction on `hs using Finset.Nonempty.cons_induction with`. Consider the case `singleton a => exact ⟨a, fun j hj => by rw [Finset.mem_singleton.1 hj]⟩`. Consider the case `cons a s ha hs ih`. Take `⟨i, hi⟩` from `ih`.
+
+Break down `ValuationRing.dvd_total (d i) (d a) with h1 | h1` into its components or cases. Conclude with `⟨i, fun j hj => (Finset.mem_cons.1 hj).elim (fun e => e ▸ h1) (hi j)⟩`. Conclude with `⟨a, fun j hj => (Finset.mem_cons.1 hj).elim (fun e => e ▸ dvd_rfl) fun hj => h1.trans (hi j hj)⟩`. Take `⟨i, hi⟩` from `key _ hne`. Conclude with `⟨i, Finset.dvd_sum fun j hj => Dvd.dvd.mul_left (hi j hj) _⟩`.
+-/
 theorem exists_dvd_sum {V ι : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Fintype ι] (d a : ι → V)
     (h : ∑ i, a i * d i ≠ 0) : ∃ i, d i ∣ ∑ i, a i * d i := by
   classical
@@ -40,6 +47,11 @@ theorem exists_dvd_sum {V ι : Type} [CommRing V] [IsDomain V] [ValuationRing V]
   obtain ⟨i, hi⟩ := key _ hne
   exact ⟨i, Finset.dvd_sum fun j hj => Dvd.dvd.mul_left (hi j hj) _⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.DeterminantExpansion.det_mul_expand`. Consider the case `exact _root_.GlobalTheory.DeterminantExpansion.det_mul_expand`. Consider the case `(apply _root_.GlobalTheory.DeterminantExpansion.det_mul_expand <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DeterminantExpansion.det_mul_expand <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.DeterminantExpansion.det_mul_expand <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DeterminantExpansion.det_mul_expand ..)`.
+-/
 theorem det_mul_eq_sum {V : Type} [CommRing V] {m g : ℕ} (M : Matrix (Fin m) (Fin g) V) (C : Matrix (Fin g) (Fin m) V) :
     (M * C).det = ∑ J : Fin m → Fin g, (∏ i, M i (J i)) * (C.submatrix J id).det := by
   first
@@ -50,6 +62,13 @@ theorem det_mul_eq_sum {V : Type} [CommRing V] {m g : ℕ} (M : Matrix (Fin m) (
   | (intros; apply @_root_.GlobalTheory.DeterminantExpansion.det_mul_expand <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.DeterminantExpansion.det_mul_expand ..)
 
+/- English proof (translation)
+Introduce `V _ _ _ m g M C δ hδ h`. Establish `hd : (M * C).det = δ ^ m` using `by rw [h, Matrix.det_smul, Matrix.det_one, Fintype.card_fin, mul_one]`. Establish `h0 : δ ^ m ≠ 0` using `pow_ne_zero _ hδ`. Prove the components needed by the constructor for the conclusion. Establish `e` using `det_mul_eq_sum C.transpose M.transpose`.
+
+Rewrite `e` using `[← Matrix.transpose_mul, Matrix.det_transpose, hd]`. Take `⟨I, hI⟩` from `exists_dvd_sum _ _ (e ▸ h0)`. Use `⟨I, ?_⟩` and prove the remaining obligations. Rewrite `hI` using `[← e]`. Rewrite using `[← Matrix.det_transpose]` and apply the resulting hypothesis.
+
+Establish `e` using `det_mul_eq_sum M C`. Rewrite `e` using `[hd]`. Take `⟨J, hJ⟩` from `exists_dvd_sum _ _ (e ▸ h0)`. Conclude with `⟨J, e ▸ hJ⟩`.
+-/
 theorem exists_minor_dvd : ∀ (V : Type) [CommRing V] [IsDomain V] [ValuationRing V] (m g : ℕ) (M : Matrix (Fin m) (Fin g) V) (C : Matrix (Fin g) (Fin m) V) (δ : V), δ ≠ 0 → M * C = δ • (1 : Matrix (Fin m) (Fin m) V) → (∃ I : Fin m → Fin g, (M.submatrix id I).det ∣ δ ^ m) ∧ ∃ J : Fin m → Fin g, (C.submatrix J id).det ∣ δ ^ m := by
   intro V _ _ _ m g M C δ hδ h
   have hd : (M * C).det = δ ^ m := by rw [h, Matrix.det_smul, Matrix.det_one, Fintype.card_fin, mul_one]
@@ -68,6 +87,37 @@ theorem exists_minor_dvd : ∀ (V : Type) [CommRing V] [IsDomain V] [ValuationRi
 
 open GlobalTheory.HartogsUnit in
 
+/- English proof (translation)
+Introduce `A _ _ _ _ _ a h`. Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := A) a`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Establish `hyK : algebraMap A (FractionRing A) y ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A _)).2 hy0`. Establish `hmem : ∀ (p : Ideal A) [p.IsPrime] (n : ℕ), algebraMap A (Localization.AtPrime p) y ∣ algebraMap A (Localization.AtPrime p) (n * x) → ∃ w, toFrac p w = (n : FractionRing A) * (algebraMap A (FractionRing A) x / algebraMap A (FractionRing A) y)`.
+
+Introduce and unpack `p _ n ⟨w, hw⟩`. Use `⟨w, ?_⟩` and prove the remaining obligations. Use `congrArg (toFrac p) hw` as an intermediate fact. Rewrite `this` using `[map_mul (toFrac p), ← RingHom.comp_apply, ← RingHom.comp_apply, toFrac_comp, map_mul, map_natCast]`. Rewrite using `[← mul_div_assoc, this, mul_div_cancel_left₀ _ hyK]`.
+
+Establish `key : ∀ p : PrimeSpectrum A, p.asIdeal.height = 1 → ∃ n : ℕ, 0 < n ∧ algebraMap A (Localization.AtPrime p.asIdeal) y ∣ algebraMap A (Localization.AtPrime p.asIdeal) (n * x)`. Introduce `p hp`. Set `L` to `Localization.AtPrime p.asIdeal`. Use `haveI : IsDomain L := IsLocalization.isDomain_localization p.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsDiscreteValuationRing L := isDiscreteValuationRing_of_height_eq_one p.asIdeal hp _`.
+
+Establish `hinj : Function.Injective (algebraMap A L)` using `IsLocalization.injective L p.asIdeal.primeCompl_le_nonZeroDivisors`. Establish `hyL : algebraMap A L y ≠ 0` using `(map_ne_zero_iff _ hinj).2 hy0`. Distinguish the cases in `hn : ∃ n : ℕ, 0 < n ∧ ¬ IsUnit (n : L)`. Take `⟨n, hn0, hn⟩` from `hn`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible L`.
+
+Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hyL hϖ`. Establish `hd : ϖ ∣ (n : L)`. Rewrite using `[← Ideal.mem_span_singleton, ← hϖ.maximalIdeal_eq]`. Conclude with `hn`. Use `⟨n ^ k, pow_pos hn0 k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hu, map_mul, map_natCast, Nat.cast_pow, Units.mul_left_dvd]`. Conclude with `(pow_dvd_pow_of_dvd hd k).mul_right _`. Use `push_neg at hn`. Take `⟨T, iT, h1, h2⟩` from `GlobalTheory.HeightOneCompletion.exists_cdvr_of_height_eq_one A p hp`. Establish `hα : Function.Injective (iT.comp (algebraMap A L))` using `h1.comp hinj`.
+
+Establish `hα' : Function.Injective ((algebraMap T.V T.Fr).comp (iT.comp (algebraMap A L)))` using `(IsFractionRing.injective T.V T.Fr).comp hα`. Take `⟨s, hs⟩` from `h T _ (IsFractionRing.lift hα') hα (fun x => IsFractionRing.lift_algebraMap hα' x) fun n hn0 => by simpa using (hn n hn0).map iT`. Rewrite `hs` using `[map_div₀, IsFractionRing.lift_algebraMap, IsFractionRing.lift_algebraMap, eq_div_iff ((map_ne_zero_iff _ hα').2 hy0)]`. Establish `hs' : s * iT (algebraMap A L y) = iT (algebraMap A L x)` using `IsFractionRing.injective T.V T.Fr (by rw [map_mul]; exact hs)`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_one, one_mul]`. Break down `ValuationRing.dvd_total (algebraMap A L y) (algebraMap A L x) with h3 | ⟨c, hc⟩` into its components or cases. Conclude with `h3`. Establish `h4 : iT (algebraMap A L y) * (s * iT c) = iT (algebraMap A L y) * 1`. Rewrite using `[mul_one, ← mul_assoc, mul_comm _ s, hs', ← map_mul, ← hc]`.
+
+Establish `h5` using `mul_left_cancel₀ ((map_ne_zero_iff _ h1).2 hyL) h4`. Establish `h6 : IsUnit c` using `(isUnit_map_iff iT c).1 (IsUnit.of_mul_eq_one_right _ h5)`. Rewrite using `[hc]`. Conclude with `h6.mul_right_dvd.2 dvd_rfl`. Use `choose! n hn0 hn using key`.
+
+Establish `hfin : {p : PrimeSpectrum A | p.asIdeal.height = 1 ∧ y ∈ p.asIdeal}.Finite`. Use `Set.Finite.of_finite_image (f := PrimeSpectrum.asIdeal) ((Ideal.finite_minimalPrimes_of_isNoetherianRing A (Ideal.span {y})).subset ?_) fun _ _ _ _ h => PrimeSpectrum.ext h` and prove the remaining obligations. Introduce and unpack `_ ⟨p, ⟨hp, hyp⟩, rfl⟩`. Use `⟨⟨p.isPrime, (Ideal.span_singleton_le_iff_mem _).2 hyp⟩, fun q ⟨hq, hyq⟩ hqp => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Establish `hlt : q < p.asIdeal` using `lt_of_le_of_ne hqp fun e => hne e.ge`. Establish `hq0 : (⊥ : Ideal A) < q` using `bot_lt_iff_ne_bot.2 fun e => hy0 (by`. Use `hyq (Ideal.mem_span_singleton_self y)` as an intermediate fact. Rewrite using `[e, Ideal.mem_bot] at this)` and apply the resulting hypothesis. Establish `h1` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`.
+
+Establish `h2` using `Ideal.height_add_one_le_of_lt_of_isPrime hq0`. Rewrite `h1` using `[hp]`. Rewrite `h2` using `[Ideal.height_bot, zero_add]`. Establish `h3 : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add_left h2 1).trans h1`. Conclude with `absurd h3 (by decide)`.
+
+Use `⟨∏ p ∈ hfin.toFinset, n p, ?_⟩` and prove the remaining obligations. Establish `hm : ((∏ p ∈ hfin.toFinset, n p : ℕ) : FractionRing A) * (algebraMap A (FractionRing A) x / algebraMap A (FractionRing A) y) ∈ (algebraMap A (FractionRing A)).range`. Use `(GlobalTheory.mem_range_algebraMap_iff_forall_height_eq_one (A := A) _).mpr fun p _ hp => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `hmem p (∏ p ∈ hfin.toFinset, n p) (by`. Distinguish the cases in `hyp : y ∈ p`.
+
+Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem n (hfin.mem_toFinset.2 ⟨hp, hyp⟩ : (⟨p, inferInstance⟩ : PrimeSpectrum A) ∈ _)`. Rewrite using `[hk, Nat.cast_mul, mul_right_comm, map_mul]`. Conclude with `(hn ⟨p, inferInstance⟩ hp).mul_right _`. Conclude with `(IsLocalization.map_units (Localization.AtPrime p) (⟨y, hyp⟩ : p.primeCompl)).dvd)`. Rewrite using `[GlobalTheory.mem_primeLocalSubalgebra_iff, ← hw]`.
+
+Conclude with `toFrac_mem p w`. Take `⟨b, hb⟩` from `hm`. Conclude with `⟨b, Finset.prod_pos fun p hp => hn0 p (hfin.mem_toFinset.1 hp).1, hb⟩`.
+-/
 theorem exists_nat_mul_mem : ∀ (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [IsNoetherianRing A] [CharZero A] (a : FractionRing A), (∀ (T : CDVR) (α : A →+* T.V) (ι : FractionRing A →+* T.Fr), Function.Injective α → (∀ x, ι (algebraMap A (FractionRing A) x) = algebraMap T.V T.Fr (α x)) → (∀ n : ℕ, 0 < n → IsUnit (n : T.V)) → ι a ∈ (algebraMap T.V T.Fr).range) → ∃ (m : ℕ) (b : A), 0 < m ∧ algebraMap A (FractionRing A) b = (m : FractionRing A) * a := by
   intro A _ _ _ _ _ a h
   classical
@@ -164,14 +214,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
   {t : SAB H X} {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ} {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, (GlobalTheory.LieMet.isComb_iff (fun i => GlobalTheory.LieMet.tanOf (hv i)) a _).2 rfl⟩`.
+-/
 theorem exists_comb (hv : ∀ i, IsTanAtG t x (v i)) (a : Fin m → S) : ∃ w, IsCombAtG t x v a w :=
   ⟨_, (GlobalTheory.LieMet.isComb_iff (fun i => GlobalTheory.LieMet.tanOf (hv i)) a _).2 rfl⟩
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FlatModel.Proj.eq_of_comb (fun i => GlobalTheory.LieMet.tanOf (hv i)) h]`. Conclude with `GlobalTheory.LieMet.isTan_tv _`.
+-/
 theorem tan_of_comb (hv : ∀ i, IsTanAtG t x (v i)) {a : Fin m → S} {w : Sp (DualNumber S) ⟶ t.G.left}
     (h : IsCombAtG t x v a w) : IsTanAtG t x w := by
   rw [GlobalTheory.FlatModel.Proj.eq_of_comb (fun i => GlobalTheory.LieMet.tanOf (hv i)) h]
   exact GlobalTheory.LieMet.isTan_tv _
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FlatModel.Proj.eq_of_comb (fun i => GlobalTheory.LieMet.tanOf (hv i)) h]`. Introduce `b`. Establish `h1 : ∀ i, actR t.act b (GlobalTheory.LieMet.tanOf (hv i)) = s b • GlobalTheory.LieMet.tanOf (hv i)` using `fun i => by`. Rewrite using `[← GlobalTheory.ShFam.Pad.Pull.eig_iff]`. Conclude with `he i b`.
+
+Rewrite using `[GlobalTheory.ShFam.Pad.Pull.eig_iff]`. Simplify using `only [map_sum, map_smul, h1, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+-/
 theorem eig_of_comb (hv : ∀ i, IsTanAtG t x (v i)) {s : 𝓞 E →+* S} (he : ∀ i, IsEigG t s (v i)) {a : Fin m → S}
     {w : Sp (DualNumber S) ⟶ t.G.left} (h : IsCombAtG t x v a w) : IsEigG t s w := by
   rw [GlobalTheory.FlatModel.Proj.eq_of_comb (fun i => GlobalTheory.LieMet.tanOf (hv i)) h]
@@ -183,6 +244,9 @@ theorem eig_of_comb (hv : ∀ i, IsTanAtG t x (v i)) {s : 𝓞 E →+* S} (he : 
   simp only [map_sum, map_smul, h1, Finset.smul_sum]
   exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
+/- English proof (translation)
+Use `⟨fun h a => ?_, fun h a => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← ν.act, ← Category.assoc, h a, Category.assoc]`. Apply `ν.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ν.act, ← Category.assoc, h a, Category.assoc]`. Rewrite using `[Category.assoc, Over.w, Category.assoc, hw, ← Category.assoc, GlobalTheory.LocM.BaseMdl.epsMul_comp]`.
+-/
 theorem isEigG_push {X' : Scheme.{0}} {t' : SAB H X'} {f : X' ⟶ X} (ν : SABMap t' t f) {x' : Sp S ⟶ X'}
     {w : Sp (DualNumber S) ⟶ t'.G.left} (hw : w ≫ t'.G.hom = spMap (algebraMap S (DualNumber S)) ≫ x')
     (s : 𝓞 E →+* S) : IsEigG t' s w ↔ IsEigG t s (w ≫ ν.φ) := by
@@ -192,6 +256,9 @@ theorem isEigG_push {X' : Scheme.{0}} {t' : SAB H X'} {f : X' ⟶ X} (ν : SABMa
     · rw [Category.assoc, ν.act, ← Category.assoc, h a, Category.assoc]
     · rw [Category.assoc, Over.w, Category.assoc, hw, ← Category.assoc, GlobalTheory.LocM.BaseMdl.epsMul_comp]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_transpose]`. Conclude with `GlobalTheory.TangentLinear.isCombAtG_mulVec v hv q M.transpose a w hM h`.
+-/
 theorem comb_vecMul (hv : ∀ i, IsTanAtG t x (v i)) {n : ℕ} {q : Fin n → (Sp (DualNumber S) ⟶ t.G.left)}
     {M : Matrix (Fin n) (Fin m) S} (hM : ∀ i, IsCombAtG t x v (M i) (q i)) {a : Fin n → S}
     {w : Sp (DualNumber S) ⟶ t.G.left} (h : IsCombAtG t x q a w) : IsCombAtG t x v (Matrix.vecMul a M) w := by
@@ -203,6 +270,25 @@ end Tan
 open GlobalTheory.LocM.BaseMdl in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hx : GlobalTheory.AllWt.ptF z ≫ pullback.fst _ _ = y'.x` using `(pullback.lift_fst _ _ _).trans hzy`. Establish `hz' : GlobalTheory.AllWt.ptF z ≫ Y.jQ ≫ pullback.fst _ _ = spMap (ι.toRingHom.comp φ) ≫ ξ` using `hz`. Establish `hpt : GlobalTheory.AllWt.ptF z = spMap ι.toRingHom ≫ GlobalTheory.AllWt.ptF y`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[hx, hm.1, Category.assoc, GlobalTheory.AllWt.ptF, pullback.lift_fst]`.
+
+Rewrite using `[Category.assoc, GlobalTheory.AllWt.ptF, GlobalTheory.AllWt.ptF, pullback.lift_snd, pullback.lift_snd]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `ι.comp_algebraMap.symm`. Use `choose a ha using fun i => (y'.basis σ (z.u σ i) (hzy ▸ z.tan σ i) (z.eig σ i)).exists`.
+
+Use `choose w hw1 hw2 hw3 using h.1`. Use `choose w' hw1' hw2' hw3' using h'.1`. Establish `hbt` using `(isTanBasis_bc he (ι.toRingHom.comp φ)).1`. Establish `hq2 : ∀ j, (spMap (dualMap ι.toRingHom) ≫ w j) ≫ Y.oF.t.G.hom = spMap (algebraMap k (DualNumber k)) ≫ GlobalTheory.AllWt.ptF z` using `fun j => by`. Rewrite using `[Category.assoc, hw1, hpt, ← Category.assoc, ← Category.assoc]`.
+
+Use `congr 1`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hq1 : (fun j => (spMap (dualMap ι.toRingHom) ≫ w j) ≫ Y.m0.toSABMap.φ) = y'.u σ` using `funext fun j => by`.
+
+Rewrite using `[Category.assoc, hw2, hm.2.1]`. Establish `hq3 : ∀ j, IsCombAtG Y.t (spMap (ι.toRingHom.comp φ) ≫ ξ) (bcV Y.t (ι.toRingHom.comp φ) e) (M.map ι j) ((spMap (dualMap ι.toRingHom) ≫ w j) ≫ Y.m.φ)` using `fun j => by`. Use `GlobalTheory.LocM.Cht.FlagBase.isCombAtG_bc Y.t ι.toRingHom (hw3 j)` as an intermediate fact. Rewrite `this` using `[sp_sp]`. Rewrite using `[← bcV_bcV, Category.assoc]`.
+
+Conclude with `this`. Establish `hM : M' = Matrix.of a * M.map ι` using `by ext1 i`. Use `funext_iff.1 ?_` and prove the remaining obligations. Establish `h1 : IsCombAtG Y.oF.t (GlobalTheory.AllWt.ptF z) (fun j => spMap (dualMap ι.toRingHom) ≫ w j) (a i) (w' i)` using `(comb_push Y.m0.toSABMap hq2 (a i) (hw1' i)).2 (by rw [hq1, hw2', hx]; exact ha i)`. Establish `h2` using `comb_vecMul hbt hq3 (hz' ▸ (comb_push Y.m hq2 (a i) (hw1' i)).1 h1)`.
+
+Conclude with `(he.2 k _ _ (tan_of_comb hbt h2)).unique (hw3' i) h2`. Use `⟨Matrix.of a, ha, hM, ?_⟩` and prove the remaining obligations. Use `haveI : CharZero k := charZero_of_injective_algebraMap (algebraMap c.F k).injective`. Establish `hδ : ((discr E : ℤ) : k) ≠ 0` using `Int.cast_ne_zero.2 (discr_ne_zero E)`. Establish `e1 : C.map ι * M.map ι = U.map (ι.toRingHom.comp φ)`.
+
+Rewrite using `[← Matrix.map_mul (f := ι), h.2.1, Matrix.map_map]`. Both sides reduce to the same expression. Establish `e2 : M.map ι * C.map ι = ((discr E : ℤ) : k) • 1`. Rewrite using `[← Matrix.map_mul (f := ι), h.2.2]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `e3 : C' * Matrix.of a * M.map ι = C.map ι * M.map ι` using `by rw [Matrix.mul_assoc, ← hM, h'.2.1, e1]`. Establish `e4` using `congrArg (· * C.map ι) e3`. Simplify using `only [Matrix.mul_assoc (C' * Matrix.of a), Matrix.mul_assoc (C.map ι), e2, Matrix.mul_smul, Matrix.mul_one] at e4`. Conclude with `smul_right_injective _ hδ e4`.
+-/
 theorem exists_change {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     (Y : Model Xo c β) {R : Type} [CommRing R] {ξ : Sp R ⟶ Y.X} {g : ℕ}
@@ -264,6 +350,21 @@ theorem exists_change {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Re
   simp only [Matrix.mul_assoc (C' * Matrix.of a), Matrix.mul_assoc (C.map ι), e2, Matrix.mul_smul, Matrix.mul_one] at e4
   exact smul_right_injective _ hδ e4
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y R _ ξ g e he Z f σ₁ σ₂ hL U₁ U₂ L _ _ _ φ y hy hyZ M₁ C₁ M₂ C₂ h₁ h₂ k _ _ ι ψ hψ z hz M₁' C₁' M₂' C₂' h₁' h₂' I J`. Take `rfl : ψ = ι.toRingHom.comp φ` from `RingHom.ext hψ`. Take `⟨y', hm⟩` from `GlobalTheory.FlagTan.exists_frMap ι y`. Use `isPreimmersion_j Y` as an intermediate fact. Establish `hpt : GlobalTheory.AllWt.ptF y' = spMap ι.toRingHom ≫ GlobalTheory.AllWt.ptF y`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, GlobalTheory.AllWt.ptF, GlobalTheory.AllWt.ptF, pullback.lift_fst, pullback.lift_fst, hm.1]`. Rewrite using `[Category.assoc, GlobalTheory.AllWt.ptF, GlobalTheory.AllWt.ptF, pullback.lift_snd, pullback.lift_snd]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+
+Conclude with `ι.comp_algebraMap.symm`. Establish `hzy0 : GlobalTheory.AllWt.ptF z = GlobalTheory.AllWt.ptF y'`. Rewrite using `[← cancel_mono Y.j, hz, hpt, Category.assoc, hy, sp_sp]`. Establish `hzy : z.x = y'.x`. Use `congrArg (· ≫ pullback.fst _ _) hzy0` as an intermediate fact.
+
+Simplify `this` using `only [GlobalTheory.AllWt.ptF, pullback.lift_fst]`. Establish `hy'Z : LiesOn Z y'` using `fun s => by`. Rewrite using `[hpt, Scheme.Hom.comp_apply]`. Conclude with `hyZ _`. Take `⟨a₁, ha₁, hM₁, -⟩` from `exists_change Y he h₁ hm hzy hz h₁'`.
+
+Take `⟨a₂, ha₂, -, hC₂⟩` from `exists_change Y he h₂ hm hzy hz h₂'`. Establish `k1` using `hL.2 k z y' hy'Z hzy a₁ a₂ ha₁ ha₂`. Rewrite `k1` using `[GlobalTheory.FlagTan.evR_frMap hL.1 hm]`. Establish `k2 : (M₁'.submatrix id I).det = a₁.det * ι (M₁.submatrix id I).det`. Rewrite using `[AlgHom.map_det, ← Matrix.det_mul, hM₁]`.
+
+Both sides reduce to the same expression. Establish `k3 : ι (C₂.submatrix J id).det = (C₂'.submatrix J id).det * a₂.det`. Rewrite using `[AlgHom.map_det, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `i j`.
+
+Conclude with `(congrFun (congrFun hC₂ (J i)) j).symm`. Rewrite using `[map_mul, map_mul, k2, k3]`. Take the linear combination `(ι (M₁.submatrix id I).det * (C₂'.submatrix J id).det) * k1`.
+-/
 theorem value_map : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (R : Type) [CommRing R] (ξ : Sp R ⟶ Y.X) (g : ℕ) (e : Fin g → (Sp (DualNumber R) ⟶ Y.t.G.left)), IsTanBasis Y.t ξ e → ∀ (Z : Comp Xo c) (f : Rul Xo c) (σ₁ σ₂ : E →+* ℂ), DetLaw Z f σ₁ σ₂ → ∀ (U₁ U₂ : Matrix (Fin g) (Fin g) R) (L : Type) [CommRing L] [IsLocalRing L] [Algebra c.F L] (φ : R →+* L) (y : FrPt Xo c L), GlobalTheory.AllWt.ptF y ≫ Y.j = spMap φ ≫ ξ → LiesOn Z y → ∀ (M₁ : Matrix (Fin (Dw.mult σ₁)) (Fin g) L) (C₁ : Matrix (Fin g) (Fin (Dw.mult σ₁)) L) (M₂ : Matrix (Fin (Dw.mult σ₂)) (Fin g) L) (C₂ : Matrix (Fin g) (Fin (Dw.mult σ₂)) L), IsFrameCoord Y ξ e U₁ φ y σ₁ M₁ C₁ → IsFrameCoord Y ξ e U₂ φ y σ₂ M₂ C₂ → ∀ (k : Type) [Field k] [Algebra c.F k] (ι : L →ₐ[c.F] k) (ψ : R →+* k), (∀ a, ψ a = ι (φ a)) → ∀ z : FrPt Xo c k, GlobalTheory.AllWt.ptF z ≫ Y.j = spMap ψ ≫ ξ → ∀ (M₁' : Matrix (Fin (Dw.mult σ₁)) (Fin g) k) (C₁' : Matrix (Fin g) (Fin (Dw.mult σ₁)) k) (M₂' : Matrix (Fin (Dw.mult σ₂)) (Fin g) k) (C₂' : Matrix (Fin g) (Fin (Dw.mult σ₂)) k), IsFrameCoord Y ξ e U₁ ψ z σ₁ M₁' C₁' → IsFrameCoord Y ξ e U₂ ψ z σ₂ M₂' C₂' → ∀ (I : Fin (Dw.mult σ₁) → Fin g) (J : Fin (Dw.mult σ₂) → Fin g), evR Xo c f z * (M₁'.submatrix id I).det * (C₂'.submatrix J id).det = ι (evR Xo c f y * (M₁.submatrix id I).det * (C₂.submatrix J id).det) := by
   intro E _ _ _ H Dw l Xo c Y R _ ξ g e he Z f σ₁ σ₂ hL U₁ U₂ L _ _ _ φ y hy hyZ M₁ C₁ M₂ C₂ h₁ h₂ k _ _ ι ψ hψ z hz
     M₁' C₁' M₂' C₂' h₁' h₂' I J
@@ -302,6 +403,37 @@ theorem value_map : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : 
 open GlobalTheory.ModelFrameCompare MonObj in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Set `_` to `io.toAlgebra`. Choose the witnesses or unpack the hypotheses as in `⟨G₂, ⟨m⟩⟩ : ∃ G : SAB H (Sp T.V), Nonempty (SABMap G Y.t xV) := by`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull xV Y.t`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨t₂, n₀, n₂, m', -, h2⟩` from `GlobalTheory.ThetaFrameCheck.genFibre_tied Xo c T _ _ Y xV yy hxV G₂ m`.
+
+Take `⟨n₁, hn₁⟩` from `sabComp pullCubComp E H _ _ _ Xo.univ.t Y.oF.t t₂ _ yy Y.m0.toSABMap m'`. Take `⟨G, t', m1, m2, ⟨ub, ht, he, hb, hl⟩, -⟩` from `y₀.2.2`. Establish `hx : y₀.1.x = yy ≫ pullback.fst _ _`. Rewrite using `[← hpt]`. Conclude with `(pullback.lift_fst _ _ _).symm`.
+
+Take `⟨m1', hm1'⟩` from `exists_sabMap_congr m1 hx`. Take `⟨k, n, hk1, hk2⟩` from `GlobalTheory.sab_extensions_iso E H Dw l Xo T.V T.Fr _ G G₂ t' t₂ m1' m2 n₁ n₂`. Take `⟨nm, hnm⟩` from `sabComp pullCubComp E H _ _ _ Y.t G₂ G xV (𝟙 _) m n`. Take `⟨q₀, hq₀⟩` from `exists_sabMap_congr nm (Category.id_comp xV)`. Rewrite `hq₀` using `[hnm]`.
+
+Take `⟨B, hB, hBt, hBe, hBc⟩` from `GlobalTheory.FactorDepth.Extension.exists_tanEquiv q₀`. Use `⟨fun j => (B (ub σ j)).left, fun j => (hBt _).2 (ht σ j), ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu hue`. Take `⟨w', hw'⟩` from `B.surjective (ovT hu)`. Establish `e : u = (B w').left` using `by rw [hw']; rfl`.
+
+Substitute `e` using the available equality. Take `⟨cf, hcf, -⟩` from `hb σ w' ((hBt _).1 hu) fun a z hz => (hBe _ a z).1 (hue a z hz)`. Conclude with `⟨cf, (hBc _ _ cf w').2 hcf⟩`. Introduce `cf u w hc hw`. Establish `h3` using `GlobalTheory.LocM.Cht.FlagBase.isCombAtG_bc Y.t (algebraMap T.V T.Fr) hc`.
+
+Take `⟨q, hq⟩` from `sabComp pullCubComp E H _ _ _ Y.t Y.oF.t t₂ _ yy Y.m m'`. Use `choose u' hu1 hu2 using hl σ`. Establish `hov : ∀ j, u' j ≫ t'.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr))`. Introduce `j`. Apply `spMap_frac_cancel (V := T.V)` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, ← m2.cart.1.w, ← Category.assoc, hu2, Category.assoc, Over.w (ub σ j), spMap_comp', ← dualMap_comp_alg, ← spMap_comp']`. Both sides reduce to the same expression. Establish `hov' : ∀ j, (u' j ≫ k.φ) ≫ t₂.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ 𝟙 _`. Introduce `j`. Rewrite using `[Category.assoc, k.cart.1.w, ← Category.assoc, hov]`.
+
+Establish `hvec : ∀ j, spMap (dualMap (algebraMap T.V T.Fr)) ≫ (B (ub σ j)).left = (u' j ≫ k.φ) ≫ q.φ`. Introduce `j`. Rewrite using `[hB, hq₀, hq, ← Category.assoc, ← hu2, Category.assoc, ← Category.assoc m2.φ, hk2]`. Simplify using `only [Category.assoc, h2]`. Establish `hpt' : spMap (algebraMap T.V T.Fr) ≫ xV = 𝟙 _ ≫ yy ≫ Y.jQ ≫ pullback.fst _ _`.
+
+Rewrite using `[Category.id_comp, ← hxV]`. Both sides reduce to the same expression. Establish `h4 : IsCombAtG Y.t (𝟙 _ ≫ yy ≫ Y.jQ ≫ pullback.fst _ _) (fun j => (u' j ≫ k.φ) ≫ q.φ) (fun j => algebraMap T.V T.Fr (cf j)) (w ≫ Y.m.φ)`. Rewrite using `[← hpt', hw]`. Simplify `h3` using `only [hvec]`.
+
+Take `⟨w₂, hw₂, hc₂⟩` from `isCombAtG_reflect q (𝟙 _) (fun j => u' j ≫ k.φ) hov' h4`. Establish `hw₂' : w₂ ≫ m'.φ = w`. Use `Y.m.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hq, hw₂]`. Use `isPreimmersion_j Y` as an intermediate fact.
+
+Establish `hmono : Mono Y.j` using `inferInstance`. Establish `e2 : w₂ ≫ t₂.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ 𝟙 _`. Take `⟨uu, -, hh⟩` from `hc₂`. Rewrite using `[← hh]`. Conclude with `Over.w _`.
+
+Establish `e1 : u ≫ Y.t.G.hom = spMap (algebraMap T.V (DualNumber T.V)) ≫ xV`. Take `⟨uu, -, hh⟩` from `hc`. Rewrite using `[← hh]`. Conclude with `Over.w _`. Rewrite using `[Category.assoc, m'.cart.1.w, ← Category.assoc, e2, Category.comp_id]`.
+
+Apply `hmono.right_cancellation` to reduce the goal to its premises. Establish `e3 : spMap (dualMap (algebraMap T.V T.Fr)) ≫ spMap (algebraMap T.V (DualNumber T.V)) ≫ xV = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ yy ≫ Y.j`. Rewrite using `[← Category.assoc, spMap_comp', dualMap_comp_alg, ← spMap_comp', Category.assoc, hxV]`. Use `show (spMap _ ≫ yy) ≫ Y.j = w ≫ Y.oF.t.G.hom ≫ Y.jQ ≫ pullback.fst _ _`. Rewrite using `[← Y.m.cart.1.w, ← Category.assoc w, hw, Category.assoc (spMap _) u, e1, e3, Category.assoc]`.
+
+Establish `h5` using `isCombAtG_push n₁ (𝟙 _) hc₂`. Establish `hv5 : (fun j => (u' j ≫ k.φ) ≫ n₁.φ) = y₀.1.u σ`. Use function extensionality and compare the values at `j`. Rewrite using `[Category.assoc, hk1, hm1', hu1]`. Rewrite `h5` using `[hv5, hn₁, ← Category.assoc w₂, hw₂', Category.id_comp, ← hx]`.
+
+Conclude with `h5`.
+-/
 theorem images_eigenBasis {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (Y : Model Xo c (algebraMap (𝓞 c.F) c.F))
     (σ : E →+* ℂ) (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io) (xV : Sp T.V ⟶ Y.X)

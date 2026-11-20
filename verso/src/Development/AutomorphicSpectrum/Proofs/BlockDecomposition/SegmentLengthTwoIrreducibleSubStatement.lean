@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.SegmentRepresentation
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.JHMult
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SegTwo.segment_two | exact GlobalTheory.CompanionTheory.SegTwo.segment_two | (intros; apply GlobalTheory.CompanionTheory.SegTwo.segment_two <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.segment_length_two_irreducible_sub : (∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (d : ℕ), 0 < d →
     ∀ σ : IrrRep (GL (Fin d) k), IsCuspidal σ.ρ →
       ¬ (multiProd (GlobalTheory.Published.consecBlocks 2 d) (segTerm σ.ρ 2)).IsIrreducible) →

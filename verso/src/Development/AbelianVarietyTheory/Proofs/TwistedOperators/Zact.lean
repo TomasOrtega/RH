@@ -18,6 +18,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.SquareDict
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W t i j A A₁ AV AV₁ hA hA₁ hV hV₁`. Use `⟨GlobalTheory.T.isSeesawHermitianTriple_gridSquare_of_standing hL W t i j, fun ωA ωB hωA hωB => ⟨fun x => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.xiV G i j x.1 * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.xiV₁ G t i j x.2, fun B ρ Θ Θ' hΘ => ?_⟩ …` and prove the remaining obligations. Establish `kA` using `GlobalTheory.T.thetaGridRouteKernel_eq_detCharacters_mul_thetaKernel hL W t i j ωA hωA B ρ Θ Θ' hΘ`. Establish `kB` using `GlobalTheory.T.smallRoute_kernel_eq_char_mul_thetaKernel hL W t i j ωB hωB B ρ Θ Θ' hΘ`. Establish `tr : ∀ (z : GA D (G.V (.grid ↑i ↑j)) →₀ ℂ) g g₁ u, translates z (kerSmall W Θ' g g₁) u = (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.xiV G i j g * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.xiV₁ G t i j g₁) * thetaKO ωB u (GlobalTheory.SquareComm.b …`.
+
+Introduce `z g g₁ u`. Simplify using `only [translates, kB, GlobalTheory.SquareDict.zact, thetaKO, Finsupp.sum, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e : ωB (u * k, GlobalTheory.SquareComm.blk _ _ (g, g₁)) = ωB (u, GlobalTheory.SquareComm.blk _ _ (g, g₁)) * ωB (k, 1)`. Rewrite using `[← map_mul]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, Module.End.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨GlobalTheory.T.routeDatum_mem_algebraicVectors_grid_frames hL W t i j A AV AV₁ hA hV hV₁ B ρ Θ Θ' hΘ, GlobalTheory.T.smallRouteDatum_mem_algebraicVectors_grid_frames hL W t i j A₁ AV AV₁ hA₁ hV hV₁ B ρ Θ Θ' hΘ, kA, tr, ?_, ?_⟩` and prove the remaining obligations. Introduce `M g g₁`.
+
+Simplify using `only [kA, GlobalTheory.SquareComm.thetaInt]`. Conclude with `integral_const_mul _ _`. Introduce `M z g g₁`. Simplify using `only [tr, GlobalTheory.SquareComm.thetaInt]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem dict : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (t : T) (i j : Fin D.R.m)
     (A : Fr (G.V (.grid (↑i + 1) (↑j + 1)))) (A₁ : Fr (G.V (.grid ↑i ↑j))) (AV : Fr (G.V (.grid ↑i (↑j + 1)))) (AV₁ : Fr (G.V (.grid (↑i + 1) ↑j))),
     GlobalTheory.SquareDict.IsGridFr W _ A → GlobalTheory.SquareDict.IsGridFr W _ A₁ → GlobalTheory.SquareDict.IsGridFr W _ AV →

@@ -14,6 +14,11 @@ section Schwartz
 variable {E A B : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup A] [NormedSpace ℝ A]
   [NormedAddCommGroup B] [NormedSpace ℝ B]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `f.decay' k n`. Use `⟨C * ‖p‖ ^ n, fun x => ?_⟩` and prove the remaining obligations. Establish `e` using `p.iteratedFDeriv_comp_right f.smooth' x (i := n) (by exact_mod_cast le_top)`. Establish `h1 : ‖iteratedFDeriv ℝ n (fun y => f (p y)) x‖ ≤ ‖iteratedFDeriv ℝ n f.toFun (p x)‖ * ‖p‖ ^ n`. Rewrite using `[show (fun y => f (p y)) = f.toFun ∘ ⇑p from rfl, e]`.
+
+Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem decay_comp (f : SchwartzMap A ℂ) (p : E →L[ℝ] A) (k n : ℕ) :
     ∃ C : ℝ, ∀ x, ‖p x‖ ^ k * ‖iteratedFDeriv ℝ n (fun y => f (p y)) x‖ ≤ C := by
   obtain ⟨C, hC⟩ := f.decay' k n
@@ -61,6 +66,11 @@ def schwartzBox (f : SchwartzMap A ℂ) (g : SchwartzMap B ℂ) (p : E →L[ℝ]
         · exact mul_le_mul a1 b2 hv (le_trans (by positivity) a1)
         · exact mul_le_mul a2 b1 (by positivity) (hu.trans a2)
 
+/- English proof (translation)
+Set `P : (κ ⊕ κ' → A) →L[ℝ] (κ → A)` to `ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (Sum.inl j)`. Set `Q : (κ ⊕ κ' → A) →L[ℝ] (κ' → A)` to `ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (Sum.inr j)`. Establish `hPQ : ∀ x, ‖x‖ ≤ max ‖P x‖ ‖Q x‖`. Introduce `x`. Use `(pi_norm_le_iff_of_nonneg (le_max_of_le_left (norm_nonneg _))).2 fun i => ?_` and prove the remaining obligations.
+
+Break down `i with j | j` into its components or cases. Conclude with `(norm_le_pi_norm (P x) j).trans (le_max_left _ _)`. Conclude with `(norm_le_pi_norm (Q x) j).trans (le_max_right _ _)`. Conclude with `⟨schwartzBox f g P Q hPQ, fun x => rfl⟩`.
+-/
 theorem exists_schwartz_box {κ κ' : Type} [Fintype κ] [Fintype κ'] (f : SchwartzMap (κ → A) ℂ)
     (g : SchwartzMap (κ' → A) ℂ) :
     ∃ h : SchwartzMap (κ ⊕ κ' → A) ℂ, ∀ x, h x = f (x ∘ Sum.inl) * g (x ∘ Sum.inr) := by
@@ -78,6 +88,15 @@ theorem exists_schwartz_box {κ κ' : Type} [Fintype κ] [Fintype κ'] (f : Schw
 
 end Schwartz
 
+/- English proof (translation)
+Establish `h₁' : IsLocallyConstant φ₁ ∧ HasCompactSupport φ₁` using `h₁`. Establish `h₂' : IsLocallyConstant φ₂ ∧ HasCompactSupport φ₂` using `h₂`. Take `⟨hl1, hc1⟩` from `h₁'`. Take `⟨hl2, hc2⟩` from `h₂'`. Use `show IsLocallyConstant (boxFun φ₁ φ₂) ∧ HasCompactSupport (boxFun φ₁ φ₂)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hl1.comp_continuous (continuous_pi fun j => continuous_apply (Sum.inl j))).mul (hl2.comp_continuous (continuous_pi fun j => continuous_apply (Sum.inr j)))`. Set `e : (κ ⊕ κ' → R) ≃ₜ (κ → R) × (κ' → R)` to `Homeomorph.sumArrowHomeomorphProdArrow`. Use `HasCompactSupport.intro ((hc1.isCompact.prod hc2.isCompact).image e.symm.continuous) ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hx' : ¬ (x ∘ Sum.inl ∈ tsupport φ₁ ∧ x ∘ Sum.inr ∈ tsupport φ₂)`. Introduce and unpack `⟨k1, k2⟩`. Conclude with `hx ⟨e x, ⟨k1, k2⟩, e.symm_apply_apply x⟩`. Use `show φ₁ (x ∘ Sum.inl) * φ₂ (x ∘ Sum.inr) = 0`. Break down `not_and_or.1 hx' with k | k` into its components or cases.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport k, zero_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport k, mul_zero]`.
+-/
 theorem box_mem_SB {R : Type} [TopologicalSpace R] [T2Space R] {κ κ' : Type} {φ₁ : (κ → R) → ℂ}
     {φ₂ : (κ' → R) → ℂ} (h₁ : φ₁ ∈ SB (κ → R)) (h₂ : φ₂ ∈ SB (κ' → R)) : boxFun φ₁ φ₂ ∈ SB (κ ⊕ κ' → R) := by
   have h₁' : IsLocallyConstant φ₁ ∧ HasCompactSupport φ₁ := h₁
@@ -101,6 +120,13 @@ theorem box_mem_SB {R : Type} [TopologicalSpace R] [T2Space R] {κ κ' : Type} {
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Set `B : ((κ → AdeleRing (𝓞 F) F) → ℂ) →ₗ[ℂ] ((κ' → AdeleRing (𝓞 F) F) → ℂ) →ₗ[ℂ] ((κ ⊕ κ' → AdeleRing (𝓞 F) F) → ℂ)` to `LinearMap.mk₂ ℂ boxFun (fun a b c => by funext x; simp only [GlobalTheory.WeilM.boxFun, Pi.add_apply]; ring) (fun s a c => by funext x; simp only [GlobalTheory.WeilM.boxFun, Pi.smul_apply, smul_eq_mul]; ring) (fun a b c => by funext x; simp only [GlobalTheory.WeilM.boxFun, Pi.add …`. Establish `hmem : B φ₁ φ₂ ∈ Submodule.map₂ B (schA F κ) (schA F κ')` using `Submodule.apply_mem_map₂ B h₁ h₂`. Establish `hle : Submodule.map₂ B (schA F κ) (schA F κ') ≤ schA F (κ ⊕ κ')`. Unfold `GlobalTheory.WeilM.schA`. Rewrite using `[Submodule.map₂_span_span, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨Φ₁, ⟨f1, g1, hg1, rfl⟩, Φ₂, ⟨f2, g2, hg2, rfl⟩, rfl⟩`. Take `⟨h, hh⟩` from `exists_schwartz_box f1 f2`. Use `Submodule.subset_span ⟨h, boxFun g1 g2, box_mem_SB hg1 hg2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [B, LinearMap.mk₂_apply, GlobalTheory.WeilM.boxFun, GlobalTheory.WeilM.pureA, hh, Function.comp_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `hle hmem`.
+-/
 theorem box_mem_schA {κ κ' : Type} [Fintype κ] [Fintype κ'] {φ₁ : (κ → AdeleRing (𝓞 F) F) → ℂ}
     {φ₂ : (κ' → AdeleRing (𝓞 F) F) → ℂ} (h₁ : φ₁ ∈ schA F κ) (h₂ : φ₂ ∈ schA F κ') :
     boxFun φ₁ φ₂ ∈ schA F (κ ⊕ κ') := by
@@ -123,6 +149,9 @@ theorem box_mem_schA {κ κ' : Type} [Fintype κ] [Fintype κ'] {φ₁ : (κ →
     ring
   exact hle hmem
 
+/- English proof (translation)
+Establish `s1` using `GlobalTheory.CompanionTheory.ThetaAdm.summable_schA F h₁`. Establish `s2` using `GlobalTheory.CompanionTheory.ThetaAdm.summable_schA F h₂`. Unfold `GlobalTheory.WeilM.thetaSum`. Rewrite using `[tsum_mul_tsum_of_summable_norm s1 s2, ← (Equiv.sumArrowEquivProdArrow κ κ' F).tsum_eq]`. Conclude with `tsum_congr (fun ξ => rfl)`.
+-/
 theorem thetaSum_box {κ κ' : Type} [Fintype κ] [Fintype κ'] {φ₁ : (κ → AdeleRing (𝓞 F) F) → ℂ}
     {φ₂ : (κ' → AdeleRing (𝓞 F) F) → ℂ} (h₁ : φ₁ ∈ schA F κ) (h₂ : φ₂ ∈ schA F κ') :
     thetaSum F (boxFun φ₁ φ₂) = thetaSum F φ₁ * thetaSum F φ₂ := by
@@ -132,6 +161,9 @@ theorem thetaSum_box {κ κ' : Type} [Fintype κ] [Fintype κ'] {φ₁ : (κ →
   rw [tsum_mul_tsum_of_summable_norm s1 s2, ← (Equiv.sumArrowEquivProdArrow κ κ' F).tsum_eq]
   exact tsum_congr (fun ξ => rfl)
 
+/- English proof (translation)
+Introduce `F _ _ _ κ κ' _ _ φ₁ h₁ φ₂ h₂`. Conclude with `⟨box_mem_schA F h₁ h₂, thetaSum_box F h₁ h₂⟩`.
+-/
 theorem theta_box : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)] (κ κ' : Type)
     [Fintype κ] [Fintype κ'], ∀ φ₁ ∈ schA F κ, ∀ φ₂ ∈ schA F κ',
     boxFun φ₁ φ₂ ∈ schA F (κ ⊕ κ') ∧ thetaSum F (boxFun φ₁ φ₂) = thetaSum F φ₁ * thetaSum F φ₂ := by

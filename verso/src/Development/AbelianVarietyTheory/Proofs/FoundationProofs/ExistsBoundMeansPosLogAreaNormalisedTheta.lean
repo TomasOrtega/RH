@@ -19,6 +19,13 @@ open scoped BigOperators
 
 namespace GlobalTheory.PositiveMeans
 
+/- English proof (translation)
+Establish `h1 : a = 4 * (x ^ 2 + x * y + y ^ 2)`. Apply `mul_left_cancel₀ (sub_ne_zero.2 hxy)` to reduce the goal to its premises. Take the linear combination `hy - hx`. Establish `h2 : a = 4 * (x ^ 2 + x * z + z ^ 2)`. Apply `mul_left_cancel₀ (sub_ne_zero.2 hxz)` to reduce the goal to its premises.
+
+Take the linear combination `hz - hx`. Establish `h3 : z = -x - y`. Apply `mul_left_cancel₀ (sub_ne_zero.2 hyz)` to reduce the goal to its premises. Take the linear combination `(h2 - h1) / 4`. Establish `h4 : b = 4 * x ^ 3 - a * x` using `by linear_combination -hx`.
+
+Substitute `h3` using the available equality. Rewrite `hd` using `[h4, h1]`. Rewrite using `[h1]`. Take the linear combination `256 * hd`.
+-/
 theorem prod_roots {a b x y z : ℂ} (hd : a ^ 3 - 27 * b ^ 2 = 1)
     (hx : 4 * x ^ 3 - a * x - b = 0) (hy : 4 * y ^ 3 - a * y - b = 0) (hz : 4 * z ^ 3 - a * z - b = 0)
     (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z) :
@@ -38,6 +45,13 @@ theorem prod_roots {a b x y z : ℂ} (hd : a ^ 3 - 27 * b ^ 2 = 1)
   rw [h1]
   linear_combination 256 * hd
 
+/- English proof (translation)
+Take `⟨L, h⟩` from `GlobalTheory.OddTheta.exists_periodPair Λ hΛ`. Distinguish the cases in `h1 : L.ω₁ / 2 - t ∈ Λ`. Use `⟨L.ω₂ / 2, ?_, ?_, fun h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[h, mul_div_cancel₀ _ two_ne_zero]`. Conclude with `L.ω₂_mem_lattice`.
+
+Rewrite using `[h]`. Conclude with `L.ω₂_div_two_notMem_lattice`. Establish `h3` using `(h _).1 (Λ.sub_mem h1 h2)`. Use `(PeriodPair.mul_ω₁_add_mul_ω₂_mem_lattice (L := L) (α := 1 / 2) (β := -1 / 2)).mp (by convert h3 using 1; push_cast; ring)` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+
+Use `⟨L.ω₁ / 2, ?_, ?_, h1⟩` and prove the remaining obligations. Rewrite using `[h, mul_div_cancel₀ _ two_ne_zero]`. Conclude with `L.ω₁_mem_lattice`. Rewrite using `[h]`. Conclude with `L.ω₁_div_two_notMem_lattice`.
+-/
 theorem exists_half (Λ : AddSubgroup ℂ)
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) (t : ℂ) :
     ∃ v : ℂ, 2 * v ∈ Λ ∧ v ∉ Λ ∧ v - t ∉ Λ := by
@@ -54,6 +68,9 @@ theorem exists_half (Λ : AddSubgroup ℂ)
     · rw [h, mul_div_cancel₀ _ two_ne_zero]; exact L.ω₁_mem_lattice
     · rw [h]; exact L.ω₁_div_two_notMem_lattice
 
+/- English proof (translation)
+Take `⟨-, h0, -, h, -⟩` from `GlobalTheory.OddTheta.sgStar_laws Λ hΛ`. Introduce `e`. Use `h u v hu hv` as an intermediate fact. Rewrite `this` using `[e, sub_self, zero_mul, eq_comm, neg_eq_zero, mul_eq_zero, h0, h0]`. The claim follows by propositional logic.
+-/
 theorem wpF_ne (Λ : AddSubgroup ℂ)
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) {u v : ℂ}
     (hu : u ∉ Λ) (hv : v ∉ Λ) (h1 : u + v ∉ Λ) (h2 : u - v ∉ Λ) : wpF Λ u ≠ wpF Λ v := by
@@ -63,6 +80,17 @@ theorem wpF_ne (Λ : AddSubgroup ℂ)
   rw [e, sub_self, zero_mul, eq_comm, neg_eq_zero, mul_eq_zero, h0, h0] at this
   tauto
 
+/- English proof (translation)
+Take `⟨v, hv2, hv, hvt⟩` from `exists_half Λ hΛ t`. Establish `hs : t + v ∉ Λ` using `fun h => hvt (by convert Λ.sub_mem h h2 using 1; ring)`. Establish `hs2 : 2 * (t + v) ∈ Λ` using `by convert Λ.add_mem h2 hv2 using 1; ring`. Take `⟨a0, -, a1, a2⟩` from `GlobalTheory.T.oddTheta_halfPeriod_value_isIntegral Λ hΛ hd hj t h2 ht`. Take `⟨-, -, b1, b2⟩` from `GlobalTheory.T.oddTheta_halfPeriod_value_isIntegral Λ hΛ hd hj v hv2 hv`.
+
+Take `⟨-, -, c1, c2⟩` from `GlobalTheory.T.oddTheta_halfPeriod_value_isIntegral Λ hΛ hd hj (t + v) hs2 hs`. Establish `hp` using `prod_roots hd a2 b2 c2 (wpF_ne Λ hΛ ht hv hs fun h => hvt (by convert Λ.neg_mem h using 1; ring)) (wpF_ne Λ hΛ ht hs (fun h => hv (by convert Λ.sub_mem h h2 using 1; ring)) fun h => hv (by convert Λ.neg_mem h using 1; ring)) (wpF_ne Λ hΛ hv hs (fun h => ht (by convert Λ.sub_mem h …`. Rewrite `hp` using `[← a1, ← b1, ← c1]`. Use `⟨a0, ?_⟩` and prove the remaining obligations. Establish `hn` using `congrArg norm hp`.
+
+Simplify using `only [norm_mul, norm_pow, Complex.norm_ofNat] at hn`. Establish `hb` using `hS v`. Establish `hc` using `hS (t + v)`. Establish `ha : 0 < ‖U1 Λ t (sgStar Λ) 0‖ ^ 2` using `by positivity`. Generalize the expression as in `‖U1 Λ t (sgStar Λ) 0‖ = x at *`.
+
+Generalize the expression as in `‖U1 Λ v (sgStar Λ) 0‖ = y at *`. Generalize the expression as in `‖U1 Λ (t + v) (sgStar Λ) 0‖ = z at *`. Establish `h1 : 1 ≤ x ^ 2 * y ^ 2 * z ^ 2`. Rewrite using `[← one_le_pow_iff_of_nonneg (n := 4) (by positivity) (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h3 : y ^ 2 * z ^ 2 ≤ S ^ 2`. Rewrite using `[sq S]`. Conclude with `mul_le_mul hb hc (by positivity) ((sq_nonneg y).trans hb)`. Rewrite using `[inv_le_iff_one_le_mul₀ ha]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem inv_le (Λ : AddSubgroup ℂ)
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂})
     (hd : TaylorLogMetric.discr Λ = 1) (hj : IsIntegral ℤ (1728 * g2 Λ ^ 3)) {S : ℝ}
@@ -99,6 +127,15 @@ theorem inv_le (Λ : AddSubgroup ℂ)
   rw [inv_le_iff_one_le_mul₀ ha]
   nlinarith
 
+/- English proof (translation)
+Take `⟨h0, hi⟩` from `inv_le Λ hΛ hd hj hS h2 ht`. Take `⟨hN, hth⟩` from `GlobalTheory.T.odd_theta_norm_unimodular_lattice Λ hΛ hd`. Rewrite using `[hth t h0]`. Establish `e1 : 2 * Real.posLog (nrm1Sq Λ (sgStar Λ)) ≤ Real.posLog (2 * Real.pi ^ 2) + Real.posLog (area Λ)⁻¹`. Use `Real.posLog_pow 2 (nrm1Sq Λ (sgStar Λ))` as an intermediate fact.
+
+Rewrite `this` using `[hN, div_eq_mul_inv]`. Establish `h` using `Real.posLog_mul (x := 2 * Real.pi ^ 2) (y := (area Λ)⁻¹)`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : Real.posLog (‖U1 Λ t (sgStar Λ) 0‖ ^ 2)⁻¹ ≤ 2 * (Real.posLog B + Real.posLog (nrm1Sq Λ (sgStar Λ)))`.
+
+Use `(Real.posLog_le_posLog (by positivity) hi).trans ?_` and prove the remaining obligations. Rewrite using `[Real.posLog_pow]`. Use `Real.posLog_mul (x := B) (y := nrm1Sq Λ (sgStar Λ))` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[div_eq_mul_inv]`. Use `Real.posLog_mul (x := nrm1Sq Λ (sgStar Λ)) (y := (‖U1 Λ t (sgStar Λ) 0‖ ^ 2)⁻¹)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem posLog_nrm_le (Λ : AddSubgroup ℂ)
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂})
     (hd : TaylorLogMetric.discr Λ = 1) (hj : IsIntegral ℤ (1728 * g2 Λ ^ 3)) {B : ℝ}
@@ -126,6 +163,13 @@ theorem posLog_nrm_le (Λ : AddSubgroup ℂ)
   have := Real.posLog_mul (x := nrm1Sq Λ (sgStar Λ)) (y := (‖U1 Λ t (sgStar Λ) 0‖ ^ 2)⁻¹)
   linarith
 
+/- English proof (translation)
+Establish `hK : ∀ x ∈ D.host.K, D.host.conj x ∈ D.host.K`. Introduce `x hx`. Establish `hm : D.host.sqrtMinusD ∈ D.host.K` using `IntermediateField.mem_adjoin_simple_self ℚ _`. Establish `: D.host.K ≤ D.host.K.comap D.host.conj.toAlgHom`. Use `IntermediateField.adjoin_simple_le_iff.2 ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `D.host.conj D.host.sqrtMinusD ∈ D.host.K`. Rewrite using `[D.host.conj_sqrtMinusD]`. Conclude with `neg_mem hm`. Conclude with `this hx`. Establish `h0 : IsIntegral ℤ (((r : D.host.K) : D.host.E))` using `(r.2 : IsIntegral ℤ (r : D.host.K)).map D.host.K.val.toRingHom.toIntAlgHom`.
+
+Establish `h1 : IsIntegral ℤ (D.host.conj ((r : D.host.K) : D.host.E))` using `h0.map D.host.conj.toAlgHom.toRingHom.toIntAlgHom`. Establish `h2 : IsIntegral ℤ (⟨_, hK _ (r : D.host.K).2⟩ : D.host.K)` using `(isIntegral_algHom_iff D.host.K.val.toRingHom.toIntAlgHom Subtype.val_injective).1 h1`. Conclude with `⟨⟨_, h2⟩, D.host.conjE_apply D.host.φ₀ _⟩`.
+-/
 theorem exists_conj (D : D7) (r : 𝓞 D.host.K) :
     ∃ r', GlobalTheory.ConjCurve.embK D r' = (starRingEnd ℂ) (GlobalTheory.ConjCurve.embK D r) := by
   have hK : ∀ x ∈ D.host.K, D.host.conj x ∈ D.host.K := by
@@ -145,6 +189,13 @@ theorem exists_conj (D : D7) (r : 𝓞 D.host.K) :
     (isIntegral_algHom_iff D.host.K.val.toRingHom.toIntAlgHom Subtype.val_injective).1 h1
   exact ⟨⟨_, h2⟩, D.host.conjE_apply D.host.φ₀ _⟩
 
+/- English proof (translation)
+Unfold `eisG`. Set `e : {w : ℂ // w ∈ Λ ∧ w ≠ 0} ≃ {w : ℂ // w ∈ Λ.map (starRingEnd ℂ).toAddMonoidHom ∧ w ≠ 0}` to `Complex.conjAe.toEquiv.subtypeEquiv fun w => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨w, h1, rfl⟩, by simpa using h2⟩`.
+
+Introduce and unpack `⟨⟨u, hu, e⟩, h2⟩`. Establish `: u = w` using `(starRingEnd ℂ).injective e`. Conclude with `⟨this ▸ hu, by simpa using h2⟩`. Rewrite using `[← e.tsum_eq, Complex.conj_tsum]`. Use `congr 1`.
+
+Use extensionality with `w`. Establish `: ((e w : {w : ℂ // w ∈ Λ.map (starRingEnd ℂ).toAddMonoidHom ∧ w ≠ 0}) : ℂ) = (starRingEnd ℂ) w` using `rfl`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem eisG_conj (Λ : AddSubgroup ℂ) (k : ℕ) :
     eisG (Λ.map (starRingEnd ℂ).toAddMonoidHom) k = (starRingEnd ℂ) (eisG Λ k) := by
   unfold eisG
@@ -163,6 +214,21 @@ theorem eisG_conj (Λ : AddSubgroup ℂ) (k : ℕ) :
   rw [this]
   simp
 
+/- English proof (translation)
+Take `⟨M', ρ', halg, hext⟩` from `GlobalTheory.TwoTorsionPt.exists_extension M ρ`. Establish `hl : lamConj M ρ (lamOf D cc δ) = lamConj M' ρ' (lamOf D cc δ)`. Unfold `lamConj`. Rewrite using `[(hext _ h2).2, (hext _ h3).2]`. Rewrite using `[hl]`.
+
+Establish `hD : DataIn D (tor0 D cc δ) M'`. Use `⟨fun τ x => halg _ ?_, (hext _ h2).1, (hext _ h3).1⟩` and prove the remaining obligations. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom (embT D τ).toRatAlgHom`. Take `⟨hfix, hbar, -⟩` from `hI.bar cc δ hc M' ρ' hD`. Break down `hfix with hfix | hfix` into its components or cases.
+
+Take `⟨cc', δ', hc', -, e⟩` from `hI.curve cc δ hc M' ρ' hfix hD.2.1 hD.2.2 1 one_pos`. Conclude with `⟨cc', δ', hc', e⟩`. Take `⟨cc', δ', hc', -, e⟩` from `hI.curve cc δ hc M' (rhoBar M' ρ') hfix hD.2.1 hD.2.2 1 one_pos`. Establish `hm : (lamConj M' ρ' (lamOf D cc δ)).map (starRingEnd ℂ).toAddMonoidHom = lamOf D cc' δ'`. Rewrite using `[← e]`.
+
+Conclude with `(congrArg Tor.abelian₂ hbar).symm`. Generalize the expression as in `lamConj M' ρ' (lamOf D cc δ) = Λ at hm`. Take `⟨-, -, hdisc, -, hO⟩` from `GlobalTheory.T.idealPeriodLattice_of_curveDatum D hI.g1 cc' δ' hc'`. Establish `hd : TaylorLogMetric.discr Λ = 1`. Rewrite `hdisc` using `[← hm, TaylorLogMetric.discr, g2, g3, eisG_conj, eisG_conj]`.
+
+Apply `(starRingEnd ℂ).injective` to reduce the goal to its premises. Rewrite using `[map_one, ← hdisc, TaylorLogMetric.discr, g2, g3]`. Simplify using `[map_ofNat]`. Take `⟨L, hL⟩` from `GlobalTheory.LatticeInvariants.exists_periodPair_of_discr_ne_zero (Λ := Λ) (by rw [hd]; exact one_ne_zero)`. Take `⟨c, d, h, -, e'⟩` from `GlobalTheory.ConjCurve.exists_crv D Λ L.ω₁ L.ω₂ (by simpa using L.indep.ne_zero 0) (fun z => (hL z).trans PeriodPair.mem_lattice) (fun r z hz => by`.
+
+Take `⟨r', hr⟩` from `exists_conj D r`. Establish `h1 : (starRingEnd ℂ) z ∈ lamOf D cc' δ'` using `hm ▸ ⟨z, hz, rfl⟩`. Establish `h4 : GlobalTheory.ConjCurve.embK D r' * (starRingEnd ℂ) z ∈ lamOf D cc' δ'` using `hO r' _ h1`. Rewrite `h4` using `[hr, ← map_mul, ← hm]`. Take `⟨u, hu, e⟩` from `h4`.
+
+Establish `: u = _` using `(starRingEnd ℂ).injective e`. Conclude with `this ▸ hu) hd 1 one_pos`. Conclude with `⟨c, d, h, e'⟩`.
+-/
 theorem exists_crv_conj {D : D7} (hI : Inp D) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ)
     (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (h2 : g2 (lamOf D cc δ) ∈ M) (h3 : g3 (lamOf D cc δ) ∈ M) :
     ∃ cc' δ', Crv D cc' δ' ∧ lamConj M ρ (lamOf D cc δ) = lamOf D cc' δ' := by
@@ -202,6 +268,15 @@ theorem exists_crv_conj {D : D7} (hI : Inp D) {cc : Ideal (𝓞 D.host.K)} {δ :
         exact this ▸ hu) hd 1 one_pos
     exact ⟨c, d, h, e'⟩
 
+/- English proof (translation)
+Introduce `ht`. Take `⟨m, hm⟩ : ∃ m : ℕ, D.host.d + 1 = 4 * m` from `⟨(D.host.d + 1) / 4, by have := D.host.hyp.2.2.2.1; omega⟩`. Establish `hs` using `D.host.sqrtMinusD_sq`. Establish `hmem : ((1 + D.host.sqrtMinusD) / 2 : D.host.E) ∈ D.host.K` using `div_mem (add_mem (one_mem _) (IntermediateField.mem_adjoin_simple_self ℚ _)) (by simpa using D.host.K.algebraMap_mem (2 : ℚ))`. Establish `hint : IsIntegral ℤ ((1 + D.host.sqrtMinusD) / 2)` using `by set c : D.host.E := (1 + D.host.sqrtMinusD) / 2`.
+
+Establish `hc : c ^ 2 - c + (m : D.host.E) = 0`. Establish `e : ((D.host.d : ℕ) : D.host.E) + 1 = 4 * (m : D.host.E)` using `by exact_mod_cast hm`. Simplify using `only [c]`. Take the linear combination `(1 / 4 : D.host.E) * hs - (1 / 4 : D.host.E) * e`. Conclude with `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (m : ℤ), by monicity!, by`.
+
+Simplify using `[Polynomial.eval₂_sub, Polynomial.eval₂_add, hc]⟩`. Establish `h1 : D.host.φ₀ ((1 + D.host.sqrtMinusD) / 2) * t ∈ Λ` using `hO ⟨⟨_, hmem⟩, (isIntegral_algHom_iff (D.host.K.val.toRingHom.toIntAlgHom) Subtype.val_injective).1 hint⟩ t ht`. Rewrite `h1` using `[map_div₀, map_add, map_one, map_ofNat]`. Establish `h2 : D.host.φ₀ D.host.sqrtMinusD ^ 2 = (Complex.I * (Real.sqrt D.host.d : ℂ)) ^ 2`. Rewrite using `[← map_pow, hs, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`.
+
+Simplify using the standard rewrite rules. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h2 with e | e` into its components or cases. Conclude with `h.2.1 (e ▸ h1)`. Rewrite `h1` using `[e, ← sub_eq_add_neg]`. Conclude with `h.2.2 h1`.
+-/
 theorem not_mem_lattice_of_isCMTorsionBasePoint {D : D7} {Λ : AddSubgroup ℂ} {t : ℂ} (h : GL3Theta.IsTwoTorsionPointUnkilled D Λ t)
     (hO : ∀ a : 𝓞 D.host.K, ∀ w ∈ Λ, D.host.φ₀ (((a : D.host.K) : D.host.E)) * w ∈ Λ) : t ∉ Λ := by
   intro ht
@@ -230,6 +305,29 @@ theorem not_mem_lattice_of_isCMTorsionBasePoint {D : D7} {Λ : AddSubgroup ℂ} 
   · rw [e, ← sub_eq_add_neg] at h1
     exact h.2.2 h1
 
+/- English proof (translation)
+Take `⟨C, hC, hA⟩` from `GlobalTheory.LatticeAreaBound.area_bounded_of_discr_eq_one`. Establish `hc1 : 0 ≤ Real.posLog C` using `Real.posLog_nonneg`. Establish `hc2 : 0 ≤ Real.posLog (2 * Real.pi ^ 2)` using `Real.posLog_nonneg`. Use `⟨18 + 3 / 2 * (Real.posLog (2 * Real.pi ^ 2) + (Real.posLog C + 2)), by positivity, ?_⟩` and prove the remaining obligations. Introduce `D hI cc δ t0 hc _ L hL hrd hdl M _ h2 h3 _ t ht`.
+
+Take `⟨-, hlogd, hr1, -⟩` from `GlobalTheory.T.derivationDenominators_and_hostField_sizes D hI.g1`. Establish `hn : (0 : ℝ) < Module.finrank ℚ M` using `by exact_mod_cast Module.finrank_pos`. Establish `hcard : (Fintype.card (M →ₐ[ℚ] ℂ) : ℝ) = Module.finrank ℚ M`. Conclude with `AlgHom.card ℚ M ℂ` after adjusting the coercions. Establish `hper` using `GlobalTheory.T.mean_log_period_conjugates_eq_chowlaSelberg D hI.g1 cc δ hc M h2 h3`.
+
+Establish `hd0 : (0 : ℝ) < D.host.d` using `by exact_mod_cast D.host.hyp.2.1.pos`. Establish `hpi` using `Real.pi_gt_three`. Establish `hγ` using `Real.one_half_lt_eulerMascheroniConstant`. Establish `hlp : 0 ≤ Real.log Real.pi` using `Real.log_nonneg (by linarith)`. Establish `hl2p : 0 ≤ Real.log (2 * Real.pi)` using `Real.log_nonneg (by linarith)`.
+
+Rewrite `hper` using `[Real.log_div (by positivity) (by positivity), Real.log_sqrt hd0.le, div_eq_iff hn.ne']`. Establish `hB : Real.posLog (3 * (2 * D.host.rdE + 1)) ≤ 9 * L`. Use `(Real.posLog_le_posLog (by positivity) (show _ ≤ 9 * D.host.rdE by linarith)).trans ?_` and prove the remaining obligations. Rewrite using `[Real.posLog_eq_log (by rw [abs_of_pos (by positivity)]; linarith), Real.log_mul (by norm_num) (by positivity)]`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 9 by norm_num)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ ρ : M →ₐ[ℚ] ℂ, Real.posLog (area (lamConj M ρ (lamOf D cc δ)))⁻¹ ≤ Real.posLog C - Real.log (area (lamConj M ρ (lamOf D cc δ)) / Real.pi) - Real.log Real.pi ∧ Real.posLog (nrm1Sq (lamConj M ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj M ρ (lamOf D cc δ)) (t ρ))) ≤ (18 * L + 3 …`. Introduce `ρ`. Take `⟨cc', δ', hc', e⟩` from `exists_crv_conj hI hc M ρ h2 h3`. Establish `ht'` using `ht ρ`.
+
+Rewrite `ht'`, the goal using `[e]`. Take `⟨hΛ, -, hdisc, -, hO⟩` from `GlobalTheory.T.idealPeriodLattice_of_curveDatum D hI.g1 cc' δ' hc'`. Take `⟨ha0, haC⟩` from `hA _ hΛ hdisc`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Real.log_div ha0.ne' (by positivity)]`.
+
+Establish `h1` using `Real.posLog_le_posLog ha0.le haC`. Establish `h4` using `Real.posLog_sub_posLog_inv (x := area (lamOf D cc' δ'))`. Combine the linear equalities and inequalities to obtain the conclusion. Use `posLog_nrm_le _ hΛ hdisc ((GlobalTheory.T.admJ_and_torsion_data_algebraic D hI.g1).1 cc' δ' hc'.1 hc'.2) (GlobalTheory.T.sigmaStar_value_le_meanSquare_genusOne D hI.g1 cc' δ' hc') ht'.1 (not_mem_lattice_of_isCMTorsionBasePoint ht' hO)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `s1 : ∑ ρ : M →ₐ[ℚ] ℂ, Real.posLog (area (lamConj M ρ (lamOf D cc δ)))⁻¹ ≤ (Real.posLog C + 2) * L * Module.finrank ℚ M`. Use `(Finset.sum_le_sum fun ρ _ => (key ρ).1).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, hper, Finset.sum_const, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, nsmul_eq_mul, hcard]`. Establish `h5` using `le_abs_self (logDerivativeAtOne D)`. Establish `h6 : Real.posLog C ≤ Real.posLog C * L` using `le_mul_of_one_le_right hc1 hL`.
+
+Establish `h7 : Real.posLog C - (Real.eulerMascheroniConstant + (Real.log (2 * Real.pi) - Real.log D.host.d / 2) - logDerivativeAtOne D) - Real.log Real.pi ≤ (Real.posLog C + 2) * L` using `by linarith`. Use `mul_le_mul_of_nonneg_right h7 hn.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h8 : Real.posLog (2 * Real.pi ^ 2) ≤ Real.posLog (2 * Real.pi ^ 2) * L` using `le_mul_of_one_le_right hc2 hL`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[div_le_iff₀ hn]`. Use `s1.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right ?_ (by linarith)) hn.le)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_iff₀ hn]`. Use `(Finset.sum_le_sum fun ρ _ => (key ρ).2).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard]`. Use `mul_le_mul_of_nonneg_right h8 hn.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem means_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), Inp D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ), Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → ∀ L : ℝ, 1 ≤ L → Real.log D.host.rdE ≤ L → |logDerivativeAtOne D| ≤ L → ∀ (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M], g2 (lamOf D cc δ) ∈ M → g3 (lamOf D cc δ) ∈ M → wpF (lamOf D cc δ) t0 ∈ M → ∀ t : (M →ₐ[ℚ] ℂ) → ℂ, (∀ ρ, GL3Theta.IsTwoTorsionPointUnkilled D (lamConj M ρ (lamOf D cc δ)) (t ρ)) → (∑ ρ : M →ₐ[ℚ] ℂ, Real.posLog (area (lamConj M ρ (lamOf D cc δ)))⁻¹) / (Module.finrank ℚ M : ℝ) ≤ C * L ∧ (∑ ρ : M →ₐ[ℚ] ℂ, Real.posLog (nrm1Sq (lamConj M ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj M ρ (lamOf D cc δ)) (t ρ)))) / (Module.finrank ℚ M : ℝ) ≤ C * L := by
   obtain ⟨C, hC, hA⟩ := GlobalTheory.LatticeAreaBound.area_bounded_of_discr_eq_one
   have hc1 : 0 ≤ Real.posLog C := Real.posLog_nonneg

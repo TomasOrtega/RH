@@ -7,6 +7,9 @@ open PositivityTheory.He2M1 GroundTheory.Global GroundTheory.Automorphic GroundT
 
 namespace GlobalTheory.CompanionTheory.He2M1
 
+/- English proof (translation)
+Unfold `thetaC`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`.
+-/
 theorem thetaC_smul {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
     (c : ℂ) (F : (ι → 𝔸[k]) → ℂ) (h : GL ι 𝔸[k]) :
     thetaC (c • F) h = c * thetaC F h := by
@@ -14,6 +17,9 @@ theorem thetaC_smul {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι
   simp only [Pi.smul_apply, smul_eq_mul]
   exact tsum_mul_left
 
+/- English proof (translation)
+Introduce `k _ _ ι _ _ w c F ω t`. Unfold `thetaCInt`. Simplify using `only [thetaC_smul, mul_assoc]`. Conclude with `integral_const_mul c _`.
+-/
 theorem thetaCInt_smul : ∀ {k : Type} [Field k] [NumberField k], ∀ {ι : Type} [Fintype ι]
     [DecidableEq ι], ∀ (w : InfinitePlace k) (c : ℂ) (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k)
     (t : {r : ℝ // 0 < r}), thetaCInt w (c • F) ω t = c * thetaCInt w F ω t := by

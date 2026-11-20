@@ -9,6 +9,21 @@ noncomputable section
 
 namespace GlobalTheory.StabFin
 
+/- English proof (translation)
+Introduce `p _ G P r z K g _ hK w hw a ha τ hτ`. Take `⟨i, σ, hσ⟩` from `G.emb_all _ hτ`. Use `set τ' : FM P →+* PadicAlgCl p := ((σ.symm : PadicAlgCl p ≃+* PadicAlgCl p) : PadicAlgCl p →+* PadicAlgCl p).comp τ with hτ'`. Establish `hτ'F : τ'.comp (algebraMap G.F (FM P)) = G.emb i`. Rewrite using `[hτ', RingHom.comp_assoc, hσ]`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hnorm : ‖τ a‖ = ‖τ' a‖`. Establish `: τ a = σ (τ' a)` using `by simp [hτ']`. Rewrite using `[this]`.
+
+Conclude with `(spectralNorm_eq_of_equiv σ _).symm`. Rewrite using `[hnorm]`. Take `⟨m, hm0, hm⟩` from `exists_pow_mem_conj K (KHT p G.m G.n r G.Fw) g _ hK hw`. Take `⟨k, hk, hkeq⟩` from `hm`. Take `⟨v, hv0, hv⟩` from `GlobalTheory.T.exists_common_eigenvector_rho_adjoinRoot_embedding p G P i τ' hτ'F`.
+
+Establish `hjm : jM P (a ^ m) = (((w ^ m : P.cent) : G.Cˣ × ℚˣ).1 : G.C)`. Rewrite using `[map_pow, ha]`. Both sides reduce to the same expression. Establish `key : (z * g) * k * (z * g)⁻¹ = inclG G r (locC G ((w ^ m : P.cent) : G.Cˣ × ℚˣ))`. Establish `e : P.toQr r z (w ^ m) = z⁻¹ * inclG G r (locC G ((w ^ m : P.cent) : G.Cˣ × ℚˣ)) * z` using `rfl`.
+
+Rewrite `e` using `[map_pow]`. Rewrite `e` using `[← hkeq]`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply] at e`. Establish `e2 : inclG G r (locC G ((w ^ m : P.cent) : G.Cˣ × ℚˣ)) = z * (z⁻¹ * inclG G r (locC G ((w ^ m : P.cent) : G.Cˣ × ℚˣ)) * z) * z⁻¹` using `by group`. Rewrite using `[e2, ← e]`.
+
+Use `group`. Establish `hcomp` using `congrArg (fun x : Gr G r => ((x.2 i : GL (Fin G.n) (KQ p (G.Fw i) r)) : Matrix (Fin G.n) (Fin G.n) (KQ p (G.Fw i) r))) key`. Establish `hk' : k.2 i ∈ Kres p (G.Fw i) G.n r` using `hk.2 i (Set.mem_univ _)`. Establish `hb` using `GlobalTheory.T.eigenvalue_integral_norm_bound p (G.Fw i) G.n r (G.rho i (jM P (a ^ m))) ((z * g).2 i) (k.2 i) hk' (by rw [hjm]; exact hcomp.symm) v (τ' (a ^ m)) hv0 (hv _)`. Rewrite `hb` using `[map_pow, norm_pow]`.
+
+Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) hm0.ne').1 hb`.
+-/
 theorem norm_le_one_at_u : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (r : ℕ) (z : Gr G r) (K : Subgroup (Gr G r)) (g : Gr G r), 0 < r → Subgroup.Commensurable K (KHT p G.m G.n r G.Fw) → ∀ w : P.cent, P.toQr r z w ∈ K.map (MulAut.conj g).toMonoidHom → ∀ (a : FM P), jM P a = ((w : G.Cˣ × ℚˣ).1 : G.C) → ∀ τ : FM P →+* PadicAlgCl p, LiesOver G.Kq G.u (τ.comp (algebraMap G.F (FM P))) → ‖τ a‖ ≤ 1 := by
   intro p _ G P r z K g _ hK w hw a ha τ hτ
   obtain ⟨i, σ, hσ⟩ := G.emb_all _ hτ

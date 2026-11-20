@@ -18,7 +18,13 @@ def emb (σ : H →* H) (d : H) : H →* H × H where
   map_one' := by simp
   map_mul' a b := by simp only [map_mul, Prod.mk_mul_mk, Prod.mk.injEq, true_and]; group
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem emb_fst (σ : H →* H) (d g : H) : (emb σ d g).1 = g := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem emb_snd (σ : H →* H) (d g : H) : (emb σ d g).2 = (σ d)⁻¹ * σ g * σ d := rfl
 
 end GlobalTheory.CompanionTheory.SplitConvTw

@@ -6,6 +6,23 @@ open UpperTheory.HF
 open NumberField IntermediateField Ideal Formalism.FrobeniusOrbits Formalism.HC
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `φ H p hpf hp P _ _`. Establish `hpp : p.Prime` using `Fact.out`. Establish `hco : Nat.Coprime p H.condN` using `hpp.coprime_iff_not_dvd.2 hp`. Establish `hoc : ordCompl[p] H.condN = H.condN`. Rewrite using `[Nat.factorization_eq_zero_of_not_dvd hp, pow_zero, Nat.div_one]`.
+
+Establish `h1 : ∀ σ : H.E ≃ₐ[ℚ] H.E, σ ∈ MulAction.stabilizer (H.E ≃ₐ[ℚ] H.E) P ↔ H.galE σ ∈ Subgroup.zpowers (H.frobG p)`. Introduce `σ`. Rewrite using `[H.der.decomp p P σ, hoc, ← mem_powers_iff_mem_zpowers, H.frobG_of_coprime hco]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, k, hu, hσ⟩`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hu' : u = ZMod.unitOfCoprime p hco ^ k`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, ZMod.coe_unitOfCoprime, ← Nat.cast_pow, ← (ZMod.natCast_eq_natCast_iff _ _ _).2 hu, ZMod.natCast_zmod_val]`. Use `show H.art (ZMod.unitOfCoprime p hco) ^ k = H.gal σ`.
+
+Rewrite using `[hσ, hu', map_pow]`. Introduce and unpack `⟨k, hk⟩`. Use `⟨ZMod.unitOfCoprime p hco ^ k, k, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, ZMod.coe_unitOfCoprime, ← Nat.cast_pow, ZMod.val_natCast]`. Conclude with `Nat.mod_modEq _ _`.
+
+Rewrite using `[map_pow]`. Conclude with `hk.symm`. Establish `h2 : Nat.card (MulAction.stabilizer (H.E ≃ₐ[ℚ] H.E) P) = orderOf (H.frobG p)`. Rewrite using `[← Nat.card_zpowers]`. Conclude with `Nat.card_congr (H.gal.toEquiv.subtypeEquiv h1)`.
+
+Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Use `H.galois` as an intermediate fact. Establish `horb : MulAction.orbit (H.E ≃ₐ[ℚ] H.E) P = primesOver (span {(p : ℤ)}) (𝓞 H.E)`. Use extensionality with `Q`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨inferInstanceAs (g • P).IsPrime, inferInstanceAs ((g • P).LiesOver _)⟩`. Introduce and unpack `⟨hQ1, hQ2⟩`. Conclude with `Ideal.exists_smul_eq_of_isGaloisGroup (span {(p : ℤ)}) P Q (H.E ≃ₐ[ℚ] H.E)`. Rewrite using `[← horb, ← h2, ← MulAction.index_stabilizer, Subgroup.index_mul_card, ← φ.natCard_GG]`.
+
+Conclude with `Nat.card_congr H.gal.toEquiv`.
+-/
 theorem UpperTheory.HF.frob_decomp :
     ∀ (φ : Frame) (H : HostAx φ) (p : ℕ) [Fact p.Prime], ¬ p ∣ H.condN → ∀ (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})],
       (∀ σ : H.E ≃ₐ[ℚ] H.E, σ ∈ MulAction.stabilizer (H.E ≃ₐ[ℚ] H.E) P ↔ H.galE σ ∈ Subgroup.zpowers (H.frobG p)) ∧

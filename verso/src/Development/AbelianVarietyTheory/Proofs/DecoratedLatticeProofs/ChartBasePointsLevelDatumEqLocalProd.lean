@@ -17,6 +17,19 @@ namespace GlobalTheory.PhiOneVal
 
 open Classical in
 
+/- English proof (translation)
+Introduce `B X I _ _ l Z u a Ch A hA k _ _ _ _ ι p β Q L hS J hJ j hj α γ z`. Establish `hj0 : j ≤ B.R.m` using `Nat.le_of_succ_le hj`. Take `⟨⟨e, he⟩, hS2⟩` from `hS`. Take `⟨hLj, hSj⟩` from `hS2 j hj0`. Take `⟨hLj', hSj'⟩` from `hS2 (j + 1) hj`.
+
+Establish `hG` using `GlobalTheory.T.phi_one_eq_one_iff_column_condition B.LL (A.p0 j α).1.1.deco.1 (A.p0 (j + 1) γ).1.1.deco.1 (B.fields.conjO (X.piT u)) (A.p0 j α).1.1.deco.2 (A.p0 (j + 1) γ).1.1.deco.2 (hA.base j hj0 α).2 (hA.base (j + 1) hj γ).2 (fun P x hx r hr c hc => GlobalTheory.T.baseChartDec …`. Establish `hLoc : ∀ i, (Maps (Q j i) (Q (j + 1) i) (GlobalTheory.FinPl.rd (β j i) (β (j + 1) i) (z.map (incA (I.rec7 l Z)))) ↔ ColCond (e i).1 (B.fields.conjO (X.piT u)) (toHom _ _ (rankN (I.rec7 l Z) j hj0) (rankN (I.rec7 l Z) (j + 1) hj) z))` using `fun i => GlobalTheory.T.maps_rd_iff_colCond_toHom (p i) (e i).1 (he i) _ _ (β j i) (β (j + 1) i) (Q j i) (Q (j + 1) i) (L j) (L (j + 1)) _ hLj hLj' (hSj i).1 (hSj' i).1 (hSj i).2 (hSj' i).2 z`. Establish `key : (∀ P : (B.primes X).vT u, ColCond P.1 (B.fields.conjO (X.piT u)) (toHom _ _ (rankN (I.rec7 l Z) j hj0) (rankN (I.rec7 l Z) (j + 1) hj) z)) ↔ ∀ i ∈ J, Maps (Q j i) (Q (j + 1) i) (GlobalTheory.FinPl.rd (β j i) (β (j + 1) i) (z.map (incA (I.rec7 l Z))))`. Use `⟨fun h i _ => (hLoc i).2 (h (e i)), fun h P => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `e.surjective P`.
+
+Conclude with `(hLoc i).1 (h i (hJ.all i))`. Establish `hprod : ∀ (J' : List ι) (c : ι → Prop), (J'.map fun i => (if c i then (1 : ℂ) else 0)).prod = if ∀ i ∈ J', c i then 1 else 0`. Introduce `J' c`. Proceed by induction on `J' with`. Consider the case `nil => simp`.
+
+Consider the case `cons i J' ih`. Rewrite using `[List.map_cons, List.prod_cons, ih]`. Apply the tactic sequence `by_cases h : c i <;> simp [h]`. Establish `hv : ∀ x, Formalism.L2.Col.phiT B.LL (A.p0 j α).1.1.deco.1 (A.p0 (j + 1) γ).1.1.deco.1 x = 1 ∨ Formalism.L2.Col.phiT B.LL (A.p0 j α).1.1.deco.1 (A.p0 (j + 1) γ).1.1.deco.1 x = 0`. Introduce `x`.
+
+Unfold `Formalism.L2.Col.phiT`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [phiOne]`. Rewrite using `[hprod]`. Use `split_ifs with hc`.
+
+Rewrite using `[hG.2 (key.2 hc), map_one]`. Break down `hv (toHom _ _ (rankN (I.rec7 l Z) j hj0) (rankN (I.rec7 l Z) (j + 1) hj) z) with h1 | h0` into its components or cases. Conclude with `absurd (key.1 (hG.1 h1)) hc`. Rewrite using `[h0, map_zero]`.
+-/
 theorem phiT_base_eq_prod : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word)
     (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)

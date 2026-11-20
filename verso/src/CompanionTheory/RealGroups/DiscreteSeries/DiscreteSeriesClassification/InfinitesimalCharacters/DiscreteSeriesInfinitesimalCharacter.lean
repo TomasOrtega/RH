@@ -11,6 +11,9 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.Imports
 
 namespace CompanionTheory.RgDsInf
 
+/- English proof (translation)
+The claim follows from `dsInfChar_of (fun V _ _ => GlobalTheory.CompanionTheory.CapelliGelfand.etr_eq_gelfVal_of_capelli V) GlobalTheory.CompanionTheory.SmoothVecGl.unitAct_glRel GlobalTheory.CompanionTheory.CapelliMap.map_qdet_etr GlobalTheory.CompanionTheory.CoefWord.eword_coef GlobalTheory.CompanionT …`.
+-/
 theorem dsInfChar' : GlobalTheory.Dec.DSInfChar :=
   dsInfChar_of (fun V _ _ => GlobalTheory.CompanionTheory.CapelliGelfand.etr_eq_gelfVal_of_capelli V) GlobalTheory.CompanionTheory.SmoothVecGl.unitAct_glRel
     GlobalTheory.CompanionTheory.CapelliMap.map_qdet_etr GlobalTheory.CompanionTheory.CoefWord.eword_coef GlobalTheory.CompanionTheory.CycWordTrace.sum_cycWord_eq_etr

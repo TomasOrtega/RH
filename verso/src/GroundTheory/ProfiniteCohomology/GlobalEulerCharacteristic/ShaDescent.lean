@@ -30,6 +30,11 @@ def shaSubmodule (A : Rep.{u} k G) [IsDiscreteRep A] (n : ℕ) : Submodule k (co
     change (cohomologyMapAlong (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) n).hom (c • x) = 0
     rw [map_smul, hx v, smul_zero]
 
+/- English proof (translation)
+Introduce `v`. Establish `e1` using `cohomologyMapAlong_comp_apply_of_eq (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (MonoidHom.id G) continuous_id (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (fun _ => rfl) f (𝟙 _) ((Rep.resFunctor (φ v).toMonoidHom).map f) (fun _ => rfl) n x`. Rewrite `e1` using `[cohomologyMapAlong_id_eq_cohomologyMap]`. Establish `e2` using `cohomologyMap_cohomologyMapAlong_apply (φ v).toMonoidHom (continuous_toMonoidHom (φ v)) (𝟙 _) ((Rep.resFunctor (φ v).toMonoidHom).map f) n x`. Rewrite `e2` using `[Category.id_comp]`.
+
+Rewrite using `[e1, ← e2, hx v, map_zero]`.
+-/
 theorem cohomologyMap_mem_shaSubmodule {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] (f : A ⟶ B)
     {n : ℕ} {x : cohomology A n} (hx : x ∈ shaSubmodule φ A n) :
     (cohomologyMap f n).hom x ∈ shaSubmodule φ B n := by
@@ -43,6 +48,9 @@ theorem cohomologyMap_mem_shaSubmodule {A B : Rep.{u} k G} [IsDiscreteRep A] [Is
   rw [Category.id_comp] at e2
   rw [e1, ← e2, hx v, map_zero]
 
+/- English proof (translation)
+Use `⟨fun hx v => ptRes_eq_zero_of_mem_ptSha φ A hx v, fun hx => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ptSha]`. Use function extensionality and compare the values at `v`. Conclude with `hx v`.
+-/
 theorem mem_ptSha_iff_mem_shaSubmodule (A : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep A] {n : ℕ}
     (x : cohomology A n) : x ∈ ptSha φ A n ↔ x ∈ shaSubmodule φ A n := by
   refine ⟨fun hx v => ptRes_eq_zero_of_mem_ptSha φ A hx v, fun hx => ?_⟩
@@ -54,6 +62,11 @@ end Sha
 
 section Nsmul
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `hmn`. Use `⟨fun a b hab => hn.1 ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `hab' : m • a = m • b` using `hab`. Express the relevant statement in the definitionally equal form `(m * c) • a = (m * c) • b`. Rewrite using `[mul_comm, ← smul_smul, ← smul_smul, hab']`.
+
+Take `⟨b, rfl⟩` from `hn.2 a`. Conclude with `⟨c • b, by change m • c • b = (m * c) • b; rw [smul_smul]⟩`.
+-/
 theorem bijective_nsmul_of_dvd {A : Type*} [AddCommGroup A] {m n : ℕ} (hmn : m ∣ n)
     (hn : Function.Bijective fun a : A => n • a) : Function.Bijective fun a : A => m • a := by
   obtain ⟨c, rfl⟩ := hmn
@@ -116,6 +129,11 @@ def mackeyTranslateInv (p : MackeyIndex V φ) :
     group⟩
 
 omit [CompactSpace G] [∀ v, CompactSpace (Hv v)] in
+/- English proof (translation)
+Establish `h : mackeyTranslateMor φ V A p ≫ mackeyTranslateInv φ V A p = 𝟙 _`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `A.ρ p.2.out⁻¹ (A.ρ p.2.out a) = a`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Use `Function.LeftInverse.injective (g := (cohomologyMap (mackeyTranslateInv φ V A p) n).hom) fun z => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ModuleCat.comp_apply, ← cohomologyMap_comp, h, cohomologyMap_id]`. Both sides reduce to the same expression.
+-/
 theorem cohomologyMap_mackeyTranslateMor_injective (p : MackeyIndex V φ) (n : ℕ) :
     Function.Injective (cohomologyMap (mackeyTranslateMor φ V A p) n).hom := by
   have h : mackeyTranslateMor φ V A p ≫ mackeyTranslateInv φ V A p = 𝟙 _ := by
@@ -128,6 +146,17 @@ theorem cohomologyMap_mackeyTranslateMor_injective (p : MackeyIndex V φ) (n : �
 
 omit [∀ v, CompactSpace (Hv v)] in
 
+/- English proof (translation)
+Use `set x := p.2.out`. Set `φ' : mackeySubgroup (V : Subgroup G) (φ p.1).toMonoidHom x →* G` to `(φ p.1).toMonoidHom.comp (mackeySubgroup (V : Subgroup G) (φ p.1).toMonoidHom x).subtype`. Establish `hφ' : Continuous φ'` using `(continuous_toMonoidHom (φ p.1)).comp (continuous_subgroup_subtype _)`. Set `g' : Rep.res φ' A ⟶ Rep.res (mackeyFamily V φ p).toMonoidHom (Rep.res (V : Subgroup G).subtype A)` to `Rep.ofHom ⟨A.ρ x, fun h => by`. Use extensionality with `a`.
+
+Express the relevant statement in the definitionally equal form `A.ρ x (A.ρ ((φ p.1) (h : Hv p.1)) a) = A.ρ (x * (φ p.1) (h : Hv p.1) * x⁻¹) (A.ρ x a)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use the proof step `group⟩`. Set `c : (V : Subgroup G) →* G` to `(innerConjHom x).comp (V : Subgroup G).subtype`.
+
+Establish `hc : Continuous c` using `(continuous_innerConjHom x).comp (continuous_subgroup_subtype _)`. Set `g₁ : Rep.res c A ⟶ Rep.res (V : Subgroup G).subtype A` to `Rep.ofHom ⟨A.ρ x, fun h => by`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `A.ρ x (A.ρ (x⁻¹ * (h : G) * x) a) = A.ρ (h : G) (A.ρ x a)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`.
+
+Use `congr 2`. Use the proof step `group⟩`. Establish `s1 : (cohomologyRes A (V : Subgroup G) n).hom y = (cohomologyMapAlong c hc g₁ n).hom y` using `by conv_lhs => rw [← cohomologyInnerConj_apply A n x y]`. Conclude with `cohomologyMapAlong_comp_apply_of_eq (V : Subgroup G).subtype (continuous_subgroup_subtype _) (innerConjHom x) (continuous_innerConjHom x) c hc (fun _ => rfl) (innerConjMor A x) (𝟙 _) g₁ (fun _ => rfl) n y`. Establish `s2` using `cohomologyMapAlong_comp_apply_of_eq (mackeyFamily V φ p).toMonoidHom (continuous_toMonoidHom (mackeyFamily V φ p)) c hc φ' hφ' (fun h => by`.
+
+Express the relevant statement in the definitionally equal form `x⁻¹ * (x * (φ p.1) (h : Hv p.1) * x⁻¹) * x = (φ p.1) (h : Hv p.1)`. Use the proof step `group) g₁ (𝟙 _) g' (fun _ => rfl) n y`. Establish `s3` using `cohomologyMap_cohomologyMapAlong_apply (mackeySubgroup (V : Subgroup G) (φ p.1).toMonoidHom x).subtype (continuous_subgroup_subtype _) (𝟙 _) (mackeyTranslateMor φ V A p) n ((cohomologyMapAlong (φ p.1).toMonoidHom (continuous_toMonoidHom (φ p.1)) (𝟙 _) n).hom y)`. Establish `s4` using `cohomologyMapAlong_comp_apply_of_eq (mackeySubgroup (V : Subgroup G) (φ p.1).toMonoidHom x).subtype (continuous_subgroup_subtype _) (φ p.1).toMonoidHom (continuous_toMonoidHom (φ p.1)) φ' hφ' (fun _ => rfl) (𝟙 _) (𝟙 _ ≫ mackeyTranslateMor φ V A p) g' (fun _ => rfl) n y`. Rewrite using `[s1, s2, cohomologyRes_eq, s3, s4]`.
+-/
 theorem cohomologyMapAlong_mackeyFamily_cohomologyRes (p : MackeyIndex V φ) (n : ℕ) (y : cohomology A n) :
     (cohomologyMapAlong (mackeyFamily V φ p).toMonoidHom (continuous_toMonoidHom (mackeyFamily V φ p)) (𝟙 _) n).hom
         ((cohomologyRes A (V : Subgroup G) n).hom y) =
@@ -183,11 +212,19 @@ variable [(V : Subgroup G).Normal]
 
 omit [IsTopologicalGroup G] [CompactSpace G] in
 
+/- English proof (translation)
+Rewrite using `[mackeySubgroup, Subgroup.index_comap]`. Conclude with `Subgroup.relIndex_dvd_index_of_normal _ _`.
+-/
 theorem index_mackeySubgroup_dvd {H : Type u} [Group H] (ψ : H →* G) (x : G) :
     (mackeySubgroup (V : Subgroup G) ψ x).index ∣ (V : Subgroup G).index := by
   rw [mackeySubgroup, Subgroup.index_comap]
   exact Subgroup.relIndex_dvd_index_of_normal _ _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy p`. Rewrite using `[cohomologyMapAlong_mackeyFamily_cohomologyRes, hy p.1, map_zero, map_zero]`. Introduce `hy v`. Set `p : MackeyIndex V φ` to `⟨v, DoubleCoset.mk (V : Subgroup G) (φ v).toMonoidHom.range 1⟩`.
+
+Establish `h0` using `hy p`. Rewrite `h0` using `[cohomologyMapAlong_mackeyFamily_cohomologyRes]`. Establish `h1` using `cohomologyMap_mackeyTranslateMor_injective φ V A p n (h0.trans (map_zero _).symm)`. Establish `hB : Function.Bijective fun a : Rep.res (φ p.1).toMonoidHom A => ((mackeyOpenSubgroup V (continuous_toMonoidHom (φ p.1)) p.2.out : OpenSubgroup (Hv p.1)) : Subgroup (Hv p.1)).index • a` using `bijective_nsmul_of_dvd (index_mackeySubgroup_dvd V (φ p.1).toMonoidHom p.2.out) hA`. Conclude with `cohomologyRes_injective_of_bijective (mackeyOpenSubgroup V (continuous_toMonoidHom (φ p.1)) p.2.out) (Rep.res (φ p.1).toMonoidHom A) hB n (h1.trans (map_zero _).symm)`.
+-/
 theorem mem_shaSubmodule_iff_cohomologyRes (hA : Function.Bijective fun a : A => (V : Subgroup G).index • a)
     (n : ℕ) (y : cohomology A n) :
     y ∈ shaSubmodule φ A n ↔

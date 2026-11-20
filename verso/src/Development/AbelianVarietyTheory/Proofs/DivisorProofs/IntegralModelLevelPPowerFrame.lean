@@ -14,6 +14,17 @@ open GlobalTheory.FlatModel
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `hK hTate hVal E _ _ _ H Dw τ p _ _ hs n l l' Xo Xo' c c' W Y r ν hle hOv hA N a T S hLat _ yb yy P π ψ y hHT β hβ`. Take `⟨ta, u, hlev, hDF⟩` from `hTate E H Dw l' Xo' c' W Y p n hs hA yb yy P π ψ hHT.1 β (conjEmb τ.1) (Ind Dw τ.1) N a T S hLat`. Rewrite `hDF` using `[htAt_embV_eq E H Dw l l' Xo Xo' c c' W Y r ν hle hOv p yb yy P π ψ y hHT β hβ (conjEmb τ.1)]`. Take `⟨hPt, -, -, z, g, a0, x, -, -, -, hTie, hLB⟩` from `hHT`. Take `⟨-, -, hπ, hψpb, hgen, -⟩` from `hPt`.
+
+Establish `hact : ∀ b, (P.oA.act b).left ≫ ψ = ψ ≫ (Y.oF.t.act.act b).left` using `fun b => Y.m.cart.1.hom_ext (by rw [Category.assoc, Category.assoc, Y.m.act, hgen, ← Category.assoc ψ, hgen, ← Category.assoc, P.gen_act, Category.assoc, hπ, Category.assoc]) (by rw [Category.assoc, Category.assoc, Over.w, hψpb.1.w, Over.w_assoc])`. Establish `hact2 : ∀ b, (P.oA.act b).left ≫ (ψ ≫ ν.φ) = (ψ ≫ ν.φ) ≫ (Xo.univ.t.act.act b).left` using `fun b => by`. Rewrite using `[← Category.assoc, hact, Category.assoc, ν.act, Category.assoc]`. Establish `hpb2` using `hψpb.comp ν.cart`. Establish `heig : ∀ σ j, AvDefs.IsEig P.Gt P.oGt (embInt c P.integers σ) (x σ j)` using `fun σ j b => ((hTie σ j).act b (hact2 b)).unique hpb2.1 (by rw [z.eig σ j b, ← algebraMap_embInt P.integers]; exact (hTie σ j).scale _)`.
+
+Establish `hK'` using `(hK p ℂ_[p] Valued.v 𝓞_ℂ_[p] (𝓞 E) P).2.2.2`. Establish `hspan : ∀ σ i, (∑ j, g σ i j • P.bLie (x σ j)) ∈ Submodule.span ℂ_[p] (Set.range P.bLie)` using `fun σ i => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Establish `heigV : ∀ σ i, (∑ j, g σ i j • P.bLie (x σ j)) ∈ P.eigV (embInt c P.integers σ)` using `fun σ i => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (bLie_mem_eigV (heig σ j))`. Establish `hmem : ∀ σ i, (∑ j, g σ i j • P.bLie (x σ j)) ∈ htLat c P σ` using `fun σ i => ((hLB σ).2.le (Submodule.subset_span ⟨i, rfl⟩)).1`. Establish `horth : ∀ k k', P.pairV (∑ j, g τ.1 k j • P.bLie (x τ.1 j)) (∑ j, g (conjEmb τ.1) k' j • P.bLie (x (conjEmb τ.1) j)) = 0` using `fun k k' => by`.
+
+Establish `h1 : (∑ j, g τ.1 k j • P.bLie (x τ.1 j)) ∈ P.W` using `hK'.2.2.2.2.2.2 ▸ hspan _ _`. Conclude with `(hK'.2.2.2.2.1 _).1 h1 _ (hK'.2.2.2.2.2.2 ▸ hspan _ _)`. Take `⟨lam, hlam, hsgn, σ, hσ⟩` from `hVal E H Dw l c p hs P τ _ _ u hDF _ _ (fun k => heigV _ k) (fun k => heigV _ k) horth (hLB τ.1) (hLB (conjEmb τ.1))`. Use `⟨ta, _, _, σ, hlev, fun k => ⟨hmem _ k, hspan _ k, heigV _ k⟩, fun k => ⟨hmem _ k, hspan _ k, heigV _ k⟩, hσ, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg norm (hsgn σ)`.
+
+Establish `hs1 : ‖((Equiv.Perm.sign σ : ℤ) : ℂ_[p])‖ = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Rewrite `e` using `[norm_mul, norm_mul, hlam, hσ, hs1, _root_.one_mul, _root_.one_mul]`. Conclude with `e.symm`.
+-/
 theorem htAt_dualFam_frame : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint → TateSt → ValueSt →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (τ : Psi H) (p : ℕ) [Fact p.Prime]
     [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ n : ℕ,

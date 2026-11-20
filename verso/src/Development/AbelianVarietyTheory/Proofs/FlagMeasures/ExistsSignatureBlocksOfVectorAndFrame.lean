@@ -13,6 +13,9 @@ namespace GlobalTheory.SignCount
 open MeasureTheory Matrix Filter Topology Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding GlobalTheory.CompactDualQuot GlobalTheory.GaugeQuot GlobalTheory.Mem.Vol.Scale
 open scoped ENNReal NNReal
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.GaussMean.qEps, Formalism.REAL.Jm, Matrix.mulVec_diagonal, dotProduct, Pi.star_apply]`. Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.conj_mul', Complex.star_def]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+-/
 private theorem qEps_eq_star_dotProduct_Jm_mulVec {m : ℕ} (ε : Fin m → Bool) (x : Fin m → ℂ) :
     ((GlobalTheory.GaussMean.qEps ε x : ℝ) : ℂ) = star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ x) := by
   simp only [GlobalTheory.GaussMean.qEps, Formalism.REAL.Jm, Matrix.mulVec_diagonal, dotProduct, Pi.star_apply]
@@ -21,6 +24,9 @@ private theorem qEps_eq_star_dotProduct_Jm_mulVec {m : ℕ} (ε : Fin m → Bool
   rw [← Complex.conj_mul', Complex.star_def]
   split_ifs <;> push_cast <;> ring
 
+/- English proof (translation)
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[qEps_eq_star_dotProduct_Jm_mulVec, qEps_eq_star_dotProduct_Jm_mulVec, ← h, Matrix.star_mulVec]`. Simplify using `only [Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul]`.
+-/
 private theorem qEps_mulVec_of_conjTranspose_mul_Jm_mul {m : ℕ} {ε η : Fin m → Bool} (C : Matrix (Fin m) (Fin m) ℂ)
     (h : Cᴴ * Formalism.REAL.Jm ε * C = Formalism.REAL.Jm η) (x : Fin m → ℂ) :
     GlobalTheory.GaussMean.qEps ε (C *ᵥ x) = GlobalTheory.GaussMean.qEps η x := by
@@ -28,12 +34,36 @@ private theorem qEps_mulVec_of_conjTranspose_mul_Jm_mul {m : ℕ} {ε η : Fin m
   rw [qEps_eq_star_dotProduct_Jm_mulVec, qEps_eq_star_dotProduct_Jm_mulVec, ← h, Matrix.star_mulVec]
   simp only [Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.GaussMean.qEps, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : ε a = true <;> simp [h]`.
+-/
 private theorem qEps_not_eq_neg {m : ℕ} (ε : Fin m → Bool) (x : Fin m → ℂ) :
     GlobalTheory.GaussMean.qEps (fun a => !ε a) x = - GlobalTheory.GaussMean.qEps ε x := by
   simp only [GlobalTheory.GaussMean.qEps, ← Finset.sum_neg_distrib]
   refine Finset.sum_congr rfl fun a _ => ?_
   by_cases h : ε a = true <;> simp [h]
 
+/- English proof (translation)
+Set `E₁ : ({a // η a = true} → ℂ) →ₗ[ℂ] (Fin m → ℂ)` to `{ toFun := fun u a => if h : η a = true then u ⟨a, h⟩ else 0 map_add' := by`. Apply the tactic sequence `intro u v; funext a; by_cases h : η a = true <;> simp [h]`. Use the proof step `map_smul' := by`. Apply the tactic sequence `intro c u; funext a; by_cases h : η a = true <;> simp [h] }`. Set `E₂ : ({a // ε a = false} → ℂ) →ₗ[ℂ] (Fin m → ℂ)` to `{ toFun := fun w a => if h : ε a = false then w ⟨a, h⟩ else 0 map_add' := by`.
+
+Apply the tactic sequence `intro u v; funext a; by_cases h : ε a = false <;> simp [h]`. Use the proof step `map_smul' := by`. Apply the tactic sequence `intro c u; funext a; by_cases h : ε a = false <;> simp [h] }`. Set `Φ` to `(C.mulVecLin ∘ₗ E₁).coprod E₂`. Establish `hinj : Function.Injective Φ`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨u, w⟩ hp`. Establish `hp' : C *ᵥ E₁ u = -(E₂ w)`. Establish `: C *ᵥ E₁ u + E₂ w = 0` using `by simpa [Φ] using hp`. Conclude with `eq_neg_of_add_eq_zero_left this`.
+
+Establish `hnn : ∀ a, 0 ≤ (if η a then (1 : ℝ) else -1) * ‖E₁ u a‖ ^ 2`. Introduce `a`. Distinguish the cases in `h : η a = true`. Simplify using `[h]`. Simplify using `[E₁, h]`.
+
+Establish `hnp : GlobalTheory.GaussMean.qEps ε (-(E₂ w)) ≤ 0`. Unfold `GlobalTheory.GaussMean.qEps`. Use `Finset.sum_nonpos fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ε a = false`. Simplify using `[h]`.
+
+Simplify using `[E₂, h]`. Establish `hq : GlobalTheory.GaussMean.qEps η (E₁ u) = 0`. Use `le_antisymm ?_ (Finset.sum_nonneg fun a _ => hnn a)` and prove the remaining obligations. Rewrite using `[← hC, hp']`. Conclude with `hnp`.
+
+Establish `hu : u = 0`. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg (fun a _ => hnn a)).1 hq`. Use function extensionality and compare the values at `b`. Use `hz b.1 (Finset.mem_univ _)` as an intermediate fact. Simplify `this` using `[E₁, b.2]`.
+
+Establish `hw : w = 0`. Establish `h0 : E₂ w = 0`. Establish `: C *ᵥ E₁ u = 0` using `by simp [hu]`. Rewrite `this` using `[hp']`. Conclude with `neg_eq_zero.1 this`.
+
+Use function extensionality and compare the values at `b`. Use `congrFun h0 b.1` as an intermediate fact. Simplify `this` using `[E₂, b.2]`. Simplify using `[hu, hw]`. Use `LinearMap.finrank_le_finrank_of_injective hinj` as an intermediate fact.
+
+Simplify `this` using `[Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`.
+-/
 private theorem card_true_add_card_false_le_of_qEps_eq {m : ℕ} {ε η : Fin m → Bool} (C : Matrix (Fin m) (Fin m) ℂ)
     (hC : ∀ x, GlobalTheory.GaussMean.qEps ε (C *ᵥ x) = GlobalTheory.GaussMean.qEps η x) :
     Fintype.card {a // η a = true} + Fintype.card {a // ε a = false} ≤ m := by
@@ -89,6 +119,15 @@ private theorem card_true_add_card_false_le_of_qEps_eq {m : ℕ} {ε η : Fin m 
   have := LinearMap.finrank_le_finrank_of_injective hinj
   simpa [Module.finrank_prod, Module.finrank_fintype_fun_eq_card] using this
 
+/- English proof (translation)
+Establish `hC` using `qEps_mulVec_of_conjTranspose_mul_Jm_mul C h`. Establish `h₁` using `card_true_add_card_false_le_of_qEps_eq C hC`. Establish `hC' : ∀ x, GlobalTheory.GaussMean.qEps (fun a => !ε a) (C *ᵥ x) = GlobalTheory.GaussMean.qEps (fun a => !η a) x`. Introduce `x`. Rewrite using `[qEps_not_eq_neg, qEps_not_eq_neg, hC]`.
+
+Establish `h₂` using `card_true_add_card_false_le_of_qEps_eq C hC'`. Simplify using `only [Fintype.card_subtype] at h₁ h₂`. Simplify using `only [Bool.not_eq_true', Bool.not_eq_false'] at h₂`. Establish `hε : (Finset.univ.filter fun a => ε a = true).card + (Finset.univ.filter fun a => ε a = false).card = m`. Rewrite using `[Finset.card_filter, Finset.card_filter, ← Finset.sum_add_distrib]`.
+
+Establish `: ∀ a : Fin m, ((if ε a = true then 1 else 0) + (if ε a = false then 1 else 0) : ℕ) = 1`. Apply the tactic sequence `intro a; cases ε a <;> simp`. Simplify using `[this]`. Establish `hη : (Finset.univ.filter fun a => η a = true).card + (Finset.univ.filter fun a => η a = false).card = m`. Rewrite using `[Finset.card_filter, Finset.card_filter, ← Finset.sum_add_distrib]`.
+
+Establish `: ∀ a : Fin m, ((if η a = true then 1 else 0) + (if η a = false then 1 else 0) : ℕ) = 1`. Apply the tactic sequence `intro a; cases η a <;> simp`. Simplify using `[this]`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Fintype.card_subtype, Fintype.card_subtype]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_true_eq {m : ℕ} {ε η : Fin m → Bool} (C : Matrix (Fin m) (Fin m) ℂ)
     (h : Cᴴ * Formalism.REAL.Jm ε * C = Formalism.REAL.Jm η) :
     Nat.card {a // ε a = true} = Nat.card {a // η a = true} := by
@@ -116,6 +155,9 @@ theorem card_true_eq {m : ℕ} {ε η : Fin m → Bool} (C : Matrix (Fin m) (Fin
   rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Fintype.card_subtype, Fintype.card_subtype]
   omega
 
+/- English proof (translation)
+Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_subtype, Finset.card_filter, Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ]`.
+-/
 theorem card_true_cons {n : ℕ} (s : Bool) (ε' : Fin n → Bool) :
     Nat.card {a // (Fin.cons s ε' : Fin (n + 1) → Bool) a = true} =
       (if s = true then 1 else 0) + Nat.card {a // ε' a = true} := by
@@ -123,12 +165,26 @@ theorem card_true_cons {n : ℕ} (s : Bool) (ε' : Fin n → Bool) :
   simp only [Nat.card_eq_fintype_card, Fintype.card_subtype, Finset.card_filter, Fin.sum_univ_succ,
     Fin.cons_zero, Fin.cons_succ]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.conjTranspose_apply, mul_assoc]`.
+-/
 private theorem conjTranspose_mul_Jm_mul_apply {m : ℕ} {ι : Type*} (ε : Fin m → Bool) (M : Matrix (Fin m) ι ℂ)
     (k l : ι) :
     (Mᴴ * Formalism.REAL.Jm ε * M) k l = ∑ i, star (M i k) * ((if ε i then 1 else -1) * M i l) := by
   rw [Matrix.mul_apply]
   simp only [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.conjTranspose_apply, mul_assoc]
 
+/- English proof (translation)
+Establish `e0` using `qEps_eq_star_dotProduct_Jm_mulVec ε x₀`. Rewrite `e0` using `[h0]`. Simplify using `only [Formalism.REAL.Jm, Matrix.mulVec_diagonal, dotProduct, Pi.star_apply] at e0`. Establish `e1 : ∀ l, ∑ i, star (x₀ i) * ((if ε i then 1 else -1) * B i l) = 0`. Introduce `l`.
+
+Use `congrFun h1 l` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, Formalism.REAL.Jm, Matrix.diagonal_mul]`. Use extensionality with `k l`. Rewrite using `[conjTranspose_mul_Jm_mul_apply]`. Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ k with rfl | ⟨k, rfl⟩ <;>`.
+
+Apply the tactic sequence `rcases Fin.eq_zero_or_eq_succ l with rfl | ⟨l, rfl⟩ <;>`. Simplify using `only [Matrix.of_apply, Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← e0]`. Apply the tactic sequence `cases s <;> simp [Formalism.REAL.Jm, GlobalTheory.GaussMean.sgn]`. Rewrite using `[e1]`.
+
+Simplify using `[Formalism.REAL.Jm, (Fin.succ_ne_zero l).symm]`. Use `congrArg star (e1 k)` as an intermediate fact. Rewrite `this` using `[star_sum, star_zero]`. Rewrite using `[show (Formalism.REAL.Jm (Fin.cons s ε') : Matrix _ _ ℂ) k.succ 0 = 0 by`. Simplify using `[Formalism.REAL.Jm, Fin.succ_ne_zero k]]`.
+
+Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases ε i <;> simp [mul_comm]`. Rewrite using `[← conjTranspose_mul_Jm_mul_apply ε B k l, h2]`. Simplify using `[Formalism.REAL.Jm, Matrix.diagonal_apply]`.
+-/
 theorem gram_cons {n : ℕ} {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {s : Bool}
     {x₀ : Fin (n + 1) → ℂ} {B : Matrix (Fin (n + 1)) (Fin n) ℂ}
     (h0 : GlobalTheory.GaussMean.qEps ε x₀ = GlobalTheory.GaussMean.sgn ℝ s)
@@ -162,6 +218,17 @@ theorem gram_cons {n : ℕ} {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {
   · rw [← conjTranspose_mul_Jm_mul_apply ε B k l, h2]
     simp [Formalism.REAL.Jm, Matrix.diagonal_apply]
 
+/- English proof (translation)
+Introduce `n ε ε' s x₀ B h0 h1 h2 P Q P' Q' f f' hf hf'`. Establish `hc` using `card_true_eq _ (gram_cons h0 h1 h2)`. Rewrite `hc` using `[card_true_cons, hf.card_true, hf'.card_true]`. Establish `hPQ` using `Sorts.add_eq f`. Establish `hPQ'` using `Sorts.add_eq f'`.
+
+Consider the cases of `s`. Simplify using `at hc`. Set `eL : Fin P' ≃ Fin P` to `finCongr (by omega)`. Set `eR : Option (Fin Q') ≃ Fin Q` to `(finSuccEquiv Q').symm.trans (finCongr (by omega))`. Apply the tactic sequence `let φ : Option (Fin P' ⊕ Fin Q') ≃ Fin P' ⊕ Option (Fin Q') := { toFun := fun o => o.elim (Sum.inr none) (Sum.elim Sum.inl (fun b => Sum.inr (some b))) invFun := Sum.elim (fun a => some (Sum.inl a)) (fun ob => ob.map Sum.inr) left_inv := by rintro (_ | _ | _) <;> rfl right_inv := …`.
+
+Use `⟨φ.trans (Equiv.sumCongr eL eR), ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Apply the tactic sequence `rcases i with i | i <;> simp [φ, GlobalTheory.CompactDualQuot.sg]`. Simplify using `[φ, GlobalTheory.CompactDualQuot.sg, GlobalTheory.GaussMean.sgn]`. Simplify using `at hc`.
+
+Set `eL : Option (Fin P') ≃ Fin P` to `(finSuccEquiv P').symm.trans (finCongr (by omega))`. Set `eR : Fin Q' ≃ Fin Q` to `finCongr (by omega)`. Apply the tactic sequence `let φ : Option (Fin P' ⊕ Fin Q') ≃ Option (Fin P') ⊕ Fin Q' := { toFun := fun o => o.elim (Sum.inl none) (Sum.elim (fun a => Sum.inl (some a)) Sum.inr) invFun := Sum.elim (fun oa => oa.map Sum.inl) (fun b => some (Sum.inr b)) left_inv := by rintro (_ | _ | _) <;> rfl right_inv := …`. Use `⟨φ.trans (Equiv.sumCongr eL eR), ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Apply the tactic sequence `rcases i with i | i <;> simp [φ, GlobalTheory.CompactDualQuot.sg]`. Simplify using `[φ, GlobalTheory.CompactDualQuot.sg, GlobalTheory.GaussMean.sgn]`.
+-/
 theorem exists_signCompat : ∀ (n : ℕ) (ε : Fin (n + 1) → Bool) (ε' : Fin n → Bool) (s : Bool) (x₀ : Fin (n + 1) → ℂ) (B : Matrix (Fin (n + 1)) (Fin n) ℂ), GlobalTheory.GaussMean.qEps ε x₀ = GlobalTheory.GaussMean.sgn ℝ s → star x₀ ᵥ* (Formalism.REAL.Jm ε * B) = 0 → Bᴴ * Formalism.REAL.Jm ε * B = Formalism.REAL.Jm ε' → ∀ (P Q P' Q' : ℕ) (f : Fin P ⊕ Fin Q ≃ Fin (n + 1)) (f' : Fin P' ⊕ Fin Q' ≃ Fin n), Sorts ε f → Sorts ε' f' → ∃ e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q), SignCompat e ∧ sg (e none) = GlobalTheory.GaussMean.sgn ℝ s := by
   intro n ε ε' s x₀ B h0 h1 h2 P Q P' Q' f f' hf hf'
   have hc := card_true_eq _ (gram_cons h0 h1 h2)

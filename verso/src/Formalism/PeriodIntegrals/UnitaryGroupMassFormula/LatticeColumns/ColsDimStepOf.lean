@@ -24,6 +24,11 @@ def ClassCountStep' : Prop :=
       covol (X.measW u).μH /
         ((X.muH u Set.univ).toReal * ((X.measW u).μHf (Subtype.val ⁻¹' K2u X hb u)).toReal)
 
+/- English proof (translation)
+Introduce `D X hb hK u hMT hL`. Establish `hS` using `hN X u hK`. Establish `hFin` using `hF X u hK`. Establish `hcount` using `hC X hb hK u (hGF _) hMT hL hS hFin`. Establish `hdim` using `(Formalism.L2.SG.ColsDim.columns_dimension _ _ _ ℂ _ (PoincareSetting.iotaI X u) (PoincareSetting.iotaF X u) (PoincareSetting.Ku X u hK) (PoincareSetting.Ku X u hK) (PoincareSetting.psiK X u hK) (PoincareSetting.piRep X u) le_rfl hS hFin inferInstance).2`.
+
+Establish `hdim' : Module.finrank ℂ (PoincareSetting.Cu X u hK) = Module.finrank ℂ (X.Vpi u) * Nat.card (Formalism.L2.SG.ColsDim.Classes (PoincareSetting.iotaF X u) (PoincareSetting.Ku X u hK))` using `hdim`. Rewrite using `[hdim', Nat.cast_mul, hcount]`.
+-/
 theorem colsDimStep_of' (hGF : ∀ I : Formalism.MainNotions.S.AutInst, AdBridgeGF I) (hN : NeatKuStep) (hF : ClassFinStep)
     (hC : ClassCountStep') : ColsDimStep := by
   intro D X hb hK u hMT hL

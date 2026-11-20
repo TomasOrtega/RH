@@ -26,10 +26,16 @@ def indF (B : Subgroup G) (χ : B →* ℂˣ) : Submodule ℂ (G → ℂ) where
     rintro c f ⟨h, K, hK, hf⟩
     exact ⟨fun b g => by simp [h b g, mul_left_comm], K, hK, fun k hk g => by simp [hf k hk g]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_indF {B : Subgroup G} {χ : B →* ℂˣ} {f : G → ℂ} :
     f ∈ indF B χ ↔ (∀ (b : B) (g : G), f (b * g) = (χ b : ℂ) * f g) ∧
       ∃ K : Subgroup G, IsOpen (K : Set G) ∧ ∀ k ∈ K, ∀ g : G, f (g * k) = f g := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => by simp, ⊤, by simp, fun _ _ _ => rfl⟩`.
+-/
 example : (fun _ => 1 : G → ℂ) ∈ indF ⊤ 1 := ⟨fun _ _ => by simp, ⊤, by simp, fun _ _ _ => rfl⟩
 
 def pr {G : Type} [Group G] (B : Subgroup G) [MeasurableSpace B] (μ : Measure B) (χ : B →* ℂˣ) (f : G → ℂ) : G → ℂ :=
@@ -43,9 +49,15 @@ section GeneralLinearIntegers
 
 variable {E : Type} [Field E] {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sg_val (σ : E ≃+* E) (g : GL (Fin n) E) (i j : Fin n) :
     (sg σ g : Matrix (Fin n) (Fin n) E) i j = σ ((g : Matrix (Fin n) (Fin n) E) i j) := rfl
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[mem_unipB]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[sg_val, hg.1 i j hij, map_zero]`. Rewrite using `[sg_val, hg.2 i, map_one]`.
+-/
 theorem sg_mem_unipB (σ : E ≃+* E) {g : GL (Fin n) E} (hg : g ∈ unipB E (Fin n)) : sg σ g ∈ unipB E (Fin n) := by
   rw [mem_unipB] at hg ⊢
   refine ⟨fun i j hij => ?_, fun i => ?_⟩
@@ -55,6 +67,9 @@ theorem sg_mem_unipB (σ : E ≃+* E) {g : GL (Fin n) E} (hg : g ∈ unipB E (Fi
 def Semi (σ : E ≃+* E) (π : Representation ℂ (GL (Fin n) E) V) (A : V →ₗ[ℂ] V) : Prop :=
   ∀ g v, A (π g v) = π (sg σ g) (A v)
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 example (π : Representation ℂ (GL (Fin n) E) V) : Semi (RingEquiv.refl E) π LinearMap.id := fun _ _ => rfl
 
 def jacA {σ : E ≃+* E} {π : Representation ℂ (GL (Fin n) E) V} {A : V →ₗ[ℂ] V} (hA : Semi σ π A) :
@@ -65,11 +80,17 @@ def jacA {σ : E ≃+* E} {π : Representation ℂ (GL (Fin n) E) V} {A : V →�
     refine Submodule.subset_span ⟨⟨_, sg_mem_unipB σ u.2⟩, A v, ?_⟩
     simp [hA u v])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jacA_mk {σ : E ≃+* E} {π : Representation ℂ (GL (Fin n) E) V} {A : V →ₗ[ℂ] V} (hA : Semi σ π A) (v : V) :
     jacA hA (Submodule.Quotient.mk v) = Submodule.Quotient.mk (A v) := rfl
 
 def Inv (σ : E ≃+* E) (ω : Eˣ →* ℂˣ) : Prop := ∀ x : Eˣ, ω (Units.map (σ : E →* E) x) = ω x
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 example (σ : E ≃+* E) : Inv σ 1 := fun _ => rfl
 
 end GeneralLinearIntegers

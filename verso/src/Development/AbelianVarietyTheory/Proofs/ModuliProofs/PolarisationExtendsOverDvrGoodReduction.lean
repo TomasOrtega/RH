@@ -25,11 +25,23 @@ noncomputable section
 
 namespace GlobalTheory.PolExtendDVR
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (Geo.Tor.chartPullPull L g g rfl) (chartPullSame M (fun _ : PUnit => g ≫ φ) (fun _ => φ) (fun _ => 1) g fun _ => rfl) h`.
+-/
 theorem lbIso_pull_comp {X Y Z : Scheme.{0}} {L : LB Y} {M : LB X} {φ : Y ⟶ X} (h : LBIso L (M.pull φ)) (g : Z ⟶ Y) :
     LBIso (L.pull g) (M.pull (g ≫ φ)) :=
   LBIso.chartPull (Geo.Tor.chartPullPull L g g rfl)
     (chartPullSame M (fun _ : PUnit => g ≫ φ) (fun _ => φ) (fun _ => 1) g fun _ => rfl) h
 
+/- English proof (translation)
+Establish `hi : Function.Injective ((algebraMap V' K').comp a)` using `(IsFractionRing.injective V' K').comp ha`. Set `b : K →+* K'` to `IsFractionRing.lift hi`. Establish `hb : b.comp (algebraMap V K) = (algebraMap V' K').comp a` using `RingHom.ext fun x => IsFractionRing.lift_algebraMap hi x`. Establish `hs : spMap b ≫ spMap (algebraMap V K) = spMap (algebraMap V' K') ≫ spMap a`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hb]`.
+
+Take `⟨P', g, hg, -, hm, t, ht⟩` from `hB _ _ (spMap b) P`. Establish `gp : IsGrpPullback P'.A P.A (spMap b) g` using `⟨hg, fun T x y x₀ y₀ hx hy => by`. Rewrite using `[(Over.OverMorphism.ext hx : x₀ = toBase hg.w x), (Over.OverMorphism.ext hy : y₀ = toBase hg.w y), ← hm]`. Use the proof step `rfl⟩`. Establish `hπ` using `isGrpPullback_pullback B (spMap a)`.
+
+Establish `gc` using `(gp.comp hφ).congr hs rfl`. Take `⟨M', w, hw⟩` from `GlobalTheory.UU.exists_pull M (GlobalTheory.UU.toBase_mul_pullback B (spMap a))`. Establish `hM : LBIso M'.L.L (M.L.L.pull (pullback.fst B.hom (spMap a)))` using `⟨w, hw.gen⟩`. Set `φ' : P'.A.left ⟶ ((Over.pullback (spMap a)).obj B).left` to `pullback.lift (g ≫ φ) (P'.A.hom ≫ spMap (algebraMap V' K')) (gc.1.w.trans (Category.assoc _ _ _).symm)`. Establish `e : φ' ≫ pullback.fst B.hom (spMap a) = g ≫ φ` using `pullback.lift_fst _ _ _`.
+
+Use `⟨P', M', φ', hπ.cancel (gc.congr rfl e.symm) (pullback.lift_snd _ _ _), ?_, hM⟩` and prove the remaining obligations. Establish `i₁ : LBIso P'.L (M.L.L.pull (g ≫ φ))` using `LBIso.trans P'.isLB (pull_isLB P.isLB _) (pull_isLB M.L.isLB _) (LBIso.symm ⟨t, ht⟩) (lbIso_pull_comp hL g)`. Establish `i₂` using `lbIso_pull_comp hM φ'`. Rewrite `i₂` using `[e]`. Conclude with `LBIso.trans P'.isLB (pull_isLB M.L.isLB _) (pull_isLB M'.L.isLB _) i₁ i₂.symm`.
+-/
 theorem exists_baseChange (hB : PolBaseChangeSt) {V K V' K' : Type} [CommRing V] [IsDomain V] [Field K] [Algebra V K]
     [IsFractionRing V K] [CommRing V'] [IsDomain V'] [Field K'] [Algebra V' K'] [IsFractionRing V' K']
     (a : V →+* V') (ha : Function.Injective a)
@@ -69,6 +81,11 @@ namespace GlobalTheory
 
 open PolExtendDVR IsLocalRing in
 
+/- English proof (translation)
+Introduce `h h₂ V K _ _ _ _ _ _ P B _ _ M φ hB hφ hL`. Set `V'` to `AdicCompletion (maximalIdeal V) V`. Take `⟨P', M', φ', hφ', hL', hM⟩` from `exists_baseChange (K' := FractionRing V') h.polBaseChange (algebraMap V V') (algebraMap_adicCompletion_injective_of_dvr V) P B M φ hφ hL`. Establish `hπ` using `isGrpPullback_pullback B (spMap (algebraMap V V'))`. Establish `hB'` using `PolPull.isAbelianScheme_of_isGrpPullback hB hπ`.
+
+Establish `hA'` using `GlobalTheory.T.relAmple_extended_principalPolarisation_dvr h h₂ V' (FractionRing V') P' _ M' φ' hB' hφ' hL' inferInstance`. Establish `: Module.FaithfullyFlat V V'` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Establish `hA : RelAmple B M.L.L` using `AmpleDescent.relAmple_of_faithfullyFlat V V' B _ _ M.L.L M'.L.L hB hπ M.L.isLB M'.L.isLB hM hA'`. Conclude with `⟨hA, KTrivSpread.kTriv_of_generic_fibre h V K P B M φ hB hφ hL hA⟩`.
+-/
 theorem polarisation_extends_dvr : Laws → Laws2 → ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (P : PolAV (Sp K)) (B : Over (Sp V)) [GrpObj B] [IsCommMonObj B] (M : GlobalTheory.UU.CP B) (φ : P.A.left ⟶ B.left), IsAbelianScheme B → IsGrpPullback P.A B (spMap (algebraMap V K)) φ → LBIso P.L (M.L.L.pull φ) → RelAmple B M.L.L ∧ KTriv B M.L.L := by
   intro h h₂ V K _ _ _ _ _ _ P B _ _ M φ hB hφ hL
   let V' := AdicCompletion (maximalIdeal V) V

@@ -13,6 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ValClosure
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Establish `h1 : valV V (algebraMap V (FractionRing V) ϖ) = WithZero.exp (-1 : ℤ)`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero hϖ.maximalIdeal_eq`. Establish `hle : ∀ w : V, valV V (algebraMap V (FractionRing V) w) ≤ 1` using `fun w => HeightOneSpectrum.valuation_le_one _ w`.
+
+Establish `h2 : valV V (algebraMap V (FractionRing V) (u : V)) = 1`. Use `le_antisymm (hle _) ?_` and prove the remaining obligations. Establish `h3 : valV V (algebraMap V (FractionRing V) (u : V)) * valV V (algebraMap V (FractionRing V) ((u⁻¹ : Vˣ) : V)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[vV, map_mul, h2, _root_.mul_one, map_zpow₀, h1, WithZero.log_zpow, WithZero.log_exp]`. Simplify using the standard rewrite rules.
+-/
 theorem vV_eq_of_hasVal {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
     (hϖ : Irreducible ϖ) {x : FractionRing V} {n : ℤ} (h : ReciprocityTheory.ChartRestriction.G.DVR.HasVal ϖ x n) : vV V x = n := by
   obtain ⟨u, rfl⟩ := h
@@ -32,6 +39,11 @@ theorem vV_eq_of_hasVal {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuatio
   rw [vV, map_mul, h2, _root_.mul_one, map_zpow₀, h1, WithZero.log_zpow, WithZero.log_exp]
   simp
 
+/- English proof (translation)
+Introduce `V _ _ _ ϖ hϖ`. Take `⟨v, hv⟩` from `GlobalTheory.exists_valOver_of_isAlgebraic hϖ (AlgebraicClosure (FractionRing V))`. Use `⟨v, hv, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hasVal_of_ne_zero hϖ hx`. Rewrite using `[vV_eq_of_hasVal hϖ hn]`.
+
+Conclude with `hv x n hn`.
+-/
 theorem exists_valuation_closure : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∃ v : AddValuation (AlgebraicClosure (FractionRing V)) (WithTop ℚ), ValOver ϖ (AlgebraicClosure (FractionRing V)) v ∧ ∀ x : FractionRing V, x ≠ 0 → v (algebraMap _ _ x) = (((vV V x : ℤ) : ℚ) : WithTop ℚ) := by
   intro V _ _ _ ϖ hϖ
   obtain ⟨v, hv⟩ := GlobalTheory.exists_valOver_of_isAlgebraic hϖ (AlgebraicClosure (FractionRing V))

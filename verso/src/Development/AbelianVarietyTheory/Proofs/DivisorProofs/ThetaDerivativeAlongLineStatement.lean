@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ThetaDerivativeAlon
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CombRSingleNil
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability GlobalTheory.ThK.FiniteLevelDerivatives
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.KernelLineLeft.hasDerivAt_theta_lineLeft | exact GlobalTheory.ThK.KernelLineLeft.hasDerivAt_theta_lineLeft | (intros; apply GlobalTheory.ThK.KernelLineLeft.hasDerivAt_theta_lineLeft <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_derivative_along_line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

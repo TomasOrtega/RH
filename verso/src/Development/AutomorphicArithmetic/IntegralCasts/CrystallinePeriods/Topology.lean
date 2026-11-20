@@ -21,6 +21,9 @@ instance Acris.topologicalSpace : TopologicalSpace (Acris p R) :=
 instance Acris.nonarchimedeanRing : NonarchimedeanRing (Acris p R) :=
   (span {(p : Acris p R)}).nonarchimedean
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Acris.isAdic : IsAdic (span {(p : Acris p R)}) := rfl
 
 namespace BdRPlus
@@ -37,12 +40,18 @@ def nhd (nk : ℕ × ℕ) : AddSubgroup (BdRPlus p R) where
 
 variable {p R}
 
+/- English proof (translation)
+Establish `h1` using `factorPow_evalₐ (AinfInv.kerTheta p R) h x`. Establish `h2` using `factorPow_evalₐ (AinfInv.kerTheta p R) h y`. Conclude with `h1.symm.trans ((congrArg _ e).trans h2)`.
+-/
 theorem eval_eq_of_le {m n : ℕ} (h : m ≤ n) {x y : BdRPlus p R}
     (e : eval p R n x = eval p R n y) : eval p R m x = eval p R m y := by
   have h1 := factorPow_evalₐ (AinfInv.kerTheta p R) h x
   have h2 := factorPow_evalₐ (AinfInv.kerTheta p R) h y
   exact h1.symm.trans ((congrArg _ e).trans h2)
 
+/- English proof (translation)
+Introduce and unpack `x ⟨a, ha⟩`. Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le h.2`. Use `⟨p ^ c * a, ?_⟩` and prove the remaining obligations. Rewrite using `[eval_eq_of_le h.1 ha, hc, pow_add, mul_assoc]`.
+-/
 theorem nhd_anti {i j : ℕ × ℕ} (h : i ≤ j) : nhd p R j ≤ nhd p R i := by
   rintro x ⟨a, ha⟩
   obtain ⟨c, hc⟩ := Nat.exists_eq_add_of_le h.2
@@ -51,6 +60,9 @@ theorem nhd_anti {i j : ℕ × ℕ} (h : i ≤ j) : nhd p R j ≤ nhd p R i := b
 
 variable (p R)
 
+/- English proof (translation)
+The claim follows from `RingSubgroupsBasis.of_comm _ (fun i j => ⟨i ⊔ j, le_inf (nhd_anti le_sup_left) (nhd_anti le_sup_right)⟩) (fun i => ⟨i, by rintro _ ⟨x, ⟨a, ha⟩, y, ⟨b, hb⟩, rfl⟩ refine ⟨a * (p ^ i.2 * b), ?_⟩ change eval p R i.1 (x * y) = _ rw [map_mul, ha, hb, ← map_mul, ← map_mul, mul_assoc]⟩) …`.
+-/
 theorem ringSubgroupsBasis : RingSubgroupsBasis (nhd p R) :=
   RingSubgroupsBasis.of_comm _
     (fun i j => ⟨i ⊔ j, le_inf (nhd_anti le_sup_left) (nhd_anti le_sup_right)⟩)
@@ -78,18 +90,27 @@ instance topologicalSpace : TopologicalSpace (BdRPlus p R) := (ringSubgroupsBasi
 instance nonarchimedeanRing : NonarchimedeanRing (BdRPlus p R) :=
   (ringSubgroupsBasis p R).nonarchimedean
 
+/- English proof (translation)
+The claim follows from `(ringSubgroupsBasis p R).hasBasis_nhds_zero`.
+-/
 theorem hasBasis_nhds_zero :
     (nhds (0 : BdRPlus p R)).HasBasis (fun _ => True) fun i => (nhd p R i : Set (BdRPlus p R)) :=
   (ringSubgroupsBasis p R).hasBasis_nhds_zero
 
 variable {p R} {S : Type v} [CommRing S] [Fact ¬IsUnit (p : S)] [IsAdicComplete (span {(p : S)}) S]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hx`. Use `⟨Ainf.map p f a, ?_⟩` and prove the remaining obligations. Rewrite using `[eval_map, ha, ← eval_map, map_algebraMap_ainf, map_mul, map_pow, map_natCast]`.
+-/
 theorem map_mem_nhd (f : R →+* S) {i : ℕ × ℕ} {x : BdRPlus p R} (hx : x ∈ nhd p R i) :
     map p f x ∈ nhd p S i := by
   obtain ⟨a, ha⟩ := hx
   refine ⟨Ainf.map p f a, ?_⟩
   rw [eval_map, ha, ← eval_map, map_algebraMap_ainf, map_mul, map_pow, map_natCast]
 
+/- English proof (translation)
+The claim follows from `continuous_of_continuousAt_zero (map p f) (by rw [ContinuousAt, map_zero, (hasBasis_nhds_zero p R).tendsto_iff (hasBasis_nhds_zero p S)] exact fun i _ => ⟨i, trivial, fun x hx => map_mem_nhd f hx⟩)`.
+-/
 theorem continuous_map (f : R →+* S) : Continuous (map p f) :=
   continuous_of_continuousAt_zero (map p f) (by
     rw [ContinuousAt, map_zero, (hasBasis_nhds_zero p R).tendsto_iff (hasBasis_nhds_zero p S)]
@@ -102,6 +123,9 @@ end BdRPlus
 
 variable {p R}
 
+/- English proof (translation)
+The claim follows from `continuous_of_continuousAt_zero f (by rw [ContinuousAt, map_zero, (Ideal.hasBasis_nhds_zero_adic (span {(p : Acris p R)})).tendsto_iff (Ideal.hasBasis_nhds_zero_adic (span {(p : Acris p S)}))] exact fun i _ => ⟨i, trivial, fun x hx => pow_le_comap_pow (span_natCast_le_comap p f) …`.
+-/
 theorem Acris.continuous_ringHom {S : Type v} [CommRing S] [Fact ¬IsUnit (p : S)]
     [IsAdicComplete (span {(p : S)}) S] (f : Acris p R →+* Acris p S) : Continuous f :=
   continuous_of_continuousAt_zero f (by
@@ -120,19 +144,31 @@ def plus : Subring (Bst p R) :=
   Subring.closure (Set.range (fun x : BcrisPlus p R =>
     algebraMap (Bcris p R) (Bst p R) (algebraMap _ _ x)) ∪ Set.range logFlat)
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inl ⟨x, rfl⟩)`.
+-/
 theorem algebraMap_mem_plus (x : BcrisPlus p R) :
     algebraMap (Bcris p R) (Bst p R) (algebraMap _ _ x) ∈ plus p R :=
   Subring.subset_closure (Or.inl ⟨x, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inr ⟨ϖ, rfl⟩)`.
+-/
 theorem logFlat_mem_plus (ϖ : PFlat p R) : logFlat ϖ ∈ plus p R :=
   Subring.subset_closure (Or.inr ⟨ϖ, rfl⟩)
 
+/- English proof (translation)
+Use `(show plus p R ≤ (plus p R).comap (frob p R) from Subring.closure_le.2 ?_) hx` and prove the remaining obligations. Introduce and unpack `_ (⟨y, rfl⟩ | ⟨ϖ, rfl⟩)`. Simplify using `using algebraMap_mem_plus _`. Simplify using `using mul_mem (natCast_mem _ p) (logFlat_mem_plus ϖ)`.
+-/
 theorem frob_mem_plus {x : Bst p R} (hx : x ∈ plus p R) : frob p R x ∈ plus p R := by
   refine (show plus p R ≤ (plus p R).comap (frob p R) from Subring.closure_le.2 ?_) hx
   rintro _ (⟨y, rfl⟩ | ⟨ϖ, rfl⟩)
   · simpa using algebraMap_mem_plus _
   · simpa using mul_mem (natCast_mem _ p) (logFlat_mem_plus ϖ)
 
+/- English proof (translation)
+Use `(show plus p R ≤ (plus p R).comap (MulSemiringAction.toRingHom G _ g) from Subring.closure_le.2 ?_) hx` and prove the remaining obligations. Introduce and unpack `_ (⟨y, rfl⟩ | ⟨ϖ, rfl⟩)`. Simplify `algebraMap_mem_plus _` using `[smul_algebraMap, Bcris.smul_algebraMap]`. Simplify `logFlat_mem_plus _` using `[smul_logFlat]`.
+-/
 theorem smul_mem_plus {G : Type*} [Group G] [MulSemiringAction G R] (g : G) {x : Bst p R}
     (hx : x ∈ plus p R) : g • x ∈ plus p R := by
   refine (show plus p R ≤ (plus p R).comap (MulSemiringAction.toRingHom G _ g) from
@@ -141,6 +177,13 @@ theorem smul_mem_plus {G : Type*} [Group G] [MulSemiringAction G R] (g : G) {x :
   · simpa [smul_algebraMap, Bcris.smul_algebraMap] using algebraMap_mem_plus _
   · simpa [smul_logFlat] using logFlat_mem_plus _
 
+/- English proof (translation)
+Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Take `⟨y, rfl⟩ | ⟨ϖ, rfl⟩` from `hx`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`.
+
+Conclude with `neg_mem hx`. Consider the case `mul x y hx' hy' hx hy`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Conclude with `add_mem (mul_mem hx' hy) (mul_mem hy' hx)`.
+-/
 theorem monodromy_mem_plus {x : Bst p R} (hx : x ∈ plus p R) : monodromy p R x ∈ plus p R := by
   induction hx using Subring.closure_induction with
   | mem x hx =>

@@ -25,6 +25,9 @@ noncomputable section
 
 namespace GlobalTheory.FrameInt
 
+/- English proof (translation)
+Use `GlobalTheory.RowUnitProof.exists_splitPlace_eq D PP ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hs`. Use `h fun c hc => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hs ⟨c, hc, fun y hy hm => hn ⟨y, hm, hy.trans (GlobalTheory.TypePlaces.star_eq_conj D _).symm⟩⟩`.
+-/
 theorem exists_split (D : D7) (PP : HeightOneSpectrum (𝓞 D.host.E)) (h : ¬ Formalism.IndefR.Lev.IsConjPl (D := D) PP PP) :
     ∃ s : ReciprocityTheory.Aut.SplitPlace D.host.E, s.w = PP := by
   refine GlobalTheory.RowUnitProof.exists_splitPlace_eq D PP ?_
@@ -33,6 +36,11 @@ theorem exists_split (D : D7) (PP : HeightOneSpectrum (𝓞 D.host.E)) (h : ¬ F
   by_contra hn
   exact hs ⟨c, hc, fun y hy hm => hn ⟨y, hm, hy.trans (GlobalTheory.TypePlaces.star_eq_conj D _).symm⟩⟩
 
+/- English proof (translation)
+Establish `hβ : IsBaseFrame (Vc D k) (L.βV k) (L.ΛV k) 1`. Take `⟨c, hc⟩` from `hL.βV k`. Rewrite `hc` using `[one_pow]`. Then use the resulting hypothesis. Use `⟨fun κ hκ => ?_, fun PP h => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hP.2 κ).1 hκ`.
+
+Conclude with `(GlobalTheory.FinZeta.LevelOff.finE_mem_St_iff hβ h1.1).2 h1`. Establish `hn : ¬ Formalism.IndefR.Lev.IsConjPl (D` using `D) PP PP := h.elim (fun h => GlobalTheory.TypePlaces.not_isConjPl L.C.P L.Pg hL.Pg PP h PP h) fun h => (hL.Q_pl s PP h).2 PP h`. Take `⟨s', hs'⟩` from `exists_split D PP hn`. Take `⟨φ, b, h1, h2⟩` from `GlobalTheory.T.exists_split_reduction_standard_frame_conj D (Vc D k) D.R.nV (GlobalTheory.FrameBlockDiagonal.rankV D k) hF P (L.βV k) (L.ΛV k) hP hβ s'`. Conclude with `⟨s', φ, b, hs', h1, h2⟩`.
+-/
 theorem frame_of {D : D7} {T : Type} (L : LevCh D T) {μ0 : T} (hL : L.Is μ0)
     (hF : D.host.F = maximalRealSubfield D.host.E) (k : Fin D.R.m) (P : principalLevelFrame.RowPsi (Vc D k) D.R.nV)
     (hP : R3.StdFrame hF P) (s : T) :
@@ -52,6 +60,9 @@ theorem frame_of {D : D7} {T : Type} (L : LevCh D T) {μ0 : T} (hL : L.Is μ0)
     obtain ⟨φ, b, h1, h2⟩ := GlobalTheory.T.exists_split_reduction_standard_frame_conj D (Vc D k) D.R.nV (GlobalTheory.FrameBlockDiagonal.rankV D k) hF P (L.βV k) (L.ΛV k) hP hβ s'
     exact ⟨s', φ, b, hs', h1, h2⟩
 
+/- English proof (translation)
+Introduce `hL` and use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c _ _ _ ad k s => frame_of (D := (w.st Z).toD7) t.r.z.R.toLevCh t.r.z.pins.char.base.lev t.r.Y.hF k (ad.PV k) (ad.std k) s`.
+-/
 theorem main : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ c =>
   ∀ (ad : MtAd t.r.Y c.a.all.gal.mt) (k : Fin (w.st Z).toD7.R.m) s,
     (∀ κ ∈ ReciprocityTheory.Aut.Umax (w.st Z).toD7.host.E (w.st Z).toD7.R.nV,

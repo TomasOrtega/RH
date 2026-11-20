@@ -6,6 +6,9 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeO
 
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
 
+/- English proof (translation)
+Unfold `PositivityTheory.Rg.Tf.Loc.quotIntegral`. Use `split_ifs with h`. Rewrite using `[← integral_const_mul]`. Simplify using `only [mul_assoc]`. Simplify using the standard rewrite rules.
+-/
 private theorem quot_smul {G : Type*} [Group G] [MeasurableSpace G] (μ : Measure G) (H : Subgroup G) (ν : Measure H)
     (c : ℂ) (F : G → ℂ) :
     PositivityTheory.Rg.Tf.Loc.quotIntegral μ H ν (fun g => c * F g) = c * PositivityTheory.Rg.Tf.Loc.quotIntegral μ H ν F := by
@@ -15,6 +18,11 @@ private theorem quot_smul {G : Type*} [Group G] [MeasurableSpace G] (μ : Measur
     simp only [mul_assoc]
   · simp
 
+/- English proof (translation)
+Use `⟨fun δ γ x μδ μγ h1 h2 h3 h4 h5 => ?_, fun γ μγ h1 h2 h3 => ?_⟩` and prove the remaining obligations. Use `h.1 δ γ x μδ μγ h1 h2 h3 h4 h5` as an intermediate fact. Unfold `PositivityTheory.Rg.Tf.Loc.twOrbIntegralC PositivityTheory.Rg.Tf.Loc.orbIntegralC at this ⊢`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[quot_smul, quot_smul, this]`.
+
+Use `h.2 γ μγ h1 h2 h3` as an intermediate fact. Unfold `PositivityTheory.Rg.Tf.Loc.orbIntegralC at this ⊢`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[quot_smul, this, mul_zero]`.
+-/
 private theorem match_smul {k E : Type} [Field k] [Field E] [Algebra k E] {n : ℕ} [TopologicalSpace k] [TopologicalSpace E]
     [MeasurableSpace (GL (Fin n) E)] [MeasurableSpace (GL (Fin n) k)]
     {σ : E ≃ₐ[k] E} {μE : Measure (GL (Fin n) E)} {μk : Measure (GL (Fin n) k)} {φ : GL (Fin n) E → ℂ} {f : GL (Fin n) k → ℂ}
@@ -29,6 +37,11 @@ private theorem match_smul {k E : Type} [Field k] [Field E] [Algebra k E] {n : �
     simp only [Pi.smul_apply, smul_eq_mul]
     rw [quot_smul, this, mul_zero]
 
+/- English proof (translation)
+Establish `hs : sqrtQ E = sqrtQ k ^ l`. Establish `h1 : NNReal.sqrt (qF E : NNReal) = NNReal.sqrt (qF k : NNReal) ^ l`. Rewrite using `[NNReal.sqrt_eq_iff_eq_sq, ← pow_mul, mul_comm, pow_mul, NNReal.sq_sqrt, hq, Nat.cast_pow]`. Rewrite using `[sqrtQ, sqrtQ, h1, NNReal.coe_pow, Complex.ofReal_pow]`. Establish `hr : rhoPair ((l : ℤ) • a) = (l : ℤ) * rhoPair a`.
+
+Simplify using `only [rhoPair, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[halfModulus_eq, halfModulus_eq, hs, hr, ← zpow_natCast, ← zpow_mul, mul_neg]`.
+-/
 private theorem half_eq {k E : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] {l : ℕ} (hq : qF E = qF k ^ l)
     {n : ℕ} (a : Fin n → ℤ) : halfModulus k ((l : ℤ) • a) = halfModulus E a := by
@@ -41,6 +54,11 @@ private theorem half_eq {k E : Type} [Field k] [ValuativeRel k] [TopologicalSpac
     exact Finset.sum_congr rfl fun i _ => by ring
   rw [halfModulus_eq, halfModulus_eq, hs, hr, ← zpow_natCast, ← zpow_mul, mul_neg]
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `algebraMap k E (Matrix.diagonal (fun i => ((ϖ ^ a i : kˣ) : k)) i j) = Matrix.diagonal (fun i => (((Units.map (algebraMap k E : k →* E) ϖ) ^ a i : Eˣ) : E)) i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Matrix.diagonal_apply_ne _ h]`.
+-/
 private theorem incl_diagPow {k E : Type} [Field k] [Field E] [Algebra k E] {n : ℕ} (ϖ : kˣ) (a : Fin n → ℤ) :
     (PositivityTheory.Rg.Tf.Loc.incl (PositivityTheory.Rg.Tf.Loc.diagPow ϖ a) : GL (Fin n) E) =
       PositivityTheory.Rg.Tf.Loc.diagPow (Units.map (algebraMap k E : k →* E) ϖ) a := by
@@ -52,6 +70,15 @@ private theorem incl_diagPow {k E : Type} [Field k] [Field E] [Algebra k E] {n :
     simp
   · simp [Matrix.diagonal_apply_ne _ h]
 
+/- English proof (translation)
+Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ hu σ hσ n _ _ _ _ μE μk hE hk a ha`. Take `⟨-, hIk, ⟨ϖ, hϖ⟩, hfk⟩` from `defBridge k n`. Take `⟨-, hIE, -, hfE⟩` from `defBridge E n`. Take `⟨hq, hun⟩` from `unrQ k E hu`. Establish `h` using `UpperTheory.ConvolutionTheory.Loc.elemMatch k E hu σ hσ n μE μk hE hk ϖ hϖ a ha`.
+
+Rewrite `h` using `[incl_diagPow, hfE _ (hun ϖ hϖ), hfk ϖ hϖ, hIk, hIE]`. Establish `hne : μE.real (iwahori E n : Set (GL (Fin n) E)) ≠ 0`. Rewrite using `[measureReal_def, ENNReal.toReal_ne_zero]`. Conclude with `⟨((isOpen_iwahori E n).measure_pos μE ⟨1, one_mem _⟩).ne', (isCompact_iwahori E n).measure_lt_top.ne⟩`. Establish `hne' : (μE.real (iwahori E n : Set (GL (Fin n) E)) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hne`.
+
+Establish `h2` using `match_smul h (halfModulus E a / (μE.real (iwahori E n : Set (GL (Fin n) E)) : ℂ))`. Rewrite `h2` using `[smul_smul]`. Unfold `th`. Rewrite using `[half_eq hq]`. Use `h2 using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← measureReal_def, ← measureReal_def, Complex.ofReal_div]`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.ConvolutionTheory.H.thMatch :
     ∀ (k E : Type) [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
       [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]

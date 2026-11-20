@@ -24,6 +24,11 @@ def readOff (Γ : Segment k) : Option (IrrGL k × ℝ) :=
   if hex : ∃ p : IrrGL k × ℝ, ∃ Δ : Segment k, PositivityTheory.UdReth2.IsCentred Δ ∧ IsLSeg Δ p.1.rep ∧ Γ = Δ.nu (p.2 : ℂ)
   then some (Classical.choose hex) else none
 
+/- English proof (translation)
+Establish `hex : ∃ p : IrrGL k × ℝ, ∃ Δ' : Segment k, PositivityTheory.UdReth2.IsCentred Δ' ∧ IsLSeg Δ' p.1.rep ∧ Δ.nu (t : ℂ) = Δ'.nu (p.2 : ℂ)` using `⟨(δ, t), Δ, hc, hL, rfl⟩`. Unfold `readOff`. Rewrite using `[dif_pos hex]`. Take `⟨Δ', hc', hL', he⟩` from `Classical.choose_spec hex`. Take `⟨h1, rfl⟩` from `eq_of_nu_eq hc hc' he`.
+
+Establish `h2` using `eq_of_isLSeg' hL hL'`. Use `congr 1`. Conclude with `Prod.ext h2.symm h1.symm`.
+-/
 theorem readOff_nu {Δ : Segment k} {δ : IrrGL k} (hc : PositivityTheory.UdReth2.IsCentred Δ) (hL : IsLSeg Δ δ.rep) (t : ℝ) :
     readOff (Δ.nu (t : ℂ)) = some (δ, t) := by
   have hex : ∃ p : IrrGL k × ℝ, ∃ Δ' : Segment k, PositivityTheory.UdReth2.IsCentred Δ' ∧ IsLSeg Δ' p.1.rep ∧
@@ -36,6 +41,9 @@ theorem readOff_nu {Δ : Segment k} {δ : IrrGL k} (hc : PositivityTheory.UdReth
   congr 1
   exact Prod.ext h2.symm h1.symm
 
+/- English proof (translation)
+Take `⟨y, hy, σ, rfl⟩` from `perm_ofFn X F hF`. Establish `hd' : ∑ j, (X (σ j)).1 = N`. Rewrite using `[Equiv.sum_comp σ (fun j => (X j).1)]`. Conclude with `hd`. Conclude with `⟨h, fun j => X (σ j), hd', hy, ⟨φ.trans (hR σ hd').some⟩⟩`.
+-/
 theorem tail_step {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin N) k) V} {h : ℕ}
     (X : Fin h → IrrGL k) (hd : ∑ j, (X j).1 = N) (φ : π.Equiv (prodIrr X hd)) (F : List (IrrGL k))
     (hF : List.Perm F (List.ofFn X))
@@ -50,6 +58,25 @@ theorem tail_step {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] {π : Rep
 
 end Local
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ N V _ _ π hsm hirr hU hgen`. Take `⟨h, δ, Δ, s, hL, hCC, hs, hd, ⟨φ⟩⟩` from `PositivityTheory.RgUd.Exp.genUnitCCOf (fun k => PositivityTheory.RgUd.expBound k) GlobalTheory.RgGu.Holds.genericUnlinkedGL_holds k N V π hsm hirr hU hgen`. Establish `hcent : ∀ j, PositivityTheory.UdReth2.IsCentred (Δ j)` using `fun j => isCentred_of_unitCC (hL j) (hCC j)`. Establish `hirrP` using `GlobalTheory.Parabolic.isIrreducible_of_equiv φ hirr`. Establish `hUP` using `GlobalTheory.GenericUnitary.isUnitarisable_of_equiv φ hU`.
+
+Establish `hsym` using `segs_symm δ Δ s hL hCC hs hd hirrP hUP`. Establish `e1 : ∀ j, readOff ((Δ j).nu ((s j : ℝ) : ℂ)) = some (δ j, s j)` using `fun j => readOff_nu (hcent j) (hL j) (s j)`. Establish `e2 : ∀ j, readOff ((Δ j).nu ((-s j : ℝ) : ℂ)) = some (δ j, -s j)` using `fun j => readOff_nu (hcent j) (hL j) (-s j)`. Establish `hm` using `congrArg (Multiset.map readOff) hsym`. Simplify using `only [Multiset.map_map, Function.comp_def, e1, e2] at hm`.
+
+Establish `hm2 : Multiset.map (fun j => (δ j, -s j)) Finset.univ.val = Multiset.map (fun j => (δ j, s j)) Finset.univ.val`. Use `(Multiset.map_injective (Option.some_injective _) ?_).symm` and prove the remaining obligations. Simplify `hm` using `[Multiset.map_map, Function.comp_def]`. Rewrite `hm2` using `[Fin.univ_val_map, Fin.univ_val_map, Multiset.coe_eq_coe]`. Use `set l := List.ofFn (fun j => (δ j, s j)) with hl`.
+
+Establish `hperm : (l.map (fun p : IrrGL k × ℝ => (p.1, -p.2))).Perm l`. Rewrite using `[hl, List.map_ofFn]`. Conclude with `hm2`. Take `⟨a, b, hb, hab⟩` from `comb l hperm`. Establish `memL : ∀ p ∈ l, ∃ j, (δ j, s j) = p`.
+
+Introduce `p hp`. Rewrite `hp` using `[hl, List.mem_ofFn]`. Take `⟨j, hj⟩` from `hp`. Conclude with `⟨j, hj⟩`. Establish `hUL : ∀ j, GlobalTheory.GenericUnitary.IsUnitaryLSeg (δ j)` using `fun j => ⟨⟨Δ j, hL j⟩, unitarisable_of_unitCC (hL j) (hCC j)⟩`.
+
+Use `⟨a, b, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : (x, (0 : ℝ)) ∈ l` using `hab.subset (List.mem_append_left _ (List.mem_map_of_mem hx))`. Take `⟨j, hj⟩` from `memL _ hx'`. Establish `: δ j = x` using `congrArg Prod.fst hj`.
+
+Rewrite using `[← this]`. Conclude with `hUL j`. Introduce `p hp`. Take `⟨j, hj⟩` from `memL p (hb p hp).2`. Substitute `hj` using the available equality.
+
+Conclude with `⟨hUL j, (hb _ hp).1, (abs_lt.mp (hs j)).2⟩`. Establish `hfac : GlobalTheory.GenericUnitary.factors a b = (a.map (fun x => (x, (0 : ℝ))) ++ b.flatMap (fun p : IrrGL k × ℝ => [p, (p.1, -p.2)])).map (fun p : IrrGL k × ℝ => p.1.nu (p.2 : ℂ))`. Simplify using `[GlobalTheory.GenericUnitary.factors, List.map_flatMap, Function.comp_def, IrrGL.nu_zero]`. Establish `hF : (GlobalTheory.GenericUnitary.factors a b).Perm (List.ofFn (fun j => (δ j).nu ((s j : ℝ) : ℂ)))`. Rewrite using `[hfac]`.
+
+Use `hab.map (fun p : IrrGL k × ℝ => p.1.nu (p.2 : ℂ))` as an intermediate fact. Rewrite `this` using `[hl, List.map_ofFn]`. Conclude with `this`. Conclude with `tail_step (fun j => (δ j).nu ((s j : ℝ) : ℂ)) hd φ _ hF (fun σ hd' => reorder δ Δ s hL hcent hs σ hd hd')`.
+-/
 theorem genericUnitaryDualGL_holds : GlobalTheory.Published.GenericUnitaryDualGL := by
   intro k _ _ _ _ _ N V _ _ π hsm hirr hU hgen
   obtain ⟨h, δ, Δ, s, hL, hCC, hs, hd, ⟨φ⟩⟩ :=

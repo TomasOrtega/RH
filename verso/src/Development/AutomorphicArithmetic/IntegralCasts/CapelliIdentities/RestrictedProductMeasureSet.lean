@@ -1,6 +1,15 @@
 import Mathlib
 
 open MeasureTheory in
+/- English proof (translation)
+Establish `hf : Measurable (fun g => (q g, fun v : S => p v g))` using `hq.prodMk (measurable_pi_lambda _ fun v => hp v)`. Establish `hB : MeasurableSet (A ×ˢ (Set.univ.pi fun v : S => K v))` using `hA.prod (MeasurableSet.univ_pi fun v => hK v)`. Establish `h2` using `congrArg (fun ν => ν (A ×ˢ (Set.univ.pi fun v : S => K v))) h`. Simplify using `only [Measure.map_apply hf hB, Measure.restrict_apply (hf hB)] at h2`. Rewrite `h2` using `[Measure.coe_nnreal_smul_apply, Measure.prod_prod, Measure.pi_pi]`.
+
+Simplify using `only [h1, Finset.prod_const_one, mul_one] at h2`. Rewrite using `[← h2]`. Use `congr 1`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_preimage, Set.mem_prod, Set.mem_pi, Set.mem_univ, true_imp_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hb⟩`. Conclude with `⟨⟨ha, fun v => hb v⟩, fun v _ => hb v⟩`. Introduce and unpack `⟨⟨ha, hb⟩, hc⟩`. Use `⟨ha, fun v => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v ∈ S`. Conclude with `hb ⟨v, hv⟩`. Conclude with `hc v hv`.
+-/
 private theorem UpperTheory.restricted_product_measure_set
     (V G Gi : Type) (Gv : V → Type) [MeasurableSpace G] [MeasurableSpace Gi] [∀ v, MeasurableSpace (Gv v)]
     (q : G → Gi) (p : ∀ v, G → Gv v) (K : ∀ v, Set (Gv v))
@@ -34,6 +43,9 @@ private theorem UpperTheory.restricted_product_measure_set
     · exact hb ⟨v, hv⟩
     · exact hc v hv
 
+/- English proof (translation)
+Introduce `V G Gi Gv _ _ _ q p K μ μi m _ _ hq hp hK h1 ⟨A, hA, h0, ht⟩ S T a b hS hT`. Establish `e1` using `UpperTheory.restricted_product_measure_set V G Gi Gv q p K μ μi m hq hp hK h1 A hA S a hS`. Establish `e2` using `UpperTheory.restricted_product_measure_set V G Gi Gv q p K μ μi m hq hp hK h1 A hA T b hT`. Establish `e : (a : ENNReal) * μi A = (b : ENNReal) * μi A` using `e1.symm.trans e2`. Conclude with `ENNReal.coe_injective ((ENNReal.mul_left_inj h0 ht).1 e)`.
+-/
 theorem UpperTheory.restricted_product_measure :
     ∀ (V G Gi : Type) (Gv : V → Type) [MeasurableSpace G] [MeasurableSpace Gi] [∀ v, MeasurableSpace (Gv v)]
         (q : G → Gi) (p : ∀ v, G → Gv v) (K : ∀ v, Set (Gv v))

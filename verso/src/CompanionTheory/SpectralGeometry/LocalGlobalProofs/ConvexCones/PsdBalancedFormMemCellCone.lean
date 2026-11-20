@@ -11,6 +11,33 @@ open GlobalTheory.PolFan.Mark.FaceIn
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.RationalConeOfSum
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar hb q ψ lab hψ hlab X _ _ _ _ hX hD m v hv β hβ hβp hvβ x hx hxp hadd hl`. Establish `hs : β + x ∈ balForms bar X` using `Submodule.add_mem _ hβ hx`. Establish `hsp : ∀ y, 0 ≤ (β + x) y y` using `fun y => add_nonneg (hβp y) (hxp y)`. Establish `hne : {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ ∧ InRCone γ (β + x) ∧ genRank γ = k}.Nonempty`. Establish `hR : toReal (β + x) ∈ psdCone bar X`.
+
+Simplify `hsp) (by simp)` using `using GlobalTheory.PolFan.ConeSub.sum_smul_toReal_mem_psdCone O bar X 1 ![β + x] ![1] (by simp [hs]) (by simpa`. Take `⟨S, -, hcov⟩` from `(hψ X hX).finite`. Take `⟨e, mm, γ, c, hγ, -, hc, hsum⟩` from `hcov _ hR`. Use `⟨_, mm, fun i => pull e.symm.toLinearMap (γ i), CarDim.isCell_pull_equiv hγ e.symm, ⟨c, hc, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `LinearMap.ext₂ fun a b => by`.
+
+Use `LinearMap.congr_fun₂ hsum (e.symm a) (e.symm b)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`. Take `⟨n, γ, hγ, hγs, hrk⟩` from `Nat.sInf_mem hne`. Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hγ.strict`. Take `⟨N', ℓ', hN', h1', h2', h3'⟩` from `hv.strict`.
+
+Establish `hNr : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hN'r : (0 : ℝ) < N'` using `by exact_mod_cast hN'`. Establish `e0` using `apply_eq_of_inRCone hγ.linear h1 hγs`. Rewrite `e0` using `[map_add, Int.cast_add, hadd, mul_add]`. Establish `eβ : (N : ℝ) * ψ.evalZ β = ℓ β` using `by linarith [h2 β hβ hβp, h2 x hx hxp]`.
+
+Establish `ex : (N : ℝ) * ψ.evalZ x = ℓ x` using `by linarith [h2 β hβ hβp, h2 x hx hxp]`. Establish `hγβ : InRCone γ β`. Take `⟨k, c, hk, hc⟩` from `h3 β hβ hβp eβ`. Conclude with `inRCone_of_nsmul_eq hk hc`. Choose the witnesses or unpack the hypotheses as in `⟨cx, -, hcx⟩ : InRCone γ x := by`.
+
+Take `⟨k, c, hk, hc⟩` from `h3 x hx hxp ex`. Conclude with `inRCone_of_nsmul_eq hk hc`. Use `set h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ := (N : ℤ) • ℓ' - (N' : ℤ) • ℓ with hh`. Establish `happ : ∀ u, (h u : ℝ) = N * ℓ' u - N' * ℓ u` using `fun u => by simp [hh]`. Set `Z : Finset (Fin n)` to `Finset.univ.filter fun j => h (γ j) = 0`.
+
+Set `s : Fin Z.card ↪ Fin n` to `(Z.orderEmbOfFin rfl).toEmbedding`. Establish `hcut : IsFaceCut γ s h`. Use `⟨fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ h (γ j)`. Rewrite using `[happ, h1]`.
+
+Use `mul_le_mul_of_nonneg_left (h2' _ (hγ.mem j) (hγ.nonneg j)) hNr.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Establish `: Set.range s = Z` using `Z.range_orderEmbOfFin rfl`. Rewrite using `[this]`.
+
+Simplify using `[Z]`. Establish `hface` using `GlobalTheory.CompanionTheory.Ar.Fan.FaceCells.isCell_face_of_isFaceCut O bar hb q ψ hψ X hX hD n γ hγ _ s h hcut`. Establish `hβ0 : h β = 0`. Establish `: (h β : ℝ) = 0`. Rewrite using `[happ, apply_eq_of_inRCone hv.linear h1' hvβ, ← eβ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Establish `hle : genRank γ ≤ genRank fun j => γ (s j)`. Rewrite `hl` using `[hlab X hX _ hs hsp, hlab X hX _ hβ hβp, Nat.cast_inj]`. Rewrite using `[hrk, hl]`.
+
+Conclude with `Nat.sInf_le ⟨_, _, hface, inRCone_face hcut hγβ hβ0, rfl⟩`. Establish `hall` using `apply_eq_zero_of_genRank_le (h := h) (fun j => (hcut.2 _).2 ⟨j, rfl⟩) hle`. Establish `hx0 : (h x : ℝ) = 0`. Rewrite using `[apply_eq_of_toReal_eq hcx h]`. Simplify using `[hall]`.
+
+Rewrite `hx0` using `[happ, ← ex]`. Establish `ex' : (N' : ℝ) * ψ.evalZ x = ℓ' x`. Establish `: (N : ℝ) * (N' * ψ.evalZ x - ℓ' x) = 0` using `by linarith`. Combine the linear relations using `[(mul_eq_zero.1 this).resolve_left hNr.ne']`. Take `⟨k, c, hk, hc⟩` from `h3' x hx hxp ex'`.
+
+Conclude with `inRCone_of_nsmul_eq hk hc`.
+-/
 theorem inRCone_of_add : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O),
     CMOrd O bar → ∀ (q : ℕ) (ψ lab : InvFun O), IsPolyFan bar q ψ → IsCarrierDim bar q ψ lab → ∀ (X : Type)
     [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q →

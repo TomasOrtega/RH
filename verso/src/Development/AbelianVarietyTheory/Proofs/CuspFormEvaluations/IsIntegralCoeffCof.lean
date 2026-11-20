@@ -30,6 +30,11 @@ def harmSub {T : Type} (r : T → ℕ) (n : ℕ) (k : Type) [Field k] (cc : T �
     exact ⟨Submodule.smul_mem _ x h1, fun σ i i' h t => by rw [map_smul, h2 σ i i' h t],
       fun m hm => h3 m (support_smul hm)⟩
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg (eval (fun v : Ix × Fin n × Fin n => if v.2.1 = v.2.2 then (1 : K) else 0)) h`. Rewrite `h1` using `[RingHom.map_det, map_zero]`. Establish `h2 : (eval (fun v : Ix × Fin n × Fin n => if v.2.1 = v.2.2 then (1 : K) else 0)).mapMatrix (gen K n t) = 1`. Use extensionality with `p q`.
+
+Simplify using `[gen, Matrix.one_apply]`. Rewrite `h1` using `[h2, Matrix.det_one]`. Conclude with `one_ne_zero h1`.
+-/
 theorem det_gen_ne_zero (K : Type) [Field K] {Ix : Type} (n : ℕ) (t : Ix) : (gen K n t).det ≠ 0 := by
   intro h
   have h1 := congrArg (eval (fun v : Ix × Fin n × Fin n => if v.2.1 = v.2.2 then (1 : K) else 0)) h
@@ -40,6 +45,9 @@ theorem det_gen_ne_zero (K : Type) [Field K] {Ix : Type} (n : ℕ) (t : Ix) : (g
   rw [h2, Matrix.det_one] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Use extensionality with `p q : 2`. Simplify using `[gen]`.
+-/
 theorem map_gen {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {Ix : Type} (n : ℕ) (t : Ix) :
     (MvPolynomial.map f).mapMatrix (gen R n t) = gen S n t := by
   ext p q : 2
@@ -48,10 +56,20 @@ theorem map_gen {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {Ix : Typ
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H) {n : ℕ}
   {Ix : Type} [Fintype Ix] (pl : Ix → (E →+* ℂ))
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun t _ => pow_ne_zero _ (det_gen_ne_zero K n t)`.
+-/
 theorem detFac_ne_zero (K : Type) [Field K] (a : (E →+* ℂ) × ℕ → ℕ) (s : Ix → ℤ) (lam : Ix → DomWeight n) :
     detFac Dw pl K a s lam ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun t _ => pow_ne_zero _ (det_gen_ne_zero K n t)
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C x => simp [algHom_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p ℓ hp`. Simplify using `only [map_mul, hp, map_X]`.
+
+Use `congr 1`. Simplify using `only [cof, aeval_X]`. Use `split_ifs with h1 h2 h3`. Simplify using `[gen]`. Rewrite using `[← map_gen f, ← RingHom.map_adjugate]`.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem map_cof {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (Q : MvPolynomial (LtN Dw n) R) :
     MvPolynomial.map f (cof Dw pl R n Q) = cof Dw pl S n (MvPolynomial.map f Q) := by
   induction Q using MvPolynomial.induction_on with
@@ -68,6 +86,11 @@ theorem map_cof {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (Q : MvPo
     · simp
     · simp
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨Q, rfl⟩ : ∃ Q, MvPolynomial.map (integralClosure ℤ K).toSubring.subtype Q = P := by`. Use `⟨∑ m ∈ P.support, monomial m ⟨P.coeff m, hP m⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_monomial, Subring.subtype_apply]`. Conclude with `P.as_sum.symm`. Rewrite using `[← map_cof, coeff_map]`.
+
+Conclude with `((cof Dw pl _ n Q).coeff m).2`.
+-/
 theorem isIntegral_coeff_cof {K : Type} [Field K] (P : MvPolynomial (LtN Dw n) K)
     (hP : ∀ m, P.coeff m ∈ (integralClosure ℤ K).toSubring) (m) : IsIntegral ℤ ((cof Dw pl K n P).coeff m) := by
   obtain ⟨Q, rfl⟩ : ∃ Q, MvPolynomial.map (integralClosure ℤ K).toSubring.subtype Q = P := by
@@ -79,6 +102,37 @@ theorem isIntegral_coeff_cof {K : Type} [Field K] (P : MvPolynomial (LtN Dw n) K
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw n Ix _ pl he hn l c a s lam ha hwt`. Take `⟨ε, hε⟩` from `GlobalTheory.T.frameReading_leadingMinorProduct_extremal E H Dw n Ix pl he hn l c a s lam ha hwt`. Take `⟨him, hex, heq⟩` from `GlobalTheory.T.hodge_weight_dominance_condition E H Dw n Ix pl he hn l c a s lam ha hwt`. Take `⟨hpG, -, -⟩` from `pG_mem_ne_zero_generates E H Dw n Ix pl he hn l c a ha`. Take `⟨-, -, hstab⟩` from `letAct_mul_one_mem_HHa E H Dw n Ix pl he hn c.F a`.
+
+Take `⟨hs1, hs2, hs3⟩` from `GlobalTheory.StdNab.nabAtr_stdLat E c.F Ix n (fun t => embF c (pl t)) lam`. Establish `hD` using `detFac_ne_zero Dw pl c.F a s lam`. Set `S` to `harmSub Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i))`. Establish `hS : ∀ P, P ∈ S ↔ P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i))` using `fun _ => Iff.rfl`. Use `set e : c.F := ((ε : ℤ) : c.F) with he'`.
+
+Establish `hee : e * e = 1`. Rewrite using `[he', ← Int.cast_mul, Int.units_coe_mul_self, Int.cast_one]`. Establish `heI : IsIntegral ℤ e` using `isIntegral_intCast _`. Use `set D := detFac Dw pl c.F a s lam with hDdef`. Establish `hex' : ∀ F : VVc c lam, ∃! P, P ∈ S ∧ cof Dw pl c.F n P = e • (D * F.1)` using `fun F => by`.
+
+Use `hex (e • F.1) (Submodule.smul_mem _ _ F.2)` as an intermediate fact. Rewrite `this` using `[mul_smul_comm]`. Then use the resulting hypothesis. Use `choose φ hφ huniq using hex'`. Establish `hu : ∀ (F : VVc c lam) P, P ∈ S → cof Dw pl c.F n P = e • (D * F.1) → φ F = P` using `fun F P h1 h2 => (huniq F P ⟨h1, h2⟩).symm`. Set `io : VVc c lam →ₗ[c.F] MvPolynomial (LtN Dw n) c.F` to `{ toFun := φ map_add' := fun F G => hu _ _ (add_mem (hφ F).1 (hφ G).1) (by`.
+
+Rewrite using `[map_add, (hφ F).2, (hφ G).2, Submodule.coe_add, mul_add, smul_add])`. Use the proof step `map_smul' := fun x F => hu _ _ (Submodule.smul_mem _ _ (hφ F).1) (by`. Rewrite using `[map_smul, (hφ F).2, Submodule.coe_smul, mul_smul_comm, smul_comm]`. Use the proof step `rfl) }`. Establish `hio : ∀ F, io F = φ F` using `fun _ => rfl`.
+
+Establish `hsurj : ∀ P ∈ S, ∃ F : VVc c lam, io F = P` using `fun P hP => by`. Take `⟨F, hF, h⟩` from `him P hP`. Use `⟨⟨e • F, Submodule.smul_mem _ _ hF⟩, hu _ _ hP ?_⟩` and prove the remaining obligations. Rewrite using `[h, mul_smul_comm, smul_smul, hee, one_smul]`. Establish `hwm : (ten fun t => extremal c.F n (lam t)) ∈ VV c.F lam`.
+
+Take `⟨F, hF, h⟩` from `him _ hpG.1`. Rewrite `h` using `[hε, ← mul_smul_comm]`. Establish `h'` using `mul_left_cancel₀ hD h`. Establish `: (ten fun t => extremal c.F n (lam t)) = e • F` using `by rw [← h', smul_smul, hee, one_smul]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ hF`. Use `⟨io, ⟨_, hwm⟩, rfl, fun ga => if h : IsUnit ga.det then ∏ t, (((invTrK (embGL (fun t => embF c (pl t)) (Matrix.nonsingInvUnit ga h))) t : GL (Fin n) c.F) : Matrix (Fin n) (Fin n) c.F).det ^ (s t) else 0, hn, ?_, ?_, ?_, (hs1 _).2 hs2, fun x hx => hs3 x ((hs1 _).1 hx), hu _ _ hpG. …` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `F hF`. Establish `h` using `(hφ F).2`.
+
+Rewrite `h` using `[← hio, hF, map_zero]`. Establish `h'` using `congrArg (fun x => e • x) h`. Simplify using `only [smul_zero, smul_smul, hee, one_smul] at h'`. Conclude with `Subtype.ext ((mul_eq_zero.1 h'.symm).resolve_left hD)`. Establish `: Submodule.span c.F (HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i))) = S` using `Submodule.span_eq S`.
+
+Rewrite using `[this]`. Use `le_antisymm ?_ hsurj` and prove the remaining obligations. Introduce and unpack `_ ⟨F, rfl⟩`. Conclude with `(hφ F).1`. Introduce `ga hga F`.
+
+Establish `h : IsUnit ga.det`. Use `congrArg Matrix.det hga` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one_right _ this`. Rewrite using `[gaStar_conj_eq_letAct E H Dw n Ix pl he hn l c ga h hga]`.
+
+Simplify using `only [dif_pos h, rhoM]`. Use `set g := invTrK (embGL (fun t => embF c (pl t)) (Matrix.nonsingInvUnit ga h)) with hg`. Use `hu _ _ (Submodule.smul_mem _ _ (hstab g _ (hφ F).1)) ?_` and prove the remaining obligations. Establish `h1` using `heq g _ (hφ F).1 (e • F.1) (Submodule.smul_mem _ _ F.2) (by rw [(hφ F).2, mul_smul_comm])`. Rewrite using `[map_smul, hio, h1, smul_smul, ← Finset.prod_mul_distrib, map_smul, mul_smul_comm]`.
+
+Establish `h2 : ∏ t, (g t : Matrix (Fin n) (Fin n) c.F).det ^ (s t) * (g t : Matrix (Fin n) (Fin n) c.F).det ^ (-(s t)) = 1` using `Finset.prod_eq_one fun t _ => by`. Rewrite using `[← zpow_add₀ (Matrix.isUnits_det_units (g t)).ne_zero, add_neg_cancel, zpow_zero]`. Rewrite using `[h2, one_smul]`. Both sides reduce to the same expression. Introduce `P hP`.
+
+Take `⟨F, rfl⟩` from `hsurj P hP.1`. Use `⟨F, (hs1 F).2 (GlobalTheory.DetSat.mem_nabStd_of_det_mul_integral c.F Ix n lam (fun t => ((degC Dw pl a t : ℤ) + (lam t).detShift - s t).toNat) F.1 F.2 fun m => ?_), rfl⟩` and prove the remaining obligations. Establish `h : e • cof Dw pl c.F n (φ F) = D * F.1` using `by rw [(hφ F).2, smul_smul, hee, one_smul]`. Express the relevant statement in the definitionally equal form `IsIntegral ℤ ((D * F.1).coeff m)`. Rewrite using `[← h, coeff_smul, smul_eq_mul]`.
+
+Conclude with `heI.mul (isIntegral_coeff_cof Dw pl (φ F) hP.2 m)`.
+-/
 theorem exists_ioLFRec : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (n : ℕ) (Ix : Type) [Fintype Ix] (pl : Ix → (E →+* ℂ)), IsEnum H pl → Dw.p + Dw.q ≤ n → ∀ (l : Level H) (c : Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) (s : Ix → ℤ) (lam : Ix → DomWeight n), (∀ τ, Antitone fun i => a (τ, i)) → WtIs Dw pl a s lam → ∃ (io : VVc c lam →ₗ[c.F] MvPolynomial (LtN Dw n) c.F) (hw : VVc c lam), IoLFRec c (fun t => embF c (pl t)) lam a io hw := by
   intro E _ _ _ H Dw n Ix _ pl he hn l c a s lam ha hwt
   obtain ⟨ε, hε⟩ := GlobalTheory.T.frameReading_leadingMinorProduct_extremal E H Dw n Ix pl he hn l c a s lam ha hwt

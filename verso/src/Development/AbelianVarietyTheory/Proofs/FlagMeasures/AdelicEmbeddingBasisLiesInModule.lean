@@ -11,6 +11,33 @@ namespace GlobalTheory.St.G.TransportCong
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D X u wt ιA hW hA b bd y hy`. Take `⟨h1, -, hinj, -⟩` from `GlobalTheory.T.adelicColumnLattice_eq_spanPart_transportedFrame D X u wt ιA hW hA`. Establish `hadd : ∀ x x', embA X wt ιA (x + x') = embA X wt ιA x + embA X wt ιA x'`. Introduce `x x'`. Simplify using `only [embA, Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib]`.
+
+Establish `hsmul : ∀ (c : D.host.E ⊗[D.host.F] Ad D.host.F) x, embA X wt ιA (c • x) = ιA.symm c • embA X wt ιA x`. Introduce `c x`. Simplify using `only [embA, Pi.smul_apply, smul_eq_mul, map_mul, mul_smul, Finset.smul_sum]`. Establish `hzero : embA X wt ιA 0 = 0` using `by simp [embA]`. Establish `hsub : ∀ x x', embA X wt ιA (x - x') = embA X wt ιA x - embA X wt ιA x'`.
+
+Introduce `x x'`. Use `hadd (x - x') x'` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, add_sub_cancel_right]`. Establish `hS : (Set.range (fun i => embA X wt ιA (b i)) ∪ Set.range (fun i => embA X wt ιA (bd i))) = embA X wt ιA '' (Set.range b ∪ Set.range bd)`.
+
+Rewrite using `[Set.image_union, ← Set.range_comp, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hspan : ∀ s ∈ Submodule.span (IntAf X.B.I.F X.B.I.E) (embA X wt ιA '' (Set.range b ∪ Set.range bd)), ∃ s' ∈ Submodule.span (OAd D.host.F D.host.E) (Set.range b ∪ Set.range bd), embA X wt ιA s' = s`. Introduce `s hs`. Proceed by induction on `hs using Submodule.span_induction with`.
+
+Consider the case `mem x hx => obtain ⟨t, ht, rfl⟩ := hx`. Conclude with `⟨t, Submodule.subset_span ht, rfl⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, hzero⟩`. Consider the case `add x x' _ _ ihx ihx'`. Take `⟨s1, hs1, rfl⟩` from `ihx`.
+
+Take `⟨s2, hs2, rfl⟩` from `ihx'`. Conclude with `⟨s1 + s2, Submodule.add_mem _ hs1 hs2, hadd _ _⟩`. Consider the case `smul a x _ ihx`. Take `⟨s1, hs1, rfl⟩` from `ihx`. Establish `ha : ιA (a : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ∈ OAd D.host.F D.host.E` using `(hA.2 a).1 a.2`.
+
+Use `⟨(⟨_, ha⟩ : OAd D.host.F D.host.E) • s1, Submodule.smul_mem _ _ hs1, ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, hsmul, RingEquiv.symm_apply_apply, Subring.smul_def]`. Establish `hmL : ∀ w ∈ mL X.B.I X.B.g, ∃ x ∈ X.B.I.Lf, w = ((X.B.g : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • x`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem x hx => obtain ⟨x', hx', rfl⟩ := hx`. Conclude with `⟨x', hx', rfl⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, (smul_zero _).symm⟩`. Consider the case `add x x' _ _ ihx ihx'`. Take `⟨a1, h1, rfl⟩` from `ihx`.
+
+Take `⟨a2, h2, rfl⟩` from `ihx'`. Conclude with `⟨a1 + a2, Submodule.add_mem _ h1 h2, (smul_add _ _ _).symm⟩`. Consider the case `smul a x _ ihx`. Take `⟨a1, h1, rfl⟩` from `ihx`. Use `⟨a • a1, Submodule.smul_mem _ _ h1, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Subring.smul_def, smul_smul, mul_comm]`. Unfold `InMod at hy`. Rewrite `hy` using `[hS]`. Take `⟨s, hs, w, hw, hsw⟩` from `Submodule.mem_sup.mp hy`. Take `⟨s', hs', rfl⟩` from `hspan s hs`.
+
+Take `⟨x, hx, rfl⟩` from `hmL w hw`. Rewrite `hsw` using `[X.g_eq]`. Break down `Nat.eq_zero_or_pos (D.host.g 0 * D.host.g 1) with h0 | hpos` into its components or cases. Use `⟨s', hs', 0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_zero, add_zero]`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hsw, h0, Nat.cast_zero, zero_smul, add_zero]`. Establish `hu : IsUnit (((D.host.g 0 * D.host.g 1 : ℕ)) : D.host.E ⊗[D.host.F] Ad D.host.F)`. Rewrite using `[← map_natCast (algebraMap D.host.F (D.host.E ⊗[D.host.F] Ad D.host.F))]`. Conclude with `(IsUnit.mk0 _ (Nat.cast_ne_zero.mpr hpos.ne')).map _`.
+
+Take `⟨c, hc⟩` from `hu`. Use `⟨s', hs', ((c⁻¹ : (D.host.E ⊗[D.host.F] Ad D.host.F)ˣ) : D.host.E ⊗[D.host.F] Ad D.host.F) • (y - s'), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hsmul, hsub, ← hsw, add_sub_cancel_left, smul_smul, ← map_natCast ιA.symm, ← hc, ← map_mul, Units.inv_mul, map_one, one_smul]`. Conclude with `hx`. Rewrite using `[smul_smul, ← hc, Units.mul_inv, one_smul, add_sub_cancel]`.
+-/
 theorem inModL_of_inMod_embA : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V) (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] Ad D.host.F), WittX X u wt → IsAdeleIso X ιA → ∀ (b bd : Fin D.R.k → Fin (D.R.N 0) → D.host.E ⊗[D.host.F] Ad D.host.F) (y : Fin (D.R.N 0) → D.host.E ⊗[D.host.F] Ad D.host.F), InMod X.B.I X.B.g (Set.range (fun i => embA X wt ιA (b i)) ∪ Set.range (fun i => embA X wt ιA (bd i))) (embA X wt ιA y) → InModL (hat D.host.F (Mq wt)) (D.host.g 0 * D.host.g 1) (Set.range b ∪ Set.range bd) y := by
   intro D X u wt ιA hW hA b bd y hy
   obtain ⟨h1, -, hinj, -⟩ := GlobalTheory.T.adelicColumnLattice_eq_spanPart_transportedFrame D X u wt ιA hW hA

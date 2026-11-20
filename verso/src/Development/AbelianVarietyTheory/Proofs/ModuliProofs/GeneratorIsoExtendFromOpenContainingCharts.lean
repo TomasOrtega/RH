@@ -16,12 +16,20 @@ namespace GlobalTheory.GenPush
 
 variable {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← gs_unit f y V hy, ← gs_unit f y U (h hy)]`. Conclude with `gs_res f y h hy a.val`.
+-/
 private theorem gm_res_eq_gm {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) {U V : X.Opens} {h : V ≤ U} (hy : f y ∈ V)
     (a : Γ(X, U)ˣ) : gm f y V (res h a) = gm f y U a := by
   apply Units.ext
   rw [← gs_unit f y V hy, ← gs_unit f y U (h hy)]
   exact gs_res f y h hy a.val
 
+/- English proof (translation)
+Establish `hy' : (𝟙 Y ≫ c) y ∈ U` using `by simpa using hy`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← gs_unit (𝟙 Y) y (c ⁻¹ᵁ U) (by simpa using hy), ← gs_unit c y U hy]`. Establish `e` using `gs_pull (𝟙 Y) c y U (by simpa using hy) a.val`. Rewrite `e` using `[Category.id_comp]`.
+
+Conclude with `e`.
+-/
 private theorem gm_id_pullU_eq_gm {X Y : Scheme.{0}} (c : Y ⟶ X) (y : Y) {U : X.Opens} (hy : c y ∈ U)
     (a : Γ(X, U)ˣ) : gm (𝟙 Y) y (c ⁻¹ᵁ U) (pullU c U a) = gm c y U a := by
   have hy' : (𝟙 Y ≫ c) y ∈ U := by simpa using hy
@@ -31,11 +39,19 @@ private theorem gm_id_pullU_eq_gm {X Y : Scheme.{0}} (c : Y ⟶ X) (y : Y) {U : 
   rw [Category.id_comp] at e
   exact e
 
+/- English proof (translation)
+Unfold `LB.pull LB.LinComb LB.wchart`. Conclude with `Set.mem_iInter.2 fun _ => ha`.
+-/
 private theorem mem_pull_U_of_mem {X Y : Scheme.{0}} (N : LB X) (c : Y ⟶ X) {y : Y} {a : N.ι} (ha : c y ∈ N.U a) :
     y ∈ (N.pull c).U (fun _ => a) := by
   unfold LB.pull LB.LinComb LB.wchart
   exact Set.mem_iInter.2 fun _ => ha
 
+/- English proof (translation)
+Establish `hm : (𝟙 Y) y ∈ (N.pull c).U (fun _ => a) ⊓ (N.pull c).U (fun _ => b)` using `⟨mem_pull_U_of_mem N c (by simpa using ha), mem_pull_U_of_mem N c (by simpa using hb)⟩`. Use `revert hm`. Unfold `LB.pull LB.LinComb`. Simplify using `only`. Introduce `hm`.
+
+Simplify using `only [Finset.univ_unique, Finset.prod_singleton, zpow_one]`. Conclude with `(gm_res_eq_gm (𝟙 Y) y hm _).trans (gm_id_pullU_eq_gm c y (show c y ∈ N.U a ⊓ N.U b from ⟨ha, hb⟩) _)`.
+-/
 private theorem gm_id_pull_g_eq_gm_g {X Y : Scheme.{0}} (N : LB X) (c : Y ⟶ X) (y : Y) {a b : N.ι} (ha : c y ∈ N.U a)
     (hb : c y ∈ N.U b) :
     gm (𝟙 Y) y ((N.pull c).U (fun _ => a) ⊓ (N.pull c).U (fun _ => b)) ((N.pull c).g (fun _ => a) (fun _ => b)) =
@@ -49,6 +65,9 @@ private theorem gm_id_pull_g_eq_gm_g {X Y : Scheme.{0}} (N : LB X) (c : Y ⟶ X)
   simp only [Finset.univ_unique, Finset.prod_singleton, zpow_one]
   exact (gm_res_eq_gm (𝟙 Y) y hm _).trans (gm_id_pullU_eq_gm c y (show c y ∈ N.U a ⊓ N.U b from ⟨ha, hb⟩) _)
 
+/- English proof (translation)
+Unfold `LB.div`. Simplify using `only`. Rewrite using `[map_mul, map_inv, gm_res_eq_gm f y (V := (A.U p.1 ⊓ B.U p.2) ⊓ (A.U q.1 ⊓ B.U q.2)) ⟨hp, hq⟩, gm_res_eq_gm f y (V := (A.U p.1 ⊓ B.U p.2) ⊓ (A.U q.1 ⊓ B.U q.2)) ⟨hp, hq⟩]`.
+-/
 private theorem gm_div_g_eq_mul_inv {X Y : Scheme.{0}} (A B : LB X) (f : Y ⟶ X) (y : Y) (p q : (A.div B).ι)
     (hp : f y ∈ A.U p.1 ⊓ B.U p.2) (hq : f y ∈ A.U q.1 ⊓ B.U q.2) :
     gm f y ((A.div B).U p ⊓ (A.div B).U q) ((A.div B).g p q) =
@@ -58,6 +77,17 @@ private theorem gm_div_g_eq_mul_inv {X Y : Scheme.{0}} (A B : LB X) (f : Y ⟶ X
   rw [map_mul, map_inv, gm_res_eq_gm f y (V := (A.U p.1 ⊓ B.U p.2) ⊓ (A.U q.1 ⊓ B.U q.2)) ⟨hp, hq⟩,
     gm_res_eq_gm f y (V := (A.U p.1 ⊓ B.U p.2) ⊓ (A.U q.1 ⊓ B.U q.2)) ⟨hp, hq⟩]
 
+/- English proof (translation)
+Establish `hW : ∀ a, c ⁻¹ᵁ N.U a ≤ V a` using `fun a y hy => hV a y hy`. Use `choose b hb using fun a => exists_ext_unit c (c ⁻¹ᵁ N.U a) (res (hW a) (s a))`. Establish `hE : ∀ a, N.U a ≤ c ''ᵁ (c ⁻¹ᵁ N.U a)`. Introduce `a x hx`. Take `⟨y, rfl⟩ : x ∈ Set.range c` from `hN a hx`.
+
+Conclude with `⟨y, hx, rfl⟩`. Establish `key : ∀ (y : Y) a, c y ∈ N.U a → gm c y (c ''ᵁ (c ⁻¹ᵁ N.U a)) (b a) = gm (𝟙 Y) y (V a) (s a)`. Introduce `y a ha`. Establish `e` using `hb a Y (𝟙 Y) y (by simpa using ha)`. Rewrite `e` using `[Category.id_comp]`.
+
+Rewrite using `[e, gm_res_eq_gm (𝟙 Y) y (by simpa using ha)]`. Use `⟨⟨fun a => res (hE a) (b a)⟩, ?_⟩` and prove the remaining obligations. Unfold `LB.Gen.IsGen`. Introduce `a a'`. Apply `Units.ext` to reduce the goal to its premises.
+
+Apply `fn_ext` to reduce the goal to its premises. Introduce `x hx`. Take `⟨y, rfl⟩ : x ∈ Set.range c` from `hN a hx.1`. Establish `hx' : (𝟙 X) (c y) ∈ N.U a ⊓ N.U a'` using `by simpa using hx`. Rewrite using `[gs_unit (𝟙 X) (c y) _ hx', gs_unit (𝟙 X) (c y) _ hx']`.
+
+Use `congr 1`. Apply `gm_inj c y hx hx` to reduce the goal to its premises. Rewrite using `[map_mul, gm_res_eq_gm c y hx, gm_res_eq_gm c y hx.1, gm_res_eq_gm c y hx, gm_res_eq_gm c y hx.2, key y a hx.1, key y a' hx.2]`. Conclude with `hs y a a' hx.1 hx.2`.
+-/
 theorem exists_gen_of_units (c : Y ⟶ X) [IsOpenImmersion c] (N : LB X) (hN : ∀ a, N.U a ≤ c.opensRange)
     (V : N.ι → Y.Opens) (hV : ∀ a y, c y ∈ N.U a → y ∈ V a) (s : ∀ a, Γ(Y, V a)ˣ)
     (hs : ∀ (y : Y) a b, c y ∈ N.U a → c y ∈ N.U b →
@@ -89,6 +119,9 @@ theorem exists_gen_of_units (c : Y ⟶ X) [IsOpenImmersion c] (N : LB X) (hN : �
     key y a hx.1, key y a' hx.2]
   exact hs y a a' hx.1 hx.2
 
+/- English proof (translation)
+Unfold `LB.Gen.IsGen at ht`. Establish `hm : (𝟙 Y) y ∈ N.U i ⊓ N.U j` using `by simpa using (⟨hi, hj⟩ : y ∈ N.U i ⊓ N.U j)`. Establish `e` using `congrArg (gm (𝟙 Y) y (N.U i ⊓ N.U j)) (ht i j)`. Rewrite `e` using `[map_mul, gm_res_eq_gm (𝟙 Y) y hm, gm_res_eq_gm (𝟙 Y) y hm]`. Conclude with `e`.
+-/
 theorem gen_stalk {N : LB Y} {t : N.Gen} (ht : t.IsGen) (y : Y) (i j : N.ι) (hi : y ∈ N.U i) (hj : y ∈ N.U j) :
     gm (𝟙 Y) y (N.U i) (t.s i) = gm (𝟙 Y) y (N.U i ⊓ N.U j) (N.g i j) * gm (𝟙 Y) y (N.U j) (t.s j) := by
   unfold LB.Gen.IsGen at ht
@@ -97,6 +130,19 @@ theorem gen_stalk {N : LB Y} {t : N.Gen} (ht : t.IsGen) (y : Y) (i j : N.ι) (hi
   rw [map_mul, gm_res_eq_gm (𝟙 Y) y hm, gm_res_eq_gm (𝟙 Y) y hm] at e
   exact e
 
+/- English proof (translation)
+Introduce `X Y c _`. Use `⟨fun N hN ⟨t, ht⟩ => ?_, fun M M' hM ⟨w, hw⟩ => ?_⟩` and prove the remaining obligations. Use `exists_gen_of_units c N hN (fun a => (N.pull c).U (fun _ => a)) (fun a y hy => mem_pull_U_of_mem N c hy) (fun a => t.s (fun _ => a)) ?_` and prove the remaining obligations. Introduce `y a b ha hb`. Rewrite using `[gen_stalk ht y (fun _ => a) (fun _ => b) (mem_pull_U_of_mem N c ha) (mem_pull_U_of_mem N c hb), gm_id_pull_g_eq_gm_g N c y ha hb]`.
+
+Establish `hN : ∀ p : (M'.div M).ι, (M'.div M).U p ≤ c.opensRange`. Introduce `p`. Use `show M'.U p.1 ⊓ M.U p.2 ≤ _`. Rewrite using `[inf_comm]`. Conclude with `hM p.2 p.1`.
+
+Establish `hV : ∀ (p : (M'.div M).ι) (y : Y), c y ∈ (M'.div M).U p → y ∈ ((M'.pull c).div (M.pull c)).U ((fun _ => p.1, fun _ => p.2) : (M'.pull c).ι × (M.pull c).ι)` using `fun p y hy => ⟨mem_pull_U_of_mem M' c hy.1, mem_pull_U_of_mem M c hy.2⟩`. Take `⟨t, ht⟩` from `exists_gen_of_units c (M'.div M) hN (fun p => ((M'.pull c).div (M.pull c)).U ((fun _ => p.1, fun _ => p.2) : (M'.pull c).ι × (M.pull c).ι)) hV (fun p => w.s ((fun _ => p.1, fun _ => p.2) : (M'.pull c).ι × (M.pull c).ι)) (by`. Introduce `y p q hp hq`. Rewrite using `[gen_stalk hw y _ _ (hV p y hp) (hV q y hq)]`. Use `congr 1`.
+
+Establish `m1 : (𝟙 Y) y ∈ (M'.pull c).U (fun _ => p.1) ⊓ (M.pull c).U (fun _ => p.2)`. Establish `h : y ∈ (M'.pull c).U (fun _ => p.1) ⊓ (M.pull c).U (fun _ => p.2)` using `hV p y hp`. Simplify using `using h`. Establish `m2 : (𝟙 Y) y ∈ (M'.pull c).U (fun _ => q.1) ⊓ (M.pull c).U (fun _ => q.2)`. Establish `h : y ∈ (M'.pull c).U (fun _ => q.1) ⊓ (M.pull c).U (fun _ => q.2)` using `hV q y hq`.
+
+Simplify using `using h`. Establish `e1` using `gm_div_g_eq_mul_inv (M'.pull c) (M.pull c) (𝟙 Y) y ((fun _ => p.1, fun _ => p.2) : (M'.pull c).ι × (M.pull c).ι) ((fun _ => q.1, fun _ => q.2) : (M'.pull c).ι × (M.pull c).ι) m1 m2`. Establish `e2` using `gm_div_g_eq_mul_inv M' M c y p q hp hq`. Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[gm_id_pull_g_eq_gm_g M' c y hp.1 hq.1, gm_id_pull_g_eq_gm_g M c y hp.2 hq.2])`. Conclude with `⟨t, ht⟩`.
+-/
 theorem gen_iso_of_charts_le_range : ∀ (X Y : Scheme.{0}) (c : Y ⟶ X) [IsOpenImmersion c], (∀ N : LB X, (∀ a, N.U a ≤ c.opensRange) → (∃ t : (N.pull c).Gen, t.IsGen) → ∃ t : N.Gen, t.IsGen) ∧ ∀ M M' : LB X, (∀ a b, M.U a ⊓ M'.U b ≤ c.opensRange) → LBIso (M.pull c) (M'.pull c) → LBIso M M' := by
   intro X Y c _
   refine ⟨fun N hN ⟨t, ht⟩ => ?_, fun M M' hM ⟨w, hw⟩ => ?_⟩

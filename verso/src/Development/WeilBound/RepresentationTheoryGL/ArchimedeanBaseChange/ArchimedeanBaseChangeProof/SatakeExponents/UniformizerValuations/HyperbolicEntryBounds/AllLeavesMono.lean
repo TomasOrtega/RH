@@ -33,12 +33,22 @@ def WEx : Prop := ∀ (hR : Rd.ReadLimit) (E : Type) [Field E] [NumberField E] [
     s₂.AllLeaves (fun M V => M = 0 ∨ ∃ K', ∃ W' ∈ xΩ₂ hR E _ _ (A i).Ma (A i).Mb M, HasType K' W' V) →
     ∀ j, HasKType (W (D.N j)) (D.V j)
 
+/- English proof (translation)
+The claim follows from `| _, .leaf V _, hp => h _ V hp | _, .node t₁ t₂, hp => ⟨allLeaves_mono h t₁ hp.1, allLeaves_mono h t₂ hp.2⟩`.
+-/
 theorem allLeaves_mono {E : Type} [Field E] [NumberField E] [IsCMField E]
     {P Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop} (h : ∀ M V, P M V → Q M V) :
     ∀ {N : ℕ} (t : Tr E N), t.AllLeaves P → t.AllLeaves Q
   | _, .leaf V _, hp => h _ V hp
   | _, .node t₁ t₂, hp => ⟨allLeaves_mono h t₁ hp.1, allLeaves_mono h t₂ hp.2⟩
 
+/- English proof (translation)
+Introduce `hR E _ _ _ n μ e lam C A`. Set `Ω : ∀ M : ℕ, Set (Submodule ℂ (Kinf E M → ℂ))` to `fun M => ⋃ i : C.ι, (xΩ₁ hR E _ _ (A i).Ma (A i).Mb M ∪ xΩ₂ hR E _ _ (A i).Ma (A i).Mb M)`. Establish `hx` using `(hR E).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.1`. Establish `hK : KTypes E Ω`. Introduce `M`.
+
+Use `⟨Set.finite_iUnion fun i => ((hx _ _ (A i).Ma (A i).Mb).2.2.1 M).1.union ((hx _ _ (A i).Ma (A i).Mb).2.2.2.1 M).1, ?_⟩` and prove the remaining obligations. Introduce `W' hW'`. Take `⟨i, hi⟩` from `Set.mem_iUnion.1 hW'`. Break down `hi with h | h` into its components or cases. Conclude with `((hx _ _ (A i).Ma (A i).Mb).2.2.1 M).2 W' h`.
+
+Conclude with `((hx _ _ (A i).Ma (A i).Mb).2.2.2.1 M).2 W' h`. Take `⟨W, hW, hj⟩` from `hJ E n μ Ω hK`. Use `⟨W, hW, fun i s₁ s₂ Pa Pb D hc h₁ h₂ => hj (C.a i) (n - C.a i) (Nat.add_sub_of_le (C.le i)) s₁ s₂ Pa Pb D hc ?_ ?_⟩` and prove the remaining obligations. Conclude with `allLeaves_mono (fun M V hv => hv.elim Or.inl fun ⟨K', W', hW', ht⟩ => Or.inr ⟨K', W', Set.mem_iUnion.2 ⟨i, Or.inl hW'⟩, ht⟩) s₁ h₁`. Conclude with `allLeaves_mono (fun M V hv => hv.elim Or.inl fun ⟨K', W', hW', ht⟩ => Or.inr ⟨K', W', Set.mem_iUnion.2 ⟨i, Or.inr hW'⟩, ht⟩) s₂ h₂`.
+-/
 theorem wEx_of (hJ : JoinType) : WEx := by
   intro hR E _ _ _ n μ e lam C A
   let Ω : ∀ M : ℕ, Set (Submodule ℂ (Kinf E M → ℂ)) := fun M =>

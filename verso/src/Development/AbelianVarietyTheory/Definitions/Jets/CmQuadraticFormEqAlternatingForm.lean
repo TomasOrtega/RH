@@ -32,6 +32,9 @@ def vdOf (D : D7) (p : ℕ) : ℝ := if p ∈ D.host.small then (padicValNat p D
 
 variable {L : SizeData₂ D} {Pm : ParameterChoice' D L}
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le (by omega) Tp.TO_40`.
+-/
 theorem TO_pos (Tp : ParamsT D L Pm) : 0 < Tp.TO := lt_of_lt_of_le (by omega) Tp.TO_40
 
 def depOf (T : Core D) (EX : ErrX D) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) : DepData D.host.E :=

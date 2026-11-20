@@ -10,6 +10,13 @@ namespace PI.LocDualGen.FpU
 variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   (l : ℕ) [Fact l.Prime] [Algebra ℚ_[l] K]
 
+/- English proof (translation)
+Rewrite using `[IsTopologicalAddGroup.t2Space_iff_zero_closed, ← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `x hx`. Establish `hx0 : x ≠ 0` using `hx`. Establish `hv : valuation K x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx0`. Rewrite using `[IsValuativeTopology.mem_nhds_iff]`.
+
+Use `⟨Units.mk0 _ hv, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩ h0`. Establish `hz' : valuation K z < valuation K x` using `hz`. Establish `h0' : x + z = 0` using `h0`. Establish `: z = -x` using `by linear_combination h0'`.
+
+Rewrite `hz'` using `[this, Valuation.map_neg]`. Conclude with `lt_irrefl _ hz'`.
+-/
 theorem t2 : T2Space K := by
   rw [IsTopologicalAddGroup.t2Space_iff_zero_closed, ← isOpen_compl_iff, isOpen_iff_mem_nhds]
   intro x hx
@@ -24,10 +31,16 @@ theorem t2 : T2Space K := by
   rw [this, Valuation.map_neg] at hz'
   exact lt_irrefl _ hz'
 
+/- English proof (translation)
+Use `haveI : T2Space K := t2 (K := K)`. Conclude with `(IsNonarchimedeanLocalField.isCompact_closedBall K 1).isClosed`.
+-/
 theorem isClosed_O : IsClosed ((𝒪[K] : Set K)) := by
   haveI : T2Space K := t2 (K := K)
   exact (IsNonarchimedeanLocalField.isCompact_closedBall K 1).isClosed
 
+/- English proof (translation)
+Establish `hcl : IsClosed {a : ℤ_[l] | algebraMap ℚ_[l] K (a : ℚ_[l]) ∈ 𝒪[K]}` using `(isClosed_O (K := K)).preimage (hcont.comp continuous_subtype_val)`. Use `PadicInt.denseRange_intCast.induction_on a hcl ?_` and prove the remaining obligations. Introduce `n`. Simplify using `only [Set.mem_setOf_eq, PadicInt.coe_intCast, map_intCast]`. Conclude with `intCast_mem _ n`.
+-/
 theorem iota_mem (hcont : Continuous (algebraMap ℚ_[l] K)) (a : ℤ_[l]) :
     algebraMap ℚ_[l] K (a : ℚ_[l]) ∈ 𝒪[K] := by
   have hcl : IsClosed {a : ℤ_[l] | algebraMap ℚ_[l] K (a : ℚ_[l]) ∈ 𝒪[K]} :=
@@ -41,14 +54,23 @@ def iotaR (hcont : Continuous (algebraMap ℚ_[l] K)) : ℤ_[l] →+* 𝒪[K] :=
   ((algebraMap ℚ_[l] K).comp (PadicInt.Coe.ringHom (p := l))).codRestrict 𝒪[K]
     (fun a => iota_mem K l hcont a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iotaR_coe (hcont : Continuous (algebraMap ℚ_[l] K)) (a : ℤ_[l]) :
     ((iotaR K l hcont a : 𝒪[K]) : K) = algebraMap ℚ_[l] K (a : ℚ_[l]) := rfl
 
+/- English proof (translation)
+Rewrite using `[CharP.charP_iff_prime_eq_zero (Fact.out : l.Prime), ← map_natCast (residue 𝒪[K]) l, IsLocalRing.residue_eq_zero_iff]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 huni.not_isUnit)`.
+-/
 theorem charP_res (huni : Irreducible ((l : ℕ) : 𝒪[K])) : CharP 𝓀[K] l := by
   rw [CharP.charP_iff_prime_eq_zero (Fact.out : l.Prime), ← map_natCast (residue 𝒪[K]) l,
     IsLocalRing.residue_eq_zero_iff]
   exact (IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 huni.not_isUnit)
 
+/- English proof (translation)
+Conclude with `congrFun (b.repr_sum_self c) i`.
+-/
 theorem repr_sum {ι R M : Type*} [Fintype ι] [CommRing R] [AddCommGroup M] [Module R M]
     (b : Module.Basis ι R M) (c : ι → R) (i : ι) : b.repr (∑ j, c j • b j) i = c i := by
   exact congrFun (b.repr_sum_self c) i
@@ -61,6 +83,11 @@ abbrev algRes : Algebra (ZMod l) 𝓀[K] := ZMod.algebra _ l
 
 attribute [local instance] algRes
 
+/- English proof (translation)
+Take `⟨-, h⟩` from `PadicInt.zmodRepr_spec a`. Rewrite `h` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨b, hb⟩` from `h`. Establish `ha : a = ((a.zmodRepr : ℕ) : ℤ_[l]) + b * (l : ℤ_[l])` using `by rw [hb]; ring`. Rewrite using `[ha]`.
+
+Simplify using `[map_natCast, CharP.cast_eq_zero]`.
+-/
 theorem res_iotaR (hcont : Continuous (algebraMap ℚ_[l] K)) (a : ℤ_[l]) :
     residue 𝒪[K] (iotaR K l hcont a) = algebraMap (ZMod l) 𝓀[K] (PadicInt.toZMod a) := by
   obtain ⟨-, h⟩ := PadicInt.zmodRepr_spec a
@@ -76,27 +103,46 @@ def bb : Module.Basis (Fin (fdim K l)) (ZMod l) 𝓀[K] := Module.finBasis (ZMod
 
 def blift (i : Fin (fdim K l)) : 𝒪[K] := (residue_surjective (bb K l i)).choose
 
+/- English proof (translation)
+Conclude with `(residue_surjective (bb K l i)).choose_spec`.
+-/
 theorem res_blift (i : Fin (fdim K l)) : residue 𝒪[K] (blift K l i) = bb K l i := by
   exact (residue_surjective (bb K l i)).choose_spec
 
 def Phi (hcont : Continuous (algebraMap ℚ_[l] K)) (c : Fin (fdim K l) → ℤ_[l]) : 𝒪[K] :=
   ∑ i, iotaR K l hcont (c i) * blift K l i
 
+/- English proof (translation)
+Unfold `Phi`. Use `push_cast`. Simplify using `only [iotaR_coe]`.
+-/
 theorem Phi_coe (hcont : Continuous (algebraMap ℚ_[l] K)) (c : Fin (fdim K l) → ℤ_[l]) :
     ((Phi K l hcont c : 𝒪[K]) : K) = ∑ i, algebraMap ℚ_[l] K (c i : ℚ_[l]) * (blift K l i : K) := by
   unfold Phi
   push_cast
   simp only [iotaR_coe]
 
+/- English proof (translation)
+Simplify using `only [Phi, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]`.
+-/
 theorem Phi_add (hcont : Continuous (algebraMap ℚ_[l] K)) (c c' : Fin (fdim K l) → ℤ_[l]) (s : ℤ_[l]) :
     Phi K l hcont (c + s • c') = Phi K l hcont c + iotaR K l hcont s * Phi K l hcont c' := by
   simp only [Phi, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, add_mul,
     Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [Phi, map_sum, map_mul, res_iotaR, res_blift, Algebra.smul_def]`.
+-/
 theorem res_Phi (hcont : Continuous (algebraMap ℚ_[l] K)) (c : Fin (fdim K l) → ℤ_[l]) :
     residue 𝒪[K] (Phi K l hcont c) = ∑ i, PadicInt.toZMod (c i) • bb K l i := by
   simp only [Phi, map_sum, map_mul, res_iotaR, res_blift, Algebra.smul_def]
 
+/- English proof (translation)
+Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Use `set r := (bb K l).repr (residue 𝒪[K] x) with hr`. Use `?_` and prove the remaining obligations. Establish `hc : residue 𝒪[K] (Phi K l hcont (fun i => ((r i).val : ℤ_[l]))) = residue 𝒪[K] x`. Rewrite using `[res_Phi]`.
+
+Establish `h1 : ∀ i, PadicInt.toZMod (((r i).val : ℕ) : ℤ_[l]) = r i` using `fun i => by`. Rewrite using `[map_natCast, ZMod.natCast_zmod_val]`. Repeatedly rewrite using `[h1]`. Conclude with `(bb K l).sum_repr (residue 𝒪[K] x)`. Establish `hm : x - Phi K l hcont (fun i => ((r i).val : ℤ_[l])) ∈ maximalIdeal 𝒪[K]`.
+
+Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, hc, sub_self]`. Rewrite `hm` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 huni, Ideal.mem_span_singleton']`. Take `⟨y, hy⟩` from `hm`. Conclude with `⟨_, y, by rw [mul_comm, hy]; ring⟩`.
+-/
 theorem one_step (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : ℕ) : 𝒪[K]))
     (x : 𝒪[K]) : ∃ c, ∃ y : 𝒪[K], x = Phi K l hcont c + (l : 𝒪[K]) * y := by
   haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩
@@ -115,6 +161,11 @@ theorem one_step (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible
   obtain ⟨y, hy⟩ := hm
   exact ⟨_, y, by rw [mul_comm, hy]; ring⟩
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => exact ⟨0, x, by simp [Phi]⟩`. Consider the case `succ j ih`. Take `⟨c, y, hxy⟩` from `ih`. Take `⟨c', y', hy⟩` from `one_step K l hcont huni y`.
+
+Use `⟨c + ((l : ℤ_[l]) ^ j) • c', y', ?_⟩` and prove the remaining obligations. Rewrite using `[Phi_add, hxy, hy]`. Simplify using `only [map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem n_step (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : ℕ) : 𝒪[K]))
     (j : ℕ) (x : 𝒪[K]) : ∃ c, ∃ y : 𝒪[K], x = Phi K l hcont c + (l : 𝒪[K]) ^ j * y := by
   induction j with
@@ -127,6 +178,23 @@ theorem n_step (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible (
     simp only [map_pow, map_natCast]
     ring
 
+/- English proof (translation)
+Use `haveI : T2Space K := t2 (K := K)`. Use `choose c y hxy using fun j => n_step K l hcont huni j x`. Set `F : (Fin (fdim K l) → ℤ_[l]) → K` to `fun c => ((Phi K l hcont c : 𝒪[K]) : K)`. Establish `hF : Continuous F`. Establish `: F = fun c => ∑ i, algebraMap ℚ_[l] K (c i : ℚ_[l]) * (blift K l i : K)`.
+
+Use function extensionality and compare the values at `c`. Conclude with `Phi_coe K l hcont c`. Rewrite using `[this]`. Use `continuous_finset_sum _ (fun i _ => ?_)` and prove the remaining obligations. Conclude with `(hcont.comp (continuous_subtype_val.comp (continuous_apply i))).mul continuous_const`.
+
+Establish `hcl : IsClosed (Set.range F)` using `(isCompact_range hF).isClosed`. Establish `h0 : Filter.Tendsto (fun j => (l : K) ^ j * (y j : K)) Filter.atTop (nhds 0)`. Establish `hp : Filter.Tendsto (fun j => (l : ℚ_[l]) ^ j) Filter.atTop (nhds 0)` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one Padic.norm_p_lt_one`. Establish `hp' : Filter.Tendsto (fun j => (l : K) ^ j) Filter.atTop (nhds 0)`. Use `(hcont.tendsto 0).comp hp` as an intermediate fact.
+
+Simplify `this` using `[Function.comp_def, map_pow, map_natCast]`. Rewrite `hp'`, the goal using `[(IsValuativeTopology.hasBasis_nhds_zero K).tendsto_right_iff]`. Introduce `γ _`. Use `filter_upwards [hp' γ trivial] with j hj`. Establish `hj' : valuation K ((l : K) ^ j) < γ` using `hj`.
+
+Use `show valuation K ((l : K) ^ j * (y j : K)) < γ`. Rewrite using `[map_mul]`. Establish `hy1 : valuation K (y j : K) ≤ 1` using `(Valuation.mem_integer_iff _ _).1 (y j).2`. Combine the equalities or inequalities in the displayed calculation. Establish `heq : (fun j => F (c j)) = fun j => (x : K) - (l : K) ^ j * (y j : K)`.
+
+Use function extensionality and compare the values at `j`. Use `congrArg (fun z : 𝒪[K] => (z : K)) (hxy j)` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify using `only [F]`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hlim : Filter.Tendsto (fun j => F (c j)) Filter.atTop (nhds (x : K))`. Rewrite using `[heq]`. Simplify using `using (tendsto_const_nhds (x := (x : K))).sub h0`. Take `⟨c0, hc0⟩` from `hcl.mem_of_tendsto hlim (Filter.Eventually.of_forall fun j => ⟨c j, rfl⟩)`.
+
+Conclude with `⟨c0, Subtype.ext hc0.symm⟩`.
+-/
 theorem span (hcont : Continuous (algebraMap ℚ_[l] K)) (huni : Irreducible ((l : ℕ) : 𝒪[K]))
     (x : 𝒪[K]) : ∃ c, x = Phi K l hcont c := by
   haveI : T2Space K := t2 (K := K)

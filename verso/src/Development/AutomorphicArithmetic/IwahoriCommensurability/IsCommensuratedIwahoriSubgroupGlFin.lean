@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IwahoriSubgroupD
 import Development.AutomorphicArithmetic.IwahoriCommensurability.IsCommensuratedIwahoriGl
 open Formalism.UG
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n`. Rewrite using `[GlobalTheory.IwEq.iwahori_eq_glnLocal_iwahori k n]`. Conclude with `UpperTheory.isCommensurated_iwahori_gl k n`.
+-/
 theorem UpperTheory.isCommensurated_iwahoriSubgroup_gl_fin :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ), Formalism.UG.IsCommensurated (GlobalTheory.SmGL.iwahori k (Fin n)) := by
   intro k _ _ _ _ n

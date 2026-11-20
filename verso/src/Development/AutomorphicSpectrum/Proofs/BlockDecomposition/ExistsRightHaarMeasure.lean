@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.AdelicHaar
 
+/- English proof (translation)
+Introduce `E _ _ _ a` and use `⟨Measure.haar, inferInstance, GlobalTheory.CovolGL.isMulRightInvariant E a _⟩`.
+-/
 theorem exists_haar_rightInvariant : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∃ μ : Measure (GA E a), μ.IsHaarMeasure ∧ μ.IsMulRightInvariant :=
   fun E _ _ _ a => ⟨Measure.haar, inferInstance, GlobalTheory.CovolGL.isMulRightInvariant E a _⟩
 

@@ -7,6 +7,13 @@ import Formalism.SharpRestriction.ValuationFrobeniusEpsilon.LeastPrimeTwists.Quo
 
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `nil => intro m`. Both sides reduce to the same expression. Consider the case `cons a _ ih => intro m`. Simplify using `only [dif, ih]`.
+
+Consider the case `swap a b l`. Introduce `m`. Simplify using `only [dif]`. Rewrite using `[sub_right_comm m a b]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `trans _ _ ih1 ih2 => intro m`. Rewrite using `[ih1, ih2]`.
+-/
 private theorem la_dif_perm {k : ℕ} {l l' : List (Deg k)} (h : l.Perm l') (f : Deg k → ℤ) :
     ∀ m, dif l f m = dif l' f m := by
   induction h with
@@ -19,6 +26,11 @@ private theorem la_dif_perm {k : ℕ} {l l' : List (Deg k)} (h : l.Perm l') (f :
     ring
   | trans _ _ ih1 ih2 => intro m; rw [ih1, ih2]
 
+/- English proof (translation)
+Proceed by induction on `ts with`. Consider the case `nil => intro m`. Rewrite using `[Sm.hdiff_nil]`. Both sides reduce to the same expression. Consider the case `cons p ts ih`.
+
+Take `⟨d, s⟩` from `p`. Introduce `m`. Rewrite using `[Sm.hdiff_cons, ih, ih]`. Both sides reduce to the same expression.
+-/
 private theorem la_hdiff {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
     (ts : List (Deg k × R)) (G : GMod B R k) :
     ∀ m, Sm.hdiff ts G m = dif (ts.map Prod.fst) (hilb G) m := by
@@ -30,6 +42,11 @@ private theorem la_hdiff {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algeb
     rw [Sm.hdiff_cons, ih, ih]
     rfl
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `h`. Use `⟨N, hN.trans (sup_le_sup_left ?_ _)⟩` and prove the remaining obligations. Rewrite using `[secs, Ideal.span_le]`. Introduce and unpack `x ⟨e, he⟩`. Break down `List.mem_cons.1 he with h | h` into its components or cases.
+
+Take `⟨rfl, rfl⟩` from `Prod.mk.inj h`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨_, List.mem_cons_self⟩)`. Conclude with `Ideal.subset_span ⟨e, List.mem_cons_of_mem _ h⟩`.
+-/
 private theorem la_adm {k : ℕ} (X : HidaSetting k) (J : Ideal X.R) (d : Deg k) (a y : X.R)
     (ts : List (Deg k × X.R)) (h : admitted X.𝒜 ((d, a * y) :: ts) J) : admitted X.𝒜 ((d, y) :: ts) J := by
   obtain ⟨N, hN⟩ := h
@@ -41,11 +58,25 @@ private theorem la_adm {k : ℕ} (X : HidaSetting k) (J : Ideal X.R) (d : Deg k)
     exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨_, List.mem_cons_self⟩)
   · exact Ideal.subset_span ⟨e, List.mem_cons_of_mem _ h⟩
 
+/- English proof (translation)
+Rewrite using `[← map_pow, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 private theorem la_mem {k : ℕ} (X : HidaSetting k) (β : X.B) (c : ℕ) {d : Deg k} {y : X.R} (hy : y ∈ X.𝒜 d) :
     algebraMap X.B X.R β ^ c * y ∈ X.𝒜 d := by
   rw [← map_pow, ← Algebra.smul_def]
   exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Establish `hb : algebraMap X.B X.R β ∈ X.𝒜 0`. Rewrite using `[X.std.zero]`. Conclude with `⟨β, rfl⟩`. Establish `hs` using `ruleSmall k X ts _ hV ((ruleGr k X F hF).2.2 0 _ hb).1 hA`. Proceed by induction on `c with`.
+
+Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ c ih`. Introduce `h`. Rewrite `h`, the goal using `[pow_succ', mul_assoc]`.
+
+Establish `hV' : Valid X.𝒜 ((0, algebraMap X.B X.R β) :: (d, algebraMap X.B X.R β ^ c * y) :: ts)`. Introduce `p hp`. Break down `List.mem_cons.1 hp with rfl | hp` into its components or cases. Conclude with `⟨le_rfl, hb⟩`. Break down `List.mem_cons.1 hp with rfl | hp` into its components or cases.
+
+Conclude with `⟨hd, la_mem X β c hy⟩`. Conclude with `hV p hp`. Use `filter_upwards [euler_rule_product_zero k X ts F d _ _ hV' hF h, ih (la_adm X _ d _ _ ts h), hs] with m h1 h2 h3`. Establish `h4 : chi ts (F.quot (algebraMap X.B X.R β)) m = _` using `h3.trans (la_hdiff ts _ m)`. Rewrite using `[h1, h2, ruleNzd k X ts F 0 _ hβ m, h4]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem la_peel {k : ℕ} (X : HidaSetting k) (F : X.Mod) (hF : F.IsGr X.𝒜) (β : X.B)
     (hβ : ∀ y : F.M, algebraMap X.B X.R β • y = 0 → y = 0)
     (hA : admitted X.𝒜 [] (F.quot (algebraMap X.B X.R β)).Ann) (d : Deg k) (hd : 0 ≤ d) (y : X.R)
@@ -74,6 +105,23 @@ private theorem la_peel {k : ℕ} (X : HidaSetting k) (F : X.Mod) (hF : F.IsGr X
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `k X F hF β hβ hA d hd n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `y c _ us hV h`. Simplify `h)` using `using rulePos k X us F hV hF (by simpa`.
+
+Consider the case `succ n ih`. Introduce `y c hy us hV h`. Rewrite `h`, the goal using `[List.ofFn_succ, List.cons_append]`. Use `set L := (List.ofFn fun i : Fin n => (d, algebraMap X.B X.R β ^ c i.succ * y i.succ)) with hL`. Establish `hVL : Valid X.𝒜 (L ++ us)`.
+
+Introduce `p hp`. Break down `List.mem_append.1 hp with hp | hp` into its components or cases. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hp`. Conclude with `⟨hd, la_mem X β _ (hy _)⟩`. Conclude with `hV p hp`.
+
+Establish `hc : ∀ l, Valid X.𝒜 l → Valid X.𝒜 ((d, y 0) :: l)`. Introduce `l hl p hp`. Break down `List.mem_cons.1 hp with rfl | hp` into its components or cases. Conclude with `⟨hd, hy 0⟩`. Conclude with `hl p hp`.
+
+Establish `hP : ((d, y 0) :: (L ++ us)).Perm (L ++ (d, y 0) :: us)` using `List.perm_middle.symm`. Establish `h'` using `la_adm X _ d _ _ _ h`. Establish `h'' : admitted X.𝒜 (L ++ (d, y 0) :: us) F.Ann`. Unfold `admitted at h' ⊢`. Rewrite using `[← E2.secs_perm hP]` and apply the resulting hypothesis.
+
+Establish `hfst : (L ++ us).map Prod.fst = List.replicate n d ++ us.map Prod.fst`. Rewrite using `[List.map_append, hL, List.map_ofFn]`. Use `congr 1`. Conclude with `List.ofFn_const n d`. Use `filter_upwards [la_peel X F hF β hβ hA d hd (y 0) (hy 0) _ hVL (c 0) h, euler_rule_two_of_graded_finite_iso ruleGr ruleFin ruleIso (euler_additivity_of_rules ruleGr ruleFin ruleIso) k X _ _ F (hc _ hVL) hP hF h', ih (fun i => y i.succ) (fun i => c i.succ) (fun i => hy _) _ (hc _ …`.
+
+Rewrite using `[h1, h2, hfst, Fin.sum_univ_succ, Nat.add_sub_cancel, Nat.cast_add, add_mul]`. Use `add_le_add le_rfl (le_trans (le_of_eq ?_) h3)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ n`.
+
+Use `congr 1`. Use `la_dif_perm ?_ _ m` and prove the remaining obligations. Rewrite using `[Nat.add_sub_cancel, List.replicate_succ, List.map_cons, List.cons_append]`. Conclude with `List.perm_middle.symm`.
+-/
 theorem UpperTheory.V.Alg.M.la_holds :
     ∀ (k : ℕ) (X : HidaSetting k) (F : X.Mod), F.IsGr X.𝒜 → ∀ β : X.B, (∀ y : F.M, algebraMap X.B X.R β • y = 0 → y = 0) →
       admitted X.𝒜 [] (F.quot (algebraMap X.B X.R β)).Ann → ∀ (d : Deg k), 0 ≤ d → ∀ (n : ℕ) (y : Fin n → X.R) (c : Fin n → ℕ),

@@ -28,21 +28,38 @@ instance unitaryGroup_secondCountable (m : ℕ) :
 def tr (m : ℕ) : Matrix.unitaryGroup (Fin m) ℂ → Matrix.unitaryGroup (Fin m) ℂ :=
   Matrix.UnitaryGroup.transpose
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma tr_val (m : ℕ) (g : Matrix.unitaryGroup (Fin m) ℂ) :
     ((tr m g : Matrix.unitaryGroup (Fin m) ℂ) : Matrix (Fin m) (Fin m) ℂ) =
       (g : Matrix (Fin m) (Fin m) ℂ)ᵀ := rfl
 
+/- English proof (translation)
+The claim follows from `continuous_induced_rng.2 (continuous_subtype_val.matrix_transpose)`.
+-/
 lemma tr_continuous (m : ℕ) : Continuous (tr m) :=
   continuous_induced_rng.2 (continuous_subtype_val.matrix_transpose)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [tr_val, Matrix.UnitaryGroup.mul_val, Matrix.transpose_mul]`.
+-/
 lemma tr_mul (m : ℕ) (x y : Matrix.unitaryGroup (Fin m) ℂ) : tr m (x * y) = tr m y * tr m x := by
   apply Subtype.ext
   simp only [tr_val, Matrix.UnitaryGroup.mul_val, Matrix.transpose_mul]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [tr_val, Matrix.transpose_transpose]`.
+-/
 lemma tr_tr (m : ℕ) (x : Matrix.unitaryGroup (Fin m) ℂ) : tr m (tr m x) = x := by
   apply Subtype.ext
   simp only [tr_val, Matrix.transpose_transpose]
 
+/- English proof (translation)
+Apply `continuous_induced_rng.2` to reduce the goal to its premises. Establish `h : (Subtype.val ∘ ι) = fun g : Matrix.unitaryGroup (Fin n) ℂ => Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (g : Matrix (Fin n) (Fin n) ℂ) 0 0 (1 : Matrix (Fin 1) (Fin 1) ℂ))`. Use function extensionality and compare the values at `g`. Conclude with `hι g`. Rewrite using `[h]`.
+
+Conclude with `(continuous_subtype_val.matrix_fromBlocks continuous_const continuous_const continuous_const).matrix_reindex _ _`.
+-/
 lemma emb_continuous (n : ℕ) (ι : Matrix.unitaryGroup (Fin n) ℂ →* Matrix.unitaryGroup (Fin (n + 1)) ℂ)
     (hι : ∀ g, ((ι g : Matrix.unitaryGroup (Fin (n + 1)) ℂ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) =
       Matrix.reindex finSumFinEquiv finSumFinEquiv
@@ -57,6 +74,17 @@ lemma emb_continuous (n : ℕ) (ι : Matrix.unitaryGroup (Fin n) ℂ →* Matrix
   exact (continuous_subtype_val.matrix_fromBlocks continuous_const continuous_const
     continuous_const).matrix_reindex _ _
 
+/- English proof (translation)
+Introduce `n N M ι hι ρ σ hρ hσ _ _ hρirr hσirr Hm hHm`. Establish `hιc : Continuous ι` using `emb_continuous n ι hι`. Establish `hclosed : IsClosed ((ι.range : Subgroup _) : Set (Matrix.unitaryGroup (Fin (n + 1)) ℂ))`. Rewrite using `[MonoidHom.coe_range]`. Conclude with `(isCompact_range hιc).isClosed`.
+
+Establish `hconj : ∀ g : Matrix.unitaryGroup (Fin (n + 1)) ℂ, ∃ h ∈ ι.range, tr (n + 1) g = h * g * h⁻¹`. Introduce `g`. Take `⟨h, hh, hEq⟩` from `hCT n g.1 g.2`. Use `⟨ι ⟨h, hh⟩, MonoidHom.mem_range.2 ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[tr_val, Matrix.UnitaryGroup.mul_val, Matrix.UnitaryGroup.mul_val, Matrix.UnitaryGroup.inv_val, Matrix.star_eq_conjTranspose, hι]`. Conclude with `hEq.symm`. Establish `hcomm` using `hG (Matrix.unitaryGroup (Fin (n + 1)) ℂ) ι.range (tr (n + 1)) hclosed (tr_continuous _) (tr_mul _) (tr_tr _) hconj N ρ hρ hρirr`. Use `hC (Matrix.unitaryGroup (Fin n) ℂ) N M (ρ.comp ι) σ (show Continuous ((fun g => ((ρ g : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)) ∘ ι) from hρ.comp hιc) hσ hσirr ?_ Hm hHm` and prove the remaining obligations. Introduce `A B hA hB`.
+
+Apply `hcomm A B` to reduce the goal to its premises. Introduce `h hh`. Take `⟨g, rfl⟩` from `MonoidHom.mem_range.1 hh`. Conclude with `hA g`. Introduce `h hh`.
+
+Take `⟨g, rfl⟩` from `MonoidHom.mem_range.1 hh`. Conclude with `hB g`.
+-/
 theorem uMultOne_of' (hCT : ConjTranspose) (hG : GelfandCompact) (hC : CommutantMult) : MultOne := by
   intro n N M ι hι ρ σ hρ hσ _ _ hρirr hσirr Hm hHm
   have hιc : Continuous ι := emb_continuous n ι hι
@@ -85,6 +113,9 @@ theorem uMultOne_of' (hCT : ConjTranspose) (hG : GelfandCompact) (hC : Commutant
     obtain ⟨g, rfl⟩ := MonoidHom.mem_range.1 hh
     exact hB g
 
+/- English proof (translation)
+The claim follows from `uMultOne_of'`.
+-/
 theorem uMultOne_of : ConjTranspose → GelfandCompact → CommutantMult → MultOne :=
   uMultOne_of'
 

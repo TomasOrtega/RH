@@ -8,6 +8,13 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open Topology Metric Filter
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce and unpack `W - - ⟨t, ht⟩`. Conclude with `⟨t, ht, by simp⟩`. Consider the case `insert a s ha ih`.
+
+Introduce `W hWo hWU hW`. Take `⟨t₀, ht₀W, ht₀⟩` from `hne a (Finset.mem_insert_self a s) W hWo hWU hW`. Establish `hW'o : IsOpen (W ∩ G a ⁻¹' {0}ᶜ)` using `((hc a (Finset.mem_insert_self a s)).mono hWU).isOpen_inter_preimage hWo isOpen_compl_singleton`. Take `⟨t, ⟨htW, hta⟩, hts⟩` from `ih (fun i hi => hc i (Finset.mem_insert_of_mem hi)) (fun i hi => hne i (Finset.mem_insert_of_mem hi)) _ hW'o (Set.inter_subset_left.trans hWU) ⟨t₀, ht₀W, ht₀⟩`. Use `⟨t, htW, fun i hi => ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `hta`. Conclude with `hts i hi`.
+-/
 theorem exists_forall_ne_zero_of_isOpen {E ι : Type} [TopologicalSpace E] (s : Finset ι)
     (G : ι → E → ℂ) (U : Set E) (hc : ∀ i ∈ s, ContinuousOn (G i) U)
     (hne : ∀ i ∈ s, ∀ W : Set E, IsOpen W → W ⊆ U → W.Nonempty → ∃ t ∈ W, G i t ≠ 0) :
@@ -30,6 +37,45 @@ theorem exists_forall_ne_zero_of_isOpen {E ι : Type} [TopologicalSpace E] (s : 
     · exact hta
     · exact hts i hi
 
+/- English proof (translation)
+Introduce `σ _ X B k f d A D hB hf hXB hD hAD hprop hopen y₀ hy₀`. Establish `zerosX : ∀ z, z ∈ X ∩ B → ∀ i, f i z = 0` using `fun z hz => by`. Rewrite `hz` using `[hXB]`. Conclude with `hz.2`. Establish `memX : ∀ z, z ∈ B → (∀ i, f i z = 0) → z ∈ X ∩ B` using `fun z hz h0 => by`.
+
+Rewrite using `[hXB]`. Conclude with `⟨hz, h0⟩`. Use `set F := {x | x ∈ X ∩ B ∧ A x = y₀} with hF`. Establish `hFc : IsCompact F`. Use `hprop {y₀} (Set.singleton_subset_iff.2 hy₀) isCompact_singleton` as an intermediate fact.
+
+Simplify `this` using `only [Set.mem_singleton_iff]`. Use `set n := Fintype.card σ`. Set `L : (σ → ℂ) ≃L[ℂ] (Fin n → ℂ)` to `ContinuousLinearEquiv.piCongrLeft ℂ (fun _ : Fin n => ℂ) (Fintype.equivFin σ)`. Use `set U₀ : Set (Fin n → ℂ) := L.symm ⁻¹' B with hU₀`. Use `set Φ : (Fin n → ℂ) → Fin (k + d) → ℂ := fun v => Fin.append (fun i => f i (L.symm v)) (A (L.symm v)) with hΦ`.
+
+Use `set yv : Fin (k + d) → ℂ := Fin.append (0 : Fin k → ℂ) y₀ with hyv`. Establish `hU₀o : IsOpen U₀` using `hB.preimage L.symm.continuous`. Establish `hΦd : DifferentiableOn ℂ Φ U₀`. Use `differentiableOn_pi.2 fun j => ?_` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun j => ?_) j` and prove the remaining obligations.
+
+Simplify using `only [hΦ, Fin.append_left]`. Conclude with `(hf i).differentiableOn.comp L.symm.differentiable.differentiableOn (fun v hv => hv)`. Simplify using `only [hΦ, Fin.append_right]`. Conclude with `((differentiable_apply (𝕜 := ℂ) j).comp (A.differentiable.comp L.symm.differentiable)).differentiableOn`. Establish `hfib : {v | v ∈ U₀ ∧ Φ v = yv} = L.symm ⁻¹' F`.
+
+Use extensionality with `v`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, hU₀, hF, hΦ, hyv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, he⟩`. Use `⟨memX _ hv fun i => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using congrFun he (Fin.castAdd d i)`. Use function extensionality and compare the values at `j`. Simplify using `using congrFun he (Fin.natAdd k j)`. Introduce and unpack `⟨hv, hA⟩`. Use `⟨hv.2, funext fun j => ?_⟩` and prove the remaining obligations.
+
+Use `Fin.addCases (fun i => ?_) (fun j => ?_) j` and prove the remaining obligations. Simplify using `[zerosX _ hv i]`. Simplify using `[hA]`. Establish `hfibc : IsCompact {v | v ∈ U₀ ∧ Φ v = yv}`. Rewrite using `[hfib, ← L.image_eq_preimage_symm]`.
+
+Conclude with `hFc.image L.continuous`. Establish `hFfin : F.Finite`. Establish `h1` using `(hFin n (k + d) U₀ Φ yv hU₀o hΦd hfibc).image L.symm`. Rewrite `h1` using `[hfib, Set.image_preimage_eq _ L.symm.surjective]`. Then use the resulting hypothesis. Establish `hloc : ∀ x ∈ F, ∃ (M : Set (σ → ℂ)) (g : (Fin d → ℂ) → ℂ), IsOpen M ∧ x ∈ M ∧ AnalyticAt ℂ g y₀ ∧ (¬ ∀ᶠ t in 𝓝 y₀, g t = 0) ∧ ∀ z ∈ X ∩ B ∩ M, g (A z) ≠ 0 → ∃ (O : Set (Fin d → ℂ)) (V : Set (σ → ℂ)) (h : (Fin d → ℂ) → σ → ℂ), IsOpen O ∧ IsOpen V ∧ z ∈ V ∧ AnalyticOnNhd ℂ h O ∧ (∀ …`.
+
+Introduce `x hx`. Establish `hiso : ∃ W ∈ 𝓝 x, ∀ x' ∈ X ∩ B ∩ W, A x' = A x → x' = x`. Use `⟨(F \ {x})ᶜ, hFfin.sdiff.isClosed.isOpen_compl.mem_nhds fun h => h.2 rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `x' ⟨hx'XB, hx'W⟩ hx'A`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hx'W ⟨⟨hx'XB, hx'A.trans hx.2⟩, hne⟩`. Take `⟨M, g, hM, hg, hg0, hsec⟩` from `hLoc σ X B k f d A hB hf hXB hopen x hx.1 hiso`. Rewrite `hg`, `hg0` using `[hx.2]`. Conclude with `⟨interior M, g, isOpen_interior, mem_interior_iff_mem_nhds.2 hM, hg, hg0, fun z hz => hsec z ⟨hz.1, interior_subset hz.2⟩⟩`. Use `choose! M g hMo hxM hga hgne hsec using hloc`.
+
+Use `set s := hFfin.toFinset with hs`. Establish `hsF : ∀ x, x ∈ s ↔ x ∈ F` using `fun x => hFfin.mem_toFinset`. Take `⟨r₀, hr₀, hr₀D⟩` from `nhds_basis_closedBall.mem_iff.1 (hD.mem_nhds hy₀)`. Use `set Mall := ⋃ x ∈ F, M x with hMall`. Establish `hMallo : IsOpen Mall` using `isOpen_biUnion fun x hx => hMo x hx`.
+
+Use `set C := {x | x ∈ X ∩ B ∧ A x ∈ closedBall y₀ r₀} \ Mall with hC`. Establish `hCc : IsCompact C` using `(hprop _ hr₀D (isCompact_closedBall y₀ r₀)).diff hMallo`. Establish `hAC : y₀ ∉ A '' C`. Introduce and unpack `⟨c, ⟨⟨hcXB, -⟩, hcM⟩, hcA⟩`. Conclude with `hcM (Set.mem_biUnion (show c ∈ F from ⟨hcXB, hcA⟩) (hxM c ⟨hcXB, hcA⟩))`.
+
+Establish `hev : ∀ᶠ t in 𝓝 y₀, t ∈ ball y₀ r₀ ∧ t ∉ A '' C ∧ ∀ x ∈ s, AnalyticAt ℂ (g x) t`. Use `(show ∀ᶠ t in 𝓝 y₀, t ∈ ball y₀ r₀ from ball_mem_nhds y₀ hr₀).and ((show ∀ᶠ t in 𝓝 y₀, t ∉ A '' C from ((hCc.image A.continuous).isClosed.isOpen_compl).mem_nhds hAC).and ?_)` and prove the remaining obligations. Conclude with `(Filter.eventually_all_finset s).2 fun x hx => (hga x ((hsF x).1 hx)).eventually_analyticAt`. Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Establish `hgan : ∀ x ∈ s, AnalyticOnNhd ℂ (g x) (ball y₀ r)` using `fun x hx t ht => (hball t ht).2.2 x hx`.
+
+Use `⟨ball y₀ r, fun t => ∏ x ∈ s, g x t, isOpen_ball, mem_ball_self hr, ?_, Finset.analyticOnNhd_fun_prod s hgan, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Conclude with `hr₀D (ball_subset_closedBall (hball t ht).1)`. Introduce `W hWo hWU hW`. Establish `hne : ∀ x ∈ s, ∀ W : Set (Fin d → ℂ), IsOpen W → W ⊆ ball y₀ r → W.Nonempty → ∃ t ∈ W, g x t ≠ 0`.
+
+Introduce `x hx W hWo hWU hW`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨t, htW⟩` from `hW`. Establish `hzt : g x =ᶠ[𝓝 t] 0` using `by filter_upwards [hWo.mem_nhds htW] with u hu using hcon u hu`.
+
+Establish `hEq` using `(hgan x hx).eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball y₀ r).isPreconnected (hWU htW) hzt`. Conclude with `hgne x ((hsF x).1 hx) (by filter_upwards [ball_mem_nhds y₀ hr] with u hu using hEq hu)`. Take `⟨t, htW, ht⟩` from `exists_forall_ne_zero_of_isOpen s g (ball y₀ r) (fun x hx => (hgan x hx).continuousOn) hne W hWo hWU hW`. Conclude with `⟨t, htW, Finset.prod_ne_zero_iff.2 ht⟩`. Introduce `y hyU hgy x' hx'XB hx'A`.
+
+Establish `hx'M : x' ∈ Mall`. Assume the negation of the conclusion as `hn`. Use `(hball y hyU).2.1 ⟨x', ⟨⟨hx'XB, ?_⟩, hn⟩, hx'A⟩` and prove the remaining obligations. Rewrite using `[hx'A]`. Conclude with `ball_subset_closedBall (hball y hyU).1`.
+
+Take `⟨x, hxF, hx'x⟩` from `Set.mem_iUnion₂.1 hx'M`. Establish `hgx : g x (A x') ≠ 0`. Rewrite using `[hx'A]`. Conclude with `Finset.prod_ne_zero_iff.1 hgy x ((hsF x).2 hxF)`. Conclude with `hsec x hxF x' ⟨hx'XB, hx'x⟩ hgx`.
+-/
 theorem ProperOpenProjectionLocalUnbranched.proof (hFin : CompactHolomorphicFibreFinite.Statement)
     (hLoc : IsolatedFibreLocalUnbranched.Statement) : ProperOpenProjectionLocalUnbranched.Statement := by
   classical

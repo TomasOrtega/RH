@@ -134,17 +134,30 @@ def period (P : PosDatum A B ι) (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure 
     (ν : Measure P.bes.N) (𝓝 : Set P.bes.N) (s : GA D A → GA D B) (φ : GA D A → ℂ) (F : GA D B → ℂ) : ℂ :=
   P.move (P.bes.period ψ μ 𝓕 ν 𝓝 s φ) F
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem period_sym (d : BesselDatum A B ι) (ψ μ 𝓕 ν 𝓝 s φ F) :
     (sym d).period ψ μ 𝓕 ν 𝓝 s φ F = d.period ψ μ 𝓕 ν 𝓝 s φ F := rfl
 
 end PosDatum
 
+/- English proof (translation)
+Unfold `BesselDatum.toPos`. Rewrite using `[List.filter_eq_nil_iff.2 (fun i _ => by have := i.2; simp; omega)]`. Both sides reduce to the same expression.
+-/
 theorem toPos_sym {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} (d : BesselDatum A B ι) (ε m b) :
     d.toPos ε m (d.ρ + 1) b = b := by
   unfold BesselDatum.toPos
   rw [List.filter_eq_nil_iff.2 (fun i _ => by have := i.2; simp; omega)]
   rfl
 
+/- English proof (translation)
+Establish `h1 : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 D.host.ccK_ne_bot)` after adjusting the coercions. Establish `h2 : D.host.sqrtMinusD ≠ 0`. Introduce `h`. Use `D.host.sqrtMinusD_sq` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Establish `hd : (D.host.d : D.host.E) ≠ 0`. Use `D.host.qd_big.2` as an intermediate fact. Conclude with `(by omega : D.host.d ≠ 0)` after adjusting the coercions. Apply `hd` to reduce the goal to its premises.
+
+Take the linear combination `this`. Unfold `Host.xi0`. Conclude with `div_ne_zero (by norm_num) (mul_ne_zero h1 h2)`.
+-/
 theorem embedding_xi_zero_ne_zero (D : D7) : D.host.xi0 ≠ 0 := by
   have h1 : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0 := by
     exact_mod_cast (Ideal.absNorm_eq_zero_iff.not.2 D.host.ccK_ne_bot)
@@ -160,6 +173,9 @@ theorem embedding_xi_zero_ne_zero (D : D7) : D.host.xi0 ≠ 0 := by
   unfold Host.xi0
   exact div_ne_zero (by norm_num) (mul_ne_zero h1 h2)
 
+/- English proof (translation)
+Rewrite using `[← h]`. Conclude with `(S.herm.eq x y).symm`.
+-/
 theorem hT_swap {S : HSp D} {x y : S.V} {c : D.host.E} (h : S.hT x y = c) : S.hT y x = star c := by
   rw [← h]; exact (S.herm.eq x y).symm
 
@@ -201,6 +217,9 @@ def memberDatum (D : D7) (u : D.what₂.Word) : BesselDatum (D.sp.X 0) (D.sp.Y 0
   θ := D.host.xi0
   θ_ne := embedding_xi_zero_ne_zero D
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨d.ρ, by rw [d.rank_eq]; omega⟩`.
+-/
 theorem odd_codim {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} (d : BesselDatum A B ι) : Odd (B.rank - A.rank) :=
   ⟨d.ρ, by rw [d.rank_eq]; omega⟩
 

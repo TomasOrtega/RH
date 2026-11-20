@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Establish `hwZ : Prime (w : ℤ)` using `Nat.prime_iff_prime_int.mp hw`. Use `haveI hPm : (Ideal.span {(w : ℤ)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hwZ.irreducible`. Take `⟨Q, hQm, hQ⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 K) (Ideal.span {(w : ℤ)}) (by`. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`.
+
+Establish `hx0 : x = 0` using `(algebraMap ℤ (𝓞 K)).injective_int (by rw [hx, map_zero])`. Rewrite using `[hx0]`. Conclude with `Ideal.zero_mem _)`. Establish `hmem : (w : 𝓞 K) ∈ Q`. Establish `hc : (w : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 K))`.
+
+Rewrite using `[hQ]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify using `using hc`. Use `⟨⟨Q, hQm.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce `hbot`.
+
+Rewrite `hmem` using `[hbot, Ideal.mem_bot]`. Conclude with `hw.ne_zero (by exact_mod_cast hmem)`.
+-/
 private theorem ex_place (K : Type) [Field K] [NumberField K] {w : ℕ} (hw : w.Prime) :
     ∃ v : HeightOneSpectrum (𝓞 K), (w : 𝓞 K) ∈ v.asIdeal := by
   have hwZ : Prime (w : ℤ) := Nat.prime_iff_prime_int.mp hw
@@ -26,6 +35,13 @@ private theorem ex_place (K : Type) [Field K] [NumberField K] {w : ℕ} (hw : w.
   rw [hbot, Ideal.mem_bot] at hmem
   exact hw.ne_zero (by exact_mod_cast hmem)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hc : Nat.Coprime p q` using `(Nat.coprime_primes hp hq).mpr hne`. Establish `hb` using `Nat.gcd_eq_gcd_ab p q`. Rewrite `hb` using `[hc.gcd_eq_one]`. Establish `hone : (1 : 𝓞 K) ∈ v.asIdeal`.
+
+Establish `e : (1 : 𝓞 K) = (p : 𝓞 K) * ((Nat.gcdA p q : ℤ) : 𝓞 K) + (q : 𝓞 K) * ((Nat.gcdB p q : ℤ) : 𝓞 K)`. Use `congrArg (Int.cast : ℤ → 𝓞 K) hb` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[e]`.
+
+Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ h1) (Ideal.mul_mem_right _ _ h2)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr hone)`.
+-/
 private theorem prime_eq {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) {p q : ℕ} (hp : p.Prime)
     (hq : q.Prime) (h1 : (p : 𝓞 K) ∈ v.asIdeal) (h2 : (q : 𝓞 K) ∈ v.asIdeal) : p = q := by
   by_contra hne
@@ -41,6 +57,27 @@ private theorem prime_eq {K : Type} [Field K] [NumberField K] (v : HeightOneSpec
     exact Ideal.add_mem _ (Ideal.mul_mem_right _ _ h1) (Ideal.mul_mem_right _ _ h2)
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr hone)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T hD U hU`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, hr, ho, -⟩` from `UpperTheory.V.GradeZeroInterpolatingElement.facts D hD`. Establish `hemb` using `(UpperTheory.V.Base.galEmbTop ℚ T.F Ω).1`. Establish `hrng` using `(UpperTheory.V.Base.galEmbTop ℚ T.F Ω).2.1`. Establish `hoe : Topology.IsOpenEmbedding (UpperTheory.V.Base.galEmb ℚ T.F Ω)`.
+
+Use `⟨hemb, ?_⟩` and prove the remaining obligations. Rewrite using `[← MonoidHom.coe_range, UpperTheory.V.Base.range_galEmb]`. Conclude with `hrng`. Establish `hmo : IsOpen ((U.map (resQ T.F) : Subgroup (G ℚ Ω)) : Set (G ℚ Ω))`. Rewrite using `[Subgroup.coe_map]`.
+
+Conclude with `hoe.isOpenMap _ hU`. Set `H : Subgroup (G ℚ Ω)` to `U.map (resQ T.F) ⊓ D.rbar.ker ⊓ D.om.ker`. Establish `hHo : IsOpen (H : Set (G ℚ Ω))` using `IsOpen.inter (IsOpen.inter hmo hr) ho`. Establish `hinf` using `Gys.splitPrimes Ω H hHo`. Take `⟨v0, -⟩` from `ex_place T.F Nat.prime_two`.
+
+Set `f : ℕ → HeightOneSpectrum (𝓞 T.F)` to `fun w => if hw : w.Prime then (ex_place T.F hw).choose else v0`. Establish `hf : ∀ w (hw : w.Prime), (w : 𝓞 T.F) ∈ (f w).asIdeal`. Introduce `w hw`. Simplify using `only [f, dif_pos hw]`. Conclude with `(ex_place T.F hw).choose_spec`.
+
+Establish `himg` using `hinf.image (f := f) (by`. Introduce `a ha b hb hab`. Conclude with `prime_eq (f a) ha.1 hb.1 (hf a ha.1) (by rw [hab]; exact hf b hb.1))`. Use `himg.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, ⟨hwp, hwD⟩, rfl⟩`.
+
+Use `⟨⟨w, hwp, ?_, hf w hwp⟩, ?_⟩` and prove the remaining obligations. Unfold `Tower.Splits`. Introduce `A hA g hg`. Establish `hg'` using `hwD A hA hg`. Take `⟨hg12, hg3⟩` from `Subgroup.mem_inf.mp hg'`.
+
+Take `⟨hg1, hg2⟩` from `Subgroup.mem_inf.mp hg12`. Use `Subgroup.mem_inf.mpr ⟨Subgroup.mem_inf.mpr ⟨?_, hg2⟩, hg3⟩` and prove the remaining obligations. Take `⟨σ, -, rfl⟩` from `Subgroup.mem_map.mp hg1`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+
+Conclude with `σ.commutes ⟨x, hx⟩`. Introduce `A hA σ hσ`. Establish `hv : A.valuation (w : Ω) < 1`. Establish `h0` using `(hA (w : 𝓞 T.F)).mpr (hf w hwp)`. Simplify using `using h0`.
+
+Establish `hdec : resQ T.F σ ∈ Dec (F` using `ℚ) A := by`. Rewrite `hσ`, the goal using `[mem_Dec]`. Conclude with `hσ`. Establish `hH` using `hwD A hv hdec`. Take `⟨τ, hτ, he⟩` from `Subgroup.mem_map.mp (Subgroup.mem_inf.mp (Subgroup.mem_inf.mp hH).1).1`.
+
+Establish `hτσ : τ = σ` using `hemb.injective he`. Conclude with `hτσ ▸ hτ`.
+-/
 theorem UpperTheory.V.Ws.Gys.placesQ :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), D.Good → ∀ U : Subgroup (G T.F Ω), IsOpen (U : Set (G T.F Ω)) →
       Set.Infinite {v : HeightOneSpectrum (𝓞 T.F) | (∃ w : ℕ, w.Prime ∧ T.Splits w ∧ (w : 𝓞 T.F) ∈ v.asIdeal) ∧ ∀ A, IsPlaceOver A v → Dec (F := T.F) A ≤ U} := by

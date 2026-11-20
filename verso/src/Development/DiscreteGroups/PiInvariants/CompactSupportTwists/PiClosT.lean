@@ -14,10 +14,16 @@ attribute [local instance] borelH
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem borelSpace_H : BorelSpace (H E n 0) := ⟨rfl⟩
 
 attribute [local instance] borelSpace_H
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun i => Fin.elim0 i)`.
+-/
 theorem GL_zero_subsingleton (a b : GA E 0) : a = b := Units.ext (Matrix.ext fun i => Fin.elim0 i)
 
 def eH : GA E n ≃ₜ* H E n 0 where
@@ -29,24 +35,42 @@ def eH : GA E n ≃ₜ* H E n 0 where
   continuous_toFun := continuous_id.prodMk continuous_const
   continuous_invFun := continuous_fst
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eH_symm_apply (x : H E n 0) : (eH (E := E) (n := n)).symm x = x.1 := rfl
 
 def muG (D : Dom E n 0) : Measure (GA E n) := D.μ.map (eH (E := E) (n := n)).symm
 
+/- English proof (translation)
+The claim follows from `(eH (E := E) (n := n)).continuous.measurable`.
+-/
 theorem measurable_eH : Measurable (eH (E := E) (n := n)) := (eH (E := E) (n := n)).continuous.measurable
 
+/- English proof (translation)
+The claim follows from `(eH (E := E) (n := n)).symm.continuous.measurable`.
+-/
 theorem measurable_eH_symm : Measurable (eH (E := E) (n := n)).symm :=
   (eH (E := E) (n := n)).symm.continuous.measurable
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨measurable_eH_symm, rfl⟩`.
+-/
 theorem mp_fst (D : Dom E n 0) : MeasurePreserving (fun x : H E n 0 => x.1) D.μ (muG D) :=
   ⟨measurable_eH_symm, rfl⟩
 
+/- English proof (translation)
+Use `⟨measurable_eH, ?_⟩` and prove the remaining obligations. Rewrite using `[muG, Measure.map_map measurable_eH measurable_eH_symm]`. Establish `: (eH (E` using `E) (n := n)) ∘ (eH (E := E) (n := n)).symm = id := funext fun x => (eH (E := E) (n := n)).apply_symm_apply x`. Rewrite using `[this, Measure.map_id]`.
+-/
 theorem mp_eH (D : Dom E n 0) : MeasurePreserving (eH (E := E) (n := n)) (muG D) D.μ := by
   refine ⟨measurable_eH, ?_⟩
   rw [muG, Measure.map_map measurable_eH measurable_eH_symm]
   have : (eH (E := E) (n := n)) ∘ (eH (E := E) (n := n)).symm = id := funext fun x => (eH (E := E) (n := n)).apply_symm_apply x
   rw [this, Measure.map_id]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `D.haar`. Conclude with `{ toIsFiniteMeasureOnCompacts := inferInstance, toIsMulLeftInvariant := h1, toIsOpenPosMeasure := h3 }`.
+-/
 theorem isHaar_D (D : Dom E n 0) : D.μ.IsHaarMeasure := by
   obtain ⟨h1, h2, h3, h4⟩ := D.haar
   exact { toIsFiniteMeasureOnCompacts := inferInstance, toIsMulLeftInvariant := h1, toIsOpenPosMeasure := h3 }
@@ -69,17 +93,28 @@ def eR (δ : ratH E n 0) : (ratGL E n).range :=
     obtain ⟨p, hp⟩ := δ.2
     exact ⟨p.1, congrArg Prod.fst hp⟩⟩
 
+/- English proof (translation)
+Use `⟨fun δ δ' h => Subtype.ext (Prod.ext (congrArg Subtype.val h) (GL_zero_subsingleton _ _)), fun γ => ?_⟩` and prove the remaining obligations. Take `⟨γ₁, hγ⟩` from `γ.2`. Use `⟨⟨((γ : GA E n), 1), ⟨(γ₁, 1), Prod.ext hγ (GL_zero_subsingleton _ _)⟩⟩, rfl⟩` and prove the remaining obligations.
+-/
 theorem eR_bijective : Function.Bijective (eR (E := E) (n := n)) := by
   refine ⟨fun δ δ' h => Subtype.ext (Prod.ext (congrArg Subtype.val h) (GL_zero_subsingleton _ _)), fun γ => ?_⟩
   obtain ⟨γ₁, hγ⟩ := γ.2
   refine ⟨⟨((γ : GA E n), 1), ⟨(γ₁, 1), Prod.ext hγ (GL_zero_subsingleton _ _)⟩⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `D.fd.preimage_of_equiv (mp_eH D).quasiMeasurePreserving eR_bijective fun δ x => by change (((δ : H E n 0).1 * x, 1) : H E n 0) = (δ : H E n 0) * (x, 1) exact Prod.ext rfl (GL_zero_subsingleton _ _)`.
+-/
 theorem isFundamentalDomain_pre (D : Dom E n 0) :
     IsFundamentalDomain (ratGL E n).range ((eH (E := E) (n := n)) ⁻¹' D.F) (muG D) :=
   D.fd.preimage_of_equiv (mp_eH D).quasiMeasurePreserving eR_bijective fun δ x => by
     change (((δ : H E n 0).1 * x, 1) : H E n 0) = (δ : H E n 0) * (x, 1)
     exact Prod.ext rfl (GL_zero_subsingleton _ _)
 
+/- English proof (translation)
+Set `eM : GA E n ≃ᵐ H E n 0` to `(eH (E := E) (n := n)).toHomeomorph.toMeasurableEquiv`. Establish `hm : (muG D).map eM = D.μ` using `(mp_eH D).map_eq`. Rewrite using `[Dom.ν, ← hm, eM.restrict_map, lintegral_map_equiv]`. Use `(isFundamentalDomain_pre D).setLIntegral_eq (isFundamentalDomain_stdDom _ _) (fun g => Φ g) fun γ g => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`.
+
+Conclude with `hΦ γ γ.2 g`.
+-/
 theorem lintegral_nu (D : Dom E n 0) (Φ : GA E n → ℝ≥0∞) (hΦ : ∀ γ ∈ (ratGL E n).range, ∀ g, Φ (γ * g) = Φ g) :
     ∫⁻ x, Φ x.1 ∂D.ν = ∫⁻ g in stdDom (ratGL E n).range, Φ g ∂muG D := by
   let eM : GA E n ≃ᵐ H E n 0 := (eH (E := E) (n := n)).toHomeomorph.toMeasurableEquiv
@@ -89,10 +124,30 @@ theorem lintegral_nu (D : Dom E n 0) (Φ : GA E n → ℝ≥0∞) (hΦ : ∀ γ 
   rw [Subgroup.smul_def, smul_eq_mul]
   exact hΦ γ γ.2 g
 
+/- English proof (translation)
+Take `⟨γ₁, rfl⟩` from `hγ`. Rewrite using `[lg_mul, lg_rat, zero_add]`.
+-/
 theorem lg_rat_mul (γ : GA E n) (hγ : γ ∈ (ratGL E n).range) (g : GA E n) : lg (γ * g) = lg g := by
   obtain ⟨γ₁, rfl⟩ := hγ
   rw [lg_mul, lg_rat, zero_add]
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `hu.bounded_above_of_compact_support hs`. Take `⟨R, hR⟩` from `hs.isCompact.isBounded.subset_closedBall 0`. Set `N : ℕ` to `⌈2 * |R| / c⌉₊ + 1`. Use `⟨N * ENNReal.ofReal M ^ (2 : ℝ), by finiteness, fun s => ?_⟩` and prove the remaining obligations. Set `a : ℤ` to `⌈(-|R| - s) / c⌉`.
+
+Set `S : Finset ℤ` to `Finset.Icc a (a + ⌈2 * |R| / c⌉₊)`. Establish `hz : ∀ m ∉ S, ‖u (s + m * c)‖ₑ ^ (2 : ℝ) = 0` using `fun m hm => by`. Establish `hu0 : u (s + m * c) = 0`. Use `image_eq_zero_of_notMem_tsupport fun ht => hm ?_` and prove the remaining obligations. Establish `h1` using `hR ht`.
+
+Rewrite `h1` using `[Metric.mem_closedBall, dist_zero_right, Real.norm_eq_abs, abs_le]`. Establish `hR' : R ≤ |R|` using `le_abs_self R`. Rewrite using `[Finset.mem_Icc]`. Prove the components needed by the constructor for the conclusion. Use `Int.ceil_le.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[div_le_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ((m : ℝ) - a) * c ≤ 2 * |R|`. Establish `ha : (a : ℝ) ≥ (-|R| - s) / c` using `Int.le_ceil _`. Rewrite `ha` using `[ge_iff_le, div_le_iff₀ hc]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : ((m : ℝ) - a) ≤ 2 * |R| / c` using `by rw [le_div_iff₀ hc]; linarith`. Establish `h4 : (2 * |R| / c) ≤ (⌈2 * |R| / c⌉₊ : ℝ)` using `Nat.le_ceil _`. Establish `h5 : ((m - a : ℤ) : ℝ) ≤ ((⌈2 * |R| / c⌉₊ : ℕ) : ℤ)` using `by push_cast; linarith`. Establish `h6` using `Int.cast_le.1 h5`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hu0, enorm_zero, ENNReal.zero_rpow_of_pos (by norm_num)]`. Rewrite using `[tsum_eq_sum hz]`. Establish `hb : ∀ m ∈ S, ‖u (s + m * c)‖ₑ ^ (2 : ℝ) ≤ ENNReal.ofReal M ^ (2 : ℝ)` using `fun m _ => ENNReal.rpow_le_rpow (by`. Rewrite using `[← ofReal_norm_eq_enorm]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (hM _)) (by norm_num)`. Use `(Finset.sum_le_sum hb).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `gcongr`. Establish `: S.card = ⌈2 * |R| / c⌉₊ + 1`.
+
+Simplify using `only [S, Int.card_Icc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`. Apply the tactic sequence `try simp [N]`.
+-/
 theorem tsum_shift_le (u : ℝ → ℂ) (hu : Continuous u) (hs : HasCompactSupport u) (c : ℝ) (hc : 0 < c) :
     ∃ K : ℝ≥0∞, K ≠ ⊤ ∧ ∀ s : ℝ, ∑' m : ℤ, ‖u (s + m * c)‖ₑ ^ (2 : ℝ) ≤ K := by
   obtain ⟨M, hM⟩ := hu.bounded_above_of_compact_support hs
@@ -141,8 +196,14 @@ variable (D : Dom E n 0)
 def Tf (u : ℝ → ℂ) (F : L2 (latticeGL E n) (muG D)) : H E n 0 → ℂ :=
   fun x => lift (latticeGL E n) F x.1 * u (ldet x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ldet_eq (x : H E n 0) : ldet x = lg x.1 := rfl
 
+/- English proof (translation)
+Establish `h1 : AEStronglyMeasurable (lift (latticeGL E n) F) (muG D)` using `aestronglyMeasurable_quotMeasure_iff_lift.1 (Lp.aestronglyMeasurable F)`. Establish `h2 : AEStronglyMeasurable (fun x : H E n 0 => lift (latticeGL E n) F x.1) D.μ` using `h1.comp_measurePreserving (mp_fst D)`. Conclude with `(h2.mul (hu.comp continuous_ldet).aestronglyMeasurable).restrict`.
+-/
 theorem aesm_Tf (u : ℝ → ℂ) (hu : Continuous u) (F : L2 (latticeGL E n) (muG D)) :
     AEStronglyMeasurable (Tf D u F) D.ν := by
   have h1 : AEStronglyMeasurable (lift (latticeGL E n) F) (muG D) :=
@@ -151,6 +212,11 @@ theorem aesm_Tf (u : ℝ → ℂ) (hu : Continuous u) (F : L2 (latticeGL E n) (m
     h1.comp_measurePreserving (mp_fst D)
   exact (h2.mul (hu.comp continuous_ldet).aestronglyMeasurable).restrict
 
+/- English proof (translation)
+Establish `e1 : ∀ x : H E n 0, ‖Tf D u F x‖ₑ ^ (2 : ℝ) = (fun g => ‖lift (latticeGL E n) F g‖ₑ ^ (2 : ℝ) * ‖u (lg g)‖ₑ ^ (2 : ℝ)) x.1` using `fun x => by`. Simplify using `only [Tf, enorm_mul, ldet_eq]`. Conclude with `ENNReal.mul_rpow_of_nonneg _ _ (by norm_num)`. Use `(lintegral_congr e1).trans ((lintegral_nu D _ fun γ hγ g => ?_).trans ((lintegral_unfold (muG D) hn (fun g => ‖lift (latticeGL E n) F g‖ₑ ^ (2 : ℝ)) (fun γ hγ g => by simp only [(memL2_lift F).1 γ hγ g]) ((aestronglyMeasurable_quotMeasure_iff_lift.1 (Lp.aestronglyMeasurable F)).e …` and prove the remaining obligations. Simplify using `only [lg_rat_mul γ hγ g, (memL2_lift F).1 γ (ratRange_le hγ) g]`.
+
+Simplify using `only [lift, Quotient.out_eq]`.
+-/
 theorem lintegral_Tf (hn : 1 ≤ n) (u : ℝ → ℂ) (hu : Continuous u) (F : L2 (latticeGL E n) (muG D)) :
     ∫⁻ x, ‖Tf D u F x‖ₑ ^ (2 : ℝ) ∂D.ν =
       ∫⁻ q, ‖F q‖ₑ ^ (2 : ℝ) * ∑' m : ℤ, ‖u (lg q.out + m * lg (splitCentre E n 1))‖ₑ ^ (2 : ℝ)
@@ -168,6 +234,15 @@ theorem lintegral_Tf (hn : 1 ≤ n) (u : ℝ → ℂ) (hu : Continuous u) (F : L
   · simp only [lg_rat_mul γ hγ g, (memL2_lift F).1 γ (ratRange_le hγ) g]
   · simp only [lift, Quotient.out_eq]
 
+/- English proof (translation)
+Take `⟨K, hK, hKs⟩` from `tsum_shift_le u hu hs _ (lg_e_pos (E := E) hn)`. Use `⟨Real.sqrt K.toReal, Real.sqrt_nonneg _, fun F => ?_⟩` and prove the remaining obligations. Establish `hk : ENNReal.ofReal (Real.sqrt K.toReal) ^ (2 : ℝ) = K`. Rewrite using `[ENNReal.ofReal_rpow_of_nonneg (Real.sqrt_nonneg _) (by norm_num), Real.rpow_two, Real.sq_sqrt ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hK]`. Establish `hle : ∫⁻ x, ‖Tf D u F x‖ₑ ^ (2 : ℝ) ∂D.ν ≤ ∫⁻ q, ‖(Real.sqrt K.toReal : ℂ) • F q‖ₑ ^ (2 : ℝ) ∂quotMeasure (latticeGL E n) (muG D)`.
+
+Rewrite using `[lintegral_Tf D hn u hu F]`. Use `lintegral_mono fun q => ?_` and prove the remaining obligations. Rewrite using `[enorm_smul, ENNReal.mul_rpow_of_nonneg _ _ (by norm_num), mul_comm]`. Use `gcongr`. Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), hk]`.
+
+Conclude with `hKs _`. Establish `key : eLpNorm (Tf D u F) 2 D.ν ≤ eLpNorm (fun q => (Real.sqrt K.toReal : ℂ) • F q) 2 (quotMeasure (latticeGL E n) (muG D))`. Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top, eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `only [ENNReal.toReal_ofNat]`. Conclude with `ENNReal.rpow_le_rpow hle (by norm_num)`.
+
+Establish `key2 : eLpNorm (fun q => (Real.sqrt K.toReal : ℂ) • F q) 2 (quotMeasure (latticeGL E n) (muG D)) = ENNReal.ofReal (Real.sqrt K.toReal) * eLpNorm F 2 (quotMeasure (latticeGL E n) (muG D))`. Express the relevant statement in the definitionally equal form `eLpNorm ((Real.sqrt K.toReal : ℂ) • (F : GlobalTheory.AutomorphicL2Unitary.Quot (latticeGL E n) → ℂ)) 2 _ = _`. Rewrite using `[eLpNorm_const_smul, ← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]`. Rewrite `key` using `[key2]`. Use `⟨⟨aesm_Tf D u hu F, key.trans_lt (ENNReal.mul_lt_top ENNReal.ofReal_lt_top (Lp.eLpNorm_lt_top F))⟩, key⟩` and prove the remaining obligations.
+-/
 theorem exists_bound (hn : 1 ≤ n) (u : ℝ → ℂ) (hu : Continuous u) (hs : HasCompactSupport u) :
     ∃ k : ℝ, 0 ≤ k ∧ ∀ F : L2 (latticeGL E n) (muG D),
       MemLp (Tf D u F) 2 D.ν ∧ eLpNorm (Tf D u F) 2 D.ν ≤ ENNReal.ofReal k * eLpNorm F 2 (quotMeasure (latticeGL E n) (muG D)) := by

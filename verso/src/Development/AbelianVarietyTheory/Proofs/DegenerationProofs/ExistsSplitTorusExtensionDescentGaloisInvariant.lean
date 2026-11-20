@@ -20,6 +20,17 @@ open GlobalTheory.LN
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k K _ _ _ _ _ G₀ B₀ _ _ _ hB₀ G B _ _ X _ _ _ φG φ hG hB q i hq hfl hsu hqc hi H hinv`. Establish `hc` using `GlobalTheory.ZM.DwModel.isGaloisCover_field k K`. Set `s : (K ≃ₐ[k] K) → (G.left ⟶ G.left)` to `fun τ => hG.1.lift φG (G.hom ≫ spMap (τ : K →+* K)) (by rw [Category.assoc, hc.inv, hG.1.w])`. Establish `hs₁ : ∀ τ, s τ ≫ φG = φG` using `fun τ => hG.1.lift_fst _ _ _`. Establish `hs₂ : ∀ τ, s τ ≫ G.hom = G.hom ≫ spMap (τ : K →+* K)` using `fun τ => hG.1.lift_snd _ _ _`.
+
+Establish `hcG` using `hc.of_isPullback (ρ' := s) hG.1.flip hs₂ hs₁`. Establish `hT` using `SplitTorus.isPullback_bcMap (spMap (algebraMap k K)) X`. Establish `hcT` using `hc.of_isPullback (ρ' := fun τ : K ≃ₐ[k] K => SplitTorus.bcMap (spMap (τ : K →+* K)) X) hT.flip (fun τ => SplitTorus.bcMap_hom _ X) (fun τ => pullback.hom_ext (by`. Establish `e` using `SplitTorus.bcMap_torusFst (spMap (algebraMap k K)) X`. Conclude with `(Category.assoc _ _ _).trans ((congrArg _ e).trans ((SplitTorus.bcMap_torusFst _ X).trans e.symm)))`.
+
+Use the proof step `(by`. Establish `e` using `SplitTorus.bcMap_hom (spMap (algebraMap k K)) X`. Use `(Category.assoc _ _ _).trans ((congrArg _ e).trans (Eq.trans ?_ e.symm))` and prove the remaining obligations. Rewrite using `[SplitTorus.bcMap_hom_assoc, hc.inv]))`. Take `⟨q', hq', -⟩` from `hcG.existsUnique_desc (q.left ≫ φ) fun τ => (hinv τ _ (hs₁ τ) (hs₂ τ)).1`.
+
+Take `⟨i', hi', -⟩` from `hcT.existsUnique_desc (i.left ≫ φG) fun τ => by`. Rewrite using `[← Category.assoc, (hinv τ _ (hs₁ τ) (hs₂ τ)).2, Category.assoc, hs₁]`. Establish `wq : q' ≫ B₀.hom = G₀.hom` using `(hcG.existsUnique_desc (φG ≫ G₀.hom) fun τ => by rw [← Category.assoc, hs₁]).unique (by rw [← Category.assoc, hq', Category.assoc, hB.1.w, ← Category.assoc, Over.w, hG.1.w]) rfl`. Establish `wi : i' ≫ G₀.hom = (splitTorus (Sp k) X).hom` using `(hcT.existsUnique_desc (SplitTorus.bcMap (spMap (algebraMap k K)) X ≫ (splitTorus (Sp k) X).hom) fun τ => by rw [← Category.assoc, hcT.inv]).unique (by rw [← Category.assoc, hi', Category.assoc, hG.1.w, ← Category.assoc, Over.w, hT.w]) rfl`. Take `⟨h₁, h₂, h₃, h₄, h₅, h₆⟩` from `splitTorus_extension_descends k K (algebraMap k K) G B G₀ B₀ X φG φ hG hB q i (Over.homMk q' wq) (Over.homMk i' wi) hq' hi' hq hfl hsu hqc hi H`.
+
+Take `⟨O, a, b, c, h⟩` from `exists_gtDatum_of_splitTorus_extension (Sp k) X G₀ B₀ hB₀ _ _ h₁ h₅ h₂ h₃ h₄ h₆`. Take `⟨d, -⟩` from `h hB₀`. Conclude with `⟨_, ⟨d⟩⟩`.
+-/
 theorem exists_splitExt_of_galois_invariant :
     ∀ (k K : Type) [Field k] [Field K] [Algebra k K] [FiniteDimensional k K] [IsGalois k K] (G₀ B₀ : Over (Sp k)) [GrpObj G₀] [IsCommMonObj G₀] [GrpObj B₀], IsAbelianScheme B₀ → ∀ (G B : Over (Sp K)) [GrpObj G] [GrpObj B] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (φG : G.left ⟶ G₀.left) (φ : B.left ⟶ B₀.left), IsGrpPullback G G₀ (spMap (algebraMap k K)) φG → IsGrpPullback B B₀ (spMap (algebraMap k K)) φ → ∀ (q : G ⟶ B) (i : splitTorus (Sp K) X ⟶ G), IsMonHom q → Flat q.left → Surjective q.left → QuasiCompact q.left → IsMonHom i → IsPullback i (toUnit _) q (η[B] : 𝟙_ _ ⟶ B) → (∀ (τ : K ≃ₐ[k] K) (s : G.left ⟶ G.left), s ≫ φG = φG → s ≫ G.hom = G.hom ≫ spMap (τ : K →+* K) → s ≫ q.left ≫ φ = q.left ≫ φ ∧ GlobalTheory.SplitTorus.bcMap (spMap (τ : K →+* K)) X ≫ i.left = i.left ≫ s) → ∃ S : SplitExt (Sp k), S.IsGt G₀ := by
   intro k K _ _ _ _ _ G₀ B₀ _ _ _ hB₀ G B _ _ X _ _ _ φG φ hG hB q i hq hfl hsu hqc hi H hinv

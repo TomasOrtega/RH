@@ -21,6 +21,13 @@ open UpperTheory.GalN.V UpperTheory.V.Z.Win.Birth
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.Published UpperTheory.V.Sd UpperTheory.V.Ws UpperTheory.V.Z.Bc UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E
 
+/- English proof (translation)
+Establish `h1 : Module.finrank ℚ M ≤ Module.finrank ℚ A * Module.finrank ℚ B` using `hM ▸ IntermediateField.finrank_sup_le A B`. Use `haveI : FiniteDimensional ℚ M := hM ▸ IntermediateField.finiteDimensional_sup A B`. Use `haveI : Module.Free B M := Module.Free.of_divisionRing B M`. Establish `h2` using `Module.finrank_mul_finrank ℚ B M`. Establish `h3 : 0 < Module.finrank ℚ B` using `Module.finrank_pos`.
+
+Establish `h4 : 0 < Module.finrank ℚ M` using `Module.finrank_pos`. Establish `h5 : Module.finrank ℚ B ≠ Module.finrank ℚ M` using `fun e => hn (IntermediateField.eq_of_le_of_finrank_eq (hM ▸ le_sup_right : B ≤ M) e ▸ (hM ▸ le_sup_left : A ≤ M))`. Generalize the expression as in `Module.finrank B M = n at h2 ⊢`. Rewrite `h1` using `[hA, ← h2, mul_comm 2]`. Establish `h6` using `Nat.le_of_mul_le_mul_left h1 h3`.
+
+Rewrite `h4`, `h5` using `[← h2]`. Apply the tactic sequence `interval_cases n <;> simp_all`.
+-/
 private theorem deg_two {Ω : Type} [Field Ω] [CharZero Ω] (A B M : IntermediateField ℚ Ω) [FiniteDimensional ℚ A]
     [FiniteDimensional ℚ B] (hM : M = A ⊔ B) (hA : Module.finrank ℚ A = 2) (hn : ¬ A ≤ B) [Algebra B M] [IsScalarTower ℚ B M] :
     Module.finrank B M = 2 := by
@@ -38,6 +45,11 @@ private theorem deg_two {Ω : Type} [Field Ω] [CharZero Ω] (A B M : Intermedia
   rw [← h2] at h4 h5
   interval_cases n <;> simp_all
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hw`. Use `push Not at hw`. Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank k`. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces k`. Establish `h3 : ({w, v, v'} : Finset (InfinitePlace k)).card = 3` using `Finset.card_eq_three.2 ⟨w, v, v', hw.1, hw.2, hv, rfl⟩`.
+
+Establish `h4` using `Finset.card_le_univ ({w, v, v'} : Finset (InfinitePlace k))`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem two_places {k : Type} [Field k] [NumberField k] [IsTotallyReal k] (h : Module.finrank ℚ k = 2)
     {v v' : InfinitePlace k} (hv : v ≠ v') (w : InfinitePlace k) : w = v ∨ w = v' := by
   classical
@@ -49,6 +61,9 @@ private theorem two_places {k : Type} [Field k] [NumberField k] [IsTotallyReal k
   have h4 := Finset.card_le_univ ({w, v, v'} : Finset (InfinitePlace k))
   omega
 
+/- English proof (translation)
+Use `letI : Algebra L ℂ := φ.toAlgebra`. Use `haveI : FiniteDimensional L M := Module.finite_of_finrank_pos (by omega)`. Establish `hc` using `AlgHom.card L M ℂ`. Take `⟨a, b, hab⟩` from `Fintype.exists_pair_of_one_lt_card (α := M →ₐ[L] ℂ) (by omega)`. Conclude with `⟨a, b, fun e => hab (AlgHom.coe_ringHom_injective e), a.comp_algebraMap, b.comp_algebraMap⟩`.
+-/
 private theorem two_emb {L M : Type} [Field L] [Field M] [CharZero L] [Algebra L M] (h : Module.finrank L M = 2) (φ : L →+* ℂ) :
     ∃ τ τ' : M →+* ℂ, τ ≠ τ' ∧ τ.comp (algebraMap L M) = φ ∧ τ'.comp (algebraMap L M) = φ := by
   letI : Algebra L ℂ := φ.toAlgebra
@@ -57,6 +72,11 @@ private theorem two_emb {L M : Type} [Field L] [Field M] [CharZero L] [Algebra L
   obtain ⟨a, b, hab⟩ := Fintype.exists_pair_of_one_lt_card (α := M →ₐ[L] ℂ) (by omega)
   exact ⟨a, b, fun e => hab (AlgHom.coe_ringHom_injective e), a.comp_algebraMap, b.comp_algebraMap⟩
 
+/- English proof (translation)
+Set `S : IntermediateField ℚ M` to `(τ.eqLocusField τ').toIntermediateField fun q => by`. Rewrite using `[RingHom.mem_eqLocusField]`. Simplify using the standard rewrite rules. Establish `h : M ≤ IntermediateField.lift S` using `hM.trans <| sup_le (fun x hx => (IntermediateField.mem_lift (⟨x, hA hx⟩ : M)).2 (eA ⟨x, hx⟩)) (fun x hx => (IntermediateField.mem_lift (⟨x, hB hx⟩ : M)).2 (eB ⟨x, hx⟩))`. Use extensionality with `x`.
+
+Conclude with `(IntermediateField.mem_lift x).1 (h x.2)`.
+-/
 private theorem hom_ext_sup {Ω : Type} [Field Ω] [CharZero Ω] (A B M : IntermediateField ℚ Ω) (hA : A ≤ M) (hB : B ≤ M)
     (hM : M ≤ A ⊔ B) (τ τ' : M →+* ℂ) (eA : ∀ x : A, τ ⟨x, hA x.2⟩ = τ' ⟨x, hA x.2⟩) (eB : ∀ x : B, τ ⟨x, hB x.2⟩ = τ' ⟨x, hB x.2⟩) :
     τ = τ' := by
@@ -69,6 +89,9 @@ private theorem hom_ext_sup {Ω : Type} [Field Ω] [CharZero Ω] (A B M : Interm
   ext x
   exact (IntermediateField.mem_lift x).1 (h x.2)
 
+/- English proof (translation)
+Use `⟨Multiset.Nodup.map (fun i j e => ?_) Finset.univ.nodup, fun z hz => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have e' : m i = m j := by exact_mod_cast add_left_cancel e fin_cases i <;> fin_cases j <;> simp_all`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hz`. Conclude with `⟨m i, add_comm _ _⟩`.
+-/
 private theorem inf_reg (m : Fin 2 → ℤ) (h : m 0 ≠ m 1) :
     (infOf m).Nodup ∧ ∀ z ∈ infOf m, ∃ n : ℤ, z = (n : ℂ) + (((2 : ℕ) : ℂ) - 1) / 2 := by
   refine ⟨Multiset.Nodup.map (fun i j e => ?_) Finset.univ.nodup, fun z hz => ?_⟩
@@ -77,6 +100,9 @@ private theorem inf_reg (m : Fin 2 → ℤ) (h : m 0 ≠ m 1) :
   · obtain ⟨i, -, rfl⟩ := Multiset.mem_map.1 hz
     exact ⟨m i, add_comm _ _⟩
 
+/- English proof (translation)
+Rewrite using `[← hA]`. Simplify using the standard rewrite rules.
+-/
 private theorem val_of_mem {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {A : ValuationSubring Ω}
     {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v) (p : ℕ) : A.valuation (p : Ω) < 1 ↔ ((p : ℕ) : 𝓞 F) ∈ v.asIdeal := by
   rw [← hA]

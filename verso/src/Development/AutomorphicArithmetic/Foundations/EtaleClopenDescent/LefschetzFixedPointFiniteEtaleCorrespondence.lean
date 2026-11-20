@@ -19,6 +19,13 @@ set_option autoImplicit false
 
 namespace UpperTheory.Core
 
+/- English proof (translation)
+Rewrite using `[← isOpen_compl_iff]`. Establish `h : (W j : Set X)ᶜ = ⋃ i ∈ {i | i ≠ j}, (W i : Set X)`. Use extensionality with `x`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, SetLike.mem_coe, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Establish `hx' : x ∈ iSup W` using `by rw [hc]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx'`. Conclude with `⟨i, fun e => hx (e ▸ hi), hi⟩`. Introduce and unpack `⟨i, hij, hi⟩ hx`.
+
+Establish `hm : x ∈ W i ⊓ W j` using `⟨hi, hx⟩`. Rewrite `hm` using `[hd i j hij]`. Conclude with `hm`. Rewrite using `[h]`. Conclude with `isOpen_biUnion fun i _ => (W i).isOpen`.
+-/
 private theorem isClosed_part {X : Scheme.{0}} {M : Type} (W : M → X.Opens)
     (hd : ∀ i j, i ≠ j → W i ⊓ W j = ⊥) (hc : iSup W = ⊤) (j : M) : IsClosed (W j : Set X) := by
   rw [← isOpen_compl_iff]
@@ -37,11 +44,21 @@ private theorem isClosed_part {X : Scheme.{0}} {M : Type} (W : M → X.Opens)
   rw [h]
   exact isOpen_biUnion fun i _ => (W i).isOpen
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem pull_congr {X X' : Scheme.{0}} {s : X ⟶ Sp ℂ} {s' : X' ⟶ Sp ℂ} {f f' : X' ⟶ X}
     (e : f = f') (hf : f ≫ s = s') (hf' : f' ≫ s = s') (a b : ℕ) (x : hodgeH s a b) :
     hodgePull hf a b x = hodgePull hf' a b x := by
   subst e; rfl
 
+/- English proof (translation)
+Establish `hf : f = ∑ i, ∑ k, LinearMap.single ℂ N i ∘ₗ ((LinearMap.proj i ∘ₗ f ∘ₗ LinearMap.single ℂ N k) ∘ₗ LinearMap.proj k)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.coe_proj, Function.eval, LinearMap.coe_single]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.univ_sum_single]`.
+
+Rewrite using `[← map_sum, Finset.univ_sum_single]`. Use `conv_lhs => rw [hf]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`.
+
+Rewrite using `[LinearMap.trace_comp_comm', LinearMap.comp_assoc, LinearMap.proj_comp_single_same, LinearMap.comp_id]`. Introduce `k _ hk`. Rewrite using `[LinearMap.trace_comp_comm', LinearMap.comp_assoc, LinearMap.proj_comp_single_ne ℂ N k i hk, LinearMap.comp_zero, map_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 private theorem trace_pi_eq_sum_trace_blocks {J : Type} [Fintype J] [DecidableEq J] {N : J → Type}
     [∀ j, AddCommGroup (N j)] [∀ j, Module ℂ (N j)] [∀ j, FiniteDimensional ℂ (N j)]
     (f : (∀ j, N j) →ₗ[ℂ] (∀ j, N j)) :
@@ -67,6 +84,9 @@ private theorem trace_pi_eq_sum_trace_blocks {J : Type} [Fintype J] [DecidableEq
   · intro h
     exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.trace_conj' u e, trace_pi_eq_sum_trace_blocks, LinearEquiv.conj_apply]`. Both sides reduce to the same expression.
+-/
 private theorem trace_block {J : Type} [Fintype J] [DecidableEq J] {M : Type} [AddCommGroup M]
     [Module ℂ M] {N : J → Type} [∀ j, AddCommGroup (N j)] [∀ j, Module ℂ (N j)]
     [∀ j, FiniteDimensional ℂ (N j)] (e : M ≃ₗ[ℂ] ∀ j, N j) (u : M →ₗ[ℂ] M) :
@@ -76,6 +96,11 @@ private theorem trace_block {J : Type} [Fintype J] [DecidableEq J] {M : Type} [A
   rfl
 
 open Classical in
+/- English proof (translation)
+Repeatedly rewrite using `[Finset.sum_filter]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Take `⟨j, hj, hu⟩` from `h y hy`. Rewrite using `[Finset.sum_eq_single j]`.
+
+Simplify using `[hj]`. Introduce `k _ hk`. Simplify using `[show y ∉ R k from fun h' => hk (hu k h')]`. Simplify using the standard rewrite rules.
+-/
 private theorem sum_part {J T : Type} [Fintype J] (F : Finset T) (R : J → Set T)
     (h : ∀ y ∈ F, ∃! j, y ∈ R j) (g : T → ℂ) :
     ∑ j, ∑ y ∈ F with y ∈ R j, g y = ∑ y ∈ F, g y := by
@@ -89,6 +114,15 @@ private theorem sum_part {J T : Type} [Fintype J] (F : Finset T) (R : J → Set 
     simp [show y ∉ R k from fun h' => hk (hu k h')]
   · simp
 
+/- English proof (translation)
+Set `e` to `LinearEquiv.ofBijective (LinearMap.pi P) hP`. Use `haveI : FiniteDimensional ℂ M := LinearEquiv.finiteDimensional e.symm`. Use `⟨this, ?_⟩` and prove the remaining obligations. Rewrite using `[trace_block e u]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Establish `hx : ∀ k, P k (e.symm (Pi.single j y)) = Pi.single j y k`. Introduce `k`. Establish `h` using `congrFun (e.apply_symm_apply (Pi.single j y)) k`.
+
+Conclude with `h`. Use `show P j (u (e.symm (Pi.single j y))) = T j j y`. Rewrite using `[key, Finset.sum_eq_single j]`. Rewrite using `[hx, Pi.single_eq_same]`. Introduce `k _ hk`.
+
+Rewrite using `[hx, Pi.single_eq_of_ne hk, map_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 private theorem glue_trace {J : Type} [Fintype J] [DecidableEq J] {M : Type} [AddCommGroup M]
     [Module ℂ M] {N : J → Type} [∀ j, AddCommGroup (N j)] [∀ j, Module ℂ (N j)]
     [∀ j, FiniteDimensional ℂ (N j)] (P : ∀ j, M →ₗ[ℂ] N j)
@@ -115,6 +149,9 @@ private theorem glue_trace {J : Type} [Fintype J] [DecidableEq J] {M : Type} [Ad
     exact absurd (Finset.mem_univ j) h
 
 open Classical in
+/- English proof (translation)
+Repeatedly rewrite using `[ht, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[hz]`. Conclude with `sum_part F R hp g`.
+-/
 private theorem final_sum {J T : Type} [Fintype J] (D : Finset ℕ) (t : ℕ → ℂ)
     (tj : J → ℕ → ℂ) (ht : ∀ b, t b = ∑ j, tj j b) (F : Finset T) (R : J → Set T)
     (hp : ∀ y ∈ F, ∃! j, y ∈ R j) (g : T → ℂ)
@@ -129,15 +166,24 @@ private noncomputable def ptIn {Y : Scheme.{0}} {s' : Y ⟶ Sp ℂ} (W : Y.Opens
     (y : CxPts (W.ι ≫ s') (RingHom.id ℂ)) : CxPts s' (RingHom.id ℂ) :=
   ⟨y.1 ≫ W.ι, by rw [Category.assoc]; exact y.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem ptIn_val {Y : Scheme.{0}} {s' : Y ⟶ Sp ℂ} (W : Y.Opens)
     (y : CxPts (W.ι ≫ s') (RingHom.id ℂ)) : (ptIn W y).1 = y.1 ≫ W.ι := rfl
 
+/- English proof (translation)
+Introduce `y1 y2 h`. Establish `h' : y1.1 ≫ W.ι = y2.1 ≫ W.ι` using `congrArg Subtype.val h`. Conclude with `Subtype.ext ((cancel_mono W.ι).1 h')`.
+-/
 private theorem ptIn_injective {Y : Scheme.{0}} {s' : Y ⟶ Sp ℂ} (W : Y.Opens) :
     Function.Injective (ptIn (s' := s') W) := by
   intro y1 y2 h
   have h' : y1.1 ≫ W.ι = y2.1 ≫ W.ι := congrArg Subtype.val h
   exact Subtype.ext ((cancel_mono W.ι).1 h')
 
+/- English proof (translation)
+Rewrite using `[UpperTheory.Cb.hodgePull_hodgeTrace_eq_sum_restrict_open Z Y s s' c1 h1 (V j) J (W j) hWd hWr c1' e1 f1 t1 a b (hodgePull h2 a b x)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hodgePull_comp h2 rfl (by rw [Category.assoc, h2]), hodgePull_comp rfl (g2 k) (by rw [Category.assoc, g2 k])]`. Conclude with `pull_congr (e2 k).symm _ _ a b x`.
+-/
 private theorem key_id {Z Y : Scheme.{0}} {s : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ} {c1 c2 : Y ⟶ Z}
     (h1 : c1 ≫ s = s') (h2 : c2 ≫ s = s') [IsFinite c1] [Etale c1] {J : Type} [Fintype J]
     (V : J → Z.Opens) (W : J → J → Y.Opens) (j : J)
@@ -157,6 +203,11 @@ private theorem key_id {Z Y : Scheme.{0}} {s : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ}
     hodgePull_comp rfl (g2 k) (by rw [Category.assoc, g2 k])]
   exact pull_congr (e2 k).symm _ _ a b x
 
+/- English proof (translation)
+Use `choose e he using fun j => UpperTheory.hodgeCohomology_open_restriction_equiv Z s (V j) a b`. Establish `hres` using `cohOn.pi_res_bijective_of_disjoint ℤ (U := V) (V := ⊤) (fun _ => le_top) hcov.ge (fun i j hne => disjoint_iff.2 (hdis i j hne)) (Omega s a) b`. Establish `hc : Function.Bijective (fun x : hodgeH s a b => (fun j => e j (cohOn.res ℤ (Omega s a) (le_top : V j ≤ ⊤) b x) : ∀ j, hodgeH ((V j).ι ≫ s) a b))` using `(Equiv.piCongrRight e).bijective.comp hres`. Establish `he' : (fun x : hodgeH s a b => (fun j => e j (cohOn.res ℤ (Omega s a) (le_top : V j ≤ ⊤) b x) : ∀ j, hodgeH ((V j).ι ≫ s) a b)) = ⇑(LinearMap.pi fun j => hodgePull (f` using `(V j).ι) (s' := (V j).ι ≫ s) rfl a b) :=`. Use function extensionality and compare the values at `fun x => funext fun j => he j x`.
+
+Rewrite using `[← he']`. Conclude with `hc`.
+-/
 private theorem pull_bij {Z : Scheme.{0}} (s : Z ⟶ Sp ℂ) {J : Type} (V : J → Z.Opens)
     (hdis : ∀ i j, i ≠ j → V i ⊓ V j = ⊥) (hcov : iSup V = ⊤) (a b : ℕ) :
     Function.Bijective (LinearMap.pi fun j =>
@@ -175,11 +226,25 @@ private theorem pull_bij {Z : Scheme.{0}} (s : Z ⟶ Sp ℂ) {J : Type} (V : J �
   exact hc
 
 open Classical in
+/- English proof (translation)
+The claim follows from `Finset.sum_preimage' φ F hφ.injOn g`.
+-/
 private theorem sum_pre {S T : Type} (φ : S → T) (hφ : Function.Injective φ) (F : Finset T)
     (g : T → ℂ) : ∑ y ∈ F.preimage φ hφ.injOn, g (φ y) = ∑ y ∈ F with y ∈ Set.range φ, g y :=
   Finset.sum_preimage' φ F hφ.injOn g
 
 open Classical in
+/- English proof (translation)
+Use `haveI hsm : SmoothOfRelativeDimension d (V.ι ≫ s) := by`. Use `smoothOfRelativeDimension_comp (n := 0) (m := d) V.ι s` as an intermediate fact. Simplify using `using this`. Establish `hF' : ∀ y : CxPts (W.ι ≫ s') (RingHom.id ℂ), y ∈ F.preimage (ptIn (s'` using `s') W) (ptIn_injective W).injOn ↔ y.1 ≫ c1' = y.1 ≫ c2' := by`. Introduce `y`.
+
+Rewrite using `[Finset.mem_preimage, hF, ptIn_val]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `(cancel_mono V.ι).mp` to reduce the goal to its premises. Simplify using `only [Category.assoc, e1, e2]`.
+
+Simplify `h` using `only [Category.assoc]`. Introduce `h`. Establish `h'` using `congrArg (· ≫ V.ι) h`. Simplify using `only [Category.assoc, e1, e2] at h'`. Simplify `h'` using `only [Category.assoc]`.
+
+Establish `hA' : ∀ y ∈ F.preimage (ptIn (s'` using `s') W) (ptIn_injective W).injOn, IsTan d c1' c2' g1 g2 y (A (ptIn W y)) ∧ (1 - A (ptIn W y)).det ≠ 0 := by`. Introduce `y hy`. Rewrite `hy` using `[Finset.mem_preimage]`. Take `⟨ht, hd⟩` from `hA _ hy`. Conclude with `⟨(UpperTheory.Cb.isTangentMatrix_iff_restrict_open Z Y s s' d c1 c2 h1 h2 V W c1' c2' e1 e2 (ptIn W y) y (ptIn_val W y).symm _).mp ht, hd⟩`.
+
+Establish `key` using `UpperTheory.Cb.holomorphic_lefschetz_finiteEtale_correspondence V.toScheme (V.ι ≫ s) d (UpperTheory.Cb.isProjOver_restrict_clopen Z s V hV hproj) W.toScheme (W.ι ≫ s') c1' c2' g1 g2 f2 t2 (F.preimage (ptIn (s' := s') W) (ptIn_injective W).injOn) hF' (fun y => A (ptIn W y)) hA' a`. Use `⟨key.1, ?_⟩` and prove the remaining obligations. Rewrite using `[key.2]`. Conclude with `sum_pre (ptIn (s' := s') W) (ptIn_injective W) F (fun y => (Matrix.det (1 + (Polynomial.X : Polynomial ℂ) • (A y).map Polynomial.C)).coeff a / (1 - A y).det)`.
+-/
 private theorem block_fixed {Z Y : Scheme.{0}} {s : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ} {c1 c2 : Y ⟶ Z}
     (h1 : c1 ≫ s = s') (h2 : c2 ≫ s = s') (d : ℕ) [SmoothOfRelativeDimension d s]
     (hproj : IsProjOver s) (V : Z.Opens) (hV : IsClosed (V : Set Z)) [IsIntegral V.toScheme]
@@ -227,6 +292,13 @@ private theorem block_fixed {Z Y : Scheme.{0}} {s : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp
     (fun y => (Matrix.det (1 + (Polynomial.X : Polynomial ℂ) • (A y).map Polynomial.C)).coeff a /
       (1 - A y).det)
 
+/- English proof (translation)
+Take `⟨⟨j, k⟩, ⟨y', hy'1, -⟩, hpu⟩` from `UpperTheory.Cb.existsUnique_complexPoint_lift_clopen_cover Y s' (J × J) (fun p => W p.1 p.2) hWd hWc y`. Establish `hpt : y.1.base default ∈ W j k`. Rewrite using `[← hy'1]`. Conclude with `(y'.1.base default).2`. Establish `hc : c1.base (y.1.base default) = c2.base (y.1.base default)`.
+
+Use `congrArg (fun f => f.base default) hy` as an intermediate fact. Simplify using `using this`. Take `⟨h1m, h2m⟩` from `(hWm j k _).1 hpt`. Establish `hjk : j = k` using `hVd j k _ h1m (by simpa [hc] using h2m)`. Substitute `hjk` using the available equality.
+
+Use `⟨j, ⟨y', Subtype.ext hy'1⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `j' ⟨y2, hy2⟩`. Establish `hv : y2.1 ≫ (W j' j').ι = y.1` using `congrArg Subtype.val hy2`. Use `hpu (j', j') ⟨y2, hv, fun y3 h3 => Subtype.ext ((cancel_mono _).1 (h3.trans hv.symm))⟩` as an intermediate fact. Conclude with `congrArg Prod.fst this`.
+-/
 private theorem fixed_part {Z Y : Scheme.{0}} {s' : Y ⟶ Sp ℂ} {c1 c2 : Y ⟶ Z} {J : Type}
     [Fintype J] (V : J → Z.Opens) (hVd : ∀ i j (z : Z), z ∈ V i → z ∈ V j → i = j)
     (W : J → J → Y.Opens) (hWm : ∀ j k (y : Y), y ∈ W j k ↔ c1 y ∈ V j ∧ c2 y ∈ V k)
@@ -252,6 +324,39 @@ private theorem fixed_part {Z Y : Scheme.{0}} {s' : Y ⟶ Sp ℂ} {c1 c2 : Y ⟶
 
 end UpperTheory.Core
 
+/- English proof (translation)
+Introduce `Z s d _ hproj Y s' c1 c2 h1 h2 _ _ f2 t2 F hF A hA a`. Use `haveI : CompactSpace Z := UpperTheory.Cb.compactSpace_of_projective_and_of_finite.1 Z s hproj`. Take `⟨J, _, V, hVd, hVc, hVi⟩` from `UpperTheory.Cb.exists_integral_clopen_decomposition_of_smooth Z s d`. Establish `hVd' : ∀ i j (z : Z), z ∈ V i → z ∈ V j → i = j`. Introduce `i j z hi hj`.
+
+Assume the negation of the conclusion as `hne`. Establish `hz : z ∈ V i ⊓ V j` using `⟨hi, hj⟩`. Rewrite `hz` using `[hVd i j hne]`. Conclude with `hz`. Establish `hVcl : ∀ j, IsClosed (V j : Set Z)` using `fun j => UpperTheory.Core.isClosed_part V hVd hVc j`.
+
+Establish `hVall : ∀ z : Z, ∃ j, z ∈ V j`. Introduce `z`. Establish `hz : z ∈ iSup V` using `by rw [hVc]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.mp hz`. Set `W : J → J → Y.Opens` to `fun j k => c1 ⁻¹ᵁ V j ⊓ c2 ⁻¹ᵁ V k`.
+
+Establish `hWm : ∀ j k (y : Y), y ∈ W j k ↔ c1 y ∈ V j ∧ c2 y ∈ V k`. Introduce `j k y`. Simplify using `[W]`. Establish `hWcl : ∀ j k, IsClosed (W j k : Set Y)`. Introduce `j k`.
+
+Establish `hset : (W j k : Set Y) = c1 ⁻¹' (V j : Set Z) ∩ c2 ⁻¹' (V k : Set Z)`. Use extensionality with `y`. Conclude with `hWm j k y`. Rewrite using `[hset]`. Conclude with `((hVcl j).preimage c1.continuous).inter ((hVcl k).preimage c2.continuous)`.
+
+Establish `hWd : ∀ j k l, k ≠ l → W j k ⊓ W j l = ⊥`. Introduce `j k l hkl`. Use extensionality with `y`. Simplify using `only [TopologicalSpace.Opens.coe_inf, Set.mem_inter_iff, SetLike.mem_coe, TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hk hl`.
+
+Conclude with `hkl (hVd' k l _ ((hWm j k y).1 hk).2 ((hWm j l y).1 hl).2)`. Establish `hWr : ∀ j, iSup (W j) = c1 ⁻¹ᵁ V j`. Introduce `j`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iSup_le fun k => inf_le_left`.
+
+Introduce `y hy`. Take `⟨k, hk⟩` from `hVall (c2 y)`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨k, (hWm j k y).2 ⟨hy, hk⟩⟩`. Establish `hWd2 : ∀ p q : J × J, p ≠ q → W p.1 p.2 ⊓ W q.1 q.2 = ⊥`. Introduce `p q hpq`.
+
+Use extensionality with `y`. Simplify using `only [TopologicalSpace.Opens.coe_inf, Set.mem_inter_iff, SetLike.mem_coe, TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hp hq`. Rewrite `hp`, `hq` using `[hWm]`. Conclude with `hpq (Prod.ext (hVd' _ _ _ hp.1 hq.1) (hVd' _ _ _ hp.2 hq.2))`.
+
+Establish `hWc : iSup (fun p : J × J => W p.1 p.2) = ⊤`. Apply `top_le_iff.mp` to reduce the goal to its premises. Introduce `y _`. Take `⟨j, hj⟩` from `hVall (c1 y)`. Take `⟨k, hk⟩` from `hVall (c2 y)`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨(j, k), (hWm j k y).2 ⟨hj, hk⟩⟩`. Establish `ex1 : ∀ j k, ∃ c' : (W j k).toScheme ⟶ (V j).toScheme, c' ≫ (V j).ι = (W j k).ι ≫ c1 ∧ IsFinite c' ∧ Etale c'` using `fun j k => UpperTheory.Cb.exists_finite_etale_restrict_clopen Y Z c1 (V j) (W j k) (hWcl j k) inf_le_left inferInstance inferInstance`. Establish `ex2 : ∀ j k, ∃ c' : (W j k).toScheme ⟶ (V k).toScheme, c' ≫ (V k).ι = (W j k).ι ≫ c2 ∧ IsFinite c' ∧ Etale c'` using `fun j k => UpperTheory.Cb.exists_finite_etale_restrict_clopen Y Z c2 (V k) (W j k) (hWcl j k) inf_le_right f2 t2`. Use `choose c1' e1 f1 t1 using ex1`. Use `choose c2' e2 f2' t2' using ex2`.
+
+Establish `g1 : ∀ j k, c1' j k ≫ (V j).ι ≫ s = (W j k).ι ≫ s'`. Introduce `j k`. Rewrite using `[← Category.assoc, e1, Category.assoc, h1]`. Establish `g2 : ∀ j k, c2' j k ≫ (V k).ι ≫ s = (W j k).ι ≫ s'`. Introduce `j k`.
+
+Rewrite using `[← Category.assoc, e2, Category.assoc, h2]`. Establish `hblock : ∀ j, (∀ b, FiniteDimensional ℂ (hodgeH ((V j).ι ≫ s) a b)) ∧ ∑ b ∈ Finset.range (d + 1), (-1 : ℂ) ^ b * LinearMap.trace ℂ _ (hodgeTrace (g1 j j) a b ∘ₗ hodgePull (g2 j j) a b) = ∑ y ∈ F with y ∈ Set.range (UpperTheory.Core.ptIn (s'` using `s') (W j j)), (Matrix.det (1 + (Polynomial.X : Polynomial ℂ) • (A y).map Polynomial.C)).coeff a / (1 - A y).det := by`. Introduce `j`. Use `haveI := hVi j`. Use `haveI := f1 j j`.
+
+Use `haveI := t1 j j`. Conclude with `UpperTheory.Core.block_fixed h1 h2 d hproj (V j) (hVcl j) (W j j) (c1' j j) (c2' j j) (e1 j j) (e2 j j) (f2' j j) (t2' j j) (g1 j j) (g2 j j) F hF A hA a`. Establish `hglue : ∀ b, FiniteDimensional ℂ (hodgeH s a b) ∧ LinearMap.trace ℂ _ (hodgeTrace h1 a b ∘ₗ hodgePull h2 a b) = ∑ j, LinearMap.trace ℂ _ (hodgeTrace (g1 j j) a b ∘ₗ hodgePull (g2 j j) a b)`. Introduce `b`. Use `haveI : ∀ j, FiniteDimensional ℂ (hodgeH ((V j).ι ≫ s) a b) := fun j => (hblock j).1 b`.
+
+Use `UpperTheory.Core.glue_trace (fun j => hodgePull (f := (V j).ι) (s' := (V j).ι ≫ s) rfl a b) (UpperTheory.Core.pull_bij s V hVd hVc a b) _ (fun j k => hodgeTrace (g1 j k) a b ∘ₗ hodgePull (g2 j k) a b) ?_` and prove the remaining obligations. Introduce `j x`. Use `haveI := f1 j`. Conclude with `UpperTheory.Core.key_id h1 h2 V W j (hWd j) (hWr j) (c1' j) (c2' j) (e1 j) (e2 j) (f1 j) (t1 j) (g1 j) (g2 j) a b x`. Use `⟨fun b => (hglue b).1, ?_⟩` and prove the remaining obligations.
+
+Conclude with `UpperTheory.Core.final_sum (Finset.range (d + 1)) _ _ (fun b => (hglue b).2) F (fun j => Set.range (UpperTheory.Core.ptIn (s' := s') (W j j))) (fun y hy => UpperTheory.Core.fixed_part V hVd' W hWm hWd2 hWc y ((hF y).1 hy)) _ (fun j => (hblock j).2)`.
+-/
 theorem UpperTheory.Cb.lefschetz_fixedPoint_finite_etale_correspondence :
     ∀ (Z : Scheme.{0}) (s : Z ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d s], IsProjOver s →
       ∀ (Y : Scheme.{0}) (s' : Y ⟶ Sp ℂ) (c1 c2 : Y ⟶ Z) (h1 : c1 ≫ s = s') (h2 : c2 ≫ s = s') [IsFinite c1] [Etale c1], IsFinite c2 → Etale c2 →

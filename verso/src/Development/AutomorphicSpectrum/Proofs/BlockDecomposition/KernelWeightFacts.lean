@@ -20,27 +20,50 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`.
+-/
 theorem val_mem (y : G n) : y.val ∈ GLs n :=
   ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.RCalc.mul_mem_GLs hx hy`.
+-/
 theorem mul_mem {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n :=
   GlobalTheory.CompanionTheory.RCalc.mul_mem_GLs hx hy
 
+/- English proof (translation)
+Establish `h : x.det ≠ 0` using `hx`. Use `show (x⁻¹).det ≠ 0`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv]`. Conclude with `inv_ne_zero h`.
+-/
 theorem inv_mem {x : Mat n} (hx : x ∈ GLs n) : x⁻¹ ∈ GLs n := by
   have h : x.det ≠ 0 := hx
   show (x⁻¹).det ≠ 0
   rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv]
   exact inv_ne_zero h
 
+/- English proof (translation)
+The claim follows from `Matrix.nonsing_inv_nonsing_inv x (isUnit_iff_ne_zero.2 hx)`.
+-/
 theorem inv_inv_mat {x : Mat n} (hx : x ∈ GLs n) : x⁻¹⁻¹ = x :=
   Matrix.nonsing_inv_nonsing_inv x (isUnit_iff_ne_zero.2 hx)
 
 def toG {x : Mat n} (hx : x ∈ GLs n) : G n := Matrix.GeneralLinearGroup.mkOfDetNeZero x hx
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toG_val {x : Mat n} (hx : x ∈ GLs n) : (toG hx).val = x := rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.coe_units_inv z`.
+-/
 theorem val_inv (z : G n) : (z⁻¹ : G n).val = z.val⁻¹ := Matrix.coe_units_inv z
 
+/- English proof (translation)
+Take `⟨hsub, hinv, -⟩` from `hL n`. Establish `hy : (z⁻¹ : G n).val * x ∈ GLs n` using `mul_mem (val_mem _) hx`. Establish `e : ((z⁻¹ : G n).val * x) * x⁻¹ = (z⁻¹ : G n).val`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv x (isUnit_iff_ne_zero.2 hx), Matrix.mul_one]`. Establish `h1` using `hsub _ hy _ (inv_mem hx)`.
+
+Establish `h2 : lg (z⁻¹ : G n).val = lg z.val` using `by rw [val_inv, hinv _ (val_mem z)]`. Rewrite `h1` using `[e, hinv x hx, h2]`. Conclude with `h1`.
+-/
 theorem lg_val_le (hL : LgFacts) (z : G n) {x : Mat n} (hx : x ∈ GLs n) :
     lg z.val ≤ lg ((z⁻¹ : G n).val * x) + lg x := by
   obtain ⟨hsub, hinv, -⟩ := hL n
@@ -52,6 +75,9 @@ theorem lg_val_le (hL : LgFacts) (z : G n) {x : Mat n} (hx : x ∈ GLs n) :
   rw [e, hinv x hx, h2] at h1
   exact h1
 
+/- English proof (translation)
+Establish `hc : ContinuousOn (lg : Mat n → ℝ) (GLs n)` using `(hL n).2.2.2.1.continuousOn`. Establish `ho : IsOpen (GLs n ∩ lg ⁻¹' Set.Ioi R)` using `hc.isOpen_inter_preimage isOpen_GLs isOpen_Ioi`. Establish `he : K =ᶠ[𝓝 y] fun _ => 0` using `eventually_of_mem (ho.mem_nhds ⟨hy, h⟩) fun a ha => hR a ha.1 ha.2`. Rewrite using `[he.fderiv_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem fderiv_far (hL : LgFacts) {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {K : Mat n → W} {R : ℝ}
     (hR : ∀ y ∈ GLs n, R < lg y → K y = 0) {y : Mat n} (hy : y ∈ GLs n) (h : R < lg y) : fderiv ℝ K y = 0 := by
   have hc : ContinuousOn (lg : Mat n → ℝ) (GLs n) := (hL n).2.2.2.1.continuousOn
@@ -61,6 +87,9 @@ theorem fderiv_far (hL : LgFacts) {W : Type} [NormedAddCommGroup W] [NormedSpace
   rw [he.fderiv_eq]
   simp
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `hK`. Use `⟨R, fun y hy h => ?_⟩` and prove the remaining obligations. Simplify using `[Rd, fderiv_far hL hR hy h]`.
+-/
 theorem cpt_Rd (hL : LgFacts) {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] {K : Mat n → W} (hK : Cpt K)
     (X : Mat n) : Cpt (Rd X K) := by
   obtain ⟨R, hR⟩ := hK
@@ -73,6 +102,9 @@ def mulLL : Mat n →L[ℝ] Mat n →L[ℝ] Mat n :=
       map_add' := fun a b => by ext1 v; simp [Matrix.add_mul]
       map_smul' := fun c a => by ext1 v; simp }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mulLL_apply (a : Mat n) : mulLL a = mulL a := rfl
 
 section Core
@@ -81,6 +113,9 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 def evL : V →L[ℝ] (V →L[ℂ] V) →L[ℝ] V := (ContinuousLinearMap.restrictScalarsL ℂ V V ℝ ℝ).flip
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem evL_apply (v : V) (A : V →L[ℂ] V) : evL v A = A v := rfl
 
 abbrev CL (P W : Type) [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddCommGroup W] [NormedSpace ℝ W] : Type :=
@@ -89,18 +124,32 @@ abbrev CL (P W : Type) [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddComm
 def Dk (K : Mat n → (V →L[ℂ] V)) (f : Mat n → V) (x : Mat n) (z : G n) : CL (Mat n) V :=
   (evL (f z.val)).comp ((fderiv ℝ K ((z⁻¹ : G n).val * x)).comp (mulL (z⁻¹ : G n).val))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Dk_apply (K : Mat n → (V →L[ℂ] V)) (f : Mat n → V) (x : Mat n) (z : G n) (v : Mat n) :
     Dk K f x z v = fderiv ℝ K ((z⁻¹ : G n).val * x) ((z⁻¹ : G n).val * v) (f z.val) := rfl
 
+/- English proof (translation)
+Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Dk_apply, h]`. Both sides reduce to the same expression.
+-/
 theorem Dk_eq_zero {K : Mat n → (V →L[ℂ] V)} (f : Mat n → V) {x : Mat n} {z : G n}
     (h : fderiv ℝ K ((z⁻¹ : G n).val * x) = 0) : Dk K f x z = 0 := by
   refine ContinuousLinearMap.ext fun v => ?_
   rw [Dk_apply, h]
   rfl
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_inv`.
+-/
 theorem continuous_valinv : Continuous fun z : G n => (z⁻¹ : G n).val :=
   Units.continuous_val.comp continuous_inv
 
+/- English proof (translation)
+Establish `h1 : ContinuousOn (fderiv ℝ K) (GLs n)` using `hK.continuousOn_fderiv_of_isOpen isOpen_GLs (by simp)`. Establish `h2 : Continuous fun p : Mat n × G n => (p.2⁻¹ : G n).val * p.1` using `(continuous_valinv.comp continuous_snd).mul continuous_fst`. Establish `h3 : ContinuousOn (fun p : Mat n × G n => fderiv ℝ K ((p.2⁻¹ : G n).val * p.1)) (GLs n ×ˢ Set.univ)` using `h1.comp h2.continuousOn fun p hp => mul_mem (val_mem _) hp.1`. Establish `h4 : Continuous fun p : Mat n × G n => mulL (p.2⁻¹ : G n).val` using `mulLL.continuous.comp (continuous_valinv.comp continuous_snd)`. Establish `h5 : Continuous fun p : Mat n × G n => evL (f p.2.val)`.
+
+Use `evL.continuous.comp ?_` and prove the remaining obligations. Conclude with `(hf.comp_continuous Units.continuous_val val_mem).comp continuous_snd`. Conclude with `h5.continuousOn.clm_comp (h3.clm_comp h4.continuousOn)`.
+-/
 theorem continuousOn_Dk {K : Mat n → (V →L[ℂ] V)} (hK : ContDiffOn ℝ ∞ K (GLs n)) {f : Mat n → V}
     (hf : ContinuousOn f (GLs n)) :
     ContinuousOn (fun p : Mat n × G n => Dk K f p.1 p.2) (GLs n ×ˢ Set.univ) := by
@@ -122,6 +171,9 @@ def Lk (K : Mat n → (V →L[ℂ] V)) (f : Mat n → V) : Mat n → V :=
   fun x => ∫ z : G n, K ((z⁻¹ : G n).val * x) (f z.val) ∂μ
 
 include μ in
+/- English proof (translation)
+Use `hc.integrable_of_hasCompactSupport (HasCompactSupport.of_support_subset_isCompact ((hL n).2.2.2.2.1 R) ?_)` and prove the remaining obligations. Introduce `z hz`. Assume the negation of the conclusion as `hlt`. Conclude with `hz (h z (not_le.1 hlt))`.
+-/
 theorem integrable_far (hL : LgFacts) {W : Type} [NormedAddCommGroup W] {Φ : G n → W} (hc : Continuous Φ) (R : ℝ)
     (h : ∀ z : G n, R < lg z.val → Φ z = 0) : Integrable Φ μ := by
   refine hc.integrable_of_hasCompactSupport (HasCompactSupport.of_support_subset_isCompact ((hL n).2.2.2.2.1 R) ?_)
@@ -129,6 +181,11 @@ theorem integrable_far (hL : LgFacts) {W : Type} [NormedAddCommGroup W] {Φ : G 
   by_contra hlt
   exact hz (h z (not_le.1 hlt))
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `hc`. Establish `h1 : Continuous fun z : G n => K ((z⁻¹ : G n).val * x)` using `hK.comp_continuous (continuous_valinv.mul continuous_const) fun z => mul_mem (val_mem _) hx`. Establish `h2 : Continuous fun z : G n => f z.val` using `hf.comp_continuous Units.continuous_val val_mem`. Use `integrable_far μ hL (h1.clm_apply h2) (R + lg x) fun z hz => ?_` and prove the remaining obligations. Use `lg_val_le hL z hx` as an intermediate fact.
+
+Rewrite using `[hR _ (mul_mem (val_mem _) hx) (by linarith)]`. Simplify using the standard rewrite rules.
+-/
 theorem integrable_Lk (hL : LgFacts) {K : Mat n → (V →L[ℂ] V)} (hK : ContinuousOn K (GLs n)) (hc : Cpt K)
     {f : Mat n → V} (hf : ContinuousOn f (GLs n)) {x : Mat n} (hx : x ∈ GLs n) :
     Integrable (fun z : G n => K ((z⁻¹ : G n).val * x) (f z.val)) μ := by
@@ -141,6 +198,9 @@ theorem integrable_Lk (hL : LgFacts) {K : Mat n → (V →L[ℂ] V)} (hK : Conti
   rw [hR _ (mul_mem (val_mem _) hx) (by linarith)]
   simp
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `hc`. Establish `h1 : Continuous (fun z : G n => Dk K f x z)` using `(continuousOn_Dk hK hf).comp_continuous (f := fun z : G n => (x, z)) (continuous_const.prodMk continuous_id) fun z => ⟨hx, Set.mem_univ _⟩`. Use `integrable_far μ hL h1 (R + lg x) fun z hz => ?_` and prove the remaining obligations. Use `lg_val_le hL z hx` as an intermediate fact. Conclude with `Dk_eq_zero f (fderiv_far hL hR (mul_mem (val_mem z⁻¹) hx) (by linarith))`.
+-/
 theorem integrable_Dk (hL : LgFacts) {K : Mat n → (V →L[ℂ] V)} (hK : ContDiffOn ℝ ∞ K (GLs n)) (hc : Cpt K)
     {f : Mat n → V} (hf : ContinuousOn f (GLs n)) {x : Mat n} (hx : x ∈ GLs n) :
     Integrable (Dk K f x) μ := by
@@ -152,6 +212,9 @@ theorem integrable_Dk (hL : LgFacts) {K : Mat n → (V →L[ℂ] V)} (hK : ContD
   have := lg_val_le hL z hx
   exact Dk_eq_zero f (fderiv_far hL hR (mul_mem (val_mem z⁻¹) hx) (by linarith))
 
+/- English proof (translation)
+Establish `hy : (z⁻¹ : G n).val * x ∈ GLs n` using `mul_mem (val_mem _) hx`. Establish `h1 : HasFDerivAt K (fderiv ℝ K ((z⁻¹ : G n).val * x)) ((z⁻¹ : G n).val * x)` using `(GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth hK hy).hasFDerivAt`. Establish `h2 : HasFDerivAt (fun x' : Mat n => mulL (z⁻¹ : G n).val x') (mulL (z⁻¹ : G n).val) x` using `(mulL (z⁻¹ : G n).val).hasFDerivAt`. Establish `h3` using `HasFDerivAt.comp x (g := K) h1 h2`. Conclude with `(evL (f z.val)).hasFDerivAt.comp x h3`.
+-/
 theorem hasFDerivAt_integrand {K : Mat n → (V →L[ℂ] V)} (hK : ContDiffOn ℝ ∞ K (GLs n)) (f : Mat n → V) {x : Mat n}
     (hx : x ∈ GLs n) (z : G n) :
     HasFDerivAt (fun x' => K ((z⁻¹ : G n).val * x') (f z.val)) (Dk K f x z) x := by
@@ -163,6 +226,19 @@ theorem hasFDerivAt_integrand {K : Mat n → (V →L[ℂ] V)} (hK : ContDiffOn �
   have h3 := HasFDerivAt.comp x (g := K) h1 h2
   exact (evL (f z.val)).hasFDerivAt.comp x h3
 
+/- English proof (translation)
+Use `haveI : ProperSpace (Mat n) := FiniteDimensional.proper ℝ (Mat n)`. Take `⟨r, hr, hB⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 (isOpen_GLs.mem_nhds hx₀)`. Establish `hBc : IsCompact (Metric.closedBall x₀ r)` using `isCompact_closedBall x₀ r`. Take `⟨R₀, hR₀⟩` from `(hBc.image_of_continuousOn ((hL n).2.2.2.1.continuousOn.mono hB)).bddAbove`. Establish `hlg : ∀ x ∈ Metric.closedBall x₀ r, lg x ≤ R₀` using `fun x hx => hR₀ ⟨x, hx, rfl⟩`.
+
+Establish `hK'` using `hc`. Take `⟨R, hR⟩` from `hc`. Establish `hC : IsCompact {z : G n | lg z.val ≤ R + R₀}` using `(hL n).2.2.2.2.1 (R + R₀)`. Take `⟨M, hM⟩` from `(hBc.prod hC).exists_bound_of_continuousOn ((continuousOn_Dk hK hf).mono fun p hp => ⟨hB hp.1, Set.mem_univ _⟩)`. Establish `hfar : ∀ x ∈ Metric.closedBall x₀ r, ∀ z : G n, z ∉ {z : G n | lg z.val ≤ R + R₀} → Dk K f x z = 0`.
+
+Introduce `x hx z hz`. Establish `h1` using `lg_val_le hL z (hB hx)`. Establish `h2` using `hlg x hx`. Establish `h3 : R + R₀ < lg z.val` using `not_le.1 hz`. Conclude with `Dk_eq_zero f (fderiv_far hL hR (mul_mem (val_mem z⁻¹) (hB hx)) (by linarith))`.
+
+Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun x (z : G n) => K ((z⁻¹ : G n).val * x) (f z.val)) (F' := Dk K f) (bound := {z : G n | lg z.val ≤ R + R₀}.indicator fun _ => M) (Metric.closedBall_mem_nhds x₀ hr) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `eventually_of_mem (Metric.closedBall_mem_nhds x₀ hr) fun x hx => (integrable_Lk μ hL hK.continuousOn hK' hf (hB hx)).aestronglyMeasurable`. Conclude with `integrable_Lk μ hL hK.continuousOn hK' hf hx₀`. Conclude with `(integrable_Dk μ hL hK hK' hf hx₀).aestronglyMeasurable`. Use `ae_of_all _ fun z x hx => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hz : z ∈ {z : G n | lg z.val ≤ R + R₀}`. Rewrite using `[Set.indicator_of_mem hz]`. Conclude with `hM (x, z) ⟨hx, hz⟩`. Rewrite using `[Set.indicator_of_notMem hz, hfar x hx z hz, norm_zero]`. Conclude with `(integrable_indicator_iff hC.measurableSet).2 (integrableOn_const hC.measure_lt_top.ne)`.
+
+Conclude with `ae_of_all _ fun z x hx => hasFDerivAt_integrand hK f (hB hx) z`.
+-/
 theorem hasFDerivAt_Lk [CompleteSpace V] (hL : LgFacts) {K : Mat n → (V →L[ℂ] V)} (hK : ContDiffOn ℝ ∞ K (GLs n))
     (hc : Cpt K) {f : Mat n → V} (hf : ContinuousOn f (GLs n)) {x₀ : Mat n} (hx₀ : x₀ ∈ GLs n) :
     HasFDerivAt (Lk μ K f) (∫ z, Dk K f x₀ z ∂μ) x₀ := by
@@ -198,6 +274,11 @@ theorem hasFDerivAt_Lk [CompleteSpace V] (hL : LgFacts) {K : Mat n → (V →L[�
   · exact (integrable_indicator_iff hC.measurableSet).2 (integrableOn_const hC.measure_lt_top.ne)
   · exact ae_of_all _ fun z x hx => hasFDerivAt_integrand hK f (hB hx) z
 
+/- English proof (translation)
+Establish `e1 : fderiv ℝ (Lk μ K f) x = (∫ z, Dk K f x z ∂μ)` using `(hasFDerivAt_Lk μ hL hK hc hf hx).fderiv`. Establish `e2 : (∫ z, Dk K f x z ∂μ : CL (Mat n) V) (x * X) = ∫ z, Dk K f x z (x * X) ∂μ` using `ContinuousLinearMap.integral_apply (integrable_Dk μ hL hK hc hf hx) _`. Establish `e3 : fderiv ℝ (Lk μ K f) x (x * X) = ∫ z, Dk K f x z (x * X) ∂μ`. Rewrite using `[e1]`. Conclude with `e2`.
+
+Use `e3.trans (integral_congr_ae (ae_of_all _ fun z => ?_))` and prove the remaining obligations. Simplify using `only [Dk_apply, Rd, Matrix.mul_assoc]`.
+-/
 theorem Rd_Lk [CompleteSpace V] (hL : LgFacts) {K : Mat n → (V →L[ℂ] V)} (hK : ContDiffOn ℝ ∞ K (GLs n))
     (hc : Cpt K) {f : Mat n → V} (hf : ContinuousOn f (GLs n)) (X : Mat n) {x : Mat n} (hx : x ∈ GLs n) :
     Rd X (Lk μ K f) x = Lk μ (Rd X K) f x := by
@@ -214,16 +295,27 @@ def Rel (f : Mat n → V) (K : Mat n → (V →L[ℂ] V)) (B : Mat n → V) : Pr
 
 variable {μ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Rd_contDiffOn X h.1, cpt_Rd hL h.2.1 X, fun _ hx => (Rd_congr X (fun _ hy => h.2.2 _ hy) hx).trans (Rd_Lk μ hL h.1 h.2.1 hf X hx)⟩`.
+-/
 theorem Rel.Rd [CompleteSpace V] (hL : LgFacts) {f : Mat n → V} (hf : ContinuousOn f (GLs n))
     {K : Mat n → (V →L[ℂ] V)} {B : Mat n → V} (h : Rel μ f K B) (X : Mat n) :
     Rel μ f (PositivityTheory.RgBcC.Rd X K) (PositivityTheory.RgBcC.Rd X B) :=
   ⟨Rd_contDiffOn X h.1, cpt_Rd hL h.2.1 X, fun _ hx =>
     (Rd_congr X (fun _ hy => h.2.2 _ hy) hx).trans (Rd_Lk μ hL h.1 h.2.1 hf X hx)⟩
 
+/- English proof (translation)
+Use `⟨contDiffOn_const, ⟨0, fun _ _ _ => rfl⟩, fun x _ => ?_⟩` and prove the remaining obligations. Simplify using `[Lk]`.
+-/
 theorem Rel.zero (f : Mat n → V) : Rel μ f 0 0 := by
   refine ⟨contDiffOn_const, ⟨0, fun _ _ _ => rfl⟩, fun x _ => ?_⟩
   simp [Lk]
 
+/- English proof (translation)
+Use `⟨h.1.add h'.1, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `h.2.1`. Take `⟨R', hR'⟩` from `h'.2.1`. Use `⟨max R R', fun y hy hl => ?_⟩` and prove the remaining obligations. Simplify using `[hR y hy (lt_of_le_of_lt (le_max_left _ _) hl), hR' y hy (lt_of_le_of_lt (le_max_right _ _) hl)]`.
+
+Rewrite using `[Pi.add_apply, h.2.2 x hx, h'.2.2 x hx]`. Simplify using `only [Lk, Pi.add_apply, ContinuousLinearMap.add_apply]`. Conclude with `(integral_add (integrable_Lk μ hL h.1.continuousOn h.2.1 hf hx) (integrable_Lk μ hL h'.1.continuousOn h'.2.1 hf hx)).symm`.
+-/
 theorem Rel.add (hL : LgFacts) {f : Mat n → V} (hf : ContinuousOn f (GLs n))
     {K K' : Mat n → (V →L[ℂ] V)} {B B' : Mat n → V} (h : Rel μ f K B) (h' : Rel μ f K' B') :
     Rel μ f (K + K') (B + B') := by
@@ -237,6 +329,11 @@ theorem Rel.add (hL : LgFacts) {f : Mat n → V} (hf : ContinuousOn f (GLs n))
     exact (integral_add (integrable_Lk μ hL h.1.continuousOn h.2.1 hf hx)
       (integrable_Lk μ hL h'.1.continuousOn h'.2.1 hf hx)).symm
 
+/- English proof (translation)
+Use `⟨h.1.const_smul c, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `h.2.1`. Conclude with `⟨R, fun y hy hl => by simp [hR y hy hl]⟩`. Rewrite using `[Pi.smul_apply, h.2.2 x hx]`. Simplify using `only [Lk, Pi.smul_apply, ContinuousLinearMap.smul_apply]`.
+
+Conclude with `(integral_smul c _).symm`.
+-/
 theorem Rel.smul {f : Mat n → V} {K : Mat n → (V →L[ℂ] V)} {B : Mat n → V} (c : ℂ) (h : Rel μ f K B) :
     Rel μ f (c • K) (c • B) := by
   refine ⟨h.1.const_smul c, ?_, fun x hx => ?_⟩
@@ -246,6 +343,9 @@ theorem Rel.smul {f : Mat n → V} {K : Mat n → (V →L[ℂ] V)} {B : Mat n �
     simp only [Lk, Pi.smul_apply, ContinuousLinearMap.smul_apply]
     exact (integral_smul c _).symm
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Rel.zero f`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(h a).add hL hf ih`.
+-/
 theorem Rel.sum (hL : LgFacts) {f : Mat n → V} (hf : ContinuousOn f (GLs n)) {ι : Type} (s : Finset ι)
     {K : ι → Mat n → (V →L[ℂ] V)} {B : ι → Mat n → V} (h : ∀ i, Rel μ f (K i) (B i)) :
     Rel μ f (∑ i ∈ s, K i) (∑ i ∈ s, B i) := by
@@ -256,11 +356,19 @@ theorem Rel.sum (hL : LgFacts) {f : Mat n → V} (hf : ContinuousOn f (GLs n)) {
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     exact (h a).add hL hf ih
 
+/- English proof (translation)
+The claim follows from `Rel.smul _ (Rel.add hL hf (h.Rd hL hf _) (Rel.smul _ (h.Rd hL hf _)))`.
+-/
 theorem Rel.Eu [CompleteSpace V] (hL : LgFacts) {f : Mat n → V} (hf : ContinuousOn f (GLs n))
     {K : Mat n → (V →L[ℂ] V)} {B : Mat n → V} (h : Rel μ f K B) (s : Bool) (a b : Fin n) :
     Rel μ f (PositivityTheory.RgBcC.Eu s a b K) (PositivityTheory.RgBcC.Eu s a b B) :=
   Rel.smul _ (Rel.add hL hf (h.Rd hL hf _) (Rel.smul _ (h.Rd hL hf _)))
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b`. Distinguish the cases in `e : a = b`. Simplify `h` using `[PositivityTheory.RgBcC.Epow, e]`.
+
+Simplify `Rel.zero f` using `[PositivityTheory.RgBcC.Epow, e]`. Consider the case `succ m ih`. Introduce `a b`. Conclude with `Rel.sum hL hf Finset.univ fun c => (ih c b).Eu hL hf s a c`.
+-/
 theorem Rel.Epow [CompleteSpace V] (hL : LgFacts) {f : Mat n → V} (hf : ContinuousOn f (GLs n))
     {K : Mat n → (V →L[ℂ] V)} {B : Mat n → V} (h : Rel μ f K B) (s : Bool) (m : ℕ) :
     ∀ a b : Fin n, Rel μ f (PositivityTheory.RgBcC.Epow s m a b K) (PositivityTheory.RgBcC.Epow s m a b B) := by
@@ -274,11 +382,17 @@ theorem Rel.Epow [CompleteSpace V] (hL : LgFacts) {f : Mat n → V} (hf : Contin
     intro a b
     exact Rel.sum hL hf Finset.univ fun c => (ih c b).Eu hL hf s a c
 
+/- English proof (translation)
+The claim follows from `Rel.sum hL hf Finset.univ fun a => h.Epow hL hf s m a a`.
+-/
 theorem Rel.gel [CompleteSpace V] (hL : LgFacts) {f : Mat n → V} (hf : ContinuousOn f (GLs n))
     {K : Mat n → (V →L[ℂ] V)} {B : Mat n → V} (h : Rel μ f K B) (s : Bool) (m : ℕ) :
     Rel μ f (PositivityTheory.RgBcC.gel s m K) (PositivityTheory.RgBcC.gel s m B) :=
   Rel.sum hL hf Finset.univ fun a => h.Epow hL hf s m a a
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons p w ih => exact ih.gel hL hf p.1 p.2`.
+-/
 theorem Rel.zOp [CompleteSpace V] (hL : LgFacts) {f : Mat n → V} (hf : ContinuousOn f (GLs n))
     {K : Mat n → (V →L[ℂ] V)} {B : Mat n → V} (h : Rel μ f K B) (w : List (Bool × ℕ)) :
     Rel μ f (PositivityTheory.RgBcC.zOp w K) (PositivityTheory.RgBcC.zOp w B) := by
@@ -292,6 +406,11 @@ section Words
 
 variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
 
+/- English proof (translation)
+Proceed by induction on `w generalizing g with`. Consider the case `nil => rfl`. Consider the case `cons p w ih`. Establish `e : Set.EqOn (zOp w fun y => L (f y)) (fun y => L (zOp w f y)) (GLs n)` using `fun y hy => ih hy`. Use `show gel p.1 p.2 (zOp w fun y => L (f y)) g = L (gel p.1 p.2 (zOp w f) g)`.
+
+Rewrite using `[(good_gel hR p.1 p.2).2.2 _ _ e hg]`. Conclude with `gel_post L p.1 p.2 ((good_zOp hR w).1 f hf) hg`.
+-/
 theorem zOp_post (hR : RCalc) (L : W →L[ℂ] W) (w : List (Bool × ℕ)) {f : Mat n → W}
     (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
     zOp w (fun y => L (f y)) g = L (zOp w f g) := by
@@ -303,6 +422,11 @@ theorem zOp_post (hR : RCalc) (L : W →L[ℂ] W) (w : List (Bool × ℕ)) {f : 
     rw [(good_gel hR p.1 p.2).2.2 _ _ e hg]
     exact gel_post L p.1 p.2 ((good_zOp hR w).1 f hf) hg
 
+/- English proof (translation)
+Proceed by induction on `w generalizing g with`. Consider the case `nil => rfl`. Consider the case `cons p w ih`. Establish `e : Set.EqOn (zOp w fun y => f (a * y * b)) (fun y => zOp w f (a * y * b)) (GLs n)` using `fun y hy => ih hy`. Establish `hZ` using `(good_zOp hR w).1 f hf`.
+
+Establish `hZ' : ContDiffOn ℝ ∞ (fun y => zOp w f (y * b)) (GLs n)` using `hZ.comp (mulR b).contDiff.contDiffOn (mapsTo_mulR hb)`. Use `show gel p.1 p.2 (zOp w fun y => f (a * y * b)) g = gel p.1 p.2 (zOp w f) (a * g * b)`. Rewrite using `[(good_gel hR p.1 p.2).2.2 _ _ e hg]`. Rewrite using `[gel_left p.1 p.2 ha (f := fun y => zOp w f (y * b)) hZ' hg]`. Conclude with `gel_right p.1 p.2 hb hZ (mul_mem ha hg)`.
+-/
 theorem zOp_trans (hR : RCalc) {a b : Mat n} (ha : a ∈ GLs n) (hb : b ∈ GLs n) (w : List (Bool × ℕ)) {f : Mat n → W}
     (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
     zOp w (fun y => f (a * y * b)) g = zOp w f (a * g * b) := by
@@ -320,6 +444,13 @@ theorem zOp_trans (hR : RCalc) {a b : Mat n} (ha : a ∈ GLs n) (hb : b ∈ GLs 
 
 end Words
 
+/- English proof (translation)
+Establish `h` using `integral_mul_left_eq_self (μ := μ) (fun y : G n => k y.val (f (x * y.val))) (toG hx)⁻¹`. Use `h.symm.trans (integral_congr_ae (ae_of_all _ fun z => ?_))` and prove the remaining obligations. Establish `e1 : x * ((toG hx)⁻¹ * z).val = z.val`. Establish `: (toG hx * ((toG hx)⁻¹ * z)).val = z.val` using `by rw [mul_inv_cancel_left]`. Conclude with `this`.
+
+Establish `e2 : ((z⁻¹ : G n).val * x)⁻¹ = ((toG hx)⁻¹ * z).val`. Establish `: (z⁻¹ * toG hx : G n).val⁻¹ = ((z⁻¹ * toG hx : G n)⁻¹).val` using `(val_inv _).symm`. Establish `e3 : (z⁻¹ * toG hx : G n).val = (z⁻¹ : G n).val * x` using `rfl`. Rewrite `this` using `[e3]`. Rewrite using `[this, _root_.mul_inv_rev, _root_.inv_inv]`.
+
+Simplify using `only [e1, e2]`.
+-/
 theorem act_eq_Lk [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n)
     (k : Mat n → (E.V →L[ℂ] E.V)) (f : Mat n → E.V) {x : Mat n} (hx : x ∈ GLs n) :
     act μ E k f x = Lk μ (fun y => k y⁻¹) f x := by
@@ -335,6 +466,19 @@ theorem act_eq_Lk [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)
     rw [this, _root_.mul_inv_rev, _root_.inv_inv]
   simp only [e1, e2]
 
+/- English proof (translation)
+Introduce and unpack `n _ _ μ _ E w g hL hU hR ⟨k₀, hs, ⟨R, hR0⟩, heq, hact⟩`. Use `haveI := FiniteDimensional.complete ℂ E.V`. Establish `hKs : ContDiffOn ℝ ∞ (fun y : Mat n => k₀ y⁻¹) (GLs n)` using `hs.comp GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv fun _ hy => inv_mem hy`. Establish `hKc : Cpt (fun y : Mat n => k₀ y⁻¹)` using `⟨R, fun y hy h => hR0 _ (inv_mem hy) (by rwa [(hL n).2.1 y hy])⟩`. Establish `hZs` using `(good_zOp hR w).1 _ hKs`.
+
+Establish `hZc : Cpt (zOp w fun y : Mat n => k₀ y⁻¹)` using `(Rel.zOp (μ := μ) hL (f := 0) continuousOn_const (B := Lk μ (fun y => k₀ y⁻¹) 0) ⟨hKs, hKc, fun _ _ => rfl⟩ w).2.1`. Use `⟨fun y => zOp w (fun y : Mat n => k₀ y⁻¹) y⁻¹, hZs.comp GlobalTheory.CompanionTheory.LengthGL.contDiffOn_inv fun _ hy => inv_mem hy, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨R', hR'⟩` from `hZc`. Conclude with `⟨R', fun y hy h => hR' _ (inv_mem hy) (by rwa [(hL n).2.1 y hy])⟩`. Introduce `y hy k₁ k₂`.
+
+Establish `hk₁` using `GlobalTheory.CompanionTheory.RCalc.unitary_mem_GLs k₁`. Establish `hk₂` using `GlobalTheory.CompanionTheory.RCalc.unitary_mem_GLs k₂`. Establish `hinv : ∀ x : Mat n, (k₁.1 * x * k₂.1)⁻¹ = k₂.1⁻¹ * x⁻¹ * k₁.1⁻¹` using `fun x => by`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.mul_assoc]`. Establish `hinv' : ∀ x : Mat n, (k₂.1⁻¹ * x * k₁.1⁻¹)⁻¹ = k₁.1 * x⁻¹ * k₂.1` using `fun x => by`.
+
+Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, inv_inv_mat hk₁, inv_inv_mat hk₂, Matrix.mul_assoc]`. Set `L : (E.V →L[ℂ] E.V) →L[ℂ] (E.V →L[ℂ] E.V)` to `(ContinuousLinearMap.mul ℂ (E.V →L[ℂ] E.V) (E.ρ k₁)).comp ((ContinuousLinearMap.mul ℂ (E.V →L[ℂ] E.V)).flip (E.ρ k₂))`. Establish `hLa : ∀ T, L T = E.ρ k₁ * T * E.ρ k₂` using `fun T => by`. Simplify using `[L, mul_assoc]`. Establish `hE : Set.EqOn (fun x : Mat n => k₀ (k₂.1⁻¹ * x * k₁.1⁻¹)⁻¹) (fun x => L (k₀ x⁻¹)) (GLs n)` using `fun x hx => by show k₀ (k₂.1⁻¹ * x * k₁.1⁻¹)⁻¹ = L (k₀ x⁻¹)`.
+
+Rewrite using `[hinv', hLa, heq _ (inv_mem hx)]`. Use `show zOp w (fun y : Mat n => k₀ y⁻¹) (k₁.1 * y * k₂.1)⁻¹ = _`. Rewrite using `[hinv y, ← zOp_trans hR (inv_mem hk₂) (inv_mem hk₁) w hKs (inv_mem hy), (good_zOp hR w).2.2 _ _ hE (inv_mem hy), zOp_post hR L w hKs (inv_mem hy), hLa]`. Introduce `u hu x hx`. Establish `hf : ContinuousOn (u 0) (GLs n)` using `(hu.2.1 0).1.continuousOn`.
+
+Establish `h0 : Rel μ (u 0) (fun y : Mat n => k₀ y⁻¹) (fun x' => ∫ t, (g t : ℂ) • u t x')` using `⟨hKs, hKc, fun x hx => (hact u hu x hx).symm.trans (act_eq_Lk μ E k₀ (u 0) hx)⟩`. Establish `h1` using `(h0.zOp hL hf w).2.2 x hx`. Rewrite using `[h1, act_eq_Lk μ E _ (u 0) hx]`. Use `integral_congr_ae (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Simplify using `only [inv_inv_mat (mul_mem (val_mem z⁻¹) hx)]`.
+-/
 theorem kerW : KerW := by
   rintro n _ _ μ _ E w g hL hU hR ⟨k₀, hs, ⟨R, hR0⟩, heq, hact⟩
   haveI := FiniteDimensional.complete ℂ E.V

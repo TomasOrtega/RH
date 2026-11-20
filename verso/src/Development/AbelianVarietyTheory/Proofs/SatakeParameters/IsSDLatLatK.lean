@@ -19,17 +19,31 @@ open scoped TensorProduct
 variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [StarRing E] [Algebra F E] {sp : Spaces R F E} {N : ℕ}
 
+/- English proof (translation)
+The claim follows from `Submodule.span_eq (Formalism.UG.CS.globLat y Lb)`.
+-/
 theorem latAd_eq (y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)) :
     Formalism.L2.PairingIndexBounds.F.latAd y Lb = Formalism.UG.CS.globLat y Lb :=
   Submodule.span_eq (Formalism.UG.CS.globLat y Lb)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compan_eq (J : Matrix (Fin N) (Fin N) E) (a : 𝓞 E) (Λ : Submodule (𝓞 E) (Fin N → E)) :
     Formalism.L2.PairingIndexBounds.F.compan (sp := sp) J a Λ = Λ ⊔ Ideal.span {a} • dl sp.cm.sig J Λ := rfl
 
+/- English proof (translation)
+Rewrite using `[compan_eq, Ideal.span_singleton_eq_bot.2 rfl, Submodule.bot_smul, sup_bot_eq]`.
+-/
 theorem compan_zero (J : Matrix (Fin N) (Fin N) E) (Λ : Submodule (𝓞 E) (Fin N → E)) :
     Formalism.L2.PairingIndexBounds.F.compan (sp := sp) J 0 Λ = Λ := by
   rw [compan_eq, Ideal.span_singleton_eq_bot.2 rfl, Submodule.bot_smul, sup_bot_eq]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `: (Formalism.L2.PairingIndexBounds.F.stdCo (sp.cm.sig : E →+* E) J).symm (Formalism.L2.PairingIndexBounds.F.stdCo (sp.cm.sig : E →+* E) J x) = x` using `LinearEquiv.symm_apply_apply _ x`. Simplify using `using (this ▸ hx)`. Introduce `h`.
+
+Conclude with `⟨_, h, by simp⟩`.
+-/
 theorem mem_toStd (J : Matrix (Fin N) (Fin N) E) (M : Submodule (𝓞 E) (Fin N → E)) (y : Fin N → E) :
     y ∈ Formalism.L2.PairingIndexBounds.F.toStd (sp.cm.sig : E →+* E) J M ↔
       (Formalism.L2.PairingIndexBounds.F.stdCo (sp.cm.sig : E →+* E) J).symm y ∈ M := by
@@ -41,6 +55,17 @@ theorem mem_toStd (J : Matrix (Fin N) (Fin N) E) (M : Submodule (𝓞 E) (Fin N 
   · intro h
     exact ⟨_, h, by simp⟩
 
+/- English proof (translation)
+Establish `hc : Formalism.L2.PairingIndexBounds.F.IsOrthCo (sp.cm.sig : E →+* E) J (Formalism.L2.PairingIndexBounds.F.stdCo (sp.cm.sig : E →+* E) J)` using `Classical.epsilon_spec hco`. Use `set co := Formalism.L2.PairingIndexBounds.F.stdCo (sp.cm.sig : E →+* E) J with hco_def`. Establish `key : ∀ x y, stdH E N (co x) (co y) = hform (sp.cm.sig : E →+* E) J x y` using `fun x y => hc x y`. Use `⟨(Module.Finite.iff_fg.1 hM.1).map _, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.PairingIndexBounds.F.toStd, Submodule.map_coe, LinearMap.coe_restrictScalars, ← hco_def, eq_top_iff]`.
+
+Introduce and unpack `v -`. Establish `hv : co.symm v ∈ Submodule.span E (M : Set (Fin N → E))` using `by rw [hM.2]; trivial`. Establish `h1` using `Submodule.apply_mem_span_image_of_mem_span (co : (Fin N → E) →ₗ[E] (Fin N → E)) hv`. Simplify using `using h1`. Rewrite using `[mem_toStd (sp := sp), ← hco_def]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite `hx` using `[mem_toStd (sp := sp), ← hco_def]`. Establish `h1` using `(mem_dl sp.cm.sig J M (co.symm y)).1 (hsd.symm ▸ hy) (co.symm x) hx`. Rewrite `h1` using `[← key, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `h1`. Introduce `h`. Rewrite using `[← hsd, mem_dl]`. Introduce `x hx`. Establish `h1` using `h (co x) ((mem_toStd (sp := sp) J M (co x)).2 (by rw [← hco_def, LinearEquiv.symm_apply_apply]; exact hx))`.
+
+Rewrite `h1` using `[← LinearEquiv.apply_symm_apply co y, key]`. Conclude with `h1`.
+-/
 theorem isSD_toStd (J : Matrix (Fin N) (Fin N) E)
     (hco : ∃ co, Formalism.L2.PairingIndexBounds.F.IsOrthCo (sp.cm.sig : E →+* E) J co)
     {M : Submodule (𝓞 E) (Fin N → E)} (hM : IsLat M) (hsd : dl sp.cm.sig J M = M) :
@@ -69,6 +94,11 @@ theorem isSD_toStd (J : Matrix (Fin N) (Fin N) E)
       rw [← LinearEquiv.apply_symm_apply co y, key] at h1
       exact h1
 
+/- English proof (translation)
+Establish `hG : Formalism.L2.PairingIndexBounds.F.compan (sp` using `sp) J a (Formalism.L2.PairingIndexBounds.F.latAd y Lb) = Formalism.UG.CS.globLat y M0 := by`. Rewrite using `[latAd_eq, ← hA]`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Rewrite using `[compan_zero, compan_zero]`.
+
+Rewrite using `[compan_eq, compan_eq]`. Conclude with `(glob_companion sp.cm.sig J hJ hLb ha y hy).symm`. Rewrite using `[hG]`. Conclude with `isSD_toStd (sp := sp) J hco (isLat_glob hM0 y) (glob_selfdual sp.cm.sig J hJ hM0 hsd y hy)`.
+-/
 theorem isSD_core (J : Matrix (Fin N) (Fin N) E)
     (hJ : ∀ M : Submodule (𝓞 E) (Fin N → E), IsLat M → IsLat (dl sp.cm.sig J M))
     (hco : ∃ co, Formalism.L2.PairingIndexBounds.F.IsOrthCo (sp.cm.sig : E →+* E) J co)
@@ -95,6 +125,9 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G
 open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `R F E _ _ _ _ _ _ sp N J hJ hco y hy Lb a hLb hM hsd`. Conclude with `isSD_core (sp := sp) J hJ hco y hy hLb a rfl hM hsd`.
+-/
 theorem isSDLat_latK : ∀ {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E), (∀ M : Submodule (𝓞 E) (Fin N → E), Formalism.L2.GlobalTheoryTheory.Comp.IsLat M → Formalism.L2.GlobalTheoryTheory.Comp.IsLat (Formalism.L2.GlobalTheoryTheory.Comp.dl sp.cm.sig J M)) → (∃ co, IsOrthCo (sp.cm.sig : E →+* E) J co) → ∀ y ∈ UPts sp.cm.sig J (FiniteAdeleRing (𝓞 F) F), ∀ (Lb : Submodule (𝓞 E) (Fin N → E)) (a : 𝓞 E), Formalism.L2.GlobalTheoryTheory.Comp.IsLat Lb → Formalism.L2.GlobalTheoryTheory.Comp.IsLat (compan (sp := sp) J a Lb) → Formalism.L2.GlobalTheoryTheory.Comp.dl sp.cm.sig J (compan (sp := sp) J a Lb) = compan (sp := sp) J a Lb → IsSDLat E N (latK sp J a y Lb) := by
   intro R F E _ _ _ _ _ _ sp N J hJ hco y hy Lb a hLb hM hsd
   exact isSD_core (sp := sp) J hJ hco y hy hLb a rfl hM hsd

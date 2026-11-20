@@ -38,6 +38,13 @@ open GlobalTheory.FinWeil GlobalTheory.FinWeilO GlobalTheory.BotClassDict Global
 
 variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Establish `H` using `isHeis_opF hψ.1 S T hw`. Establish `hA` using `selfDual_latF (GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hS hT).1`. Take `⟨hlev, hmov⟩` from `GlobalTheory.T.completedHomLattice_multiple_mem_open_level D S T ΛS ΛT hS hT (GlobalTheory.T.completedHomLattice_finitelyGenerated D S T ΛS ΛT hS hT)`. Establish `hspan` using `GlobalTheory.T.span_heisenberg_translates_of_lattice_vacua_eq_top H _ hA (smooth_theta hψ.1 hS hT hw hA hlev)`. Establish `hidx : ∀ p, idx (latF S T ΛS ΛT) ((latF S T ΛS ΛT).map (rhoF S T p)) ≠ 0` using `fun p => by`.
+
+Take `⟨N, hN, h⟩` from `hmov p.1 p.2`. Use `idx_latF_ne_zero hS hT _ hN ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `h a ha`. Take `⟨Om, h1, h2⟩` from `GlobalTheory.T.exists_weil_representation_of_lattice_vacua H lam hlam _ hA hspan (rhoF S T) gamF_rhoF hidx`.
+
+Conclude with `⟨Om, hw, hA, hspan, hidx, h1, fun p => (h2 p).1, fun p => (h2 p).2⟩`.
+-/
 theorem exists_isLatRep_of {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S ΛS)
     (hT : IsSelfDualC T ΛT) {lam : ℕ →* ℂ} (hlam : GoodNorm (sgO D) lam) {w : 𝓞 D.host.E} (hw : w + sgO D w = 1) :
@@ -54,11 +61,19 @@ theorem exists_isLatRep_of {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.ho
   obtain ⟨Om, h1, h2⟩ := GlobalTheory.T.exists_weil_representation_of_lattice_vacua H lam hlam _ hA hspan (rhoF S T) gamF_rhoF hidx
   exact ⟨Om, hw, hA, hspan, hidx, h1, fun p => (h2 p).1, fun p => (h2 p).2⟩
 
+/- English proof (translation)
+The claim follows from `adele_ext h1 (by have := congrArg (GlobalTheory.BotFormula.toAfE D) h2 rwa [toAfE_finQ, toAfE_finQ] at this)`.
+-/
 theorem ext_finQ {a b : AE D} (h1 : infPart D a = infPart D b) (h2 : finQ D a = finQ D b) : a = b :=
   adele_ext h1 (by
     have := congrArg (GlobalTheory.BotFormula.toAfE D) h2
     rwa [toAfE_finQ, toAfE_finQ] at this)
 
+/- English proof (translation)
+Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, (finPart D).map_zero⟩`. Consider the case `tmul a x => exact ⟨TensorProduct.tmul D.host.F (pairA D.host.F 0 a) x, rfl⟩`. Consider the case `add y z hy hz`.
+
+Take `⟨a, rfl⟩` from `hy`. Take `⟨b, rfl⟩` from `hz`. Conclude with `⟨a + b, (finPart D).map_add a b⟩`.
+-/
 theorem finPart_surjective (D : D7) : Function.Surjective (finPart D) := by
   intro y
   induction y using TensorProduct.induction_on with
@@ -69,6 +84,11 @@ theorem finPart_surjective (D : D7) : Function.Surjective (finPart D) := by
     obtain ⟨b, rfl⟩ := hz
     exact ⟨a + b, (finPart D).map_add a b⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `finPart_surjective D (GlobalTheory.BotFormula.toAfE D q)`. Use `⟨(1 - realIdem D) * a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, RingHom.map_sub, infPart_realIdem, RingHom.map_one, sub_self, zero_mul]`. Apply `(GlobalTheory.BotFormula.toAfE D).injective` to reduce the goal to its premises. Rewrite using `[toAfE_finQ]`.
+
+Use `show finPart D _ = _`. Rewrite using `[RingHom.map_mul, RingHom.map_sub, finPart_realIdem, RingHom.map_one, sub_zero, one_mul, ha]`.
+-/
 theorem exists_finQ (q : Formalism.MainNotions.StandardLatticesGL3.AE D) : ∃ a : AE D, infPart D a = 0 ∧ finQ D a = q := by
   obtain ⟨a, ha⟩ := finPart_surjective D (GlobalTheory.BotFormula.toAfE D q)
   refine ⟨(1 - realIdem D) * a, ?_, ?_⟩
@@ -83,12 +103,21 @@ def back (S T : HSp D) (r : D.host.E) : XF S T →+ XA D S.rank T.rank where
   map_zero' := by rw [XF.coe_zero, Matrix.map_zero _ (map_zero _), smul_zero]
   map_add' x y := by rw [XF.coe_add, Matrix.map_add _ (map_add (finQ D)), smul_add]
 
+/- English proof (translation)
+The claim follows from `neg_mul _ _`.
+-/
 theorem back_apply (r : D.host.E) (x : XF S T) (i : Fin T.rank) (j : Fin S.rank) :
     back S T r x i j = -(Formalism.MainNotions.StandardLatticesGL3.inc D r * finQ D ((x : WO S T) i j)) := neg_mul _ _
 
+/- English proof (translation)
+Rewrite using `[← map_mul, mul_inv_cancel₀ hr, map_one]`.
+-/
 theorem inc_mul_inv {r : D.host.E} (hr : r ≠ 0) : Formalism.MainNotions.StandardLatticesGL3.inc D r * Formalism.MainNotions.StandardLatticesGL3.inc D r⁻¹ = 1 := by
   rw [← map_mul, mul_inv_cancel₀ hr, map_one]
 
+/- English proof (translation)
+Introduce `x y h` and use `by refine XF.ext (Matrix.ext fun i j => ext_finQ ?_ ?_) · exact (congrFun (congrFun x.fin i) j).trans (congrFun (congrFun y.fin i) j).symm · have h1 := congrFun (congrFun h i) j rw [back_apply, back_apply] at h1 linear_combination (-Formalism.MainNotions.StandardLatticesGL3.inc D …`.
+-/
 theorem back_injective {r : D.host.E} (hr : r ≠ 0) : Function.Injective (back S T r) := fun x y h => by
   refine XF.ext (Matrix.ext fun i j => ext_finQ ?_ ?_)
   · exact (congrFun (congrFun x.fin i) j).trans (congrFun (congrFun y.fin i) j).symm
@@ -97,6 +126,9 @@ theorem back_injective {r : D.host.E} (hr : r ≠ 0) : Function.Injective (back 
     linear_combination (-Formalism.MainNotions.StandardLatticesGL3.inc D r⁻¹) * h1 -
       (finQ D ((x : WO S T) i j) - finQ D ((y : WO S T) i j)) * inc_mul_inv (D := D) hr
 
+/- English proof (translation)
+Introduce `ζ` and use `by choose a h1 h2 using fun i j => exists_finQ (D := D) (-(Formalism.MainNotions.StandardLatticesGL3.inc D r⁻¹ * ζ i j)) refine ⟨XF.mk (Matrix.of a) (Matrix.ext h1), Matrix.ext fun i j => ?_⟩ rw [back_apply, XF.coe_mk, Matrix.of_apply, h2] linear_combination ζ i j * inc_mul_inv ( …`.
+-/
 theorem back_surjective {r : D.host.E} (hr : r ≠ 0) : Function.Surjective (back S T r) := fun ζ => by
   choose a h1 h2 using fun i j => exists_finQ (D := D) (-(Formalism.MainNotions.StandardLatticesGL3.inc D r⁻¹ * ζ i j))
   refine ⟨XF.mk (Matrix.of a) (Matrix.ext h1), Matrix.ext fun i j => ?_⟩
@@ -106,11 +138,17 @@ theorem back_surjective {r : D.host.E} (hr : r ≠ 0) : Function.Surjective (bac
 def ratX (S T : HSp D) (r : D.host.E) (z : Matrix (Fin T.rank) (Fin S.rank) D.host.E) : XF S T :=
   XF.mk (finPt (S := S) (T := T) rfl rfl r z) (GlobalTheory.VacUnique.finRat_inf S T _)
 
+/- English proof (translation)
+Use `show (-Formalism.MainNotions.StandardLatticesGL3.inc D r) • (finPt (S := S) (T := T) rfl rfl r z).map (finQ D) = _`. Rewrite using `[GlobalTheory.LevelTr.finQ_finPt, neg_smul, smul_neg, neg_neg, smul_smul, inc_mul_inv hr, one_smul]`.
+-/
 theorem back_ratX {r : D.host.E} (hr : r ≠ 0) (z : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     back S T r (ratX S T r z) = z.map (Formalism.MainNotions.StandardLatticesGL3.inc D) := by
   show (-Formalism.MainNotions.StandardLatticesGL3.inc D r) • (finPt (S := S) (T := T) rfl rfl r z).map (finQ D) = _
   rw [GlobalTheory.LevelTr.finQ_finPt, neg_smul, smul_neg, neg_neg, smul_smul, inc_mul_inv hr, one_smul]
 
+/- English proof (translation)
+Use `show (-Formalism.MainNotions.StandardLatticesGL3.inc D r) • (actO S T g h u).map (finQ D) = _`. Rewrite using `[actA_apply, actO, Matrix.map_mul, Matrix.map_mul, GlobalTheory.LevelTr.finQ_mt_of_isFinPt T gT hh, GlobalTheory.LevelTr.finQ_mt_inv_of_isFinPt S gS hg]`. Use `show _ = _ * ((-Formalism.MainNotions.StandardLatticesGL3.inc D r) • (u : WO S T).map (finQ D)) * _`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem back_rhoF (gS : S.gram = 1) (gT : T.gram = 1) (r : D.host.E) {x : Formalism.MainNotions.StandardLatticesGL3.GA D S.rank}
     {y : Formalism.MainNotions.StandardLatticesGL3.GA D T.rank} {g : GA D S} {h : GA D T} (hg : IsFinPt S g x) (hh : IsFinPt T h y) (u : XF S T) :
     back S T r (rhoF S T (g, h) u) = actA D S.rank T.rank (x, y) (back S T r u) := by
@@ -120,12 +158,24 @@ theorem back_rhoF (gS : S.gram = 1) (gT : T.gram = 1) (r : D.host.E) {x : Formal
   show _ = _ * ((-Formalism.MainNotions.StandardLatticesGL3.inc D r) • (u : WO S T).map (finQ D)) * _
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Rewrite using `[mem_latF, GlobalTheory.T.mem_latticeO_iff_scale_mul_finitePart_mem_idealLattice D S T gS cc r hc hr _ u.fin, mem_latA]`. Simplify using `only [back_apply, neg_mem_iff]`.
+-/
 theorem back_mem_iff (gS : S.gram = 1) {cc : Ideal (𝓞 D.host.K)} {r : D.host.E} (hc : cc ≠ ⊥) (hr : IsScale D cc r)
     (u : XF S T) : back S T r u ∈ latA D cc S.rank T.rank ↔
       u ∈ latF S T (GlobalTheory.VacRead.lsB D cc r S.rank) (stdL D T.rank) := by
   rw [mem_latF, GlobalTheory.T.mem_latticeO_iff_scale_mul_finitePart_mem_idealLattice D S T gS cc r hc hr _ u.fin, mem_latA]
   simp only [back_apply, neg_mem_iff]
 
+/- English proof (translation)
+Establish `H` using `isHeis_opF hψ S T hw`. Take `⟨hlev, -⟩` from `GlobalTheory.T.completedHomLattice_multiple_mem_open_level D S T ΛS ΛT hS hT (GlobalTheory.T.completedHomLattice_finitelyGenerated D S T ΛS ΛT hS hT)`. Take `⟨V, hV, hf⟩` from `f.2.level`. Take `⟨N, hN, hNU⟩` from `hlev V hV`. Take `⟨M, hM, hMU⟩` from `hlev _ (GlobalTheory.FinTranslate.isOpen_annSub hψ (XF.fin (w • x)))`.
+
+Use `⟨2 * (N * M), by positivity, fun l hl => ?_⟩` and prove the remaining obligations. Establish `e1 : opF hψ S T w ((2 * (N * M)) • l) f = f`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_opF, hf _ (by`. Rewrite using `[XF.coe_nsmul, show 2 * (N * M) = N * (2 * M) by ring, mul_smul]`.
+
+Conclude with `hNU _ (nsmul_mem hl _)) (XF.fin _), mul_smul, phase_two hA w (nsmul_mem hl _), one_smul]`. Establish `e2 : gamF ψ S T (w • x) ((2 * (N * M)) • l) = 1`. Establish `e3 : ψ (symplOH S T (w • x : XF S T) (M • ((2 * N) • (l : WO S T)))) = 1` using `(hMU _ (nsmul_mem hl _)).2`. Rewrite `e3` using `[← mul_smul, show M * (2 * N) = 2 * (N * M) by ring]`. Rewrite using `[gamF, ← symplOH_add_self, AddChar.map_add_eq_mul, XF.coe_nsmul, e3, one_mul]`.
+
+Establish `e4` using `H.comp x ((2 * (N * M)) • l) f`. Rewrite `e4` using `[e1, e2, one_smul]`. Conclude with `e4.symm`.
+-/
 theorem exists_deep {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hψ : IsCharAF D.host.F ψ) (hS : IsSelfDualC S ΛS)
     (hT : IsSelfDualC T ΛT) {w : 𝓞 D.host.E} (hw : w + sgO D w = 1) (hA : SelfDual (gamF ψ S T) (latF S T ΛS ΛT))
@@ -152,6 +202,9 @@ theorem exists_deep {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
 
 variable {θ : InfFam D} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {r : D.host.E}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => exact ⟨(thetaSub ψ S T).zero_mem, fun w _ => by simp⟩`. Consider the case `cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons]`. Conclude with `(h a).add ih`.
+-/
 theorem reads_sum {ι : Type} (s : Finset ι) {G : ι → VC D S.rank T.rank → ℂ} {f : ι → WO S T → ℂ}
     (h : ∀ i, Reads ψ θ rfl rfl cc δ r (G i) (f i)) :
     Reads ψ θ (S := S) (T := T) rfl rfl cc δ r (∑ i ∈ s, G i) (∑ i ∈ s, f i) := by
@@ -159,6 +212,13 @@ theorem reads_sum {ι : Type} (s : Finset ι) {G : ι → VC D S.rank T.rank →
   | empty => exact ⟨(thetaSub ψ S T).zero_mem, fun w _ => by simp⟩
   | cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons]; exact (h a).add ih
 
+/- English proof (translation)
+Establish `hr : r ≠ 0` using `IsScale.ne_zero hset.crv.1.1 hset.scale`. Take `⟨-, -, h3, -⟩` from `GlobalTheory.T.completedStandardAdelicLattice_properties D (GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1 cc δ hset.crv S.rank T.rank`. Take `⟨m, hm, hmx⟩` from `exists_deep hset.std.1 hS hT hw hA x f`. Take `⟨n, hn, hnx⟩` from `hM.2.2.2.2 (back S T r x) F`. Take `⟨z, a, ha, hz⟩` from `h3 (back S T r x) (m * n) (Nat.mul_pos hm hn)`.
+
+Take `⟨l, rfl⟩` from `back_surjective (S := S) (T := T) hr a`. Establish `hl` using `(back_mem_iff hset.gS hset.crv.1.1 hset.scale l).1 ha`. Establish `e : ratX S T r z = x + m • n • l` using `back_injective hr (by`. Rewrite using `[back_ratX hr, hz, map_add, map_nsmul, map_nsmul, mul_smul])`. Establish `e1 : WA (back S T r x) F = WA (z.map (Formalism.MainNotions.StandardLatticesGL3.inc D)) F`.
+
+Rewrite using `[hz, mul_comm, mul_smul, hnx _ (nsmul_mem ha m)]`. Rewrite using `[e1, ← hmx _ (nsmul_mem hl n), ← e, hM.2.2.2.1, coe_opF, hph]`. Conclude with `(heisO_finPt_reads ψ θ S T rfl rfl cc δ r hset _ _ h z).smul _`.
+-/
 theorem reads_opF (hset : Setup ψ θ S T cc δ r) {w w' : 𝓞 D.host.E} (hw : w + sgO D w = 1)
     (hph : ∀ z, phase ψ w (ratX S T r z) = Formalism.MainNotions.StandardLatticesGL3.wdPh D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z))
     (hS : IsSelfDualC S (GlobalTheory.VacRead.lsB D cc r S.rank)) (hT : IsSelfDualC T (stdL D T.rank))
@@ -182,6 +242,23 @@ theorem reads_opF (hset : Setup ψ θ S T cc δ r) {w w' : 𝓞 D.host.E} (hw : 
   rw [e1, ← hmx _ (nsmul_mem hl n), ← e, hM.2.2.2.1, coe_opF, hph]
   exact (heisO_finPt_reads ψ θ S T rfl rfl cc δ r hset _ _ h z).smul _
 
+/- English proof (translation)
+Establish `hG` using `(GlobalTheory.T.inducedType_thetaGenusOne_permutes D).1`. Establish `hr : r ≠ 0` using `IsScale.ne_zero hset.crv.1.1 hset.scale`. Establish `hmem` using `back_mem_iff (T := T) hset.gS hset.crv.1.1 hset.scale`. Take `⟨w', γ, WA, hM⟩` from `GlobalTheory.T.exists_adelicWeilRepresentationModel D hG cc δ hset.crv S.rank T.rank`. Take `⟨hTT, hfix, -⟩` from `GlobalTheory.T.adelicWeil_vacuum_fixed_and_translates_span D hG cc δ hset.crv S.rank T.rank w' γ WA hM e0 he h0`.
+
+Establish `hread` using `reads_opF hset hL.hw hph hS hT hL.sd hM ⟨e0, hTT⟩ f hf`. Establish `hfixF : Fixes (opF hset.std.1 S T w) (latF S T (GlobalTheory.VacRead.lsB D cc r S.rank) (stdL D T.rank)) f` using `fun a ha => by`. Use `hread a` as an intermediate fact. Rewrite `this` using `[hfix _ ((hmem a).2 ha)]`. Conclude with `Subtype.ext (this.unique hf)`.
+
+Establish `hmem' : ∀ u, back S T r u ∈ (latA D cc S.rank T.rank).map (actA D S.rank T.rank (x, y)) ↔ u ∈ (latF S T (GlobalTheory.VacRead.lsB D cc r S.rank) (stdL D T.rank)).map (rhoF S T (g, h))` using `fun u => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, e⟩`. Take `⟨l, rfl⟩` from `back_surjective (S := S) (T := T) hr a`. Conclude with `⟨l, (hmem l).1 ha, back_injective hr (by rw [back_rhoF hset.gS hset.gT r hg hh, e])⟩`.
+
+Introduce and unpack `⟨l, hl, rfl⟩`. Conclude with `⟨_, (hmem l).2 hl, (back_rhoF hset.gS hset.gT r hg hh l).symm⟩`. Establish `hSD : SelfDual γ ((latA D cc S.rank T.rank).map (actA D S.rank T.rank (x, y)))` using `fun ζ => by`. Rewrite using `[IopSum.mem_map_act, hM.2.1]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `h2 _ ⟨a, ha, rfl⟩`. Rewrite using `[← h2 a ha, ← hM.2.2.1 (x, y) (actA D S.rank T.rank (x, y)⁻¹ ζ), IopSum.act_act_inv]`. Introduce `h2 a ha`. Rewrite using `[← hM.2.2.1 (x, y), IopSum.act_act_inv]`. Conclude with `h2 _ ⟨a, ha, rfl⟩`.
+
+Establish `H` using `isHeis_opF hset.std.1 S T hL.hw`. Take `⟨n, t, ht, hu⟩` from `((sumOp_transversal H _ _ (hL.sd' (g, h))).2.1 (hL.fin (g, h))).1`. Take `⟨s1, i1⟩` from `(sumOp_transversal H _ _ (hL.sd' (g, h))).1 f hfixF _ t ht hu`. Take `⟨s2, i2⟩` from `(sumOp_transversal hM.1 _ _ hSD).1 _ hfix _ (fun i => back S T r (t i)) (fun i => (hmem' _).2 (ht i)) (fun b hb => by`. Take `⟨l, rfl⟩` from `back_surjective (S := S) (T := T) hr b`.
+
+Simplify using `only [← map_sub, hmem]`. Conclude with `hu l ((hmem' l).1 hb))`. Establish `hidx` using `GlobalTheory.T.heisenbergRelativeIndex_translate_completed_lattice D hG cc δ hset.crv S.rank T.rank x y`. Establish `hl` using `hsq _ hidx.1 fun q hq hi => hidx.2.1 q hq (sx q hq hi) (sy q hq hi)`. Establish `hI` using `iop_eq_sumOp D hG cc δ hset.crv S.rank T.rank w' γ WA hM x y L₁ L₁' h1 h1' hSD ⟨e0, hTT⟩ hfix`.
+
+Rewrite using `[show Formalism.MainNotions.TaylorLogMetric.Iop D (tor0 D cc δ) _ _ e0 = _ from hI, hL.vac _ f hfixF, normOp, s1, s2, i1, ← i2, hl, Submodule.coe_smul, Submodule.coe_sum, Submodule.coe_sum]`. Conclude with `(reads_sum _ fun i => hread (t i)).smul _`.
+-/
 theorem reads_latRep (hset : Setup ψ θ S T cc δ r) {w : 𝓞 D.host.E}
     (hph : ∀ z, phase ψ w (ratX S T r z) = Formalism.MainNotions.StandardLatticesGL3.wdPh D (tor0 D cc δ) (pt D (tor0 D cc δ) δ z))
     (hS : IsSelfDualC S (GlobalTheory.VacRead.lsB D cc r S.rank)) (hT : IsSelfDualC T (stdL D T.rank)) {lam : ℕ →* ℂ}
@@ -238,6 +315,11 @@ theorem reads_latRep (hset : Setup ψ θ S T cc δ r) {w : 𝓞 D.host.E}
     Submodule.coe_smul, Submodule.coe_sum, Submodule.coe_sum]
   exact (reads_sum _ fun i => hread (t i)).smul _
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using induction_on_primes with`. Consider the case `zero => exact fun h => absurd rfl h`. Consider the case `one => exact fun _ h => absurd ((Ideal.eq_top_iff_one _).2 (by simpa using h)) hP.ne_top`. Consider the case `prime_mul p a hp ih`.
+
+Introduce `h0 h`. Rewrite `h` using `[Nat.cast_mul]`. Conclude with `(hP.mem_or_mem h).elim (fun h => ⟨p, hp, h⟩) (ih (right_ne_zero_of_mul h0))`.
+-/
 theorem exists_prime_mem {R : Type} [CommRing R] {P : Ideal R} (hP : P.IsPrime) :
     ∀ n : ℕ, n ≠ 0 → (n : R) ∈ P → ∃ q : ℕ, q.Prime ∧ (q : R) ∈ P := by
   intro n
@@ -249,6 +331,9 @@ theorem exists_prime_mem {R : Type} [CommRing R] {P : Ideal R} (hP : P.IsPrime) 
     rw [Nat.cast_mul] at h
     exact (hP.mem_or_mem h).elim (fun h => ⟨p, hp, h⟩) (ih (right_ne_zero_of_mul h0))
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero]`. Consider the case `tmul x e => show TensorProduct.tmul D.host.F x (star (star e)) = _`. Rewrite using `[star_star]`. Consider the case `add a b ha hb => rw [RingHom.map_add, RingHom.map_add, ha, hb]`.
+-/
 theorem cA_cA' (a : AE D) : cA D (cA D a) = a := by
   induction a using TensorProduct.induction_on with
   | zero => rw [RingHom.map_zero, RingHom.map_zero]
@@ -257,11 +342,27 @@ theorem cA_cA' (a : AE D) : cA D (cA D a) = a := by
     rw [star_star]
   | add a b ha hb => rw [RingHom.map_add, RingHom.map_add, ha, hb]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.finitePartRationalTensor_zeroAtPrime_iff_placeIdem D q hq _).2 fun v η hv hqv => by rw [← mul_assoc, hε.2.2.2.2 v η ((GlobalTheory.T.inertPrime_iff_nonSplitPlaceIdempotent D q hq v η hv hqv).1 hi), zero_mul]`.
+-/
 theorem zeroAt_half {ε : AE D} (hε : GlobalTheory.RatAut.IsHalfIdem D ε) {q : ℕ} (hq : q.Prime) (hi : Formalism.MainNotions.StandardLatticesGL3.InertQ D q)
     (b : AE D) : Formalism.MainNotions.StandardLatticesGL3.ZeroAt D q (finQ D (ε * b)) :=
   (GlobalTheory.T.finitePartRationalTensor_zeroAtPrime_iff_placeIdem D q hq _).2 fun v η hv hqv => by
     rw [← mul_assoc, hε.2.2.2.2 v η ((GlobalTheory.T.inertPrime_iff_nonSplitPlaceIdempotent D q hq v η hv hqv).1 hi), zero_mul]
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Use `hΦ.ext' (by rw [RingHom.map_mul, h0, mul_zero]) fun Q => ?_` and prove the remaining obligations. Take `⟨η, hη⟩` from `GlobalTheory.IdemSupport.exists_placeIdem (D := D) (Q.under (𝓞 D.host.F))`. Establish `key : algebraMap (AF D.host.F) (AE D) η * ((ε + cA D ε) * a) = algebraMap (AF D.host.F) (AE D) η * a`. Distinguish the cases in `hn : GlobalTheory.WeilParts.NonSplitAt D (Q.under (𝓞 D.host.F)) η`.
+
+Take `⟨q, hq, hqv⟩` from `exists_prime_mem (Q.under (𝓞 D.host.F)).isPrime _ (Ideal.absNorm_eq_zero_iff.not.2 (Q.under (𝓞 D.host.F)).ne_bot) (Ideal.absNorm_mem _)`. Use `(GlobalTheory.T.finitePartRationalTensor_zeroAtPrime_iff_placeIdem D q hq a).1 (ha q hq ((GlobalTheory.T.inertPrime_iff_nonSplitPlaceIdempotent D q hq _ η hη hqv).2 hn)) _ η hη hqv` as an intermediate fact. Rewrite using `[mul_left_comm, this, mul_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨e, he, hs⟩ : ∃ e : AE D, IsSplitIdem D e ∧ e + cA D e = algebraMap (AF D.host.F) (AE D) η := by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hn ⟨hη, h⟩`. Rewrite using `[← hs]`. Break down `hε.2.2.2.1 e he with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Establish `h3` using `congrArg (cA D) h1`. Establish `h4` using `congrArg (cA D) h2`.
+
+Rewrite `h3` using `[RingHom.map_mul]`. Rewrite `h4` using `[RingHom.map_mul, cA_cA', RingHom.map_zero]`. Take the linear combination `a * (h1 + h2 + h3 + h4)`. Establish `h3` using `congrArg (cA D) h1`. Establish `h4` using `congrArg (cA D) h2`.
+
+Rewrite `h3` using `[RingHom.map_mul, RingHom.map_zero]`. Rewrite `h4` using `[RingHom.map_mul, cA_cA']`. Take the linear combination `a * (h1 + h2 + h3 + h4)`. Establish `h1` using `congrArg (fun z => Φ z Q) key`. Simplify using `only [GlobalTheory.IdemSupport.ev_mul (Φ := Φ) (algebraMap (AF D.host.F) (AE D) η), (GlobalTheory.IdemSupport.place_comp hΦ hη).2.1 Q rfl, one_mul] at h1`.
+
+Conclude with `h1`.
+-/
 theorem half_supp {ε : AE D} (hε : GlobalTheory.RatAut.IsHalfIdem D ε) {a : AE D} (h0 : infPart D a = 0)
     (ha : ∀ q : ℕ, q.Prime → Formalism.MainNotions.StandardLatticesGL3.InertQ D q → Formalism.MainNotions.StandardLatticesGL3.ZeroAt D q (finQ D a)) : (ε + cA D ε) * a = a := by
   obtain ⟨Φ, hΦ⟩ := GlobalTheory.IdemSupport.exists_comp D
@@ -293,15 +394,40 @@ theorem half_supp {ε : AE D} (hε : GlobalTheory.RatAut.IsHalfIdem D ε) {a : A
     (GlobalTheory.IdemSupport.place_comp hΦ hη).2.1 Q rfl, one_mul] at h1
   exact h1
 
+/- English proof (translation)
+Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cut_sub_one {R : Type} [CommRing R] {e z u : R} (h : u = e * z + (1 - e)) : e * (z - 1) = u - 1 := by
   rw [h]; ring
 
+/- English proof (translation)
+Take the linear combination `-h - e' * h'`.
+-/
 theorem cut_conj {R : Type} [CommRing R] {e e' z z' : R} (h : (1 - (e + e')) * z = 1 - (e + e')) (h' : z' * z = 1) :
     e * z + (1 - e) = z * (e' * z' + (1 - e')) := by
   linear_combination -h - e' * h'
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hfin` using `GlobalTheory.LevelTr.finQ_mt_of_isFinPt V gV hg`. Establish `hinf` using `GlobalTheory.LevelTr.infPart_mt_of_mem_GfC V hg.1`. Establish `hs : SuppAt ε V g` using `fun i j => half_supp hε (by`. Rewrite using `[Matrix.sub_apply, RingHom.map_sub, sub_eq_zero]`. Use `(congrFun (congrFun hinf i) j).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.map_one (infPart D) (infPart D).map_zero (infPart D).map_one]`. Use the proof step `rfl) fun q hq hi => by`. Establish `e1 : finQ D (Formalism.L2.Theta.mt V g i j) = _` using `congrFun (congrFun hfin i) j`. Establish `e2 : finQ D ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) i j`. Rewrite using `[← Matrix.map_one (finQ D) (finQ D).map_zero (finQ D).map_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[Matrix.sub_apply, RingHom.map_sub, e1, e2]`. Conclude with `sx q hq hi i j`. Set `u` to `GlobalTheory.SplitDetChar.cut ε hε.1 (Matrix.GeneralLinearGroup.det (matHom V g))`. Establish `hu : (u : AE D) = ε * (Formalism.L2.Theta.mt V g).det + (1 - ε)` using `rfl`.
+
+Use `clear_value u`. Establish `hout` using `GlobalTheory.SplitDetChar.mul_det (1 - (ε + cA D ε)) (Formalism.L2.Theta.mt V g) fun i j => by`. Rewrite using `[sub_mul, one_mul, hs i j, sub_self]`. Establish `hun` using `det_conj_mul V g`. Establish `hdet : finQ D (Formalism.L2.Theta.mt V g).det = ((x : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D)).det`.
+
+Rewrite using `[RingHom.map_det, ← hfin]`. Both sides reduce to the same expression. Use `⟨hs, u, Units.map (finQ D).toMonoidHom u, hu, ⟨?_, ?_⟩, fun q hq hi => ?_, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hu, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, hε.2.2.1, RingHom.map_one, zero_mul, sub_zero, zero_add]`. Use `show _ = GlobalTheory.BotFormula.toFinE D (finQ D u)`.
+
+Rewrite using `[← finAdEquiv_toAfE, toAfE_finQ]`. Both sides reduce to the same expression. Use `zeroAt_half hε hq hi ((Formalism.L2.Theta.mt V g).det - 1)` as an intermediate fact. Rewrite `this` using `[show ε * ((Formalism.L2.Theta.mt V g).det - 1) = u - 1 from cut_sub_one hu, RingHom.map_sub, RingHom.map_one]`. Conclude with `this`.
+
+Establish `e1 : (u : AE D) = (Formalism.L2.Theta.mt V g).det * cA D (u : AE D)`. Rewrite using `[hu, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one]`. Conclude with `cut_conj hout hun`. Establish `e2` using `congrArg (finQ D) e1`. Establish `e5 : finQ D (cA D (u : AE D)) = Formalism.MainNotions.StandardLatticesGL3.sgA D (finQ D u)` using `finQ_sigR (u : AE D)`.
+
+Use `replace e2 := e2.trans ((finQ D).map_mul _ _)`. Rewrite `e2` using `[hdet, e5]`. Establish `e3 : ∀ z : (Formalism.MainNotions.StandardLatticesGL3.AE D)ˣ, (Formalism.MainNotions.StandardLatticesGL3.sgU D z : Formalism.MainNotions.StandardLatticesGL3.AE D) = Formalism.MainNotions.StandardLatticesGL3.sgA D z` using `fun _ => rfl`. Establish `e4 : ((Units.map (finQ D).toMonoidHom u : (Formalism.MainNotions.StandardLatticesGL3.AE D)ˣ) : Formalism.MainNotions.StandardLatticesGL3.AE D) = finQ D u` using `rfl`. Rewrite using `[Units.val_mul, Matrix.GeneralLinearGroup.val_det_apply, e3, e4]`.
+
+Conclude with `e2`.
+-/
 theorem exists_half_det {ε : AE D} (hε : GlobalTheory.RatAut.IsHalfIdem D ε) (V : HSp D) (gV : V.gram = 1) {g : GA D V}
     {x : Formalism.MainNotions.StandardLatticesGL3.GA D V.rank} (hg : IsFinPt V g x) (sx : Formalism.MainNotions.StandardLatticesGL3.SuppSplit D (x : GL (Fin V.rank) (Formalism.MainNotions.StandardLatticesGL3.AE D))) :
     SuppAt ε V g ∧ ∃ (u : (AE D)ˣ) (x₀ : (Formalism.MainNotions.StandardLatticesGL3.AE D)ˣ), IsDetAt ε V g u ∧ IsFinIdl u x₀ ∧
@@ -351,12 +477,24 @@ theorem exists_half_det {ε : AE D} (hε : GlobalTheory.RatAut.IsHalfIdem D ε) 
     rw [Units.val_mul, Matrix.GeneralLinearGroup.val_det_apply, e3, e4]
     exact e2
 
+/- English proof (translation)
+Take `⟨Λ, h1, h2⟩` from `GlobalTheory.MovedDict.isSelfDualC_inV V 1 (by rw [gV]; simp [Formalism.UG.cT]) L hL`. Establish `: Λ = L` using `SetLike.coe_injective (by rw [h1]; simp [GlobalTheory.MovedDict.inV])`. Conclude with `this ▸ h2`.
+-/
 theorem isSelfDualC_of_sd (V : HSp D) (gV : V.gram = 1) {L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hL : Formalism.MainNotions.StandardLatticesGL3.SD D L) : IsSelfDualC V L := by
   obtain ⟨Λ, h1, h2⟩ := GlobalTheory.MovedDict.isSelfDualC_inV V 1 (by rw [gV]; simp [Formalism.UG.cT]) L hL
   have : Λ = L := SetLike.coe_injective (by rw [h1]; simp [GlobalTheory.MovedDict.inV])
   exact this ▸ h2
 
+/- English proof (translation)
+Introduce `D ψ θ S T a d hS hT cc δ r hset e0 W χS χT om hom _ t0 _ _ hodd cS cT f₀ hf x y g h hg hh sx sy`. Substitute `hS hT` using the available equality. Take `⟨w, hw, hph⟩` from `GlobalTheory.T.finitePartQuadraticPhase_eq_cmTheta_exp D`. Take `⟨lam, hlam, hsq⟩` from `exists_goodNorm D`. Take `⟨ε, hε⟩` from `GlobalTheory.RatAut.exists_isHalfIdem D`.
+
+Establish `dS` using `isSelfDualC_of_sd S hset.gS (GlobalTheory.T.invDifferentLatticeProductHermitian_isSelfDual D cc r S.rank hset.crv.1.1 hset.scale)`. Establish `dT` using `isSelfDualC_of_sd T hset.gT (GlobalTheory.MovedVacuum.sd_stdL D T.rank)`. Take `⟨Om, hL⟩` from `exists_isLatRep_of hset.std dS dT hlam hw`. Take `⟨sg, u, x₀, hu, iu, zx, dx⟩` from `exists_half_det hε S hset.gS hg sx`. Take `⟨sh, v, y₀, hv, iv, zy, dy⟩` from `exists_half_det hε T hset.gT hh sy`.
+
+Take `⟨Lt, hLt, -⟩` from `GlobalTheory.NormSum.exists_lattice_of_adelic_point D S.rank`. Take `⟨Lt', hLt', -⟩` from `GlobalTheory.NormSum.exists_lattice_of_adelic_point D T.rank`. Establish `h1` using `reads_latRep hset (hph ψ θ S T cc δ r hset) dS dT hsq hL hodd.1 W.nz ⟨f₀, hf.1⟩ hf hg hh sx sy (hLt x).1 (hLt' y).1`. Establish `h2` using `GlobalTheory.T.weilDatum_splitSupported_eq_intertwiner_mul_halfDetChar D ψ hset.std S T χS χT om hom _ _ dS dT lam hlam hsq w Om hL ε hε g h sg sh u v hu hv ⟨f₀, hf.1⟩`. Establish `h3` using `W.split x y x₀ y₀ _ _ sx sy (fun q hq hi => ⟨zx q hq hi, zy q hq hi⟩) dx dy (hLt x).1 (hLt' y).1`.
+
+Establish `h4 : ((splitFacO χS χT u v : Circle) : ℂ) = ((W.chV.f y₀ ^ W.ep * W.chV'.f x₀ ^ W.ep' : ℂˣ) : ℂ)`. Rewrite using `[splitFacO, Circle.coe_mul, Circle.coe_inv, cS v y₀ iv, cT u x₀ iu, zpow_neg, Units.val_inv_eq_inv_val, inv_inv, Units.val_mul, mul_comm]`. Rewrite using `[h3, show om (g, h) f₀ = _ from h2, h4]`. Conclude with `h1.smul _`.
+-/
 theorem reads_om_split : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (r : D.host.E), Setup ψ θ S T cc δ r →
   ∀ (e0 : VC D a d → ℂ) (W : WeilO D cc δ a d e0) (χS χT : (AE D)ˣ →* Circle)

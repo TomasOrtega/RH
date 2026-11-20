@@ -16,6 +16,15 @@ open scoped ComplexOrder
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
+/- English proof (translation)
+Introduce `l hl`. Rewrite using `[Finset.mem_coe, Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.mem_BB_iff]`. Break down `hl with h | ⟨d, hd1, hdN, hlp, hlt⟩` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr ⟨?_, hlp, d, Finset.mem_Icc.mpr ⟨hd1, hdN⟩, hlt⟩` and prove the remaining obligations.
+
+Establish `hone : 1 < g ^ d` using `Nat.one_lt_pow (by omega) (by omega)`. Establish `hv : padicValNat l (g ^ d - 1) ≠ 0`. Introduce `h0`. Rewrite `hlt` using `[h0, mul_zero, pow_zero]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hdvd : l ∣ g ^ d - 1`. Assume the negation of the conclusion as `hnd`. Conclude with `hv (padicValNat.eq_zero_of_not_dvd hnd)`. Establish `h1` using `Nat.le_of_dvd (by omega) hdvd`. Establish `h2 : g ^ d ≤ g ^ N` using `Nat.pow_le_pow_right (by omega) hdN`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem algBB_sub (g N : ℕ) (hg : 2 ≤ g) :
     Formalism.CyclotomicNorms.BB N g ⊆ ((Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.BB g N : Finset ℕ) : Set ℕ) := by
   intro l hl
@@ -35,9 +44,17 @@ theorem algBB_sub (g N : ℕ) (hg : 2 ≤ g) :
     have h2 : g ^ d ≤ g ^ N := Nat.pow_le_pow_right (by omega) hdN
     omega
 
+/- English proof (translation)
+The claim follows from `dvd_trans ⟨2 ^ D.R.e, by show 2 ^ (D.R.e + 2) = 4 * 2 ^ D.R.e; ring⟩ D.host.tower_dvd`.
+-/
 private theorem four_dvd_QS (D : D7) : 4 ∣ D.host.QS :=
   dvd_trans ⟨2 ^ D.R.e, by show 2 ^ (D.R.e + 2) = 4 * 2 ^ D.R.e; ring⟩ D.host.tower_dvd
 
+/- English proof (translation)
+Establish `hc : D.ntypes.cond = D.host.QS * D.host.q * D.host.d` using `rfl`. Establish `hn : 4 ≤ D.host.QS` using `Nat.le_of_dvd D.host.QS_pos (four_dvd_QS D)`. Establish `hq : 1 ≤ D.host.q` using `by have := D.host.qd_big.1; omega`. Establish `hd : 1 ≤ D.host.d` using `by have := D.host.qd_big.2; omega`. Establish `: 4 ≤ D.ntypes.cond`.
+
+Rewrite using `[hc]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions.
+-/
 theorem cond_ge_four (D : D7) : (4 : ℝ) ≤ (D.ntypes.cond : ℝ) := by
   have hc : D.ntypes.cond = D.host.QS * D.host.q * D.host.d := rfl
   have hn : 4 ≤ D.host.QS := Nat.le_of_dvd D.host.QS_pos (four_dvd_QS D)
@@ -49,12 +66,18 @@ theorem cond_ge_four (D : D7) : (4 : ℝ) ≤ (D.ntypes.cond : ℝ) := by
       _ ≤ D.host.QS * D.host.q * D.host.d := by gcongr
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Use `show 6 ≤ D.R.k + D.R.m - 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem r_ge_six (D : D7) : 6 ≤ D.R.r := by
   have h1 := D.R.two_le_m
   have h2 := D.R.m_add_three_le_k
   show 6 ≤ D.R.k + D.R.m - 1
   omega
 
+/- English proof (translation)
+Establish `ha : 3 * N + 1 ≤ 4 * N` using `by linarith`. Establish `hN2 : 1 ≤ N ^ 2` using `one_le_pow₀ hN`. Establish `hNy : N ^ 2 ≤ N ^ 2 * y` using `le_mul_of_one_le_right (by positivity) hy`. Establish `hb : 1 + 2 * N ^ 2 * (y + 1) ≤ 5 * (N ^ 2 * y)` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cubic_bound_twenty (N y : ℝ) (hN : 1 ≤ N) (hy : 1 ≤ y) :
     (3 * N + 1) * (1 + 2 * N ^ 2 * (y + 1)) ≤ 20 * N ^ 3 * y := by
   have ha : 3 * N + 1 ≤ 4 * N := by linarith
@@ -65,6 +88,17 @@ theorem cubic_bound_twenty (N y : ℝ) (hN : 1 ≤ N) (hy : 1 ≤ y) :
         mul_le_mul ha hb (by positivity) (by positivity)
     _ = 20 * N ^ 3 * y := by ring
 
+/- English proof (translation)
+Establish `hr1 : 1 ≤ D.R.r` using `by have := r_ge_six D; omega`. Establish `hN1 : (1 : ℝ) ≤ (D.R.r : ℝ)` using `by exact_mod_cast hr1`. Establish `hy1 : 1 ≤ Y ^ ((3 : ℝ) / 4)` using `Real.one_le_rpow hY1 (by norm_num)`. Establish `hmain : (3 * (D.R.r : ℝ) + 1) * (1 + 2 * (D.R.r : ℝ) ^ 2 * (Y ^ ((3 : ℝ) / 4) + 1)) < (ArithmeticCylinders.admissiblePrimesDyadic D Y : ℝ)` using `lt_of_le_of_lt (cubic_bound_twenty (D.R.r : ℝ) (Y ^ ((3 : ℝ) / 4)) hN1 hy1) hcount`. Set `P : Finset ℕ` to `(Finset.range (⌊2 * Y⌋₊ + 1)).filter (fun p => D.ntypes.admissible p ∧ Y ≤ (p : ℝ) ∧ (p : ℝ) ≤ 2 * Y)`.
+
+Establish `hmem : ∀ p, p ∈ P ↔ D.ntypes.admissible p ∧ Y ≤ (p : ℝ) ∧ (p : ℝ) ≤ 2 * Y`. Introduce `p`. Simplify using `only [P, Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`.
+
+Introduce `h`. Conclude with `⟨Nat.lt_succ_of_le (Nat.le_floor h.2.2), h⟩`. Establish `hcardP : ArithmeticCylinders.admissiblePrimesDyadic D Y = P.card`. Unfold `ArithmeticCylinders.admissiblePrimesDyadic`. Rewrite using `[Nat.card_congr (Equiv.subtypeEquivRight (fun p => (hmem p).symm)), Nat.card_eq_fintype_card, Fintype.card_coe]`.
+
+Rewrite `hmain` using `[hcardP]`. Take `⟨g₁, hg₁, g₂, hg₂, hne, hdisj⟩` from `Formalism.IrreducibleCountingLemmas.GaloisIrreducibility.proposition_one_central_count D.R.r Y P hr1 hY1 (fun g hg => ⟨((hmem g).1 hg).1.1, ((hmem g).1 hg).2.1, ((hmem g).1 hg).2.2⟩) hmain`. Take `⟨ha₁, hY₁, h2Y₁⟩` from `(hmem g₁).1 hg₁`. Take `⟨ha₂, hY₂, h2Y₂⟩` from `(hmem g₂).1 hg₂`. Use `⟨g₁, g₂, ha₁, ha₂, hY₁, h2Y₁, hY₂, h2Y₂, hne, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Finset.disjoint_coe.mpr hdisj).mono (algBB_sub g₁ D.R.r ha₁.1.two_le) (algBB_sub g₂ D.R.r ha₂.1.two_le)`.
+-/
 theorem two_of_count (D : D7) (Y : ℝ) (hY1 : 1 ≤ Y)
     (hcount : 20 * (D.R.r : ℝ) ^ 3 * Y ^ ((3 : ℝ) / 4) < (ArithmeticCylinders.admissiblePrimesDyadic D Y : ℝ)) :
     ∃ g₁ g₂ : ℕ, D.ntypes.admissible g₁ ∧ D.ntypes.admissible g₂ ∧
@@ -99,6 +133,13 @@ theorem two_of_count (D : D7) (Y : ℝ) (hY1 : 1 ≤ Y)
   exact (Finset.disjoint_coe.mpr hdisj).mono (algBB_sub g₁ D.R.r ha₁.1.two_le)
     (algBB_sub g₂ D.R.r ha₂.1.two_le)
 
+/- English proof (translation)
+Proceed by induction on `J with`. Consider the case `zero => simp`. Consider the case `succ J ih`. Rewrite using `[Finset.sum_range_succ]`. Establish `e : 2 * (X / 2 ^ (J + 1)) = X / 2 ^ J` using `by rw [pow_succ]; field_simp`.
+
+Establish `hsub : (Finset.range (⌊X⌋₊ + 1)).filter (fun p => P p ∧ (p : ℝ) ≤ X / 2 ^ J) ⊆ (Finset.range (⌊X⌋₊ + 1)).filter (fun p => P p ∧ (p : ℝ) ≤ X / 2 ^ (J + 1)) ∪ (Finset.range (⌊X⌋₊ + 1)).filter (fun p => P p ∧ X / 2 ^ (J + 1) ≤ (p : ℝ) ∧ (p : ℝ) ≤ 2 * (X / 2 ^ (J + 1)))`. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_union] at hp ⊢`. Take `⟨hr, hPp, hle⟩` from `hp`. Distinguish the cases in `h : (p : ℝ) ≤ X / 2 ^ (J + 1)`.
+
+Conclude with `Or.inl ⟨hr, hPp, h⟩`. Conclude with `Or.inr ⟨hr, hPp, le_of_lt (not_le.mp h), by rw [e]; exact hle⟩`. Use `(Finset.card_le_card hsub).trans (Finset.card_union_le _ _)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem dyadic_count (P : ℕ → Prop) [DecidablePred P] (X : ℝ) (J : ℕ) :
     ((Finset.range (⌊X⌋₊ + 1)).filter (fun p => P p ∧ (p : ℝ) ≤ X)).card ≤
       ((Finset.range (⌊X⌋₊ + 1)).filter (fun p => P p ∧ (p : ℝ) ≤ X / 2 ^ J)).card +
@@ -122,6 +163,11 @@ theorem dyadic_count (P : ℕ → Prop) [DecidablePred P] (X : ℝ) (J : ℕ) :
     have := (Finset.card_le_card hsub).trans (Finset.card_union_le _ _)
     omega
 
+/- English proof (translation)
+Proceed by induction on `J with`. Consider the case `zero => simp`. Consider the case `succ J ih`. Rewrite using `[Finset.sum_range_succ, ih, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem geom_half (X : ℝ) (J : ℕ) : ∑ j ∈ Finset.range J, X / 2 ^ (j + 1) = X - X / 2 ^ J := by
   induction J with
   | zero => simp
@@ -130,6 +176,29 @@ theorem geom_half (X : ℝ) (J : ℕ) : ∑ j ∈ Finset.range J, X / 2 ^ (j + 1
     field_simp
     ring
 
+/- English proof (translation)
+Establish `ht0 : 0 < X * κ` using `mul_pos hX hκ`. Establish `h2J : (0 : ℝ) < 2 ^ J` using `by positivity`. Set `R` to `Finset.range (⌊X⌋₊ + 1)`. Establish `hdy` using `dyadic_count D.ntypes.admissible X J`. Establish `hall : ArithmeticCylinders.admissiblePrimesLE D X = (R.filter (fun p => D.ntypes.admissible p ∧ (p : ℝ) ≤ X)).card`.
+
+Establish `hm : ∀ p, p ∈ R.filter (fun p => D.ntypes.admissible p ∧ (p : ℝ) ≤ X) ↔ D.ntypes.admissible p ∧ (p : ℝ) ≤ X`. Introduce `p`. Simplify using `only [R, Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`.
+
+Introduce `h`. Conclude with `⟨Nat.lt_succ_of_le (Nat.le_floor h.2), h⟩`. Unfold `ArithmeticCylinders.admissiblePrimesLE`. Rewrite using `[Nat.card_congr (Equiv.subtypeEquivRight (fun p => (hm p).symm)), Nat.card_eq_fintype_card, Fintype.card_coe]`. Establish `hlowc : ((R.filter (fun p => D.ntypes.admissible p ∧ (p : ℝ) ≤ X / 2 ^ J)).card : ℝ) ≤ X / 2 ^ J`.
+
+Establish `hsub : R.filter (fun p => D.ntypes.admissible p ∧ (p : ℝ) ≤ X / 2 ^ J) ⊆ Finset.Icc 1 ⌊X / 2 ^ J⌋₊`. Introduce `p hp`. Simplify using `only [R, Finset.mem_filter] at hp`. Simplify using `only [Finset.mem_Icc]`. Conclude with `⟨hp.2.1.1.one_lt.le, Nat.le_floor hp.2.2⟩`.
+
+Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[Nat.card_Icc, Nat.add_sub_cancel]`. Combine the equalities or inequalities in the displayed calculation. Establish `hwin : ∀ j, ((R.filter (fun p => D.ntypes.admissible p ∧ X / 2 ^ (j + 1) ≤ (p : ℝ) ∧ (p : ℝ) ≤ 2 * (X / 2 ^ (j + 1)))).card) = ArithmeticCylinders.admissiblePrimesDyadic D (X / 2 ^ (j + 1))`. Introduce `j`.
+
+Establish `h2 : 2 * (X / 2 ^ (j + 1)) ≤ X`. Rewrite using `[pow_succ, ← div_div, mul_div_cancel₀ _ (by norm_num : (2 : ℝ) ≠ 0)]`. Conclude with `div_le_self hX.le (one_le_pow₀ (by norm_num))`. Establish `hm : ∀ p, p ∈ R.filter (fun p => D.ntypes.admissible p ∧ X / 2 ^ (j + 1) ≤ (p : ℝ) ∧ (p : ℝ) ≤ 2 * (X / 2 ^ (j + 1))) ↔ D.ntypes.admissible p ∧ X / 2 ^ (j + 1) ≤ (p : ℝ) ∧ (p : ℝ) ≤ 2 * (X / 2 ^ (j + 1))`. Introduce `p`.
+
+Simplify using `only [R, Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`. Conclude with `⟨Nat.lt_succ_of_le (Nat.le_floor (h.2.2.trans h2)), h⟩`.
+
+Unfold `ArithmeticCylinders.admissiblePrimesDyadic`. Rewrite using `[Nat.card_congr (Equiv.subtypeEquivRight (fun p => (hm p).symm)), Nat.card_eq_fintype_card, Fintype.card_coe]`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hsum : (∑ j ∈ Finset.range J, ((R.filter (fun p => D.ntypes.admissible p ∧ X / 2 ^ (j + 1) ≤ (p : ℝ) ∧ (p : ℝ) ≤ 2 * (X / 2 ^ (j + 1)))).card : ℝ)) ≤ X * κ`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j hj`. Rewrite using `[hwin j]`. Conclude with `(hcon j hj).le`.
+
+Use `_ = (X - X / 2 ^ J) * κ := by rw [← Finset.sum_mul, geom_half]`. Use `_ ≤ X * κ := by`. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Establish `: 0 ≤ X / 2 ^ J` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hdyR : (ArithmeticCylinders.admissiblePrimesLE D X : ℝ) ≤ ((R.filter (fun p => D.ntypes.admissible p ∧ (p : ℝ) ≤ X / 2 ^ J)).card : ℝ) + ∑ j ∈ Finset.range J, ((R.filter (fun p => D.ntypes.admissible p ∧ X / 2 ^ (j + 1) ≤ (p : ℝ) ∧ (p : ℝ) ≤ 2 * (X / 2 ^ (j + 1)))).card : ℝ)`. Rewrite using `[hall]`. Conclude with `hdy` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem dyadic_select (D : D7) (X κ : ℝ) (J : ℕ) (hX : 0 < X) (hκ : 0 < κ)
     (hlow2t : X / 2 ^ J < 2 * (X * κ)) (hA8 : 8 * (X * κ) ≤ (ArithmeticCylinders.admissiblePrimesLE D X : ℝ)) :
     ∃ j ∈ Finset.range J, X / 2 ^ (j + 1) * κ ≤ (ArithmeticCylinders.admissiblePrimesDyadic D (X / 2 ^ (j + 1)) : ℝ) := by
@@ -196,6 +265,47 @@ theorem dyadic_select (D : D7) (X κ : ℝ) (J : ℕ) (hX : 0 < X) (hκ : 0 < κ
     rw [hall]; exact_mod_cast hdy
   linarith
 
+/- English proof (translation)
+Introduce `X hX hc1 hd1 hr21 hH1 hH2`. Establish `hc4 : (4 : ℝ) ≤ (D.ntypes.cond : ℝ)` using `cond_ge_four D`. Establish `hc4N : 4 ≤ D.ntypes.cond` using `by exact_mod_cast hc4`. Use `set c : ℝ := (D.ntypes.cond : ℝ) with hcdef`. Establish `hc0 : 0 < c` using `by linarith`.
+
+Establish `hcne : c ≠ 0` using `hc0.ne'`. Establish `hc1' : 1 ≤ c` using `by linarith`. Establish `hN21 : (21 : ℝ) ≤ (D.R.r : ℝ)` using `by exact_mod_cast hr21`. Use `set N : ℝ := (D.R.r : ℝ) with hNdef`. Use `set t : ℝ := X * c ^ (-(20 : ℝ)) with htdef`.
+
+Establish `hc20 : c ^ (-(20 : ℝ)) = (c ^ 20)⁻¹` using `by rw [Real.rpow_neg hc0.le]; norm_cast`. Establish `ht0 : 0 < t` using `by rw [htdef, hc20]; positivity`. Establish `hXt : X = t * c ^ 20` using `by rw [htdef, hc20]; field_simp`. Use `set B : ℝ := N ^ 4 * c ^ 500 with hBdef`. Establish `hN1 : 1 ≤ N` using `by linarith`.
+
+Establish `hB1 : 1 ≤ B` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hN1) (one_le_pow₀ hc1')`. Establish `htq : (t ^ (1 / 4 : ℝ)) ^ 4 = t`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul ht0.le]`. Evaluate the numerical expressions. Establish `htB : B ^ 4 ≤ t`.
+
+Use `pow_le_pow_left₀ (by positivity) hH1 4` as an intermediate fact. Rewrite `this` using `[htq]`. Then use the resulting hypothesis. Establish `ht1 : 1 ≤ t` using `le_trans (one_le_pow₀ hB1) htB`. Establish `hX1737 : c ^ 1737 ≤ X`. Establish `hcB : c ^ 2000 ≤ B ^ 4`.
+
+Establish `: c ^ 500 ≤ B` using `le_mul_of_one_le_left (by positivity) (one_le_pow₀ hN1)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hX1 : 1 < X` using `lt_of_lt_of_le (one_lt_pow₀ (by linarith) (by norm_num)) hX1737`. Establish `hlog : 0 < Real.log X` using `Real.log_pos hX1`.
+
+Establish `hA` using `hP hM (le_trans h2 hd1) X hX1737`. Establish `hA8 : 8 * t ≤ (ArithmeticCylinders.admissiblePrimesLE D X : ℝ)`. Use `le_trans ?_ hA` and prove the remaining obligations. Establish `hc₀c : 2 ^ 14 ≤ c₀ * c`. Use `h1.trans hc1` as an intermediate fact.
+
+Rewrite `this` using `[div_le_iff₀ h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `step1 : c₀ / 2 * ((4 * c ^ 3) ^ 5)⁻¹ * X / (c ^ 3 * c) ≤ c₀ / 2 * ((4 * c ^ 3) ^ 5)⁻¹ * X / (c ^ 3 * Real.log X)`. Apply `div_le_div_of_nonneg_left (by positivity) (by positivity)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hH2 (by positivity)`.
+
+Use `le_trans ?_ step1` and prove the remaining obligations. Establish `e : c₀ / 2 * ((4 * c ^ 3) ^ 5)⁻¹ * X / (c ^ 3 * c) = c₀ * c * t / 2 ^ 11`. Rewrite using `[hXt]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, le_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hc₀c ht0.le]`. Use `set M : ℕ := D.ntypes.cond ^ 20 with hMdef`. Establish `hM2 : 2 ≤ M`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `set J : ℕ := Nat.log 2 M with hJdef`. Establish `hJ1 : 1 ≤ J` using `Nat.log_pos (by norm_num) hM2`. Establish `hJle : 2 ^ J ≤ M` using `Nat.pow_log_le_self 2 (by omega)`. Establish `hJlt : M < 2 ^ (J + 1)` using `Nat.lt_pow_succ_log_self (by norm_num) M`. Establish `hMc : (M : ℝ) = c ^ 20` using `by rw [hMdef]; push_cast; rfl`.
+
+Establish `hJleR : (2 : ℝ) ^ J ≤ c ^ 20` using `by rw [← hMc]; exact_mod_cast hJle`. Establish `hJltR : c ^ 20 < (2 : ℝ) ^ (J + 1)` using `by rw [← hMc]; exact_mod_cast hJlt`. Establish `h2J : (0 : ℝ) < 2 ^ J` using `by positivity`. Establish `hlowt : t ≤ X / 2 ^ J`. Rewrite using `[hXt, le_div_iff₀ h2J]`.
+
+Conclude with `mul_le_mul_of_nonneg_left hJleR ht0.le`. Establish `hlow2t : X / 2 ^ J < 2 * t`. Rewrite using `[hXt, div_lt_iff₀ h2J]`. Establish `: c ^ 20 < 2 * 2 ^ J`. Establish `h'` using `hJltR`.
+
+Rewrite `h'` using `[pow_succ (2 : ℝ) J]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Take `⟨j, hj, hcnt⟩` from `dyadic_select D X (c ^ (-(20 : ℝ))) J hX (Real.rpow_pos_of_pos hc0 _) hlow2t hA8`. Establish `hjJ : j + 1 ≤ J` using `Finset.mem_range.mp hj`.
+
+Use `set Y : ℝ := X / 2 ^ (j + 1) with hYdef`. Establish `hYt : t ≤ Y`. Use `le_trans hlowt ?_` and prove the remaining obligations. Rewrite using `[hYdef]`. Conclude with `div_le_div_of_nonneg_left hX.le (by positivity) (pow_le_pow_right₀ (by norm_num) hjJ)`.
+
+Establish `hYX : Y ≤ X / 2`. Rewrite using `[hYdef]`. Conclude with `div_le_div_of_nonneg_left hX.le (by norm_num) (by`. Combine the equalities or inequalities in the displayed calculation. Establish `hY0 : 0 < Y` using `lt_of_lt_of_le ht0 hYt`.
+
+Establish `hY1 : 1 ≤ Y` using `le_trans ht1 hYt`. Establish `hYq : B ≤ Y ^ (1 / 4 : ℝ)` using `le_trans hH1 (Real.rpow_le_rpow ht0.le hYt (by norm_num))`. Establish `hB20 : 20 * N ^ 3 * c ^ 20 < B`. Establish `hc500 : c ^ 20 ≤ c ^ 500` using `pow_le_pow_right₀ hc1' (by norm_num)`. Establish `hN3 : 0 < N ^ 3 * c ^ 20` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hsplit : Y = Y ^ ((3 : ℝ) / 4) * Y ^ (1 / 4 : ℝ)`. Rewrite using `[← Real.rpow_add hY0]`. Evaluate the numerical expressions. Establish `hcount : 20 * N ^ 3 * Y ^ ((3 : ℝ) / 4) < (ArithmeticCylinders.admissiblePrimesDyadic D Y : ℝ)`.
+
+Use `lt_of_lt_of_le ?_ hcnt` and prove the remaining obligations. Establish `hy0 : 0 < Y ^ ((3 : ℝ) / 4)` using `Real.rpow_pos_of_pos hY0 _`. Rewrite using `[hc20]`. Establish `key : 20 * N ^ 3 * c ^ 20 < Y ^ (1 / 4 : ℝ)` using `lt_of_lt_of_le hB20 hYq`. Establish `: 20 * N ^ 3 * Y ^ ((3 : ℝ) / 4) * c ^ 20 < Y`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← div_eq_mul_inv, lt_div_iff₀ (by positivity)]`. Conclude with `this`. Take `⟨g₁, g₂, hg⟩` from `two_of_count D Y hY1 hcount`. Conclude with `⟨Y, hYt, hYX, ⟨g₁, g₂, hg⟩, hcnt⟩`.
+-/
 theorem baseChange_preserves_unitary_of (D : D7) (c₀ c₂ c₁ : ℝ) (h0 : 0 < c₀) (h1 : 2 ^ 14 / c₀ ≤ c₁) (h2 : c₂ ≤ c₁)
     (hM : ArithmeticCylinders.MrayRay D 1) (hP : ArithmeticCylinders.adm2 D c₀ c₂) : ArithmeticCylinders.Conclusion1 D c₁ := by
   classical

@@ -8,6 +8,9 @@ open IsLocalRing GlobalTheory.Henselisation
 
 namespace GlobalTheory.Henselisation
 
+/- English proof (translation)
+Establish `: IsDirected (EtNbhd R) (· ≤ ·)` using `GlobalTheory.T.pointedEtaleNeighbourhoodLocalRing_isDirected R`. Establish `: DirectedSystem (fun j : EtNbhd R => j.B) (fun _ _ h => ⇑(EtNbhd.trans h))` using `⟨fun j x => (GlobalTheory.T.pointedEtaleNbhd_transitionMap_directedSystem R).1 j x, fun k j l hlj hjk x => (GlobalTheory.T.pointedEtaleNbhd_transitionMap_directedSystem R).2 l j k hlj hjk x⟩`. Conclude with `Ring.DirectLimit.of_injective (G := fun j : EtNbhd R => j.B) (fun _ _ h => EtNbhd.trans h) (fun _ _ h => (GlobalTheory.T.etaleNbhdLocalRingTransitionMap_isLocalHom_injective R _ _ h).2) i`.
+-/
 theorem Hens.of_injective_of_nbhd (R : Type) [CommRing R] [IsLocalRing R] (i : EtNbhd R) :
     Function.Injective (Hens.of i) := by
   have : IsDirected (EtNbhd R) (· ≤ ·) := GlobalTheory.T.pointedEtaleNeighbourhoodLocalRing_isDirected R

@@ -6,12 +6,18 @@ namespace GroundTheory.LocalField.FormalGroup
 
 open MvPowerSeries IsLocalRing
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+-/
 theorem powerSeries_constantCoeff_map {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S)
     (f : PowerSeries R) :
     PowerSeries.constantCoeff (PowerSeries.map φ f) = φ (PowerSeries.constantCoeff f) := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map,
     PowerSeries.coeff_zero_eq_constantCoeff_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 theorem pair_eq_substEach {R : Type*} [CommRing R] (k : PowerSeries R) :
     (![PowerSeries.subst (X 0 : MvPowerSeries (Fin 2) R) k,
       PowerSeries.subst (X 1 : MvPowerSeries (Fin 2) R) k] : Fin 2 → MvPowerSeries (Fin 2) R) =
@@ -37,6 +43,9 @@ noncomputable def map (h : Hom F G) : Hom (F.map φ) (G.map φ) where
     funext i
     exact map_substEach φ _ i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_toPowerSeries (h : Hom F G) :
     (h.map φ).toPowerSeries = PowerSeries.map φ h.toPowerSeries :=
   rfl
@@ -47,32 +56,50 @@ section Fixed
 
 variable {A B : Type*} [CommRing A] [CommRing B] [Algebra A B] (σ : B →ₐ[A] B)
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[coeff_map]`.
+-/
 theorem map_sigma_map_algebraMap {ι : Type*} (Φ : MvPowerSeries ι A) :
     MvPowerSeries.map (σ : B →+* B) (MvPowerSeries.map (algebraMap A B) Φ) =
       MvPowerSeries.map (algebraMap A B) Φ := by
   ext n
   simp [coeff_map]
 
+/- English proof (translation)
+The claim follows from `map_sigma_map_algebraMap σ f`.
+-/
 theorem powerSeries_map_sigma_map_algebraMap (f : PowerSeries A) :
     PowerSeries.map (σ : B →+* B) (PowerSeries.map (algebraMap A B) f) =
       PowerSeries.map (algebraMap A B) f :=
   map_sigma_map_algebraMap σ f
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `PowerSeries.map φ (PowerSeries.C a * PowerSeries.X) = _`. Simplify using the standard rewrite rules.
+-/
 theorem map_C_mul_X {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) (a : R) :
     MvPowerSeries.map φ (PowerSeries.C a * PowerSeries.X : PowerSeries R) =
       PowerSeries.C (φ a) * PowerSeries.X := by
   change PowerSeries.map φ (PowerSeries.C a * PowerSeries.X) = _
   simp
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem coeff_one_C_mul_X {R : Type*} [CommRing R] (a : R) :
     PowerSeries.coeff 1 (PowerSeries.C a * PowerSeries.X) = a := by
   simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `PowerSeries.constantCoeff (PowerSeries.C a * PowerSeries.X) = 0`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_C_mul_X {R : Type*} [CommRing R] (a : R) :
     constantCoeff (PowerSeries.C a * PowerSeries.X : MvPowerSeries Unit R) = 0 := by
   change PowerSeries.constantCoeff (PowerSeries.C a * PowerSeries.X) = 0
   simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem C_unit_eq {R : Type*} [CommRing R] (a : R) :
     (MvPowerSeries.C a : MvPowerSeries Unit R) = PowerSeries.C a :=
   rfl
@@ -88,6 +115,29 @@ variable {A B : Type*} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
 
 omit [IsDomain A] [IsDiscreteValuationRing A] [Finite (ResidueField A)] in
 
+/- English proof (translation)
+Use `set ϖ := algebraMap A B π`. Establish `hσc : ∀ x, (σ : B →+* B) x = σ x` using `fun _ => rfl`. Establish `hσϖ : ∀ (n : ℕ) (t : B), σ (ϖ ^ n * t) = ϖ ^ n * σ t`. Introduce `n t`. Rewrite using `[map_mul, map_pow, AlgHom.commutes]`.
+
+Establish `hadd : ∀ x y, twistOp (σ : B →+* B) v ϖ d x - twistOp (σ : B →+* B) v ϖ d y = twistOp (σ : B →+* B) v ϖ d (x - y)`. Introduce `x y`. Simplify using `only [twistOp, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpow : ϖ ^ (d - 1) = ϖ ^ (d - 2) * ϖ`.
+
+Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`.
+
+Rewrite using `[← sub_eq_zero]`. Assume the negation of the conclusion as `hz0`. Establish `hz : v * (x - y) = ϖ ^ (d - 1) * σ (x - y)`. Use `hadd x y` as an intermediate fact. Rewrite `this` using `[hxy, sub_self]`.
+
+Simplify using `only [twistOp, hσc] at this`. Take the linear combination `-this`. Take `⟨n, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hz0 hπB`. Rewrite `hz` using `[hw, map_mul, map_pow, AlgHom.commutes]`. Establish `h1 : v * w = ϖ ^ (d - 1) * σ w` using `mul_right_cancel₀ (pow_ne_zero n hπB.ne_zero) (by linear_combination hz)`.
+
+Establish `hunit : IsUnit (ϖ ^ (d - 1) * σ w)` using `h1 ▸ hv.mul w.isUnit`. Establish `hdvd : ϖ ∣ ϖ ^ (d - 1) * σ w`. Rewrite using `[hpow, mul_assoc]`. Conclude with `dvd_mul_of_dvd_right (dvd_mul_right _ _) _`. Conclude with `hπB.not_isUnit (isUnit_of_dvd_unit hdvd hunit)`.
+
+Introduce `c`. Take `⟨x, hx, -⟩` from `exists_eq_zero_of_approx (maximalIdeal B) (fun x => twistOp (σ : B →+* B) v ϖ d x - c) (fun n x y hxy => by`. Rewrite `hxy`, the goal using `[mem_maximalIdeal_pow_iff hπB]`. Take `⟨t, ht⟩` from `hxy`. Use `⟨v * t - ϖ ^ (d - 1) * σ t, ?_⟩` and prove the remaining obligations.
+
+Establish `: x = y + ϖ ^ n * t` using `by rw [← ht]; ring`. Simplify using `only [twistOp, hσc, this, map_add, hσϖ]`. Use the proof step `ring)`. Use the proof step `(fun n x hx => by`. Rewrite `hx` using `[mem_maximalIdeal_pow_iff hπB]`.
+
+Take `⟨w, hw⟩` from `hx`. Take `⟨v', hv'⟩` from `hv.exists_right_inv`. Use `⟨x - ϖ ^ n * (v' * w), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_maximalIdeal_pow_iff hπB]`. Conclude with `⟨-(v' * w), by ring⟩`.
+
+Rewrite using `[mem_maximalIdeal_pow_iff hπB]`. Use `⟨ϖ ^ (d - 2) * σ (v' * w), ?_⟩` and prove the remaining obligations. Simplify using `only [twistOp, hσc, map_sub, hσϖ] at hw ⊢`. Take the linear combination `hw - ϖ ^ n * w * hv' + ϖ ^ n * σ (v' * w) * hpow)`. Use the proof step `(m := 0) (x₀ := 0) (by simp)`.
+
+Conclude with `⟨x, sub_eq_zero.1 hx⟩`.
+-/
 theorem bijective_twistOp [IsAdicComplete (maximalIdeal B) B] {π : A}
     (hπB : Irreducible (algebraMap A B π)) {v : B} (hv : IsUnit v) {d : ℕ} (hd : 2 ≤ d) :
     Function.Bijective (twistOp (σ : B →+* B) v (algebraMap A B π) d) := by
@@ -149,6 +199,11 @@ theorem bijective_twistOp [IsAdicComplete (maximalIdeal B) B] {π : A}
 
 omit [Finite (ResidueField A)] in
 
+/- English proof (translation)
+Use extensionality with `n`. Take `⟨c, hc⟩` from `hf.dvd_coeff_sub n`. Rewrite `hc` using `[map_sub]`. Establish `h1 : PowerSeries.coeff n f = PowerSeries.coeff n (PowerSeries.X ^ Nat.card (ResidueField A) : PowerSeries A) + π * c`. Rewrite using `[← hc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h0 : residue B (algebraMap A B π) = 0` using `(residue_eq_zero_iff _).2 hmem`. Rewrite using `[PowerSeries.coeff_map, PowerSeries.coeff_map, h1, map_add, map_add, map_mul, map_mul, h0, zero_mul, add_zero, PowerSeries.coeff_X_pow, PowerSeries.coeff_X_pow]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_residue_map_eq_X_pow {π : A} (hmem : algebraMap A B π ∈ maximalIdeal B)
     {f : PowerSeries A} (hf : IsLubinTateSeries π f) :
     PowerSeries.map (residue B) (PowerSeries.map (algebraMap A B) f) =
@@ -169,6 +224,23 @@ variable (hunr : (maximalIdeal A).map (algebraMap A B) = maximalIdeal B)
   (hσ : ∀ x : B, residue B (σ x) = residue B x ^ Nat.card (ResidueField A))
 include hunr hσ
 
+/- English proof (translation)
+Use `isLocalHom_of_map_maximalIdeal hunr` as an intermediate fact. Set `` to `Fintype.ofFinite (ResidueField A)`. Take `⟨p, hcp, n, hp, hcard⟩` from `FiniteField.card' (ResidueField A)`. Use `hcp` as an intermediate fact. Establish `: Fact p.Prime` using `⟨hp⟩`.
+
+Establish `: CharP (ResidueField B) p` using `CharP.of_ringHom_of_ne_zero (ResidueField.map (algebraMap A B)) p hp.ne_zero`. Establish `hq : Nat.card (ResidueField A) = p ^ (n : ℕ)` using `by rw [Nat.card_eq_fintype_card, hcard]`. Establish `hq0 : p ^ (n : ℕ) ≠ 0` using `pow_ne_zero _ hp.ne_zero`. Establish `hmemf : algebraMap A B π ∈ maximalIdeal B` using `(mem_maximalIdeal _).2 hπB.not_isUnit`. Establish `hmemg : algebraMap A B (u * π) ∈ maximalIdeal B`.
+
+Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_left _ _ hmemf`. Establish `hf0 : PowerSeries.constantCoeff (PowerSeries.map (algebraMap A B) f) = 0`. Rewrite using `[powerSeries_constantCoeff_map, hf.constantCoeff_eq_zero, map_zero]`. Establish `hcomp : (residue B).comp (σ : B →+* B) = (iterateFrobenius (ResidueField B) p n).comp (residue B)`.
+
+Use extensionality with `x`. Simplify using `only [RingHom.comp_apply, iterateFrobenius_def]`. Rewrite using `[← hq]`. Conclude with `hσ x`. Rewrite using `[← residue_eq_zero_iff_dvd hπB, ← coeff_map]`.
+
+Use `set ψ := MvPowerSeries.map (residue B) (dropConst φ)`. Establish `hs : PowerSeries.HasSubst (dropConst φ)` using `PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_dropConst φ)`. Establish `hs' : PowerSeries.HasSubst ψ` using `PowerSeries.HasSubst.of_constantCoeff_zero (by`. Rewrite using `[constantCoeff_map, constantCoeff_dropConst, map_zero])`. Establish `hE` using `hasSubst_substEach (σ := ι) hf0`.
+
+Establish `hmapE : (fun i => MvPowerSeries.map (residue B) (substEach (PowerSeries.map (algebraMap A B) f) i : MvPowerSeries ι B)) = fun i => X i ^ (p ^ (n : ℕ))`. Use function extensionality and compare the values at `i`. Rewrite using `[map_substEach, substEach_apply, map_residue_map_eq_X_pow hmemf hf, PowerSeries.subst_pow (PowerSeries.HasSubst.X i), PowerSeries.subst_X (PowerSeries.HasSubst.X i), hq]`. Establish `hfrob : MvPowerSeries.map (residue B) (MvPowerSeries.map (σ : B →+* B) (dropConst φ)) = MvPowerSeries.map (iterateFrobenius (ResidueField B) p n) ψ`. Use extensionality with `d`.
+
+Simplify using `only [coeff_map, ψ]`. Conclude with `RingHom.congr_fun hcomp _`. Establish `h3 : subst (fun i => (X i : MvPowerSeries ι (ResidueField B)) ^ (p ^ (n : ℕ))) (MvPowerSeries.map (iterateFrobenius (ResidueField B) p n) ψ) = MvPowerSeries.map (iterateFrobenius (ResidueField B) p n) (subst (fun i => (X i : MvPowerSeries ι (ResidueField B)) ^ (p ^ (n : ℕ))) ψ)`. Rewrite using `[map_subst (HasSubst.X_pow hq0)]`. Simplify using `only [map_pow, map_X]`.
+
+Establish `h4` using `map_iterateFrobenius_expand p hp.ne_zero ψ n`. Simplify using `only [expand, coe_substAlgHom] at h4`. Rewrite using `[twistedDefect, map_sub, map_subst hE, PowerSeries.map_subst hs, map_residue_map_eq_X_pow hmemg hg, PowerSeries.subst_pow hs', PowerSeries.subst_X hs', hmapE, hfrob, h3, h4, hq, sub_self, map_zero]`.
+-/
 theorem dvd_coeff_twistedDefect {π : A} (hπB : Irreducible (algebraMap A B π)) {u : A}
     {f g : PowerSeries A} (hf : IsLubinTateSeries π f) (hg : IsLubinTateSeries (u * π) g)
     {ι : Type*} [Finite ι] (φ : MvPowerSeries ι B) (e : ι →₀ ℕ) :
@@ -246,6 +318,9 @@ include hunr hσ hπ hf hg
 
 omit [IsAlgClosed (ResidueField B)] in
 
+/- English proof (translation)
+Establish `hπB` using `irreducible_algebraMap hunr hπ`. Use `hφ.unique (σ : B →+* B) (u := algebraMap A B u) (π := algebraMap A B π) (by rw [powerSeries_constantCoeff_map, hf.constantCoeff_eq_zero, map_zero]) (by rw [PowerSeries.coeff_map, hf.coeff_one]) (by rw [powerSeries_constantCoeff_map, hg.constantCoeff_eq_zero, map_zero]) (by rw [Po …` and prove the remaining obligations.
+-/
 theorem isTwistedLift_unique {ι : Type*} [Finite ι] {ℓ φ ψ : MvPowerSeries ι B}
     (hφ : IsTwistedLift (σ : B →+* B) (PowerSeries.map (algebraMap A B) g)
       (PowerSeries.map (algebraMap A B) f) ℓ φ)
@@ -263,6 +338,15 @@ theorem isTwistedLift_unique {ι : Type*} [Finite ι] {ℓ φ ψ : MvPowerSeries
 
 omit [IsAlgClosed (ResidueField B)] in
 
+/- English proof (translation)
+Establish `hπB` using `irreducible_algebraMap hunr hπ`. Establish `hσc : ∀ x, (σ : B →+* B) x = σ x` using `fun _ => rfl`. Establish `hℓ0 : constantCoeff (PowerSeries.C ε * PowerSeries.X : MvPowerSeries Unit B) = 0`. Express the relevant statement in the definitionally equal form `PowerSeries.constantCoeff (PowerSeries.C ε * PowerSeries.X) = 0`. Simplify using the standard rewrite rules.
+
+Take `⟨θ, ⟨h2, he⟩, -⟩` from `existsUnique_twisted (σ : B →+* B) (ι := Unit) (u := algebraMap A B u) (π := algebraMap A B π) (by rw [powerSeries_constantCoeff_map, hf.constantCoeff_eq_zero, map_zero]) (by rw [PowerSeries.coeff_map, hf.coeff_one]) (by rw [powerSeries_constantCoeff_map, hg.constantCoeff_eq_zero …`. Establish `hd' : e = Finsupp.single () (e ())` using `by ext; simp`. Rewrite `he` using `[hd', Finsupp.degree_single]`. Rewrite using `[hd', he]`. Express the relevant statement in the definitionally equal form `algebraMap A B u * algebraMap A B π * PowerSeries.coeff 1 (PowerSeries.C ε * PowerSeries.X) = algebraMap A B π * σ (PowerSeries.coeff 1 (PowerSeries.C ε * PowerSeries.X))`.
+
+Rewrite using `[coeff_one_C_mul_X, hε]`. Use the proof step `ring)`. Establish `h2' : (2 : ℕ∞) ≤ order ((PowerSeries.C ε * PowerSeries.X : MvPowerSeries Unit B) - θ)`. Rewrite using `[← neg_sub, order_neg]`. Conclude with `h2`.
+
+Conclude with `⟨θ, constantCoeff_eq_zero_of_two_le_order_sub h2' hℓ0, h2, he⟩`.
+-/
 theorem exists_isTwistedLift {ε : B} (hε : σ ε = algebraMap A B u * ε) :
     ∃ θ : PowerSeries B, IsTwistedLift (σ : B →+* B) (PowerSeries.map (algebraMap A B) g)
       (PowerSeries.map (algebraMap A B) f) (PowerSeries.C ε * PowerSeries.X) θ := by
@@ -293,6 +377,39 @@ theorem exists_isTwistedLift {ε : B} (hε : σ ε = algebraMap A B u * ε) :
     exact h2
   exact ⟨θ, constantCoeff_eq_zero_of_two_le_order_sub h2' hℓ0, h2, he⟩
 
+/- English proof (translation)
+Establish `hπ' : Irreducible (u * π)` using `(irreducible_units_mul u).2 hπ`. Establish `hπB` using `irreducible_algebraMap hunr hπ`. Establish `hσc : ∀ x, (σ : B →+* B) x = σ x` using `fun _ => rfl`. Establish `hf0B : PowerSeries.constantCoeff (PowerSeries.map (algebraMap A B) f) = 0`. Rewrite using `[powerSeries_constantCoeff_map, hf.constantCoeff_eq_zero, map_zero]`.
+
+Establish `hg0B : PowerSeries.constantCoeff (PowerSeries.map (algebraMap A B) g) = 0`. Rewrite using `[powerSeries_constantCoeff_map, hg.constantCoeff_eq_zero, map_zero]`. Take `⟨η, hη⟩` from `exists_units_eq_mul σ hσ hπB (Units.map (algebraMap A B : A →* B) u)`. Use `set ε : B := (η : B)`. Establish `hε : σ ε = algebraMap A B u * ε` using `by simpa using hη`.
+
+Take `⟨θ, hθ⟩` from `exists_isTwistedLift hunr σ hσ hπ u hf hg hε`. Establish `hθ0 : PowerSeries.constantCoeff θ = 0` using `hθ.1`. Establish `hθ1 : PowerSeries.coeff 1 θ = ε`. Use `eq_coeff_of_two_le_order_sub hθ.2.1 (e := Finsupp.single () 1) (by simp)` as an intermediate fact. Express the relevant statement in the definitionally equal form `PowerSeries.coeff 1 θ = PowerSeries.coeff 1 (PowerSeries.C ε * PowerSeries.X) at this`.
+
+Rewrite using `[this, coeff_one_C_mul_X]`. Establish `hL : MvPowerSeries.map (algebraMap A B) (sum₂ (![1, 1] : Fin 2 → A)) = X 0 + X 1`. Rewrite using `[linearForm_fin_two]`. Simplify using the standard rewrite rules. Establish `hFf : IsLubinTateLift (PowerSeries.map (algebraMap A B) f) (PowerSeries.map (algebraMap A B) f) (X 0 + X 1) (MvPowerSeries.map (algebraMap A B) (lubinTateFormalGroup hπ hf).toPowerSeries)`.
+
+Rewrite using `[← hL]`. Conclude with `(isLubinTateLift_lubinTateLift hπ hf hf _).map (algebraMap A B) hf.constantCoeff_eq_zero`. Establish `hFg : IsLubinTateLift (PowerSeries.map (algebraMap A B) g) (PowerSeries.map (algebraMap A B) g) (X 0 + X 1) (MvPowerSeries.map (algebraMap A B) (lubinTateFormalGroup hπ' hg).toPowerSeries)`. Rewrite using `[← hL]`. Conclude with `(isLubinTateLift_lubinTateLift hπ' hg hg _).map (algebraMap A B) hg.constantCoeff_eq_zero`.
+
+Establish `hHom : ∀ {h h' : PowerSeries A} (hh : IsLubinTateSeries π h) (hh' : IsLubinTateSeries π h') (hπ₀ : Irreducible π) (a : A), IsLubinTateLift (PowerSeries.map (algebraMap A B) h) (PowerSeries.map (algebraMap A B) h') (PowerSeries.C (algebraMap A B a) * PowerSeries.X) (PowerSeries.ma …`. Introduce `h h' hh hh' hπ₀ a`. Rewrite using `[← map_C_mul_X]`. Conclude with `(isLubinTateLift_lubinTateHom hπ₀ hh hh' a).map (algebraMap A B) hh'.constantCoeff_eq_zero`. Establish `hHom' : ∀ a : A, IsLubinTateLift (PowerSeries.map (algebraMap A B) g) (PowerSeries.map (algebraMap A B) g) (PowerSeries.C (algebraMap A B a) * PowerSeries.X) (PowerSeries.map (algebraMap A B) (lubinTateHom hπ' hg hg a).toPowerSeries)`.
+
+Introduce `a`. Rewrite using `[← map_C_mul_X]`. Conclude with `(isLubinTateLift_lubinTateHom hπ' hg hg a).map (algebraMap A B) hg.constantCoeff_eq_zero`. Establish `uniq` using `fun {ι : Type} [Finite ι] {ℓ φ ψ : MvPowerSeries ι B} hφ hψ => isTwistedLift_unique hunr σ hσ hπ u hf hg (ℓ := ℓ) (φ := φ) (ψ := ψ) hφ hψ`. Establish `hX : ∀ j : Fin 2, IsTwistedLift (σ : B →+* B) (PowerSeries.map (algebraMap A B) g) (PowerSeries.map (algebraMap A B) f) (C ε * X j) (PowerSeries.subst (X j : MvPowerSeries (Fin 2) B) θ)`.
+
+Introduce `j`. Use `hθ.comp_lift (σ : B →+* B) hf0B hf0B (v := fun _ : Unit => (X j : MvPowerSeries (Fin 2) B)) (u := fun _ => X j) (fun _ => isLubinTateLift_X hf0B j) (fun _ => map_X _ _)` as an intermediate fact. Rewrite `this` using `[← PowerSeries.subst_def, ← PowerSeries.subst_def, powerSeries_subst_C_mul_X (PowerSeries.HasSubst.X j)]`. Then use the resulting hypothesis. Establish `hD` using `hθ.comp_lift (σ : B →+* B) hf0B hf0B (v := fun _ : Unit => (X 0 + X 1 : MvPowerSeries (Fin 2) B)) (u := fun _ => MvPowerSeries.map (algebraMap A B) (lubinTateFormalGroup hπ hf).toPowerSeries) (fun _ => hFf) (fun _ => map_sigma_map_algebraMap σ _)`. Rewrite `hD` using `[← PowerSeries.subst_def, ← PowerSeries.subst_def, powerSeries_subst_C_mul_X (PowerSeries.HasSubst.of_constantCoeff_zero (by simp))]`.
+
+Apply the tactic sequence `have hE := IsLubinTateLift.comp_twisted (σ : B →+* B) hf0B hg0B hFg (map_sigma_map_algebraMap σ _) (w := ![C ε * X 0, C ε * X 1]) (v := ![PowerSeries.subst (X 0 : MvPowerSeries (Fin 2) B) θ, PowerSeries.subst (X 1 : MvPowerSeries (Fin 2) B) θ]) (fun j => by fin_cases j <;> simpa …`. Establish `hs2 : HasSubst (![C ε * X 0, C ε * X 1] : Fin 2 → MvPowerSeries (Fin 2) B)` using `hasSubst_pair (by simp) (by simp)`. Rewrite `hE` using `[subst_add hs2, subst_X hs2, subst_X hs2]`. Simplify using `only [Fin.isValue, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one] at hE`. Rewrite `hE` using `[← mul_add]`.
+
+Establish `hDE` using `uniq hD hE`. Set `θh : Hom ((lubinTateFormalGroup hπ hf).map (algebraMap A B)) ((lubinTateFormalGroup hπ' hg).map (algebraMap A B))` to `{ toPowerSeries := θ constantCoeff_eq_zero := hθ0 map_add := by`. Rewrite using `[FormalGroup.map_toPowerSeries, FormalGroup.map_toPowerSeries, hDE] }`. Set `θi` to `Iso.ofIsUnit θh (by`. Express the relevant statement in the definitionally equal form `IsUnit (PowerSeries.coeff 1 θ)`.
+
+Rewrite using `[hθ1]`. Conclude with `η.isUnit)`. Use `⟨θi, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsUnit (PowerSeries.coeff 1 θ)`. Rewrite using `[hθ1]`.
+
+Conclude with `η.isUnit`. Express the relevant statement in the definitionally equal form `σ (PowerSeries.coeff 1 θ) = _ * PowerSeries.coeff 1 θ`. Rewrite using `[hθ1, hε]`. Express the relevant statement in the definitionally equal form `PowerSeries.map (σ : B →+* B) θ = PowerSeries.subst _ θ`. Establish `h1` using `hθ.map (σ : B →+* B) hf0B (powerSeries_map_sigma_map_algebraMap σ f) (powerSeries_map_sigma_map_algebraMap σ g)`.
+
+Establish `h2` using `hθ.comp_lift (σ : B →+* B) hf0B hf0B (v := fun _ : Unit => PowerSeries.C (algebraMap A B u) * PowerSeries.X) (u := fun _ => PowerSeries.map (algebraMap A B) (lubinTateHom hπ hf hf u).toPowerSeries) (fun _ => hHom hf hf hπ u) (fun _ => map_sigma_map_algebraMap σ _)`. Rewrite `h2` using `[← PowerSeries.subst_def, ← PowerSeries.subst_def, powerSeries_subst_C_mul_X (PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_C_mul_X _))]`. Rewrite `h1` using `[map_C_mul_X, hσc, hε]`. Rewrite `h2` using `[C_unit_eq, ← mul_assoc, ← map_mul, mul_comm ε]`. Conclude with `uniq h1 h2`.
+
+Introduce `a`. Apply `Hom.ext` to reduce the goal to its premises. Rewrite using `[Hom.toPowerSeries_comp, Hom.toPowerSeries_comp, Hom.map_toPowerSeries, Hom.map_toPowerSeries]`. Express the relevant statement in the definitionally equal form `PowerSeries.subst _ θ = PowerSeries.subst θ _`. Establish `h1` using `hθ.comp_lift (σ : B →+* B) hf0B hf0B (v := fun _ : Unit => PowerSeries.C (algebraMap A B a) * PowerSeries.X) (u := fun _ => PowerSeries.map (algebraMap A B) (lubinTateHom hπ hf hf a).toPowerSeries) (fun _ => hHom hf hf hπ a) (fun _ => map_sigma_map_algebraMap σ _)`.
+
+Establish `h2` using `IsLubinTateLift.comp_twisted (σ : B →+* B) hf0B hg0B (hHom' a) (map_sigma_map_algebraMap σ _) (w := fun _ : Unit => PowerSeries.C ε * PowerSeries.X) (v := fun _ => θ) (fun _ => hθ)`. Rewrite `h1` using `[← PowerSeries.subst_def, ← PowerSeries.subst_def, powerSeries_subst_C_mul_X (PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_C_mul_X _))]`. Rewrite `h2` using `[← PowerSeries.subst_def, ← PowerSeries.subst_def, powerSeries_subst_C_mul_X (PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_C_mul_X _))]`. Rewrite `h1`, `h2` using `[C_unit_eq]`. Establish `e : PowerSeries.C ε * (PowerSeries.C (algebraMap A B a) * PowerSeries.X) = PowerSeries.C (algebraMap A B a) * (PowerSeries.C ε * PowerSeries.X)` using `by ring`.
+
+Rewrite `h1` using `[e]`. Conclude with `uniq h1 h2`. Express the relevant statement in the definitionally equal form `PowerSeries.subst θ _ = PowerSeries.subst _ (PowerSeries.map (σ : B →+* B) θ)`. Rewrite using `[hθ.2.2, subst_substEach_unit]`. Both sides reduce to the same expression.
+-/
 theorem exists_iso_lubinTateFormalGroup :
     ∃ θ : Iso ((lubinTateFormalGroup hπ hf).map (algebraMap A B))
         ((lubinTateFormalGroup ((irreducible_units_mul u).2 hπ) hg).map (algebraMap A B)),

@@ -8,10 +8,16 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.LeibOrd
 
+/- English proof (translation)
+Simplify using `only [dpow, detChar_apply, Complex.ofReal_add, absPow_add, MonoidHom.mul_apply]`.
+-/
 theorem dpow_add_apply {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (s s' : ℝ) (x : GL (Fin n) k) : dpow n (s + s') x = dpow n s x * dpow n s' x := by
   simp only [dpow, detChar_apply, Complex.ofReal_add, absPow_add, MonoidHom.mul_apply]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n A s s'`. Use `⟨Representation.Equiv.mk (LinearEquiv.refl ℂ A.V) fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Use `show ((dpow n s' x : ℂˣ) : ℂ) • ((dpow n s x : ℂˣ) : ℂ) • A.ρ x v = ((dpow n (s + s') x : ℂˣ) : ℂ) • A.ρ x v`. Rewrite using `[dpow_add_apply, smul_smul, Units.val_mul, mul_comm]`.
+-/
 theorem giso_tw_tw : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (A : GRep k n) (s s' : ℝ), GIso ((A.tw s).tw s') (A.tw (s + s')) := by
   intro k _ _ _ _ n A s s'

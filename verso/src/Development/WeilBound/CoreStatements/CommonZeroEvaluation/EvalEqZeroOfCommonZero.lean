@@ -9,20 +9,32 @@ noncomputable section
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[linForm, mul_comm]`.
+-/
 theorem eval_linForm (x u : Fin n → ℂ) : eval u (linForm x) = ∑ j, u j * x j := by
   simp [linForm, mul_comm]
 
+/- English proof (translation)
+Unfold `linForm`. Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `j _`. Conclude with `isHomogeneous_C_mul_X (x j) j`.
+-/
 theorem linForm_isHomogeneous (x : Fin n → ℂ) : (linForm x).IsHomogeneous 1 := by
   unfold linForm
   apply IsHomogeneous.sum
   intro j _
   exact isHomogeneous_C_mul_X (x j) j
 
+/- English proof (translation)
+Rewrite using `[eval_linForm]`. Simplify using `[Pi.single_apply]`.
+-/
 theorem eval_single_linForm (x : Fin n → ℂ) (j : Fin n) :
     eval (Pi.single j 1) (linForm x) = x j := by
   rw [eval_linForm]
   simp [Pi.single_apply]
 
+/- English proof (translation)
+Introduce `h`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Rewrite using `[← eval_single_linForm x j, h]`. Simplify using the standard rewrite rules.
+-/
 theorem linForm_ne_zero {x : Fin n → ℂ} (hx : x ≠ 0) : linForm x ≠ 0 := by
   intro h
   apply hx
@@ -33,6 +45,11 @@ theorem linForm_ne_zero {x : Fin n → ℂ} (hx : x ≠ 0) : linForm x ≠ 0 := 
 def shiftHom (x c : Fin n → ℂ) : MvPolynomial (Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n) ℂ :=
   aeval (fun j => X j - C (c j) * linForm x)
 
+/- English proof (translation)
+Establish `key : (Ideal.Quotient.mkₐ ℂ (Ideal.span {linForm x})).comp (shiftHom x c) = Ideal.Quotient.mkₐ ℂ (Ideal.span {linForm x})`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `j`. Simplify using `only [AlgHom.comp_apply, shiftHom, aeval_X, Ideal.Quotient.mkₐ_eq_mk]`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
+
+Conclude with `⟨-C (c j), by ring⟩`. Establish `h` using `DFunLike.congr_fun key p`. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk] at h`. Rewrite `h` using `[eq_comm, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `h`.
+-/
 theorem linForm_dvd_sub_shift (x c : Fin n → ℂ) (p : MvPolynomial (Fin n) ℂ) :
     linForm x ∣ p - shiftHom x c p := by
   have key : (Ideal.Quotient.mkₐ ℂ (Ideal.span {linForm x})).comp (shiftHom x c) =
@@ -47,6 +64,11 @@ theorem linForm_dvd_sub_shift (x c : Fin n → ℂ) (p : MvPolynomial (Fin n) �
   rw [eq_comm, Ideal.Quotient.eq, Ideal.mem_span_singleton] at h
   exact h
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [shiftHom]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul, map_mul, hp, map_mul]`.
+
+Use `congr 1`. Simplify using `[shiftHom, eval_linForm]`.
+-/
 theorem eval_shiftHom (x c u : Fin n → ℂ) (p : MvPolynomial (Fin n) ℂ) :
     eval u (shiftHom x c p) = eval (fun j => u j - c j * ∑ i, u i * x i) p := by
   induction p using MvPolynomial.induction_on with
@@ -57,6 +79,11 @@ theorem eval_shiftHom (x c u : Fin n → ℂ) (p : MvPolynomial (Fin n) ℂ) :
     congr 1
     simp [shiftHom, eval_linForm]
 
+/- English proof (translation)
+Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[eval_shiftHom, map_zero]`. Apply `hp` to reduce the goal to its premises. Establish `: ∑ j, (u j - c j * ∑ i, u i * x i) * x j = ∑ j, u j * x j - (∑ j, c j * x j) * ∑ i, u i * x i`.
+
+Rewrite using `[Finset.sum_mul, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[this, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shiftHom_eq_zero {x c : Fin n → ℂ} (hc : ∑ j, c j * x j = 1)
     {p : MvPolynomial (Fin n) ℂ} (hp : ∀ u : Fin n → ℂ, ∑ j, u j * x j = 0 → eval u p = 0) :
     shiftHom x c p = 0 := by
@@ -71,18 +98,33 @@ theorem shiftHom_eq_zero {x c : Fin n → ℂ} (hc : ∑ j, c j * x j = 1)
   rw [this, hc]
   ring
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `Function.ne_iff.1 hx`. Use `⟨Pi.single k (x k)⁻¹, ?_⟩` and prove the remaining obligations. Establish `hk' : x k ≠ 0` using `hk`. Simplify using `[Pi.single_apply, hk']`.
+-/
 theorem exists_dual {x : Fin n → ℂ} (hx : x ≠ 0) : ∃ c : Fin n → ℂ, ∑ j, c j * x j = 1 := by
   obtain ⟨k, hk⟩ := Function.ne_iff.1 hx
   refine ⟨Pi.single k (x k)⁻¹, ?_⟩
   have hk' : x k ≠ 0 := hk
   simp [Pi.single_apply, hk']
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_dual hx`. Use `linForm_dvd_sub_shift x c p` as an intermediate fact. Rewrite `this` using `[shiftHom_eq_zero hc hp, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem linForm_dvd_of_vanish {x : Fin n → ℂ} (hx : x ≠ 0) {p : MvPolynomial (Fin n) ℂ}
     (hp : ∀ u : Fin n → ℂ, ∑ j, u j * x j = 0 → eval u p = 0) : linForm x ∣ p := by
   obtain ⟨c, hc⟩ := exists_dual hx
   have := linForm_dvd_sub_shift x c p
   rwa [shiftHom_eq_zero hc hp, sub_zero] at this
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_dual hx`. Use `⟨linForm_ne_zero hx, fun hu => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h0` using `hu.map (eval (0 : Fin n → ℂ))`. Rewrite `h0` using `[eval_linForm]`. Simplify using `at h0`.
+
+Establish `hl : shiftHom x c (linForm x) = 0` using `shiftHom_eq_zero hc fun u hu => by rw [eval_linForm, hu]`. Establish `h0 : shiftHom x c a * shiftHom x c b = 0`. Take `⟨r, hr⟩` from `hab`. Rewrite using `[← map_mul, hr, map_mul, hl, zero_mul]`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases.
+
+Use `left`. Use `linForm_dvd_sub_shift x c a` as an intermediate fact. Rewrite `this` using `[h, sub_zero]`. Then use the resulting hypothesis. Use `right`. Use `linForm_dvd_sub_shift x c b` as an intermediate fact.
+
+Rewrite `this` using `[h, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem linForm_prime {x : Fin n → ℂ} (hx : x ≠ 0) : Prime (linForm x) := by
   obtain ⟨c, hc⟩ := exists_dual hx
   refine ⟨linForm_ne_zero hx, fun hu => ?_, fun a b hab => ?_⟩
@@ -102,6 +144,13 @@ theorem linForm_prime {x : Fin n → ℂ} (hx : x ≠ 0) : Prime (linForm x) := 
       have := linForm_dvd_sub_shift x c b
       rwa [h, sub_zero] at this
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `h`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `linForm_ne_zero hy (by simpa using hr)`. Establish `hdeg` using `congrArg totalDegree hr`.
+
+Rewrite `hdeg` using `[totalDegree_mul_of_isDomain (linForm_ne_zero hx) hr0, (linForm_isHomogeneous y).totalDegree (linForm_ne_zero hy), (linForm_isHomogeneous x).totalDegree (linForm_ne_zero hx)]`. Establish `hr1 : r = C (r.coeff 0)` using `totalDegree_eq_zero_iff_eq_C.1 (by omega)`. Use `⟨r.coeff 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `congrArg (eval (Pi.single j 1)) hr` as an intermediate fact.
+
+Rewrite `this` using `[hr1, map_mul, eval_single_linForm, eval_single_linForm, eval_C]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[this, mul_comm]`.
+-/
 theorem eq_smul_of_linForm_dvd {x y : Fin n → ℂ} (hx : x ≠ 0) (hy : y ≠ 0)
     (h : linForm x ∣ linForm y) : ∃ t : ℂ, y = t • x := by
   obtain ⟨r, hr⟩ := h
@@ -120,6 +169,15 @@ theorem eq_smul_of_linForm_dvd {x y : Fin n → ℂ} (hx : x ≠ 0) (hy : y ≠ 
   simp only [Pi.smul_apply, smul_eq_mul]
   rw [this, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `P using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `ha0` using `h0 a (Finset.mem_insert_self a s)`. Establish `hs0 : ∀ x ∈ s, x ≠ 0` using `fun x hx => h0 x (Finset.mem_insert_of_mem hx)`.
+
+Take `⟨R, hR⟩` from `ih hs0 (fun x hx x' hx' t => hprop x (Finset.mem_insert_of_mem hx) x' (Finset.mem_insert_of_mem hx') t) (fun x hx => hQ x (Finset.mem_insert_of_mem hx))`. Establish `hp` using `linForm_prime ha0`. Establish `hdiv : linForm a ∣ (∏ x ∈ s, linForm x) * R` using `hR ▸ hQ a (Finset.mem_insert_self a s)`. Rewrite using `[Finset.prod_insert ha]`. Break down `hp.dvd_or_dvd hdiv with h | ⟨R', rfl⟩` into its components or cases.
+
+It suffices to derive a contradiction. Take `⟨y, hy, hdy⟩` from `(hp.dvd_finsetProd_iff _).1 h`. Take `⟨t, ht⟩` from `eq_smul_of_linForm_dvd ha0 (hs0 y hy) hdy`. Use `hprop a (Finset.mem_insert_self a s) y (Finset.mem_insert_of_mem hy) t ht` as an intermediate fact. Conclude with `ha (this ▸ hy)`.
+
+Conclude with `⟨R', by rw [hR]; ring⟩`.
+-/
 theorem prod_linForm_dvd (P : Finset (Fin n → ℂ)) (h0 : ∀ x ∈ P, x ≠ 0)
     (hprop : ∀ x ∈ P, ∀ x' ∈ P, ∀ t : ℂ, x' = t • x → x' = x)
     {Q : MvPolynomial (Fin n) ℂ} (hQ : ∀ x ∈ P, linForm x ∣ Q) :
@@ -153,6 +211,11 @@ def sectionPoly (g : MvPolynomial (Fin (e + 1) × Fin n) ℂ) (v : Fin e × Fin 
     MvPolynomial (Fin n) ℂ :=
   aeval (firstSub v) g
 
+/- English proof (translation)
+Unfold `sectionPoly`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p ij hp`.
+
+Rewrite using `[map_mul, map_mul, hp, map_mul, aeval_X, eval_X]`. Use `congr 1`. Take `⟨i, j⟩` from `ij`. Apply the tactic sequence `cases i using Fin.cases <;> simp [firstSub, consGroup]`.
+-/
 theorem eval_sectionPoly (g : MvPolynomial (Fin (e + 1) × Fin n) ℂ) (v : Fin e × Fin n → ℂ)
     (u : Fin n → ℂ) : eval u (sectionPoly g v) = eval (consGroup u v) g := by
   unfold sectionPoly
@@ -165,6 +228,15 @@ theorem eval_sectionPoly (g : MvPolynomial (Fin (e + 1) × Fin n) ℂ) (v : Fin 
     obtain ⟨i, j⟩ := ij
     cases i using Fin.cases <;> simp [firstSub, consGroup]
 
+/- English proof (translation)
+Establish `hs : ∀ ij : Fin (e + 1) × Fin n, (firstSub v ij).IsHomogeneous (if ij.1 = 0 then 1 else 0)`. Introduce and unpack `⟨i, j⟩`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simpa [firstSub] using isHomogeneous_X ℂ j`. Consider the case `succ i => simpa [firstSub, Fin.succ_ne_zero] using isHomogeneous_C (Fin n) (v (i, j))`.
+
+Rewrite using `[sectionPoly, aeval_def, eval₂_eq']`. Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `d hd`. Establish `hw` using `congrFun (hg (mem_support_iff.1 hd)) 0`. Establish `h1 : ∑ ij, (if ij.1 = (0 : Fin (e + 1)) then 1 else 0) * d ij = δ`.
+
+Rewrite `hw` using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Rewrite using `[← hw, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun ij _ => ?_` and prove the remaining obligations. Simplify using `[groupWeight, Pi.single_apply, eq_comm, mul_comm]`. Establish `hp` using `IsHomogeneous.prod Finset.univ (fun ij => firstSub v ij ^ d ij) _ (fun ij _ => (hs ij).pow (d ij))`.
+
+Rewrite `hp` using `[h1]`. Simplify using `using (isHomogeneous_C (Fin n) (coeff d g)).mul hp`.
+-/
 theorem sectionPoly_isHomogeneous {δ : ℕ} {g : MvPolynomial (Fin (e + 1) × Fin n) ℂ}
     (hg : IsMultiHomog δ g) (v : Fin e × Fin n → ℂ) : (sectionPoly g v).IsHomogeneous δ := by
   classical
@@ -188,6 +260,13 @@ theorem sectionPoly_isHomogeneous {δ : ℕ} {g : MvPolynomial (Fin (e + 1) × F
   rw [h1] at hp
   simpa using (isHomogeneous_C (Fin n) (coeff d g)).mul hp
 
+/- English proof (translation)
+Use `set a := algebraMap ℂ (AlgebraicClosure ℂ) with ha`. Establish `hinj : Function.Injective a` using `a.injective`. Establish `hmem : (a ∘ w) ∈ incidence W (e + 1)`. Use `⟨a ∘ x, fun h => hx ?_, fun q hq => ?_, fun i => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Apply `hinj` to reduce the goal to its premises. Simplify using `using congrFun h j`. Establish `h1 : aeval x q = 0` using `hW q hq`. Rewrite using `[aeval_algebraMap_apply, h1, map_zero]`. Use `congrArg a (hw i)` as an intermediate fact.
+
+Simplify `this` using `[map_sum]`. Establish `h` using `(hg.2 g).2 dvd_rfl _ hmem`. Rewrite `h` using `[aeval_algebraMap_apply]`. Conclude with `hinj (h.trans (map_zero a).symm)`.
+-/
 theorem eval_eq_zero_of_common_zero {W : Ideal (MvPolynomial (Fin n) ℂ)}
     {g : MvPolynomial (Fin (e + 1) × Fin n) ℂ} (hg : IsChowForm W (e + 1) g)
     {w : Fin (e + 1) × Fin n → ℂ} {x : Fin n → ℂ} (hx : x ≠ 0) (hW : ∀ q ∈ W, eval x q = 0)
@@ -213,6 +292,21 @@ end ModelDimension.ChowFactor
 
 open ModelDimension.ChowFactor in
 
+/- English proof (translation)
+Introduce `n e δ W g v P u₀ hg hd hP hprop hcard hne`. Establish `hQ0 : sectionPoly g v ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← eval_sectionPoly, h, map_zero]`.
+
+Establish `hdvd : ∏ x ∈ P, linForm x ∣ sectionPoly g v`. Use `prod_linForm_dvd P (fun x hx => (hP x hx).1) hprop fun x hx => ?_` and prove the remaining obligations. Take `⟨hx0, hxW, hxv⟩` from `hP x hx`. Use `linForm_dvd_of_vanish hx0 fun u hu => ?_` and prove the remaining obligations. Rewrite using `[eval_sectionPoly]`.
+
+Use `eval_eq_zero_of_common_zero hg hx0 hxW fun i => ?_` and prove the remaining obligations. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simpa [consGroup] using hu`. Consider the case `succ i => simpa [consGroup] using hxv i`. Take `⟨R, hR⟩` from `hdvd`.
+
+Establish `hprod0 : ∏ x ∈ P, linForm x ≠ 0` using `Finset.prod_ne_zero_iff.2 fun x hx => linForm_ne_zero (hP x hx).1`. Establish `hR0 : R ≠ 0`. Introduce and unpack `rfl`. Conclude with `hQ0 (by simpa using hR)`. Establish `hprodH : (∏ x ∈ P, linForm x).IsHomogeneous δ`.
+
+Use `IsHomogeneous.prod P (fun x => linForm x) (fun _ => 1) (fun x _ => linForm_isHomogeneous x)` as an intermediate fact. Simplify `this` using `[hcard]`. Establish `hdeg` using `congrArg totalDegree hR`. Rewrite `hdeg` using `[totalDegree_mul_of_isDomain hprod0 hR0, hprodH.totalDegree hprod0, (sectionPoly_isHomogeneous hd v).totalDegree hQ0]`. Establish `hR1 : R = C (R.coeff 0)` using `totalDegree_eq_zero_iff_eq_C.1 (by omega)`.
+
+Use `⟨R.coeff 0, ?_, fun u => ?_⟩` and prove the remaining obligations. Introduce `h`. Rewrite `hR1` using `[h, map_zero]`. Conclude with `hR0 hR1`. Rewrite using `[← eval_sectionPoly, hR, hR1, map_mul, eval_C, map_prod, mul_comm]`.
+
+Simplify using `only [eval_linForm, coeff_C, if_true]`.
+-/
 theorem ModelDimension.chow_form_product_formula :
     ∀ (n e δ : ℕ) (W : Ideal (MvPolynomial (Fin n) ℂ)) (g : MvPolynomial (Fin (e + 1) × Fin n) ℂ)
   (v : Fin e × Fin n → ℂ) (P : Finset (Fin n → ℂ)) (u₀ : Fin n → ℂ),

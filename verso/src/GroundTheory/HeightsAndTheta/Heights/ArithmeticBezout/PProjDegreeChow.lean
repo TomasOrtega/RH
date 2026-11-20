@@ -13,6 +13,11 @@ open MvPolynomial
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n e δ W f A hW hf hδ hA`. Rewrite using `[h₁ n e W A]`. Take `⟨hdom, hfin⟩` from `h₂ n e W A hW.isPrime hA`. Establish `hc` using `h₃ n e W f A hW hf hA`. Establish `hsep : Algebra.IsSeparable (FractionRing (MvPolynomial (Fin (e + 1)) ℂ)) (Vertical.SecAlg (W.map (MvPolynomial.map (algebraMap ℂ (FractionRing (MvPolynomial (Fin (e + 1)) ℂ))))) (projPar A))` using `⟨fun x => PerfectField.separable_of_irreducible (minpoly.irreducible (Algebra.IsIntegral.isIntegral x))⟩`.
+
+Use `le_antisymm (h₄ ℂ _ n e δ W f (projPar A) hW hf hδ hfin hdom hsep fun h => hc ?_) (h₅ ℂ _ n e δ W f (projPar A) hW hf hδ hc).2` and prove the remaining obligations. Rewrite using `[h, map_zero]`.
+-/
 theorem ProjDegreeChow.proof (h₁ : ProjSecDegree.Statement) (h₂ : ProjSecDomain.Statement)
     (h₃ : ProjChowNonzero.Statement) (h₄ : SecDegreeLe.Statement) (h₅ : SecDegreeGe.Statement) :
     ProjDegreeChow.Statement := by

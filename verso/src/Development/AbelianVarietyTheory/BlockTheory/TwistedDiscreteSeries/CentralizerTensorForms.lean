@@ -35,6 +35,11 @@ def gen (γ : Matrix n n A) : genAlg γ := ⟨γ, Algebra.self_mem_adjoin_single
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hJ, Matrix.one_mul]`. Introduce `h`.
+
+Rewrite using `[Matrix.mul_assoc, h, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJ, Matrix.one_mul]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj_eq_iff (σ : A →+* A) {J : Matrix n n A} (hJ : IsUnit J.det)
     (l m : Matrix n n A) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J l = m ↔ _root_.Formalism.UG.cT σ l * J = J * m := by
@@ -49,6 +54,9 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.ad
 open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Unfold `_root_.Formalism.UG.hform`. Simplify using `[dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.hform_eq (σ : A →+* A) (J : Matrix n n A) (x y : n → A) :
     _root_.Formalism.UG.hform σ J x y = (fun i => σ (x i)) ⬝ᵥ (J *ᵥ y) := by
   unfold _root_.Formalism.UG.hform
@@ -58,6 +66,11 @@ open Matrix NumberField in
 open scoped TensorProduct in
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] in
 
+/- English proof (translation)
+Establish `hJJ : J * _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj σ J l = _root_.Formalism.UG.cT σ l * J`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.adj`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hJ, Matrix.one_mul]`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.form, _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.hform_eq]`. Rewrite using `[mulVec_mulVec, hJJ, ← mulVec_mulVec, dotProduct_mulVec (fun i => σ (y' i))]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Unfold `_root_.Formalism.UG.cT`. Simplify using `[vecMul, mulVec, dotProduct, map_sum, mul_comm]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.form_adj (σ : A →+* A) {J : Matrix n n A} (hJ : IsUnit J.det)
     (l : Matrix n n A) (y y' : n → A) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.form σ J y (l *ᵥ y') =
@@ -249,6 +262,9 @@ def RegularAdelic : Prop :=
 
 def RegularSemisimple : Prop := RegularStructure ∧ RegularAdelic
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Algebra.FormallyEtale.of_isSeparable ℝ ℂ, Algebra.FinitePresentation.of_finiteType.1 inferInstance⟩ finrank_eq := Complex.finrank_real_complex invol := by intro e; simp ne_id := ⟨Complex.I, by simp [Complex.ext_iff]; norm_num⟩`.
+-/
 theorem isQuadInvol_complex : IsQuadInvol ℝ ℂ (Complex.conjAe : ℂ →ₐ[ℝ] ℂ) where
   etale := ⟨Algebra.FormallyEtale.of_isSeparable ℝ ℂ,
     Algebra.FinitePresentation.of_finiteType.1 inferInstance⟩
@@ -262,6 +278,9 @@ def exElt : GL (Fin 2) ℂ where
   val_inv := by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
   inv_val := by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+The claim follows from `isQuadInvol_complex herm := by ext i j; fin_cases i <;> fin_cases j <;> simp [cT] nondeg := by simp [Matrix.det_fin_two] mem := by show cT _ _ * _ * _ = _ have h2 : (starRingEnd ℂ) 2 = 2 := map_ofNat _ 2 ext i j; fin_cases i <;> fin_cases j <;> simp [cT, exElt, Matrix.mul_apply, …`.
+-/
 theorem isRegular_exElt :
     IsRegular (Complex.conjAe : ℂ →ₐ[ℝ] ℂ) (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) ℂ) exElt where
   quad := isQuadInvol_complex

@@ -16,6 +16,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [hOf]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `p _ hp`. Simplify using `[Pi.single_apply, hp]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem hOf_single (i : Fin n × Fin n) : hOf (Pi.single i (1 : ℝ)) = hb i := by
   simp only [hOf]
   rw [Finset.sum_eq_single i]
@@ -24,6 +29,9 @@ theorem hOf_single (i : Fin n × Fin n) : hOf (Pi.single i (1 : ℝ)) = hb i := 
     simp [Pi.single_apply, hp]
   · simp
 
+/- English proof (translation)
+Rewrite using `[← conjTranspose_nonsing_inv]`. Conclude with `isHermitian_mul_mul_conjTranspose _ hH`.
+-/
 theorem herm_inv_conj {x H : Mat n} (hH : H.IsHermitian) : (x⁻¹ * H * xᴴ⁻¹).IsHermitian := by
   rw [← conjTranspose_nonsing_inv]
   exact isHermitian_mul_mul_conjTranspose _ hH
@@ -37,6 +45,9 @@ def phiL {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (Fr k : Mat n →
   map_smul' r X := by
     simp only [Ld, map_smul, smul_mul_assoc, Matrix.smul_mul, RingHom.id_apply, smul_add, smul_neg]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← (hH n).2.2.1 H h]`. Unfold `hOf`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[Complex.real_smul]`.
+-/
 private theorem smul_add_smul_mul_mul_smul_add_smul_of_mul_eq_zero (hH : HbFacts) {H : Mat n} (h : H.IsHermitian) :
     ∑ p, coords H p • hb p = H := by
   conv_rhs => rw [← (hH n).2.2.1 H h]
@@ -45,9 +56,31 @@ private theorem smul_add_smul_mul_mul_smul_add_smul_of_mul_eq_zero (hH : HbFacts
   ext a b
   simp [Complex.real_smul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc (a * B) c D, Matrix.trace_mul_comm, ← Matrix.mul_assoc]`.
+-/
 private theorem trace_mul_mul_mul_rotate_two (a B c D : Mat n) : trace (a * B * c * D) = trace (c * D * a * B) := by
   rw [Matrix.mul_assoc (a * B) c D, Matrix.trace_mul_comm, ← Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hbh : ∀ p, (hb p).IsHermitian` using `(hH n).1`. Establish `hu : IsUnit x.det` using `isUnit_iff_ne_zero.mpr hx`. Establish `huH : IsUnit xᴴ.det`. Rewrite using `[det_conjTranspose]`. Conclude with `hu.star`.
+
+Establish `hA' : ∀ i, (x⁻¹ * hb i * xᴴ⁻¹).IsHermitian` using `fun i => by`. Rewrite using `[← conjTranspose_nonsing_inv]`. Conclude with `isHermitian_mul_mul_conjTranspose _ (hbh i)`. Establish `hQ : ∀ q, (xᴴ⁻¹ * hb q * x⁻¹).IsHermitian` using `fun q => by`. Rewrite using `[← conjTranspose_nonsing_inv]`.
+
+Conclude with `isHermitian_conjTranspose_mul_mul _ (hbh q)`. Establish `hexp : ∀ i, β (x⁻¹ * hb i * xᴴ⁻¹) = ∑ q, coords (x⁻¹ * hb i * xᴴ⁻¹) q • β (hb q)`. Introduce `i`. Use `conv_lhs => rw [← smul_add_smul_mul_mul_smul_add_smul_of_mul_eq_zero hH (hA' i)]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Establish `hcoef : ∀ i q, coords (x⁻¹ * hb i * xᴴ⁻¹) q = coords (xᴴ⁻¹ * hb q * x⁻¹) i`. Introduce `i q`. Simplify using `only [coords]`.
+
+Rewrite using `[trace_mul_mul_mul_rotate_two]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hexp i, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hcoef, mul_smul_comm]`. Use `_ = ∑ q, ∑ i, coords (xᴴ⁻¹ * hb q * x⁻¹) i • (α (xᴴ * hb i * x) * β (hb q)) := Finset.sum_comm`. Use `_ = ∑ q, α (∑ i, coords (xᴴ⁻¹ * hb q * x⁻¹) i • (xᴴ * hb i * x)) * β (hb q) := by`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_mul_assoc]`. Use `_ = ∑ p, α (hb p) * β (hb p) := by`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `hs : ∑ i, coords (xᴴ⁻¹ * hb q * x⁻¹) i • (xᴴ * hb i * x) = xᴴ * (∑ i, coords (xᴴ⁻¹ * hb q * x⁻¹) i • hb i) * x`.
+
+Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[hs, smul_add_smul_mul_mul_smul_add_smul_of_mul_eq_zero hH (hQ q)]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[Matrix.nonsing_inv_mul _ hu, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ huH, Matrix.one_mul]`.
+-/
 private theorem exists_dual_basis_dlog_of_isCoord (hH : HbFacts) {W : Type*} [Ring W] [Module ℝ W] [IsScalarTower ℝ W W]
     [SMulCommClass ℝ W W] (α β : Mat n →ₗ[ℝ] W) {x : Mat n} (hx : x.det ≠ 0) :
     ∑ i, α (xᴴ * hb i * x) * β (x⁻¹ * hb i * xᴴ⁻¹) = ∑ p, α (hb p) * β (hb p) := by
@@ -97,6 +130,43 @@ private theorem exists_dual_basis_dlog_of_isCoord (hH : HbFacts) {W : Type*} [Ri
           Matrix.mul_nonsing_inv _ huH, Matrix.one_mul]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `n lam E Fr ε ι S Γ T hcx σ hσ hσh k hk hkeq d hd c v hv w hw`. Take `⟨hxG, hdetv⟩` from `KcInv.coneGL n σ hσh v hv`. Take `⟨hyG, hdetw⟩` from `KcInv.coneGL n σ hσh w hw`. Use `set F : Mat n → (E.V →L[ℂ] E.V) := fun x' => Kf Fr k Γ T d x' (σ w) with hFdef`. Establish `hFs : ContDiffOn ℝ ∞ F (GLs n)`.
+
+Establish `hinner : ContDiffOn ℝ ∞ (fun x' : Mat n => x'⁻¹ * d * (σ w)ᴴ⁻¹) (GLs n)` using `KcInv.mul_contDiffOn (KcInv.mul_contDiffOn KcInv.inv_contDiffOn contDiffOn_const) contDiffOn_const`. Establish `hmaps : Set.MapsTo (fun x' : Mat n => x'⁻¹ * d * (σ w)ᴴ⁻¹) (GLs n) (GLs n)` using `fun x' hx' => KcInv.mul_mem (KcInv.mul_mem (KcInv.inv_mem hx') hd) (KcInv.inv_mem (KcInv.conjT_mem hyG))`. Establish `h2` using `hk.comp hinner hmaps`. Conclude with `(((hcx.smooth.mul h2).mul contDiffOn_const).mul contDiffOn_const).mul contDiffOn_const`. Establish `hFinv : ∀ x' ∈ GLs n, ∀ u : unitaryGroup (Fin n) ℂ, F (x' * ↑u) = F x'`.
+
+Introduce `x' hx' u`. Establish `hu1 : ((u⁻¹ : unitaryGroup (Fin n) ℂ) : Mat n) * (u : Mat n) = 1` using `by simp`. Establish `huG : (u : Mat n) ∈ GLs n` using `by show (u : Mat n).det ≠ 0`. Introduce `h0`. Establish `h3` using `congrArg Matrix.det hu1`.
+
+Rewrite `h3` using `[det_mul, h0, mul_zero, det_one]`. Conclude with `zero_ne_one h3`. Establish `hinvu : (u : Mat n)⁻¹ = ((u⁻¹ : unitaryGroup (Fin n) ℂ) : Mat n)` using `Matrix.inv_eq_left_inv hu1`. Establish `hmG : x'⁻¹ * d * (σ w)ᴴ⁻¹ ∈ GLs n` using `KcInv.mul_mem (KcInv.mul_mem (KcInv.inv_mem hx') hd) (KcInv.inv_mem (KcInv.conjT_mem hyG))`. Establish `hk' : k (((u⁻¹ : unitaryGroup (Fin n) ℂ) : Mat n) * x'⁻¹ * d * (σ w)ᴴ⁻¹) = E.ρ u⁻¹ * k (x'⁻¹ * d * (σ w)ᴴ⁻¹)`.
+
+Establish `h` using `hkeq _ hmG u⁻¹ 1`. Rewrite `h` using `[show ((1 : unitaryGroup (Fin n) ℂ) : Mat n) = 1 from rfl, Matrix.mul_one, map_one, mul_one]`. Rewrite using `[← h]`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [hFdef, Kf]`.
+
+Rewrite using `[hcx.mul x' hx' _ huG, hcx.onK u, Matrix.mul_inv_rev, hinvu, hk', ← mul_assoc (Fr x' * E.ρ u), mul_assoc (Fr x'), ← map_mul, mul_inv_cancel, map_one, mul_one]`. Establish `hDσ : ContDiffOn ℝ ∞ (fun w' => F (σ w')) (cone n)` using `hFs.comp hσ (fun v' hv' => (KcInv.coneGL n σ hσh v' hv').1)`. Establish `hDσd : DifferentiableAt ℝ (fun w' => F (σ w')) v` using `(hDσ.contDiffAt ((hO n).mem_nhds hv)).differentiableAt (by simp)`. Establish `hKc : ∀ e, (fderiv ℝ (Kc σ c Fr k Γ T d) (v, w)) (e, 0) = ((c : ℂ) * ((hOf w).det ^ n)⁻¹) • (fderiv ℝ (fun w' => F (σ w')) v) e`. Establish `hKs` using `KcInv.kcSmooth n E.V σ c Fr k Γ T d hd hσ hσh hcx.smooth hk`.
+
+Establish `hmem : cone n ×ˢ cone n ∈ nhds (v, w)` using `((hO n).prod (hO n)).mem_nhds ⟨hv, hw⟩`. Establish `hKd : DifferentiableAt ℝ (Kc σ c Fr k Γ T d) (v, w)` using `(hKs.contDiffAt hmem).differentiableAt (by simp)`. Establish `h1` using `hKd.hasFDerivAt.comp v (hasFDerivAt_prodMk_left (𝕜 := ℝ) v w)`. Establish `h2` using `hDσd.hasFDerivAt.const_smul ((c : ℂ) * ((hOf w).det ^ n)⁻¹)`. Establish `heq : (Kc σ c Fr k Γ T d) ∘ (fun e => (e, w)) = fun v' => ((c : ℂ) * ((hOf w).det ^ n)⁻¹) • F (σ v')`.
+
+Use function extensionality and compare the values at `v'`. Both sides reduce to the same expression. Rewrite `h1` using `[heq]`. Introduce `e`. Establish `h3` using `congrArg (fun L => L e) (h1.unique h2)`.
+
+Simplify using `using h3`. Establish `hfr` using `hF n (E.V →L[ℂ] E.V) σ F hσ hσh hFs hFinv v hv (σ v) hxG (hσh v hv)`. Use `set x := σ v with hxdef`. Use `set y := σ w with hydef`. Use `set m := x⁻¹ * d * yᴴ⁻¹ with hmdef`.
+
+Use `set C : ℂ := (c : ℂ) * ((hOf w).det ^ n)⁻¹ with hCdef`. Use `set φ := phiL Fr k m with hφ`. Establish `hbh` using `(hH n).1`. Establish `hstep : ∀ i, (fderiv ℝ (fun w' => F (σ w')) v) (Pi.single i 1) = (1/2 : ℝ) • (Fr x * φ (x⁻¹ * hb i * xᴴ⁻¹) * Γ * T * Fr y⁻¹)`. Introduce `i`.
+
+Establish `hXi : (x⁻¹ * hb i * xᴴ⁻¹).IsHermitian` using `herm_inv_conj (hbh i)`. Establish `hxX : x * (x⁻¹ * hb i * xᴴ⁻¹) * xᴴ = hb i`. Establish `hu : IsUnit x.det` using `isUnit_iff_ne_zero.mpr hxG`. Establish `huH : IsUnit xᴴ.det`. Rewrite using `[det_conjTranspose]`.
+
+Conclude with `hu.star`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul _ huH, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Establish `hc1 : coords (hb i) = Pi.single i 1`. Establish `h6` using `(hH n).2.2.2.1 (Pi.single i 1)`.
+
+Rewrite `h6` using `[hOf_single]`. Then use the resulting hypothesis. Establish `hc2 : coords (hb i + hb i) = Pi.single i 1 + Pi.single i 1`. Rewrite using `[← hc1]`. Use function extensionality and compare the values at `p`. Simplify using `only [coords, Matrix.add_mul, Matrix.trace_add, Complex.add_re, Pi.add_apply]`.
+
+Establish `h5` using `hfr _ hXi`. Rewrite `h5` using `[hxX]`. Use `first`. Consider the case `rw [two_smul] at h5`. Consider the case `rw [two_nsmul] at h5`.
+
+Rewrite `h5` using `[hc2, map_add]`. Establish `hder : (fderiv ℝ F x) (x * (x⁻¹ * hb i * xᴴ⁻¹)) = Fr x * φ (x⁻¹ * hb i * xᴴ⁻¹) * Γ * T * Fr y⁻¹` using `h1 n lam E Fr ε ι S Γ T hcx k hk d y hd hyG x hxG _`. Rewrite `h5` using `[hder]`. Rewrite using `[← h5, ← two_smul ℝ, smul_smul]`. Evaluate the numerical expressions.
+
+Establish `hfe : ∀ i, ε (hb i) * Fr x = Fr x * ε (xᴴ * hb i * x)` using `fun i => hcx.frε x hxG (hb i) (hbh i)`. Establish `hdual` using `exists_dual_basis_dlog_of_isCoord hH ε φ hxG`. Rewrite using `[show (∑ i, ε (hb i) * (fderiv ℝ (Kc σ c Fr k Γ T d) (v, w)) (Pi.single i 1, 0)) = ∑ i, ε (hb i) * (C • (1/2 : ℝ) • (Fr x * φ (x⁻¹ * hb i * xᴴ⁻¹) * Γ * T * Fr y⁻¹)) from Finset.sum_congr rfl fun i _ => by rw [hKc, hstep]]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.sum_mul, Finset.sum_mul, Finset.smul_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, mul_smul_comm]`. Use `congr 2`. Simplify using `only [← mul_assoc]`. Rewrite using `[hfe i]`.
+
+Use `_ = _ := by`. Rewrite using `[hdual, mul_smul_comm, smul_mul_assoc, smul_mul_assoc, smul_mul_assoc]`. Use `congr 1`. Rewrite using `[show ((1 : ℂ) / 2) = (((1 : ℝ) / 2 : ℝ) : ℂ) by push_cast; ring, Complex.coe_smul]`. Both sides reduce to the same expression.
+-/
 theorem halfOne_of (hH : HbFacts) (hF : FrameDer) (hO : ∀ n, IsOpen (cone n)) (h1 : DerOne) : HalfOne := by
   intro n lam E Fr ε ι S Γ T hcx σ hσ hσh k hk hkeq d hd c v hv w hw
   obtain ⟨hxG, hdetv⟩ := KcInv.coneGL n σ hσh v hv

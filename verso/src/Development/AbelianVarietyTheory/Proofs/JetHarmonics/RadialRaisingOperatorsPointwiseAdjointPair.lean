@@ -26,6 +26,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
 def Van (c : Fin r → ℂ) (K : Set (Q.Mx k r)) (Φ : Q.RadSp k r z z' π π') : Prop :=
   ∀ g ∈ Q.Glev k r (Fin.last r), g ∉ K → (Φ : Q.Fn k r (Wq →L[ℂ] Wp)) c g = 0
 
+/- English proof (translation)
+Simplify using `only [hsInner_eq_sum]`. Conclude with `integrable_finsetSum _ fun m _ => int_cpt_gen μ hμ Φ Ψ c _ K hKc hKG hc _ (Or.inr rfl) hΦ`.
+-/
 theorem int_left {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Q.Glev k r (Fin.last r)) μ) {c : Fin r → ℂ}
     (hc : c ∈ OmX r) {K : Set (Q.Mx k r)} (hKc : IsCompact K) (hKG : K ⊆ {g | 0 < Q.GGl k r z z' g})
     (Φ Ψ : Q.RadSp k r z z' π π') (hΦ : Van c K Φ) :
@@ -34,6 +37,9 @@ theorem int_left {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Q.Glev k r (Fin.last
   simp only [hsInner_eq_sum]
   exact integrable_finsetSum _ fun m _ => int_cpt_gen μ hμ Φ Ψ c _ K hKc hKG hc _ (Or.inr rfl) hΦ
 
+/- English proof (translation)
+Simplify using `only [hsInner_eq_sum]`. Conclude with `integrable_finsetSum _ fun m _ => int_cpt_gen μ hμ Ψ Φ c _ K hKc hKG hc _ (Or.inl rfl) hΨ`.
+-/
 theorem int_right {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Q.Glev k r (Fin.last r)) μ) {c : Fin r → ℂ}
     (hc : c ∈ OmX r) {K : Set (Q.Mx k r)} (hKc : IsCompact K) (hKG : K ⊆ {g | 0 < Q.GGl k r z z' g})
     (Φ Ψ : Q.RadSp k r z z' π π') (hΨ : Van c K Ψ) :
@@ -72,6 +78,9 @@ def adjSub {μ : Measure (Mt k r)} (hμ : B.IsHaarOn (Q.Glev k r (Fin.last r)) �
     rw [hb']
     simp
 
+/- English proof (translation)
+Take `⟨ε, hε, h1⟩` from `hS.exists_forall_le' (f := fun ζ => Complex.normSq ζ - Tz k r z * Tz k r z') (a := 0) (Complex.continuous_normSq.sub continuous_const).continuousOn (fun b hb => sub_pos.2 (hS' hb))`. Take `⟨R, hR⟩` from `hS.isBounded.exists_norm_le`. Conclude with `⟨_, isCompact_zeta_le z z' hz hz' hT hT' ε R, fun g hg => lt_of_lt_of_le hε hg.2.1, fun g hg hgK h => hgK ⟨hg, h1 _ h, hR _ h⟩⟩`.
+-/
 theorem exists_compact (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z')
     {S : Set ℂ} (hS : IsCompact S) (hS' : S ⊆ {ζ | Tz k r z * Tz k r z' < Complex.normSq ζ}) :
     ∃ K : Set (Q.Mx k r), IsCompact K ∧ K ⊆ {g | 0 < Q.GGl k r z z' g} ∧
@@ -82,6 +91,9 @@ theorem exists_compact (hz : inWb k r z) (hz' : inWb k r z') (hT : 0 < Tz k r z)
   exact ⟨_, isCompact_zeta_le z z' hz hz' hT hT' ε R, fun g hg => lt_of_lt_of_le hε hg.2.1,
     fun g hg hgK h => hgK ⟨hg, h1 _ h, hR _ h⟩⟩
 
+/- English proof (translation)
+Introduce `g hg hgK`. Rewrite using `[Formalism.FourierDecayAlt.P.NFx4.mulZ_apply hW, image_eq_zero_of_notMem_tsupport (fun h => hK g hg hgK (hS h))]`. Simplify using the standard rewrite rules.
+-/
 theorem van_mulZ {W : Module.End ℂ (Q.RadSp k r z z' π π')} {φ : ℂ → ℝ} (hW : NF.IsMulZ W fun ζ => (φ ζ : ℂ))
     {S : Set ℂ} (hS : tsupport φ ⊆ S) {K : Set (Q.Mx k r)}
     (hK : ∀ g ∈ Q.Glev k r (Fin.last r), g ∉ K → Q.zetaL k r z z' (Fin.last r) g ∉ S) (c : Fin r → ℂ)
@@ -90,6 +102,11 @@ theorem van_mulZ {W : Module.End ℂ (Q.RadSp k r z z' π π')} {φ : ℂ → �
   rw [Formalism.FourierDecayAlt.P.NFx4.mulZ_apply hW, image_eq_zero_of_notMem_tsupport (fun h => hK g hg hgK (hS h))]
   simp
 
+/- English proof (translation)
+Establish `hA : ∀ (Ξ : Q.RadSp k r z z' π π') (v : Wq), ContinuousOn (fun g : Q.Mx k r => (Ξ : Q.Fn k r (Wq →L[ℂ] Wp)) c g v) {g | (c, g) ∈ Q.DomR k r z z'}`. Introduce `Ξ v`. Establish `h1` using `(radSp_continuousOn Ξ).comp ((continuous_const.prodMk continuous_id : Continuous fun g : Q.Mx k r => (c, g)).continuousOn : ContinuousOn _ {g | (c, g) ∈ Q.DomR k r z z'}) (fun x hx => hx)`. Conclude with `h1.clm_apply continuousOn_const`. Simplify using `only [hsInner_eq_sum]`.
+
+Conclude with `continuousOn_finsetSum _ fun m _ => (hA Ψ _).inner (hA Φ _)`.
+-/
 theorem contOn_hs (Φ Ψ : Q.RadSp k r z z' π π') (c : Fin r → ℂ) :
     ContinuousOn (fun g : Q.Mx k r => B.hsInner ((Φ : Q.Fn k r (Wq →L[ℂ] Wp)) c g)
       ((Ψ : Q.Fn k r (Wq →L[ℂ] Wp)) c g)) {g | (c, g) ∈ Q.DomR k r z z'} := by
@@ -109,6 +126,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
   {Bs : B.RealPlaceData P.k P.r Wp Wq}
 
+/- English proof (translation)
+Unfold `pairAt`. Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : (c, Matrix.of x) ∈ Q.DomR P.k P.r Bs.z Bs.z'`. Conclude with `hb Φ Ψ _ hx`.
+
+Rewrite using `[radSp_zero_off (b.1 Φ) hx, radSp_zero_off Φ hx, hsInner_zero_left, hsInner_zero_left]`.
+-/
 theorem pairAt_of_ptAdj {b : RA P Bs} (hb : PtAdj P Bs b) (μ : Measure (Mt P.k P.r))
     (Φ Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (c : Fin P.r → ℂ) :
     pairAt μ (b.1 Φ) Ψ c = pairAt μ Φ ((star b).1 Ψ) c := by
@@ -119,6 +141,9 @@ theorem pairAt_of_ptAdj {b : RA P Bs} (hb : PtAdj P Bs b) (μ : Measure (Mt P.k 
   · exact hb Φ Ψ _ hx
   · rw [radSp_zero_off (b.1 Φ) hx, radSp_zero_off Φ hx, hsInner_zero_left, hsInner_zero_left]
 
+/- English proof (translation)
+Take `⟨h, hh, h', hh', rfl⟩` from `GlobalTheory.HatNF.doubleCoset_of_zeta_eq Wp Wq P Bs c g g' hg hg' hζ`. Establish `e1` using `Φ.2.2.2 (c, g) hg h hh h' hh'`. Establish `e2` using `Ψ.2.2.2 (c, g) hg h hh h' hh'`. Simplify using `only at e1 e2`. Rewrite using `[e1, e2, Formalism.FourierDecayAlt.P.PBI.hsInner_comp_left _ (Bs.π_unitary _ hh), Formalism.FourierDecayAlt.P.PBI.hsInner_comp_right _ (Bs.π'_unitary _ hh')]`.
+-/
 theorem hs_inv (Φ Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (c : Fin P.r → ℂ) (g g' : Q.Mx P.k P.r)
     (hg : (c, g) ∈ Q.DomR P.k P.r Bs.z Bs.z') (hg' : (c, g') ∈ Q.DomR P.k P.r Bs.z Bs.z')
     (hζ : P5.zeta P.k P.r Bs.z Bs.z' g = P5.zeta P.k P.r Bs.z Bs.z' g') :
@@ -131,12 +156,40 @@ theorem hs_inv (Φ Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (c : Fin P.r �
   rw [e1, e2, Formalism.FourierDecayAlt.P.PBI.hsInner_comp_left _ (Bs.π_unitary _ hh),
     Formalism.FourierDecayAlt.P.PBI.hsInner_comp_right _ (Bs.π'_unitary _ hh')]
 
+/- English proof (translation)
+The claim follows from `((pairAt_of_ptAdj ha μ (t.1 (b.1 Φ)) Ψ c).trans ht).trans (pairAt_of_ptAdj hb μ Φ _ c)`.
+-/
 theorem triple (μ : Measure (Mt P.k P.r)) (c : Fin P.r → ℂ) (a t b : RA P Bs) (ha : PtAdj P Bs a)
     (hb : PtAdj P Bs b) (Φ Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')
     (ht : pairAt μ (t.1 (b.1 Φ)) ((star a).1 Ψ) c = pairAt μ (b.1 Φ) ((star t).1 ((star a).1 Ψ)) c) :
     pairAt μ ((a * t * b).1 Φ) Ψ c = pairAt μ Φ ((star (a * t * b)).1 Ψ) c :=
   ((pairAt_of_ptAdj ha μ (t.1 (b.1 Φ)) Ψ c).trans ht).trans (pairAt_of_ptAdj hb μ Φ _ c)
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs X μ L st l0 d hD hNF l hl`. Establish `hP` using `hD.1`. Establish `hμ` using `hD.2.1`. Establish `hH` using `(GlobalTheory.T.normalForm_actualOperators_algebraicHypotheses Wp Wq P Bs X μ L st l0 d hD hNF).1`. Establish `hκ` using `fun f => (GlobalTheory.HatNF.kappa_ptAdj_ptB Wp Wq P Bs X μ L st l0 d hD hNF f).1`.
+
+Take `⟨co, hco⟩` from `GlobalTheory.HatNF.RaiseFormula.ss_formula P _ d hH l hl Complex.I (fun ρ => Formalism.FourierDecayAlt.P.NFx4.SX.xC_ne ρ _ (by simp))`. Establish `hmul : ∀ φ : ℂ → ℝ, ContDiff ℝ ∞ φ → ∃ W : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'), NF.IsMulZ W (fun ζ => (φ ζ : ℂ)) ∧ (∀ g, Commute (d.κ g).1 W) ∧ Commute (d.SS l).1 W ∧ Commute (star (d.SS l)).1 W`. Introduce `φ hφ`. Establish `hf : ContDiff ℝ ∞ (fun ζ => (φ ζ : ℂ))` using `Complex.ofRealCLM.contDiff.comp hφ`. Take `⟨W, hW⟩` from `Formalism.FourierDecayAlt.P.multiplication_zeta_exists Wp Wq P _ _ _ _ hP _ hf.contDiffOn`.
+
+Take `⟨W1, hW1⟩` from `Formalism.FourierDecayAlt.P.multiplication_zeta_exists Wp Wq P _ _ _ _ hP _ (dZ_contDiff hf).contDiffOn`. Take `⟨W2, hW2⟩` from `Formalism.FourierDecayAlt.P.multiplication_zeta_exists Wp Wq P _ _ _ _ hP _ (dZb_contDiff hf).contDiffOn`. Establish `h` using `Formalism.FourierDecayAlt.P.normal_form_order_zero Wp Wq P _ _ _ _ hP X d hNF.1 hNF.2.1 hNF.2.2.1 hNF.2.2.2 _ hf.contDiffOn W W1 W2 hW hW1 hW2`. Conclude with `⟨W, hW, h.1, (h.2.1 l hl).1, (h.2.1 l hl).2⟩`. Introduce and unpack `Φ Ψ ⟨c, g0⟩ hx`.
+
+Establish `hc : c ∈ OmX P.r` using `hx.1`. Establish `hO : IsOpen {ζ : ℂ | Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ}` using `isOpen_lt continuous_const Complex.continuous_normSq`. Take `⟨ψ, hψS, hψc, hψd, -, hψ1⟩` from `exists_contDiff_tsupport_subset (n := ⊤) (x := P5.zeta P.k P.r Bs.z Bs.z' g0) (hO.mem_nhds (sub_pos.1 hx.2.2))`. Take `⟨V, hV, hVκ, hVS, hVS'⟩` from `hmul ψ hψd`. Establish `key` using `GlobalTheory.HatNF.ZetaVanish.zeta_vanish Wp Wq P Bs μ c (fun g => B.hsInner (((d.SS l).1 Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g) ((V Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g) - B.hsInner ((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g) (((star (d.SS l)).1 (V Ψ) : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g)) …`.
+
+Establish `e : (star (d.SS l)).1 (V Ψ) = V ((star (d.SS l)).1 Ψ)` using `LinearMap.congr_fun hVS'.eq Ψ`. Rewrite `key` using `[e, Formalism.FourierDecayAlt.P.NFx4.mulZ_apply hV, Formalism.FourierDecayAlt.P.NFx4.mulZ_apply hV]`. Unfold `P5.zeta at hψ1`. Rewrite `key` using `[hψ1, Complex.ofReal_one, one_smul, one_smul]`. Conclude with `sub_eq_zero.1 key`.
+
+Introduce `φ hφd hφc hφS`. Take `⟨W, hW, hWκ, hWS, hWS'⟩` from `hmul φ hφd`. Take `⟨K, hKc, hKG, hK⟩` from `exists_compact Bs.z_mem Bs.z'_mem Bs.T_pos Bs.T'_pos (hφc.isCompact.union hψc.isCompact) (Set.union_subset hφS hψS)`. Establish `vW` using `van_mulZ hW Set.subset_union_left hK c`. Establish `vV` using `van_mulZ hV Set.subset_union_right hK c`.
+
+Establish `hmem : d.SS l ∈ adjSub hμ hc hKc hKG (W Φ) (V Ψ) (vW Φ) (vV Ψ)`. Rewrite using `[hco]`. Use `Submodule.sum_mem _ fun ρ _ => Submodule.sum_mem _ fun ρ' _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[← hNF.2.2.2]`. Use `triple μ c _ _ _ (hκ _) (hκ _) _ _ ?_` and prove the remaining obligations.
+
+Use `pairAt_t_adj_cpt' P _ _ _ _ hP X μ hμ _ _ c hc ⟨K, hKc, hKG, fun g hg hgK => ⟨?_, ?_⟩⟩ Complex.I 1 0` and prove the remaining obligations. Establish `e` using `LinearMap.congr_fun (hWκ fun ρ' => if ρ' = ρ then 1 else 0).eq Φ`. Simplify using `only [Module.End.mul_apply] at e`. Rewrite using `[e]`. Conclude with `vW _ g hg hgK`.
+
+Rewrite using `[hNF.2.2.1.1]`. Establish `e` using `LinearMap.congr_fun (hVκ fun ρ => star (if ρ = ρ' then (1 : ℂ) else 0)).eq Ψ`. Simplify using `only [Module.End.mul_apply] at e`. Rewrite using `[e]`. Conclude with `vV _ g hg hgK`.
+
+Establish `hm : pairAt μ ((d.SS l).1 (W Φ)) (V Ψ) c = pairAt μ (W Φ) ((star (d.SS l)).1 (V Ψ)) c` using `hmem`. Establish `e : (d.SS l).1 (W Φ) = W ((d.SS l).1 Φ)` using `LinearMap.congr_fun hWS.eq Φ`. Rewrite `hm` using `[e]`. Establish `hs` using `integral_sub (int_left hμ hc hKc hKG (W ((d.SS l).1 Φ)) (V Ψ) (vW _)) (int_left hμ hc hKc hKG (W Φ) ((star (d.SS l)).1 (V Ψ)) (vW _))`. Unfold `pairAt at hm`.
+
+Rewrite `hs` using `[hm, sub_self]`. Rewrite using `[← hs]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[Formalism.FourierDecayAlt.P.NFx4.mulZ_apply hW, Formalism.FourierDecayAlt.P.NFx4.mulZ_apply hW, hsInner_smul_left', hsInner_smul_left', mul_sub]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ptAdj_SS : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π') (μ : Measure (Mt P.k P.r)) (L : LevelData (RA P Bs) P.r) (st : Start (RA P Bs)) (l0 : ℕ) (d : Q.NFData P (RA P Bs)), P5.IsData P Bs.z Bs.z' Bs.π Bs.π' X μ L st l0 → IsNF X d → ∀ l ∈ Finset.Icc 1 (P.k - 1), PtAdj P Bs (d.SS l) := by
   intro Wp Wq _ _ _ _ _ _ P Bs X μ L st l0 d hD hNF l hl
   have hP := hD.1

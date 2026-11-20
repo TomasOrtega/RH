@@ -10,6 +10,17 @@ namespace GlobalTheory.Core.Ht2.BadPrimesS
 
 open GlobalTheory.ColNorms.BadPrimes
 
+/- English proof (translation)
+Introduce `CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ h`. Take `⟨⟨-, -, -, -, -, -, hX1, -, -, hPr, -, hc, -, -⟩, -, -, -, hmu, -⟩` from `h`. Substitute `hmu` using the available equality. Establish `hX` using `hX1.ok`. Establish `h2 : 2 ∣ Pr.cond`.
+
+Rewrite using `[hc, NumDatum.cond]`. Conclude with `N.H.toHostRaw.two_dvd_condN`. Establish `hS : ∀ P, P ∈ Sall sel (1 : Tup X.F X.E X.K Sg) u ↔ P ∈ Pr.vT u ∨ P ∈ Pr.vGs` using `fun P => by`. Rewrite using `[← rowSG_one sel Sg]`. Conclude with `Finset.mem_union`.
+
+Use `⟨fun P hP => rowSG_one sel Sg ▸ hP, fun P hP => ?_, fun P hP => T_mem hPr hP, ?_, odd_typePrime_of_two_dvd_cond hX hPr h2 u, odd_g hPr h2, fun P hP => ⟨fun h' => conjP_notMem hPr u ((hS _).1 hP) ((hS _).1 h'), ?_⟩⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_vG hP`. Establish `hT : ((Pr.T u : ℕ) : 𝓞 X.E) ∉ P.asIdeal` using `fun hT => hPr.T_ne_g u i (eq_of_natCast_mem P (hPr.T_prime u) (hPr.g_prime i) hT (g_mem hPr hi))`. Use `⟨i, hi, hPr.vG_norm i P hi, g_mem hPr hi, (GlobalTheory.TypePrimeUnif.typePrime_mem_and_notMem_sq hX hPr i P hi).2, fun hg => ?_, hT, fun hπ => hT (hPr.piT_norm u ▸ Ideal.mul_mem_right _ _ hπ)⟩` and prove the remaining obligations. Use `g_injective hPr (eq_of_natCast_mem P (hPr.g_prime _) (hPr.g_prime _) hg (g_mem hPr hi))` as an intermediate fact.
+
+Apply the tactic sequence `fin_cases i <;> simp at this`. Rewrite using `[Finset.prod_coe_sort _ (fun P => Formalism.L2.Col.qOf P), rowSG_one, prod_qOf_vGs hPr, GlobalTheory.IndefiniteRowSideFullHecke.WeightedNormSquareDivisors.card_eq_f N X pl.symm]`. Break down `(hS _).1 hP with h | h` into its components or cases. Conclude with `two_notMem_vT hPr h2 h`. Take `⟨i, hi⟩` from `exists_vG h`.
+
+Introduce `hP2`. Use `eq_of_natCast_mem P (hPr.g_prime i) Nat.prime_two (g_mem hPr hi) (by exact_mod_cast hP2)` as an intermediate fact. Establish `ho` using `odd_g hPr h2 i`. Rewrite `ho` using `[this]`. Conclude with `absurd ho (by decide)`.
+-/
 theorem bad_primes_sharp : ∀ (CY : ℝ) (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), HypS CY N s W Ch G sel mu cst I dl χ cD pl u δ → (∀ P ∈ rowSG Pr sel mu, P ∈ Pr.vGs) ∧ (∀ P ∈ Pr.vGs, ∃ i, P ∈ Pr.vG i ∧ Formalism.L2.Col.qOf P = Pr.g i ∧ ((Pr.g i : ℕ) : 𝓞 X.E) ∈ P.asIdeal ∧ ((Pr.g i : ℕ) : 𝓞 X.E) ∉ P.asIdeal ^ 2 ∧ ((Pr.g (1 - i) : ℕ) : 𝓞 X.E) ∉ P.asIdeal ∧ ((Pr.T u : ℕ) : 𝓞 X.E) ∉ P.asIdeal ∧ Pr.piT u ∉ P.asIdeal) ∧ (∀ P ∈ Pr.vT u, ((Pr.T u : ℕ) : 𝓞 X.E) ∈ P.asIdeal) ∧ (∏ P : rowSG Pr sel mu, Formalism.L2.Col.qOf P.1) = (Pr.g 0 * Pr.g 1) ^ N.R.f ∧ Odd (Pr.T u) ∧ (∀ i, Odd (Pr.g i)) ∧ ∀ P ∈ Sall sel mu u, conjPrime₂ P ∉ Sall sel mu u ∧ (2 : 𝓞 X.E) ∉ P.asIdeal := by
   classical
   intro CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ h

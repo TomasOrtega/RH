@@ -54,13 +54,22 @@ open UpperTheory.V.Z.J.D
 
 namespace UpperTheory.V.Z.Desc.V0
 
+/- English proof (translation)
+The claim follows from `flath (isotS secSp schurGL (boxIsot step) (piIsot (boxIsot step) (piIrr boxIrr)) (piIrr boxIrr) boxIrr) step boxIrr (piIrr boxIrr) schurGL infDim wtEx secSp`.
+-/
 theorem flathE : Flath :=
   flath (isotS secSp schurGL (boxIsot step) (piIsot (boxIsot step) (piIrr boxIrr)) (piIrr boxIrr) boxIrr) step boxIrr (piIrr boxIrr)
     schurGL infDim wtEx secSp
 
+/- English proof (translation)
+The claim follows from `countE wtEx (decomp indepS) (zDecE zEq normS) zEq (sphSame zEq) atSame bcOf (yDimE flathE eigBoxE secSp) compsEx slope ord1 eigPi`.
+-/
 theorem countE' : CountE :=
   countE wtEx (decomp indepS) (zDecE zEq normS) zEq (sphSame zEq) atSame bcOf (yDimE flathE eigBoxE secSp) compsEx slope ord1 eigPi
 
+/- English proof (translation)
+The claim follows from `numJE (muZ locSp) (muZE locSp) eEx spec2 normS (zEqDimE countE' (resEq2 typePS2 psRes) invEq1 invBox (locE kirMove isoNe isoLe eOp) kirCusp) unitEv partRep`.
+-/
 theorem numJE' : NumJE :=
   numJE (muZ locSp) (muZE locSp) eEx spec2 normS
     (zEqDimE countE' (resEq2 typePS2 psRes) invEq1 invBox (locE kirMove isoNe isoLe eOp) kirCusp) unitEv partRep

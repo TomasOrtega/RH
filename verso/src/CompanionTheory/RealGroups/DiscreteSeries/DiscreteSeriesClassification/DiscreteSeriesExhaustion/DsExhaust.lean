@@ -11,12 +11,21 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.KF
 
 namespace CompanionTheory.RgExh
 
+/- English proof (translation)
+The claim follows from `Fin.exhaustion_finite_length Hk.infinitesimal_character_shift Hk.hecke_algebra_exhaustion (Dec.decay_estimate Hk.infinitesimal_character_shift) U.far_regular_exhaustion`.
+-/
 theorem dsExhaust : GlobalTheory.Dec.DSExhaust :=
   Fin.exhaustion_finite_length Hk.infinitesimal_character_shift Hk.hecke_algebra_exhaustion (Dec.decay_estimate Hk.infinitesimal_character_shift) U.far_regular_exhaustion
 
+/- English proof (translation)
+The claim follows from `Fin.discreteSeriesClassification_of dsExhaust`.
+-/
 theorem discreteSeriesClassification : GlobalTheory.Published.DiscreteSeriesClassification :=
   Fin.discreteSeriesClassification_of dsExhaust
 
+/- English proof (translation)
+The claim follows from `Fin.discreteSeriesCover_of dsExhaust`.
+-/
 theorem discreteSeriesCover : GlobalTheory.Published.DiscreteSeriesCover := Fin.discreteSeriesCover_of dsExhaust
 
 end CompanionTheory.RgExh

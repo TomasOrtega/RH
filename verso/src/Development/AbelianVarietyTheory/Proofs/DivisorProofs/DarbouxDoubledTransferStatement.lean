@@ -13,5 +13,8 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.IrrAn
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IrrAn.exists_open_preconnected_locIdent | exact GlobalTheory.IrrAn.exists_open_preconnected_locIdent | (intros; apply GlobalTheory.IrrAn.exists_open_preconnected_locIdent <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_open_preconnected_analytic : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [LocallyOfFiniteType p] (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d) [CompactSpace (CxPts p σ)] (T : Set (Limits.pullback p (spMap σ) : Scheme.{0})), IsClosed T → IsIrreducible T → ∃ W : (Limits.pullback p (spMap σ) : Scheme.{0}).Opens, (T ∩ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0}))).Nonempty ∧ IsPreconnected (GlobalTheory.IrrAn.ptsOf p σ (T ∩ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0})))) ∧ GlobalTheory.IrrAn.LocIdent R.finAtlas (GlobalTheory.IrrAn.ptsOf p σ (T ∩ (W : Set (Limits.pullback p (spMap σ) : Scheme.{0})))) := by
   first | exact @GlobalTheory.IrrAn.exists_open_preconnected_locIdent | exact GlobalTheory.IrrAn.exists_open_preconnected_locIdent | (intros; apply GlobalTheory.IrrAn.exists_open_preconnected_locIdent <;> assumption)

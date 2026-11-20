@@ -46,9 +46,17 @@ def BiaddAt (r : ℕ) (be : MvPowerSeries (ZMod d) ℂ_[l]) : Prop :=
 def BetaProps (be : MvPowerSeries (ZMod d) ℂ_[l]) : Prop :=
   CoefProp be ∧ TeichInv be ∧ NoLowTerms be ∧ BiaddAt 0 be ∧ BiaddAt 1 be
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => by simp, fun _ _ => map_zero _⟩`.
+-/
 example : NoLowTerms (0 : MvPowerSeries (ZMod d) ℂ_[l]) ∧ TeichInv (0 : MvPowerSeries (ZMod d) ℂ_[l]) :=
   ⟨fun _ _ => by simp, fun _ _ => map_zero _⟩
 
+/- English proof (translation)
+Introduce `h`. Use `h (Finsupp.single (0 : ZMod 2) 1 + Finsupp.single 1 1) (Or.inr (Or.inr ⟨?_, ?_⟩))` as an intermediate fact. Simplify using `at this`. Use `all_goals`. Establish `hu : (Finset.univ : Finset (ZMod 2)) = {0, 1}` using `by decide`.
+
+Establish `h01 : (0 : ZMod 2) ≠ 1` using `by decide`. Establish `hv : (1 : ZMod 2).val = 1` using `rfl`. Simplify using `[degEven, degOdd, hu, Finset.sum_pair h01, hv, h01, h01.symm]`.
+-/
 example : ¬ NoLowTerms (MvPowerSeries.monomial (Finsupp.single (0 : ZMod 2) 1 + Finsupp.single 1 1) (1 : ℂ_[l])) := by
   intro h
   have := h (Finsupp.single (0 : ZMod 2) 1 + Finsupp.single 1 1) (Or.inr (Or.inr ⟨?_, ?_⟩))

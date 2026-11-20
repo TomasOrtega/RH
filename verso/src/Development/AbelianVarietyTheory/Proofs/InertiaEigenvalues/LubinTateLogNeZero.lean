@@ -21,24 +21,43 @@ abbrev QP : Type := Localization.Away ((l : ℕ) : Q K)
 
 variable {K}
 
+/- English proof (translation)
+Introduce `h`. Apply `GlobalTheory.RingBasics.p_ne_zero (p := l)` to reduce the goal to its premises. Rewrite using `[← map_natCast (algebraMap (Per.OC l) ℂ_[l]), h, map_zero]`.
+-/
 theorem l_ne_zero_OC : ((l : ℕ) : Per.OC l) ≠ 0 := by
   intro h
   apply GlobalTheory.RingBasics.p_ne_zero (p := l)
   rw [← map_natCast (algebraMap (Per.OC l) ℂ_[l]), h, map_zero]
 
+/- English proof (translation)
+Rewrite `h` using `[map_mul, map_pow, map_natCast]`. Conclude with `(mul_eq_zero.1 h).resolve_left (pow_ne_zero _ l_ne_zero_OC)`.
+-/
 theorem theta_eq_zero_of_pow_mul {n : ℕ} {c : AK K} (h : thetaK K ((l : AK K) ^ n * c) = 0) : thetaK K c = 0 := by
   rw [map_mul, map_pow, map_natCast] at h
   exact (mul_eq_zero.1 h).resolve_left (pow_ne_zero _ l_ne_zero_OC)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.DiscEval.eq_zero_of_dvd (p := l) h`.
+-/
 theorem eq_zero_OC {t : Per.OC l} (h : ∀ n : ℕ, ((l : ℕ) : Per.OC l) ^ n ∣ t) : t = 0 :=
   GlobalTheory.DiscEval.eq_zero_of_dvd (p := l) h
 
 variable (K) in
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `exists_unif (K := K)`. Take `⟨p, hp⟩` from `GlobalTheory.MemLoc.FundOnto.untilt_surjective l (thetaK K (inO K π))`. Conclude with `⟨_, ker_thetaK hπ (hp.trans (thetaK_inO π))⟩`.
+-/
 theorem exists_gen : ∃ η : AK K, RingHom.ker (thetaK K) = Ideal.span {η} := by
   obtain ⟨π, hπ⟩ := exists_unif (K := K)
   obtain ⟨p, hp⟩ := GlobalTheory.MemLoc.FundOnto.untilt_surjective l (thetaK K (inO K π))
   exact ⟨_, ker_thetaK hπ (hp.trans (thetaK_inO π))⟩
 
+/- English proof (translation)
+Establish `hθη : thetaK K η = 0`. Establish `: η ∈ RingHom.ker (thetaK K)` using `by rw [hI]; exact Ideal.mem_span_singleton_self η`. Conclude with `this`. Establish `h1 : thetaK K ((l : AK K) ^ n * c) = 0`. Use `congrArg (thetaK K) h` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, hθη, zero_mul, map_add, map_mul (thetaK K) (η ^ 2), map_pow, hθη]`. Simplify using `using this.symm`. Establish `hc : c ∈ Ideal.span {η}` using `by rw [← hI]; exact theta_eq_zero_of_pow_mul h1`. Take `⟨c', hc'⟩` from `Ideal.mem_span_singleton'.1 hc`. Use `⟨c', ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : η * (a - ((l : AK K) ^ n * c' + η * d)) = 0`. Rewrite `h` using `[← hc']`. Take the linear combination `h`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_left hη)`.
+-/
 theorem step {η : AK K} (hI : RingHom.ker (thetaK K) = Ideal.span {η}) (hη : η ≠ 0) {a c d : AK K} {n : ℕ}
     (h : η * a = (l : AK K) ^ n * c + η ^ 2 * d) : ∃ c', a = (l : AK K) ^ n * c' + η * d := by
   have hθη : thetaK K η = 0 := by
@@ -56,9 +75,25 @@ theorem step {η : AK K} (hI : RingHom.ker (thetaK K) = Ideal.span {η}) (hη : 
     linear_combination h
   exact sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_left hη)
 
+/- English proof (translation)
+The claim follows from `RingHom.mem_ker.1 (Ideal.pow_le_self two_ne_zero h)`.
+-/
 theorem theta_eq_zero_of_sq {a : AK K} (h : a ∈ RingHom.ker (thetaK K) ^ 2) : thetaK K a = 0 :=
   RingHom.mem_ker.1 (Ideal.pow_le_self two_ne_zero h)
 
+/- English proof (translation)
+Take `⟨η, hI⟩` from `exists_gen K`. Establish `hmem : ∀ z : AK K, thetaK K z = 0 ↔ η ∣ z` using `fun z => by`. Rewrite using `[← Ideal.mem_span_singleton, ← hI, RingHom.mem_ker]`. Establish `hsq : ∀ z : AK K, z ∈ RingHom.ker (thetaK K) ^ 2 ↔ η ^ 2 ∣ z` using `fun z => by`. Rewrite using `[hI, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+
+Distinguish the cases in `hη : η = 0`. Use `GlobalTheory.AinfK.complete_l K` as an intermediate fact. Establish `h0 : a = 0` using `GlobalTheory.DiscEval.eq_zero_of_dvd (p := l) fun n => by`. Take `⟨c, hc⟩` from `h n`. Rewrite `hc` using `[hsq, hη, zero_pow two_ne_zero, zero_dvd_iff, sub_eq_zero]`.
+
+Conclude with `⟨c, hc⟩`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Establish `h1 : thetaK K a = 0` using `eq_zero_OC fun n => by`. Take `⟨c, hc⟩` from `h n`.
+
+Use `theta_eq_zero_of_sq hc` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_pow, map_natCast, sub_eq_zero]`. Conclude with `⟨_, this⟩`. Take `⟨b, rfl⟩` from `(hmem a).1 h1`. Establish `h2 : thetaK K b = 0` using `eq_zero_OC fun n => by`.
+
+Take `⟨c, hc⟩` from `h n`. Take `⟨d, hd⟩` from `(hsq _).1 hc`. Take `⟨c', hc'⟩` from `step hI hη (a := b) (c := c) (d := d) (n := n) (by linear_combination hd)`. Use `⟨thetaK K c', ?_⟩` and prove the remaining obligations. Rewrite using `[hc', map_add, map_mul, map_pow, map_natCast, (hmem _).2 (dvd_mul_right η d), add_zero]`.
+
+Take `⟨e, rfl⟩` from `(hmem b).1 h2`. Conclude with `(hsq _).2 ⟨e, by ring⟩`.
+-/
 theorem mem_sq_of_forall {a : AK K}
     (h : ∀ n : ℕ, ∃ c : AK K, a - (l : AK K) ^ n * c ∈ RingHom.ker (thetaK K) ^ 2) :
     a ∈ RingHom.ker (thetaK K) ^ 2 := by
@@ -90,6 +125,13 @@ theorem mem_sq_of_forall {a : AK K}
   obtain ⟨e, rfl⟩ := (hmem b).1 h2
   exact (hsq _).2 ⟨e, by ring⟩
 
+/- English proof (translation)
+Take `⟨η, hI⟩` from `exists_gen K`. Establish `hmem : ∀ z : AK K, thetaK K z = 0 ↔ η ∣ z` using `fun z => by`. Rewrite using `[← Ideal.mem_span_singleton, ← hI, RingHom.mem_ker]`. Establish `hsq : ∀ z : AK K, z ∈ RingHom.ker (thetaK K) ^ 2 ↔ η ^ 2 ∣ z` using `fun z => by`. Rewrite using `[hI, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+
+Establish `h1 : thetaK K a = 0` using `theta_eq_zero_of_pow_mul (n := 1) (by rw [pow_one]; exact theta_eq_zero_of_sq h)`. Take `⟨b, rfl⟩` from `(hmem a).1 h1`. Distinguish the cases in `hη : η = 0`. Rewrite using `[hη, zero_mul]`. Conclude with `zero_mem _`.
+
+Take `⟨d, hd⟩` from `(hsq _).1 h`. Establish `h3 : (l : AK K) * b = η * d` using `mul_left_cancel₀ hη (by linear_combination hd)`. Establish `h2 : thetaK K b = 0` using `theta_eq_zero_of_pow_mul (n := 1) (by rw [pow_one, h3]; exact (hmem _).2 (dvd_mul_right η d))`. Take `⟨e, rfl⟩` from `(hmem b).1 h2`. Conclude with `(hsq _).2 ⟨e, by ring⟩`.
+-/
 theorem mem_sq_of_l_mul {a : AK K} (h : (l : AK K) * a ∈ RingHom.ker (thetaK K) ^ 2) :
     a ∈ RingHom.ker (thetaK K) ^ 2 := by
   obtain ⟨η, hI⟩ := exists_gen K
@@ -110,12 +152,20 @@ theorem mem_sq_of_l_mul {a : AK K} (h : (l : AK K) * a ∈ RingHom.ker (thetaK K
   obtain ⟨e, rfl⟩ := (hmem b).1 h2
   exact (hsq _).2 ⟨e, by ring⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Rewrite `h` using `[← map_natCast (Ideal.Quotient.mk (RingHom.ker (thetaK K) ^ 2)), ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (mem_sq_of_l_mul h)`.
+-/
 theorem eq_zero_of_l_mul_quot {q : Q K} (h : ((l : ℕ) : Q K) * q = 0) : q = 0 := by
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective q
   rw [← map_natCast (Ideal.Quotient.mk (RingHom.ker (thetaK K) ^ 2)), ← map_mul,
     Ideal.Quotient.eq_zero_iff_mem] at h
   exact Ideal.Quotient.eq_zero_iff_mem.2 (mem_sq_of_l_mul h)
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Use `Ideal.Quotient.eq_zero_iff_mem.2 (mem_sq_of_forall fun n => ?_)` and prove the remaining obligations. Take `⟨w, hw⟩` from `h n`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Use `⟨c, Ideal.Quotient.eq_zero_iff_mem.1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, map_mul, map_pow, map_natCast, hw, sub_self]`.
+-/
 theorem eq_zero_of_forall_dvd {q : Q K} (h : ∀ n : ℕ, ((l : ℕ) : Q K) ^ n ∣ q) : q = 0 := by
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective q
   refine Ideal.Quotient.eq_zero_iff_mem.2 (mem_sq_of_forall fun n => ?_)
@@ -126,6 +176,15 @@ theorem eq_zero_of_forall_dvd {q : Q K} (h : ∀ n : ℕ, ((l : ℕ) : Q K) ^ n 
 
 omit hl in
 
+/- English proof (translation)
+Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton] at hf ⊢`. Use `choose e he using fun n => hf (Nat.le_succ n)`. Use `choose e' he' using fun n => Ideal.Quotient.mk_surjective (e n)`. Take `⟨g, hg⟩` from `Ideal.Quotient.mk_surjective (f 0)`. Establish `hf' : ∀ n, f n = Ideal.Quotient.mk J (g - ∑ k ∈ Finset.range n, (l : A) ^ k * e' k)` using `fun n => by`.
+
+Proceed by induction on `n with`. Consider the case `zero => simp [hg]`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ← sub_sub, map_sub, ← ih, map_mul, map_pow, map_natCast, he', ← he]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {(l : A)}) (fun n => g - ∑ k ∈ Finset.range n, (l : A) ^ k * e' k) fun {m n} hmn => by`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Rewrite using `[sub_sub_sub_cancel_left, ← Finset.sum_Ico_eq_sub _ hmn]`. Conclude with `Finset.dvd_sum fun k hk => (pow_dvd_pow _ (Finset.mem_Ico.1 hk).1).mul_right _`. Simplify using `only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton] at hL`.
+
+Use `⟨Ideal.Quotient.mk J L, fun n => ?_⟩` and prove the remaining obligations. Use `map_dvd (Ideal.Quotient.mk J) (hL n)` as an intermediate fact. Rewrite `this` using `[map_pow, map_natCast, map_sub, ← hf']`. Then use the resulting hypothesis.
+-/
 theorem precomplete_quot {A : Type} [CommRing A] (J : Ideal A) [IsPrecomplete (Ideal.span {(l : A)}) A] :
     IsPrecomplete (Ideal.span {((l : ℕ) : A ⧸ J)}) (A ⧸ J) where
   prec' f hf := by
@@ -161,10 +220,16 @@ instance complete_quot : IsAdicComplete (Ideal.span {((l : ℕ) : Q K)}) (Q K) :
       have := hq n
       rwa [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton] at this }
 
+/- English proof (translation)
+Establish `h` using `IsLocalization.Away.algebraMap_isUnit (S := QP K) ((l : ℕ) : Q K)`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_l_quot : IsUnit ((l : ℕ) : QP K) := by
   have h := IsLocalization.Away.algebraMap_isUnit (S := QP K) ((l : ℕ) : Q K)
   rwa [map_natCast] at h
 
+/- English proof (translation)
+The claim follows from `IsLocalization.injective (M := Submonoid.powers ((l : ℕ) : Q K)) (QP K) (Submonoid.powers_le.2 (mem_nonZeroDivisors_iff_left.2 fun _ h => eq_zero_of_l_mul_quot h))`.
+-/
 theorem quot_injective : Function.Injective (algebraMap (Q K) (QP K)) :=
   IsLocalization.injective (M := Submonoid.powers ((l : ℕ) : Q K)) (QP K) (Submonoid.powers_le.2
     (mem_nonZeroDivisors_iff_left.2 fun _ h => eq_zero_of_l_mul_quot h))
@@ -175,10 +240,22 @@ def lam : Per.AinfP l →+* QP K :=
   IsLocalization.Away.lift ((l : ℕ) : Per.Ainf l) (g := (algebraMap (Q K) (QP K)).comp (psiA K)) (by
     rw [map_natCast]; exact isUnit_l_quot K)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_eq _ _ a`.
+-/
 theorem lam_alg (a : Per.Ainf l) :
     lam K (algebraMap (Per.Ainf l) (Per.AinfP l) a) = algebraMap (Q K) (QP K) (psiA K a) :=
   IsLocalization.Away.lift_eq _ _ a
 
+/- English proof (translation)
+Set `S : Subalgebra (Per.Ainf l) (Per.AinfP l)` to `{ ((algebraMap (Q K) (QP K)).range.comap (lam K)).toSubsemiring with algebraMap_mem' := fun r => ⟨psiA K r, (lam_alg K r).symm⟩ }`. Use `GlobalTheory.RingIface.acris0_le l S (fun x hx n y hn => ?_) hy` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lam K y ∈ (algebraMap (Q K) (QP K)).range`. Establish `hxK : inA K x ∈ RingHom.ker (thetaK K)` using `by rw [RingHom.mem_ker, thetaK_inA]; exact hx`. Establish `hnu : IsUnit ((n.factorial : ℕ) : QP K)`.
+
+Use `(GlobalTheory.RingBasics.isUnit_nat l n.factorial (Nat.factorial_ne_zero n)).map (lam K)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `e` using `congrArg (lam K) hn`. Rewrite `e` using `[map_mul, map_natCast, map_pow, lam_alg]`. Break down `n with _ | _ | n` into its components or cases.
+
+Conclude with `⟨1, by simpa using e.symm⟩`. Conclude with `⟨psiA K x, by simpa using e.symm⟩`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `h0 : psiA K x ^ (n + 1 + 1) = 0`. Rewrite using `[psiA, RingHom.comp_apply, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.pow_le_pow_right (by omega) (Ideal.pow_mem_pow hxK _)`. Rewrite `e` using `[← map_pow, h0, map_zero]`. Rewrite using `[map_zero]`. Conclude with `(hnu.mul_right_eq_zero.1 e).symm`.
+-/
 theorem lam_mem (y : Per.AinfP l) (hy : y ∈ Per.Acris0 l) : lam K y ∈ (algebraMap (Q K) (QP K)).range := by
   let S : Subalgebra (Per.Ainf l) (Per.AinfP l) :=
     { ((algebraMap (Q K) (QP K)).range.comap (lam K)).toSubsemiring with
@@ -210,6 +287,9 @@ def sig0 : Per.Acris0 l →+* Q K :=
   (equivRange K).symm.toRingHom.comp
     (((lam K).comp (Per.Acris0 l).val.toRingHom).codRestrict _ fun y => lam_mem K y.1 y.2)
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val ((equivRange K).apply_symm_apply ⟨lam K y, lam_mem K y.1 y.2⟩)`.
+-/
 theorem algebraMap_first_order_log (y : Per.Acris0 l) : algebraMap (Q K) (QP K) (sig0 K y) = lam K y :=
   congrArg Subtype.val ((equivRange K).apply_symm_apply ⟨lam K y, lam_mem K y.1 y.2⟩)
 
@@ -217,6 +297,11 @@ def sig : Per.Acris l →+* Q K :=
   (AdicCompletion.ofAlgEquiv (Ideal.span {((l : ℕ) : Q K)})).symm.toAlgHom.toRingHom.comp
     ((GlobalTheory.AdicMaps.padicMap l (sig0 K)).comp (GlobalTheory.AdicMaps.exists_acris_completion l).choose.toRingHom)
 
+/- English proof (translation)
+Establish `h0 : (GlobalTheory.AdicMaps.exists_acris_completion l).choose (aC l a) = algebraMap (Per.Acris0 l) (AdicCompletion (Ideal.span {(l : Per.Acris0 l)}) (Per.Acris0 l)) (algebraMap (Per.Ainf l) (Per.Acris0 l) a)`. Rewrite using `[← (GlobalTheory.AdicMaps.exists_acris_completion l).choose_spec, ← GlobalTheory.RingIface.tower]`. Establish `h2 : sig0 K (algebraMap _ (Per.Acris0 l) a) = psiA K a` using `quot_injective K ((algebraMap_first_order_log K _).trans (lam_alg K a))`. Express the relevant statement in the definitionally equal form `(AdicCompletion.ofAlgEquiv (Ideal.span {((l : ℕ) : Q K)})).symm (GlobalTheory.AdicMaps.padicMap l (sig0 K) ((GlobalTheory.AdicMaps.exists_acris_completion l).choose (aC l a))) = _`. Rewrite using `[h0, GlobalTheory.AdicMaps.padicMap_alg, h2]`.
+
+Conclude with `AdicCompletion.ofAlgEquiv_symm_of _ _`.
+-/
 theorem sig_aC (a : Per.Ainf l) : sig K (aC l a) = psiA K a := by
   have h0 : (GlobalTheory.AdicMaps.exists_acris_completion l).choose (aC l a) =
       algebraMap (Per.Acris0 l) (AdicCompletion (Ideal.span {(l : Per.Acris0 l)}) (Per.Acris0 l)) (algebraMap (Per.Ainf l) (Per.Acris0 l) a) := by
@@ -233,6 +318,9 @@ def rhoC : CK K →+* Q K :=
     rw [sig_aC, psiA, RingHom.comp_apply, RingHom.comp_apply]
     exact congrArg _ (inA_wA K w)
 
+/- English proof (translation)
+Use `RingHom.congr_fun (GlobalTheory.AinfK.ringHom_ext (u := (rhoC K).comp (ofA K)) (v := Ideal.Quotient.mk _) (fun a => ?_) (fun c => ?_)) z` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ofA_inA, rhoC, GlobalTheory.AcrisK.lift_inC, sig_aC]`. Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, ofA_inO, rhoC, GlobalTheory.AcrisK.lift_inI]`. Both sides reduce to the same expression.
+-/
 theorem rhoC_ofA (z : AK K) : rhoC K (ofA K z) = Ideal.Quotient.mk _ z := by
   refine RingHom.congr_fun (GlobalTheory.AinfK.ringHom_ext (u := (rhoC K).comp (ofA K)) (v := Ideal.Quotient.mk _)
     (fun a => ?_) (fun c => ?_)) z
@@ -241,10 +329,20 @@ theorem rhoC_ofA (z : AK K) : rhoC K (ofA K z) = Ideal.Quotient.mk _ z := by
 
 def rhoB : GlobalTheory.AcrisK.BK K →+* QP K := awayLift ((algebraMap (Q K) (QP K)).comp (rhoC K)) (isUnit_l_quot K)
 
+/- English proof (translation)
+The claim follows from `awayLift_toB _ _ z`.
+-/
 theorem rhoB_toB (z : CK K) : rhoB K (toB K z) = algebraMap (Q K) (QP K) (rhoC K z) := awayLift_toB _ _ z
 
 variable {K} in
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `hx2 : rhoB K (toB K (ofA K x)) ^ 2 = 0`. Rewrite using `[rhoB_toB, rhoC_ofA, ← map_pow, ← map_pow, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow (RingHom.mem_ker.2 hx) 2), map_zero]`. Use `eq_zero_of_forall_dvd fun r => ?_` and prove the remaining obligations. Take `⟨N, hN⟩ : ∃ N : ℕ, ∀ n ≥ N, ∃ z : CK K, GlobalTheory.DiscEval.psum (inK K) L (toB K (ofA K x)) n - 0 = toB K ((l : CK K) ^ r * z)` from `ev r`.
+
+Take `⟨z, hz⟩` from `hN (N + 1 + 1) (by omega)`. Establish `e` using `congrArg (rhoB K) hz`. Rewrite `e` using `[sub_zero, GlobalTheory.DiscEval.psum, Finset.sum_range_succ', Finset.sum_range_succ', h0, zero_add, h1, map_zero, zero_mul, add_zero, map_one, one_mul, pow_one, map_add, map_sum, Finset.sum_eq_zero, zero_add, rhoB_toB, rhoB_toB, rhoC_ofA, map_mul, map_pow, map_natCast]`. Conclude with `⟨_, quot_injective K e⟩`. Introduce `k _`.
+
+Rewrite using `[map_mul, map_pow, add_assoc, pow_add, hx2, mul_zero, mul_zero]`.
+-/
 theorem mem_sq_of_ev {L : PowerSeries ↥K.1} (h0 : PowerSeries.coeff 0 L = 0) (h1 : PowerSeries.coeff 1 L = 1)
     {x : AK K} (hx : thetaK K x = 0) (ev : Ev L x 0) : x ∈ RingHom.ker (thetaK K) ^ 2 := by
   rw [← Ideal.Quotient.eq_zero_iff_mem]
@@ -263,6 +361,9 @@ theorem mem_sq_of_ev {L : PowerSeries ↥K.1} (h0 : PowerSeries.coeff 0 L = 0) (
   · intro k _
     rw [map_mul, map_pow, add_assoc, pow_add, hx2, mul_zero, mul_zero]
 
+/- English proof (translation)
+Introduce `l _ K π hπ f hf x hx hnot h0`. Establish `ev` using `ev_ltLog hπ hf x hx`. Rewrite `ev` using `[h0]`. Conclude with `hnot (mem_sq_of_ev ((PowerSeries.coeff_zero_eq_constantCoeff_apply _).trans (GlobalTheory.LTLog.constantCoeff_log _ hπ hf)) (GlobalTheory.LTLog.coeff_one_log _ hπ hf) hx ev)`.
+-/
 theorem ltLog_ne_zero : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)) (hπ : Irreducible π)
     (f : PowerSeries ↥(OL K)) (hf : IsLubinTateSeries π f) (x : AK K) (hx : thetaK K x = 0),
     x ∉ RingHom.ker (thetaK K) ^ 2 → ltLog hπ hf x hx ≠ 0 := by

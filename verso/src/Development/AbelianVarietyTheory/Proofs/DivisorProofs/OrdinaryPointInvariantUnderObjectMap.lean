@@ -20,6 +20,9 @@ def push (m : ObjMap o o₂ f) {k : Type} [CommRing k] (x : Sp k ⟶ S) (g : Ove
     rw [m.cart.1.w, ← Category.assoc]
     exact congrArg (· ≫ f) (Over.w g))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem push_left (m : ObjMap o o₂ f) {k : Type} [CommRing k] (x : Sp k ⟶ S) (g : Over.mk x ⟶ o.A) :
     (push m x g).left = g.left ≫ m.φ := rfl
 

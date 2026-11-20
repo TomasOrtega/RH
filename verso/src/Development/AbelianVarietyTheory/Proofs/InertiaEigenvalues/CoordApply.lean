@@ -49,6 +49,9 @@ def coord (R : Fr l O) (jE : (ZMod n → R.EE) →ₐ[O] W.EE) (T : LocLat G Qp 
     refine Finset.sum_congr rfl fun k _ => ?_
     rw [← smul_assoc, ← map_smul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coord_apply (R : Fr l O) (jE : (ZMod n → R.EE) →ₐ[O] W.EE) (T : LocLat G Qp LL O) {r : ℕ}
     (b : Fin r → W.DD T) (x : DD R n r) :
     coord W R jE T b x = ∑ k, jE (fun i => x i k) • b k := rfl

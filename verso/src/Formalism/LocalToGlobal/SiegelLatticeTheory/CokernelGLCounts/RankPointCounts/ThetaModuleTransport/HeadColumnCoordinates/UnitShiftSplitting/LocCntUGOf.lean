@@ -11,12 +11,72 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
+/- English proof (translation)
+Unfold `HermSp.Dl`. Rewrite using `[dif_pos le_rfl]`. Both sides reduce to the same expression.
+-/
 theorem dl_full (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) :
     H.Dl f f' (r + 1) = (H.Zhat f f').det := by
   unfold HermSp.Dl
   rw [dif_pos le_rfl]
   rfl
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hOK r n hmode V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD Y₁ Y₂ be₁ be₂ al₁ al₂ eY eb`. Take `⟨g, hs⟩` from `Option.isSome_iff_exists.1 hmode`. Establish `hg` using `hyp.1`. Establish `hT` using `(hg.1.2.2.2.2.2 g hs).2.1`. Establish `hF₁ : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f t₁.T` using `⟨hg.1.2.1.2.1, hg.1.2.1.2.2.1⟩`.
+
+Establish `hF₁' : Formalism.MainNotions.ThinScalesBound.FrameK H t₁.f' t₁.T'` using `⟨hg.1.2.2.1.2.1, hg.1.2.2.1.2.2.1⟩`. Establish `hMM₁ : MMInt H t₁`. Establish `hle : MMo H t₁ ≤ t₁.abelian₂` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hg.2.1 i)`. Introduce `m hm m' hm'`. Conclude with `(hg.1.1.2.2 m).1 (hle hm) m' (hle hm')`.
+
+Set `t₂ : Term V M r` to `⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩`. Set `ZZ₁` to `H.ZZplus t₁`. Set `ZZ₂` to `HermSp.ZZplusOf M (H.Zhat f₂ f₂') t₁.T t₁.T'`. Establish `mem₁ : ∀ a b, ZZ₁ a b ∈ M.R` using `zz_mem_R hs H t₁ hF₁ hF₁' hT hMM₁`. Set `Z₁ : Matrix (Fin (r + 1)) (Fin (r + 1)) M.R` to `Matrix.of fun a b => ⟨ZZ₁ a b, mem₁ a b⟩`.
+
+Establish `e₁ : Z₁.map M.R.subtype = ZZ₁` using `by ext a b; rfl`. Establish `hY₁ : ZZ₁.submatrix Fin.castSucc Fin.castSucc = Y₁.Z.map M.R.subtype`. Use extensionality with `a b`. Conclude with `(eY a b).1.symm`. Establish `hY₂ : ZZ₂.submatrix Fin.castSucc Fin.castSucc = Y₂.Z.map M.R.subtype`.
+
+Use extensionality with `a b`. Conclude with `(eY a b).2.symm`. Establish `hu₁ : IsUnit (ZZ₁.submatrix Fin.castSucc Fin.castSucc).det` using `by rw [hY₁]; exact Y₁.unit`. Establish `hu₂ : IsUnit (ZZ₂.submatrix Fin.castSucc Fin.castSucc).det` using `by rw [hY₂]; exact Y₂.unit`. Establish `hrelZh : ((H.Zhat t₁.f t₁.f').submatrix Fin.castSucc Fin.castSucc).det * (H.Zhat f₂ f₂').det = ((H.Zhat f₂ f₂').submatrix Fin.castSucc Fin.castSucc).det * (H.Zhat t₁.f t₁.f').det`.
+
+Rewrite using `[← dl_eq_det, ← dl_eq_det, ← dl_full, ← dl_full]`. Conclude with `hyp.2.2.2.1.2.2.2.2.2`. Establish `hrel : (ZZ₁.submatrix Fin.castSucc Fin.castSucc).det * ZZ₂.det = (ZZ₂.submatrix Fin.castSucc Fin.castSucc).det * ZZ₁.det` using `det_rel_split hs _ _ _ _ hrelZh`. Set `u : E` to `ZZ₁.det * ↑(hu₁.unit⁻¹)`. Take `⟨a₀, ha₀⟩` from `exists_unit_shift g u`.
+
+Set `x : M.R` to `⟨algebraMap F E a₀, alg_mem_R hs a₀⟩`. Establish `hmapZ : ∀ Z : Matrix (Fin (r + 1)) (Fin (r + 1)) M.R, (Z + cornerM r x).map M.R.subtype = Z.map M.R.subtype + cornerM r (algebraMap F E a₀)`. Introduce `Z`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, cornerM, Matrix.of_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp [x]`. Establish `hd₁ : ZZ₁.det = (ZZ₁.submatrix Fin.castSucc Fin.castSucc).det * u`. Simplify using `only [u]`. Rewrite using `[mul_comm, mul_assoc, IsUnit.val_inv_mul, mul_one]`. Establish `hd₂ : ZZ₂.det = (ZZ₂.submatrix Fin.castSucc Fin.castSucc).det * u`.
+
+Establish `hh : (ZZ₁.submatrix Fin.castSucc Fin.castSucc).det * ↑(hu₁.unit⁻¹) = 1` using `IsUnit.mul_val_inv hu₁`. Simplify using `only [u]`. Combine the equalities or inequalities in the displayed calculation. Establish `unit₁ : IsUnit ((Z₁ + cornerM r x).map M.R.subtype).det`. Rewrite using `[hmapZ, e₁, det_add_cornerM, hd₁]`.
+
+Establish `: (ZZ₁.submatrix Fin.castSucc Fin.castSucc).det * u + algebraMap F E a₀ * (ZZ₁.submatrix Fin.castSucc Fin.castSucc).det = (ZZ₁.submatrix Fin.castSucc Fin.castSucc).det * (u + algebraMap F E a₀)` using `by ring`. Rewrite using `[this]`. Conclude with `hu₁.mul ha₀`. Set `W₁ : M.Mat (r + 1)` to `⟨Z₁ + cornerM r x, unit₁⟩`. Establish `eY₁ : ∀ a b : Fin r, Y₁.Z a b = W₁.Z a.castSucc b.castSucc` using `fun a b => by`.
+
+Establish `: W₁.Z a.castSucc b.castSucc = Z₁ a.castSucc b.castSucc`. Simplify using `[W₁, cornerM_castSucc_left]`. Rewrite using `[this]`. Conclude with `Subtype.ext (eY a b).1`. Establish `ebe₁ : ∀ a : Fin r, be₁ a = W₁.Z a.castSucc (Fin.last r)` using `fun a => by`.
+
+Establish `: W₁.Z a.castSucc (Fin.last r) = Z₁ a.castSucc (Fin.last r)`. Simplify using `[W₁, cornerM_castSucc_left]`. Rewrite using `[this]`. Conclude with `Subtype.ext (eb a).1`. Establish `eal₁ : ∀ a : Fin r, al₁ a = W₁.Z (Fin.last r) a.castSucc` using `fun a => by`.
+
+Establish `: W₁.Z (Fin.last r) a.castSucc = Z₁ (Fin.last r) a.castSucc`. Simplify using `[W₁, cornerM_castSucc_right]`. Rewrite using `[this]`. Conclude with `Subtype.ext (eb a).2.2.1`. Establish `hhdW₁ : headDet M W₁.Z = (ZZ₁.submatrix Fin.castSucc Fin.castSucc).det` using `by show (((Z₁ + cornerM r x).map M.R.subtype).submatrix Fin.castSucc Fin.castSucc).det = _`.
+
+Rewrite using `[hmapZ, e₁, head_add_cornerM]`. Establish `hdetW₁ : (W₁.Z.map M.R.subtype).det = ZZ₁.det + algebraMap F E a₀ * (ZZ₁.submatrix Fin.castSucc Fin.castSucc).det` using `by show ((Z₁ + cornerM r x).map M.R.subtype).det = _`. Rewrite using `[hmapZ, e₁, det_add_cornerM]`. Distinguish the cases in `hint : ∀ a b, ZZ₂ a b ∈ M.R`. Set `Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) M.R` to `Matrix.of fun a b => ⟨ZZ₂ a b, hint a b⟩`.
+
+Establish `e₂ : Z₂.map M.R.subtype = ZZ₂` using `by ext a b; rfl`. Establish `unit₂ : IsUnit ((Z₂ + cornerM r x).map M.R.subtype).det`. Rewrite using `[hmapZ, e₂, det_add_cornerM, hd₂]`. Establish `: (ZZ₂.submatrix Fin.castSucc Fin.castSucc).det * u + algebraMap F E a₀ * (ZZ₂.submatrix Fin.castSucc Fin.castSucc).det = (ZZ₂.submatrix Fin.castSucc Fin.castSucc).det * (u + algebraMap F E a₀)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `hu₂.mul ha₀`. Set `W₂ : M.Mat (r + 1)` to `⟨Z₂ + cornerM r x, unit₂⟩`. Establish `hu₂' : IsUnit (headDet M Z₂)` using `by show IsUnit ((Z₂.map M.R.subtype).submatrix Fin.castSucc Fin.castSucc).det`. Rewrite using `[e₂]`. Conclude with `hu₂`.
+
+Rewrite using `[h1 F E M hOK r n hmode V H hn t₁ f₂ f₂' φ φ' hyp hD Z₁ Z₂ e₁ e₂ hu₂', ← card_isoMbe_shift Z₁ Z₂ x]`. Use `Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUL.mbeU_holds M r W₁ W₂ Y₁ Y₂ be₁ be₂ al₁ al₂ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b`. Use `⟨eY₁ a b, ?_⟩` and prove the remaining obligations. Establish `: W₂.Z a.castSucc b.castSucc = Z₂ a.castSucc b.castSucc`.
+
+Simplify using `[W₂, cornerM_castSucc_left]`. Rewrite using `[this]`. Conclude with `Subtype.ext (eY a b).2`. Introduce `a`. Use `⟨ebe₁ a, ?_, eal₁ a, ?_⟩` and prove the remaining obligations.
+
+Establish `: W₂.Z a.castSucc (Fin.last r) = Z₂ a.castSucc (Fin.last r)`. Simplify using `[W₂, cornerM_castSucc_left]`. Rewrite using `[this]`. Conclude with `Subtype.ext (eb a).2.1`. Establish `: W₂.Z (Fin.last r) a.castSucc = Z₂ (Fin.last r) a.castSucc`.
+
+Simplify using `[W₂, cornerM_castSucc_right]`. Rewrite using `[this]`. Conclude with `Subtype.ext (eb a).2.2.2`. Establish `hhdW₂ : headDet M W₂.Z = (ZZ₂.submatrix Fin.castSucc Fin.castSucc).det` using `by show (((Z₂ + cornerM r x).map M.R.subtype).submatrix Fin.castSucc Fin.castSucc).det = _`. Rewrite using `[hmapZ, e₂, head_add_cornerM]`.
+
+Establish `hdetW₂ : (W₂.Z.map M.R.subtype).det = ZZ₂.det + algebraMap F E a₀ * (ZZ₂.submatrix Fin.castSucc Fin.castSucc).det` using `by show ((Z₂ + cornerM r x).map M.R.subtype).det = _`. Rewrite using `[hmapZ, e₂, det_add_cornerM]`. Rewrite using `[hhdW₁, hhdW₂, hdetW₁, hdetW₂]`. Take the linear combination `hrel`. Establish `hTh : Theta H t₁ t₂ φ φ' = ∅`.
+
+Use extensionality with `θ`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hθ`. Conclude with `hint (zz_mem_R hs H t₂ hyp.2.1 hyp.2.2.1 hT hθ.2.1)`. Use `haveI hne : IsEmpty {ψ : M.Cok Y₁ ≃ₗ[M.R] M.Cok Y₂ // ψ (Submodule.Quotient.mk be₁) = Submodule.Quotient.mk be₂ ∧ ∀ v, M.linQ Y₂ al₂ (ψ v) = M.linQ Y₁ al₁ v} := by`.
+
+Use `⟨fun ψ => hint ?_⟩` and prove the remaining obligations. Establish `hc` using `Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUL.cornerU_holds M r W₁ (ZZ₂ + cornerM r (algebraMap F E a₀)) Y₁ Y₂ be₁ be₂ al₁ al₂ (fun a b => ⟨eY₁ a b, by show (Y₂.Z a b : E) = ZZ₂ a.castSucc b.castSucc + cornerM r (algebraMap F E a₀) a.castSucc b.castSucc`. Rewrite using `[cornerM_castSucc_left, (eY a b).2, add_zero]⟩)`. Use the proof step `(fun a => ⟨ebe₁ a, by show (be₂ a : E) = ZZ₂ a.castSucc (Fin.last r) + cornerM r (algebraMap F E a₀) a.castSucc (Fin.last r)`. Rewrite using `[cornerM_castSucc_left, (eb a).2.1, add_zero], eal₁ a, by`.
+
+Use `show (al₂ a : E) = ZZ₂ (Fin.last r) a.castSucc + cornerM r (algebraMap F E a₀) (Fin.last r) a.castSucc`. Rewrite using `[cornerM_castSucc_right, (eb a).2.2.2, add_zero]⟩)`. Use the proof step `(by`. Rewrite using `[hhdW₁, hdetW₁, head_add_cornerM, det_add_cornerM]`. Take the linear combination `hrel) ⟨ψ⟩`.
+
+Establish `hcorner : ZZ₂ (Fin.last r) (Fin.last r) ∈ M.R`. Establish `h' : ZZ₂ (Fin.last r) (Fin.last r) + algebraMap F E a₀ ∈ M.R`. Use `hc` as an intermediate fact. Simplify using `only [Matrix.add_apply, cornerM_last] at this`. Conclude with `this`.
+
+Use `M.R.sub_mem h' (alg_mem_R hs a₀)` as an intermediate fact. Simplify using `using this`. Introduce `a b`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨a', rfl⟩ | rfl <;>`. Break down `Fin.eq_castSucc_or_eq_last b with ⟨b', rfl⟩ | rfl` into its components or cases.
+
+Use `(Y₂.Z a' b').2` as an intermediate fact. Rewrite `this` using `[(eY a' b').2]`. Then use the resulting hypothesis. Use `(be₂ a').2` as an intermediate fact. Rewrite `this` using `[(eb a').2.1]`. Then use the resulting hypothesis. Use `(al₂ b').2` as an intermediate fact.
+
+Rewrite `this` using `[(eb b').2.2.2]`. Then use the resulting hypothesis. Conclude with `hcorner`. Use `show Nat.card (Theta H t₁ t₂ φ φ') = _`. Rewrite using `[hTh, Nat.card_of_isEmpty, Model.nIsoBA, Nat.card_of_isEmpty]`.
+-/
 theorem locCntUG_of (h1 : Formalism.MainNotions.ThinScalesBound.AllLoc (fun M => ∀ r n, ThetaMbeG M r n)) : Formalism.L2.SG.LocalCountModules.LocCntUG.LocCntUG := by
   intro F _ _ _ E _ _ _ _ M hOK r n hmode V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD Y₁ Y₂ be₁ be₂ al₁ al₂ eY eb
   obtain ⟨g, hs⟩ := Option.isSome_iff_exists.1 hmode

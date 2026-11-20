@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsZModTorsorIff
 open CategoryTheory Limits TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.FiniteColim.eventually_finite_baseChange) | (exact GlobalTheory.FiniteColim.eventually_finite_baseChange) | (intros; apply GlobalTheory.FiniteColim.eventually_finite_baseChange <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eventually_finite_baseChange_filtered_colimit : ∀ (J : Type) [SmallCategory J] [IsFiltered J] (F : J ⥤ CommRingCat.{0}) (c : Cocone F),
     IsColimit c → ∀ (j : J) (A : Type) [CommRing A] [Algebra (F.obj j) A]
     [Algebra.FinitePresentation (F.obj j) A],

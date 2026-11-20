@@ -26,6 +26,9 @@ def degG {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} {κ
   -(∑ v, Real.log (nI (((x⁻¹ : GA E n).val * M.map (algebraMap E (Ad E))).map (cV v))) +
     ∑ᶠ w, Real.log (nF (((x⁻¹ : GA E n).val * M.map (algebraMap E (Ad E))).map (cW w))))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem degG_eq {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n k : ℕ} (x : GA E n)
     (M : Matrix (Fin n) (Fin k) E) : degG x M = degM x M := rfl
 

@@ -10,6 +10,33 @@ set_option maxHeartbeats 1600000
 
 namespace GlobalTheory.WittHighPow
 
+/- English proof (translation)
+Introduce `p _ R _ _ _ x N m`. Use `set J : Ideal R := Ideal.span {x.coeff 0 ^ m} with hJ`. Set `f : WittVector p R →+* TruncatedWittVector p N (R ⧸ J)` to `(WittVector.truncate N).comp (WittVector.map (Ideal.Quotient.mk J))`. Establish `hmem : ∀ w : WittVector p R, w ∈ RingHom.ker f ↔ ∀ n < N, w.coeff n ∈ J`. Introduce `w`.
+
+Rewrite using `[RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h n hn`. Use `congrArg (fun t => TruncatedWittVector.coeff ⟨n, hn⟩ t) h` as an intermediate fact. Simplify using `only [f, RingHom.comp_apply, WittVector.coeff_truncate, WittVector.map_coeff, TruncatedWittVector.coeff_zero] at this`.
+
+Conclude with `(Ideal.Quotient.eq_zero_iff_mem).1 this`. Introduce `h`. Use extensionality with `i`. Simplify using `only [f, RingHom.comp_apply, WittVector.coeff_truncate, WittVector.map_coeff, TruncatedWittVector.coeff_zero]`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem).2 (h i i.2)`.
+
+Use `set I := RingHom.ker f`. Use `set ϖ := x.coeff 0`. Use `set t : WittVector p R := WittVector.teichmuller p ϖ`. Use `set y : WittVector p R := x - t`. Establish `hy0 : y.coeff 0 = 0`.
+
+Establish `h1 : x = y + t` using `by simp [y]`. Establish `h2` using `congrArg (fun w => w.coeff 0) h1`. Simplify using `only [WittVector.add_coeff_zero, t, WittVector.teichmuller_coeff_zero] at h2`. Take the linear combination `-h2`. Establish `hyV : y = WittVector.verschiebung (y.shift 1)`.
+
+Use `WittVector.eq_iterate_verschiebung (x := y) (n := 1) (by` as an intermediate fact. Introduce `i hi`. Use `interval_cases i`. Conclude with `hy0)`. Simplify using `using this`.
+
+Set `u : WittVector p R` to `WittVector.mk p (fun n => (frobeniusEquiv R p).symm ((y.shift 1).coeff n))`. Establish `hu : WittVector.frobenius u = y.shift 1`. Use extensionality with `n`. Rewrite using `[WittVector.coeff_frobenius_charP]`. Simplify using `only [u, WittVector.coeff_mk]`.
+
+Conclude with `frobenius_apply_frobeniusEquiv_symm R p _`. Establish `hyp : y = u * (p : WittVector p R)`. Rewrite using `[hyV, ← hu, WittVector.verschiebung_frobenius]`. Establish `hx : x = t + u * (p : WittVector p R)`. Rewrite using `[← hyp]`.
+
+Simplify using `[y]`. Establish `ht : t ^ m ∈ I`. Rewrite using `[hmem]`. Introduce `n _`. Establish `: t ^ m = WittVector.teichmuller p (ϖ ^ m)` using `by simp [t, map_pow]`.
+
+Rewrite using `[this]`. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Substitute `h` using the available equality. Rewrite using `[WittVector.teichmuller_coeff_zero]`. Conclude with `Ideal.subset_span rfl`.
+
+Rewrite using `[WittVector.teichmuller_coeff_pos _ _ n h]`. Conclude with `J.zero_mem`. Establish `hp' : (u * (p : WittVector p R)) ^ N ∈ I`. Rewrite using `[hmem]`. Introduce `n hn`.
+
+Rewrite using `[mul_pow, WittVector.mul_pow_charP_coeff_zero _ hn]`. Conclude with `J.zero_mem`. Use `⟨m + N, fun z n hn => ?_⟩` and prove the remaining obligations. Establish `hk : x ^ (m + N) ∈ I`. Rewrite using `[hx]; exact Ideal.add_pow_mem_of_pow_mem_of_le I ht hp' (by omega)`.
+
+Conclude with `(hmem _).1 (I.mul_mem_right z hk) n hn`.
+-/
 theorem high_pow_coeff_mem_span_pow :
     ∀ {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [CharP R p] [PerfectRing R p] (x : WittVector p R) (N m : ℕ), ∃ k : ℕ, ∀ (z : WittVector p R) (n : ℕ), n < N → (x ^ k * z).coeff n ∈ Ideal.span {x.coeff 0 ^ m} := by
   intro p _ R _ _ _ x N m

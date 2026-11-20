@@ -12,20 +12,38 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [AddCommGroup V₂] [Module ℂ V₂] {π₁ : Representation ℂ (GL (Fin (m + 1)) k) V₁}
   {π₂ : Representation ℂ (GL (Fin (m + 1)) k) V₂} {l₁ : Module.Dual ℂ V₁} {l₂ : Module.Dual ℂ V₂}
 
+/- English proof (translation)
+Establish `hc : Continuous fun t : k => tv i j h (-t)` using `(continuous_tv i j h).comp continuous_neg`. Use `IsOpen.mem_nhds (((hs₁ v₁).preimage hc).inter ((hs₂ v₂).preimage hc)) ?_` and prove the remaining obligations. Simplify using `[tv_zero]`.
+-/
 theorem small_fix (hs₁ : IsSmooth π₁) (hs₂ : IsSmooth π₂) (v₁ : V₁) (v₂ : V₂) (i j : Fin (m + 1)) (h : i ≠ j) :
     {t : k | π₁ (tv i j h (-t)) v₁ = v₁ ∧ π₂ (tv i j h (-t)) v₂ = v₂} ∈ 𝓝 (0 : k) := by
   have hc : Continuous fun t : k => tv i j h (-t) := (continuous_tv i j h).comp continuous_neg
   refine IsOpen.mem_nhds (((hs₁ v₁).preimage hc).inter ((hs₂ v₂).preimage hc)) ?_
   simp [tv_zero]
 
+/- English proof (translation)
+Introduce `e` and use `by have := congrArg Fin.val e simp at this omega`.
+-/
 theorem last_ne_zero (hm : 0 < m) : Fin.last m ≠ (0 : Fin (m + 1)) := fun e => by
   have := congrArg Fin.val e
   simp at this
   omega
 
+/- English proof (translation)
+Simplify using `[Matrix.transvection, Matrix.one_apply_ne h]`.
+-/
 theorem transvection_apply_same (i j : Fin (m + 1)) (h : i ≠ j) (t : k) : Matrix.transvection i j t i j = t := by
   simp [Matrix.transvection, Matrix.one_apply_ne h]
 
+/- English proof (translation)
+Establish `hc : l₁ v₁ = l₂ v₂`. Use `hX 1` as an intermediate fact. Rewrite `this` using `[corner_one, map_one, map_one, Module.End.one_apply, Module.End.one_apply]`. Then use the resulting hypothesis. Establish `hL` using `last_ne_zero hm`. Establish `hO` using `small_fix hs₁ hs₂ v₁ v₂ _ _ hL`.
+
+Establish `key : ∀ t : k, ∀ ht : t ≠ 0, t ∈ {t : k | π₁ (tv _ _ hL (-t)) v₁ = v₁ ∧ π₂ (tv _ _ hL (-t)) v₂ = v₂} → ω₁ (Units.mk0 t ht) = ω₂ (Units.mk0 t ht)`. Introduce `t ht hmem`. Establish `hent : (((tv _ _ hL (-t))⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) 0 = (Units.mk0 t ht : k)`. Rewrite using `[val_tv_inv, neg_neg, transvection_apply_same _ _ hL, Units.val_mk0]`. Use `agree_scalar h₁ h₂ hl₁ hl₂ hW hX _ _ hent` as an intermediate fact.
+
+Rewrite `this` using `[hmem.1, hmem.2, ← hc]`. Conclude with `Units.ext (mul_right_cancel₀ h0 this)`. Use `MonoidHom.ext fun a => ?_` and prove the remaining obligations. Take `⟨t, ht, htO, hatO⟩` from `exists_small hO (a : k)`. Establish `hat : (a : k) * t ≠ 0` using `mul_ne_zero a.ne_zero ht`.
+
+Establish `e : Units.mk0 ((a : k) * t) hat = a * Units.mk0 t ht` using `Units.ext (by simp)`. Establish `h1` using `key _ hat hatO`. Rewrite `h1` using `[e, map_mul, map_mul, key _ ht htO]`. Conclude with `mul_right_cancel h1`.
+-/
 theorem centralChar_eq (hm : 0 < m) (hs₁ : IsSmooth π₁) (hs₂ : IsSmooth π₂) {ω₁ ω₂ : kˣ →* ℂˣ}
     (h₁ : HasCentralChar π₁ ω₁) (h₂ : HasCentralChar π₂ ω₂) (hl₁ : IsFunctional ψ π₁ l₁) (hl₂ : IsFunctional ψ π₂ l₂)
     (hW : ∀ (v₁ : V₁) (v₂ : V₂), (∀ g : GL (Fin m) k, l₁ (π₁ (corner g) v₁) = l₂ (π₂ (corner g) v₂)) →
@@ -53,6 +71,15 @@ theorem centralChar_eq (hm : 0 < m) (hs₁ : IsSmooth π₁) (hs₂ : IsSmooth �
   rw [e, map_mul, map_mul, key _ ht htO] at h1
   exact mul_right_cancel h1
 
+/- English proof (translation)
+Establish `step : ∀ g : GL (Fin (m + 1)) k, ((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) 0 ≠ 0 → l₁ (π₁ g v₁) = l₂ (π₂ g v₂)`. Introduce `g hg`. Use `agree_scalar h₁ h₂ hl₁ hl₂ hW hX g (Units.mk0 _ hg) rfl` as an intermediate fact. Conclude with `mul_left_cancel₀ (ω (Units.mk0 _ hg)).ne_zero this`. Distinguish the cases in `hg : ((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) 0 = 0`.
+
+Use `swap`. Conclude with `step g hg`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, ((g⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) j 0 ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+
+Establish `h1` using `congrFun (congrFun g.mul_inv 0) 0`. Rewrite `h1` using `[Matrix.mul_apply]`. Simplify using `[hall] at h1`. Establish `hjL : Fin.last m ≠ j` using `fun e => hj (e ▸ hg)`. Take `⟨t, ht, htO, -⟩` from `exists_small (small_fix hs₁ hs₂ v₁ v₂ _ _ hjL) 1`.
+
+Establish `hent : (((g * tv _ _ hjL (-t))⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) 0 ≠ 0`. Rewrite using `[mul_inv_rev, Units.val_mul, val_tv_inv, neg_neg, Matrix.transvection_mul_apply_same, hg, zero_add]`. Conclude with `mul_ne_zero ht hj`. Use `step _ hent` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, htO.1, htO.2]`. Then use the resulting hypothesis.
+-/
 theorem agree_all (hm : 0 < m) (hs₁ : IsSmooth π₁) (hs₂ : IsSmooth π₂) {ω : kˣ →* ℂˣ}
     (h₁ : HasCentralChar π₁ ω) (h₂ : HasCentralChar π₂ ω) (hl₁ : IsFunctional ψ π₁ l₁) (hl₂ : IsFunctional ψ π₂ l₂)
     (hW : ∀ (v₁ : V₁) (v₂ : V₂), (∀ g : GL (Fin m) k, l₁ (π₁ (corner g) v₁) = l₂ (π₂ (corner g) v₂)) →

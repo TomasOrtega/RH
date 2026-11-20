@@ -3,6 +3,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnimodularLattice.
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnimodularLattice.FrameC
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnimodularLattice.Transf
 
+/- English proof (translation)
+The claim follows from `PI.NUnimodLoc.UnitaryGroupMassFormula.nUnimodLoc_of PI.NUnimodLoc.UnitaryGroupMassFormula.FC.frame_conjugation_unimodular PI.NUnimodLoc.UnitaryGroupMassFormula.TR.transfer_holds`.
+-/
 theorem n_unimodular_local : PI.NUnimodLoc.NUnimodLoc :=
   PI.NUnimodLoc.UnitaryGroupMassFormula.nUnimodLoc_of PI.NUnimodLoc.UnitaryGroupMassFormula.FC.frame_conjugation_unimodular
     PI.NUnimodLoc.UnitaryGroupMassFormula.TR.transfer_holds

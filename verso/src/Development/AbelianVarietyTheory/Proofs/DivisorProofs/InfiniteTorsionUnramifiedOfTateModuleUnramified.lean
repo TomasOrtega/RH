@@ -14,6 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbVarRed
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `h1 : (m : R) = 0` using `IsFractionRing.injective R K (by rw [map_natCast, map_zero, h0])`. Rewrite using `[← map_natCast (residue R), h1, map_zero]`.
+-/
 theorem natCast_ne_zero_of_residue {R K : Type} [CommRing R] [IsLocalRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] {m : ℕ} (h : (m : ResidueField R) ≠ 0) : (m : K) ≠ 0 := by
   intro h0
@@ -21,6 +24,9 @@ theorem natCast_ne_zero_of_residue {R K : Type} [CommRing R] [IsLocalRing R] [Fi
   have h1 : (m : R) = 0 := IsFractionRing.injective R K (by rw [map_natCast, map_zero, h0])
   rw [← map_natCast (residue R), h1, map_zero]
 
+/- English proof (translation)
+Introduce `σ hσ x hx`. Take `⟨t, rfl⟩` from `GlobalTheory.T.tateModule_level_surjective_of_divisible l (ptOver K Ω ⟶ A) (GlobalTheory.T.abelianVariety_sepClosed_point_divisible K Ω A hA l hl) n x hx`. Rewrite using `[← lev_galTate, h σ hσ]`. Both sides reduce to the same expression.
+-/
 theorem torsionUnramified_pow_of_tateUnramified {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [IsSepClosed Ω]
     {V : ValuationSubring Ω} {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
     {l : ℕ} [Fact l.Prime] (hl : (l : K) ≠ 0) (h : TateUnramified A V l) (n : ℕ) :
@@ -30,6 +36,11 @@ theorem torsionUnramified_pow_of_tateUnramified {K Ω : Type} [Field K] [Field �
   rw [← lev_galTate, h σ hσ]
   rfl
 
+/- English proof (translation)
+Introduce `R K Ω _ _ _ _ _ _ _ _ _ _ V _ A _ _ hA l hp hl h`. Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed K`. Use `Set.infinite_of_injective_forall_mem (f := fun n : ℕ => l ^ n) (Nat.pow_right_injective hp.out.two_le) fun n => ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_pow]`. Conclude with `pow_ne_zero _ hl`.
+
+Conclude with `torsionUnramified_pow_of_tateUnramified hA (natCast_ne_zero_of_residue hl) h n`.
+-/
 theorem infinite_torsionUnramified_of_tateUnramified :
     ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [PerfectField (ResidueField R)]
       [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]

@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThetaDecay
 open scoped TensorProduct NNReal Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeilDirBound.norm_piInf_actAB_le_target | exact GlobalTheory.WeilDirBound.norm_piInf_actAB_le_target | (intros; apply GlobalTheory.WeilDirBound.norm_piInf_actAB_le_target <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arch_bound_unitary_action : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d) (Fin d) E) (p : UA σ J × UA σ J')
     (x : Matrix (Fin n) (Fin d) (AE F E)) (B : ℝ), 0 ≤ B →

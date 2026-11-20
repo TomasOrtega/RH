@@ -19,6 +19,11 @@ namespace S1
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `Sm Rk at *`. Use `contDiffOn_pi.mpr fun i => contDiffOn_pi.mpr fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct, Pi.star_apply]`. Establish `hs : ∀ l, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => star (q x l)) s` using `fun l => by`. Establish `h` using `Complex.conjCLE.contDiff.comp_contDiffOn (contDiffOn_pi.mp hq l)`.
+
+Simplify `h` using `[Function.comp_def]`. Conclude with `(contDiffOn_pi.mp hp i).mul (ContDiffOn.sum fun l _ => (hs l).mul contDiffOn_const)`.
+-/
 lemma smooth_hermitian_rank_two {s : Set (B.Mat k r)} {p q : B.Mat k r → Fin (2 * r + k + 1) → ℂ}
     (hp : Sm p s) (hq : Sm q s) : Sm (fun x => Rk k r (p x) (q x)) s := by
   unfold Sm Rk at *
@@ -29,6 +34,15 @@ lemma smooth_hermitian_rank_two {s : Set (B.Mat k r)} {p q : B.Mat k r → Fin (
     simpa [Function.comp_def] using h
   exact (contDiffOn_pi.mp hp i).mul (ContDiffOn.sum fun l _ => (hs l).mul contDiffOn_const)
 
+/- English proof (translation)
+Unfold `Sm unitH Formalism.QuantumDeterminants.herm at *`. Establish `hvi : ∀ i, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => v x i) s` using `fun i => contDiffOn_pi.mp hv i`. Establish `hsi : ∀ i, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => star (v x i)) s` using `fun i => by`. Establish `h` using `Complex.conjCLE.contDiff.comp_contDiffOn (hvi i)`. Simplify `h` using `[Function.comp_def]`.
+
+Establish `hh : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => star (v x) ⬝ᵥ Hpk k r *ᵥ v x) s`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply]`. Conclude with `ContDiffOn.sum fun i _ => (hsi i).mul (ContDiffOn.sum fun j _ => contDiffOn_const.mul (hvi j))`. Establish `hre : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => (star (v x) ⬝ᵥ Hpk k r *ᵥ v x).re) s`. Establish `h` using `Complex.reCLM.contDiff.comp_contDiffOn hh`.
+
+Simplify `h` using `[Function.comp_def]`. Establish `hsq` using `hre.sqrt fun x hx => (hp x hx).ne'`. Establish `hinv` using `hsq.inv fun x hx => (Real.sqrt_pos.mpr (hp x hx)).ne'`. Establish `hc : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => (((Real.sqrt (star (v x) ⬝ᵥ Hpk k r *ᵥ v x).re)⁻¹ : ℝ) : ℂ)) s`. Establish `h` using `Complex.ofRealCLM.contDiff.comp_contDiffOn hinv`.
+
+Simplify `h` using `[Function.comp_def]`. Conclude with `hc.smul hv`.
+-/
 lemma s_unitH {s : Set (B.Mat k r)} {v : B.Mat k r → Fin (2 * r + k + 1) → ℂ} (hv : Sm v s)
     (hp : ∀ x ∈ s, 0 < (Formalism.QuantumDeterminants.herm (Hpk k r) (v x) (v x)).re) : Sm (fun x => unitH k r (v x)) s := by
   unfold Sm unitH Formalism.QuantumDeterminants.herm at *
@@ -53,6 +67,23 @@ lemma s_unitH {s : Set (B.Mat k r)} {v : B.Mat k r → Fin (2 * r + k + 1) → �
 end S1
 
 open S1 in
+/- English proof (translation)
+Introduce `k r z z' _hk hz hz'`. Set `fd : B.Mat k r → ℂ` to `fun g => (Zhat k r z z' g).det`. Set `f1 : B.Mat k r → ℝ` to `fun g => (Formalism.QuantumDeterminants.herm (Hpk k r) (omW k r z z' g) (omW k r z z' g)).re`. Set `f2 : B.Mat k r → ℝ` to `fun g => (Formalism.QuantumDeterminants.herm (Hpk k r) (omS k r z z' g) (omS k r z z' g)).re`. Establish `hid : Sm (fun g : B.Mat k r => g) Set.univ` using `contDiffOn_id`.
+
+Establish `cd : Continuous fd` using `(contDiffOn_univ.1 (s_det (s_Zhat z z' hid))).continuous`. Establish `c1 : Continuous f1` using `(contDiffOn_univ.1 (s_re (s_herm _ (s_omW z z' hid) (s_omW z z' hid)))).continuous`. Establish `c2 : Continuous f2` using `(contDiffOn_univ.1 (s_re (s_herm _ (s_omS (s := Set.univ) z z') (s_omS z z')))).continuous`. Set `U : Set (B.Mat k r)` to `(fd ⁻¹' {0}ᶜ ∩ {g | 0 < f1 g}) ∩ {g | 0 < f2 g}`. Establish `hU : IsOpen U` using `((isOpen_compl_singleton.preimage cd).inter (isOpen_lt continuous_const c1)).inter (isOpen_lt continuous_const c2)`.
+
+Establish `hmem : ∀ g ∈ posG k r z z', g ∈ U`. Introduce `g hg`. Take `⟨hgV, hG⟩` from `hg`. Use `⟨⟨det_ne_of_G hz hz' hG, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hm : omW k r z z' g ∈ Wsp k r z` using `prW_mem hz _`.
+
+Conclude with `posV hz hm.1 hm.2 (omW_ne hz hz' hgV hG)`. Establish `hm : omS k r z z' g ∈ Wsp k r z'` using `prW_mem hz' _`. Establish `hω : omS k r z z' g ≠ 0` using `by rw [← omS_eq z z' hgV]; exact omW'_ne hz hz' hgV hG`. Conclude with `posV hz' hm.1 hm.2 hω`. Establish `sU : Sm (fun g : B.Mat k r => g) U` using `contDiffOn_id`.
+
+Establish `hd0 : ∀ g ∈ U, (Zhat k r z z' g).det ≠ 0` using `fun g hg => hg.1.1`. Establish `hnu : Sm (fun g => nuG z z' g) U` using `s_unitH (s_omW z z' sU) fun g hg => hg.1.2`. Establish `hnuS : Sm (fun g => unitH k r (omS k r z z' g)) U` using `s_unitH (s_omS z z') fun g hg => hg.2`. Establish `hdi : Sm (fun g => -((Zhat k r z z' g).det)⁻¹) U` using `((s_det (s_Zhat z z' sU)).inv hd0).neg`. Establish `hL : Sm (fun g => Lm k r z z' g) U`.
+
+Unfold `Lm`. Conclude with `contDiffOn_const.add (ContDiffOn.sum fun c _ => ContDiffOn.sum fun a _ => s_msmul (hdi.mul (s_adj (s_Zhat z z' sU) c a)) (s_mmul contDiffOn_const sU))`. Establish `hP : Sm (fun g => Phi k r z z' g) U`. Unfold `Phi`. Conclude with `s_mmul (s_mmul contDiffOn_const sU) hL`.
+
+Establish `hio : Sm (fun g => Phi k r z z' g * (Pm k r z' - Rk k r (unitH k r (omS k r z z' g)) (unitH k r (omS k r z z' g)) * Pm k r z')) U` using `s_mmul hP (contDiffOn_const.sub (s_mmul (smooth_hermitian_rank_two hnuS hnuS) contDiffOn_const))`. Use `⟨fun g₀ hg₀ => ⟨U, fun g => nuG z z' g, hU, hmem g₀ hg₀, hnu, fun g _ _ => rfl⟩, fun g₀ hg₀ => ⟨U, fun g => unitH k r (omS k r z z' g), hU, hmem g₀ hg₀, hnuS, fun g _ hgV => ?_⟩, fun g₀ hg₀ => ⟨U, _, hU, hmem g₀ hg₀, hio, fun g _ hgV => ?_⟩⟩` and prove the remaining obligations. Use `show unitH k r (omW' k r z z' g) = _`. Rewrite using `[omS_eq z z' hgV]`. Use `show Phi k r z z' g * (Pm k r z' - Rk k r (unitH k r (omW' k r z z' g)) (unitH k r (omW' k r z z' g)) * Pm k r z') = _`.
+
+Rewrite using `[omS_eq z z' hgV]`.
+-/
 theorem geometry_smoothness_holds : GeomSmooth := by
   intro k r z z' _hk hz hz'
   let fd : B.Mat k r → ℂ := fun g => (Zhat k r z z' g).det

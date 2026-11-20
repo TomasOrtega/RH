@@ -14,6 +14,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.Div.CoordOpp
 
+/- English proof (translation)
+Establish `h1 : compFin F E v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (AF F) e) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Fv F v) e`. Simplify using `[compFin, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR]`. Simplify using `only [piW, RingHom.comp_apply, h1]`. Conclude with `splitProj_inclR t e`.
+-/
 theorem piW_inclR {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : Pl F} (t : E →ₐ[F] Fv F v) (e : E) :
     piW t (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (AF F) e) = t e := by
@@ -22,6 +25,9 @@ theorem piW_inclR {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   simp only [piW, RingHom.comp_apply, h1]
   exact splitProj_inclR t e
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [piW, cA, compFin, splitProj]`. Consider the case `add x y hx hy => simp [map_add, hx, hy]`.
+-/
 theorem piW_cA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {v : Pl F} (t : E →ₐ[F] Fv F v) (z : AE F E) :
     piW t (cA σ z) = piW (t.comp σ) z := by
@@ -30,12 +36,20 @@ theorem piW_cA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
   | tmul a e => simp [piW, cA, compFin, splitProj]
   | add x y hx hy => simp [map_add, hx, hy]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, piW_inclR]`.
+-/
 theorem incM_map_piW {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : Pl F} (t : E →ₐ[F] Fv F v) {m k : Type} (J : Matrix m k E) :
     (incM F J).map (piW t) = J.map t := by
   ext i j
   simp [incM, piW_inclR]
 
+/- English proof (translation)
+Establish `hg` using `g.2`. Express the relevant statement in the definitionally equal form `((mat g))ᵀ * incM F J * (mat g).map (cA σ) = incM F J at hg`. Use `congrArg (fun M => M.map (piW t)) hg` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, incM_map_piW] at this`. Establish `e2 : ((mat g).map (cA σ)).map (piW t) = (mat g).map (piW (t.comp σ))`.
+
+Use extensionality with `i j`. Simplify using `[piW_cA]`. Rewrite `this` using `[e2]`. Simplify `this` using `[Matrix.transpose_map]`.
+-/
 theorem unit_map {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     ((mat g).map (piW t))ᵀ * J.map t * (mat g).map (piW (t.comp σ)) = J.map t := by
@@ -51,6 +65,13 @@ theorem unit_map {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
 end GlobalTheory.Div.CoordOpp
 
 open GlobalTheory.Div.CoordOpp in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W v t g h x`. Establish `hg` using `unit_map σ g t`. Establish `hh` using `unit_map σ h t`. Simplify using `only [Units.val_one, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one, Matrix.map_mul, Matrix.transpose_map, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`. Use `set gt := (mat g).map (piW t)`.
+
+Use `set gb := (mat g).map (piW (t.comp σ))`. Use `set ht := (mat h).map (piW t)`. Use `set hb := (mat h).map (piW (t.comp σ))`. Use `set xb := x.map (piW (t.comp σ))`. Establish `hh' : hbᵀ * (W.J.map t)ᵀ * ht = (W.J.map t)ᵀ`.
+
+Use `congrArg Matrix.transpose hh` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hb, Matrix.transpose_map, Matrix.mul_assoc]`. Use `_ = X.J.map t * xb * (W.J.map t)ᵀ := by rw [hg, hh']`.
+-/
 theorem GlobalTheory.Div.CoordOpp.coord_opp_conj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (v : Pl F) (t : E →ₐ[F] Fv F v) (g : UA σ X.J) (h : UA σ W.J)
     (x : Matrix (Fin n) (Fin d) (AE F E)),

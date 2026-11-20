@@ -11,6 +11,9 @@ open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 open private stab_orthRel from Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.SmoothRepresentationsGL.InnerZero
 
+/- English proof (translation)
+Introduce `E _ _ n μ _ U l hs`. Conclude with `⟨_, stab_orthRel (CuspidalSpectrum.cuspToL2 μ) (fun X a ha c hc => petersson_inner_lieAlgebra_skewAdjoint μ X ha hc) (fun k a ha c hc => petersson_inner_maximalCompact_invariant μ k ha hc) (fun g a ha c hc => petersson_inner_finiteAdelic_invariant μ g ha hc) l hs, CuspidalSpectru …`.
+-/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.compl :
     UpperTheory.V.Af.StrongMultiplicityOne.Compl := by
   intro E _ _ n μ _ U l hs

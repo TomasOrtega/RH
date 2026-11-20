@@ -11,6 +11,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 omit [IsAlgClosure E Ω] [IsCMField E] in
 
+/- English proof (translation)
+Establish `h` using `PadicAlgCl.norm_extends l ((l : ℕ) : ℚ_[l])`. Rewrite `h` using `[map_natCast]`. Rewrite using `[h]`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_natCast_om_lt_one : ‖((l : ℕ) : Om l)‖ < 1 := by
   have h := PadicAlgCl.norm_extends l ((l : ℕ) : ℚ_[l])
   rw [map_natCast] at h
@@ -19,6 +22,15 @@ theorem norm_natCast_om_lt_one : ‖((l : ℕ) : Om l)‖ < 1 := by
 
 omit [NumberField E] [IsAlgClosure E Ω] [IsCMField E] in
 
+/- English proof (translation)
+Establish `hn : ‖Bw.j ((l : ℕ) : Ω)‖ < 1` using `by rw [map_natCast]; exact norm_natCast_om_lt_one`. Establish `hl0 : ((l : ℕ) : Ω) ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Bw.j h0`. Rewrite `h1` using `[map_natCast, map_zero]`.
+
+Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h1`. Establish `hmem : ((l : ℕ) : Ω) ∈ A` using `(hj _).2 hn.le`. Establish `hinv : ((l : ℕ) : Ω)⁻¹ ∉ A`. Introduce `hm`. Establish `h1` using `(hj _).1 hm`.
+
+Rewrite `h1` using `[map_inv₀, norm_inv]`. Establish `hpos : 0 < ‖Bw.j ((l : ℕ) : Ω)‖` using `norm_pos_iff.2 ((_root_.map_ne_zero _).2 hl0)`. Use `(one_lt_inv₀ hpos).2 hn` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `lt_of_le_of_ne ((A.valuation_le_one_iff _).2 hmem) fun h1 => hinv ?_` and prove the remaining obligations.
+
+Rewrite using `[← A.valuation_le_one_iff, map_inv₀, h1, inv_one]`.
+-/
 theorem valuation_natCast_lt_one_of_induces {A : ValuationSubring Ω} {O : Type} [CommRing O] [Algebra ℤ_[l] O]
     [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : Pst.Induces Bw) :
     A.valuation ((l : ℕ) : Ω) < 1 := by
@@ -41,6 +53,9 @@ theorem valuation_natCast_lt_one_of_induces {A : ValuationSubring Ω} {O : Type}
 
 omit [IsAlgClosure E Ω] [IsCMField E] in
 
+/- English proof (translation)
+Use `(hA _).1 ?_` and prove the remaining obligations. Establish `h` using `valuation_natCast_lt_one_of_induces Bw hj`. Simplify `h` using `[map_natCast]`.
+-/
 theorem mem_of_induces {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (hA : IsPlaceOver A w) {O : Type} [CommRing O]
     [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (hj : Pst.Induces Bw) :
     ((l : ℕ) : 𝓞 E) ∈ w.asIdeal := by

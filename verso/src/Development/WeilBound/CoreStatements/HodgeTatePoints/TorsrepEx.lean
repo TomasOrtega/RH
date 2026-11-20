@@ -25,6 +25,13 @@ noncomputable section
 
 namespace PositivityTheory.HtPt.Rg
 
+/- English proof (translation)
+Introduce `R _ _ p hp A _ L hA hL ha`. Use `hA.comm` as an intermediate fact. Take `⟨hf, hfl, -⟩` from `(GlobalTheory.ChF.exists_gen_theta_tensor_and_finite_flat_surjective_pow R A L (L.pull (fst A A).left) hA hL ha (LB.isLB_pull hL _)).2 p hp`. Take `⟨B, cr, al, al', tw, hfree, hfin, y, hy, hu⟩` from `GlobalTheory.finRep_kernel_mul_finite_free A (LAlg.mk R : LAlg R) p hf hfl hA.smooth`. Establish `e : al = al'`.
+
+Use `Algebra.algebra_ext _ _ fun r => ?_` and prove the remaining obligations. Use `@IsScalarTower.algebraMap_apply R R B _ _ _ _ al al' tw r` as an intermediate fact. Conclude with `this.symm`. Substitute `e` using the available equality. Use `⟨{ A := B, cr := cr, alg := al, free := hfree, fin := hfin, y := y, y_p := hy, univ := ?_ }⟩` and prove the remaining obligations.
+
+Introduce `S _ _ z hz`. Conclude with `hu S z hz`.
+-/
 theorem torsrep_ex : ∀ (R : Type) [CommRing R] [IsLocalRing R] (p : ℕ), 1 ≤ p → ∀ (A : Over (Spec (CommRingCat.of R))) [GrpObj A] (L : LB A.left), IsAbelianScheme A → L.IsLB → Out.RelAmple A L → Nonempty (TorsRep A p) := by
   intro R _ _ p hp A _ L hA hL ha
   have := hA.comm

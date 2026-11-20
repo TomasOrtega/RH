@@ -13,5 +13,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.OneMapRef GlobalTheory.WeilParts
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OneMapRef.omega_level_finVec | exact GlobalTheory.OneMapRef.omega_level_finVec | (intros; apply GlobalTheory.OneMapRef.omega_level_finVec <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.level_character_eigenvector : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), ∀ t, ∀ k ∈ GfC (Vc D i), ∀ hk : fin (Vc D i) k ∈ levJ R i t, R.ωP i t (k, 1) (R.vP i t) = ((((levEnv (Vc D i) (R.βV i) (R.datVt i t)).χ ⟨fin (Vc D i) k, hk⟩)⁻¹ : ℂˣ) : ℂ) • R.vP i t := by
   first | exact @GlobalTheory.OneMapRef.omega_level_finVec | exact GlobalTheory.OneMapRef.omega_level_finVec | (intros; apply GlobalTheory.OneMapRef.omega_level_finVec <;> assumption)

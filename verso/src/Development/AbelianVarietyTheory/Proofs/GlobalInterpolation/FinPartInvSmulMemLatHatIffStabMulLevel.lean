@@ -16,6 +16,9 @@ section SlopeTestRemainingChoices
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Conclude with `e.injective (Prod.ext (((he x).1.trans h1).trans (he y).1.symm) (((he x).2.trans h2).trans (he y).2.symm))`.
+-/
 theorem parts_inj (x y : AF F ⊗[F] E)
     (h1 : (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom x =
       (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom y)
@@ -24,6 +27,9 @@ theorem parts_inj (x y : AF F ⊗[F] E)
   obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv F E
   exact e.injective (Prod.ext (((he x).1.trans h1).trans (he y).1.symm) (((he x).2.trans h2).trans (he y).2.symm))
 
+/- English proof (translation)
+Use `GlobalTheory.UnitarySplit.mem_iff _ _ (parts_inj (F := F) (E := E)) (sigR _ σ) (sigR _ σ) (sigR _ σ) (GlobalTheory.UnitarySplit.map_sig _ _) (GlobalTheory.UnitarySplit.map_sig _ _) (JR _ J) g` as an intermediate fact. Rewrite `this` using `[GlobalTheory.UnitarySplit.map_JR, GlobalTheory.UnitarySplit.map_JR]`. Conclude with `this`.
+-/
 theorem mem_parts (g : GL (Fin M) (AF F ⊗[F] E)) :
     g ∈ HR (AF F) σ J ↔
       Formalism.UG.bc (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom g ∈ HR (Ainf F) σ J ∧
@@ -33,10 +39,18 @@ theorem mem_parts (g : GL (Fin M) (AF F ⊗[F] E)) :
   rw [GlobalTheory.UnitarySplit.map_JR, GlobalTheory.UnitarySplit.map_JR] at this
   exact this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(⟨_, ((mem_parts σ J (HA.mat (AF F) σ J h)).1 h.2).2⟩ : HR (Af F) σ J), rfl⟩`.
+-/
 theorem exists_fin (h : HA (AF F) σ J) :
     ∃ k : HA (Af F) σ J, (HA.mat (Af F) σ J k).1 = finMat σ J h :=
   ⟨(⟨_, ((mem_parts σ J (HA.mat (AF F) σ J h)).1 h.2).2⟩ : HR (Af F) σ J), rfl⟩
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Establish `hs : ∀ a b, ∃ x, (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom x = a ∧ (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom x = b` using `fun a b => by`. Apply the tactic sequence `refine ⟨e.symm (a, b), (he _).1.symm.trans ?_, (he _).2.symm.trans ?_⟩ <;> simp`. Take `⟨g, g1, g2⟩` from `GlobalTheory.UnitarySplit.gl_glue _ _ parts_inj hs 1 (HA.mat (Af F) σ J k)`. Establish `hg : g ∈ HR (AF F) σ J` using `(mem_parts σ J g).2 ⟨g1 ▸ one_mem _, g2 ▸ k.2⟩`.
+
+Conclude with `⟨(⟨g, hg⟩ : HR (AF F) σ J), congrArg Units.val g2, congrArg Units.val g1⟩`.
+-/
 theorem exists_lift (k : HA (Af F) σ J) :
     ∃ h : HA (AF F) σ J, finMat σ J h = (HA.mat (Af F) σ J k).1 ∧
       (HA.mat (AF F) σ J h).1.map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom = 1 := by
@@ -49,6 +63,9 @@ theorem exists_lift (k : HA (Af F) σ J) :
   exact ⟨(⟨g, hg⟩ : HR (AF F) σ J), congrArg Units.val g2, congrArg Units.val g1⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom (HA.mat (AF F) σ J h).1 (fun i => inclR (F := F) (AF F) (x 0 i)) i` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`.
+-/
 theorem projFin_smul (h : HA (AF F) σ J) (x : Fin 1 → Fin M → E) :
     projFin (h • ratTup (F := F) (AF F) x) 0 = finMat σ J h *ᵥ fun i => inclR (F := F) (Af F) (x 0 i) := by
   funext i
@@ -58,6 +75,9 @@ theorem projFin_smul (h : HA (AF F) σ J) (x : Fin 1 → Fin M → E) :
   congr 1
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `RingHom.map_mulVec (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom (HA.mat (AF F) σ J h).1 (fun i => inclR (F := F) (AF F) (x 0 i)) i` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`.
+-/
 theorem projInf_smul (h : HA (AF F) σ J) (x : Fin 1 → Fin M → E) (i : Fin M) :
     (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom ((h • ratTup (F := F) (AF F) x) 0 i) =
       ((HA.mat (AF F) σ J h).1.map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)).toRingHom *ᵥ
@@ -69,6 +89,23 @@ theorem projInf_smul (h : HA (AF F) σ J) (x : Fin 1 → Fin M → E) (i : Fin M
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `hT F E _ _ _ _ _ σ hcm hur M J hJ L hL β hβ x hx hq h`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `hO` using `(hT F E σ hcm hur M J hJ L hL β hβ (x 0) hx hq).2.1`. Take `⟨k', hk'⟩` from `exists_fin σ J h⁻¹`.
+
+Establish `h1 : k'⁻¹ ∈ {h : HA (Af F) σ J | actV (Af F) σ J h⁻¹ (fun i => inclR (F` using `F) (Af F) (x 0 i)) ∈ latHat F E (L : Set (Fin M → E))} := by`. Rewrite using `[Set.mem_setOf_eq, inv_inv, actV_eq, hk', ← projFin_smul]`. Conclude with `hm`. Rewrite `h1` using `[hO]`. Take `⟨af, haf, kf, hkf, e⟩` from `h1`.
+
+Take `⟨a, ha1, ha2⟩` from `exists_lift σ J af`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a • ratTup (F := F) (AF F) x = ratTup (F := F) (AF F) x`. Use function extensionality and compare the values at `c i`. Take `rfl : c = 0` from `Subsingleton.elim _ _`.
+
+Use `parts_inj _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[projInf_smul, ha2, Matrix.one_mulVec]`. Both sides reduce to the same expression. Establish `h2` using `congrFun (projFin_smul σ J a x) i`. Rewrite `h2` using `[ha1]`.
+
+Use `h2.trans ?_` and prove the remaining obligations. Establish `h3 : af • ratTup (F` using `F) (Af F) (fun _ : Fin 1 => x 0) = ratTup (F := F) (Af F) (fun _ => x 0) := haf`. Conclude with `congrFun (congrFun h3 0) i`. Establish `e' : k' * af = kf⁻¹`. Establish `e2 : af * kf = k'⁻¹` using `e`.
+
+Rewrite using `[← inv_inv k', ← e2]`. Use `group`. Establish `h2 : h⁻¹ * a ∈ stab σ J (L : Set (Fin M → E))`. Introduce `y`. Rewrite using `[Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_mul, ha1, ← hk', ← Matrix.mulVec_mulVec, ← actV_eq, ← actV_eq, ← actV_mul, e']`.
+
+Conclude with `(inv_mem hkf : kf⁻¹ ∈ stabLat (Af F) σ J (latHat F E (L : Set (Fin M → E)))) y`. Establish `h3` using `inv_mem h2`. Rewrite `h3` using `[_root_.mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Introduce and unpack `⟨a, ha, hk⟩`. Establish `h1 : a⁻¹ • ratTup (F` using `F) (AF F) x = ratTup (F := F) (AF F) x := inv_mem ha`.
+
+Establish `h2 : h⁻¹ • ratTup (F` using `F) (AF F) x = (a⁻¹ * h)⁻¹ • ratTup (F := F) (AF F) x := by conv_rhs => rw [← h1, ← mul_smul]`. Use `congr 1`. Use `group`. Rewrite using `[h2, projFin_smul]`. Conclude with `((inv_mem hk : (a⁻¹ * h)⁻¹ ∈ stab σ J (L : Set (Fin M → E))) _).1 (AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, x 0, hx, rfl⟩)`.
+-/
 theorem mem_latHat_iff : StabTransitive → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → UnramifiedAtFinite F E → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ L : Submodule (𝓞 E) (Fin M → E), IsSelfDualLat σ J L → ∀ β : F, (β = 1 ∨ β = -1) → ∀ x : Fin 1 → Fin M → E, x 0 ∈ L → hE σ J (x 0) (x 0) = algebraMap F E β → ∀ h : HA (AF F) σ J, projFin (h⁻¹ • ratTup (F := F) (AF F) x) 0 ∈ latHat F E (L : Set (Fin M → E)) ↔ ∃ a ∈ Hstab (AF F) σ J x, a⁻¹ * h ∈ stab σ J (L : Set (Fin M → E)) := by
   intro hT F E _ _ _ _ _ σ hcm hur M J hJ L hL β hβ x hx hq h
   constructor

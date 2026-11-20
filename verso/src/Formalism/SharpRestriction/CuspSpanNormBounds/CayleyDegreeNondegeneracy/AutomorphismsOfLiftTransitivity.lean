@@ -10,6 +10,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable (D : D7) (u : D.what₂.Word)
 
+/- English proof (translation)
+Introduce `hTp hT3 hsp F0 he hz Λ hΛ`. Establish `hT : Tu D u ≠ 0` using `hTp.ne_zero`. Establish `hD : ∀ φ : autLz D F0 Λ, ∃ γ : {γ : isom (D.sp.X 0).hT // gmap (extendByOne D γ.1) (latticeWithZ D F0 Λ) = latticeWithZ D F0 Λ}, ActsAsExtendByOne D u F0 he φ.1 γ.1.1`. Introduce and unpack `⟨φ, σ, hσ, hσΛ, hφ⟩`. Take `⟨γ, hγ, hind⟩` from `exists_induced_isometry_W D u hT F0 he hz σ hσ`.
+
+Use `⟨⟨⟨γ, hγ⟩, ?_⟩, actsAsExtendByOne_of_induced D u F0 he σ hσ γ hind φ hφ⟩` and prove the remaining obligations. Rewrite using `[gmap_latticeWithZ_of_induced D u F0 σ hσ γ hind Λ, hσΛ]`. Use `choose f hf using hD`. Use `Nat.card_congr (Equiv.ofBijective f ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `φ₁ φ₂ h12`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Take `⟨w, c, rfl⟩` from `quotientClass_surjective D u hT F0 he hz q`. Rewrite using `[hf φ₁ w c, hf φ₂ w c, h12]`. Introduce and unpack `⟨⟨γ, hγ⟩, hγΛ⟩`.
+
+Take `⟨hrow, hLd⟩` from `transport_isLattice_latticeWithZ D u F0 he hz γ hγ Λ hΛ`. Establish `hLs` using `Lsub_eq_of_latticeWithZ_eq D u hT F0 he hz _ _ (hLd.trans hγΛ)`. Take `⟨n, hn, hnX, hne⟩` from `hL hTp hT3 hsp F0 he hz _ _ hrow hΛ hLs`. Establish `hσ : n * extendByIdentity D γ ∈ stabF D F0` using `mul_mem_flag_stabilizer F0 hn (extendByIdentity_mem_flag_stabilizer D u F0 he hz γ hγ)`. Establish `hσΛ : gmap (n * extendByIdentity D γ) Λ = Λ` using `by rw [gmap_mul, hne]`.
+
+Establish `hind : ∀ w, (n * extendByIdentity D γ) (D.sp.iXY 0 w) - D.sp.iXY 0 (γ w) ∈ F0.X`. Introduce `w`. Express the relevant statement in the definitionally equal form `n (extendByIdentity D γ (D.sp.iXY 0 w)) - _ ∈ _`. Establish `e : extendByIdentity D γ (D.sp.iXY 0 w) = D.sp.iXY 0 (γ w)`. Simplify using `using extendByIdentity_apply D γ w 0 (Submodule.zero_mem _)`.
+
+Rewrite using `[e]`. Use `hnX _ ((mem_perpS_iff_mem_orth D u F0 _).1 ?_)` and prove the remaining obligations. Simplify using `using embedding_add_smul_z_mem_perp D u F0 he (γ w) 0`. Set `φ : WbQ D F0 → WbQ D F0` to `Submodule.mapQ (F0.X.comap (perpS (VS D) F0.X).subtype) (F0.X.comap (perpS (VS D) F0.X).subtype) (((n * extendByIdentity D γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : (VS D).V →ₗ[D.host.E] (VS D).V).restrict (fun x hx => flag_stabilizer_mem_perp D u F0 _ hσ x hx)) (fun x hx => flag_sta …`. Establish `hφ : ∀ (x : perpS (VS D) F0.X) (hx : (n * extendByIdentity D γ) x.1 ∈ perpS (VS D) F0.X), φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk ⟨(n * extendByIdentity D γ) x.1, hx⟩` using `fun _ _ => rfl`.
+
+Use `⟨⟨φ, n * extendByIdentity D γ, hσ, hσΛ, hφ⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `w`.
+
+Establish `h1` using `hf ⟨φ, n * extendByIdentity D γ, hσ, hσΛ, hφ⟩ w 0`. Establish `h2` using `actsAsExtendByOne_of_induced D u F0 he _ hσ γ hind φ hφ w 0`. Conclude with `quotientClass_injective_left D u hT F0 he hz (h1.symm.trans h2)`.
+-/
 theorem automorphisms_of_lift_transitivity (hL : LiftsConjugateUnderStabilizer D u) : CardAutEqCardIsometryStabilizer D u := by
   intro hTp hT3 hsp F0 he hz Λ hΛ
   have hT : Tu D u ≠ 0 := hTp.ne_zero
@@ -56,6 +73,9 @@ theorem automorphisms_of_lift_transitivity (hL : LiftsConjugateUnderStabilizer D
     have h2 := actsAsExtendByOne_of_induced D u F0 he _ hσ γ hind φ hφ w 0
     exact quotientClass_injective_left D u hT F0 he hz (h1.symm.trans h2)
 
+/- English proof (translation)
+The claim follows from `gluing_mass_of_iso_aut_count_genus D u hpos hlat (lattice_classes_of_lift_transitivity D u hL) (automorphisms_of_lift_transitivity D u hL) h4 h5`.
+-/
 theorem gluing_mass_of_lift_transitivity (hpos : IsPosDef (D.sp.X 0).hT)
     (hlat : ForPrimeFlagLattice D u fun F0 Λ => Submodule.IsLattice D.host.E (L0X D Λ (lf D F0)))
     (hL : LiftsConjugateUnderStabilizer D u) (h4 : GluingCount D u) (h5 : OrthLatticesOneGenus D u) : WordRowsGluing D u :=
@@ -65,6 +85,11 @@ def GluingNumber : Prop :=
   ForPrimeFlagLattice D u fun F0 Λ => ∀ M ∈ genus (D.sp.X 0).hT (L0X D Λ (lf D F0)),
     {𝓛 | (∃ Λ', IsRowLat D F0 Λ' ∧ latticeWithZ D F0 Λ' = 𝓛) ∧ intersectFirstSummand D 𝓛 = M}.ncard = (Tu D u - 1) ^ D.R.f
 
+/- English proof (translation)
+Introduce `hTp hT3 hsp F0 he hz Λ hΛ M hM`. Establish `h1` using `h hTp hT3 hsp F0 he hz Λ hΛ M hM`. Use `⟨Set.finite_of_ncard_ne_zero ?_, h1⟩` and prove the remaining obligations. Establish `h2 : (Tu D u - 1) ^ D.R.f ≠ 0` using `pow_ne_zero _ (by omega)`. Introduce `h0`.
+
+Conclude with `h2 (h1.symm.trans h0)`.
+-/
 theorem gluing_count_of_gluing_number (h : GluingNumber D u) : GluingCount D u := by
   intro hTp hT3 hsp F0 he hz Λ hΛ M hM
   have h1 := h hTp hT3 hsp F0 he hz Λ hΛ M hM
@@ -73,6 +98,9 @@ theorem gluing_count_of_gluing_number (h : GluingNumber D u) : GluingCount D u :
   intro h0
   exact h2 (h1.symm.trans h0)
 
+/- English proof (translation)
+The claim follows from `gluing_mass_of_lift_transitivity D u hpos hlat hL (gluing_count_of_gluing_number D u h4) h5`.
+-/
 theorem gluing_mass_of_lift_and_number (hpos : IsPosDef (D.sp.X 0).hT)
     (hlat : ForPrimeFlagLattice D u fun F0 Λ => Submodule.IsLattice D.host.E (L0X D Λ (lf D F0)))
     (hL : LiftsConjugateUnderStabilizer D u) (h4 : GluingNumber D u) (h5 : OrthLatticesOneGenus D u) : WordRowsGluing D u :=

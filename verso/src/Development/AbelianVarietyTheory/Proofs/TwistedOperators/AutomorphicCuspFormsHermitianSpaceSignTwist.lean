@@ -14,9 +14,17 @@ namespace GlobalTheory.SgnFun
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gramAt, neg_gram]`.
+-/
 theorem gramAt_sgn_true (V : HSp D) (τ : D.what₂.Tau) : gramAt D (sgn true V) τ = -gramAt D V τ := by
   ext i j; simp [gramAt, neg_gram]
 
+/- English proof (translation)
+Distinguish the cases in `h : IsUnit A.det`. Establish `e : ((-1 : Rˣ) • A) = -A` using `by simp`. Rewrite using `[← e, Matrix.inv_smul' (A := A) (k := (-1 : Rˣ)) h]`. Simplify using the standard rewrite rules. Establish `h' : ¬ IsUnit (-A).det`.
+
+Rewrite using `[Matrix.det_neg]`. Introduce `hu`. Conclude with `h (IsUnit.mul_iff.1 hu).2`. Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.nonsing_inv_apply_not_isUnit _ h', neg_zero]`.
+-/
 theorem inv_neg_sq {k : Type} [Fintype k] [DecidableEq k] {R : Type} [CommRing R] (A : Matrix k k R) :
     (-A)⁻¹ = -A⁻¹ := by
   by_cases h : IsUnit A.det
@@ -29,6 +37,9 @@ theorem inv_neg_sq {k : Type} [Fintype k] [DecidableEq k] {R : Type} [CommRing R
       exact h (IsUnit.mul_iff.1 hu).2
     rw [Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.nonsing_inv_apply_not_isUnit _ h', neg_zero]
 
+/- English proof (translation)
+Unfold `conjAt`. Rewrite using `[gramAt_sgn_true, inv_neg_sq]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg]`.
+-/
 theorem conjAt_sgn_true (V : HSp D) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     conjAt (sgn true V) τ Z = conjAt V τ Z := by
   unfold conjAt
@@ -37,23 +48,38 @@ theorem conjAt_sgn_true (V : HSp D) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank
 
 variable {θ : InfFam D} {V : HSp D}
 
+/- English proof (translation)
+The claim follows from `hL.atTau τ _`.
+-/
 theorem oneP_sgn_true (hL : SgnLaw θ true V) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (t : ℝ) :
     ofSgn true V (oneP θ (sgn true V) τ X t) = oneP θ V τ X t := hL.atTau τ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [Rder, map_mul, oneP_sgn_true hL]`.
+-/
 theorem rder_sgn_true (hL : SgnLaw θ true V) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (f : GA D V → ℂ) :
     Rder θ (sgn true V) τ X (fun g => f (ofSgn true V g)) = fun g => Rder θ V τ X f (ofSgn true V g) := by
   funext g
   simp only [Rder, map_mul, oneP_sgn_true hL]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [RderC, conjAt_sgn_true, rder_sgn_true hL, Pi.add_apply, Pi.smul_apply]`.
+-/
 theorem rderC_sgn_true (hL : SgnLaw θ true V) (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (f : GA D V → ℂ) :
     RderC θ (sgn true V) τ Z (fun g => f (ofSgn true V g)) = fun g => RderC θ V τ Z f (ofSgn true V g) := by
   funext g
   simp only [RderC, conjAt_sgn_true, rder_sgn_true hL, Pi.add_apply, Pi.smul_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem normInf_sgn_true (g : GA D (sgn true V)) : normInf θ (sgn true V) g = normInf θ V (ofSgn true V g) := rfl
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => rfl | n + 1, Zs, f => by rw [List.ofFn_succ, List.ofFn_succ, List.foldr_cons, List.foldr_cons, foldr_rderC_sgn_true hL τ n (fun i => Zs i.succ) f, rderC_sgn_true hL]`.
+-/
 theorem foldr_rderC_sgn_true (hL : SgnLaw θ true V) (τ : D.what₂.Tau) :
     ∀ (n : ℕ) (Zs : Fin n → Matrix (Fin V.rank) (Fin V.rank) ℂ) (f : GA D V → ℂ),
       (List.ofFn fun a => RderC θ (sgn true V) τ (Zs a)).foldr (fun F acc => F acc) (fun g => f (ofSgn true V g)) =
@@ -63,6 +89,9 @@ theorem foldr_rderC_sgn_true (hL : SgnLaw θ true V) (τ : D.what₂.Tau) :
     rw [List.ofFn_succ, List.ofFn_succ, List.foldr_cons, List.foldr_cons,
       foldr_rderC_sgn_true hL τ n (fun i => Zs i.succ) f, rderC_sgn_true hL]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [gelf, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Rewrite using `[foldr_rderC_sgn_true hL τ (k + 1) (fun a => Matrix.single (idx a) (idx (a + 1)) 1) f]`.
+-/
 theorem gelf_sgn_true (hL : SgnLaw θ true V) (τ : D.what₂.Tau) (k : ℕ) (f : GA D V → ℂ) :
     gelf θ (sgn true V) τ k (fun g => f (ofSgn true V g)) = fun g => gelf θ V τ k f (ofSgn true V g) := by
   funext g
@@ -70,6 +99,9 @@ theorem gelf_sgn_true (hL : SgnLaw θ true V) (τ : D.what₂.Tau) (k : ℕ) (f 
   refine Finset.sum_congr rfl fun idx _ => ?_
   rw [foldr_rderC_sgn_true hL τ (k + 1) (fun a => Matrix.single (idx a) (idx (a + 1)) 1) f]
 
+/- English proof (translation)
+The claim follows from `| [], _ => rfl | p :: l, f => by rw [List.foldr_cons, List.foldr_cons, foldr_rder_sgn_true hL l f, rder_sgn_true hL]`.
+-/
 theorem foldr_rder_sgn_true (hL : SgnLaw θ true V) :
     ∀ (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) (f : GA D V → ℂ),
       l.foldr (fun p F => Rder θ (sgn true V) p.1 p.2 F) (fun g => f (ofSgn true V g)) =
@@ -78,6 +110,9 @@ theorem foldr_rder_sgn_true (hL : SgnLaw θ true V) :
   | p :: l, f => by
     rw [List.foldr_cons, List.foldr_cons, foldr_rder_sgn_true hL l f, rder_sgn_true hL]
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_list_prod, List.map_ofFn]`. Use `congr 2`. Conclude with `congrArg List.ofFn (funext fun i => oneP_sgn_true hL _ _ _)`.
+-/
 theorem prod_sgn_true (hL : SgnLaw θ true V) {k : ℕ} (τs : Fin k → D.what₂.Tau)
     (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ) (g : GA D (sgn true V)) (t : Fin k → ℝ) :
     ofSgn true V (g * (List.ofFn fun i => oneP θ (sgn true V) (τs i) (Xs i) (t i)).prod) =
@@ -91,6 +126,15 @@ def ofSgnH (V : HSp D) : GA D (sgn true V) ≃ₜ GA D V where
   continuous_toFun := continuous_ofSgn true V
   continuous_invFun := continuous_ofSgn_symm true V
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hl, ⟨U, hU, hk⟩, hc⟩`. Use `⟨fun γ hγ g => ?_, ⟨U.comap (ofSgn true V).symm.toMonoidHom, (continuous_ofSgn_symm true V).isOpen_preimage _ hU, fun k hk1 hk2 g => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `hl ((ofSgn true V).symm γ) ((hL.rat _).2 (by simpa using hγ)) ((ofSgn true V).symm g)`. Simplify `h` using `[map_mul]`.
+
+Establish `h` using `hk ((ofSgn true V).symm k) hk1 ((hL.fin _).2 (by simpa using hk2)) ((ofSgn true V).symm g)`. Simplify `h` using `[map_mul]`. Establish `h : Continuous ((fun g => φ (ofSgn true V g)) ∘ (ofSgnH V).symm)` using `hc.comp (ofSgnH V).symm.continuous`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+
+Simplify using `[Function.comp, ofSgnH]`. Introduce and unpack `⟨hl, ⟨U, hU, hk⟩, hc⟩`. Use `⟨fun γ hγ g => ?_, ⟨U.comap (ofSgn true V).toMonoidHom, (continuous_ofSgn true V).isOpen_preimage _ hU, fun k hk1 hk2 g => ?_⟩, hc.comp (continuous_ofSgn true V)⟩` and prove the remaining obligations. Simplify using `only [map_mul]`. Conclude with `hl _ ((hL.rat γ).1 hγ) _`.
+
+Simplify using `only [map_mul]`. Conclude with `hk _ hk1 ((hL.fin k).1 hk2) _`.
+-/
 theorem isAutFun_sgn_true (hL : SgnLaw θ true V) (φ : GA D V → ℂ) :
     IsAutFun (sgn true V) (fun g => φ (ofSgn true V g)) ↔ IsAutFun V φ := by
   constructor
@@ -113,6 +157,23 @@ theorem isAutFun_sgn_true (hL : SgnLaw θ true V) (φ : GA D V → ℂ) :
     · simp only [map_mul]
       exact hk _ hk1 ((hL.fin k).1 hk2) _
 
+/- English proof (translation)
+Set `Le : (GA D V → ℂ) ≃ₗ[ℂ] (GA D (sgn true V) → ℂ)` to `LinearEquiv.funCongrLeft ℂ ℂ (ofSgn true V).toEquiv`. Establish `hg : ∀ τ k f, gelf θ (sgn true V) τ k (Le f) = Le (gelf θ V τ k f)` using `fun τ k f => gelf_sgn_true hL τ k f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hA, hs, ⟨W, hW, hφ, hcl⟩, ⟨N, hN⟩⟩`. Use `⟨(isAutFun_sgn_true hL φ).1 hA, ?_, ⟨W.map Le.symm.toLinearMap, ?_, ?_, ?_⟩, ⟨N, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `k τs Xs hX g`. Establish `h` using `hs k τs Xs (fun i => by rw [hL.lie]; exact hX i) ((ofSgn true V).symm g)`. Simplify `h` using `only [prod_sgn_true hL, MulEquiv.apply_symm_apply]`. Use `haveI := hW`. Conclude with `Module.Finite.map W _`.
+
+Conclude with `Submodule.mem_map.2 ⟨Le φ, hφ, Le.symm_apply_apply φ⟩`. Introduce and unpack `τ k f ⟨f', hf', rfl⟩`. Use `Submodule.mem_map.2 ⟨gelf θ (sgn true V) τ k f', hcl τ k f' hf', ?_⟩` and prove the remaining obligations. Establish `e1 : gelf θ (sgn true V) τ k f' = Le (gelf θ V τ k (Le.symm f'))`. Rewrite using `[← hg, Le.apply_symm_apply]`.
+
+Use `show Le.symm (gelf θ (sgn true V) τ k f') = gelf θ V τ k (Le.symm f')`. Rewrite using `[e1, Le.symm_apply_apply]`. Introduce `l hl x`. Take `⟨C, hC⟩` from `hN l (fun p hp => by rw [hL.lie]; exact hl p hp) ((ofSgn true V).symm x)`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hC ((ofSgn true V).symm g) ((hL.inf _).2 (by simpa using hg))`. Rewrite `h` using `[foldr_rder_sgn_true hL l φ, normInf_sgn_true]`. Simplify `h` using `only [map_mul, MulEquiv.apply_symm_apply]`. Introduce and unpack `⟨hA, hs, ⟨W, hW, hφ, hcl⟩, ⟨N, hN⟩⟩`. Use `⟨(isAutFun_sgn_true hL φ).2 hA, ?_, ⟨W.map Le.toLinearMap, ?_, ?_, ?_⟩, ⟨N, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `k τs Xs hX g`. Establish `h` using `hs k τs Xs (fun i => by rw [← hL.lie]; exact hX i) (ofSgn true V g)`. Simplify `h` using `only [prod_sgn_true hL]`. Use `haveI := hW`. Conclude with `Module.Finite.map W _`.
+
+Conclude with `Submodule.mem_map.2 ⟨φ, hφ, rfl⟩`. Introduce and unpack `τ k f ⟨f', hf', rfl⟩`. Conclude with `Submodule.mem_map.2 ⟨gelf θ V τ k f', hcl τ k f' hf', (hg τ k f').symm⟩`. Introduce `l hl x`. Take `⟨C, hC⟩` from `hN l (fun p hp => by rw [← hL.lie]; exact hl p hp) (ofSgn true V x)`.
+
+Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h` using `hC (ofSgn true V g) ((hL.inf g).1 hg)`. Rewrite using `[foldr_rder_sgn_true hL l φ, normInf_sgn_true]`. Simplify `h` using `only [map_mul]`.
+-/
 theorem isAutFunSm_sgn_true (hL : SgnLaw θ true V) (φ : GA D V → ℂ) :
     IsAutFunSm θ (sgn true V) (fun g => φ (ofSgn true V g)) ↔ IsAutFunSm θ V φ := by
   let Le : (GA D V → ℂ) ≃ₗ[ℂ] (GA D (sgn true V) → ℂ) := LinearEquiv.funCongrLeft ℂ ℂ (ofSgn true V).toEquiv
@@ -155,11 +216,19 @@ theorem isAutFunSm_sgn_true (hL : SgnLaw θ true V) (φ : GA D V → ℂ) :
       rw [foldr_rder_sgn_true hL l φ, normInf_sgn_true]
       simpa only [map_mul] using h
 
+/- English proof (translation)
+Unfold `IsIsoFrame`. Rewrite using `[neg_gram, Matrix.mul_neg, Matrix.neg_mul, neg_eq_zero]`.
+-/
 theorem isIsoFrame_sgn_true {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) :
     IsIsoFrame (sgn true V) C ↔ IsIsoFrame V C := by
   unfold IsIsoFrame
   rw [neg_gram, Matrix.mul_neg, Matrix.neg_mul, neg_eq_zero]
 
+/- English proof (translation)
+Establish `h1 : Subgroup.closure s ≤ (Subgroup.closure t).comap e.toMonoidHom` using `(Subgroup.closure_le _).2 fun y hy => Subgroup.subset_closure ((h y).1 hy)`. Establish `h2 : Subgroup.closure t ≤ (Subgroup.closure s).map e.toMonoidHom` using `(Subgroup.closure_le _).2 fun y hy => ⟨e.symm y, Subgroup.subset_closure ((h _).2 (by simpa using hy)), by simp⟩`. Use `⟨fun hx => h1 hx, fun hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyx⟩` from `h2 hx`. Establish `: y = x` using `e.injective (by simpa using hyx)`.
+
+Conclude with `this ▸ hy`.
+-/
 theorem mem_closure_equiv {G H : Type*} [Group G] [Group H] (e : G ≃* H) {s : Set G} {t : Set H}
     (h : ∀ x, x ∈ s ↔ e x ∈ t) (x : G) : x ∈ Subgroup.closure s ↔ e x ∈ Subgroup.closure t := by
   have h1 : Subgroup.closure s ≤ (Subgroup.closure t).comap e.toMonoidHom :=
@@ -171,6 +240,11 @@ theorem mem_closure_equiv {G H : Type*} [Group G] [Group H] (e : G ≃* H) {s : 
   have : y = x := e.injective (by simpa using hyx)
   exact this ▸ hy
 
+/- English proof (translation)
+Unfold `NI`. Use `mem_closure_equiv (ofSgn true V) (fun x => ?_) g` and prove the remaining obligations. Establish `e2 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) C * (sgn true V).gram = -(Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) C * V.gram)`. Rewrite using `[neg_gram, Matrix.mul_neg]`. Simplify using `only [Set.mem_ofPred_eq]`.
+
+Use `and_congr Iff.rfl (and_congr ?_ (forall_congr' fun y => imp_congr ?_ Iff.rfl))` and prove the remaining obligations. Rewrite using `[e2, Matrix.map_neg _ (fun a => map_neg _ a), Matrix.neg_mul, neg_eq_zero]`. Both sides reduce to the same expression. Rewrite using `[e2, Matrix.neg_mulVec, neg_eq_zero]`.
+-/
 theorem mem_NI_sgn_true {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) (g : GA D (sgn true V)) :
     g ∈ NI (sgn true V) C ↔ ofSgn true V g ∈ NI V C := by
   unfold NI
@@ -184,6 +258,21 @@ theorem mem_NI_sgn_true {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E) (g 
     rfl
   · rw [e2, Matrix.neg_mulVec, neg_eq_zero]
 
+/- English proof (translation)
+Set `eN : NI B CB ≃* NI A CA` to `{ toFun := fun n => ⟨e n, (hN n).1 n.2⟩ invFun := fun n => ⟨e.symm n, (hN _).2 (by simpa using n.2)⟩ left_inv := fun n => by ext; simp right_inv := fun n => by ext; simp map_mul' := fun a b => by ext; simp }`. Establish `c1 : Continuous eN` using `(hc.comp continuous_subtype_val).subtype_mk _`. Establish `c2 : Continuous eN.symm` using `(hcs.comp continuous_subtype_val).subtype_mk _`. Set `eH : NI B CB ≃ₜ NI A CA` to `{ toEquiv := eN.toEquiv, continuous_toFun := c1, continuous_invFun := c2 }`. Set `eM : NI B CB ≃ᵐ NI A CA` to `eH.toMeasurableEquiv`.
+
+Use `haveI := hμ`. Establish `hH : (Measure.map eN μ).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map μ eN c1 c2`. Set `eQ : NIQ B CB ≃ NIQ A CA` to `{ toFun := fun q => ⟨eN q, by`. Rewrite using `[NIQ, Subgroup.mem_subgroupOf]`. Conclude with `(hQ _).1 (Subgroup.mem_subgroupOf.1 q.2)⟩`.
+
+Use `invFun := fun q => ⟨eN.symm q, by`. Rewrite using `[NIQ, Subgroup.mem_subgroupOf]`. Conclude with `(hQ _).2 (by simpa [eN] using Subgroup.mem_subgroupOf.1 q.2)⟩`. Use `left_inv := fun q => by ext; simp`. Use `right_inv := fun q => by ext; simp }`.
+
+Establish `hq : Measure.map eM.symm (Measure.map eM μ) = μ` using `eM.map_symm_map`. Establish `hFD : IsFundamentalDomain (NIQ A CA) (eN.symm ⁻¹' 𝓕) (Measure.map eN μ)`. Use `h𝓕.preimage_of_equiv (f := eN.symm) ⟨c2.measurable, ?_⟩ eQ.bijective ?_` and prove the remaining obligations. Conclude with `(le_of_eq hq).absolutelyContinuous`. Introduce `q x show eN.symm ((eN q : NI A CA) * x) = (q : NI B CB) * eN.symm x`.
+
+Simplify using the standard rewrite rules. Establish `h1` using `h (Measure.map eN μ) (eN.symm ⁻¹' 𝓕) hH hFD (e g)`. Establish `h2 : ∫ n in eN.symm ⁻¹' 𝓕, φ ((n : GA D A) * e g) ∂(Measure.map eM μ) = ∫ x in eM ⁻¹' (eN.symm ⁻¹' 𝓕), φ ((eM x : GA D A) * e g) ∂μ` using `setIntegral_map_equiv eM (fun n : NI A CA => φ ((n : GA D A) * e g)) _`. Establish `h3 : eM ⁻¹' (eN.symm ⁻¹' 𝓕) = 𝓕`. Use extensionality with `x`.
+
+Simplify using `[eM, eH]`. Rewrite using `[← h1, show Measure.map eN μ = Measure.map eM μ from rfl, h2, h3]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[map_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cusp_transport {A B : HSp D} (e : GA D B ≃* GA D A) (hc : Continuous e) (hcs : Continuous e.symm)
     (hQ : ∀ g, g ∈ GQ B ↔ e g ∈ GQ A) {r : ℕ} (CB : Matrix (Fin B.rank) (Fin r) D.host.E)
     (CA : Matrix (Fin A.rank) (Fin r) D.host.E) (hN : ∀ g, g ∈ NI B CB ↔ e g ∈ NI A CA) (φ : GA D A → ℂ)
@@ -230,6 +319,11 @@ theorem cusp_transport {A B : HSp D} (e : GA D B ≃* GA D A) (hc : Continuous e
   rw [map_mul]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h r C hC μ 𝓕 hμ h𝓕 g`. Use `cusp_transport (ofSgn true V).symm (continuous_ofSgn_symm true V) (by rw [MulEquiv.symm_symm]; exact continuous_ofSgn true V) (fun x => by rw [hL.rat]; simp) C C (fun x => by rw [mem_NI_sgn_true]; simp) (fun g => φ (ofSgn true V g)) (h r C ((isIsoFrame_sgn_true (V := V) C).2 hC)) …` as an intermediate fact. Simplify using `using this`. Introduce `h r C hC μ 𝓕 hμ h𝓕 g`.
+
+Conclude with `cusp_transport (ofSgn true V) (continuous_ofSgn true V) (continuous_ofSgn_symm true V) hL.rat C C (mem_NI_sgn_true (V := V) C) φ (h r C ((isIsoFrame_sgn_true (V := V) C).1 hC)) μ 𝓕 hμ h𝓕 g`.
+-/
 theorem isCuspFun_sgn_true (hL : SgnLaw θ true V) (φ : GA D V → ℂ) :
     IsCuspFun (sgn true V) (fun g => φ (ofSgn true V g)) ↔ IsCuspFun V φ := by
   constructor
@@ -247,6 +341,9 @@ end GlobalTheory.SgnFun
 
 open GlobalTheory.SgnFun in
 
+/- English proof (translation)
+Introduce `D θ hθ ε V φ`. Consider the cases of `ε`. Conclude with `⟨Iff.rfl, Iff.rfl⟩`. Establish `hL` using `GlobalTheory.T.signedUnitaryGroup_compat D θ hθ true V`. Conclude with `⟨isAutFunSm_sgn_true hL φ, isCuspFun_sgn_true hL φ⟩`.
+-/
 theorem GlobalTheory.sgn_fun_cusp : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (ε : Bool) (V : HSp D) (φ : GA D V → ℂ),
     (IsAutFunSm θ (sgn ε V) (fun g => φ (ofSgn ε V g)) ↔ IsAutFunSm θ V φ) ∧
       (IsCuspFun (sgn ε V) (fun g => φ (ofSgn ε V g)) ↔ IsCuspFun V φ) := by

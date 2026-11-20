@@ -20,6 +20,21 @@ namespace GlobalTheory.SeeSaw.PerSumProof
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B.A`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B.V`. Use `haveI := B.vA.haar`. Take `⟨K, hK, hcov⟩` from `B.cpt`. Take `⟨K', hK', hcov'⟩` from `(GlobalTheory.Mem.UnipCocompact.radicals_cocompact D B.V ρ B.d.e (isIsoSub_e B.d)).1`.
+
+Take `⟨hemb, -, hnorm, -, hrat⟩` from `GlobalTheory.Unf.besSemi D ρ B`. Establish `hch` using `GlobalTheory.MixPer.charLaws D ψ hψ.1 B.V B.V₀ B.A B.L ρ B.d B.o B.ζ 1`. Establish `hfin : B.vA.μ B.vA.𝓕 < ⊤`. Use `GlobalTheory.BesselConvDefinite.measure_fundamentalDomain_lt_top (GQ B.A) hK (fun g => ?_) B.vA.μ B.vA.fund` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hcov g`.
+
+Conclude with `⟨γ⁻¹, inv_mem hγ, γ * g, hk, by group⟩`. Establish `hc : Continuous fun q : GA D B.A × flagN B.d => besFun ψ 1 B.d B.o B.ζ φ f q.1 q.2` using `((hφ.2.comp continuous_fst).mul (hf.2.comp ((continuous_subtype_val.comp continuous_snd).mul (hemb.comp continuous_fst)))).mul ((hch.1 _).comp (continuous_subtype_val.comp continuous_snd)).star`. Take `⟨M, hM⟩` from `(hK.prod hK').exists_bound_of_continuousOn hc.continuousOn`. Use `GlobalTheory.Per.FJConv.iterated_integrableOn hfin.ne (by rw [B.vN.unit.2.2]; exact ENNReal.one_ne_top) hc (M := M) fun g n => ?_` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hcov g`.
+
+Take `⟨γ', hγ', k', hk', e⟩` from `hcov' ⟨embA B.d B.o γ * n.1 * (embA B.d B.o γ)⁻¹, hnorm n.1 n.2 γ⟩`. Establish `e' : embA B.d B.o γ * n.1 * (embA B.d B.o γ)⁻¹ = γ'.1 * k'.1` using `congrArg Subtype.val e`. Establish `hδ : embA B.d B.o γ ∈ GQ B.V` using `by simpa using (hrat 1 (one_mem _) γ).2 ⟨one_mem _, hγ⟩`. Establish `hγ'Q : γ'.1 ∈ GQ B.V` using `hγ'`. Establish `en : n.1 = (embA B.d B.o γ)⁻¹ * (γ'.1 * k'.1) * embA B.d B.o γ`.
+
+Rewrite using `[← e']`. Use `group`. Establish `e1 : besFun ψ 1 B.d B.o B.ζ φ f g n = besFun ψ 1 B.d B.o B.ζ φ f (γ * g) k'`. Simplify using `only [besFun]`. Establish `f1 : f (n.1 * embA B.d B.o g) = f (k'.1 * embA B.d B.o (γ * g))`.
+
+Rewrite using `[← hf.1 ((embA B.d B.o γ)⁻¹ * γ'.1) (mul_mem (inv_mem hδ) hγ'Q) (k'.1 * embA B.d B.o (γ * g)), en, map_mul]`. Use `congr 1`. Use `group`. Establish `p1 : psiBes ψ B.d 1 (vecB B.o B.ζ) n.1 = psiBes ψ B.d 1 (vecB B.o B.ζ) k'.1`. Use `hch.2.2.1 (γ'.1 * k'.1) γ⁻¹` as an intermediate fact.
+
+Rewrite `this` using `[map_inv, inv_inv, ← en]`. Rewrite using `[this, psiBes_mul B.d ψ 1 _ γ'.2 k'.2, hch.2.1 _ _ hγ'Q, one_mul]`. Rewrite using `[f1, p1, hφ.1 γ hγ g]`. Rewrite using `[e1]`. Conclude with `hM (γ * g, k') ⟨hk, hk'⟩`.
+-/
 theorem conv {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {ρ : ℕ} (B : BesLev D ρ) {f : GA D B.V → ℂ}
     (hf : IsContAut B.V f) {φ : GA D B.A → ℂ} (hφ : IsContAut B.A φ) :
     (∀ h, IntegrableOn (besFun ψ 1 B.d B.o B.ζ φ f h) B.vN.𝓝 B.vN.ν) ∧
@@ -65,6 +80,13 @@ end GlobalTheory.SeeSaw.PerSumProof
 
 namespace GlobalTheory.SeeSaw
 
+/- English proof (translation)
+Introduce `D ψ hψ ρ B f hf I s a φ hφ`. Establish `hconv` using `fun i (hi : i ∈ s) => PerSumProof.conv hψ B hf (hφ i hi)`. Simplify using `only [BesLev.per, besPer]`. Establish `e1 : ∀ h n, besFun ψ 1 B.d B.o B.ζ (∑ i ∈ s, a i • φ i) f h n = ∑ i ∈ s, a i * besFun ψ 1 B.d B.o B.ζ (φ i) f h n`. Introduce `h n`.
+
+Simplify using `only [besFun, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Repeatedly rewrite using `[e1]`. Establish `e2 : (fun h => ∫ n in B.vN.𝓝, ∑ i ∈ s, a i * besFun ψ 1 B.d B.o B.ζ (φ i) f h n ∂B.vN.ν) = fun h => ∑ i ∈ s, a i * ∫ n in B.vN.𝓝, besFun ψ 1 B.d B.o B.ζ (φ i) f h n ∂B.vN.ν`. Use function extensionality and compare the values at `h`.
+
+Rewrite using `[integral_finset_sum s fun i hi => ((hconv i hi).1 h).const_mul (a i)]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul _ _`. Rewrite using `[e2, integral_finset_sum s fun i hi => (hconv i hi).2.const_mul (a i)]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul _ _`.
+-/
 theorem perSum_all : ∀ D : D7, PerSum D := by
   intro D ψ hψ ρ B f hf I s a φ hφ
   have hconv := fun i (hi : i ∈ s) => PerSumProof.conv hψ B hf (hφ i hi)

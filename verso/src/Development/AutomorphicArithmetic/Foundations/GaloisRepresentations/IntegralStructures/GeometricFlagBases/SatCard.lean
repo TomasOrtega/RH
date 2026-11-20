@@ -10,6 +10,9 @@ open UpperTheory.Gal.crystallineComparison (heckePol rootPol)
 open UpperTheory.Gal.Int.Div (CrysAt PhiKilled HTRichEx JumpsOcc VBase)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E _ _ _ a U w B h`. Take `⟨σ, -, hB⟩` from `h`. Conclude with `GlobalTheory.LFun.HasSatGL.card hB`.
+-/
 theorem UpperTheory.Gal.Int.Geo.satCard :
     UpperTheory.Gal.Int.Geo.SatCard := by
   intro E _ _ _ a U w B h

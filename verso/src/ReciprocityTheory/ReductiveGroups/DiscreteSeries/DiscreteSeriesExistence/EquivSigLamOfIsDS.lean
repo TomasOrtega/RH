@@ -20,6 +20,9 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
+/- English proof (translation)
+Introduce `a b hab hne w hw hkhw`. Conclude with `cfa_no_of_vogan hgap hσ hD hV hVK hvog a b hab hne w hw hkhw`.
+-/
 theorem cf_no_of_vogan (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v)
     (hvog : ∀ (μ : Fin n → ℝ) (S : Submodule ℂ H), Formalism.MainNotions.S.IsKTypeOf ε σ μ S →
@@ -29,6 +32,9 @@ theorem cf_no_of_vogan (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD
   intro a b hab hne w hw hkhw
   exact cfa_no_of_vogan hgap hσ hD hV hVK hvog a b hab hne w hw hkhw
 
+/- English proof (translation)
+Establish `hσ : IsURepOn (UJset ε) σ` using `hDS.2.2.1`. Conclude with `casimir_eq_casVal_of_no hgap.1 hD.glRep (isInfUnitary_of_isDerivedOn hσ hD) hV (cf_no_of_vogan hgap hσ hD hV hVK hDS.2.2.2.2.2.2)`.
+-/
 theorem casOnDatum_of_isDS (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) :
     ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v := by
@@ -43,16 +49,25 @@ section Arbitrary
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
   {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Conclude with `casOnSmooth_of_copies hDS hgap (fun V hV hVK => casOnDatum_of_isDS hDS hgap (isDerivedOn_smE hDS.2.2.1) hV hVK)`.
+-/
 theorem casOnSmooth_of_isDS (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam) : CasOnSmooth ε lam σ := by
   exact casOnSmooth_of_copies hDS hgap
     (fun V hV hVK => casOnDatum_of_isDS hDS hgap (isDerivedOn_smE hDS.2.2.1) hV hVK)
 
+/- English proof (translation)
+Conclude with `equiv_sigLam_of_cas hDS hgap (casOnSmooth_of_isDS hDS hgap) hP hv₀`.
+-/
 theorem equiv_sigLam_of_isDS (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (hgap : StdGap ε lam)
     {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
     (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) :
     ∃ U : Hlam ε Ψ v₀ ≃ₗᵢ[ℂ] H, ∀ g ∈ UJset ε, ∀ x : Hlam ε Ψ v₀, U (sigLam ε Ψ v₀ g x) = σ g (U x) := by
   exact equiv_sigLam_of_cas hDS hgap (casOnSmooth_of_isDS hDS hgap) hP hv₀
 
+/- English proof (translation)
+Establish `hcas` using `casOnSmooth_of_isDS hDS (cf_stdGap_of_pq hpq hlam.1)`. Conclude with `⟨hcas, compact_isDS_unique_of_cas hpq hlam hDS hcas T⟩`.
+-/
 theorem compact_isDS_unique (hpq : pOf ε = 0 ∨ qOf ε = 0) (hlam : S7.IsHCParam lam) (hDS : Formalism.MainNotions.S.IsDS ε lam σ)
     (T : S7.KType ε (lowK ε lam)) :
     CasOnSmooth ε lam σ ∧ (∀ S : Submodule ℂ H, Formalism.MainNotions.S.IsKTypeOf ε σ (Formalism.QuantumDeterminants.lowK ε lam) S → S = ⊤) ∧
@@ -62,6 +77,9 @@ theorem compact_isDS_unique (hpq : pOf ε = 0 ∨ qOf ε = 0) (hlam : S7.IsHCPar
 
 end Arbitrary
 
+/- English proof (translation)
+Introduce `n ε lam hlam h hh hbig H _ _ _ σ hDS`. Establish `hgap : StdGap ε lam` using `⟨hlam.1, h, hh, hbig⟩`. Conclude with `isDS_props_of_copies hlam hh hbig (fun H' _ _ _ σ' hDS' V hV hVK => casOnDatum_of_isDS hDS' hgap (isDerivedOn_smE hDS'.2.2.1) hV hVK) H σ hDS`.
+-/
 theorem isDS_props_of_gap :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →
       ∀ h : ℝ, Formalism.QuantumDeterminants.GapAtLeast ε lam h → (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h →

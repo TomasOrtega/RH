@@ -8,6 +8,9 @@ open GlobalTheory.CuspRep
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext (R := 𝓞 E) E fun v => ?_)` and prove the remaining obligations. Use `congrArg (fun m : GL (Fin a) (v.adicCompletion E) => (m.val : Matrix (Fin a) (Fin a) (v.adicCompletion E)) i j) (h v)` as an intermediate fact. Conclude with `this`.
+-/
 theorem glAf_ext {x y : GL (Fin a) (Af E)}
     (h : ∀ v : HeightOneSpectrum (𝓞 E), GeneralLinearGroup.map (pLoc E v) x = GeneralLinearGroup.map (pLoc E v) y) :
     x = y := by
@@ -15,6 +18,11 @@ theorem glAf_ext {x y : GL (Fin a) (Af E)}
   have := congrArg (fun m : GL (Fin a) (v.adicCompletion E) => (m.val : Matrix (Fin a) (Fin a) (v.adicCompletion E)) i j) (h v)
   exact this
 
+/- English proof (translation)
+Use `glAf_ext fun v => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_inv]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[pLoc_locGL, pLoc_locGL, inv_mul_cancel, mul_one, one_mul]`.
+
+Rewrite using `[pLoc_locGL_of_ne hv, pLoc_locGL_of_ne hv, inv_one, one_mul, one_mul, mul_one]`.
+-/
 theorem locGL_comm_away (w : HeightOneSpectrum (𝓞 E)) (k : GL (Fin a) (Af E))
     (h : GL (Fin a) (w.adicCompletion E)) :
     locGL E a w h * ((locGL E a w (GeneralLinearGroup.map (pLoc E w) k))⁻¹ * k) =
@@ -26,6 +34,17 @@ theorem locGL_comm_away (w : HeightOneSpectrum (𝓞 E)) (k : GL (Fin a) (Af E))
     rw [pLoc_locGL, pLoc_locGL, inv_mul_cancel, mul_one, one_mul]
   · rw [pLoc_locGL_of_ne hv, pLoc_locGL_of_ne hv, inv_one, one_mul, one_mul, mul_one]
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `fin k => set kw := GeneralLinearGroup.map (pLoc E w) k set k' := (locGL E a w kw)⁻¹ * k`. Use `⟨kw, π.op (.fin k'), fun h => ?_, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rt E a (finGL E a k') (rt E a (finGL E a (locGL E a w h)) φ.1) = rt E a (finGL E a (locGL E a w h)) (rt E a (finGL E a k') φ.1)`.
+
+Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, ← map_mul, ← map_mul, locGL_comm_away]`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) φ.1 = rt E a (finGL E a (locGL E a w kw)) (rt E a (finGL E a k') φ.1)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← map_mul, mul_inv_cancel_left]`. Consider the case `cpt k`.
+
+Use `⟨1, π.op (.cpt k), fun h => ?_, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rt E a (infGL E a (Unitary.toUnits k)) (rt E a (finGL E a (locGL E a w h)) φ.1) = rt E a (finGL E a (locGL E a w h)) (rt E a (infGL E a (Unitary.toUnits k)) φ.1)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, infGL_comm]`. Rewrite using `[map_one]`.
+
+Both sides reduce to the same expression. Consider the case `lie X`. Use `⟨1, π.op (.lie X), fun h => ?_, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lie E a X (rt E a (finGL E a (locGL E a w h)) φ.1) = rt E a (finGL E a (locGL E a w h)) (lie E a X φ.1)`.
+
+Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, lie_rt_fin]`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+-/
 theorem op_eq_locRep_comp (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (o : Op E a) :
     ∃ (g : GL (Fin a) (w.adicCompletion E)) (T : Module.End ℂ π.V),
       (∀ h, T ∘ₗ π.locRep w h = π.locRep w h ∘ₗ T) ∧ π.op o = π.locRep w g ∘ₗ T := by
@@ -57,6 +76,9 @@ theorem op_eq_locRep_comp (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) (o
       rw [← Module.End.mul_apply, ← Module.End.mul_apply, lie_rt_fin]
     · rw [map_one]; rfl
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ π w o` and use `op_eq_locRep_comp π w o`.
+-/
 theorem exists_locRep_comp : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : GlobalTheory.CuspRep.CuspSub E a)
     (w : HeightOneSpectrum (𝓞 E)) (o : GlobalTheory.CuspRep.Op E a), ∃ (g : GL (Fin a) (w.adicCompletion E))
     (T : Module.End ℂ π.V), (∀ h, T ∘ₗ π.locRep w h = π.locRep w h ∘ₗ T) ∧ π.op o = π.locRep w g ∘ₗ T :=

@@ -8,6 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n g d R τ E ⟨C, k, hC⟩ hE j`. Use `choose C' hC' using hE`. Use `⟨max C 0 * ∑ i, max (C' i) 0, k, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hp : (0:ℝ) ≤ (1 + ‖s‖) ^ k` using `pow_nonneg (by positivity) _`. Establish `h1 : ∀ i, ‖τ s i j‖ ≤ max C 0 * (1 + ‖s‖) ^ k` using `fun i => (norm_le_pi_norm (τ s i) j).trans ((norm_le_pi_norm (τ s) i).trans ((hC s hs).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hp)))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem matrix_mul_bounded_poly_growth : ∀ (n g d : ℕ) (R : Set (Fin n → ℂ)) (τ : (Fin n → ℂ) → Fin d → Fin d → ℂ) (E : (Fin n → ℂ) → Fin d → Fin g → ℂ), (∃ (C : ℝ) (k : ℕ), ∀ s ∈ R, ‖τ s‖ ≤ C * (1 + ‖s‖) ^ k) → (∀ i, ∃ C : ℝ, ∀ s ∈ R, ‖E s i‖ ≤ C) → ∀ j, ∃ (C : ℝ) (k : ℕ), ∀ s ∈ R, ‖∑ i, τ s i j • E s i‖ ≤ C * (1 + ‖s‖) ^ k := by
   intro n g d R τ E ⟨C, k, hC⟩ hE j
   choose C' hC' using hE

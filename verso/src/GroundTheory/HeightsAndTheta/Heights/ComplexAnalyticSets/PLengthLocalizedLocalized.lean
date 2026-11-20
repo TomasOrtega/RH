@@ -6,6 +6,11 @@ namespace GroundTheory.Heights₂.Heights
 
 universe u v
 
+/- English proof (translation)
+Establish `h : Ideal.under B (P.map (algebraMap B (Localization.AtPrime Q))) = P` using `IsLocalization.under_map_of_isPrime_disjoint Q.primeCompl (Localization.AtPrime Q) hP (Set.disjoint_left.mpr fun _ hx hxP => hx (hPQ hxP))`. Establish `key : IsLocalization ((P.map (algebraMap B (Localization.AtPrime Q))).comap (algebraMap B (Localization.AtPrime Q))).primeCompl (Localization.AtPrime (P.map (algebraMap B (Localization.AtPrime Q))))` using `IsLocalization.isLocalization_atPrime_localization_atPrime Q.primeCompl _`. Rewrite `h` using `[Ideal.under]`. Establish `e : P.primeCompl = ((P.map (algebraMap B (Localization.AtPrime Q))).comap (algebraMap B (Localization.AtPrime Q))).primeCompl` using `Submonoid.ext fun x => by rw [Ideal.mem_primeCompl_iff, Ideal.mem_primeCompl_iff, h]`. Rewrite using `[e]`.
+
+Conclude with `key`.
+-/
 theorem LengthLocalizedLocalized.isLocalization_atPrime_map (B : Type u) [CommRing B] (P Q : Ideal B)
     [hP : P.IsPrime] [Q.IsPrime] [(P.map (algebraMap B (Localization.AtPrime Q))).IsPrime] (hPQ : P ≤ Q) :
     IsLocalization P.primeCompl (Localization.AtPrime (P.map (algebraMap B (Localization.AtPrime Q)))) := by
@@ -23,6 +28,15 @@ theorem LengthLocalizedLocalized.isLocalization_atPrime_map (B : Type u) [CommRi
   rw [e]
   exact key
 
+/- English proof (translation)
+Introduce `B _ P Q _ _ _ M _ _ hPQ`. Establish `hloc` using `LengthLocalizedLocalized.isLocalization_atPrime_map B P Q hPQ`. Set `σ : Localization.AtPrime (P.map (algebraMap B (Localization.AtPrime Q))) ≃ₐ[B] Localization.AtPrime P` to `IsLocalization.algEquiv P.primeCompl _ _`. Set `: Algebra (Localization.AtPrime (P.map (algebraMap B (Localization.AtPrime Q)))) (Localization.AtPrime P)` to `σ.toRingHom.toAlgebra`. Set `: Module (Localization.AtPrime (P.map (algebraMap B (Localization.AtPrime Q)))) (LocalizedModule P.primeCompl M)` to `Module.compHom _ (algebraMap (Localization.AtPrime (P.map (algebraMap B (Localization.AtPrime Q)))) (Localization.AtPrime P))`.
+
+Establish `: IsScalarTower (Localization.AtPrime (P.map (algebraMap B (Localization.AtPrime Q)))) (Localization.AtPrime P) (LocalizedModule P.primeCompl M)` using `⟨fun r l x => by show (r • l) • x = algebraMap _ (Localization.AtPrime P) r • (l • x)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Establish `: IsScalarTower B (Localization.AtPrime (P.map (algebraMap B (Localization.AtPrime Q)))) (LocalizedModule P.primeCompl M)` using `⟨fun b r x => by show algebraMap _ (Localization.AtPrime P) (b • r) • x = b • (algebraMap _ (Localization.AtPrime P) r • x)`. Rewrite using `[Algebra.smul_def, map_mul, mul_smul]`. Rewrite using `[show algebraMap (Localization.AtPrime (P.map (algebraMap B (Localization.AtPrime Q)))) (Localization.AtPrime P) (algebraMap B _ b) = algebraMap B (Localization.AtPrime P) b from σ.commutes b, algebraMap_smul]⟩`.
+
+Establish `hf : IsBaseChange (Localization.AtPrime Q) (LocalizedModule.mkLinearMap Q.primeCompl M)` using `IsLocalizedModule.isBaseChange Q.primeCompl _ _`. Establish `hg : IsBaseChange (Localization.AtPrime (P.map (algebraMap B (Localization.AtPrime Q)))) (LocalizedModule.mkLinearMap (P.map (algebraMap B (Localization.AtPrime Q))).primeCompl (LocalizedModule Q.primeCompl M))` using `IsLocalizedModule.isBaseChange (P.map (algebraMap B (Localization.AtPrime Q))).primeCompl _ _`. Establish `hfg` using `hf.comp hg`. Establish `h0 : IsBaseChange (Localization.AtPrime (P.map (algebraMap B (Localization.AtPrime Q)))) (LocalizedModule.mkLinearMap P.primeCompl M)` using `IsLocalizedModule.isBaseChange P.primeCompl _ _`. Rewrite using `[← (h0.equiv.symm.trans hfg.equiv).length_eq]`.
+
+Conclude with `Module.length_eq_of_surjective σ.surjective`.
+-/
 theorem LengthLocalizedLocalized.proof : LengthLocalizedLocalized.Statement.{u, v} := by
   intro B _ P Q _ _ _ M _ _ hPQ
   have hloc := LengthLocalizedLocalized.isLocalization_atPrime_map B P Q hPQ

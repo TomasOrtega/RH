@@ -14,6 +14,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Establish `: v.asIdeal.IsMaximal` using `v.isMaximal`. Use `letI : Field (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.field v.asIdeal`. Set `g : 𝓞 E →+* (𝓞 F ⧸ v.asIdeal) × (𝓞 F ⧸ v.asIdeal)` to `e.toRingHom.comp (Ideal.Quotient.mk (IE (E := E) v))`. Establish `hg : Function.Surjective g` using `e.surjective.comp Ideal.Quotient.mk_surjective`. Establish `hIE : ∀ c ∈ v.asIdeal, g (algebraMap (𝓞 F) (𝓞 E) c) = 0`.
+
+Introduce `c hc`. Simplify using `only [g, RingHom.comp_apply]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ hc), map_zero]`. Establish `key : ∀ f : (𝓞 F ⧸ v.asIdeal) × (𝓞 F ⧸ v.asIdeal) →+* 𝓞 F ⧸ v.asIdeal, Function.Surjective f → (RingHom.ker (f.comp g)).IsMaximal ∧ (RingHom.ker (f.comp g)).LiesOver v.asIdeal`. Introduce `f hf`.
+
+Establish `hM : (RingHom.ker (f.comp g)).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ (hf.comp hg)`. Use `⟨hM, ⟨?_⟩⟩` and prove the remaining obligations. Establish `hle : v.asIdeal ≤ (RingHom.ker (f.comp g)).under (𝓞 F)`. Introduce `c hc`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, RingHom.mem_ker, RingHom.comp_apply, hIE c hc, map_zero]`.
+
+Conclude with `v.isMaximal.eq_of_le (by rw [Ideal.under_def]; exact Ideal.comap_ne_top _ hM.ne_top) hle`. Take `⟨h1, h1'⟩` from `key (RingHom.fst _ _) Prod.fst_surjective`. Take `⟨h2, h2'⟩` from `key (RingHom.snd _ _) Prod.snd_surjective`. Use `⟨_, _, h1, h2, ?_, h1', h2'⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hg (1, 0)`.
+
+Introduce `heq`. Establish `hy2 : y ∈ RingHom.ker ((RingHom.snd _ _).comp g)`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, hy]`. Both sides reduce to the same expression. Rewrite `hy2` using `[← heq, RingHom.mem_ker, RingHom.comp_apply, hy]`.
+
+Conclude with `one_ne_zero hy2`.
+-/
 theorem two_primes (e : QE (E := E) v ≃+* (𝓞 F ⧸ v.asIdeal) × (𝓞 F ⧸ v.asIdeal)) :
     ∃ Q Q' : Ideal (𝓞 E), Q.IsMaximal ∧ Q'.IsMaximal ∧ Q ≠ Q' ∧ Q.LiesOver v.asIdeal ∧ Q'.LiesOver v.asIdeal := by
   have : v.asIdeal.IsMaximal := v.isMaximal
@@ -45,6 +58,25 @@ theorem two_primes (e : QE (E := E) v ≃+* (𝓞 F ⧸ v.asIdeal) × (𝓞 F �
   rw [← heq, RingHom.mem_ker, RingHom.comp_apply, hy] at hy2
   exact one_ne_zero hy2
 
+/- English proof (translation)
+Introduce `hstd hun hp`. Establish `hcm` using `hstd.1`. Take `⟨e, -⟩` from `qProd_holds σ J ψ v hstd hun hp`. Take `⟨Q, Q', hQ, hQ', hne, hl, hl'⟩` from `two_primes v e`. Take `⟨φ⟩` from `MassDataIdxEmb.emb_of_two hcm.2.2.1 v Q Q' hne`.
+
+Take `⟨θ, h3, -⟩` from `theta_exists (σ := σ) (v := v) hcm`. Establish `hind` using `theta_indep (σ := σ) (v := v) hcm θ h3`. Use `set A := algebraMap (Fv F v) (Fv F v ⊗[F] E) with hA`. Use `set T := inclR (F := F) (Fv F v) (θ : E) with hT`. Establish `hind' : ∀ a0 a1 : Fv F v, A a0 + A a1 * T = 0 → a1 = 0` using `fun a0 a1 h => (hind a0 a1 (by rw [sc_eq', sc_eq']; exact h)).2`.
+
+Establish `hnotF : ∀ c : F, algebraMap F E c ≠ (θ : E)`. Introduce `c hc`. Establish `h0` using `hind' (-(algebraMap F (Fv F v) c)) 1 (by`. Rewrite using `[map_neg, map_one, one_mul, hT, ← hc, inclR_alg', sc_eq', neg_add_cancel])`. Conclude with `one_ne_zero h0`.
+
+Take `⟨t, ht⟩` from `fix_range σ hcm (y := (θ : E) + σ θ) (by rw [map_add, sig_sig σ hcm, add_comm])`. Take `⟨m, hm⟩` from `fix_range σ hcm (y := (θ : E) * σ θ) (by rw [map_mul, sig_sig σ hcm, mul_comm])`. Use `set r := φ (θ : E) with hr`. Use `set r' := φ (σ (θ : E)) with hr'`. Establish `hsum : A r + A r' = inclR (F` using `F) (Fv F v) ((θ : E) + σ θ) := by`.
+
+Rewrite using `[← ht, inclR_alg', sc_eq', ← φ.commutes t, ht, map_add, map_add]`. Establish `hprod : A r * A r' = inclR (F` using `F) (Fv F v) ((θ : E) * σ θ) := by`. Rewrite using `[← hm, inclR_alg', sc_eq', ← φ.commutes m, hm, map_mul, map_mul]`. Establish `hkey : (T - A r) * (T - A r') = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hsum, hprod, hT]`. Simplify using `only [map_add, map_sub, map_mul]`. Use `_ = 0 := by rw [show (θ : E) * θ - ((θ : E) + σ θ) * θ + θ * σ θ = 0 by ring, map_zero]`. Use `set d := r - r' with hd`. Establish `hd0 : d ≠ 0`.
+
+Introduce `h`. Establish `h' : (θ : E) = σ θ` using `RingHom.injective φ.toRingHom (sub_eq_zero.1 h)`. Take `⟨c, hc⟩` from `fix_range σ hcm (y := (θ : E)) h'.symm`. Conclude with `hnotF c hc`. Establish `hsq : (T - A r') * (T - A r') = A d * (T - A r')`.
+
+Establish `h1 : (T - A r') * (T - A r') = (T - A r) * (T - A r') + (A r - A r') * (T - A r')` using `by ring`. Rewrite using `[h1, hkey, zero_add, ← map_sub]`. Establish `hinv : A d⁻¹ * A d = 1` using `by rw [← map_mul, inv_mul_cancel₀ hd0, map_one]`. Establish `hdi : d⁻¹ ≠ 0` using `inv_ne_zero hd0`. Use `⟨A d⁻¹ * (T - A r'), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Conclude with `hdi (hind' (-(d⁻¹ * r')) d⁻¹ (by rw [map_neg, map_mul]; linear_combination h))`. Introduce `h`. Conclude with `hdi (hind' (-(d⁻¹ * r') - 1) d⁻¹ (by rw [map_sub, map_neg, map_mul, map_one]; linear_combination h))`.
+-/
 theorem etaSp_holds : EtaSp σ J ψ v := by
   intro hstd hun hp
   have hcm := hstd.1

@@ -11,6 +11,9 @@ open GroundTheory.PAdicHodge
 variable (l : ℕ) [Fact l.Prime]
 
 set_option maxHeartbeats 200000 in
+/- English proof (translation)
+Use `show (Cmp6.cP l).symm (iotaP l (Cmp6.cA l (algebraMap _ _ a))) = _`. Rewrite using `[RingEquiv.symm_apply_eq, Cmp6.cA_apply, Reformulated.AutPerF.Acris.map_algebraMap_zero, Cmp6.acrisNHom_algebraMap]`. Use `erw [ACris.iota_of]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply]`. Use `erw [zt1, zt2, zt3]`.
+-/
 theorem jOC_zero (a : Reformulated.AutPerF.AcrisZero l (Cmp6.OC l)) :
     jOC l (algebraMap _ (Reformulated.AutPerF.Acris l (Cmp6.OC l)) a) =
       algebraMap (Reformulated.AutPerF.AinfInv l (Cmp6.OC l)) _ (a : Reformulated.AutPerF.AinfInv l (Cmp6.OC l)) := by

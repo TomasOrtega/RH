@@ -11,6 +11,9 @@ section LenEpsAux
 
 variable {O OO : Type*} [CommRing O] [Ring OO] [Algebra O OO]
 
+/- English proof (translation)
+Simplify using `[epsImg]`.
+-/
 lemma mem_epsImg_iff {M : Type*} [AddCommGroup M] [Module OO M] [Module O M]
     [IsScalarTower O OO M] (ε : OO) (x : M) :
     x ∈ epsImg O (M := M) ε ↔ ∃ y : M, ε • y = x := by
@@ -24,6 +27,9 @@ def epsMap {A B : Type*} [AddCommGroup A] [Module OO A] [Module O A] [IsScalarTo
     obtain ⟨y, rfl⟩ := hx
     exact ⟨φ y, by simp⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma epsMap_apply {A B : Type*} [AddCommGroup A] [Module OO A] [Module O A]
     [IsScalarTower O OO A]
     [AddCommGroup B] [Module OO B] [Module O B] [IsScalarTower O OO B]

@@ -73,21 +73,33 @@ section Help
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `B.hsVec`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem rdsp_hsVec_zero : B.hsVec (0 : Wq →L[ℂ] Wp) = 0 := by
   unfold B.hsVec; simp; rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : b = 0`. Rewrite using `[← hb, h, rdsp_hsVec_zero, inner_zero_right, inner_zero_right]`. Rewrite using `[← hb, ha h]`.
+-/
 theorem rdsp_ip_congr {a b a' b' : Wq →L[ℂ] Wp} (hb : b = b') (ha : b ≠ 0 → a = a') :
     inner ℂ (B.hsVec a) (B.hsVec b) = inner ℂ (B.hsVec a') (B.hsVec b') := by
   by_cases h : b = 0
   · rw [← hb, h, rdsp_hsVec_zero, inner_zero_right, inner_zero_right]
   · rw [← hb, ha h]
 
+/- English proof (translation)
+Use `show _ • J (eR k r x) = _ • J' (eR k r x)`. Rewrite using `[h]`.
+-/
 theorem rdsp_resG_congr (J J' : B.Mat k r → (Wq →L[ℂ] Wp)) (x : (Fin r → ℂ) × Mx k r)
     (h : J (eR k r x) = J' (eR k r x)) :
     resG k r (Fin.last r) J x.1 x.2 = resG k r (Fin.last r) J' x.1 x.2 := by
   show _ • J (eR k r x) = _ • J' (eR k r x)
   rw [h]
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Use `show _ • J (eR k r x) = 0`. Rewrite using `[h0, smul_zero]`.
+-/
 theorem rdsp_resG_ne (J : B.Mat k r → (Wq →L[ℂ] Wp)) (x : (Fin r → ℂ) × Mx k r)
     (h : resG k r (Fin.last r) J x.1 x.2 ≠ 0) : J (eR k r x) ≠ 0 := by
   intro h0
@@ -95,6 +107,13 @@ theorem rdsp_resG_ne (J : B.Mat k r → (Wq →L[ℂ] Wp)) (x : (Fin r → ℂ) 
   show _ • J (eR k r x) = 0
   rw [h0, smul_zero]
 
+/- English proof (translation)
+Establish `h' : ((∏ a : Fin r, (if a.val < (Fin.last r).val then ‖x.1 a‖ ^ (Mdim k r a - 1) else 1) : ℝ) : ℂ) • J (eR k r x) = 0` using `h`. Break down `smul_eq_zero.1 h' with h1 | h1` into its components or cases. It suffices to derive a contradiction. Rewrite `h1` using `[Complex.ofReal_eq_zero, Finset.prod_eq_zero_iff]`. Take `⟨a, -, ha⟩` from `h1`.
+
+Rewrite `ha` using `[if_pos (show (a : ℕ) < ((Fin.last r : Fin (r + 1)) : ℕ) by simp)]`. Use `hx a (norm_eq_zero.1 ?_)` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos (Mdim k r a - 1) with hn | hn` into its components or cases. Rewrite `ha` using `[hn, pow_zero]`. Conclude with `absurd ha one_ne_zero`.
+
+Conclude with `(pow_eq_zero_iff hn.ne').1 ha`. Conclude with `h1`.
+-/
 theorem rdsp_resG_zero (J : B.Mat k r → (Wq →L[ℂ] Wp)) (x : (Fin r → ℂ) × Mx k r) (hx : x.1 ∈ OmX r)
     (h : resG k r (Fin.last r) J x.1 x.2 = 0) : J (eR k r x) = 0 := by
   have h' : ((∏ a : Fin r, (if a.val < (Fin.last r).val then ‖x.1 a‖ ^ (Mdim k r a - 1) else 1) : ℝ) : ℂ) •
@@ -112,6 +131,41 @@ theorem rdsp_resG_zero (J : B.Mat k r → (Wq →L[ℂ] Wp)) (x : (Fin r → ℂ
 
 end Help
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Θ hΘ J K hJ hK Φ₁ Φ₂ Φ₃ Φ₄ h1 h2 h3 h4 hT`. Substitute `hz hz' hπ hπ'` using the available equality. Take `⟨Kc, hKc, hKcD, hKc0⟩` from `hT`. Take `⟨hEO, hEc, hOP⟩` from `hE P.k P.r Wp Wq D`. Establish `hC0c : IsCompact (eR P.k P.r '' Kc)` using `hKc.image_of_continuousOn (hEc.mono hKcD)`.
+
+Establish `hC0O : eR P.k P.r '' Kc ⊆ JF.Om P.k P.r D.z D.z'`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hEO x (hKcD hx)`. Take `⟨F₁, U₁, hF₁s, hF₁c, hF₁O, -, hC0U₁, -, hF₁K⟩` from `hX P.k P.r Wp Wq D K hK _ hC0c hC0O`. Take `⟨F₂, U₂, hF₂s, hF₂c, hF₂O, hU₂o, hCU₂, hU₂sat, hF₂J⟩` from `hX P.k P.r Wp Wq D J hJ _ (hC0c.union hF₁c) (Set.union_subset hC0O hF₁O)`.
+
+Take `⟨⟨hA1s, hA1c, hA1t⟩, -, hJ1⟩` from `hO P.k P.r Wp Wq D Θ hΘ.1 hΘ.2.1 F₁ hF₁s hF₁c hF₁O`. Take `⟨-, ⟨hB2s, hB2c, hB2t⟩, hJ2⟩` from `hO P.k P.r Wp Wq D Θ hΘ.1 hΘ.2.1 F₂ hF₂s hF₂c hF₂O`. Establish `hF₁O' : tsupport (B.opApply Θ F₁) ⊆ JF.Om P.k P.r D.z D.z'` using `hA1t.trans hF₁O`. Establish `hF₂O' : tsupport (B.opAdj Θ F₂) ⊆ JF.Om P.k P.r D.z D.z'` using `hB2t.trans hF₂O`. Establish `hM1` using `hM P.k P.r Wp Wq D F₁ hF₁s hF₁c hF₁O`.
+
+Establish `hM2` using `hM P.k P.r Wp Wq D F₂ hF₂s hF₂c hF₂O`. Establish `hM3` using `hM P.k P.r Wp Wq D _ hA1s hA1c hF₁O'`. Establish `hM4` using `hM P.k P.r Wp Wq D _ hB2s hB2c hF₂O'`. Establish `hKeq : ∀ g ∈ JF.Om P.k P.r D.z D.z', K g = B.JF D F₁ g`. Use `hZ P.k P.r Wp Wq D K (B.JF D F₁) hK hM1.1 fun x hx => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hxK : x ∈ Kc`. Conclude with `((hF₁K (eR P.k P.r x) (hEO x hx)).1 (hC0U₁ ⟨x, hxK, rfl⟩)).symm`. Establish `h0 : K (eR P.k P.r x) = 0`. Use `rdsp_resG_zero K x hx.1 ?_` and prove the remaining obligations. Rewrite using `[← h2 x hx]`.
+
+Conclude with `hKc0 x hxK`. Rewrite using `[h0, (hF₁K (eR P.k P.r x) (hEO x hx)).2 h0]`. Establish `hOpen : IsOpen (Q.OmPlus P.k P.r D.z D.z')` using `Formalism.FourierDecayAlt.P.PositiveOrbitOpen.omPlus_open D.z D.z'`. Establish `hΘK : ∀ g ∈ JF.Om P.k P.r D.z D.z', B.opApply Θ K g = B.JF D (B.opApply Θ F₁) g`. Introduce `g hg`.
+
+Rewrite using `[(hL P.k P.r Wp Wq Θ _ K (B.JF D F₁) hOpen (fun g' hg' hgv => hKeq g' ⟨hgv, hg'⟩) g hg.2 hg.1).1]`. Conclude with `(hJ1 g hg).1`. Establish `hΘJ : ∀ g ∈ JF.Om P.k P.r D.z D.z', g ∈ U₂ → B.opAdj Θ J g = B.JF D (B.opAdj Θ F₂) g`. Introduce `g hg hgU`. Rewrite using `[(hL P.k P.r Wp Wq Θ _ J (B.JF D F₂) (hU₂o.inter hOpen) (fun g' hg' hgv => ((hF₂J g' ⟨hgv, hg'.2⟩).1 hg'.1).symm) g ⟨hgU, hg.2⟩ hg.1).2]`.
+
+Conclude with `(hJ2 g hg).2`. Take `⟨A₁, hA₁⟩` from `radial_residue_formula Wp Wq P D.z D.z' D.π D.π' X μ L st l0 hD _ hM4.1`. Take `⟨A₂, hA₂⟩` from `radial_residue_formula Wp Wq P D.z D.z' D.π D.π' X μ L st l0 hD _ hM1.1`. Take `⟨A₃, hA₃⟩` from `radial_residue_formula Wp Wq P D.z D.z' D.π D.π' X μ L st l0 hD _ hM2.1`. Take `⟨A₄, hA₄⟩` from `radial_residue_formula Wp Wq P D.z D.z' D.π D.π' X μ L st l0 hD _ hM3.1`.
+
+Establish `eL : radIp μ Φ₁ Φ₂ = radIp μ A₁ A₂`. Unfold `radIp`. Use `integral_congr_ae (Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Distinguish the cases in `hx : (c, Matrix.of g) ∈ DomR P.k P.r D.z D.z'`. Establish `e2 : (Φ₂ : Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of g) = (A₂ : Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of g)`. Rewrite using `[h2 _ hx, hA₂ _ hx]`. Conclude with `rdsp_resG_congr _ _ _ (hKeq _ (hEO _ hx))`. Use `rdsp_ip_congr e2 fun hne => ?_` and prove the remaining obligations.
+
+Establish `hxK : (c, Matrix.of g) ∈ Kc`. Assume the negation of the conclusion as `hxK`. Conclude with `hne (hKc0 _ hxK)`. Rewrite using `[h1 _ hx, hA₁ _ hx]`. Conclude with `rdsp_resG_congr _ _ _ (hΘJ _ (hEO _ hx) (hCU₂ (Or.inl ⟨_, hxK, rfl⟩)))`.
+
+Establish `z2 : (Φ₂ : Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of g) = 0` using `Φ₂.2.1 (c, Matrix.of g) hx`. Establish `z2' : (A₂ : Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of g) = 0` using `A₂.2.1 (c, Matrix.of g) hx`. Conclude with `rdsp_ip_congr (z2.trans z2'.symm) fun hne => absurd z2 hne`. Establish `eR' : radIp μ Φ₃ Φ₄ = radIp μ A₃ A₄`. Unfold `radIp`.
+
+Use `integral_congr_ae (Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Distinguish the cases in `hx : (c, Matrix.of g) ∈ DomR P.k P.r D.z D.z'`. Establish `e4 : (Φ₄ : Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of g) = (A₄ : Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of g)`.
+
+Rewrite using `[h4 _ hx, hA₄ _ hx]`. Conclude with `rdsp_resG_congr _ _ _ (hΘK _ (hEO _ hx))`. Use `rdsp_ip_congr e4 fun hne => ?_` and prove the remaining obligations. Rewrite `hne` using `[e4, hA₄ _ hx]`. Establish `hne'` using `rdsp_resG_ne _ _ hne`.
+
+Take `⟨p, hp, hps⟩` from `hM3.2 _ (hEO _ hx) hne'`. Establish `hU : eR P.k P.r (c, Matrix.of g) ∈ U₂` using `hU₂sat p hp _ (hEO _ hx) (hCU₂ (Or.inr (hA1t hps)))`. Rewrite using `[h3 _ hx, hA₃ _ hx]`. Conclude with `rdsp_resG_congr _ _ _ ((hF₂J _ (hEO _ hx)).1 hU).symm`. Establish `z4 : (Φ₄ : Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of g) = 0` using `Φ₄.2.1 (c, Matrix.of g) hx`.
+
+Establish `z4' : (A₄ : Fn P.k P.r (Wq →L[ℂ] Wp)) c (Matrix.of g) = 0` using `A₄.2.1 (c, Matrix.of g) hx`. Conclude with `rdsp_ip_congr (z4.trans z4'.symm) fun hne => absurd z4 hne`. Take `⟨C1, -, hB⟩` from `radial_beta_identity P.k P.r Wp Wq D μ hD.2.1`. Establish `hcc : ∀ (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)), B.CkOn ⊤ (B.GV P.k P.r) F → HasCompactSupport F → ∀ (A : ℝ) (m : ℕ), B.InCC A m F` using `fun F hF hFc A m => Formalism.FourierDecayAlt.P.JFxG.cptInCC_G hF hFc (fun g _ hg => image_eq_zero_of_notMem_tsupport hg) A m`. Establish `hβ` using `Formalism.FourierDecayAlt.P.CompactSupportClassLemmas.compact_support_in_class_general D Θ hΘ.1 hΘ.2.1 F₁ F₂ hF₁s hF₁c (fun g hg _ => hOP (hF₁O hg)) hF₂s hF₂c (fun g hg _ => hOP (hF₂O hg))`.
+
+Rewrite using `[eL, eR', hSw P.k P.r D.z D.z' Wp Wq D.π D.π' μ A₁ A₂ 0, hSw P.k P.r D.z D.z' Wp Wq D.π D.π' μ A₃ A₄ 0, hB F₁ (B.opAdj Θ F₂) A₂ A₁ (hcc _ hF₁s hF₁c) (hcc _ hB2s hB2c) hA₂ hA₁ 0, hB (B.opApply Θ F₁) F₂ A₄ A₃ (hcc _ hA1s hA1c) (hcc _ hF₂s hF₂c) hA₄ hA₃ 0, hβ.2.2.2.2]`.
+-/
 theorem rDSPair_of_cut (hSw : RDSPIpSwap) (hE : RDSPEOm) (hZ : RDSPZeroR) (hX : RDSPExh) (hM : RDSPJFMem)
     (hO : RDSPOp) (hL : RDSPLoc) : RDSPair := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Θ hΘ J K hJ hK Φ₁ Φ₂ Φ₃ Φ₄ h1 h2 h3 h4

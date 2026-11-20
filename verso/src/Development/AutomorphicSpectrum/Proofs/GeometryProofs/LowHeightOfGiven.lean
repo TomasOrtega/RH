@@ -14,6 +14,9 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
+/- English proof (translation)
+Introduce `_ E _ _ _ _ H Dw l Xo c` and use `LowHeightBounds.htLow_all E H Dw l Xo c`.
+-/
 theorem htLow : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), HTLow Xo c :=
   fun _ E _ _ _ _ H Dw l Xo c => LowHeightBounds.htLow_all E H Dw l Xo c
 

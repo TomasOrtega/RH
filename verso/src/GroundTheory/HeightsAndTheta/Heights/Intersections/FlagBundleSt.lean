@@ -12,6 +12,11 @@ section Gen
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C]`. Conclude with `(eq_intCast (algebraMap ℤ B) a).trans (eq_intCast ((e.comp φ).comp C) a).symm`. Consider the case `add p q hp hq => rw [map_add, hp, hq, map_add, map_add]`.
+
+Consider the case `mul_X p q hp => rw [map_mul, hp, aeval_X, map_mul, map_mul]`.
+-/
 theorem aeval_comp_X {σ A B : Type} [CommRing A] [CommRing B] {_ : Algebra ℤ B}
     (φ : MvPolynomial σ ℤ →+* A) (e : A →+* B) (f : MvPolynomial σ ℤ) :
     aeval (fun q => e (φ (X q))) f = e (φ f) := by
@@ -24,18 +29,27 @@ theorem aeval_comp_X {σ A B : Type} [CommRing A] [CommRing B] {_ : Algebra ℤ 
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+The claim follows from `aeval_comp_X (Ideal.Quotient.mk P) (algebraMap (MRing ι ⧸ P) (FnField P)) f`.
+-/
 theorem aeval_genPt (P : Ideal (MRing ι)) {_ : Algebra ℤ (FnField P)} (f : MRing ι) :
     aeval (genPt P) f = algebraMap (MRing ι ⧸ P) (FnField P) (Ideal.Quotient.mk P f) :=
   aeval_comp_X (Ideal.Quotient.mk P) (algebraMap (MRing ι ⧸ P) (FnField P)) f
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Rewrite using `[RingHom.ker_comp_of_injective _ (IsFractionRing.injective (MRing ι ⧸ P) (FnField P)), Ideal.mk_ker]`.
+-/
 theorem ker_algebraMap_comp_mk (P : Ideal (MRing ι)) :
     RingHom.ker ((algebraMap (MRing ι ⧸ P) (FnField P)).comp (Ideal.Quotient.mk P)) = P := by
   rw [RingHom.ker_comp_of_injective _ (IsFractionRing.injective (MRing ι ⧸ P) (FnField P)), Ideal.mk_ker]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Take `⟨k, i⟩` from `p`. Simplify using `[flagMap, inlV]`.
+-/
 theorem flagMap_X_inl (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) (Fin N1) (FnField P))
     (p : Σ k, ι k) :
     flagMap P B (X (inlV (ι₂ := PluckerBlocks N1 n) p)) = C (genPt P p) := by
@@ -44,6 +58,9 @@ theorem flagMap_X_inl (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) (F
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Establish `h : (flagMap P B).comp (rename (inlV (ι₂` using `PluckerBlocks N1 n)) : MRing ι →ₐ[ℤ] _).toRingHom = (C : FnField P →+* MvPolynomial (Fin n × Fin n) (FnField P)).comp ((algebraMap (MRing ι ⧸ P) (FnField P)).comp (Ideal.Quotient.mk P)) := MvPolynomial.ringHom_ext (fun r => by`. Rewrite using `[← RingHom.comp_apply _ C r, ← RingHom.comp_apply _ C r, eq_intCast, eq_intCast]) fun p => by`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X]`. Conclude with `flagMap_X_inl P B p`. Rewrite using `[imageZ, flagIdeal, RingHom.comap_ker, h, RingHom.ker_comp_of_injective _ (C_injective _ _), ker_algebraMap_comp_mk]`.
+-/
 theorem imageZ_flagIdeal (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) (Fin N1) (FnField P)) :
     imageZ (inlV (ι₂ := PluckerBlocks N1 n)) (flagIdeal P B) = P := by
   have h : (flagMap P B).comp (rename (inlV (ι₂ := PluckerBlocks N1 n)) : MRing ι →ₐ[ℤ] _).toRingHom =

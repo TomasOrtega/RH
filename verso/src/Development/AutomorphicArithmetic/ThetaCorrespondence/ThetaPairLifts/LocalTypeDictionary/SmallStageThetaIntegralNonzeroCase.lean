@@ -22,6 +22,23 @@ open MeasureTheory
 open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.StageSmallNz
+/- English proof (translation)
+Introduce `hP hK hL`. Establish `hH` using `hP.howeDualityReal`. Establish `hLM` using `_root_.GlobalTheory.T.twisted_local_factors_match hH hP hK hL`. Take `⟨c, hc⟩` from `GlobalTheory.SqTop.Model.gBig_and GlobalTheory.T.towerStage_seesawDictionary_framesSignatures (_root_.GlobalTheory.T.theta_stage_nonzero_at_finite_places hP hK hL)`. Use `⟨c, fun ε CF hCF => ?_⟩` and prove the remaining obligations.
+
+Take `⟨C0, x0, h⟩` from `hc ε CF hCF`. Use `⟨C0, x0, fun C hC D large₂ a b r T Lc μ hLc G W S hW hN i j p A A' WW X hX hint => ?_⟩` and prove the remaining obligations. Take `⟨hd, h3⟩` from `h C hC D large₂ a b r T Lc μ hLc G`. Take `⟨FA, FA', FW, ea, eb, -, hsA', -, hD⟩` from `hd W i j p 0 A A' WW X hX`. Establish `hdef : ∀ τ, Formalism.UG.HasSignature (gramAt D A' τ) A'.rank 0` using `fun τ => by simpa using hsA' τ`.
+
+Establish `hIs` using `hX.2.2.2.2.2.2.2`. Take `⟨Pr, q, q', hq, hq', hLMt⟩` from `hLM D W.ψ W.θ W.ψ_std W.θ_is A A' WW FA FA' FW ea eb`. Establish `key : ∀ t, ∃ (Pi : ModuleCat.{0} ℂ) (rf : GA D WW → Module.End ℂ Pi) (rl : D.what₂.Tau → Matrix (Fin WW.rank) (Fin WW.rank) ℂ → Module.End ℂ Pi) (pm : (WO A WW → ℂ) →ₗ[ℂ] Pi) (pm' : (WO A' WW → ℂ) →ₗ[ℂ] Pi), GlobalTheory.SquareComm.IsMatch W.ψ W.θ FA FA' FW (Lc.mu t (j + 1) * Lc. …`. Introduce `t`. Take `⟨hTr, hInf, hf, hf', -, -⟩` from `hD t`.
+
+Take `⟨hex, hfac⟩` from `hLMt _ _ hTr hInf`. Take `⟨Pm, rf, rl, pm, pm', hm⟩` from `_root_.GlobalTheory.T.triple_weil_transfer_matching hH hP hK hL D W.ψ W.θ W.ψ_std W.θ_is A A' WW FA FA' FW _ _ hTr hex (X.ω t) (X.ω' t) (hIs.weil t) (hIs.weil' t)`. Take `⟨Pf, rr, rr', e, -, -, hr, hr'⟩` from `hfac _ _ _ _ _ _ _ hm`. Establish `hy` using `h3 W i j p 0 A A' WW X hX FA FA' FW t hf hf' Pm rf rl pm pm' hm Pr Pf q q' rr rr' e hq hq' hr hr'`. Use `haveI : Nontrivial Pm := hm.irred.1`.
+
+Use `⟨Pm, rf, rl, pm, pm', hm, nontrivial_left e, fun P' hP' => ?_⟩` and prove the remaining obligations. Rewrite using `[hr' _ hf']`. Conclude with `e.map_ne_zero_iff.2 (tmul_ne_zero hP' hy)`. Distinguish the cases in `hT : Nonempty T`. Take `⟨t0⟩` from `hT haveI : Nontrivial Pr := (key t0).choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.2.1`.
+
+Take `⟨x, hx⟩` from `exists_ne (0 : Pr)`. Take `⟨P0, rfl⟩` from `hq' x`. Use `⟨P0, fun t h0 => ?_⟩` and prove the remaining obligations. Take `⟨hTr, -, -, hf', -, hk'⟩` from `hD t`. Take `⟨Pm, rf, rl, pm, pm', hm, -, hne⟩` from `key t`.
+
+Establish `memF : ∀ P', GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P' ∈ GlobalTheory.SquareComm.algF W.ψ W.θ false FA' FW` using `fun P' => Submodule.subset_span ⟨_, P', hf', rfl⟩`. Establish `eI' : GlobalTheory.SquareComm.thetaInt (X.ω' t) X.m' X.fd' (GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P0) = X.I' W.ψ W.θ t P0`. Use function extensionality and compare the values at `h`. Simplify using `only [GlobalTheory.SquareComm.thetaInt, Tri.I', hk']`. Take `⟨Φ, hΦ, hΦ0⟩` from `_root_.GlobalTheory.T.definite_theta_lift_ne_zero hP hK hL D W.ψ W.θ W.ψ_std W.θ_is A A' WW FA FA' FW _ _ hTr hdef X.m' X.fd' hIs.meas' _ _ _ _ _ _ _ hm`.
+
+Conclude with `hΦ0 (_root_.GlobalTheory.T.vanishing_of_definite_small_irreducible hP hK hL D W.ψ W.θ W.ψ_std W.θ_is A A' WW FA FA' FW _ _ hTr hdef X.m X.fd X.m' X.fd' hIs.meas hIs.meas' _ _ _ _ _ _ _ hm _ (memF P0) (hne P0 hx) (by rw [eI']; exact h0) Φ hΦ)`. Conclude with `⟨0, fun t => (hT ⟨t⟩).elim⟩`.
+-/
 theorem smallStage_thetaIntegral_of_ne_zero : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
     NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (p : ℕ) (A A' WW : HSp D) (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p 0 X →
@@ -88,6 +105,9 @@ open GlobalTheory.SqTop
 open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.StageSmallNz.smallStage_thetaIntegral_of_ne_zero | exact _root_.GlobalTheory.StageSmallNz.smallStage_thetaIntegral_of_ne_zero | (intros; apply _root_.GlobalTheory.StageSmallNz.smallStage_thetaIntegral_of_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.smallStage_thetaIntegral_nonzero_case : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
     NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (p : ℕ) (A A' WW : HSp D) (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p 0 X →

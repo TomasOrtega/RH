@@ -14,22 +14,37 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.EisM.ZmChar
 
+/- English proof (translation)
+Simplify using `[ch]`.
+-/
 theorem ch_mul {M : ℕ} (χ : DirichletCharacter ℂ M) (x y : ℤ) : ch χ (x * y) = ch χ x * ch χ y := by
   simp [ch]
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `h`. Simplify using `[ch, ZMod.natCast_self]`.
+-/
 theorem ch_add_dvd {M : ℕ} (χ : DirichletCharacter ℂ M) (K : ℕ) (h : M ∣ K) (x : ℤ) : ch χ (x + K) = ch χ x := by
   obtain ⟨t, rfl⟩ := h
   simp [ch, ZMod.natCast_self]
 
+/- English proof (translation)
+Simplify using `only [ch, Int.cast_zero]`. Conclude with `MulChar.map_nonunit χ not_isUnit_zero`.
+-/
 theorem ch_zero {M : ℕ} [Fact (1 < M)] (χ : DirichletCharacter ℂ M) : ch χ 0 = 0 := by
   simp only [ch, Int.cast_zero]
   exact MulChar.map_nonunit χ not_isUnit_zero
 
+/- English proof (translation)
+Rewrite using `[MulChar.inv_apply]`. Establish `: Ring.inverse (-1 : ZMod M) = -1` using `by simpa using Ring.inverse_unit (-1 : (ZMod M)ˣ)`. Rewrite using `[this]`.
+-/
 theorem inv_apply_neg_one {M : ℕ} (χ : DirichletCharacter ℂ M) : χ⁻¹ (-1) = χ (-1) := by
   rw [MulChar.inv_apply]
   have : Ring.inverse (-1 : ZMod M) = -1 := by simpa using Ring.inverse_unit (-1 : (ZMod M)ˣ)
   rw [this]
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩` from `h`. Use `congrArg (Int.cast : ℤ → ZMod M) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify using `[ZMod.natCast_self] at this`. Conclude with `isUnit_iff_exists_inv.2 ⟨a, by rw [mul_comm]; exact this⟩`.
+-/
 theorem isUnit_of_coprime {M : ℕ} (d : ℤ) (h : IsCoprime d (M : ℤ)) : IsUnit (d : ZMod M) := by
   obtain ⟨a, b, hab⟩ := h
   have := congrArg (Int.cast : ℤ → ZMod M) hab
@@ -37,6 +52,9 @@ theorem isUnit_of_coprime {M : ℕ} (d : ℤ) (h : IsCoprime d (M : ℤ)) : IsUn
   simp [ZMod.natCast_self] at this
   exact isUnit_iff_exists_inv.2 ⟨a, by rw [mul_comm]; exact this⟩
 
+/- English proof (translation)
+Use `show χ (d : ZMod M) * χ⁻¹ (d : ZMod M) = 1`. Rewrite using `[← MulChar.mul_apply, mul_inv_cancel]`. Conclude with `MulChar.one_apply h`.
+-/
 theorem mul_inv_unit {M : ℕ} (χ : DirichletCharacter ℂ M) (d : ℤ) (h : IsUnit (d : ZMod M)) : ch χ d * ch χ⁻¹ d = 1 := by
   show χ (d : ZMod M) * χ⁻¹ (d : ZMod M) = 1
   rw [← MulChar.mul_apply, mul_inv_cancel]
@@ -46,6 +64,9 @@ end GlobalTheory.EisM.ZmChar
 
 namespace GlobalTheory.EisM.ZmChar
 
+/- English proof (translation)
+The claim follows from `h.of_isCoprime_of_dvd_right (Int.natCast_dvd_natCast.2 hAB)`.
+-/
 theorem cop_dvd {d : ℤ} {A B : ℕ} (h : IsCoprime d (B : ℤ)) (hAB : A ∣ B) : IsCoprime d (A : ℤ) :=
   h.of_isCoprime_of_dvd_right (Int.natCast_dvd_natCast.2 hAB)
 
@@ -53,6 +74,19 @@ end GlobalTheory.EisM.ZmChar
 
 open GlobalTheory.EisM.ZmChar in
 
+/- English proof (translation)
+Introduce `k j N l m ε u θ ν ψ hjk hN hl hm hlN hu hmul hε hpar1 hpar2`. Establish `hl1 : 1 < l ^ m` using `Nat.one_lt_pow (by omega) hl.one_lt`. Use `haveI : Fact (1 < l ^ m) := ⟨hl1⟩`. Establish `hlm : 0 < l ^ m` using `by omega`. Establish `hup : ∀ K : ℕ, N ∣ K → ∀ x, u (x + K) = u x`.
+
+Introduce `K hK x`. Take `⟨t, rfl⟩` from `hK`. Establish `e : ((N * t : ℕ) : ℤ) = (t : ℤ) * N` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `(Function.Periodic.nat_mul (show Function.Periodic u (N : ℤ) from hu) t) x`.
+
+Take `⟨c, hE1⟩` from `GlobalTheory.T.eisenstein_periodic_weights_isModularForm (k - 1 - j) (N * l ^ m) 1 (fun x => u x * ch ψ x) (fun _ => 1) (fun d => ch θ⁻¹ d * ch ψ d) (fun _ => 1) (by omega) (by positivity) one_pos (by simp [ch_zero]) (fun x => by rw [hup _ (dvd_mul_right _ _), ch_add_dvd _ _ (dvd …`. Establish `hdN : IsCoprime d (N : ℤ)` using `cop_dvd hd (by simp)`. Use `⟨fun x => ?_, fun x => by ring⟩` and prove the remaining obligations. Rewrite using `[hmul d x hdN, ch_mul]`. Use the proof step `ring)`.
+
+Use the proof step `(by simp only [ch, Int.cast_neg, Int.cast_one, mul_one]; rw [inv_apply_neg_one, mul_comm, hpar1])`. Take `⟨c', hE2⟩` from `GlobalTheory.T.eisenstein_periodic_weights_isModularForm (j + 1) (l ^ m) N (ch ψ⁻¹) (ch ν) (ch ψ⁻¹) (ch ν) (by omega) hlm hN (ch_zero _) (ch_add_dvd _ _ dvd_rfl) (ch_add_dvd _ _ dvd_rfl) (fun d _ => ⟨fun x => by rw [ch_mul, mul_comm], fun x => by rw [ch_mul, mul_comm]⟩) (by simp …`. Establish `hD1` using `(GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion (k - 1 - j) (N * l ^ m * 1) l _ _ (by omega) hl (dvd_mul_of_dvd_left (dvd_mul_of_dvd_right (dvd_pow_self l (by omega)) _) _) (fun d => by rw [ch_add_dvd _ _ (dvd_mul_of_dvd_left (dvd_mul_right _ _) _), ch_add_dvd _ _ (dvd …`. Establish `hD2` using `(GlobalTheory.T.isModularFormCoeffSeq_heckeU_and_depletion (j + 1) (l ^ m * N) l _ _ (by omega) hl (dvd_mul_of_dvd_left (dvd_pow_self l (by omega)) _) (fun d => by rw [ch_add_dvd _ _ (dvd_mul_right _ _), ch_add_dvd _ _ (dvd_mul_left _ _)]) hE2).2`. Establish `hD1'` using `(GlobalTheory.EisM.mf_linear _ _ _).2.2.2.2.1 (N * l ^ (m + 1)) _ ⟨1, by ring⟩ hD1`.
+
+Establish `hD2'` using `(GlobalTheory.EisM.mf_linear _ _ _).2.2.2.2.1 (N * l ^ (m + 1)) _ ⟨1, by ring⟩ hD2`. Establish `P` using `GlobalTheory.EisM.mul_main.2 _ _ _ _ _ _ _ hD1' hD2'`. Rewrite using `[GlobalTheory.T.eisensteinProductSeries_eq_depleted_eisenstein_product k l j u (ch ν) (ch ψ) (ch ψ⁻¹) c c' hjk]`. Establish `hk : k - 1 - j + (j + 1) = k` using `by omega`. Rewrite `P` using `[hk]`.
+
+Use `(GlobalTheory.EisM.mf_linear _ _ _).2.2.2.1 (ch ε) _ (fun d hd => ?_) P` and prove the remaining obligations. Establish `hU` using `mul_inv_unit ψ d (isUnit_of_coprime d (cop_dvd hd (dvd_mul_of_dvd_right (pow_dvd_pow l (by omega)) _)))`. Substitute `hε` using the available equality. Simplify using `only [ch, MulChar.mul_apply] at hU ⊢`. Take the linear combination `(θ⁻¹ (d : ZMod N) * ν (d : ZMod N)) * hU`.
+-/
 theorem GlobalTheory.zm_char_mf : ∀ (k j N l m : ℕ) (ε : DirichletCharacter ℂ N) (u : ℤ → ℂ) (θ ν : DirichletCharacter ℂ N) (ψ : DirichletCharacter ℂ (l ^ m)), j + 2 ≤ k → 0 < N → l.Prime → 1 ≤ m → ¬ l ∣ N → (∀ x, u (x + N) = u x) → (∀ d x : ℤ, IsCoprime d N → u (x * d) = ch θ⁻¹ d * u x) → ε = θ⁻¹ * ν → ψ (-1) * θ (-1) = (-1) ^ (k - 1 - j) → ψ (-1) * ν (-1) = (-1) ^ (j + 1) → MF k (N * l ^ (m + 1)) (ch ε) (Zm k l u (ch ν) (fun x y => ch ψ x * ch ψ⁻¹ y * ((y : ℂ) / x) ^ j)) := by
   intro k j N l m ε u θ ν ψ hjk hN hl hm hlN hu hmul hε hpar1 hpar2
   have hl1 : 1 < l ^ m := Nat.one_lt_pow (by omega) hl.one_lt

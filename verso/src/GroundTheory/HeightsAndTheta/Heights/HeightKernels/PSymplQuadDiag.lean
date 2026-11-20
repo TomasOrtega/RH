@@ -10,6 +10,9 @@ noncomputable section
 
 namespace PSymplQuadDiag
 
+/- English proof (translation)
+Establish `h1 : O.det * O.det = 1`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[det_mul, det_transpose, det_one]`. Then use the resulting hypothesis. Establish `h2 : |O.det| * |O.det| = 1` using `by rw [← abs_mul, h1, abs_one]`. Use polynomial arithmetic with `[abs_nonneg O.det]`.
+-/
 theorem abs_det_eq_one_of_mul_transpose {ι : Type} [Fintype ι] [DecidableEq ι]
     (O : Matrix ι ι ℝ) (h : Oᵀ * O = 1) : |O.det| = 1 := by
   have h1 : O.det * O.det = 1 := by
@@ -20,6 +23,17 @@ theorem abs_det_eq_one_of_mul_transpose {ι : Type} [Fintype ι] [DecidableEq ι
 
 end PSymplQuadDiag
 
+/- English proof (translation)
+Introduce `ι _ _ G hG`. Establish `hH` using `hG.isHermitian`. Use `set U : Matrix ι ι ℝ := (hH.eigenvectorUnitary : Matrix ι ι ℝ) with hUdef`. Establish `hstar : star U = Uᵀ`. Rewrite using `[star_eq_conjTranspose, conjTranspose_eq_transpose_of_trivial]`.
+
+Establish `hspec : G = U * diagonal (RCLike.ofReal ∘ hH.eigenvalues) * star U` using `by conv_lhs => rw [hH.spectral_theorem]`. Simplify using `[hUdef]`. Use `⟨star U, hH.eigenvalues, fun i => hG.eigenvalues_pos i, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hstar]`. Apply `PSymplQuadDiag.abs_det_eq_one_of_mul_transpose` to reduce the goal to its premises.
+
+Rewrite using `[transpose_transpose, ← hstar]`. Conclude with `Unitary.coe_mul_star_self hH.eigenvectorUnitary`. Rewrite using `[hH.det_eq_prod_eigenvalues]`. Simplify using the standard rewrite rules. Introduce `x`.
+
+Establish `hx : x ᵥ* U = star U *ᵥ x` using `by rw [hstar, mulVec_transpose]`. Combine the equalities or inequalities in the displayed calculation. Establish `hG' : G *ᵥ x = U *ᵥ (diagonal (RCLike.ofReal ∘ hH.eigenvalues) *ᵥ (star U *ᵥ x))`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, ← hspec]`. Rewrite using `[qf, hG']`.
+
+Use `_ = (star U *ᵥ x) ⬝ᵥ (diagonal (RCLike.ofReal ∘ hH.eigenvalues) *ᵥ (star U *ᵥ x)) := by`. Rewrite using `[dotProduct_mulVec, hx]`. Use `_ = ∑ i, hH.eigenvalues i * (star U *ᵥ x) i ^ 2 := by`. Simplify using `only [dotProduct, mulVec_diagonal, Function.comp_apply, RCLike.ofReal_real_eq_id, id]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem SymplQuadDiag.proof : SymplQuadDiag.Statement := by
   intro ι _ _ G hG
   have hH := hG.isHermitian

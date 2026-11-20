@@ -16,16 +16,28 @@ private def emb : GL (Fin n) (InfiniteAdeleRing E) →* GA E n where
     rw [← map_mul (AdelicGLn.prodEquiv E n).symm]
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem emb_apply (x : GL (Fin n) (InfiniteAdeleRing E)) :
     emb E n x = (AdelicGLn.prodEquiv E n).symm (x, 1) := rfl
 
+/- English proof (translation)
+The claim follows from `(AdelicGLn.prodEquiv E n).symm.continuous.comp (continuous_id.prodMk continuous_const)`.
+-/
 private theorem continuous_emb : Continuous (emb E n) :=
   (AdelicGLn.prodEquiv E n).symm.continuous.comp (continuous_id.prodMk continuous_const)
 
+/- English proof (translation)
+Rewrite using `[emb_apply]`. Conclude with `(AdelicGLn.prodEquiv E n).apply_symm_apply _`.
+-/
 private theorem prod_emb (x : GL (Fin n) (InfiniteAdeleRing E)) :
     AdelicGLn.prodEquiv E n (emb E n x) = (x, 1) := by
   rw [emb_apply]; exact (AdelicGLn.prodEquiv E n).apply_symm_apply _
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `a b`. Establish `h` using `AdelicGLn.prodEquiv_apply_fst E n (emb E n x) a b`. Rewrite `h` using `[prod_emb]`. Conclude with `h.symm`.
+-/
 private theorem pI_emb (x : GL (Fin n) (InfiniteAdeleRing E)) : pI E n (emb E n x) = x := by
   refine Units.ext ?_
   ext a b
@@ -33,6 +45,11 @@ private theorem pI_emb (x : GL (Fin n) (InfiniteAdeleRing E)) : pI E n (emb E n 
   rw [prod_emb] at h
   exact h.symm
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun a b => funext fun w => ?_)` and prove the remaining obligations. Establish `h` using `AdelicGLn.prodEquiv_apply_snd E n (emb E n x) a b`. Rewrite `h` using `[prod_emb]`. Express the relevant statement in the definitionally equal form `(((emb E n x : GL _ _) a b).2 : FiniteAdeleRing (𝓞 E) E) w.1 = _`. Rewrite using `[← h]`.
+
+Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 private theorem pE_emb {F : Type} [Field F] [NumberField F] [Algebra F E] (v : Pl F)
     (x : GL (Fin n) (InfiniteAdeleRing E)) : pE E n v (emb E n x) = 1 := by
   refine Units.ext (Matrix.ext fun a b => funext fun w => ?_)
@@ -46,6 +63,17 @@ private theorem pE_emb {F : Type} [Field F] [NumberField F] [Algebra F E] (v : P
 end UpperTheory.Bnd
 
 open UpperTheory.Bnd in
+/- English proof (translation)
+Introduce `hN hC hCL hR F E _ _ _ _ _ _ σ hσ n hn δ D hD`. Establish `hRP` using `hR F E n`. Take `⟨hC1, hC2, -⟩` from `hC F E σ n`. Establish `hz : ∀ s : ℝ, emb E n (pI E n (zA E n s)) = zA E n s` using `fun s => hRP.ext _ _ (pI_emb E n _) fun v => by`. Rewrite using `[pE_emb E n v]`.
+
+Conclude with `((hCL E n ⟨Real.exp s, Real.exp_pos s⟩).2.2.2 F v).symm`. Establish `hg : ∀ x, emb E n (mapGL n (galInf σ) x) = mapGL n (galAd σ) (emb E n x)` using `fun x => hRP.ext _ _ (by rw [pI_emb, hC1, pI_emb]) fun v => by`. Rewrite using `[pE_emb E n v, hC2, pE_emb E n v, map_one]`. Establish `hm` using `(hN F E σ hσ n hn).2.2`. Use `set d : GL (Fin n) (InfiniteAdeleRing E) →* {r : ℝ // 0 < r} := (detModule E n).comp (emb E n) with hd`.
+
+Establish `hdc : Continuous fun y => (d y : ℝ)` using `continuous_subtype_val.comp (continuous_detModule.comp (continuous_emb E n))`. Establish `hdz : ∀ s : ℝ, (d (pI E n (zA E n s)) : ℝ) = Real.exp s` using `fun s => by`. Simplify using `only [hd, MonoidHom.comp_apply, hz]`. Rewrite using `[zA, detModule_centralSection hn]`. Establish `hds : ∀ x, d (mapGL n (galInf σ) x) = d x` using `fun x => by`.
+
+Simplify using `only [hd, MonoidHom.comp_apply, hg, hm]`. Establish `hp : ∀ y, (d y : ℝ) ≠ 0` using `fun y => (d y).2.ne'`. Establish `hcont : Continuous fun y => Real.log ((d y : ℝ) / (d δ : ℝ))` using `(hdc.div_const _).log fun y => div_ne_zero (hp y) (hp δ)`. Use `⟨(fun y => Real.log ((d y : ℝ) / (d δ : ℝ))) '' D, hD.image hcont, fun s x hx => ⟨_, hx, ?_⟩⟩` and prove the remaining obligations. Establish `e : d (pI E n (zA E n s) * (x⁻¹ * δ * mapGL n (galInf σ) x)) = d (pI E n (zA E n s)) * d δ`.
+
+Rewrite using `[map_mul, map_mul, map_mul, hds, map_inv]`. Use `congr 1`. Rewrite using `[mul_comm (d x)⁻¹, mul_assoc, inv_mul_cancel, mul_one]`. Express the relevant statement in the definitionally equal form `Real.log ((d _ : ℝ) / (d δ : ℝ)) = s`. Rewrite using `[e, Positive.val_mul, hdz, mul_div_cancel_right₀ _ (hp δ), Real.log_exp]`.
+-/
 theorem UpperTheory.adelicBound_of_centralizer_localization :
     N5 → Compat → CentLoc → RPE → BoundE := by
   intro hN hC hCL hR F E _ _ _ _ _ _ σ hσ n hn δ D hD

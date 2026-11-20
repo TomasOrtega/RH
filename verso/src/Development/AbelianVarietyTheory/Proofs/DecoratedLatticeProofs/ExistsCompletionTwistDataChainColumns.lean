@@ -13,15 +13,24 @@ namespace GlobalTheory.TwBridgeInhab
 section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h` using `Valuation.map_add_eq_of_lt_right (valuation k) (x := x - 1) (y := 1) (by simpa using hx)`. Simplify using `using h`.
+-/
 theorem val_eq_one_of_sub_one {x : k} (hx : valuation k (x - 1) < 1) : valuation k x = 1 := by
   have h := Valuation.map_add_eq_of_lt_right (valuation k) (x := x - 1) (y := 1) (by simpa using hx)
   simpa using h
 
 def delta (μ₁ : kˣ →* ℂˣ) (ϖ : kˣ) : kˣ →* ℂˣ := μ₁ * GlobalTheory.SmGL.unrChar k (μ₁ ϖ)⁻¹
 
+/- English proof (translation)
+Simplify using `[delta, GlobalTheory.SmGL.isUnram_unrChar k _ x hx]`.
+-/
 theorem delta_unit (μ₁ : kˣ →* ℂˣ) (ϖ : kˣ) {x : kˣ} (hx : valuation k (x : k) = 1) : delta μ₁ ϖ x = μ₁ x := by
   simp [delta, GlobalTheory.SmGL.isUnram_unrChar k _ x hx]
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[delta_unit μ₁ ϖ (val_eq_one_of_sub_one hx)]`. Conclude with `h x hx`.
+-/
 theorem delta_tame {μ₁ : kˣ →* ℂˣ} (h : IsTame μ₁) (ϖ : kˣ) : IsTame (delta μ₁ ϖ) := by
   intro x hx
   rw [delta_unit μ₁ ϖ (val_eq_one_of_sub_one hx)]
@@ -30,10 +39,18 @@ theorem delta_tame {μ₁ : kˣ →* ℂˣ} (h : IsTame μ₁) (ϖ : kˣ) : IsTa
 def eta (μ : ℕ → kˣ →* ℂˣ) (m : ℕ) (δ : kˣ →* ℂˣ) (j : ℕ) : kˣ →* ℂˣ :=
   if 1 ≤ j ∧ j ≤ m then μ j * δ⁻¹ else 1
 
+/- English proof (translation)
+Rewrite using `[eta, if_pos ⟨by omega, by omega⟩, inv_mul_cancel_right]`.
+-/
 theorem eta_mul (μ : ℕ → kˣ →* ℂˣ) (m : ℕ) (δ : kˣ →* ℂˣ) {i : ℕ} (hi : i < m) :
     eta μ m δ (i + 1) * δ = μ (i + 1) := by
   rw [eta, if_pos ⟨by omega, by omega⟩, inv_mul_cancel_right]
 
+/- English proof (translation)
+Introduce `x hx`. Unfold `eta`. Use `split_ifs with hj`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, h i (by omega) x hx, mul_inv_cancel]`.
+
+Both sides reduce to the same expression.
+-/
 theorem eta_unram (μ : ℕ → kˣ →* ℂˣ) (m : ℕ) (δ : kˣ →* ℂˣ)
     (h : ∀ i, i < m → ∀ x : kˣ, valuation k (x : k) = 1 → μ (i + 1) x = δ x) (j : ℕ) : IsUnram (eta μ m δ j) := by
   intro x hx
@@ -43,6 +60,9 @@ theorem eta_unram (μ : ℕ → kˣ →* ℂˣ) (m : ℕ) (δ : kˣ →* ℂˣ)
     rw [MonoidHom.mul_apply, MonoidHom.inv_apply, h i (by omega) x hx, mul_inv_cancel]
   · rfl
 
+/- English proof (translation)
+Establish `hU : {y | valuation k (y - x) < 1} ∈ nhds x`. Rewrite using `[IsValuativeTopology.mem_nhds_iff]`. Conclude with `⟨1, by rintro _ ⟨z, hz, rfl⟩; simpa using hz⟩`. Take `⟨_, hy, a, rfl⟩` from `mem_closure_iff_nhds.mp (hd x) _ hU`. Conclude with `⟨a, hy⟩`.
+-/
 theorem exists_near {E : Type} [Field E] {ι : E →+* k} (hd : DenseRange ι) (x : k) :
     ∃ a : E, valuation k (ι a - x) < 1 := by
   have hU : {y | valuation k (y - x) < 1} ∈ nhds x := by
@@ -51,6 +71,11 @@ theorem exists_near {E : Type} [Field E] {ι : E →+* k} (hd : DenseRange ι) (
   obtain ⟨_, hy, a, rfl⟩ := mem_closure_iff_nhds.mp (hd x) _ hU
   exact ⟨a, hy⟩
 
+/- English proof (translation)
+Establish `hx0 : (x : k) ≠ 0` using `x.ne_zero`. Establish `hy : valuation k (((x⁻¹ * u : kˣ) : k) - 1) < 1`. Establish `e : ((x⁻¹ * u : kˣ) : k) - 1 = (x : k)⁻¹ * ((u : k) - x)`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e, map_mul, map_inv₀, hx, inv_one, one_mul]`. Conclude with `hu`. Use `h _ hy` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `this.symm`.
+-/
 theorem tame_near {μ : kˣ →* ℂˣ} (h : IsTame μ) {x u : kˣ} (hx : valuation k (x : k) = 1)
     (hu : valuation k ((u : k) - x) < 1) : μ u = μ x := by
   have hx0 : (x : k) ≠ 0 := x.ne_zero
@@ -67,11 +92,31 @@ end Loc
 section Arith
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K]
 
+/- English proof (translation)
+Unfold `LocE.unitV`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem unitV_inv {P : HeightOneSpectrum (𝓞 E)} (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E) :
     LocE.unitV χ⁻¹ a = (LocE.unitV χ a)⁻¹ := by
   unfold LocE.unitV
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hqE : (q : E) ≠ 0` using `by exact_mod_cast h0.ne'`. Establish `hnu : ¬ IsUnit (0 : 𝓞 E ⧸ P.asIdeal)` using `not_isUnit_zero`. Establish `key : ∀ z : ℤ, IsUnit (redP P ((q : E) / (q : E) ^ z)) ↔ z = 1`. Introduce `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Assume the negation of the conclusion as `hz`. Break down `lt_or_gt_of_ne hz with hlt | hgt` into its components or cases. Take `⟨k, hk⟩ : ∃ k : ℕ, z = -(k : ℤ)` from `⟨(-z).toNat, by omega⟩`. Establish `e : (q : E) / (q : E) ^ z = algebraMap (𝓞 E) E (((q : ℕ) : 𝓞 E) ^ (k + 1))`.
+
+Rewrite using `[hk, _root_.zpow_neg, zpow_natCast, div_inv_eq_mul, map_pow, map_natCast, pow_succ']`. Rewrite `h` using `[e, reduction_coe]`. Establish `h1 : Ideal.Quotient.mk P.asIdeal (((q : ℕ) : 𝓞 E) ^ (k + 1)) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_of_mem _ hq _ (Nat.succ_pos k))`. Rewrite `h` using `[h1]`. Conclude with `hnu h`.
+
+Take `⟨k, hk⟩ : ∃ k : ℕ, z = (k : ℤ) + 2` from `⟨(z - 2).toNat, by omega⟩`. Establish `e : (q : E) / (q : E) ^ z = ((q : E) ^ (k + 1))⁻¹`. Establish `e1 : (q : E) ^ z = (q : E) ^ (k + 1) * (q : E)`. Rewrite using `[hk, ← pow_succ, ← zpow_natCast]`. Use `congr 1`.
+
+Rewrite using `[e1, div_mul_eq_div_div_swap, div_self hqE, one_div]`. Establish `hni : ¬ IntAt P ((q : E) / (q : E) ^ z)`. Introduce and unpack `⟨r, s, hs, hrs⟩`. Apply `hs` to reduce the goal to its premises. Establish `h2 : algebraMap (𝓞 E) E s = algebraMap (𝓞 E) E (r * ((q : ℕ) : 𝓞 E) ^ (k + 1))`.
+
+Rewrite using `[map_mul, ← hrs, e, map_pow, map_natCast, mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hqE), mul_one]`. Rewrite using `[(FaithfulSMul.algebraMap_injective (𝓞 E) E) h2]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hq _ (Nat.succ_pos k))`. Rewrite `h` using `[reduction_eq_zero_of_not_integral P hni]`. Conclude with `hnu h`.
+
+Introduce and unpack `rfl`. Rewrite using `[zpow_one, div_self hqE]`. Establish `h3 : (1 : E) = algebraMap (𝓞 E) E 1` using `(map_one _).symm`. Rewrite using `[h3, reduction_coe, map_one]`. Conclude with `isUnit_one`.
+
+Unfold `LocE.vP`. Establish `h4 : (fun z : ℤ => IsUnit (redP P ((q : E) / (q : E) ^ z))) = fun z => z = 1` using `funext fun z => propext (key z)`. Rewrite using `[h4]`. Conclude with `Classical.epsilon_spec (p := fun z : ℤ => z = 1) ⟨1, rfl⟩`.
+-/
 theorem valuation_self (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (h0 : 0 < q) :
     LocE.vP P q (q : E) = 1 := by
   have hqE : (q : E) ≠ 0 := by exact_mod_cast h0.ne'
@@ -111,6 +156,13 @@ theorem valuation_self (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (hq : ((q : �
   rw [h4]
   exact Classical.epsilon_spec (p := fun z : ℤ => z = 1) ⟨1, rfl⟩
 
+/- English proof (translation)
+Establish `hqE : (q : E) ≠ 0` using `by exact_mod_cast h0.ne'`. Establish `h1 : redP P (1 : E) = 1`. Establish `h3 : (1 : E) = algebraMap (𝓞 E) E 1` using `(map_one _).symm`. Rewrite using `[h3, reduction_coe, map_one]`. Establish `hu : IsUnit (redP P (1 : E))` using `by rw [h1]; exact isUnit_one`.
+
+Unfold `LocE.locChar`. Rewrite using `[valuation_self P q hq h0, zpow_one, zpow_one, div_self hqE]`. Unfold `LocE.unitV`. Rewrite using `[dif_pos hu]`. Establish `h2 : hu.unit = 1` using `Units.ext (by rw [IsUnit.unit_spec, h1]; rfl)`.
+
+Rewrite using `[h2, map_one, Units.val_one, mul_one]`.
+-/
 theorem locChar_q {P : HeightOneSpectrum (𝓞 E)} (q : ℕ) (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (h0 : 0 < q) (cq : K)
     (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) : LocE.locChar q cq χ (q : E) = cq := by
   have hqE : (q : E) ≠ 0 := by exact_mod_cast h0.ne'
@@ -132,12 +184,18 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S₀ : Set ℕ}
   (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (P : rowSG Pr sel mu)
 
+/- English proof (translation)
+Unfold `muAt`. Rewrite using `[if_neg hP]`. Conclude with `GlobalTheory.LastSteps.locChar_unit _ _ ha`.
+-/
 theorem muAt_unit (hP : P.1 ∉ Pr.vGs) (i : ℕ) {a : X.E} (ha : IsUnit (redP P.1 a)) :
     muAt Ch sel mu cst i P a = LocE.unitV (resChar (mu : Chr X.F X.E X.K) P.1)⁻¹ a := by
   unfold muAt
   rw [if_neg hP]
   exact GlobalTheory.LastSteps.locChar_unit _ _ ha
 
+/- English proof (translation)
+Unfold `muAt`. Rewrite using `[if_neg hP]`. Conclude with `locChar_q _ hq h0 _ _`.
+-/
 theorem muAt_q (hP : P.1 ∉ Pr.vGs) (i : ℕ) (hq : ((qOf P.1 : ℕ) : 𝓞 X.E) ∈ P.1.asIdeal) (h0 : 0 < qOf P.1) :
     muAt Ch sel mu cst i P ((qOf P.1 : ℕ) : X.E) = cst.muq (i + 1) P := by
   unfold muAt
@@ -146,6 +204,33 @@ theorem muAt_q (hP : P.1 ∉ Pr.vGs) (i : ℕ) (hq : ((qOf P.1 : ℕ) : 𝓞 X.E
 
 end Chain
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S₀ mu cst L G s hL P hP k _ _ _ _ ι ϖ hc hϖ ψ hψc hψ1 hψt μ hμ`. Establish `hm : R.m = s + 2` using `hL.hm`. Establish `hm0 : 0 < R.m` using `by omega`. Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `GlobalTheory.SymBridge.ComplRes.q_ne_zero hc`. Establish `hqpos : 0 < qOf P.1` using `Nat.pos_of_ne_zero fun h => hq0 (by rw [h, Nat.cast_zero])`.
+
+Establish `hqmem : ((qOf P.1 : ℕ) : 𝓞 X.E) ∈ P.1.asIdeal` using `GlobalTheory.SymBridge.ComplRes.q_mem hc`. Establish `hμ1 : ∀ (a : X.E) (u : kˣ), (u : k) = ι a → (μ 1 u : ℂ) = G.σ₀ (muAt Ch sel mu cst 0 P a)` using `fun a u h => (hμ 0 hm0).1 a u h`. Establish `ht1 : IsTame (μ 1)` using `(hμ 0 hm0).2`. Establish `hunit : ∀ i, i < R.m → ∀ x : kˣ, valuation k (x : k) = 1 → μ (i + 1) x = μ 1 x`. Introduce `i hi x hx`.
+
+Take `⟨a, ha⟩` from `exists_near hc.dense (x : k)`. Establish `hva : valuation k (ι a) = 1`. Establish `e : ι a = (ι a - x) + x` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_right _ (by rw [hx]; exact ha), hx]`. Establish `ha0 : ι a ≠ 0`.
+
+Introduce `h0`. Rewrite `hva` using `[h0, map_zero]`. Conclude with `zero_ne_one hva`. Establish `hint : IntAt P.1 a` using `GlobalTheory.SymBridge.ComplRes.intAt_of_v hc (le_of_eq hva)`. Establish `hred : IsUnit (redP P.1 a)` using `(GlobalTheory.SymBridge.ComplRes.v_eq_one_iff_red hc hϖ hint).mp hva`.
+
+Establish `hn : valuation k (((Units.mk0 (ι a) ha0 : kˣ) : k) - x) < 1` using `ha`. Rewrite using `[← tame_near (hμ i hi).2 hx hn, ← tame_near ht1 hx hn]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[(hμ i hi).1 a _ rfl, hμ1 a _ rfl, muAt_unit Ch sel mu cst P hP i hred, muAt_unit Ch sel mu cst P hP 0 hred]`. Establish `hδ : ∀ i, i < R.m → ∀ x : kˣ, valuation k (x : k) = 1 → μ (i + 1) x = delta (μ 1) ϖ x`.
+
+Introduce `i hi x hx`. Rewrite using `[delta_unit _ _ hx]`. Conclude with `hunit i hi x hx`. Establish `hsq : G.σ₀ (cst.sq P) ^ 2 = ((Real.sqrt (qOf P.1) : ℝ) : ℂ) ^ 2`. Rewrite using `[← map_pow, hL.cst_ok.sq_sq P, map_natCast, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _), Complex.ofReal_natCast]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨sg, hsg1, hsg2⟩ : ∃ sg : ℂ, (sg = 1 ∨ sg = -1) ∧ G.σ₀ (cst.sq P) = sg * (Real.sqrt (qOf P.1) : ℂ) := by`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hsq with h | h` into its components or cases. Conclude with `⟨1, Or.inl rfl, by rw [h, one_mul]⟩`. Conclude with `⟨-1, Or.inr rfl, by rw [h, neg_one_mul]⟩`. Use `⟨⟨ϖ, hϖ, ψ, hψc, hψ1, delta (μ 1) ϖ, delta_tame ht1 ϖ, eta μ R.m (delta (μ 1) ϖ), eta_unram μ R.m _ hδ, sg⟩, ⟨hP, hm, hc, ?_, ?_, ?_, hsg2⟩, rfl, rfl, fun i hi => eta_mul μ R.m _ hi, hsg1⟩` and prove the remaining obligations.
+
+Introduce `a ha`. Use `show (ψ (ι a) : ℂ) = G.σ₀ (cst.psi P a)`. Establish `hxi : IntAt P.1 G.xi0` using `(hL.xiUnitAtPrime P).1`. Establish `hx : valuation k (ι (G.xi0 * ((qOf P.1 : X.E) ^ cst.D P * a))) ≤ 1` using `GlobalTheory.SymBridge.ComplRes.v_le_one hc (hxi.mul ha)`. Take `⟨i, -, hi⟩` from `GlobalTheory.SymBridge.ComplRes.exists_rep hc hϖ (cst.D P) _ hx`.
+
+Establish `hqk : ((qOf P.1 : ℕ) : k) ≠ 0`. Rewrite using `[← GlobalTheory.SymBridge.ComplRes.unif_eq_cast hc]`. Conclude with `ϖ.ne_zero`. Establish `hint : IntAt P.1 (G.xi0 * a - ((i : ℤ) : X.E) / (qOf P.1 : X.E) ^ cst.D P)`. Apply `GlobalTheory.SymBridge.ComplRes.intAt_of_v hc` to reduce the goal to its premises.
+
+Establish `e : ι (G.xi0 * ((qOf P.1 : X.E) ^ cst.D P * a)) - (i : k) = ι (G.xi0 * a - ((i : ℤ) : X.E) / (qOf P.1 : X.E) ^ cst.D P) * (ϖ : k) ^ cst.D P`. Rewrite using `[GlobalTheory.SymBridge.ComplRes.unif_eq_cast hc]`. Simplify using `only [map_mul, map_sub, map_div₀, map_pow, map_intCast, map_natCast]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `hi` using `[e, map_mul, map_pow]`. Establish `h0 : (0 : ValueGroupWithZero k) < valuation k (ϖ : k) ^ cst.D P` using `pow_pos (zero_lt_iff.mpr (by simp)) _`. Conclude with `le_of_mul_le_mul_right (by rwa [one_mul]) h0`. Rewrite using `[hψt a (i : ℤ) (cst.D P) hint, hL.weil P a (i : ℤ) ha hint]`. Introduce `a u ha hr hu`.
+
+Use `show ((delta (μ 1) ϖ u : ℂˣ) : ℂ) = _`. Establish `hva : valuation k (u : k) = 1`. Rewrite using `[hu]`. Conclude with `(GlobalTheory.SymBridge.ComplRes.v_eq_one_iff_red hc hϖ ha).mpr hr`. Rewrite using `[delta_unit _ _ hva, hμ1 a u hu, muAt_unit Ch sel mu cst P hP 0 hr, unitV_inv, map_inv₀]`.
+
+Introduce `i hi`. Use `show ((eta μ R.m (delta (μ 1) ϖ) (i + 1) * delta (μ 1) ϖ) ϖ : ℂ) = _`. Rewrite using `[eta_mul μ R.m _ hi, (hμ i hi).1 ((qOf P.1 : ℕ) : X.E) ϖ hc.unif, muAt_q Ch sel mu cst P hP i hqmem hqpos]`.
+-/
 theorem exists_twData : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (s : ℕ), L.Ok Ch sel mu cst G s → ∀ (P : rowSG Pr sel mu), P.1 ∉ Pr.vGs → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (ϖ : kˣ), GlobalTheory.SymBridge.IsCompl P.1 (qOf P.1) ι ϖ → GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ → ∀ ψ : AddChar k Circle, Continuous ψ → HasConductor ψ 1 → (∀ (a : X.E) (b : ℤ) (n : ℕ), IntAt P.1 (G.xi0 * a - (b : X.E) / (qOf P.1 : X.E) ^ n) → (ψ (ι a) : ℂ) = Complex.exp (2 * Real.pi * Complex.I * b / (qOf P.1 : ℂ) ^ n)) → ∀ μ : ℕ → kˣ →* ℂˣ, (∀ i, i < R.m → (∀ (a : X.E) (u : kˣ), (u : k) = ι a → (μ (i + 1) u : ℂ) = G.σ₀ (muAt Ch sel mu cst i P a)) ∧ IsTame (μ (i + 1))) → ∃ W : TwData k, AtTwist (R := R) sel mu cst G.σ₀ P ι s W ∧ W.ϖ = ϖ ∧ W.ψ = ψ ∧ (∀ i, i < R.m → W.η (i + 1) * W.δ = μ (i + 1)) ∧ (W.sg = 1 ∨ W.sg = -1) := by
   intro X Pr R Ch sel S₀ mu cst L G s hL P hP k _ _ _ _ ι ϖ hc hϖ ψ hψc hψ1 hψt μ hμ
   have hm : R.m = s + 2 := hL.hm

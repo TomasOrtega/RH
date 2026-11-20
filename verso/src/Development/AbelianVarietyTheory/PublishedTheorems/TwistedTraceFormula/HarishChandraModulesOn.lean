@@ -45,6 +45,9 @@ def HarishChandraModules : Prop :=
 
 namespace HarishChandraModules
 
+/- English proof (translation)
+Introduce `p q hpq` and use `h.1 p q hpq (X.grp p q)`.
+-/
 theorem admQ5_of_harishChandraModules (h : HarishChandraModules) (X : ProvA) : admQ5 X :=
   fun p q hpq => h.1 p q hpq (X.grp p q)
 
@@ -54,6 +57,11 @@ section Consequences
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Take `⟨U, F, hU, h0, hF, he⟩` from `hf _ hm.self_of_nhds`. Establish `hx' : AnalyticAt ℝ (fun t => (Matrix.of.symm (x t) : Fin n → Fin n → ℂ)) t₀` using `analyticAt_pi_iff.2 fun a => analyticAt_pi_iff.2 fun b => hx a b`. Establish `hc : AnalyticAt ℝ (fun t => F (Matrix.of.symm (x t))) t₀` using `AnalyticAt.comp (hF _ h0) hx'`. Use `hc.congr ?_` and prove the remaining obligations. Use `filter_upwards [hm, hx'.continuousAt.eventually (hU.mem_nhds h0)] with t h1 h2`.
+
+Conclude with `(he _ h2 h1).symm`.
+-/
 theorem AnalyticOnUJ.comp {E P : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup P]
     [NormedSpace ℝ P] {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : AnalyticOnUJ ε f)
     {x : P → Matrix (Fin n) (Fin n) ℂ} {t₀ : P} (hx : ∀ a b, AnalyticAt ℝ (fun t => x t a b) t₀)
@@ -66,6 +74,11 @@ theorem AnalyticOnUJ.comp {E P : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
   filter_upwards [hm, hx'.continuousAt.eventually (hU.mem_nhds h0)] with t h1 h2
   exact (he _ h2 h1).symm
 
+/- English proof (translation)
+Use `contDiff_iff_contDiffAt.2 fun t₀ => ?_` and prove the remaining obligations. Take `⟨U, F, hU, h0, hF, he⟩` from `hf _ (hm t₀)`. Establish `hx' : ContDiff ℝ ∞ (fun t => (Matrix.of.symm (x t) : Fin n → Fin n → ℂ))` using `contDiff_pi.2 fun a => contDiff_pi.2 fun b => hx a b`. Establish `hc : ContDiffAt ℝ ∞ (fun t => F (Matrix.of.symm (x t))) t₀` using `ContDiffAt.comp t₀ (hF _ h0).contDiffAt hx'.contDiffAt`. Use `hc.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hx'.continuous.continuousAt.eventually (hU.mem_nhds h0)] with t h2`. Conclude with `he _ h2 (hm t)`.
+-/
 theorem AnalyticOnUJ.contDiff_comp {E P : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     [NormedAddCommGroup P] [NormedSpace ℝ P] {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : AnalyticOnUJ ε f)
     {x : P → Matrix (Fin n) (Fin n) ℂ} (hx : ∀ a b, ContDiff ℝ ∞ fun t => x t a b)
@@ -80,6 +93,9 @@ theorem AnalyticOnUJ.contDiff_comp {E P : Type*} [NormedAddCommGroup E] [NormedS
   filter_upwards [hx'.continuous.continuousAt.eventually (hU.mem_nhds h0)] with t h2
   exact he _ h2 (hm t)
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, h0, hF, he⟩` from `hf g₀ hg₀`. Conclude with `⟨U, F, hU, h0, hF.contDiffOn_of_completeSpace, he⟩`.
+-/
 theorem AnalyticOnUJ.smoothOnH {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
     {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : AnalyticOnUJ ε f) :
     Formalism.QuantumDeterminants.SmoothOnH (Formalism.REAL.Jm ε) f := by
@@ -87,6 +103,9 @@ theorem AnalyticOnUJ.smoothOnH {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   obtain ⟨U, F, hU, h0, hF, he⟩ := hf g₀ hg₀
   exact ⟨U, F, hU, h0, hF.contDiffOn_of_completeSpace, he⟩
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, h0, hF, he⟩` from `hf g₀ hg₀`. Conclude with `⟨U, fun z => L (F z), hU, h0, L.comp_analyticOnNhd hF, fun z hz hm => by simp only [he z hz hm]⟩`.
+-/
 theorem AnalyticOnUJ.clm {E E' : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup E']
     [NormedSpace ℝ E'] {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : AnalyticOnUJ ε f) (L : E →L[ℝ] E') :
     AnalyticOnUJ ε fun g => L (f g) := by
@@ -100,6 +119,11 @@ attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebr
 private def entryCLM (a b : Fin n) : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ :=
   LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ a b)
 
+/- English proof (translation)
+Use `hf.comp (fun a b => ?_) (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `h1 : AnalyticAt ℝ (fun t : ℝ => g * NormedSpace.exp (t • X)) t₀` using `analyticAt_const.mul (AnalyticAt.comp (NormedSpace.exp_analytic (𝕂 := ℝ) _) (analyticAt_id.smul analyticAt_const))`. Conclude with `((entryCLM a b).analyticAt _).comp h1`. Use `GlobalTheory.GardingVec.list_prod_mem (G := Formalism.REAL.Jm ε) [g, NormedSpace.exp (t • X)] (by` as an intermediate fact. Introduce `y hy`.
+
+Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hy`. Break down `hy with rfl | rfl` into its components or cases. Conclude with `hg`. Conclude with `GlobalTheory.GardingVec.exp_mem (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε)) hX t)`. Simplify `this` using `[UJset, Formalism.REAL.inUJ]`.
+-/
 theorem AnalyticOnUJ.analytic_exp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {f : Matrix (Fin n) (Fin n) ℂ → E} (hf : AnalyticOnUJ ε f) {g X : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ UJset ε) (hX : Formalism.REAL.inG ε X) (t₀ : ℝ) :
@@ -117,6 +141,11 @@ theorem AnalyticOnUJ.analytic_exp {E : Type*} [NormedAddCommGroup E] [NormedSpac
       · exact GlobalTheory.GardingVec.exp_mem (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε)) hX t)
     simpa [UJset, Formalism.REAL.inUJ] using this
 
+/- English proof (translation)
+Establish `hG : IsUnit G`. Rewrite using `[← h]`. Conclude with `(((Matrix.isUnit_conjTranspose _).2 hP).mul (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).mul hP`. Introduce `k Xs hX`. Use `hv.contDiff_comp (x := fun t : Fin k → ℝ => P * (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod * P⁻¹) (fun a b => ?_) fun t => ?_` and prove the remaining obligations.
+
+Conclude with `(entryCLM a b).contDiff.comp ((contDiff_const.mul (GlobalTheory.GardingVec.contDiff_expProd Xs)).mul contDiff_const)`. Use `GlobalTheory.GardingVec.conj_mem hP h (GlobalTheory.GardingVec.list_prod_mem _ fun g hg => ?_)` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hg`. Conclude with `GlobalTheory.GardingVec.exp_mem hG (hX i) _`.
+-/
 theorem AnalyticOnUJ.smoothVec {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {v : H} (hv : AnalyticOnUJ ε fun g => σ g v)
     {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) :
@@ -139,6 +168,9 @@ end
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial H with hs | hn` into its components or cases. Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, analyticOnNhd_const, fun _ _ _ => Subsingleton.elim _ _⟩`. Conclude with `h.2 n ε H σ hU hI v hv`.
+-/
 theorem HarishChandraModules.analytic (h : HarishChandraModules) (hU : IsURepOn (UJset ε) σ)
     (hI : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v) : AnalyticOnUJ ε fun g => σ g v := by
   rcases subsingleton_or_nontrivial H with hs | hn
@@ -146,11 +178,17 @@ theorem HarishChandraModules.analytic (h : HarishChandraModules) (hU : IsURepOn 
     exact ⟨Set.univ, fun _ => 0, isOpen_univ, trivial, analyticOnNhd_const, fun _ _ _ => Subsingleton.elim _ _⟩
   · exact h.2 n ε H σ hU hI v hv
 
+/- English proof (translation)
+The claim follows from `(h.analytic hU hI hv).smoothOnH`.
+-/
 theorem HarishChandraModules.smoothOnH (h : HarishChandraModules) (hU : IsURepOn (UJset ε) σ)
     (hI : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v) :
     Formalism.QuantumDeterminants.SmoothOnH (Formalism.REAL.Jm ε) fun g => σ g v :=
   (h.analytic hU hI hv).smoothOnH
 
+/- English proof (translation)
+The claim follows from `(h.analytic hU hI hv).smoothVec hP hG`.
+-/
 theorem HarishChandraModules.smoothVec (h : HarishChandraModules) (hU : IsURepOn (UJset ε) σ)
     (hI : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v)
     {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (hG : Pᴴ * Formalism.REAL.Jm ε * P = G) :
@@ -161,6 +199,9 @@ end Consequences
 
 section Inhabitants
 
+/- English proof (translation)
+The claim follows from `eq_bot_or_eq_top S`.
+-/
 private theorem sub_line (S : Submodule ℂ ℂ) : S = ⊥ ∨ S = ⊤ := eq_bot_or_eq_top S
 
 def sqrtDetRep {p q : ℕ} (T : GrpData p q) : URep T where
@@ -186,6 +227,11 @@ def sqrtDetRep {p q : ℕ} (T : GrpData p q) : URep T where
     have h3 : Continuous fun g : T.G => ((T.sq g : ℂˣ) : ℂ) * x := h2.mul continuous_const
     simpa using h3
 
+/- English proof (translation)
+Use `⟨⟨⟨by simp, fun a _ b _ => by ext; simp [mul_comm]⟩, fun g hg v => ?_, fun v => ?_⟩, fun S _ _ => sub_line S, fun v => ⟨⊤, inferInstance, trivial, fun _ _ _ _ => trivial⟩⟩` and prove the remaining obligations. Establish `hm : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Establish `hd` using `congrArg (fun A => ‖Matrix.det A‖) hm`. Establish `hJ : ‖(Formalism.REAL.Jm ε).det‖ ≠ 0` using `norm_ne_zero_iff.2 ((Matrix.isUnit_iff_isUnit_det _).1 (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).ne_zero`. Simplify using `only [Matrix.det_mul, Matrix.det_conjTranspose, norm_mul, norm_star] at hd`.
+
+Establish `h2 : ‖g.det‖ ^ 2 = 1` using `mul_right_cancel₀ hJ (by nlinarith)`. Establish `h1 : ‖g.det‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h2`. Simplify using `[h1]`. Establish `: Continuous fun g : Matrix (Fin n) (Fin n) ℂ => g.det * v` using `(continuous_id.matrix_det).mul continuous_const`. Simplify using `using this.continuousOn`.
+-/
 theorem det_isURepOn {n : ℕ} (ε : Fin n → Bool) :
     IsURepOn (UJset ε) (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) ∧
     IsIrredOn (UJset ε) (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) ∧

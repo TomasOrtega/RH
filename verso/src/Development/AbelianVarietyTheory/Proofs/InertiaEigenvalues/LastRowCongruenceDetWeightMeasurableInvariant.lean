@@ -18,6 +18,11 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [GlobalTheory.ZEul.lastRow, Units.val_mul, Matrix.mul_apply]`. Rewrite using `[Finset.sum_eq_single (Fin.last m)]`. Rewrite using `[(mem_mirU_last.1 hh) (Fin.last m), if_pos rfl, one_mul]`. Introduce `l _ hl`.
+
+Rewrite using `[(mem_mirU_last.1 hh) l, if_neg hl, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem lastRow_mul_of_mem {h : GA E (m + 1)} (hh : h ∈ mirU (Ad E) (m + 1) m) (g : GA E (m + 1)) :
     GlobalTheory.ZEul.lastRow (h * g) = GlobalTheory.ZEul.lastRow g := by
   funext j
@@ -30,12 +35,18 @@ theorem lastRow_mul_of_mem {h : GA E (m + 1)} (hh : h ∈ mirU (Ad E) (m + 1) m)
 
 omit [NumberField E] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `h` using `mem_mirU_zero.1 (blkU_mem_mirU 0 y)`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => h.1 i j hij)]`. Simplify using `[h.2]`.
+-/
 theorem det_blkU {R : Type} [CommRing R] {a k : ℕ} (y : UnipotentBlockColumnIndex a k k → R) : (blkU y : GL (Fin a) R).val.det = 1 := by
   have h := mem_mirU_zero.1 (blkU_mem_mirU 0 y)
   rw [Matrix.det_of_upperTriangular (fun i j hij => h.1 i j hij)]
   simp [h.2]
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Establish `hd : Matrix.GeneralLinearGroup.det (blkU y : GA E (m + 1)) = 1` using `Units.ext (det_blkU y)`. Unfold `detPow chiDet`. Rewrite using `[MonoidHom.comp_apply, hd, map_one]`. Simplify using the standard rewrite rules.
+-/
 theorem detPow_blkU (x : ℝ) {k : ℕ} (y : UnipotentBlockColumnIndex (m + 1) k k → Ad E) : detPow E (m + 1) x (blkU y) = 1 := by
   have hd : Matrix.GeneralLinearGroup.det (blkU y : GA E (m + 1)) = 1 := Units.ext (det_blkU y)
   unfold detPow chiDet
@@ -44,6 +55,11 @@ theorem detPow_blkU (x : ℝ) {k : ℕ} (y : UnipotentBlockColumnIndex (m + 1) k
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Use `haveI : T2Space (Af E) := inferInstanceAs (T2Space (RestrictedProduct _ _ _))`. Establish `e : natLat E N = (fun z => (N : Af E) * z) '' (GroundTheory.Global.integralFiniteAdeles (𝓞 E) E : Set (Af E))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`.
+
+Conclude with `⟨z, hz, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`. Rewrite using `[e]`. Conclude with `((GroundTheory.Global.isCompact_integralFiniteAdeles E).image (continuous_const.mul continuous_id)).isClosed`.
+-/
 theorem isClosed_natLat (N : ℕ) : IsClosed (natLat E N) := by
   haveI : T2Space (Af E) := inferInstanceAs (T2Space (RestrictedProduct _ _ _))
   have e : natLat E N = (fun z => (N : Af E) * z) '' (GroundTheory.Global.integralFiniteAdeles (𝓞 E) E : Set (Af E)) := by
@@ -57,17 +73,30 @@ theorem isClosed_natLat (N : ℕ) : IsClosed (natLat E N) := by
   exact ((GroundTheory.Global.isCompact_integralFiniteAdeles E).image (continuous_const.mul continuous_id)).isClosed
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => (continuous_snd : Continuous (GlobalTheory.RSJ.pFin E)).comp ((Units.continuous_val : Continuous fun g : GA E (m + 1) => (g : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E))).matrix_elem (Fin.last m) i)`.
+-/
 theorem continuous_yFin : Continuous (yFin (E := E) (m := m)) :=
   continuous_pi fun i => (continuous_snd : Continuous (GlobalTheory.RSJ.pFin E)).comp
     ((Units.continuous_val : Continuous fun g : GA E (m + 1) => (g : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E))).matrix_elem
       (Fin.last m) i)
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `continuous_norm.comp (Units.continuous_val.comp ((GlobalTheory.HeckeGal.Model.absPow E x).2.1.comp Matrix.GeneralLinearGroup.continuous_det))`.
+-/
 theorem continuous_detPow (x : ℝ) : Continuous (detPow E (m + 1) x) :=
   continuous_norm.comp (Units.continuous_val.comp
     ((GlobalTheory.HeckeGal.Model.absPow E x).2.1.comp Matrix.GeneralLinearGroup.continuous_det))
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Set `S : Set (Fin (m + 1) → Af E)` to `{y | ∀ i : Fin (m + 1), y i - (if (i : ℕ) + 1 = m + 1 then 1 else 0) ∈ natLat E N}`. Establish `hS : IsClosed S`. Establish `e : S = ⋂ i : Fin (m + 1), (fun y : Fin (m + 1) → Af E => y i - (if (i : ℕ) + 1 = m + 1 then 1 else 0)) ⁻¹' natLat E N`. Use extensionality with `y`. Simplify using `[S]`.
+
+Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => (isClosed_natLat N).preimage ((continuous_apply i).sub continuous_const)`. Establish `hm : MeasurableSet {g : GA E (m + 1) | yFin g ∈ S}` using `(hS.preimage continuous_yFin).measurableSet`. Establish `hind : Measurable fun g : GA E (m + 1) => indN N (yFin g)`. Unfold `indN`.
+
+Conclude with `Measurable.ite hm measurable_const measurable_const`. Conclude with `((Complex.measurable_re.comp hind).mul (continuous_detPow x).measurable).real_toNNReal`.
+-/
 theorem measurable_wt (N : ℕ) (x : ℝ) : Measurable (wt (E := E) (m := m) N x) := by
   let S : Set (Fin (m + 1) → Af E) := {y | ∀ i : Fin (m + 1), y i - (if (i : ℕ) + 1 = m + 1 then 1 else 0) ∈ natLat E N}
   have hS : IsClosed S := by
@@ -82,6 +111,11 @@ theorem measurable_wt (N : ℕ) (x : ℝ) : Measurable (wt (E := E) (m := m) N x
     exact Measurable.ite hm measurable_const measurable_const
   exact ((Complex.measurable_re.comp hind).mul (continuous_detPow x).measurable).real_toNNReal
 
+/- English proof (translation)
+Introduce `E _ _ _ m N x`. Use `⟨measurable_wt N x, fun γ hγ g => ?_, fun k y g => ?_⟩` and prove the remaining obligations. Use `wt_of_lastRow_of_detPow (lastRow_mul_of_mem (map_mem_mirU _ hγ) g) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RSJ.Model.detPow_mul, GlobalTheory.RSJ.Model.detPow_ratGL, one_mul]`. Use `wt_of_lastRow_of_detPow (lastRow_mul_of_mem (blkU_mem_mirU m y) g) ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.RSJ.Model.detPow_mul, detPow_blkU, one_mul]`.
+-/
 theorem wt_measurable_invariant : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m N : ℕ) (x : ℝ),
     Measurable (GlobalTheory.ZUnf.wt (E := E) (m := m) N x) ∧
     (∀ γ ∈ mirU E (m + 1) m, ∀ g, GlobalTheory.ZUnf.wt N x (ratGL E (m + 1) γ * g) = GlobalTheory.ZUnf.wt N x g) ∧

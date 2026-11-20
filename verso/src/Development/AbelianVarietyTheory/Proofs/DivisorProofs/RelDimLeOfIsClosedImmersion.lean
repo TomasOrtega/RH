@@ -8,6 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `: Nontrivial B` using `(algebraMap B C).domain_nontrivial`. Establish `: Algebra.IsStandardSmooth R B` using `Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth g`. Establish `: Module.Free B Ω[B⁄R]` using `Algebra.IsStandardSmooth.free_kaehlerDifferential`. Establish `hs : Function.Surjective (KaehlerDifferential.mapBaseChange R B C)` using `fun x => (KaehlerDifferential.exact_mapBaseChange_map R B C x).mp (Subsingleton.elim _ _)`. Establish `h1` using `LinearMap.rank_le_of_surjective _ hs`.
+
+Rewrite `h1` using `[Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential g', Module.rank_baseChange, Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential g]`. Simplify using `using h1`.
+-/
 theorem relDim_le_of_formallyUnramified (R B C : Type) [CommRing R] [CommRing B] [CommRing C]
     [Algebra R B] [Algebra R C] [Algebra B C] [IsScalarTower R B C] [Nontrivial C]
     [Algebra.FormallyUnramified B C] (g g' : ℕ)
@@ -27,6 +32,13 @@ end GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI : Algebra R B := φ.toAlgebra`. Use `letI : Algebra B A := ψ.toAlgebra`. Use `letI : Algebra B L := ((algebraMap A L).comp ψ).toAlgebra`. Use `letI : Algebra R L := ((algebraMap A L).comp (ψ.comp φ)).toAlgebra`. Use `haveI : IsScalarTower R B L := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `haveI : IsScalarTower B A L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Algebra.FormallyUnramified B A := Algebra.FormallyUnramified.of_surjective (Algebra.ofId B A) hψ`. Use `haveI : Algebra.FormallyUnramified A L := Algebra.FormallyUnramified.of_isLocalization (Submonoid.powers t)`. Use `haveI : Algebra.FormallyUnramified B L := Algebra.FormallyUnramified.comp B A L`. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension g R B := hφ`.
+
+Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension g' R L := hL`. Conclude with `relDim_le_of_formallyUnramified R B L g g'`.
+-/
 theorem relDim_le_of_surjective_away {R B A L : Type} [CommRing R] [CommRing B] [CommRing A] [CommRing L]
     [Algebra A L] (t : A) [IsLocalization.Away t L] [Nontrivial L] (φ : R →+* B) (ψ : B →+* A)
     (hψ : Function.Surjective ψ) (g g' : ℕ) (hφ : RingHom.IsStandardSmoothOfRelativeDimension g φ)
@@ -49,6 +61,17 @@ end GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ N G ν hν ⟨x⟩ g g' hG hN`. Take `⟨U, hU, V, hV, hx, e, h⟩` from `hG.exists_isStandardSmoothOfRelativeDimension (ν.left x)`. Set `V' : N.left.Opens` to `ν.left ⁻¹ᵁ V`. Establish `hV' : IsAffineOpen V'` using `hV.preimage ν.left`. Establish `hN' : SmoothOfRelativeDimension g' (ν.left ≫ G.hom)` using `by rw [Over.w ν]; exact hN`.
+
+Establish `e' : V' ≤ (ν.left ≫ G.hom) ⁻¹ᵁ U` using `fun y hy => e hy`. Take `⟨s, hs, h'⟩` from `HasRingHomProperty.appLE (@SmoothOfRelativeDimension g') _ hN' ⟨U, hU⟩ ⟨V', hV'⟩ e'`. Establish `: Nonempty V'` using `⟨⟨x, hx⟩⟩`. Take `⟨p, hp⟩` from `Ideal.exists_maximal Γ(N.left, V')`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht, htp⟩ : ∃ t ∈ s, t ∉ p := by`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hp.ne_top (top_le_iff.1 (hs ▸ Ideal.span_le.2 fun t ht => by_contra fun h => hc ⟨t, ht, h⟩))`. Establish `: Nontrivial (Localization.Away t)`. Assume the negation of the conclusion as `hc`. Take `⟨k, hk⟩` from `(IsLocalization.subsingleton_iff (M := Submonoid.powers t)).1 (not_nontrivial_iff_subsingleton.1 hc)`.
+
+Conclude with `htp (hp.isPrime.mem_of_pow_mem k (by rw [show t ^ k = 0 from hk]; exact p.zero_mem))`. Establish `h₁` using `h' t ht`. Establish `hψ : Function.Surjective (ν.left.appLE V V' le_rfl).hom`. Use `ν.left.app_surjective V hV` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.app_eq_appLE]`.
+
+Conclude with `this`. Use `relDim_le_of_surjective_away (L := Localization.Away t) t (G.hom.appLE U V e).hom (ν.left.appLE V V' le_rfl).hom hψ g g' h ?_` and prove the remaining obligations. Rewrite using `[← CommRingCat.hom_comp, Scheme.Hom.appLE_comp_appLE ν.left G.hom U V V' e le_rfl]`. Conclude with `h₁`.
+-/
 theorem relDim_le_of_isClosedImmersion : ∀ (k : Type) [Field k] (N G : Over (Sp k)) (ν : N ⟶ G),
     IsClosedImmersion ν.left → Nonempty N.left → ∀ g g' : ℕ, SmoothOfRelativeDimension g G.hom →
     SmoothOfRelativeDimension g' N.hom → g' ≤ g := by

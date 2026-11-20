@@ -6,6 +6,23 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.DefU
 open UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Introduce `hLev hEll hKer hCS hTw E _ _ _ l _ ι a w₀ hs K hK W J hJo hJc htf m θ f hf`. Take `⟨hLvl, -, hC, -, -, -⟩` from `hLev E a w₀ hs K hK J hJo hJc`. Use `haveI : NeZero (l ^ m) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `haveI : Finite (Multiplicative (ZMod (l ^ m))) := inferInstanceAs (Finite (ZMod (l ^ m)))`. Set `lam : (lev K w₀ J) →* Multiplicative (ZMod (l ^ m))` to `θ.comp (((cLoc w₀).comp (lev K w₀ J).subtype).codRestrict J fun c => hC c.1 c.2)`.
+
+Establish `hlam : ∀ c : lev K w₀ J, lam c = θ ⟨cLoc w₀ c.1, hC c.1 c.2⟩` using `fun c => rfl`. Take `⟨N, hNo, hN1, hN⟩` from `hKer E w₀ a J hJo _ θ`. Take `⟨ℓ, hℓi, hℓC, hℓa⟩` from `hEll E a (lev K w₀ J) hLvl _ lam ⟨cLoc w₀ ⁻¹' N, hNo.preimage (GlobalTheory.BCT.GlobLev.continuous_cLoc w₀), by simpa using hN1, fun c hc => hN ⟨cLoc w₀ c.1, hC c.1 c.2⟩ hc⟩ (fun c hc => by`. Take `⟨k, hk0, hk⟩` from `isOfFinOrder_iff_pow_eq_one.1 hc`. Establish `h1 : (cLoc w₀ c.1) ^ k = 1`.
+
+Establish `h0 : c.1 ^ k = 1` using `by simpa using congrArg Subtype.val hk`. Rewrite using `[← map_pow, h0, map_one]`. Establish `h2` using `htf _ (hC c.1 c.2) k hk0 h1`. Establish `h3 : (⟨cLoc w₀ c.1, hC c.1 c.2⟩ : J) = 1` using `Subtype.ext h2`. Rewrite using `[hlam, h3, map_one])`.
+
+Take `⟨s, hs1, hs2⟩` from `hCS (l ^ m)`. Establish `hex : ∀ χ : Multiplicative (ZMod (l ^ m)) →* ℂˣ, ∃ F : algForms W, ∀ v g, F.1 v g = ((χ (ℓ g) : ℂˣ) : ℂ) * f.1 v g` using `fun χ => GlobalTheory.T.exists_algebraicModularForm_mul_archInvariant E a W f (fun g => ((χ (ℓ g) : ℂˣ) : ℂ)) (hℓa fun y => ((χ y : ℂˣ) : ℂ)) fun g x hx => by simp only [hℓi g x hx]`. Use `choose F hF using hex`. Establish `hpart : ∀ χ ∈ s, F χ ∈ part W K (fun U => ∃ χ : Multiplicative (ZMod (l ^ m)) →* ℂˣ, χ ≠ 1 ∧ GlobalTheory.CongW.HasTypeVec w₀ K J θ χ U)`. Introduce `χ hχ`.
+
+Establish `h` using `hTw E a w₀ K W J _ θ χ hC (fun k hk => hK.one k hk w₀ (not_apart_self w₀)) (F χ) (fun c hc v g => by`. Rewrite using `[hF, hF, hℓC g ⟨c, hc⟩, hf c hc v g, map_mul, Units.val_mul, hlam, mul_comm (((χ (ℓ g) : ℂˣ) : ℂ))]`. Use the proof step `ring)`. Use `(?_ : part W K _ ≤ part W K _) h` and prove the remaining obligations. Conclude with `iSup₂_le fun π hπ => le_iSup₂_of_le π ⟨χ, hs1 χ hχ, hπ⟩ le_rfl`.
+
+Use `⟨-∑ χ ∈ s, F χ, neg_mem (sum_mem hpart), fun g => 1 + ∑ χ ∈ s, ((χ (ℓ g) : ℂˣ) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Break down `hs2 (ℓ g) with h | h` into its components or cases. Simplify using `only [h, map_zero, norm_zero]`. Check the signs of the components of the expression.
+
+Simplify using `only [h]`. Rewrite using `[map_natCast, Nat.cast_pow, norm_pow]`. Introduce `v g`. Establish `e : ((-∑ χ ∈ s, F χ : algForms W) : W.Sp →ₗ[ℂ] (UA E a → ℂ)) v g = -∑ χ ∈ s, (F χ).1 v g`. Simplify using `[Finset.sum_apply, LinearMap.sum_apply]`.
+
+Express the relevant statement in the definitionally equal form `f.1 v g - ((-∑ χ ∈ s, F χ : algForms W) : W.Sp →ₗ[ℂ] (UA E a → ℂ)) v g = _`. Rewrite using `[e, Finset.sum_congr rfl fun χ _ => hF χ v g, ← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Gal.Gen.tyStep_pf :
     UpperTheory.Gal.Gen.LevFacts → UpperTheory.Gal.Gen.Ell → UpperTheory.Gal.Gen.KerOpen → UpperTheory.Gal.Gen.CharSum → UpperTheory.Gal.Gen.TwistPart → UpperTheory.Gal.Gen.TyStep := by
   intro hLev hEll hKer hCS hTw E _ _ _ l _ ι a w₀ hs K hK W J hJo hJc htf m θ f hf

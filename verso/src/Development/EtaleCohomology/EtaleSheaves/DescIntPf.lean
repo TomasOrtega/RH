@@ -8,9 +8,19 @@ namespace LateralTheory.E.DescIntPf
 def RelZS (R : Type) [CommRing R] (F : Shv R) (n : ℤ) {U E : Spc} (u : U ⟶ E) : Prop :=
   (∀ m : ℤ, m + 1 = n → Function.Surjective (pull R u F m)) ∧ Function.Injective (pull R u F n)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem relZ_iff (q : ℕ) (i n : ℤ) {A B : CommRingCat.{0}} (f : A ⟶ B) :
     RelZ q i n f ↔ RelZS (ZMod q) (tw q i) n (sch.map (Spec.map f)) := Iff.rfl
 
+/- English proof (translation)
+Establish `key : ∀ m (x : H R X F m), pull R a' F m (pull R f F m x) = pull R u F m (pull R a F m x)`. Introduce `m x`. Rewrite using `[← pull_comp, ← pull_comp, hsq]`. Use `⟨fun m hm y => ?_, fun x x' hxx => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hu.1 m hm (pull R a' F m y)`.
+
+Take `⟨x, rfl⟩` from `(ha m).2 z`. Use `⟨x, (ha' m).1 ?_⟩` and prove the remaining obligations. Rewrite using `[key, hz]`. Establish `h1` using `congrArg (pull R a' F n) hxx`. Rewrite `h1` using `[key, key]`.
+
+Conclude with `(ha n).1 (hu.2 h1)`.
+-/
 theorem transfer (R : Type) [CommRing R] (F : Shv R) {U E X' X : Spc} (u : U ⟶ E) (f : X' ⟶ X) (a' : U ⟶ X')
     (a : E ⟶ X) (hsq : u ≫ a = a' ≫ f) (ha : Eqv R a F) (ha' : Eqv R a' F) (n : ℤ) (hu : RelZS R F n u) :
     RelZS R F n f := by
@@ -26,6 +36,9 @@ theorem transfer (R : Type) [CommRing R] (F : Shv R) {U E X' X : Spc} (u : U ⟶
     rw [key, key] at h1
     exact (ha n).1 (hu.2 h1)
 
+/- English proof (translation)
+Introduce `n` and use `by have h1 : ∀ x, pull R e.inv F n (pull R e.hom F n x) = x := fun x => by rw [← pull_comp, e.inv_hom_id, pull_id] have h2 : ∀ x, pull R e.hom F n (pull R e.inv F n x) = x := fun x => by rw [← pull_comp, e.hom_inv_id, pull_id] exact ⟨Function.LeftInverse.injective h1, Function.Ri …`.
+-/
 theorem eqv_of_iso (R : Type) [CommRing R] (F : Shv R) {E E' : Spc} (e : E ≅ E') : Eqv R e.hom F := fun n => by
   have h1 : ∀ x, pull R e.inv F n (pull R e.hom F n x) = x := fun x => by
     rw [← pull_comp, e.inv_hom_id, pull_id]
@@ -33,6 +46,9 @@ theorem eqv_of_iso (R : Type) [CommRing R] (F : Shv R) {E E' : Spc} (e : E ≅ E
     rw [← pull_comp, e.hom_inv_id, pull_id]
   exact ⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩
 
+/- English proof (translation)
+The claim follows from `transfer R F u u' e₁.hom e₂.hom hsq (eqv_of_iso R F e₂) (eqv_of_iso R F e₁) n hu`.
+-/
 theorem RelZS.of_iso (R : Type) [CommRing R] (F : Shv R) {U E U' E' : Spc} (u : U ⟶ E) (u' : U' ⟶ E') (e₁ : U ≅ U')
     (e₂ : E ≅ E') (hsq : u ≫ e₂.hom = e₁.hom ≫ u') (n : ℤ) (hu : RelZS R F n u) : RelZS R F n u' :=
   transfer R F u u' e₁.hom e₂.hom hsq (eqv_of_iso R F e₂) (eqv_of_iso R F e₁) n hu
@@ -53,6 +69,11 @@ def CechSq : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (i : ℤ) {A Y : CommRingC
     ∃ (Z : CommRingCat.{0}) (wz : Y ⟶ Z) (ψ : D ⟶ Z), IsPushout φ (c ≫ g) wz ψ ∧
       ∀ m, RelZ q i m ψ → RelZS (ZMod q) (tw q i) m (disc.map (u.app (Opposite.op (SimplexCategory.mk 0))))
 
+/- English proof (translation)
+Introduce `hH q _ i n A Y φ hq P hpush hbelow C D c g hCc hDc hgi hgs hDn Y' w φ' hpo`. Take `⟨U, E, u, a', a, hsq, ha, ha', hlev, Z, wz, ψ, hpo0, h0⟩` from `hC hH q i φ hq P @hpush c g hCc hDc hgi hgs Y' w φ' hpo`. Rewrite using `[relZ_iff]`. Use `transfer _ _ u _ a' a hsq ha ha' n (hT _ _ u n (fun p m hm => ?_) (h0 n (hDn Z wz ψ hpo0)))` and prove the remaining obligations. Take `⟨L, l, Z', wz', ψ', hL, hpo', hrel⟩` from `hlev p`.
+
+Conclude with `hrel m (hbelow m hm L l hL Z' wz' ψ' hpo')`.
+-/
 theorem DescInt_of (hT : EtaleRelativeIsoTruncationFromLevels) (hC : CechSq) : LateralTheory.E.StalkCut.DescInt := by
   intro hH q _ i n A Y φ hq P hpush hbelow C D c g hCc hDc hgi hgs hDn Y' w φ' hpo
   obtain ⟨U, E, u, a', a, hsq, ha, ha', hlev, Z, wz, ψ, hpo0, h0⟩ :=

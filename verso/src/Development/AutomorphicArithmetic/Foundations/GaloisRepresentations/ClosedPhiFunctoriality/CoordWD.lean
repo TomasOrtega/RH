@@ -4,6 +4,19 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
+/- English proof (translation)
+Use `letI : Module F M := Module.compHom M κ`. Establish `hsm : ∀ (c : F) (y : M), c • y = κ c • y` using `fun _ _ => rfl`. Set `f₂ : F →+ D →+ M` to `AddMonoidHom.mk' (fun c => (DistribMulAction.toAddMonoidHom M (κ c)).comp f) (fun c c' => by`. Use extensionality with `x`. Simplify using `[add_smul])`.
+
+Establish `hf₂ : ∀ c x, f₂ c x = κ c • f x` using `fun _ _ => rfl`. Set `g : F ⊗[LL] D →+ M` to `TensorProduct.liftAddHom f₂ fun r c x => by`. Rewrite using `[hf₂, hf₂, hL, Algebra.smul_def, map_mul, mul_comm, mul_smul, smul_comm]`. Establish `hg : ∀ c x, g (c ⊗ₜ x) = κ c • f x` using `fun _ _ => rfl`. Establish `hgs : ∀ (c : F) (y : F ⊗[LL] D), g (c • y) = κ c • g y` using `fun c y => by`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, smul_add, hx, hy]`. Consider the case `tmul c' x => rw [TensorProduct.smul_tmul', hg, hg, smul_eq_mul, map_mul, mul_smul]`. Set `gL : F ⊗[LL] D →ₗ[F] M` to `{ toFun := g, map_add' := g.map_add, map_smul' := hgs }`.
+
+Establish `hk : letterKer m F τ ≤ LinearMap.ker gL` using `iSup_le fun u => by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `g _ = 0`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Consider the case `tmul c x`. Simplify using `only [LinearMap.sub_apply, LinearMap.baseChange_tmul, LinearMap.smul_apply, LinearMap.id_apply, map_sub, hgs, hg, hU]`. Rewrite using `[smul_comm, sub_self]`.
+
+Set `ψL : Letter m F τ →ₗ[F] M` to `(letterKer m F τ).liftQ gL hk`. Use `⟨ψL.toAddMonoidHom, fun c y => ψL.map_smul c y, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g (1 ⊗ₜ x) = f x`. Rewrite using `[hg, map_one, one_smul]`.
+-/
 private theorem letter_lift {LL U D : Type} [Field LL] [Field U] [AddCommGroup D] [Module LL D]
     (m : U →+* Module.End LL D) (F : Type) [Field F] [Algebra LL F] (τ : U →+* F)
     {B M : Type} [CommRing B] [AddCommGroup M] [Module B M] (κ : F →+* B) (f : D →+ M)
@@ -44,6 +57,11 @@ private theorem letter_lift {LL U D : Type} [Field LL] [Field U] [AddCommGroup D
   change g (1 ⊗ₜ x) = f x
   rw [hg, map_one, one_smul]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, smul_add, hx, hy]`. Consider the case `tmul v b`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[TensorProduct.smul_tmul', h, Pi.smul_apply, Pi.smul_apply, h, smul_eq_mul, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression.
+-/
 private theorem coord_smul {l : ℕ} [Fact l.Prime] {P : LocPrime l} {L : FinExt l} {a : ℕ}
     {ψ₀ : (Fin a → ↥L.1) ⊗[ℚ_[l]] Bst P →+ (Fin a → OB P)} (h : IsCoord P L ψ₀) (c : ↥L.1)
     (y : (Fin a → ↥L.1) ⊗[ℚ_[l]] Bst P) :
@@ -57,6 +75,11 @@ private theorem coord_smul {l : ℕ} [Fact l.Prime] {P : LocPrime l} {L : FinExt
       Algebra.TensorProduct.tmul_mul_tmul, one_mul]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, smul_add, hx, hy]`. Consider the case `tmul v b`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[GlobalTheory.Pst.mulV_tmul, h, Pi.smul_apply, h, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← Algebra.smul_def, ← TensorProduct.smul_tmul]`. Both sides reduce to the same expression.
+-/
 private theorem coord_mulV {l : ℕ} [Fact l.Prime] {P : LocPrime l} {L : FinExt l} {a : ℕ}
     {ψ₀ : (Fin a → ↥L.1) ⊗[ℚ_[l]] Bst P →+ (Fin a → OB P)} (h : IsCoord P L ψ₀) (c : ↥(MaximalUnramifiedExtension l))
     (y : (Fin a → ↥L.1) ⊗[ℚ_[l]] Bst P) :
@@ -73,6 +96,9 @@ private theorem coord_mulV {l : ℕ} [Fact l.Prime] {P : LocPrime l} {L : FinExt
 private noncomputable def kap {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) : ℂ →+* OB P :=
   (Algebra.TensorProduct.includeLeftRingHom : Om l →+* OB P).comp ι.symm.toRingHom
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((ι.symm (ι z) ⊗ₜ 1 : OB P)) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+-/
 private theorem kap_apply {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) (z : Om l) :
     kap P ι (ι z) = (z ⊗ₜ 1 : OB P) := by
   change ((ι.symm (ι z) ⊗ₜ 1 : OB P)) = _
@@ -89,12 +115,18 @@ private noncomputable def fD : ↥(GlobalTheory.Pst.Dpst P R) →+ (Fin a → OB
   { toFun := fun x => ψ₀ x.1, map_zero' := ψ₀.map_zero, map_add' := fun x y => ψ₀.map_add x.1 y.1 }
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Conclude with `(coord_smul h r x.1).trans (congrArg (fun t : OB P => t • ψ₀ x.1) (kap_apply P ι (r : Om l)).symm)`.
+-/
 private theorem fD_smul (h : IsCoord P L ψ₀) (ι : Om l ≃+* ℂ) (r : ↥L.1) (x : ↥(GlobalTheory.Pst.Dpst P R)) :
     fD R ψ₀ (r • x) = kap P ι (ι (r : Om l)) • fD R ψ₀ x := by
   exact (coord_smul h r x.1).trans
     (congrArg (fun t : OB P => t • ψ₀ x.1) (kap_apply P ι (r : Om l)).symm)
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Conclude with `(coord_mulV h u x.1).trans (congrArg (fun t : OB P => t • ψ₀ x.1) (kap_apply P ι (u : Om l)).symm)`.
+-/
 private theorem fD_mul (h : IsCoord P L ψ₀) (ι : Om l ≃+* ℂ) (u : ↥(MaximalUnramifiedExtension l)) (x : ↥(GlobalTheory.Pst.Dpst P R)) :
     fD R ψ₀ (GlobalTheory.Pst.mulD P R u x) = kap P ι (ι (u : Om l)) • fD R ψ₀ x := by
   exact (coord_mulV h u x.1).trans
@@ -103,6 +135,9 @@ private theorem fD_mul (h : IsCoord P L ψ₀) (ι : Om l ≃+* ℂ) (u : ↥(Ma
 end
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `l _ P ι K L a R ψ₀ h`. Take `⟨ψ, h1, h2⟩` from `@letter_lift ↥L.1 ↥(MaximalUnramifiedExtension l) ↥(GlobalTheory.Pst.Dpst P R) _ _ _ _ (GlobalTheory.Pst.mulD P R) ℂ _ (GlobalTheory.Pst.algC ι L) (GlobalTheory.Pst.urC ι) (OB P) (Fin a → OB P) _ _ _ (kap P ι) (fD R ψ₀) (fun r x => fD_smul R ψ₀ h ι r x) (fun u x => fD_mul R ψ₀ h …`. Conclude with `⟨ψ, h1, h2⟩`.
+-/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.coordWD_holds :
     CoordWD := by
   intro l _ P ι K L a R ψ₀ h

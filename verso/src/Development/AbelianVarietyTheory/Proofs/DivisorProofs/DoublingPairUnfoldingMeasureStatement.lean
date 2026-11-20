@@ -13,6 +13,9 @@ open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 open GlobalTheory.DblDatum
 open GlobalTheory.DblDatum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DblFinSmooth.fix_near_one | exact GlobalTheory.DblFinSmooth.fix_near_one | (intros; apply GlobalTheory.DblFinSmooth.fix_near_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.doubling_pair_unfolding_measure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ →

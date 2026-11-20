@@ -28,6 +28,11 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 variable {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] {S T : HSp D}
 variable (p : Place D k) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y)
 
+/- English proof (translation)
+Unfold `Place.up Place.down`. Establish `: FT.β * (FT.γ * (t : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π * FS.β) * FS.γ = t.map p.π`. Simplify using `only [← Matrix.mul_assoc, FT.βγ, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, FS.βγ, Matrix.mul_one]`. Rewrite using `[this]`.
+
+Conclude with `Matrix.ext fun i j => p.ι_π _`.
+-/
 theorem up_down (t : WO S T) : p.up FS FT (p.down FS FT t) = p.e • t := by
   unfold Place.up Place.down
   have : FT.β * (FT.γ * (t : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π * FS.β) * FS.γ = t.map p.π := by
@@ -36,6 +41,11 @@ theorem up_down (t : WO S T) : p.up FS FT (p.down FS FT t) = p.e • t := by
   rw [this]
   exact Matrix.ext fun i j => p.ι_π _
 
+/- English proof (translation)
+Unfold `Place.up Place.down`. Establish `: (t + (FT.β * x * FS.γ).map p.ι : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π = t.map p.π + FT.β * x * FS.γ` using `Matrix.ext fun i j => by`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, map_add, p.π_ι]`. Rewrite using `[this, Matrix.mul_add, Matrix.add_mul]`. Use `congr 1`.
+
+Simplify using `only [← Matrix.mul_assoc, FT.γβ, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, FS.γβ, Matrix.mul_one]`.
+-/
 theorem down_add_up (t : WO S T) (x : Matrix Y Y' k) : p.down FS FT (t + p.up FS FT x) = p.down FS FT t + x := by
   unfold Place.up Place.down
   have : (t + (FT.β * x * FS.γ).map p.ι : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π =
@@ -46,6 +56,9 @@ theorem down_add_up (t : WO S T) (x : Matrix Y Y' k) : p.down FS FT (t + p.up FS
   simp only [← Matrix.mul_assoc, FT.γβ, Matrix.one_mul]
   rw [Matrix.mul_assoc, FS.γβ, Matrix.mul_one]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => by change p.e * p.ι _ = p.ι _ rw [← p.ι_π, p.π_ι]`.
+-/
 theorem smul_up (x : Matrix Y Y' k) : p.e • p.up FS FT x = p.up FS FT x :=
   Matrix.ext fun i j => by
     change p.e * p.ι _ = p.ι _
@@ -64,9 +77,23 @@ def extend (e : AE D) (Ω : WO S T → ℂ) : SB (Matrix Y Y' k) →ₗ[ℂ] (WO
     · rw [mul_assoc]
     · rw [mul_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extend_apply (e : AE D) (Ω : WO S T → ℂ) (Φ : SB (Matrix Y Y' k)) (x : WO S T) :
     extend p FS FT e Ω Φ x = if IsHalf e x then Φ.1 (p.down FS FT x) * Ω ((1 - p.e) • x) else 0 := rfl
 
+/- English proof (translation)
+Establish `hee` using `p.split.1`. Use `⟨fun Φ => hth _ (hsb Φ), fun x Φ Φ' h => ?_, fun y hy Φ Φ' h => ?_⟩` and prove the remaining obligations. Establish `hx : IsHalf e (p.up FS FT x)` using `fun i j => by`. Use `congrFun (congrFun (smul_up p FS FT x) i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[← this, ← mul_assoc, mul_comm e, hq]`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, ← hTm.trans _ (hsb Φ) _ hx]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Establish `h1 : IsHalf e (t + p.up FS FT x) ↔ IsHalf e t`.
+
+Rewrite using `[GlobalTheory.PlaceModel.isHalf_iff, GlobalTheory.PlaceModel.isHalf_iff]`. Conclude with `AddSubgroup.add_mem_cancel_right _ ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hx)`. Establish `h2 : (1 - p.e) • (t + p.up FS FT x) = (1 - p.e) • t`. Rewrite using `[smul_add, sub_smul 1 p.e (p.up FS FT x), one_smul, smul_up, sub_self, add_zero]`. Rewrite using `[extend_apply, extend_apply, down_add_up, h, h2]`.
+
+Conclude with `if_congr h1.symm rfl rfl`. Establish `hy' : IsHalf (cA D e) y` using `fun i j => by`. Rewrite using `[← hy i j, ← mul_assoc, ← RingHom.map_mul, mul_comm e, hq]`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, ← hTm.modul _ (hsb Φ) _ hy']`. Use `congr 1`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[extend_apply, extend_apply, h, up_down, GlobalTheory.PlaceModel.symplO_smul, (GlobalTheory.PlaceModel.mem_half S T).1 ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hy)]`. Use `split_ifs`. Rewrite using `[mul_assoc]`. Rewrite using `[mul_zero]`.
+-/
 theorem isModel_extend {ψ : AddChar (AF D.host.F) ℂ} {e : AE D} (hq : p.e * e = p.e) {Λ : AddSubgroup (WO S T)}
     {f₀ : WO S T → ℂ} {Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)}
     (hTm : IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Tm)
@@ -109,10 +136,20 @@ def moved (g : GA D S) : Frame k S.rank Y' where
     rw [Matrix.mul_assoc, ← Matrix.mul_assoc _ _ FS.β, ← Matrix.map_mul]
     simp [Formalism.L2.Theta.mt, FS.γβ]
 
+/- English proof (translation)
+Rewrite using `[moved, ← Matrix.mul_assoc, ← Matrix.map_mul]`. Simplify using `[Formalism.L2.Theta.mt]`.
+-/
 theorem β_eq_moved (g : GA D S) : FS.β = (Formalism.L2.Theta.mt S g).map p.π * (moved p FS g⁻¹).β := by
   rw [moved, ← Matrix.mul_assoc, ← Matrix.map_mul]
   simp [Formalism.L2.Theta.mt]
 
+/- English proof (translation)
+Use `choose s hs using GlobalTheory.ResLoc.toEAf_surj (D := D)`. Establish `h1` using `h (β.val.map s) (Matrix.ext fun i j => hs _)`. Establish `h2 : (β.val.map s).map p.π = β.val.map π'` using `Matrix.ext fun i j => by`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← hπ, hs]`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[Matrix.map_mul, h2]`. Establish `h3 : (Formalism.L2.Theta.mt S g⁻¹).map p.π * (Formalism.L2.Theta.mt S g).map p.π = 1`. Rewrite using `[← Matrix.map_mul]`. Simplify using `[Formalism.L2.Theta.mt]`. Rewrite using `[← Matrix.one_mul (β.val.map π'), ← h3, Matrix.mul_assoc, h1, moved, Matrix.mul_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem map_eq_of_movedTo {π' : EAf D →+* k} (hπ : ∀ a, π' (toEAf D a) = p.π a) {g : GA D S}
     {β : GL (Fin S.rank) (EAf D)} (B : Matrix Y' Y' k) (σ : Fin S.rank → Y')
     (h : MovedTo p S g β ((FS.β * B).submatrix id σ)) :
@@ -128,6 +165,11 @@ theorem map_eq_of_movedTo {π' : EAf D →+* k} (hπ : ∀ a, π' (toEAf D a) = 
   rw [← Matrix.one_mul (β.val.map π'), ← h3, Matrix.mul_assoc, h1, moved, Matrix.mul_assoc]
   rfl
 
+/- English proof (translation)
+Establish `h1 : (βT⁻¹).val.map π' = ((LT.bas⁻¹).val * FT.γ).submatrix (fun i => LT.ord (eb.symm i)) id`. Use `Matrix.left_inv_eq_left_inv (A := βT.val.map π') ?_ ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[hT, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, Matrix.mul_assoc, ← Matrix.mul_assoc FT.γ, FT.γβ, Matrix.one_mul, Units.inv_mul]`. Conclude with `Matrix.submatrix_one_equiv (eb.symm.trans LT.ord)`.
+
+Establish `h2 : ((x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (toEAf D)).map π' = x.map p.π` using `Matrix.ext fun i j => hπ _`. Rewrite using `[frMapO, Matrix.map_mul, Matrix.map_mul, h1, h2, hS, LatFrame.coords, Place.down]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `_ = ((LT.bas⁻¹).val * FT.γ * x.map p.π * (FS.β * LS.bas.val)) (LT.ord (eb.symm (eb i))) (LS.ord (ea.symm (ea j)))`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_assoc, Equiv.symm_apply_apply]`.
+-/
 theorem coords_down {π' : EAf D →+* k} (hπ : ∀ a, π' (toEAf D a) = p.π a) {ι ι' : Type} [Fintype ι] [DecidableEq ι]
     [Fintype ι'] [DecidableEq ι'] (LS : LatFrame k ι' Y') (LT : LatFrame k ι Y) (ea : ι' ≃ Fin S.rank) (eb : ι ≃ Fin T.rank)
     {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
@@ -159,6 +201,15 @@ def locF {κ X : Type} [CommRing κ] {a b r : ℕ} (t j : ℕ) (hr : r ≤ a) (R
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[omegaG]`. Use `split_ifs with H`. Establish `h2` using `H.2.choose_spec`. Establish `h3 : ∀ w : Pg, LowZero a (y w.1) ∧ ∃ gx : GL (Fin a) (kP w.1) × X w, gx.1.val = topL a (y w.1) ∧ gx.1 ∈ blockTri (blkOf r t) ∧ Rd w gx.2 (upperLeftBlock hr gx.1)` using `fun w => by`. Take `⟨x, hx⟩` from `(hg _).1 h2.2.2 w`.
+
+Conclude with `⟨H.1 w.1 w.2, (H.2.choose w, x), h2.1 w, h2.2.1 w, hx⟩`. Establish `h4 : ∀ w : Pg, (h3 w).2.choose.1 = H.2.choose w` using `fun w => Units.ext ((h3 w).2.choose_spec.1.trans (h2.1 w).symm)`. Establish `h5` using `hc ⟨_, h2.2.2⟩ (fun w => (h3 w).2.choose.2) fun w => by`. Use `(h3 w).2.choose_spec.2.2` as an intermediate fact. Rewrite `this` using `[h4]`.
+
+Conclude with `this`. Simplify using `only [locF, dif_pos (h3 _), Finset.prod_mul_distrib]`. Simplify using `only [h4]`. Rewrite using `[← Units.coe_prod, ← h5]`. Both sides reduce to the same expression.
+
+Use `(Finset.prod_eq_zero_iff.2 (by_contra fun h => H ?_)).symm` and prove the remaining obligations. Establish `h3 : ∀ w : Pg, LowZero a (y w.1) ∧ ∃ gx : GL (Fin a) (kP w.1) × X w, gx.1.val = topL a (y w.1) ∧ gx.1 ∈ blockTri (blkOf r t) ∧ Rd w gx.2 (upperLeftBlock hr gx.1)` using `fun w =>`. Assume the negation of the conclusion as `fun h' => h ⟨w, Finset.mem_univ _, dif_neg h'⟩`. Use `choose h2 g hg' using h3`. Conclude with `⟨fun w hw => h2 ⟨w, hw⟩, fun w => (g w).1, fun w => (hg' w).1, fun w => (hg' w).2.1, (hg _).2 fun w => ⟨_, (hg' w).2.2⟩⟩`.
+-/
 theorem omegaG_eq_prod {a b r t j : ℕ} (hr : r ≤ a) (Pg Q : Finset (Pl D.host.E)) (P : LevelP Pg r ℂ)
     (χ : ℕ → ∀ w : Pl D.host.E, (kP w)ˣ →* ℂˣ) (ξ : ∀ w : Pl D.host.E, (kP w)ˣ →* ℂˣ) {X : Pg → Type}
     (Rd : ∀ w : Pg, X w → GL (Fin r) (kP w.1) → Prop) (lam : ∀ w : Pg, X w → ℂˣ)
@@ -192,6 +243,11 @@ theorem omegaG_eq_prod {a b r t j : ℕ} (hr : r ≤ a) (Pg Q : Finset (Pl D.hos
     exact ⟨fun w hw => h2 ⟨w, hw⟩, fun w => (g w).1, fun w => (hg' w).1, fun w => (hg' w).2.1,
       (hg _).2 fun w => ⟨_, (hg' w).2.2⟩⟩
 
+/- English proof (translation)
+Take `⟨-, e1, -⟩` from `GlobalTheory.FunObj.Comparison₂.cpt_idemSum he`. Take `⟨a0, -, a2⟩` from `GlobalTheory.IdemSupport.delta_of_isIdemAt (GlobalTheory.StdFrames.comp_toAd D) ha`. Use `(GlobalTheory.StdFrames.comp_toAd D).ext' (by rw [RingHom.map_mul, a0, zero_mul]) fun Q => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.IdemSupport.ev_mul]`. Distinguish the cases in `h : Q = w`.
+
+Substitute `h` using the available equality. Rewrite using `[show ((GlobalTheory.StdFrames.toAd D).comp (toEAf D)) e Q = 1 from e1 Q hw, mul_one]`. Rewrite using `[a2 Q h, zero_mul]`.
+-/
 theorem idem_mul {e a : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {w : Pl D.host.E} (hw : w ∈ P)
     (ha : Formalism.L2.NTheta.IsIdemAt a w) : a * e = a := by
   obtain ⟨-, e1, -⟩ := GlobalTheory.FunObj.Comparison₂.cpt_idemSum he
@@ -203,6 +259,9 @@ theorem idem_mul {e a : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {w
     rw [show ((GlobalTheory.StdFrames.toAd D).comp (toEAf D)) e Q = 1 from e1 Q hw, mul_one]
   · rw [a2 Q h, zero_mul]
 
+/- English proof (translation)
+Establish `: (a • x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (toEAf D) = toEAf D a • x.map (toEAf D)` using `Matrix.ext fun i j => (toEAf D).map_mul _ _`. Conclude with `(congrArg (fun z => GlobalTheory.FunObj.Comparison₂.fr βT βS z i j) this).trans (congrFun (congrFun (GlobalTheory.FunObj.Comparison₂.fr_smul βT βS _ _) i) j)`.
+-/
 theorem frMapO_smul {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (a : AE D) (x : WO S T)
     (i : Fin T.rank) (j : Fin S.rank) : frMapO S T βS βT (a • x) i j = toEAf D a * frMapO S T βS βT x i j := by
   have : (a • x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (toEAf D) = toEAf D a • x.map (toEAf D) :=
@@ -210,6 +269,9 @@ theorem frMapO_smul {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin
   exact (congrArg (fun z => GlobalTheory.FunObj.Comparison₂.fr βT βS z i j) this).trans
     (congrFun (congrFun (GlobalTheory.FunObj.Comparison₂.fr_smul βT βS _ _) i) j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `e : redM w N i j = resS D.host.F w ⟨N i j, hN i j⟩` using `dif_pos (hN i j)`. Establish `e' : redM w N' i j = resS D.host.F w ⟨N' i j, hN' i j⟩` using `dif_pos (hN' i j)`. Establish `h1 : c * N i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `by rw [← h]; exact hN' i j`. Conclude with `(e.trans (hc _ (hN i j) h1).symm).trans (e'.trans (congrArg (resS D.host.F w) (Subtype.ext (h i j) : (⟨N' i j, hN' i j⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ⟨c * N i j, h1⟩))).symm`.
+-/
 theorem redM_eq {a b : ℕ} {w : Pl D.host.E} {c : EAf D} {N N' : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) (hN' : IsIntM N')
     (h : ∀ i j, N' i j = c * N i j) (hc : ∀ (z : EAf D) (hz : z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
       (hz' : c * z ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), resS D.host.F w ⟨c * z, hz'⟩ = resS D.host.F w ⟨z, hz⟩) :
@@ -222,10 +284,18 @@ theorem redM_eq {a b : ℕ} {w : Pl D.host.E} {c : EAf D} {N N' : Matrix (Fin b)
     (e'.trans (congrArg (resS D.host.F w) (Subtype.ext (h i j) : (⟨N' i j, hN' i j⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) =
       ⟨c * N i j, h1⟩))).symm
 
+/- English proof (translation)
+Take the linear combination `hx + x * ha - x * h`.
+-/
 theorem idempotent_sub_mul_complement_eq_complement {R : Type} [CommRing R] {e a x : R} (hx : e * x = x) (ha : a * a = a) (h : a * e = a) :
     (e - a) * ((1 - a) * x) = (1 - a) * x := by
   linear_combination hx + x * ha - x * h
 
+/- English proof (translation)
+Distinguish the cases in `hA : A`. Distinguish the cases in `hB : B`. Rewrite using `[if_pos ⟨hA, hB⟩, if_pos hA, if_pos ⟨h5 hA, h1 hB⟩, h2 hB, h3 hB]`. Rewrite using `[if_neg fun h => hB h.2, if_pos hA]`. Distinguish the cases in `hv : v = 0`.
+
+Rewrite using `[hv, zero_mul]`. Rewrite using `[if_neg fun h => hB (h4 hv h.2), mul_zero]`. Rewrite using `[if_neg fun h => hA h.1, if_neg hA]`.
+-/
 theorem ite_and_eq_ite_mul_ite_of_implications {A B B' : Prop} {u v w w' : ℂ} (h1 : B → B') (h2 : B → u = v * w) (h3 : B → w = w') (h4 : v ≠ 0 → B' → B)
     {A' : Prop} (h5 : A → A') {_ : Decidable (A ∧ B)} {_ : Decidable A} {_ : Decidable (A' ∧ B')} :
     (if A ∧ B then u else 0) = if A then v * (if A' ∧ B' then w' else 0) else 0 := by
@@ -250,6 +320,9 @@ open GlobalTheory.ChainOnto
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => dif_pos (hN i j)`.
+-/
 theorem redM_eq_map {a b : ℕ} (w : Pl D.host.E) {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) :
     redM w N = (Matrix.of fun i j => (⟨N i j, hN i j⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E)).map (resS D.host.F w) :=
   Matrix.ext fun i j => dif_pos (hN i j)
@@ -260,6 +333,11 @@ section Main
 
 variable {D : D7} {u : D.what₂.Word} {d : Dat D u} {τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E}
 
+/- English proof (translation)
+Rewrite using `[locF]`. Use `split_ifs with H`. Conclude with `(h.2 H.1 _ H.2.choose_spec.1 H.2.choose_spec.2.1 _ H.2.choose_spec.2.2).symm`. Assume the negation of the conclusion as `h0`. Take `⟨h1, g, g1, g2, x, hx⟩` from `h.1 (Ne.symm h0)`.
+
+Conclude with `H ⟨h1, (g, x), g1, g2, hx⟩`.
+-/
 theorem locF_eq {κ X : Type} [CommRing κ] {a b r t j : ℕ} {hr : r ≤ a} {Rd : X → GL (Fin r) κ → Prop} {lam : X → ℂˣ}
     {χ : ℕ → κˣ →* ℂˣ} {y : Matrix (Fin b) (Fin a) κ} {v : ℂ}
     (h : (v ≠ 0 → LowZero a y ∧ ∃ g : GL (Fin a) κ, g.val = topL a y ∧ g ∈ blockTri (blkOf r t) ∧ ∃ x, Rd x (upperLeftBlock hr g)) ∧
@@ -275,10 +353,18 @@ theorem locF_eq {κ X : Type} [CommRing κ] {a b r t j : ℕ} {hr : r ≤ a} {Rd
 
 def firstOrd {κ l r : ℕ} (h : κ + l = r) : Fin κ ⊕ Fin l ≃ Fin r := finSumFinEquiv.trans (finCongr h)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rfl`.
+-/
 theorem firstOrd_val {κ l r : ℕ} (h : κ + l = r) (a : Fin κ ⊕ Fin l) :
     (firstOrd h a).val = GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos κ l a := by
   rcases a with a | a <;> rfl
 
+/- English proof (translation)
+Use `⟨ha, fun i => ?_, fun c s => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(firstOrd h).surjective i`. Rewrite using `[firstOrd_val, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Equiv.symm_apply_apply, he]`. Apply the tactic sequence `rcases i with i | i <;> rfl`. Use `(he (.inr (c, s))).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `κ + l + c.val * t + s.val = _`. Rewrite using `[h, mul_comm]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isIx_of_isOrd {κ l r t j a : ℕ} (h : κ + l = r) (ha : a = r + j * t) {e : Ix (Fin κ ⊕ Fin l) (Fin t) j ≃ Fin a}
     (he : GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.zPos e) :
     IsIx ((Equiv.sumCongr (firstOrd h).symm (Equiv.refl (Fin j × Fin t))).trans e) := by
@@ -290,11 +376,21 @@ theorem isIx_of_isOrd {κ l r t j a : ℕ} (h : κ + l = r) (ha : a = r + j * t)
     change κ + l + c.val * t + s.val = _
     rw [h, mul_comm]; omega
 
+/- English proof (translation)
+Use `G.hs` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_first {w : Pl D.host.E} (G : GAt d τ w) : D.R.k + (G.s + 1) = D.R.r := by
   have := G.hs
   unfold Ranks.r
   omega
 
+/- English proof (translation)
+Establish `key : ∀ a b (z : 𝓞 D.host.E), Ideal.Quotient.mk w.asIdeal z = g.val (firstOrd (rank_first G) a) (firstOrd (rank_first G) b) → valuation G.k ((π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype) (M a b) - (ofSplit G.q).pr (z : D.host.E)) < 1` using `fun a b z hz => by`. Establish `h1 : (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype) (Formalism.L2.DIV.oToS D.host.F D.host.E z) = (ofSplit G.q).pr (z : D.host.E)` using `hπ (incA D (z : D.host.E))`. Rewrite using `[← h1, ← RingHom.map_sub, ← hred.ker, RingHom.map_sub, Formalism.L2.DIV.resS_oToS, sub_eq_zero]`. Conclude with `(hz.trans (congrFun (congrFun hM a) b)).symm`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a b`. Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (g.val (firstOrd (rank_first G) a) (firstOrd (rank_first G) b))`. Use `Valuation.map_sub_lt _ (h a b _ _ (firstOrd_val _ a) (firstOrd_val _ b) z hz) (key a b z hz)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Introduce `h a b a' b' ha hb z hz`.
+
+Take `rfl : a' = firstOrd (rank_first G) a` from `Fin.ext (ha.trans (firstOrd_val _ a).symm)`. Take `rfl : b' = firstOrd (rank_first G) b` from `Fin.ext (hb.trans (firstOrd_val _ b).symm)`. Use `Valuation.map_add_lt _ (h a b) (key a b z hz)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.map_apply, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem red_iff {w : Pl D.host.E} (G : GAt d τ w) {π' : EAf D →+* G.k} (hπ : ∀ a, π' (toEAf D a) = G.q.pr a)
     (hred : IsRed (resS D.host.F w) (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype)) (x : G.S.P.J)
     (g : GL (Fin D.R.r) (kP w)) (M : Matrix (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin D.R.k ⊕ Fin (G.s + 1)) (Formalism.L2.Herm.intAf D.host.F D.host.E))

@@ -15,6 +15,9 @@ open scoped Classical
 
 namespace GlobalTheory.SuppP
 
+/- English proof (translation)
+The claim follows from `((presents_divOfRatSec M.isLB hr).isEqn j z hj).mem_supp_iff.1 (CartierDiv.mem_supp_of_mult_ne_zero hz)`.
+-/
 theorem not_unitAt_of_mult_ne_zero {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X]
     [IsLocallyNoetherian X] {q : X ⟶ Sp k} (M : HermLB q) {r : M.B.ι → X.functionFieldˣ} (hr : IsRatSec M.B r) {z : X}
     (hz : (M.div hr).mult z ≠ 0) (j : M.B.ι) (hj : z ∈ M.B.U j) :
@@ -22,6 +25,17 @@ theorem not_unitAt_of_mult_ne_zero {k : Type} [CommRing k] {X : Scheme.{0}} [IsI
   ((presents_divOfRatSec M.isLB hr).isEqn j z hj).mem_supp_iff.1
     (CartierDiv.mem_supp_of_mult_ne_zero hz)
 
+/- English proof (translation)
+Introduce `k _ X _ _ q D hX M r hr p hp hreg z hz`. Establish `hcz : CharZero X.functionField` using `((fnOf (⊤ : X.Opens) (TopologicalSpace.Opens.mem_top _)).charZero_iff (fnOf_injective ⊤ (TopologicalSpace.Opens.mem_top _))).1 hX.charZero`. Establish `key` using `not_unitAt_of_mult_ne_zero M hr hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hz1` using `CartierDiv.coheight_eq_one_of_mult_ne_zero hz`.
+
+Take `⟨i, hi⟩` from `exists_chart M.isLB z`. Establish `hpu : ¬ IsUnit (p : X.presheaf.stalk z)` using `fun h => key i hi ((hreg i z hi).2 h)`. Establish `hp0 : (p : X.presheaf.stalk z) ≠ 0`. Introduce `h0`. Establish `e : (p : X.functionField) = 0`.
+
+Rewrite using `[← map_natCast (algebraMap (X.presheaf.stalk z) X.functionField) p, h0, map_zero]`. Conclude with `Nat.cast_ne_zero.2 hp.ne_zero e`. Rewrite using `[← map_natCast (algebraMap (X.presheaf.stalk z) X.functionField) p, ord_algebraMap hz1 hp0]`. Establish `: Ring.KrullDimLE 1 (X.presheaf.stalk z)` using `krullDimLE_of_coheight_le hz1.le`. Establish `hne : Ring.ord _ (p : X.presheaf.stalk z) ≠ ⊤` using `Ring.ord_ne_top (mem_nonZeroDivisors_of_ne_zero hp0)`.
+
+Establish `hnt : Nontrivial (X.presheaf.stalk z ⧸ Ideal.span {(p : X.presheaf.stalk z)})` using `Ideal.Quotient.nontrivial_iff.2 (fun h => hpu (Ideal.span_singleton_eq_top.1 h))`. Establish `hpos : 0 < Module.length (X.presheaf.stalk z) (X.presheaf.stalk z ⧸ Ideal.span {(p : X.presheaf.stalk z)})` using `Module.length_pos`. Establish `hne' : Module.length (X.presheaf.stalk z) (X.presheaf.stalk z ⧸ Ideal.span {(p : X.presheaf.stalk z)}) ≠ ⊤` using `hne`. Establish `: 0 < (Module.length (X.presheaf.stalk z) (X.presheaf.stalk z ⧸ Ideal.span {(p : X.presheaf.stalk z)})).toNat` using `ENat.toNat_pos hpos.ne' hne'`. Conclude with `this` after adjusting the coercions.
+
+Introduce `Z _ i hi z' j hj hu`. Take `⟨V, hV, hVu⟩` from `hu.exists_nhds`. Establish `hsp : z ⤳ i z'` using `hi ▸ (genericPoint_specializes z').map i.continuous`. Conclude with `key j (hsp.mem_open (M.B.U j).isOpen hj) (hVu z (hsp.mem_open V.isOpen hV))`.
+-/
 theorem suppP : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (q : X ⟶ Sp k) (D : ℕ),
     IsArithVar q D → ∀ (M : HermLB q) (r : M.B.ι → X.functionFieldˣ) (hr : IsRatSec M.B r) (p : ℕ), p.Prime →
     (∀ i, ∀ x ∈ M.B.U i, RegAt x (r i : X.functionField) ∧ (IsUnit (p : X.presheaf.stalk x) → UnitAt x (r i : X.functionField))) →

@@ -15,6 +15,9 @@ namespace LocalResolutionData
 variable {k : Type u} [Field k] {X : Scheme.{u}} {f : X ⟶ Spec (CommRingCat.of k)}
   [LocallyOfFiniteType f] {s : SequenceOfBlowups X}
 
+/- English proof (translation)
+Establish `hsq : CommSq ((d.seq i).lastStructMap) (d.chartToLastObj i) (d.cover.f i) s.lastStructMap` using `⟨(d.chartToLastObj_comp_lastStructMap i).symm⟩`. Establish `h : IsPullback ((d.seq i).lastStructMap) (d.chartToLastObj i) (d.cover.f i) s.lastStructMap` using `IsPullback.of_iso_pullback hsq (d.lastObjIsoPullback i) (d.lastObjIsoPullback_hom_fst i) (d.chartToLastObj_eq i).symm`. Conclude with `h.flip`.
+-/
 theorem isPullback_chartToLastObj (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     IsPullback (d.chartToLastObj i) ((d.seq i).lastStructMap) s.lastStructMap (d.cover.f i) := by
   have hsq : CommSq ((d.seq i).lastStructMap) (d.chartToLastObj i) (d.cover.f i) s.lastStructMap :=
@@ -24,6 +27,15 @@ theorem isPullback_chartToLastObj (d : LocalResolutionData k f s) (i : d.cover.I
       (d.chartToLastObj_eq i).symm
   exact h.flip
 
+/- English proof (translation)
+Establish `hp` using `isPullback_morphismRestrict s.lastStructMap f.smoothLocus`. Establish `hc` using `isPullback_morphismRestrict (d.cover.f i) f.smoothLocus`. Establish `ht` using `isPullback_morphismRestrict ((d.seq i).lastStructMap) (d.cover.f i ⁻¹ᵁ f.smoothLocus)`. Establish `hbig` using `ht.paste_vert (d.isPullback_chartToLastObj i).flip`. Establish `hw : (((d.seq i).lastStructMap ∣_ (d.cover.f i ⁻¹ᵁ f.smoothLocus)) ≫ (d.cover.f i ∣_ f.smoothLocus)) ≫ f.smoothLocus.ι = ((((d.seq i).lastStructMap ⁻¹ᵁ (d.cover.f i ⁻¹ᵁ f.smoothLocus)).ι) ≫ d.chartToLastObj i) ≫ s.lastStructMap`.
+
+Rewrite using `[Category.assoc, hc.w]`. Conclude with `hbig.w`. Establish `hsq : IsPullback ((d.seq i).lastStructMap ∣_ (d.cover.f i ⁻¹ᵁ f.smoothLocus)) (hp.lift _ _ hw) (d.cover.f i ∣_ f.smoothLocus) (s.lastStructMap ∣_ f.smoothLocus)`. Use `IsPullback.of_bot ?_ ?_ hp` and prove the remaining obligations. Rewrite using `[hp.lift_snd, hc.w]`.
+
+Conclude with `hbig`. Rewrite using `[hp.lift_fst]`. Establish `hiso : IsIso ((d.seq i).lastStructMap ∣_ (d.cover.f i ⁻¹ᵁ f.smoothLocus))`. Rewrite using `[d.preimage_smoothLocus_cover_map i]`. Conclude with `(d.isResolution i).2.2.1`.
+
+Establish `hcomp : IsIso (hsq.flip.isoPullback.hom ≫ pullback.snd (s.lastStructMap ∣_ f.smoothLocus) (d.cover.f i ∣_ f.smoothLocus))`. Rewrite using `[hsq.flip.isoPullback_hom_snd]`. Conclude with `hiso`. Conclude with `IsIso.of_isIso_comp_left hsq.flip.isoPullback.hom (pullback.snd (s.lastStructMap ∣_ f.smoothLocus) (d.cover.f i ∣_ f.smoothLocus))`.
+-/
 private theorem isIso_pullback_snd_restrict_smoothLocus (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     IsIso (pullback.snd (s.lastStructMap ∣_ f.smoothLocus) (d.cover.f i ∣_ f.smoothLocus)) := by
   have hp := isPullback_morphismRestrict s.lastStructMap f.smoothLocus
@@ -52,6 +64,13 @@ private theorem isIso_pullback_snd_restrict_smoothLocus (d : LocalResolutionData
   exact IsIso.of_isIso_comp_left hsq.flip.isoPullback.hom
     (pullback.snd (s.lastStructMap ∣_ f.smoothLocus) (d.cover.f i ∣_ f.smoothLocus))
 
+/- English proof (translation)
+Introduce `x`. Establish `hsup : (⨆ i, (d.cover.f i).opensRange) = ⊤` using `d.cover.iSup_opensRange`. Establish `hx : (x.1 : ↥X) ∈ (⨆ i, (d.cover.f i).opensRange : X.Opens)`. Rewrite using `[hsup]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Establish `hi' : (x.1 : ↥X) ∈ Set.range (d.cover.f i).base` using `hi`. Take `⟨y₀, hy₀⟩` from `hi'`. Establish `hmem : y₀ ∈ (d.cover.f i ⁻¹ᵁ f.smoothLocus)` using `by show (d.cover.f i).base y₀ ∈ f.smoothLocus`. Rewrite using `[hy₀]`.
+
+Conclude with `x.2`. Use `⟨i, ⟨y₀, hmem⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrFun (morphismRestrict_base (d.cover.f i) f.smoothLocus) ⟨y₀, hmem⟩`. Use `h2.trans (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `hy₀`.
+-/
 private theorem exists_restrict_smoothLocus_apply_eq (d : LocalResolutionData k f s) :
     ∀ x : ↥(f.smoothLocus.toScheme), ∃ (i : d.cover.I₀)
       (y : ↥((d.cover.f i ⁻¹ᵁ f.smoothLocus).toScheme)),
@@ -81,6 +100,9 @@ private def smoothLocusOpenCover (d : LocalResolutionData k f s) :
     (exists_restrict_smoothLocus_apply_eq d)
     (fun i => show IsOpenImmersion (d.cover.f i ∣_ f.smoothLocus) from inferInstance)
 
+/- English proof (translation)
+Establish `hh : ∀ i : d.cover.I₀, MorphismProperty.isomorphisms Scheme.{u} (Scheme.Cover.pullbackHom (smoothLocusOpenCover d) (s.lastStructMap ∣_ f.smoothLocus) i)`. Introduce `i`. Conclude with `isIso_pullback_snd_restrict_smoothLocus d i`. Establish `key : MorphismProperty.isomorphisms Scheme.{u} (s.lastStructMap ∣_ f.smoothLocus)` using `IsZariskiLocalAtTarget.of_openCover (smoothLocusOpenCover d) hh`. Conclude with `key`.
+-/
 theorem isIso_lastStructMap_restrict_smoothLocus (d : LocalResolutionData k f s) :
     IsIso (s.lastStructMap ∣_ f.smoothLocus) := by
   have hh : ∀ i : d.cover.I₀, MorphismProperty.isomorphisms Scheme.{u}

@@ -19,54 +19,103 @@ namespace GlobalTheory.Cyc.LogClass
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ fun (x : Om l) (hx : x ^ (l ^ s) = 1) => (⟨s, hx⟩ : ∃ j : ℕ, x ^ (l ^ j) = 1)) _`.
+-/
 theorem ks_le_kinf (K : FinExt l) (s : ℕ) : Ks K s ≤ Kinf K :=
   sup_le_sup_left (IntermediateField.adjoin.mono _ _ _ fun (x : Om l) (hx : x ^ (l ^ s) = 1) =>
     (⟨s, hx⟩ : ∃ j : ℕ, x ^ (l ^ j) = 1)) _
 
+/- English proof (translation)
+The claim follows from `IntermediateField.fixingSubgroup_antitone (ks_le_kinf K s)`.
+-/
 theorem hinf_le_gj (K : FinExt l) (s : ℕ) : Hinf K ≤ Gj K s :=
   IntermediateField.fixingSubgroup_antitone (ks_le_kinf K s)
 
+/- English proof (translation)
+The claim follows from `IntermediateField.fixingSubgroup_antitone (show K0 K ≤ Ks K s from le_sup_left)`.
+-/
 theorem gj_le (K : FinExt l) (s : ℕ) : Gj K s ≤ (K0 K).fixingSubgroup :=
   IntermediateField.fixingSubgroup_antitone (show K0 K ≤ Ks K s from le_sup_left)
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `hy`. Rewrite using `[ha.1, (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg x hx]`.
+-/
 theorem act_inC {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (ha : IsActC act)
     {F : IntermediateField ℚ_[l] (Om l)} {g : GQ l} (hg : g ∈ F.fixingSubgroup)
     {y : PadicComplex l} (hy : y ∈ inC F) : act g y = y := by
   obtain ⟨x, hx, rfl⟩ := hy
   rw [ha.1, (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg x hx]
 
+/- English proof (translation)
+The claim follows from `IsScalarTower.algebraMap_apply ℚ_[l] (Om l) (PadicComplex l) q`.
+-/
 theorem algebraMap_eq (q : ℚ_[l]) :
     algebraMap ℚ_[l] (PadicComplex l) q = ((algebraMap ℚ_[l] (Om l) q : Om l) : PadicComplex l) :=
   IsScalarTower.algebraMap_apply ℚ_[l] (Om l) (PadicComplex l) q
 
+/- English proof (translation)
+Rewrite using `[algebraMap_eq, ha.1, AlgEquiv.commutes]`.
+-/
 theorem act_algebraMap {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (ha : IsActC act)
     (g : GQ l) (q : ℚ_[l]) :
     act g (algebraMap ℚ_[l] (PadicComplex l) q) = algebraMap ℚ_[l] (PadicComplex l) q := by
   rw [algebraMap_eq, ha.1, AlgEquiv.commutes]
 
+/- English proof (translation)
+Rewrite using `[algebraMap_eq, PadicComplex.norm_extends, PadicAlgCl.norm_extends]`.
+-/
 theorem norm_algMap (q : ℚ_[l]) : ‖algebraMap ℚ_[l] (PadicComplex l) q‖ = ‖q‖ := by
   rw [algebraMap_eq, PadicComplex.norm_extends, PadicAlgCl.norm_extends]
 
+/- English proof (translation)
+The claim follows from `(AddMonoidHomClass.isometry_of_norm _ norm_algMap).continuous`.
+-/
 theorem continuous_algMap : Continuous (algebraMap ℚ_[l] (PadicComplex l)) :=
   (AddMonoidHomClass.isometry_of_norm _ norm_algMap).continuous
 
+/- English proof (translation)
+Simplify using `only [chiC, map_mul, mul_zpow, Units.val_mul]`.
+-/
 theorem chiC_mul (χ : GQ l →* ℚ_[l]ˣ) (j : ℤ) (g h : GQ l) :
     chiC χ j (g * h) = chiC χ j g * chiC χ j h := by
   simp only [chiC, map_mul, mul_zpow, Units.val_mul]
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicComplex l)), norm_algMap]`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_l_lt : ‖(l : PadicComplex l)‖ < 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (PadicComplex l)), norm_algMap]
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicComplex l)), ← map_pow, norm_algMap]`. Conclude with `Padic.norm_p_pow n`.
+-/
 theorem norm_l_pow (n : ℕ) : ‖(l : PadicComplex l) ^ n‖ = (l : ℝ) ^ (-(n : ℤ)) := by
   rw [← map_natCast (algebraMap ℚ_[l] (PadicComplex l)), ← map_pow, norm_algMap]
   exact Padic.norm_p_pow n
 
+/- English proof (translation)
+Establish `: closure (intC (Kinf K)) ⊆ {y : PadicComplex l | ‖y‖ ≤ 1}` using `closure_minimal (fun _ h => h.2) (isClosed_le continuous_norm continuous_const)`. Conclude with `this hy`.
+-/
 theorem ohat_norm (K : FinExt l) {y : PadicComplex l} (hy : y ∈ Ohat K) : ‖y‖ ≤ 1 := by
   have : closure (intC (Kinf K)) ⊆ {y : PadicComplex l | ‖y‖ ≤ 1} :=
     closure_minimal (fun _ h => h.2) (isClosed_le continuous_norm continuous_const)
   exact this hy
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Use `haveI : NeZero l := ⟨hp.ne_zero⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) l`. Establish `hz' : IsPrimitiveRoot (z : PadicComplex l) l` using `hz.map_of_injective (f := algebraMap (Om l) (PadicComplex l)) (RingHom.injective _)`. Use `⟨z, hz', ⟨z, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `(show _ ≤ Ks K s from le_sup_right)` to reduce the goal to its premises. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_le hs`. Simplify using `[pow_add, pow_mul, hz.pow_eq_one]`. Generalize the expression as in `(z : PadicComplex l) = ζ at hz'`.
+
+Establish `hn : ‖ζ‖ = 1`. Use `congrArg norm hz'.pow_eq_one` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hp.ne_zero).1 this`. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le hp.two_le`.
+
+Establish `hm' : l = (m + 1) + 1` using `by omega`. Establish `h2 : IsPrimitiveRoot ζ ((m + 1) + 1)` using `hm' ▸ hz'`. Establish `h3` using `h2.prod_one_sub_pow_eq_order`. Establish `h4 : (l : PadicComplex l) = ((m + 1 : ℕ) : PadicComplex l) + 1`. Rewrite using `[← Nat.cast_succ]`.
+
+Conclude with `congrArg Nat.cast hm'`. Rewrite using `[h4, ← h3, Finset.prod_range_succ', norm_mul, norm_prod, norm_sub_rev ζ]`. Simplify using `only [zero_add, pow_one]`. Use `mul_le_of_le_one_left (norm_nonneg _) (Finset.prod_le_one (fun _ _ => norm_nonneg _) ?_)` and prove the remaining obligations. Introduce `i _`.
+
+Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans ?_` and prove the remaining obligations. Simplify using `[hn]`.
+-/
 theorem exists_zeta (K : FinExt l) (s : ℕ) (hs : 1 ≤ s) :
     ∃ ζ : PadicComplex l, IsPrimitiveRoot ζ l ∧ ζ ∈ inC (Ks K s) ∧
       ‖(l : PadicComplex l)‖ ≤ ‖ζ - 1‖ := by
@@ -99,6 +148,13 @@ theorem exists_zeta (K : FinExt l) (s : ℕ) (hs : 1 ≤ s) :
     refine (IsUltrametricDist.norm_add_le_max _ _).trans ?_
     simp [hn]
 
+/- English proof (translation)
+Establish `hpow : ∀ a : ℕ, d (γ ^ a) = 0`. Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => simpa using hH 1 H.one_mem`. Consider the case `succ a ih => rw [pow_succ, hd _ (S.pow_mem hγ a) _ hγ, ih, hdγ, hA0, add_zero]`.
+
+Introduce `σ hσ`. Establish `hsub : {x | ∃ h ∈ H, ∃ a : ℕ, x = h * γ ^ a} ⊆ (S : Set G)`. Introduce and unpack `_ ⟨h, hh, a, rfl⟩`. Conclude with `S.mul_mem (hHS hh) (S.pow_mem hγ a)`. Establish `h1` using `((hc σ hσ).mono hsub).mem_closure_image (dense hσ)`.
+
+Establish `h2 : d '' {x | ∃ h ∈ H, ∃ a : ℕ, x = h * γ ^ a} ⊆ {0}`. Introduce and unpack `_ ⟨_, ⟨h, hh, a, rfl⟩, rfl⟩`. Rewrite using `[Set.mem_singleton_iff, hd _ (hHS hh) _ (S.pow_mem hγ a), hH h hh, hpow, hA0, add_zero]`. Conclude with `closure_minimal h2 isClosed_singleton h1`.
+-/
 theorem vanish {G M : Type} [Group G] [TopologicalSpace G] [AddCommGroup M] [TopologicalSpace M]
     [T1Space M] (S H : Subgroup G) (hHS : H ≤ S) (A : G → M → M) (hA0 : ∀ g, A g 0 = 0)
     (d : G → M) (hc : ContinuousOn d S)
@@ -120,20 +176,32 @@ theorem vanish {G M : Type} [Group G] [TopologicalSpace G] [AddCommGroup M] [Top
     rw [Set.mem_singleton_iff, hd _ (hHS hh) _ (S.pow_mem hγ a), hH h hh, hpow, hA0, add_zero]
   exact closure_minimal h2 isClosed_singleton h1
 
+/- English proof (translation)
+Rewrite using `[chiC, norm_algMap, Units.val_zpow_eq_zpow_val, norm_zpow, (GlobalTheory.Cyc.cyc_basic l χ hχ).1, one_zpow]`.
+-/
 theorem norm_chiC {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (j : ℤ) (g : GQ l) : ‖chiC χ j g‖ = 1 := by
   rw [chiC, norm_algMap, Units.val_zpow_eq_zpow_val, norm_zpow, (GlobalTheory.Cyc.cyc_basic l χ hχ).1,
     one_zpow]
 
+/- English proof (translation)
+Unfold `chiC`. Use `continuous_algMap.comp ?_` and prove the remaining obligations. Simplify using `only [Units.val_zpow_eq_zpow_val]`. Conclude with `(GlobalTheory.Cyc.cyc_basic l χ hχ).2.1.zpow₀ j fun g => Or.inl (Units.ne_zero _)`.
+-/
 theorem continuous_chiC {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (j : ℤ) : Continuous (chiC χ j) := by
   unfold chiC
   refine continuous_algMap.comp ?_
   simp only [Units.val_zpow_eq_zpow_val]
   exact (GlobalTheory.Cyc.cyc_basic l χ hχ).2.1.zpow₀ j fun g => Or.inl (Units.ne_zero _)
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.Cyc.cyc_basic l χ hχ).2.2 K h (gj_le K 0 (hinf_le_gj K 0 hh))).2.1 hh`.
+-/
 theorem chi_hinf {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (K : FinExt l) {h : GQ l} (hh : h ∈ Hinf K) :
     χ h = 1 :=
   ((GlobalTheory.Cyc.cyc_basic l χ hχ).2.2 K h (gj_le K 0 (hinf_le_gj K 0 hh))).2.1 hh
 
+/- English proof (translation)
+Establish `h1 : g⁻¹ * h * g ∈ Gj K s` using `(Gj K s).mul_mem ((Gj K s).mul_mem ((Gj K s).inv_mem hg) (hinf_le_gj K s hh)) hg`. Use `((GlobalTheory.Cyc.cyc_basic l χ hχ).2.2 K _ (gj_le K s h1)).2.2 ?_` and prove the remaining obligations. Simplify using `[chi_hinf hχ K hh]`.
+-/
 theorem conj_hinf {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (K : FinExt l) (s : ℕ) {g h : GQ l}
     (hg : g ∈ Gj K s) (hh : h ∈ Hinf K) : g⁻¹ * h * g ∈ Hinf K := by
   have h1 : g⁻¹ * h * g ∈ Gj K s :=
@@ -141,6 +209,17 @@ theorem conj_hinf {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (K : FinExt l) (s 
   refine ((GlobalTheory.Cyc.cyc_basic l χ hχ).2.2 K _ (gj_le K s h1)).2.2 ?_
   simp [chi_hinf hχ K hh]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuousOn_const.mul hc.1).sub (((continuous_chiC hχ j).mul (GlobalTheory.Cyc.IsActC.continuous_orbit l act ha x)).sub continuous_const).continuousOn`. Introduce `g hg`. Establish `h1 : ‖c g‖ ≤ 1` using `hc.2.1 g hg`. Establish `h2 : ‖(l : PadicComplex l) ^ n * c g‖ ≤ 1`.
+
+Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) norm_l_lt.le) (norm_nonneg _) h1`. Establish `h3 : ‖chiC χ j g * act g x‖ ≤ 1`. Rewrite using `[norm_mul, norm_chiC hχ, ha.2, one_mul]`. Conclude with `hx`.
+
+Establish `sub : ∀ a b : PadicComplex l, ‖a‖ ≤ 1 → ‖b‖ ≤ 1 → ‖a - b‖ ≤ 1`. Introduce `a b h h'`. Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_neg]`.
+
+Conclude with `max_le h h'`. Conclude with `sub _ _ h2 (sub _ _ h3 hx)`. Introduce `g hg h hh`. Establish `hfix : act g (chiC χ j h) = chiC χ j h` using `act_algebraMap ha g _`. Use `hc.2.2 g hg h hh` as an intermediate fact.
+
+Simplify using `only at this ⊢`. Rewrite using `[this, chiC_mul]`. Simplify using `only [map_mul, map_sub, map_pow, map_natCast, hfix, RingAut.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem modify {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : GQ l →* ℚ_[l]ˣ}
     (ha : IsActC act) (hχ : IsCyc χ) (S : Subgroup (GQ l)) (j : ℤ) (n : ℕ)
     (c : GQ l → PadicComplex l)
@@ -172,13 +251,24 @@ theorem modify {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : GQ 
     simp only [map_mul, map_sub, map_pow, map_natCast, hfix, RingAut.mul_apply]
     ring
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_inC_iff (F : IntermediateField ℚ_[l] (Om l)) (y : PadicComplex l) :
     y ∈ inC F ↔ y ∈ F.toSubfield.map (algebraMap (Om l) (PadicComplex l)) := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨algebraMap ℚ_[l] (Om l) u, F.algebraMap_mem u, rfl⟩`.
+-/
 theorem algebraMap_mem_inC (F : IntermediateField ℚ_[l] (Om l)) (u : ℚ_[l]) :
     algebraMap ℚ_[l] (PadicComplex l) u ∈ inC F :=
   ⟨algebraMap ℚ_[l] (Om l) u, F.algebraMap_mem u, rfl⟩
 
+/- English proof (translation)
+Establish `hl : ‖(l : PadicComplex l)‖ < 1`. Establish `h1 : ‖algebraMap ℚ_[l] (PadicComplex l) (l : ℚ_[l])‖ = ‖(l : ℚ_[l])‖` using `norm_algebraMap' _ _`. Rewrite `h1` using `[map_natCast]`. Rewrite using `[h1]`. Conclude with `Padic.norm_p_lt_one`.
+
+Establish `h` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hl).mul_const ‖y‖`. Rewrite `h` using `[zero_mul]`. Take `⟨n, hn⟩` from `(h.eventually (ge_mem_nhds (zero_lt_one' ℝ))).exists`. Conclude with `⟨n, by rwa [norm_mul, norm_pow]⟩`.
+-/
 theorem exists_scale (y : PadicComplex l) : ∃ n : ℕ, ‖(l : PadicComplex l) ^ n * y‖ ≤ 1 := by
   have hl : ‖(l : PadicComplex l)‖ < 1 := by
     have h1 : ‖algebraMap ℚ_[l] (PadicComplex l) (l : ℚ_[l])‖ = ‖(l : ℚ_[l])‖ := norm_algebraMap' _ _
@@ -193,12 +283,18 @@ theorem exists_scale (y : PadicComplex l) : ∃ n : ℕ, ‖(l : PadicComplex l)
 def logC (χ : GQ l →* ℚ_[l]ˣ) (σ : GQ l) : PadicComplex l :=
   algebraMap ℚ_[l] (PadicComplex l) (logZl l (χ σ : ℚ_[l]))
 
+/- English proof (translation)
+Establish `hn` using `(GlobalTheory.Cyc.cyc_basic l χ hχ).1`. Rewrite using `[logC, map_mul, Units.val_mul, (GlobalTheory.PadicLogUnits.logZl_hom l).1 _ _ (hn g) (hn h), map_add]`. Both sides reduce to the same expression.
+-/
 theorem logC_mul {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (g h : GQ l) :
     logC χ (g * h) = logC χ g + logC χ h := by
   have hn := (GlobalTheory.Cyc.cyc_basic l χ hχ).1
   rw [logC, map_mul, Units.val_mul, (GlobalTheory.PadicLogUnits.logZl_hom l).1 _ _ (hn g) (hn h), map_add]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `logC_mul hχ 1 1`. Rewrite `h1` using `[mul_one]`. Establish `h2 : logC χ h = logC χ 1` using `by rw [logC, logC, chi_hinf hχ K hh, map_one χ]`. Rewrite using `[h2]`. Take the linear combination `-h1`.
+-/
 theorem logC_hinf {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (K : FinExt l) {h : GQ l}
     (hh : h ∈ Hinf K) : logC χ h = 0 := by
   have h1 := logC_mul hχ 1 1
@@ -207,23 +303,64 @@ theorem logC_hinf {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) (K : FinExt l) {h 
   rw [h2]
   linear_combination -h1
 
+/- English proof (translation)
+The claim follows from `continuous_algMap.comp ((GlobalTheory.PadicLogUnits.logZl_hom l).2.1.comp_continuous (GlobalTheory.Cyc.cyc_basic l χ hχ).2.1 (GlobalTheory.Cyc.cyc_basic l χ hχ).1)`.
+-/
 theorem continuous_logC {χ : GQ l →* ℚ_[l]ˣ} (hχ : IsCyc χ) : Continuous (logC χ) :=
   continuous_algMap.comp ((GlobalTheory.PadicLogUnits.logZl_hom l).2.1.comp_continuous
     (GlobalTheory.Cyc.cyc_basic l χ hχ).2.1 (GlobalTheory.Cyc.cyc_basic l χ hχ).1)
 
+/- English proof (translation)
+Rewrite using `[logC, norm_algMap, (GlobalTheory.PadicLogUnits.logZl_hom l).2.2.2 s hs.1 hs.2 _ hγ.2.le, hγ.2]`.
+-/
 theorem norm_logC {χ : GQ l →* ℚ_[l]ˣ} {K : FinExt l} {s : ℕ} (hs : Lev l s) {γ : GQ l}
     (hγ : IsGen χ K s γ) : ‖logC χ γ‖ = (l : ℝ) ^ (-(s : ℤ)) := by
   rw [logC, norm_algMap, (GlobalTheory.PadicLogUnits.logZl_hom l).2.2.2 s hs.1 hs.2 _ hγ.2.le,
     hγ.2]
 
+/- English proof (translation)
+Rewrite using `[← norm_ne_zero_iff, norm_logC hs hγ]`. Conclude with `(zpow_pos (Nat.cast_pos.mpr (Fact.out : l.Prime).pos : (0 : ℝ) < l) _).ne'`.
+-/
 theorem logC_ne_zero {χ : GQ l →* ℚ_[l]ˣ} {K : FinExt l} {s : ℕ} (hs : Lev l s) {γ : GQ l}
     (hγ : IsGen χ K s γ) : logC χ γ ≠ 0 := by
   rw [← norm_ne_zero_iff, norm_logC hs hγ]
   exact (zpow_pos (Nat.cast_pos.mpr (Fact.out : l.Prime).pos : (0 : ℝ) < l) _).ne'
 
+/- English proof (translation)
+The claim follows from `algebraMap_mem_inC F _`.
+-/
 theorem logC_mem (χ : GQ l →* ℚ_[l]ˣ) (F : IntermediateField ℚ_[l] (Om l)) (σ : GQ l) :
     logC χ σ ∈ inC F := algebraMap_mem_inC F _
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `hle` using `hinf_le_gj K s`. Establish `hl0 : (l : PadicComplex l) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hlR : (0 : ℝ) < l` using `by exact_mod_cast hp.pos`. Take `⟨x, hx, hx2⟩` from `GlobalTheory.T.cyclotomic_tate_maximalIdeal_kills_first_cohomology l act ha K 1 (l : PadicComplex l) ⟨l, natCast_mem (Kinf K) l, by simp⟩ norm_l_lt (fun g _ => c g) ⟨continuousOn_pi.2 fun _ => hc.1.mono hle, fun g hg _ => hc.2.1 g (hle hg), fun g hg h hh => by`.
+
+Use function extensionality and compare the values at `k`. Conclude with `hc.2.2 g (hle hg) h (hle hh)⟩`. Establish `hx3 : ∀ h ∈ Hinf K, (l : PadicComplex l) * c h = act h (x 0) - x 0` using `fun h hh => by`. Simplify using `using congrFun (hx2 h hh) 0`. Establish `hc1 : CocOn (Gj K s) (fun g y => act g y) {y | ‖y‖ ≤ 1} (fun g => (l : PadicComplex l) * c g - (act g (x 0) - x 0))`.
+
+Use `modify ha hχ (Gj K s) 0 1 c (by simpa [chiC] using hc) (x 0) (hx 0)` as an intermediate fact. Simplify `this` using `[chiC]`. Use `set c1 : GQ l → PadicComplex l := fun g => (l : PadicComplex l) * c g - (act g (x 0) - x 0) with hc1def`. Establish `hc1H : ∀ h ∈ Hinf K, c1 h = 0` using `fun h hh => by`. Simplify using `only [hc1def, hx3 h hh, sub_self]`.
+
+Take `⟨⟨γ, hγ⟩, hgen⟩` from `GlobalTheory.T.exists_cyclotomicTowerLevelGenerator_properties l act χ ha hχ K s hs`. Establish `hO : c1 γ ∈ Ohat K`. Use `(GlobalTheory.T.cyclotomicTower_fixed_iff_mem_completedIntegers l act ha K _ (hc1.2.1 γ hγ.1)).1 fun h hh => ?_` and prove the remaining obligations. Establish `hconj` using `conj_hinf hχ K s hγ.1 hh`. Establish `e1` using `hc1.2.2 h (hle hh) γ hγ.1`.
+
+Establish `e2` using `hc1.2.2 γ hγ.1 _ (hle hconj)`. Establish `e3 : γ * (γ⁻¹ * h * γ) = h * γ` using `by group`. Rewrite `e2` using `[e3, e1, hc1H h hh, hc1H _ hconj]`. Simplify using `using e2`. Take `⟨T1a, -, T1c, -⟩` from `GlobalTheory.T.tate_decomposition_completed_cyclotomic_integers l act χ ha hχ K s hs.1`.
+
+Take `⟨y, hy, w, hw, hyw⟩` from `T1a _ hO`. Take `⟨ζ, hζ, hζK, -⟩` from `exists_zeta K s hs.1`. Establish `hζ0 : ζ - 1 ≠ 0` using `sub_ne_zero.2 (hζ.ne_one hp.one_lt)`. Take `⟨S, hS, -⟩` from `GlobalTheory.T.exists_tate_operator_levelComplement l act χ ha hχ K s hs γ hγ ζ hζ`. Take `⟨hv, hv2, -⟩` from `hS w hw`.
+
+Establish `hvO` using `T1c _ hv`. Establish `hz : ∀ g ∈ Gj K s, act g (S w / (ζ - 1)) = act g (S w) / (ζ - 1)` using `fun g hg => by`. Rewrite using `[map_div₀, map_sub, map_one, act_inC ha hg hζK]`. Establish `hL0` using `logC_ne_zero hs hγ`. Establish `hβ : y / logC χ γ ∈ inC (Ks K s)`.
+
+Rewrite using `[mem_inC_iff]`. Conclude with `Subfield.div_mem _ hy.1 (logC_mem χ _ γ)`. Establish `key` using `vanish (Gj K s) (Hinf K) hle (fun g y => act g y) (fun g => by simp) (fun g => c1 g - logC χ g * (y / logC χ γ) - (act g (S w / (ζ - 1)) - S w / (ζ - 1))) ((hc1.1.sub ((continuous_logC hχ).mul continuous_const).continuousOn).sub ((GlobalTheory.Cyc.IsActC.continuous_orbit l act ha …`. Establish `h1` using `hc1.2.2 g hg h hh`. Establish `h2 : act g (logC χ h) = logC χ h` using `act_algebraMap ha g _`.
+
+Establish `h3` using `act_inC ha hg hβ`. Generalize the expression as in `S w / (ζ - 1) = z`. Generalize the expression as in `y / logC χ γ = β at h3 ⊢`. Use `clear_value c1`. Simplify using `only [h1, logC_mul hχ, map_sub, map_mul, h2, h3, RingAut.mul_apply]`.
+
+Use the proof step `ring)`. Use `γ hγ.1 (hgen γ hγ).2.2`. Use the proof step `(fun h hh => by`. Rewrite using `[hc1H h hh, logC_hinf hχ K hh, hz h (hle hh), (GlobalTheory.T.cyclotomicTower_fixed_iff_mem_completedIntegers l act ha K _ (ohat_norm K hvO)).2 hvO h hh]`. Use the proof step `ring)`.
+
+Use the proof step `(by`. Rewrite using `[hz γ hγ.1, ← sub_div, hv2, hyw, mul_div_cancel₀ _ hL0, mul_div_cancel_left₀ _ hζ0]`. Use the proof step `ring)`. Use `⟨y / logC χ γ / l, ?_, ?_, (x 0 + S w / (ζ - 1)) / l, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_inC_iff]`.
+
+Conclude with `Subfield.div_mem _ hβ (natCast_mem _ l)`. Establish `h1` using `norm_l_pow (l := l) 1`. Rewrite `h1` using `[pow_one]`. Rewrite using `[norm_div, norm_div, norm_logC hs hγ, h1, zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, div_inv_eq_mul, div_inv_eq_mul, mul_assoc, ← pow_add, add_comm s 1]`. Conclude with `mul_le_of_le_one_left (by positivity) hy.2`.
+
+Use `key σ hσ` as an intermediate fact. Simplify using `only [hc1def] at this`. Rewrite using `[map_div₀ (act σ) _ (l : PadicComplex l), map_natCast, map_add]`. Generalize the expression as in `S w / (ζ - 1) = z at this ⊢`. Generalize the expression as in `y / logC χ γ = β at this ⊢`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `this`.
+-/
 theorem exists_coeff {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : GQ l →* ℚ_[l]ˣ}
     (ha : IsActC act) (hχ : IsCyc χ) (K : FinExt l) (s : ℕ) (hs : Lev l s)
     (c : GQ l → PadicComplex l) (hc : CocOn (Gj K s) (fun g y => act g y) {y | ‖y‖ ≤ 1} c) :
@@ -308,6 +445,15 @@ theorem exists_coeff {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ
     field_simp
     linear_combination this
 
+/- English proof (translation)
+Establish `hl0 : (l : PadicComplex l) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Take `⟨⟨γ, hγ⟩, -⟩` from `GlobalTheory.T.exists_cyclotomicTowerLevelGenerator_properties l act χ ha hχ K s hs`. Take `⟨T1a, T1b, -, -, T1e, -⟩` from `GlobalTheory.T.tate_decomposition_completed_cyclotomic_integers l act χ ha hχ K s hs.1`. Take `⟨n, hn⟩` from `exists_scale b`. Establish `hO : (l : PadicComplex l) ^ n * b ∈ Ohat K`.
+
+Use `(GlobalTheory.T.cyclotomicTower_fixed_iff_mem_completedIntegers l act ha K _ hn).1 fun h hh => ?_` and prove the remaining obligations. Use `hb h (hinf_le_gj K s hh)` as an intermediate fact. Rewrite `this` using `[logC_hinf hχ K hh, zero_mul, eq_comm, sub_eq_zero]`. Rewrite using `[map_mul, map_pow, map_natCast, this]`. Take `⟨y, hy, x, hx, hyx⟩` from `T1a _ hO`.
+
+Establish `h1` using `congrArg (act γ) hyx`. Rewrite `h1` using `[map_mul, map_pow, map_natCast, map_add, act_inC ha hγ.1 hy.1]`. Establish `h2 : logC χ γ * α = 0`. Use `T1b _ ?_ _ ((Xj K s).sub_mem (T1e γ (gj_le K s hγ.1) x hx) hx) n ?_` and prove the remaining obligations. Rewrite using `[mem_inC_iff]`.
+
+Conclude with `Subfield.mul_mem _ (logC_mem χ _ γ) hα`. Rewrite using `[hb γ hγ.1]`. Take the linear combination `h1 - hyx`. Conclude with `(mul_eq_zero.1 h2).resolve_left (logC_ne_zero hs hγ)`.
+-/
 theorem coeff_eq_zero {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : GQ l →* ℚ_[l]ˣ}
     (ha : IsActC act) (hχ : IsCyc χ) (K : FinExt l) (s : ℕ) (hs : Lev l s)
     (α : PadicComplex l) (hα : α ∈ inC (Ks K s)) (b : PadicComplex l)
@@ -332,6 +478,9 @@ theorem coeff_eq_zero {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {�
       linear_combination h1 - hyx
   exact (mul_eq_zero.1 h2).resolve_left (logC_ne_zero hs hγ)
 
+/- English proof (translation)
+Introduce `_ _ _ _ ha hχ K s hs` and use `⟨fun c hc => exists_coeff ha hχ K s hs c hc, fun α hα b hb => coeff_eq_zero ha hχ K s hs α hα b hb⟩`.
+-/
 theorem image_H1_logChi : ∀ (l : ℕ) [Fact l.Prime] (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ), IsActC act → IsCyc χ → ∀ (K : FinExt l), ∀ s : ℕ, Lev l s → (∀ c : GQ l → PadicComplex l, CocOn (Gj K s) (fun g y => act g y) {y | ‖y‖ ≤ 1} c → ∃ α ∈ inC (Ks K s), ‖α‖ ≤ (l : ℝ) ^ (1 + s) ∧ ∃ b : PadicComplex l, ∀ σ ∈ Gj K s, c σ = algebraMap ℚ_[l] (PadicComplex l) (logZl l (χ σ : ℚ_[l])) * α + (act σ b - b)) ∧ ∀ α ∈ inC (Ks K s), ∀ b : PadicComplex l, (∀ σ ∈ Gj K s, algebraMap ℚ_[l] (PadicComplex l) (logZl l (χ σ : ℚ_[l])) * α = act σ b - b) → α = 0 :=
   fun _ _ _ _ ha hχ K s hs =>
     ⟨fun c hc => exists_coeff ha hχ K s hs c hc, fun α hα b hb => coeff_eq_zero ha hχ K s hs α hα b hb⟩

@@ -24,6 +24,29 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨N₀, hN₀⟩` from `Opn.exists_depth_step hc hJ S P v hv`. Substitute `hJ` using the available equality. Establish `hd : ∀ (N : ℕ) (z : GL (Fin n) (AfE F E)), GlobalTheory.TwU.CongAt P N z ↔ ∀ r s, Valued.v (adAt F P (z.1 r s) - (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) ≤ WithZero.exp (-(N : ℤ))` using `fun N z => forall_congr' fun r => forall_congr' fun s => AdelicValuationDictionary.entry_iff P hq N z r s`. Establish `hu : P.under (𝓞 F) = v` using `HeightOneSpectrum.ext (Eq.symm hv)`. Establish `hover : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → w = P ∨ w = conjPrime₂ P` using `fun w hw => rll_over_cases hc hv (show IsOver v w from (congrArg HeightOneSpectrum.asIdeal hw).symm)`.
+
+Use `haveI : CharZero (P.adicCompletion E) := algebraRat.charZero _`. Use `set c : P.adicCompletion E := ((qOf P : ℕ) : P.adicCompletion E) ^ (N₀ + 1) with hcdef`. Establish `hcv : Valued.v c = WithZero.exp (-((N₀ : ℤ) + 1))`. Rewrite using `[hcdef, map_pow, hq, ← WithZero.exp_nsmul]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Establish `hc1 : Valued.v c < 1`. Rewrite using `[hcv, ← WithZero.exp_zero]; exact WithZero.exp_lt_exp.2 (by omega)`. Establish `hn1 : Valued.v (m : P.adicCompletion E) ≤ 1` using `GlobalTheory.MatNthRoot.v_natCast_le_one m`. Establish `hε : Valued.v ((m : P.adicCompletion E) ^ 2 * c) ≠ 0`.
+
+Rewrite using `[map_mul, hcv]`. Use `mul_ne_zero ?_ WithZero.exp_ne_zero` and prove the remaining obligations. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 hm.ne')`. Use `set e := WithZero.log (Valued.v ((m : P.adicCompletion E) ^ 2 * c)) with he`.
+
+Use `⟨(-e).toNat, fun x hxv w hw hxw => ?_⟩` and prove the remaining obligations. Establish `hxP : ∀ r s, adAt F P (x.1.1 r s) = adAt F P (w.1 r s)` using `fun r s => by`. Establish `h` using `congrArg (fun g : GL (Fin n) _ => g.1 r s) hxw`. Use `LocSplice.adAt_eq_of_prV P ?_` and prove the remaining obligations. Rewrite using `[hu]`.
+
+Conclude with `h`. Establish `hwP` using `(hd (-e).toNat w).1 hw`. Establish `hA : ∀ r s, Valued.v (adAt F P (x.1.1 r s) - (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) ≤ Valued.v ((m : P.adicCompletion E) ^ 2 * c)` using `fun r s => by`. Rewrite using `[hxP]`. Use `(hwP r s).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← WithZero.exp_log hε, ← he]`. Conclude with `WithZero.exp_le_exp.2 (by omega)`. Set `x' : GL (Fin n) (AfE F E)` to `x.1`. Take `⟨Mu, hMun, hMu1⟩` from `SplitChi.exists_root_GL P n m hm c hc1 (Matrix.GeneralLinearGroup.map (adAt F P) x') hA`. Take `⟨z, hzU, hz1, hzP⟩` from `AdLift.exists_unitary (F := F) hc hne Mu`.
+
+Establish `hzv : ∀ v', v' ≠ v → bc (prV (E` using `E) v') z = 1 := fun v' hv' => AdPlace.bc_prV_eq_one_of_adAt F E n v' z fun w hw => hz1 w (fun e => hv' (by rw [← hw, e, hu])) fun e => hv' (by rw [← hw, e, hcj, hu])`. Establish `hz : z ∈ S.U` using `hN₀ z hzU hzv ((hd N₀ z).2 fun r s => by`. Rewrite using `[hzP]`. Use `(hMu1 r s).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, hcv]`.
+
+Conclude with `(mul_le_of_le_one_left' hn1).trans (WithZero.exp_le_exp.2 (by omega)))`. Establish `hgU : (z ^ m)⁻¹ * x.1 ∈ S.U` using `Subgroup.mul_mem _ (Subgroup.inv_mem _ (Subgroup.pow_mem _ hz m)) x.2`. Establish `hyU` using `((S.U_eq _).1 hgU).1`. Establish `hzmap : Matrix.GeneralLinearGroup.map (adAt F P) z = Mu` using `Units.ext (Matrix.ext hzP)`. Establish `key : Matrix.GeneralLinearGroup.map (adAt F P) ((z ^ m)⁻¹ * x') = 1`.
+
+Rewrite using `[map_mul, map_inv, map_pow, hzmap, hMun, inv_mul_cancel]`. Establish `hyP : ∀ r s, adAt F P (((z ^ m)⁻¹ * x.1).1 r s) = (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s` using `fun r s => congrArg (fun g : GL (Fin n) (P.adicCompletion E) => g.1 r s) key`. Establish `hyv : ∀ v', bc (prV (E` using `E) v') ((z ^ m)⁻¹ * x.1) = 1 := by`. Introduce `v'`. Distinguish the cases in `hv' : v' = v`.
+
+Rewrite using `[hv']`. Conclude with `SplitChi.bc_prV_eq_one_of_split hc rfl hyU P v hover hyP`. Conclude with `SplitChi.map_inv_pow_mul_eq_one _ m (hzv v' hv') (hxv v' hv')`. Conclude with `SplitChi.chi_eq_one_of_pow S.chi x ⟨z, hz⟩ m (hchi _) (S.chi_triv _ fun v' _ => hyv v')`.
+-/
 theorem chi_deep (hc : CMData F E) {n T f : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : J = 1) {bad : Set (HeightOneSpectrum (𝓞 F))}
     (S : StepLevel F E hc.sig J T f bad) (m : ℕ) (hm : 0 < m) (hchi : ∀ κ : S.U, S.chi κ ^ m = 1) (P : HeightOneSpectrum (𝓞 E))
     (hne : conjPrime₂ P ≠ P) (hcj : (conjPrime₂ P).under (𝓞 F) = P.under (𝓞 F))
@@ -106,6 +129,17 @@ variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨n, hn, hfin⟩` from `hfin`. Take `⟨-, gP, -, -⟩` from `GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z`. Set `Vs : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))` to `{v | ∃ P : SBof I a, IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1)}`. Establish `hVs : Vs.Finite`. Establish `e : Vs = ⋃ P : SBof I a, {v | IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1)}`.
+
+Use extensionality with `v`. Simplify using `[Vs]`. Rewrite using `[e]`. Use `Set.finite_iUnion fun P => Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `v hv w hw`.
+
+Conclude with `HeightOneSpectrum.ext (hv.trans hw.symm)`. Establish `hb : ∀ v ∈ bad, v ∈ Vs` using `fun v hv => by`. Take `⟨P, h1, h2⟩` from `exists_SBof_over I hI l Z a v (hbad v hv)`. Conclude with `⟨⟨P, h1⟩, h2⟩`. Use `GlobalTheory.ChiCont.main (F := (I.rec7 l Z).host.F) (E := (I.rec7 l Z).host.E) (sigD (I.rec7 l Z)) (gramP (I.rec7 l Z)) 1 (I.rec7 l Z).R.f bad S Vs hVs hb ?_` and prove the remaining obligations.
+
+Introduce and unpack `v ⟨P, hv⟩`. Take `⟨hs, hq, -⟩` from `AdelicValuationDictionary.main I hI l Z a 0 0 P 1`. Rewrite `hv` using `[hs]`. Establish `hne : conjPrime₂ P.1 ≠ P.1` using `fun e => GlobalTheory.Proof.NarrowJetMoments.conjP_notMem_rowSG (base_fields_primes_ok B X).1 (base_fields_primes_ok B X).2.1 hI.sel_ok hI.g_mem P.2 (by rw [e]; exact P.2)`. Take `⟨N, hN⟩` from `chi_deep (I.rec7 l Z).sp.cm gP S n hn hfin P.1 hne ((under_eq_iff B.host P.1 _).2 (Or.inr rfl)) hq v hv`.
+
+Establish `h2` using `GlobalTheory.TwU.NearOne.congAt_eventually_nhds_one (F := (I.rec7 l Z).host.F) (E := (I.rec7 l Z).host.E) ((I.rec7 l Z).R.N (I.rec7 l Z).R.m - 1) N (GlobalTheory.TwU.seamP (sm I l Z) P.1)`. Rewrite `h2` using `[hs]`. Conclude with `h2.mono fun w hw x hx hxw => hN x hx w hw hxw`.
+-/
 theorem chi_near_one (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι)
     {bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))}
     (S : StepLevel (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (gramP (I.rec7 l Z)) 1 (I.rec7 l Z).R.f bad)
@@ -141,6 +175,11 @@ theorem chi_near_one (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B
   rw [hs] at h2
   exact h2.mono fun w hw x hx hxw => hN x hx w hw hxw
 
+/- English proof (translation)
+Establish `hq` using `GlobalTheory.Mem.ReadTwist.mem_qprime_iff (hI.xi_reads a) v`. Establish `hab : ∀ w : HeightOneSpectrum (𝓞 B.host.E), w ∈ Formalism.L2.Host.aboveF (L` using `B.host.E) B.host.F v ↔ w.under (𝓞 B.host.F) = v := fun w => by`. Unfold `Formalism.L2.Host.aboveF`. Rewrite using `[Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+
+Take `⟨w, hw, hu⟩` from `h`. Establish `hv` using `hq.2 ⟨w, (hab w).1 hw, hu⟩`. Conclude with `⟨I.sel v, (_root_.Formalism.L2.Col.mem_QE I.sel (I.tup a) _).2 ⟨v, hv, rfl⟩, GlobalTheory.TwistPlaces.under_eq_iff.2 (hI.sel_ok v)⟩`.
+-/
 theorem underQ_of_ram {I : TC B X} (hI : I.Ok) (a : I.ι) (v : HeightOneSpectrum (𝓞 B.host.F))
     (h : ∃ w ∈ Formalism.L2.Host.aboveF (L := B.host.E) B.host.F v, ¬ (I.xi a).UnrAt w) : I.UnderQ a v := by
   have hq := GlobalTheory.Mem.ReadTwist.mem_qprime_iff (hI.xi_reads a) v
@@ -153,6 +192,9 @@ theorem underQ_of_ram {I : TC B X} (hI : I.Ok) (a : I.ι) (v : HeightOneSpectrum
   have hv := hq.2 ⟨w, (hab w).1 hw, hu⟩
   exact ⟨I.sel v, (_root_.Formalism.L2.Col.mem_QE I.sel (I.tup a) _).2 ⟨v, hv, rfl⟩, GlobalTheory.TwistPlaces.under_eq_iff.2 (hI.sel_ok v)⟩
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (x : 𝓞 E ⧸ P.asIdeal)`. Establish `h0 : (b : E) ≠ 0` using `fun e => by`. Establish `: b = 0` using `by exact_mod_cast e`. Conclude with `x.ne_zero (by rw [← hb, this, map_zero])`. Conclude with `⟨b, Units.mk0 _ h0, rfl, hb.symm⟩`.
+-/
 theorem exists_rep {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (x : (𝓞 E ⧸ P.asIdeal)ˣ) :
     ∃ (b : 𝓞 E) (k : Eˣ), (k : E) = b ∧ (x : 𝓞 E ⧸ P.asIdeal) = Ideal.Quotient.mk P.asIdeal b := by
   obtain ⟨b, hb⟩ := Ideal.Quotient.mk_surjective (x : 𝓞 E ⧸ P.asIdeal)
@@ -172,6 +214,25 @@ def LevRead (l : I.Laws) (Z : TC.Later B (I.cols l)) {T : Type} (L : LevCh (I.re
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `t ht bad S y lat st hbad hfin hK`. Establish `hchi` using `hL.chi`. Establish `hxiR` using `hL.xiR t`. Rewrite `hxiR` using `[hxi, hQ]`. Simplify using `only [hC] at hchi`.
+
+Rewrite using `[hβ, hQ]`. Use `clear hL hC hxi hQ hβ`. Take `⟨C, xiH, mu0, eta, xi, Pg, Q, chi, xiR, ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW⟩` from `L`. Simplify using `only at hPg hchi hxiR eG hG ⊢`. Substitute `hPg` using the available equality.
+
+Take `rfl : eG = MulEquiv.refl _` from `MulEquiv.ext fun g => funext fun w => hG g w.1 w.2 w.2`. Set `cg : ℕ → ∀ PP : Pl (I.rec7 l Z).host.E, (kP PP)ˣ →* ℂˣ` to `fun c PP => if c ≤ B.R.m then chi c PP else 1`. Establish `key` using `GlobalTheory.SeeSaw.TwLev.levIs_reads_tw I hI hP l Z (tup t) ht S (chi_near_one I hI hP l Z (tup t) S hbad hfin) hK (levPOf (D := I.rec7 l Z) (MulEquiv.refl (R3.Gc B X)) B.embLL (R3.lev1 I) (R3.chr1 I)) (fun g => ⟨fun h w => h w (Set.mem_univ w), fun h w _ => h w⟩) (fun g hg => b …`. Use `(congrArg (fun x : B.LLˣ => B.embLL (x : B.LL)) (LevFam.chr_apply (X := B.fields) I.Ps ⟨g.1, g.2⟩)).trans ?_` and prove the remaining obligations. Rewrite using `[Units.coe_prod, map_prod])`.
+
+Use `cg`. Use the proof step `(fun c w x => by`. Distinguish the cases in `hc : c < B.R.m`. Take `⟨b, k, h1, h2⟩` from `exists_rep w.1 x`. Establish `e1 : cg (c + 1) w.1 = chi (c + 1) w.1` using `if_pos hc`.
+
+Establish `e2 : chiAt I.Ch w c = I.Ch.chi ⟨c, hc⟩ w` using `dif_pos hc`. Establish `e3` using `hchi ⟨c, hc⟩ w.1 w.2 b k x h1 h2`. Establish `e4` using `(hI.ch_tied.mu0 ⟨c, hc⟩).atg w k b x h1 h2`. Establish `e5` using `(congrArg (fun z : ℂˣ => (z : ℂ)) e3).trans e4`. Rewrite using `[e1, e2]`.
+
+Use `inv_injective ?_` and prove the remaining obligations. Conclude with `(Units.val_inv_eq_inv_val _).symm.trans (e5.trans ((congrArg B.embLL (Units.val_inv_eq_inv_val _)).trans (map_inv₀ _ _)))`. Establish `e1 : cg (c + 1) w.1 = 1` using `if_neg hc`. Establish `e2 : chiAt I.Ch w c = 1` using `dif_neg hc`. Rewrite using `[e1, e2]`.
+
+Conclude with `(map_one B.embLL).symm)`. Use the proof step `(xiR t)`. Use the proof step `(fun PP hPP x => by`. Take `⟨b, k, h1, h2⟩` from `exists_rep PP x`. Establish `e1` using `hxiR PP hPP b k x h1 h2`.
+
+Establish `e2` using `GlobalTheory.NormOneUnit.resChar_eq (hI.xi_reads (tup t)) (GlobalTheory.Mem.ReadTwist.tameAt (hI.xi_reads (tup t)) fun v => Subgroup.mem_iInf.1 (I.tup (tup t)).2.1.2 v) PP x b k h1 h2.symm`. Conclude with `(congrArg (fun z : ℂˣ => (z : ℂ)) e1).trans e2.symm)`. Use the proof step `(r_le_X (D := I.rec7 l Z))`. Use `⟨key.1, fun h κ hκ => Eq.trans ?_ (key.2 h κ hκ)⟩` and prove the remaining obligations. Use `congrArg (fun z : ℂˣ => (z : ℂ)) (congrArg₂ (· * ·) (congrArg₂ (· * ·) rfl ?_) rfl)` and prove the remaining obligations.
+
+Use `Finset.prod_congr rfl fun PP _ => Finset.prod_congr rfl fun c hc => ?_` and prove the remaining obligations. Establish `e1 : cg (c + 1) PP = chi (c + 1) PP` using `if_pos (Finset.mem_range.1 hc)`. Conclude with `congrArg (fun f : (kP PP)ˣ →* ℂˣ => f _) e1.symm`.
+-/
 theorem levRead_of (hI : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {T : Type} (L : LevCh (I.rec7 l Z) T)
     (μ0 : T) (hL : L.Is μ0) (hC : ∀ j, L.C.mu0 j = I.C.mu0 j) (tup : T → I.ι) (hxi : ∀ t, L.xiH t = I.xi (tup t))
     (hPg : L.Pg = (B.primes X).vGs) (hQ : ∀ t, L.Q t = I.Q (tup t)) (hβ : L.βX = 1)
@@ -237,6 +298,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `levRead_of w.I w.ok w.pins w.l Z t.r.z.R.toLevCh _ t.r.z.lev.is (fun j => congrArg (fun C => C.mu0 j) t.r.z.lev.C) t.r.Y.tup (fun s => (t.r.z.lev.xiH s).trans (congrArg w.I.xi (t.r.tup_ix s).symm)) t.r.z.lev.Pg (fun s => (t.r.z.lev.Q s).trans (congrArg w.I.Q (t.r.tup_ix s).symm)) …`.
+-/
 theorem levRead_rows (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Top.Fr B.toPre) (T : TwDat B) (w : Bl.ColW B f T) (Z : w.Lt)
     (Wt : Set B.places.Pl) (p0 : BaseLevelRowSide (w.D Z)) (t : Bl.RowsT K w Z Wt p0) :
     LevRead w.I w.l Z t.r.z.R.toLevCh (t.r.z.R.toRealDat.levR t.r.z.F.lv2 true) t.r.Y.tup :=
@@ -246,6 +310,11 @@ theorem levRead_rows (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Top.Fr B.toPre) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `h` using `levRead_rows K B f T w Z Wt ex.p0 t`. Consider the cases of `a with`. Consider the case `mk Dc Sp Zsc lam err lam_eq x pack intersectionNumber_baseChange hκ hv hfw htup htupT hjA hjA0 heMt hPY hPW heFT hIL heE heW hjW heRR`. Consider the cases of `x with`. Consider the case `mk G Pl0 I0 T' A3 core R F cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH`.
+
+Consider the cases of `pack`. Establish `hT' : Y.tup = t.r.Y.tup` using `eq_of_heq htup`. Rewrite `h` using `[← hT']`. Conclude with `(h)`.
+-/
 theorem levRead_twArgs (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Top.Fr B.toPre) (T : TwDat B) (w : Bl.ColW B f T) (Z : w.Lt)
     (Wt : Set B.places.Pl) (L : SizeData₂ (w.st Z).toD7) (hT : GatTies (w.st Z).toD7) (Gi : G.Inst (w.st Z).toD7 L)
     (Gl : G.LatInst (w.st Z).toD7) (Kc : G.Consts) (Yd : DivX (w.st Z).toD7) (cX : ExtraC)
@@ -263,6 +332,11 @@ theorem levRead_twArgs (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Top.Fr B.toPre
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨x, a, ax, y, -⟩` from `hw`. Establish `hx : a.x = x` using `eq_of_heq ax`. Establish `h0` using `levRead_twArgs _ _ _ _ q.w q.Z _ _ _ _ _ _ _ _ _ _ a`. Establish `h1 : LevRead q.w.I q.w.l q.Z x.R.toLevCh (x.R.toRealDat.levR x.F.lv2 true) x.Y.tup`. Substitute `hx` using the available equality.
+
+Conclude with `h0`. Establish `h2 : (fun k : Bl.RPk b.R b.S => LevRead q.w.I q.w.l q.Z k.B.Q.Rl.toRealDat.toLevCh (k.B.Q.Rl.toRealDat.levR k.B.Q.F.lv2 true) k.P.I.tup) (Bl.rpkB b)`. Rewrite using `[y.eq]`. Conclude with `h1`. Conclude with `h2`.
+-/
 theorem levRead_of_bWit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : Bundle (q.w.D q.Z) q.O c) (hw : Bl.BWit q b) :
     LevRead q.w.I q.w.l q.Z (pk (packB b)).toLevCh (lvP (packB b)) (packB b).P.I.tup := by
@@ -280,6 +354,11 @@ theorem levRead_of_bWit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.P
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hxi : b.R.T.n.tp.xi = q.w.I.xi` using `(congrArg (fun s => s.2.xi) hw.recPin.s.chr).trans q.x.n.xi`. Take `⟨l0, s, he, hs, -, -, hP⟩` from `(colsStd_of_bWit q b hw).2.2.2.2`. Establish `key : ∀ (Tw : TwForms (q.w.D q.Z)) (s' : Formalism.L2.Forms.SymmetricTwistedColumnsAtPrimes b.R.T.n.tp b.R.T.cols Tw), Tw = TC.tw q.w.I q.w.l l0 q.Z → HEq s' s → LevIs (s'.pt.cls u ((packB b).P.I.tup t) h).lev (levS _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t)) (l …`. Introduce and unpack `_ s' rfl rfl`. Use `levRead_of_bWit q b hw t h _ _ _ _ _ (fun v hv => hv.imp id fun hv => ?_) (s'.pt.chi_fin u _ h) (hP.what₂ u _ h)` and prove the remaining obligations.
+
+Establish `h1` using `(s'.ch.Q_iff _ v).1 hv`. Unfold `Formalism.L2.Host.TupTied.InQ' at h1`. Rewrite `h1` using `[hxi]`. Conclude with `underQ_of_ram q.w.ok _ v h1`. Conclude with `key _ _ he hs`.
+-/
 theorem levIs_of_bWit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : Bundle (q.w.D q.Z) q.O c) (hw : Bl.BWit q b) (u : (q.w.D q.Z).what₂.Word) (t : (packB b).P.T)
     (h : (packB b).P.I.tup t ≠ (q.w.D q.Z).what₂.mu0) :
@@ -300,6 +379,9 @@ theorem levIs_of_bWit {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm
     exact underQ_of_ram q.w.ok _ v h1
   exact key _ _ he hs
 
+/- English proof (translation)
+Introduce `q _ b hw u t h g κ hm` and use `(levIs_of_bWit q b hw u t h).2 g κ hm`.
+-/
 theorem levChi_of_bWit : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → ∀ (u : (q.w.D q.Z).what₂.Word) (t : (packB b).P.T) (h : (packB b).P.I.tup t ≠ (q.w.D q.Z).what₂.mu0) (g : GA (q.w.D q.Z) (q.w.D q.Z).sp.X') (κ : ((packB b).R.T.tw.pt.cls u ((packB b).P.I.tup t) h).lev.U), GlobalTheory.Core.Rk.Top.HasMat g κ.1 → (levChi _ (pk (packB b)).βX (datXP (pk (packB b)) (lvP (packB b)) t)) g = star ((((packB b).R.T.tw.pt.cls u ((packB b).P.I.tup t) h).lev.chi κ : ℂˣ) : ℂ) :=
   fun q _ b hw u t h g κ hm => (levIs_of_bWit q b hw u t h).2 g κ hm
 

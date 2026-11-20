@@ -13,6 +13,11 @@ section Iter
 
 variable {X : Type*} [MeasurableSpace X] (μ : Measure X) [SFinite μ]
 
+/- English proof (translation)
+Rewrite using `[integral_prod _ hf]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hf.prod_right_ae] with x hx`. Rewrite using `[integral_prod _ hx]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hx.prod_right_ae] with y hy`. Conclude with `integral_prod _ hy`.
+-/
 theorem int4 (f : X × X × X × X → ℂ) (hf : Integrable f (μ.prod (μ.prod (μ.prod μ)))) :
     ∫ q, f q ∂(μ.prod (μ.prod (μ.prod μ))) = ∫ x, ∫ y, ∫ z, ∫ w, f (x, y, z, w) ∂μ ∂μ ∂μ ∂μ := by
   rw [integral_prod _ hf]
@@ -33,19 +38,40 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 def ent (a b d c : F) : Fin 2 × Fin 2 → F :=
   fun ij => (!![a, b; d, c] : Matrix (Fin 2) (Fin 2) F) ij.1 ij.2
 
+/- English proof (translation)
+Simplify using `[ent]`.
+-/
 @[simp] theorem ent_00 (a b d c : F) : ent a b d c (0, 0) = a := by simp [ent]
+/- English proof (translation)
+Simplify using `[ent]`.
+-/
 @[simp] theorem ent_01 (a b d c : F) : ent a b d c (0, 1) = b := by simp [ent]
+/- English proof (translation)
+Simplify using `[ent]`.
+-/
 @[simp] theorem ent_10 (a b d c : F) : ent a b d c (1, 0) = d := by simp [ent]
+/- English proof (translation)
+Simplify using `[ent]`.
+-/
 @[simp] theorem ent_11 (a b d c : F) : ent a b d c (1, 1) = c := by simp [ent]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [toM]`.
+-/
 theorem toM_ent (a b d c : F) : toM (ent a b d c) = !![a, b; d, c] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [toM]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨i, j⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 theorem ent_eta (X : Fin 2 × Fin 2 → F) : ent (X (0, 0)) (X (0, 1)) (X (1, 0)) (X (1, 1)) = X := by
   funext ⟨i, j⟩
   fin_cases i <;> fin_cases j <;> simp
 
+/- English proof (translation)
+Use `measurable_pi_iff.mpr fun ij => ?_` and prove the remaining obligations. Take `⟨i, j⟩` from `ij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp only [Fin.zero_eta, Fin.mk_one, Fin.isValue, ent_00, ent_01, ent_10, ent_11] <;> fun_prop`.
+-/
 theorem measurable_ent : Measurable fun q : F × F × F × F => ent q.1 q.2.1 q.2.2.1 q.2.2.2 := by
   refine measurable_pi_iff.mpr fun ij => ?_
   obtain ⟨i, j⟩ := ij
@@ -73,6 +99,13 @@ def eqB : (F × F × F × F) ≃ᵐ (Fin 2 × Fin 2 → F) where
     change Measurable fun X : Fin 2 × Fin 2 → F => (X (1, 1), X (1, 0), X (0, 1), X (0, 0))
     fun_prop
 
+/- English proof (translation)
+Use `⟨eqA.measurable, ?_⟩` and prove the remaining obligations. Use `symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[eqA.map_apply]`. Establish `: (eqA (F` using `F)) ⁻¹' Set.univ.pi s = s (1, 1) ×ˢ s (0, 0) ×ˢ s (0, 1) ×ˢ s (1, 0) := by`.
+
+Use extensionality with `⟨c, a, b, d⟩`. Simplify using `[eqA, Set.mem_pi, Prod.forall, Fin.forall_fin_two]`. The claim follows by propositional logic. Rewrite using `[this]`. Simplify using `only [Measure.prod_prod]`.
+
+Rewrite using `[Fintype.prod_prod_type]`. Simplify using `only [Fin.prod_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mpA (ψ : AddChar F Circle) : MeasurePreserving (eqA (F := F))
     (selfDualMeasure ψ |>.prod (selfDualMeasure ψ |>.prod (selfDualMeasure ψ |>.prod (selfDualMeasure ψ)))) (mM ψ) := by
   refine ⟨eqA.measurable, ?_⟩
@@ -89,6 +122,13 @@ theorem mpA (ψ : AddChar F Circle) : MeasurePreserving (eqA (F := F))
   simp only [Fin.prod_univ_two]
   ring
 
+/- English proof (translation)
+Use `⟨eqB.measurable, ?_⟩` and prove the remaining obligations. Use `symm`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[eqB.map_apply]`. Establish `: (eqB (F` using `F)) ⁻¹' Set.univ.pi s = s (1, 1) ×ˢ s (1, 0) ×ˢ s (0, 1) ×ˢ s (0, 0) := by`.
+
+Use extensionality with `⟨c, d, b, a⟩`. Simplify using `[eqB, Set.mem_pi, Prod.forall, Fin.forall_fin_two]`. The claim follows by propositional logic. Rewrite using `[this]`. Simplify using `only [Measure.prod_prod]`.
+
+Rewrite using `[Fintype.prod_prod_type]`. Simplify using `only [Fin.prod_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mpB (ψ : AddChar F Circle) : MeasurePreserving (eqB (F := F))
     (selfDualMeasure ψ |>.prod (selfDualMeasure ψ |>.prod (selfDualMeasure ψ |>.prod (selfDualMeasure ψ)))) (mM ψ) := by
   refine ⟨eqB.measurable, ?_⟩
@@ -105,12 +145,18 @@ theorem mpB (ψ : AddChar F Circle) : MeasurePreserving (eqB (F := F))
   simp only [Fin.prod_univ_two]
   ring
 
+/- English proof (translation)
+Rewrite using `[← (mpA ψ).integral_comp' g]`. Conclude with `int4 _ _ (((mpA ψ).integrable_comp_emb eqA.measurableEmbedding).mpr hg)`.
+-/
 theorem iterA (ψ : AddChar F Circle) (g : (Fin 2 × Fin 2 → F) → ℂ) (hg : Integrable g (mM ψ)) :
     ∫ X, g X ∂mM ψ = ∫ c, ∫ a, ∫ b, ∫ d, g (ent a b d c)
       ∂selfDualMeasure ψ ∂selfDualMeasure ψ ∂selfDualMeasure ψ ∂selfDualMeasure ψ := by
   rw [← (mpA ψ).integral_comp' g]
   exact int4 _ _ (((mpA ψ).integrable_comp_emb eqA.measurableEmbedding).mpr hg)
 
+/- English proof (translation)
+Rewrite using `[← (mpB ψ).integral_comp' g]`. Conclude with `int4 _ _ (((mpB ψ).integrable_comp_emb eqB.measurableEmbedding).mpr hg)`.
+-/
 theorem iterB (ψ : AddChar F Circle) (g : (Fin 2 × Fin 2 → F) → ℂ) (hg : Integrable g (mM ψ)) :
     ∫ X, g X ∂mM ψ = ∫ c, ∫ d, ∫ b, ∫ a, g (ent a b d c)
       ∂selfDualMeasure ψ ∂selfDualMeasure ψ ∂selfDualMeasure ψ ∂selfDualMeasure ψ := by
@@ -133,10 +179,18 @@ def nH (t : F) : Matrix (Fin 2) (Fin 2) F ≃ₜ Matrix (Fin 2) (Fin 2) F where
   continuous_toFun := continuous_const.matrix_mul continuous_id
   continuous_invFun := continuous_const.matrix_mul continuous_id
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hp.1.comp_continuous (nH t).continuous, hp.2.comp_homeomorph (nH t)⟩`.
+-/
 theorem schwartz_bruhat_unipotent_shift {p : Matrix (Fin 2) (Fin 2) F → ℂ} (hp : SB2 p) (t : F) :
     SB2 fun M => p ((uni2 (-t)).val * M) :=
   ⟨hp.1.comp_continuous (nH t).continuous, hp.2.comp_homeomorph (nH t)⟩
 
+/- English proof (translation)
+Establish `hc : Continuous fun X : Fin 2 × Fin 2 → F => p (toM X)` using `hp.1.continuous.comp (toMH (F := F)).continuous`. Establish `hs : HasCompactSupport fun X : Fin 2 × Fin 2 → F => p (toM X)` using `hp.2.comp_homeomorph (toMH (F := F))`. Use `haveI : IsFiniteMeasureOnCompacts (mM ψ) := by`. Unfold `mM`. Use `infer_instance`.
+
+Conclude with `(hc.mul hχ).integrable_of_hasCompactSupport hs.mul_right`.
+-/
 theorem integrable_sb (ψ : AddChar F Circle) {p : Matrix (Fin 2) (Fin 2) F → ℂ} (hp : SB2 p)
     {χ : (Fin 2 × Fin 2 → F) → ℂ} (hχ : Continuous χ) :
     Integrable (fun X => p (toM X) * χ X) (mM ψ) := by
@@ -149,6 +203,15 @@ theorem integrable_sb (ψ : AddChar F Circle) {p : Matrix (Fin 2) (Fin 2) F → 
     infer_instance
   exact (hc.mul hχ).integrable_of_hasCompactSupport hs.mul_right
 
+/- English proof (translation)
+Use `⟨(IsLocallyConstant.iff_eventually_eq _).mpr fun c₀ => ?_, ?_⟩` and prove the remaining obligations. Establish `hinv` using `GlobalTheory.LocFlat.PartialFourier.eventually_add_invariant (X := Matrix (Fin 2) (Fin 2) F) (f := p) ⟨hp.1, hp.2⟩`. Establish `hcont : Continuous fun c : F => (!![0, 0; 0, c - c₀] : Matrix (Fin 2) (Fin 2) F)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`.
+
+Establish `h2 : Filter.Tendsto (fun c : F => (!![0, 0; 0, c - c₀] : Matrix (Fin 2) (Fin 2) F)) (𝓝 c₀) (𝓝 0)`. Establish `h0 : (!![0, 0; 0, c₀ - c₀] : Matrix (Fin 2) (Fin 2) F) = 0`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Simplify `hcont.tendsto c₀` using `only [h0]`.
+
+Use `filter_upwards [h2.eventually hinv] with c hc`. Establish `key : ∀ a b d, p !![a, b; d, c] = p !![a, b; d, c₀]` using `fun a b d => by`. Rewrite using `[← hc !![a, b; d, c₀]]`. Use `congr 1`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Simplify using `only [rr, key]`. Use `HasCompactSupport.intro (K := (fun M : Matrix (Fin 2) (Fin 2) F => M 1 1) '' tsupport p) (hp.2.image (by fun_prop)) fun c hc => ?_` and prove the remaining obligations. Establish `h0 : ∀ a b d, p !![a, b; d, c] = 0` using `fun a b d => image_eq_zero_of_notMem_tsupport fun h => hc ⟨_, h, by simp⟩`. Simplify using `[rr, h0]`.
+-/
 theorem rr_mem (ψ : AddChar F Circle) {p : Matrix (Fin 2) (Fin 2) F → ℂ} (hp : SB2 p) :
     rr ψ p ∈ schwartzBruhat F := by
   refine ⟨(IsLocallyConstant.iff_eventually_eq _).mpr fun c₀ => ?_, ?_⟩
@@ -176,11 +239,25 @@ theorem rr_mem (ψ : AddChar F Circle) {p : Matrix (Fin 2) (Fin 2) F → ℂ} (h
       image_eq_zero_of_notMem_tsupport fun h => hc ⟨_, h, by simp⟩
     simp [rr, h0]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+-/
 theorem uni2_mul_uni2_eq_uni2_add (t a b d c : F) :
     (uni2 (-t)).val * !![a, b; d, c] = !![a - t * d, b - t * c; d, c] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
+/- English proof (translation)
+Establish `hψc : Continuous fun x : F => (ψ x : ℂ)` using `continuous_subtype_val.comp hψ`. Establish `hχ₀ : Continuous fun X : Fin 2 × Fin 2 → F => (ψ (-(X (0, 1) + X (1, 0))) : ℂ)` using `hψc.comp (by fun_prop)`. Establish `hχ₁ : Continuous fun X : Fin 2 × Fin 2 → F => (ψ (X (1, 1) * -t) : ℂ)` using `hψc.comp (by fun_prop)`. Establish `h₀` using `integrable_sb ψ (schwartz_bruhat_unipotent_shift hp t) hχ₀`. Establish `hχ₂ : Continuous fun X : Fin 2 × Fin 2 → F => (ψ (-(X (0, 1) + X (1, 0))) : ℂ) * (ψ (X (1, 1) * -t) : ℂ)` using `hχ₀.mul hχ₁`.
+
+Establish `h₁` using `integrable_sb ψ hp hχ₂`. Establish `e₀ : Rpart ψ (fun M => p ((uni2 (-t)).val * M)) = ∫ X, p (toM X) * ((ψ (-(X (0, 1) + X (1, 0))) : ℂ) * (ψ (X (1, 1) * -t) : ℂ)) ∂mM ψ`. Rewrite using `[Rpart, iterB ψ _ h₀, iterB ψ _ h₁]`. Use `integral_congr_ae (.of_forall fun c => ?_)` and prove the remaining obligations. Use `integral_congr_ae (.of_forall fun d => ?_)` and prove the remaining obligations.
+
+Simplify using `only [ent_01, ent_10, ent_11, toM_ent, uni2_mul_uni2_eq_uni2_add]`. Establish `s₁ : ∀ b, ∫ a, p !![a - t * d, b - t * c; d, c] * (ψ (-(b + d)) : ℂ) ∂selfDualMeasure ψ = ∫ a, p !![a, b - t * c; d, c] * (ψ (-(b + d)) : ℂ) ∂selfDualMeasure ψ` using `fun b => integral_sub_right_eq_self (fun a => p !![a, b - t * c; d, c] * (ψ (-(b + d)) : ℂ)) (t * d)`. Simplify using `only [s₁]`. Rewrite using `[← integral_sub_right_eq_self (μ := selfDualMeasure ψ) (fun b => ∫ a, p !![a, b; d, c] * ((ψ (-(b + d)) : ℂ) * (ψ (c * -t) : ℂ)) ∂selfDualMeasure ψ) (t * c)]`. Use `integral_congr_ae (.of_forall fun b => ?_)` and prove the remaining obligations.
+
+Use `integral_congr_ae (.of_forall fun a => ?_)` and prove the remaining obligations. Establish `hk : (ψ (-(b + d)) : ℂ) = (ψ (-(b - t * c + d)) : ℂ) * (ψ (c * -t) : ℂ)`. Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only`. Rewrite using `[hk]`. Rewrite using `[e₀, iterA ψ _ h₁]`. Simplify using `only [ent_01, ent_10, ent_11, toM_ent, localFourier, rr, ← integral_mul_const, mul_assoc]`.
+-/
 theorem Rpart_shift (ψ : AddChar F Circle) (hψ : Continuous ψ) {p : Matrix (Fin 2) (Fin 2) F → ℂ}
     (hp : SB2 p) (t : F) :
     Rpart ψ (fun M => p ((uni2 (-t)).val * M)) =
@@ -219,6 +296,11 @@ theorem Rpart_shift (ψ : AddChar F Circle) (hψ : Continuous ψ) {p : Matrix (F
 
 end D
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hs p hp`. Take `⟨hc, h1, -⟩` from `hs`. Establish `hinv` using `localFourier_localFourier_selfDual hc h1 (rr_mem ψ hp) (-1)`. Rewrite `hinv` using `[neg_neg]`. Rewrite using `[← hinv]`.
+
+Simplify using `only [Rpart_shift ψ hc hp]`. Use `integral_neg_eq_self (fun t => localFourier (selfDualMeasure ψ) ψ (rr ψ p) t * (ψ (t * -1) : ℂ)) (selfDualMeasure ψ)` as an intermediate fact. Rewrite using `[show localFourier (selfDualMeasure ψ) ψ (localFourier (selfDualMeasure ψ) ψ (rr ψ p)) (-1) = ∫ t, localFourier (selfDualMeasure ψ) ψ (rr ψ p) t * (ψ (t * -1) : ℂ) ∂selfDualMeasure ψ from rfl, ← this]`. Use `integral_congr_ae (.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[mul_comm]`.
+-/
 theorem integral_Rpart_shift : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ p : Matrix (Fin 2) (Fin 2) F → ℂ, SB2 p → ∫ t, (ψ t : ℂ) * Rpart ψ (fun M => p ((uni2 (-t)).val * M)) ∂selfDualMeasure ψ = rr ψ p 1 := by
   intro F _ _ _ _ _ _ ψ hs p hp
   obtain ⟨hc, h1, -⟩ := hs

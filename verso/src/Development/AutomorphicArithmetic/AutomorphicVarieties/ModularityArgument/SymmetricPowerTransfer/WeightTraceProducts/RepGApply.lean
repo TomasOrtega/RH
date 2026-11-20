@@ -19,9 +19,15 @@ def invT (R : Type) [CommRing R] (d : ℕ) : GL (Fin d) R →* GL (Fin d) R wher
   map_one' := Units.ext (by simp)
   map_mul' g h := Units.ext (by simp only [Units.val_mul, mul_inv_rev, Matrix.transpose_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem invT_val {R : Type} [CommRing R] {d : ℕ} (g : GL (Fin d) R) :
     (invT R d g : Matrix (Fin d) (Fin d) R) = ((g⁻¹ : GL (Fin d) R) : Matrix (Fin d) (Fin d) R)ᵀ := rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.transpose_transpose _)`.
+-/
 theorem invT_invT {R : Type} [CommRing R] {d : ℕ} (g : GL (Fin d) R) : invT R d (invT R d g) = g :=
   Units.ext (Matrix.transpose_transpose _)
 
@@ -35,6 +41,9 @@ def act (g : K → GL (Fin d) ℂ) (x : K × Fin d → ℂ) : K × Fin d → ℂ
 def sbs (g : K → GL (Fin d) ℂ) : MvPolynomial (K × Fin d) ℂ →ₐ[ℂ] MvPolynomial (K × Fin d) ℂ :=
   aeval fun p => ∑ j, X (p.1, j) * C ((g p.1 : Matrix (Fin d) (Fin d) ℂ) j p.2)
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [sbs]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]`. Simplify using `[sbs, act]`.
+-/
 theorem eval_sbs (g : K → GL (Fin d) ℂ) (x : K × Fin d → ℂ) (P : MvPolynomial (K × Fin d) ℂ) :
     eval x (sbs g P) = eval (act g x) P := by
   induction P using MvPolynomial.induction_on with
@@ -42,9 +51,15 @@ theorem eval_sbs (g : K → GL (Fin d) ℂ) (x : K × Fin d → ℂ) (P : MvPoly
   | add p q hp hq => simp [hp, hq]
   | mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]; simp [sbs, act]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Take `⟨v, i⟩` from `p`. Simplify using `[act, Matrix.one_apply]`.
+-/
 theorem act_one (x : K × Fin d → ℂ) : act 1 x = x := by
   funext p; obtain ⟨v, i⟩ := p; simp [act, Matrix.one_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [act, Pi.mul_apply, Units.val_mul, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem act_mul (g h : K → GL (Fin d) ℂ) (x : K × Fin d → ℂ) : act (g * h) x = act h (act g x) := by
   funext p
   simp only [act, Pi.mul_apply, Units.val_mul, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]
@@ -60,6 +75,9 @@ def MH (n : K → ℕ) : Submodule ℂ (MvPolynomial (K × Fin d) ℂ) where
   zero_mem' s x := by simp
   smul_mem' c P h s x := by rw [smul_eval, smul_eval, h]; ring
 
+/- English proof (translation)
+Introduce `s x`. Rewrite using `[eval_sbs, eval_sbs, ← h]`. Use `congr 2`. Use function extensionality and compare the values at `p`. Simplify using `[act, Finset.mul_sum, mul_assoc]`.
+-/
 theorem sbs_mem {n : K → ℕ} (g : K → GL (Fin d) ℂ) {P : MvPolynomial (K × Fin d) ℂ} (h : P ∈ MH d n) : sbs g P ∈ MH d n := by
   intro s x
   rw [eval_sbs, eval_sbs, ← h]
@@ -80,6 +98,9 @@ def mRep (n : K → ℕ) : Representation ℂ (K → GL (Fin d) ℂ) (MH d n) wh
     change eval x (sbs (g * h) P.1) = eval x (sbs g (sbs h P.1))
     rw [eval_sbs, eval_sbs, eval_sbs, act_mul]
 
+/- English proof (translation)
+The claim follows from `eval_sbs g x P.1`.
+-/
 theorem eval_mRep (n : K → ℕ) (g : K → GL (Fin d) ℂ) (P : MH d n) (x : K × Fin d → ℂ) :
     eval x (mRep d n g P).1 = eval (act g x) P.1 := eval_sbs g x P.1
 
@@ -110,6 +131,11 @@ variable (d) in
 
 def biRep (n : I → ℕ) : Representation ℂ (I → GL (Fin d) ℂ) (Bi d n) := (mRep d _).comp (dbl d)
 
+/- English proof (translation)
+Introduce `s x`. Rewrite using `[eval_rename, eval_rename]`. Use `h (fun k => s (k.1, !k.2)) (x ∘ flip I d)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Simplify using `[Fintype.prod_prod_type, mul_comm]`.
+-/
 theorem flip_mem {n : I → ℕ} {P : MvPolynomial ((I × Bool) × Fin d) ℂ} (h : P ∈ Bi d n) : rename (flip I d) P ∈ Bi d n := by
   intro s x
   rw [eval_rename, eval_rename]
@@ -141,8 +167,14 @@ variable (I) in
 
 def thG (j : ℕ) : Module.End ℂ (VG I j) := LinearMap.pi fun S => (sg S • swp 3 (dg j S)).comp (LinearMap.proj S)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem repG_apply (j : ℕ) (g : I → GL (Fin 3) ℂ) (P : VG I j) (S : I → Bool) : repG I j g P S = biRep 3 (dg j S) g (P S) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thG_apply (j : ℕ) (P : VG I j) (S : I → Bool) : thG I j P S = sg S • swp 3 (dg j S) (P S) := rfl
 
 end Bi
@@ -165,6 +197,9 @@ def repD (I : Type) [Fintype I] (n : ℕ) (e : ℤ) : Representation ℂ (I → 
   map_one' := by simp
   map_mul' g h := by rw [map_mul, map_mul, Units.val_mul, smul_mul_smul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem repD_apply (I : Type) [Fintype I] (n : ℕ) (e : ℤ) (g : I → GL (Fin 2) ℂ) :
     repD I n e g = (detE 2 e g : ℂ) • mRep 2 _ g := rfl
 
@@ -173,6 +208,9 @@ def WD {R I : Type} [CommRing R] [Fintype I] (em : I → R →+* ℂ) (n : ℕ) 
 
 def chi {R I : Type} [CommRing R] [Fintype I] (em : I → R →+* ℂ) (j : ℕ) (τ : R) : ℂ := ∏ w, hq (em w τ) 1 j
 
+/- English proof (translation)
+Introduce `s x` and use `by simp`.
+-/
 example : (1 : MvPolynomial (Unit × Fin 2) ℂ) ∈ MH 2 (fun _ : Unit => 0) := fun s x => by simp
 
 end UpperTheory.V.Z.Sym.Wt

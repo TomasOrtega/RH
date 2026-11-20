@@ -20,6 +20,15 @@ noncomputable section
 
 namespace GlobalTheory.MixDensOff
 
+/- English proof (translation)
+Introduce `k _ X p σ D ρ`. Use `set K : Set (CxPts p σ) := ⋃ c : AlgChart p σ D, c.e.source with hKdef`. Establish `hK : MeasurableSet K` using `(isOpen_iUnion fun c : AlgChart p σ D => c.e.open_source).measurableSet`. Establish `hN : {y | ∀ c : AlgChart p σ D, y ∉ c.e.source} = Kᶜ`. Use extensionality with `y`.
+
+Simplify using `[hKdef]`. Rewrite using `[hN]`. Establish `key : part ρ ≤ (part ρ).restrict K` using `iSup_le fun c => by`. Establish `e : ChartGlue.chartMeas c.e (fun y => ENNReal.ofReal (ρ c y)) Kᶜ = 0`. Rewrite using `[ChartGlue.chartMeas_apply _ _ hK.compl]`.
+
+Establish `h0 : c.e.source ∩ Kᶜ = ∅`. Use extensionality with `y`. Simplify using `only [Set.mem_inter_iff, Set.mem_compl_iff, Set.mem_empty_iff_false, iff_false, not_and, not_not]`. Introduce `hy`. Conclude with `Set.mem_iUnion.2 ⟨c, hy⟩`.
+
+Rewrite using `[h0, Set.image_empty, Measure.restrict_empty, lintegral_zero_measure]`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem (s := K) (mem_ae_iff.2 e)]`. Conclude with `Measure.restrict_mono le_rfl (le_iSup (fun c : AlgChart p σ D => ChartGlue.chartMeas c.e fun y => ENNReal.ofReal (ρ c y)) c)`. Use `le_antisymm ((key Kᶜ).trans_eq ?_) bot_le` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply hK.compl, Set.compl_inter_self, measure_empty]`.
+-/
 theorem part_off_sources_eq_zero : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ)
     (ρ : AlgChart p σ D → CxPts p σ → ℝ), part ρ {y | ∀ c : AlgChart p σ D, y ∉ c.e.source} = 0 := by
   intro k _ X p σ D ρ

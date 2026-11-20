@@ -10,6 +10,9 @@ open scoped Formalism.Per NNReal
 open Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ExpandCoeff.coeff_eq_zero_of_roots | exact GlobalTheory.ExpandCoeff.coeff_eq_zero_of_roots | (intros; apply GlobalTheory.ExpandCoeff.coeff_eq_zero_of_roots <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.coeff_eq_zero_of_roots_contain_lth_roots_conjugates : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (E : Polynomial (Wq l a)), E.Monic →
     Irreducible (E.map (GlobalTheory.TameFrob.iota l a)) → ∀ z : Om l, z ≠ 0 →
     (∀ z' : Om l, Polynomial.aeval z' (minpoly (↥(Kunr l a)) z) = 0 → ∀ y : Om l, y ^ l = z' →

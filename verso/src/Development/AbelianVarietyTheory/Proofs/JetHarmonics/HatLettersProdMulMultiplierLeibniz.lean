@@ -8,6 +8,11 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDeca
 namespace GlobalTheory.HatNF
 
 open MeasureTheory in
+/- English proof (translation)
+Establish `hν : Function.Injective (fun i : Fin (r + 2) => ((i : ℕ) : ℂ))` using `fun i j hij => Fin.ext (by simpa using hij)`. Establish `hspan` using `(_root_.GlobalTheory.vecPoly_mem_span_values A (r + 2) Z Xc _ hν hZ).1`. Establish `hcoef : ∀ j : Fin (r + 2), ∃ c : Fin (r + 2) → ℂ, ∑ i, c i • Z ((i : ℕ) : ℂ) = Xc j` using `fun j => (Submodule.mem_span_range_iff_exists_fun ℂ).mp (hspan j j.2)`. Use `choose d hd using hcoef`. Use `⟨d, fun i => Z ((i : ℕ) : ℂ), fun i => hmem _, fun m hm q => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hrule m hm q, Finset.sum_range (fun j => m (q + j) * Xc j)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hd j, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm]`.
+-/
 private theorem exists_hat_mul_m_eq_double_sum {A : Type} [Ring A] [Algebra ℂ A] {r : ℕ}
     (L : _root_.Formalism.FourierDecayAlt.R.LevelData A r) (h : A) (Z : ℂ → A) (Xc : ℕ → A)
     (hZ : ∀ s : ℂ, Z s = ∑ j ∈ Finset.range (r + 2), s ^ j • Xc j)
@@ -32,6 +37,11 @@ private theorem exists_hat_mul_m_eq_double_sum {A : Type} [Ring A] [Algebra ℂ 
   rw [mul_smul_comm]
 
 open MeasureTheory in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HatNF.hats at hh`. Break down `hh with ((⟨Y, rfl⟩ | ⟨Y, rfl⟩) | ⟨Y, rfl⟩) | ⟨Y, rfl⟩` into its components or cases. Take `⟨Xa, Xr, hXa, hXr, hrel⟩` from `_root_.GlobalTheory.HatTaylorPlus.taylor_plus A r L Y`. Conclude with `exists_hat_mul_m_eq_double_sum L _ (fun s => L.Ahat (Y + s)) Xa hXa (fun m hm q => (hrel m hm q).1) (fun s => by unfold _root_.GlobalTheory.HatNF.hats; exact Or.inl (Or.inl (Or.inl ⟨_, rfl⟩)))`. Take `⟨Xa, Xr, hXa, hXr, hrel⟩` from `_root_.GlobalTheory.HatTaylorPlus.taylor_plus A r L Y`.
+
+Conclude with `exists_hat_mul_m_eq_double_sum L _ (fun s => L.R0 (Y + s)) Xr hXr (fun m hm q => (hrel m hm q).2) (fun s => by unfold _root_.GlobalTheory.HatNF.hats; exact Or.inl (Or.inl (Or.inr ⟨_, rfl⟩)))`. Take `⟨Xa, Xr, hXa, hXr, hrel⟩` from `_root_.GlobalTheory.HatNF.TaylorMinus.taylor_minus A r L Y`. Conclude with `exists_hat_mul_m_eq_double_sum L _ (fun s => L.Ahatv (Y - s)) Xa hXa (fun m hm q => (hrel m hm q).1) (fun s => by unfold _root_.GlobalTheory.HatNF.hats; exact Or.inl (Or.inr ⟨_, rfl⟩))`. Take `⟨Xa, Xr, hXa, hXr, hrel⟩` from `_root_.GlobalTheory.HatNF.TaylorMinus.taylor_minus A r L Y`. Conclude with `exists_hat_mul_m_eq_double_sum L _ (fun s => L.R0v (Y - s)) Xr hXr (fun m hm q => (hrel m hm q).2) (fun s => by unfold _root_.GlobalTheory.HatNF.hats; exact Or.inr ⟨_, rfl⟩)`.
+-/
 private theorem exists_hat_mul_multiplier_expansion {A : Type} [Ring A] [Algebra ℂ A] {r : ℕ}
     (L : _root_.Formalism.FourierDecayAlt.R.LevelData A r) {h : A} (hh : h ∈ _root_.GlobalTheory.HatNF.hats L) :
     ∃ (d : Fin (r + 2) → Fin (r + 2) → ℂ) (g : Fin (r + 2) → A),
@@ -57,6 +67,17 @@ private theorem exists_hat_mul_multiplier_expansion {A : Type} [Ring A] [Algebra
       (fun s => by unfold _root_.GlobalTheory.HatNF.hats; exact Or.inr ⟨_, rfl⟩)
 
 open MeasureTheory in
+/- English proof (translation)
+Proceed by induction on `H with`. Consider the case `nil`. Conclude with `⟨Unit, inferInstance, fun _ => 0, fun _ => 1, fun _ => [], fun _ => ⟨by simp, rfl, by simp⟩, fun m _ q => by simp⟩`. Consider the case `cons h H ih`. Take `⟨ι, _, a, c, P, hP, hrep⟩` from `ih fun x hx => hH x (List.mem_cons_of_mem _ hx)`.
+
+Take `⟨d, g, hg, hrel⟩` from `exists_hat_mul_multiplier_expansion L (hH h List.mem_cons_self)`. Use `⟨ι × Fin (r + 2) × Fin (r + 2), inferInstance, fun x => a x.1 + x.2.1, fun x => c x.1 * d x.2.1 x.2.2, fun x => g x.2.2 :: P x.1, fun x => ⟨?_, ?_, ?_⟩, fun m hm q => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hP x.1).1`. Establish `h2 : (x.2.1 : ℕ) ≤ r + 1` using `Nat.lt_succ_iff.mp x.2.1.isLt`. Rewrite using `[List.length_cons, Nat.succ_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[(hP x.1).2.1]`. Introduce `y hy`. Break down `List.mem_cons.mp hy with rfl | hy` into its components or cases. Conclude with `hg _`.
+
+Conclude with `(hP x.1).2.2 y hy`. Rewrite using `[List.prod_cons, mul_assoc, hrep m hm q, Finset.mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, mul_smul_comm, ← mul_assoc, hrel m hm (q + a i), Finset.sum_mul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_mul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[List.prod_cons, smul_mul_assoc, smul_smul, add_assoc, mul_assoc]`.
+-/
 private theorem exists_hatWord_mul_multiplier_expansion {A : Type} [Ring A] [Algebra ℂ A] {r : ℕ}
     (L : _root_.Formalism.FourierDecayAlt.R.LevelData A r) (H : List A) (hH : ∀ h ∈ H, h ∈ _root_.GlobalTheory.HatNF.hats L) :
     ∃ (ι : Type) (_ : Fintype ι) (a : ι → ℕ) (c : ι → ℂ) (P : ι → List A),
@@ -94,6 +115,11 @@ private theorem exists_hatWord_mul_multiplier_expansion {A : Type} [Ring A] [Alg
 
 open MeasureTheory in
 
+/- English proof (translation)
+Introduce `A _ _ r L H hH`. Take `⟨ι, _, a, c, P, hP, hrep⟩` from `exists_hatWord_mul_multiplier_expansion L H hH`. Use `⟨(Finset.univ : Finset ι).toList.map fun i => (a i, c i, P i), ?_, fun m hm q => ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨i, -, rfl⟩` from `List.mem_map.mp ht`.
+
+Conclude with `hP i`. Rewrite using `[hrep m hm q, List.map_map, Finset.sum_map_toList]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.HatNF.prod_hats_mul_multiplier : ∀ (A : Type) [Ring A] [Algebra ℂ A] (r : ℕ) (L : _root_.Formalism.FourierDecayAlt.R.LevelData A r), ∀ H : List A, (∀ h ∈ H, h ∈ _root_.GlobalTheory.HatNF.hats L) → ∃ ts : List (ℕ × ℂ × List A), (∀ t ∈ ts, t.1 ≤ H.length * (r + 1) ∧ t.2.2.length = H.length ∧ ∀ h ∈ t.2.2, h ∈ _root_.GlobalTheory.HatNF.hats L) ∧ ∀ m : ℕ → A, _root_.GlobalTheory.HatNF.MulRel L m → ∀ q, H.prod * m q = (ts.map fun t => t.2.1 • (m (q + t.1) * t.2.2.prod)).sum := by
   intro A _ _ r L H hH
   obtain ⟨ι, _, a, c, P, hP, hrep⟩ := exists_hatWord_mul_multiplier_expansion L H hH

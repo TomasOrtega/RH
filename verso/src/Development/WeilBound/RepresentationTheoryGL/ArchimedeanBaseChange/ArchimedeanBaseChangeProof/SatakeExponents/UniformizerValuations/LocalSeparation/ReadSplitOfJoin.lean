@@ -17,22 +17,49 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SmVecTranslate
 
 namespace PositivityTheory.Rg.BcB.F.RS
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.JoinDatum.joinEx`.
+-/
 theorem joinEx_holds : JoinEx := GlobalTheory.CompanionTheory.JoinDatum.joinEx
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.JoinInfProof.joinInf`.
+-/
 theorem joinInf_holds : JoinInf := GlobalTheory.CompanionTheory.JoinInfProof.joinInf
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.JoinSatPf.joinSat`.
+-/
 theorem joinSat_holds : JoinSat := GlobalTheory.CompanionTheory.JoinSatPf.joinSat
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.TreeInfSum.treeInf`.
+-/
 theorem treeInf_holds : TreeInf := GlobalTheory.CompanionTheory.TreeInfSum.treeInf
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.WeightJoin.main`.
+-/
 theorem weightJoin_holds : WeightJoin := GlobalTheory.CompanionTheory.WeightJoin.main
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.MuLocal.muLoc_holds`.
+-/
 theorem muLoc_holds' : MuLoc := GlobalTheory.CompanionTheory.MuLocal.muLoc_holds
 
+/- English proof (translation)
+The claim follows from `treeModOf_holds leafMod_holds GlobalTheory.CompanionTheory.NodeSep.nodeMod h`.
+-/
 theorem treeMod_of (h : JoinMod) : TreeMod := treeModOf_holds leafMod_holds GlobalTheory.CompanionTheory.NodeSep.nodeMod h
 
+/- English proof (translation)
+The claim follows from `readModOf_holds (treeMod_of h)`.
+-/
 theorem readMod_of (h : JoinMod) : ReadMod := readModOf_holds (treeMod_of h)
 
+/- English proof (translation)
+The claim follows from `readSplit_of (treeSatOf_holds (treeMod_of h)) pairSat_holds thetaSat2_holds GlobalTheory.CompanionTheory.CtS.ctSat muLoc_holds' joinSat_holds GlobalTheory.CompanionTheory.SatSplitAt.satSplit GlobalTheory.CompanionTheory.ConjSat.satConj`.
+-/
 theorem readSplit_of_join (h : JoinMod) : ReadSplit :=
   readSplit_of (treeSatOf_holds (treeMod_of h)) pairSat_holds thetaSat2_holds GlobalTheory.CompanionTheory.CtS.ctSat muLoc_holds' joinSat_holds
     GlobalTheory.CompanionTheory.SatSplitAt.satSplit GlobalTheory.CompanionTheory.ConjSat.satConj

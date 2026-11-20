@@ -13,6 +13,11 @@ namespace GlobalTheory.HoweLocal
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Apply `GlobalTheory.AdelicU.af_ext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[map_mul (evalV F u)]`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+
+Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self]`. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne hu, GlobalTheory.AdelicU.evalV_singleFin_ne hu, zero_mul]`.
+-/
 theorem singleFin_mul (v : Pl F) (a b : Fv F v) :
     GlobalTheory.AdelicU.singleFin v (a * b) = GlobalTheory.AdelicU.singleFin v a * GlobalTheory.AdelicU.singleFin v b := by
   apply GlobalTheory.AdelicU.af_ext
@@ -23,12 +28,20 @@ theorem singleFin_mul (v : Pl F) (a b : Fv F v) :
     rw [GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self]
   · rw [GlobalTheory.AdelicU.evalV_singleFin_ne hu, GlobalTheory.AdelicU.evalV_singleFin_ne hu, zero_mul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((0 : Ainf F), GlobalTheory.AdelicU.singleFin v (a * b)) = ((0 : Ainf F), GlobalTheory.AdelicU.singleFin v a) * ((0 : Ainf F), GlobalTheory.AdelicU.singleFin v b)`. Rewrite using `[Prod.mk_mul_mk, mul_zero, singleFin_mul]`.
+-/
 theorem liftV_mul (v : Pl F) (a b : Fv F v) :
     GlobalTheory.LatVac.liftV v (a * b) = GlobalTheory.LatVac.liftV v a * GlobalTheory.LatVac.liftV v b := by
   change ((0 : Ainf F), GlobalTheory.AdelicU.singleFin v (a * b)) =
     ((0 : Ainf F), GlobalTheory.AdelicU.singleFin v a) * ((0 : Ainf F), GlobalTheory.AdelicU.singleFin v b)
   rw [Prod.mk_mul_mk, mul_zero, singleFin_mul]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => rw [add_mul, map_add, hx, hx', map_add, add_mul]`. Consider the case `tmul a e`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => rw [mul_add, map_add, hy, hy', map_add, mul_add]`. Consider the case `tmul b f`. Simplify using `only [liftE, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.map_tmul, LinearMap.id_coe, id_eq, liftV_mul]`.
+-/
 theorem liftE_mul (v : Pl F) (x y : Fv F v ⊗[F] E) : liftE v (x * y) = liftE v x * liftE v y := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -41,12 +54,18 @@ theorem liftE_mul (v : Pl F) (x y : Fv F v ⊗[F] E) : liftE v (x * y) = liftE v
       simp only [liftE, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.map_tmul, LinearMap.id_coe, id_eq,
         liftV_mul]
 
+/- English proof (translation)
+Establish `: x * y - 1 = (x - 1) + (y - 1) + (x - 1) * (y - 1)` using `by ring`. Rewrite using `[this, map_add, map_add, liftE_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem one_add_liftE_mul (v : Pl F) (x y : Fv F v ⊗[F] E) :
     (1 + liftE v (x - 1)) * (1 + liftE v (y - 1)) = 1 + liftE v (x * y - 1) := by
   have : x * y - 1 = (x - 1) + (y - 1) + (x - 1) * (y - 1) := by ring
   rw [this, map_add, map_add, liftE_mul]
   ring
 
+/- English proof (translation)
+Establish `: x * y - 1 = (x - 1) + (y - 1) + (x - 1) * (y - 1)` using `by ring`. Rewrite using `[this, map_add, map_add, liftV_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem one_add_liftV_mul (v : Pl F) (x y : Fv F v) :
     (1 + GlobalTheory.LatVac.liftV v (x - 1)) * (1 + GlobalTheory.LatVac.liftV v (y - 1)) = 1 + GlobalTheory.LatVac.liftV v (x * y - 1) := by
   have : x * y - 1 = (x - 1) + (y - 1) + (x - 1) * (y - 1) := by ring
@@ -67,9 +86,15 @@ def liftUF (v : Pl F) : (Fv F v)ˣ →* (AF F)ˣ where
   map_one' := by ext; simp
   map_mul' z w := by ext; simp only [Units.val_mul, Units.val_mk]; rw [one_add_liftV_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftU_val (v : Pl F) (z : (Fv F v ⊗[F] E)ˣ) :
     ((liftU v z : (AE F E)ˣ) : AE F E) = 1 + liftE v ((z : Fv F v ⊗[F] E) - 1) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftUF_val (v : Pl F) (a : (Fv F v)ˣ) :
     ((liftUF v a : (AF F)ˣ) : AF F) = 1 + GlobalTheory.LatVac.liftV v ((a : Fv F v) - 1) := rfl
 
@@ -79,6 +104,17 @@ end GlobalTheory.HoweLocal
 
 namespace GlobalTheory.HoweLocal
 
+/- English proof (translation)
+Set `b` to `Module.finBasis F E`. Set `bA` to `Algebra.TensorProduct.basis A b`. Set `bB` to `Algebra.TensorProduct.basis B b`. Establish `hrep : ∀ (y : A ⊗[F] E) i, bB.repr (Algebra.TensorProduct.map f (AlgHom.id F E) y) i = f (bA.repr y i)`. Introduce `y i`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp [map_add, hy, hy']`. Consider the case `tmul a e`. Simplify using `[bA, bB, Algebra.TensorProduct.basis_repr_tmul, Algebra.smul_def]`.
+
+Establish `hb : ∀ j, bB j = Algebra.TensorProduct.map f (AlgHom.id F E) (bA j)`. Introduce `j`. Simplify using `[bA, bB, Algebra.TensorProduct.basis_apply]`. Rewrite using `[Algebra.norm_eq_matrix_det bB, Algebra.norm_eq_matrix_det bA]`. Use `show _ = (f : A →+* B) _`.
+
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul, RingHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[hb, ← map_mul, hrep]`.
+
+Both sides reduce to the same expression.
+-/
 theorem norm_map_tensor {F E A B : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     [CommRing A] [CommRing B] [Algebra F A] [Algebra F B] (f : A →ₐ[F] B) (x : A ⊗[F] E) :
     Algebra.norm B (Algebra.TensorProduct.map f (AlgHom.id F E) x) = f (Algebra.norm A x) := by
@@ -110,6 +146,9 @@ namespace GlobalTheory.HoweLocal
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[liftU_val, Units.coe_map, Units.coe_map, liftUF_val, MonoidHom.coe_coe, MonoidHom.coe_coe, map_add, map_one]`. Use `congr 1`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.one_def, Algebra.algebraMap_self, RingHom.id_apply, Algebra.algebraMap_self, RingHom.id_apply, ← TensorProduct.sub_tmul]`. Simplify using `only [liftE, TensorProduct.map_tmul, LinearMap.id_coe, id_eq]`.
+-/
 theorem liftU_algebraMap (v : Pl F) (a : (Fv F v)ˣ) :
     liftU (E := E) v (Units.map (algebraMap (Fv F v) (Fv F v ⊗[F] E) : Fv F v →* Fv F v ⊗[F] E) a) =
       Units.map (algebraMap (AF F) (AE F E) : AF F →* AE F E) (liftUF v a) := by
@@ -126,12 +165,18 @@ namespace GlobalTheory.HoweLocal
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.HoweLocal.LocCoords.liftV_one_smul]`. Establish `h : (1 - GlobalTheory.LatVac.liftV v 1) • z = 0` using `hz _ (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Rewrite `h` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h.symm`.
+-/
 theorem liftE_compFin_of_at (v : Pl F) {z : AE F E} (hz : At (evFin F v) z) : liftE v (compFin F E v z) = z := by
   rw [← GlobalTheory.HoweLocal.LocCoords.liftV_one_smul]
   have h : (1 - GlobalTheory.LatVac.liftV v 1) • z = 0 := hz _ (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])
   rw [sub_smul, one_smul, sub_eq_zero] at h
   exact h.symm
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[liftU_val, Units.coe_map, MonoidHom.coe_coe, ← map_one (compFin F E v), ← map_sub, liftE_compFin_of_at v ha, add_sub_cancel]`.
+-/
 theorem liftU_compFin_of_at (v : Pl F) (a : (AE F E)ˣ) (ha : At (evFin F v) ((a : AE F E) - 1)) :
     liftU v (Units.map (compFin F E v : AE F E →* Fv F v ⊗[F] E) a) = a := by
   ext

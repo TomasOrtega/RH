@@ -17,6 +17,11 @@ namespace GlobalTheory.PullDegComp
 open GlobalTheory.ArcPull GlobalTheory.ArcQ
 open GlobalTheory.PsiEvenPull (proj)
 
+/- English proof (translation)
+Establish `H : Set.range (jK R).base ⊆ Set.range p.W.ι.base`. Introduce and unpack `_ ⟨y, rfl⟩`. Set `z' : (TK R').left` to `(default : PrimeSpectrum (FractionRing R'))`. Establish `e₁ : (genMap hi).base z' = y` using `Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) _ _`. Establish `e₂ : (jK R' ≫ spMap i).base z' = (genMap hi ≫ jK R).base z'`.
+
+Rewrite using `[← fracMap_sq hi, Category.id_comp]`. Use `⟨(p.g).base z', ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, p.g_comm]`. Conclude with `e₂.trans (by rw [Scheme.Hom.comp_apply, e₁])`. Conclude with `⟨IsOpenImmersion.lift p.W.ι (jK R) H, IsOpenImmersion.lift_fac _ _ _⟩`.
+-/
 theorem exists_generic_lift {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {i : R →+* R'}
     (hi : Function.Injective i) {D : DegPre R} {D' : DegPre R'} (p : IsPullDeg i D D') :
     ∃ s : (TK R).left ⟶ p.W.toScheme, s ≫ p.W.ι = jK R := by
@@ -31,6 +36,17 @@ theorem exists_generic_lift {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'
     exact e₂.trans (by rw [Scheme.Hom.comp_apply, e₁])
   exact ⟨IsOpenImmersion.lift p.W.ι (jK R) H, IsOpenImmersion.lift_fac _ _ _⟩
 
+/- English proof (translation)
+Establish `hji : Function.Injective (j.comp i)` using `hj.comp hi`. Establish `sc : spMap j ≫ spMap i = spMap (j.comp i)` using `(spMap_comp i j).symm`. Establish `gp : IsGrpPullback D''.P.A D.P.A (spMap (j.comp i)) (proj q ≫ proj p)` using `((pull_grp q).comp (pull_grp p)).congr sc rfl`. Establish `g₁` using `(isGen_iff _).1 p.w_gen`. Establish `g₂` using `(isGen_iff _).1 q.w_gen`.
+
+Take `⟨w, T⟩` from `Geo.Tor.exists_comp D'.P.isLB p.w q.w g₁ g₂ D.P.isLB D''.P.isLB`. Establish `hr` using `T.pmaps_comp D'.P.isLB (fun _ => q.he) (FieldPull.pmaps_rig p) (FieldPull.pmaps_rig q)`. Rewrite `hr` using `[sc]`. Establish `hc : ∀ x, (D''.c x).left ≫ proj q ≫ proj p = spMap (j.comp i) ≫ (D.c ((q.xe.trans p.xe) x)).left` using `fun x => (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ proj p) (q.c_pr x)).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (p.c_pr _)).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) sc)))))`. Take `⟨s, hs⟩` from `exists_generic_lift hi p`.
+
+Take `⟨r, -⟩` from `GlobalTheory.DvrDeg.exists_isPullDeg_of_val hji D D'' p.psiW s hs gp w (T.pgen_comp D'.P.isLB g₁ g₂) hr (q.xe.trans p.xe) hc (fun x z J J'' hJ hJ'' => by`. Take `⟨J', hJ'⟩` from `DegPull.exists_good' D'.P.isLB z`. Establish `sj : jK R'' ≫ spMap j = genMap hj ≫ jK R'` using `(Category.id_comp _).symm.trans (fracMap_sq hj)`. Establish `s' : genMap hj ≫ jK R' ≫ spMap i = genMap hji ≫ jK R` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) sj.symm).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) sc).trans ((Category.id_comp _).symm.trans (fracMap_sq hji)))))`. Establish `v₁` using `psi_val p _ _ s' hJ hJ' (q.xe x)`.
+
+Establish `v₂` using `psi_val q _ _ (fracMap_sq hj) hJ' hJ'' x`. Establish `hx : D''.xK x ≫ proj q = genMap hj ≫ D'.xK (q.xe x)` using `by show (jK R'' ≫ (D''.c x).left) ≫ proj q = genMap hj ≫ jK R' ≫ (D'.c (q.xe x)).left`. Rewrite using `[Category.assoc, q.c_pr, ← Category.assoc, ← Category.assoc, ← sj]`. Establish `t : om w z J J'' (D''.xK x) = om p.w z J J' (D''.xK x ≫ proj q) * om q.w z J' J'' (D''.xK x)` using `(congrArg (fun u => Geo.Tor.gw w (D''.xK x) z (J u) (J'' (D''.xK x))) (Category.assoc (D''.xK x) (proj q) (proj p)).symm).trans (T _ _ z _ _ _ (hJ ((D''.xK x ≫ proj q) ≫ proj p)) (hJ' (D''.xK x ≫ proj q)) (hJ'' _))`. Rewrite `v₁` using `[v₂, Category.id_comp, ← hx, ← _root_.mul_assoc, ← mul_inv, ← t]`.
+
+Conclude with `v₁)`. Conclude with `⟨r⟩`.
+-/
 theorem nonempty_isPullDeg_comp {R R' R'' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] [CommRing R'']
     [IsDomain R''] {i : R →+* R'} {j : R' →+* R''} (hi : Function.Injective i) (hj : Function.Injective j)
     {D : DegPre R} {D' : DegPre R'} {D'' : DegPre R''} (p : IsPullDeg i D D') (q : IsPullDeg j D' D'') :
@@ -72,6 +88,9 @@ end GlobalTheory.PullDegComp
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ _ _ ρ hρ D D' ⟨p⟩ ⟨R'', _, _, _, σ, D'', hσ, ⟨q⟩, hH⟩`. Conclude with `⟨R'', _, _, _, σ.comp ρ, D'', ⟨hσ.1, hσ.2.1.comp hρ.2.1, hσ.2.2.comp hρ.2.2⟩, GlobalTheory.PullDegComp.nonempty_isPullDeg_comp hρ.2.1 hσ.2.1 p q, hH⟩`.
+-/
 theorem hasFin_of_finExt : ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing R'] [IsDomain R']
     [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')),
     Nonempty (IsPullDeg ρ D.toPre D'.toPre) → HasFin D' → HasFin D := by

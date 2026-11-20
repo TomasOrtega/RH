@@ -6,6 +6,21 @@ open scoped InnerProductSpace TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J T f bad S Γ Gi Gf _ _ _ ιi ιf K ψ Φ h0 ι _ emb lam W _ _ π Jm hψ hK hχ hΓ hJ hV φ hφ`. Use `Submodule.mem_inf.2 ⟨?_, fun x _ => hV _⟩` and prove the remaining obligations. Introduce `g hg x x' κ hx y y' hy`. Take `⟨γ, hγ⟩` from `hΓ g hg`. Set `κ' : UPts σ J (FiniteAdeleRing (𝓞 F) F)` to `⟨κ.1, ((S.U_eq κ.1).1 κ.2).1⟩`.
+
+Set `k : Gf` to `Φ.symm (h0 * κ' * h0⁻¹)`. Establish `hk1 : h0⁻¹ * Φ k * h0 = κ'`. Simplify using `only [k, MulEquiv.apply_symm_apply]`. Use `group`. Establish `hy1 : ((h0⁻¹ * Φ k * h0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)) : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ S.U`.
+
+Rewrite using `[hk1]`. Conclude with `κ.2`. Establish `hk : k ∈ K` using `(hK k).2 hy1`. Establish `hc : ((ψ ⟨k, hk⟩ : ℂˣ) : ℂ) = ((S.chi κ : ℂˣ) : ℂ)`. Rewrite using `[hχ k hk hy1]`.
+
+Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((h0⁻¹ * Φ k * h0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)) : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) = κ.1`. Rewrite using `[hk1]`. Establish `hx' : x' = Φ (ιf γ) * x * κ'`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hx, ← hγ]`. Both sides reduce to the same expression. Establish `hdec : Φ.symm (x' * h0⁻¹) = ιf γ * Φ.symm (x * h0⁻¹) * ((⟨k, hk⟩ : K) : Gf)`. Apply `Φ.injective` to reduce the goal to its premises.
+
+Simplify using `only [k, map_mul Φ, MulEquiv.apply_symm_apply, hx']`. Use `group`. Establish `hconj : (starRingEnd ℂ) (((ψ ⟨k, hk⟩)⁻¹ : ℂˣ) : ℂ) = ((ψ ⟨k, hk⟩ : ℂˣ) : ℂ)`. Rewrite using `[Units.val_inv_eq_inv_val, Complex.inv_eq_conj (hψ _), Complex.conj_conj]`. Use `show Jm (φ (Φ.symm (x' * h0⁻¹))) y = (S.chi κ : ℂ) * Jm (φ (Φ.symm (x * h0⁻¹))) y'`.
+
+Rewrite using `[hdec, hφ, LinearMap.map_smulₛₗ, hconj, hc, Pi.smul_apply, smul_eq_mul, hJ γ g hγ _ y y' hy]`.
+-/
 theorem adForms_of_equivariant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 F))) (S : StepLevel F E σ J T f bad) (Γ Gi Gf : Type) [Group Γ] [Group Gi] [Group Gf] (ιi : Γ →* Gi) (ιf : Γ →* Gf) (K : Subgroup Gf) (ψ : K →* ℂˣ) (Φ : Gf ≃* UPts σ J (FiniteAdeleRing (𝓞 F) F)) (h0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (ι : Type) [Fintype ι] (emb : ι → E →+* ℂ) (lam : ι → DomWeight n) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] (π : Representation ℂ Gi W) (Jm : W →ₗ⋆[ℂ] (Frames (gramC J emb) → ℂ)), (∀ κ : K, ‖((ψ κ : ℂˣ) : ℂ)‖ = 1) → (∀ h : Gf, h ∈ K ↔ ((h0⁻¹ * Φ h * h0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)) : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ S.U) → (∀ (h : Gf) (hk : h ∈ K) (hy : ((h0⁻¹ * Φ h * h0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)) : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ S.U), ((ψ ⟨h, hk⟩ : ℂˣ) : ℂ) = ((S.chi ⟨_, hy⟩ : ℂˣ) : ℂ)) → (∀ g : GL (Fin n) E, g ∈ UJ (σ : E →+* E) J → ∃ γ : Γ, (Φ (ιf γ)).1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) g) → (∀ (γ : Γ) (g : GL (Fin n) E), (Φ (ιf γ)).1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) g → ∀ (ξ : W) (y y' : Frames (gramC J emb)), IsTr (atInf emb g.1) y' y → Jm (π (ιi γ) ξ) y = Jm ξ y') → (∀ ξ, Jm ξ ∈ ValC (gramC J emb) lam) → ∀ φ : Gf → W, (∀ (γ : Γ) (x : Gf) (κ : K), φ (ιf γ * x * κ) = (((ψ κ)⁻¹ : ℂˣ) : ℂ) • π (ιi γ) (φ x)) → (fun y : UPts σ J (FiniteAdeleRing (𝓞 F) F) => Jm (φ (Φ.symm (y * h0⁻¹)))) ∈ AdForms S emb lam := by
   intro F E _ _ _ _ _ σ n J T f bad S Γ Gi Gf _ _ _ ιi ιf K ψ Φ h0 ι _ emb lam W _ _ π Jm hψ hK hχ hΓ hJ hV φ hφ
   refine Submodule.mem_inf.2 ⟨?_, fun x _ => hV _⟩

@@ -59,16 +59,29 @@ def bwd : ↥(finiteCocycles PD (repL e ρ ι)) →ₛₗ[(e.symm : LL →+* Fra
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `γ`. Conclude with `congrArg c.1 ((Equiv.ofBijective ι hι).apply_symm_apply γ)`.
+-/
 theorem bwd_fwd (c : ↥(finZ e PD ρ ι)) : bwd e PD ρ hι (fwd e PD ι ρ c) = c := by
   apply Subtype.ext
   funext γ
   exact congrArg c.1 ((Equiv.ofBijective ι hι).apply_symm_apply γ)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `congrArg c.1 ((Equiv.ofBijective ι hι).symm_apply_apply g)`.
+-/
 theorem fwd_bwd (c : ↥(finiteCocycles PD (repL e ρ ι))) : fwd e PD ι ρ (bwd e PD ρ hι c) = c := by
   apply Subtype.ext
   funext g
   exact congrArg c.1 ((Equiv.ofBijective ι hι).symm_apply_apply g)
 
+/- English proof (translation)
+Rewrite using `[B1, LinearMap.mem_range, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Use `⟨(show TrV e V from v), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+
+Conclude with `congrFun hv (ι g)`. Introduce and unpack `⟨w, hw⟩`. Use `⟨(show V from w), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `γ`. Take `⟨g, rfl⟩` from `hι.2 γ`.
+
+Conclude with `congrFun hw g`.
+-/
 theorem mem_cob_iff (c : ↥(finZ e PD ρ ι)) :
     c.1 ∈ LinearMap.range (cobK ρ) ↔ (fwd e PD ι ρ c).1 ∈ B1 (repL e ρ ι) := by
   rw [B1, LinearMap.mem_range, LinearMap.mem_range]
@@ -107,6 +120,9 @@ def quotEquiv : (↥(finZ e PD ρ ι) ⧸ (LinearMap.range (cobK ρ)).comap (fin
     | H c => exact congrArg Submodule.Quotient.mk (fwd_bwd e PD ρ hι c)
   map_add' x y := map_add (fwdQ e PD ρ hι) x y
 
+/- English proof (translation)
+The claim follows from `rank_eq_of_equiv_equiv e (quotEquiv e PD ρ hι) e.bijective (fun k x => (fwdQ e PD ρ hι).map_smulₛₗ k x)`.
+-/
 theorem rank_finQuot :
     Module.rank (FractionRing O)
         (↥(finZ e PD ρ ι) ⧸ (LinearMap.range (cobK ρ)).comap (finZ e PD ρ ι).subtype) =
@@ -115,6 +131,9 @@ theorem rank_finQuot :
     (fun k x => (fwdQ e PD ρ hι).map_smulₛₗ k x)
 
 omit hι in
+/- English proof (translation)
+Simplify using `only [H0V, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_H0V' {W : Type} [AddCommGroup W] [Module LL W] (σ : Representation LL G W) (v : W) :
     v ∈ H0V σ ↔ ∀ g, σ g v = v := by
   simp only [H0V, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply,
@@ -136,6 +155,9 @@ def cohomZeroEquivContinuous : ↥(LinearMap.ker (cobK ρ)) ≃+ ↥(H0V (repL e
   right_inv _ := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `rank_eq_of_equiv_equiv e (cohomZeroEquivContinuous e ρ hι) e.bijective (fun k v => by apply Subtype.ext show k • (v.1 : V) = e.symm (e k) • (v.1 : V) rw [RingEquiv.symm_apply_apply])`.
+-/
 theorem rank_invariants_eq :
     Module.rank (FractionRing O) ↥(LinearMap.ker (cobK ρ)) = Module.rank LL ↥(H0V (repL e ρ ι)) :=
   rank_eq_of_equiv_equiv e (cohomZeroEquivContinuous e ρ hι) e.bijective (fun k v => by
@@ -143,12 +165,18 @@ theorem rank_invariants_eq :
     show k • (v.1 : V) = e.symm (e k) • (v.1 : V)
     rw [RingEquiv.symm_apply_apply])
 
+/- English proof (translation)
+Conclude with `congrArg Cardinal.toNat (rank_invariants_eq e ρ hι)`.
+-/
 theorem finrank_invariants_eq :
     Module.finrank (FractionRing O) ↥(LinearMap.ker (cobK ρ)) = Module.finrank LL ↥(H0V (repL e ρ ι)) := by
   exact congrArg Cardinal.toNat (rank_invariants_eq e ρ hι)
 
 omit hι [TopologicalSpace LL] in
 
+/- English proof (translation)
+Establish `h : Module.rank (FractionRing O) V = Module.rank LL (TrV e V)` using `rank_eq_of_equiv_equiv e (AddEquiv.refl V) e.bijective (fun k v => by show k • v = e.symm (e k) • v`. Rewrite using `[RingEquiv.symm_apply_apply])`. Establish `h1 : Module.rank (FractionRing O) V < Cardinal.aleph0` using `Module.rank_lt_aleph0_iff.mpr inferInstance`. Rewrite `h1` using `[h]`. Conclude with `Module.rank_lt_aleph0_iff.mp h1`.
+-/
 theorem finDim_TrV [FiniteDimensional (FractionRing O) V] : FiniteDimensional LL (TrV e V) := by
   have h : Module.rank (FractionRing O) V = Module.rank LL (TrV e V) :=
     rank_eq_of_equiv_equiv e (AddEquiv.refl V) e.bijective (fun k v => by
@@ -175,6 +203,15 @@ def FilLow {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTowe
   ∀ τ : K →ₐ[Qp] LL, FiniteDimensional LL ↥(DdRE PD ρ τ) ∧
     ∃ lo : ℤ, lo ≤ 0 ∧ ∀ a, a ≤ lo → FildR PD ρ τ a = DdRE PD ρ τ
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `lo h`. Establish `h0 : lo = 0` using `by omega`.
+
+Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `lo h`. Establish `hs : Finset.Ico lo 0 = insert lo (Finset.Ico (lo + 1) 0)`.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_Ico, Finset.mem_insert]`. Use linear arithmetic over natural numbers and integers. Establish `hn : lo ∉ Finset.Ico (lo + 1) 0`. Simplify using `only [Finset.mem_Ico]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hs, Finset.sum_insert hn, ih (lo + 1) (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sum_Ico_sub_succ_eq_telescope (f : ℤ → ℤ) : ∀ (n : ℕ) (lo : ℤ), lo + n = 0 →
     ∑ a ∈ Finset.Ico lo 0, (f a - f (a + 1)) = f lo - f 0 := by
   intro n
@@ -196,6 +233,11 @@ private theorem sum_Ico_sub_succ_eq_telescope (f : ℤ → ℤ) : ∀ (n : ℕ) 
     rw [hs, Finset.sum_insert hn, ih (lo + 1) (by omega)]
     ring
 
+/- English proof (translation)
+Establish `hn : lo + (((-lo).toNat : ℕ) : ℤ) = 0`. Rewrite using `[Int.toNat_of_nonneg (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `sum_Ico_sub_succ_eq_telescope (fun a => (finrank LL ↥(FildR PD ρ τ a) : ℤ)) (-lo).toNat lo hn`. Rewrite using `[← hF]`.
+
+Conclude with `h.symm`.
+-/
 theorem negdim_eq {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (hfin : FiniteDimensional LL ↥(DdRE PD ρ τ))
     (lo : ℤ) (hlo : lo ≤ 0) (hF : FildR PD ρ τ lo = DdRE PD ρ τ) :
@@ -208,6 +250,13 @@ theorem negdim_eq {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsSca
   rw [← hF]
   exact h.symm
 
+/- English proof (translation)
+Establish `hV` using `hBK hS V ρ hcV hcrV`. Establish `hW` using `hBK hS W ρW hcW hcrW`. Establish `hsum : ∀ τ : K →ₐ[Qp] LL, ((finrank LL ↥(DdRE PD ρ τ) : ℤ) - finrank LL ↥(FildR PD ρ τ 0)) = ((finrank LL ↥(DdRE PD ρW τ) : ℤ) - finrank LL ↥(FildR PD ρW τ 0))`. Introduce `τ`. Take `⟨hfV, loV, hloV, hFV⟩` from `hlowV τ`.
+
+Take `⟨hfW, loW, hloW, hFW⟩` from `hlowW τ`. Rewrite using `[negdim_eq PD ρ τ hfV (min loV loW) (le_trans (min_le_left _ _) hloV) (hFV _ (min_le_left _ _)), negdim_eq PD ρW τ hfW (min loV loW) (le_trans (min_le_left _ _) hloV) (hFW _ (min_le_right _ _))]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a ha`. Conclude with `hneg τ a (Finset.mem_Ico.mp ha).2`.
+
+Rewrite using `[hV, hW, Finset.sum_congr rfl (fun τ _ => hsum τ), h0W]`. Simplify using the standard rewrite rules.
+-/
 theorem count_eq (hBK : BlochKatoDim PD LL) (hS : Splits LL (K := K) (Qp := Qp))
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     [FiniteDimensional LL V] [TopologicalSpace V] [IsModuleTopology LL V] [IsTopologicalAddGroup V]
@@ -234,6 +283,11 @@ theorem count_eq (hBK : BlochKatoDim PD LL) (hS : Splits LL (K := K) (Qp := Qp))
   rw [hV, hW, Finset.sum_congr rfl (fun τ _ => hsum τ), h0W]
   simp
 
+/- English proof (translation)
+Establish `h` using `count_eq PD hBK hS ρ ρW hcV hcW hcrV hcrW hlowV hlowW hneg h0W`. Establish `h' : finrank LL (FiniteCohomology PD ρ) = finrank LL (FiniteCohomology PD ρW) + finrank LL ↥(H0V ρ)` using `by omega`. Rewrite using `[← h']`. Establish `hlt : Module.rank LL (FiniteCohomology PD ρ) < Cardinal.aleph0` using `Module.rank_lt_aleph0_iff.mpr hfin`. Use `first`.
+
+Consider the case `exact le_of_eq (Module.finrank_eq_rank (R := LL) (M := FiniteCohomology PD ρ)).symm`. Consider the case `exact (Cardinal.cast_toNat_of_lt_aleph0 hlt).symm.le`.
+-/
 theorem rank_le_count (hBK : BlochKatoDim PD LL) (hS : Splits LL (K := K) (Qp := Qp))
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     [FiniteDimensional LL V] [TopologicalSpace V] [IsModuleTopology LL V] [IsTopologicalAddGroup V]
@@ -269,9 +323,17 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {LL : Type} [Field LL] [Algebra Qp LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
+/- English proof (translation)
+Conclude with `antitone_int_of_succ_le PD.Fil_anti`.
+-/
 theorem fil_anti : Antitone PD.Fil := by
   exact antitone_int_of_succ_le PD.Fil_anti
 
+/- English proof (translation)
+Establish `hle : (PD.Fil b).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp` using `fun x hx => fil_anti PD h hx`. Introduce `x hx`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp hx`. Use `clear hx`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `tmul v f => exact LinearMap.mem_range.mpr ⟨v ⊗ₜ[Qp] Submodule.inclusion hle f, rfl⟩`. Consider the case `add y z hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+-/
 theorem filV_mono {a b : ℤ} (h : a ≤ b) : FilV PD (LL := LL) (V := V) b ≤ FilV PD a := by
   have hle : (PD.Fil b).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp := fun x hx => fil_anti PD h hx
   intro x hx
@@ -282,6 +344,11 @@ theorem filV_mono {a b : ℤ} (h : a ≤ b) : FilV PD (LL := LL) (V := V) b ≤ 
   | tmul v f => exact LinearMap.mem_range.mpr ⟨v ⊗ₜ[Qp] Submodule.inclusion hle f, rfl⟩
   | add y z hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `tmul v f`. Take `⟨a, ha⟩` from `PD.Fil_exh f`. Conclude with `⟨a, LinearMap.mem_range.mpr ⟨v ⊗ₜ[Qp] (⟨f, ha⟩ : ↥((PD.Fil a).restrictScalars Qp)), rfl⟩⟩`.
+
+Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨min a b, Submodule.add_mem _ (filV_mono PD (min_le_left a b) ha) (filV_mono PD (min_le_right a b) hb)⟩`.
+-/
 theorem exists_filV (x : TensorProduct Qp V BdR) : ∃ a, x ∈ FilV PD (LL := LL) a := by
   induction x using TensorProduct.induction_on with
   | zero => exact ⟨0, Submodule.zero_mem _⟩
@@ -294,6 +361,11 @@ theorem exists_filV (x : TensorProduct Qp V BdR) : ∃ a, x ∈ FilV PD (LL := L
     exact ⟨min a b, Submodule.add_mem _ (filV_mono PD (min_le_left a b) ha)
       (filV_mono PD (min_le_right a b) hb)⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, le_refl 0, fun x hx => by simp at hx⟩`. Consider the case `@insert x s hxs ih`. Take `⟨a, ha0, ha⟩` from `ih`. Take `⟨b, hb⟩` from `exists_filV PD (LL := LL) x`.
+
+Use `⟨min a b, le_trans (min_le_left a b) ha0, fun y hy => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hy with rfl | hy'` into its components or cases. Conclude with `filV_mono PD (min_le_right a b) hb`. Conclude with `filV_mono PD (min_le_left a b) (ha y hy')`.
+-/
 theorem exists_low_finset (s : Finset (TensorProduct Qp V BdR)) :
     ∃ a : ℤ, a ≤ 0 ∧ ∀ x ∈ s, x ∈ FilV PD (LL := LL) a := by
   induction s using Finset.induction_on with
@@ -308,6 +380,13 @@ theorem exists_low_finset (s : Finset (TensorProduct Qp V BdR)) :
 
 variable (ρ : Representation LL G V)
 
+/- English proof (translation)
+Set `b` to `Module.finBasis LL ↥(DdRE PD ρ τ)`. Take `⟨lo, hlo, hs⟩` from `exists_low_finset PD (LL := LL) (Finset.univ.image (fun j => ((b j : ↥(DdRE PD ρ τ)) : TensorProduct Qp V BdR)))`. Use `⟨lo, hlo, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ j, ((b j : ↥(DdRE PD ρ τ)) : TensorProduct Qp V BdR) ∈ FilV PD (LL` using `LL) a := fun j => filV_mono PD ha (hs _ (Finset.mem_image_of_mem _ (Finset.mem_univ j)))`. Unfold `FildR`.
+
+Apply `inf_eq_left.mpr` to reduce the goal to its premises. Introduce `y hy`. Establish `hspan : Submodule.span LL (Set.range b) ≤ (FilV PD (LL` using `LL) a).comap (DdRE PD ρ τ).subtype := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Conclude with `hb j`. Rewrite `hspan` using `[b.span_eq]`. Conclude with `hspan (Submodule.mem_top (x := (⟨y, hy⟩ : ↥(DdRE PD ρ τ))))`.
+-/
 theorem low_of_fin (τ : K →ₐ[Qp] LL) (hfin : FiniteDimensional LL ↥(DdRE PD ρ τ)) :
     ∃ lo : ℤ, lo ≤ 0 ∧ ∀ a, a ≤ lo → FildR PD ρ τ a = DdRE PD ρ τ := by
   let b := Module.finBasis LL ↥(DdRE PD ρ τ)
@@ -326,6 +405,11 @@ theorem low_of_fin (τ : K →ₐ[Qp] LL) (hfin : FiniteDimensional LL ↥(DdRE 
   rw [b.span_eq] at hspan
   exact hspan (Submodule.mem_top (x := (⟨y, hy⟩ : ↥(DdRE PD ρ τ))))
 
+/- English proof (translation)
+Introduce `τ`. Use `haveI := PD.finK`. Establish `hK : 0 < Module.finrank Qp K` using `Module.finrank_pos`. Establish `hpos : 0 < finrank LL ↥(DdR PD ρ)`. Rewrite using `[hDR]`.
+
+Conclude with `Nat.mul_pos hK hV`. Use `haveI : FiniteDimensional LL ↥(DdR PD ρ) := Module.finite_of_finrank_pos hpos`. Establish `hle : DdRE PD ρ τ ≤ DdR PD ρ` using `inf_le_left`. Use `haveI hfin : FiniteDimensional LL ↥(DdRE PD ρ τ) := Submodule.finiteDimensional_of_le hle`. Conclude with `⟨hfin, low_of_fin PD ρ τ hfin⟩`.
+-/
 theorem filLow_of_dR [FiniteDimensional LL V] (hV : 0 < finrank LL V)
     (hDR : finrank LL ↥(DdR PD ρ) = finrank Qp K * finrank LL V) : FilLow PD ρ := by
   intro τ
@@ -351,6 +435,11 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (r : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* R') (χ : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* Tcˣ)
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
+/- English proof (translation)
+Establish `hmem : l.1 ∈ K.plSet i dc`. Unfold `K.plSet`. Simplify using `only [Finset.mem_union]`. Conclude with `Or.inl (Or.inr l.2)`. Establish `hidx : K.plOf i dc (K.colIdx i dc l) = l.1`.
+
+Unfold `K.plOf K.colIdx K.idx`. Rewrite using `[dif_pos hmem, dif_pos ((K.plSet i dc).equivFin ⟨l.1, hmem⟩).isLt]`. Simplify using the standard rewrite rules. Rewrite using `[hidx]`. Conclude with `(dc.cover l.1).mp (Or.inr l.2)`.
+-/
 theorem col_over (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) ∈ placesOver D.host.E (D.nd.l i) := by
   have hmem : l.1 ∈ K.plSet i dc := by
     unfold K.plSet
@@ -363,6 +452,9 @@ theorem col_over (l : K.Col i dc) : K.plOf i dc (K.colIdx i dc l) ∈ placesOver
   rw [hidx]
   exact (dc.cover l.1).mp (Or.inr l.2)
 
+/- English proof (translation)
+The claim follows from `evalTower i (R' := R') x' colD (K := FractionRing (D.nd.O i)) (V := EvalSp (D.nd.O i) d R' x') r χ (Γn i dc n) = cobK (repE i dc r χ x' n) := by first | rfl | exact LinearMap.ext fun v => funext fun g => rfl`.
+-/
 theorem colD_eq (x' : X') (n : ℕ) :
     letI := evalModO i (R' := R') x'
     haveI := evalTower i (R' := R') x'
@@ -388,6 +480,9 @@ def ContX (x' : X') (l : K.Col i dc) : Prop :=
   letI := evalModO i (R' := R') x'
   ∀ v, Continuous fun g => repX i dc r χ x' (K.colIdx i dc l) (col_over i dc l) g v
 
+/- English proof (translation)
+The claim follows from `evalTower i (R' := R') x' OrbC i dc (repE i dc r χ x' (K.colIdx i dc l)) → ContX i dc r χ x' l := by intro h exact h (col_over i dc l)`.
+-/
 theorem contX_of_orbC (x' : X') (l : K.Col i dc) :
     letI := evalModO i (R' := R') x'
     haveI := evalTower i (R' := R') x'
@@ -421,6 +516,9 @@ def GoodW (l : K.Col i dc) : Prop :=
 
 omit [DecidableEq d] in
 
+/- English proof (translation)
+Establish `h` using `(hG2 (K.plOf i dc n) hn (TruncatedSeriesCountingIdentities.CoefExt.self (D := D) (i := i) (hw := hn))).1`. Conclude with `h.2.2.2.2.2.1`.
+-/
 theorem invariants_twist_eq_bot (rX : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (hG2 : TruncatedSeriesCountingIdentities.admG2 i rX ρ π)
     (n : ℕ) (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) :
     H0V (repW i dc ρ π n hn) = ⊥ := by
@@ -439,6 +537,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (r : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* R') (χ : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* Tcˣ)
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
+/- English proof (translation)
+The claim follows from `evalTower i (R' := R') x' Lx i dc r χ x' l = finZ (eK (D.nbr i _ (col_over i dc l))) (Br.PD D.loc D.nbr i _ (col_over i dc l)) (repE i dc r χ x' (K.colIdx i dc l)) (Br.iota D.nbr i _ (col_over i dc l)) := by unfold Lx fZ rw [dif_pos (col_over i dc l)]`.
+-/
 private theorem lx_col_eq (x' : X') (l : K.Col i dc) :
     letI := evalModO i (R' := R') x'
     haveI := evalTower i (R' := R') x'
@@ -447,6 +548,9 @@ private theorem lx_col_eq (x' : X') (l : K.Col i dc) :
   unfold Lx fZ
   rw [dif_pos (col_over i dc l)]
 
+/- English proof (translation)
+Unfold `jK`. Rewrite using `[dif_pos (col_over i dc l)]`. Both sides reduce to the same expression.
+-/
 private theorem jK_colIdx_eq_finrank_cohomology (l : K.Col i dc) :
     jK i dc ρ π (K.colIdx i dc l) = Module.finrank (Br.LL D.nbr i _ (col_over i dc l))
       (FiniteCohomology (Br.PD D.loc D.nbr i _ (col_over i dc l))
@@ -455,12 +559,20 @@ private theorem jK_colIdx_eq_finrank_cohomology (l : K.Col i dc) :
   rw [dif_pos (col_over i dc l)]
   rfl
 
+/- English proof (translation)
+The claim follows from `(D.nbr i _ (col_over i dc l)).e.symm.bijective`.
+-/
 private theorem iota_bijective_col (l : K.Col i dc) :
     Function.Bijective (Br.iota D.nbr i _ (col_over i dc l)) :=
   (D.nbr i _ (col_over i dc l)).e.symm.bijective
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hw` using `col_over i dc l`. Use `letI := evalModO i (R' := R') x'`. Use `haveI := evalTower i (R' := R') x'`. Establish `hι` using `iota_bijective_col i dc l`. Unfold `DimLx`.
+
+Rewrite using `[lx_col_eq i dc r χ x' l, colD_eq i dc r χ x' (K.colIdx i dc l), jK_colIdx_eq_finrank_cohomology i dc ρ π l, rank_finQuot (eK (D.nbr i _ hw)) (Br.PD D.loc D.nbr i _ hw) (repE i dc r χ x' (K.colIdx i dc l)) hι, finrank_invariants_eq (eK (D.nbr i _ hw)) (repE i dc r χ x' (K.colIdx …`. Use `haveI := finDim_TrV (V := EvalSp (D.nd.O i) d R' x') (eK (D.nbr i _ hw))`. Establish `hBK' : BlochKatoDim (Br.PD D.loc D.nbr i _ hw) (Br.LL D.nbr i _ hw)` using `(hBK (K.plOf i dc (K.colIdx i dc l)) hw (TruncatedSeriesCountingIdentities.CoefExt.self (D := D) (i := i) (hw := hw))).2.1`. Establish `hS : Splits (Br.LL D.nbr i _ hw) (K` using `Br.Kw D.nbr i _ hw) (Qp := ℚ_[D.nd.l i]) := LargeLevelLemmas.splits_coef (TruncatedSeriesCountingIdentities.CoefExt.self (D := D) (i := i) (hw := hw))`. Conclude with `rank_le_count (Br.PD D.loc D.nbr i _ hw) hBK' hS (repX i dc r χ x' (K.colIdx i dc l) hw) (repW i dc ρ π (K.colIdx i dc l) hw) hc hW.2.1 hcr hW.1 hlow hW.2.2 hneg (invariants_twist_eq_bot i dc ρ π rX hG2 (K.colIdx i dc l) hw) hfin`.
+-/
 theorem dimLx_of (rX : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (x' : X') (l : K.Col i dc)
     (hBK : TruncatedSeriesCountingIdentities.admBK i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i rX ρ π)
     (hc : ContX i dc r χ x' l) (hcr : CrysX i dc r χ x' l) (hneg : NegX i dc r χ ρ π x' l)
@@ -494,6 +606,11 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (r : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* R') (χ : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* Tcˣ)
   (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
 
+/- English proof (translation)
+Establish `h : Module.rank (FractionRing (D.nd.O i)) (d → FractionRing (D.nd.O i)) = Module.rank LL (TrV e (EvalSp (D.nd.O i) d R' x'))` using `rank_eq_of_equiv_equiv e (AddEquiv.refl _) e.bijective (fun k v => by show k • v = e.symm (e k) • v`. Rewrite using `[RingEquiv.symm_apply_apply])`. Establish `h2 : Module.finrank (FractionRing (D.nd.O i)) (d → FractionRing (D.nd.O i)) = Module.finrank LL (TrV e (EvalSp (D.nd.O i) d R' x'))` using `congrArg Cardinal.toNat h`. Rewrite using `[← h2]`. Use `first`.
+
+Consider the case `simp`. Consider the case `exact Module.finrank_fintype_fun_eq_card _`.
+-/
 theorem finrank_TrV (x' : X') {LL : Type} [Field LL] (e : FractionRing (D.nd.O i) ≃+* LL) :
     Module.finrank LL (TrV e (EvalSp (D.nd.O i) d R' x')) = Fintype.card d := by
   have h : Module.rank (FractionRing (D.nd.O i)) (d → FractionRing (D.nd.O i)) =
@@ -528,6 +645,11 @@ def grepX (x' : X') (l : K.Col i dc) (hc : ContX i dc r χ x' l) :
     ρ := repX i dc r χ x' (K.colIdx i dc l) (col_over i dc l)
     cont := hc }
 
+/- English proof (translation)
+Establish `hw` using `col_over i dc l`. Establish `hF` using `(hFont (K.plOf i dc (K.colIdx i dc l)) hw (TruncatedSeriesCountingIdentities.CoefExt.self (D := D) (i := i) (hw := hw))).2.2.2`. Establish `hDR` using `hF (grepX i dc r χ x' l hc) hcr`. Use `letI := evalModO i (R' := R') x'`. Use `haveI := evalTower i (R' := R') x'`.
+
+Use `haveI := finDim_TrV (V := EvalSp (D.nd.O i) d R' x') (eK (D.nbr i _ hw))`. Conclude with `filLow_of_dR (Br.PD D.loc D.nbr i _ hw) (repX i dc r χ x' (K.colIdx i dc l) hw) (by rw [finrank_TrV]; exact hd) hDR`.
+-/
 theorem filLowX_of (hFont : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hd : 0 < Fintype.card d) (x' : X') (l : K.Col i dc)
     (hc : ContX i dc r χ x' l) (hcr : CrysX i dc r χ x' l) : FilLowX i dc r χ x' l := by
   have hw := col_over i dc l
@@ -547,6 +669,11 @@ def grepW (l : K.Col i dc)
   ρ := repW i dc ρ π (K.colIdx i dc l) (col_over i dc l)
   cont := hc
 
+/- English proof (translation)
+Use `⟨hcr, hc, ?_⟩` and prove the remaining obligations. Establish `hw` using `col_over i dc l`. Establish `hF` using `(hFont (K.plOf i dc (K.colIdx i dc l)) hw (TruncatedSeriesCountingIdentities.CoefExt.self (D := D) (i := i) (hw := hw))).2.2.2`. Establish `hDR` using `hF (grepW i dc ρ π l hc) hcr`. Establish `hpos : 0 < Module.finrank (Br.LL D.nbr i _ hw) (Fin D.R.r → Br.LL D.nbr i _ hw)` using `by first`.
+
+Consider the case `(rw [Module.finrank_fin_fun]; exact hr)`. Consider the case `simpa using hr`. Conclude with `filLow_of_dR (Br.PD D.loc D.nbr i _ hw) (repW i dc ρ π (K.colIdx i dc l) hw) hpos hDR`.
+-/
 theorem goodW_of (hFont : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i) (hr : 0 < D.R.r) (l : K.Col i dc)
     (hcr : IsCrys (Br.PD D.loc D.nbr i _ (col_over i dc l)) (repW i dc ρ π (K.colIdx i dc l) (col_over i dc l)))
     (hc : ∀ v, Continuous fun g => repW i dc ρ π (K.colIdx i dc l) (col_over i dc l) g v) :
@@ -579,6 +706,9 @@ def CrysW (l : K.Col i dc) : Prop :=
 def ContW (l : K.Col i dc) : Prop :=
   ∀ v, Continuous fun g => repW i dc ρ π (K.colIdx i dc l) (col_over i dc l) g v
 
+/- English proof (translation)
+The claim follows from `dimLx_of i dc r χ ρ π rX x' l hBK hG2 hc hcr hneg (filLowX_of i dc r χ hFont hd x' l hc hcr) hfin (goodW_of i dc ρ π hFont hr l hcrW hcW)`.
+-/
 theorem dimLx_of_font (rX : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (x' : X') (l : K.Col i dc)
     (hd : 0 < Fintype.card d) (hr : 0 < D.R.r)
     (hBK : TruncatedSeriesCountingIdentities.admBK i) (hG2 : TruncatedSeriesCountingIdentities.admG2 i rX ρ π) (hFont : TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL i)

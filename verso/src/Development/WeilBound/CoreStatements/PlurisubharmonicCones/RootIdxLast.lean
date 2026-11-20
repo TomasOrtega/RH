@@ -16,6 +16,9 @@ section Det
 variable {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ : Sp Ω ⟶ X} {ξ' : Sp Ω' ⟶ X'} {f : X' ⟶ X} {i : Ω →+* Ω'}
   {V V' : Type} [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V'] {j : V →+ V'}
 
+/- English proof (translation)
+Rewrite using `[hT k, map_sum]`. Simplify using `only [hj.1, hT₁, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul, RingHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+-/
 theorem map_comb (hj : IsExtOver i j) {r : ℕ} {s c : Fin r → V} {b₀ : Fin r → V'} {T : Matrix (Fin r) (Fin r) Ω}
     {T₁ : Matrix (Fin r) (Fin r) Ω'} (hT : ∀ k, c k = ∑ l, T l k • s l) (hT₁ : ∀ k, j (s k) = ∑ l, T₁ l k • b₀ l) (k : Fin r) :
     j (c k) = ∑ l, (T₁ * i.mapMatrix T) l k • b₀ l := by
@@ -25,6 +28,23 @@ theorem map_comb (hj : IsExtOver i j) {r : ℕ} {s c : Fin r → V} {b₀ : Fin 
   rw [Finset.sum_comm]
   simp only [mul_comm]
 
+/- English proof (translation)
+Set `g : Cpt ξ'` to `⟨genPt ξ', specializes_rfl⟩`. Take `⟨hg, hgreg, -⟩` from `RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' f i hd g`. Take `⟨U₀, hU₀, b, hb, hfr⟩` from `hL ⟨f g.1, hg⟩ trivial`. Establish `hbf` using `hfr _ trivial hU₀`. Establish `hsU' : Submodule.span Ω (Set.range s) = U`.
+
+Establish `: FiniteDimensional Ω U` using `hb ▸ FiniteDimensional.span_of_finite _ (Set.finite_range _)`. Use `Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact hsU k)) ?_` and prove the remaining obligations. Rewrite using `[finrank_span_eq_card hs, ← hb, finrank_span_eq_card hbf.1]`. Establish `hjb : ∀ k, j (b k) ∈ Submodule.span Ω' (Set.range b₀)`. Introduce `k`.
+
+Take `⟨U₁, hU₁, b', hb', hfr'⟩` from `hF g trivial`. Establish `e1 : ∀ c : Fin r → V', flagStep Ω' c r = Submodule.span Ω' (Set.range c)` using `fun c => by`. Unfold `flagStep`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← e1, ← hb', e1]`. Establish `h1 : j (b k) ∈ (L.pull ξ' f j) g`. Rewrite using `[(FlagPull.pull_isFrameAt hd hj g hg hbf).2]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+
+Rewrite `h1` using `[(hfr' g trivial hU₁).2]`. Conclude with `Submodule.span_le_restrictScalars (regAt ξ' g) Ω' _ h1`. Establish `hjs : ∀ k, j (s k) ∈ Submodule.span Ω' (Set.range b₀)`. Introduce `k`. Take `⟨T, hT⟩` from `exists_mat (Ω := Ω) (b := s) (s := b) fun k => by rw [hb]; exact hsU k`.
+
+Rewrite using `[hT k, map_sum]`. Conclude with `Submodule.sum_mem _ fun k' _ => by rw [hj.1]; exact Submodule.smul_mem _ _ (hjb k')`. Take `⟨T₁, hT₁⟩` from `exists_mat hjs`. Establish `main : ∀ (q : Cpt ξ') (h : genPt ξ ⤳ f q.1), ∃ t, (detLat L s).IsGenAt ⟨f q.1, h⟩ t ∧ (detLat (L.pull ξ' f j) b₀).IsGenAt q (T₁.det * i t)`. Introduce `q h`.
+
+Take `⟨U₂, hU₂, c, hc, hcf⟩` from `hL ⟨f q.1, h⟩ trivial`. Establish `hcf'` using `hcf _ trivial hU₂`. Take `⟨T, hT⟩` from `exists_mat (Ω := Ω) (b := c) (s := s) fun k => by`. Rewrite using `[hsU', ← hc]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+
+Use `⟨T.det, GlobalTheory.T.det_lattice_frame_gen X Ω ξ V L r s c T _ hs hcf' hT, ?_⟩` and prove the remaining obligations. Establish `h2` using `GlobalTheory.T.det_lattice_frame_gen X' Ω' ξ' V' (L.pull ξ' f j) r b₀ (fun k => j (c k)) (T₁ * i.mapMatrix T) q hb₀ (FlagPull.pull_isFrameAt hd hj q h hcf') (map_comb hj hT hT₁)`. Rewrite `h2` using `[Matrix.det_mul, ← RingHom.map_det]`. Then use the resulting hypothesis. Take `⟨t, -, ht⟩` from `main g hg`. Conclude with `⟨T₁, hT₁, left_ne_zero_of_mul ht.1, main⟩`.
+-/
 theorem det_pull' {L : Lat ξ V} {r : ℕ} {s : Fin r → V} {U : Submodule Ω V} (hd : GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i)
     (hj : IsExtOver i j) (hs : LinearIndependent Ω s) (hsU : ∀ k, s k ∈ U) (hL : L.IsVB r U)
     {b₀ : Fin r → V'} (hb₀ : LinearIndependent Ω' b₀) (hF : (L.pull ξ' f j).IsFlagVBOn Set.univ b₀) :
@@ -76,6 +96,13 @@ theorem det_pull' {L : Lat ξ V} {r : ℕ} {s : Fin r → V} {U : Submodule Ω V
 variable {K K' : Type} [Fintype K] [Fintype K'] {J : K → Type} {J' : K' → Type} [∀ k, Fintype (J k)] [∀ k, Fintype (J' k)]
   {κ : K → K'} {v : (Σ k, J k) → Σ k, J' k} {y : (Σ k, J k) → Ω} {y' : (Σ k, J' k) → Ω'}
 
+/- English proof (translation)
+Establish `hU : ∏ τ, u τ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => hu τ`. Use `⟨mul_ne_zero (inv_ne_zero hU) ((map_ne_zero i).2 h.1), fun q _ c' hc' => ?_⟩` and prove the remaining obligations. Take `⟨hq, hreg, -⟩` from `RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' f i hd q`. Take `⟨d, hdv⟩` from `FlagPull.exists_chart hv c'`. Take `⟨r1, r2⟩` from `FlagPull.ratio_reg hv hy hc' hdv`.
+
+Establish `hc` using `FlagPull.inChart_of_pull hd hg' hcov q hq r1 r2`. Use `choose t ht ht' using fun τ => hΛ τ q hq`. Establish `g1` using `uMap hreg (gen_unit (deg_gen h hc) (Flag.tens_gen Λ (fun _ => -1) _ t ht))`. Establish `g2` using `Flag.tens_gen Λ' (fun _ => -1) q _ ht'`. Use `(gen_of_unit (s := (∏ k', y' ⟨k', c' k'⟩ ^ pullDeg κ a k') * ((∏ τ, u τ)⁻¹ * i e₀)) g2 ?_).2` and prove the remaining obligations.
+
+Use `g1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[FlagPull.monomial_pull hv hy a hdv]`. Simplify using `only [_root_.zpow_neg_one, mul_inv, Finset.prod_mul_distrib, Finset.prod_inv_distrib, map_div₀, map_mul, map_inv₀, map_prod i (s := Finset.univ (α := I))]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem deg_pull' {I : Type} [Fintype I] {Λ : I → Lat ξ Ω} {Λ' : I → Lat ξ' Ω'} {u : I → Ω'} (hu : ∀ τ, u τ ≠ 0)
     (hd : GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i) (hg' : IsCptGen ξ')
     (hcov : ∀ p : Cpt ξ, ∃ c, InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c p)
@@ -106,6 +133,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 
 def lastRoot (D : Datum H) (a : CMType H × Fin D.q) : CMType H × Fin (D.p + D.q) := (a.1, Fin.natAdd D.p a.2.rev)
 
+/- English proof (translation)
+Unfold `HodgeCpt.rootIdx lastRoot`. Rewrite using `[dif_neg (by simp)]`. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Use `a.2.2` as an intermediate fact.
+
+Simplify using `only [Fin.val_natAdd, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rootIdx_last (a : CMType H × Fin D.q) : HodgeCpt.rootIdx D (lastRoot D a) = ⟨.inr a.1, a.2⟩ := by
   unfold HodgeCpt.rootIdx lastRoot
   rw [dif_neg (by simp)]
@@ -115,9 +147,49 @@ theorem rootIdx_last (a : CMType H × Fin D.q) : HodgeCpt.rootIdx D (lastRoot D 
   simp only [Fin.val_natAdd, Fin.val_rev]
   omega
 
+/- English proof (translation)
+Simplify using `[HodgeCpt.rootSgn, lastRoot]`.
+-/
 theorem rootSgn_last (a : CMType H × Fin D.q) : HodgeCpt.rootSgn D (lastRoot D a) = -1 := by
   simp [HodgeCpt.rootSgn, lastRoot]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hb₀ : ∀ σ, LinearIndependent Ω (Fl.b σ)`. Take `⟨_, _, -, -, -, h, -⟩` from `Fl.generic`. Conclude with `h`. Use `choose T₁ hT₁ hu hmain using fun τ => det_pull' (L := V₂ τ) hd hj (hs τ) (hsU τ) (hvb τ) (hb₀ (.inr τ)) (by rw [← hV]; exact Fl.sub _)`.
+
+Establish `D2` using `deg_pull' hu hd 𝔐.tie.gen hcov hmain hv hy hdeg`. Simplify using `only [← hV] at D2`. Rewrite `D2` using `[← hA'.1]`. Establish `hU : ∏ τ, (T₁ τ).det ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => hu τ`. Establish `he₁ : ∏ a, e (lastRoot D a) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => (hR _).1`.
+
+Establish `D1 : (Lat.tens (fun τ => detLat (𝔐.V (.inr τ)) (Fl.b (.inr τ))) fun _ => -1).IsDegOn Set.univ y A.a (∏ a, e (lastRoot D a))`. Use `⟨he₁, fun q _ ch hch => ?_⟩` and prove the remaining obligations. Establish `g1 : ∀ τ k, ((𝔐.V (.inr τ)).gr (Fl.b (.inr τ)) k).IsGenAt q (((∏ b, y ⟨b, ch b⟩ ^ (L (lastRoot D (τ, k))).a b) * e (lastRoot D (τ, k))) ^ (-1 : ℤ))` using `fun τ k => by`. Establish `h` using `deg_gen (hR (lastRoot D (τ, k))) hch`. Unfold `HodgeCpt.Flag.rootLat at h`.
+
+Rewrite `h` using `[rootIdx_last, rootSgn_last]`. Conclude with `gen_untens (by norm_num) h`. Establish `g2` using `Flag.tens_gen (fun τ => detLat (𝔐.V (.inr τ)) (Fl.b (.inr τ))) (fun _ => -1) q _ fun τ => by`. Rewrite using `[GlobalTheory.T.det_lattice_flag_tensor _ _ _ _ _ _ _ (hb₀ _) (Fl.sub _)]`. Conclude with `Flag.tens_gen _ _ q _ (g1 τ)`.
+
+Rewrite using `[g2.2, ha, mono_sum _ (chart_ne hch), smul_eq_mul, ← Finset.prod_mul_distrib, Fintype.prod_prod_type]`. Simplify using `only [_root_.zpow_neg_one, zpow_one, Finset.prod_inv_distrib, inv_inv]`. Both sides reduce to the same expression. Use `set ρ : Ω := (∏ τ, (T₁ τ).det)⁻¹ * i e₀ / ∏ a, e (lastRoot D a) with hρ`. Establish `hρe : ρ * ∏ a, e (lastRoot D a) = (∏ τ, (T₁ τ).det)⁻¹ * i e₀` using `div_mul_cancel₀ _ he₁`.
+
+Establish `hne : ∀ k, ∃ a, y ⟨k, a⟩ ≠ 0`. Take `⟨ch, hc⟩` from `𝔐.tie.cover ⟨genPt 𝔐.ξ, specializes_rfl⟩`. Conclude with `fun k => ⟨ch k, chart_ne hc k⟩`. Take `⟨f₁, f₂, hfg, hval⟩` from `GlobalTheory.T.degree_lattice_quotient_forms _ Ω 𝔐.ξ K J y Ω _ A.a A'.a _ ρ 𝔐.tie hB hne D1 (by rw [smul_eq_mul, hρe]; exact D2)`. Use `⟨f₁, f₂, hfg, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `w ⟨z, hzw, hzI⟩ u₁ u₂ huv hu₁`. Establish `hq : genPt 𝔐.ξ ⤳ centre z` using `𝔐.all _`. Take `⟨hp, b, T, Γ, hb, hsec⟩` from `hmet z w hzw hzI`. Take `⟨φ, hφ, hup⟩` from `gram_up m hξ₂ 𝔐.tie.gen hd M₂ 𝔐.M j hpt z hq hp`. Establish `hfl : ∀ τ, ∃ cc : Fin D.q → 𝔐.Li, (∀ k, flagStep Ω cc k = flagStep Ω (Fl.b (.inr τ)) k) ∧ (𝔐.V (.inr τ)).IsFrameAt cc ⟨centre z, hq⟩` using `fun τ => by`.
+
+Take `⟨U₁, hU₁, cc, h1, h2⟩` from `Fl.sub (.inr τ) ⟨centre z, hq⟩ trivial`. Conclude with `⟨cc, h1, h2 _ trivial hU₁⟩`. Use `choose cc hcf hcv using hfl`. Establish `hjb : ∀ τ, (𝔐.V (.inr τ)).IsFrameAt (fun k => j (b τ k)) ⟨centre z, hq⟩` using `fun τ => by`. Rewrite using `[hV]`.
+
+Conclude with `FlagPull.pull_isFrameAt hd hj ⟨centre z, hq⟩ hp (hb τ).1`. Use `choose P hP hPu using fun τ => frame_mat (regAt 𝔐.ξ ⟨centre z, hq⟩) (hcv τ).1 ((hjb τ).2.symm.trans (hcv τ).2)`. Establish `hCd : ∀ τ, ((P τ).map φ).det ≠ 0` using `fun τ => by`. Use `((hPu τ).map φ).ne_zero` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+
+Establish `hpd : ∀ τ, (((P τ).map φ)ᴴ * Γ τ * (P τ).map φ).PosDef` using `fun τ => (hb τ).2.2.2.conjTranspose_mul_mul_same (Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (hCd τ))))`. Use `choose tt htt using fun τ (k : Fin D.q) => GrNorm.exists_sub_mem_flagStep (b := Fl.b (.inr τ)) k (x := cc τ k) (by`. Rewrite using `[← hcf]`. Conclude with `Submodule.subset_span ⟨k, Nat.lt_succ_self _, rfl⟩)`. Set `ν : CMType H × Fin D.q → ℝ` to `fun a => Real.sqrt (leadMinor (((P a.1).map φ)ᴴ * Γ a.1 * (P a.1).map φ) (a.2 + 1) / leadMinor (((P a.1).map φ)ᴴ * Γ a.1 * (P a.1).map φ) a.2)`.
+
+Establish `s0 : ∀ a : CMType H × Fin D.q, SecNorm 𝔐.ξ y (L (lastRoot D a)) (e (lastRoot D a)) z w (tt a.1 a.2)⁻¹ (ν a)⁻¹`. Introduce `a`. Establish `h` using `hH (lastRoot D a) z w hzw hzI (tt a.1 a.2) (ν a)`. Rewrite `h` using `[rootIdx_last, rootSgn_last, _root_.zpow_neg_one, _root_.zpow_neg_one]`. Conclude with `h ⟨hq, cc a.1, _, hcf a.1, hcv a.1, htt a.1 a.2, hup _ _ _ _ _ (hb a.1).2.2.1 (hP a.1), hpd a.1, rfl⟩`.
+
+Establish `s1` using `secNorm_prod hq hzw s0 ha (hh w)`. Establish `hcval : ValAt 𝔐.ξ z (∏ τ, ((P τ).det : Ω)) (∏ τ, ((P τ).map φ).det)` using `valAt_prod hq _ fun τ => by`. Use `hφ (P τ).det` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Establish `s2` using `RootIso.secNorm_scale (HodgePull.secNorm_pull hd hv hy hA' hq hzw hsec hcval (Finset.prod_ne_zero_iff.2 fun τ _ => hCd τ) (-1)) (inv_ne_zero hU)`.
+
+Establish `et : ∀ τ, ∏ k, tt τ k = (T₁ τ).det * i (T τ).det * ((P τ).det : Ω)` using `fun τ => by`. Establish `hm` using `map_comb hj (hb τ).2.1 (hT₁ τ)`. Use `(det_tri (r := D.q) (hb₀ (.inr τ)) (htt τ) (T₁ τ * i.mapMatrix (T τ) * (regAt 𝔐.ξ ⟨centre z, hq⟩).subtype.mapMatrix (P τ)) fun k => ?_).symm.trans ?_` and prove the remaining obligations. Use `swap`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, ← RingHom.map_det, ← RingHom.map_det]`.
+
+Both sides reduce to the same expression. Rewrite using `[hP τ k]`. Simplify using `only [hm, Finset.smul_sum, smul_smul, Matrix.mul_apply (N := (regAt 𝔐.ξ ⟨centre z, hq⟩).subtype.mapMatrix (P τ)), Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Establish `eν : ∀ τ, ∏ k, ν (τ, k) = ‖((P τ).map φ).det‖ * Real.sqrt (Γ τ).det.re` using `fun τ => (prod_sqrt_lead (hpd τ)).trans (sqrt_det_conj _ _)`. Establish `e1 : ∏ a : CMType H × Fin D.q, (tt a.1 a.2)⁻¹ = (∏ τ, (T₁ τ).det)⁻¹ * ((∏ τ, ((P τ).det : Ω)) ^ (-1 : ℤ) * i (∏ τ, (T τ).det)⁻¹)`. Rewrite using `[Finset.prod_inv_distrib, Fintype.prod_prod_type]`.
+
+Simplify using `only [et, Finset.prod_mul_distrib, map_inv₀, map_prod, _root_.zpow_neg_one, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∏ a, (ν a)⁻¹ = ‖∏ τ, ((P τ).map φ).det‖ ^ (-1 : ℤ) * (∏ τ, Real.sqrt (Γ τ).det.re)⁻¹`. Rewrite using `[Finset.prod_inv_distrib, Fintype.prod_prod_type]`. Simplify using `only [eν, Finset.prod_mul_distrib, norm_prod, _root_.zpow_neg_one, mul_inv]`.
+
+Rewrite `s2` using `[← e1, ← e2, ← hρe]`. Establish `hνpos : 0 < ∏ a, (ν a)⁻¹` using `Finset.prod_pos fun a _ => inv_pos.2 (Real.sqrt_pos.2 (div_pos (leadMinor_pos_of_posDef (hpd a.1) a.2.2) (leadMinor_pos_of_posDef (hpd a.1) a.2.2.le)))`. Establish `key` using `GlobalTheory.T.section_norm_isomorphic_lines _ Ω _ K J y A A' _ ρ _ f₁ f₂ u₁ u₂ _ w _ 𝔐.tie.gen hzw he₁ hfg hval s1 s2 hνpos huv hu₁`. Establish `hA` using `A.pos w fun k => (hzw.1 k).imp fun _ hc => hc.ne_zero`. Establish `hu' : ‖evC w u₁‖ ≠ 0` using `norm_ne_zero_iff.2 hu₁`.
+
+Use `show (0 : ℝ) = Real.log (‖evC w u₂‖ / ‖evC w u₁‖ * A'.h w / A.h w)`. Establish `: ‖evC w u₂‖ / ‖evC w u₁‖ * A'.h w / A.h w = 1`. Rewrite using `[div_mul_eq_mul_div, key]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Real.log_one]`.
+-/
 theorem core (𝔐 : HodgeCpt Y S y) (Fl : 𝔐.Flag) (hB : Birational y) {e : CMType H × Fin (D.p + D.q) → Ω}
     (L : CMType H × Fin (D.p + D.q) → HermLine J) (hR : Fl.RootLines (fun r => (L r).a) e)
     (hH : ∀ r, Fl.IsHodgeLine r (e r) (L r))

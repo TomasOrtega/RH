@@ -39,6 +39,9 @@ def HasTrace (T : H →L[ℂ] H) (c : ℂ) : Prop := IsTraceClass T ∧ trace T 
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+Establish `h` using `lp.hasSum_norm (p := 2) (by norm_num) (e.repr x)`. Simplify `h` using `[e.repr_apply_apply]`.
+-/
 theorem hasSum_norm_inner_sq (e : HilbertBasis ι ℂ H) (x : H) :
     HasSum (fun i => ‖⟪e i, x⟫_ℂ‖ ^ 2) (‖x‖ ^ 2) := by
   have h := lp.hasSum_norm (p := 2) (by norm_num) (e.repr x)
@@ -46,6 +49,9 @@ theorem hasSum_norm_inner_sq (e : HilbertBasis ι ℂ H) (x : H) :
 
 omit [CompleteSpace H] [CompleteSpace K] in
 
+/- English proof (translation)
+Rewrite using `[summable_prod_of_nonneg (fun _ => sq_nonneg _)]`. Use `⟨fun i => (hasSum_norm_inner_sq f (T (e i))).summable, ?_⟩` and prove the remaining obligations. Simplify `h` using `only [(hasSum_norm_inner_sq f _).tsum_eq]`.
+-/
 theorem summable_matrix (e : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ K) {T : H →L[ℂ] K}
     (h : Summable fun i => ‖T (e i)‖ ^ 2) :
     Summable fun p : ι × κ => ‖⟪f p.2, T (e p.1)⟫_ℂ‖ ^ 2 := by
@@ -53,6 +59,11 @@ theorem summable_matrix (e : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ K) 
   refine ⟨fun i => (hasSum_norm_inner_sq f (T (e i))).summable, ?_⟩
   simpa only [(hasSum_norm_inner_sq f _).tsum_eq] using h
 
+/- English proof (translation)
+Establish `hF` using `(summable_matrix e f h.summable).hasSum`. Establish `hs` using `h.unique (hF.prod_fiberwise fun i => hasSum_norm_inner_sq f (T (e i)))`. Rewrite `hF` using `[← hs, ← (Equiv.prodComm κ ι).hasSum_iff]`. Use `hF.prod_fiberwise fun j => ?_` and prove the remaining obligations. Use `hasSum_norm_inner_sq e (adjoint T (f j))` as an intermediate fact.
+
+Simplify using `only [adjoint_inner_right] at this`. Simplify `this` using `[Function.comp_def, norm_inner_symm (T _)]`.
+-/
 theorem hasSum_adjoint (e : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ K) {T : H →L[ℂ] K} {s : ℝ}
     (h : HasSum (fun i => ‖T (e i)‖ ^ 2) s) : HasSum (fun j => ‖adjoint T (f j)‖ ^ 2) s := by
   have hF := (summable_matrix e f h.summable).hasSum
@@ -63,24 +74,39 @@ theorem hasSum_adjoint (e : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ K) {
   simp only [adjoint_inner_right] at this
   simpa [Function.comp_def, norm_inner_symm (T _)] using this
 
+/- English proof (translation)
+Simplify using `using hasSum_adjoint (stdBasis K) e' (hasSum_adjoint e (stdBasis K) h)`.
+-/
 theorem hasSum_basis (e : HilbertBasis ι ℂ H) (e' : HilbertBasis κ ℂ H) {T : H →L[ℂ] K} {s : ℝ}
     (h : HasSum (fun i => ‖T (e i)‖ ^ 2) s) : HasSum (fun j => ‖T (e' j)‖ ^ 2) s := by
   simpa using hasSum_adjoint (stdBasis K) e' (hasSum_adjoint e (stdBasis K) h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => (hasSum_basis _ e h.hasSum).summable, fun h => (hasSum_basis e _ h.hasSum).summable⟩`.
+-/
 theorem isHilbertSchmidt_iff (e : HilbertBasis ι ℂ H) {T : H →L[ℂ] K} :
     IsHilbertSchmidt T ↔ Summable fun i => ‖T (e i)‖ ^ 2 :=
   ⟨fun h => (hasSum_basis _ e h.hasSum).summable, fun h => (hasSum_basis e _ h.hasSum).summable⟩
 
+/- English proof (translation)
+The claim follows from `hasSum_basis _ e (Summable.hasSum h)`.
+-/
 theorem IsHilbertSchmidt.hasSum {T : H →L[ℂ] K} (h : IsHilbertSchmidt T) (e : HilbertBasis ι ℂ H) :
     HasSum (fun i => ‖T (e i)‖ ^ 2) (hsNormSq T) :=
   hasSum_basis _ e (Summable.hasSum h)
 
+/- English proof (translation)
+The claim follows from `(hasSum_adjoint _ _ (Summable.hasSum h)).summable`.
+-/
 theorem IsHilbertSchmidt.adjoint {T : H →L[ℂ] K} (h : IsHilbertSchmidt T) :
     IsHilbertSchmidt (adjoint T) :=
   (hasSum_adjoint _ _ (Summable.hasSum h)).summable
 
 omit [CompleteSpace K] [CompleteSpace L] in
 
+/- English proof (translation)
+Use `Summable.of_nonneg_of_le (fun _ => sq_nonneg _) (fun i => ?_) (Summable.mul_left (c ^ 2) h)` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hS _) 2`.
+-/
 theorem IsHilbertSchmidt.of_norm_le {T : H →L[ℂ] K} {S : H →L[ℂ] L} (h : IsHilbertSchmidt T)
     (c : ℝ) (hS : ∀ x, ‖S x‖ ≤ c * ‖T x‖) : IsHilbertSchmidt S := by
   refine Summable.of_nonneg_of_le (fun _ => sq_nonneg _) (fun i => ?_) (Summable.mul_left (c ^ 2) h)
@@ -89,21 +115,33 @@ theorem IsHilbertSchmidt.of_norm_le {T : H →L[ℂ] K} {S : H →L[ℂ] L} (h :
 
 omit [CompleteSpace K] [CompleteSpace L] in
 
+/- English proof (translation)
+The claim follows from `h.of_norm_le ‖A‖ fun x => A.le_opNorm _`.
+-/
 theorem IsHilbertSchmidt.comp_left {T : H →L[ℂ] K} (h : IsHilbertSchmidt T) (A : K →L[ℂ] L) :
     IsHilbertSchmidt (A ∘L T) :=
   h.of_norm_le ‖A‖ fun x => A.le_opNorm _
 
+/- English proof (translation)
+Simplify using `using (h.adjoint.comp_left (ContinuousLinearMap.adjoint A)).adjoint`.
+-/
 theorem IsHilbertSchmidt.comp_right {T : H →L[ℂ] K} (h : IsHilbertSchmidt T) (A : L →L[ℂ] H) :
     IsHilbertSchmidt (T ∘L A) := by
   simpa using (h.adjoint.comp_left (ContinuousLinearMap.adjoint A)).adjoint
 
 omit [CompleteSpace K] in
 
+/- English proof (translation)
+Simplify using `[IsHilbertSchmidt, summable_zero]`.
+-/
 theorem isHilbertSchmidt_zero : IsHilbertSchmidt (0 : H →L[ℂ] K) := by
   simp [IsHilbertSchmidt, summable_zero]
 
 omit [CompleteSpace K] in
 
+/- English proof (translation)
+Use `Summable.of_nonneg_of_le (fun _ => sq_nonneg _) (fun i => ?_) ((Summable.add hS hT).mul_left 2)` and prove the remaining obligations. Establish `h1` using `norm_add_le (S (stdBasis H i)) (T (stdBasis H i))`. Establish `h2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Rewrite using `[add_apply]`. Use polynomial arithmetic with `[sq_nonneg (‖S (stdBasis H i)‖ - ‖T (stdBasis H i)‖)]`.
+-/
 theorem IsHilbertSchmidt.add {S T : H →L[ℂ] K} (hS : IsHilbertSchmidt S) (hT : IsHilbertSchmidt T) :
     IsHilbertSchmidt (S + T) := by
   refine Summable.of_nonneg_of_le (fun _ => sq_nonneg _) (fun i => ?_)
@@ -115,17 +153,30 @@ theorem IsHilbertSchmidt.add {S T : H →L[ℂ] K} (hS : IsHilbertSchmidt S) (hT
 
 omit [CompleteSpace K] in
 
+/- English proof (translation)
+The claim follows from `h.of_norm_le ‖c‖ fun x => by simp [norm_smul]`.
+-/
 theorem IsHilbertSchmidt.smul {T : H →L[ℂ] K} (h : IsHilbertSchmidt T) (c : ℂ) :
     IsHilbertSchmidt (c • T) :=
   h.of_norm_le ‖c‖ fun x => by simp [norm_smul]
 
 omit [CompleteSpace K] in
 
+/- English proof (translation)
+Establish `: Finite (stdIndex H)` using `(stdBasis H).orthonormal.linearIndependent.finite`. Conclude with `Summable.of_finite`.
+-/
 theorem isHilbertSchmidt_of_finiteDimensional [FiniteDimensional ℂ H] (T : H →L[ℂ] K) :
     IsHilbertSchmidt T := by
   have : Finite (stdIndex H) := (stdBasis H).orthonormal.linearIndependent.finite
   exact Summable.of_finite
 
+/- English proof (translation)
+Establish `h1` using `summable_matrix e f ((isHilbertSchmidt_iff e).1 hC)`. Establish `h2` using `(Equiv.prodComm ι κ).summable_iff.2 (summable_matrix f e ((isHilbertSchmidt_iff f).1 hB))`. Establish `hF : Summable fun p : ι × κ => ⟪e p.1, B (f p.2)⟫_ℂ * ⟪f p.2, C (e p.1)⟫_ℂ`. Use `Summable.of_norm_bounded (h1.add h2) fun p => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_def, Equiv.prodComm_apply, Prod.fst_swap, Prod.snd_swap, norm_mul]`.
+
+Use polynomial arithmetic with `[sq_nonneg (‖⟪e p.1, B (f p.2)⟫_ℂ‖ - ‖⟪f p.2, C (e p.1)⟫_ℂ‖), mul_nonneg (norm_nonneg ⟪e p.1, B (f p.2)⟫_ℂ) (norm_nonneg ⟪f p.2, C (e p.1)⟫_ℂ)]`. Use `⟨_, hF.hasSum.prod_fiberwise fun i => ?_, ((Equiv.prodComm κ ι).hasSum_iff.2 hF.hasSum).prod_fiberwise fun j => ?_⟩` and prove the remaining obligations. Simplify `f.hasSum_inner_mul_inner (adjoint B (e i)) (C (e i))` using `only [adjoint_inner_left]`. Use `e.hasSum_inner_mul_inner (adjoint C (f j)) (B (f j))` as an intermediate fact. Simplify using `only [adjoint_inner_left] at this`.
+
+Simplify `this` using `[Function.comp_def, mul_comm]`.
+-/
 theorem exists_hasSum_comp (e : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ K)
     {B : K →L[ℂ] H} {C : H →L[ℂ] K} (hB : IsHilbertSchmidt B) (hC : IsHilbertSchmidt C) :
     ∃ s : ℂ, HasSum (fun i => ⟪e i, B (C (e i))⟫_ℂ) s ∧ HasSum (fun j => ⟪f j, C (B (f j))⟫_ℂ) s := by
@@ -143,6 +194,9 @@ theorem exists_hasSum_comp (e : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ 
     simp only [adjoint_inner_left] at this
     simpa [Function.comp_def, mul_comm] using this
 
+/- English proof (translation)
+Take `⟨s, h1, h2⟩` from `exists_hasSum_comp e (stdBasis K) hB hC`. Take `⟨t, h3, h4⟩` from `exists_hasSum_comp (stdBasis H) (stdBasis K) hB hC`. Establish `: trace (B ∘L C) = s` using `h3.tsum_eq.trans (h4.unique h2)`. Rewrite using `[this]`. Conclude with `h1`.
+-/
 theorem hasSum_trace_comp (e : HilbertBasis ι ℂ H)
     {B : K →L[ℂ] H} {C : H →L[ℂ] K} (hB : IsHilbertSchmidt B) (hC : IsHilbertSchmidt C) :
     HasSum (fun i => ⟪e i, (B ∘L C) (e i)⟫_ℂ) (trace (B ∘L C)) := by
@@ -151,11 +205,19 @@ theorem hasSum_trace_comp (e : HilbertBasis ι ℂ H)
   have : trace (B ∘L C) = s := h3.tsum_eq.trans (h4.unique h2)
   rw [this]; exact h1
 
+/- English proof (translation)
+Take `⟨t, h3, h4⟩` from `exists_hasSum_comp (stdBasis H) (stdBasis K) hB hC`. Conclude with `h3.tsum_eq.trans h4.tsum_eq.symm`.
+-/
 theorem trace_comp_comm {B : K →L[ℂ] H} {C : H →L[ℂ] K} (hB : IsHilbertSchmidt B)
     (hC : IsHilbertSchmidt C) : trace (B ∘L C) = trace (C ∘L B) := by
   obtain ⟨t, h3, h4⟩ := exists_hasSum_comp (stdBasis H) (stdBasis K) hB hC
   exact h3.tsum_eq.trans h4.tsum_eq.symm
 
+/- English proof (translation)
+Take `⟨n, B, C, hB, hC, rfl⟩` from `h`. Establish `key : ∀ {κ : Type _} (f : HilbertBasis κ ℂ H), HasSum (fun i => ⟪f i, (∑ k, B k ∘L C k) (f i)⟫_ℂ) (∑ k, trace (B k ∘L C k))` using `fun f => by`. Simplify `hasSum_sum fun k (_ : k ∈ Finset.univ) => hasSum_trace_comp f (hB k) (hC k)` using `only [ContinuousLinearMap.sum_apply, inner_sum]`. Establish `h2 : HasSum (fun i => ⟪e i, (∑ k, B k ∘L C k) (e i)⟫_ℂ) (∑ k, trace (B k ∘L C k))`. Simplify `hasSum_sum fun k (_ : k ∈ Finset.univ) => hasSum_trace_comp e (hB k) (hC k)` using `only [ContinuousLinearMap.sum_apply, inner_sum]`.
+
+Rewrite using `[show trace (∑ k, B k ∘L C k) = _ from (key (stdBasis H)).tsum_eq]`. Conclude with `h2`.
+-/
 theorem IsTraceClass.hasSum_trace {T : H →L[ℂ] H} (h : IsTraceClass T) (e : HilbertBasis ι ℂ H) :
     HasSum (fun i => ⟪e i, T (e i)⟫_ℂ) (trace T) := by
   obtain ⟨n, B, C, hB, hC, rfl⟩ := h
@@ -169,12 +231,22 @@ theorem IsTraceClass.hasSum_trace {T : H →L[ℂ] H} (h : IsTraceClass T) (e : 
   rw [show trace (∑ k, B k ∘L C k) = _ from (key (stdBasis H)).tsum_eq]
   exact h2
 
+/- English proof (translation)
+The claim follows from `(h.hasSum_trace e).summable.norm`.
+-/
 theorem IsTraceClass.summable_norm {T : H →L[ℂ] H} (h : IsTraceClass T) (e : HilbertBasis ι ℂ H) :
     Summable fun i => ‖⟪e i, T (e i)⟫_ℂ‖ :=
   (h.hasSum_trace e).summable.norm
 
 omit [CompleteSpace L] in
 
+/- English proof (translation)
+Set `M : Submodule ℂ L` to `(LinearMap.range (A : H →ₗ[ℂ] L)).topologicalClosure`. Establish `hM : ∀ x, A x ∈ M` using `fun x => Submodule.le_topologicalClosure _ ⟨x, rfl⟩`. Set `a : H →ₗ[ℂ] M` to `(A : H →ₗ[ℂ] L).codRestrict M hM`. Establish `hd : DenseRange a`. Rewrite using `[DenseRange, Subtype.dense_iff]`.
+
+Introduce `y hy`. Use `closure_mono ?_ (show y ∈ closure (LinearMap.range (A : H →ₗ[ℂ] L) : Set L) from hy)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨a x, ⟨x, rfl⟩, rfl⟩`. Use `⟨(C : H →ₗ[ℂ] K).extendOfNorm a ∘L M.orthogonalProjection, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Establish `h1 : M.orthogonalProjection (A x) = a x` using `Submodule.orthogonalProjection_mem_subspace_eq_self (a x)`. Rewrite using `[comp_apply, comp_apply, h1]`. Conclude with `LinearMap.extendOfNorm_eq hd ⟨1, fun y => by simpa [a] using h y⟩ x`.
+-/
 theorem exists_comp_eq_of_norm_le {C : H →L[ℂ] K} {A : H →L[ℂ] L} (h : ∀ x, ‖C x‖ ≤ ‖A x‖)
     [CompleteSpace L] : ∃ U : L →L[ℂ] K, U ∘L A = C := by
   let M : Submodule ℂ L := (LinearMap.range (A : H →ₗ[ℂ] L)).topologicalClosure
@@ -193,6 +265,11 @@ theorem exists_comp_eq_of_norm_le {C : H →L[ℂ] K} {A : H →L[ℂ] L} (h : �
   rw [comp_apply, comp_apply, h1]
   exact LinearMap.extendOfNorm_eq hd ⟨1, fun y => by simpa [a] using h y⟩ x
 
+/- English proof (translation)
+Establish `hp : (0 : H →L[ℂ] H) ≤ adjoint C ∘L C` using `(nonneg_iff_isPositive _).2 (isPositive_adjoint_comp_self C)`. Use `set A : H →L[ℂ] H := CFC.sqrt (adjoint C ∘L C)`. Establish `hA : IsSelfAdjoint A` using `IsSelfAdjoint.of_nonneg (CFC.sqrt_nonneg _)`. Establish `h2 : A * A = adjoint C ∘L C` using `CFC.sqrt_mul_sqrt_self _ hp`. Establish `h3 : ⟪A x, A x⟫_ℂ = ⟪C x, C x⟫_ℂ`.
+
+Rewrite using `[← adjoint_inner_right, hA.adjoint_eq, ← adjoint_inner_right C]`. Conclude with `congrArg (fun S : H →L[ℂ] H => ⟪x, S x⟫_ℂ) h2`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, h3, ← @norm_eq_sqrt_re_inner ℂ]`.
+-/
 theorem norm_sqrt_apply (C : H →L[ℂ] K) (x : H) :
     ‖(CFC.sqrt (adjoint C ∘L C) : H →L[ℂ] H) x‖ = ‖C x‖ := by
   have hp : (0 : H →L[ℂ] H) ≤ adjoint C ∘L C :=
@@ -205,6 +282,9 @@ theorem norm_sqrt_apply (C : H →L[ℂ] K) (x : H) :
     exact congrArg (fun S : H →L[ℂ] H => ⟪x, S x⟫_ℂ) h2
   rw [@norm_eq_sqrt_re_inner ℂ, h3, ← @norm_eq_sqrt_re_inner ℂ]
 
+/- English proof (translation)
+Take `⟨U, hU⟩` from `exists_comp_eq_of_norm_le fun x => (norm_sqrt_apply C x).ge`. Use `⟨1, fun _ => B ∘L U, fun _ => CFC.sqrt (ContinuousLinearMap.adjoint C ∘L C), fun _ => hB.comp_right U, fun _ => hC.of_norm_le 1 fun x => by rw [norm_sqrt_apply, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one, comp_assoc, hU]`.
+-/
 theorem IsHilbertSchmidt.isTraceClass_comp {B : K →L[ℂ] H} {C : H →L[ℂ] K}
     (hB : IsHilbertSchmidt B) (hC : IsHilbertSchmidt C) : IsTraceClass (B ∘L C) := by
   obtain ⟨U, hU⟩ := exists_comp_eq_of_norm_le fun x => (norm_sqrt_apply C x).ge
@@ -213,9 +293,17 @@ theorem IsHilbertSchmidt.isTraceClass_comp {B : K →L[ℂ] H} {C : H →L[ℂ] 
     fun _ => hC.of_norm_le 1 fun x => by rw [norm_sqrt_apply, one_mul], ?_⟩
   rw [Fin.sum_univ_one, comp_assoc, hU]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ => 0, fun _ => 0, fun i => i.elim0, fun i => i.elim0, by simp⟩`.
+-/
 theorem isTraceClass_zero : IsTraceClass (0 : H →L[ℂ] H) :=
   ⟨0, fun _ => 0, fun _ => 0, fun i => i.elim0, fun i => i.elim0, by simp⟩
 
+/- English proof (translation)
+Take `⟨n, B, C, hB, hC, rfl⟩` from `hS`. Take `⟨m, B', C', hB', hC', rfl⟩` from `hT`. Use `⟨n + m, Fin.append B B', Fin.append C C', fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp [hB, hB']`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp [hC, hC']`.
+
+Simplify using `[Fin.sum_univ_add]`.
+-/
 theorem IsTraceClass.add {S T : H →L[ℂ] H} (hS : IsTraceClass S) (hT : IsTraceClass T) :
     IsTraceClass (S + T) := by
   obtain ⟨n, B, C, hB, hC, rfl⟩ := hS
@@ -225,10 +313,18 @@ theorem IsTraceClass.add {S T : H →L[ℂ] H} (hS : IsTraceClass S) (hT : IsTra
   · refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp [hC, hC']
   · simp [Fin.sum_univ_add]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction T IsTraceClass (fun _ _ => IsTraceClass.add) isTraceClass_zero h`.
+-/
 theorem isTraceClass_sum {α : Type*} (s : Finset α) {T : α → (H →L[ℂ] H)}
     (h : ∀ a ∈ s, IsTraceClass (T a)) : IsTraceClass (∑ a ∈ s, T a) :=
   Finset.sum_induction T IsTraceClass (fun _ _ => IsTraceClass.add) isTraceClass_zero h
 
+/- English proof (translation)
+Take `⟨n, B, C, hB, hC, rfl⟩` from `h`. Establish `: A ∘L (∑ i, B i ∘L C i) ∘L A' = ∑ i, (A ∘L B i) ∘L (C i ∘L A')`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `isTraceClass_sum _ fun i _ => ((hB i).comp_left A).isTraceClass_comp ((hC i).comp_right A')`.
+-/
 theorem IsTraceClass.comp_comp {T : H →L[ℂ] H} (h : IsTraceClass T) (A : H →L[ℂ] K)
     (A' : K →L[ℂ] H) : IsTraceClass (A ∘L T ∘L A') := by
   obtain ⟨n, B, C, hB, hC, rfl⟩ := h
@@ -237,42 +333,76 @@ theorem IsTraceClass.comp_comp {T : H →L[ℂ] H} (h : IsTraceClass T) (A : H �
   rw [this]
   exact isTraceClass_sum _ fun i _ => ((hB i).comp_left A).isTraceClass_comp ((hC i).comp_right A')
 
+/- English proof (translation)
+Simplify using `using h.comp_comp A (ContinuousLinearMap.id ℂ H)`.
+-/
 theorem IsTraceClass.comp_left {T : H →L[ℂ] H} (h : IsTraceClass T) (A : H →L[ℂ] H) :
     IsTraceClass (A ∘L T) := by simpa using h.comp_comp A (ContinuousLinearMap.id ℂ H)
 
+/- English proof (translation)
+Simplify using `using h.comp_comp (ContinuousLinearMap.id ℂ H) A`.
+-/
 theorem IsTraceClass.comp_right {T : H →L[ℂ] H} (h : IsTraceClass T) (A : H →L[ℂ] H) :
     IsTraceClass (T ∘L A) := by simpa using h.comp_comp (ContinuousLinearMap.id ℂ H) A
 
+/- English proof (translation)
+Simplify using `using h.comp_left (c • ContinuousLinearMap.id ℂ H)`.
+-/
 theorem IsTraceClass.smul {T : H →L[ℂ] H} (h : IsTraceClass T) (c : ℂ) : IsTraceClass (c • T) := by
   simpa using h.comp_left (c • ContinuousLinearMap.id ℂ H)
 
+/- English proof (translation)
+Take `⟨n, B, C, hB, hC, rfl⟩` from `h`. Conclude with `⟨n, fun i => ContinuousLinearMap.adjoint (C i), fun i => ContinuousLinearMap.adjoint (B i), fun i => (hC i).adjoint, fun i => (hB i).adjoint, by simp [map_sum]⟩`.
+-/
 theorem IsTraceClass.adjoint {T : H →L[ℂ] H} (h : IsTraceClass T) :
     IsTraceClass (adjoint T) := by
   obtain ⟨n, B, C, hB, hC, rfl⟩ := h
   exact ⟨n, fun i => ContinuousLinearMap.adjoint (C i), fun i => ContinuousLinearMap.adjoint (B i),
     fun i => (hC i).adjoint, fun i => (hB i).adjoint, by simp [map_sum]⟩
 
+/- English proof (translation)
+Take `⟨n, B, C, hB, hC, rfl⟩` from `h`. Conclude with `Finset.sum_induction _ IsHilbertSchmidt (fun _ _ => IsHilbertSchmidt.add) isHilbertSchmidt_zero fun i _ => (hC i).comp_left _`.
+-/
 theorem IsTraceClass.isHilbertSchmidt {T : H →L[ℂ] H} (h : IsTraceClass T) :
     IsHilbertSchmidt T := by
   obtain ⟨n, B, C, hB, hC, rfl⟩ := h
   exact Finset.sum_induction _ IsHilbertSchmidt (fun _ _ => IsHilbertSchmidt.add)
     isHilbertSchmidt_zero fun i _ => (hC i).comp_left _
 
+/- English proof (translation)
+Simplify using `[trace]`.
+-/
 @[simp] theorem trace_zero : trace (0 : H →L[ℂ] H) = 0 := by simp [trace]
 
+/- English proof (translation)
+Use `(hS.hasSum_trace (stdBasis H)).add (hT.hasSum_trace (stdBasis H))` as an intermediate fact. Simplify `this.tsum_eq` using `only [trace, add_apply, inner_add_right]`.
+-/
 theorem trace_add {S T : H →L[ℂ] H} (hS : IsTraceClass S) (hT : IsTraceClass T) :
     trace (S + T) = trace S + trace T := by
   have := (hS.hasSum_trace (stdBasis H)).add (hT.hasSum_trace (stdBasis H))
   simpa only [trace, add_apply, inner_add_right] using this.tsum_eq
 
+/- English proof (translation)
+Use `hasSum_sum fun a (ha : a ∈ s) => (h a ha).hasSum_trace (stdBasis H)` as an intermediate fact. Simplify `this.tsum_eq` using `only [trace, ContinuousLinearMap.sum_apply, inner_sum]`.
+-/
 theorem trace_sum {α : Type*} (s : Finset α) {T : α → (H →L[ℂ] H)}
     (h : ∀ a ∈ s, IsTraceClass (T a)) : trace (∑ a ∈ s, T a) = ∑ a ∈ s, trace (T a) := by
   have := hasSum_sum fun a (ha : a ∈ s) => (h a ha).hasSum_trace (stdBasis H)
   simpa only [trace, ContinuousLinearMap.sum_apply, inner_sum] using this.tsum_eq
 
+/- English proof (translation)
+Simplify using `[trace, inner_smul_right, tsum_mul_left]`.
+-/
 theorem trace_smul (c : ℂ) (T : H →L[ℂ] H) : trace (c • T) = c * trace T := by
   simp [trace, inner_smul_right, tsum_mul_left]
 
+/- English proof (translation)
+Take `⟨n, B, C, hB, hC, rfl⟩` from `h`. Establish `h1 : A ∘L (∑ i, B i ∘L C i) ∘L A' = ∑ i, (A ∘L B i) ∘L (C i ∘L A')`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `h2 : (∑ i, B i ∘L C i) ∘L A' ∘L A = ∑ i, B i ∘L (C i ∘L A' ∘L A)`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, trace_sum _ fun i _ => ((hB i).comp_left A).isTraceClass_comp ((hC i).comp_right A'), trace_sum _ fun i _ => (hB i).isTraceClass_comp ((hC i).comp_right _)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[trace_comp_comm ((hB i).comp_left A) ((hC i).comp_right A'), trace_comp_comm (hB i) ((hC i).comp_right _)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem IsTraceClass.trace_comp_comp {T : H →L[ℂ] H} (h : IsTraceClass T) (A : H →L[ℂ] K)
     (A' : K →L[ℂ] H) : trace (A ∘L T ∘L A') = trace (T ∘L A' ∘L A) := by
   obtain ⟨n, B, C, hB, hC, rfl⟩ := h
@@ -287,12 +417,24 @@ theorem IsTraceClass.trace_comp_comp {T : H →L[ℂ] H} (h : IsTraceClass T) (A
     trace_comp_comm (hB i) ((hC i).comp_right _)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[h.trace_comp_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem IsTraceClass.trace_conj {T : H →L[ℂ] H} (h : IsTraceClass T) (A : H ≃L[ℂ] K) :
     trace ((A : H →L[ℂ] K) ∘L T ∘L (A.symm : K →L[ℂ] H)) = trace T := by
   rw [h.trace_comp_comp]
   congr 1
   ext x; simp
 
+/- English proof (translation)
+Establish `hn : ∀ x, ‖CFC.abs T x‖ = ‖T x‖` using `norm_sqrt_apply T`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨U, hU⟩` from `exists_comp_eq_of_norm_le fun x => (hn x).le`. Rewrite using `[← hU]`.
+
+Conclude with `((h.comp_left U).hasSum_trace e).summable`. Introduce `h`. Take `⟨U, hU⟩` from `exists_comp_eq_of_norm_le fun x => (hn x).ge`. Use `set A : H →L[ℂ] H := CFC.sqrt (CFC.abs T)`. Establish `hA : IsSelfAdjoint A` using `IsSelfAdjoint.of_nonneg (CFC.sqrt_nonneg _)`.
+
+Establish `h2 : A ∘L A = CFC.abs T` using `CFC.sqrt_mul_sqrt_self _ (CFC.abs_nonneg T)`. Establish `hHS : IsHilbertSchmidt A`. Rewrite using `[isHilbertSchmidt_iff e]`. Use `h.norm.congr fun i => ?_` and prove the remaining obligations. Rewrite using `[← h2, comp_apply, ← adjoint_inner_left, hA.adjoint_eq, inner_self_eq_norm_sq_to_K]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← hU, ← h2]`. Conclude with `(hHS.isTraceClass_comp hHS).comp_left U`.
+-/
 theorem isTraceClass_iff_abs (e : HilbertBasis ι ℂ H) {T : H →L[ℂ] H} :
     IsTraceClass T ↔ Summable fun i => ⟪e i, CFC.abs T (e i)⟫_ℂ := by
   have hn : ∀ x, ‖CFC.abs T x‖ = ‖T x‖ := norm_sqrt_apply T
@@ -314,11 +456,17 @@ theorem isTraceClass_iff_abs (e : HilbertBasis ι ℂ H) {T : H →L[ℂ] H} :
     rw [← hU, ← h2]
     exact (hHS.isTraceClass_comp hHS).comp_left U
 
+/- English proof (translation)
+Simplify using `using (isHilbertSchmidt_of_finiteDimensional T).isTraceClass_comp (isHilbertSchmidt_of_finiteDimensional (ContinuousLinearMap.id ℂ H))`.
+-/
 theorem isTraceClass_of_finiteDimensional [FiniteDimensional ℂ H] (T : H →L[ℂ] H) :
     IsTraceClass T := by
   simpa using (isHilbertSchmidt_of_finiteDimensional T).isTraceClass_comp
     (isHilbertSchmidt_of_finiteDimensional (ContinuousLinearMap.id ℂ H))
 
+/- English proof (translation)
+Set `b` to `stdOrthonormalBasis ℂ H`. Rewrite using `[LinearMap.trace_eq_sum_inner _ b, ← ((isTraceClass_of_finiteDimensional T).hasSum_trace b.toHilbertBasis).tsum_eq, tsum_fintype]`. Simplify using the standard rewrite rules.
+-/
 theorem trace_eq_linearMap_trace [FiniteDimensional ℂ H] (T : H →L[ℂ] H) :
     trace T = LinearMap.trace ℂ H (T : H →ₗ[ℂ] H) := by
   let b := stdOrthonormalBasis ℂ H
@@ -326,9 +474,15 @@ theorem trace_eq_linearMap_trace [FiniteDimensional ℂ H] (T : H →L[ℂ] H) :
     ← ((isTraceClass_of_finiteDimensional T).hasSum_trace b.toHilbertBasis).tsum_eq, tsum_fintype]
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isTraceClass_of_finiteDimensional _, by simp [trace_eq_linearMap_trace]⟩`.
+-/
 example (n : ℕ) : HasTrace (ContinuousLinearMap.id ℂ (EuclideanSpace ℂ (Fin n))) n :=
   ⟨isTraceClass_of_finiteDimensional _, by simp [trace_eq_linearMap_trace]⟩
 
+/- English proof (translation)
+Simplify using `[trace_smul, trace_eq_linearMap_trace]`.
+-/
 example : trace (Complex.I • ContinuousLinearMap.id ℂ ℂ) = Complex.I := by
   simp [trace_smul, trace_eq_linearMap_trace]
 
@@ -352,10 +506,18 @@ def charRep (χ : G →* Circle) : G →* (ℂ →L[ℂ] ℂ) where
   map_one' := by ext; simp
   map_mul' g h := by ext; simp [mul_comm]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun g v => by simp [charRep, Circle.norm_coe], fun v => ((continuous_subtype_val.comp hχ).mul continuous_const : Continuous fun g => (χ g : ℂ) * v)⟩`.
+-/
 theorem isUnitaryRep_charRep {χ : G →* Circle} (hχ : Continuous χ) : IsUnitaryRep (charRep χ) :=
   ⟨fun g v => by simp [charRep, Circle.norm_coe], fun v =>
     ((continuous_subtype_val.comp hχ).mul continuous_const : Continuous fun g => (χ g : ℂ) * v)⟩
 
+/- English proof (translation)
+Set `U : H →ₗᵢ[ℂ] H` to `⟨(π g : H →ₗ[ℂ] H), hπ.norm_apply g⟩`. Establish `h1 : π g (π g⁻¹ w) = w`. Establish `: π g * π g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `congrArg (fun S : H →L[ℂ] H => S w) this`. Use `conv_lhs => rw [← h1]`.
+
+Conclude with `U.inner_map_map v (π g⁻¹ w)`.
+-/
 theorem IsUnitaryRep.inner_apply_left {π : G →* (H →L[ℂ] H)} (hπ : IsUnitaryRep π) (g : G)
     (v w : H) : ⟪π g v, w⟫_ℂ = ⟪v, π g⁻¹ w⟫_ℂ := by
   let U : H →ₗᵢ[ℂ] H := ⟨(π g : H →ₗ[ℂ] H), hπ.norm_apply g⟩
@@ -381,6 +543,9 @@ variable {π : G →* (H →L[ℂ] H)} {μ : Measure G} {f f' : G → ℂ}
 
 omit [TopologicalSpace G] [CompleteSpace H] in
 
+/- English proof (translation)
+Establish `h' : ∃ T, IsRepOp π μ f T` using `⟨T, h⟩`. Use extensionality with `v`. Rewrite using `[repOp, dif_pos h', (h'.choose_spec v).2, (h v).2]`.
+-/
 theorem IsRepOp.repOp_eq {T : H →L[ℂ] H} (h : IsRepOp π μ f T) : repOp π μ f = T := by
   have h' : ∃ T, IsRepOp π μ f T := ⟨T, h⟩
   ext v
@@ -388,6 +553,11 @@ theorem IsRepOp.repOp_eq {T : H →L[ℂ] H} (h : IsRepOp π μ f T) : repOp π 
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+Establish `hi : ∀ v, Integrable (fun g => f g • π g v) μ` using `fun v => (hf.norm.mul_const ‖v‖).mono' (hm v) (.of_forall fun g => by simp [norm_smul, hπ.norm_apply])`. Set `T : H →ₗ[ℂ] H` to `{ toFun := fun v => ∫ g, f g • π g v ∂μ map_add' := fun v w => by simp only [map_add, smul_add, integral_add (hi v) (hi w)] map_smul' := fun c v => by`. Simplify using `only [map_smul, RingHom.id_apply, ← integral_smul, smul_comm c] }`. Establish `hT : IsRepOp π μ f (T.mkContinuous (∫ g, ‖f g‖ ∂μ) fun v => by`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Simplify using `only [norm_smul, hπ.norm_apply, integral_mul_const]) := fun v => ⟨hi v, rfl⟩`. Rewrite using `[hT.repOp_eq]` and apply the resulting hypothesis.
+-/
 theorem IsUnitaryRep.isRepOp_of_integrable (hπ : IsUnitaryRep π) (hf : Integrable f μ)
     (hm : ∀ v, AEStronglyMeasurable (fun g => f g • π g v) μ) : IsRepOp π μ f (repOp π μ f) := by
   have hi : ∀ v, Integrable (fun g => f g • π g v) μ := fun v =>
@@ -406,6 +576,9 @@ variable [OpensMeasurableSpace G] [IsFiniteMeasureOnCompacts μ]
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+The claim follows from `hπ.isRepOp_of_integrable (hf.integrable_of_hasCompactSupport hc) fun v => ((hf.smul (hπ.continuous_apply v)).integrable_of_hasCompactSupport hc.smul_right).aestronglyMeasurable`.
+-/
 theorem IsUnitaryRep.isRepOp (hπ : IsUnitaryRep π) (hf : Continuous f) (hc : HasCompactSupport f) :
     IsRepOp π μ f (repOp π μ f) :=
   hπ.isRepOp_of_integrable (hf.integrable_of_hasCompactSupport hc) fun v =>
@@ -414,10 +587,16 @@ theorem IsUnitaryRep.isRepOp (hπ : IsUnitaryRep π) (hf : Continuous f) (hc : H
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+The claim follows from `(hπ.isRepOp hf hc v).2`.
+-/
 theorem IsUnitaryRep.repOp_apply (hπ : IsUnitaryRep π) (hf : Continuous f)
     (hc : HasCompactSupport f) (v : H) : repOp π μ f v = ∫ g, f g • π g v ∂μ :=
   (hπ.isRepOp hf hc v).2
 
+/- English proof (translation)
+Rewrite using `[hπ.repOp_apply hf hc, ← integral_inner (hπ.isRepOp hf hc v).1]`. Simplify using `only [inner_smul_right]`.
+-/
 theorem IsUnitaryRep.inner_repOp (hπ : IsUnitaryRep π) (hf : Continuous f)
     (hc : HasCompactSupport f) (w v : H) :
     ⟪w, repOp π μ f v⟫_ℂ = ∫ g, f g * ⟪w, π g v⟫_ℂ ∂μ := by
@@ -426,6 +605,9 @@ theorem IsUnitaryRep.inner_repOp (hπ : IsUnitaryRep π) (hf : Continuous f)
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+Use `IsRepOp.repOp_eq fun v => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hπ.isRepOp (μ := μ) hf hc v`. Take `⟨h3, h4⟩` from `hπ.isRepOp (μ := μ) hf' hc' v`. Simplify using `only [Pi.add_apply, add_smul, add_apply]`. Conclude with `⟨h1.add h3, by rw [integral_add h1 h3, h2, h4]⟩`.
+-/
 theorem IsUnitaryRep.repOp_add (hπ : IsUnitaryRep π) (hf : Continuous f) (hc : HasCompactSupport f)
     (hf' : Continuous f') (hc' : HasCompactSupport f') :
     repOp π μ (f + f') = repOp π μ f + repOp π μ f' := by
@@ -437,6 +619,9 @@ theorem IsUnitaryRep.repOp_add (hπ : IsUnitaryRep π) (hf : Continuous f) (hc :
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+Use `IsRepOp.repOp_eq fun v => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hπ.isRepOp (μ := μ) hf hc v`. Simplify using `only [Pi.smul_apply, smul_assoc, smul_apply]`. Conclude with `⟨h1.smul c, by rw [integral_smul, h2]⟩`.
+-/
 theorem IsUnitaryRep.repOp_smul (hπ : IsUnitaryRep π) (hf : Continuous f)
     (hc : HasCompactSupport f) (c : ℂ) : repOp π μ (c • f) = c • repOp π μ f := by
   refine IsRepOp.repOp_eq fun v => ?_
@@ -444,6 +629,9 @@ theorem IsUnitaryRep.repOp_smul (hπ : IsUnitaryRep π) (hf : Continuous f)
   simp only [Pi.smul_apply, smul_assoc, smul_apply]
   exact ⟨h1.smul c, by rw [integral_smul, h2]⟩
 
+/- English proof (translation)
+Use extensionality with `v`. Rewrite using `[comp_apply, comp_apply, hπ.repOp_apply hf hc, hπ'.repOp_apply hf hc, ← A.integral_comp_comm (hπ.isRepOp hf hc v).1]`. Simplify using `only [map_smul, hA]`.
+-/
 theorem IsUnitaryRep.comp_repOp {π' : G →* (K →L[ℂ] K)} (hπ : IsUnitaryRep π)
     (hπ' : IsUnitaryRep π') (hf : Continuous f) (hc : HasCompactSupport f) (A : H →L[ℂ] K)
     (hA : ∀ g v, A (π g v) = π' g (A v)) : A ∘L repOp π μ f = repOp π' μ f ∘L A := by
@@ -452,6 +640,11 @@ theorem IsUnitaryRep.comp_repOp {π' : G →* (K →L[ℂ] K)} (hπ : IsUnitaryR
     ← A.integral_comp_comm (hπ.isRepOp hf hc v).1]
   simp only [map_smul, hA]
 
+/- English proof (translation)
+Establish `h : repOp π' μ f = (A : H →L[ℂ] K) ∘L repOp π μ f ∘L (A.symm : K →L[ℂ] H)`. Rewrite using `[← comp_assoc, hπ.comp_repOp hπ' hf hc (A : H →L[ℂ] K) hA]`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[repTrace, h]`.
+
+Conclude with `⟨ht.comp_comp _ _, ht.trace_conj A⟩`.
+-/
 theorem IsUnitaryRep.repTrace_eq_of_equiv {π' : G →* (K →L[ℂ] K)} (hπ : IsUnitaryRep π)
     (hπ' : IsUnitaryRep π') (hf : Continuous f) (hc : HasCompactSupport f) (A : H ≃L[ℂ] K)
     (hA : ∀ g v, A (π g v) = π' g (A v)) (ht : IsTraceClass (repOp π μ f)) :
@@ -462,6 +655,11 @@ theorem IsUnitaryRep.repTrace_eq_of_equiv {π' : G →* (K →L[ℂ] K)} (hπ : 
   rw [repTrace, h]
   exact ⟨ht.comp_comp _ _, ht.trace_conj A⟩
 
+/- English proof (translation)
+Establish `hf' : Continuous fun g => starRingEnd ℂ (f g⁻¹)` using `Complex.continuous_conj.comp (hf.comp continuous_inv)`. Establish `hc' : HasCompactSupport fun g => starRingEnd ℂ (f g⁻¹)` using `(hc.comp_homeomorph (Homeomorph.inv G)).comp_left (g := starRingEnd ℂ) (map_zero _)`. Use extensionality with `v`. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations. Rewrite using `[adjoint_inner_right, hπ.inner_repOp hf' hc', ← inner_conj_symm, hπ.inner_repOp hf hc, ← integral_conj, ← integral_inv_eq_self]`.
+
+Simplify using `only [map_mul, inner_conj_symm, hπ.inner_apply_left, inv_inv]`.
+-/
 theorem IsUnitaryRep.adjoint_repOp [IsTopologicalGroup G] [BorelSpace G] [μ.IsInvInvariant]
     (hπ : IsUnitaryRep π) (hf : Continuous f) (hc : HasCompactSupport f) :
     adjoint (repOp π μ f) = repOp π μ fun g => starRingEnd ℂ (f g⁻¹) := by
@@ -475,6 +673,17 @@ theorem IsUnitaryRep.adjoint_repOp [IsTopologicalGroup G] [BorelSpace G] [μ.IsI
     ← integral_conj, ← integral_inv_eq_self]
   simp only [map_mul, inner_conj_symm, hπ.inner_apply_left, inv_inv]
 
+/- English proof (translation)
+Introduce `v`. Establish `hF : Continuous (Function.uncurry fun x y : G => (f x * f' (x⁻¹ * y)) • π y v)` using `((hf.comp continuous_fst).mul (hf'.comp (continuous_fst.inv.mul continuous_snd))).smul ((hπ.continuous_apply v).comp continuous_snd)`. Establish `hK : IsCompact (tsupport f ×ˢ (tsupport f * tsupport f'))` using `hc.prod (hc.mul hc')`. Establish `h0 : ∀ x y : G, (x, y) ∉ tsupport f ×ˢ (tsupport f * tsupport f') → f x * f' (x⁻¹ * y) = 0`. Introduce `x y h`.
+
+Assume the negation of the conclusion as `hne`. Establish `h1` using `subset_tsupport f (left_ne_zero_of_mul hne)`. Establish `h2` using `subset_tsupport f' (right_ne_zero_of_mul hne)`. Conclude with `h ⟨h1, x, h1, _, h2, by simp⟩`. Establish `hFc : HasCompactSupport (Function.uncurry fun x y : G => (f x * f' (x⁻¹ * y)) • π y v)` using `HasCompactSupport.intro hK fun p hp => by simp [Function.uncurry, h0 p.1 p.2 hp]`.
+
+Establish `hcont : Continuous fun y => ∫ x, f x * f' (x⁻¹ * y) ∂μ`. Use `continuousOn_univ.1 (continuousOn_integral_of_compact_support (f := fun y x => f x * f' (x⁻¹ * y)) (s := Set.univ) hc ?_ fun y x _ hx => ?_)` and prove the remaining obligations. Conclude with `((hf.comp continuous_snd).mul (hf'.comp (continuous_snd.inv.mul continuous_fst))).continuousOn`. Simplify using `[image_eq_zero_of_notMem_tsupport hx]`. Establish `hcs : HasCompactSupport fun y => ∫ x, f x * f' (x⁻¹ * y) ∂μ` using `HasCompactSupport.intro (hc.mul hc') fun y hy => by`.
+
+Simplify using `[fun x => h0 x y fun h => hy h.2]`. Use `⟨(hπ.isRepOp hcont hcs v).1, ?_⟩` and prove the remaining obligations. Simplify using `only [← integral_smul_const]`. Rewrite using `[← integral_integral_swap_of_hasCompactSupport hF hFc, comp_apply, hπ.repOp_apply hf hc, hπ.repOp_apply hf' hc']`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only [mul_smul, integral_smul]`. Rewrite using `[← (π x).integral_comp_comm (hπ.isRepOp hf' hc' v).1, ← integral_mul_left_eq_self (fun y => f' (x⁻¹ * y) • π y v) x]`. Simplify using the standard rewrite rules.
+-/
 theorem IsUnitaryRep.repOp_convolution [IsTopologicalGroup G] [BorelSpace G] [μ.IsMulLeftInvariant]
     (hπ : IsUnitaryRep π) (hf : Continuous f) (hc : HasCompactSupport f)
     (hf' : Continuous f') (hc' : HasCompactSupport f') :
@@ -512,6 +721,11 @@ theorem IsUnitaryRep.repOp_convolution [IsTopologicalGroup G] [BorelSpace G] [μ
     ← integral_mul_left_eq_self (fun y => f' (x⁻¹ * y) • π y v) x]
   simp
 
+/- English proof (translation)
+Establish `h : repOp (charRep χ) μ f = (∫ g, f g * (χ g : ℂ) ∂μ) • ContinuousLinearMap.id ℂ ℂ`. Use `ext`. Rewrite using `[(isUnitaryRep_charRep hχ).repOp_apply hf hc]`. Simplify using `[charRep]`. Use `⟨isTraceClass_of_finiteDimensional _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h]`. Simplify using `[trace_smul, trace_eq_linearMap_trace]`.
+-/
 theorem repTrace_charRep {χ : G →* Circle} (hχ : Continuous χ) (hf : Continuous f)
     (hc : HasCompactSupport f) :
     HasTrace (repOp (charRep χ) μ f) (∫ g, f g * (χ g : ℂ) ∂μ) := by
@@ -532,6 +746,9 @@ variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 def finRankTrace (T : V →ₗ[ℂ] V) : ℂ :=
   LinearMap.trace ℂ (LinearMap.range T) (T.restrict fun x _ => LinearMap.mem_range_self T x)
 
+/- English proof (translation)
+Establish `hle : LinearMap.range T ≤ W` using `by rintro _ ⟨x, rfl⟩; exact hW x`. Use `Submodule.finiteDimensional_of_le hle` as an intermediate fact. Conclude with `LinearMap.trace_comp_comm' (Submodule.inclusion hle) (T.rangeRestrict ∘ₗ W.subtype)`.
+-/
 theorem finRankTrace_eq (T : V →ₗ[ℂ] V) (W : Submodule ℂ V) [FiniteDimensional ℂ W]
     (hW : ∀ x, T x ∈ W) :
     finRankTrace T = LinearMap.trace ℂ W (T.restrict fun x _ => hW x) := by
@@ -539,6 +756,9 @@ theorem finRankTrace_eq (T : V →ₗ[ℂ] V) (W : Submodule ℂ V) [FiniteDimen
   have := Submodule.finiteDimensional_of_le hle
   exact LinearMap.trace_comp_comm' (Submodule.inclusion hle) (T.rangeRestrict ∘ₗ W.subtype)
 
+/- English proof (translation)
+Establish `hS : ∀ x, S x ∈ LinearMap.range S ⊔ LinearMap.range T` using `fun x => Submodule.mem_sup_left (LinearMap.mem_range_self S x)`. Establish `hT : ∀ x, T x ∈ LinearMap.range S ⊔ LinearMap.range T` using `fun x => Submodule.mem_sup_right (LinearMap.mem_range_self T x)`. Rewrite using `[finRankTrace_eq S _ hS, finRankTrace_eq T _ hT, finRankTrace_eq (S + T) _ fun x => add_mem (hS x) (hT x), ← map_add]`. Both sides reduce to the same expression.
+-/
 theorem finRankTrace_add (S T : V →ₗ[ℂ] V) [FiniteDimensional ℂ (LinearMap.range S)]
     [FiniteDimensional ℂ (LinearMap.range T)] :
     finRankTrace (S + T) = finRankTrace S + finRankTrace T := by
@@ -550,6 +770,9 @@ theorem finRankTrace_add (S T : V →ₗ[ℂ] V) [FiniteDimensional ℂ (LinearM
     finRankTrace_eq (S + T) _ fun x => add_mem (hS x) (hT x), ← map_add]
   rfl
 
+/- English proof (translation)
+Rewrite using `[finRankTrace_eq (c • T) (LinearMap.range T) fun x => Submodule.smul_mem _ c (LinearMap.mem_range_self T x), finRankTrace, ← smul_eq_mul, ← map_smul]`. Both sides reduce to the same expression.
+-/
 theorem finRankTrace_smul (c : ℂ) (T : V →ₗ[ℂ] V) [FiniteDimensional ℂ (LinearMap.range T)] :
     finRankTrace (c • T) = c * finRankTrace T := by
   rw [finRankTrace_eq (c • T) (LinearMap.range T)
@@ -557,6 +780,15 @@ theorem finRankTrace_smul (c : ℂ) (T : V →ₗ[ℂ] V) [FiniteDimensional ℂ
     ← map_smul]
   rfl
 
+/- English proof (translation)
+Establish `hm : ∀ x ∈ LinearMap.range T, (e : V →ₗ[ℂ] W) x ∈ LinearMap.range T'`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `⟨e v, (h v).symm⟩`. Set `a : LinearMap.range T →ₗ[ℂ] LinearMap.range T'` to `(e : V →ₗ[ℂ] W).restrict hm`. Set `b : LinearMap.range T' →ₗ[ℂ] LinearMap.range T` to `T.rangeRestrict ∘ₗ (e.symm : W →ₗ[ℂ] V) ∘ₗ (LinearMap.range T').subtype`.
+
+Establish `ha : Function.Surjective a`. Introduce and unpack `⟨_, w, rfl⟩`. Conclude with `⟨⟨T (e.symm w), _, rfl⟩, Subtype.ext (by simpa [a] using h (e.symm w))⟩`. Use `Module.Finite.of_surjective a ha` as an intermediate fact. Use `⟨this, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : T'.restrict (fun x _ => LinearMap.mem_range_self T' x) = a ∘ₗ b`. Use extensionality with `x`. Simplify using `[a, b, h]`. Establish `h2 : T.restrict (fun x _ => LinearMap.mem_range_self T x) = b ∘ₗ a`. Use extensionality with `x`.
+
+Simplify using `[a, b]`. Rewrite using `[finRankTrace, finRankTrace, h1, h2, LinearMap.trace_comp_comm']`.
+-/
 theorem finRankTrace_eq_of_equiv {W : Type*} [AddCommGroup W] [Module ℂ W] (e : V ≃ₗ[ℂ] W)
     {T : V →ₗ[ℂ] V} {T' : W →ₗ[ℂ] W} (h : ∀ v, e (T v) = T' (e v))
     [FiniteDimensional ℂ (LinearMap.range T)] :
@@ -577,6 +809,11 @@ theorem finRankTrace_eq_of_equiv {W : Type*} [AddCommGroup W] [Module ℂ W] (e 
     ext x; simp [a, b]
   rw [finRankTrace, finRankTrace, h1, h2, LinearMap.trace_comp_comm']
 
+/- English proof (translation)
+Set `R` to `LinearMap.range (T : H →ₗ[ℂ] H)`. Establish `: CompleteSpace R` using `FiniteDimensional.complete ℂ R`. Set `c : H →L[ℂ] R` to `T.codRestrict R fun x => ⟨x, rfl⟩`. Establish `h` using `isTraceClass_of_finiteDimensional (ContinuousLinearMap.id ℂ R)`. Use `⟨h.comp_comp R.subtypeL c, (h.trace_comp_comp R.subtypeL c).trans ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[trace_eq_linearMap_trace]`. Both sides reduce to the same expression.
+-/
 theorem hasTrace_of_finiteRank {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (T : H →L[ℂ] H) [FiniteDimensional ℂ (LinearMap.range (T : H →ₗ[ℂ] H))] :
     HasTrace T (finRankTrace (T : H →ₗ[ℂ] H)) := by
@@ -596,6 +833,11 @@ variable {X V : Type*} [TopologicalSpace X] [AddCommGroup V] [Module ℂ V]
 
 omit [Module ℂ V] in
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hc.isCompact.elim_finite_subcover (fun w => F ⁻¹' {w}) (fun w => hF _) fun x _ => Set.mem_iUnion.2 ⟨F x, rfl⟩`. Use `(t.finite_toSet.insert 0).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Distinguish the cases in `hx : F x = 0`. Conclude with `Or.inl hx`.
+
+Simplify `ht (subset_tsupport F hx))` using `using Or.inr (by simpa`.
+-/
 theorem finite_range {F : X → V} (hF : IsLocallyConstant F) (hc : HasCompactSupport F) :
     (Set.range F).Finite := by
   obtain ⟨t, ht⟩ := hc.isCompact.elim_finite_subcover (fun w => F ⁻¹' {w}) (fun w => hF _)
@@ -612,6 +854,15 @@ def lcIntegral (μ : Measure X) (F : X → V) : V := ∑ᶠ w, (μ.real (F ⁻¹
 
 variable [OpensMeasurableSpace X] {μ : Measure X} [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Establish `hfin` using `finite_range hF hc`. Establish `h1 : lcIntegral μ F = ∑ w ∈ hfin.toFinset, (μ.real (F ⁻¹' {w}) : ℂ) • w`. Use `finsum_eq_sum_of_support_subset _ fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `: F ⁻¹' {w} = ∅` using `Set.preimage_singleton_eq_empty.2 (by simpa using hn)`.
+
+Simplify using `[this] at hw`. Establish `h2 : ∀ x, l (F x) = ∑ w ∈ hfin.toFinset, (F ⁻¹' {w}).indicator (fun _ => l w) x`. Introduce `x`. Simplify using `[Set.indicator_apply]`. Simplify using `only [h1, h2, map_sum, map_smul]`.
+
+Rewrite using `[integral_finset_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hF _).measurableSet, Complex.coe_smul]`. Introduce `w _`. Distinguish the cases in `hw : w = 0`.
+
+Simplify using `[hw]`. Rewrite using `[integrable_indicator_iff (hF _).measurableSet]`. Use `integrableOn_const (ne_top_of_le_ne_top hc.isCompact.measure_ne_top (measure_mono fun x hx => subset_tsupport F ?_))` and prove the remaining obligations. Rewrite using `[Function.mem_support, show F x = w from hx]`. Conclude with `hw`.
+-/
 theorem map_lcIntegral {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
     {F : X → V} (hF : IsLocallyConstant F) (hc : HasCompactSupport F) (l : V →ₗ[ℂ] E) :
     l (lcIntegral μ F) = ∫ x, l (F x) ∂μ := by
@@ -640,6 +891,9 @@ theorem map_lcIntegral {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [C
 
 omit [MeasurableSpace X] [OpensMeasurableSpace X] in
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, h l, sub_self]`.
+-/
 theorem eq_of_forall_dual {v w : V} (h : ∀ l : V →ₗ[ℂ] ℂ, l v = l w) : v = w := by
   rw [← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]
   intro l
@@ -655,10 +909,16 @@ variable {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module �
 
 omit [TopologicalSpace G] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h k hk => by simpa using h ⟨k, hk⟩, fun h k => by simpa using h k k.2⟩`.
+-/
 theorem mem_fixed {ρ : Representation ℂ G V} {K : Subgroup G} {v : V} :
     v ∈ fixed ρ K ↔ ∀ k ∈ K, ρ k v = v :=
   ⟨fun h k hk => by simpa using h ⟨k, hk⟩, fun h k => by simpa using h k k.2⟩
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Use `fun g => ⟨(fun x => g⁻¹ * x) ⁻¹' {k | ρ k v = v}, (hρ v).preimage (continuous_const.mul continuous_id), by simp, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: ρ g (ρ (g⁻¹ * x) v) = ρ g v` using `congrArg _ hx`. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.PRep.IsSmooth.isLocallyConstant_orbit [ContinuousMul G] {ρ : Representation ℂ G V}
     (hρ : IsSmooth ρ) (v : V) : IsLocallyConstant fun g => ρ g v := by
   rw [IsLocallyConstant.iff_exists_open]
@@ -673,6 +933,13 @@ def leftStabilizer (f : G → ℂ) : Subgroup G where
   mul_mem' := fun ha hb g => by rw [mul_assoc, ha, hb]
   inv_mem' := fun {a} ha g => by rw [← ha, mul_inv_cancel_left]
 
+/- English proof (translation)
+Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Establish `h : ∀ᶠ k in nhds (1 : G), ∀ g ∈ tsupport f, f (k * g) = f g ∧ f (k⁻¹ * g) = f g`. Use `hc.isCompact.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `h1` using `(hf.comp_continuous (continuous_fst.mul continuous_snd)).eventually_eq ((1 : G), y)`. Establish `h2` using `(hf.comp_continuous (continuous_fst.inv.mul continuous_snd)).eventually_eq ((1 : G), y)`.
+
+Establish `h3` using `(hf.comp_continuous (continuous_snd (X := G))).eventually_eq ((1 : G), y)`. Use `filter_upwards [h1, h2, h3] with z a b c`. Simplify using `only [Function.comp_apply, Pi.mul_apply, Pi.inv_apply, one_mul, inv_one] at a b c`. Conclude with `⟨a.trans c.symm, b.trans c.symm⟩`. Use `filter_upwards [h] with k hk g`.
+
+Distinguish the cases in `hg : g ∈ tsupport f`. Conclude with `(hk g hg).1`. Distinguish the cases in `hg' : k * g ∈ tsupport f`. Simplify using `using (hk _ hg').2.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hg, image_eq_zero_of_notMem_tsupport hg']`.
+-/
 theorem isOpen_leftStabilizer [IsTopologicalGroup G] {f : G → ℂ} (hf : IsLocallyConstant f)
     (hc : HasCompactSupport f) : IsOpen (leftStabilizer f : Set G) := by
   refine Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_
@@ -707,6 +974,9 @@ variable [IsTopologicalGroup G] [BorelSpace G] {μ : Measure G} [IsFiniteMeasure
 
 omit [MeasurableSpace G] [BorelSpace G] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.comp₂ (hρ.isLocallyConstant_orbit v) (· • ·), hc.smul_right⟩`.
+-/
 theorem _root_.GlobalTheory.PRep.IsSmooth.smoothOp_integrand (hρ : IsSmooth ρ) (hf : IsLocallyConstant f)
     (hc : HasCompactSupport f) (v : V) :
     IsLocallyConstant (fun g => f g • ρ g v) ∧ HasCompactSupport fun g => f g • ρ g v :=
@@ -714,10 +984,18 @@ theorem _root_.GlobalTheory.PRep.IsSmooth.smoothOp_integrand (hρ : IsSmooth ρ)
 
 omit [Module ℂ V] in
 
+/- English proof (translation)
+The claim follows from `(hF.comp l).continuous.integrable_of_hasCompactSupport (hc.comp_left hl)`.
+-/
 theorem integrable_map {E : Type*} [NormedAddCommGroup E] {F : G → V} (hF : IsLocallyConstant F)
     (hc : HasCompactSupport F) (l : V → E) (hl : l 0 = 0) : Integrable (fun g => l (F g)) μ :=
   (hF.comp l).continuous.integrable_of_hasCompactSupport (hc.comp_left hl)
 
+/- English proof (translation)
+Establish `hi` using `hρ.smoothOp_integrand hf hc`. Establish `h : ∃ T : V →ₗ[ℂ] V, ∀ v, T v = lcIntegral μ fun g => f g • ρ g v`. Use `⟨⟨⟨fun v => lcIntegral μ fun g => f g • ρ g v, fun v w => ?_⟩, fun c v => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Use `eq_of_forall_dual fun l => ?_` and prove the remaining obligations. Rewrite using `[map_add l, map_lcIntegral (hi _).1 (hi _).2, map_lcIntegral (hi _).1 (hi _).2, map_lcIntegral (hi _).1 (hi _).2, ← integral_add (integrable_map (hi _).1 (hi _).2 l l.map_zero) (integrable_map (hi _).1 (hi _).2 l l.map_zero)]`.
+
+Simplify using `only [map_add, smul_add]`. Use `eq_of_forall_dual fun l => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, map_smul l, map_lcIntegral (hi _).1 (hi _).2, map_lcIntegral (hi _).1 (hi _).2, ← integral_smul]`. Simplify using `only [map_smul, smul_comm c]`. Rewrite using `[smoothOp, dif_pos h, h.choose_spec]`.
+-/
 theorem _root_.GlobalTheory.PRep.IsSmooth.smoothOp_apply (hρ : IsSmooth ρ) (hf : IsLocallyConstant f)
     (hc : HasCompactSupport f) (v : V) :
     smoothOp ρ μ f v = lcIntegral μ fun g => f g • ρ g v := by
@@ -737,12 +1015,20 @@ theorem _root_.GlobalTheory.PRep.IsSmooth.smoothOp_apply (hρ : IsSmooth ρ) (hf
       simp only [map_smul, smul_comm c]
   rw [smoothOp, dif_pos h, h.choose_spec]
 
+/- English proof (translation)
+Rewrite using `[hρ.smoothOp_apply hf hc, map_lcIntegral (hρ.smoothOp_integrand hf hc v).1 (hρ.smoothOp_integrand hf hc v).2]`. Simplify using `only [map_smul]`.
+-/
 theorem _root_.GlobalTheory.PRep.IsSmooth.map_smoothOp {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [CompleteSpace E] (hρ : IsSmooth ρ) (hf : IsLocallyConstant f) (hc : HasCompactSupport f)
     (l : V →ₗ[ℂ] E) (v : V) : l (smoothOp ρ μ f v) = ∫ g, f g • l (ρ g v) ∂μ := by
   rw [hρ.smoothOp_apply hf hc, map_lcIntegral (hρ.smoothOp_integrand hf hc v).1 (hρ.smoothOp_integrand hf hc v).2]
   simp only [map_smul]
 
+/- English proof (translation)
+Use extensionality with `v`. Use `eq_of_forall_dual fun l => ?_` and prove the remaining obligations. Establish `h1` using `integrable_map (μ := μ) (hρ.smoothOp_integrand hf hc v).1 (hρ.smoothOp_integrand hf hc v).2 l l.map_zero`. Establish `h2` using `integrable_map (μ := μ) (hρ.smoothOp_integrand hf' hc' v).1 (hρ.smoothOp_integrand hf' hc' v).2 l l.map_zero`. Simplify using `only [map_smul] at h1 h2`.
+
+Rewrite using `[LinearMap.add_apply, map_add l, hρ.map_smoothOp (hf.add hf') (hc.add hc'), hρ.map_smoothOp hf hc, hρ.map_smoothOp hf' hc', ← integral_add h1 h2]`. Simplify using `only [Pi.add_apply, add_smul]`.
+-/
 theorem _root_.GlobalTheory.PRep.IsSmooth.smoothOp_add (hρ : IsSmooth ρ) (hf : IsLocallyConstant f)
     (hc : HasCompactSupport f) (hf' : IsLocallyConstant f') (hc' : HasCompactSupport f') :
     smoothOp ρ μ (f + f') = smoothOp ρ μ f + smoothOp ρ μ f' := by
@@ -756,6 +1042,9 @@ theorem _root_.GlobalTheory.PRep.IsSmooth.smoothOp_add (hρ : IsSmooth ρ) (hf :
     hρ.map_smoothOp hf hc, hρ.map_smoothOp hf' hc', ← integral_add h1 h2]
   simp only [Pi.add_apply, add_smul]
 
+/- English proof (translation)
+Use extensionality with `v`. Use `eq_of_forall_dual fun l => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul l, hρ.map_smoothOp (f := c • f) (hf.comp (c • ·)) (hc.comp_left (g := (c • ·)) (smul_zero c)), hρ.map_smoothOp hf hc, ← integral_smul]`. Simplify using `only [Pi.smul_apply, smul_assoc]`.
+-/
 theorem _root_.GlobalTheory.PRep.IsSmooth.smoothOp_smul (hρ : IsSmooth ρ) (hf : IsLocallyConstant f)
     (hc : HasCompactSupport f) (c : ℂ) : smoothOp ρ μ (c • f) = c • smoothOp ρ μ f := by
   ext v
@@ -765,6 +1054,9 @@ theorem _root_.GlobalTheory.PRep.IsSmooth.smoothOp_smul (hρ : IsSmooth ρ) (hf 
     hρ.map_smoothOp hf hc, ← integral_smul]
   simp only [Pi.smul_apply, smul_assoc]
 
+/- English proof (translation)
+Use `eq_of_forall_dual fun l => ?_` and prove the remaining obligations. Rewrite using `[hρ'.map_smoothOp hf hc]`. Simplify `hρ.map_smoothOp (μ := μ) hf hc (l ∘ₗ j) v` using `[hj]`.
+-/
 theorem _root_.GlobalTheory.PRep.IsSmooth.map_smoothOp_of_intertwining {W : Type} [AddCommGroup W] [Module ℂ W]
     {ρ' : Representation ℂ G W} (hρ : IsSmooth ρ) (hρ' : IsSmooth ρ')
     (hf : IsLocallyConstant f) (hc : HasCompactSupport f) (j : V →ₗ[ℂ] W)
@@ -774,6 +1066,9 @@ theorem _root_.GlobalTheory.PRep.IsSmooth.map_smoothOp_of_intertwining {W : Type
   rw [hρ'.map_smoothOp hf hc]
   simpa [hj] using hρ.map_smoothOp (μ := μ) hf hc (l ∘ₗ j) v
 
+/- English proof (translation)
+Use `mem_fixed.2 fun k hk => eq_of_forall_dual fun l => ?_` and prove the remaining obligations. Rewrite using `[hρ.map_smoothOp hf hc l, ← integral_mul_left_eq_self _ k]`. Simplify `hρ.map_smoothOp (μ := μ) hf hc (l ∘ₗ ρ k) v` using `[hK k hk]`.
+-/
 theorem _root_.GlobalTheory.PRep.IsSmooth.smoothOp_mem_fixed [μ.IsMulLeftInvariant] (hρ : IsSmooth ρ)
     (hf : IsLocallyConstant f) (hc : HasCompactSupport f) {K : Subgroup G}
     (hK : ∀ k ∈ K, ∀ g, f (k * g) = f g) (v : V) : smoothOp ρ μ f v ∈ fixed ρ K := by
@@ -781,6 +1076,9 @@ theorem _root_.GlobalTheory.PRep.IsSmooth.smoothOp_mem_fixed [μ.IsMulLeftInvari
   rw [hρ.map_smoothOp hf hc l, ← integral_mul_left_eq_self _ k]
   simpa [hK k hk] using hρ.map_smoothOp (μ := μ) hf hc (l ∘ₗ ρ k) v
 
+/- English proof (translation)
+Establish `h1` using `isOpen_leftStabilizer hf hc`. Use `hρ.2 (K ⊓ leftStabilizer f) (ho.inter h1) (hK.inter_right (Subgroup.isClosed_of_isOpen _ h1))` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := fixed ρ (K ⊓ leftStabilizer f)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hρ.1.smoothOp_mem_fixed hf hc (fun k hk => show k ∈ leftStabilizer f from (Subgroup.mem_inf.1 hk).2) v`.
+-/
 theorem _root_.GlobalTheory.PRep.IsAdmissible.finiteDimensional_range_smoothOp [μ.IsMulLeftInvariant] (hρ : IsAdmissible ρ)
     (hf : IsLocallyConstant f) (hc : HasCompactSupport f) {K : Subgroup G}
     (ho : IsOpen (K : Set G)) (hK : IsCompact (K : Set G)) :
@@ -793,6 +1091,9 @@ theorem _root_.GlobalTheory.PRep.IsAdmissible.finiteDimensional_range_smoothOp [
   exact hρ.1.smoothOp_mem_fixed hf hc
     (fun k hk => show k ∈ leftStabilizer f from (Subgroup.mem_inf.1 hk).2) v
 
+/- English proof (translation)
+Use `hρ.finiteDimensional_range_smoothOp (μ := μ) hf hc ho hK` as an intermediate fact. Use `hρ.finiteDimensional_range_smoothOp (μ := μ) hf' hc' ho hK` as an intermediate fact. Rewrite using `[smoothTrace, hρ.1.smoothOp_add hf hc hf' hc', finRankTrace_add]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.PRep.IsAdmissible.smoothTrace_add [μ.IsMulLeftInvariant] (hρ : IsAdmissible ρ)
     (hf : IsLocallyConstant f) (hc : HasCompactSupport f) (hf' : IsLocallyConstant f')
     (hc' : HasCompactSupport f') {K : Subgroup G} (ho : IsOpen (K : Set G))
@@ -803,6 +1104,9 @@ theorem _root_.GlobalTheory.PRep.IsAdmissible.smoothTrace_add [μ.IsMulLeftInvar
   rw [smoothTrace, hρ.1.smoothOp_add hf hc hf' hc', finRankTrace_add]
   rfl
 
+/- English proof (translation)
+Use `hρ.finiteDimensional_range_smoothOp (μ := μ) hf hc ho hK` as an intermediate fact. Rewrite using `[smoothTrace, hρ.1.smoothOp_smul hf hc, finRankTrace_smul]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.PRep.IsAdmissible.smoothTrace_smul [μ.IsMulLeftInvariant] (hρ : IsAdmissible ρ)
     (hf : IsLocallyConstant f) (hc : HasCompactSupport f) {K : Subgroup G}
     (ho : IsOpen (K : Set G)) (hK : IsCompact (K : Set G)) (c : ℂ) :
@@ -811,6 +1115,9 @@ theorem _root_.GlobalTheory.PRep.IsAdmissible.smoothTrace_smul [μ.IsMulLeftInva
   rw [smoothTrace, hρ.1.smoothOp_smul hf hc, finRankTrace_smul]
   rfl
 
+/- English proof (translation)
+Use `hρ.finiteDimensional_range_smoothOp (μ := μ) hf hc ho hK` as an intermediate fact. Conclude with `(finRankTrace_eq_of_equiv e (hρ.1.map_smoothOp_of_intertwining hρ' hf hc (e : V →ₗ[ℂ] W) he)).2`.
+-/
 theorem _root_.GlobalTheory.PRep.IsAdmissible.smoothTrace_eq_of_equiv [μ.IsMulLeftInvariant] {W : Type} [AddCommGroup W]
     [Module ℂ W] {ρ' : Representation ℂ G W} (hρ : IsAdmissible ρ) (hρ' : IsSmooth ρ')
     (hf : IsLocallyConstant f) (hc : HasCompactSupport f) {K : Subgroup G}
@@ -820,6 +1127,17 @@ theorem _root_.GlobalTheory.PRep.IsAdmissible.smoothTrace_eq_of_equiv [μ.IsMulL
   exact (finRankTrace_eq_of_equiv e
     (hρ.1.map_smoothOp_of_intertwining hρ' hf hc (e : V →ₗ[ℂ] W) he)).2
 
+/- English proof (translation)
+Establish `hf : IsLocallyConstant ((K : Set G).indicator fun _ => (1 : ℂ))`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Distinguish the cases in `hg : g ∈ (K : Set G)`. Conclude with `⟨K, ho, hg, fun x hx => by simp only [Set.indicator_of_mem, hx, hg]⟩`.
+
+Conclude with `⟨(K : Set G)ᶜ, (K.isClosed_of_isOpen ho).isOpen_compl, hg, fun x hx => by`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hg]⟩`. Establish `hc : HasCompactSupport ((K : Set G).indicator fun _ => (1 : ℂ))` using `HasCompactSupport.intro hK fun x hx => Set.indicator_of_notMem hx _`. Use `hρ.2 K ho hK` as an intermediate fact. Establish `hm` using `hρ.1.smoothOp_mem_fixed (μ := μ) hf hc (K := K) fun k hk g => by`.
+
+Distinguish the cases in `hg : g ∈ (K : Set G)`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (K.mul_mem hk hg)]`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem fun h => hg ((K.mul_mem_cancel_left hk).1 h)]`. Establish `key : ((smoothOp ρ μ ((K : Set G).indicator fun _ => 1)).restrict fun x _ => hm x : fixed ρ K →ₗ[ℂ] fixed ρ K) = (μ.real K : ℂ) • LinearMap.id`. Use extensionality with `v`.
+
+Use `eq_of_forall_dual fun l => ?_` and prove the remaining obligations. Establish `h1 : (fun g => (K : Set G).indicator (fun _ => (1 : ℂ)) g • l (ρ g v)) = (K : Set G).indicator fun _ => l v`. Use extensionality with `g`. Distinguish the cases in `hg : g ∈ (K : Set G)`. Simplify using `[Set.indicator_of_mem hg, mem_fixed.1 v.2 g hg]`.
+
+Simplify using `[Set.indicator_of_notMem hg]`. Rewrite using `[LinearMap.restrict_coe_apply, hρ.1.map_smoothOp hf hc, h1, integral_indicator_const _ ho.measurableSet]`. Simplify using the standard rewrite rules. Rewrite using `[smoothTrace, finRankTrace_eq _ _ hm, key]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.PRep.IsAdmissible.smoothTrace_indicator [μ.IsMulLeftInvariant] (hρ : IsAdmissible ρ)
     {K : Subgroup G} (ho : IsOpen (K : Set G)) (hK : IsCompact (K : Set G)) :
     smoothTrace ρ μ ((K : Set G).indicator fun _ => 1) =

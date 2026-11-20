@@ -6,6 +6,15 @@ open IsLocalRing Module nonZeroDivisors IsLocalization.AtPrime
 
 attribute [local instance] Ideal.Quotient.field
 
+/- English proof (translation)
+Set `Rₚ` to `Localization.AtPrime p`. Set `Sₚ` to `Localization (Algebra.algebraMapSubmonoid S p.primeCompl)`. Set `: Algebra Rₚ Sₚ` to `localizationAlgebra p.primeCompl S`. Establish `hp0 : p.primeCompl ≤ R⁰` using `p.primeCompl_le_nonZeroDivisors`. Establish `: IsDomain Rₚ` using `IsLocalization.isDomain_of_le_nonZeroDivisors _ hp0`.
+
+Establish `: IsIntegrallyClosed Rₚ` using `isIntegrallyClosed_of_isLocalization _ _ hp0`. Establish `: IsScalarTower R Rₚ Sₚ` using `IsScalarTower.of_algebraMap_eq' (by rw [RingHom.algebraMap_toAlgebra, IsLocalization.map_comp, ← IsScalarTower.algebraMap_eq])`. Establish `: IsLocalization (Submonoid.map (algebraMap R S) (Ideal.primeCompl p)) Sₚ` using `inferInstanceAs (IsLocalization (Algebra.algebraMapSubmonoid S p.primeCompl) Sₚ)`. Establish `e : Algebra.algebraMapSubmonoid S p.primeCompl ≤ S⁰` using `Submonoid.map_le_of_le_comap _ <| p.primeCompl_le_nonZeroDivisors.trans (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective _ (FaithfulSMul.algebraMap_injective _ _))`. Establish `: IsDomain Sₚ` using `IsLocalization.isDomain_of_le_nonZeroDivisors _ e`.
+
+Establish `: IsTorsionFree Rₚ Sₚ`. Rewrite using `[isTorsionFree_iff_algebraMap_injective]`. Conclude with `IsLocalization.map_injective_of_injective p.primeCompl Rₚ Sₚ (FaithfulSMul.algebraMap_injective R S)`. Establish `: Module.Finite Rₚ Sₚ` using `.of_isLocalization R S p.primeCompl`. Establish `: IsIntegrallyClosed Sₚ` using `isIntegrallyClosed_of_isLocalization _ _ e`.
+
+Establish `: Module.Flat Rₚ Sₚ` using `Module.Flat.of_isLocalizedModule Rₚ p.primeCompl (IsScalarTower.toAlgHom R S Sₚ).toLinearMap`. Establish `: Module.Free Rₚ Sₚ` using `Module.free_of_flat_of_isLocalRing`. Apply `(equivQuotMaximalIdeal p Rₚ).injective` to reduce the goal to its premises. Rewrite using `[trace_quotient_eq_trace_localization_quotient S p Rₚ Sₚ, IsScalarTower.algebraMap_eq S Sₚ, RingHom.comp_apply, Ideal.Quotient.algebraMap_eq, Algebra.trace_quotient_mk, RingEquiv.apply_symm_apply, ← Algebra.intTrace_eq_trace, ← Algebra.intTrace_eq_of_isLocalization R S p.primeCom …`. Simplify using `only [equivQuotMaximalIdeal, RingHom.quotientKerEquivOfSurjective, RingEquiv.coe_trans, Function.comp_apply, Ideal.quotEquivOfEq_mk, RingHom.quotientKerEquivOfRightInverse.apply, RingHom.kerLift_mk]`.
+-/
 theorem trace_quotient_eq_of_projective (R S : Type) [CommRing R] [IsDomain R]
     [IsIntegrallyClosed R] [CommRing S] [IsDomain S] [IsIntegrallyClosed S] [Algebra R S]
     [Module.IsTorsionFree R S] [Module.Finite R S] [Module.Projective R S] (p : Ideal R)

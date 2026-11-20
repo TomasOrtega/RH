@@ -16,6 +16,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace Bmp
 
+/- English proof (translation)
+Rewrite `hU` using `[Units.isInducing_embedProduct.nhds_eq_comap]`. Take `⟨V, hV, h⟩` from `hU`. Establish `c : Continuous fun p : A × A => (p.1, MulOpposite.op p.2)` using `continuous_fst.prodMk (MulOpposite.continuous_op.comp continuous_snd)`. Use `filter_upwards [c.continuousAt.preimage_mem_nhds (x := (1, 1)) hV] with p hp g h1 h2`. Conclude with `h (show (g.1, MulOpposite.op (g⁻¹).1) ∈ V by rw [h1, h2]; exact hp)`.
+-/
 theorem near_units {A : Type} [Monoid A] [TopologicalSpace A] {U : Set Aˣ} (hU : U ∈ 𝓝 (1 : Aˣ)) :
     ∀ᶠ p in 𝓝 ((1, 1) : A × A), ∀ g : Aˣ, g.1 = p.1 → (g⁻¹).1 = p.2 → g ∈ U := by
   rw [Units.isInducing_embedProduct.nhds_eq_comap] at hU
@@ -27,6 +30,21 @@ theorem near_units {A : Type} [Monoid A] [TopologicalSpace A] {U : Set Aˣ} (hU 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
   {t : E →ₐ[F] Fv F v} {sec : Fv F v × Fv F v → AE F E} {n d : ℕ}
 
+/- English proof (translation)
+Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: ContinuousSMul (AF F) (AE F E)` using `IsModuleTopology.toContinuousSMul _ _`. Take `⟨U', h1, h2⟩` from `(mem_nhds_subtype _ _ _).1 hU`. Take `⟨A, hA⟩` from `hu`. Establish `cs : Continuous (sgl v : Fv F v → AF F)` using `(continuous_const.prodMk (continuous_singleFin v) : Continuous fun a => ((0 : Ainf F), singleFin v a))`.
+
+Set `S : Matrix (Fin n) (Fin n) (Fv F v) → Matrix (Fin n) (Fin n) (Fv F v) → Matrix (Fin n) (Fin n) (AE F E)` to `fun p q => 1 + of fun i j => sgl v ((p - 1) i j) • sec (1, 0) + sgl v (((A⁻¹).1 * qᵀ * A.1 - 1) i j) • sec (0, 1)`. Establish `cS : Continuous fun p : _ × _ => S p.1 p.2` using `continuous_const.add (continuous_matrix fun i j => ((cs.comp ((continuous_fst.sub continuous_const).matrix_elem i j)).smul continuous_const).add ((cs.comp ((((continuous_const.matrix_mul continuous_snd.matrix_transpose).matrix_mul continuous_const).sub continuous_const).matrix_el …`. Establish `S1 : S 1 1 = 1` using `by ext i j; simp [S]`. Establish `eS : ∀ g : UA σ X.J, At (evFin F v) (mat g - 1) → mat g = S ((mat g).map (piW t)) ((mat g⁻¹).map (piW t))` using `fun g hg => by`. Use `h.extM ?_ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[← sub_sub]`. Conclude with `hg.kd_sub (kd_at_matrix.2 fun i j => (at_sgl_smul _ _).kd_add (at_sgl_smul _ _))`. Use extensionality with `i j`. Simplify using `[S, (h.smul _ _).1, h.fst, ev_sgl, one_apply, apply_ite (piW t)]`. Establish `e1` using `h.unit_rel g`.
+
+Establish `e2 : ((mat g⁻¹).map (piW t))ᵀ * ((mat g).map (piW t))ᵀ = 1`. Rewrite using `[← transpose_mul, ← Matrix.map_mul, show mat g * mat g⁻¹ = 1 from g.1.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), transpose_one]`. Establish `e3 : (mat g).map (piW (t.comp σ)) = (A⁻¹).1 * ((mat g⁻¹).map (piW t))ᵀ * A.1`. Rewrite `e1` using `[← hA]`. Use `conv_rhs => rw [← e1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc _ _ (_)ᵀ]`.
+
+Use `erw [e2]`. Rewrite using `[Matrix.mul_one, Units.inv_mul, Matrix.one_mul]`. Both sides reduce to the same expression. Rewrite using `[e3]`. Use extensionality with `i j`.
+
+Simplify using `[S, (h.smul _ _).2, h.snd, ev_sgl, one_apply, apply_ite (piW (t.comp σ))]`. Establish `c2` using `cS.prodMk (cS.comp continuous_swap)`. Use `filter_upwards [(c2.tendsto' (1, 1) (1, 1) (by simp [S1])).eventually (near_units h1)] with p hp g hg e1 e2`. Establish `hg' : At (evFin F v) (mat g⁻¹ - 1)`. Rewrite using `[show mat g⁻¹ - 1 = -mat g⁻¹ * (mat g - 1) by`.
+
+Rewrite using `[mul_sub, neg_mul, show mat g⁻¹ * mat g = 1 from g.1.inv_mul]`. Simplify using `[neg_add_eq_sub]]`. Conclude with `At.kd_mul_left hg _`. Use `h2 (hp g.1 ((eS g hg).trans (by rw [e1, e2])) ((eS g⁻¹ hg').trans (by rw [inv_inv, e1, e2]; rfl)))` and prove the remaining obligations.
+-/
 theorem near_UA (h : PositivityTheory.KCo.IsSec σ t sec) {X : Spc F E n} (hu : IsUnit ((incM F X.J).map (piW t))) {U : Set (UA σ X.J)} (hU : U ∈ 𝓝 1) :
     ∀ᶠ p in 𝓝 ((1, 1) : Matrix (Fin n) (Fin n) (Fv F v) × Matrix (Fin n) (Fin n) (Fv F v)), ∀ g ∈ UAt σ X (evFin F v),
       (mat g).map (piW t) = p.1 → (mat g⁻¹).map (piW t) = p.2 → g ∈ U := by
@@ -69,6 +87,11 @@ theorem near_UA (h : PositivityTheory.KCo.IsSec σ t sec) {X : Spc F E n} (hu : 
     exact At.kd_mul_left hg _
   refine h2 (hp g.1 ((eS g hg).trans (by rw [e1, e2])) ((eS g⁻¹ hg').trans (by rw [inv_inv, e1, e2]; rfl)))
 
+/- English proof (translation)
+Use `GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v` as an intermediate fact. Establish `: CompactSpace (Matrix (Fin n) (Fin n) (v.adicCompletionIntegers F))` using `inferInstanceAs (CompactSpace (_ → _ → _))`. Take `⟨w, w1, w0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (IsDiscreteValuationRing.not_a_field (v.adicCompletionIntegers F))`. Establish `cm : Continuous fun α : Matrix (Fin n) (Fin n) (v.adicCompletionIntegers F) => α.map (algebraMap _ (Fv F v))` using `continuous_id.matrix_map continuous_subtype_val`. Establish `h1 : ∀ᶠ a : Fv F v in 𝓝 0, ∀ y ∈ (Set.univ : Set (Matrix (Fin n) (Fin n) (v.adicCompletionIntegers F) × Matrix _ _ _)), P (a • y.1.map (algebraMap _ _) + 1, a • y.2.map (algebraMap _ _) + 1)` using `isCompact_univ.eventually_forall_of_forall_eventually fun y _ => ((((continuous_fst.smul (cm.comp (continuous_fst.comp continuous_snd))).add continuous_const).prodMk ((continuous_fst.smul (cm.comp (continuous_snd.comp continuous_snd))).add continuous_const)).tendsto' (0, y) (1, 1 …`.
+
+Take `⟨N, hN⟩` from `eventually_atTop.1 ((Valued.tendsto_zero_pow_of_v_lt_one (x := (w : Fv F v)) ((Valuation.mem_maximalIdeal_iff _ _).1 w1)).eventually h1)`. Use `⟨w ^ (N + 1), pow_ne_zero _ w0, Ideal.pow_mem_of_mem _ w1 _ N.succ_pos, fun p q ⟨α, hα⟩ ⟨β, hβ⟩ => ?_⟩` and prove the remaining obligations. Conclude with `(eq_add_of_sub_eq hα.symm) ▸ (eq_add_of_sub_eq hβ.symm) ▸ hN (N + 1) N.le_succ (α, β) trivial`.
+-/
 theorem exists_level {P : Matrix (Fin n) (Fin n) (Fv F v) × Matrix (Fin n) (Fin n) (Fv F v) → Prop} (hP : ∀ᶠ p in 𝓝 (1, 1), P p) :
     ∃ a : v.adicCompletionIntegers F, a ≠ 0 ∧ a ∈ IsLocalRing.maximalIdeal _ ∧
       ∀ p q, p - 1 ∈ lam (Fv F v) a n n → q - 1 ∈ lam (Fv F v) a n n → P (p, q) := by
@@ -88,6 +111,13 @@ theorem exists_level {P : Matrix (Fin n) (Fin n) (Fv F v) × Matrix (Fin n) (Fin
   refine ⟨w ^ (N + 1), pow_ne_zero _ w0, Ideal.pow_mem_of_mem _ w1 _ N.succ_pos, fun p q ⟨α, hα⟩ ⟨β, hβ⟩ => ?_⟩
   exact (eq_add_of_sub_eq hα.symm) ▸ (eq_add_of_sub_eq hβ.symm) ▸ hN (N + 1) N.le_succ (α, β) trivial
 
+/- English proof (translation)
+Use `GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v` as an intermediate fact. Establish `: CompactSpace (Matrix (Fin n) (Fin d) (v.adicCompletionIntegers F))` using `inferInstanceAs (CompactSpace (_ → _ → _))`. Establish `ha' : (a : Fv F v) ≠ 0` using `fun h => ha (Subtype.ext h)`. Establish `op : IsOpen ((lam (Fv F v) a n d).toAddSubgroup : Set (Matrix (Fin n) (Fin d) (Fv F v)))`. Establish `o : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`.
+
+Establish `e : ∀ᶠ Y in 𝓝 (0 : Matrix (Fin n) (Fin d) (Fv F v)), ∀ i j, (a : Fv F v)⁻¹ * Y i j ∈ v.adicCompletionIntegers F` using `eventually_all.2 fun i => eventually_all.2 fun j => by`. Establish `c : Continuous fun Y : Matrix (Fin n) (Fin d) (Fv F v) => (a : Fv F v)⁻¹ * Y i j` using `continuous_const.mul (continuous_id.matrix_elem i j)`. Conclude with `(c.tendsto' 0 0 (by simp)).eventually (o.mem_nhds (zero_mem _))`. Use `AddSubgroup.isOpen_of_mem_nhds _ (g := 0) (e.mono fun Y hY => mem_lam.2 ⟨fun i j => ⟨_, hY i j⟩, ?_⟩)` and prove the remaining obligations. Conclude with `Matrix.ext fun i j => mul_inv_cancel_left₀ ha' _`.
+
+Establish `hf` using `GlobalTheory.WeilM.HaarUniq.indicator_mem ⟨_, op⟩ (isCompact_range (f := fun α : Matrix (Fin n) (Fin d) (v.adicCompletionIntegers F) => (a : Fv F v) • α.map (algebraMap _ (Fv F v))) (continuous_matrix fun i j => continuous_const.mul (continuous_subtype_val.comp (continuous_id.mat …`. Conclude with `⟨hf.1.comp_continuous (Homeomorph.subRight Y₀).continuous, hf.2.comp_homeomorph (Homeomorph.subRight Y₀)⟩`.
+-/
 theorem ind_mem {a : v.adicCompletionIntegers F} (ha : a ≠ 0) (Y₀ : Matrix (Fin n) (Fin d) (Fv F v)) :
     (fun Y => Set.indicator (lam (Fv F v) a n d : Set _) (fun _ => (1 : ℂ)) (Y - Y₀)) ∈ SB (Matrix (Fin n) (Fin d) (Fv F v)) := by
   have := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v
@@ -110,6 +140,31 @@ theorem ind_mem {a : v.adicCompletionIntegers F} (ha : a ≠ 0) (Y₀ : Matrix (
 end Bmp
 
 open Bmp in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp hnd v hv`. Take `⟨t⟩ : Nonempty (E →ₐ[F] Fv F v)` from `⟨B.τ ⟨v, hv⟩⟩`. Take `⟨⟨ι, hι⟩, -, -, k⟩` from `dictX F E σ n d B X W M om χX χW hp.base ⟨_, _, hp.herm⟩ ⟨_, _, hp.skew⟩ hp.weil v t`. Take `⟨⟨sec, h⟩, hsm⟩` from `section_statement F E σ hp.base.cm v t`. Establish `hG` using `grams h hp.herm hp.skew`.
+
+Establish `n1` using `near_UA h hG.uA ((Euler.isOpen_int (σ := σ) hp.herm.lat v).mem_nhds (one_mem _))`. Establish `hv1 : ∀ᶠ y in 𝓝 (1 : Fv F v), ValuativeRel.valuation (Fv F v) y = 1`. Simplify `(ValuativeRel.valuation (Fv F v)).locally_const (x := 1) (by simp)` using `[Filter.Eventually]`. Establish `n2` using `near_units (A := Matrix (Fin n) (Fin n) (Fv F v)) (U := {g | chrW χW t (gdet g) = 1 ∧ ValuativeRel.valuation (Fv F v) (gdet g : Fv F v) = 1}) (Eventually.and ((GeneralLinearGroup.continuous_det.tendsto' 1 1 (map_one _)).eventually ((hsm χW hp.hW).2.mem_nhds (one_mem _))) (((Units …`. Take `⟨a, a0, a1, ha⟩` from `exists_level (((continuous_fst.matrix_transpose.prodMk continuous_snd.matrix_transpose).tendsto' (1, 1) (1, 1) (by simp)).eventually (n1.and n2))`.
+
+Set `y : Matrix (Fin n) (Fin d) (v.adicCompletionIntegers F)` to `(1 : Matrix (Fin d) (Fin d) _).submatrix (Fin.castLE hnd) id`. Establish `hy : y * yᵀ = 1`. Rewrite using `[transpose_submatrix, transpose_one, ← submatrix_mul _ _ _ _ _ Function.bijective_id, Matrix.one_mul, submatrix_one _ (Fin.castLE_injective hnd)]`. Take `⟨Y₀, hY₀⟩ : ∃ Y₀, Y₀ = y.map (algebraMap _ (Fv F v))` from `⟨_, rfl⟩`. Take `⟨φ, hφ, e⟩` from `hι.bij.2.2 (ind_mem a0 Y₀)`.
+
+Establish `mult : ∀ u, At (evFin F v) u → u.map (piW (t.comp σ)) = 0 → ∀ c : ℂ, (∀ Y, Y - Y₀ ∈ lam (Fv F v) a n d → psiV B.ψ v (trace (Yᵀ * -u.map (piW t))) = c) → Acts (evFin F v) (M.co.rho B.ψ u) φ (c • φ)` using `fun u hu h0 c hc => by`. Establish `ac` using `adjoint_statement.Heisenberg₂ F _ B.ψ v _ (hu.kd_map M.co.e.toLinearMap) φ`. Establish `mem` using `schr_mem ((adjoint_statement.psi F _ hp.base.std).2 v).1 (locW v (M.co.e.toLinearMap u)) hφ`. Rewrite using `[← hι.bij.2.1 mem ((SB _).smul_mem c hφ) (funext fun Y => ?_)]`. Conclude with `ac`.
+
+Take `⟨x, hx, hcx, -⟩` from `exists_coord h hG (ofM Y, 0)`. Use `hι.mult u hu h0 φ hφ _ mem ac x hx (coord_snd.1 (congrArg Prod.snd hcx))` as an intermediate fact. Rewrite `this` using `[co_eq h, symp_eq h hG hx, hcx, dotProduct_zero, sub_zero, toM_ofM]`. Rewrite using `[this, map_smul, Pi.smul_apply, smul_eq_mul, e]`. Distinguish the cases in `hY : Y - Y₀ ∈ lam (Fv F v) a n d`.
+
+Rewrite using `[← hc Y hY, ← dot_ofM]`. Both sides reduce to the same expression. Simplify using `[Set.indicator_of_notMem hY]`. Use `⟨φ, hφ, fun h0 => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `congrFun e Y₀` as an intermediate fact.
+
+Simplify using `[h0] at this`. Set `g₀` to `GeneralLinearGroup.map (piW t) g.1`. Break down `dich (O := v.adicCompletionIntegers F) (psiV B.ψ v) (fun x => ⟨fun H => ⟨⟨x, (hp.base.psiP v hv x).1 fun z hz => H ⟨z, hz⟩⟩, rfl⟩, fun ⟨o, ho⟩ z => (hp.base.psiP v hv x).2 (ho ▸ o.2) z z.2⟩) a0 a1 y _ hy (invT g₀)⁻¹ with ⟨h1, h2⟩ | ⟨l, h1, h2⟩` into its components or cases. Take `⟨b1, b2⟩` from `ha _ _ h1 h2`. Take `⟨b2, b3⟩` from `b2 g₀ rfl rfl`.
+
+Take `⟨φ₁, m1, ac, e1⟩` from `(k ι hι).1 g hg g₀ rfl φ hφ`. Establish `key : ∀ Y, g₀.1ᵀ * Y - Y₀ ∈ lam (Fv F v) a n d ↔ Y - Y₀ ∈ lam (Fv F v) a n d` using `fun Y => by`. Use `⟨fun H => ?_, fun H => hY₀ ▸ keep h1 y (hY₀ ▸ H)⟩` and prove the remaining obligations. Use `keep h2 y (hY₀ ▸ H)` as an intermediate fact. Rewrite `this` using `[show g₀.1ᵀ = ((invT g₀)⁻¹).1 from rfl, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, ← hY₀]`. Then use the resulting hypothesis.
+
+Establish `e2 : ι φ₁ = ι φ` using `e1.trans (funext fun Y => by clear b1 ha k n1 n2 mult`. Rewrite using `[omB, b2, apow_of_valuation_eq_one b3, show gdet (1 : GL (Fin d) (Fv F v)) = 1 from map_one _, map_one, apow_one, Units.val_one, Units.val_one, Matrix.mul_one, one_mul, one_mul, one_mul, one_mul, e]`. Distinguish the cases in `hY : Y - Y₀ ∈ lam (Fv F v) a n d`. Conclude with `(Set.indicator_of_mem ((key Y).2 hY) _).trans (Set.indicator_of_mem hY fun _ => (1 : ℂ)).symm`. Conclude with `(Set.indicator_of_notMem (mt (key Y).1 hY) _).trans (Set.indicator_of_notMem hY fun _ => (1 : ℂ)).symm)`.
+
+Rewrite `ac` using `[hι.bij.2.1 m1 hφ e2]`. Conclude with `Or.inl ⟨b1 g hg rfl rfl, ac⟩`. Rewrite `h2` using `[← hY₀]`. Set `u₀ : Matrix (Fin n) (Fin d) (Fv F v)` to `of fun i j => -l (single i j 1)`. Establish `el : ∀ Y, trace (Yᵀ * -u₀) = l Y` using `fun Y => by conv_rhs => rw [matrix_eq_sum_single Y]`.
+
+Simplify using `only [← dot_ofM, dotProduct, ofM, Fintype.sum_prod_type, map_sum, u₀, Matrix.neg_apply, of_apply, neg_neg]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [← smul_eq_mul, ← map_smul]; simp`. Use `Or.inr ⟨secM sec u₀ 0, psiV B.ψ v (l Y₀), psiV B.ψ v (l (g₀.1ᵀ * Y₀)), h.atM _ _, fun H => h2 ?_, mult _ (h.atM _ _) (h.sndM _ _) _ fun Y hY => ?_, mult _ ((h.atM _ _).kd_mul_left _) (by rw [Matrix.map_mul, h.sndM, Matrix.mul_zero]) _ fun Y hY => ?_⟩` and prove the remaining obligations. Use `mul_right_cancel₀ ((psiV B.ψ v).val_isUnit (l Y₀)).ne_zero ?_` and prove the remaining obligations. Rewrite using `[← AddChar.map_add_eq_mul, ← map_add, sub_add_cancel, one_mul, H]`.
+
+Both sides reduce to the same expression. Rewrite using `[h.fstM, el, ← sub_add_cancel Y Y₀, map_add, AddChar.map_add_eq_mul, (h1 _ hY).1, one_mul]`. Rewrite using `[Matrix.map_mul, h.fstM, ← Matrix.mul_neg, ← Matrix.mul_assoc, ← transpose_transpose (Yᵀ * _), transpose_mul, transpose_transpose, el, ← sub_add_cancel Y Y₀, Matrix.mul_add, map_add, AddChar.map_add_eq_mul]`. Conclude with `(congrArg (· * _) (h1 _ hY).2).trans (one_mul _)`.
+-/
 theorem bump : Bump := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp hnd v hv
   obtain ⟨t⟩ : Nonempty (E →ₐ[F] Fv F v) := ⟨B.τ ⟨v, hv⟩⟩

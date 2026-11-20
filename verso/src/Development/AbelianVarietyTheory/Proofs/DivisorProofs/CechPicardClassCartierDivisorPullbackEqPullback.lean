@@ -13,6 +13,9 @@ open GlobalTheory.Discrepancy GlobalTheory.QCoh
 
 namespace GlobalTheory.PullCartier
 
+/- English proof (translation)
+Establish `hx : f (genericPoint M) ∈ U` using `h`. Rewrite using `[← algebraMap_germ hx a, GlobalTheory.functionFieldMap_algebraMap, Scheme.Hom.germ_stalkMap_apply f U _ hx a]`. Conclude with `(algebraMap_germ (X := M) (U := f ⁻¹ᵁ U) (x := genericPoint M) h _).symm`.
+-/
 theorem fnOf_app {M W : Scheme.{0}} [IsIntegral M] [IsIntegral W] (f : M ⟶ W) [IsDominant f]
     {U : W.Opens} (h : genericPoint M ∈ f ⁻¹ᵁ U) (a : Γ(W, U)) :
     fnOf (f ⁻¹ᵁ U) h ((f.app U).hom a) =
@@ -21,6 +24,13 @@ theorem fnOf_app {M W : Scheme.{0}} [IsIntegral M] [IsIntegral W] (f : M ⟶ W) 
   rw [← algebraMap_germ hx a, GlobalTheory.functionFieldMap_algebraMap, Scheme.Hom.germ_stalkMap_apply f U _ hx a]
   exact (algebraMap_germ (X := M) (U := f ⁻¹ᵁ U) (x := genericPoint M) h _).symm
 
+/- English proof (translation)
+Introduce `M W _ _ f _ D₀ D₁ hD`. Establish `hP : Presents D₁ ((toLB D₀).pull f) fun J => Units.map (GlobalTheory.functionFieldMap f).toMonoidHom (J PUnit.unit).1.2`. Use `⟨pull_isLB (isLB_toLB D₀) f, fun J K h => ?_, fun J x hx => hD x _ ((J PUnit.unit).2.2 _ (mem_pull.1 hx))⟩` and prove the remaining obligations. Establish `hle : ((toLB D₀).pull f).U J ⊓ ((toLB D₀).pull f).U K ≤ f ⁻¹ᵁ ((toLB D₀).U (J PUnit.unit) ⊓ (toLB D₀).U (K PUnit.unit))` using `fun y hy => ⟨mem_pull.1 hy.1, mem_pull.1 hy.2⟩`. Establish `e0 : ((toLB D₀).pull f).g J K = res hle (pullU f _ ((toLB D₀).g (J PUnit.unit) (K PUnit.unit)))` using `by dsimp only [LB.pull, LB.LinComb]; rw [Fintype.prod_unique, zpow_one]; rfl`.
+
+Establish `e : fnOf _ h (((toLB D₀).pull f).g J K).val = fnOf _ (hle h) ((f.app _).hom ((toLB D₀).g (J PUnit.unit) (K PUnit.unit)).val)`. Rewrite using `[e0, LB.val_res, fnOf_resG]`. Both sides reduce to the same expression. Rewrite using `[e, fnOf_app, fnOf_toLB_g]`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`.
+
+Rewrite using `[← map_mul, div_mul_cancel₀ _ (Units.ne_zero _)]`. Rewrite using `[← cls_pull (isLB_toLB D₀) f hP.isLB, ← toPic_apply, hP.toPic_eq]`.
+-/
 theorem cls_toLB_pull : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] (f : M ⟶ W) [IsDominant f]
     (D₀ : CartierDiv W) (D₁ : CartierDiv M),
     (∀ x g, D₀.IsEqn (f x) g → D₁.IsEqn x (Units.map (GlobalTheory.functionFieldMap f).toMonoidHom g)) →

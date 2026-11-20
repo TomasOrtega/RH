@@ -12,17 +12,26 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Unfold `zC`. Rewrite using `[norm_algebraMap']`. Both sides reduce to the same expression.
+-/
 theorem norm_zC (x : ℤ_[l]) : ‖zC x‖ = ‖x‖ := by
   unfold zC
   rw [norm_algebraMap']
   rfl
 
+/- English proof (translation)
+Rewrite using `[PadicComplexInt, Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm]`. Simplify using `only [Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding]`. Rewrite using `[Valuation.embedding_restrict]`. Conclude with `NNReal.coe_le_one.symm`.
+-/
 theorem mem_OC (y : PadicComplex l) : y ∈ PadicComplexInt l ↔ ‖y‖ ≤ 1 := by
   rw [PadicComplexInt, Valuation.mem_valuationSubring_iff, PadicComplex.norm_eq_norm]
   simp only [Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding]
   rw [Valuation.embedding_restrict]
   exact NNReal.coe_le_one.symm
 
+/- English proof (translation)
+Establish `h1 : zC x = ((algebraMap ℚ_[l] (Om l) (x : ℚ_[l]) : Om l) : PadicComplex l)` using `rfl`. Rewrite using `[h1, h.1, AlgEquiv.commutes]`.
+-/
 theorem act_zC {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (h : IsActC act) (g : GQ l)
     (x : ℤ_[l]) : act g (zC x) = zC x := by
   have h1 : zC x = ((algebraMap ℚ_[l] (Om l) (x : ℚ_[l]) : Om l) : PadicComplex l) := rfl
@@ -34,6 +43,9 @@ def zOC (l : ℕ) [Fact l.Prime] : ℤ_[l] →+* OC l :=
 
 scoped instance algOC : Algebra ℤ_[l] (OC l) := (zOC l).toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_algebraMap_OC (x : ℤ_[l]) :
     ((algebraMap ℤ_[l] (OC l) x : OC l) : PadicComplex l) = zC x := rfl
 
@@ -51,6 +63,9 @@ def thR (LL : FinExt l) (θ : Ainf l →ₐ[ℤ_[l]] OC l) : RA LL →+* OCO LL 
   ((Algebra.TensorProduct.comm ℤ_[l] ↥(OL LL) (OC l)).toAlgHom.comp
     (Algebra.TensorProduct.map (AlgHom.id ℤ_[l] ↥(OL LL)) θ)).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thR_tmul (LL : FinExt l) (θ : Ainf l →ₐ[ℤ_[l]] OC l) (a : ↥(OL LL)) (w : Ainf l) :
     thR LL θ (a ⊗ₜ[ℤ_[l]] w) = θ w ⊗ₜ[ℤ_[l]] a := rfl
 
@@ -58,19 +73,31 @@ def kap {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL)) 
     PadicComplex l :=
   (((Algebra.TensorProduct.basis (OC l) o).repr x k : OC l) : PadicComplex l)
 
+/- English proof (translation)
+Simplify using `[kap, Algebra.TensorProduct.basis_repr_tmul, coe_algebraMap_OC]`.
+-/
 theorem kap_tmul {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL)) (c : OC l)
     (a : ↥(OL LL)) (k : Fin f) :
     kap o (c ⊗ₜ[ℤ_[l]] a) k = (c : PadicComplex l) * zC (o.repr a k) := by
   simp [kap, Algebra.TensorProduct.basis_repr_tmul, coe_algebraMap_OC]
 
+/- English proof (translation)
+Simplify using `[kap]`.
+-/
 theorem kap_add {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL)) (x y : OCO LL)
     (k : Fin f) : kap o (x + y) k = kap o x k + kap o y k := by
   simp [kap]
 
+/- English proof (translation)
+Simplify using `[kap]`.
+-/
 theorem kap_zero {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL))
     (k : Fin f) : kap o 0 k = 0 := by
   simp [kap]
 
+/- English proof (translation)
+Establish `: (c ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL))) * x = c • x`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using `[kap]`.
+-/
 theorem kap_tmul_one_mul {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL))
     (c : OC l) (x : OCO LL) (k : Fin f) :
     kap o ((c ⊗ₜ[ℤ_[l]] (1 : ↥(OL LL))) * x) k = (c : PadicComplex l) * kap o x k := by
@@ -79,6 +106,9 @@ theorem kap_tmul_one_mul {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) ℤ
   rw [this]
   simp [kap]
 
+/- English proof (translation)
+The claim follows from `(mem_OC _).1 (Subtype.property _)`.
+-/
 theorem norm_kap_le {LL : FinExt l} {f : ℕ} (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL)) (x : OCO LL)
     (k : Fin f) : ‖kap o x k‖ ≤ 1 := (mem_OC _).1 (Subtype.property _)
 
@@ -87,6 +117,9 @@ def lam {LL : FinExt l} {f d : ℕ} (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL)
     Matrix (Fin d) (Fin d) (PadicComplex l) :=
   ∑ k, kap o x k • A (o k)
 
+/- English proof (translation)
+The claim follows from `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2 haveI : Module.IsTorsionFree ℤ_[l] ↥LL.1 := Module.isTorsionFree_iff_algebraMap_injective.mpr (by rw [IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] ↥LL.1] exact (algebraMap ℚ_[l] ↥LL.1).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])) …`.
+-/
 theorem freeOL (LL : FinExt l) : Module.Free ℤ_[l] ↥(OL LL) :=
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   haveI : Module.IsTorsionFree ℤ_[l] ↥LL.1 := Module.isTorsionFree_iff_algebraMap_injective.mpr (by
@@ -94,16 +127,25 @@ theorem freeOL (LL : FinExt l) : Module.Free ℤ_[l] ↥(OL LL) :=
     exact (algebraMap ℚ_[l] ↥LL.1).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l]))
   IsIntegralClosure.module_free ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
+/- English proof (translation)
+The claim follows from `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2 IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)`.
+-/
 theorem finiteOL (LL : FinExt l) : Module.Finite ℤ_[l] ↥(OL LL) :=
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
   IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
+/- English proof (translation)
+Use `haveI := freeOL LL`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap (M := ↥(OL LL)) (inclWA l).toLinearMap (WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l)))`.
+-/
 theorem inclR_injective (LL : FinExt l) : Function.Injective (inclR LL) := by
   haveI := freeOL LL
   exact Module.Flat.lTensor_preserves_injective_linearMap (M := ↥(OL LL)) (inclWA l).toLinearMap
     (WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l)))
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a w`. Conclude with `congrArg (fun u => a ⊗ₜ[ℤ_[l]] u) (inclW_act AI g w).symm`.
+-/
 theorem inclR_gRA {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (g : GQ l) (r : RA LL) :
     inclR LL (gRA AI LL g r) = AI.gRW LL g (inclR LL r) := by
   induction r using TensorProduct.induction_on with
@@ -113,6 +155,11 @@ theorem inclR_gRA {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (g : GQ l)
     exact congrArg (fun u => a ⊗ₜ[ℤ_[l]] u) (inclW_act AI g w).symm
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, kap_zero]`. Consider the case `add x y hx hy => simp only [map_add, kap_add, hx, hy]`. Consider the case `tmul a w`. Establish `h1 : gRA AI LL g (a ⊗ₜ[ℤ_[l]] w) = a ⊗ₜ[ℤ_[l]] AI.actWHom g w` using `rfl`.
+
+Rewrite using `[h1, thR_tmul, thR_tmul, kap_tmul, kap_tmul, map_mul, hθ.1, act_zC ⟨AI.actC_ext, AI.actC_norm⟩]`.
+-/
 theorem kap_thR_gRA {P : LocPrime l} (AI : LocAinf l P) {LL : FinExt l} {f n : ℕ}
     (o : Module.Basis (Fin f) ℤ_[l] ↥(OL LL)) {θ : Ainf l →ₐ[ℤ_[l]] OC l} (hθ : IsThetaShift AI n θ)
     (g : GQ l) (r : RA LL) (k : Fin f) :
@@ -136,6 +183,9 @@ scoped instance (priority := high) twModule (T : LocLat G Qp LL O) : Module R (T
 scoped instance (priority := high) twSMul (T : LocLat G Qp LL O) : SMul R (TW R T) :=
   inferInstance
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, smul_zero]`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul a t => simp [TWincl, TensorProduct.smul_tmul']`.
+-/
 theorem TWincl_smul (f : R →ₐ[O] R') (T : LocLat G Qp LL O) (r : R) (z : TW R T) :
     TWincl f T (r • z) = f r • TWincl f T z := by
   induction z using TensorProduct.induction_on with
@@ -143,6 +193,9 @@ theorem TWincl_smul (f : R →ₐ[O] R') (T : LocLat G Qp LL O) (r : R) (z : TW 
   | add x y hx hy => simp only [map_add, smul_add, hx, hy]
   | tmul a t => simp [TWincl, TensorProduct.smul_tmul']
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, smul_zero]`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul a t => simp [TWact, TensorProduct.smul_tmul']`.
+-/
 theorem TWact_smul (f : R →ₐ[O] R) (T : LocLat G Qp LL O) (g : G) (r : R) (z : TW R T) :
     TWact f T g (r • z) = f r • TWact f T g z := by
   induction z using TensorProduct.induction_on with
@@ -150,6 +203,9 @@ theorem TWact_smul (f : R →ₐ[O] R) (T : LocLat G Qp LL O) (g : G) (r : R) (z
   | add x y hx hy => simp only [map_add, smul_add, hx, hy]
   | tmul a t => simp [TWact, TensorProduct.smul_tmul']
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a t => simp [TWact, TWincl, h]`.
+-/
 theorem TWincl_act (f : R →ₐ[O] R') (u : R →ₐ[O] R) (u' : R' →ₐ[O] R') (h : ∀ r, f (u r) = u' (f r))
     (T : LocLat G Qp LL O) (g : G) (z : TW R T) :
     TWincl f T (TWact u T g z) = TWact u' T g (TWincl f T z) := by
@@ -158,11 +214,17 @@ theorem TWincl_act (f : R →ₐ[O] R') (u : R →ₐ[O] R) (u' : R' →ₐ[O] R
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul a t => simp [TWact, TWincl, h]
 
+/- English proof (translation)
+Use `haveI : Module.Free O ↥T.L.T := T.L.free`. Conclude with `Module.Flat.rTensor_preserves_injective_linearMap (M := ↥T.L.T) f.toLinearMap hf`.
+-/
 theorem TWincl_injective (f : R →ₐ[O] R') (hf : Function.Injective f) (T : LocLat G Qp LL O) :
     Function.Injective (TWincl f T) := by
   haveI : Module.Free O ↥T.L.T := T.L.free
   exact Module.Flat.rTensor_preserves_injective_linearMap (M := ↥T.L.T) f.toLinearMap hf
 
+/- English proof (translation)
+Simplify using `[TWincl]`.
+-/
 theorem TWincl_one_tmul (f : R →ₐ[O] R') (T : LocLat G Qp LL O) (t : ↥T.L.T) :
     TWincl f T ((1 : R) ⊗ₜ[O] t) = (1 : R') ⊗ₜ[O] t := by
   simp [TWincl]

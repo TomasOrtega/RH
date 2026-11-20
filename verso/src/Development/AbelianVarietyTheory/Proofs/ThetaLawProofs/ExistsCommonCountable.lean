@@ -37,6 +37,25 @@ namespace GlobalTheory.KeyRoot
 
 open GlobalTheory.KeyCancel in
 
+/- English proof (translation)
+Take `⟨he, hg, F, hc, hw, hr, hs, hF, hFe, hv⟩` from `H`. Take `⟨he'', hg'', F'', hc'', hw'', hr'', hs'', hF'', hFe'', hv''⟩` from `H''`. Establish `hsp : spMap (f'.comp f) = spMap f' ≫ spMap f` using `by show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hp` using `hc.1`.
+
+Take `⟨φ', hφ, hw0⟩ : ∃ φ' : x''.P.A.left ⟶ x'.P.A.left, φ' ≫ φ = φ'' ∧ φ' ≫ x'.P.A.hom = x''.P.A.hom ≫ spMap f'` from `⟨hp.lift φ'' (x''.P.A.hom ≫ spMap f') (by rw [hc''.1.w, Category.assoc, hsp]), hp.lift_fst _ _ _, hp.lift_snd _ _ _⟩`. Substitute `hφ` using the available equality. Establish `he' : eSec x''.P.A ≫ φ' = spMap f' ≫ eSec x'.P.A`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, he'', hsp, Category.assoc, Category.assoc, he]`.
+
+Establish `a₁ : eSec x''.P.A ≫ x''.P.A.hom = 𝟙 _` using `Over.w η[x''.P.A]`. Establish `a₂ : eSec x'.P.A ≫ x'.P.A.hom = 𝟙 _` using `Over.w η[x'.P.A]`. Rewrite using `[Category.assoc, hw0, ← Category.assoc, a₁, Category.assoc, a₂]`. Simplify using the standard rewrite rules. Establish `g` using `(isGen_iff w).1 hw`.
+
+Establish `g''` using `(isGen_iff w'').1 hw''`. Take `⟨w', T⟩` from `exists_cancel x.P.isLB w w'' g g'' x'.P.isLB x''.P.isLB`. Establish `r` using `(maps_iff w _ (fun _ => eSec x.P.A) _ x'.rig x.rig (spMap f) _ (rigPull_le φ (spMap f) he x.P.L) (fun _ => rfl)).1 hr`. Establish `r''` using `(maps_iff w'' _ (fun _ => eSec x.P.A) _ x''.rig x.rig (spMap (f'.comp f)) _ (rigPull_le (φ' ≫ φ) (spMap (f'.comp f)) he'' x.P.L) (fun _ => rfl)).1 hr''`. Rewrite `r''` using `[hsp]`.
+
+Establish `hFF : (Chart.dualMapR f').comp F = F''` using `dualNumber_ringHom_ext (fun a => by`. Rewrite using `[RingHom.comp_apply, hF, hF'']`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl])`. Use the proof step `(by`. Rewrite using `[RingHom.comp_apply, hFe, hFe'']`.
+
+Apply the tactic sequence `ext <;> simp [Chart.dualMapR])`. Use `⟨φ', w', rfl, he', hg''.trans hg.symm, Chart.dualMapR f', hc.cancel (hc''.congr hsp rfl) hw0, (isGen_iff w').2 (T.pgen_cancel x.P.isLB g g''), (maps_iff w' _ (fun _ => eSec x'.P.A) _ x''.rig x'.rig (spMap f') _ (rigPull_le φ' (spMap f') he' x'.P.L) (fun _ => rfl)).2 (T.pmaps_canc …` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart x.P.isLB (φ (φ' (q z)))`. Establish `a` using `(appLE_eq_iff_stalk w x.th x'.th).1 hs Z (q ≫ φ') z j i hj hi`. Establish `b` using `(appLE_eq_iff_stalk w'' x.th x''.th).1 hs'' Z q z j k hj hk`.
+
+Rewrite `b` using `[T Z q z j i k hj hi hk, ← Category.assoc, a, Units.val_mul, _root_.mul_assoc]`. Conclude with `(Units.mul_right_inj _).1 b`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`. Apply `hp.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hv'', Category.assoc, hv, ← hFF, ← Category.assoc]`. Use `congr 1`. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[Category.assoc, hw0, ← Category.assoc, Over.w, Category.assoc, Over.w] show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem keyVia_cancel {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {x : KeyIn R} {x' : KeyIn R'}
     {x'' : KeyIn R''} {f : R →+* R'} {f' : R' →+* R''} {φ w φ'' w''} (H : KeyVia x' x f φ w)
     (H'' : KeyVia x'' x (f'.comp f) φ'' w'') : ∃ φ' w', φ' ≫ φ = φ'' ∧ KeyVia x'' x' f' φ' w' := by
@@ -95,13 +114,22 @@ theorem keyVia_cancel {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''
       congr 2
       ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+The claim follows from `(KeyVia.main R R' x x' f).1`.
+-/
 theorem keyPB_iff {R R' : Type} [CommRing R] [CommRing R'] (x' : KeyIn R') (x : KeyIn R) (f : R →+* R') :
     KeyPB x' x f ↔ ∃ φ w, KeyVia x' x f φ w := (KeyVia.main R R' x x' f).1
 
+/- English proof (translation)
+The claim follows from `(KeyPow.exists_keyPB_ring x f).imp fun x' h => (keyPB_iff x' x f).1 h`.
+-/
 theorem exists_keyVia {R R' : Type} [CommRing R] [CommRing R'] (x : KeyIn R) (f : R →+* R') :
     ∃ x' φ w, KeyVia x' x f φ w :=
   (KeyPow.exists_keyPB_ring x f).imp fun x' h => (keyPB_iff x' x f).1 h
 
+/- English proof (translation)
+Establish `hc : (s ∪ Set.range i).Countable` using `hs.union (Set.countable_range i)`. Use `⟨Subfield.closure (s ∪ Set.range i), i.codRestrict (Subfield.closure (s ∪ Set.range i)) fun a => Subfield.subset_closure (Or.inr ⟨a, rfl⟩), ?_, fun a ha => Subfield.subset_closure (Or.inl ha), rfl⟩` and prove the remaining obligations. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Conclude with `(Subfield.cardinalMk_closure_le_max _).trans (max_le (Cardinal.le_aleph0_iff_set_countable.2 hc) le_rfl)`.
+-/
 theorem exists_factor {S K : Type} [CommRing S] [Countable S] [Field K] (i : S →+* K) (s : Set K)
     (hs : s.Countable) : ∃ (k : Subfield K) (j : S →+* k), Countable k ∧ s ⊆ k ∧ k.subtype.comp j = i := by
   have hc : (s ∪ Set.range i).Countable := hs.union (Set.countable_range i)
@@ -112,11 +140,33 @@ theorem exists_factor {S K : Type} [CommRing S] [Countable S] [Field K] (i : S �
   exact (Subfield.cardinalMk_closure_le_max _).trans
     (max_le (Cardinal.le_aleph0_iff_set_countable.2 hc) le_rfl)
 
+/- English proof (translation)
+Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (f' : R' →+* R'') :
     spMap (f'.comp f) = spMap f' ≫ spMap f := by
   show Spec.map _ = Spec.map _ ≫ Spec.map _
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Take `⟨φ₀, w₀, V₀⟩` from `(keyPB_iff _ _ _).1 h₀`. Take `⟨φ₁, w₁, V₁⟩` from `(keyPB_iff _ _ _).1 h₁`. Establish `G₀ : IsGrpPullback x.P.A y₀.P.A (spMap σ) φ₀` using `V₀.choose_spec.choose_spec.choose_spec.1`. Establish `G₁ : IsGrpPullback x.P.A y₁.P.A (spMap σ) φ₁` using `V₁.choose_spec.choose_spec.choose_spec.1`. Establish `px` using `x.P.isAb.proper`.
+
+Take `⟨s, hs⟩` from `hom_descends_to_subfield_containing_finset k K σ x.P.A x.P.A y₀.P.A y₁.P.A φ₀ φ₁ G₀.1 G₁.1 inferInstance inferInstance inferInstance (𝟙 _)`. Take `⟨k₁, α₁, c₁, hs₁, rfl⟩` from `exists_factor σ s s.countable_toSet`. Take `⟨z₁, χ₁, u₁, U₁⟩` from `exists_keyVia y₀ α₁`. Take `⟨z₁', ω, u₁', U₁'⟩` from `exists_keyVia y₁ α₁`. Take `⟨φ', w', e', W'⟩` from `keyVia_cancel U₁ V₀`.
+
+Take `⟨ψ₁, w₁', e₁', W₁'⟩` from `keyVia_cancel U₁' V₁`. Establish `gU₁ : IsGrpPullback _ _ _ χ₁` using `U₁.choose_spec.choose_spec.choose_spec.1`. Establish `gU₁' : IsGrpPullback _ _ _ ω` using `U₁'.choose_spec.choose_spec.choose_spec.1`. Establish `gW' : IsGrpPullback _ _ _ φ'` using `W'.choose_spec.choose_spec.choose_spec.1`. Establish `gW₁' : IsGrpPullback _ _ _ ψ₁` using `W₁'.choose_spec.choose_spec.choose_spec.1`.
+
+Take `⟨f₁, hf₁⟩` from `hs k₁ α₁ k₁.subtype rfl (fun a ha => ⟨⟨a, hs₁ ha⟩, rfl⟩) z₁.P.A z₁'.P.A φ' χ₁ ψ₁ ω gU₁.1 gU₁'.1 e' e₁' gW'.1.w gW₁'.1.w`. Establish `hψ : φ' ≫ f₁.left ≫ ω = φ₁`. Rewrite using `[← Category.assoc, hf₁, Over.id_left, Category.id_comp, e₁']`. Establish `hψ' : (f₁.left ≫ ω) ≫ y₁.P.A.hom = z₁.P.A.hom ≫ spMap α₁`. Rewrite using `[Category.assoc, gU₁'.1.w, ← Category.assoc, Over.w]`.
+
+Generalize the expression as in `f₁.left ≫ ω = ψ at hψ hψ'`. Establish `pz` using `z₁.P.isAb.proper`. Establish `lN` using `pull_isLB y₁.P.isLB ψ`. Establish `iso₁ : LBIso (z₁.P.L.pull φ') ((y₁.P.L.pull ψ).pull φ')` using `LBIso.trans (pull_isLB z₁.P.isLB _) x.P.isLB (pull_isLB lN _) (LBIso.symm ⟨w', W'.choose_spec.choose_spec.choose_spec.2.1⟩) (LBIso.trans x.P.isLB (pull_isLB y₁.P.isLB _) (pull_isLB lN _) ⟨w₁, V₁.choose_spec.choose_spec.choose_spec.2.1⟩ (GenSpread.lbIso_pull_pull y₁.P.isLB φ' hψ.s …`. Take `⟨s', hs'⟩` from `lbIso_descends_to_subfield_containing_finset k₁ K k₁.subtype z₁.P.A x.P.A φ' z₁.P.L (y₁.P.L.pull ψ) gW'.1 inferInstance inferInstance z₁.P.isLB lN iso₁`.
+
+Take `⟨k₂, α₂, c₂, hs₂, e₂⟩` from `exists_factor k₁.subtype s' s'.countable_toSet`. Take `⟨z₂, χ₂, u₂, U₂⟩` from `exists_keyVia z₁ α₂`. Establish `gU₂ : IsGrpPullback _ _ _ χ₂` using `U₂.choose_spec.choose_spec.choose_spec.1`. Establish `iso₂` using `hs' k₂ α₂ k₂.subtype e₂ (fun a ha => ⟨⟨a, hs₂ ha⟩, rfl⟩) z₂.P.A χ₂ gU₂.1`. Take `⟨φ'', w'', e'', W''⟩` from `keyVia_cancel U₂ (e₂.symm ▸ W' : KeyVia x z₁ (k₂.subtype.comp α₂) φ' w')`.
+
+Establish `gW'' : IsGrpPullback _ _ _ φ''` using `W''.choose_spec.choose_spec.choose_spec.1`. Establish `eσ : k₁.subtype.comp α₁ = k₂.subtype.comp (α₂.comp α₁)` using `by rw [← RingHom.comp_assoc, e₂]`. Establish `eφ : φ₁ = φ'' ≫ χ₂ ≫ ψ` using `by rw [← Category.assoc, e'', hψ]`. Substitute `eφ` using the available equality. Rewrite `V₁`, `G₁` using `[eσ]`.
+
+Establish `fl : Flat (spMap k₂.subtype)` using `inferInstance`. Establish `su : Surjective (spMap k₂.subtype)` using `⟨Function.surjective_to_subsingleton _⟩`. Use `⟨k₂, α₂.comp α₁, z₂, c₂, keyPB_trans _ _ _ _ _ _ _ _ ((keyPB_iff _ _ _).2 ⟨_, _, U₁⟩) ((keyPB_iff _ _ _).2 ⟨_, _, U₂⟩), GlobalTheory.KeyDesc.keyPB_of_keyVia_field k k₂ K _ _ y₁ z₂ x φ'' w'' (χ₂ ≫ ψ) w₁ W'' V₁ ?_ ?_⟩` and prove the remaining obligations. Use `isGrpPullback_of_fpqc _ _ _ _ _ _ _ _ φ'' _ fl su inferInstance gW'' (G₁.congr (spMap_comp' _ _) rfl) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hψ', ← Category.assoc, gU₂.1.w, Category.assoc, spMap_comp']`.
+
+Conclude with `LBIso.trans z₂.P.isLB (pull_isLB z₁.P.isLB _) (pull_isLB y₁.P.isLB _) ⟨u₂, U₂.choose_spec.choose_spec.choose_spec.2.1⟩ (LBIso.trans (pull_isLB z₁.P.isLB _) (pull_isLB lN _) (pull_isLB y₁.P.isLB _) iso₂ (GenSpread.lbIso_pull_pull y₁.P.isLB χ₂ rfl).symm)`.
+-/
 theorem exists_common_countable {k K : Type} [Field k] [Countable k] [Field K] (σ : k →+* K) (y₀ y₁ : KeyIn k)
     (x : KeyIn K) (h₀ : KeyPB x y₀ σ) (h₁ : KeyPB x y₁ σ) :
     ∃ (k' : Subfield K) (α : k →+* k') (z : KeyIn k'), Countable k' ∧ KeyPB z y₀ α ∧ KeyPB z y₁ α := by
@@ -186,26 +236,48 @@ def IsVal (t : KeyIn ℂ → ℂ) {K : Type} [CommRing K] (x : KeyIn K) (u : K) 
 
 variable {t : KeyIn ℂ → ℂ}
 
+/- English proof (translation)
+The claim follows from `keyPB_trans _ _ _ _ _ _ _ _ h h'`.
+-/
 theorem trans' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {x : KeyIn R} {x' : KeyIn R'}
     {x'' : KeyIn R''} {f : R →+* R'} {f' : R' →+* R''} (h : KeyPB x' x f) (h' : KeyPB x'' x' f') :
     KeyPB x'' x (f'.comp f) := keyPB_trans _ _ _ _ _ _ _ _ h h'
 
+/- English proof (translation)
+The claim follows from `KeyCancel.keyPB_cancel _ _ _ _ _ _ _ _ h (e ▸ h')`.
+-/
 theorem cancel' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {x : KeyIn R} {x' : KeyIn R'}
     {x'' : KeyIn R''} {f : R →+* R'} {f' : R' →+* R''} {g : R →+* R''} (h : KeyPB x' x f) (h' : KeyPB x'' x g)
     (e : f'.comp f = g) : KeyPB x'' x' f' := KeyCancel.keyPB_cancel _ _ _ _ _ _ _ _ h (e ▸ h')
 
+/- English proof (translation)
+Introduce `f x hx` and use `h (f.comp j) x (trans' hy hx)`.
+-/
 theorem IsValAt.map {S S' : Type} [CommRing S] [CommRing S'] {y : KeyIn S} {u : S} (h : IsValAt t y u)
     {y' : KeyIn S'} {j : S →+* S'} (hy : KeyPB y' y j) : IsValAt t y' (j u) :=
   fun f x hx => h (f.comp j) x (trans' hy hx)
 
+/- English proof (translation)
+Take `⟨S, _, _, i, y, u₀, h₁, h₂, rfl⟩` from `h`. Conclude with `⟨S, _, ‹_›, f.comp i, y, u₀, trans' h₁ hx, h₂, rfl⟩`.
+-/
 theorem IsVal.map {K K' : Type} [CommRing K] [CommRing K'] {x : KeyIn K} {u : K} (h : IsVal t x u)
     {x' : KeyIn K'} {f : K →+* K'} (hx : KeyPB x' x f) : IsVal t x' (f u) := by
   obtain ⟨S, _, _, i, y, u₀, h₁, h₂, rfl⟩ := h
   exact ⟨S, _, ‹_›, f.comp i, y, u₀, trans' h₁ hx, h₂, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(nonempty_algHom_complex_of_countable ℤ k).map AlgHom.toRingHom`.
+-/
 theorem nonempty_complex (k : Type) [Field k] [CharZero k] [Countable k] : Nonempty (k →+* ℂ) :=
   (nonempty_algHom_complex_of_countable ℤ k).map AlgHom.toRingHom
 
+/- English proof (translation)
+Take `⟨S, _, _, i, y, u₀, h₁, h₂, rfl⟩` from `h`. Take `⟨S', _, _, i', y', u₀', h₁', h₂', rfl⟩` from `h'`. Take `⟨k, j, _, hs, rfl⟩` from `exists_factor i (Set.range i') (Set.countable_range i')`. Set `j' : S' →+* k` to `i'.codRestrict k fun a => hs ⟨a, rfl⟩`. Take `⟨z, hz⟩` from `exists_keyPB_ring y j`.
+
+Take `⟨z', hz'⟩` from `exists_keyPB_ring y' j'`. Take `⟨k', α, w, _, hw, hw'⟩` from `exists_common_countable k.subtype z z' x (cancel' hz h₁ rfl) (cancel' hz' h₁' rfl)`. Take `⟨g⟩` from `nonempty_complex k'`. Take `⟨c, hc⟩` from `exists_keyPB_ring w g`. Establish `e` using `(((h₂.map hz).map hw) g c hc).symm.trans (((h₂'.map hz').map hw') g c hc)`.
+
+Conclude with `congrArg k.subtype (α.injective (g.injective e))`.
+-/
 theorem IsVal.unique {K : Type} [Field K] [CharZero K] {x : KeyIn K} {u u' : K} (h : IsVal t x u)
     (h' : IsVal t x u') : u = u' := by
   obtain ⟨S, _, _, i, y, u₀, h₁, h₂, rfl⟩ := h
@@ -220,6 +292,11 @@ theorem IsVal.unique {K : Type} [Field K] [CharZero K] {x : KeyIn K} {u u' : K} 
   have e := (((h₂.map hz).map hw) g c hc).symm.trans (((h₂'.map hz').map hw') g c hc)
   exact congrArg k.subtype (α.injective (g.injective e))
 
+/- English proof (translation)
+Take `⟨s⟩` from `nonempty_complex k`. Take `⟨x, hx⟩` from `exists_keyPB_ring y s`. Use `letI := s.toAlgebra`. Take `⟨u, hu⟩` from `(FixedPoint.defined_over_of_fixed (K₀ := k) (K₁ := k) (L := ℂ)).1 (t x) fun σ => by`. Take `⟨x', hx'⟩` from `exists_keyPB_ring x (σ : ℂ →+* ℂ)`.
+
+Establish `h₁` using `ht ℂ x (RingHom.id ℂ) σ (t x) x x' Function.injective_id (keyPB_id _ x) hx' rfl`. Establish `e : (σ : ℂ →+* ℂ).comp s = s` using `RingHom.ext σ.commutes`. Establish `h₂` using `ht ℂ x (RingHom.id ℂ) (RingHom.id ℂ) (t x) x x' Function.injective_id (keyPB_id _ x) (cancel' hx (trans' hx hx') (by rw [e]; rfl)) rfl`. Conclude with `h₁.symm.trans h₂`. Conclude with `⟨u, fun f x' hx' => ht k y s f u x x' s.injective hx hx' hu.symm⟩`.
+-/
 theorem exists_isValAt (ht : InFamilies t) (k : Type) [Field k] [CharZero k] [Countable k] (y : KeyIn k) :
     ∃ u, IsValAt t y u := by
   obtain ⟨s⟩ := nonempty_complex k
@@ -239,6 +316,9 @@ def Descent : Prop :=
     s.Countable → ∃ (R₀ : Subring R) (_ : IsLocalRing R₀) (_ : IsPrincipalIdealRing R₀) (x₀ : KeyIn R₀),
       Countable R₀ ∧ s ⊆ R₀ ∧ IsLocalHom R₀.subtype ∧ KeyPB x x₀ R₀.subtype
 
+/- English proof (translation)
+Take `⟨R₀, -, -, x₀, _, -, -, h⟩` from `hD K x ∅ Set.countable_empty`. Take `⟨k, j, c, hk, e⟩` from `exists_factor R₀.subtype s hs`. Take `⟨y, hy⟩` from `exists_keyPB_ring x₀ j`. Conclude with `⟨k, y, c, hk, cancel' hy h e⟩`.
+-/
 theorem Descent.field (hD : Descent) {K : Type} [Field K] [CharZero K] (x : KeyIn K) (s : Set K) (hs : s.Countable) :
     ∃ (k : Subfield K) (y : KeyIn k), Countable k ∧ s ⊆ k ∧ KeyPB x y k.subtype := by
   obtain ⟨R₀, -, -, x₀, _, -, -, h⟩ := hD K x ∅ Set.countable_empty
@@ -246,6 +326,9 @@ theorem Descent.field (hD : Descent) {K : Type} [Field K] [CharZero K] (x : KeyI
   obtain ⟨y, hy⟩ := exists_keyPB_ring x₀ j
   exact ⟨k, y, c, hk, cancel' hy h e⟩
 
+/- English proof (translation)
+Take `⟨s⟩` from `nonempty_complex k`. Take `⟨x, hx⟩` from `exists_keyPB_ring y s`. Introduce and unpack `rfl`. Conclude with `h0 x ((h s x hx).trans (map_zero s))`.
+-/
 theorem IsValAt.ne_zero (h0 : ∀ x, t x ≠ 0) {k : Type} [Field k] [CharZero k] [Countable k] {y : KeyIn k} {u : k}
     (h : IsValAt t y u) : u ≠ 0 := by
   obtain ⟨s⟩ := nonempty_complex k
@@ -253,21 +336,35 @@ theorem IsValAt.ne_zero (h0 : ∀ x, t x ≠ 0) {k : Type} [Field k] [CharZero k
   rintro rfl
   exact h0 x ((h s x hx).trans (map_zero s))
 
+/- English proof (translation)
+Take `⟨k, y, _, -, hy⟩` from `hD.field x ∅ Set.countable_empty`. Take `⟨u, hu⟩` from `exists_isValAt ht k y`. Conclude with `⟨Units.mk0 (k.subtype u) ((map_ne_zero k.subtype).2 (hu.ne_zero h0)), k, _, ‹_›, k.subtype, y, u, hy, hu, rfl⟩`.
+-/
 theorem exists_isVal (hD : Descent) (ht : InFamilies t) (h0 : ∀ x, t x ≠ 0) (K : Type) [Field K] [CharZero K]
     (x : KeyIn K) : ∃ u : Kˣ, IsVal t x (u : K) := by
   obtain ⟨k, y, _, -, hy⟩ := hD.field x ∅ Set.countable_empty
   obtain ⟨u, hu⟩ := exists_isValAt ht k y
   exact ⟨Units.mk0 (k.subtype u) ((map_ne_zero k.subtype).2 (hu.ne_zero h0)), k, _, ‹_›, k.subtype, y, u, hy, hu, rfl⟩
 
+/- English proof (translation)
+Take `⟨S, _, _, i, y, u₀, h₁, h₂, rfl⟩` from `h`. Conclude with `(h₂ i x h₁).symm`.
+-/
 theorem IsVal.complex {x : KeyIn ℂ} {u : ℂ} (h : IsVal t x u) : u = t x := by
   obtain ⟨S, _, _, i, y, u₀, h₁, h₂, rfl⟩ := h
   exact (h₂ i x h₁).symm
 
+/- English proof (translation)
+Take `⟨_, _, _, hg, _⟩` from `h`. Conclude with `hg`.
+-/
 theorem g_eq {R R' : Type} [CommRing R] [CommRing R'] {x : KeyIn R} {x' : KeyIn R'} {f : R →+* R'}
     (h : KeyPB x' x f) : x'.P.g = x.P.g := by
   obtain ⟨_, _, _, hg, _⟩ := h
   exact hg
 
+/- English proof (translation)
+Take `⟨k, y, _, -, hy⟩` from `hD.field x ∅ Set.countable_empty`. Take `⟨u₀, hu⟩` from `exists_isValAt ht k y`. Take `rfl : u = k.subtype u₀` from `h.unique ⟨k, _, ‹_›, k.subtype, y, u₀, hy, hu, rfl⟩`. Take `⟨s⟩` from `nonempty_complex k`. Take `⟨c, hc⟩` from `exists_keyPB_ring y s`.
+
+Rewrite using `[hF k K _ y x y.g_pos hy, ← map_pow, g_eq hy]`. Use `congrArg _ (s.injective ?_)` and prove the remaining obligations. Rewrite using `[← hF k ℂ s y c y.g_pos hc, hC, hu s c hc, g_eq hc, map_pow]`.
+-/
 theorem IsVal.pow (hD : Descent) (ht : InFamilies t) {N : ℕ → ℕ}
     (ρ : ∀ (K : Type) [Field K] [CharZero K], KeyIn K → Kˣ)
     (hF : ∀ (K K' : Type) [Field K] [CharZero K] [Field K'] [CharZero K'] (f : K →+* K') (x : KeyIn K) (x' : KeyIn K'),
@@ -283,6 +380,13 @@ theorem IsVal.pow (hD : Descent) (ht : InFamilies t) {N : ℕ → ℕ}
   refine congrArg _ (s.injective ?_)
   rw [← hF k ℂ s y c y.g_pos hc, hC, hu s c hc, g_eq hc, map_pow]
 
+/- English proof (translation)
+Use `a.charZero` as an intermediate fact. Take `⟨R₀, _, _, x₀, _, hu, -, h₀⟩` from `hD R x {u} (Set.countable_singleton u)`. Set `u₀ : R₀` to `⟨u, hu rfl⟩`. Take `⟨k, j, _, -, e⟩` from `exists_factor (a.comp R₀.subtype) ∅ Set.countable_empty`. Take `⟨y, hy⟩` from `exists_keyPB_ring x₀ j`.
+
+Take `⟨u₁, hu₁⟩` from `exists_isValAt ht k y`. Establish `e₁ : a u = k.subtype u₁` using `h.unique ⟨k, _, ‹_›, k.subtype, y, u₁, cancel' hy (trans' h₀ hx) e, hu₁, rfl⟩`. Establish `hj : ∀ r, k.subtype (j r) = a r` using `fun r => congrArg (fun g : R₀ →+* K => g r) e`. Take `rfl : j u₀ = u₁` from `k.subtype.injective ((hj u₀).trans e₁)`. Establish `ij : Function.Injective j` using `fun r r' hr => Subtype.ext (ha ((hj r).symm.trans ((congrArg k.subtype hr).trans (hj r'))))`.
+
+Take `⟨s⟩` from `nonempty_complex k`. Take `⟨c, hc⟩` from `exists_keyPB_ring y s`. Conclude with `⟨R₀, _, ‹_›, R₀.subtype, x₀, u₀, h₀, fun f x' hx' => ht R₀ x₀ (s.comp j) f u₀ c x' (s.injective.comp ij) (trans' hy hc) hx' (hu₁ s c hc), rfl⟩`.
+-/
 theorem IsVal.special (hD : Descent) (ht : InFamilies t) {R K : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     [IsPrincipalIdealRing R] [Field K] [CharZero K] {a : R →+* K} (ha : Function.Injective a) {x : KeyIn R}
     {xK : KeyIn K} (hx : KeyPB xK x a) {u : R} (h : IsVal t xK (a u)) : IsVal t x u := by
@@ -302,6 +406,11 @@ theorem IsVal.special (hD : Descent) (ht : InFamilies t) {R K : Type} [CommRing 
   exact ⟨R₀, _, ‹_›, R₀.subtype, x₀, u₀, h₀, fun f x' hx' => ht R₀ x₀ (s.comp j) f u₀ c x' (s.injective.comp ij)
     (trans' hy hc) hx' (hu₁ s c hc), rfl⟩
 
+/- English proof (translation)
+Use `x.P.isAb.comm` as an intermediate fact. Take `⟨hex, -, -, -, hb⟩` from `LieComb.lieComb_algebra K x.P.A x.P.g x.v x.basis.1`. Use `choose v hv using fun i => (hex (M i)).exists`. Use `⟨KeyNormalExists.constMul x.P.A.hom a x.th, fun s => ?_, v, (hb M v x.basis hv).2 hM.isUnit, fun _ => rfl, hv⟩` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `x.th_ne s`.
+
+Conclude with `⟨z, hz, KeyNormalExists.mem_nonzeroLocus_constMul _ ha.isUnit _ hz'⟩`.
+-/
 theorem exists_scale {K : Type} [Field K] (x : KeyIn K) {a : K} (ha : a ≠ 0) {M : Matrix (Fin x.P.g) (Fin x.P.g) K}
     (hM : M.det ≠ 0) : ∃ (th' : x.P.L.Sec) (_ : ∀ s : Sp K, ∃ z : x.P.A.left, x.P.A.hom z = s ∧ z ∈ Out.nonzeroLocus th')
       (v' : Fin x.P.g → (epsR K ⟶ x.P.A)) (_ : IsLieBasis v'),
@@ -313,6 +422,13 @@ theorem exists_scale {K : Type} [Field K] (x : KeyIn K) {a : K} (ha : a ≠ 0) {
   obtain ⟨z, hz, hz'⟩ := x.th_ne s
   exact ⟨z, hz, KeyNormalExists.mem_nonzeroLocus_constMul _ ha.isUnit _ hz'⟩
 
+/- English proof (translation)
+Take `⟨u, k₁, k₂, k₃, k₄, k₅, k₆⟩` from `h`. Use `P.isAb.comm` as an intermediate fact. Use `⟨u, k₁, k₂, k₃, k₄, fun i z hz => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `((congrArg (valAt' _ _) (h₁ i)).trans (valAt'_mul _ _ _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[valAt'_constFn _ _ (Over.w (u.ex z)) _ _ hz]`.
+
+Use `(congrArg (a * ·) (k₅ i z hz)).trans ?_` and prove the remaining obligations. Simplify using `only [_root_.mul_assoc]`. Establish `k` using `GlobalTheory.UnifDifferential.isDiff_of_isLieComb P.A P.L P.g P.g u _ v _ _ hv.1 k₆ (h₂ i)`. Establish `e : ∑ j, M i j • ((2 * Real.pi * Complex.I : ℂ)⁻¹ • N j) = (2 * Real.pi * Complex.I : ℂ)⁻¹ • (M * N) i`. Simplify using `only [smul_comm (M i _) (2 * Real.pi * Complex.I : ℂ)⁻¹]`.
+
+Rewrite using `[← Finset.smul_sum, ← Matrix.vecMul_eq_sum]`. Both sides reduce to the same expression. Rewrite `k` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem normalAt_scale {P : Out.PolAV (Sp ℂ)} {hg rig hr th hth v hv th' hth' v' hv'} {a : ℂ}
     {M : Matrix (Fin P.g) (Fin P.g) ℂ} (h₁ : ∀ i, LB.Sec.f th' i = constFn P.A.hom _ a * LB.Sec.f th i)
     (h₂ : ∀ i, IsLieComb (M i) v (v' i)) {τ N : Matrix (Fin P.g) (Fin P.g) ℂ} {p q : Fin P.g → ℂ} {c : ℂ}
@@ -333,6 +449,9 @@ theorem normalAt_scale {P : Out.PolAV (Sp ℂ)} {hg rig hr th hth v hv th' hth' 
       rfl
     rwa [e] at k
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `(f.map_det M).symm`.
+-/
 theorem det_cast {K K' : Type} [CommRing K] [CommRing K'] (f : K →+* K') {m n : ℕ} (e : m = n)
     (M : Matrix (Fin n) (Fin n) K) :
     (Matrix.of fun i j : Fin m => f (M (i.cast e) (j.cast e))).det = f M.det := by
@@ -343,6 +462,13 @@ def FromNormal (t : KeyIn ℂ → ℂ) : Prop :=
   (∀ x : KeyIn ℂ, ∃ τ M a b c, charHalf x.P.g a b ∧ c ≠ 0 ∧ M.det ≠ 0 ∧ NormalAt x τ M a b c) ∧
     ∀ (x : KeyIn ℂ) τ M a b c, charHalf x.P.g a b → c ≠ 0 → NormalAt x τ M a b c → t x = M.det ^ 4 / c ^ 8
 
+/- English proof (translation)
+Introduce `f x' hx'`. Take `⟨c, hc⟩` from `exists_keyPB_ring (⟨P, hg, rig, hr, th, hth, v, hv⟩ : KeyIn k) f`. Establish `e : c.P.g = P.g` using `g_eq hc`. Establish `hd` using `det_cast f e M`. Establish `ha' : f a ≠ 0` using `(map_ne_zero f).2 ha`.
+
+Take `⟨s', hs', w', hw', k₁, k₂⟩` from `exists_scale c ha' (hd ▸ (map_ne_zero f).2 hM)`. Establish `hc'` using `KeyPBScale.keyPB_scale k ℂ f P hg rig hr th hth v hv th' hth' v' hv' a M c.P e c.g_pos c.rig c.rig_gen c.th c.th_ne c.v c.basis s' hs' w' hw' h₁ h₂ k₁ k₂ hc`. Take `⟨τ, N, p, q, d, hpq, hd0, -, hn⟩` from `hN.1 c`. Establish `e₁` using `hN.2 ⟨c.P, c.g_pos, c.rig, c.rig_gen, s', hs', w', hw'⟩ _ _ _ _ _ hpq (mul_ne_zero ha' hd0) (normalAt_scale (hg := c.g_pos) (hr := c.rig_gen) (hth := c.th_ne) (hv := c.basis) (hth' := hs') (hv' := hw') k₁ k₂ hn)`. Establish `e₂` using `(h f c hc).symm.trans (hN.2 _ _ _ _ _ _ hpq hd0 hn)`.
+
+Rewrite using `[ht ℂ _ (RingHom.id ℂ) (RingHom.id ℂ) _ _ x' Function.injective_id (keyPB_id _ _) (cancel' hc' hx' rfl) rfl, RingHom.id_apply, e₁, map_mul, e₂, Matrix.det_mul, hd, map_div₀, map_pow, map_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem IsValAt.scale (ht : InFamilies t) (hN : FromNormal t) {k : Type} [Field k] {P : Out.PolAV (Sp k)}
     {hg rig hr th hth v hv th' hth' v' hv'} {a : k} (ha : a ≠ 0)
     {M : Matrix (Fin P.g) (Fin P.g) k} (hM : M.det ≠ 0)
@@ -366,6 +492,9 @@ theorem IsValAt.scale (ht : InFamilies t) (hN : FromNormal t) {k : Type} [Field 
     RingHom.id_apply, e₁, map_mul, e₂, Matrix.det_mul, hd, map_div₀, map_pow, map_pow]
   field_simp
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨z, -, hz⟩` from `hth' (default : PrimeSpectrum K)`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Rewrite `hi` using `[h₁, constFn, map_zero, map_zero, zero_mul, Scheme.basicOpen_zero]`. Conclude with `hi`.
+-/
 theorem scale_ne_zero {K : Type} [Field K] {P : Out.PolAV (Sp K)} {th th' : P.L.Sec} {a : K}
     (hth' : ∀ s : Sp K, ∃ z : P.A.left, P.A.hom z = s ∧ z ∈ Out.nonzeroLocus th')
     (h₁ : ∀ i, LB.Sec.f th' i = constFn P.A.hom _ a * LB.Sec.f th i) : a ≠ 0 := by
@@ -375,6 +504,15 @@ theorem scale_ne_zero {K : Type} [Field K] {P : Out.PolAV (Sp K)} {th th' : P.L.
   rw [h₁, constFn, map_zero, map_zero, zero_mul, Scheme.basicOpen_zero] at hi
   exact hi
 
+/- English proof (translation)
+Establish `ha` using `scale_ne_zero hth' h₁`. Use `P.isAb.comm` as an intermediate fact. Establish `hM : M.det ≠ 0` using `(((LieComb.lieComb_algebra K P.A P.g v hv.1).2.2.2.2 M v' hv h₂).1 hv').ne_zero`. Take `⟨k, y, _, hs, hy⟩` from `hD.field (⟨P, hg, rig, hr, th, hth, v, hv⟩ : KeyIn K) (insert a (Set.range fun p : Fin P.g × Fin P.g => M p.1 p.2)) ((Set.countable_range _).insert a)`. Establish `e : P.g = y.P.g` using `g_eq hy`.
+
+Set `a₀ : k` to `⟨a, hs (Set.mem_insert _ _)⟩`. Set `M₀ : Matrix (Fin y.P.g) (Fin y.P.g) k` to `fun i j => ⟨M (i.cast e.symm) (j.cast e.symm), hs (Set.mem_insert_of_mem _ ⟨(_, _), rfl⟩)⟩`. Establish `hd : M.det = k.subtype M₀.det` using `det_cast k.subtype e M₀`. Establish `ha₀ : a₀ ≠ 0` using `fun h => ha (congrArg Subtype.val h)`. Establish `hM₀ : M₀.det ≠ 0` using `fun h => hM (by rw [hd, h, map_zero])`.
+
+Take `⟨s', hs', w', hw', k₁, k₂⟩` from `exists_scale y ha₀ hM₀`. Take `⟨u₀, hu₀⟩` from `exists_isValAt ht k y`. Establish `hy'` using `KeyPBScale.keyPB_scale k K k.subtype y.P y.g_pos y.rig y.rig_gen y.th y.th_ne y.v y.basis s' hs' w' hw' a₀ M₀ P e hg rig hr th hth v hv th' hth' v' hv' k₁ k₂ h₁ h₂ hy`. Rewrite using `[h.unique ⟨k, _, ‹_›, k.subtype, y, u₀, hy, hu₀, rfl⟩, h'.unique ⟨k, _, ‹_›, k.subtype, _, _, hy', IsValAt.scale ht hN (hg := y.g_pos) (hr := y.rig_gen) (hth := y.th_ne) (hv := y.basis) ha₀ hM₀ k₁ k₂ hu₀, rfl⟩, hd, map_mul, map_div₀, map_pow, map_pow]`. Express the relevant statement in the definitionally equal form `a ^ 8 * (_ / a ^ 8 * _) = _`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem IsVal.scale (hD : Descent) (ht : InFamilies t) (hN : FromNormal t) {K : Type} [Field K] [CharZero K]
     {P : Out.PolAV (Sp K)} {hg rig hr th hth v hv th' hth' v' hv'} {a : K} {M : Matrix (Fin P.g) (Fin P.g) K}
     (h₁ : ∀ i, LB.Sec.f th' i = constFn P.A.hom _ a * LB.Sec.f th i) (h₂ : ∀ i, IsLieComb (M i) v (v' i)) {u u' : K}
@@ -402,6 +540,17 @@ theorem IsVal.scale (hD : Descent) (ht : InFamilies t) (hN : FromNormal t) {K : 
   change a ^ 8 * (_ / a ^ 8 * _) = _
   field_simp
 
+/- English proof (translation)
+Introduce `hU _ hD ⟨N, hN1, ρ, ρH, ρF, ρU, ρN⟩ hC`. Establish `hE` using `fun x => (KeyNormalExists.exists_normalAt hU x).1`. Use `choose τ M a b c hab hc hM hn using id hE`. Set `t : KeyIn ℂ → ℂ` to `fun x => (M x).det ^ 4 / c x ^ 8`. Establish `ht : InFamilies t` using `fun S _ _ _ _ x₀ f f' u x x' hf h h' e => hC S x₀ f f' u x x' _ _ _ _ _ _ _ _ _ _ hf h h' (hab x) (hab x') (hc x) (hc x') (hn x) (hn x') e`.
+
+Establish `hN : FromNormal t` using `⟨hE, fun x τ' M' a' b' c' hab' hc' hn' => hC ℂ x (RingHom.id ℂ) (RingHom.id ℂ) _ x x _ _ _ _ _ _ _ _ _ _ Function.injective_id (keyPB_id _ x) (keyPB_id _ x) hab' (hab x) hc' (hc x) hn' (hn x) rfl⟩`. Establish `h0 : ∀ x, t x ≠ 0` using `fun x => div_ne_zero (pow_ne_zero _ (hM x)) (pow_ne_zero _ (hc x))`. Establish `hρ : ∀ x : KeyIn ℂ, (ρ ℂ x : ℂ) = t x ^ N x.P.g` using `fun x => value_at_normalForm N 1 (ρ ℂ) x.P.g (a x) (b x) x.g_pos (ρH ℂ) (fun y h σ hy => ρN y σ _ _ y.g_pos ⟨fun i => (hab x).1 _, fun i => (hab x).2 _⟩ hy) x rfl _ _ _ (hc x) (hM x) (hn x)`. Use `choose κ hκ using exists_isVal hD ht h0`. Use `⟨κ, fun K _ _ P hg rig hr th hth v hv th' hth' v' hv' a M h₁ h₂ => IsVal.scale hD ht hN h₁ h₂ (hκ K _) (hκ K _), fun K K' _ _ _ _ f x x' h => (hκ K' x').unique ((hκ K x).map h), fun R K _ _ _ _ _ _ _ x xK h => ?_, fun x u σ p q h₁ h₂ hp hq h₃ h₄ h₅ h₆ => Units.ext ?_, fun x u Hm …` and prove the remaining obligations.
+
+Take `⟨u', hu', -⟩` from `ρU R K x xK x.g_pos h`. Establish `hp` using `((hκ K xK).pow hD ht ρ ρF hρ).trans hu'`. Establish `hpos : 0 < N xK.P.g` using `hN1 _`. Take `⟨u, hu⟩` from `IsIntegrallyClosed.exists_algebraMap_eq_of_isIntegral_pow (R := R) hpos (hp ▸ isIntegral_algebraMap)`. Establish `inj` using `IsFractionRing.injective R K`.
+
+Establish `hunit : IsUnit u`. Rewrite `hp` using `[← hu, ← map_pow]`. Conclude with `(isUnit_pow_iff hpos.ne').1 (inj hp ▸ u'.isUnit)`. Establish `hv : IsVal t x u` using `IsVal.special hD ht inj h (hu ▸ hκ K xK)`. Conclude with `⟨hunit.unit, hu.symm, fun k _ _ r xk _ hk => (hκ k xk).unique (hv.map hk)⟩`.
+
+Rewrite using `[(hκ ℂ x).complex, hN.2 x σ 1 p q 1 ⟨hp, hq⟩ one_ne_zero ((normalAt_one_iff x σ p q).2 ⟨u, h₁, h₂, h₃, h₄, h₅, h₆⟩)]`. Simplify using the standard rewrite rules. Take `⟨u', σ, M', p, q, d, k₁, k₂, hp, hq, k₃, k₄, hd, k₅, -, k₆, k₇⟩` from `keyIn_normal_form_and_archimedean_constant hU x u Hm W χ θ Fd nth nη h₁ h₂ h₃ h₄ h₅ h₆ h₇`. Rewrite using `[(hκ ℂ x).complex, hN.2 x σ M' p q d ⟨hp, hq⟩ hd ⟨u', k₁, k₂, k₃, k₄, k₅, k₆⟩]`. Conclude with `k₇`.
+-/
 theorem keyFormula_of_families : ThetaUnifAV → Out.PolBaseChangeSt → (∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsPrincipalIdealRing R] [CharZero R] (x : KeyIn R) (s : Set R), s.Countable → ∃ (R₀ : Subring R) (_ : IsLocalRing R₀) (_ : IsPrincipalIdealRing R₀) (x₀ : KeyIn R₀), Countable R₀ ∧ s ⊆ R₀ ∧ IsLocalHom R₀.subtype ∧ KeyPB x x₀ R₀.subtype) → (∃ N : ℕ → ℕ, (∀ g, 1 ≤ N g) ∧ KeyRule N 1 charHalf) → (∀ (S : Type) [CommRing S] [IsDomain S] [IsLocalRing S] [IsPrincipalIdealRing S] (x₀ : KeyIn S) (f f' : S →+* ℂ) (u : S) (x x' : KeyIn ℂ) (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c : ℂ) (τ' M' : Matrix (Fin x'.P.g) (Fin x'.P.g) ℂ) (a' b' : Fin x'.P.g → ℂ) (c' : ℂ), Function.Injective f → KeyPB x x₀ f → KeyPB x' x₀ f' → charHalf _ a b → charHalf _ a' b' → c ≠ 0 → c' ≠ 0 → NormalAt x τ M a b c → NormalAt x' τ' M' a' b' c' → M.det ^ 4 / c ^ 8 = f u → M'.det ^ 4 / c' ^ 8 = f' u) → KeyFormula := by
   intro hU _ hD ⟨N, hN1, ρ, ρH, ρF, ρU, ρN⟩ hC
   have hE := fun x => (KeyNormalExists.exists_normalAt hU x).1

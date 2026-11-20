@@ -39,10 +39,22 @@ def indTransport (hQP : Q ≤ P) (T : W₁ →ₗ[ℂ] W₂)
       map_smul' := fun c φ => by ext g; simp }
   isIntertwining' g := by ext φ x; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem indTransport_apply (hQP : Q ≤ P) (T : W₁ →ₗ[ℂ] W₂)
     (hT : ∀ (q : Q) (w : W₁), T (σ ⟨q, hQP q.2⟩ w) = τ q (T w)) (φ) (g : G) :
     (indTransport hQP T hT φ).1.1 g = T (φ.1.1 g) := rfl
 
+/- English proof (translation)
+Substitute `hPQ` using the available equality. Establish `h1 : ∀ (q : P) (w : W₁), (T : W₁ →ₗ[ℂ] W₂) (σ ⟨q, le_refl P q.2⟩ w) = τ q (T w)` using `fun q w => hT _ _ rfl w`. Establish `h2 : ∀ (q : P) (w : W₂), (T.symm : W₂ →ₗ[ℂ] W₁) (τ ⟨q, le_refl P q.2⟩ w) = σ q (T.symm w)`. Introduce `q w`. Apply `T.injective` to reduce the goal to its premises.
+
+Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Rewrite using `[hT q q rfl, LinearEquiv.apply_symm_apply]`. Set `f` to `indTransport le_rfl (T : W₁ →ₗ[ℂ] W₂) h1`. Set `f'` to `indTransport le_rfl (T.symm : W₂ →ₗ[ℂ] W₁) h2`. Use `⟨GlobalTheory.LocGL.equivOfBijective f ⟨fun φ ψ hφψ => ?_, fun ψ => ⟨f' ψ, ?_⟩⟩⟩` and prove the remaining obligations.
+
+Use `congrArg (fun χ => f' χ) hφψ` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun (congrArg (fun χ : smoothPart (ind P σ) => χ.1.1) this) x`.
+
+Simplify `hx` using `[f, f', indTransport_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x show T (T.symm (ψ.1.1 x)) = ψ.1.1 x`. Simplify using the standard rewrite rules.
+-/
 theorem nonempty_smInd_equiv (hPQ : P = Q) (T : W₁ ≃ₗ[ℂ] W₂)
     (hT : ∀ (p : P) (q : Q), (p : G) = q → ∀ w, T (σ p w) = τ q (T w)) :
     Nonempty ((smInd P σ).Equiv (smInd Q τ)) := by
@@ -72,19 +84,31 @@ section Pair
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (b' : Fin 2 → ℕ)
 
+/- English proof (translation)
+Use `ext`. Simplify using `[GlobalTheory.LeviBlockExponent.pairPlace, stdSum]`.
+-/
 theorem pairPlace_zero (i : Fin (b' 0)) :
     GlobalTheory.LeviBlockExponent.pairPlace b' (rfl : b' 0 + b' 1 = _) ⟨0, i⟩ = two (stdSum (rfl : b' 0 + b' 1 = _)) ⟨false, i⟩ := by
   ext
   simp [GlobalTheory.LeviBlockExponent.pairPlace, stdSum]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[GlobalTheory.LeviBlockExponent.pairPlace, stdSum]`.
+-/
 theorem pairPlace_one (j : Fin (b' 1)) :
     GlobalTheory.LeviBlockExponent.pairPlace b' (rfl : b' 0 + b' 1 = _) ⟨1, j⟩ = two (stdSum (rfl : b' 0 + b' 1 = _)) ⟨true, j⟩ := by
   ext
   simp [GlobalTheory.LeviBlockExponent.pairPlace, stdSum]
 
+/- English proof (translation)
+Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_two]`.
+-/
 theorem modExp_pair_zero : modExp (fun j : Fin 2 => Fin (b' j)) 0 = b' 1 := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_two]
 
+/- English proof (translation)
+Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_two]`.
+-/
 theorem modExp_pair_one : modExp (fun j : Fin 2 => Fin (b' j)) 1 = -(b' 0 : ℤ) := by
   simp [modExp, Finset.sum_filter, Fin.sum_univ_two]
 
@@ -95,6 +119,13 @@ section Pair2
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   (b' : Fin 2 → ℕ)
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[mem_parab_iff, mem_parab_two]`. Prove the components needed by the constructor for the conclusion. Introduce `h j i`. Use `h 1 0 j i (by decide)` as an intermediate fact.
+
+Rewrite `this` using `[pairPlace_one, pairPlace_zero, two_true, two_false]`. Then use the resulting hypothesis. Apply the tactic sequence `intro h a c i j hca fin_cases a <;> fin_cases c`. Conclude with `absurd hca (by decide)`. Conclude with `absurd hca (by decide)`. Use `h i j` as an intermediate fact.
+
+Rewrite `this` using `[← two_true, ← two_false, ← pairPlace_one, ← pairPlace_zero]`. Conclude with `this`. Conclude with `absurd hca (by decide)`.
+-/
 theorem parab_pair_eq :
     parab k (GlobalTheory.LeviBlockExponent.pairPlace b' (rfl : b' 0 + b' 1 = _)) =
       parab k (two (stdSum (rfl : b' 0 + b' 1 = _))) := by
@@ -113,18 +144,27 @@ theorem parab_pair_eq :
       exact this
     · exact absurd hca (by decide)
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[leviProj_apply, leviProj_apply, pairPlace_zero, pairPlace_zero, hpq]`.
+-/
 theorem leviProj_pair_zero (p : parab k (GlobalTheory.LeviBlockExponent.pairPlace b' (rfl : b' 0 + b' 1 = _)))
     (q : parab k (two (stdSum (rfl : b' 0 + b' 1 = _)))) (hpq : (p : GL (Fin (b' 0 + b' 1)) k) = q) :
     leviProj k _ p 0 = leviProj k _ q false := by
   ext i j
   rw [leviProj_apply, leviProj_apply, pairPlace_zero, pairPlace_zero, hpq]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[leviProj_apply, leviProj_apply, pairPlace_one, pairPlace_one, hpq]`.
+-/
 theorem leviProj_pair_one (p : parab k (GlobalTheory.LeviBlockExponent.pairPlace b' (rfl : b' 0 + b' 1 = _)))
     (q : parab k (two (stdSum (rfl : b' 0 + b' 1 = _)))) (hpq : (p : GL (Fin (b' 0 + b' 1)) k) = q) :
     leviProj k _ p 1 = leviProj k _ q true := by
   ext i j
   rw [leviProj_apply, leviProj_apply, pairPlace_one, pairPlace_one, hpq]
 
+/- English proof (translation)
+Rewrite using `[deltaHalf_apply, Fin.prod_univ_two, modExp_pair_zero, modExp_pair_one]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem deltaHalf_pair (g : Levi k (fun j : Fin 2 => Fin (b' j))) :
     deltaHalf k (fun j : Fin 2 => Fin (b' j)) g =
       absPow k ((b' 1 : ℂ) / 2) (Matrix.GeneralLinearGroup.det (g 0)) *
@@ -133,12 +173,24 @@ theorem deltaHalf_pair (g : Levi k (fun j : Fin 2 => Fin (b' j))) :
   push_cast
   rfl
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.LeviBlockExponent.pairChar, MonoidHom.finsetProd_apply, Fin.prod_univ_two]`.
+-/
 theorem pairChar_apply' (μ : Fin 2 → kˣ →* ℂˣ) (g : Levi k (fun j : Fin 2 => Fin (b' j))) :
     GlobalTheory.LeviBlockExponent.pairChar k b' μ g = μ 0 (Matrix.GeneralLinearGroup.det (g 0)) * μ 1 (Matrix.GeneralLinearGroup.det (g 1)) := by
   simp [GlobalTheory.LeviBlockExponent.pairChar, MonoidHom.finsetProd_apply, Fin.prod_univ_two]
 
 end Pair2
 
+/- English proof (translation)
+Introduce `k _ _ _ _ b' d h μ`. Substitute `h` using the available equality. Simplify using `only [GlobalTheory.CuspBlock.glCast_rfl, MonoidHom.comp_id]`. Unfold `GlobalTheory.LeviBlockExponent.pairInd prod₂ ind₂ parInd`. Use `nonempty_smInd_equiv (parab_pair_eq k b') (TensorProduct.rid ℂ ℂ).symm fun p q hpq w => ?_` and prove the remaining obligations.
+
+Establish `hL : leviProj k _ q = leviTwo k _ _ (leviProj k _ p 0, leviProj k _ p 1)`. Use function extensionality and compare the values at `x`. Consider the cases of `x`. Conclude with `(leviProj_pair_zero k b' p q hpq).symm`. Conclude with `(leviProj_pair_one k b' p q hpq).symm`.
+
+Simplify using `only [MonoidHom.comp_apply, twist_apply, ofChar_apply, TensorProduct.rid_symm_apply, hL, MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_coe, MulEquiv.symm_apply_apply, extTensor_tmul, deltaHalf_two, deltaHalf_pair, pairChar_apply']`. Simplify using `only [Fintype.card_fin, detRep, ofChar_apply, detChar_apply, Units.val_mul, smul_eq_mul]`. Establish `hc : ∀ x c : ℂ, x ⊗ₜ[ℂ] c = (c * x) ⊗ₜ[ℂ] (1 : ℂ)` using `fun x c => by`. Rewrite using `[← smul_eq_mul c x, TensorProduct.smul_tmul, smul_eq_mul, mul_one]`. Use `conv_rhs => rw [TensorProduct.smul_tmul', hc]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairInd_equiv_prod₂ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (b' : Fin 2 → ℕ) (d : ℕ) (h : b' 0 + b' 1 = d) (μ : Fin 2 → kˣ →* ℂˣ),
     Nonempty (Representation.Equiv ((GlobalTheory.LeviBlockExponent.pairInd k b' h μ).comp (GlobalTheory.CuspBlock.glCast h))

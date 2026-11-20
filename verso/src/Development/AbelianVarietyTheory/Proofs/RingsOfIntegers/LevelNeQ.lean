@@ -12,6 +12,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `e`. Establish `hc` using `D.ntypes.g_cond i`. Establish `hq` using `D.host.hyp.1`. Establish `h1 : D.host.g i % D.host.q = 1 % D.host.q`. Rewrite using `[← Nat.mod_mod_of_dvd _ (show D.host.q ∣ D.host.QS * D.host.q * D.host.d from ⟨D.host.QS * D.host.d, by ring⟩), hc]`.
+
+Rewrite `h1` using `[e, Nat.mod_self, Nat.mod_eq_of_lt hq.one_lt]`. Conclude with `zero_ne_one h1`.
+-/
 theorem level_ne_q (D : D7) (i : Fin 2) : D.host.g i ≠ D.host.q := by
   intro e
   have hc := D.ntypes.g_cond i

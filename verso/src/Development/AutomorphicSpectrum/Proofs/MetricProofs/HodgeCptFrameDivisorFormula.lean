@@ -23,6 +23,11 @@ open AlgebraicGeometry CategoryTheory NumberField Matrix
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.FMX GlobalTheory.CompanionTheory.Ar.FlagBun GlobalTheory.CompanionTheory.Ar.PB.FMX.GenFl
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : k < a`. Rewrite using `[hB a k h, zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, lt_of_le_of_lt (Fin.le_def.1 (not_lt.1 h)) hk, rfl⟩)`.
+-/
 theorem flagStep_colFrame_le {R M : Type} [Field R] [AddCommGroup M] [Module R M] {r : ℕ} (e : Fin r → M)
     (B : Matrix (Fin r) (Fin r) R) (hB : ∀ a b, b < a → B a b = 0) (i : ℕ) :
     flagStep R (colFrame e B) i ≤ flagStep R e i := by
@@ -33,6 +38,11 @@ theorem flagStep_colFrame_le {R M : Type} [Field R] [AddCommGroup M] [Module R M
   · rw [hB a k h, zero_smul]; exact Submodule.zero_mem _
   · exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, lt_of_le_of_lt (Fin.le_def.1 (not_lt.1 h)) hk, rfl⟩)
 
+/- English proof (translation)
+Use `le_antisymm (flagStep_colFrame_le e B hB i) ?_` and prove the remaining obligations. Use `letI := Matrix.invertibleOfIsUnitDet B hu`. Establish `ht : B.BlockTriangular id` using `fun a b h => hB a b h`. Establish `hi : B⁻¹.BlockTriangular id` using `blockTriangular_inv_of_blockTriangular ht`. Establish `h` using `flagStep_colFrame_le (colFrame e B) B⁻¹ (fun a b h => hi h) i`.
+
+Rewrite `h` using `[← colFrame_mul, Matrix.mul_nonsing_inv _ hu, colFrame_one]`. Then use the resulting hypothesis.
+-/
 theorem flagStep_colFrame {G M : Type} [Field G] [AddCommGroup M] [Module G M] {r : ℕ} (e : Fin r → M)
     (B : Matrix (Fin r) (Fin r) G) (hB : ∀ a b, b < a → B a b = 0) (hu : IsUnit B.det) (i : ℕ) :
     flagStep G (colFrame e B) i = flagStep G e i := by
@@ -43,6 +53,13 @@ theorem flagStep_colFrame {G M : Type} [Field G] [AddCommGroup M] [Module G M] {
   have h := flagStep_colFrame_le (colFrame e B) B⁻¹ (fun a b h => hi h) i
   rwa [← colFrame_mul, Matrix.mul_nonsing_inv _ hu, colFrame_one] at h
 
+/- English proof (translation)
+Rewrite `he`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h0 : B.mulVec g = 0`. Use function extensionality and compare the values at `l`. Use `he (fun l => B.mulVec g l) ?_ l` and prove the remaining obligations.
+
+Rewrite using `[← hg]`. Simplify using `only [colFrame, Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Use `Matrix.eq_zero_of_mulVec_eq_zero (hu.ne_zero) h0` as an intermediate fact. Introduce `k`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem linearIndependent_colFrame {G M : Type} [Field G] [AddCommGroup M] [Module G M] {r : ℕ} {e : Fin r → M}
     (he : LinearIndependent G e) (B : Matrix (Fin r) (Fin r) G) (hu : IsUnit B.det) :
     LinearIndependent G (colFrame e B) := by
@@ -61,6 +78,15 @@ theorem linearIndependent_colFrame {G M : Type} [Field G] [AddCommGroup M] [Modu
   rw [this]
   rfl
 
+/- English proof (translation)
+Set `C' : Fin r → W` to `fun k => ⟨C k, hCm k⟩`. Set `e' : Fin r → W` to `fun k => ⟨e k, hem k⟩`. Establish `hC' : LinearIndependent Ω C'` using `LinearIndependent.of_comp W.subtype hC`. Establish `he' : LinearIndependent Ω e'` using `LinearIndependent.of_comp W.subtype he`. Set `BC` to `basisOfLinearIndependentOfCardEqFinrank' C' hC' (by simp [hr])`.
+
+Set `Be` to `basisOfLinearIndependentOfCardEqFinrank' e' he' (by simp [hr])`. Use `⟨BC.toMatrix Be, ?_, fun k => ?_⟩` and prove the remaining obligations. Use `Module.Basis.toMatrix_mul_toMatrix_flip BC Be` as an intermediate fact. Conclude with `IsUnit.of_mul_eq_one _ (by rw [← Matrix.det_mul, this, Matrix.det_one])`. Establish `h` using `BC.sum_repr (e' k)`.
+
+Establish `h2` using `congrArg (Subtype.val) h`. Simplify using `only [AddSubmonoidClass.coe_finsetSum, SetLike.val_smul] at h2`. Establish `h3 : ∀ l, (BC l : M) = C l` using `fun l => by simp [BC, C']`. Simplify using `only [h3] at h2`. Use `h2.symm.trans (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations.
+
+Establish `h4 : BC.toMatrix Be l k = BC.repr (e' k) l` using `by simp [Module.Basis.toMatrix_apply, Be]`. Rewrite using `[h4]`.
+-/
 theorem exists_mat {Ω M : Type} [Field Ω] [AddCommGroup M] [Module Ω M] (W : Submodule Ω M) {r : ℕ} (C e : Fin r → M)
     (hC : LinearIndependent Ω C) (he : LinearIndependent Ω e) (hCm : ∀ k, C k ∈ W) (hem : ∀ k, e k ∈ W)
     (hr : Module.finrank Ω W = r) (hfin : Module.Finite Ω W) :
@@ -83,6 +109,13 @@ theorem exists_mat {Ω M : Type} [Field Ω] [AddCommGroup M] [Module Ω M] (W : 
     have h4 : BC.toMatrix Be l k = BC.repr (e' k) l := by simp [Module.Basis.toMatrix_apply, Be]
     rw [h4]
 
+/- English proof (translation)
+Take `⟨u', B, hu', hB, hBt, hAB⟩` from `GlobalTheory.T.exists_generic_triangular_factorization Ω G S r U A hU hA`. Take `⟨hind, hdeg⟩` from `GlobalTheory.T.isGenFam_algebraicIndependent_finrank F₀ Ω G S r u' d hd hfin hu'`. Establish `hbe : ∀ s, b s = colFrame (colFrame (fun k => j₀ (c s k)) (u' s)) (B s)` using `fun s => by`. Rewrite using `[← colFrame_mul, ← hAB]`. Use function extensionality and compare the values at `k`.
+
+Conclude with `hb s k`. Establish `hu'd : ∀ s, IsUnit (u' s).det` using `fun s => by`. Rewrite using `[Matrix.det_of_lowerTriangular _ fun a b h => hu'.2.1 s a b h]`. Simplify using `[hu'.1 s]`. Use `⟨c, u', hc, hsemi, hlin, fun s => ?_, hu'.1, hu'.2.1, fun s i => ?_, hind, hd, hdeg⟩` and prove the remaining obligations.
+
+Rewrite using `[hbe]`. Conclude with `linearIndependent_colFrame (linearIndependent_colFrame (hlin s) _ (hu'd s)) _ (hB s)`. Rewrite using `[hbe, flagStep_colFrame _ _ (hBt s) (hB s)]`. Both sides reduce to the same expression.
+-/
 theorem gen_of_mat (F₀ Ω G : Type) [Field F₀] [Field Ω] [Field G] [Algebra F₀ Ω] [Algebra Ω G] [Algebra F₀ G]
     [IsScalarTower F₀ Ω G] (E₀ E' : Type) [AddCommGroup E₀] [Module F₀ E₀] [AddCommGroup E'] [Module G E']
     (j₀ : E₀ →+ E') (S : Type) [Finite S] (r : S → ℕ) (V₀ : S → Submodule F₀ E₀) (c : ∀ s, Fin (r s) → E₀)
@@ -108,6 +141,9 @@ theorem gen_of_mat (F₀ Ω G : Type) [Field F₀] [Field Ω] [Field G] [Algebra
   · rw [hbe, flagStep_colFrame _ _ (hBt s) (hB s)]
     rfl
 
+/- English proof (translation)
+Apply the tactic sequence `have e : dualMap (b.comp a) = (dualMap b).comp (dualMap a) := RingHom.ext fun x => by ext <;> simp [dualMap]`. Rewrite using `[e]`. Simplify using `only [spMap]`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spMap_dual_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (a : R →+* R') (b : R' →+* R'') :
     spMap (dualMap (b.comp a)) = spMap (dualMap b) ≫ spMap (dualMap a) := by
   have e : dualMap (b.comp a) = (dualMap b).comp (dualMap a) := RingHom.ext fun x => by ext <;> simp [dualMap]
@@ -115,6 +151,9 @@ theorem spMap_dual_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R
   simp only [spMap]
   rw [CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Use `letI := ι.toAlgebra`. Use `letI := fn.toAlgebra`. Use `haveI : IsScalarTower F₀ Ω G := IsScalarTower.of_algebraMap_eq fun a => (RingHom.congr_fun hι a).symm`. Conclude with `gen_of_mat F₀ Ω G E₀ E' j₀ S r V₀ c b U A d hc hsemi hlin hU hA hb hd hfin`.
+-/
 theorem gen_of_mat' (F₀ Ω G : Type) [Field F₀] [Field Ω] [Field G] [Algebra Ω G] (ι : F₀ →+* Ω) (fn : F₀ →+* G)
     (hι : (algebraMap Ω G).comp ι = fn) (E₀ E' : Type) [AddCommGroup E₀] [Module F₀ E₀] [AddCommGroup E'] [Module G E']
     (j₀ : E₀ →+ E') (S : Type) [Finite S] (r : S → ℕ) (V₀ : S → Submodule F₀ E₀) (c : ∀ s, Fin (r s) → E₀)
@@ -134,6 +173,57 @@ theorem gen_of_mat' (F₀ Ω G : Type) [Field F₀] [Field Ω] [Field G] [Algebr
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO n m φ d hF hC 𝔐' pr j hO hspan hV`. Take `⟨hvb, hcc, htw, -⟩` from `hF`. Take `⟨hdom, hff, hcst, hext, hpt⟩` from `id hO`. Establish `htie₀ : CoordTie ℤ 𝔐'.ξ (seg (yv (p` using `D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀)) := by`. Use `𝔐'.tie using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `Subsingleton.elim _ _`. Establish `htie` using `GlobalTheory.T.hodgeCpt_dual_frame_generic E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n φ 𝔐'.X 𝔐'.ξ htie₀`. Establish `hch` using `GlobalTheory.T.inChart_iff_of_dominates' 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q))) ((k : K₀) → J₀ k) (seg x₀) 𝔐.tie htie₀.gen hdom`. Establish `hfl` using `GlobalTheory.T.flag_frames_generic_model_left 𝔐.X Ω 𝔐.ξ (EE 𝔐) ((k : K₀) → J₀ k) (seg x₀) (CMType H ⊕ CMType H) (rk (CMType H) D.p D.q) (VV 𝔐) (LL 𝔐) m n φ (cc 𝔐 bW bO) 𝔐'.X 𝔐'.ξ pr 𝔐.tie 𝔐.all hvb htw hcc htie 𝔐'.all hdom hch`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.tensor_equiv_of_basis_extension Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.Li 𝔐'.Li j hext.1 hext.2 hspan`.
+
+Establish `hjΦ : Φ.toLinearMap.toAddMonoidHom.comp (TensorProduct.mk Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.Li 1).toAddMonoidHom = j` using `AddMonoidHom.ext hΦ`. Establish `hW : ∀ τ, (𝔐'.V (.inl τ)).IsFlagVBOn Set.univ (fun k : Fin D.p => ∑ a, genU Ω (rk (CMType H) D.p D.q) (.inl τ) a k • j (bW τ a))`. Introduce `τ`. Establish `h1` using `GlobalTheory.T.lattice_pull_split_injection 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr 𝔐.Li (EE 𝔐) (inW 𝔐) (LinearMap.fst Ω _ _) (𝔐.V (.inl τ)) D.p (fun a => (bW τ a : 𝔐.Li)) (genU Ω (rk (CMType H) D.p D.q) (.inl τ)) (LinearMap.ext fun _ => rfl) (hfl (.inl τ))`. Establish `h2` using `GlobalTheory.T.flag_bundle_under_equiv 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr 𝔐.Li _ 𝔐'.Li (𝔐.V (.inl τ)) _ Φ Set.univ _ _ h1`.
+
+Rewrite `h2` using `[hjΦ, ← hV]`. Establish `e : (fun k : Fin D.p => ∑ a, genU Ω (rk (CMType H) D.p D.q) (.inl τ) a k • j (bW τ a)) = fun k => Φ (∑ l, genU Ω (rk (CMType H) D.p D.q) (.inl τ) l k • TensorProduct.mk Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.Li 1 (bW τ l))`. Use function extensionality and compare the values at `k`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [map_smul, hΦ]`.
+
+Rewrite using `[e]`. Conclude with `h2`. Establish `hv : ∀ τ, ∃ v : Fin D.q → 𝔐.Vgen (.inr τ), ∀ a b, bO τ a (v b) = if a = b then 1 else 0`. Introduce `τ`. Take `⟨B⟩` from `nonempty_basis_Vgen 𝔐 (.inr τ)`.
+
+Use `Module.Finite.of_basis B` as an intermediate fact. Use `⟨fun b => (Module.evalEquiv Ω _).symm ((bO τ).coord b), fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.apply_evalEquiv_symm_apply, Module.Basis.coord_apply, (bO τ).repr_self, Finsupp.single_apply]`. Use `choose v hv using hv`. Establish `hvu : ∀ τ (v' : Fin D.q → 𝔐.Vgen (.inr τ)), (∀ a b, bO τ a (v' b) = if a = b then 1 else 0) → v' = v τ`.
+
+Introduce `τ v' h'`. Take `⟨B⟩` from `nonempty_basis_Vgen 𝔐 (.inr τ)`. Use `Module.Finite.of_basis B` as an intermediate fact. Use function extensionality and compare the values at `b`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff Ω]`.
+
+Introduce `f`. Establish `hf : f ∈ Submodule.span Ω (Set.range (bO τ))` using `by rw [(bO τ).span_eq]; trivial`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf => obtain ⟨a, rfl⟩ := hf`. Simplify using `[h', hv]`.
+
+Consider the case `zero => simp`. Consider the case `add f g _ _ h1 h2 => simp only [LinearMap.add_apply, h1, h2, add_zero]`. Consider the case `smul t f _ h1 => simp only [LinearMap.smul_apply, h1, smul_zero]`. Establish `hO' : ∀ τ, (𝔐'.V (.inr τ)).IsFlagVBOn Set.univ (fun k : Fin D.q => colFrame (fun a => j (v τ a)) (genU Ω (rk (CMType H) D.p D.q) (.inr τ) : Matrix (Fin D.q) (Fin D.q) _)ᵀ⁻¹ k.rev)`. Introduce `τ`.
+
+Establish `h1` using `GlobalTheory.T.lattice_pull_split_injection 𝔐.X 𝔐'.X Ω (GenField Ω (rk (CMType H) D.p D.q)) 𝔐.ξ 𝔐'.ξ pr _ (EE 𝔐) (inO 𝔐 τ) ((LinearMap.proj τ).comp (LinearMap.snd Ω _ _)) (omBundle 𝔐 τ) D.q (fun a => bO τ a) (genU Ω (rk (CMType H) D.p D.q) (.inr τ)) (LinearMap.ext fun _ => by sim …`. Rewrite using `[hV]`. Conclude with `GlobalTheory.T.hodgeCpt_lattice_base_change E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 τ 𝔐'.X _ 𝔐'.ξ pr 𝔐'.Li j (bO τ) (v τ) _ hext hdom (hv τ) (fun a => genU_diag (r := rk (CMType H) D.p D.q) (.inr τ) a) (fun a b h => genU_above (r := rk (CMType H) D.p D.q) (.inr τ) a b h) h1`. Take `⟨ι, hι, hdomι, hfin⟩` from `GlobalTheory.T.hodgeCpt_morphism_compat E H D l Xo c Y S Ω _ K₀ _ J₀ _ x₀ _ 𝔐 𝔐' pr _ j d hO hC`. Take `⟨Li₀, _, _, M₀, j₁, V₀, c₀, hpt₁, hext₁, hV₀, hc₀⟩` from `GlobalTheory.T.hodgeCpt_descent_generic_point E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 𝔐'.Ω₀ 𝔐'.ξ₀ ι 𝔐'.gen₀ hdomι`.
+
+Establish `hjinj : Function.Injective j`. Use `(injective_iff_map_eq_zero j).2 fun e he => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1` using `hext.2 1 (fun _ => e) (LinearIndependent.of_subsingleton (0 : Fin 1) hne)`. Conclude with `h1.ne_zero (0 : Fin 1) he`.
+
+Establish `hrefl : ∀ s w, w ∈ 𝔐.Vgen s ↔ j w ∈ 𝔐'.Vgen s`. Introduce `s w`. Use `⟨hO.map_Vgen s, fun h => (Submodule.mem_iInf _).2 fun t => ?_⟩` and prove the remaining obligations. Establish `h1 : 𝔐'.ρ t (j w) - 𝔐'.emb s t • j w = 0` using `(Submodule.mem_iInf _).1 h t`. Use `show 𝔐.ρ t w - 𝔐.emb s t • w = 0`.
+
+Establish `e : 𝔐'.emb s t = algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q)) (𝔐.emb s t)` using `by show 𝔐'.cst _ = _`. Rewrite using `[hcst]`. Both sides reduce to the same expression. Apply `hjinj` to reduce the goal to its premises. Rewrite using `[map_sub, map_zero, hO.map_act, hext.1, ← e]`.
+
+Conclude with `h1`. Set `eb : ∀ s, Fin (labelRk D s) → 𝔐.Li` to `fun s => match s with`. Consider the case `.inl τ => fun a => (bW τ a : 𝔐.Li)`. Consider the case `.inr τ => fun a => (v τ a.rev : 𝔐.Li)`. Establish `heb : ∀ s, LinearIndependent Ω (eb s) ∧ ∀ k, eb s k ∈ 𝔐.Vgen s`.
+
+Introduce and unpack `(τ | τ)`. Conclude with `⟨(bW τ).linearIndependent.map' (𝔐.Vgen (.inl τ)).subtype (Submodule.ker_subtype _), fun k => (bW τ k).2⟩`. Establish `h1 : LinearIndependent Ω (v τ)` using `LinearIndependent.of_pairwise_dual_eq_zero_one (v τ) (bO τ) (fun a b hab => (hv τ a b).trans (if_neg hab)) (fun a => by rw [hv, if_pos rfl])`. Establish `h2` using `h1.map' (𝔐.Vgen (.inr τ)).subtype (Submodule.ker_subtype _)`. Conclude with `⟨h2.comp Fin.rev Fin.rev_injective, fun k => (v τ k.rev).2⟩`.
+
+Establish `hA : ∀ s, ∃ A : Matrix (Fin (labelRk D s)) (Fin (labelRk D s)) Ω, IsUnit A.det ∧ ∀ k, eb s k = ∑ l, A l k • j₁ (c₀ s l)`. Introduce `s`. Take `⟨B⟩` from `nonempty_basis_Vgen 𝔐 s`. Conclude with `exists_mat (𝔐.Vgen s) _ _ (hext₁.2 _ _ (hc₀ s).1) (heb s).1 (fun k => (hV₀ s _).1 (by rw [← (hc₀ s).2]; exact Submodule.subset_span ⟨k, rfl⟩)) (heb s).2 (by simpa using Module.finrank_eq_card_basis B) (Module.Finite.of_basis B)`. Use `choose A hAu hAe using hA`.
+
+Set `U : ∀ s, Matrix (Fin (rk (CMType H) D.p D.q s)) (Fin (rk (CMType H) D.p D.q s)) (GenField Ω (rk (CMType H) D.p D.q))` to `fun s => if Sum.isRight s = true then revInv (genU Ω (rk (CMType H) D.p D.q) s) else genU Ω (rk (CMType H) D.p D.q) s`. Establish `hU : IsGenFam Ω (GenField Ω (rk (CMType H) D.p D.q)) U` using `GlobalTheory.T.isGenFam_revInv_subfamily Ω _ _ (rk (CMType H) D.p D.q) (genU Ω (rk (CMType H) D.p D.q)) (fun s => Sum.isRight s = true) (genU_isGenFam Ω _)`. Establish `hUl : ∀ τ, U (.inl τ) = genU Ω (rk (CMType H) D.p D.q) (.inl τ)` using `fun τ => if_neg (by simp)`. Establish `hUr : ∀ τ, U (.inr τ) = revInv (genU Ω (rk (CMType H) D.p D.q) (.inr τ))` using `fun τ => if_pos (by simp)`. Set `b : ∀ s, Fin (labelRk D s) → 𝔐'.Li` to `fun s k => ∑ a, U s a k • j (eb s a)`.
+
+Establish `hbW : ∀ τ k, b (.inl τ) k = ∑ a, genU Ω (rk (CMType H) D.p D.q) (.inl τ) a k • j (bW τ a)` using `fun τ k => by show ∑ a, U (.inl τ) a k • j (bW τ a) = _`. Rewrite using `[hUl]`. Establish `hbO : ∀ τ (k : Fin D.q), b (.inr τ) k = colFrame (fun a => j (v τ a)) (genU Ω (rk (CMType H) D.p D.q) (.inr τ) : Matrix (Fin D.q) (Fin D.q) _)ᵀ⁻¹ k.rev` using `fun τ k => by show ∑ a : Fin D.q, U (.inr τ) a k • j (v τ a.rev) = _`. Rewrite using `[hUr]`. Conclude with `Fintype.sum_equiv Fin.revPerm _ _ fun a => rfl`.
+
+Establish `hb : ∀ s k, b s k = ∑ l, ((A s).map (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q))) * U s) l k • (j.comp j₁) (c₀ s l)`. Introduce `s k`. Establish `h1 : ∀ a, j (eb s a) = ∑ l, algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q)) (A s l a) • (j.comp j₁) (c₀ s l)` using `fun a => by`. Rewrite using `[hAe s a, map_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => hext.1 _ _`.
+
+Use `show ∑ a, U s a k • j (eb s a) = _`. Simplify using `only [h1, Matrix.mul_apply, Matrix.map_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ => by rw [mul_comm]`. Establish `hsub : ∀ s, (𝔐'.V s).IsFlagVBOn Set.univ (b s)`.
+
+Introduce and unpack `(τ | τ)`. Rewrite using `[show b (.inl τ) = _ from funext (hbW τ)]`. Conclude with `hW τ`. Rewrite using `[show b (.inr τ) = _ from funext (hbO τ)]`. Conclude with `hO' τ`.
+
+Establish `hjpt : ∀ e, (𝔐'.M.pt ((j.comp j₁) e)).left ≫ 𝔐'.m.φ = spMap (dualMap 𝔐'.fn) ≫ (M₀.pt e).left`. Introduce `e`. Use `show (𝔐'.M.pt (j (j₁ e))).left ≫ _ = _`. Rewrite using `[hpt, hpt₁ e, ← hι, spMap_dual_comp ι (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q))), Category.assoc]`. Establish `hgen : letI` using `𝔐'.fn.toAlgebra GlobalTheory.CompanionTheory.Ar.IsGenericFlag (Ω' := GenField Ω (rk (CMType H) D.p D.q)) (j.comp j₁) V₀ b d := by`.
+
+Conclude with `gen_of_mat' 𝔐'.Ω₀ Ω (GenField Ω (rk (CMType H) D.p D.q)) ι 𝔐'.fn hι Li₀ 𝔐'.Li (j.comp j₁) _ (labelRk D) V₀ c₀ b U A d hc₀ (fun a e => by show j (j₁ (a • e)) = 𝔐'.fn a • j (j₁ e)`. Rewrite using `[hext₁.1, hext.1, ← hι]`. Use the proof step `rfl)`. Use the proof step `(fun s => hext.2 _ _ (hext₁.2 _ _ (hc₀ s).1)) hU hAu hb hC.1 hfin`. Establish `hw : ∀ τ, wBlock (gMat D.p D.q Ω τ) = genU Ω (rk (CMType H) D.p D.q) (.inl τ)` using `fun τ => by`.
+
+Use extensionality with `a b`. Conclude with `GenMat.gMat_w Ω τ a b`. Establish `ho : ∀ τ, omBlock (gMat D.p D.q Ω τ) = genU Ω (rk (CMType H) D.p D.q) (.inr τ)` using `fun τ => by`. Use extensionality with `a b`. Conclude with `GenMat.gMat_om Ω τ a b`.
+
+Use `⟨{ b := b, sub := hsub, Li₀ := Li₀, M₀ := M₀, j := j.comp j₁, j_pt := hjpt, V₀ := V₀, V₀_mem := fun s e => (hV₀ s e).trans (hrefl s (j₁ e)), deg := d, generic := hgen }, rfl, fun τ k => ?_, fun τ v' hv' k => ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `hbW τ k`. Rewrite using `[ho, hvu τ v' hv']`. Conclude with `hbO τ k`.
+-/
 theorem exists_colFlags : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K₀ : Type) [Fintype K₀] (J₀ : K₀ → Type) [∀ k, Fintype (J₀ k)] (x₀ : (Σ k, J₀ k) → Ω) (𝔐 : HodgeCpt Y S x₀) (bW : WBases 𝔐) (bO : OmBases 𝔐) (n m : CMType H ⊕ CMType H → ℕ) (φ : ∀ s, Fin (n s) → Module.Dual Ω (EE 𝔐)) (d : ℕ), FormsOK 𝔐 bW bO m φ → 𝔐.IsCover d → ∀ (𝔐' : HodgeCpt Y S (yv (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀)) (pr : 𝔐'.X ⟶ 𝔐.X) (j : 𝔐.Li →+ 𝔐'.Li), HodgeOver 𝔐' 𝔐 pr (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q))) j → Submodule.span (GenField Ω (rk (CMType H) D.p D.q)) (Set.range j) = ⊤ → (∀ s, 𝔐'.V s = (𝔐.V s).pull 𝔐'.ξ pr j) → ∃ Fl : 𝔐'.Flag, Fl.deg = d ∧ ColFlags 𝔐 bW bO j Fl := by
   classical
   intro E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO n m φ d hF hC 𝔐' pr j hO hspan hV

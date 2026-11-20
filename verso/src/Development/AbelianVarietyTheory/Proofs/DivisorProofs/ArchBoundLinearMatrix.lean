@@ -10,6 +10,9 @@ open scoped TensorProduct NNReal Matrix
 noncomputable section
 namespace GlobalTheory.ThetaDecay
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `infEmb τ (compInf F E w (a ⊗ₜ[F] 1)) = _`. Unfold `compInf`. Simplify using `[archAt]`.
+-/
 theorem piInf_algebraMap (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) :
     piInf τ (algebraMap (AF F) (AE F E) a) = archAt F w a := by
@@ -17,6 +20,19 @@ theorem piInf_algebraMap (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   unfold compInf
   simp [archAt]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n d κ _ f`. Set `e1 : κ → (κ → AF F) × (κ → AF F)` to `fun i => (Pi.single i 1, 0)`. Set `e2 : κ → (κ → AF F) × (κ → AF F)` to `fun i => (0, Pi.single i 1)`. Set `S : ∀ w : InfinitePlace F, EmbOver E w → Fin n → Fin d → ℝ` to `fun w τ k l => ∑ i, (‖piInf τ (f (e1 i) k l)‖ + ‖piInf τ (f (e2 i) k l)‖)`. Establish `hS : ∀ w τ k l, 0 ≤ S w τ k l` using `fun w τ k l => Finset.sum_nonneg fun i _ => add_nonneg (norm_nonneg _) (norm_nonneg _)`.
+
+Use `⟨∑ w, ∑ τ : EmbOver E w, ∑ k, ∑ l, S w τ k l, Finset.sum_nonneg fun w _ => Finset.sum_nonneg fun τ _ => Finset.sum_nonneg fun k _ => Finset.sum_nonneg fun l _ => hS w τ k l, ?_⟩` and prove the remaining obligations. Introduce `v B hB hv w τ k l`. Establish `hvdec : v = ∑ i, (v.1 i • e1 i + v.2 i • e2 i)`. Apply the tactic sequence `refine Prod.ext (funext fun j => ?_) (funext fun j => ?_) <;>`. Simplify using `[e1, e2, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`.
+
+Establish `hfv : f v k l = ∑ i, (algebraMap (AF F) (AE F E) (v.1 i) * f (e1 i) k l + algebraMap (AF F) (AE F E) (v.2 i) * f (e2 i) k l)` using `by conv_lhs => rw [hvdec]`. Simplify using `only [map_sum, map_add, LinearMap.map_smul, Matrix.sum_apply, Matrix.add_apply, Matrix.smul_apply]`. Simplify using `only [Algebra.smul_def]`. Establish `h1 : ‖piInf τ (f v k l)‖ ≤ B * S w τ k l`. Rewrite using `[hfv, map_sum]`.
+
+Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, piInf_algebraMap, piInf_algebraMap, mul_add]`. Apply the tactic sequence `refine (norm_add_le _ _).trans (add_le_add ?_ ?_) <;> rw [norm_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (hv w i).1 (norm_nonneg _)`. Conclude with `mul_le_mul_of_nonneg_right (hv w i).2 (norm_nonneg _)`. Establish `h2 : S w τ k l ≤ ∑ w, ∑ τ : EmbOver E w, ∑ k, ∑ l, S w τ k l`. Use `le_trans ?_ (Finset.single_le_sum (f := fun w => ∑ τ : EmbOver E w, ∑ k, ∑ l, S w τ k l) (fun w _ => Finset.sum_nonneg fun τ _ => Finset.sum_nonneg fun k _ => Finset.sum_nonneg fun l _ => hS w τ k l) (Finset.mem_univ w))` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun τ => ∑ k, ∑ l, S w τ k l) (fun τ _ => Finset.sum_nonneg fun k _ => Finset.sum_nonneg fun l _ => hS w τ k l) (Finset.mem_univ τ))` and prove the remaining obligations.
+
+Use `le_trans ?_ (Finset.single_le_sum (f := fun k => ∑ l, S w τ k l) (fun k _ => Finset.sum_nonneg fun l _ => hS w τ k l) (Finset.mem_univ k))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun l => S w τ k l) (fun l _ => hS w τ k l) (Finset.mem_univ l)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem linMap_archBound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n d : ℕ) (κ : Type) [Fintype κ]
     (f : (κ → AF F) × (κ → AF F) →ₗ[AF F] Matrix (Fin n) (Fin d) (AE F E)), ∃ K : ℝ, 0 ≤ K ∧
     ∀ (v : (κ → AF F) × (κ → AF F)) (B : ℝ), 0 ≤ B → (∀ w i, ‖archAt F w (v.1 i)‖ ≤ B ∧ ‖archAt F w (v.2 i)‖ ≤ B) →

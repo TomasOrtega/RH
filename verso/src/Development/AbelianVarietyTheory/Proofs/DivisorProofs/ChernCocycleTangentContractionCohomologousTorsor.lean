@@ -19,6 +19,11 @@ section Dl
 
 variable {R : Type} [CommRing R] {D D' : Type} [CommRing D] [CommRing D']
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hu`. Take `⟨b, hb⟩` from `hu'`. Establish `e1 : (↑a : D) * ↑a⁻¹ = 1` using `Units.mul_inv a`. Establish `e2 : (↑b : D) * ↑b⁻¹ = 1` using `Units.mul_inv b`. Establish `e3 : Ring.inverse ((↑a : D) * ↑b) = ↑b⁻¹ * ↑a⁻¹`.
+
+Rewrite using `[← Units.val_mul, Ring.inverse_unit, mul_inv_rev, Units.val_mul]`. Simplify using `only [dl, TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, ← ha, ← hb, e3, Ring.inverse_unit, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Take the linear combination `(u'.snd * ↑b⁻¹) * e1 + (u.snd * ↑a⁻¹) * e2`.
+-/
 theorem dl_mul (u u' : DualNumber D) (hu : IsUnit u.fst) (hu' : IsUnit u'.fst) :
     dl (u * u') = dl u + dl u' := by
   obtain ⟨a, ha⟩ := hu
@@ -31,23 +36,41 @@ theorem dl_mul (u u' : DualNumber D) (hu : IsUnit u.fst) (hu' : IsUnit u'.fst) :
     Ring.inverse_unit, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]
   linear_combination (u'.snd * ↑b⁻¹) * e1 + (u.snd * ↑a⁻¹) * e2
 
+/- English proof (translation)
+Simplify using `[dl, h]`.
+-/
 theorem dl_one_add (l : DualNumber D) (h : l.fst = 0) : dl (1 + l) = l.snd := by
   simp [dl, h]
 
+/- English proof (translation)
+Simplify using `[dl]`.
+-/
 theorem dl_one : dl (1 : DualNumber D) = 0 := by
   simp [dl]
 
+/- English proof (translation)
+Simplify using `[dl]`.
+-/
 theorem dl_inl (c : D) : dl (TrivSqZeroExt.inl c : DualNumber D) = 0 := by
   simp [dl]
 
+/- English proof (translation)
+Simplify using `[epsHom, DualNumber.lift_apply_apply]`.
+-/
 theorem fst_epsHom [Algebra R D] [Algebra R D'] (φ : D →ₐ[R] D') (z : DualNumber D) :
     (epsHom φ z).fst = φ z.fst := by
   simp [epsHom, DualNumber.lift_apply_apply]
 
+/- English proof (translation)
+Simplify using `[epsHom, DualNumber.lift_apply_apply]`.
+-/
 theorem snd_epsHom' [Algebra R D] [Algebra R D'] (φ : D →ₐ[R] D') (z : DualNumber D) :
     (epsHom φ z).snd = φ z.snd := by
   simp [epsHom, DualNumber.lift_apply_apply]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hz`. Establish `e : Ring.inverse (φ (a : D)) = φ (↑a⁻¹ : D)`. Rewrite using `[show φ (a : D) = ((Units.map (φ : D →* D') a : D'ˣ) : D') from rfl, Ring.inverse_unit]`. Both sides reduce to the same expression. Simplify using `only [dl, fst_epsHom, snd_epsHom', ← ha, e, Ring.inverse_unit, map_mul]`.
+-/
 theorem dl_epsHom [Algebra R D] [Algebra R D'] (φ : D →ₐ[R] D') (z : DualNumber D) (hz : IsUnit z.fst) :
     dl (epsHom φ z) = φ (dl z) := by
   obtain ⟨a, ha⟩ := hz
@@ -56,12 +79,18 @@ theorem dl_epsHom [Algebra R D] [Algebra R D'] (φ : D →ₐ[R] D') (z : DualNu
     rfl
   simp only [dl, fst_epsHom, snd_epsHom', ← ha, e, Ring.inverse_unit, map_mul]
 
+/- English proof (translation)
+Establish `e` using `congrArg dl h`. Rewrite `e` using `[dl_mul _ _ (by simp [hl]) hc, dl_mul _ _ ha hb, dl_one_add _ hl]`. Take the linear combination `e`.
+-/
 theorem snd_of_exp (l a b c : DualNumber D) (hl : l.fst = 0) (ha : IsUnit a.fst) (hb : IsUnit b.fst)
     (hc : IsUnit c.fst) (h : (1 + l) * c = a * b) : l.snd = dl a + dl b - dl c := by
   have e := congrArg dl h
   rw [dl_mul _ _ (by simp [hl]) hc, dl_mul _ _ ha hb, dl_one_add _ hl] at e
   linear_combination e
 
+/- English proof (translation)
+The claim follows from `h.map (TrivSqZeroExt.fstHom D D D)`.
+-/
 theorem isUnit_fst {u : DualNumber D} (h : IsUnit u) : IsUnit u.fst := h.map (TrivSqZeroExt.fstHom D D D)
 
 end Dl
@@ -70,15 +99,28 @@ section Pts
 
 variable {R : Type} [CommRing R] {A B : Over (Sp R)} [GrpObj A] [GrpObj B]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, pt0, AbDual.inl, comp_lift, Category.comp_id, MonObj.comp_one]`.
+-/
 theorem pointWithZeroSecondCoord_left {D : Type} [CommRing D] [Algebra R D] (x : Pt A D) :
     (pt0 B x).left = x.left ≫ (AbDual.inl A B).left := by
   rw [← Over.comp_left, pt0, AbDual.inl, comp_lift, Category.comp_id, MonObj.comp_one]
 
+/- English proof (translation)
+Rewrite using `[pointWithZeroSecondCoord_left, Scheme.Hom.comp_preimage]`. Conclude with `h`.
+-/
 theorem pointWithZeroSecondCoord_mem_chart_of_restricted (P : LB (A ⊗ B).left) {D : Type} [CommRing D] [Algebra R D] {x : Pt A D} {c : P.ι}
     (h : ⊤ ≤ x.left ⁻¹ᵁ chartsA P c) : ⊤ ≤ (pt0 B x).left ⁻¹ᵁ P.U c := by
   rw [pointWithZeroSecondCoord_left, Scheme.Hom.comp_preimage]
   exact h
 
+/- English proof (translation)
+Establish `hsurj : Surjective (spOver (TrivSqZeroExt.fstHom R D D)).left`. Rewrite using `[spOver_left]`. Use `GlobalTheory.TorusLift.surjective_specMap _ (fun a ↦ ⟨TrivSqZeroExt.inl a, rfl⟩) ⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[sq, Ideal.zero_eq_bot, eq_bot_iff]`. Use `Ideal.mul_le.2 fun a ha b hb ↦ ?_` and prove the remaining obligations.
+
+Establish `ha' : a.fst = 0` using `ha`. Establish `hb' : b.fst = 0` using `hb`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [ha', hb']`. Establish `e : (spOver (TrivSqZeroExt.fstHom R D D) ≫ ptV v x).left = (pt0 B x).left`.
+
+Rewrite using `[ContrMor.spOver_fst_ptV v hv x]`. Use `GlobalTheory.TorusLift.preimage_eq_top_of_surjective (spOver (TrivSqZeroExt.fstHom R D D)).left (ptV v x).left (U := P.U c) (by` as an intermediate fact. Rewrite using `[← Over.comp_left, e]`. Conclude with `top_unique (pointWithZeroSecondCoord_mem_chart_of_restricted P h))`. Conclude with `this.ge`.
+-/
 theorem ptV_mem (P : LB (A ⊗ B).left) {v : epsR R ⟶ B} (hv : IsTangent v) {D : Type} [CommRing D]
     [Algebra R D] {x : Pt A D} {c : P.ι} (h : ⊤ ≤ x.left ⁻¹ᵁ chartsA P c) : ⊤ ≤ (ptV v x).left ⁻¹ᵁ P.U c := by
   have hsurj : Surjective (spOver (TrivSqZeroExt.fstHom R D D)).left := by
@@ -104,6 +146,9 @@ section Ev
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Simplify using `only [evalAt, RingHom.comp_apply]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+-/
 theorem evalAt_res' {C : Type} [CommRing C] (x : Sp C ⟶ X) {V U : X.Opens} (hVU : V ≤ U)
     (hU : ⊤ ≤ x ⁻¹ᵁ U) (hV : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, U)) :
     evalAt x U hU f = evalAt x V hV ((X.presheaf.map (homOfLE hVU).op).hom f) := by
@@ -111,6 +156,9 @@ theorem evalAt_res' {C : Type} [CommRing C] (x : Sp C ⟶ X) {V U : X.Opens} (hV
   congr 1
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `e : (spMap φ ≫ x).appLE U ⊤ h' ≫ (Scheme.ΓSpecIso (CommRingCat.of C')).hom = x.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom ≫ CommRingCat.ofHom φ`. Rewrite using `[← Scheme.ΓSpecIso_naturality, ← Category.assoc, ← Scheme.Hom.appLE_comp_appLE (spMap φ) x U ⊤ ⊤ h le_rfl]`. Use `congr 2`. Conclude with `(congrArg (fun t ↦ t.hom f) e).symm`.
+-/
 theorem evalAt_spMap' {C C' : Type} [CommRing C] [CommRing C'] (φ : C →+* C') (x : Sp C ⟶ X)
     (x' : Sp C' ⟶ X) (e : spMap φ ≫ x = x') {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x' ⁻¹ᵁ U)
     (f : Γ(X, U)) : φ (evalAt x U h f) = evalAt x' U h' f := by
@@ -125,14 +173,25 @@ theorem evalAt_spMap' {C C' : Type} [CommRing C] [CommRing C'] (φ : C →+* C')
 abbrev gv (L : LB X) {C : Type} [CommRing C] (x : Sp C ⟶ X) (a b : L.ι) : C :=
   evU x (L.U a ⊓ L.U b) (L.g a b).val
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem gv_eq (L : LB X) {C : Type} [CommRing C] (x : Sp C ⟶ X) {a b : L.ι}
     (h : ⊤ ≤ x ⁻¹ᵁ (L.U a ⊓ L.U b)) : gv L x a b = evalAt x (L.U a ⊓ L.U b) h (L.g a b).val := dif_pos h
 
+/- English proof (translation)
+Rewrite using `[gv_eq L x (le_inf ha hb)]`. Conclude with `(L.g a b).isUnit.map _`.
+-/
 theorem isUnit_gv (L : LB X) {C : Type} [CommRing C] (x : Sp C ⟶ X) {a b : L.ι}
     (ha : ⊤ ≤ x ⁻¹ᵁ L.U a) (hb : ⊤ ≤ x ⁻¹ᵁ L.U b) : IsUnit (gv L x a b) := by
   rw [gv_eq L x (le_inf ha hb)]
   exact (L.g a b).isUnit.map _
 
+/- English proof (translation)
+Establish `h₁ : ⊤ ≤ x ⁻¹ᵁ (L.U a ⊓ L.U b)` using `le_inf ha hb`. Establish `h₂ : ⊤ ≤ x ⁻¹ᵁ (L.U b ⊓ L.U c)` using `le_inf hb hc`. Establish `h₃ : ⊤ ≤ x ⁻¹ᵁ (L.U a ⊓ L.U c)` using `le_inf ha hc`. Establish `hW : ⊤ ≤ x ⁻¹ᵁ (L.U a ⊓ L.U b ⊓ L.U c)` using `le_inf h₁ hc`. Establish `e` using `congrArg (fun u : Γ(X, L.U a ⊓ L.U b ⊓ L.U c)ˣ ↦ evalAt x _ hW u.val) (hL.cocycle a b c)`.
+
+Simplify using `only [Units.val_mul, map_mul] at e`. Rewrite using `[gv_eq L x h₁, gv_eq L x h₂, gv_eq L x h₃, evalAt_res' x inf_le_left h₁ hW, evalAt_res' x (le_inf (inf_le_left.trans inf_le_right) inf_le_right) h₂ hW, evalAt_res' x (le_inf (inf_le_left.trans inf_le_left) inf_le_right) h₃ hW]`. Conclude with `e`.
+-/
 theorem gv_cocycle (L : LB X) (hL : L.IsLB) {C : Type} [CommRing C] (x : Sp C ⟶ X) {a b c : L.ι}
     (ha : ⊤ ≤ x ⁻¹ᵁ L.U a) (hb : ⊤ ≤ x ⁻¹ᵁ L.U b) (hc : ⊤ ≤ x ⁻¹ᵁ L.U c) :
     gv L x a b * gv L x b c = gv L x a c := by
@@ -147,6 +206,13 @@ theorem gv_cocycle (L : LB X) (hL : L.IsLB) {C : Type} [CommRing C] (x : Sp C �
     evalAt_res' x (le_inf (inf_le_left.trans inf_le_left) inf_le_right) h₃ hW]
   exact e
 
+/- English proof (translation)
+Establish `ka : ⊤ ≤ y' ⁻¹ᵁ L.U a`. Rewrite using `[← e]`. Conclude with `fun p _ ↦ ha (Set.mem_univ _)`. Establish `kb : ⊤ ≤ y' ⁻¹ᵁ L.U b`. Rewrite using `[← e]`.
+
+Conclude with `fun p _ ↦ hb (Set.mem_univ _)`. Establish `e1` using `congrArg dl (gv_cocycle L hL y' hb' ha' ka)`. Establish `e2` using `congrArg dl (gv_cocycle L hL y' hb' kb ka)`. Rewrite `e1` using `[dl_mul _ _ (isUnit_fst (isUnit_gv L _ hb' ha')) (isUnit_fst (isUnit_gv L _ ha' ka))]`. Rewrite `e2` using `[dl_mul _ _ (isUnit_fst (isUnit_gv L _ hb' kb)) (isUnit_fst (isUnit_gv L _ kb ka))]`.
+
+Establish `e3 : gv L y' b a = epsHom φ (gv L y b a)`. Rewrite using `[gv_eq L y' (le_inf kb ka), gv_eq L y (le_inf hb ha)]`. Conclude with `(evalAt_spMap' (epsHom φ : DualNumber D →+* DualNumber D') y y' e _ _ _).symm`. Rewrite `e2` using `[e3, dl_epsHom φ _ (isUnit_fst (isUnit_gv L _ hb ha))]`. Take the linear combination `e1 - e2`.
+-/
 theorem dl_gv {R : Type} [CommRing R] {D D' : Type} [CommRing D] [CommRing D'] [Algebra R D] [Algebra R D']
     (φ : D →ₐ[R] D') (L : LB X) (hL : L.IsLB) (y : Sp (DualNumber D) ⟶ X) (y' : Sp (DualNumber D') ⟶ X)
     (e : spMap (epsHom φ : DualNumber D →+* DualNumber D') ≫ y = y') {a b a' b' : L.ι}
@@ -175,6 +241,33 @@ open ContrMor
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `R _ A B _ _ P hP v hv j hj w _ i hi U ℓ hU hℓ n hn κ hκ`. Establish `s0 : ∀ {D : Type} [CommRing D] [Algebra R D] {x : Pt A D}, Sm (chartsA P) x → Sm P.U (pt0 B x)` using `fun ⟨c, h⟩ ↦ ⟨c, pointWithZeroSecondCoord_mem_chart_of_restricted P h⟩`. Establish `sV : ∀ {D : Type} [CommRing D] [Algebra R D] {x : Pt A D}, Sm (chartsA P) x → Sm P.U (ptV v x)` using `fun ⟨c, h⟩ ↦ ⟨c, ptV_mem P hv h⟩`. Set `T0 : ∀ {D : Type} [CommRing D] [Algebra R D] {x : Pt A D}, Sm (chartsA P) x → SmallCat P.U` to `fun {_} _ _ {x} h ↦ ⟨trivAt (pt0 B x), s0 h⟩`. Set `TV : ∀ {D : Type} [CommRing D] [Algebra R D] {x : Pt A D}, Sm (chartsA P) x → SmallCat P.U` to `fun {_} _ _ {x} h ↦ ⟨trivAt (ptV v x), sV h⟩`.
+
+Set `TT : ∀ {D : Type} [CommRing D] [Algebra R D] {x : Pt A D}, Sm (chartsA P) x → SmallCat P.U` to `fun {_} _ _ {x} h ↦ ⟨thickAt B x, s0 h⟩`. Set `sM : ∀ {D : Type} [CommRing D] [Algebra R D] {x : Pt A D} (h : Sm (chartsA P) x), T0 h ⟶ TT h` to `fun {_} _ _ {x} _ ↦ ObjectProperty.homMk (sHom x)`. Set `iM : ∀ {D : Type} [CommRing D] [Algebra R D] {x : Pt A D} (h : Sm (chartsA P) x), TV h ⟶ TT h` to `fun {_} _ _ {x} _ ↦ ObjectProperty.homMk (iHom v hv x)`. Set `k : ∀ {D : Type} [CommRing D] [Algebra R D] {x : Pt A D}, Sm (chartsA P) x → D` to `fun {D} _ _ {x} h ↦ TrivSqZeroExt.snd (R := D) (n _ _ (sM h)) - TrivSqZeroExt.snd (R := D) (n _ _ (iM h)) + (dl (U _ _ (sM h)) - dl (U _ _ (iM h))) + dl (gv P (ptV v x).left (j D x) (i (TV h)))`. Use `⟨fun D _ _ x ↦ if h : Sm (chartsA P) x then -k h else 0, ?_⟩` and prove the remaining obligations.
+
+Introduce `D _ _ D' _ _ φ x hx`. Establish `hx' : Sm (chartsA P) (spOver φ ≫ x)` using `hx.map φ`. Simplify using `only [dif_pos hx, dif_pos hx', Fn1.add, Fn1.neg]`. Set `aM : T0 hx ⟶ T0 hx'` to `ObjectProperty.homMk (aHom φ x)`. Set `bM : TV hx ⟶ TV hx'` to `ObjectProperty.homMk (bHom v φ x)`.
+
+Set `tM : TT hx ⟶ TT hx'` to `ObjectProperty.homMk (τHom φ x)`. Establish `c1 : sM hx ≫ tM = aM ≫ sM hx'` using `ObjectProperty.hom_ext _ (Thick.hom_ext fun r ↦ by`. Express the relevant statement in the definitionally equal form `epsHom φ (TrivSqZeroExt.inl r) = TrivSqZeroExt.inl (φ r)`. Use `ext`. Conclude with `fst_epsHom φ _`.
+
+Conclude with `(snd_epsHom' φ _).trans (map_zero φ))`. Establish `c2 : iM hx ≫ tM = bM ≫ iM hx'` using `ObjectProperty.hom_ext _ (Thick.hom_ext fun r ↦ rfl)`. Establish `uU : ∀ (S S' : SmallCat P.U) (f : S ⟶ S'), IsUnit (S'.obj.π (U S S' f))` using `fun S S' f ↦ by`. Rewrite using `[hU]`. Conclude with `(P.g _ _).isUnit.map _`.
+
+Establish `key : ∀ (S S' : SmallCat P.U) (f : S ⟶ S') (g : S' ⟶ TT hx'), IsUnit (TrivSqZeroExt.fst (R` using `D') (M := D') (g.hom.φ (U _ _ f))) → TrivSqZeroExt.snd (R := D') (M := D') (w.1 _ _ _ f.hom g.hom) = TrivSqZeroExt.snd (R := D') (M := D') (g.hom.φ (n _ _ f)) - TrivSqZeroExt.snd (R := D') (M := D') (n _ _ (f ≫ g)) + TrivSqZeroExt.snd (R := D') (M := D') (n _ _ g) + (dl (D := D') …`. Introduce `S S' f g hu`. Take `⟨hm, he⟩` from `hℓ S S' (TT hx') f g`. Establish `e1 : dpExp (TT hx').obj.δ (ℓ.1 _ _ _ f g) = @HAdd.hAdd (DualNumber D') (DualNumber D') (DualNumber D') _ 1 (ℓ.1 _ _ _ f g)` using `dpExp_sqDP (epsExt R D').sq hm`. Establish `e2` using `snd_of_exp (D := D') (ℓ.1 _ _ _ f g) (g.hom.φ (U _ _ f)) (U _ _ g) (U _ _ (f ≫ g)) hm hu (uU _ _ g) (uU _ _ (f ≫ g)) ((congrArg (· * U _ _ (f ≫ g)) e1).symm.trans he)`.
+
+Establish `e3` using `congrArg (TrivSqZeroExt.snd (R := D') (M := D')) (congrFun (congrFun (congrFun (congrFun (congrFun hn S) S') (TT hx')) f) g)`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (R := D') (M := D') (g.hom.φ (n _ _ f)) - TrivSqZeroExt.snd (R := D') (M := D') (n _ _ (f ≫ g)) + TrivSqZeroExt.snd (R := D') (M := D') (n _ _ g) = TrivSqZeroExt.snd (R := D') (M := D') (w.1 _ _ _ f.hom g.hom) - TrivSqZeroExt.snd (R := D') (M := D') (ℓ.1 _ _ _ f …`. Take the linear combination `e2 - e3`. Establish `us : IsUnit (TrivSqZeroExt.fst (R` using `D) (M := D) (U _ _ (sM hx))) := uU _ _ (sM hx)`. Establish `ui : IsUnit (TrivSqZeroExt.fst (R` using `D) (M := D) (U _ _ (iM hx))) := uU _ _ (iM hx)`.
+
+Establish `k1` using `key _ _ (sM hx) tM (((fst_epsHom φ _).symm ▸ us.map φ : IsUnit (epsHom φ (U _ _ (sM hx))).fst))`. Establish `k2` using `key _ _ aM (sM hx') (uU _ _ aM)`. Establish `k3` using `key _ _ (iM hx) tM (((fst_epsHom φ _).symm ▸ ui.map φ : IsUnit (epsHom φ (U _ _ (iM hx))).fst))`. Establish `k4` using `key _ _ bM (iM hx') (isUnit_fst (D := D') (uU _ _ bM))`. Rewrite `k1` using `[c1]`.
+
+Rewrite `k3` using `[c2]`. Establish `a1 : TrivSqZeroExt.snd (R` using `D') (M := D') (tM.hom.φ (n _ _ (sM hx))) = φ (TrivSqZeroExt.snd (R := D) (n _ _ (sM hx))) := snd_epsHom' φ _`. Establish `a2 : TrivSqZeroExt.snd (R` using `D') (M := D') ((sM hx').hom.φ (n _ _ aM)) = 0 := rfl`. Establish `a3 : TrivSqZeroExt.snd (R` using `D') (M := D') (tM.hom.φ (n _ _ (iM hx))) = φ (TrivSqZeroExt.snd (R := D) (n _ _ (iM hx))) := snd_epsHom' φ _`. Establish `a4 : TrivSqZeroExt.snd (R` using `D') (M := D') ((iM hx').hom.φ (n _ _ bM)) = sndPull (cocOf P.U n) v D D' φ x := by`.
+
+Establish `tr : ∀ (y y' : Pt (A ⊗ B) (DualNumber D')) (_ : y = y') (h : Sm P.U y) (h' : Sm P.U y') (f : TV hx ⟶ smallAt P.U y h) (f' : TV hx ⟶ smallAt P.U y' h'), (∀ r, f.hom.φ r = f'.hom.φ r) → n _ _ f = n _ _ f'`. Introduce and unpack `y _ rfl h h' f f' hf`. Establish `: f = f'` using `ObjectProperty.hom_ext _ (Thick.hom_ext hf)`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+
+Simplify using `only [sndPull, cocOf, dif_pos (sV hx)]`. Conclude with `congrArg (TrivSqZeroExt.snd (R := D') (M := D')) (tr _ _ (spOver_epsHom_ptV v φ x).symm (sV hx') ((sV hx).map (epsHom φ)) bM (ObjectProperty.homMk (trivMap (epsHom φ) (ptV v x))) fun _ ↦ rfl)`. Establish `b1 : dl (D` using `D') (tM.hom.φ (U _ _ (sM hx))) = φ (dl (U _ _ (sM hx))) := dl_epsHom φ _ us`. Establish `b2 : dl (D` using `D') ((sM hx').hom.φ (U _ _ aM)) = 0 := dl_inl _`. Establish `b3 : dl (D` using `D') (tM.hom.φ (U _ _ (iM hx))) = φ (dl (U _ _ (iM hx))) := dl_epsHom φ _ ui`.
+
+Establish `b4 : dl (D` using `D') ((iM hx').hom.φ (U _ _ bM)) = tanCoc P j v D D' φ x + φ (dl (gv P (ptV v x).left (j D x) (i (TV hx)))) - dl (gv P (ptV v (spOver φ ≫ x)).left (j D' (spOver φ ≫ x)) (i (TV hx'))) := by`. Establish `e : (iM hx').hom.φ (U _ _ bM) = gv P (ptV v (spOver φ ≫ x)).left (i (TV hx')) (i (TV hx))` using `(hU _ _ bM).trans (gv_eq P _ _).symm`. Establish `e' : spMap (epsHom φ : DualNumber D →+* DualNumber D') ≫ (ptV v x).left = (ptV v (spOver φ ≫ x)).left` using `(bHom v φ x).pt`. Conclude with `(congrArg (dl (D := D')) e).trans (dl_gv φ P hP _ _ e' (hi (TV hx)) (ptV_mem P hv (hj D x hx)) (hi (TV hx')) (ptV_mem P hv (hj D' _ hx')))`. Establish `hk` using `hκ D D' φ x (sHom x) (iHom v hv x) (sHom _) (iHom v hv _) (aHom φ x) (bHom v φ x) (τHom φ x) (fun _ ↦ rfl) (fun _ ↦ rfl) (fun _ ↦ rfl) (fun _ ↦ rfl) (fun _ ↦ rfl) (fun _ ↦ rfl) (fun _ ↦ rfl)`.
+
+Express the relevant statement in the definitionally equal form `_ = TrivSqZeroExt.snd (R := D') (M := D') (w.1 _ _ _ (sM hx).hom tM.hom) - TrivSqZeroExt.snd (R := D') (M := D') (w.1 _ _ _ aM.hom (sM hx').hom) - TrivSqZeroExt.snd (R := D') (M := D') (w.1 _ _ _ (iM hx).hom tM.hom) + TrivSqZeroExt.snd (R := D') (M := D') (w.1 _ _ _ bM.hom (iM hx …`. Simplify using `only [k, map_neg, map_add, map_sub]`. Take the linear combination `hk + k1 - k2 - k3 + k4 + a1 - a2 - a3 + a4 + b1 - b2 - b3 + b4`.
+-/
 theorem contr_cohom : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (P : LB (A ⊗ B).left), P.IsLB →
     ∀ v : epsR R ⟶ B, IsTangent v → ∀ (j : ∀ (D : Type) [CommRing D] [Algebra R D], Pt A D → P.ι), IsChoice P j →
     ∀ w : Z2 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _)),

@@ -10,6 +10,9 @@ open Formalism.BasicNotions Formalism.MainNotions.N NumberField IsDedekindDomain
 def CGK.ofSide {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} (A : NAut N) : CGK A :=
   { A with }
 
+/- English proof (translation)
+Establish `h1 : (fun i => hE.elim i) = A.muC` using `funext fun i => hE.elim i`. Establish `h2 : (fun i => hE.elim i) = @NAut.jumpsInf _ _ _ _ A` using `funext fun i => hE.elim i`. Consider the cases of `A`. Simplify using `only [CGK.naut, CGK.ofSide]`. Use `congr 1`.
+-/
 theorem CGK.naut_ofSide {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} (A : NAut N)
     (hE : IsEmpty N.Loc) : (CGK.ofSide A).naut hE = A := by
   have h1 : (fun i => hE.elim i) = A.muC := funext fun i => hE.elim i
@@ -18,16 +21,31 @@ theorem CGK.naut_ofSide {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : ND
   simp only [CGK.naut, CGK.ofSide]
   congr 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem setBC_self (D : D7) : setBC D D.nbc = D := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem setTy_self (D : D7) (hE : IsEmpty D.nd.Loc) : setTy D hE D.ntypes D.nStage_trivialCharacter_compat D.nStage_trivialCharacter_coeff_eq = D := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem setCG_CG (D : D7) (hE : IsEmpty D.nd.Loc) (K : CGK D.naut) : (setCG D hE K).naut.CG = K.CG := rfl
 
+/- English proof (translation)
+The claim follows from `(WD.tame_mk _).2 fun σ hσ => (WDRep.unr_diag (h := h) (WDRep.spEig w n)).2 ⟨σ, Wild_le_Ine hσ⟩`.
+-/
 theorem tame_lpSp {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) (n : ℕ) : (WD.lpSp h n).tame :=
   (WD.tame_mk _).2 fun σ hσ => (WDRep.unr_diag (h := h) (WDRep.spEig w n)).2 ⟨σ, Wild_le_Ine hσ⟩
 
+/- English proof (translation)
+Rewrite using `[WD.lpSp, WD.monodromyZero_ofWeilDeligneRepClass_iff, WDRep.sp_N]`. Introduce `h0`. Use `congrFun (LinearMap.congr_fun h0 (fun _ => 1)) ⟨1, hn⟩` as an intermediate fact. Simplify using `[shiftEnd_apply] at this`.
+-/
 theorem not_mono0_lpSp {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) {n : ℕ} (hn : 2 ≤ n) :
     ¬ (WD.lpSp h n).mono0 := by
@@ -42,6 +60,9 @@ def RowWD.special (D : D7) : RowWD D where
   dim _ _ := WD.lpDim_lpSp _
   tame _ _ _ := tame_lpSp _ _
 
+/- English proof (translation)
+The claim follows from `not_mono0_lpSp _ (by have := D.R.two_le_m; have := D.R.m_add_three_le_k; unfold Ranks.r; omega)`.
+-/
 theorem RowWD.special_not_mono0 (D : D7) (σ w) : ¬ ((RowWD.special D).par σ w).mono0 :=
   not_mono0_lpSp _ (by have := D.R.two_le_m; have := D.R.m_add_three_le_k; unfold Ranks.r; omega)
 
@@ -62,6 +83,13 @@ def RowWD.ofSide (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (hT : LabT
     refine WD.tame_of_natDegree_lab (τ := D.ntypes.teichC k) (γ := D.ntypes.tg k v) ?_
     rw [← hT k v, ← Rs.lab_eq, (D.nd.lab_monic k σ v).2, T.dim, hd]
 
+/- English proof (translation)
+Introduce `he`. Establish `hr : 2 ≤ D.R.r` using `by have := D.R.two_le_m; have := D.R.m_add_three_le_k; unfold Ranks.r; omega`. Use `h [⟨1, χ, D.R.r⟩] [⟨D.R.r, π, 1⟩] (by` as an intermediate fact. Introduce `p hp`. Simplify using `only [List.cons_append, List.nil_append, List.mem_cons, List.not_mem_nil, or_false] at hp`.
+
+Break down `hp with rfl | rfl` into its components or cases. Conclude with `⟨le_rfl, by simp only; omega, hχ, fun τ => by simpa using (D.naut.ralg_def χ).1 hχ' τ⟩`. Conclude with `⟨by simp only; omega, le_rfl, hπ, fun τ => by simpa using (D.naut.ralg_def π).1 hπ' τ⟩)`. Use the proof step `(by simp [rankIso]) (by simp [rankIso]) he`. Simplify using `at this`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem BlocksUnique.not_cusp {D : D7} (h : BlocksUnique D) (χ : D.naut.CG 1) (hχ : D.naut.csd χ) (hχ' : D.naut.ralg χ)
     (π : D.naut.CG D.R.r) (hπ : D.naut.csd π) (hπ' : D.naut.ralg π) :
     ¬ ∀ w, IsSplitPl D.host w →

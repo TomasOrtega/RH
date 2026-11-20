@@ -25,9 +25,15 @@ def epsUnit (a : k) : (DualNumber k)ˣ where
   val_inv := by ext <;> simp
   inv_val := by ext <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [epsUnit, add_comm]`.
+-/
 theorem epsUnit_add (a b : k) : epsUnit (a + b) = epsUnit a * epsUnit b := by
   ext <;> simp [epsUnit, add_comm]
 
+/- English proof (translation)
+Use `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f)` as an intermediate fact. Conclude with `(congrArg (fun g => g.hom x) this).symm`.
+-/
 theorem natur {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (x : R) :
     (spMap f).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom x) =
       (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom (f x) := by
@@ -43,6 +49,9 @@ noncomputable def phi (l : X →+ k) : Multiplicative X →* Γ((epsPt (𝟙 (Sp
 noncomputable def tanPt (l : X →+ k) : epsPt (𝟙 (Sp k)) ⟶ splitTorus (Sp k) X :=
   (splitTorusPointsEquiv (Sp k) X (epsPt (𝟙 (Sp k)))).symm (phi l)
 
+/- English proof (translation)
+Use `show ((splitTorusPointsEquiv _ _ _) ((splitTorusPointsEquiv _ _ _).symm (phi l)) (Multiplicative.ofAdd χ)).val = _`. Rewrite using `[MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem chV_tanPt (l : X →+ k) (χ : X) :
     (chV (tanPt l) χ).val = (Scheme.ΓSpecIso (CommRingCat.of (DualNumber k))).inv.hom
       (1 + TrivSqZeroExt.inr (l χ)) := by
@@ -51,11 +60,17 @@ theorem chV_tanPt (l : X →+ k) (χ : X) :
   rw [MulEquiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[chV_val, chV_val, Over.comp_left, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem chV_comp {Z Z' : Over (Sp k)} (j : Z' ⟶ Z) (t : Z ⟶ splitTorus (Sp k) X) (χ : X) :
     (chV (j ≫ t) χ).val = j.left.appTop.hom (chV t χ).val := by
   rw [chV_val, chV_val, Over.comp_left, Scheme.Hom.comp_appTop]
   rfl
 
+/- English proof (translation)
+The claim follows from `TorusOfCharMap.ext_chV fun χ => Units.ext (h χ)`.
+-/
 theorem ext_val {Z : Over (Sp k)} {a b : Z ⟶ splitTorus (Sp k) X}
     (h : ∀ χ, (chV a χ).val = (chV b χ).val) : a = b :=
   TorusOfCharMap.ext_chV fun χ => Units.ext (h χ)
@@ -65,6 +80,27 @@ end
 
 open TorusTangent in
 
+/- English proof (translation)
+Introduce `k _ X _`. Establish `hΓ` using `(Scheme.ΓSpecIso (CommRingCat.of (DualNumber k))).commRingCatIsoToRingEquiv.symm.injective`. Use `⟨tanPt, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l l' h`. Use extensionality with `χ`.
+
+Establish `e` using `congrArg (fun t => (chV t χ).val) h`. Simplify using `only [chV_tanPt] at e`. Establish `e2` using `congrArg TrivSqZeroExt.snd (hΓ e)`. Simplify using `using e2`. Introduce `l`.
+
+Set `j : Over.mk (𝟙 (Sp k)) ⟶ epsPt (𝟙 (Sp k))` to `Over.homMk (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (by`. Simplify using `only [Over.mk_hom, Category.comp_id]`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1)`. Establish `: j ≫ tanPt l = 1`.
+
+Use `ext_val fun χ => ?_` and prove the remaining obligations. Rewrite using `[chV_comp, chV_tanPt]`. Simplify using `only [j, Over.homMk_left]`. Rewrite using `[natur]`. Simplify using `[chV, map_one]`.
+
+Conclude with `congrArg CommaMorphism.left this`. Introduce `l l' show (splitTorusPointsEquiv _ _ _).symm _ = (splitTorusPointsEquiv _ _ _).symm (phi l) * (splitTorusPointsEquiv _ _ _).symm (phi l')`. Rewrite using `[← map_mul]`. Use `congr 1`. Use extensionality with `χ`.
+
+Simplify using `[phi, epsUnit_add]`. Introduce `t l`. Set `s : epsPt (𝟙 (Sp k)) ⟶ epsPt (𝟙 (Sp k))` to `Over.homMk (spMap (epsScale t)) (by`. Simplify using `only [Over.mk_hom, Category.comp_id]`. Rewrite using `[← Spec.map_comp]`.
+
+Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `epsScale t (algebraMap k (DualNumber k) x) = algebraMap k (DualNumber k) x`. Apply the tactic sequence `ext <;> simp [epsScale, TrivSqZeroExt.algebraMap_eq_inl])`. Establish `: tanPt ((AddMonoidHom.mulLeft t).comp l) = s ≫ tanPt l`.
+
+Use `ext_val fun χ => ?_` and prove the remaining obligations. Rewrite using `[chV_comp, chV_tanPt, chV_tanPt]`. Simplify using `only [s, Over.homMk_left]`. Rewrite using `[natur]`. Use `congr 1`.
+
+Apply the tactic sequence `ext <;> simp [epsScale, mul_comm]`. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `τ ρ hτ l`. Establish `hm` using `((splitTorus_map_of_charHom (Sp k) X X ρ).2 τ hτ).2.2`.
+
+Use `ext_val fun χ => ?_` and prove the remaining obligations. Rewrite using `[hm, chV_tanPt, chV_tanPt]`. Both sides reduce to the same expression.
+-/
 theorem splitTorus_tangent_addHom : ∀ (k : Type) [Field k] (X : Type) [AddCommGroup X], ∃ U : (X →+ k) → (epsPt (𝟙 (Sp k)) ⟶ splitTorus (Sp k) X), Function.Injective U ∧ (∀ l, spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ (U l).left = (1 : Over.mk (𝟙 (Sp k)) ⟶ splitTorus (Sp k) X).left) ∧ (∀ l l', U (l + l') = U l * U l') ∧ (∀ (t : k) l, (U ((AddMonoidHom.mulLeft t).comp l)).left = spMap (epsScale t) ≫ (U l).left) ∧ ∀ (τ : splitTorus (Sp k) X ⟶ splitTorus (Sp k) X) (ρ : X →+ X), (∀ χ, chV τ χ = charUnit (Sp k) X (ρ χ)) → ∀ l, U l ≫ τ = U (l.comp ρ) := by
   intro k _ X _
   have hΓ := (Scheme.ΓSpecIso (CommRingCat.of (DualNumber k))).commRingCatIsoToRingEquiv.symm.injective

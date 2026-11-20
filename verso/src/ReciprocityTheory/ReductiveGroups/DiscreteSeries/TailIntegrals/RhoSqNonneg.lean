@@ -14,6 +14,9 @@ private def gL (τ : ℝ) (p : ℕ) (i : Fin (p + 1)) : ℂ →ₗ[ℝ] ℂ :=
 private def fL (τ : ℝ) (p : ℕ) : (Fin (p + 1) → ℂ) →ₗ[ℝ] (Fin (p + 1) → ℂ) :=
   LinearMap.pi (fun i => (gL τ p i).comp (LinearMap.proj i))
 
+/- English proof (translation)
+Unfold `fL`. Rewrite using `[LinearMap.det_pi, Fin.prod_univ_succ]`. Simplify using `[gL, Fin.succ_ne_zero, LinearMap.det_smul, Complex.finrank_real_complex]`.
+-/
 private lemma fL_det (τ : ℝ) (p : ℕ) : LinearMap.det (fL τ p) = τ ^ 2 := by
   unfold fL
   rw [LinearMap.det_pi, Fin.prod_univ_succ]
@@ -22,6 +25,13 @@ private lemma fL_det (τ : ℝ) (p : ℕ) : LinearMap.det (fL τ p) = τ ^ 2 := 
 private def sclL (τ : ℝ) (p m : ℕ) : Xp (p + 1) m →ₗ[ℝ] Xp (p + 1) m :=
   LinearMap.prodMap (fL τ p) (LinearMap.prodMap (fL τ⁻¹ p) LinearMap.id)
 
+/- English proof (translation)
+Take `⟨a, b, c, d⟩` from `x`. Establish `h1 : fL τ p a = Function.update a 0 ((τ : ℂ) * a 0)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality.
+
+Simplify using `[fL, gL, Complex.real_smul]`. Simplify using `[fL, gL, hi, Function.update_apply]`. Establish `h2 : fL τ⁻¹ p b = Function.update b 0 (b 0 / (τ : ℂ))`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = 0`.
+
+Substitute `hi` using the available equality. Simplify using `[fL, gL, Complex.real_smul, div_eq_inv_mul]`. Simplify using `[fL, gL, hi, Function.update_apply]`. Simplify using `[sclL, scl, h1, h2]`.
+-/
 private lemma sclL_apply (τ : ℝ) (p m : ℕ) (x : Xp (p + 1) m) : sclL τ p m x = scl τ x := by
   obtain ⟨a, b, c, d⟩ := x
   have h1 : fL τ p a = Function.update a 0 ((τ : ℂ) * a 0) := by
@@ -38,6 +48,15 @@ private lemma sclL_apply (τ : ℝ) (p m : ℕ) (x : Xp (p + 1) m) : sclL τ p m
     · simp [fL, gL, hi, Function.update_apply]
   simp [sclL, scl, h1, h2]
 
+/- English proof (translation)
+Establish `hdet : LinearMap.det (sclL τ p m) = 1`. Unfold `sclL`. Rewrite using `[LinearMap.det_prodMap, LinearMap.det_prodMap, fL_det, fL_det, LinearMap.det_id, mul_one, inv_pow, mul_inv_cancel₀ (pow_ne_zero 2 hτ)]`. Establish `hf : (scl (p` using `p) (m := m) τ) = sclL τ p m := funext fun x => (sclL_apply τ p m x).symm`. Rewrite using `[hf]`.
+
+Use `haveI : BorelSpace ((Fin m → ℂ) × ℝ) := Prod.borelSpace`. Use `haveI : BorelSpace ((Fin (p + 1) → ℂ) × (Fin m → ℂ) × ℝ) := Prod.borelSpace`. Use `haveI : BorelSpace (Xp (p + 1) m) := Prod.borelSpace`. Use `haveI hp1 : (volume : Measure (Fin (p + 1) → ℂ)).IsAddHaarMeasure := by show (Measure.pi fun _ => volume).IsAddHaarMeasure infer_instance`. Use `haveI hm1 : (volume : Measure (Fin m → ℂ)).IsAddHaarMeasure := by show (Measure.pi fun _ => volume).IsAddHaarMeasure infer_instance`.
+
+Use `haveI : (volume : Measure ((Fin m → ℂ) × ℝ)).IsAddHaarMeasure := by show ((volume : Measure (Fin m → ℂ)).prod (volume : Measure ℝ)).IsAddHaarMeasure infer_instance`. Use `haveI : (volume : Measure ((Fin (p + 1) → ℂ) × (Fin m → ℂ) × ℝ)).IsAddHaarMeasure := by show ((volume : Measure (Fin (p + 1) → ℂ)).prod (volume : Measure ((Fin m → ℂ) × ℝ))).IsAddHaarMeasure`. Conclude with `Measure.prod.instIsAddHaarMeasure _ _`. Use `haveI : (volume : Measure (Xp (p + 1) m)).IsAddHaarMeasure := by show ((volume : Measure (Fin (p + 1) → ℂ)).prod (volume : Measure ((Fin (p + 1) → ℂ) × (Fin m → ℂ) × ℝ))).IsAddHaarMeasure`. Conclude with `Measure.prod.instIsAddHaarMeasure _ _`.
+
+Use `⟨(sclL τ p m).continuous_of_finiteDimensional.measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := volume) (by rw [hdet]; norm_num), hdet]`. Simplify using the standard rewrite rules.
+-/
 theorem scl_mp {p m : ℕ} (τ : ℝ) (hτ : τ ≠ 0) :
     MeasurePreserving (scl (p := p) (m := m) τ) volume volume := by
   have hdet : LinearMap.det (sclL τ p m) = 1 := by
@@ -70,6 +89,15 @@ theorem scl_mp {p m : ℕ} (τ : ℝ) (hτ : τ ≠ 0) :
   rw [Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := volume) (by rw [hdet]; norm_num), hdet]
   simp
 
+/- English proof (translation)
+Establish `h1 : Measurable (fun q : ℝ × Xp (p + 1) m => Function.update q.2.1 0 ((q.1 : ℂ) * q.2.1 0))`. Use `measurable_pi_lambda _ (fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Simplify using `only [Function.update_apply, if_true]`.
+
+Use `fun_prop`. Simplify using `only [Function.update_apply, hi, if_false] fun_prop`. Establish `h2 : Measurable (fun q : ℝ × Xp (p + 1) m => Function.update q.2.2.1 0 (q.2.2.1 0 / (q.1 : ℂ)))`. Use `measurable_pi_lambda _ (fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : i = 0`.
+
+Substitute `hi` using the available equality. Simplify using `only [Function.update_apply, if_true]`. Use `fun_prop`. Simplify using `only [Function.update_apply, hi, if_false] fun_prop`. Unfold `scl`.
+
+Use `fun_prop`.
+-/
 theorem scl_meas {p m : ℕ} : Measurable (fun q : ℝ × Xp (p + 1) m => scl q.1 q.2) := by
   have h1 : Measurable (fun q : ℝ × Xp (p + 1) m =>
       Function.update q.2.1 0 ((q.1 : ℂ) * q.2.1 0)) := by
@@ -92,6 +120,11 @@ theorem scl_meas {p m : ℕ} : Measurable (fun q : ℝ × Xp (p + 1) m => scl q.
   unfold scl
   fun_prop
 
+/- English proof (translation)
+Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Establish `e : (scl τ x).1 0 = (τ : ℂ) * x.1 0` using `by simp [scl]`. Establish `hτ : ‖(τ : ℂ)‖ = τ`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (by linarith)]`.
+
+Rewrite using `[e, norm_mul, hτ]`. Conclude with `le_mul_of_one_le_left (norm_nonneg _) h1`. Establish `e : (scl τ x).1 j = x.1 j` using `by simp [scl, hj]`. Rewrite using `[e]`.
+-/
 private lemma scl_fst_norm {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (x : Xp (p + 1) m) (j : Fin (p + 1)) :
     ‖x.1 j‖ ≤ ‖(scl τ x).1 j‖ := by
   by_cases hj : j = 0
@@ -104,6 +137,13 @@ private lemma scl_fst_norm {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (x : Xp (p + 1
   · have e : (scl τ x).1 j = x.1 j := by simp [scl, hj]
     rw [e]
 
+/- English proof (translation)
+Establish `ha` using `sq_nonneg ‖x.2.1 j‖`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Establish `hτ : ‖(τ : ℂ)‖ = τ`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (by linarith)]`.
+
+Establish `e : (scl τ x).2.1 0 = x.2.1 0 / (τ : ℂ)` using `by simp [scl]`. Rewrite using `[e, norm_div, hτ, div_pow, div_le_div_iff₀ (by norm_num) (by positivity)]`. Apply `mul_le_mul_of_nonneg_left _ ha` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `e : (scl τ x).2.1 j = x.2.1 j` using `by simp [scl, hj]`.
+
+Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma scl_snd_sq {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (h2 : τ ≤ 2) (x : Xp (p + 1) m) (j : Fin (p + 1)) :
     ‖x.2.1 j‖ ^ 2 / 4 ≤ ‖(scl τ x).2.1 j‖ ^ 2 := by
   have ha := sq_nonneg ‖x.2.1 j‖
@@ -119,6 +159,11 @@ private lemma scl_snd_sq {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (h2 : τ ≤ 2) 
     rw [e]
     linarith
 
+/- English proof (translation)
+Unfold `Lsq`. Establish `hs : (∑ j : Fin (p + 1), if j.val < l.val then ‖x.1 j‖ ^ 2 else 0) ≤ ∑ j : Fin (p + 1), if j.val < l.val then ‖(scl τ x).1 j‖ ^ 2 else 0`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Establish `h` using `scl_fst_norm τ h1 x j gcongr`.
+
+Conclude with `le_rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma Lsq_scl {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (x : Xp (p + 1) m) (l : Fin (p + 2)) :
     Lsq x l ≤ Lsq (scl τ x) l := by
   unfold Lsq
@@ -131,12 +176,18 @@ private lemma Lsq_scl {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (x : Xp (p + 1) m) 
     · exact le_rfl
   linarith
 
+/- English proof (translation)
+Unfold `Lsq`. Apply the tactic sequence `have h : 0 ≤ ∑ j : Fin p, (if j.val < l.val then ‖x.1 j‖ ^ 2 else 0) := Finset.sum_nonneg fun j _ => by split_ifs <;> positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma Lsq_pos {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 0 < Lsq x l := by
   unfold Lsq
   have h : 0 ≤ ∑ j : Fin p, (if j.val < l.val then ‖x.1 j‖ ^ 2 else 0) :=
     Finset.sum_nonneg fun j _ => by split_ifs <;> positivity
   linarith
 
+/- English proof (translation)
+Unfold `rhoSq`. Establish `h1` using `Lsq_pos x (Fin.last p)`. Establish `h2 : 0 ≤ ∑ i, ‖x.2.2.1 i‖ ^ 2` using `Finset.sum_nonneg fun i _ => by positivity`. Apply the tactic sequence `have h3 : 0 ≤ ∑ j : Fin p, (if l.val ≤ j.val then ‖x.2.1 j‖ ^ 2 else 0) := Finset.sum_nonneg fun j _ => by split_ifs <;> positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma rhoSq_nonneg {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 0 ≤ rhoSq x l := by
   unfold rhoSq
   have h1 := Lsq_pos x (Fin.last p)
@@ -145,6 +196,13 @@ private lemma rhoSq_nonneg {p m : ℕ} (x : Xp p m) (l : Fin (p + 1)) : 0 ≤ rh
     Finset.sum_nonneg fun j _ => by split_ifs <;> positivity
   linarith
 
+/- English proof (translation)
+Establish `hA` using `Lsq_scl τ h1 x (Fin.last (p + 1))`. Establish `hA0` using `Lsq_pos x (Fin.last (p + 1))`. Establish `hB : (scl τ x).2.2.1 = x.2.2.1` using `rfl`. Establish `hB0 : 0 ≤ ∑ i, ‖x.2.2.1 i‖ ^ 2` using `Finset.sum_nonneg fun i _ => by positivity`. Establish `hC : (∑ j : Fin (p + 1), (if l.val ≤ j.val then ‖x.2.1 j‖ ^ 2 else 0)) / 4 ≤ ∑ j : Fin (p + 1), (if l.val ≤ j.val then ‖(scl τ x).2.1 j‖ ^ 2 else 0)`.
+
+Rewrite using `[Finset.sum_div]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `scl_snd_sq τ h1 h2 x j`. Simplify using the standard rewrite rules.
+
+Unfold `rhoSq`. Rewrite using `[hB]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma rhoSq_scl {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (h2 : τ ≤ 2) (x : Xp (p + 1) m) (l : Fin (p + 2)) :
     rhoSq x l / 4 ≤ rhoSq (scl τ x) l := by
   have hA := Lsq_scl τ h1 x (Fin.last (p + 1))
@@ -162,6 +220,15 @@ private lemma rhoSq_scl {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (h2 : τ ≤ 2) (
   rw [hB]
   linarith
 
+/- English proof (translation)
+Establish `e1 : (scl τ x).2.2.1 = x.2.2.1` using `rfl`. Establish `e2 : (scl τ x).2.2.2 = x.2.2.2` using `rfl`. Unfold `bco`. Rewrite using `[e1, e2]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `key : (scl τ x).2.1 j * star ((scl τ x).1 j) = x.2.1 j * star (x.1 j)`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Establish `hτ : (τ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (by linarith)`.
+
+Establish `e3 : (scl τ x).2.1 0 = x.2.1 0 / (τ : ℂ)` using `by simp [scl]`. Establish `e4 : (scl τ x).1 0 = (τ : ℂ) * x.1 0` using `by simp [scl]`. Rewrite using `[e3, e4, star_mul', Complex.star_def, Complex.conj_ofReal]`. Clear the denominators using the available nonvanishing facts. Establish `e3 : (scl τ x).2.1 j = x.2.1 j` using `by simp [scl, hj]`.
+
+Establish `e4 : (scl τ x).1 j = x.1 j` using `by simp [scl, hj]`. Rewrite using `[e3, e4]`. Rewrite using `[key]`.
+-/
 private lemma bco_scl {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (x : Xp (p + 1) m) (l : Fin (p + 2)) :
     bco (scl τ x) l = bco x l := by
   have e1 : (scl τ x).2.2.1 = x.2.2.1 := rfl
@@ -183,6 +250,15 @@ private lemma bco_scl {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (x : Xp (p + 1) m) 
       rw [e3, e4]
   rw [key]
 
+/- English proof (translation)
+Unfold `de`. Rewrite using `[bco_scl τ h1 x l]`. Establish `hL` using `Lsq_scl τ h1 x l`. Establish `hL0` using `Lsq_pos x l`. Establish `hr` using `rhoSq_scl τ h1 h2 x l`.
+
+Establish `hr0` using `rhoSq_nonneg x l`. Establish `hb` using `sq_nonneg ‖bco x l‖`. Establish `hm : Lsq x l * (rhoSq x l / 4) ≤ Lsq (scl τ x) l * rhoSq (scl τ x) l` using `mul_le_mul hL hr (by positivity) (by linarith)`. Establish `key : (Lsq x l * rhoSq x l + ‖bco x l‖ ^ 2) / 4 ≤ Lsq (scl τ x) l * rhoSq (scl τ x) l + ‖bco x l‖ ^ 2`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h4 : Real.sqrt ((Lsq x l * rhoSq x l + ‖bco x l‖ ^ 2) / 4) = Real.sqrt (Lsq x l * rhoSq x l + ‖bco x l‖ ^ 2) / 2`. Rewrite using `[Real.sqrt_div' _ (by norm_num : (0 : ℝ) ≤ 4)]`. Use `congr 1`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]`. Rewrite using `[← h4]`.
+
+Conclude with `Real.sqrt_le_sqrt key`.
+-/
 theorem de_scl {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (h2 : τ ≤ 2) (x : Xp (p + 1) m) (l : Fin (p + 2)) :
     de x l / 2 ≤ de (scl τ x) l := by
   unfold de
@@ -205,6 +281,13 @@ theorem de_scl {p m : ℕ} (τ : ℝ) (h1 : 1 ≤ τ) (h2 : τ ≤ 2) (x : Xp (p
   rw [← h4]
   exact Real.sqrt_le_sqrt key
 
+/- English proof (translation)
+Establish `hτ' : (τ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hτ`. Establish `e1 : (scl τ x).1 0 = (τ : ℂ) * x.1 0` using `by simp [scl]`. Establish `e2 : (scl τ x).2.1 0 = x.2.1 0 / (τ : ℂ)` using `by simp [scl]`. Establish `e3 : ∀ j : Fin p, (scl τ x).1 j.succ = x.1 j.succ` using `fun j => by`. Simplify using `[scl, Fin.succ_ne_zero]`.
+
+Establish `e4 : ∀ j : Fin p, (scl τ x).2.1 j.succ = x.2.1 j.succ` using `fun j => by`. Simplify using `[scl, Fin.succ_ne_zero]`. Establish `e5 : (scl τ x).2.2.1 = x.2.2.1` using `rfl`. Establish `hk : (τ : ℂ) * (x.2.1 0 / (τ : ℂ) * η' 0) = x.2.1 0 * η' 0`. Clear the denominators using the available nonvanishing facts.
+
+Unfold `linF`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [e1, e2, e3, e4, e5]`. Take the linear combination `hk`.
+-/
 private lemma linF_scl {p m : ℕ} (τ : ℝ) (hτ : τ ≠ 0) (η η' : Fin (p + 1) → ℂ) (ζ : Fin m → ℂ)
     (x : Xp (p + 1) m) :
     (τ : ℂ) * linF η η' ζ (scl τ x) = x.2.1 0 * η' 0 +
@@ -225,9 +308,35 @@ private lemma linF_scl {p m : ℕ} (τ : ℝ) (hτ : τ ≠ 0) (η η' : Fin (p 
   simp only [e1, e2, e3, e4, e5]
   linear_combination hk
 
+/- English proof (translation)
+Rewrite using `[← coe_nnnorm, ENNReal.ofReal_coe_nnreal]`.
+-/
 private lemma enn_norm (z : ℂ) : ENNReal.ofReal ‖z‖ = (‖z‖₊ : ℝ≥0∞) := by
   rw [← coe_nnnorm, ENNReal.ofReal_coe_nnreal]
 
+/- English proof (translation)
+Take `⟨CS, hCS⟩` from `hS (δ / 4) (by positivity) (by linarith)`. Establish `hC : 0 < 2 ^ (δ / 4) * (|CS| + 1)` using `by positivity`. Use `⟨2 ^ (δ / 4) * (|CS| + 1), hC, ?_⟩` and prove the remaining obligations. Introduce `p m η η' ζ x`. Establish `hCn : ENNReal.ofReal (2 ^ (δ / 4) * (|CS| + 1)) ≠ 0`.
+
+Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `hC`. Establish `hng : -γ < 0` using `by linarith`. Distinguish the cases in `hη : η' 0 = 0`. Use `le_top.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[hη, nnnorm_zero, ENNReal.coe_zero, ENNReal.zero_rpow_of_neg hng, ENNReal.mul_top hCn, ENNReal.top_mul]`. Rewrite using `[Ne, ENNReal.rpow_eq_zero_iff]`. Simplify using `[hγ0.le]`. Distinguish the cases in `ha : x.2.1 0 = 0`. Use `le_top.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[ha, nnnorm_zero, ENNReal.coe_zero, ENNReal.zero_rpow_of_neg hng, ENNReal.mul_top]`. Use `mul_ne_zero hCn ?_` and prove the remaining obligations. Rewrite using `[Ne, ENNReal.rpow_eq_zero_iff]`. Simplify using `[hγ0.le]`. Use `set R : ℂ := (∑ j : Fin p, (x.1 j.succ * η j.succ + x.2.1 j.succ * η' j.succ)) + ∑ i, x.2.2.1 i * ζ i`.
+
+Use `set c : Fin 3 → ℂ := ![x.2.1 0 * η' 0, R, x.1 0 * η 0] with hc`. Establish `hc0 : c 0 = x.2.1 0 * η' 0` using `rfl`. Establish `hc1 : c 1 = R` using `rfl`. Establish `hc2 : c 2 = x.1 0 * η 0` using `rfl`. Establish `hpt : ∀ τ ∈ Icc (1 : ℝ) 2, ENNReal.ofReal ((1 + ‖linF η η' ζ (scl τ x)‖) ^ (-δ / 4)) ≤ ENNReal.ofReal (2 ^ (δ / 4)) * ENNReal.ofReal ((1 + ‖c 0 + c 1 * τ + c 2 * (τ : ℂ) ^ 2‖) ^ (-(δ / 4)))`.
+
+Introduce `τ hτ`. Establish `hτ0 : 0 < τ` using `by linarith [hτ.1]`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hP : ‖c 0 + c 1 * τ + c 2 * (τ : ℂ) ^ 2‖ ≤ 2 * ‖linF η η' ζ (scl τ x)‖`.
+
+Rewrite using `[hc0, hc1, hc2, ← linF_scl τ hτ0.ne' η η' ζ x, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hτ0]`. Use `gcongr`. Conclude with `hτ.2`. Establish `hF` using `norm_nonneg (linF η η' ζ (scl τ x))`. Establish `hP0` using `norm_nonneg (c 0 + c 1 * τ + c 2 * (τ : ℂ) ^ 2)`.
+
+Establish `h1 : (1 + ‖c 0 + c 1 * τ + c 2 * (τ : ℂ) ^ 2‖) / 2 ≤ 1 + ‖linF η η' ζ (scl τ x)‖` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow (by positivity) (by norm_num), neg_div, Real.rpow_neg (x := 2) (by norm_num), div_inv_eq_mul, mul_comm]`. Establish `ht : 0 < ‖x.2.1 0‖ * ‖η' 0‖` using `mul_pos (norm_pos_iff.2 ha) (norm_pos_iff.2 hη)`. Establish `hct : ‖x.2.1 0‖ * ‖η' 0‖ ≤ ‖c‖`.
+
+Rewrite using `[← norm_mul, ← hc0]`. Conclude with `norm_le_pi_norm c 0`. Establish `e1 : (1 + ‖c‖) ^ (-(δ / 4) / 2) ≤ (1 + ‖x.2.1 0‖ * ‖η' 0‖) ^ (-(δ / 4) / 2)` using `Real.rpow_le_rpow_of_nonpos (by positivity) (by linarith) (by linarith)`. Establish `e2 : (1 + ‖x.2.1 0‖ * ‖η' 0‖) ^ (-(δ / 4) / 2) ≤ (1 + ‖x.2.1 0‖ * ‖η' 0‖) ^ (-γ)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Establish `e3 : (1 + ‖x.2.1 0‖ * ‖η' 0‖) ^ (-γ) ≤ (‖x.2.1 0‖ * ‖η' 0‖) ^ (-γ)` using `Real.rpow_le_rpow_of_nonpos ht (by linarith) (by linarith)`.
+
+Establish `e4 : (‖x.2.1 0‖ * ‖η' 0‖) ^ (-γ) = ‖η' 0‖ ^ (-γ) * ‖x.2.1 0‖ ^ (-γ)`. Rewrite using `[Real.mul_rpow (norm_nonneg _) (norm_nonneg _), mul_comm]`. Establish `e5 : CS * (1 + ‖c‖) ^ (-(δ / 4) / 2) ≤ (|CS| + 1) * (‖x.2.1 0‖ * ‖η' 0‖) ^ (-γ)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `_ = ENNReal.ofReal (2 ^ (δ / 4) * (|CS| + 1)) * (‖η' 0‖₊ : ℝ≥0∞) ^ (-γ) * (‖x.2.1 0‖₊ : ℝ≥0∞) ^ (-γ) := by`. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_rpow_of_pos (norm_pos_iff.2 hη), ← ENNReal.ofReal_rpow_of_pos (norm_pos_iff.2 ha), enn_norm, enn_norm]`.
+-/
 theorem scl_weight (hS : SUB) {δ γ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1 / 2) (hγ0 : 0 < γ) (hγ : γ ≤ δ / 8) :
     ∃ C : ℝ, 0 < C ∧ ∀ {p m : ℕ} (η η' : Fin (p + 1) → ℂ) (ζ : Fin m → ℂ) (x : Xp (p + 1) m),
       ∫⁻ τ in Icc (1 : ℝ) 2, ENNReal.ofReal ((1 + ‖linF η η' ζ (scl τ x)‖) ^ (-δ / 4)) ≤

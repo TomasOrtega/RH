@@ -11,6 +11,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 
 namespace UpperTheory.V.Ws.DiagonalConstancy
 
+/- English proof (translation)
+Set `a : Fin 4 → ℕ` to `fun i => (Finset.univ.filter fun k => R i k).card`. Establish `ha : ∀ i j, i ≠ j → R i j → a j < a i` using `fun i j hij h => by`. Use `Finset.card_lt_card ⟨fun k hk => ?_, fun hs => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢`. Conclude with `ht _ _ _ h hk`.
+
+Use `hs (Finset.mem_filter.2 ⟨Finset.mem_univ i, hr i⟩)` as an intermediate fact. Conclude with `hd i j hij h (Finset.mem_filter.1 this).2`. Set `h : Fin 4 → ℤ` to `fun i => (a i : ℤ) - a i.rev`. Use `⟨(h 0 - h 1) • AddMonoidHom.fst ℤ ℤ + (h 0 - h 2) • AddMonoidHom.snd ℤ ℤ, fun i j hij hR => ?_⟩` and prove the remaining obligations. Establish `h1` using `ha i j hij hR`.
+
+Establish `h2` using `ha _ _ (fun e => hij (Fin.rev_injective e).symm) (hv i j hR)`. Establish `key : ((h 0 - h 1) • AddMonoidHom.fst ℤ ℤ + (h 0 - h 2) • AddMonoidHom.snd ℤ ℤ) (wt i j) = h i - h j`. Establish `r0 : (0 : Fin 4).rev = 3` using `rfl`. Establish `r1 : (1 : Fin 4).rev = 2` using `rfl`. Establish `r2 : (2 : Fin 4).rev = 1` using `rfl`.
+
+Establish `r3 : (3 : Fin 4).rev = 0` using `rfl`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h, wt, lamW, muW, r0, r1, r2, r3] <;> ring`. Rewrite using `[key]`. Simplify using `only [h]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem exists_form (R : Fin 4 → Fin 4 → Prop) (hr : ∀ i, R i i) (ht : ∀ i j k, R i j → R j k → R i k)
     (hv : ∀ i j, R i j → R j.rev i.rev) (hd : ∀ i j, i ≠ j → R i j → ¬ R j i) :
     ∃ φ : ℤ × ℤ →+ ℤ, ∀ i j, i ≠ j → R i j → 0 < φ (wt i j) := by
@@ -36,6 +45,17 @@ private theorem exists_form (R : Fin 4 → Fin 4 → Prop) (hr : ∀ i, R i i) (
   simp only [h]
   omega
 
+/- English proof (translation)
+Introduce and unpack `x ⟨L, hL, rfl⟩`. Establish `key : ∀ L : List (H × Fin 4 × Fin 4), (L.map fun a => r a.1 a.2.1 a.2.2).prod = 0 ∨ (0 ≤ φ (L.map fun a => wt a.2.1 a.2.2).sum ∧ (φ (L.map fun a => wt a.2.1 a.2.2).sum = 0 → IsOfFinOrder (L.map fun a => r a.1 a.2.1 a.2.2).prod))`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => right`.
+
+Simplify using the standard rewrite rules. Consider the case `cons a L ih`. Take `⟨g, i, j⟩` from `a`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons, map_add]`. Break down `ih with h | ⟨h1, h2⟩` into its components or cases.
+
+Use `left`. Rewrite using `[h, mul_zero]`. Distinguish the cases in `h0 : r g i j = 0`. Use `left`. Rewrite using `[h0, zero_mul]`.
+
+Use `right`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[(wt_eq_zero i i).2 rfl, map_zero, zero_add]`. Conclude with `⟨h1, fun h => (hf g i).mul (h2 h)⟩`.
+
+Use `hφ i j hij ⟨g, h0⟩` as an intermediate fact. Conclude with `⟨by omega, fun h => by omega⟩`. Break down `key L with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (h.2 (by rw [hL, map_zero]))`.
+-/
 private theorem mono_fin {H K : Type} [Group H] [CommRing K] (r : H →* M4 K) (φ : ℤ × ℤ →+ ℤ)
     (hφ : ∀ i j, i ≠ j → Ge r i j → 0 < φ (wt i j)) (hf : ∀ g i, IsOfFinOrder (r g i i)) :
     ∀ x ∈ mono r 0, x = 0 ∨ IsOfFinOrder x := by
@@ -64,6 +84,13 @@ private theorem mono_fin {H K : Type} [Group H] [CommRing K] (r : H →* M4 K) (
   · exact Or.inl h
   · exact Or.inr (h.2 (by rw [hL, map_zero]))
 
+/- English proof (translation)
+Break down `hx with rfl | hx` into its components or cases. Conclude with `⟨1, one_pos, by simp [hl.out.ne_zero]⟩`. Take `⟨N, hN, h⟩` from `isOfFinOrder_iff_pow_eq_one.1 hx`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN.ne' l hl.out.ne_one`. Establish `h1 : x ^ m = 1`.
+
+Establish `h2 : (x ^ m - 1) ^ l ^ a = 0` using `by rw [sub_pow_char_pow, ← pow_mul, mul_comm, h, one_pow, sub_self]`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero a hl.out.ne_zero) |>.1 h2)`. Establish `hm0 : 0 < m` using `Nat.pos_of_mul_pos_left hN`. Use `⟨m.totient, Nat.totient_pos.2 hm0, ?_⟩` and prove the remaining obligations. Establish `h3 : l ^ m.totient ≡ 1 [MOD m]` using `Nat.ModEq.pow_totient ((Nat.Prime.coprime_iff_not_dvd hl.out).2 hm)`.
+
+Rewrite using `[pow_eq_pow_mod _ h1, h3, ← pow_eq_pow_mod _ h1, pow_one]`.
+-/
 private theorem frob_fix {K : Type} [CommRing K] [IsDomain K] (l : ℕ) [hl : Fact l.Prime] [CharP K l] (x : K)
     (hx : x = 0 ∨ IsOfFinOrder x) : ∃ n : ℕ, 0 < n ∧ x ^ l ^ n = x := by
   rcases hx with rfl | hx
@@ -78,6 +105,17 @@ private theorem frob_fix {K : Type} [CommRing K] [IsDomain K] (l : ℕ) [hl : Fa
   have h3 : l ^ m.totient ≡ 1 [MOD m] := Nat.ModEq.pow_totient ((Nat.Prime.coprime_iff_not_dvd hl.out).2 hm)
   rw [pow_eq_pow_mod _ h1, h3, ← pow_eq_pow_mod _ h1, pow_one]
 
+/- English proof (translation)
+Establish `hu1 : adj u * u = 1` using `by simpa [IsGSp] using hu`. Establish `hu2 : u * adj u = 1` using `mul_eq_one_comm.1 hu1`. Use `set M := adj u * X * u with hM`. Establish `hX : X - 1 = u * (M - 1) * adj u`. Rewrite using `[hM, mul_sub, sub_mul, mul_one, hu2, ← mul_assoc, ← mul_assoc, hu2, one_mul, mul_assoc, hu2, mul_one]`.
+
+Establish `hN : ∀ i j, j ≤ i → (M - 1) i j = 0` using `fun i j h => by`. Break down `h.lt_or_eq with h | rfl` into its components or cases. Rewrite using `[Matrix.sub_apply, h1 i j h, Matrix.one_apply_ne h.ne', sub_zero]`. Rewrite using `[Matrix.sub_apply, h2, Matrix.one_apply_eq, sub_self]`. Generalize the expression as in `M - 1 = N at hX hN`.
+
+Establish `h4 : N ^ 4 = 0`. Establish `e : N ^ 4 = N * N * N * N` using `by noncomm_ring`. Rewrite using `[e]`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, hN 0 0, hN 1 0, hN 1 1, hN 2 0, hN 2 1, hN 2 2, hN 3 0, hN 3 1, hN 3 2, hN 3 3]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[hN 0 0, hN 1 0, hN 1 1, hN 2 0, hN 2 1, hN 2 2, hN 3 0, hN 3 1, hN 3 2, hN 3 3]`. Establish `h5 : (X - 1) ^ 4 = 0`. Establish `e : (u * N * adj u) ^ 4 = u * (N * (adj u * u) * N * (adj u * u) * N * (adj u * u) * N) * adj u` using `by noncomm_ring`. Establish `e' : N ^ 4 = N * N * N * N` using `by noncomm_ring`.
+
+Rewrite using `[hX, e, hu1, mul_one, mul_one, mul_one, ← e', h4, mul_zero, zero_mul]`. Establish `h6 : (X - 1) ^ l ^ 2 = 0` using `pow_eq_zero_of_le (by nlinarith [hl.out.two_le]) h5`. Rewrite `h6` using `[sub_pow_char_pow_of_commute l 2 (Commute.one_right X), one_pow]`. Conclude with `sub_eq_zero.1 h6`.
+-/
 private theorem unip {R : Type} [CommRing R] (l : ℕ) [hl : Fact l.Prime] [CharP R l] (u X : M4 R) (hu : IsGSp 1 u)
     (h1 : IsUp (adj u * X * u)) (h2 : ∀ i, (adj u * X * u) i i = 1) : X ^ l ^ 2 = 1 := by
   have hu1 : adj u * u = 1 := by simpa [IsGSp] using hu
@@ -115,6 +153,13 @@ private def dchar {H K : Type} [Group H] [CommRing K] [IsDomain K] (r : H →* M
       exact h i k hk.symm ⟨a, left_ne_zero_of_mul h0⟩ ⟨b, right_ne_zero_of_mul h0⟩
     · simp
 
+/- English proof (translation)
+Establish `hk : ∀ k : ℕ, κ g ^ N - 1 ∈ maximalIdeal A ^ k`. Introduce `k`. Set `f : G ℚ Ω →* A ⧸ maximalIdeal A ^ k` to `(powMonoidHom N).comp ((Ideal.Quotient.mk (maximalIdeal A ^ k)).toMonoidHom.comp κ)`. Establish `hf : ∀ x, f x = Ideal.Quotient.mk (maximalIdeal A ^ k) (κ x ^ N)` using `fun x => by`. Rewrite using `[map_pow]`.
+
+Both sides reduce to the same expression. Establish `ho : IsOpen (f.ker : Set (G ℚ Ω))` using `((hc k).comp (· ^ N)).isOpen_fiber 1`. Establish `ht` using `UpperTheory.V.CF.minkAbs Ω f.ker ho fun B x hx => by`. Rewrite using `[MonoidHom.mem_ker, hf, h B x hx, map_one]`. Establish `hg : g ∈ f.ker` using `ht ▸ Subgroup.mem_top g`.
+
+Rewrite `hg` using `[MonoidHom.mem_ker, hf]`. Conclude with `Ideal.Quotient.eq.1 hg`. Establish `hb` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal A) (maximalIdeal.isMaximal A).ne_top`. Establish `: κ g ^ N - 1 ∈ (⊥ : Ideal A)` using `hb ▸ Ideal.mem_iInf.2 hk`. Conclude with `sub_eq_zero.1 this`.
+-/
 private theorem mink {Ω A : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [CommRing A] [IsDomain A]
     [IsDiscreteValuationRing A] (κ : G ℚ Ω →* A) (hc : AdicCont (maximalIdeal A) κ) (N : ℕ)
     (h : ∀ B : ValuationSubring Ω, ∀ g ∈ Ine (F := ℚ) B, κ g ^ N = 1) (g : G ℚ Ω) : κ g ^ N = 1 := by
@@ -134,6 +179,11 @@ private theorem mink {Ω A : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
   have : κ g ^ N - 1 ∈ (⊥ : Ideal A) := hb ▸ Ideal.mem_iInf.2 hk
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Establish `hp : (RingHom.ker (𝔞.a c)).IsPrime` using `RingHom.ker_isPrime _`. Establish `hne : RingHom.ker (𝔞.a c) ≠ ⊥` using `fun h => by`. Establish `h1 : (l : c.O) ∈ RingHom.ker (𝔞.a c)` using `by rw [RingHom.mem_ker, map_natCast, CharP.cast_eq_zero]`. Rewrite `h1` using `[h, Ideal.mem_bot]`. Conclude with `hl.out.ne_zero (Nat.cast_eq_zero.1 h1)`.
+
+Establish `hm : (RingHom.ker (𝔞.a c)).IsMaximal` using `hp.isMaximal hne`. Rewrite `hx` using `[← eq_maximalIdeal hm]`. Then use the resulting hypothesis.
+-/
 private theorem a_kill {l : ℕ} [hl : Fact l.Prime] (c : Coef l) (𝔞 : Amb l) [CharP 𝔞.V l] (x : c.O)
     (hx : x ∈ maximalIdeal c.O) : 𝔞.a c x = 0 := by
   have hp : (RingHom.ker (𝔞.a c)).IsPrime := RingHom.ker_isPrime _
@@ -146,6 +196,25 @@ private theorem a_kill {l : ℕ} [hl : Fact l.Prime] (c : Coef l) (𝔞 : Amb l)
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Use `haveI : IsGalois ℚ Ω := {}`. Take `⟨f1, -, -, -, -, -, -, -, -, -, -, f12, -⟩` from `facts D hD`. Set `U : Subgroup (G ℚ Ω)` to `D.rbar.ker ⊓ D.ψ.ker`. Establish `hU : IsOpen (U : Set (G ℚ Ω))` using `f12.inter hD.psi_open`.
+
+Use `haveI : Finite (G ℚ Ω ⧸ U) := U.quotient_finite_of_isOpen hU`. Establish `hI : U.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `hT : ∀ p ∈ D.T, p.Prime ∧ ∀ g ∈ D.Ip p, g ∈ U → r g ^ l ^ 2 = 1`. Introduce `p hp`. Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases.
+
+Use `⟨hl, fun s hs hu => unip p u (r s) hP.sp (hP.flag s (Ine_le_Dec _ hs)) fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hP.inert s hs j, ← sub_eq_zero, ← map_one (𝔞.a c), ← map_sub]`. Use `a_kill c 𝔞 _ ?_` and prove the remaining obligations. Establish `h0 : D.rbar s = 1` using `hu.1`. Establish `h1 : D.rbar s j j = (1 : M4 (ResidueField c.O)) j j` using `by rw [h0]`.
+
+Rewrite `h1` using `[Raw.rbar, mapRep_apply, Raw.r0, show diagRep D.ps s j j = D.ps j s from Matrix.diagonal_apply_eq _ j, Matrix.one_apply_eq]`. Rewrite using `[← residue_eq_zero_iff, map_sub, h1, map_one, sub_self]`. Conclude with `⟨(f1 p hp).1, fun s hs hu => by rw [hP.atP p hp s ⟨hs, hu.2⟩, one_pow]⟩`. Establish `hone : ∀ s, r s = 1 → dchar r hd i s = 1` using `fun s hs => by show r s i i = 1`. Rewrite using `[hs, Matrix.one_apply_eq]`.
+
+Establish `hine : ∀ B : ValuationSubring Ω, ∀ s ∈ Ine (F` using `ℚ) B, dchar r hd i s ^ (U.index * l ^ 2) = 1 := by`. Introduce `B s hs`. Distinguish the cases in `hB : Raw.Away D.T B`. Rewrite using `[pow_mul, ← map_pow, hone _ (hP.unr B hB _ (pow_mem hs _) (U.pow_index_mem s).1), one_pow]`. Simplify using `only [Raw.Away, not_forall, not_not] at hB`.
+
+Take `⟨p, hp, hv⟩` from `hB`. Take `⟨t, ht⟩` from `(B3.placesQ Ω).2.2 p (D.pl p) B (hT p hp).1 (hD.pl_over p (hT p hp).1) hv`. Establish `h1` using `(hT p hp).2 _ (pow_mem (ht s hs) _) (U.pow_index_mem _)`. Rewrite `h1` using `[← map_pow, ← pow_mul]`. Establish `h2` using `hone _ h1`.
+
+Establish `h3 : dchar r hd i (t⁻¹ * s * t) = dchar r hd i s`. Rewrite using `[map_mul, map_mul, mul_right_comm, ← map_mul, inv_mul_cancel, map_one, one_mul]`. Rewrite `h2` using `[map_pow, h3]`. Then use the resulting hypothesis. Take `⟨A, _, _, _, f, P₁, hf, hc, hm⟩` from `hP.small`. Establish `hr : ∀ s a b, f (P₁.r s a b) = r s a b` using `fun s a b => congrFun (congrFun (DFunLike.congr_fun (congrArg PD.r hm) s) a) b`.
+
+Establish `hd₁ : DiagType P₁.r` using `fun a b hab ⟨s, hs⟩ ⟨t, ht⟩ => hd a b hab ⟨s, fun e => hs (hf.inj (by rw [hr, e, map_zero]))⟩ ⟨t, fun e => ht (hf.inj (by rw [hr, e, map_zero]))⟩`. Establish `h` using `mink (dchar P₁.r hd₁ i) (hc i i) (U.index * l ^ 2) (fun B s hs => hf.inj (by`. Rewrite using `[map_pow, map_one, ← hine B s hs]`. Conclude with `congrArg (· ^ _) (hr s i i))) g`. Use `isOfFinOrder_iff_pow_eq_one.2 ⟨U.index * l ^ 2, Nat.pos_of_ne_zero (mul_ne_zero hI (pow_ne_zero _ hl.ne_zero)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hr, ← map_pow, ← map_one f]`. Conclude with `congrArg f h`.
+-/
 private theorem diag_fin (D : Raw Ω c) (hD : D.Good) (𝔞 : Amb l) [CharP 𝔞.V l] (r : G ℚ Ω →* M4 𝔞.V) (u : M4 𝔞.V)
     (hP : KPair D 𝔞 r u) (hd : DiagType r) (g : G ℚ Ω) (i : Fin 4) : IsOfFinOrder (r g i i) := by
   have hl : l.Prime := Fact.out
@@ -198,6 +267,13 @@ private theorem diag_fin (D : Raw Ω c) (hD : D.Good) (𝔞 : Amb l) [CharP 𝔞
 end UpperTheory.V.Ws.DiagonalConstancy
 
 open UpperTheory.V.Ws.DiagonalConstancy in
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD 𝔞 hK r hV u hP hd x hx`. Use `haveI : CharP 𝔞.V l := 𝔞.toK.charP Subtype.val_injective l`. Take `⟨-, R, i1, i2, i3, ρ, y, hρ, hy, -, hr⟩` from `hV`. Use `letI : Algebra c.O 𝔞.K := (𝔞.toK.comp (𝔞.a c)).toAlgebra`. Set `y' : R →ₐ[c.O] 𝔞.K` to `{ toRingHom := 𝔞.toK.comp y commutes' := fun a => congrArg 𝔞.toK (RingHom.congr_fun hy a) }`.
+
+Establish `hpt : D.PtIn 𝔞.K (mapRep 𝔞.toK r)` using `⟨R, i1, i2, i3, ρ, y', hρ, by subst hr; ext g i j; rfl⟩`. Take `⟨p1, -, -, -, -, p6, -⟩` from `ptIn D hD _ _ hpt`. Take `⟨-, g2, g3, g4, -⟩` from `geAlg _ _ _ p1 p6`. Establish `hiff : ∀ i j, Ge (mapRep 𝔞.toK r) i j ↔ Ge r i j` using `fun i j => exists_congr fun g => by simp`. Simplify using `only [hiff] at g2 g3 g4`.
+
+Take `⟨φ, hφ⟩` from `exists_form (Ge r) g2 g3 g4 hd`. Conclude with `frob_fix l x (mono_fin r φ hφ (diag_fin D hD 𝔞 r u hP hd) x hx)`.
+-/
 theorem UpperTheory.V.Ws.diagConst :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (𝔞 : Amb l), CharP 𝔞.K l → ∀ r, VPt D 𝔞 r → ∀ u, KPair D 𝔞 r u → DiagType r → ∀ x ∈ mono r 0, ∃ n : ℕ, 0 < n ∧ x ^ l ^ n = x := by
   intro Ω _ _ _ l _ c D hD 𝔞 hK r hV u hP hd x hx

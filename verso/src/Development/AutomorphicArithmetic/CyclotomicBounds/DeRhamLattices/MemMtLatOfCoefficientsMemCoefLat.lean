@@ -13,6 +13,13 @@ set_option maxHeartbeats 1600000
 open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
+/- English proof (translation)
+Introduce `D X X0 Y S YS Z c w j H ι hι F hF hy`. Establish `hB` using `Z.good.base (c.twI w) j (c.sd w)`. Establish `hc : IsCoefRing D.what₂.embLL (labLL D) (intLL D)` using `⟨fun τ => FWT.embV_spec (RingHom.id _) D.what₂.embLL (RingHom.comp_id _) τ, fun a => ⟨a, rfl⟩⟩`. Use `(Base.mem_mtLat _ _ _ _).2 ⟨hF, fun h => ?_⟩` and prove the remaining obligations. Take `⟨a, γ, k, e⟩` from `((X.R.B.L j (Y.tupT (D.what₂.muTw w))).pres.reps h).exists`.
+
+Take `⟨hk, -⟩` from `UpperTheory.KN.levEnv_level_subgroup_le_levJ_and_character_eq D X X0 Y S YS Z c w j H ι hι k`. Establish `h1` using `((Base.mem_formsC _).1 hF).2 γ ((X.R.B.L j (Y.tupT (D.what₂.muTw w))).pres.y a) ⟨k, hk⟩`. Establish `h2` using `Base.act_mem_coefLat hB.frame hc γ _ k (Base.mem_St_of_mem_levJ hk) (hy a)`. Establish `h3` using `GlobalTheory.T.level_twist_character_mem_coefficientIntegers D X X0 Y S YS Z c w j H ι hι ⟨k, hk⟩`. Establish `h4` using `Submodule.smul_mem _ (⟨_, h3⟩ : intLL D) h2`.
+
+Substitute `e` using the available equality. Conclude with `h1 ▸ h4`.
+-/
 theorem _root_.UpperTheory.KN.mem_mtLat_of_coefficients_mem_coefLat :
     ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),
       ∀ ι : KE c w →+* ℂ, (∀ x, ι (c.embW w x) = D.what₂.embLL x) →

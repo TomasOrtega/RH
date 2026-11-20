@@ -16,6 +16,15 @@ namespace GlobalTheory.Dict.ProjProj
 
 open GlobalTheory.SW.TensVac
 
+/- English proof (translation)
+Take `⟨v₂, hv₂, -⟩` from `h₂.vac hs`. Take `⟨v₃, hv₃, -⟩` from `h₃.vac hs`. Establish `hsb₂` using `(h₂.proj idx hs hn hv.1 hv₂).1`. Rewrite using `[(h₃.proj idx hs hn hsb₂ hv₃).2, (h₃.proj idx hs hn hv.1 hv₃).2]`. Use `congr 1`.
+
+Establish `hfin` using `h₂.finite idx hs hn hv.1`. Establish `hsb : ∀ ψ ∈ hfin.toFinset, IsSB ψ`. Introduce `ψ hψ`. Take `⟨y, -, rfl⟩` from `hfin.mem_toFinset.1 hψ`. Conclude with `rho_sb idx hs hn y hv.1`.
+
+Establish `hpos : (((fun y => epsW X w y • heisG X bas y v) '' A₂).ncard : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 ((Set.ncard_pos hfin).2 ⟨_, 0, A₂.zero_mem, rfl⟩).ne'`. Take `⟨h1, h2⟩` from `sum_sb_ip _ hsb hv₃.1`. Rewrite using `[projA, finsum_mem_eq_finite_toFinset_sum _ hfin, ip_smul_left _ h1 hv₃.1, h2, Finset.sum_congr rfl (g := fun _ => SW.ip v v₃), Finset.sum_const, ← Set.ncard_eq_toFinset_card _ hfin, nsmul_eq_mul, inv_mul_cancel_left₀ hpos]`. Introduce `ψ hψ`. Take `⟨y, hy, rfl⟩` from `hfin.mem_toFinset.1 hψ`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `AddSubgroup.mem_sup.1 (hle hy)`. Use `show SW.ip (epsW X w (a + b) • heisG X bas (a + b) v) v₃ = SW.ip v v₃`. Rewrite using `[add_comm a b, ← h₂.rho_rho idx hs hn hb.1 ha.1 hv.1, hv.2.2 a ha.2, ← rho_ip (w := w) idx hs hn b hv.1 hv₃.1, hv₃.2.2 b hb.2]`.
+-/
 theorem proj_proj_of_good {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ}
     {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
     (hs : IsSympl X bas) (hn : Even n) {w : E}
@@ -45,6 +54,9 @@ theorem proj_proj_of_good {E : Type} [Field E] [NumberField E] [IsCMField E] {r 
   rw [add_comm a b, ← h₂.rho_rho idx hs hn hb.1 ha.1 hv.1, hv.2.2 a ha.2,
     ← rho_ip (w := w) idx hs hn b hv.1 hv₃.1, hv₃.2.2 b hb.2]
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx n hs hn w hw hw' L₁ L₂ L₃ _ hL₂ hL₃ Λ₁ _ Λ₂ hΛ₂ Λ₃ hΛ₃ hle v hv`. Establish `good (L) (hL : SelfD X L) (Λ) (hΛ : Λ ∈ Vset E n 1) : Good X w (tens Λ L)`. Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.T.tensorLattice_selfDual_semicharacter_index E r X g bas idx n hs hn w hw hw' L hL 1 Λ hΛ`. Conclude with `⟨h1, h2, h3⟩`. Conclude with `proj_proj_of_good idx hs hn (good L₂ hL₂ Λ₂ hΛ₂) (good L₃ hL₃ Λ₃ hΛ₃) hle hv`.
+-/
 theorem proj_proj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ L₁ L₂ L₃ : Lt E r, SelfD X L₁ → SelfD X L₂ → SelfD X L₃ → ∀ Λ₁ ∈ Vset E n 1, ∀ Λ₂ ∈ Vset E n 1, ∀ Λ₃ ∈ Vset E n 1, tens Λ₂ L₂ ≤ (tens Λ₂ L₂ ⊓ tens Λ₁ L₁) ⊔ (tens Λ₂ L₂ ⊓ tens Λ₃ L₃) → ∀ v : TF n g, IsVac X bas w (tens Λ₁ L₁) v → projA X bas w (tens Λ₃ L₃) (projA X bas w (tens Λ₂ L₂) v) = projA X bas w (tens Λ₃ L₃) v := by
   intro E _ _ _ r X g bas idx n hs hn w hw hw' L₁ L₂ L₃ _ hL₂ hL₃ Λ₁ _ Λ₂ hΛ₂ Λ₃ hΛ₃ hle v hv
   have good (L) (hL : SelfD X L) (Λ) (hΛ : Λ ∈ Vset E n 1) : Good X w (tens Λ L) := by

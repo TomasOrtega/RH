@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.UCanon
 
+/- English proof (translation)
+Introduce `V _ _ D hB F _ _ _ k hk y x hx`. Take `⟨J, hJ⟩` from `good_pt D.P.isLB (default : PrimeSpectrum F)`. Conclude with `exists_qk_over (F := F) hJ hB hk y x hx`.
+-/
 theorem exists_qk_over_cF : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V), D.TauBimult →
     ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (k : ℕ), 1 ≤ k →
     ∀ (y : D.X) (x : TF (R := V) F ⟶ D.P.A), x ^ k = DegPre.cF D F y → ∃ p : QkPt D F k, p.y = y ∧ p.g.b = x := by

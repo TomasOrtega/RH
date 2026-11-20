@@ -8,6 +8,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC.TwistFiltered
 
+/- English proof (translation)
+The claim follows from `(Types.FilteredColimit.isColimit_eq_iff' (isColimitOfPreserves (forget CommRingCat.{0}) hc) x y).1 h`.
+-/
 theorem ring_eq_later {J : Type} [SmallCategory J] [IsFiltered J] {D : J ⥤ CommRingCat.{0}} {c : Cocone D}
     (hc : IsColimit c) {j : J} {x y : D.obj j} (h : c.ι.app j x = c.ι.app j y) :
     ∃ (k : J) (f : j ⟶ k), D.map f x = D.map f y :=
@@ -29,11 +32,47 @@ end GlobalTheory.EtC.TwistFiltered
 
 namespace GlobalTheory.EtC.TwistFiltered
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ζ`. Both sides reduce to the same expression.
+-/
 theorem prim_map_comp {q : ℕ} {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     Prim.map (q := q) g ∘ Prim.map f = Prim.map (g.comp f) := by
   funext ζ
   rfl
 
+/- English proof (translation)
+Introduce `q i`. Rewrite using `[(GlobalTheory.T.preservesFilteredColimits_moduleCat_iff_forget_iff_elements (ULift.{1} (ZMod q)) (twF q i)).2]`. Introduce `J _ _ D c hc`. Take `⟨hon, hinj⟩` from `GlobalTheory.T.cyclotomicPrimitiveRoots_filtered_colimit q J D c hc`. Establish `hw : ∀ {j k : J} (f : j ⟶ k) (y : (twF q i).obj (D.obj j)), ((twF q i).map (c.ι.app k)).hom (((twF q i).map (D.map f)).hom y) = ((twF q i).map (c.ι.app j)).hom y`.
+
+Introduce `j k f y`. Rewrite using `[← ModuleCat.comp_apply, ← Functor.map_comp, c.w]`. Establish `hwP : ∀ {j k : J} (f : j ⟶ k), Prim.map (q` using `q) (c.ι.app k).hom ∘ Prim.map (D.map f).hom = Prim.map (c.ι.app j).hom := by`. Introduce `j k f`. Rewrite using `[prim_map_comp, ← CommRingCat.hom_comp, c.w]`.
+
+Establish `hwP' : ∀ {j k : J} (f : j ⟶ k) (ζ : Prim q (D.obj j)), Prim.map (q` using `q) (c.ι.app k).hom (Prim.map (D.map f).hom ζ) = Prim.map (c.ι.app j).hom ζ := fun f ζ => congrFun (hwP f) ζ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H f`.
+
+Proceed by induction on `f using Finsupp.induction_linear with`. Consider the case `zero`. Take `⟨j⟩` from `IsFiltered.nonempty (C := J)`. Conclude with `⟨j, 0, by rw [map_zero]; rfl⟩`. Consider the case `add f g hf hg`.
+
+Take `⟨j, y, hy⟩` from `hf`. Take `⟨j', y', hy'⟩` from `hg`. Use `⟨IsFiltered.max j j', ((twF q i).map (D.map (IsFiltered.leftToMax j j'))).hom y + ((twF q i).map (D.map (IsFiltered.rightToMax j j'))).hom y', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hw, hw, hy, hy']`. Both sides reduce to the same expression.
+
+Consider the case `single ζ a`. Take `⟨j, ξ, hξ⟩` from `hon ζ`. Use `⟨j, Submodule.Quotient.mk (Finsupp.single ξ a), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (Finsupp.mapDomain _ _) = _`. Rewrite using `[Finsupp.mapDomain_single, hξ]`.
+
+Introduce `j y hy`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map (c.ι.app j).hom) x) = 0 at hy`. Rewrite `hy` using `[Submodule.Quotient.mk_eq_zero]`.
+
+Establish `hlift : ∀ r ∈ twRel q i c.pt, ∃ (k : J) (s : Prim q (D.obj k) →₀ ULift.{1} (ZMod q)), s ∈ twRel q i (D.obj k) ∧ Finsupp.mapDomain (Prim.map (c.ι.app k).hom) s = r`. Introduce `r hr`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem r hr`. Take `⟨ζ, ξ, a, hrel, rfl⟩` from `hr`.
+
+Take `⟨j1, ζ1, hζ1⟩` from `hon ζ`. Take `⟨j2, ξ1, hξ1⟩` from `hon ξ`. Take `⟨ζm, hζm⟩ : ∃ ζm : Prim q (D.obj (IsFiltered.max j1 j2)), Prim.map (c.ι.app _).hom ζm = ζ` from `⟨_, (hwP' (IsFiltered.leftToMax j1 j2) ζ1).trans hζ1⟩`. Take `⟨ξm, hξm⟩ : ∃ ξm : Prim q (D.obj (IsFiltered.max j1 j2)), Prim.map (c.ι.app _).hom ξm = ξ` from `⟨_, (hwP' (IsFiltered.rightToMax j1 j2) ξ1).trans hξ1⟩`. Establish `heq : c.ι.app (IsFiltered.max j1 j2) ξm.1 = c.ι.app (IsFiltered.max j1 j2) (ζm.1 ^ (a : ZMod q).val)`.
+
+Rewrite using `[map_pow]`. Establish `h1` using `congrArg Subtype.val hζm`. Establish `h2` using `congrArg Subtype.val hξm`. Simplify using `only [Prim.map] at h1 h2`. Rewrite using `[h1, h2, hrel]`.
+
+Take `⟨n, g, hg⟩` from `ring_eq_later hc heq`. Use `⟨n, Finsupp.single (Prim.map (D.map g).hom ξm) 1 - Finsupp.single (Prim.map (D.map g).hom ζm) (ULift.up ((a ^ i : (ZMod q)ˣ) : ZMod q)), Submodule.subset_span ⟨_, _, a, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Prim.map]`. Rewrite using `[hg, map_pow]`. Rewrite using `[Finsupp.mapDomain_sub, Finsupp.mapDomain_single, Finsupp.mapDomain_single, hwP' g ξm, hwP' g ζm, hζm, hξm]`.
+
+Consider the case `zero`. Take `⟨j⟩` from `IsFiltered.nonempty (C := J)`. Conclude with `⟨j, 0, zero_mem _, by simp⟩`. Consider the case `add r r' _ _ hr hr'`. Take `⟨k, s, hs, rfl⟩` from `hr`.
+
+Take `⟨k', s', hs', rfl⟩` from `hr'`. Use `⟨IsFiltered.max k k', Finsupp.mapDomain (Prim.map (D.map (IsFiltered.leftToMax k k')).hom) s + Finsupp.mapDomain (Prim.map (D.map (IsFiltered.rightToMax k k')).hom) s', add_mem (twRel_le q i _ hs) (twRel_le q i _ hs'), ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.mapDomain_add, ← Finsupp.mapDomain_comp, ← Finsupp.mapDomain_comp, hwP, hwP]`. Consider the case `smul a r _ hr`. Take `⟨k, s, hs, rfl⟩` from `hr`.
+
+Conclude with `⟨k, a • s, Submodule.smul_mem _ a hs, by rw [Finsupp.mapDomain_smul]⟩`. Take `⟨k, s, hs, hsr⟩` from `hlift _ hy`. Establish `hz : Finsupp.mapDomain (Prim.map (c.ι.app (IsFiltered.max j k)).hom) (Finsupp.mapDomain (Prim.map (D.map (IsFiltered.leftToMax j k)).hom) x - Finsupp.mapDomain (Prim.map (D.map (IsFiltered.rightToMax j k)).hom) s) = 0`. Rewrite using `[Finsupp.mapDomain_sub, ← Finsupp.mapDomain_comp, ← Finsupp.mapDomain_comp, hwP, hwP, hsr, sub_self]`. Establish `key` using `GlobalTheory.T.finsupp_mapDomain_eq_zero_at_filtered_stage (ULift.{1} (ZMod q)) J (primSys q D) (Prim q c.pt) (fun j => Prim.map (c.ι.app j).hom) (fun j k f ζ => hwP' f ζ) hinj (IsFiltered.max j k) _ hz`.
+
+Take `⟨n, h, hn⟩` from `key`. Use `⟨n, IsFiltered.leftToMax j k ≫ h, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map (D.map (IsFiltered.leftToMax j k ≫ h)).hom) x) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `Finsupp.mapDomain (Prim.map (D.map h).hom) _ = 0 at hn`.
+
+Rewrite `hn` using `[Finsupp.mapDomain_sub, sub_eq_zero, ← Finsupp.mapDomain_comp, ← Finsupp.mapDomain_comp, prim_map_comp, prim_map_comp]`. Rewrite using `[Functor.map_comp, CommRingCat.hom_comp, hn]`. Use `twRel_le q i (D.map (IsFiltered.rightToMax j k ≫ h)).hom hs` as an intermediate fact. Rewrite `this` using `[Functor.map_comp, CommRingCat.hom_comp]`. Then use the resulting hypothesis.
+-/
 theorem twF_preservesFilteredColimits : ∀ (q : ℕ) (i : ℤ), PreservesFilteredColimitsOfSize.{0, 0} (twF q i) := by
   intro q i
   rw [(GlobalTheory.T.preservesFilteredColimits_moduleCat_iff_forget_iff_elements (ULift.{1} (ZMod q)) (twF q i)).2]

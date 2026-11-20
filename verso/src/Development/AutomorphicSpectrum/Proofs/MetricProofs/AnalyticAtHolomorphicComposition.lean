@@ -6,6 +6,13 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `A.cover (bp w₀)`. Establish `hca : ContinuousAt bp w₀` using `hc.continuousAt (hUn.mem_nhds hw₀)`. Establish `h1 : AnalyticAt ℂ (A.chart k ∘ bp) w₀` using `hb k w₀ ⟨hw₀, hk⟩`. Establish `h2 : AnalyticAt ℂ (f ∘ (A.chart k).symm) ((A.chart k ∘ bp) w₀)`. Apply `hf k` to reduce the goal to its premises.
+
+Use `⟨(A.chart k).map_source hk, ?_⟩` and prove the remaining obligations. Use `show (A.chart k).symm (A.chart k (bp w₀)) ∈ W`. Rewrite using `[(A.chart k).left_inv hk]`. Conclude with `hwW`. Establish `h3` using `h2.comp h1`.
+
+Use `h3.congr ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ w in 𝓝 w₀, bp w ∈ (A.chart k).source` using `hca ((A.chart k).open_source.mem_nhds hk)`. Use `filter_upwards [hev] with w hw`. Simplify using `only [Function.comp_apply, (A.chart k).left_inv hw]`.
+-/
 theorem analyticAt_comp_of_holo_in_charts (e n : ℕ) (X : Type) [TopologicalSpace X]
     (A : FinHolAtlas n X) (Un : Set (Fin e → ℂ)) (bp : (Fin e → ℂ) → X) (w₀ : Fin e → ℂ)
     (W : Set X) (f : X → ℂ) (hUn : IsOpen Un) (hw₀ : w₀ ∈ Un) (hc : ContinuousOn bp Un)

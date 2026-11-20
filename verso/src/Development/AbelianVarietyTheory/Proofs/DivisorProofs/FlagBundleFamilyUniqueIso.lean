@@ -23,6 +23,11 @@ def Carries {T : Scheme.{0}} (π : Y ⟶ B) (g : T ⟶ B) (h : T ⟶ Y) (w : h �
     e.hom ≫ (flT a).ι i = (Scheme.Modules.pullback h).map ((fl a).ι i) ≫
       (Scheme.Modules.pullbackComp h π).hom.app (E a) ≫ (Scheme.Modules.pullbackCongr w).hom.app (E a)
 
+/- English proof (translation)
+Introduce `a i`. Use `⟨(Scheme.Modules.pullbackId Y).app ((fl a).F i), ?_⟩` and prove the remaining obligations. Establish `h1 : (Scheme.Modules.pullback (𝟙 Y)).map ((fl a).ι i) ≫ (Scheme.Modules.pullbackId Y).hom.app ((Scheme.Modules.pullback π).obj (E a)) = (Scheme.Modules.pullbackId Y).hom.app ((fl a).F i) ≫ (fl a).ι i` using `(Scheme.Modules.pullbackId Y).hom.naturality ((fl a).ι i)`. Establish `h2` using `NatTrans.congr_app (Scheme.Modules.pseudofunctor_right_unitality π) (E a)`. Simplify using `at h2`.
+
+Simplify using `only [Iso.app_hom, Scheme.Modules.pullbackCongr, eqToIso.hom, eqToHom_app]`. Rewrite using `[← h1, ← h2, Iso.hom_inv_id_app_assoc]`.
+-/
 theorem carries_id (π : Y ⟶ B) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (n a)) :
     Carries π π (𝟙 Y) (Category.id_comp π) fl fl := by
   intro a i
@@ -36,6 +41,15 @@ theorem carries_id (π : Y ⟶ B) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullba
   simp only [Iso.app_hom, Scheme.Modules.pullbackCongr, eqToIso.hom, eqToHom_app]
   rw [← h1, ← h2, Iso.hom_inv_id_app_assoc]
 
+/- English proof (translation)
+Substitute `w₁ w₂` using the available equality. Introduce `a i`. Take `⟨e₁, he₁⟩` from `c₁ a i`. Take `⟨e₂, he₂⟩` from `c₂ a i`. Use `⟨(Scheme.Modules.pullbackComp h₁ h₂).symm.app _ ≪≫ (Scheme.Modules.pullback h₁).mapIso e₂ ≪≫ e₁, ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `NatTrans.congr_app (Scheme.Modules.pseudofunctor_associativity h₁ h₂ π) (E a)`. Simplify using `only [Iso.trans_hom, Iso.app_hom, Iso.symm_hom, Functor.mapIso_hom, Category.assoc, he₁] at h3 ⊢`. Rewrite using `[← Functor.map_comp_assoc, he₂]`. Simplify using `[Scheme.Modules.pullbackCongr] at h3 ⊢`. Establish `hn : (Scheme.Modules.pullbackComp h₁ h₂).inv.app ((fl a).F i) ≫ (Scheme.Modules.pullback h₁).map ((Scheme.Modules.pullback h₂).map ((fl a).ι i)) = (Scheme.Modules.pullback (h₁ ≫ h₂)).map ((fl a).ι i) ≫ (Scheme.Modules.pullbackComp h₁ h₂).inv.app ((Scheme.Modules.pullback π).obj ( …` using `((Scheme.Modules.pullbackComp h₁ h₂).inv.naturality ((fl a).ι i)).symm`.
+
+Rewrite using `[reassoc_of% hn]`. Use `congr 1`. Establish `h4` using `congrArg (fun f => (Scheme.Modules.pullbackComp h₁ h₂).inv.app ((Scheme.Modules.pullback π).obj (E a)) ≫ (Scheme.Modules.pullback h₁).map ((Scheme.Modules.pullbackComp h₂ π).hom.app (E a)) ≫ (Scheme.Modules.pullbackComp h₁ (h₂ ≫ π)).hom.app (E a) ≫ f ≫ eqToHom (by rw [Category.as …`. Simplify using `only [Category.assoc, Iso.hom_inv_id_app_assoc, ← Functor.map_comp_assoc, Iso.hom_inv_id_app, CategoryTheory.Functor.map_id, Category.id_comp, Iso.inv_hom_id_app_assoc, eqToHom_trans, eqToHom_refl, Category.comp_id] at h4`. Use `erw [CategoryTheory.Functor.map_id, Category.id_comp, Iso.inv_hom_id_app_assoc] at h4`.
+
+Conclude with `h4.symm`.
+-/
 theorem carries_comp {T Y' : Scheme.{0}} (π : Y ⟶ B) (π' : Y' ⟶ B) (g : T ⟶ B) (h₁ : T ⟶ Y') (h₂ : Y' ⟶ Y)
     (w₁ : h₁ ≫ π' = g) (w₂ : h₂ ≫ π = π')
     (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (n a))
@@ -71,6 +85,11 @@ end GlobalTheory.CovTest.FlagUniq
 
 open GlobalTheory.CovTest.FlagUniq in
 
+/- English proof (translation)
+Introduce `B Y Y' π π' ι E r fl fl' h h'`. Take `⟨g₁, ⟨w₁, c₁⟩, -⟩` from `h' Y π fl`. Take `⟨g₂, ⟨w₂, c₂⟩, -⟩` from `h Y' π' fl'`. Take `⟨u, -, hu⟩` from `h Y π fl`. Take `⟨u', -, hu'⟩` from `h' Y' π' fl'`.
+
+Establish `e₁ : g₁ ≫ g₂ = 𝟙 Y` using `(hu _ ⟨_, carries_comp π π' π g₁ g₂ w₁ w₂ fl fl' fl c₁ c₂⟩).trans (hu _ ⟨_, carries_id π fl⟩).symm`. Establish `e₂ : g₂ ≫ g₁ = 𝟙 Y'` using `(hu' _ ⟨_, carries_comp π' π π' g₂ g₁ w₂ w₁ fl' fl fl' c₂ c₁⟩).trans (hu' _ ⟨_, carries_id π' fl'⟩).symm`. Conclude with `⟨⟨g₁, g₂, e₁, e₂⟩, w₁⟩`.
+-/
 theorem GlobalTheory.CovTest.flagBundle_iso_over : ∀ (B Y Y' : Scheme.{0}) (π : Y ⟶ B) (π' : Y' ⟶ B) (ι : Type) (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)) (fl' : ∀ a, Vert.Flag ((Scheme.Modules.pullback π').obj (E a)) (r a)), IsFlagBundle π E r fl → IsFlagBundle π' E r fl' → ∃ e : Y ≅ Y', e.hom ≫ π' = π := by
   intro B Y Y' π π' ι E r fl fl' h h'
   obtain ⟨g₁, ⟨w₁, c₁⟩, -⟩ := h' Y π fl

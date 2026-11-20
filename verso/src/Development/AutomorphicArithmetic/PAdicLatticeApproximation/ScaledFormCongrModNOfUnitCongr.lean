@@ -5,6 +5,19 @@ open NumberField
 open GlobalTheory GlobalTheory.PELU GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGeo UpperTheory.Gal.W2.Wit
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `p _ D X n ν b u u' a a' e e' hn hc hb hε hu hu' he he' hr hr'`. Establish `hden` using `UpperTheory.scaled_form_den_eq_one_on_lattice p D X u u' hu hu'`. Establish `hform : algebraMap ℚ (AfP p) (X.s * X.B u u') = (X.ε : AfP p) * MultScale.EFA D (X.r u) (X.r u')` using `X.form u u'`. Generalize the expression as in `X.s * X.B u u' = q at hden hform ⊢`. Establish `hqz : ((q.num : ℤ) : ℚ) = q` using `Rat.coe_int_num_of_den_eq_one hden`.
+
+Establish `ha` using `MultScale.inAf_mem D a`. Establish `ha'` using `MultScale.inAf_mem D a'`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hexp⟩ : ∃ y : AfP p, IsIntAf y ∧ MultScale.EFA D (inAf D a + n • e) (inAf D a' + n • e') = ((D.EF a a' : ℤ) : AfP p) + (n : AfP p) * y := by`. Use `⟨MultScale.EFA D (inAf D a) e' + MultScale.EFA D e (inAf D a') + (n : AfP p) * MultScale.EFA D e e', ?_, ?_⟩` and prove the remaining obligations. Conclude with `MultScale.isIntAf_add (MultScale.isIntAf_add (MultScale.isIntAf_EFA D ha he') (MultScale.isIntAf_EFA D he ha')) (MultScale.isIntAf_mul (by simpa using MultScale.isIntAf_intCast (p := p) (n : ℤ)) (MultScale.isIntAf_EFA D he he'))`.
+
+Simplify using `only [map_add, LinearMap.add_apply, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, MultScale.EFA_inAf]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hform` using `[hr, hr', hexp, hε]`. Establish `hE` using `MultScale.isIntAf_intCast (p := p) (D.EF a a')`. Establish `hN : IsIntAf (n : AfP p)` using `by simpa using MultScale.isIntAf_intCast (p := p) (n : ℤ)`.
+
+Establish `hy' : IsIntAf ((ν : AfP p) * y + b * (((D.EF a a' : ℤ) : AfP p) + (n : AfP p) * y))` using `MultScale.isIntAf_add (MultScale.isIntAf_mul (MultScale.isIntAf_intCast ν) hy) (MultScale.isIntAf_mul hb (MultScale.isIntAf_add hE (MultScale.isIntAf_mul hN hy)))`. Establish `hc' : algebraMap ℚ (AfP p) (((q.num - ν * (D.EF a a' : ℤ) : ℤ)) : ℚ) = (n : AfP p) * ((ν : AfP p) * y + b * (((D.EF a a' : ℤ) : AfP p) + (n : AfP p) * y))`. Establish `h1 : algebraMap ℚ (AfP p) ((q.num : ℤ) : ℚ) = algebraMap ℚ (AfP p) q` using `by rw [hqz]`. Rewrite `h1`, the goal using `[map_intCast]`. Use `push_cast`.
+
+Rewrite using `[h1, hform]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk⟩` from `IntDvd.int_dvd_of_eq_mul_isIntAf p n hn hc _ _ hy' hc'`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hk' : ((q.num : ℤ) : ℚ) - (ν : ℚ) * (D.EF a a' : ℤ) = (n : ℚ) * k` using `by exact_mod_cast hk`.
+
+Rewrite using `[← hqz]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.scaled_form_congr_mod_n_of_unit_congr :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (X : UpperTheory.Gal.W2.Wit.Sys D) (n : ℕ) (ν : ℤ) (b : AfP p) (u u' : VQ D) (a a' : D.La) (e e' : AfP p ⊗[ℚ] VQ D), 0 < n → n.Coprime p → IsIntAf b → (X.ε : AfP p) = (ν : AfP p) + (n : AfP p) * b → u ∈ X.lat → u' ∈ X.lat → e ∈ LaHat D → e' ∈ LaHat D → X.r u = inAf D a + n • e → X.r u' = inAf D a' + n • e' → ∃ z : ℤ, X.s * X.B u u' = (ν : ℚ) * (D.EF a a' : ℤ) + (n : ℚ) * z := by
   intro p _ D X n ν b u u' a a' e e' hn hc hb hε hu hu' he he' hr hr'

@@ -19,6 +19,25 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 
 namespace GlobalTheory.SquareAgree.KerPMax
 
+/- English proof (translation)
+Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm N N' hN hN' hle`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `by rw [← hO.psi]; exact hT'.base.std`. Take `⟨hz, hlin⟩` from `isDatum_linear Γ.M' ψ hstd cB`. Establish `hfun : ∀ ΦD ∈ algD Γ.M' Bs.ψ Bs.emb, ∀ Φ₀, IsDatum Γ.M' ψ cB ΦD Φ₀ → Φ₀ ∈ algF ψ θ false A₁ B`. Introduce `ΦD hΦD Φ₀ hD`.
+
+Take `⟨Φ₁, hΦ₁, hD₁⟩` from `hO.algB' ΦD hΦD`. Rewrite using `[IsDatum.fun_eq Γ.M' ψ cB cB.surjective hD hD₁]`. Conclude with `hΦ₁`. Set `S : Submodule ℂ Pi` to `{ carrier := {x | ∃ ΦD ∈ N', ∃ Φ₀, IsDatum Γ.M' ψ cB ΦD Φ₀ ∧ p' Φ₀ = x} zero_mem' := ⟨0, N'.zero_mem, 0, hz, map_zero p'⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨ΦD, hΦD, Φ₀, hD, rfl⟩ ⟨ΨD, hΨD, Ψ₀, hE, rfl⟩`.
+
+Use `⟨ΦD + ΨD, N'.add_mem hΦD hΨD, Φ₀ + Ψ₀, ?_, map_add p' _ _⟩` and prove the remaining obligations. Simplify using `using hlin ΦD ΨD Φ₀ Ψ₀ 1 hD hE`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨ΦD, hΦD, Φ₀, hD, rfl⟩`. Use `⟨c • ΦD, N'.smul_mem c hΦD, c • Φ₀, ?_, map_smul p' c Φ₀⟩` and prove the remaining obligations.
+
+Simplify using `using hlin 0 ΦD 0 Φ₀ c hz hD }`. Establish `hc1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) hO.JW₁ 1 = 1` using `Subtype.ext (by simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU, map_one])`. Establish `hS1 : ∀ g ∈ GfC X, ∀ x ∈ S, rf g x ∈ S`. Introduce and unpack `g hg _ ⟨ΦD, hΦD, Φ₀, hD, rfl⟩`. Establish `hΦ₀` using `hfun ΦD (hN'.le hΦD) Φ₀ hD`.
+
+Establish `hW` using `hO.weilB ΦD Φ₀ hD 1 g`. Rewrite `hW` using `[hc1]`. Conclude with `⟨_, GlobalTheory.T.triple_geometry_hermitian_form hP D X W.rank W₁.rank e Bs Γ Xc om om' hT' hO.JX N' hN' g hg ΦD hΦD, _, hW, hm.mapB.eqf g hg Φ₀ hΦ₀⟩`. Establish `hS2 : ∀ τ, ∀ Y ∈ lieAt X τ, ∀ x ∈ S, rl τ Y x ∈ S`. Introduce and unpack `τ Y hY _ ⟨ΦD, hΦD, Φ₀, hD, rfl⟩`.
+
+Take `⟨ΨD, hΨD, Φ₁, hΦ₁, hE, hder⟩` from `GlobalTheory.T.seesaw_unfolding_evaluation hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hm N' hN' τ Y hY ΦD hΦD Φ₀ hD`. Conclude with `⟨ΨD, hΨD, Φ₁, hE, hm.mapB.eql τ Y hY Φ₀ (hfun _ (hN'.le hΦD) _ hD) Φ₁ hΦ₁ hder⟩`. Break down `hm.irred.2 S hS1 hS2 with h0 | h1` into its components or cases. Use `left`. Use `le_antisymm (fun ΦD hΦD => ?_) hle` and prove the remaining obligations.
+
+Take `⟨Φ₁, hΦ₁, hD₁⟩` from `hO.algB' ΦD (hN'.le hΦD)`. Establish `hx : p' Φ₁ ∈ S` using `⟨ΦD, hΦD, Φ₁, hD₁, rfl⟩`. Rewrite `hx` using `[h0, Submodule.mem_bot]`. Conclude with `(hN ΦD).2 ⟨hN'.le hΦD, Φ₁, hΦ₁, hD₁, hx⟩`. Use `right`.
+
+Use `le_antisymm hN'.le (fun ΨD hΨD => ?_)` and prove the remaining obligations. Take `⟨Ψ₀, hΨ₀, hE⟩` from `hO.algB' ΨD hΨD`. Establish `hx : p' Ψ₀ ∈ S` using `h1 ▸ Submodule.mem_top`. Take `⟨ΦD, hΦD, Φ₀, hD, hpe⟩` from `hx`. Establish `hdiff : ΨD - ΦD ∈ N`.
+
+Use `(hN _).2 ⟨(algD _ _ _).sub_mem hΨD (hN'.le hΦD), Ψ₀ - Φ₀, (algF ψ θ false A₁ B).sub_mem hΨ₀ (hfun _ (hN'.le hΦD) _ hD), ?_, ?_⟩` and prove the remaining obligations. Simplify `hlin ΨD ΦD Ψ₀ Φ₀ (-1) hE hD` using `[sub_eq_add_neg]`. Rewrite using `[map_sub, hpe, sub_self]`. Simplify using `using N'.add_mem (hle hdiff) hΦD`.
+-/
 theorem kernel_maximal : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

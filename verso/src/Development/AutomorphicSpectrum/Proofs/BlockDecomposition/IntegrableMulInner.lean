@@ -15,12 +15,18 @@ namespace GlobalTheory.CompanionTheory.RgHeA
 variable {Γ : Type} [Group Γ] [TopologicalSpace Γ] [SecondCountableTopology Γ] [MeasurableSpace Γ] [BorelSpace Γ]
   {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Use `(hf.norm.mul_const ‖b‖).mono' (hf.aestronglyMeasurable.smul (hτ.4 b).aestronglyMeasurable) (.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, hτ.norm]`.
+-/
 theorem integrable_smul_rep {ν : Measure Γ} {τ : Γ → (H →L[ℂ] H)} (hτ : IsU τ) {f : Γ → ℂ} (hf : Integrable f ν) (b : H) :
     Integrable (fun g => f g • τ g b) ν := by
   refine (hf.norm.mul_const ‖b‖).mono' (hf.aestronglyMeasurable.smul (hτ.4 b).aestronglyMeasurable)
     (.of_forall fun g => ?_)
   rw [norm_smul, hτ.norm]
 
+/- English proof (translation)
+Use `(hf.norm.mul_const (‖a‖ * ‖b‖)).mono' (hf.aestronglyMeasurable.mul (continuous_const.inner (hτ.4 b)).aestronglyMeasurable) (.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integrable_mul_inner {ν : Measure Γ} {τ : Γ → (H →L[ℂ] H)} (hτ : IsU τ) {f : Γ → ℂ} (hf : Integrable f ν) (a b : H) :
     Integrable (fun g => f g * ⟪a, τ g b⟫_ℂ) ν := by
   refine (hf.norm.mul_const (‖a‖ * ‖b‖)).mono'
@@ -46,9 +52,15 @@ def coefOp (ν : Measure Γ) (τ : Γ → (H →L[ℂ] H)) (hτ : IsU τ) (f : �
       · rw [norm_smul, hτ.norm]
       · rw [integral_mul_const]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coefOp_apply (ν : Measure Γ) (τ : Γ → (H →L[ℂ] H)) (hτ : IsU τ) (f : Γ → ℂ) (hf : Integrable f ν) (b : H) :
     coefOp ν τ hτ f hf b = ∫ g, f g • τ g b ∂ν := rfl
 
+/- English proof (translation)
+Rewrite using `[coefOp_apply, ← integral_inner (integrable_smul_rep hτ hf b)]`. Simplify using `only [inner_smul_right]`.
+-/
 theorem inner_coefOp (ν : Measure Γ) (τ : Γ → (H →L[ℂ] H)) (hτ : IsU τ) (f : Γ → ℂ) (hf : Integrable f ν) (a b : H) :
     ⟪a, coefOp ν τ hτ f hf b⟫_ℂ = ∫ g, f g * ⟪a, τ g b⟫_ℂ ∂ν := by
   rw [coefOp_apply, ← integral_inner (integrable_smul_rep hτ hf b)]

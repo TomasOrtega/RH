@@ -12,6 +12,9 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.EisRestrict
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, RingHom.coe_coe, hσ]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [hJ]; ring`.
+-/
 theorem hE_swap_conj {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → E) :
     hE σ J y x = σ (hE σ J x y) := by
@@ -19,6 +22,9 @@ theorem hE_swap_conj {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →�
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [hJ]; ring
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, Formalism.UG.cT, GlobalTheory.EisMidHt.firstColumn, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem hE_col0v_gram {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n r : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (X Y : Matrix (Fin n) (Fin (r + 1)) E) :
     hE σ J (GlobalTheory.EisMidHt.firstColumn X) (GlobalTheory.EisMidHt.firstColumn Y) = (Formalism.UG.cT (σ : E →+* E) X * J * Y) 0 0 := by
@@ -30,6 +36,37 @@ end GlobalTheory.EisRestrict
 
 open GlobalTheory.EisRestrict in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y hcm hJ hW`. Establish `hσ : ∀ e, σ (σ e) = e` using `fun e => GlobalTheory.SiegelSet.sigma_sigma (σ := σ) hcm e`. Use `set x₀ := GlobalTheory.EisMidHt.firstColumn X`. Use `set y₀ := GlobalTheory.EisMidHt.firstColumn Y`. Establish `hxy : hE σ J x₀ y₀ = 1`.
+
+Rewrite using `[hE_col0v_gram, hW.xy, Matrix.one_apply_eq]`. Establish `hyx : hE σ J y₀ x₀ = 1` using `by rw [hE_swap_conj σ J hσ hJ.1, hxy, map_one]`. Establish `hxx : hE σ J x₀ x₀ = 0`. Rewrite using `[hE_col0v_gram σ J X X, hW.xx]`. Both sides reduce to the same expression.
+
+Establish `hyy : hE σ J y₀ y₀ = 0`. Rewrite using `[hE_col0v_gram σ J Y Y, hW.yy]`. Both sides reduce to the same expression. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [J0, Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, RingHom.coe_coe, hσ]`.
+
+Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← hJ.1 l k]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `hdet`. Take `⟨u, hu0, hu⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Use `set z := ι σ J X Y u with hz`. Establish `hzV : z ∈ V0 σ J X Y` using `ι_mem σ J X Y u`. Establish `hV : ∀ v ∈ V0 σ J X Y, hE σ J z v = 0`.
+
+Introduce `v hv`. Take `⟨u', rfl⟩` from `exists_ι_eq σ J X Y hv`. Rewrite using `[hE_swap_conj σ J hσ hJ.1, ← hE_J0, hE_eq_dot, hu, dotProduct_zero, map_zero]`. Establish `hzV'` using `(mem_invariant_forms σ J X Y).1 hzV`. Establish `hx : hE σ J z x₀ = 0` using `by rw [hE_swap_conj σ J hσ hJ.1, hzV'.1, map_zero]`.
+
+Establish `hy : hE σ J z y₀ = 0` using `by rw [hE_swap_conj σ J hσ hJ.1, hzV'.2, map_zero]`. Establish `hall : ∀ w, hE σ J z w = 0`. Introduce `w`. Use `set w' := w - hE σ J y₀ w • x₀ - hE σ J x₀ w • y₀`. Establish `hw' : w' ∈ V0 σ J X Y`.
+
+Establish `h1` using `(hRight σ J x₀).map_sub (w - hE σ J y₀ w • x₀) (hE σ J x₀ w • y₀)`. Establish `h2` using `(hRight σ J x₀).map_sub w (hE σ J y₀ w • x₀)`. Establish `h3` using `(hRight σ J y₀).map_sub (w - hE σ J y₀ w • x₀) (hE σ J x₀ w • y₀)`. Establish `h4` using `(hRight σ J y₀).map_sub w (hE σ J y₀ w • x₀)`. Simplify using `only [hRight, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.map_smul, smul_eq_mul] at h1 h2 h3 h4`.
+
+Use `(mem_invariant_forms σ J X Y).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2, hxx, hxy]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, h4, hyx, hyy]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hw : w = w' + hE σ J y₀ w • x₀ + hE σ J x₀ w • y₀`. Simplify using `only [w']`. Normalize the expressions using the abelian group laws. Establish `e` using `(hRight σ J z).map_add (w' + hE σ J y₀ w • x₀) (hE σ J x₀ w • y₀)`. Establish `e2` using `(hRight σ J z).map_add w' (hE σ J y₀ w • x₀)`.
+
+Simplify using `only [hRight, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.map_smul, smul_eq_mul] at e e2`. Rewrite using `[hw, e, e2, hV w' hw', hx, hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hJz : J *ᵥ z = 0`. Use function extensionality and compare the values at `i`.
+
+Establish `h` using `hall (Pi.single i 1)`. Rewrite `h` using `[hE_swap_conj σ J hσ hJ.1, hE_eq_dot]`. Establish `h' : (fun k => σ ((Pi.single i (1 : E) : Fin n → E) k)) = Pi.single i 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`.
+
+Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Rewrite `h` using `[h', single_one_dotProduct]`. Use `congrArg σ h` as an intermediate fact.
+
+Rewrite `this` using `[hσ, map_zero]`. Simplify using `using this`. Establish `hz0 : z = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hJ.2 (Matrix.exists_mulVec_eq_zero_iff.mp ⟨z, hne, hJz⟩)`.
+
+Conclude with `hu0 (ι_injective σ J X Y (by rw [← hz, hz0, map_zero]))`.
+-/
 theorem GlobalTheory.EisRestrict.isHermND_restrictedForm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),
     IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y →

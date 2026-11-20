@@ -23,9 +23,19 @@ namespace GlobalTheory.LastPrimSplit
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.FinPl.FrameLat.sec_one q, q.pr_sec]`.
+-/
 theorem pr_e (q : GlobalTheory.FinPl.SplitPt D k) : q.pr q.e = 1 := by
   rw [← GlobalTheory.FinPl.FrameLat.sec_one q, q.pr_sec]
 
+/- English proof (translation)
+Establish `he` using `(GlobalTheory.FinPl.FrameLat.e_mem_intAt q).2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Prove the components needed by the constructor for the conclusion. Rewrite using `[q.int_iff, q.sec_pr, RingHom.map_mul]`.
+
+Conclude with `GlobalTheory.FinPl.FrameLat.mul_mem_intAE he h`. Rewrite using `[q.int_iff, q.sec_pr, RingHom.map_mul]`. Conclude with `GlobalTheory.FinPl.FrameLat.mul_mem_intAE he ((GlobalTheory.FinPl.FrameLat.cA_int_iff a).2 h)`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨ha, ?_⟩` and prove the remaining obligations.
+
+Rewrite `h1`, `h2` using `[q.int_iff, q.sec_pr]`. Rewrite `h2` using `[← GlobalTheory.FinPl.FrameLat.cA_int_iff, RingHom.map_mul, GlobalTheory.LocSympl.conj_conj]`. Rewrite using `[← (GlobalTheory.FinPl.FrameLat.idem_iff q a).1 ha, add_mul, RingHom.map_add]`. Conclude with `add_mem h1 h2`.
+-/
 theorem mem_intAt_iff_pr (q : GlobalTheory.FinPl.SplitPt D k) (a : AE D) (ha : a ∈ GlobalTheory.FinPl.idAt D (· = q.v)) :
     a ∈ GlobalTheory.FinPl.intAt D (· = q.v) ↔ q.pr a ∈ 𝒪[k] ∧ q.pr (cA D a) ∈ 𝒪[k] := by
   have he := (GlobalTheory.FinPl.FrameLat.e_mem_intAt q).2
@@ -43,6 +53,11 @@ theorem mem_intAt_iff_pr (q : GlobalTheory.FinPl.SplitPt D k) (a : AE D) (ha : a
     rw [← (GlobalTheory.FinPl.FrameLat.idem_iff q a).1 ha, add_mul, RingHom.map_add]
     exact add_mem h1 h2
 
+/- English proof (translation)
+Establish `hell : ∀ i : Fin ρ, cA D (ell D ρ i) = if i = ⟨ρ - 1, by omega⟩ then 1 else 0`. Introduce `i`. Simplify using `only [ell, Fin.ext_iff]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | (exfalso; omega) | simp`. Simplify using `only [HypDec.incAdj_apply, HypDec.incY_apply, yZero, zEll, Matrix.vecMul, dotProduct, Matrix.mul_apply, Matrix.smul_apply, Matrix.neg_apply, adj, Matrix.transpose_apply, Matrix.map_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_mul, map_neg, hell, map_sum]`.
+
+Rewrite using `[Finset.sum_eq_single (⟨ρ - 1, by omega⟩ : Fin ρ) (fun i _ hi => by simp [hi]) (fun h => absurd (Finset.mem_univ _) h)]`. Simplify using `only [if_true, mul_one, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `incA D (d.e' i _) * (-incA D _ * (cA D a * -incA D (star (z m)) * incA D (S.gram m l))) = cA D a * (incA D _ * incA D (d.e' i _) * (incA D (star (z m)) * incA D (S.gram m l)))`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem incAdj_yZero_apply {ρ : ℕ} (hρ : 0 < ρ) {S T T₀ : HSp D} (d : HypDec T T₀ ρ) (z : Fin S.rank → D.host.E)
     (a : AE D) (i : Fin T.rank) (l : Fin S.rank) :
     d.incAdj S (a • yZero S ρ z) i l =
@@ -61,10 +76,24 @@ theorem incAdj_yZero_apply {ρ : ℕ} (hρ : 0 < ρ) {S T T₀ : HSp D} (d : Hyp
     cA D a * (incA D _ * incA D (d.e' i _) * (incA D (star (z m)) * incA D (S.gram m l)))
   ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.vecMul, dotProduct, map_sum, RingHom.map_mul]`.
+-/
 theorem map_row {E : Type} [Field E] (f : E →+* k) {m n : Type} [Fintype m] (w : m → E) (M : Matrix m n E) (j : n) :
     ∑ l, f (w l) * f (M l j) = f ((w ᵥ* M) j) := by
   simp only [Matrix.vecMul, dotProduct, map_sum, RingHom.map_mul]
 
+/- English proof (translation)
+Use `set f := q.pr.comp (incA D) with hf`. Use function extensionality and compare the values at `t`. Break down `t with t | ⟨⟨⟩⟩` into its components or cases. Rewrite using `[Pi.single_eq_of_ne Sum.inl_ne_inr]`. Establish `h0 : (fun l => f ((star (vecB B.o B.ζ) ᵥ* B.V₀.gram) l)) ᵥ* B.o.iA.map f = 0`.
+
+Use function extensionality and compare the values at `j`. Use `(map_row f _ B.o.iA j).trans ?_` and prove the remaining obligations. Rewrite using `[vecB, Matrix.star_mulVec, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, B.o.orth, Matrix.vecMul_zero, Pi.zero_apply, Pi.zero_apply, map_zero]`. Establish `h1 : ((fun l => f ((star (vecB B.o B.ζ) ᵥ* B.V₀.gram) l)) ᵥ* (B.o.iA.map f * FA.β)) t = 0`. Rewrite using `[← Matrix.vecMul_vecMul, h0, Matrix.zero_vecMul, Pi.zero_apply]`.
+
+Rewrite using `[← h1]`. Express the relevant statement in the definitionally equal form `∑ l, f ((star (vecB B.o B.ζ) ᵥ* B.V₀.gram) l) * F₀.β l (Sum.inl t) = ∑ l, f ((star (vecB B.o B.ζ) ᵥ* B.V₀.gram) l) * (B.o.iA.map f * FA.β) l t`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hF₀.1 l t]`. Both sides reduce to the same expression.
+
+Rewrite using `[Pi.single_eq_same]`. Establish `h0 : (star (vecB B.o B.ζ) ᵥ* B.V₀.gram) ⬝ᵥ vecB B.o B.ζ = star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ`. Rewrite using `[vecB, Matrix.star_mulVec, Matrix.vecMul_vecMul, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, B.o.isoB]`. Express the relevant statement in the definitionally equal form `∑ l, f _ * F₀.β l (Sum.inr ()) = sc * f (star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ)`. Rewrite using `[← h0, dotProduct, map_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hF₀.2 l, RingHom.map_mul, mul_left_comm]`. Both sides reduce to the same expression.
+-/
 theorem row_core (q : GlobalTheory.FinPl.SplitPt D k) {ρ : ℕ} (B : BesLev D ρ) {n : Type} [Fintype n] [DecidableEq n] (sc : k)
     (FA : Frame k B.A.rank n) (F₀ : Frame k B.V₀.rank (n ⊕ Unit)) (hF₀ : (ofSplit q).IsCoreFrame B sc FA F₀) :
     (fun l => q.pr (incA D ((star (vecB B.o B.ζ) ᵥ* B.V₀.gram) l))) ᵥ* F₀.β =
@@ -95,6 +124,23 @@ theorem row_core (q : GlobalTheory.FinPl.SplitPt D k) {ρ : ℕ} (B : BesLev D �
     rw [hF₀.2 l, RingHom.map_mul, mul_left_comm]
     rfl
 
+/- English proof (translation)
+Use `set f := q.pr.comp (incA D) with hf`. Use `set i₀ : Fin ρ := ⟨ρ - 1, by omega⟩ with hi₀`. Establish `hcol : ∀ {m : ℕ} (M : Matrix (Fin J.W.rank) (Fin m) D.host.E) (j : Fin m), ∑ l, f ((J.d.e'ᴴ * J.W.gram) i₀ l) * f (M l j) = f ((J.d.e'ᴴ * J.W.gram * M) i₀ j)` using `fun M j => by`. Rewrite using `[Matrix.mul_apply (M := J.d.e'ᴴ * J.W.gram), map_sum]`. Simplify using `only [RingHom.map_mul]`.
+
+Use function extensionality and compare the values at `t`. Break down `t with t | t` into its components or cases. Rewrite using `[Pi.single_eq_of_ne Sum.inl_ne_inr]`. Establish `hz : J.d.e'ᴴ * J.W.gram * J.d.i₀ = 0`. Use `congrArg Matrix.conjTranspose J.d.i₀e'` as an intermediate fact.
+
+Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `h0 : (fun l => f ((J.d.e'ᴴ * J.W.gram) i₀ l)) ᵥ* J.d.i₀.map f = 0`. Use function extensionality and compare the values at `j`. Use `(hcol J.d.i₀ j).trans ?_` and prove the remaining obligations. Rewrite using `[hz, Matrix.zero_apply, map_zero, Pi.zero_apply]`.
+
+Establish `h1 : ((fun l => f ((J.d.e'ᴴ * J.W.gram) i₀ l)) ᵥ* (J.d.i₀.map f * FW₀.β)) t = 0`. Rewrite using `[← Matrix.vecMul_vecMul, h0, Matrix.zero_vecMul, Pi.zero_apply]`. Rewrite using `[← h1]`. Express the relevant statement in the definitionally equal form `∑ l, f ((J.d.e'ᴴ * J.W.gram) i₀ l) * FW.β l (Sum.inl t) = ∑ l, f ((J.d.e'ᴴ * J.W.gram) i₀ l) * (J.d.i₀.map f * FW₀.β) l t`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hFW.2.1 l t]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `∑ l, f ((J.d.e'ᴴ * J.W.gram) i₀ l) * FW.β l (Sum.inr t) = _`. Establish `hmul : ∀ (c : k) (M : Matrix (Fin J.W.rank) (Fin ρ) D.host.E) (j : Fin ρ), (∀ r, FW.β r (Sum.inr t) = c * f (M r j)) → ∑ l, f ((J.d.e'ᴴ * J.W.gram) i₀ l) * FW.β l (Sum.inr t) = c * f ((J.d.e'ᴴ * J.W.gram * M) i₀ j)` using `fun c M j h => by`. Rewrite using `[← hcol, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => by rw [h, mul_left_comm]`. Distinguish the cases in `ht : t.val < ρ`. Rewrite using `[hmul _ _ _ (hFW.2.2.1 ⟨t.val, ht⟩ t rfl), J.d.e'e]`. Distinguish the cases in `h2 : t.val = ρ - 1`. Establish `h3 : t = ⟨ρ - 1, by omega⟩` using `Fin.ext h2`.
+
+Establish `h4 : (⟨t.val, ht⟩ : Fin ρ) = i₀` using `Fin.ext h2`. Establish `h5 : ρ - (i₀ : ℕ) = 1` using `by change ρ - (ρ - 1) = 1; omega`. Rewrite using `[h4, Matrix.one_apply_eq, map_one, mul_one, h5, pow_one, h3, Pi.single_eq_same]`. Rewrite using `[Matrix.one_apply_ne fun h => h2 (congrArg Fin.val h).symm, map_zero, mul_zero, Pi.single_eq_of_ne fun h => h2 (congrArg Fin.val (Sum.inr_injective h))]`. Establish `h6` using `t.2`.
+
+Rewrite using `[hmul _ _ _ (hFW.2.2.2 ⟨2 * ρ - 1 - t.val, by omega⟩ t (by change t.val + (2 * ρ - 1 - t.val) + 1 = _; omega)), J.d.e'e', Matrix.zero_apply, map_zero, mul_zero, Pi.single_eq_of_ne fun h => ht (by`. Establish `h7 : t.val = ρ - 1` using `congrArg Fin.val (Sum.inr_injective h)`. Use the proof step `omega)]`.
+-/
 theorem row_jac (q : GlobalTheory.FinPl.SplitPt D k) {ρ : ℕ} (hρ : 0 < ρ) (J : JacLev D ρ) {n' : Type} [Fintype n'] [DecidableEq n']
     (sc hh : k) (FW₀ : Frame k J.W₀.rank n') (FW : Frame k J.W.rank (n' ⊕ Fin (2 * ρ)))
     (hFW : (ofSplit q).IsJacFrame J sc hh FW₀ FW) :

@@ -8,6 +8,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.BKIntegralToRational
 
+/- English proof (translation)
+Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := A) a`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Take `⟨N, hN⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hd0 hϖ`. Establish `h1 : ϖ ∣ p`.
+
+Rewrite using `[← Ideal.mem_span_singleton, ← hϖ.maximalIdeal_eq]`. Conclude with `hu`. Take `⟨c, hc⟩ : d ∣ p ^ N` from `hN.dvd.trans (pow_dvd_pow_of_dvd h1 N)`. Use `⟨n * c, N, ?_⟩` and prove the remaining obligations. Establish `hd1 : algebraMap A (FractionRing A) d ≠ 0`.
+
+Simplify using `using hd0`. Rewrite using `[← map_pow, hc, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_mul_pow_eq {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] {p : A}
     (hu : ¬ IsUnit p) (a : FractionRing A) :
     ∃ (x : A) (N : ℕ), a * algebraMap A (FractionRing A) p ^ N = algebraMap A (FractionRing A) x := by
@@ -25,6 +32,15 @@ theorem exists_mul_pow_eq {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuat
   rw [← map_pow, hc, map_mul, map_mul]
   field_simp
 
+/- English proof (translation)
+Establish `hd1 : algebraMap O' (FractionRing O') (ι d) ≠ 0` using `by simpa using hd'`. Establish `hop : IsOpen ((Ideal.span {d} : Ideal O₀) : Set O₀)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O₀`. Take `⟨N, hN⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hd hϖ`. Use `(isAdic_iff.1 had).1 N` as an intermediate fact.
+
+Rewrite `this` using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Rewrite using `[Ideal.span_singleton_eq_span_singleton.2 hN]` and apply the resulting hypothesis. Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`.
+
+Use `⟨(fun y => y - x) ⁻¹' ((Ideal.span {d} : Ideal O₀) : Set O₀), hop.preimage (by fun_prop), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩ : d ∣ y - x` from `Ideal.mem_span_singleton.1 hy`. Rewrite using `[Submodule.Quotient.eq]`. Use `⟨ι c, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_div, ← map_sub, ← map_sub, hc, map_mul, map_mul]`.
+
+Simplify using `only [Algebra.linearMap_apply]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem continuous_div_mk {O₀ O' : Type} [CommRing O₀] [IsDomain O₀] [IsDiscreteValuationRing O₀]
     [TopologicalSpace O₀] [IsTopologicalRing O₀] (had : IsAdic (IsLocalRing.maximalIdeal O₀))
     [CommRing O'] [IsDomain O'] (ι : O₀ →+* O') {d : O₀} (hd : d ≠ 0) (hd' : ι d ≠ 0) :
@@ -55,20 +71,32 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
   {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O₀ : Type} [CommRing O₀] [Algebra ℤ_[l] O₀] [TopologicalSpace O₀]
   (Bw : LocBridge l E Ω Gw O₀) (P : LocPrime l) {m : ℕ}
 
+/- English proof (translation)
+The claim follows from `Subtype.val_injective.comp Bw.eO.injective`.
+-/
 theorem toLL_injective : Function.Injective Bw.toLL :=
   Subtype.val_injective.comp Bw.eO.injective
 
+/- English proof (translation)
+Establish `h1 : Continuous fun x => Bw.eO (f x)` using `continuous_induced_rng.2 h`. Simplify `Bw.eO_symm_cont.comp h1` using `[Function.comp_def]`.
+-/
 theorem continuous_of_toLL {X : Type} [TopologicalSpace X] (f : X → O₀)
     (h : Continuous fun x => Bw.toLL (f x)) : Continuous f := by
   have h1 : Continuous fun x => Bw.eO (f x) := continuous_induced_rng.2 h
   simpa [Function.comp_def] using Bw.eO_symm_cont.comp h1
 
+/- English proof (translation)
+Apply `continuous_of_toLL Bw` to reduce the goal to its premises. Use `((continuous_apply j).comp hf.1.1).comp Bw.e_cont` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+-/
 theorem continuous_of_crys {T : (Ω ≃ₐ[E] Ω) →* GL (Fin m) O₀} {f : ↥Gw → Fin m → O₀}
     (hf : IsCrysCocycle Bw P T f) (j : Fin m) : Continuous fun g => f g j := by
   apply continuous_of_toLL Bw
   have := ((continuous_apply j).comp hf.1.1).comp Bw.e_cont
   simpa [Function.comp_def] using this
 
+/- English proof (translation)
+Apply `toLL_injective Bw` to reduce the goal to its premises. Use `congrFun (hf.1.2 (Bw.e g) (Bw.e h)) j` as an intermediate fact. Simplify `this` using `[← map_mul, LocBridge.rep, Matrix.mulVec, dotProduct, Matrix.toLinAlgEquiv'_apply]`.
+-/
 theorem cocycle_of_crys {T : (Ω ≃ₐ[E] Ω) →* GL (Fin m) O₀} {f : ↥Gw → Fin m → O₀}
     (hf : IsCrysCocycle Bw P T f) (g h : ↥Gw) (j : Fin m) :
     f (g * h) j = f g j + ∑ b, ((T g : GL (Fin m) O₀) : Matrix (Fin m) (Fin m) O₀) j b * f h b := by
@@ -82,15 +110,24 @@ section Main
 
 variable (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (k : ℕ)
 
+/- English proof (translation)
+Establish `: CharZero (FractionRing (D.ntw.O0 i))` using `(D.ntw.emb0 i).charZero_iff (D.ntw.emb0 i).injective |>.1 inferInstance`. Establish `: CharZero (D.ntw.O0 i)` using `(algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))).charZero`. Conclude with `Nat.cast_ne_zero.2 (Fact.out : (D.ntw.l i).Prime).ne_zero`.
+-/
 theorem l_ne_zero : ((D.ntw.l i : ℕ) : D.ntw.O0 i) ≠ 0 := by
   have : CharZero (FractionRing (D.ntw.O0 i)) :=
     (D.ntw.emb0 i).charZero_iff (D.ntw.emb0 i).injective |>.1 inferInstance
   have : CharZero (D.ntw.O0 i) := (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))).charZero
   exact Nat.cast_ne_zero.2 (Fact.out : (D.ntw.l i).Prime).ne_zero
 
+/- English proof (translation)
+The claim follows from `(D.ntw.Ok_inj i k).comp (D.ntw.O_inj i)`.
+-/
 theorem toOk_injective : Function.Injective (toOk D i k) :=
   (D.ntw.Ok_inj i k).comp (D.ntw.O_inj i)
 
+/- English proof (translation)
+Use `D.ntw.Ok_fin i k` as an intermediate fact. Establish `: FaithfulSMul (D.ntw.O i) (D.ntw.Ok i k)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (D.ntw.Ok_inj i k)`. Introduce `h`. Establish `h2 : IsUnit (algebraMap (D.ntw.O i) (D.ntw.Ok i k) (D.ntw.l i))` using `by simpa using h`. Conclude with `D.ntw.O_l i ((isUnit_map_iff _ _).1 h2)`.
+-/
 theorem l_not_unit : ¬ IsUnit ((D.ntw.l i : ℕ) : D.ntw.Ok i k) := by
   have := D.ntw.Ok_fin i k
   have : FaithfulSMul (D.ntw.O i) (D.ntw.Ok i k) :=
@@ -99,8 +136,14 @@ theorem l_not_unit : ¬ IsUnit ((D.ntw.l i : ℕ) : D.ntw.Ok i k) := by
   have h2 : IsUnit (algebraMap (D.ntw.O i) (D.ntw.Ok i k) (D.ntw.l i)) := by simpa using h
   exact D.ntw.O_l i ((isUnit_map_iff _ _).1 h2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latT_eq : latT D i s = Gen.Tgl i s := rfl
 
+/- English proof (translation)
+Establish `h : toOk D i k = Gen.phiK D.ntw i k` using `rfl`. Simplify using `[latT_eq, h, hg, Gen.Trep, twRep, matAct, Gen.Tgl_coe, Gen.Tmat, Finset.smul_sum, smul_smul]`.
+-/
 theorem trep_apply (ψ : GE D →* (D.ntw.Ok i k)ˣ) (g : GE D) (hg : ψ g = 1)
     (x : Fin D.R.r → KmodO (D.ntw.Ok i k)) (a : Fin D.R.r) :
     Gen.Trep i s k ψ g x a = ∑ b, toOk D i k
@@ -111,6 +154,9 @@ theorem trep_apply (ψ : GE D →* (D.ntw.Ok i k)ˣ) (g : GE D) (hg : ψ g = 1)
 variable (ψ : GE D →* (D.ntw.Ok i k)ˣ) (v : PlE D.host) (hv : v ∈ placesOver D.host.E (D.ntw.l i))
   (hψ : ∀ σ ∈ decAt D v, ψ σ = 1)
 
+/- English proof (translation)
+Unfold `Gen.bk`. Use `split`. Conclude with `Submodule.subset_span ⟨z, c, y, hc, hy, hz, rfl⟩`. The hypotheses give a contradiction.
+-/
 theorem mk_mem_bk (bkP : BK D)
     (z : ReciprocityTheory.Gal.Z1 ((Gen.Trep i s k ψ).comp (Gen.DecV D.nd v).subtype))
     (c : ↥(Loc.GK (bkP.br i v hv).Kw) → Fin D.R.r → ↥(bkP.br i v hv).LL.1)
@@ -127,6 +173,13 @@ theorem mk_mem_bk (bkP : BK D)
 
 include hψ in
 
+/- English proof (translation)
+Establish `hd' : toOk D i k d ≠ 0` using `(map_ne_zero_iff _ (toOk_injective D i k)).2 hd`. Establish `hd1 : algebraMap _ (FractionRing (D.ntw.Ok i k)) (toOk D i k d) ≠ 0` using `by simpa using hd'`. Establish `hd2 : (D.ntwbr i v hv).toLL d ≠ 0` using `(map_ne_zero_iff _ (toLL_injective _)).2 hd`. Use `⟨⟨fun g j => Submodule.Quotient.mk (algebraMap _ (FractionRing (D.ntw.Ok i k)) (toOk D i k (f g j)) / algebraMap _ (FractionRing (D.ntw.Ok i k)) (toOk D i k d)), ?_, fun g h => ?_⟩, fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Conclude with `continuous_pi fun j => (continuous_div_mk (D.ntw.twistBaseCoefficientRing_isAdic i) (toOk D i k) hd hd').comp (continuous_of_crys _ _ hf j)`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[Pi.add_apply, MonoidHom.comp_apply, Subgroup.coe_subtype, trep_apply D i s k ψ g (hψ g g.2)]`. Use `beta_reduce`. Rewrite using `[cocycle_of_crys _ _ hf g h j]`. Simplify using `only [← Submodule.mkQ_apply, map_add, map_sum, map_mul, add_div, Finset.sum_div, mul_div_assoc, ← LinearMap.map_smul, Algebra.smul_def]`.
+
+Use `mk_mem_bk D i s k ψ v hv (bk0 D) _ (((D.ntwbr i v hv).toLL d)⁻¹ • (fun g j => (D.ntwbr i v hv).toLL (f ((D.ntwbr i v hv).e.symm g) j))) (fun g j => algebraMap _ (FractionRing (D.ntw.Ok i k)) (toOk D i k (f g j)) / algebraMap _ (FractionRing (D.ntw.Ok i k)) (toOk D i k d)) (Submod …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(D.ntwbr i v hv).toLL d * (((D.ntwbr i v hv).toLL d)⁻¹ * (D.ntwbr i v hv).toLL (f ((D.ntwbr i v hv).e.symm ((D.ntwbr i v hv).e g)) a)) = (D.ntwbr i v hv).toLL (f g a)`. Rewrite using `[MulEquiv.symm_apply_apply, mul_inv_cancel_left₀ hd2]`. Conclude with `mul_div_cancel₀ _ hd1`.
+-/
 theorem div_mem {f : ↥(decAt D v) → Fin D.R.r → D.ntw.O0 i}
     (hf : IsCrysCocycle (D.ntwbr i v hv) (D.loc (D.ntw.l i)) (latT D i s) f) {d : D.ntw.O0 i}
     (hd : d ≠ 0) :

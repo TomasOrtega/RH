@@ -16,6 +16,13 @@ namespace GlobalTheory.SgInf.FrameBound
 def mnr {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (l : Fin n) : ℂ :=
   (Z.submatrix (Fin.castLE (Nat.succ_le_of_lt l.isLt)) (Fin.castLE (Nat.succ_le_of_lt l.isLt))).det
 
+/- English proof (translation)
+Use `Finset.prod_bij (fun i _ => Fin.castLE (Nat.succ_le_of_lt l.isLt) i) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i _`. Rewrite using `[Finset.mem_Iic, Fin.le_def]`. Use `i.isLt` as an intermediate fact. Simplify using `only [Fin.val_castLE]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `i _ j _ h`. Conclude with `Fin.castLE_injective _ h`. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_Iic, Fin.le_def]`.
+
+Conclude with `⟨⟨j.val, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩`. Introduce `i _`. Both sides reduce to the same expression.
+-/
 theorem prod_castLE {n : ℕ} (t : Fin n → ℂ) (l : Fin n) :
     ∏ i : Fin (l.val + 1), t (Fin.castLE (Nat.succ_le_of_lt l.isLt) i) = ∏ i ∈ Finset.Iic l, t i := by
   refine Finset.prod_bij (fun i _ => Fin.castLE (Nat.succ_le_of_lt l.isLt) i) ?_ ?_ ?_ ?_
@@ -30,6 +37,17 @@ theorem prod_castLE {n : ℕ} (t : Fin n → ℂ) (l : Fin n) :
     exact ⟨⟨j.val, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩
   · intro i _; rfl
 
+/- English proof (translation)
+Take `⟨L, b, e, h1, h2, h3⟩` from `GlobalTheory.exists_lowerUnitriangular_mul_upperTriangular n Z hZ`. Establish `hm : ∀ l, mnr Z l = ∏ i ∈ Finset.Iic l, b i i`. Introduce `l`. Establish `hU : UpUni Lᴴ` using `⟨fun i j h => by simp [h2 j i h], fun i => by simp [h1 i]⟩`. Use `minor_mul_left (Nat.succ_le_of_lt l.isLt) b Lᴴ hU` as an intermediate fact.
+
+Rewrite `this` using `[conjTranspose_conjTranspose, ← e]`. Unfold `mnr`. Rewrite using `[this, det_of_upperTriangular, ← prod_castLE (fun i => b i i) l]`. Both sides reduce to the same expression. Introduce `i j hij`.
+
+Conclude with `h3 _ _ hij`. Establish `ht : ∀ l, b l l ≠ 0` using `fun l => by`. Use `hZ l` as an intermediate fact. Rewrite `this` using `[hm l, Finset.prod_ne_zero_iff]`. Conclude with `this l (Finset.mem_Iic.2 le_rfl)`.
+
+Use `⟨L, Matrix.diagonal (fun i => (b i i)⁻¹) * b, fun i => b i i, fun i j => ⟨h2 i j, fun h => h ▸ h1 i⟩, fun i j => ⟨fun h => ?_, fun h => ?_⟩, ?_, hm⟩` and prove the remaining obligations. Simplify using `[h3 i j h]`. Substitute `h` using the available equality. Simplify using `[ht i]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.diagonal _), diagonal_mul_diagonal]`.
+
+Simplify using `[ht, e.symm]`.
+-/
 theorem exists_ldu {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (hZ : ∀ l, mnr Z l ≠ 0) :
     ∃ (L U : Matrix (Fin n) (Fin n) ℂ) (t : Fin n → ℂ), IsLoUni L ∧ IsUpUni U ∧
       Z = L * Matrix.diagonal t * U ∧ ∀ l, mnr Z l = ∏ i ∈ Finset.Iic l, t i := by
@@ -55,6 +73,15 @@ theorem exists_ldu {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (hZ : ∀ l, mnr Z
   · rw [Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.diagonal _), diagonal_mul_diagonal]
     simp [ht, e.symm]
 
+/- English proof (translation)
+Introduce `i j`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hc : c < i`. Rewrite using `[(hA i c).1 hc, zero_mul]`. Rewrite using `[(hB c j).1 (lt_of_lt_of_le h (not_lt.1 hc)), mul_zero]`. Introduce and unpack `rfl`. Rewrite using `[mul_apply, Finset.sum_eq_single i]`.
+
+Rewrite using `[(hA i i).2 rfl, (hB i i).2 rfl, one_mul]`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases. Rewrite using `[(hA i c).1 h, zero_mul]`. Rewrite using `[(hB c i).1 h, mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem upUni_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (hA : IsUpUni A) (hB : IsUpUni B) :
     IsUpUni (A * B) := by
   intro i j
@@ -74,6 +101,11 @@ theorem upUni_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (hA : IsUpUni A) 
       · rw [(hB c i).1 h, mul_zero]
     · simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `⟨fun hh => by simp [(h j i).1 hh], fun hh => by simp [(h j i).2 hh.symm]⟩`. Introduce `h i j`. Conclude with `⟨fun hh => by simpa using (h j i).1 hh, fun hh => by`.
+
+Use `congrArg star ((h j i).2 hh.symm)` as an intermediate fact. Rewrite using `[conjTranspose_apply, star_star, star_one] at this⟩` and apply the resulting hypothesis.
+-/
 theorem loUni_iff {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} : IsLoUni A ↔ IsUpUni Aᴴ := by
   constructor
   · intro h i j
@@ -83,16 +115,27 @@ theorem loUni_iff {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} : IsLoUni A ↔ IsU
       have := congrArg star ((h j i).2 hh.symm)
       rwa [conjTranspose_apply, star_star, star_one] at this⟩
 
+/- English proof (translation)
+Rewrite using `[det_of_upperTriangular (fun i j h => (hA i j).1 h)]`. Conclude with `Finset.prod_eq_one fun i _ => (hA i i).2 rfl`.
+-/
 theorem det_upUni {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : IsUpUni A) : A.det = 1 := by
   rw [det_of_upperTriangular (fun i j h => (hA i j).1 h)]
   exact Finset.prod_eq_one fun i _ => (hA i i).2 rfl
 
+/- English proof (translation)
+Use `det_upUni (loUni_iff.1 hA)` as an intermediate fact. Rewrite `this` using `[det_conjTranspose]`. Establish `h2` using `congrArg star this`. Rewrite `h2` using `[star_star, star_one]`. Then use the resulting hypothesis.
+-/
 theorem det_loUni {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : IsLoUni A) : A.det = 1 := by
   have := det_upUni (loUni_iff.1 hA)
   rw [det_conjTranspose] at this
   have h2 := congrArg star this
   rwa [star_star, star_one] at h2
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.LatticeFactsFlagMeasures.main`. Consider the case `exact _root_.GlobalTheory.LatticeFactsFlagMeasures.main`. Consider the case `(apply _root_.GlobalTheory.LatticeFactsFlagMeasures.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LatticeFactsFlagMeasures.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.LatticeFactsFlagMeasures.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LatticeFactsFlagMeasures.main ..)`.
+-/
 theorem norm_mul_apply_le {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (a b : ℝ)
     (hA : ∀ i j, ‖A i j‖ ≤ a) (hB : ∀ i j, ‖B i j‖ ≤ b) (i j : Fin n) : ‖(A * B) i j‖ ≤ n * (a * b) := by
   first
@@ -103,6 +146,21 @@ theorem norm_mul_apply_le {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (a b : �
   | (intros; apply @_root_.GlobalTheory.LatticeFactsFlagMeasures.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.LatticeFactsFlagMeasures.main ..)
 
+/- English proof (translation)
+Take `⟨c, hc, H⟩` from `GlobalTheory.SgInf.LduBound.ldu_bound m`. Use `⟨((m + 1 : ℕ) : ℝ) * ((c * B0 ^ (m + 1) / δ) * (c / δ ^ m)), ?_⟩` and prove the remaining obligations. Introduce `Z P Q B hP hQ hB hZ hZ0 hmin`. Take `⟨L, U, t, hL, hU, e, hm⟩` from `exists_ldu Z (fun l h => by`. Use `hmin l` as an intermediate fact.
+
+Rewrite `this` using `[h, norm_zero]`. Conclude with `absurd hδ (not_lt.2 this))`. Establish `ht : ∀ l : Fin (m + 1), δ ≤ ‖∏ i ∈ Finset.Iic l, t i‖` using `fun l => hm l ▸ hmin l`. Establish `hL0 : IsLoUni (Pᴴ * L)`. Rewrite using `[loUni_iff, conjTranspose_mul, conjTranspose_conjTranspose]`.
+
+Conclude with `upUni_mul (loUni_iff.1 hL) hP`. Establish `hU0 : IsUpUni (U * Q)` using `upUni_mul hU hQ`. Establish `H1` using `H L U t B δ hL hU hB hδ hδ1 ht (e ▸ hZ)`. Establish `H0` using `H (Pᴴ * L) (U * Q) t B0 δ hL0 hU0 hB0 hδ hδ1 ht (by`. Introduce `i j`.
+
+Use `hZ0 i j` as an intermediate fact. Rewrite `this` using `[e]`. Simplify `this)` using `only [Matrix.mul_assoc]`. Establish `eP : Pᴴ = Pᴴ * L * L⁻¹`. Rewrite using `[Matrix.mul_assoc, mul_nonsing_inv _ (by rw [det_loUni hL]; exact isUnit_one), Matrix.mul_one]`.
+
+Establish `eQ : Q = U⁻¹ * (U * Q)`. Rewrite using `[← Matrix.mul_assoc, nonsing_inv_mul _ (by rw [det_upUni hU]; exact isUnit_one), Matrix.one_mul]`. Establish `ek : ((m + 1 : ℕ) : ℝ) * ((c * B0 ^ (m + 1) / δ) * (c / δ ^ m)) * B ^ (m * (m + 1)) = ((m + 1 : ℕ) : ℝ) * ((c * B0 ^ (m + 1) / δ) * (c * (B ^ (m + 1) / δ) ^ m))`. Rewrite using `[div_pow, ← pow_mul, mul_comm (m + 1) m]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `i j`. Rewrite using `[ek]`. Prove the components needed by the constructor for the conclusion. Use `norm_mul_apply_le (Pᴴ * L) L⁻¹ _ _ (fun i j => (H0 i j).1) (fun i j => (H1 i j).2.2.1) j i` as an intermediate fact. Rewrite `this` using `[← eP]`.
+
+Simplify using `using this`. Use `norm_mul_apply_le U⁻¹ (U * Q) _ _ (fun i j => (H1 i j).2.2.2) (fun i j => (H0 i j).2.1) i j` as an intermediate fact. Rewrite `this` using `[← eQ, mul_comm (c * _) _]`. Conclude with `this`.
+-/
 theorem uni_bound (m : ℕ) (B0 δ : ℝ) (hB0 : 1 ≤ B0) (hδ : 0 < δ) (hδ1 : δ ≤ 1) :
     ∃ K : ℝ, ∀ (Z P Q : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (B : ℝ), IsUpUni P → IsUpUni Q → 1 ≤ B →
       (∀ i j, ‖Z i j‖ ≤ B) → (∀ i j, ‖(Pᴴ * Z * Q) i j‖ ≤ B0) → (∀ l, δ ≤ ‖mnr Z l‖) →
@@ -142,25 +200,46 @@ theorem uni_bound (m : ℕ) (B0 δ : ℝ) (hB0 : 1 ≤ B0) (hδ : 0 < δ) (hδ1 
     rw [← eQ, mul_comm (c * _) _] at this
     exact this
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq]`. Simplify using `only [eucl, Complex.normSq_eq_norm_sq]`.
+-/
 theorem eucl_eq {N : ℕ} (v : Fin N → ℂ) : eucl v = ‖(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin N))‖ := by
   rw [EuclideanSpace.norm_eq]
   simp only [eucl, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Rewrite using `[eucl_eq, eucl_eq, ← Matrix.toEuclideanCLM_toLp]`. Conclude with `ContinuousLinearMap.le_opNorm _ _`.
+-/
 theorem eucl_mulVec_le {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (v : Fin N → ℂ) :
     eucl (x *ᵥ v) ≤ opn x * eucl v := by
   rw [eucl_eq, eucl_eq, ← Matrix.toEuclideanCLM_toLp]
   exact ContinuousLinearMap.le_opNorm _ _
 
+/- English proof (translation)
+Establish `h` using `norm_inner_le_norm (𝕜 := ℂ) (WithLp.toLp 2 v : EuclideanSpace ℂ (Fin N)) (WithLp.toLp 2 (H *ᵥ u))`. Rewrite `h` using `[EuclideanSpace.inner_toLp_toLp, dotProduct_comm, ← eucl_eq, ← eucl_eq, mul_comm]`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (eucl_mulVec_le H u) (Real.sqrt_nonneg _))`.
+-/
 theorem herm_le {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (u v : Fin N → ℂ) :
     ‖herm H u v‖ ≤ opn H * eucl u * eucl v := by
   have h := norm_inner_le_norm (𝕜 := ℂ) (WithLp.toLp 2 v : EuclideanSpace ℂ (Fin N)) (WithLp.toLp 2 (H *ᵥ u))
   rw [EuclideanSpace.inner_toLp_toLp, dotProduct_comm, ← eucl_eq, ← eucl_eq, mul_comm] at h
   exact h.trans (mul_le_mul_of_nonneg_right (eucl_mulVec_le H u) (Real.sqrt_nonneg _))
 
+/- English proof (translation)
+The claim follows from `(LinearMap.continuous_of_finiteDimensional (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin N)).toAlgEquiv.toLinearMap).norm`.
+-/
 theorem continuous_opn {N : ℕ} : Continuous fun x : Matrix (Fin N) (Fin N) ℂ => opn x :=
   (LinearMap.continuous_of_finiteDimensional
     (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin N)).toAlgEquiv.toLinearMap).norm
 
+/- English proof (translation)
+Establish `h1 : opn xᴴ = opn x`. Unfold `opn`. Rewrite using `[← Matrix.star_eq_conjTranspose, map_star, norm_star]`. Establish `h2 : opn (Hpk k r) ≤ opn x * opn (Hpk k r) * opn x` using `by conv_lhs => rw [← show xᴴ * Hpk k r * x = Hpk k r from hx]`. Use `(opn_mul_le _ _).trans (mul_le_mul_of_nonneg_right ?_ (opn_nonneg _))` and prove the remaining obligations.
+
+Rewrite using `[← h1]`. Conclude with `opn_mul_le _ _`. Establish `h3 : 1 ≤ opn (Hpk k r) * opn (Hpk k r)`. Use `opn_mul_le (Hpk k r) (Hpk k r)` as an intermediate fact. Rewrite `this` using `[(hpkFacts k r).2.1, opn_one]`. Then use the resulting hypothesis.
+
+Establish `h4 : 0 < opn (Hpk k r)` using `lt_of_le_of_ne (opn_nonneg _) fun h => by`. Rewrite `h3` using `[← h]`. Evaluate the numerical expressions using `at h3`. Assume the negation of the conclusion as `h`. Establish `h5` using `not_le.1 h`.
+
+Establish `h6` using `opn_nonneg x`. Establish `h7 : opn x * opn x < 1` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem one_le_opn {k r : ℕ} {x : Mat k r} (hx : x ∈ GG k r) : 1 ≤ opn x := by
   have h1 : opn xᴴ = opn x := by
     unfold opn
@@ -180,16 +259,27 @@ theorem one_le_opn {k r : ℕ} {x : Mat k r} (hx : x ∈ GG k r) : 1 ≤ opn x :
   have h7 : opn x * opn x < 1 := by nlinarith
   nlinarith
 
+/- English proof (translation)
+Unfold `eucl`. Rewrite using `[Real.sqrt_le_left (Finset.sum_nonneg fun i _ => norm_nonneg _)]`. Simplify using `only [Complex.normSq_eq_norm_sq]`. Conclude with `Finset.sum_sq_le_sq_sum_of_nonneg fun i _ => norm_nonneg _`.
+-/
 theorem eucl_le_sum {N : ℕ} (v : Fin N → ℂ) : eucl v ≤ ∑ i, ‖v i‖ := by
   unfold eucl
   rw [Real.sqrt_le_left (Finset.sum_nonneg fun i _ => norm_nonneg _)]
   simp only [Complex.normSq_eq_norm_sq]
   exact Finset.sum_sq_le_sq_sum_of_nonneg fun i _ => norm_nonneg _
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem eucl_nonneg {N : ℕ} (v : Fin N → ℂ) : 0 ≤ eucl v := Real.sqrt_nonneg _
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `(eucl_le_sum _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_flagMat, e, mul_apply, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hP c b) (norm_nonneg _)`.
+-/
 theorem eucl_frame_le (z : Fin (2 * r + k + 1) → ℂ) (s : Mat k r) (P : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (e : s * flagMat k r z = flagMat k r z * P) (a : ℝ) (hP : ∀ i j, ‖P i j‖ ≤ a) (b : Fin (r + 1)) :
     eucl (s *ᵥ fvec k r z b) ≤ (∑ i, ∑ c, ‖flagMat k r z i c‖) * a := by
@@ -201,6 +291,9 @@ theorem eucl_frame_le (z : Fin (2 * r + k + 1) → ℂ) (s : Mat k r) (P : Matri
   rw [norm_mul]
   exact mul_le_mul_of_nonneg_left (hP c b) (norm_nonneg _)
 
+/- English proof (translation)
+Use `⟨max 1 (opn (Hpk k r) * ((∑ b, eucl (fvec k r z' b)) * ∑ a, eucl (fvec k r z a))), le_max_left _ _, ?_⟩` and prove the remaining obligations. Introduce `x a b`. Establish `e1 : eucl (fvec k r z' b) ≤ ∑ b, eucl (fvec k r z' b)` using `Finset.single_le_sum (f := fun b => eucl (fvec k r z' b)) (fun _ _ => eucl_nonneg _) (Finset.mem_univ b)`. Establish `e2 : eucl (fvec k r z a) ≤ ∑ a, eucl (fvec k r z a)` using `Finset.single_le_sum (f := fun a => eucl (fvec k r z a)) (fun _ _ => eucl_nonneg _) (Finset.mem_univ a)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_zhat_le (z z' : Fin (2 * r + k + 1) → ℂ) :
     ∃ c : ℝ, 1 ≤ c ∧ ∀ (x : Mat k r) a b, ‖Zhat k r z z' x a b‖ ≤ c * opn x := by
   refine ⟨max 1 (opn (Hpk k r) * ((∑ b, eucl (fvec k r z' b)) * ∑ a, eucl (fvec k r z a))), le_max_left _ _, ?_⟩
@@ -218,6 +311,15 @@ theorem exists_zhat_le (z z' : Fin (2 * r + k + 1) → ℂ) :
     _ ≤ _ := mul_le_mul_of_nonneg_right (le_max_of_le_right (mul_le_mul_of_nonneg_left
         (mul_le_mul e1 e2 (eucl_nonneg _) ((eucl_nonneg _).trans e1)) (opn_nonneg _))) (opn_nonneg _)
 
+/- English proof (translation)
+Take `⟨hG, h1, h2⟩` from `hγ`. Use `show Dmin k r z z' γ l.succ ≠ 0`. Distinguish the cases in `hl : l.succ.val ≤ r`. Conclude with `h1 _ hl`. Establish `e : l.succ = Fin.last (r + 1)`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `l.isLt` as an intermediate fact. Simplify using `only [Fin.val_succ, Fin.val_last] at hl ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`.
+
+Introduce `h0`. Establish `h3` using `gNonneg k r z z' hz hz' hT hT' γ hG`. Establish `h4 : Gf k r z z' γ ≤ 0`. Unfold `Gf`. Rewrite using `[h0, map_zero, zero_sub, neg_nonpos]`.
+
+Conclude with `mul_nonneg (mul_pos hT hT').le (Complex.normSq_nonneg _)`. Conclude with `h2 (le_antisymm h4 h3)`.
+-/
 theorem mnr_ne_zero {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z')
     (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') {γ : Mat k r} (hγ : γ ∈ Greg k r z z') (l : Fin (r + 1)) :
     mnr (Zhat k r z z' γ) l ≠ 0 := by
@@ -239,6 +341,9 @@ theorem mnr_ne_zero {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' 
       exact mul_nonneg (mul_pos hT hT').le (Complex.normSq_nonneg _)
     exact h2 (le_antisymm h4 h3)
 
+/- English proof (translation)
+Unfold `mnr`. Use `Continuous.matrix_det (Continuous.matrix_submatrix ?_ _ _)` and prove the remaining obligations. Rewrite using `[show Zhat k r z z' = fun γ => (flagMat k r z)ᴴ * (Hpk k r * (γ * flagMat k r z')) from`. Use function extensionality and compare the values at `(zhat_eq k r z z')]`. Conclude with `continuous_const.matrix_mul (continuous_const.matrix_mul (continuous_id.matrix_mul continuous_const))`.
+-/
 theorem continuous_mnr (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 1)) :
     Continuous fun γ : Mat k r => mnr (Zhat k r z z' γ) l := by
   unfold mnr
@@ -253,6 +358,27 @@ namespace GlobalTheory.SgInf
 
 open FrameBound
 
+/- English proof (translation)
+Introduce `k r z z' C hz hz' hT hT' hC hreg`. Take `⟨c, hc, hZ⟩` from `exists_zhat_le z z'`. Take `⟨M, hM⟩` from `hC.bddAbove_image continuous_opn.continuousOn`. Establish `hd : ∀ l : Fin (r + 1), ∃ d : ℝ, 0 < d ∧ ∀ γ ∈ C, d ≤ ‖mnr (Zhat k r z z' γ) l‖` using `fun l => hC.exists_forall_le' (continuous_mnr z z' l).norm.continuousOn (fun γ hγ => norm_pos_iff.2 (mnr_ne_zero hz hz' hT hT' (hreg hγ) l))`. Use `choose d hd0 hd using hd`.
+
+Use `set δ : ℝ := min 1 (Finset.univ.inf' Finset.univ_nonempty d) with hδ`. Establish `hδ0 : 0 < δ` using `lt_min one_pos ((Finset.lt_inf'_iff _).2 fun l _ => hd0 l)`. Establish `hδd : ∀ l, δ ≤ d l` using `fun l => min_le_of_right_le (Finset.inf'_le _ (Finset.mem_univ l))`. Take `⟨K, hK⟩` from `uni_bound r (c * max 1 M) δ (one_le_mul_of_one_le_of_one_le hc (le_max_left _ _)) hδ0 (min_le_left _ _)`. Use `set e : ℝ := ∑ i, ∑ a, ‖flagMat k r z i a‖ with he`.
+
+Use `set e' : ℝ := ∑ i, ∑ a, ‖flagMat k r z' i a‖ with he'`. Establish `hH : IsUnit (Hpk k r).det`. Use `congrArg Matrix.det (hpkFacts k r).2.1` as an intermediate fact. Rewrite `this` using `[det_mul, det_one]`. Conclude with `IsUnit.of_mul_eq_one _ this`.
+
+Take `⟨-, g2, g3⟩` from `uHGroup _ (Hpk k r) hH`. Use `⟨max (e * (K * c ^ (r * (r + 1)))) (e' * (K * c ^ (r * (r + 1)))), ?_⟩` and prove the remaining obligations. Introduce `γ hγ s hs s' hs' b`. Take `⟨hu, P, hP, eP⟩` from `exists_S k r z hz s hs`. Take `⟨hu', Q, hQ, eQ⟩` from `exists_S k r z' hz' s' hs'`.
+
+Use `set x : Mat k r := s * γ * s'⁻¹ with hx`. Establish `hxG : x ∈ GG k r` using `g2 _ (g2 _ hu _ (hreg hγ).1) _ (g3 s' hu').2`. Establish `hx1 : 1 ≤ opn x` using `one_le_opn hxG`. Establish `hxs : x * s' = s * γ`. Rewrite using `[hx, Matrix.mul_assoc, nonsing_inv_mul _ (g3 s' hu').1, Matrix.mul_one]`.
+
+Establish `eZ : Pᴴ * Zhat k r z z' x * Q = Zhat k r z z' γ`. Establish `a : Zhat k r z z' (x * s') = Zhat k r z z' x * Q`. Simplify using `only [zhat_eq, Matrix.mul_assoc, eQ]`. Establish `b : Zhat k r z z' γ = Pᴴ * Zhat k r z z' (s * γ)`. Rewrite using `[zhat_eq, zhat_eq, ← Matrix.mul_assoc Pᴴ, ← conjTranspose_mul, ← eP]`.
+
+Use `conv_lhs => rw [← hu]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[b, ← hxs, a, Matrix.mul_assoc]`. Establish `hm : ∀ l, mnr (Zhat k r z z' x) l = mnr (Zhat k r z z' γ) l` using `fun l => by`. Unfold `mnr`.
+
+Rewrite using `[← eZ, minor_mul _ _ _ hQ, minor_mul_left _ _ _ hP]`. Establish `key` using `hK (Zhat k r z z' x) P Q (c * opn x) (fun i j => ⟨hP.1 i j, fun h => h ▸ hP.2 i⟩) (fun i j => ⟨hQ.1 i j, fun h => h ▸ hQ.2 i⟩) (one_le_mul_of_one_le_of_one_le hc hx1) (hZ x) (fun i j => by`. Rewrite using `[eZ]`. Conclude with `(hZ γ i j).trans (mul_le_mul_of_nonneg_left (le_max_of_le_right (hM ⟨γ, hγ, rfl⟩)) (zero_le_one.trans hc)))`. Use the proof step `(fun l => by rw [hm]; exact (hδd l).trans (hd l γ hγ))`.
+
+Establish `hp : 0 ≤ opn x ^ (r * (r + 1))` using `pow_nonneg (opn_nonneg _) _`. Prove the components needed by the constructor for the conclusion. Use `(eucl_frame_le z s P eP _ (fun i j => (key i j).1) b).trans ?_` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (mul_le_mul_of_nonneg_right (le_max_left _ _) hp)` and prove the remaining obligations. Rewrite using `[mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `(eucl_frame_le z' s' Q eQ _ (fun i j => (key i j).2) b).trans ?_` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (mul_le_mul_of_nonneg_right (le_max_right _ _) hp)` and prove the remaining obligations. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frame_image_bound : ∀ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (C : Set (Mat k r)), inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → IsCompact C → C ⊆ Greg k r z z' → ∃ C0 : ℝ, ∀ γ ∈ C, ∀ s ∈ Sset k r z, ∀ s' ∈ Sset k r z', ∀ b : Fin (r + 1), eucl (s *ᵥ fvec k r z b) ≤ C0 * opn (s * γ * s'⁻¹) ^ (r * (r + 1)) ∧ eucl (s' *ᵥ fvec k r z' b) ≤ C0 * opn (s * γ * s'⁻¹) ^ (r * (r + 1)) := by
   intro k r z z' C hz hz' hT hT' hC hreg
   obtain ⟨c, hc, hZ⟩ := exists_zhat_le z z'

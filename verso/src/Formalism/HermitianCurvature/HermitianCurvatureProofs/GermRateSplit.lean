@@ -33,6 +33,9 @@ def GermRateTop (S : C.HidaSetting E Wp Wq) (v : Fin S.f) : Prop :=
         ‖utOf s (vOf (KB.dlB S (b + s - 1) 1) Vec) h x D -
           mainD s (betaL S) ε' (fun z => φ z • btOf s (KB.dlB S b s) Vec h z) x D‖ ≤ C * ‖x‖⁻¹
 
+/- English proof (translation)
+Introduce `ε hε b s hb hs hbs`. Break down `Nat.lt_or_ge (b + s) (S.G.r + 2) with h | h` into its components or cases. Conclude with `hL ε hε b s hb hs (by omega)`. Conclude with `hT ε hε b s hb hs (by omega)`.
+-/
 theorem germRate_of (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (hL : GermRateLow S v) (hT : GermRateTop S v) :
     GermRate S v := by
   intro ε hε b s hb hs hbs
@@ -62,6 +65,11 @@ def GermRateTopB : Prop :=
     (f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (χ : ℝ → ℝ) (A₀ : ℝ),
     KB.IsLeadingFormSetting Cb Cc S p f χ A₀ → ∀ n v, GermRateTop (PBL.setC S p (PBASM.cutSeq S p f χ n)) v
 
+/- English proof (translation)
+Introduce `hA Cb`. Take `⟨c1, h1⟩` from `hL hA Cb`. Take `⟨c2, h2⟩` from `hT hA Cb`. Use `⟨max c1 c2, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S p f χ A₀ hB n v`.
+
+Conclude with `germRate_of _ v (h1 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place (le_max_left _ _) hB) n v) (h2 E Wp Wq S p f χ A₀ (PBJoint.built_setting_to_model_place (le_max_right _ _) hB) n v)`.
+-/
 theorem germRateB_of (hL : GermRateLowB) (hT : GermRateTopB) : GermRateB := by
   intro hA Cb
   obtain ⟨c1, h1⟩ := hL hA Cb
@@ -75,6 +83,9 @@ end
 
 end Formalism.FourierDecayAlt.P.GermRateSplit
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.GermRateSplit.germRateB_of`.
+-/
 theorem Formalism.FourierDecayAlt.P.germ_rate_bound_of_split :
     Formalism.FourierDecayAlt.P.GermRateSplit.GermRateLowB → Formalism.FourierDecayAlt.P.GermRateSplit.GermRateTopB → Formalism.FourierDecayAlt.P.GermFibreKernels.GermRateB :=
   Formalism.FourierDecayAlt.P.GermRateSplit.germRateB_of

@@ -12,12 +12,22 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory.AAUnitAway
 
+/- English proof (translation)
+Introduce `hn`. Take `⟨x, y, e⟩ : IsCoprime (n : A) (l : A)` from `Nat.Coprime.cast h`. Conclude with `hI ((Ideal.eq_top_iff_one _).2 (e ▸ I.add_mem (I.mul_mem_left _ hn) (I.mul_mem_left _ hl)))`.
+-/
 theorem natCast_notMem {A : Type} [CommRing A] {I : Ideal A} (hI : I ≠ ⊤) {l n : ℕ} (hl : (l : A) ∈ I)
     (h : Nat.Coprime n l) : (n : A) ∉ I := by
   intro hn
   obtain ⟨x, y, e⟩ : IsCoprime (n : A) (l : A) := Nat.Coprime.cast h
   exact hI ((Ideal.eq_top_iff_one _).2 (e ▸ I.add_mem (I.mul_mem_left _ hn) (I.mul_mem_left _ hl)))
 
+/- English proof (translation)
+Establish `hnot : ¬ D.host.𝔟 ≤ Q`. Introduce `hle`. Establish `hd : Q ∣ differentIdeal (𝓞 D.host.K) (𝓞 D.host.E)`. Rewrite using `[D.host.𝔟_spec.1]`. Conclude with `(Ideal.dvd_iff_le.2 hle).mul_right _`.
+
+Conclude with `natCast_notMem hQ.ne_top hlQ (Nat.Coprime.mul_left ((Nat.Prime.coprime_iff_not_dvd hl).2 (UpperTheory.Small.not_dvd_QS D.host hl h2)).symm ((Nat.coprime_primes D.host.hyp.1 hl).2 hq.symm)) (D.host.der.diffSupport Q hQ hd)`. Take `⟨z, hz, hzP⟩` from `Set.not_subset.1 hnot`. Establish `hB : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (Formalism.L2.Pj.b_ne_bot D)`. Use `⟨z, hzP, fun t ha => ?_⟩` and prove the remaining obligations. Unfold `Host.AA0 at ha`.
+
+Rewrite `ha` using `[FractionalIdeal.mem_inv_iff hB]`. Take `⟨w, hw⟩` from `(FractionalIdeal.mem_one_iff _).1 (ha _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨z, hz, rfl⟩))`. Conclude with `⟨w, hw⟩`.
+-/
 theorem exists_den (D : D7) (Q : Ideal (𝓞 D.host.E)) [hQ : Q.IsPrime] {l : ℕ} (hl : l.Prime) (h2 : l ∉ D.host.small) (hq : l ≠ D.host.q)
     (hlQ : (l : 𝓞 D.host.E) ∈ Q) :
     ∃ z : 𝓞 D.host.E, z ∉ Q ∧ ∀ t ∈ D.host.AA0, ∃ w : 𝓞 D.host.E, (w : D.host.E) = t * (z : D.host.E) := by
@@ -38,6 +48,11 @@ theorem exists_den (D : D7) (Q : Ideal (𝓞 D.host.E)) [hQ : Q.IsPrime] {l : �
   obtain ⟨w, hw⟩ := (FractionalIdeal.mem_one_iff _).1 (ha _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨z, hz, rfl⟩))
   exact ⟨w, hw⟩
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨s, hs, hx⟩` from `(mem_locP P I x).1 hx`. Take `⟨t, ht, hx⟩` from `(mem_locP P J _).1 (h hx)`. Use `(mem_locP P J x).2 ⟨t * s, fun hm => ?_, by rwa [mul_smul]⟩` and prove the remaining obligations. Break down `P.isPrime.mem_or_mem hm with h | h` into its components or cases.
+
+Use `exacts [ht h, hs h]`.
+-/
 theorem localization_le_of_le_localization₂ {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) {I J : Submodule (𝓞 E) E}
     (h : I ≤ localization₂ P.asIdeal J) : localization₂ P.asIdeal I ≤ localization₂ P.asIdeal J := by
   intro x hx
@@ -47,6 +62,17 @@ theorem localization_le_of_le_localization₂ {E : Type} [Field E] [NumberField 
   rcases P.isPrime.mem_or_mem hm with h | h
   exacts [ht h, hs h]
 
+/- English proof (translation)
+Set `j : 𝓞 D.host.E →+* 𝓞 X.E` to `RingOfIntegers.mapRingHom (s.iE.symm : D.host.E →+* X.E)`. Establish `hj : ∀ a : 𝓞 D.host.E, ((j a : 𝓞 X.E) : X.E) = s.iE.symm (a : D.host.E)` using `fun _ => rfl`. Use `haveI := P.isPrime`. Use `le_antisymm (localization_le_of_le_localization₂ P ?_) (localization_le_of_le_localization₂ P ?_)` and prove the remaining obligations. Take `⟨z, hz, hden⟩` from `exists_den D (P.asIdeal.comap j) hl h2 hq (by rw [Ideal.mem_comap, map_natCast]; exact hP)`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `r ⟨c, -, t, ht, rfl⟩`. Take `⟨w, hw⟩` from `hden t ht`. Use `(mem_locP P _ _).2 ⟨j z, hz, Submodule.mem_one.2 ⟨j (algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c * w), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+
+Express the relevant statement in the definitionally equal form `((j _ : 𝓞 X.E) : X.E) = ((j z : 𝓞 X.E) : X.E) * _`. Rewrite using `[hj, hj, ← map_mul]`. Use `congr 1`. Establish `e : ((algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c * w : 𝓞 D.host.E) : D.host.E) = ((c : D.host.K) : D.host.E) * (w : D.host.E)` using `rfl`. Rewrite using `[e, hw]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Take `⟨y, rfl⟩` from `Submodule.mem_one.1 hx`. Use `(mem_locP P _ _).2 ⟨(Ideal.absNorm cc : ℕ), natCast_notMem P.isPrime.ne_top hP hc, ?_⟩` and prove the remaining obligations. Establish `h1 : ((Ideal.absNorm cc : ℕ) : X.E) ∈ (ambOf s B χ cD).AA`.
+
+Use `Submodule.subset_span ⟨_, Ideal.absNorm_mem cc, 1, Formalism.L2.Pj.one_mem_inverse_halfDifferent D, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `Submodule.smul_mem _ y h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `[Algebra.smul_def, mul_comm]`.
+-/
 theorem locP_AA (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ)
     (cD : D.what₂.Tau → ℂ) (P : HeightOneSpectrum (𝓞 X.E)) (l : ℕ) (hl : l.Prime) (h2 : l ∉ D.host.small) (hq : l ≠ D.host.q)
     (hP : (l : 𝓞 X.E) ∈ P.asIdeal) (hc : Nat.Coprime (Ideal.absNorm cc) l) :
@@ -77,6 +103,15 @@ theorem locP_AA (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)
     convert Submodule.smul_mem _ y h1 using 1
     simp [Algebra.smul_def, mul_comm]
 
+/- English proof (translation)
+Introduce `ha`. Establish `hrk : Module.finrank ℚ X.E = 2 * X.f`. Rewrite using `[← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, Fields.f, hX.card_Tau, mul_comm]`. Establish `hcc : ∀ x, X.conjO (X.conjO x) = x` using `fun x => RingOfIntegers.ext (star_star (x : X.E))`. Take `⟨P, hP⟩` from `Finset.card_pos.1 (hcard ▸ hX.f_pos)`.
+
+Establish `hint : IsIntegral ℤ a`. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `(isIntegral_algebraMap (R := ℤ) (x := (p : ℤ)) |>.neg) |> fun h => by simpa using h`. Take `⟨b, hba⟩ : ∃ b : 𝓞 X.E, algebraMap (𝓞 X.E) X.E b = a` from `⟨⟨a, hint⟩, rfl⟩`.
+
+Establish `hb : b ^ 2 = -(p : 𝓞 X.E)`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_pow, hba, ha, map_neg, map_natCast]`. Establish `hpP : (p : 𝓞 X.E) ∈ P.asIdeal` using `hN P hP ▸ Ideal.absNorm_mem _`. Establish `haP : b ∈ P.asIdeal` using `P.isPrime.mem_of_pow_mem 2 (hb ▸ P.asIdeal.neg_mem hpP)`.
+
+Use `GlobalTheory.SplitUnram.natCast_notMem_sq X.E X.conjO π p hcc hp hn hcop (by rw [hrk, hcard]) hN P hP ?_` and prove the remaining obligations. Use `Ideal.pow_mem_pow haP 2` as an intermediate fact. Rewrite `this` using `[hb, neg_mem_iff]`. Then use the resulting hypothesis.
+-/
 theorem sq_ne_neg {X : Fields} (hX : X.Ok) (π : 𝓞 X.E) (p : ℕ) (hp : p.Prime) (hn : π * X.conjO π = (p : 𝓞 X.E))
     (hcop : IsCoprime π (X.conjO π)) (hcard : (divs π).card = X.f) (hN : ∀ P ∈ divs π, Ideal.absNorm P.asIdeal = p)
     (a : X.E) : a ^ 2 ≠ -(p : X.E) := by
@@ -100,6 +135,11 @@ theorem sq_ne_neg {X : Fields} (hX : X.Ok) (π : 𝓞 X.E) (p : ℕ) (hp : p.Pri
   have := Ideal.pow_mem_pow haP 2
   rwa [hb, neg_mem_iff] at this
 
+/- English proof (translation)
+Introduce `hs`. Establish `hrk : Module.finrank ℚ X.E = 2 * X.f`. Rewrite using `[← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, Fields.f, hX.card_Tau, mul_comm]`. Establish `hcc : ∀ x, X.conjO (X.conjO x) = x` using `fun x => RingOfIntegers.ext (star_star (x : X.E))`. Take `⟨P, hP⟩` from `Finset.card_pos.1 (hcard ▸ hX.f_pos)`.
+
+Establish `hpP : (p : 𝓞 X.E) ∈ P.asIdeal` using `hN P hP ▸ Ideal.absNorm_mem _`. Conclude with `(UpperTheory.Ram.not_dvd_QS_of_notMem_sq D.host.toHostAx D.host.QS_exact X.E s.iE P p hp hpP (GlobalTheory.SplitUnram.natCast_notMem_sq X.E X.conjO π p hcc hp hn hcop (by rw [hrk, hcard]) hN P hP)).1 (Nat.dvd_of_mem_primeFactors hs)`.
+-/
 theorem notMem_small {X : Fields} (hX : X.Ok) (D : D7) (s : Seam D X) (π : 𝓞 X.E) (p : ℕ) (hp : p.Prime)
     (hn : π * X.conjO π = (p : 𝓞 X.E)) (hcop : IsCoprime π (X.conjO π)) (hcard : (divs π).card = X.f)
     (hN : ∀ P ∈ divs π, Ideal.absNorm P.asIdeal = p) : p ∉ D.host.small := by
@@ -113,6 +153,11 @@ theorem notMem_small {X : Fields} (hX : X.Ok) (D : D7) (s : Seam D X) (π : 𝓞
     (GlobalTheory.SplitUnram.natCast_notMem_sq X.E X.conjO π p hcc hp hn hcop (by rw [hrk, hcard]) hN P hP)).1
     (Nat.dvd_of_mem_primeFactors hs)
 
+/- English proof (translation)
+Establish `ha : (s.iE.symm (D.host.sqq)) ^ 2 = -(D.host.q : Z.X.E)`. Rewrite using `[← map_pow, D.host.sqq_sq, map_neg, map_natCast]`. Establish `hcc : ∀ x, Z.X.conjO (Z.X.conjO x) = x` using `fun x => RingOfIntegers.ext (star_star (x : Z.X.E))`. Establish `hPr` using `hZ.primes`. Use `⟨fun u => ⟨fun h => ?_, fun h => ?_⟩, fun i => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `notMem_small hZ.fields D s _ _ (hPr.T_prime u) (hPr.piT_norm u) (hPr.piT_cop u) (hPr.vT_card u) (hPr.vT_norm u) h`. Conclude with `sq_ne_neg hZ.fields _ _ (hPr.T_prime u) (hPr.piT_norm u) (hPr.piT_cop u) (hPr.vT_card u) (hPr.vT_norm u) _ (h ▸ ha)`. Conclude with `notMem_small hZ.fields D s (Z.X.conjO (Z.Pr.piG i)) _ (hPr.g_prime i) (by rw [hcc, mul_comm, hPr.piG_norm i]) (by rw [hcc]; exact (hPr.piG_cop i).symm) (hPr.vG_card i) (hPr.vG_norm i) h`. Conclude with `sq_ne_neg hZ.fields (Z.X.conjO (Z.Pr.piG i)) _ (hPr.g_prime i) (by rw [hcc, mul_comm, hPr.piG_norm i]) (by rw [hcc]; exact (hPr.piG_cop i).symm) (hPr.vG_card i) (hPr.vG_norm i) _ (h ▸ ha)`.
+-/
 theorem primes_ne (Z : Dat) (D : D7) (s : Seam D Z.X) (hZ : Z.Ok) :
     (∀ u, Z.Pr.T u ∉ D.host.small ∧ Z.Pr.T u ≠ D.host.q) ∧ ∀ i, Z.Pr.g i ∉ D.host.small ∧ Z.Pr.g i ≠ D.host.q := by
   have ha : (s.iE.symm (D.host.sqq)) ^ 2 = -(D.host.q : Z.X.E) := by
@@ -127,6 +172,9 @@ theorem primes_ne (Z : Dat) (D : D7) (s : Seam D Z.X) (hZ : Z.Ok) :
   · exact sq_ne_neg hZ.fields (Z.X.conjO (Z.Pr.piG i)) _ (hPr.g_prime i) (by rw [hcc, mul_comm, hPr.piG_norm i])
       (by rw [hcc]; exact (hPr.piG_cop i).symm) (hPr.vG_card i) (hPr.vG_norm i) _ (h ▸ ha)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨locP_AA, primes_ne⟩`.
+-/
 theorem locP_AA_and_primes_ne : (∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (P : HeightOneSpectrum (𝓞 X.E)) (l : ℕ), l.Prime → l ∉ D.host.small → l ≠ D.host.q → (l : 𝓞 X.E) ∈ P.asIdeal → Nat.Coprime (Ideal.absNorm cc) l → localization₂ P.asIdeal (ambOf s B χ cD).AA = localization₂ P.asIdeal (1 : Submodule (𝓞 X.E) X.E)) ∧ ∀ (Z : Dat) (D : D7) (s : Seam D Z.X), Z.Ok → (∀ u, Z.Pr.T u ∉ D.host.small ∧ Z.Pr.T u ≠ D.host.q) ∧ ∀ i, Z.Pr.g i ∉ D.host.small ∧ Z.Pr.g i ≠ D.host.q :=
   ⟨locP_AA, primes_ne⟩
 

@@ -1,6 +1,15 @@
 import Mathlib
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.Signature
 
+/- English proof (translation)
+Introduce `E _ _ _ N X v`. Use `Submodule.span_induction (fun x hx => ⟨1, one_pos, by simpa using hx⟩) ⟨1, one_pos, by simp⟩ ?_ ?_ (X.Λ_span ▸ Submodule.mem_top : v ∈ Submodule.span E (X.Λ : Set (Fin N → E)))` and prove the remaining obligations. Introduce and unpack `x y - - ⟨a, ha, hx⟩ ⟨b, hb, hy⟩`. Use `⟨a * b, mul_pos ha hb, ?_⟩` and prove the remaining obligations. Use `X.Λ.add_mem (nsmul_mem hx b) (nsmul_mem hy a) using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `i`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `c x - ⟨a, ha, hx⟩`. Take `⟨m, s, hm, hs⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (.of_finite ℚ c)).exists_nsmul_eq (NumberField.RingOfIntegers E)`.
+
+Use `⟨m * a, mul_pos (Nat.pos_of_ne_zero hm) ha, ?_⟩` and prove the remaining obligations. Use `X.Λ.smul_mem s hx using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← algebraMap_smul E s, ← hs]`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Reformulated.B.Ga5b.exists_nat_smul_mem :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E]
     [inst_2 : NumberField.IsCMField E] {N : ℕ} (X : ReciprocityTheory.ChartRestriction.G.FD.Data E N) (v : Fin N → E),

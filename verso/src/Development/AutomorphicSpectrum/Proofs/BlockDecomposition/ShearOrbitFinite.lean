@@ -11,6 +11,13 @@ namespace GlobalTheory.CompanionTheory.MirPair.ShearOrbit
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Establish `hd : b ⬝ᵥ GlobalTheory.BZMir.eLast k n = b (Fin.last n)`. Simplify using `[GlobalTheory.BZMir.eLast, dotProduct_single]`. Establish `hM : vecMulVec (GlobalTheory.BZMir.eLast k n) b * vecMulVec (GlobalTheory.BZMir.eLast k n) b = b (Fin.last n) • vecMulVec (GlobalTheory.BZMir.eLast k n) b`. Rewrite using `[vecMulVec_mul_vecMulVec, hd]`. Use extensionality with `i j`.
+
+Simplify using `only [vecMulVec_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : (1 + b (Fin.last n))⁻¹ + (1 + b (Fin.last n))⁻¹ * b (Fin.last n) = 1`. Rewrite using `[← mul_one_add]`. Conclude with `inv_mul_cancel₀ hb`.
+
+Rewrite using `[mul_sub, mul_one, mul_smul_comm, add_mul, one_mul, hM, smul_add, smul_smul, ← add_smul, hc, one_smul, add_sub_cancel_right]`.
+-/
 theorem shear_mul_inv (n : ℕ) (b : Fin (n + 1) → k) (hb : 1 + b (Fin.last n) ≠ 0) :
     (1 + vecMulVec (eLast k n) b) * (1 - (1 + b (Fin.last n))⁻¹ • vecMulVec (eLast k n) b) = 1 := by
   have hd : b ⬝ᵥ GlobalTheory.BZMir.eLast k n = b (Fin.last n) := by
@@ -27,6 +34,9 @@ theorem shear_mul_inv (n : ℕ) (b : Fin (n + 1) → k) (hb : 1 + b (Fin.last n)
   rw [mul_sub, mul_one, mul_smul_comm, add_mul, one_mul, hM, smul_add, smul_smul, ← add_smul, hc,
     one_smul, add_sub_cancel_right]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.MirPair.ShearOrbit.shear_mul_inv n b hb`. Establish `hu : IsUnit (1 + vecMulVec (GlobalTheory.BZMir.eLast k n) b)` using `⟨⟨_, _, h, mul_eq_one_comm.mp h⟩, rfl⟩`. Rewrite using `[GlobalTheory.CompanionTheory.MirPair.shearGL, dif_pos hu]`. Conclude with `hu.unit_spec`.
+-/
 theorem shearGL_val (n : ℕ) (b : Fin (n + 1) → k) (hb : 1 + b (Fin.last n) ≠ 0) :
     ((shearGL n b : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) =
       1 + vecMulVec (eLast k n) b := by
@@ -36,6 +46,9 @@ theorem shearGL_val (n : ℕ) (b : Fin (n + 1) → k) (hb : 1 + b (Fin.last n) �
   rw [GlobalTheory.CompanionTheory.MirPair.shearGL, dif_pos hu]
   exact hu.unit_spec
 
+/- English proof (translation)
+The claim follows from `Units.inv_eq_of_mul_eq_one_right (by rw [shearGL_val n b hb]; exact shear_mul_inv n b hb)`.
+-/
 theorem shearGL_inv_val (n : ℕ) (b : Fin (n + 1) → k) (hb : 1 + b (Fin.last n) ≠ 0) :
     (((shearGL n b)⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) =
       1 - (1 + b (Fin.last n))⁻¹ • vecMulVec (eLast k n) b :=
@@ -43,6 +56,9 @@ theorem shearGL_inv_val (n : ℕ) (b : Fin (n + 1) → k) (hb : 1 + b (Fin.last 
 
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : valuation k (b (Fin.last n)) ≤ valuation k (r : k)` using `hb (Fin.last n)`. Establish `h2 : b (Fin.last n) = -1` using `by linear_combination h`. Rewrite `h1` using `[h2, Valuation.map_neg, map_one]`. Conclude with `absurd hr (not_lt.mpr h1)`.
+-/
 theorem one_add_ne_zero_of_mem_box (n : ℕ) {r : kˣ} (hr : valuation k (r : k) < 1) {b : Fin (n + 1) → k}
     (hb : b ∈ box (n + 1) r) : 1 + b (Fin.last n) ≠ 0 := by
   intro h
@@ -51,6 +67,11 @@ theorem one_add_ne_zero_of_mem_box (n : ℕ) {r : kˣ} (hr : valuation k (r : k)
   rw [h2, Valuation.map_neg, map_one] at h1
   exact absurd hr (not_lt.mpr h1)
 
+/- English proof (translation)
+Establish `hne : ∀ b : (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) r : Set (Fin (n + 1) → k)), 1 + b.1 (Fin.last n) ≠ 0` using `fun b => GlobalTheory.CompanionTheory.MirPair.ShearOrbit.one_add_ne_zero_of_mem_box n hr b.2`. Establish `hv : Continuous fun b : (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) r : Set (Fin (n + 1) → k)) => vecMulVec (GlobalTheory.BZMir.eLast k n) b.1` using `continuous_matrix fun i j => by`. Simplify using `only [vecMulVec_apply]`. Conclude with `continuous_const.mul ((continuous_apply j).comp continuous_subtype_val)`. Rewrite using `[Units.continuous_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `(continuous_const.add hv).congr fun b => (GlobalTheory.CompanionTheory.MirPair.ShearOrbit.shearGL_val n b.1 (hne b)).symm`. Establish `hinv : Continuous fun b : (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) r : Set (Fin (n + 1) → k)) => (1 + b.1 (Fin.last n))⁻¹` using `(continuous_const.add ((continuous_apply _).comp continuous_subtype_val)).inv₀ hne`. Conclude with `(continuous_const.sub (hinv.smul hv)).congr fun b => (GlobalTheory.CompanionTheory.MirPair.ShearOrbit.shearGL_inv_val n b.1 (hne b)).symm`.
+-/
 theorem continuous_shearGL (n : ℕ) {r : kˣ} (hr : valuation k (r : k) < 1) :
     Continuous fun b : (box (n + 1) r : Set (Fin (n + 1) → k)) => shearGL n b.1 := by
   have hne : ∀ b : (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) r : Set (Fin (n + 1) → k)), 1 + b.1 (Fin.last n) ≠ 0 :=
@@ -70,6 +91,13 @@ theorem continuous_shearGL (n : ℕ) {r : kˣ} (hr : valuation k (r : k) < 1) :
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Establish `hmat : Continuous (GlobalTheory.BZMir.glEmbHom k m)`. Apply `continuous_matrix` to reduce the goal to its premises. Introduce `i j`. Apply the tactic sequence `induction i using Fin.lastCases <;> induction j using Fin.lastCases <;>`. Apply the tactic sequence `simp [GlobalTheory.BZMir.glEmbHom, GlobalTheory.BZMir.glEmbMat] <;>`.
+
+Use `first`. Consider the case `exact continuous_const`. Consider the case `exact continuous_id.matrix_elem _ _`. Consider the case `fun_prop`. Establish `hGL : Continuous (GlobalTheory.BZMir.glEmb k m)` using `Continuous.units_map _ hmat`.
+
+Conclude with `continuous_induced_rng.2 hGL`.
+-/
 theorem continuous_levi (m : ℕ) : Continuous (levi k m) := by
   have hmat : Continuous (GlobalTheory.BZMir.glEmbHom k m) := by
     apply continuous_matrix
@@ -83,6 +111,13 @@ theorem continuous_levi (m : ℕ) : Continuous (levi k m) := by
   have hGL : Continuous (GlobalTheory.BZMir.glEmb k m) := Continuous.units_map _ hmat
   exact continuous_induced_rng.2 hGL
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `p hp`. Establish `hS : IsOpen {g : GlobalTheory.BZMir.Mir k (n + 1) | T g v = v}` using `hT v`. Establish `hcont : Continuous fun g : GlobalTheory.BZMir.Mir k (n + 1) => p⁻¹ * g` using `continuous_const.mul continuous_id`. Establish `hmem : (fun g : GlobalTheory.BZMir.Mir k (n + 1) => p⁻¹ * g) ⁻¹' {g | T g v = v} ∈ 𝓝 p`.
+
+Apply `hcont.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Apply `hS.mem_nhds` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `filter_upwards [hmem] with g hg`. Establish `hg' : T (p⁻¹ * g) v = v` using `hg`.
+
+Establish `hsplit : T g = T p * T (p⁻¹ * g)`. Rewrite using `[← map_mul, mul_inv_cancel_left]`. Use `show T g v = w`. Rewrite using `[hsplit, Module.End.mul_apply, hg']`. Conclude with `hp`.
+-/
 theorem isOpen_orbit_fiber {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (T : Representation ℂ (Mir k (n + 1)) V) (hT : IsSmooth T) (v w : V) :
     IsOpen {p : Mir k (n + 1) | T p v = w} := by
@@ -102,6 +137,11 @@ theorem isOpen_orbit_fiber {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   rw [hsplit, Module.End.mul_apply, hg']
   exact hp
 
+/- English proof (translation)
+Use `haveI : CompactSpace (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) r : Set (Fin (n + 1) → k)) := isCompact_iff_compactSpace.mp (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.isCompact_box (n + 1) r)`. Establish `hc : Continuous fun b : (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) r : Set (Fin (n + 1) → k)) => GlobalTheory.BZMir.levi k (n + 1) (GlobalTheory.CompanionTheory.MirPair.shearGL n b.1)` using `(GlobalTheory.CompanionTheory.MirPair.ShearOrbit.continuous_levi (n + 1)).comp (GlobalTheory.CompanionTheory.MirPair.ShearOrbit.continuous_shearGL n hr)`. Establish `hlc : IsLocallyConstant fun b : (GlobalTheory.CompanionTheory.BZOnto.PerpSmall.box (n + 1) r : Set (Fin (n + 1) → k)) => T (GlobalTheory.BZMir.levi k (n + 1) (GlobalTheory.CompanionTheory.MirPair.shearGL n b.1)) v`. Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `w`.
+
+Conclude with `(GlobalTheory.CompanionTheory.MirPair.ShearOrbit.isOpen_orbit_fiber T hT v w).preimage hc`. Rewrite using `[Set.image_eq_range]`. Conclude with `hlc.range_finite`.
+-/
 theorem shear_orbit_finite {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (T : Representation ℂ (Mir k (n + 1)) V) (hT : IsSmooth T) (v : V) (r : kˣ)
     (hr : valuation k (r : k) < 1) :

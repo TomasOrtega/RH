@@ -10,6 +10,19 @@ open MvPolynomial
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `F _ _ n e I f t u q p _ hI hf hu hq hp hqt`. Establish `hpt : specFirst f t ∉ p`. Rewrite using `[hp, Ideal.mem_span_singleton]`. Conclude with `hqt`. Establish `: Module.Finite (Localization.AtPrime p) (ChartLoc I t e p)` using `h₃ F n e I f t p hI hf hpt`.
+
+Rewrite using `[h₄ (Localization.AtPrime p) (ChartLoc I t e p) (algebraMap (ChartInc I t e) (ChartLoc I t e p) (chartLin I t e u))]`. Use `finsum_maximalSpectrum_ord_eq_sum _ _ (chartIdeal I t e p) ?_ _ ?_` and prove the remaining obligations. Establish `h` using `h₅ F n e I f t u q p hI hf hu hq hp hqt`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `W`.
+
+Simplify using the standard rewrite rules. Introduce `W hW _`. Take `⟨hWs, hWq⟩` from `Finset.mem_filter.mp hW`. Establish `hrel : W ∈ relComps (I ⊔ Ideal.span {linForm u})`. Rewrite `hWs` using `[Finsupp.mem_support_iff]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hWs (by simp [divCycle, fundCycle, Finsupp.onFinset_apply, h])`. Establish `hqW : q ∈ incIdeal W e` using `hWq ▸ Ideal.mem_span_singleton_self q`. Establish `htW : linForm t ∉ W` using `fun h => by`. Establish `hIW : I ≤ W` using `le_trans le_sup_left hrel.1.1.2`.
+
+Use `h₂ F n e I W f t hf hIW h` as an intermediate fact. Rewrite `this` using `[← hWq, Ideal.mem_span_singleton]`. Conclude with `hqt this`. Take `⟨_, hord⟩` from `h₆ F n e I W f t u q p hI hf hu hq hp hqt hrel hqW htW`. Establish `hlen` using `h₇ F n e I W f t u q p hI hf hu hq hp hqt hrel hqW htW`.
+
+Establish `hdiv : divCycle I u W = localMult (I ⊔ Ideal.span {linForm u}) W`. Simplify using `[divCycle, fundCycle, Finsupp.onFinset_apply, hrel]`. Rewrite using `[hlen, mul_one, hdiv]`. Conclude with `hord`.
+-/
 theorem ChartLengthAlgClosed.proof (h₂ : SpecFirstMemIncIdeal.Statement)
     (h₃ : ChartFinite.Statement) (h₄ : LengthFiniteAlgebra.Statement) (h₅ : ChartMaxIdeals.Statement)
     (h₆ : ChartLocalOrder.Statement) (h₇ : ChartResidueDegreeAlgClosed.Statement) :

@@ -11,6 +11,13 @@ namespace GlobalTheory.Mem.VolEmb
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Set `_ : Algebra F ℂ` to `(τ.comp (algebraMap F E)).toAlgebra`. Set `f : Ainf F →ₐ[F] ℂ` to `{ toRingHom := (InfinitePlace.Completion.extensionEmbedding w).comp (Pi.evalRingHom _ w) commutes' := fun x => (InfinitePlace.Completion.extensionEmbedding_coe w _).trans (DFunLike.congr_fun hw x) }`. Set `g : E →ₐ[F] ℂ` to `{ toRingHom := τ, commutes' := fun _ => rfl }`. Use `⟨(Algebra.TensorProduct.lift f g (fun _ _ => Commute.all _ _)).toRingHom, fun x => ?_, ?_⟩` and prove the remaining obligations. Use `show f 1 * g x = τ x`.
+
+Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression. Establish `: (fun a : Ainf F => (Algebra.TensorProduct.lift f g (fun _ _ => Commute.all _ _)).toRingHom (a ⊗ₜ[F] (1 : E))) = fun a => InfinitePlace.Completion.extensionEmbedding w (a w)`. Use function extensionality and compare the values at `a`. Use `show f a * g 1 = _`.
+
+Rewrite using `[map_one, mul_one]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w)`.
+-/
 theorem infEmb_exists (τ : E →+* ℂ) (w : InfinitePlace F) (hw : w.embedding = τ.comp (algebraMap F E)) :
     ∃ θ : Ainf F ⊗[F] E →+* ℂ, IsInfEmb τ θ := by
   let _ : Algebra F ℂ := (τ.comp (algebraMap F E)).toAlgebra
@@ -32,10 +39,18 @@ theorem infEmb_exists (τ : E →+* ℂ) (w : InfinitePlace F) (hw : w.embedding
     rw [this]
     exact (InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w)
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption`.
+-/
 theorem infEmb_unique (τ : E →+* ℂ) (θ θ' : Ainf F ⊗[F] E →+* ℂ) (h : IsInfEmb τ θ)
     (h' : IsInfEmb τ θ') : θ = θ' :=
   by apply _root_.UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h τ`. Use `h.1` as an intermediate fact. Establish `hr : (InfinitePlace.mk (τ.comp (algebraMap F E))).IsReal` using `IsTotallyReal.isReal _`. Establish `hw : (InfinitePlace.mk (τ.comp (algebraMap F E))).embedding = τ.comp (algebraMap F E)` using `InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 hr)`. Take `⟨θ, hθ⟩` from `infEmb_exists τ _ hw`.
+
+Conclude with `⟨θ, hθ, fun θ' h' => infEmb_unique τ θ' θ h' hθ⟩`.
+-/
 theorem existsUnique_infEmb : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ τ : E →+* ℂ, ∃! θ : Ainf F ⊗[F] E →+* ℂ, IsInfEmb τ θ := by
   intro F E _ _ _ _ _ σ h τ
   have := h.1

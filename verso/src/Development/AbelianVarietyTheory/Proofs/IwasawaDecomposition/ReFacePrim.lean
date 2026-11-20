@@ -10,6 +10,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨⟨hE, hR⟩, ⟨hW, hL⟩⟩` from `h.hecke`. Use `exact`. Use the proof step `{ heckeR := h.heckeR heckeL := h.heckeL hecke := ⟨⟨hE, ⟨hR.intw, hR.comm, hR.parts⟩⟩, ⟨hW, ⟨hL.intw, hL.comm, hL.parts⟩⟩⟩ gUnit := h.gUnit gEquiv := h.gEquiv block := h.block rowTest := h.rowTest liftTest := h.liftTest liftTestB := h.liftTestB liftOnto := fun hW' hh => h.liftOnto …`.
+-/
 theorem reFace_prim (R : RealDat3 D A3 Ks) (F : Face3 D A3)
     (Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 F.P1 F.ψ1 Zs)) (Sp : ∀ Zs, SPer (Dc Zs))
     (Zsc : DefSub A3.fam3.amb3 → IndefScale A3.fam3.base3) (e : type_of% R.err0) (h : PrimRows3 R F) :

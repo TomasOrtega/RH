@@ -6,6 +6,11 @@ open UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Hi UpperTheory.V.AlgebraToo
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro F d _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+
+Introduce `F d h`. Rewrite using `[List.ofFn_succ, List.prod_cons, mul_assoc, ih (fun k => F k.succ) (fun k => d k.succ) (fun k => h _), ← mul_assoc, h 0, mul_assoc, Matrix.diagonal_mul_diagonal]`. Simplify using `only [Fin.prod_univ_succ]`.
+-/
 private theorem prod_conj {K : Type} [Field K] {n : ℕ} (V : Matrix (Fin n) (Fin n) K) :
     ∀ (m : ℕ) (F : Fin m → Matrix (Fin n) (Fin n) K) (d : Fin m → Fin n → K),
       (∀ k, F k * V = V * Matrix.diagonal (d k)) →
@@ -19,12 +24,40 @@ private theorem prod_conj {K : Type} [Field K] {n : ℕ} (V : Matrix (Fin n) (Fi
       ← mul_assoc, h 0, mul_assoc, Matrix.diagonal_mul_diagonal]
     simp only [Fin.prod_univ_succ]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsDiagonalization.exists_diag P α hα hP`.
+-/
 private theorem exists_diag {K : Type} [Field K] {n : ℕ} (P : Matrix (Fin n) (Fin n) K) (α : Fin n → K)
     (hα : Function.Injective α)
     (hP : P.charpoly = ∏ i, (Polynomial.X - Polynomial.C (α i))) :
     ∃ V : Matrix (Fin n) (Fin n) K, IsUnit V ∧ P * V = V * Matrix.diagonal α :=
   _root_.UpperTheory.Reformulated.B.ExistsDiagonalization.exists_diag P α hα hP
 
+/- English proof (translation)
+Introduce `K _ n P T α β hα hc hP htr i`. Take `⟨V, hV, hPV⟩` from `exists_diag P α hα hP`. Take `⟨V', h1, h2⟩` from `isUnit_iff_exists.1 hV`. Take `⟨S, hS⟩ : ∃ S, S = V' * T * V` from `⟨_, rfl⟩`. Establish `hTV : T * V = V * S`.
+
+Rewrite using `[hS, ← mul_assoc, ← mul_assoc, h1, one_mul]`. Establish `hSD : Matrix.diagonal α * S = S * Matrix.diagonal α`. Use `hV.mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← hPV, mul_assoc, ← hTV, ← mul_assoc, hc, mul_assoc, hPV, ← mul_assoc, hTV, mul_assoc]`. Establish `hSd : S = Matrix.diagonal (fun j => S j j)`.
+
+Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.diagonal_apply_ne _ hab]`.
+
+Use `congrFun (congrFun hSD a) b` as an intermediate fact. Rewrite `this` using `[Matrix.diagonal_mul, Matrix.mul_diagonal, mul_comm]`. Assume the negation of the conclusion as `h0`. Conclude with `hab (hα (mul_left_cancel₀ h0 this))`. Establish `hpow : ∀ a : ℕ, P ^ a * V = V * Matrix.diagonal α ^ a`.
+
+Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih => rw [pow_succ, mul_assoc, hPV, ← mul_assoc, ih, mul_assoc, ← pow_succ]`. Establish `htr' : ∀ a : ℕ, ∑ j, α j ^ a * S j j = ∑ j, α j ^ a * β j`.
+
+Introduce `a`. Rewrite using `[← htr a]`. Establish `e : P ^ a * T = V * (Matrix.diagonal α ^ a * S) * V'`. Rewrite using `[← mul_assoc, ← hpow, mul_assoc (P ^ a), ← hTV, mul_assoc, mul_assoc, h1, mul_one]`. Rewrite using `[e, Matrix.trace_mul_cycle, h2, one_mul, Matrix.diagonal_pow]`.
+
+Simplify using `[Matrix.trace, Matrix.diagonal_mul]`. Establish `hβ : (fun j => S j j - β j) = 0`. Use `Matrix.eq_zero_of_forall_pow_sum_mul_pow_eq_zero hα (fun a => ?_)` and prove the remaining obligations. Simplify using `only [sub_mul, Finset.sum_sub_distrib, sub_eq_zero]`. Simplify `htr' a` using `only [mul_comm]`.
+
+Establish `hSβ : S = Matrix.diagonal β`. Rewrite using `[hSd]`. Use `congr 1`. Use extensionality with `j`. Conclude with `sub_eq_zero.1 (congrFun hβ j)`.
+
+Establish `hE` using `prod_conj V n (fun i' => if i' = i then 1 else P - α i' • (1 : Matrix (Fin n) (Fin n) K)) (fun k j => if k = i then 1 else α j - α k) (by`. Introduce `k`. Distinguish the cases in `hk : k = i`. Simplify using `[hk]`. Simplify using `only [if_neg hk]`.
+
+Rewrite using `[sub_mul, hPV, smul_mul_assoc, one_mul]`. Use extensionality with `a b`. Simplify using `[Matrix.mul_diagonal, mul_sub, mul_comm])`. Establish `hT : (T - β i • (1 : Matrix (Fin n) (Fin n) K)) * V = V * Matrix.diagonal (fun j => β j - β i)`. Rewrite using `[sub_mul, hTV, hSβ, smul_mul_assoc, one_mul]`.
+
+Use extensionality with `a b`. Simplify using `[Matrix.mul_diagonal, mul_sub, mul_comm]`. Use `hV.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, hT, ← mul_assoc, hE, mul_assoc, Matrix.diagonal_mul_diagonal, zero_mul]`. Establish `: (fun j => (∏ k, if k = i then 1 else α j - α k) * (β j - β i)) = fun _ => (0 : K)`.
+
+Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Simplify using `[hj]`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ j) (by simp [hj]), zero_mul]`. Rewrite using `[this, Matrix.diagonal_zero, mul_zero]`.
+-/
 theorem UpperTheory.V.Pa.Lev.pairRel :
     ∀ (K : Type) [Field K] (n : ℕ) (P T : Matrix (Fin n) (Fin n) K) (α β : Fin n → K), Function.Injective α → P * T = T * P → P.charpoly = ∏ i, (Polynomial.X - Polynomial.C (α i)) → (∀ a : ℕ, (P ^ a * T).trace = ∑ i, α i ^ a * β i) → ∀ i, (List.ofFn fun i' => if i' = i then 1 else P - α i' • (1 : Matrix (Fin n) (Fin n) K)).prod * (T - β i • (1 : Matrix (Fin n) (Fin n) K)) = 0 := by
   intro K _ n P T α β hα hc hP htr i

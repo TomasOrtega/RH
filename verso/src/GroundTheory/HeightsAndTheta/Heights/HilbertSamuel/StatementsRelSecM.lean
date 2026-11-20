@@ -15,10 +15,18 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {Ω 
 def relSecM (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (b : K → ℕ) : Submodule R Ω :=
   Submodule.span R ((fun μ : (Σ k, ι k) → ℕ => ∏ p, y p ^ μ p) '' {μ | ∀ k, ∑ i, μ ⟨k, i⟩ = b k})
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨μ, hμ, rfl⟩`.
+-/
 theorem monomial_mem_relSecM (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) {b : K → ℕ} (μ : (Σ k, ι k) → ℕ)
     (hμ : ∀ k, ∑ i, μ ⟨k, i⟩ = b k) : ∏ p, y p ^ μ p ∈ relSecM R y b :=
   Submodule.subset_span ⟨μ, hμ, rfl⟩
 
+/- English proof (translation)
+Establish `hfin : {μ : (Σ k, ι k) → ℕ | ∀ k, ∑ i, μ ⟨k, i⟩ = b k}.Finite`. Use `(Set.Finite.pi (t := fun p : (Σ k, ι k) => Set.Iic (b p.1)) fun p => Set.finite_Iic _).subset ?_` and prove the remaining obligations. Introduce `μ hμ p _`. Simplify using `only [Set.mem_Iic]`. Rewrite using `[← hμ p.1]`.
+
+Conclude with `Finset.single_le_sum (f := fun i => μ ⟨p.1, i⟩) (fun _ _ => Nat.zero_le _) (Finset.mem_univ p.2)`. Conclude with `Submodule.fg_span (hfin.image _)`.
+-/
 theorem relSecM_fg (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (b : K → ℕ) : (relSecM R y b).FG := by
   have hfin : {μ : (Σ k, ι k) → ℕ | ∀ k, ∑ i, μ ⟨k, i⟩ = b k}.Finite := by
     refine (Set.Finite.pi (t := fun p : (Σ k, ι k) => Set.Iic (b p.1)) fun p => Set.finite_Iic _).subset ?_
@@ -28,6 +36,11 @@ theorem relSecM_fg (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) (b : K → 
     exact Finset.single_le_sum (f := fun i => μ ⟨p.1, i⟩) (fun _ _ => Nat.zero_le _) (Finset.mem_univ p.2)
   exact Submodule.fg_span (hfin.image _)
 
+/- English proof (translation)
+Establish `hle : relSecM R y b * relSecM R y b' ≤ relSecM R y (b + b')`. Rewrite using `[relSecM, relSecM, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨μ, hμ, rfl⟩, _, ⟨ν, hν, rfl⟩, rfl⟩`. Use `Submodule.subset_span ⟨μ + ν, fun k => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Finset.sum_add_distrib, hμ k, hν k]`.
+
+Simplify using `[pow_add, Finset.prod_mul_distrib]`. Conclude with `hle (Submodule.mul_mem_mul hx hx')`.
+-/
 theorem mul_mem_relSecM (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) {b b' : K → ℕ} {x x' : Ω}
     (hx : x ∈ relSecM R y b) (hx' : x' ∈ relSecM R y b') : x * x' ∈ relSecM R y (b + b') := by
   have hle : relSecM R y b * relSecM R y b' ≤ relSecM R y (b + b') := by
@@ -38,6 +51,9 @@ theorem mul_mem_relSecM (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) {b b' 
     · simp [pow_add, Finset.prod_mul_distrib]
   exact hle (Submodule.mul_mem_mul hx hx')
 
+/- English proof (translation)
+Establish `: Algebra.FiniteType ℤ (Algebra.adjoin ℤ (Set.range g))` using `Algebra.FiniteType.adjoin_of_finite (Set.finite_range g)`. Conclude with `Algebra.FiniteType.isNoetherianRing ℤ _`.
+-/
 theorem adjoin_isNoetherianRing {m : ℕ} (g : Fin m → Ω) : IsNoetherianRing (Algebra.adjoin ℤ (Set.range g)) := by
   have : Algebra.FiniteType ℤ (Algebra.adjoin ℤ (Set.range g)) :=
     Algebra.FiniteType.adjoin_of_finite (Set.finite_range g)
@@ -45,6 +61,11 @@ theorem adjoin_isNoetherianRing {m : ℕ} (g : Fin m → Ω) : IsNoetherianRing 
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Introduce `c hc`. Establish `key : ∀ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * a' k)) = y ⟨k, c k⟩ ^ (-((n : ℤ) * a k)) * (y ⟨k, c k⟩ ^ e k)⁻¹`. Introduce `k`. Rewrite using `[h k, show -(((1 : ℕ) : ℤ) * ((n : ℤ) * a k + (e k : ℤ))) = -((n : ℤ) * a k) + -((e k : ℕ) : ℤ) by push_cast; ring, zpow_add₀ (hc k), zpow_neg (y ⟨k, c k⟩) ((e k : ℕ) : ℤ), zpow_natCast]`. Rewrite using `[Finset.prod_congr rfl fun k _ => key k, Finset.prod_mul_distrib]`.
+
+Establish `hmem : (s * ∏ k, y ⟨k, c k⟩ ^ (-((n : ℤ) * a k))) * ∏ k, (y ⟨k, c0 k⟩ / y ⟨k, c k⟩) ^ e k ∈ Algebra.adjoin R (Set.range fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩)` using `mul_mem (hs c hc) (prod_mem fun k _ => pow_mem (Algebra.subset_adjoin (Set.mem_range_self (f := fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩) ⟨k, c0 k⟩)) _)`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Simplify using `only [div_pow, Finset.prod_div_distrib, Finset.prod_inv_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_prod_mem_relChartLat (R : Subalgebra ℤ Ω) (y : (Σ k, ι k) → Ω) {a a' : K → ℤ} {n : ℕ} (e : K → ℕ)
     (c0 : ∀ k, ι k) (h : ∀ k, a' k = n * a k + e k) {s : Ω} (hs : s ∈ relChartLat R y a n) :
     s * ∏ k, y ⟨k, c0 k⟩ ^ e k ∈ relChartLat R y a' 1 := by

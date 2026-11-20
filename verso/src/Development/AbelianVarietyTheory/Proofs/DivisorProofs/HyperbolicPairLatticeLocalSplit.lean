@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.IwSplitLine
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ x y hxx hyy hxy hyx L hLat v hv hL g`. Take `⟨P, P', hne, hP, hP'⟩` from `hv`. Take `⟨τ, -⟩` from `existsUnique_splitPrime_eq h (v := v) hne (IsDedekindDomain.HeightOneSpectrum.ext hP) (IsDedekindDomain.HeightOneSpectrum.ext hP')`. Take `⟨k, i, qq, hn, hsum⟩` from `GlobalTheory.IwSplitFrame.exists_compl x y (cT (σ : E →+* E) y * J) (cT (σ : E →+* E) x * J) hyx hyy hxx hxy`. Take `⟨B, lv, hB⟩` from `GlobalTheory.Core.Rk.IwFlagSplit.exists_flag_basis (v := v) τ hJ (e := x) (e' := y) (i := i) (p := cT (σ : E →+* E) y * J) (q := qq) (Fintype.equivOfCardEq (by simp only [Fintype.card_sum, Fintype.card_fin]; omega)) hsum hxy`.
+
+Establish `hQ : ∀ z : GLoc σ J v, (B⁻¹ * splitHom σ J τ z * B).1.BlockTriangular lv → z ∈ GlobalTheory.IwSplitFrame.keepGrp (σ` using `σ) (J := J) (v := v) (x.map (inclR (F := F) (Fv F v))) := fun z hz => by`. Take `⟨⟨b, hb⟩, b', hb'⟩` from `hB z hz`. Conclude with `GlobalTheory.IwSplitFrame.keeps_of_split h τ z hyx hb hb'`. Take `⟨q, k', hq, hk, rfl⟩` from `GlobalTheory.Core.Rk.IwFlagSplit.iwasawa_of_triangular h hJ τ L hL _ B lv hQ g`. Take `⟨β, hβ⟩` from `hq`.
+
+Conclude with `⟨q, k', hk, rfl, β, hβ⟩`.
+-/
 theorem iwasawa_line_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (x y : Matrix (Fin n) (Fin 1) E), cT (σ : E →+* E) x * J * x = 0 → cT (σ : E →+* E) y * J * y = 0 → cT (σ : E →+* E) x * J * y = 1 → cT (σ : E →+* E) y * J * x = 1 → ∀ (L : Submodule (𝓞 E) (Fin n → E)), Submodule.IsLattice E L → ∀ (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → IsSelfDualAt σ J L v → ∀ g : GLoc σ J v, ∃ q k : GLoc σ J v, k ∈ stabLoc σ J L v ∧ g = q * k ∧ ∃ β : GL (Fin 1) (Fv F v ⊗[F] E), (matHom _ σ J q).1 * x.map (inclR (F := F) (Fv F v)) = x.map (inclR (F := F) (Fv F v)) * β.1 := by
   intro F E _ _ _ _ _ σ h n J hJ x y hxx hyy hxy hyx L hLat v hv hL g
   obtain ⟨P, P', hne, hP, hP'⟩ := hv

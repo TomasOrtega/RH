@@ -3,6 +3,19 @@ open IsDedekindDomain
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Distinguish the cases in `ha0 : a = 0`. Conclude with `⟨0, 1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp [ha0]⟩`. Establish `hle : FractionalIdeal.spanSingleton (nonZeroDivisors R) a ≤ I` using `FractionalIdeal.spanSingleton_le_iff_mem.2 ha`. Establish `hne : FractionalIdeal.spanSingleton (nonZeroDivisors R) a ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 ha0`. Establish `hc : 0 ≤ FractionalIdeal.count K P (FractionalIdeal.spanSingleton (nonZeroDivisors R) a)` using `hI ▸ FractionalIdeal.count_mono K P hne hle`.
+
+Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := R) a`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Establish `hyK : algebraMap R K y ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at ha0`. Establish `hcoe : ∀ r : R, r ≠ 0 → FractionalIdeal.count K P (FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K r)) = ((Associates.mk P.asIdeal).count (Associates.mk (Ideal.span {r} : Ideal R)).factors : ℤ)`.
+
+Introduce `r hr`. Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K P]`. Simplify using `using hr`. Establish `hmul : FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K x / algebraMap R K y) * FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K y) = FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K x)`. Rewrite using `[FractionalIdeal.spanSingleton_mul_spanSingleton, div_mul_cancel₀ _ hyK]`.
+
+Establish `hcnt` using `congrArg (FractionalIdeal.count K P) hmul`. Rewrite `hcnt` using `[FractionalIdeal.count_mul K P hne (FractionalIdeal.spanSingleton_ne_zero_iff.2 hyK), hcoe x hx0, hcoe y hy0]`. Establish `hval : P.valuation K (algebraMap R K x / algebraMap R K y) ≤ 1`. Rewrite using `[map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_if_neg _ hx0, HeightOneSpectrum.intValuation_if_neg _ hy0, div_le_one₀ (zero_lt_iff.2 WithZero.exp_ne_zero), WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hmem : algebraMap R K x / algebraMap R K y ∈ P.valuationSubringAtPrime K`. Rewrite using `[HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring]`. Conclude with `hval`. Take `⟨⟨b, c⟩, hbc⟩` from `IsLocalization.surj P.asIdeal.primeCompl (⟨_, hmem⟩ : P.valuationSubringAtPrime K)`. Use `⟨b, c, c.2, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (algebraMap (P.valuationSubringAtPrime K) K) hbc` as an intermediate fact. Rewrite `this` using `[map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[mul_comm]`. Conclude with `this`.
+-/
 theorem exists_den_not_mem_of_count_eq_zero {R K : Type} [CommRing R] [IsDedekindDomain R]
     [Field K] [Algebra R K] [IsFractionRing R K] (P : IsDedekindDomain.HeightOneSpectrum R)
     (I : FractionalIdeal (nonZeroDivisors R) K) (hI : FractionalIdeal.count K P I = 0)

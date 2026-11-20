@@ -12,11 +12,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `N` and use `by have hle : I ^ N ≤ (I' ^ N).comap f := le_trans (Ideal.pow_right_mono h N) (Ideal.le_comap_pow _ N) exact (hF N).comp (Ideal.quotientMap _ f hle)`.
+-/
 private theorem cont_map {Γ R R' : Type} [TopologicalSpace Γ] [CommRing R] [CommRing R'] (f : R →+* R') {I : Ideal R} {I' : Ideal R'}
     (h : ∀ x ∈ I, f x ∈ I') {F : Γ → R} (hF : AdicCont I F) : AdicCont I' fun g => f (F g) := fun N => by
   have hle : I ^ N ≤ (I' ^ N).comap f := le_trans (Ideal.pow_right_mono h N) (Ideal.le_comap_pow _ N)
   exact (hF N).comp (Ideal.quotientMap _ f hle)
 
+/- English proof (translation)
+Introduce `hC Ω _ _ _ l _ c D hD hF`. Take `⟨U, _, _, _, ρ, W, hpt, hz, hform, hnf⟩` from `Po.univGr hC D hD hF`. Use `haveI : IsCO c.O (W.gr 0) := wPres_gr_zero_isCO_of_mem_maximalIdeal c.O _ U W hz`. Take `⟨hmax, u, hu, hspan⟩` from `wPres_maximalIdeal_gr_zero_eq_sup_span_monomials c.O _ U W hz`. Take `⟨𝔞, A, _, _, _, f, s, y, hch, hf, hy, hloc, ⟨b, hb, hb0⟩, hO, hcl⟩` from `Po.ambPt c (W.gr 0) hnf`.
+
+Take `⟨A', _, _, _, f', Ξ, hf', hΞ, hext⟩` from `Po.ptA 𝔞 A f hf s c.O _ U W hz y (fun b hb => hloc b ((hmax b).2 hb)) hcl`. Set `Y : U →+* 𝔞.V` to `f'.comp Ξ`. Establish `hya : ∀ a, y (algebraMap c.O (W.gr 0) a) = 𝔞.a c a` using `fun a => RingHom.congr_fun hy a`. Establish `hYa : ∀ a, Y (algebraMap c.O U a) = 𝔞.a c a` using `fun a => by`. Establish `e : ((algebraMap c.O (W.gr 0) a : W.A) : U) = algebraMap c.O U a`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← hya, ← hext, e]`. Both sides reduce to the same expression. Establish `hYm : ∀ x ∈ maximalIdeal U, Y x ∈ maximalIdeal 𝔞.V` using `fun x hx => by haveI := hf'.loc`. Conclude with `map_nonunit f' _ (hΞ x hx)`.
+
+Use `⟨𝔞, mapRep Y ρ.hom, hch, ⟨⟨A', inferInstance, inferInstance, inferInstance, f', ⟨mapRep Ξ ρ.hom, fun _ => 1⟩, hf', fun i j => cont_map Ξ hΞ (ρ.cont i j), PD.ext rfl (funext fun _ => Matrix.map_one _ (map_zero _) (map_one _))⟩, U, inferInstance, inferInstance, inferInstance, ρ, Y, …` and prove the remaining obligations. Establish `hex : ∃ v ∈ u, y v ≠ 0`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `hb0 (show b ∈ RingHom.ker y from (?_ : maximalIdeal (W.gr 0) ≤ RingHom.ker y) hb)` and prove the remaining obligations.
+
+Rewrite using `[hspan]`. Use `sup_le (Ideal.map_le_iff_le_comap.2 fun a ha => ?_) (Ideal.span_le.2 fun v hv => hn v hv)` and prove the remaining obligations. Use `show y _ = 0`. Rewrite using `[hya, hO a ha]`. Take `⟨v, hv, hv0⟩` from `hex`.
+
+Take `⟨n, -, hn, hvn⟩` from `hu v hv`. Use `haveI := (Po.fin_res c).1`. Use `haveI : CharP 𝔞.V l := haveI := hch`. Use the proof step `𝔞.V.subtype.charP Subtype.val_injective l`. Establish `hvm : v ∈ maximalIdeal (W.gr 0)` using `hspan ▸ Ideal.mem_sup_right (Ideal.subset_span hv)`.
+
+Use `Po.nonAlg l c.O _ U ρ.hom 𝔞.V Y (fun a ha => by rw [hYa, hO a ha]) ((v : W.A) : U) ?_ (hYm _ ((hmax v).1 hvm)) ?_` and prove the remaining obligations. Rewrite using `[hvn]`. Conclude with `Po.zMono c.O _ U ρ.hom W (fun g a b => D.r0 g a b) (fun g a b h => Matrix.diagonal_apply_ne (fun i => (D.ps i g : c.O)) h) hform n hn`. Use `show f' (Ξ _) ≠ 0`. Rewrite using `[hext]` and apply the resulting hypothesis.
+-/
 theorem UpperTheory.V.Ws.ptOver :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ¬ D.Fin0 → ∃ (𝔞 : Amb l) (r : G ℚ Ω →* M4 𝔞.V), CharP 𝔞.K l ∧ VPt D 𝔞 r ∧ ∃ x ∈ mono r 0, ∀ n : ℕ, 0 < n → x ^ l ^ n ≠ x := by
   intro hC Ω _ _ _ l _ c D hD hF

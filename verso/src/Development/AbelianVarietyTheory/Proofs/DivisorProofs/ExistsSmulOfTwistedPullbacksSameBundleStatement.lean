@@ -17,6 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TwistRatio.exists_smul_of_isTwistPull | exact GlobalTheory.TwistRatio.exists_smul_of_isTwistPull | (intros; apply GlobalTheory.TwistRatio.exists_smul_of_isTwistPull <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_smul_of_twistedPullbacks_sameBundle : ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (P : PolAV (Sp K)) (m : ℕ), 1 ≤ m →
     ∀ (th : LB.Sec (LPow P.A P.L ((1 : ℕ) : ℤ) (baseOver (Sp K))))
       (α α' : LB.Gen (LB.LinComb P.L (K := Fin 2) ![(snd (baseOver (Sp K)) P.A).left, (snd (baseOver (Sp K)) P.A ^ m).left]

@@ -9,6 +9,13 @@ open GlobalTheory.Mum
 noncomputable section
 namespace GlobalTheory.FibOpen
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `X' Y' i₁ i₂ f' hf`. Establish `h1 : UniversallyClosed f'` using `MorphismProperty.of_isPullback hf.flip inferInstance`. Establish `h2 : UniversallyInjective f'` using `MorphismProperty.of_isPullback hf.flip inferInstance`. Establish `h3 : Surjective f'` using `MorphismProperty.of_isPullback hf.flip inferInstance`.
+
+Establish `hb : Function.Bijective f'` using `⟨f'.injective, f'.surjective⟩`. Use `show IsOpenMap f'`. Introduce `U hU`. Establish `e : f' '' U = (f' '' Uᶜ)ᶜ` using `by rw [Set.image_compl_eq hb, compl_compl]`. Rewrite using `[e]`.
+
+Conclude with `(f'.isClosedMap _ hU.isClosed_compl).isOpen_compl`.
+-/
 theorem universallyOpen_of {X Y : Scheme.{0}} (f : X ⟶ Y) [UniversallyClosed f] [UniversallyInjective f]
     [Surjective f] : UniversallyOpen f := by
   constructor
@@ -23,12 +30,18 @@ theorem universallyOpen_of {X Y : Scheme.{0}} (f : X ⟶ Y) [UniversallyClosed f
   rw [e]
   exact (f'.isClosedMap _ hU.isClosed_compl).isOpen_compl
 
+/- English proof (translation)
+The claim follows from `pullback.hom_ext h₁ h₂ @[reassoc]`.
+-/
 theorem fiber_hom_ext {X Y T : Scheme.{0}} (f : X ⟶ Y) (y : Y) {u v : T ⟶ f.fiber y}
     (h₁ : u ≫ f.fiberι y = v ≫ f.fiberι y)
     (h₂ : u ≫ f.fiberToSpecResidueField y = v ≫ f.fiberToSpecResidueField y) : u = v :=
   pullback.hom_ext h₁ h₂
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `pullback.condition`.
+-/
 theorem fiber_condition {X Y : Scheme.{0}} (f : X ⟶ Y) (y : Y) :
     f.fiberι y ≫ f = f.fiberToSpecResidueField y ≫ Y.fromSpecResidueField y :=
   pullback.condition
@@ -38,15 +51,26 @@ def fiberLift {X Y T : Scheme.{0}} (f : X ⟶ Y) (y : Y) (u : T ⟶ X) (v : T �
   pullback.lift u v h
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+-/
 theorem fiberLift_ι {X Y T : Scheme.{0}} (f : X ⟶ Y) (y : Y) (u : T ⟶ X) (v : T ⟶ Spec (Y.residueField y))
     (h : u ≫ f = v ≫ Y.fromSpecResidueField y) : fiberLift f y u v h ≫ f.fiberι y = u :=
   pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem fiberLift_snd {X Y T : Scheme.{0}} (f : X ⟶ Y) (y : Y) (u : T ⟶ X) (v : T ⟶ Spec (Y.residueField y))
     (h : u ≫ f = v ≫ Y.fromSpecResidueField y) : fiberLift f y u v h ≫ f.fiberToSpecResidueField y = v :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`. Both sides reduce to the same expression.
+
+Introduce and unpack `rfl`. Take `⟨z⟩` from `‹Nonempty T›`. Conclude with `⟨z, by rw [Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]⟩`.
+-/
 theorem range_comp_fromSpecResidueField {X T : Scheme.{0}} [Nonempty T] (x : X) (t : T ⟶ Spec (X.residueField x)) :
     Set.range (t ≫ X.fromSpecResidueField x) = {x} := by
   ext y
@@ -58,6 +82,9 @@ theorem range_comp_fromSpecResidueField {X T : Scheme.{0}} [Nonempty T] (x : X) 
     obtain ⟨z⟩ := ‹Nonempty T›
     exact ⟨z, by rw [Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]⟩
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`.
+-/
 theorem comp_fromSpecResidueField_apply {Y T : Scheme.{0}} (y : Y) (t : T ⟶ Spec (Y.residueField y)) (z : T) :
     (t ≫ Y.fromSpecResidueField y) z = y := by
   rw [Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]
@@ -67,6 +94,33 @@ end
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+Introduce `R _ _ _ _ S X π U a b g τ c hπp hπs hΓ hlft hsep hap haO hτ hc₁ hc₂ het x hxc hxcl hinj hsurj φ hφ₁ hφ₂`. Set `ψ : a.fiber x ⟶ pullback ((pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberToSpecResidueField (τ x)) (Spec.map (τ.residueFieldMap x))` to `pullback.lift φ (a.fiberToSpecResidueField x) hφ₂`. Establish `hψ₁ : ψ ≫ pullback.fst _ _ = φ` using `pullback.lift_fst _ _ _`. Establish `hψ₂ : ψ ≫ pullback.snd _ _ = a.fiberToSpecResidueField x` using `pullback.lift_snd _ _ _`. Establish `hSx : pullback.fst ((pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberToSpecResidueField (τ x)) (Spec.map (τ.residueFieldMap x)) ≫ (pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberToSpecResidueField (τ x) = pullback.snd _ _ ≫ (Spec.map (τ.residueFieldMap x))` using `pullback.condition`.
+
+Establish `hres : U.left.fromSpecResidueField x ≫ τ = (Spec.map (τ.residueFieldMap x)) ≫ 𝔸(Fin g; Sp R).fromSpecResidueField (τ x)` using `(τ.SpecMap_residueFieldMap_fromSpecResidueField x).symm`. Establish `hFc : (pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π) ≫ (𝔸(Fin g; Sp R) ↘ Sp R) = pullback.snd (𝔸(Fin g; Sp R) ↘ Sp R) π ≫ π` using `pullback.condition`. Establish `hb : a.fiberι x ≫ b = φ ≫ (pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberι (τ x) ≫ pullback.snd _ _`. Rewrite using `[← hc₂, ← Category.assoc, ← hφ₁, Category.assoc]`. It suffices to establish `h : UniversallyOpen ψ by`.
+
+Rewrite using `[← hψ₁]`. Use `infer_instance`. Use `haveI : IsProper a := hap`. Use `haveI : IsProper π := hπp`. Use `haveI : IsProper (a.fiberToSpecResidueField x) := MorphismProperty.pullback_snd (P := @IsProper) _ _ hap`.
+
+Use `haveI : IsSeparated (pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π) := MorphismProperty.pullback_fst (P := @IsSeparated) _ _ inferInstance`. Use `haveI : IsSeparated ((pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberToSpecResidueField (τ x)) := MorphismProperty.pullback_snd (P := @IsSeparated) _ _ inferInstance`. Use `haveI : IsProper (ψ ≫ pullback.snd _ _) := by rw [hψ₂]; infer_instance`. Use `haveI : IsProper ψ := IsProper.of_comp ψ (pullback.snd ((pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberToSpecResidueField (τ x)) (Spec.map (τ.residueFieldMap x)))`. Use `haveI : UniversallyInjective ψ := by`.
+
+Use `((tfae_universallyInjective ψ).out 0 1).mpr ?_` and prove the remaining obligations. Introduce `K _ q q' hq`. Simplify using `only at hq`. Establish `e₂ : q ≫ a.fiberToSpecResidueField x = q' ≫ a.fiberToSpecResidueField x`. Rewrite using `[← hψ₂, ← Category.assoc, hq, Category.assoc]`.
+
+Establish `e₃ : q ≫ φ = q' ≫ φ` using `by rw [← hψ₁, ← Category.assoc, hq, Category.assoc]`. Establish `ea : ∀ q : Spec (.of K) ⟶ a.fiber x, (q ≫ a.fiberι x) ≫ a = (q ≫ a.fiberToSpecResidueField x) ≫ U.left.fromSpecResidueField x` using `fun q => by`. Rewrite using `[Category.assoc, Category.assoc, GlobalTheory.FibOpen.fiber_condition]`. Establish `key` using `hinj K (q ≫ a.fiberι x) (q' ≫ a.fiberι x) (by rw [ea]; exact GlobalTheory.FibOpen.range_comp_fromSpecResidueField x _) (by rw [ea, ea, e₂]) (by rw [Category.assoc, Category.assoc, hb, ← Category.assoc q, e₃, Category.assoc])`. Conclude with `GlobalTheory.FibOpen.fiber_hom_ext a x key e₂`.
+
+Use `haveI : Surjective ψ := by`. Prove the components needed by the constructor for the conclusion. Introduce `y`. Set `Ω` to `AlgebraicClosure ((pullback ((pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberToSpecResidueField (τ x)) (Spec.map (τ.residueFieldMap x))).residueField y)`. Set `t : Sp Ω ⟶ pullback ((pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberToSpecResidueField (τ x)) (Spec.map (τ.residueFieldMap x))` to `Spec.map (CommRingCat.ofHom (algebraMap ((pullback ((pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberToSpecResidueField (τ x)) (Spec.map (τ.residueFieldMap x))).residueField y) Ω)) ≫ (pullback ((pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberToSpecResidueField (τ x)) (Spec.map (τ.resi …`.
+
+Set `ξ` to `(t ≫ pullback.snd _ _) ≫ U.left.fromSpecResidueField x`. Set `s` to `t ≫ pullback.fst _ _ ≫ (pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberι (τ x) ≫ pullback.snd (𝔸(Fin g; Sp R) ↘ Sp R) π`. Establish `hξ : ξ ≫ U.hom = s ≫ π`. Simplify using `only [ξ, s, Category.assoc]`. Rewrite using `[← hτ, ← hFc, reassoc_of% hres, GlobalTheory.FibOpen.fiber_condition_assoc, reassoc_of% hSx]`.
+
+Take `⟨p, hp₁, hp₂⟩` from `hsurj Ω ξ s (GlobalTheory.FibOpen.range_comp_fromSpecResidueField x _) hξ`. Set `q : Sp Ω ⟶ a.fiber x` to `GlobalTheory.FibOpen.fiberLift a x p (t ≫ pullback.snd _ _) (by rw [hp₁])`. Establish `hqt : q ≫ ψ = t`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ₁]`.
+
+Apply `GlobalTheory.FibOpen.fiber_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hφ₁, GlobalTheory.FibOpen.fiberLift_ι_assoc]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc]`. Rewrite using `[hc₁, reassoc_of% hp₁]`.
+
+Simplify using `only [ξ, Category.assoc]`. Rewrite using `[hres, GlobalTheory.FibOpen.fiber_condition, reassoc_of% hSx]`. Simplify using `only [Category.assoc]`. Rewrite using `[hc₂, hp₂]`. Rewrite using `[Category.assoc, hφ₂, GlobalTheory.FibOpen.fiberLift_snd_assoc]`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[hSx]`. Rewrite using `[Category.assoc, hψ₂, GlobalTheory.FibOpen.fiberLift_snd]`. Take `⟨z⟩ : Nonempty (Sp Ω)` from `inferInstance`. Use `⟨q z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.comp_apply, hqt]`. Conclude with `GlobalTheory.FibOpen.comp_fromSpecResidueField_apply y _ z`. Conclude with `GlobalTheory.FibOpen.universallyOpen_of ψ`.
+-/
 theorem GlobalTheory.FibOpen.fibre_universallyOpen : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (S X : Scheme.{0}) (π : S ⟶ Sp R) (U : Over (Sp R)) (a : X ⟶ U.left) (b : X ⟶ S) (g : ℕ) (τ : U.left ⟶ 𝔸(Fin g; Sp R)) (c : X ⟶ pullback (𝔸(Fin g; Sp R) ↘ Sp R) π), IsProper π → Surjective π → Function.Bijective π.appTop.hom → LocallyOfFiniteType U.hom → IsSeparated U.hom → IsProper a → (∀ V : U.left.Opens, Function.Bijective (a.app V).hom) → τ ≫ (𝔸(Fin g; Sp R) ↘ Sp R) = U.hom → c ≫ pullback.fst _ _ = a ≫ τ → c ≫ pullback.snd _ _ = b → Etale c → ∀ x : U.left, IsClosed ({x} : Set U.left) → U.hom x = closedPoint R → (∀ (Ω : Type) [Field Ω] (p p' : Sp Ω ⟶ X), Set.range (p ≫ a) = {x} → p ≫ a = p' ≫ a → p ≫ b = p' ≫ b → p = p') → (∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ξ : Sp Ω ⟶ U.left) (s : Sp Ω ⟶ S), Set.range ξ = {x} → ξ ≫ U.hom = s ≫ π → ∃ p : Sp Ω ⟶ X, p ≫ a = ξ ∧ p ≫ b = s) → ∀ φ : a.fiber x ⟶ (pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiber (τ x), φ ≫ (pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberι (τ x) = a.fiberι x ≫ c → φ ≫ (pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberToSpecResidueField (τ x) = a.fiberToSpecResidueField x ≫ Spec.map (τ.residueFieldMap x) → UniversallyOpen φ := by
   intro R _ _ _ _ S X π U a b g τ c hπp hπs hΓ hlft hsep hap haO hτ hc₁ hc₂ het x hxc hxcl hinj hsurj φ hφ₁ hφ₂
   let ψ : a.fiber x ⟶ pullback ((pullback.fst (𝔸(Fin g; Sp R) ↘ Sp R) π).fiberToSpecResidueField (τ x)) (Spec.map (τ.residueFieldMap x)) :=

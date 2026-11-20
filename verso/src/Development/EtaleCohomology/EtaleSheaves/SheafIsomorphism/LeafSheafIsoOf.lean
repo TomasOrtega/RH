@@ -14,6 +14,17 @@ def LeafSecRep : Prop := ∀ (B : Scheme.{0}) (q : ℕ), ∃ e : ∀ (F : SShv B
     e F U' ((H0 B q).map ((OU B q).map a) ≫ t) = F.val.map a.op (e F U t)) ∧
   (∀ (F : SShv B q) (U : B.Etale) (t t' : (H0 B q).obj ((OU B q).obj U) ⟶ F), e F U (t - t') = e F U t - e F U t')
 
+/- English proof (translation)
+Introduce `B q F G g hinj hsurj`. Take `⟨e, hg, hres, hsub⟩` from `hR B q`. Establish `h0 : ∀ (F : SShv B q) U, e F U 0 = 0` using `fun F U => by simpa using hsub F U 0 0`. Establish `: EssentiallySmall.{1} B.Etale` using `inferInstance`. Establish `hSC : (EtTop B).HasSheafCompose (forget (ModuleCat.{1} (ULift.{1} (ZMod q))))` using `hasSheafComposeEssentiallySmallSite (J := EtTop B) (A := ModuleCat.{1} (ULift.{1} (ZMod q))) (F := forget _)`.
+
+Use `(Sheaf.isLocallyBijective_iff_isIso g).1 ⟨⟨fun {X} x y hxy => ?_⟩, ⟨fun {U} s => ?_⟩⟩` and prove the remaining obligations. Set `t` to `(e F X.unop).symm x - (e F X.unop).symm y`. Establish `ht : t ≫ g = 0`. Apply `(e G X.unop).injective` to reduce the goal to its premises. Rewrite using `[hg, hsub, h0, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`.
+
+Simplify `hxy` using `[sub_eq_zero]`. Take `⟨S, hS, hP⟩` from `hinj X.unop t ht`. Use `(EtTop B).superset_covering ?_ hS` and prove the remaining obligations. Introduce `U' a ha`. Use `congrArg (e F U') (hP U' a ha)` as an intermediate fact.
+
+Rewrite `this` using `[hres, h0, hsub, Equiv.apply_symm_apply, Equiv.apply_symm_apply, map_sub, sub_eq_zero]`. Conclude with `this`. Take `⟨S, hS, hP⟩` from `hsurj U ((e G U).symm s)`. Use `(EtTop B).superset_covering ?_ hS` and prove the remaining obligations. Introduce `U' a ha`.
+
+Take `⟨t, ht⟩` from `hP U' a ha`. Use `⟨e F U' t, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, ← ht, hres, Equiv.apply_symm_apply]`.
+-/
 theorem LeafSheafIso_of (hR : LeafSecRep) : LeafSheafIso := by
   intro B q F G g hinj hsurj
   obtain ⟨e, hg, hres, hsub⟩ := hR B q

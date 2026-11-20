@@ -14,6 +14,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
   {ex : Extra D L hT Gi Gl Kc Y cX} {t : KerEntTied ex} {u : D.what₂.Word} {μ : D.what₂.Tup} {St : ChainCharts D u μ}
   {A : AdData t u μ St} {dtU : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm →* D.Dt} {a : 𝓞 D.host.E}
 
+/- English proof (translation)
+Rewrite using `[← H.N_eq i hi c]`. Conclude with `H.lat i hi c`. Use `frame P := H.frame i hi c P`. Use `fnl P v h hv := by`. Take `⟨ι, hι⟩` from `H.fnl i hi ((St i hi).chOf c) P v h hv`.
+
+Conclude with `Classical.epsilon_spec (p := fun ι => ∀ c', (St i hi).chOf c' = (St i hi).chOf c → FunMoved t.seam ((St i hi).K ((St i hi).chOf c)).lev P v h ι (A.mov i hi c') (A.pt i hi c').deco.1) ⟨ι, hι⟩ c rfl`.
+-/
 theorem isPtAd_rep (H : AdTie A dtU a) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.chTw u μ).cls i) :
     IsPtAd A a i hi ((St i hi).chOf c) ((St i hi).y c) (A.pt i hi c) where
   lat := by
@@ -26,10 +31,20 @@ theorem isPtAd_rep (H : AdTie A dtU a) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.chTw
       (p := fun ι => ∀ c', (St i hi).chOf c' = (St i hi).chOf c →
         FunMoved t.seam ((St i hi).K ((St i hi).chOf c)).lev P v h ι (A.mov i hi c') (A.pt i hi c').deco.1) ⟨ι, hι⟩ c rfl
 
+/- English proof (translation)
+Take `⟨⟨c, rfl⟩, -⟩` from `((St i hi).K β).y_bij.2 (Quotient.mk'' 1)`. Conclude with `⟨_, _, isPtAd_rep H i hi c⟩`.
+-/
 theorem exists_isPtAd (H : AdTie A dtU a) (i : ℕ) (hi : i ≤ D.R.m) (β : (St i hi).Ch) : ∃ x p, IsPtAd A a i hi β x p := by
   obtain ⟨⟨c, rfl⟩, -⟩ := ((St i hi).K β).y_bij.2 (Quotient.mk'' 1)
   exact ⟨_, _, isPtAd_rep H i hi c⟩
 
+/- English proof (translation)
+Establish `h : ∃ y' : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm, Matrix.GeneralLinearGroup.det y'.1 = Matrix.GeneralLinearGroup.det y.1` using `⟨y, rfl⟩`. Establish `e : h.choose = y`. Establish `hc` using `congrArg Units.val h.choose_spec`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_unique] at hc`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Conclude with `hc`.
+
+Unfold `muOf`. Rewrite using `[dif_pos h, e]`.
+-/
 theorem muOf_det (j : ℕ) (y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm) :
     muOf t u μ dtU j (Matrix.GeneralLinearGroup.det y.1) = (((t.O u μ).mt j (dtU y) : ℂˣ) : ℂ) := by
   have h : ∃ y' : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm, Matrix.GeneralLinearGroup.det y'.1 = Matrix.GeneralLinearGroup.det y.1 := ⟨y, rfl⟩
@@ -52,6 +67,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (sel : HeightOneSpectrum (𝓞
 
 open Classical in
 
+/- English proof (translation)
+Unfold `frsF`. Use `split_ifs with h`. Conclude with `(Deco.liftFr_spec (p.deco.2.hasLift ⟨P.1, h⟩)).1 x`. Conclude with `p.2 ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩ x`.
+-/
 theorem frsF_mem {j : ℕ} (p : ChPt (R := R) sel mu w j) (P : rowSG Pr sel mu) (x : Sp X.E (R.N j)) :
     frsF sel mu p P x ∈ p.deco.1.at P.1 ↔ x ∈ stdAt X.E (R.N j) P.1 := by
   unfold frsF
@@ -59,6 +77,15 @@ theorem frsF_mem {j : ℕ} (p : ChPt (R := R) sel mu w j) (P : rowSG Pr sel mu) 
   · exact (Deco.liftFr_spec (p.deco.2.hasLift ⟨P.1, h⟩)).1 x
   · exact p.2 ⟨P.1, (Finset.mem_union.mp P.2).resolve_left h⟩ x
 
+/- English proof (translation)
+Use `show (∃ s ∈ P.asIdeal.primeCompl, s • w ∈ _) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsw⟩ l`. Take `⟨r, hr⟩` from `(Submodule.mem_one).1 (hsw l (Set.mem_univ l))`. Use `⟨r, s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hr]`. Simplify using `[Algebra.smul_def]`. Introduce `h choose r s hs e using h`. Use `⟨∏ l, s l, Submonoid.prod_mem _ fun l _ => hs l, fun l _ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((∏ l, s l) • w) l ∈ (1 : Submodule (𝓞 X.E) X.E)`.
+
+Rewrite using `[Submodule.mem_one]`. Use `⟨r l * ∏ k ∈ Finset.univ.erase l, s k, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase Finset.univ s (Finset.mem_univ l)]`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul, map_prod]`. Rewrite using `[← e l]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem mem_stdAt_iff_forall_intAt {n : ℕ} (P : HeightOneSpectrum (𝓞 X.E)) (w : Sp X.E n) :
     w ∈ stdAt X.E n P ↔ ∀ l, IntAt P (w l) := by
   show (∃ s ∈ P.asIdeal.primeCompl, s • w ∈ _) ↔ _
@@ -81,6 +108,11 @@ private theorem mem_stdAt_iff_forall_intAt {n : ℕ} (P : HeightOneSpectrum (�
 
 open Classical in
 
+/- English proof (translation)
+Apply the tactic sequence `have hc : ((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then 0 else cst.M))⁻¹ = ((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then (0 : ℤ) else (cst.M : ℤ)))⁻¹ := by split_ifs <;> simp`. Establish `e : ((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then (0 : ℤ) else (cst.M : ℤ)))⁻¹ • (z - y) = frsF sel mu p P (((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then (0 : ℤ) else (cst.M : ℤ)))⁻¹ • ((frsF sel mu p P).symm z - (frsF sel mu p P).symm y))`. Rewrite using `[map_smul, map_sub, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[e, frsF_mem, mem_stdAt_iff_forall_intAt]`. Unfold `SameCoset`.
+
+Simplify using `only [hc, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem sameCoset_iff {j : ℕ} (p : ChPt (R := R) sel mu w j) (P : rowSG Pr sel mu) (z y : Sp X.E (R.N j)) :
     SameCoset sel mu cst P ((frsF sel mu p P).symm z) ((frsF sel mu p P).symm y) ↔
       (((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then (0 : ℤ) else (cst.M : ℤ)))⁻¹ • (z - y)) ∈ p.deco.1.at P.1 := by
@@ -95,6 +127,11 @@ theorem sameCoset_iff {j : ℕ} (p : ChPt (R := R) sel mu w j) (P : rowSG Pr sel
   unfold SameCoset
   simp only [hc, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `l`. Take `⟨r₁, s₁, hs₁, e₁⟩` from `h l`. Take `⟨r₂, s₂, hs₂, e₂⟩` from `h' l`. Use `⟨r₁ * s₂ + r₂ * s₁, s₁ * s₂, fun hm => (P.1.isPrime.mem_or_mem hm).elim hs₁ hs₂, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply] at e₁ e₂ ⊢`.
+
+Rewrite using `[map_add, map_mul, map_mul, map_mul, ← e₁, ← e₂]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sameCoset_trans {n : ℕ} {P : rowSG Pr sel mu} {x y z : Sp X.E n} (h : SameCoset sel mu cst P x y) (h' : SameCoset sel mu cst P y z) :
     SameCoset sel mu cst P x z := by
   intro l
@@ -105,6 +142,11 @@ theorem sameCoset_trans {n : ℕ} {P : rowSG Pr sel mu} {x y z : Sp X.E n} (h : 
   rw [map_add, map_mul, map_mul, map_mul, ← e₁, ← e₂]
   ring
 
+/- English proof (translation)
+Introduce `l`. Take `⟨r, s, hs, e⟩` from `h l`. Use `⟨-r, s, hs, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply] at e ⊢`. Rewrite using `[map_neg, ← e]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sameCoset_symm {n : ℕ} {P : rowSG Pr sel mu} {x y : Sp X.E n} (h : SameCoset sel mu cst P x y) :
     SameCoset sel mu cst P y x := by
   intro l
@@ -114,6 +156,13 @@ theorem sameCoset_symm {n : ℕ} {P : rowSG Pr sel mu} {x y : Sp X.E n} (h : Sam
   rw [map_neg, ← e]
   ring
 
+/- English proof (translation)
+Take `⟨y, -, rfl⟩` from `h`. Use `⟨y, ?_, fun z => ?_⟩` and prove the remaining obligations. Use `show y - y ∈ locLat (rowSG Pr sel mu) p.deco.1.N _`. Rewrite using `[sub_self]`. Conclude with `Submodule.zero_mem _`.
+
+Use `show z - y ∈ locLat (rowSG Pr sel mu) p.deco.1.N _ ↔ _`. Unfold `locLat`. Rewrite using `[Submodule.mem_iInf]`. Use `forall_congr' fun P => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, sameCoset_iff]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mem_of_ybSet {j : ℕ} (p : ChPt (R := R) sel mu w j) {Yb : Set (Sp X.E (R.N j))} (h : Yb ∈ ybSet sel mu cst p.deco.1.N) :
     ∃ y ∈ Yb, ∀ z, z ∈ Yb ↔ ∀ P, SameCoset sel mu cst P ((frsF sel mu p P).symm z) ((frsF sel mu p P).symm y) := by
   obtain ⟨y, -, rfl⟩ := h
@@ -130,10 +179,18 @@ theorem mem_of_ybSet {j : ℕ} (p : ChPt (R := R) sel mu w j) {Yb : Set (Sp X.E 
 
 end Gen
 
+/- English proof (translation)
+Unfold `y0At`. Rewrite using `[dif_pos rfl]`.
+-/
 theorem chartBaseRepresentative_penultimate_step (β : (St (t.m2 + 1) (cpl_lt t μ).le).Ch) (P : SB t μ) : y0At A (t.m2 + 1) (cpl_lt t μ).le β P = A.y0 β P := by
   unfold y0At
   rw [dif_pos rfl]
 
+/- English proof (translation)
+Take `⟨y₀, hy₀, hmem⟩` from `mem_of_ybSet t.sel (t.tup μ) (t.cst μ) (A.pt _ (cpl_lt t μ).le c) (H.chain.2.1 c)`. Use extensionality with `z`. Simplify using `only [cosetOf, Set.mem_ofPred_eq, chartBaseRepresentative_penultimate_step]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+
+Rewrite using `[hmem]`. Introduce `P`. Conclude with `sameCoset_trans _ _ _ (hz P) (sameCoset_symm _ _ _ (H.coset c y₀ hy₀ P))`. Introduce `hz P`. Conclude with `H.coset c z hz P`.
+-/
 theorem cosetOf_rep (H : AdTie A dtU a) (c : (D.chTw u μ).cls (t.m2 + 1)) :
     cosetOf A (t.m2 + 1) (cpl_lt t μ).le ((St _ (cpl_lt t μ).le).chOf c) (A.pt _ (cpl_lt t μ).le c) = A.yb c := by
   obtain ⟨y₀, hy₀, hmem⟩ := mem_of_ybSet t.sel (t.tup μ) (t.cst μ) (A.pt _ (cpl_lt t μ).le c) (H.chain.2.1 c)
@@ -147,6 +204,11 @@ theorem cosetOf_rep (H : AdTie A dtU a) (c : (D.chTw u μ).cls (t.m2 + 1)) :
   · intro hz P
     exact H.coset c z hz P
 
+/- English proof (translation)
+Unfold `xiPt`. Use `split_ifs with h₁ h₂`. Rewrite using `[H.chain.2.2.1 i h₁ c c' z]`. Substitute `h₂` using the available equality. Rewrite using `[H.chain.2.2.2.1 c c' z, ← cosetOf_rep H c']`.
+
+Establish `h₃ : i = t.m2 + 1`. Use `m_eq t μ` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute `h₃` using the available equality. Rewrite using `[H.chain.2.2.2.2.1.2 c c' z, ← cosetOf_rep H c]`.
+-/
 theorem xiPt_rep (H : AdTie A dtU a) (i : ℕ) (hi : i + 1 ≤ D.R.m) (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1))
     (z : HomE t.X.E (D.R.N i) (D.R.N (i + 1))) :
     t.seam.σ₀ (xiPt A i hi ((St i _).chOf c) ((St (i + 1) hi).chOf c') (A.pt i (Nat.le_of_succ_le hi) c) (A.pt (i + 1) hi c') z) =
@@ -162,6 +224,11 @@ theorem xiPt_rep (H : AdTie A dtU a) (i : ℕ) (hi : i + 1 ≤ D.R.m) (c : (D.ch
     subst h₃
     rw [H.chain.2.2.2.2.1.2 c c' z, ← cosetOf_rep H c]
 
+/- English proof (translation)
+Establish `h₁` using `isPtAd_rep H i (Nat.le_of_succ_le hi) c`. Establish `h₂` using `isPtAd_rep H (i + 1) hi c'`. Unfold `xiAd`. Use `split`. Use `next h =>`.
+
+Rewrite using `[hA _ _ _ _ _ _ _ _ _ _ h₁ h₂ h.1.choose_spec h.2.choose_spec (fun _ _ => ⟨rfl, rfl⟩)]`. Conclude with `xiPt_rep H i hi c c' _`. Use `next h => exact absurd ⟨⟨_, h₁⟩, ⟨_, h₂⟩⟩ h`.
+-/
 theorem xiAd_rep (H : AdTie A dtU a) (i : ℕ) (hi : i + 1 ≤ D.R.m) (hA : PtAway A a i hi)
     (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1)) (z : HomE D.host.E (D.R.N i) (D.R.N (i + 1))) :
     xiAd A a i hi ((St i _).chOf c) ((St (i + 1) hi).chOf c') ((St i _).y c) ((St (i + 1) hi).y c') z =
@@ -177,6 +244,15 @@ theorem xiAd_rep (H : AdTie A dtU a) (i : ℕ) (hi : i + 1 ≤ D.R.m) (hA : PtAw
     exact xiPt_rep H i hi c c' _
   · next h => exact absurd ⟨⟨_, h₁⟩, ⟨_, h₂⟩⟩ h
 
+/- English proof (translation)
+Establish `key : σ (g : Matrix (Fin n) (Fin n) B).det * (g : Matrix (Fin n) (Fin n) B).det = 1`. Establish `e` using `congrArg Matrix.det (show cT σ (g : Matrix (Fin n) (Fin n) B) * J * (g : Matrix (Fin n) (Fin n) B) = J from hg)`. Establish `hs : (cT σ (g : Matrix (Fin n) (Fin n) B)).det = σ (g : Matrix (Fin n) (Fin n) B).det`. Rewrite using `[cT, Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite `e` using `[Matrix.det_mul, Matrix.det_mul, hs]`. Apply `hJ.mul_right_cancel` to reduce the goal to its premises. Rewrite using `[one_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨Units.map (Matrix.scalar (Fin 1) : B →+* Matrix (Fin 1) (Fin 1) B).toMonoidHom (Matrix.GeneralLinearGroup.det g), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show cT σ _ * 1 * _ = 1`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[cT, Matrix.mul_apply, Matrix.GeneralLinearGroup.val_det_apply, key]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_unique]`.
+-/
 theorem exists_det_eq {B : Type} [CommRing B] {n : ℕ} (σ : B →+* B) (J : Matrix (Fin n) (Fin n) B) (hJ : IsUnit J.det)
     (g : GL (Fin n) B) (hg : g ∈ UJ σ J) :
     ∃ y ∈ UJ σ (1 : Matrix (Fin 1) (Fin 1) B), Matrix.GeneralLinearGroup.det y = Matrix.GeneralLinearGroup.det g := by
@@ -200,6 +276,9 @@ theorem exists_det_eq {B : Type} [CommRing B] {n : ℕ} (σ : B →+* B) (J : Ma
   · apply Units.ext
     simp [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_unique]
 
+/- English proof (translation)
+The claim follows from `xiAd_rep H i hi (hA i hi) c c' z rat := hR lev i hi := hL i hi away i hi β β' x x' x₁ x₁' hx := by funext z unfold xiAd rw [dif_pos ⟨hE _ _ β x₁, hE _ _ β' x₁'⟩, dif_pos ⟨hE _ _ β x, hE _ _ β' x'⟩] rw [hA i hi β β' x x' x₁ x₁' _ _ _ _ (hE _ _ β x).choose_spec (hE _ _ β' x').choos …`.
+-/
 theorem adLawAt_of_clauses (Hp : AdPins A dtU) (H : AdTie A dtU a) (hE : PtEx A a) (hA : ∀ i hi, PtAway A a i hi) (hL : ∀ i hi, LevAt A dtU a i hi)
     (hR : RatLaw A a) (hS : SizeLaw A a) (hM : MuLaw t u μ dtU)
     (hI : ∀ i hi β β' x x' z, IntOff (t.O u μ).S (xiAd A a i hi β β' x x' z)) :
@@ -239,6 +318,9 @@ theorem adLawAt_of_clauses (Hp : AdPins A dtU) (H : AdTie A dtU a) (hE : PtEx A 
   mu_unr i hi := (hM i hi).2.2.2.1
   mu_rat i hi := (hM i hi).2.2.2.2
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a Hp H`. Conclude with `⟨xiAd A a, muOf t u μ dtU, adLawAt_of_clauses Hp H (hE A dtU a Hp H) (hA A dtU a Hp H) (hL A dtU a Hp H) (hR A dtU a Hp H) (hS A dtU a Hp H) (hM A dtU a Hp H) (hI A dtU a Hp H)⟩`.
+-/
 theorem adLawOfTie_of_clauses (hE : UnderTie fun A _ a => PtEx A a) (hA : UnderTie fun A _ a => ∀ i hi, PtAway A a i hi)
     (hL : UnderTie fun A dtU a => ∀ i hi, LevAt A dtU a i hi) (hR : UnderTie fun A _ a => RatLaw A a) (hS : UnderTie fun A _ a => SizeLaw A a)
     (hM : UnderTie fun {_ _ _ _ _ _ _ _ _ t u μ _} _ dtU _ => MuLaw t u μ dtU)

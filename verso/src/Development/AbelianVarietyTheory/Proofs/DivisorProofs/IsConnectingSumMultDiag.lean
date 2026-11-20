@@ -25,6 +25,9 @@ variable (R A) in
 abbrev valZero : A ⊗[R] A →ₐ[R] R :=
   Algebra.TensorProduct.lift (counitAlgHom R A) (counitAlgHom R A) (fun _ _ ↦ Commute.all _ _)
 
+/- English proof (translation)
+Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Consider the case `tmul a b => simp [map_mulBy]`.
+-/
 theorem map_multDiag (f : A →ₐc[R] B) (i : ℕ) (c : A ⊗[R] A) :
     f (multDiag R A i c) = multDiag R B i (pullbackTwo f c) := by
   induction c with
@@ -34,6 +37,9 @@ theorem map_multDiag (f : A →ₐc[R] B) (i : ℕ) (c : A ⊗[R] A) :
 
 omit [IsCocomm R A] [IsCocomm R B] in
 
+/- English proof (translation)
+Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Consider the case `tmul a b => simp`.
+-/
 theorem valZero_pullTwo (f : A →ₐc[R] B) (c : A ⊗[R] A) :
     valZero R B (pullbackTwo f c) = valZero R A c := by
   induction c with
@@ -41,6 +47,9 @@ theorem valZero_pullTwo (f : A →ₐc[R] B) (c : A ⊗[R] A) :
   | add s t hs ht => simp only [map_add, hs, ht]
   | tmul a b => simp
 
+/- English proof (translation)
+Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Consider the case `tmul a b => simp`.
+-/
 theorem counit_multDiag (i : ℕ) (c : A ⊗[R] A) :
     counit (R := R) (multDiag R A i c) = valZero R A c := by
   induction c with
@@ -48,6 +57,17 @@ theorem counit_multDiag (i : ℕ) (c : A ⊗[R] A) :
   | add s t hs ht => simp only [map_add, hs, ht]
   | tmul a b => simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Establish `h0 : ∀ a : A, mulBy R A 0 a = algebraMap R A (counit a)` using `fun _ => rfl`. Rewrite using `[Finset.sum_range_zero, map_zero, zero_smul, add_zero, add_zero]`. Generalize the expression as in `c = t`.
+
+Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Consider the case `tmul a b`. Simplify using `[h0, Algebra.algebraMap_eq_smul_one, Algebra.TensorProduct.one_def, smul_tmul', smul_smul, mul_comm]`.
+
+Consider the case `succ k ih`. Establish `h` using `pullTwo_convMul (mulBy R A k) (BialgHom.id R A) c hc`. Establish `e : (toConv (mulBy R A k) * toConv (BialgHom.id R A)).ofConv = mulBy R A (k + 1)`. Rewrite using `[mulBy, mulBy, pow_succ]`. Establish `e2 : ∀ t : A ⊗[R] A, LinearMap.mul' R A (TensorProduct.map (mulBy R A k : A →ₗ[R] A) (BialgHom.id R A : A →ₗ[R] A) t) = multDiag R A k t` using `fun t => by`.
+
+Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`. Consider the case `tmul a b => simp`. Rewrite `h` using `[e, e2, pullTwo_id, ih]`.
+
+Rewrite using `[h, Finset.sum_range_succ, map_add, succ_nsmul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pullTwo_mulBy_eq (c : A ⊗[R] A) (hc : c ∈ symCocycles R A) (k : ℕ) :
     pullbackTwo (mulBy R A k) c = algebraMap R _ (valZero R A c) + k • c +
       cobOne R A (∑ i ∈ Finset.range k, multDiag R A i c) := by
@@ -82,6 +102,13 @@ namespace PDivGroup
 
 open PDiv
 
+/- English proof (translation)
+Set `B : G.funs` to `⟨fun n => ∑ i ∈ Finset.range p, multDiag R (G.A n) i (z.1 n), fun n => by`. Simplify using `only [map_sum, map_multDiag, (z.2 n).2]⟩`. Set `K : G.funs` to `⟨fun n => algebraMap R _ (valZero R _ (z.1 n)), fun n => by dsimp only`. Rewrite using `[AlgHomClass.commutes, ← (z.2 n).2, valZero_pullTwo]⟩`. Establish `hK : funsMap ((p : ℤ_[p]) • 𝟙 G) K = K` using `Subtype.ext (funext fun n => AlgHomClass.commutes (Hom.app _ n) _)`.
+
+Use `⟨z + G.cob K, B, (Submodule.Quotient.eq _).2 ⟨K, by simp⟩, ?_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[map_add, cocyclesMap_cob, hK]`. Use `Subtype.ext (funext fun n => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cobOne R _ (B.1 n) = pullbackTwo (((p : ℤ_[p]) • 𝟙 G : G ⟶ G).app n) (z.1 n) + cobOne R _ (algebraMap R _ (valZero R _ (z.1 n)))`. Rewrite using `[natCast_smul_id_app, pullTwo_mulBy_eq _ (z.2 n).1, ← Nat.cast_smul_eq_nsmul R, hp, zero_smul, add_zero, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, map_smul, cobOne_apply 1, comul_one, Algebra.TensorProduct.one_def, sub_self, zero_sub, smul_neg]`.
+
+Normalize the expressions using the abelian group laws. Simplify using `only [map_sum, counit_multDiag, Finset.sum_const, Finset.card_range, nsmul_eq_mul, hp, zero_mul]`.
+-/
 theorem isConnecting_sum_multDiag (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (hp : (p : R) = 0)
     (G : PDivGroup p R) (z : G.cocycles) :
     G.IsConnecting (Submodule.Quotient.mk z) (∑ i ∈ Finset.range p,

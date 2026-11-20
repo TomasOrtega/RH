@@ -26,6 +26,9 @@ private def algSub (p : ℕ) [hp : Fact p.Prime] (R : Type) [CommRing R] [CharP 
     have h := sub_pow_char_pow (p := p) (n := a) (0 : R) x
     rwa [zero_sub, hx, zero_pow (pow_pos hp.out.pos _).ne', zero_sub] at h
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.RestrictAutomorphism.exists_alg ρ hopen M hM hJ`.
+-/
 private theorem exists_alg {p : ℕ} [hp : Fact p.Prime] {G : Type} [Group G] {R : Type} [CommRing R]
     (ρ : G →* (R ≃+* R)) [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [IsDomain R] [CharP R p]
     (hopen : ∀ (y : R) (m : ℕ), 0 < m → y ^ p ^ m = y → ∀ᶠ g in 𝓝 (1 : G), ρ g y = y)
@@ -38,6 +41,9 @@ private theorem exists_alg {p : ℕ} [hp : Fact p.Prime] {G : Type} [Group G] {R
 
 end
 
+/- English proof (translation)
+Introduce `l _ P AI K r M hM hI`. Use `GlobalTheory.UnramifiedCrys.compactSpace_GK K` as an intermediate fact. Conclude with `exists_alg (p := l) (AI.actT.comp (GK K).subtype) (fun y m hm hy => (continuous_subtype_val.tendsto (1 : ↥(GK K))).eventually (GlobalTheory.UnramifiedCrys.eventually_actT_eq AI y m hm hy)) M hM (fun g hg => hI g (Subgroup.subset_closure fun x hx => GlobalTheory.UnramifiedCrys.nor …`.
+-/
 theorem UpperTheory.exists_algebraic_vector_spanning_subspace :
     ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) {r : ℕ} (M : ↥(GK K) →* Matrix (Fin r) (Fin r) ℤ_[l]), Continuous M → (∀ g ∈ IK K, M g = 1) → ∃ W : Matrix (Fin r) (Fin r) (Ainf l), IsUnit W.det ∧ (∀ g, (M g).map (zlW l (OCb l)) * W.map (AI.actW (g : GQ l)) = W) ∧ ∀ i j n, ∃ m, 0 < m ∧ (W i j).coeff n ^ l ^ m = (W i j).coeff n := by
   intro l _ P AI K r M hM hI

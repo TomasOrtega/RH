@@ -13,6 +13,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.VKMap.vK_valuation_map | exact GlobalTheory.CompanionTheory.FexTheta.VKMap.vK_valuation_map | (intros; apply GlobalTheory.CompanionTheory.FexTheta.VKMap.vK_valuation_map <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.valuation_vector_homomorphism : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
   ∀ (c : HeckeCharacter K) (M : ∀ v : Pl, LM c v), AdmM M →
     (∀ (κ : Kˣ) (v : Pl), vK M κ v = ord ((k1 (M v) κ : (Qv v)ˣ) : Qv v)) ∧ (∀ κ : Kˣ, vK M κ ∈ Tm M) ∧

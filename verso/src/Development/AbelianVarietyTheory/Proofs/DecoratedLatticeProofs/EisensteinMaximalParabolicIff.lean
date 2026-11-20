@@ -20,6 +20,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [equivFinsuppOfBasisRight_apply_tmul_apply]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+-/
 theorem coord_map {ι : Type} [DecidableEq ι] (b : Module.Basis ι F E) {R R' : Type} [CommRing R] [Algebra F R]
     [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R') (x : R ⊗[F] E) (i : ι) :
     equivFinsuppOfBasisRight b (Algebra.TensorProduct.map f (AlgHom.id F E) x) i =
@@ -31,6 +34,13 @@ theorem coord_map {ι : Type} [DecidableEq ι] (b : Module.Basis ι F E) {R R' :
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace F E`. Apply `(equivFinsuppOfBasisRight (M := AF F) b).injective` to reduce the goal to its premises. Use extensionality with `i`. Use `Prod.ext (funext fun w => ?_) (RestrictedProduct.ext _ _ fun v => ?_)` and prove the remaining obligations. Establish `h1` using `coord_map b (evInf F w) x i`.
+
+Establish `h2` using `coord_map b (evInf F w) y i`. Establish `h3 : Algebra.TensorProduct.map (evInf F w) (AlgHom.id F E) x = Algebra.TensorProduct.map (evInf F w) (AlgHom.id F E) y` using `hw w`. Rewrite `h1` using `[h3, h2]`. Conclude with `h1.symm`. Establish `h1` using `coord_map b (evFin F v) x i`.
+
+Establish `h2` using `coord_map b (evFin F v) y i`. Establish `h3 : Algebra.TensorProduct.map (evFin F v) (AlgHom.id F E) x = Algebra.TensorProduct.map (evFin F v) (AlgHom.id F E) y` using `hv v`. Rewrite `h1` using `[h3, h2]`. Conclude with `h1.symm`.
+-/
 theorem tens_ext {x y : AF F ⊗[F] E} (hw : ∀ w, compInf F E w x = compInf F E w y)
     (hv : ∀ v, compFin F E v x = compFin F E v y) : x = y := by
   classical
@@ -51,6 +61,9 @@ theorem tens_ext {x y : AF F ⊗[F] E} (hw : ∀ w, compInf F E w x = compInf F 
     rw [h3, h2] at h1
     exact h1.symm
 
+/- English proof (translation)
+Use `⟨?_, fun h => ⟨_, h⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨β, hβ⟩`. Rewrite using `[hβ, ← Matrix.mul_assoc D, h, Matrix.one_mul]`.
+-/
 theorem keeps_iff {A : Type} [CommRing A] {n j : ℕ} {M : Matrix (Fin n) (Fin n) A} {C : Matrix (Fin n) (Fin j) A}
     {D : Matrix (Fin j) (Fin n) A} (h : D * C = 1) :
     (∃ β : Matrix (Fin j) (Fin j) A, M * C = C * β) ↔ M * C = C * (D * (M * C)) := by
@@ -58,6 +71,17 @@ theorem keeps_iff {A : Type} [CommRing A] {n j : ℕ} {M : Matrix (Fin n) (Fin n
   rintro ⟨β, hβ⟩
   rw [hβ, ← Matrix.mul_assoc D, h, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hq : ∀ q : Polynomial A, Polynomial.aeval M.val q * C = C * Polynomial.aeval β q`. Introduce `q`. Proceed by induction on `q using Polynomial.induction_on with`. Consider the case `C a => simp [Algebra.algebraMap_eq_smul_one]`. Consider the case `add p q hp hq => simp [Matrix.add_mul, Matrix.mul_add, hp, hq]`.
+
+Consider the case `monomial k a ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul (Polynomial.aeval β), Polynomial.aeval_X, Polynomial.aeval_X, Matrix.mul_assoc, h, ← Matrix.mul_assoc, ih, Matrix.mul_assoc]`. Establish `hu : IsUnit (M.val.charpoly.coeff 0)`. Establish `h1` using `Matrix.det_eq_sign_charpoly_coeff M.val`. Establish `h2 : IsUnit M.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 M.isUnit`.
+
+Rewrite `h2` using `[h1]`. Conclude with `isUnit_of_mul_isUnit_right h2`. Take `⟨u, hu⟩` from `hu`. Establish `h0` using `Matrix.aeval_self_charpoly M.val`. Rewrite `h0` using `[← Polynomial.X_mul_divX_add M.val.charpoly, map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C, ← hu]`.
+
+Establish `h1 : (M⁻¹).val = -((u⁻¹).val • Polynomial.aeval M.val M.val.charpoly.divX)`. Establish `h2` using `congrArg (fun Z => (u⁻¹).val • ((M⁻¹).val * Z)) h0`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Algebra.algebraMap_eq_smul_one, Matrix.mul_smul, Matrix.mul_one, smul_add, smul_smul, one_smul, Matrix.mul_zero, smul_zero] at h2`. Conclude with `eq_neg_of_add_eq_zero_right h2`. Use `⟨-((u⁻¹).val • Polynomial.aeval β M.val.charpoly.divX), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h1, Matrix.neg_mul, Matrix.smul_mul, hq, Matrix.mul_neg, Matrix.mul_smul]`.
+-/
 theorem keeps_inv {A : Type} [CommRing A] {n j : ℕ} (M : GL (Fin n) A) {C : Matrix (Fin n) (Fin j) A}
     {β : Matrix (Fin j) (Fin j) A} (h : M.val * C = C * β) :
     ∃ β' : Matrix (Fin j) (Fin j) A, (M⁻¹).val * C = C * β' := by
@@ -92,12 +116,22 @@ def Keeps (R : Type) [CommRing R] [Algebra F R] {σ : E →ₐ[F] E} {n j : ℕ}
     (matHom R σ J g).val * C.map (inclR (F := F) R) = C.map (inclR (F := F) R) * β
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by rw [map_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]⟩`.
+-/
 theorem keeps_one (R : Type) [CommRing R] [Algebra F R] {σ : E →ₐ[F] E} {n j : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (C : Matrix (Fin n) (Fin j) E) : Keeps R C (1 : HA R σ J) :=
   ⟨1, by rw [map_one, Units.val_one, Matrix.one_mul, Matrix.mul_one]⟩
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `key : ∀ {R : Type} [CommRing R] [Algebra F R] (f : AF F →ₐ[F] R), Keeps R C (IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ J f p) → ((matHom (AF F) σ J p).val * adMat F C).map (Algebra.TensorProduct.map f (AlgHom.id F E)).toRingHom = (adMat F C * (adMat F D * ((matHom (AF …`. Introduce `R _ _ f hf`. Establish `hm : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) E), (adMat F Z).map (Algebra.TensorProduct.map f (AlgHom.id F E)).toRingHom = Z.map (inclR R)`. Introduce `a b Z`. Use extensionality with `i k`.
+
+Simplify using `[adMat, inclR]`. Establish `hD : D.map (inclR (F` using `F) R) * C.map (inclR (F := F) R) = 1 := by`. Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `only [Matrix.map_mul, hm]`. Conclude with `(keeps_iff hD).1 hf`.
+
+Establish `h1 : (matHom (AF F) σ J p).val * adMat F C = adMat F C * (adMat F D * ((matHom (AF F) σ J p).val * adMat F C))`. Use extensionality with `i k`. Conclude with `tens_ext (fun w => congrFun (congrFun (key (evInf F w) (hw w)) i) k) (fun v => congrFun (congrFun (key (evFin F v) (hv v)) i) k)`. Take `⟨β', h2⟩` from `keeps_inv _ h1`. Conclude with `⟨⟨_, fun _ _ hh => absurd hh (lt_irrefl _), h1⟩, ⟨β', fun _ _ hh => absurd hh (lt_irrefl _), by rw [map_inv]; exact h2⟩⟩`.
+-/
 theorem mem_parFlag_of_local {σ : E →ₐ[F] E} {n j : ℕ} {J : Matrix (Fin n) (Fin n) E} {C : Matrix (Fin n) (Fin j) E}
     {D : Matrix (Fin j) (Fin n) E} (h : D * C = 1) (p : GAd σ J)
     (hw : ∀ w : InfinitePlace F, Keeps w.Completion C (projArch σ J w p))
@@ -127,6 +161,13 @@ theorem mem_parFlag_of_local {σ : E →ₐ[F] E} {n j : ℕ} {J : Matrix (Fin n
   exact ⟨⟨_, fun _ _ hh => absurd hh (lt_irrefl _), h1⟩,
     ⟨β', fun _ _ hh => absurd hh (lt_irrefl _), by rw [map_inv]; exact h2⟩⟩
 
+/- English proof (translation)
+Establish `hram : ∀ P : HeightOneSpectrum (𝓞 E), P.asIdeal.ramificationIdx (𝓞 F) = 1` using `fun P => Ideal.ramificationIdx_eq_one_of_isUnramifiedAt`. Break down `LFun.InertChart.isSplit_or_isInertAt (F := F) (E := E) (v := v) (fun P _ => hram P) with hs | ⟨w, hw⟩` into its components or cases. Take `⟨P, Q, hPQ, hP, hQ⟩` from `hs`. Take `⟨τ, -, -⟩` from `existsUnique_splitPrime_eq (v := v) hc hPQ (HeightOneSpectrum.ext hP) (HeightOneSpectrum.ext hQ)`. Take `⟨k, i, q, hn, hsum⟩` from `IwSplitFrame.exists_compl C C' _ _ hC'C hC'C' hCC hCC'`.
+
+Set `ε : Fin n ≃ (Fin j ⊕ Fin k) ⊕ Fin j` to `(finCongr hn).trans (finSumFinEquiv.symm.trans (Equiv.sumCongr finSumFinEquiv.symm (Equiv.refl _)))`. Take `⟨B, lv, hB⟩` from `Core.Rk.IwFlagSplit.exists_flag_basis τ hJ ε hsum hCC'`. Take `⟨q, k, hq, hk, hy⟩` from `Core.Rk.IwFlagSplit.iwasawa_of_triangular hc hJ τ L hL (IwSplitFrame.keepGrp (C.map (inclR (Fv F v)))) B lv (fun g hg => by`. Take `⟨⟨a, ha⟩, a', ha'⟩` from `hB g hg`. Conclude with `IwSplitFrame.keeps_of_split hc τ g hC'C ha ha') y`.
+
+Take `⟨β, hβ⟩` from `hq`. Conclude with `⟨q, k, hk, ⟨β.val, hβ⟩, hy⟩`. Take `⟨c, hc1⟩` from `exists_integer_add_conj_eq_one_of_formallyUnramified F E σ hc inferInstance`. Take `⟨q, k, hk, hy, β, hβ⟩` from `InertIwasawaLoc.exists_loc hc hc1 hJ hw (fun P _ => hram P) hL hC'C hCC y`. Conclude with `⟨q, k, hk, ⟨β.val, hβ⟩, hy⟩`.
+-/
 theorem iwasawa_fin {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) (hu : Algebra.Unramified (𝓞 F) (𝓞 E)) {n j : ℕ}
     {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) {C C' : Matrix (Fin n) (Fin j) E}
     (hCC : cT (σ : E →+* E) C * J * C = 0) (hCC' : cT (σ : E →+* E) C * J * C' = 1)
@@ -154,6 +195,11 @@ theorem iwasawa_fin {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) (hu : Algebra.Unr
     obtain ⟨q, k, hk, hy, β, hβ⟩ := InertIwasawaLoc.exists_loc hc hc1 hJ hw (fun P _ => hram P) hL hC'C hCC y
     exact ⟨q, k, hk, ⟨β.val, hβ⟩, hy⟩
 
+/- English proof (translation)
+Take `⟨ε, hε⟩` from `ha w`. Establish `h0 : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion σ) (C.map (inclR (F` using `F) w.Completion)) * JR (F := F) w.Completion J * C.map (inclR (F := F) w.Completion) = 0 := by`. Rewrite using `[IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_map (σ : E →+* E) _ _ (fun x => by simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, inclR]), JR, ← Matrix.map_mul, ← Matrix.map_mul, hCC, Matrix.map_zero _ (map_zero _)]`. Take `⟨k, hk, hk', β, hβ⟩` from `Core.Rk.IwIso.local_at_arch hc J w _ ε hε _ h0 (matHom w.Completion σ J y) y.2`. Set `k' : GArch σ J w` to `⟨k, hk⟩`.
+
+Use `⟨y * k'⁻¹, k', Core.Rk.IwIso.mem_stabArch_of σ J w _ k' hk', ⟨β, ?_⟩, by simp⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv]`. Conclude with `hβ`.
+-/
 theorem iwasawa_arch {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) {n j : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {C : Matrix (Fin n) (Fin j) E} (hCC : cT (σ : E →+* E) C * J * C = 0)
     {a : GL (Fin n) (AF F ⊗[F] E)} (ha : IsMajorantFrame σ J a) (w : InfinitePlace F) (y : GArch σ J w) :
@@ -169,6 +215,15 @@ theorem iwasawa_arch {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) {n j : ℕ}
   rw [map_mul, map_inv]
   exact hβ
 
+/- English proof (translation)
+Use `choose q k hk hq hy using fun v => iwasawa_fin hc hu hJ hCC hCC' hC'C hC'C' v (hL v) (proj σ J v g)`. Use `choose q' k' hk' hq' hy' using fun w => iwasawa_arch hc hCC ha w (projArch σ J w g)`. Establish `hfin` using `Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc σ J L g)`. Take `⟨p₁, h₁, h₁'⟩` from `AdelicIwasawaGlue.exists_fin_part σ J q hfin.toFinset`. Take `⟨p₂, h₂, h₂'⟩` from `AdelicIwasawaGlue.exists_arch_part σ J q' Finset.univ`.
+
+Use `⟨p₁ * p₂, mem_parFlag_of_local hC'C _ (fun w => ?_) (fun v => ?_), (p₁ * p₂)⁻¹ * g, ?_, (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations. Rewrite using `[map_mul, h₁, h₂', one_mul, if_pos (Finset.mem_univ _)]`. Conclude with `hq' w`. Rewrite using `[map_mul, h₁', h₂, mul_one] split_ifs exacts [hq v, keeps_one _ _]`. Use `mem_levelAll.2 ⟨fun v => ?_, fun w => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_inv, map_mul, h₁', h₂, mul_one] split_ifs with hv`. Rewrite using `[hy v, inv_mul_cancel_left]`. Conclude with `hk v`. Rewrite using `[inv_one, one_mul]`. Simplify using `using hv`.
+
+Rewrite using `[map_mul, map_inv, map_mul, h₁, h₂', one_mul, if_pos (Finset.mem_univ _), hy' w, inv_mul_cancel_left]`. Conclude with `hk' w`.
+-/
 theorem iwasawa {σ : E →ₐ[F] E} (hc : IsCMExt F E σ) (hu : Algebra.Unramified (𝓞 F) (𝓞 E)) {n j : ℕ}
     {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J) {C C' : Matrix (Fin n) (Fin j) E}
     (hCC : cT (σ : E →+* E) C * J * C = 0) (hCC' : cT (σ : E →+* E) C * J * C' = 1)

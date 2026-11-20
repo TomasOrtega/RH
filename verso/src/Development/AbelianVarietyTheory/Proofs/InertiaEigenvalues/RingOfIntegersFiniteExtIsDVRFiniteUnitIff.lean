@@ -8,6 +8,15 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.IntDvr
 
+/- English proof (translation)
+Introduce `l _ K`. Use `⟨Formalism.BasicNotions.Examples₂.LB.OL_dvr K, Formalism.BasicNotions.Examples₂.LB.OL_finite K, fun x => ⟨fun h => h.map _, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Formalism.BasicNotions.Examples₂.LB.isUnit_iff]`. Take `⟨u, hu⟩` from `h`. Establish `h1` using `(GlobalTheory.RingBasics.mem_OC _).1 (u : OC l).2`.
+
+Establish `h2` using `(GlobalTheory.RingBasics.mem_OC _).1 ((u⁻¹ : (OC l)ˣ) : OC l).2`. Establish `h3 : ((u : OC l) : ℂ_[l]) * (((u⁻¹ : (OC l)ˣ) : OC l) : ℂ_[l]) = 1`. Use `congrArg (fun z : OC l => (z : ℂ_[l])) u.mul_inv` as an intermediate fact. Conclude with `this`. Establish `h4 : ‖((u : OC l) : ℂ_[l])‖ = 1`.
+
+Establish `h5` using `congrArg norm h3`. Rewrite `h5` using `[norm_mul, norm_one]`. Use polynomial arithmetic with `[norm_nonneg ((u : OC l) : ℂ_[l]), norm_nonneg (((u⁻¹ : (OC l)ˣ) : OC l) : ℂ_[l])]`. Establish `h6 : ((u : OC l) : ℂ_[l]) = (((x : ↥K.1) : Om l) : ℂ_[l])`. Rewrite using `[hu, coe_intToOC]`.
+
+Rewrite `h4` using `[h6, PadicComplex.norm_extends]`. Conclude with `h4`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l), IsDiscreteValuationRing ↥(OL K) ∧
     Module.Finite ℤ_[l] ↥(OL K) ∧ ∀ x : ↥(OL K), IsUnit x ↔ IsUnit (intToOC K x) := by
   intro l _ K

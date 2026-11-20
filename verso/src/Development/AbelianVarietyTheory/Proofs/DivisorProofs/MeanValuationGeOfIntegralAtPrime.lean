@@ -16,6 +16,13 @@ namespace GlobalTheory.FunObj.SqNum.MeanValLow
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `ha0 : (Ideal.span {a} : Ideal (𝓞 K)) ≠ 0`. Rewrite using `[ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Introduce and unpack `rfl`. Conclude with `ha w.asIdeal.zero_mem`. Unfold `Formalism.DivisionValues.vw`.
+
+Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K _ ha0]`. Assume the negation of the conclusion as `h`. Establish `h' : (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {a})).factors ≠ 0`. Introduce `h0`. Conclude with `h (by rw [h0]; rfl)`.
+
+Conclude with `ha (Ideal.dvd_span_singleton.1 ((Associates.count_ne_zero_iff_dvd ha0 w.irreducible).1 h'))`.
+-/
 theorem vw_eq_zero_of_notMem (w : Formalism.PairingDivisionLocalBalance.Pl K) {a : 𝓞 K} (ha : a ∉ w.asIdeal) : Formalism.DivisionValues.vw w (a : K) = 0 := by
   classical
   have ha0 : (Ideal.span {a} : Ideal (𝓞 K)) ≠ 0 := by
@@ -30,11 +37,17 @@ theorem vw_eq_zero_of_notMem (w : Formalism.PairingDivisionLocalBalance.Pl K) {a
     exact h (by rw [h0]; rfl)
   exact ha (Ideal.dvd_span_singleton.1 ((Associates.count_ne_zero_iff_dvd ha0 w.irreducible).1 h'))
 
+/- English proof (translation)
+Unfold `Formalism.DivisionValues.vw`. Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton]`. Conclude with `FractionalIdeal.count_coe_nonneg K w _`.
+-/
 theorem vw_int_nonneg (w : Formalism.PairingDivisionLocalBalance.Pl K) (a : 𝓞 K) : 0 ≤ Formalism.DivisionValues.vw w (a : K) := by
   unfold Formalism.DivisionValues.vw
   rw [← FractionalIdeal.coeIdeal_span_singleton]
   exact FractionalIdeal.count_coe_nonneg K w _
 
+/- English proof (translation)
+Unfold `Formalism.DivisionValues.vw`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Conclude with `FractionalIdeal.count_mul K w ((FractionalIdeal.spanSingleton_ne_zero_iff).2 ha) ((FractionalIdeal.spanSingleton_ne_zero_iff).2 hb)`.
+-/
 theorem vw_mul (w : Formalism.PairingDivisionLocalBalance.Pl K) {a b : K} (ha : a ≠ 0) (hb : b ≠ 0) :
     Formalism.DivisionValues.vw w (a * b) = Formalism.DivisionValues.vw w a + Formalism.DivisionValues.vw w b := by
   unfold Formalism.DivisionValues.vw
@@ -42,10 +55,18 @@ theorem vw_mul (w : Formalism.PairingDivisionLocalBalance.Pl K) {a b : K} (ha : 
   exact FractionalIdeal.count_mul K w ((FractionalIdeal.spanSingleton_ne_zero_iff).2 ha)
     ((FractionalIdeal.spanSingleton_ne_zero_iff).2 hb)
 
+/- English proof (translation)
+Unfold `Formalism.DivisionValues.vw`. Rewrite using `[← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]`.
+-/
 theorem vw_pow (w : Formalism.PairingDivisionLocalBalance.Pl K) (a : K) (n : ℕ) : Formalism.DivisionValues.vw w (a ^ n) = n * Formalism.DivisionValues.vw w a := by
   unfold Formalism.DivisionValues.vw
   rw [← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]
 
+/- English proof (translation)
+Use `letI : Algebra K ℂ := σ.toAlgebra`. Use `letI : Algebra (𝓞 K) ℂ := ((algebraMap K ℂ).comp (algebraMap (𝓞 K) K)).toAlgebra`. Use `haveI : IsScalarTower (𝓞 K) K ℂ := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower ℤ (𝓞 K) ℂ := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `hi : IsIntegral (𝓞 K) δ` using `hδ.tower_top`.
+
+Establish `e` using `minpoly.isIntegrallyClosed_eq_field_fractions' K hi`. Use `⟨(minpoly (𝓞 K) δ).coeff 0, ?_⟩` and prove the remaining obligations. Rewrite using `[hq.eq_minpoly, e, coeff_map]`.
+-/
 theorem coeff_zero_mem (σ : K →+* ℂ) {δ : ℂ} (hδ : IsIntegral ℤ δ) {q : K[X]} (hq : IsMinPol σ δ q) :
     ∃ b : 𝓞 K, (b : K) = q.coeff 0 := by
   letI : Algebra K ℂ := σ.toAlgebra
@@ -61,6 +82,27 @@ end GlobalTheory.FunObj.SqNum.MeanValLow
 
 open GlobalTheory.FunObj.SqNum.MeanValLow in
 
+/- English proof (translation)
+Introduce `K _ _ σ β p hp hβ c hc l hl w hw m ⟨n, hn, hint⟩`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Rewrite `hn` using `[Nat.coprime_zero_left]`. Conclude with `hl.one_lt.ne' hn`.
+
+Establish `hl0 : (l : K) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `hnK : (n : K) ≠ 0` using `by exact_mod_cast hn0`. Establish `hlm : (l : K) ^ m ≠ 0` using `pow_ne_zero _ hl0`. Use `set a : K := (n : K) * (l : K) ^ m * c with ha_def`. Establish `ha : a ≠ 0` using `mul_ne_zero (mul_ne_zero hnK hlm) hc`.
+
+Establish `hδ : IsIntegral ℤ (σ a * β)`. Establish `e : σ a * β = (n : ℂ) * ((l : ℂ) ^ m * (σ c * β))`. Simplify using `only [a, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `hint`. Use `letI : Algebra K ℂ := σ.toAlgebra`. Use `haveI : IsScalarTower ℤ K ℂ := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `hK : IsIntegral K (σ a * β)` using `hδ.tower_top`. Establish `hq : IsMinPol σ (σ a * β) (minpoly K (σ a * β))` using `⟨minpoly.monic hK, minpoly.irreducible hK, minpoly.aeval K (σ a * β)⟩`.
+
+Take `⟨b, hb⟩` from `coeff_zero_mem σ hδ hq`. Establish `eq` using `hp.scaleRoots_eq hq ha`. Take `⟨hc0, hd⟩` from `hp.ne_zero hβ`. Rewrite `hb` using `[eq, coeff_scaleRoots, Nat.sub_zero]`. Establish `h0 : 0 ≤ Formalism.DivisionValues.vw w (p.coeff 0 * a ^ p.natDegree)` using `hb ▸ vw_int_nonneg w b`.
+
+Rewrite `h0` using `[vw_mul w hc0 (pow_ne_zero _ ha), vw_pow, ha_def, vw_mul w (mul_ne_zero hnK hlm) hc, vw_mul w hnK hlm, vw_pow]`. Establish `hnw : (n : 𝓞 K) ∉ w.asIdeal`. Introduce `hn'`. Take `⟨x, y, e'⟩` from `(Nat.isCoprime_iff_coprime.2 hn).map (Int.castRingHom (𝓞 K))`. Use `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations.
+
+Rewrite using `[← e']`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (by simpa using hn')) (Ideal.mul_mem_left _ _ (by simpa using hw))`. Establish `hvn : Formalism.DivisionValues.vw w (n : K) = 0`. Use `vw_eq_zero_of_notMem w hnw` as an intermediate fact. Simplify using `using this`.
+
+Rewrite `h0` using `[hvn]`. Establish `hdpos : (0 : ℝ) < p.natDegree` using `by exact_mod_cast Nat.pos_of_ne_zero hd`. Unfold `GlobalTheory.FunObj.SqNum.meanVal_vw`. Establish `h1 : (0 : ℝ) ≤ (Formalism.DivisionValues.vw w (p.coeff 0) : ℝ) + p.natDegree * ((m : ℝ) * Formalism.DivisionValues.vw w (l : K) + Formalism.DivisionValues.vw w c)`. Use `(Int.cast_le (R := ℝ)).2 h0` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : -((m : ℝ) * Formalism.DivisionValues.vw w (l : K) + Formalism.DivisionValues.vw w c) ≤ (Formalism.DivisionValues.vw w (p.coeff 0) : ℝ) / p.natDegree`. Rewrite using `[le_div_iff₀ hdpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem GlobalTheory.FunObj.SqNum.meanVal_vw_ge_of_intAt : ∀ {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) {β : ℂ} {p : K[X]}, GlobalTheory.FunObj.SqNum.IsMinPol σ β p → β ≠ 0 → ∀ {c : K}, c ≠ 0 → ∀ {l : ℕ}, l.Prime → ∀ {w : Formalism.PairingDivisionLocalBalance.Pl K}, (l : 𝓞 K) ∈ w.asIdeal → ∀ {m : ℕ}, GlobalTheory.CMVal.IntAt l ((l : ℂ) ^ m * (σ c * β)) → -((m : ℝ) * (Formalism.DivisionValues.vw w (l : K) : ℝ)) ≤ (Formalism.DivisionValues.vw w c : ℝ) + GlobalTheory.FunObj.SqNum.meanVal_vw w p := by
   intro K _ _ σ β p hp hβ c hc l hl w hw m ⟨n, hn, hint⟩
   have hn0 : n ≠ 0 := by

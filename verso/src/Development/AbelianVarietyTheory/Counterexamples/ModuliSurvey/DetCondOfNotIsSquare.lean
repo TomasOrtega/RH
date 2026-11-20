@@ -10,10 +10,16 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DetCondCheck
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> simp [epsScale]`.
+-/
 theorem epsScale_fst_snd {k : Type} [Field k] (c : k) (x : DualNumber k) :
     (epsScale c x).fst = x.fst ∧ (epsScale c x).snd = c * x.snd := by
   constructor <;> simp [epsScale]
 
+/- English proof (translation)
+Take `⟨b⟩` from `(GlobalTheory.Serre.Lie.lieMult_id_iff a τ n).mp hn`. Take `⟨b'⟩` from `(GlobalTheory.Serre.Lie.lieMult_id_iff a τ m).mp hm`. Simplify using `using (Module.finrank_eq_card_basis b).symm.trans (Module.finrank_eq_card_basis b')`.
+-/
 theorem lieMult_unique {k O : Type} [Field k] [CommRing O] {G : Over (Sp k)} [GrpObj G]
     [IsCommMonObj G] (a : OAct O G) (τ : O →+* k) {n m : ℕ}
     (hn : LieMult a (𝟙 _) τ n) (hm : LieMult a (𝟙 _) τ m) : n = m := by
@@ -23,11 +29,17 @@ theorem lieMult_unique {k O : Type} [Field k] [CommRing O] {G : Over (Sp k)} [Gr
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `h1 : (τ H.rt) ^ 2 = ρ ^ 2` using `by rw [← map_pow, H.rt_sq, hρ]; simp`. Conclude with `(sq_eq_sq_iff_eq_or_eq_neg.mp h1).resolve_left h`.
+-/
 theorem map_rt_eq_neg (H : Host E) {k : Type} [Field k] {ρ : k} (hρ : ρ ^ 2 = -(H.d : k))
     (τ : 𝓞 E →+* k) (h : τ H.rt ≠ ρ) : τ H.rt = -ρ := by
   have h1 : (τ H.rt) ^ 2 = ρ ^ 2 := by rw [← map_pow, H.rt_sq, hρ]; simp
   exact (sq_eq_sq_iff_eq_or_eq_neg.mp h1).resolve_left h
 
+/- English proof (translation)
+Introduce `h`. Establish `h0 : ρ = 0` using `by linear_combination h / 2`. Establish `: (H.d : k) = 0` using `by rw [h0] at hρ; simpa using hρ`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast this)`.
+-/
 theorem ne_neg (H : Host E) {k : Type} [Field k] [CharZero k] {ρ : k}
     (hρ : ρ ^ 2 = -(H.d : k)) : ρ ≠ -ρ := by
   intro h
@@ -35,11 +47,17 @@ theorem ne_neg (H : Host E) {k : Type} [Field k] [CharZero k] {ρ : k}
   have : (H.d : k) = 0 := by rw [h0] at hρ; simpa using hρ
   exact H.d_prime.ne_zero (by exact_mod_cast this)
 
+/- English proof (translation)
+Introduce `τ` and use `(hk ⟨τ H.rt, by rw [← sq, ← map_pow, H.rt_sq]; simp⟩).elim`.
+-/
 theorem detCond_of_not_isSquare {H : Host E} (D : Datum H) {S : Scheme.{0}} {G : Over S} [GrpObj G]
     (a : OAct (𝓞 E) G) {k : Type} [Field k] (hk : ¬ IsSquare (-(H.d : k))) (t : Sp k ⟶ S) (ρ : k) :
     DetCond D a t ρ := fun τ =>
   (hk ⟨τ H.rt, by rw [← sq, ← map_pow, H.rt_sq]; simp⟩).elim
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((IsAlgClosed.lift : E →ₐ[ℚ] k) : E →+* k).comp (algebraMap (𝓞 E) E)⟩`.
+-/
 theorem nonempty_ringHom (k : Type) [Field k] [CharZero k] [IsAlgClosed k] :
     Nonempty (𝓞 E →+* k) :=
   ⟨((IsAlgClosed.lift : E →ₐ[ℚ] k) : E →+* k).comp (algebraMap (𝓞 E) E)⟩

@@ -37,6 +37,9 @@ def minorProd (col : ∀ σ : T, Fin (r σ) → Fin n) (a : T × ℕ → ℕ) : 
 def diagExp (col : ∀ σ : T, Fin (r σ) → Fin n) (a : T × ℕ → ℕ) : Letter T r n →₀ ℕ :=
   ∑ σ : T, ∑ i : Fin (r σ), Finsupp.single ⟨σ, i, col σ i⟩ (a (σ, i.val))
 
+/- English proof (translation)
+Simplify using `[minorProd, gap]`.
+-/
 example (col : ∀ σ : T, Fin (r σ) → Fin n) : minorProd r n R col 0 = 1 := by
   simp [minorProd, gap]
 
@@ -90,6 +93,9 @@ def push {n : ℕ} (g : Matrix (Fin n) (Fin n) E) :
     MvPolynomial (LtN Dw n) c.F →ₐ[c.F] MvPolynomial (LtN Dw n) c.F :=
   aeval fun ℓ => letB c ℓ.1 ℓ.2.1 (fun k => g k ℓ.2.2)
 
+/- English proof (translation)
+Simplify using `[push, letB]`.
+-/
 example {n : ℕ} (g : Matrix (Fin n) (Fin n) E) (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) (j : Fin n) :
     push c g (X (⟨σ, i, j⟩ : LtN Dw n)) = ∑ k, C (embF c σ (g k j)) * X (⟨σ, i, k⟩ : LtN Dw n) := by
   simp [push, letB]
@@ -201,6 +207,9 @@ def MovesDatum {n : ℕ} (J : Subgroup (UA E n)) (ψ : J →* c.Fˣ) (ph : (Fin 
     (∀ a b, ∃ u ∈ intAd E, star (k.1.1 a b) - diagE E (κ a b : E) = (l.M : AdE E) * u) →
       ∀ x, ph (fun a => ∑ b, κ a b • x b) = ((ψ k : c.Fˣ) : c.F) * ph x
 
+/- English proof (translation)
+Simplify using `[MovesDatum, FixesDatum]`.
+-/
 example {n : ℕ} (J : Subgroup (UA E n)) (ph : (Fin n → ConjQ Dw l) → c.F) :
     MovesDatum c J 1 ph ↔ FixesDatum c J ph := by
   simp [MovesDatum, FixesDatum]

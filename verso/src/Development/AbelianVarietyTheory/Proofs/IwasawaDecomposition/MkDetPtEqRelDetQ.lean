@@ -16,6 +16,9 @@ section General
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
+/- English proof (translation)
+Establish `h` using `CharValCompare.val_dual (P := P) ⟨hN, hu⟩ (isFr_latFr P hN) (isFr_latFr (conjPrime₂ P) hN)`. Rewrite `h` using `[map_mul, valuation_star, CharValCompare.conjP_conjP]`. Rewrite using `[ordSub_detSub_eq hN (isFr_latFr P hN), ordSub_detSub_eq hN (isFr_latFr (conjPrime₂ P) hN)]`. Unfold `ordF`. Rewrite using `[eq_inv_of_mul_eq_one_right h, WithZero.log_inv]`.
+-/
 theorem ordSub_conj {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N)
     (hu : Formalism.HermitianLatticesTheory.IsUnimodular (hStd E n) N) (P : HeightOneSpectrum (𝓞 E)) :
     ordSub (conjPrime₂ P) (detSub N) = -ordSub P (detSub N) := by
@@ -25,12 +28,20 @@ theorem ordSub_conj {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice 
   unfold ordF
   rw [eq_inv_of_mul_eq_one_right h, WithZero.log_inv]
 
+/- English proof (translation)
+Rewrite using `[ordSub_detSub_eq (f := 1) stdLat_lattice fun _ => Iff.rfl]`. Simplify using `[ordF]`.
+-/
 theorem ordSub_std (w : HeightOneSpectrum (𝓞 E)) : ordSub w (detSub (stdLat E n)) = 0 := by
   rw [ordSub_detSub_eq (f := 1) stdLat_lattice fun _ => Iff.rfl]
   simp [ordF]
 
 open Classical in
 
+/- English proof (translation)
+Establish `e : valAt w (detIdl SB N fr) = Valued.v (compAt w (detIdl SB N fr))` using `valAt_apply _ _`. Rewrite using `[ordI, e, compAt_detIdl SB hN]`. Use `split_ifs`. Rewrite using `[valued_algebraMap, ordSub_detSub_eq hN (hf w)]`. Both sides reduce to the same expression.
+
+Simplify using the standard rewrite rules. Establish `h` using `ordF_unif_self w`. Unfold `ordF at h`. Rewrite using `[map_pow, valued_algebraMap, WithZero.log_pow, neg_eq_iff_eq_neg.1 h]`. Simplify using the standard rewrite rules.
+-/
 theorem ordI_detIdl (SB : Finset (HeightOneSpectrum (𝓞 E))) {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N)
     {fr : HeightOneSpectrum (𝓞 E) → Sp E n ≃ₗ[E] Sp E n} (hf : ∀ P, IsFr P N (fr P)) (w : HeightOneSpectrum (𝓞 E)) :
     ordI w (detIdl SB N fr) =
@@ -50,6 +61,11 @@ end General
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations. Rewrite using `[← QuotientGroup.mk_inv, ← QuotientGroup.mk_mul, mk_mem_UOQ, KDq_sup_unitIdl]`. Use `(GlobalTheory.Mem.Chr.mem_KD_sup_unitIdl_iff R H _).2 fun w w' hw => ?_` and prove the remaining obligations. Rewrite using `[← valAt_apply, ← valAt_apply, valAt_eq, valAt_eq, ordI_mul, ordI_mul, ordI_inv, ordI_inv, (isConjPl_iff H w w').1 hw]`. Use `h w` as an intermediate fact.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mk_mk_eq_of_ord {R : Ranks} (H : Formalism.BasicNotions.Host R) (SQ : Finset (HeightOneSpectrum (𝓞 H.E))) {a b : Ideles H.E}
     (h : ∀ w, ordI w a - ordI (conjPrime₂ w) a = ordI w b - ordI (conjPrime₂ w) b) :
     (QuotientGroup.mk (QuotientGroup.mk a) : DtQ H SQ ⧸ UOQ H SQ) = QuotientGroup.mk (QuotientGroup.mk b) := by
@@ -70,6 +86,13 @@ open DetLat
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `R H n ST SG Q SQ p hL`. Establish `hN` using `p.deco.2.lat`. Establish `hf : {w | (ordSub w (detSub p.deco.1.N) - ordSub w (detSub (stdLat H.E n))).toNat ≠ 0}.Finite` using `(finite_ordSub hN).subset fun v hv h0 => hv (by simp [h0, ordSub_std])`. Use `mk_mk_eq_of_ord H SQ (a := ptIdl H SQ p) (b := powI fun w => (ordSub w (detSub p.deco.1.N) - ordSub w (detSub (stdLat H.E n))).toNat) fun w => ?_` and prove the remaining obligations. Rewrite using `[ordI_powI _ hf, ordI_powI _ hf, ptIdl, ordI_detIdl _ hN (isFr_ptFr p), ordI_detIdl _ hN (isFr_ptFr p), CharValCompare.conjP_conjP, ordSub_std, ordSub_std, ordSub_conj hN p.deco.2.uni]`.
+
+Establish `hs` using `hL.split w`. Distinguish the cases in `h1 : w ∈ uSG SG SQ`. Rewrite using `[if_pos h1, if_neg (hs h1), if_pos h1]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h2 : conjPrime₂ w ∈ uSG SG SQ`.
+
+Rewrite using `[if_neg h1, if_pos h2, if_pos h2]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h1, if_neg h2, if_neg h2, if_neg h1]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mk_detPt_eq_relDetQ : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (n : ℕ) (ST SG Q SQ : Finset (HeightOneSpectrum (𝓞 H.E))) (p : DecoF H.E n ST SG Q), LevOk H SG SQ → (QuotientGroup.mk (detPt H SQ p) : DtQ H SQ ⧸ UOQ H SQ) = relDetQ H SQ n (stdLat H.E n) p.deco.1.N := by
   intro R H n ST SG Q SQ p hL
   have hN := p.deco.2.lat

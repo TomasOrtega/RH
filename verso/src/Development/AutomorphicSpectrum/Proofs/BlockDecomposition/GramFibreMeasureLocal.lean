@@ -16,12 +16,58 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW.FibSim
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_scal {A : Type} [CommRing A] {M n : ℕ} (C : Matrix (Fin n) (Fin M) A)
     (D : Matrix (Fin M) (Fin n) A) (G' G J : Matrix (Fin M) (Fin M) A) (t : A)
     (h : G' * J * G = t • J) : (C * G' * J) * (G * D) = t • (C * J * D) := by
   calc (C * G' * J) * (G * D) = C * (G' * J * G) * D := by simp only [Matrix.mul_assoc]
     _ = t • (C * J * D) := by rw [h, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm g l hl hgl a c hmu hnu S`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hR`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`.
+
+Use `haveI := hT2`. Take `⟨hTK, hLK, hSK, hTK2, -, -, -, hBor, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ R`. Use `haveI := hTK`. Use `haveI := hLK`. Use `haveI := hSK`.
+
+Use `haveI := hTK2`. Use `haveI := hBor n M`. Take `⟨hLH, hSH, hT2H, hBH, hG⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ R n`. Use `haveI := hLH`. Use `haveI := hSH`.
+
+Use `haveI := hT2H`. Use `haveI := hBH`. Take `⟨G, hGc, hGe⟩` from `hG M J hJ`. Establish `hKu` using `GlobalTheory.CompanionTheory.SW.KUnits.units_val_isOpenEmbedding F E σ hσ R hR`. Establish `hcont : ∀ h : GL (Fin M) (R ⊗[F] E), Continuous (actTup R h : (Fin n → Fin M → R ⊗[F] E) → (Fin n → Fin M → R ⊗[F] E))`.
+
+Introduce `h`. Use `continuous_pi fun b => ?_` and prove the remaining obligations. Conclude with `continuous_const.matrix_mulVec (continuous_apply b)`. Set `e : (Fin n → Fin M → R ⊗[F] E) ≃ₜ (Fin n → Fin M → R ⊗[F] E)` to `{ toFun := actTup R g invFun := actTup R g⁻¹ left_inv := fun X => by`. Use function extensionality and compare the values at `b`.
+
+Simplify using `[actTup, Matrix.mulVec_mulVec]`. Use `right_inv := fun X => by`. Use function extensionality and compare the values at `b`. Simplify using `[actTup, Matrix.mulVec_mulVec]`. Use `continuous_toFun := hcont g`.
+
+Use `continuous_invFun := hcont g⁻¹ }`. Take `⟨u, rfl⟩` from `hl`. Set `am` to `algebraMap R (R ⊗[F] E)`. Establish `hinv : ∀ (v w : Rˣ) (_ : (v : R) * w = 1) (A : HermR R σ n), GlobalTheory.CompanionTheory.SW.MassSimil.scalH R σ (v : R) (GlobalTheory.CompanionTheory.SW.MassSimil.scalH R σ (w : R) A) = A`. Introduce `v w hvw A`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.SW.MassSimil.scalH_coe, GlobalTheory.CompanionTheory.SW.MassSimil.scalH_coe, smul_smul, ← map_mul, hvw, map_one, one_smul]`. Establish `hcs : ∀ v : R, Continuous (GlobalTheory.CompanionTheory.SW.MassSimil.scalH R σ v : HermR R σ n → HermR R σ n)`. Introduce `v`. Establish `hv : Continuous fun A : HermR R σ n => (A : Matrix (Fin n) (Fin n) (R ⊗[F] E))` using `continuous_subtype_val`.
+
+Conclude with `(hv.const_smul (algebraMap R (R ⊗[F] E) v)).subtype_mk _`. Set `τh : HermR R σ n ≃ₜ HermR R σ n` to `{ toFun := GlobalTheory.CompanionTheory.SW.MassSimil.scalH R σ (u : R) invFun := GlobalTheory.CompanionTheory.SW.MassSimil.scalH R σ ((u⁻¹ : Rˣ) : R) left_inv := hinv _ _ (by simp) right_inv := hinv _ _ (by simp) continuous_toFun := hcs _ continuous_invFun := hcs _ }`. Set `B : Set (HermR R σ n)` to `{S | IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det}`. Establish `hBo : IsOpen B`. Establish `: B = (fun S : HermR R σ n => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det) ⁻¹' Set.range (Units.val : (R ⊗[F] E)ˣ → R ⊗[F] E)`.
+
+Use extensionality with `S`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hKu.isOpen_range.preimage continuous_subtype_val.matrix_det`. Establish `hdet : ∀ (v : Rˣ) (A : HermR R σ n), A ∈ B → GlobalTheory.CompanionTheory.SW.MassSimil.scalH R σ (v : R) A ∈ B`.
+
+Introduce `v A hA`. Use `show IsUnit ((GlobalTheory.CompanionTheory.SW.MassSimil.scalH R σ (v : R) A : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det`. Rewrite using `[GlobalTheory.CompanionTheory.SW.MassSimil.scalH_coe, Matrix.det_smul]`. Conclude with `((v.isUnit.map (algebraMap R (R ⊗[F] E))).pow _).mul hA`. Establish `hBτ : τh '' B = B`.
+
+Use extensionality with `S'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hS, rfl⟩`. Conclude with `hdet _ _ hS`. Introduce `hS'`.
+
+Conclude with `⟨τh.symm S', hdet _ _ hS', τh.apply_symm_apply _⟩`. Establish `hU : G ⁻¹' B = {X | IsUnit (gramR R σ J X).det}`. Use extensionality with `X`. Use `show IsUnit _ ↔ IsUnit _`. Rewrite using `[hGe]`.
+
+Establish `hfam : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (G ⁻¹' B) ν B m`. Rewrite using `[hU]`. Conclude with `hm`. Establish `hgram : ∀ X : Fin n → Fin M → R ⊗[F] E, gramR R σ J (actTup R g X) = (algebraMap R (R ⊗[F] E) (u : R)) • gramR R σ J X`. Introduce `X`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.SW.GramAlg.gramR_eq, GlobalTheory.CompanionTheory.SW.GramAlg.gramR_eq, GlobalTheory.CompanionTheory.SW.GramAlg.colM_actTup, cT_mul]`. Conclude with `conj_scal _ _ _ _ _ _ hgl`. Establish `hcomm : ∀ X, G (e X) = τh (G X)`. Introduce `X`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show ((G (actTup R g X) : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = ((GlobalTheory.CompanionTheory.SW.MassSimil.scalH R σ (u : R) (G X) : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E))`. Rewrite using `[← hGe, GlobalTheory.CompanionTheory.SW.MassSimil.scalH_coe, ← hGe]`. Conclude with `hgram X`. Establish `htr` using `GlobalTheory.CompanionTheory.SW.isFibreFamily_transport _ _ _ μ ν (gramR R σ J) G Subtype.val Subtype.val_injective hGc hGe _ (gramR R σ J) G hGc hGe e τh hcomm B hBo m hfam`. Rewrite `htr` using `[hBτ, hU]`.
+
+Establish `hmu' : μ.map e = a • μ` using `hmu`. Establish `hnu' : ν.map τh = c • ν` using `hnu`. Rewrite `htr` using `[hmu', hnu']`. Establish `hnew : IsGramFib R σ J n (a • μ) (c • ν) (fun b => (m (τh.symm b)).map e)` using `htr`. Establish `ha0 : a ≠ 0`.
+
+Introduce and unpack `rfl`. Establish `h0 : μ.map e = 0` using `by rw [hmu', zero_smul]`. Establish `h1 : (μ.map e) Set.univ = μ Set.univ`. Rewrite using `[e.measurableEmbedding.map_apply, Set.preimage_univ]`. Rewrite `h1` using `[h0]`.
+
+Conclude with `(isOpen_univ.measure_pos μ Set.univ_nonempty).ne h1`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : ν.map τh = 0` using `by rw [hnu', zero_smul]`. Establish `h1 : (ν.map τh) Set.univ = ν Set.univ`.
+
+Rewrite using `[τh.measurableEmbedding.map_apply, Set.preimage_univ]`. Rewrite `h1` using `[h0]`. Conclude with `(isOpen_univ.measure_pos ν Set.univ_nonempty).ne h1`. Use `haveI hμa : (a • μ).IsAddHaarMeasure := Measure.IsAddHaarMeasure.nnreal_smul μ ha0`. Use `haveI hνc : (c • ν).IsAddHaarMeasure := Measure.IsAddHaarMeasure.nnreal_smul ν hc0`.
+
+Establish `hres` using `GlobalTheory.CompanionTheory.SW.Rescale.isGramFib_rescale F E σ hσ M J hJ R hR n μ ν m hμ hν hm a c ha0 hc0`. Establish `huq` using `GlobalTheory.CompanionTheory.SW.GramFib.fibre_unique F E σ hσ M J hJ R hR n (a • μ) (c • ν) _ hμa hνc hres _ hnew (τh S)`. Establish `hs : τh.symm (τh S) = S` using `τh.symm_apply_apply S`. Simplify using `only [hs] at huq`. Conclude with `huq.symm`.
+-/
 theorem fib_similitude : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n : ℕ), ∀ (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n)) (m : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsGramFib R σ J n μ ν m → ∀ (g : GL (Fin M) (R ⊗[F] E)) (l : R), IsUnit l → cT (sigR R σ) (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR R J * (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = (algebraMap R (R ⊗[F] E) l) • JR R J → ∀ a c : ℝ≥0, μ.map (actTup R g) = a • μ → ν.map (GlobalTheory.CompanionTheory.SW.MassSimil.scalH R σ l) = c • ν → ∀ S, (m S).map (actTup R g) = (a / c) • m (GlobalTheory.CompanionTheory.SW.MassSimil.scalH R σ l S) := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm g l hl hgl a c hmu hnu S
   obtain ⟨hTR, hLC, hSC, hT2, -⟩ := id hR

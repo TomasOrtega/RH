@@ -19,6 +19,9 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over S'} [GrpObj A]
   {T : Over S'} {T₀ : Over S} (τ : T.left ⟶ T₀.left) (hτ : τ ≫ T₀.hom = T.hom ≫ f)
 include hp hτ
 
+/- English proof (translation)
+Set `x₀ : T₀ ⟶ G` to `Over.homMk (inv τ ≫ x.left ≫ φ) (by`. Rewrite using `[Category.assoc, Category.assoc, hp.1.w, IsIso.inv_comp_eq, hτ, ← Category.assoc, Over.w])`. Establish `e : τ ≫ x₀.left = x.left ≫ φ` using `IsIso.hom_inv_id_assoc _ _`. Use `⟨x₀, e, Over.OverMorphism.ext ((cancel_epi τ).1 ?_)⟩` and prove the remaining obligations. Rewrite using `[over_pow hp τ hτ e, hx, over_one hp τ hτ]`.
+-/
 theorem exists_torsion_up [IsIso τ] {n : ℕ} (x : T ⟶ A) (hx : x ^ n = 1) :
     ∃ x₀ : T₀ ⟶ G, τ ≫ x₀.left = x.left ≫ φ ∧ x₀ ^ n = 1 := by
   let x₀ : T₀ ⟶ G := Over.homMk (inv τ ≫ x.left ≫ φ) (by
@@ -27,6 +30,9 @@ theorem exists_torsion_up [IsIso τ] {n : ℕ} (x : T ⟶ A) (hx : x ^ n = 1) :
   refine ⟨x₀, e, Over.OverMorphism.ext ((cancel_epi τ).1 ?_)⟩
   rw [over_pow hp τ hτ e, hx, over_one hp τ hτ]
 
+/- English proof (translation)
+Establish `w : (τ ≫ x₀.left) ≫ G.hom = T.hom ≫ f` using `by rw [Category.assoc, Over.w, hτ]`. Set `x : T ⟶ A` to `Over.homMk (hp.1.lift _ _ w) (hp.1.lift_snd _ _ _)`. Establish `e : τ ≫ x₀.left = x.left ≫ φ` using `(hp.1.lift_fst _ _ _).symm`. Use `⟨x, e, Over.OverMorphism.ext (hp.1.hom_ext ?_ (by rw [Over.w, Over.w]))⟩` and prove the remaining obligations. Rewrite using `[← over_pow hp τ hτ e, hx, over_one hp τ hτ]`.
+-/
 theorem exists_torsion_down {n : ℕ} (x₀ : T₀ ⟶ G) (hx : x₀ ^ n = 1) :
     ∃ x : T ⟶ A, τ ≫ x₀.left = x.left ≫ φ ∧ x ^ n = 1 := by
   have w : (τ ≫ x₀.left) ≫ G.hom = T.hom ≫ f := by rw [Category.assoc, Over.w, hτ]
@@ -35,6 +41,11 @@ theorem exists_torsion_down {n : ℕ} (x₀ : T₀ ⟶ G) (hx : x₀ ^ n = 1) :
   refine ⟨x, e, Over.OverMorphism.ext (hp.1.hom_ext ?_ (by rw [Over.w, Over.w]))⟩
   rw [← over_pow hp τ hτ e, hx, over_one hp τ hτ]
 
+/- English proof (translation)
+Introduce `Z r z J J' hJ hJ'`. Establish `e : psi hp σ hσ ≫ (β ▷ G).left = psi hp τ hτ`. Use `psi_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Over.comp_left, whiskerRight_fst, Over.comp_left, ← Category.assoc, psi_fst', psi_fst', Category.assoc, hβ]`. Rewrite using `[Category.assoc, VVRank.whisker_snd_left, psi_snd', psi_snd']`.
+
+Rewrite using `[sv_of_eq_mul (s := th') (t := VVRank.pullS G a β th₀) (c := c) (fun j => congrArg (fun q => q.1 j) hc) _ z hJ, sv_of_eq_mul (s := SecM.toSec A (σ.appTop.hom c • SecM.ofSec A th)) (t := th) (c := σ.appTop.hom c) (fun j => rfl) _ z hJ', VVRank.sv_pullS _ _ _ _ _ _ hJ, Category.ass …`. Conclude with `congrArg (fun q => _ * (q * _)) (gs_pull _ σ z ⊤ trivial c).symm`.
+-/
 theorem secRel_smul {L₀ : LB G.left} {L₁ : LB A.left} {w : LB.Iso L₁ (L₀.pull φ)} {a : ℤ} {B : Over S}
     (σ : T.left ⟶ B.left) (hσ : σ ≫ B.hom = T.hom ≫ f) (β : B ⟶ T₀) (hβ : σ ≫ β.left = τ)
     {th : LB.Sec (LPow A L₁ a T)} {th₀ : LB.Sec (LPow G L₀ a T₀)} (h : SecRel hp τ hτ w th th₀)
@@ -56,6 +67,27 @@ theorem secRel_smul {L₀ : LB G.left} {L₁ : LB A.left} {w : LB.Iso L₁ (L₀
 
 end Pts
 
+/- English proof (translation)
+Introduce `hLaw _ S G _ L ρ hL hρ K _ _ _ x₀ P φ hp ⟨w, hw⟩ m hm Ix x v hx hv`. Establish `hL₁` using `P.isLB`. Use `P.isAb.comm` as an intermediate fact. Take `⟨ρ', hρ', hr⟩` from `exists_rigidificationPullbackCompatibleIso hp hw hL hL₁ hρ`. Establish `hx' : ∀ i, x i ^ (m ^ 2) = 1` using `fun i => (hx _).2 ⟨i, rfl⟩`.
+
+Take `⟨thP, hg, hth⟩` from `GlobalTheory.T.exists_generator_thetaPoint_normalised_thetaConstants K P ρ' hρ' m Ix x v hx' hv`. Set `τ : (baseOver (Sp K)).left ⟶ (Over.mk x₀).left` to `𝟙 (Sp K)`. Use `haveI : IsIso τ := inferInstanceAs (IsIso (𝟙 (Sp K)))`. Establish `hτ : τ ≫ (Over.mk x₀).hom = (baseOver (Sp K)).hom ≫ x₀` using `rfl`. Establish `hi : inv τ = 𝟙 (Sp K)` using `IsIso.inv_eq_of_hom_inv_id (Category.id_comp _)`.
+
+Take `⟨th, hrel⟩` from `exists_secRel_up hp τ hτ hw hL hL₁ thP`. Use `⟨th, ThetaPtUp.isGenSec_up hp τ hτ hw hL hL₁ hrel hg, fun F _ _ e x' h a th' hth' => ?_⟩` and prove the remaining obligations. Use `choose y hy hy' using fun i => exists_torsion_up hp τ hτ (x i) (hx' i)`. Establish `up : ∀ i, ThG G L ρ m th (y i) (fnOf (v i))` using `fun i => by`. Establish `q` using `ThG.up hp τ hτ hw hL hL₁ hr (hy i) (hy' i) hrel (hth i)`.
+
+Rewrite `q` using `[hi]`. Conclude with `q`. Set `T' : Over (Sp K)` to `Over.mk (spMap e)`. Set `u : T' ⟶ baseOver (Sp K)` to `Over.homMk (spMap e) (Category.comp_id _)`. Set `τ' : T'.left ⟶ (Over.mk x₀).left` to `spMap e`.
+
+Establish `hτ' : τ' ≫ (Over.mk x₀).hom = T'.hom ≫ x₀` using `rfl`. Set `σ : T'.left ⟶ (Over.mk x').left` to `𝟙 (Sp F)`. Use `haveI : IsIso σ := inferInstanceAs (IsIso (𝟙 (Sp F)))`. Establish `hσ : σ ≫ (Over.mk x').hom = T'.hom ≫ x₀` using `(Category.id_comp _).trans h.symm`. Establish `hj : inv σ = 𝟙 (Sp F)` using `IsIso.inv_eq_of_hom_inv_id (Category.id_comp _)`.
+
+Take `⟨t, ht⟩` from `exists_secRel hp τ' hτ' hw hL hL₁ th`. Establish `hrel'` using `secRel_smul hp τ' hτ' σ hσ (Over.homMk (spMap e) h : Over.mk x' ⟶ Over.mk x₀) (Category.id_comp _) ht hth'`. Establish `hu : ∀ i, (u ≫ x i) ^ (m ^ 2) = 1` using `fun i => by rw [← MonObj.comp_pow, hx', MonObj.comp_one]`. Establish `down : ∀ i, ThG P.A P.L ρ' m (SecM.toSec P.A (σ.appTop.hom (fnOf a) • SecM.ofSec P.A t)) (u ≫ x i) (fnOf (a * e (v i)))` using `fun i => by`. Establish `e₁ : τ' ≫ (y i).left = (u ≫ x i).left ≫ φ` using `(congrArg (spMap e ≫ ·) ((Category.id_comp _).symm.trans (hy i))).trans (Category.assoc _ _ _).symm`.
+
+Establish `q` using `ThG.smul (th' := SecM.toSec P.A (σ.appTop.hom (fnOf a) • SecM.ofSec P.A t)) hL₁ rfl (ThG.move hp τ' hτ' hw hL hL₁ hr e₁ (hu i) ht (up i))`. Establish `e₂ : σ.appTop.hom (fnOf a) * τ'.appTop.hom (fnOf (v i)) = fnOf (a * e (v i))` using `(congrArg (fnOf a * ·) (congrArg (fun q => q.hom (v i)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom e))).symm).trans (map_mul (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom _ _).symm`. Rewrite `q` using `[e₂]`. Conclude with `q`. Establish `hK : ((m ^ 2 : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (pow_ne_zero _ hm.pos.ne')`.
+
+Use `⟨fun i => ?_, fun z c hz => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `exists_torsion_up hp σ hσ _ (hu i)`. Establish `q` using `ThG.up hp σ hσ hw hL hL₁ hr hz hz' hrel' (down i)`. Rewrite `q` using `[hj]`. Conclude with `⟨z, q⟩`.
+
+Take `⟨z', hz₁, hz₂⟩` from `exists_torsion_down hp σ hσ z hz.1`. Take `⟨y', hy₁, rfl⟩` from `TorsionFieldExt.exists_of_isAlgClosed hLaw P u hK (by rw [← map_natCast e]; exact (map_ne_zero e).2 hK) z' hz₂`. Take `⟨i, rfl⟩` from `(hx y').1 hy₁`. Establish `hun : IsUnit ((m ^ 2 : ℕ) : Γ(Sp K, ⊤))`. Rewrite using `[← map_natCast (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom]`.
+
+Conclude with `(IsUnit.mk0 _ hK).map _`. Establish `q : fnOf c = fnOf (a * e (v i))` using `ThG.unique hLaw P hm hun (ThG.move hp σ hσ hw hL hL₁ hr hz₁ hz₂ hrel' hz) (down i)`. Conclude with `⟨i, (Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv.injective q⟩`.
+-/
 theorem exists_gen_thG_generic : Laws → Laws2 → ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (x₀ : Sp K ⟶ S) (P : PolAV (Sp K)) (φ : P.A.left ⟶ G.left), IsGrpPullback P.A G x₀ φ → LBIso P.L (L.pull φ) → ∀ (m : ℕ), Odd m → ∀ (Ix : Type) (x : Ix → (baseOver (Sp K) ⟶ P.A)) (v : Ix → K), (∀ y, y ^ (m ^ 2) = 1 ↔ ∃ i, x i = y) → IsThetaPt P m x (fun i => fnOf (v i)) → ∃ th : LB.Sec (LPow G L ((1 : ℕ) : ℤ) (Over.mk x₀)), IsGenSec G L ((1 : ℕ) : ℤ) th ∧ ∀ (F : Type) [Field F] [IsAlgClosed F] (e : K →+* F) (x' : Sp F ⟶ S) (h : spMap e ≫ x₀ = x') (a : F) (th' : LB.Sec (LPow G L ((1 : ℕ) : ℤ) (Over.mk x'))), SecM.ofSec G th' = @id Γ((Over.mk x').left, ⊤) (fnOf a) • SecM.ofSec G (VVRank.pullS G _ (Over.homMk (spMap e) h : Over.mk x' ⟶ Over.mk x₀) th) → (∀ i, ∃ z, ThG G L ρ m th' z (fnOf (a * e (v i)))) ∧ ∀ z (c : F), ThG G L ρ m th' z (fnOf c) → ∃ i, c = a * e (v i) := by
   intro hLaw _ S G _ L ρ hL hρ K _ _ _ x₀ P φ hp ⟨w, hw⟩ m hm Ix x v hx hv
   have hL₁ := P.isLB

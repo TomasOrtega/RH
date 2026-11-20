@@ -14,24 +14,48 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 
 def prH : D.host.E →+* k := p.π.comp (incA D)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_eq : p.pr = prH p := rfl
 
+/- English proof (translation)
+Rewrite using `[← p.ι_π, p.π_ι]`.
+-/
 theorem e_mul_ι (x : k) : p.e * p.ι x = p.ι x := by rw [← p.ι_π, p.π_ι]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Conclude with `e_mul_ι p (K i j)`.
+-/
 theorem e_smul_map {m n : Type} (K : Matrix m n k) : p.e • K.map p.ι = K.map p.ι := by
   funext i j; exact e_mul_ι p (K i j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Conclude with `p.π_ι (K i j)`.
+-/
 theorem map_ι_π {m n : Type} (K : Matrix m n k) : (K.map p.ι).map p.π = K := by
   funext i j; exact p.π_ι (K i j)
 
+/- English proof (translation)
+The claim follows from `(map_ne_zero (prH p)).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)`.
+-/
 theorem xi_ne : p.xi ≠ 0 := (map_ne_zero (prH p)).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)
 
+/- English proof (translation)
+The claim follows from `(map_ne_zero (prH p)).2 B.line.2`.
+-/
 theorem hz_ne {ρ : ℕ} (B : BesLev D ρ) : p.hz B ≠ 0 := (map_ne_zero (prH p)).2 B.line.2
 
+/- English proof (translation)
+Rewrite using `[h, p.ι_π, ha]`. Both sides reduce to the same expression.
+-/
 theorem char_half {ψ : AddChar (AF D.host.F) ℂ} {ψk : AddChar k Circle} (h : p.IsChar ψ ψk) {a : AE D} (ha : p.e * a = a) :
     ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * a)) = ψk (p.π a) := by
   rw [h, p.ι_π, ha]; rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, v, ε, ⟨α, rfl, -⟩, h3⟩` from `p.split`. Establish `h4 : cA D p.e * cA D p.e = cA D p.e` using `by rw [← map_mul, h1]`. Establish `h5 : cA D p.e = cA D p.e * (p.e + cA D p.e)` using `by rw [mul_add, mul_comm (cA D p.e) p.e, h2, h4, zero_add]`. Establish `h6 : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = 0` using `TensorProduct.zero_tmul _ _`. Rewrite using `[h5, h3, map_mul, h6, mul_zero]`.
+-/
 theorem infPart_conj_e : infPart D (cA D p.e) = 0 := by
   obtain ⟨h1, h2, v, ε, ⟨α, rfl, -⟩, h3⟩ := p.split
   have h4 : cA D p.e * cA D p.e = cA D p.e := by rw [← map_mul, h1]
@@ -43,9 +67,17 @@ theorem infPart_conj_e : infPart D (cA D p.e) = 0 := by
 def xiPt (S : HSp D) {ρ : ℕ} (K : Matrix (Fin S.rank) (Fin ρ) k) : Mx D ρ S.rank :=
   adj (gA S ⬝ K.map p.ι)
 
+/- English proof (translation)
+Rewrite using `[xiPt, ← adj_smul, ← Matrix.mul_smul, e_smul_map]`.
+-/
 theorem smul_xiPt (S : HSp D) {ρ : ℕ} (K : Matrix (Fin S.rank) (Fin ρ) k) : cA D p.e • xiPt p S K = xiPt p S K := by
   rw [xiPt, ← adj_smul, ← Matrix.mul_smul, e_smul_map]
 
+/- English proof (translation)
+Introduce `i j`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h : cA D p.e * xiPt p S K i j = xiPt p S K i j` using `congrFun (congrFun (smul_xiPt p S K) i) j`. Express the relevant statement in the definitionally equal form `infPart D _ = 0`. Rewrite using `[← h, map_mul, infPart_conj_e, zero_mul]`.
+
+Conclude with `Ideal.mem_iInf.2 fun w => (w.2 trivial).elim`.
+-/
 theorem mxAt_xiPt (S : HSp D) {ρ : ℕ} (K : Matrix (Fin S.rank) (Fin ρ) k) : GlobalTheory.FinPl.MxAt (fun _ => True) (xiPt p S K) := by
   intro i j
   refine ⟨?_, ?_⟩
@@ -58,17 +90,26 @@ section Pair
 
 variable {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (K : Matrix (Fin V₀.rank) (Fin σ) k)
 
+/- English proof (translation)
+Establish `h : cA D p.e • (dW.jX ⬝ xiPt p V₀ K ⬝ dV.p0) = dW.jX ⬝ xiPt p V₀ K ⬝ dV.p0`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, smul_xiPt]`. Introduce `i j`. Conclude with `congrFun (congrFun h i) j`.
+-/
 theorem isHalf_xiPt : IsHalf (cA D p.e) (dV.ext0 W (dW.incX V₀ (xiPt p V₀ K))) := by
   have h : cA D p.e • (dW.jX ⬝ xiPt p V₀ K ⬝ dV.p0) = dW.jX ⬝ xiPt p V₀ K ⬝ dV.p0 := by
     rw [← Matrix.smul_mul, ← Matrix.mul_smul, smul_xiPt]
   intro i j
   exact congrFun (congrFun h i) j
 
+/- English proof (translation)
+Rewrite using `[hO_eq_trace, HypDec.matrixExtendByZero_apply, HypDec.incX_apply, xiPt, dV.p0_eq, dW.pY_eq]`. Simplify using `only [adj_mul, adj_adj, adj_gA, adj_giA, Matrix.mul_assoc, giA_gA_cancel]`.
+-/
 theorem hO_xiPt (x : WO V W) :
     hO V W x (dV.ext0 W (dW.incX V₀ (xiPt p V₀ K))) = (dV.j0 ⬝ (K.map p.ι ⬝ (dW.pY ⬝ x))).trace := by
   rw [hO_eq_trace, HypDec.matrixExtendByZero_apply, HypDec.incX_apply, xiPt, dV.p0_eq, dW.pY_eq]
   simp only [adj_mul, adj_adj, adj_gA, adj_giA, Matrix.mul_assoc, giA_gA_cancel]
 
+/- English proof (translation)
+Rewrite using `[hO_eq_trace, HypDec.incAdj_apply, HypDec.incY_apply, HypDec.incX_apply, xiPt]`. Simplify using `only [adj_mul, adj_adj, adj_gA, Matrix.mul_assoc, giA_gA_cancel, cancel₃ dW.gram_XY, Matrix.one_mul]`.
+-/
 theorem hO_incAdj_xiPt (y : Mx D V₀.rank σ) :
     hO V₀ W (dW.incAdj V₀ y) (dW.incX V₀ (xiPt p V₀ K)) =
       (K.map p.ι ⬝ (incA D (-D.host.xi0⁻¹) • (adj y ⬝ gA V₀))).trace := by
@@ -77,6 +118,11 @@ theorem hO_incAdj_xiPt (y : Mx D V₀.rank σ) :
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {ψk : AddChar k Circle}
 
+/- English proof (translation)
+Rewrite using `[symplO, hO_xiPt, char_half p h]`. Use `congr 2`. Rewrite using `[AddMonoidHom.map_trace, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, map_ι_π, Place.up, map_ι_π]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm]`.
+
+Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[← smul_eq_mul, ← Matrix.trace_smul, ← Matrix.mul_smul, ← Matrix.smul_mul, e_smul_map]`.
+-/
 theorem char_up (h : p.IsChar ψ ψk) {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
     (FV : Frame k V.rank Y') (FW : Frame k W.rank Y) (t : Matrix Y Y' k) :
     ψ (symplO V W (p.up FV FW t) (dV.ext0 W (dW.incX V₀ (xiPt p V₀ K)))) =
@@ -89,6 +135,11 @@ theorem char_up (h : p.IsChar ψ ψk) {Y Y' : Type} [Fintype Y] [DecidableEq Y] 
     simp only [← Matrix.mul_assoc]
   · rw [← smul_eq_mul, ← Matrix.trace_smul, ← Matrix.mul_smul, ← Matrix.smul_mul, e_smul_map]
 
+/- English proof (translation)
+Rewrite using `[symplO, hO_incAdj_xiPt, char_half p h]`. Use `congr 2`. Rewrite using `[Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, map_mul, AddMonoidHom.map_trace, Matrix.map_mul, map_ι_π]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `prH p _ = -(prH p _)⁻¹`.
+
+Rewrite using `[map_neg, map_inv₀]`. Rewrite using `[← smul_eq_mul, ← Matrix.trace_smul, ← Matrix.smul_mul, e_smul_map]`.
+-/
 theorem char_incAdj (h : p.IsChar ψ ψk) (y : Mx D V₀.rank σ) :
     ψ (symplO V₀ W (dW.incAdj V₀ y) (dW.incX V₀ (xiPt p V₀ K))) =
       ψk (-p.xi⁻¹ * (K * (adj y ⬝ gA V₀).map p.π).trace) := by
@@ -102,10 +153,22 @@ theorem char_incAdj (h : p.IsChar ψ ψk) (y : Mx D V₀.rank σ) :
 
 end Pair
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, h, Finset.mul_sum, mul_left_comm]`.
+-/
 theorem mul_col {l m n Y : Type} [Fintype m] {P : Matrix l m k} {X : Matrix m n k} {M : Matrix m Y k} {j : Y} {i : n} {a : k}
     (h : ∀ r, M r j = a * X r i) (i₀ : l) : (P * M) i₀ j = a * (P * X) i₀ i := by
   simp only [Matrix.mul_apply, h, Finset.mul_sum, mul_left_comm]
 
+/- English proof (translation)
+Take `⟨hc, h0, hX, hY⟩` from `h`. Break down `r with a | j` into its components or cases. Rewrite using `[if_neg Sum.inl_ne_inr, mul_col (a := 1) (X := J.d.j0.map p.π * G₀.β) (i := a) (fun r => by rw [one_mul]; exact h0 r a), ← Matrix.mul_assoc, ← Matrix.map_mul, J.d.pY_j0]`. Simplify using the standard rewrite rules. Distinguish the cases in `hj : j.val < ρ`.
+
+Establish `hne : (Sum.inr j : n ⊕ Fin c) ≠ Sum.inr l` using `fun e => by`. Use `congrArg Fin.val (Sum.inr_injective e)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne, mul_col (X := J.d.jX.map p.π) (i := ⟨j.val, hj⟩) (hX ⟨j.val, hj⟩ j rfl), ← Matrix.map_mul, J.d.pY_jX]`. Simplify using the standard rewrite rules.
+
+Establish `hj' : 2 * ρ - 1 - j.val < ρ` using `by have := j.2; omega`. Rewrite using `[mul_col (X := J.d.jY.map p.π) (i := ⟨_, hj'⟩) (hY ⟨_, hj'⟩ j (by have := j.2; simp only; omega)), ← Matrix.map_mul, J.d.pY_jY, Matrix.map_apply, Matrix.one_apply]`. Distinguish the cases in `e : j = l`. Establish `e' : i = ⟨_, hj'⟩` using `Fin.ext (by subst e; simp only; omega)`. Rewrite using `[if_pos e', if_pos (congrArg _ e), map_one, mul_one, ← e']`.
+
+Establish `e' : i ≠ ⟨_, hj'⟩` using `fun e' => e (Fin.ext (by have := congrArg Fin.val e'; have := j.2; simp only at *; omega))`. Rewrite using `[if_neg e', if_neg (fun x => e (Sum.inr_injective x)), map_zero, mul_zero]`.
+-/
 theorem jac_row {ρ : ℕ} {J : JacLev D ρ} {s hh : k} {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
     {G₀ : Frame k J.W₀.rank n} {FW : Frame k J.W.rank (n ⊕ Fin c)} (h : p.IsJacFrame J s hh G₀ FW) (i : Fin ρ) (l : Fin c)
     (hl : l.val + i.val + 1 = 2 * ρ) (r : n ⊕ Fin c) :
@@ -129,6 +192,21 @@ theorem jac_row {ρ : ℕ} {J : JacLev D ρ} {s hh : k} {n : Type} [Fintype n] [
       · have e' : i ≠ ⟨_, hj'⟩ := fun e' => e (Fin.ext (by have := congrArg Fin.val e'; have := j.2; simp only at *; omega))
         rw [if_neg e', if_neg (fun x => e (Sum.inr_injective x)), map_zero, mul_zero]
 
+/- English proof (translation)
+Establish `h1 : ∀ x, (adj (yZero B.V₀ ρ (vecB B.o B.ζ)) ⬝ gA B.V₀).map p.π i x = -(if i.val + 1 = ρ then 1 else 0) * prH p ((star B.ζ ᵥ* (B.o.iBᴴ * B.V₀.gram)) x)`. Introduce `x`. Rewrite using `[← Matrix.vecMul_vecMul, ← Matrix.star_mulVec]`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, adj, yZero, zEll, Matrix.transpose_apply, Matrix.neg_apply, Matrix.vecMulVec_apply, ell, ratV, Matrix.vecMul, dotProduct, map_sum, Finset.mul_sum, gA, rat]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Rewrite using `[mul_one, map_neg, GlobalTheory.DualPairCheck.cA_incA, neg_mul, ← map_mul, map_neg, neg_one_mul]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify using `only [h1, mul_assoc, ← Finset.mul_sum]`. Break down `q with a | ⟨⟨⟩⟩` into its components or cases. Establish `h2 : ∀ y, ∑ x, prH p ((star B.ζ ᵥ* (B.o.iBᴴ * B.V₀.gram)) x) * prH p (B.o.iA x y) = 0`. Introduce `y`. Establish `: ((star B.ζ ᵥ* (B.o.iBᴴ * B.V₀.gram)) ᵥ* B.o.iA) y = 0`.
+
+Rewrite using `[Matrix.vecMul_vecMul, B.o.orth, Matrix.vecMul_zero]`. Both sides reduce to the same expression. Simplify using `only [← map_mul, ← map_sum]`. Rewrite using `[← map_zero (prH p), ← this]`. Both sides reduce to the same expression.
+
+Establish `h3 : ∑ x, prH p ((star B.ζ ᵥ* (B.o.iBᴴ * B.V₀.gram)) x) * F₀.β x (Sum.inl a) = 0`. Establish `e : ∀ x, F₀.β x (Sum.inl a) = ∑ y, prH p (B.o.iA x y) * FA.β y a` using `fun x => h.1 x a`. Simplify using `only [e, Finset.mul_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_mul, h2, zero_mul, Finset.sum_const_zero]`.
+
+Rewrite using `[h3]`. Simplify using the standard rewrite rules. Establish `h3 : ∑ x, prH p ((star B.ζ ᵥ* (B.o.iBᴴ * B.V₀.gram)) x) * F₀.β x (Sum.inr ()) = s * p.hz B`. Establish `: star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ = (star B.ζ ᵥ* (B.o.iBᴴ * B.V₀.gram)) ⬝ᵥ vecB B.o B.ζ`. Rewrite using `[← B.o.isoB, vecB, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`.
+
+Rewrite using `[Place.hz, this, pr_eq, dotProduct, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[h.2, map_mul, pr_eq]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `rw [h3]; by_cases e : i.val + 1 = ρ <;> simp [e]`.
+-/
 theorem core_val {ρ : ℕ} {B : BesLev D ρ} {s : k} {n : Type} [Fintype n] [DecidableEq n] {FA : Frame k B.A.rank n}
     {F₀ : Frame k B.V₀.rank (n ⊕ Unit)} (h : p.IsCoreFrame B s FA F₀) (i : Fin ρ) (q : n ⊕ Unit) :
     ((adj (yZero B.V₀ ρ (vecB B.o B.ζ)) ⬝ gA B.V₀).map p.π * F₀.β) i q =
@@ -166,6 +244,11 @@ theorem core_val {ρ : ℕ} {B : BesLev D ρ} {s : k} {n : Type} [Fintype n] [De
       rw [h.2, map_mul, pr_eq]; ring
     rw [h3]; by_cases e : i.val + 1 = ρ <;> simp [e]
 
+/- English proof (translation)
+Break down `q with a | i` into its components or cases. Rewrite using `[h.2.1, pr_eq, Matrix.map_mul, Matrix.mul_assoc, mul_col (a := 1) (X := B.o.iA.map (prH p) * FA.β) (i := a) (fun r => by rw [one_mul]; exact h₀.1 r a), one_mul]`. Both sides reduce to the same expression. Rewrite using `[h.2.2.2.1 i (hq i rfl), pr_eq, Matrix.mulVec, dotProduct, map_sum, Finset.mul_sum, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, mul_left_comm]`. Conclude with `congrArg _ (h₀.2 y)`.
+-/
 theorem core_col {ρ : ℕ} {B : BesLev D ρ} {s : k} {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {FA : Frame k B.A.rank n}
     {F₀ : Frame k B.V₀.rank (n ⊕ Unit)} {FV : Frame k B.V.rank (n ⊕ Fin c)} (h₀ : p.IsCoreFrame B s FA F₀)
     (h : p.IsBesFrame B s FA FV) (q : n ⊕ Fin c) (hq : ∀ i, q = Sum.inr i → i.val = ρ) (x : Fin B.V.rank) :
@@ -179,10 +262,32 @@ theorem core_col {ρ : ℕ} {B : BesLev D ρ} {s : k} {n : Type} [Fintype n] [De
     rw [map_mul, mul_left_comm]
     exact congrArg _ (h₀.2 y)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.trace_single_mul, smul_eq_mul]`.
+-/
 theorem trace_single {m n l : Type} [Fintype m] [Fintype n] [DecidableEq n] [Fintype l] [DecidableEq l] (M : Matrix m n k) (q : n)
     (i : l) (a : k) (N : Matrix l m k) : (M * Matrix.single q i a * N).trace = a * (N * M) i q := by
   rw [Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.trace_single_mul, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `D hF hL _ k _ _ _ _ _ _ p ν _ ψ ψk hch ρ B J st s hs n n' _ _ _ _ c FA F₀ FV G₀ FW h₀ hB hJ Tm hT r q hr b Φ Φ' hΦ`. Take `⟨l, rfl, hl, hq⟩` from `hr`. Establish `hc` using `hJ.1`. Establish `hi : 2 * ρ - 1 - l.val < ρ` using `by have := l.2; omega`. Take `⟨i, hli⟩ : ∃ i : Fin ρ, l.val + i.val + 1 = 2 * ρ` from `⟨⟨_, hi⟩, by have := l.2; simp only; omega⟩`.
+
+Establish `hxi` using `xi_ne p`. Establish `hhz` using `hz_ne p B`. Take `⟨κ, hκ⟩ : ∃ κ, κ = s * (p.hz B / p.xi) * (-1 / p.xi) ^ (ρ - 1 - i.val)` from `⟨_, rfl⟩`. Establish `hκ0 : κ ≠ 0`. Rewrite using `[hκ]; exact mul_ne_zero (mul_ne_zero hs (div_ne_zero hhz hxi)) (pow_ne_zero _ (div_ne_zero (by simp) hxi))`.
+
+Take `⟨K, hK⟩ : ∃ K, K = F₀.β * Matrix.single (q.map id fun _ => ()) i (b / κ)` from `⟨_, rfl⟩`. Establish `h1 : ∀ t, ψ (symplO B.V J.W (p.up FV FW t) (B.d.ext0 J.W (J.d.incX B.V₀ (xiPt p B.V₀ K)))) = ψk (b * t (Sum.inr l) q)`. Introduce `t`. Establish `e : FV.γ * (B.d.j0.map p.π * K) * (J.d.pY.map p.π * FW.β) * t = FV.γ * (B.d.j0.map p.π * F₀.β) * Matrix.single (q.map id fun _ => ()) i (b / κ) * (J.d.pY.map p.π * FW.β * t)`. Simplify using `only [hK, Matrix.mul_assoc]`.
+
+Rewrite using `[char_up p B.d J.d K hch, e, trace_single, ← Matrix.mul_assoc _ FV.γ, mul_col (a := 1) (X := FV.β) (i := q) (fun x => by rw [one_mul]; exact core_col p h₀ hB q hq x), one_mul, Matrix.mul_assoc _ FV.γ, FV.γβ, Matrix.mul_one, Matrix.mul_apply]`. Simplify using `only [jac_row p hJ i l hli, ← hκ, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← mul_assoc, div_mul_cancel₀ _ hκ0]`. Establish `h2 : ψ (symplO B.V₀ J.W (J.d.incAdj B.V₀ (yZero B.V₀ ρ (vecB B.o B.ζ))) (J.d.incX B.V₀ (xiPt p B.V₀ K))) = ψk (b * GlobalTheory.RootEx.basePt c (0 : Matrix n n' k) (Sum.inr l) q)`. Rewrite using `[char_incAdj p J.d K hch, hK, trace_single, core_val p h₀]`.
+
+Use `congr 2`. Break down `q with a | j` into its components or cases. Simplify using `[GlobalTheory.RootEx.basePt]`. Establish `hj` using `hq j rfl`. Distinguish the cases in `e : i.val + 1 = ρ`.
+
+Establish `e1 : l.val = j.val` using `by omega`. Establish `e2 : ρ - 1 - i.val = 0` using `by omega`. Rewrite `hκ` using `[e2, pow_zero, mul_one]`. Simplify using `only [GlobalTheory.RootEx.basePt, e, e1, Sum.map_inr, and_self, if_true, fromBlocks_apply₂₂, of_apply, hκ]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `e1 : l.val ≠ j.val` using `by omega`. Simplify using `[GlobalTheory.RootEx.basePt, e, e1]`. Take `⟨a, ha⟩ : ∃ a : ℂ, a = ψk (b * GlobalTheory.RootEx.basePt c (0 : Matrix n n' k) (Sum.inr l) q)` from `⟨_, rfl⟩`. Establish `ha0 : a ≠ 0` using `by rw [ha]; exact Circle.coe_ne_zero _`. Establish `h3` using `hT.modul _ (isHalf_xiPt p B.d J.d K) Φ (a • Φ') fun t => by`.
+
+Rewrite using `[h1, Submodule.coe_smul, Pi.smul_apply, hΦ, smul_eq_mul, ← mul_assoc, ha, ← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Establish `h4` using `((hL ψ fun _ => True).1 ρ B J st).Heisenberg₂.iso _ (hT.theta Φ) _ (mxAt_xiPt p B.V₀ K)`. Rewrite `h4` using `[← h3, h2, ← ha, map_smul, (GlobalTheory.FlatLin.flatBF_linear D hF ψ ρ B J st _ _ a (hT.theta Φ') (hT.theta Φ')).2]`.
+
+Conclude with `smul_right_injective _ ha0 h4`.
+-/
 theorem flatBF_mul_row : ∀ (D : D7), FlatLaw D → GlobalTheory.FinPl.FlatLaws D → OmLoc D → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (p : Place D k) (ν : Measure k), ν.IsAddHaarMeasure → ∀ (ψ : AddChar (AF D.host.F) ℂ) (ψk : AddChar k Circle), p.IsChar ψ ψk → ∀ (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (st : StepBF ψ B J) (s : k), s ≠ 0 → ∀ (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c : ℕ) (FA : Frame k B.A.rank n') (F₀ : Frame k B.V₀.rank (n' ⊕ Unit)) (FV : Frame k B.V.rank (n' ⊕ Fin (c + 1))) (G₀ : Frame k J.W₀.rank n) (FW : Frame k J.W.rank (n ⊕ Fin c)), p.IsCoreFrame B s FA F₀ → p.IsBesFrame B s FA FV → p.IsJacFrame J s (p.hz B) G₀ FW → ∀ (Tm : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] (WO B.V J.W → ℂ)), p.IsModel ψ FV FW Tm → ∀ (r : n ⊕ Fin c) (q : n' ⊕ Fin (c + 1)), (∃ l, r = Sum.inr l ∧ ρ ≤ l.val ∧ ∀ i, q = Sum.inr i → i.val = ρ) → ∀ (b : k) (Φ Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), (∀ t, Φ'.1 t = (ψk (b * (t r q - GlobalTheory.RootEx.basePt c (0 : Matrix n n' k) r q)) : ℂ) * Φ.1 t) → flatBF st (Tm Φ') = flatBF st (Tm Φ) := by
   intro D hF hL _ k _ _ _ _ _ _ p ν _ ψ ψk hch ρ B J st s hs n n' _ _ _ _ c FA F₀ FV G₀ FW h₀ hB hJ Tm hT r q hr b Φ Φ' hΦ
   obtain ⟨l, rfl, hl, hq⟩ := hr

@@ -8,6 +8,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates (defCoord polyd
 open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CMTypeRestrict.exists_equiv_realEmbeddings | exact GlobalTheory.CMTypeRestrict.exists_equiv_realEmbeddings | (intros; apply GlobalTheory.CMTypeRestrict.exists_equiv_realEmbeddings <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_real_embedding_ordering : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),
     IsCMType φ → ∀ (e₀ : Fin (Module.finrank ℚ (FR E)) ≃ I),
     ∃ e : Fin (Module.finrank ℚ (FR E)) ≃ (FR E →+* ℝ), ∀ j (x : FR E), (e j x : ℂ) = φ (e₀ j) (x : E) := by

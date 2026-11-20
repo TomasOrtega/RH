@@ -16,9 +16,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Use `haveI := z.isPrime`. Conclude with `PrimeSpectrum.ext (Ideal.eq_bot_of_prime _)`.
+-/
 theorem field_pt_eq_bot {K : Type} [Field K] (z : Sp K) : z = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K) :=
   by haveI := z.isPrime; exact PrimeSpectrum.ext (Ideal.eq_bot_of_prime _)
 
+/- English proof (translation)
+Take `⟨⟨T, kO, yT, hfin, hinj, hyT⟩, hrange⟩` from `hyb`. Establish `hgen : yT (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum T.V) ∈ Xw`. Establish `h1` using `hrange ⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ_[p]), rfl⟩`. Rewrite `h1` using `[bot_map (FaithfulSMul.algebraMap_injective 𝓞_ℂ_[p] ℂ_[p]), ← hyT, bot_map hinj]`. Conclude with `h1`.
+
+Use `set y : Sp T.Fr ⟶ X := spMap (algebraMap T.V T.Fr) ≫ yT with hy`. Establish `hyO : Set.range y ⊆ (O : Set X)`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[field_pt_eq_bot z, hy, bot_map (IsFractionRing.injective T.V T.Fr)]`. Conclude with `hO hgen`.
+
+Establish `hr : Set.range y ⊆ Set.range O.ι` using `by rw [Scheme.Opens.range_ι]; exact hyO`. Set `y₀ : Sp T.Fr ⟶ O` to `IsOpenImmersion.lift O.ι y hr`. Set `y' : Sp T.Fr ⟶ X'` to `y₀ ≫ inv (π ∣_ O) ≫ (π ⁻¹ᵁ O).ι`. Establish `hy' : y' ≫ π = spMap (algebraMap T.V T.Fr) ≫ yT`. Simplify using `only [y', Category.assoc, ← morphismRestrict_ι, IsIso.inv_hom_id_assoc, y₀, IsOpenImmersion.lift_fac]`.
+
+Conclude with `hy`. Use `haveI : ValuationRing T.V := inferInstance`. Take `⟨yT', -, hyT'⟩` from `valuative_lift_of_isProper π y' yT hy'`. Use `⟨spMap kO ≫ yT', ⟨⟨T, kO, yT', hfin, hinj, rfl⟩, ?_⟩, by rw [Category.assoc, hyT', hyT]⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Use `show π _ ∈ Xw`. Use `hrange ⟨z, rfl⟩` as an intermediate fact. Rewrite `this` using `[← hyT, ← hyT']`. Simplify using `only [Scheme.Hom.comp_apply, Category.assoc] at this`. Conclude with `this`.
+-/
 theorem isTest_lift (p : ℕ) [Fact p.Prime] (X X' : Scheme.{0}) (π : X' ⟶ X) (hπ : IsProper π) (Xw O : X.Opens)
     (hO : Xw ≤ O) (hiso : IsIso (π ∣_ O)) (yb : Sp 𝓞_ℂ_[p] ⟶ X) (hyb : IsTest p Xw yb) :
     ∃ yb', IsTest p (π ⁻¹ᵁ Xw) yb' ∧ yb' ≫ π = yb := by

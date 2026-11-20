@@ -18,6 +18,11 @@ section OneSide
 variable {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[_root_.sum_apply]`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`. Use `conv_lhs => rw [← (stdOrthonormalBasis ℂ Wp).sum_repr' x]`. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_smul]`.
+-/
 theorem op_eq_sum (T : Wp →L[ℂ] Wp) :
     T = ∑ i, (innerSL ℂ ((stdOrthonormalBasis ℂ Wp) i)).smulRight (T ((stdOrthonormalBasis ℂ Wp) i)) := by
   ext x
@@ -31,6 +36,9 @@ def piOp (z : Fin (2 * r + k + 1) → ℂ)
     (π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)) (h : Mt k r) : Wp →L[ℂ] Wp :=
   ∑ i, (innerSL ℂ ((stdOrthonormalBasis ℂ Wp) i)).smulRight (piV z π ((stdOrthonormalBasis ℂ Wp) i) h)
 
+/- English proof (translation)
+Establish `hs` using `Finset.stronglyMeasurable_sum (Finset.univ : Finset (Fin (Module.finrank ℂ Wp))) (f := fun i (h : Mt k r) => (innerSL ℂ ((stdOrthonormalBasis ℂ Wp) i)).smulRight (piV z π ((stdOrthonormalBasis ℂ Wp) i) h)) (fun i _ => (ContinuousLinearMap.smulRightL ℂ Wp Wp (innerSL ℂ ((stdOrthon …`. Use `hs using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `h`. Unfold `piOp`. Rewrite using `[Finset.sum_apply]`.
+-/
 theorem sm_piOp {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ}
     {π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)}
     (hT : 0 < Tz k r z) (hπ : PI.UpqRep.IsHCTypeW k r z u π) : StronglyMeasurable (piOp (k := k) (r := r) z π) := by
@@ -44,6 +52,9 @@ theorem sm_piOp {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ}
   unfold piOp
   rw [Finset.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[op_eq_sum (π (Matrix.of h))]`. Unfold `piOp`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[show piV z π ((stdOrthonormalBasis ℂ Wp) i) h = π (Matrix.of h) ((stdOrthonormalBasis ℂ Wp) i) from Set.indicator_of_mem (s := {h : Mt k r | Matrix.of h ∈ UWset k r z}) hh _]`.
+-/
 theorem piOp_eq (z : Fin (2 * r + k + 1) → ℂ)
     (π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)) {h : Mt k r}
     (hh : Matrix.of h ∈ UWset k r z) : piOp z π h = π (Matrix.of h) := by
@@ -61,12 +72,18 @@ section Be
 variable {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem aVec_eq (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ)
     (π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp))
     (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)) (w0 v : H) (ξ : Wp)
     (t : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (p1 : Mt k r × Mt k r) :
     aVec z c π σ w0 v ξ t p1 = Formalism.FourierDecayAlt.P.S3dx6.aInt z c π σ w0 v t p1 ξ := rfl
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun x => by rw [Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_unitary hT hπ h hh, one_mul]`.
+-/
 theorem norm_pi_le_one {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ}
     {π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)}
     (hT : 0 < Tz k r z) (hπ : PI.UpqRep.IsHCTypeW k r z u π) {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
@@ -74,6 +91,15 @@ theorem norm_pi_le_one {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ}
   ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun x => by
     rw [Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_unitary hT hπ h hh, one_mul]
 
+/- English proof (translation)
+Establish `hU : PI.WBL.Cv.SigU σ` using `PI.WBL.Cv.sigAll k r ε lam H σ hσ`. Set `F : Mt k r × Mt k r → (Wp →L[ℂ] Wp)` to `fun p => (cM σ v w0 (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.mulM p.1 p.2) (t : Mt k r)) * star (psi k r z c (Matrix.of p.2))) • piOp z π (Formalism.FourierDecayAlt.P.B7.invM p.1)`. Establish `hF : StronglyMeasurable F`. Establish `hc : Measurable fun p : Mt k r × Mt k r => cM σ v w0 (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.mulM p.1 p.2) (t : Mt k r))` using `(meas_cM hσ v w0).comp (Formalism.FourierDecayAlt.P.B7.meas_mulM (Formalism.FourierDecayAlt.P.B7.meas_mulM measurable_fst measurable_snd) measurable_const)`. Establish `hps : Measurable fun p : Mt k r × Mt k r => star (psi k r z c (Matrix.of p.2))` using `(continuous_star.comp (Formalism.FourierDecayAlt.P.S3dx6.continuous_psi z c)).measurable.comp measurable_snd`.
+
+Conclude with `(hc.mul hps).stronglyMeasurable.smul ((sm_piOp hT hπ).comp_measurable (Formalism.FourierDecayAlt.P.B7.measurable_invM.comp measurable_fst))`. Use `hF.aestronglyMeasurable.congr ?_` and prove the remaining obligations. Establish `h1' : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z` using `Measure.quasiMeasurePreserving_fst.ae h1`. Establish `h2' : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae h2`. Use `filter_upwards [h1', h2'] with p hp1 hp2`.
+
+Establish `hhn : Matrix.of p.1 * Matrix.of p.2 ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hp1.1 hp2.1`. Establish `hm : Matrix.of p.1 * Matrix.of p.2 * t ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hhn ht`. Establish `e1 : cM σ v w0 (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.mulM p.1 p.2) (t : Mt k r)) = ⟪v, σ (Matrix.of p.1 * Matrix.of p.2) (σ t w0)⟫_ℂ`. Rewrite using `[show cM σ v w0 (Formalism.FourierDecayAlt.P.B7.mulM (Formalism.FourierDecayAlt.P.B7.mulM p.1 p.2) (t : Mt k r)) = ⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * t) w0⟫_ℂ from Set.indicator_of_mem (s := {g : Mt k r | Matrix.of g ∈ UH (Hpk k r)}) hm _]`. Rewrite using `[hU.2.1 _ hhn _ ht]`.
+
+Both sides reduce to the same expression. Establish `e2 : piOp z π (Formalism.FourierDecayAlt.P.B7.invM p.1) = π (Matrix.of p.1)⁻¹` using `piOp_eq z π (h := Formalism.FourierDecayAlt.P.B7.invM p.1) (Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uw_inv hp1).1`. Use `show F p = _`. Simplify using `only [F, e1, e2]`. Both sides reduce to the same expression.
+-/
 theorem aesm_beInt {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
     (hσ : PI.UpqRep.IsDSHpk k r ε lam σ) {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ}
@@ -117,6 +143,13 @@ theorem aesm_beInt {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1
 
 variable [CompleteSpace Wp]
 
+/- English proof (translation)
+Establish `hU : PI.WBL.Cv.SigU σ` using `PI.WBL.Cv.sigAll k r ε lam H σ hσ`. Establish `hι : MeasurePreserving (Prod.map (Formalism.FourierDecayAlt.P.B7.invM (k` using `k) (r := r)) Formalism.FourierDecayAlt.P.B7.invM) (μW.prod μN) (μW.prod μN) := hιW.prod hιN`. Establish `hae` using `aesm_beInt hσ hT hπ c w0 v ht h1 h2`. Establish `h1' : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z` using `Measure.quasiMeasurePreserving_fst.ae h1`. Establish `h2' : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae h2`.
+
+Establish `hξn : 0 < ‖ξ‖` using `norm_pos_iff.mpr hξ`. Establish `hcomp : Integrable (Formalism.FourierDecayAlt.ThreeDimData.beInt z c π σ (σ t w0) v ∘ Prod.map Formalism.FourierDecayAlt.P.B7.invM Formalism.FourierDecayAlt.P.B7.invM) (μW.prod μN)`. Use `(ha.norm.div_const ‖ξ‖).mono' (hae.comp_measurePreserving hι) ?_` and prove the remaining obligations. Use `filter_upwards [h1', h2'] with p hp1 hp2`. Rewrite using `[Function.comp_apply, Formalism.FourierDecayAlt.P.S3dx6.aInt_eq hz c π hU w0 v ht hp1 hp2, aVec_eq]`.
+
+Unfold `Formalism.FourierDecayAlt.P.S3dx6.aInt`. Rewrite using `[norm_smul, _root_.smul_apply, norm_smul, Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_unitary hT hπ _ hp1, le_div_iff₀ hξn]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_of_le_one_right (norm_nonneg _) (norm_pi_le_one hT hπ hp1)) (norm_nonneg ξ)`. Conclude with `(hι.integrable_comp hae).mp hcomp`.
+-/
 theorem int_beInt_of {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
     (hσ : PI.UpqRep.IsDSHpk k r ε lam σ) {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ}
@@ -148,6 +181,19 @@ theorem int_beInt_of {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k +
       (norm_nonneg ξ)
   exact (hι.integrable_comp hae).mp hcomp
 
+/- English proof (translation)
+Establish `hU : PI.WBL.Cv.SigU σ` using `PI.WBL.Cv.sigAll k r ε lam H σ hσ`. Establish `hι : MeasurePreserving (Prod.map (Formalism.FourierDecayAlt.P.B7.invM (k` using `k) (r := r)) Formalism.FourierDecayAlt.P.B7.invM) (μW.prod μN) (μW.prod μN) := hιW.prod hιN`. Establish `h1' : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z` using `Measure.quasiMeasurePreserving_fst.ae h1`. Establish `h2' : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae h2`. Establish `hval : (Formalism.FourierDecayAlt.ThreeDimData.be z c π σ μW μN (σ t w0) v) ξ = ⟪l v, ξ⟫_ℂ • l (σ t w0)`.
+
+Rewrite using `[hbe, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`. Distinguish the cases in `hI : Integrable (Formalism.FourierDecayAlt.ThreeDimData.beInt z c π σ (σ t w0) v) (μW.prod μN)`. Establish `e1 : (Formalism.FourierDecayAlt.ThreeDimData.be z c π σ μW μN (σ t w0) v) ξ = ∫ p, Formalism.FourierDecayAlt.ThreeDimData.beInt z c π σ (σ t w0) v p ξ ∂(μW.prod μN)` using `ContinuousLinearMap.integral_apply hI ξ`. Establish `hg : AEStronglyMeasurable (fun p => Formalism.FourierDecayAlt.ThreeDimData.beInt z c π σ (σ t w0) v p ξ) (Measure.map (Prod.map Formalism.FourierDecayAlt.P.B7.invM Formalism.FourierDecayAlt.P.B7.invM) (μW.prod μN))`. Rewrite using `[hι.map_eq]`.
+
+Conclude with `hI.aestronglyMeasurable.apply_continuousLinearMap ξ`. Establish `e2 : ∫ p, Formalism.FourierDecayAlt.ThreeDimData.beInt z c π σ (σ t w0) v p ξ ∂(μW.prod μN) = ∫ p, Formalism.FourierDecayAlt.ThreeDimData.beInt z c π σ (σ t w0) v (Prod.map Formalism.FourierDecayAlt.P.B7.invM Formalism.FourierDecayAlt.P.B7.invM p) ξ ∂(μW.prod μN)`. Rewrite using `[← integral_map hι.measurable.aemeasurable hg, hι.map_eq]`. Establish `e3 : ∫ p, Formalism.FourierDecayAlt.ThreeDimData.beInt z c π σ (σ t w0) v (Prod.map Formalism.FourierDecayAlt.P.B7.invM Formalism.FourierDecayAlt.P.B7.invM p) ξ ∂(μW.prod μN) = ∫ p, aVec z c π σ w0 v ξ t p ∂(μW.prod μN)`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [h1', h2'] with p hp1 hp2`. Rewrite using `[Formalism.FourierDecayAlt.P.S3dx6.aInt_eq hz c π hU w0 v ht hp1 hp2, aVec_eq]`. Rewrite using `[← e3, ← e2, ← e1, hval]`. Establish `hbe0 : Formalism.FourierDecayAlt.ThreeDimData.be z c π σ μW μN (σ t w0) v = 0` using `integral_undef hI`. Rewrite `hval` using `[hbe0, _root_.zero_apply]`.
+
+Rewrite using `[← hval]`. Break down `hA with hA | hA` into its components or cases. Distinguish the cases in `hξ : ξ = 0`. Substitute `hξ` using the available equality. Simplify using `[aVec]`.
+
+Conclude with `absurd (int_beInt_of hσ hz hT hπ c w0 v ξ hξ ht hιW hιN h1 h2 hA) hI`. Conclude with `integral_eq_zero_of_ae hA`.
+-/
 theorem int_a_eq {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
     (hσ : PI.UpqRep.IsDSHpk k r ε lam σ) {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ}

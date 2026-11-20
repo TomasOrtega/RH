@@ -8,6 +8,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DualCon.FinAffNoeth
 
+/- English proof (translation)
+Introduce `R _ _ A _ hA L hL hR`. Conclude with `GlobalTheory.DualCon.FinAffAmple.finAff_of_relAmple R A hA L hL hR`.
+-/
 theorem finAff_of_relAmple_noetherian : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left), L.IsLB → Out.RelAmple A L → FinAff A.left := by
   intro R _ _ A _ hA L hL hR
   exact GlobalTheory.DualCon.FinAffAmple.finAff_of_relAmple R A hA L hL hR

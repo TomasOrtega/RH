@@ -16,6 +16,17 @@ open Module GroundTheory.PAdicHodge
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hϖ` using `IsPerfectoidField.maximalIdeal_eq_span_varpi ℂ_[l] l`. Establish `hne` using `IsPerfectoidField.algebraMap_ne_zero_of_maximalIdeal_eq_span hϖ`. Take `⟨b, rfl⟩` from `(IsPerfectoidField.mem_fil_iff hϖ).1 h1`. Establish `hb : IsUnit b`. Assume the negation of the conclusion as `hb`.
+
+Establish `hm : b ∈ IsLocalRing.maximalIdeal _` using `(IsLocalRing.mem_maximalIdeal _).2 hb`. Rewrite `hm` using `[hϖ, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hm`. Use `h2 ((IsPerfectoidField.mem_fil_iff hϖ).2 ⟨c, ?_⟩)` and prove the remaining obligations. Rewrite using `[map_mul, zpow_add₀ hne, zpow_one, mul_assoc]`.
+
+Take `⟨u, rfl⟩` from `hb`. Use `⟨_, (IsPerfectoidField.mem_fil_iff hϖ).2 ⟨((u⁻¹ : (Formalism.Per6.BdRp l)ˣ) : Formalism.Per6.BdRp l), rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h3 : algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (u : Formalism.Per6.BdRp l) * algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) ((u⁻¹ : (Formalism.Per6.BdRp l)ˣ) : Formalism.Per6.BdRp l) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h4` using `mul_inv_cancel₀ (zpow_ne_zero a hne)`.
+
+Rewrite using `[zpow_neg]`. Generalize the expression as in `algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (u : Formalism.Per6.BdRp l) = A at *`. Generalize the expression as in `algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) ((u⁻¹ : (Formalism.Per6.BdRp l)ˣ) : Formalism.Per6.BdRp l) = A' at *`. Generalize the expression as in `(algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (IsPerfectoidField.varpi ℂ_[l] l) ^ a)⁻¹ = C at *`. Generalize the expression as in `algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (IsPerfectoidField.varpi ℂ_[l] l) ^ a = D at *`.
+
+Take the linear combination `(A * A') * h4 + h3`.
+-/
 theorem exists_inv_fil (a : ℤ) (x : Formalism.Per6.BdR l) (h1 : x ∈ Formalism.Per6.FilD l a) (h2 : x ∉ Formalism.Per6.FilD l (a + 1)) :
     ∃ y ∈ Formalism.Per6.FilD l (-a), x * y = 1 := by
   have hϖ := IsPerfectoidField.maximalIdeal_eq_span_varpi ℂ_[l] l
@@ -41,6 +52,13 @@ theorem exists_inv_fil (a : ℤ) (x : Formalism.Per6.BdR l) (h1 : x ∈ Formalis
   generalize algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (IsPerfectoidField.varpi ℂ_[l] l) ^ a = D at *
   linear_combination (A * A') * h4 + h3
 
+/- English proof (translation)
+Use `letI : Algebra LL (Om l) := σ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ_[l] LL (Om l) := .of_algebraMap_eq fun x => (σ.commutes x).symm`. Use `haveI : Normal ℚ_[l] (Om l) := IsAlgClosure.normal ℚ_[l] (Om l)`. Set `g₀ : Om l →ₐ[ℚ_[l]] Om l` to `σ'.liftNormal (Om l)`. Establish `hg₀ : ∀ x, g₀ (σ x) = σ' x` using `fun x => AlgHom.liftNormal_commutes σ' (Om l) x`.
+
+Set `g : GQ l` to `AlgEquiv.ofBijective g₀ (Algebra.IsAlgebraic.algHom_bijective g₀)`. Use `⟨⟨g, ?_⟩, hg₀⟩` and prove the remaining obligations. Rewrite using `[GK, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `c hc`. Establish `h1 : σ (τ ⟨c, hc⟩) = c` using `DFunLike.congr_fun h ⟨c, hc⟩`.
+
+Establish `h2 : σ' (τ ⟨c, hc⟩) = c` using `DFunLike.congr_fun h' ⟨c, hc⟩`. Express the relevant statement in the definitionally equal form `g₀ c = c`. Rewrite using `[← h1, hg₀, h1, h2]`.
+-/
 theorem exists_gal (K : FinExt l) {LL : Type} [Field LL] [Algebra ℚ_[l] LL] (τ : ↥K.1 →ₐ[ℚ_[l]] LL)
     (σ σ' : LL →ₐ[ℚ_[l]] Om l) (h : σ.comp τ = K.1.val) (h' : σ'.comp τ = K.1.val) :
     ∃ g : ↥(GK K), ∀ x, (g : GQ l) (σ x) = σ' x := by
@@ -63,12 +81,18 @@ section
 variable {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
   {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O)
 
+/- English proof (translation)
+Use extensionality with `i`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `[LocBridge.repE, PositivityTheory.HodgeLocalCharacter.HLC.toGL1, Matrix.mulVec, dotProduct]`.
+-/
 theorem repE_toGL1 (LL' : FinExt l) (ψ : ↥Gw →* (↥LL'.1)ˣ) (g : ↥(GK Bw.Kw)) (v : Fin 1 → ↥LL'.1) :
     Bw.repE LL' ((PositivityTheory.HodgeLocalCharacter.HLC.toGL1 ↥LL'.1).comp ψ) g v = ((ψ (Bw.e.symm g) : (↥LL'.1)ˣ) : ↥LL'.1) • v := by
   ext i
   rw [Subsingleton.elim i 0]
   simp [LocBridge.repE, PositivityTheory.HodgeLocalCharacter.HLC.toGL1, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥Bw.Kw.1 := Bw.Kw.2`. Rewrite using `[← AlgHom.card ℚ_[l] ↥Bw.Kw.1 (Om l)]`. Conclude with `Fintype.card_congr { toFun := fun τ => LL'.1.val.comp τ invFun := fun τ => τ.codRestrict LL'.1.toSubalgebra fun x => hLL (Bw.LL_split τ x) left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+-/
 theorem card_emb_le (LL' : FinExt l) (hLL : Bw.LL.1 ≤ LL'.1) [Fintype (↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1)] :
     Fintype.card (↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1) = finrank ℚ_[l] ↥Bw.Kw.1 := by
   haveI : FiniteDimensional ℚ_[l] ↥Bw.Kw.1 := Bw.Kw.2
@@ -84,6 +108,15 @@ end
 end GlobalTheory.CompanionTheory.DeRhamChar
 
 open GlobalTheory.CompanionTheory.DeRhamChar Module GlobalTheory.Cmp.JumpDict GroundTheory.PAdicHodge in
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ P AI hT w A _ O _ _ _ Bw _ LL' hLL ψ J hJ`. Take `⟨T⟩` from `hT`. Use `haveI : IsDomain P.R.BdR := T.eD.toMulEquiv.isDomain (Formalism.Per6.BdR l)`. Use `haveI : FiniteDimensional ℚ_[l] ↥LL'.1 := LL'.2`. Use `haveI : FiniteDimensional ℚ_[l] ↥Bw.Kw.1 := Bw.Kw.2`.
+
+Establish `hOm : ∀ x : Om l, algebraMap (Om l) P.R.BdR x ∈ (P.PD Bw.Kw).Fil 0` using `fun x => by`. Take `⟨y, hy, -⟩` from `T.om x`. Rewrite using `[T.fil, hy]`. Conclude with `(IsPerfectoidField.mem_fil_iff (IsPerfectoidField.maximalIdeal_eq_span_varpi ℂ_[l] l)).2 ⟨y, by simp⟩`. Establish `hval : ∀ (a : ℤ) (x : P.R.BdR), x ∈ (P.PD Bw.Kw).Fil a → x ∉ (P.PD Bw.Kw).Fil (a + 1) → ∃ y ∈ (P.PD Bw.Kw).Fil (-a), x * y = 1` using `fun a x h1 h2 => by`.
+
+Take `⟨y, hy, hxy⟩` from `exists_inv_fil a (T.eD x) ((T.fil _ _ _).1 h1) (fun h => h2 ((T.fil _ _ _).2 h))`. Use `⟨T.eD.symm y, (T.fil _ _ _).2 (by simpa using hy), T.eD.injective ?_⟩` and prove the remaining obligations. Simplify using `using hxy`. Establish `hmult : ∀ (τ : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1) a, multV (P.PD Bw.Kw) (Bw.repE LL' ((PositivityTheory.HodgeLocalCharacter.HLC.toGL1 ↥LL'.1).comp ψ⁻¹)) τ a = if a = -J τ then 1 else 0` using `fun τ a => multV_inv (P.PD Bw.Kw) (GK Bw.Kw).subtype Bw.Kw.1.val (fun _ => rfl) (fun g x => by rw [P.PD_actdR]; exact P.actQdR_Om _ x) (fun g c => (IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 c c.2) hOm hval (χ := ψ.comp Bw.e.symm.toMonoidHom) (χ' := ψ⁻¹.comp Bw.e.symm.to …`. Use `⟨?_, fun τ a => hmult τ a⟩` and prove the remaining obligations.
+
+Use `finrank_ddR_of_one_jump (P.PD Bw.Kw) (card_emb_le Bw LL' hLL) (Bw.repE LL' ((PositivityTheory.HodgeLocalCharacter.HLC.toGL1 ↥LL'.1).comp ψ⁻¹)) (fun τ => ⟨-J τ, hmult τ⟩)` as an intermediate fact. Simplify `this` using `[LocBridge.IsdRE]`.
+-/
 theorem GlobalTheory.CompanionTheory.DeRhamChar.isdRJ_inv : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied6 l P AI) →
     ∀ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), IsPlaceOver A w →
     ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O),

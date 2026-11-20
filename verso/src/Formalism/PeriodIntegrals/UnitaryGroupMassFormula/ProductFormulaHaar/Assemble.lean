@@ -8,6 +8,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProductFormulaHaar.ResC
 
 namespace PI.ProdFormulaE.Assemble
 
+/- English proof (translation)
+The claim follows from `Top.prodFormulaE_of hH modulus_eq_finitePlace Tr.sumLocalTrace TrIntP.norm_trace_le_one ResCharP.eq_iff_mem_asIdeal`.
+-/
 theorem prodFormulaE_of_haar (hH : St.HaarAlg) : PI.ProdFormulaE.ProdFormulaE :=
   Top.prodFormulaE_of hH modulus_eq_finitePlace Tr.sumLocalTrace TrIntP.norm_trace_le_one ResCharP.eq_iff_mem_asIdeal
 

@@ -4,11 +4,27 @@ namespace Bl.PadicNatCastNorm
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `h1 : ((m : ℚ_[p]) : PadicAlgCl p) = (m : PadicAlgCl p)` using `map_natCast _ m`. Rewrite using `[← h1, PadicAlgCl.norm_extends, Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).2 hm`.
+-/
 private lemma norm_natCast_padicAlgCl_of_not_dvd' {m : ℕ} (hm : ¬ p ∣ m) : ‖(m : PadicAlgCl p)‖ = 1 := by
   have h1 : ((m : ℚ_[p]) : PadicAlgCl p) = (m : PadicAlgCl p) := map_natCast _ m
   rw [← h1, PadicAlgCl.norm_extends, Padic.norm_natCast_eq_one_iff]
   exact (Nat.Prime.coprime_iff_not_dvd Fact.out).2 hm
 
+/- English proof (translation)
+Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm (dvd_zero p)`. Establish `hn : ‖η‖ = 1`. Establish `h2 : ‖η‖ ^ m = 1` using `by rw [← norm_pow, hη, norm_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg η) hm0).1 h2`. Establish `hup : ‖η - 1‖ ≤ 1`. Use `IsUltrametricDist.norm_add_le_max η (-1)` as an intermediate fact. Rewrite `this` using `[hn, norm_neg, norm_one, max_self, ← sub_eq_add_neg]`. Conclude with `this`.
+
+Use `le_antisymm hup (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Establish `hsub : η - 1 ≠ 0` using `sub_ne_zero.2 h`. Establish `hgeom : ∀ n : ℕ, ‖∑ j ∈ Finset.range n, η ^ j‖ ≤ 1` using `fun n => IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun j _ => by rw [norm_pow, hn, one_pow])`. Establish `hpow : ∀ i : ℕ, ‖η ^ i - 1‖ ≤ ‖η - 1‖` using `fun i => by`. Rewrite using `[← geom_sum_mul, norm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hsum0 : ∑ i ∈ Finset.range m, η ^ i = 0`. Establish `h3` using `geom_sum_mul η m`. Rewrite `h3` using `[hη, sub_self]`. Conclude with `(mul_eq_zero.1 h3).resolve_right hsub`.
+
+Establish `hmeq : (m : PadicAlgCl p) = -∑ i ∈ Finset.range m, (η ^ i - 1)`. Rewrite using `[Finset.sum_sub_distrib, hsum0, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, zero_sub, neg_neg]`. Establish `hle : ‖(m : PadicAlgCl p)‖ ≤ ‖η - 1‖`. Rewrite using `[hmeq, norm_neg]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) (fun i _ => hpow i)`.
+
+Rewrite `hle` using `[norm_natCast_padicAlgCl_of_not_dvd' hm]`. Conclude with `absurd (lt_of_le_of_lt hle hlt) (lt_irrefl 1)`.
+-/
 theorem goal1 {m : ℕ} (hm : ¬ p ∣ m) {η : PadicAlgCl p} (hη : η ^ m = 1) (h : η ≠ 1) :
     ‖η - 1‖ = 1 := by
   have hm0 : m ≠ 0 := by

@@ -23,6 +23,17 @@ noncomputable section
 
 namespace GlobalTheory.ChainTw
 
+/- English proof (translation)
+Introduce `hP D _ c w hw k _ s s' hs hs' p hp u y φ v _ w' _`. Take `⟨hr, -, hfl⟩` from `hs`. Take `⟨hr', -, hfl'⟩` from `hs'`. Establish `hc : c.Is` using `hw.com`. Establish `hF` using `GlobalTheory.T.thetaKernel_iterated_integrals_swap D c.ψ c.θ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) p.ω hc.inf hp.weil (p.pt φ) (hp.theta φ) s.ν s.fd s'.ν s'.fd hfl.haar hfl.fund hfl'.haar hfl'.fund (PiLocalization₂.val u v) (PiLocalization₂.val y w') (rapidDec_val hP hc u v) ( …`.
+
+Simplify using `only [PiLocalization₂.pet, Lift.pet, Step.up]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[← integral_conj, ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ g in s.fd, ∫ h in s'.fd, thetaKO p.ω g h (p.pt φ) * PiLocalization₂.val y w' h * conj (PiLocalization₂.val u v g) ∂s'.ν ∂s.ν := hF`.
+
+Use `_ = ∫ g in s.fd, PiLocalization₂.val (p.io y) (p.It φ w') g * starRingEnd ℂ (PiLocalization₂.val u v g) ∂s.ν := by`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[integral_mul_const]`. Use `congr 1`.
+
+Conclude with `hp.io.eq y φ w' g`.
+-/
 theorem upAdjQ_of_cuspRapidDecay : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, UpAdjQ D := by
   intro hP D _ c w hw k _ s s' hs hs' p hp u y φ v _ w' _
   obtain ⟨hr, -, hfl⟩ := hs

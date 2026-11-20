@@ -39,6 +39,9 @@ def actOf {G k B : Type} [Group G] [CommRing k] [CommRing B] [Algebra k B] (s : 
 def inc (K : FinExt l) : ↥(K0 K) →ₐ[ℚ_[l]] ↥(MaximalUnramifiedExtension l) :=
   IntermediateField.inclusion (inf_le_right : K0 K ≤ MaximalUnramifiedExtension l)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inc_coe (K : FinExt l) (x : ↥(K0 K)) : ((inc K x : ↥(MaximalUnramifiedExtension l)) : Om l) = (x : Om l) := rfl
 
 def sigK (K : FinExt l) (σ : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] ↥(MaximalUnramifiedExtension l))
@@ -46,17 +49,49 @@ def sigK (K : FinExt l) (σ : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] 
   (((MaximalUnramifiedExtension l).val.comp σ).comp (inc K)).codRestrict (K0 K).toSubalgebra fun x =>
     ⟨h (inc K x) x.2.1, (σ (inc K x)).2⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext rfl`.
+-/
 theorem inc_sigK (K : FinExt l) (σ : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] ↥(MaximalUnramifiedExtension l)) (h) (x : ↥(K0 K)) :
     inc K (sigK K σ h x) = σ (inc K x) := Subtype.ext rfl
 
+/- English proof (translation)
+The claim follows from `haveI := K.2 Module.Finite.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`.
+-/
 theorem finiteDimensional_maxUnramifiedSubfield (K : FinExt l) : FiniteDimensional ℚ_[l] ↥(K0 K) :=
   haveI := K.2
   Module.Finite.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap
     (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))
 
+/- English proof (translation)
+The claim follows from `(IntermediateField.mem_fixingSubgroup_iff K.1 (g : GQ l)).1 g.2 x hx`.
+-/
 theorem fix (K : FinExt l) (g : ↥(GK K)) (x : Om l) (hx : x ∈ K.1) : (g : GQ l) x = x :=
   (IntermediateField.mem_fixingSubgroup_iff K.1 (g : GQ l)).1 g.2 x hx
 
+/- English proof (translation)
+Establish `aB : ∀ c : ↥(K0 K), algebraMap ↥(K0 K) R.B c = algebraMap ↥(MaximalUnramifiedExtension l) R.B (inc K c)` using `fun _ => rfl`. Establish `aD : ∀ c : ↥K.1, algebraMap ↥K.1 R.BdR c = algebraMap (Om l) R.BdR (c : Om l)` using `fun _ => rfl`. Establish `aD0 : ∀ c : ↥(K0 K), algebraMap ↥(K0 K) R.BdR c = algebraMap (Om l) R.BdR (c : Om l)` using `fun _ => rfl`. Establish `aQ : ∀ c : ℚ_[l], algebraMap ℚ_[l] R.B c = algebraMap ↥(MaximalUnramifiedExtension l) R.B (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) c)` using `fun c => IsScalarTower.algebraMap_apply _ _ _ c`. Use `haveI := finiteDimensional_maxUnramifiedSubfield K`.
+
+Use `⟨{ p := l hp := Fact.out finK₀ := finiteDimensional_maxUnramifiedSubfield K finK := K.2 σ := sigK K σ hσ σ_bij := AlgHom.bijective _ actB := actOf (fun g : ↥(GK K) => sB g) (fun g h x => sB_mul g h x) (fun x => sB_one x) (fun g c => by rw [aB]; exact sB_u g _ _ (fix K g _ c.2.1)) …` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `invB b fun g hg => hb ⟨g, hg⟩`. Conclude with `⟨⟨c, hc, c.2⟩, e⟩`. Use `φ := AlgHom.mk φ fun c => by`. Express the relevant statement in the definitionally equal form `φ _ = _`.
+
+Rewrite using `[aQ, φ_u, AlgHom.commutes]`. Use `φ_inj := φ_inj`. Use `φ_K₀ := fun c => by`. Express the relevant statement in the definitionally equal form `φ _ = _`. Rewrite using `[aB, aB, φ_u, inc_sigK]`.
+
+Use `φ_comm := fun g b => φ_comm g b`. Use `actdR := actOf (fun g : ↥(GK K) => sD g) (fun g h x => sD_mul g h x) (fun x => sD_one x) (fun g c => by rw [aD, sD_o, fix K g _ c.2])`. Use `invdR := fun b hb => by`. Take `⟨c, hc, e⟩` from `invD b fun g hg => hb ⟨g, hg⟩`. Conclude with `⟨⟨c, hc⟩, e⟩`.
+
+Use `ι := AlgHom.mk ι fun c => by`. Express the relevant statement in the definitionally equal form `ι _ = _`. Rewrite using `[aB, aD0, ι_u, inc_coe]`. Use `ι_inj := ι_inj`. Use `ι_comm := fun g b => ι_comm g b`.
+
+Use `Fil := fun a => { carrier := F a add_mem' := fun hx hy => (F a).add_mem hx hy zero_mem' := (F a).zero_mem smul_mem' := fun c x hx => by`. Use `F_mul 0 a _ _ (F_o (c : Om l)) hx` as an intermediate fact. Rewrite `this` using `[zero_add, ← aD, ← Algebra.smul_def]`. Conclude with `this }`. Use `Fil_anti := fun a x hx => F_anti a hx`.
+
+Use `one_mem := by`. Use `F_o 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Conclude with `this`. Use `Fil_mul := F_mul`.
+
+Use `Fil_exh := F_exh`. Use `Fil_sep := F_sep`. Use `Fil_G := fun g a x hx => F_G g a x hx`. Use `χ := ((Units.map (PadicInt.Coe.ringHom (p := l)).toMonoidHom).comp χ).comp (GK K).subtype`. Use `t := t`.
+
+Use `t_unit := t_unit`. Use `t_act := fun g => by`. Rewrite using `[Algebra.smul_def]`. Conclude with `t_act g`. Use `t_φ := by`.
+
+Rewrite using `[Algebra.smul_def, map_natCast]`. Conclude with `t_φ`. Use `mem_filtration_one := t1`. Use `not_mem_filtration_two := t2`. Use `fund := fund }, rfl, fun _ _ => rfl, fun _ _ => rfl, fun _ => rfl, fun _ => rfl, rfl, fun _ => rfl,`.
+
+Use `fun _ _ => Iff.rfl, fun x c h => ?_⟩`. Establish `: inc K x = c` using `Subtype.ext h.symm`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+-/
 theorem exists_abstract (R : LocRings l) (K : FinExt l)
     (sB : GQ l → R.B →+* R.B) (sD : GQ l → R.BdR →+* R.BdR) (φ : R.B →+* R.B) (ι : R.B →+* R.BdR)
     (F : ℤ → AddSubgroup R.BdR) (σ : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] ↥(MaximalUnramifiedExtension l)) (χ : GQ l →* ℤ_[l]ˣ) (t : R.B)
@@ -158,6 +193,19 @@ theorem exists_abstract (R : LocRings l) (K : FinExt l)
   rw [← this]
   rfl
 
+/- English proof (translation)
+Introduce `l _ C K`. Take `⟨a1, a2, a3, a4, a5, -, -, -, -, a10, -, a12, a13⟩` from `ActLaws.act_laws l`. Take `⟨f1, f2, f3, f4, f5, f6, f7⟩` from `GlobalTheory.T.bdR_filtration_laws l`. Take `⟨u1, u2, -, u4, u5, -⟩` from `GlobalTheory.T.localPeriodRingsData_unramified_laws l C`. Take `⟨t1, t2, t3, -⟩` from `GlobalTheory.T.fontaine_t_isUnit_bcris_and_uniformizer_bdRPlus l C`.
+
+Establish `hσ` using `(frob_laws l C.σ C.σ_root).2.1 K`. Establish `so` using `(GlobalTheory.T.bdRPlus_simple_roots_section_unique_equivariant l C.o C.o_sec).2.2`. Establish `sD_o : ∀ (g : GQ l) (x : Om l), Per.σD g (algebraMap (Per.BdRp l) (Per.BdR l) (C.o x)) = algebraMap (Per.BdRp l) (Per.BdR l) (C.o (g x))` using `fun g x => by rw [a10, so]`. Establish `F_o : ∀ x : Om l, algebraMap (Per.BdRp l) (Per.BdR l) (C.o x) ∈ Per.FilD l 0` using `fun x => by`. Establish `h1 : (1 : Per.BdRp l) ∈ Per.FilP l 0` using `(f7 0 1).1 (by rw [map_one]; exact f2)`.
+
+Establish `h2 : C.o x * 1 ∈ Per.FilP l 0` using `Ideal.mul_mem_left _ _ h1`. Rewrite `h2` using `[mul_one]`. Conclude with `(f7 0 _).2 h2`. Establish `u_z : ∀ z : ℤ_[l], C.u (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (z : ℚ_[l])) = algebraMap (Per.Acris l) (Per.Bcris l) (algebraMap (Per.Ainf l) (Per.Acris l) (Per.zA l z))` using `fun z => by`. Apply `u4` to reduce the goal to its premises.
+
+Establish `e1 : ((algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (z : ℚ_[l]) : ↥(MaximalUnramifiedExtension l)) : Om l) = algebraMap ℚ_[l] (Om l) (z : ℚ_[l])` using `(IsScalarTower.algebraMap_apply ℚ_[l] ↥(MaximalUnramifiedExtension l) (Om l) (z : ℚ_[l])).symm`. Rewrite using `[C.ι_u, C.ι_j, ULaws.alg_acris, C.j_cris.on0, e1, C.o_sec.z, Subalgebra.coe_algebraMap, aDp, RingHom.comp_apply]`. Establish `t_act : ∀ g : GQ l, Per.σB g (algebraMap (Per.Acris l) (Per.Bcris l) C.t) = C.u (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) ((C.χ g : ℤ_[l]) : ℚ_[l])) * algebraMap (Per.Acris l) (Per.Bcris l) C.t` using `fun g => by`. Rewrite using `[a12, GlobalTheory.T.acrisGaloisAction_fontaine_t_eq_cyclotomic l C g, map_mul, u_z]`. Establish `t_φ : Per.φB l (algebraMap (Per.Acris l) (Per.Bcris l) C.t) = (l : Per.Bcris l) * algebraMap (Per.Acris l) (Per.Bcris l) C.t`.
+
+Rewrite using `[a13, GlobalTheory.T.acrisFrobenius_fontaine_t_eq_mul l C, map_mul, map_natCast]`. Establish `s1 : C.ι (algebraMap (Per.Acris l) (Per.Bcris l) C.t) ∈ Per.FilD l 1`. Rewrite using `[C.ι_j]`. Conclude with `(f7 1 _).2 t2`. Establish `s2 : C.ι (algebraMap (Per.Acris l) (Per.Bcris l) C.t) ∉ Per.FilD l 2`.
+
+Rewrite using `[C.ι_j]`. Conclude with `fun h => t3 ((f7 2 _).1 h)`. Take `⟨PD, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `exists_abstract (ringsOf C) K (fun g => Per.σB g) (fun g => Per.σD g) (Per.φB l) C.ι (fun a => (Per.FilD l a).toAddSubgroup) C.σ C.χ (algebraMap (Per.Acris l) (Per.Bcris l) C.t) hσ a1 a2 a3 a4 u2 sD_o (InvCris.invariants_Bcris l C K) (GlobalTheory.T.bdR_galois_invariants_eq_finEx …`. Conclude with `⟨PD, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩`.
+-/
 theorem exists_realPD : ∀ (l : ℕ) [Fact l.Prime], ∀ (C : Core l) (K : FinExt l), ∃ PD, IsRealPD C K PD := by
   intro l _ C K
   obtain ⟨a1, a2, a3, a4, a5, -, -, -, -, a10, -, a12, a13⟩ := ActLaws.act_laws l

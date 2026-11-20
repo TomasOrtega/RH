@@ -14,6 +14,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.RunIn
 
+/- English proof (translation)
+Introduce `hCI D T hT hG large₂ j hj w hPR hL hr hLP x P hP f hf σ ℓ hℓ hp1`. Take `⟨inst, hnab⟩` from `hT.nabPin j hj`. Establish `hunf : IsUnf (T.U j (goodOf T.Q.c σ))` using `hT.toLawsCore.unf j hj _ (goodEmb_goodOf T.Q.c σ)`. Take `⟨hfd, hrdl, hrd1, hf1, hr1, hxi, hDF, habs, hcU, hlie, -, -, -, hl1⟩` from `GlobalTheory.T.unitaryDatumNumbers_for_supBounds D T hT j hj w`. Take `⟨-, hLrd, -, -, hLf, -, -, hLa, hLn⟩` from `id hPR`.
+
+Establish `hL0 : (0 : ℝ) < large₂.sc.L` using `by linarith`. Establish `ha0 : (0 : ℝ) ≤ absA w` using `by rw [habs]; exact Nat.cast_nonneg _`. Establish `hσg : GoodEmb T.Q.c (goodOf T.Q.c σ)` using `goodEmb_goodOf T.Q.c σ`. Establish `hNs : T.Ns j w σ f = lieFac (T.Q.Dw j) (xiR D) (wtA w) * supN (T.U j (goodOf T.Q.c σ)).X (laU (T.U j (goodOf T.Q.c σ)) (wtA w) w.n) (rdU (T.U j (goodOf T.Q.c σ)) f)` using `rfl`. Establish `hS0 : 0 ≤ supN (T.U j (goodOf T.Q.c σ)).X (laU (T.U j (goodOf T.Q.c σ)) (wtA w) w.n) (rdU (T.U j (goodOf T.Q.c σ)) f)` using `ENNReal.toReal_nonneg`.
+
+Break down `hS0.eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[hNs, ← h0, mul_zero, Real.log_zero]`. Check the signs of the components of the expression. Establish `hC : f ∈ T.C j w` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.PfTies1.cuspTie D T hT j hj w hLP x P hP f hf`. Take `⟨k, xf, -, hort, hSle, hla, hlog⟩` from `GlobalTheory.T.cuspForm_halfSup_at_orthonormalFrame_firstMin D T hT hG large₂ j hj w hPR hL hr hLP (goodOf T.Q.c σ) hσg f hC hpos`.
+
+Establish `hlam0 : 0 < Real.sqrt (((T.U j (goodOf T.Q.c σ)).X k).firstMinimumSq xf.1)` using `Real.sqrt_pos.mpr hla`. Establish `hlam2 : Real.sqrt (((T.U j (goodOf T.Q.c σ)).X k).firstMinimumSq xf.1) ^ 2 = ((T.U j (goodOf T.Q.c σ)).X k).firstMinimumSq xf.1` using `Real.sq_sqrt hla.le`. Establish `hU` using `GlobalTheory.T.thetaGenerator_pointwise_bound_orthonormal_frame hCI _ _ _ _ (T.Q.Xo j) T.Q.c (goodOf T.Q.c σ) D.R.r (Formalism.L2.PjFree.Unf.ofPj (T.U j (goodOf T.Q.c σ))) ((Formalism.L2.PjFree.goodEmb_iff _).mpr hσg) ((Formalism.L2.PjFree.isUnf_ofPj _).mpr hunf) hr1 (2 * xiR D) …`. Rewrite `hU` using `[hfd]`. Establish `key` using `GlobalTheory.log_exp_mul_le_of_generator_sup_bound D.R.f D.R.r w.n (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w)) large₂.sc.L ℓ (absA w) (rdE D.host.E) (Real.sqrt (((T.U j (goodOf T.Q.c σ)).X k).firstMinimumSq xf.1)) (2 * xiR D) 1 _ _ (l1At σ P) hL hf1 hr1 hr (by rw [habs]; exact_mod_ca …`.
+
+Rewrite using `[hNs, hlie]`. Conclude with `key`.
+-/
 theorem log_sup_theta_generator_le : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (_h : LawsP T), GamAt T.toCore → ∀ (large₂ : SizeData₂ D) (j : ℕ) (_hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → LastPos (T.Q.Dw j) (wtA w) → ∀ (x : Fin w.n → (T.Q.Dw j).La) (P : MvPolynomial (LtN (T.Q.Dw j) w.n) T.Q.c.F), P ∈ harmA T.Q.c (wtA w) w.n → ∀ f : T.R j, IsThRule (T.Q.Xo j) T.Q.c (T.nab j) x P f → ∀ (σ : T.Q.c.F →+* ℂ) (ℓ : ℝ), 0 ≤ ℓ → l1At σ P ≤ Real.exp ℓ → Real.log (T.Ns j w σ f) ≤ ℓ + 10 * large₂.sc.L * absA w + 200 * D.R.f * D.R.r * w.n * large₂.sc.L := by
   intro hCI D T hT hG large₂ j hj w hPR hL hr hLP x P hP f hf σ ℓ hℓ hp1
   obtain ⟨inst, hnab⟩ := hT.nabPin j hj

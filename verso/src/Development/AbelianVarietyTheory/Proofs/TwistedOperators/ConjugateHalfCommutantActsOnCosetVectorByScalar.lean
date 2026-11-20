@@ -25,6 +25,11 @@ namespace GlobalTheory.CosScalar
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FunObj.HatFrame.mem_hatMx_homLat_iff D Λ Λ' β β' hβ hβ' 𝔪]`. Use `⟨fun i j => by rw [Matrix.smul_apply, smul_eq_mul, map_mul, ha0, zero_mul], fun i j => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hse⟩` from `hz i j`. Use `⟨⟨toEAf D a, ha⟩ * s, Ideal.mul_mem_left _ _ hs, ?_⟩` and prove the remaining obligations. Establish `e2 : GlobalTheory.FunObj.Comparison₂.fr β' β ((a • z).map (toEAf D)) i j = toEAf D a * GlobalTheory.FunObj.Comparison₂.fr β' β (z.map (toEAf D)) i j`.
+
+Simplify using `only [GlobalTheory.FunObj.Comparison₂.fr, Matrix.mul_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring`. Conclude with `(congrArg (toEAf D a * ·) hse).trans e2.symm`.
+-/
 theorem smul_mem_hatMx_of_fr {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} {β : GL (Fin n) (Lev.EAf D)} {β' : GL (Fin m) (Lev.EAf D)}
     (hβ : Formalism.L2.DIV.IsFrame β Λ) (hβ' : Formalism.L2.DIV.IsFrame β' Λ') (𝔪 : Ideal (𝓞 D.host.E)) {a : AE D}
@@ -41,6 +46,9 @@ theorem smul_mem_hatMx_of_fr {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n 
     exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring
   exact (congrArg (toEAf D a * ·) hse).trans e2.symm
 
+/- English proof (translation)
+Take `⟨β, hβ⟩` from `GlobalTheory.AdelicFrame.exists_isFrame D.host.F Λ hΛ.fg hΛ.span_eq_top`. Take `⟨β', hβ'⟩` from `GlobalTheory.AdelicFrame.exists_isFrame D.host.F Λ' hΛ'.fg hΛ'.span_eq_top`. Conclude with `⟨β, β', hβ, hβ'⟩`.
+-/
 theorem exists_frames {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} (hΛ : Submodule.IsLattice D.host.E Λ)
     (hΛ' : Submodule.IsLattice D.host.E Λ') :
@@ -49,6 +57,9 @@ theorem exists_frames {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.h
   obtain ⟨β', hβ'⟩ := GlobalTheory.AdelicFrame.exists_isFrame D.host.F Λ' hΛ'.fg hΛ'.span_eq_top
   exact ⟨β, β', hβ, hβ'⟩
 
+/- English proof (translation)
+Take `⟨β, β', hβ, hβ'⟩` from `exists_frames hΛ hΛ'`. Rewrite `hz` using `[GlobalTheory.FunObj.HatFrame.mem_hatMx_homLat_iff D Λ Λ' β β' hβ hβ' 𝔪]`. Conclude with `smul_mem_hatMx_of_fr hβ hβ' 𝔪 ha0 ha hz.2`.
+-/
 theorem smul_mem_hatMx {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} (hΛ : Submodule.IsLattice D.host.E Λ)
     (hΛ' : Submodule.IsLattice D.host.E Λ') (𝔪 : Ideal (𝓞 D.host.E)) {a : AE D}
@@ -58,6 +69,9 @@ theorem smul_mem_hatMx {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.
   rw [GlobalTheory.FunObj.HatFrame.mem_hatMx_homLat_iff D Λ Λ' β β' hβ hβ' 𝔪] at hz
   exact smul_mem_hatMx_of_fr hβ hβ' 𝔪 ha0 ha hz.2
 
+/- English proof (translation)
+Take `⟨β, β', hβ, hβ'⟩` from `exists_frames hΛ hΛ'`. Conclude with `smul_mem_hatMx_of_fr hβ hβ' 𝔪 ha0 ha (GlobalTheory.FunObj.Comparison₂.fr_mem_idS hβ hβ' hy)`.
+-/
 theorem smul_map_mem_hatMx {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} (hΛ : Submodule.IsLattice D.host.E Λ)
     (hΛ' : Submodule.IsLattice D.host.E Λ') (𝔪 : Ideal (𝓞 D.host.E)) {a : AE D}
@@ -67,11 +81,19 @@ theorem smul_map_mem_hatMx {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n �
   obtain ⟨β, β', hβ, hβ'⟩ := exists_frames hΛ hΛ'
   exact smul_mem_hatMx_of_fr hβ hβ' 𝔪 ha0 ha (GlobalTheory.FunObj.Comparison₂.fr_mem_idS hβ hβ' hy)
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_mono fun _ ⟨α, hα, x, hx, e⟩ => ⟨α, hα, x, Submodule.smul_le_right hx, e⟩`.
+-/
 theorem hatMx_smul_le {m n : ℕ} (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)) (𝔪 : Ideal (𝓞 D.host.E)) :
     hatMx (𝔪 • homLat Λ Λ') ≤ hatMx (homLat Λ Λ') :=
   AddSubgroup.closure_mono fun _ ⟨α, hα, x, hx, e⟩ => ⟨α, hα, x, Submodule.smul_le_right hx, e⟩
 
+/- English proof (translation)
+Take `⟨-, x₀, hx₀, hd⟩` from `ht`. Take `⟨-, x₁, hx₁, hd'⟩` from `ht'`. Establish `hy : x₀.1 - x₁.1 ∈ 𝔪 • homLat Λ Λ'` using `GlobalTheory.FunObj.Comparison₂.sub_mem_of_mk_eq (hx₀.trans hx₁.symm)`. Establish `e1 : t - t' = (t - e • (↑x₀ : Matrix (Fin m) (Fin n) D.host.E).map (incA D)) - (t' - e • (↑x₁ : Matrix (Fin m) (Fin n) D.host.E).map (incA D)) + e • (x₀.1 - x₁.1).map (incA D)`. Rewrite using `[Matrix.map_sub _ (map_sub (incA D)), smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Conclude with `add_mem (sub_mem hd hd') (smul_map_mem_hatMx hΛ hΛ' 𝔪 he0 he hy)`.
+-/
 theorem sub_mem_of_cosSet {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} (hΛ : Submodule.IsLattice D.host.E Λ)
     (hΛ' : Submodule.IsLattice D.host.E Λ') {𝔪 : Ideal (𝓞 D.host.E)} {e : AE D}
@@ -91,6 +113,31 @@ end GlobalTheory.CosScalar
 set_option maxHeartbeats 2000000 in
 open GlobalTheory.CosScalar in
 
+/- English proof (translation)
+Introduce `D hQ T L μ₀ hL sc G W M hM i hi e he hT w hw hinf κ`. Establish `hsd` using `GlobalTheory.CosetRow.selfDual_chi hL G i hi`. Establish `hprops` using `GlobalTheory.IdemSumIdeal.isIdemSum_props e G.pl.W0 (fun _ => 0) he`. Establish `he0 : infPart D e = 0` using `hprops.1`. Establish `heint` using `hprops.2.1`.
+
+Take `⟨⟨es, hes, hesum⟩, -⟩` from `id he`. Establish `hee : e * e = e` using `by conv_lhs => rw [hesum, Finset.sum_mul]`. Rewrite using `[hesum]`. Conclude with `Finset.sum_congr rfl fun P hP => GlobalTheory.IdemSumLoc.idem_mul_sum hes (hesum ▸ he.2) hP`. Establish `hkey : ∀ u : WO (G.pS (.chi i 0)) (G.pT (.chi i 0)), IsHalf e u → u ∈ hatMx (G.modul • homLat (G.Λ (.grid (i + 1) 0)) (G.Λ (.grid i 0))) → W.ψ (symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) w u) = 1`.
+
+Introduce `u hu hm`. Establish `hlat : u ∈ latO (G.pS (.chi i 0)) (G.pT (.chi i 0)) (G.latS (.chi i 0) : Set _) (G.latT (.chi i 0) : Set _) fun _ => True` using `GlobalTheory.RowLatChi.mem_latO_of_mem_hatMx hsd.1 he (GlobalTheory.AAUnit.exists_valuation_one_element_at_grid_places hQ hL G) hu (hatMx_smul_le _ _ _ hm)`. Establish `hsplit : u = ∑ P ∈ G.pl.W0, es P • u`. Rewrite using `[← Finset.sum_smul, ← hesum]`. Use extensionality with `a b`.
+
+Rewrite using `[Matrix.smul_apply, smul_eq_mul, hu a b]`. Establish `hsum : symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) w (∑ P ∈ G.pl.W0, es P • u) = ∑ P ∈ G.pl.W0, symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) w (es P • u)` using `map_sum (AddMonoidHom.mk' (symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) w) (GlobalTheory.Core.Rk.ThetaOf.symplO_add_right _ _ w)) _ _`. Rewrite using `[hsplit, hsum]`. Use `Finset.sum_induction _ (fun x => W.ψ x = 1) (fun a b ha hb => by rw [AddChar.map_add_eq_mul, ha, hb, one_mul]) (AddChar.map_zero_eq_one _) fun P hP => ?_` and prove the remaining obligations. Establish `hsp : IsSplitIdem D (es P)` using `(hes P hP).1`.
+
+Establish `hPsum : IsIdemSum (es P) {P}` using `⟨⟨es, fun Q hQ => by rw [Finset.mem_singleton.1 hQ]; exact hes P hP, by rw [Finset.sum_singleton]⟩, hsp.2.1⟩`. Establish `hPp` using `GlobalTheory.IdemSumIdeal.isIdemSum_props (es P) {P} (fun _ => 0) hPsum`. Use `hw.2 (es P) hsp (es P • u) ⟨GlobalTheory.CosetRow.smul_mem_latO_idem _ _ hsp.1 hlat, fun e' he' => ?_⟩ fun a b => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Establish `hp'` using `GlobalTheory.IdemSumIdeal.isIdemSum_props e' G.pl.W0 (fun _ => 0) he'`.
+
+Conclude with `smul_mem_hatMx hsd.1.1 hsd.2.1 _ (by rw [map_mul, hp'.1, zero_mul]) (by rw [map_mul]; exact mul_mem hp'.2.1 hPp.2.1) hm`. Use `show es P * (es P * u a b) = es P * u a b`. Rewrite using `[← mul_assoc, hsp.1]`. Establish `hyH : IsHalf (cA D e) (cA D e • w)` using `fun a b => by show cA D e * (cA D e * w a b) = cA D e * w a b`. Rewrite using `[← mul_assoc, ← map_mul, hee]`.
+
+Establish `hconst : ∀ t ∈ cosSet e κ, ∀ t' ∈ cosSet e κ, W.ψ (symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) t (cA D e • w)) = W.ψ (symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) t' (cA D e • w))`. Introduce `t ht t' ht'`. Establish `hu : IsHalf e (t - t')` using `fun a b => by show e * (t a b - t' a b) = t a b - t' a b`. Rewrite using `[mul_sub, ht.1 a b, ht'.1 a b]`. Establish `hm` using `sub_mem_of_cosSet hsd.1.1 hsd.2.1 he0 heint ht ht'`.
+
+Establish `h1 : W.ψ (symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) (t - t') (cA D e • w)) = 1`. Rewrite using `[GlobalTheory.BigDat.symplO_cA_smul, show e • (t - t') = t - t' from Matrix.ext fun a b => hu a b, GlobalTheory.Asc.psi_symplO_swap]`. Conclude with `hkey _ hu hm`. Establish `e1 : symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) t (cA D e • w) = symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) (t - t') (cA D e • w) + symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) t' (cA D e • w)`. Rewrite using `[← GlobalTheory.Core.Rk.ThetaOf.symplO_add_left, sub_add_cancel]`.
+
+Rewrite using `[e1, AddChar.map_add_eq_mul, h1, one_mul]`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hT κ`. Establish `hcv : W.cosVec i κ = Tm (cosInd e κ)` using `hall Tm hTm`. Establish `hSB` using `GlobalTheory.GridWeil.isSBHalf_cosInd hsd.1 hsd.2 (G.pl.modul_ne_bot sc) hee he0 κ`. Establish `hmod` using `hTm.modul (cosInd e κ) hSB (cA D e • w) hyH`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ℂ, (fun t => W.ψ (symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) t (cA D e • w)) * cosInd e κ t) = c • cosInd e κ := by`. Distinguish the cases in `hne : (cosSet e κ).Nonempty`. Take `⟨t₀, ht₀⟩` from `hne`. Use `⟨W.ψ (symplO (G.pS (.chi i 0)) (G.pT (.chi i 0)) t₀ (cA D e • w)), funext fun t => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ht : t ∈ cosSet e κ`.
+
+Establish `h1 : cosInd e κ t = 1` using `by simp [cosInd, ht]`. Rewrite using `[Pi.smul_apply, h1, hconst t ht t₀ ht₀, smul_eq_mul]`. Establish `h0 : cosInd e κ t = 0` using `by simp [cosInd, ht]`. Rewrite using `[Pi.smul_apply, h0, mul_zero, smul_zero]`. Use `⟨0, funext fun t => ?_⟩` and prove the remaining obligations.
+
+Establish `ht : t ∉ cosSet e κ` using `fun h => hne ⟨t, h⟩`. Establish `h0 : cosInd e κ t = 0` using `by simp [cosInd, ht]`. Rewrite using `[Pi.smul_apply, h0, mul_zero, smul_zero]`. Conclude with `⟨c, by rw [hcv, ← hmod, hc, map_smul]⟩`.
+-/
 theorem GlobalTheory.CosScalar.conjHalf_heisO_cosVec_smul : All fun {D} _ _ _ {G} W _ => ∀ i, i < D.R.m → ∀ e : AE D, IsIdemSum e G.pl.W0 → (∀ κ, IsThetaAt W.ψ (symplO _ _) (heisO W.ψ _ _) e (latO (G.pS (.chi i 0)) (G.pT (.chi i 0)) (G.latS (.chi i 0) : Set _) (G.latT (.chi i 0) : Set _) fun _ => True) 1 (W.vac i) (cosInd e κ) (W.cosVec i κ)) → ∀ w ∈ Ann W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0)) (depLat G (.chi i 0)), w.map (infPart D) = 0 → ∀ κ, ∃ c : ℂ, heisO W.ψ (G.pS (.chi i 0)) (G.pT (.chi i 0)) (cA D e • w) (W.cosVec i κ) = c • W.cosVec i κ := by
   intro D hQ T L μ₀ hL sc G W M hM i hi e he hT w hw hinf κ
   have hsd := GlobalTheory.CosetRow.selfDual_chi hL G i hi

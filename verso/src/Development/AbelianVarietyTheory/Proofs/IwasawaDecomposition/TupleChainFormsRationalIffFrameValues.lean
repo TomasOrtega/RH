@@ -13,6 +13,13 @@ namespace GlobalTheory.Mem.Col2.TwP
 
 open GlobalTheory.Mem.Col2.RowTie
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u a z`. Establish `hsg : sgTG (D` using `I.rec7 l Z) (I.fm l u a) = (I.perIn u a).sgT := by`. Use function extensionality and compare the values at `τ`. Take `⟨k, hk⟩` from `B.R.t_odd`. Establish `e1 : B.R.m * (B.R.t + 1) / 2 = B.R.m * (k + 1)`.
+
+Rewrite using `[hk, show B.R.m * (2 * k + 1 + 1) = 2 * (B.R.m * (k + 1)) by ring]; omega`. Establish `e2 : (B.R.t + 1) / 2 = k + 1` using `by omega`. Use `show Formalism.L2.Forms.shW (B.wts.sgW τ) ((B.R.m * (B.R.t + 1) / 2 : ℕ) : ℤ) = GlobalTheory.Mem.Col2.shW (B.wts.sgW τ) (-((B.R.m : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ)))`. Rewrite using `[e1, e2]`. Unfold `GlobalTheory.Mem.Col2.shW Formalism.L2.Forms.shW`.
+
+Use `congr 1`. Establish `hsh : shiftOf (sgTG (D` using `I.rec7 l Z) (I.fm l u a)) = shiftOf (I.perIn u a).sgT := congrArg shiftOf hsg`. Conclude with `rat_iff (I.stX a) B.fields.emb B.embLL (I.perIn u a).sgT (l.fmL u a).famP (VV_shW B.wts.sgW _) hsh z`.
+-/
 theorem ptEmb_iff_rat : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι), ∀ z : (I.per l u a).Wrow, (∃ x, (I.fm l u a).ptEmb x = z) ↔ z ∈ (I.fm l u a).ptC ∧ ∀ c, ∃ Pc ∈ RatSpan (I.rec7 l Z) (I.fm l u a).sg, GlobalTheory.Mem.Col2.TwP.eWt I l Z u a z c = fnOf _ (shiftOf (sgTG (I.fm l u a))) 1 Pc := by
   intro B X I hI hP l Z u a z
   have hsg : sgTG (D := I.rec7 l Z) (I.fm l u a) = (I.perIn u a).sgT := by

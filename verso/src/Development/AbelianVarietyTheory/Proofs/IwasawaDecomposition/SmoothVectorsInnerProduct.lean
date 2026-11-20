@@ -9,6 +9,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SmVec
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ P G hP hG hσ X _ _ _ _ ν _ act hact a A ha hsob hA φ hφ w hw f`. Establish `hemb` using `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Use `haveI : SecondCountableTopology (Formalism.REAL.UJ ε) := hemb.isEmbedding.secondCountableTopology`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`.
+
+Use `haveI : LocallyCompactSpace (Formalism.REAL.UJ ε) := hemb.locallyCompactSpace`. Use `haveI : SigmaFinite (Formalism.REAL.muG ε) := inferInstance`. Take `⟨hc, ⟨C, hC⟩, hact'⟩` from `ha w hw`. Establish `key : ∀ v ∈ smSub G (trRep σ P), ⟪f, A v⟫_ℂ = ∫ x, ⟪f x, a v x⟫_ℂ ∂ν` using `fun v hv => by`. Rewrite using `[L2.inner_def]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hA v hv] with x hx`. Rewrite using `[hx]`. Establish `h1 : ∀ x, a (gard ε σ φ w) x = ∫ g : Formalism.REAL.UJ ε, φ (umat g) • a w (act g x) ∂(Formalism.REAL.muG ε)` using `fun x => by`. Use `((GlobalTheory.T.sobolevContinuous_form_gardingVector n ε H σ P G hP hG hσ _ (hsob x)).2 w hw).2 φ hφ` as an intermediate fact.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, hact'] at this`. Conclude with `this`. Establish `hφi : Integrable (fun g : Formalism.REAL.UJ ε => φ (umat g)) (Formalism.REAL.muG ε)`. Simplify using `using hφ.integrable (ε := ε) (F := fun _ => (1 : ℝ)) continuous_const`. Establish `hf1 : Integrable (f : X → ℂ) ν` using `(Lp.memLp f).integrable (by norm_num)`.
+
+Establish `hint : Integrable (fun p : Formalism.REAL.UJ ε × X => φ (umat p.1) • ⟪f p.2, a w (act p.1 p.2)⟫_ℂ) ((Formalism.REAL.muG ε).prod ν)`. Use `Integrable.mono' ((hφi.norm.mul_prod hf1.norm).mul_const C) ?_ (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `AEStronglyMeasurable.smul hφi.aestronglyMeasurable.comp_fst ?_` and prove the remaining obligations. Conclude with `AEStronglyMeasurable.inner hf1.aestronglyMeasurable.comp_snd (hc.comp hact).aestronglyMeasurable`. Rewrite using `[norm_smul, mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left ((norm_inner_le_norm _ _).trans (mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _))) (norm_nonneg _)`. Rewrite using `[key _ (gard_mem hP hG hσ hφ w)]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Establish `hcx : Continuous fun g : Formalism.REAL.UJ ε => a w (act g x)` using `hc.comp (hact.comp (Continuous.prodMk_left x))`. Rewrite using `[h1, ← integral_inner (hφ.integrable hcx)]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[← Complex.coe_smul, inner_smul_right, Complex.real_smul]`.
+
+Use `_ = ∫ g : Formalism.REAL.UJ ε, ∫ x, φ (umat g) • ⟪f x, a w (act g x)⟫_ℂ ∂ν ∂(Formalism.REAL.muG ε) := (integral_integral_swap (f := fun (g : Formalism.REAL.UJ ε) (x : X) => φ (umat g) • ⟪f x, a w (act g x)⟫_ℂ) hint).symm`. Use `_ = _ := by`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[integral_smul, key _ (sigma_mem hP hG hσ hw g.2)]`.
+
+Simplify using `only [hact']`.
+-/
 theorem inner_l2_gard : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (P G : Matrix (Fin n) (Fin n) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm ε * P = G → IsURepOn (UJset ε) σ → ∀ (X : Type) [TopologicalSpace X] [SecondCountableTopology X] [MeasurableSpace X] [BorelSpace X] (ν : Measure X) [IsFiniteMeasure ν] (act : Formalism.REAL.UJ ε → X → X), Continuous (Function.uncurry act) → ∀ (a : H →ₗ[ℂ] (X → ℂ)) (A : H →ₗ[ℂ] Lp ℂ 2 ν), (∀ w ∈ smSub G (trRep σ P), Continuous (a w) ∧ (∃ C : ℝ, ∀ x, ‖a w x‖ ≤ C) ∧ ∀ (g : Formalism.REAL.UJ ε) x, a (σ (umat g) w) x = a w (act g x)) → (∀ x, Sobolev₂ (lieG G) (trRep σ P) ((LinearMap.proj x).comp a)) → (∀ w ∈ smSub G (trRep σ P), (A w : X → ℂ) =ᵐ[ν] a w) → ∀ φ, IsTest φ → ∀ w ∈ smSub G (trRep σ P), ∀ f : Lp ℂ 2 ν, ⟪f, A (gard ε σ φ w)⟫_ℂ = ∫ g : Formalism.REAL.UJ ε, φ (umat g) • ⟪f, A (σ (umat g) w)⟫_ℂ ∂(Formalism.REAL.muG ε) := by
   intro n ε H _ _ _ σ P G hP hG hσ X _ _ _ _ ν _ act hact a A ha hsob hA φ hφ w hw f
   have hemb := (Formalism.REAL.isClosedEmbeddingMatrix n ε).1

@@ -7,11 +7,23 @@ open UpperTheory.HF
 open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `h` using `Nat.ordProj_mul_ordCompl_eq_self N l`. Use `conv_rhs => rw [← h, mul_comm]`. Conclude with `mul_dvd_mul_left _ (pow_dvd_pow l hj)`.
+-/
 private theorem layer_dvd {N l j : ℕ} (hj : j ≤ N.factorization l) : ordCompl[l] N * l ^ j ∣ N := by
   have h := Nat.ordProj_mul_ordCompl_eq_self N l
   conv_rhs => rw [← h, mul_comm]
   exact mul_dvd_mul_left _ (pow_dvd_pow l hj)
 
+/- English proof (translation)
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hN (zero_dvd_iff.1 hc)`. Establish `hM : 0 < ordCompl[l] N` using `Nat.ordCompl_pos l hN`. Establish `hM0 : ordCompl[l] N * l ^ j ≠ 0` using `Nat.mul_ne_zero hM.ne' (pow_ne_zero _ hl.ne_zero)`.
+
+Establish `hfM : (ordCompl[l] N * l ^ j).factorization = N.factorization.erase l + Finsupp.single l j`. Rewrite using `[Nat.factorization_mul hM.ne' (pow_ne_zero _ hl.ne_zero), Nat.factorization_ordCompl, hl.factorization_pow]`. Establish `hcN` using `(Nat.factorization_le_iff_dvd hc0 hN).2 hc`. Rewrite using `[← Nat.factorization_le_iff_dvd hc0 hM0, hfM]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `h l` as an intermediate fact. Simplify using `using this`. Introduce `h q`. Distinguish the cases in `hq : q = l`.
+
+Substitute `hq` using the available equality. Simplify using `using h`. Rewrite using `[Finsupp.add_apply, Finsupp.erase_ne hq]`. Conclude with `le_add_right (hcN q)`.
+-/
 private theorem dvd_layer_iff {N c l j : ℕ} (hl : l.Prime) (hN : N ≠ 0) (hc : c ∣ N) :
     c ∣ ordCompl[l] N * l ^ j ↔ c.factorization l ≤ j := by
   have hc0 : c ≠ 0 := by
@@ -35,6 +47,15 @@ private theorem dvd_layer_iff {N c l j : ℕ} (hl : l.Prime) (hN : N ≠ 0) (hc 
     · rw [Finsupp.add_apply, Finsupp.erase_ne hq]
       exact le_add_right (hcN q)
 
+/- English proof (translation)
+Introduce `φ H l j hl hj`. Establish `hN : H.condN ≠ 0` using `H.condN_ne_zero`. Take `⟨hE, hEpos, hspec⟩` from `condE_spec H`. Establish `hEN : H.condE.factorization l ≤ H.condN.factorization l` using `(Nat.factorization_le_iff_dvd hEpos.ne' hN).2 hE l`. Establish `part1 : ∀ k, k ≤ H.condN.factorization l → (H.imgOne (ordCompl[l] H.condN * l ^ k) = ⊥ ↔ H.condE.factorization l ≤ k)`.
+
+Introduce `k hk`. Rewrite using `[hspec _ (layer_dvd hk)]`. Conclude with `dvd_layer_iff hl hN hE`. Use `⟨part1 j hj, fun hje => ?_, hEN⟩` and prove the remaining obligations. Use `set e := H.condE.factorization l with he`.
+
+Establish `hdiv : ordCompl[l] H.condN * l ^ j ∣ ordCompl[l] H.condN * l ^ e` using `mul_dvd_mul_left _ (pow_dvd_pow l hje)`. Establish `hc` using `card_imgOne_dvd H hdiv (layer_dvd hEN)`. Rewrite `hc` using `[(part1 e hEN).2 le_rfl, Subgroup.card_bot, one_mul]`. Establish `hcop : ∀ k, (ordCompl[l] H.condN).Coprime (l ^ k)` using `fun k => ((Nat.coprime_ordCompl hl hN).pow_left k).symm`. Establish `hM : 0 < ordCompl[l] H.condN` using `Nat.ordCompl_pos l hN`.
+
+Rewrite `hc` using `[Nat.totient_mul (hcop e), Nat.totient_mul (hcop j), Nat.mul_div_mul_left _ _ (Nat.totient_pos.2 hM)]`. Conclude with `hc`.
+-/
 theorem UpperTheory.HF.layer_bot :
     ∀ {φ : Frame} (H : HostRaw φ) {l j : ℕ}, l.Prime → j ≤ H.condN.factorization l → (H.imgOne (ordCompl[l] H.condN * l ^ j) = ⊥ ↔ H.condE.factorization l ≤ j) ∧ (j ≤ H.condE.factorization l → Nat.card (H.imgOne (ordCompl[l] H.condN * l ^ j)) ∣ (l ^ H.condE.factorization l).totient / (l ^ j).totient) ∧ H.condE.factorization l ≤ H.condN.factorization l := by
   intro φ H l j hl hj

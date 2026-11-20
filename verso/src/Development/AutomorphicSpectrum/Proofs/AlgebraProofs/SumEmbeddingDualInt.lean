@@ -10,11 +10,19 @@ open Module NumberField GlobalTheory.CompanionTheory.Ar.HT GlobalTheory.Companio
 variable {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K V]
   {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+The claim follows from `LinearMap.IsProj.trace (p := eigSp ρ σ) ⟨fun x => eigProj_mem ρ σ x, fun _ hx => eigProj_of_mem hx⟩`.
+-/
 theorem trace_eigProj [FiniteDimensional K V] (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) :
     LinearMap.trace K V (eigProj ρ σ) = (finrank K (eigSp ρ σ) : K) :=
   LinearMap.IsProj.trace (p := eigSp ρ σ)
     ⟨fun x => eigProj_mem ρ σ x, fun _ hx => eigProj_of_mem hx⟩
 
+/- English proof (translation)
+Establish `h1 : ∑ σ : E →+* K, σ (dualInt E k) = ∑ σ : E →ₐ[ℚ] K, σ (dualInt E k)` using `Fintype.sum_equiv (RingHom.equivRatAlgHom E K) _ _ fun _ => rfl`. Establish `h2` using `repr_eq_trace (E := E) 1 k`. Rewrite using `[h1, ← trace_eq_sum_embeddings (E := K) (K := ℚ) (L := E)]`. Establish `h3 : ((1 : 𝓞 E) : E) = 1` using `map_one (algebraMap (𝓞 E) E)`. Rewrite `h2` using `[h3, mul_one]`.
+
+Rewrite using `[← h2]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_embedding_dualInt [IsAlgClosed K] [CharZero K]
     (k : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
     ∑ σ : E →+* K, σ (dualInt E k) = (((RingOfIntegers.basis E).repr 1 k : ℤ) : K) := by
@@ -27,6 +35,11 @@ theorem sum_embedding_dualInt [IsAlgClosed K] [CharZero K]
   rw [← h2]
   simp
 
+/- English proof (translation)
+Unfold `eigProj`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, sum_embedding_dualInt]`. Use `conv_rhs => rw [← map_one ρ, ← (RingOfIntegers.basis E).sum_repr 1, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`.
+-/
 theorem sum_eigProj [IsAlgClosed K] [CharZero K] (ρ : 𝓞 E →+* Module.End K V) :
     ∑ σ : E →+* K, eigProj ρ σ = 1 := by
   unfold eigProj
@@ -36,6 +49,15 @@ theorem sum_eigProj [IsAlgClosed K] [CharZero K] (ρ : 𝓞 E →+* Module.End K
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_zsmul, Int.cast_smul_eq_zsmul]
 
+/- English proof (translation)
+Introduce `K _ _ _ V _ _ _ E _ _ ρ htr σ`. Use `choose m hm using fun k => htr (RingOfIntegers.basis E k)`. Use `set l : E := ∑ k, (m k : E) * dualInt E k with hl`. Establish `h1 : ∀ τ : E →+* K, (finrank K (eigSp ρ τ) : K) = τ l`. Introduce `τ`.
+
+Rewrite using `[← trace_eigProj, hl, map_sum]`. Unfold `eigProj`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hm, map_mul, map_intCast, smul_eq_mul, mul_comm]`.
+
+Establish `h2 : ∀ τ : E →+* K, (finrank K (eigSp ρ τ) : E) = l` using `fun τ => τ.injective (by rw [map_natCast, h1])`. Establish `h3 : ∀ τ : E →+* K, finrank K (eigSp ρ τ) = finrank K (eigSp ρ σ)` using `fun τ => Nat.cast_injective ((h2 τ).trans (h2 σ).symm)`. Establish `h4 : (finrank K V : K) = ∑ τ : E →+* K, (finrank K (eigSp ρ τ) : K)`. Rewrite using `[← LinearMap.trace_one, ← sum_eigProj ρ, map_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => trace_eigProj ρ τ`.
+
+Rewrite `h4` using `[h3]`. Rewrite `h4` using `[Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul]`. Establish `h5 : finrank K V = finrank ℚ E * finrank K (eigSp ρ σ)` using `by exact_mod_cast h4`. Rewrite using `[h5, mul_comm]`.
+-/
 theorem finrank_eigSp_mul :
     ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (V : Type) [AddCommGroup V] [Module K V]
       [FiniteDimensional K V] (E : Type) [Field E] [NumberField E] (ρ : 𝓞 E →+* Module.End K V),

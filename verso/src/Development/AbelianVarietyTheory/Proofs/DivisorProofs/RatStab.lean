@@ -45,6 +45,9 @@ def termW (B : Base F E) {n n₁ d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} (
     (w : IsoV σ W.J) (g : UA σ X.J) (h : UA σ W.J) : ℂ :=
   thetaSum F (e (M.co.rho B.ψ (shiftB σ H H' 1) (om (g, γ w * h) Φ)))
 
+/- English proof (translation)
+The claim follows from `one_mem _`.
+-/
 example {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) : (1 : UA σ J) ∈ ratStab σ J x := one_mem _
 
 end GlobalTheory.ConeSmallUnf

@@ -30,6 +30,13 @@ namespace GlobalTheory
 
 open CoverGlue
 
+/- English proof (translation)
+Establish `hc : ∀ p : S, ∃ i, p ∈ Set.range (U i).ι` using `fun p => by`. Take `⟨i, hi⟩` from `exists_mem hU p`. Conclude with `⟨i, by simpa using hi⟩`. Take `⟨F, hF⟩` from `exists_hom (fun i => (U i).ι) (fun i => inferInstance) hc (fun i => (σ i).left ≫ ψ i) (fun i j => isPullback_opens_inf (U i) (U j)) hσ`. Establish `hw : F ≫ A.hom = 𝟙 S`.
+
+Use `hom_ext (fun i => (U i).ι) (fun i => inferInstance) hc (fun i => ?_)` and prove the remaining obligations. Establish `h1` using `Over.w (σ i)`. Rewrite using `[reassoc_of% (hF i), (hp i).w, reassoc_of% h1]`. Simplify using the standard rewrite rules. Use `⟨Over.homMk F (by simpa using hw), fun i => ?_⟩` and prove the remaining obligations.
+
+Simplify using `using (hF i).symm`.
+-/
 private theorem exists_section_of_compatible_local_sections {S : Scheme.{0}} {I : Type} {U : I → S.Opens} (hU : iSup U = ⊤) {A : Over S}
     {G : ∀ i, Over (U i).toScheme} {ψ : ∀ i, (G i).left ⟶ A.left}
     (hp : ∀ i, IsPullback (ψ i) (G i).hom A.hom (U i).ι)
@@ -50,6 +57,11 @@ private theorem exists_section_of_compatible_local_sections {S : Scheme.{0}} {I 
   refine ⟨Over.homMk F (by simpa using hw), fun i => ?_⟩
   simpa using (hF i).symm
 
+/- English proof (translation)
+Establish `hψ : ∀ i, IsOpenImmersion (ψ i)` using `fun i => isOpenImmersion (hp i)`. Establish `hc` using `covers hU hp`. Take `⟨F, hF⟩` from `exists_hom ψ hψ hc (fun i => (e i).left ≫ ψ i) hB he`. Establish `hw : F ≫ A.hom = A.hom`. Use `hom_ext ψ hψ hc (fun i => ?_)` and prove the remaining obligations.
+
+Rewrite using `[reassoc_of% (hF i), (hp i).w, reassoc_of% (Over.w (e i))]`. Conclude with `⟨Over.homMk F hw, fun i => (hF i).symm⟩`.
+-/
 private theorem exists_endo_of_compatible_local_endos {S : Scheme.{0}} {I : Type} {U : I → S.Opens} (hU : iSup U = ⊤) {A : Over S}
     {G : ∀ i, Over (U i).toScheme} {ψ : ∀ i, (G i).left ⟶ A.left}
     (hp : ∀ i, IsPullback (ψ i) (G i).hom A.hom (U i).ι)
@@ -65,12 +77,30 @@ private theorem exists_endo_of_compatible_local_endos {S : Scheme.{0}} {I : Type
     rw [reassoc_of% (hF i), (hp i).w, reassoc_of% (Over.w (e i))]
   exact ⟨Over.homMk F hw, fun i => (hF i).symm⟩
 
+/- English proof (translation)
+Use `ext`. Simplify using `[unitS]`. Both sides reduce to the same expression.
+-/
 private theorem hcompl_unit_property_of_isPrime {o : Type} [CommRing o] {S S' : Scheme.{0}} (f : S' ⟶ S) (s : S ⟶ Sp o) (u : oˣ) :
     Units.map f.appTop.hom.toMonoidHom (unitS s u) = unitS (f ≫ s) u := by
   ext
   simp [unitS]
   rfl
 
+/- English proof (translation)
+Introduce `o _ g k J b S s I U t hU hov hrig`. Use `choose u hl hr using hov`. Simplify using `only [TMap] at hl hr`. Use `choose a ha using hl`. Use `choose a' ha' using hr`.
+
+Establish `hcoc` using `GlobalTheory.T.thetaObject_comparison_maps_cocycle tObj_pull o g k J b S s I U t u a a' (fun i j => ⟨(ha i j).1, (ha i j).2.1, (ha i j).2.2.1⟩) (fun i j => ⟨(ha' i j).1, (ha' i j).2.1, (ha' i j).2.2.1⟩) hrig`. Take `⟨A, ψ, hp, hB⟩` from `GlobalTheory.T.glue_schemes_over_opens_along_cocycle S I U (fun i => (t i).A) (fun i j => (u i j).A) a a' (fun i j => (ha i j).1.1) (fun i j => (ha' i j).1.1) hcoc`. Establish `hgl` using `GlobalTheory.T.group_laws_on_cover_agree_on_common_points S I U A (fun i => (t i).A) ψ (fun i j => (u i j).A) a a' hp (fun i j => (ha i j).1) (fun i j => (ha' i j).1) hB`. Take `⟨m, hm⟩` from `GlobalTheory.T.exists_binary_op_glued_along_cover S I U A (fun i => (t i).A) ψ (fun i => μ) hU hp (fun i j T r r' x y x' y' hx hy => by`. Simplify `(hgl.1 i j T r r' x y x' y' hx hy).1)` using `only [Hom.mul_def]`.
+
+Take `⟨n, hn⟩` from `GlobalTheory.T.exists_binary_op_glued_along_cover S I U A (fun i => (t i).A) ψ (fun i => fst _ _ ≫ ι) hU hp (fun i j T r r' x y x' y' hx hy => by`. Simplify `(hgl.1 i j T r r' x y x' y' hx hy).2)` using `only [lift_fst_assoc, Hom.inv_def]`. Take `⟨e, he⟩` from `exists_section_of_compatible_local_sections hU hp (fun i => (1 : Out.baseOver (U i).toScheme ⟶ (t i).A)) hgl.2`. Take `⟨inst, hgp⟩` from `GlobalTheory.T.exists_grpObj_of_local_group_laws_on_cover S I U A (fun i => (t i).A) ψ m n e hU hp (fun i T x y x₀ y₀ hx hy => ⟨by simpa only [Hom.mul_def] using hm i T x y x₀ y₀ hx hy, by simpa only [lift_fst_assoc, Hom.inv_def] using hn i T x y x₀ y₀ hx hy⟩) he`. Establish `hab` using `GlobalTheory.T.isAbelianScheme_and_relDim_of_open_cover S I U A (fun i => (t i).A) ψ hU hgp`.
+
+Establish `hA : IsAbelianScheme A` using `hab.1 (fun i => (t i).ab)`. Take `⟨L, hL, hrigL, hLi⟩` from `GlobalTheory.T.exists_glue_rigidified_lineBundles_cover S I U A (fun i => (t i).A) ψ hU hgp hA (fun i => (t i).ab) (fun i => (t i).L) (fun i j => (u i j).A.left) a a' hB (fun i => (t i).isLB) (fun i => (t i).rigid) (fun i j => LBIso.trans (pull_isLB (t i).isLB _) (u i j).isLB (pu …`. Use `choose P hP using fun l => exists_section_of_compatible_local_sections hU hp (fun i => (t i).pt l) (fun i j => by`. Rewrite using `[← Category.assoc, ← (ha i j).2.2.1 l, Category.assoc, (hB i j).w, ← Category.assoc, (ha' i j).2.2.1 l, Category.assoc])`. Use `choose F hF using fun w => exists_endo_of_compatible_local_endos hU hp hB (fun i => (t i).act w) (fun i j => by`.
+
+Rewrite using `[← Category.assoc, ← (ha i j).2.2.2 w, Category.assoc, (hB i j).w, ← Category.assoc, (ha' i j).2.2.2 w, Category.assoc])`. Establish `h82` using `GlobalTheory.T.torsion_and_isMonHom_of_open_cover S I U A (fun i => (t i).A) ψ hU hgp hA (fun i => (t i).ab)`. Establish `hsym` using `GlobalTheory.T.symmetric_local_on_base_cover S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL (fun i => (t i).isLB) hLi (fun i => (t i).sym)`. Establish `hamp` using `GlobalTheory.T.relAmple_of_open_cover_grpPullback_relAmple S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL (fun i => (t i).isLB) hLi hA (fun i => (t i).ab) (fun i => (t i).ample)`. Establish `hkt` using `GlobalTheory.T.thetaGroupKernel_trivial_of_open_cover S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL (fun i => (t i).isLB) hLi hA (fun i => (t i).ab) (fun i => (t i).ktriv)`.
+
+Establish `htor : ∀ l, P l ^ k = 1` using `fun l => h82.1 k (P l) (fun i => (t i).pt l) (fun i => hP l i) (fun i => (t i).torsion l)`. Establish `hbij` using `GlobalTheory.T.torsionBasis_geometric_fibres_of_open_cover S I U A (fun i => (t i).A) ψ hU hgp hA (fun i => (t i).ab) g k P (fun i => (t i).pt) (fun i l => hP l i) (fun i => (t i).bij)`. Establish `hunit : ∀ i, Units.map (U i).ι.appTop.hom.toMonoidHom (unitS s b.ζ) = unitS ((U i).ι ≫ s) b.ζ` using `fun i => hcompl_unit_property_of_isPrime (U i).ι s b.ζ`. Establish `hpair : ∀ l l', Out.WeilIs A L k (P l) (P l') (unitS s b.ζ ^ Out.stdSymp g l l')` using `fun l l' => GlobalTheory.T.weilIs_local_on_base_of_openCover S I U A (fun i => (t i).A) ψ hU hgp L (fun i => (t i).L) hL (fun i => (t i).isLB) hLi hA (fun i => (t i).ab) k (P l) (P l') (fun i => (t i).pt l) (fun i => (t i).pt l') _ (fun i => hP l i) (fun i => hP l' i) (fun i => b …`. Rewrite using `[map_zpow, hunit i]`.
+
+Conclude with `(t i).pairing l l')`. Establish `hhom : ∀ w, IsMonHom (F w)` using `fun w => h82.2 (F w) (fun i => (t i).act w) (fun i => hF w i) (fun i => (t i).hom w)`. Set `t₀ : TObj g k J b s` to `{ A := A grp := inst ab := hA dim := hab.2 g (fun i => (t i).dim) L := L isLB := hL rigid := hrigL sym := hsym ample := hamp ktriv := hkt pt := P torsion := htor bij := hbij pairing := hpair act := F hom := hhom }`. Conclude with `⟨t₀, fun i => ⟨ψ i, hgp i, hLi i, fun l => hP l i, fun w => hF w i⟩⟩`.
+-/
 theorem exists_tobj_of_cover : ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) (S : Scheme.{0}) (s : S ⟶ Sp o) (I : Type) (U : I → S.Opens) (t : ∀ i, TObj g k J b ((U i).ι ≫ s)), iSup U = ⊤ → (∀ i j, ∃ u : TObj g k J b ((U i ⊓ U j).ι ≫ s), TMap u (t i) (S.homOfLE inf_le_left) ∧ TMap u (t j) (S.homOfLE inf_le_right)) → (∀ (T : Scheme.{0}) (i : I) (f : T ⟶ (U i).toScheme) (u : TObj g k J b (f ≫ (U i).ι ≫ s)) (φ φ' : u.A.left ⟶ (t i).A.left), IsOpenImmersion f → IsGrpPullback u.A (t i).A f φ → IsGrpPullback u.A (t i).A f φ' → LBIso u.L ((t i).L.pull φ) → LBIso u.L ((t i).L.pull φ') → (∀ a, (u.pt a).left ≫ φ = (u.pt a).left ≫ φ') → φ = φ') → ∃ t₀ : TObj g k J b s, ∀ i, TMap (t i) t₀ (U i).ι := by
   intro o _ g k J b S s I U t hU hov hrig
   choose u hl hr using hov

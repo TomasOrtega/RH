@@ -3,10 +3,19 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.TailIntegrals.HermitianL
 
 namespace ReciprocityTheory.ChartRestriction.DS.Xi
 
+/- English proof (translation)
+The claim follows from `iwB`.
+-/
 theorem iw : IW := iwB
 
+/- English proof (translation)
+The claim follows from `detH hB2`.
+-/
 theorem det_of (hB2 : InductiveHeisenbergInputs) : DET := detH hB2
 
+/- English proof (translation)
+The claim follows from `CB.coefStepC hB2 hT hD`.
+-/
 theorem coefStep_of (hB2 : InductiveHeisenbergInputs) (hT : TBoth) (hD : DET) : CoefStep := CB.coefStepC hB2 hT hD
 
 end ReciprocityTheory.ChartRestriction.DS.Xi

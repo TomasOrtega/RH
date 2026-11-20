@@ -13,6 +13,15 @@ namespace DiscreteGroups.sglob.DzType
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `key : ∀ (ν : Weil h →* ℂˣ) (hν : IsSmooth ν), ∃ hs : IsSmooth (ξL₀ * ν.comp r), Induces (WD.lpOfChar hv (ξL₀ * ν.comp r) hs) (WD.mk (b.twist ν hν))`. Introduce `ν hν`. Use `EpsUnique.induces_of_eigenvector E L Ω A w v h hv r hr hrs m (b.twist ν hν) v₀ (ξL₀ * ν.comp r) hm (fun σ => ?_) ?_` and prove the remaining obligations. Rewrite using `[WDRep.twist_ρ, LinearMap.smul_apply, hξ, smul_smul, MonoidHom.mul_apply, Units.val_mul, MonoidHom.comp_apply, mul_comm]`. Rewrite using `[eq_top_iff, ← hsp]`.
+
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, rfl⟩`. Establish `e : b.ρ σ v₀ = ((ν σ)⁻¹ : ℂˣ) • ((b.twist ν hν).ρ σ v₀)`. Rewrite using `[WDRep.twist_ρ, LinearMap.smul_apply, Units.smul_def, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Use `show b.ρ σ v₀ ∈ Submodule.span ℂ (Set.range fun σ => (b.twist ν hν).ρ σ v₀)`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨σ, rfl⟩)`. Take `⟨hs₁, i₁⟩` from `key ν₁ hν₁`. Take `⟨hs₂, i₂⟩` from `key ν₂ hν₂`. Use `⟨hs₁, hs₂, ?_⟩` and prove the remaining obligations.
+
+Establish `d : (WD.lpOfChar hv (ξL₀ * ν₁.comp r) hs₁).lpDim = (WD.lpOfChar hv (ξL₀ * ν₂.comp r) hs₂).lpDim`. Simplify using `[WD.lpOfChar]`. Conclude with `hε.ind E L w v h hv hL ψ ψL hc h1 hcL hψL _ _ _ _ i₁ i₂ d`.
+-/
 theorem eps_ind_step {E L Ω : Type} [Field E] [NumberField E] [Field L] [NumberField L] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra E L] [IsScalarTower E L Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) {v : HeightOneSpectrum (𝓞 L)}

@@ -6,6 +6,9 @@ namespace Formalism.RepresentationBoundsCohomology.CyclotomicTwistCohomology
 
 open Matrix Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic Polynomial
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Establish `h2 : t * (A i j - B i j) = 0` using `by rw [mul_sub, this, sub_self]`. Conclude with `sub_eq_zero.mp (ht _ h2)`.
+-/
 lemma mat_cancel {OC : Type} [CommRing OC] {r : ℕ} (t : OC) (ht : ∀ a : OC, t * a = 0 → a = 0)
     {A B : Matrix (Fin r) (Fin r) OC} (h : t • A = t • B) : A = B := by
   ext i j
@@ -14,12 +17,18 @@ lemma mat_cancel {OC : Type} [CommRing OC] {r : ℕ} (t : OC) (ht : ∀ a : OC, 
   have h2 : t * (A i j - B i j) = 0 := by rw [mul_sub, this, sub_self]
   exact sub_eq_zero.mp (ht _ h2)
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 lemma map_scalar {ℓ : ℕ} [Fact ℓ.Prime] {OC : Type} [CommRing OC] [Algebra ℤ_[ℓ] OC] {r : ℕ}
     (e : OC ≃ₐ[ℤ_[ℓ]] OC) :
     (((ℓ : OC)) • (1 : Matrix (Fin r) (Fin r) OC)).map e = (ℓ : OC) • (1 : Matrix (Fin r) (Fin r) OC) := by
   ext i j
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Introduce `ℓ _ G _ OC _ _ actO r S S' Y Y' hℓ hY h1 h2 g`. Apply `mat_cancel (ℓ : OC) hℓ` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_scalar (actO g), ← h2, Matrix.map_mul]`. Use `_ = (ℓ : OC) • (S'.Mx g * Y') := by rw [Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul]`.
+-/
 theorem interInv : StatInterInv := by
   intro ℓ _ G _ OC _ _ actO r S S' Y Y' hℓ hY h1 h2 g
   apply mat_cancel (ℓ : OC) hℓ
@@ -31,12 +40,24 @@ theorem interInv : StatInterInv := by
         rw [← map_scalar (actO g), ← h2, Matrix.map_mul]
     _ = (ℓ : OC) • (S'.Mx g * Y') := by rw [Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul]
 
+/- English proof (translation)
+Introduce `ℓ _ G _ OC _ _ actO r S S' Y χ i hY g`. Use `show Y.map (actO g) * ((((χ g) ^ i : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) • S'.Mx g) = ((((χ g) ^ i : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) • S.Mx g) * Y`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, hY g]`.
+-/
 theorem interTwist : StatInterTwist := by
   intro ℓ _ G _ OC _ _ actO r S S' Y χ i hY g
   show Y.map (actO g) * ((((χ g) ^ i : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) • S'.Mx g)
     = ((((χ g) ^ i : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) • S.Mx g) * Y
   rw [Matrix.mul_smul, Matrix.smul_mul, hY g]
 
+/- English proof (translation)
+Introduce `ℓ _ G _ OC _ _ actO r S' Um Y Y' hℓ hU h1`. Establish `cancelY : ∀ A B : Matrix (Fin r) (Fin r) OC, A * Y = B * Y → A = B`. Introduce `A B h`. Apply `mat_cancel (ℓ : OC) hℓ` to reduce the goal to its premises. Establish `: A * Y * Y' = B * Y * Y'` using `by rw [h]`.
+
+Rewrite `this` using `[Matrix.mul_assoc, Matrix.mul_assoc, h1, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_one]`. Conclude with `this`. Prove the components needed by the constructor for the conclusion. Apply `cancelY` to reduce the goal to its premises. Rewrite using `[← hU 1, S'.one, Matrix.mul_one, Matrix.one_mul]`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Introduce `g h`. Apply `cancelY` to reduce the goal to its premises. Rewrite using `[← hU (g * h), S'.mul, Matrix.mul_assoc, ← hU g, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, ← hU h, Matrix.map_mul]`.
+
+Use `congr 2`. Use extensionality with `i j`. Simplify using `[map_mul]`.
+-/
 theorem slOfInter : StatSLofInter := by
   intro ℓ _ G _ OC _ _ actO r S' Um Y Y' hℓ hU h1
   have cancelY : ∀ A B : Matrix (Fin r) (Fin r) OC, A * Y = B * Y → A = B := by
@@ -59,6 +80,13 @@ theorem slOfInter : StatSLofInter := by
     ext i j
     simp [map_mul]
 
+/- English proof (translation)
+Introduce `ℓ _ G G' _ _ _ OC _ _ _ _ _ actO r S S' Y Y' h h' p hYY x`. Take `⟨c, rfl⟩` from `Submodule.mkQ_surjective _ x`. Use `show Submodule.mkQ _ _ = (ℓ : ℤ_[ℓ]) • Submodule.mkQ _ c`. Rewrite using `[← map_smul]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show (c.1 g ᵥ* Y') ᵥ* Y = (ℓ : ℤ_[ℓ]) • c.1 g`. Rewrite using `[Matrix.vecMul_vecMul, hYY, Matrix.vecMul_smul, Matrix.vecMul_one]`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[Algebra.smul_def]`.
+-/
 theorem sandwich_composite_on_H1 : SandwichCompositeOnH1 := by
   intro ℓ _ G G' _ _ _ OC _ _ _ _ _ actO r S S' Y Y' h h' p hYY x
   obtain ⟨c, rfl⟩ := Submodule.mkQ_surjective _ x
@@ -72,12 +100,24 @@ theorem sandwich_composite_on_H1 : SandwichCompositeOnH1 := by
   funext k
   simp [Algebra.smul_def]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[matAct, LinearMap.pi_apply, LinearMap.sum_apply]`.
+-/
 lemma matAct_apply {R X : Type} [CommRing R] [AddCommGroup X] [Module R X] {r : ℕ}
     (V : Matrix (Fin r) (Fin r) R) (g0 : X →ₗ[R] X) (v : Fin r → X) :
     matAct V g0 v = fun k => ∑ t, V k t • g0 (v t) := by
   funext k
   simp [matAct, LinearMap.pi_apply, LinearMap.sum_apply]
 
+/- English proof (translation)
+Establish `hn : ∀ n : ℕ, (w : ℤ_[ℓ]) - 1 ∣ ((w ^ n : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) - 1`. Introduce `n`. Rewrite using `[Units.val_pow_eq_pow_val]`. Simplify using `using sub_dvd_pow_sub_pow (w : ℤ_[ℓ]) 1 n`. Take `⟨n, rfl | rfl⟩` from `i.eq_nat_or_neg`.
+
+Simplify using `using hn n`. Take `⟨q, hq⟩` from `hn n`. Use `⟨-(((w ^ n)⁻¹ : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) * q, ?_⟩` and prove the remaining obligations. Establish `e1 : ((w ^ (-(n : ℤ)) : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) = (((w ^ n)⁻¹ : ℤ_[ℓ]ˣ) : ℤ_[ℓ])` using `by simp`. Establish `e2 : (((w ^ n)⁻¹ : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) * ((w ^ n : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) = 1`.
+
+Rewrite using `[← Units.val_mul]`. Simplify using the standard rewrite rules. Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_sub, neg_mul, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = ((w : ℤ_[ℓ]) - 1) * (-(((w ^ n)⁻¹ : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) * q) := by rw [hq]; ring`.
+-/
 lemma zpow_sub_one_dvd {ℓ : ℕ} [Fact ℓ.Prime] (w : ℤ_[ℓ]ˣ) (i : ℤ) :
     (w : ℤ_[ℓ]) - 1 ∣ ((w ^ i : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) - 1 := by
   have hn : ∀ n : ℕ, (w : ℤ_[ℓ]) - 1 ∣ ((w ^ n : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) - 1 := by
@@ -97,6 +137,17 @@ lemma zpow_sub_one_dvd {ℓ : ℕ} [Fact ℓ.Prime] (w : ℤ_[ℓ]ˣ) (i : ℤ) 
           rw [mul_sub, neg_mul, e2]; ring
       _ = ((w : ℤ_[ℓ]) - 1) * (-(((w ^ n)⁻¹ : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) * q) := by rw [hq]; ring
 
+/- English proof (translation)
+Introduce `ℓ _ Tt r Vm z z' ϖ ϖ₁ w i hz hϖ hc hT2 hV hw`. Establish `hdv : z * ϖ ∣ algebraMap ℤ_[ℓ] Tt.Om ((w ^ i : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) - 1`. Take `⟨q, hq⟩` from `hw.trans (zpow_sub_one_dvd w i)`. Establish `: algebraMap ℤ_[ℓ] Tt.Om ((w ^ i : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) - 1 = algebraMap ℤ_[ℓ] Tt.Om (((w ^ i : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) - 1)` using `by simp`. Rewrite using `[this, hq, map_mul, map_pow, sq, ← hz]`.
+
+Use `nth_rewrite 2 [hz]`. Rewrite using `[← hϖ]`. Conclude with `⟨z' * ϖ₁ * algebraMap ℤ_[ℓ] Tt.Om q, by ring⟩`. Establish `hVt : ∀ a b, z * ϖ ∣ (Vmᵀ - 1) a b`. Introduce `a b`.
+
+Use `hV b a` as an intermediate fact. Simplify `this` using `[Matrix.sub_apply, Matrix.transpose_apply, Matrix.one_apply, eq_comm]`. Establish `hVi` using `twistUm Tt.Om (z * ϖ) _ r Vmᵀ hdv hVt`. Take `⟨h1, h2⟩` from `unitCongruenceGivesPerturbation_statement ℓ Tt.Om Tt.Xm ϖ z z' r (Tt.Vi Vm w i) Tt.gX hz hc hT2.1 hT2.2.1 hT2.2.2 hVi`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `v hv`. Apply `h1 v` to reduce the goal to its premises. Rewrite using `[← matAct_apply]`. Conclude with `hv`. Introduce `v`.
+
+Take `⟨y, hy⟩` from `h2 v`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, ← matAct_apply]`. Both sides reduce to the same expression.
+-/
 theorem t3W : PerturbationForEveryTwist := by
   intro ℓ _ Tt r Vm z z' ϖ ϖ₁ w i hz hϖ hc hT2 hV hw
   have hdv : z * ϖ ∣ algebraMap ℤ_[ℓ] Tt.Om ((w ^ i : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) - 1 := by
@@ -124,6 +175,23 @@ theorem t3W : PerturbationForEveryTwist := by
     rw [hy, ← matAct_apply]
     rfl
 
+/- English proof (translation)
+Introduce `ℓ _ G _ _ _ M _ _ _ _ _ _ a H γ lg c w0 hlg hadd hH hgen hfix hcH hcγ σ`. Take `⟨hcc, hcoc⟩` from `c.2`. Establish `lg1 : lg 1 = 0`. Use `hadd 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+
+Conclude with `(add_eq_left.mp this.symm)`. Establish `c1 : c.1 1 = 0`. Use `hcoc 1 1` as an intermediate fact. Rewrite `this` using `[mul_one, map_one]`. Conclude with `(add_eq_left.mp this.symm)`.
+
+Set `S : Subgroup G` to `{ carrier := {σ | lg γ • c.1 σ = lg σ • w0} one_mem' := by show lg γ • c.1 1 = lg 1 • w0`. Rewrite using `[lg1, c1, smul_zero, zero_smul]`. Use the proof step `mul_mem' := by`. Introduce `x y hx hy`. Use `show lg γ • c.1 (x * y) = lg (x * y) • w0`.
+
+Establish `hx' : lg γ • c.1 x = lg x • w0` using `hx`. Establish `hy' : lg γ • c.1 y = lg y • w0` using `hy`. Rewrite using `[hcoc, smul_add, hx', ← map_smul, hy', map_smul, hfix, hadd, add_smul]`. Use the proof step `inv_mem' := by`. Introduce `x hx`.
+
+Use `show lg γ • c.1 x⁻¹ = lg x⁻¹ • w0`. Establish `hx' : lg γ • c.1 x = lg x • w0` using `hx`. Establish `e1 : c.1 x⁻¹ + a x⁻¹ (c.1 x) = 0` using `by rw [← hcoc, inv_mul_cancel, c1]`. Establish `e2 : lg x⁻¹ + lg x = 0` using `by rw [← hadd, inv_mul_cancel, lg1]`. Establish `e3 : lg γ • c.1 x⁻¹ + lg x • w0 = 0`.
+
+Use `congrArg (fun t => lg γ • t) e1` as an intermediate fact. Simplify using `only [smul_add, smul_zero] at this`. Rewrite `this` using `[← map_smul, hx', map_smul, hfix]`. Then use the resulting hypothesis. Establish `e4 : lg x⁻¹ • w0 + lg x • w0 = 0` using `by rw [← add_smul, e2, zero_smul]`. Conclude with `add_right_cancel (e3.trans e4.symm) }`.
+
+Establish `hS : S = ⊤`. Apply `hgen S` to reduce the goal to its premises. Conclude with `isClosed_eq (hcc.const_smul _) (hlg.smul continuous_const)`. Introduce `h hh show lg γ • c.1 h = lg h • w0`. Rewrite using `[hcH h hh, hH h hh, smul_zero, zero_smul]`.
+
+Use `show lg γ • c.1 γ = lg γ • w0`. Rewrite using `[hcγ]`. Establish `: σ ∈ S` using `hS ▸ Subgroup.mem_top σ`. Conclude with `this`.
+-/
 theorem logClass : StatLogClass := by
   intro ℓ _ G _ _ _ M _ _ _ _ _ _ a H γ lg c w0 hlg hadd hH hgen hfix hcH hcγ σ
   obtain ⟨hcc, hcoc⟩ := c.2

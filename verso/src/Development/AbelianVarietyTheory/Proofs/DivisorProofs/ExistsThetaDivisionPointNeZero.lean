@@ -13,6 +13,9 @@ open ReciprocityTheory.PTheta Complex Matrix
 
 namespace GlobalTheory.ThetaDivisionPoints
 
+/- English proof (translation)
+Establish `h` using `thetaQuasiPeriod_holds (Fin g) a 0 ((N : ℂ) • z) ((N : ℂ) • τ) 0 m (hτ.smul _)`. Rewrite `h` using `[ofIntVec_zero, mulVec_zero, add_zero]`. Rewrite using `[smul_add, smul_smul, mul_inv_cancel₀ hN, one_smul, h]`. Use `congr 1`. Simplify using `[autFactor, ofIntVec_zero, eC_zero]`.
+-/
 theorem theta_add_int_div {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm) {N : ℕ}
     (hN : (N : ℂ) ≠ 0) (a : Fin g → ℝ) (z : Fin g → ℂ) (m : Fin g → ℤ) :
     theta a 0 ((N : ℂ) • (z + (N : ℂ)⁻¹ • ofIntVec m)) ((N : ℂ) • τ) =
@@ -23,6 +26,11 @@ theorem theta_add_int_div {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.
   congr 1
   simp [autFactor, ofIntVec_zero, eC_zero]
 
+/- English proof (translation)
+Establish `h` using `thetaRealTransl_holds (Fin g) a 0 (fun i => (n i : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) (hτ.smul _)`. Establish `e0 : ofRealVec (0 : Fin g → ℝ) = 0` using `by ext i; simp [ofRealVec]`. Establish `e1 : ofRealVec (fun i => (n i : ℝ) / N) = (N : ℂ)⁻¹ • ofIntVec n`. Use extensionality with `i`. Simplify using `[ofRealVec, ofIntVec, div_eq_inv_mul]`.
+
+Establish `e2 : ((N : ℂ) • τ) *ᵥ ((N : ℂ)⁻¹ • ofIntVec n) = (N : ℂ) • (N : ℂ)⁻¹ • τ *ᵥ ofIntVec n`. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_smul]`. Rewrite `h` using `[e0, add_zero, add_zero (0 : Fin g → ℝ)]`. Rewrite using `[smul_add, ← e2, ← e1]`. Conclude with `⟨_, Complex.exp_ne_zero _, h⟩`.
+-/
 theorem theta_add_tau_div {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm) {N : ℕ}
     (hN : (N : ℂ) ≠ 0) (a : Fin g → ℝ) (z : Fin g → ℂ) (n : Fin g → ℤ) :
     ∃ u : ℂ, u ≠ 0 ∧ theta a 0 ((N : ℂ) • (z + (N : ℂ)⁻¹ • τ *ᵥ ofIntVec n)) ((N : ℂ) • τ) =
@@ -43,6 +51,13 @@ noncomputable def intChar {g : ℕ} (N : ℕ) (c : Fin g → Fin N) : Multiplica
   map_one' := by simp [ofIntVec_zero, eC_zero]
   map_mul' m m' := by rw [toAdd_mul, ofIntVec_add, dotProduct_add, eC_add]
 
+/- English proof (translation)
+Introduce `c c' h`. Use function extensionality and compare the values at `i`. Establish `key : ∀ d : Fin g → Fin N, intChar N d (Multiplicative.ofAdd (Pi.single i 1)) = cexp (2 * Real.pi * I / N) ^ (d i : ℕ)`. Introduce `d`. Express the relevant statement in the definitionally equal form `eC (ofRealVec (fun i => ((d i : ℕ) : ℝ) / N) ⬝ᵥ ofIntVec (Pi.single i 1)) = _`.
+
+Rewrite using `[GlobalTheory.ThetaSpan.ofIntVec_single, dotProduct_single_one, ← Complex.exp_nat_mul, eC]`. Use `congr 1`. Simplify using `only [ofRealVec]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h1` using `key c`. Rewrite `h1` using `[h, key c']`. Conclude with `Fin.ext ((Complex.isPrimitiveRoot_exp N hN).pow_inj (c i).2 (c' i).2 h1.symm)`.
+-/
 theorem intChar_injective {g : ℕ} {N : ℕ} (hN : N ≠ 0) :
     Function.Injective (intChar (g := g) N) := by
   intro c c' h
@@ -60,6 +75,13 @@ theorem intChar_injective {g : ℕ} {N : ℕ} (hN : N ≠ 0) :
   rw [h, key c'] at h1
   exact Fin.ext ((Complex.isPrimitiveRoot_exp N hN).pow_inj (c i).2 (c' i).2 h1.symm)
 
+/- English proof (translation)
+Establish `f4` using `@GlobalTheory.fourierCoeff_unitCube_translate_of_entire_periodic`. Establish `f5` using `@GlobalTheory.entire_periodic_eq_zero_of_fourierCoeff_eq_zero f4`. Establish `hdim` using `@GlobalTheory.ClassicalTheta.card_le_pow_of_linearIndependent f4 f5`. Take `⟨hlev, hli⟩` from `classicalTheta_level_and_linearIndependent' g τ hτ N hN`. Assume the negation of the conclusion as `hnot`.
+
+Establish `hopt` using `hli.option hnot`. Establish `hcard : Fintype.card (Option (Fin g → Fin N)) = N ^ g + 1` using `by simp`. Set `e` to `(Fintype.equivFinOfCardEq hcard).symm`. Establish `hli'` using `hopt.comp e e.injective`. Use `hdim g N τ (fun j => eC (-(τ j j) / 2)) hN (fun j => Complex.exp_ne_zero _) (N ^ g + 1) _ (fun k => ?_) hli'` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [Function.comp_apply]`. Break down `e k with _ | c` into its components or cases. Conclude with `hf`. Conclude with `⟨(hlev c).1, GlobalTheory.ThetaSpan.laws_of_level τ N _ (hlev c).2⟩`.
+-/
 theorem mem_span_of_laws {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ SiegelH (Fin g)) {N : ℕ}
     (hN : 1 ≤ N) {f : (Fin g → ℂ) → ℂ} (hf : Differentiable ℂ f ∧
       (∀ (i : Fin g) z, f (z + Pi.single i 1) = f z) ∧
@@ -84,6 +106,11 @@ theorem mem_span_of_laws {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ �
     · exact hf
     · exact ⟨(hlev c).1, GlobalTheory.ThetaSpan.laws_of_level τ N _ (hlev c).2⟩
 
+/- English proof (translation)
+Establish `f8` using `@GlobalTheory.riemannTheta_level_one_ne_zero classicalTheta_level_and_linearIndependent'`. Take `⟨f, hf, hz⟩` from `GlobalTheory.exists_level_apply_ne_zero_of_two_le f8 g τ hτ N hN z`. Establish `hs` using `mem_span_of_laws hτ (by omega : 1 ≤ N) ⟨hf.1, GlobalTheory.ThetaSpan.laws_of_level τ N f hf.2⟩`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hs`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← ha]`. Simplify using `[Finset.sum_apply, hcon]`.
+-/
 theorem exists_theta_ne_zero {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ SiegelH (Fin g))
     {N : ℕ} (hN : 2 ≤ N) (z : Fin g → ℂ) : ∃ c : Fin g → Fin N,
       theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ) ≠ 0 := by
@@ -97,6 +124,31 @@ theorem exists_theta_ne_zero {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : 
   rw [← ha]
   simp [Finset.sum_apply, hcon]
 
+/- English proof (translation)
+Introduce `g N τ β f hs hp hN hβ hd hf0 hper hlaw`. Establish `hτ : τ ∈ SiegelH (Fin g)` using `⟨hs, hp⟩`. Establish `hN0 : N ≠ 0` using `by omega`. Establish `hNC : (N : ℂ) ≠ 0` using `by exact_mod_cast hN0`. Establish `hπ : (2 * Real.pi * I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`.
+
+Set `w : Fin g → ℂ` to `fun j => Complex.log (β j) / (2 * Real.pi * I * N) + τ j j / 2`. Establish `hw : ∀ j, β j * cexp (-(2 * Real.pi * I) * N * w j) = eC (-(τ j j) / 2) ^ N`. Introduce `j`. Rewrite using `[eC, ← Complex.exp_nat_mul]`. Use `conv_lhs => rw [← Complex.exp_log (hβ j), ← Complex.exp_add]`.
+
+Use `congr 1`. Simplify using `only [w]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hF` using `mem_span_of_laws (f := fun z => f (z + w)) hτ (by omega : 1 ≤ N) ⟨hd.comp (by fun_prop), fun i z => by`.
+
+Rewrite using `[add_right_comm, hper], fun j z => by`. Rewrite using `[add_right_comm, hlaw, ← hw j, Pi.add_apply, mul_add, Complex.exp_add]`. Use the proof step `ring⟩`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hF`. Choose the witnesses or unpack the hypotheses as in `⟨c₀, hc₀⟩ : ∃ c, a c ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hf0` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Use `congrFun ha (z - w)` as an intermediate fact.
+
+Simplify `this.symm` using `[hcon]`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hvan : ∀ n : Fin g → ℤ, theta (fun i => ((c₀ i : ℕ) : ℝ) / N) 0 ((N : ℂ) • (-w + (N : ℂ)⁻¹ • τ *ᵥ ofIntVec n)) ((N : ℂ) • τ) = 0`. Introduce `n`.
+
+Establish `hli` using `(linearIndependent_monoidHom (Multiplicative (Fin g → ℤ)) ℂ).comp _ (intChar_injective (g := g) hN0)`. Use `Fintype.linearIndependent_iff.1 hli (fun c => a c * theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • (-w + (N : ℂ)⁻¹ • τ *ᵥ ofIntVec n)) ((N : ℂ) • τ)) (by` as an intermediate fact. Use function extensionality and compare the values at `m`. Establish `h1` using `congrFun ha (-w + (N : ℂ)⁻¹ • τ *ᵥ ofIntVec n + (N : ℂ)⁻¹ • ofIntVec m.toAdd)`. Establish `h2` using `hcon m.toAdd n`.
+
+Establish `e : -w + (N : ℂ)⁻¹ • τ *ᵥ ofIntVec n + (N : ℂ)⁻¹ • ofIntVec m.toAdd + w = (N : ℂ)⁻¹ • ((fun i => (m.toAdd i : ℂ)) + τ.mulVec (fun i => (n i : ℂ)))`. Rewrite using `[smul_add]`. Express the relevant statement in the definitionally equal form `_ = (N : ℂ)⁻¹ • ofIntVec m.toAdd + (N : ℂ)⁻¹ • τ *ᵥ ofIntVec n`. Normalize the expressions using the abelian group laws. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1 ⊢`.
+
+Rewrite `h1` using `[e, h2]`. Rewrite using `[Pi.zero_apply, ← h1]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[theta_add_int_div hs hNC, mul_assoc, mul_comm (eC _)]`. Use the proof step `rfl) c₀`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_left hc₀`. Take `⟨c, hc⟩` from `exists_theta_ne_zero hτ hN (-w)`. Take `⟨u, hu, h⟩` from `theta_add_tau_div hs hNC (fun i => ((c₀ i : ℕ) : ℝ) / N) (-w) (fun i => ((c i : ℕ) : ℤ) - ((c₀ i : ℕ) : ℤ))`. Rewrite `h` using `[hvan]`. Establish `e : ((fun i => ((c₀ i : ℕ) : ℝ) / N) + fun i => ((((c i : ℕ) : ℤ) - ((c₀ i : ℕ) : ℤ) : ℤ) : ℝ) / N) = fun i => ((c i : ℕ) : ℝ) / N`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`.
+
+Conclude with `mul_ne_zero hu hc h.symm`.
+-/
 theorem exists_division_point_ne_zero :
     ∀ (g N : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ) (β : Fin g → ℂ) (f : (Fin g → ℂ) → ℂ), τ.IsSymm → (τ.map Complex.im).PosDef → 2 ≤ N → (∀ j, β j ≠ 0) → Differentiable ℂ f → f ≠ 0 → (∀ (i : Fin g) z, f (z + Pi.single i 1) = f z) → (∀ (j : Fin g) z, f (z + τ.mulVec (Pi.single j 1)) = β j * cexp (-(2 * Real.pi * I) * N * z j) * f z) → ∃ m n : Fin g → ℤ, f ((N : ℂ)⁻¹ • ((fun i => (m i : ℂ)) + τ.mulVec (fun i => (n i : ℂ)))) ≠ 0 := by
   intro g N τ β f hs hp hN hβ hd hf0 hper hlaw

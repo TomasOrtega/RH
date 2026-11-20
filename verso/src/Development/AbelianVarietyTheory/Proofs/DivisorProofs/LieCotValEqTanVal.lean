@@ -31,6 +31,17 @@ def sqToEps {M S : Type} [AddCommGroup M] [Module R M] [Module Rᵐᵒᵖ M] [Is
 
 attribute [local instance] cotOp cotCentral cotTower
 
+/- English proof (translation)
+Set `S` to `ModPow p R n`. Set `E : SqExt R` to `SqExt.ofModule R S S`. Set `ρ : (cotExt R (G.A n)).C →ₐ[R] DualNumber S` to `sqToEps (t.tanDer hv n)`. Set `y' : Pt A (cotExt R (G.A n)).C` to `spOver (cotPt R (G.A n)) ≫ t.y n`. Establish `hρ : ρ.comp (cotPt R (G.A n)) = t.tanPt hv n` using `AlgHom.ext fun a ↦ by`.
+
+Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[t.fst_tanPt]`. Conclude with `congrArg (algebraMap R S) (add_zero _)`. Rewrite using `[← t.tanDer_d]`. Conclude with `congrArg (t.tanDer hv n) (zero_add _)`.
+
+Establish `e : spOver ρ ≫ y' = epsRedPow p n v`. Rewrite using `[← Category.assoc, spOver_comp, hρ, t.tanPt_y]`. Establish `k1` using `(cotExt R (G.A n)).val_map E ρ (Algebra.ofId R S) (fun _ ↦ rfl) (fun _ ↦ TrivSqZeroExt.ext rfl (map_zero (t.tanDer hv n))) y'.left y'.w _ (Pt.w (epsRedPow p n v)) (congrArg Over.Hom.left e) β`. Establish `k2` using `(SqExt.dual R).val_map E (epsTo R S) (Algebra.ofId R S) (fun c ↦ (fst_epsTo S c).symm) (fun c ↦ TrivSqZeroExt.ext (fst_epsTo S _) ((snd_epsTo S _).trans (map_zero _))) v.left (pt_w v) _ (Pt.w (epsRedPow p n v)) rfl β`. Establish `h0 : fv β.1 (G.A n) (cotExt R (G.A n)).C (cotPt R (G.A n)) (t.y n) = 0` using `β.2 _ rfl rfl`.
+
+Establish `k3` using `congrArg TrivSqZeroExt.snd (k1.symm.trans k2)`. Rewrite `k3` using `[snd_epsTo]`. Use `Eq.trans ?_ k3` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t.tanDer hv n (cotSnd R _ (_ - fv β.1 (G.A n) (cotExt R (G.A n)).C (cotPt R (G.A n)) (t.y n))) = _`. Rewrite using `[h0, sub_zero]`.
+
+Both sides reduce to the same expression.
+-/
 theorem tanDer_cotVal {A : Over (Sp R)} [GrpObj A] {p : ℕ} {G : PDivGroup p R} (t : G.TorsionTower A)
     (β : Form (A.hom ≫ 𝟙 _)) {v : epsR R ⟶ A} (hv : IsTangent v) (n : ℕ) :
     t.tanDer hv n (cotVal β.1 (t.y n)) = algebraMap R (ModPow p R n) (tanVal v β) := by
@@ -60,6 +71,11 @@ theorem tanDer_cotVal {A : Over (Sp R)} [GrpObj A] {p : ℕ} {G : PDivGroup p R}
   rw [h0, sub_zero]
   rfl
 
+/- English proof (translation)
+Introduce `R _ A _ p G t ⟨n, hn⟩ β w hw x v h`. Establish `h1` using `(t.lieCorr_iff h.1 x).1 h n w`. Rewrite `h1` using `[hw, tanDer_cotVal]`. Establish `h2` using `Ideal.Quotient.eq.1 h1`. Rewrite `h2` using `[hn, Ideal.mem_span_singleton, zero_dvd_iff]`.
+
+Conclude with `sub_eq_zero.1 h2`.
+-/
 theorem lie_cotVal_eq_tanVal : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R) (t : G.TorsionTower A), IsNilpotent (p : R) → ∀ (β : Form (A.hom ≫ 𝟙 _)) (w : G.omega), (∀ n, w.1 n = cotVal β.1 (t.y n)) → ∀ (x : G.Lie) (v : epsR R ⟶ A), t.LieCorr x v → x w = tanVal v β := by
   intro R _ A _ p G t ⟨n, hn⟩ β w hw x v h
   have h1 := (t.lieCorr_iff h.1 x).1 h n w

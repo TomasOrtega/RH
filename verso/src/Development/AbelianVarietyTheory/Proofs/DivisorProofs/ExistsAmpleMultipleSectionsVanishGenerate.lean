@@ -10,12 +10,20 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep
 namespace GlobalTheory.IdGenRat
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CombChern.presents_zpow (presents_toLB A) (l : ℤ)`. Rewrite `h` using `[natCast_zsmul]`. Conclude with `⟨_, h⟩`.
+-/
 theorem presents_lbPow_toLB {X : Scheme.{0}} [IsIntegral X] (A : CartierDiv X) (l : ℕ) :
     ∃ r, Presents (l • A) (lbPow (toLB A) l) r := by
   have h := GlobalTheory.CombChern.presents_zpow (presents_toLB A) (l : ℤ)
   rw [natCast_zsmul] at h
   exact ⟨_, h⟩
 
+/- English proof (translation)
+Introduce `X _ _ p hp A z hA`. Take `⟨l₁, hl₁⟩` from `Filter.eventually_atTop.1 (GlobalTheory.T.eventually_exists_ample_pow_sections_cutting_out_closed X p hp (toLB A) (Closeds.closure {z}) hA)`. Use `⟨l₁, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨r, κ, -, hz, hy⟩` from `hl₁ l hl`. Take `⟨ρ, hρ⟩` from `presents_lbPow_toLB A l`.
+
+Use `⟨r, fun i => hρ.rat (κ i), fun i => hρ.rat_mem _, fun i => ?_, fun y hy' => ?_⟩` and prove the remaining obligations. Conclude with `(hρ.vanishesAt_rat_iff _).2 (hz i z (subset_closure rfl))`. Establish `hyZ : y ∉ Closeds.closure ({z} : Set X)` using `fun h => hy' (specializes_iff_mem_closure.2 h)`. Take `⟨i, hi⟩` from `hy y hyZ`. Conclude with `⟨i, (hρ.generatesAt_rat_iff _).2 hi⟩`.
+-/
 theorem exists_sections_vanish_generate : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ), IsProjOver p → ∀ (A : CartierDiv X) (z : X), IsAmpleLB (toLB A) → ∃ l₁ : ℕ, ∀ l, l₁ ≤ l → ∃ (r : ℕ) (κ : Fin r → X.functionField), (∀ i, κ i ∈ (l • A).sections) ∧ (∀ i, (l • A).VanishesAt z (κ i)) ∧ ∀ y, ¬ z ⤳ y → ∃ i, (l • A).GeneratesAt y (κ i) := by
   intro X _ _ p hp A z hA
   obtain ⟨l₁, hl₁⟩ := Filter.eventually_atTop.1

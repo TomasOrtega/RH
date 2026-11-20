@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.Mean4O
 
+/- English proof (translation)
+Establish `h : (φ.comp (algebraMap ℚ F)).IsIntegral`. Establish `e : φ.comp (algebraMap ℚ F) = algebraMap ℚ (algebraicClosure ℚ ℂ)` using `Subsingleton.elim _ _`. Rewrite using `[e]`. Introduce `x`. Establish `hx : IsAlgebraic ℚ (x : ℂ)` using `mem_algebraicClosure_iff.1 x.2`.
+
+Establish `hi : IsIntegral ℚ x` using `(isIntegral_algHom_iff (algebraicClosure ℚ ℂ).val Subtype.val_injective).1 hx.isIntegral`. Conclude with `hi`. Conclude with `RingHom.IsIntegral.tower_top _ _ h`.
+-/
 theorem isIntegral_toAlgNumbers {F : Type} [Field F] [CharZero F]
     (φ : F →+* (algebraicClosure ℚ ℂ)) : φ.IsIntegral := by
   have h : (φ.comp (algebraMap ℚ F)).IsIntegral := by
@@ -23,6 +28,11 @@ theorem isIntegral_toAlgNumbers {F : Type} [Field F] [CharZero F]
     exact hi
   exact RingHom.IsIntegral.tower_top _ _ h
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `Spec.map_surjective (p ≫ Y.str)`. Establish `hint : IsIntegralHom (p ≫ Y.str)`. Rewrite using `[← hφ]`. Conclude with `IsIntegralHom.SpecMap_iff.2 (isIntegral_toAlgNumbers φ.hom)`. Establish `hp : IsIntegralHom p` using `IsIntegralHom.of_comp p Y.str`.
+
+Establish `hc : IsClosed ({IsLocalRing.closedPoint Qb} : Set (Sp Qb))` using `IsLocalRing.isClosed_singleton_closedPoint Qb`. Use `p.isClosedMap _ hc` as an intermediate fact. Conclude with `(Set.image_singleton (f := ⇑p) (a := IsLocalRing.closedPoint Qb)) ▸ this`.
+-/
 theorem isClosed_below_algebraic (F : Type) [Field F] [NumberField F] (Y : Var F)
     (p : Sp Qb ⟶ Y.X) : IsClosed ({below p} : Set Y.X) := by
   obtain ⟨φ, hφ⟩ := Spec.map_surjective (p ≫ Y.str)

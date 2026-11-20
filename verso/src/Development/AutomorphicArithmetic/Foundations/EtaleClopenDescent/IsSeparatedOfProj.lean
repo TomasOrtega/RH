@@ -8,6 +8,11 @@ set_option autoImplicit false
 
 namespace UpperTheory.A
 
+/- English proof (translation)
+Establish `ho : IsOpenMap c` using `c.isOpenMap`. Establish `hd : DenseRange c`. Establish `: (Set.range c).Nonempty` using `Set.range_nonempty _`. Conclude with `(ho.isOpen_range.dense this)`. Establish `h1` using `(genericPoint_spec Y).image c.continuous`.
+
+Rewrite `h1` using `[Set.image_univ]`. Establish `h2 : closure (Set.range c) = Set.univ` using `hd.closure_range`. Rewrite `h1` using `[h2]`. Conclude with `(h1.eq (genericPoint_spec Z))`.
+-/
 theorem generic_map {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] (c : Y ⟶ Z) [Etale c] :
     c (genericPoint Y) = genericPoint Z := by
   have ho : IsOpenMap c := c.isOpenMap
@@ -24,12 +29,24 @@ noncomputable def ffHom {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] (c : Y 
     Z.functionField ⟶ Y.functionField :=
   Z.presheaf.stalkSpecializes (specializes_of_eq (generic_map c)) ≫ c.stalkMap (genericPoint Y)
 
+/- English proof (translation)
+Rewrite using `[ffHom, ← Category.assoc, TopCat.Presheaf.germ_stalkSpecializes]`. Conclude with `Scheme.Hom.germ_stalkMap c V (genericPoint Y) hV'`.
+-/
 theorem germ_ffHom {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] (c : Y ⟶ Z) [Etale c]
     (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c ⁻¹ᵁ V) :
     Z.presheaf.germ V (genericPoint Z) hV ≫ ffHom c = c.app V ≫ Y.presheaf.germ (c ⁻¹ᵁ V) (genericPoint Y) hV' := by
   rw [ffHom, ← Category.assoc, TopCat.Presheaf.germ_stalkSpecializes]
   exact Scheme.Hom.germ_stalkMap c V (genericPoint Y) hV'
 
+/- English proof (translation)
+Establish `aK : ∀ r : ℂ, algebraMap ℂ Z.functionField r = (Z.presheaf.germ ⊤ (genericPoint Z) trivial).hom (p.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom r))`. Introduce `r`. Substitute `hK` using the available equality. Both sides reduce to the same expression. Establish `aL : ∀ r : ℂ, algebraMap ℂ Y.functionField r = (Y.presheaf.germ ⊤ (genericPoint Y) trivial).hom (p'.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom r))`.
+
+Introduce `r`. Substitute `hL` using the available equality. Both sides reduce to the same expression. Use `⟨{ (ffHom c).hom with commutes' := fun r => ?_ }, fun V hV hV' g => ?_⟩` and prove the remaining obligations. Establish `h` using `germ_ffHom c ⊤ trivial trivial`.
+
+Establish `h2` using `congrArg (fun f => f.hom (p.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom r))) h`. Express the relevant statement in the definitionally equal form `(ffHom c).hom (algebraMap ℂ Z.functionField r) = _`. Rewrite using `[aK, aL, ← hc, Scheme.Hom.comp_appTop]`. Conclude with `h2`. Establish `h` using `congrArg (fun f => f.hom g) (germ_ffHom c V hV hV')`.
+
+Conclude with `h`.
+-/
 theorem exists_ffMap {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] (p : Z ⟶ Sp ℂ) (p' : Y ⟶ Sp ℂ) (c : Y ⟶ Z)
     (hc : c ≫ p = p') [Etale c] [instK : Algebra ℂ Z.functionField] [instL : Algebra ℂ Y.functionField]
     (hK : instK = ffAlg p) (hL : instL = ffAlg p') :
@@ -71,6 +88,9 @@ noncomputable def ringOn {Y : Scheme.{0}} [IsIntegral Y] (p' : Y ⟶ Sp ℂ) [in
 def joinCover {Z Y : Scheme.{0}} {ι : Type} (c1 c2 : Y ⟶ Z) (U : ι → Z.Opens) : ι ⊕ₗ ι → Y.Opens :=
   fun i => Sum.elim (fun j => c1 ⁻¹ᵁ U j) (fun j => c2 ⁻¹ᵁ U j) (ofLex i)
 
+/- English proof (translation)
+Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s _ ih`. Rewrite using `[Finset.inf_insert]`. Conclude with `⟨h a, ih⟩`.
+-/
 theorem generic_mem_inf {Y : Scheme.{0}} [IsIntegral Y] {κ : Type} (V : κ → Y.Opens) (h : ∀ k, genericPoint Y ∈ V k)
     (I : Finset κ) : genericPoint Y ∈ I.inf V := by
   classical
@@ -80,6 +100,11 @@ theorem generic_mem_inf {Y : Scheme.{0}} [IsIntegral Y] {κ : Type} (V : κ → 
     rw [Finset.inf_insert]
     exact ⟨h a, ih⟩
 
+/- English proof (translation)
+Break down `h : ofLex k with j | j` into its components or cases. Simplify using `only [joinCover, h, Sum.elim_inl]`. Express the relevant statement in the definitionally equal form `c1 (genericPoint Y) ∈ U j`. Rewrite using `[generic_map c1]`. Conclude with `hU j`.
+
+Simplify using `only [joinCover, h, Sum.elim_inr]`. Express the relevant statement in the definitionally equal form `c2 (genericPoint Y) ∈ U j`. Rewrite using `[generic_map c2]`. Conclude with `hU j`.
+-/
 theorem generic_mem_join {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] {ι : Type} (c1 c2 : Y ⟶ Z) [Etale c1] [Etale c2]
     (U : ι → Z.Opens) (hU : ∀ i, genericPoint Z ∈ U i) (k : ι ⊕ₗ ι) : genericPoint Y ∈ joinCover c1 c2 U k := by
   rcases h : ofLex k with j | j
@@ -90,6 +115,9 @@ theorem generic_mem_join {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] {ι : 
     change c2 (genericPoint Y) ∈ U j
     rw [generic_map c2]; exact hU j
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `e : Limits.terminal.from Y = c ≫ Limits.terminal.from Z` using `Subsingleton.elim _ _`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem isSeparated_of_hom {Z Y : Scheme.{0}} [Z.IsSeparated] (c : Y ⟶ Z) [IsSeparated c] : Y.IsSeparated := by
   constructor
   have e : Limits.terminal.from Y = c ≫ Limits.terminal.from Z := Subsingleton.elim _ _
@@ -97,12 +125,22 @@ theorem isSeparated_of_hom {Z Y : Scheme.{0}} [Z.IsSeparated] (c : Y ⟶ Z) [IsS
   infer_instance
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
+/- English proof (translation)
+Take `⟨N, i, hi, -⟩` from `hP`. Use `haveI := hi`. Use `haveI : (PSpace ℂ N).IsSeparated := isSeparated_of_hom (Proj.toSpecZero (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) ℂ))`. Conclude with `isSeparated_of_hom i`.
+-/
 theorem isSeparated_of_proj {Z : Scheme.{0}} (p : Z ⟶ Sp ℂ) (hP : IsProjOver p) : Z.IsSeparated := by
   obtain ⟨N, i, hi, -⟩ := hP
   haveI := hi
   haveI : (PSpace ℂ N).IsSeparated := isSeparated_of_hom (Proj.toSpecZero (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) ℂ))
   exact isSeparated_of_hom i
 
+/- English proof (translation)
+Establish `hk : ∀ k, IsAffineOpen (joinCover c1 c2 U k)`. Introduce `k`. Break down `h : ofLex k with j | j` into its components or cases. Simplify using `only [joinCover, h, Sum.elim_inl]`. Conclude with `(hU j).preimage c1`.
+
+Simplify using `only [joinCover, h, Sum.elim_inr]`. Conclude with `(hU j).preimage c2`. Proceed by induction on `hI using Finset.Nonempty.cons_induction with`. Consider the case `singleton a => simpa using hk a`. Consider the case `cons a s ha hs ih`.
+
+Rewrite using `[Finset.cons_eq_insert, Finset.inf_insert]`. Conclude with `(hk a).inf ih`.
+-/
 theorem isAffineOpen_join {Z Y : Scheme.{0}} [Y.IsSeparated] {ι : Type} (c1 c2 : Y ⟶ Z) [IsFinite c1] [IsFinite c2]
     (U : ι → Z.Opens) (hU : ∀ i, IsAffineOpen (U i)) (I : Finset (ι ⊕ₗ ι)) (hI : I.Nonempty) :
     IsAffineOpen (I.inf (joinCover c1 c2 U)) := by
@@ -118,6 +156,11 @@ theorem isAffineOpen_join {Z Y : Scheme.{0}} [Y.IsSeparated] {ι : Type} (c1 c2 
     rw [Finset.cons_eq_insert, Finset.inf_insert]
     exact (hk a).inf ih
 
+/- English proof (translation)
+Use `haveI := isSeparated_of_proj p hP`. Use `haveI : Y.IsSeparated := isSeparated_of_hom c1`. Use `⟨by subst hL; rfl, fun I hI => ?_, ?_, fun I => generic_mem_inf _ (generic_mem_join c1 c2 U fun i => by simpa using hU.ne {i}) I, fun I _ y => Iff.rfl⟩` and prove the remaining obligations. Conclude with `isAffineOpen_join c1 c2 U (fun i => by simpa using hU.affine {i} ⟨i, by simp⟩) I hI`. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations.
+
+Establish `hx : c1 x ∈ (⊤ : Z.Opens)` using `trivial`. Rewrite `hx` using `[← hU.cover]`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨toLex (Sum.inl i), hi⟩`.
+-/
 theorem isAffCover_join {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] (p : Z ⟶ Sp ℂ) (p' : Y ⟶ Sp ℂ) (c1 c2 : Y ⟶ Z)
     [IsFinite c1] [Etale c1] [IsFinite c2] [Etale c2] (hP : IsProjOver p) [instK : Algebra ℂ Z.functionField]
     [instL : Algebra ℂ Y.functionField] (hL : instL = ffAlg p') {ι : Type} (U : ι → Z.Opens)

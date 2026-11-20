@@ -15,6 +15,9 @@ namespace Formalism.L2.SG.Pf.MassDataX
 
 open Formalism.L2.SG.TypedSets
 
+/- English proof (translation)
+The claim follows from `massDataColumns_of' Formalism.L2.SG.Closed.AdBridgeIso_holds Formalism.L2.SG.Closed.AdBridgeGF_holds Formalism.L2.SG.Closed.AdBridgeK_holds (fun X u hK => Formalism.L2.SG.PoincareInHH.Cut.neatKu_of_gamUnipKu X u hK (Formalism.L2.SG.PoincareInHH.Cut.latOfLattice_holds X u) (Formal …`.
+-/
 theorem inColumnsAt_holds :
     ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)
       (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf) (u u' : D.what₂.Word)

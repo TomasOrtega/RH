@@ -15,18 +15,29 @@ namespace RatSheetNoChartNull
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+The claim follows from `continuousOn_pi.2 fun r => (MvPolynomial.continuous_eval (p r)).continuousOn.div (MvPolynomial.continuous_eval q).continuousOn fun _ hx => hx`.
+-/
 theorem continuousOn_ratMap (p : Fin d → MvPolynomial (Fin n) ℂ) (q : MvPolynomial (Fin n) ℂ) :
     ContinuousOn (RatChart.ratMap p q) {x | eval x q ≠ 0} :=
   continuousOn_pi.2 fun r =>
     (MvPolynomial.continuous_eval (p r)).continuousOn.div (MvPolynomial.continuous_eval q).continuousOn
       fun _ hx => hx
 
+/- English proof (translation)
+The claim follows from `(continuousOn_ratMap p q).isOpen_inter_preimage (isOpen_ne_fun (MvPolynomial.continuous_eval q) continuous_const) hS`.
+-/
 theorem isOpen_ratPreimage (p : Fin d → MvPolynomial (Fin n) ℂ) (q : MvPolynomial (Fin n) ℂ)
     {S : Set (Fin d → ℂ)} (hS : IsOpen S) :
     IsOpen ({x | eval x q ≠ 0} ∩ RatChart.ratMap p q ⁻¹' S) :=
   (continuousOn_ratMap p q).isOpen_inter_preimage
     (isOpen_ne_fun (MvPolynomial.continuous_eval q) continuous_const) hS
 
+/- English proof (translation)
+Distinguish the cases in `hx : ∃ s, RatChart.IsRatSheetAt J p q x s`. Take `⟨s, U, hU, hxU, hsd, hsx, hsec, V, hV, hVs⟩` from `hx`. Establish `hqx : eval x q ≠ 0` using `hsx ▸ (hsec _ hxU).2.1`. Use `⟨s, U, interior V ∩ ({x | eval x q ≠ 0} ∩ RatChart.ratMap p q ⁻¹' U), hU, isOpen_interior.inter (isOpen_ratPreimage p q hU), hsd, ?_, fun _ => ⟨mem_interior_iff_mem_nhds.2 hV, hqx, hxU⟩⟩` and prove the remaining obligations. Introduce and unpack `x' ⟨hx'Z, hx'V, hx'q, hx'U⟩`.
+
+Establish `hx's : s (RatChart.ratMap p q x') = x'` using `(hVs x' ⟨hx'Z, interior_subset hx'V⟩ hx'q hx'U).symm`. Conclude with `⟨hx'U, U, hU, hx'U, hsd, hx's, hsec, interior V, isOpen_interior.mem_nhds hx'V, fun x'' hx'' hq'' hR'' => hVs x'' ⟨hx''.1, interior_subset hx''.2⟩ hq'' hR''⟩`. Conclude with `⟨fun _ => x, ∅, ∅, isOpen_empty, isOpen_empty, differentiableOn_empty, by simp, fun h => absurd h hx⟩`.
+-/
 theorem exists_sheet_nhds {J : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d → MvPolynomial (Fin n) ℂ}
     {q : MvPolynomial (Fin n) ℂ} (x : Fin n → ℂ) :
     ∃ (s : (Fin d → ℂ) → Fin n → ℂ) (U : Set (Fin d → ℂ)) (W : Set (Fin n → ℂ)),
@@ -46,6 +57,21 @@ theorem exists_sheet_nhds {J : Ideal (MvPolynomial (Fin n) ℂ)} {p : Fin d → 
   · exact ⟨fun _ => x, ∅, ∅, isOpen_empty, isOpen_empty, differentiableOn_empty,
       by simp, fun h => absurd h hx⟩
 
+/- English proof (translation)
+Take `⟨U, hU, hyU, hsd, hsx, hsec, V, hV, hVs⟩` from `hs`. Use `set R := RatChart.ratMap p q with hRdef`. Use `set F : (Fin d → ℂ) → Fin d → ℂ := fun w => A *ᵥ s w with hFdef`. Establish `hFa` using `SheetOnlyNull.analyticOnNhd_of_differentiableOn hU (SheetOnlyNull.differentiableOn_mulVec A hsd)`. Use `set G : Set (Fin d → ℂ) := U ∩ (fun w => (ReciprocityTheory.AnForm.A.jacC F w).det) ⁻¹' {0}ᶜ with hGdef`.
+
+Establish `hG : IsOpen G` using `(SheetOnlyNull.analyticOnNhd_det_jacC hU (SheetOnlyNull.differentiableOn_mulVec A hsd)).continuousOn |>.isOpen_inter_preimage hU isOpen_compl_singleton`. Establish `hinj : ∀ w, (ReciprocityTheory.AnForm.A.jacC F w).det ≠ 0 → Function.Injective (fderiv ℂ F w)` using `fun w hw => (SheetOnlyNull.injective_iff_det_ne_zero _).2 (by rwa [← ReciprocityTheory.AnForm.A.det_jacC])`. Establish `hequiv : ∀ w ∈ G, ∃ e : (Fin d → ℂ) ≃L[ℂ] (Fin d → ℂ), HasStrictFDerivAt F (e : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ)) w`. Introduce `w hw`. Use `⟨(LinearEquiv.ofInjectiveEndo _ (hinj w hw.2)).toContinuousLinearEquiv, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hFa w hw.1).hasStrictFDerivAt.congr_fderiv (ContinuousLinearMap.ext fun v => rfl)`. Take `⟨e, he⟩` from `hequiv _ ⟨hyU, hdet⟩`. Use `set φ := he.toOpenPartialHomeomorph F with hφdef`. Establish `hφ : ∀ w, φ w = F w` using `fun w => by rw [hφdef, HasStrictFDerivAt.toOpenPartialHomeomorph_coe]`. Establish `hysrc : R x ∈ φ.source` using `he.mem_toOpenPartialHomeomorph_source`.
+
+Establish `hFx : F (R x) = A *ᵥ x` using `by simp only [hFdef, hsx]`. Establish `hsym : φ.symm (A *ᵥ x) = R x` using `by rw [← hFx, ← hφ, φ.left_inv hysrc]`. Establish `hqx : eval x q ≠ 0` using `hsx ▸ (hsec _ hyU).2.1`. Use `⟨s ∘ φ.symm, φ.target ∩ φ.symm ⁻¹' G, φ.isOpen_inter_preimage_symm hG, ⟨by rw [← hFx, ← hφ]; exact φ.map_source hysrc, by rw [Set.mem_preimage, hsym]; exact ⟨hyU, hdet⟩⟩, ?_, by simp only [Function.comp_apply, hsym, hsx], fun z hz => ⟨?_, (hsec _ hz.2.1).1⟩, ?_⟩` and prove the remaining obligations. Introduce `z ⟨hzT, hzG⟩`.
+
+Take `⟨e', he'⟩` from `hequiv _ hzG`. Establish `hsymd : HasFDerivAt φ.symm _ z` using `φ.hasFDerivAt_symm hzT (f' := e') (by`. Establish `: (φ : (Fin d → ℂ) → Fin d → ℂ) = F` using `funext hφ`. Rewrite using `[this]`. Conclude with `he'.hasFDerivAt)`.
+
+Conclude with `((hsd.differentiableAt (hU.mem_nhds hzG.1)).comp z hsymd.differentiableAt).differentiableWithinAt`. Use `show F (φ.symm z) = z`. Rewrite using `[← hφ, φ.right_inv hz.1]`. Use `⟨V ∩ ({x | eval x q ≠ 0} ∩ R ⁻¹' (φ.source ∩ U)), inter_mem hV ((isOpen_ratPreimage p q (φ.open_source.inter hU)).mem_nhds ⟨hqx, hysrc, hyU⟩), ?_⟩` and prove the remaining obligations. Introduce and unpack `x'' ⟨hx''Z, hx''V, hx''q, hx''src, hx''U⟩ -`.
+
+Establish `hx'' : x'' = s (R x'')` using `hVs x'' ⟨hx''Z, hx''V⟩ hx''q hx''U`. Establish `hA : A *ᵥ x'' = φ (R x'')` using `by rw [hφ, hFdef]; exact congrArg _ hx''`. Rewrite using `[Function.comp_apply, hA, φ.left_inv hx''src]`. Conclude with `hx''`.
+-/
 theorem exists_sheet_of_det_ne_zero {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {p : Fin d → MvPolynomial (Fin n) ℂ} {q : MvPolynomial (Fin n) ℂ} {A : Matrix (Fin d) (Fin n) ℂ}
     {x : Fin n → ℂ} {s : (Fin d → ℂ) → Fin n → ℂ} (hs : RatChart.IsRatSheetAt J p q x s)
@@ -94,6 +120,17 @@ theorem exists_sheet_of_det_ne_zero {J : Ideal (MvPolynomial (Fin n) ℂ)}
     rw [Function.comp_apply, hA, φ.left_inv hx''src]
     exact hx''
 
+/- English proof (translation)
+Take `⟨U, hU, hyU, hsd, hsx, hsec, V, hV, hVs⟩` from `hs`. Use `set R := RatChart.ratMap p q with hRdef`. Use `set F : (Fin d → ℂ) → Fin d → ℂ := fun w => A *ᵥ s w with hFdef`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+
+Establish `hcrit : F '' (W₀ ∩ U) ⊆ F '' {w | w ∈ U ∧ ¬ Function.Injective (fderiv ℂ F w)}` using `Set.image_mono fun w hw => ⟨hw.2, fun hinj => (SheetOnlyNull.injective_iff_det_ne_zero _).1 hinj (by rw [← ReciprocityTheory.AnForm.A.det_jacC]; exact hall w hw.1)⟩`. Establish `hnull` using `measure_mono_null hcrit (h₂ d d U F hU (SheetOnlyNull.differentiableOn_mulVec A hsd))`. Establish `hxZ : x ∈ zeroSet J` using `hsx ▸ (hsec _ hyU).1`. Establish `hqx : eval x q ≠ 0` using `hsx ▸ (hsec _ hyU).2.1`. Establish `hnhds` using `h₁ n d J (linPoly A) hJ hA.injective hA.finite x hxZ (V ∩ ({x | eval x q ≠ 0} ∩ R ⁻¹' (W₀ ∩ U))) (inter_mem hV ((isOpen_ratPreimage p q (hW₀.inter hU)).mem_nhds ⟨hqx, hxW₀, hyU⟩))`.
+
+Establish `hev : ∀ z : Fin n → ℂ, (fun i => eval z (linPoly A i)) = A *ᵥ z` using `fun z => by`. Use extensionality with `i`. Simplify using `[linPoly, Matrix.mulVec, dotProduct]`. Simplify using `only [hev] at hnhds`. Establish `hsub : (fun z => A *ᵥ z) '' (IndefiniteRowSideFullHecke.ComplexSets.zeroLocus J ∩ (V ∩ ({x | eval x q ≠ 0} ∩ R ⁻¹' (W₀ ∩ U)))) ⊆ F '' (W₀ ∩ U)`.
+
+Introduce and unpack `_ ⟨z, ⟨hzZ, hzV, hzq, hzW⟩, rfl⟩`. Use `⟨R z, hzW, ?_⟩` and prove the remaining obligations. Simplify using `only [hFdef]`. Rewrite using `[← hVs z ⟨hzZ, hzV⟩ hzq hzW.2]`. Establish `hpos` using `Measure.measure_pos_of_mem_nhds (μ := μH[(Module.finrank ℝ (Fin d → ℂ) : ℝ)]) (Filter.mem_of_superset hnhds hsub)`.
+
+Rewrite `hpos` using `[SheetOnlyNull.finrank_real_fin_complex]`. Conclude with `hpos.ne' hnull`.
+-/
 theorem exists_det_ne_zero (h₁ : IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.Statement)
     (h₂ : IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.Statement) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {p : Fin d → MvPolynomial (Fin n) ℂ} {q : MvPolynomial (Fin n) ℂ} {A : Matrix (Fin d) (Fin n) ℂ}
@@ -132,6 +169,15 @@ theorem exists_det_ne_zero (h₁ : IndefiniteRowSideFullHecke.ComplexSets.Finite
 
 end RatSheetNoChartNull
 
+/- English proof (translation)
+Introduce `n d J A p q hJ _ hA _`. Use `set B := {x | x ∈ zeroSet J ∧ (∃ s, RatChart.IsRatSheetAt J p q x s) ∧ ¬ ∃ s', IsSheetAt J A x s'} with hBdef`. Use `choose σ U W hU hW hσd hWsh hxW using fun x : Fin n → ℂ => RatSheetNoChartNull.exists_sheet_nhds (J := J) (p := p) (q := q) x`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable W hW`. Establish `hpiece : ∀ i, volume (RatChart.ratMap p q '' (B ∩ W i)) = 0`.
+
+Introduce `i`. Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, ⟨hxB, hxWi⟩, rfl⟩`. Take `⟨hRx, hsh⟩` from `hWsh i x ⟨hxB.1, hxWi⟩`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp (hU i) _ hRx`.
+
+Use `⟨Metric.ball (RatChart.ratMap p q x) r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball _ r).isPreconnected, fun w => (ReciprocityTheory.AnForm.A.jacC (fun v => A *ᵥ σ i v) w).det, (SheetOnlyNull.analyticOnNhd_det_jacC (hU i) (SheetOnlyNull.differentiableOn_mulVec A (hσ …` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨x'', ⟨hx''B, hx''W⟩, rfl⟩, -⟩`. Assume the negation of the conclusion as `hne`. Conclude with `hx''B.2.2 (RatSheetNoChartNull.exists_sheet_of_det_ne_zero (hWsh i x'' ⟨hx''B.1, hx''W⟩).2 hne)`. Use `measure_mono_null ?_ ((measure_biUnion_null_iff hTc).2 fun i _ => hpiece i)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hxB, rfl⟩`. Establish `hx : x ∈ ⋃ i ∈ T, W i` using `hTU ▸ Set.mem_iUnion.2 ⟨x, hxW x hxB.2.1⟩`. Take `⟨i, hiT, hxi⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `Set.mem_biUnion hiT ⟨x, ⟨hxB, hxi⟩, rfl⟩`.
+-/
 theorem RatSheetNoChartNull.proof : RatSheetNoChartNull.Statement := by
   intro n d J A p q hJ _ hA _
   set B := {x | x ∈ zeroSet J ∧ (∃ s, RatChart.IsRatSheetAt J p q x s) ∧ ¬ ∃ s', IsSheetAt J A x s'}

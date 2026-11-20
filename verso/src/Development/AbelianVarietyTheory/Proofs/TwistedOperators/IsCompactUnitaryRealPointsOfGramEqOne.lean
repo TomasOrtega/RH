@@ -30,6 +30,13 @@ open GlobalTheory.RowEx MeasureTheory
 
 namespace GlobalTheory.GramOneCompact
 
+/- English proof (translation)
+Introduce `D V hg`. Establish `hL : (GlobalTheory.SW.stdL D.host.E V.rank).FG ∧ Submodule.span D.host.E (GlobalTheory.SW.stdL D.host.E V.rank : Set (Fin V.rank → D.host.E)) = ⊤`. Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← (Pi.basisFun D.host.E (Fin V.rank)).span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨a, by simp⟩`. Take `⟨C, hC, hCm⟩` from `GlobalTheory.Ker.CongTop.exists_compact V _ hL.1 hL.2`. Use `hC.of_isClosed_subset (GlobalTheory.Ker.CongTop.isClosed_GinfC V) fun k hk => hCm k ?_ (Or.inr hg)` and prove the remaining obligations.
+
+Establish `hk1 : finHom V k = 1` using `hk`. Establish `h1 : GlobalTheory.Ker.fmt V k = GlobalTheory.Ker.fmt V 1`. Rewrite using `[GlobalTheory.Ker.CongTop.fmt_eq, GlobalTheory.Ker.CongTop.fmt_eq, hk1, map_one]`. Rewrite using `[h1]`. Conclude with `(GlobalTheory.Ker.CongTop.congSub V (GlobalTheory.SW.stdL D.host.E V.rank) 1).one_mem.1`.
+-/
 theorem isCompact_GinfC_of_gram_eq_one : ∀ (D : D7) (V : HSp D), V.gram = 1 → IsCompact (GinfC V : Set (GA D V)) := by
   intro D V hg
   have hL : (GlobalTheory.SW.stdL D.host.E V.rank).FG ∧ Submodule.span D.host.E

@@ -13,12 +13,23 @@ variable {Z : Scheme.{0}} {A A' : Type} [CommRing A] [CommRing A']
 def val (z : Sp A ⟶ Z) (V : Z.Opens) (h : ⊤ ≤ z ⁻¹ᵁ V) : Γ(Z, V) →+* A :=
   (z.appLE V ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of A)).hom).hom
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem val_congr {z z' : Sp A ⟶ Z} (e : z = z') (V : Z.Opens) (h : ⊤ ≤ z ⁻¹ᵁ V) (h' : ⊤ ≤ z' ⁻¹ᵁ V) :
     val z V h = val z' V h' := by subst e; rfl
 
+/- English proof (translation)
+Introduce `p _` and use `h (Set.mem_univ ((spMap φ) p))`.
+-/
 theorem le_comp (φ : A →+* A') {z : Sp A ⟶ Z} {V : Z.Opens} (h : ⊤ ≤ z ⁻¹ᵁ V) :
     ⊤ ≤ (spMap φ ≫ z) ⁻¹ᵁ V := fun p _ => h (Set.mem_univ ((spMap φ) p))
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `h1 : (spMap φ ≫ z).appLE V ⊤ h' = z.appLE V ⊤ h ≫ (spMap φ).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Establish `h2 : (spMap φ ≫ z).appLE V ⊤ h' ≫ (Scheme.ΓSpecIso (CommRingCat.of A')).hom = z.appLE V ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of A)).hom ≫ CommRingCat.ofHom φ`.
+
+Rewrite using `[h1, Category.assoc, Scheme.ΓSpecIso_naturality]`. Unfold `val`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+-/
 theorem val_comp (φ : A →+* A') (z : Sp A ⟶ Z) (V : Z.Opens) (h : ⊤ ≤ z ⁻¹ᵁ V) {z' : Sp A' ⟶ Z}
     (e : z' = spMap φ ≫ z) (h' : ⊤ ≤ z' ⁻¹ᵁ V) (s : Γ(Z, V)) :
     val z' V h' s = φ (val z V h s) := by
@@ -33,6 +44,9 @@ theorem val_comp (φ : A →+* A') (z : Sp A ⟶ Z) (V : Z.Opens) (h : ⊤ ≤ z
   rw [h2]
   rfl
 
+/- English proof (translation)
+Use `IsAffineOpen.SpecMap_appLE_fromSpec z hU (isAffineOpen_top _) h` as an intermediate fact. Rewrite `this` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Express the relevant statement in the definitionally equal form `Spec.map (z.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of A)).hom) ≫ hU.fromSpec = z`. Rewrite using `[Spec.map_comp, Category.assoc, this, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+-/
 theorem val_rep (z : Sp A ⟶ Z) {U : Z.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ z ⁻¹ᵁ U) :
     spMap (val z U h) ≫ hU.fromSpec = z := by
   have := IsAffineOpen.SpecMap_appLE_fromSpec z hU (isAffineOpen_top _) h
@@ -41,10 +55,18 @@ theorem val_rep (z : Sp A ⟶ Z) {U : Z.Opens} (hU : IsAffineOpen U) (h : ⊤ �
   rw [Spec.map_comp, Category.assoc, this, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id,
     Spec.map_id, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[← val_rep z hU h, ← val_rep z' hU h', RingHom.ext e]`.
+-/
 theorem val_ext {z z' : Sp A ⟶ Z} {U : Z.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ z ⁻¹ᵁ U)
     (h' : ⊤ ≤ z' ⁻¹ᵁ U) (e : ∀ s, val z U h s = val z' U h' s) : z = z' := by
   rw [← val_rep z hU h, ← val_rep z' hU h', RingHom.ext e]
 
+/- English proof (translation)
+Introduce `p _`. Establish `: p ∈ Set.range (PrimeSpectrum.comap φ)`. Establish `e : Set.range (PrimeSpectrum.comap φ) = Set.univ` using `(range_comap_of_surjective _ _ hs).trans ((PrimeSpectrum.zeroLocus_eq_univ_iff _).2 (fun a ha => mem_nilradical.2 (hn a ha)))`. Conclude with `e.ge (Set.mem_univ (α := PrimeSpectrum A) p)`. Take `⟨q, rfl⟩` from `this`.
+
+Conclude with `h (Set.mem_univ q)`.
+-/
 theorem le_of_nil (φ : A →+* A') (hs : Function.Surjective φ) (hn : ∀ a, φ a = 0 → IsNilpotent a)
     {z : Sp A ⟶ Z} {V : Z.Opens} (h : ⊤ ≤ (spMap φ ≫ z) ⁻¹ᵁ V) : ⊤ ≤ z ⁻¹ᵁ V := by
   intro p _
@@ -56,16 +78,25 @@ theorem le_of_nil (φ : A →+* A') (hs : Function.Surjective φ) (hn : ∀ a, �
   obtain ⟨q, rfl⟩ := this
   exact h (Set.mem_univ q)
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (z (IsLocalRing.closedPoint B))) isOpen_univ`. Conclude with `⟨U, hU, (Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of B) z hxU).ge⟩`.
+-/
 theorem exists_affine {B : Type} [CommRing B] [IsLocalRing B] (z : Sp B ⟶ Z) :
     ∃ U : Z.Opens, IsAffineOpen U ∧ ⊤ ≤ z ⁻¹ᵁ U := by
   obtain ⟨_, ⟨U, hU, rfl⟩, hxU, -⟩ := Z.isBasis_affineOpens.exists_subset_of_mem_open
     (Set.mem_univ (z (IsLocalRing.closedPoint B))) isOpen_univ
   exact ⟨U, hU, (Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of B) z hxU).ge⟩
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_spMap {A'' : Type} [CommRing A''] (φ : A →+* A') (ψ : A' →+* A'') :
     spMap ψ ≫ spMap φ = spMap (ψ.comp φ) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Use `Ideal.mul_mem_mul ha hb` as an intermediate fact. Rewrite `this` using `[← pow_two, hJ, Ideal.mem_bot]`. Then use the resulting hypothesis.
+-/
 theorem mul_zero_of {J : Ideal A} (hJ : J ^ 2 = ⊥) {a b : A} (ha : a ∈ J) (hb : b ∈ J) : a * b = 0 := by
   have := Ideal.mul_mem_mul ha hb
   rwa [← pow_two, hJ, Ideal.mem_bot] at this
@@ -123,6 +154,17 @@ def mal (hJ : J ^ 2 = ⊥) : Tri J →+* A where
     simp only [Subring.coe_mul, Prod.fst_mul, Prod.snd_mul]
     linear_combination (-1 : A) * e2 - e3
 
+/- English proof (translation)
+Establish `hl : ∀ x : Sp A ⟶ Z, spMap (Ideal.Quotient.mk J) ≫ x = spMap (Ideal.Quotient.mk J) ≫ o → ⊤ ≤ x ⁻¹ᵁ W` using `fun x hx => le_of_nil (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective (fun a ha => ⟨2, by`. Use `Ideal.Quotient.eq_zero_iff_mem.1 ha` as an intermediate fact. Rewrite using `[pow_two, mul_zero_of hJ this this]⟩) (hx ▸ le_comp _ ho)`. Establish `hm : ∀ (x : Sp A ⟶ Z) (hx : spMap (Ideal.Quotient.mk J) ≫ x = spMap (Ideal.Quotient.mk J) ≫ o) s, val x W (hl x hx) s - val o W ho s ∈ J` using `fun x hx s => Ideal.Quotient.eq.1 ((val_comp _ x W (hl x hx) rfl (le_comp _ (hl x hx)) s).symm.trans (val_comp _ o W ho hx _ s))`. Use `⟨spMap (triLift J _ _ _ (hm x hx) (hm y hy)) ≫ hW.fromSpec, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, spMap_spMap]`. Conclude with `val_rep x hW _`. Rewrite using `[← Category.assoc, spMap_spMap]`. Conclude with `val_rep o hW _`. Rewrite using `[← Category.assoc, spMap_spMap]`.
+
+Conclude with `val_rep y hW _`. Introduce and unpack `rfl`. Rewrite using `[← Category.assoc, spMap_spMap]`. Use `Eq.trans ?_ (val_rep x hW (hl x hx))` and prove the remaining obligations. Use `congr 2`.
+
+Use extensionality with `s`. Conclude with `sub_add_cancel _ _`. Introduce and unpack `rfl`. Rewrite using `[← Category.assoc, spMap_spMap]`. Use `Eq.trans ?_ (val_rep y hW (hl y hy))` and prove the remaining obligations.
+
+Use `congr 2`. Use extensionality with `s`. Express the relevant statement in the definitionally equal form `val x W _ s - val x W _ s + val y W _ s = _`. Rewrite using `[sub_self, zero_add]`.
+-/
 theorem exists_tri (hJ : J ^ 2 = ⊥) (x o y : Sp A ⟶ Z) {W : Z.Opens} (hW : IsAffineOpen W) (ho : ⊤ ≤ o ⁻¹ᵁ W)
     (hx : spMap (Ideal.Quotient.mk J) ≫ x = spMap (Ideal.Quotient.mk J) ≫ o)
     (hy : spMap (Ideal.Quotient.mk J) ≫ y = spMap (Ideal.Quotient.mk J) ≫ o) :

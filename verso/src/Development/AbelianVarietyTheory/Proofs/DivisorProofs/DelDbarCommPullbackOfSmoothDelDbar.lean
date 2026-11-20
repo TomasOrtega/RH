@@ -15,6 +15,11 @@ namespace GlobalTheory.CxForm.HolAtlas
 
 variable {M M' : Type} [TopologicalSpace M] [TopologicalSpace M'] {n n' : ℕ} (A : HolAtlas M n) (A' : HolAtlas M' n')
 
+/- English proof (translation)
+Use `⟨(A'.e j).continuousOn_symm.isOpen_inter_preimage (A'.e j).open_target ((A.e i).open_source.preimage hf.1), fun v hv => ?_⟩` and prove the remaining obligations. Establish `hs : (A'.e j).symm v ∈ (A'.e j).source` using `(A'.e j).map_target hv.1`. Establish `hτ : (A.e i ∘ f ∘ (A'.e j).symm) v ∈ (A.e i).target` using `(A.e i).map_source hv.2`. Rewrite using `[HolAtlas.loc, dif_pos hv.1, HolAtlas.loc, dif_pos hτ, GlobalTheory.T.holAtlas_pullback_eq_chart_expression M M' n n' A A' f α hf hα ⟨(j, (A'.e j).symm v), hs⟩ i hv.2]`. Establish `hc : (A'.e j) ((A'.e j).symm v) = v` using `(A'.e j).right_inv hv.1`.
+
+Simplify using `only [Pt.crd, Pt.ch, Pt.pt, hc]`. Use `congr 2`. Conclude with `Subtype.ext (Prod.ext rfl ((A.e i).left_inv hv.2).symm)`.
+-/
 theorem loc_pullback_eq {f : M' → M} {α : A.Fld} (hf : A.IsHolo A' f) (hα : A.IsForm α) (j : A'.ι) (i : A.ι) :
     IsOpen ((A'.e j).target ∩ (A'.e j).symm ⁻¹' (f ⁻¹' (A.e i).source)) ∧
     ∀ v ∈ (A'.e j).target ∩ (A'.e j).symm ⁻¹' (f ⁻¹' (A.e i).source),
@@ -31,6 +36,15 @@ theorem loc_pullback_eq {f : M' → M} {α : A.Fld} (hf : A.IsHolo A' f) (hα : 
   congr 2
   exact Subtype.ext (Prod.ext rfl ((A.e i).left_inv hv.2).symm)
 
+/- English proof (translation)
+Establish `key : ∀ x : A'.Pt, A'.del (A.pullback A' f α) x = A.pullback A' f (A.del α) x ∧ A'.dbar (A.pullback A' f α) x = A.pullback A' f (A.dbar α) x`. Introduce `x`. Establish `hi : f x.pt ∈ (A.e (A.cover (f x.pt)).choose).source` using `(A.cover (f x.pt)).choose_spec`. Take `⟨hU, hloc⟩` from `loc_pullback_eq A A' hf hα x.1.1 (A.cover (f x.pt)).choose`. Establish `hx : x.crd ∈ (A'.e x.1.1).target ∩ (A'.e x.1.1).symm ⁻¹' (f ⁻¹' (A.e (A.cover (f x.pt)).choose).source)`.
+
+Use `⟨(A'.e x.1.1).map_source x.2, ?_⟩` and prove the remaining obligations. Use `show (A'.e x.1.1).symm (A'.e x.1.1 x.1.2) ∈ f ⁻¹' (A.e (A.cover (f x.pt)).choose).source`. Rewrite using `[(A'.e x.1.1).left_inv x.2]`. Conclude with `hi`. Establish `hτx : (A.e (A.cover (f x.pt)).choose ∘ f ∘ (A'.e x.1.1).symm) x.crd = A.e (A.cover (f x.pt)).choose (f x.pt)` using `by show A.e _ (f ((A'.e x.1.1).symm (A'.e x.1.1 x.1.2))) = _`.
+
+Rewrite using `[(A'.e x.1.1).left_inv x.2]`. Establish `hdiff : ∀ S, DifferentiableAt ℝ (fun y => (bas n).repr (A.loc α (A.cover (f x.pt)).choose y) S) ((A.e (A.cover (f x.pt)).choose ∘ f ∘ (A'.e x.1.1).symm) x.crd)`. Introduce `S`. Rewrite using `[hτx]`. Conclude with `((hα.smooth _ S).differentiableOn (by simp)).differentiableAt ((A.e _).open_target.mem_nhds ((A.e _).map_source hi))`.
+
+Establish `hc` using `GlobalTheory.T.del_dbar_chainRule_holomorphicPullback n' n _ _ (A.loc α (A.cover (f x.pt)).choose) x.crd hU hx (hf.2 x.1.1 _) hdiff`. Establish `hl` using `(GlobalTheory.T.delOperatorAt_dbarOperatorAt_linear_local n' x.crd).2.2.2.1 _ _ (Filter.eventually_of_mem (hU.mem_nhds hx) hloc)`. Rewrite `hc` using `[hτx]`. Conclude with `⟨(hl.1.trans hc.1 : _), (hl.2.trans hc.2 : _)⟩`. Conclude with `⟨funext fun x => (key x).1, funext fun x => (key x).2⟩`.
+-/
 theorem pullback_del_dbar (f : M' → M) (α : A.Fld) (hf : A.IsHolo A' f) (hα : A.IsForm α) :
     A'.del (A.pullback A' f α) = A.pullback A' f (A.del α) ∧
       A'.dbar (A.pullback A' f α) = A.pullback A' f (A.dbar α) := by
@@ -62,6 +76,9 @@ theorem pullback_del_dbar (f : M' → M) (α : A.Fld) (hf : A.IsHolo A' f) (hα 
 
 end GlobalTheory.CxForm.HolAtlas
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ A A' f α hf hα _ _` and use `HolAtlas.pullback_del_dbar A A' f α hf hα`.
+-/
 theorem GlobalTheory.CxForm.HolAtlas.del_dbar_comm_pullback : ∀ (M M' : Type) [TopologicalSpace M] [TopologicalSpace M'] (n n' : ℕ)
     (A : HolAtlas M n) (A' : HolAtlas M' n')
     (f : M' → M) (α : A.Fld), A.IsHolo A' f → A.IsForm α → A.IsForm (A.del α) → A.IsForm (A.dbar α) →

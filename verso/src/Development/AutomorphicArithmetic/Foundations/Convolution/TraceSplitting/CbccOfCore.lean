@@ -8,6 +8,9 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.SplitStrong
 import Development.AutomorphicArithmetic.Foundations.Convolution.TraceSplitting.Cbcc
 
+/- English proof (translation)
+The claim follows from `have a := liftStep (coreLift hC hG) have b := liftAll a have c := descStep (coreDesc hC hG) b cbcc places a b c (splitStrong c)`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.cbcc_of_core (hC : UpperTheory.ConvolutionTheory.CI) (hG : UpperTheory.ConvolutionTheory.GM.GM) : UpperTheory.V.Z.Bc.CBCc :=
   have a := liftStep (coreLift hC hG)
   have b := liftAll a

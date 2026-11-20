@@ -71,8 +71,14 @@ def planeEquiv : (GaussianInt × GaussianInt) ≃ₗ[ℤ] (Fin 4 → ℤ) where
 
 def planeBasis : Module.Basis (Fin 4) ℤ (GaussianInt × GaussianInt) := Module.Basis.ofEquivFun planeEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem planeEquiv_symm_apply (f : Fin 4 → ℤ) : planeEquiv.symm f = (⟨f 0, f 1⟩, ⟨f 2, f 3⟩) := rfl
 
+/- English proof (translation)
+Simplify using `[planeBasis, Module.Basis.coe_ofEquivFun]`.
+-/
 theorem planeBasis_apply (a : Fin 4) : planeBasis a = planeEquiv.symm (Pi.single a 1) := by
   simp [planeBasis, Module.Basis.coe_ofEquivFun]
 
@@ -81,34 +87,61 @@ def planeForm : (GaussianInt × GaussianInt) →ₗ[ℤ] (GaussianInt × Gaussia
     (fun v v' w => by simp; ring) (fun n v w => by simp [zsmul_eq_mul, Zsqrtd.re_mul, Zsqrtd.im_mul]; ring)
     (fun v w w' => by simp; ring) (fun n v w => by simp [zsmul_eq_mul, Zsqrtd.re_mul, Zsqrtd.im_mul]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem planeForm_apply (v w : GaussianInt × GaussianInt) :
     planeForm v w = v.1.re * w.2.re + v.1.im * w.2.im - v.2.re * w.1.re - v.2.im * w.1.im := rfl
 
 def planeLie (v : GaussianInt × GaussianInt) : ℂ := (toComplex v.1 + Complex.I * toComplex v.2) / 2
 
+/- English proof (translation)
+Rewrite using `[planeLie, toComplex_def₂ v.1, toComplex_def₂ v.2, Complex.div_ofNat_re]`. Simplify using `[sub_eq_add_neg]`.
+-/
 theorem planeLie_re (v : GaussianInt × GaussianInt) : (planeLie v).re = ((v.1.re : ℝ) - v.2.im) / 2 := by
   rw [planeLie, toComplex_def₂ v.1, toComplex_def₂ v.2, Complex.div_ofNat_re]
   simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[planeLie, toComplex_def₂ v.1, toComplex_def₂ v.2, Complex.div_ofNat_im]`. Simplify using the standard rewrite rules.
+-/
 theorem planeLie_im (v : GaussianInt × GaussianInt) : (planeLie v).im = ((v.1.im : ℝ) + v.2.re) / 2 := by
   rw [planeLie, toComplex_def₂ v.1, toComplex_def₂ v.2, Complex.div_ofNat_im]
   simp
 
+/- English proof (translation)
+Simplify using `only [planeLie, Prod.smul_fst, Prod.smul_snd, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem planeLie_smul (a : GaussianInt) (v : GaussianInt × GaussianInt) :
     planeLie (a • v) = toComplex a * planeLie v := by
   simp only [planeLie, Prod.smul_fst, Prod.smul_snd, smul_eq_mul, map_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [planeLie, Prod.fst_add, Prod.snd_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem planeLie_add (v w : GaussianInt × GaussianInt) : planeLie (v + w) = planeLie v + planeLie w := by
   simp only [planeLie, Prod.fst_add, Prod.snd_add, map_add]
   ring
 
+/- English proof (translation)
+Rewrite using `[planeForm_apply]`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, smul_eq_mul, Zsqrtd.re_mul, Zsqrtd.im_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem planeForm_I (v : GaussianInt × GaussianInt) :
     planeForm v ((⟨0, 1⟩ : GaussianInt) • v) = 2 * (v.1.im * v.2.re - v.1.re * v.2.im) := by
   rw [planeForm_apply]
   simp only [Prod.smul_fst, Prod.smul_snd, smul_eq_mul, Zsqrtd.re_mul, Zsqrtd.im_mul]
   ring
 
+/- English proof (translation)
+Establish `hE` using `hI v hv _ (I.smul_mem ⟨0, 1⟩ hv)`. Rewrite `hE` using `[planeForm_I]`. Establish `hre` using `congrArg Complex.re h`. Establish `him` using `congrArg Complex.im h`. Rewrite `hre` using `[planeLie_re, Complex.zero_re]`.
+
+Rewrite `him` using `[planeLie_im, Complex.zero_im]`. Establish `h1 : v.1.re = v.2.im`. Establish `: ((v.1.re : ℤ) : ℝ) = (v.2.im : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `h2 : v.1.im = -v.2.re`.
+
+Establish `: ((v.1.im : ℤ) : ℝ) = -(v.2.re : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Rewrite `hE` using `[h1, h2]`. Establish `h3 : v.2.re = 0` using `by nlinarith [sq_nonneg v.2.re, sq_nonneg v.2.im]`. Establish `h4 : v.2.im = 0` using `by nlinarith [sq_nonneg v.2.re, sq_nonneg v.2.im]`.
+
+Rewrite `h2` using `[h3, neg_zero]`. Rewrite `h1` using `[h4]`. Conclude with `Prod.ext (Zsqrtd.ext h1 h2) (Zsqrtd.ext h3 h4)`.
+-/
 theorem eq_zero_of_planeLie {I : Submodule GaussianInt (GaussianInt × GaussianInt)} (hI : IsIsoSub planeForm I)
     {v : GaussianInt × GaussianInt} (hv : v ∈ I) (h : planeLie v = 0) : v = 0 := by
   have hE := hI v hv _ (I.smul_mem ⟨0, 1⟩ hv)
@@ -130,6 +163,19 @@ theorem eq_zero_of_planeLie {I : Submodule GaussianInt (GaussianInt × GaussianI
   rw [h4] at h1
   exact Prod.ext (Zsqrtd.ext h1 h2) (Zsqrtd.ext h3 h4)
 
+/- English proof (translation)
+Rewrite `hli` using `[LinearIndependent.pair_iff]`. Use `set δ := v.1 * w.2 - v.2 * w.1 with hδ`. Establish `hA : w.2 • v + (-v.2) • w = (δ, 0)`. Apply the tactic sequence `ext <;> simp [hδ] <;> ring`. Establish `hB : (-w.1) • v + v.1 • w = (0, δ)`.
+
+Apply the tactic sequence `ext <;> simp [hδ] <;> ring`. Establish `hAI : ((δ, 0) : GaussianInt × GaussianInt) ∈ I` using `hA ▸ I.add_mem (I.smul_mem _ hv) (I.smul_mem _ hw)`. Establish `hBI : ((0, δ) : GaussianInt × GaussianInt) ∈ I` using `hB ▸ I.add_mem (I.smul_mem _ hv) (I.smul_mem _ hw)`. Establish `hE` using `hI _ hAI _ hBI`. Rewrite `hE` using `[planeForm_apply]`.
+
+Simplify using `only [show (0 : GaussianInt).re = 0 from rfl, show (0 : GaussianInt).im = 0 from rfl, mul_zero, sub_zero] at hE`. Establish `hδ0 : δ = 0`. Establish `h1 : δ.re = 0` using `by nlinarith [sq_nonneg δ.re, sq_nonneg δ.im]`. Establish `h2 : δ.im = 0` using `by nlinarith [sq_nonneg δ.re, sq_nonneg δ.im]`. Conclude with `Zsqrtd.ext h1 h2`.
+
+Establish `hA0` using `hli _ _ (by rw [hA, hδ0]; rfl)`. Establish `hB0` using `hli _ _ (by rw [hB, hδ0]; rfl)`. Establish `hv0 : v = 0`. Establish `e1 : v.1 = 0` using `hB0.2`. Establish `e2 : v.2 = 0` using `neg_eq_zero.mp hA0.2`.
+
+Conclude with `Prod.ext e1 e2`. Establish `hw0 : w = 0`. Establish `e1 : w.1 = 0` using `neg_eq_zero.mp hB0.1`. Establish `e2 : w.2 = 0` using `hA0.1`. Conclude with `Prod.ext e1 e2`.
+
+Use `hli 1 0 (by simp [hv0, hw0])` as an intermediate fact. Conclude with `one_ne_zero this.1`.
+-/
 theorem not_two_independent {I : Submodule GaussianInt (GaussianInt × GaussianInt)} (hI : IsIsoSub planeForm I)
     {v w : GaussianInt × GaussianInt} (hv : v ∈ I) (hw : w ∈ I)
     (hli : LinearIndependent GaussianInt ![v, w]) : False := by
@@ -162,12 +208,18 @@ theorem not_two_independent {I : Submodule GaussianInt (GaussianInt × GaussianI
   have := hli 1 0 (by simp [hv0, hw0])
   exact one_ne_zero this.1
 
+/- English proof (translation)
+Use `hli.comp ![a, b] (by` as an intermediate fact. Apply the tactic sequence `intro x y h; fin_cases x <;> fin_cases y <;> simp_all [eq_comm])`. Apply the tactic sequence `rwa [show w ∘ ![a, b] = ![w a, w b] from by funext i; fin_cases i <;> rfl] at this`.
+-/
 theorem pair_of_family {ρ : ℕ} {w : Fin ρ → GaussianInt × GaussianInt} (hli : LinearIndependent GaussianInt w)
     (a b : Fin ρ) (hab : a ≠ b) : LinearIndependent GaussianInt ![w a, w b] := by
   have := hli.comp ![a, b] (by
     intro x y h; fin_cases x <;> fin_cases y <;> simp_all [eq_comm])
   rwa [show w ∘ ![a, b] = ![w a, w b] from by funext i; fin_cases i <;> rfl] at this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Conclude with `not_two_independent hI (hw ⟨0, by omega⟩) (hw ⟨1, by omega⟩) (pair_of_family hli _ _ (by simp [Fin.ext_iff]))`.
+-/
 theorem family_le_one {I : Submodule GaussianInt (GaussianInt × GaussianInt)} (hI : IsIsoSub planeForm I)
     {ρ : ℕ} {w : Fin ρ → GaussianInt × GaussianInt} (hw : ∀ a, w a ∈ I) (hli : LinearIndependent GaussianInt w) :
     ρ ≤ 1 := by
@@ -175,6 +227,11 @@ theorem family_le_one {I : Submodule GaussianInt (GaussianInt × GaussianInt)} (
   exact not_two_independent hI (hw ⟨0, by omega⟩) (hw ⟨1, by omega⟩)
     (pair_of_family hli _ _ (by simp [Fin.ext_iff]))
 
+/- English proof (translation)
+Establish `hρ` using `family_le_one hI hv hli`. Use `interval_cases ρ`. Conclude with `linearIndependent_empty_type`. Rewrite using `[linearIndependent_unique_iff]`. Introduce `h`.
+
+Establish `h0 : planeLie (v default) = 0` using `congrFun h t`. Conclude with `hli.ne_zero default (eq_zero_of_planeLie hI (hv default) h0)`.
+-/
 theorem planeLie_linInd {T : Type} (t : T) {I : Submodule GaussianInt (GaussianInt × GaussianInt)}
     (hI : IsIsoSub planeForm I) (ρ : ℕ) (v : Fin ρ → GaussianInt × GaussianInt) (hv : ∀ a, v a ∈ I)
     (hli : LinearIndependent GaussianInt v) : LinearIndependent ℂ fun a => fun _ : T => planeLie (v a) := by
@@ -236,30 +293,47 @@ def planeCusp (II : IntersectionSystem)
 
 def planeLine : Submodule GaussianInt (GaussianInt × GaussianInt) := GaussianInt ∙ ((1, 0) : GaussianInt × GaussianInt)
 
+/- English proof (translation)
+Rewrite using `[planeLine, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Simplify using the standard rewrite rules. Apply the tactic sequence `intro h; exact ⟨v.1, by ext <;> simp [h]⟩`.
+-/
 theorem mem_planeLine {v : GaussianInt × GaussianInt} : v ∈ planeLine ↔ v.2 = 0 := by
   rw [planeLine, Submodule.mem_span_singleton]
   constructor
   · rintro ⟨a, rfl⟩; simp
   · intro h; exact ⟨v.1, by ext <;> simp [h]⟩
 
+/- English proof (translation)
+Introduce `v hv w hw`. Rewrite `hv`, `hw` using `[mem_planeLine]`. Rewrite using `[planeForm_apply, hv, hw]`. Simplify using the standard rewrite rules.
+-/
 theorem planeLine_isIso : IsIsoSub planeForm planeLine := by
   intro v hv w hw
   rw [mem_planeLine] at hv hw
   rw [planeForm_apply, hv, hw]
   simp
 
+/- English proof (translation)
+Introduce `h`. Establish `: ((1, 0) : GaussianInt × GaussianInt) ∈ planeLine` using `mem_planeLine.2 rfl`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `one_ne_zero (congrArg Prod.fst this)`.
+-/
 theorem planeLine_ne_bot : planeLine ≠ ⊥ := by
   intro h
   have : ((1, 0) : GaussianInt × GaussianInt) ∈ planeLine := mem_planeLine.2 rfl
   rw [h, Submodule.mem_bot] at this
   exact one_ne_zero (congrArg Prod.fst this)
 
+/- English proof (translation)
+Introduce `v n hn h`. Rewrite `h`, the goal using `[mem_planeLine]`. Establish `: n • v.2 = 0` using `by simpa using h`. Conclude with `(smul_eq_zero.mp this).resolve_left hn`.
+-/
 theorem planeLine_saturated : IsSaturated planeLine := by
   intro v n hn h
   rw [mem_planeLine] at h ⊢
   have : n • v.2 = 0 := by simpa using h
   exact (smul_eq_zero.mp this).resolve_left hn
 
+/- English proof (translation)
+Use `⟨1, ![(1, 0)], le_rfl, fun a => by fin_cases a; exact mem_planeLine.2 rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[linearIndependent_unique_iff]`. Simplify using the standard rewrite rules. Establish `: Submodule.span GaussianInt (Set.range ![((1, 0) : GaussianInt × GaussianInt)]) = planeLine`. Simplify using `[planeLine]`.
+
+Rewrite using `[this, AddSubgroup.relIndex_self]`. Conclude with `one_ne_zero`.
+-/
 theorem planeLine_family : ∃ ρ v, IsNzFamily planeLine ρ v := by
   refine ⟨1, ![(1, 0)], le_rfl, fun a => by fin_cases a; exact mem_planeLine.2 rfl, ?_, ?_⟩
   · rw [linearIndependent_unique_iff]; simp
@@ -268,6 +342,13 @@ theorem planeLine_family : ∃ ρ v, IsNzFamily planeLine ρ v := by
     rw [this, AddSubgroup.relIndex_self]
     exact one_ne_zero
 
+/- English proof (translation)
+Establish `key : ∀ ρ (w : Fin ρ → GaussianInt × GaussianInt), IsNzFamily planeLine ρ w → 0 < (∏ τ : Unit, ((planeCusp II hII).gramLie z τ w).det.re) / ((Submodule.span GaussianInt (Set.range w)).toAddSubgroup.relIndex planeLine.toAddSubgroup : ℝ)`. Introduce `ρ w ⟨h1, hmem, hli, hidx⟩`. Establish `hidx' : (0 : ℝ) < ((Submodule.span GaussianInt (Set.range w)).toAddSubgroup.relIndex planeLine.toAddSubgroup : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hidx`. Use `div_pos ?_ hidx'` and prove the remaining obligations. Establish `hρ` using `family_le_one planeLine_isIso hmem hli`.
+
+Use `interval_cases ρ`. Simplify using `only [Finset.univ_unique, Finset.prod_singleton, Matrix.det_unique]`. Simplify using `only [CuspData.gramLie, planeCusp, Matrix.of_apply]`. Establish `hw0 : planeLie (w default) ≠ 0` using `fun h => hli.ne_zero default (eq_zero_of_planeLie planeLine_isIso (hmem default) h)`. Use `show 0 < (∑ _c : Fin 1, starRingEnd ℂ (planeLie (w default)) * planeLie (w default)).re`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, one_smul, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`. Conclude with `Complex.normSq_pos.2 hw0`. Unfold `CuspData.Nz`. Rewrite using `[dif_pos planeLine_family]`. Conclude with `key _ _ planeLine_family.choose_spec.choose_spec`.
+-/
 theorem planeCusp_Nz_pos (II : IntersectionSystem)
     (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2]) (z : (Σ _ : Unit, Fin 2) → ℂ) : 0 < (planeCusp II hII).Nz z planeLine := by
   have key : ∀ ρ (w : Fin ρ → GaussianInt × GaussianInt), IsNzFamily planeLine ρ w →

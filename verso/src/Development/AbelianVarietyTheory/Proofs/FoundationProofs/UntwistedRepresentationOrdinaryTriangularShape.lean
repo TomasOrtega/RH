@@ -14,6 +14,23 @@ open scoped Matrix MatrixGroups Pointwise
 
 namespace GlobalTheory.RhoAdm
 
+/- English proof (translation)
+Introduce `Ω _ _ _ E _ f hf δ hδ`. Use `haveI : CompactSpace (Ω ≃ₐ[ℚ] Ω) := inferInstance`. Establish `key : ∀ x : Ω ≃ₐ[ℚ] Ω, ∃ V ∈ nhds (1 : Ω ≃ₐ[ℚ] Ω), ∀ a ∈ V, ∀ b ∈ V, ‖f (x * a * b) - f x‖ < δ / 2`. Introduce `x`. Establish `hc : Continuous fun p : (Ω ≃ₐ[ℚ] Ω) × (Ω ≃ₐ[ℚ] Ω) => f (x * p.1 * p.2)` using `hf.comp ((continuous_const.mul continuous_fst).mul continuous_snd)`.
+
+Establish `ht` using `hc.tendsto (1, 1)`. Simplify using `only [mul_one] at ht`. Establish `hev` using `(Metric.tendsto_nhds.1 ht) (δ / 2) (by linarith)`. Rewrite `hev` using `[nhds_prod_eq]`. Take `⟨V, hV, hV'⟩` from `(Filter.eventually_prod_self_iff (r := fun a b => dist (f (x * a * b)) (f x) < δ / 2)).1 hev`.
+
+Conclude with `⟨V, hV, fun a ha b hb => by simpa [dist_eq_norm] using hV' a ha b hb⟩`. Use `choose V hV1 hV using key`. Choose the witnesses or unpack the hypotheses as in `⟨U, hU1, hU⟩ : ∃ U ∈ nhds (1 : Ω ≃ₐ[ℚ] Ω), ∀ s, ∀ u ∈ U, ‖f (s * u) - f s‖ < δ := by`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => (fun y => x⁻¹ * y) ⁻¹' interior (V x)) (fun x => isOpen_interior.preimage (continuous_mul_left x⁻¹)) (fun y _ => Set.mem_iUnion.2 ⟨y, by show y⁻¹ * y ∈ interior (V y)`. Rewrite using `[inv_mul_cancel]`.
+
+Conclude with `mem_interior_iff_mem_nhds.2 (hV1 y)⟩)`. Use `⟨⋂ x ∈ t, V x, (Filter.biInter_finset_mem t).2 fun x _ => hV1 x, fun s u hu => ?_⟩` and prove the remaining obligations. Take `⟨x, hxt, hsx⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ s))`. Establish `ha : x⁻¹ * s ∈ V x` using `interior_subset hsx`. Establish `hux : u ∈ V x` using `Set.mem_iInter₂.1 hu x hxt`.
+
+Establish `h1` using `hV x (x⁻¹ * s) ha u hux`. Establish `h2` using `hV x (x⁻¹ * s) ha 1 (mem_of_mem_nhds (hV1 x))`. Simplify using `only [mul_inv_cancel_left, mul_one] at h1 h2`. Combine the equalities or inequalities in the displayed calculation. Take `⟨L, hL, hLU⟩` from `(krullTopology_mem_nhds_one_iff ℚ Ω U).1 hU1`.
+
+Set `b` to `Module.finBasis ℚ L`. Use `⟨Finset.univ.image (fun i => (b i : Ω)), fun s s' hs' => hU s s' (hLU ?_)⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. It suffices to establish `h : ∀ y : L, s' y = y from fun x hx => h ⟨x, hx⟩`. Introduce `y`.
+
+Establish `hy` using `b.mem_span y`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨i, rfl⟩` from `hz`. Conclude with `hs' _ (Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩)`.
+
+Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => simp [hy, hz]`. Consider the case `smul c y _ hy => simp [hy]`.
+-/
 theorem unifCont : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {E : Type} [NormedField E]
     (f : (Ω ≃ₐ[ℚ] Ω) → E), Continuous f → ∀ δ : ℝ, 0 < δ → ∃ E0 : Finset Ω, ∀ s s' : Ω ≃ₐ[ℚ] Ω,
       (∀ x ∈ E0, s' x = x) → ‖f (s * s') - f s‖ < δ := by
@@ -66,6 +83,13 @@ theorem unifCont : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ
   | add y z _ _ hy hz => simp [hy, hz]
   | smul c y _ hy => simp [hy]
 
+/- English proof (translation)
+Establish `h1 : normV v = Ideal.absNorm v.asIdeal`. Unfold `normV`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `h2 : Ideal.absNorm v.asIdeal ∣ Ideal.absNorm (Ideal.span {((q : ℕ) : 𝓞 ℚ)})` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).mpr hv)`. Establish `h3 : Ideal.absNorm (Ideal.span {((q : ℕ) : 𝓞 ℚ)}) = q`.
+
+Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `h4 : ((q : ℕ) : 𝓞 ℚ) = algebraMap ℤ (𝓞 ℚ) (q : ℤ)` using `by simp`. Rewrite using `[h4, Algebra.norm_algebraMap, RingOfIntegers.rank, Module.finrank_self]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3]`.
+
+Break down `(Nat.dvd_prime hq).mp h2 with h | h` into its components or cases. Conclude with `absurd (Ideal.absNorm_eq_one_iff.mp h) v.isPrime.ne_top`. Rewrite using `[h1, h]`.
+-/
 theorem normV_ratPrime {q : ℕ} (hq : q.Prime) (v : HeightOneSpectrum (𝓞 ℚ))
     (hv : ((q : ℕ) : 𝓞 ℚ) ∈ v.asIdeal) : normV v = q := by
   have h1 : normV v = Ideal.absNorm v.asIdeal := by
@@ -83,6 +107,27 @@ theorem normV_ratPrime {q : ℕ} (hq : q.Prime) (v : HeightOneSpectrum (𝓞 ℚ
   · exact absurd (Ideal.absNorm_eq_one_iff.mp h) v.isPrime.ne_top
   · rw [h1, h]
 
+/- English proof (translation)
+Introduce `Ω _ _ q hq s hs`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Take `⟨V, hqV, hV⟩` from `hs`. Establish `hval : V.valuation (q : Ω) < 1` using `(ValuationSubring.mem_nonunits_iff V).1 hqV`.
+
+Establish `hover : IsPlaceOver V (ReciprocityTheory.Neutral.Cmp.ratPrime q)` using `fun x => by`. Establish `h` using `ReciprocityTheory.Neutral.Cmp.lies_over_ratPrime V hval x`. Rewrite `h` using `[eq_ratCast]`. Rewrite using `[eq_ratCast]`. Conclude with `h`.
+
+Establish `hmem : ((q : ℕ) : 𝓞 ℚ) ∈ (ReciprocityTheory.Neutral.Cmp.ratPrime q).asIdeal` using `(hover _).1 (by simpa using hval)`. Establish `hn : normV (ReciprocityTheory.Neutral.Cmp.ratPrime q) = q` using `normV_ratPrime hq _ hmem`. Use `⟨_, V, hn, hover, ?_⟩` and prove the remaining obligations. Use `show s ∈ V.decompositionSubgroup ℚ ∧ ∀ x, V.valuation x ≤ 1 → V.valuation (s x - x ^ normV _) < 1`. Rewrite using `[hn]`.
+
+Establish `key : ∀ y : Ω, s y ∈ V → y ∈ V`. Introduce `y hy`. Assume the negation of the conclusion as `hyV`. Establish `hy0 : y ≠ 0` using `fun h => hyV (h ▸ V.zero_mem)`. Establish `hlt : 1 < V.valuation y`.
+
+Rewrite using `[← not_le, V.valuation_le_one_iff]`. Conclude with `hyV`. Establish `hinv : V.valuation y⁻¹ < 1` using `by rw [map_inv₀]; exact inv_lt_one_of_one_lt₀ hlt`. Establish `hinvV : y⁻¹ ∈ V` using `(V.valuation_le_one_iff _).1 hinv.le`. Establish `h1` using `(hV y⁻¹ hinvV).2`.
+
+Establish `h2 : V.valuation (y⁻¹ ^ q) < 1`. Rewrite using `[map_pow]`. Conclude with `pow_lt_one₀ zero_le' hinv hq.ne_zero`. Establish `h3 : V.valuation (s y⁻¹) < 1`. Use `Valuation.map_add_lt V.valuation h1 h2` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `h4 : V.valuation (s y) ≤ 1` using `(V.valuation_le_one_iff _).2 hy`. Rewrite `h3` using `[map_inv₀ s]`. Establish `h5 : V.valuation (s y * (s y)⁻¹) < 1`. Rewrite using `[map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' h4) h3`. Rewrite `h5` using `[mul_inv_cancel₀ ((map_ne_zero s).2 hy0), map_one]`. Conclude with `lt_irrefl _ h5`. Use `⟨MulAction.mem_stabilizer_iff.2 ?_, fun x hx => (hV x ((V.valuation_le_one_iff x).1 hx)).2⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(hV _ h).1` as an intermediate fact. Rewrite `this` using `[AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Introduce `h`. Apply `key` to reduce the goal to its premises. Rewrite using `[AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]` and apply the resulting hypothesis.
+-/
 theorem frobPlace : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] (q : ℕ), q.Prime → ∀ s : Ω ≃ₐ[ℚ] Ω, FrobAt q s →
     ∃ (w : HeightOneSpectrum (𝓞 ℚ)) (A : ValuationSubring Ω), normV w = q ∧ IsPlaceOver A w ∧
       IsFrob (F := ℚ) A (normV w) s := by
@@ -132,6 +177,9 @@ theorem frobPlace : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] (q : ℕ), q.Pri
     apply key
     rwa [AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `s hs`. Simplify using `[h s hs]`.
+-/
 theorem killsMu_inv {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {χ : G ℚ Ω →* (Qbar l)ˣ}
     (h : KillsMu l χ) : KillsMu l χ⁻¹ := by
   intro s hs
@@ -139,18 +187,30 @@ theorem killsMu_inv {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ
 
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+Rewrite using `[zpow_natCast]`. Both sides reduce to the same expression.
+-/
 theorem unTw_eq (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) :
     unTw W e χ = tw W (cycBar ℚ Ω l ^ (e : ℤ) * χ⁻¹) := by
   rw [zpow_natCast]; rfl
 
+/- English proof (translation)
+Rewrite using `[unTw_eq]`. Conclude with `tw_val _ _ _`.
+-/
 theorem untw_val (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) (s : G ℚ Ω) :
     (unTw W e χ s : Matrix (Fin 2) (Fin 2) (Qbar l)) = ((cycBar ℚ Ω l ^ (e : ℤ) * χ⁻¹) s : Qbar l) • mat W s := by
   rw [unTw_eq]; exact tw_val _ _ _
 
+/- English proof (translation)
+Rewrite using `[untw_val]`. Simplify using the standard rewrite rules.
+-/
 theorem untw_val' (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) (s : G ℚ Ω) :
     (unTw W e χ s : Matrix (Fin 2) (Fin 2) (Qbar l)) = (eps l s ^ e * (χ s : Qbar l)⁻¹) • mat W s := by
   rw [untw_val]; simp
 
+/- English proof (translation)
+Establish `hdet : ((dt W s : (Qbar l)ˣ) : Qbar l) = (mat W s).det`. Simplify using `[dt, mat, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[untw_val', Matrix.det_smul, Fintype.card_fin, hdet]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem untw_det (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) (s : G ℚ Ω) :
     (unTw W e χ s : Matrix (Fin 2) (Fin 2) (Qbar l)).det =
       eps l s ^ (2 * e) * (((χ s : Qbar l)⁻¹) ^ 2 * (dt W s : Qbar l)) := by
@@ -159,6 +219,9 @@ theorem untw_det (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) (s : G 
   rw [untw_val', Matrix.det_smul, Fintype.card_fin, hdet]
   ring
 
+/- English proof (translation)
+Introduce `V hV`. Use `hirr.2.2 V le_top fun s v hv => ?_` and prove the remaining obligations. Establish `h` using `V.smul_mem ((((cycBar ℚ Ω l ^ (e : ℤ) * χ⁻¹) (s : G ℚ Ω) : (Qbar l)ˣ)⁻¹ : (Qbar l)ˣ) : Qbar l) (hV s v hv)`. Rewrite `h` using `[untw_val, Matrix.smul_mulVec, smul_smul, Units.inv_mul, one_smul]`. Conclude with `h`.
+-/
 theorem untw_irr (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) (hirr : IsIrr (W.comp (H0g W).subtype)) :
     ∀ V : Submodule (Qbar l) (Fin 2 → Qbar l),
       (∀ s v, v ∈ V → (unTw W e χ s : Matrix (Fin 2) (Fin 2) (Qbar l)) *ᵥ v ∈ V) → V = ⊥ ∨ V = ⊤ := by
@@ -168,6 +231,11 @@ theorem untw_irr (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) (hirr :
   rw [untw_val, Matrix.smul_mulVec, smul_smul, Units.inv_mul, one_smul] at h
   exact h
 
+/- English proof (translation)
+Establish `hu : (cycBar ℚ Ω l ^ (-(e : ℤ)) * (dt W)⁻¹ * χ) s⁻¹ = (cycBar ℚ Ω l ^ (e : ℤ) * χ⁻¹) s * dt W s`. Simplify using `only [map_inv, MonoidHom.mul_apply, MonoidHom.inv_apply, zpow_neg, MonoidHom.zpow_apply]`. Simplify using `[mul_comm, mul_left_comm, mul_assoc]`. Establish `hdet : ((dt W s : (Qbar l)ˣ) : Qbar l) = (mat W s).det`. Simplify using `[dt, mat, Matrix.GeneralLinearGroup.val_det_apply]`.
+
+Establish `hne : (mat W s).det ≠ 0` using `hdet ▸ Units.ne_zero _`. Rewrite using `[tw_val, untw_val, hu, Units.val_mul, hdet, map_inv, Matrix.coe_units_inv, Matrix.adjugate_smul, Fintype.card_fin]`. Express the relevant statement in the definitionally equal form `_ • (mat W s)⁻¹ = _`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', smul_smul, mul_assoc, mul_inv_cancel₀ hne, mul_one, pow_one]`.
+-/
 theorem att_inv_eq (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) (s : G ℚ Ω) :
     (tw W (cycBar ℚ Ω l ^ (-(e : ℤ)) * (dt W)⁻¹ * χ) s⁻¹ : Matrix (Fin 2) (Fin 2) (Qbar l)) =
       (unTw W e χ s : Matrix (Fin 2) (Fin 2) (Qbar l)).adjugate := by
@@ -182,10 +250,28 @@ theorem att_inv_eq (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) (s : 
   change _ • (mat W s)⁻¹ = _
   rw [Matrix.inv_def, Ring.inverse_eq_inv', smul_smul, mul_assoc, mul_inv_cancel₀ hne, mul_one, pow_one]
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> simp [coeff_X, coeff_C, coeff_X_pow]`.
+-/
 theorem coeff_quad (a b : ℂ) :
     (X ^ 2 - C a * X + C b : ℂ[X]).coeff 1 = -a ∧ (X ^ 2 - C a * X + C b : ℂ[X]).coeff 0 = b := by
   constructor <;> simp [coeff_X, coeff_C, coeff_X_pow]
 
+/- English proof (translation)
+Establish `hB` using `Filter.eventually_cofinite.1 hatt.2`. Use `⟨hB.toFinset.image normV, fun q hq hqS s hs => ?_⟩` and prove the remaining obligations. Take `⟨w, A, hn, hA, hF⟩` from `frobPlace q hq s hs`. Establish `hw : w ∉ hB.toFinset` using `fun h => hqS (Finset.mem_image.2 ⟨w, h, hn⟩)`. Establish `hgood` using `of_not_not fun h => hw (hB.mem_toFinset.2 h)`.
+
+Establish `hcp` using `(hgood A hA).2 s hF`. Rewrite `hcp` using `[hn, att_inv_eq]`. Use `set M := (unTw W e χ s : Matrix (Fin 2) (Fin 2) (Qbar l))`. Establish `htr : M.adjugate.trace = M.trace`. Simplify using `[Matrix.trace_fin_two, Matrix.adjugate_fin_two, add_comm]`.
+
+Establish `hdt : M.adjugate.det = M.det`. Rewrite using `[Matrix.det_adjugate, Fintype.card_fin]`. Simplify using the standard rewrite rules. Establish `h1 : (Polynomial.map ι.toRingHom M.adjugate.charpoly).coeff 1 = (g.heckePoly q).coeff 1` using `by rw [hcp]`. Establish `h0 : (Polynomial.map ι.toRingHom M.adjugate.charpoly).coeff 0 = (g.heckePoly q).coeff 0` using `by rw [hcp]`.
+
+Rewrite `h1` using `[Polynomial.coeff_map, Newform.heckePoly, (coeff_quad _ _).1]`. Rewrite `h0` using `[Polynomial.coeff_map, Newform.heckePoly, (coeff_quad _ _).2]`. Establish `et` using `Matrix.trace_eq_neg_charpoly_coeff M.adjugate`. Establish `ed` using `Matrix.det_eq_sign_charpoly_coeff M.adjugate`. Simplify using `only [Fintype.card_fin, Nat.reduceSub] at et ed`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← htr, et]`. Apply `ι.injective` to reduce the goal to its premises. Simplify using `only [map_neg, RingEquiv.apply_symm_apply]`. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe] at h1`.
+
+Rewrite using `[h1, neg_neg]`. Rewrite using `[← hdt, ed]`. Apply `ι.injective` to reduce the goal to its premises. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe] at h0`. Simplify using `only [map_mul, map_pow, map_neg, map_one, RingEquiv.apply_symm_apply, map_natCast, h0, neg_one_sq, one_mul]`.
+
+Rewrite using `[show 2 * e + 1 - 1 = 2 * e by omega, mul_comm]`.
+-/
 theorem frob_trace_det (ι : Qbar l ≃+* ℂ) (e : ℕ) (W : R2 Ω l) (g : Newform (2 * e + 1)) (χ : G ℚ Ω →* (Qbar l)ˣ)
     (hatt : g.Att ι (tw W (cycBar ℚ Ω l ^ (-(e : ℤ)) * (dt W)⁻¹ * χ))) :
     ∃ S0 : Finset ℕ, ∀ q : ℕ, q.Prime → q ∉ S0 → ∀ s : Ω ≃ₐ[ℚ] Ω, FrobAt q s →
@@ -224,11 +310,19 @@ theorem frob_trace_det (ι : Qbar l ≃+* ℂ) (e : ℕ) (W : R2 Ω l) (g : Newf
     simp only [map_mul, map_pow, map_neg, map_one, RingEquiv.apply_symm_apply, map_natCast, h0, neg_one_sq, one_mul]
     rw [show 2 * e + 1 - 1 = 2 * e by omega, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[unTw_eq]`. Conclude with `UpperTheory.V.X.Kato.twCont l Ω 2 W hW l (Fact.out : l.Prime).one_lt.le χ⁻¹ (killsMu_inv hχ) e`.
+-/
 theorem untw_cont [IsAlgClosure ℚ Ω] (e : ℕ) (W : R2 Ω l) (χ : G ℚ Ω →* (Qbar l)ˣ) (hW : Continuous W)
     (hχ : KillsMu l χ) : Continuous (unTw W e χ) := by
   rw [unTw_eq]
   exact UpperTheory.V.X.Kato.twCont l Ω 2 W hW l (Fact.out : l.Prime).one_lt.le χ⁻¹ (killsMu_inv hχ) e
 
+/- English proof (translation)
+Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `hM0 : M ≠ 0` using `fun h => hM (h ▸ dvd_zero p)`. Establish `hN : ¬ V.valuation (M : Ω) < 1` using `fun h => by`. Use `(ReciprocityTheory.Neutral.Cmp.valuation_intCast_lt_one_iff V hV (M : ℤ)).1 (by simpa using h)` as an intermediate fact.
+
+Conclude with `hM (Int.natCast_dvd_natCast.1 this)`. Use `eq_of_pow_eq_one V hN ?_ ?_ (hs ζ (valuation_eq_one_of_pow_eq_one V hM0 hζ).le)` and prove the remaining obligations. Rewrite using `[← map_pow, hζ, map_one]`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ, one_pow]`.
+-/
 theorem root_eq {p M n : ℕ} (hp : p.Prime) (hM : ¬ p ∣ M) (V : ValuationSubring Ω) (hV : V.valuation (p : Ω) < 1)
     (s : G ℚ Ω) (hs : ∀ x, V.valuation x ≤ 1 → V.valuation (s x - x ^ n) < 1) {ζ : Ω} (hζ : ζ ^ M = 1) :
     s ζ = ζ ^ n := by
@@ -242,6 +336,11 @@ theorem root_eq {p M n : ℕ} (hp : p.Prime) (hM : ¬ p ∣ M) (V : ValuationSub
   · rw [← map_pow, hζ, map_one]
   · rw [← pow_mul, mul_comm, pow_mul, hζ, one_pow]
 
+/- English proof (translation)
+Take `⟨w, B, hn, hB, hF⟩` from `frobPlace q hq s hs`. Establish `hl : ((l : ℕ) : 𝓞 ℚ) ∉ w.asIdeal` using `fun h => hql (hn.symm.trans (normV_ratPrime Fact.out w h))`. Establish `h` using `cycZ_of_isFrob hl hB hF`. Establish `e1 : eps l s = algebraMap ℚ_[l] (Qbar l) (((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])` using `rfl`. Rewrite using `[e1, h, hn]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem eps_frobAt [IsAlgClosure ℚ Ω] {q : ℕ} (hq : q.Prime) (hql : q ≠ l) {s : G ℚ Ω} (hs : FrobAt q s) :
     eps l s = (q : Qbar l) := by
   obtain ⟨w, B, hn, hB, hF⟩ := frobPlace q hq s hs
@@ -251,6 +350,25 @@ theorem eps_frobAt [IsAlgClosure ℚ Ω] {q : ℕ} (hq : q.Prime) (hql : q ≠ l
   rw [e1, h, hn]
   simp
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : NeZero g.M := ⟨g.pos.ne'⟩`. Use `haveI : NeZero ((g.M : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr g.pos.ne'⟩`. Use `set η : G ℚ Ω → Qbar l := fun t => ((χ t : Qbar l)⁻¹) ^ 2 * (dt W t : Qbar l) with hη`.
+
+Establish `hc : Continuous η`. Establish `h` using `(Units.continuous_val.comp (untw_cont 0 W χ hW hχ)).matrix_det`. Use `h.congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, untw_det, hη, mul_zero, pow_zero, one_mul]`. Use `show η s = 1`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨E0, hE0⟩` from `unifCont η hc ‖1 - η s‖ (norm_pos_iff.2 (sub_ne_zero.2 (Ne.symm hne)))`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω g.M`. Take `⟨S0, hS0⟩` from `frob_trace_det ι e W g χ hatt`. Take `⟨s', q, hs', hq, hqS, hF⟩` from `exists_fixing_mul_frobAt s (insert ζ E0) (insert l (S0 ∪ g.M.primeFactors))`.
+
+Simplify using `only [Finset.mem_insert, Finset.mem_union, not_or, Nat.mem_primeFactors] at hqS`. Take `⟨hql, hqS0, hqM⟩` from `hqS`. Establish `hqM' : ¬ q ∣ g.M` using `fun h => hqM ⟨hq, h, g.pos.ne'⟩`. Establish `hlA : A.valuation (l : Ω) < 1`. Take `⟨v, hv, hlv⟩` from `hA`.
+
+Simplify using `using (hv _).2 hlv`. Establish `h1 : s ζ = ζ`. Simplify `hs.2 x hx) hζ.pow_eq_one` using `using root_eq (n := 1) Fact.out hM A hlA s (fun x hx => by simpa`. Establish `h2 : (s * s') ζ = ζ ^ q`. Take `⟨V, hqV, hV⟩` from `hF`.
+
+Conclude with `root_eq hq hqM' V ((ValuationSubring.mem_nonunits_iff V).1 hqV) (s * s') (fun x hx => (hV x ((V.valuation_le_one_iff x).1 hx)).2) hζ.pow_eq_one`. Rewrite `h2` using `[AlgEquiv.mul_apply, hs' ζ (Finset.mem_insert_self _ _), h1]`. Establish `hq1 : (q : ZMod g.M) = 1`. Take `⟨k, rfl⟩ : ∃ k, q = k + 1` from `⟨q - 1, by have := hq.pos; omega⟩`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero g.pos.ne'`.
+
+Establish `hk : ζ ^ k = 1`. Apply `mul_right_cancel₀ hζ0` to reduce the goal to its premises. Rewrite using `[← pow_succ, ← h2, one_mul]`. Use `(ZMod.natCast_eq_zero_iff k g.M).2 ((hζ.pow_eq_one_iff_dvd k).1 hk)` as an intermediate fact. Use `push_cast`.
+
+Rewrite using `[this, zero_add]`. Establish `hd` using `(hS0 q hq hqS0 (s * s') hF).2`. Rewrite `hd` using `[untw_det, eps_frobAt hq hql hF, hq1, map_one, map_one]`. Establish `hq0 : (q : Qbar l) ^ (2 * e) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hq.ne_zero)`. Establish `h3 : η (s * s') = 1` using `mul_left_cancel₀ hq0 hd`.
+
+Establish `h4` using `hE0 s s' fun x hx => hs' x (Finset.mem_insert_of_mem hx)`. Rewrite `h4` using `[h3]`. Conclude with `lt_irrefl _ h4`.
+-/
 theorem det_mul_eq_one_on_inertia [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (W : R2 Ω l) (g : Newform (2 * e + 1))
     (χ : G ℚ Ω →* (Qbar l)ˣ) (hW : Continuous W) (hχ : KillsMu l χ)
     (hatt : g.Att ι (tw W (cycBar ℚ Ω l ^ (-(e : ℤ)) * (dt W)⁻¹ * χ))) (hM : ¬ l ∣ g.M)
@@ -302,6 +420,21 @@ theorem det_mul_eq_one_on_inertia [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) 
   rw [h3] at h4
   exact lt_irrefl _ h4
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ ι e S A W g ψ hN hU hψ`. Take `⟨χ, hχ, hin, hχψ⟩` from `hψ`. Take `⟨hM, -, χ', hχ', hatt, hin'⟩` from `hU`. Establish `hkey : ∀ s ∈ Ine (F` using `ℚ) A, ((χ s : Qbar l)⁻¹) ^ 2 * (dt W s : Qbar l) = 1 := by`. Introduce `s hs`.
+
+Establish `h` using `det_mul_eq_one_on_inertia ι e W g χ' hN.cont hχ' hatt hM hN.atL hs`. Establish `h1` using `hin s hs`. Establish `h2` using `hin' s hs`. Establish `h0 : mat W s 1 1 * (cycBar ℚ Ω l s : Qbar l) ^ (e : ℤ) ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Establish `h3` using `mul_left_cancel₀ h0 (h1.trans h2.symm)`.
+
+Establish `h4` using `mul_left_cancel₀ (inv_ne_zero (Units.ne_zero (dt W s))) h3`. Rewrite using `[h4]` and apply the resulting hypothesis. Establish `h10 : ∀ s ∈ Dec (F` using `ℚ) A, (unTw W e χ s : Matrix (Fin 2) (Fin 2) (Qbar l)) 1 0 = 0 := by`. Introduce `s hs`. Rewrite using `[untw_val', Matrix.smul_apply, hN.upper s hs, smul_zero]`.
+
+Establish `h11 : ∀ s ∈ Ine (F` using `ℚ) A, (unTw W e χ s : Matrix (Fin 2) (Fin 2) (Qbar l)) 1 1 = 1 := by`. Introduce `s hs`. Establish `h1` using `hin s hs`. Establish `h2` using `hkey s hs`. Establish `hx : (χ s : Qbar l) ≠ 0` using `Units.ne_zero _`.
+
+Establish `hd : (dt W s : Qbar l) ≠ 0` using `Units.ne_zero _`. Rewrite `h1` using `[zpow_natCast]`. Rewrite using `[untw_val', Matrix.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [eps]`.
+
+Clear the denominators using the available nonvanishing facts. Use `_ = 1 := by rw [h1, h2, one_mul]`. Use `⟨unTw W e χ, fun s => ?_, untw_cont e W χ hN.cont hχ, h10, h11, ∅, fun s hs _ => ?_⟩` and prove the remaining obligations. Rewrite using `[untw_val', rhoK, thK, ← hχψ s, mul_inv, inv_inv]`. Establish `hd` using `untw_det e W χ s`.
+
+Rewrite `hd` using `[Matrix.det_fin_two, h11 s hs, h10 s (Ine_le_Dec A hs), hkey s hs, mul_one, mul_zero, sub_zero, mul_one]`. Conclude with `hd`.
+-/
 theorem rho_ordinary_shape : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (S : Finset Pl)
     (A : ValuationSubring Ω) (W : R2 Ω l) (g : Newform (2 * e + 1)) (ψ : ZMod l → Qbar l),
   Nf e S A W → SrcUr ι e A W g →

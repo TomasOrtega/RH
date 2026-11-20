@@ -13,6 +13,9 @@ open scoped TensorProduct
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.LiftSys GlobalTheory.Obs
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.abelianScheme_unobstructed_of_cohomology_structure GlobalTheory.T.abelian_structure_cohomology_statement fun R _ A _ g hA hg => ⟨(GlobalTheory.T.abelianScheme_oneFormFrame_and_primitiveOneForms R A g hA hg).1, GlobalTheory.T.globalFunctionsConstantAfterBaseChange_o …`.
+-/
 theorem GlobalTheory.UnobTop.abelianUnobstructed : GlobalTheory.Published.AbelianUnobstructed :=
   GlobalTheory.T.abelianScheme_unobstructed_of_cohomology_structure GlobalTheory.T.abelian_structure_cohomology_statement fun R _ A _ g hA hg =>
     ⟨(GlobalTheory.T.abelianScheme_oneFormFrame_and_primitiveOneForms R A g hA hg).1, GlobalTheory.T.globalFunctionsConstantAfterBaseChange_of_abelianScheme R A hA, (GlobalTheory.T.abelianScheme_oneFormFrame_and_primitiveOneForms R A g hA hg).2⟩

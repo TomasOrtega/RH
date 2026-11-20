@@ -8,6 +8,9 @@ open scoped Pointwise ComplexOrder ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Substitute `ho hK` using the available equality. Rewrite using `[← (MulAction.orbitEquivQuotientStabilizer G b).symm.tsum_eq]`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Rewrite using `[MulAction.orbitEquivQuotientStabilizer_symm_apply]`.
+-/
 theorem tsum_orbit_eq_tsum_quotient {G X : Type*} [Group G] [MulAction G X] (b : X) (o : Set X)
     (ho : MulAction.orbit G b = o) (K : Subgroup G) (hK : MulAction.stabilizer G b = K)
     (f : X → ℝ≥0∞) : ∑' p : o, f p = ∑' q : G ⧸ K, f ((Quotient.out q : G) • b) := by
@@ -39,13 +42,22 @@ variable [NumberField E]
 
 attribute [local instance] archMulAction
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem archSmul_apply {h : HermitianForm F E W} {v : Basis ι E W} (g : archUnitary h v)
     (y : InfinitePlace E → ι → ℂ) (w : InfinitePlace E) :
     (g • y) w = ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ y w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem invApply_eq_smul {h : HermitianForm F E W} {v : Basis ι E W} (g : archUnitary h v)
     (y : InfinitePlace E → ι → ℂ) : invApply g y = g⁻¹ • y := rfl
 
+/- English proof (translation)
+Establish `hw : ∀ w, Continuous fun g : archUnitary h v => (g⁻¹ • y) w` using `fun w => (Units.continuous_val.comp ((continuous_apply w).comp (continuous_subtype_val.comp continuous_inv))).matrix_mulVec continuous_const`. Unfold `Majorant.len`. Use `Real.continuous_sqrt.comp (continuous_finset_sum _ fun w _ => ?_)` and prove the remaining obligations. Conclude with `Complex.continuous_re.comp (((continuous_star.comp (hw w))).dotProduct (continuous_const.matrix_mulVec (hw w)))`.
+-/
 theorem continuous_len_inv_smul {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h v)
     (y : InfinitePlace E → ι → ℂ) : Continuous fun g : archUnitary h v => M.len (g⁻¹ • y) := by
   have hw : ∀ w, Continuous fun g : archUnitary h v => (g⁻¹ • y) w := fun w =>
@@ -60,11 +72,17 @@ def belowIndicator {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h 
     (y : InfinitePlace E → ι → ℂ) (t : ℝ) : archUnitary h v → ℝ≥0∞ :=
   {g | M.len (g⁻¹ • y) < t}.indicator 1
 
+/- English proof (translation)
+The claim follows from `(isOpen_lt (continuous_len_inv_smul M y) continuous_const).measurableSet`.
+-/
 theorem measurableSet_below {h : HermitianForm F E W} {v : Basis ι E W}
     (M : Majorant h v) (y : InfinitePlace E → ι → ℂ) (t : ℝ) :
     MeasurableSet {g : archUnitary h v | M.len (g⁻¹ • y) < t} :=
   (isOpen_lt (continuous_len_inv_smul M y) continuous_const).measurableSet
 
+/- English proof (translation)
+The claim follows from `measurable_one.indicator (measurableSet_below M y t)`.
+-/
 theorem measurable_belowIndicator {h : HermitianForm F E W} {v : Basis ι E W}
     (M : Majorant h v) (y : InfinitePlace E → ι → ℂ) (t : ℝ) :
     Measurable (belowIndicator M y t) :=
@@ -72,6 +90,9 @@ theorem measurable_belowIndicator {h : HermitianForm F E W} {v : Basis ι E W}
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Introduce `x y hxy`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace E))`. Apply `v.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Conclude with `w.embedding.injective (congrFun (congrFun hxy w) i)`.
+-/
 theorem vecAt_injective (v : Basis ι E W) : Function.Injective (vecAt v) := by
   intro x y hxy
   obtain ⟨w⟩ := (inferInstance : Nonempty (InfinitePlace E))
@@ -81,6 +102,11 @@ theorem vecAt_injective (v : Basis ι E W) : Function.Injective (vecAt v) := by
 
 variable [NumberField F] [IsTotallyReal F] [IsTotallyComplex E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w i`. Rewrite using `[archSmul_apply]`. Establish `hm : (((archEmbed h v γ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) = (LinearMap.toMatrix v v ((γ : W ≃ₗ[E] W) : W →ₗ[E] W)).map w.embedding`. Rewrite using `[← unitaryGroupEquivMatrix_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[hm]`. Express the relevant statement in the definitionally equal form `_ = w.embedding (v.repr (((γ : W ≃ₗ[E] W) : W →ₗ[E] W) x) i)`. Rewrite using `[← LinearMap.toMatrix_mulVec_repr v v, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem archEmbed_smul_vecAt (h : HermitianForm F E W) (v : Basis ι E W) (γ : h.unitaryGroup)
     (x : W) : archEmbed h v γ • vecAt v x = vecAt v (γ • x) := by
   funext w i
@@ -94,6 +120,13 @@ theorem archEmbed_smul_vecAt (h : HermitianForm F E W) (v : Basis ι E W) (γ : 
   rw [← LinearMap.toMatrix_mulVec_repr v v, RingHom.map_mulVec]
   rfl
 
+/- English proof (translation)
+Use extensionality with `⟨γ, hγ⟩`. Rewrite using `[MulAction.mem_stabilizer_iff, Subgroup.mem_subgroupOf]`. Take `⟨δ, hδ, rfl⟩` from `Subgroup.mem_map.1 hγ`. Express the relevant statement in the definitionally equal form `archEmbed h v δ • vecAt v y = vecAt v y ↔ _`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `he`. Rewrite `he` using `[archEmbed_smul_vecAt]`. Conclude with `Subgroup.mem_map.2 ⟨⟨δ, hδ⟩, MulAction.mem_stabilizer_iff.2 (vecAt_injective v he), rfl⟩`. Introduce and unpack `⟨ε, hε, he⟩`. Establish `he' : archEmbed h v (ε : h.unitaryGroup) = archEmbed h v δ` using `he`.
+
+Rewrite using `[← he', archEmbed_smul_vecAt]`. Conclude with `congrArg (vecAt v) (MulAction.mem_stabilizer_iff.1 hε)`.
+-/
 theorem stabilizer_vecAt (h : HermitianForm F E W) (v : Basis ι E W) (La : AddSubgroup W)
     (y : W) : MulAction.stabilizer (archLatticeGroup h v La) (vecAt v y) =
       (vecStabGroup h v La y).subgroupOf (archLatticeGroup h v La) := by
@@ -110,6 +143,41 @@ theorem stabilizer_vecAt (h : HermitianForm F E W) (v : Basis ι E W) (La : AddS
     rw [← he', archEmbed_smul_vecAt]
     exact congrArg (vecAt v) (MulAction.mem_stabilizer_iff.1 hε)
 
+/- English proof (translation)
+Introduce `M μ _ D La VV hLa hVV hiso hstab hC`. Use `set Γ := archLatticeGroup h v La with hΓ`. Establish `: DiscreteTopology Γ` using `h₅ La hLa.isLattice`. Establish `: Countable Γ` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hQc : ∀ K : Subgroup Γ, Countable (Γ ⧸ K)` using `fun K => QuotientGroup.mk_surjective.countable`.
+
+Take `⟨FD, -, hFD⟩` from `h₄ μ Γ inferInstance`. Establish `key : ∀ y ∈ VV, ∃ C : ℝ≥0∞, C < ⊤ ∧ ∀ t : ℝ, 0 < t → ∫⁻ g in FD, ∑' q : Γ ⧸ (vecStabGroup h v La y).subgroupOf Γ, belowIndicator M (vecAt v y) t (((Quotient.out q : Γ) : archUnitary h v)⁻¹ * g) ∂μ = C * ENNReal.ofReal (t ^ (2 * finrank ℚ F * (finrank E W - 1)))`. Introduce `y hy`. Take `⟨FD₀, hFD₀, C, -, hCtop, hCt⟩` from `h₁ M μ D La y hLa (hVV hy) (hiso y hy).1 (hiso y hy).2`. Use `⟨C, hCtop, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Establish `hle : vecStabGroup h v La y ≤ Γ`. Introduce and unpack `_ ⟨ε, -, rfl⟩`. Conclude with `Subgroup.mem_map.2 ⟨ε.1, ε.2, rfl⟩`. Establish `hinv : ∀ γ ∈ vecStabGroup h v La y, ∀ g, belowIndicator M (vecAt v y) t (γ * g) = belowIndicator M (vecAt v y) t g`. Introduce `γ hγ g`.
+
+Take `⟨ε, hε, rfl⟩` from `Subgroup.mem_map.1 hγ`. Establish `hb : ((archEmbed h v).comp (latticeStab h La).subtype ε) • vecAt v y = vecAt v y`. Express the relevant statement in the definitionally equal form `archEmbed h v (ε : h.unitaryGroup) • vecAt v y = vecAt v y`. Rewrite using `[archEmbed_smul_vecAt]`. Conclude with `congrArg (vecAt v) (MulAction.mem_stabilizer_iff.1 hε)`.
+
+Establish `hb'` using `(inv_smul_eq_iff.2 hb.symm).symm`. Simplify using `only [belowIndicator, Set.indicator_apply, Set.mem_setOf_eq, _root_.mul_inv_rev, mul_smul, ← hb', Pi.one_apply]`. Rewrite using `[h₃ μ Γ _ hle FD FD₀ hFD hFD₀ _ (measurable_belowIndicator M (vecAt v y) t) hinv, belowIndicator, lintegral_indicator_one (measurableSet_below M _ t), Measure.restrict_apply (measurableSet_below M _ t), Set.inter_comm]`. Conclude with `hCt t ht`. Use `choose! Cf hCf hCeq using key`.
+
+Take `⟨S, hSV, hScov⟩` from `h₂ D La VV hLa hVV hiso hstab hC`. Set `T : Finset (Set (InfinitePlace E → ι → ℂ))` to `S.image fun y => MulAction.orbit Γ (vecAt v y)`. Establish `hT : ∀ o ∈ T, ∃ y, y ∈ S ∧ MulAction.orbit Γ (vecAt v y) = o` using `fun o ho => by`. Take `⟨y, hy, e⟩` from `Finset.mem_image.1 ho`. Conclude with `⟨y, hy, e⟩`.
+
+Use `choose! Y hYS hYo using hT`. Establish `hP : vecAt v '' VV = ⋃ o ∈ (T : Set (Set (InfinitePlace E → ι → ℂ))), o`. Use extensionality with `p`. Simplify using `only [Set.mem_iUnion, Finset.mem_coe, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨y, hyS, γ, hγ, rfl⟩` from `hScov x hx`. Use `⟨MulAction.orbit Γ (vecAt v y), Finset.mem_image.2 ⟨y, hyS, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← archEmbed_smul_vecAt]`. Conclude with `⟨⟨archEmbed h v γ, Subgroup.mem_map.2 ⟨γ, hγ, rfl⟩⟩, rfl⟩`.
+
+Introduce and unpack `⟨o, ho, hp⟩`. Rewrite `hp` using `[← hYo o ho]`. Take `⟨⟨γ', hγ'⟩, rfl⟩` from `hp`. Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.1 hγ'`. Conclude with `⟨γ • Y o, hstab γ hγ _ (hSV (hYS o ho)), (archEmbed_smul_vecAt h v γ (Y o)).symm⟩`.
+
+Establish `hdisj : (T : Set (Set (InfinitePlace E → ι → ℂ))).PairwiseDisjoint fun o => o`. Introduce `o₁ h₁' o₂ h₂' hne`. Use `Set.disjoint_left.2 fun p hp1 hp2 => hne ?_` and prove the remaining obligations. Rewrite `hp1`, the goal using `[← hYo o₁ h₁']`. Rewrite `hp2`, the goal using `[← hYo o₂ h₂']`.
+
+Conclude with `(MulAction.orbit_eq_iff.2 hp1).symm.trans (MulAction.orbit_eq_iff.2 hp2)`. Establish `hcount : ∀ g t, countBelow M VV g t = ∑ o ∈ T, ∑' q : Γ ⧸ (vecStabGroup h v La (Y o)).subgroupOf Γ, belowIndicator M (vecAt v (Y o)) t (((Quotient.out q : Γ) : archUnitary h v)⁻¹ * g)`. Introduce `g t`. Establish `hPA : vecAt v '' {x ∈ VV | M.len (invApply g (vecAt v x)) < t} = vecAt v '' VV ∩ {p | M.len (g⁻¹ • p) < t}`. Use extensionality with `p`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨hx, hxt⟩, rfl⟩`. Conclude with `⟨⟨x, hx, rfl⟩, hxt⟩`. Introduce and unpack `⟨⟨x, hx, rfl⟩, hxt⟩`. Conclude with `⟨x, ⟨hx, hxt⟩, rfl⟩`.
+
+Establish `h1 : countBelow M VV g t = ∑' p : (vecAt v '' VV : Set _), {p | M.len (g⁻¹ • p) < t}.indicator 1 (p : _)`. Rewrite using `[countBelow, ← (vecAt_injective v).encard_image, hPA, ← ENNReal.tsum_set_one, tsum_subtype (vecAt v '' VV), Set.indicator_indicator, ← tsum_subtype]`. Both sides reduce to the same expression. Rewrite using `[h1, hP, ENNReal.tsum_biUnion' hdisj]`. Use `(Finset.tsum_subtype' T fun o : Set (InfinitePlace E → ι → ℂ) => ∑' p : o, {p | M.len (g⁻¹ • p) < t}.indicator (1 : (InfinitePlace E → ι → ℂ) → ℝ≥0∞) (p : InfinitePlace E → ι → ℂ)).trans ?_` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun o ho => ?_` and prove the remaining obligations. Rewrite using `[tsum_orbit_eq_tsum_quotient (vecAt v (Y o)) o (hYo o ho) _ (stabilizer_vecAt h v La (Y o))]`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [belowIndicator, Set.indicator_apply, Set.mem_setOf_eq, _root_.mul_inv_rev, inv_inv, mul_smul]`. Both sides reduce to the same expression.
+
+Establish `hm : ∀ t : ℝ, 0 < t → massBelow M μ FD VV t = ∑ o ∈ T, Cf (Y o) * ENNReal.ofReal (t ^ (2 * finrank ℚ F * (finrank E W - 1)))`. Introduce `t ht`. Rewrite using `[massBelow, lintegral_congr fun g => hcount g t, lintegral_finset_sum]`. Conclude with `Finset.sum_congr rfl fun o ho => hCeq (Y o) (hSV (hYS o ho)) t ht`. Conclude with `fun o _ => @Measurable.ennreal_tsum _ _ _ (hQc _) _ fun q => (measurable_belowIndicator M _ t).comp (measurable_const_mul _)`.
+
+Use `⟨FD, hFD, fun t ht => ⟨?_, fun θ hθ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hm t ht]`. Conclude with `ENNReal.sum_lt_top.2 fun o ho => ENNReal.mul_lt_top (hCf _ (hSV (hYS o ho))) ENNReal.ofReal_lt_top`. Rewrite using `[hm (θ * t) (mul_pos hθ ht), hm t ht, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun o _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, ENNReal.ofReal_mul (pow_nonneg hθ.le _)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ScalingLaw.proof (h : HermitianForm F E W) (v : Basis ι E W) [FiniteDimensional E W]
     (h₁ : UnfoldingIntegral.Statement h v) (h₂ : VectorOrbitsFinite.Statement h)
     (h₃ : UnfoldOrbit.Statement (archUnitary h v))

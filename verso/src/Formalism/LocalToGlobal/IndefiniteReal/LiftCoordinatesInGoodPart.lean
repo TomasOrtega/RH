@@ -151,14 +151,25 @@ variable {A : FamIn K G Pl0 T m} {P0 : Subgroup G} {ψ0 : P0 →* Kˣ} {P1 : Sub
   {sEE : X.EE →ₗ⋆[ℂ] (faceOf A P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs).Sp.HH}
   {C CH : ℝ}
 
+/- English proof (translation)
+The claim follows from `CxData.cutStable X hP.kFormR hP.kFormL hP.kerStabR hP.kerStabL hP.adjClosedR hP.adjClosedL`.
+-/
 theorem CxPrims.stable (hP : CxPrims A P0 ψ0 P1 ψ1 Dc Sp Zsc X cv s C0 C1 ζ sEE C CH) : X.zs.Stable :=
   CxData.cutStable X hP.kFormR hP.kFormL hP.kerStabR hP.kerStabL hP.adjClosedR hP.adjClosedL
 
+/- English proof (translation)
+Introduce `b` and use `match b with | false => A.side_WF hP.ok P0 ψ0 X.zs hP.stable hP.inBlock hP.sep | true => A.side_WF hP.ok P1 ψ1 X.zs hP.stable hP.inBlock hP.sep`.
+-/
 theorem CxPrims.wf (hP : CxPrims A P0 ψ0 P1 ψ1 Dc Sp Zsc X cv s C0 C1 ζ sEE C CH) :
     ∀ b, (lv (faceOf A P0 ψ0 P1 ψ1 Dc Sp Zsc X.zs) b).WF := fun b => match b with
   | false => A.side_WF hP.ok P0 ψ0 X.zs hP.stable hP.inBlock hP.sep
   | true => A.side_WF hP.ok P1 ψ1 X.zs hP.stable hP.inBlock hP.sep
 
+/- English proof (translation)
+Establish `hW` using `hP.wf`. Establish `hst` using `hP.stable`. Establish `what₂` using `fun b => cutRows (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) cv b (hW b) hP.h4pos (hP.isoR b) (hP.crdZ b) (hP.coordinates_in_good_part b) (hP.ratLev b) (hP.dnLev b) (hP.upLev b) (hP.thmBop b) (hP.partsE b)`. Establish `lifts` using `fun b => CxData.cutLifts X (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) cv b (hW b) hP.h4pos (hP.kForm b) (hP.isoL b) (hP.crdZL b) (hP.lift_coordinates_in_good_part b) (hP.ratLevL b) (hP.dnLevL b) (hP.upLevL b) (hP.thmAop b) (hP.partsW b)`. Establish `types` using `cutTypes A X P0 ψ0 P1 ψ1 Dc Sp Zsc s C0 C1 hP.ok hP.sep hst hP.eig0 hP.eig1 hP.typ0 hP.typ1`.
+
+Conclude with `{ stable := hst inBlock := hP.inBlock ratZ := hP.ratZ pos := hP.pos proviso := cutProviso A X P0 ψ0 P1 ψ1 Dc Sp Zsc s C0 C1 hP.ok hP.heckeL hP.eig0 hP.eig1 types := types partsOrth := cutPartsOrth A X P0 ψ0 P1 ψ1 Dc Sp Zsc s hP.ok hP.heckeR hst h0 := hP.h0 h2 := fun b => (what₂ b …`.
+-/
 theorem links_of_prims (hP : CxPrims A P0 ψ0 P1 ψ1 Dc Sp Zsc X cv s C0 C1 ζ sEE C CH) :
     X.CxLinks (crdOf A P0 ψ0 P1 ψ1 Dc Sp Zsc) (X.colDef (fun u t => (ζ u t)⁻¹) sEE) C CH := by
   have hW := hP.wf

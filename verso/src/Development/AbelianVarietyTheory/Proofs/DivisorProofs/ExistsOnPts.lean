@@ -40,6 +40,11 @@ def detFn (c : O.s.Comp) (B : ℝ) (τ : D.what₂.Tau) (z : (O.var c).X) : (O.v
 def detLn (c : O.s.Comp) (B : ℝ) (τ : D.what₂.Tau) (σ : D.what₂.LL →+* ℂ) (y : Pts (O.var c) σ) : ℝ :=
   ∑ i : Fin O.N, rootLn O c B (τ, i) σ y
 
+/- English proof (translation)
+Use `⟨fun σ y => if h : ∃ a, I.ε a = σ then g h.choose ((I.pt h.choose).symm (cast (congrArg (Pts Y) h.choose_spec.symm) y)) else 0, fun a z => ?_⟩` and prove the remaining obligations. Establish `h : ∃ a', I.ε a' = I.ε a` using `⟨a, rfl⟩`. Establish `key : ∀ (b : Fin (M.n + 1)) (hb : I.ε b = I.ε a), g b ((I.pt b).symm (cast (congrArg (Pts Y) hb.symm) (I.pt a z))) = g a z`. Introduce `b hb`. Take `rfl` from `I.ε.injective hb`.
+
+Simplify using the standard rewrite rules. Simplify using `only [dif_pos h]`. Conclude with `key _ h.choose_spec`.
+-/
 theorem exists_onPts {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e} (I : ManIs M Y) (g : M.Fun) :
     ∃ gY : ∀ σ : F →+* ℂ, Pts Y σ → ℝ, ∀ a z, gY (I.ε a) (I.pt a z) = g a z := by
   classical

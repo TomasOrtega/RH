@@ -21,6 +21,13 @@ section Val
 
 variable (T : CDVR) (e : ℕ)
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `hx`. Distinguish the cases in `hr : algebraMap T.V T.Fr r = 0`. Rewrite using `[hr, nval_zero]`. Conclude with `le_top`. Rewrite using `[nval_of_ne hr]`.
+
+Establish `h1` using `(IsDiscreteValuationRing.maximalIdeal T.V).valuation_le_one (K := T.Fr) r`. Establish `h2 : valV T.V (algebraMap T.V T.Fr r) ≠ 0` using `valV_ne_zero hr`. Establish `h3` using `(WithZero.log_le_log h2 one_ne_zero).mpr h1`. Rewrite `h3` using `[WithZero.log_one]`. Establish `h4 : (0 : ℝ) ≤ (vV T.V (algebraMap T.V T.Fr r) : ℝ)`.
+
+Establish `: 0 ≤ vV T.V (algebraMap T.V T.Fr r)` using `by unfold vV; omega`. Conclude with `this` after adjusting the coercions. Conclude with `div_nonneg h4 (Nat.cast_nonneg e)` after adjusting the coercions.
+-/
 theorem nval_nonneg_of_mem {x : T.Fr} (hx : x ∈ (algebraMap T.V T.Fr).range) : (0 : EReal) ≤ nval T.V e x := by
   obtain ⟨r, rfl⟩ := hx
   by_cases hr : algebraMap T.V T.Fr r = 0
@@ -35,6 +42,11 @@ theorem nval_nonneg_of_mem {x : T.Fr} (hx : x ∈ (algebraMap T.V T.Fr).range) :
     exact_mod_cast this
   exact_mod_cast div_nonneg h4 (Nat.cast_nonneg e)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [nval_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Use `le_trans (le_min ?_ ih) (nval_add e _ _)` and prove the remaining obligations.
+
+Rewrite using `[nval_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_nval_int_comb {ι : Type} (s : Finset ι) (cf S : ι → T.Fr) (r : EReal)
     (hc : ∀ i, cf i ∈ (algebraMap T.V T.Fr).range) (hS : ∀ i, r ≤ nval T.V e (S i)) :
     r ≤ nval T.V e (∑ i ∈ s, cf i * S i) := by
@@ -48,6 +60,9 @@ theorem le_nval_int_comb {ι : Type} (s : Finset ι) (cf S : ι → T.Fr) (r : E
     calc r = 0 + r := (zero_add r).symm
       _ ≤ _ := add_le_add (nval_nonneg_of_mem T e (hc a)) (hS a)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h choose g hg using h`. Conclude with `⟨g, MvPowerSeries.ext fun m => hg m⟩`. Introduce and unpack `⟨g, rfl⟩ m`. Conclude with `⟨_, (MvPowerSeries.coeff_map _ _ _).symm⟩`.
+-/
 theorem isIntPS_iff {n d : ℕ} (f : Germ.PS T.Fr n d) :
     IsIntPS T f ↔ ∃ g : Germ.PS T.V n d, MvPowerSeries.map (algebraMap T.V T.Fr) g = f := by
   constructor
@@ -57,6 +72,11 @@ theorem isIntPS_iff {n d : ℕ} (f : Germ.PS T.Fr n d) :
   · rintro ⟨g, rfl⟩ m
     exact ⟨_, (MvPowerSeries.coeff_map _ _ _).symm⟩
 
+/- English proof (translation)
+Use `choose g hg using fun b => (isIntPS_iff T (f b)).1 (hf b)`. Use `(isIntPS_iff T _).2 ⟨boxSer g, ?_⟩` and prove the remaining obligations. Unfold `boxSer`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hg b, MvPowerSeries.rename_map]`.
+-/
 theorem isIntPS_boxSer {n d : ℕ} (f : Fin n → Germ.PS T.Fr 1 d) (hf : ∀ b, IsIntPS T (f b)) :
     IsIntPS T (boxSer f) := by
   choose g hg using fun b => (isIntPS_iff T (f b)).1 (hf b)
@@ -80,6 +100,13 @@ def colVal (C : IntegralChartA3 Xo c T io y) (k : ℕ) {n : ℕ} (f : Fin n → 
   ∑ mo ∈ P.support, P.coeff mo *
     ∏ b, C.ch.B.nabVal T.Fr C.ch.h H.w0 k (f b) C.ch.uvec (MvPolynomial.monomial (colOf mo b) 1)
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Take `⟨Q, rfl⟩ : ∃ Q, MvPolynomial.rename (letterEquiv (E →+* ℂ) Dw.mult n) Q = P` from `MvPolynomial.rename_surjective _ (letterEquiv _ _ n).surjective P`. Unfold `chartVal colVal`. Rewrite using `[nabValN_boxSer T.Fr _ _ C.ch.B T.Fr C.ch.h H.w0 (const_eq_zero C.ch.gauge) k n f _ _ (letterEquiv (E →+* ℂ) Dw.mult n) _ C.ch.uvec _ (fun _ => rfl) (fun _ => rfl), GlobalTheory.NabCol.sum_support_rename (letterEquiv (E →+* ℂ) Dw.mult n) (fun mo => ∏ b, C.ch.B.nabVal T.Fr C.ch.h …`. Use `Finset.sum_congr rfl fun mo _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hc : colM mo b = colOf (Finsupp.mapDomain (letterEquiv (E →+* ℂ) Dw.mult n) mo) b`. Use extensionality with `ℓ`. Conclude with `(Finsupp.mapDomain_apply (letterEquiv (E →+* ℂ) Dw.mult n).injective mo (ℓ, b)).symm`.
+
+Rewrite using `[hc]`.
+-/
 theorem chartVal_boxSer (C : IntegralChartA3 Xo c T io y) (k : ℕ) {n : ℕ} (f : Fin n → Germ.PS T.Fr 1 (chD C.ch))
     (P : MvPolynomial (LtN Dw n) T.Fr) : chartVal C k (boxSer f) P = colVal C k f P := by
   letI := io.toAlgebra
@@ -98,6 +125,13 @@ theorem chartVal_boxSer (C : IntegralChartA3 Xo c T io y) (k : ℕ) {n : ℕ} (f
     exact (Finsupp.mapDomain_apply (letterEquiv (E →+* ℂ) Dw.mult n).injective mo (ℓ, b)).symm
   rw [hc]
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Prove the components needed by the constructor for the conclusion. Introduce `h f hf`. Rewrite using `[← chartVal_boxSer]`. Conclude with `h _ (isIntPS_boxSer T f hf)`.
+
+Introduce `h f hf`. Take `⟨S, hS⟩` from `exists_jet P.totalDegree f`. Establish `h1 : chartVal C k f P = ∑ j : S, MvPowerSeries.coeff j.1 f * chartVal C k (MvPowerSeries.monomial j.1 1) P`. Unfold `chartVal`. Rewrite using `[(nabJet T.Fr _ _ C.ch.B T.Fr C.ch.h H.w0 k n _ _ _).1 _ _ _ hS, (nabJet T.Fr _ _ C.ch.B T.Fr C.ch.h H.w0 k n _ _ _).2.1]`.
+
+Rewrite using `[h1]`. Use `le_nval_int_comb T e _ _ _ r (fun j => hf j.1) fun j => ?_` and prove the remaining obligations. Rewrite using `[monomial_eq_boxSer, chartVal_boxSer]`. Use `h _ fun b => (isIntPS_iff T _).2 ⟨∏ i, MvPowerSeries.X ((0 : Fin 1), i) ^ j.1 (b, i), ?_⟩` and prove the remaining obligations. Simplify using `only [map_prod, map_pow, MvPowerSeries.map_X]`.
+-/
 theorem bound_all_iff_bound_prod (C : IntegralChartA3 Xo c T io y) (e k : ℕ) {n : ℕ} (P : MvPolynomial (LtN Dw n) T.Fr)
     (r : EReal) :
     (∀ f : Germ.PS T.Fr n (chD C.ch), IsIntPS T f → r ≤ nval T.V e (chartVal C k f P)) ↔

@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BCT.SepBezout.bezout_eventually | exact GlobalTheory.BCT.SepBezout.bezout_eventually | (intros; apply GlobalTheory.BCT.SepBezout.bezout_eventually <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eventually_bezout_separable_derivative_adicIntegers : ∀ (E : Type) [Field E] [NumberField E] (P : E[X]), P.Separable →
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, ∃ u v : (w.adicCompletion E)[X],
       (∀ i, u.coeff i ∈ w.adicCompletionIntegers E) ∧ (∀ i, v.coeff i ∈ w.adicCompletionIntegers E) ∧

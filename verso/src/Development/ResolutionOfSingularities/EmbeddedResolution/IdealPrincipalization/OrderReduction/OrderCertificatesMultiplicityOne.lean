@@ -38,6 +38,9 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Substitute `hN` using the available equality. Substitute `hZ` using the available equality. Conclude with `h`.
+-/
 private theorem orderCertificate_congr_morphism_ideal_center {k : Type u} [Field k] {W : Scheme.{u}}
     {p p' : W ⟶ Spec (CommRingCat.of k)} {N N' : W.IdealSheafData} {μ : ℕ} {Mem : Set ↥W}
     {Z Z' : W.IdealSheafData} (hp : p = p') (hN : N = N') (hZ : Z = Z')
@@ -47,6 +50,9 @@ private theorem orderCertificate_congr_morphism_ideal_center {k : Type u} [Field
   subst hZ
   exact h
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Conclude with `h`.
+-/
 private theorem principalizationCertificate_congr_mult {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {I : W.IdealSheafData} {m m' : ℕ} {Mem : Set ↥W}
     {Z : W.IdealSheafData} (hm : m = m') (h : PrincipalizationCertificate W p I m Mem Z) :
@@ -54,6 +60,9 @@ private theorem principalizationCertificate_congr_mult {k : Type u} [Field k] {W
   subst hm
   exact h
 
+/- English proof (translation)
+Use `(MarkedSchemeWithCenter.mem_boundarySupport_iff (s.dataAt i) x).2 ⟨J, ?_, hx⟩` and prove the remaining obligations. Rewrite using `[MarkedBlowupSequenceData.dataAt_boundary]`. Conclude with `hJ`.
+-/
 private theorem mem_boundarySupport_of_mem_support_of_mem_boundary {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedBlowupSequenceData p I m E) (i : ℕ) (J : (s.obj i).IdealSheafData)
@@ -63,11 +72,19 @@ private theorem mem_boundarySupport_of_mem_support_of_mem_boundary {k : Type u} 
   rw [MarkedBlowupSequenceData.dataAt_boundary]
   exact hJ
 
+/- English proof (translation)
+Substitute `hl` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem get_zero_of_eq_cons {α : Type _} (l : List α) (a : α) (L : List α)
     (hl : l = a :: L) (h0 : 0 < l.length) : l.get ⟨0, h0⟩ = a := by
   subst hl
   rfl
 
+/- English proof (translation)
+Substitute `hl` using the available equality. Take `⟨n, hn⟩` from `idx`. Consider the cases of `n with`. Consider the case `zero => exact absurd rfl hidx`. Consider the case `succ m`.
+
+Establish `hm : m < L.length` using `by simpa using hn`. Use `show L.get ⟨m, hm⟩ ∈ L`. Simplify using the standard rewrite rules.
+-/
 private theorem get_mem_of_eq_cons_of_ne_zero {α : Type _} (l : List α) (a : α) (L : List α)
     (hl : l = a :: L) (idx : Fin l.length) (hidx : (idx : ℕ) ≠ 0) : l.get idx ∈ L := by
   subst hl
@@ -79,6 +96,9 @@ private theorem get_mem_of_eq_cons_of_ne_zero {α : Type _} (l : List α) (a : �
       show L.get ⟨m, hm⟩ ∈ L
       simp
 
+/- English proof (translation)
+Substitute `hI` using the available equality. Substitute `hm` using the available equality. Conclude with `MarkedBlowupSequenceData.ofMarkedSequence_controlledTransform s i hi`.
+-/
 private theorem controlledTransform_eq_ideal_of_eq {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedSequenceOfBlowups p I m E) (I' : X.IdealSheafData) (m' : ℕ)
@@ -88,6 +108,9 @@ private theorem controlledTransform_eq_ideal_of_eq {k : Type u} [Field k] {X : S
   subst hm
   exact MarkedBlowupSequenceData.ofMarkedSequence_controlledTransform s i hi
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Substitute `hA` using the available equality. Substitute `hH` using the available equality. Substitute `hμ` using the available equality. Conclude with `hyp`.
+-/
 private theorem isMaxContactHypersurface_congr {k : Type u} [Field k] {X : Scheme.{u}}
     (p p' : X ⟶ Spec (CommRingCat.of k))
     (hfp : LocallyOfFiniteType p) (hfp' : LocallyOfFiniteType p')
@@ -101,6 +124,9 @@ private theorem isMaxContactHypersurface_congr {k : Type u} [Field k] {X : Schem
   subst hμ
   exact hyp
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Conclude with `FunctorialResolution.EmbeddedResolution.balancedTunedSheaf_one k p I`.
+-/
 private theorem balancedTunedSheaf_eq_of_mult_eq_one {k : Type u} [Field k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (hfp : LocallyOfFiniteType p)
     (I : X.IdealSheafData) (m : ℕ) (hm : m = 1) :
@@ -108,6 +134,13 @@ private theorem balancedTunedSheaf_eq_of_mult_eq_one {k : Type u} [Field k] [IsN
   subst hm
   exact FunctorialResolution.EmbeddedResolution.balancedTunedSheaf_one k p I
 
+/- English proof (translation)
+Use `hfti` as an intermediate fact. Use `hsmt` as an intermediate fact. Use `hczs` as an intermediate fact. Establish `hadm` using `isMaxContactHypersurface_iteratedStrictTransform hstar S hv hord H hH u t ht`. Establish `hsub` using `hadm.orderAtLeastLocus_subset_support (le_of_eq hm1.symm)`.
+
+Rewrite `hsub` using `[BoundarySeparationByMaxContact.iteratedStrictTransform_eq_toBlowupSequenceData u H t]`. Introduce `x hx`. Apply `hsub` to reduce the goal to its premises. Rewrite using `[FunctorialResolution.EmbeddedResolution.mem_orderAtLeastLocus_iff]`. Establish `hcoe : ((S.mult : ℕ) : ℕ∞) = 1` using `by simp [hm1]`.
+
+Rewrite using `[hcoe]`. Conclude with `(FunctorialResolution.EmbeddedResolution.one_le_orderAt_iff_mem_support (u.ideal t) x).2 hx`.
+-/
 private theorem support_ideal_subset_iteratedStrictTransform (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u})
     (hv : S.IsAdmissible) [LocallyOfFiniteType S.structMap]
     (hord : ∀ x : ↥S.scheme, orderAt S.ideal x ≤ ((S.mult : ℕ) : ℕ∞)) (hm1 : S.mult = 1)
@@ -132,6 +165,31 @@ private theorem support_ideal_subset_iteratedStrictTransform (hstar : MaxContact
   rw [hcoe]
   exact (FunctorialResolution.EmbeddedResolution.one_le_orderAt_iff_mem_support (u.ideal t) x).2 hx
 
+/- English proof (translation)
+Establish `hoi : IsOpenImmersion (comapSubscheme (⊤ : W.Opens).ι Dv)` using `hin.isOpenImmersion_comapSubscheme _ _`. Establish `hkey : ∀ x : ↥(Dv.comap (⊤ : W.Opens).ι).subscheme, (⊤ : W.Opens).ι ((Dv.comap (⊤ : W.Opens).ι).subschemeι x) = Dv.subschemeι ((comapSubscheme (⊤ : W.Opens).ι Dv) x)`. Introduce `x`. Establish `hc` using `comapSubscheme_comp (⊤ : W.Opens).ι Dv`. Establish `h2` using `congrArg (fun f : (Dv.comap (⊤ : W.Opens).ι).subscheme ⟶ W => f.base x) hc`.
+
+Simplify using `using h2.symm`. Establish `hNH' : ∀ y, y ∈ (N.comap (⊤ : W.Opens).ι).support → y ∈ (Dv.comap (⊤ : W.Opens).ι).support`. Introduce `y hy`. Rewrite `hy`, the goal using `[FunctorialResolution.EmbeddedResolution.mem_comap_support_iff_base_mem_support]`. Conclude with `hNsupp hy`.
+
+Establish `hZH' : ∀ y, y ∈ (Z.comap (⊤ : W.Opens).ι).support → y ∈ (Dv.comap (⊤ : W.Opens).ι).support`. Introduce `y hy`. Rewrite `hy`, the goal using `[FunctorialResolution.EmbeddedResolution.mem_comap_support_iff_base_mem_support]`. Conclude with `hZH hy`. Break down `hcase with hop | ⟨J, hJnz, hJloc, hJcert⟩` into its components or cases.
+
+Use `OrderCertificate.descend (fun _ _ => ⊤) (fun _ _ => trivial) (fun _ _ => Dv.comap (⊤ : W.Opens).ι) (fun _ _ => hin.comap_isSmoothDivisor _ p Dv hDsm) (fun _ _ => hNH') (fun _ _ => hZH') (fun _ _ => none) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `_ _ _`. Establish `key : IsOpen (⇑(comapSubscheme (⊤ : W.Opens).ι Dv) ⁻¹' (⇑Dv.subschemeι ⁻¹' (↑Z.support : Set ↥W)))` using `((comapSubscheme (⊤ : W.Opens).ι Dv) ⁻¹ᵁ (⟨_, hop⟩ : Dv.subscheme.Opens)).isOpen`. Use `key using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_preimage]`. Rewrite using `[← hkey x]`. Conclude with `FunctorialResolution.EmbeddedResolution.mem_comap_support_iff_base_mem_support (⊤ : W.Opens).ι Z _`. Introduce `_ _ _ hJz; exact absurd hJz (by simp)`. Introduce `_ _ _ hJz; exact absurd hJz (by simp)`.
+
+Introduce `_ _ _ hJz; exact absurd hJz (by simp)`. Use `OrderCertificate.descend (fun _ _ => ⊤) (fun _ _ => trivial) (fun _ _ => Dv.comap (⊤ : W.Opens).ι) (fun _ _ => hin.comap_isSmoothDivisor _ p Dv hDsm) (fun _ _ => hNH') (fun _ _ => hZH') (fun _ _ => some (J.comap (comapSubscheme (⊤ : W.Opens).ι Dv))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `_ _ hcon; exact absurd hcon (by simp)`. Introduce `_ _ Jz hJz`. Take `rfl : Jz = J.comap (comapSubscheme (⊤ : W.Opens).ι Dv)` from `by simpa using hJz.symm`.
+
+Conclude with `hin.comap_nonzeroOnComponents _ J hJnz`. Introduce `_ _ Jz hJz x hx`. Take `rfl : Jz = J.comap (comapSubscheme (⊤ : W.Opens).ι Dv)` from `by simpa using hJz.symm`. Establish `hx' : Dv.subschemeι ((comapSubscheme (⊤ : W.Opens).ι Dv) x) ∉ Mem`. Introduce `hc`.
+
+Apply `hx` to reduce the goal to its premises. Establish `hkx` using `hkey x`. Simplify `hc` using `[hkx]`. Take `⟨V, hV, hVeq⟩` from `hJloc _ hx'`. Use `⟨(comapSubscheme (⊤ : W.Opens).ι Dv) ⁻¹ᵁ V, hV, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ((comapSubscheme (⊤ : W.Opens).ι Dv) ⁻¹ᵁ V).ι ≫ comapSubscheme (⊤ : W.Opens).ι Dv = Scheme.Hom.resLE (comapSubscheme (⊤ : W.Opens).ι Dv) V ((comapSubscheme (⊤ : W.Opens).ι Dv) ⁻¹ᵁ V) le_rfl ≫ V.ι` using `(Scheme.Hom.resLE_comp_ι _ _).symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Use `_ = (N.comap ((Dv.comap (⊤ : W.Opens).ι).subschemeι ≫ (⊤ : W.Opens).ι)).comap ((comapSubscheme (⊤ : W.Opens).ι Dv) ⁻¹ᵁ V).ι := by`. Rewrite using `[comapSubscheme_comp]`.
+
+Use `_ = ((N.comap (⊤ : W.Opens).ι).comap (Dv.comap (⊤ : W.Opens).ι).subschemeι).comap ((comapSubscheme (⊤ : W.Opens).ι Dv) ⁻¹ᵁ V).ι := by`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Introduce `_ _ Jz hJz`. Take `rfl : Jz = J.comap (comapSubscheme (⊤ : W.Opens).ι Dv)` from `by simpa using hJz.symm`. Establish `hpc` using `PrincipalizationCertificate.comap_of_openImmersionStability hin hJcert (comapSubscheme (⊤ : W.Opens).ι Dv)`.
+
+Establish `e2 : comapSubscheme (⊤ : W.Opens).ι Dv ≫ (Dv.subschemeι ≫ p) = (Dv.comap (⊤ : W.Opens).ι).subschemeι ≫ ((⊤ : W.Opens).ι ≫ p)` using `comapSubscheme_comp_assoc _ _ _`. Establish `e3 : (⇑(comapSubscheme (⊤ : W.Opens).ι Dv) ⁻¹' (⇑Dv.subschemeι ⁻¹' Mem)) = ⇑((Dv.comap (⊤ : W.Opens).ι).subschemeι ≫ (⊤ : W.Opens).ι) ⁻¹' Mem`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage]`. Rewrite using `[← hkey x]`.
+
+Simplify using the standard rewrite rules. Establish `e4 : (Z.comap Dv.subschemeι).comap (comapSubscheme (⊤ : W.Opens).ι Dv) = (Z.comap (⊤ : W.Opens).ι).comap (Dv.comap (⊤ : W.Opens).ι).subschemeι`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, comapSubscheme_comp]`. Rewrite `hpc` using `[e2, e3, e4]`. Conclude with `hpc`.
+-/
 private theorem orderCertificate_one_of_isSmoothDivisor {k : Type u} [Field k] {W : Scheme.{u}}
     (hin : OpenImmersionStability k) (p : W ⟶ Spec (CommRingCat.of k))
     (N : W.IdealSheafData) (Mem : Set ↥W) (Z : W.IdealSheafData) (Dv : W.IdealSheafData)
@@ -262,6 +320,47 @@ private theorem orderCertificate_one_of_isSmoothDivisor {k : Type u} [Field k] {
 
 namespace BoundarySeparationByMaxContact
 
+/- English proof (translation)
+Introduce `hft hmk i hi`. Establish `hftI : LocallyOfFiniteType ((separateAllBoundary T h.valid hinv A).proj (separateAllBoundary T h.valid hinv A).length ≫ (MaxContactCoverData.coverTriple T h.valid).structMap)` using `hft`. Establish `hSV : (MaxContactCoverData.coverTriple T h.valid).IsAdmissible` using `isAdmissible_coverTriple hstar P T h`. Establish `hSO : ∀ x : ↥(MaxContactCoverData.coverTriple T h.valid).scheme, orderAt (MaxContactCoverData.coverTriple T h.valid).ideal x ≤ (((MaxContactCoverData.coverTriple T h.valid).mult : ℕ) : ℕ∞)` using `orderAt_coverTriple_ideal_le_mult hstar P T h`. Establish `hS1 : (MaxContactCoverData.coverTriple T h.valid).mult = 1`.
+
+Simplify using `[MaxContactCoverData.coverTriple_mult, MaxContactCoverData.tunedMult, hmult, FunctorialResolution.EmbeddedResolution.tuningExponent_one]`. Establish `honeLe : 1 ≤ (MaxContactCoverData.coverTriple T h.valid).mult` using `le_of_eq hS1.symm`. Establish `hcz : CharZero (MaxContactCoverData.coverTriple T h.valid).base` using `hSV.charZero`. Establish `hsm0 : Smooth ((separateAllBoundary T h.valid hinv A).proj (separateAllBoundary T h.valid hinv A).length ≫ (MaxContactCoverData.coverTriple T h.valid).structMap)` using `smooth_projectionToBase_comp hstar (MaxContactCoverData.coverTriple T h.valid) hSV (separateAllBoundary T h.valid hinv A) (separateAllBoundary T h.valid hinv A).length le_rfl`. Establish `hAdmCover` using `isMaxContactHypersurface_coverMaxContactIdeal hstar P T h`.
+
+Establish `hAdmT` using `isMaxContactHypersurface_iteratedStrictTransform hstar (MaxContactCoverData.coverTriple T h.valid) hSV hSO (MaxContactCoverData.coverMaxContactIdeal T h.valid) hAdmCover (separateAllBoundary T h.valid hinv A) (separateAllBoundary T h.valid hinv A).length le_rfl`. Establish `heqT : MaxContactReduction.iteratedStrictTransform (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid) (separateAllBoundary T h.valid hinv A).length = MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxCo …` using `(MaxContactReduction.strictTransformAtLength_eq _ _).symm`. Establish `hAdm0 : IsMaxContactHypersurface (MaxContactCoverData.coverTriple T h.valid).base ((separateAllBoundary T h.valid hinv A).proj (separateAllBoundary T h.valid hinv A).length ≫ (MaxContactCoverData.coverTriple T h.valid).structMap) ((separateAllBoundary T h.valid hinv A).ideal (sep …` using `isMaxContactHypersurface_congr ((separateAllBoundary T h.valid hinv A).proj (separateAllBoundary T h.valid hinv A).length ≫ (MaxContactCoverData.coverTriple T h.valid).structMap) ((separateAllBoundary T h.valid hinv A).proj (separateAllBoundary T h.valid hinv A).length ≫ (MaxCont …`. Take `⟨_, hV2, hP2, _, _, _⟩` from `exists_cover_eq_separateAllBoundary_append hstar hinv P hmono A B hspec T h`. Establish `hV' : (reduceAlongHypersurfaceTriple T h.valid hinv A hft).IsAdmissible` using `hV2`.
+
+Establish `hP' : P (reduceAlongHypersurfaceTriple T h.valid hinv A hft).krullDimSucc` using `hP2`. Establish `hftT : LocallyOfFiniteType (reduceAlongHypersurfaceTriple T h.valid hinv A hft).structMap`. Rewrite using `[MaxContactCoverData.derivedTriple_structureMorphism]`. Conclude with `hft`. Establish `hcz2 : CharZero (reduceAlongHypersurfaceTriple T h.valid hinv A hft).base` using `hV'.charZero`.
+
+Establish `hOB : (reduceAlongHypersurfaceTriple T h.valid hinv A hft).IsOrderBoundedByMult` using `LowerDimReductionPullback.isOrderBoundedByMult_derivedTriple hstar (MaxContactCoverData.coverTriple T h.valid) hSV honeLe hSO (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverM …`. Establish `hbalanced : (reduceAlongHypersurfaceTriple T h.valid hinv A hft).IsBalanced hftT` using `LowerDimReductionPullback.isBalanced_derivedTriple hstar (MaxContactCoverData.coverTriple T h.valid) hSV honeLe hSO (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactI …`. Establish `hbd : (reduceAlongHypersurfaceTriple T h.valid hinv A hft).boundary = MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid) :: List.drop (MaxContactCoverData.coverTriple T h.valid).boundary.length ( …` using `MaxContactCoverData.derivedTriple_boundary _ _ _ _ _`. Establish `hjlen : 0 < (reduceAlongHypersurfaceTriple T h.valid hinv A hft).boundary.length`. Rewrite using `[hbd]`.
+
+Simplify using the standard rewrite rules. Take `⟨D, b, hDsm, hD0, hcenter, hbtrue, hDsucc, _hDfin, hJsh⟩` from `(hspec 0).shape (reduceAlongHypersurfaceTriple T h.valid hinv A hft) hV' hP' hOB hbalanced hjlen`. Establish `hmu : FunctorialResolution.EmbeddedResolution.tuningExponent (MaxContactCoverData.coverTriple T h.valid).mult = (reduceAlongHypersurfaceTriple T h.valid hinv A hft).mult` using `(MaxContactCoverData.derivedTriple_mult _ _ _ _ _).symm`. Establish `hpeq : ((separateAllBoundary T h.valid hinv A).proj (separateAllBoundary T h.valid hinv A).length ≫ (MaxContactCoverData.coverTriple T h.valid).structMap) = (reduceAlongHypersurfaceTriple T h.valid hinv A hft).structMap` using `(MaxContactCoverData.derivedTriple_structureMorphism _ _ _ _ _).symm`. Establish `htm : FunctorialResolution.EmbeddedResolution.tuningExponent (MaxContactCoverData.coverTriple T h.valid).mult = 1`.
+
+Rewrite using `[hS1]`. Conclude with `FunctorialResolution.EmbeddedResolution.tuningExponent_one`. Establish `hMultOne : (reduceAlongHypersurfaceTriple T h.valid hinv A hft).mult = 1` using `hmu.symm.trans htm`. Establish `hIdeal : (reduceAlongHypersurfaceTriple T h.valid hinv A hft).ideal = LowerDimReductionPullback.tunedIdealAtLength (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft` using `LowerDimReductionPullback.ideal_derivedTriple _ _ hft _ _`. Establish `hIdeal2 : LowerDimReductionPullback.tunedIdealAtLength (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft = FunctorialResolution.EmbeddedResolution.balancedTunedSheaf (MaxContactCoverData.coverTriple T h.valid).base ((separateAllBoundary T h.va …` using `LowerDimReductionPullback.tunedIdealAtLength_eq_balancedTunedSheaf _ _ hft`.
+
+Establish `hIdealEq : (reduceAlongHypersurfaceTriple T h.valid hinv A hft).ideal = (separateAllBoundary T h.valid hinv A).ideal (separateAllBoundary T h.valid hinv A).length` using `(hIdeal.trans hIdeal2).trans (balancedTunedSheaf_eq_of_mult_eq_one ((separateAllBoundary T h.valid hinv A).proj (separateAllBoundary T h.valid hinv A).length ≫ (MaxContactCoverData.coverTriple T h.valid).structMap) hftI ((separateAllBoundary T h.valid hinv A).ideal (separateAllBo …`. Establish `hOrderLe : ∀ x : ↥(reduceAlongHypersurfaceTriple T h.valid hinv A hft).scheme, orderAt (reduceAlongHypersurfaceTriple T h.valid hinv A hft).ideal x ≤ (((reduceAlongHypersurfaceTriple T h.valid hinv A hft).mult : ℕ) : ℕ∞)` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff _).1 hOB`. Establish `hord : ∀ x : ↥((separateAllBoundary T h.valid hinv A).obj (separateAllBoundary T h.valid hinv A).length), orderAt ((separateAllBoundary T h.valid hinv A).ideal (separateAllBoundary T h.valid hinv A).length) x ≤ (((MaxContactCoverData.coverTriple T h.valid).mult : ℕ) : ℕ∞)` using `LowerDimReductionPullback.orderAt_ideal_length_le hstar (MaxContactCoverData.coverTriple T h.valid) hSV hSO (separateAllBoundary T h.valid hinv A)`. Establish `key` using `isMaxContactHypersurface_balancedTunedSheaf hstar (MaxContactCoverData.coverTriple T h.valid).base ((separateAllBoundary T h.valid hinv A).proj (separateAllBoundary T h.valid hinv A).length ≫ (MaxContactCoverData.coverTriple T h.valid).structMap) ((separateAllBoundary T h.valid h …`. Establish `hMaxContactHyp : IsMaxContactHypersurface (reduceAlongHypersurfaceTriple T h.valid hinv A hft).base (reduceAlongHypersurfaceTriple T h.valid hinv A hft).structMap (reduceAlongHypersurfaceTriple T h.valid hinv A hft).ideal (reduceAlongHypersurfaceTriple T h.valid hinv A hft).mult …` using `isMaxContactHypersurface_congr ((separateAllBoundary T h.valid hinv A).proj (separateAllBoundary T h.valid hinv A).length ≫ (MaxContactCoverData.coverTriple T h.valid).structMap) (reduceAlongHypersurfaceTriple T h.valid hinv A hft).structMap hftI hftT hpeq (hIdeal.trans hIdeal2). …`.
+
+Establish `hNoe : ∀ t, t ≤ (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).length → IsLocallyNoetherian ((BlowupSequenceData.ofSequenceOfBlowups (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups).obj t)` using `fun t ht => isLocallyNoetherian_tunedMarkedBlowupSeq_schemeAt hstar (MaxContactCoverData.coverTriple T h.valid) hSV (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactI …`. Establish `hb0 : (reduceAlongHypersurfaceTriple T h.valid hinv A hft).boundary.get ⟨0, hjlen⟩ = MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)` using `get_zero_of_eq_cons _ _ _ hbd hjlen`. Establish `hi' : i ≤ (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft))).length`. Rewrite using `[MarkedBlowupSequenceData.ofMarkedSequence_length]`. Conclude with `le_of_lt hi`.
+
+Establish `hK0 : D 0 = (MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)).comap (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).isoZero.hom` using `hD0.trans (congrArg (fun J => J.comap (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).isoZero.hom) hb0)`. Establish `hKstep : ∀ t < (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).length, D (t + 1) = Blowup.strictTransform ((A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).transitionMapSucc t) ((A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).center t) (D t) ∨ D (t …`. Introduce `t htlen`. Distinguish the cases in `hbc : b = true ∧ t = 0`. Take `⟨hbt, ht0⟩` from `hbc`.
+
+Substitute `ht0` using the available equality. Conclude with `Or.inr (hbtrue hbt).2.2`. Conclude with `Or.inl (hDsucc t htlen hbc)`. Establish `hNsub : (↑((A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).ideal i).support : Set ↥((A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).schemeAt i)) ⊆ ↑(D i).support`. Introduce `x hx`.
+
+Establish `h1` using `support_ideal_subset_iteratedStrictTransform hstar (reduceAlongHypersurfaceTriple T h.valid hinv A hft) hV' hOrderLe hMultOne (MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)) hMaxContactHyp ( …`. Conclude with `BlowupSequenceData.support_iteratedStrictTransform_subset_support (MarkedBlowupSequenceData.ofMarkedSequence (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft))).toBlowupSequenceData hNoe (MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) ( …`. Establish `hctrl : (BlowupSequenceData.ofSequenceOfBlowups (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups).controlledTransform ((separateAllBoundary T h.valid hinv A).ideal (separateAllBoundary T h.valid hinv A).length) (MaxContactCoverData.coverTriple T h.va …` using `controlledTransform_eq_ideal_of_eq (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)) ((separateAllBoundary T h.valid hinv A).ideal (separateAllBoundary T h.valid hinv A).length) (MaxContactCoverData.coverTriple T h.valid).mult hIdealEq.symm (hS1.trans hMultOne.symm) i (l …`. Establish `hctrlR : (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)] (MaxContactCoverData.c …` using `hctrl`. Establish `hidR : (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)] (MaxContactCoverData.cov …` using `(MarkedBlowupSequenceData.toBlowupSequenceData_controlledTransform_eq (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCove …`.
+
+Establish `hid : ((continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)] (MaxContactCoverData.cov …` using `(MarkedBlowupSequenceData.dataAt_ideal (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h. …`. Establish `hceR : (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)] (MaxContactCoverData.cov …` using `BlowupSequenceData.ofSequenceOfBlowups_center (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups i`. Establish `hce : ((continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)] (MaxContactCoverData.cov …` using `(MarkedBlowupSequenceData.dataAt_center (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h …`. Establish `hprojR : (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)] (MaxContactCoverData.c …` using `BlowupSequenceData.ofSequenceOfBlowups_projectionToBase (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups i`. Establish `hstm : ((continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)] (MaxContactCoverData.co …` using `((MarkedBlowupSequenceData.dataAt_structMap (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal …`.
+
+Establish `hAb : (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).boundary i = (BlowupSequenceData.ofSequenceOfBlowups (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups).boundaryFrom (reduceAlongHypersurfaceTriple T h.valid hinv A hft).boundary i` using `(MarkedBlowupSequenceData.ofMarkedSequence_boundary (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)) i (le_of_lt hi)).symm`. Establish `hAb2 : (BlowupSequenceData.ofSequenceOfBlowups (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups).boundaryFrom (reduceAlongHypersurfaceTriple T h.valid hinv A hft).boundary i = (BlowupSequenceData.ofSequenceOfBlowups (A 0 (reduceAlongHypersurfaceTripl …` using `congrArg (fun E => (BlowupSequenceData.ofSequenceOfBlowups (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups).boundaryFrom E i) hbd`. Establish `hAb3 : (BlowupSequenceData.ofSequenceOfBlowups (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups).boundaryFrom (MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid) :: …` using `BlowupSequenceData.boundary_cons _ _ _ i`. Establish `hAb4 : (BlowupSequenceData.ofSequenceOfBlowups (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups).boundaryFrom (List.drop (MaxContactCoverData.coverTriple T h.valid).boundary.length ((separateAllBoundary T h.valid hinv A).boundary (separateAllBoundary …` using `BlowupSequenceData.boundary_eq_map_iteratedStrictTransform_append _ _ i`. Establish `hAfull : (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).boundary i = (BlowupSequenceData.ofSequenceOfBlowups (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups).iteratedStrictTransform i (MaxContactReduction.strictTransformAtLength (separat …` using `(hAb.trans hAb2).trans (hAb3.trans (congrArg (fun l => (BlowupSequenceData.ofSequenceOfBlowups (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).toSequenceOfBlowups).iteratedStrictTransform i (MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hin …`.
+
+Establish `hRb : (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContactCoverData.coverMaxContactIdeal T h.valid)] (MaxContactCoverData.cove …` using `(MarkedBlowupSequenceData.toBlowupSequenceData_boundary_eq_boundary_of_le (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hinv A) (MaxContact …`. Establish `hOther : MarkedSequenceOfBlowups.otherBoundaryLocus (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)) 0 i ⊆ ((continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separ …`. Introduce `x hx`. Take `⟨idx, hidx, hxs⟩` from `(MarkedSequenceOfBlowups.mem_otherBoundaryLocus_iff (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)) 0 i x).1 hx`. Establish `hmem` using `get_mem_of_eq_cons_of_ne_zero _ _ _ hAfull idx hidx`.
+
+Establish `hmem2 : ((A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).boundary i).get idx ∈ (continuationMarkedData (MaxContactCoverData.coverTriple T h.valid) (separateAllBoundary T h.valid hinv A) hft [MaxContactReduction.strictTransformAtLength (separateAllBoundary T h.valid hin …`. Rewrite using `[hRb]`. Break down `List.mem_append.1 hmem with h1 | h2` into its components or cases. Take `⟨y, hy, hfy⟩` from `List.mem_map.1 h1`. Conclude with `List.mem_append.2 (Or.inl (List.mem_map.2 ⟨y, List.mem_of_mem_drop hy, hfy⟩))`.
+
+Conclude with `List.mem_append.2 (Or.inr h2)`. Conclude with `mem_boundarySupport_of_mem_support_of_mem_boundary _ i _ hmem2 x hxs`. Establish `hmain : OrderCertificate ((A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).schemeAt i) (MarkedSequenceOfBlowups.projectionToSpec (A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)) i) ((A 0 (reduceAlongHypersurfaceTriple T h.valid hinv A hft)).ideal i) 1 ((contin …`. Use `orderCertificate_one_of_isSmoothDivisor (hopen (reduceAlongHypersurfaceTriple T h.valid hinv A hft).base) _ _ _ _ (D i) (hDsm i (le_of_lt hi)) hNsub (hcenter i hi) ?_` and prove the remaining obligations. Distinguish the cases in `hbc : b = true ∧ i = 0`.
+
+Use `left`. Take `⟨hbt, hi0⟩` from `hbc`. Substitute `hi0` using the available equality. Conclude with `(hbtrue hbt).2.1`. Use `right`.
+
+Take `⟨J, hJnz, hJl, hJc⟩` from `hJsh i hi hbc`. Use `⟨J, hJnz, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hxm`. Conclude with `hJl x (fun hc => hxm (hOther hc))`. Conclude with `principalizationCertificate_mono_of_subset (Set.preimage_mono hOther) (principalizationCertificate_congr_mult hMultOne hJc)`.
+
+Conclude with `orderCertificate_congr_morphism_ideal_center hstm.symm hid.symm hce.symm hmain`.
+-/
 theorem continuationOrderCertificate_of_mult_eq_one (hstar : MaxContactCoverProperties.{u})
     (hopen : ∀ (k : Type u) [Field k], OpenImmersionStability k)
     (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
@@ -683,6 +782,9 @@ theorem continuationOrderCertificate_of_mult_eq_one (hstar : MaxContactCoverProp
           (principalizationCertificate_congr_mult hMultOne hJc)
   exact orderCertificate_congr_morphism_ideal_center hstm.symm hid.symm hce.symm hmain
 
+/- English proof (translation)
+The claim follows from `orderCertificate_coverMarkedBlowupData hstar hinv P hmono A B hspec T h (continuationOrderCertificate_of_mult_eq_one hstar hopen hinv P hmono A B hspec T h hmult) hmult t ht`.
+-/
 theorem orderCertificate_coverMarkedBlowupData_of_mult_eq_one (hstar : MaxContactCoverProperties.{u})
     (hopen : ∀ (k : Type u) [Field k], OpenImmersionStability k)
     (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)

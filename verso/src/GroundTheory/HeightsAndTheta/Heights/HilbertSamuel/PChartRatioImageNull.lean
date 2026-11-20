@@ -10,6 +10,13 @@ open scoped NNReal ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Set `E : ((Σ _ : Fin e, Fin 2) → ℝ) ≃L[ℝ] (Fin e → ℂ)` to `(Pi.basis (fun _ : Fin e => Complex.basisOneI)).equivFun.symm.toContinuousLinearEquiv`. Establish `hcard : Fintype.card (Σ _ : Fin e, Fin 2) = 2 * e`. Simplify using `[Fintype.card_sigma, mul_comm]`. Establish `hT : volume (E ⁻¹' S) = 0`. Rewrite using `[← hausdorffMeasure_pi_real, hcard]`.
+
+Establish `h` using `hausdorffMeasure_of_dimH_lt (s := E ⁻¹' S) (d := ((2 * e : ℕ) : ℝ≥0)) (by`. Rewrite using `[ContinuousLinearEquiv.dimH_preimage]`. Simplify using `using hS)`. Simplify using `using h`. Establish `: (Measure.map E volume).IsAddHaarMeasure` using `E.isAddHaarMeasure_map volume`.
+
+Establish `hac : (volume : Measure (Fin e → ℂ)) ≪ Measure.map E volume` using `Measure.absolutelyContinuous_isAddHaarMeasure _ _`. Apply `hac` to reduce the goal to its premises. Conclude with `(E.toHomeomorph.toMeasurableEquiv.map_apply S).trans hT`.
+-/
 theorem ChartRatioImageNull.volume_eq_zero_of_dimH_lt {e : ℕ} {S : Set (Fin e → ℂ)}
     (hS : dimH S < 2 * (e : ℝ≥0∞)) : volume S = 0 := by
   let E : ((Σ _ : Fin e, Fin 2) → ℝ) ≃L[ℝ] (Fin e → ℂ) :=
@@ -28,6 +35,37 @@ theorem ChartRatioImageNull.volume_eq_zero_of_dimH_lt {e : ℕ} {S : Set (Fin e 
   apply hac
   exact (E.toHomeomorph.toMeasurableEquiv.map_apply S).trans hT
 
+/- English proof (translation)
+Introduce `K _ ι _ J e Ψ hdim`. Use `set S := {y : Fin e → ℂ | ∃ z ∈ zeroLocus ℂ J, Ψ (segre z) 0 ≠ 0 ∧ (Fin.cons 1 y : Fin (e + 1) → ℂ) = (Ψ (segre z) 0)⁻¹ • Ψ (segre z)} with hSdef`. Distinguish the cases in `hJ : J = ⊤`. Establish `hS : S = ∅`. Use extensionality with `y`.
+
+Simplify using `only [hSdef, mem_ofPred_eq, mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨z, hz, -⟩`. Establish `h1` using `hz 1 (hJ ▸ Submodule.mem_top)`. Simplify using `at h1`. Rewrite using `[hS, measure_empty]`.
+
+Establish `: Nontrivial (MvPolynomial (Σ k, ι k) ℂ ⧸ J)` using `Ideal.Quotient.nontrivial_iff.mpr hJ`. Establish `h0` using `ringKrullDim_nonneg_of_nontrivial (R := MvPolynomial (Σ k, ι k) ℂ ⧸ J)`. Choose the witnesses or unpack the hypotheses as in `⟨m, rfl⟩ : ∃ m, e = m + 1 := by`. Break down `e with _ | m` into its components or cases. Conclude with `absurd (h0.trans_lt hdim) (by simp)`.
+
+Conclude with `⟨m, rfl⟩`. Establish `hle : ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ J) ≤ (m : WithBot ℕ∞)`. Break down `hx : ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ J) with _ | x` into its components or cases. Conclude with `bot_le`. Rewrite `hdim` using `[hx]`.
+
+Establish `hx' : x < (m : ℕ∞) + 1`. Establish `h5 : ((x : WithBot ℕ∞)) < (((m + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)` using `hdim`. Establish `h6` using `WithBot.coe_lt_coe.1 h5`. Conclude with `h6` after adjusting the coercions. Conclude with `WithBot.coe_le_coe.2 ((ENat.lt_add_one_iff (ENat.natCast_ne_top m)).1 hx')`.
+
+Set `eqv : (Σ k, ι k) ≃ Fin (Fintype.card (Σ k, ι k))` to `Fintype.equivFin _`. Set `J' : Ideal (MvPolynomial (Fin (Fintype.card (Σ k, ι k))) ℂ)` to `J.map (rename eqv)`. Establish `hdim' : ringKrullDim (MvPolynomial (Fin (Fintype.card (Σ k, ι k))) ℂ ⧸ J') ≤ (m : WithBot ℕ∞)`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv J J' (renameEquiv ℂ eqv).toRingEquiv rfl)]`. Conclude with `hle`.
+
+Establish `hV'` using `GroundTheory.Heights₂.Heights.ZeroLocusDimH.full _ m J' hdim'`. Set `L : ((Σ k, ι k) → ℂ) ≃L[ℂ] (Fin (Fintype.card (Σ k, ι k)) → ℂ)` to `(LinearEquiv.piCongrLeft' ℂ (fun _ => ℂ) eqv).toContinuousLinearEquiv`. Establish `hVsub : zeroLocus ℂ J ⊆ L ⁻¹' {x | ∀ q ∈ J', eval x q = 0}`. Introduce `z hz q hq`. Establish `hJle : J ≤ (RingHom.ker (eval (L z))).comap (rename eqv)`.
+
+Introduce `p hp`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, eval_rename]`. Establish `h2 : (L z) ∘ eqv = z`. Use function extensionality and compare the values at `i`. Simplify using `[L]`.
+
+Rewrite using `[h2]`. Simplify `hz p hp` using `[MvPolynomial.coe_aeval_eq_eval]`. Conclude with `Ideal.map_le_iff_le_comap.mpr hJle hq`. Establish `hV : dimH (zeroLocus ℂ J : Set ((Σ k, ι k) → ℂ)) ≤ 2 * (m : ℝ≥0∞)` using `(dimH_mono hVsub).trans ((L.dimH_preimage _).le.trans hV')`. Set `G : ((Σ k, ι k) → ℂ) → (Fin (m + 1) → ℂ)` to `fun z j => (Ψ (segre z) 0)⁻¹ * Ψ (segre z) j.succ`.
+
+Set `U` to `{z : (Σ k, ι k) → ℂ | Ψ (segre z) 0 ≠ 0}`. Establish `hSsub : S ⊆ G '' (zeroLocus ℂ J ∩ U)`. Introduce and unpack `y ⟨z, hz, hz0, hy⟩`. Use `⟨z, ⟨hz, hz0⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Establish `h3` using `congrFun hy j.succ`. Simplify `h3.symm` using `[G]`. Establish `hsmooth : ContDiff ℂ ⊤ (fun z : (Σ k, ι k) → ℂ => Ψ (segre z))`. Establish `h1 : ContDiff ℂ ⊤ (segre : ((Σ k, ι k) → ℂ) → ((k : K) → ι k) → ℂ)`. Apply `contDiff_pi.2` to reduce the goal to its premises.
+
+Introduce `i`. Conclude with `contDiff_prod (fun k _ => contDiff_apply ℂ ℂ _)`. Conclude with `(LinearMap.toContinuousLinearMap Ψ).contDiff.comp h1`. Establish `hc : ∀ i, ContDiff ℂ ⊤ (fun z : (Σ k, ι k) → ℂ => Ψ (segre z) i)` using `fun i => (contDiff_apply ℂ ℂ i).comp hsmooth`. Establish `hG : ∀ z ∈ U, ContDiffAt ℂ 1 G z`.
+
+Introduce `z hz`. Apply `contDiffAt_pi.2` to reduce the goal to its premises. Introduce `j`. Conclude with `(((hc 0).contDiffAt.inv hz).mul (hc j.succ).contDiffAt).of_le le_top`. Establish `hGdim : dimH (G '' (zeroLocus ℂ J ∩ U)) ≤ dimH (zeroLocus ℂ J ∩ U)`.
+
+Apply `dimH_image_le_of_locally_lipschitzOn` to reduce the goal to its premises. Introduce `z hz`. Take `⟨C, t, ht, hlip⟩` from `(hG z hz.2).exists_lipschitzOnWith`. Conclude with `⟨C, t, mem_nhdsWithin_of_mem_nhds ht, hlip⟩`. Apply `ChartRatioImageNull.volume_eq_zero_of_dimH_lt` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h4 : 2 * m < 2 * (m + 1)` using `by omega`. Conclude with `h4` after adjusting the coercions.
+-/
 theorem ChartRatioImageNull.proof : ChartRatioImageNull.Statement := by
   intro K _ ι _ J e Ψ hdim
   classical

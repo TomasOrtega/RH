@@ -20,6 +20,9 @@ section Form
 
 variable {L : Type} [Field L]
 
+/- English proof (translation)
+Rewrite using `[tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul']`. Use `congr 1`.
+-/
 theorem one_tmul_smul (σ : L →+* ℂ) {V : Type} [AddCommGroup V] [Module (𝓞 L) V] (r : 𝓞 L) (x : V) :
     (1 : ComplexAt σ) ⊗ₜ[𝓞 L] (r • x) = (σ (r : L)) • ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x) := by
   rw [tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul']
@@ -27,6 +30,17 @@ theorem one_tmul_smul (σ : L →+* ℂ) {V : Type} [AddCommGroup V] [Module (�
 
 variable [NumberField L]
 
+/- English proof (translation)
+Set `c : PreInnerProductSpace.Core ℂ F` to `C.toCore`. Introduce `x hx x' hx'`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha`. Proceed by induction on `hx' using Submodule.span_induction with`.
+
+Consider the case `mem b hb => exact h a ha b hb`. Consider the case `zero => rw [map_zero]`. Conclude with `InnerProductSpace.Core.inner_zero_right _`. Consider the case `add u v _ _ hu hv`. Rewrite using `[map_add]`.
+
+Conclude with `(InnerProductSpace.Core.inner_add_right _ _ _).trans (by rw [show _ = _ from hu, show _ = _ from hv, add_zero])`. Consider the case `smul r u _ hu`. Rewrite using `[hs]`. Conclude with `(InnerProductSpace.Core.inner_smul_right _ _).trans (by rw [show _ = _ from hu, mul_zero])`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `InnerProductSpace.Core.inner_zero_left _`. Consider the case `add u v _ _ hu hv`. Rewrite using `[map_add]`. Conclude with `(InnerProductSpace.Core.inner_add_left _ _ _).trans (by rw [show _ = _ from hu, show _ = _ from hv, add_zero])`. Consider the case `smul r u _ hu`.
+
+Rewrite using `[hs]`. Conclude with `(InnerProductSpace.Core.inner_smul_left _ _).trans (by rw [show _ = _ from hu, mul_zero])`.
+-/
 theorem core_span {R V F : Type} [CommRing R] [AddCommGroup V] [Module R V] [AddCommGroup F] [Module ℂ F]
     (C : InnerProductSpace.Core ℂ F) (f : V →+ F) (φ : R → ℂ) (hs : ∀ r x, f (r • x) = φ r • f x) (A A' : Set V)
     (h : ∀ x ∈ A, ∀ x' ∈ A', C.inner (f x) (f x') = 0) :
@@ -52,6 +66,11 @@ theorem core_span {R V F : Type} [CommRing R] [AddCommGroup V] [Module R V] [Add
     rw [hs]
     exact (InnerProductSpace.Core.inner_smul_left _ _).trans (by rw [show _ = _ from hu, mul_zero])
 
+/- English proof (translation)
+Set `f : B.carrier →+ Fibre σ B.carrier` to `{ toFun := fun x => (1 : ComplexAt σ) ⊗ₜ[𝓞 L] x map_zero' := TensorProduct.tmul_zero _ _ map_add' := fun x y => TensorProduct.tmul_add _ _ _ }`. Establish `key` using `core_span (B.metric.form σ) f (fun r : 𝓞 L => σ (r : L)) (fun r x => one_tmul_smul σ r x) A A' h _ hx _ hx'`. Set `c : PreInnerProductSpace.Core ℂ (Fibre σ B.carrier)` to `(B.metric.form σ).toCore`. Establish `ne : ∀ b : 𝓞 L, b ≠ 0 → σ (b : L) ≠ 0` using `fun b hb => (map_ne_zero σ).2 (by simpa using hb)`. Establish `e : (B.metric.form σ).inner (f (a • x)) (f (a' • x')) = (starRingEnd ℂ) (σ (a : L)) * (σ (a' : L) * (B.metric.form σ).inner (f x) (f x'))`.
+
+Rewrite using `[show f (a • x) = σ (a : L) • f x from one_tmul_smul σ a x, show f (a' • x') = σ (a' : L) • f x' from one_tmul_smul σ a' x']`. Conclude with `(InnerProductSpace.Core.inner_smul_left _ _).trans (congrArg _ (InnerProductSpace.Core.inner_smul_right _ _))`. Rewrite `key` using `[e]`. Establish `h1 : (starRingEnd ℂ) (σ (a : L)) ≠ 0` using `(map_ne_zero _).2 (ne a ha)`. Conclude with `(mul_eq_zero.1 ((mul_eq_zero.1 key).resolve_left h1)).resolve_left (ne a' ha')`.
+-/
 theorem orth_sat (B : HermitianBundle.{0} L) (σ : L →+* ℂ) (A A' : Set B.carrier)
     (h : ∀ x ∈ A, ∀ x' ∈ A',
       (B.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x) ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x') = 0)
@@ -80,12 +99,26 @@ end Form
 
 section Eigen
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem epsMul_eq (c : ℂ) : GlobalTheory.CompanionTheory.Ar.epsMul c = ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsScale c := rfl
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l}
   {c : Coeff l} {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ} {Ω : Type} [Field Ω] {K : Type} [Fintype K]
   {J : K → Type} {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Take `⟨e, he, v, hval, hl⟩` from `hx`. Establish `hσ : spMap σ ≫ spMap (algebraMap (𝓞 L) L) ≫ z = spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z`. Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ z) (spec_comp _ _)`. Establish `hd : dualMap (σ.comp (algebraMap (𝓞 L) L)) = (dualMap σ).comp (dualMap (algebraMap (𝓞 L) L))`.
+
+Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`. Establish `hw' : w = epsBase σ hσ ≫ v`. Use `(left_eq_iff σ hσ w v).1 ?_` and prove the remaining obligations. Establish `h1 : w.left = spMap (dualMap (σ.comp (algebraMap (𝓞 L) L))) ≫ (MB.pt x).left`.
+
+Simplify `hw` using `[LieModel.Lifts]`. Establish `h2 : v.left = spMap (dualMap (algebraMap (𝓞 L) L)) ≫ (MB.pt x).left`. Simplify `hl` using `[LieModel.Lifts]`. Rewrite using `[h1, h2, hd, ← Category.assoc]`. Conclude with `congrArg (· ≫ (MB.pt x).left) (spec_comp _ _).symm`.
+
+Substitute `hw'` using the available equality. Use `⟨isTanAt_base σ hσ hval.isTanAt, fun a => ?_⟩` and prove the remaining obligations. Establish `ev` using `GlobalTheory.CompanionTheory.Ar.FlagFib.valAt_eigen E H D l Xo c Y S Ω K J y 𝔐 L _ hp g₀ hg s e v a (hU he) hval`. Establish `e1 : ((epsBase σ hσ ≫ v) ≫ 𝔐.t.act.act a).left = Spec.map (CommRingCat.ofHom (dualMap σ)) ≫ (v ≫ 𝔐.t.act.act a).left` using `rfl`. Rewrite using `[e1, ev, ← Category.assoc, spec_dual_eps, Category.assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isLieEigen_of_gen (𝔐 : HodgeCpt Y S y) {L : Type} [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ 𝔐.X)
     (hp : genPt 𝔐.ξ ⤳ centre (spMap (algebraMap (𝓞 L) L) ≫ z))
     (g₀ : c.F →+* 𝔐.X.presheaf.stalk (centre (spMap (algebraMap (𝓞 L) L) ≫ z)))
@@ -121,6 +154,15 @@ theorem isLieEigen_of_gen (𝔐 : HodgeCpt Y S y) {L : Type} [Field L] [NumberFi
 
 end Eigen
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ K _ J y 𝔐 h hO L _ _ z B MB hF s s' hss U U' hU hU' σ x hx x' hx'`. Establish `hp : genPt 𝔐.ξ ⤳ centre (spMap (algebraMap (𝓞 L) L) ≫ z)` using `𝔐.all _`. Take `⟨g₀, hg⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.KonstReg.exists_const_stalk E H D l Xo c Y S Ω K J y 𝔐 ⟨_, hp⟩ (fun n hn => isUnit_natCast_stalk 𝔐.X L _ n hn)`. Set `: Fintype (CMType H)` to `Fintype.ofFinite _`. Set `ι₀ : c.F →+* ℂ` to `σ.comp ((Scheme.stalkClosedPointTo (spMap (algebraMap (𝓞 L) L) ≫ z)).hom.comp g₀)`.
+
+Establish `hinj` using `(GlobalTheory.CompanionTheory.Ar.LabelCount.labels_injective_card E H l c ℂ ι₀).1`. Establish `hne : ι₀.comp (labelEmb c s) ≠ ι₀.comp (labelEmb c s')` using `fun e => hss (hinj e)`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨a', ha', hax'⟩` from `hx'`. Use `orth_sat B σ _ _ ?_ x x' a a' ha ha' hax hax'` and prove the remaining obligations.
+
+Introduce `u hu u' hu'`. Set `w` to `epsBase (σ.comp (algebraMap (𝓞 L) L)) rfl ≫ MB.pt u`. Set `w'` to `epsBase (σ.comp (algebraMap (𝓞 L) L)) rfl ≫ MB.pt u'`. Establish `hl : MB.Lifts (σ.comp (algebraMap (𝓞 L) L)) (𝟙 𝔐.t.G.left) u w` using `Category.comp_id _`. Establish `hl' : MB.Lifts (σ.comp (algebraMap (𝓞 L) L)) (𝟙 𝔐.t.G.left) u' w'` using `Category.comp_id _`.
+
+Establish `e1` using `isLieEigen_of_gen 𝔐 z hp g₀ hg s U hU σ MB u hu w hl`. Establish `e2` using `isLieEigen_of_gen 𝔐 z hp g₀ hg s' U' hU' σ MB u' hu' w' hl'`. Conclude with `(hF σ u u' w w' hl hl').trans (hO _ _ _ w w' hne e1 e2)`.
+-/
 theorem orthAt_subFib : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (h : LieMetric 𝔐.M y), h.Orth 𝔐.t.act → ∀ (L : Type) [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ 𝔐.X) (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (MB : LieModel 𝔐.t.G z B.carrier), IsFibre (fun z v w c => c = h.ip z v w) z B MB → ∀ (s s' : CMType H ⊕ CMType H), s ≠ s' → ∀ U U' : Submodule Ω 𝔐.Li, U ≤ 𝔐.Vgen s → U' ≤ 𝔐.Vgen s' → OrthAt B (FlagFib.subFib 𝔐.M U z MB) (FlagFib.subFib 𝔐.M U' z MB) := by
   intro E _ _ _ H D l Xo c Y S Ω _ K _ J y 𝔐 h hO L _ _ z B MB hF s s' hss U U' hU hU' σ x hx x' hx'
   have hp : genPt 𝔐.ξ ⤳ centre (spMap (algebraMap (𝓞 L) L) ≫ z) := 𝔐.all _

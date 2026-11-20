@@ -37,6 +37,13 @@ open GlobalTheory.PtTie
 
 namespace GlobalTheory.DepthOverLevel
 
+/- English proof (translation)
+Establish `hφ : 0 ≤ φ`. Establish `h1 : 0 ≤ (e * (R * N ^ 3)) * φ` using `by linarith`. Conclude with `nonneg_of_mul_nonneg_right h1 (by positivity)`. Establish `hD2 : 1 ≤ Dg ^ 2` using `one_le_pow₀ hD`. Establish `hn' : 0 ≤ n` using `hn0.trans hn`.
+
+Establish `h1 : n₁ * r / 4 ≤ n * N * Dg ^ 2`. Establish `h2 : n₁ * r ≤ n * N` using `mul_le_mul hn hr hr0 hn'`. Establish `h3 : n * N * 1 ≤ n * N * Dg ^ 2` using `mul_le_mul_of_nonneg_left hD2 (by positivity)`. Establish `h4 : 0 ≤ n₁ * r` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ (n * N * Dg ^ 2 + 2 * Dg ^ 2) * (e * (R * N ^ 3 * φ)) / g / e := by gcongr`. Use `_ = R * (N ^ 4 * n + 2 * N ^ 3) * Dg ^ 2 / g * φ := by field_simp`. Use `_ ≤ c * φ := by gcongr`.
+-/
 theorem lattice_terms_le (R N φ Φ e n n₁ r Dg g c : ℝ) (hR : 0 < R) (hN : 0 < N) (he : 0 < e) (hΦ : 0 ≤ Φ)
     (hΦe : Φ ≤ e * (R * N ^ 3 * φ)) (hn0 : 0 ≤ n₁) (hn : n₁ ≤ n) (hr0 : 0 ≤ r) (hr : r ≤ N) (hD : 1 ≤ Dg) (hg : 0 < g)
     (hc : R * (N ^ 4 * n + 2 * N ^ 3) * Dg ^ 2 / g ≤ c) :
@@ -57,6 +64,11 @@ theorem lattice_terms_le (R N φ Φ e n n₁ r Dg g c : ℝ) (hR : 0 < R) (hN : 
     _ = R * (N ^ 4 * n + 2 * N ^ 3) * Dg ^ 2 / g * φ := by field_simp
     _ ≤ c * φ := by gcongr
 
+/- English proof (translation)
+Introduce `hu`. Apply `h` to reduce the goal to its premises. Establish `h2 : valV S.V (algebraMap S.V S.Fr ((N : ℕ) : S.V)) = 1`. Unfold `valV`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`.
+
+Conclude with `fun h => (mem_nonunits_iff.1 h) hu`. Rewrite `h2` using `[map_natCast]`. Unfold `vV`. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+-/
 theorem not_isUnit_of_vV_ne_zero (S : CDVR) (N : ℕ) (h : vV S.V ((N : ℕ) : S.Fr) ≠ 0) : ¬ IsUnit ((N : ℕ) : S.V) := by
   intro hu
   apply h
@@ -69,6 +81,17 @@ theorem not_isUnit_of_vV_ne_zero (S : CDVR) (N : ℕ) (h : vV S.V ((N : ℕ) : S
   rw [h2]
   simp
 
+/- English proof (translation)
+Establish `hq : D.host.q.Prime` using `D.host.hyp.1`. Establish `hd : D.host.d.Prime` using `D.host.hyp.2.1`. Establish `hq8 : D.host.q % 8 = 3` using `D.host.hyp.2.2.1`. Establish `hd16 : D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`. Establish `hnd : ¬ D.host.g i ∣ D.host.condN` using `fun h => by`.
+
+Establish `hc : D.host.g i % D.host.condN = 1` using `D.ntypes.g_cond i`. Establish `h1` using `Nat.mod_mod_of_dvd (D.host.g i) h`. Rewrite `h1` using `[hc, Nat.mod_self, Nat.mod_eq_of_lt (D.host.g_prime i).one_lt]`. Conclude with `one_ne_zero h1`. Establish `hl : resCharOf la = D.host.g i` using `(RPfVal.prime_mem_iff la (D.host.g_prime i)).1 hg`.
+
+Establish `hnn : nnW B hinj EX w ≠ 0`. Establish `hπ : ∀ k, iE D hinj B (EX.piG k) ≠ 0 ∧ iE D hinj B (piBarO EX k) ≠ 0`. Introduce `k`. Rewrite using `[← mul_ne_zero_iff, ← map_mul, RPfVal.piG_mul_bar, map_natCast]`. Conclude with `Nat.cast_ne_zero.2 (D.host.g_prime k).ne_zero`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => mul_ne_zero (pow_ne_zero _ (hπ k).1) (pow_ne_zero _ (hπ k).2)`. Establish `hnn0 : ((nnW B hinj EX w : 𝓞 B.KO) : B.KO) ≠ 0` using `fun h => hnn (NumberField.RingOfIntegers.coe_eq_zero_iff.1 h)`. Establish `hP : pPow D (c2 D w) (cHalf w) (cHalf w) = D.host.QS ^ c2 D w * D.host.q ^ cHalf w * D.host.d ^ cHalf w` using `rfl`. Establish `hN : pPow D (c2 D w) (cHalf w) (cHalf w) ≠ 0` using `Nat.mul_ne_zero (Nat.mul_ne_zero (pow_ne_zero _ D.host.QS_pos.ne') (pow_ne_zero _ hq.ne_zero)) (pow_ne_zero _ hd.ne_zero)`. Use `⟨mul_ne_zero hnn (Nat.cast_ne_zero.2 hN), hnn0, ?_⟩` and prove the remaining obligations.
+
+Establish `hc : ((sWt B hinj EX w : 𝓞 B.KO) : B.KO) = ((nnW B hinj EX w : 𝓞 B.KO) : B.KO) * ((pPow D (c2 D w) (cHalf w) (cHalf w) : ℕ) : B.KO)` using `by show algebraMap (𝓞 B.KO) B.KO (_ * _) = _`. Rewrite using `[map_mul, map_natCast]`. Rewrite using `[hc, Crude.crv_vLa_mul la hnn0 (Nat.cast_ne_zero.2 hN), hP, RPfVal.vLa_pPow la D.host.QS_pos.ne' hq hd, hl, padicValNat.eq_zero_of_not_dvd (fun h => hnd (h.trans D.host.QS_dvd_condN)), if_neg (D.host.ne_q_of_not_dvd hnd), if_neg (D.host.ne_d_of_not_dvd hnd)]`. Simplify using the standard rewrite rules.
+-/
 theorem vLa_sWt {D : D7} {j : ℕ} (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D)
     (w : WeightFamilies.Wt D j) (la : HeightOneSpectrum (𝓞 B.KO)) (i : Fin 2) (hg : ((D.host.g i : ℕ) : 𝓞 B.KO) ∈ la.asIdeal) :
     sWt B hinj EX w ≠ 0 ∧ ((nnW B hinj EX w : 𝓞 B.KO) : B.KO) ≠ 0 ∧
@@ -105,6 +128,9 @@ theorem vLa_sWt {D : D7} {j : ℕ} (B : WeightFamilies.Prov D) (hinj : Function.
     if_neg (D.host.ne_q_of_not_dvd hnd), if_neg (D.host.ne_d_of_not_dvd hnd)]
   simp
 
+/- English proof (translation)
+Establish `h : ∃ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 B.KO) ∈ la.asIdeal` using `⟨i, hg⟩`. Establish `h1 : D.host.g (Classical.choose h) = D.host.g i` using `((RPfVal.prime_mem_iff la (D.host.g_prime _)).1 (Classical.choose_spec h)).symm.trans ((RPfVal.prime_mem_iff la (D.host.g_prime i)).1 hg)`. Unfold `nusOf`. Rewrite using `[dif_pos h, h1, H1algLink.eWL_eq]`.
+-/
 theorem nusOf_of_mem {D : D7} {j : ℕ} (B : WeightFamilies.Prov D) (w : WeightFamilies.Wt D j) (nu : HeightOneSpectrum (𝓞 B.KO) → ℝ)
     (la : HeightOneSpectrum (𝓞 B.KO)) (i : Fin 2) (hg : ((D.host.g i : ℕ) : 𝓞 B.KO) ∈ la.asIdeal) :
     nusOf B w nu la = (ramOverZ la : ℝ) * (WeightAlgebra.DF w : ℝ) / ((D.host.g i : ℝ) - 1) := by
@@ -115,6 +141,11 @@ theorem nusOf_of_mem {D : D7} {j : ℕ} (B : WeightFamilies.Prov D) (w : WeightF
   unfold nusOf
   rw [dif_pos h, h1, H1algLink.eWL_eq]
 
+/- English proof (translation)
+Introduce `i i' hii`. Unfold `wtA`. Use `Finset.sum_le_sum fun t _ => add_le_add ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `partitionExtendByZero_antitone (w.aPlus_antitone t) hii`.
+
+Conclude with `le_rfl`. Use `split_ifs`. Conclude with `partitionExtendByZero_antitone (w.aM_anti t) hii`. Conclude with `le_rfl`.
+-/
 theorem wtA_antitone {D : D7} {j : ℕ} (w : WeightFamilies.Wt D j) (τ : D.host.E →+* ℂ) : Antitone fun i => wtA w (τ, i) := by
   intro i i' hii
   unfold wtA
@@ -126,6 +157,39 @@ theorem wtA_antitone {D : D7} {j : ℕ} (w : WeightFamilies.Wt D j) (τ : D.host
     · exact partitionExtendByZero_antitone (w.aM_anti t) hii
     · exact le_rfl
 
+/- English proof (translation)
+Introduce `hHT D T h j hj hinj EX w c hO hR la i hg y`. Use `letI := T.Q.H.starRing`. Take `⟨hlast, hn, hDg, hc0, hc⟩` from `hR`. Take `⟨S, io, e, ho, z, hz, hl, C, Pu, hC, hPu, hval⟩` from `GlobalTheory.T.exists_uniformisedModel_integralChart_at_point D T h j hj la y`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible S.V`.
+
+Take `⟨⟨Q, hQ⟩, -⟩` from `GlobalTheory.PowData.exists_powData _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c S io z C Pu ϖ hϖ`. Take `⟨r, Φ, M0, ⟨hΦ, b, hb1, hb2⟩, hr, hM0, hjm, hΦe⟩` from `GlobalTheory.ShortBasisAt.exists_shortBasis D T h j hj la S io e ho z hz (imgV y) hl C Pu ϖ hϖ Q hQ`. Establish `hphi : (recPJ h j hj).phiC la (PtV.mk la ho z hz (imgV y) hl) = (recPJ h j hj).phiC la y` using `rfl`. Rewrite `hΦe` using `[hphi]`. Establish `hM` using `h.toLawsCore.toLawsM`.
+
+Take `⟨hDF, -, hpos, -, -, hf1, hr1, hrank⟩` from `GlobalTheory.WeightOnDatum.weight_on_datum D T.toCore hM.pins j hj w`. Establish `hD1` using `(hpos hlast).2`. Establish `hpq` using `((GlobalTheory.PinNum.numerics_of_pins D T.Q hM.pins).2.2.2.2.2.2 j hj).1`. Take `⟨-, hst, hMb, -⟩` from `GlobalTheory.HalfGen.half_principal_and_split D T.toCore hM EX`. Establish `hMb` using `hMb hO`.
+
+Establish `hnab : IsNab (T.Q.Xo j) T.Q.c (T.nab j)`. Take `⟨st, hn⟩` from `h.nabPin j hj`. Use `GlobalTheory.PowGerm.starSt _ T.Q.H st hn.1` as an intermediate fact. Substitute `this` using the available equality. Conclude with `hn`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i', hne, hMg, hMb', hα⟩ : ∃ i' : Fin 2, D.host.g i ≠ D.host.g i' ∧ T.Q.l.M = D.host.g i' * D.host.g i ∧ T.Q.l.Mb = Ideal.span {piBarO EX i * piBarO EX i'} ∧ star (piBarO EX i) * star (piBarO EX i') = EX.piG 0 * EX.piG 1 := by`. Establish `hs : ∀ k, star (piBarO EX k) = EX.piG k` using `fun k => by rw [← (hst k).1, star_star]`. Establish `hLM` using `level_M T.toCore hM`. Use `fin_cases i`. Conclude with `⟨1, D.host.g_ne, hLM.trans (mul_comm _ _), hMb, by rw [hs, hs]; rfl⟩`.
+
+Conclude with `⟨0, D.host.g_ne.symm, hLM, by rw [hMb, mul_comm]; rfl, by rw [hs, hs, mul_comm]; rfl⟩`. Establish `hres : resCharOf la = D.host.g i` using `(RPfVal.prime_mem_iff la (D.host.g_prime i)).1 hg`. Establish `hvg : vV S.V ((D.host.g i : ℕ) : S.Fr) = (e : ℤ) * ramOverZ la`. Rewrite using `[← map_natCast io, ho.2, ← hres, Crude.crv_vLa_char]`. Establish `hnu : ¬ IsUnit ((D.host.g i : ℕ) : S.V)`.
+
+Use `not_isUnit_of_vV_ne_zero S _ ?_` and prove the remaining obligations. Rewrite using `[hvg]`. Conclude with `mul_ne_zero (Nat.cast_ne_zero.2 ho.1.ne') (Nat.cast_ne_zero.2 (H1algLink.ramOverZ_ne_zero la))`. Establish `hsp` using `GlobalTheory.LevelSplit.splitsIn_level_prime D i`. Establish `hg' : (0 : ℝ) < D.host.g i'` using `by exact_mod_cast (D.host.g_prime i').pos`.
+
+Establish `he : (0 : ℝ) < e` using `by exact_mod_cast ho.1`. Establish `hnr : 2 * D.R.r ≤ w.n` using `le_trans (by nlinarith) hn`. Establish `hDM : (WeightAlgebra.DF w : ℝ) * M0 < D.host.g i'`. Distinguish the cases in `hlt : j < D.R.m`. Conclude with `lt_of_le_of_lt (mul_le_mul_of_nonneg_left hM0 (Nat.cast_nonneg _)) (hc hlt i').1`.
+
+Rewrite using `[(hjm (not_lt.1 hlt)).1, mul_zero]`. Conclude with `hg'`. Establish `hA` using `GlobalTheory.T.theta_generators_least_value_over_level_prime hHT _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c (T.nab j) hnab (h.thTot j hj) S io z C hC Pu hPu hz ϖ hϖ Q hQ Φ M0 r b hΦ hb1 hb2 (D.host.g i) (D.host.g i') (D.host.g_prime i) (D.host.g_prime i') hne hMg (piBarO EX i) (pi …`. Take `⟨hs0, hnn0, hsv⟩` from `vLa_sWt (recB h.toLawsCore) hinj EX w la i hg`. Establish `hN : nval S.V e (∏ τ : D.host.E →+* ℂ, (io (embK T.Q.c τ (star (piBarO EX i) * star (piBarO EX i')))) ^ (∑ k : Fin ((T.Q.Dw j).mult τ), wtA w (τ, k))) = (((vLa la ((sWt (recB h.toLawsCore) hinj EX w : 𝓞 T.Q.c.F) : T.Q.c.F) : ℤ) : ℝ) : EReal)`.
+
+Establish `h1 : (∏ τ : D.host.E →+* ℂ, (io (embK T.Q.c τ (star (piBarO EX i) * star (piBarO EX i')))) ^ (∑ k : Fin ((T.Q.Dw j).mult τ), wtA w (τ, k))) = io ((nnW (recB h.toLawsCore) hinj EX w : 𝓞 T.Q.c.F) : T.Q.c.F)`. Rewrite using `[← GlobalTheory.PtTie.nrm_eq_nnW D T h j hj hinj EX w, hα]`. Unfold `nrm`. Simplify using `only [map_prod, map_pow]`. Rewrite using `[h1, nval_of_ne ((map_ne_zero io).2 hnn0), ho.2]`.
+
+Use `congrArg (fun x : ℝ => (x : EReal)) ?_` and prove the remaining obligations. Rewrite using `[Int.cast_mul, Int.cast_natCast, mul_div_cancel_left₀ _ he.ne']`. Conclude with `congrArg (fun x : ℤ => (x : ℝ)) hsv.symm`. Rewrite `hA` using `[hN, hDF, hpq, hvg]`. Establish `hdep : (recPJ h j hj).depth (sWt (recB h.toLawsCore) hinj EX w) w la y ≤ (⨅ f ∈ T.th j w, nval S.V e (evI z f)) + (((vLa la ((sWt (recB h.toLawsCore) hinj EX w : 𝓞 T.Q.c.F) : T.Q.c.F) : ℤ) : ℝ) : EReal)`.
+
+Rewrite using `[← EReal.sub_le_iff_le_add (Or.inl (EReal.coe_ne_bot _)) (Or.inl (EReal.coe_ne_top _))]`. Use `le_iInf₂ fun f hf => ?_` and prove the remaining obligations. Rewrite using `[EReal.sub_le_iff_le_add (Or.inl (EReal.coe_ne_bot _)) (Or.inl (EReal.coe_ne_top _)), ← hval w f hf, add_comm]`. Conclude with `GlobalTheory.DepthRule.depth_le_scaled_value D T h j hj w hlast _ hs0 la y f hf`. Use `hdep.trans (le_trans hA (EReal.coe_le_coe_iff.2 ?_))` and prove the remaining obligations.
+
+Rewrite using `[nusOf_of_mem (recB h.toLawsCore) w _ la i hg, add_assoc, add_div]`. Use `add_le_add (le_of_eq ?_) ?_` and prove the remaining obligations. Use `push_cast`. Rewrite using `[mul_assoc, mul_div_assoc, mul_div_cancel_left₀ _ he.ne']`. Distinguish the cases in `hlt : j < D.R.m`.
+
+Establish `hm` using `D.R.two_le_m`. Establish `hf' : (0 : ℝ) < D.R.f` using `by exact_mod_cast hf1`. Establish `hm' : (0 : ℝ) < D.R.m` using `by exact_mod_cast (by omega : 0 < D.R.m)`. Use `lattice_terms_le (rr0 D) (2 * D.R.f * D.R.m) _ Φ e w.n _ r _ _ c ?_ (by positivity) he hΦ hΦe (Nat.cast_nonneg _) (by exact_mod_cast (by omega : D.R.r ≤ w.n)) (Nat.cast_nonneg _) (by exact_mod_cast hr) (by exact_mod_cast hD1) hg' (hc hlt i').2` and prove the remaining obligations. Unfold `rr0`.
+
+Establish `hd : (0 : ℝ) < |(NumberField.discr D.host.E : ℝ)|` using `abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero _))`. Establish `hk : (0 : ℝ) < Module.finrank ℚ D.host.E` using `by exact_mod_cast Module.finrank_pos`. Check the signs of the components of the expression. Establish `h0 : (recPJ h j hj).phiC la y = 0`. Unfold `WeightAlgebra.PJ.phiC`.
+
+Rewrite using `[if_neg hlt]`. Rewrite using `[h0, (hjm (not_lt.1 hlt)).2]`. Simplify using the standard rewrite rules.
+-/
 theorem depth_le_over_level : (∀ (p : ℕ) [Fact p.Prime], Pdiv.ChartF.HTFSt p) → ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (w : WeightFamilies.Wt D j) (c : ℝ), Oriented T EX → RunNum D w c → ∀ (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (i : Fin 2), ((D.host.g i : ℕ) : 𝓞 T.Q.c.F) ∈ la.asIdeal → ∀ y : T.PtA j la, (recPJ h j hj).depth (sWt (recB h.toLawsCore) hinj EX w) w la y ≤ ((nusOf (recB h.toLawsCore) w (nuWt T w) la + c * (recPJ h j hj).phiC la y : ℝ) : EReal) := by
   intro hHT D T h j hj hinj EX w c hO hR la i hg y
   letI := T.Q.H.starRing

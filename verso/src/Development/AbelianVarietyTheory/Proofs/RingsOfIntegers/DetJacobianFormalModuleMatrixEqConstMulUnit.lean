@@ -23,6 +23,9 @@ def invJ (z : Pt R n d) (a l : Fin d) : PS R n d := ev ![z, 0] (pderiv R ((1 : F
 def invD (q : Fin n × Fin d) (f : PS R n d) : PS R n d :=
   ∑ c, pderiv R (q.1, c) f * invJ G (pt R d q.1) c q.2
 
+/- English proof (translation)
+Establish `hz0 : ∀ i, constantCoeff ((0 : Pt R n d) i) = 0` using `fun i => by simp`. Unfold `invJ`. Rewrite using `[GlobalTheory.DerivEndo.cc_ev (GlobalTheory.DerivEndo.noConst_two hz hz0), ← GlobalTheory.FormalMulN.coeff_single_one]`. Conclude with `GlobalTheory.FormalMulN.lin_F_right G a l`.
+-/
 theorem const_invJ {z : Pt R n d} (hz : ∀ i, constantCoeff (z i) = 0) (a l : Fin d) :
     constantCoeff (invJ G z a l) = if a = l then 1 else 0 := by
   have hz0 : ∀ i, constantCoeff ((0 : Pt R n d) i) = 0 := fun i => by simp
@@ -30,6 +33,13 @@ theorem const_invJ {z : Pt R n d} (hz : ∀ i, constantCoeff (z i) = 0) (a l : F
   rw [GlobalTheory.DerivEndo.cc_ev (GlobalTheory.DerivEndo.noConst_two hz hz0), ← GlobalTheory.FormalMulN.coeff_single_one]
   exact GlobalTheory.FormalMulN.lin_F_right G a l
 
+/- English proof (translation)
+Unfold `invD`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[GlobalTheory.DerivEndo.pderiv_ev ha, Finset.sum_mul]`. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem invD_ev {m : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff (a j i) = 0)
     (f : PS R m d) (q : Fin n × Fin d) :
     invD G q (ev a f) = ∑ j, ∑ l, ev a (pderiv R (j, l) f) * invD G q (a j l) := by
@@ -46,6 +56,9 @@ theorem invD_ev {m : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j i, constantCoeff 
       refine Finset.sum_congr rfl fun c _ => ?_
       ring
 
+/- English proof (translation)
+Use `show pderiv R (j', c) (X (j, l)) = _`. Use `split_ifs with h`. Rewrite using `[h, pderiv_X_self]`. Conclude with `pderiv_X_of_ne h`.
+-/
 private theorem pderiv_pt_eq_ite {k : ℕ} (j j' : Fin k) (l c : Fin d) :
     pderiv R (j', c) (pt R d j l) = if (j, l) = (j', c) then 1 else 0 := by
   show pderiv R (j', c) (X (j, l)) = _
@@ -53,9 +66,15 @@ private theorem pderiv_pt_eq_ite {k : ℕ} (j j' : Fin k) (l c : Fin d) :
   · rw [h, pderiv_X_self]
   · exact pderiv_X_of_ne h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem formalGroup_add_apply_eq_ev {k : ℕ} (x y : Pt R k d) (a : Fin d) :
     G.add x y a = ev ![x, y] (G.F a) := rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.DerivEndo.ev_ev hb (GlobalTheory.DerivEndo.noConst_two hx hy)]`. Use `congr 1`. Use function extensionality and compare the values at `j i`. Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 private theorem ev_ev_pair_eq_ev_pair_ev {k m : ℕ} (b : Fin m → Pt R k d) (hb : ∀ j i, constantCoeff (b j i) = 0)
     (x y : Pt R m d) (hx : ∀ i, constantCoeff (x i) = 0) (hy : ∀ i, constantCoeff (y i) = 0)
     (g : PS R 2 d) :
@@ -65,6 +84,19 @@ private theorem ev_ev_pair_eq_ev_pair_ev {k m : ℕ} (b : Fin m → Pt R k d) (h
   funext j i
   fin_cases j <;> rfl
 
+/- English proof (translation)
+Establish `hz0 : ∀ i, constantCoeff ((0 : Pt R n d) i) = 0` using `fun i => by simp`. Establish `c0` using `GlobalTheory.DerivEndo.cc_pt (R := R) (n := 3) (d := d) 0`. Establish `c1` using `GlobalTheory.DerivEndo.cc_pt (R := R) (n := 3) (d := d) 1`. Establish `c2` using `GlobalTheory.DerivEndo.cc_pt (R := R) (n := 3) (d := d) 2`. Establish `c01` using `GlobalTheory.FormalMulN.const_add G c0 c1`.
+
+Establish `c12` using `GlobalTheory.FormalMulN.const_add G c1 c2`. Establish `e3 : ∀ j i, constantCoeff ((![z, w, 0] : Fin 3 → Pt R n d) j i) = 0` using `GlobalTheory.FormalMulN.const_three hz hw hz0`. Establish `hL0 : ∀ l, pderiv R ((2 : Fin 3), i) (G.add (pt R d 0) (pt R d 1) l) = 0`. Introduce `l`. Rewrite using `[formalGroup_add_apply_eq_ev, GlobalTheory.DerivEndo.pderiv_ev (GlobalTheory.DerivEndo.noConst_two c0 c1)]`.
+
+Simplify using `[pderiv_pt_eq_ite, Fin.sum_univ_two]`. Establish `hR : ∀ l, pderiv R ((2 : Fin 3), i) (G.add (pt R d 1) (pt R d 2) l) = ev ![pt R (n` using `3) d 1, pt R d 2] (pderiv R ((1 : Fin 2), i) (G.F l)) := by`. Introduce `l`. Rewrite using `[formalGroup_add_apply_eq_ev, GlobalTheory.DerivEndo.pderiv_ev (GlobalTheory.DerivEndo.noConst_two c1 c2)]`. Simplify using `[pderiv_pt_eq_ite, Fin.sum_univ_two]`.
+
+Establish `hA` using `congrArg (fun P : Pt R 3 d => pderiv R ((2 : Fin 3), i) (P a)) (GlobalTheory.FormalMulN.add_assoc_pt G c0 c1 c2)`. Rewrite `hA` using `[formalGroup_add_apply_eq_ev G (G.add _ _) _ a, formalGroup_add_apply_eq_ev G (pt R d 0) _ a, GlobalTheory.DerivEndo.pderiv_ev (GlobalTheory.DerivEndo.noConst_two c01 c2), GlobalTheory.DerivEndo.pderiv_ev (GlobalTheory.DerivEndo.noConst_two c0 c12)]`. Simplify using `[Fin.sum_univ_two, hL0, hR, pderiv_pt_eq_ite] at hA`. Establish `f0 : (fun i => ev ![z, w, 0] (pt R (n` using `3) d 0 i)) = z := GlobalTheory.FormalMulN.ev_pt_fun e3 0`. Establish `f1 : (fun i => ev ![z, w, 0] (pt R (n` using `3) d 1 i)) = w := GlobalTheory.FormalMulN.ev_pt_fun e3 1`.
+
+Establish `f2 : (fun i => ev ![z, w, 0] (pt R (n` using `3) d 2 i)) = 0 := GlobalTheory.FormalMulN.ev_pt_fun e3 2`. Establish `fa0 : (fun i => ev ![z, w, 0] (G.add (pt R (n` using `3) d 0) (pt R d 1) i)) = G.add z w := by`. Rewrite using `[GlobalTheory.FormalMulN.ev_add_pts G c0 c1 e3, f0, f1]`. Establish `fa1 : (fun i => ev ![z, w, 0] (G.add (pt R (n` using `3) d 1) (pt R d 2) i)) = w := by`. Rewrite using `[GlobalTheory.FormalMulN.ev_add_pts G c1 c2 e3, f1, f2, GlobalTheory.FormalMulN.add_zero_pt G hw]`.
+
+Establish `hB` using `congrArg (ev ![z, w, 0]) hA`. Rewrite `hB` using `[ev_ev_pair_eq_ev_pair_ev _ e3 _ _ c01 c2, fa0, f2, GlobalTheory.DerivEndo.ev_sum e3]`. Simplify using `only [GlobalTheory.DerivEndo.ev_mul e3, ev_ev_pair_eq_ev_pair_ev _ e3 _ _ c0 c12, ev_ev_pair_eq_ev_pair_ev _ e3 _ _ c1 c2, f0, f1, f2, fa1] at hB`. Conclude with `hB.symm`.
+-/
 theorem right_invJ {z w : Pt R n d} (hz : ∀ i, constantCoeff (z i) = 0)
     (hw : ∀ i, constantCoeff (w i) = 0) (a i : Fin d) :
     ∑ c, ev ![z, w] (pderiv R ((1 : Fin 2), c) (G.F a)) * invJ G w c i = invJ G (G.add z w) a i := by
@@ -104,6 +136,13 @@ theorem right_invJ {z w : Pt R n d} (hz : ∀ i, constantCoeff (z i) = 0)
     f0, f1, f2, fa1] at hB
   exact hB.symm
 
+/- English proof (translation)
+Establish `h2 : ∀ j i, constantCoeff ((![pt R (n` using `2) d 1, pt R (n := 2) d 0] : Fin 2 → Pt R 2 d) j i) = 0 := GlobalTheory.DerivEndo.noConst_two (GlobalTheory.DerivEndo.cc_pt 1) (GlobalTheory.DerivEndo.cc_pt 0)`. Establish `hzw` using `GlobalTheory.DerivEndo.noConst_two hz hw`. Establish `hc : G.F a = ev ![pt R (n` using `2) d 1, pt R (n := 2) d 0] (G.F a) := by`. Establish `h` using `GlobalTheory.FormalMulN.add_comm_pt G (GlobalTheory.DerivEndo.cc_pt (R := R) (n := 2) (d := d) 0) (GlobalTheory.DerivEndo.cc_pt 1)`. Rewrite `h` using `[GlobalTheory.DerivEndo.add_pt]`.
+
+Conclude with `congrFun h a`. Establish `hd : pderiv R ((0 : Fin 2), c) (G.F a) = ev ![pt R (n` using `2) d 1, pt R (n := 2) d 0] (pderiv R ((1 : Fin 2), c) (G.F a)) := by conv_lhs => rw [hc]`. Rewrite using `[GlobalTheory.DerivEndo.pderiv_ev h2]`. Simplify using `[Fin.sum_univ_two, pderiv_pt_eq_ite]`. Rewrite using `[hd, ev_ev_pair_eq_ev_pair_ev _ hzw _ _ (GlobalTheory.DerivEndo.cc_pt 1) (GlobalTheory.DerivEndo.cc_pt 0), GlobalTheory.FormalMulN.ev_pt_fun hzw 0, GlobalTheory.FormalMulN.ev_pt_fun hzw 1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ev_left_eq {z w : Pt R n d} (hz : ∀ i, constantCoeff (z i) = 0)
     (hw : ∀ i, constantCoeff (w i) = 0) (a c : Fin d) :
     ev ![z, w] (pderiv R ((0 : Fin 2), c) (G.F a)) = ev ![w, z] (pderiv R ((1 : Fin 2), c) (G.F a)) := by
@@ -128,10 +167,18 @@ def Inv (z : Pt R n d) : Prop :=
   (∀ i, constantCoeff (z i) = 0) ∧
     ∀ q : Fin n × Fin d, ∃ u : Fin d → R, ∀ a, invD G q (z a) = ∑ l, invJ G z a l * C (u l)
 
+/- English proof (translation)
+Use `⟨fun i => by simp, fun q => ⟨0, fun a => ?_⟩⟩` and prove the remaining obligations. Simplify using `[invD]`.
+-/
 theorem inv_zero : Inv G (0 : Pt R n d) := by
   refine ⟨fun i => by simp, fun q => ⟨0, fun a => ?_⟩⟩
   simp [invD]
 
+/- English proof (translation)
+Use `⟨GlobalTheory.DerivEndo.cc_pt j, fun q => ⟨fun l => if j = q.1 ∧ l = q.2 then 1 else 0, fun a => ?_⟩⟩` and prove the remaining obligations. Unfold `invD`. Simplify using `only [pderiv_pt_eq_ite]`. Distinguish the cases in `h : j = q.1`. Substitute `h` using the available equality.
+
+Simplify using `[Prod.mk.injEq, apply_ite (C (σ := Fin n × Fin d) (R := R)), mul_ite, ite_mul]`. Simplify using `[h]`.
+-/
 theorem inv_pt (j : Fin n) : Inv G (pt R d j) := by
   refine ⟨GlobalTheory.DerivEndo.cc_pt j, fun q => ⟨fun l => if j = q.1 ∧ l = q.2 then 1 else 0, fun a => ?_⟩⟩
   unfold invD
@@ -141,6 +188,15 @@ theorem inv_pt (j : Fin n) : Inv G (pt R d j) := by
     simp [Prod.mk.injEq, apply_ite (C (σ := Fin n × Fin d) (R := R)), mul_ite, ite_mul]
   · simp [h]
 
+/- English proof (translation)
+Take `⟨hz0, hzu⟩` from `hz`. Take `⟨hw0, hwu⟩` from `hw`. Use `⟨GlobalTheory.FormalMulN.const_add G hz0 hw0, fun q => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hzu q`. Take `⟨v, hv⟩` from `hwu q`.
+
+Use `⟨u + v, fun a => ?_⟩` and prove the remaining obligations. Establish `hZ : ∀ m, ∑ l, ev ![z, w] (pderiv R ((0 : Fin 2), l) (G.F a)) * invJ G z l m = invJ G (G.add z w) a m`. Introduce `m`. Repeatedly rewrite using `[ev_left_eq G hz0 hw0]`. Rewrite using `[right_invJ G hw0 hz0, GlobalTheory.FormalMulN.add_comm_pt G hw0 hz0]`.
+
+Establish `hW : ∀ m, ∑ l, ev ![z, w] (pderiv R ((1 : Fin 2), l) (G.F a)) * invJ G w l m = invJ G (G.add z w) a m` using `fun m => right_invJ G hz0 hw0 a m`. Rewrite using `[formalGroup_add_apply_eq_ev, invD_ev G (GlobalTheory.DerivEndo.noConst_two hz0 hw0), Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, hu, hv]`. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`. Use `congr 1`.
+
+Repeatedly rewrite using `[← hZ, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`. Repeatedly rewrite using `[← hW, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem inv_add {z w : Pt R n d} (hz : Inv G z) (hw : Inv G w) : Inv G (G.add z w) := by
   obtain ⟨hz0, hzu⟩ := hz
   obtain ⟨hw0, hwu⟩ := hw
@@ -164,9 +220,15 @@ theorem inv_add {z w : Pt R n d} (hz : Inv G z) (hw : Inv G w) : Inv G (G.add z 
   · simp_rw [← hW, Finset.sum_mul, Finset.mul_sum, mul_assoc]
     exact Finset.sum_comm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem comp1_apply_eq_ev_single {k : ℕ} (φ : Pt R 1 d) (z : Pt R k d) (a : Fin d) :
     comp1 φ z a = ev ![z] (φ a) := rfl
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.DerivEndo.noConst_one hz`. Rewrite using `[ev_ev_pair_eq_ev_pair_ev ![z] h1 (pt R d 0) 0 (GlobalTheory.DerivEndo.cc_pt 0) (fun i => by simp), GlobalTheory.FormalMulN.ev_pt_fun h1 0, GlobalTheory.FormalMulN.ev_zero_fun h1]`. Both sides reduce to the same expression.
+-/
 private theorem ev_single_ev_restrict_first_axis {k : ℕ} (z : Pt R k d) (hz : ∀ i, constantCoeff (z i) = 0) (g : PS R 2 d) :
     ev ![z] (ev (n := 1) ![pt R d 0, 0] g) = ev ![z, 0] g := by
   have h1 := GlobalTheory.DerivEndo.noConst_one hz
@@ -174,6 +236,19 @@ private theorem ev_single_ev_restrict_first_axis {k : ℕ} (z : Pt R k d) (hz : 
     GlobalTheory.FormalMulN.ev_pt_fun h1 0, GlobalTheory.FormalMulN.ev_zero_fun h1]
   rfl
 
+/- English proof (translation)
+Take `⟨hz0, hzu⟩` from `hz`. Establish `h1` using `GlobalTheory.DerivEndo.noConst_one hz0`. Establish `hc : ∀ i, constantCoeff (comp1 φ z i) = 0` using `fun i => by`. Rewrite using `[comp1_apply_eq_ev_single, GlobalTheory.DerivEndo.cc_ev h1]`. Conclude with `hφ i`.
+
+Use `⟨hc, fun q => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hzu q`. Use `⟨(dLin φ).mulVec u, fun a => ?_⟩` and prove the remaining obligations. Establish `hB : ∀ g : PS R 2 d, ev ![z] (ev (n` using `1) ![φ] (ev (n := 1) ![pt R d 0, 0] g)) = ev ![comp1 φ z, 0] g := by`. Introduce `g`.
+
+Rewrite using `[GlobalTheory.DerivEndo.ev_ev h1 (GlobalTheory.DerivEndo.noConst_one hφ)]`. Establish `e : (fun j i => ev ![z] ((![φ] : Fin 1 → Pt R 1 d) j i)) = ![comp1 φ z]`. Use function extensionality and compare the values at `j i`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Rewrite using `[e, ev_single_ev_restrict_first_axis (comp1 φ z) hc]`. Establish `K : ∀ m, ∑ l, ev ![z] (pderiv R ((0 : Fin 1), l) (φ a)) * invJ G z l m = ∑ b, invJ G (comp1 φ z) a b * C (dLin φ b m)`. Introduce `m`. Establish `hj` using `congrArg (ev ![z]) (GlobalTheory.DerivEndo.jac_endo G φ hφ hom a m)`. Simplify using `only [GlobalTheory.DerivEndo.ev_sum h1, GlobalTheory.DerivEndo.ev_mul h1, GlobalTheory.DerivEndo.ev_C, hB, ev_single_ev_restrict_first_axis z hz0] at hj`.
+
+Conclude with `hj`. Rewrite using `[comp1_apply_eq_ev_single, invD_ev G h1]`. Simplify using `only [Fin.sum_univ_one, Matrix.cons_val_zero, hu]`. Simplify using `only [Finset.mul_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [← Finset.sum_mul, K]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem inv_comp (φ : Pt R 1 d) (hφ : ∀ i, constantCoeff (φ i) = 0)
     (hom : comp1 φ (G.add (pt R (n := 2) d 0) (pt R (n := 2) d 1)) =
       G.add (comp1 φ (pt R (n := 2) d 0)) (comp1 φ (pt R (n := 2) d 1)))
@@ -210,6 +285,9 @@ theorem inv_comp (φ : Pt R 1 d) (hφ : ∀ i, constantCoeff (φ i) = 0)
   simp only [Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum, mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, RingHom.map_det, h, Matrix.det_one]`. Conclude with `isUnit_one`.
+-/
 theorem isUnit_det_of_const {σ ι : Type} [Fintype ι] [DecidableEq ι]
     (M : Matrix ι ι (MvPowerSeries σ R))
     (h : (constantCoeff (σ := σ) (R := R)).mapMatrix M = 1) : IsUnit M.det := by
@@ -219,6 +297,11 @@ theorem isUnit_det_of_const {σ ι : Type} [Fintype ι] [DecidableEq ι]
 def blockJ (z : Fin n → Pt R n d) : Matrix (Fin n × Fin d) (Fin n × Fin d) (PS R n d) :=
   Matrix.of fun p q => if p.1 = q.1 then invJ G (z p.1) p.2 q.2 else 0
 
+/- English proof (translation)
+Use extensionality with `p q`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.one_apply]`. Unfold `blockJ`. Rewrite using `[Matrix.of_apply]`. Distinguish the cases in `h : p.1 = q.1`.
+
+Rewrite using `[if_pos h, const_invJ G (hz p.1)]`. Simplify using `[Prod.ext_iff, h]`. Rewrite using `[if_neg h, map_zero, if_neg (fun e => h (congrArg Prod.fst e))]`.
+-/
 theorem const_blockJ {z : Fin n → Pt R n d} (hz : ∀ b i, constantCoeff (z b i) = 0) :
     (constantCoeff (σ := Fin n × Fin d) (R := R)).mapMatrix (blockJ G z) = 1 := by
   ext p q
@@ -230,6 +313,25 @@ theorem const_blockJ {z : Fin n → Pt R n d} (hz : ∀ b i, constantCoeff (z b 
     simp [Prod.ext_iff, h]
   · rw [if_neg h, map_zero, if_neg (fun e => h (congrArg Prod.fst e))]
 
+/- English proof (translation)
+Establish `hψ' : ∀ b, (∀ i, constantCoeff (ψ b i) = 0) ∧ ∀ q : Fin n × Fin d, ∃ u : Fin d → R, ∀ a, invD G q (ψ b a) = ∑ l, invJ G (ψ b) a l * C (u l)` using `hψ`. Use `choose hψ0 u hu using hψ'`. Use `set Jac := Matrix.of fun i j : Fin n × Fin d => pderiv R j (ψ i.1 i.2) with hJac`. Use `set Lm := Matrix.of fun p q : Fin n × Fin d => coeff (Finsupp.single q 1) (ψ p.1 p.2) with hLm`. Use `set Um : Matrix (Fin n × Fin d) (Fin n × Fin d) R := Matrix.of fun p q => u p.1 q p.2 with hUm`.
+
+Establish `hpt0 : ∀ b i, constantCoeff ((fun b => pt R d b : Fin n → Pt R n d) b i) = 0` using `fun b i => GlobalTheory.DerivEndo.cc_pt b i`. Establish `key : Jac * blockJ G (fun b => pt R d b) = blockJ G ψ * (C (σ` using `Fin n × Fin d) (R := R)).mapMatrix Um := by`. Use extensionality with `i q`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, Fintype.sum_prod_type, Fintype.sum_prod_type]`. Establish `e1 : ∀ j1 : Fin n, ∑ j2, Jac i (j1, j2) * blockJ G (fun b => pt R d b) (j1, j2) q = if j1 = q.1 then ∑ c, pderiv R (j1, c) (ψ i.1 i.2) * invJ G (pt R d j1) c q.2 else 0`.
+
+Introduce `j1`. Unfold `blockJ`. Apply the tactic sequence `split_ifs with h <;> simp [hJac, h]`. Establish `e2 : ∀ p1 : Fin n, ∑ p2, blockJ G ψ i (p1, p2) * (C (σ` using `Fin n × Fin d) (R := R)).mapMatrix Um (p1, p2) q = if i.1 = p1 then ∑ l, invJ G (ψ i.1) i.2 l * C (u i.1 q l) else 0 := by`. Introduce `p1`.
+
+Unfold `blockJ`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[hUm]`. Simplify using `[h]`.
+
+Simplify using `only [e1, e2, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← hu]`. Both sides reduce to the same expression. Establish `hUpt : IsUnit (blockJ G (fun b => pt R d b)).det` using `isUnit_det_of_const _ (const_blockJ G hpt0)`. Establish `hUψ : IsUnit (blockJ G ψ).det` using `isUnit_det_of_const _ (const_blockJ G hψ0)`.
+
+Establish `hL : (constantCoeff (σ` using `Fin n × Fin d) (R := R)).mapMatrix Jac = Lm := by`. Use extensionality with `p q`. Simplify using `[hJac, hLm, GlobalTheory.FormalMulN.coeff_single_one]`. Establish `hCU : (constantCoeff (σ` using `Fin n × Fin d) (R := R)).mapMatrix ((C (σ := Fin n × Fin d) (R := R)).mapMatrix Um) = Um := by`. Use extensionality with `p q`.
+
+Simplify using the standard rewrite rules. Establish `hUL : Lm = Um`. Use `congrArg (constantCoeff (σ := Fin n × Fin d) (R := R)).mapMatrix key` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, const_blockJ G hpt0, const_blockJ G hψ0, hL, hCU, mul_one, one_mul]`. Conclude with `this`.
+
+Establish `hdet` using `congrArg Matrix.det key`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul, ← RingHom.map_det]`. Use `⟨hUψ.unit * hUpt.unit⁻¹, ?_⟩` and prove the remaining obligations. Establish `e : Jac.det = Jac.det * (blockJ G (fun b => pt R d b)).det * ((hUpt.unit⁻¹ : (PS R n d)ˣ) : PS R n d)`. Rewrite using `[mul_assoc, IsUnit.mul_val_inv, mul_one]`.
+
+Rewrite using `[e, hdet, hUL, Units.val_mul, IsUnit.unit_spec]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_jac_of_inv (ψ : Fin n → Pt R n d) (hψ : ∀ b, Inv G (ψ b)) :
     ∃ U : (PS R n d)ˣ, Matrix.det (Matrix.of fun i j : Fin n × Fin d => pderiv R j (ψ i.1 i.2)) =
       C (Matrix.det (Matrix.of fun p q : Fin n × Fin d =>
@@ -293,12 +395,22 @@ section Local
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   [IsAdicComplete (maximalIdeal V) V] [CharZero V] {d : ℕ}
 
+/- English proof (translation)
+Take `⟨-, -, h3, -⟩` from `GlobalTheory.PlaceInt.evC_spec V (Fin m × Fin d) (Fin n × Fin d) (Fin n × Fin d) (fun p => a p.1 p.2) (fun p => by rw [ha p.1 p.2]; exact Submodule.zero_mem _)`. Conclude with `h3 (fun p => ha p.1 p.2) f`.
+-/
 theorem evV_eq_ev {m n : ℕ} {a : Fin m → Pt V n d} (ha : ∀ j i, constantCoeff (a j i) = 0)
     (f : PS V m d) : evV a f = ev a f := by
   obtain ⟨-, -, h3, -⟩ := GlobalTheory.PlaceInt.evC_spec V (Fin m × Fin d) (Fin n × Fin d) (Fin n × Fin d)
     (fun p => a p.1 p.2) (fun p => by rw [ha p.1 p.2]; exact Submodule.zero_mem _)
   exact h3 (fun p => ha p.1 p.2) f
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact inv_zero G`. Consider the case `cons z L ih`. Establish `hz` using `hL z (by simp)`. Establish `hr` using `ih (fun x hx => hL x (by simp [hx]))`.
+
+Establish `e : L.foldr (addV G.F) 0 = L.foldr (addV G.F) 0` using `rfl`. Establish `e2 : addV G.F z (L.foldr (addV G.F) 0) = G.add z (L.foldr (addV G.F) 0)`. Use function extensionality and compare the values at `i`. Rewrite using `[formalGroup_add_apply_eq_ev]`. Conclude with `evV_eq_ev (GlobalTheory.DerivEndo.noConst_two hz.1 hr.1) _`.
+
+Rewrite using `[List.foldr_cons, e2]`. Conclude with `inv_add G hz hr`.
+-/
 theorem inv_foldr {n : ℕ} (G : FGLaw V d) (L : List (Pt V n d)) (hL : ∀ z ∈ L, Inv G z) :
     Inv G (L.foldr (addV G.F) 0) := by
   induction L with
@@ -314,6 +426,13 @@ theorem inv_foldr {n : ℕ} (G : FGLaw V d) (L : List (Pt V n d)) (hL : ∀ z �
     rw [List.foldr_cons, e2]
     exact inv_add G hz hr
 
+/- English proof (translation)
+Unfold `matV`. Apply `inv_foldr` to reduce the goal to its premises. Introduce `z hz`. Rewrite `hz` using `[List.mem_ofFn]`. Take `⟨j, rfl⟩` from `hz`.
+
+Establish `e : compV (B.A.act (p b j)) (pt V (n` using `n) d j) = comp1 (B.A.act (p b j)) (pt V d j) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[comp1_apply_eq_ev_single]`. Conclude with `evV_eq_ev (GlobalTheory.DerivEndo.noConst_one (GlobalTheory.DerivEndo.cc_pt j)) _`. Rewrite using `[e]`.
+
+Conclude with `inv_comp B.G _ (B.A.const _) (B.A.hom _) (inv_pt B.G j)`.
+-/
 theorem inv_matV {O : Type} [CommRing O] [StarRing O] (B : FB V d O) {n : ℕ}
     (p : Matrix (Fin n) (Fin n) O) (b : Fin n) :
     Inv B.G (matV B p (fun j => pt V (n := n) d j) b) := by
@@ -331,6 +450,9 @@ theorem inv_matV {O : Type} [CommRing O] [StarRing O] (B : FB V d O) {n : ℕ}
 
 end Local
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ d O _ _ B n p`. Conclude with `det_jac_of_inv B.G _ (fun b => inv_matV B p b)`.
+-/
 theorem det_jacobian_matV : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [IsAdicComplete (maximalIdeal V) V] [CharZero V] (d : ℕ) (O : Type) [CommRing O] [StarRing O]
     (B : FB V d O) (n : ℕ) (p : Matrix (Fin n) (Fin n) O), ∃ U : (PS V n d)ˣ,

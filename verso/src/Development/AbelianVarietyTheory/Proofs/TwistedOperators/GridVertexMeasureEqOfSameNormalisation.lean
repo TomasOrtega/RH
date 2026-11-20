@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.HaarNorm
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨hμ, ⟨θ, hθ⟩, hθall⟩` from `h`. Take `⟨⟨A, hA⟩, hAall⟩` from `hθall θ hθ`. Take `⟨⟨m, hm⟩, hmall⟩` from `hAall A hA`. Establish `e` using `hmall m hm`.
+
+Establish `e'` using `((h'.2.2 θ hθ).2 A hA).2 m hm`. Establish `hμ'` using `h'.1`. Establish `hB : ∀ ρ : D.what₂.Tau, ∃ B : Set (UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2), MeasurableSet B ∧ m ρ B ≠ 0 ∧ m ρ B ≠ ⊤`. Introduce `ρ`. Take `⟨j1, j2, j3, -, j5, -⟩` from `GlobalTheory.UpqTopology.upq_lcsc (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2`.
+
+Use `haveI := hg ρ (m ρ) (hm ρ)`. Take `⟨C, hC, hC1⟩` from `exists_compact_mem_nhds (1 : UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2)`. Apply the tactic sequence `exact ⟨C, hC.measurableSet, (by first | exact (Measure.measure_pos_of_mem_nhds (m ρ) hC1).ne' | exact (measure_pos_of_nonempty_interior (m ρ) ⟨1, mem_interior_iff_mem_nhds.2 hC1⟩).ne'), hC.measure_lt_top.ne⟩`. Use `choose B hBm hB0 hBt using hB`. Use `set S := {h : GA D V | Lev.finE V h ∈ K ∧ ∀ ρ, ∃ b ∈ B ρ, UpqT.mat b * A ρ = A ρ * infMat D.sp.cm.sig V.gram (θ ρ) h}`.
+
+Establish `hS : μ S = ∏ ρ, m ρ (B ρ)` using `e B hBm`. Establish `hS' : μ' S = ∏ ρ, m ρ (B ρ)` using `e' B hBm`. Establish `hp0 : ∏ ρ, m ρ (B ρ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun ρ _ => hB0 ρ`. Establish `hpt : ∏ ρ, m ρ (B ρ) ≠ ⊤` using `ENNReal.prod_ne_top fun ρ _ => hBt ρ`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul μ' μ`.
+
+Establish `hcS : μ' S = (Measure.haarScalarFactor μ' μ : ENNReal) * μ S` using `by conv_lhs => rw [hc]`. Both sides reduce to the same expression. Rewrite `hcS` using `[hS, hS']`. Establish `hc1 : (Measure.haarScalarFactor μ' μ : ENNReal) = 1`. Use `(ENNReal.mul_left_inj hp0 hpt).1 (hcS.symm.trans (one_mul _).symm)` as an intermediate fact.
+
+Conclude with `this`. Rewrite using `[hc, ENNReal.coe_eq_one.1 hc1, one_smul]`.
+-/
 theorem measLevW_unique {D : D7} (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D)))
     (good : ∀ ρ : D.what₂.Tau, Measure (UpqT (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2) → Prop)
     (hg : ∀ ρ m, good ρ m → m.IsHaarMeasure) {μ μ' : Measure (GA D V)}
@@ -50,6 +63,9 @@ theorem measLevW_unique {D : D7} (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev
     exact this
   rw [hc, ENNReal.coe_eq_one.1 hc1, one_smul]
 
+/- English proof (translation)
+Introduce `D T L sc G M M' X K h h'`. Unfold `GlobalTheory.FunObj.Vol.IsAt at h h'`. Use `split_ifs at h h'`. Conclude with `measLevW_unique _ _ _ (fun _ _ hm => hm.1) h.1 h'.1`. Conclude with `measLevW_unique _ _ _ (fun _ _ hm => hm.1) h.1 h'.1`.
+-/
 theorem vol_nu_eq_of_isAt : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (M M' : Vol G) (X : Node) (K : Subgroup (GL (Fin (G.V X).rank) (Lev.EAf D))), M.IsAt X K → M'.IsAt X K → M.ν X = M'.ν X := by
   intro D T L sc G M M' X K h h'
   unfold GlobalTheory.FunObj.Vol.IsAt at h h'

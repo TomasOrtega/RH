@@ -18,6 +18,9 @@ def Riso (g : G) : L2 Γ μ ≃ₗᵢ[ℂ] L2 Γ μ where
     (by ext F; simp [← ContinuousLinearMap.mul_apply, ← map_mul])
   norm_map' := norm_R g
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Riso_apply (g : G) (F : L2 Γ μ) : Riso Γ μ g F = R Γ μ g F := rfl
 
 def Rhom : G →* (L2 Γ μ ≃ₗᵢ[ℂ] L2 Γ μ) where

@@ -13,6 +13,11 @@ open scoped ComplexOrder ContDiff
 
 namespace GlobalTheory.ShFam
 
+/- English proof (translation)
+Introduce `D A N j S κ s L k x i`. Establish `hoff : ∀ z : Pt D.what₂.Tau j (N - j), ¬ LiesIn (s.toCpt L k z) (x.cpt i)` using `fun z h => s.not_liesIn_toCpt L k z ((x.liesIn_genBd_iff _).2 ⟨i, h⟩)`. Take `⟨-, h2, -⟩` from `GlobalTheory.T.smooth_pullback_to_frame_domain D A N j S κ s L k {y | ¬ LiesIn y (x.cpt i)} (fun y => Real.log (x.nrm κ.σ₀ i y ^ 2)) (isOpen_not_liesIn _) (x.nrm_div κ.σ₀ i).smoothOn_log`. Establish `e : {v ∈ DomFlat D.what₂.Tau j (N - j) | s.toCpt L k (unflat v) ∈ {y | ¬ LiesIn y (x.cpt i)}} = DomFlat D.what₂.Tau j (N - j)` using `Set.sep_eq_self_iff_mem_true.2 fun v _ => hoff (unflat v)`. Rewrite `h2` using `[e]`.
+
+Establish `h3 : ContDiffOn ℝ ∞ (fun v => Real.exp (Real.log (x.nrm κ.σ₀ i (s.toCpt L k (unflat v)) ^ 2) / 2)) (DomFlat D.what₂.Tau j (N - j))` using `(h2.div_const 2).exp`. Use `(Complex.ofRealCLM.contDiff.comp_contDiffOn h3).congr fun v _ => ?_` and prove the remaining obligations. Establish `hp` using `x.nrm_pos (s.not_liesIn_toCpt L k (unflat v)) i`. Simplify using `only [Function.comp_apply, Complex.ofRealCLM_apply]`. Rewrite using `[Real.log_pow, Nat.cast_ofNat, mul_div_cancel_left₀ _ (two_ne_zero), Real.exp_log hp]`.
+-/
 theorem smoothOn_nrm_toCpt : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (L : CmList A)
     (k : s.Comp) (x : ToroidalCompactificationData s) (i : Fin x.m),
     HodgeDomain.SmoothOn fun z : Pt D.what₂.Tau j (N - j) => (x.nrm κ.σ₀ i (s.toCpt L k z) : ℂ) := by

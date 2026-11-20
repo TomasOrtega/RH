@@ -19,6 +19,11 @@ def Chosen8 (CH C0 C5 c6 : ℝ) : Prop :=
 
 def WeightVectorSmallSharesEight (C0 CH : ℝ) : Prop := ∃ C5 c6 : ℝ, 0 < C5 ∧ 0 < c6 ∧ Chosen8 Fm CH C0 C5 c6
 
+/- English proof (translation)
+Take `⟨x0, hx0⟩` from `h`. Use `⟨max x0 (Fm.x1 + 1), fun x hx hW => ?_⟩` and prove the remaining obligations. Establish `hx1 : Fm.x1 < x`. Use `le_of_max_le_right hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hxx : x ≥ x0` using `le_of_max_le_left hx`. Take `⟨i0⟩` from `Fm.Ix_win x hW`. Take `⟨a, b, hwin, hself⟩` from `FamCore.coverU_hyp_self Fm.toFamCore x hx1 i0`. Conclude with `⟨i0, a, b, hwin, ⟨i0, fun t => ⟨(hself t).1.symm, (hself t).2.symm⟩⟩, fun i _ => hx0 x hxx i⟩`.
+-/
 theorem chosenWS_of_wall (h : ChosenWall Fm) : ChosenWS Fm := by
   obtain ⟨x0, hx0⟩ := h
   refine ⟨max x0 (Fm.x1 + 1), fun x hx hW => ?_⟩

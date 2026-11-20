@@ -27,6 +27,11 @@ def ZuckDualG : Prop :=
     PI.UpqRep.IsHCParam μ → PI.UpqRep.IsDS ε μ σ → ∀ h : ℝ, PI.ZuckTensor.GapAtLeast ε μ h → thrS ε + 1 < h →
       ∃ X : PI.ZuckTensor.TensorDSd n ε μ H σ, ∀ s, s ∈ X.Sm ↔ PI.UpqRep.IsHCParam (μ - Pi.single s 1)
 
+/- English proof (translation)
+Introduce `n ε μ H _ _ _ σ hμ hd h hG hth`. Distinguish the cases in `hq : 1 ≤ S7.q0 ε`. Conclude with `cns_zuck_nc hq hμ hd hG hth`. Establish `h0 : S7.q0 ε = 0` using `by omega`. Establish `hpq : pOf ε = 0 ∨ qOf ε = 0`.
+
+Simplify using `only [S7.q0] at h0`. Use linear arithmetic over natural numbers and integers. Conclude with `cns_zuck_cpt hpq hμ hd`.
+-/
 theorem zuckG : ZuckG := by
   intro n ε μ H _ _ _ σ hμ hd h hG hth
   by_cases hq : 1 ≤ S7.q0 ε
@@ -37,6 +42,11 @@ theorem zuckG : ZuckG := by
       omega
     exact cns_zuck_cpt hpq hμ hd
 
+/- English proof (translation)
+Introduce `n ε μ H _ _ _ σ hμ hd h hG hth`. Distinguish the cases in `hq : 1 ≤ S7.q0 ε`. Conclude with `cns_zuckd_nc hq hμ hd hG hth`. Establish `h0 : S7.q0 ε = 0` using `by omega`. Establish `hpq : pOf ε = 0 ∨ qOf ε = 0`.
+
+Simplify using `only [S7.q0] at h0`. Use linear arithmetic over natural numbers and integers. Conclude with `cns_zuckd_cpt hpq hμ hd`.
+-/
 theorem zuckDualG : ZuckDualG := by
   intro n ε μ H _ _ _ σ hμ hd h hG hth
   by_cases hq : 1 ≤ S7.q0 ε

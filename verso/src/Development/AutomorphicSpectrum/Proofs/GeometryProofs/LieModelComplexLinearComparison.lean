@@ -20,11 +20,17 @@ def push (hφ : IsGrpPullback G' G f φ) {T : Over S'} (x : T ⟶ G') : Over.mk 
     simp only [Over.mk_hom, Category.assoc, Functor.id_obj, Functor.const_obj_obj, Over.mk_left]
     rw [h1, ← Category.assoc, h2])
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(hφ.2 T x y (push hφ x) (push hφ y) rfl rfl).symm`.
+-/
 theorem push_mul (hφ : IsGrpPullback G' G f φ) {T : Over S'} (x y : T ⟶ G') :
     push hφ (x * y) = push hφ x * push hφ y := by
   apply Over.OverMorphism.ext
   exact (hφ.2 T x y (push hφ x) (push hφ y) rfl rfl).symm
 
+/- English proof (translation)
+Establish `h` using `push_mul hφ (1 : T ⟶ G') 1`. Rewrite `h` using `[_root_.mul_one]`. Conclude with `left_eq_mul.mp h`.
+-/
 theorem push_one (hφ : IsGrpPullback G' G f φ) (T : Over S') :
     push hφ (1 : T ⟶ G') = 1 := by
   have h := push_mul hφ (1 : T ⟶ G') 1
@@ -33,6 +39,9 @@ theorem push_one (hφ : IsGrpPullback G' G f φ) (T : Over S') :
 
 end Push
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Simplify using `[dualMap]`.
+-/
 theorem spec_fst_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom B B B).toRingHom) ≫
         Spec.map (CommRingCat.ofHom (dualMap f)) =
@@ -42,6 +51,9 @@ theorem spec_fst_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) 
   refine CommRingCat.hom_ext (RingHom.ext fun a => ?_)
   simp [dualMap]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem spec_alg_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     Spec.map (CommRingCat.ofHom (dualMap f)) ≫ Spec.map (CommRingCat.ofHom (algebraMap A (DualNumber A))) =
       Spec.map (CommRingCat.ofHom (algebraMap B (DualNumber B))) ≫ Spec.map (CommRingCat.ofHom f) := by
@@ -50,6 +62,9 @@ theorem spec_alg_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) 
   refine CommRingCat.hom_ext (RingHom.ext fun a => ?_)
   ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, epsMul, mul_comm]`.
+-/
 theorem spec_epsMul_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (c : A) :
     Spec.map (CommRingCat.ofHom (epsMul (f c))) ≫ Spec.map (CommRingCat.ofHom (dualMap f)) =
       Spec.map (CommRingCat.ofHom (dualMap f)) ≫ Spec.map (CommRingCat.ofHom (epsMul c)) := by
@@ -58,6 +73,25 @@ theorem spec_epsMul_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* 
   refine CommRingCat.hom_ext (RingHom.ext fun a => ?_)
   ext <;> simp [dualMap, epsMul, mul_comm]
 
+/- English proof (translation)
+Set `c : epsAt (spMap ψ ≫ h) ⟶ Over.mk ((epsAt (𝟙 (Sp R))).hom ≫ h)` to `Over.homMk (spMap (dualMap ψ)) (by`. Establish `key` using `spec_alg_dualMap ψ`. Simplify using `only [Over.mk_hom, Category.comp_id]`. Rewrite using `[← Category.assoc, key, Category.assoc])`. Set `w : (Fin g → R) → (epsAt (spMap ψ ≫ h) ⟶ G)` to `fun x => c ≫ push hφ (M.pt x)`.
+
+Establish `wl : ∀ x, (w x).left = spMap (dualMap ψ) ≫ (M.pt x).left ≫ φ` using `fun _ => rfl`. Establish `wt : ∀ x, IsTanAt G (spMap ψ ≫ h) (w x)`. Introduce `x`. Set `c0 : Over.mk (spMap ψ ≫ h) ⟶ Over.mk ((Over.mk (𝟙 (Sp R))).hom ≫ h)` to `Over.homMk (spMap ψ) (by simp)`. Establish `h0 : c0 ≫ push hφ (1 : Over.mk (𝟙 (Sp R)) ⟶ G') = 1`.
+
+Rewrite using `[push_one]`. Conclude with `MonObj.comp_one c0`. Establish `h1 : spMap ψ ≫ (1 : Over.mk (𝟙 (Sp R)) ⟶ G').left ≫ φ = (1 : Over.mk (spMap ψ ≫ h) ⟶ G).left` using `congrArg CommaMorphism.left h0`. Establish `h2` using `M.tan x`. Unfold `IsTanAt at h2 ⊢`.
+
+Rewrite using `[wl, ← h1, ← h2, ← Category.assoc, spec_fst_dualMap ψ]`. Simplify using `only [Category.assoc]`. Use `choose j hj using fun x => MR.onto (w x) (wt x)`. Establish `jadd : ∀ x y, j (x + y) = j x + j y`. Introduce `x y`.
+
+Apply `MR.inj` to reduce the goal to its premises. Rewrite using `[MR.add, hj, hj, hj]`. Simplify using `only [w, M.add, push_mul, MonObj.comp_mul]`. Establish `jsmul : ∀ (a : R) x, j (a • x) = ψ a • j x`. Introduce `a x`.
+
+Apply `MR.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[MR.smul, hj, hj, wl, wl, M.smul, ← Category.assoc (Spec.map _) (spMap (dualMap ψ)), spec_epsMul_dualMap]`. Simplify using `only [Category.assoc]`. Set `J : (Fin g → R) →+ Vz` to `AddMonoidHom.mk' j jadd`.
+
+Use `⟨∑ i, (LinearMap.proj i : (Fin g → ℂ) →ₗ[ℂ] ℂ).smulRight (j (Pi.single i 1)), fun x => ?_⟩` and prove the remaining obligations. Establish `hΘ : (∑ i, (LinearMap.proj i : (Fin g → ℂ) →ₗ[ℂ] ℂ).smulRight (j (Pi.single i 1))) (fun e => ψ (x e)) = j x`. Establish `hx : x = ∑ i, x i • (Pi.single i 1 : Fin g → R)` using `by conv_lhs => rw [← Finset.univ_sum_single x]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Pi.single_smul, smul_eq_mul, _root_.mul_one]`.
+
+Establish `hJ : J x = ∑ i, J (x i • (Pi.single i 1 : Fin g → R))` using `by conv_lhs => rw [hx]`. Conclude with `map_sum J _ _`. Establish `hJ' : j x = ∑ i, ψ (x i) • j (Pi.single i 1)`. Use `hJ.trans (Finset.sum_congr rfl fun i _ => jsmul _ _)` and prove the remaining obligations. Rewrite using `[hJ']`.
+
+Simplify using `[LinearMap.sum_apply]`. Rewrite using `[hΘ, hj, wl]`.
+-/
 theorem exists_linear_of_pullback {X : Scheme.{0}} {R : Type} [CommRing R] {G' : Over (Sp R)} [GrpObj G']
     {G : Over X} [GrpObj G] {h : Sp R ⟶ X} {φ : G'.left ⟶ G.left} (hφ : IsGrpPullback G' G h φ) {g : ℕ}
     (M : LieModel G' (𝟙 (Sp R)) (Fin g → R)) (ψ : R →+* ℂ) {Vz : Type} [AddCommGroup Vz] [Module ℂ Vz]
@@ -113,6 +147,9 @@ theorem exists_linear_of_pullback {X : Scheme.{0}} {R : Type} [CommRing R] {G' :
     simp [LinearMap.sum_apply]
   rw [hΘ, hj, wl]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t R _ t' h m g M ψ Vz _ _ MR`. Conclude with `exists_linear_of_pullback m.cart M ψ MR`.
+-/
 theorem exists_linear_fibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X) (R : Type) [CommRing R] (t' : SAB H (Sp R)) (h : Sp R ⟶ X) (m : SABMap t' t h) (g : ℕ) (M : LieModel t'.G (𝟙 (Sp R)) (Fin g → R)) (ψ : R →+* ℂ) (Vz : Type) [AddCommGroup Vz] [Module ℂ Vz] (MR : LieModel t.G (spMap ψ ≫ h) Vz), ∃ Θ : (Fin g → ℂ) →ₗ[ℂ] Vz, ∀ x : Fin g → R, (MR.pt (Θ (fun e => ψ (x e)))).left = spMap (dualMap ψ) ≫ (M.pt x).left ≫ m.φ := by
   intro E _ _ _ H X t R _ t' h m g M ψ Vz _ _ MR
   exact exists_linear_of_pullback m.cart M ψ MR

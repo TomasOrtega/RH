@@ -8,6 +8,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.ThetaExh
 
+/- English proof (translation)
+Introduce `hL D P i hF`. Take `⟨B, hB, hinner⟩` from `hF`. Conclude with `GlobalTheory.ThetaExh.typeOrth_of_avTied D P.M P.H.av i B hB hinner (GlobalTheory.AlgFormsFin.finiteDimensional_forms D D.R.nV (P.M.loc i).wt (GlobalTheory.T.finite_doubleCosets_definiteUnitary_maximalLevel D.host.E D.R.nV))`.
+-/
 theorem typeOrth_of_pin : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ i : D.nd.Loc, MtForm D P.M i → GlobalTheory.ThetaExh.TypeOrth D.nd D.naut i := by
   intro hL D P i hF
   obtain ⟨B, hB, hinner⟩ := hF

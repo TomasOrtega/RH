@@ -5,6 +5,25 @@ open GlobalTheory.LKInvGood
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ _ ℓ _`. Set `f : NumberField.RingOfIntegers F → ℚ_[ℓ] ⊗[ℚ] F` to `fun a => (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] (a : F)`. Take `⟨s, hs⟩` from `(inferInstance : Module.Finite ℤ (NumberField.RingOfIntegers F)).fg_top`. Establish `hint : ∀ x ∈ (f '' (s : Set (NumberField.RingOfIntegers F))), IsIntegral ℤ_[ℓ] x`. Introduce and unpack `_ ⟨a, -, rfl⟩`.
+
+Establish `h1 : IsIntegral ℤ ((a : F))` using `NumberField.RingOfIntegers.isIntegral_coe a`. Establish `h2 : IsIntegral ℤ (f a)`. Use `h1.map ((Algebra.TensorProduct.includeRight : F →ₐ[ℚ] ℚ_[ℓ] ⊗[ℚ] F).restrictScalars ℤ)` as an intermediate fact. Simplify `this` using `[f]`. Conclude with `h2.tower_top`.
+
+Establish `hfin : Module.Finite ℤ_[ℓ] (Algebra.adjoin ℤ_[ℓ] (f '' (s : Set (NumberField.RingOfIntegers F))))` using `Algebra.finite_adjoin_of_finite_of_isIntegral ((s.finite_toSet).image f) hint`. Establish `heq : cenOrder ℓ F = Algebra.adjoin ℤ_[ℓ] (f '' (s : Set (NumberField.RingOfIntegers F)))`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Set `A` to `Algebra.adjoin ℤ_[ℓ] (f '' (s : Set (NumberField.RingOfIntegers F)))`. Set `N : Submodule ℤ (NumberField.RingOfIntegers F)` to `{ carrier := {x | f x ∈ A} add_mem' := by`. Introduce `x y hx hy`. Simplify using `only [Set.mem_setOf_eq, f, map_add, TensorProduct.tmul_add] at hx hy ⊢`. Conclude with `A.add_mem hx hy`.
+
+Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_setOf_eq, f, map_zero, TensorProduct.tmul_zero]`. Conclude with `A.zero_mem`. Use the proof step `smul_mem' := by`. Introduce `c x hx`.
+
+Simplify using `only [Set.mem_setOf_eq, f, zsmul_eq_mul, map_mul, map_intCast] at hx ⊢`. Establish `: (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] ((c : F) * (x : F)) = c • ((1 : ℚ_[ℓ]) ⊗ₜ[ℚ] (x : F))`. Rewrite using `[← zsmul_eq_mul, TensorProduct.tmul_smul]`. Rewrite using `[this]`. Conclude with `A.toSubring.zsmul_mem hx c }`.
+
+Establish `hsN : (s : Set _) ⊆ N` using `fun x hx => show f x ∈ A from Algebra.subset_adjoin ⟨x, hx, rfl⟩`. Establish `: a ∈ N`. Use `Submodule.span_le.mpr hsN` as an intermediate fact. Rewrite `this` using `[hs]`. Conclude with `this Submodule.mem_top`.
+
+Conclude with `this`. Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, -, rfl⟩`. Conclude with `⟨a, rfl⟩`. Rewrite using `[heq]`.
+
+Conclude with `hfin`.
+-/
 theorem cenOrder_finite : ∀ (F : Type) [Field F] [NumberField F] (ℓ : ℕ) [Fact ℓ.Prime],
     Module.Finite ℤ_[ℓ] (cenOrder ℓ F) := by
   intro F _ _ ℓ _

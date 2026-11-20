@@ -20,10 +20,16 @@ section CoordLemmas
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {P : HeightOneSpectrum (𝓞 E)}
   {N : Submodule (𝓞 E) (Sp E n)}
 
+/- English proof (translation)
+Use `h.smul 0 0 (Submodule.zero_mem _)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem FunAt.zero {f : Sp E n → 𝓞 E ⧸ P.asIdeal} (h : FunAt P N f) : f 0 = 0 := by
   have := h.smul 0 0 (Submodule.zero_mem _)
   simpa using this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h.zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, h.add _ (hv a (Finset.mem_insert_self _ _)) _ (Submodule.sum_mem _ fun i hi => hv i (Finset.mem_insert_of_mem hi)), ih fun i hi => hv i (Finset.mem_insert_of_mem hi)]`.
+-/
 theorem FunAt.sum {f : Sp E n → 𝓞 E ⧸ P.asIdeal} (h : FunAt P N f) {ι : Type} (s : Finset ι) (v : ι → Sp E n)
     (hv : ∀ i ∈ s, v i ∈ localization₂ P.asIdeal N) : f (∑ i ∈ s, v i) = ∑ i ∈ s, f (v i) := by
   classical
@@ -35,6 +41,11 @@ theorem FunAt.sum {f : Sp E n → 𝓞 E ⧸ P.asIdeal} (h : FunAt P N f) {ι : 
         (Submodule.sum_mem _ fun i hi => hv i (Finset.mem_insert_of_mem hi)),
       ih fun i hi => hv i (Finset.mem_insert_of_mem hi)]
 
+/- English proof (translation)
+Establish `key : z ∈ N ∧ f z = 0`. Use `Submodule.smul_induction_on hz (fun p hp y hy => ?_) (fun y y' hy hy' => ?_)` and prove the remaining obligations. Use `⟨N.smul_mem p hy, ?_⟩` and prove the remaining obligations. Rewrite using `[h.smul p y (le_locP _ _ hy), Ideal.Quotient.eq_zero_iff_mem.2 hp, zero_mul]`. Use `⟨N.add_mem hy.1 hy'.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h.add y (le_locP _ _ hy.1) y' (le_locP _ _ hy'.1), hy.2, hy'.2, add_zero]`. Conclude with `key.2`.
+-/
 theorem FunAt.of_smul_mem {f : Sp E n → 𝓞 E ⧸ P.asIdeal} (h : FunAt P N f) {z : Sp E n}
     (hz : z ∈ P.asIdeal • N) : f z = 0 := by
   have key : z ∈ N ∧ f z = 0 := by
@@ -45,6 +56,11 @@ theorem FunAt.of_smul_mem {f : Sp E n → 𝓞 E ⧸ P.asIdeal} (h : FunAt P N f
       rw [h.add y (le_locP _ _ hy.1) y' (le_locP _ _ hy'.1), hy.2, hy'.2, add_zero]
   exact key.2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ localization₂ P.asIdeal N`. Take `⟨s, hs, hsy⟩` from `(mem_locP _ _ _).1 hy`. Apply `mul_left_cancel₀ (mk_ne_zero hs)` to reduce the goal to its premises. Rewrite using `[← hf.smul s y hy, ← hg.smul s y hy, h _ hsy]`.
+
+Rewrite using `[hf.off y hy, hg.off y hy]`.
+-/
 theorem FunAt.ext_on {f g : Sp E n → 𝓞 E ⧸ P.asIdeal} (hf : FunAt P N f) (hg : FunAt P N g)
     (h : ∀ z ∈ N, f z = g z) : f = g := by
   funext y
@@ -56,22 +72,37 @@ theorem FunAt.ext_on {f g : Sp E n → 𝓞 E ⧸ P.asIdeal} (hf : FunAt P N f) 
 
 variable {co : Sp E n → (Fin n → 𝓞 E ⧸ P.asIdeal)}
 
+/- English proof (translation)
+Rewrite using `[h.add x hx y hy]; rfl smul a x hx := by rw [h.smul a x hx]; rfl off x hx := by rw [h.off x hx]; rfl`.
+-/
 theorem CoordAt.comp (h : CoordAt P N co) (i : Fin n) : FunAt P N fun y => co y i where
   add x hx y hy := by rw [h.add x hx y hy]; rfl
   smul a x hx := by rw [h.smul a x hx]; rfl
   off x hx := by rw [h.off x hx]; rfl
 
+/- English proof (translation)
+The claim follows from `funext fun i => (h.comp i).zero`.
+-/
 theorem CoordAt.zero (h : CoordAt P N co) : co 0 = 0 := funext fun i => (h.comp i).zero
 
+/- English proof (translation)
+The claim follows from `funext fun i => (h.comp i).of_smul_mem hz`.
+-/
 theorem CoordAt.of_smul_mem (h : CoordAt P N co) {z : Sp E n} (hz : z ∈ P.asIdeal • N) : co z = 0 :=
   funext fun i => (h.comp i).of_smul_mem hz
 
+/- English proof (translation)
+Establish `h1 : x - y = x + (-1 : 𝓞 E) • y` using `by rw [neg_smul, one_smul, sub_eq_add_neg]`. Rewrite using `[h1, h.add x hx _ (Submodule.smul_mem _ _ hy), h.smul _ y hy, map_neg, map_one, neg_smul, one_smul, sub_eq_add_neg]`.
+-/
 theorem CoordAt.sub (h : CoordAt P N co) {x y : Sp E n} (hx : x ∈ localization₂ P.asIdeal N)
     (hy : y ∈ localization₂ P.asIdeal N) : co (x - y) = co x - co y := by
   have h1 : x - y = x + (-1 : 𝓞 E) • y := by rw [neg_smul, one_smul, sub_eq_add_neg]
   rw [h1, h.add x hx _ (Submodule.smul_mem _ _ hy), h.smul _ y hy, map_neg, map_one, neg_smul, one_smul,
     sub_eq_add_neg]
 
+/- English proof (translation)
+The claim follows from `h.ker _ (N.sub_mem hx hy) (by rw [h.sub (le_locP _ _ hx) (le_locP _ _ hy), e, sub_self])`.
+-/
 theorem CoordAt.sub_mem (h : CoordAt P N co) {x y : Sp E n} (hx : x ∈ N) (hy : y ∈ N) (e : co x = co y) :
     x - y ∈ P.asIdeal • N :=
   h.ker _ (N.sub_mem hx hy) (by rw [h.sub (le_locP _ _ hx) (le_locP _ _ hy), e, sub_self])
@@ -99,12 +130,24 @@ section Exists
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨a, t, rfl⟩` from `IsLocalization.exists_mk'_eq P.asIdeal.primeCompl r`. Use `⟨a, t, t.2, ?_⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 E) (Ow P) E, ← map_mul, mul_comm, IsLocalization.mk'_spec, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem intAt_algebraMap_ow (P : HeightOneSpectrum (𝓞 E)) (r : Ow P) : IntAt P (algebraMap (Ow P) E r) := by
   obtain ⟨a, t, rfl⟩ := IsLocalization.exists_mk'_eq P.asIdeal.primeCompl r
   refine ⟨a, t, t.2, ?_⟩
   rw [IsScalarTower.algebraMap_apply (𝓞 E) (Ow P) E, ← map_mul, mul_comm, IsLocalization.mk'_spec,
     ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Take `⟨ι, _, b, bK, hb⟩` from `exists_basis_atW P hN.fg hN.span_eq_top`. Establish `hcard : Fintype.card ι = n`. Rewrite using `[← Module.finrank_eq_card_basis bK, Module.finrank_fin_fun]`. Set `e : ι ≃ Fin n` to `Fintype.equivFinOfCardEq hcard`. Use `⟨bK.reindex e, fun i => ?_, fun y hy i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Module.Basis.reindex_apply, hb]`. Conclude with `(mem_locP _ _ _).2 (mem_atW_iff.1 (b (e.symm i)).2)`. Establish `hy' : y ∈ atW P N` using `mem_atW_iff.2 ((mem_locP _ _ _).1 hy)`. Establish `h1 : (∑ j, b.repr ⟨y, hy'⟩ j • b j) = (⟨y, hy'⟩ : atW P N)` using `b.sum_repr _`. Establish `h2 : y = ∑ j, algebraMap (Ow P) E (b.repr ⟨y, hy'⟩ j) • bK j`.
+
+Establish `h3` using `congrArg (fun z : atW P N => (z : Sp E n)) h1`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h3`. Use `h3.symm.trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hb, ow_smul_def]`. Establish `h4 : bK.repr y (e.symm i) = algebraMap (Ow P) E (b.repr ⟨y, hy'⟩ (e.symm i))`.
+
+Establish `h5` using `congrArg (fun z => bK.repr z (e.symm i)) h2`. Simplify using `only [Module.Basis.repr_sum_self] at h5`. Conclude with `h5`. Rewrite using `[Module.Basis.repr_reindex_apply, h4]`. Conclude with `intAt_algebraMap_ow P _`.
+-/
 theorem exists_locBasis (P : HeightOneSpectrum (𝓞 E)) {N : Submodule (𝓞 E) (Sp E n)}
     (hN : Submodule.IsLattice E N) :
     ∃ β : Module.Basis (Fin n) E (Sp E n), (∀ i, β i ∈ localization₂ P.asIdeal N) ∧
@@ -131,6 +174,27 @@ theorem exists_locBasis (P : HeightOneSpectrum (𝓞 E)) {N : Submodule (𝓞 E)
     rw [Module.Basis.repr_reindex_apply, h4]
     exact intAt_algebraMap_ow P _
 
+/- English proof (translation)
+Take `⟨β, hβ, hint⟩` from `exists_locBasis P hN`. Set `co : Sp E n → (Fin n → 𝓞 E ⧸ P.asIdeal)` to `fun y => if y ∈ localization₂ P.asIdeal N then fun i => redP P (β.repr y i) else 0`. Establish `hpos : ∀ y, y ∈ localization₂ P.asIdeal N → co y = fun i => redP P (β.repr y i)` using `fun y hy => if_pos hy`. Establish `hsm : ∀ (a : 𝓞 E), ∀ x ∈ localization₂ P.asIdeal N, co (a • x) = Ideal.Quotient.mk P.asIdeal a • co x`. Introduce `a x hx`.
+
+Rewrite using `[hpos _ (Submodule.smul_mem _ a hx), hpos _ hx]`. Use function extensionality and compare the values at `i`. Rewrite using `[← algebraMap_smul E a x, map_smul, Finsupp.smul_apply, smul_eq_mul, ← Algebra.smul_def, redP_osmul a (hint x hx i)]`. Both sides reduce to the same expression. Use `⟨co, ⟨?_, hsm, fun x hx => if_neg hx, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `x hx y hy`. Rewrite using `[hpos _ (Submodule.add_mem _ hx hy), hpos _ hx, hpos _ hy]`. Use function extensionality and compare the values at `i`. Rewrite using `[map_add, Finsupp.add_apply, reduction_add (hint x hx i) (hint y hy i)]`. Both sides reduce to the same expression.
+
+Introduce `c choose r hr using fun i => Ideal.Quotient.mk_surjective (c i)`. Establish `hy0 : ∑ i, r i • β i ∈ localization₂ P.asIdeal N` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hβ i)`. Establish `hc0 : co (∑ i, r i • β i) = c`. Rewrite using `[hpos _ hy0]`. Use function extensionality and compare the values at `i`.
+
+Establish `: (∑ i, r i • β i) = ∑ i, algebraMap (𝓞 E) E (r i) • β i` using `Finset.sum_congr rfl fun i _ => (algebraMap_smul E _ _).symm`. Rewrite using `[this, Module.Basis.repr_sum_self, reduction_coe, hr]`. Take `⟨s, hs, hsy⟩` from `(mem_locP _ _ _).1 hy0`. Use `P.isMaximal` as an intermediate fact. Take `⟨t', ht'⟩` from `Ideal.Quotient.exists_inv (mk_ne_zero hs)`.
+
+Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective t'`. Use `⟨t • s • ∑ i, r i • β i, N.smul_mem t hsy, ?_⟩` and prove the remaining obligations. Rewrite using `[hsm t _ (Submodule.smul_mem _ s hy0), hsm s _ hy0, hc0, smul_smul, mul_comm, ht', one_smul]`. Introduce `x hx h0`. Establish `hxl` using `le_locP P N hx`.
+
+Rewrite `h0` using `[hpos _ hxl]`. Establish `hterm : ∀ i, β.repr x i • β i ∈ localization₂ P.asIdeal (P.asIdeal • N)`. Introduce `i`. Take `⟨r, s, hs, hrs⟩` from `hint x hxl i`. Establish `hr : r ∈ P.asIdeal`.
+
+Establish `h1` using `reduction_spec P hs hrs`. Rewrite `h1` using `[congrFun h0 i]`. Simplify using `only [Pi.zero_apply, mul_zero] at h1`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h1.symm`. Take `⟨s', hs', hb⟩` from `(mem_locP _ _ _).1 (hβ i)`.
+
+Use `(mem_locP _ _ _).2 ⟨s * s', fun hm => (P.isPrime.mem_or_mem hm).elim hs hs', ?_⟩` and prove the remaining obligations. Establish `e : (s * s') • (β.repr x i • β i) = r • (s' • β i)`. Rewrite using `[mul_smul, smul_comm s' (β.repr x i) (β i), ← algebraMap_smul E s, smul_smul, hrs, algebraMap_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem_smul hr hb`.
+
+Establish `hsum : x ∈ localization₂ P.asIdeal (P.asIdeal • N)`. Rewrite using `[← β.sum_repr x]`. Conclude with `Submodule.sum_mem _ fun i _ => hterm i`. Take `⟨s, hs, hsx⟩` from `(mem_locP _ _ _).1 hsum`. Conclude with `mem_smul_of_loc hx hs hsx`.
+-/
 theorem exists_coordAt (P : HeightOneSpectrum (𝓞 E)) {N : Submodule (𝓞 E) (Sp E n)}
     (hN : Submodule.IsLattice E N) : ∃ co, CoordAt P N co := by
   classical

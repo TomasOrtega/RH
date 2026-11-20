@@ -17,19 +17,31 @@ abbrev C (R : Type) [CommRing R] (B : Type) [CommRing B] : Cx R := (chains R).ob
 abbrev Cm (R : Type) [CommRing R] {B B' : Type} [CommRing B] [CommRing B'] (g : B →+* B') : C R B' ⟶ C R B :=
   (chains R).map (spMap g)
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Functor.map_comp, ← Spec.map_comp, CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp {B₀ B B' : Type} [CommRing B₀] [CommRing B] [CommRing B'] (h : B₀ →+* B) (g : B →+* B') :
     spMap g ≫ spMap h = spMap (g.comp h) := by
   simp only [spMap, ← Functor.map_comp, ← Spec.map_comp, CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Rewrite using `[← Functor.map_comp, spMap_comp]`.
+-/
 theorem Cm_comp (R : Type) [CommRing R] {B₀ B B' : Type} [CommRing B₀] [CommRing B] [CommRing B'] (h : B₀ →+* B)
     (g : B →+* B') : Cm R g ≫ Cm R h = Cm R (g.comp h) := by
   rw [← Functor.map_comp, spMap_comp]
 
+/- English proof (translation)
+The claim follows from `IsLocalization.map_comp _`.
+-/
 theorem awayMap_comp_algebraMap {A A' : Type} [CommRing A] [CommRing A'] [Algebra A A'] (f : A) :
     (Localization.awayMap (algebraMap A A') f).comp (algebraMap A (Localization.Away f)) =
       (algebraMap A' (Localization.Away (algebraMap A A' f))).comp (algebraMap A A') :=
   IsLocalization.map_comp _
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext (Submonoid.powers f)` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, awayMap_comp_algebraMap, ← RingHom.comp_assoc, awayHom_comp_algebraMap, awayMap_comp_algebraMap, RingHom.comp_assoc]`. Use `congr 1`. Conclude with `RingHom.ext fun a => φ.commutes a`.
+-/
 theorem awayHom_comp_awayMap {A A' A'' : Type} [CommRing A] [CommRing A'] [CommRing A''] [Algebra A A']
     [Algebra A A''] (φ : A' →ₐ[A] A'') (f : A) :
     (awayHom φ f).comp (Localization.awayMap (algebraMap A A') f) = Localization.awayMap (algebraMap A A'') f := by
@@ -47,6 +59,9 @@ def exSC (R : Type) [CommRing R] (A A' : Type) [CommRing A] [CommRing A'] [Algeb
     (biprod.desc (Cm R (algebraMap A (Localization.Away f))) (Cm R (algebraMap A A')))
     (by rw [biprod.lift_desc, Preadditive.neg_comp, Cm_comp, Cm_comp, awayMap_comp_algebraMap, add_neg_cancel])
 
+/- English proof (translation)
+Use `GlobalTheory.T.chain_complex_exact_square R _ _ _ _ ?_ (exSC R A A' f).zero (GlobalTheory.T.freeEtaleSheaf_excision_shortExact R A A' f hN ?_)` and prove the remaining obligations. Use `all_goals`. Simplify using `only [biprod.lift_desc, Preadditive.neg_comp, ← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, awayMap_comp_algebraMap, add_neg_cancel]`.
+-/
 theorem exSC_shortExact (R : Type) [CommRing R] (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A']
     [Algebra.Etale A A'] (f : A) (hN : IsNbhd A A' f) : (exSC R A A' f).ShortExact := by
   refine GlobalTheory.T.chain_complex_exact_square R _ _ _ _ ?_ (exSC R A A' f).zero (GlobalTheory.T.freeEtaleSheaf_excision_shortExact R A A' f hN ?_)
@@ -72,6 +87,23 @@ def exMap (R : Type) [CommRing R] {A A' A'' : Type} [CommRing A] [CommRing A'] [
       congr 2
       exact RingHom.ext fun a => φ.commutes a
 
+/- English proof (translation)
+Introduce `q A A' _ _ _ _ f hN n i`. Establish `hI : ∀ k, Injective ((res (ZMod q) (tw q i)).X k)` using `fun k => inferInstanceAs (Injective ((injectiveResolution (tw q i)).cochainComplex.X k))`. Take `⟨d, hex, hnat⟩` from `longExact_first_of_injective (ZMod q) (res (ZMod q) (tw q i)) hI`. Establish `hS` using `exSC_shortExact (ZMod q) A A' f hN`. Use `⟨d (exSC (ZMod q) A A' f) hS n, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x`. Use `Iff.trans ?_ ((hex _ hS n).2.2 x)` and prove the remaining obligations. Establish `hb` using `(cpull_biprod_bijective (ZMod q) (C (ZMod q) (Localization.Away f)) (C (ZMod q) A') (res (ZMod q) (tw q i)) (n + 1)).1`. Establish `e1 : pull (ZMod q) (spMap (algebraMap A (Localization.Away f))) (tw q i) (n + 1) x = cpull (biprod.inl : C (ZMod q) (Localization.Away f) ⟶ _) (res (ZMod q) (tw q i)) (n + 1) (cpull (exSC (ZMod q) A A' f).g (res (ZMod q) (tw q i)) (n + 1) x)`. Establish `hc : (biprod.inl : C (ZMod q) (Localization.Away f) ⟶ C (ZMod q) (Localization.Away f) ⊞ C (ZMod q) A') ≫ (exSC (ZMod q) A A' f).g = Cm (ZMod q) (algebraMap A (Localization.Away f))` using `biprod.inl_desc _ _`.
+
+Use `Eq.trans ?_ ((ZcFun.main (ZMod q)).2.1 _ (exSC (ZMod q) A A' f).g _ _ x)` and prove the remaining obligations. Conclude with `(congrArg (fun m => cpull m (res (ZMod q) (tw q i)) (n + 1) x) hc).symm`. Establish `e2 : pull (ZMod q) (spMap (algebraMap A A')) (tw q i) (n + 1) x = cpull (biprod.inr : C (ZMod q) A' ⟶ _) (res (ZMod q) (tw q i)) (n + 1) (cpull (exSC (ZMod q) A A' f).g (res (ZMod q) (tw q i)) (n + 1) x)`. Establish `hc : (biprod.inr : C (ZMod q) A' ⟶ C (ZMod q) (Localization.Away f) ⊞ C (ZMod q) A') ≫ (exSC (ZMod q) A A' f).g = Cm (ZMod q) (algebraMap A A')` using `biprod.inr_desc _ _`. Use `Eq.trans ?_ ((ZcFun.main (ZMod q)).2.1 _ (exSC (ZMod q) A A' f).g _ _ x)` and prove the remaining obligations.
+
+Conclude with `(congrArg (fun m => cpull m (res (ZMod q) (tw q i)) (n + 1) x) hc).symm`. Express the relevant statement in the definitionally equal form `(_, _) = ((0, 0) : _ × _) ↔ _`. Rewrite using `[e1, e2]`. Take `⟨y, hy⟩ : ∃ y : CohomologyClass (C (ZMod q) (Localization.Away f) ⊞ C (ZMod q) A') (res (ZMod q) (tw q i)) (n + 1), y = cpull (exSC (ZMod q) A A' f).g (res (ZMod q) (tw q i)) (n + 1) x` from `⟨_, rfl⟩`. Rewrite using `[← hy]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `hb` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[h]`.
+
+Conclude with `Prod.ext (map_zero _).symm (map_zero _).symm`. Introduce `h`. Rewrite using `[h]`. Conclude with `Prod.ext (map_zero _) (map_zero _)`. Introduce `A'' _ _ _ φ hN'' z hz`.
+
+Establish `hS''` using `exSC_shortExact (ZMod q) A A'' f hN''`. Establish `h` using `hnat _ _ hS'' hS (exMap (ZMod q) φ f) n z`. Establish `hz' : cpull (exMap (ZMod q) φ f).τ₁ (res (ZMod q) (tw q i)) n z = 0` using `hz`. Rewrite `h` using `[hz', map_zero]`. Establish `hid : cpull (exMap (ZMod q) φ f).τ₃ (res (ZMod q) (tw q i)) (n + 1) (d _ hS n z) = d _ hS n z` using `ZcFun.cpull_id _ _ _ _`.
+
+Rewrite `h` using `[hid]`. Conclude with `h`.
+-/
 theorem excision_natural : ∀ (q : ℕ) (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] [Algebra.Etale A A'] (f : A), IsNbhd A A' f → ∀ n i : ℤ, ∃ δ : Ht q (sp (Localization.Away (algebraMap A A' f))) n i →+ Ht q (sp A) (n + 1) i, Function.Exact δ (fun x : Ht q (sp A) (n + 1) i => (pull _ (spMap (algebraMap A (Localization.Away f))) _ _ x, pull _ (spMap (algebraMap A A')) _ _ x)) ∧ ∀ (A'' : Type) [CommRing A''] [Algebra A A''] [Algebra.Etale A A''] (φ : A' →ₐ[A] A''), IsNbhd A A'' f → ∀ z, pull _ (spMap (awayHom φ f)) _ _ z = 0 → δ z = 0 := by
   intro q A A' _ _ _ _ f hN n i
   have hI : ∀ k, Injective ((res (ZMod q) (tw q i)).X k) := fun k =>

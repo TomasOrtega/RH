@@ -19,6 +19,15 @@ variable {n : ℕ}
 def pairForm (u v : Fin n → ℂ) : MvPolynomial (Fin n × Fin n) ℂ :=
   ∑ p : Fin n × Fin n, C (u p.1 * starRingEnd ℂ (v p.2)) * X p
 
+/- English proof (translation)
+Distinguish the cases in `hk : k = n`. Substitute `hk` using the available equality. Use `⟨fun u => (Matrix.of u).det, fun u v => ?_⟩` and prove the remaining obligations. Simplify using `only [pairForm]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, topCoeff_sum]`.
+
+Repeatedly rewrite using `[Finset.prod_mul_distrib, ← map_prod, topCoeff_C_mul]`. Rewrite using `[← (Equiv.arrowProdEquivProdArrow (Fin k) (fun _ => Fin k) (fun _ => Fin k)).symm.sum_comp, Fintype.sum_prod_type]`. Simplify using `only [Equiv.arrowProdEquivProdArrow, Equiv.coe_fn_symm_mk]`. Repeatedly rewrite using `[topCoeff_prod_X_pair]`. Establish `key : ∀ (c d : Fin k → Fin k), (∏ i, u i (c i) * starRingEnd ℂ (v i (d i))) * ((rowSel c).det * (rowSel d).det) = ((∏ i, (Matrix.of u) i (c i)) * (rowSel c).det) * ((∏ i, ((Matrix.of v).map (starRingEnd ℂ)) i (d i)) * (rowSel d).det)`.
+
+Introduce `c d`. Simplify using `only [Matrix.of_apply, Matrix.map_apply, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => key c d, ← Finset.sum_mul_sum, sum_prod_mul_det_rowSel, sum_prod_mul_det_rowSel, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Use `⟨fun _ => 0, fun u v => ?_⟩` and prove the remaining obligations. Simplify using `only [pairForm]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, topCoeff_sum]`. Repeatedly rewrite using `[Finset.prod_mul_distrib, ← map_prod, topCoeff_C_mul]`. Simplify using `[topCoeff_prod_X_of_ne hk]`.
+-/
 theorem topCoeff_prod_pairForm_fin (k : ℕ) :
     ∃ D : (Fin k → Fin n → ℂ) → ℂ, ∀ u v : Fin k → Fin n → ℂ,
       topCoeff (∏ j, pairForm (u j) (v j)) = D u * starRingEnd ℂ (D v) := by
@@ -48,6 +57,9 @@ theorem topCoeff_prod_pairForm_fin (k : ℕ) :
     simp_rw [Finset.prod_mul_distrib, ← map_prod, topCoeff_C_mul]
     simp [topCoeff_prod_X_of_ne hk]
 
+/- English proof (translation)
+Take `⟨D, hD⟩` from `topCoeff_prod_pairForm_fin (n := n) (Fintype.card J)`. Set `e` to `(Fintype.equivFin J).symm`. Use `⟨fun u => D (u ∘ e), fun u v => ?_⟩` and prove the remaining obligations. Rewrite using `[← hD, ← e.prod_comp]`. Both sides reduce to the same expression.
+-/
 theorem topCoeff_prod_pairForm (J : Type) [Fintype J] :
     ∃ D : (J → Fin n → ℂ) → ℂ, ∀ u v : J → Fin n → ℂ,
       topCoeff (∏ j, pairForm (u j) (v j)) = D u * starRingEnd ℂ (D v) := by
@@ -57,6 +69,13 @@ theorem topCoeff_prod_pairForm (J : Type) [Fintype J] :
   rw [← hD, ← e.prod_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_comm]`. Establish `h (τ : Equiv.Perm (Fin m)) : ∑ σ : Equiv.Perm (Fin m), ((Equiv.Perm.sign σ : ℤ) : R) * ((Equiv.Perm.sign τ : ℤ) : R) * ∏ i, M (σ i) (τ i) = M.det`. Establish `h1` using `Matrix.det_permute' τ M`. Rewrite `h1` using `[Matrix.det_apply']`. Establish `h2 : ((Equiv.Perm.sign τ : ℤ) : R) * ((Equiv.Perm.sign τ : ℤ) : R) = 1`.
+
+Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.submatrix_apply, id]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = M.det := by rw [h1, ← mul_assoc, h2, one_mul]`. Repeatedly rewrite using `[h]`. Simplify using `[Fintype.card_perm]`.
+-/
 theorem factorial_mul_det {R : Type} [CommRing R] {m : ℕ} (M : Matrix (Fin m) (Fin m) R) :
     (m.factorial : R) * M.det = ∑ σ : Equiv.Perm (Fin m), ∑ τ : Equiv.Perm (Fin m),
       ((Equiv.Perm.sign σ : ℤ) : R) * ((Equiv.Perm.sign τ : ℤ) : R) * ∏ i, M (σ i) (τ i) := by
@@ -78,6 +97,9 @@ theorem factorial_mul_det {R : Type} [CommRing R] {m : ℕ} (M : Matrix (Fin m) 
   simp_rw [h]
   simp [Fintype.card_perm]
 
+/- English proof (translation)
+Simplify using `only [sqPoly, pairForm, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, map_sum, Finset.sum_mul, Fintype.sum_prod_type]`. Rewrite using `[Finset.sum_comm (γ := Fin r)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (γ := Fin r)]`. Both sides reduce to the same expression.
+-/
 theorem sqPoly_apply {m r : ℕ} (T : V n →ₗ[ℂ] Matrix (Fin m) (Fin r) ℂ) (i j : Fin m) :
     sqPoly T i j = ∑ k, pairForm (fun a => T (coordVec a) i k) (fun a => T (coordVec a) j k) := by
   simp only [sqPoly, pairForm, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, map_sum,
@@ -87,6 +109,11 @@ theorem sqPoly_apply {m r : ℕ} (T : V n →ₗ[ℂ] Matrix (Fin m) (Fin r) ℂ
   rw [Finset.sum_comm (γ := Fin r)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[map_natCast, factorial_mul_det]`. Repeatedly rewrite using `[sqPoly_apply, Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (γ := Fin m → Fin r)]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (γ := Fin m → Fin r)]`.
+
+Simplify using `only [map_mul, map_intCast]`.
+-/
 theorem factorial_mul_det_sqPoly {m r : ℕ} (T : V n →ₗ[ℂ] Matrix (Fin m) (Fin r) ℂ) :
     C (m.factorial : ℂ) * (sqPoly T).det = ∑ k : Fin m → Fin r, ∑ σ : Equiv.Perm (Fin m), ∑ τ : Equiv.Perm (Fin m),
       C (((Equiv.Perm.sign σ : ℤ) : ℂ) * ((Equiv.Perm.sign τ : ℤ) : ℂ)) *
@@ -98,6 +125,17 @@ theorem factorial_mul_det_sqPoly {m r : ℕ} (T : V n →ₗ[ℂ] Matrix (Fin m)
   rw [Finset.sum_comm (γ := Fin m → Fin r)]
   simp only [map_mul, map_intCast]
 
+/- English proof (translation)
+Take `⟨D, hD⟩` from `topCoeff_prod_pairForm (n := n) (Σ b, Fin (m b))`. Establish `h : (∏ b, ((m b).factorial : ℂ)) * topCoeff (∏ b, (sqPoly (T b)).det) = ∑ k : ∀ b, Fin (m b) → Fin (r b), (∑ σ : ∀ b, Equiv.Perm (Fin (m b)), (∏ b, ((Equiv.Perm.sign (σ b) : ℤ) : ℂ)) * D fun j a => T j.1 (coordVec a) (σ j.1 j.2) (k j.1 j.2)) * starRingEnd ℂ (∑ σ : ∀ b, Equiv.Perm …`. Rewrite using `[← topCoeff_C_mul, map_prod, ← Finset.prod_mul_distrib]`. Repeatedly rewrite using `[factorial_mul_det_sqPoly]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, topCoeff_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, topCoeff_sum, map_sum, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, topCoeff_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_mul_distrib, ← map_prod, topCoeff_C_mul, ← Fintype.prod_sigma', hD, Finset.prod_mul_distrib]`. Simplify using `only [map_mul, map_prod, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : 0 ≤ (∏ b, ((m b).factorial : ℂ)) * topCoeff (∏ b, (sqPoly (T b)).det)`. Rewrite using `[h]`.
+
+Conclude with `Finset.sum_nonneg fun k _ => mul_star_self_nonneg _`. Establish `hN : (0 : ℝ) < ∏ b, ((m b).factorial : ℝ)` using `Finset.prod_pos fun b _ => by exact_mod_cast Nat.factorial_pos _`. Establish `e : (∏ b, ((m b).factorial : ℂ)) = ((∏ b, ((m b).factorial : ℝ) : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite `h0` using `[e]`. Establish `h1 : (0 : ℂ) ≤ (((∏ b, ((m b).factorial : ℝ))⁻¹ : ℝ) : ℂ)` using `Complex.zero_le_real.2 (inv_nonneg.2 hN.le)`.
+
+Establish `h2` using `mul_nonneg h1 h0`. Rewrite `h2` using `[← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ hN.ne', Complex.ofReal_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem topCoeff_prod_det_nonneg {B : Type} [Fintype B] (m r : B → ℕ)
     (T : ∀ b, V n →ₗ[ℂ] Matrix (Fin (m b)) (Fin (r b)) ℂ) :
     0 ≤ topCoeff (∏ b, (sqPoly (T b)).det) := by
@@ -133,6 +171,9 @@ theorem topCoeff_prod_det_nonneg {B : Type} [Fintype B] (m r : B → ℕ)
 
 end GlobalTheory.PointFormSign.TopPos
 
+/- English proof (translation)
+Establish `h` using `TopPos.topCoeff_prod_det_nonneg (B := Σ t, Fin (e t)) (fun b => m b.1) (fun b => r b.1) fun b => T b.1`. Rewrite `h` using `[Fintype.prod_sigma]`. Use `h.trans_eq (congrArg topCoeff (Finset.prod_congr rfl fun t _ => ?_))` and prove the remaining obligations. Conclude with `(Finset.prod_const (s := Finset.univ) (sqPoly (T t)).det).trans (by rw [Finset.card_univ, Fintype.card_fin])`.
+-/
 theorem GlobalTheory.PointFormSign.topCoeff_prod_det_sqPoly_pow_nonneg {n : ℕ} {κ : Type} [Fintype κ] (m r e : κ → ℕ)
     (T : ∀ t, V n →ₗ[ℂ] Matrix (Fin (m t)) (Fin (r t)) ℂ) :
     0 ≤ topCoeff (∏ t, (sqPoly (T t)).det ^ e t) := by

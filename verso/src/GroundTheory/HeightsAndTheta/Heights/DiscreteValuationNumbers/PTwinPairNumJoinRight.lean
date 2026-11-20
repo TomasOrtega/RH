@@ -16,16 +16,25 @@ namespace PairNumberJoinRight
 
 variable {K K' K₂ : Type} {ι : K → Type} {ι' : K' → Type} {ι₂ : K₂ → Type}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with k | k | k <;> rfl`.
+-/
 theorem assocDeg_comp_midSwapBlocks (a : K ⊕ K' → ℤ) :
     assocDeg (K₂ := K₂) a ∘ midSwapBlocks = midDeg (K₂ := K₂) a := by
   funext k
   rcases k with k | k | k <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Apply the tactic sequence `obtain ⟨k | k, i⟩ := p <;> rfl`.
+-/
 theorem midSwapVars_comp_midVar :
     ⇑(midSwapVars ι ι' ι₂) ∘ midVar (ι := ι) (ι' := ι') ι₂ = assocVar ι₂ := by
   funext p
   obtain ⟨k | k, i⟩ := p <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with k | k | k <;> simp [midDeg]`.
+-/
 theorem midDeg_sub (a b : K ⊕ K' → ℤ) :
     midDeg (K₂ := K₂) a - midDeg (K₂ := K₂) b = midDeg (K₂ := K₂) (a - b) := by
   funext k
@@ -35,6 +44,11 @@ end PairNumberJoinRight
 
 open PairNumberJoinRight in
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ ι _ x K' _ ι' _ z K₂ _ ι₂ _ w d hF hZ hfn I I₁ hI hI₁ n a a' f g hv H hH`. Establish `hy` using `joinCoord_comp_midSwapVars x z w`. Take `⟨hZL, hfnL, -, hnum⟩` from `hRel O Ω (K ⊕ (K₂ ⊕ K')) (Sum.elim ι (Sum.elim ι₂ ι')) (K ⊕ (K' ⊕ K₂)) (Sum.elim ι (Sum.elim ι' ι₂)) midSwapBlocks (midSwapVars ι ι' ι₂) midSwapVars_fst (joinCoord x (joinCoord z w)) d (by rw [hy]; exact hZ)`. Establish `hIL : IsFieldIntersection (F` using `IsLocalRing.ResidueField O) (ι := Sum.elim ι (Sum.elim ι' ι₂)) (fun V _ L => intNum (IsLocalRing.ResidueField O) V L) := IntNumIsFieldIntersection.full _ _ _`. Rewrite using `[hLeft O Ω K ι x K' ι' z K₂ ι₂ w d hF hZL (hfnL.trans (by rw [hy]; exact hfn)) _ I₁ hIL hI₁ n a a' f g hv H hH]`.
+
+Establish `key` using `hnum I _ hI hIL n (fun i => assocDeg (K₂ := K₂) (a i)) (fun i => assocDeg (K₂ := K₂) (a' i)) (fun i => rename (midVar ι₂) (f i)) (fun i => rename (midVar ι₂) (g i)) (fun i => by`. Rewrite using `[hy, assocDeg_comp_midSwapBlocks, assocDeg_comp_midSwapBlocks, midDeg_sub]`. Conclude with `hVert O Ω K ι x K' ι' z K₂ ι₂ w _ _ _ (hv i)) H hH`. Simplify using `only [hy, assocDeg_comp_midSwapBlocks, rename_rename, midSwapVars_comp_midVar] at key`. Conclude with `key.symm`.
+-/
 theorem PairNumberJoinRight.proof (hLeft : PairNumberJoinLeft.Statement)
     (hVert : JoinVerticalDivisorRight.Statement) (hRel : PairNumberRelabelAlt.Statement) :
     PairNumberJoinRight.Statement := by

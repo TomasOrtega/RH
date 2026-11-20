@@ -20,6 +20,11 @@ section Ultra
 
 variable {C : Type} [Field C] (v : AddValuation C (WithTop ℝ))
 
+/- English proof (translation)
+Establish `h1 : min (v x) (v (x - y)) ≤ v (x - (x - y))` using `AddValuation.map_sub v _ _`. Rewrite `h1` using `[sub_sub_cancel, min_eq_left h.le]`. Establish `h2 : min (v y) (v (x - y)) ≤ v (y + (x - y))` using `AddValuation.map_add v _ _`. Rewrite `h2` using `[add_sub_cancel]`. Break down `le_total (v y) (v (x - y)) with h3 | h3` into its components or cases.
+
+Rewrite `h2` using `[min_eq_left h3]`. Conclude with `le_antisymm h2 h1`. Rewrite `h2` using `[min_eq_right h3]`. Conclude with `absurd (lt_of_le_of_lt h2 h) (lt_irrefl _)`.
+-/
 theorem val_eq_of_lt_sub (x y : C) (h : v x < v (x - y)) : v y = v x := by
   have h1 : min (v x) (v (x - y)) ≤ v (x - (x - y)) := AddValuation.map_sub v _ _
   rw [sub_sub_cancel, min_eq_left h.le] at h1
@@ -31,6 +36,11 @@ theorem val_eq_of_lt_sub (x y : C) (h : v x < v (x - y)) : v y = v x := by
   · rw [min_eq_right h3] at h2
     exact absurd (lt_of_le_of_lt h2 h) (lt_irrefl _)
 
+/- English proof (translation)
+Use `le_iInf fun s => ?_` and prove the remaining obligations. Distinguish the cases in `hs : v (a s) = ⊤`. Rewrite using `[hs]`. Conclude with `le_top`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.1 hs`.
+
+Take `⟨N, hN⟩` from `exists_nat_gt r`. Take `⟨t, ht⟩` from `h s N`. Establish `hlt : v (a s) < v (a s - b t)` using `lt_of_lt_of_le (by rw [← hr]; exact WithTop.coe_lt_coe.2 hN) ht`. Rewrite using `[← val_eq_of_lt_sub v _ _ hlt]`. Conclude with `iInf_le _ t`.
+-/
 theorem iInf_le_of_approx {S U : Type} (a : S → C) (b : U → C)
     (h : ∀ (s : S) (N : ℕ), ∃ t, ((N : ℝ) : WithTop ℝ) ≤ v (a s - b t)) :
     ⨅ t, toE (v (b t)) ≤ ⨅ s, toE (v (a s)) := by
@@ -46,6 +56,9 @@ theorem iInf_le_of_approx {S U : Type} (a : S → C) (b : U → C)
     rw [← val_eq_of_lt_sub v _ _ hlt]
     exact iInf_le _ t
 
+/- English proof (translation)
+Use `le_antisymm ?_ (iInf_le_of_approx v a b h1)` and prove the remaining obligations. Use `iInf_le_of_approx v b a fun t N => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `h2 t N`. Conclude with `⟨s, by rwa [AddValuation.map_sub_swap]⟩`.
+-/
 theorem iInf_eq_of_approx {S U : Type} (a : S → C) (b : U → C)
     (h1 : ∀ (s : S) (N : ℕ), ∃ t, ((N : ℝ) : WithTop ℝ) ≤ v (a s - b t))
     (h2 : ∀ (t : U) (N : ℕ), ∃ s, ((N : ℝ) : WithTop ℝ) ≤ v (a s - b t)) :
@@ -57,6 +70,13 @@ theorem iInf_eq_of_approx {S U : Type} (a : S → C) (b : U → C)
 
 end Ultra
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c p _ la T io e ho y Ch cx n B hB k`. Use `letI := H.starRing`. Take `⟨X⟩` from `nonempty_valExt_of_overLa la ho`. Establish `hmid : GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.nuLocX_vp Ch X cx B k = GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.nuH_vp Ch X cx`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.nuLocX_vp GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.nuH_vp depth`.
+
+Use `iInf_eq_of_approx (vX_vp X) (fun g : {g : PS X.C n (chD Ch.ch) // MvIsInt (vX_vp X) g} => GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.nabX Ch X cx B k g.1) (fun f : {f : MvPowerSeries (Σ _ : GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.Col cx, F …` and prove the remaining obligations. Take `⟨f, hf, hN⟩` from `GlobalTheory.T.exists_integral_germ_on_columns_same_value E H Dw l Xo c p la T io e ho y Ch X cx n B hB N k g.1 g.2`. Conclude with `⟨⟨f, hf⟩, hN⟩`. Take `⟨g, hg, hN⟩` from `GlobalTheory.T.exists_integral_germ_on_copies_same_value E H Dw l Xo c p la T io e ho y Ch X cx n B hB N k f.1 f.2`. Conclude with `⟨⟨g, hg⟩, hN⟩`.
+
+Conclude with `(GlobalTheory.T.localDepth_over_dvr_eq_over_closed_field E H Dw l Xo c p la T io e ho y Ch X cx n B k).trans (hmid.trans (GlobalTheory.T.isotropicFactor_depth_eq_sum_factor_depths E H Dw l Xo c p T io y Ch X cx).1)`.
+-/
 theorem nuLocOf_eq_nuP : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (p : ℕ) [Fact p.Prime] (la : PointsOfFlagModel.abelian₂ p c) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la.1 T.V io e → ∀ (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (cx : Lt1 Dw → ℕ) (n : ℕ) (B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T.V), IsCols c T io p cx B → ∀ k : ℕ, nuLocOf Ch (vV T.V (p : T.Fr)).toNat k (polyT B cx) = nuP p y cx := by
   intro E _ _ _ H Dw l Xo c p _ la T io e ho y Ch cx n B hB k
   letI := H.starRing

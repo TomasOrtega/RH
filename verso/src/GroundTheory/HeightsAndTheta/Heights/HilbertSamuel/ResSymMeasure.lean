@@ -24,6 +24,9 @@ open Classical in
 def NZAt (z : J → ℂ) (k : ℕ) : Prop :=
   ∀ h : k < Fintype.card J, z ((Fintype.equivFin J).symm ⟨k, h⟩) ≠ 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Fintype.card J, fun h => absurd h (lt_irrefl _)⟩`.
+-/
 theorem exists_nzAt (z : J → ℂ) : ∃ k, NZAt z k :=
   ⟨Fintype.card J, fun h => absurd h (lt_irrefl _)⟩
 
@@ -36,17 +39,30 @@ open Classical in
 def normPt (z : J → ℂ) : J → ℂ :=
   if h : idx z < Fintype.card J then (z ((Fintype.equivFin J).symm ⟨idx z, h⟩))⁻¹ • z else z
 
+/- English proof (translation)
+Unfold `NZAt`. Use `forall_congr' fun h => ?_` and prove the remaining obligations. Simplify using `[Pi.smul_apply, smul_eq_mul, hc]`.
+-/
 theorem nzAt_smul_iff {c : ℂ} (hc : c ≠ 0) (z : J → ℂ) (k : ℕ) : NZAt (c • z) k ↔ NZAt z k := by
   unfold NZAt
   refine forall_congr' fun h => ?_
   simp [Pi.smul_apply, smul_eq_mul, hc]
 
 open Classical in
+/- English proof (translation)
+Unfold `idx`. Use `le_antisymm (Nat.find_min' _ ((nzAt_smul_iff hc z _).2 (Nat.find_spec (exists_nzAt z)))) (Nat.find_min' _ ((nzAt_smul_iff hc z _).1 (Nat.find_spec (exists_nzAt (c • z)))))` and prove the remaining obligations.
+-/
 theorem idx_smul {c : ℂ} (hc : c ≠ 0) (z : J → ℂ) : idx (c • z) = idx z := by
   unfold idx
   refine le_antisymm (Nat.find_min' _ ((nzAt_smul_iff hc z _).2 (Nat.find_spec (exists_nzAt z))))
     (Nat.find_min' _ ((nzAt_smul_iff hc z _).1 (Nat.find_spec (exists_nzAt (c • z)))))
 
+/- English proof (translation)
+Establish `hi` using `idx_smul hc z`. Unfold `normPt`. Rewrite using `[hi]`. Use `split_ifs with h`. Rewrite using `[Pi.smul_apply, smul_eq_mul, smul_smul, mul_inv, mul_assoc, mul_left_comm, inv_mul_cancel₀ hc, mul_one]`.
+
+Establish `hz : z = 0`. Use function extensionality and compare the values at `j`. Assume the negation of the conclusion as `hj`. Apply `h` to reduce the goal to its premises. Establish `hn : NZAt z (Fintype.equivFin J j)` using `fun hk => by simpa using hj`.
+
+Conclude with `lt_of_le_of_lt (Nat.find_min' _ hn) (Fintype.equivFin J j).2`. Rewrite using `[hz, smul_zero]`.
+-/
 theorem normPt_smul {c : ℂ} (hc : c ≠ 0) (z : J → ℂ) : normPt (c • z) = normPt z := by
   classical
   have hi := idx_smul hc z
@@ -63,6 +79,11 @@ theorem normPt_smul {c : ℂ} (hc : c ≠ 0) (z : J → ℂ) : normPt (c • z) 
       exact lt_of_le_of_lt (Nat.find_min' _ hn) (Fintype.equivFin J j).2
     rw [hz, smul_zero]
 
+/- English proof (translation)
+Unfold `normPt`. Use `split_ifs with h`. Use `⟨_, inv_ne_zero ?_, rfl⟩` and prove the remaining obligations. Use `Nat.find_spec (exists_nzAt z)` as an intermediate fact. Conclude with `this h`.
+
+Conclude with `⟨1, one_ne_zero, (one_smul ℂ z).symm⟩`.
+-/
 theorem normPt_eq_smul (z : J → ℂ) : ∃ a : ℂ, a ≠ 0 ∧ normPt z = a • z := by
   classical
   unfold normPt
@@ -72,6 +93,13 @@ theorem normPt_eq_smul (z : J → ℂ) : ∃ a : ℂ, a ≠ 0 ∧ normPt z = a �
     exact this h
   · exact ⟨1, one_ne_zero, (one_smul ℂ z).symm⟩
 
+/- English proof (translation)
+Use `measurable_find (fun z => exists_nzAt z) fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k < Fintype.card J`. Establish `: {z : J → ℂ | NZAt z k} = (fun z : J → ℂ => z ((Fintype.equivFin J).symm ⟨k, hk⟩)) ⁻¹' {0}ᶜ`. Use extensionality with `z`. Simplify using `[NZAt, hk]`.
+
+Rewrite using `[this]`. Conclude with `(measurable_pi_apply _) (measurableSet_singleton 0).compl`. Establish `: {z : J → ℂ | NZAt z k} = Set.univ`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_univ, iff_true]`.
+
+Conclude with `fun h => absurd h hk`. Rewrite using `[this]`. Conclude with `MeasurableSet.univ`.
+-/
 theorem measurable_idx : Measurable (idx : (J → ℂ) → ℕ) := by
   classical
   refine measurable_find (fun z => exists_nzAt z) fun k => ?_
@@ -88,6 +116,13 @@ theorem measurable_idx : Measurable (idx : (J → ℂ) → ℕ) := by
     rw [this]
     exact MeasurableSet.univ
 
+/- English proof (translation)
+Set `G : (J → ℂ) × ℕ → J → ℂ` to `fun p => if h : p.2 < Fintype.card J then (p.1 ((Fintype.equivFin J).symm ⟨p.2, h⟩))⁻¹ • p.1 else p.1`. Establish `hG : Measurable G`. Use `measurable_from_prod_countable_left fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k < Fintype.card J`. Simplify using `only [G, hk, dif_pos]`.
+
+Conclude with `((measurable_pi_apply _).inv).smul measurable_id`. Simplify using `only [G, hk, dif_neg, not_false_eq_true]`. Conclude with `measurable_id`. Establish `: (normPt : (J → ℂ) → J → ℂ) = G ∘ fun z => (z, idx z)`. Use function extensionality and compare the values at `z`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hG.comp (measurable_id.prodMk measurable_idx)`.
+-/
 theorem measurable_normPt : Measurable (normPt : (J → ℂ) → J → ℂ) := by
   classical
   let G : (J → ℂ) × ℕ → J → ℂ := fun p =>
@@ -105,6 +140,9 @@ theorem measurable_normPt : Measurable (normPt : (J → ℂ) → J → ℂ) := b
   rw [this]
   exact hG.comp (measurable_id.prodMk measurable_idx)
 
+/- English proof (translation)
+Take `⟨a, ha, h⟩` from `normPt_eq_smul z`. Rewrite using `[h, hg a z ha]`.
+-/
 theorem degZero_normPt {β : Type*} {g : (J → ℂ) → β} (hg : ∀ (c : ℂ) z, c ≠ 0 → g (c • z) = g z)
     (z : J → ℂ) : g (normPt z) = g z := by
   obtain ⟨a, ha, h⟩ := normPt_eq_smul z
@@ -116,29 +154,49 @@ section Conj
 
 variable {J : Type} [Fintype J]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[conjPt]`.
+-/
 theorem conjPt_smul (c : ℂ) (z : J → ℂ) : conjPt (c • z) = starRingEnd ℂ c • conjPt z := by
   funext i
   simp [conjPt]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[conjPt]`.
+-/
 theorem conjPt_conjPt (z : J → ℂ) : conjPt (conjPt z) = z := by
   funext i
   simp [conjPt]
 
+/- English proof (translation)
+Introduce `h` and use `hz (by rw [← conjPt_conjPt z, h] funext i simp [conjPt])`.
+-/
 theorem conjPt_ne_zero {z : J → ℂ} (hz : z ≠ 0) : conjPt z ≠ 0 := fun h => hz (by
   rw [← conjPt_conjPt z, h]
   funext i
   simp [conjPt])
 
+/- English proof (translation)
+Rewrite using `[← secFun_map_int, secFun_conjPt, secFun_map_int]`.
+-/
 theorem eval_conjPt_map_int (z : J → ℂ) (f : MvPolynomial J ℤ) :
     eval (conjPt z) (map (Int.castRingHom ℂ) f) = starRingEnd ℂ (eval z (map (Int.castRingHom ℂ) f)) := by
   rw [← secFun_map_int, secFun_conjPt, secFun_map_int]
 
 variable {Ω : Type} [Field Ω] [CharZero Ω]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨conjPt_ne_zero hz.1, fun f hf => by rw [eval_conjPt_map_int, hz.2 f hf, map_zero]⟩`.
+-/
 theorem conjPt_mem_pts {x : J → Ω} {z : J → ℂ} (hz : z ∈ pts (coordIdeal ℤ x)) :
     conjPt z ∈ pts (coordIdeal ℤ x) :=
   ⟨conjPt_ne_zero hz.1, fun f hf => by rw [eval_conjPt_map_int, hz.2 f hf, map_zero]⟩
 
+/- English proof (translation)
+Establish `hcl : IsClosed {z : J → ℂ | ∀ g ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) g) = 0}`. Simplify using `only [Set.ofPred_forall]`. Conclude with `isClosed_iInter fun g => isClosed_iInter fun _ => isClosed_eq (continuous_eval _) continuous_const`. Establish `: pts (coordIdeal ℤ x) = {0}ᶜ ∩ {z : J → ℂ | ∀ g ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) g) = 0}`. Use extensionality with `z`.
+
+Simplify using `[pts, conePts]`. Rewrite using `[this]`. Conclude with `(measurableSet_singleton 0).compl.inter hcl.measurableSet`.
+-/
 theorem measurableSet_pts (x : J → Ω) : MeasurableSet (pts (coordIdeal ℤ x)) := by
   have hcl : IsClosed {z : J → ℂ | ∀ g ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) g) = 0} := by
     simp only [Set.ofPred_forall]
@@ -157,6 +215,9 @@ section Resolution
 
 variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Take `⟨c, hc, hz⟩` from `h`. Use `⟨c (), hc (), ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression.
+-/
 theorem sameOrbit_eq_smul {z z' : Ix κ → ℂ} (h : SameOrbit z z') : ∃ a : ℂ, a ≠ 0 ∧ z = a • z' := by
   obtain ⟨c, hc, hz⟩ := h
   refine ⟨c (), hc (), ?_⟩
@@ -164,6 +225,9 @@ theorem sameOrbit_eq_smul {z z' : Ix κ → ℂ} (h : SameOrbit z z') : ∃ a : 
   funext p
   rfl
 
+/- English proof (translation)
+Establish `hm` using `d.R.mem y₀ y hy`. Use `⟨fun h0 => ?_, hm.2⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hm.1 ()`. Conclude with `hi (congrFun h0 _)`.
+-/
 theorem lift_mem_pts (d : HSMDatum D Ω κ) {y₀ y : d.R.X} (hy : y ∈ d.R.U y₀) :
     d.R.lift y₀ y ∈ pts (coordIdeal ℤ d.x) := by
   have hm := d.R.mem y₀ y hy
@@ -171,13 +235,24 @@ theorem lift_mem_pts (d : HSMDatum D Ω κ) {y₀ y : d.R.X} (hy : y ∈ d.R.U y
   obtain ⟨i, hi⟩ := hm.1 ()
   exact hi (congrFun h0 _)
 
+/- English proof (translation)
+The claim follows from `lift_mem_pts d (d.R.mem_U y)`.
+-/
 theorem resPt_mem_pts (d : HSMDatum D Ω κ) (y : d.R.X) : resPt d y ∈ pts (coordIdeal ℤ d.x) :=
   lift_mem_pts d (d.R.mem_U y)
 
+/- English proof (translation)
+The claim follows from `sameOrbit_eq_smul (d.R.compat y y₀ y ⟨d.R.mem_U y, hy⟩)`.
+-/
 theorem resPt_eq_smul_lift (d : HSMDatum D Ω κ) {y₀ y : d.R.X} (hy : y ∈ d.R.U y₀) :
     ∃ a : ℂ, a ≠ 0 ∧ resPt d y = a • d.R.lift y₀ y :=
   sameOrbit_eq_smul (d.R.compat y y₀ y ⟨d.R.mem_U y, hy⟩)
 
+/- English proof (translation)
+Introduce `y hy`. Use `(continuousAt_pi.2 fun p => ?_).continuousWithinAt` and prove the remaining obligations. Take `⟨j, hj⟩` from `d.R.A.cover y`. Establish `hpt : d.R.A.chart j y ∈ (d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' d.R.U y₀` using `⟨(d.R.A.chart j).map_source hj, by simpa [(d.R.A.chart j).left_inv hj] using hy⟩`. Establish `han` using `d.R.holo y₀ p j _ hpt`.
+
+Establish `h2 : ContinuousAt ((fun y => d.R.lift y₀ y p) ∘ (d.R.A.chart j).symm ∘ d.R.A.chart j) y` using `han.continuousAt.comp ((d.R.A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(d.R.A.chart j).open_source.mem_nhds hj] with y' hy'`. Simplify using `[(d.R.A.chart j).left_inv hy']`.
+-/
 theorem continuousOn_lift (d : HSMDatum D Ω κ) (y₀ : d.R.X) :
     ContinuousOn (d.R.lift y₀) (d.R.U y₀) := by
   intro y hy
@@ -192,6 +267,11 @@ theorem continuousOn_lift (d : HSMDatum D Ω κ) (y₀ : d.R.X) :
   filter_upwards [(d.R.A.chart j).open_source.mem_nhds hj] with y' hy'
   simp [(d.R.A.chart j).left_inv hy']
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun y₀ => ?_` and prove the remaining obligations. Establish `hU` using `(d.R.isOpen_U y₀).mem_nhds (d.R.mem_U y₀)`. Establish `h1 : ContinuousAt (d.R.lift y₀) y₀` using `(continuousOn_lift d y₀).continuousAt hU`. Establish `h0 : d.R.lift y₀ y₀ ∈ ({0}ᶜ : Set (Ix κ → ℂ))` using `(lift_mem_pts d (d.R.mem_U y₀)).1`. Establish `h2 : ContinuousAt (fun y => g (d.R.lift y₀ y)) y₀` using `(hgc.continuousAt (isOpen_compl_singleton.mem_nhds h0)).comp h1`.
+
+Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [hU] with y hy`. Take `⟨a, ha, he⟩` from `resPt_eq_smul_lift d hy`. Rewrite using `[he, hg a _ ha]`.
+-/
 theorem continuous_degZero_resPt (d : HSMDatum D Ω κ) {β : Type*} [TopologicalSpace β]
     {g : (Ix κ → ℂ) → β} (hgc : ContinuousOn g {0}ᶜ) (hg : ∀ (c : ℂ) z, c ≠ 0 → g (c • z) = g z) :
     Continuous fun y => g (resPt d y) := by
@@ -206,6 +286,9 @@ theorem continuous_degZero_resPt (d : HSMDatum D Ω κ) {β : Type*} [Topologica
   obtain ⟨a, ha, he⟩ := resPt_eq_smul_lift d hy
   rw [he, hg a _ ha]
 
+/- English proof (translation)
+Use `continuous_degZero_resPt d (g := fun z => g (conjPt z)) ?_ fun c z hc => ?_` and prove the remaining obligations. Conclude with `hgc.comp continuous_conjPt.continuousOn fun z hz => conjPt_ne_zero hz`. Rewrite using `[conjPt_smul, hg _ _ ((map_ne_zero _).2 hc)]`.
+-/
 theorem continuous_degZero_conj_resPt (d : HSMDatum D Ω κ) {β : Type*} [TopologicalSpace β]
     {g : (Ix κ → ℂ) → β} (hgc : ContinuousOn g {0}ᶜ) (hg : ∀ (c : ℂ) z, c ≠ 0 → g (c • z) = g z) :
     Continuous fun y => g (conjPt (resPt d y)) := by
@@ -215,11 +298,25 @@ theorem continuous_degZero_conj_resPt (d : HSMDatum D Ω κ) {β : Type*} [Topol
 
 def symPt (d : HSMDatum D Ω κ) (y : d.R.X) : Ix κ → ℂ := normPt (resPt d y)
 
+/- English proof (translation)
+Take `⟨a, ha, h⟩` from `normPt_eq_smul (resPt d y)`. Rewrite using `[symPt, h]`. Conclude with `smul_mem_pts_coord d.x (resPt_mem_pts d y) ha`.
+-/
 theorem symPt_mem_pts (d : HSMDatum D Ω κ) (y : d.R.X) : symPt d y ∈ pts (coordIdeal ℤ d.x) := by
   obtain ⟨a, ha, h⟩ := normPt_eq_smul (resPt d y)
   rw [symPt, h]
   exact smul_mem_pts_coord d.x (resPt_mem_pts d y) ha
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun y₀ : d.R.X => d.R.U y₀) d.R.isOpen_U fun y _ => Set.mem_iUnion.2 ⟨y, d.R.mem_U y⟩`. Introduce `S hS`. Establish `hloc : ∀ y₀ : d.R.X, MeasurableSet (d.R.U y₀ ∩ symPt d ⁻¹' S)`. Introduce `y₀`. Establish `hpw : Measurable ((d.R.U y₀).piecewise (d.R.lift y₀) (fun _ => 0))` using `(continuousOn_lift d y₀).measurable_piecewise continuousOn_const (d.R.isOpen_U y₀).measurableSet`.
+
+Establish `he : d.R.U y₀ ∩ symPt d ⁻¹' S = d.R.U y₀ ∩ (d.R.U y₀).piecewise (d.R.lift y₀) (fun _ => 0) ⁻¹' (normPt ⁻¹' S)`. Use extensionality with `y`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage]`. Use `and_congr_right fun hy => ?_` and prove the remaining obligations. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hy, symPt]`.
+
+Take `⟨a, ha, h⟩` from `resPt_eq_smul_lift d hy`. Rewrite using `[h, normPt_smul ha]`. Rewrite using `[he]`. Conclude with `(d.R.isOpen_U y₀).measurableSet.inter (hpw (measurable_normPt hS))`. Establish `: symPt d ⁻¹' S = ⋃ y₀ ∈ t, (d.R.U y₀ ∩ symPt d ⁻¹' S)`.
+
+Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, Set.mem_inter_iff, exists_and_left, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨y₀, hy₀⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`.
+
+Conclude with `⟨y₀, hy₀.2, hy₀.1, hy⟩`. Introduce and unpack `⟨y₀, -, -, hy⟩`. Conclude with `hy`. Rewrite using `[this]`. Conclude with `Finset.measurableSet_biUnion t fun y₀ _ => hloc y₀`.
+-/
 theorem measurable_symPt (d : HSMDatum D Ω κ) : Measurable (symPt d) := by
   classical
   obtain ⟨t, ht⟩ := isCompact_univ.elim_finite_subcover (fun y₀ : d.R.X => d.R.U y₀) d.R.isOpen_U
@@ -263,6 +360,13 @@ instance isProbabilityMeasure_symMeasure (d : HSMDatum D Ω κ) : IsProbabilityM
     Measure.map_apply hc MeasurableSet.univ, Set.preimage_univ, Set.preimage_univ, measure_univ, smul_eq_mul,
     one_add_one_eq_two, ENNReal.inv_mul_cancel two_ne_zero ENNReal.ofNat_ne_top]
 
+/- English proof (translation)
+Establish `hm` using `measurable_symPt d`. Establish `hc : Measurable (conjPt ∘ symPt d)` using `continuous_conjPt.measurable.comp hm`. Establish `hS` using `(measurableSet_pts d.x).compl`. Rewrite using `[symMeasure, Measure.smul_apply, Measure.add_apply, Measure.map_apply hm hS, Measure.map_apply hc hS]`. Establish `h1 : symPt d ⁻¹' (pts (coordIdeal ℤ d.x))ᶜ = ∅`.
+
+Use extensionality with `y`. Simplify using `[symPt_mem_pts d y]`. Establish `h2 : (conjPt ∘ symPt d) ⁻¹' (pts (coordIdeal ℤ d.x))ᶜ = ∅`. Use extensionality with `y`. Simplify using `[conjPt_mem_pts (symPt_mem_pts d y)]`.
+
+Rewrite using `[h1, h2, measure_empty, add_zero, smul_zero]`.
+-/
 theorem symMeasure_compl_pts (d : HSMDatum D Ω κ) : symMeasure d (pts (coordIdeal ℤ d.x))ᶜ = 0 := by
   have hm := measurable_symPt d
   have hc : Measurable (conjPt ∘ symPt d) := continuous_conjPt.measurable.comp hm
@@ -276,6 +380,11 @@ theorem symMeasure_compl_pts (d : HSMDatum D Ω κ) : symMeasure d (pts (coordId
     simp [conjPt_mem_pts (symPt_mem_pts d y)]
   rw [h1, h2, measure_empty, add_zero, smul_zero]
 
+/- English proof (translation)
+Establish `hm` using `measurable_symPt d`. Establish `hcj : Measurable (conjPt : (Ix κ → ℂ) → Ix κ → ℂ)` using `continuous_conjPt.measurable`. Rewrite using `[symMeasure, Measure.map_smul, Measure.map_add _ _ hcj, Measure.map_map hcj hm, Measure.map_map hcj (hcj.comp hm)]`. Establish `: conjPt ∘ (conjPt ∘ symPt d) = symPt d`. Use function extensionality and compare the values at `y`.
+
+Conclude with `conjPt_conjPt _`. Rewrite using `[this, add_comm]`.
+-/
 theorem map_conjPt_symMeasure (d : HSMDatum D Ω κ) : (symMeasure d).map conjPt = symMeasure d := by
   have hm := measurable_symPt d
   have hcj : Measurable (conjPt : (Ix κ → ℂ) → Ix κ → ℂ) := continuous_conjPt.measurable
@@ -286,6 +395,19 @@ theorem map_conjPt_symMeasure (d : HSMDatum D Ω κ) : (symMeasure d).map conjPt
     exact conjPt_conjPt _
   rw [this, add_comm]
 
+/- English proof (translation)
+Use `d.vol.1` as an intermediate fact. Establish `hm` using `measurable_symPt d`. Establish `hc : Measurable (conjPt ∘ symPt d)` using `continuous_conjPt.measurable.comp hm`. Establish `hgm : Measurable g` using `measurable_of_continuousOn_compl_singleton 0 hgc`. Establish `e1 : (fun y => g (symPt d y)) = fun y => g (resPt d y)`.
+
+Use function extensionality and compare the values at `y`. Conclude with `degZero_normPt hg _`. Establish `hgconj : ∀ (c : ℂ) z, c ≠ 0 → g (conjPt (c • z)) = g (conjPt z)` using `fun c z hc' => by`. Rewrite using `[conjPt_smul, hg _ _ ((map_ne_zero _).2 hc')]`. Establish `e2 : (fun y => g ((conjPt ∘ symPt d) y)) = fun y => g (conjPt (resPt d y))`.
+
+Use function extensionality and compare the values at `y`. Conclude with `degZero_normPt (g := fun z => g (conjPt z)) hgconj _`. Establish `hc1` using `continuous_degZero_resPt d hgc hg`. Establish `hc2` using `continuous_degZero_conj_resPt d hgc hg`. Establish `hi1 : Integrable (fun y => g (resPt d y)) d.dV` using `integrableOn_univ.1 (hc1.continuousOn.integrableOn_compact isCompact_univ)`.
+
+Establish `hi2 : Integrable (fun y => g (conjPt (resPt d y))) d.dV` using `integrableOn_univ.1 (hc2.continuousOn.integrableOn_compact isCompact_univ)`. Establish `hI1 : Integrable g (d.dV.map (symPt d))`. Rewrite using `[integrable_map_measure hgm.aestronglyMeasurable hm.aemeasurable]`. Express the relevant statement in the definitionally equal form `Integrable (fun y => g (symPt d y)) d.dV`. Rewrite using `[e1]`.
+
+Conclude with `hi1`. Establish `hI2 : Integrable g (d.dV.map (conjPt ∘ symPt d))`. Rewrite using `[integrable_map_measure hgm.aestronglyMeasurable hc.aemeasurable]`. Express the relevant statement in the definitionally equal form `Integrable (fun y => g ((conjPt ∘ symPt d) y)) d.dV`. Rewrite using `[e2]`.
+
+Conclude with `hi2`. Rewrite using `[symMeasure, integral_smul_measure, integral_add_measure hI1 hI2, integral_map hm.aemeasurable hgm.aestronglyMeasurable, integral_map hc.aemeasurable hgm.aestronglyMeasurable]`. Simplify using `only [e1]`. Rewrite using `[e2, ENNReal.toReal_inv, ENNReal.toReal_ofNat]`.
+-/
 theorem integral_symMeasure (d : HSMDatum D Ω κ) {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [CompleteSpace E] [MeasurableSpace E] [BorelSpace E] [SecondCountableTopology E]
     {g : (Ix κ → ℂ) → E} (hgc : ContinuousOn g {0}ᶜ) (hg : ∀ (c : ℂ) z, c ≠ 0 → g (c • z) = g z) :
@@ -323,6 +445,17 @@ theorem integral_symMeasure (d : HSMDatum D Ω κ) {E : Type*} [NormedAddCommGro
   simp only [e1]
   rw [e2, ENNReal.toReal_inv, ENNReal.toReal_ofNat]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hne`. Take `⟨j, hj⟩` from `d.R.A.cover y`. Take `⟨ν, hνc, hνp, hν⟩` from `d.vol.2 j`. Use `set S' := S ∩ (d.R.A.chart j).source with hS'`. Establish `hS'o : IsOpen S'` using `hS.inter (d.R.A.chart j).open_source`.
+
+Use `set T := (d.R.A.chart j).target ∩ (d.R.A.chart j).symm ⁻¹' S' with hT`. Establish `hTo : IsOpen T` using `(d.R.A.chart j).isOpen_inter_preimage_symm hS'o`. Establish `hTy : d.R.A.chart j y ∈ T` using `⟨(d.R.A.chart j).map_source hj, by simp [(d.R.A.chart j).left_inv hj, hS', hy, hj]⟩`. Establish `hvol : 0 < volume T` using `hTo.measure_pos volume ⟨_, hTy⟩`. Establish `hmono : d.dV S' ≤ d.dV S` using `measure_mono Set.inter_subset_left`.
+
+Use `lt_of_lt_of_le ?_ hmono` and prove the remaining obligations. Rewrite using `[hν S' hS'o.measurableSet Set.inter_subset_right]`. Establish `hae : AEMeasurable (fun w => ENNReal.ofReal (ν w)) (volume.restrict T)` using `ENNReal.measurable_ofReal.comp_aemeasurable ((hνc.continuousOn.mono Set.inter_subset_left).aemeasurable hTo.measurableSet)`. Use `pos_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `h0` using `[lintegral_eq_zero_iff' hae]`.
+
+Establish `h0' : ∀ᵐ w ∂(volume.restrict T), ENNReal.ofReal (ν w) = 0` using `h0`. Rewrite `h0'` using `[ae_iff]`. Establish `: volume.restrict T T = 0`. Use `measure_mono_null (fun w hw => ?_) h0'` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, ENNReal.ofReal_eq_zero, not_le]`.
+
+Conclude with `hνp w hw.1`. Rewrite `this` using `[Measure.restrict_apply_self]`. Conclude with `hvol.ne' this`.
+-/
 theorem dV_pos_of_isOpen (d : HSMDatum D Ω κ) {S : Set d.R.X} (hS : IsOpen S) (hne : S.Nonempty) :
     0 < d.dV S := by
   obtain ⟨y, hy⟩ := hne

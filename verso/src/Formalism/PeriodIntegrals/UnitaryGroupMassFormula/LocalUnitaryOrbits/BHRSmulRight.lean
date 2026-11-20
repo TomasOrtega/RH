@@ -14,6 +14,15 @@ section Int
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Set `b` to `RingOfIntegers.basis E`. Establish `h : Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F` using `F) (Fv F v) (x : E)) '' Set.univ) = Submodule.span (v.adicCompletionIntegers F) (Set.range fun i => inclR (F := F) (Fv F v) ((b i : 𝓞 E) : E)) := by`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, -, rfl⟩`.
+
+Establish `hx : ((x : 𝓞 E) : E) = ∑ i, (b.repr x i) • ((b i : 𝓞 E) : E)`. Use `congrArg (fun y : 𝓞 E => (y : E)) (b.sum_repr x)` as an intermediate fact. Simplify using `using this.symm`. Simplify using `only`. Rewrite using `[hx, map_sum]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Conclude with `zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨_, Set.mem_univ _, rfl⟩`. Rewrite using `[h]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem b_fg : (Submodule.span (v.adicCompletionIntegers F)
     ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ)).FG := by
   let b := RingOfIntegers.basis E
@@ -43,6 +52,11 @@ def bAlg : Subalgebra (v.adicCompletionIntegers F) (Fv F v ⊗[F] E) :=
     ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ)) (b_one_mem (E := E) v)
     (fun _ _ hx hy => b_mul_mem v hx hy)
 
+/- English proof (translation)
+Establish `hfg : (Subalgebra.toSubmodule (bAlg (E` using `E) v)).FG := b_fg v`. Establish `hi : IsIntegral (v.adicCompletionIntegers F) (sc (E` using `E) v a) := IsIntegral.of_mem_of_fg (bAlg (E := E) v) hfg _ ha`. Set `f : Fv F v →ₐ[v.adicCompletionIntegers F] Fv F v ⊗[F] E` to `(Algebra.ofId (Fv F v) (Fv F v ⊗[F] E)).restrictScalars (v.adicCompletionIntegers F)`. Establish `hfa : f a = sc (E` using `E) v a := by rw [b_sc_eq]; rfl`. Rewrite `hi` using `[← hfa]`.
+
+Establish `hi'` using `(isIntegral_algHom_iff f (algebraMap (Fv F v) (Fv F v ⊗[F] E)).injective).1 hi`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi'`. Rewrite using `[← hy]`. Conclude with `y.2`.
+-/
 theorem b_int_of_sc {a : Fv F v} (ha : sc (E := E) v a ∈ OEv (E := E) v) : a ∈ v.adicCompletionIntegers F := by
   have hfg : (Subalgebra.toSubmodule (bAlg (E := E) v)).FG := b_fg v
   have hi : IsIntegral (v.adicCompletionIntegers F) (sc (E := E) v a) :=
@@ -56,6 +70,17 @@ theorem b_int_of_sc {a : Fv F v} (ha : sc (E := E) v a ∈ OEv (E := E) v) : a �
   rw [← hy]
   exact y.2
 
+/- English proof (translation)
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, -, rfl⟩` from `hx`. Establish `hb : IsIntegral ℤ (σ (b : E))`. Simplify using `using (b.isIntegral_coe).map (σ.toRingHom.toIntAlgHom)`.
+
+Establish `e : sigR (Fv F v) σ (inclR (F` using `F) (Fv F v) (b : E)) = inclR (F := F) (Fv F v) ((⟨σ (b : E), hb⟩ : 𝓞 E) : E) := by`. Simplify using `[sigR, inclR]`. Rewrite using `[e]`. Conclude with `b_inclR_mem (F := F) (E := E) v ⟨σ (b : E), hb⟩`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`. Establish `h1 : r • x = algebraMap (Fv F v) (Fv F v ⊗[F] E) (r : Fv F v) * x`.
+
+Rewrite using `[← Algebra.smul_def]`. Both sides reduce to the same expression. Establish `h2 : algebraMap (Fv F v) (Fv F v ⊗[F] E) (r : Fv F v) * sigR (Fv F v) σ x = r • sigR (Fv F v) σ x`. Rewrite using `[← Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Establish `h3 : sigR (Fv F v) σ (algebraMap (Fv F v) (Fv F v ⊗[F] E) (r : Fv F v)) = algebraMap (Fv F v) (Fv F v ⊗[F] E) (r : Fv F v)`. Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[h1, map_mul, h3, h2]`. Conclude with `Submodule.smul_mem _ r hx`.
+-/
 theorem b_sigR_mem (σ : E →ₐ[F] E) {z : Fv F v ⊗[F] E} (hz : z ∈ OEv (E := E) v) :
     sigR (Fv F v) σ z ∈ OEv (E := E) v := by
   induction hz using Submodule.span_induction with
@@ -82,6 +107,9 @@ theorem b_sigR_mem (σ : E →ₐ[F] E) {z : Fv F v ⊗[F] E} (hz : z ∈ OEv (E
     rw [h1, map_mul, h3, h2]
     exact Submodule.smul_mem _ r hx
 
+/- English proof (translation)
+Rewrite using `[b_sc_eq, ← Algebra.smul_def, map_smul, smul_eq_mul]`.
+-/
 theorem b_tr_sc (s : Fv F v) (w : Fv F v ⊗[F] E) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (sc (E := E) v s * w) =
       s * Algebra.trace (Fv F v) (Fv F v ⊗[F] E) w := by
@@ -95,31 +123,51 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem b_hR_smul_right (x y : Fin n → Fv F v ⊗[F] E) (c : Fv F v ⊗[F] E) :
     hR (Fv F v) σ J x (c • y) = c * hR (Fv F v) σ J x y := by
   simp only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem b_hR_smul_left (c : Fv F v ⊗[F] E) (x y : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (c • x) y = sigR (Fv F v) σ c * hR (Fv F v) σ J x y := by
   simp only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `[hR, Formalism.UG.hform]`.
+-/
 theorem b_hR_zero_left (y : Fin n → Fv F v ⊗[F] E) : hR (Fv F v) σ J 0 y = 0 := by
   simp [hR, Formalism.UG.hform]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem b_smulF (s : Fv F v) (y : Fin n → Fv F v ⊗[F] E) : s • y = sc (E := E) v s • y := by
   funext i
   simp only [Pi.smul_apply, smul_eq_mul]
   rw [Algebra.smul_def]
   rfl
 
+/- English proof (translation)
+Simplify using `only [BR, Pi.smul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[b_smulF v s (Y i), b_hR_smul_right, b_tr_sc]`.
+-/
 theorem b_BR_smul_right {a : ℕ} (s : Fv F v) (X Y : TupV (E := E) v n a) :
     BR (Fv F v) σ J X (s • Y) = s * BR (Fv F v) σ J X Y := by
   simp only [BR, Pi.smul_apply, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [b_smulF v s (Y i), b_hR_smul_right, b_tr_sc]
 
+/- English proof (translation)
+Rewrite using `[BR, Finset.sum_eq_single i]`. Rewrite using `[Pi.single_eq_same]`. Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj, b_hR_zero_left, map_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem b_BR_single {a : ℕ} (i : Fin a) (u : Fin n → Fv F v ⊗[F] E) (Y : TupV (E := E) v n a) :
     BR (Fv F v) σ J (Pi.single i u) Y =
       Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (hR (Fv F v) σ J u (Y i)) := by
@@ -129,6 +177,17 @@ theorem b_BR_single {a : ℕ} (i : Fin a) (u : Fin n → Fv F v ⊗[F] E) (Y : T
   · intro j _ hj
     rw [Pi.single_eq_of_ne hj, b_hR_zero_left, map_zero]
   · intro h; exact absurd (Finset.mem_univ i) h
+/- English proof (translation)
+Introduce and unpack `hS ⟨L, hLat, rfl⟩ hSD hU`. Establish `hd0` using `dV_ne_zero v`. Establish `hinv : ∀ y, σ (σ y) = y` using `b_sig_sig σ hS.1`. Use extensionality with `Y`. Simplify using `only [Set.mem_ofPred_eq, SetLike.mem_coe, mem_smulSub]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨dV v • Y, fun i => ?_, by rw [smul_smul, inv_mul_cancel₀ hd0, one_smul]⟩` and prove the remaining obligations. Use `(hSD _).2 fun x hx => hP hS hU _ fun c hc => ?_` and prove the remaining obligations. Establish `hcx : Pi.single i (sigR (Fv F v) σ c • x) ∈ LamT v (L : Set (Fin n → E)) a`.
+
+Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `b_lat_smul v L (b_sigR_mem v σ hc) hx`.
+
+Rewrite using `[Pi.single_eq_of_ne hj]`. Conclude with `Submodule.zero_mem _`. Establish `h1` using `h _ hcx`. Rewrite `h1` using `[b_BR_single, b_hR_smul_left, sigR_sigR v σ hinv]`. Rewrite using `[Pi.smul_apply, b_smulF v, b_hR_smul_right, mul_left_comm, b_tr_sc]`.
+
+Conclude with `h1`. Introduce and unpack `⟨X', hX', rfl⟩ X hX`. Rewrite using `[b_BR_smul_right, ← mul_assoc, mul_inv_cancel₀ hd0, one_mul]`. Conclude with `sum_mem fun i _ => b_trace_mem v ((hSD _).1 (hX' i) _ (hX i))`.
+-/
 theorem dualW_of_perf (a : ℕ) (hP : TrPerf σ J ψ v) : DualW σ J ψ v Λ a := by
   classical
   rintro hS ⟨L, hLat, rfl⟩ hSD hU

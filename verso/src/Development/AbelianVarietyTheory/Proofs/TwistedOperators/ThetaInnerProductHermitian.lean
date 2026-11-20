@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ThetaPairingLaws
 
+/- English proof (translation)
+Unfold `ipO nrm2`. Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem ipO_self {D : D7} {m n : ℕ} (μ : Measure (Mx D m n)) (𝓕 : Set (Mx D m n)) (f : Mx D m n → ℂ) :
     ipO μ 𝓕 f f = (nrm2 μ 𝓕 f : ℂ) := by
   unfold ipO nrm2
@@ -18,6 +21,11 @@ theorem ipO_self {D : D7} {m n : ℕ} (μ : Measure (Mx D m n)) (𝓕 : Set (Mx 
   funext w
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Use `haveI : Countable D.host.E := Finsupp.Countable.of_moduleFinite (R := ℚ) (M := D.host.E)`. Use `haveI : Countable (Matrix (Fin T.rank) (Fin S.rank) D.host.E) := inferInstanceAs (Countable (Fin T.rank → Fin S.rank → D.host.E))`. Establish `h : (ratL T S : Set (WO S T)).Countable`. Rewrite using `[ratL, AddMonoidHom.coe_range]`. Conclude with `Set.countable_range _`.
+
+Conclude with `h.to_subtype`.
+-/
 private theorem countable_ratL' {D : D7} (S T : HSp D) : Countable ↥(ratL T S) := by
   haveI : Countable D.host.E := Finsupp.Countable.of_moduleFinite (R := ℚ) (M := D.host.E)
   haveI : Countable (Matrix (Fin T.rank) (Fin S.rank) D.host.E) :=
@@ -27,6 +35,41 @@ private theorem countable_ratL' {D : D7} (S T : HSp D) : Countable ↥(ratL T S)
     exact Set.countable_range _
   exact h.to_subtype
 
+/- English proof (translation)
+Introduce `D ψ S T μ 𝓕 hψ hμ f g hf hg`. Establish `hμ₀` using `hμ`. Unfold `IsCovolOne at hμ₀`. Take `⟨hHaar, hFD, -⟩` from `hμ₀`. Use `haveI := hHaar`.
+
+Take `⟨-, hL2⟩` from `GlobalTheory.ThetaSquare.theta_square_integrable D S T`. Take `⟨hSq, hHeis, -⟩` from `hL2 ψ hψ`. Take `⟨-, hInvol, hPres, hUnit, -⟩` from `hHeis`. Take `⟨-, -, ⟨-, hHL⟩, -⟩` from `(GlobalTheory.ThetaAllChar.thetaFacts D).std hψ S T`. Establish `hInt : ∀ a b : WO S T → ℂ, IsThetaFunO ψ S T a → IsThetaFunO ψ S T b → IntegrableOn (fun w => a w * (starRingEnd ℂ) (b w)) 𝓕 μ` using `fun a b ha hb => (hHL μ μ 𝓕 𝓕 hμ hμ a b ha hb).2.1`.
+
+Use `⟨hInt f g hf hg, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `ipO`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `w`.
+
+Rewrite using `[map_mul, Complex.conj_conj, mul_comm]`. Introduce `c`. Prove the components needed by the constructor for the conclusion. Unfold `ipO`. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `ipO`.
+
+Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `f' hf'`. Prove the components needed by the constructor for the conclusion. Unfold `ipO`. Rewrite using `[← integral_add (hInt f g hf hg) (hInt f' g hf' hg)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Unfold `ipO`. Rewrite using `[← integral_add (hInt g f hg hf) (hInt g f' hg hf')]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.add_apply, map_add]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `ipO_self μ 𝓕 f`.
+
+Introduce `h0`. Use `haveI := countable_ratL' S T`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : MeasurableConstVAdd ↥(ratL T S) (WO S T) := ⟨fun γ => measurable_const_add (γ : WO S T)⟩`. Use `haveI : VAddInvariantMeasure ↥(ratL T S) (WO S T) μ := ⟨fun γ s _ => measure_preimage_add μ (γ : WO S T) s⟩`.
+
+Unfold `nrm2 at h0`. Establish `hI : IntegrableOn (fun w => ‖f w‖ ^ 2) 𝓕 μ`. Use `(hInt f f hf hf).norm.congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, Complex.norm_conj, sq]`. Establish `hae : (fun w => ‖f w‖ ^ 2) =ᵐ[μ.restrict 𝓕] 0` using `(integral_eq_zero_iff_of_nonneg (fun w => sq_nonneg ‖f w‖) hI).1 h0`.
+
+Establish `hae' : ∀ᵐ w ∂μ.restrict 𝓕, f w = 0` using `hae.mono fun w hw => by simpa using hw`. Establish `htopen : IsOpen {x : WO S T | f x ≠ 0}` using `isOpen_ne_fun hf.cont continuous_const`. Establish `hts : μ ({x : WO S T | f x ≠ 0} ∩ 𝓕) = 0`. Rewrite using `[← Measure.restrict_apply₀' hFD.nullMeasurableSet]`. Conclude with `ae_iff.1 hae'`.
+
+Establish `hzero : μ {x : WO S T | f x ≠ 0} = 0`. Use `hFD.measure_zero_of_invariant _ (fun γ => ?_) hts` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Express the relevant statement in the definitionally equal form `f ((↑(-γ) : WO S T) + y) ≠ 0 ↔ f y ≠ 0`.
+
+Rewrite using `[← norm_ne_zero_iff, (hSq f hf).1 (↑(-γ)) (-γ).2 y, norm_ne_zero_iff]`. Establish `hempty` using `(htopen.measure_eq_zero_iff μ).1 hzero`. Use function extensionality and compare the values at `x`. Assume the negation of the conclusion as `hx`. Establish `hmem : x ∈ {x : WO S T | f x ≠ 0}` using `hx`.
+
+Rewrite `hmem` using `[hempty]`. Conclude with `hmem`. Introduce `w`. Use `⟨hUnit μ 𝓕 hHaar hFD w f g hf hg, ?_⟩` and prove the remaining obligations. Establish `hg' : IsThetaFunO ψ S T (heisO ψ S T (-w) g)` using `hPres (-w) g hg`.
+
+Establish `e` using `hInvol (-w) g`. Rewrite `e` using `[neg_neg]`. Combine the equalities or inequalities in the displayed calculation. Introduce `μ' 𝓕' h'`. Establish `a` using `(hHL μ' μ 𝓕' 𝓕 h' hμ f g hf hg).2.2`.
+
+Establish `b` using `(hHL μ μ 𝓕 𝓕 hμ hμ f g hf hg).2.2`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RealDirectionThetaNonzero.heisO_apply_zero] at a b`. Unfold `ipO`. Rewrite using `[a, b]`.
+-/
 theorem ipO_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsStdChar D ψ (-1) → IsCovolOne (ratL T S) μ 𝓕 → ∀ f g : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ S T g → IntegrableOn (fun w => f w * (starRingEnd ℂ) (g w)) 𝓕 μ ∧ ipO μ 𝓕 g f = (starRingEnd ℂ) (ipO μ 𝓕 f g) ∧ (∀ c : ℂ, ipO μ 𝓕 (c • f) g = c * ipO μ 𝓕 f g ∧ ipO μ 𝓕 f (c • g) = (starRingEnd ℂ) c * ipO μ 𝓕 f g) ∧ (∀ f', IsThetaFunO ψ S T f' → ipO μ 𝓕 (f + f') g = ipO μ 𝓕 f g + ipO μ 𝓕 f' g ∧ ipO μ 𝓕 g (f + f') = ipO μ 𝓕 g f + ipO μ 𝓕 g f') ∧ ipO μ 𝓕 f f = (nrm2 μ 𝓕 f : ℂ) ∧ (nrm2 μ 𝓕 f = 0 → f = 0) ∧ (∀ w, ipO μ 𝓕 (heisO ψ S T w f) (heisO ψ S T w g) = ipO μ 𝓕 f g ∧ ipO μ 𝓕 (heisO ψ S T w f) g = ipO μ 𝓕 f (heisO ψ S T (-w) g)) ∧ ∀ μ' 𝓕', IsCovolOne (ratL T S) μ' 𝓕' → ipO μ' 𝓕' f g = ipO μ 𝓕 f g := by
   intro D ψ S T μ 𝓕 hψ hμ f g hf hg
   have hμ₀ := hμ

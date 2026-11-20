@@ -24,6 +24,11 @@ namespace GlobalTheory.ChIntPull
 
 open GlobalTheory.CxPts
 
+/- English proof (translation)
+Establish `h : ⊤ ≤ spMap f ⁻¹ᵁ ⊤` using `fun x _ => trivial`. Unfold `valR`. Rewrite using `[dif_pos h, show (spMap f).appLE ⊤ ⊤ h = (spMap f).appTop from Scheme.Hom.appLE_eq_app _]`. Establish `e` using `congrArg (fun q => CommRingCat.Hom.hom q ((Scheme.ΓSpecIso (CommRingCat.of R)).inv a)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f))`. Simplify using `only [CommRingCat.comp_apply] at e`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem valR_spMap_top {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (a : R) :
     valR (spMap f) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv a) = f a := by
   have h : ⊤ ≤ spMap f ⁻¹ᵁ ⊤ := fun x _ => trivial
@@ -35,6 +40,9 @@ theorem valR_spMap_top {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (a
   calc _ = _ := e
     _ = f a := by simp
 
+/- English proof (translation)
+Unfold `Weight.chernInt`. Rewrite using `[MeasureTheory.integral_finset_sum _ fun j _ => (h j).1.const_mul (r j), MeasureTheory.integral_finset_sum _ fun j _ => (h j).2.const_mul (r j), ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MeasureTheory.integral_const_mul, MeasureTheory.integral_const_mul, mul_sub]`.
+-/
 theorem chernInt_sum_mul {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {B : LB X}
     (φ : Weight p σ B) (D : ℕ) (S : Set (CxPts p σ)) {m : ℕ} (f : Fin m → CxPts p σ → ℝ) (r : Fin m → ℝ)
     (h : ∀ j, φ.ChernIntegrableOn D S (f j)) :
@@ -66,6 +74,9 @@ def ptsEquiv : (Σ σ : k →+* ℂ, CxPts (spMap (algebraMap k k')) σ) ≃ (k'
     rw [Spec.preimage_map]
     rfl
 
+/- English proof (translation)
+Use `show (Spec.preimage q.2.1).hom a = valR q.2.1 ⊤ _`. Use `conv_rhs => rw [← Spec.map_preimage q.2.1]`. Conclude with `(valR_spMap_top (Spec.preimage q.2.1).hom a).symm`.
+-/
 theorem ptsEquiv_apply (q : Σ σ : k →+* ℂ, CxPts (spMap (algebraMap k k')) σ) (a : k') :
     ptsEquiv q a = CxPts.ev _ q.1 ⊤ ((Scheme.ΓSpecIso (CommRingCat.of k')).inv a) q.2 := by
   show (Spec.preimage q.2.1).hom a = valR q.2.1 ⊤ _
@@ -76,6 +87,27 @@ end GlobalTheory.ChIntPull
 
 open GlobalTheory.ChIntPull in
 
+/- English proof (translation)
+Introduce `H k _ X _ p D hX k' _ _ _ ρ hρ hk' c hc hcc hs ι _ L n`. Establish `hfin : Module.Finite ℤ k'`. Use `hX.finite` as an intermediate fact. Establish `hF` using `GlobalTheory.ArithCurveFinite.isFinite k (Sp k') _ hk'`. Establish `: Module.Finite k k'` using `RingHom.finite_algebraMap.1 ((IsFinite.SpecMap_iff _).1 hF)`.
+
+Conclude with `Module.Finite.trans k k'`. Establish `hcz : CharZero k'`. Use `hk'.charZero` as an intermediate fact. Conclude with `RingHom.charZero (Scheme.ΓSpecIso (CommRingCat.of k')).inv.hom`. Establish `hfe : Finite (k' →+* ℂ)` using `.of_equiv _ (RingHom.equivIntAlgHom k' ℂ).symm`.
+
+Establish `hfk : Finite (k →+* ℂ)` using `hX.finite_emb`. Establish `hfy : ∀ σ, Finite (CxPts (spMap (algebraMap k k')) σ)` using `fun σ => Finite.of_injective (fun y => ptsEquiv (⟨σ, y⟩ : Σ σ : k →+* ℂ, CxPts (spMap (algebraMap k k')) σ)) fun y y' h => by simpa using ptsEquiv.injective h`. Set `C : (k' →+* ℂ) → ℝ` to `fun τ => c (ptsEquiv.symm τ).1 (ptsEquiv.symm τ).2`. Establish `hCe : ∀ q, C (ptsEquiv q) = c q.1 q.2` using `fun q => by show c (ptsEquiv.symm (ptsEquiv q)).1 (ptsEquiv.symm (ptsEquiv q)).2 = _`. Rewrite using `[Equiv.symm_apply_apply]`.
+
+Establish `hCc : ∀ τ, C ((starRingEnd ℂ).comp τ) = C τ` using `fun τ => hcc _ _ PUnit.unit (ptsEquiv.symm τ).2 (ptsEquiv.symm ((starRingEnd ℂ).comp τ)).2 (show Spec.map (CommRingCat.ofHom ((starRingEnd ℂ).comp τ)) = Spec.map _ ≫ Spec.map _ by`. Rewrite using `[← Spec.map_comp]`. Use the proof step `rfl) CxPts.mem_ptsIn_top`. Establish `hCs : ∑ᶠ τ, C τ = 0`. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact.
+
+Use `fun σ => Fintype.ofFinite (CxPts (spMap (algebraMap k k')) σ)` as an intermediate fact. Rewrite using `[← finsum_comp_equiv (ptsEquiv (k := k) (k' := k')), ← hs]`. Simplify using `only [hCe, finsum_eq_sum_of_fintype]`. Conclude with `Fintype.sum_sigma _`. Take `⟨m, a, r, hr⟩` from `GlobalTheory.T.unit_logarithm_spanning k' C hCc hCs`.
+
+Set `aX : Fin m → Γ(X, ⊤)ˣ` to `fun j => Units.map (ρ.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of k')).inv.hom).toMonoidHom (a j)`. Establish `key : ∀ σ (y : CxPts p σ), c σ (PtsOver.map ρ hρ _ y) = ∑ j, r j * CxPts.logSq y ⊤ (aX j)`. Introduce `σ y`. Rewrite using `[← hCe ⟨σ, PtsOver.map ρ hρ _ y⟩, hr]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ptsEquiv_apply, CxPts.logSq, ← CxPts.ev_app ρ hρ ⊤]`. Both sides reduce to the same expression. Establish `hint` using `fun j => GlobalTheory.T.chern_integral_log_unit_vanishes H k X p D hX (aX j) ι L n`. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Establish `e : ∀ σ, ((comb L n).φ σ).chernInt D Set.univ (fun y => c σ (PtsOver.map ρ hρ _ y)) = ∑ j, r j * ((comb L n).φ σ).chernInt D Set.univ (fun y => CxPts.logSq y ⊤ (aX j))` using `fun σ => by`.
+
+Simplify using `only [key]`. Conclude with `chernInt_sum_mul _ D _ _ r fun j => (hint j).1 σ`. Unfold `chInt`. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [e]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Establish `h0` using `(hint j).2`. Unfold `chInt at h0`.
+
+Rewrite `h0` using `[finsum_eq_sum_of_fintype]`. Rewrite using `[h0, mul_zero]`.
+-/
 theorem GlobalTheory.ChIntPull.chInt_pull_eq_zero : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'] (ρ : X ⟶ Sp k')
     (hρ : ρ ≫ spMap (algebraMap k k') = p), IsArithVar (spMap (algebraMap k k')) 0 →

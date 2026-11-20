@@ -19,6 +19,11 @@ namespace GlobalTheory.BalProjOpen
 
 open GlobalTheory.BalProj
 
+/- English proof (translation)
+Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Conclude with `⟨c, hfix c hc⟩`. Introduce and unpack `⟨d, rfl⟩ a show (d ᵥ* P) ᵥ* B a = χ a • (d ᵥ* P)`.
+
+Rewrite using `[Matrix.vecMul_vecMul, hP a, Matrix.vecMul_smul]`.
+-/
 theorem eigSp_eq_range {O k : Type} [Field k] {n : ℕ} (B : O → Matrix (Fin n) (Fin n) k) (χ : O → k)
     (P : Matrix (Fin n) (Fin n) k) (hP : ∀ a, P * B a = χ a • P) (hfix : ∀ c ∈ eigSp B χ, c ᵥ* P = c) :
     eigSp B χ = LinearMap.range (Matrix.vecMulLinear P) := by
@@ -30,6 +35,11 @@ theorem eigSp_eq_range {O k : Type} [Field k] {n : ℕ} (B : O → Matrix (Fin n
     show (d ᵥ* P) ᵥ* B a = χ a • (d ᵥ* P)
     rw [Matrix.vecMul_vecMul, hP a, Matrix.vecMul_smul]
 
+/- English proof (translation)
+Establish `h1 : Matrix.vecMulLinear P = Matrix.toLin' Pᵀ`. Use extensionality with `c i`. Simplify using `[Matrix.mulVec_transpose]`. Establish `hi : IsIdempotentElem (Matrix.toLin' Pᵀ)` using `by show Matrix.toLin' Pᵀ * Matrix.toLin' Pᵀ = Matrix.toLin' Pᵀ`. Rewrite using `[Module.End.mul_eq_comp, ← Matrix.toLin'_mul, ← Matrix.transpose_mul, hP]`.
+
+Rewrite using `[h1, ← (LinearMap.IsIdempotentElem.isProj_range _ hi).trace, Matrix.trace_toLin'_eq, Matrix.trace_transpose]`.
+-/
 theorem finrank_range_eq_trace {k : Type} [Field k] {n : ℕ} (P : Matrix (Fin n) (Fin n) k) (hP : P * P = P) :
     (Module.finrank k (LinearMap.range (Matrix.vecMulLinear P)) : k) = P.trace := by
   have h1 : Matrix.vecMulLinear P = Matrix.toLin' Pᵀ := by
@@ -40,6 +50,19 @@ theorem finrank_range_eq_trace {k : Type} [Field k] {n : ℕ} (P : Matrix (Fin n
     rw [Module.End.mul_eq_comp, ← Matrix.toLin'_mul, ← Matrix.transpose_mul, hP]
   rw [h1, ← (LinearMap.IsIdempotentElem.isProj_range _ hi).trace, Matrix.trace_toLin'_eq, Matrix.trace_transpose]
 
+/- English proof (translation)
+Use `set P := ∑ i, f i • A (b i) with hPdef`. Establish `hPA : ∀ a, P * A a = χ a • P`. Introduce `a`. Rewrite using `[← h2 a, hPdef, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_mul_assoc, ← hmul, mul_comm]`. Establish `hPP : P * P = P` using `by conv_lhs => arg 2; rw [hPdef]`. Rewrite using `[Finset.mul_sum]`. Repeatedly rewrite using `[mul_smul_comm, hPA, smul_smul, ← Finset.sum_smul, h1, one_smul]`. Use `set Pb := P.map φ`.
+
+Establish `hPbA : ∀ a, Pb * (A a).map φ = φ (χ a) • Pb`. Introduce `a`. Rewrite using `[← Matrix.map_mul, hPA a]`. Use extensionality with `i j`. Simplify using `[Pb]`.
+
+Establish `hfix : ∀ c ∈ eigSp (fun a => (A a).map φ) (fun a => φ (χ a)), c ᵥ* Pb = c`. Introduce `c hc`. Establish `: Pb = ∑ i, φ (f i) • (A (b i)).map φ`. Use extensionality with `i j`. Simplify using `[Pb, hPdef, Matrix.sum_apply, map_sum]`.
+
+Rewrite using `[this, Matrix.vecMul_sum]`. Repeatedly rewrite using `[Matrix.vecMul_smul, hc _, smul_smul, ← Finset.sum_smul, ← map_mul, ← map_sum, h1, map_one, one_smul]`. Establish `hPbPb : Pb * Pb = Pb` using `by rw [← Matrix.map_mul, hPP]`. Unfold `eigRank`. Rewrite using `[eigSp_eq_range _ _ Pb hPbA hfix, finrank_range_eq_trace Pb hPbPb]`.
+
+Simplify using `[Pb, Matrix.trace, map_sum]`.
+-/
 theorem eigRank_cast_eq_trace {O R k : Type} [CommRing O] [CommRing R] [Field k] (φ : R →+* k) {n : ℕ}
     (A : O → Matrix (Fin n) (Fin n) R) (hmul : ∀ a b, A (a * b) = A a * A b) (χ : O → R)
     {J : Type} [Fintype J] (f : J → R) (b : J → O) (h1 : ∑ i, f i * χ (b i) = 1)
@@ -73,6 +96,15 @@ theorem eigRank_cast_eq_trace {O R k : Type} [CommRing O] [CommRing R] [Field k]
   rw [eigSp_eq_range _ _ Pb hPbA hfix, finrank_range_eq_trace Pb hPbPb]
   simp [Pb, Matrix.trace, map_sum]
 
+/- English proof (translation)
+Use `set t := (∑ i, f i • A (b i)).trace with ht`. Establish `key : ∀ (𝔭 : PrimeSpectrum R) (M : ℕ), eigRank (algebraMap R 𝔭.asIdeal.ResidueField) A χ = M ↔ t - M ∈ 𝔭.asIdeal`. Introduce `𝔭 M`. Use `haveI : CharZero 𝔭.asIdeal.ResidueField := (RingHom.charZero_iff ((algebraMap R 𝔭.asIdeal.ResidueField).comp j).injective).1 inferInstance`. Rewrite using `[← Nat.cast_inj (R := 𝔭.asIdeal.ResidueField), eigRank_cast_eq_trace _ A hmul χ f b h1 h2, ← Ideal.algebraMap_residueField_eq_zero, map_sub, map_natCast, sub_eq_zero]`.
+
+Establish `hle : ∀ 𝔭 : PrimeSpectrum R, eigRank (algebraMap R 𝔭.asIdeal.ResidueField) A χ ≤ n`. Introduce `𝔭`. Unfold `eigRank`. Conclude with `(Submodule.finrank_le _).trans (by simp)`. Establish `hset : {𝔭 : PrimeSpectrum R | eigRank (algebraMap R 𝔭.asIdeal.ResidueField) A χ = N} = (⋃ M ∈ (Finset.range (n + 1)).filter (· ≠ N), PrimeSpectrum.zeroLocus {t - (M : R)})ᶜ`.
+
+Use extensionality with `𝔭`. Simplify using `only [Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_iUnion, Finset.mem_filter, Finset.mem_range, PrimeSpectrum.mem_zeroLocus, Set.singleton_subset_iff, SetLike.mem_coe, exists_prop, not_exists, not_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h M hM hM'`. Conclude with `hM.2 (((key 𝔭 M).2 hM').symm.trans h)`.
+
+Introduce `h`. Assume the negation of the conclusion as `hne`. Conclude with `h _ ⟨Nat.lt_succ_of_le (hle 𝔭), hne⟩ ((key 𝔭 _).1 rfl)`. Rewrite using `[hset]`. Conclude with `(isClosed_biUnion_finset fun M _ => PrimeSpectrum.isClosed_zeroLocus _).isOpen_compl`.
+-/
 theorem isOpen_eigRank_eq_of_datum {O R K : Type} [CommRing O] [CommRing R] [Field K] [CharZero K] (j : K →+* R)
     {n : ℕ} (A : O → Matrix (Fin n) (Fin n) R) (hmul : ∀ a b, A (a * b) = A a * A b) (χ : O → R)
     {J : Type} [Fintype J] (f : J → R) (b : J → O) (h1 : ∑ i, f i * χ (b i) = 1)
@@ -104,6 +136,35 @@ theorem isOpen_eigRank_eq_of_datum {O R K : Type} [CommRing O] [CommRing R] [Fie
   rw [hset]
   exact (isClosed_biUnion_finset fun M _ => PrimeSpectrum.isClosed_zeroLocus _).isOpen_compl
 
+/- English proof (translation)
+Use `set bO := RingOfIntegers.basis E`. Use `set bE := integralBasis E`. Establish `hnd` using `_root_.traceForm_nondegenerate ℚ E`. Take `⟨d, hd⟩ : ∃ d, d = (Algebra.traceForm ℚ E).dualBasis hnd bE` from `⟨_, rfl⟩`. Establish `hdr : ∀ i j, Algebra.trace ℚ E (bE i * d j) = if i = j then 1 else 0`.
+
+Introduce `i j`. Rewrite using `[← Algebra.traceForm_apply, hd]`. Conclude with `LinearMap.BilinForm.apply_dualBasis_right hnd (Algebra.traceForm_isSymm ℚ) bE i j`. Establish `hdrep0 : ∀ (y : E) i, d.repr y i = Algebra.trace ℚ E (y * bE i)`. Introduce `y i`.
+
+Rewrite using `[hd, LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]`. Use `set g : E →+* R := iF.comp (τ.codRestrict F.toSubfield (hF τ))`. Establish `hg : ∀ a : 𝓞 E, embR F hF iF τ a = g (a : E)` using `fun a => rfl`. Establish `hbE : ∀ i, bE i = (bO i : E)` using `fun i => integralBasis_apply E i`. Establish `hrep : ∀ (y : E) i, bE.repr y i = Algebra.trace ℚ E (y * d i)`.
+
+Introduce `y i`. Use `conv_rhs => rw [← bE.sum_repr y]`. Rewrite using `[Finset.sum_mul, map_sum]`. Repeatedly rewrite using `[smul_mul_assoc, map_smul, hdr, smul_eq_mul, mul_ite, _root_.mul_one]`. Simplify using the standard rewrite rules.
+
+Establish `hdrep : ∀ y : E, y = ∑ i, Algebra.trace ℚ E (y * bE i) • d i`. Introduce `y`. Use `conv_lhs => rw [← d.sum_repr y]`. Repeatedly rewrite using `[hdrep0]`. Establish `hA : ∑ i, d i * bE i = 1`.
+
+Rewrite using `[← sub_eq_zero]`. Use `hnd.1 _ fun y => ?_` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, sub_mul, map_sub, _root_.one_mul, Finset.sum_mul, map_sum, sub_eq_zero, Algebra.trace_eq_matrix_trace bE y, Matrix.trace]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag, Algebra.leftMulMatrix_eq_repr_mul, hrep]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hB : ∀ (a : 𝓞 E) j, ∑ i, ((bO.repr (a * bO i) j : ℤ) : E) * d i = (a : E) * d j`. Introduce `a j`. Use `conv_rhs => rw [hdrep ((a : E) * d j)]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : Algebra.trace ℚ E ((a : E) * d j * bE i) = bE.repr ((a : E) * bE i) j`. Rewrite using `[hrep]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : bE.repr ((a : E) * bE i) j = ((bO.repr (a * bO i) j : ℤ) : ℚ)`. Rewrite using `[hbE]`. Conclude with `integralBasis_repr_apply E (a * bO i) j`. Rewrite using `[h1, h2, Algebra.smul_def, eq_ratCast, Rat.cast_intCast]`. Establish `hexp : ∀ x : 𝓞 E, A x = ∑ j, bO.repr x j • A (bO j)`.
+
+Introduce `x`. Set `Aa : 𝓞 E →+ Matrix (Fin n) (Fin n) R` to `AddMonoidHom.mk' A hadd`. Use `conv_lhs => rw [← bO.sum_repr x]`. Conclude with `(map_sum Aa _ _).trans (Finset.sum_congr rfl fun j _ => map_zsmul Aa _ _)`. Use `⟨_, inferInstance, fun i => g (d i), bO, ?_, ?_⟩` and prove the remaining obligations.
+
+Repeatedly rewrite using `[hg, ← map_mul, ← map_sum, ← hbE, hA, map_one]`. Introduce `a`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hexp (a * bO i), Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_smul, Int.cast_smul_eq_zsmul]`. Use `_ = ∑ j, (∑ i, g (d i) * ((bO.repr (a * bO i) j : ℤ) : R)) • A (bO j) := by`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[Finset.sum_smul]`.
+
+Use `_ = ∑ j, (embR F hF iF τ a * g (d j)) • A (bO j) := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hg, ← map_mul, ← hB a j, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul g, map_intCast g, _root_.mul_comm]`. Use `_ = _ := by`. Rewrite using `[Finset.smul_sum]`. Repeatedly rewrite using `[smul_smul]`.
+-/
 theorem exists_datum {E : Type} [Field E] [NumberField E] (F : IntermediateField ℚ ℂ)
     (hF : ∀ (τ : E →+* ℂ) (a : E), τ a ∈ F) (R : Type) [CommRing R] (iF : F →+* R) (n : ℕ)
     (A : 𝓞 E → Matrix (Fin n) (Fin n) R) (hadd : ∀ a b, A (a + b) = A a + A b) (τ : E →+* ℂ) :
@@ -181,6 +242,9 @@ theorem exists_datum {E : Type} [Field E] [NumberField E] (F : IntermediateField
           rw [Finset.smul_sum]
           simp_rw [smul_smul]
 
+/- English proof (translation)
+Introduce `E _ _ _ F hF R _ iF n A h1 hadd hmul τ N`. Take `⟨J, _, f, b, hf1, hf2⟩` from `exists_datum F hF R iF n A hadd τ`. Conclude with `isOpen_eigRank_eq_of_datum iF A hmul _ f b hf1 hf2 N`.
+-/
 theorem isOpen_eigRank_eq : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (F : IntermediateField ℚ ℂ) (hF : ∀ (τ : E →+* ℂ) (a : E), τ a ∈ F) (R : Type) [CommRing R] (iF : F →+* R) (n : ℕ) (A : 𝓞 E → Matrix (Fin n) (Fin n) R), A 1 = 1 → (∀ a b, A (a + b) = A a + A b) → (∀ a b, A (a * b) = A a * A b) → ∀ (τ : E →+* ℂ) (N : ℕ), IsOpen {𝔭 : PrimeSpectrum R | GlobalTheory.BalProj.eigRank (algebraMap R 𝔭.asIdeal.ResidueField) A (GlobalTheory.BalProj.embR F hF iF τ) = N} := by
   intro E _ _ _ F hF R _ iF n A h1 hadd hmul τ N
   obtain ⟨J, _, f, b, hf1, hf2⟩ := exists_datum F hF R iF n A hadd τ

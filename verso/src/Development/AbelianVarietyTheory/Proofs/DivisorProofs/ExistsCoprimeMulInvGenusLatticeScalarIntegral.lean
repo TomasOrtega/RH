@@ -27,6 +27,15 @@ noncomputable section
 
 namespace GlobalTheory.BetaInvIntegral
 
+/- English proof (translation)
+Introduce `D T hF j hj n Λ σ p hp hU hT hTp`. Establish `hβ : betaH (Dw` using `T.Q.Dw j) T.Q.c Λ ≠ 0 := by`. Unfold `betaH`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`.
+
+Conclude with `one_ne_zero`. Take `⟨M, hM, hint⟩` from `GlobalTheory.KerTie.MuqUnit.exists_coprime_mul_isIntegral hp (betaH (Dw := T.Q.Dw j) T.Q.c Λ)⁻¹ (fun w hw => by`. Take `⟨k, hk, h1, h2⟩` from `hTp`. Establish `hA : ReciprocityTheory.ChartRestriction.G.PullbackSections.AdaptAt Λ w` using `⟨k, GlobalTheory.ShortUnits.not_mem_of_coprime' w hk.symm hw, h1, h2⟩`. Establish `hv` using `GlobalTheory.ShortUnits.vLa_betaH T hF j hj Λ w hU hT hA`.
+
+Establish `hne : w.valuation T.Q.c.F (betaH (Dw` using `T.Q.Dw j) T.Q.c Λ) ≠ 0 := by simpa using hβ`. Establish `h1' : w.valuation T.Q.c.F (betaH (Dw` using `T.Q.Dw j) T.Q.c Λ) = 1 := by`. Rewrite using `[← WithZero.exp_log hne]`. Simplify using `only [vLa, neg_eq_zero] at hv`. Rewrite using `[hv]`.
+
+Both sides reduce to the same expression. Rewrite using `[map_inv₀, h1', inv_one])`. Use `⟨M, hM, ?_⟩` and prove the remaining obligations. Use `map_isIntegral_int σ hint` as an intermediate fact. Simplify `this` using `[map_mul, map_inv₀, map_natCast]`.
+-/
 theorem betaH_inv_integral : ∀ (D : D7) (T : Full D), LawsFull T → ∀ (j : ℕ), InR D j → ∀ {n : ℕ} (Λ : GenLat D.host.E n) (σ : T.Q.c.F →+* ℂ) (p : ℕ), p.Prime → Λ.Unimod → Λ.TrivAt (badN D) → Λ.TrivAt p → ∃ m : ℕ, Nat.Coprime m p ∧ IsIntegral ℤ ((m : ℂ) * (σ (betaH (Dw := T.Q.Dw j) T.Q.c Λ))⁻¹) := by
   intro D T hF j hj n Λ σ p hp hU hT hTp
   have hβ : betaH (Dw := T.Q.Dw j) T.Q.c Λ ≠ 0 := by

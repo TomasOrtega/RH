@@ -12,6 +12,9 @@ end DeepSquares
 
 open NumberField IsDedekindDomain in
 open scoped WithZero in
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, WithZero.exp k = a` from `⟨_, WithZero.exp_log (ne_bot_of_gt ha)⟩`. Take `⟨l, rfl⟩ : ∃ l, WithZero.exp l = b` from `⟨_, WithZero.exp_log (ne_bot_of_gt hb)⟩`. Rewrite `ha`, `hb` using `[WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_add, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 private lemma exp_neg_two_mul_le_mul_of_lt {e : ℕ} {a b : ℤᵐ⁰}
     (ha : WithZero.exp (-((e : ℤ) + 1)) < a) (hb : WithZero.exp (-((e : ℤ) + 1)) < b) :
     WithZero.exp (-(2 * (e : ℤ))) ≤ a * b := by
@@ -24,6 +27,23 @@ private lemma exp_neg_two_mul_le_mul_of_lt {e : ℕ} {a b : ℤᵐ⁰}
 open NumberField IsDedekindDomain in
 open scoped WithZero in
 
+/- English proof (translation)
+Introduce `F _ _ v e h2 x hx`. Unfold `_root_.GlobalTheory.QNorm.hiUnits at hx`. Unfold `_root_.GlobalTheory.QNorm.sqs _root_.GlobalTheory.QNorm.hiUnits`. Take `⟨-, hx1⟩` from `hx`. Use `set w : Valuation (v.adicCompletion F) ℤᵐ⁰ := Valued.v`.
+
+Establish `h4 : w 4 = WithZero.exp (-(2 * e : ℤ))`. Establish `: (4 : v.adicCompletion F) = 2 * 2` using `by norm_num`. Rewrite using `[this, map_mul, h2, ← WithZero.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hlt : w ((x : v.adicCompletion F) - 1) < w 4`. Use `lt_of_le_of_lt hx1 ?_` and prove the remaining obligations. Rewrite using `[h4, WithZero.exp_lt_exp]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨r, hr⟩` from `_root_.GlobalTheory.LocalQuad.isSquare_of_valued_sub_one_lt F v _ hlt`. Establish `hprod : w (r - 1) * w (r + 1) ≤ WithZero.exp (-((2 * e + 1 : ℕ) : ℤ))`. Rewrite using `[← map_mul, show (r - 1) * (r + 1) = r * r - 1 by ring, ← hr]; exact hx1`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hs1⟩ : ∃ s : v.adicCompletion F, s * s = x ∧ w (s - 1) ≤ WithZero.exp (-((e + 1 : ℕ) : ℤ)) := by`. Distinguish the cases in `hm : w (r - 1) ≤ WithZero.exp (-((e + 1 : ℕ) : ℤ))`.
+
+Conclude with `⟨r, hr.symm, hm⟩`. Distinguish the cases in `hp : w (r + 1) ≤ WithZero.exp (-((e + 1 : ℕ) : ℤ))`. Use `⟨-r, by rw [neg_mul_neg, hr], ?_⟩` and prove the remaining obligations. Rewrite using `[show -r - 1 = -(r + 1) by ring, Valuation.map_neg]` and apply the resulting hypothesis. It suffices to derive a contradiction.
+
+Move the coercions through the operations in `at hm hp hprod`. Use `(exp_neg_two_mul_le_mul_of_lt (not_le.mp hm) (not_le.mp hp)).trans hprod` as an intermediate fact. Rewrite `this` using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hs0 : s ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `only [mul_zero] at hs`. Conclude with `x.ne_zero hs.symm`. Establish `hsv : w s = 1`. Establish `hlt1 : w (s - 1) < 1` using `hs1.trans_lt (by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; omega)`.
+
+Simplify using `using Valuation.map_one_add_of_lt w hlt1`. Use `⟨Units.mk0 s hs0, ⟨hsv, hs1⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[pow_two, hs]`.
+-/
 theorem _root_.GlobalTheory.QNorm.hiUnits_le_sqs_hiUnits : ∀ (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (e : ℕ),
     Valued.v (2 : v.adicCompletion F) = WithZero.exp (-(e : ℤ)) →

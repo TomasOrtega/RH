@@ -7,6 +7,9 @@ namespace Formalism.CohomologicalDescent.LD
 
 open Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Unfold `mu`. Apply `Nat.eq_zero_of_le_zero` to reduce the goal to its premises. Use `Finset.sup_le fun tau htau => ?_` and prove the remaining obligations. Simplify using `only [shapes, Finset.mem_filter] at htau`. Conclude with `htau.2.2.2.2.le`.
+-/
 theorem ld_mu_w (p w i q : ℕ) (lam2 : Fin q → ℕ) : mu p w i lam2 (w : ℤ) = 0 := by
   unfold mu
   apply Nat.eq_zero_of_le_zero
@@ -14,6 +17,11 @@ theorem ld_mu_w (p w i q : ℕ) (lam2 : Fin q → ℕ) : mu p w i lam2 (w : ℤ)
   simp only [shapes, Finset.mem_filter] at htau
   exact htau.2.2.2.2.le
 
+/- English proof (translation)
+Introduce `p w i q lam2`. Unfold `Dn`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `k _`. Distinguish the cases in `hk : (w : ℤ) - ((k : ℤ) - (q : ℤ)) = 0`.
+
+Establish `hc : (k : ℤ) - (q : ℤ) = (w : ℤ)` using `by omega`. Rewrite using `[hc, ld_mu_w, pow_zero]`. Conclude with `one_ne_zero`. Conclude with `pow_ne_zero _ hk`.
+-/
 theorem dnNeZero : DnNeZero := by
   intro p w i q lam2
   unfold Dn
@@ -25,6 +33,13 @@ theorem dnNeZero : DnNeZero := by
     exact one_ne_zero
   · exact pow_ne_zero _ hk
 
+/- English proof (translation)
+Introduce `p w i q lam2 c hw hmu`. Unfold `mu at hmu`. Choose the witnesses or unpack the hypotheses as in `⟨tau, htau, hne⟩ : ∃ tau ∈ shapes p w i lam2, boxesOfContent lam2 tau c ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Conclude with `hmu (Nat.eq_zero_of_le_zero (Finset.sup_le fun t ht => (hcon t ht).le))`. Unfold `boxesOfContent at hne`. Take `⟨a, ha⟩` from `Finset.card_pos.mp (Nat.pos_of_ne_zero hne)`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha`. Simplify using `only [shapes, Finset.mem_filter, Fintype.mem_piFinset, Finset.mem_Icc] at htau`.
+
+Establish `h1` using `(htau.1 a).2`. Establish `h2` using `hw a`. Establish `h3` using `a.isLt`. Apply the tactic sequence `constructor <;> omega`.
+-/
 theorem muSupport : MuSupport := by
   intro p w i q lam2 c hw hmu
   unfold mu at hmu
@@ -41,6 +56,11 @@ theorem muSupport : MuSupport := by
   have h3 := a.isLt
   constructor <;> omega
 
+/- English proof (translation)
+Use `haveI : Fact l.Prime := ⟨hl⟩`. Take `⟨D', hD'⟩` from `(padicValInt_dvd_iff (p := l) (padicValInt l D) D).mpr (Or.inr le_rfl)`. Use `⟨D', hD', fun hdiv => ?_⟩` and prove the remaining obligations. Take `⟨E, hE⟩` from `hdiv`. Establish `h2 : (l : ℤ) ^ (padicValInt l D + 1) ∣ D` using `⟨E, by rw [pow_succ, mul_assoc, ← hE]; exact hD'⟩`.
+
+Break down `(padicValInt_dvd_iff (p := l) (padicValInt l D + 1) D).mp h2 with h3 | h3` into its components or cases. Conclude with `hD h3`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ld_val_split (l : ℕ) (hl : l.Prime) (D : ℤ) (hD : D ≠ 0) :
     ∃ D' : ℤ, D = (l : ℤ) ^ padicValInt l D * D' ∧ ¬ (l : ℤ) ∣ D' := by
   haveI : Fact l.Prime := ⟨hl⟩
@@ -52,6 +72,17 @@ theorem ld_val_split (l : ℕ) (hl : l.Prime) (D : ℤ) (hD : D ≠ 0) :
   · exact hD h3
   · omega
 
+/- English proof (translation)
+Introduce `l r ν μ e D hl hD`. Take `⟨D', hD', hnd⟩` from `ld_val_split l hl D hD`. Use `set v := padicValInt l D with hv`. Establish `hlp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h x hx`. Take `⟨m, hm, hmx⟩` from `h x hx`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `e1 : m * ((l : ℤ) ^ e * D) = D' * (m * (l : ℤ) ^ (e + v))`. Rewrite using `[hD', pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hmx`. Introduce `h x hx`. Take `⟨m, hm, hmx⟩` from `h x hx`.
+
+Use `⟨m * D', fun hdvd => ?_, ?_⟩` and prove the remaining obligations. Break down `hlp.dvd_or_dvd hdvd with h1 | h1` into its components or cases. Conclude with `hm h1`. Conclude with `hnd h1`. Establish `e1 : m * D' * (l : ℤ) ^ (e + v) = m * ((l : ℤ) ^ e * D)`.
+
+Rewrite using `[hD', pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `hmx`.
+-/
 theorem expLeIffKilled : ExpLeIffKilled := by
   intro l r ν μ e D hl hD
   obtain ⟨D', hD', hnd⟩ := ld_val_split l hl D hD
@@ -78,6 +109,11 @@ theorem expLeIffKilled : ExpLeIffKilled := by
       rw [e1]
       exact hmx
 
+/- English proof (translation)
+Introduce `l r ν μ e e' hee h x hx`. Take `⟨m, hm, hmx⟩` from `h x hx`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hee`. Establish `e1 : m * (l : ℤ) ^ (e + d) = (l : ℤ) ^ d * (m * (l : ℤ) ^ e)` using `by ring`.
+
+Rewrite using `[e1, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hmx`.
+-/
 theorem expLeMono : ExpLeMono := by
   intro l r ν μ e e' hee h x hx
   obtain ⟨m, hm, hmx⟩ := h x hx
@@ -87,6 +123,19 @@ theorem expLeMono : ExpLeMono := by
   rw [e1, mul_smul]
   exact Submodule.smul_mem _ _ hmx
 
+/- English proof (translation)
+Introduce `l r ν hl hν`. Take `⟨b, ⟨_, hspan, _⟩, _⟩` from `sSBasis ℤ r r ν`. Establish `hfin : (ssIdx r r ν).Finite` using `sSIdxFinite r r ν`. Establish `: Fintype (ssIdx r r ν)` using `hfin.fintype`. Establish `hb : ∀ m : ssIdx r r ν, ∃ c : ℤ, c ≠ 0 ∧ c • b m ∈ weyl ℤ r r le_rfl ν`.
+
+Introduce `m`. Use `weylRational r r le_rfl ν hν (b m) ?_` and prove the remaining obligations. Rewrite using `[← hspan]`. Conclude with `Submodule.subset_span ⟨m, rfl⟩`. Use `choose c hc0 hc using hb`.
+
+Use `set Cc : ℤ := ∏ m, c m with hCc`. Establish `hC0 : Cc ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun m _ => hc0 m`. Establish `hall : ∀ x ∈ dualWeyl ℤ r r ν, Cc • x ∈ weyl ℤ r r le_rfl ν`. Introduce `x hx`. Rewrite `hx` using `[← hspan]`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, rfl⟩` from `hx`. Take `⟨d, hd⟩ : c m ∣ Cc` from `Finset.dvd_prod_of_mem c (Finset.mem_univ m)`. Rewrite using `[hd, mul_comm, mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (hc m)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`. Take `⟨D', hD', hnd⟩` from `ld_val_split l hl Cc hC0`. Use `⟨padicValInt l Cc, fun μ x hx => ⟨D', hnd, ?_⟩⟩` and prove the remaining obligations. Use `hall x hx.1` as an intermediate fact. Rewrite `this` using `[hD', mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem expBounded : ExpBounded := by
   intro l r ν hl hν
   obtain ⟨b, ⟨_, hspan, _⟩, _⟩ := sSBasis ℤ r r ν
@@ -117,14 +166,29 @@ theorem expBounded : ExpBounded := by
   have := hall x hx.1
   rwa [hD', mul_comm] at this
 
+/- English proof (translation)
+Introduce `h l q w lam2 hl ha hw` and use `h l 1 q w lam2 hl ha hw`.
+-/
 theorem plain_implies_one_block : OneRowOfBound := fun h l q w lam2 hl ha hw => h l 1 q w lam2 hl ha hw
 
+/- English proof (translation)
+Introduce `h l p q w lam2 hl ha hw eL heL i μ hd`. Establish `h0 : Antitone (0 : Fin (p + q) → ℤ)` using `fun _ _ _ => le_rfl`. Use `h l p q w lam2 0 hl ha hw h0 0 eL (fun μ2 _ => heL μ2) i μ hd ?_` and prove the remaining obligations. Simplify using `[depth2]`.
+-/
 theorem gradedImpliesPlain : GradedImpliesPlain := by
   intro h l p q w lam2 hl ha hw eL heL i μ hd
   have h0 : Antitone (0 : Fin (p + q) → ℤ) := fun _ _ _ => le_rfl
   refine h l p q w lam2 0 hl ha hw h0 0 eL (fun μ2 _ => heL μ2) i μ hd ?_
   simp [depth2]
 
+/- English proof (translation)
+Use extensionality with `tau`. Simplify using `only [shapes, Finset.mem_filter, Fintype.mem_piFinset, Finset.mem_Icc, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, hsum, -, -⟩`. Use function extensionality and compare the values at `a`.
+
+Establish `ha : a = 0` using `Subsingleton.elim _ _`. Substitute `ha` using the available equality. Simplify using `using hsum`. Introduce and unpack `rfl`. Use `⟨fun _ => ⟨Nat.le_add_right y i, le_rfl⟩, fun _ _ _ => le_rfl, by simp, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `b j hj`. Unfold `colLen`. Conclude with `(Finset.card_le_univ _).trans (by simpa using hp)`. Unfold `boxesOfContent`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`.
+
+Introduce and unpack `a - ⟨h1, h2⟩`. Move the coercions through the operations in `at h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ld_shapes_one (p w y i : ℕ) (hp : 1 ≤ p) (h : y + i ≤ w) :
     shapes p w i (fun _ : Fin 1 => y) = {fun _ => y + i} := by
   ext tau
@@ -146,6 +210,11 @@ theorem ld_shapes_one (p w y i : ℕ) (hp : 1 ≤ p) (h : y + i ≤ w) :
       push_cast at h2
       omega
 
+/- English proof (translation)
+Rewrite using `[mu, ld_shapes_one p w y i hp h, Finset.sup_singleton]`. Unfold `boxesOfContent`. Rewrite using `[Finset.univ_unique, Finset.filter_singleton]`. Establish `h0 : ((default : Fin 1).val : ℤ) = 0` using `by simp`. Simplify using `only [h0, add_zero]`.
+
+Use `push_cast`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem ld_mu_one (p w y i : ℕ) (hp : 1 ≤ p) (h : y + i ≤ w) (c : ℤ) :
     mu p w i (fun _ : Fin 1 => y) c = if (y : ℤ) ≤ c ∧ c < (y : ℤ) + (i : ℤ) then 1 else 0 := by
   rw [mu, ld_shapes_one p w y i hp h, Finset.sup_singleton]
@@ -156,6 +225,17 @@ theorem ld_mu_one (p w y i : ℕ) (hp : 1 ≤ p) (h : y + i ≤ w) (c : ℤ) :
   push_cast
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `p w y i hp h`. Unfold `Dn`. Establish `e1 : ∀ k ∈ Finset.range (1 + w + i), ((w : ℤ) - ((k : ℤ) - ((1 : ℕ) : ℤ))) ^ mu p w i (fun _ : Fin 1 => y) ((k : ℤ) - ((1 : ℕ) : ℤ)) = if (y : ℤ) ≤ (k : ℤ) - 1 ∧ (k : ℤ) - 1 < (y : ℤ) + (i : ℤ) then (w : ℤ) - ((k : ℤ) - 1) else 1`. Introduce `k _`. Rewrite using `[ld_mu_one p w y i hp h]`.
+
+Use `push_cast`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.prod_congr rfl e1, ← Finset.prod_filter]`. Establish `e2 : (Finset.range (1 + w + i)).filter (fun k : ℕ => (y : ℤ) ≤ (k : ℤ) - 1 ∧ (k : ℤ) - 1 < (y : ℤ) + (i : ℤ)) = (Finset.range i).image (fun j => j + y + 1)`. Use extensionality with `k`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h1, h2⟩`. Conclude with `⟨k - y - 1, by omega, by omega⟩`. Introduce and unpack `⟨j, hj, rfl⟩`.
+
+Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e2, Finset.prod_image (by intro a _ b _ hab; simpa using hab)]`. Rewrite using `[← Nat.descFactorial_eq_factorial_mul_choose, Nat.descFactorial_eq_prod_range, Nat.cast_prod]`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Rewrite `hj` using `[Finset.mem_range]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem dn2 : Dn2 := by
   intro p w y i hp h
   unfold Dn
@@ -187,32 +267,53 @@ theorem dn2 : Dn2 := by
 
 noncomputable def ldDet : MvPolynomial (Fin 2 × Fin 2) ℤ := X (0, 0) * X (1, 1) - X (0, 1) * X (1, 0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rank_two_vector_def (w y i : ℕ) : vec2 w y i = X (0, 0) ^ (w - y - i) * X (1, 0) ^ i * ldDet ^ y := rfl
 
+/- English proof (translation)
+Introduce `h`. Establish `h'` using `congrArg (MvPolynomial.eval (fun v : Fin 2 × Fin 2 => if v.1 = v.2 then (1 : ℤ) else 0)) h`. Simplify using `[ldDet] at h'`.
+-/
 theorem ld_det_ne : ldDet ≠ 0 := by
   intro h
   have h' := congrArg (MvPolynomial.eval (fun v : Fin 2 × Fin 2 => if v.1 = v.2 then (1 : ℤ) else 0)) h
   simp [ldDet] at h'
 
+/- English proof (translation)
+Rewrite using `[rank_two_vector_def]`. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ (X_ne_zero _)) (pow_ne_zero _ (X_ne_zero _))) (pow_ne_zero _ ld_det_ne)`.
+-/
 theorem rank_two_vector_ne_zero (w y i : ℕ) : vec2 w y i ≠ 0 := by
   rw [rank_two_vector_def]
   exact mul_ne_zero (mul_ne_zero (pow_ne_zero _ (X_ne_zero _)) (pow_ne_zero _ (X_ne_zero _)))
     (pow_ne_zero _ ld_det_ne)
 
+/- English proof (translation)
+Introduce `a b hab`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all [wt2]`.
+-/
 theorem ld_anti (w y : ℕ) (h : y ≤ w) : Antitone (wt2 w y) := by
   intro a b hab
   fin_cases a <;> fin_cases b <;> simp_all [wt2]
 
+/- English proof (translation)
+Unfold `lpMinor`. Rewrite using `[Matrix.det_unique]`. Both sides reduce to the same expression.
+-/
 theorem leading_minor_one_eq_entry (h1 : 1 ≤ 2) (h2 : 1 ≤ 2) : lpMinor ℤ (r := 2) (n := 2) 1 h1 h2 = X (0, 0) := by
   unfold lpMinor
   rw [Matrix.det_unique]
   rfl
 
+/- English proof (translation)
+Unfold `lpMinor`. Rewrite using `[Matrix.det_fin_two]`. Both sides reduce to the same expression.
+-/
 theorem leading_minor_two_eq_det (h1 : 2 ≤ 2) (h2 : 2 ≤ 2) : lpMinor ℤ (r := 2) (n := 2) 2 h1 h2 = ldDet := by
   unfold lpMinor
   rw [Matrix.det_fin_two]
   rfl
 
+/- English proof (translation)
+Unfold `hw`. Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Fin.val_zero, Fin.val_one, zero_add, Nat.reduceAdd]`. Rewrite using `[leading_minor_one_eq_entry, leading_minor_two_eq_det, rank_two_vector_def]`. Simplify using `[nuNext, wt2]`.
+-/
 theorem ld_hw (w y : ℕ) : hw ℤ (le_refl 2) (wt2 w y) = vec2 w y 0 := by
   unfold hw
   rw [Fin.prod_univ_two]
@@ -220,6 +321,13 @@ theorem ld_hw (w y : ℕ) : hw ℤ (le_refl 2) (wt2 w y) = vec2 w y 0 := by
   rw [leading_minor_one_eq_entry, leading_minor_two_eq_det, rank_two_vector_def]
   simp [nuNext, wt2]
 
+/- English proof (translation)
+Rewrite using `[rank_two_vector_def]`. Establish `hX : ∀ a b : Fin 2, IsWeightedHomogeneous (rowW 2 2) (X (a, b) : MvPolynomial (Fin 2 × Fin 2) ℤ) (Pi.single a 1)` using `fun a b => isWeightedHomogeneous_X _ _ _`. Establish `hD : IsWeightedHomogeneous (rowW 2 2) ldDet (Pi.single 0 1 + Pi.single 1 1)`. Establish `h1` using `(hX 0 0).mul (hX 1 1)`. Establish `h2` using `(hX 0 1).mul (hX 1 0)`.
+
+Rewrite `h1`, `h2`, the goal using `[← mem_weightedHomogeneousSubmodule]`. Conclude with `Submodule.sub_mem _ h1 h2`. Establish `hall` using `(((hX 0 0).pow (w - y - i)).mul ((hX 1 0).pow i)).mul (hD.pow y)`. Use `hall using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+
+Apply the tactic sequence `fin_cases a <;> simp [wt2] <;> omega`.
+-/
 theorem rank_two_vector_weighted_homog (w y i : ℕ) (h : y + i ≤ w) :
     IsWeightedHomogeneous (rowW 2 2) (vec2 w y i) (wt2 (w - i) (y + i)) := by
   rw [rank_two_vector_def]
@@ -236,11 +344,23 @@ theorem rank_two_vector_weighted_homog (w y i : ℕ) (h : y + i ≤ w) :
   funext a
   fin_cases a <;> simp [wt2] <;> omega
 
+/- English proof (translation)
+Simplify using `only [rowGen, aeval_X]`.
+-/
 theorem ld_rowGen_X (a b : Fin 2) (v : Fin 2 × Fin 2) :
     rowGen ℤ a b (X v) = Polynomial.C (X v) +
       (if v.1 = b then Polynomial.X * Polynomial.C (X (a, v.2)) else 0) := by
   simp only [rowGen, aeval_X]
 
+/- English proof (translation)
+Rewrite using `[Polynomial.coeff_mul_C]`. Use `congr 1`. Rewrite using `[add_comm (Polynomial.C a), add_pow, Polynomial.finset_sum_coeff]`. Establish `hterm : ∀ j ∈ Finset.range (m + 1), ((Polynomial.X * Polynomial.C b) ^ j * Polynomial.C a ^ (m - j) * (m.choose j : Polynomial S)).coeff k = if k = j then (m.choose j : S) * a ^ (m - j) * b ^ j else 0`. Introduce `j _`.
+
+Rewrite using `[show (Polynomial.X * Polynomial.C b) ^ j * Polynomial.C a ^ (m - j) * (m.choose j : Polynomial S) = Polynomial.C (b ^ j * a ^ (m - j) * (m.choose j : S)) * Polynomial.X ^ j by`. Simplify using `only [mul_pow, map_mul, map_pow, map_natCast]`. Use the proof step `ring]`. Rewrite using `[Polynomial.coeff_C_mul_X_pow]`. Use `split_ifs with hkj`.
+
+Substitute `hkj` using the available equality. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_ite_eq]`. Use `split_ifs with hk`.
+
+Both sides reduce to the same expression. Rewrite `hk` using `[Finset.mem_range]`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem ld_coeff_lin {S : Type*} [CommRing S] (a b c : S) (m k : ℕ) :
     ((Polynomial.C a + Polynomial.X * Polynomial.C b) ^ m * Polynomial.C c).coeff k =
       (m.choose k : S) * a ^ (m - k) * b ^ k * c := by
@@ -265,30 +385,50 @@ theorem ld_coeff_lin {S : Type*} [CommRing S] (a b c : S) (m k : ℕ) :
     rw [Nat.choose_eq_zero_of_lt (by omega)]
     simp
 
+/- English proof (translation)
+Simplify using `using ld_coeff_lin (1 : S) 1 c m k`.
+-/
 theorem ld_coeff_one {S : Type*} [CommRing S] (c : S) (m k : ℕ) :
     ((1 + Polynomial.X) ^ m * Polynomial.C c).coeff k = (m.choose k : S) * c := by
   simpa using ld_coeff_lin (1 : S) 1 c m k
 
+/- English proof (translation)
+Simplify using `only [ldDet, map_sub, map_mul, ld_rowGen_X]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem generator_one_zero_det : rowGen ℤ 1 0 ldDet = Polynomial.C ldDet := by
   simp only [ldDet, map_sub, map_mul, ld_rowGen_X]
   norm_num
   ring
 
+/- English proof (translation)
+Simplify using `only [ldDet, map_sub, map_mul, ld_rowGen_X]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem generator_zero_one_det : rowGen ℤ 0 1 ldDet = Polynomial.C ldDet := by
   simp only [ldDet, map_sub, map_mul, ld_rowGen_X]
   norm_num
   ring
 
+/- English proof (translation)
+Simplify using `only [ldDet, map_sub, map_mul, ld_rowGen_X]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem generator_zero_zero_det : rowGen ℤ 0 0 ldDet = (1 + Polynomial.X) * Polynomial.C ldDet := by
   simp only [ldDet, map_sub, map_mul, ld_rowGen_X]
   norm_num
   ring
 
+/- English proof (translation)
+Simplify using `only [ldDet, map_sub, map_mul, ld_rowGen_X]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem generator_one_one_det : rowGen ℤ 1 1 ldDet = (1 + Polynomial.X) * Polynomial.C ldDet := by
   simp only [ldDet, map_sub, map_mul, ld_rowGen_X]
   norm_num
   ring
 
+/- English proof (translation)
+Establish `h00 : rowGen ℤ 1 0 (X ((0 : Fin 2), (0 : Fin 2))) = Polynomial.C (X (0, 0)) + Polynomial.X * Polynomial.C (X (1, 0))`. Rewrite using `[ld_rowGen_X]`. Simplify using the standard rewrite rules. Establish `h10 : rowGen ℤ 1 0 (X ((1 : Fin 2), (0 : Fin 2))) = Polynomial.C (X (1, 0))`. Rewrite using `[ld_rowGen_X]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[rowDiv, rank_two_vector_def, map_mul, map_mul, map_pow, map_pow, map_pow, h00, h10, generator_one_zero_det, ← map_pow, ← map_pow, mul_assoc, ← map_mul, ld_coeff_lin, rank_two_vector_def, zsmul_eq_mul, Int.cast_natCast, pow_add, show w - y - i - k = w - y - (i + k) by omega]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem divided_power_one_zero_vector (w y i k : ℕ) :
     rowDiv ℤ 1 0 k (vec2 w y i) = ((w - y - i).choose k : ℤ) • vec2 w y (i + k) := by
   have h00 : rowGen ℤ 1 0 (X ((0 : Fin 2), (0 : Fin 2))) =
@@ -301,6 +441,13 @@ theorem divided_power_one_zero_vector (w y i k : ℕ) :
     Int.cast_natCast, pow_add, show w - y - i - k = w - y - (i + k) by omega]
   ring
 
+/- English proof (translation)
+Establish `h00 : rowGen ℤ 0 1 (X ((0 : Fin 2), (0 : Fin 2))) = Polynomial.C (X (0, 0))`. Rewrite using `[ld_rowGen_X]`. Simplify using the standard rewrite rules. Establish `h10 : rowGen ℤ 0 1 (X ((1 : Fin 2), (0 : Fin 2))) = Polynomial.C (X (1, 0)) + Polynomial.X * Polynomial.C (X (0, 0))`. Rewrite using `[ld_rowGen_X]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[rowDiv, rank_two_vector_def, map_mul, map_mul, map_pow, map_pow, map_pow, h00, h10, generator_zero_one_det, ← map_pow, ← map_pow, mul_comm (Polynomial.C _), mul_assoc, ← map_mul, ld_coeff_lin, rank_two_vector_def, zsmul_eq_mul, Int.cast_natCast]`. Break down `Nat.lt_or_ge i k with hki | hki` into its components or cases. Rewrite using `[Nat.choose_eq_zero_of_lt hki]`. Simplify using the standard rewrite rules.
+
+Establish `e1 : w - y - (i - k) = (w - y - i) + k` using `by omega`. Rewrite using `[e1, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem divided_power_zero_one_vector (w y i k : ℕ) (h : y + i ≤ w) :
     rowDiv ℤ 0 1 k (vec2 w y i) = (i.choose k : ℤ) • vec2 w y (i - k) := by
   have h00 : rowGen ℤ 0 1 (X ((0 : Fin 2), (0 : Fin 2))) = Polynomial.C (X (0, 0)) := by
@@ -318,6 +465,11 @@ theorem divided_power_zero_one_vector (w y i k : ℕ) (h : y + i ≤ w) :
     rw [e1, pow_add]
     ring
 
+/- English proof (translation)
+Establish `h00 : rowGen ℤ 0 0 (X ((0 : Fin 2), (0 : Fin 2))) = (1 + Polynomial.X) * Polynomial.C (X (0, 0))`. Apply the tactic sequence `rw [ld_rowGen_X]; simp <;> ring`. Establish `h10 : rowGen ℤ 0 0 (X ((1 : Fin 2), (0 : Fin 2))) = Polynomial.C (X (1, 0))`. Rewrite using `[ld_rowGen_X]`. Simplify using the standard rewrite rules.
+
+Establish `e : rowGen ℤ 0 0 (vec2 w y i) = (1 + Polynomial.X) ^ (w - y - i + y) * Polynomial.C (vec2 w y i)`. Rewrite using `[rank_two_vector_def, map_mul, map_mul, map_pow, map_pow, map_pow, h00, h10, generator_zero_zero_det]`. Simplify using `only [map_mul, map_pow, mul_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rowDiv, e, ld_coeff_one, zsmul_eq_mul, Int.cast_natCast]`.
+-/
 theorem divided_power_zero_zero_vector (w y i k : ℕ) :
     rowDiv ℤ 0 0 k (vec2 w y i) = ((w - y - i + y).choose k : ℤ) • vec2 w y i := by
   have h00 : rowGen ℤ 0 0 (X ((0 : Fin 2), (0 : Fin 2))) =
@@ -331,6 +483,11 @@ theorem divided_power_zero_zero_vector (w y i k : ℕ) :
     ring
   rw [rowDiv, e, ld_coeff_one, zsmul_eq_mul, Int.cast_natCast]
 
+/- English proof (translation)
+Establish `h00 : rowGen ℤ 1 1 (X ((0 : Fin 2), (0 : Fin 2))) = Polynomial.C (X (0, 0))`. Rewrite using `[ld_rowGen_X]`. Simplify using the standard rewrite rules. Establish `h10 : rowGen ℤ 1 1 (X ((1 : Fin 2), (0 : Fin 2))) = (1 + Polynomial.X) * Polynomial.C (X (1, 0))`. Apply the tactic sequence `rw [ld_rowGen_X]; simp <;> ring`.
+
+Establish `e : rowGen ℤ 1 1 (vec2 w y i) = (1 + Polynomial.X) ^ (i + y) * Polynomial.C (vec2 w y i)`. Rewrite using `[rank_two_vector_def, map_mul, map_mul, map_pow, map_pow, map_pow, h00, h10, generator_one_one_det]`. Simplify using `only [map_mul, map_pow, mul_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rowDiv, e, ld_coeff_one, zsmul_eq_mul, Int.cast_natCast]`.
+-/
 theorem divided_power_one_one_vector (w y i k : ℕ) :
     rowDiv ℤ 1 1 k (vec2 w y i) = ((i + y).choose k : ℤ) • vec2 w y i := by
   have h00 : rowGen ℤ 1 1 (X ((0 : Fin 2), (0 : Fin 2))) = Polynomial.C (X (0, 0)) := by
@@ -344,6 +501,11 @@ theorem divided_power_one_one_vector (w y i k : ℕ) :
     ring
   rw [rowDiv, e, ld_coeff_one, zsmul_eq_mul, Int.cast_natCast]
 
+/- English proof (translation)
+Establish `hy : y ≤ w` using `by omega`. Establish `hhw : vec2 w y 0 ∈ dualWeyl ℤ 2 2 (wt2 w y)`. Rewrite using `[← ld_hw]`. Conclude with `hwMem ℤ 2 2 le_rfl (wt2 w y) (ld_anti w y hy)`. Establish `h1` using `rowDivStable ℤ 2 2 (wt2 w y) 1 0 i _ hhw`.
+
+Rewrite `h1` using `[divided_power_one_zero_vector, zero_add]`. Use `dualWeylSat ℤ 2 2 (wt2 w y) _ _ ?_ h1` and prove the remaining obligations. Establish `: 0 < (w - y - 0).choose i` using `Nat.choose_pos (by omega)`. Conclude with `this.ne'` after adjusting the coercions.
+-/
 theorem rank_two_vector_mem_dual_weyl (w y i : ℕ) (h : y + i ≤ w) : vec2 w y i ∈ dualWeyl ℤ 2 2 (wt2 w y) := by
   have hy : y ≤ w := by omega
   have hhw : vec2 w y 0 ∈ dualWeyl ℤ 2 2 (wt2 w y) := by
@@ -355,6 +517,19 @@ theorem rank_two_vector_mem_dual_weyl (w y i : ℕ) (h : y + i ≤ w) : vec2 w y
   have : 0 < (w - y - 0).choose i := Nat.choose_pos (by omega)
   exact_mod_cast this.ne'
 
+/- English proof (translation)
+Take `rfl | rfl | rfl : s = 0 ∨ s = 1 ∨ s = 2` from `by omega`. Use `left`. Conclude with `⟨rfl, by unfold initMinor; exact Matrix.det_isEmpty⟩`. Use `right`. Use `left`.
+
+Use `⟨rfl, I 0, ?_⟩` and prove the remaining obligations. Unfold `initMinor`. Rewrite using `[Matrix.det_fin_one]`. Both sides reduce to the same expression. Use `right`.
+
+Use `right`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `h : initMinor ℤ I hs = X (I 0, 0) * X (I 1, 1) - X (I 0, 1) * X (I 1, 0)`. Unfold `initMinor`. Rewrite using `[Matrix.det_fin_two]`.
+
+Both sides reduce to the same expression. Rewrite using `[h]`. Generalize the expression as in `I 0 = a`. Generalize the expression as in `I 1 = b`. Establish `ha : a = 0 ∨ a = 1` using `by omega`.
+
+Establish `hb : b = 0 ∨ b = 1` using `by omega`. Apply the tactic sequence `rcases ha with rfl | rfl <;> rcases hb with rfl | rfl`. Conclude with `⟨0, by rw [C_0]; ring⟩`. Conclude with `⟨1, by rw [C_1]; unfold ldDet; ring⟩`. Conclude with `⟨-1, by rw [C_neg, C_1]; unfold ldDet; ring⟩`.
+
+Conclude with `⟨0, by rw [C_0]; ring⟩`.
+-/
 theorem ld_minor (s : ℕ) (I : Fin s → Fin 2) (hs : s ≤ 2) :
     (s = 0 ∧ initMinor ℤ I hs = 1) ∨ (s = 1 ∧ ∃ a : Fin 2, initMinor ℤ I hs = X (a, 0)) ∨
       (s = 2 ∧ ∃ ε : ℤ, initMinor ℤ I hs = C ε * ldDet) := by
@@ -383,6 +558,15 @@ theorem ld_minor (s : ℕ) (I : Fin s → Fin 2) (hs : s ≤ 2) :
     · exact ⟨-1, by rw [C_neg, C_1]; unfold ldDet; ring⟩
     · exact ⟨0, by rw [C_0]; ring⟩
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, 0, 0, by simp, by simp⟩`. Consider the case `insert k S hk ih`. Take `⟨ε, α, β, hprod, hcard⟩` from `ih`. Establish `hk1 : k ∉ S.filter fun k => 1 < sz k` using `fun h => hk (Finset.mem_filter.mp h).1`.
+
+Establish `hk0 : k ∉ S.filter fun k => 0 < sz k` using `fun h => hk (Finset.mem_filter.mp h).1`. Rewrite using `[Finset.prod_insert hk, hprod, Finset.filter_insert, Finset.filter_insert]`. Break down `ld_minor (sz k) (I k) (hsz k) with ⟨h0, hm⟩ | ⟨h1, a, hm⟩ | ⟨h2, ε', hm⟩` into its components or cases. Rewrite using `[hm, if_neg (by omega), if_neg (by omega)]`. Conclude with `⟨ε, α, β, by ring, hcard⟩`.
+
+Rewrite using `[hm, if_neg (by omega), if_pos (by omega), Finset.card_insert_of_notMem hk0]`. Establish `ha : a = 0 ∨ a = 1` using `by omega`. Break down `ha with rfl | rfl` into its components or cases. Conclude with `⟨ε, α + 1, β, by ring, by omega⟩`. Conclude with `⟨ε, α, β + 1, by ring, by omega⟩`.
+
+Rewrite using `[hm, if_pos (by omega), if_pos (by omega), Finset.card_insert_of_notMem hk0, Finset.card_insert_of_notMem hk1]`. Conclude with `⟨ε' * ε, α, β, by rw [C_mul]; ring, by omega⟩`.
+-/
 theorem ld_prod {K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ 2) (I : ∀ k, Fin (sz k) → Fin 2)
     (S : Finset (Fin K)) :
     ∃ (ε : ℤ) (α β : ℕ), ∏ k ∈ S, initMinor ℤ (I k) (hsz k) =
@@ -407,6 +591,13 @@ theorem ld_prod {K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ 2) (I : �
         Finset.card_insert_of_notMem hk1]
       exact ⟨ε' * ε, α, β, by rw [C_mul]; ring, by omega⟩
 
+/- English proof (translation)
+Rewrite using `[standardMonomialSpan 2 2 (wt2 w y) (ld_anti w y hy)]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `f ⟨K, sz, hsz, I, hshape, rfl⟩`. Take `⟨ε, α, β, hprod, hcard⟩` from `ld_prod sz hsz I Finset.univ`. Establish `h0 : (Finset.univ.filter fun k => 0 < sz k).card = w` using `congrFun hshape 0`.
+
+Establish `h1 : (Finset.univ.filter fun k => 1 < sz k).card = y` using `congrFun hshape 1`. Rewrite `hcard` using `[h0, h1]`. Rewrite `hprod` using `[h1]`. Establish `hα : α = w - y - β` using `by omega`. Establish `: bideterminant ℤ sz hsz I = ε • vec2 w y β`.
+
+Unfold `bideterminant`. Rewrite using `[hprod, hα, ← rank_two_vector_def, smul_eq_C_mul]`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨β, by omega, rfl⟩)`.
+-/
 theorem ld_nabla_le (w y : ℕ) (hy : y ≤ w) :
     dualWeyl ℤ 2 2 (wt2 w y) ≤ Submodule.span ℤ {v | ∃ j, y + j ≤ w ∧ v = vec2 w y j} := by
   rw [standardMonomialSpan 2 2 (wt2 w y) (ld_anti w y hy)]
@@ -424,6 +615,13 @@ theorem ld_nabla_le (w y : ℕ) (hy : y ≤ w) :
   rw [SetLike.mem_coe, this]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨β, by omega, rfl⟩)
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx1` using `ld_nabla_le w y hy hx.1`. Establish `hx2 : IsWeightedHomogeneous (rowW 2 2) x μ` using `hx.2`. Rewrite using `[← hx2.weightedHomogeneousComponent_same]`. Establish `hmap : Submodule.map (weightedHomogeneousComponent (R` using `ℤ) (rowW 2 2) μ) (Submodule.span ℤ {v | ∃ j, y + j ≤ w ∧ v = vec2 w y j}) ≤ T := by`.
+
+Rewrite using `[Submodule.map_span]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨j, hj, rfl⟩, rfl⟩`. Distinguish the cases in `hμ : wt2 (w - j) (y + j) = μ`. Substitute `hμ` using the available equality.
+
+Rewrite using `[SetLike.mem_coe, (rank_two_vector_weighted_homog w y j hj).weightedHomogeneousComponent_same]`. Conclude with `hT j hj rfl`. Rewrite using `[SetLike.mem_coe, (rank_two_vector_weighted_homog w y j hj).weightedHomogeneousComponent_ne μ (Ne.symm hμ)]`. Conclude with `T.zero_mem`. Conclude with `hmap (Submodule.mem_map_of_mem hx1)`.
+-/
 theorem ld_nablaWt_le (w y : ℕ) (hy : y ≤ w) (μ : Fin 2 → ℕ)
     (T : Submodule ℤ (MvPolynomial (Fin 2 × Fin 2) ℤ))
     (hT : ∀ j, y + j ≤ w → wt2 (w - j) (y + j) = μ → vec2 w y j ∈ T) :
@@ -445,6 +643,9 @@ theorem ld_nablaWt_le (w y : ℕ) (hy : y ≤ w) (μ : Fin 2 → ℕ)
       exact T.zero_mem
   exact hmap (Submodule.mem_map_of_mem hx1)
 
+/- English proof (translation)
+Introduce `w y μ hy h`. Use `le_bot_iff.mp (ld_nablaWt_le w y hy μ ⊥ ?_)` and prove the remaining obligations. Introduce `j hj hμ`. Conclude with `absurd hμ.symm (h j hj)`.
+-/
 theorem rank2Other : Rank2Other := by
   intro w y μ hy h
   refine le_bot_iff.mp (ld_nablaWt_le w y hy μ ⊥ ?_)
@@ -454,8 +655,32 @@ theorem rank2Other : Rank2Other := by
 noncomputable def ldM (w y : ℕ) : Submodule ℤ (MvPolynomial (Fin 2 × Fin 2) ℤ) :=
   Submodule.span ℤ {v | ∃ j, y + j ≤ w ∧ v = ((w - y).choose j : ℤ) • vec2 w y j}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨j, hj, rfl⟩`.
+-/
 theorem ld_M_gen (w y j : ℕ) (hj : y + j ≤ w) : ((w - y).choose j : ℤ) • vec2 w y j ∈ ldM w y := Submodule.subset_span ⟨j, hj, rfl⟩
 
+/- English proof (translation)
+Unfold `ldM at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨j, hj, rfl⟩` from `hf`. Rewrite using `[rowDiv_smul]`.
+
+Establish `ha : a = 0 ∨ a = 1` using `by omega`. Establish `hb : b = 0 ∨ b = 1` using `by omega`. Apply the tactic sequence `rcases ha with rfl | rfl <;> rcases hb with rfl | rfl`. Rewrite using `[divided_power_zero_zero_vector, smul_comm]`. Conclude with `Submodule.smul_mem _ _ (ld_M_gen w y j hj)`.
+
+Rewrite using `[divided_power_zero_one_vector w y j k hj]`. Distinguish the cases in `hk : k ≤ j`. Establish `hid : (w - y).choose j * j.choose k = (w - y - (j - k)).choose k * (w - y).choose (j - k)`. Establish `h1` using `Nat.choose_mul (n := w - y) (k := j) (s := j - k) (Nat.sub_le j k)`. Rewrite `h1` using `[Nat.choose_symm hk, Nat.sub_sub_self hk]`.
+
+Rewrite using `[h1, mul_comm]`. Rewrite using `[smul_smul]`. Establish `hid' : (((w - y).choose j : ℕ) : ℤ) * ((j.choose k : ℕ) : ℤ) = (((w - y - (j - k)).choose k : ℕ) : ℤ) * (((w - y).choose (j - k) : ℕ) : ℤ)`. Conclude with `hid` after adjusting the coercions. Rewrite using `[hid', ← smul_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (ld_M_gen w y (j - k) (by omega))`. Rewrite using `[Nat.choose_eq_zero_of_lt (show j < k by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[divided_power_one_zero_vector]`. Distinguish the cases in `hk : y + (j + k) ≤ w`.
+
+Establish `hid : (w - y).choose j * (w - y - j).choose k = (j + k).choose j * (w - y).choose (j + k)`. Establish `h1` using `Nat.choose_mul (n := w - y) (k := j + k) (s := j) (Nat.le_add_right j k)`. Rewrite `h1` using `[Nat.add_sub_cancel_left]`. Rewrite using `[← h1, mul_comm]`. Rewrite using `[smul_smul]`.
+
+Establish `hid' : (((w - y).choose j : ℕ) : ℤ) * (((w - y - j).choose k : ℕ) : ℤ) = (((j + k).choose j : ℕ) : ℤ) * (((w - y).choose (j + k) : ℕ) : ℤ)`. Conclude with `hid` after adjusting the coercions. Rewrite using `[hid', ← smul_smul]`. Conclude with `Submodule.smul_mem _ _ (ld_M_gen w y (j + k) hk)`. Rewrite using `[Nat.choose_eq_zero_of_lt (show w - y - j < k by omega)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[divided_power_one_one_vector, smul_comm]`. Conclude with `Submodule.smul_mem _ _ (ld_M_gen w y j hj)`. Consider the case `zero`. Establish `: rowDiv ℤ a b k (0 : MvPolynomial (Fin 2 × Fin 2) ℤ) = 0` using `(rowDivL ℤ a b k).map_zero`.
+
+Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x z _ _ hx hz`. Rewrite using `[rowDiv_add]`. Conclude with `Submodule.add_mem _ hx hz`.
+
+Consider the case `smul c x _ hx`. Rewrite using `[rowDiv_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem ld_M_stable (w y : ℕ) (a b : Fin 2) (k : ℕ) (f : MvPolynomial (Fin 2 × Fin 2) ℤ)
     (hf : f ∈ ldM w y) : rowDiv ℤ a b k f ∈ ldM w y := by
   unfold ldM at hf
@@ -509,6 +734,13 @@ theorem ld_M_stable (w y : ℕ) (a b : Fin 2) (k : ℕ) (f : MvPolynomial (Fin 2
     rw [rowDiv_smul]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Unfold `weyl`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨wd, rfl⟩`. Use `show applyWord ℤ wd (hw ℤ le_rfl (wt2 w y)) ∈ ldM w y`. Proceed by induction on `wd with`.
+
+Consider the case `nil => show hw ℤ le_rfl (wt2 w y) ∈ ldM w y`. Rewrite using `[ld_hw]`. Use `ld_M_gen w y 0 (by omega)` as an intermediate fact. Simplify using `using this`. Consider the case `cons x wd ih`.
+
+Rewrite using `[applyWord_cons]`. Conclude with `ld_M_stable w y _ _ _ _ ih`.
+-/
 theorem ld_weyl_le (w y : ℕ) (hy : y ≤ w) : weyl ℤ 2 2 le_rfl (wt2 w y) ≤ ldM w y := by
   unfold weyl
   refine Submodule.span_le.mpr ?_
@@ -524,6 +756,9 @@ theorem ld_weyl_le (w y : ℕ) (hy : y ≤ w) : weyl ℤ 2 2 le_rfl (wt2 w y) �
     rw [applyWord_cons]
     exact ld_M_stable w y _ _ _ _ ih
 
+/- English proof (translation)
+Establish `h0 : hw ℤ le_rfl (wt2 w y) ∈ weyl ℤ 2 2 le_rfl (wt2 w y)` using `Submodule.subset_span ⟨[], rfl⟩`. Establish `h1` using `weylRowDivStable ℤ 2 2 le_rfl (wt2 w y) 1 0 j _ h0`. Rewrite `h1` using `[ld_hw, divided_power_one_zero_vector, zero_add]`. Conclude with `h1`.
+-/
 theorem ld_gen_mem_weyl (w y j : ℕ) :
     ((w - y).choose j : ℤ) • vec2 w y j ∈ weyl ℤ 2 2 le_rfl (wt2 w y) := by
   have h0 : hw ℤ le_rfl (wt2 w y) ∈ weyl ℤ 2 2 le_rfl (wt2 w y) :=
@@ -532,6 +767,25 @@ theorem ld_gen_mem_weyl (w y j : ℕ) :
   rw [ld_hw, divided_power_one_zero_vector, zero_add] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `w y i h`. Establish `hy : y ≤ w` using `by omega`. Use `⟨le_antisymm ?_ ?_, rank_two_vector_ne_zero w y i, ?_⟩` and prove the remaining obligations. Use `ld_nablaWt_le w y hy _ _ ?_` and prove the remaining obligations. Introduce `j hj hμ`.
+
+Establish `h1 : y + j = y + i` using `congrFun hμ 1`. Establish `hji : j = i` using `by omega`. Rewrite using `[hji]`. Conclude with `Submodule.mem_span_singleton_self _`. Use `(Submodule.span_singleton_le_iff_mem _ _).mpr ?_` and prove the remaining obligations.
+
+Conclude with `⟨rank_two_vector_mem_dual_weyl w y i h, rank_two_vector_weighted_homog w y i h⟩`. Introduce `c`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Establish `hcM` using `ld_weyl_le w y hy hc`.
+
+Establish `hmap : Submodule.map (weightedHomogeneousComponent (R` using `ℤ) (rowW 2 2) (wt2 (w - i) (y + i))) (ldM w y) ≤ Submodule.span ℤ {((w - y).choose i : ℤ) • vec2 w y i} := by`. Unfold `ldM`. Rewrite using `[Submodule.map_span]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨j, hj, rfl⟩, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, map_smul]`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Rewrite using `[(rank_two_vector_weighted_homog w y j hj).weightedHomogeneousComponent_same]`. Conclude with `Submodule.mem_span_singleton_self _`.
+
+Establish `hne : wt2 (w - i) (y + i) ≠ wt2 (w - j) (y + j)`. Introduce `hμ`. Establish `h1 : y + i = y + j` using `congrFun hμ 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[(rank_two_vector_weighted_homog w y j hj).weightedHomogeneousComponent_ne _ hne, smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `h2` using `hmap (Submodule.mem_map_of_mem hcM)`. Rewrite `h2` using `[map_smul, (rank_two_vector_weighted_homog w y i h).weightedHomogeneousComponent_same]`. Take `⟨d, hd⟩` from `Submodule.mem_span_singleton.mp h2`. Rewrite `hd` using `[smul_smul]`.
+
+Establish `h3 : (d * ((w - y).choose i : ℤ) - c) • vec2 w y i = 0`. Rewrite using `[sub_smul, hd, sub_self]`. Break down `smul_eq_zero.mp h3 with h4 | h4` into its components or cases. Conclude with `⟨d, by linarith⟩`. Conclude with `absurd h4 (rank_two_vector_ne_zero w y i)`.
+
+Introduce and unpack `⟨d, rfl⟩`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (ld_gen_mem_weyl w y i)`.
+-/
 theorem rank2Exact : Rank2Exact := by
   intro w y i h
   have hy : y ≤ w := by omega
@@ -578,6 +832,15 @@ theorem rank2Exact : Rank2Exact := by
       rw [mul_comm, mul_smul]
       exact Submodule.smul_mem _ _ (ld_gen_mem_weyl w y i)
 
+/- English proof (translation)
+Rewrite using `[expLeIffKilled l 2 _ μ e _ hl (dnNeZero 1 w i 1 _)]`. Introduce `x hx`. Use `⟨1, (Nat.prime_iff_prime_int.mp hl).not_dvd_one, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hex : ∃ j, y + j ≤ w ∧ μ = wt2 (w - j) (y + j)`. Take `⟨j, hj, rfl⟩` from `hex`.
+
+Establish `hd' : w - j + i = w` using `hd`. Establish `hij : j = i` using `by omega`. Substitute `hij` using the available equality. Rewrite `hx` using `[(rank2Exact w y j hj).1]`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hx`.
+
+Rewrite using `[dn2 1 w y j le_rfl hj, smul_smul]`. Establish `: (1 * ((l : ℤ) ^ e * ((j.factorial * (w - y).choose j : ℕ) : ℤ)) * c) = ((l : ℤ) ^ e * (j.factorial : ℤ) * c) * ((w - y).choose j : ℤ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (ld_gen_mem_weyl w y j)`. Establish `hbot` using `rank2Other w y μ hy (fun j hj hμ => hex ⟨j, hj, hμ⟩)`. Rewrite `hx` using `[hbot]`. Rewrite using `[(Submodule.mem_bot ℤ).mp hx, smul_zero]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem ld_rank2_core (l w y : ℕ) (hl : l.Prime) (hy : y ≤ w) (e i : ℕ) (μ : Fin 2 → ℕ)
     (hd : μ 0 + i = w) :
     ExpLe l 2 (wt2 w y) μ (e + padicValInt l (Dn 1 w i (fun _ : Fin 1 => y))) := by
@@ -603,22 +866,40 @@ theorem ld_rank2_core (l w y : ℕ) (hl : l.Prime) (hy : y ≤ w) (e i : ℕ) (�
     rw [(Submodule.mem_bot ℤ).mp hx, smul_zero]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `fin_cases a <;> rfl`.
+-/
 theorem ld_blockWt2 (w y : ℕ) : blockWt 1 1 w (fun _ : Fin 1 => y) = wt2 w y := by
   funext a
   fin_cases a <;> rfl
 
+/- English proof (translation)
+Introduce `l w y hl hy eL _ i μ hd`. Establish `hd' : μ 0 + i = w` using `by simpa [IsDepth] using hd`. Rewrite using `[ld_blockWt2]`. Conclude with `ld_rank2_core l w y hl hy eL i μ hd'`.
+-/
 theorem lemmaD_rank2 : LemmaD_rank2 := by
   intro l w y hl hy eL _ i μ hd
   have hd' : μ 0 + i = w := by simpa [IsDepth] using hd
   rw [ld_blockWt2]
   exact ld_rank2_core l w y hl hy eL i μ hd'
 
+/- English proof (translation)
+Introduce `l w y ξ hl hy _ i' eL _ i μ hd _`. Establish `hd' : μ 0 + i = w` using `by simpa [IsDepth] using hd`. Rewrite using `[ld_blockWt2]`. Conclude with `ld_rank2_core l w y hl hy eL i μ hd'`.
+-/
 theorem lemmaDGraded_rank2 : LemmaDGraded_rank2 := by
   intro l w y ξ hl hy _ i' eL _ i μ hd _
   have hd' : μ 0 + i = w := by simpa [IsDepth] using hd
   rw [ld_blockWt2]
   exact ld_rank2_core l w y hl hy eL i μ hd'
 
+/- English proof (translation)
+Simplify using `only [shapes, Finset.mem_filter, Fintype.mem_piFinset] at htau`. Take `⟨-, hanti, -, hcol, -⟩` from `htau`. Unfold `boxesOfContent`. Break down `(Finset.univ.filter fun a : Fin q => (lam2 a : ℤ) ≤ c + (a.val : ℤ) ∧ c + (a.val : ℤ) < (tau a : ℤ)).eq_empty_or_nonempty with hS | hS` into its components or cases. Rewrite using `[hS]`.
+
+Simplify using the standard rewrite rules. Establish `hb` using `Finset.max'_mem _ hS`. Establish `hb'` using `(Finset.mem_filter.mp hb).2`. Establish `hj0 : 0 ≤ c + (((Finset.univ.filter fun a : Fin q => (lam2 a : ℤ) ≤ c + (a.val : ℤ) ∧ c + (a.val : ℤ) < (tau a : ℤ)).max' hS).val : ℤ)` using `le_trans (Int.natCast_nonneg _) hb'.1`. Take `⟨j, hj⟩` from `Int.eq_ofNat_of_zero_le hj0`.
+
+Establish `hjt : j < tau ((Finset.univ.filter fun a : Fin q => (lam2 a : ℤ) ≤ c + (a.val : ℤ) ∧ c + (a.val : ℤ) < (tau a : ℤ)).max' hS)` using `by omega`. Use `le_trans (Finset.card_le_card ?_) (hcol _ j hjt)` and prove the remaining obligations. Introduce `a ha`. Establish `ha'` using `(Finset.mem_filter.mp ha).2`. Establish `hab` using `Finset.le_max' _ a ha`.
+
+Establish `hab' : (a.val : ℤ) ≤ (((Finset.univ.filter fun a : Fin q => (lam2 a : ℤ) ≤ c + (a.val : ℤ) ∧ c + (a.val : ℤ) < (tau a : ℤ)).max' hS).val : ℤ)`. Conclude with `hab` after adjusting the coercions. Establish `htb` using `hanti a _ hab`. Simplify using `only [colLen, Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `constructor <;> omega`.
+-/
 theorem ld_boxes_le (p w i q : ℕ) (lam2 tau : Fin q → ℕ) (htau : tau ∈ shapes p w i lam2) (c : ℤ) :
     boxesOfContent lam2 tau c ≤ p := by
   simp only [shapes, Finset.mem_filter, Fintype.mem_piFinset] at htau
@@ -646,11 +927,23 @@ theorem ld_boxes_le (p w i q : ℕ) (lam2 tau : Fin q → ℕ) (htau : tau ∈ s
     simp only [colLen, Finset.mem_filter, Finset.mem_univ, true_and]
     constructor <;> omega
 
+/- English proof (translation)
+Introduce `p w i q lam2 c`. Unfold `mu`. Conclude with `Finset.sup_le fun tau h => ld_boxes_le p w i q lam2 tau h c`.
+-/
 theorem muLe : MuLe := by
   intro p w i q lam2 c
   unfold mu
   exact Finset.sup_le fun tau h => ld_boxes_le p w i q lam2 tau h c
 
+/- English proof (translation)
+Introduce `p w i q m lam2 c hlam hmu`. Unfold `mu at hmu`. Choose the witnesses or unpack the hypotheses as in `⟨tau, htau, hne⟩ : ∃ tau ∈ shapes p w i lam2, boxesOfContent lam2 tau c ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Conclude with `hmu (Nat.eq_zero_of_le_zero (Finset.sup_le fun t ht => (hcon t ht).le))`. Unfold `boxesOfContent at hne`. Take `⟨a, ha⟩` from `Finset.card_pos.mp (Nat.pos_of_ne_zero hne)`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha`. Simplify using `only [shapes, Finset.mem_filter] at htau`.
+
+Establish `hz` using `htau.2.2.2.2`. Unfold `boxesOfContent at hz`. Rewrite `hz` using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Establish `hna` using `hz (Finset.mem_univ a)`. Establish `h1` using `hlam a`.
+
+Establish `h3` using `a.isLt`. Prove the components needed by the constructor for the conclusion. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hc push_neg at hc`. Conclude with `hna ⟨by omega, by omega⟩`.
+-/
 theorem muRange : MuRange := by
   intro p w i q m lam2 c hlam hmu
   unfold mu at hmu
@@ -674,6 +967,11 @@ theorem muRange : MuRange := by
     push_neg at hc
     exact hna ⟨by omega, by omega⟩
 
+/- English proof (translation)
+Introduce `p w i q lam2 hw`. Unfold `Dn`. Use `Finset.prod_pos fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hmu : mu p w i lam2 ((k : ℤ) - (q : ℤ)) = 0`. Rewrite using `[hmu, pow_zero]`.
+
+Conclude with `one_pos`. Establish `hlt` using `(muRange p w i q 0 lam2 _ (fun b => ⟨Nat.zero_le _, hw b⟩) hmu).2`. Conclude with `pow_pos (by omega) _`.
+-/
 theorem dnPos : DnPos := by
   intro p w i q lam2 hw
   unfold Dn
@@ -684,6 +982,19 @@ theorem dnPos : DnPos := by
   · have hlt := (muRange p w i q 0 lam2 _ (fun b => ⟨Nat.zero_le _, hw b⟩) hmu).2
     exact pow_pos (by omega) _
 
+/- English proof (translation)
+Introduce `p w i q m lam2 hb`. Unfold `Dn`. Establish `hfac : ∀ k ∈ Finset.range (q + w + i), ((w : ℤ) - ((k : ℤ) - (q : ℤ))) ^ mu p w i lam2 ((k : ℤ) - (q : ℤ)) ∣ (((if k ∈ Finset.Ico (m + 1) (w + q) then (w + q - k) ^ p else 1 : ℕ)) : ℤ)`. Introduce `k _`. Distinguish the cases in `hmu : mu p w i lam2 ((k : ℤ) - (q : ℤ)) = 0`.
+
+Rewrite using `[hmu, pow_zero]`. Conclude with `one_dvd _`. Establish `h` using `muRange p w i q m lam2 _ hb hmu`. Establish `hk : k ∈ Finset.Ico (m + 1) (w + q)` using `Finset.mem_Ico.mpr (by omega)`. Rewrite using `[if_pos hk]`.
+
+Establish `he : ((w : ℤ) - ((k : ℤ) - (q : ℤ))) = ((w + q - k : ℕ) : ℤ)` using `by omega`. Rewrite using `[he, Nat.cast_pow]`. Conclude with `pow_dvd_pow _ (muLe p w i q lam2 _)`. Use `dvd_trans (Finset.prod_dvd_prod_of_dvd _ _ hfac) ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_prod, Finset.prod_ite_mem]`.
+
+Establish `hsub : Finset.range (q + w + i) ∩ Finset.Ico (m + 1) (w + q) = Finset.Ico (m + 1) (w + q)`. Use `Finset.inter_eq_right.mpr ?_` and prove the remaining obligations. Introduce `k hk`. Establish `hk'` using `Finset.mem_Ico.mp hk`. Conclude with `Finset.mem_range.mpr (by omega)`.
+
+Rewrite using `[hsub, Finset.prod_pow, Finset.prod_Ico_eq_prod_range]`. Establish `hH : w + q - (m + 1) = w + q - m - 1` using `by omega`. Establish `hprod : ∏ j ∈ Finset.range (w + q - (m + 1)), (w + q - (m + 1 + j)) = (w + q - m - 1).factorial`. Rewrite using `[hH, ← Nat.descFactorial_self, Nat.descFactorial_eq_prod_range]`. Use `Finset.prod_congr rfl ?_` and prove the remaining obligations.
+
+Introduce `j _`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hprod]`.
+-/
 theorem dnDvd : DnDvd := by
   intro p w i q m lam2 hb
   unfold Dn
@@ -716,6 +1027,13 @@ theorem dnDvd : DnDvd := by
     omega
   rw [hprod]
 
+/- English proof (translation)
+Introduce `l p w i q m lam2 hl hb`. Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `hdvd` using `dnDvd p w i q m lam2 hb`. Establish `h1 : (l : ℤ) ^ padicValInt l (Dn p w i lam2) ∣ (((w + q - m - 1).factorial ^ p : ℕ) : ℤ)` using `dvd_trans (padicValInt_dvd _) hdvd`. Establish `hF : (((w + q - m - 1).factorial ^ p : ℕ) : ℤ) ≠ 0`.
+
+Conclude with `pow_ne_zero p (Nat.factorial_ne_zero _)` after adjusting the coercions. Establish `h2 : padicValInt l (Dn p w i lam2) ≤ padicValInt l (((w + q - m - 1).factorial ^ p : ℕ) : ℤ)`. Break down `(padicValInt_dvd_iff _ _).mp h1 with h | h` into its components or cases. Conclude with `absurd h hF`. Conclude with `h`.
+
+Rewrite `h2` using `[padicValInt.of_nat, padicValNat.pow]`. Establish `h3` using `sub_one_mul_padicValNat_factorial (p := l) (w + q - m - 1)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dnVal : DnVal := by
   intro l p w i q m lam2 hl hb
   have : Fact l.Prime := ⟨hl⟩
@@ -735,6 +1053,17 @@ theorem dnVal : DnVal := by
     _ = p * ((l - 1) * padicValNat l (w + q - m - 1).factorial) := by ring
     _ ≤ p * (w + q - m - 1) := Nat.mul_le_mul_left _ (by rw [h3]; exact Nat.sub_le _ _)
 
+/- English proof (translation)
+Introduce `i j hij`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left j => simp only [blockWt, Fin.append_left, le_refl]`.
+
+Consider the case `right j`. Simplify using `only [blockWt, Fin.append_left, Fin.append_right]`. Conclude with `hb j`. Consider the case `right i`. Proceed by induction on `j using Fin.addCases with`.
+
+Consider the case `left j`. It suffices to derive a contradiction. Use `j.isLt` as an intermediate fact. Rewrite `hij` using `[Fin.le_def]`. Simplify using `at hij`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `right j`. Simplify using `only [blockWt, Fin.append_right]`. Apply `ha` to reduce the goal to its premises. Rewrite `hij`, the goal using `[Fin.le_def]`.
+
+Simplify using `using hij`.
+-/
 theorem ld_blockWt_anti (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, lam2 b ≤ w) :
     Antitone (blockWt p q w lam2) := by
   intro i j hij
@@ -759,6 +1088,23 @@ theorem ld_blockWt_anti (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2
       rw [Fin.le_def] at hij ⊢
       simpa using hij
 
+/- English proof (translation)
+Introduce `hD l q w m lam2 hl ha hb eL heL μ`. Establish `hbw : ∀ b, lam2 b ≤ w` using `fun b => (hb b).2`. Establish `hl1 : 0 < l - 1` using `by have := hl.two_le; omega`. Distinguish the cases in `hμ : μ (Fin.castAdd q (0 : Fin 1)) ≤ w`. Establish `hd : IsDepth 1 q w μ (w - μ (Fin.castAdd q (0 : Fin 1)))`.
+
+Simplify using `only [IsDepth, Finset.univ_unique, Fin.default_eq_zero, Finset.sum_singleton, one_mul]`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hD l q w lam2 hl ha hbw eL heL _ μ hd`. Use `expLeMono l _ _ μ _ _ ?_ h1` and prove the remaining obligations. Use `Nat.add_le_add_left ?_ eL` and prove the remaining obligations.
+
+Use `(Nat.le_div_iff_mul_le hl1).mpr ?_` and prove the remaining obligations. Establish `h2` using `dnVal l 1 w (w - μ (Fin.castAdd q (0 : Fin 1))) q m lam2 hl hb`. Rewrite `h2` using `[one_mul]`. Rewrite using `[mul_comm]`. Conclude with `h2`.
+
+Introduce `x hx`. Establish `hx0 : x = 0`. Assume the negation of the conclusion as `hne`. Take `⟨d, hd⟩` from `MvPolynomial.support_nonempty.mpr hne`. Establish `hdom` using `(dualWeylDominanceZ (1 + q) (1 + q) (blockWt 1 q w lam2) le_rfl (ld_blockWt_anti 1 q w lam2 ha hbw) x hx.1 d hd).1 1`.
+
+Establish `hf : (Finset.univ.filter fun a : Fin (1 + q) => a.val < 1) = {Fin.castAdd q (0 : Fin 1)}`. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff, Fin.val_castAdd, Fin.val_zero]`. Use linear arithmetic over natural numbers and integers. Rewrite `hdom` using `[hf, Finset.sum_singleton, Finset.sum_singleton]`.
+
+Establish `hwt : Finsupp.weight (rowW (1 + q) (1 + q)) d = μ` using `hx.2 (MvPolynomial.mem_support_iff.mp hd)`. Rewrite `hdom` using `[← ldrow_weight_rowW, hwt]`. Establish `hnu : rowNu (r` using `1 + q) (blockWt 1 q w lam2) (Fin.castAdd q (0 : Fin 1)) = w := by`. Unfold `rowNu`. Rewrite using `[dif_pos (Fin.castAdd q (0 : Fin 1)).isLt]`.
+
+Conclude with `Fin.append_left _ _ 0`. Rewrite `hdom` using `[hnu]`. Conclude with `hμ hdom`. Use `⟨1, (Nat.prime_iff_prime_int.mp hl).not_dvd_one, ?_⟩` and prove the remaining obligations. Rewrite using `[hx0, smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem peelBound : PeelBound := by
   intro hD l q w m lam2 hl ha hb eL heL μ
   have hbw : ∀ b, lam2 b ≤ w := fun b => (hb b).2
@@ -801,9 +1147,17 @@ theorem peelBound : PeelBound := by
 
 def ldZ (q : ℕ) : Fin (1 + q) := Fin.castAdd q (0 : Fin 1)
 
+/- English proof (translation)
+Simplify using `only [blockWt, ldZ, Fin.append_left]`.
+-/
 theorem symmetric_block_weight_zero (q w : ℕ) : blockWt 1 q w (fun _ => 0) (ldZ q) = w := by
   simp only [blockWt, ldZ, Fin.append_left]
 
+/- English proof (translation)
+Proceed by induction on `s using Fin.addCases with`. Consider the case `left i`. It suffices to derive a contradiction. Apply `hs` to reduce the goal to its premises. Simplify using `only [ldZ]`.
+
+Use `congr 1`. Conclude with `Subsingleton.elim _ _`. Consider the case `right j => simp only [blockWt, Fin.append_right]`.
+-/
 theorem ld_sym_nu_ne (q w : ℕ) (s : Fin (1 + q)) (hs : s ≠ ldZ q) : blockWt 1 q w (fun _ => 0) s = 0 := by
   induction s using Fin.addCases with
   | left i =>
@@ -814,6 +1168,15 @@ theorem ld_sym_nu_ne (q w : ℕ) (s : Fin (1 + q)) (hs : s ≠ ldZ q) : blockWt 
     exact Subsingleton.elim _ _
   | right j => simp only [blockWt, Fin.append_right]
 
+/- English proof (translation)
+Unfold `hw`. Rewrite using `[Finset.prod_eq_single (ldZ q)]`. Establish `h1 : nuNext (blockWt 1 q w fun _ => 0) (ldZ q) = 0`. Unfold `nuNext`. Use `split_ifs with h`.
+
+Apply `ld_sym_nu_ne` to reduce the goal to its premises. Introduce `heq`. Conclude with `absurd (congrArg Fin.val heq) (by simp)`. Both sides reduce to the same expression. Rewrite using `[h1, symmetric_block_weight_zero, Nat.sub_zero]`.
+
+Use `congr 1`. Establish `hz : ((ldZ q : Fin (1 + q)) : ℕ) = 0` using `rfl`. Simplify using `only [hz, zero_add]`. Unfold `lpMinor`. Rewrite using `[Matrix.det_unique]`.
+
+Both sides reduce to the same expression. Introduce `b _ hb`. Rewrite using `[ld_sym_nu_ne q w b hb, Nat.zero_sub, pow_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem ld_sym_hw (q w : ℕ) :
     hw ℤ (le_refl (1 + q)) (blockWt 1 q w (fun _ => 0)) = X (ldZ q, ldZ q) ^ w := by
   unfold hw
@@ -841,11 +1204,21 @@ noncomputable def ldSv (q w : ℕ) (μ : Fin (1 + q) → ℕ) (S : Finset (Fin (
     MvPolynomial (Fin (1 + q) × Fin (1 + q)) ℤ :=
   X (ldZ q, ldZ q) ^ (w - ∑ a ∈ S, μ a) * ∏ a ∈ S, X (a, ldZ q) ^ μ a
 
+/- English proof (translation)
+Simplify using `only [rowGen, aeval_X]`.
+-/
 theorem ld_sym_rowGen (q : ℕ) (a b : Fin (1 + q)) (v : Fin (1 + q) × Fin (1 + q)) :
     rowGen ℤ a b (X v) = Polynomial.C (X v) +
       (if v.1 = b then Polynomial.X * Polynomial.C (X (a, v.2)) else 0) := by
   simp only [rowGen, aeval_X]
 
+/- English proof (translation)
+Establish `hg : rowGen ℤ a (ldZ q) (ldSv q w μ S) = (Polynomial.C (X (ldZ q, ldZ q)) + Polynomial.X * Polynomial.C (X (a, ldZ q))) ^ (w - ∑ b ∈ S, μ b) * Polynomial.C (∏ b ∈ S, X (b, ldZ q) ^ μ b)`. Unfold `ldSv`. Rewrite using `[map_mul, map_pow, ld_sym_rowGen, if_pos rfl, map_prod, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations.
+
+Establish `hbz : ¬ (b, ldZ q).1 = ldZ q` using `fun h => hz (h ▸ hb)`. Rewrite using `[map_pow, ld_sym_rowGen, if_neg hbz, add_zero, map_pow]`. Unfold `rowDiv`. Rewrite using `[hg, ld_coeff_lin]`. Unfold `ldSv`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, zsmul_eq_mul, add_comm (μ a), Nat.sub_add_eq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ld_sym_step (q w : ℕ) (μ : Fin (1 + q) → ℕ) (S : Finset (Fin (1 + q))) (a : Fin (1 + q))
     (ha : a ∉ S) (hz : ldZ q ∉ S) :
     rowDiv ℤ a (ldZ q) (μ a) (ldSv q w μ S) =
@@ -866,6 +1239,17 @@ theorem ld_sym_step (q w : ℕ) (μ : Fin (1 + q) → ℕ) (S : Finset (Fin (1 +
   push_cast
   ring
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Establish `h0 : ldSv q w μ ∅ = hw ℤ (le_refl (1 + q)) (blockWt 1 q w (fun _ => 0))`. Rewrite using `[ld_sym_hw]`.
+
+Simplify using `[ldSv]`. Rewrite using `[h0, Nat.cast_one, one_smul]`. Conclude with `Submodule.subset_span ⟨[], rfl⟩`. Consider the case `insert a S ha ih`. Establish `hz' : ldZ q ∉ S` using `fun h => hz (Finset.mem_insert_of_mem h)`.
+
+Rewrite `hS` using `[Finset.sum_insert ha]`. Take `⟨c, hc, hmem⟩` from `ih hz' (by omega)`. Use `⟨c * (w - ∑ b ∈ S, μ b).choose (μ a), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert ha, add_comm (μ a)]`. Establish `h1` using `Nat.descFactorial_mul_descFactorial (n := w) (k := ∑ b ∈ S, μ b) (m := ∑ b ∈ S, μ b + μ a) (Nat.le_add_right _ _)`.
+
+Rewrite `h1` using `[Nat.add_sub_cancel_left]`. Rewrite using `[← h1, mul_comm]`. Use `Nat.mul_dvd_mul ?_ hc` and prove the remaining obligations. Rewrite using `[Nat.descFactorial_eq_factorial_mul_choose]`. Conclude with `Dvd.intro_left _ rfl`.
+
+Establish `h2` using `weylRowDivStable ℤ (1 + q) (1 + q) le_rfl (blockWt 1 q w fun _ => 0) a (ldZ q) (μ a) _ hmem`. Rewrite `h2` using `[rowDiv_smul, ld_sym_step q w μ S a ha hz', smul_smul]`. Use `push_cast`. Conclude with `h2`.
+-/
 theorem ld_sym_mem (q w : ℕ) (μ : Fin (1 + q) → ℕ) (S : Finset (Fin (1 + q))) (hz : ldZ q ∉ S)
     (hS : ∑ a ∈ S, μ a ≤ w) :
     ∃ c : ℕ, c ∣ w.descFactorial (∑ a ∈ S, μ a) ∧
@@ -896,6 +1280,29 @@ theorem ld_sym_mem (q w : ℕ) (μ : Fin (1 + q) → ℕ) (S : Finset (Fin (1 + 
       push_cast
       exact h2
 
+/- English proof (translation)
+Establish `key : ∀ d ∈ x.support, d = ∑ a, Finsupp.single (a, ldZ q) (μ a) ∧ ∑ a, μ a = w`. Introduce `d hd`. Establish `hd'` using `MvPolynomial.mem_support_iff.mp hd`. Establish `hcolw : Finsupp.weight (colW (1 + q) (1 + q)) d = blockWt 1 q w fun _ => 0` using `hx.1.1 hd'`. Establish `hroww : Finsupp.weight (rowW (1 + q) (1 + q)) d = μ` using `hx.2 hd'`.
+
+Establish `hcol : ∀ s, ∑ a, d (a, s) = blockWt 1 q w (fun _ => 0) s` using `fun s => by`. Rewrite using `[← lccomp_weight_colW_apply, hcolw]`. Establish `hrow : ∀ a, rowDeg d a = μ a` using `fun a => by`. Rewrite using `[← ldrow_weight_rowW, hroww]`. Establish `hzero : ∀ a s, s ≠ ldZ q → d (a, s) = 0`.
+
+Introduce `a s hs`. Establish `h1` using `hcol s`. Rewrite `h1` using `[ld_sym_nu_ne q w s hs]`. Conclude with `(Finset.sum_eq_zero_iff.mp h1) a (Finset.mem_univ a)`. Establish `hdz : ∀ a, d (a, ldZ q) = μ a`.
+
+Introduce `a`. Rewrite using `[← hrow a]`. Unfold `rowDeg`. Conclude with `(Finset.sum_eq_single (ldZ q) (fun s _ hs => hzero a s hs) (fun h => absurd (Finset.mem_univ _) h)).symm`. Prove the components needed by the constructor for the conclusion.
+
+Use extensionality with `⟨a, s⟩`. Rewrite using `[Finsupp.finsetSum_apply]`. Distinguish the cases in `hs : s = ldZ q`. Substitute `hs` using the available equality. Rewrite using `[Finset.sum_eq_single a]`.
+
+Rewrite using `[Finsupp.single_eq_same, hdz]`. Introduce `b _ hb`. Conclude with `Finsupp.single_eq_of_ne (by intro h; exact hb (Prod.mk.inj h).1.symm)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Rewrite using `[hzero a s hs]`. Use `symm`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Conclude with `Finsupp.single_eq_of_ne (by intro h; exact hs (Prod.mk.inj h).2)`. Establish `h1` using `hcol (ldZ q)`.
+
+Rewrite `h1` using `[symmetric_block_weight_zero]`. Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun a _ => (hdz a).symm`. Take `⟨d, hd⟩` from `MvPolynomial.support_nonempty.mpr hne`. Use `⟨(key d hd).2, coeff (∑ a, Finsupp.single (a, ldZ q) (μ a)) x, ?_⟩` and prove the remaining obligations.
+
+Establish `hprod : ∏ a, (X (a, ldZ q) : MvPolynomial (Fin (1 + q) × Fin (1 + q)) ℤ) ^ μ a = monomial (∑ a, Finsupp.single (a, ldZ q) (μ a)) 1`. Rewrite using `[monomial_sum_one]`. Conclude with `Finset.prod_congr rfl fun a _ => X_pow_eq_monomial`. Rewrite using `[hprod]`. Use extensionality with `d'`.
+
+Rewrite using `[coeff_smul, coeff_monomial]`. Distinguish the cases in `hd' : ∑ a, Finsupp.single (a, ldZ q) (μ a) = d'`. Rewrite using `[if_pos hd', hd', smul_eq_mul, mul_one]`. Rewrite using `[if_neg hd', smul_zero]`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hd' (key d' (MvPolynomial.mem_support_iff.mpr hc)).1.symm`.
+-/
 theorem ld_sym_unique (q w : ℕ) (μ : Fin (1 + q) → ℕ) (x : MvPolynomial (Fin (1 + q) × Fin (1 + q)) ℤ)
     (hx : x ∈ nablaWt (1 + q) (blockWt 1 q w fun _ => 0) μ) (hne : x ≠ 0) :
     ∑ a, μ a = w ∧ ∃ c : ℤ, x = c • ∏ a, X (a, ldZ q) ^ μ a := by
@@ -953,6 +1360,17 @@ theorem ld_sym_unique (q w : ℕ) (μ : Fin (1 + q) → ℕ) (x : MvPolynomial (
     by_contra hc
     exact hd' (key d' (MvPolynomial.mem_support_iff.mpr hc)).1.symm
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos q with hq | hq` into its components or cases. Conclude with `Or.inr hq`. Use `left`. Take `⟨q', rfl⟩ : ∃ q', q = q' + 1` from `⟨q - 1, by omega⟩`. Simplify using `only [shapes, Finset.mem_filter, Fintype.mem_piFinset, Finset.mem_Icc]`.
+
+Apply the tactic sequence `refine ⟨fun a => ⟨Nat.zero_le _, by split_ifs <;> omega⟩, ?_, ?_, ?_, ?_⟩`. Introduce `a b hab`. Establish `hab' : a.val ≤ b.val` using `hab`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `[Fin.sum_univ_succ]`.
+
+Introduce `b j hj`. Unfold `colLen`. Rewrite using `[Finset.card_le_one]`. Introduce `a ha c hc`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha hc`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Apply the tactic sequence `split_ifs at ha hc <;> omega`. Unfold `boxesOfContent`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce and unpack `a - ⟨-, h2⟩`.
+
+Use `beta_reduce at h2`. Apply the tactic sequence `split_ifs at h2 <;> omega`.
+-/
 theorem ld_sym_shape (q w i : ℕ) (hi : i ≤ w) :
     (fun a : Fin q => if a.val = 0 then i else 0) ∈ shapes 1 w i (fun _ : Fin q => 0) ∨ q = 0 := by
   rcases Nat.eq_zero_or_pos q with hq | hq
@@ -978,6 +1396,13 @@ theorem ld_sym_shape (q w i : ℕ) (hi : i ≤ w) :
     beta_reduce at h2
     split_ifs at h2 <;> omega
 
+/- English proof (translation)
+Establish `hmem` using `(ld_sym_shape q w i hi).resolve_right (by omega)`. Introduce `h0'`. Establish `hle` using `Finset.le_sup (f := fun tau => boxesOfContent (fun _ : Fin q => 0) tau c) hmem`. Unfold `mu at h0'`. Rewrite `hle` using `[h0']`.
+
+Establish `hpos : 0 < boxesOfContent (fun _ : Fin q => 0) (fun a : Fin q => if a.val = 0 then i else 0) c`. Unfold `boxesOfContent`. Apply `Finset.card_pos.mpr` to reduce the goal to its premises. Use `⟨⟨0, hq⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `absurd (lt_of_lt_of_le hpos hle) (lt_irrefl 0)`.
+-/
 theorem ld_sym_mu (q w i : ℕ) (hq : 0 < q) (hi : i ≤ w) (c : ℤ) (h0 : 0 ≤ c) (h1 : c < (i : ℤ)) :
     mu 1 w i (fun _ : Fin q => 0) c ≠ 0 := by
   have hmem := (ld_sym_shape q w i hi).resolve_right (by omega)
@@ -993,6 +1418,15 @@ theorem ld_sym_mu (q w i : ℕ) (hq : 0 < q) (hi : i ≤ w) (c : ℤ) (h0 : 0 �
     omega
   exact absurd (lt_of_lt_of_le hpos hle) (lt_irrefl 0)
 
+/- English proof (translation)
+Unfold `Dn`. Rewrite using `[Nat.descFactorial_eq_prod_range, Nat.cast_prod]`. Establish `hsub : (Finset.range i).image (fun c => c + q) ⊆ Finset.range (q + w + i)`. Introduce `k hk`. Simplify using `only [Finset.mem_image, Finset.mem_range] at hk ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Use `dvd_trans ?_ (Finset.prod_dvd_prod_of_subset _ _ _ hsub)` and prove the remaining obligations. Rewrite using `[Finset.prod_image (by intro a _ b _ hab; simpa using hab)]`. Use `Finset.prod_dvd_prod_of_dvd _ _ fun c hc => ?_` and prove the remaining obligations. Rewrite `hc` using `[Finset.mem_range]`.
+
+Establish `e : ((c + q : ℕ) : ℤ) - (q : ℤ) = (c : ℤ)` using `by push_cast; ring`. Simplify using `only [e]`. Establish `hmu` using `ld_sym_mu q w i hq hi (c : ℤ) (by positivity) (by exact_mod_cast hc)`. Establish `hc' : ((w - c : ℕ) : ℤ) = (w : ℤ) - (c : ℤ)` using `by rw [Nat.cast_sub (by omega)]`. Rewrite using `[hc']`.
+
+Conclude with `dvd_pow_self _ hmu`.
+-/
 theorem ld_sym_Dn (q w i : ℕ) (hq : 0 < q) (hi : i ≤ w) :
     ((w.descFactorial i : ℕ) : ℤ) ∣ Dn 1 w i (fun _ : Fin q => 0) := by
   unfold Dn
@@ -1012,6 +1446,25 @@ theorem ld_sym_Dn (q w i : ℕ) (hq : 0 < q) (hi : i ≤ w) :
   rw [hc']
   exact dvd_pow_self _ hmu
 
+/- English proof (translation)
+Introduce `l q w hl eL _ i μ hd`. Rewrite using `[expLeIffKilled l _ _ μ eL _ hl (dnNeZero 1 w i q _)]`. Introduce `x hx`. Use `⟨1, (Nat.prime_iff_prime_int.mp hl).not_dvd_one, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hne : x = 0`.
+
+Rewrite using `[hne, smul_zero]`. Conclude with `Submodule.zero_mem _`. Take `⟨hsum, c, rfl⟩` from `ld_sym_unique q w μ x hx hne`. Establish `hd' : μ (ldZ q) + i = w`. Use `hd` as an intermediate fact.
+
+Simplify using `only [IsDepth, Finset.univ_unique, Fin.default_eq_zero, Finset.sum_singleton, one_mul] at this`. Conclude with `this`. Establish `hsplit : μ (ldZ q) + ∑ a ∈ Finset.univ.erase (ldZ q), μ a = w`. Rewrite using `[Finset.add_sum_erase _ _ (Finset.mem_univ _)]`. Conclude with `hsum`.
+
+Establish `hSi : ∑ a ∈ Finset.univ.erase (ldZ q), μ a = i` using `by omega`. Take `⟨c', hc', hmem⟩` from `ld_sym_mem q w μ (Finset.univ.erase (ldZ q)) (Finset.notMem_erase _ _) (by omega)`. Establish `hv : ldSv q w μ (Finset.univ.erase (ldZ q)) = ∏ a, X (a, ldZ q) ^ μ a`. Unfold `ldSv`. Rewrite using `[hSi, ← Finset.mul_prod_erase _ _ (Finset.mem_univ (ldZ q))]`.
+
+Establish `: w - i = μ (ldZ q)` using `by omega`. Rewrite using `[this]`. Rewrite `hmem` using `[hv]`. Rewrite `hc'` using `[hSi]`. Establish `hdvd : ((c' : ℕ) : ℤ) ∣ Dn 1 w i (fun _ : Fin q => 0)`.
+
+Break down `Nat.eq_zero_or_pos q with hq | hq` into its components or cases. Substitute `hq` using the available equality. Establish `hi0 : i = 0`. Rewrite using `[← hSi]`. Use `Finset.sum_eq_zero fun a ha => ?_` and prove the remaining obligations.
+
+Establish `hlt` using `a.isLt`. Conclude with `absurd (Fin.ext (show a.val = (ldZ 0).val from by have h0 : (ldZ 0).val = 0 := rfl; omega)) (Finset.ne_of_mem_erase ha)`. Substitute `hi0` using the available equality. Establish `: c' = 1` using `by simpa using hc'`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Conclude with `dvd_trans (Int.natCast_dvd_natCast.mpr hc') (ld_sym_Dn q w i hq (by omega))`. Take `⟨e, he⟩` from `hdvd`. Rewrite using `[smul_smul, he]`. Establish `: (1 * ((l : ℤ) ^ eL * ((c' : ℤ) * e)) * c) = ((l : ℤ) ^ eL * e * c) * (c' : ℤ)` using `by ring`.
+
+Rewrite using `[this, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hmem`.
+-/
 theorem lemmaD_sym : LemmaD_sym := by
   intro l q w hl eL _ i μ hd
   rw [expLeIffKilled l _ _ μ eL _ hl (dnNeZero 1 w i q _)]
@@ -1056,24 +1509,81 @@ theorem lemmaD_sym : LemmaD_sym := by
   rw [this, mul_smul]
   exact Submodule.smul_mem _ _ hmem
 
+/- English proof (translation)
+The claim follows from `dnNeZero`.
+-/
 theorem d_n_ne_zero : DnNeZero := dnNeZero
+/- English proof (translation)
+The claim follows from `muSupport`.
+-/
 theorem mu_support : MuSupport := muSupport
+/- English proof (translation)
+The claim follows from `expLeIffKilled`.
+-/
 theorem exponent_le_iff_killed : ExpLeIffKilled := expLeIffKilled
+/- English proof (translation)
+The claim follows from `expLeMono`.
+-/
 theorem exponent_le_monotone : ExpLeMono := expLeMono
+/- English proof (translation)
+The claim follows from `expBounded`.
+-/
 theorem exponent_bounded : ExpBounded := expBounded
+/- English proof (translation)
+The claim follows from `gradedImpliesPlain`.
+-/
 theorem graded_implies_plain : GradedImpliesPlain := gradedImpliesPlain
+/- English proof (translation)
+The claim follows from `plain_implies_one_block`.
+-/
 theorem plain_implies_one_block_thm : OneRowOfBound := plain_implies_one_block
+/- English proof (translation)
+The claim follows from `dn2`.
+-/
 theorem d_n_rank_two : Dn2 := dn2
+/- English proof (translation)
+The claim follows from `rank2Exact`.
+-/
 theorem rank_two_exact_case : Rank2Exact := rank2Exact
+/- English proof (translation)
+The claim follows from `rank2Other`.
+-/
 theorem rank_two_other_case : Rank2Other := rank2Other
+/- English proof (translation)
+The claim follows from `lemmaD_rank2`.
+-/
 theorem lemma_d_rank_two : LemmaD_rank2 := lemmaD_rank2
+/- English proof (translation)
+The claim follows from `lemmaDGraded_rank2`.
+-/
 theorem lemma_d_graded_rank_two : LemmaDGraded_rank2 := lemmaDGraded_rank2
+/- English proof (translation)
+The claim follows from `muLe`.
+-/
 theorem mu_le_alt : MuLe := muLe
+/- English proof (translation)
+The claim follows from `muRange`.
+-/
 theorem mu_range : MuRange := muRange
+/- English proof (translation)
+The claim follows from `dnPos`.
+-/
 theorem d_n_pos : DnPos := dnPos
+/- English proof (translation)
+The claim follows from `dnDvd`.
+-/
 theorem d_n_dvd : DnDvd := dnDvd
+/- English proof (translation)
+The claim follows from `dnVal`.
+-/
 theorem d_n_value : DnVal := dnVal
+/- English proof (translation)
+The claim follows from `peelBound`.
+-/
 theorem peel_bound : PeelBound := peelBound
+/- English proof (translation)
+The claim follows from `lemmaD_sym`.
+-/
 theorem lemma_d_symmetric : LemmaD_sym := lemmaD_sym
 
 end Formalism.CohomologicalDescent.LD

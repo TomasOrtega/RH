@@ -10,6 +10,25 @@ open scoped TensorProduct
 
 namespace GlobalTheory.UnitaryScalarModT
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hdeg hσ hfix hun v T hT hunif M _ _ hM m hm d c hd hc`. Take `⟨χ, hχ⟩` from `GlobalTheory.PrimeOrderModule.exists_character (intV E v) M T hT hM`. Take `⟨s, hs, hsχ⟩` from `GlobalTheory.OverSplit.exists_splitting_of_character F E σ hdeg hσ hfix hun v T hT χ`. Take `⟨⟨ε, hε⟩, -, -⟩` from `GlobalTheory.OverResidue.residue_of_prime_card F E σ v s hs M T hT hM (fun a m ha => hχ a m (hsχ a ha))`. Establish `hεm : ε m ≠ 0` using `fun h => hm (ε.injective (h.trans (map_zero ε).symm))`.
+
+Establish `key : ∀ (a : intV E v) (a' : v.adicCompletionIntegers F), (a' : v.adicCompletion F) = (s a).1 → a • m = 0 → a' ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`. Introduce `a a' h h0`. Establish `h1` using `hε a a' h m`. Rewrite `h1` using `[h0, map_zero]`. Establish `h2 : IsLocalRing.residue _ a' * ε m = 0` using `h1.symm`.
+
+Conclude with `(IsLocalRing.residue_eq_zero_iff _).1 ((mul_eq_zero.1 h2).resolve_right hεm)`. Take `⟨hd1, hd2⟩` from `(hs.2.2 d).1 d.2`. Take `⟨hc1, -⟩` from `(hs.2.2 c).1 c.2`. Use `set d₁ : v.adicCompletionIntegers F := ⟨_, hd1⟩ with hd₁`. Use `set d₂ : v.adicCompletionIntegers F := ⟨_, hd2⟩ with hd₂`.
+
+Use `set c₁ : v.adicCompletionIntegers F := ⟨_, hc1⟩ with hc₁`. Establish `m1 : d₁ - 1 ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)` using `key (d - 1) _ (by simp [hd₁]) hd`. Establish `mT : (T : v.adicCompletionIntegers F) ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)` using `key (T : intV E v) _ (by simp) (by rw [Nat.cast_smul_eq_nsmul, ← hM, card_nsmul_eq_zero'])`. Establish `hrel : d₂ * d₁ = 1 + (T : v.adicCompletionIntegers F) * c₁`. Establish `h` using `congrArg (fun x => (s x).1) hc`.
+
+Simplify using `only [map_mul, map_add, map_one, map_natCast, hs.2.1] at h`. Conclude with `Subtype.ext (by simpa [hd₁, hd₂, hc₁, swapR] using h)`. Establish `m2 : d₂ - 1 ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`. Establish `: d₂ - 1 = (T : v.adicCompletionIntegers F) * c₁ - d₂ * (d₁ - 1)`. Take the linear combination `hrel`.
+
+Rewrite using `[this]`. Conclude with `sub_mem (Ideal.mul_mem_right _ _ mT) (Ideal.mul_mem_left _ _ m1)`. Take `⟨b₁, hb₁⟩` from `hunif _ ((Valuation.mem_maximalIdeal_iff (v := Valued.v) (a := d₁ - 1)).1 m1)`. Take `⟨b₂, hb₂⟩` from `hunif _ ((Valuation.mem_maximalIdeal_iff (v := Valued.v) (a := d₂ - 1)).1 m2)`. Use `⟨⟨s.symm ((b₁ : v.adicCompletion F), (b₂ : v.adicCompletion F)), (hs.2.2 _).2 ?_⟩, s.injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[s.apply_symm_apply]`. Conclude with `⟨b₁.2, b₂.2⟩`. Establish `e1 : (s d).1 - 1 = (T : v.adicCompletion F) * b₁`. Establish `h` using `congrArg Subtype.val hb₁`. Move the coercions through the operations in `at h`.
+
+Conclude with `h`. Establish `e2 : (s d).2 - 1 = (T : v.adicCompletion F) * b₂`. Establish `h` using `congrArg Subtype.val hb₂`. Move the coercions through the operations in `at h`. Conclude with `h`.
+
+Rewrite using `[map_add, map_one, map_mul, map_natCast, s.apply_symm_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `using sub_eq_iff_eq_add'.1 e1`. Simplify using `using sub_eq_iff_eq_add'.1 e2`.
+-/
 theorem eq_one_add_of_fixes : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (_ : Module.finrank F E = 2) (_ : ∀ x, σ (σ x) = x) (_ : ∀ x, σ x = x → x ∈ (algebraMap F E).range)
     (_ : ∀ P : Ideal (𝓞 E), P.IsMaximal → ∃ θ t : 𝓞 E, (t : E) = σ θ ∧ θ - t ∉ P) (v : HeightOneSpectrum (𝓞 F)) (T : ℕ) (_ : T.Prime)
     (_ : ∀ a : v.adicCompletionIntegers F, Valued.v (a : v.adicCompletion F) < 1 → ∃ b : v.adicCompletionIntegers F, a = (T : v.adicCompletionIntegers F) * b)

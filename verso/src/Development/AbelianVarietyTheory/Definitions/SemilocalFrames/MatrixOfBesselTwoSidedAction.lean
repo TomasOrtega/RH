@@ -127,12 +127,23 @@ def Vinf (σ : Mat k r → (H →L[ℂ] H)) (w : H) : Submodule ℂ H :=
 def dil (k r : ℕ) (τ : ℝ) : Mat k r := Matrix.diagonal fun i =>
   if i.val < r then (τ : ℂ) ^ (r - i.val) else if i.val ≤ r + k then 1 else ((τ : ℂ) ^ (i.val - (r + k)))⁻¹
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem of_invM (x : Mt k r) : (Matrix.of (invM x) : Mat k r) = (Matrix.of x : Mat k r)⁻¹ := rfl
 
+/- English proof (translation)
+Use `show ((((Matrix.of x : Mat k r)⁻¹ : Mat k r))⁻¹ : Mat k r) = Matrix.of x`. Conclude with `Matrix.nonsing_inv_nonsing_inv _ h`.
+-/
 theorem invM_invM (x : Mt k r) (h : IsUnit (Matrix.of x : Mat k r).det) : invM (invM x) = x := by
   show ((((Matrix.of x : Mat k r)⁻¹ : Mat k r))⁻¹ : Mat k r) = Matrix.of x
   exact Matrix.nonsing_inv_nonsing_inv _ h
 
+/- English proof (translation)
+Establish `hc : Continuous fun x : Mt k r => (Matrix.of x : Mat k r)` using `by exact continuous_id`. Establish `hdet : Measurable fun x : Mt k r => ((Matrix.of x : Mat k r).det)⁻¹` using `hc.matrix_det.measurable.inv`. Establish `hadj : ∀ i j, Measurable fun x : Mt k r => (Matrix.of x : Mat k r).adjugate i j` using `fun i j => ((continuous_apply_apply i j).comp hc.matrix_adjugate).measurable`. Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Establish `key : (fun x : Mt k r => invM x i j) = fun x => ((Matrix.of x : Mat k r).det)⁻¹ * (Matrix.of x : Mat k r).adjugate i j`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[invM, Matrix.inv_def, Ring.inverse_eq_inv']`. Rewrite using `[key]`. Conclude with `hdet.mul (hadj i j)`.
+-/
 theorem measurable_invM : Measurable (invM : Mt k r → Mt k r) := by
   have hc : Continuous fun x : Mt k r => (Matrix.of x : Mat k r) := by exact continuous_id
   have hdet : Measurable fun x : Mt k r => ((Matrix.of x : Mat k r).det)⁻¹ :=
@@ -147,74 +158,137 @@ theorem measurable_invM : Measurable (invM : Mt k r → Mt k r) := by
   rw [key]
   exact hdet.mul (hadj i j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem of_rmulM (a : Mat k r) (x : Mt k r) : (Matrix.of (rmulM a x) : Mat k r) = Matrix.of x * a := rfl
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [rmulM, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finsetSum _ fun l _ => (continuous_apply_apply i l).mul continuous_const`.
+-/
 theorem continuous_rmulM (a : Mat k r) : Continuous (rmulM a : Mt k r → Mt k r) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [rmulM, Matrix.mul_apply, Matrix.of_apply]
   exact continuous_finsetSum _ fun l _ => (continuous_apply_apply i l).mul continuous_const
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matrix_of_besselTwoSidedAction (γ : Mat k r) (p : Mt k r × Mt k r) :
     (Matrix.of (act2 γ p) : Mat k r) = Matrix.of p.1 * γ * Matrix.of (invM p.2) := rfl
 
+/- English proof (translation)
+The claim follows from `norm_nonneg _`.
+-/
 theorem opn_nonneg {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ opn g := norm_nonneg _
 
+/- English proof (translation)
+Simplify using `only [opn, map_mul]`. Conclude with `norm_mul_le _ _`.
+-/
 theorem opn_mul_le {n : ℕ} (g h : Matrix (Fin n) (Fin n) ℂ) : opn (g * h) ≤ opn g * opn h := by
   simp only [opn, map_mul]
   exact norm_mul_le _ _
 
+/- English proof (translation)
+Simplify using `[opn]`.
+-/
 theorem opn_one {n : ℕ} : opn (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) = 1 := by
   simp [opn]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Simplify using `only [hPart]`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp [Matrix.one_apply, *]`.
+-/
 theorem hPart_one : hPart k r 1 = 1 := by
   funext i j
   simp only [hPart]
   split_ifs with h1 h2 <;> simp [Matrix.one_apply, *]
 
+/- English proof (translation)
+Simplify using `[PiS, hPart_one]`.
+-/
 theorem PiS_one (ψ : Mat k r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) : PiS ψ π 1 = ψ 1 • π 1 := by
   simp [PiS, hPart_one]
 
+/- English proof (translation)
+Simplify using `[coef]`.
+-/
 theorem coef_smul_left (σ : Mat k r → (H →L[ℂ] H)) (c : ℂ) (u v : H) (g : Mat k r) :
     coef σ (c • u) v g = c * coef σ u v g := by
   simp [coef]
 
+/- English proof (translation)
+Simplify using `[coef, mul_comm]`.
+-/
 theorem coef_smul_right (σ : Mat k r → (H →L[ℂ] H)) (c : ℂ) (u v : H) (g : Mat k r) :
     coef σ u (c • v) g = star c * coef σ u v g := by
   simp [coef, mul_comm]
 
+/- English proof (translation)
+Simplify using `[coef]`.
+-/
 theorem coef_add_left (σ : Mat k r → (H →L[ℂ] H)) (u u' v : H) (g : Mat k r) :
     coef σ (u + u') v g = coef σ u v g + coef σ u' v g := by
   simp [coef]
 
+/- English proof (translation)
+Simplify using `[coef]`.
+-/
 theorem coef_add_right (σ : Mat k r → (H →L[ℂ] H)) (u v v' : H) (g : Mat k r) :
     coef σ u (v + v') g = coef σ u v g + coef σ u v' g := by
   simp [coef]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankOneInnerOperator_apply (a : Wp) (b η : Wq) : rk1 a b η = ⟪b, η⟫_ℂ • a := rfl
 
+/- English proof (translation)
+Rewrite using `[rk1, ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, mul_comm]`.
+-/
 theorem norm_rankOneInnerOperator (a : Wp) (b : Wq) : ‖rk1 a b‖ = ‖a‖ * ‖b‖ := by
   rw [rk1, ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, mul_comm]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨g, hg, rfl⟩`.
+-/
 theorem mem_DD (σ : Mat k r → (H →L[ℂ] H)) (w : H) {g : Mat k r} (hg : g ∈ GG k r) : σ g w ∈ DD σ w := Submodule.subset_span ⟨g, hg, rfl⟩
 
+/- English proof (translation)
+Introduce `u hu v hv` and use `h u (hV hu) v (hV hv)`.
+-/
 theorem Decay.mono {σ : Mat k r → (H →L[ℂ] H)} {V V' : Set H} {a : ℝ} (h : Decay σ V a) (hV : V' ⊆ V) :
     Decay σ V' a := fun u hu v hv => h u (hV hu) v (hV hv)
 
+/- English proof (translation)
+Introduce `_ hγ` and use `hγ.1`.
+-/
 theorem Greg_subset (z z' : Fin (2 * r + k + 1) → ℂ) : Greg k r z z' ⊆ GG k r := fun _ hγ => hγ.1
 
+/- English proof (translation)
+Use `show ((!![1, 2; 0, 1] : Matrix (Fin 2) (Fin 2) ℂ)⁻¹ : Matrix (Fin 2) (Fin 2) ℂ) = _`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 example : invM (k := 1) (r := 0) !![1, 2; 0, 1] = !![1, -2; 0, 1] := by
   show ((!![1, 2; 0, 1] : Matrix (Fin 2) (Fin 2) ℂ)⁻¹ : Matrix (Fin 2) (Fin 2) ℂ) = _
   apply Matrix.inv_eq_right_inv
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (x : Mt k r) : invM x = @Inv.inv (Mat k r) Matrix.inv (Matrix.of x) := rfl
 
+/- English proof (translation)
+Unfold `dil`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+-/
 example : dil 1 1 2 = Matrix.diagonal ![2, 1, 1, 2⁻¹] := by
   unfold dil
   congr 1; funext i
   fin_cases i <;> simp
 
+/- English proof (translation)
+Simplify using `[rankOneInnerOperator_apply]`.
+-/
 example : rk1 (1 : ℂ) (Complex.I : ℂ) (1 : ℂ) = -Complex.I := by simp [rankOneInnerOperator_apply]
 
 end GlobalTheory.SgInf

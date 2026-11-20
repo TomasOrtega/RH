@@ -20,11 +20,24 @@ def rightTr (h : G) : (G → ℂ) →ₗ[ℂ] (G → ℂ) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rightTr_apply (h : G) (f : G → ℂ) (g : G) : rightTr h f g = f (g * h) := rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨x, rfl⟩`.
+-/
 theorem gen_mem (φ : G → ℂ) (x : G) : (fun g => φ (g * x)) ∈ translates φ :=
   Submodule.subset_span ⟨x, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨x, rfl⟩` from `hf`. Establish `: rightTr h (fun g => φ (g * x)) = fun g => φ (g * (h * x))`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[mul_assoc]`. Rewrite using `[this]`. Conclude with `gen_mem φ _`. Consider the case `zero => simp`. Consider the case `add f f' _ _ h1 h2 => rw [map_add]`.
+
+Conclude with `add_mem h1 h2`. Consider the case `smul c f _ h1 => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ h1`.
+-/
 theorem rightTr_mem (φ : G → ℂ) (h : G) {f : G → ℂ} (hf : f ∈ translates φ) :
     rightTr h f ∈ translates φ := by
   induction hf using Submodule.span_induction with
@@ -45,9 +58,17 @@ def rightEquiv (φ : G → ℂ) (h : G) : translates φ ≃ₗ[ℂ] translates �
   left_inv f := by ext g; simp
   right_inv f := by ext g; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rightEquiv_coe (φ : G → ℂ) (h : G) (f : translates φ) (g : G) :
     (rightEquiv φ h f : G → ℂ) g = (f : G → ℂ) (g * h) := rfl
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf => obtain ⟨x, rfl⟩ := hf`. Conclude with `h x`. Consider the case `zero => simp`. Consider the case `add f f' _ _ h1 h2 => simp [h1, h2, mul_add]`.
+
+Consider the case `smul c f _ h1 => simp only [Pi.smul_apply, smul_eq_mul, h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_eq_of_mem {φ : G → ℂ} {g k : G} {z : ℂ} (h : ∀ x, φ (g * x) = z * φ (k * x))
     {f : G → ℂ} (hf : f ∈ translates φ) : f g = z * f k := by
   induction hf using Submodule.span_induction with
@@ -62,6 +83,15 @@ section Top
 
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨x, rfl⟩` from `hf`. Use `⟨K.comap (MulAut.conj x⁻¹).toMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun u : G => x⁻¹ * u * x⁻¹⁻¹` using `by fun_prop`.
+
+Conclude with `hKo.preimage hc`. Introduce `u hu g`. Establish `hu' : x⁻¹ * u * x ∈ K` using `by simpa [MulAut.conj_apply] using hu`. Use `hr (g * x) _ hu'` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Consider the case `zero => exact ⟨⊤, isOpen_univ, by simp⟩`. Consider the case `add f f' _ _ h1 h2`. Take `⟨U, hU, h⟩` from `h1`. Take `⟨U', hU', h'⟩` from `h2`. Conclude with `⟨U ⊓ U', hU.inter hU', fun u hu g => by simp [h u hu.1, h' u hu.2]⟩`.
+
+Consider the case `smul c f _ h1`. Take `⟨U, hU, h⟩` from `h1`. Conclude with `⟨U, hU, fun u hu g => by simp [h u hu]⟩`.
+-/
 theorem exists_open_stabilizer {K : Subgroup G} (hKo : IsOpen (K : Set G)) {φ : G → ℂ}
     (hr : ∀ g, ∀ k ∈ K, φ (g * k) = φ g) {f : G → ℂ} (hf : f ∈ translates φ) :
     ∃ U : Subgroup G, IsOpen (U : Set G) ∧ ∀ u ∈ U, ∀ g, f (g * u) = f g := by
@@ -84,6 +114,11 @@ theorem exists_open_stabilizer {K : Subgroup G} (hKo : IsOpen (K : Set G)) {φ :
     obtain ⟨U, hU, h⟩ := h1
     exact ⟨U, hU, fun u hu g => by simp [h u hu]⟩
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Establish `hopen : IsOpen ((fun y => g⁻¹ * y) ⁻¹' (U : Set G))` using `hU.preimage (by fun_prop)`. Establish `hev : ∀ᶠ y in 𝓝 g, f g = f y` using `by filter_upwards [hopen.mem_nhds (by simp [U.one_mem])] with y hy`. Use `h _ hy g` as an intermediate fact.
+
+Simplify using `using this.symm`. Conclude with `continuousAt_const.congr hev`.
+-/
 theorem continuous_of_stabilizer {f : G → ℂ} {U : Subgroup G} (hU : IsOpen (U : Set G))
     (h : ∀ u ∈ U, ∀ g, f (g * u) = f g) : Continuous f := by
   rw [continuous_iff_continuousAt]
@@ -96,6 +131,9 @@ theorem continuous_of_stabilizer {f : G → ℂ} {U : Subgroup G} (hU : IsOpen (
     simpa using this.symm
   exact continuousAt_const.congr hev
 
+/- English proof (translation)
+Take `⟨U, hU, h⟩` from `exists_open_stabilizer hKo hr hf`. Conclude with `continuous_of_stabilizer hU h`.
+-/
 theorem continuous_of_mem {K : Subgroup G} (hKo : IsOpen (K : Set G)) {φ : G → ℂ}
     (hr : ∀ g, ∀ k ∈ K, φ (g * k) = φ g) {f : G → ℂ} (hf : f ∈ translates φ) : Continuous f := by
   obtain ⟨U, hU, h⟩ := exists_open_stabilizer hKo hr hf
@@ -113,6 +151,9 @@ def ip (κ : Measure G) (K : Subgroup G) (f f' : G → ℂ) : ℂ :=
 
 variable {κ : Measure G} [κ.IsHaarMeasure] {K : Subgroup G}
 
+/- English proof (translation)
+Establish `: Continuous fun k => conj (f k) * f' k`. Use `Complex.continuous_conj` as an intermediate fact. Use `fun_prop`. Conclude with `this.continuousOn.integrableOn_compact hKc`.
+-/
 theorem integrableOn_mul (hKc : IsCompact (K : Set G)) {f f' : G → ℂ} (hf : Continuous f)
     (hf' : Continuous f') : IntegrableOn (fun k => conj (f k) * f' k) (K : Set G) κ := by
   have : Continuous fun k => conj (f k) * f' k := by
@@ -120,6 +161,9 @@ theorem integrableOn_mul (hKc : IsCompact (K : Set G)) {f f' : G → ℂ} (hf : 
     fun_prop
   exact this.continuousOn.integrableOn_compact hKc
 
+/- English proof (translation)
+Unfold `ip`. Rewrite using `[← integral_add (integrableOn_mul hKc hf hf'') (integrableOn_mul hKc hf' hf'')]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[add_mul]`.
+-/
 theorem ip_add_left (hKc : IsCompact (K : Set G)) {f f' f'' : G → ℂ} (hf : Continuous f)
     (hf' : Continuous f') (hf'' : Continuous f'') :
     ip κ K (f + f') f'' = ip κ K f f'' + ip κ K f' f'' := by
@@ -127,16 +171,27 @@ theorem ip_add_left (hKc : IsCompact (K : Set G)) {f f' f'' : G → ℂ} (hf : C
   rw [← integral_add (integrableOn_mul hKc hf hf'') (integrableOn_mul hKc hf' hf'')]
   congr 1; funext k; simp [add_mul]
 
+/- English proof (translation)
+Unfold `ip`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[mul_assoc]`.
+-/
 theorem ip_smul_left (c : ℂ) (f f' : G → ℂ) : ip κ K (c • f) f' = conj c * ip κ K f f' := by
   unfold ip
   rw [← integral_const_mul]
   congr 1; funext k; simp [mul_assoc]
 
+/- English proof (translation)
+Unfold `ip`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[mul_comm]`.
+-/
 theorem conj_ip (f f' : G → ℂ) : conj (ip κ K f' f) = ip κ K f f' := by
   unfold ip
   rw [← integral_conj]
   congr 1; funext k; simp [mul_comm]
 
+/- English proof (translation)
+Unfold `ip`. Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Complex.conj_mul']`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem ip_self (f : G → ℂ) :
     ip κ K f f = ((∫ k in (K : Set G), ‖f k‖ ^ 2 ∂κ : ℝ) : ℂ) := by
   unfold ip
@@ -144,6 +199,13 @@ theorem ip_self (f : G → ℂ) :
   congr 1; funext k
   rw [Complex.conj_mul']; push_cast; rfl
 
+/- English proof (translation)
+Rewrite `h0` using `[ip_self, Complex.ofReal_eq_zero]`. Establish `hint : IntegrableOn (fun k => ‖f k‖ ^ 2) (K : Set G) κ` using `(by fun_prop : Continuous fun k => ‖f k‖ ^ 2).continuousOn.integrableOn_compact hKc`. Establish `hae` using `(setIntegral_eq_zero_iff_of_nonneg_ae (Filter.Eventually.of_forall fun k => by positivity) hint).1 h0`. Establish `hae'` using `(ae_restrict_iff' hKo.measurableSet).1 hae`. Establish `hopen : IsOpen ((K : Set G) ∩ {k | f k ≠ 0})` using `hKo.inter (isOpen_ne_fun hf continuous_const)`.
+
+Establish `hnull : κ ((K : Set G) ∩ {k | f k ≠ 0}) = 0`. Use `measure_mono_null ?_ (ae_iff.1 hae')` and prove the remaining obligations. Introduce and unpack `k ⟨hk, hne⟩ hcon`. Conclude with `hne (by simpa using hcon hk)`. Establish `hempty` using `(hopen.measure_eq_zero_iff κ).1 hnull`.
+
+Introduce `k hk`. Assume the negation of the conclusion as `hne`. Establish `: k ∈ (K : Set G) ∩ {k | f k ≠ 0}` using `⟨hk, hne⟩`. Rewrite `this` using `[hempty]`. Conclude with `this`.
+-/
 theorem eq_zero_on_of_ip_self (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G))
     {f : G → ℂ} (hf : Continuous f) (h0 : ip κ K f f = 0) : ∀ k ∈ K, f k = 0 := by
   rw [ip_self, Complex.ofReal_eq_zero] at h0

@@ -8,10 +8,18 @@ namespace TopsConditionalProbabilityBounds
 
 open Finset
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (pow_nonneg hδ0 _) (pow_nonneg (by linarith) _)`.
+-/
 theorem weight_nonneg (n : ℕ) (δ : ℝ) (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) (T : Finset ℕ) :
     0 ≤ δ ^ (T.card - 1) * (1 - δ) ^ (n - T.card) :=
   mul_nonneg (pow_nonneg hδ0 _) (pow_nonneg (by linarith) _)
 
+/- English proof (translation)
+Unfold `condProb`. Apply `sum_le_sum` to reduce the goal to its premises. Introduce `T _`. Use `split_ifs with h1 h2 h2`. Conclude with `le_rfl`.
+
+Conclude with `absurd ⟨h1.1, h T h1.1 h1.2⟩ h2`. Conclude with `weight_nonneg n δ hδ0 hδ1 T`. Conclude with `le_rfl`.
+-/
 theorem condProb_mono (n : ℕ) (δ : ℝ) (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) (A B : Finset ℕ → Prop)
     (h : ∀ T, 0 ∈ T → A T → B T) : condProb n δ A ≤ condProb n δ B := by
   classical
@@ -24,6 +32,35 @@ theorem condProb_mono (n : ℕ) (δ : ℝ) (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) (
   · exact weight_nonneg n δ hδ0 hδ1 T
   · exact le_rfl
 
+/- English proof (translation)
+Use `set U := (range n \ S).erase 0 with hU`. Establish `h0U : 0 ∈ range n \ S` using `by simp [h0]; omega`. Establish `hUcard : U.card = n - S.card - 1`. Rewrite using `[hU, card_erase_of_mem h0U, card_sdiff_of_subset hS, card_range]`. Establish `hs1 : S.card + 1 ≤ n`.
+
+Establish `hsub : S ⊆ (range n).erase 0` using `fun x hx => mem_erase.2 ⟨fun h => h0 (h ▸ hx), hS hx⟩`. Use `card_le_card hsub` as an intermediate fact. Rewrite `this` using `[card_erase_of_mem (by simp; omega), card_range]`. Use linear arithmetic over natural numbers and integers. Establish `key : ∑ T' ∈ U.powerset, δ ^ T'.card * (1 - δ) ^ (U.card - T'.card) = 1`.
+
+Rewrite using `[sum_pow_mul_eq_add_pow]`. Simplify using the standard rewrite rules. Establish `step1 : condProb n δ (fun T => Disjoint S T) = ∑ T ∈ (range n).powerset.filter (fun T => 0 ∈ T ∧ Disjoint S T), δ ^ (T.card - 1) * (1 - δ) ^ (n - T.card)`. Unfold `condProb`. Rewrite using `[sum_filter]`.
+
+Use `sum_congr rfl (fun T _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`. Establish `step2 : ∑ T ∈ (range n).powerset.filter (fun T => 0 ∈ T ∧ Disjoint S T), δ ^ (T.card - 1) * (1 - δ) ^ (n - T.card) = ∑ T' ∈ U.powerset, δ ^ T'.card * ((1 - δ) ^ S.card * (1 - δ) ^ (U.card - T'.card))`. Use `sum_nbij' (fun T => T.erase 0) (fun T' => insert 0 T') ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `T hT`.
+
+Simplify using `only [mem_filter, mem_powerset] at hT ⊢`. Take `⟨hTn, _, hST⟩` from `hT`. Introduce `x hx`. Rewrite `hx` using `[mem_erase]`. Rewrite using `[hU, mem_erase, mem_sdiff]`.
+
+Conclude with `⟨hx.1, hTn hx.2, fun hxS => disjoint_left.1 hST hxS hx.2⟩`. Introduce `T' hT'`. Simplify using `only [mem_filter, mem_powerset] at hT' ⊢`. Use `⟨?_, mem_insert_self _ _, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite `hx` using `[mem_insert]`. Break down `hx with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Conclude with `(mem_sdiff.1 (mem_of_mem_erase (hT' hx))).1`.
+
+Rewrite using `[disjoint_insert_right]`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Rewrite using `[disjoint_left]`. Introduce `x hxS hxT`. Conclude with `(mem_sdiff.1 (mem_of_mem_erase (hT' hxT))).2 hxS`.
+
+Introduce `T hT`. Simplify using `only [mem_powerset, mem_filter] at hT`. Conclude with `insert_erase hT.2.1`. Introduce `T' hT'`. Simplify using `only [mem_powerset] at hT'`.
+
+Apply `erase_insert` to reduce the goal to its premises. Introduce `h`. Use `hT' h` as an intermediate fact. Rewrite `this` using `[hU]`. Conclude with `(notMem_erase 0 _) this`.
+
+Introduce `T hT`. Simplify using `only [mem_filter, mem_powerset] at hT`. Take `⟨hTn, h0T, hST⟩` from `hT`. Establish `hsub : T.erase 0 ⊆ U`. Introduce `x hx`.
+
+Rewrite `hx` using `[mem_erase]`. Rewrite using `[hU, mem_erase, mem_sdiff]`. Conclude with `⟨hx.1, hTn hx.2, fun hxS => disjoint_left.1 hST hxS hx.2⟩`. Establish `hc` using `card_le_card hsub`. Rewrite `hc`, the goal using `[card_erase_of_mem h0T]`.
+
+Establish `hT1 : 1 ≤ T.card` using `card_pos.2 ⟨0, h0T⟩`. Rewrite using `[← pow_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[step1, step2]`.
+
+Repeatedly rewrite using `[mul_left_comm _ ((1 - δ) ^ S.card)]`. Rewrite using `[← mul_sum, key, mul_one]`.
+-/
 theorem condProb_disjoint (n : ℕ) (δ : ℝ) (S : Finset ℕ) (hS : S ⊆ range n) (h0 : 0 ∉ S)
     (hn : 1 ≤ n) :
     condProb n δ (fun T => Disjoint S T) = (1 - δ) ^ S.card := by
@@ -98,6 +135,21 @@ theorem condProb_disjoint (n : ℕ) (δ : ℝ) (S : Finset ℕ) (hS : S ⊆ rang
   simp_rw [mul_left_comm _ ((1 - δ) ^ S.card)]
   rw [← mul_sum, key, mul_one]
 
+/- English proof (translation)
+Break down `lt_or_ge (i + G) n with hlt | hge` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Apply `condProb_mono n δ hδ0 hδ1` to reduce the goal to its premises. Introduce and unpack `T _ ⟨_, hT⟩`. Rewrite using `[disjoint_left]`.
+
+Introduce `x hx hxT`. Rewrite `hx` using `[mem_Icc]`. Use `hT (x - i) (by omega) (by omega)` as an intermediate fact. Rewrite `this` using `[show i + (x - i) = x by omega, Nat.mod_eq_of_lt (by omega)]`. Conclude with `this hxT`.
+
+Use `_ = (1 - δ) ^ (Icc (i + 1) (i + G)).card := by`. Apply `condProb_disjoint n δ _ _ _ (by omega)` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[mem_Icc]`. Rewrite using `[mem_range]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[mem_Icc]`. Use linear arithmetic over natural numbers and integers. Use `_ = (1 - δ) ^ G := by`. Rewrite using `[Nat.card_Icc]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Apply `condProb_mono n δ hδ0 hδ1` to reduce the goal to its premises. Introduce and unpack `T h0T ⟨_, hT⟩`.
+
+Use `hT (n - i) (by omega) (by omega)` as an intermediate fact. Rewrite `this` using `[show i + (n - i) = n by omega, Nat.mod_self]`. Conclude with `this h0T`. Use `_ = 0 := by`. Unfold `condProb`.
+
+Simplify using the standard rewrite rules. Use `_ ≤ (1 - δ) ^ G := pow_nonneg (by linarith) _`.
+-/
 theorem bad_bound (n : ℕ) (δ : ℝ) (G : ℕ) (hn : 2 ≤ n) (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1)
     (i : ℕ) (hi : i < n) :
     condProb n δ (fun T => i ∈ T ∧ ∀ d, 1 ≤ d → d ≤ G → (i + d) % n ∉ T) ≤ (1 - δ) ^ G := by
@@ -139,6 +191,17 @@ theorem bad_bound (n : ℕ) (δ : ℝ) (G : ℕ) (hn : 2 ≤ n) (hδ0 : 0 ≤ δ
 end TopsConditionalProbabilityBounds
 
 open Finset TopsConditionalProbabilityBounds in
+/- English proof (translation)
+Introduce `n δ G hn hδ0 hδ1`. Establish `hunion : condProb n δ (fun T => ¬ CondC n T G) ≤ ∑ i ∈ range n, condProb n δ (fun T => i ∈ T ∧ ∀ d, 1 ≤ d → d ≤ G → (i + d) % n ∉ T)`. Unfold `condProb`. Rewrite using `[sum_comm]`. Apply `sum_le_sum` to reduce the goal to its premises.
+
+Introduce `T hT`. Rewrite `hT` using `[mem_powerset]`. Use `split_ifs with h`. Take `⟨h0T, hC⟩` from `h`. Unfold `CondC at hC`.
+
+Use `push Not at hC`. Take `⟨i, hiT, hi⟩` from `hC`. Establish `hir : i ∈ range n` using `hT hiT`. Use `le_trans (le_of_eq ?_) (single_le_sum ?_ hir)` and prove the remaining obligations. Conclude with `(if_pos ⟨h0T, hiT, hi⟩).symm`.
+
+Introduce `j _ split_ifs`. Conclude with `weight_nonneg n δ hδ0 hδ1 T`. Conclude with `le_rfl`. Apply `sum_nonneg` to reduce the goal to its premises. Introduce `j _`.
+
+Use `split_ifs`. Conclude with `weight_nonneg n δ hδ0 hδ1 T`. Conclude with `le_rfl`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tops_choice_part_c : TopsChoiceThirdBound := by
   intro n δ G hn hδ0 hδ1
   classical

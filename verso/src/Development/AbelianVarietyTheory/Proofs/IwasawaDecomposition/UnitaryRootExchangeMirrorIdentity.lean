@@ -15,6 +15,11 @@ open GlobalTheory.BesselCompare (mt_mul mt_one hA_add hA_smul hA_smul_right hA_v
 
 variable {D : D7} {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V}
 
+/- English proof (translation)
+Rewrite using `[suppAt_iff_vec]`. Introduce `x`. Establish `e1 : (ε + cA D ε) * hA B x y = hA B x y`. Rewrite using `[← hy, hA_smul_right, ← mul_assoc, h2]`. Establish `e2 : (ε + cA D ε) • y = y` using `by conv_lhs => rw [← hy]`.
+
+Rewrite using `[smul_smul, h1, hy]`. Establish `e : (mt B k).mulVec x - x = hA B x y • v - hA B x v • y` using `by rw [hk x]; abel`. Rewrite using `[e, smul_sub, smul_smul, e1, smul_comm, e2]`.
+-/
 theorem suppAt_of_isK {ε a : AE D} {v y : Fin B.rank → AE D} {k : GA D B} (hk : IsK B v y k) (hy : a • y = y)
     (h1 : (ε + cA D ε) * a = a) (h2 : (ε + cA D ε) * cA D a = cA D a) : SuppAt ε B k := by
   rw [suppAt_iff_vec]
@@ -38,27 +43,46 @@ def fixGrp (B : HSp D) (x : Fin B.rank → AE D) : Subgroup (GA D B) where
     conv_lhs => rw [← show (mt B g).mulVec x = x from hg]
     rw [mulVec_inv_cancel]
 
+/- English proof (translation)
+Use `show _ = _`. Rewrite using `[hg, hA_vec_iA (besselDatum_auxiliaryVector_orthogonal_image d l), hA_vec, (GlobalTheory.T.besselDatum_adelicVector_decomposition D A B ι d).1, if_neg h]`. Simplify using the standard rewrite rules.
+-/
 theorem fix_of_isK (d : BesselDatum A B ι) {i l : Fin (d.ρ + 1)} (h : l ≠ i) {t} {g : GA D B}
     (hg : IsK B (vecA B (dual d i)) (iA ι t) g) : g ∈ fixGrp B (vecA B (d.aux l)) := by
   show _ = _
   rw [hg, hA_vec_iA (besselDatum_auxiliaryVector_orthogonal_image d l), hA_vec, (GlobalTheory.T.besselDatum_adelicVector_decomposition D A B ι d).1, if_neg h]
   simp
 
+/- English proof (translation)
+Use `(Subgroup.closure_le _).2 (Set.iUnion_subset fun i => Set.iUnion_subset fun hi u hu => ?_) hg` and prove the remaining obligations. Take `⟨t, -, ht⟩` from `(GlobalTheory.T.mem_besselExchangeGroup_iff_rootExchange D A B ι d ε he i u).1 (Subgroup.subset_closure hu)`. Conclude with `fix_of_isK d (fun e => by rw [e] at h; omega) ht`.
+-/
 theorem fix_of_ExGe (d : BesselDatum A B ι) {ε : AE D} (he : IsSplitIdem D ε) {p : ℕ} {l : Fin (d.ρ + 1)} (h : l.1 < p)
     {g : GA D B} (hg : g ∈ ExGe d ε p) : g ∈ fixGrp B (vecA B (d.aux l)) := by
   refine (Subgroup.closure_le _).2 (Set.iUnion_subset fun i => Set.iUnion_subset fun hi u hu => ?_) hg
   obtain ⟨t, -, ht⟩ := (GlobalTheory.T.mem_besselExchangeGroup_iff_rootExchange D A B ι d ε he i u).1 (Subgroup.subset_closure hu)
   exact fix_of_isK d (fun e => by rw [e] at h; omega) ht
 
+/- English proof (translation)
+Unfold `BesselDatum.aux`. Rewrite using `[Fin.snoc_castSucc]`.
+-/
 theorem basis_castSucc (d : BesselDatum A B ι) (l : Fin d.ρ) : d.aux l.castSucc = d.e l := by
   unfold BesselDatum.aux; rw [Fin.snoc_castSucc]
 
+/- English proof (translation)
+Unfold `BesselDatum.aux`. Use `Fin.lastCases ?_ (fun l => ?_) m` and prove the remaining obligations. Rewrite using `[Fin.snoc_last]`. Conclude with `hD_swap_zero (d.ez j)`. Rewrite using `[Fin.snoc_castSucc]`.
+
+Conclude with `d.ee l j`.
+-/
 theorem hD_basis_e (d : BesselDatum A B ι) (m) (j : Fin d.ρ) : B.hD (d.aux m) (d.e j) = 0 := by
   unfold BesselDatum.aux
   refine Fin.lastCases ?_ (fun l => ?_) m
   · rw [Fin.snoc_last]; exact hD_swap_zero (d.ez j)
   · rw [Fin.snoc_castSucc]; exact d.ee l j
 
+/- English proof (translation)
+Establish `key : ∀ m : Fin (d.ρ + 1), m.1 = i.1 + 1 → B.hD (d.aux m) (d.f i) = 0`. Introduce `m`. Unfold `BesselDatum.aux`. Use `Fin.lastCases (fun _ => ?_) (fun l hl => ?_) m` and prove the remaining obligations. Rewrite using `[Fin.snoc_last]`.
+
+Conclude with `hD_swap_zero (d.fz i)`. Rewrite using `[Fin.snoc_castSucc, d.ef, if_neg]`. Introduce and unpack `rfl`. Simplify using `at hl`. Conclude with `key _ rfl`.
+-/
 theorem hD_basis_succ_f (d : BesselDatum A B ι) (i : Fin d.ρ) : B.hD (d.aux i.succ) (d.f i) = 0 := by
   have key : ∀ m : Fin (d.ρ + 1), m.1 = i.1 + 1 → B.hD (d.aux m) (d.f i) = 0 := by
     intro m
@@ -70,6 +94,9 @@ theorem hD_basis_succ_f (d : BesselDatum A B ι) (i : Fin d.ρ) : B.hD (d.aux i.
       simp at hl
   exact key _ rfl
 
+/- English proof (translation)
+Establish `hc' : (mt B c).mulVec v = v` using `hc`. Establish `h0 : hA B ((mt B c⁻¹).mulVec x) v = 0` using `by rw [hA_mt_left, inv_inv, hc', hx]`. Rewrite using `[mulVec_mul, mulVec_mul, hk, h0, zero_smul, sub_zero, Matrix.mulVec_add, Matrix.mulVec_smul, hc', mulVec_cancel_inv]`.
+-/
 theorem conj_apply {v y : Fin B.rank → AE D} {k c : GA D B} (hk : IsK B v y k) (hc : c ∈ fixGrp B v)
     {x : Fin B.rank → AE D} (hx : hA B x v = 0) :
     (mt B (c * k * c⁻¹)).mulVec x = x + hA B ((mt B c⁻¹).mulVec x) y • v := by
@@ -77,10 +104,30 @@ theorem conj_apply {v y : Fin B.rank → AE D} {k c : GA D B} (hk : IsK B v y k)
   have h0 : hA B ((mt B c⁻¹).mulVec x) v = 0 := by rw [hA_mt_left, inv_inv, hc', hx]
   rw [mulVec_mul, mulVec_mul, hk, h0, zero_smul, sub_zero, Matrix.mulVec_add, Matrix.mulVec_smul, hc', mulVec_cancel_inv]
 
+/- English proof (translation)
+Simplify using `[ite_smul]`.
+-/
 theorem sum_single (d : BesselDatum A B ι) (j : Fin d.ρ) (a : AE D) :
     ∑ l, (if l = j then a else 0) • vecA B (d.e l) = a • vecA B (d.e j) := by
   simp [ite_smul]
 
+/- English proof (translation)
+Introduce `D A B ι d ψ ε he j t₀ t b₀ k ht₀ ht hb₀ hk`. Establish `h1 : ε * ε = ε` using `he.1`. Establish `h2 : ε * cA D ε = 0` using `he.2.1`. Establish `h3 : cA D ε * cA D ε = cA D ε` using `by rw [← RingHom.map_mul, h1]`. Establish `a1 : (ε + cA D ε) * ε = ε` using `by rw [add_mul, h1, mul_comm, h2, add_zero]`.
+
+Establish `a2 : (ε + cA D ε) * cA D ε = cA D ε` using `by rw [add_mul, h2, h3, zero_add]`. Establish `sk : SuppAt ε B k` using `suppAt_of_isK (a := cA D ε) hk (by rw [← iA_smul, ht]) a2 (by rw [cA_cA, a1])`. Establish `sb : SuppAt ε B b₀` using `suppAt_of_isK (a := ε) hb₀ (by rw [← iA_smul, ht₀]) a1 a2`. Use `⟨sk, fun b hb => ?_⟩` and prove the remaining obligations. Establish `sb'` using `suppAt_of_mem_ExGe hb`.
+
+Establish `hn : b * (b₀ * k * b₀⁻¹) * b⁻¹ = (b * b₀) * k * (b * b₀)⁻¹` using `by group`. Establish `hfix : ∀ l : Fin d.ρ, l ≤ j → b * b₀ ∈ fixGrp B (vecA B (d.e l))`. Introduce `l hl`. Establish `hl' : l.1 ≤ j.1` using `hl`. Rewrite using `[← basis_castSucc]`.
+
+Use `mul_mem (fix_of_ExGe d he (by simp; omega) hb) (fix_of_isK d (fun e => ?_) hb₀)` and prove the remaining obligations. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `hact : ∀ x : B.V, B.hD x (d.e j) = 0 → actV B (b * (b₀ * k * b₀⁻¹) * b⁻¹) x = vecA B x + hA B ((mt B (b * b₀)⁻¹).mulVec (vecA B x)) (iA ι t) • vecA B (d.e j)`.
+
+Introduce `x hx`. Rewrite using `[hn]`. Conclude with `conj_apply hk (hfix j le_rfl) (by rw [hA_vec, hx, map_zero])`. Use `⟨Subgroup.subset_closure ⟨fun i => ?_, fun x hx => ?_⟩, suppAt_mul (suppAt_mul sb' (suppAt_mul (suppAt_mul sb sk) (suppAt_inv sb))) (suppAt_inv sb'), ?_⟩` and prove the remaining obligations. Use `⟨_, fun l hl => ?_, by rw [hact _ (d.ee i j), ← sum_single]⟩ split_ifs with h` and prove the remaining obligations.
+
+Substitute `h` using the available equality. Rewrite using `[show (mt B (b * b₀)⁻¹).mulVec (vecA B (d.e i)) = _ from inv_mem (hfix i hl), hA_vec_iA (d.eA i)]`. Both sides reduce to the same expression. Conclude with `⟨_, by rw [hact _ (hx j), ← sum_single]⟩`. Unfold `BesselDatum.psiN BesselDatum.simpleSum`.
+
+Use `congr 3`. Establish `e : ∀ i : Fin d.ρ, hA B (actV B (b * (b₀ * k * b₀⁻¹) * b⁻¹) (d.aux i.succ)) (vecA B (d.f i)) = if j = i then hA B ((mt B (b * b₀)⁻¹).mulVec (vecA B (d.aux i.succ))) (iA ι t) else 0`. Introduce `i`. Rewrite using `[hact _ (hD_basis_e d _ j), hA_add, hA_smul, hA_vec, hA_vec, hD_basis_succ_f, d.ef]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Simplify using `only [e, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hb' : (mt B b⁻¹).mulVec (vecA B (d.aux j.succ)) = vecA B (d.aux j.succ)` using `inv_mem (fix_of_ExGe d he (by simp) hb)`. Establish `p1 : hA B (iA ι t) (vecA B (dual d j.succ)) = 0`. Rewrite using `[← hA_herm, hA_vec_iA (dual_perp d _), map_zero]`. Rewrite using `[_root_.mul_inv_rev, mulVec_mul, hb', hA_mt_left, inv_inv, hb₀, p1, zero_smul, sub_zero, hA_add_right, hA_vec_iA (besselDatum_auxiliaryVector_orthogonal_image d _), zero_add, hA_smul_right, hA_herm, hA_vec, (GlobalTheory.T.besselDatum_adelicVector_decomposition D A B ι d).1, if_p …`.
+-/
 theorem mirror : ∀ (D : D7) (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (d : BesselDatum A B ι) (ψ : AddChar (AF D.host.F) ℂ) (ε : AE D), IsSplitIdem D ε → ∀ (j : Fin d.ρ) (t₀ t : Fin A.rank → AE D) (b₀ k : GA D B), ε • t₀ = t₀ → cA D ε • t = t → IsK B (vecA B (dual d j.succ)) (iA ι t₀) b₀ → IsK B (vecA B (d.e j)) (iA ι t) k → SuppAt ε B k ∧ ∀ b ∈ ExGe d ε (j.1 + 2), b * (b₀ * k * b₀⁻¹) * b⁻¹ ∈ d.N ∧ SuppAt ε B (b * (b₀ * k * b₀⁻¹) * b⁻¹) ∧ d.psiN ψ (b * (b₀ * k * b₀⁻¹) * b⁻¹) = ψ (Algebra.trace (AF D.host.F) (AE D) (incA D d.θ * hA A t₀ t)) := by
   intro D A B ι d ψ ε he j t₀ t b₀ k ht₀ ht hb₀ hk
   have h1 : ε * ε = ε := he.1

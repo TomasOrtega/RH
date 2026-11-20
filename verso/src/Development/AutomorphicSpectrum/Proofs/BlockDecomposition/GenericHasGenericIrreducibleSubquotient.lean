@@ -14,6 +14,17 @@ section General
 
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `stab : ∀ {W : Type} [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ G W) (w : W), ∃ H : Subgroup G, ∀ g, g ∈ H ↔ σ g w = w`. Introduce `W _ _ σ w`. Use `⟨{ carrier := {g | σ g w = w}, mul_mem' := ?_, one_mem' := ?_, inv_mem' := ?_ }, fun g => Iff.rfl⟩` and prove the remaining obligations. Introduce `a b ha hb replace ha : σ a w = w := ha replace hb : σ b w = w := hb show σ (a * b) w = w`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`.
+
+Use `show σ 1 w = w`. Rewrite using `[map_one, Module.End.one_apply]`. Introduce `a ha replace ha : σ a w = w := ha show σ a⁻¹ w = w conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Introduce `v`.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Take `⟨H₁, hH₁⟩` from `stab ρ (x : V)`. Take `⟨H₂, hH₂⟩` from `stab (subQuot A B) (Submodule.Quotient.mk x)`. Establish `hle : H₁ ≤ H₂`. Introduce `g hg`.
+
+Rewrite `hg` using `[hH₁]`. Rewrite using `[hH₂]`. Use `show Submodule.Quotient.mk (A.toRepresentation g x) = Submodule.Quotient.mk x`. Use `congr 1`. Conclude with `Subtype.ext hg`.
+
+Establish `e₁ : (H₁ : Set G) = {g | ρ g x = x}` using `Set.ext hH₁`. Establish `e₂ : (H₂ : Set G) = {g | (subQuot A B) g (Submodule.Quotient.mk x) = Submodule.Quotient.mk x}` using `Set.ext hH₂`. Rewrite using `[← e₂]`. Conclude with `Subgroup.isOpen_mono hle (e₁ ▸ hρ x)`.
+-/
 theorem isSmooth_subQuot [TopologicalSpace G] [IsTopologicalGroup G] {ρ : Representation ℂ G V} (hρ : IsSmooth ρ)
     (A B : Subrepresentation ρ) : IsSmooth (subQuot A B) := by
   have stab : ∀ {W : Type} [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ G W) (w : W),
@@ -49,6 +60,17 @@ theorem isSmooth_subQuot [TopologicalSpace G] [IsTopologicalGroup G] {ρ : Repre
   rw [← e₂]
   exact Subgroup.isOpen_mono hle (e₁ ▸ hρ x)
 
+/- English proof (translation)
+Take `⟨a, haA, hak⟩` from `SetLike.not_le_iff_exists.mp hA`. Set `φ : A.toSubmodule →ₗ[ℂ] V ⧸ twKer ρ N χ` to `(twKer ρ N χ).mkQ ∘ₗ A.toSubmodule.subtype`. Establish `hφ : Submodule.comap A.toSubmodule.subtype B.toSubmodule ≤ LinearMap.ker φ`. Introduce `x hx`. Rewrite using `[LinearMap.mem_ker]`.
+
+Use `show Submodule.Quotient.mk (x : V) = (0 : V ⧸ twKer ρ N χ)`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hB (Submodule.mem_comap.mp hx)`. Set `Ψ` to `(Submodule.comap A.toSubmodule.subtype B.toSubmodule).liftQ φ hφ`. Establish `hker : twKer (subQuot A B) N χ ≤ LinearMap.ker Ψ`.
+
+Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `w ⟨n, v, rfl⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub, map_smul]`. Use `show Submodule.Quotient.mk (ρ n (x : V)) - (χ n : ℂ) • Submodule.Quotient.mk (x : V) = (0 : V ⧸ twKer ρ N χ)`.
+
+Rewrite using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_sub, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.subset_span ⟨n, (x : V), rfl⟩`. Use `⟨⟨(Submodule.Quotient.mk (Submodule.Quotient.mk ⟨a, haA⟩ : A.toSubmodule ⧸ Submodule.comap A.toSubmodule.subtype B.toSubmodule) : _ ⧸ twKer (subQuot A B) N χ), 0, ?_⟩⟩` and prove the remaining obligations. Introduce `h`. Rewrite `h` using `[Submodule.Quotient.mk_eq_zero]`.
+
+Establish `h'` using `hker h`. Rewrite `h'` using `[LinearMap.mem_ker]`. Establish `h'' : Submodule.Quotient.mk a = (0 : V ⧸ twKer ρ N χ)` using `h'`. Conclude with `hak ((Submodule.Quotient.mk_eq_zero _).mp h'')`.
+-/
 theorem nontrivial_twJacquet_subQuot {ρ : Representation ℂ G V} (N : Subgroup G) (χ : N →* ℂˣ)
     (A B : Subrepresentation ρ) (hB : B.toSubmodule ≤ twKer ρ N χ) (hA : ¬ A.toSubmodule ≤ twKer ρ N χ) :
     Nontrivial (TwJacquet (subQuot A B) N χ) := by
@@ -82,6 +104,23 @@ theorem nontrivial_twJacquet_subQuot {ρ : Representation ℂ G V} (N : Subgroup
 
 end General
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ N V _ _ ρ hρ hfl hgen`. Establish `hNA` using `isFiniteLength_iff_isNoetherian_isArtinian.mp hfl`. Use `haveI := hNA.1`. Use `haveI := hNA.2`. Establish `hle : ∀ S T : Subrepresentation ρ, S.asSubmodule ≤ T.asSubmodule ↔ S ≤ T` using `fun S T => Iff.rfl`.
+
+Establish `hsm : StrictMono (fun S : Subrepresentation ρ => S.asSubmodule)` using `fun S T h => lt_of_le_of_ne ((hle S T).mpr h.le) (fun he => h.ne (le_antisymm ((hle S T).mp he.le) ((hle T S).mp he.ge)))`. Establish `wfl : WellFounded (fun S T : Subrepresentation ρ => S < T)` using `Subrelation.wf (fun {S T} h => hsm h) (InvImage.wf (fun S : Subrepresentation ρ => S.asSubmodule) wellFounded_lt)`. Establish `wfg : WellFounded (fun S T : Subrepresentation ρ => T < S)` using `Subrelation.wf (fun {S T} h => hsm h) (InvImage.wf (fun S : Subrepresentation ρ => S.asSubmodule) wellFounded_gt)`. Establish `hgen' : Nontrivial (V ⧸ twKer ρ (unipB k (Fin N)) (whitChar ψ N))` using `hgen`. Set `T0 : Subrepresentation ρ` to `⟨⊤, fun _ _ _ => Submodule.mem_top⟩`.
+
+Establish `htop : ¬ T0.toSubmodule ≤ twKer ρ (unipB k (Fin N)) (whitChar ψ N)`. Introduce `h`. Take `⟨x, y, hxy⟩` from `hgen'.exists_pair_ne`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Apply `hxy` to reduce the goal to its premises. Rewrite using `[Submodule.Quotient.eq]`. Conclude with `h Submodule.mem_top`. Take `⟨A, hAP, hAmin⟩` from `wfl.has_min {A | ¬ A.toSubmodule ≤ twKer ρ (unipB k (Fin N)) (whitChar ψ N)} ⟨T0, htop⟩`. Set `Z : Subrepresentation ρ` to `⟨⊥, fun g v hv => by`.
+
+Rewrite `hv`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hv, map_zero]⟩`. Establish `hZk : Z.toSubmodule ≤ twKer ρ (unipB k (Fin N)) (whitChar ψ N)` using `bot_le`. Establish `hZA : Z < A`. Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Establish `hx0 : x = 0` using `(Submodule.mem_bot ℂ).mp hx`. Rewrite using `[hx0]`. Conclude with `A.toSubmodule.zero_mem`. Introduce `h`.
+
+Rewrite `hAP` using `[← h]`. Conclude with `hAP hZk`. Take `⟨B, hBA, hBmax⟩` from `wfg.has_min {B | B < A} ⟨Z, hZA⟩`. Establish `hcov : B ⋖ A` using `⟨hBA, fun C hBC hCA => hBmax C hCA hBC⟩`. Establish `hBk : B.toSubmodule ≤ twKer ρ (unipB k (Fin N)) (whitChar ψ N)`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hAmin B h hBA`. Conclude with `⟨A, B, hBA.le, GlobalTheory.SmGL.isIrreducible_subQuot hcov, GlobalTheory.CompanionTheory.GenExists.isSmooth_subQuot hρ A B, GlobalTheory.CompanionTheory.GenExists.nontrivial_twJacquet_subQuot _ _ A B hBk hAP⟩`.
+-/
 theorem exists_generic_subQuot : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ∀ (N : ℕ) {V : Type} [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ (GL (Fin N) k) V), IsSmooth ρ → GlobalTheory.SmGL.HasFiniteLength ρ →

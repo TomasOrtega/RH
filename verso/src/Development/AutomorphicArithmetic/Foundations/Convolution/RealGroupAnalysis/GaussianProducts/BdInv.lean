@@ -7,6 +7,15 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
+/- English proof (translation)
+Introduce `F _ _ _ π f hf C hC`. Take `⟨B₁, h₁⟩` from `UpperTheory.ConvolutionTheory.R2.Pp.bdd F π f hf C hC`. Take `⟨-, hd⟩` from `UpperTheory.ConvolutionTheory.R2.decay F π f hf`. Take `⟨B₂, h₂⟩` from `hd C hC 1 one_pos 1`. Establish `key : ∀ (b : A F) (a : (A F)ˣ), ∀ k ∈ C, ‖f.1 (gl (nU b * mD a) * k)‖ ≤ max (max B₁ B₂) 0 * (ab a)⁻¹`.
+
+Introduce `b a k hk`. Establish `hp : 0 < ab a` using `(IdeleGroup.ideleModule F a).2`. Establish `hi : 0 < (ab a)⁻¹` using `inv_pos.2 hp`. Break down `le_total 1 (ab a) with h | h` into its components or cases. Establish `h3` using `h₂ b a k hk h`.
+
+Rewrite `h3` using `[pow_one]`. Conclude with `h3.trans (mul_le_mul_of_nonneg_right ((le_max_right _ _).trans (le_max_left _ _)) hi.le)`. Establish `h1 : 1 ≤ (ab a)⁻¹` using `(one_le_inv₀ hp).2 h`. Combine the equalities or inequalities in the displayed calculation. Use `⟨_, le_max_right _ _, fun b a k hk => ⟨key b a k hk, UpperTheory.ConvolutionTheory.R2.Pp.norm_Wf_le fun x => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `e : gl (nU (x + b) * mD a) = gl (nU x) * gl (nU b * mD a)`. Establish `g : ∀ y z : G1 F, gl (y * z) = gl y * gl z` using `fun y z => map_mul _ _ _`. Rewrite using `[g, g, UpperTheory.ConvolutionTheory.R2.Pp.n_add, mul_assoc]`. Establish `h4` using `key (x + b) a k hk`. Rewrite `h4` using `[e, mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.bdInv :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (π : TR.CuspSub F 2), ∀ f ∈ π.V, ∀ C : Set (GL (Fin 2) (A F)), IsCompact C → ∃ B : ℝ, 0 ≤ B ∧ ∀ b a, ∀ k ∈ C,
     ‖f.1 (gl (nU b * mD a) * k)‖ ≤ B * (ab a)⁻¹ ∧ ‖Wf f.1 (gl (nU b * mD a) * k)‖ ≤ B * (ab a)⁻¹ := by

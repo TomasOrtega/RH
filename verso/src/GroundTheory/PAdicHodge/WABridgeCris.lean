@@ -24,13 +24,29 @@ variable (p) in
 
 def radA : ℝ := ((p : ℝ)⁻¹) ^ p
 
+/- English proof (translation)
+The claim follows from `pow_pos inv_p_pos p`.
+-/
 theorem radA_pos : 0 < radA p := pow_pos inv_p_pos p
 
+/- English proof (translation)
+The claim follows from `pow_lt_one₀ inv_p_pos.le inv_p_lt_one hp.out.ne_zero`.
+-/
 theorem radA_lt_one : radA p < 1 := pow_lt_one₀ inv_p_pos.le inv_p_lt_one hp.out.ne_zero
 
+/- English proof (translation)
+Rewrite using `[ker_theta_eq_span_xiA]`. Conclude with `Ideal.mem_span_singleton_self _`.
+-/
 theorem xiA_mem_ker : xiA p ∈ RingHom.ker θ := by
   rw [ker_theta_eq_span_xiA]; exact Ideal.mem_span_singleton_self _
 
+/- English proof (translation)
+Establish `e : teichmuller p (pFlat p) = (p : AInf ℂ_[p] p) - xiA p` using `by rw [xiA]; ring`. Take `⟨q, hq⟩ : ((p : AInf ℂ_[p] p) ^ (1 + 1)) ∣ ((p : AInf ℂ_[p] p) - xiA p) ^ p ^ 1 - (-xiA p) ^ p ^ 1` from `dvd_sub_pow_of_dvd_sub (p := p) (a := (p : AInf ℂ_[p] p) - xiA p) (b := -xiA p) ⟨1, by ring⟩ 1`. Use `⟨(p : 𝔸) * algebraMap _ 𝔸 q + ((-1) ^ p * ((p - 1).factorial : 𝔸)) * dpow p (xiA p), ?_, ?_⟩` and prove the remaining obligations. Use `Subalgebra.add_mem _ (Subalgebra.mul_mem _ (Subalgebra.natCast_mem _ _) (Subalgebra.algebraMap_mem _ _)) (Subalgebra.mul_mem _ ?_ (dpow_mem xiA_mem_ker p))` and prove the remaining obligations. Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (Subalgebra.neg_mem _ (Subalgebra.one_mem _)) _) (Subalgebra.natCast_mem _ _)`.
+
+Establish `h1 : ((p : AInf ℂ_[p] p) - xiA p) ^ p = (-xiA p) ^ p + (p : AInf ℂ_[p] p) ^ 2 * q`. Rewrite `hq` using `[pow_one]`. Rewrite using `[← hq]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `factorial_mul_dpow (K := ℂ_[p]) (p := p) p (xiA p)`.
+
+Establish `h3 : (p.factorial : 𝔸) = (p : 𝔸) * ((p - 1).factorial : 𝔸)`. Rewrite using `[← Nat.cast_mul, Nat.mul_factorial_pred hp.out.ne_zero]`. Rewrite using `[e, ← map_pow, h1, map_add, map_mul, map_pow, map_pow, map_neg, neg_pow, ← h2, h3, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_teich_pow_eq : ∃ w ∈ ACrisZero ℂ_[p] p,
     algebraMap (AInf ℂ_[p] p) 𝔸 (teichmuller p (pFlat p)) ^ p = (p : 𝔸) * w := by
   have e : teichmuller p (pFlat p) = (p : AInf ℂ_[p] p) - xiA p := by rw [xiA]; ring
@@ -51,8 +67,16 @@ theorem exists_teich_pow_eq : ∃ w ∈ ACrisZero ℂ_[p] p,
       map_natCast]
     ring
 
+/- English proof (translation)
+The claim follows from `gn_natCast_p (radA_pos (p := p))`.
+-/
 theorem gn_radA_natCast_p : gn ℂ_[p] p (radA p) (p : 𝔸) = radA p := gn_natCast_p (radA_pos (p := p))
 
+/- English proof (translation)
+Establish `hc` using `convergesAt_toB (K := ℂ_[p]) (p := p) (algebraMap _ 𝔸 x) hρ0 hρ1`. Unfold `gn`. Rewrite `hc`, the goal using `[coeffB_toB_algebraMap]`. Establish `h` using `hc.le_gaussNorm 0`. Rewrite `h` using `[zpow_zero, mul_one]`.
+
+Establish `e : (𝓣).zcoeff (incl ℂ_[p] p x) 0 = (𝓣).red (incl ℂ_[p] p x)`. Simplify using `[TeichLift.zcoeff, TeichLift.coeff]`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem norm_red_le_gn (x : AInf ℂ_[p] p) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) :
     ‖(𝓣).red (incl ℂ_[p] p x)‖ ≤ gn ℂ_[p] p ρ (algebraMap _ 𝔸 x) := by
   have hc := convergesAt_toB (K := ℂ_[p]) (p := p) (algebraMap _ 𝔸 x) hρ0 hρ1
@@ -65,11 +89,33 @@ theorem norm_red_le_gn (x : AInf ℂ_[p] p) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : �
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[gn, coeffB_toB_algebraMap, h, TeichLift.zcoeff_teich, TeichLift.gaussNorm_pi_single 0 a hρ0, zpow_zero, mul_one]`.
+-/
 theorem gn_of_incl_eq_teich {x : AInf ℂ_[p] p} {a : Cb p} (h : incl ℂ_[p] p x = (𝓣).teich a)
     {ρ : ℝ} (hρ0 : 0 < ρ) : gn ℂ_[p] p ρ (algebraMap _ 𝔸 x) = ‖a‖ := by
   rw [gn, coeffB_toB_algebraMap, h, TeichLift.zcoeff_teich, TeichLift.gaussNorm_pi_single 0 a hρ0,
     zpow_zero, mul_one]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `x _`. Conclude with `⟨_, Subalgebra.algebraMap_mem _ x, by rw [pow_zero, one_mul]⟩`. Consider the case `succ k ih`.
+
+Introduce `x hx`. Take `⟨w, hw, hwe⟩` from `exists_teich_pow_eq (p := p)`. Use `set a := (𝓣).red (incl ℂ_[p] p x) with ha`. Establish `hv0 : varpi p ≠ 0` using `varpi_ne_zero`. Establish `hna : ‖a‖ ≤ ‖varpi p‖ ^ (p * (k + 1))`.
+
+Rewrite using `[norm_varpi, pow_mul]`. Conclude with `(norm_red_le_gn x (radA_pos (p := p)) (radA_lt_one (p := p))).trans hx`. Use `set c := a / varpi p ^ (p * (k + 1)) with hc_def`. Establish `hc : ‖c‖ ≤ 1`. Rewrite using `[hc_def, norm_div, norm_pow]`.
+
+Conclude with `div_le_one_of_le₀ hna (by positivity)`. Establish `hac : a = varpi p ^ (p * (k + 1)) * c`. Rewrite using `[hc_def, mul_div_cancel₀ _ (pow_ne_zero _ hv0)]`. Take `⟨u, hu⟩` from `(𝓣).teich_mem_int hc`. Take `⟨x', hx'⟩` from `(𝓣).tail_mem_int (⟨x, rfl⟩ : incl ℂ_[p] p x ∈ (𝓣).int)`.
+
+Take `⟨t, ht⟩ : ∃ t, t = teichmuller p (pFlat p) ^ (p * (k + 1)) * u` from `⟨_, rfl⟩`. Establish `hteich : incl ℂ_[p] p t = (𝓣).teich a`. Rewrite using `[ht, map_mul, map_pow, incl_teichmuller, hu, hac, (𝓣).teich_mul, (𝓣).teich_pow, teich_eq, teich_eq]`. Both sides reduce to the same expression. Establish `hdec : x = t + (p : AInf ℂ_[p] p) * x'`.
+
+Apply `incl_injective` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, hteich, hx', map_natCast]`. Conclude with `(𝓣).eq_teich_add_π_mul_tail (incl ℂ_[p] p x)`. Establish `hgt : gn ℂ_[p] p (radA p) (algebraMap _ 𝔸 t) ≤ radA p ^ (k + 1)`. Rewrite using `[gn_of_incl_eq_teich hteich (radA_pos (p := p))]`.
+
+Conclude with `(norm_red_le_gn x (radA_pos (p := p)) (radA_lt_one (p := p))).trans hx`. Establish `hgx' : gn ℂ_[p] p (radA p) (algebraMap _ 𝔸 x') ≤ radA p ^ k`. Establish `e : algebraMap (AInf ℂ_[p] p) 𝔸 ((p : AInf ℂ_[p] p) * x') = algebraMap _ 𝔸 x - algebraMap _ 𝔸 t`. Rewrite using `[hdec, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h1` using `gn_sub_le (K := ℂ_[p]) (p := p) (radA_pos (p := p)) (radA_lt_one (p := p)) (algebraMap _ 𝔸 x) (algebraMap _ 𝔸 t)`. Rewrite `h1` using `[← e, map_mul, map_natCast, gn_mul (K := ℂ_[p]) (p := p) (radA_pos (p := p)) (radA_lt_one (p := p)), gn_radA_natCast_p]`. Establish `h2` using `h1.trans (max_le hx hgt)`. Rewrite `h2` using `[pow_succ']`. Conclude with `le_of_mul_le_mul_left h2 (radA_pos (p := p))`.
+
+Take `⟨c', hc', hc'e⟩` from `ih x' hgx'`. Use `⟨w ^ (k + 1) * algebraMap _ 𝔸 u + c', Subalgebra.add_mem _ (Subalgebra.mul_mem _ (Subalgebra.pow_mem _ hw _) (Subalgebra.algebraMap_mem _ u)) hc', ?_⟩` and prove the remaining obligations. Rewrite using `[hdec, map_add, map_mul, hc'e, ht, map_mul, map_pow, pow_mul, hwe, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_eq_pow_mul_of_gn_le (k : ℕ) : ∀ x : AInf ℂ_[p] p,
     gn ℂ_[p] p (radA p) (algebraMap _ 𝔸 x) ≤ radA p ^ k →
       ∃ c ∈ ACrisZero ℂ_[p] p, algebraMap _ 𝔸 x = (p : 𝔸) ^ k * c := by
@@ -120,10 +166,20 @@ theorem exists_eq_pow_mul_of_gn_le (k : ℕ) : ∀ x : AInf ℂ_[p] p,
     rw [hdec, map_add, map_mul, hc'e, ht, map_mul, map_pow, pow_mul, hwe, map_natCast]
     ring
 
+/- English proof (translation)
+Use `IsLocalization.Away.algebraMap_isUnit (S := 𝔸) (p : AInf ℂ_[p] p)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_p_away : IsUnit (p : 𝔸) := by
   have := IsLocalization.Away.algebraMap_isUnit (S := 𝔸) (p : AInf ℂ_[p] p)
   rwa [map_natCast] at this
 
+/- English proof (translation)
+Take `⟨k, x, hx⟩` from `IsLocalization.Away.surj (p : AInf ℂ_[p] p) z`. Establish `hgx : gn ℂ_[p] p (radA p) (algebraMap _ 𝔸 x) ≤ radA p ^ k`. Rewrite using `[← hx, map_natCast, gn_mul (K := ℂ_[p]) (p := p) (radA_pos (p := p)) (radA_lt_one (p := p)), gn_pow (K := ℂ_[p]) (p := p) (radA_pos (p := p)) (radA_lt_one (p := p)), gn_radA_natCast_p]`. Conclude with `mul_le_of_le_one_left (pow_nonneg (radA_pos (p := p)).le k) hz`. Take `⟨c, hc, hcx⟩` from `exists_eq_pow_mul_of_gn_le k x hgx`.
+
+Establish `e : z = c`. Establish `h1 : z * (p : 𝔸) ^ k = c * (p : 𝔸) ^ k`. Rewrite using `[mul_comm c, ← hcx, ← hx, map_natCast]`. Conclude with `(isUnit_p_away.pow k).mul_right_cancel h1`. Rewrite using `[e]`.
+
+Conclude with `hc`.
+-/
 theorem mem_acrisZero_of_gn_le_one {z : 𝔸} (hz : gn ℂ_[p] p (radA p) z ≤ 1) :
     z ∈ ACrisZero ℂ_[p] p := by
   obtain ⟨k, x, hx⟩ := IsLocalization.Away.surj (p : AInf ℂ_[p] p) z
@@ -138,6 +194,13 @@ theorem mem_acrisZero_of_gn_le_one {z : 𝔸} (hz : gn ℂ_[p] p (radA p) z ≤ 
     exact (isUnit_p_away.pow k).mul_right_cancel h1
   rw [e]; exact hc
 
+/- English proof (translation)
+Establish `hnat : ∀ n : ℕ, gn ℂ_[p] p (radA p) ((pUnit p ^ n : 𝔸ˣ) : 𝔸) = radA p ^ n`. Introduce `n`. Rewrite using `[Units.val_pow_eq_pow_val, coe_pUnit, map_natCast, gn_pow (K := ℂ_[p]) (p := p) (radA_pos (p := p)) (radA_lt_one (p := p)), gn_radA_natCast_p]`. Establish `hinv : ∀ u : 𝔸ˣ, gn ℂ_[p] p (radA p) ((u⁻¹ : 𝔸ˣ) : 𝔸) * gn ℂ_[p] p (radA p) (u : 𝔸) = 1`. Introduce `u`.
+
+Rewrite using `[← gn_mul (K := ℂ_[p]) (p := p) (radA_pos (p := p)) (radA_lt_one (p := p)), ← Units.val_mul, inv_mul_cancel, Units.val_one, gn_one (K := ℂ_[p]) (p := p) (radA_pos (p := p)) (radA_lt_one (p := p))]`. Break down `k with n | n` into its components or cases. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast, hnat, zpow_natCast]`. Rewrite using `[zpow_negSucc, zpow_negSucc]`. Establish `h` using `hinv (pUnit p ^ (n + 1))`.
+
+Rewrite using `[← hnat]`. Conclude with `eq_inv_of_mul_eq_one_left h`.
+-/
 theorem gn_pUnit_zpow (k : ℤ) : gn ℂ_[p] p (radA p) ((pUnit p ^ k : 𝔸ˣ) : 𝔸) = radA p ^ k := by
   have hnat : ∀ n : ℕ, gn ℂ_[p] p (radA p) ((pUnit p ^ n : 𝔸ˣ) : 𝔸) = radA p ^ n := by
     intro n
@@ -155,6 +218,11 @@ theorem gn_pUnit_zpow (k : ℤ) : gn ℂ_[p] p (radA p) ((pUnit p ^ k : 𝔸ˣ) 
     rw [← hnat]
     exact eq_inv_of_mul_eq_one_left h
 
+/- English proof (translation)
+Use `⟨((pUnit p ^ (-M) : 𝔸ˣ) : 𝔸) * z, mem_acrisZero_of_gn_le_one ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gn_mul (K := ℂ_[p]) (p := p) (radA_pos (p := p)) (radA_lt_one (p := p)), gn_pUnit_zpow, zpow_neg]`. Establish `hpos : 0 < radA p ^ M` using `zpow_pos (radA_pos (p := p)) M`. Rewrite using `[inv_mul_le_iff₀ hpos, mul_one]`. Conclude with `hz`.
+
+Rewrite using `[← mul_assoc, ← Units.val_mul, ← zpow_add, add_neg_cancel, zpow_zero, Units.val_one, one_mul]`.
+-/
 theorem exists_eq_zpow_mul_of_gn_le {z : 𝔸} {M : ℤ} (hz : gn ℂ_[p] p (radA p) z ≤ radA p ^ M) :
     ∃ c ∈ ACrisZero ℂ_[p] p, z = ((pUnit p ^ M : 𝔸ˣ) : 𝔸) * c := by
   refine ⟨((pUnit p ^ (-M) : 𝔸ˣ) : 𝔸) * z, mem_acrisZero_of_gn_le_one ?_, ?_⟩
@@ -165,6 +233,15 @@ theorem exists_eq_zpow_mul_of_gn_le {z : 𝔸} {M : ℤ} (hz : gn ℂ_[p] p (rad
   · rw [← mul_assoc, ← Units.val_mul, ← zpow_add, add_neg_cancel, zpow_zero, Units.val_one,
       one_mul]
 
+/- English proof (translation)
+Establish `hnum` using `(𝓣).num_spec b`. Establish `hcoeff` using `(𝓣).coeffB_eq hnum`. Establish `hint : (𝓣).num b ∈ (𝓣).int` using `(𝓣).mem_int_iff.2 fun n => by`. Establish `h` using `hb ((n : ℤ) - ((𝓣).den b : ℤ))`. Rewrite `h` using `[hcoeff]`.
+
+Simplify using `only [sub_add_cancel] at h`. Simplify `h` using `[TeichLift.zcoeff]`. Take `⟨x, hx⟩` from `hint`. Use `⟨algebraMap _ 𝔸 x * ((pUnit p ^ (-((𝓣).den b : ℤ)) : 𝔸ˣ) : 𝔸), ?_⟩` and prove the remaining obligations. Establish `hu : toB ℂ_[p] p ((pUnit p ^ (-((𝓣).den b : ℤ)) : 𝔸ˣ) : 𝔸) * algebraMap _ (𝓣).B (𝓣).π ^ (𝓣).den b = 1`.
+
+Establish `e : algebraMap _ (𝓣).B (𝓣).π ^ (𝓣).den b = toB ℂ_[p] p ((pUnit p ^ (((𝓣).den b : ℕ) : ℤ) : 𝔸ˣ) : 𝔸)`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val, coe_pUnit, map_pow, toB_algebraMap, map_natCast]`. Both sides reduce to the same expression. Rewrite using `[e, ← map_mul, ← Units.val_mul, ← zpow_add, neg_add_cancel, zpow_zero, Units.val_one, map_one]`. Establish `h2 : (toB ℂ_[p] p (algebraMap _ 𝔸 x * ((pUnit p ^ (-((𝓣).den b : ℤ)) : 𝔸ˣ) : 𝔸)) - b) * algebraMap _ (𝓣).B (𝓣).π ^ (𝓣).den b = 0`.
+
+Rewrite using `[sub_mul, map_mul, mul_assoc, hu, mul_one, hnum, toB_algebraMap, hx, sub_self]`. Conclude with `sub_eq_zero.1 ((𝓣).eq_zero_of_mul_pow h2)`.
+-/
 theorem exists_toB_eq_of_norm_coeffB_le_one {b : (𝓣).B} (hb : ∀ n, ‖(𝓣).coeffB b n‖ ≤ 1) :
     ∃ s : 𝔸, toB ℂ_[p] p s = b := by
   have hnum := (𝓣).num_spec b
@@ -188,6 +265,9 @@ theorem exists_toB_eq_of_norm_coeffB_le_one {b : (𝓣).B} (hb : ∀ n, ‖(𝓣
     rw [sub_mul, map_mul, mul_assoc, hu, mul_one, hnum, toB_algebraMap, hx, sub_self]
   exact sub_eq_zero.1 ((𝓣).eq_zero_of_mul_pow h2)
 
+/- English proof (translation)
+Establish `h : (toB ℂ_[p] p).comp (phiAway ℂ_[p] p) = ((frob ℂ_[p] p).toB : (𝓣).B →+* (𝓣).B).comp (toB ℂ_[p] p)`. Apply `IsLocalization.ringHom_ext (Submonoid.powers (p : AInf ℂ_[p] p))` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [RingHom.comp_apply, phiAway_algebraMap, toB_algebraMap, RingEquiv.coe_toRingHom, TeichLift.TeichFrob.toB_algebraMap, frob_φ_incl]`. Conclude with `RingHom.congr_fun h z`.
+-/
 theorem toB_phiAway (z : 𝔸) :
     toB ℂ_[p] p (phiAway ℂ_[p] p z) = (frob ℂ_[p] p).toB (toB ℂ_[p] p z) := by
   have h : (toB ℂ_[p] p).comp (phiAway ℂ_[p] p) =
@@ -200,6 +280,13 @@ theorem toB_phiAway (z : 𝔸) :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hprec : IsPrecomplete (Ideal.span {(p : ACris ℂ_[p] p)}) (ACris ℂ_[p] p)` using `inferInstance`. Establish `key : ∀ m n : ℕ, m ≤ n → (p : ACris ℂ_[p] p) ^ m ∣ algebraMap (ACrisZero ℂ_[p] p) (ACris ℂ_[p] p) (t m) - algebraMap (ACrisZero ℂ_[p] p) (ACris ℂ_[p] p) (t n)`. Introduce `m n hmn`. Take `⟨d, hd⟩` from `ht m n hmn`. Use `⟨algebraMap (ACrisZero ℂ_[p] p) (ACris ℂ_[p] p) d, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_sub, hd, map_mul, map_pow, map_natCast]`. Take `⟨L, hL⟩` from `hprec.prec (f := fun N => algebraMap (ACrisZero ℂ_[p] p) (ACris ℂ_[p] p) (t N)) (fun {m n} hmn => (smodEq_span_singleton_pow_iff _ _ _ _).2 (key m n hmn))`. Use `⟨L, fun N => ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `(smodEq_span_singleton_pow_iff _ _ _ _).1 (hL N)`. Use `⟨-d, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_neg, ← hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_limit (t : ℕ → ACrisZero ℂ_[p] p)
     (ht : ∀ N N', N ≤ N' → ∃ d : ACrisZero ℂ_[p] p, t N - t N' = (p : ACrisZero ℂ_[p] p) ^ N * d) :
     ∃ c : ACris ℂ_[p] p, ∀ N, ∃ d : ACris ℂ_[p] p,
@@ -221,26 +308,55 @@ theorem exists_limit (t : ℕ → ACrisZero ℂ_[p] p)
 
 variable {ρ : Set.Ioo (0 : ℝ) 1}
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (evalB ℂ_[p] p 0 x - evalB ℂ_[p] p 0 y)`. Rewrite using `[← ha, Ideal.Quotient.eq_zero_iff_mem, pow_zero, Ideal.one_eq_top]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem evalB_zero_eq (x y : 𝔹) : evalB ℂ_[p] p 0 x = evalB ℂ_[p] p 0 y := by
   rw [← sub_eq_zero]
   obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (evalB ℂ_[p] p 0 x - evalB ℂ_[p] p 0 y)
   rw [← ha, Ideal.Quotient.eq_zero_iff_mem, pow_zero, Ideal.one_eq_top]
   trivial
 
+/- English proof (translation)
+The claim follows from `evalₐ_iota n c`.
+-/
 theorem evalB_iota_acris (n : ℕ) (c : ACris ℂ_[p] p) :
     evalB ℂ_[p] p n (ACris.iota ℂ_[p] p c) = ACris.iotaQ ℂ_[p] p n c :=
   evalₐ_iota n c
 
+/- English proof (translation)
+Rewrite using `[AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, iotaQ_of]`.
+-/
 theorem iotaQ_algebraMap_acrisZero (n : ℕ) (y : ACrisZero ℂ_[p] p) :
     ACris.iotaQ ℂ_[p] p n (algebraMap (ACrisZero ℂ_[p] p) (ACris ℂ_[p] p) y) =
       Ideal.Quotient.mk _ (y : 𝔸) := by
   rw [AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, iotaQ_of]
 
+/- English proof (translation)
+The claim follows from `(embedding₂ ℂ_[p] p n c).2`.
+-/
 theorem iotaQ_mem_acrisQ (n : ℕ) (c : ACris ℂ_[p] p) : ACris.iotaQ ℂ_[p] p n c ∈ acrisQ ℂ_[p] p n :=
   (embedding₂ ℂ_[p] p n c).2
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `evalB_ext fun n => ?_` and prove the remaining obligations. Break down `n with _ | m` into its components or cases. Conclude with `evalB_zero_eq _ _`. Use `set Q := 𝔸 ⧸ RingHom.ker (fontaineThetaInvertP (normInteger ℂ_[p]) p) ^ (m + 1)`. Use `set D : Q := evalB ℂ_[p] p (m + 1) ((p : 𝔹) ^ j * iota p hρ w) - evalB ℂ_[p] p (m + 1) (ACris.iota ℂ_[p] p c) with hDdef`.
+
+Establish `hD : ∀ N : ℕ, ∃ e ∈ acrisQ ℂ_[p] p (m + 1), D = (p : Q) ^ N * e`. Introduce `N`. Establish `hw` using `hs (N + m)`. Establish `hw' : (𝓣).extNorm ρ (inversePRadius p hρ) (w - awayToExt p ρ (s (N + m))) ≤ (p : ℝ) ^ (-((N + m : ℕ) : ℤ))` using `hw`. Take `⟨y, hy⟩` from `exists_evalB_iota_eq_zpow hρ hw' m`.
+
+Take `⟨d, hd⟩` from `hc (N + m)`. Establish `hexp : (((N + m : ℕ) : ℤ) - (m : ℤ)) = (N : ℤ)` using `by push_cast; ring`. Establish `e1 : iota p hρ (w - awayToExt p ρ (s (N + m))) = iota p hρ w - toBDeRhamPlus (normInteger ℂ_[p]) p (s (N + m))`. Rewrite using `[map_sub, iota_awayToExt]`. Establish `e2 : ((pUnit p ^ (((N + m : ℕ) : ℤ) - (m : ℤ)) : 𝔸ˣ) : 𝔸) = (p : 𝔸) ^ N`.
+
+Rewrite using `[hexp, zpow_natCast, Units.val_pow_eq_pow_val, coe_pUnit, map_natCast]`. Rewrite `hy` using `[e1, e2]`. Establish `h1 : evalB ℂ_[p] p (m + 1) (iota p hρ w) = Ideal.Quotient.mk _ (s (N + m)) + (p : Q) ^ N * Ideal.Quotient.mk _ (algebraMap _ 𝔸 y)`. Establish `h2` using `hy`. Rewrite `h2` using `[map_sub, evalB_toBDeRhamPlus]`.
+
+Rewrite using `[← map_natCast (Ideal.Quotient.mk _), ← map_pow, ← map_mul, ← h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc' : c = algebraMap (ACrisZero ℂ_[p] p) (ACris ℂ_[p] p) ⟨_, hmem (N + m)⟩ + (p : ACris ℂ_[p] p) ^ (N + m) * d` using `by rw [← hd]; ring`. Use `⟨(p : Q) ^ j * Ideal.Quotient.mk _ (algebraMap _ 𝔸 y) - (p : Q) ^ m * ACris.iotaQ ℂ_[p] p (m + 1) d, ?_, ?_⟩` and prove the remaining obligations. Use `Subring.sub_mem _ (Subring.mul_mem _ (Subring.pow_mem _ (natCast_mem _ p) _) (latticeQ_le _ ⟨y, rfl⟩)) (Subring.mul_mem _ (Subring.pow_mem _ (natCast_mem _ p) _) (iotaQ_mem_acrisQ _ _))` and prove the remaining obligations.
+
+Establish `h3 : evalB ℂ_[p] p (m + 1) (ACris.iota ℂ_[p] p c) = (p : Q) ^ j * Ideal.Quotient.mk _ (s (N + m)) + (p : Q) ^ (N + m) * ACris.iotaQ ℂ_[p] p (m + 1) d`. Rewrite using `[evalB_iota_acris, hc', map_add, map_mul, map_pow, map_natCast, iotaQ_algebraMap_acrisZero]`. Simplify using `only [map_mul, map_pow, map_natCast]`. Rewrite using `[hDdef, map_mul, map_pow, map_natCast, h1, h3]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨e0, he0, hDe0⟩` from `hD 0`. Establish `hDmem : D ∈ acrisQ ℂ_[p] p (m + 1)` using `by rw [hDe0, pow_zero, one_mul]; exact he0`. Use `isAdicComplete_acrisQ ℂ_[p] p (m + 1)` as an intermediate fact. Establish `hzero : (⟨D, hDmem⟩ : acrisQ ℂ_[p] p (m + 1)) = 0`. Use `IsHausdorff.haus' (I := Ideal.span {(p : acrisQ ℂ_[p] p (m + 1))}) _ fun N => ?_` and prove the remaining obligations.
+
+Rewrite using `[smodEq_span_singleton_pow_iff, sub_zero, subring_pow_dvd_iff]`. Take `⟨e, he, hDe⟩` from `hD N`. Conclude with `⟨e, he, hDe⟩`. Establish `h0 : D = 0` using `congrArg Subtype.val hzero`. Conclude with `sub_eq_zero.1 h0`.
+-/
 theorem pow_mul_iota_eq (hρ : (p : ℝ)⁻¹ < ρ) {w : (𝓣).RobbaExt ρ} {c : ACris ℂ_[p] p} (j : ℕ)
     (s : ℕ → 𝔸)
     (hs : ∀ N : ℕ, (𝓣).extNorm ρ (inversePRadius p hρ) (w - awayToExt p ρ (s N)) ≤ (p : ℝ) ^ (-(N : ℤ)))

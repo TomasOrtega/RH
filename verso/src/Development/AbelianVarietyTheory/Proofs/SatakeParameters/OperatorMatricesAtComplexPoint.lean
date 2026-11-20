@@ -12,6 +12,9 @@ variable {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin 
   (d : D.what₂.Tau → Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ)
   (f' : D.what₂.Tau → Matrix (Fin (D.R.N (j + 1))) (Fin (D.R.N (j + 1))) ℂ)
 
+/- English proof (translation)
+Use extensionality with `b t`. Simplify using `only [Matrix.map_apply, yMat, evD, MvPolynomial.eval₂Hom_C, RingHom.coe_comp, Function.comp_apply, MvPolynomial.eval_X, Matrix.submatrix_apply]`. Both sides reduce to the same expression.
+-/
 theorem evD_yMat (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     (yMat X Kc j v s).map (evD X D pos ι hN d f') =
       ((zT X D pos f' (pos ⟨v, s⟩)).map ι).submatrix (Fin.cast hN.2.symm) (Fin.cast hN.2.symm) := by
@@ -20,20 +23,36 @@ theorem evD_yMat (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     MvPolynomial.eval_X, Matrix.submatrix_apply]
   rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, dMat, evD, MvPolynomial.eval₂Hom_X', Matrix.submatrix_apply]`.
+-/
 theorem evD_dMat (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     (dMat X Kc j v s).map (evD X D pos ι hN d f') =
       ((d (pos ⟨v, s⟩)).map ι).submatrix (Fin.cast hN.1.symm) (Fin.cast hN.2.symm) := by
   ext a b
   simp only [Matrix.map_apply, dMat, evD, MvPolynomial.eval₂Hom_X', Matrix.submatrix_apply]
 
+/- English proof (translation)
+Rewrite using `[zT, Equiv.symm_apply_apply, if_neg hs]`.
+-/
 theorem zT_even (v : X.Pl) (s : Fin (X.G.P.n' v)) (hs : ¬ IsOddPos s) {n : ℕ} (g : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) :
     zT X D pos g (pos ⟨v, s⟩) = g (pos ⟨v, s⟩) := by
   rw [zT, Equiv.symm_apply_apply, if_neg hs]
 
+/- English proof (translation)
+Rewrite using `[zT, Equiv.symm_apply_apply, if_pos hs]`.
+-/
 theorem zT_odd (v : X.Pl) (s : Fin (X.G.P.n' v)) (hs : IsOddPos s) {n : ℕ} (g : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) :
     zT X D pos g (pos ⟨v, s⟩) = ((g (pos ⟨v, s⟩))⁻¹).transpose.submatrix id Fin.rev := by
   rw [zT, Equiv.symm_apply_apply, if_pos hs]
 
+/- English proof (translation)
+Use `set z := zT X D pos g (pos ⟨v, s⟩) with hz`. Establish `hmul : z * (g (pos ⟨v, s⟩)).transpose.submatrix Fin.rev id = 1`. Rewrite using `[hz, zT_odd X D pos v s hs g]`. Establish `h1 : ((g (pos ⟨v, s⟩))⁻¹).transpose.submatrix id Fin.rev * (g (pos ⟨v, s⟩)).transpose.submatrix Fin.rev id = (((g (pos ⟨v, s⟩))⁻¹).transpose * (g (pos ⟨v, s⟩)).transpose).submatrix id id` using `Matrix.submatrix_mul_equiv _ _ _ Fin.revPerm _`. Rewrite using `[h1, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hg)]`.
+
+Simplify using the standard rewrite rules. Establish `hdet : z.det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det hmul` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`.
+
+Conclude with `zero_ne_one this`. Rewrite using `[← Matrix.inv_eq_right_inv hmul, Matrix.inv_def, smul_smul, Ring.inverse_eq_inv', mul_inv_cancel₀ hdet, one_smul]`.
+-/
 theorem adj_zT_odd (v : X.Pl) (s : Fin (X.G.P.n' v)) (hs : IsOddPos s) {n : ℕ} (g : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ)
     (hg : (g (pos ⟨v, s⟩)).det ≠ 0) :
     (zT X D pos g (pos ⟨v, s⟩)).adjugate =
@@ -53,6 +72,21 @@ theorem adj_zT_odd (v : X.Pl) (s : Fin (X.G.P.n' v)) (hs : IsOddPos s) {n : ℕ}
     exact zero_ne_one this
   rw [← Matrix.inv_eq_right_inv hmul, Matrix.inv_def, smul_smul, Ring.inverse_eq_inv', mul_inv_cancel₀ hdet, one_smul]
 
+/- English proof (translation)
+Introduce `hf _ v s`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, evD_yMat, ι.map_det]`. Conclude with `Matrix.det_submatrix_equiv_self (finCongr hN.2.symm) _`. Introduce `hs`.
+
+Rewrite using `[dyMat, ← Matrix.submatrix_map, Matrix.map_mul, evD_yMat, evD_dMat, zT_even X D pos v s hs]`. Rewrite using `[show ((d (pos ⟨v, s⟩)).map ι).submatrix (Fin.cast hN.1.symm) (Fin.cast hN.2.symm) * ((f' (pos ⟨v, s⟩)).map ι).submatrix (Fin.cast hN.2.symm) (Fin.cast hN.2.symm) = ((d (pos ⟨v, s⟩)).map ι * (f' (pos ⟨v, s⟩)).map ι).submatrix (Fin.cast hN.1.symm) (Fin.cast hN.2.symm) from Matrix. …`. Rewrite using `[← Matrix.map_mul, Matrix.submatrix_submatrix, dfr, ← Matrix.submatrix_map, Matrix.submatrix_submatrix]`. Use extensionality with `a t`. Both sides reduce to the same expression.
+
+Introduce `hs`. Establish `hz` using `hf (pos ⟨v, s⟩)`. Establish `hY : (yMat X Kc j v s).adjugate.map (evD X D pos ι hN d f') = (((zT X D pos f' (pos ⟨v, s⟩)).det • (f' (pos ⟨v, s⟩)).transpose.submatrix Fin.rev id).map ι).submatrix (Fin.cast hN.2.symm) (Fin.cast hN.2.symm)`. Establish `h1 : (yMat X Kc j v s).adjugate.map (evD X D pos ι hN d f') = ((yMat X Kc j v s).map (evD X D pos ι hN d f')).adjugate` using `RingHom.map_adjugate _ _`. Rewrite using `[h1, evD_yMat, ← adj_zT_odd X D pos v s hs f' hz]`.
+
+Rewrite using `[show (((zT X D pos f' (pos ⟨v, s⟩)).map ι).submatrix (Fin.cast hN.2.symm) (Fin.cast hN.2.symm)).adjugate = ((zT X D pos f' (pos ⟨v, s⟩)).map ι).adjugate.submatrix (Fin.cast hN.2.symm) (Fin.cast hN.2.symm) from Matrix.adjugate_submatrix_equiv_self (finCongr hN.2.symm) _]`. Use `congr 1`. Conclude with `(RingHom.map_adjugate ι _).symm`. Rewrite using `[YtMat, Matrix.map_mul, ← Matrix.submatrix_map, hY, Matrix.transpose_map, evD_dMat, Matrix.transpose_submatrix, Matrix.submatrix_submatrix]`. Establish `hrev : ∀ t : Fin (NN X.G.P.m X.t j), Fin.rev (Fin.cast hN.2.symm (shiftI X j t)) = Fin.castLE (rk_le X D hN) (Fin.rev (Fin.cast hN.1.symm t))`.
+
+Introduce `t`. Establish `h1` using `hN.1`. Establish `h2` using `hN.2`. Establish `h3` using `rk_le X D hN`. Use `t.isLt` as an intermediate fact.
+
+Use `ext`. Simplify using `only [Fin.val_rev, Fin.coe_cast, Fin.coe_castLE, shiftI]`. Use linear arithmetic over natural numbers and integers. Use extensionality with `t a`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.transpose_apply, Function.comp_apply, id, smul_eq_mul, dfr, map_mul, map_sum]`.
+
+Rewrite using `[hrev, Finset.mul_sum]`. Use `Fintype.sum_equiv (finCongr hN.2.symm) _ _ (fun b => ?_)` and prove the remaining obligations. Simplify using `only [finCongr_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evD_blockMats {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
     (Kc : Type) [Field Kc] [Algebra X.G.Kf Kc] (ι : ℂ →+* Kc) (j : ℕ) (hN : RankTie X D j)
     (d : D.what₂.Tau → Matrix (Fin (D.R.N j)) (Fin (D.R.N (j + 1))) ℂ)

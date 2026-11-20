@@ -14,6 +14,21 @@ namespace GlobalTheory.CuspTraceSum
 open GlobalTheory.OpTrace GlobalTheory.DiscreteSum ContinuousLinearMap
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Set `b : ∀ i, HilbertBasis (stdIndex (W i)) ℂ (W i)` to `fun i => stdBasis (W i)`. Set `v : (Σ i, stdIndex (W i)) → K` to `fun a => (W a.1).subtypeₗᵢ (b a.1 a.2)`. Establish `ho : Orthonormal ℂ v` using `hs.OrthogonalFamily.orthonormal_sigma_orthonormal fun i => (b i).orthonormal`. Establish `hsp : (Submodule.span ℂ (Set.range v))ᗮ = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`.
+
+Introduce `x hx`. Use `eq_zero_of_isHilbertSum hs fun i y hy => ?_` and prove the remaining obligations. Establish `h1` using `((b i).hasSum_repr ⟨y, hy⟩).mapL ((innerSL ℂ x).comp (W i).subtypeL)`. Establish `h2 : ∀ j, ((innerSL ℂ x).comp (W i).subtypeL) ((b i).repr ⟨y, hy⟩ j • b i j) = 0` using `fun j => by`. Establish `h3 : ⟪v ⟨i, j⟩, x⟫_ℂ = 0` using `(Submodule.mem_orthogonal _ _).1 hx _ (Submodule.subset_span ⟨⟨i, j⟩, rfl⟩)`.
+
+Establish `h4 : ⟪x, (b i j : K)⟫_ℂ = 0` using `inner_eq_zero_symm.1 h3`. Simplify using `[inner_smul_right, h4]`. Establish `h5 : ⟪x, y⟫_ℂ = 0`. Use `h1.unique (hasSum_zero.congr_fun fun j => (h2 j))` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `inner_eq_zero_symm.1 h5`. Set `e : HilbertBasis (Σ i, stdIndex (W i)) ℂ K` to `HilbertBasis.mkOfOrthogonalEqBot ho hsp`. Establish `he : ∀ a, e a = v a` using `fun a => by simp [e]`. Establish `hR : ∀ i, (T.restrict (hTW i)) = (W i).orthogonalProjection ∘L T ∘L (W i).subtypeL` using `fun i => by`. Use extensionality with `x`.
+
+Simplify using `[Submodule.orthogonalProjection_mem_subspace_eq_self (K := W i) ⟨_, hTW i x x.2⟩]`. Establish `htc : ∀ i, IsTraceClass (T.restrict (hTW i))` using `fun i => by`. Rewrite using `[hR i]`. Conclude with `hT.comp_comp _ _`. Establish `hterm : ∀ a : Σ i, stdIndex (W i), ⟪e a, T (e a)⟫_ℂ = ⟪b a.1 a.2, T.restrict (hTW a.1) (b a.1 a.2)⟫_ℂ` using `fun a => by rw [he]; rfl`.
+
+Establish `hsum` using `hT.hasSum_trace e`. Establish `hnorm` using `hT.summable_norm e`. Simplify using `only [hterm] at hsum hnorm`. Use `⟨htc, ?_, hsum.sigma fun i => (htc i).hasSum_trace (b i)⟩` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun i => ?_) hnorm.sigma` and prove the remaining obligations.
+
+Rewrite using `[← ((htc i).hasSum_trace (b i)).tsum_eq]`. Conclude with `norm_tsum_le_tsum_norm ((htc i).summable_norm (b i))`.
+-/
 theorem hasSum_trace_restrict {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K] {ι : Type}
     {W : ι → Submodule ℂ K} [hW : ∀ i, CompleteSpace (W i)]
     (hs : IsHilbertSum ℂ (fun i => W i) fun i => (W i).subtypeₗᵢ) {T : K →L[ℂ] K} (hT : IsTraceClass T)
@@ -60,6 +75,23 @@ namespace GlobalTheory.CuspTraceSum
 
 open GlobalTheory.OpTrace GlobalTheory.DiscreteSum GlobalTheory.AutMult GlobalTheory.AutomorphicL2Unitary MeasureTheory
 
+/- English proof (translation)
+Take `⟨⟨ι, W, hWi, hs⟩, hfin⟩` from `hD`. Use `haveI : ∀ i, CompleteSpace (W i) := fun i => (hWi i).1.completeSpace`. Establish `hR : IsRepOp ρ μ f (repOp ρ μ f)` using `hρ.isRepOp hf hfs`. Establish `hTW : ∀ i, ∀ x ∈ W i, repOp ρ μ f x ∈ W i` using `fun i x hx => (hWi i).1.map_mem_of_isRepOp hR hx`. Take `⟨htc, hsn, hsum⟩` from `hasSum_trace_restrict hs hT hTW`.
+
+Establish `hrest : ∀ i, repOp (hWi i).1.rep μ f = (repOp ρ μ f).restrict (hTW i)` using `fun i => ContinuousLinearMap.ext fun x => Subtype.ext (((hWi i).1.coe_repOp_rep hR).2 x)`. Set `cls : ι → UDual G` to `fun i => (⟨W i, (hWi i).1.rep, isIrrUnitary_rep hρ (hWi i)⟩ : IrrU G).cl`. Establish `hcls : ∀ c i, cls i = c ↔ IsCopy c.rep.π ρ (W i)` using `fun c i => by conv_lhs => rw [← UDual.cl_rep c]`. Rewrite using `[IrrU.cl_eq_iff]`. Conclude with `⟨fun h => ⟨(hWi i).1, h.symm⟩, fun ⟨_, h⟩ => h.symm⟩`.
+
+Establish `htr : ∀ c i, cls i = c → IsTraceClass (repOp c.rep.π μ f) ∧ repTrace c.rep.π μ f = trace ((repOp ρ μ f).restrict (hTW i))`. Introduce `c i hi`. Take `⟨_, e, he⟩` from `(hcls c i).1 hi`. Establish `h2 : IsTraceClass (repOp (hWi i).1.rep μ f)` using `by rw [hrest]; exact htc i`. Take `⟨h3, h4⟩` from `((hWi i).1.isUnitaryRep hρ).repTrace_eq_of_equiv c.rep.isIrr.unitary hf hfs e.symm.toContinuousLinearEquiv (fun g x => by`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearIsometryEquiv.coe_toContinuousLinearEquiv, he, LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]) h2`. Use `⟨h3, h4.trans ?_⟩` and prove the remaining obligations. Rewrite using `[repTrace, hrest]`. Establish `hmult : ∀ c : UDual G, (cls ⁻¹' {c}).Finite ∧ multIn c.rep.π ρ ⊤ = (cls ⁻¹' {c}).ncard`.
+
+Introduce `c`. Take `⟨h1, h2⟩` from `multIn_eq_ncard hρ c.rep.isIrr (hfin c.rep) hWi hs`. Establish `e : cls ⁻¹' {c} = {i | IsCopy c.rep.π ρ (W i)}` using `Set.ext fun i => hcls c i`. Rewrite using `[e]`. Conclude with `⟨h1, h2⟩`.
+
+Establish `hfib : ∀ c : UDual G, ∑' b : ↑(cls ⁻¹' {c}), trace ((repOp ρ μ f).restrict (hTW b)) = ((multIn c.rep.π ρ ⊤).toNat : ℂ) * repTrace c.rep.π μ f`. Introduce `c`. Rewrite using `[tsum_congr fun b : ↑(cls ⁻¹' {c}) => (htr c b b.2).2.symm, tsum_const, nsmul_eq_mul, (hmult c).2, Cardinal.toNat_natCast, Nat.card_coe_set_eq]`. Use `⟨fun c hc => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[(hmult c).2]`.
+
+Take `⟨i, hi⟩` from `Set.nonempty_of_ncard_ne_zero (by exact_mod_cast hc)`. Conclude with `(htr c i hi).1`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun c => ?_) (hsn.hasSum.tsum_fiberwise cls).summable` and prove the remaining obligations. Rewrite using `[← hfib]`. Conclude with `norm_tsum_le_tsum_norm (hsn.subtype _)`.
+
+Conclude with `(hsum.tsum_fiberwise cls).congr_fun fun c => (hfib c).symm`.
+-/
 theorem hasSum_multIn_repTrace {G K : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
     [OpensMeasurableSpace G] [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
     {ρ : G →* (K →L[ℂ] K)} (hρ : IsUnitaryRep ρ) (hD : IsDiscreteSum ρ) (μ : Measure G)
@@ -119,6 +151,11 @@ namespace GlobalTheory.CuspTraceSum
 
 open GlobalTheory.DiscreteSum
 
+/- English proof (translation)
+Introduce `hP D V μ _ _ f hf`. Establish `hfc` using `continuous_of_mem_ccAd hf`. Establish `h` using `hasSum_multIn_repTrace (isUnitaryRep_Rcusp V μ) (Published.cuspDiscreteDecomposition_of_traceClass hP D V μ) μ hfc.1 hfc.2 (hP D V μ f hf)`. Establish `e : ∀ c : UDual (GA D V), mCusp V μ c.rep.π = multIn c.rep.π (Rcusp V μ) ⊤` using `fun c => (multIn_rep (isSubrep_L2cusp V μ)).symm`. Simplify using `only [e]`.
+
+Conclude with `h`.
+-/
 theorem hasSum_mCusp_repTrace : GlobalTheory.Published.CuspTraceClass → ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], ∀ f ∈ CcGA V, (∀ c : UDual (GA D V), mCusp V μ c.rep.π ≠ 0 → IsTraceClass (repOp c.rep.π μ f)) ∧ (Summable fun c : UDual (GA D V) => ‖((mCusp V μ c.rep.π).toNat : ℂ) * repTrace c.rep.π μ f‖) ∧ HasSum (fun c : UDual (GA D V) => ((mCusp V μ c.rep.π).toNat : ℂ) * repTrace c.rep.π μ f) (trace (RcuspOp V μ f)) := by
   intro hP D V μ _ _ f hf
   have hfc := continuous_of_mem_ccAd hf

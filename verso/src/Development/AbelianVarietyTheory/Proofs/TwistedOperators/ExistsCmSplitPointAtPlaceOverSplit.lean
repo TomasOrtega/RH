@@ -25,6 +25,15 @@ namespace GlobalTheory.SplitPtAtPlace
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D w e he hF`. Take `⟨s, hsw⟩` from `GlobalTheory.OffBad.splitPlace_of_isSplitPl D w (GlobalTheory.OffBad.isSplitPl_of_isSplit D w (GlobalTheory.DivPtLocal.isSplit_of_isIdemAt D w e he))`. Substitute `hsw` using the available equality. Take `⟨p, c, hpl, hc, hci, hπ⟩` from `GlobalTheory.T.exists_splitLocalPlaceData_at_splitPlace D s hF`. Take `⟨q, hq⟩` from `GlobalTheory.PlaceSplitPt.exists_splitPt p`.
+
+Establish `hqe : q.e = p.e` using `by rw [← hq]; rfl`. Establish `hqpr : ∀ a, q.pr a = p.π a` using `fun a => by rw [← hq]; rfl`. Establish `hpe : Formalism.L2.NTheta.IsIdemAt p.e s.w` using `⟨p.split, hpl.2.2⟩`. Establish `hee : p.e = e` using `GlobalTheory.LocMod.PinInhab.idem_unique hpe he`. Use `⟨q, hqe.trans hee, GlobalTheory.LocMod.PinInhab.v_eq_under q (hqe ▸ hpe), fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hqpr, hπ]`. Establish `key` using `GlobalTheory.SplitFrameW.cpt_swap D.host.F hF ((GlobalTheory.StdFrames.toAd D).comp (Lev.swapAE D)) (fun a x => GlobalTheory.StdFrames.toAd_spec D x a) s c hc hci (GlobalTheory.NJoin.tensCast hF (finPart D a))`. Rewrite using `[← key]`. Establish `hcast : GlobalTheory.NJoin.tensCast hF = GlobalTheory.Mem.R3.swapCast hF` using `rfl`. Rewrite using `[hcast, RingEquiv.symm_apply_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_splitPt_cpt : ∀ (D : D7) (w : Formalism.L2.DIV.Pl D.host.E) (e : AE D), Formalism.L2.NTheta.IsIdemAt e w → D.host.F = maximalRealSubfield D.host.E → ∃ p : GlobalTheory.FinPl.SplitPt D (Kw w), p.e = e ∧ p.v = w.under (𝓞 D.host.F) ∧ ∀ a : AE D, p.pr a = cpt w (Lev.swapAE D (finPart D a)) := by
   intro D w e he hF
   obtain ⟨s, hsw⟩ := GlobalTheory.OffBad.splitPlace_of_isSplitPl D w

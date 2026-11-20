@@ -8,9 +8,15 @@ variable {K : Type} [Field K] {n : ℕ}
 noncomputable def cols (S : Submodule K (Fin n → K)) : Fin (Module.finrank K S) → (Fin n → K) :=
   fun j => (Module.finBasis K S j : Fin n → K)
 
+/- English proof (translation)
+The claim follows from `(Module.finBasis K S).linearIndependent.map' S.subtype S.ker_subtype`.
+-/
 theorem cols_li (S : Submodule K (Fin n → K)) : LinearIndependent K (cols S) :=
   (Module.finBasis K S).linearIndependent.map' S.subtype S.ker_subtype
 
+/- English proof (translation)
+Establish `h : Set.range (cols S) = S.subtype '' Set.range (Module.finBasis K S)`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h, Submodule.span_image, (Module.finBasis K S).span_eq, Submodule.map_top, Submodule.range_subtype]`.
+-/
 theorem cols_span (S : Submodule K (Fin n → K)) : Submodule.span K (Set.range (cols S)) = S := by
   have h : Set.range (cols S) = S.subtype '' Set.range (Module.finBasis K S) := by
     rw [← Set.range_comp]; rfl
@@ -20,18 +26,34 @@ theorem cols_span (S : Submodule K (Fin n → K)) : Submodule.span K (Set.range 
 def form (σ : K →+* K) (D : Matrix (Fin n) (Fin n) K) (u v : Fin n → K) : K :=
   (fun i => σ (u i)) ⬝ᵥ (D *ᵥ v)
 
+/- English proof (translation)
+Simplify using `[form, dotProduct, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem form_add_left (σ : K →+* K) (D : Matrix (Fin n) (Fin n) K) (u u' v : Fin n → K) :
     form σ D (u + u') v = form σ D u v + form σ D u' v := by
   simp [form, dotProduct, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[form, dotProduct, Finset.mul_sum, mul_assoc]`.
+-/
 theorem form_smul_left (σ : K →+* K) (D : Matrix (Fin n) (Fin n) K) (c : K) (u v : Fin n → K) :
     form σ D (c • u) v = σ c * form σ D u v := by
   simp [form, dotProduct, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[form, dotProduct]`.
+-/
 theorem form_zero_left (σ : K →+* K) (D : Matrix (Fin n) (Fin n) K) (v : Fin n → K) :
     form σ D 0 v = 0 := by
   simp [form, dotProduct]
 
+/- English proof (translation)
+Establish `h1 : d.val * (d⁻¹).val = 1` using `Units.mul_inv d`. Establish `h2 : (d⁻¹).val * d.val = 1` using `Units.inv_mul d`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ x hx`. Establish `hy' : ∀ x ∈ W, ∑ i, σ (x i) * y i = 0` using `hy`.
+
+Establish `h3 : (d⁻¹).val *ᵥ (Matrix.toLin' d.val y) = y`. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Simplify using `only [form, h3]`. Conclude with `hy' x hx`. Introduce `h`.
+
+Use `⟨(d⁻¹).val *ᵥ v, fun x hx => h x hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
+-/
 theorem mem_perpD (σ : K →+* K) (d : GL (Fin n) K) (W : Submodule K (Fin n → K)) (v : Fin n → K) :
     v ∈ perpD σ d W ↔ ∀ x ∈ W, form σ (d⁻¹).val x v = 0 := by
   have h1 : d.val * (d⁻¹).val = 1 := Units.mul_inv d
@@ -47,6 +69,9 @@ theorem mem_perpD (σ : K →+* K) (d : GL (Fin n) K) (W : Submodule K (Fin n �
     refine ⟨(d⁻¹).val *ᵥ v, fun x hx => h x hx, ?_⟩
     rw [Matrix.toLin'_apply, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]
 
+/- English proof (translation)
+Simplify using `only [form, Matrix.mulVec_mulVec, hγ]`. Simplify using `only [dotProduct, mulVec, map_sum, map_mul, hσ, transpose_apply, map_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap (σ : K →+* K) (hσ : ∀ x, σ (σ x) = x) (D γ : Matrix (Fin n) (Fin n) K)
     (hγ : D * γ = (D.map σ)ᵀ) (u v : Fin n → K) :
     form σ D u (γ *ᵥ v) = σ (form σ D v u) := by
@@ -56,17 +81,54 @@ theorem form_swap (σ : K →+* K) (hσ : ∀ x, σ (σ x) = x) (D γ : Matrix (
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem entry {κ κ' : Type} [Fintype κ] [Fintype κ'] (σ : K →+* K)
     (D : Matrix (Fin n) (Fin n) K) (M : Matrix (Fin n) κ K) (N : Matrix (Fin n) κ' K) (i j) :
     ((M.map σ)ᵀ * D * N) i j = form σ D (fun k => M k i) (fun k => N k j) := by
   rw [Matrix.mul_assoc]; rfl
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem entry_mulVec {κ κ' : Type} [Fintype κ] [Fintype κ'] (σ : K →+* K)
     (D : Matrix (Fin n) (Fin n) K) (M : Matrix (Fin n) κ K) (N : Matrix (Fin n) κ' K)
     (c : κ' → K) (i) :
     (((M.map σ)ᵀ * D * N) *ᵥ c) i = form σ D (fun k => M k i) (N *ᵥ c) := by
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]; rfl
 
+/- English proof (translation)
+Take `⟨Q, hQ⟩` from `Submodule.exists_isCompl (W ⊓ perpD σ d W)`. Establish `hC : (W ⊓ perpD σ d W) ⊔ (Q ⊓ W) = W`. Rewrite using `[← sup_inf_assoc_of_le Q (inf_le_left : W ⊓ perpD σ d W ≤ W), hQ.sup_eq_top, top_inf_eq]`. Establish `hdis : Disjoint (W ⊓ perpD σ d W) (Q ⊓ W)` using `hQ.disjoint.mono_right inf_le_left`. Take `⟨a, u, hu, hus⟩ : ∃ (a : ℕ) (u : Fin a → Fin n → K), LinearIndependent K u ∧ Submodule.span K (Set.range u) = W ⊓ perpD σ d W` from `⟨_, _, cols_li _, cols_span _⟩`.
+
+Take `⟨b, v, hv, hvs⟩ : ∃ (b : ℕ) (v : Fin b → Fin n → K), LinearIndependent K v ∧ Submodule.span K (Set.range v) = Q ⊓ W` from `⟨_, _, cols_li _, cols_span _⟩`. Establish `hum : ∀ j, u j ∈ W ⊓ perpD σ d W` using `fun j => hus ▸ Submodule.subset_span ⟨j, rfl⟩`. Establish `hvm : ∀ j, v j ∈ Q ⊓ W` using `fun j => hvs ▸ Submodule.subset_span ⟨j, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin n) (Fin a) K, Bᵀ = u` from `⟨(Matrix.of u)ᵀ, rfl⟩`. Take `⟨A, hA⟩ : ∃ A : Matrix (Fin n) (Fin b) K, Aᵀ = v` from `⟨(Matrix.of v)ᵀ, rfl⟩`.
+
+Establish `hT : ((fromCols B A)ᵀ : _ → _ → K) = Sum.elim u v`. Substitute `hB hA` using the available equality. Use function extensionality and compare the values at `s k`. Apply the tactic sequence `rcases s with j | j <;> rfl`. Establish `hspan : Submodule.span K (Set.range (fromCols B A)ᵀ) = W`.
+
+Rewrite using `[hT, Set.Sum.elim_range, Submodule.span_union, hus, hvs, hC]`. Establish `hli : LinearIndependent K (fromCols B A)ᵀ`. Rewrite using `[hT]`. Conclude with `hu.sum_type hv (by rw [hus, hvs]; exact hdis)`. Establish `hFW : ∀ s, (fun k => fromCols B A k s) ∈ W` using `fun s => by`.
+
+Establish `: (fun k => fromCols B A k s) ∈ Submodule.span K (Set.range (fromCols B A)ᵀ)` using `Submodule.subset_span ⟨s, rfl⟩`. Rewrite `this` using `[hspan]`. Then use the resulting hypothesis. Establish `hr : ∀ w ∈ W ⊓ perpD σ d W, ∀ x ∈ W, form σ (d⁻¹).val x w = 0` using `fun w hw x hx => (mem_perpD σ d W w).1 hw.2 x hx`. Establish `hl : ∀ w ∈ W ⊓ perpD σ d W, ∀ x ∈ W, form σ (d⁻¹).val w x = 0` using `fun w hw x hx => by`. Rewrite `hx` using `[← hW]`.
+
+Take `⟨x', hx', rfl⟩` from `hx`. Rewrite using `[Matrix.toLin'_apply, form_swap σ hσ _ γ hγ, hr w hw x' hx', map_zero]`. Establish `hBc : ∀ j, (fun k => B k j) = u j` using `fun j => congrFun hB j`. Establish `hAc : ∀ j, (fun k => A k j) = v j` using `fun j => congrFun hA j`. Use `⟨_, _, B, A, hli, by rw [hB]; exact hus, hspan, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Rewrite using `[entry, hBc]`. Conclude with `hr _ (hum j) _ (hFW i)`. Use extensionality with `i j`. Rewrite using `[entry, hBc]`.
+
+Conclude with `hl _ (hum i) _ (hFW j)`. Introduce `h0`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `hAv : A *ᵥ c = ∑ j, c j • v j`. Rewrite using `[Matrix.mulVec_eq_sum, hA]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => op_smul_eq_smul _ _`. Establish `hyC : A *ᵥ c ∈ Q ⊓ W`. Rewrite using `[hAv]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hvm j)`. Establish `hyW : A *ᵥ c ∈ W` using `hyC.2`.
+
+Establish `hcol : ∀ s, form σ (d⁻¹).val (fun k => fromCols B A k s) (A *ᵥ c) = 0`. Introduce and unpack `(j | j)`. Establish `h` using `hl _ (hum j) _ hyW`. Rewrite `h` using `[← hBc j]`. Conclude with `h`.
+
+Use `congrFun hc j` as an intermediate fact. Rewrite `this` using `[entry_mulVec]`. Conclude with `this`. Establish `hperp : A *ᵥ c ∈ perpD σ d W`. Rewrite using `[mem_perpD]`.
+
+Introduce `x hx`. Rewrite `hx` using `[← hspan]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨s, rfl⟩` from `h`.
+
+Conclude with `hcol s`. Consider the case `zero => exact form_zero_left _ _ _`. Consider the case `add x y _ _ hx hy => rw [form_add_left, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [form_smul_left, hx, mul_zero]`. Establish `hy0 : A *ᵥ c = 0`.
+
+Use `hdis.le_bot (show A *ᵥ c ∈ _ from ⟨⟨hyW, hperp⟩, hyC⟩)` as an intermediate fact. Simplify using `using this`. Apply `hc0` to reduce the goal to its premises. Establish `hsum : ∑ j, c j • v j = 0` using `by rw [← hAv, hy0]`. Use function extensionality and compare the values at `j`.
+
+Conclude with `Fintype.linearIndependent_iff.1 hv c hsum j`.
+-/
 theorem exists_adapted (σ : K →+* K) (hσ : ∀ x, σ (σ x) = x) (d : GL (Fin n) K)
     (γ : Matrix (Fin n) (Fin n) K) (hγ : (d⁻¹).val * γ = ((d⁻¹).val.map σ)ᵀ)
     (W : Submodule K (Fin n → K)) (hW : W.map (Matrix.toLin' γ) = W) :
@@ -152,6 +214,9 @@ theorem exists_adapted (σ : K →+* K) (hσ : ∀ x, σ (σ x) = x) (d : GL (Fi
     funext j
     exact Fintype.linearIndependent_iff.1 hv c hsum j
 
+/- English proof (translation)
+Introduce `E _ _ _ n d W hW`. Establish `hσ : ∀ x, conjE E (conjE E x) = x` using `fun x => NumberField.IsCMField.complexConj_apply_apply E x`. Use `exists_adapted (conjE E) hσ d (nrm d).val ?_ W hW` and prove the remaining obligations. Establish `h2 : (d⁻¹).val * d.val = 1` using `Units.inv_mul d`. Rewrite using `[nrm, Units.val_mul, ← mul_assoc, h2, one_mul, thetaR_val]`.
+-/
 theorem radical : Radical := by
   intro E _ _ _ n d W hW
   have hσ : ∀ x, conjE E (conjE E x) = x := fun x => NumberField.IsCMField.complexConj_apply_apply E x

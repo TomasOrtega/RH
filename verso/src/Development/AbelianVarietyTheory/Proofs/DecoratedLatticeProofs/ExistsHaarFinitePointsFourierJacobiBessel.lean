@@ -21,6 +21,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.HaarExist
 
+/- English proof (translation)
+Introduce `D V`. Establish `hf` using `GlobalTheory.AdelicSplit.isClosed_GfC' V`. Use `haveI : LocallyCompactSpace (GfC V) := hf.locallyCompactSpace`. Use `⟨⟨Measure.haar, inferInstance⟩, fun V₀ ρ d => ⟨?_, fun A L o => ?_⟩⟩` and prove the remaining obligations. Establish `hJ` using `GlobalTheory.jacGrp_isClosed D V V₀ ρ d`.
+
+Establish `hc : IsClosed (((jacGrp d).subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V))` using `hJ.preimage continuous_subtype_val`. Use `haveI : LocallyCompactSpace ((jacGrp d).subgroupOf (GfC V)) := hc.locallyCompactSpace`. Conclude with `⟨Measure.haar, inferInstance⟩`. Establish `hB` using `GlobalTheory.BesClosed.besGrp_isClosed D V V₀ A L ρ d o`. Establish `hc : IsClosed (((besGrp d o).subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V))` using `hB.preimage continuous_subtype_val`.
+
+Use `haveI : LocallyCompactSpace ((besGrp d o).subgroupOf (GfC V)) := hc.locallyCompactSpace`. Conclude with `⟨Measure.haar, inferInstance⟩`.
+-/
 theorem haar_exists : ∀ (D : D7) (V : HSp D), (∃ μ : Measure (GfC V), μ.IsHaarMeasure) ∧ ∀ (V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ), (∃ μ : Measure ((jacGrp d).subgroupOf (GfC V)), μ.IsHaarMeasure) ∧ ∀ (A L : HSp D) (o : OrthDec V₀ A L), ∃ μ : Measure ((besGrp d o).subgroupOf (GfC V)), μ.IsHaarMeasure := by
   intro D V
   have hf := GlobalTheory.AdelicSplit.isClosed_GfC' V

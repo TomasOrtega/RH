@@ -19,12 +19,20 @@ section Reindex
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Unfold `InChart`. Use `and_congr Iff.rfl ⟨fun h c' => ?_, fun h c' => h _⟩` and prove the remaining obligations. Simplify using `using h (e.symm c')`.
+-/
 theorem inChart_comp_equiv (ξ : Spec (CommRingCat.of Ω) ⟶ X) {κ κ' : Type} (e : κ' ≃ κ) (x : κ → Ω) (c : κ')
     (p : Cpt ξ) : InChart ξ (x ∘ e) c p ↔ InChart ξ x (e c) p := by
   unfold InChart
   refine and_congr Iff.rfl ⟨fun h c' => ?_, fun h c' => h _⟩
   simpa using h (e.symm c')
 
+/- English proof (translation)
+Establish `hr : ∀ c : κ', (Set.range fun j => (x ∘ e) j / (x ∘ e) c) = Set.range fun j => x j / x (e c)` using `fun c => e.surjective.range_comp (fun j => x j / x (e c))`. Use `⟨h.gen, fun p => ?_, fun c hc => ?_, fun c hc a => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h.cover p`. Conclude with `⟨e.symm c, (inChart_comp_equiv ξ e x _ p).2 (by simpa using hc)⟩`. Take `⟨U, hU, hq⟩` from `h.affine (e c) hc`.
+
+Use `⟨U, hU, fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[hq q]`. Conclude with `exists_congr fun hh => (inChart_comp_equiv ξ e x c ⟨q, hh⟩).symm`. Rewrite using `[hr c, h.ring (e c) hc a]`. Conclude with `forall_congr' fun p => imp_congr (inChart_comp_equiv ξ e x c p).symm Iff.rfl`.
+-/
 theorem coordTie_comp_equiv {o : Type} [CommRing o] [Algebra o Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {κ κ' : Type}
     (e : κ' ≃ κ) {x : κ → Ω} (h : CoordTie o ξ x) : CoordTie o ξ (x ∘ e) := by
   have hr : ∀ c : κ', (Set.range fun j => (x ∘ e) j / (x ∘ e) c) = Set.range fun j => x j / x (e c) := fun c =>
@@ -46,11 +54,17 @@ section OpenImm
 variable {X Y : Scheme.{0}} {Ω : Type} [Field Ω]
 variable (ζ : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) [IsOpenImmersion f]
 
+/- English proof (translation)
+Establish `e2 : genPt (ζ ≫ f) = f (genPt ζ)` using `Scheme.Hom.comp_apply _ _ _`. Rewrite `h` using `[e2]`. Conclude with `f.isOpenEmbedding.isInducing.specializes_iff.1 h`.
+-/
 theorem specializes_of_openImm {y : Y} (h : genPt (ζ ≫ f) ⤳ f y) : genPt ζ ⤳ y := by
   have e2 : genPt (ζ ≫ f) = f (genPt ζ) := Scheme.Hom.comp_apply _ _ _
   rw [e2] at h
   exact f.isOpenEmbedding.isInducing.specializes_iff.1 h
 
+/- English proof (translation)
+Unfold `InChart`. Rewrite using `[regAt_push]`.
+-/
 theorem inChart_push {κ : Type} (x : κ → Ω) (c : κ) (p : Cpt ζ) :
     InChart (ζ ≫ f) x c (push ζ f p) ↔ InChart ζ x c p := by
   unfold InChart
@@ -58,12 +72,28 @@ theorem inChart_push {κ : Type} (x : κ → Ω) (c : κ) (p : Cpt ζ) :
 
 variable {ζ f}
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `q`. Take `⟨y, rfl⟩` from `hR q hq`. Conclude with `⟨⟨y, specializes_of_openImm ζ f hq⟩, rfl⟩`.
+-/
 theorem exists_push (hR : ∀ q : X, genPt (ζ ≫ f) ⤳ q → q ∈ Set.range f) (q : Cpt (ζ ≫ f)) :
     ∃ p : Cpt ζ, push ζ f p = q := by
   obtain ⟨q, hq⟩ := q
   obtain ⟨y, rfl⟩ := hR q hq
   exact ⟨⟨y, specializes_of_openImm ζ f hq⟩, rfl⟩
 
+/- English proof (translation)
+Use `⟨⟨?_, fun q => ?_⟩, fun q => ?_, fun c hc => ?_, fun c hc a => ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.stalkClosedPointTo_comp ζ f]`. Establish `hb : Function.Bijective (f.stalkMap (ζ (IsLocalRing.closedPoint Ω))).hom` using `ConcreteCategory.bijective_of_isIso _`. Conclude with `h.gen.bij.comp hb`. Take `⟨p, rfl⟩` from `exists_push hR q`.
+
+Conclude with `genMap_push_injective ζ f p (h.gen.inj p)`. Take `⟨p, rfl⟩` from `exists_push hR q`. Take `⟨c, hc⟩` from `h.cover p`. Conclude with `⟨c, (inChart_push ζ f x c p).2 hc⟩`. Take `⟨U, hU, hq⟩` from `h.affine c hc`.
+
+Use `⟨f ''ᵁ U, hU.image_of_isOpenImmersion f, fun q => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨h1, h2⟩` from `(hq y).1 hy`. Conclude with `⟨(push ζ f ⟨y, h1⟩).2, (inChart_push ζ f x c ⟨y, h1⟩).2 h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Take `⟨y, rfl⟩` from `hR q h1`. Establish `h1'` using `specializes_of_openImm ζ f h1`. Conclude with `⟨y, (hq y).2 ⟨h1', (inChart_push ζ f x c ⟨y, h1'⟩).1 h2⟩, rfl⟩`. Rewrite using `[h.ring c hc a]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H q hq`. Take `⟨p, rfl⟩` from `exists_push hR q`. Rewrite using `[regAt_push]`. Conclude with `H p ((inChart_push ζ f x c p).1 hq)`. Introduce `H p hp`.
+
+Use `H (push ζ f p) ((inChart_push ζ f x c p).2 hp)` as an intermediate fact. Rewrite `this` using `[regAt_push]`. Then use the resulting hypothesis.
+-/
 theorem coordTie_push {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω}
     (hR : ∀ q : X, genPt (ζ ≫ f) ⤳ q → q ∈ Set.range f) (h : CoordTie o ζ x) : CoordTie o (ζ ≫ f) x := by
   refine ⟨⟨?_, fun q => ?_⟩, fun q => ?_, fun c hc => ?_, fun c hc a => ?_⟩
@@ -95,6 +125,21 @@ theorem coordTie_push {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ
       have := H (push ζ f p) ((inChart_push ζ f x c p).2 hp)
       rwa [regAt_push] at this
 
+/- English proof (translation)
+Use `⟨⟨?_, fun p => ?_⟩, fun p => ?_, fun c hc => ?_, fun c hc a => ?_⟩` and prove the remaining obligations. Establish `hb : Function.Bijective (f.stalkMap (ζ (IsLocalRing.closedPoint Ω))).hom` using `ConcreteCategory.bijective_of_isIso _`. Establish `h1` using `h.gen.bij`. Rewrite `h1` using `[Scheme.stalkClosedPointTo_comp ζ f]`. Conclude with `(Function.Bijective.of_comp_iff _ hb).1 h1`.
+
+Establish `h1` using `h.gen.inj (push ζ f p)`. Rewrite `h1` using `[genMap_push]`. Establish `hb : Function.Bijective (f.stalkMap p.1).hom` using `ConcreteCategory.bijective_of_isIso _`. Conclude with `(Function.Injective.of_comp_iff' _ hb).1 h1`. Take `⟨c, hc⟩` from `h.cover (push ζ f p)`.
+
+Conclude with `⟨c, (inChart_push ζ f x c p).1 hc⟩`. Take `⟨U, hU, hq⟩` from `h.affine c hc`. Establish `hle : U ≤ f.opensRange` using `fun q hqU => hR q ((hq q).1 hqU).1`. Use `⟨f ⁻¹ᵁ U, ?_, fun y => ⟨fun hy => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `e : f ''ᵁ (f ⁻¹ᵁ U) = U`.
+
+Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf]`. Conclude with `inf_eq_right.2 hle`. Rewrite using `[← f.isAffineOpen_iff_of_isOpenImmersion, e]`. Conclude with `hU`. Take `⟨h1, h2⟩` from `(hq (f y)).1 hy`.
+
+Establish `h1'` using `specializes_of_openImm ζ f h1`. Conclude with `⟨h1', (inChart_push ζ f x c ⟨y, h1'⟩).1 h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `(hq (f y)).2 ⟨(push ζ f ⟨y, h1⟩).2, (inChart_push ζ f x c ⟨y, h1⟩).2 h2⟩`. Rewrite using `[h.ring c hc a]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H p hp`. Use `H (push ζ f p) ((inChart_push ζ f x c p).2 hp)` as an intermediate fact. Rewrite `this` using `[regAt_push]`. Then use the resulting hypothesis. Introduce `H q hq`.
+
+Take `⟨p, rfl⟩` from `exists_push hR q`. Rewrite using `[regAt_push]`. Conclude with `H p ((inChart_push ζ f x c p).1 hq)`.
+-/
 theorem coordTie_of_push {o : Type} [CommRing o] [Algebra o Ω] {κ : Type} {x : κ → Ω}
     (hR : ∀ q : X, genPt (ζ ≫ f) ⤳ q → q ∈ Set.range f) (h : CoordTie o (ζ ≫ f) x) : CoordTie o ζ x := by
   refine ⟨⟨?_, fun p => ?_⟩, fun p => ?_, fun c hc => ?_, fun c hc a => ?_⟩
@@ -138,11 +183,25 @@ section Model
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_preimage g, ← Spec.map_preimage g']`. Use `congr 1`. Conclude with `CommRingCat.hom_ext (RingHom.ext_int _ _)`.
+-/
 theorem spec_int_hom_ext (g g' : Spec (CommRingCat.of Ω) ⟶ Spec (CommRingCat.of ℤ)) : g = g' := by
   rw [← Spec.map_preimage g, ← Spec.map_preimage g']
   congr 1
   exact CommRingCat.hom_ext (RingHom.ext_int _ _)
 
+/- English proof (translation)
+Set `W : X.Opens` to `sSup {U : X.Opens | ∀ q ∈ U, genPt ξ ⤳ q}`. Establish `hW : ∀ q ∈ W, genPt ξ ⤳ q`. Introduce `q hq`. Take `⟨U, hU, hqU⟩` from `TopologicalSpace.Opens.mem_sSup.1 hq`. Conclude with `hU q hqU`.
+
+Establish `hC : ∀ q : X, genPt ξ ⤳ q → q ∈ W`. Introduce `q hq`. Take `⟨c, hc⟩` from `h.cover ⟨q, hq⟩`. Take `⟨U, -, hU⟩` from `h.affine c hc.1`. Use `TopologicalSpace.Opens.mem_sSup.2 ⟨U, fun r hr => ((hU r).1 hr).1, (hU q).2 ⟨hq, hc⟩⟩` and prove the remaining obligations.
+
+Establish `hr : Set.range ξ ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Establish `hz : z = IsLocalRing.closedPoint Ω` using `Subsingleton.elim _ _`. Substitute `hz` using the available equality. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Conclude with `hC _ specializes_rfl`. Establish `e : IsOpenImmersion.lift W.ι ξ hr ≫ W.ι = ξ` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hR : ∀ q : X, genPt ξ ⤳ q → q ∈ Set.range W.ι` using `fun q hq => by`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hC q hq`.
+
+Use `⟨W, IsOpenImmersion.lift W.ι ξ hr, W.ι, inferInstance, e, hR, fun q => ?_⟩` and prove the remaining obligations. Use `specializes_of_openImm _ W.ι ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hW _ q.2`.
+-/
 theorem exists_openModel {κ : Type} {x : κ → Ω} {ξ : Spec (CommRingCat.of Ω) ⟶ X} (h : CoordTie ℤ ξ x) :
     ∃ (Y : Scheme.{0}) (ζ : Spec (CommRingCat.of Ω) ⟶ Y) (f : Y ⟶ X) (_ : IsOpenImmersion f), ζ ≫ f = ξ ∧
       (∀ q : X, genPt ξ ⤳ q → q ∈ Set.range f) ∧ ∀ q : Y, genPt ζ ⤳ q := by
@@ -171,6 +230,9 @@ theorem exists_openModel {κ : Type} {x : κ → Ω} {ξ : Spec (CommRingCat.of 
   rw [e]
   exact hW _ q.2
 
+/- English proof (translation)
+Take `⟨Y, ζ, f, _, rfl, hR, hall⟩` from `exists_openModel h`. Set `M : PModel ℤ x` to `{ X := Y ξ := ζ s := Y.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (Int.castRingHom _)) hover := spec_int_hom_ext _ _ all := hall tie := coordTie_of_push hR h }`. Use `coordTie_push hR (GlobalTheory.T.join_coords_coordTie ℤ Ω κ x M κ' w fun p => ?_)` and prove the remaining obligations. Take `⟨l, hl⟩` from `hw (push ζ f p)`. Conclude with `⟨l, (inChart_push ζ f w l p).1 hl⟩`.
+-/
 theorem coordTie_join {κ κ' : Type} [Finite κ] [Finite κ'] {x : κ → Ω} {w : κ' → Ω}
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} (h : CoordTie ℤ ξ x) (hw : ∀ p : Cpt ξ, ∃ l, InChart ξ w l p) :
     CoordTie ℤ ξ (joinCo (RingHom.id Ω) x w) := by
@@ -188,6 +250,11 @@ theorem coordTie_join {κ κ' : Type} [Finite κ] [Finite κ'] {x : κ → Ω} {
 
 end Model
 
+/- English proof (translation)
+Introduce `X Ω _ ξ K _ J _ y K' _ J' _ s h hs`. Establish `hw : ∀ p : Cpt ξ, ∃ i, InChart ξ (fun c : (k : K') → J' k => ∏ k, s ⟨k, c k⟩) i p`. Introduce `p`. Use `choose i hi using fun k => hs k p`. Use `⟨i, Finset.prod_ne_zero_iff.2 fun k _ => (hi k).1, fun c' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `prod_mem fun k _ => (hi k).2 (c' k)`. Establish `h2` using `coordTie_join (κ := (k : K) → J k) (κ' := (k : K') → J' k) h hw`. Conclude with `coordTie_comp_equiv (Equiv.sumPiEquivProdPi (Sum.elim J J')) h2`.
+-/
 theorem add_block_multi : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type)
     [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (K' : Type) [Fintype K']
     (J' : K' → Type) [∀ k, Fintype (J' k)] (s : (Σ k, J' k) → Ω),

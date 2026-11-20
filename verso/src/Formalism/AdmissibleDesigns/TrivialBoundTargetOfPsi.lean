@@ -18,6 +18,11 @@ section Cyc
 
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)
 
+/- English proof (translation)
+Introduce `w hw g`. Establish `h1` using `Formalism.MainNotions.N.KBKa.cycZ_eq_χQ (D.nbr i w hw) (D.loc (D.nd.l i)) (eW i dc hw g)`. Establish `h2` using `(D.loc (D.nd.l i)).PD_χ (D.nbr i w hw).Kw (eW i dc hw g)`. Establish `h3 : ((Br.ι (D.nbr i w hw) (eW i dc hw g) : Dec (F` using `D.host.E) (D.nd.plOm.1 w)) : GE D.nd) = (g : GE D.nd) := by show (((D.nbr i w hw).e.symm ((D.nbr i w hw).e (MulEquiv.subgroupCongr (Dw_idx i dc hw) g)) : ↥(Dec (F := D.host.E) (D.nd.plOm.1 w))) : GE D.nd) = _`. Rewrite using `[MulEquiv.symm_apply_apply]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[h3]`. Use `show ((((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw).χ (eW i dc hw g) : ℚ_[D.nd.l i]ˣ) : ℚ_[D.nd.l i]) = _`. Rewrite using `[h2, ← h1]`. Both sides reduce to the same expression.
+-/
 theorem cycW_of : CycW i dc := by
   intro w hw g
   have h1 := Formalism.MainNotions.N.KBKa.cycZ_eq_χQ (D.nbr i w hw) (D.loc (D.nd.l i)) (eW i dc hw g)
@@ -32,6 +37,11 @@ theorem cycW_of : CycW i dc := by
   rw [h2, ← h1]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_subgroupOf]`. Establish `hA : Aw i dc (idx i dc w) = D.nd.plOm.1 w`. Unfold `Aw`. Rewrite using `[plOf_idx i dc (mem_plSet i dc hw)]`. Rewrite using `[hA]`.
+
+Conclude with `hh`.
+-/
 theorem eW_inert' {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (h : Br.G D.nbr i w hw) (hh : h ∈ Br.inert D.nbr i w hw) :
     (eW i dc hw).symm h ∈ (Ine (F := D.host.E) (Aw i dc (idx i dc w))).subgroupOf (Dw i dc (idx i dc w)) := by
@@ -52,6 +62,11 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   (Dd : RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (RepresentationBoundsCohomology.blk D.R))
   [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]
 
+/- English proof (translation)
+Use `D.nd.trO i` as an intermediate fact. Establish `hc1 : Continuous fun g : GE D.nd => (((D.nd.chi i 1 g)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)`. Establish `: (fun g : GE D.nd => (((D.nd.chi i 1 g)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)) = fun g => ((D.nd.chi i 1 g⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)` using `funext fun g => by rw [map_inv]`. Rewrite using `[this]`. Conclude with `(D.nd.chi_cont i 1).comp continuous_inv`.
+
+Establish `h` using `hc1.mul (D.nd.chi_cont i ((c' : ℕ) + 1))`. Establish `he : (fun g : GE D.nd => sE i (((Fin.succ c' : Fin (D.R.t + 1)) : ℕ) - 1) g) = fun g => (((D.nd.chi i 1 g)⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) * ((D.nd.chi i ((c' : ℕ) + 1) g : (D.nd.O i)ˣ) : D.nd.O i)`. Use function extensionality and compare the values at `fun g => (chi_ratio (i := i) c' g).symm`. Rewrite using `[he]`. Conclude with `h`.
+-/
 theorem sE_cont (c' : Fin D.R.t) :
     Continuous fun g : GE D.nd => sE i (((Fin.succ c' : Fin (D.R.t + 1)) : ℕ) - 1) g := by
   have := D.nd.trO i
@@ -67,6 +82,9 @@ theorem sE_cont (c' : Fin D.R.t) :
   rw [he]
   exact h
 
+/- English proof (translation)
+Establish `he : (fun h => (algebraMap (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) (epsL i dc hw h)) ^ (((Fin.succ c' : Fin (D.R.t + 1)) : ℕ) - 1)) = fun h => algebraMap (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) ((D.nbr i w hw).eO (sE i (((Fin.succ c' : Fin (D.R.t + 1)) : ℕ) - 1) ((( …`. Use function extensionality and compare the values at `h`. Rewrite using `[eO_sE i dc (cycW_of i dc) hw, MulEquiv.apply_symm_apply, map_pow]`. Rewrite using `[he]`. Conclude with `continuous_subtype_val.comp ((D.nbr i w hw).eO_cont.comp ((sE_cont i c').comp (continuous_subtype_val.comp (eW_symm_cont i dc hw))))`.
+-/
 theorem epsL_cont {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) (c' : Fin D.R.t) :
     Continuous fun h => (algebraMap (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) (epsL i dc hw h)) ^
       (((Fin.succ c' : Fin (D.R.t + 1)) : ℕ) - 1) := by
@@ -83,6 +101,9 @@ variable [∀ k, IsScalarTower Dd.T' Dd.R' (blockRestrictedRepresentationType (R
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `blkTw_of_def hD hN c hc`. Take `⟨c', rfl⟩ : ∃ c', Fin.succ c' = c` from `Fin.exists_succ_eq.mpr (by`. Introduce and unpack `rfl`. Simplify using `at hc)`. Conclude with `⟨coefDictOf i dc Dd (cycW_of i dc) hw c'.succ φ hφ (epsL_cont i dc hw c')⟩`.
+-/
 theorem coefDict_of
     (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i))
@@ -106,6 +127,15 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hT` using `hTB w hw hwrow`. Establish `het : (c : ℕ) - 1 < D.R.t`. Use `c.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h2` using `trivial_bound_general hT het Cd.Ce`.
+
+Establish `hp : (Br.PD D.loc D.nbr i w hw).p = D.nd.l i` using `Br.PD_p D.loc D.nbr i w hw`. Use `lenMap_gen Cd (eW_symm_cont i dc hw) hp ?_ ?_` and prove the remaining obligations. Introduce `z hz hF`. Unfold `Fc at hF`. Use `split_ifs at hF with h1`.
+
+Conclude with `hW_zero Cd (eW_symm_cont i dc hw) (h2.2 (by omega)) (fun h hh => eW_inert' i dc hw h hh) z hz hF`. Conclude with `hW_bot Cd z hz hF`. Introduce `z hz hH`. Unfold `Fc`. Use `split_ifs with h1`.
+
+Conclude with `hB_zero Cd (eW_symm_cont i dc hw) (h2.2 (by omega)) (eW_inert i dc hw) z hz hH`. Conclude with `hB_bot Cd (eW_symm_cont i dc hw) (h2.1 (by omega)) z hz hH`.
+-/
 theorem lenMap_of (cB : ℕ) (hTB : TrivialBoundAtRows i dc r π cB) {w : HeightOneSpectrum (𝓞 D.host.E)}
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (hwrow : w ∈ dc.row) (c : Fin (D.R.t + 1)) (hc : 1 ≤ (c : ℕ))
     (Cd : CoefDict (Br.PD D.loc D.nbr i w hw) ↥(TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL.1 ↥(OL (TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL)
@@ -152,6 +182,11 @@ def YtPsi : Prop :=
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `w hw hwrow c hcc`. Take `⟨Cd⟩` from `coefDict_of i dc r ρ π g0 eB e₁ s Dd hD hN hw c hcc`. Take `⟨Y, hY1, hY2⟩` from `hY w hw hwrow c hcc Cd`. Use `⟨Y, Cd, hY1, hY2, ?_, ?_⟩` and prove the remaining obligations. Conclude with `yLoc_of i dc r π g0 eB e₁ s Dd hD hc c (idx i dc w)`.
+
+Conclude with `lenMap_of i dc r π Dd cB hTB hw hwrow c hcc Cd`.
+-/
 theorem tbDict2_of (cB : ℕ)
     (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (hc : Formalism.MainNotions.TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) (hTB : TrivialBoundAtRows i dc r π cB)
@@ -163,6 +198,9 @@ theorem tbDict2_of (cB : ℕ)
   · exact yLoc_of i dc r π g0 eB e₁ s Dd hD hc c (idx i dc w)
   · exact lenMap_of i dc r π Dd cB hTB hw hwrow c hcc Cd
 
+/- English proof (translation)
+The claim follows from `trivial_bound_target_of_dict i dc r π Dd cB hTB hTie (tbDict2_of i dc r ρ π g0 eB e₁ s Dd cB hD hN hc hTB hY)`.
+-/
 theorem trivial_bound_target_of_psi (cB : ℕ)
     (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
     (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (hc : Formalism.MainNotions.TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) (hTB : TrivialBoundAtRows i dc r π cB)

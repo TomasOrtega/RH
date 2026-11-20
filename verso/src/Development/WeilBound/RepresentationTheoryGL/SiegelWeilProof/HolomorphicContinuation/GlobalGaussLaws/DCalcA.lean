@@ -15,8 +15,14 @@ def vS (u : Fin m → Fin n → ℂ) (X : Fin n → ℝ) (s : ℝ) : Fin m → F
 
 def crd (v : Fin m → Fin n → ℂ) (k : Fin m × Fin n × Bool) : ℂ := if k.2.2 then star (v k.1 k.2.1) else v k.1 k.2.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evX_eq (P : PX m n) (v : Fin m → Fin n → ℂ) : evX P v = MvPolynomial.eval (crd v) P := rfl
 
+/- English proof (translation)
+Unfold `crd vS`. Use `split_ifs`. Rewrite using `[star_mul', Complex.star_def, Complex.conj_ofReal]`. Both sides reduce to the same expression.
+-/
 theorem crd_vS (u : Fin m → Fin n → ℂ) (X : Fin n → ℝ) (k : Fin m × Fin n × Bool) (s : ℝ) :
     crd (vS u X s) k = crd u k * ((Real.exp (s * X k.2.1) : ℝ) : ℂ) := by
   unfold crd vS
@@ -24,6 +30,11 @@ theorem crd_vS (u : Fin m → Fin n → ℂ) (X : Fin n → ℝ) (k : Fin m × F
   · rw [star_mul', Complex.star_def, Complex.conj_ofReal]
   · rfl
 
+/- English proof (translation)
+Establish `h` using `((hasDerivAt_id s).mul_const x).exp`. Simplify using `only [id, one_mul] at h`. Establish `h2` using `h.ofReal_comp`. Establish `e : ((x : ℂ) * ((Real.exp (s * x) : ℝ) : ℂ)) = ((Real.exp (s * x) * x : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e]`.
+
+Conclude with `h2`.
+-/
 theorem hasDerivAt_expX (x s : ℝ) :
     HasDerivAt (fun s : ℝ => ((Real.exp (s * x) : ℝ) : ℂ)) ((x : ℂ) * ((Real.exp (s * x) : ℝ) : ℂ)) s := by
   have h := ((hasDerivAt_id s).mul_const x).exp
@@ -33,6 +44,9 @@ theorem hasDerivAt_expX (x s : ℝ) :
   rw [e]
   exact h2
 
+/- English proof (translation)
+Establish `h` using `(hasDerivAt_expX (X k.2.1) s).const_mul (crd u k)`. Establish `e1 : (fun s : ℝ => crd (vS u X s) k) = fun s => crd u k * ((Real.exp (s * X k.2.1) : ℝ) : ℂ)`. Use function extensionality and compare the values at `fun s => crd_vS u X k s`. Rewrite using `[e1, crd_vS]`. Conclude with `h.congr_deriv (by ring)`.
+-/
 theorem crd_hasDeriv (u : Fin m → Fin n → ℂ) (X : Fin n → ℝ) (k : Fin m × Fin n × Bool) (s : ℝ) :
     HasDerivAt (fun s : ℝ => crd (vS u X s) k) ((X k.2.1 : ℂ) * crd (vS u X s) k) s := by
   have h := (hasDerivAt_expX (X k.2.1) s).const_mul (crd u k)
@@ -41,6 +55,9 @@ theorem crd_hasDeriv (u : Fin m → Fin n → ℂ) (X : Fin n → ℝ) (k : Fin 
   rw [e1, crd_vS]
   exact h.congr_deriv (by ring)
 
+/- English proof (translation)
+Rewrite using `[Derivation.leibniz, pderiv_X, smul_eq_mul, smul_eq_mul]`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using `[add_comm, mul_comm]`. Simplify using `[h, Ne.symm h, mul_comm]`.
+-/
 theorem pderiv_mul_X (p : PX m n) (k i : Fin m × Fin n × Bool) :
     pderiv i (p * MvPolynomial.X k) = pderiv i p * MvPolynomial.X k + if i = k then p else 0 := by
   rw [Derivation.leibniz, pderiv_X, smul_eq_mul, smul_eq_mul]
@@ -48,6 +65,19 @@ theorem pderiv_mul_X (p : PX m n) (k i : Fin m × Fin n × Bool) :
   · subst h; simp [add_comm, mul_comm]
   · simp [h, Ne.symm h, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [evX_eq, eval_C, pderiv_C, map_zero, zero_mul, Finset.sum_const_zero]`. Conclude with `hasDerivAt_const _ _`. Consider the case `add p q hp hq`.
+
+Simplify using `only [evX_eq, map_add, add_mul, Finset.sum_add_distrib] at *`. Conclude with `hp.add hq`. Consider the case `mul_X p k hp`. Establish `h` using `hp.mul (crd_hasDeriv u X k s)`. Simplify using `only [evX_eq] at *`.
+
+Establish `efun : (fun s : ℝ => eval (crd (vS u X s)) (p * MvPolynomial.X k)) = fun s => eval (crd (vS u X s)) p * crd (vS u X s) k`. Use function extensionality and compare the values at `s'`. Simplify using `[eval_mul, eval_X]`. Rewrite using `[efun]`. Use `h.congr_deriv ?_` and prove the remaining obligations.
+
+Use `symm`. Use `set D : Fin m × Fin n × Bool → ℂ := fun i => (X i.2.1 : ℂ) * crd (vS u X s) i with hD`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_mul_X]`.
+
+Use `split_ifs with hik`. Simplify using `[eval_mul, eval_X]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[eval_mul, eval_X]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = (∑ i, eval (crd (vS u X s)) (pderiv i p) * D i) * crd (vS u X s) k + eval (crd (vS u X s)) p * D k := by`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_mul, Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+-/
 theorem eval_hasDeriv (P : PX m n) (u : Fin m → Fin n → ℂ) (X : Fin n → ℝ) (s : ℝ) :
     HasDerivAt (fun s : ℝ => evX P (vS u X s))
       (∑ k, evX (pderiv k P) (vS u X s) * ((X k.2.1 : ℂ) * crd (vS u X s) k)) s := by
@@ -80,10 +110,23 @@ theorem eval_hasDeriv (P : PX m n) (u : Fin m → Fin n → ℂ) (X : Fin n → 
           rw [Finset.sum_add_distrib, Finset.sum_mul, Finset.sum_ite_eq']
           simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crd_false (v : Fin m → Fin n → ℂ) (a : Fin m) (j : Fin n) : crd v (a, j, false) = v a j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crd_true (v : Fin m → Fin n → ℂ) (a : Fin m) (j : Fin n) : crd v (a, j, true) = star (v a j) := rfl
 
+/- English proof (translation)
+Establish `hnorm : ∀ a j, ((‖v a j‖ ^ 2 : ℝ) : ℂ) = v a j * star (v a j)`. Introduce `a j`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using `only [dil, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.id_apply, Derivation.coeFn_coe, evX_eq, map_sum, map_add, map_sub, map_mul, MvPolynomial.smul_eval, eval_X, smul_eq_mul]`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool, crd_false, crd_true, hnorm]`.
+
+Use `set E := (eval (crd v)) P with hE`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (Fin m))) (t := (Finset.univ : Finset (Fin n))) (f := fun a j => (eval (crd v)) ((pderiv (a, j, true)) P) * ((X j : ℂ) * star (v a j)) + (eval (crd v)) ((pderiv (a, j, false)) P) * ((X j : ℂ) * v a j)), Finset.sum_comm (s := (Finset.un …`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_add, Finset.mul_sum, Finset.mul_sum, Finset.sum_mul, add_sub_assoc, ← Finset.sum_sub_distrib]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evX_dil (c : ℝ) (X : Fin n → ℝ) (P : PX m n) (v : Fin m → Fin n → ℂ) :
     evX (dil c X P) v = ((m : ℂ) * ∑ j, (X j : ℂ)) * evX P v +
       ∑ k, evX (pderiv k P) v * ((X k.2.1 : ℂ) * crd v k) -

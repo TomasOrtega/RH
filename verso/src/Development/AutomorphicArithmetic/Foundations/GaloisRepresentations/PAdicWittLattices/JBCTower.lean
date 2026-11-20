@@ -9,12 +9,21 @@ private noncomputable def cmp {X A B C : Scheme.{0}} (p : X ⟶ A) (a : B ⟶ A)
   pullback.lift (pullback.fst p ab) (pullback.snd p ab ≫ b)
     (by rw [pullback.condition, Category.assoc, h])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 private theorem cmp_fst {X A B C : Scheme.{0}} (p : X ⟶ A) (a : B ⟶ A) (ab : C ⟶ A) (b : C ⟶ B) (h : b ≫ a = ab) :
     cmp p a ab b h ≫ pullback.fst p a = pullback.fst p ab := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 private theorem cmp_snd {X A B C : Scheme.{0}} (p : X ⟶ A) (a : B ⟶ A) (ab : C ⟶ A) (b : C ⟶ B) (h : b ≫ a = ab) :
     cmp p a ab b h ≫ pullback.snd p a = pullback.snd p ab ≫ b := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Use `IsPullback.of_right (h₁₂ := pullback.fst p a) (h₂₂ := a) (v₁₃ := p) ?_ (cmp_snd p a ab b h) (IsPullback.of_hasPullback p a)` and prove the remaining obligations. Rewrite using `[cmp_fst, h]`. Conclude with `IsPullback.of_hasPullback p ab`.
+-/
 private theorem cmp_isPullback {X A B C : Scheme.{0}} (p : X ⟶ A) (a : B ⟶ A) (ab : C ⟶ A) (b : C ⟶ B) (h : b ≫ a = ab) :
     IsPullback (cmp p a ab b h) (pullback.snd p ab) (pullback.snd p a) b := by
   refine IsPullback.of_right (h₁₂ := pullback.fst p a) (h₂₂ := a) (v₁₃ := p) ?_ (cmp_snd p a ab b h)
@@ -22,6 +31,9 @@ private theorem cmp_isPullback {X A B C : Scheme.{0}} (p : X ⟶ A) (a : B ⟶ A
   rw [cmp_fst, h]
   exact IsPullback.of_hasPullback p ab
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, bcMap_fst, cmp_fst, bcMap_fst, ← Category.assoc, cmp_fst]`. Rewrite using `[Category.assoc, Category.assoc, bcMap_snd, cmp_snd, cmp_snd, ← Category.assoc, bcMap_snd]`.
+-/
 private theorem cmp_bcMap {X Y A B C : Scheme.{0}} (p : X ⟶ A) (q : Y ⟶ A) (f : Y ⟶ X) (hf : f ≫ p = q)
     (a : B ⟶ A) (ab : C ⟶ A) (b : C ⟶ B) (h : b ≫ a = ab) :
     cmp q a ab b h ≫ bcMap a f hf = bcMap ab f hf ≫ cmp p a ab b h := by
@@ -29,6 +41,9 @@ private theorem cmp_bcMap {X Y A B C : Scheme.{0}} (p : X ⟶ A) (q : Y ⟶ A) (
   · rw [Category.assoc, Category.assoc, bcMap_fst, cmp_fst, bcMap_fst, ← Category.assoc, cmp_fst]
   · rw [Category.assoc, Category.assoc, bcMap_snd, cmp_snd, cmp_snd, ← Category.assoc, bcMap_snd]
 
+/- English proof (translation)
+Use `IsPullback.of_bot (v₂₁ := pullback.snd p ab) (v₂₂ := pullback.snd p a) (h₃₁ := b) ?_ (cmp_bcMap p q f hf a ab b h) (cmp_isPullback p a ab b h)` and prove the remaining obligations. Rewrite using `[bcMap_snd, bcMap_snd]`. Conclude with `cmp_isPullback q a ab b h`.
+-/
 private theorem cmp_bcMap_isPullback {X Y A B C : Scheme.{0}} (p : X ⟶ A) (q : Y ⟶ A) (f : Y ⟶ X) (hf : f ≫ p = q)
     (a : B ⟶ A) (ab : C ⟶ A) (b : C ⟶ B) (h : b ≫ a = ab) :
     IsPullback (cmp q a ab b h) (bcMap ab f hf) (bcMap a f hf) (cmp p a ab b h) := by
@@ -40,6 +55,13 @@ private theorem cmp_bcMap_isPullback {X Y A B C : Scheme.{0}} (p : X ⟶ A) (q :
 end UpperTheory.Gal.G3.BaseChangeTowers
 
 open UpperTheory.Gal.G3.BaseChangeTowers in
+/- English proof (translation)
+Introduce `hN k K F _ _ _ τ φ H hH`. Use `⟨hN k K τ H hH, ⟨?_⟩⟩` and prove the remaining obligations. Establish `hab : Spec.map (CommRingCat.ofHom φ) ≫ Spec.map (CommRingCat.ofHom τ) = Spec.map (CommRingCat.ofHom (φ.comp τ))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Set `a` to `Spec.map (CommRingCat.ofHom τ)`.
+
+Set `ab` to `Spec.map (CommRingCat.ofHom (φ.comp τ))`. Set `b` to `Spec.map (CommRingCat.ofHom φ)`. Establish `hz : IsPullback (cmp H.q a ab b hab) (UpperTheory.Gal.Int.Geo.bcAlong H (φ.comp τ)).q (UpperTheory.Gal.Int.Geo.bcAlong H τ).q b` using `cmp_isPullback H.q a ab b hab`. Use `{ z := cmp H.q a ab b hab hz := hz y := fun j => cmp (H.s j ≫ H.q) a ab b hab hs := fun j => ?_ ht := fun j => ?_ }` and prove the remaining obligations. Conclude with `cmp_bcMap_isPullback H.q (H.s j ≫ H.q) (H.s j) rfl a ab b hab`.
+
+Conclude with `cmp_bcMap H.q (H.s j ≫ H.q) (H.t j) (H.comm j) a ab b hab`.
+-/
 theorem UpperTheory.Gal.G3.jBCTower :
     UpperTheory.Gal.Seam.NiceBc → PositivityTheory.AutomorphicGaloisHodgeTate.G8.BCTower := by
   intro hN k K F _ _ _ τ φ H hH

@@ -38,6 +38,9 @@ def intSer (V : VF C) (σ : Type) : Subring (MvPowerSeries σ C) where
   zero_mem' := fun μ => by rw [map_zero]; exact VF.Ge.zero 0
   neg_mem' := fun hf μ => by rw [map_neg]; exact (hf μ).neg
 
+/- English proof (translation)
+Introduce `μ`. Rewrite using `[coeff_X]`. Use `split_ifs`. Conclude with `VF.Ge.one`. Conclude with `VF.Ge.zero 0`.
+-/
 theorem intS_X (V : VF C) (s : σ) : IntS V (X s : MvPowerSeries σ C) := by
   classical
   intro μ
@@ -46,6 +49,9 @@ theorem intS_X (V : VF C) (s : σ) : IntS V (X s : MvPowerSeries σ C) := by
   · exact VF.Ge.one
   · exact VF.Ge.zero 0
 
+/- English proof (translation)
+Introduce `μ`. Rewrite using `[coeff_subst (hasSubst_of_constantCoeff_zero h0)]`. Use `finsum_induction (V.Ge 0) (VF.Ge.zero 0) (fun _ _ hx hy => hx.add hy) fun e => ?_` and prove the remaining obligations. Establish `: (e.prod fun s m => a s ^ m) ∈ intSer V τ` using `Subring.prod_mem _ fun s _ => Subring.pow_mem _ (ha s) _`. Conclude with `(hf e).mul_int (this μ)`.
+-/
 theorem intS_subst (V : VF C) [Finite σ] {a : σ → MvPowerSeries τ C} (h0 : ∀ s, constantCoeff (a s) = 0)
     (ha : ∀ s, IntS V (a s)) {f : MvPowerSeries σ C} (hf : IntS V f) : IntS V (subst a f) := by
   intro μ
@@ -55,6 +61,13 @@ theorem intS_subst (V : VF C) [Finite σ] {a : σ → MvPowerSeries τ C} (h0 : 
     Subring.prod_mem _ fun s _ => Subring.pow_mem _ (ha s) _
   exact (hf e).mul_int (this μ)
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero h0), finsum_eq_sum_of_support_subset (s := Finset.range (m.degree + 1))]`. Use `show ∑ k ∈ Finset.range (m.degree + 1), coeff m (h ^ k) / (k.factorial : C) = _`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_exp, smul_eq_mul]`.
+
+Simplify using `[div_eq_inv_mul]`. Introduce `k hk`. Rewrite `hk` using `[Function.mem_support]`. Assume the negation of the conclusion as `hc`. Apply `hk` to reduce the goal to its premises.
+
+Rewrite using `[coeff_of_lt_order, smul_zero]`. Use `lt_of_lt_of_le ?_ (le_order_pow_of_constantCoeff_eq_zero k h0)` and prove the remaining obligations. Simplify using `only [Finset.coe_range, Set.mem_Iio, not_lt] at hc`. Conclude with `hc` after adjusting the coercions.
+-/
 theorem mvExp_eq [CharZero C] {h : MvPowerSeries σ C} (h0 : constantCoeff h = 0) :
     mvExp h = PowerSeries.subst h (PowerSeries.exp C) := by
   ext m
@@ -73,6 +86,13 @@ theorem mvExp_eq [CharZero C] {h : MvPowerSeries σ C} (h0 : constantCoeff h = 0
     simp only [Finset.coe_range, Set.mem_Iio, not_lt] at hc
     exact_mod_cast hc
 
+/- English proof (translation)
+Establish `hS : HasSubst (fun s => (X (φ s) : MvPowerSeries τ C))` using `hasSubst_of_constantCoeff_zero fun s => constantCoeff_X _`. Rewrite using `[coeff_subst hS, coeff_subst hS]`. Use `finsum_congr fun e => ?_` and prove the remaining obligations. Distinguish the cases in `he : e.degree ≤ N`. Rewrite using `[hfg e he]`.
+
+Establish `h1 : (e.prod fun s m => (X (φ s) : MvPowerSeries τ C) ^ m) = monomial (e.mapDomain φ) 1`. Rewrite using `[monomial_one_eq, Finsupp.prod_mapDomain_index (by simp) (fun _ _ _ => pow_add _ _ _)]`. Establish `h2 : μ ≠ e.mapDomain φ`. Introduce and unpack `rfl`. Apply `he` to reduce the goal to its premises.
+
+Rewrite `hμ` using `[Finsupp.degree_mapDomain]`. Then use the resulting hypothesis. Rewrite using `[h1, coeff_monomial_ne h2, smul_zero, smul_zero]`.
+-/
 theorem coeff_rename_low [Finite σ] (φ : σ → τ) {f g : MvPowerSeries σ C} {N : ℕ}
     (hfg : ∀ e : σ →₀ ℕ, e.degree ≤ N → coeff e f = coeff e g) (μ : τ →₀ ℕ) (hμ : μ.degree ≤ N) :
     coeff μ (subst (fun s => (X (φ s) : MvPowerSeries τ C)) f) =
@@ -93,6 +113,11 @@ theorem coeff_rename_low [Finite σ] (φ : σ → τ) {f g : MvPowerSeries σ C}
 
 variable {dd : ℕ}
 
+/- English proof (translation)
+Use extensionality with `μ`. Set `e : Fin dd ≃ Fin 1 × Fin dd` to `⟨fun x => (0, x), fun p => p.2, fun _ => rfl, fun p => Prod.ext (Subsingleton.elim _ _) rfl⟩`. Rewrite using `[coeff_subst (hasSubst_of_constantCoeff_zero ha), coeff_subst (hasSubst_of_constantCoeff_zero fun p : Fin 1 × Fin dd => ha p.2), ← finsum_comp_equiv (Finsupp.domCongr (M := ℕ) e).toEquiv]`. Use `finsum_congr fun ν => ?_` and prove the remaining obligations. Establish `h1 : (Finsupp.domCongr (M` using `ℕ) e).toEquiv ν = ν.mapDomain fun x : Fin dd => ((0 : Fin 1), x) := Finsupp.equivMapDomain_eq_mapDomain e ν`.
+
+Rewrite using `[h1, Finsupp.prod_mapDomain_index (by simp) (fun _ _ _ => pow_add _ _ _)]`. Both sides reduce to the same expression.
+-/
 theorem subst_singlePointUncurry {a : Fin dd → MvPowerSeries τ C} (ha : ∀ i, constantCoeff (a i) = 0) (f : PS C 1 dd) :
     subst a (un1 f) = subst (fun p : Fin 1 × Fin dd => a p.2) f := by
   ext μ
@@ -112,35 +137,62 @@ def sb {n : ℕ} (a : Fin n → Fin dd → MvPowerSeries τ C) (f : PS C n dd) :
 
 def Zc {ι : Type} (a : ι → MvPowerSeries τ C) : Prop := ∀ i, constantCoeff (a i) = 0
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun p => ha p.1 p.2`.
+-/
 theorem hasSubst_sb {n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j)) :
     HasSubst (fun p : Fin n × Fin dd => a p.1 p.2) :=
   hasSubst_of_constantCoeff_zero fun p => ha p.1 p.2
 
+/- English proof (translation)
+The claim follows from `subst_comp_subst_apply (hasSubst_sb hb) (hasSubst_sb ha) f`.
+-/
 theorem sb_ev {m n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j))
     {b : Fin m → Pt C n dd} (hb : ∀ j, Zc (b j)) (f : PS C m dd) :
     sb a (ev b f) = sb (fun j i => sb a (b j i)) f :=
   subst_comp_subst_apply (hasSubst_sb hb) (hasSubst_sb ha) f
 
+/- English proof (translation)
+The claim follows from `subst_X (hasSubst_sb ha) (j, i)`.
+-/
 theorem sb_pt {n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j)) (j : Fin n) (i : Fin dd) :
     sb a (pt C dd j i) = a j i :=
   subst_X (hasSubst_sb ha) (j, i)
 
+/- English proof (translation)
+Introduce `_` and use `constantCoeff_X _`.
+-/
 theorem zc_pt {n : ℕ} (j : Fin n) : Zc (pt C dd j) := fun _ => constantCoeff_X _
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hasSubst_sb ha) (fun p => ha p.1 p.2) hf`.
+-/
 theorem cc_sb {n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j)) {f : PS C n dd}
     (hf : constantCoeff f = 0) : constantCoeff (sb a f) = 0 :=
   constantCoeff_subst_eq_zero (hasSubst_sb ha) (fun p => ha p.1 p.2) hf
 
+/- English proof (translation)
+Introduce `j`. Use `fin_cases j`. Conclude with `ha`.
+-/
 theorem zc1 {a : Fin dd → MvPowerSeries τ C} (ha : Zc a) : ∀ j, Zc (![a] j) := by
   intro j; fin_cases j; exact ha
 
+/- English proof (translation)
+Introduce `j`. Use `fin_cases j`. Use `exacts [ha, hb]`.
+-/
 theorem zc2 {a b : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) : ∀ j, Zc (![a, b] j) := by
   intro j; fin_cases j; exacts [ha, hb]
 
+/- English proof (translation)
+Introduce `j`. Use `fin_cases j`. Use `exacts [ha, hb, hc]`.
+-/
 theorem zc3 {a b c : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) (hc : Zc c) :
     ∀ j, Zc (![a, b, c] j) := by
   intro j; fin_cases j; exacts [ha, hb, hc]
 
+/- English proof (translation)
+Rewrite using `[sb_ev ha (zc1 hb)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem substPointsPowerSeries_eval_one {n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j))
     {b : Pt C n dd} (hb : Zc b) (f : PS C 1 dd) :
     sb a (ev ![b] f) = sb ![fun i => sb a (b i)] f := by
@@ -150,6 +202,11 @@ theorem substPointsPowerSeries_eval_one {n : ℕ} {a : Fin n → Fin dd → MvPo
   fin_cases j
   rfl
 
+/- English proof (translation)
+Rewrite using `[sb_ev ha (zc2 hb hc)]`. Use `congrArg (fun A => sb A f) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem substPointsPowerSeries_eval_two {n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j))
     {b c : Pt C n dd} (hb : Zc b) (hc : Zc c) (f : PS C 2 dd) :
     sb a (ev ![b, c] f) = sb ![fun i => sb a (b i), fun i => sb a (c i)] f := by
@@ -160,19 +217,38 @@ theorem substPointsPowerSeries_eval_two {n : ℕ} {a : Fin n → Fin dd → MvPo
   · simp
   · simp
 
+/- English proof (translation)
+The claim follows from `funext (sb_pt ha j)`.
+-/
 theorem sb_pt' {n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j)) (j : Fin n) :
     (fun i => sb a (pt C dd j i)) = a j := funext (sb_pt ha j)
 
+/- English proof (translation)
+The claim follows from `intS_subst V (a := fun p : Fin n × Fin dd => a p.1 p.2) (fun p => ha p.1 p.2) (fun p => hi p.1 p.2) hf`.
+-/
 theorem intS_sb (V : VF C) {n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j))
     (hi : ∀ j i, IntS V (a j i)) {f : PS C n dd} (hf : IntS V f) : IntS V (sb a f) :=
   intS_subst V (a := fun p : Fin n × Fin dd => a p.1 p.2) (fun p => ha p.1 p.2) (fun p => hi p.1 p.2) hf
 
+/- English proof (translation)
+The claim follows from `subst_add (hasSubst_sb ha) f g`.
+-/
 theorem sb_add {n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j)) (f g : PS C n dd) :
     sb a (f + g) = sb a f + sb a g := subst_add (hasSubst_sb ha) f g
 
+/- English proof (translation)
+The claim follows from `subst_sub (hasSubst_sb ha) f g`.
+-/
 theorem sb_sub {n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j)) (f g : PS C n dd) :
     sb a (f - g) = sb a f - sb a g := subst_sub (hasSubst_sb ha) f g
 
+/- English proof (translation)
+Establish `hA` using `hasSubst_of_constantCoeff_zero ha`. Unfold `inCol`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) hA]`. Simplify using `only [subst_X hA]`. Rewrite using `[subst_singlePointUncurry (fun i => ha _)]`.
+
+Unfold `sb`. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Use `fin_cases j`.
+
+Both sides reduce to the same expression.
+-/
 theorem subst_inCol {a : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : Zc a) (col : Fin 2) (f : PS C 1 dd) :
     subst a (inCol col (un1 f)) = sb ![fun x => a (col, x)] f := by
   have hA := hasSubst_of_constantCoeff_zero ha
@@ -187,6 +263,11 @@ theorem subst_inCol {a : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : Zc a) (co
   fin_cases j
   rfl
 
+/- English proof (translation)
+Establish `hA` using `hasSubst_of_constantCoeff_zero ha`. Unfold `hCol`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) hA]`. Simplify using `only [subst_X hA]`. Unfold `sb`.
+
+Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Apply the tactic sequence `fin_cases j <;> rfl`.
+-/
 theorem subst_hCol {a : Fin 2 × (Fin 2 × Fin dd) → MvPowerSeries τ C} (ha : Zc a) (col : Fin 2) (f : PS C 2 dd) :
     subst a (hCol col f) = sb ![fun x => a (0, (col, x)), fun x => a (1, (col, x))] f := by
   have hA := hasSubst_of_constantCoeff_zero ha
@@ -199,6 +280,9 @@ theorem subst_hCol {a : Fin 2 × (Fin 2 × Fin dd) → MvPowerSeries τ C} (ha :
   obtain ⟨j, i⟩ := p
   fin_cases j <;> rfl
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[coeff_map]`.
+-/
 theorem map_self (f : MvPowerSeries σ C) : MvPowerSeries.map (algebraMap C C) f = f := by
   ext n
   simp [coeff_map]
@@ -210,10 +294,18 @@ section Chart
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
   (Y : FBChart C V O dd) {τ : Type}
 
+/- English proof (translation)
+Introduce `i` and use `by rw [← coeff_zero_eq_constantCoeff_apply, Y.lg_lin i 0 (by simp), coeff_zero_eq_constantCoeff_apply, constantCoeff_X]`.
+-/
 theorem zc_lg : Zc Y.lg := fun i => by
   rw [← coeff_zero_eq_constantCoeff_apply, Y.lg_lin i 0 (by simp), coeff_zero_eq_constantCoeff_apply,
     constantCoeff_X]
 
+/- English proof (translation)
+Use `fin_cases g`. Use `coeff_of_ev_zero Y.h 0 ![0, pt C dd 0] rfl ?_ Y.gauge.ax0` and prove the remaining obligations. Introduce `g' hg'`. Rewrite using `[fin_two_eq_one_sub_of_ne' 0 g' hg']`. Both sides reduce to the same expression.
+
+Use `coeff_of_ev_zero Y.h 1 ![pt C dd 0, 0] rfl ?_ Y.gauge.ax1` and prove the remaining obligations. Introduce `g' hg'`. Rewrite using `[fin_two_eq_one_sub_of_ne' 1 g' hg']`. Both sides reduce to the same expression.
+-/
 theorem h_axes (g : Fin 2) : ∀ e : Fin 2 × Fin dd →₀ ℕ, (∀ s ∈ e.support, s.1 ≠ g) → coeff e Y.h = 0 := by
   fin_cases g
   · refine coeff_of_ev_zero Y.h 0 ![0, pt C dd 0] rfl ?_ Y.gauge.ax0
@@ -225,26 +317,44 @@ theorem h_axes (g : Fin 2) : ∀ e : Fin 2 × Fin dd →₀ ℕ, (∀ s ∈ e.su
     rw [fin_two_eq_one_sub_of_ne' 1 g' hg']
     rfl
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Conclude with `h_axes Y 0 0 (by simp)`.
+-/
 theorem cc_h : constantCoeff Y.h = 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply]
   exact h_axes Y 0 0 (by simp)
 
+/- English proof (translation)
+The claim follows from `funext fun _ => map_self _`.
+-/
 theorem FK_self : Y.B.FK C = Y.B.G.F := funext fun _ => map_self _
 
 def law (a b : Fin dd → MvPowerSeries τ C) : Fin dd → MvPowerSeries τ C := fun i => sb ![a, b] (Y.B.G.F i)
 
+/- English proof (translation)
+Introduce `i` and use `cc_sb (zc2 ha hb) (Y.B.G.const i)`.
+-/
 theorem zc_law {a b : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) : Zc (law Y a b) :=
   fun i => cc_sb (zc2 ha hb) (Y.B.G.const i)
 
+/- English proof (translation)
+The claim follows from `zc_law Y (zc_pt j) (zc_pt k)`.
+-/
 theorem zc_addOf {n : ℕ} (j k : Fin n) : Zc (addOf Y.B.G.F (pt C dd j) (pt C dd k)) :=
   zc_law Y (zc_pt j) (zc_pt k)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[addOf, substPointsPowerSeries_eval_two ha (zc_pt j) (zc_pt k), sb_pt' ha, sb_pt' ha]`. Both sides reduce to the same expression.
+-/
 theorem sb_addOf {n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j)) (j k : Fin n) :
     (fun i => sb a (addOf Y.B.G.F (pt C dd j) (pt C dd k) i)) = law Y (a j) (a k) := by
   funext i
   rw [addOf, substPointsPowerSeries_eval_two ha (zc_pt j) (zc_pt k), sb_pt' ha, sb_pt' ha]
   rfl
 
+/- English proof (translation)
+Establish `h2` using `zc2 ha hb`. Establish `e` using `congrArg (sb ![a, b]) (Y.lg_add i)`. Rewrite `e` using `[substPointsPowerSeries_eval_one h2 (zc_addOf Y 0 1), sb_addOf Y h2, sb_add h2, substPointsPowerSeries_eval_one h2 (zc_pt 0), substPointsPowerSeries_eval_one h2 (zc_pt 1), sb_pt' h2, sb_pt' h2]`. Conclude with `e.symm`.
+-/
 theorem lg_law {a b : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) (i : Fin dd) :
     sb ![a] (Y.lg i) + sb ![b] (Y.lg i) = sb ![law Y a b] (Y.lg i) := by
   have h2 := zc2 ha hb
@@ -252,25 +362,42 @@ theorem lg_law {a b : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) (i 
   rw [substPointsPowerSeries_eval_one h2 (zc_addOf Y 0 1), sb_addOf Y h2, sb_add h2, substPointsPowerSeries_eval_one h2 (zc_pt 0), substPointsPowerSeries_eval_one h2 (zc_pt 1), sb_pt' h2, sb_pt' h2] at e
   exact e.symm
 
+/- English proof (translation)
+Establish `e` using `congrArg (sb ![a]) (congrFun Y.ex_lg i)`. Rewrite `e` using `[comp1, substPointsPowerSeries_eval_one (zc1 ha) (zc_lg Y), sb_pt (zc1 ha)]`. Conclude with `e`.
+-/
 theorem ex_lg {a : Fin dd → MvPowerSeries τ C} (ha : Zc a) (i : Fin dd) :
     sb ![fun x => sb ![a] (Y.lg x)] (Y.ex i) = a i := by
   have e := congrArg (sb ![a]) (congrFun Y.ex_lg i)
   rw [comp1, substPointsPowerSeries_eval_one (zc1 ha) (zc_lg Y), sb_pt (zc1 ha)] at e
   exact e
 
+/- English proof (translation)
+Establish `e` using `congrArg (sb ![a]) (congrFun Y.lg_ex i)`. Rewrite `e` using `[comp1, substPointsPowerSeries_eval_one (zc1 ha) Y.ex_const, sb_pt (zc1 ha)]`. Conclude with `e`.
+-/
 theorem lg_ex {a : Fin dd → MvPowerSeries τ C} (ha : Zc a) (i : Fin dd) :
     sb ![fun x => sb ![a] (Y.ex x)] (Y.lg i) = a i := by
   have e := congrArg (sb ![a]) (congrFun Y.lg_ex i)
   rw [comp1, substPointsPowerSeries_eval_one (zc1 ha) Y.ex_const, sb_pt (zc1 ha)] at e
   exact e
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.subst_exp (fun p : Fin n × Fin dd => a p.1 p.2) (fun p => ha p.1 p.2) hf`.
+-/
 theorem sb_exp {n : ℕ} {a : Fin n → Fin dd → MvPowerSeries τ C} (ha : ∀ j, Zc (a j)) {f : PS C n dd}
     (hf : constantCoeff f = 0) : sb a (FB.expS C f) = PowerSeries.subst (sb a f) (PowerSeries.exp C) :=
   ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.subst_exp (fun p : Fin n × Fin dd => a p.1 p.2) (fun p => ha p.1 p.2) hf
 
+/- English proof (translation)
+The claim follows from `cc_sb (zc2 hb hc) (cc_h Y)`.
+-/
 theorem cc_hev {n : ℕ} {b c : Pt C n dd} (hb : Zc b) (hc : Zc c) : constantCoeff (ev ![b, c] Y.h) = 0 :=
   cc_sb (zc2 hb hc) (cc_h Y)
 
+/- English proof (translation)
+Establish `h3` using `zc3 ha hb hc`. Establish `e` using `Y.gauge.ph1`. Rewrite `e` using `[FB.toK, map_self, FK_self]`. Rewrite using `[e, sb_exp h3 (by`. Rewrite using `[map_sub, map_add, cc_hev Y (zc_pt _) (zc_pt _), cc_hev Y (zc_pt _) (zc_pt _), cc_hev Y (zc_addOf Y _ _) (zc_pt _)]`.
+
+Use the proof step `simp),`. Use `sb_sub h3, sb_add h3, substPointsPowerSeries_eval_two h3 (zc_pt _) (zc_pt _), substPointsPowerSeries_eval_two h3 (zc_pt _) (zc_pt _),`. Use `substPointsPowerSeries_eval_two h3 (zc_addOf Y _ _) (zc_pt _), sb_addOf Y h3, sb_pt' h3, sb_pt' h3, sb_pt' h3]`. Both sides reduce to the same expression.
+-/
 theorem exp_gauge_cocycle_first_variable {a b c : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) (hc : Zc c) :
     PowerSeries.subst (sb ![a, c] Y.h + sb ![b, c] Y.h - sb ![law Y a b, c] Y.h) (PowerSeries.exp C) =
       sb ![a, b, c] Y.B.ph1 := by
@@ -285,6 +412,11 @@ theorem exp_gauge_cocycle_first_variable {a b c : Fin dd → MvPowerSeries τ C}
     substPointsPowerSeries_eval_two h3 (zc_addOf Y _ _) (zc_pt _), sb_addOf Y h3, sb_pt' h3, sb_pt' h3, sb_pt' h3]
   rfl
 
+/- English proof (translation)
+Establish `h3` using `zc3 ha hb hc`. Establish `e` using `Y.gauge.ph2`. Rewrite `e` using `[FB.toK, map_self, FK_self]`. Rewrite using `[e, sb_exp h3 (by`. Rewrite using `[map_sub, map_add, cc_hev Y (zc_pt _) (zc_pt _), cc_hev Y (zc_pt _) (zc_pt _), cc_hev Y (zc_pt _) (zc_addOf Y _ _)]`.
+
+Use the proof step `simp),`. Use `sb_sub h3, sb_add h3, substPointsPowerSeries_eval_two h3 (zc_pt _) (zc_pt _), substPointsPowerSeries_eval_two h3 (zc_pt _) (zc_pt _),`. Use `substPointsPowerSeries_eval_two h3 (zc_pt _) (zc_addOf Y _ _), sb_addOf Y h3, sb_pt' h3, sb_pt' h3, sb_pt' h3]`. Both sides reduce to the same expression.
+-/
 theorem exp_gauge_cocycle_second_variable {a b c : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) (hc : Zc c) :
     PowerSeries.subst (sb ![a, b] Y.h + sb ![a, c] Y.h - sb ![a, law Y b c] Y.h) (PowerSeries.exp C) =
       sb ![a, b, c] Y.B.ph2 := by
@@ -299,6 +431,11 @@ theorem exp_gauge_cocycle_second_variable {a b c : Fin dd → MvPowerSeries τ C
     substPointsPowerSeries_eval_two h3 (zc_pt _) (zc_addOf Y _ _), sb_addOf Y h3, sb_pt' h3, sb_pt' h3, sb_pt' h3]
   rfl
 
+/- English proof (translation)
+Establish `h2` using `zc2 ha hb`. Establish `e` using `Y.gauge.sy`. Rewrite `e` using `[FB.toK, map_self]`. Rewrite using `[e, sb_exp h2 (by`. Rewrite using `[map_sub, cc_hev Y (zc_pt _) (zc_pt _), cc_h]`.
+
+Use the proof step `simp),`. Use `sb_sub h2, substPointsPowerSeries_eval_two h2 (zc_pt _) (zc_pt _), sb_pt' h2, sb_pt' h2]`. Both sides reduce to the same expression.
+-/
 theorem exp_sy {a b : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) :
     PowerSeries.subst (sb ![b, a] Y.h - sb ![a, b] Y.h) (PowerSeries.exp C) = sb ![a, b] Y.B.sy := by
   have h2 := zc2 ha hb
@@ -315,15 +452,27 @@ variable {d : ℕ} {I0 : Type} [Fintype I0] (p : SelfData Y d I0)
 def colOf (a : Fin 2 × Fin dd → MvPowerSeries τ C) (col : Fin 2) : Fin dd → MvPowerSeries τ C := fun x => a (col, x)
 
 omit [CharZero C] in
+/- English proof (translation)
+Introduce `_` and use `ha _`.
+-/
 theorem zc_col {a : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : Zc a) (col : Fin 2) : Zc (colOf a col) :=
   fun _ => ha _
 
+/- English proof (translation)
+The claim follows from `subst_inCol ha _ _`.
+-/
 theorem subst_lg {a : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : Zc a) (x : Fin 2 × Fin dd) :
     subst a ((Y.rawSelf p).lg x) = sb ![colOf a x.1] (Y.lg x.2) := subst_inCol ha _ _
 
+/- English proof (translation)
+The claim follows from `subst_inCol ha _ _`.
+-/
 theorem subst_ex {a : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : Zc a) (x : Fin 2 × Fin dd) :
     subst a ((Y.rawSelf p).ex x) = sb ![colOf a x.1] (Y.ex x.2) := subst_inCol ha _ _
 
+/- English proof (translation)
+Unfold `addP`. Simplify using `only [subst_lg Y p ha, subst_lg Y p hb, lg_law Y (zc_col ha _) (zc_col hb _)]`. Rewrite using `[subst_ex Y p fun y => cc_sb (zc1 (zc_law Y (zc_col ha _) (zc_col hb _))) (zc_lg Y _)]`. Conclude with `ex_lg Y (zc_law Y (zc_col ha _) (zc_col hb _)) _`.
+-/
 theorem formalAdd_eq {a b : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) (x : Fin 2 × Fin dd) :
     addP (Y.rawSelf p) a b x = law Y (colOf a x.1) (colOf b x.1) x.2 := by
   unfold addP
@@ -331,15 +480,26 @@ theorem formalAdd_eq {a b : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : Zc a) 
   rw [subst_ex Y p fun y => cc_sb (zc1 (zc_law Y (zc_col ha _) (zc_col hb _))) (zc_lg Y _)]
   exact ex_lg Y (zc_law Y (zc_col ha _) (zc_col hb _)) _
 
+/- English proof (translation)
+Introduce `x` and use `by rw [formalAdd_eq Y p ha hb] exact zc_law Y (zc_col ha _) (zc_col hb _) _`.
+-/
 theorem zc_addP {a b : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) :
     Zc (addP (Y.rawSelf p) a b) := fun x => by
   rw [formalAdd_eq Y p ha hb]
   exact zc_law Y (zc_col ha _) (zc_col hb _) _
 
+/- English proof (translation)
+The claim follows from `funext fun x => formalAdd_eq Y p ha hb (col, x)`.
+-/
 theorem col_addP {a b : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) (col : Fin 2) :
     colOf (addP (Y.rawSelf p) a b) col = law Y (colOf a col) (colOf b col) :=
   funext fun x => formalAdd_eq Y p ha hb (col, x)
 
+/- English proof (translation)
+Establish `hz : Zc (fun q : Fin 2 × (Fin 2 × Fin dd) => if q.1 = 0 then a q.2 else b q.2)` using `fun q => by dsimp only split_ifs exacts [ha _, hb _]`. Unfold `hAt`. Use `show subst _ (∑ col, hCol col Y.h) = _`. Rewrite using `[Fin.sum_univ_two, subst_add (hasSubst_of_constantCoeff_zero hz), subst_hCol hz, subst_hCol hz]`. Simplify using `only [if_true, one_ne_zero, if_false]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hAt_eq {a b : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) :
     hAt (Y.rawSelf p) a b = sb ![colOf a 0, colOf b 0] Y.h + sb ![colOf a 1, colOf b 1] Y.h := by
   have hz : Zc (fun q : Fin 2 × (Fin 2 × Fin dd) => if q.1 = 0 then a q.2 else b q.2) := fun q => by
@@ -353,8 +513,16 @@ theorem hAt_eq {a b : Fin 2 × Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : 
   rfl
 
 omit [CharZero C] in
+/- English proof (translation)
+Introduce `_` and use `constantCoeff_X _`.
+-/
 theorem zc_gp {κ : Type} {n : ℕ} (j : Fin n) : Zc (gp C κ j) := fun _ => constantCoeff_X _
 
+/- English proof (translation)
+Unfold `hAt`. Establish `: (fun q : Fin 2 × (Fin 2 × Fin dd) => if q.1 = 0 then gp C (Fin 2 × Fin dd) (0 : Fin 2) q.2 else gp C (Fin 2 × Fin dd) 1 q.2) = X`. Use function extensionality and compare the values at `⟨j, x⟩`. Apply the tactic sequence `fin_cases j <;> simp [gp]`. Rewrite using `[this, subst_self]`.
+
+Both sides reduce to the same expression.
+-/
 theorem h_eq : (Y.rawSelf p).h = hAt (Y.rawSelf p) (gp C _ (0 : Fin 2)) (gp C _ 1) := by
   unfold hAt
   have : (fun q : Fin 2 × (Fin 2 × Fin dd) => if q.1 = 0 then gp C (Fin 2 × Fin dd) (0 : Fin 2) q.2
@@ -364,15 +532,24 @@ theorem h_eq : (Y.rawSelf p).h = hAt (Y.rawSelf p) (gp C _ (0 : Fin 2)) (gp C _ 
   rw [this, subst_self]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mvExp_eq (by simp [hf, hg]), ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_add hf hg]`. Conclude with `(intSer V τ).mul_mem hf' hg'`.
+-/
 theorem intS_exp_add {f g : MvPowerSeries τ C} (hf : constantCoeff f = 0) (hg : constantCoeff g = 0)
     (hf' : IntS V (PowerSeries.subst f (PowerSeries.exp C)))
     (hg' : IntS V (PowerSeries.subst g (PowerSeries.exp C))) : IntS V (mvExp (f + g)) := by
   rw [mvExp_eq (by simp [hf, hg]), ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_add hf hg]
   exact (intSer V τ).mul_mem hf' hg'
 
+/- English proof (translation)
+The claim follows from `cc_sb (zc2 ha hb) (cc_h Y)`.
+-/
 theorem cc_hsb {a b : Fin dd → MvPowerSeries τ C} (ha : Zc a) (hb : Zc b) : constantCoeff (sb ![a, b] Y.h) = 0 :=
   cc_sb (zc2 ha hb) (cc_h Y)
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `p.gm_lim 0`. Establish `h` using `hM a r s`. Rewrite `h` using `[Nat.cast_zero]`. Simplify using `using h.add (p.em_int a (M r s))`.
+-/
 theorem gm_int (a : ZMod d) (r s : Fin 2) : V.Ge 0 (p.gm a r s) := by
   obtain ⟨M, hM⟩ := p.gm_lim 0
   have h := hM a r s
@@ -381,6 +558,9 @@ theorem gm_int (a : ZMod d) (r s : Fin 2) : V.Ge 0 (p.gm a r s) := by
 
 end Chart
 
+/- English proof (translation)
+The claim follows from `inferInstance closed := Y.algClosed odd := Y.l_odd lin := by intro x μ hμ have hX : Zc (X : Fin 2 × Fin dd → MvPowerSeries (Fin 2 × Fin dd) C) := fun _ => constantCoeff_X _ have e := subst_lg Y p hX x rw [subst_self, id] at e have e2 : (fun q : Fin 1 × Fin dd => (![colOf (X : Fin …`.
+-/
 theorem rlaw_rawSelf (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ)
     (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I0 : Type) [Fintype I0] (p : SelfData Y d I0) :
     RLaw (Y.rawSelf p) V where

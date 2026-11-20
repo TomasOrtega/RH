@@ -7,6 +7,11 @@ open CategoryTheory Formalism.IrreducibleCountingLemmas.TYPES
 
 namespace PI.SerBridgeGLW
 
+/- English proof (translation)
+Set `b` to `fun c => Module.Free.chooseBasis ℂ (M c)`. Establish `hc : ∀ c, LinearMap.trace ℂ (M c) (f c) = ∑ i, (b c).repr (f c (b c i)) i`. Introduce `c`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (b c)]`. Simplify using `[Matrix.trace, LinearMap.toMatrix_apply]`.
+
+Simplify using `only [hc]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (Basis.piTensorProduct b)]`. Simplify using `only [Matrix.trace, Matrix.diag, LinearMap.toMatrix_apply, Basis.piTensorProduct_apply, PiTensorProduct.map_tprod, Basis.piTensorProduct_repr_tprod_apply]`.
+-/
 theorem trace_piTensorMap {s : ℕ} {M : Fin s → Type} [∀ c, AddCommGroup (M c)] [∀ c, Module ℂ (M c)]
     [∀ c, Module.Finite ℂ (M c)] (f : ∀ c, M c →ₗ[ℂ] M c) :
     LinearMap.trace ℂ (PiTensorProduct ℂ M) (PiTensorProduct.map f) =
@@ -23,6 +28,9 @@ theorem trace_piTensorMap {s : ℕ} {M : Fin s → Type} [∀ c, AddCommGroup (M
   simp only [Matrix.trace, Matrix.diag, LinearMap.toMatrix_apply, Basis.piTensorProduct_apply,
     PiTensorProduct.map_tprod, Basis.piTensorProduct_repr_tprod_apply]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show blk K b c (((p * q : parab K b) : GL ι K) : Matrix ι ι K) = blk K b c ((p : GL ι K) : Matrix ι ι K) * blk K b c ((q : GL ι K) : Matrix ι ι K)`. Rewrite using `[← blk_mul b c p.2.1 q.2.1]`. Both sides reduce to the same expression.
+-/
 theorem levi_mul' (K : Type) [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fintype ι] [DecidableEq ι]
     {s : ℕ} (b : ι → Fin s) (c : Fin s) (p q : parab K b) :
     levi K b c (p * q) = levi K b c p * levi K b c q := by
@@ -32,6 +40,9 @@ theorem levi_mul' (K : Type) [Field K] [Fintype K] [DecidableEq K] {ι : Type} [
   rw [← blk_mul b c p.2.1 q.2.1]
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show blk K b c (((1 : parab K b) : GL ι K) : Matrix ι ι K) = 1`. Conclude with `Matrix.submatrix_one _ Subtype.val_injective`.
+-/
 theorem levi_one' (K : Type) [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fintype ι] [DecidableEq ι]
     {s : ℕ} (b : ι → Fin s) (c : Fin s) : levi K b c 1 = 1 := by
   apply Units.ext
@@ -49,6 +60,27 @@ def inflRep (K : Type) [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fintyp
     simp only [infl, levi_mul', map_mul]
     exact PiTensorProduct.map_mul _ _
 
+/- English proof (translation)
+Establish `key : ∀ (f : hcSpace K b lam) (g x : GL ι K), ((hcRep K b lam g f : hcSpace K b lam) : GL ι K → PiTensorProduct ℂ (fun c => (lam c : Type))) x = (f : GL ι K → PiTensorProduct ℂ (fun c => (lam c : Type))) (x * g)` using `fun _ _ _ => rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hφ, hne⟩`. Establish `hφ' : ∀ g, φ ∘ₗ V.ρ g = hcRep K b lam g ∘ₗ φ` using `hφ`. Establish `hval : ∀ (v : V) (x : GL ι K), ((φ (V.ρ x v) : hcSpace K b lam) : GL ι K → PiTensorProduct ℂ (fun c => (lam c : Type))) 1 = ((φ v : hcSpace K b lam) : GL ι K → PiTensorProduct ℂ (fun c => (lam c : Type))) x`.
+
+Introduce `v x`. Use `congrArg (fun F : V →ₗ[ℂ] hcSpace K b lam => ((F v : hcSpace K b lam) : GL ι K → PiTensorProduct ℂ (fun c => (lam c : Type))) 1) (hφ' x)` as an intermediate fact. Simplify `this` using `[key]`. Use `⟨LinearMap.proj (R := ℂ) (φ := fun _ : GL ι K => PiTensorProduct ℂ (fun c => (lam c : Type))) 1 ∘ₗ (hcSpace K b lam).subtype ∘ₗ φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hne` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[← hval v x]`. Conclude with `LinearMap.congr_fun h0 (V.ρ x v)`. Introduce `p`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+
+Use `show ((φ (V.ρ p.1 v) : hcSpace K b lam) : GL ι K → PiTensorProduct ℂ (fun c => (lam c : Type))) 1 = infl K b lam p (((φ v : hcSpace K b lam) : GL ι K → PiTensorProduct ℂ (fun c => (lam c : Type))) 1)`. Rewrite using `[hval, ← (φ v).2 p 1, mul_one]`. Introduce and unpack `⟨ψ, hne, hψ⟩`. Set `φ : V →ₗ[ℂ] hcSpace K b lam` to `{ toFun := fun v => ⟨fun x => ψ (V.ρ x v), fun p x => by show ψ (V.ρ (p.1 * x) v) = infl K b lam p (ψ (V.ρ x v))`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+
+Conclude with `LinearMap.congr_fun (hψ p) (V.ρ x v)⟩`. Use the proof step `map_add' := fun v w => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+
+Use the proof step `map_smul' := fun c v => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using `}`. Use `⟨φ, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+
+Use `show ψ (V.ρ x (V.ρ g v)) = ψ (V.ρ (x * g) v)`. Rewrite using `[map_mul, Module.End.mul_apply]`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `v`. Use `congrArg (fun f : hcSpace K b lam => (f : GL ι K → PiTensorProduct ℂ (fun c => (lam c : Type))) 1) (LinearMap.congr_fun h0 v)` as an intermediate fact. Simplify `this` using `[φ]`.
+-/
 theorem isConstituent_hc_iff (K : Type) [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fintype ι]
     [DecidableEq ι] {s : ℕ} (b : ι → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K))
     (V : FDRep ℂ (GL ι K)) :
@@ -114,6 +146,13 @@ theorem isConstituent_hc_iff (K : Type) [Field K] [Fintype K] [DecidableEq K] {�
         (f : GL ι K → PiTensorProduct ℂ (fun c => (lam c : Type))) 1) (LinearMap.congr_fun h0 v)
       simpa [φ] using this
 
+/- English proof (translation)
+Rewrite using `[Representation.mem_invariants]`. Prove the components needed by the constructor for the conclusion. Introduce `h g`. Use extensionality with `x`. Use `congrArg (fun φ : V →ₗ[ℂ] W => φ (ρV g x)) (h g)` as an intermediate fact.
+
+Simplify using `only [Representation.linHom_apply, LinearMap.comp_apply, Representation.inv_self_apply] at this`. Simplify using `only [LinearMap.comp_apply]`. Conclude with `this.symm`. Introduce `h g`. Use extensionality with `x`.
+
+Use `congrArg (fun φ : V →ₗ[ℂ] W => φ (ρV g⁻¹ x)) (h g)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Representation.self_inv_apply] at this`. Simplify using `only [Representation.linHom_apply, LinearMap.comp_apply]`. Conclude with `this.symm`.
+-/
 theorem mem_inv_linHom_iff {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] (ρV : Representation ℂ G V) (ρW : Representation ℂ G W) (f : V →ₗ[ℂ] W) :
     f ∈ (Representation.linHom ρV ρW).invariants ↔ ∀ g, f ∘ₗ ρV g = ρW g ∘ₗ f := by

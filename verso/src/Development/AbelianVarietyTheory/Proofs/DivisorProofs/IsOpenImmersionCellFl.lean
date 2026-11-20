@@ -28,6 +28,9 @@ def cellCol (w : ι → Equiv.Perm (Fin N)) (τ : ι) (j : Fin N) :
   ∑ i, cellRing ι N w ((cellGL Prod.fst Prod.snd w τ).1 i j) •
     resM _ le_top (VB.freeFrame (Fl ι N) (Fin N) i)
 
+/- English proof (translation)
+Simplify using `[cellOpen]`.
+-/
 theorem mem_cellOpen {w : ι → Equiv.Perm (Fin N)} {y : Fl ι N} :
     y ∈ cellOpen ι N w ↔ y ∈ Set.range (cell Prod.fst Prod.snd w) := by
   simp [cellOpen]

@@ -9,6 +9,11 @@ namespace MassDataLevelSSteps
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures Formalism.L2.SG.TypedSets MeasureTheory NumberField
   IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
 
+/- English proof (translation)
+Establish `hne : ∏ p : TypX X, muSv X w p ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun p _ => hA X hb hT hL w p)`. Establish `hS` using `hB X hb hT hL w`. Establish `hR` using `hC X hb hK hT hL w`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀ _ hne, hS]`.
+
+Rewrite using `[hS, div_mul_eq_mul_div, div_eq_iff hne]`. Take the linear combination `(-muNf X w) * hR`.
+-/
 theorem clauses_word (hA : TypedNe) (hB : GlobLevelS) (hC : RatioH) {D : D7} (X : HidaSetting D)
     (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (hT : X.MeasTie hb) (hL : X.LevelSubgroupNormalized) (w : D.what₂.Word) :
     (muSf X w / ∏ p : TypX X, muSv X w p) * ∏ p : TypX X, muSv X w p = muNf X w * muHf X w ∧
@@ -22,6 +27,9 @@ theorem clauses_word (hA : TypedNe) (hB : GlobLevelS) (hC : RatioH) {D : D7} (X 
   · rw [hS, div_mul_eq_mul_div, div_eq_iff hne]
     linear_combination (-muNf X w) * hR
 
+/- English proof (translation)
+Introduce `D X hb hK FdN FdN' u u' X0 L A hH`. Take `⟨hT, hL, -, -⟩` from `hH`. Take `⟨h1, h2⟩` from `clauses_word hA hB hC X hb hK hT hL u`. Take `⟨h3, h4⟩` from `clauses_word hA hB hC X hb hK hT hL u'`. Conclude with `⟨h1, h2, h3, h4⟩`.
+-/
 theorem inLevelSAt_of (hA : TypedNe) (hB : GlobLevelS) (hC : RatioH) :
     ∀ {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)
       (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)

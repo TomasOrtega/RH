@@ -13,6 +13,11 @@ open MeasureTheory GlobalTheory.ChartGlue GlobalTheory.Mean4O.CoverInt
 
 namespace GlobalTheory.Mean4O.CoverInt
 
+/- English proof (translation)
+Introduce `k _ X _ p σ hσ _ U hU D c`. Establish `: IsDomain k` using `hσ.isDomain σ`. Use `measure_mono_null ?_ (ae_iff.1 (SemiPosBir.ae_mem hσ c (U := U) ⟨_, hU⟩))` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩ h`. Establish `h₁` using `h (c.e.map_source hz.1)`.
+
+Rewrite `h₁` using `[c.e.left_inv hz.1]`. Conclude with `hz.2 h₁`.
+-/
 theorem volume_image_compl_ptsIn : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (σ : k →+* ℂ), Function.Injective σ → (∀ W : X.Opens, Nonempty W → Function.Injective (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p W)) → ∀ U : X.Opens, genericPoint X ∈ U → ∀ (D : ℕ) (c : AlgChart p σ D), MeasureTheory.volume (c.e '' (c.e.source ∩ (ptsIn p σ U)ᶜ)) = 0 := by
   intro k _ X _ p σ hσ _ U hU D c
   have : IsDomain k := hσ.isDomain σ

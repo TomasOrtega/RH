@@ -26,6 +26,31 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {V : Type} [AddCommGroup V] [Module E V]
 
+/- English proof (translation)
+Use `hM.loc` as an intermediate fact. Use `hM.char0` as an intermediate fact. Take `⟨S, ⟨c⟩⟩` from `CoordExist.exists_coord M hM H r k P hrk hP`. Take `⟨-, hN, hN', hSt, -⟩` from `CoordUnip.transport M hM H r k P S c`. Take `⟨on, on', -⟩` from `FrameOnto.unipotent_onto M.L r k S`.
+
+Take `⟨-, stab⟩` from `FrameStab.stab_eq M.L r k S`. Establish `hmem : ∀ Y, Y ∈ c1 ↔ ∃ A A', Tied M.L.O (algebraMap F E (LocNG.theta M)) A A' ∧ Y = cT M.L A * Y0 * A'`. Introduce `Y`. Rewrite using `[hc1]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨A, A', h1, h2, h3, h4⟩`. Conclude with `⟨A, A', (tied_iff_span _ _ _ _).1 ⟨h1, h2, h3⟩, h4⟩`. Introduce and unpack `⟨A, A', h, h4⟩`. Take `⟨h1, h2, h3⟩` from `(tied_iff_span _ _ _ _).2 h`. Conclude with `⟨A, A', h1, h2, h3, h4⟩`.
+
+Establish `hfr : ∀ g g' : Fin (r + 1) → V, (∃ n ∈ P.A.N, g = fun b => n (P.A.f b)) → (∃ n' ∈ P.B.N, g' = fun b => n' (P.B.f b)) → ∃ u u' : Matrix (Fin (r + 1)) (Fin (r + 1)) E, UT u ∧ UT u' ∧ g = act P.A.f u ∧ g' = act P.B.f u'`. Introduce and unpack `g g' ⟨n, hn, e⟩ ⟨n', hn', e'⟩`. Take `⟨u, hu, h⟩` from `on _ ((hN n).1 hn)`. Take `⟨u', hu', h'⟩` from `on' _ ((hN' n').1 hn')`. Conclude with `⟨u, u', hu, hu', e.trans (pull c n _ _ c.f_eq u h), e'.trans (pull c n' _ _ c.f'_eq u' h')⟩`.
+
+Establish `hZ0 : S.Zh = H.Zhat P.A.f P.B.f`. Use extensionality with `a b`. Simplify using `only [Frames.Zh, HermSp.Zhat, Matrix.of_apply, c.f_eq, c.f'_eq, c.h_eq]`. Take `⟨a₁, a₁', ha₁, e₁⟩` from `(hmem _).1 hZ1`. Take `⟨a, a', ha, e⟩` from `(hmem _).1 hZ`.
+
+Take `⟨b₁, b₁', hb₁, p1, -, p1', -⟩` from `ha₁.inv`. Establish `hA` using `hb₁.mul ha`. Establish `eZ : H.Zhat f f' = cT M.L (b₁ * a) * H.Zhat t₁.f t₁.f' * (b₁' * a')`. Establish `: cT M.L (b₁ * a) * H.Zhat t₁.f t₁.f' * (b₁' * a') = cT M.L (a₁ * b₁ * a) * Y0 * (a₁' * b₁' * a')`. Simplify using `only [e₁, cT_mul, mul_assoc]`.
+
+Rewrite using `[this, p1, p1', one_mul, one_mul, e]`. Generalize the expression as in `b₁ * a = A at hA eZ`. Generalize the expression as in `b₁' * a' = A' at hA eZ`. Take `⟨B, B', hB, q1, q2, q1', q2'⟩` from `hA.inv`. Take `⟨-, -, ⟨n₁, hn₁, e₁f, -⟩, ⟨n₁', hn₁', e₁f', -⟩, -⟩` from `ht₁`.
+
+Take `⟨u₁, u₁', hu₁, hu₁', f₁, f₁'⟩` from `hfr _ _ ⟨n₁, hn₁, e₁f⟩ ⟨n₁', hn₁', e₁f'⟩`. Take `⟨u, u', hu, hu', f₀, f₀'⟩` from `hfr _ _ hf hf'`. Take `⟨v, hv, w1, w2, -⟩` from `hu₁.inv`. Take `⟨v', hv', w1', w2', -⟩` from `hu₁'.inv`. Rewrite `eZ` using `[f₀, f₀', f₁, f₁', Zhat_act, Zhat_act, ← hZ0]`.
+
+Establish `key : cT M.L (u * B * v) * S.Zh * (u' * B' * v') = S.Zh`. Establish `h1 : cT M.L (u * B * v) * S.Zh * (u' * B' * v') = cT M.L (B * v) * (cT M.L u * S.Zh * u') * (B' * v')`. Simplify using `only [cT_mul, mul_assoc]`. Establish `h2 : cT M.L (B * v) * (cT M.L A * (cT M.L u₁ * S.Zh * u₁') * A') * (B' * v') = cT M.L (u₁ * (A * B) * v) * S.Zh * (u₁' * (A' * B') * v')`. Simplify using `only [cT_mul, mul_assoc]`.
+
+Rewrite using `[h1, eZ, h2, q1, q1', mul_one, mul_one, w1, w1', cT_one, one_mul, mul_one]`. Take `⟨h, hh, g1, g2⟩` from `(stab _ _ ((hu.mul hB.1).mul hv) ((hu'.mul hB.2.1).mul hv')).1 key`. Take `⟨s, rfl⟩` from `c.grp.surjective h`. Establish `k1` using `pull c s _ _ c.f_eq _ g1`. Establish `k2` using `pull c s _ _ c.f'_eq _ g2`.
+
+Use `⟨s, (hSt s).2 hh, A, A', hA, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[f₀, f₁, map_act, k1, act_act, act_act]`. Use `congr 1`. Establish `: u * B * v * (u₁ * A) = u * (B * (v * u₁) * A)` using `by simp only [mul_assoc]`. Rewrite using `[this, w2, mul_one, q2, mul_one]`.
+
+Rewrite using `[f₀', f₁', map_act, k2, act_act, act_act]`. Use `congr 1`. Establish `: u' * B' * v' * (u₁' * A') = u' * (B' * (v' * u₁') * A')` using `by simp only [mul_assoc]`. Rewrite using `[this, w2', mul_one, q2', mul_one]`.
+-/
 theorem frames_in_class (M : Model F E) (hM : M.OK) (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r)
     (hrk : Module.finrank E V = k + 2 * r + 1) (hP : P.RelG (LocNG.theta M))
     (d₁ : LocNG.Datum P) (t₁ : Term V M r) (ht₁ : LocNG.IsTermOver P d₁ t₁)
@@ -108,11 +133,21 @@ namespace GlobalTheory.HL.LocGenMass
 
 open GlobalTheory.HL.PairingClass
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[act, Matrix.one_apply]`.
+-/
 theorem act_one' {E : Type} [CommRing E] {V : Type} [AddCommGroup V] [Module E V] {n : ℕ}
     (g : Fin n → V) : act g (1 : Matrix (Fin n) (Fin n) E) = g := by
   funext j
   simp [act, Matrix.one_apply]
 
+/- English proof (translation)
+Establish `key : ∀ (g : Fin n → V) (D : Matrix (Fin n) (Fin n) E), IntM O D → Submodule.span O (Set.range (act g D)) ≤ Submodule.span O (Set.range g)`. Introduce `g D hD`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Conclude with `Submodule.smul_mem _ (⟨D i j, hD i j⟩ : O) (Submodule.subset_span ⟨i, rfl⟩)`. Use `le_antisymm (key _ _ hC) ?_` and prove the remaining obligations. Take `⟨B, -, hCB, -, hint⟩` from `hU.inv`. Establish `e : act (act g₀ C) B = g₀` using `by rw [act_act, hCB, act_one']`. Use `key (act g₀ C) B (hint O hC)` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem span_act_eq {E : Type} [CommRing E] {V : Type} [AddCommGroup V] [Module E V] {n : ℕ}
     (O : Subring E) (g₀ : Fin n → V) (C : Matrix (Fin n) (Fin n) E) (hU : UT C) (hC : IntM O C) :
     Submodule.span O (Set.range (act g₀ C)) = Submodule.span O (Set.range g₀) := by
@@ -129,6 +164,31 @@ theorem span_act_eq {E : Type} [CommRing E] {V : Type} [AddCommGroup V] [Module 
   have := key (act g₀ C) B (hint O hC)
   rwa [e] at this
 
+/- English proof (translation)
+Take `⟨hA, hA', hn₀, hn₀', e, e', hth, hgr⟩` from `hW`. Take `⟨C, C', a3, a4, a12, adiag, aθ, p1, p2⟩` from `hc`. Establish `p1 : ∀ j, m (S.f j) = ∑ i, C i j • m₀ (S.f i)` using `p1`. Establish `p2 : ∀ j, m' (S.f' j) = ∑ i, C' i j • m₀' (S.f' i)` using `p2`. Establish `pf : (fun b => m (S.f b)) = act (fun b => m₀ (S.f b)) C` using `funext p1`.
+
+Establish `pf' : (fun b => m' (S.f' b)) = act (fun b => m₀' (S.f' b)) C'` using `funext p2`. Establish `hU : UT C` using `⟨fun i j h => (a12 i j h).1, fun i => (adiag i).1⟩`. Establish `hU' : UT C'` using `⟨fun i j h => (a12 i j h).2, fun i => (adiag i).2⟩`. Establish `hg : ∀ a (j : Fin r), hf L S.Hm (S.f a) (S.f j.castSucc) = 0` using `fun a j => by`. Simplify using `[S.gram, Fin.castSucc_ne_last]`.
+
+Establish `hg' : ∀ a (j : Fin r), hf L S.Hm (S.f' a) (S.f' j.castSucc) = 0` using `fun a j => by`. Simplify using `[S.gram', Fin.castSucc_ne_last]`. Establish `hs : {i : Fin (r + 1) | (i : ℕ) < r + 1} = Set.univ`. Use extensionality with `i`. Simplify using `using i.2`.
+
+Take `⟨s1, s2, s3⟩` from `StdLat.stdLat_spec L r k S _ _ (Or.inl ⟨rfl, rfl⟩) _ hA`. Take `⟨s1', s2', s3'⟩` from `StdLat.stdLat_spec L r k S _ _ (Or.inr ⟨rfl, rfl⟩) _ hA'`. Establish `hSD : IsSD L S.Hm Λ`. Use `TermBasic.isSD_smul S hn₀.1.1 s1` as an intermediate fact. Rewrite `this` using `[← e]`. Then use the resulting hypothesis.
+
+Establish `tr : ∀ x, (x ∈ Λ ∧ x ∈ S.spanTo S.f (r + 1)) ↔ x ∈ Submodule.span L.O (Set.range fun b => m₀ (S.f b))`. Introduce `x`. Use `TermBasic.trace_smul hg hn₀ (s2 (r + 1) le_rfl) x` as an intermediate fact. Rewrite `this` using `[← e, hs, Set.image_univ]`. Then use the resulting hypothesis. Establish `tr' : ∀ x, (x ∈ Λ ∧ x ∈ S.spanTo S.f' (r + 1)) ↔ x ∈ Submodule.span L.O (Set.range fun b => m₀' (S.f' b))`.
+
+Introduce `x`. Use `TermBasic.trace_smul hg' hn₀' (s2' (r + 1) le_rfl) x` as an intermediate fact. Rewrite `this` using `[← e', hs, Set.image_univ]`. Then use the resulting hypothesis. Establish `prim : ∀ x, (x ∈ Λ ∧ x ∈ S.spanTo S.f (r + 1)) ↔ x ∈ Submodule.span L.O (Set.range fun b => m (S.f b))`. Introduce `x`.
+
+Rewrite using `[tr, pf, span_act_eq L.O _ C hU a3]`. Establish `prim' : ∀ x, (x ∈ Λ ∧ x ∈ S.spanTo S.f' (r + 1)) ↔ x ∈ Submodule.span L.O (Set.range fun b => m' (S.f' b))`. Introduce `x`. Rewrite using `[tr', pf', span_act_eq L.O _ C' hU' a4]`. Take `⟨A₁, hA₁, n₁, hn₁, hfix, hΛ₁⟩` from `GlobalTheory.HL.FrameLift.lift L r k S S.f S.es (Or.inl ⟨rfl, rfl⟩) Λ hSD m hm prim`.
+
+Take `⟨A₁', hA₁', n₁', hn₁', hfix', hΛ₁'⟩` from `GlobalTheory.HL.FrameLift.lift L r k S S.f' S.es' (Or.inr ⟨rfl, rfl⟩) Λ hSD m' hm' prim'`. Establish `eA : A₁ = δ.1`. Use extensionality with `x`. Rewrite using `[(StdLat.stdLat_spec L r k S _ _ (Or.inl ⟨rfl, rfl⟩) _ hA₁).2.2 x, s3 x, TermBasic.inner_smul S hn₁ (Λ := S.stdLat S.f S.es A₁), TermBasic.inner_smul S hn₀ (Λ := S.stdLat S.f S.es δ.1), ← hΛ₁, ← e]`. Establish `eA' : A₁' = δ.2.1`.
+
+Use extensionality with `x`. Rewrite using `[(StdLat.stdLat_spec L r k S _ _ (Or.inr ⟨rfl, rfl⟩) _ hA₁').2.2 x, s3' x, TermBasic.inner_smul S hn₁' (Λ := S.stdLat S.f' S.es' A₁'), TermBasic.inner_smul S hn₀' (Λ := S.stdLat S.f' S.es' δ.2.1), ← hΛ₁', ← e']`. Substitute `eA eA'` using the available equality. Use `⟨n₁, hn₁, n₁', hn₁', hfix, hfix', hA, hA', hn₁, hn₁', hΛ₁, hΛ₁', fun j => ?_, hgr⟩` and prove the remaining obligations. Rewrite using `[hfix, hfix', p1, p2]`.
+
+Use `choose y hy hyeq using hth`. Use `choose cc hcc hcceq using aθ`. Establish `hmem : ∀ i, m₀ (S.f i) ∈ Λ` using `fun i => ((tr _).2 (Submodule.subset_span ⟨i, rfl⟩)).1`. Use `⟨∑ i, ((⟨C' i j, a4 i j⟩ : L.O) • y i + (⟨cc i j, hcc i j⟩ : L.O) • m₀ (S.f i)), Submodule.sum_mem _ fun i _ => Submodule.add_mem _ (Submodule.smul_mem _ _ (hy i)) (Submodule.smul_mem _ _ (hmem i)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : m₀' (S.f' i) = m₀ (S.f i) + algebraMap F E S.th • y i`. Rewrite using `[← hyeq i, add_sub_cancel]`. Establish `h2 : C' i j = C i j + algebraMap F E S.th * cc i j`. Rewrite using `[← hcceq i j, add_sub_cancel]`.
+
+Rewrite using `[h1, Subring.smul_def, Subring.smul_def]`. Simplify using `only [h2]`. Use `module`.
+-/
 theorem relift {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) (r k : ℕ)
     (S : Frames L r k) (δ : S.Datum) (Λ : Submodule L.O S.V) (m₀ m₀' m m' : S.GLV)
@@ -211,6 +271,63 @@ end GlobalTheory.HL.LocGenMass
 
 namespace GlobalTheory.HL.LocGenMass
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P hk hrank hrel R d0 f f' hf hf' Y0 c1 hc1 hZ hex`. Use `letI := hM.loc`. Use `letI := hM.char0`. Take `⟨d₁, t₁, ht₁, hZ₁⟩` from `hex`. Take `⟨S, ⟨c⟩⟩` from `GlobalTheory.HL.CoordExist.exists_coord M hM H r k P hrank hrel`.
+
+Take `⟨hT1, hT2, -⟩` from `GlobalTheory.HL.CoordTermWt.terms_correspond M hM H r k P S c`. Take `⟨hth, hN, hN', hSt, -⟩` from `GlobalTheory.HL.CoordUnip.transport M hM H r k P S c`. Take `⟨-, -, hbij, -⟩` from `GlobalTheory.HL.CoordMass.transport M hM H r k P S c`. Establish `aS` using `GlobalTheory.FrameAct.stabiliser_acts_on_terms M.L r k S`. Establish `cls` using `GlobalTheory.HL.FrameClass.frame_classes M.L r k S`.
+
+Establish `trm` using `GlobalTheory.HL.TermBasic.term_basic M.L r k S`. Establish `vol` using `(GlobalTheory.HL.volSt M.L r k S).2`. Take `⟨s₀, hs₀, A, A', hAA, ef, ef'⟩` from `frames_in_class M hM H r k P hrank hrel d₁ t₁ ht₁ f f' hf hf' Y0 c1 hc1 hZ₁ hZ`. Take `⟨n, hn, rfl⟩` from `hf`. Take `⟨n', hn', rfl⟩` from `hf'`.
+
+Establish `h₁` using `(hT1 d₁ t₁ ht₁).1`. Establish `hs₀' : c.grp s₀ ∈ S.St` using `(hSt s₀).1 hs₀`. Establish `hΛ₁t : S.IsTerm (c.dat d₁) (c.grp s₀ • c.lat t₁.abelian₂)` using `(aS _ _ h₁ _ hs₀').1`. Use `set C₂ := S.Fr (c.dat d₁) (c.grp s₀ • c.lat t₁.abelian₂) with hC₂`. Establish `hC₂' : C₂ = S.frameCls (fun b => c.e (n (P.A.f b))) (fun b => c.e (n' (P.B.f b)))`.
+
+Rewrite using `[hC₂, (aS _ _ h₁ _ hs₀').2.2.2.2.1, GlobalTheory.HL.AbsGenMass.fr_eq hM c d₁ t₁ ht₁, (cls _ _).2.2]`. Take `⟨a1, a2, a3, a4, C, hC, e1⟩` from `hAA`. Use `((cls (fun b => c.grp s₀ (c.e (t₁.f b))) (fun b => c.grp s₀ (c.e (t₁.f' b)))).2.1 (fun b => c.e (n (P.A.f b)), fun b => c.e (n' (P.B.f b))) ⟨A, A', a3, a4, fun i j h => ⟨a1.1 i j h, a2.1 i j h⟩, fun i => ⟨a1.2 i, a2.2 i⟩, fun i j => ⟨C i j, hC i j, ?_⟩, fun j => ?_, fun j => ?_⟩) …` and prove the remaining obligations. Rewrite using `[e1, ← hth]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `congrFun ef j` as an intermediate fact. Simplify using `only [PairingClass.act] at this`. Simplify using `[this, CoordUnip.grp_apply]`. Use `congrFun ef' j` as an intermediate fact.
+
+Simplify using `only [PairingClass.act] at this`. Simplify using `[this, CoordUnip.grp_apply]`. Establish `hI : S.IsIntCls C₂` using `(trm _ _ hΛ₁t).2.2.2.2.2.2.1`. Take `⟨-, -, hw1, hwinv⟩` from `vol C₂ hI.1`. Use `⟨S.wC C₂, by linarith, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hsum` using `GlobalTheory.HL.TotalWeight.sumCls_one_le M.L r k S ⟨_, _, hΛ₁t⟩`. Establish `hle : ENNReal.ofReal (S.wC C₂) ≤ S.sumCls fun _ => 1`. Unfold `Frames.sumCls`. Use `le_trans ?_ (ENNReal.le_tsum (Quotient.mk (MulAction.orbitRel S.St (Set S.FrP)) C₂))` and prove the remaining obligations. Establish `hrl : (MulAction.orbitRel S.St (Set S.FrP)) (Quotient.mk (MulAction.orbitRel S.St (Set S.FrP)) C₂).out C₂` using `Quotient.mk_out C₂`.
+
+Take `⟨⟨h, hh⟩, e⟩` from `MulAction.orbitRel_apply.1 hrl`. Establish `e' : (Quotient.mk (MulAction.orbitRel S.St (Set S.FrP)) C₂).out = h • C₂` using `e.symm`. Establish `hint : S.IsIntCls (h • C₂)`. Rewrite using `[hC₂, ← (aS _ _ hΛ₁t h hh).2.2.2.2.1]`. Conclude with `(trm _ _ (aS _ _ hΛ₁t h hh).1).2.2.2.2.2.2.1`.
+
+Rewrite using `[e', if_pos hint, hwinv h hh, mul_one]`. Rewrite using `[(GlobalTheory.HL.CoordHeight.height_eq M hM H r k P S c).1]`. Use `hle.trans hsum` as an intermediate fact. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by unfold Frames.Hp; positivity)).1 this`. Establish `conv : ∀ (s : Set (Term V M r)) (p : Term V M r → Prop) [∀ t, Decidable (p t)] (g : Term V M r → ℝ≥0∞), (∑' t : s, if p t.1 then g t.1 else 0) = ∑' t : {t // t ∈ s ∧ p t}, g t.1`.
+
+Introduce `s p _ g`. Rewrite using `[tsum_subtype s (fun t => if p t then g t else 0)]`. Rewrite using `[show (∑' t : {t // t ∈ s ∧ p t}, g t.1) = ∑' t : ({t | t ∈ s ∧ p t} : Set _), g t.1 from rfl, tsum_subtype]`. Use `tsum_congr fun t => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : t ∈ s <;> by_cases h2 : p t <;> simp [Set.indicator, h1, h2]`.
+
+Establish `orb : ∀ X : Set S.FrP, (∃ s ∈ S.St, X = s • S.Fr (c.dat d₁) (c.lat t₁.abelian₂)) ↔ ∃ s ∈ S.St, X = s • C₂`. Introduce `X`. Rewrite using `[hC₂, (aS _ _ h₁ _ hs₀').2.2.2.2.1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, e⟩`.
+
+Use `⟨s * (c.grp s₀)⁻¹, S.St.mul_mem hs (S.St.inv_mem hs₀'), ?_⟩` and prove the remaining obligations. Rewrite using `[e, mul_smul, inv_smul_smul]`. Introduce and unpack `⟨s, hs, e⟩`. Use `⟨s * c.grp s₀, S.St.mul_mem hs hs₀', ?_⟩` and prove the remaining obligations. Rewrite using `[e, mul_smul]`.
+
+Establish `hC₁` using `GlobalTheory.HL.AbsGenMass.fr_eq hM c d₁ t₁ ht₁`. Establish `hclass : ∀ d t, LocNG.IsTermOver P d t → (H.Zhat t.f t.f' ∈ c1 ↔ ∃ s ∈ S.St, S.Fr (c.dat d) (c.lat t.abelian₂) = s • C₂)`. Introduce `d t ht`. Rewrite using `[GlobalTheory.HL.PairingClass.mem_class_iff M hM H r k P hrank hrel d₁ d t₁ t ht₁ ht Y0 c1 hc1 hZ₁, ← orb, GlobalTheory.HL.AbsGenMass.fr_eq hM c d t ht, hC₁]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨s, hs, A, A', a1, a2, a3, a4, a5⟩`. Use `⟨c.grp s, (hSt s).1 hs, ?_⟩` and prove the remaining obligations. Rewrite using `[(cls _ _).2.2]`. Use `((cls _ _).2.1 (fun b => c.e (t.f b), fun b => c.e (t.f' b)) ⟨A, A', fun i j => (a1 i j).1, fun i j => (a1 i j).2.1, a2, a3, fun i j => hth ▸ (a1 i j).2.2, fun j => ?_, fun j => ?_⟩).1` and prove the remaining obligations. Simplify using `[a4, Coord.grp]`.
+
+Simplify using `[a5, Coord.grp]`. Introduce and unpack `⟨s, hs, e⟩`. Establish `hm` using `(cls (fun b => c.e (t.f b)) (fun b => c.e (t.f' b))).1`. Rewrite `hm` using `[e, (cls _ _).2.2]`. Take `⟨A, A', a1, a1', a2, a3, a6, a4, a5⟩` from `hm`.
+
+Use `⟨c.grp.symm s, (hSt _).2 (by simpa using hs), A, A', fun i j => ⟨a1 i j, a1' i j, hth ▸ a6 i j⟩, a2, a3, fun j => c.e.injective ?_, fun j => c.e.injective ?_⟩` and prove the remaining obligations. Use `(a4 j).trans ?_` and prove the remaining obligations. Simplify using `[Coord.grp]`. Use `(a5 j).trans ?_` and prove the remaining obligations. Simplify using `[Coord.grp]`.
+
+Establish `hstab : ∀ δ : S.Datum, ∀ s ∈ S.St, ∀ Λ, S.IsTerm δ Λ → (S.BBzero δ Λ ∧ ∃ s ∈ S.St, S.Fr δ Λ = s • C₂) → (S.BBzero δ (s • Λ) ∧ ∃ s' ∈ S.St, S.Fr δ (s • Λ) = s' • C₂)`. Introduce and unpack `δ h hh Λ hΛ ⟨hb, s, hs, e⟩`. Use `⟨(aS δ Λ hΛ h hh).2.2.2.2.2.2.2.1.2 hb, h * s, S.St.mul_mem hh hs, ?_⟩` and prove the remaining obligations. Rewrite using `[(aS δ Λ hΛ h hh).2.2.2.2.1, e, mul_smul]`. Rewrite using `[← ENNReal.tsum_mul_left]`.
+
+Use `tsum_congr fun d => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Use `congr 1`. Establish `e0` using `conv (R.RT d.1) (fun t => ¬ LocNG.BBne (H := H) t ∧ H.Zhat t.f t.f' ∈ c1) (fun t => ENNReal.ofReal (LocNG.mu P t))`. Use `beta_reduce at e0`.
+
+Rewrite using `[e0, GlobalTheory.HL.AbsGenMass.sum_eq_mass hM c R d.1 _ (fun Λ => S.BBzero (c.dat d.1) Λ ∧ ∃ s ∈ S.St, S.Fr (c.dat d.1) Λ = s • C₂) (hstab _) (fun t ht => by`. Rewrite using `[(hT1 _ t ht).2.2, not_not, hclass _ t ht]),`. Use the proof step `hC₂, GlobalTheory.HL.MassOrbit.mass_orbit_class M.L r k S _ _ hΛ₁t, ← hC₂]`. Unfold `Frames.nT`. Use `congr 2`.
+
+Use `Eq.trans ?_ (hbij.1.encard_image _)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `Λ'`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hT, hB, hF⟩`. Take `⟨⟨Λ, g, g', T, T'⟩, ht, rfl⟩` from `hT2 d.1 Λ' hT`. Establish `ht'` using `ht`. Take `⟨h1, h2, ⟨n₀, hn₀, hg, hΛ⟩, ⟨n₀', hn₀', hg', hΛ'⟩, -⟩` from `ht'`. Simplify using `only at h1 h2 hg hΛ hg' hΛ'`.
+
+Substitute `h1 h2 hg hg'` using the available equality. Establish `hW` using `(GlobalTheory.HL.CoordTerm.isTermW_iff M hM H r k P S c d.1 n₀ n₀' Λ).1 ⟨ht, hn₀, hn₀', hΛ, hΛ'⟩`. Establish `hmem : ((fun b => c.grp n (S.f b)), (fun b => c.grp n' (S.f' b))) ∈ S.frameCls (fun b => c.grp n₀ (S.f b)) (fun b => c.grp n₀' (S.f' b))`. Rewrite using `[← (GlobalTheory.HL.WitIndep.witness_independence M.L r k S _ _ _ _ hW).2.2.1, hF, hC₂']`. Establish `e1 : (fun b => c.grp n (S.f b)) = fun b => c.e (n (P.A.f b))`.
+
+Use function extensionality and compare the values at `fun b => by rw [c.f_eq, CoordUnip.grp_apply]`. Establish `e2 : (fun b => c.grp n' (S.f' b)) = fun b => c.e (n' (P.B.f b))`. Use function extensionality and compare the values at `fun b => by rw [c.f'_eq, CoordUnip.grp_apply]`. Rewrite using `[e1, e2]`. Conclude with `(cls _ _).1`.
+
+Take `⟨m₂, hm₂, m₂', hm₂', e2, e2', hW2⟩` from `relift M.L r k S _ _ _ _ _ _ hW ((hN n).1 hn) ((hN' n').1 hn') hmem`. Take `⟨n₂, rfl⟩` from `c.grp.surjective m₂`. Take `⟨n₂', rfl⟩` from `c.grp.surjective m₂'`. Establish `key` using `(GlobalTheory.HL.CoordTerm.isTermW_iff M hM H r k P S c d.1 n₂ n₂' Λ).2 hW2`. Establish `q1 : (fun b => n (P.A.f b)) = fun b => n₂ (P.A.f b)` using `funext fun b => c.e.injective (by`.
+
+Rewrite using `[← CoordUnip.grp_apply c n, ← CoordUnip.grp_apply c n₂, ← c.f_eq, e2])`. Establish `q2 : (fun b => n' (P.B.f b)) = fun b => n₂' (P.B.f b)` using `funext fun b => c.e.injective (by`. Rewrite using `[← CoordUnip.grp_apply c n', ← CoordUnip.grp_apply c n₂', ← c.f'_eq, e2'])`. Use `⟨Λ, ⟨?_, fun hb => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[q1, q2]`.
+
+Conclude with `key.1`. Rewrite `hb` using `[q1, q2]`. Conclude with `(hT1 _ _ key.1).2.2.1 hb hB`. Introduce and unpack `⟨Λ, ⟨ht, hb⟩, rfl⟩`. Use `⟨(hT1 _ _ ht).1, ?_, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hB`. Conclude with `hb ((hT1 _ _ ht).2.2.2 hB)`. Conclude with `(GlobalTheory.HL.AbsGenMass.fr_eq hM c d.1 _ ht).trans hC₂'.symm`.
+-/
 theorem mass_class_eq_weight_count : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r), 4 * r + 7 ≤ k → Module.finrank E V = k + 2 * r + 1 → P.RelG (LocNG.theta M) → ∀ (R : LocNG.Reps P) (d0 : LocNG.Datum P), ∀ (f f' : Fin (r + 1) → V), (∃ n ∈ P.A.N, f = fun b => n (P.A.f b)) → (∃ n' ∈ P.B.N, f' = fun b => n' (P.B.f b)) → ∀ (Y0 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (c1 : Set (Matrix (Fin (r + 1)) (Fin (r + 1)) E)), c1 = {Y | ∃ A A' : Matrix (Fin (r + 1)) (Fin (r + 1)) E, ((∀ a b, b < a → A a b = 0) ∧ (∀ a, A a a = 1) ∧ ∀ a b, A a b ∈ M.L.O) ∧ ((∀ a b, b < a → A' a b = 0) ∧ (∀ a, A' a a = 1) ∧ ∀ a b, A' a b ∈ M.L.O) ∧ (∀ a b, A a b - A' a b ∈ Submodule.span M.L.O {algebraMap F E (LocNG.theta M)}) ∧ Y = (A.transpose.map M.L.cj) * Y0 * A'} → H.Zhat f f' ∈ c1 → (∃ (d : LocNG.Datum P) (t : Term V M r), LocNG.IsTermOver P d t ∧ H.Zhat t.f t.f' ∈ c1) → ∃ w : ℝ, 0 < w ∧ w ≤ P.Hp ^ (3 * (r + 1) ^ 2) ∧ (∑' d : R.RD, ENNReal.ofReal (LocNG.Datum.wt d0 d.1) * ∑' t : R.RT d.1, (if ¬ LocNG.BBne (H := H) t.1 ∧ H.Zhat t.1.f t.1.f' ∈ c1 then ENNReal.ofReal (LocNG.mu P t.1) else 0)) = ENNReal.ofReal w * ∑' d : R.RD, ENNReal.ofReal (LocNG.Datum.wt d0 d.1) * (({Λ | LocNG.IsTermOver P d.1 (⟨Λ, f, f', P.A.T, P.B.T⟩ : Term V M r) ∧ ¬ LocNG.BBne (H := H) (⟨Λ, f, f', P.A.T, P.B.T⟩ : Term V M r)} : Set (Submodule M.L.O V)).encard : ℝ≥0∞) := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H r k P hk hrank hrel R d0 f f' hf hf' Y0 c1 hc1 hZ hex
   letI := hM.loc

@@ -16,6 +16,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory GlobalTheory.Cart
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TrivOnZeroLocus.cls_pull_eq_zero | exact GlobalTheory.TrivOnZeroLocus.cls_pull_eq_zero | (intros; apply GlobalTheory.TrivOnZeroLocus.cls_pull_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rational_section_divisor_comparison : ∀ (X : Scheme.{0}) [IsIntegral X] (k : Type) [CommRing k] (q : X ⟶ Sp k) (M : HermLB q)
     (r : M.B.ι → X.functionFieldˣ), (∀ i, ∀ x ∈ M.B.U i, RegAt x (r i : X.functionField)) →
     ∀ (B : HermLB q) (ρ : B.B.ι → X.functionFieldˣ), IsRatSec B.B ρ → ∀ (ι : Type) (U : ι → X.Opens) (t : ι → X.functionFieldˣ),

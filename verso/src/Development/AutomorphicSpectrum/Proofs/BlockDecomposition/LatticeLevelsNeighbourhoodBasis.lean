@@ -21,6 +21,9 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheo
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl
 
+/- English proof (translation)
+Rewrite `hV` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hsub⟩` from `hV`. Use `⟨⋂ i, t i, Filter.iInter_mem.mpr (fun i => by simpa using ht i), fun Y hY => hsub ?_⟩` and prove the remaining obligations. Introduce `i _`. Conclude with `Set.mem_iInter.mp (hY i) i`.
+-/
 theorem exists_cube_subset_of_mem_nhds_zero {ι X : Type*} [Finite ι] [TopologicalSpace X] [Zero X]
     {V : Set (ι → X)} (hV : V ∈ nhds (0 : ι → X)) :
     ∃ W ∈ nhds (0 : X), ∀ Y : ι → X, (∀ i, Y i ∈ W) → Y ∈ V := by
@@ -30,6 +33,17 @@ theorem exists_cube_subset_of_mem_nhds_zero {ι X : Type*} [Finite ι] [Topologi
   intro i _
   exact Set.mem_iInter.mp (hY i) i
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ d b n M U hU`. Set `bb` to `Algebra.TensorProduct.basis (Af F) b`. Take `⟨W1, hW1, hW1U⟩` from `exists_cube_subset_of_mem_nhds_zero hU`. Take `⟨W, hW, hWW1⟩` from `exists_cube_subset_of_mem_nhds_zero hW1`. Establish `hcont : Continuous (fun c : Fin d → Af F => ∑ k, c k • bb k)` using `continuous_finsetSum _ (fun k _ => (continuous_apply k).smul continuous_const)`.
+
+Establish `hV : (fun c : Fin d → Af F => ∑ k, c k • bb k) ⁻¹' W ∈ nhds (0 : Fin d → Af F)`. Apply `hcont.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using hW`. Take `⟨V0, hV0, hV0V⟩` from `exists_cube_subset_of_mem_nhds_zero hV`. Take `⟨-, -, -, -, -, -, -, hN, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`.
+
+Take `⟨N, hNpos, hNV0⟩` from `hN V0 hV0`. Use `⟨N, hNpos, fun X hX => hW1U X fun a => hWW1 (X a) fun i => ?_⟩` and prove the remaining obligations. Establish `hXai : InNOh b N (X a i)` using `(show ∀ (a : Fin n) (i : Fin M), InNOh b N (X a i) from hX) a i`. Establish `hmem : (⇑(bb.repr (X a i))) ∈ (fun c : Fin d → Af F => ∑ k, c k • bb k) ⁻¹' W`. Apply `hV0V` to reduce the goal to its premises.
+
+Introduce `k`. Take `⟨y, hy, hk⟩` from `hXai k`. Rewrite using `[hk]`. Conclude with `hNV0 y hy`. Simplify using `only [Set.mem_preimage] at hmem`.
+
+Rewrite `hmem` using `[bb.sum_repr]`. Then use the resulting hypothesis.
+-/
 theorem latN_small : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ),
     ∀ U ∈ nhds (0 : Fin n → Fin M → Af F ⊗[F] E), ∃ N : ℕ, 0 < N ∧

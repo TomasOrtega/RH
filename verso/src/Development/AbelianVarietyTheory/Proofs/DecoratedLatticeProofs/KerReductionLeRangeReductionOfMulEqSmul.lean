@@ -4,6 +4,17 @@ open Matrix Formalism.UG Formalism.L2.DIV GlobalTheory.LevNorm
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O _ _ k _ r hr n M N π hπ hker hMN v hv`. Establish `hmap : ∀ (A : Matrix (Fin n) (Fin n) O) (x : Fin n → O), (fun i => r ((A *ᵥ x) i)) = A.map r *ᵥ (fun i => r (x i))`. Introduce `A x`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+
+Use `set v' : Fin n → O := fun i => Function.surjInv hr (v i) with hv'def`. Establish `hv' : (fun i => r (v' i)) = v` using `funext fun i => Function.surjInv_eq hr (v i)`. Establish `h0 : ∀ i, r ((N *ᵥ v') i) = 0`. Introduce `i`. Use `congrFun (hmap N v') i` as an intermediate fact.
+
+Rewrite using `[this, hv', hv]`. Both sides reduce to the same expression. Use `choose w hw using fun i => hker _ (h0 i)`. Establish `hNw : N *ᵥ v' = π • w`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[hw i]`. Establish `key : π • v' = π • (M *ᵥ w)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.smul_mulVec, Matrix.one_mulVec]`. Use `_ = (M * N) *ᵥ v' := by rw [hMN]`.
+
+Use `_ = M *ᵥ (N *ᵥ v') := by rw [Matrix.mulVec_mulVec]`. Use `_ = π • (M *ᵥ w) := by rw [hNw, Matrix.mulVec_smul]`. Establish `hvw : v' = M *ᵥ w` using `smul_right_injective (Fin n → O) hπ key`. Use `⟨fun i => r (w i), ?_⟩` and prove the remaining obligations. Rewrite using `[← hmap, ← hvw, hv']`.
+-/
 theorem ker_map_subset_range_map_of_mul_eq_smul :
     ∀ {O : Type} [CommRing O] [IsDomain O] {k : Type} [Field k] (r : O →+* k),
       Function.Surjective r → ∀ {n : ℕ} (M N : Matrix (Fin n) (Fin n) O) (π : O), π ≠ 0 →

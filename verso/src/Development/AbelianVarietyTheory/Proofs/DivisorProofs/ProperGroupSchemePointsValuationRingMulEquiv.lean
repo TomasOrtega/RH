@@ -13,6 +13,15 @@ open scoped CategoryTheory.Obj
 noncomputable section
 namespace GlobalTheory.ValPts
 
+/- English proof (translation)
+Introduce `U Ω _ _ _ _ _ _ S G _ hp u`. Set `V : Over.mk (spMap (algebraMap U Ω) ≫ u) ⟶ Over.mk u` to `Over.homMk (spMap (algebraMap U Ω)) rfl`. Set `φ : (Over.mk u ⟶ G) →* (Over.mk (spMap (algebraMap U Ω) ≫ u) ⟶ G)` to `MonoidHom.mk' (V ≫ ·) fun x y => MonObj.comp_mul V x y`. Establish `hv : ValuativeCriterion G.hom`. Rewrite `hp` using `[IsProper.eq_valuativeCriterion]`.
+
+Conclude with `hp.1.1.1`. Establish `hb : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `a b e`. Establish `e' : spMap (algebraMap U Ω) ≫ a.left = spMap (algebraMap U Ω) ≫ b.left` using `congrArg (fun q => q.left) e`.
+
+Set `Q : ValuativeCommSq G.hom` to `{ R := U, K := Ω, i₁ := spMap (algebraMap U Ω) ≫ a.left, i₂ := u, commSq := ⟨(Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (Over.w a))⟩ }`. Take `⟨W⟩` from `hv Q`. Establish `h1` using `W.uniq ⟨a.left, rfl, Over.w a⟩`. Establish `h2` using `W.uniq ⟨b.left, e'.symm, Over.w b⟩`. Conclude with `Over.OverMorphism.ext (congrArg CommSq.LiftStruct.l (h1.trans h2.symm))`.
+
+Introduce `y`. Set `Q : ValuativeCommSq G.hom` to `{ R := U, K := Ω, i₁ := y.left, i₂ := u, commSq := ⟨Over.w y⟩ }`. Take `⟨W⟩` from `hv Q`. Conclude with `⟨Over.homMk W.default.l W.default.fac_right, Over.OverMorphism.ext W.default.fac_left⟩`. Conclude with `⟨MulEquiv.ofBijective φ hb, fun P => rfl⟩`.
+-/
 theorem points_generic_mulEquiv : ∀ (U Ω : Type) [CommRing U] [IsDomain U] [ValuationRing U] [Field Ω] [Algebra U Ω] [IsFractionRing U Ω] (S : Scheme.{0}) (G : Over S) [GrpObj G], IsProper G.hom → ∀ u : Sp U ⟶ S, ∃ e : (Over.mk u ⟶ G) ≃* (Over.mk (spMap (algebraMap U Ω) ≫ u) ⟶ G), ∀ P, (e P).left = spMap (algebraMap U Ω) ≫ P.left := by
   intro U Ω _ _ _ _ _ _ S G _ hp u
   let V : Over.mk (spMap (algebraMap U Ω) ≫ u) ⟶ Over.mk u := Over.homMk (spMap (algebraMap U Ω)) rfl

@@ -11,6 +11,15 @@ noncomputable section
 
 namespace GlobalTheory.LatOrb.Stab
 
+/- English proof (translation)
+Proceed by induction on `r using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Introduce `v hv`. Rewrite using `[Polynomial.map_add, map_add, Matrix.add_mulVec]`. Conclude with `M.add_mem (hp v hv) (hq v hv)`.
+
+Consider the case `monomial k a`. Introduce `v hv`. Establish `hpow : ∀ v ∈ M, (γ ^ k) *ᵥ v ∈ M`. Proceed by induction on `k with`. Consider the case `zero => intro v hv`.
+
+Simplify using `using hv`. Consider the case `succ k ih`. Introduce `v hv`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec]`. Conclude with `ih _ (hM v hv)`.
+
+Rewrite using `[Polynomial.map_monomial, aeval_monomial, ← Matrix.mulVec_mulVec, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec, algebraMap_smul]`. Conclude with `M.smul_mem a (hpow v hv)`.
+-/
 theorem polyStable {O K : Type} [CommRing O] [Field K] [Algebra O K] {n : ℕ}
     (γ : Matrix (Fin n) (Fin n) K) (M : Submodule O (Fin n → K))
     (hM : ∀ v ∈ M, γ *ᵥ v ∈ M) (r : O[X]) :
@@ -38,6 +47,49 @@ end GlobalTheory.LatOrb.Stab
 
 namespace GlobalTheory.LatOrb.Stab
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ _ n P₀ hcop γ hchar M₁ M₂ hL₁ hL₂ hs₁ hs₂`. Establish `hsep : γ.charpoly.Separable` using `by rw [hchar]; exact Polynomial.Separable.map hcop`. Take `⟨v₀, hv₀⟩` from `GlobalTheory.T.exists_cyclicVector_of_separable_charpoly' n γ hsep`. Take `⟨A, hA⟩ : ∃ A : Subalgebra K (Matrix (Fin n) (Fin n) K), A = Algebra.adjoin K {γ}` from `⟨_, rfl⟩`. Establish `memA : ∀ a : Matrix (Fin n) (Fin n) K, a ∈ A ↔ ∃ p : K[X], aeval γ p = a`.
+
+Introduce `a`. Rewrite using `[hA, Algebra.adjoin_singleton_eq_range_aeval]`. Both sides reduce to the same expression. Establish `commA : ∀ a ∈ A, ∀ b ∈ A, a * b = b * a`. Introduce `a ha b hb`.
+
+Take `⟨p, rfl⟩` from `(memA a).1 ha`. Take `⟨q, rfl⟩` from `(memA b).1 hb`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Use `letI : CommRing A := { A.toRing with mul_comm := fun x y => Subtype.ext (commA _ x.2 _ y.2) }`. Use `haveI : Module.Finite K A := inferInstance`.
+
+Use `haveI : IsReduced A := by`. Use `⟨fun a ⟨m, hm⟩ => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `(memA a).1 a.2`. Establish `h0 : aeval γ (f ^ m) = 0`. Rewrite using `[map_pow, hf]`.
+
+Conclude with `congrArg Subtype.val hm`. Establish `hsq : Squarefree (minpoly K γ)` using `(hsep.of_dvd (Matrix.minpoly_dvd_charpoly γ)).squarefree`. Establish `h1 : minpoly K γ ∣ f` using `hsq.isRadical m f (minpoly.dvd K γ h0)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hf]`.
+
+Conclude with `(minpoly.dvd_iff).1 h1`. Set `φ : A →ₗ[K] (Fin n → K)` to `{ toFun := fun a => (a : Matrix (Fin n) (Fin n) K) *ᵥ v₀ map_add' := fun a b => by simp [Matrix.add_mulVec] map_smul' := fun c a => by simp [Matrix.smul_mulVec] }`. Establish `hφ : ∀ a : A, φ a = (a : Matrix (Fin n) (Fin n) K) *ᵥ v₀` using `fun _ => rfl`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `a ha`. Rewrite `ha` using `[hφ]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `u`. Take `⟨p, rfl⟩` from `hv₀ u`. Take `⟨q, hq⟩` from `(memA a).1 a.2`. Express the relevant statement in the definitionally equal form `(a : Matrix (Fin n) (Fin n) K) *ᵥ (aeval γ p *ᵥ v₀) = (0 : Matrix (Fin n) (Fin n) K) *ᵥ _`. Rewrite using `[Matrix.mulVec_mulVec, ← hq, ← map_mul, mul_comm, map_mul, hq, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_zero, Matrix.zero_mulVec]`.
+
+Establish `hsurj : Function.Surjective φ`. Introduce `u`. Take `⟨p, rfl⟩` from `hv₀ u`. Conclude with `⟨⟨aeval γ p, (memA _).2 ⟨p, rfl⟩⟩, rfl⟩`. Set `e : A ≃ₗ[K] (Fin n → K)` to `LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩`.
+
+Establish `he : ∀ a : A, e a = (a : Matrix (Fin n) (Fin n) K) *ᵥ v₀` using `fun _ => rfl`. Set `eO : A ≃ₗ[O] (Fin n → K)` to `e.restrictScalars O`. Set `J : Submodule O (Fin n → K) → Submodule O A` to `fun M => M.map (eO.symm : (Fin n → K) →ₗ[O] A)`. Establish `memJ : ∀ M y, y ∈ J M ↔ (y : Matrix (Fin n) (Fin n) K) *ᵥ v₀ ∈ M`. Introduce `M y`.
+
+Simplify using `only [J, Submodule.mem_map_equiv]`. Both sides reduce to the same expression. Establish `latJ : ∀ M, IsLatV O M → GlobalTheory.UnitLemma.IsLat O K (J M)`. Introduce `M hM`. Use `⟨hM.1.map _, ?_⟩` and prove the remaining obligations.
+
+Establish `hcoe : ((J M : Submodule O A) : Set A) = (e.symm : (Fin n → K) →ₗ[K] A) '' (M : Set _)`. Use extensionality with `y`. Simplify using `[J, Submodule.mem_map]`. Both sides reduce to the same expression. Rewrite using `[hcoe, Submodule.span_image, hM.2, Submodule.map_top, LinearEquiv.range]`.
+
+Establish `stJ : ∀ M, (∀ v ∈ M, γ *ᵥ v ∈ M) → ∀ a ∈ integralClosure O A, ∀ y ∈ J M, a * y ∈ J M`. Introduce `M hM a ha y hy`. Establish `hint : IsIntegral O (a : Matrix (Fin n) (Fin n) K)` using `(ha : IsIntegral O a).map (A.val.restrictScalars O)`. Take `⟨p, hp⟩` from `(memA _).1 a.2`. Rewrite `hint` using `[← hp]`.
+
+Take `⟨r, hr⟩` from `GlobalTheory.T.integral_aeval_eq_aeval_map_of_coprime_charpoly n P₀ hcop γ hchar p hint`. Rewrite `hy`, the goal using `[memJ]`. Express the relevant statement in the definitionally equal form `((a : Matrix (Fin n) (Fin n) K) * (y : Matrix (Fin n) (Fin n) K)) *ᵥ v₀ ∈ M`. Rewrite using `[← Matrix.mulVec_mulVec, ← hp, hr]`. Conclude with `polyStable γ M hM r _ hy`.
+
+Use `haveI : IsPrincipalIdealRing (integralClosure O A) := GlobalTheory.UnitLemma.PrincipalLatDVR.isPrincipalIdealRing_integralClosure (E := K)`. Use `set Λ : Submodule O A := Subalgebra.toSubmodule (integralClosure O A)`. Establish `back : ∀ M (c : Aˣ), J M = GlobalTheory.UnitLemma.mulLat O (c : A) Λ → M = matLat O ((c : A) : Matrix (Fin n) (Fin n) K) (Λ.map (eO : A →ₗ[O] (Fin n → K)))`. Introduce `M c hc`. Use extensionality with `v`.
+
+Take `⟨y, rfl⟩` from `hsurj v`. Rewrite using `[mem_matLat]`. Establish `h1 : φ y ∈ M ↔ y ∈ J M` using `by rw [memJ]; rfl`. Rewrite using `[h1, hc]`. Simplify using `only [GlobalTheory.UnitLemma.mulLat, Submodule.mem_map, LinearMap.mulLeft_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, rfl⟩`. Use `⟨eO l, ⟨l, hl, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((c : A) : Matrix (Fin n) (Fin n) K) *ᵥ ((l : Matrix (Fin n) (Fin n) K) *ᵥ v₀) = (((c : A) * l : A) : Matrix (Fin n) (Fin n) K) *ᵥ v₀`. Rewrite using `[Matrix.mulVec_mulVec]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨_, ⟨l, hl, rfl⟩, hv⟩`. Use `⟨l, hl, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← hv]`. Express the relevant statement in the definitionally equal form `(((c : A) * l : A) : Matrix (Fin n) (Fin n) K) *ᵥ v₀ = ((c : A) : Matrix (Fin n) (Fin n) K) *ᵥ ((l : Matrix (Fin n) (Fin n) K) *ᵥ v₀)`.
+
+Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Take `⟨a₁, h₁⟩` from `GlobalTheory.UnitLemma.PrincipalLat.eq_mulLat_of_isPrincipalIdealRing (E := K) (J M₁) (latJ M₁ hL₁) (stJ M₁ hs₁)`. Take `⟨a₂, h₂⟩` from `GlobalTheory.UnitLemma.PrincipalLat.eq_mulLat_of_isPrincipalIdealRing (E := K) (J M₂) (latJ M₂ hL₂) (stJ M₂ hs₂)`. Take `⟨p, hp⟩` from `(memA _).1 ((a₂ * a₁⁻¹ : Aˣ) : A).2`.
+
+Use `⟨p, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `(Units.isUnit (a₂ * a₁⁻¹)).map A.val`. Rewrite using `[back M₂ a₂ h₂, back M₁ a₁ h₁, ← matLat_mul, hp]`. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `((a₂ : A) : Matrix (Fin n) (Fin n) K) = (((a₂ * a₁⁻¹ : Aˣ) : A) * (a₁ : A) : A).1`. Rewrite using `[← Units.val_mul, inv_mul_cancel_right]`.
+-/
 theorem exists_unit_eq_matLat : ∀ {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Field K] [Algebra O K] [IsFractionRing O K]
     (n : ℕ) (P₀ : O[X]), IsCoprime P₀ (derivative P₀) →

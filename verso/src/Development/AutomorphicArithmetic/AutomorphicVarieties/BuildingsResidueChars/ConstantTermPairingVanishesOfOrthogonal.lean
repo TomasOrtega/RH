@@ -12,8 +12,16 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg.Tf.IntegralApplyAeEq UpperTheory.V.Z.IntegralApplyAeEq UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 open scoped NumberField.AdeleRing
 
+/- English proof (translation)
+The claim follows from `unipOne_zero 2`.
+-/
 private theorem nn_zero {K : Type} [Field K] [NumberField K] : (nn (K := K) 0) = 1 := unipOne_zero 2
 
+/- English proof (translation)
+Establish `hmem : lv 1 γ 0 ∈ PK K` using `(pkLaws.2.1 _).2 ⟨0, 1, ⟨γ, hγ⟩, by`. Establish `h0 : nn (K` using `K) ((0 : unipLattice K (2 + 2) 2) : UPos (2 + 2) 2 → 𝔸[K]) = 1 := nn_zero`. Rewrite using `[h0, one_mul]`. Use the proof step `rfl⟩`. Establish `e : lv m₂ (γ * m) s = lv 1 γ 0 * lv m₂ m s`.
+
+Rewrite using `[blkLaws.2.1, one_mul, zero_add]`. Rewrite using `[e, mul_assoc, hP.rat _ hmem]`.
+-/
 private theorem lv_left {K : Type} [Field K] [NumberField K] {F : G1 K (2 + 2) → ℂ} (hP : PFun F) (m₂ : G1 K 2) (s : ℝ)
     (γ : G1 K 2) (hγ : γ ∈ Gam K 2) (m : G1 K 2) (g : G1 K (2 + 2)) :
     F (lv m₂ (γ * m) s * g) = F (lv m₂ m s * g) := by
@@ -25,6 +33,9 @@ private theorem lv_left {K : Type} [Field K] [NumberField K] {F : G1 K (2 + 2) �
     rw [blkLaws.2.1, one_mul, zero_add]
   rw [e, mul_assoc, hP.rat _ hmem]
 
+/- English proof (translation)
+Establish `h2` using `IsContRep.ae_eq_quotFun (μ := μ) (φ := v) (F := φ) ⟨hc, hi, hr⟩`. Use `h2.trans (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show quotFun φ hi y = φ (Quotient.out y)`. Use `conv_lhs => rw [← Quotient.out_eq y]`. Both sides reduce to the same expression.
+-/
 private theorem rep_ae {K : Type} [Field K] [NumberField K] {μ : Measure (G1 K 2)} [μ.IsHaarMeasure] {v : L2 μ}
     {φ : G1 K 2 → ℂ} (hc : Continuous φ) (hi : ∀ γ ∈ Gam K 2, ∀ y, φ (γ * y) = φ y) (hr : Reps μ v φ) :
     (v : RightCosetSpace (Gam K 2) → ℂ) =ᵐ[quotientMeasure (Gam K 2) μ] fun y => φ (Quotient.out y) := by
@@ -34,6 +45,11 @@ private theorem rep_ae {K : Type} [Field K] [NumberField K] {μ : Measure (G1 K 
   conv_lhs => rw [← Quotient.out_eq y]
   rfl
 
+/- English proof (translation)
+Take `⟨e, he, hm⟩` from `adMeas m m₂ s`. Establish `h1 : ∀ X, F (w0 K * nn X * (lv m m₂ s * k)) = F (lv m₂ m (-s) * (w0 K * nn (e X) * k))` using `fun X => by`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[h1]`.
+
+Establish `hme : MeasurableEmbedding (e : (UPos (2 + 2) 2 → _) → _)` using `e.toHomeomorph.measurableEmbedding`. Rewrite using `[← hme.integral_map (g := fun X => F (lv m₂ m (-s) * (w0 K * nn X * k))), hm, integral_smul_measure, ENNReal.toReal_ofReal (Real.exp_pos _).le]`.
+-/
 private theorem long_swap {K : Type} [Field K] [NumberField K] (F : G1 K (2 + 2) → ℂ) (m m₂ : G1 K 2) (s : ℝ)
     (k : G1 K (2 + 2)) (hF : Continuous F) :
     (∫ X, F (w0 K * nn X * (lv m m₂ s * k)) ∂unipMeasure K (2 + 2) 2) =
@@ -51,6 +67,11 @@ private theorem long_swap {K : Type} [Field K] [NumberField K] (F : G1 K (2 + 2)
   rw [← hme.integral_map (g := fun X => F (lv m₂ m (-s) * (w0 K * nn X * k))), hm, integral_smul_measure,
     ENNReal.toReal_ofReal (Real.exp_pos _).le]
 
+/- English proof (translation)
+Establish `hl : Continuous fun p : G1 K 2 × G1 K 2 × ℝ => lv p.1 p.2.1 p.2.2`. Take `⟨-, -, -, h, -⟩` from `blkLaws (K := K)`. Conclude with `h`. Establish `h0 : Continuous fun p : G1 K 2 × (UPos (2 + 2) 2 → 𝔸[K]) => ((m₂, p.1, -s) : G1 K 2 × G1 K 2 × ℝ)` using `continuous_const.prodMk (continuous_fst.prodMk continuous_const)`. Establish `h1 : Continuous fun p : G1 K 2 × (UPos (2 + 2) 2 → 𝔸[K]) => lv m₂ p.1 (-s)`.
+
+Establish `h` using `Continuous.comp hl h0`. Simplify `h` using `only [Function.comp_def]`. Establish `h2 : Continuous fun p : G1 K 2 × (UPos (2 + 2) 2 → 𝔸[K]) => nn p.2` using `(continuous_unipOne (K := K) (n := 2 + 2) 2).comp continuous_snd`. Conclude with `hF.comp (h1.mul ((continuous_const.mul h2).mul continuous_const))`.
+-/
 private theorem long_cont {K : Type} [Field K] [NumberField K] {F : G1 K (2 + 2) → ℂ} (hF : Continuous F) (m₂ : G1 K 2) (s : ℝ)
     (k : G1 K (2 + 2)) :
     Continuous fun p : G1 K 2 × (UPos (2 + 2) 2 → 𝔸[K]) => F (lv m₂ p.1 (-s) * (w0 K * nn p.2 * k)) := by
@@ -66,12 +87,42 @@ private theorem long_cont {K : Type} [Field K] [NumberField K] {F : G1 K (2 + 2)
     (continuous_unipOne (K := K) (n := 2 + 2) 2).comp continuous_snd
   exact hF.comp (h1.mul ((continuous_const.mul h2).mul continuous_const))
 
+/- English proof (translation)
+Rewrite using `[integral_integral_swap hI]`. Simplify using `only [hZ, integral_zero]`.
+-/
 private theorem swap_zero {Y X : Type} [MeasurableSpace Y] [MeasurableSpace X] (Q : Measure Y) (ν : Measure X)
     [IsFiniteMeasure Q] [IsFiniteMeasure ν] (f : Y → X → ℂ) (hI : Integrable (Function.uncurry f) (Q.prod ν))
     (hZ : ∀ x, ∫ y, f y x ∂Q = 0) : ∫ y, ∫ x, f y x ∂ν ∂Q = 0 := by
   rw [integral_integral_swap hI]
   simp only [hZ, integral_zero]
 
+/- English proof (translation)
+Introduce `K _ _ μ₂ _ τ₁ τ₂ ρ F h hP hB hS hort hc hi hv m₂ s k hk`. Take `⟨v, hvρ, hvr⟩` from `hv`. Establish `hQf` using `isFiniteMeasure_quotientMeasure (K := K) (n := 2) μ₂`. Take `⟨R, hR⟩` from `hB`. Take `⟨B, hBd⟩` from `hP.bdd`.
+
+Take `⟨C, hCc, hC⟩` from `(longCell (K := K)).2 (R - s)`. Use `haveI : IsFiniteMeasure ((unipMeasure K (2 + 2) 2).restrict C) := ⟨by simpa using hCc.measure_lt_top⟩`. Set `Φ : G1 K 2 → (UPos (2 + 2) 2 → 𝔸[K]) → ℂ` to `fun m X => F (lv m₂ m (-s) * (w0 K * nn X * k))`. Set `P : RightCosetSpace (Gam K 2) → (UPos (2 + 2) 2 → 𝔸[K]) → ℂ` to `fun y X => Φ (Quotient.out y) X`. Set `H : RightCosetSpace (Gam K 2) → ℂ` to `fun y => h (Quotient.out y)`.
+
+Establish `hΦi : ∀ X, ∀ γ ∈ Gam K 2, ∀ m, Φ (γ * m) X = Φ m X` using `fun X γ hγ m => lv_left hP m₂ (-s) γ hγ m _`. Establish `hΦc : Continuous (Function.uncurry Φ)` using `long_cont hP.cont m₂ s k`. Establish `hPq : ∀ y X, P y X = quotFun (fun m => Φ m X) (hΦi X) y` using `fun y X => by conv_rhs => rw [← Quotient.out_eq y]`. Both sides reduce to the same expression. Establish `hPc : Continuous (Function.uncurry P)`.
+
+Establish `hq` using `(isOpenQuotientMap_mk (Gam K 2)).prodMap (IsOpenQuotientMap.id (X := UPos (2 + 2) 2 → 𝔸[K]))`. Rewrite using `[hq.isQuotientMap.continuous_iff]`. Use `hΦc.congr fun p => ?_` and prove the remaining obligations. Use `show Φ p.1 p.2 = P (mk (Gam K 2) p.1) p.2`. Rewrite using `[hPq]`.
+
+Both sides reduce to the same expression. Establish `hPb : ∀ y X, ‖P y X‖ ≤ B` using `fun y X => hBd _`. Establish `hsupp : ∀ m X, X ∉ C → Φ m X = 0` using `fun m X hX => by`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hR _ hne`.
+
+Establish `h2` using `(hpSpec (K := K)).1 0 m₂ m (-s) (w0 K * nn X * k)`. Rewrite `h2` using `[nn_zero, one_mul]`. Rewrite `h1` using `[h2, abs_le]`. Conclude with `hX (hC X k hk (by linarith [h1.1]))`. Establish `hHr` using `rep_ae hc hi hvr`.
+
+Establish `hHm : MemLp H 2 (quotientMeasure (Gam K 2) μ₂)` using `(Lp.memLp v).ae_eq hHr`. Establish `hHi : Integrable H (quotientMeasure (Gam K 2) μ₂)` using `hHm.integrable one_le_two`. Establish `hHs : AEStronglyMeasurable H (quotientMeasure (Gam K 2) μ₂)` using `hHi.1`. Establish `hI : Integrable (Function.uncurry fun y X => P y X * starRingEnd ℂ (H y)) ((quotientMeasure (Gam K 2) μ₂).prod ((unipMeasure K (2 + 2) 2).restrict C))`. Establish `hm : AEStronglyMeasurable (fun p : RightCosetSpace (Gam K 2) × (UPos (2 + 2) 2 → 𝔸[K]) => starRingEnd ℂ (H p.1)) ((quotientMeasure (Gam K 2) μ₂).prod ((unipMeasure K (2 + 2) 2).restrict C))` using `(continuous_star.comp_aestronglyMeasurable hHs).comp_fst`.
+
+Use `Integrable.mono' (hHi.norm.mul_prod (integrable_const B)) (hPc.aestronglyMeasurable.mul hm) (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `show ‖P p.1 p.2 * starRingEnd ℂ (H p.1)‖ ≤ ‖H p.1‖ * B`. Rewrite using `[norm_mul, RCLike.norm_conj, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hPb _ _) (norm_nonneg _)`. Establish `hT : ∀ y : RightCosetSpace (Gam K 2), (∫ X, F (w0 K * nn X * (lv (Quotient.out y) m₂ s * k)) ∂unipMeasure K (2 + 2) 2) * starRingEnd ℂ (h (Quotient.out y)) = (Real.exp (4 * s) : ℝ) • ∫ X in C, P y X * starRingEnd ℂ (H y) ∂unipMeasure K (2 + 2) 2` using `fun y => by`.
+
+Rewrite using `[long_swap F _ m₂ s k hP.cont, smul_mul_assoc, integral_mul_const]`. Use `congr 2`. Conclude with `(setIntegral_eq_integral_of_forall_compl_eq_zero fun X hX => hsupp _ X hX).symm`. Establish `hZ : ∀ X, ∫ y, P y X * starRingEnd ℂ (H y) ∂quotientMeasure (Gam K 2) μ₂ = 0` using `fun X => by`. Take `⟨u, huτ, hur⟩` from `(hS (lv 1 1 (-s) * (w0 K * nn X * k))).2 m₂`.
+
+Establish `hur' : Reps μ₂ u (fun m => Φ m X)`. Establish `e : (fun m => F (lv m₂ m 0 * (lv 1 1 (-s) * (w0 K * nn X * k)))) = fun m => Φ m X`. Use function extensionality and compare the values at `m`. Use `show _ = F (lv m₂ m (-s) * (w0 K * nn X * k))`. Rewrite using `[← mul_assoc, blkLaws.2.1, mul_one, mul_one, zero_add]`.
+
+Rewrite `hur` using `[e]`. Then use the resulting hypothesis. Establish `h1 : (u : RightCosetSpace (Gam K 2) → ℂ) =ᵐ[quotientMeasure (Gam K 2) μ₂] fun y => P y X` using `rep_ae (hΦc.comp (continuous_id.prodMk continuous_const)) (hΦi X) hur'`. Establish `h3 : inner ℂ v u = 0` using `inner_eq_zero_symm.1 (Submodule.isOrtho_iff_inner_eq.1 hort u huτ v hvρ)`. Rewrite `h3` using `[L2.inner_def]`. Rewrite using `[← h3]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h1, hHr] with y a b`. Rewrite using `[a, b, RCLike.inner_apply]`. Establish `hI2 : Integrable (fun y => ∫ X in C, P y X * starRingEnd ℂ (H y) ∂unipMeasure K (2 + 2) 2) (quotientMeasure (Gam K 2) μ₂)` using `hI.integral_prod_left`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Repeatedly rewrite using `[hT]`. Conclude with `hI2.smul (Real.exp (4 * s))`. Repeatedly rewrite using `[hT]`. Rewrite using `[integral_smul, @swap_zero _ _ _ _ _ _ hQf _ _ hI hZ, smul_zero]`.
+-/
 theorem UpperTheory.constantTerm_pairing_vanishes_of_orthogonal :
     ∀ {K : Type} [Field K] [NumberField K] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ ρ : Submodule ℂ (L2 μ₂)) (F : G1 K (2 + 2) → ℂ) (h : G1 K 2 → ℂ),
           PFun F → InBand F → Slices τ₁ τ₂ F → τ₂ ⟂ ρ → Continuous h → (∀ γ ∈ Gam K 2, ∀ m, h (γ * m) = h m) → (∃ v ∈ ρ, Reps μ₂ v h) →

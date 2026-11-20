@@ -2,6 +2,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Pp
 
 open TensorProduct in
+/- English proof (translation)
+Introduce `B C K _ _ _ _ _ _ q _ f hf`. Use `letI : Algebra B K := f.toAlgebra`. Set `p : Ideal B` to `q.comap (algebraMap B C)`. Use `haveI : p.IsPrime := Ideal.comap_isPrime _ _`. Establish `hunit : ∀ {L : Type} [Field L] (g : B →+* L), RingHom.ker g = p → ∃ g' : p.ResidueField →+* L, g'.comp (algebraMap B p.ResidueField) = g`.
+
+Introduce `L _ g hg`. Establish `h2 : p.primeCompl ≤ Submonoid.comap g (IsUnit.submonoid L)`. Introduce `x hx`. Establish `: g x ≠ 0` using `fun h => hx (by rw [← hg]; exact h)`. Conclude with `(isUnit_iff_ne_zero.2 this)`.
+
+Conclude with `⟨Ideal.ResidueField.lift p g hg.ge h2, RingHom.ext fun x => Ideal.ResidueField.lift_algebraMap p g hg.ge h2 x⟩`. Take `⟨a, ha⟩` from `hunit f hf`. Take `⟨b, hb⟩` from `hunit ((algebraMap C q.ResidueField).comp (algebraMap B C)) (by`. Rewrite using `[← RingHom.comap_ker, Ideal.ker_algebraMap_residueField])`. Use `haveI hnt : Nontrivial (K ⊗[B] C) := by`.
+
+Use `letI : Algebra p.ResidueField K := a.toAlgebra`. Use `letI : Algebra p.ResidueField q.ResidueField := b.toAlgebra`. Use `haveI : IsScalarTower B p.ResidueField K := IsScalarTower.of_algebraMap_eq' ha.symm`. Set `T` to `K ⊗[p.ResidueField] q.ResidueField`. Use `haveI : Nontrivial T := inferInstance`.
+
+Set `u : K →ₐ[B] T` to `(Algebra.TensorProduct.includeLeft : K →ₐ[B] T)`. Set `v : C →ₐ[B] T` to `{ toRingHom := ((Algebra.TensorProduct.includeRight : q.ResidueField →ₐ[p.ResidueField] T) : q.ResidueField →+* T).comp (algebraMap C q.ResidueField) commutes' := fun x => by`. Establish `h1 : algebraMap C q.ResidueField (algebraMap B C x) = algebraMap p.ResidueField q.ResidueField (algebraMap B p.ResidueField x)` using `(RingHom.congr_fun hb x).symm`. Use `show (Algebra.TensorProduct.includeRight : q.ResidueField →ₐ[p.ResidueField] T) (algebraMap C q.ResidueField (algebraMap B C x)) = _`. Rewrite using `[h1, AlgHom.commutes, ← IsScalarTower.algebraMap_apply] }`.
+
+Conclude with `(Algebra.TensorProduct.lift u v (fun _ _ => Commute.all _ _)).toRingHom.domain_nontrivial`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (K ⊗[B] C)`. Use `letI : Field ((K ⊗[B] C) ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite K ((K ⊗[B] C) ⧸ m) := finite_of_finite_type_of_isJacobsonRing _ _`. Establish `hbij : Function.Bijective (algebraMap K ((K ⊗[B] C) ⧸ m))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`.
+
+Set `ψ : ((K ⊗[B] C) ⧸ m) →ₐ[K] K` to `(AlgEquiv.ofBijective (Algebra.ofId K _) hbij).symm.toAlgHom`. Set `χ : (K ⊗[B] C) →ₐ[K] K` to `ψ.comp (Ideal.Quotient.mkₐ K m)`. Use `⟨(χ : K ⊗[B] C →+* K).comp ((Algebra.TensorProduct.includeRight : C →ₐ[B] K ⊗[B] C) : C →+* K ⊗[B] C), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `show χ ((Algebra.TensorProduct.includeRight : C →ₐ[B] K ⊗[B] C) (algebraMap B C x)) = f x`.
+
+Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply B K (K ⊗[B] C), AlgHom.commutes]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Ws.Pp.extFg :
     ∀ {B C K : Type} [CommRing B] [CommRing C] [Field K] [IsAlgClosed K] [Algebra B C] [Algebra.FiniteType B C] (q : Ideal C) [q.IsPrime] (f : B →+* K), RingHom.ker f = q.comap (algebraMap B C) → ∃ φ : C →+* K, φ.comp (algebraMap B C) = f := by
   intro B C K _ _ _ _ _ _ q _ f hf

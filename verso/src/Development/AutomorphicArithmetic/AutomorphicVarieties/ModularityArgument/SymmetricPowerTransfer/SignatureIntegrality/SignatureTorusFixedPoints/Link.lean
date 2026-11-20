@@ -7,6 +7,29 @@ noncomputable section
 
 open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Sig UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n`. Establish `hTiw : (Lev.iw k).TH n = (glIwa k n).T`. Apply `le_antisymm (Lev.levelTorus_le_torus _)` to reduce the goal to its premises. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `⟨t, fun i _ => ht i, rfl⟩`.
+
+Establish `h2 : (Lev.iw k).J n = (glIwa k n).Iw 0` using `by show (glIwa k n).N ⊔ (Lev.iw k).TH n ⊔ (glIwa k n).Nm 0 = (glIwa k n).N ⊔ (glIwa k n).T ⊔ (glIwa k n).Nm 0`. Rewrite using `[hTiw]`. Use `⟨?_, h2, ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, hU⟩` from `memIwC k n ⊤`. Establish `hK : Kc k n 1 = KOne k (Fin n)`.
+
+Unfold `Kc KOne`. Use `congr 1`. Use extensionality with `g`. Simplify using `only [MonoidHom.mem_ker, Matrix.GeneralLinearGroup.ext_iff, GeneralLinearGroup.map_apply, Units.val_one, Matrix.one_apply]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations.
+
+Establish `h1 : ∀ (I : Ideal 𝒪[k]) (x : 𝒪[k]), Ideal.Quotient.mk I x = 1 ↔ x - 1 ∈ I` using `fun I x => by`. Rewrite using `[← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq]`. Establish `h0 : ∀ (I : Ideal 𝒪[k]) (x : 𝒪[k]), Ideal.Quotient.mk I x = 0 ↔ x ∈ I` using `fun I x => Ideal.Quotient.eq_zero_iff_mem`. Use `split_ifs`. Rewrite using `[h1] erw [h1]`.
+
+Rewrite using `[pow_one]`. Rewrite using `[h0] erw [h0]`. Rewrite using `[pow_one]`. Establish `hTor : Subgroup.map (diagT k (Fin n)) (torC k n ⊤) = (Lev.iw k).TH n`. Use `congr 1`.
+
+Use extensionality with `t`. Simplify using `only [torC, Subgroup.mem_pi, Set.mem_univ, true_implies]`. Conclude with `forall_congr' fun i => hU (t i)`. Apply `le_antisymm` to reduce the goal to its premises. Use `show (glIwa k n).N ⊔ (Lev.iw k).TH n ⊔ (glIwa k n).Nm 0 ≤ KOne k (Fin n) ⊔ unipO k n ⊔ Subgroup.map (diagT k (Fin n)) (torC k n ⊤)`.
+
+Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Conclude with `le_sup_right.trans le_sup_left`. Rewrite using `[← hTor]`. Conclude with `le_sup_right`. Introduce `x hx`.
+
+Establish `h1 : x ∈ Kc k n 1` using `hx.2`. Rewrite `h1` using `[hK]`. Conclude with `(le_sup_left.trans le_sup_left : KOne k (Fin n) ≤ KOne k (Fin n) ⊔ unipO k n ⊔ Subgroup.map (diagT k (Fin n)) (torC k n ⊤)) h1`. Use `show KOne k (Fin n) ⊔ unipO k n ⊔ Subgroup.map (diagT k (Fin n)) (torC k n ⊤) ≤ (glIwa k n).N ⊔ (Lev.iw k).TH n ⊔ (glIwa k n).Nm 0`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[← hK]`. Conclude with `kc_le (Lev.iw k)`. Conclude with `(Lev.iw k).N_le`. Rewrite using `[hTor]`. Conclude with `le_sup_right.trans le_sup_left`.
+
+Introduce `c`. Establish `hT : (Lev.deep k c).TH n = (glIwa k n).Tc c`. Apply `le_antisymm _ (Lev.Tc_le_TH _)` to reduce the goal to its premises. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Conclude with `⟨Lev.levelTorus_le_torus _ ⟨s, hs, rfl⟩, dg_mem_Kc.mpr fun i => hs i trivial⟩`.
+
+Use `show (glIwa k n).N ⊔ (Lev.deep k c).TH n ⊔ (glIwa k n).Nm c = (glIwa k n).N ⊔ (glIwa k n).Tc c ⊔ (glIwa k n).Nm c`. Rewrite using `[hT]`.
+-/
 theorem UpperTheory.V.Z.Sym.Sig.link : UpperTheory.V.Z.Sym.Sig.Link := by
   intro k _ _ _ _ n
   have hTiw : (Lev.iw k).TH n = (glIwa k n).T := by

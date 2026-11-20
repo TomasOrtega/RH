@@ -16,6 +16,11 @@ open Filter Topology
 open ReciprocityTheory.ChartRestriction.G.FD (Data Frame Bor rmul lact mat col dmin Wt)
 open GlobalTheory.ShFam GlobalTheory.ShFam.BdArc GlobalTheory.Toroidal GlobalTheory.KoecherArc
 
+/- English proof (translation)
+Use `⟨fun u => ∑ i, ε i * p i u * ∏ k ∈ Finset.univ.erase i, q k u, fun u => ∏ i, q i u, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `DifferentiableOn.fun_sum fun i _ => ((hp i).const_mul _).mul (DifferentiableOn.fun_finsetProd fun k _ => hq k)`. Conclude with `DifferentiableOn.fun_finsetProd fun k _ => hq k`. Introduce `u hu h0`. Use `⟨Finset.prod_ne_zero_iff.2 fun i _ => (h i u hu h0).1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun k => q k u) (Finset.mem_univ i), ← (h i u hu h0).2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem comb_quot {m : ℕ} (ε : Fin m → ℂ) (f p q : Fin m → ℂ → ℂ) (s : Set ℂ)
     (hp : ∀ i, DifferentiableOn ℂ (p i) s) (hq : ∀ i, DifferentiableOn ℂ (q i) s)
     (h : ∀ i, ∀ u ∈ s, u ≠ 0 → q i u ≠ 0 ∧ f i u * q i u = p i u) :
@@ -34,6 +39,19 @@ private theorem comb_quot {m : ℕ} (ε : Fin m → ℂ) (f p q : Fin m → ℂ 
     rw [← Finset.mul_prod_erase Finset.univ (fun k => q k u) (Finset.mem_univ i), ← (h i u hu h0).2]
     ring
 
+/- English proof (translation)
+Use `haveI : IsLocalRing (CAt σ) := inferInstanceAs (IsLocalRing ℂ)`. Take `⟨k, T, M₀, γ₀, xx, hT, hO₀, hL⟩` from `GlobalTheory.T.exists_holomorphicFrameOrbit_lift_of_arc E H Dw l Xo c O β Z σ N U A φ x fr ψ r y hσ hU hb.1 hm`. Take `⟨M, γ, hO, hγ⟩` from `GlobalTheory.T.exists_holomorphicFrameOrbit_unipotent_order_two E N _ T M₀ γ₀ xx hO₀`. Establish `hne : γ ≠ 1`. Introduce and unpack `rfl`.
+
+Take `⟨x₀, hx₀, x', h1, h2⟩` from `GlobalTheory.T.trivial_monodromy_orbit_converges_symmetric_domain E N _ T M xx hO`. Conclude with `GlobalTheory.T.boundary_arc_lift_not_converges_symmetric_domain E H Dw l Xo c O β Z σ N U A φ x fr ψ r y k T xx hσ hU hb hm hL x₀ hx₀ x' h1 h2`. Take `⟨ξ, c', hξ, hc', ht⟩` from `GlobalTheory.T.holomorphicFrameOrbit_isotropic_vector_short E N _ T M γ xx hO hγ hne`. Take `⟨m, v, Lp, Lm, hlim⟩` from `GlobalTheory.T.exists_arcLift_periods_tendsto_span E H Dw l Xo c O β Z σ N U A φ x fr ψ r y k T M γ xx hσ hU hb.1 hm hO hL`. Establish `hper` using `GlobalTheory.T.eigenframe_specialization_uniform_bound E H Dw l Xo c O β Z σ N U A φ x fr ψ r y k T M γ xx hσ hU hb.1 hm hO hL`.
+
+Take `⟨C', B, hn⟩` from `GlobalTheory.T.normFactor_inv_le_pow_holomorphicOrbit_periodBound E N _ T M γ xx (la k) m v Lp Lm hO hlim hper`. Establish `hp` using `tendsto_cusp (hS k) hO.2.2.2.1 hξ hc' ht hn`. Establish `hsec` using `(hS k).1.1`. Take `⟨hM, hΓ, hdiff, hdom, hperd⟩` from `hO`. Establish `hγd : ∀ w : ℂ, T < w.im → lact γ (xx w) ∈ (U.X k).dom` using `fun w hw => GlobalTheory.MajInv.lact_mem_dom _ ((U.X k).Γ_stab γ hΓ) (hdom w hw)`.
+
+Use `GlobalTheory.T.meromorphic_germ_vanishes_of_periodic_exp_modulus (fun w => (∑ i, ε i • rdU U (g i : Rul Xo c)) k (xx w)) (fun _ => 0) _ a b T r M 1 1 hM one_pos (one_pow 1) hb.1.1.1 (hsec.1.comp hdiff hdom) (differentiableOn_const 0) (fun w hw => ?_) hp ha hb' hpq` and prove the remaining obligations. Take `⟨b, hb1, hb2, hb3⟩` from `hperd w hw`. Take `⟨h, hl⟩` from `hL w hw`. Use `⟨?_, rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [hb3]`.
+
+Rewrite using `[hsec.2.1 _ (hγd w hw) b hb1, hsec.2.2 γ hΓ _ (hdom w hw), hχ k γ hΓ]`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.bchar, hb2]`. Rewrite using `[Complex.exp_zero, norm_one, mul_one]`. Establish `rd : ∀ i, rdU U (g i : Rul Xo c) k (xx w) = toC (evR Xo c (g i : Rul Xo c) (y (eTwoPi w)))` using `fun i => by`. Establish `rd : rdU U (g i : Rul Xo c) k (xx w) = toC (evR Xo c (g i : Rul Xo c) (U.un k ⟨xx w, h⟩))` using `dif_pos h`.
+
+Rewrite using `[rd, GlobalTheory.ShFam.KeyRel.evR_sameLie he (g i).2 hl]`. Use `show ‖∑ i, ε i * toC (evR Xo c (g i : Rul Xo c) (y (eTwoPi w)))‖ = ‖(∑ i, ε i • rdU U (g i : Rul Xo c)) k (xx w)‖`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, rd]`.
+-/
 private theorem tendsto_fam {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Z : Model Xo c β)
@@ -80,6 +98,9 @@ private theorem tendsto_fam {E : Type} [Field E] [NumberField E] [IsCMField E] {
     show ‖∑ i, ε i * toC (evR Xo c (g i : Rul Xo c) (y (eTwoPi w)))‖ = ‖(∑ i, ε i • rdU U (g i : Rul Xo c)) k (xx w)‖
     simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, rd]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact ⟨r, hr, le_rfl, fun i => i.elim0⟩`. Consider the case `succ m ih`. Take `⟨s, h1, h2, h3⟩` from `ih (fun i => ρ i.succ) fun i => hρ _`. Conclude with `⟨min s (ρ 0), lt_min h1 (hρ 0), (min_le_left _ _).trans h2, Fin.cases (min_le_right _ _) fun i => (min_le_left _ _).trans (h3 i)⟩`.
+-/
 private theorem exists_radius {m : ℕ} (ρ : Fin m → ℝ) (r : ℝ) (hr : 0 < r) (hρ : ∀ i, 0 < ρ i) :
     ∃ s : ℝ, 0 < s ∧ s ≤ r ∧ ∀ i, s ≤ ρ i := by
   induction m with
@@ -89,6 +110,17 @@ private theorem exists_radius {m : ℕ} (ρ : Fin m → ℝ) (r : ℝ) (hr : 0 <
     exact ⟨min s (ρ 0), lt_min h1 (hρ 0), (min_le_left _ _).trans h2,
       Fin.cases (min_le_right _ _) fun i => (min_le_left _ _).trans (h3 i)⟩
 
+/- English proof (translation)
+Introduce `D T j Y e o hY Z TF la σ hσ m ε g hS`. Use `haveI : IsLocalRing (CAt σ) := inferInstanceAs (IsLocalRing ℂ)`. Establish `hU` using `hY.unf σ hσ`. Establish `hχ` using `AllWt.Model.chi_modelWt (Y.U σ) (hY.chiTriv σ hσ) (AllWt.wtOf _ la 0) (AllWt.even_wtOf la 0)`. Establish `he : AllWt.exOf (T.Q.Dw j) la 0 none = 0` using `by show (AllWt.wtOf (T.Q.Dw j) la 0).2 = 0`.
+
+Rewrite using `[AllWt.wtOf_snd, mul_zero]`. Introduce `W hW i hWi ψ r hψ hs hin hout η hη`. Take `⟨φ, x, fr, y, hb, hm, hval⟩` from `GlobalTheory.T.exists_eigenFrame_along_arc_flagSpaceChart TF Z la σ hσ W hW i hWi ψ r hψ hs hin hout`. Use `choose ρ' p q hρ' hρr' hpq using fun t : Fin m => GlobalTheory.T.exists_holomorphic_quotient_along_arc (sec₀ TF.X Z _ (g t)) W hW i hWi ψ r hψ hout`. Take `⟨ρ, hρ, hρr, hρρ⟩` from `exists_radius ρ' r hψ.1 hρ'`.
+
+Establish `hi : ∀ u, ⊤ ≤ (spMap (ψ u) ≫ (show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec)) ⁻¹ᵁ (L₀ TF.X Z la).U i` using `fun u s _ => hWi (hW.range_fromSpec.le ⟨_, rfl⟩)`. Establish `hv : ∀ t, ∀ u ∈ Metric.ball (0 : ℂ) ρ, u ≠ 0 → ψ u (q t) ≠ 0 ∧ toC (evR _ _ (g t).1 (y u)) * ψ u (q t) = ψ u (p t)` using `fun t u hu h => by`. Establish `hur : u ∈ Metric.ball (0 : ℂ) r` using `Metric.ball_subset_ball hρr hu`. Establish `hut : u ∈ Metric.ball (0 : ℂ) (ρ' t)` using `Metric.ball_subset_ball (hρρ t) hu`. Use `⟨(hpq t u hut h).1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hval (g t) u hur h (hout u hur h) (hi u)]`. Conclude with `(hpq t u hut h).2 _ _`. Take `⟨a, b, ha, hb', hab⟩` from `comb_quot ε (fun t u => toC (evR _ _ (g t).1 (y u))) (fun t u => ψ u (p t)) (fun t u => ψ u (q t)) (Metric.ball 0 ρ) (fun t => (hψ.2 (p t)).mono (Metric.ball_subset_ball hρr)) (fun t => (hψ.2 (q t)).mono (Metric.ball_subset_ball hρr)) hv`. Establish `ht` using `tendsto_fam TF.Y hσ hU _ hχ he ε g hS fr (isBdArc_mono hb hρ hρr) (fun u hu h => hm u (Metric.ball_subset_ball hρr hu) h) a b ha hb' hab`. Establish `h2 : Tendsto (fun u => ‖∑ t, ε t * toC (evR _ _ (g t).1 (y u))‖) (𝓝[≠] 0) (𝓝 0)` using `by simpa using ht.norm`.
+
+Use `filter_upwards [h2.eventually (gt_mem_nhds hη), self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (Metric.ball_mem_nhds (0 : ℂ) hρ)] with u h1 h3 h4 hO hi'`. Rewrite using `[Finset.sum_congr rfl fun t _ => congrArg (ε t * ·) (hval (g t) u (Metric.ball_subset_ball hρr h4) h3 hO hi')]`. Conclude with `h1`.
+-/
 private theorem famArcZero_cusp :
     ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : GlobalTheory.CompHS.TorFlag Y.d.Xo₂ Y.d.c₂) (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)) (σ : Y.d.c₂.F →+* ℂ), GoodEmb Y.d.c₂ σ → ∀ (m : ℕ) (ε : Fin m → ℂ) (g : Fin m → AllWt.secZ Y.d.Xo₂ Y.d.c₂ (AllWt.exOf (T.Q.Dw j) la 0)), (∀ k, (∑ i, ε i • rdU (Y.U σ) (g i : Rul Y.d.Xo₂ Y.d.c₂)) k ∈ ((Y.U σ).X k).SS (AllWt.modelWt (Y.U σ) (wtOf (T.Q.Dw j) la 0) k)) → GlobalTheory.CompHS.FamArcZero TF.X Z la σ ε (fun i => GlobalTheory.CompHS.sec₀ TF.X Z _ (g i)) := by
   intro D T j Y e o hY Z TF la σ hσ m ε g hS
@@ -131,6 +163,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi
 
+/- English proof (translation)
+Introduce `D T j Y e o hY Z TF la σ hσ m ε g h`. Conclude with `famArcZero_cusp D T j Y e o hY Z TF la σ hσ m ε g (GlobalTheory.CuspSecFin.mem_SS_of_mem_holSub _ _ h)`.
+-/
 theorem UpperTheory.holomorphic_reduction_span :
     ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : GlobalTheory.CompHS.TorFlag Y.d.Xo₂ Y.d.c₂) (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)) (σ : Y.d.c₂.F →+* ℂ), GoodEmb Y.d.c₂ σ → ∀ (m : ℕ) (ε : Fin m → ℂ) (g : Fin m → secZ Y.d.Xo₂ Y.d.c₂ (exOf (T.Q.Dw j) la 0)), (∑ i, ε i • rdU (Y.U σ) (g i : Rul Y.d.Xo₂ Y.d.c₂)) ∈ holSub (Y.U σ).X (modelWt (Y.U σ) (wtOf (T.Q.Dw j) la 0)) → GlobalTheory.CompHS.FamArcZero TF.X Z la σ ε (fun i => GlobalTheory.CompHS.sec₀ TF.X Z _ (g i)) := by
   intro D T j Y e o hY Z TF la σ hσ m ε g h

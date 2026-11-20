@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 noncomputable section
 namespace GlobalTheory.Core.Rk.Exh.Top
+/- English proof (translation)
+Introduce `hDM hSP` and use `downNe_of_core hDM PositivityTheory.Rg.Rsw.resCore hSP`.
+-/
 theorem downNe_k_of_hypotheses' : ResidueKilled.DM → GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.SimplePole → ∀ D : D7, EulerRight D → DownNe D :=
   fun hDM hSP => downNe_of_core hDM PositivityTheory.Rg.Rsw.resCore hSP
 end GlobalTheory.Core.Rk.Exh.Top

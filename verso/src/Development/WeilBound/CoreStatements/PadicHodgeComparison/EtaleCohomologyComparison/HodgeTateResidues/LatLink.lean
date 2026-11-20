@@ -38,6 +38,13 @@ namespace CrystallineSemistableComparison.HT
 
 open Pb Pb.Lat
 
+/- English proof (translation)
+Establish `h1 : J.map g ≤ J'`. Rewrite using `[hJ, hJ', Ideal.map_le_iff_le_comap, Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Express the relevant statement in the definitionally equal form `g (ι a) ∈ I'.map ι'`. Rewrite using `[h]`.
+
+Conclude with `Ideal.mem_map_of_mem _ (hs (Ideal.mem_map_of_mem _ ha))`. Use `⟨h1, fun {n} a ha => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (n.factorial : B')`. Use `(isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 n.factorial_ne_zero) : IsUnit (n.factorial : K)).map (algebraMap K B')` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Use `hu.mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[δ'.factorial_mul_dpow_eq_pow (h1 (Ideal.mem_map_of_mem _ ha)), ← map_natCast g, ← map_mul, δ.factorial_mul_dpow_eq_pow ha, map_pow]`.
+-/
 theorem dp_of_char {K A B A' B' : Type} [Field K] [CharZero K] [CommRing A] [CommRing B] [CommRing A'] [CommRing B'] [Algebra K B']
     {I : Ideal A} {I' : Ideal A'} {J : Ideal B} {J' : Ideal B'} (δ : DividedPowers J) (δ' : DividedPowers J') (ι : A →+* B)
     (ι' : A' →+* B') (s : A →+* A') (g : B →+* B') (hJ : J = I.map ι) (hJ' : J' = I'.map ι') (hs : I.map s ≤ I')
@@ -57,14 +64,23 @@ theorem dp_of_char {K A B A' B' : Type} [Field K] [CharZero K] [CommRing A] [Com
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.exists_lattice_bound_integers l K).imp fun M h => ⟨h, GlobalTheory.T.acris_mem_lattice_sub l M, GlobalTheory.T.fontaine_lattice_dpow_closed l M, GlobalTheory.T.galois_preserves_t_power_span l K, fun k g => GlobalTheory.T.galois_preserves_lattice_sub l K M k g _, G …`.
+-/
 theorem levHyp_ex [FiniteDimensional ℚ_[l] K] : ∃ M : ℕ, LevHyp l K M :=
   (GlobalTheory.T.exists_lattice_bound_integers l K).imp fun M h => ⟨h, GlobalTheory.T.acris_mem_lattice_sub l M, GlobalTheory.T.fontaine_lattice_dpow_closed l M, GlobalTheory.T.galois_preserves_t_power_span l K,
     fun k g => GlobalTheory.T.galois_preserves_lattice_sub l K M k g _, GlobalTheory.T.lattice_sub_reduction_mem l M⟩
 
+/- English proof (translation)
+The claim follows from `ι_map (fk l k) (xi0 l) (fk l k) (xi0 l) l M (gB h k g) (h.gal k g) a`.
+-/
 theorem lev_σ_ι (h : LevHyp l K M) (k : ℕ) (g : K.fixingSubgroup) (a : (lev h k).A) :
     (lev h k).ι ((lev h k).σA g a) = (lev h k).σB g ((lev h k).ι a) :=
   ι_map (fk l k) (xi0 l) (fk l k) (xi0 l) l M (gB h k g) (h.gal k g) a
 
+/- English proof (translation)
+The claim follows from `hk lat := GlobalTheory.T.level_lattice_base h k hk toB_surj := GlobalTheory.T.level_toB_surjective h k toB_ker := GlobalTheory.T.level_toB_eq_zero_iff_t_pow_dvd h k toB_K := GlobalTheory.T.level_toB_algebraMap_field h k ι_inj := ι_injective (fk l k) (xi0 l) l M ι_dp := dp_ι (fk l …`.
+-/
 theorem lev_good (h : LevHyp l K M) (k : ℕ) (hk : 1 ≤ k) : (lev h k).Good where
   pos := hk
   lat := GlobalTheory.T.level_lattice_base h k hk
@@ -87,12 +103,21 @@ theorem lev_good (h : LevHyp l K M) (k : ℕ) (hk : 1 ≤ k) : (lev h k).Good wh
   σB_K := GlobalTheory.T.level_galois_fixes_field h k
   pdP_B := GlobalTheory.T.level_filtration_span_t_pow h k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dk_pk (k : ℕ) (x : BdRp l) : dk l k (pk l (k + 1) x) = pk l k x := rfl
 
+/- English proof (translation)
+The claim follows from `(ι_map (fk l (m + 2)) (xi0 l) (fk l (m + 1)) (xi0 l) l M (dk l (m + 1)) (h.dIn (m + 1)) a).symm`.
+-/
 theorem sys_dι (h : LevHyp l K M) (m : ℕ) (a : ((levSys h).L (m + 1)).A) :
     (levSys h).dB m (((levSys h).L (m + 1)).ι a) = ((levSys h).L m).ι ((levSys h).dA m a) :=
   (ι_map (fk l (m + 2)) (xi0 l) (fk l (m + 1)) (xi0 l) l M (dk l (m + 1)) (h.dIn (m + 1)) a).symm
 
+/- English proof (translation)
+The claim follows from `lev_good h (m + 1) (Nat.le_add_left 1 m) dB_toB m x := dk_pk (m + 1) (pInv l x) dι := sys_dι h dlam m c := Subtype.ext (dk_pk (m + 1) (ACris.iota ℂ_[l] l c)) dO m a := Subtype.ext (dk_pk (m + 1) (kP l K a)) dK m k := dk_pk (m + 1) (kP l K k) ddp := GlobalTheory.T.level_system_tra …`.
+-/
 theorem levSys_good (h : LevHyp l K M) : (levSys h).Good where
   lev m := lev_good h (m + 1) (Nat.le_add_left 1 m)
   dB_toB m x := dk_pk (m + 1) (pInv l x)
@@ -107,6 +132,9 @@ theorem levSys_good (h : LevHyp l K M) : (levSys h).Good where
   dσB := GlobalTheory.T.level_system_transition_galois_B h
   cpl := GlobalTheory.T.existsUnique_period_of_compatible h
 
+/- English proof (translation)
+The claim follows from `(levHyp_ex (l := l) (K := K)).elim fun _ h => ⟨levSys h, levSys_good h, fun m => GlobalTheory.T.level_xi_mem_ideal_and_theta_compat h (m + 1)⟩`.
+-/
 theorem levSys_ex [FiniteDimensional ℚ_[l] K] : ∃ S : Kap.LevSys (per l K), S.Good ∧ ∀ m, (S.L m).CrisOK :=
   (levHyp_ex (l := l) (K := K)).elim fun _ h => ⟨levSys h, levSys_good h, fun m => GlobalTheory.T.level_xi_mem_ideal_and_theta_compat h (m + 1)⟩
 

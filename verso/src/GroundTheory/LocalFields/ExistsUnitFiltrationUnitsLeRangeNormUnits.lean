@@ -22,9 +22,15 @@ def normUnits : Lˣ →* Kˣ :=
 
 variable {K L} in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_normUnits (x : Lˣ) : ((normUnits K L x : Kˣ) : K) = Algebra.norm K (x : L) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `Algebra.norm_eq_prod_automorphisms K x`.
+-/
 theorem algebraMap_norm_eq_prod [FiniteDimensional K L] [IsGalois K L] (x : L) :
     algebraMap K L (Algebra.norm K x) = ∏ σ : L ≃ₐ[K] L, σ x :=
   Algebra.norm_eq_prod_automorphisms K x
@@ -35,34 +41,55 @@ section Ord
 
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
+/- English proof (translation)
+Establish `h1` using `normalizedValuation_eq_exp_ord (zpow_ne_zero k hx)`. Rewrite `h1` using `[map_zpow₀, normalizedValuation_eq_exp_ord hx, ← WithZero.exp_zsmul, WithZero.exp_inj, smul_eq_mul]`. Take the linear combination `h1`.
+-/
 theorem ord_zpow {x : K} (hx : x ≠ 0) (k : ℤ) : ord (x ^ k) = k * ord x := by
   have h1 := normalizedValuation_eq_exp_ord (zpow_ne_zero k hx)
   rw [map_zpow₀, normalizedValuation_eq_exp_ord hx, ← WithZero.exp_zsmul, WithZero.exp_inj,
     smul_eq_mul] at h1
   linear_combination h1
 
+/- English proof (translation)
+Simplify using `using ord_zpow hx k`. Use the proof step `@[simp]`.
+-/
 theorem ord_pow {x : K} (hx : x ≠ 0) (k : ℕ) : ord (x ^ k) = k * ord x := by
   simpa using ord_zpow hx k
 
 @[simp]
+/- English proof (translation)
+Simplify using `[ord]`.
+-/
 theorem ord_zero : ord (0 : K) = 0 := by
   simp [ord]
 
+/- English proof (translation)
+Simplify using `[ord, normalizedValuation_unitsOfIntProd]`.
+-/
 theorem ord_unitsOfIntProd {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) (n : Multiplicative ℤ)
     (u : 𝒪[K]ˣ) : ord ((unitsOfIntProd hϖ (n, u) : Kˣ) : K) = n.toAdd := by
   simp [ord, normalizedValuation_unitsOfIntProd]
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
+/- English proof (translation)
+Simplify using `[unitsOfIntProd, zpowersHom_apply]`.
+-/
 theorem unitsOfIntProd_eq {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) (n : Multiplicative ℤ)
     (u : 𝒪[K]ˣ) : unitsOfIntProd hϖ (n, u) = uniformizerUnit hϖ ^ n.toAdd * unitsIncl K u := by
   simp [unitsOfIntProd, zpowersHom_apply]
 
+/- English proof (translation)
+Rewrite using `[mem_unitFiltrationUnits_zero_iff, ← map_one (valuation K), ← normalizedValuation_eq_iff, normalizedValuation_eq_exp_ord x.ne_zero, map_one, ← WithZero.exp_zero, WithZero.exp_inj, neg_eq_zero]`.
+-/
 theorem ord_eq_zero_iff_mem {x : Kˣ} : ord (x : K) = 0 ↔ x ∈ unitFiltrationUnits K 0 := by
   rw [mem_unitFiltrationUnits_zero_iff, ← map_one (valuation K), ← normalizedValuation_eq_iff,
     normalizedValuation_eq_exp_ord x.ne_zero, map_one, ← WithZero.exp_zero, WithZero.exp_inj,
     neg_eq_zero]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, Homeomorph.coe_mulLeft, SetLike.mem_coe, ← ord_eq_zero_iff_mem, Units.val_mul, Units.val_zpow_eq_zpow_val, coe_uniformizerUnit]`. Establish `hϖ0 : (ϖ : K) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`. Rewrite using `[ord_mul (zpow_ne_zero _ hϖ0) y.ne_zero, ord_zpow hϖ0, ord_uniformizer hϖ]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem setOf_ord_eq {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) (m : ℤ) :
     {y : Kˣ | ord (y : K) = m} =
       (Homeomorph.mulLeft (uniformizerUnit hϖ ^ (-m))) ⁻¹' (unitFiltrationUnits K 0 : Set Kˣ) := by
@@ -73,11 +100,17 @@ theorem setOf_ord_eq {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) (m : ℤ) :
   rw [ord_mul (zpow_ne_zero _ hϖ0) y.ne_zero, ord_zpow hϖ0, ord_uniformizer hϖ]
   omega
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Rewrite using `[setOf_ord_eq hϖ]`. Conclude with `(isOpen_unitFiltrationUnits 0).preimage (Homeomorph.continuous _)`.
+-/
 theorem isOpen_setOf_ord_eq (m : ℤ) : IsOpen {y : Kˣ | ord (y : K) = m} := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
   rw [setOf_ord_eq hϖ]
   exact (isOpen_unitFiltrationUnits 0).preimage (Homeomorph.continuous _)
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Rewrite using `[setOf_ord_eq hϖ, Homeomorph.isCompact_preimage]`. Conclude with `isCompact_unitFiltrationUnits 0`.
+-/
 theorem isCompact_setOf_ord_eq (m : ℤ) : IsCompact {y : Kˣ | ord (y : K) = m} := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
   rw [setOf_ord_eq hϖ, Homeomorph.isCompact_preimage]
@@ -97,22 +130,34 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
+/- English proof (translation)
+The claim follows from `IsIntegralClosure.isLocalization 𝒪[K] K L 𝒪[L]`.
+-/
 theorem isLocalization_integer :
     IsLocalization (Algebra.algebraMapSubmonoid 𝒪[L] 𝒪[K]⁰) L :=
   IsIntegralClosure.isLocalization 𝒪[K] K L 𝒪[L]
 
 variable {K L}
 
+/- English proof (translation)
+Use `isLocalization_integer K L` as an intermediate fact. Conclude with `(Algebra.norm_localization (Rₘ := K) (Sₘ := L) 𝒪[K] 𝒪[K]⁰ x).symm`.
+-/
 theorem coe_norm_integer (x : 𝒪[L]) :
     ((Algebra.norm 𝒪[K] x : 𝒪[K]) : K) = Algebra.norm K (x : L) := by
   have := isLocalization_integer K L
   exact (Algebra.norm_localization (Rₘ := K) (Sₘ := L) 𝒪[K] 𝒪[K]⁰ x).symm
 
+/- English proof (translation)
+Use `isLocalization_integer K L` as an intermediate fact. Conclude with `(Algebra.trace_localization (Rₘ := K) (Sₘ := L) 𝒪[K] 𝒪[K]⁰ x).symm`.
+-/
 theorem coe_trace_integer (x : 𝒪[L]) :
     ((Algebra.trace 𝒪[K] 𝒪[L] x : 𝒪[K]) : K) = Algebra.trace K L (x : L) := by
   have := isLocalization_integer K L
   exact (Algebra.trace_localization (Rₘ := K) (Sₘ := L) 𝒪[K] 𝒪[K]⁰ x).symm
 
+/- English proof (translation)
+Establish `h` using `coe_norm_integer (K := K) (⟨x, hx⟩ : 𝒪[L])`. Rewrite using `[← h]`. Conclude with `(Algebra.norm 𝒪[K] (⟨x, hx⟩ : 𝒪[L])).2`.
+-/
 theorem norm_mem_integer {x : L} (hx : x ∈ 𝒪[L]) : Algebra.norm K x ∈ 𝒪[K] := by
   have h := coe_norm_integer (K := K) (⟨x, hx⟩ : 𝒪[L])
   rw [← h]
@@ -123,15 +168,24 @@ variable (K L) in
 def normIntegerUnits : 𝒪[L]ˣ →* 𝒪[K]ˣ :=
   Units.map (Algebra.norm 𝒪[K] : 𝒪[L] →* 𝒪[K])
 
+/- English proof (translation)
+The claim follows from `coe_norm_integer _`.
+-/
 theorem coe_normIntegerUnits (u : 𝒪[L]ˣ) :
     (((normIntegerUnits K L u : 𝒪[K]ˣ) : 𝒪[K]) : K) = Algebra.norm K ((u : 𝒪[L]) : L) :=
   coe_norm_integer _
 
+/- English proof (translation)
+Use `ext`. Simplify using `[coe_normIntegerUnits]`.
+-/
 theorem normUnits_unitsIncl (u : 𝒪[L]ˣ) :
     normUnits K L (unitsIncl L u) = unitsIncl K (normIntegerUnits K L u) := by
   ext
   simp [coe_normIntegerUnits]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨_, ⟨u, -, rfl⟩, rfl⟩`. Conclude with `⟨normIntegerUnits K L u, by simp, (normUnits_unitsIncl u).symm⟩`.
+-/
 theorem map_normUnits_unitFiltrationUnits_zero_le :
     (unitFiltrationUnits L 0).map (normUnits K L) ≤ unitFiltrationUnits K 0 := by
   rintro _ ⟨_, ⟨u, -, rfl⟩, rfl⟩
@@ -139,6 +193,13 @@ theorem map_normUnits_unitFiltrationUnits_zero_le :
 
 section Valuation
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[L]`. Establish `h` using `map_maximalIdeal K L`. Rewrite `h` using `[hϖ.maximalIdeal_eq, hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_pow, Ideal.span_singleton_eq_span_singleton]`. Take `⟨u, hu⟩` from `h.symm`. Establish `h2 : algebraMap K L (ϖ : K) = (π : L) ^ ramificationIndex K L * ((u : 𝒪[L]) : L)`.
+
+Rewrite using `[← coe_algebraMap_integer, ← hu]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hπ0 : (π : L) ≠ 0` using `by exact_mod_cast hπ.ne_zero`. Rewrite using `[h2, ord_mul (pow_ne_zero _ hπ0) (by simp), ord_pow hπ0, ord_uniformizer hπ, ord_unit]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ord_algebraMap_uniformizer {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     ord (algebraMap K L (ϖ : K)) = ramificationIndex K L := by
   obtain ⟨π, hπ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[L]
@@ -154,6 +215,13 @@ theorem ord_algebraMap_uniformizer {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
   rw [h2, ord_mul (pow_ne_zero _ hπ0) (by simp), ord_pow hπ0, ord_uniformizer hπ, ord_unit]
   simp
 
+/- English proof (translation)
+Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Simplify using the standard rewrite rules. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Take `⟨⟨n, u⟩, hx⟩` from `(unitsOfIntProd_bijective hϖ).2 (Units.mk0 a ha)`. Establish `ha' : a = (ϖ : K) ^ n.toAdd * ((u : 𝒪[K]) : K)`.
+
+Rewrite using `[← coe_unitsOfIntProd hϖ, hx, Units.val_mk0]`. Establish `hϖ0 : (ϖ : K) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`. Establish `hϖL : algebraMap K L (ϖ : K) ≠ 0` using `by simpa using hϖ0`. Establish `hu : algebraMap K L ((u : 𝒪[K]) : K) = (((Units.map (algebraMap 𝒪[K] 𝒪[L]).toMonoidHom u : 𝒪[L]ˣ) : 𝒪[L]) : L)` using `rfl`. Rewrite using `[ha', map_mul, map_zpow₀, ord_mul (zpow_ne_zero _ hϖL) (by rw [hu]; simp), ord_zpow hϖL, ord_algebraMap_uniformizer hϖ, hu, ord_unit, ord_mul (zpow_ne_zero _ hϖ0) (by simp), ord_zpow hϖ0, ord_uniformizer hϖ, ord_unit]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ord_algebraMap (a : K) : ord (algebraMap K L a) = ramificationIndex K L * ord a := by
   rcases eq_or_ne a 0 with rfl | ha
   · simp
@@ -170,6 +238,9 @@ theorem ord_algebraMap (a : K) : ord (algebraMap K L a) = ramificationIndex K L 
     ord_zpow hϖ0, ord_uniformizer hϖ, ord_unit]
   ring
 
+/- English proof (translation)
+Take `⟨⟨n, u⟩, rfl⟩` from `(unitsOfIntProd_bijective hπ).2 x`. Rewrite using `[ord_unitsOfIntProd, ← coe_normUnits, unitsOfIntProd_eq, map_mul, map_zpow, normUnits_unitsIncl, Units.val_mul, Units.val_zpow_eq_zpow_val, coe_unitsIncl, ord_mul (zpow_ne_zero _ (Units.ne_zero _)) (by simp), ord_zpow (Units.ne_zero _), ord_unit, coe_normUnits, coe_uniformizerUni …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ord_norm_units {π : 𝒪[L]} (hπ : Irreducible π) (x : Lˣ) :
     ord (Algebra.norm K (x : L)) = ord (x : L) * ord (Algebra.norm K (π : L)) := by
   obtain ⟨⟨n, u⟩, rfl⟩ := (unitsOfIntProd_bijective hπ).2 x
@@ -179,6 +250,11 @@ theorem ord_norm_units {π : 𝒪[L]} (hπ : Irreducible π) (x : Lˣ) :
     coe_normUnits, coe_uniformizerUnit]
   ring
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `hϖ0 : (ϖ : K) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`. Establish `hϖL : algebraMap K L (ϖ : K) ≠ 0` using `by simpa using hϖ0`. Establish `h` using `ord_norm_units (K := K) hπ (Units.mk0 _ hϖL)`. Rewrite `h` using `[Units.val_mk0, Algebra.norm_algebraMap, ord_pow hϖ0, ord_uniformizer hϖ, ord_algebraMap_uniformizer hϖ, ← ramificationIndex_mul_residueDegree K L]`.
+
+Establish `he : (ramificationIndex K L : ℤ) ≠ 0`. Conclude with `(ramificationIndex_pos K L).ne'` after adjusting the coercions. Move the coercions through the operations in `at h`. Conclude with `(mul_left_cancel₀ he (by linear_combination h)).symm`.
+-/
 theorem ord_norm_uniformizer {π : 𝒪[L]} (hπ : Irreducible π) :
     ord (Algebra.norm K (π : L)) = residueDegree K L := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
@@ -192,6 +268,11 @@ theorem ord_norm_uniformizer {π : 𝒪[L]} (hπ : Irreducible π) :
   push_cast at h
   exact (mul_left_cancel₀ he (by linear_combination h)).symm
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[L]`. Use `ord_norm_units (K := K) hπ (Units.mk0 x hx)` as an intermediate fact. Rewrite `this` using `[Units.val_mk0, ord_norm_uniformizer hπ]`.
+
+Rewrite using `[this, mul_comm]`.
+-/
 theorem ord_norm (x : L) : ord (Algebra.norm K x) = residueDegree K L * ord x := by
   rcases eq_or_ne x 0 with rfl | hx
   · simp
@@ -200,6 +281,9 @@ theorem ord_norm (x : L) : ord (Algebra.norm K x) = residueDegree K L * ord x :=
   rw [Units.val_mk0, ord_norm_uniformizer hπ] at this
   rw [this, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[ord_algebraMap, ord_norm, ← ramificationIndex_mul_residueDegree K L]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ord_algebraMap_norm (x : L) :
     ord (algebraMap K L (Algebra.norm K x)) = Module.finrank K L * ord x := by
   rw [ord_algebraMap, ord_norm, ← ramificationIndex_mul_residueDegree K L]
@@ -212,6 +296,11 @@ section Topology
 
 variable (K L)
 
+/- English proof (translation)
+Use `isModuleTopology K L` as an intermediate fact. Set `b` to `Module.finBasis K L`. Establish `hlin : Continuous (Algebra.leftMulMatrix b : L → Matrix _ _ K)` using `IsModuleTopology.continuous_of_linearMap (Algebra.leftMulMatrix b).toLinearMap`. Establish `h : (Algebra.norm K : L → K) = fun x ↦ (Algebra.leftMulMatrix b x).det`. Use function extensionality and compare the values at `x`.
+
+Conclude with `Algebra.norm_eq_matrix_det b x`. Rewrite using `[h]`. Conclude with `hlin.matrix_det`.
+-/
 theorem continuous_algebraNorm : Continuous (Algebra.norm K : L → K) := by
   classical
   have := isModuleTopology K L
@@ -224,6 +313,11 @@ theorem continuous_algebraNorm : Continuous (Algebra.norm K : L → K) := by
   rw [h]
   exact hlin.matrix_det
 
+/- English proof (translation)
+Rewrite using `[Units.continuous_iff]`. Use `⟨(continuous_algebraNorm K L).comp Units.continuous_val, ?_⟩` and prove the remaining obligations. Establish `h : (fun x : Lˣ ↦ (((normUnits K L x)⁻¹ : Kˣ) : K)) = fun x ↦ Algebra.norm K ((x⁻¹ : Lˣ) : L)`. Use function extensionality and compare the values at `x`. Rewrite using `[← map_inv, coe_normUnits]`.
+
+Rewrite using `[h]`. Conclude with `(continuous_algebraNorm K L).comp Units.continuous_coe_inv`.
+-/
 theorem continuous_normUnits : Continuous (normUnits K L) := by
   rw [Units.continuous_iff]
   refine ⟨(continuous_algebraNorm K L).comp Units.continuous_val, ?_⟩
@@ -234,6 +328,11 @@ theorem continuous_normUnits : Continuous (normUnits K L) := by
   rw [h]
   exact (continuous_algebraNorm K L).comp Units.continuous_coe_inv
 
+/- English proof (translation)
+Rewrite using `[isProperMap_iff_isCompact_preimage]`. Use `⟨continuous_normUnits K L, fun C hC ↦ ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hC.elim_finite_subcover (fun m : ℤ ↦ {y : Kˣ | ord (y : K) = m}) isOpen_setOf_ord_eq (fun y _ ↦ Set.mem_iUnion.2 ⟨_, rfl⟩)`. Use `IsCompact.of_isClosed_subset (t.isCompact_biUnion fun m _ ↦ isCompact_setOf_ord_eq (m / residueDegree K L)) (hC.isClosed.preimage (continuous_normUnits K L)) ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨m, hm, hxm⟩` from `Set.mem_iUnion₂.1 (ht hx)`. Use `Set.mem_iUnion₂.2 ⟨m, hm, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, coe_normUnits, ord_norm] at hxm ⊢`. Establish `hf : (residueDegree K L : ℤ) ≠ 0` using `by exact_mod_cast (residueDegree_pos K L).ne'`. Rewrite using `[← hxm, Int.mul_ediv_cancel_left _ hf]`.
+-/
 theorem isProperMap_normUnits : IsProperMap (normUnits K L) := by
   rw [isProperMap_iff_isCompact_preimage]
   refine ⟨continuous_normUnits K L, fun C hC ↦ ?_⟩
@@ -249,12 +348,24 @@ theorem isProperMap_normUnits : IsProperMap (normUnits K L) := by
   have hf : (residueDegree K L : ℤ) ≠ 0 := by exact_mod_cast (residueDegree_pos K L).ne'
   rw [← hxm, Int.mul_ediv_cancel_left _ hf]
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.coe_range]`. Conclude with `(isProperMap_normUnits K L).isClosedMap.isClosed_range`.
+-/
 theorem isClosed_range_normUnits : IsClosed ((normUnits K L).range : Set Kˣ) := by
   rw [MonoidHom.coe_range]
   exact (isProperMap_normUnits K L).isClosedMap.isClosed_range
 
 end Topology
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis 𝒪[K] 𝒪[L]`. Use `set M := Algebra.leftMulMatrix b z with hM`. Use `set Q := (Matrix.det (1 + (X : 𝒪[K][X]) • M.map C)).divX.divX with hQ`. Set `f : 𝒪[K][X]` to `C (1 - a) + C M.trace * X + Q * X ^ 2`. Establish `hnorm : ∀ r : 𝒪[K], Algebra.norm 𝒪[K] (1 + r • z) = 1 + M.trace * r + Q.eval r * r ^ 2`.
+
+Introduce `r`. Rewrite using `[Algebra.norm_eq_matrix_det b, map_add, map_one, map_smul, Matrix.det_one_add_smul]`. Establish `htr : M.trace = ϖ ^ k * ε`. Rewrite using `[← hz, Algebra.trace_eq_matrix_trace b]`. Establish `hd : f.derivative.eval 0 = ϖ ^ k * ε`.
+
+Simplify using `[f, htr]`. Establish `hf0 : f.eval 0 = 1 - a`. Simplify using `[f]`. Take `⟨r, hr, -⟩` from `exists_root_of_dvd hϖ f 0 k ε hd (by rwa [hf0])`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hnorm]`. Establish `h0 : f.eval r = 0` using `hr`. Simplify using `only [f, eval_add, eval_C, eval_mul, eval_X, eval_pow] at h0`. Take the linear combination `h0`.
+-/
 theorem exists_norm_one_add_smul_eq (z : 𝒪[L]) {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) (k : ℕ)
     (ε : 𝒪[K]ˣ) (hz : Algebra.trace 𝒪[K] 𝒪[L] z = ϖ ^ k * ε) (a : 𝒪[K])
     (ha : ϖ ^ (2 * k + 1) ∣ 1 - a) : ∃ r : 𝒪[K], Algebra.norm 𝒪[K] (1 + r • z) = a := by
@@ -285,6 +396,17 @@ variable [Algebra.IsSeparable K L]
 
 variable (K L) in
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : L, Algebra.trace K L w ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `one_ne_zero ((traceForm_nondegenerate K L).1 1 fun w ↦ ?_)` and prove the remaining obligations. Simplify using `only [not_exists, not_not] at h`. Simplify using `using h w`.
+
+Establish `hw0 : w ≠ 0` using `by rintro rfl; simp at hw`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `h1 : valuation L (algebraMap K L (ϖ : K)) < 1` using `(Valuation.HasExtension.val_map_lt_one_iff (valuation K) (valuation L) _).mpr (valuation_lt_one_of_mem_maximalIdeal (uniformizer_mem_maximalIdeal hϖ))`. Establish `hv0 : valuation L w ≠ 0` using `by simpa using hw0`. Take `⟨m, hm⟩` from `exists_pow_lt₀ h1 (Units.mk0 (valuation L w)⁻¹ (inv_ne_zero hv0))`.
+
+Establish `hint : algebraMap K L (ϖ : K) ^ m * w ∈ 𝒪[L]`. Rewrite using `[Valuation.mem_integer_iff, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hm.le`. Use `_ = 1 := inv_mul_cancel₀ hv0`.
+
+Use `⟨⟨_, hint⟩, fun h ↦ ?_⟩` and prove the remaining obligations. Establish `h2 : Algebra.trace K L (algebraMap K L (ϖ : K) ^ m * w) = 0`. Establish `h3` using `coe_trace_integer (K := K) (⟨_, hint⟩ : 𝒪[L])`. Rewrite `h3` using `[h, ZeroMemClass.coe_zero]`. Conclude with `h3.symm`.
+
+Rewrite `h2` using `[← map_pow, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Establish `hϖ0 : (ϖ : K) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`. Conclude with `mul_ne_zero (pow_ne_zero _ hϖ0) hw h2`.
+-/
 theorem exists_trace_integer_ne_zero : ∃ z : 𝒪[L], Algebra.trace 𝒪[K] 𝒪[L] z ≠ 0 := by
   obtain ⟨w, hw⟩ : ∃ w : L, Algebra.trace K L w ≠ 0 := by
     by_contra h
@@ -316,6 +438,15 @@ theorem exists_trace_integer_ne_zero : ∃ z : 𝒪[L], Algebra.trace 𝒪[K] �
 
 variable (K L) in
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Take `⟨z, hz⟩` from `exists_trace_integer_ne_zero K L`. Take `⟨k, hk⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hz hϖ`. Take `⟨ε, hε⟩` from `hk.symm`. Use `⟨2 * k + 1, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `hdvd : ϖ ^ (2 * k + 1) ∣ 1 - (a : 𝒪[K])`. Rewrite using `[← dvd_neg, neg_sub]`. Conclude with `(mem_maximalIdeal_pow_iff hϖ).mp ha`. Take `⟨r, hr⟩` from `exists_norm_one_add_smul_eq z hϖ k ε hε.symm a hdvd`.
+
+Establish `hN` using `coe_norm_integer (K := K) (1 + r • z)`. Rewrite `hN` using `[hr]`. Establish `hne : ((1 + r • z : 𝒪[L]) : L) ≠ 0`. Introduce `h0`. Rewrite `hN` using `[h0, Algebra.norm_zero]`.
+
+Simplify using `at hN`. Use `⟨Units.mk0 _ hne, ?_⟩` and prove the remaining obligations. Use `ext`. Rewrite using `[coe_normUnits, Units.val_mk0, ← hN, coe_unitsIncl]`.
+-/
 theorem exists_unitFiltrationUnits_le_range_normUnits :
     ∃ n, unitFiltrationUnits K n ≤ (normUnits K L).range := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
@@ -340,12 +471,26 @@ theorem exists_unitFiltrationUnits_le_range_normUnits :
 
 variable (K L) in
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `exists_unitFiltrationUnits_le_range_normUnits K L`. Conclude with `Subgroup.isOpen_mono hn (isOpen_unitFiltrationUnits n)`.
+-/
 theorem isOpen_range_normUnits : IsOpen ((normUnits K L).range : Set Kˣ) := by
   obtain ⟨n, hn⟩ := exists_unitFiltrationUnits_le_range_normUnits K L
   exact Subgroup.isOpen_mono hn (isOpen_unitFiltrationUnits n)
 
 variable (K L) in
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `exists_unitFiltrationUnits_le_range_normUnits K L`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Use `set d := Module.finrank K L with hd`. Establish `hd0 : d ≠ 0` using `Module.finrank_pos.ne'`. Set `P : Subgroup (Multiplicative ℤ × 𝒪[K]ˣ)` to `(AddSubgroup.zmultiples (d : ℤ)).toSubgroup.prod (unitFiltration K n)`.
+
+Establish `hP : P.index ≠ 0`. Rewrite using `[Subgroup.index_prod, AddSubgroup.index_toSubgroup, Int.index_zmultiples]`. Conclude with `mul_ne_zero (by simpa using hd0) (unitFiltration K n).index_ne_zero_of_finite`. Establish `hle : P.comap (unitsEquivIntProd hϖ).toMonoidHom ≤ (normUnits K L).range`. Introduce `x hx`.
+
+Simplify using `only [Subgroup.mem_comap, Subgroup.mem_prod, MulEquiv.coe_toMonoidHom, P] at hx`. Take `⟨h1, h2⟩` from `hx`. Use `set p := unitsEquivIntProd hϖ x with hp`. Establish `hxp : x = unitsOfIntProd hϖ (p.1, p.2)`. Rewrite using `[← unitsEquivIntProd_symm_apply, Prod.mk.eta, hp, MulEquiv.symm_apply_apply]`.
+
+Take `⟨j, hj⟩` from `AddSubgroup.mem_zmultiples_iff.mp ((Multiplicative.mem_toSubgroup _ _).mp h1)`. Rewrite using `[hxp, unitsOfIntProd_eq, ← hj, smul_eq_mul, mul_comm j, zpow_mul, zpow_natCast]`. Use `Subgroup.mul_mem _ (Subgroup.zpow_mem _ (MonoidHom.mem_range.mpr ⟨Units.map (algebraMap K L : K →* L) (uniformizerUnit hϖ), ?_⟩) _) (hn (Subgroup.mem_map.mpr ⟨_, h2, rfl⟩))` and prove the remaining obligations. Use `ext`. Simplify using `[Algebra.norm_algebraMap, hd]`.
+
+Establish `: (P.comap (unitsEquivIntProd hϖ).toMonoidHom).FiniteIndex`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Subgroup.index_comap_of_surjective _ (unitsEquivIntProd hϖ).surjective]`. Conclude with `hP`. Conclude with `Subgroup.finiteIndex_of_le hle`.
+-/
 theorem finiteIndex_range_normUnits : (normUnits K L).range.FiniteIndex := by
   obtain ⟨n, hn⟩ := exists_unitFiltrationUnits_le_range_normUnits K L
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]

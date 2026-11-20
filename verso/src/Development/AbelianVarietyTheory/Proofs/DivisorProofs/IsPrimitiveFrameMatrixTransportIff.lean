@@ -12,6 +12,15 @@ namespace PrimFrameTr
 section Fields
 variable {k k' : Type} [Field k] [Field k']
 
+/- English proof (translation)
+Set `M` to `LinearMap.range Z.mulVecLin`. Set `b` to `Module.finBasis k M`. Establish `hc : ∀ y : D, (fun x => Z x y) ∈ M` using `fun y => ⟨Pi.single y 1, by ext x; simp⟩`. Set `P : Matrix A (Fin (Module.finrank k M)) k` to `Matrix.of fun x l => (b l : A → k) x`. Set `Q : Matrix (Fin (Module.finrank k M)) D k` to `Matrix.of fun l y => b.repr ⟨fun x => Z x y, hc y⟩ l`.
+
+Establish `hPQ : Z = P * Q`. Use extensionality with `x y`. Establish `h` using `congrArg (fun z : M => (z : A → k) x) (b.sum_repr ⟨fun x => Z x y, hc y⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h`. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify using `only [P, Q, Matrix.of_apply]`. Rewrite using `[← h]`. Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`. Establish `h : Z.map f = P.map f * Q.map f` using `by rw [hPQ, Matrix.map_mul]`. Rewrite using `[h]`.
+
+Use `(Matrix.rank_mul_le_left _ _).trans ((Matrix.rank_le_card_width _).trans ?_)` and prove the remaining obligations. Simplify using `[Matrix.rank, M]`.
+-/
 theorem rank_map_le {A D : Type} [Fintype A] [Fintype D] [DecidableEq D] (f : k →+* k') (Z : Matrix A D k) :
     (Z.map f).rank ≤ Z.rank := by
   classical
@@ -33,6 +42,9 @@ theorem rank_map_le {A D : Type} [Fintype A] [Fintype D] [DecidableEq D] (f : k 
   refine (Matrix.rank_mul_le_left _ _).trans ((Matrix.rank_le_card_width _).trans ?_)
   simp [Matrix.rank, M]
 
+/- English proof (translation)
+Use `le_antisymm (rank_map_le (j : k →+* k') Z) ?_` and prove the remaining obligations. Use `rank_map_le (j.symm : k' →+* k) (Z.map j)` as an intermediate fact. Establish `e : (Z.map j).map (j.symm : k' →+* k) = Z` using `by ext; simp`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem rank_map_equiv {A D : Type} [Fintype A] [Fintype D] [DecidableEq D] (j : k ≃+* k') (Z : Matrix A D k) :
     (Z.map j).rank = Z.rank := by
   refine le_antisymm (rank_map_le (j : k →+* k') Z) ?_
@@ -40,14 +52,23 @@ theorem rank_map_equiv {A D : Type} [Fintype A] [Fintype D] [DecidableEq D] (j :
   have e : (Z.map j).map (j.symm : k' →+* k) = Z := by ext; simp
   rwa [e] at this
 
+/- English proof (translation)
+Establish `: trM j rA cD Z = (Z.map j).submatrix rA cD` using `by ext; rfl`. Rewrite using `[this, Matrix.rank_submatrix, rank_map_equiv]`.
+-/
 theorem rank_trM {A D A₂ D₂ : Type} [Fintype A] [Fintype D] [DecidableEq D] [Fintype D₂]
     (j : k ≃+* k') (rA : A₂ ≃ A) (cD : D₂ ≃ D) (Z : Matrix A D k) : (trM j rA cD Z).rank = Z.rank := by
   have : trM j rA cD Z = (Z.map j).submatrix rA cD := by ext; rfl
   rw [this, Matrix.rank_submatrix, rank_map_equiv]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem row_trM {A D A₂ D₂ : Type} (j : k ≃+* k') (rA : A₂ ≃ A) (cD : D₂ ≃ D) (Z : Matrix A D k) (r : A₂) :
     (trM j rA cD Z).row r = fun c => j (Z.row (rA r) (cD c)) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `d`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, row_trM]`. Conclude with `(Fintype.sum_equiv rA _ _ fun r => rfl).symm`.
+-/
 theorem read_sum {A D A₂ D₂ : Type} [Fintype A] [Fintype A₂] (j : k ≃+* k') (rA : A₂ ≃ A) (cD : D₂ ≃ D)
     (Z : Matrix A D k) (c : A → k) :
     (fun d => j ((∑ a, c a • Z.row a) (cD d))) = ∑ r, j (c (rA r)) • (trM j rA cD Z).row r := by
@@ -55,6 +76,9 @@ theorem read_sum {A D A₂ D₂ : Type} [Fintype A] [Fintype A₂] (j : k ≃+* 
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, row_trM]
   exact (Fintype.sum_equiv rA _ _ fun r => rfl).symm
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun k).1 hx`. Rewrite using `[read_sum j rA cD Z c]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun k').2 ⟨_, rfl⟩`.
+-/
 theorem mem_spanK_of {A D A₂ D₂ : Type} [Fintype A] [Fintype A₂] (j : k ≃+* k') (rA : A₂ ≃ A) (cD : D₂ ≃ D)
     (Z : Matrix A D k) {x : D → k} (hx : x ∈ Submodule.span k (Set.range Z.row)) :
     (fun d => j (x (cD d))) ∈ Submodule.span k' (Set.range (trM j rA cD Z).row) := by
@@ -67,9 +91,15 @@ end Fields
 variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] {j : k ≃+* k'}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hj.2.1, by simpa using hj.1, fun x => by rw [← hj.2.2 (j.symm x)]; simp⟩`.
+-/
 theorem isLocIso_symm (hj : IsLocIso j) : IsLocIso j.symm :=
   ⟨hj.2.1, by simpa using hj.1, fun x => by rw [← hj.2.2 (j.symm x)]; simp⟩
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun 𝒪[k]).1 hx`. Establish `h` using `read_sum j rA cD Z (fun a => (c a : k))`. Establish `e : (∑ a, c a • Z.row a) = ∑ a, (c a : k) • Z.row a` using `Finset.sum_congr rfl fun a _ => rfl`. Rewrite using `[e, h]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun 𝒪[k']).2 ⟨fun r => ⟨j (c (rA r)), (hj.2.2 _).2 (c (rA r)).2⟩, rfl⟩`.
+-/
 theorem mem_spanO_of (hj : IsLocIso j) {A D A₂ D₂ : Type} [Fintype A] [Fintype A₂] (rA : A₂ ≃ A) (cD : D₂ ≃ D)
     (Z : Matrix A D k) {x : D → k} (hx : x ∈ Submodule.span 𝒪[k] (Set.range Z.row)) :
     (fun d => j (x (cD d))) ∈ Submodule.span 𝒪[k'] (Set.range (trM j rA cD Z).row) := by
@@ -80,10 +110,16 @@ theorem mem_spanO_of (hj : IsLocIso j) {A D A₂ D₂ : Type} [Fintype A] [Finty
   exact (Submodule.mem_span_range_iff_exists_fun 𝒪[k']).2
     ⟨fun r => ⟨j (c (rA r)), (hj.2.2 _).2 (c (rA r)).2⟩, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `d`. Simplify using the standard rewrite rules.
+-/
 theorem read_symm {D D₂ : Type} (cD : D₂ ≃ D) (x : D → k) :
     (fun d => j.symm ((fun c => j (x (cD c))) (cD.symm d))) = x := by
   funext d; simp
 
+/- English proof (translation)
+The claim follows from `trM_symm_trM j rA cD Z`.
+-/
 theorem trM_symm {A D A₂ D₂ : Type} (rA : A₂ ≃ A) (cD : D₂ ≃ D) (Z : Matrix A D k) :
     trM j.symm rA.symm cD.symm (trM j rA cD Z) = Z := trM_symm_trM j rA cD Z
 
@@ -93,6 +129,9 @@ def readEquiv (j : k ≃+* k') {D D₂ : Type} (cD : D₂ ≃ D) : (D → k) ≃
   left_inv x := by funext d; simp
   right_inv y := by funext d; simp
 
+/- English proof (translation)
+Use `⟨fun h => ?_, mem_spanK_of j rA cD Z⟩` and prove the remaining obligations. Use `mem_spanK_of j.symm rA.symm cD.symm _ h` as an intermediate fact. Rewrite `this` using `[read_symm, trM_symm]`. Then use the resulting hypothesis.
+-/
 theorem memK_iff {A D A₂ D₂ : Type} [Fintype A] [Fintype A₂] (rA : A₂ ≃ A) (cD : D₂ ≃ D)
     (Z : Matrix A D k) (x : D → k) :
     (fun d => j (x (cD d))) ∈ Submodule.span k' (Set.range (trM j rA cD Z).row) ↔
@@ -101,6 +140,9 @@ theorem memK_iff {A D A₂ D₂ : Type} [Fintype A] [Fintype A₂] (rA : A₂ �
   have := mem_spanK_of j.symm rA.symm cD.symm _ h
   rwa [read_symm, trM_symm] at this
 
+/- English proof (translation)
+Use `⟨fun h => ?_, mem_spanO_of hj rA cD Z⟩` and prove the remaining obligations. Use `mem_spanO_of (isLocIso_symm hj) rA.symm cD.symm _ h` as an intermediate fact. Rewrite `this` using `[read_symm, trM_symm]`. Then use the resulting hypothesis.
+-/
 theorem memO_iff (hj : IsLocIso j) {A D A₂ D₂ : Type} [Fintype A] [Fintype A₂] (rA : A₂ ≃ A) (cD : D₂ ≃ D)
     (Z : Matrix A D k) (x : D → k) :
     (fun d => j (x (cD d))) ∈ Submodule.span 𝒪[k'] (Set.range (trM j rA cD Z).row) ↔
@@ -113,6 +155,13 @@ end PrimFrameTr
 
 open PrimFrameTr in
 
+/- English proof (translation)
+Establish `hc : Fintype.card A₂ = Fintype.card A` using `Fintype.card_congr rA`. Establish `hm : trM j rA cD Z ∈ matLat A₂ Λ₂ ↔ Z ∈ matLat A Λ`. Rewrite using `[mem_matLat, mem_matLat]`. Use `(forall_congr' fun r => ?_).trans (rA.forall_congr_right (q := fun a => Z.row a ∈ Λ))` and prove the remaining obligations. Conclude with `hL (Z.row (rA r))`.
+
+Establish `hs : (Submodule.span 𝒪[k'] (Set.range (trM j rA cD Z).row) = (Submodule.span k' (Set.range (trM j rA cD Z).row)).restrictScalars 𝒪[k'] ⊓ Λ₂) ↔ (Submodule.span 𝒪[k] (Set.range Z.row) = (Submodule.span k (Set.range Z.row)).restrictScalars 𝒪[k] ⊓ Λ)`. Rewrite using `[SetLike.ext_iff, SetLike.ext_iff]`. Use `((readEquiv j cD).forall_congr_right).symm.trans (forall_congr' fun x => ?_)` and prove the remaining obligations. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem]`. Express the relevant statement in the definitionally equal form `((fun d => j (x (cD d))) ∈ _ ↔ (fun d => j (x (cD d))) ∈ _ ∧ (fun d => j (x (cD d))) ∈ Λ₂) ↔ _`.
+
+Rewrite using `[memO_iff hj, memK_iff, hL]`. Unfold `IsPrimFrame`. Rewrite using `[rank_trM, hc, hm, hs]`.
+-/
 theorem isPrimFrame_trM_iff {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
     {j : k ≃+* k'} {A D A₂ D₂ : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype A₂]

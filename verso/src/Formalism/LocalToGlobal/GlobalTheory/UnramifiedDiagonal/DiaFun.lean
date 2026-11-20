@@ -12,6 +12,23 @@ variable {D : D7} {u : D.what₂.Word}
 set_option maxHeartbeats 20000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `h1` using `(mem_local_dual_lattice_iff' T.cls0 c (T.atT.eV v).1 (fun a => inclE (F := D.host.F) ((T.atT.eV v).1.adicCompletion D.host.F) (z a))).1 (Submodule.subset_span ⟨z, hz, rfl⟩)`. Establish `h2` using `(mem_local_dual_lattice_iff' T.cls0 c2 (T.atT.eV v).1 (fun a => inclE (F := D.host.F) ((T.atT.eV v).1.adicCompletion D.host.F) ((((γd⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z) a))).1 (Submodule.subset_span ⟨_, hz2, rfl⟩)`. Rewrite using `[T.fv0 v c2 ⟨_, hz2⟩ h2, T.fv0 v c ⟨z, hz⟩ h1]`. Use `(congrArg (T.fMe0 v) ?_).trans (map_zsmul (T.fMe0 v) k _)` and prove the remaining obligations. Establish `hκ : bc (prV (E` using `D.host.E) (T.atT.eV v).1) κd.1 ∈ T.cls0.lev.Uloc (T.atT.eV v).1 := ((T.cls0.lev.U_eq _).1 κd.2).2 _`.
+
+Rewrite `hκ` using `[T.cls0.lev.UlocAlt _ (T.atT.eV v).2]`. Take `⟨hgκ, hfix⟩` from `(Subgroup.mem_inf.1 hκ).2`. Take `⟨-, -, hgδ, hfδ⟩` from `hδ`. Establish `hw' : bc (prV (E` using `D.host.E) (T.atT.eV v).1) (T.cls0.y c).1 * bc (prV (E := D.host.E) (T.atT.eV v).1) δ.1 = bc (prV (E := D.host.E) (T.atT.eV v).1) (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γd) * bc (prV (E := D.host.E) (T.atT.eV v).1) (T.cls0.y c2).1 * bc (prV (E := D.hos …`. Establish `e0` using `congrArg (bc (prV (E := D.host.E) (T.atT.eV v).1)) h`.
+
+Simplify using `only [Subgroup.coe_mul, map_mul] at e0`. Conclude with `e0`. Establish `eg : (fun a => inclE (F` using `D.host.F) ((T.atT.eV v).1.adicCompletion D.host.F) ((((γd⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z) a)) = (((bc (prV (E := D.host.E) (T.atT.eV v).1) (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γd))⁻¹ : GL _ _ …`. Rewrite using `[← map_inv, ← map_inv]`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression. Establish `hdd : (((bc (prV (E` using `D.host.E) (T.atT.eV v).1) δ.1) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) _)) *ᵥ ((((bc (prV (E := D.host.E) (T.atT.eV v).1) δ.1)⁻¹ : GL _ _) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) _) *ᵥ ((((bc (prV (E := D.host.E) (T.atT.eV v).1) (T.cls0.y c).1)⁻¹ : GL _ _) : Matrix (Fin (D.R.N …`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Establish `hu : (((bc (prV (E` using `D.host.E) (T.atT.eV v).1) δ.1)⁻¹ : GL _ _) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) _) *ᵥ ((((bc (prV (E := D.host.E) (T.atT.eV v).1) (T.cls0.y c).1)⁻¹ : GL _ _) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) _) *ᵥ (fun a => inclE (F := D.host.F) ((T.atT.eV v).1.adicCompletion D.host.F …`.
+
+Use `(hgδ _).2 ?_` and prove the remaining obligations. Rewrite using `[hdd]`. Conclude with `h1`. Establish `key : (((bc (prV (E` using `D.host.E) (T.atT.eV v).1) (T.cls0.y c2).1)⁻¹ : GL _ _) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) _) *ᵥ (fun a => inclE (F := D.host.F) ((T.atT.eV v).1.adicCompletion D.host.F) ((((γd⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z) a)) = (( …`. Establish `gid : ∀ (Yc Dl Y2 G K : GL (Fin (D.R.N 0)) (D.host.E ⊗[D.host.F] (T.atT.eV v).1.adicCompletion D.host.F)), Yc * Dl = G * Y2 * K → Y2⁻¹ * G⁻¹ = K * Dl⁻¹ * Yc⁻¹`.
+
+Introduce `Yc Dl Y2 G K e0`. Establish `: Y2 = G⁻¹ * (Yc * Dl) * K⁻¹` using `by rw [e0]; group`. Rewrite using `[this]`. Use `group`. Establish `gm` using `congrArg Units.val (gid _ _ _ _ _ hw')`.
+
+Rewrite `gm` using `[Units.val_mul, Units.val_mul, Units.val_mul]`. Rewrite using `[eg, mulVec_mulVec, mulVec_mulVec, mulVec_mulVec, gm]`. Establish `e1 : T.cls0.lev.fT (T.atT.eV v).1 (T.atT.eV v).2 ⟨_, h2⟩ = T.cls0.lev.fT (T.atT.eV v).1 (T.atT.eV v).2 ⟨_, hu⟩`. Use `Eq.trans ?_ (hfix ⟨_, hu⟩)` and prove the remaining obligations. Use `congr 1`.
+
+Conclude with `Subtype.ext key`. Establish `e2` using `hfδ ⟨_, hu⟩`. Establish `e3 : (⟨(bc (prV (E` using `D.host.E) (T.atT.eV v).1) δ.1).1 *ᵥ ((((bc (prV (E := D.host.E) (T.atT.eV v).1) δ.1)⁻¹ : GL _ _) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) _) *ᵥ ((((bc (prV (E := D.host.E) (T.atT.eV v).1) (T.cls0.y c).1)⁻¹ : GL _ _) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) _) *ᵥ (fun a => inclE ( …`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem diaFun_same (T : Forms0 D u) (v : (D.mem u).A.vT) (k : ℤ)
     (δ : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))
     (hδ : IsDia T.cls0.lev (T.atT.eV v).1 (T.atT.eV v).2 k δ) (c c2 : (D.mem u).C.cls 0)

@@ -9,17 +9,33 @@ namespace GlobalTheory.NRows.Model
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.RowCopy
 
+/- English proof (translation)
+The claim follows from `Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩`.
+-/
 theorem used_loc (D : D7) (i : D.nd.Loc) : D.nd.mu i = D.what₂.mu0 ∨ ∃ w, D.nd.mu i = D.what₂.muAt w :=
   Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Conclude with `h μ hμ ⟨k, by omega⟩`.
+-/
 theorem lamPos_of_used {D : D7} (h : LamUsed D) {μ} (hμ : μ = D.what₂.mu0 ∨ ∃ w, μ = D.what₂.muAt w) {j : ℕ}
     (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : LamPos D μ j := by
   obtain ⟨k, rfl⟩ : ∃ k, j = k + 1 := ⟨j - 1, by omega⟩
   exact h μ hμ ⟨k, by omega⟩
 
+/- English proof (translation)
+The claim follows from `lamPos_of_used h (used_loc D i) (D.nd.j_range i).1 (D.nd.j_range i).2`.
+-/
 theorem lamLoc {D : D7} (h : LamUsed D) (i : D.nd.Loc) : LamPos D (D.nd.mu i) (D.nd.j i) :=
   lamPos_of_used h (used_loc D i) (D.nd.j_range i).1 (D.nd.j_range i).2
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (D.what₂.thetaP μ j ∘ₗ D.what₂.thetaT μ j)`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hI.submodule_iSup_eq_top, iSup_le_iff]`. Introduce `σ f hf`. Distinguish the cases in `h0 : D.what₂.isot j σ = ⊥`. Rewrite `hf` using `[h0]`.
+
+Rewrite using `[(Submodule.mem_bot ℂ).1 hf]`. Conclude with `zero_mem _`. Establish `hl : ((D.what₂.lamP μ j σ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast ((h σ).2 h0).ne'`. Use `⟨((D.what₂.lamP μ j σ : ℝ) : ℂ)⁻¹ • f, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.comp_apply, (h σ).1 f hf, smul_smul, inv_mul_cancel₀ hl, one_smul]`.
+
+Establish `hi` using `LinearMap.injective_iff_surjective.2 hs`. Rewrite `hi` using `[LinearMap.coe_comp]`. Conclude with `hi.of_comp`.
+-/
 theorem up_injective {D : D7} {μ} {j : ℕ} (h : LamPos D μ j) (hI : DirectSum.IsInternal (D.what₂.isot j)) :
     Function.Injective (D.what₂.thetaT μ j) := by
   have hs : Function.Surjective (D.what₂.thetaP μ j ∘ₗ D.what₂.thetaT μ j) := by
@@ -36,6 +52,11 @@ theorem up_injective {D : D7} {μ} {j : ℕ} (h : LamPos D μ j) (hI : DirectSum
   rw [LinearMap.coe_comp] at hi
   exact hi.of_comp
 
+/- English proof (translation)
+Introduce `j hj w hw`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Establish `e : D.what₂.muTw w = D.what₂.muAt w` using `((D.what₂.muAt_or w).resolve_left hw).symm`. Establish `a` using `up_injective (lamPos_of_used h (Or.inr ⟨w, e⟩) h1 h2) (hI j h1 h2)`. Establish `b` using `up_injective (lamPos_of_used h (Or.inl rfl) h1 h2) (hI j h1 h2)`.
+
+Unfold `SizeData₂.zeroSpaceRankAtPlace SizeData₂.dZ0 Rows.Data.Zj`. Rewrite using `[LinearMap.finrank_range_of_inj a, LinearMap.finrank_range_of_inj b]`.
+-/
 theorem rank_of {D : D7} (hI : SumRepresentations.adm8 D) (h : LamUsed D) (L : SizeData₂ D) : TwistedPlaces.adm3 L := by
   intro j hj w hw
   obtain ⟨h1, h2⟩ := Finset.mem_Icc.1 hj
@@ -45,6 +66,11 @@ theorem rank_of {D : D7} (hI : SumRepresentations.adm8 D) (h : LamUsed D) (L : S
   unfold SizeData₂.zeroSpaceRankAtPlace SizeData₂.dZ0 Rows.Data.Zj
   rw [LinearMap.finrank_range_of_inj a, LinearMap.finrank_range_of_inj b]
 
+/- English proof (translation)
+Introduce `h`. Take `⟨f, hf, hne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`. Establish `h1` using `(h _ (Or.inl rfl) j σ).1 f hf`. Establish `hl : ((D.what₂.lamP D.what₂.mu0 (j.1 + 1) σ : ℝ) : ℂ) ≠ 0`. Conclude with `((h _ (Or.inl rfl) j σ).2 hσ).ne'` after adjusting the coercions.
+
+Rewrite `h1` using `[h0, LinearMap.zero_apply]`. Conclude with `hne ((smul_eq_zero.1 h1.symm).resolve_left hl)`.
+-/
 theorem not_lamUsed {D : D7} (j : Fin D.R.m) (σ : D.what₂.FT) (hσ : D.what₂.isot (j.1 + 1) σ ≠ ⊥)
     (h0 : D.what₂.thetaP D.what₂.mu0 (j.1 + 1) = 0) : ¬ LamUsed D := by
   intro h
@@ -55,31 +81,55 @@ theorem not_lamUsed {D : D7} (j : Fin D.R.m) (σ : D.what₂.FT) (hσ : D.what�
   rw [h0, LinearMap.zero_apply] at h1
   exact hne ((smul_eq_zero.1 h1.symm).resolve_left hl)
 
+/- English proof (translation)
+The claim follows from `D.mtpar_tie`.
+-/
 theorem mtPar_holds (D : D7) : MtParTie D.nd D.naut D.ntypes := D.mtpar_tie
 
+/- English proof (translation)
+Simplify using `only [GoodIdempotentFixesLocalisationForms, D.nStage_trivialCharacter_compat.2]`.
+-/
 theorem goodIdempotent_iff_rowProjector (D : D7) : GoodIdempotentFixesLocalisationForms D ↔ ∀ (i : D.nd.Loc) (σ' : D.ntypes.Par),
     ∀ F ∈ D.ntypes.MtPar (D.nd.mu i) (D.nd.j i) σ', D.ntypes.goodPar σ' → D.what₂.eMt (D.nd.mu i) (D.nd.j i) F = F := by
   simp only [GoodIdempotentFixesLocalisationForms, D.nStage_trivialCharacter_compat.2]
 
+/- English proof (translation)
+Introduce `i σ' F hF hg` and use `(h.2.2.2.2.1 _ _ (D.nd.j_range i).1 (D.nd.j_range i).2 σ' F hF).1 hg`.
+-/
 theorem goodIdempotent_of_goodProjector {D : D7} (h : ArithmeticCylinders.Conclusion4 D) : GoodIdempotentFixesLocalisationForms D :=
   fun i σ' F hF hg => (h.2.2.2.2.1 _ _ (D.nd.j_range i).1 (D.nd.j_range i).2 σ' F hF).1 hg
 
+/- English proof (translation)
+Introduce `a _ _ _ _ _ _` and use `h a`.
+-/
 theorem partsGive_of_stmt {D : D7} (h : SumRepresentations.IntegralityFromMetric D) : PartsGive D := fun a _ _ _ _ _ _ => h a
 
+/- English proof (translation)
+The claim follows from `h ⟨⟨a.tie0, I.hypO, base_change_automorphic_of D I.bc I.c1, a.a2, b.a3, b.a4, a.a5⟩, a.temp⟩ a.tieLab b.rowSize a.hecke (lamLoc I.lam) b.thetaOne a.g4p`.
+-/
 theorem baseChange_preserves_unitary_of {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (h : PartsGive D) (I : Inputs hL D) (a : RowsA D) (b : RowsB D) :
     SumRepresentations.Conclusion1 D :=
   h ⟨⟨a.tie0, I.hypO, base_change_automorphic_of D I.bc I.c1, a.a2, b.a3, b.a4, a.a5⟩, a.temp⟩ a.tieLab b.rowSize a.hecke
     (lamLoc I.lam) b.thetaOne a.g4p
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1⟩`.
+-/
 theorem an_of {D : D7} (h : SumRepresentations.adm5 D) : IsobaricCuspidalStrongMultiplicityOne D.nd D.naut ∧ IsobaricDiscreteSelfDualStrongMultiplicityOne D.nd D.naut := ⟨h.1, h.2.1⟩
 
 section Read
 variable {D : D7} {cf : Formalism.L2.Host.CharFrame D} {nch : NChoice D} {tp : Formalism.L2.Host.TupTied D cf nch}
   (X : GlobalTheory.NJoin.RealAt D cf nch tp)
 
+/- English proof (translation)
+The claim follows from `(X.IL.jMt μ hμ j f).2.1`.
+-/
 theorem exists_vec {μ} (hμ : Formalism.IndefR.RecTie.Used0 D μ) (j : Fin D.R.m) (f : D.what₂.Mt μ (j.1 + 1)) :
     ∃ y, X.R.extV j (X.tupT μ) y = X.fn hμ j f := (X.IL.jMt μ hμ j f).2.1
 
+/- English proof (translation)
+Introduce `l`. Establish `: (fun h => l (X.R.extV j t 0 h)) = 0`. Use function extensionality and compare the values at `h`. Simplify using the standard rewrite rules. Rewrite using `[this, map_zero]`.
+-/
 theorem goodVt_zero (j : Fin D.R.m) (t : X.T) : GlobalTheory.DownLift.GoodVt X.R j t 0 := by
   intro l
   have : (fun h => l (X.R.extV j t 0 h)) = 0 := by
@@ -87,6 +137,9 @@ theorem goodVt_zero (j : Fin D.R.m) (t : X.T) : GlobalTheory.DownLift.GoodVt X.R
     simp
   rw [this, map_zero]
 
+/- English proof (translation)
+Establish `h2 : D.ntypes.onMt μ (j.1 + 1) D.ntypes.e0 f = f` using `by rw [← D.nStage_trivialCharacter_compat.2]; exact hf`. Establish `h3` using `h μ hμ j f y hy`. Conclude with `h3.1 h2`.
+-/
 theorem good_of_fixed (h : GoodIdempotentReadsAsGoodTypeProjector X) {μ} (hμ : Formalism.IndefR.RecTie.Used0 D μ) (j : Fin D.R.m) (f : D.what₂.Mt μ (j.1 + 1))
     (y) (hy : X.R.extV j (X.tupT μ) y = X.fn hμ j f) (hf : D.what₂.eMt μ (j.1 + 1) f = f) :
     GlobalTheory.DownLift.GoodVt X.R j (X.tupT μ) y := by
@@ -98,10 +151,16 @@ end Read
 
 def PartNe (D : D7) : Prop := 0 < D.R.m ∧ ∃ σ : D.what₂.FT, ∀ j : Fin D.R.m, ∃ f ∈ D.what₂.isot (j.1 + 1) σ, f ≠ 0
 
+/- English proof (translation)
+Introduce `μ _ j σ` and use `⟨fun f _ => by rw [h, h1, Complex.ofReal_one, one_smul], fun _ => by rw [h1]; exact one_pos⟩`.
+-/
 theorem lamUsed_of_id (D : D7) (h : ∀ μ j f, D.what₂.thetaP μ j (D.what₂.thetaT μ j f) = f)
     (h1 : ∀ μ j σ, D.what₂.lamP μ j σ = 1) : LamUsed D := fun μ _ j σ =>
   ⟨fun f _ => by rw [h, h1, Complex.ofReal_one, one_smul], fun _ => by rw [h1]; exact one_pos⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.Core.Int.Inhab.recOne, lamUsed_of_id _ (fun _ _ f => congrArg (fun g => g f) (LinearMap.adjoint_id (𝕜 := ℂ) (E := Formalism.BasicNotions.Examples₂.NZ.En 1))) (fun _ _ _ => rfl), by decide, (), fun _ => ⟨Formalism.BasicNotions.Examples₂.NZ.eb 1 0, (show Formalism.Bas …`.
+-/
 theorem lamUsed_model : ∃ D : D7, LamUsed D ∧ PartNe D :=
   ⟨GlobalTheory.Core.Int.Inhab.recOne, lamUsed_of_id _
     (fun _ _ f => congrArg (fun g => g f) (LinearMap.adjoint_id (𝕜 := ℂ) (E := Formalism.BasicNotions.Examples₂.NZ.En 1))) (fun _ _ _ => rfl),
@@ -110,12 +169,21 @@ theorem lamUsed_model : ∃ D : D7, LamUsed D ∧ PartNe D :=
         Submodule.subset_span ⟨0, rfl, rfl⟩),
       (Formalism.BasicNotions.Examples₂.NZ.eb 1).toBasis.ne_zero 0⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ i => h.elim i, fun i => h.elim i, fun i => h.elim i, fun i => h.elim i, fun i => h.elim i, fun i => h.elim i⟩`.
+-/
 theorem rowsC_of_isEmpty (D : D7) [h : IsEmpty D.nd.Loc] : RowsC D :=
   ⟨fun _ _ _ _ _ i => h.elim i, fun i => h.elim i, fun i => h.elim i, fun i => h.elim i, fun i => h.elim i,
     fun i => h.elim i⟩
 
+/- English proof (translation)
+Introduce `i` and use `h.elim i`.
+-/
 theorem serLoc_of_isEmpty (D : D7) [h : IsEmpty D.nd.Loc] : GlobalTheory.TypeLeaf.SerLoc D := fun i => h.elim i
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Establish `h` using `T.X.given.core.models.vpos ⟨k, by omega⟩`. Introduce `τ`. Conclude with `Or.inl (h τ)`.
+-/
 theorem definite_of_tied {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (T : Tied hL D) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     (letI := D.host.cmStar; (D.sp.V j).IsDefinite) := by
   obtain ⟨k, rfl⟩ : ∃ k, j = k + 1 := ⟨j - 1, by omega⟩
@@ -123,6 +191,9 @@ theorem definite_of_tied {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7}
   intro τ
   exact Or.inl (h τ)
 
+/- English proof (translation)
+Use `haveI : Nontrivial (Formalism.L2.heckeAlg T.P.H.cover.B j w) := inferInstance`. Take `⟨I, hI⟩` from `Ideal.exists_maximal (Formalism.L2.heckeAlg T.P.H.cover.B j w)`. Take `⟨i, hi, -⟩` from `T.P.H.cover.mx_all j w h1 h2 hw I hI`. Conclude with `⟨i, (D.nd.locs_mem _ _ _).1 hi⟩`.
+-/
 theorem loc_of_tied {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (T : Tied hL D) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (w : D.what₂.places.Pl) (hw : D.what₂.muAt w ≠ D.what₂.mu0) [Nontrivial (T.P.H.cover.B.V j w)] :
     ∃ i : D.nd.Loc, D.nd.j i = j ∧ D.nd.w i = w := by
@@ -131,6 +202,9 @@ theorem loc_of_tied {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (T :
   obtain ⟨i, hi, -⟩ := T.P.H.cover.mx_all j w h1 h2 hw I hI
   exact ⟨i, (D.nd.locs_mem _ _ _).1 hi⟩
 
+/- English proof (translation)
+Establish `h2` using `(h μ hμ j f y hy).2 hg`. Rewrite `h2` using `[← D.nStage_trivialCharacter_compat.2, h0]`. Conclude with `h2.symm`.
+-/
 theorem eq_zero_of_good {D : D7} {cf : Formalism.L2.Host.CharFrame D} {nch : NChoice D} {tp : Formalism.L2.Host.TupTied D cf nch}
     (X : GlobalTheory.NJoin.RealAt D cf nch tp) (h : GoodIdempotentReadsAsGoodTypeProjector X) {μ} (hμ : Formalism.IndefR.RecTie.Used0 D μ) (j : Fin D.R.m)
     (h0 : D.what₂.eMt μ (j.1 + 1) = 0) (f : D.what₂.Mt μ (j.1 + 1)) (y) (hy : X.R.extV j (X.tupT μ) y = X.fn hμ j f)
@@ -139,6 +213,13 @@ theorem eq_zero_of_good {D : D7} {cf : Formalism.L2.Host.CharFrame D} {nch : NCh
   rw [← D.nStage_trivialCharacter_compat.2, h0] at h2
   exact h2.symm
 
+/- English proof (translation)
+Establish `e : D.what₂.muTw w = D.what₂.muAt w` using `((D.what₂.muAt_or w).resolve_left hw).symm`. Establish `a` using `up_injective (lamPos_of_used I.lam (Or.inr ⟨w, e⟩) h1 h2) (I.isot j h1 h2)`. Take `⟨f, -, hf⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`. Establish `hne : D.what₂.thetaT (D.what₂.muTw w) j f ≠ 0` using `fun h => hf (a (h.trans (map_zero _).symm))`. Set `b` to `Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j)`.
+
+Establish `hidx : Nonempty (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.what₂.muTw w) j))`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nonempty_iff]`. Establish `h3` using `(D.what₂.jMt_basis (D.what₂.muTw w) j b).2`. Rewrite `h3` using `[Set.range_eq_empty, Submodule.span_empty]`.
+
+Conclude with `hne ((Submodule.mem_bot ℂ).1 (h3 ▸ Submodule.mem_top))`. Take `⟨k⟩` from `hidx`. Use `haveI : Nontrivial (I.P.H.cover.B.V j w) := ⟨⟨_, 0, (I.P.H.cover.B.iV_basis j w b).1.ne_zero k⟩⟩`. Conclude with `loc_of_tied I.toRowSideFamily j h1 h2 w hw`.
+-/
 theorem loc_of_inputs {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (I : Inputs hL D) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (σ : D.what₂.FT) (hσ : D.what₂.isot j σ ≠ ⊥) (w : D.what₂.places.Pl) (hw : D.what₂.muAt w ≠ D.what₂.mu0) :
     ∃ i : D.nd.Loc, D.nd.j i = j ∧ D.nd.w i = w := by
@@ -157,6 +238,13 @@ theorem loc_of_inputs {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (I
   haveI : Nontrivial (I.P.H.cover.B.V j w) := ⟨⟨_, 0, (I.P.H.cover.B.iV_basis j w b).1.ne_zero k⟩⟩
   exact loc_of_tied I.toRowSideFamily j h1 h2 w hw
 
+/- English proof (translation)
+Establish `h : LamUsed GlobalTheory.Core.Int.Inhab.recOne` using `lamUsed_of_id _ (fun _ _ f => congrArg (fun g => g f) (LinearMap.adjoint_id (𝕜 := ℂ) (E := Formalism.BasicNotions.Examples₂.NZ.En 1))) (fun _ _ _ => rfl)`. Establish `hp : PartNe GlobalTheory.Core.Int.Inhab.recOne` using `⟨by decide, (), fun _ => ⟨Formalism.BasicNotions.Examples₂.NZ.eb 1 0, (show Formalism.BasicNotions.Examples₂.NZ.eb 1 0 ∈ Submodule.span ℂ (Formalism.BasicNotions.Examples₂.NZ.eb 1 '' {_σ | () = ()}) from Submodule.subset_span ⟨0, rfl, rfl⟩), (Formalism.BasicNotions.Examples₂.NZ.e …`. Establish `h8 : SumRepresentations.adm8 GlobalTheory.Core.Int.Inhab.recOne`. Introduce `j _ _`. Use `haveI : Unique GlobalTheory.Core.Int.Inhab.recOne.what₂.FT := inferInstanceAs (Unique Unit)`.
+
+Establish `ht : ∀ σ, GlobalTheory.Core.Int.Inhab.recOne.what₂.isot j σ = ⊤` using `fun _ => by show Submodule.span ℂ (Formalism.BasicNotions.Examples₂.NZ.eb 1 '' {_σ | () = ()}) = ⊤`. Establish `: ({_σ | () = ()} : Set (Fin 1)) = Set.univ` using `by ext; simp`. Rewrite using `[this, Set.image_univ]`. Conclude with `(Formalism.BasicNotions.Examples₂.NZ.eb 1).toBasis.span_eq`. Use `(DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top _).2 ⟨iSupIndep_subsingleton _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff, ← ht default]`. Conclude with `le_iSup _ default`. Conclude with `⟨_, h, hp, h8, rank_of h8 h⟩`.
+-/
 theorem rows_model : ∃ D : D7, LamUsed D ∧ PartNe D ∧ SumRepresentations.adm8 D ∧ ∀ L : SizeData₂ D, TwistedPlaces.adm3 L := by
   have h : LamUsed GlobalTheory.Core.Int.Inhab.recOne := lamUsed_of_id _
     (fun _ _ f => congrArg (fun g => g f) (LinearMap.adjoint_id (𝕜 := ℂ) (E := Formalism.BasicNotions.Examples₂.NZ.En 1))) (fun _ _ _ => rfl)
@@ -177,21 +265,37 @@ theorem rows_model : ∃ D : D7, LamUsed D ∧ PartNe D ∧ SumRepresentations.a
     exact le_iSup _ default
   exact ⟨_, h, hp, h8, rank_of h8 h⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.DesignBC.jointCond_of_definite D (definite_of_tied T)`.
+-/
 theorem baseChangeConditions_of_tied {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (T : Tied hL D) : GlobalDatumCompatibility D :=
   GlobalTheory.DesignBC.jointCond_of_definite D (definite_of_tied T)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h j h1 h2 => h (baseChangeConditions_of_tied T).1 (hypCM_of D (baseChangeConditions_of_tied T)) j h1 h2 (nV_pos D) (definite_of_tied T j h1 h2), fun h _ _ j h1 h2 _ _ => h j h1 h2⟩`.
+-/
 theorem bc_iff_of_tied {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (T : Tied hL D) :
     SphericalInertData.Conclusion1 D ↔ ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ π : D.nbc.AU j, SphericalInertData.SphInert D.nd D.naut D.nbc j π →
       ∃ Pa, SphericalInertData.IsBC D.nd D.naut D.nbc j π Pa :=
   ⟨fun h j h1 h2 => h (baseChangeConditions_of_tied T).1 (hypCM_of D (baseChangeConditions_of_tied T)) j h1 h2 (nV_pos D) (definite_of_tied T j h1 h2),
     fun h _ _ j h1 h2 _ _ => h j h1 h2⟩
 
+/- English proof (translation)
+Take `⟨eR, -, -, h, -⟩` from `X.given.core.grp.record`. Conclude with `⟨eR, h⟩`.
+-/
 theorem eC_eq {D : D7} {cf : Formalism.L2.Host.CharFrame D} {nch : NChoice D} {tp : Formalism.L2.Host.TupTied D cf nch}
     (X : GlobalTheory.NJoin.RealAt D cf nch tp) : ∃ eR : X.G ≃* G0g D.nd, ∀ g,
       Formalism.IndefR.Links.RealDat.eC (A := X.A) D.what₂.embLL g = D.ntypes.e0.coeff (eR g) := by
   obtain ⟨eR, -, -, h, -⟩ := X.given.core.grp.record
   exact ⟨eR, h⟩
 
+/- English proof (translation)
+Introduce `μ hμ j f y hy`. Unfold `GlobalTheory.DownLift.GoodVt`. Rewrite using `[hy]`. Prove the components needed by the constructor for the conclusion. Introduce `hf l`.
+
+Rewrite using `[h μ hμ j f l, hf]`. Introduce `hg`. Apply `(X.IL.jMt μ hμ j).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Establish `key : ∀ l : (X.R.cV j).W →ₗ[ℂ] ℂ, l (X.fn hμ j (D.ntypes.onMt μ (j.1 + 1) D.ntypes.e0 f) g - X.fn hμ j f g) = 0` using `fun l => by`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun ((h μ hμ j f l).symm.trans (hg l)) g`. Conclude with `sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ (V := (X.R.cV j).W) _).1 key)`.
+-/
 theorem unitaryRealisationReading_of_idempotent_acts_via_levelGroup {D : D7} {cf : Formalism.L2.Host.CharFrame D} {nch : NChoice D} {tp : Formalism.L2.Host.TupTied D cf nch}
     (X : GlobalTheory.NJoin.RealAt D cf nch tp)
     (h : ∀ μ (hμ : Formalism.IndefR.RecTie.Used0 D μ) (j : Fin D.R.m) (f : D.what₂.Mt μ (j.1 + 1))
@@ -215,9 +319,17 @@ theorem unitaryRealisationReading_of_idempotent_acts_via_levelGroup {D : D7} {cf
       exact congrFun ((h μ hμ j f l).symm.trans (hg l)) g
     exact sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ (V := (X.R.cV j).W) _).1 key)
 
+/- English proof (translation)
+Introduce `r` and use `hne (r.a.hecke ν ν' (Filter.Eventually.of_forall fun w _ => h w))`.
+-/
 theorem not_rows_of_dup (D : D7) (ν ν' : D.naut.CG 1) (hne : ν ≠ ν') (h : ∀ w, D.naut.locG ν w = D.naut.locG ν' w) :
     ¬ Rows D := fun r => hne (r.a.hecke ν ν' (Filter.Eventually.of_forall fun w _ => h w))
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨f, hf, hne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`. Establish `h1` using `(h.loc i σ).1 f hf`. Establish `h2 : D.what₂.thetaT (D.nd.mu i) (D.nd.j i) f = 0` using `(Submodule.mem_bot ℂ).1 (h0 ▸ Submodule.mem_map_of_mem hf)`. Establish `hl : ((D.what₂.lamP (D.nd.mu i) (D.nd.j i) σ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast ((h.loc i σ).2 hσ).ne'`.
+
+Rewrite `h1` using `[h2, map_zero]`. Conclude with `hne ((smul_eq_zero.1 h1.symm).resolve_left hl)`.
+-/
 theorem lift_ne {D : D7} (h : LamUsed D) (i : D.nd.Loc) (σ : D.what₂.FT) (hσ : D.what₂.isot (D.nd.j i) σ ≠ ⊥) :
     (D.what₂.isot (D.nd.j i) σ).map (D.what₂.thetaT (D.nd.mu i) (D.nd.j i)) ≠ ⊥ := by
   intro h0

@@ -29,20 +29,34 @@ def quad (F : HermLattice K (r + 1)) (φ : Fin (N + 1) → Fin (r + 1) → K)
 variable (F : HermLattice K (r + 1)) (φ : Fin (N + 1) → Fin (r + 1) → K)
   (R : (K →+* ℂ) → Fin (r + 1) → Fin (N + 1) → ℂ)
 
+/- English proof (translation)
+The claim follows from `(Complex.pos_iff.mp ((F.posDef σ).dotProduct_mulVec_pos hv)).1`.
+-/
 theorem herm_re_pos (σ : K →+* ℂ) {v : Fin (r + 1) → ℂ} (hv : v ≠ 0) :
     0 < (star v ⬝ᵥ (F.metric σ *ᵥ v)).re :=
   (Complex.pos_iff.mp ((F.posDef σ).dotProduct_mulVec_pos hv)).1
 
+/- English proof (translation)
+Distinguish the cases in `hv : v = 0`. Simplify using `[hv]`. Conclude with `(herm_re_pos F σ hv).le`.
+-/
 theorem herm_re_nonneg (σ : K →+* ℂ) (v : Fin (r + 1) → ℂ) :
     0 ≤ (star v ⬝ᵥ (F.metric σ *ᵥ v)).re := by
   by_cases hv : v = 0
   · simp [hv]
   · exact (herm_re_pos F σ hv).le
 
+/- English proof (translation)
+The claim follows from `add_nonneg (Finset.sum_nonneg fun σ _ ↦ herm_re_nonneg F σ _) (Finset.sum_nonneg fun _ _ ↦ sq_nonneg _)`.
+-/
 theorem quad_nonneg (z : Fin (N + 1) → ℂ) : 0 ≤ quad F φ R z :=
   add_nonneg (Finset.sum_nonneg fun σ _ ↦ herm_re_nonneg F σ _)
     (Finset.sum_nonneg fun _ _ ↦ sq_nonneg _)
 
+/- English proof (translation)
+Distinguish the cases in `h : ∀ σ, recover R σ z = 0`. Establish `hrem : remainder φ R z = z`. Use function extensionality and compare the values at `b`. Simplify using `[remainder, h]`. Take `⟨b, hb⟩` from `Function.ne_iff.mp hz`.
+
+Use `add_pos_of_nonneg_of_pos (Finset.sum_nonneg fun σ _ ↦ herm_re_nonneg F σ _) ?_` and prove the remaining obligations. Rewrite using `[hrem]`. Conclude with `Finset.sum_pos' (fun _ _ ↦ sq_nonneg _) ⟨b, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hb) 2⟩`. Take `⟨σ, hσ⟩` from `not_forall.mp h`. Conclude with `add_pos_of_pos_of_nonneg (Finset.sum_pos' (fun τ _ ↦ herm_re_nonneg F τ _) ⟨σ, Finset.mem_univ _, herm_re_pos F σ hσ⟩) (Finset.sum_nonneg fun _ _ ↦ sq_nonneg _)`.
+-/
 theorem quad_pos {z : Fin (N + 1) → ℂ} (hz : z ≠ 0) : 0 < quad F φ R z := by
   by_cases h : ∀ σ, recover R σ z = 0
   · have hrem : remainder φ R z = z := by
@@ -59,12 +73,18 @@ theorem quad_pos {z : Fin (N + 1) → ℂ} (hz : z ≠ 0) : 0 < quad F φ R z :=
       (Finset.sum_nonneg fun _ _ ↦ sq_nonneg _)
 
 omit [NumberField K] in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [recover, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ ↦ by ring`.
+-/
 theorem recover_smul (σ : K →+* ℂ) (c : ℂ) (z : Fin (N + 1) → ℂ) :
     recover R σ (fun b ↦ c * z b) = c • recover R σ z := by
   funext j
   simp only [recover, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun b _ ↦ by ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [remainder, recover_smul, Pi.smul_apply, smul_eq_mul, mul_sub, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun σ _ ↦ Finset.sum_congr rfl fun j _ ↦ by ring`.
+-/
 theorem remainder_smul (c : ℂ) (z : Fin (N + 1) → ℂ) :
     remainder φ R (fun b ↦ c * z b) = c • remainder φ R z := by
   funext b
@@ -72,16 +92,27 @@ theorem remainder_smul (c : ℂ) (z : Fin (N + 1) → ℂ) :
   congr 1
   exact Finset.sum_congr rfl fun σ _ ↦ Finset.sum_congr rfl fun j _ ↦ by ring
 
+/- English proof (translation)
+Rewrite using `[star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc, Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.re_ofReal_mul]`.
+-/
 theorem herm_smul (σ : K →+* ℂ) (c : ℂ) (v : Fin (r + 1) → ℂ) :
     (star (c • v) ⬝ᵥ (F.metric σ *ᵥ (c • v))).re = ‖c‖ ^ 2 * (star v ⬝ᵥ (F.metric σ *ᵥ v)).re := by
   rw [star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc,
     Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Simplify using `only [quad, recover_smul, remainder_smul, herm_smul, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, mul_add, Finset.mul_sum]`.
+-/
 theorem quad_smul (c : ℂ) (z : Fin (N + 1) → ℂ) :
     quad F φ R (fun b ↦ c * z b) = ‖c‖ ^ 2 * quad F φ R z := by
   simp only [quad, recover_smul, remainder_smul, herm_smul, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow,
     mul_add, Finset.mul_sum]
 
+/- English proof (translation)
+Establish `hrec : ∀ σ j, ContDiff ℝ ∞ (fun z : Fin (N + 1) → ℂ ↦ recover R σ z j)` using `fun σ j ↦ ContDiff.sum fun b _ ↦ contDiff_const.mul (contDiff_apply ℝ ℂ b)`. Establish `hconj : ContDiff ℝ ∞ (fun x : ℂ ↦ star x)` using `Complex.conjCLE.contDiff`. Use `ContDiff.add (ContDiff.sum fun σ _ ↦ Complex.reCLM.contDiff.comp ?_) (ContDiff.sum fun b _ ↦ (contDiff_norm_sq ℝ).comp ?_)` and prove the remaining obligations. Simplify using `only [dotProduct, mulVec, Pi.star_apply]`. Conclude with `ContDiff.sum fun i _ ↦ (hconj.comp (hrec σ i)).mul (ContDiff.sum fun j _ ↦ contDiff_const.mul (hrec σ j))`.
+
+Conclude with `(contDiff_apply ℝ ℂ b).sub (ContDiff.sum fun σ _ ↦ ContDiff.sum fun j _ ↦ contDiff_const.mul (hrec σ j))`.
+-/
 theorem contDiff_quad : ContDiff ℝ ∞ (quad F φ R) := by
   have hrec : ∀ σ j, ContDiff ℝ ∞ (fun z : Fin (N + 1) → ℂ ↦ recover R σ z j) := fun σ j ↦
     ContDiff.sum fun b _ ↦ contDiff_const.mul (contDiff_apply ℝ ℂ b)
@@ -96,6 +127,13 @@ theorem contDiff_quad : ContDiff ℝ ∞ (quad F φ R) := by
 
 omit [NumberField K] in
 open Classical in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Establish `h1 : ∀ i, ∑ b, R t j b * (s (φ b i) * w i) = (if s = t ∧ i = j then 1 else 0) * w i`. Introduce `i`. Rewrite using `[← hR t j s i, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun b _ ↦ by ring`.
+
+Simplify using `only [recover, latticePoint, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [h1]`. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hts, Ne.symm hts]`.
+-/
 theorem recover_point
     (hR : ∀ (σ : K →+* ℂ) (j₀ : Fin (r + 1)) (τ : K →+* ℂ) (j : Fin (r + 1)),
       ∑ b, R σ j₀ b * τ (φ b j) = if τ = σ ∧ j = j₀ then 1 else 0)
@@ -116,6 +154,11 @@ theorem recover_point
 
 open Classical in
 
+/- English proof (translation)
+Establish `hrem : remainder φ R (latticePoint φ s w ()) = 0`. Use function extensionality and compare the values at `b`. Simplify using `only [remainder, recover_point φ R hR, Pi.zero_apply]`. Rewrite using `[Finset.sum_eq_single s (fun σ _ hσ ↦ by simp [hσ]) (fun h ↦ absurd (Finset.mem_univ s) h)]`. Simplify using `[latticePoint]`.
+
+Simplify using `only [quad, hrem, recover_point φ R hR, Pi.zero_apply, norm_zero]`. Rewrite using `[Finset.sum_eq_single s (fun σ _ hσ ↦ by simp [hσ]) (fun h ↦ absurd (Finset.mem_univ s) h)]`. Simplify using the standard rewrite rules.
+-/
 theorem quad_point
     (hR : ∀ (σ : K →+* ℂ) (j₀ : Fin (r + 1)) (τ : K →+* ℂ) (j : Fin (r + 1)),
       ∑ b, R σ j₀ b * τ (φ b j) = if τ = σ ∧ j = j₀ then 1 else 0)
@@ -132,12 +175,18 @@ theorem quad_point
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `[latticePoint, ComplexEmbedding.conjugate_coe_eq, map_sum, map_mul]`.
+-/
 theorem conj_point (s : K →+* ℂ) (w : Fin (r + 1) → ℂ) :
     (fun b ↦ starRingEnd ℂ (latticePoint φ s w () b)) =
       latticePoint φ (ComplexEmbedding.conjugate s) (fun j ↦ starRingEnd ℂ (w j)) () := by
   funext b
   simp [latticePoint, ComplexEmbedding.conjugate_coe_eq, map_sum, map_mul]
 
+/- English proof (translation)
+Rewrite using `[F.conj s]`. Establish `h : star (fun j ↦ starRingEnd ℂ (w j)) ⬝ᵥ ((F.metric s).map (starRingEnd ℂ) *ᵥ fun j ↦ starRingEnd ℂ (w j)) = starRingEnd ℂ (star w ⬝ᵥ (F.metric s *ᵥ w))`. Simplify using `[dotProduct, mulVec, map_sum, map_mul, Matrix.map_apply]`. Rewrite using `[h, Complex.conj_re]`.
+-/
 theorem herm_conj (s : K →+* ℂ) (w : Fin (r + 1) → ℂ) :
     (star (fun j ↦ starRingEnd ℂ (w j)) ⬝ᵥ
         (F.metric (ComplexEmbedding.conjugate s) *ᵥ fun j ↦ starRingEnd ℂ (w j))).re =
@@ -178,6 +227,13 @@ def line : HermLine (fun _ : Unit ↦ N) where
 
 end LatticeLine
 
+/- English proof (translation)
+Introduce `K _ _ r N F φ hφ`. Take `⟨-, -, hrec⟩` from `h K r N F φ hφ`. Use `choose R hR using hrec`. Use `⟨LatticeLine.line F φ R, rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `s w _ show Real.sqrt ((LatticeLine.quad F φ R (latticePoint φ s w ()) + LatticeLine.quad F φ R (fun b ↦ starRingEnd ℂ (latticePoint φ s w () b))) / 2) = _`.
+
+Rewrite using `[LatticeLine.conj_point, LatticeLine.quad_point F φ R hR, LatticeLine.quad_point F φ R hR, LatticeLine.herm_conj]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `z _ show Real.sqrt ((LatticeLine.quad F φ R (fun b ↦ starRingEnd ℂ (z () b)) + LatticeLine.quad F φ R (fun b ↦ starRingEnd ℂ (starRingEnd ℂ (z () b)))) / 2) = Real.sqrt ((LatticeLine.quad F φ R (z ()) + LatticeLine.quad F φ R (fun b ↦ starRingEnd ℂ (z () b))) / 2)`. Simplify using `only [Complex.conj_conj]`.
+
+Rewrite using `[add_comm]`.
+-/
 theorem LatticeLineExists.proof (h : OneBlockPoints.Statement) : LatticeLineExists.Statement := by
   intro K _ _ r N F φ hφ
   obtain ⟨-, -, hrec⟩ := h K r N F φ hφ

@@ -9,6 +9,17 @@ namespace PI.ProdFormulaE.Tr
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 F)) b`. Establish `hd' : ∀ i, ∃ a : 𝓞 F, algebraMap (𝓞 F) F a = (d : 𝓞 F) • b i` using `fun i => RingHom.mem_rangeS.1 (hd i)`. Use `choose a ha using hd'`. Establish `hd0 : algebraMap (𝓞 F) F (d : 𝓞 F) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).2 (nonZeroDivisors.coe_ne_zero d)`. Establish `hw : ∀ i, (P i).valuation F (algebraMap (𝓞 F) F (d : 𝓞 F) * c) ≠ 0` using `fun i => (Valuation.ne_zero_iff _).2 (mul_ne_zero hd0 hc)`.
+
+Establish `hn : ∀ i, WithZero.exp (-((WithZero.log ((P i).valuation F (algebraMap (𝓞 F) F (d : 𝓞 F) * c))).natAbs : ℤ)) ≤ (P i).valuation F (algebraMap (𝓞 F) F (d : 𝓞 F) * c)`. Introduce `i`. Use `conv_rhs => rw [← WithZero.exp_log (hw i)]`. Rewrite using `[WithZero.exp_le_exp, Int.natCast_natAbs]`. Conclude with `neg_abs_le _`.
+
+Consider the cases of `nonempty_fintype ι`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := Finset.univ) (fun i => (P i).asIdeal) (fun i => (WithZero.log ((P i).valuation F (algebraMap (𝓞 F) F (d : 𝓞 F) * c))).natAbs) (fun i _ => (P i).prime) (fun i _ j _ hij h => hij (hP (HeightOneSpectrum.ext h))) (fun i => a i.1)`. Use `⟨algebraMap (𝓞 F) F y / algebraMap (𝓞 F) F (d : 𝓞 F), fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `((P i).intValuation_le_pow_iff_mem _ _).2 (hy i (Finset.mem_univ _))`. Establish `h2 : (P i).valuation F (algebraMap (𝓞 F) F (y - a i)) ≤ (P i).valuation F (algebraMap (𝓞 F) F (d : 𝓞 F) * c)`.
+
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `h1.trans (hn i)`. Establish `h3 : algebraMap (𝓞 F) F (d : 𝓞 F) * (algebraMap (𝓞 F) F y / algebraMap (𝓞 F) F (d : 𝓞 F) - b i) = algebraMap (𝓞 F) F (y - a i)`. Rewrite using `[map_sub, ha i, Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `key : (P i).valuation F (algebraMap (𝓞 F) F (d : 𝓞 F)) * (P i).valuation F (algebraMap (𝓞 F) F y / algebraMap (𝓞 F) F (d : 𝓞 F) - b i) ≤ (P i).valuation F (algebraMap (𝓞 F) F (d : 𝓞 F)) * (P i).valuation F c`. Rewrite using `[← map_mul, ← map_mul, h3]`. Conclude with `h2`. Conclude with `(mul_le_mul_iff_right₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hd0))).1 key`.
+-/
 theorem exists_approx {ι : Type} [Finite ι] (P : ι → HeightOneSpectrum (𝓞 F))
     (hP : Function.Injective P) (b : ι → F) (c : F) (hc : c ≠ 0) :
     ∃ x : F, ∀ i, (P i).valuation F (x - b i) ≤ (P i).valuation F c := by
@@ -50,6 +61,9 @@ theorem exists_approx {ι : Type} [Finite ι] (P : ι → HeightOneSpectrum (�
     exact h2
   exact (mul_le_mul_iff_right₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hd0))).1 key
 
+/- English proof (translation)
+Apply `IsTopologicalAddGroup.t2Space_of_zero_sep` to reduce the goal to its premises. Introduce `x hx`. Use `⟨{z | valuation K z < valuation K x}, ?_, fun h => lt_irrefl (valuation K x) h⟩` and prove the remaining obligations. Rewrite using `[IsValuativeTopology.mem_nhds_zero_iff]`. Conclude with `⟨Units.mk0 _ ((Valuation.ne_zero_iff _).2 hx), fun z hz => by simpa using hz⟩`.
+-/
 theorem t2Space_of_isValuativeTopology_alt (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsValuativeTopology K] : T2Space K := by
   apply IsTopologicalAddGroup.t2Space_of_zero_sep
@@ -60,6 +74,19 @@ theorem t2Space_of_isValuativeTopology_alt (K : Type) [Field K] [ValuativeRel K]
 
 variable {ℓ : ℕ} [Fact ℓ.Prime] {ι : Type}
 
+/- English proof (translation)
+Establish `hl : ∀ i, Tendsto (fun N : ℕ => D.ιF i ((ℓ : F) ^ N)) atTop (𝓝 0)`. Introduce `i`. Establish `h0 : Tendsto (fun N : ℕ => (ℓ : ℚ_[ℓ]) ^ N) atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one Padic.norm_p_lt_one`. Establish `h1` using `((D.cont i).tendsto 0).comp h0`. Rewrite `h1` using `[map_zero]`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `N`. Simplify using the standard rewrite rules. Establish `hev : ∀ᶠ N in atTop, ∀ i, valuation (D.K i) (D.ιF i ((ℓ : F) ^ N)) < γ i`. Rewrite using `[Filter.eventually_all]`.
+
+Introduce `i`. Conclude with `hl i ((IsValuativeTopology.hasBasis_nhds_zero (D.K i)).mem_of_mem (i := γ i) trivial)`. Take `⟨N, hN⟩` from `hev.exists`. Establish `hb : ∀ i, ∃ b : F, valuation (D.K i) (D.ιF i b - k i) < γ i`. Introduce `i`.
+
+Take `⟨_, hz, b, rfl⟩` from `mem_closure_iff_nhds.1 (D.dense i (k i)) _ ((IsValuativeTopology.hasBasis_nhds (k i)).mem_of_mem (i := γ i) trivial)`. Conclude with `⟨b, hz⟩`. Use `choose b hb using hb`. Establish `hc : ((ℓ : F) ^ N) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : ℓ.Prime).ne_zero)`. Take `⟨x, hx⟩` from `exists_approx D.P hP b _ hc`.
+
+Use `⟨x, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : valuation (D.K i) (D.ιF i (x - b i)) ≤ valuation (D.K i) (D.ιF i ((ℓ : F) ^ N))` using `(Valuation.vle_iff_le (valuation (D.K i))).1 ((D.val i _ _).2 (hx i))`. Establish `h2 : D.ιF i x - k i = D.ιF i (x - b i) + (D.ιF i (b i) - k i)`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h2]`. Conclude with `Valuation.map_add_lt _ (lt_of_le_of_lt h1 (hN i)) (hb i)`.
+-/
 private theorem exists_valuation_sub_lt_of_injective [Finite ι] (D : LocFam F ℓ ι) (hP : Function.Injective D.P)
     (k : ∀ i, D.K i) (γ : ∀ i, (ValueGroupWithZero (D.K i))ˣ) :
     ∃ x : F, ∀ i, valuation (D.K i) (D.ιF i x - k i) < γ i := by
@@ -95,6 +122,13 @@ private theorem exists_valuation_sub_lt_of_injective [Finite ι] (D : LocFam F �
   rw [h2]
   exact Valuation.map_add_lt _ (lt_of_le_of_lt h1 (hN i)) (hb i)
 
+/- English proof (translation)
+Rewrite using `[DenseRange, dense_iff_inter_open]`. Introduce and unpack `U hU ⟨k, hk⟩`. Take `⟨I, u, hu, hIU⟩` from `isOpen_pi_iff.1 hU k hk`. Establish `hγ : ∀ i, ∃ γ : (ValueGroupWithZero (D.K i))ˣ, i ∈ I → {z | valuation (D.K i) (z - k i) < γ} ⊆ u i`. Introduce `i`.
+
+Distinguish the cases in `hi : i ∈ I`. Take `⟨γ, -, hγ⟩` from `(IsValuativeTopology.hasBasis_nhds (k i)).mem_iff.1 ((hu i hi).1.mem_nhds (hu i hi).2)`. Conclude with `⟨γ, fun _ => hγ⟩`. Conclude with `⟨1, fun h => absurd h hi⟩`. Use `choose γ hγ using hγ`.
+
+Take `⟨x, hx⟩` from `exists_valuation_sub_lt_of_injective D hP k γ`. Conclude with `⟨_, hIU (fun i hi => hγ i hi (hx i)), x, rfl⟩`.
+-/
 theorem LocFam.denseDiag [Finite ι] (D : LocFam F ℓ ι) (hP : Function.Injective D.P) :
     DenseRange (fun x : F => fun i => D.ιF i x) := by
   rw [DenseRange, dense_iff_inter_open]
@@ -112,6 +146,15 @@ theorem LocFam.denseDiag [Finite ι] (D : LocFam F ℓ ι) (hP : Function.Inject
   obtain ⟨x, hx⟩ := exists_valuation_sub_lt_of_injective D hP k γ
   exact ⟨_, hIU (fun i hi => hγ i hi (hx i)), x, rfl⟩
 
+/- English proof (translation)
+Introduce `F _ _ ℓ _ ι _ D hD`. Establish `: ∀ i, T2Space (D.K i)` using `fun i => t2Space_of_isValuativeTopology_alt (D.K i)`. Establish `: ∀ i, ContinuousSMul ℚ_[ℓ] (D.K i)` using `fun i => ⟨by`. Repeatedly rewrite using `[Algebra.smul_def]`. Conclude with `((D.cont i).comp continuous_fst).mul continuous_snd⟩`.
+
+Establish `hcl : IsClosed (LinearMap.range D.Φ.toLinearMap : Set (∀ i, D.K i))` using `Submodule.closed_of_finiteDimensional _`. Establish `hdense : Dense (LinearMap.range D.Φ.toLinearMap : Set (∀ i, D.K i))`. Use `Dense.mono ?_ (LocFam.denseDiag D hD.1)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨1 ⊗ₜ x, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Simplify using `[LocFam.Φ_tmul]`. Introduce `y`. Establish `hy : y ∈ closure (LinearMap.range D.Φ.toLinearMap : Set (∀ i, D.K i))`. Rewrite using `[hdense.closure_eq]`.
+
+Discharge the goal by the elementary cases of `trivial`. Rewrite `hy` using `[hcl.closure_eq]`. Take `⟨z, hz⟩` from `LinearMap.mem_range.1 hy`. Conclude with `⟨z, by simpa using hz⟩`.
+-/
 theorem toPi_surjective : TrSurj := by
   intro F _ _ ℓ _ ι _ D hD
   have : ∀ i, T2Space (D.K i) := fun i => t2Space_of_isValuativeTopology_alt (D.K i)

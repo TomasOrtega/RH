@@ -19,6 +19,9 @@ namespace GlobalTheory.GSep.TwistModel
 section Siegel
 variable {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem twistSum_ofUMem_iff {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
     {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
     {X : Type} [AddCommGroup X] {m : ℕ} {t : Fin m → V} {δ : Fin m → LinearMap.BilinForm ℤ X} (𝔪 : UMem X₁ z₁ act V ev X t δ)
@@ -26,6 +29,9 @@ theorem twistSum_ofUMem_iff {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix
     GlobalTheory.GSep.TwistSum (ofSetup X₁) z₁ _ x₀ (ofUMem 𝔪) lab T sg c τ e ↔
       GlobalTheory.Poinc.Sep.TwistSum X₁ z₁ act x₀ 𝔪 lab T sg c τ e := Iff.rfl
 
+/- English proof (translation)
+Introduce `V _ _ _ ev _ _ _ _ _ 𝔪 C lab hlab T hT c τ hτ` and use `h V ev _ _ _ (ofUMem 𝔪) C lab hlab T hT c τ hτ`.
+-/
 theorem twistAtEach_siegel {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
     {x₀ : X₁.S.Gam} {sg : ℤˣ}
     (h : GlobalTheory.GSep.TwistAtEach (I := {p : Matrix (Fin 8) (Fin 8) ℤ × Matrix (Fin 8) (Fin 8) ℤ //
@@ -37,10 +43,16 @@ end Siegel
 
 variable {I : Type} {X₁ : GSet} {z₁ : X₁.M.Z} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `(X₁.M.stalkEquiv z₁).surjective ⟨a, ha⟩`. Conclude with `⟨s, by rw [← RatModel.coe_stalkEquiv, hs]⟩`.
+-/
 theorem exists_germ {a : X₁.Ω₁} (ha : a ∈ X₁.M.O z₁) : ∃ s : X₁.M.Z.presheaf.stalk z₁, X₁.M.stalkHom z₁ s = a := by
   obtain ⟨s, hs⟩ := (X₁.M.stalkEquiv z₁).surjective ⟨a, ha⟩
   exact ⟨s, by rw [← RatModel.coe_stalkEquiv, hs]⟩
 
+/- English proof (translation)
+Take `⟨zt, hz⟩` from `exists_germ (z₁ := z₁) (Subalgebra.algebraMap_mem _ (X₁.S.ζ ^ (X₁.S.r * X₁.S.N)))`. Take `⟨h, hh⟩` from `exists_germ (z₁ := z₁) (mul_mem (Subalgebra.algebraMap_mem _ (X₁.S.ζ ^ e)) (hd.2 b))`. Conclude with `⟨zt, h, hz, by rw [hh, mul_div_assoc]⟩`.
+-/
 theorem exists_germs {x₀ : X₁.S.Gam} (hd : X₁.M.Div X₁.S.th x₀ z₁) (b : X₁.S.Gam) (e : ℕ) :
     ∃ zt h : X₁.M.Z.presheaf.stalk z₁, X₁.M.stalkHom z₁ zt = algebraMap X₁.o₁ X₁.Ω₁ (X₁.S.ζ ^ (X₁.S.r * X₁.S.N)) ∧
       X₁.M.stalkHom z₁ h = algebraMap X₁.o₁ X₁.Ω₁ (X₁.S.ζ ^ e) * X₁.S.th b / X₁.S.th x₀ := by
@@ -51,6 +63,19 @@ theorem exists_germs {x₀ : X₁.S.Gam} (hd : X₁.M.Div X₁.S.th x₀ z₁) (
 variable {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
   {X : Type} [AddCommGroup X] {t : X → V} {δ : I → X → X} (𝔪 : GMem X₁ z₁ act V ev X t δ)
 
+/- English proof (translation)
+Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩`. Establish `hk : 1 ≤ X₁.S.r * X₁.S.N`. Take `⟨j, -, hj⟩` from `X₁.ρ.r_eq`. Establish `hn` using `X₁.ρ.n_prime.pos`.
+
+Rewrite using `[hj, X₁.ρ.N_eq]`. Conclude with `Nat.one_le_iff_ne_zero.2 (by positivity)`. Take `⟨h, hh⟩` from `GlobalTheory.TorusExt.exists_iota (F := AlgebraicClosure (FractionRing V)) 𝔪.D.tau_bimult (𝔪.e₈ mu)`. Take `⟨g', hg'⟩` from `(GlobalTheory.UT.gt_onto_divisible_kernel GlobalTheory.firstFiveLaws V (maximalIdeal V) hA 𝔪.D (AlgebraicClosure (FractionRing V))).2.1 _ hk h`. Set `p : QkPt 𝔪.D.toPre (AlgebraicClosure (FractionRing V)) (X₁.S.r * X₁.S.N)` to `⟨𝔪.e₈ mu, g', h, hg', hh⟩`.
+
+Take `⟨f, hf, -⟩` from `GlobalTheory.TorsionIso.torsion_eq GlobalTheory.firstFiveLaws V (maximalIdeal V) hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U (AlgebraicClosure (FractionRing V)) _ hk`. Establish `hx` using `(hf p (f p)).2 rfl`. Take `⟨w, hw⟩` from `𝔪.U.ext`. Establish `hpow : f p ^ (X₁.S.r * X₁.S.N) = 1` using `(hx w hw).1`. Set `z` to `pushHom 𝔪.cart (TFK (R := V) (AlgebraicClosure (FractionRing V))) (f p)`.
+
+Establish `hz : z ^ (X₁.S.r * X₁.S.N) = 1`. Simplify using `only [z]`. Rewrite using `[← map_pow, hpow, map_one]`. Take `⟨a, ha, -⟩` from `X₁.ρ.pt_bij (AlgebraicClosure (FractionRing V)) _ z hz`. Use `⟨a, p, f p, rfl, hx, ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `congrArg (fun q => q.left) ha`. Simplify using `only [Over.comp_left, Over.homMk_left] at e`. Establish `e2 : spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK) = jFK (R` using `V) (AlgebraicClosure (FractionRing V)) ≫ spMap 𝔪.yK := by`. Simplify using `[spMap, jFK, ← Spec.map_comp]`. Rewrite using `[e2]`.
+
+Conclude with `e.symm`.
+-/
 theorem exists_yy (mu : X) : ∃ a : X₁.S.Gam, 𝔪.YY a mu := by
   haveI : CharZero V := 𝔪.cn.2.2.2
   have hA : AdmBase V (maximalIdeal V) := ⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩
@@ -82,6 +107,13 @@ theorem exists_yy (mu : X) : ∃ a : X₁.S.Gam, 𝔪.YY a mu := by
   rw [e2]
   exact e.symm
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨c, -, h⟩` from `GlobalTheory.ZH.GoodOut.exists_th_notMem GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 X₁.ρ ⟨RingHom.ker 𝔪.yK, RingHom.ker_isPrime 𝔪.yK⟩ 0`. Use `h (RingHom.mem_ker.2 ?_)` and prove the remaining obligations. Establish `sp : ∀ w, X₁.M.Z.fromSpecStalk z₁ w ⤳ z₁` using `fun w => by`. Establish `: X₁.M.Z.fromSpecStalk z₁ w ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨w, rfl⟩`.
+
+Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hd'` using `hd.of_specializes (ξ := (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint (FractionRing V))) (sp _)`. Establish `hs : ∀ w, (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) w ⤳ (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint (FractionRing V))` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton _ _)`. Establish `e` using `RatModel.val_mul hs (hd'.2 (0 + c)) (𝔪.reg _ (X₁.S.th_mem x₀))`. Rewrite `e` using `[div_mul_cancel₀ _ hd.1]`.
+
+Rewrite `h0`, the goal using `[𝔪.yK_eq]`. Conclude with `e.trans ((congrArg (_ * ·) h0).trans (mul_zero _))`.
+-/
 theorem yK_th_ne_zero {x₀ : X₁.S.Gam} (hd : X₁.M.Div X₁.S.th x₀ z₁) : 𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩ ≠ 0 := by
   intro h0
   obtain ⟨c, -, h⟩ := GlobalTheory.ZH.GoodOut.exists_th_notMem GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 X₁.ρ
@@ -100,6 +132,13 @@ theorem yK_th_ne_zero {x₀ : X₁.S.Gam} (hd : X₁.M.Div X₁.S.th x₀ z₁) 
   rw [𝔪.yK_eq] at h0 ⊢
   exact e.trans ((congrArg (_ * ·) h0).trans (mul_zero _))
 
+/- English proof (translation)
+Establish `hc : (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint V) = z₁`. Use `(Scheme.Hom.comp_apply _ _ _).trans (Eq.trans (congrArg (X₁.M.Z.fromSpecStalk z₁) ?_) (Scheme.fromSpecStalk_closedPoint (x := z₁)))` and prove the remaining obligations. Conclude with `comap_closedPoint ev`. Establish `h : (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint V) ⤳ z₁` using `specializes_of_eq hc`. Establish `e` using `RatModel.val_spMap_comp (algebraMap V (FractionRing V)) (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) h (X₁.M.stalkEquiv z₁ a)`.
+
+Rewrite `e` using `[RatModel.coe_stalkEquiv]`. Use `e.trans (congrArg _ ?_)` and prove the remaining obligations. Establish `hψ : Spec.map (X₁.M.Z.presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁)) ≫ X₁.M.Z.fromSpecStalk z₁ = spMap ev ≫ X₁.M.Z.fromSpecStalk z₁`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Establish `heq : spMap ev = Spec.map (X₁.M.Z.presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁))`.
+
+Rewrite using `[← cancel_mono (X₁.M.Z.fromSpecStalk z₁), hψ]`. Establish `hφψ` using `Spec.map_injective heq`. Simplify using `only [RatModel.valLoc, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply]`. Conclude with `(congrArg (fun φ => φ.hom a) hφψ).symm`.
+-/
 theorem val_stalkHom [IsLocalHom ev] (a : X₁.M.Z.presheaf.stalk z₁) :
     X₁.M.val (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (X₁.M.stalkHom z₁ a) =
       algebraMap V (FractionRing V) (ev a) := by
@@ -124,12 +163,30 @@ theorem val_stalkHom [IsLocalHom ev] (a : X₁.M.Z.presheaf.stalk z₁) :
     RingEquiv.symm_apply_apply]
   exact (congrArg (fun φ => φ.hom a) hφψ).symm
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_yy 𝔪 mu`. Rewrite using `[hwt a mu ha]`. Simplify using `[eStd]`.
+-/
 theorem wt_zero (sg : ℤˣ) (wt : X → ZMod (X₁.S.r * X₁.S.N))
     (hwt : ∀ a mu, 𝔪.YY a mu → wt mu = (sg : ℤ) • eStd X₁.S.g _ (0 : X₁.S.Gam) a) (mu : X) : wt mu = 0 := by
   obtain ⟨a, ha⟩ := exists_yy 𝔪 mu
   rw [hwt a mu ha]
   simp [eStd]
 
+/- English proof (translation)
+Introduce `zt h _ hh wt hwt`. Use `haveI : IsNoetherianRing V := 𝔪.cn.1`. Use `haveI : IsLocalHom ev := 𝔪.loc`. Establish `hθ` using `yK_th_ne_zero 𝔪 hd`. Take `⟨x, fr, th, w₀, s, g', w, -, -, hv, -, hexp, hc', hT⟩` from `hT`.
+
+Establish `hS` using `(hc' c).2.2 1 le_rfl (w c) (fun z J _ => (pow_one _).symm) (hc' c).2.1 th s _ hexp (hv (lab c))`. Establish `hc : (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint V) = z₁`. Use `(Scheme.Hom.comp_apply _ _ _).trans (Eq.trans (congrArg (X₁.M.Z.fromSpecStalk z₁) ?_) (Scheme.fromSpecStalk_closedPoint (x := z₁)))` and prove the remaining obligations. Conclude with `comap_closedPoint ev`. Establish `hsp : ∀ w, (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) w ⤳ (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint (FractionRing V))` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton (M := X₁.M) (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (IsLocalRing.closedPoint (FractionRing V)))`.
+
+Establish `hgen : (jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint (FractionRing V)) ⤳ z₁`. Establish `h1 : (jK V) (closedPoint (FractionRing V)) ⤳ closedPoint V` using `IsLocalRing.specializes_closedPoint _`. Establish `h2` using `h1.map (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁).continuous`. Rewrite `h2` using `[hc]`. Conclude with `h2`.
+
+Establish `hO : X₁.M.stalkHom z₁ h ∈ X₁.M.O ((jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) (closedPoint (FractionRing V)))` using `RatModel.O_le_of_specializes hgen (X₁.M.stalkEquiv z₁ h).2`. Establish `hh' : algebraMap V (FractionRing V) (ev h) * 𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩ = 𝔪.yK ⟨X₁.S.th (lab c), X₁.S.th_mem (lab c)⟩`. Rewrite using `[← val_stalkHom (ev := ev), 𝔪.yK_eq, 𝔪.yK_eq, ← RatModel.val_mul hsp hO (𝔪.reg _ (X₁.S.th_mem x₀)), hh, div_mul_cancel₀ _ hd.1, pow_zero, map_one, _root_.one_mul, add_zero]`. Use `TwistSum₂.sumI_of_sumF_mul _ _ _ hθ ?_` and prove the remaining obligations. Rewrite using `[hh']`.
+
+Establish `e : (fun mu : X => algebraMap V (FractionRing V) (ev zt ^ (wt mu).val * T mu c) * 𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩) = fun mu => coef s (g' c) (w c) (𝔪.e₈ mu)`. Use function extensionality and compare the values at `mu`. Rewrite using `[wt_zero 𝔪 sg wt hwt mu, ZMod.val_zero, pow_zero, _root_.one_mul, hT]`. Rewrite using `[e]`. Take `⟨N, hN, hs, hx, hS⟩` from `hS`.
+
+Use `⟨N, hN, hs, fun mu => hx _, fun n => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hS n`. Use `⟨S.map 𝔪.e₈.symm.toEquiv.toEmbedding, fun T' hT' => ?_⟩` and prove the remaining obligations. Use `hS (T'.map 𝔪.e₈.toEquiv.toEmbedding) (fun y hy => by` as an intermediate fact. Use `Finset.mem_map.2 ⟨𝔪.e₈.symm y, hT' (Finset.mem_map.2 ⟨y, hy, rfl⟩), ?_⟩` and prove the remaining obligations.
+
+Use the proof step `simp)`. Rewrite `this` using `[Finset.sum_map]`. Conclude with `this`.
+-/
 theorem twistSum_zero {x₀ : X₁.S.Gam} (hd : X₁.M.Div X₁.S.th x₀ z₁) {C : Type} {lab : C → X₁.S.Gam} {T : X → C → V}
     (hT : 𝔪.Terms x₀ lab T) (sg : ℤˣ) (c : C) : GlobalTheory.GSep.TwistSum X₁ z₁ act x₀ 𝔪 lab T sg c 0 0 := by
   intro zt h _ hh wt hwt
@@ -175,6 +232,17 @@ theorem twistSum_zero {x₀ : X₁.S.Gam} (hd : X₁.M.Div X₁.S.th x₀ z₁) 
   rw [Finset.sum_map] at this
   exact this
 
+/- English proof (translation)
+Introduce `H`. Use `haveI : IsLocalHom ev := 𝔪.loc`. Take `⟨zt, h, hz, hh⟩` from `exists_germs hd (x₀ + 0) e`. Take `⟨N, -, -, -, hS⟩` from `H zt h hz hh 0 (fun a mu _ => by simp [eStd])`. Take `⟨S, hS⟩` from `hS 1`.
+
+Establish `h1` using `hS S le_rfl`. Simplify using `only [mul_zero, Finset.sum_const_zero, sub_zero, pow_one] at h1`. Establish `h2 : ev h ∈ maximalIdeal V`. Use `Submodule.smul_mono le_rfl (le_top : N ≤ ⊤) h1` as an intermediate fact. Simplify using `using this`.
+
+Establish `hpos : (X₁.S.r * X₁.S.N) ^ 2 ≠ 0`. Use `X₁.S.r_pos` as an intermediate fact. Use `X₁.S.N_ge` as an intermediate fact. Check the signs of the components of the expression. Take `⟨u, hu⟩` from `(X₁.S.prim.isUnit hpos).pow e`.
+
+Take `⟨k, hk⟩` from `exists_germ (z₁ := z₁) (Subalgebra.algebraMap_mem (X₁.M.O z₁) ((u⁻¹ : X₁.o₁ˣ) : X₁.o₁))`. Establish `hinj : Function.Injective (X₁.M.stalkHom z₁)` using `fun a b hab => (X₁.M.stalkEquiv z₁).injective (Subtype.ext (by rw [RatModel.coe_stalkEquiv, RatModel.coe_stalkEquiv, hab]))`. Establish `hmul : h * k = 1` using `hinj (by`. Rewrite using `[map_mul, hh, hk, add_zero, mul_div_assoc, div_self hd.1, _root_.mul_one, ← hu, ← map_mul, map_one]`. Use the proof step `simp)`.
+
+Conclude with `(mem_maximalIdeal _).1 h2 ((IsUnit.of_mul_eq_one k hmul).map ev)`.
+-/
 theorem not_twistSum_zero_family {x₀ : X₁.S.Gam} (hd : X₁.M.Div X₁.S.th x₀ z₁) (sg : ℤˣ) (e : ℕ) :
     ¬ GlobalTheory.GSep.TwistSum X₁ z₁ act x₀ 𝔪 (fun _ : Unit => x₀) (fun _ _ => 0) sg () 0 e := by
   intro H

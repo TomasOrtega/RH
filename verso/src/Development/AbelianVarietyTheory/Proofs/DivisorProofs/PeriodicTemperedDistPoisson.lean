@@ -11,8 +11,16 @@ noncomputable def dotForm (n : ℕ) : LinearMap.BilinForm ℝ (Fin n → ℝ) :=
     (fun x y y' => by simp [mul_add, Finset.sum_add_distrib])
     (fun c x y => by simp [Finset.mul_sum, mul_left_comm])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dotForm_apply (n : ℕ) (x y : Fin n → ℝ) : dotForm n x y = ∑ i, x i * y i := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Use function extensionality and compare the values at `i`. Use `hx (Pi.single i 1)` as an intermediate fact. Simplify `this` using `[dotForm_apply, Pi.single_apply]`.
+
+Introduce `y hy`. Use function extensionality and compare the values at `i`. Use `hy (Pi.single i 1)` as an intermediate fact. Simplify `this` using `[dotForm_apply, Pi.single_apply]`.
+-/
 theorem dotForm_nondegenerate (n : ℕ) : (dotForm n).Nondegenerate := by
   constructor
   · intro x hx
@@ -27,6 +35,11 @@ theorem dotForm_nondegenerate (n : ℕ) : (dotForm n).Nondegenerate := by
 abbrev intLat (n : ℕ) : Submodule ℤ (Fin n → ℝ) :=
   Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Fin n)))
 
+/- English proof (translation)
+Rewrite using `[intLat, (Pi.basisFun ℝ (Fin n)).mem_span_iff_repr_mem ℤ x]`. Simplify using `only [Pi.basisFun_repr, Set.mem_range, eq_intCast]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose k hk using h`. Conclude with `⟨k, funext fun i => (hk i).symm⟩`.
+
+Introduce and unpack `⟨k, rfl⟩ i`. Conclude with `⟨k i, rfl⟩`.
+-/
 theorem mem_intLat {n : ℕ} (x : Fin n → ℝ) :
     x ∈ intLat n ↔ ∃ k : Fin n → ℤ, x = fun i => (k i : ℝ) := by
   rw [intLat, (Pi.basisFun ℝ (Fin n)).mem_span_iff_repr_mem ℤ x]
@@ -48,6 +61,19 @@ noncomputable def intLatEquiv (n : ℕ) : (Fin n → ℤ) ≃ intLat n :=
       obtain ⟨k, hk⟩ := (mem_intLat l.1).1 l.2
       exact ⟨k, Subtype.ext hk.symm⟩⟩
 
+/- English proof (translation)
+Introduce `n T htr hmod`. Take `⟨c, hc⟩` from `GlobalTheory.LatticeComb.comb_unique (Fin n → ℝ) (dotForm n) (dotForm_nondegenerate n) (intLat n) 0 T (fun l hl f f' hf => by`. Take `⟨k, rfl⟩` from `(mem_intLat l).1 hl`. Conclude with `htr k f f' hf)`. Use the proof step `(fun μ hμ f f' hf => by`.
+
+Establish `hi : ∀ i, ∃ z : ℤ, μ i = z`. Introduce `i`. Take `⟨z, hz⟩` from `hμ (Pi.single i 1) ((mem_intLat _).2 ⟨Pi.single i 1, by`. Apply the tactic sequence `funext j; by_cases h : j = i <;> simp [Pi.single_apply, h]⟩)`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hz, dotForm_apply]`. Simplify using `[Pi.single_apply]`. Use `choose m hm using hi`. Establish `hμm : μ = fun i => (m i : ℝ)` using `funext hm`. Substitute `hμm` using the available equality.
+
+Establish `h0 : dotForm n 0 (fun i => (m i : ℝ)) = 0` using `by simp`. Rewrite using `[h0]`. Simplify using `only [Complex.ofReal_zero, mul_zero, Complex.exp_zero, one_mul]`. Use `hmod m f f' fun x => ?_` and prove the remaining obligations. Rewrite using `[hf x, dotForm_apply]`.
+
+Use `congr 3`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _)`. Use `⟨c, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[hc f, ← (intLatEquiv n).tsum_eq]`.
+
+Simplify using `only [zero_add]`. Both sides reduce to the same expression.
+-/
 theorem dirac_comb_unique : ∀ (n : ℕ) (T : SchwartzMap (Fin n → ℝ) ℂ →L[ℂ] ℂ),
     (∀ k : Fin n → ℤ, ∀ f f' : SchwartzMap (Fin n → ℝ) ℂ, (∀ x, f' x = f (x + fun i => (k i : ℝ))) → T f' = T f) →
     (∀ m : Fin n → ℤ, ∀ f f' : SchwartzMap (Fin n → ℝ) ℂ,

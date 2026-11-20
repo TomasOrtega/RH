@@ -14,6 +14,19 @@ open GlobalTheory.ZM.NearBuild
 
 namespace GlobalTheory.ZM.NearBuild
 
+/- English proof (translation)
+Use `haveI : NeZero k := ⟨hk⟩`. Establish `red : ∀ e : Fin r → ℕ, ∏ i, y i ^ ((e i : ZMod (k * l))).val = ∏ i, y i ^ e i` using `fun e => Finset.prod_congr rfl fun i _ => by rw [ZMod.val_natCast, ← pow_eq_pow_mod _ (hy i)]`. Establish `tor : ∀ e : Fin r → ℕ, (∏ i, y i ^ e i) ^ (k * l) = 1` using `fun e => by`. Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_eq_one fun i _ => by rw [← pow_mul, mul_comm, pow_mul, hy, one_pow]`.
+
+Establish `inj : ∀ e e' : Fin r → ℕ, ∏ i, y i ^ e i = ∏ i, y i ^ e' i → ∀ i, e i ≡ e' i [MOD k * l]`. Introduce `e e' he i`. Use `(h _ (tor e)).unique (y₁ := fun i => (e i : ZMod (k * l))) (y₂ := fun i => (e' i : ZMod (k * l))) (red e) ((red e').trans he.symm)` as an intermediate fact. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).1 (congrFun this i)`. Take `⟨c, hc, -⟩` from `h z (by rw [pow_mul, hz, one_pow])`.
+
+Establish `hd : ∀ i, l ∣ (c i).val` using `fun i => by`. Use `inj (fun i => k * (c i).val) (fun _ => 0) (by` as an intermediate fact. Simplify using `only [pow_zero, Finset.prod_const_one]`. Rewrite using `[← hz, ← hc, ← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [← pow_mul, mul_comm]) i`.
+
+Conclude with `Nat.dvd_of_mul_dvd_mul_left (Nat.pos_of_ne_zero hk) ((Nat.modEq_zero_iff_dvd).1 this)`. Use `choose d hd using hd`. Use `⟨fun i => (d i : ZMod k), ?_, fun c' hc' => funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ZMod.val_natCast, ← pow_eq_pow_mod _ (by rw [← pow_mul, mul_comm, hy]), hd, pow_mul]`. Use `inj (fun i => l * (c' i).val) (fun i => l * d i) (by` as an intermediate fact. Simplify using `only [pow_mul, ← hd]`. Rewrite using `[hc, ← hc']) i`. Rewrite `this` using `[mul_comm k l]`.
+
+Establish `h2` using `Nat.ModEq.mul_left_cancel' hl this`. Rewrite using `[← (ZMod.natCast_eq_natCast_iff _ _ _).2 h2, ZMod.natCast_zmod_val]`.
+-/
 theorem torsBasis_pow {G : Type} [CommGroup G] {r k l : ℕ} (hk : k ≠ 0) (hl : l ≠ 0) (y : Fin r → G)
     (hy : ∀ i, y i ^ (k * l) = 1)
     (h : ∀ z : G, z ^ (k * l) = 1 → ∃! c : Fin r → ZMod (k * l), ∏ i, y i ^ (c i).val = z)
@@ -50,6 +63,9 @@ theorem torsBasis_pow {G : Type} [CommGroup G] {r k l : ℕ} (hk : k ≠ 0) (hl 
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Simplify using `only [Out.linComb, List.prod_ofFn, MonObj.comp_pow] at h ⊢`. Conclude with `torsBasis_pow (left_ne_zero_of_mul hN0) (right_ne_zero_of_mul hN0) _ (fun i => by rw [← MonObj.comp_pow, hy, MonObj.comp_one]) h z hz`.
+-/
 theorem torsBasis_pow_linComb {A T : Over S} [GrpObj A] [IsCommMonObj A] {r k l N : ℕ} (hN : N = k * l) (hN0 : N ≠ 0)
     (u : T ⟶ Out.baseOver S) (y : Fin r → (Out.baseOver S ⟶ A)) (hy : ∀ i, y i ^ N = 1)
     (h : ∀ z : T ⟶ A, z ^ N = 1 → ∃! c : Fin r → ZMod N, Out.linComb (fun i => u ≫ y i) (fun i => (c i).val) = z)
@@ -60,6 +76,15 @@ theorem torsBasis_pow_linComb {A T : Over S} [GrpObj A] [IsCommMonObj A] {r k l 
   exact torsBasis_pow (left_ne_zero_of_mul hN0) (right_ne_zero_of_mul hN0) _
     (fun i => by rw [← MonObj.comp_pow, hy, MonObj.comp_one]) h z hz
 
+/- English proof (translation)
+Introduce `hL hL2 o _ g N' J b Mat κ R _ _ _ β v m A _ L act Q hN0 hodd ⟨l, hl⟩ hD ⟨hab, hsm, hlb, hamp, hlab, hfib⟩`. Establish `hun : IsUnit (m : R)`. Use `b.unit.map β` as an intermediate fact. Rewrite `this` using `[map_natCast, Nat.cast_pow, isUnit_pow_iff two_ne_zero, hl, Nat.cast_mul]`. Conclude with `isUnit_of_mul_isUnit_left this`.
+
+Use `hab.comm` as an intermediate fact. Take `⟨L', l1, l2, l3, l4, l5⟩` from `GlobalTheory.OddDescent.exists_descended hL hL2 R A g m L (fun i => (Q i ^ l : Out.baseOver (Sp R) ⟶ A)) hab hsm hodd hun hlb hamp (fun i => by`. Establish `e : l * m = N'` using `by rw [mul_comm, ← hl]`. Establish `: (Q i ^ l) ^ m = 1` using `by rw [← pow_mul, e, hlab.2.1]`. Conclude with `this)`.
+
+Use the proof step `(fun K _ _ x => torsBasis_pow_linComb hl hN0 _ _ hlab.2.1 (hlab.2.2 K x))`. Use the proof step `(fun r hr => hD r fun q hq hqp => hr q (by`. Take `⟨K, _, _, x, s, t, hx, ht⟩` from `mem_objPrimes.1 hq`. Take `⟨ψ, hψ, hi⟩` from `hfib K x s t ht`. Conclude with `⟨K, inferInstance, inferInstance, x, t.pol, ψ, hx, hψ.1, hi⟩) hqp)`.
+
+Use `⟨L', hab, hsm, l1, l2, l3, l4, hlab, fun K _ _ x s t ht => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ, hi⟩` from `hfib K x s t ht`. Conclude with `⟨ψ, hψ, l5 K x t.pol ψ hψ.1 hi⟩`.
+-/
 theorem exists_polFam_of_grpFam : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ) (R : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] (β : o →+* R) (v : Ix g (N' ^ 2) → R) (m : ℕ) (A : Over (Sp R)) [GrpObj A] (L : LB A.left) (act : J → (A ⟶ A)) (Q : Fin (2 * g) → (Out.baseOver (Sp R) ⟶ A)), N' ≠ 0 → Odd m → m ∣ N' → DenseP (objPrimes b Mat κ β v) → GrpFam b Mat κ β v m A L act Q → ∃ L' : LB A.left, PolFam b Mat κ β v A L' act Q := by
   intro hL hL2 o _ g N' J b Mat κ R _ _ _ β v m A _ L act Q hN0 hodd ⟨l, hl⟩ hD ⟨hab, hsm, hlb, hamp, hlab, hfib⟩
   have hun : IsUnit (m : R) := by

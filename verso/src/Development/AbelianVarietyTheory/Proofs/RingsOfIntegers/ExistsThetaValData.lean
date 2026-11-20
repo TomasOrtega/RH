@@ -19,6 +19,9 @@ open GlobalTheory.PlaceInt
 
 namespace GlobalTheory.RatData
 
+/- English proof (translation)
+Establish `: Flat (spMap i)`. Rewrite using `[spMap, Flat.SpecMap_iff]`. Conclude with `RingHom.Flat.of_isField (Field.toIsField K) _`. Establish `: Surjective (spMap i)` using `⟨Function.surjective_to_subsingleton _⟩`. Conclude with `Flat.epi_of_flat_of_surjective _`.
+-/
 theorem epi_spMap_fields {K L : Type} [Field K] [Field L] (i : K →+* L) : Epi (spMap i) := by
   have : Flat (spMap i) := by
     rw [spMap, Flat.SpecMap_iff]
@@ -28,6 +31,9 @@ theorem epi_spMap_fields {K L : Type} [Field K] [Field L] (i : K →+* L) : Epi 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Use `epi_spMap_fields i` as an intermediate fact. Establish `h₁` using `congrArg (fun f => f.left) h`. Simplify using `only [Over.comp_left, hg] at h₁`. Use `ext1`. Conclude with `(cancel_epi (spMap i)).1 h₁`.
+-/
 theorem cancel_of_left_eq (Xo : Moduli Dw l) {K L : Type} [Field K] [Field L] {x : Sp K ⟶ Xo.X} {x' : Sp L ⟶ Xo.X}
     (i : K →+* L) (g : ptO Xo x' ⟶ ptO Xo x) (hg : g.left = spMap i) {a b : ptO Xo x ⟶ Xo.univ.t.G}
     (h : g ≫ a = g ≫ b) : a = b := by
@@ -37,6 +43,13 @@ theorem cancel_of_left_eq (Xo : Moduli Dw l) {K L : Type} [Field K] [Field L] {x
   ext1
   exact (cancel_epi (spMap i)).1 h₁
 
+/- English proof (translation)
+Establish `: Nontrivial B` using `hφ.injective.nontrivial`. Take `⟨m, hm⟩` from `Ideal.exists_maximal B`. Use `letI : Field (B ⧸ m) := Ideal.Quotient.field m`. Set `χ : B →+* B ⧸ m` to `Ideal.Quotient.mk m`. Establish `hc : spMap (χ.comp φ) = spMap χ ≫ spMap φ`.
+
+Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Set `g₁ : ptO Xo (spMap (χ.comp φ) ≫ x) ⟶ ptO Xo (spMap φ ≫ x)` to `Over.homMk (spMap χ) (by`. Express the relevant statement in the definitionally equal form `spMap χ ≫ spMap φ ≫ x = spMap (χ.comp φ) ≫ x`. Rewrite using `[hc, Category.assoc])`.
+
+Set `g₂ : ptO Xo (spMap (χ.comp φ) ≫ x) ⟶ ptO Xo x` to `Over.homMk (spMap (χ.comp φ)) rfl`. Use `⟨B ⧸ m, inferInstance, χ, _, g₁, g₂, rfl, rfl, hc, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hx (B ⧸ m) (χ.comp φ) (g₁ ≫ w) (by rw [← MonObj.comp_pow, hw, MonObj.comp_one])`. Conclude with `⟨a, Over.OverMorphism.ext ha.symm⟩`.
+-/
 theorem descend (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) (M : ℕ) (hx : AllRat Xo x M)
     {B : Type} [CommRing B] (φ : K →+* B) (hφ : φ.FaithfullyFlat) :
     ∃ (Ω : Type) (_ : Field Ω) (χ : B →+* Ω) (x' : Sp Ω ⟶ Xo.X) (g₁ : ptO Xo x' ⟶ ptO Xo (spMap φ ≫ x))
@@ -58,6 +71,11 @@ theorem descend (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) (M :
   obtain ⟨a, ha⟩ := hx (B ⧸ m) (χ.comp φ) (g₁ ≫ w) (by rw [← MonObj.comp_pow, hw, MonObj.comp_one])
   exact ⟨a, Over.OverMorphism.ext ha.symm⟩
 
+/- English proof (translation)
+Take `⟨B, _, φ, w, hφ, hw⟩` from `GlobalTheory.T.exists_faithfullyFlat_nthRoots_of_torsion GlobalTheory.firstFiveLaws.1 E H Dw l Xo K x N N hN hN Unit (fun _ => t) (fun _ => ht)`. Take `⟨Ω, _, χ, x', g₁, g₂, h₁, h₂, h₃, h₄⟩` from `descend Xo x _ hx φ hφ`. Set `g : ptO Xo (spMap φ ≫ x) ⟶ ptO Xo x` to `Over.homMk (spMap φ) rfl`. Establish `hw' : w () ^ N = g ≫ t` using `Over.OverMorphism.ext (hw ())`. Establish `hg : g₂ = g₁ ≫ g` using `Over.OverMorphism.ext h₃`.
+
+Take `⟨a, ha⟩` from `h₄ (w ()) (by rw [pow_two, pow_mul, hw', ← MonObj.comp_pow, ht, MonObj.comp_one])`. Use `⟨a, cancel_of_left_eq Xo _ g₂ h₂ ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_pow, ha, ← MonObj.comp_pow, hw', hg, Category.assoc]`.
+-/
 theorem exists_root (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) (N : ℕ) (hN : 0 < N)
     (hx : AllRat Xo x (N ^ 2)) (t : ptO Xo x ⟶ Xo.univ.t.G) (ht : t ^ N = 1) : ∃ r, r ^ N = t := by
   obtain ⟨B, _, φ, w, hφ, hw⟩ := GlobalTheory.T.exists_faithfullyFlat_nthRoots_of_torsion GlobalTheory.firstFiveLaws.1 E H Dw l Xo K x N N hN hN Unit
@@ -70,6 +88,13 @@ theorem exists_root (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) 
   refine ⟨a, cancel_of_left_eq Xo _ g₂ h₂ ?_⟩
   rw [MonObj.comp_pow, ha, ← MonObj.comp_pow, hw', hg, Category.assoc]
 
+/- English proof (translation)
+Take `⟨B, _, φ, ev, hφ, hadd, hsm, hkill, hinj⟩` from `GlobalTheory.T.exists_faithfullyFlat_full_linear_level_structure GlobalTheory.firstFiveLaws.1 E H Dw l Xo K x k hk`. Take `⟨Ω, _, χ, x', g₁, g₂, h₁, h₂, -, h₄⟩` from `descend Xo x _ hx φ hφ`. Use `choose e he using fun a => h₄ (ev a) (by rw [← map_nsmul_eq_pow_of_add_eq_mul ev hadd, hkill])`. Use `⟨e, fun a b => cancel_of_left_eq Xo _ g₂ h₂ ?_, fun o a => cancel_of_left_eq Xo _ g₂ h₂ ?_, fun a => cancel_of_left_eq Xo _ g₂ h₂ ?_, fun a b hab => hinj Ω χ a b ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, he, he, he, hadd, MonObj.comp_mul]`.
+
+Rewrite using `[← Category.assoc, he, he, hsm, Category.assoc]`. Rewrite using `[he, hkill, MonObj.comp_one, MonObj.comp_one]`. Establish `h : g₁ ≫ ev a = g₁ ≫ ev b` using `by rw [← he, ← he, hab]`. Establish `h'` using `congrArg (fun f => f.left) h`. Simplify using `only [Over.comp_left, h₁] at h'`.
+
+Conclude with `h'`.
+-/
 theorem exists_linear_level (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K ⟶ Xo.X) (k : ℕ) (hk : 0 < k)
     (hx : AllRat Xo x k) : ∃ ev : Dw.La → (ptO Xo x ⟶ Xo.univ.t.G), (∀ a b, ev (a + b) = ev a * ev b) ∧
       (∀ (o : 𝓞 E) a, ev (o • a) = ev a ≫ Xo.univ.t.act.act o) ∧ (∀ a, ev (k • a) = 1) ∧
@@ -87,6 +112,23 @@ theorem exists_linear_level (Xo : Moduli Dw l) {K : Type} [Field K] (x : Sp K �
     simp only [Over.comp_left, h₁] at h'
     exact h'
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c K _ _ y`. Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hM : 0 < l.M` using `l.odd.pos`. Establish `hlev : ∀ a : Dw.La, KilledBy Xo l.Mb (levPt Xo y.x a) ∧ levPt Xo y.x a ^ l.M = 1`. Introduce `a`.
+
+Take `⟨h₁, -, h₃⟩` from `moduli_univ_eta_killed hL E H Dw l Xo a`. Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[levPt, Category.assoc, h₁ b hb, MonObj.comp_one]`. Rewrite using `[levPt, ← MonObj.comp_pow, h₃, MonObj.comp_one]`. Use `⟨fun hx a => ?_, fun n Λ N hU hLev hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨v, hv⟩` from `exists_root Xo y.x l.M hM hx _ (hlev a).2`. Take `⟨t', ht', hk⟩` from `(exists_root_killedBy_pow E H Dw l Xo _ _ v l.M hM (hlev a).1 hv).2 rfl`. Use `(exists_isVtOver_and_existsUnique_isUUOver hL E H Dw l Xo l.M l.odd (ptO Xo y.x) y.s).1 _ _ t' ht' ?_ hk` and prove the remaining obligations. Rewrite using `[pow_two, pow_mul, ht', (hlev a).2]`. Take `⟨hodd, hdvd, hle⟩` from `hLev`.
+
+Establish `hN : 0 < N` using `hodd.pos`. Establish `hlevN : ∀ a : Dw.La, levPt Xo y.x a ^ N = 1`. Introduce `a`. Take `⟨k, hk⟩` from `hdvd`. Rewrite using `[hk, pow_mul, (hlev a).2, one_pow]`.
+
+Use `choose r hr using fun q : LevQ Dw l => exists_root Xo y.x N hN hx _ (hlevN (levRep q))`. Use `choose t ht ht' using fun q => (exists_root_killedBy_pow E H Dw l Xo _ _ _ N hN (hlev _).1 (hr q)).1`. Establish `htN : ∀ q, t q ^ (N ^ 2) = 1` using `fun q => by rw [pow_two, pow_mul, ht q, hlevN]`. Take `⟨ev, hadd, hsm, hk, hinj⟩` from `exists_linear_level Xo y.x (N ^ 2) (pow_pos hN 2) hx`. Take `⟨zz, hz, hzi, -⟩` from `GlobalTheory.T.exists_isotropic_group_lattice_class_representatives E H Dw n Λ N hU hN (hle.trans inf_le_left)`.
+
+Establish `hZ : ∀ i, InZh Xo Λ N (fun b => ev (zz i b))`. Use `fun i => ⟨fun b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul_eq_pow_of_add_eq_mul ev hadd, hk]`. Introduce `mu hmu cm hcm i'`. Take `⟨u, hu⟩` from `hz i mu hmu cm hcm i'`.
+
+Simplify using `only [← hsm]`. Rewrite using `[← map_sum_eq_prod_ofFn_of_add_eq_mul ev hadd, hu]`. Conclude with `hk u`. Use `choose F hF using fun (q : Fin n → LevQ Dw l) i b => ((exists_isVtOver_and_existsUnique_isUUOver hL E H Dw l Xo N hodd _ y.s).2 (ev (zz i b)) (t (q b)) ((hZ i).1 b) (htN _)).exists`. Use `⟨fun i b => ev (zz i b), fun q b => t (q b), F, hZ, ?_, fun q b => ⟨ht _, ht' _⟩, hF⟩` and prove the remaining obligations.
+
+Introduce `k _ ψ g hg i i' hii`. Conclude with `hzi _ _ fun b => hinj _ _ (cancel_of_left_eq Xo ψ g hg (congrFun hii b))`.
+-/
 theorem exists_thetaVal_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), (AllRat Xo y.x (l.M ^ 2) → ∀ x : Dw.La, ∃ F, IsVtOver Xo.univ.t.G Xo.univ.t.PP l.M (KilledBy Xo (l.Mb ^ 2)) y.s (levPt Xo y.x x) F) ∧ ∀ (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → Λ.LevOK N l.M → AllRat Xo y.x (N ^ 2) → ∃ (z : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo y.x ⟶ Xo.univ.t.G)) (tp : (Fin n → LevQ Dw l) → Fin n → (ptO Xo y.x ⟶ Xo.univ.t.G)) (F : (Fin n → LevQ Dw l) → Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y.x))), (∀ i, InZh Xo Λ N (z i)) ∧ GeoInj Xo y.x z ∧ (∀ q b, tp q b ^ N = levPt Xo y.x (levRep (q b)) ∧ ∃ j : ℕ, KilledBy Xo (l.Mb ^ j) (tp q b)) ∧ (∀ q i b, IsUUOver Xo.univ.t.G Xo.univ.t.PP N y.s (z i b) (tp q b) (F q i b)) := by
   intro E _ _ _ H Dw l Xo c K _ _ y
   have hL : Laws := GlobalTheory.firstFiveLaws.1

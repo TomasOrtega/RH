@@ -17,11 +17,17 @@ namespace CrystallineSemistableComparison.D
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => rw [pow_zero, pow_one, add_zero]`. Consider the case `succ N ih => rw [pow_succ', pow_mul, ← add_assoc, (isRt_rt l).1 (k + N), ih]`.
+-/
 theorem rt_pow (k N : ℕ) : rt l (k + N) ^ (l ^ N) = rt l k := by
   induction N with
   | zero => rw [pow_zero, pow_one, add_zero]
   | succ N ih => rw [pow_succ', pow_mul, ← add_assoc, (isRt_rt l).1 (k + N), ih]
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hN : N ≤ l ^ N` using `(Nat.lt_pow_self (Fact.out : l.Prime).one_lt).le`. Rewrite using `[← rt_pow l k N, ← Nat.sub_add_cancel hN, pow_add]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨rt l (k + N), Ideal.subset_span ⟨k + N, rfl⟩, rfl⟩)`.
+-/
 theorem rt_ideal (N : ℕ) : Ideal.span (Set.range (rt l)) ≤
     Ideal.span ((fun a => a ^ N) '' (Ideal.span (Set.range (rt l)) : Set (Ob l))) := by
   rw [Ideal.span_le]
@@ -30,6 +36,9 @@ theorem rt_ideal (N : ℕ) : Ideal.span (Set.range (rt l)) ≤
   rw [← rt_pow l k N, ← Nat.sub_add_cancel hN, pow_add]
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨rt l (k + N), Ideal.subset_span ⟨k + N, rfl⟩, rfl⟩)
 
+/- English proof (translation)
+Use `(toPf_full l).1` as an intermediate fact. Use `(toPf_full l).2` as an intermediate fact. Establish `hdes : DesJ (testι l ⋙ toPf l) (tensF l (Ob l) N) (rt l k)` using `fun A => CrystallineSemistableComparison.P.induct (testι l ⋙ toPf l) (tensF l (Ob l) N) _ (rt_ideal l) (fun A => powers_good l h N M hN A) A _ (Ideal.subset_span ⟨k, rfl⟩)`. Conclude with `des_ff (testι l) (toPf l) _ _ hdes`.
+-/
 theorem des_tens (h : ObFacts l) (N : Type) [AddCommGroup N] [Module (Ob l) N] (M : ℕ) (hN : ∀ x : N, pFlat l ^ M • x = 0) (k : ℕ) :
     Des (toPf l ⋙ tensF l (Ob l) N) (rt l k) := by
   have := (toPf_full l).1

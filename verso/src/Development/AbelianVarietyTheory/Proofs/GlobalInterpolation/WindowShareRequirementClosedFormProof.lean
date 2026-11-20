@@ -14,6 +14,15 @@ namespace GlobalTheory.EX.G4
 
 open Formalism.FrobeniusOrbits Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.Inhab Formalism.L2.GlobalTheoryTheory GlobalTheory.EX NumberField
 
+/- English proof (translation)
+Establish `he : 0 < eps`. Take `⟨i⟩` from `Fm.Ix_zero`. Use `(Fm.L 0 i).sc.eps_pos` as an intermediate fact. Rewrite `this` using `[Fm.L_eps]`. Then use the resulting hypothesis. Take `⟨CH, C', b0, b1, b2, b3, b4, b5, b6, hp13⟩` from `h13`.
+
+Take `⟨Cm, hCm, h8⟩` from `family_first_bound_of_theorem Fm CH C' (kapIDefF Fm) b0 b1 b2 b3 b4 b5 b6 hp13`. Take `⟨C31, -, h1⟩` from `family_first_lemma Fm`. Take `⟨x0, h⟩` from `((((h1.and (family_orders_bound_of_lemma Fm (TopChoiceBounds.family_band_ratio_holds Fm) hCN)).and (family_sizes_bound Fm hLa (eps / 48) (by positivity))).and h8).and (eventually_sizes_admitted Fm)).and (Ev.x1 Fm)`. Take `⟨x2, H2⟩` from `Filter.eventually_atTop.1 (AuxBlock8.Pf.numMean_ev eps Fm.GK Fm.GK_nonneg Cm hCm)`. Take `⟨x3, H3⟩` from `Filter.eventually_atTop.1 (AuxBlock8.Pf.restHypI_ev eps Fm.GK Fm.GK_nonneg Cm C31)`.
+
+Use `⟨max x0 (max x2 x3), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `e0 : x ≥ x0` using `le_trans (le_max_left _ _) hx`. Establish `e2 : x ≥ x2` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `e3 : x ≥ x3` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Take `⟨⟨⟨⟨⟨a1, a4⟩, a5⟩, a8⟩, aSz⟩, hx1⟩` from `h x e0 i`.
+
+Establish `NM` using `H2 x e2 (Fm.D x i) (Fm.L x i) (Fm.L_x x i hx1) (Fm.L_eps x i) aSz.1 a5`. Establish `HI` using `H3 x e3 (Fm.D x i) (Fm.L x i) (Fm.Gx x i) (Fm.L_x x i hx1) (Fm.L_eps x i) aSz a5 a4 a1 NM`. Conclude with `AuxBlock8.Pf.weight_condition_of_mean_excess _ _ (AuxBlock8.Pf.meanEx_of (Fm.Gx x i) Fm.GK Fm.GK_nonneg Cm a8 NM HI a4.2.2.1 (AuxBlock8.Pf.slopeEstimate_of_lemmaB_slopeLine (Fm.Gx x i) Fm.GK Fm.GK_nonneg Cm a8 NM HI a4.2.2.1))`.
+-/
 theorem w_of {eps : ℝ} (Fm : FamP eps) (h13 : FirstTheoremAtFamily Fm) (hLa : 0 < Fm.GK.La) (hCN : CornerGLContinuity.FamilyWindowLogBound Fm) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, AuxBlock8.WeightVectorExists (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Fm.GK := by
   have he : 0 < eps := by
@@ -37,6 +46,9 @@ theorem w_of {eps : ℝ} (Fm : FamP eps) (h13 : FirstTheoremAtFamily Fm) (hLa : 
   exact AuxBlock8.Pf.weight_condition_of_mean_excess _ _ (AuxBlock8.Pf.meanEx_of (Fm.Gx x i) Fm.GK Fm.GK_nonneg Cm a8 NM HI a4.2.2.1
     (AuxBlock8.Pf.slopeEstimate_of_lemmaB_slopeLine (Fm.Gx x i) Fm.GK Fm.GK_nonneg Cm a8 NM HI a4.2.2.1))
 
+/- English proof (translation)
+The claim follows from `(((first_theorem_closed_form (fun _ => True) RangeOne.rangeOne_abs).and (signs_closed (fun _ => True))).and (TopChoiceBounds.family_log_bound_closed (fun _ => True))).imp fun Fm _ _ h => w_of Fm h.1.1 h.1.2.1 h.2`.
+-/
 theorem wClosed : DC.WClosed :=
   (((first_theorem_closed_form (fun _ => True) RangeOne.rangeOne_abs).and (signs_closed (fun _ => True))).and
     (TopChoiceBounds.family_log_bound_closed (fun _ => True))).imp fun Fm _ _ h => w_of Fm h.1.1 h.1.2.1 h.2

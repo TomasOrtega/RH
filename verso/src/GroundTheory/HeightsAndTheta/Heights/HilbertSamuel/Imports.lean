@@ -11,6 +11,19 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y M P0 II hII har hb hM hpos`. Use `set T := II K ι (mCoordIdeal y) 1 (fun _ => M)`. Use `set g := geomDeg (mCoordIdeal y) M 0`. Establish `hden : 0 < 2 * (|g| + 1)` using `by positivity`. Use `set η := T / (2 * (|g| + 1))`.
+
+Establish `hη0 : 0 < η` using `div_pos hpos hden`. Establish `he : η * (2 * (|g| + 1)) = T` using `div_mul_cancel₀ T hden.ne'`. Establish `hηlt : η * g < T`. Establish `h1 : η * g ≤ η * |g|` using `mul_le_mul_of_nonneg_left (le_abs_self g) hη0.le`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hshift` using `ConstantShift.proof K ι (II K ι) (mCoordIdeal y) 0 M η (hII K ι) har hM.semipos.1`. Establish `hpos' : 0 < II K ι (mCoordIdeal y) 1 (fun _ => HermLine.constShift M η)`. Establish `e : II K ι (mCoordIdeal y) 1 (fun _ => HermLine.constShift M η) = T - ((0 : ℕ) + 1 : ℝ) * η * g` using `hshift`. Rewrite using `[e]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hvol` using `hG6 K ι Ω y (HermLine.constShift M η) P0 II hII har hb hM.normalForm_baseLattice_le_dualSpan_sup_line (isSemipositiveRel_constShift hM.semipos η) (by rw [constShift_a]; exact hM.nef) (isConjInvariantH_constShift hM.conjInv η)`. Take `⟨n, hn, s, hs, hs0, hsmall⟩` from `exists_small_section_of_arithmeticVolume_pos (hpos'.trans_le hvol)`. Establish `hn' : (0 : ℝ) < n * η` using `mul_pos (by exact_mod_cast hn) hη0`. Use `⟨n, s, hn, by rwa [constShift_a] at hs, hs0, Real.exp (-(n * η)), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Real.exp_lt_one_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `dg dh g' h z hg hh hdeg heq hz`. Establish `hle` using `hsmall dg dh g' h z hg hh (by rw [constShift_a]; exact hdeg) heq hz`. Establish `e : Real.exp (-(n * η)) = Real.exp (-η) ^ n`.
+
+Rewrite using `[← Real.exp_nat_mul]`. Put the polynomial expressions in normal form. Use `hle.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[constShift_h, mul_pow, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ArithmeticVolumeDimensionOne.proof (hG6 : ArithmeticVolumeBigDimensionOne.Statement) : ArithmeticVolumeDimensionOne.Statement := by
   intro K _ ι _ Ω _ _ y M P0 II hII har hb hM hpos
   set T := II K ι (mCoordIdeal y) 1 (fun _ => M)

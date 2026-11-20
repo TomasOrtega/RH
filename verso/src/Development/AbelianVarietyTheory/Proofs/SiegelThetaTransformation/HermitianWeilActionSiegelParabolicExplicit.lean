@@ -15,6 +15,9 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)} {n N : ℕ}
 
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨D, hD, h⟩` from `Dict.exists_den fun p : α × β => x p.1 p.2`. Conclude with `⟨D, hD, fun i j => h (i, j)⟩`.
+-/
 theorem exists_den {α β : Type} [Finite α] [Finite β] (x : Matrix α β E) :
     ∃ D : ℕ, 0 < D ∧ IntM (D • x) := by
   obtain ⟨D, hD, h⟩ := Dict.exists_den fun p : α × β => x p.1 p.2
@@ -23,12 +26,18 @@ theorem exists_den {α β : Type} [Finite α] [Finite β] (x : Matrix α β E) :
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)} {n N : ℕ} in
+/- English proof (translation)
+Simplify using `using isIntegral_algebraMap (R := ℤ) (A := E) (x := (k : ℤ))`.
+-/
 private lemma isIntegral_int_natCast {E : Type} [Field E] (k : ℕ) : IsIntegral ℤ (k : E) := by
   simpa using isIntegral_algebraMap (R := ℤ) (A := E) (x := (k : ℤ))
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)} {n N : ℕ} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.SW.IntM at hM hβ hP`. Unfold `Matrix.trace _root_.GlobalTheory.SW.ccT`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `IsIntegral.sum _ fun j _ => (IsIntegral.sum _ fun k _ => (hM i k).mul (hβ k j)).mul (_root_.GlobalTheory.SW.Base.isIntegral_cc (hP i j))`.
+-/
 private lemma isIntegral_trace_mul_mul_ccT_of_intM {E : Type} [Field E] [NumberField E] [IsCMField E] {n N : ℕ}
     {M P : Matrix (Fin n) (Fin N) E} {β : Matrix (Fin N) (Fin N) E} (hM : _root_.GlobalTheory.SW.IntM M)
     (hβ : _root_.GlobalTheory.SW.IntM β) (hP : _root_.GlobalTheory.SW.IntM P) :
@@ -43,6 +52,11 @@ private lemma isIntegral_trace_mul_mul_ccT_of_intM {E : Type} [Field E] [NumberF
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)} {n N : ℕ} in
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (Algebra.trace ℚ E t)` using `Algebra.isIntegral_trace ht`. Take `⟨m, hm⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h1`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `h2` using `trace_eq_sum_embeddings (K := ℚ) (L := E) (E := ℂ) (x := t)`. Rewrite `h2` using `[← hm]`.
+
+Rewrite `h2` using `[← (RingHom.equivRatAlgHom (R := E) (S := ℂ)).sum_comp]`. Simplify using `using h2.symm`.
+-/
 private lemma exists_int_sum_embeddings_eq_of_isIntegral {E : Type} [Field E] [NumberField E] (t : E) (ht : IsIntegral ℤ t) :
     ∃ m : ℤ, ∑ σ : E →+* ℂ, σ t = m := by
   have h1 : IsIntegral ℤ (Algebra.trace ℚ E t) := Algebra.isIntegral_trace ht
@@ -56,6 +70,9 @@ private lemma exists_int_sum_embeddings_eq_of_isIntegral {E : Type} [Field E] [N
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)} {n N : ℕ} in
+/- English proof (translation)
+Rewrite using `[← _root_.GlobalTheory.SW.HAct.map_ccT, ← Matrix.map_mul, ← Matrix.map_mul]`. Simplify using `only [Matrix.trace, Matrix.diag, map_sum, Matrix.map_apply]`.
+-/
 private lemma map_trace_mul_mul_ccT_eq_trace_conjTranspose {E : Type} [Field E] [NumberField E] [IsCMField E] {n N : ℕ}
     (τ : E →+* ℂ) (M P : Matrix (Fin n) (Fin N) E) (β : Matrix (Fin N) (Fin N) E) :
     τ (M * β * _root_.GlobalTheory.SW.ccT P).trace = (M.map τ * β.map τ * (P.map τ)ᴴ).trace := by
@@ -65,6 +82,9 @@ private lemma map_trace_mul_mul_ccT_eq_trace_conjTranspose {E : Type} [Field E] 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)} {n N : ℕ} in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private lemma matrix_map_natCast_smul {E : Type} [Field E] {a b : Type} (τ : E →+* ℂ) (k : ℕ) (M : Matrix a b E) :
     ((k : E) • M).map τ = (k : ℂ) • M.map τ := by
   ext i j
@@ -73,6 +93,11 @@ private lemma matrix_map_natCast_smul {E : Type} [Field E] {a b : Type} (τ : E 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)} {n N : ℕ} in
+/- English proof (translation)
+Establish `ha : (X * Bh * Yᴴ).trace = star (Y * Bh * Xᴴ).trace`. Rewrite using `[← Matrix.trace_conjTranspose, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hB, Matrix.mul_assoc]`. Establish `hb : star (Y * Bh * Yᴴ).trace = (Y * Bh * Yᴴ).trace`. Rewrite using `[← Matrix.trace_conjTranspose, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hB, Matrix.mul_assoc]`. Simplify using `only [conjTranspose_add, conjTranspose_smul, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, trace_add, trace_smul, smul_eq_mul, star_add, star_mul', star_natCast, star_ofNat, star_pow, Nat.cast_mul, Nat.cast_ofNat, ha, hb, star_star]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma trace_quadratic_form_shift_expand {n N : ℕ} (X Y : Matrix (Fin n) (Fin N) ℂ) (Bh : Matrix (Fin N) (Fin N) ℂ)
     (hB : Bhᴴ = Bh) (r d : ℕ) :
     ((X + ((2 * r * d : ℕ) : ℂ) • Y) * Bh * (X + ((2 * r * d : ℕ) : ℂ) • Y)ᴴ).trace =
@@ -95,6 +120,29 @@ open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)} {n N : ℕ} in
 
+/- English proof (translation)
+Take `⟨R, hR, h1, h2⟩` from `h`. Take `⟨d, hd, hdβ⟩` from `_root_.GlobalTheory.SW.Dict.exists_den (fun p : Fin N × Fin N => β p.1 p.2)`. Establish `hdβ' : _root_.GlobalTheory.SW.IntM ((d : E) • β)`. Unfold `_root_.GlobalTheory.SW.IntM`. Introduce `i j`.
+
+Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← nsmul_eq_mul]`. Conclude with `hdβ (i, j)`. Establish `hcast : ∀ y : Matrix (Fin n) (Fin N) E, ((2 * R * d : ℕ) : E) • y = (R : E) • ((2 * d : ℕ) : E) • y`. Introduce `y`. Rewrite using `[smul_smul]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨2 * R * d, by positivity, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hφx : φ x ≠ 0` using `fun h0 => hx (by simp [h0])`. Use `_root_.GlobalTheory.SW.Dict.intM_nsmul (2 * d) (h1 x hφx)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hcast, smul_comm, Nat.cast_smul_eq_nsmul E]`. Introduce `x y hy`.
+
+Establish `hy' : _root_.GlobalTheory.SW.IntM (((2 * d : ℕ) : E) • y)`. Rewrite using `[Nat.cast_smul_eq_nsmul E]`. Conclude with `_root_.GlobalTheory.SW.Dict.intM_nsmul _ hy`. Establish `hper : φ (x + ((2 * R * d : ℕ) : E) • y) = φ x`. Rewrite using `[hcast]`.
+
+Conclude with `h2 x _ hy'`. Simplify using `only [hper]`. Distinguish the cases in `hφx : φ x = 0`. Simplify using `[hφx]`. Use `congr 2`.
+
+Establish `hRx` using `h1 x hφx`. Use `set t : E := 2 * (y * ((d : E) • β) * _root_.GlobalTheory.SW.ccT ((R : E) • x)).trace + 2 * ((R : E) ^ 2 * d) * (y * ((d : E) • β) * _root_.GlobalTheory.SW.ccT y).trace with ht`. Establish `htI : IsIntegral ℤ t`. Use `IsIntegral.add ?_ ?_` and prove the remaining obligations. Conclude with `(by simpa using isIntegral_int_natCast (E := E) 2 : IsIntegral ℤ (2 : E)).mul (isIntegral_trace_mul_mul_ccT_of_intM hy hdβ' hRx)`.
+
+Conclude with `((by simpa using isIntegral_int_natCast (E := E) 2 : IsIntegral ℤ (2 : E)).mul (((isIntegral_int_natCast R).pow 2).mul (isIntegral_int_natCast d))).mul (isIntegral_trace_mul_mul_ccT_of_intM hy hdβ' hy)`. Take `⟨m, hm⟩` from `exists_int_sum_embeddings_eq_of_isIntegral t htI`. Establish `hsum : ∑ τ : Ψ, τ.1 ((x + ((2 * R * d : ℕ) : E) • y) * β * _root_.GlobalTheory.SW.ccT (x + ((2 * R * d : ℕ) : E) • y)).trace = ∑ τ : Ψ, τ.1 (x * β * _root_.GlobalTheory.SW.ccT x).trace + m`. Rewrite using `[← hm, _root_.GlobalTheory.SW.Dict.sum_type hΨ, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Establish `hBh : (β.map τ.1)ᴴ = β.map τ.1`. Rewrite using `[← _root_.GlobalTheory.SW.HAct.map_ccT, hβ]`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq, map_trace_mul_mul_ccT_eq_trace_conjTranspose, map_trace_mul_mul_ccT_eq_trace_conjTranspose, Matrix.map_add _ (map_add τ.1), matrix_map_natCast_smul, trace_quadratic_form_shift_expand _ _ _ hBh R d, ht]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast, map_ofNat, map_trace_mul_mul_ccT_eq_trace_conjTranspose, matrix_map_natCast_smul]`. Simplify using `only [Complex.star_def, map_add, map_mul, map_pow, map_natCast, map_ofNat]`.
+
+Unfold `_root_.GlobalTheory.SW.chiH`. Rewrite using `[hsum, mul_add, Complex.exp_add]`. Establish `hm1 : Complex.exp (2 * Real.pi * Complex.I * m) = 1`. Rewrite using `[show 2 * (Real.pi : ℂ) * Complex.I * m = m * (2 * Real.pi * Complex.I) by ring]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I m`.
+
+Rewrite using `[hm1, mul_one]`.
+-/
 theorem _root_.GlobalTheory.SW.Parab.isSB_chiH (hΨ : _root_.GlobalTheory.SW.IsType Ψ)
     {β : Matrix (Fin N) (Fin N) E} (hβ : _root_.GlobalTheory.SW.ccT β = β) (c : ℂ)
     {φ : Matrix (Fin n) (Fin N) E → ℂ} (h : _root_.GlobalTheory.SW.IsSB φ) :
@@ -160,6 +208,15 @@ theorem _root_.GlobalTheory.SW.Parab.isSB_chiH (hΨ : _root_.GlobalTheory.SW.IsT
       exact Complex.exp_int_mul_two_pi_mul_I m
     rw [hm1, mul_one]
 
+/- English proof (translation)
+Establish `h : ccT γ * Matrix.J (Fin N) E * γ = Matrix.J (Fin N) E` using `hγ`. Establish `e : ccT γ = Matrix.fromBlocks (ccT γ.toBlocks₁₁) (ccT γ.toBlocks₂₁) (ccT γ.toBlocks₁₂) (ccT γ.toBlocks₂₂)`. Apply the tactic sequence `ext (i | i) (j | j) <;> rfl`. Rewrite `h` using `[e]`. Use `nth_rewrite 5 [← Matrix.fromBlocks_toBlocks γ] at h`.
+
+Establish `z : ccT (0 : Matrix (Fin N) (Fin N) E) = 0` using `by ext i j; simp [ccT, cc]`. Rewrite `h` using `[h0, z, Matrix.J, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj]`. Take `⟨-, h2, h3, h4⟩` from `h`. Generalize the expression as in `γ.toBlocks₁₁ = A at *`. Generalize the expression as in `γ.toBlocks₁₂ = B at *`.
+
+Generalize the expression as in `γ.toBlocks₂₂ = D at *`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, neg_inj] at h2 h3 h4`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Establish `h5 : A * ccT D = 1` using `mul_eq_one_comm.1 h3`. Establish `h6 : D * ccT A = 1` using `mul_eq_one_comm.1 h2`.
+
+Establish `h7 : ccT D * B = ccT B * D` using `by rw [← sub_eq_zero, sub_eq_add_neg]; exact h4`. Rewrite using `[Base.ccT_mul, Base.ccT_ccT]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h6, Matrix.mul_one]`. Use `_ = B * ccT A := by rw [← h7, ← Matrix.mul_assoc, h5, Matrix.one_mul]`.
+-/
 theorem blocks {γ : M2 E N} (hγ : γ ∈ UU E N) (h0 : γ.toBlocks₂₁ = 0) :
     ccT γ.toBlocks₁₁ * γ.toBlocks₂₂ = 1 ∧
       ccT (γ.toBlocks₁₂ * ccT γ.toBlocks₁₁) = γ.toBlocks₁₂ * ccT γ.toBlocks₁₁ := by
@@ -193,6 +250,11 @@ end GlobalTheory.SW.Parab
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
+/- English proof (translation)
+Establish `h` using `(_root_.GlobalTheory.SW.HAct.group_part hγ).1`. Establish `hγ' : γ = fromBlocks γ.toBlocks₁₁ γ.toBlocks₁₂ 0 γ.toBlocks₂₂`. Rewrite using `[← h0]`. Conclude with `(fromBlocks_toBlocks γ).symm`. Rewrite `h` using `[hγ', det_fromBlocks_zero₂₁]`.
+
+Conclude with `IsUnit.mul_iff.1 h`.
+-/
 private lemma isUnit_det_diag_blocks_of_lower_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
     {γ : _root_.GlobalTheory.SW.M2 E N} (hγ : γ ∈ _root_.GlobalTheory.SW.UU E N) (h0 : γ.toBlocks₂₁ = 0) :
     IsUnit γ.toBlocks₁₁.det ∧ IsUnit γ.toBlocks₂₂.det := by
@@ -205,6 +267,11 @@ private lemma isUnit_det_diag_blocks_of_lower_zero {E : Type} [Field E] [NumberF
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
+/- English proof (translation)
+Take `⟨d, hd, hM⟩` from `_root_.GlobalTheory.SW.Dict.exists_den (fun p : Fin N × Fin N => M p.1 p.2)`. Use `⟨d, hd, fun x hx => ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.SW.IntM at hx ⊢`. Introduce `k j`. Rewrite using `[Matrix.smul_apply, Matrix.mul_apply, Finset.smul_sum]`.
+
+Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_smul_comm]`. Conclude with `(hx k i).mul (hM (i, j))`.
+-/
 private lemma exists_pos_nat_smul_mul_intM_of_intM {E : Type} [Field E] [NumberField E] {n N : ℕ}
     (M : Matrix (Fin N) (Fin N) E) : ∃ d : ℕ, 0 < d ∧ ∀ x : Matrix (Fin n) (Fin N) E,
       _root_.GlobalTheory.SW.IntM x → _root_.GlobalTheory.SW.IntM (d • (x * M)) := by
@@ -219,6 +286,11 @@ private lemma exists_pos_nat_smul_mul_intM_of_intM {E : Type} [Field E] [NumberF
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
+/- English proof (translation)
+Take `⟨d, hd, h1⟩` from `exists_pos_nat_smul_mul_intM_of_intM (n := n) A`. Take `⟨d', hd', h2⟩` from `exists_pos_nat_smul_mul_intM_of_intM (n := n) A⁻¹`. Set `e : Matrix (Fin n) (Fin N) E →+ Matrix (Fin n) (Fin N) E` to `{ toFun := fun x => x * A map_zero' := Matrix.zero_mul A map_add' := fun x y => Matrix.add_mul x y A }`. Use `_root_.GlobalTheory.SW.Dict.isSB_comp e d d' hd hd' h1 (fun x hx => ?_) hφ` and prove the remaining obligations. Use `h2 _ hx` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `_root_.GlobalTheory.SW.IntM (d' • (x * A * A⁻¹)) at this`. Rewrite `this` using `[Matrix.mul_assoc, mul_nonsing_inv _ hA, Matrix.mul_one]`. Then use the resulting hypothesis.
+-/
 private lemma isSB_comp_mul_right_of_isUnit_det {E : Type} [Field E] [NumberField E] {n N : ℕ}
     {A : Matrix (Fin N) (Fin N) E} (hA : IsUnit A.det) {φ : Matrix (Fin n) (Fin N) E → ℂ}
     (hφ : _root_.GlobalTheory.SW.IsSB φ) : _root_.GlobalTheory.SW.IsSB fun x => φ (x * A) := by
@@ -235,6 +307,11 @@ private lemma isSB_comp_mul_right_of_isUnit_det {E : Type} [Field E] [NumberFiel
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `Matrix.map_injective τ.injective` to reduce the goal to its premises. Use `show (_root_.GlobalTheory.SW.ccT _).map τ = τ.mapMatrix (-(A * _root_.GlobalTheory.SW.ccT B))`. Rewrite using `[_root_.GlobalTheory.SW.HAct.map_ccT]`. Express the relevant statement in the definitionally equal form `(τ.mapMatrix (-(B * _root_.GlobalTheory.SW.ccT A)))ᴴ = _`.
+
+Simplify using `only [map_neg, map_mul, RingHom.mapMatrix_apply, _root_.GlobalTheory.SW.HAct.map_ccT, conjTranspose_neg, conjTranspose_mul, conjTranspose_conjTranspose]`.
+-/
 private lemma ccT_neg_mul_ccT {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
     (A B : Matrix (Fin N) (Fin N) E) :
     _root_.GlobalTheory.SW.ccT (-(B * _root_.GlobalTheory.SW.ccT A)) = -(A * _root_.GlobalTheory.SW.ccT B) := by
@@ -248,6 +325,13 @@ private lemma ccT_neg_mul_ccT {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `Matrix.map_injective τ.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `τ.mapMatrix _ = τ.mapMatrix _`. Simplify using `only [map_mul, RingHom.mapMatrix_apply, _root_.GlobalTheory.SW.HAct.map_ccT]`. Establish `h` using `_root_.GlobalTheory.SW.HAct.map_mem τ hγ`.
+
+Rewrite `h` using `[_root_.GlobalTheory.SW.HAct.map_blocks, h0]`. Take `⟨_, h2, h3, h4⟩` from `_root_.GlobalTheory.SW.HAct.blocks h`. Simplify using `only [Matrix.map_zero _ (map_zero τ), conjTranspose_zero, Matrix.zero_mul, Matrix.mul_zero, zero_add] at h2 h3`. Use `set A := γ.toBlocks₁₁.map τ`. Use `set B := γ.toBlocks₁₂.map τ`.
+
+Use `set D := γ.toBlocks₂₂.map τ`. Establish `hDA' : D * Aᴴ = 1` using `mul_eq_one_comm.1 h2`. Establish `hAD' : A * Dᴴ = 1` using `mul_eq_one_comm.1 h3`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma toBlocks₁₁_mul_ccT_toBlocks₁₂_comm_of_mem_UU {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
     {γ : _root_.GlobalTheory.SW.M2 E N} (hγ : γ ∈ _root_.GlobalTheory.SW.UU E N) (h0 : γ.toBlocks₂₁ = 0) :
     γ.toBlocks₁₁ * _root_.GlobalTheory.SW.ccT γ.toBlocks₁₂ = γ.toBlocks₁₂ * _root_.GlobalTheory.SW.ccT γ.toBlocks₁₁ := by
@@ -273,6 +357,9 @@ private lemma toBlocks₁₁_mul_ccT_toBlocks₁₂_comm_of_mem_UU {E : Type} [F
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
+/- English proof (translation)
+Establish `h` using `_root_.GlobalTheory.SW.HAct.map_mem τ hγ`. Rewrite `h` using `[_root_.GlobalTheory.SW.HAct.map_blocks, h0]`. Take `⟨_, h2, h3, _⟩` from `_root_.GlobalTheory.SW.HAct.blocks h`. Simplify using `only [Matrix.map_zero _ (map_zero τ), conjTranspose_zero, Matrix.zero_mul, Matrix.mul_zero, zero_add] at h2 h3`. Conclude with `⟨h2, h3⟩`.
+-/
 private lemma map_toBlocks₁₁_conjTranspose_mul_toBlocks₂₂_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
     {γ : _root_.GlobalTheory.SW.M2 E N} (hγ : γ ∈ _root_.GlobalTheory.SW.UU E N)
     (h0 : γ.toBlocks₂₁ = 0) (τ : E →+* ℂ) :
@@ -285,6 +372,9 @@ private lemma map_toBlocks₁₁_conjTranspose_mul_toBlocks₂₂_eq_one {E : Ty
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
+/- English proof (translation)
+Establish `hc : ∀ a k, τ (_root_.GlobalTheory.SW.ccT x a k) = star (τ (x k a))` using `fun a k => congrFun (congrFun (_root_.GlobalTheory.SW.HAct.map_ccT τ x) a) k`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, map_sum, map_mul, hc, dotProduct, mulVec, Matrix.map_apply, Pi.star_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+-/
 private lemma map_trace_mul_mul_ccT_self_eq_sum_dotProduct {E : Type} [Field E] [NumberField E] [IsCMField E] {n N : ℕ}
     (τ : E →+* ℂ) (x : Matrix (Fin n) (Fin N) E) (β : Matrix (Fin N) (Fin N) E) :
     τ (x * β * _root_.GlobalTheory.SW.ccT x).trace =
@@ -298,6 +388,13 @@ private lemma map_trace_mul_mul_ccT_self_eq_sum_dotProduct {E : Type} [Field E] 
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
+/- English proof (translation)
+Establish `hDinv : D⁻¹ = Aᴴ` using `Matrix.inv_eq_left_inv hAD`. Establish `hDHinv : (Dᴴ)⁻¹ = A` using `Matrix.inv_eq_right_inv hDA`. Establish `hrow : (Y * Dᴴ) k = Y k ᵥ* Dᴴ` using `rfl`. Establish `hstar : star ((Y * Dᴴ) k) = D *ᵥ star (Y k)`. Rewrite using `[hrow, Matrix.star_vecMul, conjTranspose_conjTranspose]`.
+
+Rewrite using `[hstar, hrow, hDinv, hDHinv]`. Simplify using `only [Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul]`. Establish `e1 : Dᴴ * -(B * Aᴴ) * D = -(Dᴴ * B)`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, Matrix.mul_assoc, hAD, Matrix.mul_one]`. Establish `e2 : Dᴴ * ((A * Z + B) * Aᴴ) * D = Z + Dᴴ * B`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hAD, Matrix.mul_one, Matrix.mul_add, ← Matrix.mul_assoc, hDA, Matrix.one_mul]`. Rewrite using `[e1, e2, hDA, hAD]`. Simplify using `only [Matrix.vecMul_one, Matrix.vecMul_add, Matrix.vecMul_neg, add_dotProduct, neg_dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma hermitian_parabolic_exponent_rows_eq {n N : ℕ} (Y z z' : Matrix (Fin n) (Fin N) ℂ) (A B D Z : Matrix (Fin N) (Fin N) ℂ)
     (hAD : Aᴴ * D = 1) (hDA : Dᴴ * A = 1) (k : Fin n) :
     ((Y * Dᴴ) k ⬝ᵥ (-(B * Aᴴ)) *ᵥ star ((Y * Dᴴ) k)) +
@@ -323,6 +420,29 @@ private lemma hermitian_parabolic_exponent_rows_eq {n N : ℕ} (Y z z' : Matrix 
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
+/- English proof (translation)
+Establish `hdetA : IsUnit γ.toBlocks₁₁.det`. Establish `h` using `(_root_.GlobalTheory.SW.HAct.group_part hγ).1`. Establish `hγ' : γ = fromBlocks γ.toBlocks₁₁ γ.toBlocks₁₂ 0 γ.toBlocks₂₂`. Rewrite using `[← h0]`. Conclude with `(fromBlocks_toBlocks γ).symm`.
+
+Rewrite `h` using `[hγ', det_fromBlocks_zero₂₁]`. Conclude with `(IsUnit.mul_iff.1 h).1`. Use `set A := γ.toBlocks₁₁ with hA`. Use `set B := γ.toBlocks₁₂ with hB`. Use `set D := γ.toBlocks₂₂ with hD`.
+
+Set `e : Matrix (Fin n) (Fin N) E ≃ Matrix (Fin n) (Fin N) E` to `{ toFun := fun y => y * A⁻¹ invFun := fun x => x * A left_inv := fun y => by simp only [Matrix.mul_assoc, nonsing_inv_mul _ hdetA, Matrix.mul_one] right_inv := fun x => by simp only [Matrix.mul_assoc, mul_nonsing_inv _ hdetA, Matrix.mul_one] }`. Establish `hden : ∀ (Z : _root_.GlobalTheory.SW.CM Ψ N N) (τ : Ψ), _root_.GlobalTheory.SW.hDen Ψ γ Z τ = D.map τ`. Introduce `Z τ`. Unfold `_root_.GlobalTheory.SW.hDen`. Rewrite using `[h0, Matrix.map_zero _ (map_zero _), Matrix.zero_mul, zero_add]`.
+
+Establish `hadj : ∀ (Z : _root_.GlobalTheory.SW.CM Ψ N N) (τ : Ψ), _root_.GlobalTheory.SW.hDen' Ψ γ Z τ = (D.map τ)ᴴ`. Introduce `Z τ`. Unfold `_root_.GlobalTheory.SW.hDen'`. Rewrite using `[h0, Matrix.map_zero _ (map_zero _), conjTranspose_zero, Matrix.mul_zero, zero_add]`. Establish `hAinv : ∀ τ : E →+* ℂ, (A⁻¹).map τ = (D.map τ)ᴴ`.
+
+Introduce `τ`. Establish `h1 : A.map τ * (A⁻¹).map τ = 1`. Rewrite using `[← Matrix.map_mul, mul_nonsing_inv _ hdetA, Matrix.map_one _ (map_zero τ) (map_one τ)]`. Rewrite using `[← Matrix.inv_eq_right_inv h1, Matrix.inv_eq_left_inv (map_toBlocks₁₁_conjTranspose_mul_toBlocks₂₂_eq_one hγ h0 τ).2]`. Introduce `Z _ z z'`.
+
+Unfold `_root_.GlobalTheory.SW.thH _root_.GlobalTheory.SW.hFac`. Rewrite using `[← e.tsum_eq, ← tsum_mul_left]`. Use `tsum_congr fun y => ?_` and prove the remaining obligations. Establish `hyA : e y * A = y` using `e.left_inv y`. Establish `hkey : _root_.GlobalTheory.SW.chiH Ψ (-(B * _root_.GlobalTheory.SW.ccT A)) (e y) * Complex.exp (2 * Real.pi * Complex.I * _root_.GlobalTheory.SW.expo Ψ (e y) (_root_.GlobalTheory.SW.hAct Ψ γ Z) (fun τ ↦ of fun k ↦ (_root_.GlobalTheory.SW.hDen' Ψ γ Z τ)⁻¹ *ᵥ z τ k) (fun τ ↦ of fun …`.
+
+Unfold `_root_.GlobalTheory.SW.chiH _root_.GlobalTheory.SW.expo _root_.GlobalTheory.SW.hAct`. Rewrite using `[← Complex.exp_add, ← mul_add, ← Finset.sum_add_distrib]`. Use `congr 2`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_trace_mul_mul_ccT_self_eq_sum_dotProduct, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hey : (e y).map τ.1 = y.map τ.1 * (D.map τ.1)ᴴ`. Express the relevant statement in the definitionally equal form `(y * A⁻¹).map τ.1 = _`. Rewrite using `[Matrix.map_mul, hAinv]`. Establish `hβ : (-(B * _root_.GlobalTheory.SW.ccT A)).map τ.1 = -(B.map τ.1 * (A.map τ.1)ᴴ)`.
+
+Express the relevant statement in the definitionally equal form `τ.1.mapMatrix (-(B * _root_.GlobalTheory.SW.ccT A)) = _`. Rewrite using `[map_neg, map_mul, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, _root_.GlobalTheory.SW.HAct.map_ccT]`. Simplify using `only [of_apply, hadj, hden]`. Use `hermitian_parabolic_exponent_rows_eq (y.map τ.1) (z τ) (z' τ) (A.map τ.1) (B.map τ.1) (D.map τ.1) (Z τ) (map_toBlocks₁₁_conjTranspose_mul_toBlocks₂₂_eq_one hγ h0 τ.1).1 (map_toBlocks₁₁_conjTranspose_mul_toBlocks₂₂_eq_one hγ h0 τ.1).2 k` as an intermediate fact. Rewrite `this` using `[← hey, ← hβ]`.
+
+Conclude with `this`. Rewrite using `[← hkey]`. Simplify using `only [hden, h0, Matrix.map_zero _ (map_zero _), Matrix.mul_zero, Matrix.zero_mulVec, dotProduct_zero, Finset.sum_const_zero, mul_zero, Complex.exp_zero, mul_one]`. Rewrite using `[hyA]`. Establish `hdet : ∀ τ : Ψ, (D.map τ).det = τ.1 D.det` using `fun τ => by`.
+
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Simplify using `only [hdet]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma transH_chiH_mul_comp_of_toBlocks₂₁_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E]
     {Ψ : Finset (E →+* ℂ)} {n N : ℕ} {γ : _root_.GlobalTheory.SW.M2 E N}
     (hγ : γ ∈ _root_.GlobalTheory.SW.UU E N) (h0 : γ.toBlocks₂₁ = 0)
@@ -401,6 +521,13 @@ private lemma transH_chiH_mul_comp_of_toBlocks₂₁_eq_zero {E : Type} [Field E
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
+/- English proof (translation)
+Use extensionality with `a j`. Establish `hmem : γ' (Sum.inr a) ∈ _root_.GlobalTheory.SW.botSpan γ`. Rewrite using `[hspan]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Unfold `_root_.GlobalTheory.SW.botSpan at hmem`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hmem`. Establish `hid : ∀ b, ∑ m, γ (Sum.inr b) m * γ⁻¹ m (Sum.inl j) = 0`. Introduce `b`. Use `congrFun (congrFun (mul_nonsing_inv (γ : Matrix (Fin N ⊕ Fin N) (Fin N ⊕ Fin N) E) hdet) (Sum.inr b)) (Sum.inl j)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules. Simplify using `only [toBlocks₂₁, of_apply, Matrix.zero_apply, Matrix.mul_apply, ← hc, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum, hid, mul_zero, Finset.sum_const_zero]`.
+-/
 private lemma toBlocks₂₁_mul_inv_eq_zero_of_botSpan_eq {E : Type} [Field E] {N : ℕ} {γ γ' : _root_.GlobalTheory.SW.M2 E N}
     (hdet : IsUnit (Matrix.det γ)) (hspan : _root_.GlobalTheory.SW.botSpan γ = _root_.GlobalTheory.SW.botSpan γ') :
     (γ' * γ⁻¹ : Matrix (Fin N ⊕ Fin N) (Fin N ⊕ Fin N) E).toBlocks₂₁ = 0 := by
@@ -423,6 +550,9 @@ private lemma toBlocks₂₁_mul_inv_eq_zero_of_botSpan_eq {E : Type} [Field E] 
 
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.SW.hFac _root_.GlobalTheory.SW.hDen`. Simplify using `only [h0, Matrix.map_zero _ (map_zero _), Matrix.zero_mul, zero_add, Matrix.mul_zero, Matrix.zero_mulVec, dotProduct_zero, Finset.sum_const_zero, mul_zero, Complex.exp_zero, mul_one]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 private lemma hFac_eq_prod_det_pow_of_toBlocks₂₁_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E]
     {Ψ : Finset (E →+* ℂ)} {n N : ℕ} {γ : _root_.GlobalTheory.SW.M2 E N} (h0 : γ.toBlocks₂₁ = 0)
     (Z : _root_.GlobalTheory.SW.CM Ψ N N) (z z' : _root_.GlobalTheory.SW.CM Ψ n N) :
@@ -437,6 +567,21 @@ private lemma hFac_eq_prod_det_pow_of_toBlocks₂₁_eq_zero {E : Type} [Field E
 open Matrix Complex NumberField Filter Topology in
 open scoped ComplexConjugate ComplexOrder Real in
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ hΨ n N hn φ hφ`. Establish `hpar : ∀ γ ∈ _root_.GlobalTheory.SW.UU E N, γ.toBlocks₂₁ = 0 → ∀ φ : Matrix (Fin n) (Fin N) E → ℂ, _root_.GlobalTheory.SW.IsSB φ → ∀ x, _root_.GlobalTheory.SW.weil Ψ γ φ x = (∏ τ : Ψ, τ.1 γ.toBlocks₂₂.det ^ n) * _root_.GlobalTheory.SW.chiH Ψ (-(γ.toBlocks₁₂ * _root_.GlobalTheory. …`. Introduce `γ hγ h0 φ hφ x`. Establish `hA` using `(isUnit_det_diag_blocks_of_lower_zero hγ h0).1`. Establish `hSB : _root_.GlobalTheory.SW.IsSB fun x => (∏ τ : Ψ, τ.1 γ.toBlocks₂₂.det ^ n) * _root_.GlobalTheory.SW.chiH Ψ (-(γ.toBlocks₁₂ * _root_.GlobalTheory.SW.ccT γ.toBlocks₁₁)) x * φ (x * γ.toBlocks₁₁)`.
+
+Use `_root_.GlobalTheory.SW.Parab.isSB_chiH hΨ ?_ _ (isSB_comp_mul_right_of_isUnit_det hA hφ)` and prove the remaining obligations. Rewrite using `[ccT_neg_mul_ccT, toBlocks₁₁_mul_ccT_toBlocks₁₂_comm_of_mem_UU hγ h0]`. Use `(_root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn γ hγ φ hφ).2.2.1 _ hSB (transH_chiH_mul_comp_of_toBlocks₂₁_eq_zero hγ h0 φ)` as an intermediate fact. Conclude with `(congrFun this x).symm`. Use `⟨fun γ hγ h0 x => hpar γ hγ h0 φ hφ x, ?_⟩` and prove the remaining obligations.
+
+Introduce `γ hγ γ' hγ' hspan Z hZ z z'`. Establish `hprops` using `_root_.GlobalTheory.SW.HAct.group_part hγ`. Use `set p := γ' * γ⁻¹ with hp`. Establish `hpU : p ∈ _root_.GlobalTheory.SW.UU E N` using `_root_.GlobalTheory.SW.HAct.mul_mem hprops.2.1 hγ'`. Establish `hp0 : p.toBlocks₂₁ = 0` using `toBlocks₂₁_mul_inv_eq_zero_of_botSpan_eq hprops.1 hspan`.
+
+Establish `hγ'eq : γ' = p * γ`. Rewrite using `[hp, Matrix.mul_assoc, nonsing_inv_mul _ hprops.1, Matrix.mul_one]`. Establish `htest` using `_root_.GlobalTheory.SW.weil_action E Ψ hΨ n N hn γ hγ φ hφ`. Establish `hcomp` using `htest.2.2.2.2.2.1 p hpU`. Establish `hcoc` using `(_root_.GlobalTheory.SW.transH_comp E Ψ n N γ p hγ hpU).1 Z hZ z z'`.
+
+Establish `hD` using `(isUnit_det_diag_blocks_of_lower_zero hpU hp0).2`. Establish `hc : (∏ τ : Ψ, τ.1 p.toBlocks₂₂.det ^ n) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `τ _`. Conclude with `pow_ne_zero _ ((map_ne_zero τ.1).2 hD.ne_zero)`.
+
+Establish `hchi : _root_.GlobalTheory.SW.chiH Ψ (-(p.toBlocks₁₂ * _root_.GlobalTheory.SW.ccT p.toBlocks₁₁)) (0 : Matrix (Fin n) (Fin N) E) = 1`. Unfold `_root_.GlobalTheory.SW.chiH`. Simplify using the standard rewrite rules. Unfold `_root_.GlobalTheory.SW.eisTerm`. Rewrite using `[hγ'eq, hcomp, hpar p hpU hp0 _ htest.1, hcoc, hFac_eq_prod_det_pow_of_toBlocks₂₁_eq_zero hp0, hchi, Matrix.zero_mul, mul_inv, mul_one]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem _root_.GlobalTheory.SW.weil_parabolic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), _root_.GlobalTheory.SW.IsType Ψ → ∀ (n N : ℕ), Even n → ∀ φ : Matrix (Fin n) (Fin N) E → ℂ, _root_.GlobalTheory.SW.IsSB φ → (∀ γ ∈ _root_.GlobalTheory.SW.UU E N, γ.toBlocks₂₁ = 0 → ∀ x, _root_.GlobalTheory.SW.weil Ψ γ φ x = (∏ τ : Ψ, τ.1 γ.toBlocks₂₂.det ^ n) * _root_.GlobalTheory.SW.chiH Ψ (-(γ.toBlocks₁₂ * _root_.GlobalTheory.SW.ccT γ.toBlocks₁₁)) x * φ (x * γ.toBlocks₁₁)) ∧ ∀ γ ∈ _root_.GlobalTheory.SW.UU E N, ∀ γ' ∈ _root_.GlobalTheory.SW.UU E N, _root_.GlobalTheory.SW.botSpan γ = _root_.GlobalTheory.SW.botSpan γ' → ∀ Z ∈ _root_.GlobalTheory.SW.Hn Ψ N, ∀ z z', _root_.GlobalTheory.SW.eisTerm Ψ γ φ Z z z' = _root_.GlobalTheory.SW.eisTerm Ψ γ' φ Z z z' := by
   intro E _ _ _ Ψ hΨ n N hn φ hφ
   have hpar : ∀ γ ∈ _root_.GlobalTheory.SW.UU E N, γ.toBlocks₂₁ = 0 →

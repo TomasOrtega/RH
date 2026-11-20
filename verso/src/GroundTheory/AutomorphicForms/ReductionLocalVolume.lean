@@ -17,6 +17,13 @@ section Unitary
 
 variable {𝕜 : Type*} [RCLike 𝕜] {n : ℕ}
 
+/- English proof (translation)
+Set `L : EuclideanSpace 𝕜 (Fin n) →ₗᵢ[𝕜] EuclideanSpace 𝕜 (Fin n)` to `{ toFun := fun x => WithLp.toLp 2 (WithLp.ofLp x ᵥ* M) map_add' := fun x y => by simp [add_vecMul] map_smul' := fun c x => by simp [smul_vecMul] norm_map' := fun x => by`. Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`. Conclude with `hM (WithLp.ofLp x) }`. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Use extensionality with `i j`.
+
+Establish `h` using `L.inner_map_map (WithLp.toLp 2 (Pi.single j (1 : 𝕜))) (WithLp.toLp 2 (Pi.single i (1 : 𝕜)))`. Simplify using `only [L, LinearIsometry.coe_mk, LinearMap.coe_mk, AddHom.coe_mk, EuclideanSpace.inner_toLp_toLp, single_one_vecMul] at h`. Rewrite using `[Matrix.mul_apply, one_apply]`. Establish `h2 : ∑ k, M i k * star M k j = M.row i ⬝ᵥ star (M.row j)`. Simplify using `[dotProduct, Matrix.row, Matrix.star_apply]`.
+
+Rewrite using `[h2, h, single_one_dotProduct, Pi.star_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem mem_unitaryGroup_of_euclidNorm {M : Matrix (Fin n) (Fin n) 𝕜}
     (hM : ∀ y : Fin n → 𝕜, euclidNorm (y ᵥ* M) = euclidNorm y) : M ∈ unitaryGroup (Fin n) 𝕜 := by
   classical
@@ -46,6 +53,25 @@ variable {E 𝕜 : Type*} [NormedField E] [RCLike 𝕜] {m : ℕ}
   [MeasurableSpace (GL (Fin (m + 1)) E)] [BorelSpace (GL (Fin (m + 1)) E)]
   [MeasurableSpace (GL (Fin (m + 1)) 𝕜)] [BorelSpace (GL (Fin (m + 1)) 𝕜)]
 
+/- English proof (translation)
+Establish `hφc : Continuous φ` using `(AddMonoidHomClass.isometry_of_norm φ hφ).continuous`. Establish `hφ' : ∀ x, ‖φ.symm x‖ = ‖x‖` using `fun x => by rw [← hφ, RingEquiv.apply_symm_apply]`. Establish `hφc' : Continuous φ.symm` using `(AddMonoidHomClass.isometry_of_norm φ.symm hφ').continuous`. Use `set e : Matrix (Fin (m + 1)) (Fin (m + 1)) E ≃* Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜 := φ.mapMatrix.toMulEquiv with he`. Use `set Φ : GL (Fin (m + 1)) E ≃ₜ* GL (Fin (m + 1)) 𝕜 := unitsCongr e (continuous_id.matrix_map hφc) (continuous_id.matrix_map hφc') with hΦ`.
+
+Establish `hΦv : ∀ g : GL (Fin (m + 1)) E, ((Φ g : GL (Fin (m + 1)) 𝕜) : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) = (g : Matrix (Fin (m + 1)) (Fin (m + 1)) E).map φ` using `fun g => rfl`. Use `set ν : Measure (GL (Fin (m + 1)) 𝕜) := Measure.map Φ μ with hν`. Establish `hνH : ν.IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map μ Φ`. Establish `hω' : IsCompact (Φ '' ω)` using `hω.image Φ.continuous`. Establish `hωB' : ∀ b ∈ Φ '' ω, (b : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜).IsUpperTriangular`.
+
+Introduce and unpack `_ ⟨b, hb, rfl⟩ i j hij`. Rewrite using `[hΦv, Matrix.map_apply, hωB b hb hij, map_zero]`. Establish `hfin` using `measure_siegelGL_lt_top (c₂ := c₂) ν (fun μK _ μA _ μN _ => hANK ν μK μA μN) hω' hωB' ht hc₁`. Establish `hmeas : MeasurableSet (siegelGL (Φ '' ω) t c₁ c₂)` using `(isClosed_siegelGL hω' t c₁ c₂).measurableSet`. Use `lt_of_le_of_lt (measure_mono ?_) ((Measure.map_apply Φ.continuous.measurable hmeas).symm ▸ hfin)` and prove the remaining obligations.
+
+Introduce and unpack `g ⟨hd1, hd2, b, hbω, r, hr, k, hk, rfl⟩`. Express the relevant statement in the definitionally equal form `Φ (b * D r * k) ∈ siegelGL (Φ '' ω) t c₁ c₂`. Establish `hdet : ‖((Φ (b * D r * k) : GL (Fin (m + 1)) 𝕜) : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜).det‖ = ‖((b * D r * k : GL (Fin (m + 1)) E) : Matrix (Fin (m + 1)) (Fin (m + 1)) E).det‖`. Rewrite using `[hΦv]`. Establish `h1` using `RingHom.map_det (φ : E →+* 𝕜) ((b * D r * k : GL (Fin (m + 1)) E) : Matrix (Fin (m + 1)) (Fin (m + 1)) E)`.
+
+Rewrite `h1` using `[RingHom.mapMatrix_apply]`. Express the relevant statement in the definitionally equal form `‖(((b * D r * k : GL (Fin (m + 1)) E) : Matrix (Fin (m + 1)) (Fin (m + 1)) E).map (φ : E →+* 𝕜)).det‖ = _`. Rewrite using `[← h1]`. Conclude with `hφ _`. Establish `hkU : ((Φ k : GL (Fin (m + 1)) 𝕜) : Matrix (Fin (m + 1)) (Fin (m + 1)) 𝕜) ∈ unitaryGroup (Fin (m + 1)) 𝕜`.
+
+Use `mem_unitaryGroup_of_euclidNorm fun y => ?_` and prove the remaining obligations. Establish `hy : y = fun i => φ (φ.symm (y i))` using `by funext i; simp`. Rewrite using `[hy, hΦv]`. Establish `: (fun i => φ (φ.symm (y i))) ᵥ* (k : Matrix (Fin (m + 1)) (Fin (m + 1)) E).map φ = fun j => φ.toRingHom (((fun i => φ.symm (y i)) ᵥ* (k : Matrix (Fin (m + 1)) (Fin (m + 1)) E)) j)`. Use extensionality with `j`.
+
+Simplify using `[vecMul, dotProduct, _root_.map_sum, map_mul]`. Rewrite using `[this, euclidNorm_map φ.toRingHom hφ, hk, ← euclidNorm_map φ.toRingHom hφ]`. Both sides reduce to the same expression. Use `⟨hd1.trans_eq hdet.symm, hdet.trans_le hd2, Φ b, ⟨b, hbω, rfl⟩, r, hr, ⟨_, hkU⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`.
+
+Use `congr 1`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hΦv, hD, coe_diagPosOf]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Both sides reduce to the same expression.
+-/
 theorem measure_lt_top_of_ringEquiv (φ : E ≃+* 𝕜) (hφ : ∀ x, ‖φ x‖ = ‖x‖)
     [MeasurableSpace (unitaryGroup (Fin (m + 1)) 𝕜)] [BorelSpace (unitaryGroup (Fin (m + 1)) 𝕜)]
     (hANK : ∀ (ν : Measure (GL (Fin (m + 1)) 𝕜)) [ν.IsHaarMeasure]
@@ -138,6 +164,21 @@ def localSiegel (w : InfinitePlace K) {n : ℕ} (ω : Set (GL (Fin n) w.Completi
       ∃ k ∈ archCompact w,
         g = b * diagUnits n (fun i => posRealToUnits w ⟨r i ^ w.mult, pow_pos (hr i) _⟩) * k}
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Establish `hs : (Set.univ : Set (GL (Fin 0) w.Completion)).Subsingleton` using `fun x _ y _ => Units.ext (Subsingleton.elim _ _)`. Conclude with `lt_of_le_of_lt (measure_mono (subset_univ _)) hs.isCompact.measure_lt_top`. Consider the case `succ m => set D : PosDiag (Fin (m + 1)) → GL (Fin (m + 1)) w.Completion := fun r => diagUnits (m + 1) (fun i => posRealToUnits w ⟨r.1 i ^ w.mult, pow_pos (r.2 i) _⟩) with hDdef`.
+
+Establish `hsub : localSiegel w ω t c₁ c₂ ⊆ {g | c₁ ≤ ‖(g : Matrix (Fin (m + 1)) (Fin (m + 1)) w.Completion).det‖ ∧ ‖(g : Matrix (Fin (m + 1)) (Fin (m + 1)) w.Completion).det‖ ≤ c₂ ∧ ∃ b ∈ ω, ∃ r : PosDiag (Fin (m + 1)), (∀ l : Fin m, t * r.1 l.succ ≤ r.1 l.castSucc) ∧ ∃ k : GL (Fin (m + 1) …`. Introduce and unpack `g ⟨h1, h2, b, hb, r, hr, hrat, k, hk, rfl⟩`. Conclude with `⟨h1, h2, b, hb, ⟨r, hr⟩, fun l => hrat l.castSucc l.succ (by simp), k, hk, rfl⟩`. Use `lt_of_le_of_lt (measure_mono hsub) ?_` and prove the remaining obligations. Distinguish the cases in `hw : w.IsReal`.
+
+Establish `hφ : ∀ x, ‖InfinitePlace.Completion.ringEquivRealOfIsReal hw x‖ = ‖x‖` using `fun x => (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) x`. Use `measure_lt_top_of_ringEquiv (𝕜 := ℝ) (InfinitePlace.Completion.ringEquivRealOfIsReal hw) hφ (fun ν _ μK _ μA _ μN _ => lintegral_GLReal_ANK ν μK μA μN) μ D (fun r => ?_) hω hωB ht hc₁` and prove the remaining obligations. Rewrite using `[hDdef]`. Simplify using `only`. Rewrite using `[coe_diagUnits, diagonal_map (map_zero _)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hm : w.mult = 1` using `by simp [InfinitePlace.mult, hw]`. Simplify using `only [posRealToUnits, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mk0, posRealElem, dif_pos hw, RingEquiv.apply_symm_apply, hm, pow_one]`. Both sides reduce to the same expression.
+
+Establish `hc` using `InfinitePlace.not_isReal_iff_isComplex.1 hw`. Establish `hφ : ∀ x, ‖InfinitePlace.Completion.ringEquivComplexOfIsComplex hc x‖ = ‖x‖` using `fun x => (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) x`. Use `measure_lt_top_of_ringEquiv (𝕜 := ℂ) (InfinitePlace.Completion.ringEquivComplexOfIsComplex hc) hφ (fun ν _ μK _ μA _ μN _ => lintegral_GLComplex_ANK ν μK μA μN) μ D (fun r => ?_) hω hωB ht hc₁` and prove the remaining obligations. Rewrite using `[hDdef]`. Simplify using `only`.
+
+Rewrite using `[coe_diagUnits, diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hm : w.mult = 2` using `by simp [InfinitePlace.mult, hw]`. Simplify using `only [posRealToUnits, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mk0, posRealElem, dif_neg hw, RingEquiv.apply_symm_apply, hm]`.
+
+Rewrite using `[Real.sqrt_sq (r.2 i).le]`. Both sides reduce to the same expression.
+-/
 theorem measure_localSiegel_lt_top (w : InfinitePlace K) {n : ℕ}
     [MeasurableSpace (GL (Fin n) w.Completion)] [BorelSpace (GL (Fin n) w.Completion)]
     (μ : Measure (GL (Fin n) w.Completion)) [μ.IsHaarMeasure] {ω : Set (GL (Fin n) w.Completion)}

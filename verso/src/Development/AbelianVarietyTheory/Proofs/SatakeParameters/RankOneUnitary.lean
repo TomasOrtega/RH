@@ -18,6 +18,11 @@ namespace GlobalTheory.TempGal
 
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL GlobalTheory.Pst GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `π w σ _ α hα`. Take `⟨ξ, hξ, -, hξu⟩` from `GlobalTheory.HeckeComp.main D.host.E (P.chr.e1 π).1 w`. Establish `he` using `GlobalTheory.RankOneComp.locG_rankOne_eq_rcAt hAF hL D P π w ξ hξ`. Rewrite `hα` using `[WDTie.eig, he]`. Unfold `WD.inePol at hα`.
+
+Use `split_ifs at hα with hσ`. Conclude with `GlobalTheory.LocLanglands.IsRec.recUnit (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 w)) ξ (Irr.ofDet 1 ξ hξ.1) (hξu (P.chr.e1 π).2) ⟨Representation.Equiv.refl _⟩ ⟨σ, hσ⟩ α hα`. Simplify using `at hα`.
+-/
 theorem rankOneUnitary (hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7)
     (P : Pin hL D) : RankOneUnitary P.T := by
   intro π w σ _ α hα
@@ -30,6 +35,19 @@ theorem rankOneUnitary (hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (
       (Irr.ofDet 1 ξ hξ.1) (hξu (P.chr.e1 π).2) ⟨Representation.Equiv.refl _⟩ ⟨σ, hσ⟩ α hα
   · simp at hα
 
+/- English proof (translation)
+Use `host_isCMField D.host` as an intermediate fact. Establish `ha1 : 1 ≤ a` using `by omega`. Take `⟨π₀, hπ₀⟩` from `Quotient.exists_rep (P.cg.e a π).1`. Establish `hmk : CG.mk π₀ = (P.cg.e a π).1` using `hπ₀`. Establish `hc₀ : π₀.IsCsd`.
+
+Establish `h1` using `(P.cg.csd a π).1 hc`. Rewrite `h1` using `[CGu.IsCsd, ← hmk]`. Conclude with `h1`. Establish `hinf : ∀ τ, D.naut.infG π τ = (CG.mk π₀).infChar τ` using `fun τ => by`. Rewrite using `[P.cg.inf, CGu.infChar, ← hmk]`.
+
+Establish `hr₀ : (CG.mk π₀).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Use `(D.naut.ralg_def π).1 hr τ` as an intermediate fact. Rewrite `this` using `[hinf]`. Then use the resulting hypothesis. Take `⟨r, wt, HT, H⟩` from `hG.of_isCsd D.nd.Om ι ha1 hr₀ hc₀`. Establish `hloc : ∀ (w : PlE D.host) (u : ℝ), P.T.e w (D.naut.lpTw (D.naut.locG π w) u) = (ParLaws.locPar hL (CG.mk π₀) (D.nd.plOm.2 w)).lpTw u` using `fun w u => by`.
+
+Rewrite using `[P.T.tw, P.cg.loc, hmk]`. Both sides reduce to the same expression. Establish `haway : ∀ (w : PlE D.host) (hl : ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal), wdOf (D.nd.plOm.2 w) hl ι r = P.T.e w (D.naut.lpTw (D.naut.locG π w) ((1 - (a : ℝ)) / 2))` using `fun w hl => by`. Rewrite using `[GlobalTheory.GalFirstClause.wdOfEqLocPar hL hF H hl, hloc]`. Establish `hv : (1 - (a : ℝ)) / 2 + (wt : ℝ) / 2 = 0`.
+
+Use `GlobalTheory.GalFirstClause.exponentEqZero D.naut ha1 π hc l _ fun w hl => ?_` and prove the remaining obligations. Establish `h1` using `H.tempered_wdOf hl (D.nd.plOm.2 w)`. Rewrite `h1` using `[haway w hl, ← P.T.tw, ← P.T.tempered, D.naut.lpTw_add]`. Conclude with `h1`. Establish `h1` using `H.tempered_wdOf hlw (D.nd.plOm.2 w)`.
+
+Rewrite `h1` using `[haway w hlw, ← P.T.tw, ← P.T.tempered, D.naut.lpTw_add, hv, D.naut.lpTw_zero]`. Conclude with `h1`.
+-/
 theorem temperedAway (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal)
     (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (a : ℕ) (π : D.naut.CG a) (ha : 2 ≤ a)
     (hc : D.naut.csd π) (hr : D.naut.ralg π) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (w : PlE D.host)
@@ -64,6 +82,11 @@ theorem temperedAway (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hG 
   rw [haway w hlw, ← P.T.tw, ← P.T.tempered, D.naut.lpTw_add, hv, D.naut.lpTw_zero] at h1
   exact h1
 
+/- English proof (translation)
+Distinguish the cases in `h2 : ((2 : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal`. Establish `h3 : ((3 : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal` using `fun h3 => w.isPrime.ne_top <| by`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : ((3 : ℕ) : 𝓞 D.host.E) - ((2 : ℕ) : 𝓞 D.host.E) = 1` using `by push_cast; ring`. Rewrite using `[← e]`.
+
+Conclude with `w.asIdeal.sub_mem h3 h2`. Take `⟨ι⟩ : Nonempty (Qbar 3 ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 3`. Conclude with `temperedAway hF hG hL D P a π ha hc hr 3 ι w h3`. Take `⟨ι⟩ : Nonempty (Qbar 2 ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 2`. Conclude with `temperedAway hF hG hL D P a π ha hc hr 2 ι w h2`.
+-/
 theorem rankTwo (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal)
     (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D) (a : ℕ) (π : D.naut.CG a) (ha : 2 ≤ a)
     (hc : D.naut.csd π) (hr : D.naut.ralg π) (w : PlE D.host) : D.naut.tempered (D.naut.locG π w) := by
@@ -78,6 +101,9 @@ theorem rankTwo (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hG : Glo
   · obtain ⟨ι⟩ : Nonempty (Qbar 2 ≃+* ℂ) := GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 2
     exact temperedAway hF hG hL D P a π ha hc hr 2 ι w h2
 
+/- English proof (translation)
+Introduce `hF hG hL D P`. Conclude with `admissible_of_rank_one_unitary D P.T (rankOneUnitary hF hL D P) (fun a π ha hc hr w => rankTwo hF hG hL D P a π ha hc hr w)`.
+-/
 theorem main : GlobalTheory.Published.AutomorphicFormsFiniteGL → GlobalTheory.Published.GaloisRepOfPolarizedCuspidal → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), Formalism.MainNotions.SumRepresentations.adm7 D := by
   intro hF hG hL D P
   exact admissible_of_rank_one_unitary D P.T (rankOneUnitary hF hL D P)

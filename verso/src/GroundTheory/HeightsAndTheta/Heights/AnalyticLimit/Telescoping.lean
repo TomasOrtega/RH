@@ -25,21 +25,36 @@ def TelescopingFamily.Statement : Prop :=
         (ell t < F.r x →
           |∑ i, c i * ((F.sys i).ph t x - (F.sys i).ph t' x)| ≤ C' * Real.log (F.r x))
 
+/- English proof (translation)
+The claim follows from `Real.log_le_log (inv_pos.2 (lt_of_lt_of_le ht' htt)) (inv_anti₀ ht' htt)`.
+-/
 theorem ell_anti {t t' : ℝ} (ht' : 0 < t') (htt : t' ≤ t) : ell t ≤ ell t' :=
   Real.log_le_log (inv_pos.2 (lt_of_lt_of_le ht' htt)) (inv_anti₀ ht' htt)
 
+/- English proof (translation)
+Use `Real.add_one_le_exp 1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_of_exp_le {y : ℝ} (h : Real.exp 1 ≤ y) : 1 ≤ y := by
   have := Real.add_one_le_exp 1
   linarith
 
+/- English proof (translation)
+The claim follows from `div_nonneg (mul_nonneg hC (Real.log_nonneg h)) (by linarith)`.
+-/
 theorem errE_nonneg {C t : ℝ} (hC : 0 ≤ C) (h : 1 ≤ ell t) : 0 ≤ errE C t :=
   div_nonneg (mul_nonneg hC (Real.log_nonneg h)) (by linarith)
 
+/- English proof (translation)
+Unfold `errE`. Rewrite using `[div_le_iff₀ (by linarith)]`. Conclude with `mul_le_mul_of_nonneg_left (Real.log_le_self (by linarith)) hC`.
+-/
 theorem errE_le {C t : ℝ} (hC : 0 ≤ C) (h : 1 ≤ ell t) : errE C t ≤ C := by
   unfold errE
   rw [div_le_iff₀ (by linarith)]
   exact mul_le_mul_of_nonneg_left (Real.log_le_self (by linarith)) hC
 
+/- English proof (translation)
+The claim follows from `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hCC (Real.log_nonneg h)) (by linarith)`.
+-/
 theorem errE_mono {C C' t : ℝ} (hCC : C ≤ C') (h : 1 ≤ ell t) : errE C t ≤ errE C' t :=
   div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hCC (Real.log_nonneg h)) (by linarith)
 
@@ -50,6 +65,9 @@ variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X} {R : R
 
 def teleConst : ℝ := 1 + |S.C| + S.C ^ 2 + |R.C|
 
+/- English proof (translation)
+Unfold `teleConst`. Use `abs_nonneg S.C` as an intermediate fact. Use `abs_nonneg R.C` as an intermediate fact. Use `sq_nonneg S.C` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem teleConst_pos : 0 < S.teleConst := by
   unfold teleConst
   have := abs_nonneg S.C
@@ -57,16 +75,25 @@ theorem teleConst_pos : 0 < S.teleConst := by
   have := sq_nonneg S.C
   linarith
 
+/- English proof (translation)
+Establish `h2` using `S.ph_le t ht h0 x`. Establish `h3` using `S.le_log t ht h0 x`. Use polynomial arithmetic with `[Real.log_nonneg h1]`.
+-/
 theorem C_nonneg {t : ℝ} (ht : 0 < t) (h0 : S.ell₀ ≤ ell t) (h1 : 1 ≤ ell t) (x : X) : 0 ≤ S.C := by
   have h2 := S.ph_le t ht h0 x
   have h3 := S.le_log t ht h0 x
   nlinarith [Real.log_nonneg h1]
 
+/- English proof (translation)
+Establish `h2` using `R.φ_le x hx`. Establish `h3` using `R.le_φ x hx`. Use polynomial arithmetic with `[Real.log_nonneg (R.one_le_r x hx)]`.
+-/
 theorem dataC_nonneg {x : X} (hx : x ∈ R.Yo) : 0 ≤ R.C := by
   have h2 := R.φ_le x hx
   have h3 := R.le_φ x hx
   nlinarith [Real.log_nonneg (R.one_le_r x hx)]
 
+/- English proof (translation)
+The claim follows from `|S.ph t x - S.ph t' x| ≤ S.teleConst * (t ^ (1 / 3 : ℝ) + errE S.C t) := by have ht : 0 < t := lt_of_lt_of_le ht' htt have h1 := one_le_of_exp_le he have h0' : S.ell₀ ≤ ell t' := le_trans h0 (ell_anti ht' htt) have hC := S.C_nonneg ht h0 h1 x have hK := dataC_nonneg hx have ha : …`.
+-/
 theorem tele_near {t t' : ℝ} (ht' : 0 < t') (htt : t' ≤ t) (h0 : S.ell₀ ≤ ell t)
     (he : Real.exp 1 ≤ ell t) {x : X} (hx : x ∈ R.Yo) (hr : R.r x ≤ ell t) :
     |S.ph t x - S.ph t' x| ≤ S.teleConst * (t ^ (1 / 3 : ℝ) + errE S.C t) := by
@@ -93,6 +120,9 @@ theorem tele_near {t t' : ℝ} (ht' : 0 < t') (htt : t' ≤ t) (h0 : S.ell₀ �
   rw [hM, abs_le]
   constructor <;> linarith
 
+/- English proof (translation)
+The claim follows from `|S.ph t x - S.ph t' x| ≤ S.teleConst * Real.log (R.r x) := by have ht : 0 < t := lt_of_lt_of_le ht' htt have h1 := one_le_of_exp_le he have h0' : S.ell₀ ≤ ell t' := le_trans h0 (ell_anti ht' htt) have hC := S.C_nonneg ht h0 h1 x have hK := dataC_nonneg hx have hL : 1 ≤ Real.log ( …`.
+-/
 theorem tele_far {t t' : ℝ} (ht' : 0 < t') (htt : t' ≤ t) (h0 : S.ell₀ ≤ ell t)
     (he : Real.exp 1 ≤ ell t) {x : X} (hx : x ∈ R.Yo) (hr : ell t < R.r x) :
     |S.ph t x - S.ph t' x| ≤ S.teleConst * Real.log (R.r x) := by
@@ -122,12 +152,36 @@ theorem tele_far {t t' : ℝ} (ht' : 0 < t') (htt : t' ≤ t) (h0 : S.ell₀ ≤
 
 end System
 
+/- English proof (translation)
+Introduce `X _ D A R S`. Use `⟨S.teleConst, max S.ell₀ (Real.exp 1), fun t t' ht' htt hℓ x hx => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `S.tele_near ht' htt (le_trans (le_max_left _ _) hℓ) (le_trans (le_max_right _ _) hℓ) hx`. Conclude with `S.tele_far ht' htt (le_trans (le_max_left _ _) hℓ) (le_trans (le_max_right _ _) hℓ) hx`.
+-/
 theorem Telescoping.proof : Telescoping.Statement := by
   intro X _ D A R S
   refine ⟨S.teleConst, max S.ell₀ (Real.exp 1), fun t t' ht' htt hℓ x hx => ⟨?_, ?_⟩⟩
   · exact S.tele_near ht' htt (le_trans (le_max_left _ _) hℓ) (le_trans (le_max_right _ _) hℓ) hx
   · exact S.tele_far ht' htt (le_trans (le_max_left _ _) hℓ) (le_trans (le_max_right _ _) hℓ) hx
 
+/- English proof (translation)
+Introduce `X _ D A F Λ`. Use `set B : ℝ := ∑ i, (F.sys i).teleConst with hB`. Establish `hB0 : 0 ≤ B` using `Finset.sum_nonneg fun i _ => ((F.sys i).teleConst_pos).le`. Establish `hMB : ∀ i, (F.sys i).teleConst ≤ B` using `fun i => Finset.single_le_sum (f := fun i => (F.sys i).teleConst) (fun i _ => ((F.sys i).teleConst_pos).le) (Finset.mem_univ i)`. Establish `hCB : ∀ i, (F.sys i).C ≤ B` using `fun i => by`.
+
+Use `le_trans ?_ (hMB i)` and prove the remaining obligations. Unfold `System.teleConst`. Use `le_abs_self (F.sys i).C` as an intermediate fact. Use `abs_nonneg (F.R i).C` as an intermediate fact. Use `sq_nonneg (F.sys i).C` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set C' : ℝ := (|Λ| + 1) * B with hC'`. Establish `hBC' : B ≤ C'`. Rewrite using `[hC']`. Use polynomial arithmetic with `[abs_nonneg Λ]`.
+
+Use `⟨C', ∑ i, |(F.sys i).ell₀| + Real.exp 1, fun c hc t t' ht' htt hℓ x hx => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ i, (F.sys i).ell₀ ≤ ell t` using `fun i => by`. Use `le_trans (le_trans (le_abs_self _) ?_) hℓ` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun i => |(F.sys i).ell₀|) (fun i _ => abs_nonneg _) (Finset.mem_univ i)` as an intermediate fact. Use `Real.exp_pos 1` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `he : Real.exp 1 ≤ ell t`. Use `le_trans ?_ hℓ` and prove the remaining obligations. Use `Finset.sum_nonneg (fun i (_ : i ∈ Finset.univ) => abs_nonneg (F.sys i).ell₀)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h1` using `one_le_of_exp_le he`. Establish `hx' : ∀ i, x ∈ (F.R i).Yo` using `fun i => (F.Yo_eq i).symm ▸ hx`. Establish `hr' : ∀ i, (F.R i).r x = F.r x` using `fun i => F.r_eq i x hx`. Establish `hsum : |∑ i, c i * ((F.sys i).ph t x - (F.sys i).ph t' x)| ≤ ∑ i, |c i| * |(F.sys i).ph t x - (F.sys i).ph t' x|`. Use `le_trans (Finset.abs_sum_le_sum_abs _ _) (le_of_eq ?_)` and prove the remaining obligations.
+
+Conclude with `Finset.sum_congr rfl fun i _ => abs_mul _ _`. Establish `hc0 : ∑ i, |c i| ≤ |Λ|` using `le_trans hc (le_abs_self Λ)`. Establish `hfin : ∀ K : ℝ, 0 ≤ K → (∀ i, |(F.sys i).ph t x - (F.sys i).ph t' x| ≤ B * K) → |∑ i, c i * ((F.sys i).ph t x - (F.sys i).ph t' x)| ≤ C' * K`. Introduce `K hK hi`. Use `le_trans hsum (le_trans (Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (hi i) (abs_nonneg (c i))) ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_mul, hC']`. Establish `hBK` using `mul_nonneg hB0 hK`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hc0 hBK]`. Establish `ht : 0 < t` using `lt_of_lt_of_le ht' htt`. Establish `ha : 0 ≤ t ^ (1 / 3 : ℝ)` using `Real.rpow_nonneg ht.le _`.
+
+Use `⟨fun hr => hfin _ (add_nonneg ha (errE_nonneg (hB0.trans hBC') h1)) fun i => ?_, fun hr => hfin _ (Real.log_nonneg (le_trans h1 (le_of_lt hr))) fun i => ?_⟩` and prove the remaining obligations. Establish `hCi` using `(F.sys i).C_nonneg ht (h0 i) h1 x`. Use `le_trans ((F.sys i).tele_near ht' htt (h0 i) he (hx' i) ((hr' i).symm ▸ hr)) (mul_le_mul (hMB i) ?_ (add_nonneg ha (errE_nonneg hCi h1)) hB0)` and prove the remaining obligations. Combine the linear relations using `[errE_mono ((hCB i).trans hBC') h1]`. Establish `h` using `(F.sys i).tele_far ht' htt (h0 i) he (hx' i) ((hr' i).symm ▸ hr)`.
+
+Rewrite `h` using `[hr' i]`. Conclude with `le_trans h (mul_le_mul_of_nonneg_right (hMB i) (Real.log_nonneg (le_trans h1 (le_of_lt hr))))`.
+-/
 theorem TelescopingFamily.proof : TelescopingFamily.Statement := by
   intro X _ D A F Λ
   set B : ℝ := ∑ i, (F.sys i).teleConst with hB

@@ -19,11 +19,17 @@ def onSet {i : ℕ} (s : Cech.Cochain (fun _ : Cell U => V) i) (A : Finset (Fin 
     s ⟨⟨A, Finset.card_pos.mp (h.1 ▸ Nat.succ_pos i), h.2⟩, h.1⟩
   else 0
 
+/- English proof (translation)
+Unfold `onSet`. Rewrite using `[dif_pos ⟨I.2, I.1.2.2⟩]`.
+-/
 theorem onSet_idx {i : ℕ} (s : Cech.Cochain (fun _ : Cell U => V) i) (I : Cech.Idx U i) :
     onSet s I.1.1 = s I := by
   unfold onSet
   rw [dif_pos ⟨I.2, I.1.2.2⟩]
 
+/- English proof (translation)
+Rewrite using `[Cech.d_apply, ← Finset.sum_coe_sort K.1.1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← onSet_idx s (Cech.face K j)]`. Both sides reduce to the same expression.
+-/
 theorem d_eq {i : ℕ} (s : Cech.Cochain (fun _ : Cell U => V) i) (K : Cech.Idx U (i + 1)) :
     Cech.d (fun _ : Cell U => V) (Cech.idRes R V U) i s K =
       ∑ j ∈ K.1.1, Cech.sgn K.1.1 j • onSet s (K.1.1.erase j) := by
@@ -35,6 +41,17 @@ theorem d_eq {i : ℕ} (s : Cech.Cochain (fun _ : Cell U => V) i) (K : Cech.Idx 
 def coneY {i : ℕ} (k : Fin n) (z : Cech.Cochain (fun _ : Cell U => V) (i + 1)) (A : Finset (Fin n)) : V :=
   if k ∈ A then 0 else Cech.sgn (insert k A) k • onSet z (insert k A)
 
+/- English proof (translation)
+Establish `hcoc : ∀ L : Finset (Fin n), L ⊆ U → L.card = i + 1 + 1 + 1 → ∑ j ∈ L, Cech.sgn L j • onSet z (L.erase j) = 0`. Introduce `L hLU hL`. Establish `h` using `congrFun hz ⟨⟨L, Finset.card_pos.mp (by omega), hLU⟩, hL⟩`. Rewrite `h` using `[d_eq]`. Conclude with `h`.
+
+Rewrite using `[← onSet_idx z K]`. Establish `hK : K.1.1.card = i + 1 + 1` using `K.2`. Establish `hKU : K.1.1 ⊆ U` using `K.1.2.2`. Generalize the expression as in `K.1.1 = Kf at hK hKU ⊢`. Distinguish the cases in `h : k ∈ Kf`.
+
+Rewrite using `[Finset.sum_eq_single k]`. Rewrite using `[coneY, if_neg (Finset.notMem_erase k Kf), Finset.insert_erase h, smul_smul, Cech.Cone.sgn_mul_self, one_smul]`. Introduce `j hj hne`. Rewrite using `[coneY, if_pos (Finset.mem_erase.mpr ⟨Ne.symm hne, h⟩), smul_zero]`. Conclude with `fun h' => absurd h h'`.
+
+Establish `hc` using `hcoc (insert k Kf) (Finset.insert_subset hk hKU) (by rw [Finset.card_insert_of_notMem h, hK])`. Rewrite `hc` using `[Finset.sum_insert h, Finset.erase_insert h]`. Establish `hb` using `eq_neg_iff_add_eq_zero.mpr ((add_comm _ _).trans hc)`. Establish `hs : ∑ j ∈ Kf, Cech.sgn Kf j • coneY k z (Kf.erase j) = -(Cech.sgn (insert k Kf) k • ∑ j ∈ Kf, Cech.sgn (insert k Kf) j • onSet z ((insert k Kf).erase j))`. Rewrite using `[Finset.smul_sum, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hne : k ≠ j` using `fun e => h (e ▸ hj)`. Establish `hni : k ∉ Kf.erase j` using `fun hm => h (Finset.mem_of_mem_erase hm)`. Rewrite using `[Finset.erase_insert_of_ne hne, coneY, if_neg hni, smul_smul, smul_smul, Cech.Cone.sgn_key h hj, neg_smul]`. Rewrite using `[hs, hb, smul_neg, neg_neg, smul_smul, Cech.Cone.sgn_mul_self, one_smul]`.
+-/
 theorem cone_d {i : ℕ} {z : Cech.Cochain (fun _ : Cell U => V) (i + 1)}
     (hz : Cech.d (fun _ : Cell U => V) (Cech.idRes R V U) (i + 1) z = 0) {k : Fin n} (hk : k ∈ U)
     (K : Cech.Idx U (i + 1)) :
@@ -71,6 +88,17 @@ theorem cone_d {i : ℕ} {z : Cech.Cochain (fun _ : Cell U => V) (i + 1)}
         Cech.Cone.sgn_key h hj, neg_smul]
     rw [hs, hb, smul_neg, neg_neg, smul_smul, Cech.Cone.sgn_mul_self, one_smul]
 
+/- English proof (translation)
+Use `⟨fun K => ∑ k ∈ U, a k • coneY k z K.1.1, fun K _ => ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Unfold `coneY`. Use `split_ifs with h`. Rewrite using `[smul_zero]`.
+
+Conclude with `zero_mem _`. Rewrite using `[smul_comm]`. Conclude with `zsmul_mem (hmem K k hk h) _`. Use function extensionality and compare the values at `K`. Rewrite using `[d_eq]`.
+
+Establish `hY : ∀ j ∈ K.1.1, onSet (fun I => ∑ k ∈ U, a k • coneY k z I.1.1 : Cech.Cochain (fun _ : Cell U => V) i) (K.1.1.erase j) = ∑ k ∈ U, a k • coneY k z (K.1.1.erase j)`. Introduce `j hj`. Unfold `onSet`. Rewrite using `[dif_pos ⟨by rw [Finset.card_erase_of_mem hj, K.2]; rfl, (Finset.erase_subset _ _).trans K.1.2.2⟩]`. Rewrite using `[Finset.sum_congr rfl fun j hj => by rw [hY j hj]]`.
+
+Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => smul_comm _ _ _`. Use `_ = ∑ k ∈ U, a k • z K := Finset.sum_congr rfl fun k hk => by rw [cone_d hz hk K]`.
+
+Use `_ = z K := by rw [← Finset.sum_smul, ha, one_smul]`.
+-/
 theorem exact_of_partition {A : Type w} [Semiring A] [Module A V] (M : Cell U → Submodule R V)
     {i : ℕ} (z : Cech.Cochain (fun _ : Cell U => V) (i + 1))
     (hz : Cech.d (fun _ : Cell U => V) (Cech.idRes R V U) (i + 1) z = 0)
@@ -103,6 +131,13 @@ theorem exact_of_partition {A : Type w} [Semiring A] [Module A V] (M : Cell U �
       _ = ∑ k ∈ U, a k • z K := Finset.sum_congr rfl fun k hk => by rw [cone_d hz hk K]
       _ = z K := by rw [← Finset.sum_smul, ha, one_smul]
 
+/- English proof (translation)
+Establish `hcard : ({a, b} : Finset (Fin n)).card = 0 + 1 + 1` using `Finset.card_pair hab.ne`. Establish `h` using `congrFun hz ⟨⟨{a, b}, Finset.insert_nonempty _ _, Finset.insert_subset haU (Finset.singleton_subset_iff.mpr hbU)⟩, hcard⟩`. Rewrite `h` using `[d_eq]`. Express the relevant statement in the definitionally equal form `∑ j ∈ ({a, b} : Finset (Fin n)), Cech.sgn {a, b} j • onSet z (({a, b} : Finset _).erase j) = 0 at h`. Establish `ha : a ∉ ({b} : Finset (Fin n))` using `Finset.notMem_singleton.mpr hab.ne`.
+
+Rewrite `h` using `[Finset.sum_pair hab.ne, Finset.erase_insert ha, Finset.erase_insert_of_ne hab.ne, Finset.erase_singleton, Cech.Cone.sgn_insert ha, Cech.Cone.sgn_insert ha, if_neg (lt_irrefl _), if_pos hab]`. Establish `e1 : Cech.sgn ({b} : Finset (Fin n)) a = 1`. Simplify using `[Cech.sgn, Finset.filter_singleton, lt_asymm hab]`. Establish `e2 : Cech.sgn ({b} : Finset (Fin n)) b = 1`. Simplify using `[Cech.sgn, Finset.filter_singleton]`.
+
+Rewrite `h` using `[e1, e2, insert_empty_eq]`. Rewrite `h` using `[one_mul, one_smul, one_mul, neg_one_smul, ← sub_eq_add_neg, sub_eq_zero]`. Conclude with `h.symm`.
+-/
 theorem onSet_pair {z : Cech.Cochain (fun _ : Cell U => V) 0}
     (hz : Cech.d (fun _ : Cell U => V) (Cech.idRes R V U) 0 z = 0)
     {a b : Fin n} (haU : a ∈ U) (hbU : b ∈ U) (hab : a < b) : onSet z {a} = onSet z {b} := by
@@ -124,6 +159,11 @@ theorem onSet_pair {z : Cech.Cochain (fun _ : Cell U => V) 0}
   rw [one_mul, one_smul, one_mul, neg_one_smul, ← sub_eq_add_neg, sub_eq_zero] at h
   exact h.symm
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Finset.card_eq_one.mp I.2`. Take `⟨b, hb⟩` from `Finset.card_eq_one.mp K.2`. Establish `haU : a ∈ U` using `I.1.2.2 (by rw [ha]; exact Finset.mem_singleton_self a)`. Establish `hbU : b ∈ U` using `K.1.2.2 (by rw [hb]; exact Finset.mem_singleton_self b)`. Rewrite using `[← onSet_idx z I, ← onSet_idx z K, ha, hb]`.
+
+Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Conclude with `onSet_pair hz haU hbU h`. Both sides reduce to the same expression. Conclude with `(onSet_pair hz hbU haU h).symm`.
+-/
 theorem const {z : Cech.Cochain (fun _ : Cell U => V) 0}
     (hz : Cech.d (fun _ : Cell U => V) (Cech.idRes R V U) 0 z = 0)
     (I K : Cech.Idx U 0) : z I = z K := by

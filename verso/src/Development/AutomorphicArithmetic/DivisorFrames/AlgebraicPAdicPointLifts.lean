@@ -13,6 +13,11 @@ open ReciprocityTheory.ChartRestriction.G.Pdiv GlobalTheory.HTLat GlobalTheory.C
 open scoped NNReal
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 
+/- English proof (translation)
+Establish `hv : ValuativeCriterion f`. Rewrite `hp` using `[IsProper.eq_valuativeCriterion]`. Conclude with `hp.1.1.1`. Set `S : ValuativeCommSq f` to `{ R := V, K := FractionRing V, i₁ := y, i₂ := s, commSq := ⟨h⟩ }`. Take `⟨U⟩` from `hv S`.
+
+Conclude with `⟨U.default.l, U.default.fac_left.symm⟩`.
+-/
 private theorem ext_proper {X B : Scheme.{0}} (f : X ⟶ B) (hp : IsProper f) {V : Type} [CommRing V] [IsDomain V]
     [ValuationRing V] (y : Sp (FractionRing V) ⟶ X) (s : Sp V ⟶ B)
     (h : y ≫ f = spMap (algebraMap V (FractionRing V)) ≫ s) :
@@ -24,14 +29,23 @@ private theorem ext_proper {X B : Scheme.{0}} (f : X ⟶ B) (hp : IsProper f) {V
   obtain ⟨U⟩ := hv S
   exact ⟨U.default.l, U.default.fac_left.symm⟩
 
+/- English proof (translation)
+The claim follows from `(h.algHom k.toIntAlgHom).extendScalars (S := R) Int.cast_injective`.
+-/
 private theorem alg_map {K R C : Type} [Field K] [Field R] [CharZero R] [Field C] [Algebra R C] (k : K →+* C) (a : K)
     (h : IsAlgebraic ℤ a) : IsAlgebraic R (k a) :=
   (h.algHom k.toIntAlgHom).extendScalars (S := R) Int.cast_injective
 
+/- English proof (translation)
+The claim follows from `(h.map k.toIntAlgHom).tower_top`.
+-/
 private theorem int_map {A R C : Type} [CommRing A] [CommRing R] [CommRing C] [Algebra R C] (k : A →+* C) (a : A)
     (h : IsIntegral ℤ a) : IsIntegral R (k a) :=
   (h.map k.toIntAlgHom).tower_top
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h1`. Establish `h2 : Valued.v (y : ℂ_[p]) ≤ 1` using `y.2`. Rewrite using `[← GlobalTheory.FlatModel.coe_valued]`. Conclude with `NNReal.coe_le_one.mpr h2`.
+-/
 private theorem norm_le_one_of_isIntegral (p : ℕ) [Fact p.Prime] (x : ℂ_[p]) (h1 : IsIntegral 𝓞_ℂ_[p] x) :
     ‖x‖ ≤ 1 := by
   obtain ⟨y, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.mp h1
@@ -39,6 +53,25 @@ private theorem norm_le_one_of_isIntegral (p : ℕ) [Fact p.Prime] (x : ℂ_[p])
   rw [← GlobalTheory.FlatModel.coe_valued]
   exact NNReal.coe_le_one.mpr h2
 
+/- English proof (translation)
+Set `T : CDVR` to `{ V := ℤ_[p] }`. Establish `hfin : T.FinRes` using `Finite.of_equiv _ (PadicInt.residueField (p := p)).symm.toEquiv`. Set `g : ℤ_[p] →+* ℂ_[p]` to `(algebraMap ℚ_[p] ℂ_[p]).comp (algebraMap ℤ_[p] ℚ_[p])`. Establish `hg : Function.Injective g` using `(algebraMap ℚ_[p] ℂ_[p]).injective.comp (IsFractionRing.injective ℤ_[p] ℚ_[p])`. Establish `hgO : ∀ a, g a ∈ 𝓞_ℂ_[p]` using `fun a => by show Valued.v (g a) ≤ 1`.
+
+Rewrite using `[← NNReal.coe_le_one, GlobalTheory.FlatModel.coe_valued]`. Use `show ‖algebraMap ℚ_[p] ℂ_[p] (a : ℚ_[p])‖ ≤ 1`. Rewrite using `[norm_algebraMap']`. Conclude with `a.2`. Set `kO : T.V →+* 𝓞_ℂ_[p]` to `g.codRestrict (𝓞_ℂ_[p]) hgO`.
+
+Set `kk : T.Fr →+* ℂ_[p]` to `IsFractionRing.lift (K := FractionRing ℤ_[p]) hg`. Establish `hk : ∀ a, algebraMap 𝓞_ℂ_[p] ℂ_[p] (kO a) = kk (algebraMap T.V T.Fr a)` using `fun a => (IsFractionRing.lift_algebraMap (K := FractionRing ℤ_[p]) hg a).symm`. Use `letI algT : Algebra T.Fr ℂ_[p] := kk.toAlgebra`. Set `K' : IntermediateField T.Fr ℂ_[p]` to `algebraicClosure T.Fr ℂ_[p]`. Establish `hKa : Algebra.IsAlgebraic T.Fr K'` using `algebraicClosure.isAlgebraic T.Fr ℂ_[p]`.
+
+Use `haveI : CharZero T.Fr := RingHom.charZero kk`. Establish `hkK : ∀ a, k a ∈ K'` using `fun a => by`. Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `alg_map k a (hK a)`. Set `k' : K →+* K'` to `k.codRestrict K' hkK`.
+
+Establish `hft : LocallyOfFiniteType (s ≫ spMap (algebraMap ℤ (𝓞 F)))`. Establish `: LocallyOfFiniteType (spMap (algebraMap ℤ (𝓞 F)))`. Unfold `spMap`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `RingHom.finiteType_algebraMap.mpr inferInstance`.
+
+Use `infer_instance`. Take `⟨L, yL, hLfin, hyL1, -⟩` from `GlobalTheory.FinDesc.exists_finite_subext_point _ _ _ hft T.Fr K' hKa (spMap k' ≫ z) (spMap (algebraMap ℤ T.Fr)) (specZIsTerminal.hom_ext _ _)`. Take `⟨kL, hkL⟩ : ∃ kL : L →+* ℂ_[p], kL = K'.val.toRingHom.comp L.val.toRingHom` from `⟨_, rfl⟩`. Establish `hkL1 : ∀ x : L, kL x = ((x : K') : ℂ_[p])` using `fun x => by rw [hkL]; rfl`. Take `⟨T', i, iF, ψ, kO', hT'fin, hkO'inj, hi, hψ, hkO', hint⟩` from `GlobalTheory.CdvrLiftCp.exists_cdvr_lift p T hfin kO kk hk L kL (fun a => by rw [hkL1]; rfl)`.
+
+Take `⟨φ, hφ⟩` from `Spec.map_surjective (yL ≫ s : Sp L ⟶ Sp (𝓞 F))`. Take `⟨fL, hfLφ⟩ : ∃ fL : 𝓞 F →+* L, fL = φ.hom` from `⟨_, rfl⟩`. Establish `hφ' : yL ≫ s = spMap fL` using `by rw [← hφ, hfLφ]; rfl`. Take `⟨β', hβ'⟩` from `hint (𝓞 F) fL (fun a => norm_le_one_of_isIntegral p _ (int_map (kL.comp fL) a (RingOfIntegers.isIntegral a)))`. Establish `hring : ψ.toRingHom.comp fL = (algebraMap T'.V T'.Fr).comp β'` using `RingHom.ext fun a => (hβ' a).symm`.
+
+Establish `hsq : (spMap ψ.toRingHom ≫ yL) ≫ s = spMap (algebraMap T'.V (FractionRing T'.V)) ≫ spMap β'`. Rewrite using `[Category.assoc, hφ', spMap_spMap, spMap_spMap, hring]`. Take `⟨yT, hyT⟩` from `ext_proper s hs (spMap ψ.toRingHom ≫ yL) (spMap β') hsq`. Use `⟨T', kO', yT, hT'fin, hkO'inj, ?_⟩` and prove the remaining obligations. Establish `hrk : (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp kO' = (kL.comp ψ.symm.toRingHom).comp (algebraMap T'.V T'.Fr)` using `RingHom.ext hkO'`.
+
+Establish `e1 : (kL.comp ψ.symm.toRingHom).comp ψ.toRingHom = K'.val.toRingHom.comp (algebraMap L K')` using `RingHom.ext fun x => by show kL (ψ.symm (ψ x)) = _`. Rewrite using `[RingEquiv.symm_apply_apply, hkL1]`. Both sides reduce to the same expression. Establish `e2 : K'.val.toRingHom.comp k' = k` using `RingHom.ext fun _ => rfl`. Rewrite using `[← Category.assoc, spMap_spMap, hrk, ← spMap_spMap, Category.assoc, ← hyT, ← Category.assoc, spMap_spMap, e1, ← spMap_spMap, Category.assoc, hyL1, ← Category.assoc, spMap_spMap, e2]`.
+-/
 private theorem descend_gen (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) (s : X ⟶ Sp (𝓞 F)) (hs : IsProper s)
     (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (k : K →+* ℂ_[p]) (z : Sp K ⟶ X) (hK : ∀ a : K, IsAlgebraic ℤ a) :
     ∃ (T : CDVR) (kO : T.V →+* 𝓞_ℂ_[p]) (yT : Sp T.V ⟶ X), T.FinRes ∧ Function.Injective kO ∧
@@ -97,6 +130,11 @@ private theorem descend_gen (F : Type) [Field F] [NumberField F] (X : Scheme.{0}
   rw [← Category.assoc, spMap_spMap, hrk, ← spMap_spMap, Category.assoc, ← hyT, ← Category.assoc, spMap_spMap, e1,
     ← spMap_spMap, Category.assoc, hyL1, ← Category.assoc, spMap_spMap, e2]
 
+/- English proof (translation)
+Take `⟨T, kO, yT, h1, h2, h3⟩` from `descend_gen F X s hs p K k z hK`. Use `⟨T, kO, yT, h1, h2, ?_⟩` and prove the remaining obligations. Establish `hiO : Function.Injective (algebraMap 𝓞_ℂ_[p] ℂ_[p])` using `(PadicComplexInt.integers p).hom_inj`. Use `haveI : X.IsSeparated := ⟨by`. Rewrite using `[← Limits.terminal.comp_from s]`.
+
+Use the proof step `infer_instance⟩`. Use `haveI : IsDominant (spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap 𝓞_ℂ_[p] ℂ_[p])).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 hiO]`. Conclude with `bot_le)⟩`. Conclude with `ext_of_isDominant (spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])) (h3.trans hz.symm)`.
+-/
 private theorem descend (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) (s : X ⟶ Sp (𝓞 F)) (hs : IsProper s)
     (p : ℕ) [Fact p.Prime] (yb : Sp 𝓞_ℂ_[p] ⟶ X) (K : Type) [Field K] (k : K →+* ℂ_[p]) (z : Sp K ⟶ X)
     (hK : ∀ a : K, IsAlgebraic ℤ a) (hz : spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ yb = spMap k ≫ z) :
@@ -113,6 +151,31 @@ private theorem descend (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) (s
       rw [(RingHom.injective_iff_ker_eq_bot _).1 hiO]; exact bot_le)⟩
   exact ext_of_isDominant (spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p])) (h3.trans hz.symm)
 
+/- English proof (translation)
+Use `letI := H.starRing`. Use `haveI : IsDomain O := hv.hom_inj.isDomain _`. Use `haveI : ValuationRing O := ValuationRing.of_integers _ hv`. Establish `hinj : Function.Injective ((algebraMap O C).comp kO)` using `fun a b h => by`. Simplify using `only [RingHom.comp_apply, hk] at h`.
+
+Conclude with `IsFractionRing.injective T.V T.Fr (k.injective h)`. Establish `hp0 : ∀ {R : Type} [CommRing R] (f : R →+* O), (p : R) ≠ 0` using `fun f h => (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero : (p : C) ≠ 0) (by`. Rewrite using `[← map_natCast ((algebraMap O C).comp f), h, map_zero])`. Establish `hpu : ∀ {R : Type} [CommRing R] (f : R →+* O), ¬ IsUnit (p : R)` using `fun f h => hpO.out (by simpa using h.map f)`. Use `haveI : IsLocalHom kO := ⟨fun a ha => by`.
+
+Assume the negation of the conclusion as `hau`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero]`. Conclude with `not_isUnit_zero ha`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 hϖ`. Establish `hn : n ≠ 0`. Introduce and unpack `rfl`. Rewrite `hu` using `[pow_zero, _root_.mul_one]`.
+
+Conclude with `hau (hu ▸ u.isUnit)`. Rewrite `ha` using `[hu, map_mul, map_pow]`. Establish `h1 : IsUnit (kO ϖ)` using `(isUnit_pow_iff hn).1 (isUnit_of_mul_isUnit_right ha)`. Take `⟨n', u', hu'⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (hp0 kO) hϖ`. Use `hpO.out ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_natCast kO, hu', map_mul, map_pow]`. Conclude with `(u'.isUnit.map kO).mul (h1.pow _)⟩`. Take `⟨T', φ', G', m, hi, hf, -, -, U, -⟩` from `GlobalTheory.UnifAfterExt.exists_finite_ext_uniformised E H Dw l Xo T G t' m₂ _ m₁ hy`. Take `⟨f', -, hf'⟩` from `GlobalTheory.CharDepth.exists_local_extension_of_integral v hv φ' hi hf.to_isIntegral kO hinj`. Establish `hI : ∃ n : ℕ, ∀ a ∈ IsLocalRing.maximalIdeal T'.V ^ n, f' a ∈ Ideal.span {(p : O)}`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T'.V`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (hp0 f') hϖ`. Use `⟨n, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`.
+
+Use `Ideal.mem_span_singleton'.2 ⟨f' (b * ↑u⁻¹), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast f', ← map_mul, hu, _root_.mul_assoc, Units.inv_mul_cancel_left]`. Take `⟨A, oA, φ, hφ, hφa, hL⟩` from `exists_polAV_fibre m₁ Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (spMap k)`. Establish `e1 : spMap f' ≫ spMap φ' = spMap kO` using `by rw [spMap_spMap, hf']`. Establish `e2 : spMap k ≫ spMap (algebraMap T.V T.Fr) = spMap ((algebraMap O C).comp f') ≫ spMap φ'`.
+
+Rewrite using `[spMap_spMap, spMap_spMap, RingHom.comp_assoc, hf']`. Conclude with `congrArg _ (RingHom.ext fun a => (hk a).symm)`. Establish `h2 : IsGrpPullback A.A G.G (spMap ((algebraMap O C).comp f') ≫ spMap φ') (φ ≫ m₂.φ)` using `(hφ.comp m₂.cart).congr e2 rfl`. Take `⟨j, hj1, hj2⟩ : ∃ j : A.A.left ⟶ G'.G.left, j ≫ m.φ = φ ≫ m₂.φ ∧ j ≫ G'.G.hom = A.A.hom ≫ spMap ((algebraMap O C).comp f')` from `⟨m.cart.1.lift _ _ (h2.1.w.trans (Category.assoc _ _ _).symm), m.cart.1.lift_fst _ _ _, m.cart.1.lift_snd _ _ _⟩`. Establish `hj : IsGrpPullback A.A G'.G (spMap ((algebraMap O C).comp f')) j` using `m.cart.cancel (h2.congr rfl hj1.symm) hj2`.
+
+Establish `hja : ∀ a, (oA.act a).left ≫ j = j ≫ (G'.act.toRingAct.act a).left` using `fun a => m.cart.1.hom_ext (by`. Express the relevant statement in the definitionally equal form `_ = (j ≫ (G'.act.act a).left) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, m.act, hj1, reassoc_of% hj1, reassoc_of% (hφa a), m₂.act])`. Use the proof step `(by rw [Category.assoc, Category.assoc, Over.w, hj2, Over.w_assoc])`. Take `⟨ε⟩ : Nonempty (Eps p C)` from `inferInstance`.
+
+Take `⟨-, -, -, -, -, P, -, -, -, -, hA, -, -, -, -, π, -, hπ, -, -, -, hgen, hπa, -⟩` from `exists_point_of_unif U.U.toUnifPre G'.semi U.lin hv ε f' hI A oA j hj hja`. Use `clear hja hφa hj`. Use `clear oA`. Substitute `hA` using the available equality. Use `⟨P, π ≫ m.φ, φ, (hπ.comp m.cart).congr e1 rfl, fun a => ?_, hφ, ?_, hL⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, hπa, Category.assoc, Category.assoc]`. Conclude with `congrArg (π ≫ ·) (m.act a)`. Rewrite using `[← Category.assoc, eq_of_heq hgen, hj1]`.
+-/
 private theorem point_of_sab {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l) (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
     [CharZero C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [hpO : Fact ¬IsUnit (p : O)]
@@ -194,6 +257,21 @@ private theorem point_of_sab {E : Type} [Field E] [NumberField E] [IsCMField E] 
     exact congrArg (π ≫ ·) (m.act a)
   · rw [← Category.assoc, eq_of_heq hgen, hj1]
 
+/- English proof (translation)
+Establish `h' : spMap k ≫ x = yy ≫ Z.jQ ≫ Limits.pullback.fst _ _` using `h`. Take `⟨b, hb⟩ : ∃ b : 𝓞 c.F →+* K, x ≫ Z.s = spMap b` from `⟨(Spec.preimage (x ≫ Z.s)).hom, (Spec.map_preimage (x ≫ Z.s)).symm⟩`. Take `⟨g₀, hg₀⟩ : ∃ g₀ : c.F →+* C, yy ≫ Z.jQ ≫ Limits.pullback.snd _ _ = spMap g₀` from `⟨(Spec.preimage (yy ≫ Z.jQ ≫ Limits.pullback.snd _ _)).hom, (Spec.map_preimage _).symm⟩`. Establish `e0 : k.comp b = g₀.comp (algebraMap (𝓞 c.F) c.F)`. Establish `e : spMap (k.comp b) = spMap (g₀.comp (algebraMap (𝓞 c.F) c.F))`.
+
+Rewrite using `[← spMap_spMap, ← spMap_spMap, ← hb, ← hg₀, reassoc_of% h', Limits.pullback.condition]`. Simplify using `only [Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Establish `hbi : Function.Injective b`. Establish `: Function.Injective (k.comp b)`.
+
+Rewrite using `[e0]`. Conclude with `g₀.injective.comp (IsFractionRing.injective (𝓞 c.F) c.F)`. Conclude with `Function.Injective.of_comp (f := k) this`. Set `g : c.F →+* K` to `IsFractionRing.lift hbi`. Establish `hg : g.comp (algebraMap (𝓞 c.F) c.F) = b` using `RingHom.ext fun a => IsFractionRing.lift_algebraMap hbi a`.
+
+Establish `hkg : k.comp g = g₀` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) (by rw [RingHom.comp_assoc, hg, e0])`. Establish `hw : x ≫ Z.s = spMap g ≫ spMap (algebraMap (𝓞 c.F) c.F)` using `by rw [spMap_spMap, hg, hb]`. Set `yK : Sp K ⟶ Limits.pullback Z.s (spMap (algebraMap (𝓞 c.F) c.F))` to `Limits.pullback.lift x (spMap g) hw`. Establish `hyK : spMap k ≫ yK = yy ≫ Z.jQ`. Use `Limits.pullback.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Limits.pullback.lift_fst, h', Category.assoc]`. Rewrite using `[Category.assoc, Limits.pullback.lift_snd, Category.assoc, hg₀, spMap_spMap, hkg]`. Establish `hr : Set.range yK ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨q, rfl⟩`. Take `⟨q0⟩ : Nonempty (Sp C)` from `inferInstance`.
+
+Establish `hq : q = spMap k q0` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Rewrite using `[hq, ← Scheme.Hom.comp_apply, hyK, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Use `haveI := Z.jQ_open`. Establish `hy' : IsOpenImmersion.lift Z.jQ yK hr ≫ Z.jQ = yK` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Use `⟨IsOpenImmersion.lift Z.jQ yK hr, ?_, ?_⟩` and prove the remaining obligations. Use `show _ ≫ Z.jQ ≫ Limits.pullback.fst _ _ = _`. Rewrite using `[← Category.assoc, hy', Limits.pullback.lift_fst]`. Rewrite using `[← cancel_mono Z.jQ, Category.assoc, hy', hyK]`.
+-/
 private theorem lift_gen {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
     (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) {K C : Type} [Field K] [Field C] (k : K →+* C)
@@ -237,6 +315,19 @@ private theorem lift_gen {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
     rw [← Category.assoc, hy', Limits.pullback.lift_fst]
   · rw [← cancel_mono Z.jQ, Category.assoc, hy', hyK]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Z p _ yb yy hyy halg`. Use `letI := H.starRing`. Take `⟨K, _, k₀, z, hK, hz⟩` from `halg`. Take `⟨T, kO, yT, hfin, hkO, hyT⟩` from `descend c.F Z.X Z.s (projProper _ _ _ Z.proj) p yb K k₀ z hK hz`. Establish `hiO : Function.Injective (algebraMap 𝓞_ℂ_[p] ℂ_[p])` using `(PadicComplexInt.integers p).hom_inj`.
+
+Establish `hinj : Function.Injective ((algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp kO)` using `hiO.comp hkO`. Set `k : T.Fr →+* ℂ_[p]` to `IsFractionRing.lift hinj`. Establish `hk : ∀ a, algebraMap 𝓞_ℂ_[p] ℂ_[p] (kO a) = k (algebraMap T.V T.Fr a)` using `fun a => (IsFractionRing.lift_algebraMap hinj a).symm`. Establish `hOO : (algebraMap 𝓞_ℂ_[p] ℂ_[p]).comp kO = k.comp (algebraMap T.V T.Fr)` using `RingHom.ext hk`. Take `⟨y, hy1, hy2⟩` from `lift_gen Z k (spMap (algebraMap T.V T.Fr) ≫ yT) yy (by`.
+
+Rewrite using `[← hyy, ← hyT, sp_sp, sp_sp, hOO])`. Establish `tr : ∀ {S S' : Scheme.{0}} {s : SAB H S} {s' : SAB H S'} {f g : S' ⟶ S}, f = g → ∀ m : SABMap s' s f, ∃ m' : SABMap s' s g, m'.φ = m.φ`. Introduce `S S' s s' f g h m`. Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+
+Take `⟨G, ⟨b⟩⟩` from `exists_sab yT Z.t`. Take `⟨t', ⟨q⟩⟩` from `exists_sab y Z.oF.t`. Take `⟨m₁, hm₁⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Z.m0.toSABMap q`. Take `⟨e₂, he₂⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Z.m q`. Take `⟨e₂', he₂'⟩` from `tr (show y ≫ Z.jQ ≫ Limits.pullback.fst _ _ = spMap (algebraMap T.V T.Fr) ≫ yT from hy1) e₂`.
+
+Take `⟨m₂, hm₂⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ b e₂'`. Take `⟨P, π, φ, hπ, hπa, hφ, hgen, hL⟩` from `point_of_sab Xo p ℂ_[p] (Valued.v : Valuation ℂ_[p] ℝ≥0) 𝓞_ℂ_[p] (PadicComplexInt.integers p) T hfin G t' m₂ _ m₁ k kO hk`. Use `⟨P, π ≫ b.φ, φ ≫ q.φ, hyy, (hπ.comp b.cart).congr hyT rfl, fun a => ?_, (hφ.comp q.cart).congr hy2 rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hπa, Category.assoc, Category.assoc]`. Conclude with `congrArg (π ≫ ·) (b.act a)`.
+
+Rewrite using `[Category.assoc, ← he₂, ← he₂', hm₂, reassoc_of% hgen]`. Conclude with `LBIso.trans P.A.isLB (pull_isLB Xo.univ.t.PP.isLB _) (pull_isLB Z.oF.t.PP.isLB _) hL (GlobalTheory.LN.GenericPoint.lbIso_pull (GlobalTheory.LN.GenericPoint.lbIso_of_sabMap Z.m0.toSABMap) _ (by rw [hm₁, Category.assoc])).symm`.
+-/
 theorem UpperTheory.algebraic_p_adic_point_lifts :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (p : ℕ) [Fact p.Prime] (yb : Sp 𝓞_ℂ_[p] ⟶ Z.X) (yy : Sp ℂ_[p] ⟶ Xo.XF c), spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ yb = yy ≫ Z.j → AlgDef (spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ yb) → letI := H.starRing; ∃ (P : PtP E p) (π : P.G.left ⟶ Z.t.G.left) (ψ : P.A.A.left ⟶ Z.oF.t.G.left), PtOnG Z yb yy P π ψ := by
   intro E _ _ _ H Dw l Xo c Z p _ yb yy hyy halg

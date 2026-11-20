@@ -81,6 +81,9 @@ def IwahoriBaseChange : Prop := Glob fun x y => Main x y
 
 def LocalGlobalSubnormal : Prop := Glob fun x y => Rel x y
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT hG P AI hT w hw A hA O _ _ _ Bw hj σ hσ rc hrc` and use `h1 E Ω A w hA _ _ (h2 E Ω l ι a ha π hc hr r wt HT hG P AI hT w hw A hA O Bw hj σ hσ rc hrc)`.
+-/
 theorem local_global_of_iwahori (h1 : RelOfMain) (h2 : IwahoriBaseChange) : LocalGlobalSubnormal :=
   fun E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT hG P AI hT w hw A hA O _ _ _ Bw hj σ hσ rc hrc =>
     h1 E Ω A w hA _ _ (h2 E Ω l ι a ha π hc hr r wt HT hG P AI hT w hw A hA O Bw hj σ hσ rc hrc)

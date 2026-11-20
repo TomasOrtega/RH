@@ -6,6 +6,25 @@ namespace GroundTheory.Heights₂.Heights.LowerBound
 
 open Real
 
+/- English proof (translation)
+Introduce `K1 Ca Cc hK1 hCa hCc`. Use `⟨2 * (Ca + 1 / 2 + Cc + K1), ?_⟩` and prove the remaining obligations. Introduce `A0 b0 hh sl rest vol J f j' n N j La h`. Establish `hfj : 0 < f * j'` using `mul_pos h.f_pos h.j'_pos`. Establish `hn` using `h.n_succ_pos`.
+
+Establish `hv` using `h.vol_pos`. Establish `hJ` using `h.J_pos`. Establish `hLa` using `h.one_le_La`. Establish `hN : 0 < N` using `lt_of_lt_of_le one_pos h.one_le_N`. Establish `hden : 0 < (n + 1) * vol * J` using `by positivity`.
+
+Establish `hrest : rest / ((n + 1) * vol * J) ≤ Cc * f * j'`. Rewrite using `[div_le_iff₀ hden]`. Combine the equalities or inequalities in the displayed calculation. Establish `hhh : hh / ((n + 1) * J) ≤ f * j' / 2 * La` using `h.hh_upper.trans (mul_le_mul_of_nonneg_left h.log_le_La (by positivity))`. Establish `hCcLa : Cc * (f * j') ≤ Cc * (f * j') * La`.
+
+Establish `: 0 ≤ Cc * (f * j')` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hAb : -((Ca + 1 / 2 + Cc) * La) ≤ A0 + b0`. Establish `hsl` using `h.sl_lower`. Establish `key : f * j' * (-((Ca + 1 / 2 + Cc) * La)) ≤ f * j' * (A0 + b0)`.
+
+Rewrite using `[h.identity]`. Establish `e1 : f * j' * (-((Ca + 1 / 2 + Cc) * La)) = -(Ca * f * j' * La) - f * j' / 2 * La - Cc * (f * j') * La` using `by ring`. Establish `e2 : Cc * f * j' = Cc * (f * j')` using `by ring`. Rewrite using `[e1]`. Rewrite `hrest` using `[e2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_of_mul_le_mul_left key hfj`. Establish `hsum : j * A0 + N * b0 ≤ K1 * N * La` using `(le_abs_self _).trans h.bound_sum`. Establish `hNj : -(N * ((Ca + 1 / 2 + Cc + K1) * La)) ≤ (N - j) * A0`. Establish `e : (N - j) * A0 = N * (A0 + b0) - (j * A0 + N * b0)` using `by ring`.
+
+Establish `hm : N * (-((Ca + 1 / 2 + Cc) * La)) ≤ N * (A0 + b0)` using `mul_le_mul_of_nonneg_left hAb hN.le`. Rewrite using `[e]`. Establish `e3 : K1 * N * La = N * (K1 * La)` using `by ring`. Rewrite `hsum` using `[e3]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Distinguish the cases in `hA : 0 ≤ A0`. Establish `: 0 ≤ 2 * (Ca + 1 / 2 + Cc + K1) * La` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `replace hA : A0 < 0 := lt_of_not_ge hA`. Establish `hhalf : (N - j) * A0 ≤ N / 2 * A0` using `mul_le_mul_of_nonpos_right h.half_N_le hA.le`.
+
+Establish `key : N * (-(2 * (Ca + 1 / 2 + Cc + K1) * La)) ≤ N * A0` using `by nlinarith`. Use `le_of_mul_le_mul_left key hN` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ReductionSmallFirst.proof : ReductionSmallFirst.Statement := by
   intro K1 Ca Cc hK1 hCa hCc
   refine ⟨2 * (Ca + 1 / 2 + Cc + K1), ?_⟩

@@ -7,6 +7,15 @@ namespace GlobalTheory
 
 open NumberField IsDedekindDomain in
 open scoped Classical in
+/- English proof (translation)
+Use `set I : Ideal ℤ := P.asIdeal.under ℤ with hI`. Establish `hN : (Ideal.absNorm P.asIdeal : ℤ) ∈ I`. Rewrite using `[hI, Ideal.mem_comap]`. Simplify using `using Ideal.absNorm_mem P.asIdeal`. Establish `hN0 : (Ideal.absNorm P.asIdeal : ℤ) ≠ 0`.
+
+Use `_root_.GlobalTheory.Mem.RayPrimes.two_le_absNorm P` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hIbot : I ≠ ⊥` using `fun h => hN0 (by simpa [h] using hN)`. Establish `hprime` using `Submodule.IsPrincipal.prime_generator_of_isPrime I hIbot`. Use `set g := Submodule.IsPrincipal.generator I`.
+
+Use `⟨g.natAbs, Int.prime_iff_natAbs_prime.mp hprime, ?_, ?_⟩` and prove the remaining obligations. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[Int.span_natAbs, Ideal.span_singleton_generator]`. Establish `hpr : Prime ((g.natAbs : ℕ) : ℤ)`. Rewrite using `[Int.natCast_natAbs]`.
+
+Conclude with `hprime.abs`. Use `haveI : P.asIdeal.LiesOver (Ideal.span {((g.natAbs : ℕ) : ℤ)}) := ⟨by rw [Int.span_natAbs, Ideal.span_singleton_generator]⟩`. Conclude with `⟨_, (Ideal.absNorm_eq_pow_inertiaDeg P.asIdeal hpr).trans (by rw [Int.natAbs_natCast])⟩`.
+-/
 private lemma exists_prime_liesOver_absNorm_eq_pow (K : Type) [Field K] [NumberField K]
     (P : HeightOneSpectrum (𝓞 K)) :
     ∃ q : ℕ, q.Prime ∧ P.asIdeal.LiesOver (Ideal.span {(q : ℤ)}) ∧
@@ -34,6 +43,29 @@ private lemma exists_prime_liesOver_absNorm_eq_pow (K : Type) [Field K] [NumberF
 open NumberField IsDedekindDomain in
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `K _ _`. Use `choose q hq hlies f hf using exists_prime_liesOver_absNorm_eq_pow K`. Use `set d := Module.finrank ℚ K`. Establish `hfib : ∀ (T : Finset {P : HeightOneSpectrum (𝓞 K) // ¬ (Ideal.absNorm P.asIdeal).Prime}) (r : ℕ), (T.filter fun P => q P.1 = r).card ≤ d`. Introduce `T r`.
+
+Distinguish the cases in `hr : ∃ P ∈ T, q P.1 = r`. Take `⟨P₀, -, rfl⟩` from `hr`. Establish `hspan : Ideal.span {((q P₀.1 : ℕ) : ℤ)} ≠ ⊥`. Simplify using `using (hq P₀.1).ne_zero`. Use `haveI hsp : (Ideal.span {((q P₀.1 : ℕ) : ℤ)}).IsPrime := (Ideal.span_singleton_prime (by simpa using (hq P₀.1).ne_zero)).mpr (Nat.prime_iff_prime_int.mp (hq P₀.1))`.
+
+Use `haveI : (Ideal.span {((q P₀.1 : ℕ) : ℤ)}).IsMaximal := hsp.isMaximal hspan`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.card_le_card_of_injOn (fun P => P.1.asIdeal) ?_ ?_` and prove the remaining obligations. Introduce `P hP`. Rewrite using `[Finset.mem_coe, IsDedekindDomain.mem_primesOverFinset_iff hspan]`.
+
+Establish `hPq` using `(Finset.mem_filter.mp hP).2`. Use `haveI := hlies P.1`. Conclude with `⟨P.1.isPrime, by rw [← hPq]; infer_instance⟩`. Introduce `P _ P' _ h`. Conclude with `Subtype.ext (HeightOneSpectrum.ext h)`.
+
+Use `_ ≤ d := Ideal.card_primesOverFinset_le_finrank (𝓞 K) ℚ K hspan`. Use `push_neg at hr`. Rewrite using `[Finset.card_eq_zero.mpr (Finset.filter_eq_empty_iff.mpr hr)]`. Conclude with `Nat.zero_le _`. Establish `hsum : Summable fun n : ℕ => 1 / (n : ℝ) ^ 2` using `Real.summable_one_div_nat_pow.mpr one_lt_two`.
+
+Use `summable_of_sum_le (c := d * ∑' n : ℕ, 1 / (n : ℝ) ^ 2) (fun P => by positivity) ?_` and prove the remaining obligations. Introduce `T`. Establish `hle : ∀ P ∈ T, ((Ideal.absNorm P.1.asIdeal : ℕ) : ℝ)⁻¹ ≤ 1 / ((q P.1 : ℕ) : ℝ) ^ 2`. Introduce `P _`. Establish `h2` using `_root_.GlobalTheory.Mem.RayPrimes.two_le_absNorm P.1`.
+
+Establish `hf2 : 2 ≤ f P.1`. Break down `Nat.lt_or_ge (f P.1) 2 with h | h` into its components or cases. Use `interval_cases hfP : f P.1`. Rewrite `h2` using `[hf P.1, hfP]`. Simplify using `at h2`.
+
+Conclude with `absurd (by rw [hf P.1, hfP, pow_one]; exact hq P.1) P.2`. Conclude with `h`. Rewrite using `[one_div]`. Apply `inv_anti₀ (by have := (hq P.1).pos; positivity)` to reduce the goal to its premises. Rewrite using `[hf P.1]`.
+
+Conclude with `Nat.pow_le_pow_right (hq P.1).pos hf2` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun P hP => by rw [(Finset.mem_filter.mp hP).2]), Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ ∑ r ∈ T.image (fun P => q P.1), (d : ℝ) * (1 / (r : ℝ) ^ 2) := by`.
+
+Use `Finset.sum_le_sum fun r _ => ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `hfib T r` after adjusting the coercions. Use `_ = d * ∑ r ∈ T.image (fun P => q P.1), 1 / (r : ℝ) ^ 2 := by rw [Finset.mul_sum]`. Use `_ ≤ d * ∑' n : ℕ, 1 / (n : ℝ) ^ 2 := by gcongr`.
+
+Conclude with `hsum.sum_le_tsum _ (fun n _ => by positivity)`.
+-/
 theorem _root_.GlobalTheory.summable_inv_absNorm_of_not_prime :
     ∀ (K : Type) [Field K] [NumberField K],
       Summable fun P : {P : HeightOneSpectrum (𝓞 K) // ¬ (Ideal.absNorm P.asIdeal).Prime} =>

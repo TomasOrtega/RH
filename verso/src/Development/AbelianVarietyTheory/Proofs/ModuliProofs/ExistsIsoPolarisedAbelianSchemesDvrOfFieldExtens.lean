@@ -18,12 +18,18 @@ set_option backward.isDefEq.respectTransparency false
 
 namespace GlobalTheory.IsoOverField
 
+/- English proof (translation)
+Rewrite using `[eSec, eSec, Functor.obj.η_def, Over.comp_left, Over.ε_pullback_left, Category.assoc, IsIso.inv_comp_eq]`. Use `erw [ExtUnique.pullback_map_left_fst, ← Category.assoc, ← pullback.condition]`. Simplify using the standard rewrite rules.
+-/
 theorem eSec_pullback_fst {S S' : Scheme.{0}} (p : S' ⟶ S) (G : Over S) [GrpObj G] :
     eSec ((Over.pullback p).obj G) ≫ pullback.fst G.hom p = p ≫ eSec G := by
   rw [eSec, eSec, Functor.obj.η_def, Over.comp_left, Over.ε_pullback_left, Category.assoc, IsIso.inv_comp_eq]
   erw [ExtUnique.pullback_map_left_fst, ← Category.assoc, ← pullback.condition]
   simp
 
+/- English proof (translation)
+The claim follows from `{ comm := by have := hA.comm; infer_instance smooth := by have := hA.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by have := hA.proper; show IsProper (pullback.snd _ _); infer_instance geomConnected := by have := hA.geomConnected; show GeometricallyConnected ( …`.
+-/
 theorem isAbelianScheme_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) (A : Over S) [GrpObj A]
     (hA : IsAbelianScheme A) : IsAbelianScheme ((Over.pullback f).obj A) :=
   { comm := by have := hA.comm; infer_instance
@@ -37,21 +43,54 @@ noncomputable def toBase (A : Over S) : (Over.mk (k ≫ j) ⊗ A).left ⟶ pullb
   pullback.lift (snd (Over.mk (k ≫ j)) A).left ((fst (Over.mk (k ≫ j)) A).left ≫ k)
     (by rw [Over.w, Category.assoc]; exact (Over.w (fst (Over.mk (k ≫ j)) A)).symm)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem toBase_fst (A : Over S) : toBase k j A ≫ pullback.fst A.hom j = (snd (Over.mk (k ≫ j)) A).left :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem toBase_snd (A : Over S) : toBase k j A ≫ pullback.snd A.hom j = (fst (Over.mk (k ≫ j)) A).left ≫ k :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+The claim follows from `(IsPullback.of_hasPullback T.hom A.hom).flip`.
+-/
 theorem isPullback_snd (T A : Over S) : IsPullback (snd T A).left (fst T A).left A.hom T.hom :=
   (IsPullback.of_hasPullback T.hom A.hom).flip
 
+/- English proof (translation)
+Use `IsPullback.of_right ?_ (toBase_snd k j A) (IsPullback.of_hasPullback A.hom j)` and prove the remaining obligations. Rewrite using `[toBase_fst]`. Conclude with `isPullback_snd (Over.mk (k ≫ j)) A`.
+-/
 theorem isPullback_toBase (A : Over S) :
     IsPullback (toBase k j A) (fst (Over.mk (k ≫ j)) A).left (pullback.snd A.hom j) k := by
   refine IsPullback.of_right ?_ (toBase_snd k j A) (IsPullback.of_hasPullback A.hom j)
   rw [toBase_fst]
   exact isPullback_snd (Over.mk (k ≫ j)) A
 
+/- English proof (translation)
+Establish `hκ : κ.left = k` using `(cancel_mono j).1 (Over.w κ)`. Apply the tactic sequence `let s : pullback A.hom j ⟶ (Over.mk j ⊗ A).left := (pullbackSymmetry A.hom j).hom`. Establish `s₁ : s ≫ (fst (Over.mk j) A).left = pullback.snd A.hom j` using `pullbackSymmetry_hom_comp_fst _ _`. Establish `s₂ : s ≫ (snd (Over.mk j) A).left = pullback.fst A.hom j` using `pullbackSymmetry_hom_comp_snd _ _`. Establish `hs : toBase k j A ≫ s = (κ ▷ A).left`.
+
+Use `(isPullback_snd (Over.mk j) A).hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, s₂, toBase_fst, ← Over.comp_left, whiskerRight_snd]`. Rewrite using `[Category.assoc, s₁, toBase_snd, ← Over.comp_left, whiskerRight_fst, Over.comp_left, hκ]`. Establish `hw : (s ≫ g.left) ≫ B.hom = pullback.snd A.hom j ≫ j`. Rewrite using `[Category.assoc, Over.w, ← s₁, Category.assoc]`.
+
+Conclude with `congrArg (s ≫ ·) (Over.w (fst (Over.mk j) A)).symm`. Set `f : (Over.pullback j).obj A ⟶ (Over.pullback j).obj B` to `Over.homMk (pullback.lift (s ≫ g.left) (pullback.snd A.hom j) hw) (pullback.lift_snd _ _ _)`. Establish `f₁ : f.left ≫ pullback.fst B.hom j = s ≫ g.left` using `pullback.lift_fst _ _ _`. Establish `f₂ : f.left ≫ pullback.snd B.hom j = pullback.snd A.hom j` using `pullback.lift_snd _ _ _`. Establish `key : toBase k j A ≫ f.left ≫ pullback.fst B.hom j = (φ.hom ≫ snd _ _).left`.
+
+Rewrite using `[f₁, ← Category.assoc, hs, ← Over.comp_left, hg]`. Establish `hφ' : φ.hom.left ≫ (fst (Over.mk (k ≫ j)) B).left = (fst (Over.mk (k ≫ j)) A).left`. Rewrite using `[← Over.comp_left, hφ]`. Establish `sq : toBase k j A ≫ f.left = φ.hom.left ≫ toBase k j B`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, key, Category.assoc, toBase_fst, Over.comp_left]`. Rewrite using `[Category.assoc, f₂, Category.assoc, toBase_snd, toBase_snd, ← Category.assoc, hφ']`. Establish `pb : IsPullback (toBase k j A) φ.hom.left f.left (toBase k j B)`. Use `IsPullback.of_bot ?_ sq (isPullback_toBase k j B)` and prove the remaining obligations. Rewrite using `[hφ', f₂]`.
+
+Conclude with `isPullback_toBase k j A`. Establish `hQ : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) (toBase k j B)` using `MorphismProperty.of_isPullback (isPullback_toBase k j B).flip ⟨⟨inferInstance, inferInstance⟩, inferInstance⟩`. Establish `hi : IsIso f.left` using `MorphismProperty.of_isPullback_of_descendsAlong (P := MorphismProperty.isomorphisms Scheme.{0}) pb.flip hQ (inferInstanceAs (IsIso ((Over.forget S).map φ.hom)))`. Establish `: IsIso ((Over.forget U).map f)` using `hi`. Establish `: IsIso f` using `isIso_of_reflects_iso f (Over.forget U)`.
+
+Use `⟨asIso f, ?_, key⟩` and prove the remaining obligations. Establish `: Epi k` using `Flat.epi_of_flat_of_surjective _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `one : ∀ (G : Over S) [GrpObj G], (1 : Over.mk (k ≫ j) ⟶ G).left = (k ≫ j) ≫ eSec G` using `fun G _ => by`.
+
+Rewrite using `[Hom.one_def, Over.comp_left]`. Use `congr 1`. Establish `e : (lift (𝟙 (Over.mk (k ≫ j))) (1 : Over.mk (k ≫ j) ⟶ A)).left ≫ toBase k j A = k ≫ eSec ((Over.pullback j).obj A)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, toBase_fst, ← Over.comp_left, lift_snd, one, Category.assoc, Category.assoc]`.
+
+Conclude with `congrArg (k ≫ ·) (eSec_pullback_fst j A).symm`. Rewrite using `[Category.assoc, toBase_snd, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc]`. Conclude with `(Category.id_comp _).trans ((Category.comp_id k).symm.trans (congrArg (k ≫ ·) (Over.w η[(Over.pullback j).obj A]).symm))`. Use `(cancel_epi k).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `k ≫ (eSec ((Over.pullback j).obj A) ≫ f.left) ≫ pullback.fst B.hom j = k ≫ eSec ((Over.pullback j).obj B) ≫ pullback.fst B.hom j`.
+
+Rewrite using `[eSec_pullback_fst, Category.assoc, ← Category.assoc k, ← e, Category.assoc, key, ← Over.comp_left, h₁, one, Category.assoc]`. Conclude with `(Over.w _).trans (Over.w _).symm`.
+-/
 theorem exists_iso_over [Flat k] [Surjective k] [QuasiCompact k] [Mono j] (A B : Over S) [GrpObj A] [GrpObj B]
     (φ : Over.mk (k ≫ j) ⊗ A ≅ Over.mk (k ≫ j) ⊗ B) (hφ : φ.hom ≫ fst _ _ = fst _ _)
     (h₁ : lift (𝟙 (Over.mk (k ≫ j))) (1 : Over.mk (k ≫ j) ⟶ A) ≫ φ.hom ≫ snd _ _ = 1)
@@ -116,6 +155,21 @@ theorem exists_iso_over [Flat k] [Surjective k] [QuasiCompact k] [Mono j] (A B :
       one, Category.assoc]
   · exact (Over.w _).trans (Over.w _).symm
 
+/- English proof (translation)
+Introduce `hl _ V _ _ _ P P' C _ _ φ hφ h₁ hL κ g hg`. Establish `: Flat (jFK (R` using `V) C) := FieldBaseChange.flat_spMap (algebraMap (FractionRing V) C)`. Establish `: Surjective (jFK (R` using `V) C) := FieldBaseChange.surjective_spMap (algebraMap (FractionRing V) C)`. Establish `: QuasiCompact (jFK (R` using `V) C) := by`. Establish `: IsAffine (TK V).left` using `inferInstanceAs (IsAffine (Spec _))`.
+
+Use `infer_instance`. Establish `: Mono (jK V)`. Establish `: IsPreimmersion (jK V)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors V)`. Use `infer_instance`. Take `⟨f, hf₁, hf⟩` from `exists_iso_over (jFK (R := V) C) (jK V) P.A P'.A φ hφ h₁ κ g hg`.
+
+Establish `hm : IsMonHom f.hom` using `hl.rigidity _ _ _ (isAbelianScheme_pullback _ _ P.isAb) (isAbelianScheme_pullback _ _ P'.isAb) f.hom hf₁`. Establish `hm' : IsMonHom f.inv` using `inferInstance`. Establish `hs` using `isSemiAbelian_of_isAbelianScheme P.A P.isAb`. Establish `hs'` using `isSemiAbelian_of_isAbelianScheme P'.A P'.isAb`. Take `⟨F, ⟨hF, eF⟩, -⟩` from `homExtension_semiAbelian_dvr_unconditional V (FractionRing V) P.A P'.A hs hs' f.hom hm`.
+
+Take `⟨G, ⟨-, eG⟩, -⟩` from `homExtension_semiAbelian_dvr_unconditional V (FractionRing V) P'.A P.A hs' hs f.inv hm'`. Take `⟨_, _⟩` from `ExtUnique.spec_fractionRing V (FractionRing V)`. Use `P.isAb.smooth` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact. Use `P'.isAb.smooth` as an intermediate fact.
+
+Use `P'.isAb.proper` as an intermediate fact. Establish `: IsIso F` using `ExtUnique.isIso_of_pullback (jK V) f F G eF eG`. Establish `e : φ.hom ≫ snd _ _ = snd _ _ ≫ F`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← hf, ← eF, Over.comp_left, ← toBase_fst (jFK (R := V) C) (jK V) P.A, Category.assoc]`.
+
+Conclude with `congrArg (_ ≫ ·) (ExtUnique.pullback_map_left_fst (jK V) F)`. Use `⟨asIso F, hF, e, ?_⟩` and prove the remaining obligations. Establish `hN` using `pull_isLB P'.isLB F.left`. Establish `hβ : jFK (R` using `V) C ≫ jK V = spMap ((algebraMap (FractionRing V) C).comp (algebraMap V (FractionRing V))) := (Spec.map_comp _ _).symm`. Use `IsoDescent.lbIso_of_field V C ((algebraMap (FractionRing V) C).comp (algebraMap V (FractionRing V))) ((algebraMap (FractionRing V) C).injective.comp (IsFractionRing.injective V (FractionRing V))) P.A P.isAb _ (snd (TF (R := V) C) P.A).left (fst (TF (R := V) C) P.A).left (hβ ▸ isP …` and prove the remaining obligations.
+
+Establish `eF' : eSec P.A ≫ F.left = eSec P'.A` using `congrArg (·.left) (IsMonHom.one_hom F)`. Rewrite using `[← CechPic.cls_eq_iff (pull_isLB P.isLB _) (pull_isLB hN _), (CechPic.cls_eq_zero_iff _).2 P.rigid, CechPic.cls_pull hN, CechPic.cls_pull P'.isLB, ← CechPic.pull_comp, eF', ← CechPic.cls_pull P'.isLB _ (pull_isLB P'.isLB _), (CechPic.cls_eq_zero_iff _).2 P'.rigid]`. Rewrite `hL` using `[← CechPic.cls_eq_iff (pull_isLB P.isLB _) (pull_isLB P'.isLB _), CechPic.cls_pull P'.isLB, e]`. Rewrite using `[← CechPic.cls_eq_iff (pull_isLB P.isLB _) (pull_isLB hN _), hL, CechPic.cls_pull hN, CechPic.cls_pull P'.isLB, ← CechPic.pull_comp, Over.comp_left]`.
+-/
 theorem exists_iso_over_dvr : Laws → Laws2 → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (P P' : PolAV (Sp V)) (C : Type) [Field C] [Algebra (FractionRing V) C] (φ : TF (R := V) C ⊗ P.A ≅ TF (R := V) C ⊗ P'.A), φ.hom ≫ fst _ _ = fst _ _ → lift (𝟙 (TF (R := V) C)) (1 : TF (R := V) C ⟶ P.A) ≫ φ.hom ≫ snd _ _ = 1 → LBIso (P.L.pull (snd (TF (R := V) C) P.A).left) (P'.L.pull (φ.hom ≫ snd (TF (R := V) C) P'.A).left) → ∀ (κ : TF (R := V) C ⟶ TK V) (g : TK V ⊗ P.A ⟶ P'.A), κ ▷ P.A ≫ g = φ.hom ≫ snd _ _ → ∃ Ψ : P.A ≅ P'.A, IsMonHom Ψ.hom ∧ φ.hom ≫ snd _ _ = snd _ _ ≫ Ψ.hom ∧ LBIso P.L (P'.L.pull Ψ.hom.left) := by
   intro hl _ V _ _ _ P P' C _ _ φ hφ h₁ hL κ g hg
   have : Flat (jFK (R := V) C) := FieldBaseChange.flat_spMap (algebraMap (FractionRing V) C)

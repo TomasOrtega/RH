@@ -24,6 +24,19 @@ def twpair_cup_compat : Prop :=
 def twpair_zc_fun : Prop :=
   ∀ (R : Type) [CommRing R] , (∀ (K I : Cx R) (n : ℤ) x, cpull (𝟙 K) I n x = x ∧ cpush K (𝟙 I) n x = x) ∧ (∀ {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (I : Cx R) (n : ℤ) x, cpull (f ≫ g) I n x = cpull f I n (cpull g I n x)) ∧ (∀ (K : Cx R) {I J M : Cx R} (f : I ⟶ J) (g : J ⟶ M) (n : ℤ) x, cpush K (f ≫ g) n x = cpush K g n (cpush K f n x)) ∧ (∀ {K L I J : Cx R} (f : K ⟶ L) (g : I ⟶ J) (n : ℤ) x, cpull f J n (cpush L g n x) = cpush K g n (cpull f I n x)) ∧ (∀ {K L : Cx R} (f g : K ⟶ L), Nonempty (Homotopy f g) → ∀ (I : Cx R) (n : ℤ), cpull f I n = cpull g I n ∧ cpush I f n = cpush I g n)
 
+/- English proof (translation)
+Introduce `q _ i j`. Take `⟨T, τ, hτ⟩` from `h1 (ZMod q) (res _ (tw q i)) (res _ (tw q j))`. Establish `hT` using `h3 q i j (i + j) rfl _ _ (h4 q i).1 (h4 q j).1 (h4 q j).2.1 τ hτ`. Take `⟨⟨u, hu⟩, hhom⟩` from `(h4 q (i + j)).2.2 _ hT`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨ν, hν⟩` from `(h2 (ZMod q) τ hτ).2.2 u`. Apply `pick_spec` to reduce the goal to its premises. Use `⟨ν, fun U ζ => ?_⟩` and prove the remaining obligations. Use `hν U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ)` as an intermediate fact. Rewrite using `[← hu U ζ, this]`.
+
+Both sides reduce to the same expression. Introduce `k hk μ ν hμ hν E n m w h`. Substitute `hk` using the available equality. Take `⟨uμ, huμ, -⟩` from `(h2 (ZMod q) τ hτ).1 μ (𝟙 _) (𝟙 _)`. Take `⟨uν, huν, -⟩` from `(h2 (ZMod q) τ hτ).1 ν (𝟙 _) (𝟙 _)`.
+
+Establish `hgen : ∀ U ζ, Sec.map (uμ.f 0) (τ.mul U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ)) = Sec.map (uν.f 0) (τ.mul U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ))`. Introduce `U ζ`. Rewrite using `[huμ U 0 0 0 (add_zero 0), huν U 0 0 0 (add_zero 0)]`. Conclude with `(hμ U ζ).trans (hν U ζ).symm`. Establish `hh` using `hhom uμ uν hgen`.
+
+Establish `hp` using `((h6 (ZMod q)).2.2.2.2 uμ uν hh ((chains (ZMod q)).obj E) w).2`. Establish `hid` using `(h6 (ZMod q)).1`. Use extensionality with `a b`. Establish `e1` using `h5 (ZMod q) τ μ (𝟙 _) (𝟙 _) uμ huμ E h a b`. Establish `e2` using `h5 (ZMod q) τ ν (𝟙 _) (𝟙 _) uν huν E h a b`.
+
+Rewrite `e1`, `e2` using `[(hid _ _ n a).2, (hid _ _ m b).2]`. Rewrite using `[← e1, ← e2, hp]`.
+-/
 theorem etale_tate_twist_cup_pairing_of_tensor_and_resolution_properties (h1 : twpair_tens_ex) (h2 : twpair_tens_univ) (h3 : twpair_tens_twres)
     (h4 : twpair_twres_ext) (h5 : twpair_cup_compat) (h6 : twpair_zc_fun) : LateralTheory.EtaleFoundations.EtaleTwistResolutionPairingCupUnique := by
   intro q _ i j

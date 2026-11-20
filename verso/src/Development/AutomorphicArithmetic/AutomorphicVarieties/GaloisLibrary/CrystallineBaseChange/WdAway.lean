@@ -4,6 +4,29 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PlaceOverTrans
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands UpperTheory.V UpperTheory.V.Af
 
+/- English proof (translation)
+Introduce `F K Ω _ _ _ _ _ _ _ _ _ _ _ l _ ι A v w h h' i hP hl hl' n r x y hx hy`. Use `haveI : Algebra.IsAlgebraic K Ω := IsAlgClosure.isAlgebraic`. Take `⟨c, hc, hdegc, hq, hsm⟩` from `GlobalTheory.T.place_over_transport_ring_iso F Ω A v h K Ω A w h' _ _ i hP`. Establish `hd1 : ∀ σ, deg (c.symm σ) = deg σ` using `fun σ => by`. Rewrite using `[← hdegc, MulEquiv.apply_symm_apply]`.
+
+Establish `hs1 : ∀ (M : Type) [Monoid M] (g : Weil h →* M), IsSmooth g → IsSmooth (g.comp c.symm.toMonoidHom)` using `fun M _ g hg => by`. Establish `e : (g.comp c.symm.toMonoidHom).comp c.toMonoidHom = g` using `by ext σ; simp`. Establish `hg' : IsSmooth ((g.comp c.symm.toMonoidHom).comp c.toMonoidHom)` using `by rwa [e]`. Conclude with `(hsm M _).mpr hg'`. Establish `key : ∀ σ : Weil h', ((c.symm σ : Weil h) : G F Ω) = Bc.res F Ω K (σ : G K Ω)` using `fun σ => AlgEquiv.ext fun z => (hc (c.symm σ) σ).mpr (c.apply_symm_apply σ) z`.
+
+Establish `hres : Continuous (Bc.res F Ω K : G K Ω →* G F Ω)`. Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `U' hU'`. Take `⟨U, hU, hU1, H⟩` from `GlobalTheory.WeilTransport.conj_nhds K Ω F Ω (RingEquiv.refl Ω) U' hU'`.
+
+Conclude with `Filter.mem_map.mpr (Filter.mem_of_superset (hU.mem_nhds hU1) fun σ hσ => H σ hσ _ fun z => rfl)`. Establish `hmem : ∀ σ : Ine (F` using `K) A, Bc.res F Ω K (σ : G K Ω) ∈ Ine (F := F) A := fun σ => by`. Establish `h1 : ((c.symm (ineIncl h' σ) : Weil h) : G F Ω) ∈ Ine (F` using `F) A := by`. Rewrite using `[← deg_eq_zero_iff, hd1, deg_ineIncl]`. Rewrite `h1` using `[key]`. Then use the resulting hypothesis.
+
+Set `d : Ine (F` to `K) A →* Ine (F := F) A := ((Bc.res F Ω K).comp (Ine (F := K) A).subtype).codRestrict _ hmem`. Establish `hdc : Continuous d` using `(hres.comp continuous_subtype_val).subtype_mk _`. Establish `hds : Function.Surjective d` using `fun τ => by`. Establish `h1 : ((c (ineIncl h τ) : Weil h') : G K Ω) ∈ Ine (F` using `K) A := by`. Rewrite using `[← deg_eq_zero_iff, hdegc, deg_ineIncl]`.
+
+Use `⟨⟨_, h1⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h2` using `key (c (ineIncl h τ))`. Rewrite `h2` using `[MulEquiv.symm_apply_apply]`. Conclude with `h2.symm`. Take `⟨t, ht, φ, hφ, N, a, hN, ha, rfl⟩` from `hx`.
+
+Establish `hφ' : deg (c φ) = 1` using `by rw [hdegc, hφ]`. Establish `hine : ∀ g : Weil h', d (inePart hφ' g) = inePart hφ (c.symm g)` using `fun g => by`. Use `Subtype.ext ?_` and prove the remaining obligations. Establish `h2` using `key (((c φ) ^ deg g)⁻¹ * g)`. Rewrite `h2` using `[map_mul, map_inv, map_zpow, MulEquiv.symm_apply_apply, ← hd1]`.
+
+Use `Eq.trans ?_ h2.symm` and prove the remaining obligations. Rewrite using `[hd1]`. Both sides reduce to the same expression. Establish `hmat : ∀ g : Weil h', wdMat (t.comp d) hφ' (r.comp (Bc.res F Ω K)) N g = wdMat t hφ r N (c.symm g)` using `fun g => by`. Rewrite using `[wdMat, wdMat, key, ← hine]`.
+
+Both sides reduce to the same expression. Set `b` to `GlobalTheory.WDTransport.pull c.symm.toMonoidHom hd1 hq.symm hs1 a`. Establish `hb : IsWDOf ι (r.comp (Bc.res F Ω K)) (WD.mk b)`. Use `⟨t.comp d, ⟨ht.1.comp hdc, ht.2.comp hds⟩, c φ, hφ', N, b, ?_, ?_, rfl⟩` and prove the remaining obligations. Take `⟨h1, U, hU, H⟩` from `hN`.
+
+Conclude with `⟨h1, U.comap d, hU.preimage hdc, fun σ hσ => H (d σ) hσ⟩`. Use `⟨ha.1, fun σ => ?_⟩` and prove the remaining obligations. Simplify using `only [hmat]`. Conclude with `ha.2 (c.symm σ)`. Rewrite using `[hy.unique hl' hb]`.
+
+Use `⟨n, a, b, rfl, rfl, rfl, fun σ σ' hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[← (hc σ σ').mp hσ]`. Conclude with `congrArg a.ρ (c.symm_apply_apply σ).symm`.
+-/
 theorem UpperTheory.V.Br.wdAway :
     UpperTheory.V.Br.WdAway := by
   intro F K Ω _ _ _ _ _ _ _ _ _ _ _ l _ ι A v w h h' i hP hl hl' n r x y hx hy

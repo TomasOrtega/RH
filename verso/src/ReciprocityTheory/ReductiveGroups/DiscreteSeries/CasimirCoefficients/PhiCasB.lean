@@ -13,6 +13,21 @@ variable {n : ℕ}
 def casCoef (μ : Fin n → ℤ) (a b : Fin n) : ℝ :=
   (if a = b then (μ a : ℝ) ^ 2 else 0) + (if b < a then (μ a : ℝ) - μ b else 0)
 
+/- English proof (translation)
+Establish `hcard : ∀ a : Fin n, (((univ.filter fun b : Fin n => b < a).card : ℕ) : ℝ) - (((univ.filter fun b : Fin n => a < b).card : ℕ) : ℝ) = -2 * rho n a`. Introduce `a`. Rewrite using `[Finset.filter_gt_eq_Iio, Finset.filter_lt_eq_Ioi, Fin.card_Iio, Fin.card_Ioi]`. Establish `ha : 1 + (a : ℕ) ≤ n` using `by have := a.isLt; omega`. Rewrite using `[Nat.sub_sub, Nat.cast_sub ha]`.
+
+Simplify using `only [rho]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hrow : ∀ a, ∑ b, casCoef μ a b = (μ a : ℝ) ^ 2 + ∑ b, ((if b < a then (μ a : ℝ) else 0) - if b < a then (μ b : ℝ) else 0)`. Introduce `a`.
+
+Rewrite using `[show (μ a : ℝ) ^ 2 = ∑ b, (if a = b then (μ a : ℝ) ^ 2 else 0) by simp, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Unfold `casCoef`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hswap : ∑ a : Fin n, ∑ b : Fin n, (if b < a then (μ b : ℝ) else 0) = ∑ a : Fin n, ∑ b : Fin n, (if a < b then (μ a : ℝ) else 0)` using `Finset.sum_comm`.
+
+Establish `hA : ∀ a : Fin n, ∑ b : Fin n, (if b < a then (μ a : ℝ) else 0) = (μ a : ℝ) * (((univ.filter fun b : Fin n => b < a).card : ℕ) : ℝ)`. Introduce `a`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_comm]`. Establish `hB : ∀ a : Fin n, ∑ b : Fin n, (if a < b then (μ a : ℝ) else 0) = (μ a : ℝ) * (((univ.filter fun b : Fin n => a < b).card : ℕ) : ℝ)`. Introduce `a`.
+
+Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_comm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hrow, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Use `_ = ∑ a, ((μ a : ℝ) ^ 2 + (μ a : ℝ) * (-2 * rho n a)) := by`. Rewrite using `[hswap, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hA, hB, ← hcard]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = casVal lam := by`. Simplify using `only [casVal, nsq, dot, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hμ a]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_casCoef (μ : Fin n → ℤ) (lam : Fin n → ℝ) (hμ : IsMu lam μ) :
     ∑ a, ∑ b, casCoef μ a b = casVal lam := by
   have hcard : ∀ a : Fin n, (((univ.filter fun b : Fin n => b < a).card : ℕ) : ℝ) -

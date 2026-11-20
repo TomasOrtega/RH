@@ -8,6 +8,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.LocCountFinite
 
+/- English proof (translation)
+Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.ker g), Nat.card_congr (g.quotKerEquivOfSurjective hg).toEquiv, h.linearMap_ker_eq, ← Nat.card_congr (LinearEquiv.ofInjective f hf).toEquiv]`.
+-/
 theorem card_of_exact {R A B C : Type} [CommRing R] [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B]
     [AddCommGroup C] [Module R C] (f : A →ₗ[R] B) (g : B →ₗ[R] C) (hf : Function.Injective f)
     (h : Function.Exact f g) (hg : Function.Surjective g) : Nat.card B = Nat.card A * Nat.card C := by
@@ -24,6 +27,19 @@ variable {R Γ M' M M'' : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ]
 
 abbrev coc (L : Submodule R (H1 ρ)) : Submodule R (Z1 ρ) := L.comap (Submodule.mkQ _)
 
+/- English proof (translation)
+Set `B` to `(B1 ρ).comap (Z1 ρ).subtype`. Establish `hB : B ≤ coc ρ L` using `fun z hz => by`. Establish `: (Submodule.Quotient.mk z : H1 ρ) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hz`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk z : H1 ρ) ∈ L`. Rewrite using `[this]`.
+
+Conclude with `L.zero_mem`. Establish `h1 : Nat.card (coc ρ L) = Nat.card B * Nat.card L`. Use `card_of_exact (Submodule.inclusion hB) ((Submodule.mkQ B).restrict (p := coc ρ L) (q := L) fun _ h => h) (Submodule.inclusion_injective _) (fun z => ?_) (fun x => ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+
+Conclude with `⟨⟨z.1, (Submodule.Quotient.mk_eq_zero _).1 (congrArg Subtype.val hz)⟩, rfl⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `Subtype.ext ((Submodule.Quotient.mk_eq_zero _).2 b.2)`. Take `⟨x, hx⟩` from `x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Conclude with `⟨⟨z, hx⟩, rfl⟩`. Establish `h2 : Nat.card M = Nat.card (H0 ρ) * Nat.card B`. Use `card_of_exact (H0 ρ).subtype (((d0 ρ).codRestrict (Z1 ρ) fun m => coboundaries_le_cocycles ρ hc ⟨m, rfl⟩).codRestrict B fun m => ⟨m, rfl⟩) (Submodule.subtype_injective _) (fun m => ?_) (fun x => ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hm`.
+
+Use `⟨⟨m, (mem_riemannRochSpace_iff_regularAt_everywhere ρ m).2 fun g => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `: ρ g m - m = 0` using `congrFun (congrArg (fun z => z.1.1) hm) g`. Conclude with `sub_eq_zero.1 this`. Introduce and unpack `⟨b, rfl⟩`. Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations.
+
+Conclude with `sub_eq_zero.2 ((mem_riemannRochSpace_iff_regularAt_everywhere ρ _).1 b.2 g)`. Take `⟨⟨z, hz⟩, m, hm⟩` from `x`. Conclude with `⟨m, Subtype.ext (Subtype.ext hm)⟩`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_coc (hc : ContAction ρ) (L : Submodule R (H1 ρ)) :
     Nat.card (coc ρ L) * Nat.card (H0 ρ) = Nat.card L * Nat.card M := by
   let B := (B1 ρ).comap (Z1 ρ).subtype
@@ -58,6 +74,21 @@ theorem card_coc (hc : ContAction ρ) (L : Submodule R (H1 ρ)) :
       exact ⟨m, Subtype.ext (Subtype.ext hm)⟩
   rw [h1, h2]; ring
 
+/- English proof (translation)
+Use `card_of_exact ((cocycles1MapOfEquivariant ρ' ρ u continuous_of_discreteTopology hu).restrict (p := coc ρ' L') (q := coc ρ L) fun z h => (h1 _).2 h) ((cocycles1MapOfEquivariant ρ ρ'' w continuous_of_discreteTopology hw).restrict (p := coc ρ L) (q := coc ρ'' L'') fun z h => h2 _ h) …` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `e1 : ∀ g, u (Function.invFun u (z.1.1 g)) = z.1.1 g` using `fun g => Function.invFun_eq ((hex _).1 (congrFun (congrArg (fun z => z.1.1) hz) g))`. Set `z' : Z1 ρ'` to `⟨fun g => Function.invFun u (z.1.1 g), (continuous_of_discreteTopology (f := Function.invFun u)).comp z.1.2.1, fun g h => hinj (by`.
+
+Rewrite using `[map_add, hu, e1, e1, e1]`. Conclude with `z.1.2.2 g h)⟩`. Establish `e : cocycles1MapOfEquivariant ρ' ρ u continuous_of_discreteTopology hu z' = z.1` using `Subtype.ext (funext e1)`. Use `⟨⟨z', (h1 _).1 ?_⟩, Subtype.ext e⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (cocycles1MapOfEquivariant ρ' ρ u continuous_of_discreteTopology hu z') ∈ L`.
+
+Rewrite using `[e]`. Conclude with `z.2`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `Subtype.ext (Subtype.ext (funext fun g => hex.apply_apply_eq_zero _))`. Take `⟨x, hx⟩` from `x`.
+
+Take `⟨y, hy, e⟩` from `h3 hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `e' : (Submodule.Quotient.mk (x - cocycles1MapOfEquivariant ρ ρ'' w continuous_of_discreteTopology hw z) : H1 ρ'') = 0`. Rewrite using `[Submodule.Quotient.mk_sub, sub_eq_zero]`. Conclude with `e.symm`.
+
+Take `⟨m, hm⟩` from `(GlobalTheory.SelLeftExact.mk_eq_zero_iff ρ'' _).1 e'`. Take `⟨m, rfl⟩` from `hsurj m`. Set `b : Z1 ρ` to `⟨d0 ρ m, coboundaries_le_cocycles ρ hc ⟨m, rfl⟩⟩`. Establish `hb : (Submodule.Quotient.mk b : H1 ρ) = 0` using `(GlobalTheory.SelLeftExact.mk_eq_zero_iff ρ b).2 ⟨m, fun _ => rfl⟩`. Use `⟨⟨z + b, ?_⟩, Subtype.ext (Subtype.ext (funext fun g => ?_))⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (z + b) : H1 ρ) ∈ L`. Rewrite using `[Submodule.Quotient.mk_add, hb, add_zero]`. Conclude with `hy`. Express the relevant statement in the definitionally equal form `w (z.1 g + (ρ g m - m)) = x.1 g`. Establish `: x.1 g - w (z.1 g) = ρ'' g (w m) - w m` using `hm g`.
+
+Rewrite using `[map_add, map_sub, hw, ← this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem card_coc_mul (u : M' →ₗ[R] M) (hu : ∀ g m, u (ρ' g m) = ρ g (u m)) (hinj : Function.Injective u)
     (w : M →ₗ[R] M'') (hw : ∀ g m, w (ρ g m) = ρ'' g (w m)) (hex : Function.Exact u w) (hsurj : Function.Surjective w)
     (hc : ContAction ρ) (L' : Submodule R (H1 ρ')) (L : Submodule R (H1 ρ)) (L'' : Submodule R (H1 ρ''))
@@ -103,6 +134,11 @@ theorem card_coc_mul (u : M' →ₗ[R] M) (hu : ∀ g m, u (ρ' g m) = ρ g (u m
       rw [map_add, map_sub, hw, ← this]
       abel
 
+/- English proof (translation)
+Establish `a` using `card_coc ρ hc L`. Establish `a'` using `card_coc ρ' hc' L'`. Establish `a''` using `card_coc ρ'' hc'' L''`. Establish `b` using `card_coc_mul ρ' ρ ρ'' u hu hinj w hw hex hsurj hc L' L L'' h1 h2 h3`. Establish `c` using `card_of_exact u w hinj hex hsurj`.
+
+Use `Nat.eq_of_mul_eq_mul_left (Nat.card_pos (α := M)) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← a, b]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [a', a'', c]; ring`.
+-/
 theorem card_six [Finite M] (u : M' →ₗ[R] M) (hu : ∀ g m, u (ρ' g m) = ρ g (u m)) (hinj : Function.Injective u)
     (w : M →ₗ[R] M'') (hw : ∀ g m, w (ρ g m) = ρ'' g (w m)) (hex : Function.Exact u w) (hsurj : Function.Surjective w)
     (hc' : ContAction ρ') (hc : ContAction ρ) (hc'' : ContAction ρ'')
@@ -122,11 +158,17 @@ theorem card_six [Finite M] (u : M' →ₗ[R] M) (hu : ∀ g m, u (ρ' g m) = ρ
       rw [← a, b]; ring
     _ = _ := by rw [a', a'', c]; ring
 
+/- English proof (translation)
+The claim follows from `hc.comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)`.
+-/
 theorem contAction_sub (hc : ContAction ρ) (U : Subgroup Γ) : ContAction (ρ.comp U.subtype) :=
   hc.comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)
 
 end Abstract
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := A)`. Rewrite `hn` using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Use `fun b => ⟨n, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[hn, Ideal.zero_eq_bot, Ideal.mem_bot]`. Rewrite using `[hx, zero_smul]`.
+-/
 theorem tors_of_finite (A : Type) [CommRing A] [IsLocalRing A] [Finite A] (B : Type) [AddCommGroup B] [Module A B] :
     Tors A B := by
   obtain ⟨n, hn⟩ := IsArtinianRing.isNilpotent_jacobson_bot (R := A)
@@ -135,12 +177,34 @@ theorem tors_of_finite (A : Type) [CommRing A] [IsLocalRing A] [Finite A] (B : T
   rw [hn, Ideal.zero_eq_bot, Ideal.mem_bot] at hx
   rw [hx, zero_smul]
 
+/- English proof (translation)
+Establish `h : Ideal.span {((l : ℕ) : 𝓞 F)} ≠ 0`. Simplify using `using hl`. Use `(Ideal.finite_factors h).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+-/
 theorem finite_places (F : Type) [Field F] [NumberField F] (l : ℕ) (hl : l ≠ 0) : (placesOver F l).Finite := by
   have h : Ideal.span {((l : ℕ) : 𝓞 F)} ≠ 0 := by
     simpa using hl
   refine (Ideal.finite_factors h).subset fun v hv => ?_
   exact Ideal.dvd_span_singleton.2 hv
 
+/- English proof (translation)
+Introduce `D N X bkP i s A _ _ _ _ κ Q hS hK hL hC Y _ _ _ _ _`. Use `haveI := hS.2.1`. Establish `hfin` using `finite_places D.host.E (X.l i) (Fact.out : (X.l i).Prime).ne_zero`. Establish `hcont : ∀ (B : Type) [AddCommGroup B] [Module A B] [TopologicalSpace B] [DiscreteTopology B] (v : PlE D.host), ContAction ((repOn (Tgl i s) κ B).comp (DecV N v).subtype)` using `fun B _ _ _ _ v => contAction_sub _ (GlobalTheory.SelLeftExact.contAction_of_tors (X.twistBaseCoefficientRing_isAdic i) _ (GlobalTheory.SelLeftExact.continuous_Tgl i s) κ hS.2.2.2.1 (tors_of_finite A B)) _`. Proceed by induction on `hn : Nat.card Y using Nat.strong_induction_on generalizing Y with`.
+
+Consider the case `_ n ih`. Substitute `hn` using the available equality. Break down `subsingleton_or_nontrivial Y with hY | hY` into its components or cases. Establish `e1 : ∀ v, Nat.card (bkOn bkP i (Tgl i s) κ Y v) = 1` using `fun v => by haveI : Subsingleton (H1 ((repOn (Tgl i s) κ Y).comp (DecV N v).subtype)) := (Submodule.Quotient.mk_surjective _).subsingleton`. Conclude with `Nat.card_unique`.
+
+Establish `e2 : ∀ v, Nat.card (H0 ((repOn (Tgl i s) κ Y).comp (DecV N v).subtype)) = 1` using `fun v => Nat.card_unique`. Establish `e3 : Nat.card Y = 1` using `Nat.card_unique`. Simplify using `only [e1, e2, e3, one_pow, mul_one]`. Take `⟨K, hKa, -⟩` from `(eq_bot_or_exists_atom_le (⊤ : Submodule A Y)).resolve_left top_ne_bot`. Establish `hKs : IsSimpleModule A K` using `isSimpleModule_iff_isAtom.2 hKa`.
+
+Use `letI : TopologicalSpace (Y ⧸ K) := ⊥`. Use `haveI : DiscreteTopology (Y ⧸ K) := ⟨rfl⟩`. Use `haveI : Finite (Y ⧸ K) := Finite.of_surjective _ (Submodule.Quotient.mk_surjective K)`. Establish `hex : Function.Exact K.subtype K.mkQ` using `LinearMap.exact_subtype_mkQ K`. Establish `hcard` using `card_of_exact K.subtype K.mkQ K.subtype_injective hex K.mkQ_surjective`.
+
+Establish `hlt : Nat.card (Y ⧸ K) < Nat.card Y` using `by haveI := IsSimpleModule.nontrivial A K`. Establish `h1 : 1 < Nat.card K` using `Finite.one_lt_card`. Establish `h2 : 0 < Nat.card (Y ⧸ K)` using `Nat.card_pos`. Rewrite using `[hcard]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `a` using `hC K hKs`. Establish `b` using `ih _ hlt (Y ⧸ K) rfl`. Establish `c : ∀ v ∈ hfin.toFinset, Nat.card (bkOn bkP i (Tgl i s) κ Y v) * (Nat.card (H0 ((repOn (Tgl i s) κ K).comp (DecV N v).subtype)) * Nat.card (H0 ((repOn (Tgl i s) κ (Y ⧸ K)).comp (DecV N v).subtype))) = Nat.card (H0 ((repOn (Tgl i s) κ Y).comp (DecV N v).subtype)) * (Nat.card (bkOn …` using `fun v hv => by`. Establish `hv'` using `hfin.mem_toFinset.1 hv`. Use `card_six _ _ _ (K.subtype.compLeft (Fin D.R.r)) (fun g m => repOn_map (Tgl i s) κ K.subtype g.1 m) (fun x y h => funext fun a => Subtype.ext (congrFun h a)) (K.mkQ.compLeft (Fin D.R.r)) (fun g m => repOn_map (Tgl i s) κ K.mkQ g.1 m) (fun m => ⟨fun hm => ?_, ?_⟩) (fun m => ?_) (hc …` and prove the remaining obligations.
+
+Use `choose m' hm' using fun a => (hex (m a)).1 (congrFun hm a)`. Conclude with `⟨m', funext hm'⟩`. Introduce and unpack `⟨m', rfl⟩`. Conclude with `funext fun a => hex.apply_apply_eq_zero _`. Use `choose m' hm' using fun a => K.mkQ_surjective (m a)`.
+
+Conclude with `⟨m', funext hm'⟩`. Establish `c'` using `Finset.prod_congr rfl c`. Simplify using `only [Finset.prod_mul_distrib] at c'`. Simplify using `only [finprod_mem_eq_finite_toFinset_prod _ hfin] at a b ⊢`. Rewrite `c'` using `[a, b]`.
+
+Establish `hpos : 0 < (∏ v ∈ hfin.toFinset, Nat.card (H0 ((repOn (Tgl i s) κ K).comp (DecV N v).subtype))) * ∏ v ∈ hfin.toFinset, Nat.card (H0 ((repOn (Tgl i s) κ (Y ⧸ K)).comp (DecV N v).subtype))` using `Nat.mul_pos (Finset.prod_pos fun v _ => Nat.card_pos) (Finset.prod_pos fun v _ => Nat.card_pos)`. Use `Nat.eq_of_mul_eq_mul_right hpos ?_` and prove the remaining obligations. Rewrite using `[c', hcard, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locCountFin : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), ∀ (A : Type) [CommRing A] [IsLocalRing A] [Finite A] [Algebra (X.O0 i) A] (κ : GE N →* Aˣ) (Q : Finset (PlE D.host)), Setup bkP i s κ Q → Kills i A → LocSat bkP i s κ → LocCount bkP i s κ → LocCountFin bkP i s κ := by
   intro D N X bkP i s A _ _ _ _ κ Q hS hK hL hC Y _ _ _ _ _
   haveI := hS.2.1

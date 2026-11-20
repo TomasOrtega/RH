@@ -89,14 +89,23 @@ variable {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {κ : Type} [Li
 private def dd (r : κ → R) (c : Finset κ → N) : Finset κ → N :=
   fun t => ∑ i ∈ t, GlobalTheory.cubeSign t i • r i • c (t.erase i)
 
+/- English proof (translation)
+Simplify using `[dd, map_sum]`.
+-/
 private theorem dd_map {N' : Type} [AddCommGroup N'] [Module R N'] (φ : N →ₗ[R] N') (r : κ → R)
     (c : Finset κ → N) (t : Finset κ) : dd r (fun s => φ (c s)) t = φ (dd r c t) := by
   simp [dd, map_sum]
 
+/- English proof (translation)
+Simplify using `[dd, Finset.sum_add_distrib]`.
+-/
 private theorem dd_add (r : κ → R) (a b : Finset κ → N) (t : Finset κ) :
     dd r (fun s => a s + b s) t = dd r a t + dd r b t := by
   simp [dd, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `h` using `Finset.card_erase_add_one hi`. Rewrite using `[hc _ (by omega), smul_zero, smul_zero]`.
+-/
 private theorem dd_deg (r : κ → R) (c : Finset κ → N) (n : ℤ)
     (hc : ∀ s : Finset κ, (s.card : ℤ) ≠ n - 1 → c s = 0) (t : Finset κ) (ht : (t.card : ℤ) ≠ n) :
     dd r c t = 0 := by
@@ -104,6 +113,17 @@ private theorem dd_deg (r : κ → R) (c : Finset κ → N) (n : ℤ)
   have h := Finset.card_erase_add_one hi
   rw [hc _ (by omega), smul_zero, smul_zero]
 
+/- English proof (translation)
+Set `F : κ → κ → N` to `fun i j => if j ≠ i then (GlobalTheory.cubeSign t i * GlobalTheory.cubeSign (t.erase i) j) • (r i * r j) • c ((t.erase i).erase j) else 0`. Establish `h1 : dd r (dd r c) t = ∑ i ∈ t, ∑ j ∈ t, F i j`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [F]`. Rewrite using `[← Finset.sum_filter, Finset.filter_ne', dd, Finset.smul_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, mul_smul, smul_comm (r i)]`. Establish `h2 : ∀ i ∈ t, ∀ j ∈ t, F i j + F j i = 0`. Introduce `i hi j hj`. Distinguish the cases in `h : j = i`.
+
+Simplify using `[F, h]`. Simplify using `only [F]`. Rewrite using `[if_pos h, if_pos (Ne.symm h), GlobalTheory.cubeSign_mul_erase hi hj (Ne.symm h), mul_comm (r j), Finset.erase_right_comm (a := j), neg_smul, neg_add_cancel]`. Establish `h3 : (∑ i ∈ t, ∑ j ∈ t, F i j) + ∑ i ∈ t, ∑ j ∈ t, F j i = 0`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun j hj => h2 i hi j hj`. Rewrite `h3` using `[Finset.sum_comm (f := fun i j => F j i), ← two_smul ℂ]`. Rewrite using `[h1]`.
+
+Conclude with `(smul_eq_zero.1 h3).resolve_left two_ne_zero`.
+-/
 private theorem dd_dd [Module ℂ N] (r : κ → R) (c : Finset κ → N) (t : Finset κ) :
     dd r (dd r c) t = 0 := by
   let F : κ → κ → N := fun i j =>
@@ -133,22 +153,34 @@ private theorem dd_dd [Module ℂ N] (r : κ → R) (c : Finset κ → N) (t : F
 
 variable [Algebra ℂ R] [Module ℂ N] [IsScalarTower ℂ R N]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `[kos, acx, wd, dd]`.
+-/
 private theorem kos_D (r : κ → R) (c : Finset κ → N) :
     (kos (Algebra.lsmul ℂ ℂ N) ⊤ r).D c = dd r c := by
   funext t
   simp [kos, acx, wd, dd]
 
+/- English proof (translation)
+Simplify using `only [kos, acx, Submodule.mem_pi, Set.mem_univ, true_imp_iff]`. Use `forall_congr' fun s => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : (s.card : ℤ) = n <;> simp [h]`.
+-/
 private theorem kos_C (r : κ → R) (c : Finset κ → N) (n : ℤ) :
     c ∈ (kos (Algebra.lsmul ℂ ℂ N) ⊤ r).C n ↔ ∀ s : Finset κ, (s.card : ℤ) ≠ n → c s = 0 := by
   simp only [kos, acx, Submodule.mem_pi, Set.mem_univ, true_imp_iff]
   refine forall_congr' fun s => ?_
   by_cases h : (s.card : ℤ) = n <;> simp [h]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PD.Cx.Z, Submodule.mem_inf, kos_C, LinearMap.mem_ker, kos_D]`.
+-/
 private theorem kos_Z (r : κ → R) (c : Finset κ → N) (n : ℤ) :
     c ∈ (kos (Algebra.lsmul ℂ ℂ N) ⊤ r).Z n ↔
       (∀ s : Finset κ, (s.card : ℤ) ≠ n → c s = 0) ∧ dd r c = 0 := by
   rw [GlobalTheory.PD.Cx.Z, Submodule.mem_inf, kos_C, LinearMap.mem_ker, kos_D]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.PD.Cx.B, Submodule.mem_map, kos_C, kos_D]`.
+-/
 private theorem kos_B (r : κ → R) (c : Finset κ → N) (n : ℤ) :
     c ∈ (kos (Algebra.lsmul ℂ ℂ N) ⊤ r).B n ↔
       ∃ b : Finset κ → N, (∀ s : Finset κ, (s.card : ℤ) ≠ n - 1 → b s = 0) ∧ dd r b = c := by
@@ -159,6 +191,27 @@ end Helpers
 end UpperTheory.Reformulated.B.KoszulComplexHomotopy
 
 open scoped Pointwise in
+/- English proof (translation)
+Introduce `H d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `R N _ _ _ _ _ _ κ _ _ r f _ _ _ m hm c hc`. Establish `h0 : c = 0` using `funext fun s => ((kos_Z r c m).1 hc).1 s (by omega)`.
+
+Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ d ih`. Introduce `R N _ _ _ _ _ _ κ _ _ r f hlen hreg hsp m hm c hc`. Take `_ | ⟨g, f⟩` from `f`.
+
+Simplify using `at hlen`. Rewrite `hreg` using `[RingTheory.Sequence.isWeaklyRegular_cons_iff]`. Take `⟨hg, hf⟩` from `hreg`. Establish `hB` using `H R N (Algebra.lsmul ℂ ℂ N) κ ⊤ ⊤ r (fun _ _ _ _ => Submodule.mem_top) m c hc g (hsp g List.mem_cons_self)`. Take `⟨b, hb, hbc⟩` from `(kos_B r _ m).1 hB`.
+
+Establish `hbc' : ∀ s, dd r b s = g • c s` using `fun s => congrFun hbc s`. Set `P : Submodule R N` to `g • (⊤ : Submodule R N)`. Establish `hP : ∀ x : N, P.mkQ x = 0 ↔ ∃ y, g • y = x`. Introduce `x`. Simplify using `[P, Submodule.mem_smul_pointwise_iff_exists]`.
+
+Establish `IH` using `ih R (N ⧸ P) κ r f (by simpa using hlen) hf (fun x hx => hsp x (List.mem_cons_of_mem _ hx)) (m - 1) (by omega)`. Establish `hZ : (fun s => P.mkQ (b s)) ∈ (kos (Algebra.lsmul ℂ ℂ (N ⧸ P)) ⊤ r).Z (m - 1)`. Rewrite using `[kos_Z]`. Use `⟨fun s hs => by rw [hb s hs, map_zero], funext fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[dd_map, hbc']`.
+
+Conclude with `(hP _).2 ⟨_, rfl⟩`. Take `⟨a, ha, hab⟩` from `(kos_B r _ _).1 (IH hZ)`. Establish `hlift : ∀ s : Finset κ, ∃ x : N, P.mkQ x = a s ∧ ((s.card : ℤ) ≠ m - 1 - 1 → x = 0)`. Introduce `s`. Distinguish the cases in `hs : (s.card : ℤ) = m - 1 - 1`.
+
+Take `⟨x, hx⟩` from `P.mkQ_surjective (a s)`. Conclude with `⟨x, hx, fun h => absurd hs h⟩`. Conclude with `⟨0, by rw [ha s hs, map_zero], fun _ => rfl⟩`. Use `choose a' ha' ha0 using hlift`. Establish `hdiv : ∀ s, ∃ y, g • y = b s - dd r a' s`.
+
+Introduce `s`. Rewrite using `[← hP, map_sub, ← dd_map, funext ha', hab, sub_self]`. Use `choose y hy using hdiv`. Rewrite using `[kos_B]`. Use `⟨y, fun s hs => hg ?_, funext fun s => hg ?_⟩` and prove the remaining obligations.
+
+Use `show g • y s = g • (0 : N)`. Rewrite using `[hy, hb s hs, dd_deg r a' _ ha0 s hs, sub_zero, smul_zero]`. Use `show g • dd r y s = g • c s`. Establish `e : b = fun s => dd r a' s + (LinearMap.lsmul R N g) (y s)`. Use function extensionality and compare the values at `s`.
+
+Rewrite using `[LinearMap.lsmul_apply, hy, add_sub_cancel]`. Rewrite using `[← hbc', e, dd_add, dd_dd, dd_map, zero_add, LinearMap.lsmul_apply]`.
+-/
 theorem UpperTheory.Reformulated.B.KoszulComplexHomotopy.koszulExactBelowLengthOfWeaklyRegular_of_htpy :
     UpperTheory.Reformulated.B.KoszulComplexHomotopy.Htpy → UpperTheory.Reformulated.B.KoszulComplexHomotopy.KoszulExactBelowLengthOfWeaklyRegular := by
   intro H d

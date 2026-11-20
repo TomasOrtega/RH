@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.HeightCounting.FormsStep
 
+/- English proof (translation)
+Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, D.starLL_cx]`. Establish `hp : ((ζ : ↥D.LL0) : D.what₂.LL) ^ n = 1`. Establish `e` using `congrArg (fun u : (↥D.LL0)ˣ => ((u : ↥D.LL0) : D.what₂.LL)) h`. Simplify using `using e`.
+
+Establish `hz : (D.what₂.embLL ((ζ : ↥D.LL0) : D.what₂.LL)) ^ n = 1`. Rewrite using `[← map_pow, hp, map_one]`. Establish `hn1 : ‖D.what₂.embLL ((ζ : ↥D.LL0) : D.what₂.LL)‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hz hn`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hn1]`. Simplify using the standard rewrite rules.
+-/
 theorem star_mul_self_of_pow (D : D7) (ζ : (↥D.LL0)ˣ) (n : ℕ) (hn : n ≠ 0) (h : ζ ^ n = 1) :
     star ((ζ : ↥D.LL0) : D.what₂.LL) * ((ζ : ↥D.LL0) : D.what₂.LL) = 1 := by
   apply D.what₂.embLL.injective
@@ -20,11 +25,17 @@ theorem star_mul_self_of_pow (D : D7) (ζ : (↥D.LL0)ˣ) (n : ℕ) (hn : n ≠ 
   rw [mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hn1]
   simp
 
+/- English proof (translation)
+Simplify using `only [readT, RingHom.comp_apply, Bool.false_eq_true, if_false, if_true]`. Rewrite using `[T.restX_coefficientEmbedding_conj i x ⟨star (x : D.what₂.LL), hstar x⟩ rfl]`.
+-/
 theorem readT_false_eq (D : D7) (T : TwR D.LL0 D.nd) (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0)
     (i : T.Tw) (x : ↥D.LL0) : readT D T i false x = readT D T i true ⟨star (x : D.what₂.LL), hstar x⟩ := by
   simp only [readT, RingHom.comp_apply, Bool.false_eq_true, if_false, if_true]
   rw [T.restX_coefficientEmbedding_conj i x ⟨star (x : D.what₂.LL), hstar x⟩ rfl]
 
+/- English proof (translation)
+Rewrite using `[readT_false_eq D T hstar, ← map_mul]`. Establish `e : (⟨star ((ζ : ↥D.LL0) : D.what₂.LL), hstar _⟩ : ↥D.LL0) * (ζ : ↥D.LL0) = 1` using `Subtype.ext (star_mul_self_of_pow D ζ n hn h)`. Rewrite using `[e, map_one]`.
+-/
 theorem readT_false_mul_true (D : D7) (T : TwR D.LL0 D.nd) (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0)
     (i : T.Tw) (ζ : (↥D.LL0)ˣ) (n : ℕ) (hn : n ≠ 0) (h : ζ ^ n = 1) :
     readT D T i false (ζ : ↥D.LL0) * readT D T i true (ζ : ↥D.LL0) = 1 := by
@@ -33,9 +44,21 @@ theorem readT_false_mul_true (D : D7) (T : TwR D.LL0 D.nd) (hstar : ∀ x : D.LL
     Subtype.ext (star_mul_self_of_pow D ζ n hn h)
   rw [e, map_one]
 
+/- English proof (translation)
+Rewrite using `[← ofAdd_toAdd m, ← ofAdd_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul, ofAdd_zero]`.
+-/
 theorem mul_pow_g_eq_one (g : ℕ) (m : Multiplicative (ZMod g)) : m ^ g = 1 := by
   rw [← ofAdd_toAdd m, ← ofAdd_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul, ofAdd_zero]
 
+/- English proof (translation)
+Introduce `D S In T hstar`. Use `⟨fun i b u => ?_, fun _ i k h => ?_⟩` and prove the remaining obligations. Simplify using `only [psiUT, MonoidHom.comp_apply, psiUOf_apply, map_prod]`. Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Consider the cases of `b`.
+
+Simplify using `only [thSide, Bool.false_eq_true, if_false, MonoidHom.inv_apply, MonoidHom.comp_apply]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, Units.val_inv_eq_inv_val, Units.coe_map]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Conclude with `readT_false_mul_true D T hstar i _ (D.host.g kv.1) (D.host.g_prime kv.1).ne_zero (by rw [← map_pow, mul_pow_g_eq_one, map_one])`.
+
+Both sides reduce to the same expression. Apply `In.θ_ne k` to reduce the goal to its premises. Use `MonoidHom.ext fun x => Units.ext ?_` and prove the remaining obligations. Apply `(readT D T i true).injective` to reduce the goal to its premises. Establish `e` using `congrArg (fun u : (FractionRing (T.O i))ˣ => (u : FractionRing (T.O i))) (DFunLike.congr_fun h x)`.
+
+Simplify using `using e`.
+-/
 theorem psiUT_eq_thSide : ∀ (D : D7) (S : RatDat D.ntw) (In : RatIn D S) (T : TwR D.LL0 D.nd),
     (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) →
     (∀ i b (u : Formalism.IndefR.NX.U D.nd), psiUT D T In.θ i b u = psiUOf D.nd (NX.xiRed D)

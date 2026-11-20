@@ -77,6 +77,15 @@ structure Sup0 (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (q0 :
 
 end sup
 
+/- English proof (translation)
+Introduce `hH k r lam u b bv ga h q0 R0 ν₀ hN hR0`. Establish `hex : DSExist` using `hH.2.2.2.1`. Establish `hC : ∃ P, PI.UpqRep.IsCayleyU k r (PI.BesselPeriodGGP.eps48 k r) P`. Take `⟨P, hP, -⟩` from `hR0.2`. Conclude with `⟨P, hP⟩`.
+
+Establish `hfam` using `(GlobalTheory.T.numericalFamily_shape_gaps k r lam u b bv ga h q0 hN).2`. Establish `key : ∀ ν : Fin (2 * r + k + 1) → ℤ, ∃ R : Rep k r, (∑ a, (ν a).natAbs ≤ q0 → R.IsDS (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ))) ∧ (ν = ν₀ → R = R0)`. Introduce `ν`. Distinguish the cases in `h0 : ν = ν₀`. Use `⟨R0, fun _ => ?_, fun _ => rfl⟩` and prove the remaining obligations.
+
+Substitute `h0` using the available equality. Conclude with `hR0`. Distinguish the cases in `hq : ∑ a, (ν a).natAbs ≤ q0`. Take `⟨R, hR⟩` from `hex k r _ _ (hfam ν hq).1 hC`. Conclude with `⟨R, fun _ => hR, fun h => absurd h h0⟩`.
+
+Conclude with `⟨R0, fun h => absurd h hq, fun _ => rfl⟩`. Use `choose R hR using key`. Conclude with `⟨R, fun ν hν => (hR ν).1 hν, (hR ν₀).2 rfl⟩`.
+-/
 theorem family_through_discreteSeries : Hyps → ∀ (k r : ℕ) (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ)
     (b bv ga h : ℝ) (q0 : ℕ) (R0 : Rep k r) (ν₀ : Fin (2 * r + k + 1) → ℤ), Num k r lam u b bv ga h q0 →
     R0.IsDS (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν₀ a : ℝ)) →
@@ -103,6 +112,21 @@ theorem family_through_discreteSeries : Hyps → ∀ (k r : ℕ) (lam : Fin (2 *
   choose R hR using key
   exact ⟨R, fun ν hν => (hR ν).1 hν, (hR ν₀).2 rfl⟩
 
+/- English proof (translation)
+Introduce `hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg f s₀ ν₀ h0 hfam hL hR hf hs₀`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Establish `hK : PI.KFinSmooth` using `hH.1.2.2.1`. Establish `hDS : ∀ ν, n1 ν ≤ q0 → (R ν).IsDS (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν a : ℝ))` using `fun ν hν => hfam ν hν`.
+
+Establish `hdg0 : 0 < dg ν₀` using `(hL ν₀ h0).2.1`. Establish `hsn : 0 < ‖s₀‖` using `norm_pos_iff.mpr hs₀`. Establish `hnz : NzOn (R ν₀) (l ν₀) ∧ NzOn (R ν₀) (l' ν₀)`. Take `⟨m, x, y, X, hxy, -, hs⟩` from `hf`. Establish `hsm` using `(GlobalTheory.rep_basic_of_isDS hK _ _ _ _ (R ν₀) (hDS ν₀ h0)).2.2.2.2.1`.
+
+Rewrite `hs₀` using `[hs]`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hs₀`. Use `⟨⟨x i, hsm _ (hxy i).1, fun h => hi ?_⟩, ⟨y i, hsm _ (hxy i).2, fun h => hi ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h, inner_zero_left]`. Rewrite using `[h, map_zero, inner_zero_right]`.
+
+Establish `hex : ∀ ν, ∃ (s : ℂ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)), (ν = ν₀ → F = fun g => ((dg ν₀ / ‖s₀‖ : ℝ) : ℂ) • f g) ∧ (n1 ν ≤ q0 → NzOn (R ν) (l ν) → NzOn (R ν) (l' ν) → IsCoef (R ν) (l ν) (l' ν) F s ∧ ‖s‖ = dg ν) ∧ (¬ (n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)) → F = 0)`. Introduce `ν`. Distinguish the cases in `hν : ν = ν₀`. Substitute `ν` using the available equality. Use `⟨((dg ν₀ / ‖s₀‖ : ℝ) : ℂ) * s₀, _, fun _ => rfl, fun _ _ _ => ⟨?_, ?_⟩, fun hn => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.isCoef_of_translate_smul_exists hK _ _ _ _ (R ν₀) Wp Wq (l ν₀) (l' ν₀) (hDS ν₀ h0)).2.1 f s₀ _ hf`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (div_pos hdg0 hsn).le]`. Clear the denominators using the available nonvanishing facts. Conclude with `absurd ⟨h0, hnz⟩ hn`. Distinguish the cases in `hc : n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)`.
+
+Take `⟨h1, h2, h3⟩` from `hc`. Establish `e1` using `GlobalTheory.bessel_nonzero_on_translates hH _ _ _ _ (R ν) Wp _ _ (l ν) (hDS ν h1) (hL ν h1).1.1 h2`. Establish `e2` using `GlobalTheory.bessel_nonzero_on_translates hH _ _ _ _ (R ν) Wq _ _ (l' ν) (hDS ν h1) (hR ν h1).1.1 h3`. Take `⟨F, hF⟩` from `(GlobalTheory.isCoef_of_translate_smul_exists hK _ _ _ _ (R ν) Wp Wq (l ν) (l' ν) (hDS ν h1)).2.2 e1 e2 (dg ν : ℂ)`. Use `⟨_, F, fun h => absurd h hν, fun _ _ _ => ⟨hF, ?_⟩, fun hn => absurd ⟨h1, h2, h3⟩ hn⟩` and prove the remaining obligations.
+
+Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (hL ν h1).2.1.le]`. Conclude with `⟨0, 0, fun h => absurd h hν, fun h1 h2 h3 => absurd ⟨h1, h2, h3⟩ hc, fun _ => rfl⟩`. Use `choose s J h1 h2 h3 using hex`. Conclude with `⟨s, J, dg ν₀ / ‖s₀‖, div_pos hdg0 hsn, h1 ν₀ rfl, hnz, h2, h3⟩`.
+-/
 theorem exists_coef_family : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (s₀ : ℂ) (ν₀ : Fin (2 * P.r + P.k + 1) → ℤ), n1 ν₀ ≤ q0 → IsFam lam q0 R → (haveI := FiniteDimensional.complete ℂ Wp; SideFam p.T.base.z p.T.base.π p.T.base.μW p.T.base.μN p.T.base.μG q0 R l dg) → (haveI := FiniteDimensional.complete ℂ Wq; SideFam p.T.base.z' p.T.base.π' p.T.base.μW' p.T.base.μN p.T.base.μG q0 R l' dg) → IsCoef (R ν₀) (l ν₀) (l' ν₀) f s₀ → s₀ ≠ 0 → ∃ (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (t : ℝ), 0 < t ∧ J ν₀ = (fun g => (t : ℂ) • f g) ∧ (NzOn (R ν₀) (l ν₀) ∧ NzOn (R ν₀) (l' ν₀)) ∧ (∀ ν, n1 ν ≤ q0 → NzOn (R ν) (l ν) → NzOn (R ν) (l' ν) → IsCoef (R ν) (l ν) (l' ν) (J ν) (s ν) ∧ ‖s ν‖ = dg ν) ∧ (∀ ν, ¬ (n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)) → J ν = 0) := by
   intro hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg f s₀ ν₀ h0 hfam hL hR hf hs₀
   haveI := FiniteDimensional.complete ℂ Wp
@@ -145,6 +169,27 @@ theorem exists_coef_family : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddC
   choose s J h1 h2 h3 using hex
   exact ⟨s, J, dg ν₀ / ‖s₀‖, div_pos hdg0 hsn, h1 ν₀ rfl, hnz, h2, h3⟩
 
+/- English proof (translation)
+Introduce `hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J hNum hFam hL hR hco hz`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Take `⟨-, hz1, hz2, -, -, ht1, ht2⟩` from `p.hP`. Take `⟨νq, νq', hS, hS'⟩` from `GlobalTheory.T.besselDatum_both_sides_are_sides P.k P.r Wp Wq p.T.base P.u P.u' ht1 ht2`.
+
+Establish `key : ∀ ν, ∃ t : Finset (Fin (2 * P.r + P.k + 1)) → ℂ, (∀ I, J ν = 0 ∨ J (ν + eZ I) = 0 → t I = 0) ∧ (n1 ν + (P.r + 1) * (P.r + 2) ≤ q0 → ∃ io pr ep, TensH (cmp (P.r + 1)) (cmp (P.r + 1) (Formalism.QuantumDeterminants.Hpk P.k P.r)) (R ν) (fun I : Sub (2 * P.r + P.k + 1) (P.r + 1) …`. Introduce `ν`. Distinguish the cases in `hν : n1 ν + (P.r + 1) * (P.r + 2) ≤ q0`. Use `swap`. Conclude with `⟨fun _ => 0, fun _ _ => rfl, fun h => absurd h hν⟩`.
+
+Establish `hν1 : n1 ν + (P.r + 1) ≤ q0` using `by nlinarith`. Establish `hν0 : n1 ν ≤ q0` using `by omega`. Take `⟨io, pr, ep, hT⟩` from `(GlobalTheory.T.pieri_tensor_decomposition hH P.k P.r lam P.u b bv ga h q0 R hNum hFam ν).1 (P.r + 1) hν1`. Establish `hI : ∀ I : Sub (2 * P.r + P.k + 1) (P.r + 1), n1 (ν + eZ I.1) ≤ q0`. Introduce `I`.
+
+Establish `h1 : n1 (ν + eZ I.1) ≤ n1 ν + I.1.card`. Unfold `n1 eZ`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`.
+
+Apply the tactic sequence `split_ifs <;> omega`. Use `_ = ∑ i, (ν i).natAbs + I.1.card := by`. Rewrite using `[Finset.sum_add_distrib]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[I.2]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hk : ∀ I : Sub (2 * P.r + P.k + 1) (P.r + 1), ∃ κ κ' : ℂ, J ν ≠ 0 → (∀ v ∈ (R ν).sm, l (ν + eZ I.1) (∑ c, pr I c (tm (R ν) (wedge (Formalism.QuantumDeterminants.fvec P.k P.r p.T.base.z)) v c)) = κ • l ν v) ∧ (∀ v ∈ (R ν).sm, l' (ν + eZ I.1) (∑ c, pr I c (tm (R ν) (wedge (Formalis …`. Introduce `I`. Distinguish the cases in `hJ : J ν = 0`. Conclude with `⟨0, 0, fun h => absurd hJ h⟩`.
+
+Establish `hn : n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)`. Assume the negation of the conclusion as `hc`. Conclude with `hJ (hz ν hc)`. Take `⟨κ, hκ⟩` from `(GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hH P.k P.r _ _ _ _ (P.r + 1) (R ν) (fun I : Sub (2 * P.r + P.k + 1) (P.r + 1) => R (ν + eZ I.1)) io pr ep _ _ _ Wp p.T.base.z p.T.base.π P.u p.T.base.μW p.T.base.μN p.T.base.μG νq (wedge (Formalism.QuantumDeterminants.fv …`. Take `⟨κ', hκ'⟩` from `(GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hH P.k P.r _ _ _ _ (P.r + 1) (R ν) (fun I : Sub (2 * P.r + P.k + 1) (P.r + 1) => R (ν + eZ I.1)) io pr ep _ _ _ Wq p.T.base.z' p.T.base.π' P.u' p.T.base.μW' p.T.base.μN p.T.base.μG νq' (wedge (Formalism.QuantumDeterminan …`.
+
+Conclude with `⟨κ, κ', fun _ => ⟨hκ, hκ'⟩⟩`. Use `choose κ κ' hκ using hk`. Use `⟨fun I => if hc : I.card = P.r + 1 ∧ J ν ≠ 0 ∧ J (ν + eZ I) ≠ 0 then (ep ⟨I, hc.1⟩ : ℂ) * κ' ⟨I, hc.1⟩ * star (κ ⟨I, hc.1⟩) * s ν / s (ν + eZ I) else 0, ?_, fun _ => ?_⟩` and prove the remaining obligations. Introduce `I hI0`. Use `dif_neg ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨-, h1, h2⟩`. Conclude with `hI0.elim h1 h2`. Use `⟨io, pr, ep, hT, fun I h1 h2 => ⟨κ I, κ' I, (hκ I h1).1, (hκ I h1).2, ?_⟩⟩` and prove the remaining obligations. Conclude with `dif_pos (⟨I.2, h1, h2⟩ : I.1.card = P.r + 1 ∧ J ν ≠ 0 ∧ J (ν + eZ I.1) ≠ 0)`. Use `choose tau h1 h2 using key`.
+
+Conclude with `⟨tau, ⟨hFam, hL, hR, hco, hz, h1, h2⟩⟩`.
+-/
 theorem exists_tau : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)), Num P.k P.r lam P.u b bv ga h q0 → IsFam lam q0 R → (haveI := FiniteDimensional.complete ℂ Wp; SideFam p.T.base.z p.T.base.π p.T.base.μW p.T.base.μN p.T.base.μG q0 R l dg) → (haveI := FiniteDimensional.complete ℂ Wq; SideFam p.T.base.z' p.T.base.π' p.T.base.μW' p.T.base.μN p.T.base.μG q0 R l' dg) → (∀ ν, n1 ν ≤ q0 → NzOn (R ν) (l ν) → NzOn (R ν) (l' ν) → IsCoef (R ν) (l ν) (l' ν) (J ν) (s ν) ∧ ‖s ν‖ = dg ν) → (∀ ν, ¬ (n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)) → J ν = 0) → ∃ tau, Sup0 p lam q0 R l l' dg s J tau := by
   intro hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J hNum hFam hL hR hco hz
   classical
@@ -221,6 +266,15 @@ theorem exists_tau : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup
   choose tau h1 h2 using key
   exact ⟨tau, ⟨hFam, hL, hR, hco, hz, h1, h2⟩⟩
 
+/- English proof (translation)
+Introduce `hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R0 f ν₀ h0 hN hR0 hf hj`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Take `⟨R, hfam, hR⟩` from `family_through_discreteSeries hH P.k P.r lam P.u b bv ga h q0 R0 ν₀ hN hR0`. Substitute `hR` using the available equality.
+
+Take `⟨l, l', dg, hl, hl'⟩` from `GlobalTheory.T.exists_family_functionals hH P Wp Wq p lam b bv ga h q0 R hN hfam`. Establish `hK : PI.KFinSmooth` using `hH.1.2.2.1`. Take `⟨s₀, hs₀⟩` from `(GlobalTheory.T.capelli_k_finite_coefficient hK P.k P.r _ _ (R ν₀) Wp Wq (l ν₀) (l' ν₀) hR0).1 f hf`. Take `⟨⟨-, -, -, -, hgap⟩, hnum⟩` from `GlobalTheory.T.numericalFamily_shape_gaps P.k P.r lam P.u b bv ga h q0 hN`. Establish `hg : Formalism.QuantumDeterminants.GapAtLeast (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)) (h / 2)` using `(hnum ν₀ h0).2.2.1`.
+
+Take `⟨c, -, hc⟩` from `GlobalTheory.T.bessel_setting_uniform_constant hH P.k P.r Wp Wq p.T.base`. Establish `hne : s₀ ≠ 0`. Introduce `hz`. Apply `hj` to reduce the goal to its premises. Rewrite using `[GlobalTheory.T.jN2_eq_normSq_base P Wp Wq p f, hc _ _ (h / 2) (R ν₀) (l ν₀) (l' ν₀) (dg ν₀) hR0 hg hgap (hl ν₀ h0).1 (hl' ν₀ h0).1 (hl ν₀ h0).2.2 f s₀ hs₀, hz]`.
+
+Simplify using the standard rewrite rules. Take `⟨s, J, t, ht, hJ, -, hcoef, hzero⟩` from `exists_coef_family hH P Wp Wq p lam b bv ga h q0 R l l' dg f s₀ ν₀ h0 hfam hl hl' hs₀ hne`. Take `⟨tau, htau⟩` from `exists_tau hH P Wp Wq p lam b bv ga h q0 R l l' dg s J hN hfam hl hl' hcoef hzero`. Conclude with `⟨R, l, l', dg, s, J, tau, t, ht, hJ, htau⟩`.
+-/
 theorem suppliedData_exists : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R0 : Rep P.k P.r) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (ν₀ : Fin (2 * P.r + P.k + 1) → ℤ), n1 ν₀ ≤ q0 → Num P.k P.r lam P.u b bv ga h q0 → R0.IsDS (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)) → PI.CapelliEig.IsKFinCoefT (k := P.k) (r := P.r) R0.σ f → TBB.jN2 p f ≠ 0 → ∃ (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ) (t : ℝ), 0 < t ∧ J ν₀ = (fun g => (t : ℂ) • f g) ∧ Sup0 p lam q0 R l l' dg s J tau := by
   intro hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R0 f ν₀ h0 hN hR0 hf hj
   haveI := FiniteDimensional.complete ℂ Wp
@@ -246,6 +300,23 @@ theorem suppliedData_exists : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAdd
     exists_tau hH P Wp Wq p lam b bv ga h q0 R l l' dg s J hN hfam hl hl' hcoef hzero
   exact ⟨R, l, l', dg, s, J, tau, t, ht, hJ, htau⟩
 
+/- English proof (translation)
+Introduce `hy P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hS`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Take `⟨c₁, hc₁, h1⟩` from `GlobalTheory.T.bessel_setting_uniform_constant hy P.k P.r Wp Wq p.T.base`. Establish `hH : PI.BesselPeriodGGP.IsHaarOn (GG P.k P.r) p.T.base.μG` using `by haveI : IsFiniteMeasureOnCompacts p.T.base.μG := ⟨fun K hK => p.T.base.haarG.finite_compact K hK⟩ haveI : IsLocallyFiniteMeasure p.T.base.μG := inferInstance`.
+
+Conclude with `⟨inferInstance, p.T.base.haarG.ne_zero, p.T.base.haarG.conc, p.T.base.haarG.left⟩`. Take `⟨c₂, hc₂, h2⟩` from `GlobalTheory.BesselDegree.schur_fdeg hy P.k P.r (PI.BesselPeriodGGP.eps48 P.k P.r) _ hH`. Take `⟨⟨-, -, -, -, hgap⟩, hfam⟩` from `GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN`. Use `⟨c₁ * c₂, mul_pos hc₁ hc₂, fun ν hν => ?_⟩` and prove the remaining obligations. Establish `hDS` using `hS.fam ν hν`.
+
+Take `⟨hl, hdg, hfd⟩` from `hS.left ν hν`. Take `⟨hl', -, -⟩` from `hS.right ν hν`. Establish `hP` using `h1 _ _ (h / 2) (R ν) (l ν) (l' ν) (dg ν) hDS (hfam ν hν).2.2.1 hgap hl hl' hfd`. Establish `h0 : TBB.jN2 p (0 : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) = 0`. Rewrite using `[GlobalTheory.T.jN2_eq_normSq_base, hP 0 0 ⟨0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun g _ => by simp, by simp⟩]`.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `hnz : NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)`. Use `right`. Take `⟨hc, hs⟩` from `hS.coef ν hν hnz.1 hnz.2`. Establish `hj : TBB.jN2 p (J ν) = ENNReal.ofReal (c₁ * dg ν)`.
+
+Rewrite using `[GlobalTheory.T.jN2_eq_normSq_base, hP _ _ hc, hs]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Take `⟨w, hw, -⟩` from `(GlobalTheory.rep_basic_of_isDS hy.1.2.2.1 P.k P.r _ _ (R ν) hDS).2.2.2.2.2.2.2.1`. Establish `hw0 : w ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hw`. Establish `hd : dg ν = c₂ * Formalism.QuantumDeterminants.fdegHC (fun a => lam a + (ν a : ℝ))`. Rewrite using `[← hfd w hw0, (h2 _ (R ν) hDS).1 w hw0]`. Use `⟨?_, hnz.1, hnz.2, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `hJ`. Rewrite `hj` using `[hJ, h0]`. Conclude with `absurd hj.symm (ENNReal.ofReal_pos.2 (mul_pos hc₁ hdg)).ne'`. Introduce `hs0`. Rewrite `hs` using `[hs0, norm_zero]`.
+
+Conclude with `hdg.ne hs`. Rewrite using `[hj, hd, mul_assoc]`. Use `left`. Establish `hJ` using `hS.zero ν (fun hh => hnz hh.2)`. Conclude with `⟨hJ, by rw [hJ, h0], hnz⟩`.
+-/
 theorem sup_norm : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ), Num P.k P.r lam P.u b bv ga h q0 → Sup0 p lam q0 R l l' dg s J tau → ∃ c : ℝ, 0 < c ∧ ∀ ν, n1 ν ≤ q0 → (J ν = 0 ∧ TBB.jN2 p (J ν) = 0 ∧ ¬ (NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν))) ∨ (J ν ≠ 0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν) ∧ s ν ≠ 0 ∧ TBB.jN2 p (J ν) = ENNReal.ofReal (c * Formalism.QuantumDeterminants.fdegHC (fun a => lam a + (ν a : ℝ)))) := by
   intro hy P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hS
   haveI := FiniteDimensional.complete ℂ Wp
@@ -291,6 +362,19 @@ theorem sup_norm : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup W
     have hJ := hS.zero ν (fun hh => hnz hh.2)
     exact ⟨hJ, by rw [hJ, h0], hnz⟩
 
+/- English proof (translation)
+Introduce `hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R0 f ν₀ h0 hN hR0 hf`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Take `⟨R, hfam, hR⟩` from `family_through_discreteSeries hH P.k P.r lam P.u b bv ga h q0 R0 ν₀ hN hR0`. Substitute `hR` using the available equality.
+
+Take `⟨l, l', dg, hl, hl'⟩` from `GlobalTheory.T.exists_family_functionals hH P Wp Wq p lam b bv ga h q0 R hN hfam`. Take `⟨hB, hdg, hfd⟩` from `hl ν₀ h0`. Take `⟨hB', -, -⟩` from `hl' ν₀ h0`. Take `⟨⟨-, -, -, -, hok⟩, hν⟩` from `GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN`. Establish `hgap : Formalism.QuantumDeterminants.GapAtLeast (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)) (h / 2)` using `(hν ν₀ h0).2.2.1`.
+
+Take `⟨s, hs⟩` from `(GlobalTheory.isCoef_of_translate_smul_exists hH.1.2.2.1 P.k P.r _ _ (R ν₀) Wp Wq (l ν₀) (l' ν₀) hR0).1 f hf`. Take `⟨c, hc, hnorm⟩` from `GlobalTheory.T.bessel_setting_uniform_constant hH P.k P.r Wp Wq p.T.base`. Establish `hj : TBB.jN2 p f = ENNReal.ofReal (c * ‖s‖ ^ 2 / dg ν₀)`. Rewrite using `[GlobalTheory.T.jN2_eq_normSq_base]`. Conclude with `hnorm _ _ (h / 2) (R ν₀) (l ν₀) (l' ν₀) (dg ν₀) hR0 hgap hok hB hB' hfd f s hs`.
+
+Establish `hck` using `(GlobalTheory.T.smooth_and_inCC_of_isCoef_of_gap hH P.k P.r _ _ (h / 2) (R ν₀) Wp Wq (l ν₀) (l' ν₀) f s hR0 hgap hok hs).1`. Use `⟨by rw [hj]; exact ENNReal.ofReal_lt_top, GlobalTheory.T.aemeasurable_besselNormIntegrand_bigCell P Wp Wq p f (GlobalTheory.CoefZero.continuousOn_of_ckOn hck), fun hz x hx hG => ?_⟩` and prove the remaining obligations. Establish `hs0 : s = 0`. Assume the negation of the conclusion as `hne`. Rewrite `hz` using `[hj, ENNReal.ofReal_eq_zero]`.
+
+Establish `hpos : 0 < ‖s‖` using `norm_pos_iff.mpr hne`. Establish `: 0 < c * ‖s‖ ^ 2 / dg ν₀` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨γ, hγ, -, hV⟩` from `GlobalTheory.T.exists_regularRep_besselBigCellVector_eq_bessel P Wp Wq p x hx hG`. Take `⟨OO, hOO⟩` from `GlobalTheory.T.bessel_orbital_integral_integrable_and_eq_smul hH P.k P.r _ _ (h / 2) (R ν₀) Wp Wq p.T.base (l ν₀) (l' ν₀) hR0 hgap hok hB hB'`.
+
+Rewrite using `[hV f, (hOO f s hs γ hγ).2, hs0, zero_smul]`.
+-/
 theorem coef_norm_finite_and_zero : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R0 : Rep P.k P.r) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (ν₀ : Fin (2 * P.r + P.k + 1) → ℤ), n1 ν₀ ≤ q0 → Num P.k P.r lam P.u b bv ga h q0 → R0.IsDS (PI.BesselPeriodGGP.eps48 P.k P.r) (fun a => lam a + (ν₀ a : ℝ)) → PI.CapelliEig.IsKFinCoefT (k := P.k) (r := P.r) R0.σ f → TBB.jN2 p f < ⊤ ∧ (AEMeasurable fun c : Fin (P.r + 1) → ℂ => ENNReal.ofReal (TBB.Ew p (fun _ => 1) f (P.r + 1) [] (TBB.bigPt P.r c))) ∧ (TBB.jN2 p f = 0 → ∀ c : Fin (P.r + 1) → ℂ, D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) → 0 < TBB.Gp p (TBB.bigPt P.r c) → p.V f (TBB.bigPt P.r c) = 0) := by
   intro hH P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R0 f ν₀ h0 hN hR0 hf
   haveI := FiniteDimensional.complete ℂ Wp
@@ -321,6 +405,11 @@ theorem coef_norm_finite_and_zero : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [Nor
   obtain ⟨OO, hOO⟩ := GlobalTheory.T.bessel_orbital_integral_integrable_and_eq_smul hH P.k P.r _ _ (h / 2) (R ν₀) Wp Wq p.T.base (l ν₀) (l' ν₀) hR0 hgap hok hB hB'
   rw [hV f, (hOO f s hs γ hγ).2, hs0, zero_smul]
 
+/- English proof (translation)
+Introduce `_ P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau _ hS ν`. Apply `GlobalTheory.T.aemeasurable_besselNormIntegrand_bigCell` to reduce the goal to its premises. Distinguish the cases in `hν : n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)`. Conclude with `GlobalTheory.SupMeas.isCoef_continuousOn (hS.fam ν hν.1) (hS.coef ν hν.1 hν.2.1 hν.2.2).1`. Rewrite using `[hS.zero ν hν]`.
+
+Conclude with `continuousOn_const`.
+-/
 theorem sup_meas : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ), Num P.k P.r lam P.u b bv ga h q0 → Sup0 p lam q0 R l l' dg s J tau → ∀ ν, AEMeasurable fun c : Fin (P.r + 1) → ℂ => ENNReal.ofReal (TBB.Ew p (fun _ => 1) (J ν) (P.r + 1) [] (TBB.bigPt P.r c)) := by
   intro _ P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau _ hS ν
   apply GlobalTheory.T.aemeasurable_besselNormIntegrand_bigCell
@@ -329,6 +418,19 @@ theorem sup_meas : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup W
   · rw [hS.zero ν hν]
     exact continuousOn_const
 
+/- English proof (translation)
+Introduce `hyp P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hN' hS ν hν I hI`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Distinguish the cases in `hz : J ν = 0 ∨ J (ν + eZ I) = 0`. Rewrite using `[hS.tau_zero ν I hz, norm_zero]`.
+
+Check the signs of the components of the expression. Rewrite `hz` using `[not_or]`. Establish `h1 : n1 ν ≤ q0 ∧ NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)`. Assume the negation of the conclusion as `hc`. Conclude with `hz.1 (hS.zero ν hc)`.
+
+Establish `h2 : n1 (ν + eZ I) ≤ q0 ∧ NzOn (R (ν + eZ I)) (l (ν + eZ I)) ∧ NzOn (R (ν + eZ I)) (l' (ν + eZ I))`. Assume the negation of the conclusion as `hc`. Conclude with `hz.2 (hS.zero _ hc)`. Take `⟨-, -, -, hT, hT', hty, hty'⟩` from `p.hP`. Take `⟨νq, νq', hG, hG'⟩` from `GlobalTheory.T.besselDatum_both_sides_are_sides P.k P.r Wp Wq p.T.base P.u P.u' hty hty'`.
+
+Take `⟨io, pr, ep, hTens, hκ⟩` from `hS.tau_eq ν hν`. Take `⟨κ, κ', hk, hk', ht⟩` from `hκ ⟨I, hI⟩ hz.1 hz.2`. Establish `b1` using `GlobalTheory.T.wedge_raising_scalar_sq_mul_degree_ratio_le hyp P.k P.r Wp lam P.u b bv ga h q0 _ _ _ _ _ νq R l dg ⟨hN, hS.fam, hG, hS.left⟩ ν hν io pr ep hTens h1.2.1 ⟨I, hI⟩ κ h2.2.1 hk`. Establish `b2` using `GlobalTheory.T.wedge_raising_scalar_sq_mul_degree_ratio_le hyp P.k P.r Wq lam P.u' b bv ga h q0 _ _ _ _ _ νq' R l' dg ⟨hN', hS.fam, hG', hS.right⟩ ν hν io pr ep hTens h1.2.2 ⟨I, hI⟩ κ' h2.2.2 hk'`. Rewrite `b1` using `[hT]`.
+
+Rewrite `b2` using `[hT']`. Establish `s1` using `(hS.coef ν h1.1 h1.2.1 h1.2.2).2`. Establish `s2` using `(hS.coef _ h2.1 h2.2.1 h2.2.2).2`. Establish `d1` using `(hS.left ν h1.1).2.1`. Establish `d2` using `(hS.left _ h2.1).2.1`.
+
+Establish `hep : ‖(ep ⟨I, hI⟩ : ℂ)‖ = 1`. Apply the tactic sequence `rcases hTens.ep_sq ⟨I, hI⟩ with h | h <;> simp [h]`. Establish `ht' : tau ν I = (ep ⟨I, hI⟩ : ℂ) * κ' * star κ * s ν / s (ν + eZ I)` using `ht`. Rewrite using `[ht', norm_div, norm_mul, norm_mul, norm_mul, hep, one_mul, norm_star, s1, s2]`. Conclude with `GlobalTheory.SupTau.arith _ _ _ _ _ _ _ (norm_nonneg _) (norm_nonneg _) d1 d2 (GlobalTheory.SupTau.hsq_nonneg _ _ _) (GlobalTheory.SupTau.hsq_nonneg _ _ _) b1 b2`.
+-/
 theorem tau_bound : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ), Num P.k P.r lam P.u b bv ga h q0 → Num P.k P.r lam P.u' b bv ga h q0 → Sup0 p lam q0 R l l' dg s J tau → ∀ ν, n1 ν + (P.r + 1) * (P.r + 2) ≤ q0 → ∀ I : Finset (Fin (2 * P.r + P.k + 1)), I.card = P.r + 1 → ‖tau ν I‖ ≤ Real.sqrt (Hsq P.r P.T b * Hsq P.r P.T' b) ^ (P.r + 1) := by
   intro hyp P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hN' hS ν hν I hI
   classical
@@ -364,6 +466,21 @@ theorem tau_bound : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup 
   rw [ht', norm_div, norm_mul, norm_mul, norm_mul, hep, one_mul, norm_star, s1, s2]
   exact GlobalTheory.SupTau.arith _ _ _ _ _ _ _ (norm_nonneg _) (norm_nonneg _) d1 d2 (GlobalTheory.SupTau.hsq_nonneg _ _ _) (GlobalTheory.SupTau.hsq_nonneg _ _ _) b1 b2
 
+/- English proof (translation)
+Introduce `H P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hS ν hν c hc hG`. Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Take `⟨γ, hγ, hZ, hV⟩` from `GlobalTheory.T.exists_regularRep_besselBigCellVector_eq_bessel P Wp Wq p c hc hG`. Simplify using `only [hV]`.
+
+Distinguish the cases in `hJ : J ν = 0`. Rewrite using `[hJ, GlobalTheory.SuppliedPieri.JF_zero, smul_zero]`. Use `symm`. Use `Finset.sum_eq_zero fun I _ => ?_` and prove the remaining obligations. Rewrite using `[hS.tau_zero ν I (Or.inl hJ), zero_smul]`.
+
+Take `⟨c0, -, hdich⟩` from `sup_norm H P Wp Wq p lam b bv ga h q0 R l l' dg s J tau hN hS`. Take `⟨⟨-, -, -, -, hGap⟩, hfam⟩` from `GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN`. Establish `hν0 : n1 ν ≤ q0` using `by omega`. Establish `hνI : ∀ I : Sub (2 * P.r + P.k + 1) (P.r + 1), n1 (ν + eZ I.1) ≤ q0`. Introduce `I`.
+
+Establish `h1` using `GlobalTheory.SuppliedPieri.n1_add_eZ_le ν I.1`. Rewrite `h1` using `[I.2]`. Establish `h2 : P.r + 1 ≤ (P.r + 1) * (P.r + 2)` using `Nat.le_mul_of_pos_right _ (by omega)`. Use linear arithmetic over natural numbers and integers. Take `⟨io, pr, ep, hT, htau⟩` from `hS.tau_eq ν hν`.
+
+Establish `hnz : NzOn (R ν) (l ν) ∧ NzOn (R ν) (l' ν)`. Assume the negation of the conclusion as `hcon`. Conclude with `hJ (hS.zero ν fun hh => hcon hh.2)`. Establish `key` using `GlobalTheory.T.tensor_weighted_bessel_gap H P.k P.r (Sub (2 * P.r + P.k + 1) (P.r + 1)) (Sub (2 * P.r + P.k + 1) (P.r + 1)) (cmp (P.r + 1)) (cmp (P.r + 1) (Formalism.QuantumDeterminants.Hpk P.k P.r)) (P.r + 1) (R ν) (fun I => R (ν + eZ I.1)) io pr ep (PI.BesselPeriodGGP.eps48 P.k …`. Break down `hdich _ (hνI I) with ⟨h0, -, hn⟩ | ⟨h0, hn, hn', hs, -⟩` into its components or cases.
+
+Conclude with `Or.inl ⟨not_and_or.mp hn, hS.tau_zero ν I.1 (Or.inr h0)⟩`. Conclude with `Or.inr ⟨(hS.coef _ (hνI I) hn hn').1, hs, htau I hJ h0⟩)`. Use `γ hγ`. Rewrite `key` using `[GlobalTheory.TopMinorWedge.herm_cmp_wedge_eq_det, hZ]`. Rewrite using `[key]`.
+
+Use `symm`. Conclude with `Finset.sum_subtype _ (fun I => by simp) (fun I => tau ν I • B.JF p.T.base (J (ν + eZ I)) γ)`.
+-/
 theorem supplied_pieri : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (R : (Fin (2 * P.r + P.k + 1) → ℤ) → Rep P.k P.r) (l : ∀ ν, (R ν).H → Wp) (l' : ∀ ν, (R ν).H → Wq) (dg : (Fin (2 * P.r + P.k + 1) → ℤ) → ℝ) (s : (Fin (2 * P.r + P.k + 1) → ℤ) → ℂ) (J : (Fin (2 * P.r + P.k + 1) → ℤ) → B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (tau : (Fin (2 * P.r + P.k + 1) → ℤ) → Finset (Fin (2 * P.r + P.k + 1)) → ℂ), Num P.k P.r lam P.u b bv ga h q0 → Sup0 p lam q0 R l l' dg s J tau → ∀ ν, n1 ν + (P.r + 1) * (P.r + 2) ≤ q0 → ∀ c : Fin (P.r + 1) → ℂ, D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) → 0 < TBB.Gp p (TBB.bigPt P.r c) → (D.ptMatN (TBB.bigPt P.r c) (P.r + 1)).det • p.V (J ν) (TBB.bigPt P.r c) = ∑ I ∈ powersetCard (P.r + 1) (univ : Finset (Fin (2 * P.r + P.k + 1))), tau ν I • p.V (J (ν + eZ I)) (TBB.bigPt P.r c) := by
   intro H P Wp Wq _ _ _ _ _ _ p lam b bv ga h q0 R l l' dg s J tau hN hS ν hν c hc hG
   haveI := FiniteDimensional.complete ℂ Wp
@@ -412,6 +529,41 @@ theorem supplied_pieri : Hyps → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommG
   symm
   exact Finset.sum_subtype _ (fun I => by simp) (fun I => tau ν I • B.JF p.T.base (J (ν + eZ I)) γ)
 
+/- English proof (translation)
+Take `⟨⟨hbv, hbv', hn', -, -⟩, -⟩` from `GlobalTheory.NumFam.num_fam _ _ _ _ _ _ _ _ _ hN`. Establish `hb : 2 ≤ b` using `by linarith`. Establish `hν₀ : n1 ν₀ ≤ q0` using `by omega`. Take `⟨hfin, hmeas, hz⟩` from `coef_norm_finite_and_zero H P Wp Wq p lam b bv ga h q0 R0 f ν₀ hν₀ hN hDS hf`. Distinguish the cases in `h0 : TBB.jN2 p f = 0`.
+
+Conclude with `GlobalTheory.T.familyDerivativeExpansion_of_V_eq_zero P Wp Wq p f b _ a₁ (by linarith) hmeas (hz h0)`. Take `⟨R, l, l', dg, s, J, tau, t, ht, hJ, hS⟩` from `suppliedData_exists H P Wp Wq p lam b bv ga h q0 R0 f ν₀ hν₀ hN hDS hf h0`. Establish `hn : ∀ μ : Fin (2 * P.r + P.k + 1) → ℤ, n1 μ ≤ Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.N1 (μ - ν₀) + n1 ν₀` using `fun μ => by`. Establish `e : Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.N1 (μ - ν₀ + ν₀) ≤ _` using `Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.n1_add_le (μ - ν₀) ν₀`. Rewrite `e` using `[sub_add_cancel]`.
+
+Conclude with `e`. Set `d : Formalism.FourierDecayAlt.P.CutBP.PieriExpansionData P Wp Wq` to `⟨(2 * P.r + P.k + 1), J, ν₀, tau, (P.r + 1) * (P.r + 2), q0 - n1 ν₀, Real.sqrt (Hsq P.r P.T b * Hsq P.r P.T' b)⟩`. Establish `hP : Formalism.FourierDecayAlt.P.CutBP.PieriExpansion p d` using `fun μ hμ c hc hG => supplied_pieri H P Wp Wq p lam b bv ga h q0 R l l' dg s J tau hN hS μ (by have := hn μ; dsimp only [d] at hμ; omega) c hc hG`. Establish `hTau : Formalism.FourierDecayAlt.P.CutBP.PieriCoefficientBound d` using `fun μ hμ I hI => tau_bound H P Wp Wq p lam b bv ga h q0 R l l' dg s J tau hN hN' hS μ (by have := hn μ; dsimp only [d] at hμ; omega) I (Finset.mem_powersetCard.1 hI).2`. Establish `hD : Formalism.FourierDecayAlt.P.CutBP.PieriDegreeConditions p d`.
+
+Take `⟨c, hc, key⟩` from `sup_norm H P Wp Wq p lam b bv ga h q0 R l l' dg s J tau hN hS`. Establish `hdeg` using `GlobalTheory.FamilyDegreeRatio.degree_ratios P.k P.r lam P.u b bv ga h q0 hN`. Simplify using `only [d]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show 0 < TBB.jN2 p (J ν₀)`.
+
+Rewrite using `[hJ, Formalism.FourierDecayAlt.P.CutBP.norm_sq_const_smul]`. Use `ENNReal.mul_pos ?_ h0` and prove the remaining obligations. Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `pow_pos (norm_pos_iff.2 (Complex.ofReal_ne_zero.2 ht.ne')) 2`. Introduce `μ hμ`.
+
+Establish `hμ' : n1 μ ≤ q0` using `by have := hn μ; dsimp only at hμ; omega`. Use `show TBB.jN2 p (J μ) < ⊤ ∧ (TBB.jN2 p (J μ) = 0 → ∀ c : Fin (P.r + 1) → ℂ, D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) → 0 < TBB.Gp p (TBB.bigPt P.r c) → p.V (J μ) (TBB.bigPt P.r c) = 0)`. Break down `key μ hμ' with ⟨hJ, hz, -⟩ | ⟨-, -, -, -, he⟩` into its components or cases. Use `⟨by rw [hz]; exact ENNReal.zero_lt_top, fun _ x _ _ => ?_⟩` and prove the remaining obligations. Establish `e : J μ = fun g => (0 : ℂ) • J μ g`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[hJ, zero_smul]`. Both sides reduce to the same expression. Rewrite using `[e, Formalism.FourierDecayAlt.P.CutBP.V_csmul, zero_smul]`. Use `⟨by rw [he]; exact ENNReal.ofReal_lt_top, fun hz => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hz` using `[he]`. Conclude with `absurd hz (ENNReal.ofReal_pos.2 (mul_pos hc (hdeg μ hμ').1)).ne'`. Introduce `μ hμ hne I hI`. Establish `hμ1 : n1 μ + (P.r + 1) * (P.r + 2) ≤ q0` using `by have := hn μ; dsimp only at hμ; omega`. Establish `hμ' : n1 μ ≤ q0` using `le_trans (Nat.le_add_right _ _) hμ1`.
+
+Establish `hcard : I.card = P.r + 1` using `(mem_powersetCard.1 hI).2`. Establish `hν : n1 (μ + eZ I) ≤ q0`. Establish `e1 : n1 (μ + eZ I) ≤ n1 μ + Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.N1 (Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.eI I)` using `Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.n1_add_le μ (Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.eI I)`. Rewrite `e1` using `[Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.n1_eI_eq_card, hcard]`. Establish `e2 : P.r + 1 ≤ (P.r + 1) * (P.r + 2)` using `Nat.le_mul_of_pos_right _ (by omega)`.
+
+Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `TBB.jN2 p (J μ) ≠ 0 at hne`. Use `show TBB.jN2 p (J (μ + eZ I)) ≤ ENNReal.ofReal ((Real.exp 1 * ((2 * P.r + P.k + 1 : ℕ) : ℝ)) ^ (P.r + 1)) * TBB.jN2 p (J μ)`. Break down `key μ hμ' with ⟨-, hz, -⟩ | ⟨-, -, -, -, he⟩` into its components or cases. Conclude with `absurd hz hne`.
+
+Break down `key _ hν with ⟨-, hz, -⟩ | ⟨-, -, -, -, he'⟩` into its components or cases. Rewrite using `[hz]`. Conclude with `zero_le`. Rewrite using `[he, he', ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Take `⟨hpos, hrat, -⟩` from `hdeg μ hμ'`. Establish `e1` using `hrat I`. Rewrite `e1` using `[hcard]`. Establish `e2 : ((2 * P.r + P.k + 1) : ℝ) ^ (P.r + 1) ≤ (Real.exp 1 * ((2 * P.r + P.k + 1 : ℕ) : ℝ)) ^ (P.r + 1)`. Use `pow_le_pow_left₀ (by positivity) ?_ _` and prove the remaining obligations.
+
+Use `push_cast`. Conclude with `le_mul_of_one_le_left (by positivity) (Real.one_le_exp zero_le_one)`. Establish `e3` using `e1.trans (mul_le_mul_of_nonneg_right e2 hpos.le)`. Combine the equalities or inequalities in the displayed calculation. Establish `hM` using `sup_meas H P Wp Wq p lam b bv ga h q0 R l l' dg s J tau hN hS`.
+
+Establish `hH` using `GlobalTheory.TopNum.top_num P.r P.T P.T' b C hC hb hT hT'`. Establish `hE` using `Formalism.FourierDecayAlt.P.CutBP.family_expansion_of_parts p (Formalism.FourierDecayAlt.P.CutBP.unitF p (J ν₀)) b (C / 2 + 6) a₁ d`. Use `rfl (Real.sqrt_nonneg _) (Nat.le_mul_of_pos_right _ (by omega)) (by dsimp only [d]; omega)`. Use the proof step `(Formalism.FourierDecayAlt.P.CutBP.coefficient_growth_le_power _ P.r b _ (C + 10) _ hb (by dsimp only [d]; push_cast; exact hn') (Real.sqrt_nonneg _) hH (by linarith))`. Use `hP hTau hD hM`.
+
+Establish `hpos : 0 < TBB.jN2 p (J ν₀)` using `hD.1`. Establish `hlt : TBB.jN2 p (J ν₀) < ⊤` using `(hD.2.1 ν₀ (by simp [Formalism.FourierDecayAlt.P.CutBP.LatticeNorms.N1, d])).1`. Establish `hsc : Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) ≠ 0`. Unfold `Formalism.FourierDecayAlt.P.CutBP.scF`. Conclude with `inv_ne_zero (Real.sqrt_pos.2 (ENNReal.toReal_pos hpos.ne' hlt.ne)).ne'`.
+
+Establish `hE'` using `GlobalTheory.T.bigCellExpansion_smul P Wp Wq p _ b _ a₁ (((Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) : ℂ) * (t : ℂ))⁻¹) hE`. Establish `hne : ((Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) : ℂ) * (t : ℂ)) ≠ 0` using `mul_ne_zero (Complex.ofReal_ne_zero.2 hsc) (Complex.ofReal_ne_zero.2 ht.ne')`. Establish `e : (fun g => (((Formalism.FourierDecayAlt.P.CutBP.scF p (J ν₀) : ℂ) * (t : ℂ))⁻¹) • Formalism.FourierDecayAlt.P.CutBP.unitF p (J ν₀) g) = f`. Use function extensionality and compare the values at `g`. Establish `hg : J ν₀ g = (t : ℂ) • f g` using `congrFun hJ g`.
+
+Unfold `Formalism.FourierDecayAlt.P.CutBP.unitF`. Rewrite using `[hg, smul_smul, smul_smul, mul_assoc, inv_mul_cancel₀ hne, one_smul]`. Rewrite `hE'` using `[e]`. Conclude with `hE'`.
+-/
 theorem wave_ball_estimate (H : Hyps) (C : ℝ) (hC : 0 ≤ C) (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
     [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 a₁ : ℕ)
@@ -518,6 +670,9 @@ theorem wave_ball_estimate (H : Hyps) (C : ℝ) (hC : 0 ≤ C) (P : M.Par) (Wp W
   rw [e] at hE'
   exact hE'
 
+/- English proof (translation)
+Establish `hb` using `(GlobalTheory.NumFam.num_fam P.k P.r lam P.u b bv ga h q0 hN).1`. Conclude with `Formalism.FourierDecayAlt.P.CutBP.big_cell_expansion_of_family p f b (C / 2 + 6) a₁ (by linarith [hb.1, hb.2.1]) (wave_ball_estimate H C hC P Wp Wq p lam b bv ga h q0 a₁ R0 f ν₀ hN hN' hT hT' hq hDS hf)`.
+-/
 theorem wave_ball_estimate_dual (H : Hyps) (C : ℝ) (hC : 0 ≤ C) (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
     [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (lam : Fin (2 * P.r + P.k + 1) → ℝ) (b bv ga h : ℝ) (q0 a₁ : ℕ)

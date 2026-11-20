@@ -29,9 +29,15 @@ def qHom (u v : S) (B : Type) [CommRing B] [Algebra S B] (hu : IsUnit (algebraMa
       rw [IsLocalization.Away.lift_eq]
       exact (awayHom u B hu).commutes r }
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.algebraMap_isUnit u`.
+-/
 theorem away_unit (u : S) : IsUnit (algebraMap S (Localization.Away u) u) :=
   IsLocalization.Away.algebraMap_isUnit u
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply S B B']`. Conclude with `h.map _`.
+-/
 theorem unit_of_map {B B' : Type} [CommRing B] [Algebra S B] [CommRing B'] [Algebra S B'] [Algebra B B']
     [IsScalarTower S B B'] {u : S} (h : IsUnit (algebraMap S B u)) : IsUnit (algebraMap S B' u) := by
   rw [IsScalarTower.algebraMap_apply S B B']
@@ -43,10 +49,16 @@ section Extend
 
 variable {S : Type} [CommRing S] {G : Over (Spec (CommRingCat.of S))} [GrpObj G]
 
+/- English proof (translation)
+Rewrite using `[scale_scale, pow_add]`.
+-/
 theorem scale_pow_add {A : Type} [CommRing A] [Algebra S A] (x : A) (a b : ℕ) (y : sp (R₀ := S) (DualNumber A) ⟶ G) :
     spMap (scaleS (S := S) (x ^ a)) ≫ spMap (scaleS (x ^ b)) ≫ y = spMap (scaleS (x ^ (a + b))) ≫ y := by
   rw [scale_scale, pow_add]
 
+/- English proof (translation)
+Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Rewrite using `[add_comm m d, ← scale_pow_add x d m y₁, ← scale_pow_add x d m y₂, h]`.
+-/
 theorem scale_pow_mono {A : Type} [CommRing A] [Algebra S A] (x : A) {m M : ℕ} (hm : m ≤ M)
     {y₁ y₂ : sp (R₀ := S) (DualNumber A) ⟶ G} (h : spMap (scaleS (S := S) (x ^ m)) ≫ y₁ = spMap (scaleS (x ^ m)) ≫ y₂) :
     spMap (scaleS (S := S) (x ^ M)) ≫ y₁ = spMap (scaleS (x ^ M)) ≫ y₂ := by
@@ -56,10 +68,18 @@ theorem scale_pow_mono {A : Type} [CommRing A] [Algebra S A] (x : A) {m M : ℕ}
 variable [∀ s : S, Smooth (Gs G s).hom]
 
 include G in
+/- English proof (translation)
+Use `haveI := chart_smooth (C := C)`. Use `infer_instance`.
+-/
 theorem fp_chart {s : S} (C : Chart (Gs G s)) : Algebra.FinitePresentation (Localization.Away s) Γ((Gs G s).left, C.U) := by
   haveI := chart_smooth (C := C)
   infer_instance
 
+/- English proof (translation)
+Use `haveI := fp_chart C`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid A (Submonoid.powers (algebraMap S (Localization.Away s) t))) (Localization.Away (algebraMap S A t)) := by`. Establish `e : Algebra.algebraMapSubmonoid A (Submonoid.powers (algebraMap S (Localization.Away s) t)) = Submonoid.powers (algebraMap S A t)`. Rewrite using `[Algebra.algebraMapSubmonoid, Submonoid.map_powers, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[e]`.
+
+Use `infer_instance`. Take `⟨m, hm, y, hy, heq⟩` from `tanS_lift C (A := A) (A' := Localization.Away (algebraMap S A t)) (Submonoid.powers (algebraMap S (Localization.Away s) t)) hy'`. Take `⟨N, rfl⟩` from `hm`. Use `⟨N, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, map_pow, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem tanS_away_lift {s : S} (C : Chart (Gs G s)) {A : Type} [CommRing A] [Algebra S A]
     [Algebra (Localization.Away s) A] [IsScalarTower S (Localization.Away s) A] (t : S)
     {y' : sp (R₀ := S) (DualNumber (Localization.Away (algebraMap S A t))) ⟶ G} (hy' : TanS y') :
@@ -81,6 +101,13 @@ theorem tanS_away_lift {s : S} (C : Chart (Gs G s)) {A : Type} [CommRing A] [Alg
   refine ⟨N, y, hy, ?_⟩
   rw [heq, map_pow, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Use `haveI := fp_chart C`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid A (Submonoid.powers (algebraMap S (Localization.Away s) t))) (Localization.Away (algebraMap S A t)) := by`. Establish `e : Algebra.algebraMapSubmonoid A (Submonoid.powers (algebraMap S (Localization.Away s) t)) = Submonoid.powers (algebraMap S A t)`. Rewrite using `[Algebra.algebraMapSubmonoid, Submonoid.map_powers, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[e]`.
+
+Use `infer_instance`. Take `⟨m, hm, heq⟩` from `tanS_uniq C (A := A) (A' := Localization.Away (algebraMap S A t)) (Submonoid.powers (algebraMap S (Localization.Away s) t)) h₁ h₂ he`. Take `⟨N, rfl⟩` from `hm`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite `heq` using `[map_pow, ← IsScalarTower.algebraMap_apply]`.
+
+Conclude with `heq`.
+-/
 theorem tanS_away_uniq {s : S} (C : Chart (Gs G s)) {A : Type} [CommRing A] [Algebra S A]
     [Algebra (Localization.Away s) A] [IsScalarTower S (Localization.Away s) A] (t : S)
     {y₁ y₂ : sp (R₀ := S) (DualNumber A) ⟶ G} (h₁ : TanS y₁) (h₂ : TanS y₂)

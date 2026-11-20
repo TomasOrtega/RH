@@ -22,6 +22,15 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y K _ y tK m`. Establish `hp : IsPullback Y.m0.toSABMap.φ Y.oF.t.G.hom Xo.univ.t.G.hom (pullback.fst _ _)` using `Y.m0.cart.1`. Establish `hw : m.φ ≫ Xo.univ.t.G.hom = (tK.G.hom ≫ y) ≫ pullback.fst _ _`. Rewrite using `[Category.assoc]`. Conclude with `m.cart.1.w`.
+
+Set `φ' : tK.G.left ⟶ Y.oF.t.G.left` to `hp.lift m.φ (tK.G.hom ≫ y) hw`. Establish `h1 : φ' ≫ Y.m0.toSABMap.φ = m.φ` using `hp.lift_fst _ _ _`. Establish `h2 : φ' ≫ Y.oF.t.G.hom = tK.G.hom ≫ y` using `hp.lift_snd _ _ _`. Establish `hn : IsGrpPullback tK.G Xo.univ.t.G (y ≫ pullback.fst _ _) (φ' ≫ Y.m0.toSABMap.φ)` using `by rw [h1]; exact m.cart`. Establish `hc : IsGrpPullback tK.G Y.oF.t.G y φ'` using `IsGrpPullback.cancel Y.m0.toSABMap.cart hn h2`.
+
+Use `⟨φ' ≫ Y.m.φ, IsGrpPullback.comp hc Y.m.cart, ?_⟩` and prove the remaining obligations. Introduce and unpack `u v v' ⟨u', a, b, e⟩ huv`. Establish `hu : u.left ≫ φ' = u'`. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h1, huv, b]`.
+
+Establish `wu : u.left ≫ tK.G.hom = spMap (algebraMap K (DualNumber K)) ≫ 𝟙 (Sp K)` using `Over.w u`. Rewrite using `[Category.assoc, h2, ← Category.assoc, wu, a, Category.comp_id]`. Rewrite using `[← Category.assoc, hu, e]`.
+-/
 theorem exists_cart_to_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (K : Type) [Field K] (y : Sp K ⟶ Xo.XF c) (tK : SAB H (Sp K)) (m : SABMap tK Xo.univ.t (under y)),
     ∃ φ₁ : tK.G.left ⟶ Y.t.G.left, IsGrpPullback tK.G Y.t.G (y ≫ Y.j) φ₁ ∧
       ∀ (u : epsAt (𝟙 (Sp K)) ⟶ tK.G) (v : epsAt (under y) ⟶ Xo.univ.t.G) (v' : epsAt (y ≫ Y.j) ⟶ Y.t.G),

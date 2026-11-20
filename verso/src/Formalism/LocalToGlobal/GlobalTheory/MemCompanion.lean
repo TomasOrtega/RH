@@ -22,12 +22,20 @@ def Coord.Q (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E)) : Matrix (Fin 
 def Coord.Q' (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E)) : Matrix n (Fin N) E :=
   LinearMap.toMatrix' ((co.symm.trans K.κ : (Fin N → E) ≃ₗ[E] (n → E)) : (Fin N → E) →ₗ[E] (n → E))
 
+/- English proof (translation)
+Unfold `Coord.Q`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem Coord.Q_mulVec (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E)) (v : n → E) :
     K.Q co *ᵥ v = co (K.κ.symm v) := by
   unfold Coord.Q
   rw [LinearMap.toMatrix'_mulVec]
   rfl
 
+/- English proof (translation)
+Unfold `Coord.Q Coord.Q'`. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem Coord.Q_mul_Q' (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E)) : K.Q co * K.Q' co = 1 := by
   unfold Coord.Q Coord.Q'
   rw [← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]
@@ -36,6 +44,11 @@ theorem Coord.Q_mul_Q' (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E)) : K
   intro v
   simp
 
+/- English proof (translation)
+Unfold `Coord.Q Coord.Q'`. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem Coord.Q'_mul_Q (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E)) : K.Q' co * K.Q co = 1 := by
   unfold Coord.Q Coord.Q'
   rw [← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]
@@ -44,6 +57,11 @@ theorem Coord.Q'_mul_Q (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E)) : K
   intro v
   simp
 
+/- English proof (translation)
+Unfold `hform stdH`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Matrix.one_apply_eq, mul_one]`. Both sides reduce to the same expression.
+
+Introduce `j _ hj`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hj), mul_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem hform_one (x y : Fin N → E) : hform (hc.sig : E →+* E) (1 : Matrix (Fin N) (Fin N) E) x y = stdH E N x y := by
   unfold hform stdH
   refine Finset.sum_congr rfl fun i _ => ?_
@@ -53,6 +71,9 @@ theorem hform_one (x y : Fin N → E) : hform (hc.sig : E →+* E) (1 : Matrix (
     rw [Matrix.one_apply_ne (Ne.symm hj), mul_zero, zero_mul]
   · intro h; exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h1` using `hform_single (hc.sig : E →+* E) (cT (hc.sig : E →+* E) (K.Q co) * (1 : Matrix (Fin N) (Fin N) E) * K.Q co) i j`. Establish `h2` using `hform_single (hc.sig : E →+* E) K.J i j`. Rewrite using `[← h1, ← h2, ← hform_mulVec_rect, hform_one, K.Q_mulVec, K.Q_mulVec, hco, K.form, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem Coord.hQ (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E))
     (hco : ∀ x y, stdH E N (co x) (co y) = S.hT x y) :
     cT (hc.sig : E →+* E) (K.Q co) * (1 : Matrix (Fin N) (Fin N) E) * K.Q co = K.J := by
@@ -62,6 +83,11 @@ theorem Coord.hQ (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E))
   rw [← h1, ← h2, ← hform_mulVec_rect, hform_one, K.Q_mulVec, K.Q_mulVec, hco, K.form,
     LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[mem_mapQ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, h⟩`. Establish `h1 : K.Q co *ᵥ (K.κ x) = co y` using `h`. Rewrite `h1` using `[K.Q_mulVec, LinearEquiv.symm_apply_apply]`.
+
+Rewrite using `[← co.injective h1]` and apply the resulting hypothesis. Introduce `hy`. Conclude with `⟨K.κ y, ⟨y, hy, rfl⟩, by rw [K.Q_mulVec, LinearEquiv.symm_apply_apply]⟩`.
+-/
 theorem Coord.mem_mapQ_lat (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E)) (X : Submodule (𝓞 E) S.V) (y : S.V) :
     co y ∈ mapQ (K.Q co) (K.lat X) ↔ y ∈ X := by
   rw [mem_mapQ]
@@ -73,6 +99,11 @@ theorem Coord.mem_mapQ_lat (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E))
   · intro hy
     exact ⟨K.κ y, ⟨y, hy, rfl⟩, by rw [K.Q_mulVec, LinearEquiv.symm_apply_apply]⟩
 
+/- English proof (translation)
+Use `⟨Module.Finite.iff_fg.2 ((Module.Finite.iff_fg.1 hM.1).map _), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `h2 : Q' *ᵥ y ∈ Submodule.span E (M : Set (n → E))` using `by rw [hM.2]; trivial`. Establish `h3 : Q *ᵥ (Q' *ᵥ y) ∈ (Submodule.span E (M : Set (n → E))).map (Matrix.mulVecLin Q)` using `⟨_, h2, rfl⟩`.
+
+Rewrite `h3` using `[mulVec_mulVec, h1, one_mulVec, Submodule.map_span]`. Conclude with `h3`.
+-/
 theorem isLat_mapQ {m : Type} [Fintype m] [DecidableEq m] (Q : Matrix m n E) (Q' : Matrix n m E) (h1 : Q * Q' = 1)
     {M : Submodule (𝓞 E) (n → E)} (hM : IsLat M) : IsLat (mapQ Q M) := by
   refine ⟨Module.Finite.iff_fg.2 ((Module.Finite.iff_fg.1 hM.1).map _), ?_⟩
@@ -83,6 +114,13 @@ theorem isLat_mapQ {m : Type} [Fintype m] [DecidableEq m] (Q : Matrix m n E) (Q'
   rw [mulVec_mulVec, h1, one_mulVec, Submodule.map_span] at h3
   exact h3
 
+/- English proof (translation)
+Establish `h` using `isLat_mapQ (K.Q co) (K.Q' co) (K.Q_mul_Q' co) hM`. Use `⟨Module.Finite.iff_fg.1 h.1, h.2, fun y => ?_⟩` and prove the remaining obligations. Establish `h1` using `dl_mapQ hc.sig K.J (K.Q co) (K.Q' co) (K.Q_mul_Q' co) (K.hQ co hco) M`. Rewrite `h1` using `[hsd]`. Use `conv_lhs => rw [← h1]`.
+
+Rewrite using `[mem_dl]`. Prove the components needed by the constructor for the conclusion. Introduce `h2 x hx`. Rewrite using `[← hform_one (hc := hc)]`. Conclude with `h2 x hx`.
+
+Introduce `h2 x hx`. Rewrite using `[hform_one]`. Conclude with `h2 x hx`.
+-/
 theorem Coord.isSDLat (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E))
     (hco : ∀ x y, stdH E N (co x) (co y) = S.hT x y) {M : Submodule (𝓞 E) (n → E)} (hM : IsLat M)
     (hsd : dl hc.sig K.J M = M) : IsSDLat E N (mapQ (K.Q co) M) := by
@@ -104,6 +142,11 @@ def Coord.StandardHermitianLattice (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N
     (hco : ∀ x y, stdH E N (co x) (co y) = S.hT x y) : SDLat E N :=
   ⟨mapQ (K.Q co) (K.lat S.L0), K.isSDLat co hco (K.isLat_lat S.standardTuple_isLattice) K.base_lattice_self_dual⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_sup, Submodule.ideal_span_singleton_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, z, hz, rfl⟩`. Take `⟨b, hb, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hz`. Conclude with `⟨x, hx, b, hb, by rw [← algebraMap_smul E a b]⟩`.
+
+Introduce and unpack `⟨x, hx, b, hb, rfl⟩`. Conclude with `⟨x, hx, a • b, Submodule.smul_mem_pointwise_smul b a D hb, by rw [← algebraMap_smul E a b]⟩`.
+-/
 theorem mem_companion (L D : Submodule (𝓞 E) S.V) (a : 𝓞 E) (y : S.V) :
     y ∈ L ⊔ Ideal.span {a} • D ↔ ∃ x ∈ L, ∃ b ∈ D, y = x + (a : E) • b := by
   rw [Submodule.mem_sup, Submodule.ideal_span_singleton_smul]
@@ -114,6 +157,11 @@ theorem mem_companion (L D : Submodule (𝓞 E) S.V) (a : 𝓞 E) (y : S.V) :
   · rintro ⟨x, hx, b, hb, rfl⟩
     exact ⟨x, hx, a • b, Submodule.smul_mem_pointwise_smul b a D hb, by rw [← algebraMap_smul E a b]⟩
 
+/- English proof (translation)
+Establish `hcomp` using `K.companion hL hΛb g hg hyl ha hbase`. Establish `hL0` using `K.isLat_lat S.standardTuple_isLattice`. Use `⟨⟨mapQ (K.Q co) (globLat g (K.lat S.L0)), K.isSDLat co hco (isLat_glob hL0 g) (glob_selfdual hc.sig K.J K.isLat_dl hL0 K.base_lattice_self_dual g hg)⟩, ?_, conjQ (K.Q co) (K.Q' co) (K.Q_mul_Q' co) (K.Q'_mul_Q co) g, conjQ_mem hc.sig K.J _ _ _ _ (K.hQ co hco) g hg, ?_, ?_⟩` and prove the remaining obligations. Introduce `y show co y ∈ mapQ (K.Q co) (globLat g (K.lat S.L0)) ↔ _`. Rewrite using `[← hcomp, K.mem_mapQ_lat, mem_companion]`.
+
+Introduce `v`. Conclude with `mem_hat_map_glob (K.Q co) (K.Q' co) (K.Q_mul_Q' co) (K.Q'_mul_Q co) hL0 g v`. Use `ext`. Conclude with `det_conjQ (K.Q co) (K.Q' co) (K.Q_mul_Q' co) (K.Q'_mul_Q co) g`.
+-/
 theorem Coord.main (K : Coord hc S n) (co : S.V ≃ₗ[E] (Fin N → E))
     (hco : ∀ x y, stdH E N (co x) (co y) = S.hT x y)
     {L : Submodule (𝓞 E) S.V} (hL : Submodule.IsLattice E L)

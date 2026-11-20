@@ -10,6 +10,35 @@ import Development.AbelianVarietyTheory.CrystallinePeriods.RingBasics
 open Formalism.Per GlobalTheory.PSer
 open scoped Formalism.Per
 
+/- English proof (translation)
+Introduce `l _ h μ hh hμ`. Take `⟨sh1, sh0, shmul, shpow, shle, shsurj, shadd, shneg⟩` from `GlobalTheory.T.tiltUntiltToComplexPAdic_basic_laws l`. Establish `hl0 : 0 < ‖(l : ℂ_[l])‖` using `norm_pos_iff.2 GlobalTheory.RingBasics.p_ne_zero`. Establish `hl1 : ‖(l : ℂ_[l])‖ < 1` using `GlobalTheory.RingBasics.norm_p_lt`. Establish `hlD : ∀ D : ℕ, l ^ D ≠ 0` using `fun D => (pow_pos (Fact.out : l.Prime).pos D).ne'`.
+
+Take `⟨σ, hσ⟩` from `shsurj (l : ℂ_[l]) hl1.le`. Take `⟨t, D, E, M, a, ρ, ht, hME, ha, haN, hρl, hρ1, hρD, haM, hak, hpoly⟩` from `GlobalTheory.T.untiltFrobeniusLaurentSeries_eq_polynomial_mod_prime l h μ σ hh hμ hσ`. Establish `hshv : ∀ u : Fl l, ‖sh (σ * u ^ l ^ D)‖ ≤ ‖(l : ℂ_[l])‖`. Introduce `u`. Rewrite using `[shmul, shpow, hσ, norm_mul, norm_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨‖t‖, ?_, ?_⟩` and prove the remaining obligations. Introduce `t' ht'`. Establish `hb : ‖t' / t‖ ≤ 1`. Rewrite using `[norm_div]`.
+
+Conclude with `div_le_one_of_le₀ ht' (norm_nonneg _)`. Take `⟨W, hW, hPW⟩` from `GlobalTheory.T.exists_root_additive_poly_eq_of_unit_coeff l E (M + h) a hME ha haN (t' / t) hb`. Take `⟨u, hu⟩` from `shsurj W hW`. Use `⟨σ * u ^ l ^ D, hshv u, ?_⟩` and prove the remaining obligations. Establish `key` using `hpoly u`.
+
+Establish `e : t * (t' / t) = t'` using `by field_simp`. Rewrite `key` using `[hu, hPW, e]`. Conclude with `key`. Establish `hρ0 : 0 < ρ` using `lt_of_lt_of_le hl0 hρl`. Take `⟨Z, hZc, hZ, hsep⟩` from `GlobalTheory.T.exists_separated_roots_additive_poly l E M h a ρ hME ha haN hρ0 hρ1 haM hak`.
+
+Use `choose! u hu using fun (W : ℂ_[l]) (hW : ‖W‖ ≤ 1) => shsurj W hW`. Set `v : ℂ_[l] → Fl l` to `fun W => σ * u W ^ l ^ D`. Set `K' : AddSubgroup (Fl l)` to `{ carrier := {x | ‖sh x‖ ≤ ‖(l : ℂ_[l])‖ ^ l ^ h} zero_mem' := by show ‖sh (0 : Fl l)‖ ≤ _`. Rewrite using `[sh0, norm_zero]`. Check the signs of the components of the expression.
+
+Use the proof step `add_mem' := by`. Introduce `x y hx hy`. Conclude with `(GlobalTheory.T.tiltUntilt_add_estimate_le l _ x y hx hy).2`. Use the proof step `neg_mem' := by`. Introduce `x hx`.
+
+Use `show ‖sh (-x)‖ ≤ _`. Rewrite using `[shneg]`. Conclude with `hx }`. Establish `hchar : ∀ x : Fl l, l • x = 0` using `fun x => by`. Rewrite using `[nsmul_eq_mul, CharP.cast_eq_zero, zero_mul]`.
+
+Establish `hsepv : ∀ W ∈ Z, ∀ W' ∈ Z, W ≠ W' → v W - v W' ∉ K'`. Introduce `W hW W' hW' hne hmem`. Establish `hsepW` using `hsep W hW W' hW' hne`. Establish `hvd : v W - v W' = σ * (u W - u W') ^ l ^ D`. Simplify using `only [v]`.
+
+Rewrite using `[sub_pow_char_pow, mul_sub]`. Establish `hmem' : ‖sh (v W - v W')‖ ≤ ‖(l : ℂ_[l])‖ ^ l ^ h` using `hmem`. Rewrite `hmem'` using `[hvd, shmul, shpow, hσ, norm_mul, norm_pow, ← hρD]`. Establish `hd : ‖sh (u W - u W')‖ ≤ ρ`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Establish `h1 : ρ ^ l ^ D < ‖sh (u W - u W')‖ ^ l ^ D` using `pow_lt_pow_left₀ hcon hρ0.le (hlD D)`. Establish `h2` using `mul_lt_mul_of_pos_left h1 hl0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `shadd (u W - u W') (u W')`.
+
+Rewrite `h2` using `[sub_add_cancel, hu W (hZ W hW).1, hu W' (hZ W' hW').1]`. Establish `e3 : W - W' = (W - sh (u W - u W') - W') + sh (u W - u W')` using `by ring`. Establish `h3 : ‖W - W'‖ ≤ max ‖W - sh (u W - u W') - W'‖ ‖sh (u W - u W')‖`. Rewrite using `[e3]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
+
+Establish `h4 : ‖W - W'‖ ≤ ρ` using `h3.trans (max_le (h2.trans hρl) hd)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨x, hxZ, hx⟩` from `GlobalTheory.T.exists_independent_mod_prime_of_pow_le_card l (Fl l) ℂ_[l] K' h Z v hchar hZc hsepv`. Use `⟨fun b => v (x b), fun b => hshv (u (x b)), ?_, fun n hn => hx n hn⟩` and prove the remaining obligations. Introduce `b`.
+
+Establish `key` using `hpoly (u (x b))`. Rewrite `key` using `[hu _ (hZ _ (hxZ b)).1, (hZ _ (hxZ b)).2, mul_zero, sub_zero]`. Conclude with `key`.
+-/
 theorem GlobalTheory.oneVarCount_onto_independentZeros : ∀ (l : ℕ) [Fact l.Prime] (h : ℕ) (μ : Fin h → ℂ_[l]), 1 ≤ h → μ ≠ 0 → ∃ τ : ℝ, (∀ t : ℂ_[l], ‖t‖ ≤ τ → ∃ y : Fl l, ‖sh y‖ ≤ ‖(l : ℂ_[l])‖ ∧ ‖∑ i : Fin h, μ i * lam h i y - t‖ ≤ ‖(l : ℂ_[l])‖ * τ) ∧ ∃ x : Fin h → Fl l, (∀ a, ‖sh (x a)‖ ≤ ‖(l : ℂ_[l])‖) ∧ (∀ a, ‖∑ i : Fin h, μ i * lam h i (x a)‖ ≤ ‖(l : ℂ_[l])‖ * τ) ∧ ∀ n : Fin h → ℕ, ‖sh (∑ a, n a • x a)‖ ≤ ‖(l : ℂ_[l])‖ ^ l ^ h → ∀ a, l ∣ n a := by
   intro l _ h μ hh hμ
   obtain ⟨sh1, sh0, shmul, shpow, shle, shsurj, shadd, shneg⟩ := GlobalTheory.T.tiltUntiltToComplexPAdic_basic_laws l

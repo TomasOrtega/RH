@@ -23,6 +23,11 @@ variable {ε : PreTilt (normInteger ℂ_[p]) p} (hε : PreTilt.untilt ε = 1)
   (hζ : PreTilt.untilt ((_root_.frobeniusEquiv (PreTilt (normInteger ℂ_[p]) p) p).symm ε) ≠ 1)
   {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨n, y, hy⟩` from `IsLocalization.Away.surj t x`. Establish `h1` using `congrArg fS hy`. Rewrite `h1` using `[map_mul, hx, zero_mul, hf]`.
+
+Establish `hy0 : y = 0` using `hfR (hinj (by rw [← h1, map_zero, map_zero]))`. Rewrite `hy` using `[hy0, map_zero]`. Establish `hu : IsUnit (algebraMap R S t ^ n)` using `(IsLocalization.Away.algebraMap_isUnit t).pow n`. Conclude with `hu.mul_left_eq_zero.1 hy`.
+-/
 theorem injective_of_away {R S : Type*} [CommRing R] [CommRing S] [Algebra R S] (t : R)
     [IsLocalization.Away t S] (hinj : Function.Injective (algebraMap R S)) (fR : R →+* R) (fS : S →+* S)
     (hf : ∀ x, fS (algebraMap R S x) = algebraMap R S (fR x)) (hfR : Function.Injective fR) :
@@ -37,20 +42,32 @@ theorem injective_of_away {R S : Type*} [CommRing R] [CommRing S] [Algebra R S] 
   have hu : IsUnit (algebraMap R S t ^ n) := (IsLocalization.Away.algebraMap_isUnit t).pow n
   exact hu.mul_left_eq_zero.1 hy
 
+/- English proof (translation)
+Introduce `h0` and use `hb (hg (hι (by rw [h0, map_zero, map_zero])))`.
+-/
 theorem map_map_ne_zero {R E : Type*} [CommRing R] [CommRing E] (ι : R →+* E) (hι : Function.Injective ι)
     (g : R →+* R) (hg : Function.Injective g) {b : R} (hb : b ≠ 0) : ι (g b) ≠ 0 := fun h0 =>
   hb (hg (hι (by rw [h0, map_zero, map_zero])))
 
+/- English proof (translation)
+Rewrite using `[hT, map_zero, sub_zero]`.
+-/
 theorem map_zero_sub_zero_eq {S : Type*} [CommRing S] (g : S →+* S) {T : S} (hT : T = 0) :
     g 0 - 0 = T := by
   rw [hT, map_zero, sub_zero]
 
+/- English proof (translation)
+Rewrite using `[smul_div₀', ← hιg, ← hιg, div_eq_div_iff (hgy σ) hy, ← map_mul, ← map_mul, h σ]`.
+-/
 theorem smul_div_eq_of_cross {R E G : Type*} [CommRing R] [Field E] [Group G] [MulSemiringAction G E]
     (ι : R →+* E) (g : G → R →+* R) (hιg : ∀ σ x, ι (g σ x) = σ • ι x) {x y : R} (hy : ι y ≠ 0)
     (hgy : ∀ σ, ι (g σ y) ≠ 0) (h : ∀ σ, g σ x * y = x * g σ y) (σ : G) :
     σ • (ι x / ι y) = ι x / ι y := by
   rw [smul_div₀', ← hιg, ← hιg, div_eq_div_iff (hgy σ) hy, ← map_mul, ← map_mul, h σ]
 
+/- English proof (translation)
+Rewrite `h` using `[smul_div₀', ← hιg, ← hιg, div_sub_div _ _ hgb hb, div_eq_iff (mul_ne_zero hgb hb)]`. Apply `hι` to reduce the goal to its premises. Simplify using `only [map_sub, map_mul] at h ⊢`. Take the linear combination `h`.
+-/
 theorem cross_of_smul_div_sub {R E G : Type*} [CommRing R] [Field E] [Group G] [MulSemiringAction G E]
     (ι : R →+* E) (hι : Function.Injective ι) (g : G → R →+* R) (hιg : ∀ σ x, ι (g σ x) = σ • ι x)
     {a b T : R} (σ : G) (hb : ι b ≠ 0) (hgb : ι (g σ b) ≠ 0) (h : σ • (ι a / ι b) - ι a / ι b = ι T) :
@@ -62,6 +79,9 @@ theorem cross_of_smul_div_sub {R E G : Type*} [CommRing R] [Field E] [Group G] [
 
 set_option maxHeartbeats 3200000 in
 include hζ in
+/- English proof (translation)
+The claim follows from `injective_of_away (periodTPlus hε) (algebraMap_bCris_injective hε hζ) (phiPlus ℂ_[p] p) (phiB hε) (fun x => phiB_algebraMap hε x) phiPlus_injective`.
+-/
 theorem phiB_injective : Function.Injective (phiB hε) :=
   injective_of_away (periodTPlus hε) (algebraMap_bCris_injective hε hζ) (phiPlus ℂ_[p] p) (phiB hε)
     (fun x => phiB_algebraMap hε x) phiPlus_injective
@@ -69,6 +89,11 @@ theorem phiB_injective : Function.Injective (phiB hε) :=
 set_option maxHeartbeats 4000000 in
 include hζ in
 
+/- English proof (translation)
+Take `⟨k, -, hk⟩` from `bCris_fixed_mem_maxUnramified hε hζ μ hμ`. Set `ιA : BCris hε →ₐ[ℚ_[p]] 𝔹dR` to `{ toRingHom := iotaB hε hζ, commutes' := iotaB_algebraMap_padic hε hζ }`. Set `φA : BCris hε →ₐ[ℚ_[p]] BCris hε` to `{ toRingHom := phiB hε, commutes' := phiB_algebraMap_padic' hε }`. Establish `halg : IsAlgebraic ℚ_[p] (ιA μ)`. Express the relevant statement in the definitionally equal form `IsAlgebraic ℚ_[p] (iotaB hε hζ μ)`.
+
+Rewrite using `[hk]`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic k).algHom ((IsScalarTower.toAlgHom ℚ_[p] 𝔹 𝔹dR).comp (algClToBdR p))`. Conclude with `exists_iterate_eq_of_algebraic ιA (iotaB_injective hε hζ) φA halg`.
+-/
 theorem phiB_preperiodic_of_fixed [FiniteDimensional ℚ_[p] K] (μ : BCris hε) (hμ : ∀ σ : Gal(PadicAlgCl p/K), galB hε σ μ = μ) :
     ∃ n d, 0 < d ∧ (phiB hε)^[n + d] μ = (phiB hε)^[n] μ := by
   obtain ⟨k, -, hk⟩ := bCris_fixed_mem_maxUnramified hε hζ μ hμ
@@ -86,6 +111,11 @@ theorem phiB_preperiodic_of_fixed [FiniteDimensional ℚ_[p] K] (μ : BCris hε)
 set_option maxHeartbeats 4000000 in
 include hζ in
 
+/- English proof (translation)
+Establish `hιy : iotaB hε hζ y ≠ 0` using `fun h0 => hy (iotaB_injective hε hζ (by rw [h0, map_zero]))`. Establish `hμF : iotaB hε hζ x / iotaB hε hζ y ∈ fracBCris hε hζ` using `div_mem (iotaB_mem_fracBCris hε hζ x) (iotaB_mem_fracBCris hε hζ y)`. Establish `hμfix : ∀ σ : Gal(PadicAlgCl p/K), σ • (iotaB hε hζ x / iotaB hε hζ y) = iotaB hε hζ x / iotaB hε hζ y` using `smul_div_eq_of_cross (iotaB hε hζ) (fun σ : Gal(PadicAlgCl p/K) => galB hε σ) (fun σ z => iotaB_galB hε hζ σ z) hιy (fun σ h0 => hy (galB_injective hε σ (iotaB_injective hε hζ (by rw [h0, map_zero, map_zero])))) h`. Take `⟨k, hk, hμk⟩` from `fracBCris_fixed hε hζ hμF hμfix`. Take `⟨z, hz, hzk⟩` from `exists_bCris_fixed hε hζ hk`.
+
+Use `⟨z, hz, iotaB_injective hε hζ ?_⟩` and prove the remaining obligations. Establish `e1 : iotaB hε hζ z = iotaB hε hζ x / iotaB hε hζ y` using `hzk.trans ((algClToBdRField_apply k).symm.trans hμk.symm)`. Rewrite using `[map_mul, e1, div_mul_cancel₀ _ hιy]`.
+-/
 theorem exists_fixed_of_cross [FiniteDimensional ℚ_[p] K] (x y : BCris hε) (hy : y ≠ 0)
     (h : ∀ σ : Gal(PadicAlgCl p/K), galB hε σ x * y = x * galB hε σ y) :
     ∃ z : BCris hε, (∀ σ : Gal(PadicAlgCl p/K), galB hε σ z = z) ∧ x = z * y := by
@@ -105,6 +135,9 @@ theorem exists_fixed_of_cross [FiniteDimensional ℚ_[p] K] (x y : BCris hε) (h
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `isDomain_bCris hε hζ` as an intermediate fact. Take `⟨a', b', hb', hφ', hg'⟩` from `exists_pair_phi (phiB hε) (phiB_injective hε hζ) (phiB_algebraMap_padic' hε) (fun σ : Gal(PadicAlgCl p/K) => galB hε σ) (fun σ => galB_injective hε σ) (fun σ q => galB_algebraMap_padic hε σ q) (fun σ x => (phiB_galB hε σ x).symm) (phiB_periodTCris hε) (phiB_preperiodic_of_fixed h …`. Use `isDomain_bCrisPlus (p := p)` as an intermediate fact. Take `⟨α, β, hβ, hφ, hg⟩` from `exists_pair_away (periodTPlus hε) (algebraMap_bCris_injective hε hζ) (phiPlus ℂ_[p] p) (phiB hε) (fun x => phiB_algebraMap hε x) (fun σ : Gal(PadicAlgCl p/K) => galPlus σ) (fun σ => galB hε σ) (fun σ x => galB_algebraMap hε σ x) (fun σ => algebraMap ℚ_[p] (BCrisPlus ℂ_[p] p) (kum …`. Conclude with `false_of_frac hε hζ (K := K) hg hβ hφ`.
+-/
 theorem false_of_bCris_pair [FiniteDimensional ℚ_[p] K] {a b : BCris hε} (hb : b ≠ 0)
     (hrel : ∀ σ : Gal(PadicAlgCl p/K), galB hε σ a * b - a * galB hε σ b =
       algebraMap ℚ_[p] (BCris hε) (kummerC hε hζ σ : ℚ_[p]) * periodTCris hε * galB hε σ b * b) :
@@ -125,6 +158,13 @@ theorem false_of_bCris_pair [FiniteDimensional ℚ_[p] K] {a b : BCris hε} (hb 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `h`. Take `⟨a, b, rfl⟩` from `exists_eq_div_of_mem_closure_range (iotaB hε hζ) hy`. Distinguish the cases in `hb : b = 0`. Use `not_forall_galB_sub_eq_kummerC hε hζ (K := K) 0 fun σ => ?_` and prove the remaining obligations. Establish `h1` using `h σ`.
+
+Establish `h0 : iotaB hε hζ a / iotaB hε hζ b = 0` using `by rw [hb, map_zero, div_zero]`. Rewrite `h1` using `[h0, smul_zero, sub_zero]`. Conclude with `map_zero_sub_zero_eq (galB hε σ) (iotaB_injective hε hζ (h1.symm.trans (map_zero _).symm))`. Establish `hιb : iotaB hε hζ b ≠ 0` using `fun h0 => hb (iotaB_injective hε hζ (by rw [h0, map_zero]))`. Use `false_of_bCris_pair hε hζ (K := K) (a := a) hb fun σ => ?_` and prove the remaining obligations.
+
+Establish `hιgb : iotaB hε hζ (galB hε σ b) ≠ 0` using `map_map_ne_zero (iotaB hε hζ) (iotaB_injective hε hζ) (galB hε σ) (galB_injective hε σ) hb`. Conclude with `cross_of_smul_div_sub (iotaB hε hζ) (iotaB_injective hε hζ) (fun σ : Gal(PadicAlgCl p/K) => galB hε σ) (fun σ z => iotaB_galB hε hζ σ z) σ hιb hιgb (h σ)`.
+-/
 theorem not_forall_gal_smul_sub_eq [FiniteDimensional ℚ_[p] K] {y : 𝔹dR} (hy : y ∈ fracBCris hε hζ) :
     ¬ ∀ σ : Gal(PadicAlgCl p/K), σ • y - y =
       iotaB hε hζ (algebraMap ℚ_[p] (BCris hε) (kummerC hε hζ σ : ℚ_[p]) * periodTCris hε) := by

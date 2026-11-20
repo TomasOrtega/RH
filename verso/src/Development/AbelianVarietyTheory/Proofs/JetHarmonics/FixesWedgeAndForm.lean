@@ -12,6 +12,11 @@ namespace GlobalTheory.FlagFix
 
 open Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Establish `dU : U.det = 1`. Establish `ht : U.IsUpperTriangular` using `fun i j hij => hU0 i j hij`. Rewrite using `[det_of_isUpperTriangular ht]`. Conclude with `Finset.prod_eq_one (fun i _ => hU1 i)`. Use function extensionality and compare the values at `I`.
+
+Establish `e : (Matrix.of fun a b : Fin l => f' b (I.1.orderEmbOfFin I.2 a)) = (Matrix.of fun a b : Fin l => f b (I.1.orderEmbOfFin I.2 a)) * U`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, h]`. Simplify using `only [wedge]`. Rewrite using `[e, det_mul, dU, mul_one]`.
+-/
 theorem wedge_eq_of_mul {n l : ℕ} (f f' : Fin l → Fin n → ℂ) (U : Matrix (Fin l) (Fin l) ℂ)
     (hU0 : ∀ c a, a < c → U c a = 0) (hU1 : ∀ c, U c c = 1)
     (h : ∀ i a, f' a i = ∑ c, f c i * U c a) : wedge f' = wedge f := by
@@ -27,11 +32,17 @@ theorem wedge_eq_of_mul {n l : ℕ} (f f' : Fin l → Fin n → ℂ) (U : Matrix
   simp only [wedge]
   rw [e, det_mul, dU, mul_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Simplify using `only [flat, herm]`. Rewrite using `[dotProduct_mulVec, dotProduct_single, mul_one]`.
+-/
 theorem flat_eq (k r : ℕ) (f : Fin (2 * r + k + 1) → ℂ) : flat k r f = star f ᵥ* Hpk k r := by
   funext c
   simp only [flat, herm]
   rw [dotProduct_mulVec, dotProduct_single, mul_one]
 
+/- English proof (translation)
+Establish `h2 : Hpk k r * Hpk k r = 1` using `(hermitian_pos_facts_hold k r).2.1`. Establish `hl : (Hpk k r * sᴴ * Hpk k r) * s = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc sᴴ, hs, h2]`. Rewrite using `[flat_eq, dualM, mulVec_transpose, Matrix.inv_eq_left_inv hl, vecMul_vecMul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul, ← vecMul_vecMul, ← star_mulVec, hf]`.
+-/
 theorem dual_fix (k r : ℕ) (f : Fin (2 * r + k + 1) → ℂ)
     (s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hs : sᴴ * Hpk k r * s = Hpk k r)
     (hf : s *ᵥ f = f) : dualM s *ᵥ flat k r f = flat k r f := by
@@ -41,6 +52,13 @@ theorem dual_fix (k r : ℕ) (f : Fin (2 * r + k + 1) → ℂ)
   rw [flat_eq, dualM, mulVec_transpose, Matrix.inv_eq_left_inv hl, vecMul_vecMul,
     ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul, ← vecMul_vecMul, ← star_mulVec, hf]
 
+/- English proof (translation)
+Introduce `k r z hz s hs`. Take `⟨U, hU0, hU1, hF⟩` from `S_F hz hs`. Establish `key : ∀ i a, (s *ᵥ fvec k r z a) i = ∑ c, fvec k r z c i * U c a`. Introduce `i a`. Use `congrFun (congrFun hF i) a` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_apply, Fm, mulVec, dotProduct]`. Use `⟨?_, dual_fix k r _ s (Sset_UH hs) ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.compoundMatrix_cauchyBinet_properties _ (r + 1) s s).2.2.2]`. Conclude with `wedge_eq_of_mul _ _ U hU0 hU1 key`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[key, Finset.sum_eq_single 0, hU1, mul_one]`. Introduce `c _ hc`. Rewrite using `[hU0 c 0 (Fin.pos_of_ne_zero hc), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem fixes_wedge_and_form : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), Formalism.QuantumDeterminants.inWb k r z →
     ∀ s ∈ Formalism.QuantumDeterminants.Sset k r z,
       cmp (r + 1) s *ᵥ (wedge (Formalism.QuantumDeterminants.fvec k r z)) = (wedge (Formalism.QuantumDeterminants.fvec k r z)) ∧

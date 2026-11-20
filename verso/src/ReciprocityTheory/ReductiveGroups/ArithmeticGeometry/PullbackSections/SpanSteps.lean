@@ -14,6 +14,15 @@ section Read
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r}
 
+/- English proof (translation)
+Introduce `f`. Establish `h0 : (f : Rul Xo c) ∈ cusp Xo c U a n` using `f.2`. Establish `h1` using `(Submodule.mem_inf.mp h0).2`. Rewrite `h1` using `[Submodule.mem_iInf]`. Establish `h2` using `h1 σ`.
+
+Rewrite `h2` using `[Submodule.mem_iInf]`. Establish `hf : rdC U σ a n f ∈ holSub (U σ).X (laU (U σ) a n)` using `h2 hσ`. Set `K : Submodule ℂ (FDSec (U σ).X)` to `{ carrier := {P | IsHolCusp (U σ).X (laU (U σ) a n) P} zero_mem' := by`. Introduce `k`. Conclude with `((hM5 r ((U σ).X k) (laU (U σ) a n k) (laU (U σ) a n k) 0).1).1`.
+
+Use the proof step `add_mem' := by`. Introduce `P Q hP hQ k`. Conclude with `((hM5 r ((U σ).X k) (laU (U σ) a n k) (laU (U σ) a n k) 0).1).2.1 _ (hP k) _ (hQ k)`. Use the proof step `smul_mem' := by`. Introduce `z P hP k`.
+
+Conclude with `((hM5 r ((U σ).X k) (laU (U σ) a n k) (laU (U σ) a n k) 0).1).2.2 z _ (hP k) }`. Establish `hle : holSub (U σ).X (laU (U σ) a n) ≤ K` using `Submodule.span_le.mpr (fun P hP => hP)`. Conclude with `hle hf`.
+-/
 theorem readings_holomorphic_cuspForms (hM5 : SiegelSpaceAlgebra (E := E)) {σ : c.F →+* ℂ} (hσ : GoodEmb c σ)
     (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : RdHolCusp σ (laU (U σ) a n) (rdC U σ a n) := by
   intro f
@@ -37,6 +46,11 @@ theorem readings_holomorphic_cuspForms (hM5 : SiegelSpaceAlgebra (E := E)) {σ :
   have hle : holSub (U σ).X (laU (U σ) a n) ≤ K := Submodule.span_le.mpr (fun P hP => hP)
   exact hle hf
 
+/- English proof (translation)
+Establish `h0 : (f : Rul Xo c) ∈ cusp Xo c U a n` using `f.2`. Establish `h1` using `(Submodule.mem_inf.mp h0).2`. Rewrite `h1` using `[Submodule.mem_iInf]`. Establish `h2` using `h1 σ`. Rewrite `h2` using `[Submodule.mem_iInf]`.
+
+Conclude with `h2 hσ`.
+-/
 theorem rdC_mem_holSub {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (f : cusp Xo c U a n) : rdC U σ a n f ∈ holSub (U σ).X (laU (U σ) a n) := by
   have h0 : (f : Rul Xo c) ∈ cusp Xo c U a n := f.2
@@ -46,6 +60,9 @@ theorem rdC_mem_holSub {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) (a : (E →+* �
   rw [Submodule.mem_iInf] at h2
   exact h2 hσ
 
+/- English proof (translation)
+Use `Submodule.mem_inf.mpr ⟨rdC_mem_holSub hσ a n f, ?_⟩` and prove the remaining obligations. Introduce `k x hx`. Simplify using `[rdC, rdU, hx]`.
+-/
 theorem rdC_mem_holSub0 {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     (f : cusp Xo c U a n) : rdC U σ a n f ∈ holSub0 (U σ).X (laU (U σ) a n) := by
   refine Submodule.mem_inf.mpr ⟨rdC_mem_holSub hσ a n f, ?_⟩

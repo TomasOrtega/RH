@@ -20,6 +20,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.HTTors
 
+/- English proof (translation)
+Use `hA.smooth` as an intermediate fact. Establish `hfin : IsFinite φ.left` using `GlobalTheory.T.abelianScheme_endomorphism_finite_of_geometric_fibres S A hA φ fun k _ _ t => (h k t).fin`. Establish `hflat : Flat φ.left` using `GlobalTheory.T.flat_of_finite_flat_geometric_fibres_over_base S A A φ inferInstance inferInstance inferInstance hfin fun k _ _ t => (h k t).flat`. Use `⟨hfin, hflat, GlobalTheory.AbLaw.MulN.surjective_of_geomFibres φ fun k _ _ t => (h k t).surj, fun y => ?_⟩` and prove the remaining obligations. Set `K` to `AlgebraicClosure (A.left.residueField y)`.
+
+Set `u : Sp K ⟶ A.left` to `spMap (algebraMap (A.left.residueField y) K) ≫ A.left.fromSpecResidueField y`. Set `t` to `u ≫ A.hom`. Set `q : Sp K` to `(⊥ : PrimeSpectrum K)`. Set `v : Sp K ⟶ pullback A.hom t` to `pullback.lift u (𝟙 _) (by simp [t])`. Establish `hP` using `GlobalTheory.AbLaw.MulN.isPullback_baseChange t φ`.
+
+Establish `e` using `Scheme.Hom.finrank_of_isPullback _ _ _ _ hP (v q)`. Establish `hv : pullback.fst A.hom t (v q) = y`. Rewrite using `[← Scheme.Hom.comp_apply]`. Establish `: v ≫ pullback.fst A.hom t = u` using `pullback.lift_fst _ _ _`. Rewrite using `[this]`.
+
+Conclude with `(Scheme.Hom.comp_apply _ _ q).trans (Scheme.fromSpecResidueField_apply y _)`. Rewrite `e` using `[hv]`. Rewrite using `[← e]`. Conclude with `(h K t).rank _`.
+-/
 theorem isIsogDeg_of_geomFibres (S : Scheme.{0}) (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) (φ : A ⟶ A)
     (d : ℕ) (h : ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ S),
       GlobalTheory.IwLevel.IsIsogDeg ((Over.pullback t).map φ) d) : GlobalTheory.IwLevel.IsIsogDeg φ d := by
@@ -44,6 +53,9 @@ theorem isIsogDeg_of_geomFibres (S : Scheme.{0}) (A : Over S) [GrpObj A] (hA : I
   rw [← e]
   exact (h K t).rank _
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.T.isFinite_and_finrank_act_eq_norm_pow k A hA F ρ l d hl hl0 hcard c hc`. Conclude with `GlobalTheory.T.isogeny_degree_of_fibre_rank k A hA _ (ρ.hom c) h1 _ h2`.
+-/
 theorem isIsogDeg_fibre (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A] (hA : IsAbelianScheme A)
     (F : Type) [Field F] [NumberField F] (ρ : OAct (𝓞 F) A) (l d : ℕ) (hl : l.Prime) (hl0 : (l : k) ≠ 0)
     (hcard : Nat.card {x : 𝟙_ (Over (Sp k)) ⟶ A // x ^ l = 1} = l ^ (d * Module.finrank ℚ F))
@@ -62,6 +74,15 @@ def pullAct {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {S : Sch
     rw [map_add, act.add]
     exact map_mul (Over.pullback t).homMonoidHom _ _
 
+/- English proof (translation)
+Introduce `p _ D R _ b N S s o c hc`. Use `isIsogDeg_of_geomFibres S o.A o.ab _ _ fun k _ _ t => ?_` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `Spec.map_surjective (t ≫ s)`. Establish `hβ : t ≫ s = spMap φ.hom` using `by rw [← hφ]; rfl`. Take `⟨I, -⟩` from `o.geom k t φ.hom hβ`.
+
+Take `⟨l, hlp, hl⟩` from `Nat.exists_infinite_primes (p + 1)`. Establish `hlp' : l ≠ p` using `by omega`. Establish `hcop : l.Coprime p` using `(Nat.coprime_primes hl (Fact.out)).2 hlp'`. Establish `hl0 : (l : k) ≠ 0`. Use `(b.unit l hcop).map φ.hom` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `hcount` using `GlobalTheory.T.card_lTorsion_eq_pow_of_tateSimilitude p D k _ _ _ I l hl hlp'`. Set `e` to `GlobalTheory.TorsionLift.ptsEquiv t o.A (𝟙_ (Over (Sp k))) t (Category.id_comp t)`. Establish `hc2 : Nat.card {x : 𝟙_ (Over (Sp k)) ⟶ (Over.pullback t).obj o.A // x ^ l = 1} = l ^ ((D.m * D.n) * Module.finrank ℚ D.F)`.
+
+Rewrite using `[← hcount]`. Use `Nat.card_congr (e.toEquiv.subtypeEquiv fun x => ?_)` and prove the remaining obligations. Use `show x ^ l = 1 ↔ e x ^ l = 1`. Rewrite using `[← map_pow, map_eq_one_iff e e.injective]`. Conclude with `isIsogDeg_fibre k _ (GlobalTheory.isAbelianScheme_pullback_obj t o.A o.ab) D.F (pullAct o.act t) l _ hl hl0 hc2 c hc`.
+-/
 theorem isIsogDeg_intAct : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R]
     (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : GlobalTheory.UPel.HT.Obj b N s) (c : 𝓞 D.F),
     c ≠ 0 → GlobalTheory.IwLevel.IsIsogDeg (o.act.act (algebraMap (𝓞 D.F) D.O c)) ((Algebra.norm ℤ c).natAbs ^ (D.m * D.n)) := by

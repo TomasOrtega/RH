@@ -23,14 +23,27 @@ def quotInv (c : O →+* O) (p : O) (hp : c p = p) :
     rw [Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, hp]
     exact Ideal.mem_span_singleton_self p)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotInv_mk (c : O →+* O) (p : O) (hp : c p = p) (u : O) :
     quotInv c p hp (Ideal.Quotient.mk _ u) = Ideal.Quotient.mk _ (c u) := rfl
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Rewrite using `[quotInv_mk, quotInv_mk, hc]`.
+-/
 theorem quotInv_quotInv (c : O →+* O) (hc : ∀ u, c (c u) = u) (p : O) (hp : c p = p) (u) :
     quotInv c p hp (quotInv c p hp u) = u := by
   obtain ⟨v, rfl⟩ := Ideal.Quotient.mk_surjective u
   rw [quotInv_mk, quotInv_mk, hc]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective v`. Rewrite `hv` using `[← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨k, hk⟩` from `hv`.
+
+Establish `hpj : p ^ j = p * p ^ (j - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨w + p ^ (j - 1) * k, by linear_combination hk + k * hpj⟩`.
+
+Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨Ideal.Quotient.mk _ w, map_mul _ _ _⟩`.
+-/
 private lemma quotient_mk_dvd_mk_iff_dvd (p : O) (j : ℕ) (hj : 1 ≤ j) (u : O) :
     Ideal.Quotient.mk (Ideal.span {p ^ j}) p ∣ Ideal.Quotient.mk (Ideal.span {p ^ j}) u ↔
       p ∣ u := by
@@ -47,6 +60,53 @@ private lemma quotient_mk_dvd_mk_iff_dvd (p : O) (j : ℕ) (hj : 1 ≤ j) (u : O
   · rintro ⟨w, rfl⟩
     exact ⟨Ideal.Quotient.mk _ w, map_mul _ _ _⟩
 
+/- English proof (translation)
+Establish `hq0 : 0 < q` using `by omega`. Establish `hfinA : Finite (O ⧸ Ideal.span {p ^ j})` using `Nat.finite_of_card_ne_zero (by rw [h2]; exact pow_ne_zero _ hq0.ne')`. Establish `hfinB : Finite (O ⧸ Ideal.span {p})` using `Nat.finite_of_card_ne_zero (by rw [h1]; exact pow_ne_zero _ hq0.ne')`. Set `_ : Fintype (O ⧸ Ideal.span {p})` to `Fintype.ofFinite _`. Establish `hle : Ideal.span {p ^ j} ≤ (Ideal.span {p}).comap (RingHom.id O)`.
+
+Rewrite using `[Ideal.comap_id, Ideal.span_singleton_le_span_singleton]`. Conclude with `dvd_pow_self p (by omega)`. Use `set φ := Ideal.quotientMap (Ideal.span {p}) (RingHom.id O) hle with hφdef`. Establish `hφmk : ∀ u, φ (Ideal.Quotient.mk _ u) = Ideal.Quotient.mk _ u` using `fun u => Ideal.quotientMap_mk`. Establish `hsurj : Function.Surjective φ`.
+
+Introduce `z`. Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `⟨_, hφmk u⟩`. Use `set cA := quotInv c (p ^ j) hpj with hcAdef`. Use `set cB := quotInv c p hp with hcBdef`.
+
+Establish `hφc : ∀ u, φ (cA u) = cB (φ u)`. Introduce `u`. Take `⟨v, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Rewrite using `[hcAdef, hcBdef, quotInv_mk, hφmk, hφmk, quotInv_mk]`. Use `set pA : O ⧸ Ideal.span {p ^ j} := Ideal.Quotient.mk _ p with hpAdef`.
+
+Establish `hker : ∀ u, φ u = 0 ↔ pA ∣ u`. Introduce `u`. Take `⟨v, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Rewrite using `[hφmk, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, hpAdef, quotient_mk_dvd_mk_iff_dvd p j hj v]`. Establish `hnil : IsNilpotent pA` using `⟨j, by rw [hpAdef, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.mem_span_singleton_self _⟩`. Establish `hcA : ∀ u, cA (cA u) = u` using `quotInv_quotInv c hc _ hpj`. Establish `hcB : ∀ u, cB (cB u) = u` using `quotInv_quotInv c hc _ hp`. Establish `hωA : IsUnit (Ideal.Quotient.mk (Ideal.span {p ^ j}) ω - cA (Ideal.Quotient.mk _ ω))`. Rewrite using `[hcAdef, quotInv_mk, ← map_sub]`.
+
+Conclude with `hω.map _`. Establish `hωB : IsUnit (Ideal.Quotient.mk (Ideal.span {p}) ω - cB (Ideal.Quotient.mk _ ω))`. Rewrite using `[hcBdef, quotInv_mk, ← map_sub]`. Conclude with `hω.map _`. Establish `hpA : cA pA = pA` using `by rw [hcAdef, hpAdef, quotInv_mk, hp]`.
+
+Use `set GA := G.map (Ideal.Quotient.mk (Ideal.span {p ^ j})) with hGAdef`. Establish `hGA : ∀ a b, cA (GA b a) = GA a b`. Introduce `a b`. Simplify using `only [hGAdef, Matrix.map_apply]`. Rewrite using `[hcAdef, quotInv_mk, hG]`.
+
+Establish `hGB : ∀ a b, cB ((GA.map φ) b a) = (GA.map φ) a b`. Introduce `a b`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[← hφc, hGA]`. Establish `hKB : ∀ t, cB t = t → t ≠ 0 → IsUnit t`.
+
+Introduce `t ht ht0`. Take `⟨θ, -, hθ, -, -⟩` from `exists_trace_one c hc hω`. Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Establish `h' : Ideal.Quotient.mk (Ideal.span {p}) (c u) = Ideal.Quotient.mk _ u`. Rewrite `ht` using `[hcBdef, quotInv_mk]`.
+
+Conclude with `ht`. Establish `hv : c (θ * u + c (θ * u)) = θ * u + c (θ * u)`. Rewrite using `[map_add, hc, add_comm]`. Establish `hmk : Ideal.Quotient.mk (Ideal.span {p}) (θ * u + c (θ * u)) = Ideal.Quotient.mk _ u`. Rewrite using `[map_mul c, map_add, map_mul, map_mul, h', ← add_mul, ← map_add, hθ, map_one, one_mul]`.
+
+Establish `hnd : ¬ p ∣ θ * u + c (θ * u)`. Introduce `hd`. Apply `ht0` to reduce the goal to its premises. Rewrite using `[← hmk, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `hd`.
+
+Rewrite using `[← hmk]`. Conclude with `(hK _ hv hnd).map _`. Establish `hcardB : Fintype.card (O ⧸ Ideal.span {p}) = q ^ 2`. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `h1`.
+
+Establish `h29` using `GlobalTheory.T.primitiveTuplesWithGramMatrix_hensel_count cA hcA _ hωA pA hpA hnil m n GA hGA`. Establish `h31` using `GlobalTheory.T.ncard_primitive_tuples_gram_mod_nilpotent cA cB hcA pA hnil φ hsurj hφc hker m n GA`. Establish `h33` using `GlobalTheory.T.card_hermitian_matrices_dvd_sq cA hcA _ hωA pA hpA m`. Establish `h62` using `GlobalTheory.T.ncard_primitiveTuplesWithGramMatrix_residueRing cB hcB _ hωB hKB q hq hcardB m n hmn (GA.map φ) hGB`. Establish `hD : Nat.card {u : O ⧸ Ideal.span {p ^ j} // pA ∣ u} = q ^ (2 * (j - 1))`.
+
+Establish `hcard` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup (φ : (O ⧸ Ideal.span {p ^ j}) →+ (O ⧸ Ideal.span {p})).ker`. Rewrite `hcard` using `[Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective (φ : (O ⧸ Ideal.span {p ^ j}) →+ (O ⧸ Ideal.span {p})) hsurj).toEquiv, h1, h2]`. Establish `hsub : Nat.card ((φ : (O ⧸ Ideal.span {p ^ j}) →+ (O ⧸ Ideal.span {p})).ker) = Nat.card {u : O ⧸ Ideal.span {p ^ j} // pA ∣ u}` using `Nat.card_congr (Equiv.subtypeEquivRight fun u => by`. Rewrite using `[AddMonoidHom.mem_ker]`. Conclude with `hker u)`.
+
+Rewrite `hcard` using `[hsub]`. Establish `h2j : q ^ (2 * j) = q ^ 2 * q ^ (2 * (j - 1))`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hcard` using `[h2j]`. Conclude with `(Nat.eq_of_mul_eq_mul_left (pow_pos hq0 2) hcard).symm`. Rewrite `h31`, `h33` using `[hD]`. Establish `hH : Nat.card {H : Matrix (Fin m) (Fin m) (O ⧸ Ideal.span {p ^ j}) // (∀ a b, cA (H b a) = H a b) ∧ ∀ a b, pA ∣ H a b} = q ^ ((j - 1) * (m * m))`. Apply `Nat.pow_left_injective (n := 2) (by norm_num)` to reduce the goal to its premises.
+
+Simplify using `only`. Rewrite using `[h33, ← pow_mul, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h29` using `[hH, h31]`.
+
+Establish `hle2 : m * m ≤ 2 * n * m` using `by nlinarith`. Establish `hK2 : 2 * n * m - m ^ 2 + m * m = 2 * n * m`. Rewrite using `[sq]`. Conclude with `Nat.sub_add_cancel hle2`. Establish `hexp : 2 * (j - 1) * (n * m) = (j - 1) * (2 * n * m - m ^ 2) + (j - 1) * (m * m)`.
+
+Rewrite using `[← Nat.mul_add, hK2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h29` using `[← pow_mul, hexp, pow_add]`. Establish `hS : Set.ncard (sols cA n GA) = q ^ ((j - 1) * (2 * n * m - m ^ 2)) * Set.ncard (sols cB n (GA.map φ))`. Apply `Nat.eq_of_mul_eq_mul_right (pow_pos hq0 ((j - 1) * (m * m)))` to reduce the goal to its premises.
+
+Rewrite using `[h29]`. Expand and normalize the polynomial expressions, which then agree. Establish `hjK : j * (2 * n * m - m ^ 2) = (j - 1) * (2 * n * m - m ^ 2) + (2 * n * m - m ^ 2)` using `by conv_lhs => rw [← Nat.sub_add_cancel hj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hN, hS, hjK]`.
+
+Use `push_cast`. Rewrite using `[pow_add]`. Establish `hX : (0 : ℝ) ≤ (q : ℝ) ^ ((j - 1) * (2 * n * m - m ^ 2))` using `by positivity`. Take `⟨hlo, hhi⟩` from `h62`. Prove the components needed by the constructor for the conclusion.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hlo hX]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hhi hX]`.
+-/
 theorem count_quot (c : O →+* O) (hc : ∀ u, c (c u) = u) (ω : O) (hω : IsUnit (ω - c ω))
     (p : O) (hp : c p = p) (hK : ∀ t, c t = t → ¬ p ∣ t → IsUnit t) (q : ℕ) (hq : 2 ≤ q)
     (j : ℕ) (hj : 1 ≤ j) (h1 : Nat.card (O ⧸ Ideal.span {p}) = q ^ 2)
@@ -192,6 +252,71 @@ theorem count_quot (c : O →+* O) (hc : ∀ u, c (c u) = u) (ω : O) (hω : IsU
 
 end Abstract
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ n m j hmn hj Gm hHm hIm R hR hrep N hN`. Take `⟨-, -, -, -, hmemF, hcardj, hq2, -⟩` from `GlobalTheory.UnramOrder.order_facts L ϖ hϖ`. Set `c : L.O →+* L.O` to `(L.cj : E →+* E).restrict L.O L.O (fun x hx => GlobalTheory.UnramOrder.cj_mem L hx)`. Establish `hcv : ∀ u : L.O, (c u : E) = L.cj u` using `fun u => rfl`. Establish `hc : ∀ u, c (c u) = u` using `fun u => Subtype.ext (L.cj_cj u)`.
+
+Take `⟨ω0, hω0, e0, he0, hωe⟩` from `GlobalTheory.UnramOrder.exists_sub_cj_mul_eq_one L`. Establish `hω : IsUnit ((⟨ω0, hω0⟩ : L.O) - c ⟨ω0, hω0⟩)` using `IsUnit.of_mul_eq_one (⟨e0, he0⟩ : L.O) (Subtype.ext hωe)`. Set `p : L.O` to `⟨algebraMap F E (ϖ : F), (hmemF _).2 ϖ.2⟩`. Establish `hpv : ∀ k : ℕ, ((p ^ k : L.O) : E) = algebraMap F E ((ϖ : F) ^ k)`. Introduce `k`.
+
+Rewrite using `[SubmonoidClass.coe_pow, map_pow]`. Establish `hp : c p = p` using `Subtype.ext (L.cj.commutes _)`. Establish `hpj : c (p ^ j) = p ^ j` using `by rw [map_pow, hp]`. Establish `hϖ0 : (ϖ : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `hpnu : ¬ IsUnit p`.
+
+Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `hv1 : algebraMap F E (ϖ : F) * v = 1` using `congrArg Subtype.val hv`. Establish `hv2 : algebraMap F E (ϖ : F)⁻¹ * algebraMap F E (ϖ : F) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hϖ0, map_one]`.
+
+Establish `hvE : (v : E) = algebraMap F E (ϖ : F)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, hv2, one_mul]`. Use `_ = algebraMap F E (ϖ : F)⁻¹ := by rw [hv1, mul_one]`. Establish `hmem : (ϖ : F)⁻¹ ∈ 𝒪[F]`.
+
+Rewrite using `[← hmemF, ← hvE]`. Conclude with `v.2`. Conclude with `hϖ.not_isUnit (IsUnit.of_mul_eq_one (a := ϖ) (⟨_, hmem⟩ : 𝒪[F]) (Subtype.ext (mul_inv_cancel₀ hϖ0)))`. Establish `hK : ∀ t : L.O, c t = t → ¬ p ∣ t → IsUnit t`. Introduce `t ht hnd`.
+
+Take `⟨a, ha⟩` from `GlobalTheory.UnramOrder.exists_int_of_fixed L t.2 (congrArg Subtype.val ht)`. Establish `hau : IsUnit a`. Assume the negation of the conclusion as `hna`. Establish `hmax : a ∈ IsLocalRing.maximalIdeal 𝒪[F]` using `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 hna)`. Rewrite `hmax` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.mem_span_singleton]`.
+
+Take `⟨b, rfl⟩` from `hmax`. Conclude with `hnd ⟨⟨algebraMap F E (b : F), (hmemF _).2 b.2⟩, Subtype.ext (ha.trans (map_mul (algebraMap F E) (ϖ : F) (b : F)))⟩`. Take `⟨u, rfl⟩` from `hau`. Establish `huw : ((u : 𝒪[F]) : F) * (((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F) = 1` using `congrArg Subtype.val u.mul_inv`. Use `IsUnit.of_mul_eq_one (a := t) (M := L.O) ⟨algebraMap F E (((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F), (hmemF _).2 ((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]).2⟩ (Subtype.ext ?_)` and prove the remaining obligations.
+
+Use `show (t : E) * algebraMap F E (((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F) = 1`. Rewrite using `[ha, ← map_mul, huw, map_one]`. Establish `hjac : ∀ u : L.O, u ∈ Ideal.span {p ^ j} → IsUnit (1 + u)`. Introduce `u hu`. Rewrite `hu` using `[Ideal.mem_span_singleton]`.
+
+Take `⟨v, rfl⟩` from `hu`. Establish `hfix : c ((1 + p ^ j * v) * c (1 + p ^ j * v)) = (1 + p ^ j * v) * c (1 + p ^ j * v)`. Rewrite using `[map_mul, hc, mul_comm]`. Establish `hcv' : c (1 + p ^ j * v) = 1 + p ^ j * c v`. Rewrite using `[map_add, map_one, map_mul, map_pow, hp]`.
+
+Establish `hnd : ¬ p ∣ (1 + p ^ j * v) * c (1 + p ^ j * v)`. Introduce and unpack `⟨s, hs⟩`. Rewrite `hs` using `[hcv']`. Establish `hpj' : p ^ j = p * p ^ (j - 1)`. Rewrite using `[← pow_succ']`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Apply `hpnu` to reduce the goal to its premises. Use `IsUnit.of_mul_eq_one (a := p) (s - p ^ (j - 1) * (v + c v + p ^ j * v * c v)) ?_` and prove the remaining obligations. Take the linear combination `(-1 : L.O) * hs + (v + c v + p ^ j * v * c v) * hpj'`.
+
+Conclude with `isUnit_of_mul_isUnit_left (hK _ hfix hnd)`. Establish `hsetj : ∀ k : ℕ, {y : L.O | (y : E) = algebraMap F E ((ϖ : F) ^ k)} = {p ^ k}`. Introduce `k`. Use extensionality with `y`. Rewrite using `[Set.mem_ofPred_eq, Set.mem_singleton_iff, ← hpv k]`.
+
+Conclude with `⟨fun h => Subtype.ext h, fun h => h ▸ rfl⟩`. Establish `h2 : Nat.card (L.O ⧸ Ideal.span {p ^ j}) = resQ ϖ ^ (2 * j)`. Use `hcardj j` as an intermediate fact. Rewrite `this` using `[hsetj j]`. Then use the resulting hypothesis. Establish `h1 : Nat.card (L.O ⧸ Ideal.span {p}) = resQ ϖ ^ 2`.
+
+Use `hcardj 1` as an intermediate fact. Rewrite `this` using `[hsetj 1, pow_one, mul_one]`. Then use the resulting hypothesis. Establish `hmkeq : ∀ u v : L.O, Ideal.Quotient.mk (Ideal.span {p ^ j}) u = Ideal.Quotient.mk _ v ↔ ∃ c0 ∈ L.O, (u : E) - v = algebraMap F E ((ϖ : F) ^ j) * c0`. Introduce `u v`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Use `⟨k, k.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hpv j]`. Conclude with `congrArg Subtype.val hk`.
+
+Introduce and unpack `⟨c0, hc0, h⟩`. Use `⟨⟨c0, hc0⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← hpv j]`. Conclude with `h`. Establish `hrepQ : ∀ z : L.O ⧸ Ideal.span {p ^ j}, ∃ w : E, ∃ hw : w ∈ L.O, w ∈ R ∧ Ideal.Quotient.mk _ (⟨w, hw⟩ : L.O) = z`.
+
+Introduce `z`. Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨w, ⟨hwR, c0, hc0, hw⟩, -⟩` from `hrep u u.2`. Use `⟨w, hR w hwR, hwR, (hmkeq _ _).2 ⟨-c0, neg_mem hc0, ?_⟩⟩` and prove the remaining obligations. Use `show w - (u : E) = _`.
+
+Rewrite using `[mul_neg, ← hw]`. Expand and normalize the polynomial expressions, which then agree. Use `choose rp hrpO hrpR hrpmk using hrepQ`. Establish `hrp_eq : ∀ w (hw : w ∈ R), rp (Ideal.Quotient.mk (Ideal.span {p ^ j}) (⟨w, hR w hw⟩ : L.O)) = w`. Introduce `w hw`.
+
+Take `⟨c0, hc0, hc⟩` from `(hmkeq _ _).1 (hrpmk (Ideal.Quotient.mk (Ideal.span {p ^ j}) (⟨w, hR w hw⟩ : L.O)))`. Establish `hc' : rp (Ideal.Quotient.mk (Ideal.span {p ^ j}) (⟨w, hR w hw⟩ : L.O)) - w = algebraMap F E ((ϖ : F) ^ j) * c0` using `hc`. Take `⟨w', -, huniq⟩` from `hrep w (hR w hw)`. Establish `ea` using `huniq _ ⟨hrpR _, -c0, neg_mem hc0, by rw [mul_neg, ← hc']; ring⟩`. Establish `eb` using `huniq w ⟨hw, 0, zero_mem _, by rw [sub_self, mul_zero]⟩`.
+
+Conclude with `ea.trans eb.symm`. Establish `hfv : ∀ u v : Fin n → L.O, hf L 1 (fun i => (u i : E)) (fun i => (v i : E)) = ((ip c u v : L.O) : E)`. Introduce `u v`. Simplify using `[hf, ip, Matrix.one_apply, hcv]`. Set `cA` to `quotInv c (p ^ j) hpj`.
+
+Establish `hφc' : ∀ u, Ideal.Quotient.mk (Ideal.span {p ^ j}) (c u) = cA (Ideal.Quotient.mk _ u)` using `fun u => (quotInv_mk c (p ^ j) hpj u).symm`. Establish `hk : ∀ u, Ideal.Quotient.mk (Ideal.span {p ^ j}) u = 0 → IsUnit (1 + u)` using `fun u hu => hjac u (Ideal.Quotient.eq_zero_iff_mem.1 hu)`. Establish `hEprim : ∀ u : Fin m → Fin n → L.O, (∃ y : Fin m → Fin n → E, (∀ a i, y a i ∈ L.O) ∧ ∀ a b, hf L 1 (fun i => (u a i : E)) (y b) = if a = b then 1 else 0) ↔ Prim c u`. Introduce `u`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hyO, hy⟩`. Use `⟨fun b i => ⟨y b i, hyO b i⟩, fun a b => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `e : hf L 1 (fun i => (u a i : E)) (fun i => ((⟨y b i, hyO b i⟩ : L.O) : E)) = if a = b then 1 else 0` using `hy a b`. Rewrite `e` using `[hfv]`. Apply the tactic sequence `exact e.trans (by split_ifs <;> rfl)`.
+
+Introduce and unpack `⟨y, hy⟩`. Use `⟨fun b i => (y b i : E), fun b i => (y b i).2, fun a b => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg Subtype.val (hy a b)`. Rewrite `e` using `[← hfv]`. Apply the tactic sequence `exact e.trans (by split_ifs <;> rfl)`.
+
+Set `GO : Matrix (Fin m) (Fin m) L.O` to `fun a b => ⟨Gm a b, hIm a b⟩`. Establish `hGO : ∀ a b, c (GO b a) = GO a b` using `fun a b => Subtype.ext (congrFun (congrFun hHm a) b)`. Establish `hgram : ∀ u : Fin m → Fin n → L.O, (∀ a b, ∃ c0 ∈ L.O, hf L 1 (fun i => (u b i : E)) (fun i => (u a i : E)) - Gm a b = algebraMap F E ((ϖ : F) ^ j) * c0) ↔ ∀ a b, ip cA (fun i => Ideal.Quotient.mk (Ideal.span {p ^ j}) (u b i)) (fun i => Ideal.Quotient.mk (Ideal.span {p ^ j}) (u a …`. Introduce `u`. Use `forall_congr' fun a => forall_congr' fun b => ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_ip c cA _ hφc', hmkeq, hfv]`. Establish `hset : {x : Fin m → Fin n → E | (∀ a i, x a i ∈ R) ∧ (∃ y : Fin m → Fin n → E, (∀ a i, y a i ∈ L.O) ∧ ∀ a b, hf L 1 (x a) (y b) = if a = b then 1 else 0) ∧ ∀ a b, ∃ c ∈ L.O, hf L 1 (x b) (x a) - Gm a b = algebraMap F E ((ϖ : F) ^ j) * c} = (fun z a i => rp (z a i)) '' sols cA n ( …`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hx, hprim, hgr⟩`. Set `u : Fin m → Fin n → L.O` to `fun a i => ⟨x a i, hR _ (hx a i)⟩`. Use `⟨fun a i => Ideal.Quotient.mk _ (u a i), And.intro ?_ ?_, ?_⟩` and prove the remaining obligations. Conclude with `Prim.map c cA _ hφc' ((hEprim u).1 hprim)`. Conclude with `(hgram u).1 hgr`.
+
+Use function extensionality and compare the values at `a i`. Conclude with `hrp_eq (x a i) (hx a i)`. Introduce and unpack `⟨z, ⟨hzp, hzg⟩, rfl⟩`. Set `u : Fin m → Fin n → L.O` to `fun a i => ⟨rp (z a i), hrpO (z a i)⟩`. Establish `hu : (fun a i => Ideal.Quotient.mk (Ideal.span {p ^ j}) (u a i)) = z`.
+
+Use function extensionality and compare the values at `fun a => funext fun i => hrpmk (z a i)`. Use `⟨fun a i => hrpR (z a i), (hEprim u).2 ?_, (hgram u).2 ?_⟩` and prove the remaining obligations. Apply `prim_of_map c hc cA _ hφc' Ideal.Quotient.mk_surjective hk` to reduce the goal to its premises. Rewrite using `[hu]`. Conclude with `hzp`.
+
+Introduce `a b`. Establish `e` using `hzg a b`. Rewrite `e` using `[← hu]`. Conclude with `e`. Establish `hinj : Function.Injective (fun (z : Fin m → Fin n → L.O ⧸ Ideal.span {p ^ j}) (a : Fin m) (i : Fin n) => rp (z a i))`.
+
+Introduce `z z' h`. Use function extensionality and compare the values at `a i`. Establish `e : rp (z a i) = rp (z' a i)` using `congrFun (congrFun h a) i`. Combine the equalities or inequalities in the displayed calculation. Establish `hN' : N = Set.ncard (sols cA n (GO.map (Ideal.Quotient.mk _)))` using `hN.trans ((congrArg Set.ncard hset).trans (Set.ncard_image_of_injective _ hinj))`.
+
+Conclude with `count_quot c hc _ hω p hp hK (resQ ϖ) hq2 j hj h1 h2 hpj m n hmn GO hGO N hN'`.
+-/
 theorem primitive_gram_count : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ ϖ : 𝒪[F], Irreducible ϖ → ∀ (n m j : ℕ), 2 * m + 3 ≤ n → 1 ≤ j → ∀ (Gm : Matrix (Fin m) (Fin m) E), IsHerm L Gm → IsIntM L Gm → ∀ (R : Finset E), (∀ u ∈ R, u ∈ L.O) → (∀ u ∈ L.O, ∃! w, w ∈ R ∧ ∃ c ∈ L.O, u - w = algebraMap F E ((ϖ : F) ^ j) * c) → ∀ N : ℕ, N = Set.ncard {x : Fin m → Fin n → E | (∀ a i, x a i ∈ R) ∧ (∃ y : Fin m → Fin n → E, (∀ a i, y a i ∈ L.O) ∧ ∀ a b, hf L 1 (x a) (y b) = if a = b then 1 else 0) ∧ ∀ a b, ∃ c ∈ L.O, hf L 1 (x b) (x a) - Gm a b = algebraMap F E ((ϖ : F) ^ j) * c} → (resQ ϖ : ℝ) ^ (j * (2 * n * m - m ^ 2)) ≤ 2 * N ∧ (N : ℝ) ≤ 2 * (resQ ϖ : ℝ) ^ (j * (2 * n * m - m ^ 2)) := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ n m j hmn hj Gm hHm hIm R hR hrep N hN
   classical

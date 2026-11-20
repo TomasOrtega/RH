@@ -9,6 +9,9 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.TheoremTB
 
+/- English proof (translation)
+Introduce `D HW F hA h5 l _ K s LL h`. Conclude with `⟨GlobalTheory.T.crystalline_extension_class_bound D HW F hA l K s LL h, GlobalTheory.T.weight_good_reduction_at_prime D HW F hA h5 l K s LL h⟩`.
+-/
 theorem tb_assembled : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW),
     admitted D HW F → Conclusion5 D → Conclusion4 D HW F := by
   intro D HW F hA h5 l _ K s LL h

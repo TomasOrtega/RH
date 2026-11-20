@@ -21,6 +21,9 @@ section General
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {A B A' B' : X.Modules}
   {α : O →+* End A} {β : O →+* End B} {α' : O →+* End A'} {β' : O →+* End B'} {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `ShortComplex.shortExact_of_iso (ShortComplex.isoMk (S₁ := ShortComplex.mk f' g' w') (Iso.refl _) e.symm (Iso.refl _) (by simp [← hf]) (by simp [← hg])) h`.
+-/
 theorem shortExact_map_of_iso {T : Scheme.{0}} (j : T ⟶ X) {D : X.Modules} {D' : T.Modules} {f : A ⟶ D} {g : D ⟶ B}
     (w : f ≫ g = 0) {f' : (pb j).obj A ⟶ D'} {g' : D' ⟶ (pb j).obj B} {w' : f' ≫ g' = 0}
     (h : (ShortComplex.mk f' g' w').ShortExact) (e : (pb j).obj D ≅ D') (hf : (pb j).map f ≫ e.hom = f')
@@ -28,6 +31,9 @@ theorem shortExact_map_of_iso {T : Scheme.{0}} (j : T ⟶ X) {D : X.Modules} {D'
   ShortComplex.shortExact_of_iso (ShortComplex.isoMk (S₁ := ShortComplex.mk f' g' w') (Iso.refl _) e.symm (Iso.refl _)
     (by simp [← hf]) (by simp [← hg])) h
 
+/- English proof (translation)
+Use `haveI := h.mono_f`. Use `haveI := h.epi_g`. Conclude with `ShortComplex.ShortExact.mk' (QCoh.exact_map_pullback f h.exact).1 (FlagLocal.mono_pullback_of_isOpenImmersion f K.f) (QCoh.exact_map_pullback f h.exact).2`.
+-/
 theorem shortExact_map_open {T : Scheme.{0}} (f : T ⟶ X) [IsOpenImmersion f] {K : ShortComplex X.Modules}
     (h : K.ShortExact) : (K.map (pb f)).ShortExact := by
   haveI := h.mono_f
@@ -40,6 +46,25 @@ def InducesIso {T T' S : Scheme.{0}} {a : T ⟶ X} {a' : T' ⟶ X} {b : S ⟶ T'
     (φ : (pb b).obj N ≅ (pb c).obj M) : Prop :=
   (pb b).map e'.hom ≫ φ.hom = (sqIso w).hom.app D ≫ (pb c).map e.hom
 
+/- English proof (translation)
+Take `⟨D, e, e', he⟩` from `exists_glue_obj w hS hd φ`. Establish `he₁ : ∀ i, (pb (b i)).map (e' i).inv ≫ (sqIso (w i)).hom.app D = (φ i).hom ≫ (pb (c i)).map e.inv` using `fun i => by`. Rewrite using `[← cancel_epi ((pb (b i)).map (e' i).hom), reassoc_of% he i]`. Simplify using `[← Functor.map_comp, ← Functor.map_comp_assoc]`. Establish `hin : ∀ {F : X.Modules} (f : (pb a).obj F ⟶ d₀.D) (f' : ∀ i, (pb (a' i)).obj F ⟶ (d' i).D), (∀ i, (pb (b i)).map (f' i) ≫ (φ i).hom = (sqIso (w i)).hom.app F ≫ (pb (c i)).map f) → ∃ g : F ⟶ D, (pb a).map g ≫ e.hom = f ∧ ∀ i, (pb (a' i)).map g ≫ (e' i).hom = f' i` using `fun f f' h => by`.
+
+Take `⟨g, hg, hg'⟩` from `exists_glue_hom w hS hd hc (f ≫ e.inv) (fun i => f' i ≫ (e' i).inv) fun i => by`. Rewrite using `[Functor.map_comp, Category.assoc, he₁, reassoc_of% h i, Functor.map_comp]`. Conclude with `⟨g, by simp [hg], fun i => by simp [hg']⟩`. Establish `hout : ∀ {F : X.Modules} (f : d₀.D ⟶ (pb a).obj F) (f' : ∀ i, (d' i).D ⟶ (pb (a' i)).obj F), (∀ i, (φ i).hom ≫ (pb (c i)).map f = (pb (b i)).map (f' i) ≫ (sqIso (w i)).hom.app F) → ∃ g : D ⟶ F, e.hom ≫ f = (pb a).map g ∧ ∀ i, (e' i).hom ≫ f' i = (pb (a' i)).map g` using `fun f f' h => by`. Take `⟨g, hg, hg'⟩` from `exists_glue_hom w hS hd hc (e.hom ≫ f) (fun i => (e' i).hom ≫ f' i) fun i => by`.
+
+Rewrite using `[Functor.map_comp, Category.assoc, ← h, reassoc_of% he i, Functor.map_comp]`. Conclude with `⟨g, hg.symm, fun i => (hg' i).symm⟩`. Take `⟨a₀, ha, ha'⟩` from `hin d₀.a (fun i => (d' i).a) fun i => (hφ i).2.1`. Take `⟨b₀, hb, hb'⟩` from `hout d₀.b (fun i => (d' i).b) fun i => (hφ i).2.2.1`. Take `⟨u₀, hu, hu'⟩` from `hin d₀.u (fun i => (d' i).u) fun i => (hφ i).2.2.2.1`.
+
+Take `⟨v₀, hv, hv'⟩` from `hout d₀.v (fun i => (d' i).v) fun i => (hφ i).2.2.2.2`. Use `choose ρ hρ hρ' using fun x : O => hin (e.hom ≫ act d₀.ρ x) (fun i => (e' i).hom ≫ act (d' i).ρ x) fun i => by`. Use `(hφ i).1 x` as an intermediate fact. Rewrite `this` using `[act_pullAct, act_pullAct]`. Rewrite using `[Functor.map_comp, Category.assoc, this, reassoc_of% he i, Functor.map_comp]`.
+
+Establish `ext : ∀ {F : X.Modules} {g g' : F ⟶ D}, (pb a).map g ≫ e.hom = (pb a).map g' ≫ e.hom → (∀ i, (pb (a' i)).map g ≫ (e' i).hom = (pb (a' i)).map g' ≫ (e' i).hom) → g = g'` using `fun h h' => hom_ext_cover hc ((cancel_mono _).1 h) fun i => (cancel_mono _).1 (h' i)`. Establish `m1 : ∀ {Y : Scheme.{0}} {F : Y.Modules} (σ : O →+* End F), act σ 1 = 𝟙 F` using `fun σ => map_one σ`. Establish `m0 : ∀ {Y : Scheme.{0}} {F : Y.Modules} (σ : O →+* End F), act σ 0 = 0` using `fun σ => map_zero σ`. Establish `mm : ∀ {Y : Scheme.{0}} {F : Y.Modules} (σ : O →+* End F) x y, act σ (x * y) = act σ y ≫ act σ x` using `fun σ => map_mul σ`. Establish `ma : ∀ {Y : Scheme.{0}} {F : Y.Modules} (σ : O →+* End F) x y, act σ (x + y) = act σ x + act σ y` using `fun σ => map_add σ`.
+
+Set `ρ₀ : O →+* End D` to `{ toFun := ρ map_one' := show ρ 1 = 𝟙 D from ext (by rw [hρ, m1]; simp) fun i => by rw [hρ', m1]; simp map_mul' := fun x y => show ρ (x * y) = ρ y ≫ ρ x from`. Use extensionality with `(by rw [hρ, mm, Functor.map_comp, Category.assoc, hρ, reassoc_of% hρ y]) fun i => by`. Rewrite using `[hρ', mm, Functor.map_comp, Category.assoc, hρ', reassoc_of% hρ' y i]`. Use the proof step `map_zero' := show ρ 0 = (0 : D ⟶ D) from ext (by rw [hρ, m0]; simp) fun i => by rw [hρ', m0]; simp`. Use the proof step `map_add' := fun x y => show ρ (x + y) = (ρ x + ρ y : D ⟶ D) from`.
+
+Use extensionality with `(by rw [hρ, ma, Functor.map_add, Preadditive.add_comp, hρ, hρ, Preadditive.comp_add]) fun i => by`. Rewrite using `[hρ', ma, Functor.map_add, Preadditive.add_comp, hρ', hρ', Preadditive.comp_add] }`. Establish `ein : ∀ {F : X.Modules} {σ : O →+* End F} {g : F ⟶ D}, IsEquivariant (pullAct σ a) d₀.ρ ((pb a).map g ≫ e.hom) → (∀ i, IsEquivariant (pullAct σ (a' i)) (d' i).ρ ((pb (a' i)).map g ≫ (e' i).hom)) → IsEquivariant σ ρ₀ g` using `fun {F σ g} h h' x => show act σ x ≫ g = g ≫ ρ x from`. Use extensionality with `(by rw [Functor.map_comp, Functor.map_comp, Category.assoc, Category.assoc, hρ, ← Category.assoc _ e.hom, ← h x, act_pullAct]) fun i => by`. Rewrite using `[Functor.map_comp, Functor.map_comp, Category.assoc, Category.assoc, hρ', ← Category.assoc _ (e' i).hom, ← h' i x, act_pullAct]`.
+
+Establish `eout : ∀ {F : X.Modules} {σ : O →+* End F} {g : D ⟶ F} {f : d₀.D ⟶ (pb a).obj F} {f' : ∀ i, (d' i).D ⟶ (pb (a' i)).obj F}, e.hom ≫ f = (pb a).map g → (∀ i, (e' i).hom ≫ f' i = (pb (a' i)).map g) → IsEquivariant d₀.ρ (pullAct σ a) f → (∀ i, IsEquivariant (d' i).ρ (pullAct σ (a' i) …` using `fun {F σ g f f'} hf hf' h h' x => show ρ x ≫ g = g ≫ act σ x from hom_ext_cover hc (by rw [Functor.map_comp, Functor.map_comp, ← hf, reassoc_of% hρ x, h x, act_pullAct, Category.assoc]) fun i => by`. Rewrite using `[Functor.map_comp, Functor.map_comp, ← hf', reassoc_of% hρ' x i, h' i x, act_pullAct, Category.assoc]`. Establish `w₁ : a₀ ≫ b₀ = 0` using `hom_ext_cover hc (by rw [Functor.map_comp, ← hb, reassoc_of% ha, d₀.w₁, Functor.map_zero]) fun i => by`. Rewrite using `[Functor.map_comp, ← hb', reassoc_of% ha' i, (d' i).w₁, Functor.map_zero]`. Establish `w₂ : u₀ ≫ v₀ = 0` using `hom_ext_cover hc (by rw [Functor.map_comp, ← hv, reassoc_of% hu, d₀.w₂, Functor.map_zero]) fun i => by`.
+
+Rewrite using `[Functor.map_comp, ← hv', reassoc_of% hu' i, (d' i).w₂, Functor.map_zero]`. Use `⟨{ D := D, ρ := ρ₀, a := a₀, b := b₀, u := u₀, v := v₀, w₁ := w₁, w₂ := w₂ isVB := isVB_of_cover hc (d₀.isVB.of_iso e.symm) fun i => (d' i).isVB.of_iso (e' i).symm exact₁ := shortExact_of_cover hc _ (shortExact_map_of_iso a w₁ d₀.exact₁ e ha hb) fun i => shortExact_map_of_iso _ w …` and prove the remaining obligations.
+-/
 theorem exists_glue {T : Scheme.{0}} {ι : Type} {T' S : ι → Scheme.{0}} {a : T ⟶ X} {a' : ∀ i, T' i ⟶ X}
     {b : ∀ i, S i ⟶ T' i} {c : ∀ i, S i ⟶ T} [IsOpenImmersion a] [∀ i, IsOpenImmersion (a' i)]
     [∀ i, IsOpenImmersion (b i)] [∀ i, IsOpenImmersion (c i)] (w : ∀ i, b i ≫ a' i = c i ≫ a)
@@ -127,10 +152,16 @@ theorem exists_glue {T : Scheme.{0}} {ι : Type} {T' S : ι → Scheme.{0}} {a :
             equiv_v := eout hv hv' d₀.equiv_v fun i => (d' i).equiv_v }, e, e',
     ⟨hρ, ha, hb, hu, hv⟩, fun i => ⟨fun x => hρ' x i, ha' i, hb' i, hu' i, hv' i⟩, he⟩
 
+/- English proof (translation)
+Rewrite using `[Scheme.homOfLE_ι, Scheme.homOfLE_ι]`.
+-/
 theorem inf_square (V U : X.Opens) :
     X.homOfLE (inf_le_left : V ⊓ U ≤ V) ≫ V.ι = X.homOfLE (inf_le_right : V ⊓ U ≤ U) ≫ U.ι := by
   rw [Scheme.homOfLE_ι, Scheme.homOfLE_ι]
 
+/- English proof (translation)
+Rewrite using `[Scheme.Opens.opensRange_ι, Scheme.Opens.opensRange_ι]`. Introduce `x hx`. Conclude with `⟨⟨x, hx.2, hx.1⟩, by rw [Scheme.homOfLE_ι]; rfl⟩`.
+-/
 theorem range_inf_le (V U : X.Opens) :
     U.ι.opensRange ⊓ V.ι.opensRange ≤ (X.homOfLE (inf_le_right : V ⊓ U ≤ U) ≫ U.ι).opensRange := by
   rw [Scheme.Opens.opensRange_ι, Scheme.Opens.opensRange_ι]
@@ -140,6 +171,13 @@ theorem range_inf_le (V U : X.Opens) :
 def AgreeOnInf {V U : X.Opens} (d : DatumOn α β α' β' r V.ι) (d₀ : DatumOn α β α' β' r U.ι) : Prop :=
   ∃ φ, Agree d d₀ (inf_square V U) φ
 
+/- English proof (translation)
+Establish `h₁ : ∀ i, U.ι.opensRange ⊓ (V i).ι.opensRange ≤ (X.homOfLE (inf_le_right : V i ⊓ U ≤ U) ≫ U.ι).opensRange` using `fun i => range_inf_le (V i) U`. Establish `h₂ : ∀ i j, i ≠ j → (V i).ι.opensRange ⊓ (V j).ι.opensRange ≤ U.ι.opensRange` using `fun i j h => by`. Rewrite using `[Scheme.Opens.opensRange_ι, Scheme.Opens.opensRange_ι, Scheme.Opens.opensRange_ι]`. Conclude with `hd i j h`. Establish `h₃ : ∀ x : X, x ∈ U.ι.opensRange ∨ ∃ i, x ∈ (V i).ι.opensRange` using `fun x => by`.
+
+Establish `: x ∈ U ⊔ ⨆ i, V i` using `by rw [hc]; trivial`. Break down `Opens.mem_sup.1 this with h | h` into its components or cases. Conclude with `.inl (by rwa [Scheme.Opens.opensRange_ι])`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 h`. Conclude with `.inr ⟨i, by rwa [Scheme.Opens.opensRange_ι]⟩`.
+
+Conclude with `exists_glue (T := U) (T' := fun i => V i) (S := fun i => (V i ⊓ U : X.Opens)) (a := U.ι) (a' := fun i => (V i).ι) (b := fun i => X.homOfLE (inf_le_left : V i ⊓ U ≤ V i)) (c := fun i => X.homOfLE (inf_le_right : V i ⊓ U ≤ U)) (fun i => inf_square (V i) U) h₁ h₂ h₃ d₀ d' φ hφ`.
+-/
 theorem exists_glue_opens {ι : Type} (U : X.Opens) (V : ι → X.Opens) (hd : ∀ i j, i ≠ j → V i ⊓ V j ≤ U)
     (hc : U ⊔ ⨆ i, V i = ⊤) (d₀ : DatumOn α β α' β' r U.ι) (d' : ∀ i, DatumOn α β α' β' r (V i).ι)
     (φ : ∀ i, (pb (X.homOfLE (inf_le_left : V i ⊓ U ≤ V i))).obj (d' i).D ≅
@@ -163,6 +201,13 @@ theorem exists_glue_opens {ι : Type} (U : X.Opens) (V : ι → X.Opens) (hd : �
     (a' := fun i => (V i).ι) (b := fun i => X.homOfLE (inf_le_left : V i ⊓ U ≤ V i))
     (c := fun i => X.homOfLE (inf_le_right : V i ⊓ U ≤ U)) (fun i => inf_square (V i) U) h₁ h₂ h₃ d₀ d' φ hφ
 
+/- English proof (translation)
+Use `choose V hx hV d φ hφ using h`. Take `⟨d, e, -, he, -⟩` from `exists_glue_opens (ι := {x : X // x ∉ U}) U (fun x => V x.1 x.2) (fun x y hxy z hz => by`. Distinguish the cases in `e : z = x.1`. Conclude with `hV _ _ z hz.2 fun e' => hxy (Subtype.ext (e.symm.trans e'))`. Conclude with `hV _ _ z hz.1 e)`.
+
+Use the proof step `(eq_top_iff.2 fun z _ => by`. Distinguish the cases in `hz : z ∈ U`. Conclude with `Opens.mem_sup.2 (.inl hz)`. Conclude with `Opens.mem_sup.2 (.inr (Opens.mem_iSup.2 ⟨⟨z, hz⟩, hx z hz⟩)))`. Use `d₀ (fun x => d x.1 x.2) (fun x => φ x.1 x.2) fun x => hφ x.1 x.2`.
+
+Conclude with `⟨d, e, he⟩`.
+-/
 theorem exists_glue_points (U : X.Opens) (d₀ : DatumOn α β α' β' r U.ι)
     (h : ∀ x : X, x ∉ U → ∃ V : X.Opens, x ∈ V ∧ (∀ y ∈ V, y ≠ x → y ∈ U) ∧
       ∃ d : DatumOn α β α' β' r V.ι, AgreeOnInf d d₀) :
@@ -197,11 +242,17 @@ def Datum.restrict (d : Datum α β α' β' r) {T : Scheme.{0}} (f : T ⟶ X) [I
   equiv_u := d.equiv_u.pullback f
   equiv_v := d.equiv_v.pullback f
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => (Category.comp_id _).trans (Category.id_comp _).symm, Category.comp_id _, Category.id_comp _, Category.comp_id _, Category.id_comp _⟩`.
+-/
 theorem Datum.restrictsTo_restrict (d : Datum α β α' β' r) {T : Scheme.{0}} (f : T ⟶ X) [IsOpenImmersion f] :
     RestrictsTo d (d.restrict f) (Iso.refl _) :=
   ⟨fun _ => (Category.comp_id _).trans (Category.id_comp _).symm, Category.comp_id _, Category.id_comp _,
     Category.comp_id _, Category.id_comp _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => (sqIso w).hom.naturality (act d.ρ x), (sqIso w).hom.naturality d.a, ((sqIso w).hom.naturality d.b).symm, (sqIso w).hom.naturality d.u, ((sqIso w).hom.naturality d.v).symm⟩`.
+-/
 theorem Datum.agree_restrict (d : Datum α β α' β' r) {T T' S : Scheme.{0}} {a : T ⟶ X} {a' : T' ⟶ X} [IsOpenImmersion a]
     [IsOpenImmersion a'] {b : S ⟶ T'} {c : S ⟶ T} (w : b ≫ a' = c ≫ a) :
     Agree (d.restrict a') (d.restrict a) w ((sqIso w).app d.D) :=
@@ -210,6 +261,9 @@ theorem Datum.agree_restrict (d : Datum α β α' β' r) {T T' S : Scheme.{0}} {
 
 end General
 
+/- English proof (translation)
+Use `choose φ hφ using h`. Take `⟨d, -⟩` from `exists_glue_opens U V hd hc d₀ d' φ hφ`. Conclude with `(hasDieu_iff q k c i).2 ⟨g, hg, ⟨d⟩⟩`.
+-/
 theorem hasDieu_of_opens {O : Type} [CommRing O] (q : ℕ) [Fact q.Prime] (k : Type) [Field k] [CharP k q] (c : O →+* O)
     {C : Scheme.{0}} [Algebra k Γ(C, ⊤)] {G : Over C} [GrpObj G] [QuasiSeparated G.hom] (i : OAct O G) (g : ℕ)
     (hg : IsVB (omega G) g) {ι : Type} (U : C.Opens) (V : ι → C.Opens) (hd : ∀ j l, j ≠ l → V j ⊓ V l ≤ U)
@@ -219,6 +273,9 @@ theorem hasDieu_of_opens {O : Type} [CommRing O] (q : ℕ) [Fact q.Prime] (k : T
   obtain ⟨d, -⟩ := exists_glue_opens U V hd hc d₀ d' φ hφ
   exact (hasDieu_iff q k c i).2 ⟨g, hg, ⟨d⟩⟩
 
+/- English proof (translation)
+Take `⟨d, -⟩` from `exists_glue_points U d₀ h`. Conclude with `(hasDieu_iff q k c i).2 ⟨g, hg, ⟨d⟩⟩`.
+-/
 theorem hasDieu_of_points {O : Type} [CommRing O] (q : ℕ) [Fact q.Prime] (k : Type) [Field k] [CharP k q] (c : O →+* O)
     {C : Scheme.{0}} [Algebra k Γ(C, ⊤)] {G : Over C} [GrpObj G] [QuasiSeparated G.hom] (i : OAct O G) (g : ℕ)
     (hg : IsVB (omega G) g) (U : C.Opens) (d₀ : DieuDatumOn q k c i g U.ι)

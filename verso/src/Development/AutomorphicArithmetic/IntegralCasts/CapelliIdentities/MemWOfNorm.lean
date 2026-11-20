@@ -12,6 +12,17 @@ import Mathlib
     (p : ℕ) → [Fact (Nat.Prime p)] → Type :=
     fun (p : ℕ) [Fact (Nat.Prime p)] ↦ FractionRing (UpperTheory.Reformulated.B.Qi32.WW p)
 
+/- English proof (translation)
+Introduce `p inst i0 hW x hx`. Establish `hp : ‖(p : ℂ_[p])‖ < 1`. Establish `h : (p : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (p : ℚ_[p])` using `(map_natCast _ p).symm`. Rewrite using `[h, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+
+Break down `ValuationRing.isInteger_or_isInteger (UpperTheory.Reformulated.B.Qi32.WW p) x with h | ⟨w, hw⟩` into its components or cases. Conclude with `h`. Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Conclude with `⟨0, map_zero _⟩`. Distinguish the cases in `hu : IsUnit w`.
+
+Take `⟨u, rfl⟩` from `hu`. Use `⟨((u⁻¹ : (UpperTheory.Reformulated.B.Qi32.WW p)ˣ) : UpperTheory.Reformulated.B.Qi32.WW p), ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, hw, inv_inv]`. It suffices to derive a contradiction. Establish `hirr : Irreducible (p : UpperTheory.Reformulated.B.Qi32.WW p)` using `WittVector.irreducible p`.
+
+Establish `hmem : w ∈ IsLocalRing.maximalIdeal (UpperTheory.Reformulated.B.Qi32.WW p)` using `hu`. Rewrite `hmem` using `[hirr.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨v, rfl⟩` from `hmem`. Establish `h1 : ‖i0 x‖ * ‖i0 x⁻¹‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, mul_inv_cancel₀ hx0, map_one, norm_one]`.
+
+Establish `h2 : ‖i0 x⁻¹‖ < 1`. Rewrite using `[← hw, map_mul, map_mul, map_natCast, map_natCast, norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (hW v)) hp`. Establish `h3 : ‖i0 x‖ * ‖i0 x⁻¹‖ ≤ ‖i0 x⁻¹‖` using `mul_le_of_le_one_left (norm_nonneg _) hx`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.Reformulated.B.Qi32.mem_W_of_norm :
     ∀ {p : ℕ} [inst : Fact (Nat.Prime p)] (i0 : UpperTheory.Reformulated.B.Qi32.K0 p →+* ℂ_[p]),
       (∀ (x : UpperTheory.Reformulated.B.Qi32.WW p),

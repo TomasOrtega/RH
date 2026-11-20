@@ -7,6 +7,21 @@ namespace GlobalTheory.FlatHilbAff
 
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
+/- English proof (translation)
+Introduce `V K _ _ _ _ _ _ X X' _ _ p p' b h I`. Use `set φ : V →+* Γ(X, ⊤) := p.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom with hφ`. Use `letI : Algebra V Γ(X, ⊤) := φ.toAlgebra`. Establish `H0` using `isPushout_appTop_of_isPullback h`. Establish `H : IsPushout (CommRingCat.ofHom (algebraMap V K)) (CommRingCat.ofHom (algebraMap V Γ(X, ⊤))) ((Scheme.ΓSpecIso (CommRingCat.of K)).inv ≫ p'.appTop) b.appTop`.
+
+Use `H0.flip.of_iso (Scheme.ΓSpecIso _) (Scheme.ΓSpecIso _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Scheme.ΓSpecIso_naturality _`. Use extensionality with `x`. Simplify using `[φ, RingHom.algebraMap_toAlgebra]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Set `e : K ⊗[V] Γ(X, ⊤) ≃+* Γ(X', ⊤)` to `((CommRingCat.isPushout_tensorProduct V K Γ(X, ⊤)).isoPushout ≪≫ H.isoPushout.symm).commRingCatIsoToRingEquiv`. Establish `he : ∀ x : Γ(X, ⊤), e (Algebra.TensorProduct.includeRight x) = b.appTop.hom x`. Introduce `x`. Establish `h1` using `congr($((CommRingCat.isPushout_tensorProduct V K Γ(X, ⊤)).inr_isoPushout_hom).hom x)`.
+
+Establish `h4` using `congr($(H.inr_isoPushout_inv).hom x)`. Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_ofHom, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h1 h4`. Establish `: e (Algebra.TensorProduct.includeRight x) = H.isoPushout.inv.hom ((CommRingCat.isPushout_tensorProduct V K Γ(X, ⊤)).isoPushout.hom.hom (Algebra.TensorProduct.includeRight x))` using `rfl`. Rewrite using `[this]`. Conclude with `(congrArg H.isoPushout.inv.hom h1).trans h4`.
+
+Take `⟨J, ⟨hJf, hJ⟩, -⟩` from `GlobalTheory.ValuativeQuotient.main V K Γ(X, ⊤) (I.comap e.toRingHom)`. Use `⟨J, ?_, ?_⟩` and prove the remaining obligations. Establish `: (algebraMap V (Γ(X, ⊤) ⧸ J)) = (Ideal.Quotient.mk J).comp (p.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom)`. Both sides reduce to the same expression. Rewrite using `[← this, RingHom.flat_algebraMap_iff]`.
+
+Conclude with `hJf`. Establish `hb : b.appTop.hom = e.toRingHom.comp (Algebra.TensorProduct.includeRight : Γ(X, ⊤) →ₐ[V] K ⊗[V] Γ(X, ⊤)).toRingHom`. Use extensionality with `x`. Conclude with `(he x).symm`. Rewrite using `[hb, ← Ideal.map_map]`.
+
+Express the relevant statement in the definitionally equal form `Ideal.map e.toRingHom (J.map (Algebra.TensorProduct.includeRight : Γ(X, ⊤) →ₐ[V] K ⊗[V] Γ(X, ⊤))) = I`. Rewrite using `[hJ]`. Conclude with `Ideal.map_comap_of_surjective _ e.surjective I`.
+-/
 theorem exists_flat_ideal : ∀ (V K : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (X X' : Scheme.{0}) [IsAffine X] [IsAffine X'] (p : X ⟶ Spec (CommRingCat.of V)) (p' : X' ⟶ Spec (CommRingCat.of K)) (b : X' ⟶ X), IsPullback b p' p (Spec.map (CommRingCat.ofHom (algebraMap V K))) → ∀ I : Ideal Γ(X', ⊤), ∃ J : Ideal Γ(X, ⊤), ((Ideal.Quotient.mk J).comp (p.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom)).Flat ∧ Ideal.map b.appTop.hom J = I := by
   intro V K _ _ _ _ _ _ X X' _ _ p p' b h I
   set φ : V →+* Γ(X, ⊤) := p.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom with hφ

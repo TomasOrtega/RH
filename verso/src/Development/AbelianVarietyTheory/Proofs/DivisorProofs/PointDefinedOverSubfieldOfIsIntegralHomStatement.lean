@@ -10,5 +10,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.USep
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DefOverIntegral.defOver_of_isIntegralHom | exact GlobalTheory.DefOverIntegral.defOver_of_isIntegralHom | (intros; apply GlobalTheory.DefOverIntegral.defOver_of_isIntegralHom <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pointDefinedOverSubfield_of_isIntegralHom : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIntegralHom f] {K : Type} [Field K] (k₀ : Subfield K), IsAlgClosed k₀ → ∀ P : Sp K ⟶ X, GlobalTheory.UChart.DefOver k₀ (P ≫ f) → GlobalTheory.UChart.DefOver k₀ P := by
   first | exact @GlobalTheory.DefOverIntegral.defOver_of_isIntegralHom | exact GlobalTheory.DefOverIntegral.defOver_of_isIntegralHom | (intros; apply GlobalTheory.DefOverIntegral.defOver_of_isIntegralHom <;> assumption)

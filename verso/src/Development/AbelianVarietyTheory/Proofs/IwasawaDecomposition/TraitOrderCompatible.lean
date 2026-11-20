@@ -17,6 +17,11 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.TorRef.Overlap
 
+/- English proof (translation)
+Establish `: IsPrincipalIdealRing B` using `IsPrincipalIdealRing.of_surjective e.toRingHom e.surjective`. Establish `: IsLocalRing B` using `IsLocalRing.of_surjective' e.toRingHom e.surjective`. Use `{ not_a_field' := ?_ }` and prove the remaining obligations. Rewrite using `[Ne, ← IsLocalRing.isField_iff_maximalIdeal_eq]`. Introduce `hF`.
+
+Conclude with `IsDiscreteValuationRing.not_isField A (MulEquiv.isField hF e.toMulEquiv)`.
+-/
 theorem isDiscreteValuationRing_of_ringEquiv {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B]
     (e : A ≃+* B) (h : IsDiscreteValuationRing A) : IsDiscreteValuationRing B := by
   have : IsPrincipalIdealRing B := IsPrincipalIdealRing.of_surjective e.toRingHom e.surjective
@@ -26,6 +31,13 @@ theorem isDiscreteValuationRing_of_ringEquiv {A B : Type} [CommRing A] [IsDomain
   intro hF
   exact IsDiscreteValuationRing.not_isField A (MulEquiv.isField hF e.toMulEquiv)
 
+/- English proof (translation)
+Take `⟨R, _, _, _, ξ, t, m, P, k, γ, hcn, hξ, het, -, -, -, -⟩` from `hC y`. Substitute `hξ` using the available equality. Take `⟨hR, hinj, hdesc⟩` from `GlobalTheory.T.etale_completion_dvr_injective _ R _ hcn het`. Establish `hR'` using `hR`. Take `⟨hdvrR, hcpl, hch0⟩` from `hR'`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Take `⟨be, hbe, hmon, -⟩` from `exists_periodForm P hϖ`. Establish `hr` using `GlobalTheory.T.generic_point_in_open_of_injective Z R ξ hinj`. Take `⟨n, hn, h1⟩` from `ho R hR ϖ hϖ ξ t m P hr be hbe hmon hy`. Take `⟨n', hn', h2⟩` from `ho' R hR ϖ hϖ ξ t m P hr be hbe hmon hy'`.
+
+Establish `e : n = n'` using `by exact_mod_cast hn.trans hn'.symm`. Substitute `e` using the available equality. Conclude with `hdesc _ _ (h1.trans h2.symm)`.
+-/
 theorem associated_of_dvr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c)
     (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ),
@@ -47,6 +59,9 @@ theorem associated_of_dvr {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   subst e
   exact hdesc _ _ (h1.trans h2.symm)
 
+/- English proof (translation)
+Take `⟨-, hft, -⟩` from `GlobalTheory.CoeffRings.coeff_isDedFrac E H l c`. Establish `: IsNoetherianRing (𝓞 c.F)` using `Algebra.FiniteType.isNoetherianRing ℤ (𝓞 c.F)`. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver Z.proj` as an intermediate fact. Conclude with `LocallyOfFiniteType.isLocallyNoetherian Z.s`.
+-/
 theorem isLocallyNoetherian_gmod {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) : IsLocallyNoetherian Z.X := by
   obtain ⟨-, hft, -⟩ := GlobalTheory.CoeffRings.coeff_isDedFrac E H l c
@@ -54,6 +69,15 @@ theorem isLocallyNoetherian_gmod {E : Type} [Field E] [NumberField E] [IsCMField
   have := GlobalTheory.ThetaDescent.isProper_of_isProjOver Z.proj
   exact LocallyOfFiniteType.isLocallyNoetherian Z.s
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z Cn φ hC U U' f f' hf hf' ho ho' x hx hx'`. Use `isLocallyNoetherian_gmod Z` as an intermediate fact. Take `⟨hdx, hicx⟩` from `Z.normal x`. Establish `ha` using `nonZeroDivisors.ne_zero (isRegularFn_iff_germ.1 hf x hx)`. Establish `hb` using `nonZeroDivisors.ne_zero (isRegularFn_iff_germ.1 hf' x hx')`.
+
+Use `GlobalTheory.T.associated_of_height_one_localizations _ _ _ ha hb fun q _ hq => ?_` and prove the remaining obligations. Take `⟨y, h, e, he⟩` from `GlobalTheory.T.stalk_localization_eq_generization Z.X x q`. Establish `hy : y ∈ U` using `h.mem_open U.isOpen hx`. Establish `hy' : y ∈ U'` using `h.mem_open U'.isOpen hx'`. Take `⟨hdy, -⟩` from `Z.normal y`.
+
+Establish `hd : IsDiscreteValuationRing (Z.X.presheaf.stalk y)` using `isDiscreteValuationRing_of_ringEquiv e (GlobalTheory.T.isDiscreteValuationRing_localization_of_height_eq_one' _ q hq)`. Establish `key` using `associated_of_dvr Z Cn φ hC U U' f f' ho ho' y hy hy' hd`. Establish `g1 : (Z.X.presheaf.germ U y hy).hom f = e (algebraMap _ _ ((Z.X.presheaf.germ U x hx).hom f))`. Rewrite using `[he, ← CommRingCat.comp_apply, TopCat.Presheaf.germ_stalkSpecializes]`. Establish `g2 : (Z.X.presheaf.germ U' y hy').hom f' = e (algebraMap _ _ ((Z.X.presheaf.germ U' x hx').hom f'))`.
+
+Rewrite using `[he, ← CommRingCat.comp_apply, TopCat.Presheaf.germ_stalkSpecializes]`. Rewrite `key` using `[g1, g2]`. Simplify using `using key.map e.symm`.
+-/
 theorem associated_germ : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ), (Fin m → LinearMap.BilinForm ℤ X) → Prop) (φ : InvFun (𝓞 E)), HasCones Cn Z → ∀ (U U' : Z.X.Opens) (f : Γ(Z.X, U)) (f' : Γ(Z.X, U')), IsRegularFn f → IsRegularFn f' → TraitOrd φ Z U f → TraitOrd φ Z U' f' → ∀ (x : Z.X) (hx : x ∈ U) (hx' : x ∈ U'), Associated ((Z.X.presheaf.germ U x hx).hom f) ((Z.X.presheaf.germ U' x hx').hom f') := by
   intro E _ _ _ H D l Xo c Z Cn φ hC U U' f f' hf hf' ho ho' x hx hx'
   have := isLocallyNoetherian_gmod Z

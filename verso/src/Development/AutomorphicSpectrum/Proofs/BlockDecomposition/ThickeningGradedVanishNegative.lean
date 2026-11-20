@@ -8,6 +8,11 @@ namespace GlobalTheory.CompanionTheory.Cone
 
 universe w v u
 
+/- English proof (translation)
+Establish `hC : Subsingleton (CH.Cn (U.ι ⋙ F) j)` using `⟨fun f g => funext fun s => (h _).elim _ _⟩`. Establish `hZ : Subsingleton ((CH.cx (U.ι ⋙ F)).Z j)` using `⟨fun x y => Subtype.ext (hC.elim _ _)⟩`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Conclude with `congrArg _ (hZ.elim x y)`.
+-/
 theorem HU_subsingleton_of_obj {R : Type} [CommRing R] {C : Type u} [Category.{v} C]
     (F : C ⥤ ModuleCat.{w} R) (U : ObjectProperty C) (j : ℕ)
     (h : ∀ T : C, Subsingleton (F.obj T)) : Subsingleton (HU F U j) := by
@@ -20,6 +25,11 @@ theorem HU_subsingleton_of_obj {R : Type} [CommRing R] {C : Type u} [Category.{v
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
   exact congrArg _ (hZ.elim x y)
 
+/- English proof (translation)
+Establish `h0 : ∀ x : sqM a b T, x = 0`. Introduce and unpack `⟨x, hx⟩`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hx`. Use `Subtype.ext ?_` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (h ▸ hy)`.
+
+Conclude with `⟨fun x y => (h0 x).trans (h0 y).symm⟩`.
+-/
 theorem sq_obj_subsingleton {R : Type} [CommRing R] {C : Type u} [Category.{v} C]
     {A : C ⥤ CommAlgCat.{0} R} (a b : IdF A) (T : C) (h : a.S T = b.S T) :
     Subsingleton ((sq a b).obj T) := by
@@ -30,6 +40,9 @@ theorem sq_obj_subsingleton {R : Type} [CommRing R] {C : Type u} [Category.{v} C
     exact Ideal.Quotient.eq_zero_iff_mem.2 (h ▸ hy)
   exact ⟨fun x y => (h0 x).trans (h0 y).symm⟩
 
+/- English proof (translation)
+Use `HU_subsingleton_of_obj _ Q j fun T => sq_obj_subsingleton _ _ T ?_` and prove the remaining obligations. Establish `e : r.toNat = (r + 1).toNat` using `by omega`. Express the relevant statement in the definitionally equal form `T.pdPow r.toNat = T.pdPow (r + 1).toNat`. Rewrite using `[e]`.
+-/
 theorem HU_gr_neg {b : Base} (L : b.Fun) (Q : ObjectProperty (Thick L)) (r : ℤ) (hr : r < 0) (j : ℕ) :
     Subsingleton (HU (gr (Φ := thP L) (thFil L) r) Q j) := by
   refine HU_subsingleton_of_obj _ Q j fun T => sq_obj_subsingleton _ _ T ?_

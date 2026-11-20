@@ -25,6 +25,9 @@ namespace GlobalTheory.KFourier
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds n ε).1`. Use `haveI : SecondCountableTopology (KG ε) := TopologicalSpace.Subtype.secondCountableTopology (KG ε : Set (UJ ε))`. Establish `h` using `continuous_parametric_integral_of_continuous (μ := muK ε) hF (isCompact_univ (X := KG ε))`. Simplify `h` using `only [Measure.restrict_univ]`.
+-/
 theorem continuous_integral_paramK {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {F : KG ε → KG ε → E} (hF : Continuous (Function.uncurry F)) :
     Continuous (fun x => ∫ k, F x k ∂(muK ε)) := by
@@ -34,6 +37,9 @@ theorem continuous_integral_paramK {ε : Fin n → Bool} {E : Type} [NormedAddCo
   have h := continuous_parametric_integral_of_continuous (μ := muK ε) hF (isCompact_univ (X := KG ε))
   simpa only [Measure.restrict_univ] using h
 
+/- English proof (translation)
+Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds n ε).1`. Use `haveI : SecondCountableTopology (KG ε) := TopologicalSpace.Subtype.secondCountableTopology (KG ε : Set (UJ ε))`. Conclude with `hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace F)`.
+-/
 theorem integrable_prod_of_continuousK {ε : Fin n → Bool} {F : KG ε × KG ε → ℂ} (hF : Continuous F) :
     Integrable F ((muK ε).prod (muK ε)) := by
   haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds n ε).1
@@ -41,6 +47,13 @@ theorem integrable_prod_of_continuousK {ε : Fin n → Bool} {F : KG ε × KG ε
     TopologicalSpace.Subtype.secondCountableTopology (KG ε : Set (UJ ε))
   exact hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace F)
 
+/- English proof (translation)
+Establish `hsq : ∀ z : ℂ, star z * z = ((‖z‖ ^ 2 : ℝ) : ℂ)`. Introduce `z`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `re1 : ∀ h : KG ε → ℂ, (∫ x, star (h x) * h x ∂(muK ε)).re = ∫ x, ‖h x‖ ^ 2 ∂(muK ε)`. Introduce `h`. Repeatedly rewrite using `[hsq]`. Rewrite using `[integral_complex_ofReal, Complex.ofReal_re]`. Establish `H` using `GlobalTheory.norm_integral_star_mul_sq_le (muK ε) f g hf.aestronglyMeasurable hg.aestronglyMeasurable (integrable_of_continuousK (by fun_prop)) (integrable_of_continuousK (by fun_prop))`.
+
+Rewrite `H` using `[re1 f, re1 g]`. Rewrite using `[← Real.sqrt_mul (integral_nonneg fun x => by positivity)]`. Use `Real.abs_le_sqrt H` as an intermediate fact. Rewrite `this` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis.
+-/
 theorem norm_integral_star_mul_le_sqrtK {ε : Fin n → Bool} {f g : KG ε → ℂ} (hf : Continuous f)
     (hg : Continuous g) :
     ‖∫ x, star (f x) * g x ∂(muK ε)‖ ≤
@@ -58,6 +71,39 @@ theorem norm_integral_star_mul_le_sqrtK {ε : Fin n → Bool} {f g : KG ε → �
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `n ε p κ hp hκ hκ0 hκ1 horth`. Use `haveI : IsProbabilityMeasure (muK ε) := (compact_haar_holds n ε).1`. Establish `hsq : ∀ z : ℂ, star z * z = ((‖z‖ ^ 2 : ℝ) : ℂ)`. Introduce `z`. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hA0 : 0 ≤ ∫ x, ‖p x‖ ^ 2 ∂(muK ε)` using `integral_nonneg fun x => by positivity`. Establish `hAc : ∫ x, star (p x) * p x ∂(muK ε) = ((∫ x, ‖p x‖ ^ 2 ∂(muK ε) : ℝ) : ℂ)`. Repeatedly rewrite using `[hsq]`.
+
+Conclude with `integral_complex_ofReal`. Establish `htr : ∀ x, ∫ k, (κ k : ℂ) * p (x * k) ∂(muK ε) = ∫ k, (κ (x⁻¹ * k) : ℂ) * p k ∂(muK ε)`. Introduce `x`. Use `integral_mul_left_eq_self (μ := muK ε) (fun k => (κ (x⁻¹ * k) : ℂ) * p k) x` as an intermediate fact. Simplify `this` using `only [inv_mul_cancel_left]`.
+
+Establish `hzero : ∫ x, star (p x) * ∫ k, (κ k : ℂ) * p (x * k) ∂(muK ε) ∂(muK ε) = 0`. Repeatedly rewrite using `[htr]`. Establish `e1 : ∀ x, star (p x) * ∫ k, (κ (x⁻¹ * k) : ℂ) * p k ∂(muK ε) = ∫ k, star (p x) * ((κ (x⁻¹ * k) : ℂ) * p k) ∂(muK ε)` using `fun x => (integral_const_mul _ _).symm`. Repeatedly rewrite using `[e1]`. Establish `hint : Integrable (Function.uncurry fun x k => star (p x) * ((κ (x⁻¹ * k) : ℂ) * p k)) ((muK ε).prod (muK ε))` using `integrable_prod_of_continuousK (F := fun z : KG ε × KG ε => star (p z.1) * ((κ (z.1⁻¹ * z.2) : ℂ) * p z.2)) (by fun_prop)`.
+
+Rewrite using `[integral_integral_swap hint]`. Establish `e2 : ∀ k, ∫ x, star (p x) * ((κ (x⁻¹ * k) : ℂ) * p k) ∂(muK ε) = (∫ x, star (p x) * (κ (x⁻¹ * k) : ℂ) ∂(muK ε)) * p k`. Introduce `k`. Rewrite using `[← integral_mul_const]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e2, horth, zero_mul, integral_zero]`. Establish `hκ1c : ∫ k, (κ k : ℂ) ∂(muK ε) = 1` using `by rw [integral_complex_ofReal, hκ1, Complex.ofReal_one]`. Establish `hinner : ∀ x, ∫ k, (κ k : ℂ) * (p x - p (x * k)) ∂(muK ε) = p x - ∫ k, (κ k : ℂ) * p (x * k) ∂(muK ε)`.
+
+Introduce `x`. Establish `i1 : Integrable (fun k => (κ k : ℂ) * p x) (muK ε)` using `integrable_of_continuousK (by fun_prop)`. Establish `i2 : Integrable (fun k => (κ k : ℂ) * p (x * k)) (muK ε)` using `integrable_of_continuousK (by fun_prop)`. Repeatedly rewrite using `[mul_sub]`. Rewrite using `[integral_sub i1 i2, integral_mul_const, hκ1c, one_mul]`.
+
+Establish `hcontT : Continuous (fun x => ∫ k, (κ k : ℂ) * p (x * k) ∂(muK ε))` using `continuous_integral_paramK (F := fun x k => (κ k : ℂ) * p (x * k)) (by fun_prop)`. Establish `hkey : ((∫ x, ‖p x‖ ^ 2 ∂(muK ε) : ℝ) : ℂ) = ∫ k, (κ k : ℂ) * ∫ x, star (p x) * (p x - p (x * k)) ∂(muK ε) ∂(muK ε)`. Establish `e1 : ∀ k, (κ k : ℂ) * ∫ x, star (p x) * (p x - p (x * k)) ∂(muK ε) = ∫ x, star (p x) * ((κ k : ℂ) * (p x - p (x * k))) ∂(muK ε)`. Introduce `k`. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e1]`. Establish `hint : Integrable (Function.uncurry fun x k => star (p x) * ((κ k : ℂ) * (p x - p (x * k)))) ((muK ε).prod (muK ε))` using `integrable_prod_of_continuousK (F := fun z : KG ε × KG ε => star (p z.1) * ((κ z.2 : ℂ) * (p z.1 - p (z.1 * z.2)))) (by fun_prop)`.
+
+Rewrite using `[← integral_integral_swap hint]`. Establish `e2 : ∀ x, ∫ k, star (p x) * ((κ k : ℂ) * (p x - p (x * k))) ∂(muK ε) = star (p x) * p x - star (p x) * ∫ k, (κ k : ℂ) * p (x * k) ∂(muK ε)`. Introduce `x`. Rewrite using `[integral_const_mul, hinner, mul_sub]`. Repeatedly rewrite using `[e2]`.
+
+Establish `iA : Integrable (fun x => star (p x) * p x) (muK ε)` using `integrable_of_continuousK (by fun_prop)`. Establish `iB : Integrable (fun x => star (p x) * ∫ k, (κ k : ℂ) * p (x * k) ∂(muK ε)) (muK ε)` using `integrable_of_continuousK ((continuous_star.comp hp).mul hcontT)`. Rewrite using `[integral_sub iA iB, hzero, sub_zero, hAc]`. Establish `hCS : ∀ k, ‖∫ x, star (p x) * (p x - p (x * k)) ∂(muK ε)‖ ≤ Real.sqrt (∫ x, ‖p x‖ ^ 2 ∂(muK ε)) * Real.sqrt (∫ x, ‖p x - p (x * k)‖ ^ 2 ∂(muK ε))` using `fun k => norm_integral_star_mul_le_sqrtK (g := fun x => p x - p (x * k)) hp (by fun_prop)`. Establish `hIc : Continuous (fun k => ∫ x, star (p x) * (p x - p (x * k)) ∂(muK ε))` using `continuous_integral_paramK (F := fun k x => star (p x) * (p x - p (x * k))) (by fun_prop)`.
+
+Establish `hDc : Continuous (fun k => ∫ x, ‖p x - p (x * k)‖ ^ 2 ∂(muK ε))` using `continuous_integral_paramK (F := fun k x => ‖p x - p (x * k)‖ ^ 2) (by fun_prop)`. Establish `hmain : ∫ x, ‖p x‖ ^ 2 ∂(muK ε) ≤ Real.sqrt (∫ x, ‖p x‖ ^ 2 ∂(muK ε)) * ∫ k, κ k * Real.sqrt (∫ x, ‖p x - p (x * k)‖ ^ 2 ∂(muK ε)) ∂(muK ε)`. Establish `e : ∫ x, ‖p x‖ ^ 2 ∂(muK ε) = (∫ k, (κ k : ℂ) * ∫ x, star (p x) * (p x - p (x * k)) ∂(muK ε) ∂(muK ε)).re`. Rewrite using `[← hkey, Complex.ofReal_re]`. Establish `hl : Continuous (fun k => ‖(κ k : ℂ) * ∫ x, star (p x) * (p x - p (x * k)) ∂(muK ε)‖)` using `by fun_prop`.
+
+Establish `hr : Continuous (fun k => κ k * (Real.sqrt (∫ x, ‖p x‖ ^ 2 ∂(muK ε)) * Real.sqrt (∫ x, ‖p x - p (x * k)‖ ^ 2 ∂(muK ε))))` using `by fun_prop`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `Complex.re_le_norm _`. Use `_ ≤ ∫ k, ‖(κ k : ℂ) * ∫ x, star (p x) * (p x - p (x * k)) ∂(muK ε)‖ ∂(muK ε) := norm_integral_le_integral_norm _`.
+
+Use `_ ≤ ∫ k, κ k * (Real.sqrt (∫ x, ‖p x‖ ^ 2 ∂(muK ε)) * Real.sqrt (∫ x, ‖p x - p (x * k)‖ ^ 2 ∂(muK ε))) ∂(muK ε) := by`. Use `integral_mono (hl.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)) (hr.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)) fun k => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (hκ0 k)]`. Conclude with `mul_le_mul_of_nonneg_left (hCS k) (hκ0 k)`. Use `_ = _ := by rw [← integral_const_mul]; congr 1; funext k; ring`.
+
+Break down `hA0.lt_or_eq with hpos | hz` into its components or cases. Establish `hs : 0 < Real.sqrt (∫ x, ‖p x‖ ^ 2 ∂(muK ε))` using `Real.sqrt_pos.2 hpos`. Use `le_of_mul_le_mul_left ?_ hs` and prove the remaining obligations. Rewrite using `[Real.mul_self_sqrt hA0]`. Conclude with `hmain`.
+
+Rewrite using `[← hz, Real.sqrt_zero]`. Conclude with `integral_nonneg fun k => mul_nonneg (hκ0 k) (Real.sqrt_nonneg _)`.
+-/
 theorem sqrt_integral_normSq_le_integral_kernel_mul_translate :
     ∀ {n : ℕ} (ε : Fin n → Bool) (p : KG ε → ℂ) (κ : KG ε → ℝ), Continuous p → Continuous κ →
       (∀ k, 0 ≤ κ k) → ∫ k, κ k ∂(muK ε) = 1 →

@@ -48,6 +48,13 @@ def SymmetricBundleSt : Prop :=
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Use `⟨hl, fun Ω _ _ s => ?_⟩` and prove the remaining obligations. Establish `h` using `isGrpPullback_pullback A s`. Establish `hL'` using `pull_isLB hL (pullback.fst A.hom s)`. Take `⟨w, hw⟩` from `(cls_eq_iff hL' hL').1 rfl`. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (x := s (IsLocalRing.closedPoint Ω)) (U := ⊤) trivial`.
+
+Establish `hE : (ev P (fst A A) (snd A A ≫ l)).IsLB` using `pull_isLB hP _`. Establish `hΛ : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hΛ' : (abelian₂ ((Over.pullback s).obj A) (L.pull (pullback.fst A.hom s))).IsLB` using `LB.isLB_linComb hL' _ _`. Use `⟨_, hL', relAmple_pull h.1 hL hL' ((isGen_iff w).1 hw) U hU (fun y => by rwa [Subsingleton.elim y (IsLocalRing.closedPoint Ω)]) ha, (cls_eq_iff (pull_isLB hE _) hΛ').1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_pull hE, ← (cls_eq_iff hΛ hE).2 e, show cls _ hΛ = lam (cls L hL) (fst A A) (snd A A) from cls_cube_two hL _ _ hΛ, show cls _ hΛ' = lam (cls _ hL') (fst _ _) (snd _ _) from cls_cube_two hL' _ _ hΛ', sqToBase, pull_lam, lift_fst, lift_snd, cls_pull hL, lam_pull_of_isGrpPullba …`.
+
+Both sides reduce to the same expression.
+-/
 theorem isPolarisation_of_relAmple {A B : Over S} [GrpObj A] [GrpObj B] {P : LB (A ⊗ B).left} (hP : P.IsLB)
     {l : A ⟶ B} (hl : IsMonHom l) {L : LB A.left} (hL : L.IsLB) (ha : Out.RelAmple A L)
     (e : LBIso (abelian₂ A L) (ev P (fst A A) (snd A A ≫ l))) : IsPolarisation A B P l := by
@@ -69,11 +76,17 @@ theorem isPolarisation_of_relAmple {A B : Over S} [GrpObj A] [GrpObj B] {P : LB 
     sqToBase, pull_lam, lift_fst, lift_snd, cls_pull hL, lam_pull_of_isGrpPullback h]
   rfl
 
+/- English proof (translation)
+Establish `hΛ : (abelian₂ Q.A Q.L).IsLB` using `LB.isLB_linComb Q.isLB _ _`. Use `isPolarisation_of_relAmple hΛ inferInstance Q.isLB Q.ample ((cls_eq_iff hΛ (pull_isLB hΛ _)).1 ?_)` and prove the remaining obligations. Rewrite using `[cls_ev hΛ, evc, Category.comp_id, lift_fst_snd, Over.id_left, pull_id]`.
+-/
 theorem isPolarisation_id (Q : Out.PolAV S) : IsPolarisation Q.A Q.A (abelian₂ Q.A Q.L) (𝟙 _) := by
   have hΛ : (abelian₂ Q.A Q.L).IsLB := LB.isLB_linComb Q.isLB _ _
   refine isPolarisation_of_relAmple hΛ inferInstance Q.isLB Q.ample ((cls_eq_iff hΛ (pull_isLB hΛ _)).1 ?_)
   rw [cls_ev hΛ, evc, Category.comp_id, lift_fst_snd, Over.id_left, pull_id]
 
+/- English proof (translation)
+Set `Q` to `Out.Inh.zeroPolAV S`. Establish `hΛ : (abelian₂ Q.A Q.L).IsLB` using `LB.isLB_linComb Q.isLB _ _`. Use `⟨Q.isAb, isDual_unit, isPolarisation_of_relAmple (LB.isLB_triv _) inferInstance Q.isLB Q.ample ((cls_eq_iff hΛ (pull_isLB (LB.isLB_triv _) _)).1 ?_)⟩` and prove the remaining obligations. Rewrite using `[show cls _ hΛ = lam (cls Q.L Q.isLB) (fst _ _) (snd _ _) from cls_cube_two Q.isLB _ _ hΛ, show fst Q.A Q.A = 1 from toUnit_unique _ _, lam_one_left]`. Conclude with `(map_zero (pull _)).symm`.
+-/
 theorem hyp_zero (S : Scheme.{0}) : IsAbelianScheme (𝟙_ (Over S)) ∧
     IsDual (𝟙_ (Over S)) (𝟙_ (Over S)) (LB.triv _) ∧
     IsPolarisation (𝟙_ (Over S)) (𝟙_ (Over S)) (LB.triv _) (𝟙 _) := by
@@ -85,6 +98,9 @@ theorem hyp_zero (S : Scheme.{0}) : IsAbelianScheme (𝟙_ (Over S)) ∧
     show fst Q.A Q.A = 1 from toUnit_unique _ _, lam_one_left]
   exact (map_zero (pull _)).symm
 
+/- English proof (translation)
+Introduce `E`. Conclude with `⟨rfl, E.isAb, GlobalTheory.PerfectDual.isDual_of_isPerfect hD _ _ E.isAb E.isAb E.smoothDim E.smoothDim (isPerfect_ell W), isPolarisation_id E⟩`.
+-/
 theorem hyp_elliptic (hD : GlobalTheory.Published.DualAbelianScheme) {R : Type} [CommRing R] [IsNoetherianRing R]
     (W : WeierstrassCurve R) [W.IsElliptic] :
     let E := GlobalTheory.WeierstrassCurve.ellPolAV W
@@ -93,6 +109,15 @@ theorem hyp_elliptic (hD : GlobalTheory.Published.DualAbelianScheme) {R : Type} 
   exact ⟨rfl, E.isAb, GlobalTheory.PerfectDual.isDual_of_isPerfect hD _ _ E.isAb E.isAb E.smoothDim E.smoothDim
     (isPerfect_ell W), isPolarisation_id E⟩
 
+/- English proof (translation)
+Establish `hB : IsAbelianScheme (P.A ⊗ P'.A)` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ P.isAb P'.isAb`. Set `p` to `fst P.A P'.A`. Set `q` to `snd P.A P'.A`. Take `⟨M, hM, eM⟩` from `cls_surj (pull p.left (cls P.L P.isLB) + pull q.left (cls P'.L P'.isLB))`. Establish `hd` using `LB.isLB_div hM (pull_isLB P.isLB p.left)`.
+
+Establish `last : LBIso (M.div (P.L.pull p.left)) (P'.L.pull q.left)`. Use `(cls_eq_iff hd (pull_isLB P'.isLB _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_div hM (pull_isLB P.isLB p.left), eM, cls_pull P.isLB, cls_pull P'.isLB, add_sub_cancel_left]`. Use `haveI := P.isAb.proper`. Use `haveI := P'.isAb.proper`.
+
+Use `haveI := hB.proper`. Use `⟨M, hM, ?_, ?_, ?_, GlobalTheory.TripleProd.kTriv_prod hM P.isLB P'.isLB eM P.ktriv P'.ktriv⟩` and prove the remaining obligations. Rewrite using `[PolProd.rigidified_iff _ hM, eM, map_add, ← pull_comp, ← pull_comp, PolProd.eSec_comp p, PolProd.eSec_comp q, (PolProd.rigidified_iff _ P.isLB).1 P.rigid, (PolProd.rigidified_iff _ P'.isLB).1 P'.rigid, add_zero]`. Establish `h₁` using `((PolProd.sym_iff _ P.isLB).1 P.sym).pull_over (π' := (P.A ⊗ P'.A).hom) p.left (Over.w p)`. Establish `h₂` using `((PolProd.sym_iff _ P'.isLB).1 P'.sym).pull_over (π' := (P.A ⊗ P'.A).hom) q.left (Over.w q)`.
+
+Rewrite using `[PolProd.sym_iff _ hM, eM]`. Use `PolProd.locZero_add h₁ h₂ using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add, map_sub, map_sub, ← pull_comp, ← pull_comp, ← pull_comp, ← pull_comp, PolProd.inv_comp_left p, PolProd.inv_comp_left q]`. Normalize the expressions using the abelian group laws. Conclude with `(relAmple_iff_isAmpleLB_of_isAffine _ hM).2 (IsAmpleLB.box ((relAmple_iff_isAmpleLB_of_isAffine _ P.isLB).1 P.ample) ((relAmple_iff_isAmpleLB_of_isAffine _ P'.isLB).1 P'.ample) hM (p := p.left) (q := q.left) (f := P.A.hom) (g := P'.A.hom) (IsPullback.of_hasPullback _ _) last.symm …`.
+-/
 theorem exists_prod {R : Type} [CommRing R] (P P' : Out.PolAV (Sp R)) :
     ∃ M : LB (P.A ⊗ P'.A).left, M.IsLB ∧ Out.Rigidified _ M ∧ Out.Sym _ M ∧ Out.RelAmple _ M ∧ Out.KTriv _ M := by
   have hB : IsAbelianScheme (P.A ⊗ P'.A) := AbelianSchemeGerms.isAbelianScheme_tensor _ _ P.isAb P'.isAb
@@ -134,11 +159,19 @@ def prodPol {R : Type} [CommRing R] (P P' : Out.PolAV (Sp R)) : Out.PolAV (Sp R)
   ample := (exists_prod P P').choose_spec.2.2.2.1
   ktriv := (exists_prod P P').choose_spec.2.2.2.2
 
+/- English proof (translation)
+The claim follows from `let D := prodPol E E ⟨_, GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.isPrincipalPol_of_polAV (prodPol D (prodPol D (prodPol D D)))⟩`.
+-/
 theorem conclusion_of_polAV {R : Type} [CommRing R] (E : Out.PolAV (Sp R)) :
     ∃ c : Pic (G4 (E.A ⊗ E.A) ⊗ G4 (E.A ⊗ E.A)).left, IsPrincipalPol (G4 (E.A ⊗ E.A)) c :=
   let D := prodPol E E
   ⟨_, GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.isPrincipalPol_of_polAV (prodPol D (prodPol D (prodPol D D)))⟩
 
+/- English proof (translation)
+Establish `e : IsUnit ((-8 : R) * 37 + (-11) * (-27))`. Rewrite using `[show (-8 : R) * 37 + (-11) * (-27) = 1 by norm_num]; exact isUnit_one`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add e with u | u` into its components or cases. Use `⟨⟨0, 0, 1, -1, 0⟩, ⟨?_⟩⟩` and prove the remaining obligations. Use `isUnit_of_mul_isUnit_right u using 1` and compare the differences between its conclusion and the goal.
+
+Evaluate the numerical expressions using `[WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Use `⟨⟨0, 0, 1, 0, 0⟩, ⟨?_⟩⟩` and prove the remaining obligations. Use `isUnit_of_mul_isUnit_right u using 1` and compare the differences between its conclusion and the goal. Evaluate the numerical expressions using `[WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`.
+-/
 theorem exists_elliptic (R : Type) [CommRing R] [IsLocalRing R] : ∃ W : WeierstrassCurve R, W.IsElliptic := by
   have e : IsUnit ((-8 : R) * 37 + (-11) * (-27)) := by
     rw [show (-8 : R) * 37 + (-11) * (-27) = 1 by norm_num]; exact isUnit_one
@@ -150,12 +183,18 @@ theorem exists_elliptic (R : Type) [CommRing R] [IsLocalRing R] : ∃ W : Weiers
     convert isUnit_of_mul_isUnit_right u using 1
     norm_num [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]
 
+/- English proof (translation)
+The claim follows from `haveI : IsDomain R := Function.Injective.isDomain (algebraMap R C) hv.hom_inj haveI := ValuationRing.of_integers v hv inferInstance`.
+-/
 theorem isLocalRing_integers {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
     (hv : v.Integers R) : IsLocalRing R :=
   haveI : IsDomain R := Function.Injective.isDomain (algebraMap R C) hv.hom_inj
   haveI := ValuationRing.of_integers v hv
   inferInstance
 
+/- English proof (translation)
+Use `isLocalRing_integers hv` as an intermediate fact. Take `⟨W, _⟩` from `exists_elliptic R`. Set `E` to `GlobalTheory.WeierstrassCurve.ellPolAV W`. Conclude with `⟨E.A, E.grp, _, E.isAb, E.smoothDim, GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.isPrincipalPol_of_polAV E, E.L, E.isLB, E.rigid, E.sym, E.ample, E.ktriv, rfl⟩`.
+-/
 theorem symmetricBundle_elliptic {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R]
     [Algebra R C] (hv : v.Integers R) :
     ∃ (A : Over (Sp R)) (_ : GrpObj A) (c : Pic (A ⊗ A).left), IsAbelianScheme A ∧
@@ -168,10 +207,20 @@ theorem symmetricBundle_elliptic {C : Type} [Field C] {v : Valuation C NNReal} {
   exact ⟨E.A, E.grp, _, E.isAb, E.smoothDim, GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.isPrincipalPol_of_polAV E, E.L, E.isLB, E.rigid, E.sym,
     E.ample, E.ktriv, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, Valuation.integer.integers _⟩`.
+-/
 theorem setting_padic (p : ℕ) [Fact p.Prime] : IsAlgClosed ℂ_[p] ∧
     (Valued.v : Valuation ℂ_[p] NNReal).Integers (Valued.v : Valuation ℂ_[p] NNReal).integer :=
   ⟨inferInstance, Valuation.integer.integers _⟩
 
+/- English proof (translation)
+Introduce `C _ _ v R _ _ hv A _ L hA hL ha`. Use `isLocalRing_integers hv` as an intermediate fact. Establish `hΛ : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Take `⟨a₁, a₂⟩` from `GlobalTheory.CubeDual.isAdditive_lam hC hA hL hΛ`. Take `⟨B, _, P, hB, -, h₁, h₂⟩` from `hD _ A hA`.
+
+Take `⟨x, hx, -⟩` from `h₁.univ A (abelian₂ A L) hΛ a₁`. Establish `hm` using `isMonHom_of_classifying _ A A B (abelian₂ A L) P h₁ h₂.additive hΛ a₂ x hx`. Take `⟨c, hc⟩` from `hZ _ A B P x hA hB h₁ (isPolarisation_of_relAmple h₁.isLB hm hL ha hx)`. Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB`. Establish `h4 : IsAbelianScheme (G4 (A ⊗ B))` using `AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAB hAB))`.
+
+Take `⟨M, hM, m₁, m₂, m₃, m₄, -⟩` from `hS C v R hv _ h4 c hc`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim R _ h4`. Use `haveI := hA.comm`. Use `haveI := hB.comm`. Use `⟨⟨G4 (A ⊗ B), h4, g, hg, M, hM, m₁, m₂, m₃, m₄⟩, lift (lift (𝟙 A) 1) 1, fst _ _ ≫ fst _ _, inferInstance, inferInstance, by simp⟩` and prove the remaining obligations.
+-/
 theorem zarhinStatement_of (hD : GlobalTheory.Published.DualAbelianScheme) (hC : GlobalTheory.Published.CubeTheorem) (hZ : ZarhinScheme)
     (hS : SymmetricBundleSt) : GlobalTheory.CompanionTheory.Ar.GR.ZarhinStatement := by
   intro C _ _ v R _ _ hv A _ L hA hL ha

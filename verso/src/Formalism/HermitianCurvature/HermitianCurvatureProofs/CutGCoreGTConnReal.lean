@@ -10,10 +10,26 @@ open Formalism.FourierDecayAlt.P.CutMP.Gauge Formalism.FourierDecayAlt.P.CutMP.G
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `NF.dZb`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZb_eq (f : ℂ → ℂ) (ζ : ℂ) :
     NF.dZb f ζ = (1 / 2 : ℂ) * fderiv ℝ f ζ 1 + (1 / 2 * Complex.I) * fderiv ℝ f ζ Complex.I := by
   unfold NF.dZb; ring
 
+/- English proof (translation)
+Establish `hfd : Differentiable ℝ f` using `hf.differentiable one_ne_zero`. Establish `hgd : Differentiable ℝ g` using `hg.differentiable one_ne_zero`. Establish `cf : Continuous (fderiv ℝ f)` using `hf.continuous_fderiv one_ne_zero`. Establish `cg : Continuous (fderiv ℝ g)` using `hg.continuous_fderiv one_ne_zero`. Establish `hgc' : HasCompactSupport (fderiv ℝ g)` using `hgc.fderiv ℝ`.
+
+Establish `I1 : ∀ v : ℂ, Integrable (fun x => fderiv ℝ f x v * g x)` using `fun v => ((cf.clm_apply continuous_const).mul hg.continuous).integrable_of_hasCompactSupport hgc.mul_left`. Establish `I2 : ∀ v : ℂ, Integrable (fun x => f x * fderiv ℝ g x v)` using `fun v => by`. Use `(hf.continuous.mul (cg.clm_apply continuous_const)).integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Conclude with `(hgc.fderiv_apply (𝕜 := ℝ) v).mul_left`. Establish `I3 : Integrable (fun x => f x * g x)` using `(hf.continuous.mul hg.continuous).integrable_of_hasCompactSupport hgc.mul_left`.
+
+Establish `e1 : ∫ x, f x * fderiv ℝ g x 1 = -∫ x, fderiv ℝ f x 1 * g x` using `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (I1 1) (I2 1) I3 (fun x _ => hfd x) (fun x _ => hgd x)`. Establish `e2 : ∫ x, f x * fderiv ℝ g x Complex.I = -∫ x, fderiv ℝ f x Complex.I * g x` using `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (I1 _) (I2 _) I3 (fun x _ => hfd x) (fun x _ => hgd x)`. Simplify using `only [dZb_eq]`. Establish `L : ∫ ζ, f ζ * ((1 / 2 : ℂ) * fderiv ℝ g ζ 1 + (1 / 2 * Complex.I) * fderiv ℝ g ζ Complex.I) = (1 / 2 : ℂ) * (∫ ζ, f ζ * fderiv ℝ g ζ 1) + (1 / 2 * Complex.I) * (∫ ζ, f ζ * fderiv ℝ g ζ Complex.I)`. Establish `h` using `integral_add ((I2 1).const_mul (1 / 2 : ℂ)) ((I2 Complex.I).const_mul (1 / 2 * Complex.I))`.
+
+Rewrite `h` using `[integral_const_mul, integral_const_mul]`. Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `ζ`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `R : ∫ ζ, ((1 / 2 : ℂ) * fderiv ℝ f ζ 1 + (1 / 2 * Complex.I) * fderiv ℝ f ζ Complex.I) * g ζ = (1 / 2 : ℂ) * (∫ ζ, fderiv ℝ f ζ 1 * g ζ) + (1 / 2 * Complex.I) * (∫ ζ, fderiv ℝ f ζ Complex.I * g ζ)`. Establish `h` using `integral_add ((I1 1).const_mul (1 / 2 : ℂ)) ((I1 Complex.I).const_mul (1 / 2 * Complex.I))`. Rewrite `h` using `[integral_const_mul, integral_const_mul]`. Rewrite using `[← h]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `ζ`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[L, R]`. Take the linear combination `(1 / 2 : ℂ) * e1 + (1 / 2 * Complex.I) * e2`.
+-/
 theorem ibp_dZb (f g : ℂ → ℂ) (hf : ContDiff ℝ 1 f) (hg : ContDiff ℝ 1 g) (hgc : HasCompactSupport g) :
     ∫ ζ, f ζ * NF.dZb g ζ = -∫ ζ, NF.dZb f ζ * g ζ := by
   have hfd : Differentiable ℝ f := hf.differentiable one_ne_zero
@@ -50,6 +66,11 @@ theorem ibp_dZb (f g : ℂ → ℂ) (hf : ContDiff ℝ 1 f) (hg : ContDiff ℝ 1
   rw [L, R]
   linear_combination (1 / 2 : ℂ) * e1 + (1 / 2 * Complex.I) * e2
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun w => star (F w)) ((Complex.conjCLE.toContinuousLinearMap : ℂ →L[ℝ] ℂ).comp (fderiv ℝ F ζ)) ζ` using `Complex.conjCLE.toContinuousLinearMap.hasFDerivAt.comp ζ hF.hasFDerivAt`. Unfold `NF.dZb NF.dZ`. Rewrite using `[h.fderiv]`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply]`. Simplify using `only [star_mul', star_sub, Complex.star_def, Complex.conj_I, map_div₀, map_one, map_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZb_conj (F : ℂ → ℂ) (ζ : ℂ) (hF : DifferentiableAt ℝ F ζ) :
     NF.dZb (fun w => star (F w)) ζ = star (NF.dZ F ζ) := by
   have h : HasFDerivAt (fun w => star (F w))
@@ -61,6 +82,13 @@ theorem dZb_conj (F : ℂ → ℂ) (ζ : ℂ) (hF : DifferentiableAt ℝ F ζ) :
   simp only [star_mul', star_sub, Complex.star_def, Complex.conj_I, map_div₀, map_one, map_ofNat]
   ring
 
+/- English proof (translation)
+Establish `hn : ∀ w : ℂ, ((Complex.normSq w : ℂ) - (TT : ℂ)) = w * star w - (TT : ℂ)`. Introduce `w`. Rewrite using `[Complex.star_def, Complex.mul_conj]`. Repeatedly rewrite using `[hn]`. Establish `hc : HasFDerivAt (fun w : ℂ => star w) (Complex.conjCLE.toContinuousLinearMap : ℂ →L[ℝ] ℂ) ζ` using `Complex.conjCLE.toContinuousLinearMap.hasFDerivAt`.
+
+Establish `hid : HasFDerivAt (fun w : ℂ => w) (ContinuousLinearMap.id ℝ ℂ) ζ` using `hasFDerivAt_id ζ`. Establish `hp` using `(hid.mul hc).sub_const (TT : ℂ)`. Establish `hq : HasFDerivAt (fun w => G w * (w * star w - (TT : ℂ))) (G ζ • (ζ • (Complex.conjCLE.toContinuousLinearMap : ℂ →L[ℝ] ℂ) + star ζ • ContinuousLinearMap.id ℝ ℂ) + (ζ * star ζ - (TT : ℂ)) • fderiv ℝ G ζ) ζ` using `hG.hasFDerivAt.mul hp`. Unfold `NF.dZb`. Rewrite using `[hq.fderiv]`.
+
+Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, smul_eq_mul, Complex.star_def, map_one, Complex.conj_I]`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dZb_mul_gg (G : ℂ → ℂ) (TT : ℝ) (ζ : ℂ) (hG : DifferentiableAt ℝ G ζ) :
     NF.dZb (fun w => G w * ((Complex.normSq w : ℂ) - (TT : ℂ))) ζ =
       NF.dZb G ζ * ((Complex.normSq ζ : ℂ) - (TT : ℂ)) + G ζ * ζ := by
@@ -87,6 +115,9 @@ section vals
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `rawR`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[SSC.hsVec_sub, inner_sub_right, mul_sub]`.
+-/
 theorem rawR_sub (P : M.Par) (μsec : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k + 1)) ℂ) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
     (Z W : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (ρ : M.Ty P) (q : MA.Qp P.r P.TT) :
     rawR P μsec e (Z - W) ρ q = rawR P μsec e Z ρ q - rawR P μsec e W ρ q := by
@@ -94,6 +125,9 @@ theorem rawR_sub (P : M.Par) (μsec : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k +
   simp only [Pi.sub_apply]
   rw [SSC.hsVec_sub, inner_sub_right, mul_sub]
 
+/- English proof (translation)
+Establish `h` using `rawR_sub P μsec e 0 Z ρ q`. Rewrite `h` using `[zero_sub, SSAdjH.rawR_zero, zero_sub]`. Conclude with `h`.
+-/
 theorem rawR_neg [FiniteDimensional ℂ Wp] (P : M.Par) (μsec : ℂ → Matrix (Fin (P.k + 1)) (Fin (P.k + 1)) ℂ) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
     (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (ρ : M.Ty P) (q : MA.Qp P.r P.TT) :
     rawR P μsec e (-Z) ρ q = -rawR P μsec e Z ρ q := by
@@ -104,6 +138,9 @@ theorem rawR_neg [FiniteDimensional ℂ Wp] (P : M.Par) (μsec : ℂ → Matrix 
 section gg
 open Formalism.FourierDecayAlt.MA Formalism.FourierDecayAlt.P.MAx1.An
 
+/- English proof (translation)
+Use `show ((ggQ P.r P.TT : SmQ P.r P.TT) : Qp P.r P.TT → ℂ) q * (f : Qp P.r P.TT → ℂ) q = _`. Rewrite using `[gg_apply, coordE_vz, coordE_vzb, Complex.mul_conj]`.
+-/
 theorem ggP_val (P : M.Par) (f : MA.SmQ P.r P.TT) (q : MA.Qp P.r P.TT) :
     ((show MA.SmQ P.r P.TT from ((MA.DQ P).ggP P.TT).1 f) : MA.Qp P.r P.TT → ℂ) q =
       ((Complex.normSq q.1.2 : ℂ) - (P.TT : ℂ)) * (f : MA.Qp P.r P.TT → ℂ) q := by
@@ -124,6 +161,11 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
 
 include hH he
 
+/- English proof (translation)
+Establish `hpl` using `hH.1`. Establish `hk2` using `hH.2.1`. Establish `hv` using `SSC.vl_fn P Bs X d hH e Z ρ q`. Simplify using `only [SSC.vl, SSTr.trR_apply P Bs hpl hk2 e he] at hv`. Take `⟨f1, f2, f3⟩` from `hv`.
+
+Use `⟨f2, f1, f3, ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, -, f5, -⟩` from `GT.gauge_function_holds Wp Wq P Bs X d hH e Z`. Rewrite using `[← SSTr.trR_apply P Bs hpl hk2 e he, ← SSTr.trR_apply P Bs hpl hk2 e he, show trR P Bs e (d.L.GG.1 Z) ρ = _ from congrFun f5 ρ]`. Conclude with `(congrArg (fun g : MA.SmQ P.r P.TT => (g : MA.Qp P.r P.TT → ℂ) q) (SSC.actA_sc P _ _ ρ)).trans (ggP_val P _ q)`.
+-/
 theorem v_fn (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (ρ : M.Ty P) (q : MA.Qp P.r P.TT) :
     rawR P Bs.μsec e ((d.L.ζb.1 Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ q =
         star q.1.2 * rawR P Bs.μsec e (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ q ∧
@@ -145,6 +187,13 @@ theorem v_fn (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (ρ : M.Ty P) (q : MA
   exact (congrArg (fun g : MA.SmQ P.r P.TT => (g : MA.Qp P.r P.TT → ℂ) q) (SSC.actA_sc P _ _ ρ)).trans
     (ggP_val P _ q)
 
+/- English proof (translation)
+Establish `hpl` using `hH.1`. Establish `hk2` using `hH.2.1`. Establish `hTT : 0 ≤ P.TT` using `(mul_pos hpl.1.T_pos hpl.1.T'_pos).le`. Establish `htr : trR P Bs e Z ρ = fnZ P F`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `q'`. Rewrite using `[SSTr.trR_apply P Bs hpl hk2 e he, hZ q', fnZ_val P hF q']`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← SSTr.trR_apply P Bs hpl hk2 e he, (hC Z ρ).1, htr] show ((dzQ P (fnZ P F) : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q + ((fnZ P (A ρ) : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q * ((fnZ P F : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q = _`. Rewrite using `[dzQ_apply P hTT, wirtinger_derivative_fibre_function P hF q, fnZ_val P (hAB ρ).1 q, fnZ_val P hF q]`.
+
+Rewrite using `[← SSTr.trR_apply P Bs hpl hk2 e he, (hC Z ρ).2, htr] show -((dzbQ P (fnZ P F) : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q + ((fnZ P (Bf ρ) : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q * ((fnZ P F : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q = _`. Rewrite using `[dzbQ_apply P hTT, wirt_fnZ_zb P hF q, fnZ_val P (hAB ρ).2 q, fnZ_val P hF q]`.
+-/
 theorem v_conn (A Bf : M.Ty P → ℂ → ℂ) (hAB : SmAB P A Bf) (hC : ConnF P Bs d e A Bf)
     (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (ρ : M.Ty P) (F : ℂ → ℂ)
     (hF : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F (Ann P))
@@ -171,6 +220,9 @@ theorem v_conn (A Bf : M.Ty P → ℂ → ℂ) (hAB : SmAB P A Bf) (hC : ConnF P
       ((fnZ P (Bf ρ) : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q * ((fnZ P F : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q = _
     rw [dzbQ_apply P hTT, wirt_fnZ_zb P hF q, fnZ_val P (hAB ρ).2 q, fnZ_val P hF q]
 
+/- English proof (translation)
+Establish `h` using `SSAdjH.kap_pt P Bs hH.1 hH.2.1 e he d hk (fun σ => if σ = ρ then (1 : ℂ) else 0) W ρ q`. Simplify using `only [if_true, one_mul] at h`. Conclude with `h`.
+-/
 theorem v_pj (hk : KapF P Bs d e) (W : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (ρ : M.Ty P) (q : MA.Qp P.r P.TT) :
     rawR P Bs.μsec e (((Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ).1 W : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ q =
       rawR P Bs.μsec e (W : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ q := by
@@ -178,6 +230,25 @@ theorem v_pj (hk : KapF P Bs d e) (W : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') 
   simp only [if_true, one_mul] at h
   exact h
 
+/- English proof (translation)
+Establish `hRel` using `hH.2.2.2.2.2.1`. Establish `hQ` using `hH.2.2.2.2.2.2`. Establish `hΦρ : ∀ q : MA.Qp P.r P.TT, rawR P Bs.μsec e (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ q = F q.1.2`. Introduce `q'`. Rewrite using `[hΦr ρ q', if_pos rfl, one_mul]`.
+
+Establish `hgg : ((Complex.normSq q.1.2 : ℂ) - (P.TT : ℂ)) ≠ 0`. Establish `h2` using `q.2.2`. Introduce `h0`. Establish `h3 : ((Complex.normSq q.1.2 - P.TT : ℝ) : ℂ) = 0` using `by push_cast; exact h0`. Establish `h4 : Complex.normSq q.1.2 - P.TT = 0` using `by exact_mod_cast h3`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨nb, nbs⟩` from `v_conn P Bs X d hH e he A Bf hAB hC Φ ρ F hF hΦρ q`. Prove the components needed by the constructor for the conclusion. Establish `hB` using `congrArg (fun p : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => p.1 Φ) (Formalism.FourierDecayAlt.P.NFx4.NO.B3 hRel Y ρ)`. Establish `L : (Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ * d.QQ Y 1 0 * Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ).1 Φ = (Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ).1 (X.t Y 1 0 Φ)` using `by show (Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ).1 ((d.QQ Y 1 0).1 ((Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ).1 Φ)) = _`.
+
+Rewrite using `[hΦP, ← hQ Y]`. Both sides reduce to the same expression. Establish `R : (M.xC P ρ Y • (d.L.GG * d.L.l0 Y * Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ)).1 Φ = M.xC P ρ Y • d.L.GG.1 (-(d.L.nab.1 Φ) - (Y + 1 / 2) • d.L.ζb.1 (d.L.GGi.1 Φ))`. Rewrite using `[Algebra.smul_def]`. Use `show (algebraMap ℂ (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) (M.xC P ρ Y)).1 (d.L.GG.1 ((d.L.l0 Y).1 ((Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ).1 Φ))) = _`.
+
+Rewrite using `[hΦP]`. Both sides reduce to the same expression. Rewrite `hB` using `[L, R]`. Establish `hv` using `congrArg (fun Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π' => rawR P Bs.μsec e (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ q) hB`. Apply the tactic sequence `try simp only at hv`.
+
+Rewrite `hv` using `[v_pj P Bs X d hH e he hk]`. Rewrite using `[hv, Submodule.coe_smul, SSAdjH.rawR_smul, (v_fn P Bs X d hH e he _ ρ q).2.2.2, Submodule.coe_sub, rawR_sub, Submodule.coe_neg, rawR_neg, Submodule.coe_smul, SSAdjH.rawR_smul, nb, (v_fn P Bs X d hH e he _ ρ q).1, (v_fn P Bs X d hH e he _ ρ q).2.2.1, hΦρ q]`. Clear the denominators using the available nonvanishing facts. Establish `hB` using `congrArg (fun p : Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') => p.1 Φ) (Formalism.FourierDecayAlt.P.NFx4.NO.B5 hRel Y ρ)`. Establish `L : (Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ * d.QQ Y 0 1 * Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ).1 Φ = (Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ).1 (X.t Y 0 1 Φ)` using `by show (Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ).1 ((d.QQ Y 0 1).1 ((Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ).1 Φ)) = _`.
+
+Rewrite using `[hΦP, ← hQ Y]`. Both sides reduce to the same expression. Establish `R : (M.xC P ρ Y • (d.L.GG * d.L.m0 Y * Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ)).1 Φ = M.xC P ρ Y • d.L.GG.1 (-(d.L.nabs.1 Φ) - (Y - 1 / 2) • d.L.ζ.1 (d.L.GGi.1 Φ))`. Rewrite using `[Algebra.smul_def]`. Use `show (algebraMap ℂ (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) (M.xC P ρ Y)).1 (d.L.GG.1 ((d.L.m0 Y).1 ((Formalism.FourierDecayAlt.P.NFx4.NO.Pj d ρ).1 Φ))) = _`.
+
+Rewrite using `[hΦP]`. Both sides reduce to the same expression. Rewrite `hB` using `[L, R]`. Establish `hv` using `congrArg (fun Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π' => rawR P Bs.μsec e (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ q) hB`. Apply the tactic sequence `try simp only at hv`.
+
+Rewrite `hv` using `[v_pj P Bs X d hH e he hk]`. Rewrite using `[hv, Submodule.coe_smul, SSAdjH.rawR_smul, (v_fn P Bs X d hH e he _ ρ q).2.2.2, Submodule.coe_sub, rawR_sub, Submodule.coe_neg, rawR_neg, Submodule.coe_smul, SSAdjH.rawR_smul, nbs, (v_fn P Bs X d hH e he _ ρ q).2.1, (v_fn P Bs X d hH e he _ ρ q).2.2.1, hΦρ q]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem blk (hk : KapF P Bs d e) (A Bf : M.Ty P → ℂ → ℂ) (hAB : SmAB P A Bf) (hC : ConnF P Bs d e A Bf)
     (ρ : M.Ty P) (Y : ℂ) (F : ℂ → ℂ) (hF : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F (Ann P))
     (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')
@@ -242,6 +313,9 @@ theorem blk (hk : KapF P Bs d e) (A Bf : M.Ty P → ℂ → ℂ) (hAB : SmAB P A
 
 end atoms
 
+/- English proof (translation)
+Establish `hsub : Function.support f ⊆ Function.support S` using `fun ζ h1 h2 => h1 (hfS ζ h2)`. Establish `ht : tsupport f ⊆ tsupport S` using `closure_mono hsub`. Establish `hc : Continuous f` using `hf.continuous_of_tsupport_subset (ann_open P) (ht.trans hSs)`. Conclude with `hc.integrable_of_hasCompactSupport (hS.mono hsub)`.
+-/
 theorem integ_of (P : M.Par) (f S : ℂ → ℂ) (hf : ContinuousOn f (Ann P)) (hS : HasCompactSupport S)
     (hSs : tsupport S ⊆ Ann P) (hfS : ∀ ζ, S ζ = 0 → f ζ = 0) : Integrable f := by
   have hsub : Function.support f ⊆ Function.support S := fun ζ h1 h2 => h1 (hfS ζ h2)
@@ -249,12 +323,18 @@ theorem integ_of (P : M.Par) (f S : ℂ → ℂ) (hf : ContinuousOn f (Ann P)) (
   have hc : Continuous f := hf.continuous_of_tsupport_subset (ann_open P) (ht.trans hSs)
   exact hc.integrable_of_hasCompactSupport (hS.mono hsub)
 
+/- English proof (translation)
+Establish `c` using `hF.continuous_fderiv one_ne_zero`. Unfold `NF.dZ`. Conclude with `continuous_const.mul ((c.clm_apply continuous_const).sub (continuous_const.mul (c.clm_apply continuous_const)))`.
+-/
 theorem dZ_cont {F : ℂ → ℂ} (hF : ContDiff ℝ 1 F) : Continuous (NF.dZ F) := by
   have c := hF.continuous_fderiv one_ne_zero
   unfold NF.dZ
   exact continuous_const.mul ((c.clm_apply continuous_const).sub
     (continuous_const.mul (c.clm_apply continuous_const)))
 
+/- English proof (translation)
+Establish `c` using `hF.continuous_fderiv one_ne_zero`. Unfold `NF.dZb`. Conclude with `continuous_const.mul ((c.clm_apply continuous_const).add (continuous_const.mul (c.clm_apply continuous_const)))`.
+-/
 theorem dZb_cont {F : ℂ → ℂ} (hF : ContDiff ℝ 1 F) : Continuous (NF.dZb F) := by
   have c := hF.continuous_fderiv one_ne_zero
   unfold NF.dZb
@@ -262,6 +342,69 @@ theorem dZb_cont {F : ℂ → ℂ} (hF : ContDiff ℝ 1 F) : Continuous (NF.dZb 
     (continuous_const.mul (c.clm_apply continuous_const)))
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk A Bf hAB hC ρ ζ0 hζ0`. Establish `hpl` using `hH.1`. Establish `hk2` using `hH.2.1`. Establish `hTT : 0 < P.TT` using `mul_pos hpl.1.T_pos hpl.1.T'_pos`. Set `c0 : Fin P.r → ℂ` to `fun _ => 1`.
+
+Establish `hc0 : c0 ∈ OmX P.r` using `fun _ => one_ne_zero`. Set `gg : ℂ → ℂ` to `fun ζ => (Complex.normSq ζ : ℂ) - (P.TT : ℂ)`. Establish `gg_cont : Continuous gg` using `(Complex.continuous_ofReal.comp Complex.continuous_normSq).sub continuous_const`. Establish `gg_ne : ∀ ζ ∈ Ann P, gg ζ ≠ 0`. Introduce `ζ hζ h0`.
+
+Establish `h2 : P.TT < Complex.normSq ζ` using `hζ`. Establish `h3 : ((Complex.normSq ζ - P.TT : ℝ) : ℂ) = 0` using `by push_cast; exact h0`. Establish `h4 : Complex.normSq ζ - P.TT = 0` using `by exact_mod_cast h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `gg_sm : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) gg`.
+
+Establish `: ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun ζ : ℂ => Complex.normSq ζ)`. Simplify using `only [Complex.normSq_apply]`. Conclude with `(Complex.reCLM.contDiff.mul Complex.reCLM.contDiff).add (Complex.imCLM.contDiff.mul Complex.imCLM.contDiff)`. Conclude with `(Complex.ofRealCLM.contDiff.comp this).sub contDiff_const`. Set `Yr : ℝ` to `1 + ∑ i ∈ Finset.Icc 1 (P.k - 1), |M.rho P ρ i|`.
+
+Establish `hxR : M.xC P ρ (Yr : ℂ) = ((∏ i ∈ Finset.Icc 1 (P.k - 1), (Yr + M.rho P ρ i) : ℝ) : ℂ)`. Unfold `M.xC`. Use `push_cast`. Both sides reduce to the same expression. Establish `hxne : M.xC P ρ (Yr : ℂ) ≠ 0`.
+
+Rewrite using `[hxR]`. Establish `: (∏ i ∈ Finset.Icc 1 (P.k - 1), (Yr + M.rho P ρ i)) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i hi`. Establish `h1 : |M.rho P ρ i| ≤ ∑ j ∈ Finset.Icc 1 (P.k - 1), |M.rho P ρ j|` using `Finset.single_le_sum (f := fun j => |M.rho P ρ j|) (fun j _ => abs_nonneg _) hi`.
+
+Establish `h2` using `neg_abs_le (M.rho P ρ i)`. Establish `h3 : 0 < Yr + M.rho P ρ i` using `by simp only [Yr]; linarith`. Conclude with `h3.ne'`. Conclude with `this` after adjusting the coercions. Establish `hxr : (starRingEnd ℂ) (M.xC P ρ (Yr : ℂ)) = M.xC P ρ (Yr : ℂ)`.
+
+Rewrite using `[hxR, Complex.conj_ofReal]`. Use `set x := M.xC P ρ (Yr : ℂ) with hxdef`. Establish `key : ∀ F G : ℂ → ℂ, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F → HasCompactSupport F → tsupport F ⊆ Ann P → ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) G → HasCompactSupport G → tsupport G ⊆ Ann P → ∫ ζ, star (F ζ) * (gg ζ * (Bf ρ ζ - star (A ρ ζ))) * G ζ = 0`. Introduce `F G hF hFc hFs hG hGc hGs`. Take `⟨Φ, hΦr, hΦP⟩` from `SSAdjH.exists_proj P Bs hpl hk2 e he d hk F hF.contDiffOn ρ`.
+
+Take `⟨Ψ, hΨr, hΨP⟩` from `SSAdjH.exists_proj P Bs hpl hk2 e he d hk G hG.contDiffOn ρ`. Establish `hvan : ∀ (Z : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') (H : ℂ → ℂ), (∀ σ (q : MA.Qp P.r P.TT), rawR P Bs.μsec e (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) σ q = (if σ = ρ then 1 else 0) * H q.1.2) → ∀ ζ ∈ Ann P, ζ ∉ tsupport H → (Z : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ) …`. Introduce `Z H hZ ζ hζ hn`. Establish `hs` using `SSAdjH.sec_expand P Bs hpl hk2 e he Z ⟨(c0, ζ), ⟨fun _ => one_ne_zero, hζ⟩⟩`. Use `hs.trans (Finset.sum_eq_zero fun σ _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hZ, image_eq_zero_of_notMem_tsupport hn]`. Simplify using the standard rewrite rules. Establish `radj` using `radial_adjoint_identity_holds Wp Wq P Bs X d hH (Yr : ℂ) 1 0 c0 hc0 Φ Ψ ⟨tsupport F ∪ tsupport G, hFc.isCompact.union hGc.isCompact, Set.union_subset hFs hGs, fun ζ hζ hn => ⟨hvan Φ F hΦr ζ hζ (fun h => hn (Or.inl h)), hvan Ψ G hΨr ζ hζ (fun h => hn (Or.inr h))⟩⟩`. Rewrite `radj` using `[show star (Yr : ℂ) = (Yr : ℂ) from Complex.conj_ofReal Yr]`. Establish `eL : Set.EqOn (fun ζ => (((wR P.k P.TT ζ) ^ 2 : ℝ) : ℂ) * inner ℂ (B.hsVec (((X.t (Yr : ℂ) 1 0 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ))) (B.hsVec ((Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ)))) (fun …`.
+
+Introduce `ζ hζ`. Set `q : MA.Qp P.r P.TT` to `⟨(c0, ζ), ⟨fun _ => one_ne_zero, hζ⟩⟩`. Establish `hp` using `SSAdjH.hs_pair P Bs hpl hk2 e he (X.t (Yr : ℂ) 1 0 Φ) Ψ q`. Use `hp.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single ρ]`.
+
+Rewrite using `[hΨr ρ q, if_pos rfl, one_mul, (blk P Bs X d hH e he hk A Bf hAB hC ρ (Yr : ℂ) F hF.contDiffOn Φ hΦr hΦP q).1]`. Introduce `σ _ hσ`. Rewrite using `[hΨr σ q, if_neg hσ, zero_mul, mul_zero]`. Introduce `h0`. Conclude with `absurd (Finset.mem_univ _) h0`.
+
+Establish `eR : Set.EqOn (fun ζ => (((wR P.k P.TT ζ) ^ 2 : ℝ) : ℂ) * inner ℂ (B.hsVec ((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ))) (B.hsVec (((X.t (Yr : ℂ) 0 1 Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ)))) (fun …`. Introduce `ζ hζ`. Set `q : MA.Qp P.r P.TT` to `⟨(c0, ζ), ⟨fun _ => one_ne_zero, hζ⟩⟩`. Establish `hp` using `SSAdjH.hs_pair P Bs hpl hk2 e he Φ (X.t (Yr : ℂ) 0 1 Ψ) q`. Use `hp.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single ρ]`. Rewrite using `[hΦr ρ q, if_pos rfl, one_mul, (blk P Bs X d hH e he hk A Bf hAB hC ρ (Yr : ℂ) G hG.contDiffOn Ψ hΨr hΨP q).2]`. Introduce `σ _ hσ`. Rewrite using `[hΦr σ q, if_neg hσ, zero_mul, star_zero, zero_mul]`. Introduce `h0`.
+
+Conclude with `absurd (Finset.mem_univ _) h0`. Rewrite `radj` using `[setIntegral_congr_fun (ann_open P).measurableSet eL, setIntegral_congr_fun (ann_open P).measurableSet eR]`. Establish `hGz : ∀ ζ, ζ ∉ Ann P → G ζ = 0` using `fun ζ h => image_eq_zero_of_notMem_tsupport (fun h' => h (hGs h'))`. Establish `hFz : ∀ ζ, ζ ∉ Ann P → F ζ = 0` using `fun ζ h => image_eq_zero_of_notMem_tsupport (fun h' => h (hFs h'))`. Rewrite `radj` using `[setIntegral_eq_integral_of_forall_compl_eq_zero (fun ζ h => by rw [hGz ζ h, mul_zero]), setIntegral_eq_integral_of_forall_compl_eq_zero (fun ζ h => by rw [hFz ζ h, star_zero, zero_mul])]`.
+
+Establish `hF1 : ContDiff ℝ 1 F` using `hF.of_le (by exact_mod_cast le_top)`. Establish `hG1 : ContDiff ℝ 1 G` using `hG.of_le (by exact_mod_cast le_top)`. Establish `cF` using `hF.continuous`. Establish `cG` using `hG.continuous`. Establish `cdF` using `dZ_cont hF1`.
+
+Establish `cdG` using `dZb_cont hG1`. Establish `cA : ContinuousOn (A ρ) (Ann P)` using `(hAB ρ).1.continuousOn`. Establish `cB : ContinuousOn (Bf ρ) (Ann P)` using `(hAB ρ).2.continuousOn`. Set `Lf : ℂ → ℂ` to `fun ζ => star (x * (-(gg ζ * (NF.dZ F ζ + A ρ ζ * F ζ)) - ((Yr : ℂ) + 1 / 2) * (star ζ * F ζ))) * G ζ`. Set `Rf : ℂ → ℂ` to `fun ζ => star (F ζ) * (x * (-(gg ζ * (-NF.dZb G ζ + Bf ρ ζ * G ζ)) - ((Yr : ℂ) - 1 / 2) * (ζ * G ζ)))`.
+
+Set `Ja : ℂ → ℂ` to `fun ζ => G ζ * gg ζ * star (NF.dZ F ζ)`. Set `Jb : ℂ → ℂ` to `fun ζ => (NF.dZb G ζ * gg ζ + G ζ * ζ) * star (F ζ)`. Set `Kf : ℂ → ℂ` to `fun ζ => star (F ζ) * (gg ζ * (Bf ρ ζ - star (A ρ ζ))) * G ζ`. Establish `iL : Integrable Lf` using `integ_of P Lf G (by`. Simplify using `only [Lf]`.
+
+Conclude with `(continuous_star.comp_continuousOn (continuousOn_const.mul ((((gg_cont.continuousOn.mul (cdF.continuousOn.add (cA.mul cF.continuousOn)))).neg).sub (continuousOn_const.mul (continuous_star.continuousOn.mul cF.continuousOn))))).mul cG.continuousOn)`. Use `hGc hGs (fun ζ h => by simp only [Lf]; rw [h, mul_zero])`. Establish `iR : Integrable Rf` using `integ_of P Rf F (by`. Simplify using `only [Rf]`. Conclude with `(continuous_star.comp_continuousOn cF.continuousOn).mul (continuousOn_const.mul ((gg_cont.continuousOn.mul ((cdG.continuousOn.neg).add (cB.mul cG.continuousOn))).neg.sub (continuousOn_const.mul (continuousOn_id.mul cG.continuousOn)))))`.
+
+Use `hFc hFs (fun ζ h => by simp only [Rf]; rw [h, star_zero, zero_mul])`. Establish `iJa : Integrable Ja` using `integ_of P Ja G (by`. Simplify using `only [Ja]`. Conclude with `((cG.mul gg_cont).mul (continuous_star.comp cdF)).continuousOn)`. Use `hGc hGs (fun ζ h => by simp only [Ja]; rw [h, zero_mul, zero_mul])`.
+
+Establish `iJb : Integrable Jb` using `integ_of P Jb F (by`. Simplify using `only [Jb]`. Conclude with `(((cdG.mul gg_cont).add (cG.mul continuous_id)).mul (continuous_star.comp cF)).continuousOn)`. Use `hFc hFs (fun ζ h => by simp only [Jb]; rw [h, star_zero, mul_zero])`. Establish `iK : Integrable Kf` using `integ_of P Kf G (by`.
+
+Simplify using `only [Kf]`. Conclude with `((continuous_star.comp_continuousOn cF.continuousOn).mul (gg_cont.continuousOn.mul (cB.sub (continuous_star.comp_continuousOn cA)))).mul cG.continuousOn)`. Use `hGc hGs (fun ζ h => by simp only [Kf]; rw [h, mul_zero])`. Establish `hpt : ∀ ζ, Lf ζ - Rf ζ = x * (-(Ja ζ + Jb ζ) + Kf ζ)`. Introduce `ζ`.
+
+Simplify using `only [Lf, Rf, Ja, Jb, Kf, gg, Complex.star_def, map_mul, map_sub, map_neg, map_add, Complex.conj_ofReal, Complex.conj_conj, map_div₀, map_one, map_ofNat, hxr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hibp` using `ibp_dZb (fun w => G w * gg w) (fun w => star (F w)) (hG1.mul (gg_sm.of_le (by exact_mod_cast le_top))) (Complex.conjCLE.contDiff.comp hF1) (hFc.comp_left (star_zero _))`. Establish `eJa : (fun w => G w * gg w * NF.dZb (fun w => star (F w)) w) = Ja`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [Ja]`. Rewrite using `[dZb_conj F w (hF1.differentiable one_ne_zero w)]`. Establish `eJb : (fun w => NF.dZb (fun w => G w * gg w) w * star (F w)) = Jb`. Use function extensionality and compare the values at `w`. Simplify using `only [Jb, gg]`.
+
+Rewrite using `[dZb_mul_gg G P.TT w (hG1.differentiable one_ne_zero w)]`. Rewrite `hibp` using `[eJa, eJb]`. Establish `hsum : ∫ ζ, (Lf ζ - Rf ζ) = 0` using `by rw [integral_sub iL iR, radj, sub_self]`. Establish `h1 : (fun ζ => Lf ζ - Rf ζ) = fun ζ => ((-x) * Ja ζ + ((-x) * Jb ζ + x * Kf ζ))`. Use function extensionality and compare the values at `ζ`.
+
+Rewrite using `[hpt]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hsum` using `[h1, integral_add (iJa.const_mul _) (show Integrable (fun ζ => (-x) * Jb ζ + x * Kf ζ) from (iJb.const_mul _).add (iK.const_mul _)), integral_add (iJb.const_mul _) (iK.const_mul _), integral_const_mul, integral_const_mul, integral_const_mul, hibp]`. Establish `h2 : x * (∫ ζ, Kf ζ) = 0` using `by linear_combination hsum`. Conclude with `(mul_eq_zero.1 h2).resolve_left hxne`.
+
+Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 (ann_open P) ζ0 hζ0`. Set `χ : ContDiffBump ζ0` to `⟨ε / 3, 2 * ε / 3, by positivity, by linarith⟩`. Set `kk : ℂ → ℂ` to `fun ζ => gg ζ * (Bf ρ ζ - star (A ρ ζ))`. Establish `ckk : ContinuousOn kk (Ann P)` using `gg_cont.continuousOn.mul ((hAB ρ).2.continuousOn.sub (continuous_star.comp_continuousOn (hAB ρ).1.continuousOn))`. Establish `hballA : Metric.ball ζ0 (ε / 3) ⊆ Ann P` using `(Metric.ball_subset_ball (by linarith)).trans hball`.
+
+Establish `hχs : tsupport (fun ζ => ((χ ζ : ℝ) : ℂ)) ⊆ Ann P`. Use `(tsupport_comp_subset Complex.ofReal_zero _).trans ?_` and prove the remaining obligations. Rewrite using `[χ.tsupport_eq]`. Conclude with `(Metric.closedBall_subset_ball (by simp only [χ]; linarith)).trans hball`. Establish `hH0` using `SSAdjH.pt_of_tests (U := Metric.ball ζ0 (ε / 3)) Metric.isOpen_ball (H := fun ζ => ((χ ζ : ℝ) : ℂ) * kk ζ) ((Complex.continuous_ofReal.comp χ.continuous).continuousOn.mul (ckk.mono hballA)) (fun φ hφ hφc hφs => by`.
+
+Use `key (fun ζ => ((χ ζ : ℝ) : ℂ)) (fun ζ => ((φ ζ : ℝ) : ℂ)) (Complex.ofRealCLM.contDiff.comp χ.contDiff) (χ.hasCompactSupport.comp_left Complex.ofReal_zero) hχs (Complex.ofRealCLM.contDiff.comp hφ) (hφc.comp_left Complex.ofReal_zero) ((tsupport_comp_subset Complex.ofReal_zero _).tr …` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `ζ`. Simplify using `only [kk, Complex.real_smul, Complex.star_def, Complex.conj_ofReal]`.
+
+Use the proof step `ring)`. Use `ζ0 (Metric.mem_ball_self (by positivity))`. Establish `h1 : χ ζ0 = 1` using `χ.one_of_mem_closedBall (Metric.mem_closedBall_self (by positivity))`. Simplify using `only [h1, Complex.ofReal_one, one_mul, kk] at hH0`. Use `(mul_eq_zero.1 hH0).resolve_left (gg_ne ζ0 hζ0)` as an intermediate fact.
+
+Conclude with `sub_eq_zero.1 this`.
+-/
 theorem gauge_reality_holds : GTCReal := by
   intro Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk A Bf hAB hC ρ ζ0 hζ0
   classical
@@ -453,6 +596,9 @@ end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.SSReal
 
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
+/- English proof (translation)
+The claim follows from `SSReal.gauge_reality_holds`.
+-/
 theorem gauge_reality_holds : GTCReal := SSReal.gauge_reality_holds
 
 end Formalism.FourierDecayAlt.P.CutMP.Gauge.GC

@@ -13,6 +13,9 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.NL.GamQ
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.isUnit_iff_constantCoeff]`. Simplify using `[hf]`.
+-/
 theorem isUnit_one_add {O : Type} [CommRing O] (f : PowerSeries O)
     (hf : PowerSeries.constantCoeff f = 0) : IsUnit (1 + f) := by
   rw [PowerSeries.isUnit_iff_constantCoeff]; simp [hf]
@@ -20,6 +23,29 @@ theorem isUnit_one_add {O : Type} [CommRing O] (f : PowerSeries O)
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D HW F Cm l _ K s LL h W C u T hT k`. Take `⟨χ, -, -, hγ₀, -, hQ, -, -⟩` from `GlobalTheory.NL.CycRing.rings_cyclotomic D HW l K s LL h`. Take `⟨b, hb⟩` from `((GlobalTheory.Cyc.XX_QQ_properties l ↥(OL LL) s h.1).2.2.2.2.2.1 (χ W.gam)).2`. Set `U : AA K LL` to `fun _ => 1 + GlobalTheory.Cyc.XX l ↥(OL LL) s * b`. Establish `hγQ : W.γA W.gam W.Q = W.Q * U`.
+
+Use function extensionality and compare the values at `i`. Use `show W.γ₀ W.gam (W.Q i) = W.Q i * U i`. Rewrite using `[hγ₀, hQ]`. Conclude with `hb`. Establish `hUu : IsUnit U` using `Pi.isUnit_iff.2 fun _ => isUnit_one_add _ (by simp [GlobalTheory.Cyc.XX])`.
+
+Establish `hγs : ∀ (a : AA K LL) (y : W.DD T), W.γ T (a • y) = W.γA W.gam a • W.γ T y`. Introduce `a y`. Use `W.γD_smul T W.gam (algebraMap (AA K LL) W.EE a) y` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.γE_ext, algebraMap_smul]`. Conclude with `this`.
+
+Set `v : AA K LL` to `((hUu.unit ^ k)⁻¹ : (AA K LL)ˣ)`. Establish `hvU : v * U ^ k = 1` using `by show (((hUu.unit ^ k)⁻¹ : (AA K LL)ˣ) : AA K LL) * U ^ k = 1`. Establish `e : U ^ k = ((hUu.unit ^ k : (AA K LL)ˣ) : AA K LL)`. Rewrite using `[Units.val_pow_eq_pow_val, IsUnit.unit_spec]`. Rewrite using `[e, Units.inv_mul]`.
+
+Establish `key : ∀ y : W.DD T, W.Q ^ k • W.γ T y = v • W.γ T (W.Q ^ k • y)`. Introduce `y`. Rewrite using `[hγs, map_pow, hγQ, mul_pow, smul_smul, mul_left_comm, hvU, mul_one]`. Use `⟨fun x hx => ?_, fun i ζ hζ => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+
+Conclude with `(W.N T).smul_mem v (W.N_Γ T W.gam _ hx)`. Establish `hfull` using `GlobalTheory.NL.FullLevel.full_lat D HW F Cm l K s LL h T hT i ζ hζ`. Establish `hlev` using `(GlobalTheory.NL.LevInj.expansion_basis D HW F Cm l K s LL h T hT i ζ ⟨s, hζ⟩ hfull).1`. Use `⟨W.lev i ζ v, ?_, fun x hx hγ j => ?_⟩` and prove the remaining obligations. Establish `hg` using `W.gam_gen`.
+
+Rewrite `hg` using `[(HW l).W_s]`. Establish `hΓ` using `((Cm l).C K s LL h).tie.lev_Γ W.gam i ζ ζ s 1 (by rw [(D.loc l).PD_p]; exact hζ) (by rw [Nat.cast_one]; exact hg.ge) (pow_one ζ).symm W.Q`. Establish `hΓ' : W.lev i ζ W.Q * W.lev i ζ U = PowerSeries.rescale u (W.lev i ζ W.Q)`. Rewrite using `[← map_mul, ← hγQ]`. Conclude with `hΓ`.
+
+Take `⟨w0, hw0, hQw⟩` from `((GlobalTheory.NL.lev_at_root_of_unity D HW l K s LL h i ζ ⟨s, hζ⟩).2.2.2.1 hζ).1`. Rewrite `hΓ'` using `[hQw, map_mul, PowerSeries.rescale_X]`. Establish `h1 : w0 * W.lev i ζ U = PowerSeries.C u * PowerSeries.rescale u w0`. Apply `mul_left_cancel₀ (PowerSeries.X_ne_zero (R := ↥LL.1))` to reduce the goal to its premises. Take the linear combination `hΓ'`.
+
+Establish `h2` using `congrArg (PowerSeries.coeff 0) h1`. Rewrite `h2` using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_rescale, pow_zero, one_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul]`. Establish `hw0c : PowerSeries.constantCoeff w0 ≠ 0` using `(hw0.map PowerSeries.constantCoeff).ne_zero`. Establish `hUc : PowerSeries.constantCoeff (W.lev i ζ U) = u`. Apply `mul_left_cancel₀ hw0c` to reduce the goal to its premises.
+
+Rewrite using `[h2, mul_comm]`. Establish `h3` using `congrArg PowerSeries.constantCoeff (congrArg (W.lev i ζ) hvU)`. Rewrite `h3` using `[map_mul, map_pow, map_one, map_mul, map_pow, map_one, hUc]`. Rewrite using `[zpow_neg, zpow_natCast]`. Conclude with `eq_inv_of_mul_eq_one_left h3`.
+
+Establish `e1 : (⟨W.Q ^ k • W.γ T x, hγ⟩ : ↥(W.N T)) = v • (⟨W.γD T W.gam (W.Q ^ k • x), W.N_Γ T W.gam _ hx⟩ : ↥(W.N T))` using `Subtype.ext (key x)`. Establish `e2 : ex C h T i ζ ⟨W.γD T W.gam (W.Q ^ k • x), W.N_Γ T W.gam _ hx⟩ = fun m => u ^ m • ex C h T i ζ ⟨W.Q ^ k • x, hx⟩ m`. Use function extensionality and compare the values at `fun m => GlobalTheory.NL.GradedLat.ex_gam C h T hT i ζ hζ.pow_eq_one ⟨W.Q ^ k • x, hx⟩ m`. Rewrite using `[e1, hlev, e2]`.
+-/
 theorem gam_Q_pow : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let C := Cm l; let u : ↥LL.1 := algebraMap ↥(OL LL) ↥LL.1 (W.χΓ W.gam : ↥(OL LL)); ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ k : ℕ, (∀ x : W.DD T, W.Q ^ k • x ∈ W.N T → W.Q ^ k • W.γ T x ∈ W.N T) ∧ ∀ (i : Let K) (ζ : ↥LL.1), IsPrimitiveRoot ζ (l ^ s) → ∃ w : PowerSeries ↥LL.1, PowerSeries.constantCoeff w = u ^ (-(k : ℤ)) ∧ ∀ (x : W.DD T) (hx : W.Q ^ k • x ∈ W.N T) (hγ : W.Q ^ k • W.γ T x ∈ W.N T) (j : ℤ), ex C h T i ζ ⟨W.Q ^ k • W.γ T x, hγ⟩ j = conv w (fun m => u ^ m • ex C h T i ζ ⟨W.Q ^ k • x, hx⟩ m) j := by
   intro D HW F Cm l _ K s LL h W C u T hT k
   obtain ⟨χ, -, -, hγ₀, -, hQ, -, -⟩ := GlobalTheory.NL.CycRing.rings_cyclotomic D HW l K s LL h

@@ -10,6 +10,23 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `Ω _ _ ι ν κ _ _ _ E _ _ Φ _ _ _ x e b φ δ g i₀ l₀ k₀ k₁ d t a hx ht htF hxt hδ hδF hφ hgF hg ha`. Take `⟨hden, hr⟩` from `hM Ω Φ 2 a (φ k₁ (e 0)) (φ k₁ (e 1)) (φ k₀ (e 0)) (φ k₀ (e 1)) ha (RatioField.det_ne_zero e b φ g (x i₀) hx k₀ k₁ hφ hg)`. Use `set F := IntermediateField.adjoin ℚ (Set.range fun j => x j / x i₀)`. Use `set W := T.wwCoord x δ e φ (a 0) (a 1)`. Set `c : ∀ k, T.wwIdx ι ν κ k` to `fun k => T.WBlk.casesOn (motive := fun k => T.wwIdx ι ν κ k) k i₀ l₀ k₀ k₀`.
+
+Set `r : Fin 2 → Φ` to `fun j => T.lineVal e (φ k₁) (a j) / T.lineVal e (φ k₀) (a j)`. Set `t' : Fin (d + 2) → Φ` to `fun n => Sum.elim (fun m => algebraMap Ω Φ (t m)) r (finSumFinEquiv.symm n)`. Establish `ht'n : ∀ m, algebraMap Ω Φ (t m) ∈ Set.range t'` using `fun m => ⟨finSumFinEquiv (Sum.inl m), by simp [t']⟩`. Establish `hr' : ∀ j, r j ∈ Set.range t'` using `fun j => ⟨finSumFinEquiv (Sum.inr j), by simp [t']⟩`. Establish `hrC : ∀ j, r j ∈ coneRatios W c` using `fun j => by fin_cases j exacts [⟨⟨.line0, k₁⟩, rfl⟩, ⟨⟨.line1, k₁⟩, rfl⟩]`.
+
+Establish `hline : ∀ (L : IntermediateField ℚ Φ), (∀ z ∈ F, algebraMap Ω Φ z ∈ L) → (∀ j, r j ∈ L) → ∀ j k, T.lineVal e (φ k) (a j) / T.lineVal e (φ k₀) (a j) ∈ L`. Introduce `L hF hrL j k`. Establish `hgF' : ∀ k q, g k q ∈ F` using `hgF`. Rewrite using `[RatioField.lineVal_cramer e b φ g (x i₀) k₀ k₁ k hφ hg, add_div, mul_div_assoc, mul_div_assoc, div_self (show T.lineVal e (φ k₀) (a j) ≠ 0 from hden j)]`. Apply the tactic sequence `refine L.add_mem (L.mul_mem (hF _ ?_) (L.one_mem)) (L.mul_mem (hF _ ?_) (hrL j)) <;>`.
+
+Conclude with `F.div_mem (F.sub_mem (F.mul_mem (hgF' _ _) (hgF' _ _)) (F.mul_mem (hgF' _ _) (hgF' _ _))) (F.sub_mem (F.mul_mem (hgF' _ _) (hgF' _ _)) (F.mul_mem (hgF' _ _) (hgF' _ _)))`. Establish `hcases : ∀ (L : IntermediateField ℚ Φ), (∀ z ∈ F, algebraMap Ω Φ z ∈ L) → (∀ j, r j ∈ L) → ∀ y ∈ coneRatios W c, y ∈ L`. Introduce and unpack `L hF hrL _ ⟨⟨blk, i⟩, rfl⟩`. Consider the cases of `blk`. Simplify `hF _ (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)` using `[W, c, T.wwCoord, map_div₀]`.
+
+Simplify `hF _ (hδF i)` using `[W, c, T.wwCoord, map_div₀]`. Conclude with `hline L hF hrL 0 i`. Conclude with `hline L hF hrL 1 i`. Use `⟨c, t', fun k => ?_, ?_, fun n => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Consider the cases of `k exacts [(map_ne_zero _).mpr hx, (map_ne_zero _).mpr hδ, hden 0, hden 1]`.
+
+Establish `hti : AlgebraicIndependent ℚ fun m => algebraMap Ω Φ (t m)` using `ht.map' (f := (algebraMap Ω Φ).toRatAlgHom) (algebraMap Ω Φ).injective`. Use `(algebraicIndependent_equiv' (finSumFinEquiv.symm.trans (Equiv.sumComm _ _)) ?_).mpr (hti.sumElim_of_tower (S := Ω) (by rintro _ ⟨m, rfl⟩; exact ⟨t m, rfl⟩) hr)` and prove the remaining obligations. Use function extensionality and compare the values at `n`. Simplify using `only [Function.comp, Equiv.trans_apply, t']`. Apply the tactic sequence `cases finSumFinEquiv.symm n <;> rfl`.
+
+Establish `hbase : ∀ z ∈ F, algebraMap Ω Φ z ∈ IntermediateField.adjoin ℚ (coneRatios W c)` using `fun z hz => RatioField.map_mem (S := Set.range fun j => x j / x i₀) (fun w hw => by`. Take `⟨j, rfl⟩` from `hw`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨.base, j⟩, by simp [W, c, T.wwCoord, map_div₀]⟩) hz`. Take `⟨m | j, rfl⟩` from `finSumFinEquiv.surjective n`. Simplify `hbase _ (htF m)` using `[t']`.
+
+Simplify `IntermediateField.subset_adjoin _ _ (hrC j)` using `[t']`. Establish `hL` using `hcases ((algebraicClosure (IntermediateField.adjoin ℚ (Set.range t')) Φ).restrictScalars ℚ) (fun z hz => (IntermediateField.mem_restrictScalars ℚ).mpr (mem_algebraicClosure_iff.mpr (RatioField.isAlgebraic_map_adjoin (S := Set.range fun j => x j / x i₀) ht (fun w hw => by obtain ⟨ …`. Conclude with `mem_algebraicClosure_iff.mp ((IntermediateField.mem_restrictScalars ℚ).mp hL)`.
+-/
 theorem WWRatioBasis.proof (hM : MobiusAlgIndep.Statement) : WWRatioBasis.Statement := by
   intro Ω _ _ ι ν κ _ _ _ E _ _ Φ _ _ _ x e b φ δ g i₀ l₀ k₀ k₁ d t a hx ht htF hxt hδ hδF hφ hgF hg ha
   obtain ⟨hden, hr⟩ := hM Ω Φ 2 a (φ k₁ (e 0)) (φ k₁ (e 1)) (φ k₀ (e 0)) (φ k₀ (e 1)) ha

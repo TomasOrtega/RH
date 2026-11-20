@@ -15,11 +15,19 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 def chirp (c : ℝ) (q : V → ℝ) (x : V) : ℂ := Complex.exp (Complex.I * ((-(2 * Real.pi) * c * q x : ℝ) : ℂ))
 
+/- English proof (translation)
+Establish `h1 : (fun x => -(2 * Real.pi) * c * q x).HasTemperateGrowth` using `(Function.HasTemperateGrowth.const _).mul hq`. Conclude with `GlobalTheory.CompanionTheory.OM.SchDiff.temperate_exp.comp h1`.
+-/
 theorem chirp_tg (c : ℝ) {q : V → ℝ} (hq : q.HasTemperateGrowth) : (chirp c q).HasTemperateGrowth := by
   have h1 : (fun x => -(2 * Real.pi) * c * q x).HasTemperateGrowth :=
     (Function.HasTemperateGrowth.const _).mul hq
   exact GlobalTheory.CompanionTheory.OM.SchDiff.temperate_exp.comp h1
 
+/- English proof (translation)
+Establish `hq : (fun x => t * L x + t ^ 2 * (L a / 2)).HasTemperateGrowth` using `((Function.HasTemperateGrowth.const t).mul L.hasTemperateGrowth).add (Function.HasTemperateGrowth.const _)`. Use `⟨SchwartzMap.smulLeftCLM ℂ (chirp 1 fun x => t * L x + t ^ 2 * (L a / 2)) (SchwartzMap.compSubConstCLM ℂ (-(t • a)) f), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (chirp_tg 1 hq), SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add, hl, chirp]`. Simplify using `only [smul_eq_mul]`. Use `congr 2`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hl_schwartz (a : V) (L : V →L[ℝ] ℝ) (f : 𝓢(V, ℂ)) (t : ℝ) : ∃ G : 𝓢(V, ℂ), ∀ x, G x = hl a L t f x := by
   have hq : (fun x => t * L x + t ^ 2 * (L a / 2)).HasTemperateGrowth :=
     ((Function.HasTemperateGrowth.const t).mul L.hasTemperateGrowth).add (Function.HasTemperateGrowth.const _)

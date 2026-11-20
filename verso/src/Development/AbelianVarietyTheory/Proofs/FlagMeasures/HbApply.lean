@@ -21,6 +21,9 @@ def Wb : Submodule D.host.E (VS D).V where
     intro c x hx a
     exact ⟨by rw [map_smul, (hx a).1, smul_zero], by rw [map_smul, (hx a).2, smul_zero]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Wb (v : (VS D).V) : v ∈ Wb X ↔ ∀ a, (VS D).hT (X.eX a) v = 0 ∧ (VS D).hT (X.fY a) v = 0 := Iff.rfl
 
 def hb : Wb X →ₗ⋆[D.host.E] Wb X →ₗ[D.host.E] D.host.E := GlobalTheory.Mass.hRes (VS D).hT (Wb X)
@@ -38,13 +41,27 @@ def Lmap (u : D.what₂.Word) (Λ : Submodule (𝓞 D.host.E) (VS D).V) : Submod
 abbrev Gz (u : D.what₂.Word) : Subgroup (Formalism.HermitianLatticesTheory.isom (hb X)) :=
   MulAction.stabilizer (Formalism.HermitianLatticesTheory.isom (hb X)) (zb X u)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hb_apply (x y : Wb X) : hb X x y = (VS D).hT (x : (VS D).V) (y : (VS D).V) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zb_coe (u : D.what₂.Word) : ((zb X u : Wb X) : (VS D).V) = X.zu u := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hU_apply (u : D.what₂.Word) (x y : Ub X u) :
     hU X u x y = (VS D).hT ((x : Wb X) : (VS D).V) ((y : Wb X) : (VS D).V) := rfl
 
+/- English proof (translation)
+Unfold `Ub GlobalTheory.Mass.perp`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Conclude with `H (zb X u) (Submodule.mem_span_singleton_self _)`.
+
+Introduce `H y hy`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply]`. Express the relevant statement in the definitionally equal form `_ • (VS D).hT (X.zu u) (x : (VS D).V) = 0`. Rewrite using `[H, smul_zero]`.
+-/
 theorem mem_Ub (u : D.what₂.Word) (x : Wb X) : x ∈ Ub X u ↔ (VS D).hT (X.zu u) (x : (VS D).V) = 0 := by
   unfold Ub GlobalTheory.Mass.perp
   simp only [Submodule.mem_iInf, LinearMap.mem_ker]
@@ -57,6 +74,9 @@ theorem mem_Ub (u : D.what₂.Word) (x : Wb X) : x ∈ Ub X u ↔ (VS D).hT (X.z
     change _ • (VS D).hT (X.zu u) (x : (VS D).V) = 0
     rw [H, smul_zero]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Lmap (u : D.what₂.Word) (Λ : Submodule (𝓞 D.host.E) (VS D).V) (w : Wb X) :
     w ∈ Lmap X u Λ ↔ (w : (VS D).V) ∈ Λ ⊔ GlobalTheory.HermLat.rs (𝓞 D.host.E) (GlobalTheory.TypeAsm.F0 X u).X := Iff.rfl
 

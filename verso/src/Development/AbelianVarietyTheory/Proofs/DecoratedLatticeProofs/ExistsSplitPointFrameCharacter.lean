@@ -14,6 +14,11 @@ namespace GlobalTheory.InhPt
 
 open GlobalTheory.MixPer
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p ψ hψ`. Establish `hn : ∀ x : AF D.host.F, ‖ψ x‖ = 1` using `hψ.1.2.1`. Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Establish `htr : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hc : Continuous fun a : k => psiE ψ (p.sec a)` using `hψ.1.1.comp (htr.comp p.cont_sec)`.
+
+Set `χ : AddChar k Circle` to `{ toFun := fun a => ⟨psiE ψ (p.sec a), by simpa [Submonoid.unitSphere, psiE] using hn _⟩ map_zero_eq_one' := by ext; simp [psiE] map_add_eq_mul' := by intro a b; ext; simp [psiE, map_add, AddChar.map_add_eq_mul]; rfl }`. Conclude with `⟨χ, fun a => rfl, Continuous.subtype_mk hc _⟩`.
+-/
 theorem exists_char : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∃ χ : AddChar k Circle, p.IsChar ψ χ ∧ Continuous χ := by
   intro D k _ _ _ _ p ψ hψ
   have hn : ∀ x : AF D.host.F, ‖ψ x‖ = 1 := hψ.1.2.1
@@ -27,6 +32,19 @@ theorem exists_char : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [Topolo
       map_add_eq_mul' := by intro a b; ext; simp [psiE, map_add, AddChar.map_add_eq_mul]; rfl }
   exact ⟨χ, fun a => rfl, Continuous.subtype_mk hc _⟩
 
+/- English proof (translation)
+Introduce `D`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `k _ _ _ _ _ _ T hT hcard hirr w e hw he hN hsq haveI := Fact.mk hT`. Take `⟨φ, hφ, hφs, hφO⟩` from `GlobalTheory.T.exists_ringEquiv_padic_of_residueCard_uniformizer k T hcard hirr`. Take `⟨v, pr, sec, hab, h1, h2, hpr, hsec, hint⟩` from `GlobalTheory.T.exists_padicCoordinates_of_degreeOne_splitPlace D T w e hw he hN hsq`.
+
+Use `⟨⟨v, e, he, hab, φ.toRingHom.comp pr, sec.comp φ.symm.toRingHom.toAddMonoidHom, ?_, ?_, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `a`. Simplify using `[h1]`. Introduce `x`. Simplify using `[h2]`.
+
+Conclude with `hφ.comp hpr`. Conclude with `hsec.comp hφs`. Introduce `a`. Use `hφO (φ.symm a)` as an intermediate fact. Simplify using `only [RingEquiv.apply_symm_apply] at this`.
+
+Simplify using `[this, hint]`. Introduce `k _ _ _ _ p`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `S n _ _ b b' h1 h2`. Take `⟨gl, hs, hm⟩` from `GlobalTheory.T.exists_GL_embedding_unitaryAdelic_splitPlace_basis D k p S n b b' h1 h2`.
+
+Conclude with `⟨⟨b, b', h1, h2, gl, hs, hm⟩, rfl⟩`. Introduce `ψ hψ`. Take `⟨χ, hχ, hc⟩` from `exists_char D k p ψ hψ`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_adelicTraceCharacter_splitSection_ne_one D k p ψ hψ`. Use `⟨χ, hχ, hc, ?_, fun hu => GlobalTheory.T.splitPlaceCharacter_conductor_integers D k p ψ χ hψ hχ hu⟩` and prove the remaining obligations.
+
+Introduce `h1`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← hχ a, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_splitPt_frame_char : ∀ (D : D7), (∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [IsTopologicalRing k] [CharZero k] (T : ℕ), T.Prime → Nat.card (IsLocalRing.ResidueField 𝒪[k]) = T → Irreducible (T : 𝒪[k]) → ∀ (w : Formalism.L2.DIV.Pl D.host.E) (e : AE D), Formalism.L2.NTheta.IsIdemAt e w → IsSplitIdem D e → Ideal.absNorm w.asIdeal = T → ¬ (w.asIdeal ^ 2 ∣ Ideal.span {(T : 𝓞 D.host.E)}) → ∃ p : SplitPt D k, p.e = e) ∧ ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k), (∀ (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (b : Matrix (Fin S.rank) n k) (b' : Matrix n (Fin S.rank) k), b * b' = 1 → b' * b = 1 → ∃ β : Frame p S n, β.b = b) ∧ ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∃ χ : AddChar k Circle, p.IsChar ψ χ ∧ Continuous χ ∧ χ ≠ 1 ∧ (p.UnitAA → GlobalTheory.SplitWeil.HasConductor χ 1) := by
   intro D
   refine ⟨?_, ?_⟩

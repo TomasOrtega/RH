@@ -9,12 +9,24 @@ def Princ (ε : R) (O : AddSubgroup R) : Prop :=
   ∀ J : AddSubgroup R, (∀ a ∈ J, ε * a = a) → (∀ o ∈ O, ∀ a ∈ J, o * a ∈ J) → (∃ m : ℕ, 0 < m ∧ (m : R) * ε ∈ J) →
     (∃ N : ℕ, 0 < N ∧ ∀ a ∈ J, (N : R) * a ∈ O) → ∃ α ∈ J, ∃ α', ε * α' = α' ∧ α * α' = ε ∧ ∀ a ∈ J, α' * a ∈ O
 
+/- English proof (translation)
+Use `(hM₂ _ (by rw [smul_comm, hM₁ y hy])).2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `hmul _ ho _ ((hM₂ y (hM₁ y hy)).1 hy x hx)`.
+-/
 theorem smul_mem_of_sd (hmul : ∀ a ∈ O, ∀ b ∈ O, a * b ∈ O) (hM₁ : ∀ y ∈ M, ε • y = y)
     (hM₂ : ∀ y, ε • y = y → (y ∈ M ↔ ∀ x ∈ M, h y x ∈ O)) {o : R} (ho : o ∈ O) {y : V} (hy : y ∈ M) : o • y ∈ M := by
   refine (hM₂ _ (by rw [smul_comm, hM₁ y hy])).2 fun x hx => ?_
   rw [map_smul, LinearMap.smul_apply, smul_eq_mul]
   exact hmul _ ho _ ((hM₂ y (hM₁ y hy)).1 hy x hx)
 
+/- English proof (translation)
+Establish `hfix : ∀ t, X t ∈ M → ∀ k, ε * t k = t k` using `fun t ht k => by`. Use `congrArg (fun z => h z (f k)) (hM₁ _ ht)` as an intermediate fact. Simplify `this` using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, hXf]`. Set `J : AddSubgroup R` to `{ carrier := {a | ∃ t : Fin ρ → R, (∀ l, i < l → t l = 0) ∧ X t ∈ M ∧ t i = a} zero_mem' := ⟨0, fun _ _ => rfl, by rw [map_zero]; exact M.zero_mem, rfl⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨t, h1, h2, rfl⟩ ⟨s, g1, g2, rfl⟩`.
+
+Conclude with `⟨t + s, fun l hl => by simp [h1 l hl, g1 l hl], by rw [map_add]; exact M.add_mem h2 g2, rfl⟩`. Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨t, h1, h2, rfl⟩`. Conclude with `⟨-t, fun l hl => by simp [h1 l hl], by rw [map_neg]; exact M.neg_mem h2, rfl⟩ }`. Take `⟨α, ⟨b, hb1, hb2, rfl⟩, α', h1, h2, h3⟩` from `hP J (by rintro _ ⟨t, -, h2, rfl⟩; exact hfix t h2 i) (by`.
+
+Introduce and unpack `o ho _ ⟨t, h1, h2, rfl⟩`. Conclude with `⟨o • t, fun l hl => by simp [h1 l hl], by rw [map_smul]; exact smul_mem_of_sd hmul hM₁ hM₂ ho h2, rfl⟩)`. Use the proof step `⟨N, hN, Pi.single i ((N : R) * ε), fun l hl => Pi.single_eq_of_ne hl.ne' _, he i, Pi.single_eq_same _ _⟩`. Use the proof step `⟨N, hN, by`. Introduce and unpack `_ ⟨t, -, h2, rfl⟩`.
+
+Use `(hM₂ _ (hM₁ _ h2)).1 h2 _ (hf i)` as an intermediate fact. Rewrite using `[map_smulₛₗ, hXf, map_mul, map_natCast, hεc, smul_eq_mul, mul_assoc, hfix t h2 i] at this⟩` and apply the resulting hypothesis. Conclude with `⟨b, α', hb1, hb2, h1, h2, fun t ht1 ht2 => h3 _ ⟨t, ht1, ht2, rfl⟩⟩`.
+-/
 theorem exists_triangular (hεc : c ε = ε) (hmul : ∀ a ∈ O, ∀ b ∈ O, a * b ∈ O) (hP : Princ ε O)
     (hM₁ : ∀ y ∈ M, ε • y = y) (hM₂ : ∀ y, ε • y = y → (y ∈ M ↔ ∀ x ∈ M, h y x ∈ O))
     (X : (Fin ρ → R) →ₗ[R] V) (f : Fin ρ → V) (hXf : ∀ t k, h (X t) (f k) = t k) (N : ℕ) (hN : 0 < N)
@@ -45,6 +57,35 @@ theorem exists_triangular (hεc : c ε = ε) (hmul : ∀ a ∈ O, ∀ b ∈ O, a
       rwa [map_smulₛₗ, hXf, map_mul, map_natCast, hεc, smul_eq_mul, mul_assoc, hfix t h2 i] at this⟩
   exact ⟨b, α', hb1, hb2, h1, h2, fun t ht1 ht2 => h3 _ ⟨t, ht1, ht2, rfl⟩⟩
 
+/- English proof (translation)
+Establish `hint : ∀ i, ∀ y ∈ M, h (X (b i)) y ∈ O` using `fun i => (hM₂ _ (hM₁ _ (hb₂ i))).1 (hb₂ i)`. Establish `hsm : ∀ {o : R}, o ∈ O → ∀ {y : V}, y ∈ M → o • y ∈ M` using `fun ho _ hy => smul_mem_of_sd hmul hM₁ hM₂ ho hy`. Set `K : AddSubgroup R` to `{ carrier := {a | ∃ y ∈ M, (∀ i, i < j → h (X (b i)) y = 0) ∧ h (X (b j)) y = a} zero_mem' := ⟨0, M.zero_mem, fun _ _ => map_zero _, map_zero _⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨t, h1, h2, rfl⟩ ⟨s, g1, g2, rfl⟩`. Conclude with `⟨t + s, M.add_mem h1 g1, fun l hl => by rw [map_add, h2 l hl, g2 l hl, add_zero], map_add _ _ _⟩`.
+
+Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨t, h1, h2, rfl⟩`. Conclude with `⟨-t, M.neg_mem h1, fun l hl => by rw [map_neg, h2 l hl, neg_zero], map_neg _ _⟩ }`. Establish `hKO : ∀ o ∈ O, ∀ a ∈ K, o * a ∈ K`. Introduce and unpack `o ho _ ⟨t, h1, h2, rfl⟩`.
+
+Conclude with `⟨c o • t, hsm (hcO o ho) h1, fun l hl => by rw [map_smulₛₗ, h2 l hl, smul_zero], by rw [map_smulₛₗ, hcc, smul_eq_mul]⟩`. Establish `hαN : α' * ((N : R) * ε) ∈ O`. Use `hJ (Pi.single j ((N : R) * ε)) (fun l hl => Pi.single_eq_of_ne hl.ne' _) (he j)` as an intermediate fact. Rewrite `this` using `[Pi.single_eq_same]`. Then use the resulting hypothesis. Establish `hNK : (N : R) * ε * b j j ∈ K` using `⟨_, hf j, fun i hi => by rw [map_smulₛₗ, hXf, hb₁ i j hi, smul_zero], by rw [map_smulₛₗ, hXf, map_mul, map_natCast, hεc, smul_eq_mul]⟩`.
+
+Take `⟨β, hβ, β', h1, h2, h3⟩` from `hP K (by rintro _ ⟨t, h1, -, rfl⟩; exact hOε _ (hint j t h1)) hKO ⟨N * N, Nat.mul_pos hN hN, by`. Establish `e : ((N * N : ℕ) : R) * ε = α' * ((N : R) * ε) * ((N : R) * ε * b j j)`. Use `push_cast`. Take the linear combination `(-(N : R) * N * ε * ε) * hα - ((N : R) * N * (ε + 1)) * hεε`. Rewrite using `[e]`.
+
+Conclude with `hKO _ hαN _ hNK⟩`. Use the proof step `⟨1, one_pos, by rintro _ ⟨t, h1, -, rfl⟩; rw [Nat.cast_one, one_mul]; exact hint j t h1⟩`. Use `choose g hg hg' using fun i : Fin ρ => ih (Pi.single i ε) fun l => by`. Distinguish the cases in `hl : l = i`. Rewrite using `[hl, Pi.single_eq_same]`.
+
+Conclude with `hεO`. Rewrite using `[Pi.single_eq_of_ne hl]`. Conclude with `O.zero_mem`. Set `s` to `Finset.univ.filter (· < j)`. Set `t : Fin ρ → R` to `β' • b j - ∑ i ∈ s, (β' * h (X (b j)) (g i)) • b i`.
+
+Establish `hXt : X t = β' • X (b j) - ∑ i ∈ s, (β' * h (X (b j)) (g i)) • X (b i)`. Simplify using `only [t, map_sub, map_sum, map_smul]`. Establish `htM : X t ∈ M`. Use `(hM₂ _ ?_).2 fun y hy => ?_` and prove the remaining obligations. Rewrite using `[hXt, smul_sub, Finset.smul_sum, smul_smul, h1]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [smul_smul, ← mul_assoc, h1]`. Establish `hy' : y - ∑ i ∈ s, c (h (X (b i)) y) • g i ∈ M` using `M.sub_mem hy (M.sum_mem fun i _ => hsm (hcO _ (hint i y hy)) (hg i))`. Establish `hK : h (X (b j)) (y - ∑ i ∈ s, c (h (X (b i)) y) • g i) ∈ K`. Use `⟨_, hy', fun l hl => ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, map_sum, Finset.sum_eq_single l]`. Rewrite using `[map_smulₛₗ, hcc, hg' l l hl, Pi.single_eq_same, smul_eq_mul, mul_comm, hOε _ (hint l y hy), sub_self]`. Introduce `i _ hi`. Rewrite using `[map_smulₛₗ, hg' i l hl, Pi.single_eq_of_ne hi.symm, smul_zero]`. Introduce `hl'; exact absurd (by simpa [s] using hl) hl'`.
+
+Use `h3 _ hK` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hXt]`. Simplify using `only [map_sub, map_sum, map_smul, map_smulₛₗ, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, hcc, mul_sub, Finset.mul_sum, RingHom.id_apply]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hz : ∀ l, j ≤ l → (∑ i ∈ s, (β' * h (X (b j)) (g i)) • b i) l = 0` using `fun l hl => by`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun i hi => by`. Rewrite using `[Pi.smul_apply, hb₁ i l (lt_of_lt_of_le (Finset.mem_filter.1 hi).2 hl), smul_zero]`.
+
+Establish `hβ' : β' ∈ O`. Use `hJ t (fun l hl => by` as an intermediate fact. Simplify using `only [t]`. Rewrite using `[Pi.sub_apply, hz l hl.le, Pi.smul_apply, hb₁ j l hl, smul_zero, sub_zero]) htM`. Simplify using `only [t] at this`.
+
+Rewrite `this` using `[Pi.sub_apply, hz j le_rfl, Pi.smul_apply, sub_zero, smul_eq_mul]`. Establish `e : α' * (β' * b j j) = β'` using `by linear_combination β' * hα + h1`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `hKO _ hβ' _ hβ` as an intermediate fact. Rewrite `this` using `[mul_comm, h2]`.
+
+Conclude with `this`.
+-/
 theorem exists_step (hcc : ∀ a, c (c a) = a) (hεε : ε * ε = ε) (hεc : c ε = ε) (hεO : ε ∈ O) (hOε : ∀ a ∈ O, ε * a = a)
     (hmul : ∀ a ∈ O, ∀ b ∈ O, a * b ∈ O) (hcO : ∀ a ∈ O, c a ∈ O) (hP : Princ ε O)
     (hM₁ : ∀ y ∈ M, ε • y = y) (hM₂ : ∀ y, ε • y = y → (y ∈ M ↔ ∀ x ∈ M, h y x ∈ O))
@@ -129,6 +170,19 @@ theorem exists_step (hcc : ∀ a, c (c a) = a) (hεε : ε * ε = ε) (hεc : c 
   rw [mul_comm, h2] at this
   exact this
 
+/- English proof (translation)
+Use `choose b α' hb₁ hb₂ _ hα hJ using exists_triangular hεc hmul hP hM₁ hM₂ X f hXf N hN he hf`. Establish `hint : ∀ i, ∀ y ∈ M, h (X (b i)) y ∈ O` using `fun i => (hM₂ _ (hM₁ _ (hb₂ i))).1 (hb₂ i)`. Establish `key : ∀ n : ℕ, n ≤ ρ → ∀ z : Fin ρ → R, (∀ i, z i ∈ O) → ∃ y ∈ M, ∀ i : Fin ρ, i.1 < n → h (X (b i)) y = z i`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => exact fun _ z _ => ⟨0, M.zero_mem, fun i hi => absurd hi (Nat.not_lt_zero _)⟩`. Consider the case `succ n ih`. Introduce `hn z hz`. Set `j : Fin ρ` to `⟨n, hn⟩`. Take `⟨w, hw, hw₁, hw₂⟩` from `exists_step hcc hεε hεc hεO hOε hmul hcO hP hM₁ hM₂ X f hXf N hN he hf b hb₁ hb₂ j (α' j) (hα j) (hJ j) (ih (Nat.le_of_succ_le hn))`.
+
+Take `⟨y, hy, hy'⟩` from `ih (Nat.le_of_succ_le hn) z hz`. Establish `ho : z j - h (X (b j)) y ∈ O` using `O.sub_mem (hz j) (hint j y hy)`. Use `⟨y + c (z j - h (X (b j)) y) • w, M.add_mem hy (smul_mem_of_sd hmul hM₁ hM₂ (hcO _ ho) hw), fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smulₛₗ, hcc, smul_eq_mul]`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hi with hi | hi` into its components or cases.
+
+Rewrite using `[hw₁ i hi, hy' i hi, mul_zero, add_zero]`. Establish `: i = j` using `Fin.ext hi`. Rewrite using `[this, hw₂, mul_comm, hOε _ ho, add_sub_cancel]`. Use `choose y hy hy' using fun j : Fin ρ => key ρ le_rfl (Pi.single j ε) fun l => by`. Distinguish the cases in `hl : l = j`.
+
+Rewrite using `[hl, Pi.single_eq_same]`. Conclude with `hεO`. Rewrite using `[Pi.single_eq_of_ne hl]`. Conclude with `O.zero_mem`. Use `⟨b, hb₁, fun i k => ?_, hb₂, y, hy, fun i j => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (fun z => h z (f k)) (hM₁ _ (hb₂ i))` as an intermediate fact. Simplify `this` using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, hXf]`. Rewrite using `[hy' j i i.2, Pi.single_apply]`.
+-/
 theorem exists_flag_dual (hcc : ∀ a, c (c a) = a) (hεε : ε * ε = ε) (hεc : c ε = ε) (hεO : ε ∈ O)
     (hOε : ∀ a ∈ O, ε * a = a) (hmul : ∀ a ∈ O, ∀ b ∈ O, a * b ∈ O) (hcO : ∀ a ∈ O, c a ∈ O) (hP : Princ ε O)
     (hM₁ : ∀ y ∈ M, ε • y = y) (hM₂ : ∀ y, ε • y = y → (y ∈ M ↔ ∀ x ∈ M, h y x ∈ O))
@@ -179,12 +233,24 @@ def sesq (c : R →+* R) {n : ℕ} (G : Matrix (Fin n) (Fin n) R) : (Fin n → R
       exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)
 
 open Matrix in
+/- English proof (translation)
+Simplify using `only [sesq, LinearMap.mk₂'ₛₗ_apply, Matrix.mul_apply, transpose_apply, map_apply, Finset.mul_sum, mul_assoc]`.
+-/
 theorem sesq_col {n p q : ℕ} (G : Matrix (Fin n) (Fin n) R) (A : Matrix (Fin n) (Fin p) R) (B : Matrix (Fin n) (Fin q) R)
     (i : Fin p) (j : Fin q) : sesq c G (fun k => A k i) (fun k => B k j) = ((B.map c)ᵀ * (G * A)) j i := by
   simp only [sesq, LinearMap.mk₂'ₛₗ_apply, Matrix.mul_apply, transpose_apply, map_apply, Finset.mul_sum, mul_assoc]
 
 open Matrix in
 
+/- English proof (translation)
+Take `⟨b, h1, h2, h3, y, h4, h5⟩` from `exists_flag_dual (h := sesq c G) (M := M) hcc hεε hεc hεO hOε hmul hcO hP (fun y hy => funext (hM₁ y hy)) (fun y hy => hM₂ y (congrFun hy)) E.mulVecLin (fun k l => F l k) (fun t k => by`. Use `sesq_col (c := c) G (E * Matrix.of fun l (_ : Fin 1) => t l) F 0 k` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc _ G, hEF, Matrix.one_mul]`. Conclude with `this) N hN`. Use the proof step `(fun k => by`.
+
+Use `he k using 1` and compare the differences between its conclusion and the goal. Use extensionality with `l`. Simplify using `[mul_comm]) hf`. Use `⟨Matrix.of fun i j => b j i, fun i j hij => h1 j i hij, fun i j => h2 j i, h3, Matrix.of fun k j => y j k, h4, ?_⟩` and prove the remaining obligations. Use extensionality with `j i`.
+
+Rewrite using `[← sesq_col]`. Use `(h5 i j).trans ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hij, Matrix.one_apply_ne (Ne.symm hij)]`.
+-/
 theorem exists_flag_dual_matrix {n : ℕ} {M : AddSubgroup (Fin n → R)} (G : Matrix (Fin n) (Fin n) R)
     (hcc : ∀ a, c (c a) = a) (hεε : ε * ε = ε) (hεc : c ε = ε) (hεO : ε ∈ O)
     (hOε : ∀ a ∈ O, ε * a = a) (hmul : ∀ a ∈ O, ∀ b ∈ O, a * b ∈ O) (hcO : ∀ a ∈ O, c a ∈ O) (hP : Princ ε O)

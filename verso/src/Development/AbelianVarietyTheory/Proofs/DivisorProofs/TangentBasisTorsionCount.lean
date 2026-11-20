@@ -18,6 +18,13 @@ namespace GlobalTheory.HtGen.PointDet
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `hM : (Matrix.of fun r l : Fin k => ∑ i, h (σ r) i * a (Fin.castLE hk l) i) = fun r => ∑ i, h (σ r) i • (fun l : Fin k => a (Fin.castLE hk l) i)`. Use extensionality with `r l`. Simplify using `[Finset.sum_apply]`. Unfold `pairDet`. Rewrite using `[hM]`.
+
+Express the relevant statement in the definitionally equal form `Matrix.detRowAlternating.toMultilinearMap _ = _`. Rewrite using `[MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, smul_eq_mul]`. Use `congr 1`.
+
+Unfold `minor`. Rewrite using `[← Matrix.det_transpose]`. Both sides reduce to the same expression.
+-/
 theorem pairDet_eq_sum {C J : Type} [CommRing C] {g m k : ℕ} (h : J → Fin g → C) (a : Fin m → Fin g → C)
     (hk : k ≤ m) (σ : Fin k → J) :
     pairDet h a hk σ = ∑ s : Fin k → Fin g, (∏ i, h (σ i) (s i)) * minor a hk s := by
@@ -36,6 +43,9 @@ theorem pairDet_eq_sum {C J : Type} [CommRing C] {g m k : ℕ} (h : J → Fin g 
   rw [← Matrix.det_transpose]
   rfl
 
+/- English proof (translation)
+Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE hk) (Fin.castLE_injective hk) _ _ (fun l' hl' => ?_) (fun l => ?_)` and prove the remaining obligations. Establish `: ¬ (l' : ℕ) < k` using `fun hl => hl' ⟨⟨l', hl⟩, Fin.ext rfl⟩`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_extend {C : Type} [CommRing C] {m k : ℕ} (hk : k ≤ m) (cf : Fin k → C) (f : Fin m → C) :
     ∑ l', (fun l' : Fin m => if hl : (l' : ℕ) < k then cf ⟨l', hl⟩ else 0) l' * f l' =
       ∑ l : Fin k, cf l * f (Fin.castLE hk l) := by
@@ -45,6 +55,9 @@ theorem sum_extend {C : Type} [CommRing C] {m k : ℕ} (hk : k ≤ m) (cf : Fin 
     simp [this]
   · simp
 
+/- English proof (translation)
+Rewrite using `[← sum_extend hk cf (fun l' => ∑ i, hh i * a l' i)]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l' _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+-/
 theorem sum_comb_extend {C : Type} [CommRing C] {g m k : ℕ} (hk : k ≤ m) (cf : Fin k → C) (hh : Fin g → C)
     (a : Fin m → Fin g → C) :
     ∑ i, hh i * (∑ l', (fun l' : Fin m => if hl : (l' : ℕ) < k then cf ⟨l', hl⟩ else 0) l' • a l') i =
@@ -54,6 +67,29 @@ theorem sum_comb_extend {C : Type} [CommRing C] {g m k : ℕ} (hk : k ≤ m) (cf
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun l' _ => Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ t hX p _ x g g' e e' he he' N c h h' hall hdl hdl' m k hk u a a' ha hu hu' ν hν0`. Use `set xC := spMap (intO ℂ_[p]).subtype ≫ x with hxC`. Establish `heC` using `GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t (intO ℂ_[p]).subtype he`. Establish `hlat` using `fun b w hw => GlobalTheory.T.tangent_basis_torsion_chars E H X t hX p x g e he N c h hall hdl b w hw`. Establish `hut : ∀ l, IsTanAtG t xC (u l)` using `fun l => GlobalTheory.LineNorm.Chart.comb_tan heC.1 (hu l)`.
+
+Establish `hgr` using `fun l => GlobalTheory.LineNorm.WedgeMax.grNorm_eq t heC.1 (P := fun b => ∀ j, ‖∑ i, (h j i : ℂ_[p]) * b i‖ ≤ 1) (fun b w hw => (hlat b w hw).1) hu l`. Establish `hp0 : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Establish `hker : ∀ cc : Fin g → ℂ_[p], (∀ j, ∑ i, (h j i : ℂ_[p]) * cc i = 0) → cc = 0`. Introduce `cc hcc`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨i, hi⟩` from `Function.ne_iff.1 hne`. Establish `hi' : cc i ≠ 0` using `by simpa using hi`. Take `⟨y, hy⟩` from `NormedField.exists_one_lt_norm ℂ_[p]`. Take `⟨w, -, hw⟩` from `GlobalTheory.LineNorm.WedgeMax.exists_comb t heC.1 ((y / ((p : ℂ_[p]) * cc i)) • cc)`. Establish `hmem` using `(hlat _ w hw).1.2 fun j => by`.
+
+Establish `: ∑ i', (h j i' : ℂ_[p]) * ((y / ((p : ℂ_[p]) * cc i)) • cc) i' = (y / ((p : ℂ_[p]) * cc i)) * ∑ i', (h j i' : ℂ_[p]) * cc i'`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by simp only [Pi.smul_apply, smul_eq_mul]; ring`. Rewrite using `[this, hcc j]`. Simplify using the standard rewrite rules. Establish `h1` using `(hlat _ w hw).2 hmem i`.
+
+Establish `: (p : ℂ_[p]) * ((y / ((p : ℂ_[p]) * cc i)) • cc) i = y`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Rewrite `h1` using `[this]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hpos, hprod⟩` from `GlobalTheory.T.successive_minima_positive_norms ℂ_[p] g (Fin N) (fun j i => (h j i : ℂ_[p])) hker m a ha _ hgr`. Establish `hν : ν = ⨆ σ : Fin k → Fin N, ‖pairDet (fun j i => (h j i : ℂ_[p])) a hk σ‖`. Rewrite using `[hν0, hprod k hk]`. Use `congr 1`.
+
+Use extensionality with `σ`. Rewrite using `[pairDet_eq_sum]`. Establish `hνpos : 0 < ν` using `hν0 ▸ Finset.prod_pos fun l _ => hpos _`. Establish `hne : Nonempty (Fin k → Fin N)`. Assume the negation of the conclusion as `hne`.
+
+Rewrite `hne` using `[not_nonempty_iff]`. Rewrite `hν` using `[Real.iSup_of_isEmpty]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle : ∀ σ : Fin k → Fin N, ‖pairDet (fun j i => (h j i : ℂ_[p])) a hk σ‖ ≤ ν` using `fun σ => hν ▸ le_ciSup (f := fun σ => ‖pairDet (fun j i => (h j i : ℂ_[p])) a hk σ‖) (Finite.bddAbove_range _) σ`. Establish `hex : ∃ σ : Fin k → Fin N, ‖pairDet (fun j i => (h j i : ℂ_[p])) a hk σ‖ = ν` using `hν ▸ exists_eq_ciSup_of_finite`.
+
+Use `⟨hpos, hle, hex, fun σ => ?_⟩` and prove the remaining obligations. Establish `hclose : ∀ cf : Fin k → ℂ_[p], (∀ j, ‖∑ l, cf l * ∑ i, (h j i : ℂ_[p]) * a (Fin.castLE hk l) i‖ ≤ 1) → ∀ j, ‖∑ l, cf l * ((∑ i, (h j i : ℂ_[p]) * a (Fin.castLE hk l) i) - ∑ i, (h' j i : ℂ_[p]) * a' (Fin.castLE hk l) i)‖ < 1`. Introduce `cf hcf j`. Take `⟨w, -, hw⟩` from `GlobalTheory.LineNorm.WedgeMax.exists_comb t hut (fun l' : Fin m => if hl : (l' : ℕ) < k then cf ⟨l', hl⟩ else 0)`. Establish `hwe` using `GlobalTheory.LineNorm.Chart.comb_comb heC.1 hu hw`.
+
+Establish `hwe'` using `GlobalTheory.LineNorm.Chart.comb_comb (GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t (intO ℂ_[p]).subtype he').1 hu' hw`. Establish `hmem` using `(hlat _ w hwe).1.2 fun j' => by`. Rewrite using `[sum_comb_extend]`. Conclude with `hcf j'`. Establish `h1` using `GlobalTheory.T.tangent_basis_change_torsion E H X t hX p x g g' e e' he he' (c j) (h j) (h' j) (hdl j) (hdl' j) _ _ w hwe hwe' hmem`.
+
+Rewrite `h1` using `[sum_comb_extend, sum_comb_extend, ← Finset.sum_sub_distrib]`. Simplify `h1` using `only [mul_sub]`. Conclude with `GlobalTheory.T.determinant_perturbation_bound ℂ_[p] (Fin N) k (fun j l => ∑ i, (h j i : ℂ_[p]) * a (Fin.castLE hk l) i) (fun j l => ∑ i, (h' j i : ℂ_[p]) * a' (Fin.castLE hk l) i) ν hνpos hle hex hclose σ`.
+-/
 theorem pairDet_htLattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X), X.IsSeparated → ∀ (p : ℕ) [Fact p.Prime] (x : Sp ↥(intO ℂ_[p]) ⟶ X) (g g' : ℕ) (e : Fin g → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left)) (e' : Fin g' → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left)), IsTanBasis t x e → IsTanBasis t x e' → ∀ (N : ℕ) (c : Fin N → TorsChar t x (p ^ 2)) (h : Fin N → Fin g → ↥(intO ℂ_[p])) (h' : Fin N → Fin g' → ↥(intO ℂ_[p])), (∀ c' : TorsChar t x (p ^ 2), ∃ j, Agree c' (c j)) → (∀ j, DlogIs t p 2 (c j) e (h j)) → (∀ j, DlogIs t p 2 (c j) e' (h' j)) → ∀ (m k : ℕ) (hk : k ≤ m) (u : Fin m → (Sp (DualNumber ℂ_[p]) ⟶ t.G.left)) (a : Fin m → Fin g → ℂ_[p]) (a' : Fin m → Fin g' → ℂ_[p]), LinearIndependent ℂ_[p] a → (∀ l, IsCombAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e i) (a l) (u l)) → (∀ l, IsCombAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (fun i => spMap (dualMap (intO ℂ_[p]).subtype) ≫ e' i) (a' l) (u l)) → ∀ ν : ℝ, ν = ∏ l : Fin k, GlobalTheory.ShFam.Pad.grNorm t (spMap (intO ℂ_[p]).subtype ≫ x) (latHT t p (spMap (intO ℂ_[p]).subtype ≫ x)) u (Fin.castLE hk l) → (∀ l, 0 < GlobalTheory.ShFam.Pad.grNorm t (spMap (intO ℂ_[p]).subtype ≫ x) (latHT t p (spMap (intO ℂ_[p]).subtype ≫ x)) u l) ∧ (∀ σ : Fin k → Fin N, ‖pairDet (fun j i => (h j i : ℂ_[p])) a hk σ‖ ≤ ν) ∧ (∃ σ : Fin k → Fin N, ‖pairDet (fun j i => (h j i : ℂ_[p])) a hk σ‖ = ν) ∧ ∀ σ : Fin k → Fin N, ‖pairDet (fun j i => (h j i : ℂ_[p])) a hk σ - pairDet (fun j i => (h' j i : ℂ_[p])) a' hk σ‖ < ν := by
   intro E _ _ _ H X _ t hX p _ x g g' e e' he he' N c h h' hall hdl hdl' m k hk u a a' ha hu hu' ν hν0
   set xC := spMap (intO ℂ_[p]).subtype ≫ x with hxC

@@ -52,6 +52,9 @@ def clEquiv : (B₁.prod B₂).Cl ≃ B₁.Cl × B₂.Cl where
     | mk a => induction k₂ using Quot.ind with
       | mk b => rfl
 
+/- English proof (translation)
+Rewrite using `[Nat.card_congr (clEquiv B₁ B₂), Nat.card_prod]`.
+-/
 theorem card_cl_prod (K : UQ) (B₁ B₂ : InvAlg K) :
     Nat.card (B₁.prod B₂).Cl = Nat.card B₁.Cl * Nat.card B₂.Cl := by
   rw [Nat.card_congr (clEquiv B₁ B₂), Nat.card_prod]

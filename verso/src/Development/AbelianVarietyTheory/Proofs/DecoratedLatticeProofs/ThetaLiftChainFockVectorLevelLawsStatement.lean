@@ -7,5 +7,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.levelLaw | exact GlobalTheory.ChainOnto.levelLaw | (intros; apply GlobalTheory.ChainOnto.levelLaw <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaLiftChain_fockVector_levelLaws : ∀ D : D7, LevelLaw D := by
   first | exact @GlobalTheory.ChainOnto.levelLaw | exact GlobalTheory.ChainOnto.levelLaw | (intros; apply GlobalTheory.ChainOnto.levelLaw <;> assumption)

@@ -12,6 +12,31 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 open GlobalTheory.SphLineComm in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v g`. Establish `hlat : G.W.L.IsLattice E` using `hT.geo.hW.lat`. Set `ρ : GlobalTheory.SphLine.locU σ G.W v →* AddMonoid.End (Fin (a + a') → AE F E)` to `{ toFun := fun k => { toFun := fun z => mat k.1 *ᵥ z, map_zero' := Matrix.mulVec_zero _, map_add' := Matrix.mulVec_add _ } map_one' := by`. Apply `AddMonoidHom.ext` to reduce the goal to its premises. Introduce `z`.
+
+Use `show mat (1 : UA σ G.W.J) *ᵥ z = z`. Rewrite using `[GlobalTheory.SphLine.mat_one, Matrix.one_mulVec]`. Use the proof step `map_mul' := by`. Introduce `k1 k2`. Apply `AddMonoidHom.ext` to reduce the goal to its premises.
+
+Introduce `z`. Use `show mat (k1.1 * k2.1) *ᵥ z = mat k1.1 *ᵥ (mat k2.1 *ᵥ z)`. Rewrite using `[GlobalTheory.SphLine.mat_mul, Matrix.mulVec_mulVec] }`. Establish `hρ : ∀ k z, ρ k z = mat k.1 *ᵥ z` using `fun _ _ => rfl`. Establish `hsupp : ∀ k : GlobalTheory.SphLine.locU σ G.W v, ∀ z, (mat k.1 - 1) *ᵥ z = (mat k.1 - 1) *ᵥ (unitAt v • z)`.
+
+Introduce `k z`. Establish `h0 : (1 - unitAt v) • (mat k.1 - 1) = 0` using `k.2 _ (by rw [map_sub, map_one, evFin_unitAt_self, sub_self])`. Rewrite using `[Matrix.mulVec_smul, ← Matrix.smul_mulVec]`. Rewrite `h0` using `[sub_smul, one_smul, sub_eq_zero]`. Rewrite using `[← h0]`.
+
+Set `π : (Fin (a + a') → AE F E) →+ (Fin (a + a') → AE F E)` to `DistribMulAction.toAddMonoidHom _ (unitAt v)`. Establish `hπ : ∀ k z, ρ k z - z = ρ k (π z) - π z`. Introduce `k z`. Simplify using `only [hρ]`. Use `show mat k.1 *ᵥ z - z = mat k.1 *ᵥ (unitAt v • z) - unitAt v • z`.
+
+Use `hsupp k z` as an intermediate fact. Rewrite `this` using `[Matrix.sub_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.one_mulVec]`. Conclude with `this`. Establish `hπ' : ∀ k z, ρ k (π z) = π (ρ k z)`. Introduce `k z`.
+
+Use `show mat k.1 *ᵥ (unitAt v • z) = unitAt v • (mat k.1 *ᵥ z)`. Conclude with `Matrix.mulVec_smul _ _ _`. Take `⟨n1, hn1, h1⟩` from `GlobalTheory.T.local_matrix_preserves_lattice_multiple F E (a + a') G.W v (mat g.1 - 1) hlat g.2`. Take `⟨n2, hn2, h2⟩` from `GlobalTheory.T.local_matrix_preserves_lattice_multiple F E (a + a') G.W v (mat g⁻¹.1 - 1) hlat (g⁻¹).2`. Establish `hg : ∀ z ∈ latHat G.W, (n1 * n2) • ρ g z ∈ latHat G.W ∧ (n1 * n2) • ρ g⁻¹ z ∈ latHat G.W`.
+
+Introduce `z hz`. Prove the components needed by the constructor for the conclusion. Establish `e : ρ g z = z + (mat g.1 - 1) *ᵥ z` using `by rw [hρ, Matrix.sub_mulVec, Matrix.one_mulVec]; abel`. Rewrite using `[e, smul_add, mul_comm, mul_smul, mul_smul]`. Conclude with `(latHat G.W).add_mem ((latHat G.W).nsmul_mem ((latHat G.W).nsmul_mem hz _) _) ((latHat G.W).nsmul_mem (h1 z hz) _)`.
+
+Establish `e : ρ g⁻¹ z = z + (mat g⁻¹.1 - 1) *ᵥ z` using `by rw [hρ, Matrix.sub_mulVec, Matrix.one_mulVec]; abel`. Rewrite using `[e, smul_add, mul_smul, mul_smul]`. Conclude with `(latHat G.W).add_mem ((latHat G.W).nsmul_mem ((latHat G.W).nsmul_mem hz _) _) ((latHat G.W).nsmul_mem (h2 z hz) _)`. Establish `hn : n1 * n2 ≠ 0` using `Nat.mul_ne_zero hn1 hn2`. Establish `htf : ∀ x : Fin (a + a') → AE F E, (n1 * n2) • x = 0 → x = 0`.
+
+Introduce `x hx`. Rewrite `hx` using `[← Nat.cast_smul_eq_nsmul F]`. Conclude with `(smul_eq_zero.mp hx).resolve_left (by exact_mod_cast hn)`. Take `⟨S, hS, hfin⟩` from `GlobalTheory.T.lattice_unit_quotient_finite_reps F E (a + a') G.W v (unitAt v) hlat (evI_unitAt v) (fun w hw => evFin_unitAt_ne hw) (by rw [evFin_unitAt_self]; exact one_mem _) ((n1 * n2) * (n1 * n2)) (Nat.mul_ne_zero hn hn)`. Use `relIndex_conj_ne_zero ρ (latHat G.W) _ ?_ π hπ hπ' g (n1 * n2) htf hg S hS hfin` and prove the remaining obligations.
+
+Introduce `k`. Rewrite using `[Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce `hk z hz`. Conclude with `hk.2 z hz`.
+
+Introduce `hk`. Conclude with `⟨k.2, fun z hz => hk z hz⟩`.
+-/
 theorem GlobalTheory.SphLineComm.commensurated : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ (v : Pl F) (g : GlobalTheory.SphLine.locU σ G.W v),

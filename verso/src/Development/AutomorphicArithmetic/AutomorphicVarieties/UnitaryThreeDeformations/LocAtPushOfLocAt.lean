@@ -6,28 +6,43 @@ section SlopeTestRemainingChoices
 
 variable {O R R' D : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing R'] [Algebra O R'] [Group D]
 
+/- English proof (translation)
+Simplify using `only [GG.map, GG.ofGL, SemidirectProduct.map_inl]`.
+-/
 private theorem map_ofGL (f : R →+* R') (h : GL (Fin 3) R) :
     GG.map f (GG.ofGL h) = GG.ofGL (GeneralLinearGroup.map f h) := by
   simp only [GG.map, GG.ofGL, SemidirectProduct.map_inl]
 
+/- English proof (translation)
+Simplify using `only [conjBy, push, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, MulAut.conj_inv_apply, map_mul, map_inv, map_ofGL]`.
+-/
 private theorem conj_push (φ : R →ₐ[O] R') (h : GL (Fin 3) R) (r : D →* GG 3 R) (g : D) :
     conjBy (GeneralLinearGroup.map (φ : R →+* R') h)⁻¹ (push φ r) g =
       GG.map (φ : R →+* R') (conjBy h⁻¹ r g) := by
   simp only [conjBy, push, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply,
     MulAut.conj_inv_apply, map_mul, map_inv, map_ofGL]
 
+/- English proof (translation)
+Rewrite using `[conj_push]`. Simplify using `[GG.mat, GG.map, SemidirectProduct.map_left]`.
+-/
 private theorem conj_push_mat (φ : R →ₐ[O] R') (h : GL (Fin 3) R) (r : D →* GG 3 R) (g : D) (a b : Fin 3) :
     (conjBy (GeneralLinearGroup.map (φ : R →+* R') h)⁻¹ (push φ r) g).mat a b =
       φ ((conjBy h⁻¹ r g).mat a b) := by
   rw [conj_push]
   simp [GG.mat, GG.map, SemidirectProduct.map_left]
 
+/- English proof (translation)
+Rewrite using `[conj_push_mat, H.tri g hg a b hab, map_zero] ine s hs hη a := by rw [conj_push_mat, H.ine s hs hη a, AlgHom.commutes]`.
+-/
 private theorem triIn_push (φ : R →ₐ[O] R') {η : D →* ℤˣ} {Ψ : D →* Oˣ} {I : Subgroup D}
     {r : D →* GG 3 R} {h : GL (Fin 3) R} (H : TriIn η Ψ I r h) :
     TriIn η Ψ I (push φ r) (GeneralLinearGroup.map (φ : R →+* R') h) where
   tri g hg a b hab := by rw [conj_push_mat, H.tri g hg a b hab, map_zero]
   ine s hs hη a := by rw [conj_push_mat, H.ine s hs hη a, AlgHom.commutes]
 
+/- English proof (translation)
+The claim follows from `triIn_push φ H.toTriIn low g hg a b hab := by rw [conj_push_mat, H.low g hg a b hab, map_zero]`.
+-/
 private theorem diagIn_push (φ : R →ₐ[O] R') {η : D →* ℤˣ} {Ψ : D →* Oˣ} {I : Subgroup D}
     {r : D →* GG 3 R} {h : GL (Fin 3) R} (H : DiagIn η Ψ I r h) :
     DiagIn η Ψ I (push φ r) (GeneralLinearGroup.map (φ : R →+* R') h) where
@@ -36,6 +51,11 @@ private theorem diagIn_push (φ : R →ₐ[O] R') {η : D →* ℤˣ} {Ψ : D �
 
 variable [IsLocalRing O] [IsCO O R] [IsCO O R']
 
+/- English proof (translation)
+Establish `hm : ∀ x ∈ maximalIdeal R, φ x ∈ maximalIdeal R'`. Introduce `x hx`. Rewrite using `[← res_eq_zero_iff O R', res_map, res_eq_zero_iff O R]`. Conclude with `hx`. Unfold `InHat CongOne EntIn at H ⊢`.
+
+Introduce `a b`. Establish `e : ((GeneralLinearGroup.map (φ : R →+* R') h : Matrix (Fin 3) (Fin 3) R') - 1) a b = φ (((h : Matrix (Fin 3) (Fin 3) R) - 1) a b)`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.sub_apply, Matrix.one_apply, hab]`. Rewrite using `[e]`. Conclude with `hm _ (H a b)`.
+-/
 private theorem inHat_push (φ : R →ₐ[O] R') {h : GL (Fin 3) R} (H : InHat h) :
     InHat (GeneralLinearGroup.map (φ : R →+* R') h) := by
   have hm : ∀ x ∈ maximalIdeal R, φ x ∈ maximalIdeal R' := by
@@ -52,6 +72,13 @@ private theorem inHat_push (φ : R →ₐ[O] R') {h : GL (Fin 3) R} (H : InHat h
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `O _ _ G Γ ι _ _ F R R' _ _ _ _ _ _ φ v r hr`. Unfold `Frame.LocAt at hr ⊢`. Take `⟨hT, hD, hU⟩` from `hr`. Use `⟨fun hv => ?_, fun hv => ?_, fun hv => ?_⟩` and prove the remaining obligations. Take `⟨h, hh, ht⟩` from `hT hv`.
+
+Conclude with `⟨_, inHat_push φ hh, triIn_push φ ht⟩`. Take `⟨h, hh, ht⟩` from `hD hv`. Conclude with `⟨_, inHat_push φ hh, diagIn_push φ ht⟩`. Introduce `s hs`. Establish `h1` using `hU hv s hs`.
+
+Simplify using `only [push, MonoidHom.comp_apply, h1, map_one]`.
+-/
 theorem UpperTheory.locAt_push_of_locAt :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] {G Γ ι : Type} [Group G] [Group Γ] (F : Frame O G Γ ι) {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R'] [Algebra O R'] [IsCO O R'] (φ : R →ₐ[O] R') (v : ι) (r : F.D v →* GG 3 R), F.LocAt v r → F.LocAt v (push φ r) := by
   intro O _ _ G Γ ι _ _ F R R' _ _ _ _ _ _ φ v r hr

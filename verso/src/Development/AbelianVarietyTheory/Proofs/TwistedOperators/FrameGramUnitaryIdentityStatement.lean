@@ -27,6 +27,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinTransJet.fock_jets_heisO_fin | exact GlobalTheory.FinTransJet.fock_jets_heisO_fin | (intros; apply GlobalTheory.FinTransJet.fock_jets_heisO_fin <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.frame_gram_unitary_identity : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) →
     ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)

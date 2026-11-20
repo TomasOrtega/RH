@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.L
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsIdempotentElemCharIdem
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.HasSatakeGLOfIsSatVecGL
 
+/- English proof (translation)
+Establish `key : ∀ q : H ⧸ K, φ (h * (q.out : H)) = φ ((h • q : H ⧸ K).out : H)`. Introduce `q`. Establish `e : ((h * (q.out : H) : H) : H ⧸ K) = h • q` using `by conv_rhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Establish `hk : (h * (q.out : H))⁻¹ * ((h • q : H ⧸ K).out : H) ∈ K`.
+
+Apply `QuotientGroup.eq.mp` to reduce the goal to its premises. Rewrite using `[QuotientGroup.out_eq']`. Conclude with `e`. Use `hφ (h * (q.out : H)) _ hk` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`.
+
+Conclude with `this.symm`. Repeatedly rewrite using `[key]`. Conclude with `Equiv.sum_comp (MulAction.toPerm h) (fun q : H ⧸ K => φ (q.out : H))`.
+-/
 private lemma sum_shift {H M : Type} [Group H] [AddCommMonoid M] (K : Subgroup H)
     [Fintype (H ⧸ K)] (φ : H → M) (hφ : ∀ g, ∀ k ∈ K, φ (g * k) = φ g) (h : H) :
     ∑ q : H ⧸ K, φ (h * (q.out : H)) = ∑ q : H ⧸ K, φ (q.out : H) := by
@@ -22,6 +29,31 @@ private lemma sum_shift {H M : Type} [Group H] [AddCommMonoid M] (K : Subgroup H
   simp_rw [key]
   exact Equiv.sum_comp (MulAction.toPerm h) (fun q : H ⧸ K => φ (q.out : H))
 
+/- English proof (translation)
+Use `haveI : CompactSpace U := isCompact_iff_compactSpace.mp hU`. Establish `hvt : v ∈ ⨆ f : {f : W →ₗ[ℂ] V // ∀ (g : G) (x : W), f (σ g x) = τ g (f x)}, LinearMap.range (f : W →ₗ[ℂ] V)` using `by rw [hsup]; trivial`. Take `⟨c, hc, hcs⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).mp hvt`. Use `choose x hx using fun i => LinearMap.mem_range.mp (hc i)`. Set `stab : W → OpenSubgroup U` to `fun y => { toSubgroup := { carrier := {h : U | σ (h : G) y = y} mul_mem' := by`.
+
+Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Simplify using `[map_mul, Module.End.mul_apply, ha, hb]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`.
+
+Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Establish `: σ ((a : G)⁻¹) (σ (a : G) y) = y`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+
+Rewrite `this` using `[ha]`. Simplify using `using this }`. Use the proof step `isOpen' := (hsm y).preimage continuous_subtype_val }`. Set `K : OpenSubgroup U` to `c.support.inf (fun i => stab (x i))`. Use `haveI : Finite (U ⧸ (K : Subgroup U)) := Subgroup.quotient_finite_of_isOpen _ K.isOpen`.
+
+Use `haveI := Fintype.ofFinite (U ⧸ (K : Subgroup U))`. Establish `hK : ∀ i ∈ c.support, ∀ k ∈ (K : Subgroup U), σ ((k : U) : G) (x i) = x i`. Introduce `i hi k hk`. Establish `hle : K ≤ stab (x i)` using `Finset.inf_le hi`. Conclude with `hle hk`.
+
+Set `A : W → W` to `fun y => ∑ q : U ⧸ (K : Subgroup U), σ (((q.out : U)) : G) y`. Establish `hAfix : ∀ i ∈ c.support, ∀ u ∈ U, σ u (A (x i)) = A (x i)`. Introduce `i hi u hu`. Use `sum_shift (K : Subgroup U) (fun h : U => σ (h : G) (x i)) (by` as an intermediate fact. Introduce `g k hk`.
+
+Simplify using `only [Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Rewrite using `[hK i hi k hk]) ⟨u, hu⟩`. Simplify using `only [A, map_sum]`. Simplify `this` using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Establish `hsum : ∑ i ∈ c.support, (i : {f : W →ₗ[ℂ] V // ∀ (g : G) (x : W), f (σ g x) = τ g (f x)}).1 (A (x i)) = (Fintype.card (U ⧸ (K : Subgroup U)) : ℂ) • v`.
+
+Establish `h1 : ∀ i ∈ c.support, i.1 (A (x i)) = ∑ q : U ⧸ (K : Subgroup U), τ (((q.out : U)) : G) (c i)`. Introduce `i _`. Simplify using `only [A, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[i.2, hx i]`.
+
+Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_comm]`. Establish `h2 : ∀ q : U ⧸ (K : Subgroup U), ∑ i ∈ c.support, τ (((q.out : U)) : G) (c i) = v`. Introduce `q`. Establish `hcs' : ∑ i ∈ c.support, c i = v` using `hcs`. Rewrite using `[← map_sum, hcs']`.
+
+Conclude with `hfix _ (q.out : U).2`. Simplify using `only [h2, Finset.sum_const, Finset.card_univ]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Establish `hne : (Fintype.card (U ⧸ (K : Subgroup U)) : ℂ) • v ≠ 0`. Use `smul_ne_zero ?_ hv` and prove the remaining obligations.
+
+Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Rewrite `hne` using `[← hsum]`. Take `⟨i, hi, hne'⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Use `⟨A (x i), ?_, hAfix i hi⟩` and prove the remaining obligations. Introduce `h0`.
+
+Conclude with `hne' (by rw [h0, map_zero])`.
+-/
 private lemma core {G W V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup W] [_root_.Module ℂ W] [AddCommGroup V] [_root_.Module ℂ V]
     (σ : Representation ℂ G W) (τ : Representation ℂ G V)
@@ -94,6 +126,11 @@ private lemma core {G W V : Type} [Group G] [TopologicalSpace G] [IsTopologicalG
   intro h0
   exact hne' (by rw [h0, map_zero])
 
+/- English proof (translation)
+Introduce `F _ _ n V _ _ ρ w σ hiso U hU hfix`. Take `⟨v, hv, hvfix⟩` from `hfix`. Take `⟨x, hx, hxfix⟩` from `core σ.ρ (MonoidHom.comp ρ (GlobalTheory.CuspRep.locGL F n w)) (by`. Consider the cases of `σ with`. Consider the case `mk W ρ' hs hi => exact hs)`.
+
+Use the proof step `(by simpa using hiso.2) hU hv hvfix`. Conclude with `⟨x, hx, hxfix⟩`.
+-/
 theorem UpperTheory.Reformulated.B.HasFixedVector.hasFixed :
     ∀ {F : Type} [inst : Field F] [inst_1 : NumberField F] {n : ℕ} {V : Type} [inst_2 : AddCommGroup V]
       [inst_3 : _root_.Module ℂ V] {ρ : Representation ℂ (GL (Fin n) (GlobalTheory.CuspRep.Af F)) V}

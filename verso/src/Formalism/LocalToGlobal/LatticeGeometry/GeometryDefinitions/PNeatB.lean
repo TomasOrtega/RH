@@ -16,11 +16,23 @@ local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 local notation "𝒜" => E ⊗[F] FiniteAdeleRing (𝓞 F) F
 local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)
 
+/- English proof (translation)
+The claim follows from `Submodule.smul_mem _ (⟨c, hc⟩ : S) hw`.
+-/
 theorem latS_mul_mem {R : Type} [CommRing R] [Algebra F R] (S : Subring (E ⊗[F] R))
     (Λ : Submodule (𝓞 E) (n → E)) {c : E ⊗[F] R} (hc : c ∈ S) {w : n → E ⊗[F] R}
     (hw : w ∈ latS (F := F) R S Λ) : (fun i => c * w i) ∈ latS (F := F) R S Λ :=
   Submodule.smul_mem _ (⟨c, hc⟩ : S) hw
 
+/- English proof (translation)
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨x, hx, rfl⟩` from `hu`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero`.
+
+Establish `: (fun i => prV (E` using `E) v ((0 : n → 𝒜) i)) = 0 := by ext i; simp`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: (fun i => prV (E` using `E) v ((a + b) i)) = (fun i => prV (E := E) v (a i)) + (fun i => prV (E := E) v (b i)) := by`.
+
+Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `add_mem ha hb`. Consider the case `smul s a _ ha`.
+
+Establish `: (fun i => prV (E` using `E) v ((s • a) i)) = (fun i => prV (E := E) v (s : 𝒜) * prV (E := E) v (a i)) := by`. Use extensionality with `i`. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, map_mul]`. Rewrite using `[this]`. Conclude with `latS_mul_mem _ Λ (afsplit_prV_int v _ s.2) ha`.
+-/
 theorem prV_latS (Λ : Submodule (𝓞 E) (n → E)) (v : HeightOneSpectrum (𝓞 F)) {u : n → 𝒜}
     (hu : u ∈ latS (F := F) 𝔸 𝒮 Λ) :
     (fun i => prV (E := E) v (u i)) ∈ latS (F := F) (v.adicCompletion F)
@@ -43,6 +55,17 @@ theorem prV_latS (Λ : Submodule (𝓞 E) (n → E)) (v : HeightOneSpectrum (�
       ext i; rw [Pi.smul_apply, Subring.smul_def, smul_eq_mul, map_mul]
     rw [this]; exact latS_mul_mem _ Λ (afsplit_prV_int v _ s.2) ha
 
+/- English proof (translation)
+Proceed by induction on `hh using Submodule.span_induction with`. Consider the case `mem h hh`. Take `⟨x, hx, rfl⟩` from `hh`. Establish `: (fun i => afsplitIE v (inclE (F` using `F) (v.adicCompletion F) (x i))) = (fun i => afsplitEps E v * inclE (F := F) 𝔸 (x i)) := by`. Use extensionality with `i`.
+
+Rewrite using `[← afsplit_decomp, afsplit_prV_inclE]`. Rewrite using `[this]`. Conclude with `latS_mul_mem _ Λ (afsplit_eps_int v) (Submodule.subset_span ⟨x, hx, rfl⟩)`. Consider the case `zero`. Establish `: (fun i => afsplitIE v ((0 : n → E ⊗[F] v.adicCompletion F) i)) = 0` using `by ext i; simp`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: (fun i => afsplitIE v ((a + b) i)) = (fun i => afsplitIE v (a i)) + (fun i => afsplitIE v (b i))`. Use extensionality with `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `add_mem ha hb`. Consider the case `smul s a _ ha`. Establish `: (fun i => afsplitIE v ((s • a) i)) = (fun i => afsplitIE v (s : E ⊗[F] v.adicCompletion F) * afsplitIE v (a i))`.
+
+Use extensionality with `i`. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, map_mul]`. Rewrite using `[this]`. Conclude with `latS_mul_mem _ Λ (afsplit_IE_int v _ s.2) ha`.
+-/
 theorem IE_latS (Λ : Submodule (𝓞 E) (n → E)) (v : HeightOneSpectrum (𝓞 F))
     {h : n → E ⊗[F] v.adicCompletion F}
     (hh : h ∈ latS (F := F) (v.adicCompletion F)
@@ -71,6 +94,19 @@ theorem IE_latS (Λ : Submodule (𝓞 E) (n → E)) (v : HeightOneSpectrum (𝓞
       ext i; rw [Pi.smul_apply, Subring.smul_def, smul_eq_mul, map_mul]
     rw [this]; exact latS_mul_mem _ Λ (afsplit_IE_int v _ s.2) ha
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro w _ h`. Simplify using `using h`. Consider the case `insert v T hv ih`. Introduce `w hloc h`.
+
+Establish `h1 : (fun i => (1 - afsplitEps E v) * w i) ∈ latS (F` using `F) 𝔸 𝒮 Λ := by`. Apply `ih` to reduce the goal to its premises. Introduce `u hu`. Establish `huv : u ≠ v` using `fun e => hv (e ▸ hu)`. Establish `: (fun i => prV (E` using `E) u ((1 - afsplitEps E v) * w i)) = (fun i => prV (E := E) u (w i)) := by`.
+
+Use extensionality with `i`. Rewrite using `[map_mul, map_sub, map_one, afsplit_prV_eps_ne v u huv, sub_zero, one_mul]`. Rewrite using `[this]`. Conclude with `hloc u (Finset.mem_insert_of_mem hu)`. Establish `: (fun i => (∏ v ∈ T, (1 - afsplitEps E v)) * ((1 - afsplitEps E v) * w i)) = (fun i => (∏ v ∈ insert v T, (1 - afsplitEps E v)) * w i)`.
+
+Use extensionality with `i`. Rewrite using `[Finset.prod_insert hv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `h`.
+
+Establish `h2` using `IE_latS Λ v (hloc v (Finset.mem_insert_self v T))`. Establish `: w = (fun i => afsplitIE v (prV (E` using `E) v (w i))) + (fun i => (1 - afsplitEps E v) * w i) := by`. Use extensionality with `i`. Rewrite using `[Pi.add_apply, afsplit_decomp]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `add_mem h2 h1`.
+-/
 theorem latS_of_prod (Λ : Submodule (𝓞 E) (n → E)) (T : Finset (HeightOneSpectrum (𝓞 F))) :
     ∀ w : n → 𝒜, (∀ v ∈ T, (fun i => prV (E := E) v (w i)) ∈ latS (F := F) (v.adicCompletion F)
       (tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring) Λ) →
@@ -102,6 +138,19 @@ theorem latS_of_prod (Λ : Submodule (𝓞 E) (n → E)) (T : Finset (HeightOneS
       rw [Pi.add_apply, afsplit_decomp]; ring
     rw [this]; exact add_mem h2 h1
 
+/- English proof (translation)
+Use `set T := (levelaf_finite_places d hd).toFinset with hT`. Establish `hdF : algebraMap (𝓞 F) F d ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 F) F)]` and apply the resulting hypothesis. Use `⟨algebraMap F 𝔸 (algebraMap (𝓞 F) F d)⁻¹ * ∏ v ∈ T, (1 - afsplitI v 1), ?_, ?_⟩` and prove the remaining obligations. Introduce `u`.
+
+Establish `e : (algebraMap F 𝔸 (algebraMap (𝓞 F) F d)⁻¹ * ∏ v ∈ T, (1 - afsplitI v 1)) u = algebraMap F (u.adicCompletion F) (algebraMap (𝓞 F) F d)⁻¹ * ∏ v ∈ T, (1 - (afsplitI v (1 : v.adicCompletion F)) u)`. Use `map_prod (evalV F u) (fun v => (1 - afsplitI v (1 : v.adicCompletion F))) T` as an intermediate fact. Rewrite using `[afsplit_mul_apply]`. Use `congr 1`. Rewrite using `[e]`.
+
+Distinguish the cases in `hu : u ∈ T`. Rewrite using `[Finset.prod_eq_zero hu (by rw [afsplitI_self, sub_self]), mul_zero]`. Conclude with `zero_mem _`. Rewrite using `[Finset.prod_eq_one (fun v hv => by`. Rewrite using `[afsplitI_ne v u (fun e => hu (e ▸ hv)), sub_zero]), mul_one]`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, map_inv₀]`. Establish `h1 : ¬ Valued.v (algebraMap (𝓞 F) (u.adicCompletion F) d) < 1`. Simplify `hu` using `[hT]`. Establish `h2 : Valued.v (algebraMap (𝓞 F) (u.adicCompletion F) d) ≤ 1` using `levelaf_int_mem_v u d`. Establish `h3 : Valued.v (algebraMap (𝓞 F) (u.adicCompletion F) d) = 1` using `le_antisymm h2 (not_lt.1 h1)`.
+
+Rewrite `h3` using `[IsScalarTower.algebraMap_apply (𝓞 F) F (u.adicCompletion F)]`. Rewrite using `[h3, inv_one]`. Establish `e1 : ∀ v : HeightOneSpectrum (𝓞 F), (1 - afsplitEps E v) = (Algebra.TensorProduct.includeRight : 𝔸 →ₐ[F] 𝒜) (1 - afsplitI v 1)`. Introduce `v`. Rewrite using `[map_sub, map_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[Finset.prod_congr rfl (fun v _ => e1 v), ← map_prod, levelafC, Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.TensorProduct.includeRight_apply]`. Use `congr 1`. Rewrite using `[mul_right_comm, IsScalarTower.algebraMap_apply (𝓞 F) F 𝔸, ← map_mul, inv_mul_cancel₀ hdF, map_one, one_mul]`.
+-/
 theorem prod_eps_eq (d : 𝓞 F) (hd : d ≠ 0) :
     ∃ a ∈ intAd F, (∏ v ∈ (levelaf_finite_places d hd).toFinset, (1 - afsplitEps E v)) =
       ((1 : E) ⊗ₜ[F] a) * levelafC E d := by
@@ -141,6 +190,15 @@ theorem prod_eps_eq (d : 𝓞 F) (hd : d ≠ 0) :
     rw [mul_right_comm, IsScalarTower.algebraMap_apply (𝓞 F) F 𝔸, ← map_mul, inv_mul_cancel₀ hdF, map_one,
       one_mul]
 
+/- English proof (translation)
+Use `choose d0 hd0 hd0m using fun i => levelaf_denom (F := F) (E := E) (w i)`. Take `⟨c, hc, hcm⟩` from `adelstabL_lower (F := F) Λ hspan`. Establish `h1 : ∀ i, levelafC E (∏ j, d0 j) * w i ∈ 𝒮`. Introduce `i`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), mul_comm (d0 i), levelafC_mul, mul_assoc]`.
+
+Conclude with `mul_mem (levelafC_mem _) (hd0m i)`. Establish `h2` using `hcm _ h1`. Establish `hd : c * ∏ j, d0 j ≠ 0` using `mul_ne_zero hc (Finset.prod_ne_zero_iff.2 fun j _ => hd0 j)`. Take `⟨a, ha, hae⟩` from `prod_eps_eq (E := E) _ hd`. Use `latS_of_prod Λ (levelaf_finite_places _ hd).toFinset w (fun v _ => hloc v) ?_` and prove the remaining obligations.
+
+Rewrite using `[hae]`. Establish `ha' : (1 : E) ⊗ₜ[F] a ∈ 𝒮` using `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`. Use `latS_mul_mem _ Λ ha' h2` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[levelafC_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem latS_of_loc (Λ : Submodule (𝓞 E) (n → E)) (hspan : Submodule.span E (Λ : Set (n → E)) = ⊤)
     (w : n → 𝒜) (hloc : ∀ v : HeightOneSpectrum (𝓞 F),
       (fun i => prV (E := E) v (w i)) ∈ latS (F := F) (v.adicCompletion F)

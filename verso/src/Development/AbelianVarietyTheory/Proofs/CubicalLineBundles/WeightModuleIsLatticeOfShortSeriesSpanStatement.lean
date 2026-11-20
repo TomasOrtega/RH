@@ -12,5 +12,8 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G Reciproci
 open GlobalTheory GlobalTheory.RunIn
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.latAt_record | exact GlobalTheory.latAt_record | (intros; apply GlobalTheory.latAt_record <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weightModule_isLattice_of_shortSeries_span : ∀ (D : D7) (T : Core D) (h : LawsCore T), GamAt T → ∀ (large₂ : SizeData₂ D) (CA : ℝ), WeightAlgebra.ParA large₂ CA → ∀ (j : ℕ) (ka : WeightFamilies.Wt D j) (P : ModuliIntegralCharts.Prov D) (X : WeightAlgebra.PJ D (recB h) P j) (S : WeightAlgebra.Scal (recB h)) (wL wF : WeightFamilies.Wt D j), S.sK ≠ 0 → PullbackSections.SpanAt X ka → WeightAlgebra.H2 X S ka wL wF → Formalism.MainNotions.Gaps.EtaleWeightGaps.LatAt (recB h) j ka := by
   first | exact @GlobalTheory.latAt_record | exact GlobalTheory.latAt_record | (intros; apply GlobalTheory.latAt_record <;> assumption)

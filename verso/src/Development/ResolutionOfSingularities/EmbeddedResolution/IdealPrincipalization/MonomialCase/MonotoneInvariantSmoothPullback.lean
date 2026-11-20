@@ -20,6 +20,9 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MonomialCenter
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun J 𝒞 h𝒞 hop => hGeom.flat_comap_center T hT Y k' q g hT' J 𝒞 h𝒞 hop, fun J => hGeom.flat_components_down T hT Y k' q g hT' J, fun J => hGeom.flat_components_up T hT Y k' q g hT' J, hord⟩`.
+-/
 theorem IsComponentCompatiblePullback.of_flat (hGeom : MonomialGeometryHypotheses.{u}) (T : MarkedIdealWithBoundary.{u})
     (hT : T.IsAdmissible) (Y : Scheme.{u}) (k' : Type u) [Field k']
     (q : Y ⟶ Spec (CommRingCat.of k')) (g : Y ⟶ T.scheme) [AlgebraicGeometry.Flat g]

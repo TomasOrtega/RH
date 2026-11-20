@@ -24,6 +24,9 @@ section Weight
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Unfold `wchar`. Rewrite using `[Fintype.prod_option]`. Simplify using `[ex]`.
+-/
 theorem wchar_gen {S : Type} [CommRing S] (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (u : Sˣ) :
     wchar (ex Dw a n) (fun i : Ix Dw => Option.elim i u (fun _ => 1)) = (u : S) ^ n := by
   unfold wchar
@@ -38,6 +41,15 @@ def midEmb (C : Cover T j σ) : C.c'.F →+* ℂ := C.σ₂.comp (C.d.eF : C.c'.
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use `letI a₂ : Algebra C.d.c₂.F (CAt (midEmb C)) := RingHom.toAlgebra (R := C.d.c₂.F) (S := CAt (midEmb C)) C.σ₂`. Use `letI a₀ : Algebra T.Q.c.F (CAt (midEmb C)) := RingHom.toAlgebra (R := T.Q.c.F) (S := CAt (midEmb C)) σ`. Establish `hov : AlgOver T.Q.c C.c' C.hle (CAt (midEmb C))` using `fun a => DFunLike.congr_fun hσ a`. Establish `hc : ∀ a : C.c'.F, algebraMap C.d.c₂.F (CAt (midEmb C)) (C.d.eF a) = algebraMap C.c'.F (CAt (midEmb C)) a` using `fun _ => rfl`. Set `y₀ : FrPt (T.Q.Xo j) T.Q.c (CAt (midEmb C))` to `y`.
+
+Set `z : FrPt (T.Q.Xo j) C.c' (CAt (midEmb C))` to `FrPt.ext C.hle hov y₀`. Set `w : FrPt C.d.Xo₂ C.d.c₂ (CAt (midEmb C))` to `y₂`. Take `⟨y', hy'⟩` from `GlobalTheory.CoverSec.exists_frOver_below C.d hc w ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (T.Q.Xo j).s) hx).trans z.x_over))`. Take `⟨t₀, ht⟩` from `GlobalTheory.GeoLevel.exists_frBor_gen z y' (hy'.1.symm.trans hx) (funext fun τ => funext fun i => (hy'.2.1 τ i).symm.trans (hu τ i))`. Use `⟨toC (t₀ : CAt (midEmb C)), Units.ne_zero (M₀ := ℂ) t₀, ?_, fun n a f hf f₂ hp => ?_⟩` and prove the remaining obligations.
+
+Introduce `σ' σ₂' g ty ty₂ F F₂ i i₂ P P₂ p p₂ e e₂ N N₂`. Conclude with `norm_gen_eq_one_of_frOver C.d F₂ F i₂ i P₂ P y₂ z y' _ p₂ p e₂ e N₂ N hy' ht`. Establish `h1` using `@hp (CAt (midEmb C)) (inferInstanceAs (Field ℂ)) a₀ (inferInstanceAs (Algebra C.c'.F (CAt (midEmb C)))) a₂ hov hc w y' hy'`. Establish `hb : FrBor (fun i => Option.elim i t₀ (fun _ => 1)) y₀ (y'.res C.hle hov)` using `ht`. Establish `h2` using `(GlobalTheory.Frames.algebraic_laws GlobalTheory.lawsFieldsSeparately.2.1 _ _ _ _ (T.Q.Xo j) T.Q.c).2.2.2.2.2.2 (CAt (midEmb C)) (inferInstanceAs (IsReduced ℂ)) a n f hf _ _ _ hb`.
+
+Rewrite `h2` using `[wchar_gen]`. Conclude with `h1.trans h2`.
+-/
 theorem exists_scalar (C : Cover T j σ) (hσ : C.σ₂.comp C.inc = σ) (y : FrPt (T.Q.Xo j) T.Q.c (CAt σ))
     (y₂ : FrPt C.d.Xo₂ C.d.c₂ (CAt C.σ₂))
     (hx : (y₂.x : Sp ℂ ⟶ C.d.Xo₂.X) ≫ C.d.r = (y.x : Sp ℂ ⟶ (T.Q.Xo j).X))
@@ -76,6 +88,17 @@ theorem exists_scalar (C : Cover T j σ) (hσ : C.σ₂.comp C.inc = σ) (y : Fr
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D T hT j hj σ hσ C hC k₂`. Take `⟨h₀, rfl⟩` from `GlobalTheory.CoverOnto.exists_dict₂_comp D T hT j hj σ hσ C hC k₂`. Take `⟨γ, hΛ, hiso, hfr⟩` from `GlobalTheory.CoverFrameMove.frames_differ D T hT j hj σ hσ C hC h₀`. Use `⟨(T.dict j σ h₀).1, γ, hΛ, hiso, fun h hh => GlobalTheory.CoverRead.CompIndep.comp_eq_of_cover D T hT j hj σ hσ C hC h h₀ hh, fun x x' hx hxx' => ?_⟩` and prove the remaining obligations. Establish `hU` using `hT.unf j hj σ hσ`.
+
+Establish `hU₂` using `hC.2.2.2.1`. Establish `hΨ : ∀ τ, τ ∈ ((T.U j σ).X (T.dict j σ h₀).1).Ψ ↔ τ ∈ (C.U₂.X (C.dict₂ h₀).1).Ψ` using `fun τ => ((hU.2.1 _).2 τ).trans ((hU₂.2.1 _).2 τ).symm`. Apply the tactic sequence `have hx' : x' ∈ ((T.U j σ).X (T.dict j σ h₀).1).dom := GlobalTheory.FrameDom.mem_dom_of_isometry _ _ _ _ γ ((hU.2.1 _).1.trans (hU₂.2.1 _).1.symm) hΨ hiso x x' hx hxx'`. Take `⟨o₁, o₂⟩` from `GlobalTheory.T.coverFramedPoint_over_moved_base_frame D T hT j hj σ hσ C hC h₀ γ hΛ hiso hfr x x' hx hx' hxx'`. Take `⟨t, ht, hn, hr⟩` from `exists_scalar C hC.2.2.1 _ _ o₁ o₂`.
+
+Use `⟨hx', t, ht, fun hd => ?_, fun n a _ f hf f₂ _ hp => ?_⟩` and prove the remaining obligations. Establish `hd' : ∀ τ i, ‖dmin ((T.U j σ).X (T.dict j σ h₀).1).Gm x' τ i‖ = 1`. Introduce and unpack `⟨τ, h₁⟩ i`. Rewrite using `[← hd ⟨τ, (hΨ τ).1 h₁⟩ i]`. Unfold `dmin`.
+
+Rewrite using `[hxx' τ ((hΨ τ).1 h₁) h₁, GlobalTheory.FrameDom.gram_mul _ _ _ hiso τ]`. Take `⟨g, e, F, ik, φ, -, hP⟩` from `hU.2.2.2.2.2`. Take `⟨g₂, e₂, F₂, ik₂, φ₂, -, hP₂⟩` from `hU₂.2.2.2.2.2`. Take `rfl : g₂ = g` from `Fin.equiv_iff_eq.1 ⟨e₂.trans e.symm⟩`. Take `⟨P, -, p, u, -, N⟩` from `hP _ ⟨x', hx'⟩`.
+
+Take `⟨P₂, -, p₂, u₂, -, N₂⟩` from `hP₂ _ ⟨x, hx⟩`. Conclude with `hn _ _ _ _ _ F F₂ _ _ P P₂ p p₂ u u₂ (N hd') (N₂ hd)`. Establish `e : rdU (T.U j σ) f (T.dict j σ h₀).1 x' = toC (evR (T.Q.Xo j) T.Q.c f ((T.U j σ).un (T.dict j σ h₀).1 ⟨x', hx'⟩))` using `dif_pos hx'`. Rewrite using `[e]`. Conclude with `(dif_pos hx).trans (hr n a f hf f₂ hp)`.
+-/
 theorem comp_over_comp_norm : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.IsUnif → ∀ k₂ : C.U₂.Comp, ∃ (k : (T.U j σ).Comp) (γ : GL (Fin D.R.r) D.host.E), (((T.U j σ).X k).Λ : Set (Fin D.R.r → D.host.E)) = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec '' ((C.U₂.X k₂).Λ : Set _) ∧ (∀ v w, herm ((T.U j σ).X k).Gm ((γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec v) ((γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec w) = herm (C.U₂.X k₂).Gm v w) ∧ (∀ h, (C.dict₂ h).1 = k₂ → (T.dict j σ h).1 = k) ∧ ∀ (x : Frame (C.U₂.X k₂).Ψ D.R.r) (x' : Frame ((T.U j σ).X k).Ψ D.R.r), x ∈ (C.U₂.X k₂).dom → (∀ (τ : D.host.E →+* ℂ) (h₂ : τ ∈ (C.U₂.X k₂).Ψ) (h₁ : τ ∈ ((T.U j σ).X k).Ψ), mat x' ⟨τ, h₁⟩ = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ * mat x ⟨τ, h₂⟩) → x' ∈ ((T.U j σ).X k).dom ∧ ∃ t : ℂ, t ≠ 0 ∧ ((∀ τ i, ‖dmin (C.U₂.X k₂).Gm x τ i‖ = 1) → ‖t‖ = 1) ∧ ∀ n : ℕ, ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ), Dom a n → ∀ f ∈ sec (T.Q.Xo j) T.Q.c a n, ∀ f₂ ∈ sec C.d.Xo₂ C.d.c₂ a n, C.IsPull f f₂ → rdU C.U₂ f₂ k₂ x = t ^ n * rdU (T.U j σ) f k x' := by
   intro D T hT j hj σ hσ C hC k₂
   obtain ⟨h₀, rfl⟩ := GlobalTheory.CoverOnto.exists_dict₂_comp D T hT j hj σ hσ C hC k₂

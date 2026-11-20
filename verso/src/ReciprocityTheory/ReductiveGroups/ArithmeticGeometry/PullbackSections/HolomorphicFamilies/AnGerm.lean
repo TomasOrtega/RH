@@ -44,6 +44,9 @@ def pullSecLP (s : LB.Sec (LPow A L a T)) : LB.Sec (LPow A L a T') where
       (gm_linComb L (fun _ : Fin 1 => (snd T' A).left) (fun _ => a) (𝟙 _) y i j hy.1 hy.2).symm)
     simp only [trF, Category.assoc, ← Over.comp_left, hh]
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem isPullSec_pullSecLP (s : LB.Sec (LPow A L a T)) : IsPullSec A L a h hh s (pullSecLP A L a h hh s) := fun _ => rfl
 
 end PullSec

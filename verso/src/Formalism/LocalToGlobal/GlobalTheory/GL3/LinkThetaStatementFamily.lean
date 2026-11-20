@@ -8,6 +8,11 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker Classical
 
+/- English proof (translation)
+Introduce `cc hcc`. Take `⟨L, hL⟩` from `Formalism.L2.PairingIndexBounds.Rec.exists_pp D cc hcc`. Establish `h4` using `Formalism.L2.PairingIndexBounds.Rec.eisG_eq_G _ L hL 2 (by norm_num)`. Establish `h6` using `Formalism.L2.PairingIndexBounds.Rec.eisG_eq_G _ L hL 3 (by norm_num)`. Use `Formalism.L2.Th1.F.discNeZero L` as an intermediate fact.
+
+Unfold `Formalism.MainNotions.TaylorLogMetric.discr Formalism.MainNotions.TaylorLogMetric.g2 Formalism.MainNotions.TaylorLogMetric.g3`. Rewrite using `[h4, h6]`. Simplify `this` using `[PeriodPair.g₂, PeriodPair.g₃]`.
+-/
 theorem discrNe (D : D7) : DiscrNe D := by
   intro cc hcc
   obtain ⟨L, hL⟩ := Formalism.L2.PairingIndexBounds.Rec.exists_pp D cc hcc
@@ -70,15 +75,32 @@ def LinkThetaStatementFamily : Prop :=
   ∀ (eps : ℝ) (Fm : Formalism.MainNotions.FamP eps) (C : ℝ),
     (∀ x (i : Fm.Ix x), PerAll (Fm.D x i)) → (∀ x (i : Fm.Ix x), RestAll (Fm.D x i) C) → StatementFamilyConstant Fm C
 
+/- English proof (translation)
+Introduce `D cc hcc δ hδ e`. Apply `discrNe D cc hcc.1` to reduce the goal to its premises. Rewrite using `[← (show δ ^ 12 = discr (lamOf D cc 1) from hδ), e]`. Evaluate the numerical expressions.
+-/
 theorem delta_nonzero_link : LinkDeltaNe := by
   intro D cc hcc δ hδ e
   apply discrNe D cc hcc.1
   rw [← (show δ ^ 12 = discr (lamOf D cc 1) from hδ), e]
   norm_num
 
+/- English proof (translation)
+Introduce `D cc hcc δ hδ` and use `base_linkage_exists D cc hcc δ (delta_nonzero_link D cc hcc δ hδ)`.
+-/
 theorem base_link_of_nonzero_delta : LinkBaseRec :=
   fun D cc hcc δ hδ => base_linkage_exists D cc hcc δ (delta_nonzero_link D cc hcc δ hδ)
 
+/- English proof (translation)
+Introduce `D cc hcc δ hδ B N N' L L' hA x hx`. Take `⟨a, b, hab, e⟩` from `hermitian_form_integral_values D cc hcc δ hδ (delta_nonzero_link D cc hcc δ hδ) N N' L L' hA x hx x hx`. Establish `hs` using `IO.sqrt_d_pos D`. Establish `hreal : (Formalism.MainNotions.TaylorLogMetric.Hf D (tor0 D cc δ) x x).im = 0`. Establish `h1` using `IO.Hf_herm (tor0 D cc δ) x x`.
+
+Establish `h2` using `congrArg Complex.im h1`. Rewrite `h2` using `[Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : b = 0`. Rewrite `hreal` using `[e]`.
+
+Simplify using `at hreal`. Conclude with `hreal`. Substitute `hb` using the available equality. Take `⟨j, hj⟩` from `hab`. Use `⟨j, ?_⟩` and prove the remaining obligations.
+
+Use `show Real.sqrt D.host.d / 2 * (Formalism.MainNotions.TaylorLogMetric.Hf D (tor0 D cc δ) x x).re = (j : ℝ)`. Rewrite using `[e]`. Establish `ha : (a : ℝ) = 2 * j`. Establish `: a = 2 * j` using `by linarith`. Conclude with `this` after adjusting the coercions.
+
+Simplify using `only [Int.cast_zero, zero_mul, add_zero, Complex.ofReal_re]`. Rewrite using `[ha]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem rational_integrality_link : LinkQInt := by
   intro D cc hcc δ hδ B N N' L L' hA x hx
   obtain ⟨a, b, hab, e⟩ := hermitian_form_integral_values D cc hcc δ hδ (delta_nonzero_link D cc hcc δ hδ) N N' L L' hA x hx x hx
@@ -104,24 +126,39 @@ theorem rational_integrality_link : LinkQInt := by
   rw [ha]
   field_simp
 
+/- English proof (translation)
+Introduce `D cc hcc δ hδ B χ hχ N N' L L' hA`. Establish `hS` using `SO.stdOK B hcc hδ`. Establish `hL` using `B.latAll hcc hδ (delta_nonzero_link D cc hcc δ hδ)`. Conclude with `⟨B.eq_change_right hS hL χ hχ hA, B.eq_change_left hS hL χ hχ hA, B.eNat_zero hS hL χ hχ hA.1 hA.2.1⟩`.
+-/
 theorem equation_base_link : LinkEqBase := by
   intro D cc hcc δ hδ B χ hχ N N' L L' hA
   have hS := SO.stdOK B hcc hδ
   have hL := B.latAll hcc hδ (delta_nonzero_link D cc hcc δ hδ)
   exact ⟨B.eq_change_right hS hL χ hχ hA, B.eq_change_left hS hL χ hχ hA, B.eNat_zero hS hL χ hχ hA.1 hA.2.1⟩
 
+/- English proof (translation)
+Introduce `D hA cc hcc δ hδ`. Take `⟨B⟩` from `base_link_of_nonzero_delta D cc hcc δ hδ`. Use `⟨character_linkage_holds D hA, fun χ hχ => ⟨B.eNat χ, vector_bound_link D cc hcc δ hδ B χ hχ, ?_⟩⟩` and prove the remaining obligations. Conclude with `theta_bound_link D cc hcc δ hδ B χ hχ`.
+-/
 theorem partition_link : LinkPart := by
   intro D hA cc hcc δ hδ
   obtain ⟨B⟩ := base_link_of_nonzero_delta D cc hcc δ hδ
   refine ⟨character_linkage_holds D hA, fun χ hχ => ⟨B.eNat χ, vector_bound_link D cc hcc δ hδ B χ hχ, ?_⟩⟩
   exact theta_bound_link D cc hcc δ hδ B χ hχ
 
+/- English proof (translation)
+Introduce `D C hA hper h` and use `eigen_linkage_all_primes D C hA hper (discrNe D) h`.
+-/
 theorem provision_link_holds : LinkThetaFamily :=
   fun D C hA hper h => eigen_linkage_all_primes D C hA hper (discrNe D) h
 
+/- English proof (translation)
+Introduce `hP D C hA h1 h2 h3 h4 h` and use `provision_link_holds D C hA (hP D h1 h2 h3 h4) h`.
+-/
 theorem provision_link_of_periods : LinkThetaFamily' :=
   fun hP D C hA h1 h2 h3 h4 h => provision_link_holds D C hA (hP D h1 h2 h3 h4) h
 
+/- English proof (translation)
+Introduce `_ Fm C hper hrest hA x i` and use `provision_link_holds (Fm.D x i) C (hA x i) (hper x i) (hrest x i)`.
+-/
 theorem link_theta_statement_family : LinkThetaStatementFamily :=
   fun _ Fm C hper hrest hA x i => provision_link_holds (Fm.D x i) C (hA x i) (hper x i) (hrest x i)
 

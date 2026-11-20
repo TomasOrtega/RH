@@ -9,6 +9,9 @@ section Abstract
 
 variable {M : Type} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.CompositionMem.comp_mem W μ hμ Y hY s`.
+-/
 private theorem comp_mem {ι : Type} (W : Module.End ℂ M) (μ : ι → ℂ) (hμ : Function.Injective μ) (Y : Submodule ℂ M)
     (hY : ∀ y ∈ Y, W y ∈ Y) (s : Finset ι) :
     ∀ x : ι → M, (∀ j, W (x j) = μ j • x j) → ∑ j ∈ s, x j ∈ Y → ∀ j ∈ s, x j ∈ Y :=
@@ -29,9 +32,17 @@ private def gen (V : Submodule ℂ M) (W : Module.End ℂ M) (X : ℤˣ → Modu
 
 variable {V : Submodule ℂ M} {W : Module.End ℂ M} {X : ℤˣ → Module.End ℂ M} {k : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> simp`.
+-/
 private theorem sq_sign (s : ℤˣ) : ((s : ℤ) : ℂ) * ((s : ℤ) : ℂ) = 1 := by
   rcases Int.units_eq_one_or s with rfl | rfl <;> simp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using hu.2.1`. Consider the case `succ n ih`. Rewrite using `[pow_succ', Module.End.mul_apply, h.wx, ih, map_smul, ← add_smul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem wt (h : Rel W X) {s : ℤˣ} {u : M} (hu : u ∈ ext V W X k s) (n : ℕ) :
     W ((X s ^ n) u) = (((s : ℤ) : ℂ) * Complex.I * (k + 2 + 2 * n)) • (X s ^ n) u := by
   induction n with
@@ -42,6 +53,13 @@ private theorem wt (h : Rel W X) {s : ℤˣ} {u : M} (hu : u ∈ ext V W X k s) 
     push_cast
     ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_add, pow_one, h.xx, hu.2.2, hu.2.1, map_zero, zero_add, smul_smul, pow_zero, Module.End.one_apply]`. Use `congr 1`. Use `push_cast`.
+
+Take the linear combination `(4 * ((k : ℂ) + 2) * Complex.I ^ 2) * sq_sign s + 4 * ((k : ℂ) + 2) * Complex.I_sq`. Consider the case `succ n ih`. Rewrite using `[pow_succ', Module.End.mul_apply, h.xx, ih, wt h hu, map_smul, smul_smul, ← Module.End.mul_apply, ← pow_succ', ← add_smul]`. Use `congr 1`. Use `push_cast`.
+
+Take the linear combination `(4 * ((k : ℂ) + 2 + 2 * (n + 1)) * Complex.I ^ 2) * sq_sign s + 4 * ((k : ℂ) + 2 + 2 * (n + 1)) * Complex.I_sq`.
+-/
 private theorem down (h : Rel W X) {s : ℤˣ} {u : M} (hu : u ∈ ext V W X k s) (n : ℕ) :
     X (-s) ((X s ^ (n + 1)) u) = (-4 * ((n : ℂ) + 1) * (k + 2 + n)) • (X s ^ n) u := by
   induction n with
@@ -56,6 +74,11 @@ private theorem down (h : Rel W X) {s : ℤˣ} {u : M} (hu : u ∈ ext V W X k s
     push_cast
     linear_combination (4 * ((k : ℂ) + 2 + 2 * (n + 1)) * Complex.I ^ 2) * sq_sign s + 4 * ((k : ℂ) + 2 + 2 * (n + 1)) * Complex.I_sq
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact hn`. Consider the case `succ n ih`. Establish `h1` using `hY _ hn`. Rewrite `h1` using `[down h hu]`.
+
+Apply the tactic sequence `refine ih ((Y.smul_mem_iff (mul_ne_zero (mul_ne_zero (by norm_num) ?_) ?_)).1 h1) <;> norm_cast <;> omega`.
+-/
 private theorem extract (h : Rel W X) {s : ℤˣ} {u : M} (hu : u ∈ ext V W X k s) (Y : Submodule ℂ M)
     (hY : ∀ y ∈ Y, X (-s) y ∈ Y) (n : ℕ) (hn : (X s ^ n) u ∈ Y) : u ∈ Y := by
   induction n with
@@ -65,9 +88,15 @@ private theorem extract (h : Rel W X) {s : ℤˣ} {u : M} (hu : u ∈ ext V W X 
     rw [down h hu] at h1
     refine ih ((Y.smul_mem_iff (mul_ne_zero (mul_ne_zero (by norm_num) ?_) ?_)).1 h1) <;> norm_cast <;> omega
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_iSup_of_mem (s, n) ⟨u, hu, rfl⟩`.
+-/
 private theorem mem_gen {s : ℤˣ} {u : M} (hu : u ∈ ext V W X k s) (n : ℕ) : (X s ^ n) u ∈ gen V W X k :=
   Submodule.mem_iSup_of_mem (s, n) ⟨u, hu, rfl⟩
 
+/- English proof (translation)
+Establish `: gen V W X k ≤ Y.comap T` using `iSup_le fun p => by`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `hT _ _ u hu`. Conclude with `this`.
+-/
 private theorem gen_stable (T : Module.End ℂ M) (Y : Submodule ℂ M)
     (hT : ∀ s n, ∀ u ∈ ext V W X k s, T ((X s ^ n) u) ∈ Y) : ∀ x ∈ gen V W X k, T x ∈ Y := by
   have : gen V W X k ≤ Y.comap T := iSup_le fun p => by
@@ -75,17 +104,26 @@ private theorem gen_stable (T : Module.End ℂ M) (Y : Submodule ℂ M)
     exact hT _ _ u hu
   exact this
 
+/- English proof (translation)
+The claim follows from `gen_stable 1 V fun s n u hu => by induction n with | zero => exact hu.1 | succ n ih => rw [pow_succ']; exact hV _ _ ih`.
+-/
 private theorem gen_le (hV : ∀ s, ∀ x ∈ V, X s x ∈ V) : gen V W X k ≤ V :=
   gen_stable 1 V fun s n u hu => by
     induction n with
     | zero => exact hu.1
     | succ n ih => rw [pow_succ']; exact hV _ _ ih
 
+/- English proof (translation)
+The claim follows from `gen_stable _ _ fun s n u hu => by rw [wt h hu] exact Submodule.smul_mem _ _ (mem_gen hu n)`.
+-/
 private theorem generated_stable_under_W (h : Rel W X) : ∀ x ∈ gen V W X k, W x ∈ gen V W X k :=
   gen_stable _ _ fun s n u hu => by
     rw [wt h hu]
     exact Submodule.smul_mem _ _ (mem_gen hu n)
 
+/- English proof (translation)
+The claim follows from `gen_stable _ _ fun s n u hu => by by_cases e : t = s · subst e rw [← Module.End.mul_apply, ← pow_succ'] exact mem_gen hu _ · have e' : t = -s := Int.units_ne_iff_eq_neg.1 e subst e' cases n with | zero => rw [pow_zero, Module.End.one_apply, hu.2.2]; exact Submodule.zero_mem _ | s …`.
+-/
 private theorem gen_X (h : Rel W X) (t : ℤˣ) : ∀ x ∈ gen V W X k, X t x ∈ gen V W X k :=
   gen_stable _ _ fun s n u hu => by
     by_cases e : t = s
@@ -103,10 +141,20 @@ private structure Nor (V : Submodule ℂ M) (W : Module.End ℂ M) (X : ℤˣ �
   tw : ∀ x, T (W x) = ((d : ℤ) : ℂ) • W (T x)
   tx : ∀ s, ∃ c : ℂ, c ≠ 0 ∧ ∀ x, T (X s x) = c • X (d * s) (T x)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h0, by simpa using h1, fun s => ⟨1, one_ne_zero, by simpa using h2 s⟩⟩`.
+-/
 private theorem Nor.of_comm {T : Module.End ℂ M} (h0 : ∀ x ∈ V, T x ∈ V) (h1 : ∀ x, T (W x) = W (T x))
     (h2 : ∀ s x, T (X s x) = X s (T x)) : Nor V W X T 1 :=
   ⟨h0, by simpa using h1, fun s => ⟨1, one_ne_zero, by simpa using h2 s⟩⟩
 
+/- English proof (translation)
+Use `⟨hT.mem _ hu.1, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (((d : ℤ) : ℂ) • ·) (hT.tw u)`. Simplify using `only [smul_smul, sq_sign, one_smul, hu.2.1, map_smul] at h`. Rewrite using `[← h]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc, h⟩` from `hT.tx (-s)`. Establish `h1` using `h u`. Rewrite `h1` using `[hu.2.2, map_zero, mul_neg]`.
+
+Conclude with `(smul_eq_zero.1 h1.symm).resolve_left hc`.
+-/
 private theorem Nor.ext_mem {T : Module.End ℂ M} {d : ℤˣ} (hT : Nor V W X T d) {s : ℤˣ} {u : M} (hu : u ∈ ext V W X k s) :
     T u ∈ ext V W X k (d * s) := by
   refine ⟨hT.mem _ hu.1, ?_, ?_⟩
@@ -121,6 +169,9 @@ private theorem Nor.ext_mem {T : Module.End ℂ M} {d : ℤˣ} (hT : Nor V W X T
     rw [hu.2.2, map_zero, mul_neg] at h1
     exact (smul_eq_zero.1 h1.symm).resolve_left hc
 
+/- English proof (translation)
+The claim follows from `gen_stable _ _ fun s n u hu => by obtain ⟨c, -, h⟩ := hT.tx s have e : T ((X s ^ n) u) = c ^ n • (X (d * s) ^ n) (T u) := by induction n with | zero => simp | succ n ih => rw [pow_succ', Module.End.mul_apply, h, ih, map_smul, smul_smul, pow_succ', pow_succ', Module.End.mul_apply] …`.
+-/
 private theorem Nor.gen_mem {T : Module.End ℂ M} {d : ℤˣ} (hT : Nor V W X T d) : ∀ x ∈ gen V W X k, T x ∈ gen V W X k :=
   gen_stable _ _ fun s n u hu => by
     obtain ⟨c, -, h⟩ := hT.tx s
@@ -131,6 +182,13 @@ private theorem Nor.gen_mem {T : Module.End ℂ M} {d : ℤˣ} (hT : Nor V W X T
     rw [e]
     exact Submodule.smul_mem _ _ (mem_gen (hT.ext_mem hu) n)
 
+/- English proof (translation)
+Take `⟨f, hf, rfl⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hx`. Establish `hinj : Function.Injective fun p : ℤˣ × ℕ => ((p.1 : ℤ) : ℂ) * Complex.I * (k + 2 + 2 * p.2)`. Introduce and unpack `⟨s, n⟩ ⟨t, l⟩ e`. Establish `e1 : ((s : ℤ) : ℂ) * (k + 2 + 2 * n) = ((t : ℤ) : ℂ) * (k + 2 + 2 * l)` using `mul_left_cancel₀ Complex.I_ne_zero (by linear_combination e)`. Establish `e2 : (s : ℤ) * (k + 2 + 2 * n) = (t : ℤ) * (k + 2 + 2 * l)` using `by exact_mod_cast e1`.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> rcases Int.units_eq_one_or t with rfl | rfl <;> simp at e2 ⊢ <;> omega`. Establish `hc` using `comp_mem W _ hinj Y hW f.support f (fun p => by`. Take `⟨u, hu, e⟩` from `hf p`. Rewrite using `[← e]`. Conclude with `wt h hu _) hxY`.
+
+Take `⟨p, hp, hp0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h0`. Take `⟨u, hu, e⟩` from `hf p`. Use `⟨p.1, u, hu, extract h hu Y (hX _) p.2 (e ▸ hc p hp), fun e0 => hp0 ?_⟩` and prove the remaining obligations. Rewrite using `[← e, e0, map_zero]`.
+-/
 private theorem exists_ext (h : Rel W X) (Y : Submodule ℂ M) (hW : ∀ y ∈ Y, W y ∈ Y) (hX : ∀ s, ∀ y ∈ Y, X s y ∈ Y)
     {x : M} (hx : x ∈ gen V W X k) (hxY : x ∈ Y) (h0 : x ≠ 0) : ∃ s, ∃ u ∈ ext V W X k s, u ∈ Y ∧ u ≠ 0 := by
   obtain ⟨f, hf, rfl⟩ := (Submodule.mem_iSup_iff_exists_finsupp _ _).1 hx
@@ -160,11 +218,24 @@ private def wOp (E : Fin 2 → Fin 2 → Module.End ℂ M) : Module.End ℂ M :=
 private noncomputable def xOp (E : Fin 2 → Fin 2 → Module.End ℂ M) (s : ℤˣ) : Module.End ℂ M :=
   E 0 0 - E 1 1 + (((s : ℤ) : ℂ) * Complex.I) • (E 0 1 + E 1 0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem wOp_apply (E : Fin 2 → Fin 2 → Module.End ℂ M) (x : M) : wOp E x = E 0 1 x - E 1 0 x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem xOp_apply (E : Fin 2 → Fin 2 → Module.End ℂ M) (s : ℤˣ) (x : M) :
     xOp E s x = E 0 0 x - E 1 1 x + (((s : ℤ) : ℂ) * Complex.I) • (E 0 1 x + E 1 0 x) := rfl
 
+/- English proof (translation)
+Establish `g : ∀ i j k l x, E i j (E k l x) = E k l (E i j x) + ((if j = k then E i l else 0) - (if l = i then E k j else 0)) x` using `fun i j k l x => sub_eq_iff_eq_add'.1 (LinearMap.congr_fun (h i j k l) x)`. Establish `a : ∀ x, E 0 0 (E 0 1 x) = E 0 1 (E 0 0 x) + E 0 1 x` using `fun x => by simpa using g 0 0 0 1 x`. Establish `b : ∀ x, E 1 1 (E 0 1 x) = E 0 1 (E 1 1 x) + -E 0 1 x` using `fun x => by simpa using g 1 1 0 1 x`. Establish `c : ∀ x, E 0 0 (E 1 0 x) = E 1 0 (E 0 0 x) + -E 1 0 x` using `fun x => by simpa using g 0 0 1 0 x`. Establish `d : ∀ x, E 1 1 (E 1 0 x) = E 1 0 (E 1 1 x) + E 1 0 x` using `fun x => by simpa using g 1 1 1 0 x`.
+
+Establish `e : ∀ x, E 0 1 (E 1 0 x) = E 1 0 (E 0 1 x) + (E 0 0 x - E 1 1 x)` using `fun x => by simpa using g 0 1 1 0 x`. Establish `f : ∀ x, E 1 1 (E 0 0 x) = E 0 0 (E 1 1 x)` using `fun x => by simpa using g 1 1 0 0 x`. Use `⟨fun s x => ?_, fun s x => ?_⟩` and prove the remaining obligations. Simplify using `only [wOp_apply, xOp_apply, map_add, map_sub, map_smul, a, b, c, d, e, f]`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> match_scalars <;> push_cast <;> ring_nf <;> simp`.
+
+Simplify using `only [wOp_apply, xOp_apply, map_add, map_sub, map_smul, a, b, c, d, e, f]`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> match_scalars <;> push_cast <;> ring_nf <;> simp`.
+-/
 private theorem rel_of (E : Fin 2 → Fin 2 → Module.End ℂ M) (h : Formalism.REAL.GlRel E) : Rel (wOp E) (xOp E) := by
   have g : ∀ i j k l x, E i j (E k l x) = E k l (E i j x) + ((if j = k then E i l else 0) - (if l = i then E k j else 0)) x :=
     fun i j k l x => sub_eq_iff_eq_add'.1 (LinearMap.congr_fun (h i j k l) x)
@@ -180,6 +251,13 @@ private theorem rel_of (E : Fin 2 → Fin 2 → Module.End ℂ M) (h : Formalism
   · simp only [wOp_apply, xOp_apply, map_add, map_sub, map_smul, a, b, c, d, e, f]
     rcases Int.units_eq_one_or s with rfl | rfl <;> match_scalars <;> push_cast <;> ring_nf <;> simp
 
+/- English proof (translation)
+Use `⟨hV, fun x => ?_, fun s => ⟨(P 0 0 + ((s : ℤ) : ℂ) * Complex.I * P 0 1) ^ 2, pow_ne_zero _ fun e => ?_, fun x => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [wOp_apply, map_sub, hT, Fin.sum_univ_two, h2, h3] match_scalars`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `((d : ℤ) : ℂ) * h1`. Take the linear combination `-((d : ℤ) : ℂ) * h1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hs` using `sq_sign s`. Establish `: (1 : ℂ) = 0`. Take the linear combination `-h1 + (P 0 0 - ((s : ℤ) : ℂ) * Complex.I * P 0 1) * e + (P 0 1 ^ 2 * Complex.I ^ 2) * hs + P 0 1 ^ 2 * Complex.I_sq`. Conclude with `one_ne_zero this`.
+
+Simplify using `only [xOp_apply, map_sub, map_add, map_smul, hT, Fin.sum_univ_two, h2, h3]`. Establish `h4 : Complex.I ^ 3 = -Complex.I` using `Complex.I_pow_three`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> rcases Int.units_eq_one_or d with rfl | rfl <;> match_scalars <;> push_cast <;> ring_nf <;>`. Apply the tactic sequence `simp only [Complex.I_sq, h4] <;> ring`.
+-/
 private theorem nor_of (E : Fin 2 → Fin 2 → Module.End ℂ M) (V : Submodule ℂ M) (T : Module.End ℂ M) (hV : ∀ x ∈ V, T x ∈ V)
     (P : Fin 2 → Fin 2 → ℂ) (hT : ∀ i j x, T (E i j x) = ∑ k, ∑ l, (P k i * P l j) • E k l (T x)) (d : ℤˣ)
     (h1 : P 0 0 ^ 2 + P 0 1 ^ 2 = 1) (h2 : P 1 0 = -((d : ℤ) : ℂ) * P 0 1) (h3 : P 1 1 = ((d : ℤ) : ℂ) * P 0 0) :
@@ -200,6 +278,17 @@ private theorem nor_of (E : Fin 2 → Fin 2 → Module.End ℂ M) (V : Submodule
     rcases Int.units_eq_one_or s with rfl | rfl <;> rcases Int.units_eq_one_or d with rfl | rfl <;> match_scalars <;> push_cast <;> ring_nf <;>
       simp only [Complex.I_sq, h4] <;> ring
 
+/- English proof (translation)
+Establish `hZ : E 0 0 x + E 1 1 x ∈ Y` using `hc ▸ Y.smul_mem c hx`. Establish `hH : E 0 0 x - E 1 1 x ∈ Y`. Use `Y.smul_mem (1 / 2 : ℂ) (Y.add_mem (hX 1) (hX (-1)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [xOp_apply]`.
+
+Apply the tactic sequence `match_scalars <;> push_cast <;> ring`. Establish `hS : E 0 1 x + E 1 0 x ∈ Y`. Use `Y.sub_mem (hX 1) hH` as an intermediate fact. Rewrite `this` using `[xOp_apply, add_sub_cancel_left]`. Conclude with `(Y.smul_mem_iff (by simp)).1 this`.
+
+Rewrite `hW` using `[wOp_apply]`. Use `(Y.smul_mem_iff (two_ne_zero (α := ℂ))).1 ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Use `Y.add_mem hZ hH using 1` and compare the differences between its conclusion and the goal. Simplify using `[two_smul]`.
+
+Use `Y.add_mem hS hW using 1` and compare the differences between its conclusion and the goal. Simplify using `[two_smul]`. Use `Y.sub_mem hS hW using 1` and compare the differences between its conclusion and the goal. Simplify using `[two_smul]`. Use `Y.sub_mem hZ hH using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `[two_smul]`.
+-/
 private theorem unit_mem (E : Fin 2 → Fin 2 → Module.End ℂ M) (Y : Submodule ℂ M) (x : M) (c : ℂ) (hx : x ∈ Y) (hW : wOp E x ∈ Y)
     (hX : ∀ s, xOp E s x ∈ Y) (hc : E 0 0 x + E 1 1 x = c • x) (i j : Fin 2) : E i j x ∈ Y := by
   have hZ : E 0 0 x + E 1 1 x ∈ Y := hc ▸ Y.smul_mem c hx
@@ -226,6 +315,11 @@ section Forms
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Establish `h : (a * e - b * c) * (a * e - b * c) = 1`. Take the linear combination `(c * c + e * e) * h1 + h3 - (a * c + b * e) * h2`. Break down `mul_self_eq_one_iff.1 h with h | h` into its components or cases. Apply the tactic sequence `refine ⟨1, ?_, ?_⟩ <;> push_cast`. Take the linear combination `-c * h1 + a * h2 - b * h`.
+
+Take the linear combination `-e * h1 + b * h2 + a * h`. Apply the tactic sequence `refine ⟨-1, ?_, ?_⟩ <;> push_cast`. Take the linear combination `-c * h1 + a * h2 - b * h`. Take the linear combination `-e * h1 + b * h2 + a * h`.
+-/
 private theorem orth (a b c e : ℝ) (h1 : a * a + b * b = 1) (h2 : a * c + b * e = 0) (h3 : c * c + e * e = 1) :
     ∃ d : ℤˣ, c = -((d : ℤ) : ℝ) * b ∧ e = ((d : ℤ) : ℝ) * a := by
   have h : (a * e - b * c) * (a * e - b * c) = 1 := by
@@ -239,12 +333,20 @@ private theorem orth (a b c e : ℝ) (h1 : a * a + b * b = 1) (h2 : a * c + b * 
     · linear_combination -e * h1 + b * h2 + a * h
 
 omit [NumberField F] [IsTotallyReal F] in
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun (congrFun (Matrix.mem_unitaryGroup_iff.1 k.2) i) j) v`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.star_apply, Matrix.one_apply] at h`. Apply the tactic sequence `split_ifs at h ⊢ <;> simpa using h`.
+-/
 private theorem row (k : TR.Kinf F 2) (v : InfinitePlace F) (i j : Fin 2) :
     k.1 i 0 v * k.1 j 0 v + k.1 i 1 v * k.1 j 1 v = if i = j then 1 else 0 := by
   have h := congrFun (congrFun (congrFun (Matrix.mem_unitaryGroup_iff.1 k.2) i) j) v
   simp only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.star_apply, Matrix.one_apply] at h
   split_ifs at h ⊢ <;> simpa using h
 
+/- English proof (translation)
+Use `nor_of _ V _ (hV (.cpt k)) (fun i j => ((k.1 i j v : ℝ) : ℂ)) (fun i j x => ?_) d ?_ (by exact_mod_cast h2) (by exact_mod_cast h3)` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun (TR.Cen.rt_Eop (Unitary.toUnits k) v i j) x`. Simplify using `only [Module.End.mul_apply, LinearMap.sum_apply, LinearMap.smul_apply] at h`. Conclude with `h`. Establish `h` using `row k v 0 0`.
+
+Rewrite `h` using `[if_pos rfl, ← sq, ← sq]`. Conclude with `h` after adjusting the coercions.
+-/
 private theorem nor_cpt {V : Submodule ℂ (TR.Sm F 2)} (hV : TR.IsStable V) (k : TR.Kinf F 2) (v : InfinitePlace F) (d : ℤˣ)
     (h2 : k.1 1 0 v = -((d : ℤ) : ℝ) * k.1 0 1 v) (h3 : k.1 1 1 v = ((d : ℤ) : ℝ) * k.1 0 0 v) :
     Nor V (wOp (TR.Eop v)) (xOp (TR.Eop v)) (TR.cptRep F 2 k) d := by
@@ -256,24 +358,50 @@ private theorem nor_cpt {V : Submodule ℂ (TR.Sm F 2)} (hV : TR.IsStable V) (k 
     rw [if_pos rfl, ← sq, ← sq] at h
     exact_mod_cast h
 
+/- English proof (translation)
+The claim follows from `Nor.of_comm hV (fun x => by simp only [wOp_apply, map_sub, h]) fun s x => by simp only [xOp_apply, map_sub, map_add, map_smul, h]`.
+-/
 private theorem nor_comm {V : Submodule ℂ (TR.Sm F 2)} (v : InfinitePlace F) (T : Module.End ℂ (TR.Sm F 2)) (hV : ∀ x ∈ V, T x ∈ V)
     (h : ∀ i j x, T (TR.Eop v i j x) = TR.Eop v i j (T x)) : Nor V (wOp (TR.Eop v)) (xOp (TR.Eop v)) T 1 :=
   Nor.of_comm hV (fun x => by simp only [wOp_apply, map_sub, h]) fun s x => by simp only [xOp_apply, map_sub, map_add, map_smul, h]
 
+/- English proof (translation)
+The claim follows from `hV (.lie _)`.
+-/
 private theorem eop_mem {V : Submodule ℂ (TR.Sm F 2)} (hV : TR.IsStable V) (v : InfinitePlace F) (i j : Fin 2) :
     ∀ x ∈ V, TR.Eop v i j x ∈ V := hV (.lie _)
 
+/- English proof (translation)
+Introduce `x hx` and use `V.sub_mem (eop_mem hV v _ _ x hx) (eop_mem hV v _ _ x hx)`.
+-/
 private theorem w_mem {V : Submodule ℂ (TR.Sm F 2)} (hV : TR.IsStable V) (v : InfinitePlace F) :
     ∀ x ∈ V, wOp (TR.Eop v) x ∈ V := fun x hx => V.sub_mem (eop_mem hV v _ _ x hx) (eop_mem hV v _ _ x hx)
 
+/- English proof (translation)
+Introduce `x hx` and use `V.add_mem (V.sub_mem (eop_mem hV v _ _ x hx) (eop_mem hV v _ _ x hx)) (V.smul_mem _ (V.add_mem (eop_mem hV v _ _ x hx) (eop_mem hV v _ _ x hx)))`.
+-/
 private theorem x_mem {V : Submodule ℂ (TR.Sm F 2)} (hV : TR.IsStable V) (v : InfinitePlace F) (s : ℤˣ) :
     ∀ x ∈ V, xOp (TR.Eop v) s x ∈ V := fun x hx =>
   V.add_mem (V.sub_mem (eop_mem hV v _ _ x hx) (eop_mem hV v _ _ x hx))
     (V.smul_mem _ (V.add_mem (eop_mem hV v _ _ x hx) (eop_mem hV v _ _ x hx)))
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun (TR.Eop_comm h i j k l) x`.
+-/
 private theorem eop_comm {v w : InfinitePlace F} (h : v ≠ w) (i j k l : Fin 2) (x : TR.Sm F 2) :
     TR.Eop v i j (TR.Eop w k l x) = TR.Eop w k l (TR.Eop v i j x) := LinearMap.congr_fun (TR.Eop_comm h i j k l) x
 
+/- English proof (translation)
+Establish `hr` using `rel_of _ (TR.glRel_Eop (a := 2) v)`. Introduce `o`. Consider the cases of `o with`. Consider the case `fin k => exact (nor_comm v _ (hV (.fin k)) fun i j x => (LinearMap.congr_fun (TR.lie_rt_fin _ k) x).symm).gen_mem`. Consider the case `cpt k`.
+
+Take `⟨d, h2, h3⟩` from `orth _ _ _ _ (row k v 0 0) (row k v 0 1) (row k v 1 1)`. Conclude with `(nor_cpt hV k v d h2 h3).gen_mem`. Consider the case `lie X`. Introduce `x hx`. Establish `e : X = ∑ i, ∑ j, ∑ w, X i j w • TR.toL (Matrix.single i j (Pi.single w (1 : ℝ) : TR.Rinf F))`.
+
+Use function extensionality and compare the values at `a b u`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Fin.sum_univ_two, Finset.sum_apply, Pi.single_apply]`. Express the relevant statement in the definitionally equal form `TR.lie F 2 X x ∈ _`. Rewrite using `[e]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`.
+
+Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => Submodule.sum_mem _ fun w _ => Submodule.smul_of_tower_mem _ _ ?_` and prove the remaining obligations. Establish `key : TR.Eop w i j x ∈ gen V (wOp (TR.Eop v)) (xOp (TR.Eop v)) m`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Conclude with `unit_mem _ _ x c hx (generated_stable_under_W hr x hx) (fun s => gen_X hr s x hx) (hc x (gen_le (x_mem hV w) hx)) i j`.
+
+Conclude with `(nor_comm v _ (eop_mem hV w i j) (eop_comm h i j)).gen_mem x hx`. Use `key using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+-/
 private theorem gen_isStable {V : Submodule ℂ (TR.Sm F 2)} (hV : TR.IsStable V) (v : InfinitePlace F) (m : ℕ) (c : ℂ)
     (hc : HasCen V v c) : TR.IsStable (gen V (wOp (TR.Eop v)) (xOp (TR.Eop v)) m) := by
   classical
@@ -301,6 +429,9 @@ private theorem gen_isStable {V : Submodule ℂ (TR.Sm F 2)} (hV : TR.IsStable V
     convert key using 1
     rfl
 
+/- English proof (translation)
+Use `and_congr_right fun _ => and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[wOp_apply]`. Simplify using the standard rewrite rules. Rewrite using `[xOp_apply, add_eq_zero_iff_eq_neg, ← neg_smul]`. Simplify using the standard rewrite rules.
+-/
 private theorem mem_ext_iff {V : Submodule ℂ (TR.Sm F 2)} (v : InfinitePlace F) (m : ℕ) (φ : TR.Sm F 2) :
     φ ∈ ext V (wOp (TR.Eop v)) (xOp (TR.Eop v)) m 1 ↔ φ ∈ V ∧ TR.Eop v 0 1 φ - TR.Eop v 1 0 φ = (Complex.I * (m + 2)) • φ ∧
       TR.Eop v 0 0 φ - TR.Eop v 1 1 φ = Complex.I • (TR.Eop v 0 1 φ + TR.Eop v 1 0 φ) := by
@@ -322,6 +453,23 @@ end Forms
 end UpperTheory.V.Lit.JL.DiscreteSeriesWeights
 
 open UpperTheory.V.Lit.JL.DiscreteSeriesWeights in
+/- English proof (translation)
+Introduce `F _ _ _ π m c h`. Set `U : InfinitePlace F → ℤˣ → Submodule ℂ (TR.Sm F 2)` to `fun v => ext π.V (wOp (TR.Eop v)) (xOp (TR.Eop v)) (m v)`. Establish `key : ∀ S : Finset (InfinitePlace F), ∃ φ ∈ π.V, φ ≠ 0 ∧ ∀ w ∈ S, φ ∈ U w 1`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`.
+
+Consider the case `empty`. Take `⟨φ, h1, h2⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot π.ne_bot`. Conclude with `⟨φ, h1, h2, by simp⟩`. Consider the case `insert v S hv ih`. Take `⟨φ, h1, h2, h3⟩` from `ih`.
+
+Take `⟨hc, ψ, p1, p2, p3⟩` from `h v`. Establish `hgen : gen π.V (wOp (TR.Eop v)) (xOp (TR.Eop v)) (m v) = π.V`. Use `(π.irred _ (gen_le (x_mem π.stable v)) (gen_isStable π.stable v _ _ hc)).resolve_left fun e => p2 ?_` and prove the remaining obligations. Use `mem_gen ((mem_ext_iff v (m v) ψ).2 ⟨p1, p3⟩) 0` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Establish `hne : ∀ w ∈ S, v ≠ w` using `fun w hw e => hv (e ▸ hw)`. Establish `hY : ∀ T : Module.End ℂ (TR.Sm F 2), (∀ w ∈ S, Nor π.V (wOp (TR.Eop w)) (xOp (TR.Eop w)) T 1) → ∀ y ∈ (⨅ w ∈ S, U w 1), T y ∈ (⨅ w ∈ S, U w 1)` using `fun T hT y hy => by`. Simplify using `only [Submodule.mem_iInf] at hy ⊢`. Introduce `w hw`.
+
+Use `(hT w hw).ext_mem (s := 1) (hy w hw)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Take `⟨s, u, u1, u2, u3⟩` from `exists_ext (rel_of _ (TR.glRel_Eop (a := 2) v)) (⨅ w ∈ S, U w 1) (hY _ fun w hw => nor_comm w _ (w_mem π.stable v) fun i j x => by`. Simplify using `only [wOp_apply, map_sub, eop_comm (hne w hw)])`. Use the proof step `(fun s => hY _ fun w hw => nor_comm w _ (x_mem π.stable v s) fun i j x => by`.
+
+Simplify using `only [xOp_apply, map_sub, map_add, map_smul, eop_comm (hne w hw)])`. Use the proof step `(hgen.ge h1) (by simpa only [Submodule.mem_iInf] using h3) h2`. Use `⟨TR.cptRep F 2 (DiscreteSeriesWeights.flip v s) u, π.stable (.cpt _) u u1.1, fun e => u3 ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `congrArg (TR.cptRep F 2 (DiscreteSeriesWeights.flip v s)⁻¹) e` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, map_zero]`. Then use the resulting hypothesis.
+
+Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Use `(nor_cpt π.stable (DiscreteSeriesWeights.flip w s) w s (by simp [DiscreteSeriesWeights.flip]) (by simp [DiscreteSeriesWeights.flip])).ext_mem u1` as an intermediate fact. Rewrite `this` using `[Int.units_mul_self]`. Then use the resulting hypothesis. Use `hY _ (fun w hw => nor_cpt π.stable (DiscreteSeriesWeights.flip v s) w 1 (by simp [DiscreteSeriesWeights.flip]) (by simp [DiscreteSeriesWeights.flip, (hne w hw).symm])) u u2` as an intermediate fact. Simplify using `only [Submodule.mem_iInf] at this`.
+
+Conclude with `this w hw`. Take `⟨φ, h1, h2, h3⟩` from `key Finset.univ`. Conclude with `⟨φ, h1, h2, fun v => ((mem_ext_iff v (m v) φ).1 (h3 v (Finset.mem_univ v))).2⟩`.
+-/
 theorem UpperTheory.V.Lit.JL.dsAll :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (π : DiscG F) (m : InfinitePlace F → ℕ) (c : InfinitePlace F → ℂ), (∀ v, IsDS π.V v (m v) (c v)) → ∃ φ ∈ π.V, φ ≠ 0 ∧ (∀ v, TR.Eop v 0 1 φ - TR.Eop v 1 0 φ = (Complex.I * (m v + 2)) • φ ∧ TR.Eop v 0 0 φ - TR.Eop v 1 1 φ = Complex.I • (TR.Eop v 0 1 φ + TR.Eop v 1 0 φ)) := by
   classical

@@ -15,6 +15,15 @@ variable {R k : Type} [CommRing R] [CommRing k] {b a : ℕ}
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨M, rfl⟩ : ∃ M : Matrix (Fin b) (Fin a) O, N = M.map O.subtype` from `⟨Matrix.of fun i j => ⟨N i j, h i j⟩, by ext i j; rfl⟩`. Establish `key : z.map O.subtype * M.map O.subtype * y.map O.subtype = (z * M * y).map O.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Establish `mem : ∀ i j, (z.map O.subtype * M.map O.subtype * y.map O.subtype) i j ∈ O` using `fun i j => by`. Rewrite using `[key]`.
+
+Conclude with `((z * M * y) i j).2`. Use `⟨mem, ?_⟩` and prove the remaining obligations. Establish `lhs : (Matrix.of fun i j => if h : (z.map O.subtype * M.map O.subtype * y.map O.subtype) i j ∈ O then ρ ⟨(z.map O.subtype * M.map O.subtype * y.map O.subtype) i j, h⟩ else 0) = (z * M * y).map ρ`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, dif_pos (mem i j), Matrix.map_apply]`.
+
+Use `congr 1`. Conclude with `Subtype.ext (congrFun (congrFun key i) j)`. Establish `mid : (Matrix.of fun i j => if h : M.map O.subtype i j ∈ O then ρ ⟨M.map O.subtype i j, h⟩ else 0) = M.map ρ`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, dif_pos (h i j)]`.
+
+Both sides reduce to the same expression. Rewrite using `[lhs, mid, Matrix.map_mul, Matrix.map_mul]`.
+-/
 theorem int_mul (O : Subring R) (ρ : O →+* k) (z : Matrix (Fin b) (Fin b) O) (y : Matrix (Fin a) (Fin a) O)
     (N : Matrix (Fin b) (Fin a) R) (h : ∀ i j, N i j ∈ O) :
     (∀ i j, (z.map O.subtype * N * y.map O.subtype) i j ∈ O) ∧
@@ -40,12 +49,20 @@ theorem int_mul (O : Subring R) (ρ : O →+* k) (z : Matrix (Fin b) (Fin b) O) 
     rfl
   rw [lhs, mid, Matrix.map_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cancel (Z : GL (Fin b) R) (Y : GL (Fin a) R) (N : Matrix (Fin b) (Fin a) R) :
     Z.val * ((Z⁻¹).val * N * Y.val) * (Y⁻¹).val = N := by
   calc Z.val * ((Z⁻¹).val * N * Y.val) * (Y⁻¹).val
       = (Z.val * (Z⁻¹).val) * N * (Y.val * (Y⁻¹).val) := by simp only [Matrix.mul_assoc]
     _ = N := by rw [Units.mul_inv, Units.mul_inv, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `eH : (H⁻¹).val = βT.val * ((Z⁻¹).val * (βT⁻¹).val)`. Rewrite using `[← hZ, mul_inv_rev, mul_inv_rev, inv_inv, Units.val_mul, Units.val_mul]`. Establish `eG : G.val = βS.val * (Y.val * (βS⁻¹).val)`. Rewrite using `[← hY, Units.val_mul, Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hg, hh, eH, eG]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc (βT⁻¹).val βT.val, Units.inv_mul, Matrix.one_mul]`.
+-/
 theorem move {A : Type} [CommRing A] (f : A →+* R) (βS G Y : GL (Fin a) R) (βT H Z : GL (Fin b) R)
     (hY : βS * Y * βS⁻¹ = G) (hZ : βT * Z * βT⁻¹ = H)
     (g : Matrix (Fin a) (Fin a) A) (h : Matrix (Fin b) (Fin b) A) (hg : g.map f = G.val) (hh : h.map f = (H⁻¹).val)
@@ -59,6 +76,11 @@ theorem move {A : Type} [CommRing A] (f : A →+* R) (βS G Y : GL (Fin a) R) (�
   simp only [Matrix.mul_assoc]
   rw [Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc (βT⁻¹).val βT.val, Units.inv_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `ez : (Formalism.UG.bc O.subtype z).val = z.val.map O.subtype` using `rfl`. Establish `ey : (Formalism.UG.bc O.subtype y).val = y.val.map O.subtype` using `rfl`. Establish `ez' : (Formalism.UG.bc ρ z).val = z.val.map ρ` using `rfl`. Establish `ey' : (Formalism.UG.bc ρ y).val = y.val.map ρ` using `rfl`. Rewrite using `[ez, ey, ez', ey']`.
+
+Conclude with `GlobalTheory.FrameRed.int_mul O ρ z.val y.val N h`.
+-/
 private theorem bc_mul_restrict_mul_bc_eq (O : Subring R) (ρ : O →+* k) (z : GL (Fin b) O) (y : GL (Fin a) O)
     (N : Matrix (Fin b) (Fin a) R) (h : ∀ i j, N i j ∈ O) :
     (∀ i j, ((Formalism.UG.bc O.subtype z).val * N * (Formalism.UG.bc O.subtype y).val) i j ∈ O) ∧
@@ -78,6 +100,9 @@ end General
 
 variable {D : D7}
 
+/- English proof (translation)
+Conclude with `⟨(bc_mul_restrict_mul_bc_eq _ (RingHom.id _) z y N h).1, fun PP => (bc_mul_restrict_mul_bc_eq _ (resS D.host.F PP) z y N h).2⟩`.
+-/
 theorem isIntM_mul {b a : ℕ} (z : GL (Fin b) (Formalism.L2.Herm.intAf D.host.F D.host.E))
     (y : GL (Fin a) (Formalism.L2.Herm.intAf D.host.F D.host.E)) {N : Matrix (Fin b) (Fin a) (Datum.EAf D)}
     (h : IsIntM (D := D) N) :
@@ -86,9 +111,17 @@ theorem isIntM_mul {b a : ℕ} (z : GL (Fin b) (Formalism.L2.Herm.intAf D.host.F
       (Formalism.UG.bc (resS D.host.F PP) z).val * redM (D := D) PP N * (Formalism.UG.bc (resS D.host.F PP) y).val := by
   exact ⟨(bc_mul_restrict_mul_bc_eq _ (RingHom.id _) z y N h).1, fun PP => (bc_mul_restrict_mul_bc_eq _ (resS D.host.F PP) z y N h).2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_map (V : HSp D) (g : GA D V) :
     (Formalism.L2.Theta.mt V g).map (toEAf D) = (finE V g).val := rfl
 
+/- English proof (translation)
+Establish `hY : βS * intGL D.host.F D.host.E _ y * βS⁻¹ = finE S g` using `by rw [← hy]; rfl`. Establish `hZ : βT * intGL D.host.F D.host.E _ z * βT⁻¹ = finE T h` using `by rw [← hz]; rfl`. Establish `hg : (Formalism.L2.Theta.mt S g⁻¹⁻¹).map (toEAf D) = (finE S g).val` using `by rw [inv_inv]; exact GlobalTheory.FrameRed.mt_map S g`. Establish `hh : (Formalism.L2.Theta.mt T h⁻¹).map (toEAf D) = ((finE T h)⁻¹).val` using `by rw [GlobalTheory.FrameRed.mt_map, map_inv]`. Use `show (βT⁻¹).val * (Formalism.L2.Theta.mt T h⁻¹ * x * Formalism.L2.Theta.mt S g⁻¹⁻¹).map (toEAf D) * βS.val = _`.
+
+Conclude with `GlobalTheory.FrameRed.move (toEAf D) βS (finE S g) (intGL D.host.F D.host.E _ y) βT (finE T h) (intGL D.host.F D.host.E _ z) hY hZ _ _ hg hh x`.
+-/
 theorem frMapO_actO {S T : HSp D} {βS : GL (Fin S.rank) (Lev.EAf D)} {βT : GL (Fin T.rank) (Lev.EAf D)}
     {g : GA D S} {h : GA D T} {y : GL (Fin S.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)}
     {z : GL (Fin T.rank) (Formalism.L2.Herm.intAf D.host.F D.host.E)}
@@ -103,6 +136,11 @@ theorem frMapO_actO {S T : HSp D} {βS : GL (Fin S.rank) (Lev.EAf D)} {βT : GL 
   exact GlobalTheory.FrameRed.move (toEAf D) βS (finE S g) (intGL D.host.F D.host.E _ y) βT (finE T h)
     (intGL D.host.F D.host.E _ z) hY hZ _ _ hg hh x
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hM`. Establish `h1` using `(GlobalTheory.FrameRed.isIntM_mul (D := D) z y⁻¹ hM).1`. Rewrite `h1` using `[map_inv (intGL D.host.F D.host.E a) y, GlobalTheory.FrameRed.cancel]`. Then use the resulting hypothesis. Introduce `hN`.
+
+Establish `h1` using `(GlobalTheory.FrameRed.isIntM_mul (D := D) z⁻¹ y hN).1`. Rewrite `h1` using `[map_inv (intGL D.host.F D.host.E b) z]`. Then use the resulting hypothesis.
+-/
 theorem isIntM_iff {b a : ℕ} (z : GL (Fin b) (Formalism.L2.Herm.intAf D.host.F D.host.E))
     (y : GL (Fin a) (Formalism.L2.Herm.intAf D.host.F D.host.E)) (N : Matrix (Fin b) (Fin a) (Datum.EAf D)) :
     IsIntM (D := D) (((intGL D.host.F D.host.E b z)⁻¹).val * N * (intGL D.host.F D.host.E a y).val) ↔
@@ -115,6 +153,9 @@ theorem isIntM_iff {b a : ℕ} (z : GL (Fin b) (Formalism.L2.Herm.intAf D.host.F
     have h1 := (GlobalTheory.FrameRed.isIntM_mul (D := D) z⁻¹ y hN).1
     rwa [map_inv (intGL D.host.F D.host.E b) z] at h1
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.FrameRed.isIntM_mul (D := D) z⁻¹ y h).2 PP`. Rewrite `h1` using `[map_inv (intGL D.host.F D.host.E b) z, map_inv (Formalism.UG.bc (resS D.host.F PP)) z]`. Then use the resulting hypothesis.
+-/
 theorem redM_mul {b a : ℕ} (z : GL (Fin b) (Formalism.L2.Herm.intAf D.host.F D.host.E))
     (y : GL (Fin a) (Formalism.L2.Herm.intAf D.host.F D.host.E)) {N : Matrix (Fin b) (Fin a) (Datum.EAf D)}
     (h : IsIntM (D := D) N) (PP : Pl D.host.E) :
@@ -123,6 +164,15 @@ theorem redM_mul {b a : ℕ} (z : GL (Fin b) (Formalism.L2.Herm.intAf D.host.F D
   have h1 := (GlobalTheory.FrameRed.isIntM_mul (D := D) z⁻¹ y h).2 PP
   rwa [map_inv (intGL D.host.F D.host.E b) z, map_inv (Formalism.UG.bc (resS D.host.F PP)) z] at h1
 
+/- English proof (translation)
+Introduce `D S T βS βT g h hg hh x`. Unfold `St at hg hh`. Take `⟨y, hy⟩` from `MonoidHom.mem_range.1 hg`. Take `⟨z, hz⟩` from `MonoidHom.mem_range.1 hh`. Establish `e` using `GlobalTheory.FrameRed.frMapO_actO hy hz x`.
+
+Use `⟨?_, fun hI PP => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `GlobalTheory.FrameRed.isIntM_iff z y _`. Rewrite using `[e, GlobalTheory.FrameRed.redM_mul z y hI PP]`. Establish `a : redFn βS PP (finE S g) = Formalism.UG.bc (resS D.host.F PP) y`.
+
+Rewrite using `[← hy]`. Conclude with `redFn_frGL βS PP y`. Establish `b : redFn βT PP (finE T h) = Formalism.UG.bc (resS D.host.F PP) z`. Rewrite using `[← hz]`. Conclude with `redFn_frGL βT PP z`.
+
+Rewrite using `[a, b]`.
+-/
 theorem frMapO_actO_red : ∀ (D : D7) (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (g : GA D S) (h : GA D T), finE S g ∈ St βS → finE T h ∈ St βT → ∀ x : WO S T, (IsIntM (frMapO S T βS βT (actO S T g⁻¹ h⁻¹ x)) ↔ IsIntM (frMapO S T βS βT x)) ∧ (IsIntM (frMapO S T βS βT x) → ∀ PP, redM PP (frMapO S T βS βT (actO S T g⁻¹ h⁻¹ x)) = ((redFn βT PP (finE T h))⁻¹).val * redM PP (frMapO S T βS βT x) * (redFn βS PP (finE S g)).val) := by
   intro D S T βS βT g h hg hh x
   unfold St at hg hh

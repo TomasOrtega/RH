@@ -5,6 +5,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 open scoped TensorProduct in
+/- English proof (translation)
+Establish `hb : ¬ ∃ s : Finset V, Nonempty (Module.Basis s ℂ V)`. Introduce and unpack `⟨s, ⟨b⟩⟩`. Conclude with `h (Module.Finite.of_basis b)`. Simplify using `[LinearMap.trace, hb]`.
+-/
 private lemma trace_eq_zero_of_not_finite' {V : Type} [AddCommGroup V] [Module ℂ V]
     (h : ¬ Module.Finite ℂ V) (f : V →ₗ[ℂ] V) : LinearMap.trace ℂ V f = 0 := by
   have hb : ¬ ∃ s : Finset V, Nonempty (Module.Basis s ℂ V) := by
@@ -13,6 +16,11 @@ private lemma trace_eq_zero_of_not_finite' {V : Type} [AddCommGroup V] [Module �
   simp [LinearMap.trace, hb]
 
 open scoped TensorProduct in
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Take `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ W, φ w ≠ 0` from `by by_contra! h`. Conclude with `hw ((Module.forall_dual_apply_eq_zero_iff ℂ w).mp h)`. Set `p : V ⊗[ℂ] W →ₗ[ℂ] V` to `(TensorProduct.rid ℂ V).toLinearMap ∘ₗ TensorProduct.map LinearMap.id φ`. Use `Module.Finite.of_surjective p fun v => ⟨v ⊗ₜ ((φ w)⁻¹ • w), ?_⟩` and prove the remaining obligations.
+
+Simplify using `[p, hφ]`.
+-/
 private lemma finite_left_of_finite_tensor_of_nontrivial {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] [Nontrivial W] [Module.Finite ℂ (V ⊗[ℂ] W)] :
     Module.Finite ℂ V := by
@@ -26,6 +34,9 @@ private lemma finite_left_of_finite_tensor_of_nontrivial {V W : Type} [AddCommGr
   simp [p, hφ]
 
 open scoped TensorProduct in
+/- English proof (translation)
+Establish `: Module.Finite ℂ (W ⊗[ℂ] V)` using `Module.Finite.equiv (TensorProduct.comm ℂ V W)`. Conclude with `finite_left_of_finite_tensor_of_nontrivial (W := V)`.
+-/
 private lemma finite_right_of_finite_tensor_of_nontrivial {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] [Nontrivial V] [Module.Finite ℂ (V ⊗[ℂ] W)] :
     Module.Finite ℂ W := by
@@ -35,6 +46,13 @@ private lemma finite_right_of_finite_tensor_of_nontrivial {V W : Type} [AddCommG
 
 open scoped TensorProduct in
 
+/- English proof (translation)
+Distinguish the cases in `hU : Module.Finite ℂ U`. Distinguish the cases in `hU' : Module.Finite ℂ U'`. Conclude with `LinearMap.trace_tensorProduct' T T'`. Rewrite using `[trace_eq_zero_of_not_finite' hU' T', mul_zero]`. Distinguish the cases in `hUU : Module.Finite ℂ (U ⊗[ℂ] U')`.
+
+Break down `subsingleton_or_nontrivial U with hs | hs` into its components or cases. Rewrite using `[Subsingleton.elim T 0, TensorProduct.map_zero_left, map_zero]`. Conclude with `absurd (finite_right_of_finite_tensor_of_nontrivial (V := U)) hU'`. Conclude with `trace_eq_zero_of_not_finite' hUU _`. Rewrite using `[trace_eq_zero_of_not_finite' hU T, zero_mul]`.
+
+Distinguish the cases in `hUU : Module.Finite ℂ (U ⊗[ℂ] U')`. Break down `subsingleton_or_nontrivial U' with hs | hs` into its components or cases. Rewrite using `[Subsingleton.elim T' 0, TensorProduct.map_zero_right, map_zero]`. Conclude with `absurd (finite_left_of_finite_tensor_of_nontrivial (W := U')) hU`. Conclude with `trace_eq_zero_of_not_finite' hUU _`.
+-/
 theorem _root_.GlobalTheory.trace_tensorProduct_map_complex {U U' : Type} [AddCommGroup U] [Module ℂ U]
     [AddCommGroup U'] [Module ℂ U'] (T : U →ₗ[ℂ] U) (T' : U' →ₗ[ℂ] U') :
     LinearMap.trace ℂ (U ⊗[ℂ] U') (TensorProduct.map T T') =

@@ -33,6 +33,11 @@ def heartKer : Subring A where
 
 end Ker
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using the standard rewrite rules. Introduce `i s hi ih h`.
+
+Rewrite using `[Finset.prod_insert hi, Derivation.leibniz, h i (Finset.mem_insert_self i s), ih (fun j hj => h j (Finset.mem_insert_of_mem hj)), smul_zero, smul_zero, add_zero]`.
+-/
 private theorem derivation_prod_eq_zero_of_forall' {R A ι : Type} [CommRing R] [CommRing A] [Algebra R A]
     (D : Derivation R A A) (s : Finset ι) (f : ι → A) (h : ∀ i ∈ s, D (f i) = 0) :
     D (∏ i ∈ s, f i) = 0 := by
@@ -45,6 +50,9 @@ private theorem derivation_prod_eq_zero_of_forall' {R A ι : Type} [CommRing R] 
     rw [Finset.prod_insert hi, Derivation.leibniz, h i (Finset.mem_insert_self i s),
       ih (fun j hj => h j (Finset.mem_insert_of_mem hj)), smul_zero, smul_zero, add_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply, map_sum]`. Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, map_zsmul, derivation_prod_eq_zero_of_forall' D _ _ (fun i _ => h _ _), smul_zero]`.
+-/
 private theorem derivation_det_eq_zero_of_entries {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
     (D : Derivation R A A) {k : ℕ} (M : Matrix (Fin k) (Fin k) A) (h : ∀ i j, D (M i j) = 0) :
     D M.det = 0 := by
@@ -52,6 +60,11 @@ private theorem derivation_det_eq_zero_of_entries {R A : Type} [CommRing R] [Com
   refine Finset.sum_eq_zero fun σ _ => ?_
   rw [Units.smul_def, map_zsmul, derivation_prod_eq_zero_of_forall' D _ _ (fun i _ => h _ _), smul_zero]
 
+/- English proof (translation)
+Simplify using `only [minorXZ]`. Apply `derivation_det_eq_zero_of_entries` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[Matrix.of_apply, map_sum]`. Use `Finset.sum_eq_zero fun a0 _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Derivation.leibniz, MvPolynomial.pderiv_X, MvPolynomial.pderiv_X]`. Simplify using `[Pi.single_apply, hs, Ne.symm hs]`.
+-/
 theorem heart_pderiv_minor {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N0 N1 : ℕ) (s s' : Lt) (hs : s ≠ s')
     (k : ℕ) (I : Fin k ↪o Fin N1) (a : Fin N0) (b : Fin N1) :
     MvPolynomial.pderiv (R := ℤ) (Sum.inr (s', a, b)) (minorXZ N0 N1 s k I) = 0 := by
@@ -63,6 +76,9 @@ theorem heart_pderiv_minor {Lt : Type} [Fintype Lt] [DecidableEq Lt] (N0 N1 : �
   rw [Derivation.leibniz, MvPolynomial.pderiv_X, MvPolynomial.pderiv_X]
   simp [Pi.single_apply, hs, Ne.symm hs]
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, Derivation.add_apply, ih]`.
+-/
 private theorem derivation_finset_sum_apply' {R A ι : Type} [CommRing R] [CommRing A] [Algebra R A]
     (s : Finset ι) (D : ι → Derivation R A A) (x : A) : (∑ i ∈ s, D i) x = ∑ i ∈ s, D i x := by
   classical
@@ -71,6 +87,9 @@ private theorem derivation_finset_sum_apply' {R A ι : Type} [CommRing R] [CommR
   · intro i s hi ih
     rw [Finset.sum_insert hi, Finset.sum_insert hi, Derivation.add_apply, ih]
 
+/- English proof (translation)
+Simplify using `only [dRow]`. Rewrite using `[derivation_finset_sum_apply']`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.smul_apply, h a, smul_zero]`.
+-/
 theorem heart_dRow_zero {H : Type} {N0 N1 : ℕ} (t : H) (r : ℕ) (b : Fin N1) (f : PolyXZ H N0 N1)
     (h : ∀ a : Fin N0, MvPolynomial.pderiv (R := ℤ) (Sum.inr ((true, t), a, b)) f = 0) :
     dRow (N0 := N0) t r b f = 0 := by
@@ -79,6 +98,11 @@ theorem heart_dRow_zero {H : Type} {N0 N1 : ℕ} (t : H) (r : ℕ) (b : Fin N1) 
   refine Finset.sum_eq_zero fun a _ => ?_
   rw [Derivation.smul_apply, h a, smul_zero]
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.sum_empty, Finset.prod_empty]`. Introduce `j`. Conclude with `(d j).map_one_eq_zero`.
+
+Introduce `i s hi ih h`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi]`. Conclude with `hS A ι d _ _ _ _ (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem heart_sdeg_prod (hS : PSDegMul) {A : Type} [CommRing A] {ι : Type} (d : ι → Derivation ℤ A A)
     {κ : Type} [DecidableEq κ] (s : Finset κ) (f : κ → A) (k : κ → ℕ) :
     (∀ i ∈ s, SDegD d (k i) (f i)) → SDegD d (∑ i ∈ s, k i) (∏ i ∈ s, f i) := by
@@ -92,6 +116,23 @@ theorem heart_sdeg_prod (hS : PSDegMul) {A : Type} [CommRing A] {ι : Type} (d :
     exact hS A ι d _ _ _ _ (h i (Finset.mem_insert_self i s))
       (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Introduce `H _ inst N0 N1 nu I t n hn`. Use `clear inst`. Set `P : Bool × H → PolyXZ H N0 N1` to `fun s => ∏ c : Fin ((nu s).rowLen 0), minorXZ (Lt := Bool × H) N0 N1 s ((nu s).colLen c) (I s c)`. Set `R : PolyXZ H N0 N1` to `∏ s ∈ (Finset.univ.erase (false, t)).erase (true, t), P s`. Establish `hne : (true, t) ≠ (false, t)` using `by simp`.
+
+Establish `hmem : (true, t) ∈ Finset.univ.erase (false, t)` using `by simp`. Establish `hG : Gxz N0 N1 nu I = P (false, t) * (P (true, t) * R)` using `by show (∏ s, P s) = _`. Rewrite using `[← Finset.mul_prod_erase Finset.univ P (Finset.mem_univ (false, t)), ← Finset.mul_prod_erase (Finset.univ.erase (false, t)) P hmem]`. Establish `hnoP : ∀ (s s' : Bool × H), s ≠ s' → ∀ (a : Fin N0) (b : Fin N1), MvPolynomial.pderiv (R` using `ℤ) (Sum.inr (s', a, b)) (P s) = 0 := by`. Introduce `s s' hs a b`.
+
+Apply `derivation_prod_eq_zero_of_forall'` to reduce the goal to its premises. Introduce `c _`. Use `heart_pderiv_minor N0 N1 s s' hs _ (I s c) a b` and compare the differences between its conclusion and the goal. Establish `hnoR : ∀ (s' : Bool × H), s' = (false, t) ∨ s' = (true, t) → ∀ (a : Fin N0) (b : Fin N1), MvPolynomial.pderiv (R` using `ℤ) (Sum.inr (s', a, b)) R = 0 := by`. Introduce `s' hs' a b`.
+
+Apply `derivation_prod_eq_zero_of_forall'` to reduce the goal to its premises. Introduce `s hs`. Apply `hnoP s s' _ a b` to reduce the goal to its premises. Introduce and unpack `rfl`. Break down `hs' with rfl | rfl` into its components or cases.
+
+Conclude with `Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hs) rfl`. Conclude with `Finset.ne_of_mem_erase hs rfl`. Establish `h1 : ∀ (a : Fin N0) (b : Fin N1), pd (Sum.inr ((false, t), a, b)) (P (true, t) * R) = 0`. Introduce `a b`. Use `show MvPolynomial.pderiv (R := ℤ) (Sum.inr ((false, t), a, b)) (P (true, t) * R) = 0`.
+
+Rewrite using `[Derivation.leibniz, hnoP (true, t) (false, t) hne a b, hnoR (false, t) (Or.inl rfl) a b, smul_zero, smul_zero, add_zero]`. Establish `hR0 : SDegD (fun b : Fin N1 => dRow (N0` using `N0) t 0 b) 0 R := by`. Introduce `b`. Conclude with `heart_dRow_zero t 0 b R (fun a => hnoR (true, t) (Or.inr rfl) a b)`. Establish `hmin : ∀ c : Fin ((nu (true, t)).rowLen 0), SDegD (fun b : Fin N1 => dRow (N0` using `N0) t 0 b) 1 (minorXZ (Lt := Bool × H) N0 N1 (true, t) ((nu (true, t)).colLen c) (I (true, t) c)) := by`.
+
+Introduce `c j j'`. Conclude with `hM H N0 N1 t _ _ j' j`. Establish `hPT0` using `heart_sdeg_prod hS (fun b : Fin N1 => dRow (N0 := N0) t 0 b) Finset.univ _ (fun _ => 1) (fun c _ => hmin c)`. Rewrite `hPT0` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]`. Establish `hPT : SDegD (fun b : Fin N1 => dRow (N0` using `N0) t 0 b) ((nu (true, t)).rowLen 0) (P (true, t)) := hPT0`.
+
+Establish `h2` using `hS _ _ _ _ _ _ 0 hPT hR0`. Rewrite using `[hG]`. Conclude with `hF H N0 N1 (nu (false, t)) (I (false, t)) t (P (true, t) * R) ((nu (true, t)).rowLen 0) n h1 h2 hn`.
+-/
 theorem lapZero_of (hM : PMinorAff) (hS : PSDegMul) (hF : PLapForms) : PLapZero := by
   intro H _ inst N0 N1 nu I t n hn
   clear inst

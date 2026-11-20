@@ -21,10 +21,20 @@ noncomputable def classCircle (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ
     rw [ofMul_mul]
     exact AddChar.map_add_eq_mul _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_classCircle (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ) (c : ClassGroup (𝓞 F)) :
     (classCircle ψ c : ℂ) = ψ (Additive.ofMul c) := by
   rfl
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Establish `hU : IsOpen ((IdeleClassGroup.mk F) '' (standardOpenSubgroup F : Set (IdeleGroup F)))` using `IdeleClassGroup.isOpenMap_mk (K := F) _ (isOpen_standardOpenSubgroup F)`. Establish `h1 : (1 : IdeleClassGroup F) ∈ (IdeleClassGroup.mk F) '' (standardOpenSubgroup F : Set (IdeleGroup F))` using `⟨1, (standardOpenSubgroup F).one_mem, map_one _⟩`. Rewrite using `[ContinuousAt, map_one]`. Use `tendsto_nhds_of_eventually_eq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hU.mem_nhds h1] with y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Establish `hx1 : IdeleGroup.toFractionalIdeal x = 1`. Rewrite using `[← MonoidHom.mem_ker, IdeleGroup.ker_toFractionalIdeal]`. Conclude with `hx`.
+
+Rewrite using `[MonoidHom.comp_apply, IdeleClassGroup.toClassGroup_mk, IdeleGroup.toClassGroup_apply, hx1, map_one, map_one]`.
+-/
 theorem continuous_comp_toClassGroup (φ : ClassGroup (𝓞 F) →* Circle) :
     Continuous (φ.comp (IdeleClassGroup.toClassGroup (K := F))) := by
   refine continuous_of_continuousAt_one _ ?_
@@ -46,10 +56,16 @@ noncomputable def classHecke (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ)
   toMonoidHom := (classCircle ψ).comp IdeleClassGroup.toClassGroup
   continuous_toFun := continuous_comp_toClassGroup _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classHecke_toIdele (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ) (x : IdeleGroup F) :
     (classHecke ψ).toIdele x = classCircle ψ (IdeleGroup.toClassGroup x) :=
   rfl
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h1 : IdeleGroup.toFractionalIdeal x = 1`. Rewrite using `[← MonoidHom.mem_ker, IdeleGroup.ker_toFractionalIdeal]`. Conclude with `hx`. Rewrite using `[MonoidHom.mem_ker, classHecke_toIdele, IdeleGroup.toClassGroup_apply, h1, map_one, map_one]`.
+-/
 theorem standardOpenSubgroup_le_ker (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ) :
     standardOpenSubgroup F ≤ (classHecke ψ).toIdele.ker := by
   intro x hx
@@ -58,6 +74,11 @@ theorem standardOpenSubgroup_le_ker (ψ : AddChar (Additive (ClassGroup (𝓞 F)
     exact hx
   rw [MonoidHom.mem_ker, classHecke_toIdele, IdeleGroup.toClassGroup_apply, h1, map_one, map_one]
 
+/- English proof (translation)
+Use `show finiteLevel (fun v => multiplicity v.asIdeal (⊤ : Ideal (𝓞 F))) = finiteLevel 0`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[Pi.zero_apply, multiplicity_eq_zero]`. Introduce `h`.
+
+Conclude with `v.isPrime.ne_top (top_le_iff.mp (Ideal.le_of_dvd h))`.
+-/
 theorem idealLevel_top : idealLevel (⊤ : Ideal (𝓞 F)) = finiteLevel 0 := by
   show finiteLevel (fun v => multiplicity v.asIdeal (⊤ : Ideal (𝓞 F))) = finiteLevel 0
   congr 1
@@ -66,6 +87,13 @@ theorem idealLevel_top : idealLevel (⊤ : Ideal (𝓞 F)) = finiteLevel 0 := by
   intro h
   exact v.isPrime.ne_top (top_le_iff.mp (Ideal.le_of_dvd h))
 
+/- English proof (translation)
+Establish `hne : (⊤ : Ideal (𝓞 F)) ≠ ⊥` using `top_ne_bot`. Establish `hle : Subgroup.map ofFinite (idealLevel (⊤ : Ideal (𝓞 F))) ≤ (classHecke ψ).toIdele.ker`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Apply `standardOpenSubgroup_le_ker ψ` to reduce the goal to its premises. Rewrite using `[mem_standardOpenSubgroup_iff_ord]`.
+
+Introduce `v`. Rewrite `hz` using `[idealLevel_top]`. Apply `ord_eq_zero_of_mem_unitsLevel (n := 0)` to reduce the goal to its premises. Rewrite using `[← finiteComponent_toFinite, toFinite_ofFinite]`. Conclude with `Subgroup.mem_comap.mp (Subgroup.mem_iInf.mp hz v)`.
+
+Establish `hd` using `((classHecke ψ).map_idealLevel_le_ker_iff hne).mp hle`. Conclude with `top_le_iff.mp (Ideal.le_of_dvd hd)`.
+-/
 theorem conductor_classHecke (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ) :
     (classHecke ψ).conductor = ⊤ := by
   have hne : (⊤ : Ideal (𝓞 F)) ≠ ⊥ := top_ne_bot
@@ -81,6 +109,19 @@ theorem conductor_classHecke (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ)
   have hd := ((classHecke ψ).map_idealLevel_le_ker_iff hne).mp hle
   exact top_le_iff.mp (Ideal.le_of_dvd hd)
 
+/- English proof (translation)
+Establish `hprime : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), (classHecke ψ).coeff v.asIdeal = ψ (Additive.ofMul (ClassGroup.mk0 ⟨v.asIdeal, mem_nonZeroDivisors_of_ne_zero v.ne_bot⟩))`. Introduce `v`. Establish `hv : ¬ v.asIdeal ∣ (classHecke ψ).conductor`. Rewrite using `[conductor_classHecke]`. Introduce `h`.
+
+Conclude with `v.isPrime.ne_top (top_le_iff.mp (Ideal.le_of_dvd h))`. Rewrite using `[HeckeCharacter.coeff_asIdeal_of_not_dvd _ hv]`. Take `⟨x, hx, hxI⟩` from `exists_mem_primeToLevel (primeIdealUnit_mem_idealsPrimeTo hv)`. Establish `heq : (primeIdealUnit v : (FractionalIdeal (𝓞 F)⁰ F)ˣ) = FractionalIdeal.mk0 F ⟨v.asIdeal, mem_nonZeroDivisors_of_ne_zero v.ne_bot⟩` using `Units.ext (by rw [coe_primeIdealUnit, FractionalIdeal.coe_mk0])`. Rewrite using `[HeckeCharacter.idealCharacter_apply _ hx ⟨primeIdealUnit v, primeIdealUnit_mem_idealsPrimeTo hv⟩ hxI, classHecke_toIdele, coe_classCircle, IdeleGroup.toClassGroup_apply, hxI, heq, ClassGroup.mk_mk0]`.
+
+Use `UniqueFactorizationMonoid.induction_on_prime (P := fun I : Ideal (𝓞 F) => ∀ hI : I ≠ ⊥, (classHecke ψ).coeff I = ψ (Additive.ofMul (ClassGroup.mk0 ⟨I, mem_nonZeroDivisors_of_ne_zero hI⟩))) J ?_ ?_ ?_ hJ` and prove the remaining obligations. Introduce `h`. Conclude with `absurd Ideal.zero_eq_bot h`. Introduce `x hx hx0`. Take `rfl` from `Ideal.isUnit_iff.mp hx`.
+
+Establish `h1 : (⟨⊤, mem_nonZeroDivisors_of_ne_zero hx0⟩ : (Ideal (𝓞 F))⁰) = 1` using `Subtype.ext Ideal.one_eq_top.symm`. Rewrite using `[HeckeCharacter.coeff_top, h1, map_one, ofMul_one, AddChar.map_zero_eq_one]`. Introduce `a p ha hp ih hpa`. Establish `ha' : a ≠ ⊥`. Rewrite using `[← Ideal.zero_eq_bot]`.
+
+Conclude with `ha`. Establish `hp0 : p ≠ ⊥`. Rewrite using `[← Ideal.zero_eq_bot]`. Conclude with `hp.ne_zero`. Establish `hv` using `hprime ⟨p, Ideal.isPrime_of_prime hp, hp0⟩`.
+
+Establish `hmk : (⟨p * a, mem_nonZeroDivisors_of_ne_zero hpa⟩ : (Ideal (𝓞 F))⁰) = ⟨p, mem_nonZeroDivisors_of_ne_zero hp0⟩ * ⟨a, mem_nonZeroDivisors_of_ne_zero ha'⟩` using `Subtype.ext rfl`. Rewrite using `[HeckeCharacter.coeff_mul, ih ha', hmk, map_mul, ofMul_mul, AddChar.map_add_eq_mul]`. Use `congr 1`.
+-/
 theorem coeff_classHecke (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ)
     (J : Ideal (𝓞 F)) (hJ : J ≠ ⊥) :
     (classHecke ψ).coeff J =

@@ -4,6 +4,29 @@ open Polynomial Classical GlobalTheory.BadShare
 
 namespace GlobalTheory.BadShare
 
+/- English proof (translation)
+Establish `n_pos : 0 < n` using `(Nat.zero_le _).trans_lt n_large`. Establish `n2_pos : 1 ≤ 2 * n` using `mul_pos (zero_lt_two' ℕ) n_pos`. Set `S` to `{p ∈ Finset.range (2 * n / 3 + 1) | Nat.Prime p}`. Set `T` to `(Finset.range (2 * n + 1)).filter (fun p => p.Prime ∧ n < p)`. Set `f : ℕ → ℕ` to `fun x => x ^ n.centralBinom.factorization x`.
+
+Establish `hf : ∀ p, f p ≤ 2 * n` using `fun p => Nat.pow_factorization_choose_le (mul_pos two_pos n_pos)`. Establish `hdisj : Disjoint S T`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hx hy`. Establish `h1` using `Finset.mem_range.1 (Finset.mem_filter.1 hx).1`.
+
+Establish `h2` using `(Finset.mem_filter.1 hy).2.2`. Use linear arithmetic over natural numbers and integers. Establish `key : n.centralBinom = (∏ x ∈ S, f x) * ∏ x ∈ T, f x`. Rewrite using `[← Finset.prod_union hdisj]`. Use `(Eq.trans ?_ n.prod_pow_factorization_centralBinom).symm` and prove the remaining obligations.
+
+Apply `Finset.prod_subset` to reduce the goal to its premises. Introduce `x hx`. Break down `Finset.mem_union.1 hx with h | h` into its components or cases. Establish `h1` using `Finset.mem_range.1 (Finset.mem_filter.1 h).1`. Rewrite using `[Finset.mem_range]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `(Finset.mem_filter.1 h).1`. Introduce `x hx h2x`. Distinguish the cases in `hp : x.Prime`. Establish `h1 : ¬ x < 2 * n / 3 + 1` using `fun h => h2x (Finset.mem_union.2 (Or.inl (Finset.mem_filter.2 ⟨Finset.mem_range.2 h, hp⟩)))`.
+
+Establish `h2 : ¬ n < x` using `fun h => h2x (Finset.mem_union.2 (Or.inr (Finset.mem_filter.2 ⟨hx, hp, h⟩)))`. Establish `h3 : 2 * n < 3 * x` using `by omega`. Simplify using `only [f]`. Rewrite using `[Nat.factorization_centralBinom_of_two_mul_self_lt_three_mul n_large (not_lt.1 h2) h3, Nat.pow_zero]`. Simplify using `only [f]`.
+
+Rewrite using `[Nat.factorization_eq_zero_of_not_prime n.centralBinom hp, Nat.pow_zero]`. Rewrite using `[key]`. Apply `mul_le_mul'` to reduce the goal to its premises. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not S (· ≤ Nat.sqrt (2 * n))]`. Apply `mul_le_mul'` to reduce the goal to its premises.
+
+Use `(Finset.prod_le_prod' fun p _ => hf p).trans ?_` and prove the remaining obligations. Establish `: (Finset.Icc 1 (Nat.sqrt (2 * n))).card = Nat.sqrt (2 * n)`. Rewrite using `[Nat.card_Icc, Nat.add_sub_cancel]`. Rewrite using `[Finset.prod_const]`. Use `pow_right_mono₀ n2_pos ((Finset.card_le_card fun x hx => ?_).trans this.le)` and prove the remaining obligations.
+
+Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hx`. Conclude with `Finset.mem_Icc.mpr ⟨(Finset.mem_filter.1 h1).2.one_lt.le, h2⟩`. Use `le_trans ?_ (primorial_le_four_pow (2 * n / 3))` and prove the remaining obligations. Use `(Finset.prod_le_prod' fun p hp => (?_ : f p ≤ p)).trans ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Finset.mem_filter.1 hp`.
+
+Use `(pow_right_mono₀ (Finset.mem_filter.1 h1).2.one_lt.le ?_).trans (pow_one p).le` and prove the remaining obligations. Conclude with `Nat.factorization_choose_le_one (Nat.sqrt_lt'.mp <| not_le.1 h2)`. Use `Finset.prod_le_prod_of_subset_of_one_le' (Finset.filter_subset _ _) ?_` and prove the remaining obligations. Conclude with `fun p hp _ => (Finset.mem_filter.1 hp).2.one_lt.le`. Use `(Finset.prod_le_prod' fun p _ => hf p).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_const]`.
+-/
 theorem centralBinom_le_pow_card_primes_between (n : ℕ) (n_large : 2 < n) :
     n.centralBinom ≤ (2 * n) ^ Nat.sqrt (2 * n) * 4 ^ (2 * n / 3) *
       (2 * n) ^ ((Finset.range (2 * n + 1)).filter (fun p => p.Prime ∧ n < p)).card := by
@@ -62,6 +85,31 @@ theorem centralBinom_le_pow_card_primes_between (n : ℕ) (n_large : 2 < n) :
     rw [Finset.prod_const]
 
 open Polynomial Classical in
+/- English proof (translation)
+Use `set s := Nat.sqrt (2 * m) with hs`. Establish `hone : ∀ (P : Prop) [Decidable P] (p : ℕ), (P → 1 ≤ p) → 1 ≤ (if P then p else 1)`. Introduce `P _ p h`. Use `split_ifs with hP`. Use `exacts [h hP, le_rfl]`.
+
+Establish `key : ∀ p ∈ Finset.range (2 * m + 1), p ^ m.centralBinom.factorization p ≤ (if p ≤ s then 2 * m else 1) * (if p.Prime ∧ p ≤ 2 * m / 3 then p else 1) * (if p.Prime ∧ m < p then p else 1)`. Introduce `p _`. Establish `hB : 1 ≤ (if p.Prime ∧ p ≤ 2 * m / 3 then p else 1)` using `hone _ _ fun h => h.1.one_lt.le`. Establish `hC : 1 ≤ (if p.Prime ∧ m < p then p else 1)` using `hone _ _ fun h => h.1.one_lt.le`. Establish `hBC : 1 ≤ (if p.Prime ∧ p ≤ 2 * m / 3 then p else 1) * (if p.Prime ∧ m < p then p else 1)` using `le_trans (by norm_num) (Nat.mul_le_mul hB hC)`.
+
+Distinguish the cases in `h1 : p ≤ s`. Rewrite using `[if_pos h1]`. Establish `h2 : p ^ m.centralBinom.factorization p ≤ 2 * m`. Rewrite using `[Nat.centralBinom_eq_two_mul_choose]`. Conclude with `Nat.pow_factorization_choose_le (by omega)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg h1, one_mul]`. Establish `hsq : 2 * m < p ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hv : m.centralBinom.factorization p ≤ 1`.
+
+Rewrite using `[Nat.centralBinom_eq_two_mul_choose]`. Conclude with `Nat.factorization_choose_le_one hsq`. Distinguish the cases in `hp : p.Prime`. Distinguish the cases in `h3 : p ≤ 2 * m / 3`. Establish `h4 : ¬ m < p` using `by omega`.
+
+Rewrite using `[if_pos ⟨hp, h3⟩, if_neg (fun h => h4 h.2), mul_one]`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `h5 : m < p`. Rewrite using `[if_neg (fun h => h3 h.2), if_pos ⟨hp, h5⟩, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h0 : m.centralBinom.factorization p = 0` using `Nat.factorization_centralBinom_of_two_mul_self_lt_three_mul hm (by omega) (by omega)`. Rewrite using `[h0, pow_zero]`. Conclude with `hBC`. Rewrite using `[Nat.factorization_eq_zero_of_not_prime _ hp, pow_zero]`. Conclude with `hBC`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Use `_ ≤ _ := by gcongr ?_ * ?_ * ?_`. Rewrite using `[← Finset.prod_filter, Finset.prod_const]`. Apply `Nat.pow_le_pow_right (by omega)` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hx ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Use `_ = s + 1 := Finset.card_range _`. Rewrite using `[← Finset.prod_filter]`. Combine the equalities or inequalities in the displayed calculation. Unfold `primorial`. Use `congr 1`.
+
+Use extensionality with `p`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h2, h3⟩`. Conclude with `⟨by omega, h2⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨by omega, h2, by omega⟩`. Use `_ ≤ 4 ^ (2 * m / 3) := primorial_le_4_pow _`. Rewrite using `[← Finset.prod_filter]`.
+-/
 private lemma centralBinom_le_pow_mul_four_pow_mul_prod_large_primes (m : ℕ) (hm : 2 < m) :
     m.centralBinom ≤ (2 * m) ^ (Nat.sqrt (2 * m) + 1) * 4 ^ (2 * m / 3) *
       ∏ p ∈ (Finset.range (2 * m + 1)).filter (fun p => p.Prime ∧ m < p), p := by
@@ -147,6 +195,45 @@ private lemma centralBinom_le_pow_mul_four_pow_mul_prod_large_primes (m : ℕ) (
 
 open Polynomial Classical in
 
+/- English proof (translation)
+Introduce `N hN`. Use `set S := (Finset.range (N + 1)).filter (fun p => p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N) with hS`. Use `set m := N / 2 with hm`. Use `set s := Nat.sqrt (2 * m) with hs`. Use `set k := S.card with hk`.
+
+Use `set q := 2 * m / 3 with hq`. Establish `hm3 : 2 < m` using `by omega`. Establish `hT : ∏ p ∈ (Finset.range (2 * m + 1)).filter (fun p => p.Prime ∧ m < p), p ≤ N ^ 3 * N ^ k`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not ((Finset.range (2 * m + 1)).filter (fun p => p.Prime ∧ m < p)) (· ∈ S), mul_comm]`. Apply `Nat.mul_le_mul` to reduce the goal to its premises.
+
+Establish `hsub : ((Finset.range (2 * m + 1)).filter (fun p => p.Prime ∧ m < p)).filter (fun x => x ∉ S) ⊆ Finset.Icc (N - 2) N`. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hx`. Take `⟨⟨h1, h2, h3⟩, h4⟩` from `hx`. Establish `h5 : ¬ (x + 3 ≤ N)` using `fun h5 => h4 (by`.
+
+Rewrite using `[hS]`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Conclude with `⟨by omega, h2, by omega, h5⟩)`. Rewrite using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Nat.pow_le_pow_right (by omega)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod_of_subset_of_one_le'` to reduce the goal to its premises.
+
+Introduce `x hx`. Conclude with `(Finset.mem_filter.mp hx).2`. Introduce `x hx _`. Rewrite `hx` using `[hS]`. Conclude with `(Finset.mem_filter.mp hx).2.1.one_lt.le`.
+
+Use `_ ≤ N ^ k := Finset.prod_le_pow_card _ _ _ (fun x hx => by`. Rewrite `hx` using `[hS]`. Use `(Finset.mem_filter.mp hx).1` as an intermediate fact. Rewrite `this` using `[Finset.mem_range]`. Use the proof step `omega)`.
+
+Establish `hnat : 4 ^ m < N ^ (s + 5 + k) * 4 ^ q`. Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers. Use `_ = N ^ (s + 5 + k) * 4 ^ q := by ring`. Establish `hN0 : (0 : ℝ) < N` using `by exact_mod_cast (by omega : 0 < N)`.
+
+Establish `hreal : (m : ℝ) * Real.log 4 < (s + 5 + k) * Real.log N + q * Real.log 4`. Establish `h' : (4 : ℝ) ^ m < (N : ℝ) ^ (s + 5 + k) * (4 : ℝ) ^ q` using `by exact_mod_cast hnat`. Establish `h2` using `Real.log_lt_log (by positivity) h'`. Rewrite `h2` using `[Real.log_mul (pow_pos hN0 _).ne' (by positivity), Real.log_pow, Real.log_pow, Real.log_pow]`. Move the coercions through the operations in `at h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq3 : (3 : ℝ) * q ≤ 2 * m` using `by exact_mod_cast (by omega : 3 * q ≤ 2 * m)`. Establish `hmN : (N : ℝ) ≤ 2 * m + 1` using `by exact_mod_cast (by omega : N ≤ 2 * m + 1)`. Establish `hs2 : (s : ℝ) ^ 2 ≤ N`. Establish `: s ^ 2 ≤ N` using `le_trans (Nat.sqrt_le' (2 * m)) (by omega)`.
+
+Conclude with `this` after adjusting the coercions. Use `set t := Real.sqrt N with ht`. Establish `ht0 : 0 ≤ t` using `Real.sqrt_nonneg _`. Establish `ht2 : t ^ 2 = N` using `Real.sq_sqrt hN0.le`. Establish `hNbig : (100000 : ℝ) ≤ N` using `by exact_mod_cast hN`.
+
+Establish `hst : (s : ℝ) ≤ t` using `by nlinarith [Nat.cast_nonneg (α := ℝ) s]`. Establish `htlow : (316 : ℝ) ≤ t` using `by nlinarith`. Establish `hL : Real.log N ≤ 7.72 + t / 50`. Establish `h1` using `Real.log_le_sub_one_of_pos (x := t / 100) (by positivity)`. Rewrite `h1` using `[Real.log_div (by positivity) (by norm_num)]`.
+
+Establish `h2 : Real.log t = Real.log N / 2` using `by rw [ht, Real.log_sqrt hN0.le]`. Establish `h3 : Real.log 100 < 4.86`. Establish `: Real.log 100 < Real.log (2 ^ 7)` using `Real.log_lt_log (by norm_num) (by norm_num)`. Rewrite `this` using `[Real.log_pow]`. Move the coercions through the operations in `at this`.
+
+Combine the linear relations using `[Real.log_two_lt_d9]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL4 : 1.386 < Real.log 4`. Establish `: Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`.
+
+Evaluate the numerical expressions. Combine the linear relations using `[Real.log_two_gt_d9]`. Establish `hLpos : 0 < Real.log N` using `Real.log_pos (by linarith)`. Establish `hsum : (k : ℝ) * (1 / N) ≤ ∑ p ∈ S, (1 : ℝ) / p`. Rewrite using `[hk, ← nsmul_eq_mul, ← Finset.sum_const]`.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[hS]`. Take `⟨h1, h2, _⟩` from `Finset.mem_filter.mp hp`. Rewrite `h1` using `[Finset.mem_range]`.
+
+Apply `one_div_le_one_div_of_le (by exact_mod_cast h2.pos)` to reduce the goal to its premises. Conclude with `(by omega : p ≤ N)` after adjusting the coercions. Establish `hA : ((m : ℝ) - q) * 1.386 ≤ (m : ℝ) * Real.log 4 - q * Real.log 4`. Use the polynomial consequences of the given equalities and inequalities. Establish `hB : ((s : ℝ) + 5) * Real.log N ≤ (t + 5) * (7.72 + t / 50)` using `mul_le_mul (by linarith) hL hLpos.le (by positivity)`.
+
+Establish `hkey : (N : ℝ) ≤ k * (10 * Real.log N)`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr htlow) ht0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one_div, div_le_div_iff₀ (by positivity) hN0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `_ ≤ _ := hsum`.
+-/
 theorem _root_.GlobalTheory.BadShare.inv_log_le_sum_inv_primes_between :
     ∀ N : ℕ, 100000 ≤ N → 1 / (10 * Real.log N) ≤
       ∑ p ∈ (Finset.range (N + 1)).filter (fun p => p.Prime ∧ N < 2 * p ∧ p + 3 ≤ N),

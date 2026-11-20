@@ -7,6 +7,13 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 
 namespace GlobalTheory.HTW.Rec
 
+/- English proof (translation)
+Introduce `D L C j ε τ ψ hR a`. Establish `hB` using `GlobalTheory.T.twistedDualOrbitPageWord_box L C j ε τ ψ hR`. Establish `hpos : (etaHat L : ℤ) < szT (hcAt D (letter τ ψ a)) j (pos ε (letter τ ψ a))` using `hB.2.2.2.2.2 a`. Establish `h0 : 0 ≤ szT (hcAt D (letter τ ψ a)) j (pos ε (letter τ ψ a))` using `by omega`. Establish `hc : ((szT (hcAt D (letter τ ψ a)) j (pos ε (letter τ ψ a))).toNat : ℤ) = szT (hcAt D (letter τ ψ a)) j (pos ε (letter τ ψ a))` using `Int.toNat_of_nonneg h0`.
+
+Establish `hS : (szT (hcAt D (letter τ ψ a)) j (pos ε (letter τ ψ a)) + (sHat L : ℤ)).toNat = (szT (hcAt D (letter τ ψ a)) j (pos ε (letter τ ψ a))).toNat + sHat L` using `by omega`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hc`. Simplify using `only [recWord, pageWord, WordData.Mi, hS]`. Simplify using `only [recWord, pageWord, WordData.hi, hS]`.
+
+Simplify using `only [ThickN, recWord, pageWord, WordData.thick]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem recWord_letter_eq_pageWord : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ) (j : Fin D.R.m) (ε : ℤˣ) (τ ψ : D.R.GG),
     Roomy L C → ∀ a : ZMod (orderOf ψ),
     (((recWord L j ε (letter τ ψ)).sz a : ℕ) : ℤ) = (pageWord L j ε τ ψ).sz a ∧

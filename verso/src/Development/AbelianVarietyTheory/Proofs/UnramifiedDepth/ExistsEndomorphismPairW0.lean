@@ -27,6 +27,11 @@ variable {d : ℕ} {I : Fin 2 → Type} (X : RawChart C d I (Fin dd))
 
 include hlg hex hh in
 
+/- English proof (translation)
+Establish `g : ∀ b, GP (Y.B.A.act b)` using `fun b i => Y.B.A.const b i`. Use `isEnd_of_hom_raw Y X hlg hex hh _ _ (g _) (g _) (Y.B.A.hom _) (Y.B.A.hom _) (Y.intAct _) (Y.intAct _) ?_` and prove the remaining obligations. Establish `h` using `Y.gauge.ad a`. Rewrite `h` using `[actK_self, actK_self]`. Rewrite using `[← h]`.
+
+Establish `e : FB.toK C (Y.B.ad a) = Y.B.ad a` using `by show MvPowerSeries.map (RingHom.id C) _ = _`. Rewrite using `[MvPowerSeries.map_id]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Y.intAd a`.
+-/
 theorem isEnd_act_raw (a : O) : IsEnd X V (dLin (Y.B.A.act a)) (dLin (Y.B.A.act (star a))) := by
   have g : ∀ b, GP (Y.B.A.act b) := fun b i => Y.B.A.const b i
   refine isEnd_of_hom_raw Y X hlg hex hh _ _ (g _) (g _) (Y.B.A.hom _) (Y.B.A.hom _) (Y.intAct _) (Y.intAct _) ?_
@@ -41,6 +46,19 @@ theorem isEnd_act_raw (a : O) : IsEnd X V (dLin (Y.B.A.act a)) (dLin (Y.B.A.act 
 
 include hlg hex hh in
 
+/- English proof (translation)
+Establish `hX : ∀ i : Fin dd, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin dd) C) = 0` using `fun i => by simp`. Establish `g : ∀ b, GP (Y.B.A.act b)` using `fun b i => Y.B.A.const b i`. Establish `p0 : GP (pt C (n` using `2) dd 0) := gp_pt 0`. Establish `p1 : GP (pt C (n` using `2) dd 1) := gp_pt 1`. Establish `q0 : GP (pt C (n` using `1) dd 0) := gp_pt 0`.
+
+Establish `hs : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin dd => (MvPowerSeries.X q.2 : MvPowerSeries (Fin dd) C))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hX q.2`. Establish `e1` using `matrixEnd_eq_subst' Y X hlg hex (pt C dd 0) q0 (by`. Rewrite using `[germ_comp1_zero_point_left _ (gp_addOf _ Y.B.G.const _ _ p0 p1), germ_comp1_zero_point_left _ p0, germ_comp1_zero_point_left _ p1]) _ hX`. Rewrite `e1` using `[germLinearPart_coordinatePoint_zero]`. Establish `e2` using `matrixEnd_eq_subst' Y X hlg hex _ (g a) (Y.B.A.hom a) _ hX`.
+
+Establish `e3 : comp1 (Y.B.A.act a) (pt C dd (0 : Fin 1)) = Y.B.A.act a`. Use function extensionality and compare the values at `i`. Rewrite using `[germComp1_eq_subst]`. Establish `: (fun q : Fin 1 × Fin dd => pt C dd (0 : Fin 1) q.2) = MvPowerSeries.X`. Use function extensionality and compare the values at `⟨s, x⟩`.
+
+Take `rfl : s = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression. Rewrite using `[this, MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Establish `e4 : un1 (Y.B.hL C Y.h a) = MvPowerSeries.subst (fun q : Fin 1 × Fin dd => (MvPowerSeries.X q.2 : MvPowerSeries (Fin dd) C)) (Y.B.hL C Y.h a)`.
+
+Rewrite using `[← subst_singlePointUncurry _ hX, MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Rewrite using `[e4, FB.hL, actK_self, e3, ev, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun q : Fin 2 × Fin dd => pair_points_zero_constant q0 (g a) q.1 q.2) hs, hAt, hh]`. Use `show MvPowerSeries.subst _ Y.h = MvPowerSeries.subst _ Y.h`. Use `congr 1`.
+
+Use function extensionality and compare the values at `⟨s, x⟩`. Use `fin_cases s`. Conclude with `(e1 x).symm`. Conclude with `(e2 x).symm`.
+-/
 theorem gauge_at_linearPart_action_eq_hermitianLift (a : O) : un1 (Y.B.hL C Y.h a) =
     hAt X (endP X 1 (MvPowerSeries.X : Fin dd → MvPowerSeries (Fin dd) C))
       (endP X (dLin (Y.B.A.act a)) (MvPowerSeries.X : Fin dd → MvPowerSeries (Fin dd) C)) := by
@@ -78,6 +96,9 @@ theorem gauge_at_linearPart_action_eq_hermitianLift (a : O) : un1 (Y.B.hL C Y.h 
   · exact (e1 x).symm
   · exact (e2 x).symm
 
+/- English proof (translation)
+Rewrite using `[← germLinearPart_coordinatePoint_zero, ← Y.B.A.one_act, ← Y.halfIntegralGenerator_add_conj_eq_one]`. Use extensionality with `i j`. Conclude with `(Nab.coeff_act_add Y.B _ _ i j).symm`.
+-/
 theorem linear_parts_w0_sum_one : dLin (Y.B.A.act Y.w0) + dLin (Y.B.A.act (star Y.w0)) = 1 := by
   rw [← germLinearPart_coordinatePoint_zero, ← Y.B.A.one_act, ← Y.halfIntegralGenerator_add_conj_eq_one]
   ext i j
@@ -85,6 +106,27 @@ theorem linear_parts_w0_sum_one : dLin (Y.B.A.act Y.w0) + dLin (Y.B.A.act (star 
 
 end Chart
 
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd Y d _ I0 _ p`. Set `X : RawChart C d (fun _ => I0) (Fin dd)` to `{ lg := fun i => un1 (Y.lg i), ex := fun i => un1 (Y.ex i), h := Y.h, k := 0, u := fun _ => p.e, ty := fun _ => p.ty0, n := 0, j := 0, j' := 0, big := fun _ _ => True }`. Establish `hlg : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0`. Introduce `i`. Use `show MvPowerSeries.constantCoeff (un1 (Y.lg i)) = 0`.
+
+Rewrite using `[constantCoeff_uncurry, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, Y.lg_lin i 0 (by simp)]`. Simplify using the standard rewrite rules. Establish `hex : ∀ i, MvPowerSeries.constantCoeff (X.ex i) = 0`. Introduce `i`. Use `show MvPowerSeries.constantCoeff (un1 (Y.ex i)) = 0`.
+
+Rewrite using `[constantCoeff_uncurry]`. Conclude with `Y.ex_const i`. Establish `hh : MvPowerSeries.constantCoeff X.h = 0`. Use `coeff_of_ev_zero Y.h 0 ![0, pt C dd 0] rfl (by` as an intermediate fact. Introduce `g' hg'`.
+
+Rewrite using `[fin_two_eq_one_sub_of_ne' _ _ hg']`. Use the proof step `rfl) Y.gauge.ax0 0 (by simp)`. Simplify using `using this`. Establish `blk : ∀ M M' : Matrix (Fin dd) (Fin dd) C, M + M' = 1 → (Matrix.of fun x y : Fin 2 × Fin dd => if x.1 = y.1 then M x.2 y.2 else 0) + (Matrix.of fun x y : Fin 2 × Fin dd => if x.1 = y.1 then M' x.2 y.2 else 0) = 1`. Introduce `M M' h`.
+
+Use extensionality with `⟨a, i⟩ ⟨b, j⟩`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.add_apply, Matrix.one_apply, Matrix.of_apply, Prod.mk.injEq] at this ⊢`. Distinguish the cases in `hab : a = b`. Simplify using `[hab, this]`.
+
+Simplify using `[hab]`. Establish `hone : (1 : Matrix (Fin 2 × Fin dd) (Fin 2 × Fin dd) C) = fun x y => if x.1 = y.1 then (1 : Matrix (Fin dd) (Fin dd) C) x.2 y.2 else 0`. Rewrite using `[← blk 1 0 (add_zero _)]`. Use extensionality with `x y`. Simplify using the standard rewrite rules.
+
+Use `⟨_, _, teichSelf_double C V dd d d _ _ X (Y.rawSelf p) hlg hex hh rfl rfl rfl _ _ (isEnd_act_raw Y X rfl rfl rfl Y.w0), blk _ _ (linear_parts_w0_sum_one Y), fun v x => ?_, ?_⟩` and prove the remaining obligations. Use `show _ = (dLin (Y.B.A.act Y.w0)).mulVec (fun i => v (x.1, i)) x.2`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single x.1]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Establish `hX : ∀ i : Fin dd, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin dd) C) = 0` using `fun i => by simp`. Establish `hX' : ∀ i : Fin 2 × Fin dd, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin 2 × Fin dd) C) = 0` using `fun i => by simp`.
+
+Establish `hlg' : ∀ i, MvPowerSeries.constantCoeff ((Y.rawSelf p).lg i) = 0` using `fun i => constantCoeff_subst_zero (fun _ => MvPowerSeries.constantCoeff_X _) (hlg _)`. Establish `hex' : ∀ i, MvPowerSeries.constantCoeff ((Y.rawSelf p).ex i) = 0` using `fun i => constantCoeff_subst_zero (fun _ => MvPowerSeries.constantCoeff_X _) (hex _)`. Unfold `hEnd`. Rewrite using `[hone]`. Use `Eq.trans ?_ (teichSelf_hAt_col X (Y.rawSelf p) rfl _ _ (teichSelf_cc_endP _ hlg' hex' _ _ hX') (teichSelf_cc_endP _ hlg' hex' _ _ hX')).symm` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun col _ => ?_` and prove the remaining obligations. Establish `c : ∀ y : Fin dd, MvPowerSeries.constantCoeff (MvPowerSeries.X (col, y) : MvPowerSeries (Fin 2 × Fin dd) C) = 0` using `fun _ => hX' _`. Rewrite using `[gauge_at_linearPart_action_eq_hermitianLift Y X rfl rfl rfl, inCol, teichSelf_subst_hAt X _ _ (teichSelf_cc_endP X hlg hex _ _ hX) (teichSelf_cc_endP X hlg hex _ _ hX) _ c]`. Simplify using `only [teichSelf_subst_endP X hlg _ _ hX _ c, MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero c)]`. Apply the tactic sequence `congr 1 <;> funext y <;> exact (teichSelf_endP_col X (Y.rawSelf p) hlg rfl rfl _ _ hX' (col, y)).symm`.
+-/
 theorem exists_endomorphism_w0 : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I0 : Type) [Fintype I0] (p : SelfData Y d I0), ∃ W W' : Matrix (Fin 2 × Fin dd) (Fin 2 × Fin dd) C, IsEnd (Y.rawSelf p) V W W' ∧ W + W' = 1 ∧ (∀ (v : Fin 2 × Fin dd → C) (x : Fin 2 × Fin dd), W.mulVec v x = linAct (Y.B.A.act Y.w0) (fun i => v (x.1, i)) x.2) ∧ ∑ col : Fin 2, inCol col (un1 (Y.B.hL C Y.h Y.w0)) = hEnd (Y.rawSelf p) 1 W := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p
   let X : RawChart C d (fun _ => I0) (Fin dd) :=

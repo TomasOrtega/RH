@@ -8,6 +8,17 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.CuspRep GlobalTheory.WeilD
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `c`. Proceed by induction on `c with`. Consider the case `zero`. Introduce `n N hn σ τ e`. Take `rfl : n = 0` from `by simpa using hn.symm`.
+
+Take `⟨e⟩` from `e`. Take `⟨φ⟩` from `SupportRing.nonempty_equiv_unit (k := w.adicCompletion E) (stdBlocks N hn) fun i => (σ i).ρ`. Establish `h1` using `L.det 0 1 isSmoothChar_one`. Simplify using `only [List.range_zero, List.map_nil] at h1`. Rewrite using `[List.ofFn_zero]`.
+
+Use `(congrArg rc (IrrGL.of_eq_of.2 ⟨e.trans φ⟩)).trans h1` and prove the remaining obligations. Consider the case `succ s ih`. Introduce `n N hn σ τ e`. Take `rfl : n = N 0 + ∑ i : Fin s, N i.succ` from `hn.symm.trans (Fin.sum_univ_succ N)`. Take `⟨e⟩` from `e`.
+
+Take `⟨E₁⟩` from `MultiIrr.nonempty_prod₂_equiv_multiProd_succ (k := w.adicCompletion E) N hn fun i => (σ i).ρ`. Establish `hs : IsSmooth (multiProd (stdBlocks (fun i : Fin s => N i.succ) rfl) fun i : Fin s => (σ i.succ).ρ)` using `isSmooth_parInd _ _`. Establish `hi` using `GlobalTheory.T.isIrreducible_second_factor_of_irreducible_product _ _ _ _ _ _ (σ 0).ρ _ τ.ρ (σ 0).smooth (σ 0).irred hs τ.irred ⟨e.trans E₁.symm⟩`. Set `σ' : SmIrr (GL (Fin (∑ i : Fin s, N i.succ)) (w.adicCompletion E))` to `⟨_, _, hs, hi⟩`. Establish `h1` using `L.prod (N 0) _ (ParLaws.toRep (σ 0)) (ParLaws.toRep σ') (ParLaws.toRep τ) ⟨e.trans E₁.symm⟩`.
+
+Establish `h2` using `ih (N := fun i : Fin s => N i.succ) rfl (fun i => σ i.succ) σ' ⟨.refl _⟩`. Rewrite using `[List.ofFn_succ]`. Conclude with `h1.trans (congrArg _ h2)`.
+-/
 private theorem locProd_sum {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     {rc : IrrGL (w.adicCompletion E) → WD h} {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
@@ -40,6 +51,9 @@ private theorem locProd_sum {E Ω : Type} [Field E] [NumberField E] [Field Ω] [
     rw [List.ofFn_succ]
     exact h1.trans (congrArg _ h2)
 
+/- English proof (translation)
+Introduce `_ X E Ω _ _ _ _ _ n c N hn w σ _ τ e A h rc hrc`. Take `⟨a, ha, ε, L⟩` from `X E Ω A w h rc hrc`. Conclude with `locProd_sum L hn σ τ e`.
+-/
 theorem UpperTheory.V.Z.Win.Gu.prodT :
     HypothesesH → ExtraV → ProdT := by
   intro _ X E Ω _ _ _ _ _ n c N hn w σ _ τ e A h rc hrc

@@ -18,6 +18,17 @@ namespace GlobalTheory.PairTerm
 
 section Algebra
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `d hd`. Rewrite `hd` using `[Finsupp.degree_eq_zero_iff]`. Substitute `hd` using the available equality.
+
+Conclude with `⟨Fin.elim0, by simp⟩`. Consider the case `succ n ih`. Introduce `d hd`. Establish `hne : d ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hd`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.mp hne`. Establish `hle : Finsupp.single i 1 ≤ d`. Rewrite using `[Finsupp.single_le_iff]`. Conclude with `Nat.one_le_iff_ne_zero.mpr hi`.
+
+Take `⟨d', rfl⟩` from `exists_add_of_le hle`. Establish `hd' : d'.degree = n`. Rewrite `hd` using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `ih d' hd'`.
+
+Use `⟨Fin.cons i a, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← ha, MvPolynomial.X, MvPolynomial.monomial_mul, one_mul]`.
+-/
 theorem exists_monomial_eq_prod_X {σ : Type} (n : ℕ) : ∀ d : σ →₀ ℕ, d.degree = n →
     ∃ a : Fin n → σ, (monomial d (1 : ℚ)) = ∏ k, X (a k) := by
   classical
@@ -46,6 +57,11 @@ theorem exists_monomial_eq_prod_X {σ : Type} (n : ℕ) : ∀ d : σ →₀ ℕ,
     simp only [Fin.cons_zero, Fin.cons_succ]
     rw [← ha, MvPolynomial.X, MvPolynomial.monomial_mul, one_mul]
 
+/- English proof (translation)
+Rewrite using `[P.as_sum]`. Use `Finset.sum_induction _ q hadd h0 fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : d.degree = n`. Assume the negation of the conclusion as `h`. Conclude with `(MvPolynomial.mem_support_iff.mp hd) (hP.coeff_eq_zero h)`.
+
+Take `⟨a, ha⟩` from `exists_monomial_eq_prod_X n d hdeg`. Establish `h1 : monomial d (P.coeff d) = P.coeff d • monomial d (1 : ℚ)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h1, ha]`. Conclude with `hmon _ _`.
+-/
 theorem homog_induction {σ : Type} {n : ℕ} (q : MvPolynomial σ ℚ → Prop) (h0 : q 0)
     (hadd : ∀ a b, q a → q b → q (a + b)) (hmon : ∀ (a : ℚ) (ν : Fin n → σ), q (a • ∏ k, X (ν k)))
     (P : MvPolynomial σ ℚ) (hP : P.IsHomogeneous n) : q P := by
@@ -61,6 +77,9 @@ theorem homog_induction {σ : Type} {n : ℕ} (q : MvPolynomial σ ℚ → Prop)
   rw [h1, ha]
   exact hmon _ _
 
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, Finsupp.toMultiset m = M` from `⟨Multiset.toFinsupp M, Multiset.toFinsupp_toMultiset M⟩`. Rewrite using `[GlobalTheory.NumLRename.prod_map_X_toMultiset, GlobalTheory.NumLRename.numL_monomial, one_mul, if_pos]`. Rewrite using `[← hM, Finsupp.card_toMultiset, Finsupp.degree, Finsupp.sum]`. Both sides reduce to the same expression.
+-/
 theorem numL_prod {A : Type} (num : Multiset A → ℝ) (d : ℕ) (M : Multiset A) (hM : Multiset.card M = d) :
     numL num d (M.map X).prod = num M := by
   classical
@@ -68,6 +87,11 @@ theorem numL_prod {A : Type} (num : Multiset A → ℝ) (d : ℕ) (M : Multiset 
   rw [GlobalTheory.NumLRename.prod_map_X_toMultiset, GlobalTheory.NumLRename.numL_monomial, one_mul, if_pos]
   rw [← hM, Finsupp.card_toMultiset, Finsupp.degree, Finsupp.sum]; rfl
 
+/- English proof (translation)
+Rewrite using `[G.as_sum, map_sum]`. Use `IsHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations. Establish `h` using `hG (mem_support_iff.1 hd)`. Rewrite using `[aeval_monomial, ← h, Finsupp.weight_apply, Finsupp.sum, Finsupp.prod, ← zero_add (∑ _ ∈ _, _)]`. Use `IsHomogeneous.mul (isHomogeneous_C _ _) (IsHomogeneous.prod _ _ _ fun s _ => ?_)` and prove the remaining obligations.
+
+Simplify `(hf s).pow (d s)` using `[mul_comm]`.
+-/
 theorem isHomogeneous_aeval_of_weighted {σ τ : Type} (w : σ → ℕ) (f : σ → MvPolynomial τ ℚ)
     (hf : ∀ s, (f s).IsHomogeneous (w s)) {m : ℕ} {G : MvPolynomial σ ℚ} (hG : G.IsWeightedHomogeneous w m) :
     (aeval f G).IsHomogeneous m := by
@@ -81,6 +105,17 @@ theorem isHomogeneous_aeval_of_weighted {σ τ : Type} (w : σ → ℕ) (f : σ 
 
 variable {L A Cp ι : Type} [Fintype Cp] [Fintype ι]
 
+/- English proof (translation)
+Use `homog_induction (fun P => ∑ c, numL (num c) (d + 1) (rename sym (toR ((X (false, l) - X (true, l)) * P))) = lg * ∑ la, w la * ((((Z la).capDeg (Dv la) (aeval (cl la) P) : ℚ) : ℝ) / cv la)) ?_ ?_ ?_ P hP` and prove the remaining obligations. Simplify using `[toR]`. Introduce `a b ha hb`. Simplify using `only [toR, mul_add, map_add, Finset.sum_add_distrib, Rat.cast_add, add_div] at ha hb ⊢`. Rewrite using `[ha, hb]`.
+
+Introduce `a ν`. Establish `e (b : Bool) (c : Cp) : numL (num c) (d + 1) (rename sym (toR (X (b, l) * ∏ i, X (ν i)))) = num c (sym (b, l) ::ₘ Finset.univ.val.map fun i => sym (ν i))`. Rewrite using `[← numL_prod (num c) (d + 1) _ (by simp)]`. Use `congr 1`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.map_map]`.
+
+Simplify using `only [toR, map_mul, map_prod, map_X, rename_X]`. Both sides reduce to the same expression. Establish `e' (c : Cp) : numL (num c) (d + 1) (rename sym (toR ((X (false, l) - X (true, l)) * a • ∏ i, X (ν i)))) = (a : ℝ) * (num c (sym (false, l) ::ₘ Finset.univ.val.map fun i => sym (ν i)) - num c (sym (true, l) ::ₘ Finset.univ.val.map fun i => sym (ν i)))`. Rewrite using `[← e, ← e, ← map_sub, ← smul_eq_mul (a : ℝ), ← map_smul]`. Use `congr 1`.
+
+Simplify using `only [toR, smul_eq_C_mul, map_mul, map_sub, map_C, rename_C, eq_ratCast]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e', ← Finset.mul_sum, h, map_smul, map_prod, aeval_X, smul_eq_mul, Rat.cast_mul]`. Rewrite using `[mul_left_comm, Finset.mul_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun la _ => by ring` and prove the remaining obligations.
+-/
 theorem pair_ext (num : Cp → Multiset A → ℝ) (sym : Bool × L → A) (d : ℕ) (Z : ι → ITh)
     (cl : ∀ la, Bool × L → (Z la).Ch) (Dv : ∀ la, (Z la).VDiv) (lg : ℝ) (w cv : ι → ℝ) (l : L)
     (h : ∀ ν : Fin d → Bool × L, ∑ c, (num c (sym (false, l) ::ₘ Finset.univ.val.map fun i => sym (ν i)) -
@@ -122,6 +157,9 @@ def evL (rt : Rt Tau N → L) (wl : Fin g ⊕ Fin g → L) : MvPolynomial (Vm Ta
     | Sum.inl (b, x) => X (b, rt x)
     | Sum.inr (b, k) => C ((k.factorial : ℚ)⁻¹) * ∑ l, X (b, wl l) ^ k
 
+/- English proof (translation)
+Use `isHomogeneous_aeval_of_weighted _ _ ?_ hG` and prove the remaining obligations. Introduce and unpack `(⟨b, x⟩ | ⟨b, k⟩)`. Conclude with `isHomogeneous_X _ _`. Use `(isHomogeneous_C (Bool × L) ((k.factorial : ℚ)⁻¹)).mul (IsHomogeneous.sum Finset.univ (fun l => (X (b, wl l) : MvPolynomial (Bool × L) ℚ) ^ k) k fun l _ => isHomogeneous_X_pow _ _)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+-/
 theorem evL_homog (rt : Rt Tau N → L) (wl : Fin g ⊕ Fin g → L) {m : ℕ} {G : MvPolynomial (Vm Tau N) ℚ}
     (hG : G.IsWeightedHomogeneous (wt Tau N) m) : (evL rt wl G).IsHomogeneous m := by
   refine isHomogeneous_aeval_of_weighted _ _ ?_ hG
@@ -135,12 +173,20 @@ theorem evL_homog (rt : Rt Tau N → L) (wl : Fin g ⊕ Fin g → L) {m : ℕ} {
 def gk (k : ℕ) (l : L) : MvPolynomial (Bool × L) ℚ :=
   ∑ a ∈ Finset.range k, X (false, l) ^ a * X (true, l) ^ (k - 1 - a)
 
+/- English proof (translation)
+Use `IsHomogeneous.sum _ _ _ fun a ha => ?_` and prove the remaining obligations. Establish `h` using `(isHomogeneous_X_pow (R := ℚ) ((false, l) : Bool × L) a).mul (isHomogeneous_X_pow (true, l) (k - 1 - a))`. Use `Finset.mem_range.1 ha` as an intermediate fact. Rewrite `h` using `[show a + (k - 1 - a) = k - 1 by omega]`. Then use the resulting hypothesis.
+-/
 theorem gk_homog (k : ℕ) (l : L) : (gk k l).IsHomogeneous (k - 1) := by
   refine IsHomogeneous.sum _ _ _ fun a ha => ?_
   have h := (isHomogeneous_X_pow (R := ℚ) ((false, l) : Bool × L) a).mul (isHomogeneous_X_pow (true, l) (k - 1 - a))
   have := Finset.mem_range.1 ha
   rwa [show a + (k - 1 - a) = k - 1 by omega] at h
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_sub]`. Simplify using `only [evL, aeval_X]`. Rewrite using `[← mul_sub, ← Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← geom_sum₂_mul, smul_eq_C_mul, gk]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evL_dCh (rt : Rt Tau N → L) (wl : Fin g ⊕ Fin g → L) (k : ℕ) (G : MvPolynomial (Vm Tau N) ℚ) :
     evL rt wl ((X (Sum.inr (false, k)) - X (Sum.inr (true, k))) * G) =
       ∑ l, (X (false, wl l) - X (true, wl l)) * ((k.factorial : ℚ)⁻¹ • (gk k (wl l) * evL rt wl G)) := by
@@ -151,6 +197,15 @@ theorem evL_dCh (rt : Rt Tau N → L) (wl : Fin g ⊕ Fin g → L) (k : ℕ) (G 
   rw [← geom_sum₂_mul, smul_eq_C_mul, gk]
   ring
 
+/- English proof (translation)
+Establish `e : dCh Tau N k * toR G = toR ((X (Sum.inr (false, k)) - X (Sum.inr (true, k))) * G)`. Simplify using `[dCh, toR]`. Establish `e' (c : Cp) (G : MvPolynomial (Vm Tau N) ℚ) : I.mixEv Sx R q c (toR G) = rename (sym c) (toR (evL rt wl G))`. Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C a => simp [toR, evL, ArIn.mixEv]`.
+
+Consider the case `add P Q hP hQ`. Simplify using `only [toR, map_add] at hP hQ ⊢`. Rewrite using `[hP, hQ]`. Consider the case `mul_X P v hP`. Simplify using `only [toR, map_mul, map_X] at hP ⊢`.
+
+Rewrite using `[hP]`. Use `congr 1`. Break down `v with ⟨b, x⟩ | ⟨b, k⟩` into its components or cases. Simplify using `[evL, ArIn.mixEv, h₁]`. Simplify using `only [evL, ArIn.mixEv, aeval_X, map_X, rename_X, map_mul, map_C, rename_C, map_sum, map_pow, h₂, eq_ratCast, Rat.cast_inv, Rat.cast_natCast]`.
+
+Rewrite using `[e, ArIn.arMix, LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun c _ => congrArg (numL _ _) (e' c _)`.
+-/
 theorem arMix_dCh (I : ArIn Tau N g Cp) (Sx : Finset ℕ) (R : ℝ) (q : ℕ) (sym : ∀ c, Bool × L → I.A c)
     (rt : Rt Tau N → L) (wl : Fin g ⊕ Fin g → L)
     (h₁ : ∀ c b x, sym c (b, rt x) = I.root (Function.update (ArIn.ind Sx) q b) R x c)
@@ -184,6 +239,17 @@ section Whole
 
 variable {D : D7} {p : ℕ} [Fact p.Prime] {N : ℕ} {L A Cp ι : Type} [Fintype Cp] [Fintype ι]
 
+/- English proof (translation)
+Establish `hev (la : ι) : aeval (cl la) (evL rt wl G) = evC (M la) (rt' la) G`. Establish `: (aeval (cl la)).comp (evL rt wl) = (aeval (M la).Z.c1).comp (evV (M la) (rt' la))`. Use `MvPolynomial.algHom_ext ?_` and prove the remaining obligations. Introduce and unpack `(⟨b, x⟩ | ⟨_ | _, k⟩)`. Simplify using `[evL, evV, hrt]`.
+
+Simplify using `[evL, evV, Fintype.sum_sum_type, fun i => (hl la i).1, fun i => (ho la i).1]`. Simplify using `[evL, evV, Fintype.sum_sum_type, fun i => (hl la i).2.1, fun i => (ho la i).2.1]`. Conclude with `congrArg (fun f => f G) this`. Establish `hgk (la : ι) (l : L) : aeval (cl la) (gk k l) = Gk (M la).Z k (cl la (false, l)) (cl la (true, l))`. Simplify using `[gk, Gk]`.
+
+Establish `key (l : L)` using `pair_ext num sym d (fun la => (M la).Z) cl (fun la => Dv la l) lg w (fun la => ((M la).cov : ℝ)) l (h l) ((k.factorial : ℚ)⁻¹ • (gk k l * evL rt wl G)) (by`. Rewrite using `[smul_eq_C_mul]`. Use `((gk_homog k l).mul (evL_homog rt wl hG)).C_mul ((k.factorial : ℚ)⁻¹)` as an intermediate fact. Rewrite using `[show k - 1 + m = d by omega] at this)` and apply the resulting hypothesis. Rewrite using `[evL_dCh]`.
+
+Simplify using `only [toR, map_sum] at key ⊢`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [key]`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun la _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, ← Finset.sum_div]`. Use `congr 2`. Simplify using `only [map_smul, map_mul, hev, hgk, Fintype.sum_sum_type, fun i => (hl la i).1, fun i => (ho la i).1, fun i => (hl la i).2.1, fun i => (ho la i).2.1, fun i => (hl la i).2.2, fun i => (ho la i).2.2, chk, ck, smul_eq_mul, Rat.cast_mul, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast, F …`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem whole_ext {rk : ι → Emb D p → ℕ} (M : ∀ la, DV.Mdl D p N (rk la))
     (rt' : ∀ la, Bool × Rt D.what₂.Tau N → (M la).Z.LB) (num : Cp → Multiset A → ℝ) (sym : Bool × L → A) (d : ℕ)
     (rt : Rt D.what₂.Tau N → L) (wl : Fin (D.R.f * N) ⊕ Fin (D.R.f * N) → L)
@@ -255,11 +321,17 @@ def wholeLn : Fin (D.R.f * N) ⊕ Fin (D.R.f * N) → Ln S.Dw
   | .inl k => (false, ⟨.inr k, by rw [letterOf_whole]; rfl⟩)
   | .inr k => (true, ⟨.inr k.rev, by rw [letterOf_whole]; rfl⟩)
 
+/- English proof (translation)
+Unfold `rootLn rootSym`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem lnSym_rootLn (a : ℕ → Bool) (R : Option ℝ) (x : Rt D.what₂.Tau N) :
     lnSym a R (rootLn S x) = rootSym S.Dw a R (tauEmb D x.1) x.2 := by
   unfold rootLn rootSym
   split_ifs <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases l with k | k <;> rfl`.
+-/
 theorem lnSym_wholeLn (a : ℕ → Bool) (R : Option ℝ) (l : Fin (D.R.f * N) ⊕ Fin (D.R.f * N)) :
     lnSym a R (wholeLn S l) = wholeSym a R l := by
   rcases l with k | k <;> rfl
@@ -267,6 +339,9 @@ theorem lnSym_wholeLn (a : ℕ → Bool) (R : Option ℝ) (l : Fin (D.R.f * N) �
 variable {S} {κ : Lv A} {p : ℕ} [Fact p.Prime] {hp : p.Prime}
   {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈ W.nonunits} (z : AdmAt S κ hp hW) (jc : DV.KW p →+* ℂ)
 
+/- English proof (translation)
+Unfold `rootLn rootOf admitted.rootLB`. Use `split_ifs`. Conclude with `lnLB_false z b _`. Conclude with `lnLB_true z b _`.
+-/
 theorem lnLB_rootLn (b : Bool) (x : Rt D.what₂.Tau N) : lnLB z b (rootLn S x) = rootOf z jc (b, x) := by
   unfold rootLn rootOf admitted.rootLB
   split_ifs
@@ -275,6 +350,11 @@ theorem lnLB_rootLn (b : Bool) (x : Rt D.what₂.Tau N) : lnLB z b (rootLn S x) 
 
 end Signed
 
+/- English proof (translation)
+Introduce `D O hO p _`. Use `choose jc hjc hnu using fun la : Formalism.L2.Geo.PlL D p => AdmTest.exists_placeW_nonunit D p la`. Use `choose z _ using fun la => admEx O.S O.κ p Fact.out (placeW D p la (jc la)) (hnu la) 3 (one_add_lt_three Fact.out)`. Use `letI := Formalism.L2.Geo.finPl D p`. Use `⟨Formalism.L2.Geo.PlL D p, Formalism.L2.Geo.finPl D p, Formalism.L2.Geo.wtL D p, fun la => placeW D p la (jc la), hnu, jc, z, fun la => (AdmTest.placeW_spec (hjc la)).2, Formalism.L2.Geo.wtL_sum D p, ?_⟩` and prove the remaining obligations.
+
+Introduce `Sx R hR k m hk hm G hG`. Establish `key` using `whole_ext (fun la => mdlOf (z la) (jc la)) (fun la => rootOf (z la) (jc la)) (A := Sym D.host.E →₀ ℤ) (arIn O.s O.Φ O.met.hm).num (fun x : Bool × Ln O.S.Dw => lnSym (Function.update (ArIn.ind Sx) p x.1) (some R) x.2) (dimFl D.what₂.Tau O.N) (rootLn O.S) (wholeLn O.S) (fun la x => …`. Use `Eq.trans ?_ key` and prove the remaining obligations. Conclude with `arMix_dCh (arIn O.s O.Φ O.met.hm) Sx R p (fun _ (x : Bool × Ln O.S.Dw) => lnSym (Function.update (ArIn.ind Sx) p x.1) (some R) x.2) (rootLn O.S) (wholeLn O.S) (fun _ b x => lnSym_rootLn O.S _ _ x) (fun _ b l => lnSym_wholeLn O.S _ _ l) k G`.
+-/
 theorem termWSt_of_pairSt (hP : PairSt) : TermWSt := by
   intro D O hO p _
   classical
@@ -303,6 +383,9 @@ theorem termWSt_of_pairSt (hP : PairSt) : TermWSt := by
     (fun _ (x : Bool × Ln O.S.Dw) => lnSym (Function.update (ArIn.ind Sx) p x.1) (some R) x.2) (rootLn O.S) (wholeLn O.S)
     (fun _ b x => lnSym_rootLn O.S _ _ x) (fun _ b l => lnSym_wholeLn O.S _ _ l) k G
 
+/- English proof (translation)
+Introduce `h2 hH hA _ _` and use `termWSt_of_pairSt (GlobalTheory.T.pair_statement_of_height_alteration h2 hH hA)`.
+-/
 theorem termWSt_holds : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.RegularAlteration →
     GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd → TermWSt :=
   fun h2 hH hA _ _ => termWSt_of_pairSt (GlobalTheory.T.pair_statement_of_height_alteration h2 hH hA)

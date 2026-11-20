@@ -8,6 +8,15 @@ open scoped Matrix
 
 namespace PositivityTheory.HtPt.Rh
 
+/- English proof (translation)
+Introduce `p C _ R _ _ N N' _ _ M M' j K hM hG g hg`. Rewrite `hg` using `[← hM]`. Take `⟨g', hg', rfl⟩` from `hg`. Establish `hinv : g' ∈ invFun M' ⊥` using `⟨hg', fun x k hk => by rw [AddSubgroup.mem_bot.1 hk, add_zero]⟩`. Establish `h1 : g' ∈ Algebra.adjoin R ((afFun p (invFun M' ⊥) : Submodule R (N' → C)) : Set (N' → C))` using `hG hinv`.
+
+Express the relevant statement in the definitionally equal form `(fun x => g' (j x)) ∈ Algebra.adjoin R ((afFun p (invFun M K) : Submodule R (N → C)) : Set (N → C))`. Use `clear hg' hinv`. Proceed by induction on `h1 using Algebra.adjoin_induction with`. Consider the case `mem f hf`. Use `Algebra.subset_adjoin ⟨?_, fun x y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hM]`. Conclude with `⟨f, hf.1.1, rfl⟩`. Use `hf.2 (j x) (j y)` as an intermediate fact. Simplify `this` using `only [map_add]`. Consider the case `algebraMap r => exact Subalgebra.algebraMap_mem _ r`.
+
+Consider the case `add f f' _ _ h h' => exact Subalgebra.add_mem _ h h'`. Consider the case `mul f f' _ _ h h' => exact Subalgebra.mul_mem _ h h'`.
+-/
 theorem sub_pull : ∀ (p : ℕ) (C : Type) [Field C] (R : Type) [CommRing R] [Algebra R C] (N N' : Type) [AddCommGroup N] [AddCommGroup N'] (M : Submodule R (N → C)) (M' : Submodule R (N' → C)) (j : N →+ N') (K : AddSubgroup N), M'.map (LinearMap.funLeft R C (j : N → N')) = invFun M K → GenAF p M' ⊥ → GenAF p M K := by
   intro p C _ R _ _ N N' _ _ M M' j K hM hG g hg
   rw [← hM] at hg

@@ -9,11 +9,17 @@ open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab GlobalTheory.SeqC
 
 namespace GlobalTheory.HomStab
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Conclude with `hs`.
+-/
 theorem grpHMap_stab_surjective_congr (R : Type) [CommRing R] (i a b a' b' : ℕ) (h : a ≤ b) (h' : a' ≤ b') (ha : a = a') (hb : b = b')
     (hs : Function.Surjective (grpHMap (stab R a b h) i).hom) :
     Function.Surjective (grpHMap (stab R a' b' h') i).hom := by
   subst ha hb; exact hs
 
+/- English proof (translation)
+Introduce `R _ s hsr i IH m m' h hm hi`. Take `⟨e, he, hc⟩` from `GlobalTheory.T.splitSeq_firstPage_iso_and_differential R s hsr (m + 1)`. Take `⟨hdd, hd0, hex⟩` from `GlobalTheory.T.splitSequence_rep_complex_exact R (m + 1)`. Establish `key` using `GlobalTheory.T.quillen_stabilisation_surjective_bottom ℤ (GL (Fin (m + 1)) R) i (splitRep R (m + 1)) (splitD R (m + 1)) hdd (hd0 (GlobalTheory.T.splitSeq_exactAt_of_two_mul_add_stableRange_le R s hsr (m + 1) 0 (by omega))) (fun p hp => hex p (GlobalTheory.T.splitSeq_exactAt_of_tw …`. Conclude with `grpHMap_stab_surjective_congr R i _ _ m m' _ h (by omega) (by omega) key`.
+-/
 theorem grpHMap_stab_surjective_step : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ i : ℕ, (∀ q m m' (h : m ≤ m'), q < i → m' = m + 1 → (2 * q + s + 1 ≤ m → Function.Surjective (grpHMap (stab R m m' h) q).hom) ∧ (2 * q + s + 2 ≤ m → Function.Injective (grpHMap (stab R m m' h) q).hom)) → ∀ m m' (h : m ≤ m'), m' = m + 1 → 2 * i + s + 1 ≤ m → Function.Surjective (grpHMap (stab R m m' h) i).hom := by
   intro R _ s hsr i IH m m' h hm hi
   obtain ⟨e, he, hc⟩ := GlobalTheory.T.splitSeq_firstPage_iso_and_differential R s hsr (m + 1)
@@ -33,6 +39,9 @@ end GlobalTheory.HomStab
 
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab GlobalTheory.SeqCx UpperTheory.V.KL
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.HomStab.grpHMap_stab_surjective_step`. Consider the case `exact @GlobalTheory.HomStab.grpHMap_stab_surjective_congr`.
+-/
 theorem _root_.GlobalTheory.T.groupHomology_GL_stab_surjective_of_stableRange_induction : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ i : ℕ, (∀ q m m' (h : m ≤ m'), q < i → m' = m + 1 → (2 * q + s + 1 ≤ m → Function.Surjective (grpHMap (stab R m m' h) q).hom) ∧ (2 * q + s + 2 ≤ m → Function.Injective (grpHMap (stab R m m' h) q).hom)) → ∀ m m' (h : m ≤ m'), m' = m + 1 → 2 * i + s + 1 ≤ m → Function.Surjective (grpHMap (stab R m m' h) i).hom := by
   first
   | exact @GlobalTheory.HomStab.grpHMap_stab_surjective_step

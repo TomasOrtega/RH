@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.CrisFlat
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Use `letI := f.toAlgebra`. Use `haveI : IsScalarTower R (R ⧸ I) (A ⧸ I.map (algebraMap R A)) := IsScalarTower.of_algebraMap_eq fun a => (hf a).symm`. Set `e₀ : (R ⧸ I) ⊗[R] A ≃ₗ[R] A ⧸ I.map (algebraMap R A)` to `(TensorProduct.comm R (R ⧸ I) A).trans ((Algebra.TensorProduct.quotIdealMapEquivTensorQuot A I).symm.toLinearEquiv.restrictScalars R)`. Set `e : (R ⧸ I) ⊗[R] A ≃ₗ[R ⧸ I] A ⧸ I.map (algebraMap R A)` to `e₀.extendScalarsOfSurjective Ideal.Quotient.mk_surjective`.
+
+Conclude with `Module.Flat.of_linearEquiv e.symm`.
+-/
 theorem flat_quotient_of_flat {R A : Type} [CommRing R] [CommRing A] [Algebra R A] [Module.Flat R A]
     (I : Ideal R) (J : Ideal A) (hJ : J = I.map (algebraMap R A)) (f : R ⧸ I →+* A ⧸ J)
     (hf : ∀ a, f (Ideal.Quotient.mk I a) = Ideal.Quotient.mk J (algebraMap R A a)) :
@@ -28,6 +33,15 @@ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 def wToAcr0 (r : Res l K) : WittVector l r.k →+* (base l).Acr0 :=
   (algebraMap (base l).W (base l).Acr0).comp ((base l).sW.comp (WittVector.map r.s))
 
+/- English proof (translation)
+Use `letI := (wToAcr0 r).toAlgebra`. Rewrite using `[Module.isTorsionFree_iff_smul_eq_zero]`. Introduce `a x h`. Distinguish the cases in `ha : a = 0`. Conclude with `Or.inl ha`.
+
+Use `Or.inr ?_` and prove the remaining obligations. Take `⟨m, b, e⟩` from `WittVector.exists_eq_pow_p_mul' a ha`. Rewrite `h` using `[Algebra.smul_def]`. Establish `h1 : (wToAcr0 r a : Localization.Away (l : (base l).W)) * (x : Localization.Away (l : (base l).W)) = 0` using `congrArg Subtype.val h`. Establish `hl : IsUnit (l : Localization.Away (l : (base l).W))`.
+
+Use `IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (l : (base l).W)) (l : (base l).W)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hu : IsUnit (wToAcr0 r a : Localization.Away (l : (base l).W))`. Establish `e2 : (wToAcr0 r a : Localization.Away (l : (base l).W)) = (l : Localization.Away (l : (base l).W)) ^ m * ((base l).Acr0.val.toRingHom.comp (wToAcr0 r)) b`. Express the relevant statement in the definitionally equal form `((base l).Acr0.val.toRingHom.comp (wToAcr0 r)) a = _`.
+
+Rewrite using `[e, map_mul, map_pow, map_natCast]`. Rewrite using `[e2]`. Conclude with `(hl.pow m).mul (b.isUnit.map _)`. Conclude with `Subtype.ext ((hu.mul_right_eq_zero).1 h1)`.
+-/
 theorem isTorsionFree_acris_zero (r : Res l K) :
     letI := (wToAcr0 r).toAlgebra; Module.IsTorsionFree (WittVector l r.k) (base l).Acr0 := by
   letI := (wToAcr0 r).toAlgebra
@@ -52,12 +66,20 @@ theorem isTorsionFree_acris_zero (r : Res l K) :
     exact (hl.pow m).mul (b.isUnit.map _)
   exact Subtype.ext ((hu.mul_right_eq_zero).1 h1)
 
+/- English proof (translation)
+Use `letI := (wToAcr0 r).toAlgebra`. Use `haveI := isTorsionFree_acris_zero r`. Use `infer_instance`.
+-/
 theorem flat_acris_zero (r : Res l K) :
     letI := (wToAcr0 r).toAlgebra; Module.Flat (WittVector l r.k) (base l).Acr0 := by
   letI := (wToAcr0 r).toAlgebra
   haveI := isTorsionFree_acris_zero r
   infer_instance
 
+/- English proof (translation)
+Use `letI := (wToAcr0 r).toAlgebra`. Use `haveI := flat_acris_zero r`. Use `flat_quotient_of_flat (R := WittVector l r.k) (A := (base l).Acr0) (Ideal.span {(l : WittVector l r.k) ^ n}) (Ideal.span {(l : (base l).Acr0) ^ n}) ?_ (Mid.wn r n) ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_span, Set.image_singleton, map_pow, map_natCast]`. Introduce `a`.
+
+Conclude with `(Mid.wn_mk r n a).trans ((base l).cris_algebraMap n (WittVector.map r.s a))`.
+-/
 theorem flat_acr (r : Res l K) (n : ℕ) :
     letI := (Mid.wn r n).toAlgebra; Module.Flat (Wc.Wm l r.k n) ((base l).Acr n) := by
   letI := (wToAcr0 r).toAlgebra

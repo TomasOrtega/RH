@@ -3,6 +3,19 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k C _ _ _ m a`. Establish `h0 : AlgebraicIndepOn k a (∅ : Set (Fin m))` using `algebraicIndependent_empty_type_iff.mpr (algebraMap k C).injective`. Take `⟨s, hs⟩` from `(Set.toFinite {s : Set (Fin m) | AlgebraicIndepOn k a s}).exists_maximal ⟨∅, h0⟩`. Establish `hsi : AlgebraicIndepOn k a s` using `hs.prop`. Set `e : s ≃ Fin (Nat.card s)` to `Finite.equivFin s`.
+
+Use `⟨Nat.card s, fun i => a (e.symm i), ?_, ?_⟩` and prove the remaining obligations. Conclude with `hsi.comp e.symm e.symm.injective`. Establish `hr : Set.range (fun i => a (e.symm i)) = a '' s`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨e.symm i, (e.symm i).2, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨e ⟨y, hy⟩, by simp only [Equiv.symm_apply_apply]⟩`. Introduce `j`.
+
+Rewrite using `[hr]`. Distinguish the cases in `hj : j ∈ s`. Conclude with `isAlgebraic_algebraMap (⟨a j, IntermediateField.subset_adjoin k _ ⟨j, hj, rfl⟩⟩ : IntermediateField.adjoin k (a '' s))`. Establish `hni : ¬ AlgebraicIndepOn k a (insert j s)`. Introduce `h`.
+
+Establish `hle : insert j s ≤ s` using `hs.2 h (Set.subset_insert j s)`. Conclude with `hj (hle (Set.mem_insert j s))`. Rewrite `hni` using `[AlgebraicIndepOn.insert_iff hj]`. Establish `halg : IsAlgebraic (Algebra.adjoin k (a '' s)) (a j)`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hni ⟨hsi, hc⟩`. Conclude with `IntermediateField.isAlgebraic_adjoin_iff.mpr halg`.
+-/
 theorem exists_finite_transcendenceBasis_in_family :
     ∀ (k C : Type) [Field k] [Field C] [Algebra k C] (m : ℕ) (a : Fin m → C),
       ∃ (d : ℕ) (t : Fin d → C), AlgebraicIndependent k t ∧

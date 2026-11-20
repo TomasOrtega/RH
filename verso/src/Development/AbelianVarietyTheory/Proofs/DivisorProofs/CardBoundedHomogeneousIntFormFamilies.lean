@@ -5,10 +5,20 @@ open Filter Topology MvPolynomial GlobalTheory.HSAmp
 
 namespace GlobalTheory.HSAmp.Count
 
+/- English proof (translation)
+The claim follows from `|(c : ℝ)| ≤ R ↔ c ∈ Finset.Icc (-(⌊R⌋₊ : ℤ)) (⌊R⌋₊ : ℤ) := by rw [Finset.mem_Icc, ← abs_le, ← Int.cast_abs, ← Int.le_floor, Int.natCast_floor_eq_floor hR]`.
+-/
 theorem abs_intCast_le_iff (c : ℤ) {R : ℝ} (hR : 0 ≤ R) :
     |(c : ℝ)| ≤ R ↔ c ∈ Finset.Icc (-(⌊R⌋₊ : ℤ)) (⌊R⌋₊ : ℤ) := by
   rw [Finset.mem_Icc, ← abs_le, ← Int.cast_abs, ← Int.le_floor, Int.natCast_floor_eq_floor hR]
 
+/- English proof (translation)
+Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨β, h⟩]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `e`. Conclude with `hb (Subtype.ext e)`. Simplify using the standard rewrite rules.
+
+Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Conclude with `h a.2`.
+-/
 theorem coeff_sum_monomial {D q : ℕ} [Fintype {α : Fin (D + 1) →₀ ℕ // α.degree = q}]
     (g : {α : Fin (D + 1) →₀ ℕ // α.degree = q} → ℤ) (β : Fin (D + 1) →₀ ℕ) :
     coeff β (∑ a, monomial a.1 (g a)) = if h : β.degree = q then g ⟨β, h⟩ else 0 := by
@@ -28,6 +38,9 @@ theorem coeff_sum_monomial {D q : ℕ} [Fintype {α : Fin (D + 1) →₀ ℕ // 
     rintro rfl
     exact h a.2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Conclude with `hβ (by rw [Finsupp.degree_eq_weight_one]; exact hP hc)`.
+-/
 theorem coeff_eq_zero_of_isHomogeneous {D q : ℕ} {P : MvPolynomial (Fin (D + 1)) ℤ}
     (hP : P.IsHomogeneous q) {β : Fin (D + 1) →₀ ℕ} (hβ : β.degree ≠ q) : coeff β P = 0 := by
   by_contra hc
@@ -36,6 +49,23 @@ theorem coeff_eq_zero_of_isHomogeneous {D q : ℕ} {P : MvPolynomial (Fin (D + 1
 end GlobalTheory.HSAmp.Count
 
 open GlobalTheory.HSAmp.Count in
+/- English proof (translation)
+Introduce `D q δ R hR`. Establish `hAcard : Nat.card {α : Fin (D + 1) →₀ ℕ // α.degree = q} = (q + D).choose D`. Rewrite using `[GlobalTheory.natCard_degree_eq, Fintype.card_fin, show q + (D + 1) - 1 = q + D by omega, Nat.choose_symm_add]`. Use `haveI : Finite {α : Fin (D + 1) →₀ ℕ // α.degree = q} := (Finsupp.finite_of_degree_eq q).to_subtype`. Use `letI : Fintype {α : Fin (D + 1) →₀ ℕ // α.degree = q} := Fintype.ofFinite _`.
+
+Use `set S := {T : Fin δ → MvPolynomial (Fin (D + 1)) ℤ | (∀ i, (T i).IsHomogeneous q) ∧ ∀ i α, |((coeff α (T i) : ℤ) : ℝ)| ≤ R} with hS`. Set `F : S → (Fin δ → {α : Fin (D + 1) →₀ ℕ // α.degree = q} → Finset.Icc (-(⌊R⌋₊ : ℤ)) (⌊R⌋₊ : ℤ))` to `fun T i a => ⟨coeff a.1 (T.1 i), (abs_intCast_le_iff _ hR).1 (T.2.2 i a.1)⟩`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨T, hT⟩ ⟨T', hT'⟩ h`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use extensionality with `β`. Distinguish the cases in `hβ : β.degree = q`. Use `congrArg Subtype.val (congrFun (congrFun h i) ⟨β, hβ⟩)` as an intermediate fact.
+
+Simplify `this` using `[F]`. Rewrite using `[coeff_eq_zero_of_isHomogeneous (hT.1 i) hβ, coeff_eq_zero_of_isHomogeneous (hT'.1 i) hβ]`. Introduce `f`. Use `⟨⟨fun i => ∑ a, monomial a.1 ((f i a : ℤ)), fun i => ?_, fun i β => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `IsHomogeneous.sum _ _ _ fun a _ => isHomogeneous_monomial _ a.2`.
+
+Rewrite using `[coeff_sum_monomial] split_ifs with h`. Conclude with `(abs_intCast_le_iff _ hR).2 (f i ⟨β, h⟩).2`. Simplify using `using hR`. Use function extensionality and compare the values at `i a`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[F, coeff_sum_monomial, a.2]`. Set `e` to `Equiv.ofBijective F hF`. Establish `hfin : S.Finite` using `Set.finite_coe_iff.1 (Finite.of_equiv _ e.symm)`. Use `⟨hfin, ?_, hAcard, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_coe_set_eq, Nat.card_congr e, Nat.card_fun, Nat.card_fun, hAcard, Nat.card_eq_fintype_card, Fintype.card_coe, Int.card_Icc, Nat.card_eq_fintype_card, Fintype.card_fin, ← pow_mul, mul_comm]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[homogeneousSubmodule_eq_finsupp_supported]`. Conclude with `(Module.finrank_eq_nat_card_basis (basisRestrictSupport ℤ {d : Fin (D + 1) →₀ ℕ | d.degree = q})).trans hAcard`. Rewrite using `[homogeneousSubmodule_eq_finsupp_supported] haveI : Finite {d : Fin (D + 1) →₀ ℕ | d.degree = q} := (Finsupp.finite_of_degree_eq q).to_subtype`.
+
+Conclude with `Module.Finite.of_basis (basisRestrictSupport ℤ {d : Fin (D + 1) →₀ ℕ | d.degree = q})`.
+-/
 theorem GlobalTheory.HSAmp.card_bounded_forms : ∀ (D q δ : ℕ) (R : ℝ), 0 ≤ R → {T : Fin δ → MvPolynomial (Fin (D + 1)) ℤ | (∀ i, (T i).IsHomogeneous q) ∧ ∀ i α, |((coeff α (T i) : ℤ) : ℝ)| ≤ R}.Finite ∧ {T : Fin δ → MvPolynomial (Fin (D + 1)) ℤ | (∀ i, (T i).IsHomogeneous q) ∧ ∀ i α, |((coeff α (T i) : ℤ) : ℝ)| ≤ R}.ncard = (2 * ⌊R⌋₊ + 1) ^ (δ * (q + D).choose D) ∧ Nat.card {α : Fin (D + 1) →₀ ℕ // α.degree = q} = (q + D).choose D ∧ Module.finrank ℤ (homogeneousSubmodule (Fin (D + 1)) ℤ q) = (q + D).choose D ∧ Module.Finite ℤ (homogeneousSubmodule (Fin (D + 1)) ℤ q) := by
   intro D q δ R hR
   classical

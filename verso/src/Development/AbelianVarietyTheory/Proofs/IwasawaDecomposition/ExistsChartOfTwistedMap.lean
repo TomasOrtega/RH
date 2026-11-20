@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.ChartPull
 
+/- English proof (translation)
+Take `⟨w, hw, -⟩` from `mu.lin`. Establish `sq` using `mu.cart.1`. Establish `hW : t'.G.hom ⁻¹ᵁ U' ≤ mu.cm.F ⁻¹ᵁ (t.G.hom ⁻¹ᵁ U)`. Introduce `g hg`. Use `show t.G.hom (mu.cm.F g) ∈ U`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, sq.w, Scheme.Hom.comp_apply]`. Conclude with `hle hg`. Take `⟨θ', hθ', hval⟩` from `GlobalTheory.T.sections_pull_preserve_basic_opens _ _ mu.cm.F t.PP.L t'.PP.L w hw t.PP.isLB t'.PP.isLB _ θ hθ _ hW`. Use `⟨θ', hθ', fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨g, j, hg, hgj⟩` from `hne (f y) (hle hy)`.
+
+Take `⟨g', hg', hy'⟩` from `Scheme.exists_preimage_of_isPullback sq g y hg`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (t'.PP.isLB.cover.ge (Set.mem_univ g'))`. Establish `hgU : g' ∈ t'.G.hom ⁻¹ᵁ U'` using `by show t'.G.hom g' ∈ U'; rw [hy']; exact hy`. Establish `hj : mu.cm.F g' ∈ t.PP.L.U j` using `by rw [hg']; exact (t.G.left.basicOpen_le _ hgj).2`. Conclude with `⟨g', i, hy', (hval g' i j hgU hi hj).2 (by rw [hg']; exact hgj)⟩`.
+-/
 theorem exists_secOn_pull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} {σ : 𝓞 E ≃+* 𝓞 E} (mu : TwMap σ t' t f) (U : S.Opens)
     (θ : ∀ i, Γ(t.G.left, t.G.hom ⁻¹ᵁ U ⊓ t.PP.L.U i)) (hθ : θ ∈ secOn t.PP.L (t.G.hom ⁻¹ᵁ U))
@@ -36,6 +43,11 @@ theorem exists_secOn_pull {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   have hj : mu.cm.F g' ∈ t.PP.L.U j := by rw [hg']; exact (t.G.left.basicOpen_le _ hgj).2
   exact ⟨g', i, hy', (hval g' i j hgU hi hj).2 (by rw [hg']; exact hgj)⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l l' Xo Xo' c c' Z Z' σ π mu hσ M x hx`. Use `haveI := c'.fin`. Use `haveI : NumberField c'.F := {}`. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver Z'.proj` as an intermediate fact. Establish `: IsLocallyNoetherian Z'.X` using `LocallyOfFiniteType.isLocallyNoetherian Z'.s`.
+
+Take `⟨U', hle, hxU, hU', hdom⟩` from `GlobalTheory.T.exists_affine_domain_nbhd_normal Z'.X Z'.normal (π ⁻¹ᵁ M.U) x hx`. Take `⟨θ', hθ', hne'⟩` from `exists_secOn_pull mu M.U M.θ M.θ_mem M.θ_ne U' hle`. Take `⟨v₀, ρ, hlie⟩` from `GlobalTheory.T.twisted_map_sends_chart_opens E H D l l' Xo Xo' c c' _ _ _ _ Z Z' σ π mu hσ M U' hU' hle`. Conclude with `⟨⟨U', hU', hdom, θ', hθ', hne', M.n, v₀, ρ, hlie⟩, hxU⟩`.
+-/
 theorem exists_chart_of_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l' : Level H)
     (Xo : Moduli D l) (Xo' : Moduli D l') (c : Coeff l) (c' : Coeff l') (Z : GMod Xo c) (Z' : GMod Xo' c')
     (σ : 𝓞 E ≃+* 𝓞 E) (π : Z'.X ⟶ Z.X) (mu : TwMap σ Z'.t Z.t π), σ H.w0 = H.w0 →

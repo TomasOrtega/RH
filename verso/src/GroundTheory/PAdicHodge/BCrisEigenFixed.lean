@@ -12,6 +12,15 @@ section Abstract
 variable {G B E : Type*} [Group G] [CommRing B] [IsDomain B] [MulSemiringAction G B] [Field E]
   [MulSemiringAction G E]
 
+/- English proof (translation)
+Set `` to `IsFractionRing.mulSemiringAction G B (FractionRing B)`. Use `set j : FractionRing B →+* E := IsFractionRing.lift hι with hj`. Establish `hjalg : ∀ x : B, j (algebraMap B (FractionRing B) x) = ι x` using `fun x => IsFractionRing.lift_algebraMap _ _`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩ g`. Rewrite using `[← algebraMap.coe_smul', hy g]`. Introduce `hx`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := B) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+
+Establish `hfixE : ∀ g : G, g • (ι a / ι b) = ι a / ι b`. Introduce `g`. Establish `h1` using `congrArg j (hx g)`. Rewrite `h1` using `[smul_div₀', ← algebraMap.coe_smul', ← algebraMap.coe_smul', map_div₀, map_div₀, hjalg, hjalg, hjalg, hjalg, hequiv, hequiv]`. Rewrite using `[smul_div₀']`.
+
+Conclude with `h1`. Take `⟨y, hy, hyab⟩` from `hfix a b hb0 hfixE`. Use `⟨y, hy, j.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hjalg, hyab, map_div₀, hjalg, hjalg]`.
+-/
 theorem image_fixedPoints_fractionRing_of_embedding (ι : B →+* E) (hι : Function.Injective ι)
     (hequiv : ∀ (g : G) (b : B), ι (g • b) = g • ι b)
     (hfix : ∀ a b : B, b ≠ 0 → (∀ g : G, g • (ι a / ι b) = ι a / ι b) →
@@ -58,6 +67,9 @@ variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 include hζ in
 set_option maxHeartbeats 3200000 in
 
+/- English proof (translation)
+Take `⟨k, hk, hxk⟩` from `fracBCris_fixed (K := K) hε hζ hx hfix`. Take `⟨y, hy, hyk⟩` from `exists_bCris_fixed (K := K) hε hζ hk`. Conclude with `⟨y, hy, by rw [hyk, hxk]; rfl⟩`.
+-/
 theorem exists_fixed_iotaB_eq [FiniteDimensional ℚ_[p] K] {x : 𝔹dR} (hx : x ∈ fracBCris hε hζ)
     (hfix : ∀ σ : Gal(PadicAlgCl p/K), σ • x = x) :
     ∃ y : BCris hε, (∀ σ : Gal(PadicAlgCl p/K), galB hε σ y = y) ∧ iotaB hε hζ y = x := by
@@ -69,6 +81,9 @@ include hζ in
 set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `letI := isDomain_bCris hε hζ letI := galBAction (K := K) hε image_fixedPoints_fractionRing_of_embedding (iotaB hε hζ) (iotaB_injective hε hζ) (fun σ b => iotaB_galB (K := K) hε hζ σ b) (fun a b _ h => exists_fixed_iotaB_eq (K := K) hε hζ (div_mem (iotaB_mem_fracBCris hε hζ a) (io …`.
+-/
 theorem image_fixedPoints_fractionRing [FiniteDimensional ℚ_[p] K] :
     letI := isDomain_bCris hε hζ
     letI := galBAction (K := K) hε

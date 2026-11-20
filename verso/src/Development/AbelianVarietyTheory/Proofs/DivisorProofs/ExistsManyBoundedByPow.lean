@@ -16,8 +16,16 @@ variable {k F : Type} [Field k] [Field F] [Algebra k F]
 
 abbrev Mx (t : F) (v : Place k F) : WithZero (Multiplicative ℤ) := max 1 (v.1 t)
 
+/- English proof (translation)
+The claim follows from `le_max_left _ _`.
+-/
 theorem one_le_Mx (t : F) (v : Place k F) : 1 ≤ Mx t v := le_max_left _ _
 
+/- English proof (translation)
+Rewrite using `[aeval_eq_sum_range]`. Use `v.1.map_sum_le fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_pow]`. Establish `hi' : i ≤ p.natDegree` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`. Establish `hc : v.1 (algebraMap k F (p.coeff i)) ≤ 1`.
+
+Distinguish the cases in `h : p.coeff i = 0`. Simplify using `[h]`. Conclude with `(v.2.2 _ h).le`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem val_aeval_le (t : F) (p : k[X]) (v : Place k F) :
     v.1 (aeval t p) ≤ Mx t v ^ p.natDegree := by
   rw [aeval_eq_sum_range]
@@ -33,6 +41,15 @@ theorem val_aeval_le (t : F) (p : k[X]) (v : Place k F) :
     _ = Mx t v ^ i := one_mul _
     _ ≤ Mx t v ^ p.natDegree := pow_le_pow_right₀ (one_le_Mx t v) hi'
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hM : 1 ≤ Mx t v ^ c` using `one_le_pow₀ (one_le_Mx t v)`. Establish `hy1 : 1 < v.1 y` using `lt_of_le_of_lt hM hlt`. Establish `hy0 : v.1 y ≠ 0` using `ne_of_gt (lt_trans zero_lt_one hy1)`.
+
+Rewrite `hy` using `[hP.as_sum, eval_add, eval_pow, eval_X, eval_finset_sum]`. Establish `heq` using `eq_neg_of_add_eq_zero_left hy`. Establish `hlt2 : v.1 (∑ i ∈ Finset.range P.natDegree, (C (P.coeff i) * X ^ i).eval y) < v.1 y ^ P.natDegree`. Use `v.1.map_sum_lt (pow_ne_zero _ hy0) fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.mp hi`.
+
+Rewrite using `[eval_mul, eval_C, eval_pow, eval_X, map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : v.1 (y ^ P.natDegree) = v.1 (∑ i ∈ Finset.range P.natDegree, (C (P.coeff i) * X ^ i).eval y)`. Rewrite using `[heq, Valuation.map_neg]`. Rewrite `h3` using `[map_pow]`.
+
+Rewrite `hlt2` using `[← h3]`. Conclude with `lt_irrefl _ hlt2`.
+-/
 theorem val_le_of_monic (t y : F) (P : F[X]) (hP : P.Monic) (hy : P.eval y = 0) (c : ℕ)
     (v : Place k F) (hc : ∀ i < P.natDegree, v.1 (P.coeff i) ≤ Mx t v ^ c) :
     v.1 y ≤ Mx t v ^ c := by
@@ -66,6 +83,29 @@ open Polynomial
 
 variable {k F : Type} [Field k] [Field F] [Algebra k F]
 
+/- English proof (translation)
+Take `⟨p, hp0, hpy⟩` from `hy`. Use `set A : Subalgebra k F := (aeval t : k[X] →ₐ[k] F).range with hA`. Use `set P : F[X] := p.map (algebraMap k⟮t⟯ F) with hPdef`. Establish `hP0 : P ≠ 0` using `(Polynomial.map_ne_zero_iff (algebraMap k⟮t⟯ F).injective).mpr hp0`. Establish `hPy : P.eval y = 0` using `by rw [hPdef, eval_map, ← aeval_def]; exact hpy`.
+
+Establish `hcoef : ∀ i, ∃ s : k[X], aeval t s ≠ 0 ∧ aeval t s * P.coeff i ∈ A`. Introduce `i`. Rewrite using `[hPdef, coeff_map]`. Take `⟨r, s, hrs⟩` from `(IntermediateField.mem_adjoin_simple_iff k (p.coeff i : F)).mp (p.coeff i).2`. Distinguish the cases in `hs : aeval t s = 0`.
+
+Use `⟨1, by simp, ?_⟩` and prove the remaining obligations. Establish `: algebraMap k⟮t⟯ F (p.coeff i) = 0`. Express the relevant statement in the definitionally equal form `(p.coeff i : F) = 0`. Rewrite using `[hrs, hs, div_zero]`. Rewrite using `[this, mul_zero]`.
+
+Conclude with `A.zero_mem`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `aeval t s * (p.coeff i : F) ∈ A`. Rewrite using `[hrs, mul_div_cancel₀ _ hs]`. Conclude with `⟨r, rfl⟩`.
+
+Use `choose s hs0 hsA using hcoef`. Use `set D : F := ∏ i ∈ Finset.range (P.natDegree + 1), aeval t (s i) with hD`. Establish `hD0 : D ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => hs0 i`. Use `set Q : F[X] := C D * P with hQdef`. Establish `hQA : ∀ i, Q.coeff i ∈ A`.
+
+Introduce `i`. Rewrite using `[hQdef, coeff_C_mul]`. Distinguish the cases in `hi : i ∈ Finset.range (P.natDegree + 1)`. Rewrite using `[hD, ← Finset.prod_erase_mul _ _ hi, mul_assoc]`. Use `A.mul_mem (A.prod_mem fun j _ => ⟨s j, rfl⟩) (hsA i)` and prove the remaining obligations.
+
+Establish `: P.coeff i = 0` using `coeff_eq_zero_of_natDegree_lt (by`. Simplify using `only [Finset.mem_range, not_lt] at hi`. Use the proof step `omega)`. Rewrite using `[this, mul_zero]`. Conclude with `A.zero_mem`.
+
+Establish `hQ0 : Q ≠ 0` using `mul_ne_zero (C_ne_zero.mpr hD0) hP0`. Establish `hQy : Q.eval y = 0` using `by rw [hQdef, eval_mul, hPy, mul_zero]`. Use `set R : F[X] := integralNormalization Q with hRdef`. Establish `hRmon : R.Monic` using `monic_integralNormalization hQ0`. Establish `hRy : R.eval (Q.leadingCoeff * y) = 0` using `integralNormalization_eval₂_eq_zero (RingHom.id F) hQy (fun x hx => hx)`.
+
+Establish `hRA : ∀ i, R.coeff i ∈ A`. Introduce `i`. Rewrite using `[hRdef, integralNormalization_coeff]`. Use `split_ifs`. Conclude with `A.one_mem`.
+
+Conclude with `A.mul_mem (hQA i) (A.pow_mem (hQA _) _)`. Use `choose pr hpr using hRA`. Take `⟨q, hq⟩` from `hQA Q.natDegree`. Establish `hq' : aeval t q = Q.leadingCoeff` using `hq`. Use `⟨q, by rw [hq']; exact leadingCoeff_ne_zero.mpr hQ0, (Finset.range R.natDegree).sup fun i => (pr i).natDegree, fun v => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hq']`. Use `val_le_of_monic t _ R hRmon hRy _ v fun i hi => ?_` and prove the remaining obligations. Establish `h1 : R.coeff i = aeval t (pr i)` using `(hpr i).symm`. Rewrite using `[h1]`. Conclude with `(val_aeval_le t (pr i) v).trans (pow_le_pow_right₀ (one_le_Mx t v) (Finset.le_sup (f := fun i => (pr i).natDegree) (Finset.mem_range.mpr hi)))`.
+-/
 theorem exists_mul_bdd (t y : F) (hy : IsAlgebraic k⟮t⟯ y) :
     ∃ q : k[X], aeval t q ≠ 0 ∧ ∃ c : ℕ, ∀ v : Place k F, v.1 (aeval t q * y) ≤ Mx t v ^ c := by
   classical
@@ -131,6 +171,29 @@ namespace GlobalTheory.Nef
 
 open Polynomial PolesOfT
 
+/- English proof (translation)
+Introduce `k F _ _ _ _ _ _ t ht`. Distinguish the cases in `hfin : FiniteDimensional k⟮t⟯ F`. Use `swap`. Use `⟨0, fun N => ⟨0, Fin.elim0, linearIndependent_empty_type, ?_, fun i => i.elim0⟩⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_of_infinite_dimensional hfin]`.
+
+Simplify using the standard rewrite rules. Use `set d := Module.finrank k⟮t⟯ F with hd`. Set `b` to `Module.finBasis k⟮t⟯ F`. Establish `halg : ∀ j, IsAlgebraic k⟮t⟯ (b j)` using `fun j => Algebra.IsAlgebraic.isAlgebraic _`. Use `choose q hq0 cj hcj using fun j => exists_mul_bdd t (b j) (halg j)`.
+
+Use `⟨Finset.univ.sup cj, fun N => ?_⟩` and prove the remaining obligations. Use `set c := Finset.univ.sup cj with hc`. Use `set L := N - c with hL`. Set `w : Fin d → k⟮t⟯` to `fun j => aeval (IntermediateField.AdjoinSimple.gen k t) (q j)`. Establish `hw : ∀ j, algebraMap k⟮t⟯ F (w j) = aeval t (q j)` using `fun j => by`.
+
+Simplify using `only [w]`. Rewrite using `[← aeval_algebraMap_apply, IntermediateField.AdjoinSimple.algebraMap_gen]`. Establish `hw0 : ∀ j, w j ≠ 0` using `fun j h => hq0 j (by rw [← hw j, h, map_zero])`. Set `y : Fin d → F` to `fun j => aeval t (q j) * b j`. Establish `hyli : LinearIndependent k⟮t⟯ y`.
+
+Use `b.linearIndependent.units_smul (fun j => Units.mk0 (w j) (hw0 j))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `[y, Algebra.smul_def, hw]`. Establish `hpowF : LinearIndependent k (fun n : ℕ => t ^ n)`.
+
+Establish `h1` using `(Polynomial.basisMonomials k).linearIndependent.map' (aeval t).toLinearMap (LinearMap.ker_eq_bot.mpr (transcendental_iff_injective.mp ht))`. Establish `heq : (fun n : ℕ => t ^ n) = (aeval t).toLinearMap ∘ Polynomial.basisMonomials k`. Use function extensionality and compare the values at `n`. Simplify using `[Polynomial.coe_basisMonomials]`. Rewrite using `[heq]`.
+
+Conclude with `h1`. Establish `hpow : LinearIndependent k (fun i : Fin L => (IntermediateField.AdjoinSimple.gen k t) ^ (i : ℕ))`. Establish `heq : (IsScalarTower.toAlgHom k k⟮t⟯ F).toLinearMap ∘ (fun i : Fin L => (IntermediateField.AdjoinSimple.gen k t) ^ (i : ℕ)) = (fun n : ℕ => t ^ n) ∘ (fun i : Fin L => (i : ℕ))`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Apply `LinearIndependent.of_comp (IsScalarTower.toAlgHom k k⟮t⟯ F).toLinearMap` to reduce the goal to its premises. Rewrite using `[heq]`. Conclude with `hpowF.comp _ Fin.val_injective`. Establish `hprod` using `linearIndependent_smul hpow hyli`. Use `⟨L * d, fun i => (fun p : Fin L × Fin d => (IntermediateField.AdjoinSimple.gen k t) ^ (p.1 : ℕ) • y p.2) (finProdFinEquiv.symm i), hprod.comp _ finProdFinEquiv.symm.injective, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Establish `h1 : ((N : ℤ) - c) ≤ (L : ℤ)` using `by omega`. Conclude with `mul_le_mul_of_nonneg_right h1 (Int.natCast_nonneg _)`. Introduce `i v dsimp only`. Generalize the expression as in `finProdFinEquiv.symm i = p`.
+
+Take `⟨a, j⟩` from `p`. Establish `hsm : (IntermediateField.AdjoinSimple.gen k t) ^ (a : ℕ) • y j = t ^ (a : ℕ) * (aeval t (q j) * b j)`. Rewrite using `[Algebra.smul_def, map_pow, IntermediateField.AdjoinSimple.algebraMap_gen]`. Simplify using `only`. Rewrite using `[hsm, map_mul, map_pow]`.
+
+Establish `ha : (a : ℕ) + c ≤ N` using `by have := a.2; omega`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_many_bounded_by_pow : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Algebra k F], IsFF k F →
   ∀ t : F, Transcendental k t → ∃ c : ℕ, ∀ N : ℕ, ∃ (n : ℕ) (f : Fin n → F), LinearIndependent k f ∧ ((N : ℤ) - c) * Module.finrank k⟮t⟯ F ≤ n ∧ ∀ (i : Fin n) (v : Place k F), v.1 (f i) ≤ max 1 (v.1 t) ^ N := by
   intro k F _ _ _ _ _ _ t ht

@@ -33,14 +33,29 @@ def quotAlgHom (Z B : Submodule K V) :
   map_add' f g := by ext z; rfl
   commutes' c := by ext z; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotAlgHom_mk (Z B : Submodule K V) (f : stabAlg Z B) (z : Z) :
     quotAlgHom Z B f (Submodule.Quotient.mk z) =
       Submodule.Quotient.mk ⟨(f : Module.End K V) z, f.2.1 z z.2⟩ := rfl
 
+/- English proof (translation)
+Rewrite using `[quotAlgHom_mk, Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression.
+-/
 theorem quotAlgHom_mk_eq_zero (Z B : Submodule K V) (f : stabAlg Z B) (z : Z) :
     quotAlgHom Z B f (Submodule.Quotient.mk z) = 0 ↔ (f : Module.End K V) z ∈ B := by
   rw [quotAlgHom_mk, Submodule.Quotient.mk_eq_zero]; rfl
 
+/- English proof (translation)
+Use `set χ := A.charpoly with hχdef`. Establish `hχ : χ ≠ 0` using `(LinearMap.charpoly_monic A).ne_zero`. Use `set a := χ.rootMultiplicity c`. Use `set r := χ /ₘ (X - C c) ^ a`. Establish `hr : r.eval c ≠ 0` using `eval_divByMonic_pow_rootMultiplicity_ne_zero c hχ`.
+
+Establish `hfac : (X - C c) ^ a * r = χ` using `pow_mul_divByMonic_rootMultiplicity_eq χ c`. Establish `ha : a ≤ finrank K M`. Establish `h1 : (X - C c) ^ a ∣ χ` using `⟨r, hfac.symm⟩`. Establish `h2` using `natDegree_le_of_dvd h1 hχ`. Rewrite `h2` using `[natDegree_pow, natDegree_X_sub_C, mul_one, hχdef, LinearMap.charpoly_natDegree]`. Then use the resulting hypothesis.
+
+Use `⟨C (r.eval c)⁻¹ * r, by simp [hr], fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Establish `: (X - C c) ^ finrank K M * (C (r.eval c)⁻¹ * r) = C (r.eval c)⁻¹ * (X - C c) ^ (finrank K M - a) * χ`. Rewrite using `[← hfac]`. Use `conv_lhs => rw [← Nat.sub_add_cancel ha, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_mul, LinearMap.aeval_self_charpoly, mul_zero, LinearMap.zero_apply]`.
+-/
 theorem exists_poly_genEig (M : Type) [AddCommGroup M] [Module K M] [FiniteDimensional K M]
     (A : Module.End K M) (c : K) :
     ∃ p : K[X], p.eval c = 1 ∧
@@ -72,6 +87,39 @@ namespace GlobalTheory
 
 open Polynomial Module GlobalTheory.GenEigIdem
 
+/- English proof (translation)
+Introduce `K _ V _ _ Z B ι S T lam _hBZ hfd hZ hB hcomm hgen`. Set `Tg : {t // S t} → stabAlg Z B` to `fun t => ⟨T t.1, hZ t.1 t.2, hB t.1 t.2⟩`. Set `φ` to `quotAlgHom Z B`. Set `d` to `finrank K (Z ⧸ B.comap Z.subtype)`. Establish `hex : ∀ t : {t // S t}, ∃ p : K[X], p.eval (lam t.1) = 1 ∧ ∀ w, aeval (φ (Tg t)) ((X - C (lam t.1)) ^ d) (aeval (φ (Tg t)) p w) = 0` using `fun t => exists_poly_genEig _ _ _`.
+
+Use `choose p hp1 hp2 using hex`. Set `N : {t // S t} → Submodule K (Z ⧸ B.comap Z.subtype)` to `fun t => LinearMap.ker (aeval (φ (Tg t)) ((X - C (lam t.1)) ^ d))`. Set `Ninf : Finset {t // S t} → Submodule K (Z ⧸ B.comap Z.subtype)` to `fun F => ⨅ t ∈ F, N t`. Take `⟨F, -, hF⟩` from `(measure fun F : Finset {t // S t} => finrank K (Ninf F)).wf.has_min Set.univ ⟨∅, trivial⟩`. Establish `hFle : ∀ s, Ninf F ≤ N s`.
+
+Introduce `s`. Establish `hins : Ninf (insert s F) = N s ⊓ Ninf F` using `Finset.iInf_insert _ _ _`. Establish `hmin : ¬ finrank K (Ninf (insert s F)) < finrank K (Ninf F)` using `hF (insert s F) trivial`. Establish `heq : Ninf (insert s F) = Ninf F`. Apply `Submodule.eq_of_le_of_finrank_le` to reduce the goal to its premises.
+
+Rewrite using `[hins]`. Conclude with `inf_le_right`. Conclude with `not_lt.mp hmin`. Rewrite using `[← heq, hins]`. Conclude with `inf_le_left`.
+
+Establish `hinv : ∀ (s t : {t // S t}) (q : K[X]) (w : Z ⧸ B.comap Z.subtype), w ∈ N t → aeval (φ (Tg s)) q w ∈ N t`. Introduce `s t q w hw`. Establish `hc : Commute (φ (Tg s)) (φ (Tg t))`. Use `LinearMap.ext fun w => Submodule.Quotient.induction_on _ w fun z => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, quotAlgHom_mk, quotAlgHom_mk, quotAlgHom_mk, quotAlgHom_mk, Submodule.Quotient.eq]`.
+
+Conclude with `hcomm s.1 t.1 s.2 t.2 z z.2`. Establish `hc2 : Commute (aeval (φ (Tg s)) q) (aeval (φ (Tg t)) ((X - C (lam t.1)) ^ d))` using `Algebra.commute_of_mem_adjoin_singleton_of_commute (aeval_mem_adjoin_singleton K _) (Algebra.commute_of_mem_adjoin_singleton_of_commute (aeval_mem_adjoin_singleton K _) hc.symm).symm`. Establish `hw'` using `LinearMap.mem_ker.mp hw`. Use `LinearMap.mem_ker.mpr ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← hc2.eq, Module.End.mul_apply, hw', map_zero]`.
+
+Establish `hprod : ∀ (l : List {t // S t}) (w : Z ⧸ B.comap Z.subtype) (t : {t // S t}), t ∈ l → φ (l.map fun s => aeval (Tg s) (p s)).prod w ∈ N t`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro w t ht`. Simplify using `at ht`.
+
+Consider the case `cons a l ih`. Introduce `w t ht`. Rewrite using `[List.map_cons, List.prod_cons, map_mul, Module.End.mul_apply, ← aeval_algHom_apply]`. Break down `List.mem_cons.mp ht with rfl | ht'` into its components or cases. Conclude with `LinearMap.mem_ker.mpr (hp2 _ _)`.
+
+Conclude with `hinv _ _ _ _ (ih _ _ ht')`. Set `P : FreeAlgebra K ι` to `(F.toList.map fun t => aeval (FreeAlgebra.ι K t.1) (p t)).prod`. Set `Q : stabAlg Z B` to `(F.toList.map fun t => aeval (Tg t) (p t)).prod`. Establish `hPQ : FreeAlgebra.lift K T P = (Q : Module.End K V)`. Rewrite using `[show (Q : Module.End K V) = (stabAlg Z B).val Q from rfl]`.
+
+Simplify using `only [P, Q, map_list_prod, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun t _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[← aeval_algHom_apply, ← aeval_algHom_apply, FreeAlgebra.lift_ι_apply]`.
+
+Both sides reduce to the same expression. Establish `hPmem : P ∈ Algebra.adjoin K (FreeAlgebra.ι K '' {t | S t})`. Use `Subalgebra.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Take `⟨t, -, rfl⟩` from `List.mem_map.mp hx`. Conclude with `Algebra.adjoin_mono (Set.singleton_subset_iff.2 (Set.mem_image_of_mem (FreeAlgebra.ι K) (show t.1 ∈ {t | S t} from t.2))) (aeval_mem_adjoin_singleton K _)`.
+
+Establish `hPlam : FreeAlgebra.lift K lam P = 1`. Simplify using `only [P, map_list_prod, List.map_map]`. Use `List.prod_eq_one fun x hx => ?_` and prove the remaining obligations. Take `⟨t, -, rfl⟩` from `List.mem_map.mp hx`. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[← aeval_algHom_apply, FreeAlgebra.lift_ι_apply, coe_aeval_eq_eval, hp1]`. Use `⟨P, hPmem, hPlam, fun z hz s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[hPQ]`. Establish `hQz : (Q : Module.End K V) z ∈ Z` using `Q.2.1 z hz`. Use `hgen _ hQz d (fun t ht => ?_) s hs` and prove the remaining obligations.
+
+Set `U : stabAlg Z B` to `(Tg ⟨t, ht⟩ - algebraMap K (stabAlg Z B) (lam t)) ^ d`. Establish `hU : (U : Module.End K V) = (T t - lam t • 1) ^ d`. Simplify using `[U, Tg, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[← hU]`. Establish `key : φ U (Submodule.Quotient.mk ⟨(Q : Module.End K V) z, hQz⟩) = 0`.
+
+Establish `h1 : φ Q (Submodule.Quotient.mk ⟨z, hz⟩) = Submodule.Quotient.mk ⟨(Q : Module.End K V) z, hQz⟩` using `quotAlgHom_mk _ _ _ _`. Rewrite using `[← h1]`. Establish `hφU : φ U = aeval (φ (Tg ⟨t, ht⟩)) ((X - C (lam t)) ^ d)`. Simplify using `[U]`. Rewrite using `[hφU]`.
+
+Use `LinearMap.mem_ker.mp (hFle ⟨t, ht⟩ ?_)` and prove the remaining obligations. Simplify using `only [Ninf, Submodule.mem_iInf]`. Introduce `s' hs'`. Conclude with `hprod _ _ _ (Finset.mem_toList.mpr hs')`. Conclude with `(quotAlgHom_mk_eq_zero Z B U _).mp key`.
+-/
 theorem exists_genEig_idem_poly : ∀ (K : Type) [Field K] (V : Type) [AddCommGroup V] [Module K V] (Z B : Submodule K V) (ι : Type) (S : ι → Prop) (T : ι → Module.End K V) (lam : ι → K), B ≤ Z → FiniteDimensional K Z → (∀ t, S t → ∀ z ∈ Z, T t z ∈ Z) → (∀ t, S t → ∀ z ∈ B, T t z ∈ B) → (∀ t t', S t → S t' → ∀ z ∈ Z, T t (T t' z) - T t' (T t z) ∈ B) → (∀ z ∈ Z, ∀ n : ℕ, (∀ t, S t → ((T t - lam t • 1) ^ n) z ∈ B) → ∀ t, S t → (T t - lam t • 1) z ∈ B) → ∃ P ∈ Algebra.adjoin K (FreeAlgebra.ι K '' {t | S t}), FreeAlgebra.lift K lam P = 1 ∧ ∀ z ∈ Z, ∀ t, S t → (T t - lam t • 1) (FreeAlgebra.lift K T P z) ∈ B := by
   intro K _ V _ _ Z B ι S T lam _hBZ hfd hZ hB hcomm hgen
   let Tg : {t // S t} → stabAlg Z B := fun t => ⟨T t.1, hZ t.1 t.2, hB t.1 t.2⟩

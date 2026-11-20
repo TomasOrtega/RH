@@ -4,6 +4,13 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCyclotom
 
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ v`. Establish `hc : ∀ g σ : G F Ω, cycZ F Ω l (g⁻¹ * σ * g) = cycZ F Ω l σ` using `fun g σ => by`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm _ (cycZ F Ω l σ), inv_mul_cancel_right]`. Establish `key : ∀ A A' : ValuationSubring Ω, IsPlaceOver A v → IsPlaceOver A' v → decImage F l A' ≤ decImage F l A ∧ ineImage F l A' ≤ ineImage F l A`. Introduce `A A' hA hA'`.
+
+Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := F) hA hA'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `_ ⟨σ, hσ, rfl⟩`. Conclude with `⟨_, GlobalTheory.Cut.ShaBound.conj_mem_Dec hσ, hc g σ⟩`. Introduce and unpack `_ ⟨σ, hσ, rfl⟩`.
+
+Conclude with `⟨_, GlobalTheory.Cut.ShaBound.conj_mem_Ine' hσ, hc g σ⟩`. Introduce `A A' hA hA'`. Conclude with `⟨le_antisymm (key A' A hA' hA).1 (key A A' hA hA').1, le_antisymm (key A' A hA' hA).2 (key A A' hA hA').2⟩`.
+-/
 theorem UpperTheory.V.LDataCardLeFinrank.imageConj :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (v : HeightOneSpectrum (𝓞 F)) (A A' : ValuationSubring Ω), IsPlaceOver A v → IsPlaceOver A' v → decImage F l A = decImage F l A' ∧ ineImage F l A = ineImage F l A' := by
   intro F Ω _ _ _ _ _ l _ v

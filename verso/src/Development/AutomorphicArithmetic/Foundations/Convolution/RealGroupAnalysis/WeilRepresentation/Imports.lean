@@ -10,6 +10,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π hr Φ hΦ`. Use `Cm.mem_range_ofAut.1 ((Submodule.span_le.2 ?_ : span W M π ≤ _) hΦ)` and prove the remaining obligations. Introduce and unpack `Ψ ⟨f, hf, φ, hφ, e⟩`. Use `Cm.mem_range_ofAut.2 ⟨fun γ g => ?_, level F E D W M π f hf φ hφ Ψ e, (kFin F E D W M π f hf φ hφ Ψ e).2, zFin F E D W M π hr Ψ (Submodule.subset_span ⟨f, hf, φ, hφ, e⟩), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `(equiv F E D W M π f hf φ).1 γ g`. Rewrite using `[e]`. Conclude with `growth F E D W M π f hf φ hφ g`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.aut :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), St.Aut W M π := by
   intro F E _ _ _ _ _ _ _ D W M π hr Φ hΦ

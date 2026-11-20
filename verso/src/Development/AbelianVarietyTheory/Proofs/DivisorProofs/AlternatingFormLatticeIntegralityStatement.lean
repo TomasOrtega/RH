@@ -4,6 +4,9 @@ import Mathlib
 open NumberField
 open scoped nonZeroDivisors
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_alternating_bilinForm_eq_pairing | exact GlobalTheory.exists_alternating_bilinForm_eq_pairing | (intros; apply GlobalTheory.exists_alternating_bilinForm_eq_pairing <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.alternating_form_lattice_integrality : ∀ {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V], Module.finrank F V = 2 → ∀ (L : Set V),
     (∀ x ∈ L, ∀ x' ∈ L, x + x' ∈ L) → (∀ (a : 𝓞 F), ∀ x ∈ L, (a : F) • x ∈ L) → ∀ (P : V → V → F),
     (∀ x ∈ L, ∀ x' ∈ L, P x x' = -P x' x) →

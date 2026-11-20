@@ -16,6 +16,19 @@ section Local
 
 variable {k : Type} [Field k] [Fintype k]
 
+/- English proof (translation)
+Set `L : Matrix (Fin r) (Fin n) k →+ k` to `AddMonoidHom.mk' (fun x => Matrix.trace (x * w)) (fun a b => by rw [Matrix.add_mul, Matrix.trace_add])`. Establish `h` using `AddChar.sum_eq_ite (ψ.compAddMonoidHom L)`. Establish `h2 : ψ.compAddMonoidHom L = 0 ↔ w = 0`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+
+Use extensionality with `i j`. Assume the negation of the conclusion as `hne`. Use `hψ hne ?_` and prove the remaining obligations. Use extensionality with `t`. Use `DFunLike.congr_fun h0 (Matrix.single j i t)` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `ψ (Matrix.trace (Matrix.single j i t * w)) = 1 at this`. Rewrite `this` using `[Matrix.trace_single_mul, smul_eq_mul]`. Rewrite using `[AddChar.mulShift_apply, mul_comm]`. Conclude with `this`. Introduce and unpack `rfl`.
+
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `ψ (Matrix.trace (x * (0 : Matrix (Fin n) (Fin r) k))) = 1`. Simplify using the standard rewrite rules. Use `Eq.trans h ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = 0`.
+
+Rewrite using `[if_pos (h2.2 hw), if_pos hw, Nat.card_eq_fintype_card]`. Establish `: Fintype.card (Matrix (Fin r) (Fin n) k) = Fintype.card k ^ (n * r)`. Express the relevant statement in the definitionally equal form `Fintype.card (Fin r → Fin n → k) = _`. Simplify using `[pow_mul]`. Rewrite using `[this]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[if_neg (fun h => hw (h2.1 h)), if_neg hw]`.
+-/
 theorem sum_char_trace {n r : ℕ} {ψ : AddChar k ℂ} (hψ : ψ.IsPrimitive) (w : Matrix (Fin n) (Fin r) k) :
     ∑ x : Matrix (Fin r) (Fin n) k, ψ (Matrix.trace (x * w)) =
       if w = 0 then ((Nat.card k : ℂ) ^ (n * r)) else 0 := by
@@ -47,6 +60,13 @@ theorem sum_char_trace {n r : ℕ} {ψ : AddChar k ℂ} (hψ : ψ.IsPrimitive) (
     rw [this]; push_cast; rfl
   · rw [if_neg (fun h => hw (h2.1 h)), if_neg hw]
 
+/- English proof (translation)
+Establish `hc : ((Nat.card k : ℂ) ^ (n * r)) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 Nat.card_pos.ne')`. Establish `h1 : ∀ x : Matrix (Fin r) (Fin n) k, (((Nat.card k : ℂ) ^ (n * r))⁻¹ * ∑ v, f v * ψ (Matrix.trace (-x * v))) * ψ (Matrix.trace (x * u)) = ∑ v, ((Nat.card k : ℂ) ^ (n * r))⁻¹ * f v * ψ (Matrix.trace (x * (u - v)))` using `fun x => by`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, mul_assoc, ← AddChar.map_add_eq_mul, ← Matrix.trace_add, Matrix.mul_sub, Matrix.neg_mul, neg_add_eq_sub]`.
+
+Simplify using `only [h1]`. Rewrite using `[Finset.sum_comm, Finset.sum_eq_single u]`. Rewrite using `[← Finset.mul_sum, sum_char_trace hψ, if_pos (sub_self u)]`. Clear the denominators using the available nonvanishing facts. Introduce `v _ hv`.
+
+Rewrite using `[← Finset.mul_sum, sum_char_trace hψ, if_neg (fun h => hv (sub_eq_zero.1 h).symm), mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem inversion {n r : ℕ} {ψ : AddChar k ℂ} (hψ : ψ.IsPrimitive) (f : Matrix (Fin n) (Fin r) k → ℂ)
     (u : Matrix (Fin n) (Fin r) k) :
     f u = ∑ x : Matrix (Fin r) (Fin n) k,
@@ -71,17 +91,26 @@ def embTop (n : ℕ) {r : ℕ} (g : Matrix (Fin r) (Fin r) k) : Matrix (Fin n) (
   fun i j => if h : i.val < r then g ⟨i.val, h⟩ j else 0
 
 omit [Fintype k] in
+/- English proof (translation)
+Use extensionality with `i j`. Establish `: i.val < n` using `lt_of_lt_of_le i.2 h`. Simplify using `[topL, embTop, this]`.
+-/
 theorem topL_embTop {n r : ℕ} (h : r ≤ n) (g : Matrix (Fin r) (Fin r) k) : topL r (embTop n g) = g := by
   ext i j
   have : i.val < n := lt_of_lt_of_le i.2 h
   simp [topL, embTop, this]
 
 omit [Fintype k] in
+/- English proof (translation)
+Introduce `i j hi _`. Simplify using `[embTop, not_lt.2 hi]`.
+-/
 theorem lowZero_embTop {n r : ℕ} (g : Matrix (Fin r) (Fin r) k) : LowZero r (embTop n g) := by
   intro i j hi _
   simp [embTop, not_lt.2 hi]
 
 omit [Fintype k] in
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `hi : i.val < r`. Simplify using `[topL, embTop, hi]`. Simplify using `[embTop, hi, hu i j (not_lt.1 hi) j.2]`.
+-/
 theorem embTop_topL {n r : ℕ} {u : Matrix (Fin n) (Fin r) k} (hu : LowZero r u) : embTop n (topL r u) = u := by
   ext i j
   by_cases hi : i.val < r
@@ -89,6 +118,11 @@ theorem embTop_topL {n r : ℕ} {u : Matrix (Fin n) (Fin r) k} (hu : LowZero r u
   · simp [embTop, hi, hu i j (not_lt.1 hi) j.2]
 
 omit [Fintype k] in
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_le h`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`. Establish `h2 : ∀ i : Fin r, i.val < r + t` using `fun i => lt_of_lt_of_le i.2 h`.
+
+Simplify using `[embTop, topL, h2]`. Both sides reduce to the same expression.
+-/
 theorem trace_embTop {n r : ℕ} (h : r ≤ n) (x : Matrix (Fin r) (Fin n) k) (g : Matrix (Fin r) (Fin r) k) :
     Matrix.trace (x * embTop n g) = Matrix.trace (topL r x * g) := by
   obtain ⟨t, rfl⟩ := Nat.exists_eq_add_of_le h
@@ -99,6 +133,19 @@ theorem trace_embTop {n r : ℕ} (h : r ≤ n) (x : Matrix (Fin r) (Fin n) k) (g
   simp [embTop, topL, h2]
   rfl
 
+/- English proof (translation)
+Take `⟨h0, h1⟩` from `GlobalTheory.matrixGaussSum_singular_and_invertible k ℂ ψ ξ r hψ hξ`. Establish `step : ∑ v : Matrix (Fin n) (Fin r) k, (if h : LowZero r v ∧ IsUnit (topL r v).det then ((ξ h.2.unit : ℂˣ) : ℂ) ^ (-1 : ℤ) else 0) * ψ (Matrix.trace (x * v)) = ∑ g : GL (Fin r) k, (((ξ (Matrix.GeneralLinearGroup.det g))⁻¹ : ℂˣ) : ℂ) * ψ (Matrix.trace (topL r x * (g : Matrix (Fin …`. Use `symm`. Apply `Finset.sum_of_injOn (fun g : GL (Fin r) k => embTop n (g : Matrix (Fin r) (Fin r) k))` to reduce the goal to its premises. Introduce `a _ b _ hab`.
+
+Use `congrArg (topL r) hab` as an intermediate fact. Simplify using `only [topL_embTop h] at this`. Conclude with `Units.ext this`. Introduce `a _`. Simplify using the standard rewrite rules.
+
+Introduce `u _ hu`. Rewrite using `[dif_neg, zero_mul]`. Introduce and unpack `⟨hl, hd⟩`. Conclude with `hu ⟨((Matrix.isUnit_iff_isUnit_det _).2 hd).unit, by simp, embTop_topL hl⟩`. Introduce `g _`.
+
+Establish `hx : IsUnit (topL r (embTop n (g : Matrix (Fin r) (Fin r) k))).det`. Rewrite using `[topL_embTop h]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit`. Establish `hdet : hx.unit = Matrix.GeneralLinearGroup.det g` using `Units.ext (by simp [topL_embTop h])`. Rewrite using `[dif_pos ⟨lowZero_embTop _, hx⟩, trace_embTop h, hdet, zpow_neg_one, Units.val_inv_eq_inv_val]`.
+
+Rewrite using `[step]`. Distinguish the cases in `hy : IsUnit (topL r x).det`. Establish `hm` using `(Matrix.isUnit_iff_isUnit_det _).2 hy`. Establish `hdet : Matrix.GeneralLinearGroup.det (hm.unit : GL (Fin r) k) = hy.unit` using `Units.ext (by simp [Matrix.GeneralLinearGroup.det])`. Establish `key` using `h1 hm.unit`.
+
+Rewrite `key` using `[hdet]`. Simplify using `only [IsUnit.unit_spec, one_mul] at key`. Rewrite using `[key, dif_pos hy, mul_comm]`. Establish `hz : (topL r x).det = 0` using `by simpa using hy`. Rewrite using `[h0 _ hz, dif_neg hy, mul_zero]`.
+-/
 theorem transform {n r : ℕ} (h : r ≤ n) {ψ : AddChar k ℂ} (hψ : ψ.IsPrimitive) {ξ : kˣ →* ℂˣ} (hξ : ξ ≠ 1)
     (x : Matrix (Fin r) (Fin n) k) :
     ∑ v : Matrix (Fin n) (Fin r) k,
@@ -142,6 +189,9 @@ theorem transform {n r : ℕ} (h : r ≤ n) {ψ : AddChar k ℂ} (hψ : ψ.IsPri
 
 end Local
 
+/- English proof (translation)
+Use `split_ifs with h`. Conclude with `Finset.prod_congr rfl fun i _ => (dif_pos (h i.1 i.2)).symm`. Use `push_neg at h`. Take `⟨i, hi, hp⟩` from `h`. Conclude with `(Finset.prod_eq_zero (Finset.mem_attach Q ⟨i, hi⟩) (dif_neg hp)).symm`.
+-/
 theorem dite_prod {ι : Type} (Q : Finset ι) (p : ι → Prop) (f : ∀ i, p i → ℂ) :
     (if h : ∀ i ∈ Q, p i then ∏ i ∈ Q.attach, f i.1 (h i.1 i.2) else 0) =
       ∏ i ∈ Q.attach, if h : p i.1 then f i.1 h else 0 := by
@@ -151,6 +201,17 @@ theorem dite_prod {ι : Type} (Q : Finset ι) (p : ι → Prop) (f : ∀ i, p i 
     obtain ⟨i, hi, hp⟩ := h
     exact (Finset.prod_eq_zero (Finset.mem_attach Q ⟨i, hi⟩) (dif_neg hp)).symm
 
+/- English proof (translation)
+Introduce `D _ Q n r hrn ψP ξ hψ hξ`. Set `f : ∀ PP : Pl D.host.E, Matrix (Fin n) (Fin r) (kP PP) → ℂ` to `fun PP v => if h : LowZero r v ∧ IsUnit (topL r v).det then ((ξ PP h.2.unit : ℂˣ) : ℂ) ^ (-1 : ℤ) else 0`. Set `c : ∀ PP : Pl D.host.E, Matrix (Fin r) (Fin n) (kP PP) → ℂ` to `fun PP x => ((Nat.card (kP PP) : ℂ) ^ (n * r))⁻¹ * ∑ v, f PP v * ψP PP (Matrix.trace (-x * v))`. Use `⟨fun x => ∏ PP ∈ Q.attach, c PP.1 (x PP), fun u => ?_, fun x y hxy => ?_⟩` and prove the remaining obligations. Establish `h1 : omegaQ Q r ξ (-1) u = ∏ PP ∈ Q.attach, f PP.1 (u PP.1)`.
+
+Unfold `omegaQ`. Use `dite_prod Q (fun PP => LowZero r (u PP) ∧ IsUnit (topL r (u PP)).det) (fun PP h => ((ξ PP h.2.unit : ℂˣ) : ℂ) ^ (-1 : ℤ))` and compare the differences between its conclusion and the goal. Establish `h2 : ∀ PP : ↥Q, f PP.1 (u PP.1) = ∑ x, c PP.1 x * ψP PP.1 (Matrix.trace (x * u PP.1))` using `fun PP => by`. Use `letI := Ideal.Quotient.field PP.1.asIdeal`. Conclude with `inversion (k := kP PP.1) (hψ PP.1 PP.2) (f PP.1) (u PP.1)`.
+
+Rewrite using `[h1]`. Simplify using `only [h2, ← Finset.prod_mul_distrib, Finset.attach_eq_univ]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Establish `h1 : omegaFlat Q r ξ y = ∏ PP ∈ Q.attach, if h : IsUnit (topL r (y PP.1)).det then ((ξ PP.1 h.unit : ℂˣ) : ℂ) else 0`. Unfold `omegaFlat`.
+
+Use `dite_prod Q (fun PP => IsUnit (topL r (y PP)).det) (fun PP h => ((ξ PP h.unit : ℂˣ) : ℂ))` and compare the differences between its conclusion and the goal. Rewrite using `[h1, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Rewrite using `[hxy PP, mul_assoc]`. Simplify using `only [c, Pi.neg_apply, neg_neg]`.
+
+Use `congr 1`. Use `letI := Ideal.Quotient.field PP.1.asIdeal`. Use `transform (k := kP PP.1) hrn (hψ PP.1 PP.2) (hξ PP.1 PP.2) (x PP)` and compare the differences between its conclusion and the goal.
+-/
 theorem omegaQ_fourier : ∀ (D : D7) [∀ PP : Pl D.host.E, Fintype (kP PP)] (Q : Finset (Pl D.host.E)) (n r : ℕ), r ≤ n → ∀ (ψP : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ), (∀ PP ∈ Q, (ψP PP).IsPrimitive) → (∀ PP ∈ Q, ξ PP ≠ 1) → ∃ c : (∀ PP : ↥Q, Matrix (Fin r) (Fin n) (kP PP.1)) → ℂ, (∀ u : ∀ PP : Pl D.host.E, Matrix (Fin n) (Fin r) (kP PP), omegaQ Q r ξ (-1) u = ∑ x, c x * ∏ PP ∈ Q.attach, ψP PP.1 (Matrix.trace (x PP * u PP.1))) ∧ ∀ (x : ∀ PP : ↥Q, Matrix (Fin r) (Fin n) (kP PP.1)) (y : ∀ PP : Pl D.host.E, Matrix (Fin r) (Fin n) (kP PP)), (∀ PP : ↥Q, y PP.1 = x PP) → c (-x) = (∏ PP ∈ Q.attach, ((Nat.card (kP PP.1) : ℂ) ^ (n * r))⁻¹ * ∑ g : GL (Fin r) (kP PP.1), (((ξ PP.1 (Matrix.GeneralLinearGroup.det g))⁻¹ : ℂˣ) : ℂ) * ψP PP.1 (Matrix.trace (g : Matrix (Fin r) (Fin r) (kP PP.1)))) * omegaFlat Q r ξ y := by
   intro D _ Q n r hrn ψP ξ hψ hξ
   let f : ∀ PP : Pl D.host.E, Matrix (Fin n) (Fin r) (kP PP) → ℂ := fun PP v =>

@@ -11,6 +11,17 @@ open scoped TensorProduct NNReal Matrix
 
 namespace PositivityTheory.ThKF0
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP`. Establish `hS` using `hP.weil.isUSplitting`. Take `⟨l, hl, hlt⟩` from `(GlobalTheory.T.theta_distribution_nonzero_admissible F (Fin n × Fin d)).2.1`. Use `⟨fun Φ hΦ => ⟨?_, ?_, theta_moderate_growth_of_decay harch F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ⟩, ?_⟩` and prove the remaining obligations. Use `(hS.cont l hl Φ hΦ).congr fun x => ?_` and prove the remaining obligations.
+
+Simplify using `only [theta]`. Conclude with `hlt _ (hS.pres _ _ hΦ)`. Introduce `γ hγ γ' hγ' g h`. Simplify using `only [theta]`. Establish `e : om (γ * g, γ' * h) Φ = om (γ, γ') (om (g, h) Φ)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `theta_sum_rational_invariance F E σ B n d X W M χX χW om r s r' s' hP γ hγ γ' hγ' _ (hS.pres _ _ hΦ)`. Introduce `φ hφ g h`.
+
+Take `⟨T, hT⟩` from `hS.adm (g, h) l hl φ hφ`. Use `T.continuous.congr fun f => ?_` and prove the remaining obligations. Simplify using `only [theta]`. Establish `hm : pureA F (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) φ ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, φ, hφ, rfl⟩`. Rewrite using `[← hlt _ (hS.pres _ _ hm)]`.
+
+Conclude with `(hT f).symm`.
+-/
 theorem thetaBasic_of (harch : ArchBd) : GlobalTheory.ThK.ThetaBasic := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP
   have hS := hP.weil.isUSplitting

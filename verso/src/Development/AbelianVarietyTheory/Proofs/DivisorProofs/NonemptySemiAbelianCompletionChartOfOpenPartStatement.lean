@@ -10,5 +10,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Desc.OpenChart.nonempty_chart | exact GlobalTheory.Desc.OpenChart.nonempty_chart | (intros; apply GlobalTheory.Desc.OpenChart.nonempty_chart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nonempty_semiAbelianCompletionChart_of_openPart : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) {S : Scheme.{0}} (j : Xo.XF c ⟶ S) [IsOpenImmersion j] (A : Over (Xo.XF c)) [GrpObj A], IsSemiAbelian A → ∀ x ∈ Set.range j, Nonempty (GlobalTheory.Desc.Chart j A x) := by
   first | exact @GlobalTheory.Desc.OpenChart.nonempty_chart | exact GlobalTheory.Desc.OpenChart.nonempty_chart | (intros; apply GlobalTheory.Desc.OpenChart.nonempty_chart <;> assumption)

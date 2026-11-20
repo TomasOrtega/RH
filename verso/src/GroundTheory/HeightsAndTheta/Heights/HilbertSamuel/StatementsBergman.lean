@@ -57,6 +57,9 @@ def BergmanL1Convergence.Statement : Prop :=
       Tendsto (fun n : ℕ => ∫ x, |((n : ℝ) ^ D)⁻¹ * bergman W dV (V n) n x - bergmanDens W dV x|
         ∂dV.μ) atTop (𝓝 0)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j x`. Simplify using `[Weight.lerp]`.
+-/
 lemma lerp_self_φ {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X}
     {L : HolLineBundle A} (W : Weight L) (t : ℝ) : (W.lerp W t).φ = W.φ := by
   funext j x

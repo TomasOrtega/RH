@@ -18,6 +18,9 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
 
 omit [IsUnitBall O K] in
 
+/- English proof (translation)
+Establish `hρ` using `pow_pos (rad_pos l (1 / e)) n`. Rewrite using `[← le_div_iff₀ hρ]`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (div_nonneg hb hρ.le) fun j => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hρ, norm_term_eq]`. Conclude with `hf _`.
+-/
 theorem norm_tail_mul_rad_le {f : K⟦X⟧} {b : ℝ} (hb : 0 ≤ b)
     (hf : ∀ n, ‖coeff n f‖ * rad l (1 / e) ^ n ≤ b) (n : ℕ) :
     ‖tail l e f n‖ * rad l (1 / e) ^ n ≤ b := by
@@ -27,12 +30,18 @@ theorem norm_tail_mul_rad_le {f : K⟦X⟧} {b : ℝ} (hb : 0 ≤ b)
   rw [le_div_iff₀ hρ, norm_term_eq]
   exact hf _
 
+/- English proof (translation)
+Rewrite using `[tail_rec l e hf n, map_sub, E, add_mul, map_add, coeff_X_pow_mul', if_neg (by omega), ← map_natCast (C : K →+* K⟦X⟧) l, coeff_C_mul, quotE, coeff_mk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_sub_E_mul_quotE_of_lt [CompleteSpace K] {f : K⟦X⟧} (hf : f ∈ Rpi O K l e) {n : ℕ}
     (hn : n < e) : coeff n (f - E K l e * quotE l e f) = tail l e f n := by
   rw [tail_rec l e hf n, map_sub, E, add_mul, map_add, coeff_X_pow_mul', if_neg (by omega),
     ← map_natCast (C : K →+* K⟦X⟧) l, coeff_C_mul, quotE, coeff_mk]
   ring
 
+/- English proof (translation)
+Use `le_trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)) (hf.1 n)` and prove the remaining obligations. Use `le_trans ?_ (norm_pow_le_norm_factorial (K := K) l (n / e))` and prove the remaining obligations. Rewrite using `[← rad_pow (K := K) l e, ← pow_mul]`. Conclude with `pow_le_pow_of_le_one (rad_nonneg _ _) (rad_le_one l (by positivity)) (Nat.mul_div_le n e)`.
+-/
 theorem norm_coeff_mul_rad_le_of_mem_S {f : K⟦X⟧} (hf : f ∈ S O K e) (n : ℕ) :
     ‖coeff n f‖ * rad l (1 / e) ^ n ≤ 1 := by
   refine le_trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)) (hf.1 n)
@@ -40,6 +49,25 @@ theorem norm_coeff_mul_rad_le_of_mem_S {f : K⟦X⟧} (hf : f ∈ S O K e) (n : 
   rw [← rad_pow (K := K) l e, ← pow_mul]
   exact pow_le_pow_of_le_one (rad_nonneg _ _) (rad_le_one l (by positivity)) (Nat.mul_div_le n e)
 
+/- English proof (translation)
+Proceed by induction on `m generalizing f b with`. Consider the case `zero => exact ⟨0, fun n => by simpa using hb, f, hf, by simp⟩`. Consider the case `succ m ih`. Establish `hl0 : 0 < ‖(l : K)‖` using `norm_pos_iff.2 (l_ne_zero l)`. Establish `hl1 : ‖(l : K)‖ < 1` using `norm_l_lt_one l`.
+
+Establish `hρe : rad l (1 / e) ^ e = ‖(l : K)‖` using `rad_pow l e`. Establish `hρ0 : 0 < rad l (1 / e)` using `rad_pos l _`. Establish `hρ1 : rad l (1 / e) ≤ 1` using `rad_le_one l (by positivity)`. Establish `htail` using `norm_tail_mul_rad_le l e hb hfb`. Establish `hq : ∀ n, ‖coeff n (quotE l e f)‖ * rad l (1 / e) ^ n ≤ b * ‖(l : K)‖⁻¹` using `fun n => by`.
+
+Use `htail (n + e)` as an intermediate fact. Rewrite `this` using `[pow_add, hρe]`. Rewrite using `[quotE, coeff_mk, le_mul_inv_iff₀ hl0]`. Simplify `this` using `[mul_assoc]`. Take `⟨g1, hg1, h1, hh1, hq1⟩` from `ih (quotE_mem_Rpi l e hf) (mul_nonneg hb (inv_nonneg.2 hl0.le)) hq`.
+
+Establish `hpow : ‖(l : K)‖⁻¹ ≤ ‖(l : K)‖⁻¹ ^ (m + 1)`. Simplify using `using pow_le_pow_right₀ (one_le_inv₀ hl0 |>.2 hl1.le) (Nat.succ_le_succ (Nat.zero_le m))`. Use `⟨(f - E K l e * quotE l e f) + E K l e * g1, fun n => ?_, h1, hh1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations.
+
+Break down `lt_or_ge n e with hn | hn` into its components or cases. Rewrite using `[coeff_sub_E_mul_quotE_of_lt l e hf hn]`. Establish `h2` using `htail n`. Establish `h3 : ‖(l : K)‖ ≤ rad l (1 / e) ^ n`. Rewrite using `[← hρe]`.
+
+Conclude with `pow_le_pow_of_le_one hρ0.le hρ1 hn.le`. Establish `h4 : ‖tail l e f n‖ ≤ b * ‖(l : K)‖⁻¹`. Rewrite using `[le_mul_inv_iff₀ hl0]`. Conclude with `(mul_le_mul_of_nonneg_left h3 (norm_nonneg _)).trans h2`. Conclude with `h4.trans (mul_le_mul_of_nonneg_left hpow hb)`.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le' hn`. Rewrite using `[coeff_sub_E_mul_quotE l e hf, norm_zero]`. Check the signs of the components of the expression. Establish `hE : ∀ n, ‖coeff n (E K l e)‖ * (1 : ℝ) ≤ 1` using `fun n => by`. Simplify using `using (E_mem l e (A O K)) n`.
+
+Use `norm_coeff_mul_le (w := fun _ => (1 : ℝ)) (fun _ => zero_le_one) (fun _ _ => by simp) (a := 1) (b := b * ‖(l : K)‖⁻¹ * ‖(l : K)‖⁻¹ ^ m) zero_le_one (by positivity) hE (g := g1) (fun n => by rw [mul_one]; exact hg1 n) n` as an intermediate fact. Establish `e' : (1 : ℝ) * (b * ‖(l : K)‖⁻¹ * ‖(l : K)‖⁻¹ ^ m) = b * ‖(l : K)‖⁻¹ ^ (m + 1)`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[mul_one, e']`. Conclude with `this`.
+
+Take the linear combination `E K l e * hq1`.
+-/
 theorem exists_bdd_div_E_pow [CompleteSpace K] (m : ℕ) {f : K⟦X⟧} (hf : f ∈ Rpi O K l e)
     {b : ℝ} (hb : 0 ≤ b) (hfb : ∀ n, ‖coeff n f‖ * rad l (1 / e) ^ n ≤ b) :
     ∃ g : K⟦X⟧, (∀ n, ‖coeff n g‖ ≤ b * ‖(l : K)‖⁻¹ ^ m) ∧
@@ -96,6 +124,15 @@ namespace GlobalTheory.BKReal
 
 open PowerSeries GlobalTheory.BK
 
+/- English proof (translation)
+Take `⟨g, hg, h, hh, hs⟩` from `exists_bdd_div_E_pow l e m (S_le_R l e s.2) zero_le_one (norm_coeff_mul_rad_le_of_mem_S l e s.2)`. Establish `hl0 : ‖(l : K)‖ ≠ 0` using `norm_ne_zero_iff.2 (GlobalTheory.BK.l_ne_zero (K := K) l)`. Establish `hG : C ((l : K) ^ m) * g ∈ A O K` using `fun n => by`. Rewrite using `[coeff_C_mul, norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hH : C ((l : K) ^ m) * h ∈ Rpi O K l e` using `mul_mem (HasK.C_mem _) hh`. Establish `key : (l : Rpi O K l e) ^ m * Subalgebra.inclusion (invL_S_le_Rpi l e) (algebraMap (S O K e) (invL l (S O K e)) s) = ⟨_, A_le_Rpi l e hG⟩ + EIn l e (Rpi O K l e) ^ m * ⟨_, hH⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_add, Subalgebra.coe_pow, SubringClass.coe_natCast, Subalgebra.coe_inclusion, coe_algebraMap_away, coe_EIn, map_pow, map_natCast]`. Rewrite using `[hs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ϖ.iHat O K (toHat O K l e ⟨_, A_le_Rpi l e hG⟩) = toOD l O (ϖ.iA O K ⟨_, hG⟩)` using `(congrArg (ϖ.iHat O K) (toHat_eq_ofAl l e (g := algebraMap (A O K) (invL l (A O K)) ⟨_, hG⟩) rfl)).trans (ϖ.iHat_ofA O K _)`. Establish `e2 : ϖ.iHat O K (Ehat O K l e) = ϖ.iAl O K (EIn l e _)` using `ϖ.iHat_ofAl O K _`. Establish `h1 : (l : OD l O) ^ m * ϖ.iHat O K (toHatS O K l e (algebraMap (S O K e) (invL l (S O K e)) s)) = ϖ.iHat O K (toHat O K l e ((l : Rpi O K l e) ^ m * Subalgebra.inclusion (invL_S_le_Rpi l e) (algebraMap (S O K e) (invL l (S O K e)) s)))`. Simplify using `only [map_mul, map_pow, map_natCast]`.
+
+Both sides reduce to the same expression. Use `⟨ϖ.iA O K ⟨_, hG⟩, ϖ.iHat O K (toHat O K l e ⟨_, hH⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[h1, key]`. Rewrite using `[map_add (toHat O K l e), map_add (ϖ.iHat O K), map_mul (toHat O K l e), map_mul (ϖ.iHat O K), map_pow (toHat O K l e), map_pow (ϖ.iHat O K), toHat_E, e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_l_pow_iHat_toHatS_sub_dvd (l : ℕ) [Fact l.Prime] (e : ℕ) [NeZero e] (O K : Type)
     [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K]
     [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (ϖ : PiSys l e)

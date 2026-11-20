@@ -4,6 +4,37 @@ namespace GlobalTheory
 
 open Finset in
 
+/- English proof (translation)
+Use `letI : Fintype B := Fintype.ofFinite B`. Establish `hc : (Fintype.card B : L) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Use `set s : Module.End L V := ∑ b : B, (((lam b)⁻¹ : Lˣ) : L) • ρ b with hs`. Use `set e : Module.End L V := (Fintype.card B : L)⁻¹ • s with he`. Establish `h1 : ∀ b : B, ρ b * s = (lam b : L) • s`.
+
+Introduce `b`. Rewrite using `[hs, Finset.mul_sum, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft b) _ _ ?_` and prove the remaining obligations. Introduce `c`. Simplify using `only [Equiv.coe_mulLeft, map_mul, Subgroup.coe_mul, smul_smul, mul_smul_comm]`.
+
+Use `congr 1`. Simplify using `[mul_comm]`. Establish `h1e : ∀ b : B, ρ b * e = (lam b : L) • e`. Introduce `b`. Rewrite using `[he, mul_smul_comm, h1, smul_comm]`.
+
+Establish `h2 : ∀ f : Module.End L V, (∀ b : B, ρ b * f = (lam b : L) • f) → e * f = f`. Introduce `f hf`. Rewrite using `[he, smul_mul_assoc, hs, Finset.sum_mul]`. Establish `: ∀ b : B, ((((lam b)⁻¹ : Lˣ) : L) • ρ b) * f = f`. Introduce `b`.
+
+Rewrite using `[smul_mul_assoc, hf, smul_smul]`. Simplify using the standard rewrite rules. Simplify using `only [this, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul L, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Establish `hev : e v = v`.
+
+Rewrite using `[he, hs]`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, hlam, smul_smul, Units.inv_mul, one_smul, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul L, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Set `κ : G → B ≃* B` to `fun g => (MulAut.conjNormal (H := B) g⁻¹)`. Establish `hκ : ∀ g (b : B), (κ g b : G) = g⁻¹ * b * g`.
+
+Introduce `g b`. Simplify using `[κ]`. Establish `hcomm : ∀ g (b : B), ρ b * ρ g = ρ g * ρ (κ g b)`. Introduce `g b`. Rewrite using `[← map_mul, ← map_mul, hκ]`.
+
+Use `congr 1`. Use `group`. Use `⟨e, ?_, h2 e h1e, h1e, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Rewrite `hev` using `[h]`.
+
+Conclude with `hv hev.symm`. Introduce `t ht`. Establish `ht'` using `(hT t).1 ht`. Rewrite using `[he, mul_smul_comm, smul_mul_assoc, hs, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`.
+
+Use `symm`. Use `Fintype.sum_equiv (κ t).toEquiv _ _ ?_` and prove the remaining obligations. Introduce `b`. Use `ht' b (κ t b) (hκ t b)` as an intermediate fact. Rewrite using `[smul_mul_assoc, mul_smul_comm, hcomm, ← this]`.
+
+Both sides reduce to the same expression. Introduce `g hg`. Set `f : B →* L` to `(Units.coeHom L).comp (lam⁻¹ * lam.comp (κ g).toMonoidHom)`. Establish `hf : f ≠ 1`. Introduce `h`.
+
+Apply `hg` to reduce the goal to its premises. Rewrite using `[hT]`. Introduce `b b' hb`. Establish `hb' : b' = κ g b` using `Subtype.ext (by rw [hb, hκ])`. Establish `h3 : f b = 1` using `by rw [h]; rfl`.
+
+Establish `h4 : (lam b)⁻¹ * lam (κ g b) = 1` using `Units.ext h3`. Rewrite using `[hb']`. Conclude with `(inv_mul_eq_one.mp h4).symm`. Establish `h0` using `sum_hom_units_eq_zero f hf`. Establish `: s * ρ g * e = 0`.
+
+Rewrite using `[hs, Finset.sum_mul, Finset.sum_mul]`. Establish `: ∀ b : B, ((((lam b)⁻¹ : Lˣ) : L) • ρ b) * ρ g * e = f b • (ρ g * e)`. Introduce `b`. Rewrite using `[smul_mul_assoc, smul_mul_assoc, hcomm, mul_assoc, h1e, mul_smul_comm, smul_smul]`. Both sides reduce to the same expression.
+
+Simplify using `only [this]`. Rewrite using `[← Finset.sum_smul, h0, zero_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← smul_mul_assoc, ← smul_mul_assoc]`. Use `_ = 0 := by rw [this, smul_zero]`.
+-/
 theorem exists_weight_idempotent (L : Type) [Field L] [CharZero L] (G : Type) [Group G] [Finite G]
     (V : Type) [AddCommGroup V] [Module L V] (ρ : Representation L G V) (B T : Subgroup G)
     (lam : B →* Lˣ) (v : V) (hB : B.Normal) (hv : v ≠ 0)

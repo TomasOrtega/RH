@@ -16,6 +16,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.ThetaLevel
 
+/- English proof (translation)
+Establish `h1 : ∀ N : ℕ, (N : ℝ) / 2 ≤ ‖∑ i ∈ Finset.range N, z ^ i‖`. Introduce `N`. Use `le_trans ?_ (Complex.re_le_norm _)` and prove the remaining obligations. Rewrite using `[Complex.re_sum]`. Establish `: ∀ i ∈ Finset.range N, (1 / 2 : ℝ) ≤ (z ^ i).re`.
+
+Introduce `i _`. Establish `h2` using `(Complex.abs_re_le_norm (z ^ i - 1)).trans_lt (h i)`. Rewrite `h2` using `[Complex.sub_re, Complex.one_re, abs_lt]`. Combine the linear relations using `[h2.1]`. Establish `h3` using `Finset.sum_le_sum this`.
+
+Simplify using `only [Finset.sum_const, Finset.card_range, nsmul_eq_mul] at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hz`. Establish `hpos : 0 < ‖z - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hz)`. Take `⟨N, hN⟩` from `exists_nat_gt (1 / ‖z - 1‖)`.
+
+Establish `h4` using `h N`. Rewrite `h4` using `[← geom_sum_mul, norm_mul]`. Rewrite `hN` using `[div_lt_iff₀ hpos]`. Use polynomial arithmetic with `[h1 N]`.
+-/
 theorem eq_one_of_pow_near {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
   have h1 : ∀ N : ℕ, (N : ℝ) / 2 ≤ ‖∑ i ∈ Finset.range N, z ^ i‖ := by
     intro N
@@ -37,6 +46,13 @@ theorem eq_one_of_pow_near {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) 
   rw [div_lt_iff₀ hpos] at hN
   nlinarith [h1 N]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`. Take `⟨μ, 𝓕, hμ, h𝓕, -⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WO S T) (ratL T S) K hK hKc).1`. Use `filter_upwards [GlobalTheory.T.eventually_weilMatrixCoeff_finitePoint_invariant D ψ hψ S T μ 𝓕 hμ h𝓕 f hf] with p hp h1 h2`. Take `⟨g, h⟩` from `p`.
+
+Take `⟨c, -, hc⟩` from `GlobalTheory.T.thetaFunction_eq_unitSmul_of_diagonalCoefficient_eq D ψ hψ S T μ 𝓕 hμ h𝓕 f (om (g, h) f) hf (hw.om_pres _ f hf) (fun w => by`. Establish `e : actO S T g h (actO S T g⁻¹ h⁻¹ w) = w` using `GlobalTheory.AdelicLatMove.actO_actO_inv S T g h w`. Establish `e1` using `hp h1 h2 (actO S T g⁻¹ h⁻¹ w)`. Establish `e2` using `GlobalTheory.Mem.LiftPolar.scalar_eq D ψ hψ S T μ 𝓕 hμ h𝓕 (om (g, h)) (hw.om_pres _) (hw.om_unit μ 𝓕 hμ h𝓕 _) (heisO ψ S T (actO S T g⁻¹ h⁻¹ w) f) f (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf _) hf`. Rewrite `e2` using `[hw.om_heis g h _ f hf, e]`.
+
+Simplify using `only [e] at e1`. Conclude with `e2.trans e1.symm)`. Conclude with `⟨c, hc⟩`.
+-/
 theorem eventually_smul (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (hw : GlobalTheory.Ker.IsWeak ψ S T om)
     (f : WO S T → ℂ) (hf : IsThetaFunO ψ S T f) :
@@ -56,6 +72,19 @@ theorem eventually_smul (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdCh
     exact e2.trans e1.symm)
   exact ⟨c, hc⟩
 
+/- English proof (translation)
+Introduce `D ψ hψ S T om hw hc f hf`. Distinguish the cases in `h0 : f = 0`. Conclude with `⟨⊤, ⊤, by simp, by simp, fun k _ _ k' _ _ => by rw [h0, map_zero]⟩`. Take `⟨w, hw0⟩` from `Function.ne_iff.1 h0`. Establish `hw0 : f w ≠ 0` using `hw0`.
+
+Establish `hcont : Continuous fun p : GA D S × GA D T => ‖om p f w / f w - 1‖` using `(((hc f hf w).div_const _).sub continuous_const).norm`. Establish `hnear : ∀ᶠ p : GA D S × GA D T in 𝓝 1, ‖om p f w / f w - 1‖ < 1 / 2`. Use `hcont.continuousAt.eventually_lt continuousAt_const ?_` and prove the remaining obligations. Simplify using `[div_self hw0]`. Establish `hN` using `(eventually_smul D ψ hψ S T om hw f hf).and hnear`.
+
+Take `⟨N, hN1, N', hN2, hsub⟩` from `mem_nhds_prod_iff.1 (show _ ∈ 𝓝 ((1 : GA D S), (1 : GA D T)) from hN)`. Take `⟨U, hU, hUN⟩` from `GlobalTheory.Mem.SmallSub.exists_open_subgroup_finite_subset D S N hN1`. Take `⟨U', hU', hUN'⟩` from `GlobalTheory.Mem.SmallSub.exists_open_subgroup_finite_subset D T N' hN2`. Use `⟨U, U', hU, hU', fun k hk hkf k' hk' hkf' => ?_⟩` and prove the remaining obligations. Take `⟨c, hcf⟩` from `(hsub (Set.mk_mem_prod (hUN k hk hkf) (hUN' k' hk' hkf'))).1 hkf hkf'`.
+
+Establish `hpow : ∀ n : ℕ, om ((k, k') ^ n) f = c ^ n • f`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, map_mul, Module.End.mul_apply, hcf, map_smul, ih, smul_smul, pow_succ']`.
+
+Establish `hc1 : c = 1` using `eq_one_of_pow_near fun n => by`. Establish `h` using `(hsub (Set.mk_mem_prod (hUN _ (pow_mem hk n) (pow_mem hkf n)) (hUN' _ (pow_mem hk' n) (pow_mem hkf' n)))).2`. Establish `e : om (k ^ n, k' ^ n) f = c ^ n • f` using `hpow n`. Rewrite `h` using `[e, Pi.smul_apply, smul_eq_mul, mul_div_cancel_right₀ _ hw0]`. Conclude with `h`.
+
+Rewrite using `[hcf, hc1, one_smul]`.
+-/
 theorem exists_level : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), GlobalTheory.Ker.IsWeak ψ S T om → OmCont ψ S T om → ∀ f, IsThetaFunO ψ S T f → ∃ (U : Subgroup (GA D S)) (U' : Subgroup (GA D T)), IsOpen (U : Set (GA D S)) ∧ IsOpen (U' : Set (GA D T)) ∧ ∀ k ∈ U, k ∈ GfC S → ∀ k' ∈ U', k' ∈ GfC T → om (k, k') f = f := by
   intro D ψ hψ S T om hw hc f hf
   by_cases h0 : f = 0

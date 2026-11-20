@@ -6,6 +6,19 @@ noncomputable section
 
 namespace GlobalTheory.Schubert
 
+/- English proof (translation)
+Use `set f : ι × Fin N → ι × Fin N := fun x => (x.1, ρ x.1 x.2) with hfdef`. Establish `hinj : Function.Injective f`. Introduce and unpack `⟨a, i⟩ ⟨b, j⟩ h`. Simplify using `only [hfdef, Prod.mk.injEq] at h`. Take `⟨rfl, h2⟩` from `h`.
+
+Simplify using `[(ρ a).injective h2]`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨a, j⟩`. Conclude with `⟨(a, (ρ a).symm j), by simp [hfdef]⟩`. Establish `hexp : ∀ σ : ι → Equiv.Perm (Fin N), Formalism.DegreeFormula.permExp (σ * ρ⁻¹) = (Formalism.DegreeFormula.permExp σ).mapDomain f`.
+
+Introduce `σ`. Use extensionality with `y`. Take `⟨⟨a, i⟩, rfl⟩` from `hsurj y`. Rewrite using `[Finsupp.mapDomain_apply hinj]`. Simplify using `[Formalism.DegreeFormula.permExp, hfdef, Pi.mul_apply, Pi.inv_apply]`.
+
+Establish `hsgn : ∀ σ : ι → Equiv.Perm (Fin N), (∏ τ, ((Equiv.Perm.sign ((σ * ρ⁻¹) τ) : ℤ) : ℝ)) = (∏ τ, ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ)) * ∏ τ, ((Equiv.Perm.sign (ρ τ) : ℤ) : ℝ)`. Introduce `σ`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[Pi.mul_apply, Pi.inv_apply, Equiv.Perm.sign_inv]`.
+
+Establish `key : ∑ σ : ι → Equiv.Perm (Fin N), (∏ τ, ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ)) * (rename f P).coeff (Formalism.DegreeFormula.permExp σ) = (∏ τ, ((Equiv.Perm.sign (ρ τ) : ℤ) : ℝ)) * ∑ σ : ι → Equiv.Perm (Fin N), (∏ τ, ((Equiv.Perm.sign (σ τ) : ℤ) : ℝ)) * P.coeff (Formalism.DegreeFor …`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight (ρ⁻¹ : ι → Equiv.Perm (Fin N))), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulRight, hsgn, hexp, coeff_rename_mapDomain _ hinj]`. Expand and normalize the polynomial expressions, which then agree.
+
+Unfold `Formalism.DegreeFormula.degFl`. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem degFl_rename_perm {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (ρ : ι → Equiv.Perm (Fin N))
     (P : MvPolynomial (ι × Fin N) ℝ) :
     Formalism.DegreeFormula.degFl ι N (rename (fun x : ι × Fin N => (x.1, ρ x.1 x.2)) P) =
@@ -51,11 +64,17 @@ namespace GlobalTheory.Schubert
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem perm_val_congr {H : Host E} (Dw : Datum H) (w : ∀ τ, Equiv.Perm (Fin (Dw.mult τ)))
     {a b : E →+* ℂ} (e : a = b) (i : ℕ) (h1 : i < Dw.mult a) (h2 : i < Dw.mult b) :
     ((w a ⟨i, h1⟩ : Fin (Dw.mult a)) : ℕ) = ((w b ⟨i, h2⟩ : Fin (Dw.mult b)) : ℕ) := by
   subst e; rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem sign_perm_congr {H : Host E} (Dw : Datum H) (w : ∀ τ, Equiv.Perm (Fin (Dw.mult τ)))
     {a b : E →+* ℂ} (e : a = b) : Equiv.Perm.sign (w a) = Equiv.Perm.sign (w b) := by
   subst e; rfl
@@ -67,10 +86,18 @@ def flagPerm {H : Host E} (Dw : Datum H) (w : ∀ τ, Equiv.Perm (Fin (Dw.mult �
     (Fin.revPerm.permCongr ((finCongr (GlobalTheory.PointChern.mult_of_not_mem Dw (GlobalTheory.AllWt.conj_not_mem τ))).permCongr
       (w (conjEmb τ.1)))))
 
+/- English proof (translation)
+Simplify using `only [flagPerm, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_sumCongr]`.
+-/
 theorem sign_flagPerm {H : Host E} (Dw : Datum H) (w : ∀ τ, Equiv.Perm (Fin (Dw.mult τ))) (τ : GlobalTheory.AllWt.Psi H) :
     Equiv.Perm.sign (flagPerm Dw w τ) = Equiv.Perm.sign (w τ.1) * Equiv.Perm.sign (w (conjEmb τ.1)) := by
   simp only [flagPerm, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_sumCongr]
 
+/- English proof (translation)
+Establish `hp : (i : ℕ) < Dw.p`. Establish `h1` using `i.2`. Establish `h2` using `GlobalTheory.PointChern.mult_of_mem Dw τ.2`. Use linear arithmetic over natural numbers and integers. Establish `e : (⟨i, hi⟩ : Fin (Dw.p + Dw.q)) = Fin.castAdd Dw.q ⟨i, hp⟩` using `rfl`.
+
+Rewrite using `[e]`. Unfold `flagPerm`. Rewrite using `[Equiv.permCongr_apply, finSumFinEquiv_symm_apply_castAdd, Equiv.sumCongr_apply, Sum.map_inl, finSumFinEquiv_apply_left, Fin.coe_castAdd, Equiv.permCongr_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem flagPerm_big {H : Host E} (Dw : Datum H) (w : ∀ τ, Equiv.Perm (Fin (Dw.mult τ))) (τ : GlobalTheory.AllWt.Psi H)
     (i : Fin (Dw.mult τ.1)) (hi : (i : ℕ) < Dw.p + Dw.q) :
     ((flagPerm Dw w τ ⟨i, hi⟩ : Fin (Dw.p + Dw.q)) : ℕ) = ((w τ.1 i : Fin (Dw.mult τ.1)) : ℕ) := by
@@ -83,6 +110,15 @@ theorem flagPerm_big {H : Host E} (Dw : Datum H) (w : ∀ τ, Equiv.Perm (Fin (D
     finSumFinEquiv_apply_left, Fin.coe_castAdd, Equiv.permCongr_apply]
   simp
 
+/- English proof (translation)
+Establish `hq : (i : ℕ) < Dw.q`. Establish `h1` using `i.2`. Establish `h2` using `GlobalTheory.PointChern.mult_of_not_mem Dw hσ`. Use linear arithmetic over natural numbers and integers. Establish `e : (⟨Dw.p + (Dw.q - 1 - (i : ℕ)), hi⟩ : Fin (Dw.p + Dw.q)) = Fin.natAdd Dw.p ⟨Dw.q - 1 - i, by omega⟩` using `rfl`.
+
+Rewrite using `[e]`. Unfold `flagPerm`. Rewrite using `[Equiv.permCongr_apply, finSumFinEquiv_symm_apply_natAdd, Equiv.sumCongr_apply, Sum.map_inr, finSumFinEquiv_apply_right, Fin.coe_natAdd, Equiv.permCongr_apply, Equiv.permCongr_apply]`. Simplify using `only [Fin.revPerm_symm, Fin.revPerm_apply, Fin.val_rev, finCongr_apply, finCongr_symm, Fin.coe_cast]`. Establish `key : ∀ x : Fin (Dw.mult (conjEmb (conjEmb σ))), (x : ℕ) = (i : ℕ) → ((w (conjEmb (conjEmb σ)) x : Fin _) : ℕ) = ((w σ i : Fin (Dw.mult σ)) : ℕ)`.
+
+Introduce and unpack `⟨x, hx⟩ hxi`. Simplify using `only at hxi`. Substitute `hxi` using the available equality. Conclude with `perm_val_congr Dw w (GlobalTheory.AllWt.conjEmb_conjEmb σ) _ _ i.2`. Rewrite using `[key _ (by simp; omega)]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem flagPerm_small {H : Host E} (Dw : Datum H) (w : ∀ τ, Equiv.Perm (Fin (Dw.mult τ))) {σ : E →+* ℂ}
     (hσ : ¬ σ (H.rt : E) = H.rt0) (i : Fin (Dw.mult σ)) (hi : Dw.p + (Dw.q - 1 - (i : ℕ)) < Dw.p + Dw.q) :
     ((flagPerm Dw w ⟨conjEmb σ, GlobalTheory.AllWt.conj_mem hσ⟩ ⟨Dw.p + (Dw.q - 1 - (i : ℕ)), hi⟩ : Fin (Dw.p + Dw.q)) : ℕ) =
@@ -110,6 +146,13 @@ namespace GlobalTheory.Schubert
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Use `MvPolynomial.algHom_ext fun x => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, rename_X, flagMap, aeval_X]`. Take `⟨σ, i⟩` from `x`.
+
+Distinguish the cases in `h : σ (H.rt : E) = H.rt0`. Simplify using `only [flagRoot, dif_pos h, rename_X]`. Use `congr 2`. Conclude with `Fin.ext (flagPerm_big Dw w ⟨σ, h⟩ i _).symm`. Simplify using `only [flagRoot, dif_neg h, map_neg, rename_X]`.
+
+Use `congr 3`. Conclude with `Fin.ext (flagPerm_small Dw w h i _).symm`.
+-/
 theorem flagMap_rename {H : Host E} (Dw : Datum H) (w : ∀ τ, Equiv.Perm (Fin (Dw.mult τ)))
     (Q : MvPolynomial (GlobalTheory.GoodMetric.Root Dw.mult) ℝ) :
     flagMap Dw (rename (fun x : GlobalTheory.GoodMetric.Root Dw.mult =>
@@ -128,6 +171,11 @@ theorem flagMap_rename {H : Host E} (Dw : Datum H) (w : ∀ τ, Equiv.Perm (Fin 
     congr 3
     exact Fin.ext (flagPerm_small Dw w h i _).symm
 
+/- English proof (translation)
+Simplify using `only [sign_flagPerm, Finset.prod_mul_distrib]`. Rewrite using `[← Fintype.prod_subtype_mul_prod_subtype (fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0)]`. Use `congr 1`. Use `Fintype.prod_equiv { toFun := fun τ => (⟨conjEmb τ.1, GlobalTheory.AllWt.conj_mem τ.2⟩ : GlobalTheory.AllWt.Psi H) invFun := fun τ => ⟨conjEmb τ.1, GlobalTheory.AllWt.conj_not_mem τ⟩ left_inv := fun τ => Subtype.ext (GlobalTheory.AllWt.conjEmb_conjEmb τ.1) right_inv := fun τ => S …` and prove the remaining obligations. Introduce `τ`.
+
+Simplify using `only [Equiv.coe_fn_mk]`. Conclude with `sign_perm_congr Dw w (GlobalTheory.AllWt.conjEmb_conjEmb τ.1).symm`.
+-/
 theorem prod_sign_eq {H : Host E} (Dw : Datum H) (w : ∀ τ, Equiv.Perm (Fin (Dw.mult τ))) :
     (∏ τ, Equiv.Perm.sign (w τ) : ℤˣ) = ∏ τ : GlobalTheory.AllWt.Psi H, Equiv.Perm.sign (flagPerm Dw w τ) := by
   simp only [sign_flagPerm, Finset.prod_mul_distrib]
@@ -146,6 +194,9 @@ end GlobalTheory.Schubert
 
 namespace GlobalTheory.Schubert
 
+/- English proof (translation)
+Rewrite using `[flagMap_rename, degFl_rename_perm, prod_sign_eq]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem degFl_flagMap_rename_perm (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (w : ∀ τ, Equiv.Perm (Fin (Dw.mult τ))) (Q : MvPolynomial (GlobalTheory.GoodMetric.Root Dw.mult) ℝ) :
     Formalism.DegreeFormula.degFl (GlobalTheory.AllWt.Psi H) (Dw.p + Dw.q) (GlobalTheory.Schubert.flagMap Dw (MvPolynomial.rename

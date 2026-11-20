@@ -17,6 +17,39 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Establish `hnpos : 0 < d.N + 1` using `Nat.succ_pos _`. Establish `hqm' : ∀ s ∈ q.support, ∀ b, ∑ j, s (b, j) = m b` using `hqm`. Set `ψ : Fin d.D × Fin (d.N + 1) → TVar d.D d.N` to `fun p => (p.1.succ, p.2)`. Establish `hψ : Function.Injective ψ`. Introduce `p p' h`.
+
+Establish `h1` using `congrArg Prod.fst h`. Establish `h2` using `congrArg Prod.snd h`. Conclude with `Prod.ext (Fin.succ_injective _ h1) h2`. Establish `hvars : (q.vars : Set (TVar d.D d.N)) ⊆ Set.range ψ`. Introduce `v hv`.
+
+Break down `v with ⟨i, j⟩` into its components or cases. Break down `Fin.eq_zero_or_eq_succ i with rfl | ⟨k, rfl⟩` into its components or cases. It suffices to derive a contradiction. Take `⟨s, hs, hsv⟩` from `(MvPolynomial.mem_vars _).1 (Finset.mem_coe.1 hv)`. Establish `h0` using `hqm' s hs 0`.
+
+Rewrite `h0` using `[hm]`. Establish `hz : s ((0 : Fin (d.D + 1)), j) = 0` using `(Finset.sum_eq_zero_iff.1 h0) j (Finset.mem_univ j)`. Conclude with `(Finsupp.mem_support_iff.1 hsv) hz`. Conclude with `⟨(k, j), rfl⟩`. Take `⟨q', hq'⟩` from `MvPolynomial.exists_rename_eq_of_vars_subset_range q ψ hψ hvars`.
+
+Take `⟨g, hgdef⟩ : ∃ g : MvPolynomial (Fin d.D × Fin (d.N + 1)) ℂ, g = MvPolynomial.map sg q'` from `⟨_, rfl⟩`. Establish `hev : ∀ z, d.evT sg 0 (d.tOf z) q = MvPolynomial.eval (ReciprocityTheory.MultiplicativeHeights.blockPoint z) g`. Introduce `z`. Rewrite using `[hgdef, MvPolynomial.eval_map, ← hq']`. Unfold `ReciprocityTheory.ChartRestriction.G.T0.Data.evT`.
+
+Rewrite using `[MvPolynomial.eval₂_rename]`. Use `congr 1`. Establish `hg : ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous (fun b : Fin d.D => m b.succ) g`. Unfold `ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous`. Introduce `s hs b`.
+
+Establish `hs' : MvPolynomial.coeff s q' ≠ 0`. Rewrite `hs` using `[hgdef, MvPolynomial.mem_support_iff, MvPolynomial.coeff_map]`. Introduce `h0`. Rewrite `hs` using `[h0, map_zero]`. Conclude with `hs rfl`.
+
+Establish `hmem : Finsupp.mapDomain ψ s ∈ q.support`. Rewrite using `[MvPolynomial.mem_support_iff, ← hq', MvPolynomial.coeff_rename_mapDomain ψ hψ]`. Conclude with `hs'`. Conclude with `(Finset.sum_congr rfl fun j _ => (Finsupp.mapDomain_apply hψ s (b, j)).symm).trans (hqm' _ hmem b.succ)`. Establish `hg0 : g ≠ 0`.
+
+Rewrite using `[hgdef]`. Introduce `h`. Apply `hq` to reduce the goal to its premises. Rewrite using `[← hq']`. Establish `h' : q' = 0` using `MvPolynomial.map_injective (f := sg) sg.injective (by rw [h, map_zero])`.
+
+Rewrite using `[h', map_zero]`. Take `⟨s, hs⟩` from `MvPolynomial.ne_zero_iff.1 hg0`. Take `⟨z, hz1, hzle⟩` from `ReciprocityTheory.MultiplicativeHeights.exists_torus_coeff_le g s`. Establish `hz0 : MvPolynomial.eval z g ≠ 0`. Introduce `h`.
+
+Rewrite `hzle` using `[h, norm_zero]`. Conclude with `hs (norm_le_zero_iff.1 hzle)`. Take `⟨r, hr⟩ : ∃ r : ℝ, r = (Real.sqrt ((d.N + 1 : ℕ) : ℝ))⁻¹` from `⟨_, rfl⟩`. Establish `hrpos : 0 < r`. Rewrite using `[hr]`.
+
+Conclude with `inv_pos.2 (Real.sqrt_pos.2 (Nat.cast_pos.2 hnpos))`. Establish `hvec : ∀ b : Fin d.D, (WithLp.toLp 2 (fun j : Fin (d.N + 1) => (r : ℂ) * z (b, j)) : EuclideanSpace ℂ (Fin (d.N + 1))) ∈ Metric.sphere (0 : EuclideanSpace ℂ (Fin (d.N + 1))) 1`. Introduce `b`. Rewrite using `[mem_sphere_zero_iff_norm, EuclideanSpace.norm_eq]`. Establish `hterm : ∀ j : Fin (d.N + 1), ‖(WithLp.toLp 2 (fun j : Fin (d.N + 1) => (r : ℂ) * z (b, j)) : EuclideanSpace ℂ (Fin (d.N + 1))) j‖ ^ 2 = r ^ 2`.
+
+Introduce `j`. Use `show ‖(r : ℂ) * z (b, j)‖ ^ 2 = r ^ 2`. Rewrite using `[norm_mul, hz1, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hrpos]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => hterm j), Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, hr, inv_pow, Real.sq_sqrt (Nat.cast_nonneg _), mul_inv_cancel₀ (Nat.cast_pos.2 hnpos).ne', Real.sqrt_one]`. Set `u : ReciprocityTheory.MultiplicativeHeights.BlockSphere d.D (d.N + 1)` to `fun b => ⟨_, hvec b⟩`.
+
+Establish `hu : MvPolynomial.eval (ReciprocityTheory.MultiplicativeHeights.blockPoint u) g ≠ 0`. Establish `hbp : ReciprocityTheory.MultiplicativeHeights.blockPoint u = fun p => (r : ℂ) * z p`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Rewrite using `[hbp, ReciprocityTheory.MultiplicativeHeights.eval_mul_of_isMultiHomogeneous hg]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ (Complex.ofReal_ne_zero.2 hrpos.ne')) hz0`. Establish `key` using `ReciprocityTheory.MultiplicativeHeights.null_of_logBound hnpos ReciprocityTheory.MultiplicativeHeights.Closed.sphereLogIntegrable (ReciprocityTheory.MultiplicativeHeights.blockSphere_logMean_bound ReciprocityTheory.MultiplicativeHeights.Closed.sj ReciprocityTheory.MultiplicativeH …`. Rewrite using `[MeasureTheory.ae_iff]`. Use `MeasureTheory.measure_mono_null ?_ key` and prove the remaining obligations. Introduce `w hw`.
+
+Simplify using `only [Set.mem_setOf_eq, not_not] at hw ⊢`. Rewrite using `[← hev w]`. Conclude with `hw`.
+-/
 theorem ae_evT_ne_zero (sg : K →+* ℂ) (q : KTp K d.D d.N) (hq : q ≠ 0) (m : Fin (d.D + 1) → ℕ)
     (hm : m 0 = 0) (hqm : ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous m q) :
     ∀ᵐ z ∂(ReciprocityTheory.MultiplicativeHeights.blockSphereProb d.D (d.N + 1)), d.evT sg 0 (d.tOf z) q ≠ 0 := by

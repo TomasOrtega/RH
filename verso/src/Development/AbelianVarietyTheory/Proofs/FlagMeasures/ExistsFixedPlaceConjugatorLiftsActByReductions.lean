@@ -36,11 +36,19 @@ noncomputable section
 namespace GlobalTheory.FixedConj
 open ReciprocityTheory.Aut
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, smul_smul, he]`.
+-/
 theorem smul_mul_mul_of_idem {R : Type} [CommRing R] {a b : ℕ} (e : R) (he : e * e = e)
     (M : Matrix (Fin a) (Fin b) R) (N : Matrix (Fin b) (Fin b) R) (Q : Matrix (Fin b) (Fin a) R) :
     e • (M * N * Q) = (e • M) * N * (e • Q) := by
   rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, smul_smul, he]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e1 : (Matrix.of fun (i : Fin a) (j : Fin a) => if (i : ℕ) = (j : ℕ) then (1 : R) else 0) = 1`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Rewrite using `[e1, Matrix.one_mul, Matrix.mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem castMatrix_mul_mul_castMatrix_apply {R : Type} [CommRing R] {a b : ℕ} (h : a = b) (X : Matrix (Fin b) (Fin b) R) (i j : Fin a) :
     ((Matrix.of fun (i : Fin a) (j : Fin b) => if (i : ℕ) = (j : ℕ) then (1 : R) else 0) * X *
       (Matrix.of fun (i : Fin b) (j : Fin a) => if (i : ℕ) = (j : ℕ) then (1 : R) else 0)) i j =
@@ -51,16 +59,27 @@ theorem castMatrix_mul_mul_castMatrix_apply {R : Type} [CommRing R] {a b : ℕ} 
   rw [e1, Matrix.one_mul, Matrix.mul_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hC, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hU]`.
+-/
 theorem conj_sub_one {R : Type} [CommRing R] {a b : ℕ} (U : Matrix (Fin a) (Fin b) R) (U' : Matrix (Fin b) (Fin a) R)
     (hU : U * U' = 1) (C Ci X : Matrix (Fin b) (Fin b) R) (hC : C * Ci = 1) :
     U * (C * X * Ci) * U' - 1 = U * (C * (X - 1) * Ci) * U' := by
   rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hC, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hU]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem actsAs_congr {I : Formalism.MainNotions.S.AutInst} {N p : ℕ} {w w' : IsDedekindDomain.HeightOneSpectrum (𝓞 I.E)} (e : w = w')
     (fr : GlobalTheory.RowLev.PlFrame I N p w) (x : I.Gf) (M : Matrix (Fin N) (Fin N) (ZMod p)) :
     (e ▸ fr).ActsAs x M ↔ fr.ActsAs x M := by
   subst e; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Introduce `k _ hk`.
+
+Establish `: (i : ℕ) ≠ k` using `fun e => hk (Fin.ext e.symm)`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem castMatrix_mul_castMatrix {R : Type} [CommRing R] {a b : ℕ} (h : a = b) :
     (Matrix.of fun (i : Fin a) (j : Fin b) => if (i : ℕ) = (j : ℕ) then (1 : R) else 0) *
       (Matrix.of fun (i : Fin b) (j : Fin a) => if (i : ℕ) = (j : ℕ) then (1 : R) else 0) = 1 := by
@@ -73,6 +92,15 @@ theorem castMatrix_mul_castMatrix {R : Type} [CommRing R] {a b : ℕ} (h : a = b
     simp [this]
   · simp
 
+/- English proof (translation)
+Establish `hσ' : ∀ b, σA (θ.symm b) = θ.symm (σ b)` using `fun b => by`. Apply `θ.injective` to reduce the goal to its premises. Rewrite using `[hθσ, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Use `⟨Matrix.GeneralLinearGroup.map (θ.symm : R →+* A) cE, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e2 : ReciprocityTheory.Aut.conjT σA ((Matrix.GeneralLinearGroup.map (θ.symm : R →+* A) cE : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = (ReciprocityTheory.Aut.conjT σ (cE : Matrix (Fin n) (Fin n) R)).map θ.symm`.
+
+Use extensionality with `i j`. Simplify using `[ReciprocityTheory.Aut.conjT, hσ']`. Rewrite using `[e2]`. Use `show (cE : Matrix (Fin n) (Fin n) R).map θ.symm * _ = 1`. Rewrite using `[← Matrix.map_mul, hcE, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `: ((Matrix.GeneralLinearGroup.map (θ.symm : R →+* A) cE)⁻¹ : GL (Fin n) A) = Matrix.GeneralLinearGroup.map (θ.symm : R →+* A) cE⁻¹` using `(map_inv _ _).symm`. Rewrite using `[this]`. Use extensionality with `i j`.
+
+Conclude with `RingEquiv.apply_symm_apply θ _`.
+-/
 theorem exists_unitary_transport {A R : Type} [CommRing A] [CommRing R] (θ : A ≃+* R) (σA : A →+* A) (σ : R →+* R)
     (hθσ : ∀ a, θ (σA a) = σ (θ a)) (n : ℕ) (cE : GL (Fin n) R)
     (hcE : (cE : Matrix (Fin n) (Fin n) R) * ReciprocityTheory.Aut.conjT σ (cE : Matrix (Fin n) (Fin n) R) = 1) :
@@ -95,6 +123,9 @@ theorem exists_unitary_transport {A R : Type} [CommRing A] [CommRing R] (θ : A 
     rw [this]; ext i j
     exact RingEquiv.apply_symm_apply θ _
 
+/- English proof (translation)
+Establish `e1 : Z * ((C : Matrix (Fin n) (Fin n) R) * X * ((C⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)) * Z' = (Z * (C : Matrix (Fin n) (Fin n) R)) * X * (((C⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * Z')`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, smul_mul_mul_of_idem e he, hZ, hZ', ← smul_mul_mul_of_idem e he]`.
+-/
 theorem part_eq {R : Type} [CommRing R] {m n : ℕ} (e : R) (he : e * e = e) (Z P : Matrix (Fin m) (Fin n) R)
     (Z' P' : Matrix (Fin n) (Fin m) R) (C : GL (Fin n) R)
     (hZ : e • (Z * (C : Matrix (Fin n) (Fin n) R)) = e • P)
@@ -105,6 +136,11 @@ theorem part_eq {R : Type} [CommRing R] {m n : ℕ} (e : R) (he : e * e = e) (Z 
     simp only [Matrix.mul_assoc]
   rw [e1, smul_mul_mul_of_idem e he, hZ, hZ', ← smul_mul_mul_of_idem e he]
 
+/- English proof (translation)
+Establish `h1 : res ⟨e * a, S.mul_mem he ha⟩ = res ⟨e * x, S.mul_mem he hx⟩`. Use `congr 1`. Conclude with `Subtype.ext h`. Establish `h2 : res ⟨e * a, S.mul_mem he ha⟩ = res ⟨e, he⟩ * res ⟨a, ha⟩` using `by rw [← map_mul]; rfl`. Establish `h3 : res ⟨e * x, S.mul_mem he hx⟩ = res ⟨e, he⟩ * res ⟨x, hx⟩` using `by rw [← map_mul]; rfl`.
+
+Rewrite `h1` using `[h2, h3, hres, one_mul, one_mul]`. Conclude with `h1`.
+-/
 theorem res_eq_of_part {R k : Type} [CommRing R] [CommRing k] (S : Subring R) (res : S →+* k) (e : R) (he : e ∈ S)
     (hres : res ⟨e, he⟩ = 1) (a x : R) (ha : a ∈ S) (hx : x ∈ S) (h : e * a = e * x) :
     res ⟨a, ha⟩ = res ⟨x, hx⟩ := by
@@ -115,6 +151,9 @@ theorem res_eq_of_part {R k : Type} [CommRing R] [CommRing k] (S : Subring R) (r
   rw [h2, h3, hres, one_mul, one_mul] at h1
   exact h1
 
+/- English proof (translation)
+Establish `e1 : a = d + e * (a - d)` using `by linear_combination h`. Establish `h1 : (⟨a, ha⟩ : S) = ⟨d, hd⟩ + ⟨e, he⟩ * (⟨a, ha⟩ - ⟨d, hd⟩)` using `Subtype.ext e1`. Rewrite using `[h1, map_add, map_mul, hres, zero_mul, add_zero]`.
+-/
 theorem res_eq_of_off {R k : Type} [CommRing R] [CommRing k] (S : Subring R) (res : S →+* k) (e : R) (he : e ∈ S)
     (hres : res ⟨e, he⟩ = 0) (a d : R) (ha : a ∈ S) (hd : d ∈ S) (h : (1 - e) * (a - d) = 0) :
     res ⟨a, ha⟩ = res ⟨d, hd⟩ := by
@@ -122,6 +161,11 @@ theorem res_eq_of_off {R k : Type} [CommRing R] [CommRing k] (S : Subring R) (re
   have h1 : (⟨a, ha⟩ : S) = ⟨d, hd⟩ + ⟨e, he⟩ * (⟨a, ha⟩ - ⟨d, hd⟩) := Subtype.ext e1
   rw [h1, map_add, map_mul, hres, zero_mul, add_zero]
 
+/- English proof (translation)
+Establish `hC : (C : Matrix (Fin n) (Fin n) R) * ((C⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = 1` using `C.mul_inv`. Rewrite using `[conj_sub_one U U' hUU _ _ X hC]`. Establish `e2 : f • (U * ((C : Matrix (Fin n) (Fin n) R) * (X - 1) * ((C⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)) * U') = U * ((C : Matrix (Fin n) (Fin n) R) * (f • (X - 1)) * ((C⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)) * U'`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[e2, hX]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem smul_conj_sub_one {R : Type} [CommRing R] {m n : ℕ} (U : Matrix (Fin m) (Fin n) R) (U' : Matrix (Fin n) (Fin m) R)
     (hUU : U * U' = 1) (C : GL (Fin n) R) (X : Matrix (Fin n) (Fin n) R) (f : R) (hX : f • (X - 1) = 0) :
     f • (U * ((C : Matrix (Fin n) (Fin n) R) * X * ((C⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)) * U' - 1) = 0 := by
@@ -133,6 +177,9 @@ theorem smul_conj_sub_one {R : Type} [CommRing R] {m n : ℕ} (U : Matrix (Fin m
   rw [e2, hX]
   simp
 
+/- English proof (translation)
+Establish `: Bi * M * B - 1 = Bi * (M - 1) * B`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hBiB]`. Establish `e2 : f • (Bi * (M - 1) * B) = Bi * (f • (M - 1)) * B` using `by simp only [Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[this, e2, h]`. Simplify using the standard rewrite rules.
+-/
 theorem smul_conj_sub_one' {R : Type} [CommRing R] {m : ℕ} (Bi B M : Matrix (Fin m) (Fin m) R) (hBiB : Bi * B = 1)
     (f : R) (h : f • (M - 1) = 0) : f • (Bi * M * B - 1) = 0 := by
   have : Bi * M * B - 1 = Bi * (M - 1) * B := by
@@ -141,6 +188,9 @@ theorem smul_conj_sub_one' {R : Type} [CommRing R] {m : ℕ} (Bi B M : Matrix (F
   rw [this, e2, h]
   simp
 
+/- English proof (translation)
+Use `⟨_, Matrix.of fun (i : Fin m) (j : Fin n) => if (i : ℕ) = (j : ℕ) then (1 : R) else 0, _, Matrix.of fun (i : Fin n) (j : Fin m) => if (i : ℕ) = (j : ℕ) then (1 : R) else 0, ?_, ?_, castMatrix_mul_castMatrix h, castMatrix_mul_castMatrix h.symm, rfl, rfl, castMatrix_mul_mul_castMat …` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc U, hUU, Matrix.one_mul, β.inv_mul]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (β : Matrix (Fin m) (Fin m) R), β.mul_inv, Matrix.one_mul, hU'U]`.
+-/
 theorem frame_algebra {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (U : Matrix (Fin m) (Fin n) R)
     (U' : Matrix (Fin n) (Fin m) R) (hUU : U * U' = 1) (hU'U : U' * U = 1) (β : GL (Fin m) R) :
     ∃ (Z P : Matrix (Fin m) (Fin n) R) (Z' P' : Matrix (Fin n) (Fin m) R), Z * Z' = 1 ∧ Z' * Z = 1 ∧ P * P' = 1 ∧
@@ -152,11 +202,19 @@ theorem frame_algebra {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (U : Matri
   · rw [Matrix.mul_assoc, ← Matrix.mul_assoc U, hUU, Matrix.one_mul, β.inv_mul]
   · rw [Matrix.mul_assoc, ← Matrix.mul_assoc (β : Matrix (Fin m) (Fin m) R), β.mul_inv, Matrix.one_mul, hU'U]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem assoc_five {R : Type} [CommRing R] {m n : ℕ} (Bi B : Matrix (Fin m) (Fin m) R) (U : Matrix (Fin m) (Fin n) R)
     (U' : Matrix (Fin n) (Fin m) R) (X : Matrix (Fin n) (Fin n) R) :
     Bi * (U * X * U') * B = (Bi * U) * X * (U' * B) := by
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Distinguish the cases in `hij : i = j`. Establish `hab' : a = b` using `hab.2 hij`. Establish `: (⟨(1 : Matrix (Fin m) (Fin m) R) a b, hd⟩ : S) = 1` using `Subtype.ext (by show (1 : Matrix (Fin m) (Fin m) R) a b = (1 : R); rw [hab', Matrix.one_apply_eq])`. Rewrite using `[this, map_one, hij, Matrix.one_apply_eq, ZMod.val_one, Nat.cast_one]`. Establish `hab' : a ≠ b` using `fun e => hij (hab.1 e)`.
+
+Establish `: (⟨(1 : Matrix (Fin m) (Fin m) R) a b, hd⟩ : S) = 0` using `Subtype.ext (by show (1 : Matrix (Fin m) (Fin m) R) a b = (0 : R); exact Matrix.one_apply_ne hab')`. Rewrite using `[this, map_zero, Matrix.one_apply_ne hij, ZMod.val_zero, Nat.cast_zero]`.
+-/
 theorem res_one_apply {R k : Type} [CommRing R] [CommRing k] (S : Subring R) (res : S →+* k) {m r p : ℕ} [Fact (1 < p)]
     (a b : Fin m) (hd : (1 : Matrix (Fin m) (Fin m) R) a b ∈ S) (i j : Fin r) (hab : a = b ↔ i = j) :
     res ⟨(1 : Matrix (Fin m) (Fin m) R) a b, hd⟩ = ((((1 : Matrix (Fin r) (Fin r) (ZMod p)) i j).val : ℕ) : k) := by
@@ -172,6 +230,73 @@ local notation "INST" D => Formalism.L2.SG.InstExistsPf.instOf D
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Take `⟨β₀, hβ₀⟩` from `Formalism.L2.DIV.frame_exists_alt (INST D).F (INST D).E (INST D).n (INST D).L ⟨(INST D).L_fg, (INST D).L_span⟩`. Take `⟨U, U', hUU, hUU', hFM⟩` from `GlobalTheory.T.exists_rectangular_conj_instanceMatrix_standardPsi D hF PY t hStd`. Establish `hsp` using `fun kv : Σ k : Fin 2, D.nd.PlG k => GlobalTheory.SplitPlaceOfFixed.exists_splitPlace_plGw D kv`. Use `choose sp hsp using hsp`. Establish `hid` using `fun kv : Σ k : Fin 2, D.nd.PlG k => GlobalTheory.T.exists_integralIdempotent_splitPlace_cmFiniteAdeles D.host.E (sp kv)`.
+
+Use `choose ε₀ hε₀ using hid`. Set `σ : Formalism.IndefR.Lev.EAf D →+* Formalism.IndefR.Lev.EAf D` to `Formalism.L2.SG.HidaSetting.sigA (INST D)`. Set `θ : ReciprocityTheory.Aut.AL D.host.E ≃+* Formalism.IndefR.Lev.EAf D` to `adeleEquiv D hF`. Establish `hθσ : ∀ a, θ (conjAL D.host.E a) = σ (θ a)` using `fun a => GlobalTheory.ConjFrame.swapAE_conjAL hF a`. Establish `hσσ : ∀ a, σ (σ a) = a`.
+
+Introduce `a`. Take `⟨b, rfl⟩` from `θ.surjective a`. Rewrite using `[← hθσ, ← hθσ, conjAL_conjAL]`. Establish `hdist : ∀ kv kv' : Σ k : Fin 2, D.nd.PlG k, kv ≠ kv' → (sp kv).v ≠ (sp kv').v` using `fun kv kv' hne => GlobalTheory.T.splitPlace_base_ne_of_distinct_type_primes D (sp kv) (sp kv') kv kv' (hsp kv) (hsp kv') hne`. Establish `horth0 : ∀ kv kv' : Σ k : Fin 2, D.nd.PlG k, kv ≠ kv' → ε₀ kv * ε₀ kv' = 0 ∧ ε₀ kv * conjAL D.host.E (ε₀ kv') = 0`.
+
+Introduce `kv kv' hne`. Apply the tactic sequence `constructor <;>`. Apply `GlobalTheory.T.finiteAdelesCmField_eq_zero_of_components` to reduce the goal to its premises. Introduce `v`. Rewrite using `[map_mul]`.
+
+Distinguish the cases in `hv : v = (sp kv).v`. Substitute `hv` using the available equality. Use `(hε₀ kv').2.2.2.2.2 (sp kv).v (hdist kv kv' hne)` as an intermediate fact. Simplify using `[this.1, this.2]`. Simplify using `[((hε₀ kv).2.2.2.2.2 v hv).1]`.
+
+Set `ε : (Σ k : Fin 2, D.nd.PlG k) → Formalism.IndefR.Lev.EAf D` to `fun kv => θ (ε₀ kv)`. Establish `hεidem : ∀ kv, ε kv * ε kv = ε kv` using `fun kv => by`. Simplify using `only [ε]`. Rewrite using `[← map_mul, (hε₀ kv).1]`. Establish `hεσ : ∀ kv, ε kv * σ (ε kv) = 0` using `fun kv => by`.
+
+Simplify using `only [ε]`. Rewrite using `[← hθσ, ← map_mul, (hε₀ kv).2.1, map_zero]`. Establish `hεorth : ∀ kv kv', kv ≠ kv' → ε kv * ε kv' = 0 ∧ ε kv * σ (ε kv') = 0`. Introduce `kv kv' hne`. Simplify using `only [ε]`.
+
+Rewrite using `[← hθσ, ← map_mul, ← map_mul, (horth0 kv kv' hne).1, (horth0 kv kv' hne).2, map_zero]`. Conclude with `⟨rfl, rfl⟩`. Take `⟨Z, P, Z', P', hZZ', hZ'Z, hPP', hP'P, hZ, hZ', hPXP⟩` from `frame_algebra (R := Formalism.IndefR.Lev.EAf D) hn U U' hUU hUU' β₀`. Take `⟨cE, hcE, hcZ⟩` from `GlobalTheory.T.exists_unitary_conjugator_of_split_idempotents (Formalism.IndefR.Lev.EAf D) σ hσσ (INST D).n D.R.r (Σ k : Fin 2, D.nd.PlG k) ε hεidem hεσ hεorth Z P Z' P' hZZ' hZ'Z hPP' hP'P`. Take `⟨cA, hcA1, hcA2, hcA3⟩` from `exists_unitary_transport θ (conjAL D.host.E) σ hθσ D.R.r cE hcE`.
+
+Set `c : GAf D.host.E D.R.r` to `⟨cA, hcA1⟩`. Establish `hfr` using `fun kv : Σ k : Fin 2, D.nd.PlG k => GlobalTheory.T.exists_degreeOne_prime_frame_reduced_matrices (INST D) β₀ hβ₀ D.R.r (D.host.g kv.1) hn (D.naut.plGw kv.1 kv.2) (D.host.g_prime kv.1) (Formalism.L2.SG.Pf.RowDictPf.card_res_host kv.1 kv.2)`. Use `choose fr hfr using hfr`. Use `⟨c, fun k v => fr ⟨k, v⟩, ?_⟩` and prove the remaining obligations. Introduce `kv s hs x γ hlift`.
+
+Take `rfl : s = sp kv` from `huniq _ _ (hs.trans (hsp kv).symm)`. Establish `hεint : ε kv ∈ Formalism.L2.Herm.intAf (↥D.host.F) D.host.E` using `GlobalTheory.T.cmFieldFiniteAdeleTensorEquiv_mem_integralAdeles D hF _ (hε₀ kv).2.2.1`. Establish `hgw : ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (sp kv).w.asIdeal`. Rewrite using `[hsp kv]`. Conclude with `D.naut.plGw_over kv.1 kv.2`.
+
+Establish `hxU : x ∈ Umax D.host.E D.R.r` using `GlobalTheory.T.mem_maximalCompactUnitary_of_splitPlaceLift D.host.E D.R.r (sp kv) (D.host.g kv.1) (D.host.g_prime kv.1) hgw x γ hlift`. Establish `hKof : ∀ z : GAf D.host.E D.R.r, (INST D).fmat (Formalism.IndefR.RationalEmbedding.iota D (MulAut.conj t (PY.ψ (c * z * c⁻¹)))).2 = U * ((cE : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.IndefR.Lev.EAf D)) * ((z : GL (Fin D.R.r) (AL D.host.E)) : Matrix (Fin D.R.r) (Fin D.R.r) (AL D …`. Introduce `z`. Rewrite using `[hFM]`. Use `congr 2`.
+
+Use `show ((cA : Matrix (Fin D.R.r) (Fin D.R.r) (AL D.host.E)) * ((z : GL (Fin D.R.r) (AL D.host.E)) : Matrix _ _ _) * ((cA⁻¹ : GL (Fin D.R.r) (AL D.host.E)) : Matrix _ _ _)).map θ = _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hcA2, hcA3]`. Establish `hAeq : ∀ z : GAf D.host.E D.R.r, (((β₀⁻¹ * ((Formalism.IndefR.RationalEmbedding.iota D (MulAut.conj t (PY.ψ (c * z * c⁻¹)))).2 : GL (Fin (INST D).n) ((INST D).E ⊗[(INST D).F] Formalism.MainNotions.S.Af (INST D).F)) * β₀ : GL (Fin (INST D).n) ((INST D).E ⊗[(INST D).F] Formalism.Ma …`. Introduce `z`. Rewrite using `[hZ, hZ']`.
+
+Use `show ((β₀⁻¹).val : Matrix (Fin (INST D).n) (Fin (INST D).n) (Formalism.IndefR.Lev.EAf D)) * (INST D).fmat (Formalism.IndefR.RationalEmbedding.iota D (MulAut.conj t (PY.ψ (c * z * c⁻¹)))).2 * (β₀.val : Matrix (Fin (INST D).n) (Fin (INST D).n) (Formalism.IndefR.Lev.EAf D)) = _`. Rewrite using `[hKof z]`. Conclude with `assoc_five _ _ _ _ _`. Establish `hpart : ∀ z : GAf D.host.E D.R.r, ∀ a b : Fin (INST D).n, ε kv * (@id (Formalism.IndefR.Lev.EAf D) ((β₀⁻¹ * ((Formalism.IndefR.RationalEmbedding.iota D (MulAut.conj t (PY.ψ (c * z * c⁻¹)))).2 : GL (Fin (INST D).n) ((INST D).E ⊗[(INST D).F] Formalism.MainNotions.S.Af (INST D).F)) …`. Introduce `z a b`.
+
+Establish `h1` using `congrFun (congrFun (part_eq (ε kv) (hεidem kv) Z P Z' P' cE (hcZ kv).1 (hcZ kv).2 (((z : GL (Fin D.R.r) (AL D.host.E)) : Matrix (Fin D.R.r) (Fin D.R.r) (AL D.host.E)).map θ)) a) b`. Rewrite `h1` using `[← hAeq z]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at h1`. Rewrite `h1` using `[hPXP]`. Conclude with `h1`.
+
+Establish `hx1 : ∀ i j, (1 - (ε₀ kv + conjAL D.host.E (ε₀ kv))) * (((x : GL (Fin D.R.r) (AL D.host.E)) : Matrix (Fin D.R.r) (Fin D.R.r) (AL D.host.E)) i j - (1 : Matrix (Fin D.R.r) (Fin D.R.r) (AL D.host.E)) i j) = 0`. Introduce `i j`. Apply `GlobalTheory.T.finiteAdelesCmField_eq_zero_of_components` to reduce the goal to its premises. Introduce `v`. Rewrite using `[map_mul, map_sub, map_sub, map_one]`.
+
+Distinguish the cases in `hv : v = (sp kv).v`. Substitute `hv` using the available equality. Rewrite using `[(hε₀ kv).2.2.2.2.1, sub_self, zero_mul]`. Establish `h1` using `congrFun (congrFun (hlift.1 v (by simpa using hv)) i) j`. Simplify using `only [Matrix.map_apply] at h1`.
+
+Rewrite using `[h1]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Take `⟨f, hfdef⟩ : ∃ f : Formalism.IndefR.Lev.EAf D, f = θ (1 - (ε₀ kv + conjAL D.host.E (ε₀ kv)))` from `⟨_, rfl⟩`. Establish `hf : f = 1 - ε kv - σ (ε kv)`. Rewrite using `[hfdef, map_sub, map_add, map_one, hθσ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hfx : f • ((((x : GL (Fin D.R.r) (AL D.host.E)) : Matrix (Fin D.R.r) (Fin D.R.r) (AL D.host.E)).map θ) - 1) = 0`. Use extensionality with `i j`. Establish `h1 : f * θ (((x : GL (Fin D.R.r) (AL D.host.E)) : Matrix (Fin D.R.r) (Fin D.R.r) (AL D.host.E)) i j - (1 : Matrix (Fin D.R.r) (Fin D.R.r) (AL D.host.E)) i j) = 0`. Rewrite using `[hfdef, ← map_mul, hx1 i j, map_zero]`.
+
+Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.map_apply, smul_eq_mul, Matrix.zero_apply]`. Rewrite using `[← h1, map_sub]`. Use `congr 2`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Take `⟨MK, hMK⟩ : ∃ MK : Matrix (Fin (INST D).n) (Fin (INST D).n) (Formalism.IndefR.Lev.EAf D), MK = (INST D).fmat (Formalism.IndefR.RationalEmbedding.iota D (MulAut.conj t (PY.ψ (c * x * c⁻¹)))).2` from `⟨_, rfl⟩`.
+
+Establish `hfK : f • (MK - 1) = 0`. Rewrite using `[hMK, hKof x]`. Conclude with `smul_conj_sub_one U U' hUU cE _ f hfx`. Establish `hKinv : ((Formalism.IndefR.RationalEmbedding.iota D (MulAut.conj t (PY.ψ (c * x * c⁻¹)))).2)⁻¹ = (Formalism.IndefR.RationalEmbedding.iota D (MulAut.conj t (PY.ψ (c * x⁻¹ * c⁻¹)))).2`. Establish `e1 : PY.ψ (c * x⁻¹ * c⁻¹) = (PY.ψ (c * x * c⁻¹))⁻¹`.
+
+Rewrite using `[← map_inv]`. Use `congr 1`. Use `group`. Establish `h2 : ∀ g : Formalism.L2.Theta.GA D (D.sp.Y 0), (Formalism.IndefR.RationalEmbedding.iota D (MulAut.conj t g⁻¹)).2 = ((Formalism.IndefR.RationalEmbedding.iota D (MulAut.conj t g)).2)⁻¹`. Introduce `g`.
+
+Rewrite using `[map_inv, map_inv, Prod.snd_inv]`. Rewrite using `[e1]`. Conclude with `(h2 _).symm`. Establish `hcc : ∀ i : Fin D.R.r, Fin.cast hn (Fin.cast hn.symm i) = i` using `fun i => Fin.ext rfl`. Establish `hK : (Formalism.IndefR.RationalEmbedding.iota D (MulAut.conj t (PY.ψ (c * x * c⁻¹)))).2 ∈ (INST D).Kset`.
+
+Use `GlobalTheory.T.mem_maximalCompact_of_trivial_off_splitPair (INST D) β₀ hβ₀ (ε kv) (hεidem kv) (hεσ kv) hεint _ (fun i j => ?_) (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun hfK i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply] at h1`. Rewrite `h1` using `[hf, hMK]`. Conclude with `h1`.
+
+Establish `h2 : ε kv * θ (((x : GL (Fin D.R.r) (AL D.host.E)) : Matrix (Fin D.R.r) (Fin D.R.r) (AL D.host.E)) (Fin.cast hn i) (Fin.cast hn j)) ∈ Formalism.L2.Herm.intAf (↥D.host.F) D.host.E` using `mul_mem hεint (GlobalTheory.T.cmFieldFiniteAdeleTensorEquiv_mem_integralAdeles D hF _ (hxU _ _))`. Rewrite `h2` using `[← hpart x i j]`. Conclude with `h2`. Rewrite using `[hKinv]`. Establish `h2 : ε kv * θ ((((x⁻¹ : GAf D.host.E D.R.r) : GL (Fin D.R.r) (AL D.host.E)) : Matrix (Fin D.R.r) (Fin D.R.r) (AL D.host.E)) (Fin.cast hn i) (Fin.cast hn j)) ∈ Formalism.L2.Herm.intAf (↥D.host.F) D.host.E` using `mul_mem hεint (GlobalTheory.T.cmFieldFiniteAdeleTensorEquiv_mem_integralAdeles D hF _ (inv_mem hxU _ _))`.
+
+Rewrite `h2` using `[← hpart x⁻¹ i j]`. Conclude with `h2`. Use `⟨hK, ?_, ?_⟩` and prove the remaining obligations. Apply `(hfr kv) _ hK` to reduce the goal to its premises. Introduce `i j hij`.
+
+Rewrite using `[← hsp kv]`. Establish `hres1 : Formalism.L2.DIV.resS (↥D.host.F) (sp kv).w ⟨ε kv, hεint⟩ = 1`. Establish `h1` using `GlobalTheory.T.residue_cmFieldFiniteAdeleTensorEquiv_eq_natCast D hF (sp kv) (ε₀ kv) hεint 1 (hε₀ kv).2.2.1 (by rw [(hε₀ kv).2.2.2.1, Nat.cast_one, sub_self, map_zero]; exact zero_lt_one)`. Rewrite `h1` using `[Nat.cast_one]`. Conclude with `h1`.
+
+Establish `hxθ : θ (((x : GL (Fin D.R.r) (AL D.host.E)) : Matrix (Fin D.R.r) (Fin D.R.r) (AL D.host.E)) i j) ∈ Formalism.L2.Herm.intAf (↥D.host.F) D.host.E` using `GlobalTheory.T.cmFieldFiniteAdeleTensorEquiv_mem_integralAdeles D hF _ (hxU i j)`. Establish `h3` using `hpart x (Fin.cast hn.symm i) (Fin.cast hn.symm j)`. Rewrite `h3` using `[hcc, hcc]`. Conclude with `(res_eq_of_part _ _ (ε kv) hεint hres1 _ _ hij hxθ h3).trans (GlobalTheory.T.residue_cmFieldFiniteAdeleTensorEquiv_eq_natCast D hF (sp kv) _ hxθ ((γ : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) i j).val (hxU i j) (hlift.2 i j))`. Introduce `kv' hne`.
+
+Apply `(hfr kv') _ hK` to reduce the goal to its premises. Introduce `i j hij`. Rewrite using `[← hsp kv']`. Establish `hemem : ε₀ kv + conjAL D.host.E (ε₀ kv) ∈ ALint D.host.E` using `add_mem (hε₀ kv).2.2.1 (conjAL_mem_ALint D.host.E (hε₀ kv).2.2.1)`. Establish `he : θ (ε₀ kv + conjAL D.host.E (ε₀ kv)) ∈ Formalism.L2.Herm.intAf (↥D.host.F) D.host.E` using `GlobalTheory.T.cmFieldFiniteAdeleTensorEquiv_mem_integralAdeles D hF _ hemem`.
+
+Establish `hcomp : compAt D.host.E (sp kv').v (ε₀ kv + conjAL D.host.E (ε₀ kv)) = 0`. Use `(hε₀ kv).2.2.2.2.2 (sp kv').v (hdist kv' kv hne)` as an intermediate fact. Rewrite using `[map_add, this.1, this.2, add_zero]`. Establish `hres0 : Formalism.L2.DIV.resS (↥D.host.F) (sp kv').w ⟨_, he⟩ = 0`. Establish `h1` using `GlobalTheory.T.residue_cmFieldFiniteAdeleTensorEquiv_eq_natCast D hF (sp kv') (ε₀ kv + conjAL D.host.E (ε₀ kv)) he 0 hemem (by rw [GlobalTheory.T.splitPlaceProjection_eq_zero_of_placeComponent_eq_zero D.host.E (sp kv') _ hcomp, Nat.cast_zero, sub_zero, map_zero]; exact zero_lt_on …`.
+
+Rewrite `h1` using `[Nat.cast_zero]`. Conclude with `h1`. Establish `h3` using `smul_conj_sub_one' ((β₀⁻¹ : GL _ _).val : Matrix (Fin (INST D).n) (Fin (INST D).n) (Formalism.IndefR.Lev.EAf D)) (β₀.val : Matrix (Fin (INST D).n) (Fin (INST D).n) (Formalism.IndefR.Lev.EAf D)) MK β₀.inv_mul f hfK`. Establish `h4` using `congrFun (congrFun h3 (Fin.cast hn.symm i)) (Fin.cast hn.symm j)`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.sub_apply, Matrix.zero_apply] at h4`.
+
+Establish `hfe : f = 1 - θ (ε₀ kv + conjAL D.host.E (ε₀ kv))` using `by rw [hfdef, map_sub, map_one]`. Rewrite `h4` using `[hfe, hMK]`. Establish `hd : (1 : Matrix (Fin (INST D).n) (Fin (INST D).n) (Formalism.IndefR.Lev.EAf D)) (Fin.cast hn.symm i) (Fin.cast hn.symm j) ∈ Formalism.L2.Herm.intAf (↥D.host.F) D.host.E`. Distinguish the cases in `hij' : Fin.cast hn.symm i = Fin.cast hn.symm j`. Rewrite using `[hij', Matrix.one_apply_eq]`.
+
+Conclude with `one_mem _`. Rewrite using `[Matrix.one_apply_ne hij']`. Conclude with `zero_mem _`. Use `(res_eq_of_off _ _ _ he hres0 _ _ hij hd h4).trans ?_` and prove the remaining obligations. Use `haveI : Fact (1 < D.host.g kv'.1) := ⟨(D.host.g_prime kv'.1).one_lt⟩`.
+
+Conclude with `res_one_apply _ _ _ _ hd i j (Fin.cast_injective hn.symm).eq_iff`.
+-/
 theorem core0 (D : D7) (t : Formalism.L2.Theta.GA D (D.sp.Y 0)) (PY : RowPsi (Yc D 0) D.R.r)
     (hF : D.host.F = maximalRealSubfield D.host.E) (hStd : StdPsi hF PY)
     (hn : (Formalism.L2.SG.InstExistsPf.instOf D).n = D.R.r)
@@ -381,6 +506,13 @@ theorem core0 (D : D7) (t : Formalism.L2.Theta.GA D (D.sp.Y 0)) (PY : RowPsi (Yc
     haveI : Fact (1 < D.host.g kv'.1) := ⟨(D.host.g_prime kv'.1).one_lt⟩
     exact res_one_apply _ _ _ _ hd i j (Fin.cast_injective hn.symm).eq_iff
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `hid : ∀ x, ιE x = x` using `fun x => eq_of_heq (hpin x)`. Establish `hw : ∀ w, primeComap ιE w = w` using `fun w => by`. Use extensionality with `a`. Use `show RingOfIntegers.mapRingEquiv ιE a ∈ w.asIdeal ↔ a ∈ w.asIdeal`.
+
+Apply the tactic sequence `have : RingOfIntegers.mapRingEquiv ιE a = a := RingOfIntegers.ext (by simp [hid] <;> rfl)`. Rewrite using `[this]`. Conclude with `Iff.rfl`. Take `⟨c, fr, H⟩` from `core0 D t PY hF hStd hn huniq`. Use `⟨c, fun k v => ((hw (D.naut.plGw k v)).symm ▸ fr k v : GlobalTheory.RowLev.PlFrame (Formalism.L2.SG.InstExistsPf.instOf D) D.R.r (D.host.g k) (primeComap ιE (D.naut.plGw k v))), ?_⟩` and prove the remaining obligations.
+
+Introduce `kv s hs x γ hl`. Take `⟨h1, h2, h3⟩` from `H kv s hs x γ hl`. Conclude with `⟨h1, (actsAs_congr _ _ _ _).mpr h2, fun kv' hne => (actsAs_congr _ _ _ _).mpr (h3 kv' hne)⟩`.
+-/
 theorem core (D : D7) (I : Formalism.MainNotions.S.AutInst) (h : I = Formalism.L2.SG.InstExistsPf.instOf D) (ιE : I.E ≃+* D.host.E)
     (hpin : ∀ x, HEq (ιE x) x) (hn : I.n = D.R.r) (t : Formalism.L2.Theta.GA D (D.sp.Y 0)) (PY : RowPsi (Yc D 0) D.R.r)
     (hF : D.host.F = maximalRealSubfield D.host.E) (hStd : StdPsi hF PY)
@@ -409,6 +541,9 @@ theorem core (D : D7) (I : Formalism.MainNotions.S.AutInst) (h : I = Formalism.L
   obtain ⟨h1, h2, h3⟩ := H kv s hs x γ hl
   exact ⟨h1, (actsAs_congr _ _ _ _).mpr h2, fun kv' hne => (actsAs_congr _ _ _ _).mpr (h3 kv' hne)⟩
 
+/- English proof (translation)
+Introduce `D X h t PY hF hStd hpin huniq`. Conclude with `core D X.B.I h X.ιE hpin X.n_eq t PY hF hStd huniq`.
+-/
 theorem exists_conj_frames : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t : Formalism.L2.Theta.GA D (D.sp.Y 0)) (PY : RowPsi (Yc D 0) D.R.r) (hF : D.host.F = maximalRealSubfield D.host.E), StdPsi hF PY → (∀ x : X.B.I.E, HEq (X.ιE x) x) → (∀ s s' : ReciprocityTheory.Aut.SplitPlace D.host.E, s.w = s'.w → s = s') → ∃ (c : GAf D.host.E D.R.r) (fr : ∀ (k : Fin 2) (v : D.nd.PlG k), GlobalTheory.RowLev.PlFrame X.B.I D.R.r (D.host.g k) (Formalism.L2.SG.Pf.RowDictPf.wB X (D.naut.plGw k v))), ∀ (kv : Σ k : Fin 2, D.nd.PlG k) (s : ReciprocityTheory.Aut.SplitPlace D.host.E), s.w = D.naut.plGw kv.1 kv.2 → ∀ (x : GAf D.host.E D.R.r) (γ : GL (Fin D.R.r) (ZMod (D.host.g kv.1))), IsLift s x γ → (Formalism.L2.SG.RowsJoinPinned.iotaX X h (MulAut.conj t (PY.ψ (c * x * c⁻¹)))).2 ∈ X.B.I.Kset ∧ (fr kv.1 kv.2).ActsAs (Formalism.L2.SG.RowsJoinPinned.iotaX X h (MulAut.conj t (PY.ψ (c * x * c⁻¹)))).2 (γ : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) ∧ ∀ kv' : Σ k : Fin 2, D.nd.PlG k, kv' ≠ kv → (fr kv'.1 kv'.2).ActsAs (Formalism.L2.SG.RowsJoinPinned.iotaX X h (MulAut.conj t (PY.ψ (c * x * c⁻¹)))).2 1 := by
   intro D X h t PY hF hStd hpin huniq
   exact core D X.B.I h X.ιE hpin X.n_eq t PY hF hStd huniq

@@ -13,10 +13,16 @@ variable {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algeb
 
 def conjFun (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (k : K) : K := Classical.choose (hc.2.1 k)
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (hc.2.1 k)).symm`.
+-/
 theorem conjFun_spec (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (k : K) :
     algebraMap K E (conjFun cj hc k) = cj (algebraMap K E k) :=
   (Classical.choose_spec (hc.2.1 k)).symm
 
+/- English proof (translation)
+The claim follows from `(algebraMap K E).injective (by rw [conjFun_spec, conjFun_spec, hc.1])`.
+-/
 theorem conjFun_conjFun (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (k : K) :
     conjFun cj hc (conjFun cj hc k) = k :=
   (algebraMap K E).injective (by rw [conjFun_spec, conjFun_spec, hc.1])
@@ -31,8 +37,16 @@ def conjK (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) : K ≃+* K where
   map_add' x y := (algebraMap K E).injective (by
     rw [conjFun_spec, map_add, map_add, map_add, conjFun_spec, conjFun_spec])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjK_apply (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (k : K) : conjK cj hc k = conjFun cj hc k := rfl
 
+/- English proof (translation)
+Establish `he : (algebraMap K E).comp (conjK cj hc : K →+* K) = (cj.toRingEquiv : E →+* E).comp (algebraMap K E)`. Use extensionality with `k`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, conjK_apply, conjFun_spec]`. Both sides reduce to the same expression. Establish `h1` using `Algebra.trace_eq_of_equiv_equiv (conjK cj hc) cj.toRingEquiv he z`.
+
+Establish `h2 : conjK cj hc (Algebra.trace K E z) = Algebra.trace K E (cj z)`. Rewrite using `[h1, RingEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[← h2, conjK_apply, conjFun_spec]`.
+-/
 theorem trace_cj (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (z : E) :
     algebraMap K E (Algebra.trace K E (cj z)) = cj (algebraMap K E (Algebra.trace K E z)) := by
   have he : (algebraMap K E).comp (conjK cj hc : K →+* K) = (cj.toRingEquiv : E →+* E).comp (algebraMap K E) := by
@@ -45,6 +59,19 @@ theorem trace_cj (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (z : E) :
     rfl
   rw [← h2, conjK_apply, conjFun_spec]
 
+/- English proof (translation)
+Set `φ : K →ₗ[ℚ] E` to `(IsScalarTower.toAlgHom ℚ K E).toLinearMap`. Set `L : K →ₗ[ℚ] E` to `cj.toLinearMap.comp φ - φ`. Establish `hL : ∀ x, L x = cj (algebraMap K E x) - algebraMap K E x` using `fun x => rfl`. Establish `hker : ∀ x, x ∈ LinearMap.ker L ↔ cj (algebraMap K E x) = algebraMap K E x`. Introduce `x`.
+
+Rewrite using `[LinearMap.mem_ker, hL, sub_eq_zero]`. Establish `hrange : LinearMap.range L ≠ ⊥`. Take `⟨k0, hk0⟩` from `hc.2.2`. Introduce `h`. Rewrite `h` using `[LinearMap.range_eq_bot]`.
+
+Apply `hk0` to reduce the goal to its premises. Use `congrArg (fun f : K →ₗ[ℚ] E => f k0) h` as an intermediate fact. Simplify using `only [LinearMap.zero_apply, hL, sub_eq_zero] at this`. Conclude with `this`. Establish `hr1 : 1 ≤ finrank ℚ (LinearMap.range L)` using `Submodule.one_le_finrank_iff.mpr hrange`.
+
+Establish `hsum` using `L.finrank_range_add_finrank_ker`. Establish `hk1 : finrank ℚ (LinearMap.ker L) ≤ 1` using `by omega`. Establish `h1mem : (1 : K) ∈ LinearMap.ker L`. Rewrite using `[hker, map_one, map_one]`. Establish `hle : Submodule.span ℚ {(1 : K)} ≤ LinearMap.ker L`.
+
+Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `h1mem`. Establish `hfr : finrank ℚ (Submodule.span ℚ {(1 : K)}) = 1` using `finrank_span_singleton one_ne_zero`. Establish `heq` using `Submodule.eq_of_le_of_finrank_le hle (by omega)`. Establish `hkmem : k ∈ Submodule.span ℚ {(1 : K)}` using `by rw [heq, hker]; exact hk`.
+
+Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.mp hkmem`. Conclude with `⟨r, by rw [← hr, Rat.smul_one_eq_cast]⟩`.
+-/
 theorem fixed_rat (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (h2 : finrank ℚ K = 2) (k : K)
     (hk : cj (algebraMap K E k) = algebraMap K E k) : ∃ r : ℚ, k = (r : K) := by
   let φ : K →ₗ[ℚ] E := (IsScalarTower.toAlgHom ℚ K E).toLinearMap
@@ -82,17 +109,29 @@ variable {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algeb
 def trL (cj : E ≃ₐ[ℚ] E) (y : E) : E →ₗ[K] K :=
   (Algebra.trace K E).comp (LinearMap.mulRight K (cj y))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trL_apply (cj : E ≃ₐ[ℚ] E) (y x : E) : trL (K := K) cj y x = Algebra.trace K E (x * cj y) := rfl
 
+/- English proof (translation)
+Rewrite using `[← trace_cj cj hc, map_mul cj, hc.1, mul_comm]`.
+-/
 theorem tr_swap (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (x y : E) :
     algebraMap K E (Algebra.trace K E (y * cj x)) = cj (algebraMap K E (Algebra.trace K E (x * cj y))) := by
   rw [← trace_cj cj hc, map_mul cj, hc.1, mul_comm]
 
+/- English proof (translation)
+Apply `(algebraMap K E).injective` to reduce the goal to its premises. Rewrite using `[tr_swap cj hc, h, map_zero, map_zero]`.
+-/
 theorem tr_swap_zero (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (x y : E)
     (h : Algebra.trace K E (x * cj y) = 0) : Algebra.trace K E (y * cj x) = 0 := by
   apply (algebraMap K E).injective
   rw [tr_swap cj hc, h, map_zero, map_zero]
 
+/- English proof (translation)
+Establish `: Module.Finite K E` using `Module.Finite.of_restrictScalars_finite ℚ K E`. Introduce `h`. Use `hpos x hx` as an intermediate fact. Rewrite `this` using `[← Algebra.trace_trace (S := K), h, map_zero]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem tr_self_ne (cj : E ≃ₐ[ℚ] E) (hpos : ∀ x : E, x ≠ 0 → 0 < Algebra.trace ℚ E (x * cj x))
     (x : E) (hx : x ≠ 0) : Algebra.trace K E (x * cj x) ≠ 0 := by
   have : Module.Finite K E := Module.Finite.of_restrictScalars_finite ℚ K E
@@ -101,6 +140,13 @@ theorem tr_self_ne (cj : E ≃ₐ[ℚ] E) (hpos : ∀ x : E, x ≠ 0 → 0 < Alg
   rw [← Algebra.trace_trace (S := K), h, map_zero] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Establish `: Module.Finite K E` using `Module.Finite.of_restrictScalars_finite ℚ K E`. Establish `hfix : cj (algebraMap K E (Algebra.trace K E (x * cj x))) = algebraMap K E (Algebra.trace K E (x * cj x))` using `(tr_swap cj hc x x).symm`. Take `⟨r, hr⟩` from `fixed_rat cj hc h2 _ hfix`. Use `⟨r, ?_, hr⟩` and prove the remaining obligations. Use `hpos x hx` as an intermediate fact.
+
+Rewrite `this` using `[← Algebra.trace_trace (S := K), hr]`. Establish `h3 : Algebra.trace ℚ K (r : K) = 2 * r`. Rewrite using `[show (r : K) = algebraMap ℚ K r from rfl, Algebra.trace_algebraMap, h2, nsmul_eq_mul]`. Evaluate the numerical expressions. Rewrite `this` using `[h3]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tr_self_rat (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (h2 : finrank ℚ K = 2)
     (hpos : ∀ x : E, x ≠ 0 → 0 < Algebra.trace ℚ E (x * cj x)) (x : E) (hx : x ≠ 0) :
     ∃ r : ℚ, 0 < r ∧ Algebra.trace K E (x * cj x) = (r : K) := by
@@ -117,6 +163,21 @@ theorem tr_self_rat (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj) (h2 : finrank ℚ 
   rw [h3] at this
   linarith
 
+/- English proof (translation)
+Establish `: Module.Finite K E` using `Module.Finite.of_restrictScalars_finite ℚ K E`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _`. Conclude with `⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0⟩`.
+
+Consider the case `succ m ih`. Introduce `hm`. Take `⟨e, he0, heo⟩` from `ih (by omega)`. Set `F : E →ₗ[K] (Fin m → K)` to `LinearMap.pi (fun i => trL cj (e i))`. Establish `hF : LinearMap.ker F ≠ ⊥` using `LinearMap.ker_ne_bot_of_finrank_lt (by`.
+
+Rewrite using `[Module.finrank_fin_fun]`. Use the proof step `omega)`. Take `⟨x, hxk, hx0⟩` from `(Submodule.ne_bot_iff _).mp hF`. Establish `hxo : ∀ i, Algebra.trace K E (x * cj (e i)) = 0`. Introduce `i`.
+
+Use `congrArg (fun f => f i) (LinearMap.mem_ker.mp hxk)` as an intermediate fact. Simplify `this` using `[F, trL_apply]`. Use `⟨Fin.snoc e x, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations.
+
+Simplify using `using hx0`. Simplify using `using he0 i`. Introduce `i j hij`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+
+Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd rfl hij`. Consider the case `cast j => simpa using hxo j`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`.
+
+Consider the case `last => simpa using tr_swap_zero cj hc _ _ (hxo i)`. Consider the case `cast j`. Establish `: i ≠ j` using `fun h => hij (by rw [h])`. Simplify using `using heo i j this`.
+-/
 theorem exists_orth (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj)
     (hpos : ∀ x : E, x ≠ 0 → 0 < Algebra.trace ℚ E (x * cj x)) :
     ∀ m : ℕ, m ≤ finrank K E → ∃ e : Fin m → E, (∀ i, e i ≠ 0) ∧
@@ -154,6 +215,11 @@ theorem exists_orth (cj : E ≃ₐ[ℚ] E) (hc : IsConj K cj)
           have : i ≠ j := fun h => hij (by rw [h])
           simpa using heo i j this
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Establish `h` using `congrArg (trL (K := K) cj (v j)) hg`. Rewrite `h` using `[map_sum, map_zero, Finset.sum_eq_single j]`. Rewrite `h` using `[map_smul, trL_apply, smul_eq_mul]`.
+
+Conclude with `(mul_eq_zero.mp h).resolve_right (tr_self_ne cj hpos _ (hv0 j))`. Introduce `i _ hij`. Rewrite using `[map_smul, trL_apply, hvo i j hij, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 theorem orth_linInd {n : Type} [Fintype n] (cj : E ≃ₐ[ℚ] E)
     (hpos : ∀ x : E, x ≠ 0 → 0 < Algebra.trace ℚ E (x * cj x)) (v : n → E)
     (hv0 : ∀ i, v i ≠ 0) (hvo : ∀ i j, i ≠ j → Algebra.trace K E (v i * cj (v j)) = 0) :
@@ -169,6 +235,19 @@ theorem orth_linInd {n : Type} [Fintype n] (cj : E ≃ₐ[ℚ] E)
     rw [map_smul, trL_apply, hvo i j hij, smul_zero]
   · intro h; exact absurd (Finset.mem_univ j) h
 
+/- English proof (translation)
+Introduce `K E _ _ _ _ _ cj n _ h2 hn hc hpos`. Establish `: Module.Finite K E` using `Module.Finite.of_restrictScalars_finite ℚ K E`. Take `⟨e, he0, heo⟩` from `exists_orth (K := K) cj hc hpos (finrank K E) le_rfl`. Set `σ : n ≃ Fin (finrank K E)` to `Fintype.equivFinOfCardEq hn`. Set `v : n → E` to `fun i => e (σ i)`.
+
+Establish `hv0 : ∀ i, v i ≠ 0` using `fun i => he0 _`. Establish `hvo : ∀ i j, i ≠ j → Algebra.trace K E (v i * cj (v j)) = 0` using `fun i j hij => heo _ _ (fun h => hij (σ.injective h))`. Establish `hli` using `orth_linInd (K := K) cj hpos v hv0 hvo`. Set `b : Basis n K E` to `basisOfLinearIndependentOfCardEqFinrank' v hli hn`. Establish `hb : ∀ i, b i = v i` using `fun i => by simp [b]`.
+
+Use `choose q hq0 hq using fun i => tr_self_rat (K := K) cj hc h2 hpos (v i) (hv0 i)`. Use `⟨b, q, hq0, ?_⟩` and prove the remaining obligations. Establish `hcol : ∀ y i, Algebra.trace K E (y * cj (v i)) = b.repr y i * (q i : K)`. Introduce `y i`. Establish `h` using `congrArg (trL (K := K) cj (v i)) (b.sum_repr y)`.
+
+Rewrite `h` using `[map_sum, Finset.sum_eq_single i]`. Rewrite using `[← trL_apply, ← h, map_smul, trL_apply, hb, hq, smul_eq_mul]`. Introduce `j _ hji`. Rewrite using `[map_smul, trL_apply, hb, hvo j i hji, smul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`. Introduce `x y`. Establish `hx` using `congrArg (fun z => algebraMap K E (trL (K := K) cj y z)) (b.sum_repr x)`. Simplify using `only [map_sum, map_smul, trL_apply, smul_eq_mul, map_mul] at hx`. Rewrite using `[← hx]`.
+
+Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hb, tr_swap cj hc, hcol, map_mul, map_mul, map_ratCast, map_ratCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem orthogonal_diagonal : OrthDiag := by
   intro K E _ _ _ _ _ cj n _ h2 hn hc hpos
   classical

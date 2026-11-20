@@ -23,14 +23,29 @@ open GlobalTheory.StdRead.CharVal
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).bijective.comp (GlobalTheory.BotFormula.toAfE D).bijective`.
+-/
 theorem toE_bijective (D : D7) : Function.Bijective (toE D) :=
   (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).bijective.comp (GlobalTheory.BotFormula.toAfE D).bijective
 
+/- English proof (translation)
+Rewrite using `[← finQ_incA, toE_finQ]`. Both sides reduce to the same expression.
+-/
 theorem toE_inc (b : 𝓞 D.host.E) :
     toE D (inc D (b : D.host.E)) = (Formalism.L2.DIV.oToS D.host.F D.host.E b : Formalism.L2.Herm.intAf D.host.F D.host.E) := by
   rw [← finQ_incA, toE_finQ]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, t, ht, rfl⟩` from `hy`. Establish `ht'` using `(toE_int_iff t).2 ht`. Establish `h` using `Ideal.mul_mem_right (⟨_, ht'⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) _ (Ideal.mem_map_of_mem (Formalism.L2.DIV.oToS D.host.F D.host.E) hb)`.
+
+Rewrite using `[RingHom.map_mul, toE_inc]`. Conclude with `⟨_, h⟩`. Consider the case `zero => rw [RingHom.map_zero]`. Conclude with `⟨zero_mem _, Ideal.zero_mem _⟩`. Consider the case `add a b _ _ ha hb`.
+
+Take `⟨h1, h2⟩` from `ha`. Take `⟨h3, h4⟩` from `hb`. Rewrite using `[RingHom.map_add]`. Conclude with `⟨add_mem h1 h3, Ideal.add_mem _ h2 h4⟩`. Consider the case `neg a _ ha`.
+
+Take `⟨h1, h2⟩` from `ha`. Rewrite using `[RingHom.map_neg]`. Conclude with `⟨neg_mem h1, Submodule.neg_mem _ h2⟩`.
+-/
 theorem inId_of_mem {𝔪 : Ideal (𝓞 D.host.E)} {y : Formalism.MainNotions.StandardLatticesGL3.AE D} (hy : y ∈ hatId D 𝔪) : InId 𝔪 (toE D y) := by
   induction hy using AddSubgroup.closure_induction with
   | mem y hy =>
@@ -51,6 +66,15 @@ theorem inId_of_mem {𝔪 : Ideal (𝓞 D.host.E)} {y : Formalism.MainNotions.St
     rw [RingHom.map_neg]
     exact ⟨neg_mem h1, Submodule.neg_mem _ h2⟩
 
+/- English proof (translation)
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Conclude with `⟨inc D (b : D.host.E), AddSubgroup.subset_closure ⟨b, hb, 1, one_mem _, (mul_one _).symm⟩, toE_inc b⟩`. Consider the case `zero => exact ⟨0, zero_mem _, RingHom.map_zero _⟩`.
+
+Consider the case `add a b _ _ ha hb`. Take `⟨y, hy, e⟩` from `ha`. Take `⟨z, hz, e'⟩` from `hb`. Use `⟨y + z, add_mem hy hz, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_add, e, e']`.
+
+Conclude with `(AddMemClass.coe_add _ a b).symm`. Consider the case `smul s a _ ha`. Take `⟨y, hy, e⟩` from `ha`. Take `⟨t, ht⟩` from `(toE_bijective D).2 s.1`. Establish `htO : t ∈ OhE D` using `(toE_int_iff t).1 (by rw [ht]; exact s.2)`.
+
+Use `⟨t * y, GlobalTheory.FunObj.StdDatum.mul_mem_hatId htO hy, ?_⟩` and prove the remaining obligations. Establish `h1` using `(toE D).map_mul t y`. Rewrite `h1` using `[e, ht]`. Rewrite using `[smul_eq_mul]`. Conclude with `h1.trans (MulMemClass.coe_mul _ s a).symm`.
+-/
 theorem exists_of_mem_idS {𝔪 : Ideal (𝓞 D.host.E)} {u : Formalism.L2.Herm.intAf D.host.F D.host.E}
     (hu : u ∈ Ideal.map (Formalism.L2.DIV.oToS D.host.F D.host.E) 𝔪) : ∃ y ∈ hatId D 𝔪, toE D y = u.1 := by
   induction hu using Submodule.span_induction with
@@ -74,6 +98,9 @@ theorem exists_of_mem_idS {𝔪 : Ideal (𝓞 D.host.E)} {u : Formalism.L2.Herm.
     rw [smul_eq_mul]
     exact h1.trans (MulMemClass.coe_mul _ s a).symm
 
+/- English proof (translation)
+Introduce `D 𝔪 y`. Use `⟨fun ⟨h, hm⟩ => ?_, inId_of_mem⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `exists_of_mem_idS hm`. Rewrite using `[← (toE_bijective D).1 e]` and apply the resulting hypothesis.
+-/
 theorem inId_toE_iff : ∀ {D : D7} (𝔪 : Ideal (𝓞 D.host.E)) (y : Formalism.MainNotions.StandardLatticesGL3.AE D), InId 𝔪 (toE D y) ↔ y ∈ hatId D 𝔪 := by
   intro D 𝔪 y
   refine ⟨fun ⟨h, hm⟩ => ?_, inId_of_mem⟩

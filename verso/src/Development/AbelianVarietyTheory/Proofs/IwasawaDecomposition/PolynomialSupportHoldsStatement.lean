@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PolynomialSu
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.SysExOfPol
 open GlobalTheory.TorRef
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorRef.polSuppSt | exact GlobalTheory.TorRef.polSuppSt | (intros; apply GlobalTheory.TorRef.polSuppSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.polynomial_support_holds : PolSuppSt := by
   first | exact @GlobalTheory.TorRef.polSuppSt | exact GlobalTheory.TorRef.polSuppSt | (intros; apply GlobalTheory.TorRef.polSuppSt <;> assumption)

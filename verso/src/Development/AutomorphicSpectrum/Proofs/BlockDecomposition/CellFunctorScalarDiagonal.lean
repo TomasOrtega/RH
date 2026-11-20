@@ -14,6 +14,13 @@ def evalOne {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     smoothPart (ind H σ) →ₗ[ℂ] W :=
   (LinearMap.proj (1 : G)).comp ((indSpace H σ).subtype.comp (smoothPart (ind H σ)).subtype)
 
+/- English proof (translation)
+Substitute `hH` using the available equality. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Establish `h0 : (v : GlobalTheory.PRep.indSpace (⊤ : Subgroup G) σ).1 1 = 0` using `hv`. Establish `hmem : ∀ (h : (⊤ : Subgroup G)) (x : G), (v : GlobalTheory.PRep.indSpace (⊤ : Subgroup G) σ).1 (↑h * x) = σ h ((v : GlobalTheory.PRep.indSpace (⊤ : Subgroup G) σ).1 x)` using `(v : GlobalTheory.PRep.indSpace (⊤ : Subgroup G) σ).2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `key : (v : GlobalTheory.PRep.indSpace (⊤ : Subgroup G) σ).1 x = σ ⟨x, Subgroup.mem_top x⟩ ((v : GlobalTheory.PRep.indSpace (⊤ : Subgroup G) σ).1 1)`. Use `hmem ⟨x, Subgroup.mem_top x⟩ 1` as an intermediate fact.
+
+Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Rewrite using `[key, h0, map_zero]`. Use `first`. Consider the case `rfl`. Consider the case `simp`.
+-/
 theorem evalOne_injective {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup W] [Module ℂ W] (H : Subgroup G) (hH : H = ⊤) (σ : Representation ℂ H W) :
     Function.Injective (evalOne H σ) := by
@@ -37,6 +44,17 @@ theorem evalOne_injective {G W : Type} [Group G] [TopologicalSpace G] [IsTopolog
   | rfl
   | simp
 
+/- English proof (translation)
+Distinguish the cases in `hφ : φ = 0`. Conclude with `Or.inl hφ`. Use `right`. Use `haveI : Module.Finite ℂ V := Module.Finite.of_injective ι hι`. Establish `hV : Module.finrank ℂ V ≤ 1` using `(LinearMap.finrank_le_finrank_of_injective hι).trans hX`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, φ v ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hφ (LinearMap.ext hne)`. Establish `hv0 : v ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hv (map_zero φ)`. Use `haveI : Nontrivial V := ⟨⟨v, 0, hv0⟩⟩`. Establish `hV1 : Module.finrank ℂ V = 1` using `le_antisymm hV Module.finrank_pos`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' (φ v) hv).mp hT (ψ v)`.
+
+Use `⟨c, LinearMap.ext fun w => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `(finrank_eq_one_iff_of_nonzero' v hv0).mp hV1 w`. Use `first`. Consider the case `(rw [← ht, map_smul, map_smul, LinearMap.smul_apply, ← hc]; done)`. Consider the case `(rw [← ht, ← hc]; simp [smul_comm])`.
+
+Consider the case `(subst ht; simp [← hc, smul_smul, mul_comm])`.
+-/
 theorem dichotomy {V X T : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup X] [Module ℂ X]
     [AddCommGroup T] [Module ℂ T] [Module.Finite ℂ X] (hX : Module.finrank ℂ X ≤ 1)
     (hT : Module.finrank ℂ T = 1) (ι : V →ₗ[ℂ] X) (hι : Function.Injective ι)
@@ -66,6 +84,9 @@ theorem dichotomy {V X T : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup X
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hr` using `B.2.1 false`. Establish `hc` using `B.2.2 false`. Use `first`. Consider the case `(rw [Fintype.sum_bool] at hr hc; omega)`. Consider the case `(simp only [Fintype.sum_bool] at hr hc; omega)`.
+-/
 theorem sizeMatrix_true_false {a b : ℕ}
     (B : SizeMatrix (Two (Fin a) (Fin b)) (Two (Fin a) (Fin b))) (h : B.1 false true = 0) :
     B.1 true false = 0 := by
@@ -75,6 +96,13 @@ theorem sizeMatrix_true_false {a b : ℕ}
   | (rw [Fintype.sum_bool] at hr hc; omega)
   | (simp only [Fintype.sum_bool] at hr hc; omega)
 
+/- English proof (translation)
+Establish `h'` using `GlobalTheory.CompanionTheory.CellDiag.sizeMatrix_true_false B h`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[GlobalTheory.SmGL.relParab, Subgroup.mem_pi]`. Introduce `j _`.
+
+Rewrite using `[GlobalTheory.SmGL.mem_parab_iff]`. Introduce `p q i i' hqp`. Rewrite `hqp` using `[Bool.lt_iff]`. Take `⟨rfl, rfl⟩` from `hqp`. It suffices to derive a contradiction.
+
+Consider the cases of `j`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `i'.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem relParab_eq_top {a b : ℕ}
     (B : SizeMatrix (Two (Fin a) (Fin b)) (Two (Fin a) (Fin b))) (h : B.1 false true = 0)
     (g : ∀ j, (Σ i, Fin (B.1 i j)) ≃ Two (Fin a) (Fin b) j) :
@@ -95,6 +123,11 @@ theorem relParab_eq_top {a b : ℕ}
   · have := i'.isLt
     omega
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a b χ₁ χ₂ B f g h φ ψ`. Establish `hT : Module.finrank ℂ (ℂ ⊗[ℂ] ℂ) = 1` using `by first`. Consider the case `rw [Module.finrank_tensorProduct, Module.finrank_self]`. Consider the case `simp [Module.finrank_tensorProduct]`. Consider the case `simp`.
+
+Use `GlobalTheory.CompanionTheory.CellDiag.dichotomy ?_ hT (GlobalTheory.CompanionTheory.CellDiag.evalOne _ _) (GlobalTheory.CompanionTheory.CellDiag.evalOne_injective _ (GlobalTheory.CompanionTheory.CellDiag.relParab_eq_top (k := k) B h g) _) φ.toLinearMap ψ.toLinearMap` and prove the remaining obligations. Use `first`. Consider the case `exact (Submodule.finrank_quotient_le _).trans hT.le`. Consider the case `exact (Submodule.finrank_quotient_le _).trans (le_of_eq hT)`. Consider the case `(refine (Submodule.finrank_quotient_le _).trans ?_; simp)`.
+-/
 theorem diag_cell_at_most_one_map : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ) (B : SizeMatrix (Two (Fin a) (Fin b)) (Two (Fin a) (Fin b))) (f : ∀ i, (Σ j, Fin (B.1 i j)) ≃ Two (Fin a) (Fin b) i) (g : ∀ j, (Σ i, Fin (B.1 i j)) ≃ Two (Fin a) (Fin b) j), B.1 false true = 0 → (∀ φ ψ : (cellFunctor f g ((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom)).IntertwiningMap (((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom)), φ.toLinearMap = 0 ∨ ∃ c : ℂ, ψ.toLinearMap = c • φ.toLinearMap) := by
   intro k _ _ _ _ a b χ₁ χ₂ B f g h φ ψ
   have hT : Module.finrank ℂ (ℂ ⊗[ℂ] ℂ) = 1 := by

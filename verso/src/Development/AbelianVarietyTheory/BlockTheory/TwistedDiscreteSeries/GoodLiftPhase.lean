@@ -53,6 +53,15 @@ def LiftBaseRat (R : RealDat D A Ks) (F : Face D A) (ph : Fin D.R.m → ℂ) : P
 def LiftsRational (R : RealDat D A Ks) (F : Face D A) (ph : Fin D.R.m → ℂ) : Prop :=
   (∀ j, ‖ph j‖ = 1) ∧ LiftKerTest R F ph ∧ LiftBaseRat R F ph
 
+/- English proof (translation)
+Establish `hn : (((Real.sqrt (RealDat.nP F b) : ℝ) : ℂ)) * (((Real.sqrt (RealDat.nP F b))⁻¹ : ℝ) : ℂ) = 1`. Establish `h0 : 0 < RealDat.nP F b`. Unfold `RealDat.nP`. Conclude with `Nat.card_pos` after adjusting the coercions. Rewrite using `[← Complex.ofReal_mul, mul_inv_cancel₀ (Real.sqrt_pos.2 h0).ne', Complex.ofReal_one]`.
+
+Establish `hs : sg0 D A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Establish `h1 : (R.toCx F).w0C b j (cpt A.v0.embedding y) = ∑ k, A.v0.embedding (y k) • (R.toCx F).eW b j ((R.toCx F).bW b j A.v0 k)`. Simplify using `only [CxData.w0C, CxData.wC, lin, LinearMap.comp_apply, Fintype.linearCombination_apply, map_sum, map_smul]`. Both sides reduce to the same expression. Rewrite using `[h1, map_sum]`.
+
+Establish `h2 : ∀ (s : Bool) (f : Fin (Module.finrank D.what₂.LL (R.WL F b j)) → Tw s (R.HW j (sg0 D A)).H), Tw.out (∑ k, f k) = ∑ k, Tw.out (f k)` using `fun _ _ => rfl`. Use `(h2 _ _).trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Use `show cj (twAt D.what₂.embLL A.v0) (A.v0.embedding (y k)) • ((((Real.sqrt (RealDat.nP F b) : ℝ) : ℂ)) • ((((Real.sqrt (RealDat.nP F b))⁻¹ : ℝ) : ℂ) • (R.FW j).j (sg0 D A) (R.bL F b j k))) = _`. Rewrite using `[smul_smul (((Real.sqrt (RealDat.nP F b) : ℝ) : ℂ)), hn, one_smul, R.emb0, cj_cj]`.
+
+Use `congr 1`. Conclude with `(DFunLike.congr_fun hs (y k)).symm`.
+-/
 theorem liftWeight_complexPoint_eq_twist (R : RealDat D A Ks) (F : Face D A) (b : Bool) (j : Fin D.R.m)
     (y : Fin (Module.finrank D.what₂.LL (R.WL F b j)) → D.what₂.LL) :
     Tw.out (s := twAt D.what₂.embLL A.v0) (E := (R.HW j (sg0 D A)).H) ((R.toCx F).w0C b j (cpt A.v0.embedding y)) =
@@ -79,12 +88,18 @@ theorem liftWeight_complexPoint_eq_twist (R : RealDat D A Ks) (F : Face D A) (b 
   congr 1
   exact (DFunLike.congr_fun hs (y k)).symm
 
+/- English proof (translation)
+Use extensionality with `u`. Use `show c • f (Tw.out u) = cj s (cj s c) • f (Tw.out u)`. Rewrite using `[cj_cj]`.
+-/
 theorem twMap_smul {E E' : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [NormedAddCommGroup E'] [InnerProductSpace ℂ E']
     (s : Bool) (c : ℂ) (f : E →ₗ[ℂ] E') : Tw.map s (c • f) = cj s c • Tw.map s f := by
   ext u
   show c • f (Tw.out u) = cj s (cj s c) • f (Tw.out u)
   rw [cj_cj]
 
+/- English proof (translation)
+The claim follows from `congrArg (withLift (R.toCx F)) (funext fun j => funext fun t => twMap_smul _ (ph j) (R.thG j t))`.
+-/
 theorem cxPhase_eq (R : RealDat D A Ks) (F : Face D A) (ph : Fin D.R.m → ℂ) :
     cxPhase R F ph = withLift (R.toCx F) fun j t => cj (twAt D.what₂.embLL A.v0) (ph j) • (R.toCx F).θ' j t :=
   congrArg (withLift (R.toCx F)) (funext fun j => funext fun t => twMap_smul _ (ph j) (R.thG j t))

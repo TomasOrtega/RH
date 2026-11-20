@@ -22,13 +22,30 @@ def cellVec (hS1 : KOne k (Fin m) ≤ S)
 variable (hS1 : KOne k (Fin m) ≤ S)
   (hS4 : ∀ y ∈ S, ∀ a, valuation k (((y : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) a a) = 1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cellVec_apply (g : GL (Fin m) k) : (cellVec hS1 hS4).1.1 g = cellFun S g := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Subtype.ext (funext fun g => cellFun_mul_right hS4 hs g))`.
+-/
 theorem cellVec_fixed {s : GL (Fin m) k} (hs : s ∈ S) : psOne k m s (cellVec hS1 hS4) = cellVec hS1 hS4 :=
   Subtype.ext (Subtype.ext (funext fun g => cellFun_mul_right hS4 hs g))
 
 open Classical in
 include hS1 hS4 in
+/- English proof (translation)
+Use `split_ifs with hK`. Establish `e : wRev k m * c⁻¹ = (((1 : parab k (eOne m)) : GL (Fin m) k)) * wRev k m * c⁻¹` using `by simp`. Rewrite using `[e, cellFun_eq hS4 1 (hS1 (inv_mem hK)), dl_one, Units.val_one]`. Rewrite using `[cellFun, dif_neg]`. Introduce and unpack `⟨p, y, hy, e⟩`.
+
+Apply `hK` to reduce the goal to its premises. Establish `hy' : y = (wRev k m * (p : GL (Fin m) k)⁻¹ * wRev k m) * c⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hci : c⁻¹ ∈ unipB k (Fin m)` using `inv_mem hc`. Establish `hX : ∀ i j, ((((wRev k m * (p : GL (Fin m) k)⁻¹ * wRev k m : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) * ((c⁻¹ : GL (Fin m) k) : Matrix (Fin m) (Fin m) k)) i j) = ((y : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) i j`.
+
+Introduce `i j`. Rewrite using `[hy']`. Simplify using `only [Units.val_mul]`. Establish `hpi : ((p : GL (Fin m) k)⁻¹) ∈ parab k (eOne m)` using `inv_mem p.2`. Establish `key` using `valuation_unitri_lt (valuation k) (((wRev k m * (p : GL (Fin m) k)⁻¹ * wRev k m : GL (Fin m) k) : Matrix (Fin m) (Fin m) k)) (((c⁻¹ : GL (Fin m) k) : Matrix (Fin m) (Fin m) k)) (fun i j hij => by`.
+
+Rewrite using `[wRev_conj_apply]`. Conclude with `(mem_parab.1 hpi) (Fin.rev i) (Fin.rev j) (by simpa using Fin.rev_lt_rev.2 hij))`. Use the proof step `(fun i => ((mem_unipB _).1 hci).2 i) (fun i j hij => ((mem_unipB _).1 hci).1 i j hij)`. Use the proof step `(fun i j => by rw [hX]; exact val_le_of_mem_KO (hS2 hy) i j)`. Use the proof step `(fun i => by rw [hX]; exact hS4 y hy i)`.
+
+Use the proof step `(fun i j hij => by rw [hX]; exact hS3 y hy i j hij)`. Establish `hK' : c⁻¹ ∈ KOne k (Fin m)` using `mem_KOne_of_unip hci key`. Simplify using `using inv_mem hK'`.
+-/
 theorem cellFun_wRev (hS2 : S ≤ KO k (Fin m))
     (hS3 : ∀ y ∈ S, ∀ a b, a < b → valuation k (((y : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) a b) < 1)
     {c : GL (Fin m) k} (hc : c ∈ unipB k (Fin m)) :

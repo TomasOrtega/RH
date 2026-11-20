@@ -11,6 +11,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ D D' E _ _ _ _ _ _ ψ φ hψ`. Use `letI : Algebra D E := φ.toRingHom.toAlgebra`. Use `letI : Algebra D D' := ψ.toRingHom.toAlgebra`. Use `haveI : Module.FaithfullyFlat D D' := hψ`. Set `f : E →+* TensorProduct D E D'` to `Algebra.TensorProduct.includeLeftRingHom`.
+
+Set `g : D' →+* TensorProduct D E D'` to `(Algebra.TensorProduct.includeRight : D' →ₐ[D] _).toRingHom`. Establish `hfg : f.comp (algebraMap D E) = g.comp (algebraMap D D')` using `RingHom.ext fun d => by`. Express the relevant statement in the definitionally equal form `(algebraMap D E d) ⊗ₜ[D] (1 : D') = (1 : E) ⊗ₜ[D] algebraMap D D' d`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Use `letI iR : Algebra R (TensorProduct D E D') := (f.comp (algebraMap R E)).toAlgebra`.
+
+Establish `hf : f.FaithfullyFlat`. Establish `: Module.FaithfullyFlat E (TensorProduct D E D')` using `inferInstance`. Conclude with `(RingHom.faithfullyFlat_algebraMap_iff).2 this`. Use `⟨TensorProduct D E D', inferInstance, iR, { f with commutes' := fun r => rfl }, { g with commutes' := fun r => ?_ }, hf, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g (algebraMap R D' r) = f (algebraMap R E r)`.
+
+Rewrite using `[← ψ.commutes r, ← φ.commutes r]`. Conclude with `(congrArg (fun h => h (algebraMap R D r)) hfg).symm`. Use extensionality with `d`. Conclude with `congrArg (fun h => h d) hfg`.
+-/
 theorem exists_pushout_faithfullyFlat : ∀ (R : Type) [CommRing R] (D D' E : Type) [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] [CommRing E] [Algebra R E] (ψ : D →ₐ[R] D') (φ : D →ₐ[R] E), (ψ : D →+* D').FaithfullyFlat → ∃ (E' : Type) (_ : CommRing E') (_ : Algebra R E') (ψ' : E →ₐ[R] E') (φ' : D' →ₐ[R] E'), (ψ' : E →+* E').FaithfullyFlat ∧ ψ'.comp φ = φ'.comp ψ := by
   intro R _ D D' E _ _ _ _ _ _ ψ φ hψ
   letI : Algebra D E := φ.toRingHom.toAlgebra

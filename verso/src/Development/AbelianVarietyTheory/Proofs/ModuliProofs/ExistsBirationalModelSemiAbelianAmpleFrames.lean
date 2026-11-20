@@ -28,6 +28,17 @@ open Classical
 
 namespace GlobalTheory.ModelOfOutput
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `IsGenericPointHom.fractionField R K`. Take `⟨W, hW, j, h₁, h₂⟩` from `spread_out_of_isGermInjective' (𝟙 (Sp R)) g (x := genericPoint (Sp R)) (e.inv ≫ x) (by rw [Category.assoc, hx, Category.comp_id, Iso.inv_comp_eq]; exact he.symm)`. Rewrite `h₂` using `[Category.comp_id]`. Establish `hd : IsDominant j`. Establish `: IsDominant (W.fromSpecStalkOfMem _ hW ≫ j)` using `h₁ ▸ inferInstance`.
+
+Conclude with `IsDominant.of_comp (W.fromSpecStalkOfMem _ hW) j`. Establish `hr : Set.range j ⊆ Set.range (g ⁻¹ᵁ W).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨w, rfl⟩`. Use `show g (j w) ∈ W`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, h₂]`. Conclude with `w.2`. Establish `e₁` using `IsOpenImmersion.lift_fac (g ⁻¹ᵁ W).ι j hr`. Use `set j' := IsOpenImmersion.lift (g ⁻¹ᵁ W).ι j hr`. Establish `: IsDominant (j' ≫ (g ⁻¹ᵁ W).ι)` using `e₁.symm ▸ hd`.
+
+Establish `: IsDominant j'` using `IsDominant.of_comp_of_isOpenImmersion _ (g ⁻¹ᵁ W).ι`. Establish `e₂ : j' ≫ g ∣_ W = 𝟙 _`. Rewrite using `[← cancel_mono W.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, e₁, h₂, Category.id_comp]`. Establish `e₃ : g ∣_ W ≫ j = (g ⁻¹ᵁ W).ι` using `ext_of_isDominant_of_isSeparated g (by rw [Category.assoc, h₂, morphismRestrict_ι]) j' (by rw [← Category.assoc, e₂, Category.id_comp, e₁])`. Establish `: IsIso j'` using `⟨g ∣_ W, e₂, by`.
+
+Rewrite using `[← cancel_mono (g ⁻¹ᵁ W).ι, Category.assoc, e₁, e₃, Category.id_comp]⟩`. Use `⟨W, j, W.isOpen.dense ⟨_, hW⟩, ?_, hd, h₂⟩` and prove the remaining obligations. Rewrite using `[← e₁]`. Use `infer_instance`.
+-/
 theorem exists_openImmersion_section {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] {U : Scheme.{0}} [IsIntegral U] (g : U ⟶ Sp R) [IsSeparated g] [LocallyOfFiniteType g]
     (x : Sp K ⟶ U) [IsDominant x] (hx : x ≫ g = spMap (algebraMap R K)) :
@@ -61,6 +72,11 @@ theorem exists_openImmersion_section {R K : Type} [CommRing R] [IsDomain R] [Fie
   rw [← e₁]
   infer_instance
 
+/- English proof (translation)
+Use `h.ded` as an intermediate fact. Use `M.sep` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant M.pt` using `.of_isDominant _`. Establish `: QuasiCompact M.pt` using `⟨fun U _ _ => (Set.toFinite _).isCompact⟩`. Establish `: Flat (M.pt ≫ M.s)`.
+
+Rewrite using `[M.pt_s]`. Use `Flat.SpecMap_iff.2 (RingHom.flat_algebraMap_iff.2 ?_)` and prove the remaining obligations. Establish `: FaithfulSMul o Ω` using `(faithfulSMul_iff_algebraMap_injective o Ω).2 h.inj`. Use `infer_instance`. Conclude with `flat_of_schemeDominant_of_isDedekindDomain (O := CommRingCat.of o) M.pt M.s`.
+-/
 theorem flat_ratModel {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [h : GlobalTheory.ZH.ArithBase o Ω]
     (M : GlobalTheory.ZH.RatModel o Ω) : Flat M.s := by
   have := h.ded
@@ -74,6 +90,33 @@ theorem flat_ratModel {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [h : 
     infer_instance
   exact flat_of_schemeDominant_of_isDedekindDomain (O := CommRingCat.of o) M.pt M.s
 
+/- English proof (translation)
+Introduce `_ _ E _ _ _ H o Ω _ _ _ hb R t₀ S ρ h φ act M U₀ EE Z m r₀ _ hfr hO hop hφ hL hact hadj hprim hamp`. Take `⟨act', h₂, h₃, hact', hgood⟩` from `GlobalTheory.TripleOut.exists_triple GlobalTheory.homExtension_semiAbelian_dvr o Ω S ρ M U₀ EE Z E H act hO hadj hprim`. Set `t : SAB H M.Z` to `SAB.mk (H := H) Z.G Z.semi act' Z.L Z.cub Z.sym h₂ h₃`. Establish `: IsFractionRing R Ω` using `IsFractionRing.of_field R Ω fun y => by`. Take `⟨a, ha, b, hb, rfl⟩` from `hfr y`.
+
+Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, rfl⟩`. Establish `hr : Set.range M.pt ⊆ Set.range U₀.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(GlobalTheory.ZH.top_le_preimage_iff _ _).1 (M.top_le_preimage_pt hO.ne)`. Establish `ex` using `IsOpenImmersion.lift_fac U₀.ι M.pt hr`.
+
+Use `set x := IsOpenImmersion.lift U₀.ι M.pt hr`. Establish `: IsDominant (x ≫ U₀.ι)` using `ex.symm ▸ inferInstance`. Establish `: IsDominant x` using `IsDominant.of_comp_of_isOpenImmersion _ U₀.ι`. Establish `: Nonempty U₀.toScheme` using `⟨⟨_, hO.ne.some_mem⟩⟩`. Establish `: IsIntegral U₀.toScheme` using `isIntegral_of_isOpenImmersion U₀.ι`.
+
+Set `g : U₀.toScheme ⟶ Sp R` to `Z.u₀ ≫ spMap (Subalgebra.inclusion h).toRingHom`. Establish `hx : x ≫ g = spMap (algebraMap R Ω)`. Rewrite using `[← Category.assoc, Z.u₀_gen x ex, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hg : g ≫ spMap (algebraMap o R) = U₀.ι ≫ M.s`.
+
+Use `ext_of_isDominant x ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hx, ← Category.assoc, ex, M.pt_s, ← Spec.map_comp]`. Both sides reduce to the same expression. Use `M.sep` as an intermediate fact. Use `M.lft` as an intermediate fact.
+
+Establish `: IsSeparated (g ≫ spMap (algebraMap o R))` using `hg ▸ inferInstance`. Establish `: IsSeparated g` using `IsSeparated.of_comp g (spMap (algebraMap o R))`. Establish `: LocallyOfFiniteType (g ≫ spMap (algebraMap o R))` using `hg ▸ inferInstance`. Establish `: LocallyOfFiniteType g` using `locallyOfFiniteType_of_comp g (spMap (algebraMap o R))`. Take `⟨W, j, hW, hj₁, hj₂, hj⟩` from `exists_openImmersion_section g x hx`.
+
+Take `⟨PP', cub, sym, adj, prim, m₁, -⟩` from `sabPull GlobalTheory.laws3.cubePull W.ι t₀`. Use `set tW : SAB H W.toScheme := ⟨(Over.pullback W.ι).obj t₀.G, IsSemiAbelian.pullback W.ι t₀.G t₀.semi, OAct.pullback W.ι t₀.G t₀.act, PP', cub, sym, adj, prim⟩`. Use `clear_value tW`. Establish `hP` using `(isGrpPullback_pullback ρ.P.A Z.u₀).comp hφ`. Set `ψ : tW.G.left ⟶ pullback ρ.P.A.hom Z.u₀` to `hP.1.lift m₁.φ (tW.G.hom ≫ j) (by rw [m₁.cart.1.w, Category.assoc, hj])`.
+
+Establish `ψ₁ : ψ ≫ pullback.fst ρ.P.A.hom Z.u₀ ≫ φ = m₁.φ` using `hP.1.lift_fst _ _ _`. Establish `ψ₂ : ψ ≫ pullback.snd ρ.P.A.hom Z.u₀ = tW.G.hom ≫ j` using `hP.1.lift_snd _ _ _`. Establish `hψ : IsGrpPullback tW.G ((Over.pullback Z.u₀).obj ρ.P.A) j ψ` using `hP.cancel (m₁.cart.congr hj.symm ψ₁.symm) ψ₂`. Establish `hA : IsProper ρ.P.A.hom` using `GlobalTheory.ZH.isProper_hom_of_relAmple ρ.P.ample`. Establish `hA' : IsProper tW.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) hψ.1 (inferInstanceAs (IsProper (pullback.snd ρ.P.A.hom Z.u₀)))`.
+
+Establish `hψa : ∀ a, (tW.act.act a).left ≫ ψ = ψ ≫ ((Over.pullback Z.u₀).map (act.act a)).left` using `fun a => by`. Establish `A : ((Over.pullback Z.u₀).map (act.act a)).left ≫ pullback.fst ρ.P.A.hom Z.u₀ = pullback.fst ρ.P.A.hom Z.u₀ ≫ (act.act a).left` using `pullback.lift_fst _ _ _`. Establish `B : ((Over.pullback Z.u₀).map (act.act a)).left ≫ pullback.snd ρ.P.A.hom Z.u₀ = pullback.snd ρ.P.A.hom Z.u₀` using `Over.w ((Over.pullback Z.u₀).map (act.act a))`. Apply `hP.1.hom_ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← ψ₁]`. Simplify using `only [Category.assoc, hact]`. Use `_ = _ := by rw [← A]; simp only [Category.assoc]`. Combine the equalities or inequalities in the displayed calculation. Establish `hLW : LBIso tW.PP.L (t.PP.L.pull (ψ ≫ Z.φ))`.
+
+Establish `a₁ : LBIso tW.PP.L (t₀.PP.L.pull m₁.φ)`. Take `⟨w, hw, -⟩` from `m₁.lin`. Conclude with `⟨w, hw⟩`. Establish `a₂ : LBIso (ρ.P.L.pull (ψ ≫ pullback.fst ρ.P.A.hom Z.u₀)) (t₀.PP.L.pull m₁.φ)` using `GenSpread.lbIso_pull_of_lbIso hL _ (by rw [Category.assoc, ψ₁])`. Establish `a₃ : LBIso (Z.L.L.pull (ψ ≫ Z.φ)) (ρ.P.L.pull (ψ ≫ pullback.fst ρ.P.A.hom Z.u₀))` using `GenSpread.lbIso_pull_comp ψ rfl rfl ⟨Z.w, Z.w_gen⟩`.
+
+Conclude with `LBIso.trans tW.PP.isLB (pull_isLB t₀.PP.isLB _) (pull_isLB Z.L.isLB _) a₁ (LBIso.trans (pull_isLB Z.L.isLB _) (pull_isLB ρ.P.isLB _) (pull_isLB t₀.PP.isLB _) a₃ a₂).symm`. Take `⟨m₂, -⟩` from `GlobalTheory.exists_sabMap_of_lbIso E H M.Z W.toScheme t tW (j ≫ U₀.ι) (ψ ≫ Z.φ) ⟨inferInstance, fun y _ K _ _ p _ => inferInstance⟩ (hψ.comp Z.cart) (fun a => by`. Rewrite using `[← Category.assoc, hψa, Category.assoc, Category.assoc]`. Conclude with `congrArg (ψ ≫ ·) (hact' a)) hLW`. Take `⟨A, hA₁, hA₂⟩` from `hamp r₀ le_rfl`.
+
+Establish `: IsDominant U₀.ι` using `⟨by`. Rewrite using `[DenseRange, Scheme.Opens.range_ι]`. Conclude with `U₀.isOpen.dense hO.ne⟩`. Conclude with `⟨⟨M.Z, M.s, hO.normal, hO.proj, flat_ratModel M, t, Z.qproj, hgood (GlobalTheory.ZH.abOpen_of_isOpen_abLocus o Ω S ρ M U₀ EE Z hO hop), W, hW, j ≫ U₀.ι, inferInstance, inferInstance, by rw [Category.assoc, ← hg, ← Category.assoc, hj], tW, m₁, m₂, A⟩, M.integral, hA₂, fun r hr => …`.
+-/
 theorem exists_zOn : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [GlobalTheory.ZH.ArithBase o Ω] (R : Subalgebra o Ω) (t₀ : SAB H (Sp R)) (S : GlobalTheory.ZH.ThetaSys o Ω) (ρ : S.Real) (h : R ≤ S.R) (φ : ρ.P.A.left ⟶ t₀.G.left) (act : OAct (𝓞 E) ρ.P.A) (M : GlobalTheory.ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Z : GlobalTheory.ZH.ZHOut ρ M U₀ EE) (m : ℕ) (r₀ : ℤ), R.FG → (∀ x : Ω, ∃ a ∈ R, ∃ c ∈ R, x = a / c) → S.Over₀ M U₀ → IsOpen (abLocus Z.G) → IsGrpPullback ρ.P.A t₀.G (spMap (Subalgebra.inclusion h).toRingHom) φ → LBIso ρ.P.L (t₀.PP.L.pull φ) → (∀ a, (act.act a).left ≫ φ = φ ≫ (t₀.act.act a).left) → (letI := ρ.P.isAb.comm; ∀ a, LBIso (cubeLB ρ.P.A ![fst _ _ ≫ act.act a, snd _ _] ρ.P.L) (cubeLB ρ.P.A ![fst _ _, snd _ _ ≫ act.act (H.bar a)] ρ.P.L)) → (letI := ρ.P.isAb.comm; LBIso ρ.P.L (cubeLB ρ.P.A ![𝟙 _, act.act H.w0] ρ.P.L)) → (∀ r : ℤ, r₀ ≤ r → ∃ A : GlobalTheory.LN.AmpFrames Z.G Z.L.L (m ^ 2), A.r = r ∧ A.s = 1) → ∃ C : ZOn (spMap (algebraMap o R)) t₀ m, IsIntegral C.Z ∧ C.amp.s = 1 ∧ ∀ r : ℤ, C.amp.r ≤ r → ∃ A : GlobalTheory.LN.AmpFrames C.t.G C.t.PP.L (m ^ 2), A.r = r ∧ A.s = 1 := by
   intro _ _ E _ _ _ H o Ω _ _ _ hb R t₀ S ρ h φ act M U₀ EE Z m r₀ _ hfr hO hop hφ hL hact hadj hprim hamp
   obtain ⟨act', h₂, h₃, hact', hgood⟩ := GlobalTheory.TripleOut.exists_triple GlobalTheory.homExtension_semiAbelian_dvr o Ω S ρ M U₀ EE Z

@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.WeilRepres
 
 namespace UpperTheory.Lit
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.ThKW.S.weilEx`.
+-/
 theorem weilRepresentationExists_pair : GlobalTheory.Published.WeilRepresentationExists := PositivityTheory.ThKW.S.weilEx
 
 end UpperTheory.Lit

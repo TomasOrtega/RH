@@ -16,8 +16,14 @@ variable {D : D7}
 
 def untup {m r : ℕ} (y : Mx D m r) : Fin r → Fin m → AE D := fun a i => y i a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tupOf_untup {m r : ℕ} (y : Mx D m r) : tupOf (untup y) = y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem untup_tupOf {m r : ℕ} (X : Fin r → Fin m → AE D) : untup (tupOf X) = X := rfl
 
 def hermE (D : D7) (r : ℕ) (b : hermA D r) : HermR (AF D.host.F) D.sp.cm.sig r :=

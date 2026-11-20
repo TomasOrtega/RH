@@ -16,6 +16,21 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
 
 omit [Module S E] [IsScalarTower S Ω E] in
 
+/- English proof (translation)
+Take `⟨sF, hsF⟩` from `hF`. Take `⟨sQ, hsQ⟩` from `hQ`. Use `⟨Finset.image₂ (fun q y => q • y) sQ sF, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce `z hz`. Rewrite `hz` using `[Finset.coe_image₂]`. Take `⟨q, hq, y, hy, rfl⟩` from `hz`. Conclude with `Submodule.subset_span ⟨q, hsQ ▸ Submodule.subset_span hq, y, hsF ▸ Submodule.subset_span hy, rfl⟩`. Express the relevant statement in the definitionally equal form `Submodule.span _ _ ≤ _`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨q, hq, y, hy, rfl⟩`. Rewrite `hq` using `[← hsQ]`. Rewrite `hy` using `[← hsF]`. Use `Submodule.span_induction (p := fun q _ => q • y ∈ Submodule.span (chartRing S x I) ((Finset.image₂ (fun q y => q • y) sQ sF : Finset E) : Set E)) ?_ ?_ ?_ ?_ hq` and prove the remaining obligations.
+
+Introduce `q hq`. Use `Submodule.span_induction (p := fun y _ => q • y ∈ Submodule.span (chartRing S x I) ((Finset.image₂ (fun q y => q • y) sQ sF : Finset E) : Set E)) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `y hy`. Conclude with `Submodule.subset_span (by rw [Finset.coe_image₂]; exact ⟨q, hq, y, hy, rfl⟩)`. Rewrite using `[smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `a z _ hz`.
+
+Rewrite using `[Subalgebra.smul_def, smul_comm]`. Conclude with `Submodule.smul_mem _ a hz`. Rewrite using `[zero_smul]`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`.
+
+Rewrite using `[add_smul]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `a q _ hq`. Rewrite using `[smul_assoc]`. Conclude with `Submodule.smul_mem _ a hq`.
+-/
 theorem SubSystem.twist_sub_fg (F : SubSystem S x E) (Q : SubSystem S x Ω) (I : Chart x)
     (hF : (F.sub I).FG) (hQ : (Q.sub I).FG) : ((F.twist Q).sub I).FG := by
   obtain ⟨sF, hsF⟩ := hF
@@ -53,6 +68,9 @@ theorem SubSystem.twist_sub_fg (F : SubSystem S x E) (Q : SubSystem S x Ω) (I :
 
 end
 
+/- English proof (translation)
+Introduce `S _ Ω _ _ N x E _ _ _ _ F Q hF`. Conclude with `⟨F.twistFam Q.toSubFamily, rfl, fun I => SubSystem.twist_sub_fg F.toSubSystem Q.toSubSystem I (hF I) (Q.fg I)⟩`.
+-/
 theorem SubFamilyTwist.proof : SubFamilyTwist.Statement.{u, v, w} := by
   intro S _ Ω _ _ N x E _ _ _ _ F Q hF
   exact ⟨F.twistFam Q.toSubFamily, rfl, fun I =>

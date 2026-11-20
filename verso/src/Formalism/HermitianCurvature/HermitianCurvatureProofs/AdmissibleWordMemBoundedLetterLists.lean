@@ -15,6 +15,13 @@ open scoped ComplexConjugate
 noncomputable section
 open Classical
 
+/- English proof (translation)
+Unfold `KB.BlockPSD at h ⊢`. Use `Formalism.FourierDecayAlt.P.JCx1.decay.psd_pull _ _ h (Y.disjSum Y) (Sum.map f f) (by` as an intermediate fact. Introduce `x hx`. Break down `x with p | p` into its components or cases. Rewrite `hx` using `[Finset.inl_mem_disjSum]`.
+
+Rewrite using `[Sum.map_inl, Finset.inl_mem_disjSum]`. Conclude with `Finset.mem_image_of_mem f hx`. Rewrite `hx` using `[Finset.inr_mem_disjSum]`. Rewrite using `[Sum.map_inr, Finset.inr_mem_disjSum]`. Conclude with `Finset.mem_image_of_mem f hx)`.
+
+Use `(congrArg (TB.PSDOn (Y.disjSum Y)) ?_).mp this` and prove the remaining obligations. Use function extensionality and compare the values at `x y`. Apply the tactic sequence `rcases x with p | p <;> rcases y with q | q <;> rfl`.
+-/
 theorem blockPSD_pull {α X : Type} [DecidableEq α] (Y : Finset X) (f : X → α) (a w b : α → α → ℂ)
     (h : KB.BlockPSD (Y.image f) (Y.image f) a w b) :
     KB.BlockPSD Y Y (fun p q => a (f p) (f q)) (fun p q => w (f p) (f q)) (fun p q => b (f p) (f q)) := by
@@ -32,6 +39,23 @@ theorem blockPSD_pull {α X : Type} [DecidableEq α] (Y : Finset X) (f : X → �
   funext x y
   rcases x with p | p <;> rcases y with q | q <;> rfl
 
+/- English proof (translation)
+Set `el : X ⊕ X → X` to `Sum.elim id id`. Establish `hK : TB.PSDOn (Y.disjSum Y) (fun x y => κ (el x) (el y))` using `Formalism.FourierDecayAlt.P.JCx1.decay.psd_pull Y κ hκ (Y.disjSum Y) el (by`. Introduce `x hx`. Break down `x with p | p` into its components or cases. Rewrite `hx` using `[Finset.inl_mem_disjSum]`.
+
+Conclude with `hx`. Rewrite `hx` using `[Finset.inr_mem_disjSum]`. Conclude with `hx)`. Establish `hB2 : ∀ v, ∃ K : X ⊕ X → X ⊕ X → ℂ, TB.PSDOn (Y.disjSum Y) K ∧ ∀ p q, K (.inl p) (.inl q) = a v p q ∧ K (.inl p) (.inr q) = w v p q ∧ K (.inr p) (.inr q) = b v p q` using `fun v => ⟨_, hB v, fun p q => ⟨rfl, rfl, rfl⟩⟩`. Use `choose K hKp hKv using hB2`.
+
+Set `M : Option ι → X ⊕ X → X ⊕ X → ℂ` to `fun o => match o with`. Consider the case `none => fun x y => κ (el x) (el y)`. Consider the case `some v => K v`. Establish `hM : ∀ o, TB.PSDOn (Y.disjSum Y) (M o)`. Introduce `o`.
+
+Break down `o with _ | v` into its components or cases. Conclude with `hK`. Conclude with `hKp v`. Establish `hP` using `Formalism.FourierDecayAlt.P.schur_product (X ⊕ X) (Option ι) (Y.disjSum Y) M hM`. Establish `h2` using `Formalism.FourierDecayAlt.P.JCx1.decay.psd_compress (Y.disjSum Y) (fun x y => ∏ o, M o x y) hP (fun _ : Fin 2 => Y) (fun j => if j = 0 then Sum.inl else Sum.inr) (by`.
+
+Introduce `j h hh`. Use `fin_cases j`. Simplify using `only [Fin.zero_eta, Fin.isValue, ↓reduceIte]`. Rewrite using `[Finset.inl_mem_disjSum]`. Conclude with `hh`.
+
+Simplify using `only [Fin.mk_one, Fin.isValue, one_ne_zero, ↓reduceIte]`. Rewrite using `[Finset.inr_mem_disjSum]`. Conclude with `hh)`. Take `⟨hcs, hA, hB'⟩` from `Formalism.FourierDecayAlt.P.JCx1.decay.psd_two_cs _ h2`. Simplify using `only [Matrix.of_apply, Fintype.prod_option, Fin.isValue, one_ne_zero, ↓reduceIte, M, el, Sum.elim_inl, Sum.elim_inr, id, hKv] at hcs hA hB'`.
+
+Use `set W := ∑ p ∈ Y, ∑ q ∈ Y, κ p q * ∏ v, w v p q`. Use `set A := (∑ p ∈ Y, ∑ q ∈ Y, κ p q * ∏ v, a v p q).re`. Use `set B := (∑ p ∈ Y, ∑ q ∈ Y, κ p q * ∏ v, b v p q).re`. Establish `hW : ‖W‖ ^ 2 ≤ A * B` using `hcs`. Establish `hA0 : 0 ≤ A` using `hA`.
+
+Establish `hB0 : 0 ≤ B` using `hB'`. Establish `hn` using `norm_nonneg W`. Use polynomial arithmetic with `[sq_nonneg (A - B), sq_nonneg (‖W‖ - (A + B) / 2)]`.
+-/
 theorem block_schur {X ι : Type} [Fintype ι] (Y : Finset X) (κ : X → X → ℂ) (hκ : TB.PSDOn Y κ)
     (a w b : ι → X → X → ℂ) (hB : ∀ v, KB.BlockPSD Y Y (a v) (w v) (b v)) :
     ‖∑ p ∈ Y, ∑ q ∈ Y, κ p q * ∏ v, w v p q‖ ≤
@@ -80,9 +104,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
   [∀ x, InnerProductSpace ℂ (Wq x)]
 
+/- English proof (translation)
+The claim follows from `Finset.le_sup (f := fun u => (w.1 u).length) (Finset.mem_univ v)`.
+-/
 theorem len_le_cnt (S : C.HidaSetting E Wp Wq) (w : S.W) (v : Fin S.f) : (w.1 v).length ≤ S.base.cnt w :=
   Finset.le_sup (f := fun u => (w.1 u).length) (Finset.mem_univ v)
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `ha`. Establish `hlen : (w.1 v).length ≤ S.Ntop` using `le_trans (len_le_cnt S w v) w.2.2`. Simplify using `only [C.listsUpTo, Finset.mem_biUnion, Finset.mem_range, Finset.mem_image, Fintype.mem_piFinset]`. Use `⟨(w.1 v).length, by omega, (w.1 v).get, fun j => ?_, List.ofFn_get _⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_product, Finset.mem_univ, true_and, List.get_eq_getElem]`.
+
+Establish `h1` using `w.2.1.1 v j j.2`. Establish `hnode : (if ((w.1 v)[j.1]).1 then ((w.1 v)[j.1]).2 else ((w.1 v)[j.1]).2 - 1) ∈ S.nodes v`. Simplify using `only [C.HidaSetting.nodes, Finset.mem_union, Finset.mem_biUnion, Finset.mem_range] at h1 ⊢`. Break down `h1 with h | h` into its components or cases. Conclude with `Or.inl ⟨_, by omega, h⟩`.
+
+Conclude with `Or.inr h`. Simplify using `only [C.HidaSetting.pts, Finset.mem_union, Finset.mem_image]`. Use `split_ifs at hnode with hb`. Conclude with `Or.inl hnode`. Conclude with `Or.inr ⟨_, hnode, by ring⟩`.
+-/
 theorem admissible_word_mem_bounded_letter_lists (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (a : List C.Letter) (ha : D.AdmAt S v a) :
     a ∈ C.listsUpTo (S.pts v) S.Ntop := by
   obtain ⟨w, rfl⟩ := ha
@@ -101,6 +135,11 @@ theorem admissible_word_mem_bounded_letter_lists (S : C.HidaSetting E Wp Wq) (v 
   · exact Or.inl hnode
   · exact Or.inr ⟨_, hnode, by ring⟩
 
+/- English proof (translation)
+Use `⟨⟨fun v => ?_, fun v => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hp v`. Rewrite using `[← hu]`. Conclude with `u.2.1.1 v`. Take `⟨u, hu⟩` from `hp v`.
+
+Rewrite using `[← hu]`. Conclude with `u.2.1.2 v`. Conclude with `le_trans (Finset.sup_le fun v _ => hl v) hn`.
+-/
 theorem admissible_length_of_places (S : C.HidaSetting E Wp Wq) (p : C.Word S.f) (hp : ∀ v, D.AdmAt S v (p v)) (n : ℕ)
     (hn : n ≤ S.Ntop) (hl : ∀ v, (p v).length ≤ n) : S.AdmN p := by
   refine ⟨⟨fun v => ?_, fun v => ?_⟩, ?_⟩
@@ -112,6 +151,11 @@ theorem admissible_length_of_places (S : C.HidaSetting E Wp Wq) (p : C.Word S.f)
     exact u.2.1.2 v
   · exact le_trans (Finset.sup_le fun v _ => hl v) hn
 
+/- English proof (translation)
+Simplify using `only [TB.Data.Wb, Finset.mem_filter]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show w' ∈ (C.wall S.pts S.Ntop).subtype S.AdmN`. Rewrite using `[Finset.mem_subtype]`. Simplify using `only [C.wall, Fintype.mem_piFinset]`.
+
+Conclude with `fun v => admissible_word_mem_bounded_letter_lists S v _ (hm v).1`. Use `show C.Word.cnt w'.1 ≤ n`. Conclude with `Finset.sup_le fun v _ => (hm v).2`.
+-/
 theorem mem_Wb (S : C.HidaSetting E Wp Wq) (n : ℕ) (w' : S.W)
     (hm : ∀ v, D.AdmAt S v (w'.1 v) ∧ (w'.1 v).length ≤ n) : w' ∈ S.base.Wb n := by
   simp only [TB.Data.Wb, Finset.mem_filter]
@@ -123,6 +167,15 @@ theorem mem_Wb (S : C.HidaSetting E Wp Wq) (n : ℕ) (w' : S.W)
   · show C.Word.cnt w'.1 ≤ n
     exact Finset.sup_le fun v _ => (hm v).2
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_univ_sum]`. Establish `hsub : Fintype.piFinset U ⊆ (S.base.Wb n).map (Function.Embedding.subtype _)`. Introduce `p hp`. Rewrite `hp` using `[Fintype.mem_piFinset]`. Establish `hadm : S.AdmN p` using `admissible_length_of_places S p (fun v => ((hU v).2 _ (hp v)).1) n hn (fun v => ((hU v).2 _ (hp v)).2)`.
+
+Use `Finset.mem_map.mpr ⟨⟨p, hadm⟩, mem_Wb S n ⟨p, hadm⟩ fun v => (hU v).2 _ (hp v), rfl⟩` and prove the remaining obligations. Establish `hzero : ∀ p ∈ (S.base.Wb n).map (Function.Embedding.subtype _), p ∉ Fintype.piFinset U → ∏ v, (θ v (p v) : ℂ) * G v (p v) = 0`. Introduce `p _ hp`. Rewrite `hp` using `[Fintype.mem_piFinset]`. Use `push Not at hp`.
+
+Take `⟨v, hv⟩` from `hp`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (by rw [(hU v).1.2.1 _ hv]; simp)`. Rewrite using `[Finset.sum_subset hsub hzero, Finset.sum_map]`. Use `Finset.sum_congr rfl fun w' _ => ?_` and prove the remaining obligations. Simplify using `only [Function.Embedding.coe_subtype]`.
+
+Use `push_cast`. Rewrite using `[Finset.prod_mul_distrib]`.
+-/
 theorem prod_sum_words (S : C.HidaSetting E Wp Wq) (n : ℕ) (hn : n ≤ S.Ntop)
     (U : Fin S.f → Finset (List C.Letter)) (θ : Fin S.f → List C.Letter → ℝ)
     (hU : ∀ v, KB.LocProb S v n (U v) (θ v)) (G : Fin S.f → List C.Letter → ℂ) :
@@ -148,6 +201,13 @@ theorem prod_sum_words (S : C.HidaSetting E Wp Wq) (n : ℕ) (hn : n ≤ S.Ntop)
   push_cast
   rw [Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Use `⟨fun w' => Finset.prod_nonneg fun v _ => (hU v).1.1 _, fun w' hw' => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hw'` to reduce the goal to its premises. Use `mem_Wb S n w' fun v => (hU v).2 _ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hv`.
+
+Conclude with `hne (Finset.prod_eq_zero (Finset.mem_univ v) ((hU v).1.2.1 _ hv))`. Establish `h` using `prod_sum_words S n hn U θ hU (fun _ _ => 1)`. Simplify using `only [Finset.prod_const_one, mul_one] at h`. Establish `h1 : ∀ v, ∑ a ∈ U v, (θ v a : ℂ) = 1` using `fun v => by exact_mod_cast (hU v).1.2.2`. Simplify using `only [h1, Finset.prod_const_one] at h`.
+
+Conclude with `h` after adjusting the coercions.
+-/
 theorem isProb_prod (S : C.HidaSetting E Wp Wq) (n : ℕ) (hn : n ≤ S.Ntop)
     (U : Fin S.f → Finset (List C.Letter)) (θ : Fin S.f → List C.Letter → ℝ)
     (hU : ∀ v, KB.LocProb S v n (U v) (θ v)) :
@@ -164,6 +224,11 @@ theorem isProb_prod (S : C.HidaSetting E Wp Wq) (n : ℕ) (hn : n ≤ S.Ntop)
     simp only [h1, Finset.prod_const_one] at h
     exact_mod_cast h
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨⟨fun a => by dsimp only; split_ifs <;> norm_num, fun a ha => ?_, by simp⟩, fun a ha => ?_⟩`. Rewrite `ha` using `[Finset.mem_singleton]`. Simplify using `[ha]`. Rewrite `ha` using `[Finset.mem_singleton]`. Substitute `ha` using the available equality.
+
+Conclude with `⟨⟨w, rfl⟩, le_trans (len_le_cnt S w v) hn⟩`.
+-/
 theorem locProb_single (S : C.HidaSetting E Wp Wq) (w : S.W) (v : Fin S.f) (n : ℕ) (hn : S.base.cnt w ≤ n) :
     KB.LocProb S v n {w.1 v} (fun a => if a = w.1 v then 1 else 0) := by
   refine ⟨⟨fun a => by dsimp only; split_ifs <;> norm_num, fun a ha => ?_, by simp⟩, fun a ha => ?_⟩
@@ -181,6 +246,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
   [∀ x, InnerProductSpace ℂ (Wq x)]
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_filter]`. Use `congr 1`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+-/
 theorem prod_univ_ite {ι R : Type} [Fintype ι] [CommMonoid R] (A : Finset ι) (g : ι → R) :
     ∏ v, (if v ∈ A then g v else 1) = ∏ v ∈ A, g v := by
   rw [← Finset.prod_filter]
@@ -188,6 +256,17 @@ theorem prod_univ_ite {ι R : Type} [Fintype ι] [CommMonoid R] (A : Finset ι) 
   ext v
   simp
 
+/- English proof (translation)
+Establish `e1 : ∀ h h' : TB.Pt E, ∏ v, ((s v : ℂ) * ∑ a ∈ U v, (θ v a : ℂ) * KB.gN S v ε (i - 1) a (C.loc (S.σ v) h) (C.loc (S.σ v) h')) = ((∏ v, s v : ℝ) : ℂ) * ∑ w' ∈ S.base.Wb n, ((∏ v, θ v (w'.1 v) : ℝ) : ℂ) * (S.gram ε (i - 1) w'.1 h h' / (C.Word.size S.P w'.1 : ℂ))`. Introduce `h h'`. Rewrite using `[Finset.prod_mul_distrib, ← prod_sum_words S n hn U θ hU (fun v a => KB.gN S v ε (i - 1) a (C.loc (S.σ v) h) (C.loc (S.σ v) h'))]`. Use `push_cast`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun w' _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [KB.gN, C.HidaSetting.gram, if_pos hi, Finset.prod_div_distrib]`. Use `congr 1`. Simplify using `only [C.Word.size, C.HidaSetting.sizeAt, Complex.ofReal_prod]`.
+
+Establish `e2 : ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, ((s v : ℂ) * ∑ a ∈ U v, (θ v a : ℂ) * KB.gN S v ε (i - 1) a (C.loc (S.σ v) h) (C.loc (S.σ v) h')) = ((∏ v, s v : ℝ) : ℂ) * ∑ w' ∈ S.base.Wb n, ((∏ v, θ v (w'.1 v) : ℝ) : ℂ) * ((∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * S.gram ε (i - 1) w'.1 h h') / (C.Word …`. Rewrite using `[Finset.sum_congr rfl fun h _ => Finset.sum_congr rfl fun h' _ => by rw [e1 h h']]`. Simplify using `only [Finset.mul_sum, Finset.sum_div]`. Rewrite using `[Finset.sum_congr rfl (fun h _ => Finset.sum_comm), Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w' _ => Finset.sum_congr rfl fun h _ => Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, Complex.re_ofReal_mul, Complex.re_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun w' _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_ofReal_mul, Complex.div_ofReal_re]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rhs_eval (S : C.HidaSetting E Wp Wq) (ε : ℝ) (i : ℕ) (hi : i - 1 ≤ S.G.r + 1) (Y : Finset (TB.Pt E))
     (κ : TB.Pt E → TB.Pt E → ℂ) (n : ℕ) (hn : n ≤ S.Ntop) (U : Fin S.f → Finset (List C.Letter))
     (θ : Fin S.f → List C.Letter → ℝ) (hU : ∀ v, KB.LocProb S v n (U v) (θ v)) (s : Fin S.f → ℝ) :
@@ -223,6 +302,39 @@ theorem rhs_eval (S : C.HidaSetting E Wp Wq) (ε : ℝ) (i : ℕ) (hi : i - 1 �
   rw [Complex.re_ofReal_mul, Complex.div_ofReal_re]
   rfl
 
+/- English proof (translation)
+Establish `hlen : ∀ v, (w.1 v).length + C.Kst ≤ S.Ntop` using `fun v => by have := len_le_cnt S w v; omega`. Establish `H` using `fun v => hW v i hi1 hi2 (w.1 v) ⟨w, rfl⟩ (hlen v)`. Use `choose Up θp Um θm hUp hUm hblk using H`. Establish `hwid : ∀ v, (w.1 v).length + C.Kst ≤ S.base.cnt w + C.Kst` using `fun v => by`. Use `len_le_cnt S w v` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hUp' : ∀ v, KB.LocProb S v (S.base.cnt w + C.Kst) (Up v) (θp v)` using `fun v => ⟨(hUp v).1, fun a ha => ⟨((hUp v).2 a ha).1, le_trans ((hUp v).2 a ha).2 (hwid v)⟩⟩`. Establish `hUm' : ∀ v, KB.LocProb S v (S.base.cnt w + C.Kst) (Um v) (θm v)` using `fun v => ⟨(hUm v).1, fun a ha => ⟨((hUm v).2 a ha).1, le_trans ((hUm v).2 a ha).2 (hwid v)⟩⟩`. Set `U : Bool → Finset (Fin S.f) → Fin S.f → Finset (List C.Letter)` to `fun sg A v => if v ∈ A then (if sg then Up v else Um v) else {w.1 v}`. Set `th : Bool → Finset (Fin S.f) → Fin S.f → List C.Letter → ℝ` to `fun sg A v => if v ∈ A then (if sg then θp v else θm v) else fun a => if a = w.1 v then 1 else 0`.
+
+Establish `hU : ∀ sg A v, KB.LocProb S v (S.base.cnt w + C.Kst) (U sg A v) (th sg A v)`. Introduce `sg A v`. Distinguish the cases in `hv : v ∈ A`. Consider the cases of `sg`. Simplify using `only [U, th, hv, if_true, Bool.false_eq_true, if_false]`.
+
+Conclude with `hUm' v`. Simplify using `only [U, th, hv, if_true]`. Conclude with `hUp' v`. Simplify using `only [U, th, hv, if_false]; exact locProb_single S w v _ (by omega)`. Establish `hP : ∀ sg A, TB.IsProb (S.base.Wb (S.base.cnt w + C.Kst)) (fun w' : S.W => ∏ v, th sg A v (w'.1 v))` using `fun sg A => isProb_prod S _ hcnt (U sg A) (th sg A) (hU sg A)`.
+
+Use `⟨fun A w' => ((∏ v, th true A v (w'.1 v)) + ∏ v, th false A v (w'.1 v)) / 2, fun A => ?_, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hP true A`. Take `⟨g1, g2, g3⟩` from `hP false A`. Use `⟨fun a => by have := h1 a; have := g1 a; dsimp only; positivity, fun a ha => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [h2 a ha, g2 a ha]`.
+
+Evaluate the numerical expressions. Rewrite using `[← Finset.sum_div, Finset.sum_add_distrib, h3, g3]`. Evaluate the numerical expressions. Introduce `Y hY κ hκ L A`. Establish `hYv : ∀ v, ∀ h ∈ Y.image (C.loc (S.σ v)), D.ptSize h = i - 1`.
+
+Introduce `v h hh`. Take `⟨p, hp, rfl⟩` from `Finset.mem_image.mp hh`. Rewrite using `[Formalism.FourierDecayAlt.P.JCx1.needs.ptSize_loc]`. Conclude with `hY p hp`. Set `sc : Fin S.f → ℝ` to `fun v => if v ∈ A then X i v ^ C.Kst else 1`.
+
+Set `aK : Bool → Fin S.f → C.LPt → C.LPt → ℂ` to `fun sg v p q => (sc v : ℂ) * ∑ a ∈ U sg A v, (th sg A v a : ℂ) * KB.gN S v ε (i - 1) a p q`. Establish `haK : ∀ sg v, (aK sg v) = if v ∈ A then (fun p q => ((X i v ^ C.Kst : ℝ) : ℂ) * KB.mix S v ε (i - 1) (if sg then Up v else Um v) (if sg then θp v else θm v) p q) else KB.gN S v ε (i - 1) (w.1 v)`. Introduce `sg v`. Use function extensionality and compare the values at `p q`. Distinguish the cases in `hv : v ∈ A`.
+
+Apply the tactic sequence `cases sg <;> simp [aK, sc, U, th, hv, KB.mix]`. Simplify using `[aK, sc, U, th, hv]`. Establish `hc : ∀ v, ∃ c : ℂ, ‖c‖ = (if v ∈ A then ‖L v‖ ^ C.Kst else 1) ∧ KB.BlockPSD (Y.image (C.loc (S.σ v))) (Y.image (C.loc (S.σ v))) (aK true v) (fun p q => c * KB.hatB S v ε i 1 (w.1 v) (L v) p q) (aK false v)`. Introduce `v`. Distinguish the cases in `hv : v ∈ A`.
+
+Take `⟨-, u, hu, hB⟩` from `hblk v ε hε (L v) (Y.image (C.loc (S.σ v))) (hYv v)`. Use `⟨u * L v ^ C.Kst, by simp [hv, hu, norm_pow], ?_⟩` and prove the remaining obligations. Rewrite using `[haK true v, haK false v]`. Simplify using `only [hv, if_true, Bool.false_eq_true, if_false]`. Conclude with `hB`.
+
+Take `⟨hB0, -⟩` from `hblk v ε hε (L v) (Y.image (C.loc (S.σ v))) (hYv v)`. Use `⟨1, by simp [hv], ?_⟩` and prove the remaining obligations. Rewrite using `[haK true v, haK false v]`. Simplify using `only [hv, if_false, one_mul]`. Conclude with `hB0`.
+
+Use `choose c hcn hcB using hc`. Establish `hS` using `block_schur Y κ hκ (fun v p q => aK true v (C.loc (S.σ v) p) (C.loc (S.σ v) q)) (fun v p q => c v * KB.hatB S v ε i 1 (w.1 v) (L v) (C.loc (S.σ v) p) (C.loc (S.σ v) q)) (fun v p q => aK false v (C.loc (S.σ v) p) (C.loc (S.σ v) q)) (fun v => blockPSD_pull Y (C.loc (S.σ v)) _ _ _ ( …`. Establish `hL : ∑ p ∈ Y, ∑ q ∈ Y, κ p q * ∏ v, (c v * KB.hatB S v ε i 1 (w.1 v) (L v) (C.loc (S.σ v) p) (C.loc (S.σ v) q)) = (∏ v, c v) * KB.NhatV S ε i w Y κ L`. Simplify using `only [KB.NhatV, Finset.prod_mul_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hcp : ‖∏ v, c v‖ = ∏ v ∈ A, ‖L v‖ ^ C.Kst`. Rewrite using `[norm_prod, Finset.prod_congr rfl (fun v _ => hcn v)]`. Use `prod_univ_ite (R := ℝ) A (fun v => ‖L v‖ ^ C.Kst) using 3` and compare the differences between its conclusion and the goal. Establish `hi : i - 1 ≤ S.G.r + 1` using `by omega`.
+
+Establish `hR : ∀ sg, (∑ p ∈ Y, ∑ q ∈ Y, κ p q * ∏ v, aK sg v (C.loc (S.σ v) p) (C.loc (S.σ v) q)).re = (∏ v ∈ A, X i v ^ C.Kst) * ∑ w' ∈ S.base.Wb (S.base.cnt w + C.Kst), (∏ v, th sg A v (w'.1 v)) * S.base.N0 ε (i - 1) w' Y κ`. Introduce `sg`. Rewrite using `[rhs_eval S ε i hi Y κ _ hcnt (U sg A) (th sg A) (hU sg A) sc]`. Use `congr 1`. Use `prod_univ_ite (R := ℝ) A (fun v => X i v ^ C.Kst) using 3` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `try dsimp only at hS`. Rewrite `hS` using `[hL, norm_mul, hcp, hR true, hR false]`. Use `hS.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← mul_add, mul_div_assoc, ← Finset.sum_add_distrib, Finset.sum_div]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun w' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem waveV_core (S : C.HidaSetting E Wp Wq) (X : ℕ → Fin S.f → ℝ) (hW : ∀ v, KB.WaveLoc S v fun i => X i v)
     (ε : ℝ) (hε : 0 < ε) (i : ℕ) (hi1 : 1 ≤ i) (hi2 : i ≤ S.G.r + 1) (w : S.W)
     (hcnt : S.base.cnt w + C.Kst ≤ S.Ntop) :
@@ -329,16 +441,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
   [∀ x, InnerProductSpace ℂ (Wq x)]
 
+/- English proof (translation)
+Unfold `KB.psiL`. Rewrite using `[show 2 * (Real.pi : ℂ) * Complex.I * (((2 * (l * c).re / (S.g : ℝ) : ℝ)) : ℂ) = ((2 * Real.pi * (2 * (l * c).re / (S.g : ℝ)) : ℝ) : ℂ) * Complex.I by push_cast; ring]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+-/
 theorem norm_psiL (S : C.HidaSetting E Wp Wq) (l c : ℂ) : ‖KB.psiL S l c‖ = 1 := by
   unfold KB.psiL
   rw [show 2 * (Real.pi : ℂ) * Complex.I * (((2 * (l * c).re / (S.g : ℝ) : ℝ)) : ℂ) =
       ((2 * Real.pi * (2 * (l * c).re / (S.g : ℝ)) : ℝ) : ℂ) * Complex.I by push_cast; ring]
   exact Complex.norm_exp_ofReal_mul_I _
 
+/- English proof (translation)
+Unfold `KB.psiL`. Use `fun_prop`.
+-/
 theorem continuous_psiL (S : C.HidaSetting E Wp Wq) (l : ℂ) : Continuous fun c => KB.psiL S l c := by
   unfold KB.psiL
   fun_prop
 
+/- English proof (translation)
+Unfold `C.HidaSetting.psiInf KB.psiL`. Rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.sum_div, Finset.mul_sum]`.
+-/
 theorem psiInf_eq_prod (S : C.HidaSetting E Wp Wq) (l : E) (c : J.CV E) :
     S.psiInf l c = ∏ v, KB.psiL S (S.σ v l) (c (S.pl v)) := by
   unfold C.HidaSetting.psiInf KB.psiL
@@ -347,6 +468,13 @@ theorem psiInf_eq_prod (S : C.HidaSetting E Wp Wq) (l : E) (c : J.CV E) :
   push_cast
   rw [Finset.sum_div, Finset.mul_sum]
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.unipotent_dual_lattice_covolume E hU S.g _ 1 hg]`. Establish `hf : S.f = S6.deg E`. Establish `h1` using `(Formalism.FourierDecayAlt.P.degreeFacts_statement E).2.1`. Establish `h2 : Fintype.card (Fin S.f) = Fintype.card (InfinitePlace E)` using `Fintype.card_congr S.pl`. Rewrite `h2` using `[Fintype.card_fin]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, hf]`. Unfold `KB.dlB D.deG`. Establish `hrd` using `Formalism.FourierDecayAlt.P.Jx4.rd_pos E`. Establish `hg' : (0 : ℝ) < (S.g : ℝ)` using `by exact_mod_cast hg`.
+
+Establish `e : S6.rd E ^ (2 * S6.nuBlock (S.G.r : ℤ) (i : ℤ) (1 : ℤ)) / (2 / (S6.rd E * (S.g : ℝ) ^ 3)) = S6.rd E ^ (2 * S6.nuBlock (S.G.r : ℤ) (i : ℤ) (1 : ℤ)) * (S6.rd E / 2) * (S.g : ℝ) ^ 3`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Nat.cast_one, e, mul_pow, mul_pow, ← zpow_natCast, ← zpow_mul, ← pow_mul]`.
+-/
 theorem prod_dlB (S : C.HidaSetting E Wp Wq) (hg : 0 < S.g) (hU : S6.Unram E) (i : ℕ) :
     ∏ _v : Fin S.f, KB.dlB S i 1 = ZLattice.covolume (J.eLat E (S6.perLat E S.g (S6.nuBlock S.G.r i 1) 1) 1) := by
   rw [Formalism.FourierDecayAlt.P.unipotent_dual_lattice_covolume E hU S.g _ 1 hg]
@@ -364,6 +492,39 @@ theorem prod_dlB (S : C.HidaSetting E Wp Wq) (hg : 0 < S.g) (hU : S6.Unram E) (i
     field_simp
   rw [Nat.cast_one, e, mul_pow, mul_pow, ← zpow_natCast, ← zpow_mul, ← pow_mul]
 
+/- English proof (translation)
+Establish `H : ∀ (v : Fin S.f) (h h' : Y), ∃ φ : ℂ → ℂ, Continuous φ ∧ (∀ c : ℂ, c ≠ 0 → φ c = S.gramLoc v ε i (w.1 v) (C.loc (S.σ v) h ++ [(1, c)]) (C.loc (S.σ v) h' ++ [(1, c)])) ∧ (∃ Cφ : ℝ, ∀ c : ℂ, ‖φ c‖ ≤ Cφ * ((1 + ‖c‖) ^ 3)⁻¹) ∧ ∫ c : ℂ, φ c = (KB.dlB S i 1 : ℂ) * S.gramLoc v ε (i - …`. Introduce `v h h'`. Conclude with `hInt v ε hε i hi1 hi2 w _ _ (by rw [Formalism.FourierDecayAlt.P.JCx1.needs.ptSize_loc]; exact hY h h.2) (by rw [Formalism.FourierDecayAlt.P.JCx1.needs.ptSize_loc]; exact hY h' h'.2)`. Use `choose φ hφc hφe hφb hφi using H`. Use `choose Cφ hCφ using hφb`.
+
+Use `set ψ : Fin S.f → ℂ → ℂ := fun v c => KB.psiL S (S.σ v l) c with hψ`. Use `set sz : ℂ := (C.Word.size S.P w.1 : ℂ) with hsz`. Use `set Φ : (Fin S.f → ℂ) → ℂ := fun y => (∑ h : Y, ∑ h' : Y, κ h h' * ∏ v, (φ v h h' (y v) * ψ v (y v))) / sz with hΦ`. Establish `hint1 : ∀ v (h h' : Y), Integrable (fun c => φ v h h' c * ψ v c)` using `fun v h h' => Formalism.FourierDecayAlt.P.JCx1.needs.integrable_of_decay ((hφc v h h').mul (continuous_psiL S _)) (Cφ := Cφ v h h') (fun c => by rw [norm_mul, norm_psiL, mul_one]; exact hCφ v h h' c)`. Establish `hΦc : Continuous Φ`.
+
+Apply `Continuous.div_const` to reduce the goal to its premises. Conclude with `continuous_finsetSum _ fun h _ => continuous_finsetSum _ fun h' _ => continuous_const.mul (continuous_finsetProd _ fun v _ => ((hφc v h h').mul (continuous_psiL S _)).comp (continuous_apply v))`. Establish `hN1 : ∀ c : J.CV E, (∀ v, c (S.pl v) ≠ 0) → S.N1 ε i w.1 Y κ c * S.psiInf l c = Φ (Formalism.FourierDecayAlt.P.JCx1.needs.Qm S c)`. Introduce `c hc`. Simplify using `only [C.HidaSetting.N1, hΦ, Formalism.FourierDecayAlt.P.JCx1.needs.Qm_apply, psiInf_eq_prod, Finset.prod_mul_distrib]`.
+
+Rewrite using `[div_mul_eq_mul_div, Finset.sum_mul, ← Finset.sum_coe_sort Y]`. Use `congr 1`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, ← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc]`. Use `congr 2`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hφe v h h' _ (hc v)]`. Establish `hae : (fun c => S.N1 ε i w.1 Y κ c * S.psiInf l c) =ᵐ[volume] fun c => Φ (Formalism.FourierDecayAlt.P.JCx1.needs.Qm S c)`.
+
+Establish `hnull : volume (Formalism.FourierDecayAlt.P.JCx1.needs.Qm S ⁻¹' (⋃ v, {y : Fin S.f → ℂ | y v = 0})) = 0`. Rewrite using `[(Formalism.FourierDecayAlt.P.JCx1.needs.Qm_mp S).measure_preimage (MeasurableSet.iUnion fun v => measurableSet_eq_fun (measurable_pi_apply v) measurable_const).nullMeasurableSet]`. Conclude with `measure_iUnion_null fun v => Measure.pi_hyperplane _ v 0`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp hnull] with c hc`. Apply `hN1 c` to reduce the goal to its premises.
+
+Introduce `v hv`. Conclude with `hc (Set.mem_preimage.mpr (Set.mem_iUnion.mpr ⟨v, by simp [Formalism.FourierDecayAlt.P.JCx1.needs.Qm_apply, hv]⟩))`. Establish `hmap : ∫ c, Φ (Formalism.FourierDecayAlt.P.JCx1.needs.Qm S c) = ∫ y, Φ y` using `by conv_rhs => rw [← (Formalism.FourierDecayAlt.P.JCx1.needs.Qm_mp S).map_eq]`. Rewrite using `[integral_map (Formalism.FourierDecayAlt.P.JCx1.needs.Qm_mp S).measurable.aemeasurable hΦc.aestronglyMeasurable]`. Establish `hint : ∀ (h h' : Y), Integrable (fun y : Fin S.f → ℂ => ∏ v, (φ v h h' (y v) * ψ v (y v)))` using `fun h h' => Integrable.fintype_prod (f := fun v c => φ v h h' c * ψ v c) (fun v => hint1 v h h')`.
+
+Establish `hΦi : ∫ y, Φ y = (∑ h : Y, ∑ h' : Y, κ h h' * ∏ v, ∫ c, φ v h h' c * ψ v c) / sz`. Simplify using `only [hΦ]`. Rewrite using `[integral_div, integral_finsetSum _ fun h _ => integrable_finsetSum _ fun h' _ => (hint h h').const_mul _]`. Use `congr 1`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_finsetSum _ fun h' _ => (hint h h').const_mul _]`. Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_fintype_prod_volume_eq_prod (f := fun v c => φ v h h' c * ψ v c)]`. Establish `hne : ∀ᵐ c : ℂ, c ∉ ({0} : Set ℂ)` using `measure_eq_zero_iff_ae_notMem.mp (measure_singleton 0)`. Establish `hB1 : ∀ v (h h' : Y), KB.hatB S v ε i 1 (w.1 v) (S.σ v l) (C.loc (S.σ v) h) (C.loc (S.σ v) h') = (KB.dlB S i 1 : ℂ)⁻¹ * ((∫ c, φ v h h' c * ψ v c) / (S.sizeAt v (w.1 v) : ℂ))`.
+
+Introduce `v h h'`. Unfold `KB.hatB KB.gN`. Rewrite using `[show i + 1 - 1 = i by omega, ← integral_div]`. Use `congr 1`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hne] with c hc`. Rewrite using `[hφe v h h' c (by simpa using hc)]`. Simplify using `only [hψ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcv` using `prod_dlB S hg hU i`.
+
+Establish `hrd` using `Formalism.FourierDecayAlt.P.Jx4.rd_pos E`. Establish `hdl0 : KB.dlB S i 1 ≠ 0`. Unfold `KB.dlB D.deG`. Establish `hg' : (0 : ℝ) < (S.g : ℝ)` using `by exact_mod_cast hg`. Check the signs of the components of the expression.
+
+Establish `eR : KB.NhatV S ε i w Y κ (fun v => S.σ v l) = ∑ h : Y, ∑ h' : Y, κ h h' * ∏ v, ((KB.dlB S i 1 : ℂ)⁻¹ * ((∫ c, φ v h h' c * ψ v c) / (S.sizeAt v (w.1 v) : ℂ)))`. Unfold `KB.NhatV`. Rewrite using `[← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_coe_sort Y]`.
+
+Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Simplify using `only [hB1]`. Unfold `C.HidaSetting.Nhat`. Rewrite using `[eR, integral_congr_ae hae, hmap, hΦi, ← hcv, Finset.sum_div, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_div, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_div_distrib, Finset.prod_inv_distrib, Complex.ofReal_prod]`. Establish `hsz' : ∏ v, (S.sizeAt v (w.1 v) : ℂ) = sz`. Simplify using `only [hsz, C.Word.size, C.HidaSetting.sizeAt, Complex.ofReal_prod]`.
+
+Rewrite using `[hsz']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nhat_eq_nhatV (S : C.HidaSetting E Wp Wq) (hg : 0 < S.g) (hU : S6.Unram E) (hInt : KB.IntAll S)
     (ε : ℝ) (hε : 0 < ε) (i : ℕ) (hi1 : 1 ≤ i) (hi2 : i ≤ S.G.r + 1) (w : S.W) (Y : Finset (TB.Pt E))
     (hY : ∀ h ∈ Y, TB.level h = i - 1) (κ : TB.Pt E → TB.Pt E → ℂ) (l : E) :
@@ -475,9 +636,17 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ S X hW ε hε i hi1 hi2 w _ hcnt` and use `PBB.waveV_core S X hW ε hε i hi1 hi2 w hcnt`.
+-/
 theorem plane_wave_bound : Formalism.FourierDecayAlt.KB.WaveV :=
   fun _ _ _ _ _ _ _ _ _ _ S X hW ε hε i hi1 hi2 w _ hcnt => PBB.waveV_core S X hW ε hε i hi1 hi2 w hcnt
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S X hg1 hg2 hU _hG hInt _hX hW ε hε i hi1 hi2 w _hw hcnt`. Take `⟨θ, hθ, hb⟩` from `PBB.waveV_core S X hW ε hε i hi1 hi2 w hcnt`. Use `⟨θ, hθ, fun Y hY κ hκ l _ _ A => ?_⟩` and prove the remaining obligations. Establish `hg : 0 < S.g` using `Nat.mul_pos hg1 hg2`. Rewrite using `[PBB.nhat_eq_nhatV S hg hU hInt ε hε i hi1 hi2 w Y hY κ l]`.
+
+Use `hb Y hY κ hκ (fun v => S.σ v l) A` as an intermediate fact. Simplify using `only [Formalism.FourierDecayAlt.P.JCx1.norm_σ] at this`. Conclude with `this`.
+-/
 theorem plane_wave_bound_of_local_bounds : Formalism.FourierDecayAlt.KB.WaveOfLoc := by
   intro E _ _ _ Wp Wq _ _ _ _ S X hg1 hg2 hU _hG hInt _hX hW ε hε i hi1 hi2 w _hw hcnt
   obtain ⟨θ, hθ, hb⟩ := PBB.waveV_core S X hW ε hε i hi1 hi2 w hcnt

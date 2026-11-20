@@ -6,6 +6,9 @@ namespace Formalism.L2.SG.Pf.MassDataX
 
 open Formalism.L2.SG.TypedSets
 
+/- English proof (translation)
+The claim follows from `massDataMasses_of' hinfCompact_holds kCompactOpen_holds classFinite_holds strongApproxN_holds`.
+-/
 theorem inMassesAt_holds :
     ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)
       (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf) (u u' : D.what₂.Word)

@@ -6,11 +6,17 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace LateralTheory.EtaleFoundations.TensLocbij
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Conclude with `⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩`.
+-/
 theorem loc_mono {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P)
     (hPQ : ∀ V g, P V g → Q V g) : Loc U Q := by
   obtain ⟨S, hS, hP⟩ := h
   exact ⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h1`. Take `⟨T, hT, hQ⟩` from `h2`. Conclude with `⟨S ⊓ T, (Scheme.etaleTopology).intersection_covering hS hT, fun V g hg => ⟨hP V g hg.1, hQ V g hg.2⟩⟩`.
+-/
 theorem loc_and {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h1 : Loc U P)
     (h2 : Loc U Q) : Loc U (fun V g => P V g ∧ Q V g) := by
   obtain ⟨S, hS, hP⟩ := h1
@@ -18,6 +24,9 @@ theorem loc_and {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} 
   exact ⟨S ⊓ T, (Scheme.etaleTopology).intersection_covering hS hT,
     fun V g hg => ⟨hP V g hg.1, hQ V g hg.2⟩⟩
 
+/- English proof (translation)
+Simplify using `[op_comp, Functor.map_comp]`.
+-/
 theorem map_comp_apply' (R : Type) [CommRing R] (P : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R))
     {U V W : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (p : P.obj (op U)) :
     (P.map (k ≫ g).op).hom p = (P.map k.op).hom ((P.map g.op).hom p) := by

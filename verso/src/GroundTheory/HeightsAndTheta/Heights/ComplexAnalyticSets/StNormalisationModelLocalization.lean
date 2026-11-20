@@ -14,12 +14,18 @@ def normalModelSubmonoid {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (M : I
     ((Ideal.Quotient.mk M.ideal).comp
       (rename Sum.inl : MvPolynomial (Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n ⊕ Fin M.m) ℂ).toRingHom)
 
+/- English proof (translation)
+The claim follows from `Submonoid.mem_map_of_mem _ (show f ∈ (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl from fun h ↦ hf (RingHom.mem_ker.1 h))`.
+-/
 theorem mk_rename_mem_normalModelSubmonoid {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     (M : IndefiniteRowSideFullHecke.ComplexSets.NormalModel J) (q : Fin n → ℂ) (f : MvPolynomial (Fin n) ℂ) (hf : eval q f ≠ 0) :
     Ideal.Quotient.mk M.ideal (rename Sum.inl f) ∈ normalModelSubmonoid M q :=
   Submonoid.mem_map_of_mem _ (show f ∈ (RingHom.ker (eval q : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl from
     fun h ↦ hf (RingHom.mem_ker.1 h))
 
+/- English proof (translation)
+Introduce and unpack `⟨f, hf, h0⟩`. Apply `hf` to reduce the goal to its premises. Use `RingHom.mem_ker.2 (hq f ?_)` and prove the remaining obligations. Rewrite using `[← M.comap_eq, Ideal.mem_comap, ← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h0`.
+-/
 theorem zero_not_mem_normalModelSubmonoid {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     (M : IndefiniteRowSideFullHecke.ComplexSets.NormalModel J) (q : Fin n → ℂ) (hq : q ∈ zeroSet J) :
     (0 : MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) ∉ normalModelSubmonoid M q := by

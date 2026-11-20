@@ -11,6 +11,11 @@ open GlobalTheory.Mum.PowData
 
 namespace GlobalTheory.Mum.PowData
 
+/- English proof (translation)
+Introduce `R _ _ I D D₀ A A₀ G G₀ _ _ _ _ U U₀ K _ n a b h e`. Set `P` to `Over.pullback (thick R I e)`. Use `(U₀.gt e).q_hom` as an intermediate fact. Set `fG : (G ⟶ G₀) →* (P.obj G ⟶ P.obj G₀)` to `MonoidHom.mk' (fun x => P.map x) fun x y => Functor.map_mul P x y`. Set `fB : (D.toPre.P.A ⟶ D₀.toPre.P.A) →* (P.obj D.toPre.P.A ⟶ P.obj D₀.toPre.P.A)` to `MonoidHom.mk' (fun x => P.map x) fun x y => Functor.map_mul P x y`.
+
+Establish `hG : P.map (∏ i, a i ^ n i) = ∏ i, P.map (a i) ^ n i` using `(map_prod fG _ _).trans (Finset.prod_congr rfl fun i _ => map_zpow fG _ _)`. Establish `hB : P.map (∏ i, b i ^ n i) = ∏ i, P.map (b i) ^ n i` using `(map_prod fB _ _).trans (Finset.prod_congr rfl fun i _ => map_zpow fB _ _)`. Use `show P.map (∏ i, a i ^ n i) ≫ (U₀.gt e).q = (U.gt e).q ≫ P.map (∏ i, b i ^ n i)`. Rewrite using `[hG, hB, prod_zpow_comp, comp_prod_zpow]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [h i e]`.
+-/
 theorem over₀_prod_zpow : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), ∀ (D D₀ : DegData R I) (A A₀ : PolAV (Sp (FractionRing R))) (G G₀ : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [GrpObj G₀] [IsCommMonObj G₀], ∀ (U : UnifPre I D A G) (U₀ : UnifPre I D₀ A₀ G₀) (K : Type) [Fintype K] (n : K → ℤ) (a : K → (G ⟶ G₀)) (b : K → (D.toPre.P.A ⟶ D₀.toPre.P.A)), (∀ i, Over₀ U U₀ (a i) (b i)) → Over₀ U U₀ (∏ i, a i ^ n i) (∏ i, b i ^ n i) := by
   intro R _ _ I D D₀ A A₀ G G₀ _ _ _ _ U U₀ K _ n a b h e
   let P := Over.pullback (thick R I e)

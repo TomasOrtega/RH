@@ -9,6 +9,13 @@ open scoped BigOperators
 
 namespace GlobalTheory.ThetaConj
 
+/- English proof (translation)
+Introduce `M ρ`. Set `L : IntermediateField ℚ ℂ` to `M ⊓ Qbar`. Establish `h1 : L ≤ M` using `inf_le_left`. Establish `h2 : L ≤ Qbar` using `inf_le_right`. Use `letI : Algebra L Qbar := (IntermediateField.inclusion h2).toRingHom.toAlgebra`.
+
+Use `haveI : IsScalarTower ℚ L Qbar := IsScalarTower.of_algebraMap_eq fun r => by`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(map_ratCast (algebraMap ℚ ℂ) r).trans (by simp)`. Use `haveI : Algebra.IsAlgebraic ℚ Qbar := algebraicClosure.isAlgebraic ℚ ℂ`. Use `haveI : Algebra.IsAlgebraic L Qbar := Algebra.IsAlgebraic.tower_top (K := ℚ) L`.
+
+Take `⟨φ, hφ⟩` from `IsAlgClosed.surjective_domRestrict_of_isAlgebraic (K := ℚ) (L := L) (M := ℂ) (E := Qbar) (ρ.comp (IntermediateField.inclusion h1))`. Use `⟨φ, fun x hx hM => ?_⟩` and prove the remaining obligations. Rewrite using `[cj_mem ρ hM, cj_mem φ hx]`. Use `DFunLike.congr_fun hφ (⟨x, ⟨hM, hx⟩⟩ : L)` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem exists_cj_Qbar_eq : ∀ (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ),
     ∃ ρ' : Qbar →ₐ[ℚ] ℂ, ∀ x : ℂ, x ∈ Qbar → x ∈ M → cj M ρ x = cj Qbar ρ' x := by
   intro M ρ

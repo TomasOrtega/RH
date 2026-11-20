@@ -26,6 +26,29 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.TrueGeo GlobalTheory.ArInt Gl
 open scoped Classical
 set_option autoImplicit false
 
+/- English proof (translation)
+Introduce `D O hC c W τ`. Establish `hdr` using `hC.dualRef`. Use `set Y := O.var c with hYdef`. Use `set Dv : Fin O.N → Y.Dv := fun i => (O.root0 c ∅ (τ, i)).D with hDv`. Establish `hN : ∀ i : Fin O.N, GlobalTheory.CoverNorm.Norms W.V (W.root ∅ (τ, i)) (fun x => genAt (O.root0 c ∅ (τ, i)).D x ^ 1) _ _` using `fun i => GlobalTheory.CoverNorm.norms_of_induces (Setup.induces_root0 D O hdr ∅ c W ∅ subset_rfl (τ, i))`.
+
+Take `⟨r, hr, hu, -, -⟩` from `GlobalTheory.CoverNorm.norms_comb hN (fun _ => 1)`. Establish `hF` using `GlobalTheory.ShFam.Hor.isFlat_flatSec D O.A O.N O.j O.S O.κ O.s O.Φ c τ`. Establish `hdivsum : ∀ (s : Finset (Fin O.N)) (n : Fin O.N → Letter O.S.Dw → ℤ), divOf (O.Φ.C c) (∑ i ∈ s, n i) = ∑ i ∈ s, divOf (O.Φ.C c) (n i)`. Introduce `s n`. Simplify using `only [divOf, Finset.sum_apply, Finset.sum_smul]`.
+
+Conclude with `Finset.sum_comm`. Establish `hind : ArIn.ind ∅ = fun _ => false`. Use function extensionality and compare the values at `q`. Simplify using `[ArIn.ind]`. Establish `hpq : O.S.Dw.p + O.S.Dw.q = O.N` using `O.S.rank_eq`.
+
+Establish `hsum : divOf (O.Φ.C c) (expo O.S.Dw (detSym O.S.Dw (fun _ => false) none (DV.tauEmb D τ))) = ∑ i, Dv i`. Establish `e1 : detSym O.S.Dw (fun _ => false) none (DV.tauEmb D τ) = ∑ i : Fin O.N, rootSym O.S.Dw (ArIn.ind ∅) none (DV.tauEmb D τ) (i : ℕ)`. Rewrite using `[hind, detSym, hpq, Fin.sum_univ_eq_sum_range (fun i => rootSym O.S.Dw (fun _ => false) none (DV.tauEmb D τ) i)]`. Rewrite using `[e1, GlobalTheory.CovolFin.expo_sum, hdivsum]`. Both sides reduce to the same expression.
+
+Establish `hgen : ∀ y : Y.X, (∑ i, Dv i).GeneratesAt y (∏ i, genAt (Dv i) y)`. Introduce `y`. Use `Finset.induction_on (Finset.univ : Finset (Fin O.N)) ?_ ?_` and prove the remaining obligations. Simplify using `using (CartierDiv.generatesAt_zero_iff (x := y) (f := (1 : Y.Fn))).2 (unitAt_one y)`. Introduce `a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `(generatesAt_genAt (Dv a) y).mul ih`. Use `set fl := flatSec O.s O.Φ c τ with hfl`. Establish `hq : ∀ y : Y.X, UnitAt y (fl * (∏ i, genAt (Dv i) y)⁻¹)`. Introduce `y`.
+
+Establish `h1 : (∑ i, Dv i).GeneratesAt y fl` using `hsum ▸ hF y`. Take `⟨t, ht⟩` from `(∑ i, Dv i).exists_isEqn y`. Establish `a1` using `ht.generatesAt_iff.1 h1`. Establish `a2` using `ht.generatesAt_iff.1 (hgen y)`. Establish `e : fl * (∏ i, genAt (Dv i) y)⁻¹ = (fl * (t : Y.Fn)) * ((∏ i, genAt (Dv i) y) * (t : Y.Fn))⁻¹`.
+
+Rewrite using `[mul_inv, mul_mul_mul_comm, mul_inv_cancel₀ (Units.ne_zero t), mul_one]`. Rewrite using `[e]`. Conclude with `a1.mul a2.inv`. Establish `hfl0 : fl ≠ 0` using `(hF (genericPoint Y.X)).ne_zero`. Establish `hφ0 : W.V.φ fl ≠ 0` using `(map_ne_zero _).2 hfl0`.
+
+Use `⟨fun i => Units.mk0 (W.V.φ fl) hφ0 * r i, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j h`. Simplify using `only [Units.val_mul, Units.val_mk0]`. Rewrite using `[hr i j h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `i x hx`. Establish `H` using `hu i x hx`. Simplify using `only [pow_one, one_pow] at H`. Establish `hp0 : (∏ k, genAt (Dv k) (W.V.π x)) ≠ 0` using `(hgen (W.V.π x)).ne_zero`. Establish `e : ((Units.mk0 (W.V.φ fl) hφ0 * r i : W.V.G.functionFieldˣ) : W.V.G.functionField) = W.V.φ (fl * (∏ k, genAt (Dv k) (W.V.π x))⁻¹) * (W.V.φ (∏ k, genAt (Dv k) (W.V.π x)) * r i)`.
+
+Establish `: W.V.φ (∏ k, genAt (Dv k) (W.V.π x)) ≠ 0` using `(map_ne_zero _).2 hp0`. Rewrite using `[Units.val_mul, Units.val_mk0, map_mul, map_inv₀]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `(W.V.unitAt_φ (hq _)).mul (by simpa only [pow_one, zpow_one] using H)`.
+-/
 theorem GlobalTheory.FlatRat.exists_unit_ratSec_comb_root : ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) (W : O.LatModel ∅ c) (τ : D.what₂.Tau), ∃ r : ((GlobalTheory.ArInt.comb (fun i : Fin O.N => W.root ∅ (τ, i)) (fun _ => 1)).B.pull W.V.j).ι → W.V.G.functionFieldˣ, GlobalTheory.Cartier.IsRatSec ((GlobalTheory.ArInt.comb (fun i : Fin O.N => W.root ∅ (τ, i)) (fun _ => 1)).B.pull W.V.j) r ∧ ∀ i, ∀ x ∈ ((GlobalTheory.ArInt.comb (fun i : Fin O.N => W.root ∅ (τ, i)) (fun _ => 1)).B.pull W.V.j).U i, UnitAt x (r i : W.V.G.functionField) := by
   intro D O hC c W τ
   have hdr := hC.dualRef

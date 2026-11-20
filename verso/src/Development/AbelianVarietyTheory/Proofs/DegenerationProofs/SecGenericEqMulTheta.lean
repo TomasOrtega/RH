@@ -20,16 +20,29 @@ open GlobalTheory.Points
 
 variable {B : Scheme.{0}} (A : Over B) (L : LB A.left) (a : ℤ)
 
+/- English proof (translation)
+Introduce `y _` and use `Set.mem_iInter.2 fun _ => h ⟨y, rfl⟩`.
+-/
 theorem le_chart {T : Over B} {K : Type} [CommRing K] (q : Sp K ⟶ (T ⊗ A).left) (j : L.ι)
     (h : Set.range (q ≫ (snd T A).left) ⊆ L.U j) : ⊤ ≤ q ⁻¹ᵁ (LPow A L a T).U (fun _ => j) :=
   fun y _ => Set.mem_iInter.2 fun _ => h ⟨y, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[H j, valR_res q _ hq, valR_comp]`.
+-/
 theorem valR_pull [GrpObj A] {T T' : Over B} {h : T' ⊗ A ⟶ T ⊗ A} {hh : h ≫ snd T A = snd T' A}
     {s : LB.Sec (LPow A L a T)} {s' : LB.Sec (LPow A L a T')} (H : IsPullSec A L a h hh s s')
     {K : Type} [CommRing K] (q : Sp K ⟶ (T' ⊗ A).left) (j : Fin 1 → L.ι) (hq : ⊤ ≤ q ⁻¹ᵁ (LPow A L a T').U j) :
     valR q _ (s'.f j) = valR (q ≫ h.left) _ (s.f j) := by
   rw [H j, valR_res q _ hq, valR_comp]
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Use `⟨b 0, fun s => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, -⟩` from `hb s`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom (r 0), fun K _ β q j hq hj => ?_⟩` and prove the remaining obligations. Rewrite using `[hr j, Fin.sum_univ_one, valR_mul q _ hj, valR_res q _ hj]`.
+
+Use `congr 1`. Establish `e` using `valR_comp q (fst (Over.mk t) A).left ⊤ (r 0)`. Use `e.symm.trans ?_` and prove the remaining obligations. Rewrite using `[hq]`. Establish `e2` using `valR_specMap (C := K) (A := CommRingCat.of Ω) (CommRingCat.ofHom β) ((Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom (r 0))`.
+
+Use `Eq.trans ?_ e2` and prove the remaining obligations. Conclude with `congrArg (valR (spMap β) ⊤) ((Scheme.ΓSpecIso (CommRingCat.of Ω)).hom_inv_id_apply (r 0)).symm`.
+-/
 theorem valR_of_basis {Ω : Type} [CommRing Ω] (t : Sp Ω ⟶ B) {m : ℕ} (hm : m = 1)
     {b : Fin m → LB.Sec (LPow A L a (Over.mk t))} (hb : IsSecBasis _ b) :
     ∃ b₀ : LB.Sec (LPow A L a (Over.mk t)), ∀ s : LB.Sec (LPow A L a (Over.mk t)), ∃ c : Ω,
@@ -50,6 +63,11 @@ theorem valR_of_basis {Ω : Type} [CommRing Ω] (t : Sp Ω ⟶ B) {m : ℕ} (hm 
   refine Eq.trans ?_ e2
   exact congrArg (valR (spMap β) ⊤) ((Scheme.ΓSpecIso (CommRingCat.of Ω)).hom_inv_id_apply (r 0)).symm
 
+/- English proof (translation)
+Establish `hx : ⊤ ≤ x ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => z.left) (fun _ => j)` using `fun y _ => Set.mem_iInter.2 fun _ => hj ⟨y, rfl⟩`. Establish `e` using `congrArg (valR x _) (H fun _ => j)`. Rewrite `e` using `[valR_res x _ hx, valR_mul x _ hx, valR_res x _ hx]`. Rewrite using `[valR_comp]`. Use `e.trans_ne (mul_ne_zero hv ?_)` and prove the remaining obligations.
+
+Rewrite using `[valR_eq x _ hx]`. Conclude with `((τ.s fun _ => j).isUnit.map _).ne_zero`.
+-/
 theorem valR_ne_zero [GrpObj A] {T : Over B} {s : LB.Sec (LPow A L a T)} {z : T ⟶ A}
     {τ : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => z.left) (fun _ => a))} {v : Γ(T.left, ⊤)}
     (H : IsValueAt A L a s z τ v) {K : Type} [Field K] (x : Sp K ⟶ T.left) (j : L.ι)
@@ -68,6 +86,23 @@ end GlobalTheory.ZH.ThetaLine
 
 open GlobalTheory.Points GlobalTheory.ZH.ThetaLine in
 
+/- English proof (translation)
+Introduce `_ hL2 o Ω _ _ _ _ S ρ s`. Set `t₀ : Sp Ω ⟶ Sp S.R` to `spMap S.R.val.toRingHom`. Set `h : (Over.mk t₀ : Over (Sp S.R)) ⟶ baseOver (Sp S.R)` to `Over.homMk t₀ (Category.comp_id t₀)`. Take `⟨th, hth⟩ : ∃ th, IsPullSec ρ.P.A ρ.P.L 1 (h ▷ ρ.P.A) (whiskerRight_snd h ρ.P.A) ρ.th₁ th` from `(GlobalTheory.LN.PolFrames.exists_pullSec ρ.P.A ρ.P.L 1 h ρ.th₁).imp fun _ H => H.1`. Take `⟨b, hb⟩` from `GlobalTheory.PowBasis.exists_basis_pow hL2.secTwist ρ.P 1 le_rfl Ω t₀`.
+
+Take `⟨b₀, hb₀⟩` from `valR_of_basis ρ.P.A ρ.P.L 1 t₀ (one_pow _) hb`. Take `⟨c, hc⟩` from `hb₀ s`. Take `⟨d, hd⟩` from `hb₀ th`. Establish `hd0 : d ≠ 0`. Take `⟨a, ha⟩` from `S.th_ne`.
+
+Take `⟨j, hj⟩` from `exists_chart ρ.P.isLB ((t₀ ≫ (ρ.pt a).left) (IsLocalRing.closedPoint Ω))`. Establish `hj' : Set.range (t₀ ≫ (ρ.pt a).left) ⊆ ρ.P.L.U j`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Subsingleton.elim y (IsLocalRing.closedPoint Ω)]`. Conclude with `hj`.
+
+Establish `hne` using `valR_ne_zero ρ.P.A ρ.P.L 1 (ρ.th_val a) t₀ j hj' ((valR_specMap (C := Ω) (A := CommRingCat.of S.R) (CommRingCat.ofHom S.R.val.toRingHom) _).trans_ne ha)`. Set `x : Sp Ω ⟶ ((Over.mk t₀ : Over (Sp S.R)) ⊗ ρ.P.A).left` to `(ptSecT ρ.P.A (h ≫ ρ.pt a)).left`. Establish `hx1 : x ≫ (fst (Over.mk t₀ : Over (Sp S.R)) ρ.P.A).left = spMap (RingHom.id Ω)` using `(congrArg CommaMorphism.left (lift_fst (𝟙 (Over.mk t₀ : Over (Sp S.R))) (h ≫ ρ.pt a))).trans (Spec.map_id _).symm`. Establish `hx2 : x ≫ (snd (Over.mk t₀ : Over (Sp S.R)) ρ.P.A).left = t₀ ≫ (ρ.pt a).left` using `congrArg CommaMorphism.left (lift_snd (𝟙 (Over.mk t₀ : Over (Sp S.R))) (h ≫ ρ.pt a))`. Establish `hx3 : x ≫ (h ▷ ρ.P.A).left = t₀ ≫ (ptSecT ρ.P.A (ρ.pt a)).left`.
+
+Establish `: ptSecT ρ.P.A (h ≫ ρ.pt a) ≫ h ▷ ρ.P.A = h ≫ ptSecT ρ.P.A (ρ.pt a)`. Simplify using `[ptSecT]`. Conclude with `congrArg CommaMorphism.left this`. Establish `hxj` using `le_chart ρ.P.A ρ.P.L 1 x j (hx2 ▸ hj')`. Introduce and unpack `rfl`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[← hx3, ← valR_pull ρ.P.A ρ.P.L 1 hth x _ hxj, hd Ω _ x _ hx1 hxj, map_zero, zero_mul]`. Use `⟨c / d, fun K _ β q r j hq hr hj => ?_⟩` and prove the remaining obligations. Establish `hqj` using `le_chart ρ.P.A ρ.P.L 1 q j hj`. Establish `hrq : r = q ≫ (h ▷ ρ.P.A).left`.
+
+Establish `h2 : r ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left = (q ≫ (h ▷ ρ.P.A).left) ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left`. Rewrite using `[hr, Category.assoc, ← Over.comp_left, whiskerRight_snd]`. Establish `w : (fst (baseOver (Sp S.R)) ρ.P.A).left = (snd (baseOver (Sp S.R)) ρ.P.A).left ≫ ρ.P.A.hom` using `(Category.comp_id _).symm.trans (pullback.condition (f := 𝟙 (Sp S.R)) (g := ρ.P.A.hom))`. Use `pullback.hom_ext (f := 𝟙 (Sp S.R)) (g := ρ.P.A.hom) ?_ h2` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `r ≫ (fst (baseOver (Sp S.R)) ρ.P.A).left = _ ≫ (fst (baseOver (Sp S.R)) ρ.P.A).left`.
+
+Rewrite using `[w, ← Category.assoc, h2]`. Simplify using `only [Category.assoc]`. Express the relevant statement in the definitionally equal form `valR q _ _ = β (c / d) * valR r _ _`. Rewrite using `[hrq, ← valR_pull ρ.P.A ρ.P.L 1 hth q _ hqj, hc K β q _ hq hqj, hd K β q _ hq hqj, map_div₀, ← _root_.mul_assoc, div_mul_cancel₀ _ ((map_ne_zero β).2 hd0)]`.
+-/
 theorem GlobalTheory.ZH.sec_generic_eq_mul_theta : Laws → Laws2 → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (s : LB.Sec (LPow ρ.P.A ρ.P.L 1 (Over.mk (spMap S.R.val.toRingHom) : Over (Sp S.R)))), ∃ c : Ω, ∀ (K : Type) [Field K] (β : Ω →+* K) (q : Sp K ⟶ ((Over.mk (spMap S.R.val.toRingHom) : Over (Sp S.R)) ⊗ ρ.P.A).left) (r : Sp K ⟶ (baseOver (Sp S.R) ⊗ ρ.P.A).left) (jP : ρ.P.L.ι), q ≫ (fst (Over.mk (spMap S.R.val.toRingHom) : Over (Sp S.R)) ρ.P.A).left = spMap β → r ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left = q ≫ (snd (Over.mk (spMap S.R.val.toRingHom) : Over (Sp S.R)) ρ.P.A).left → Set.range (q ≫ (snd (Over.mk (spMap S.R.val.toRingHom) : Over (Sp S.R)) ρ.P.A).left) ⊆ ρ.P.L.U jP → valF q _ (s.f fun _ => jP) = β c * valF r _ (ρ.th₁.f fun _ => jP) := by
   intro _ hL2 o Ω _ _ _ _ S ρ s
   let t₀ : Sp Ω ⟶ Sp S.R := spMap S.R.val.toRingHom

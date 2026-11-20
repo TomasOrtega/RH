@@ -20,6 +20,9 @@ def RatioP (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarch
     (X ⊓ Y).relIndex X ≠ 0 ∧ (X ⊓ Y).relIndex Y ≠ 0 ∧
       ((X ⊓ Y).relIndex Y : ℝ) / ((X ⊓ Y).relIndex X : ℝ) = (distribHaarChar k (LinearEquiv.det φ) : ℝ)
 
+/- English proof (translation)
+Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `congrArg (fun z : W => g⁻¹.val * (z : Matrix (Fin n) (Fin n) k) * g.val) hab`. Simplify using `only [LinearMap.coe_restrict_apply, adL_apply, adL_inv_adL] at h`. Conclude with `h`.
+-/
 theorem adL_restrict_inj (g : GL (Fin n) k) (W : Submodule k (Matrix (Fin n) (Fin n) k))
     (hW : ∀ a ∈ W, adL g a ∈ W) : Function.Injective ((adL g).restrict hW) := by
   intro a b hab
@@ -28,6 +31,11 @@ theorem adL_restrict_inj (g : GL (Fin n) k) (W : Submodule k (Matrix (Fin n) (Fi
   simp only [LinearMap.coe_restrict_apply, adL_apply, adL_inv_adL] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[mem_cj]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨⟨_, (mem_lat.1 h).1⟩, h, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_ofInjectiveEndo, LinearMap.coe_restrict_apply, adL_apply, adL_adL_inv]`.
+
+Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[LinearEquiv.coe_ofInjectiveEndo, LinearMap.coe_restrict_apply, adL_apply, adL_inv_adL]`. Conclude with `hz`.
+-/
 theorem mem_cj_iff_exists (g : GL (Fin n) k) (W : Submodule k (Matrix (Fin n) (Fin n) k))
     (hW : ∀ a ∈ W, adL g a ∈ W) (γ : ValueGroupWithZero k) (y : Matrix (Fin n) (Fin n) k) :
     y ∈ cj g (lat W γ) ↔ ∃ z : W, (z : Matrix (Fin n) (Fin n) k) ∈ lat W γ ∧
@@ -41,6 +49,9 @@ theorem mem_cj_iff_exists (g : GL (Fin n) k) (W : Submodule k (Matrix (Fin n) (F
     rw [LinearEquiv.coe_ofInjectiveEndo, LinearMap.coe_restrict_apply, adL_apply, adL_inv_adL]
     exact hz
 
+/- English proof (translation)
+Rewrite using `[LinearEquiv.coe_det]`. Use `congr 1`.
+-/
 theorem det_ofInjectiveEndo (g : GL (Fin n) k) (W : Submodule k (Matrix (Fin n) (Fin n) k))
     (hW : ∀ a ∈ W, adL g a ∈ W) :
     ((LinearEquiv.det (LinearEquiv.ofInjectiveEndo _ (adL_restrict_inj g W hW)) : kˣ) : k) =
@@ -48,6 +59,9 @@ theorem det_ofInjectiveEndo (g : GL (Fin n) k) (W : Submodule k (Matrix (Fin n) 
   rw [LinearEquiv.coe_det]
   congr 1
 
+/- English proof (translation)
+Establish `h2` using `h.1.2`. Rewrite `h2` using `[sub_mul, mul_sub, one_mul, mul_one]`. Conclude with `sub_left_inj.1 h2`.
+-/
 theorem comm_of_mem_cS (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n) (Fin n) k)
     (v : Fin n → k) (u : GL (Fin n) k) (h : u.val - 1 ∈ cS Z x v) : u.val * x = x * u.val := by
   have h2 := h.1.2

@@ -17,6 +17,9 @@ variable {D : D7} {L : SizeData₂ D}
 end Sizes
 section Main
 variable {D : D7} {L : SizeData₂ D}
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ hF _ => let ⟨x₀, h⟩ := sizeRows_fam he Fm hF ⟨x₀, fun x hx h0 i _ _ => h x hx h0 i⟩⟩⟩`.
+-/
 theorem sizeAt_alt : _root_.GlobalTheory.BigTop.Fun.SizeAtAlt :=
   ⟨1, one_pos, fun _ he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ hF _ =>
     let ⟨x₀, h⟩ := sizeRows_fam he Fm hF

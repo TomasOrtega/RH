@@ -30,6 +30,11 @@ def Orth {r : ℕ} (X : Data E r) (G : Matrix (Fin r) (Fin r) E) (p : X.Ψ → �
 def Uni {r : ℕ} (X : Data E r) (G : Matrix (Fin r) (Fin r) E) (n : X.Ψ → Matrix (Fin r) (Fin r) ℂ) : Prop :=
   ∀ τ : X.Ψ, ∀ u w, hermC τ.1 G (Matrix.mulVec (n τ) u) (Matrix.mulVec (n τ) w) = hermC τ.1 G u w
 
+/- English proof (translation)
+Introduce `h0`. Establish `h` using `congrArg Matrix.det (hx τ)`. Rewrite `h` using `[gram_eq_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, Matrix.det_diagonal]`. Use `(Finset.prod_ne_zero_iff.2 fun a _ => ?_) h.symm` and prove the remaining obligations. Unfold `sgn`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma det_ne_zero_of_isOrth {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {p : X.Ψ → ℕ} {x : Frame X.Ψ r} (hx : Orth X G p x)
     (τ : X.Ψ) : (mat x τ).det ≠ 0 := by
   intro h0
@@ -39,6 +44,11 @@ lemma det_ne_zero_of_isOrth {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r)
   unfold sgn
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [Uni, Set.setOf_forall]`. Use `isClosed_iInter fun τ => isClosed_iInter fun u => isClosed_iInter fun w => ?_` and prove the remaining obligations. Use `isClosed_eq ?_ continuous_const` and prove the remaining obligations. Establish `hc : Continuous fun g : X.Ψ → GL (Fin r) ℂ => (g τ : Matrix (Fin r) (Fin r) ℂ)` using `Units.continuous_val.comp (continuous_apply τ)`. Simplify using `only [hermC_eq_dot]`.
+
+Conclude with `(hc.matrix_mulVec continuous_const).dotProduct (continuous_const.matrix_mulVec (hc.matrix_mulVec continuous_const).star)`.
+-/
 lemma isClosed_unitary {r : ℕ} (X : Data E r) (G : Matrix (Fin r) (Fin r) E) :
     IsClosed {g : X.Ψ → GL (Fin r) ℂ | Uni X G fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)} := by
   simp only [Uni, Set.setOf_forall]
@@ -50,6 +60,9 @@ lemma isClosed_unitary {r : ℕ} (X : Data E r) (G : Matrix (Fin r) (Fin r) E) :
   exact (hc.matrix_mulVec continuous_const).dotProduct
     (continuous_const.matrix_mulVec (hc.matrix_mulVec continuous_const).star)
 
+/- English proof (translation)
+Introduce `τ`. Rewrite using `[← hx τ, show mat (X.lmulC n x) τ = n τ * mat x τ from rfl]`. Use extensionality with `a b`. Simplify using `only [gram, Matrix.of_apply, col_mul', hn τ]`.
+-/
 lemma isOrth_lmulC {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {p : X.Ψ → ℕ} {n : X.Ψ → Matrix (Fin r) (Fin r) ℂ}
     (hn : Uni X G n) {x : Frame X.Ψ r} (hx : Orth X G p x) : Orth X G p (X.lmulC n x) := by
   intro τ
@@ -61,9 +74,17 @@ noncomputable def toGL {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {
     X.Ψ → GL (Fin r) ℂ :=
   fun τ => Matrix.GeneralLinearGroup.mkOfDetNeZero (mat x τ) (det_ne_zero_of_isOrth X hx τ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma val_toGL {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {p : X.Ψ → ℕ} {x : Frame X.Ψ r} (hx : Orth X G p x) (τ : X.Ψ) :
     (toGL X hx τ : Matrix (Fin r) (Fin r) ℂ) = mat x τ := rfl
 
+/- English proof (translation)
+Introduce `τ u w`. Establish `key : ∀ u w, hermC τ.1 G (mat x τ *ᵥ u) (mat x τ *ᵥ w) = hermC τ.1 G (mat y τ *ᵥ u) (mat y τ *ᵥ w)`. Introduce `u w`. Rewrite using `[hermC_mulVec, hermC_mulVec, hx τ, hy τ]`. Establish `h` using `key ((((toGL X hy τ)⁻¹ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) *ᵥ u) ((((toGL X hy τ)⁻¹ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) *ᵥ w)`.
+
+Rewrite `h` using `[← val_toGL X hx, ← val_toGL X hy]`. Simplify using `only [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec] at h`. Simplify using `only [Pi.mul_apply, Pi.inv_apply, Units.val_mul]`. Conclude with `h`.
+-/
 lemma quotient_unitary {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {p : X.Ψ → ℕ} {x y : Frame X.Ψ r} (hx : Orth X G p x)
     (hy : Orth X G p y) :
     Uni X G fun τ => ((toGL X hx * (toGL X hy)⁻¹) τ : Matrix (Fin r) (Fin r) ℂ) := by
@@ -79,6 +100,11 @@ lemma quotient_unitary {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {
   simp only [Pi.mul_apply, Pi.inv_apply, Units.val_mul]
   exact h
 
+/- English proof (translation)
+Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun x : {x : Frame X.Ψ r | Orth X G p x} => mat x.1 τ` using `(continuous_apply τ).comp continuous_subtype_val`. Use `Units.continuous_iff.2 ⟨hc, ?_⟩` and prove the remaining obligations. Establish `h : (fun x : {x : Frame X.Ψ r | Orth X G p x} => (((toGL X x.2 τ)⁻¹ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)) = fun x => ((mat x.1 τ).det)⁻¹ • (mat x.1 τ).adjugate`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[Matrix.coe_units_inv, val_toGL, Matrix.inv_def, Ring.inverse_eq_inv']`. Rewrite using `[h]`. Conclude with `(hc.matrix_det.inv₀ fun x => det_ne_zero_of_isOrth X x.2 τ).smul hc.matrix_adjugate`.
+-/
 lemma continuous_toGL {r : ℕ} (X : Data E r) (G : Matrix (Fin r) (Fin r) E) (p : X.Ψ → ℕ) :
     Continuous fun x : {x : Frame X.Ψ r | Orth X G p x} => toGL X x.2 := by
   refine continuous_pi fun τ => ?_
@@ -93,6 +119,19 @@ lemma continuous_toGL {r : ℕ} (X : Data E r) (G : Matrix (Fin r) (Fin r) E) (p
   rw [h]
   exact (hc.matrix_det.inv₀ fun x => det_ne_zero_of_isOrth X x.2 τ).smul hc.matrix_adjugate
 
+/- English proof (translation)
+Introduce `r X G p H hH`. Use `haveI := locallyCompact_GL r`. Use `haveI := secondCountable_GL r`. Establish `hcl : IsClosed (H : Set (X.Ψ → GL (Fin r) ℂ))`. Use `isClosed_unitary X G using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `g`. Conclude with `hH g`. Use `⟨hcl.locallyCompactSpace, Topology.IsEmbedding.subtypeVal.secondCountableTopology, fun x0 hx0 => ?_⟩` and prove the remaining obligations. Establish `horth : ∀ g : H, Orth X G p (X.lmulC (fun τ => ((g : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x0)` using `fun g => isOrth_lmulC X ((hH _).1 g.2) hx0`. Use `⟨horth, fun x => if hx : Orth X G p x then ⟨toGL X hx * (toGL X hx0)⁻¹, (hH _).2 (quotient_unitary X hx hx0)⟩ else 1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[continuousOn_iff_continuous_restrict]`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Use `((continuous_toGL X G p).mul (continuous_const (y := (toGL X hx0)⁻¹))).congr fun x => ?_` and prove the remaining obligations. Establish `hx : Orth X G p x.1` using `x.2`. Simplify using `only [Function.comp_apply, Set.restrict_apply, dif_pos hx]`.
+
+Both sides reduce to the same expression. Introduce `x hx`. Simplify using `only [dif_pos hx]`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(((toGL X hx τ * (toGL X hx0 τ)⁻¹ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * (toGL X hx0 τ : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = mat x τ`.
+
+Rewrite using `[← Units.val_mul, inv_mul_cancel_right, val_toGL]`. Introduce `g`. Simplify using `only [dif_pos (horth g)]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `toGL X (horth g) * (toGL X hx0)⁻¹ = g`.
+
+Rewrite using `[mul_inv_eq_iff_eq_mul]`. Use function extensionality and compare the values at `τ`. Conclude with `Units.ext rfl`.
+-/
 theorem unitary_group_frames :
     (∀ (r : ℕ) (X : Data E r) {G : Matrix (Fin r) (Fin r) E} (p : X.Ψ → ℕ) (H : Subgroup (X.Ψ → GL (Fin r) ℂ)), (∀ g, g ∈ H ↔ Uni X G fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) → LocallyCompactSpace H ∧ SecondCountableTopology H ∧ ∀ x0, Orth X G p x0 → (∀ g : H, Orth X G p (X.lmulC (fun τ => ((g : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x0)) ∧ ∃ ι : Frame X.Ψ r → H, ContinuousOn ι {x | Orth X G p x} ∧ (∀ x, Orth X G p x → X.lmulC (fun τ => ((ι x : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x0 = x) ∧ ∀ g : H, ι (X.lmulC (fun τ => ((g : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x0) = g) := by
   classical
@@ -130,6 +169,19 @@ theorem unitary_group_frames :
     funext τ
     exact Units.ext rfl
 
+/- English proof (translation)
+Introduce `r X G p τ0 x a hx ha τ`. Use `letI : DecidableEq X.Ψ := Classical.decEq _`. Distinguish the cases in `hτ : τ = τ0`. Substitute `hτ` using the available equality. Establish `hm : mat (Function.update x τ (mat x τ * a⁻¹ : Matrix (Fin r) (Fin r) ℂ)) τ = mat x τ * a⁻¹`.
+
+Unfold `mat`. Conclude with `Function.update_self _ _ _`. Establish `hJ : (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ then (1 : ℂ) else -1) = gram τ.1 G (mat x τ)`. Rewrite using `[hx τ]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hdet : (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ then (1 : ℂ) else -1).det ≠ 0`. Rewrite using `[Matrix.det_diagonal]`.
+
+Use `Finset.prod_ne_zero_iff.2 fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `h` using `inv_keeps_gram hdet ha`. Rewrite `h` using `[hJ]`. Rewrite using `[hm, ← hx τ, ← h, gram_eq_mul, gram_eq_mul, Matrix.transpose_mul, Matrix.map_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `hm : mat (Function.update x τ0 (mat x τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ)) τ = mat x τ`. Unfold `mat`. Conclude with `Function.update_of_ne hτ _ _`. Rewrite using `[hm]`.
+
+Conclude with `hx τ`.
+-/
 theorem isOrth_update_mul_inv :
     (∀ (r : ℕ) (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {p : X.Ψ → ℕ} (τ0 : X.Ψ) (x : Frame X.Ψ r) (a : Matrix (Fin r) (Fin r) ℂ), Orth X G p x → (a)ᵀ * (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1) * (a).map (starRingEnd ℂ) = (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1) → Orth X G p (@Function.update X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) x τ0 (mat x τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ))) := by
   intro r X G p τ0 x a hx ha τ
@@ -164,6 +216,15 @@ theorem isOrth_update_mul_inv :
     rw [hm]
     exact hx τ
 
+/- English proof (translation)
+Establish `hJ : ∀ τ, (Matrix.diagonal fun a : Fin r => ((sgn (p τ) (a : ℕ) : ℝ) : ℂ)) = (Matrix.diagonal fun k : Fin r => if (k : ℕ) < (p τ) then (1 : ℂ) else -1)`. Introduce `τ`. Use `congr 1`. Use function extensionality and compare the values at `k`. Unfold `sgn`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hy : Orth X G p (fun τ => (mat x0 τ * (c τ : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ))`. Introduce `τ`. Establish `h0` using `hx0 τ`. Rewrite `h0` using `[gram_eq_mul, hJ]`.
+
+Express the relevant statement in the definitionally equal form `gram τ.1 G (mat x0 τ * (c τ : Matrix (Fin r) (Fin r) ℂ)) = _`. Rewrite using `[gram_eq_mul, hJ, Matrix.transpose_mul, Matrix.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h0, hc τ]`.
+
+Establish `he : toGL X hy = toGL X hx0 * c`. Use function extensionality and compare the values at `τ`. Conclude with `Units.ext rfl`. Rewrite using `[← he]`. Conclude with `quotient_unitary X hy hx0`.
+-/
 lemma conj_unitary {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {p : X.Ψ → ℕ} {x0 : Frame X.Ψ r} (hx0 : Orth X G p x0)
     (c : X.Ψ → GL (Fin r) ℂ)
     (hc : ∀ τ, (c τ : Matrix (Fin r) (Fin r) ℂ)ᵀ *
@@ -197,6 +258,25 @@ lemma conj_unitary {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {p : 
   rw [← he]
   exact quotient_unitary X hy hx0
 
+/- English proof (translation)
+Introduce `r X G p H hH x0 hx0 τ0 a s ha hs hsa`. Use `letI : DecidableEq X.Ψ := Classical.decEq _`. Establish `hda` using `det_ne_zero_of_diag ha`. Set `A : GL (Fin r) ℂ` to `Matrix.GeneralLinearGroup.mkOfDetNeZero a hda`. Set `S : GL (Fin r) ℂ` to `Matrix.GeneralLinearGroup.mkOfDetNeZero s (det_ne_zero_of_diag hs)`.
+
+Establish `hAi : ((A⁻¹ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = a⁻¹`. Rewrite using `[Matrix.coe_units_inv]`. Both sides reduce to the same expression. Establish `hSA : S * A = A⁻¹ * S`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, Units.val_mul, hAi]`. Conclude with `hsa`. Establish `hSA' : S * A⁻¹ = A * S`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : ∀ b : GL (Fin r) ℂ, (b : Matrix (Fin r) (Fin r) ℂ)ᵀ * (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1) * (b : Matrix (Fin r) (Fin r) ℂ).map (starRingEnd ℂ) = (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1) → toGL X hx0 * P …`.
+
+Introduce `b hb`. Use `(hH _).2 (conj_unitary X hx0 _ fun τ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : τ = τ0`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`.
+
+Conclude with `hb`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Simplify using the standard rewrite rules. Use `⟨(⟨_, hmem A ha⟩ : H)⁻¹, ⟨_, hmem S hs⟩, ?_, fun g => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h1 : (Pi.mulSingle τ0 S * (Pi.mulSingle τ0 A)⁻¹ : X.Ψ → GL (Fin r) ℂ) = Pi.mulSingle τ0 A * Pi.mulSingle τ0 S`. Rewrite using `[← Pi.mulSingle_inv, ← Pi.mulSingle_mul, ← Pi.mulSingle_mul, hSA']`. Simplify using `only [inv_inv, Subgroup.coe_mul, Subgroup.coe_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ((g * (⟨_, hmem A ha⟩ : H)⁻¹ : H) : X.Ψ → GL (Fin r) ℂ) * toGL X hx0 = (g : X.Ψ → GL (Fin r) ℂ) * toGL X hx0 * Pi.mulSingle τ0 A⁻¹`.
+
+Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Pi.mulSingle_inv]`. Use `group`. Use function extensionality and compare the values at `τ`. Establish `k1` using `congrArg (fun u : X.Ψ → GL (Fin r) ℂ => (u τ : Matrix (Fin r) (Fin r) ℂ)) key`. Use `k1.trans ?_` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[Pi.mul_apply, Pi.mul_apply, Units.val_mul, Units.val_mul]`. Distinguish the cases in `h : τ = τ0`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, hAi]`.
+
+Conclude with `Eq.symm (@Function.update_self X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) _ _ _)`. Rewrite using `[Pi.mulSingle_eq_of_ne h, Units.val_one, Matrix.mul_one]`. Conclude with `Eq.symm (@Function.update_of_ne X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) _ _ h _ _)`.
+-/
 theorem step_of_right_mul :
     (∀ (r : ℕ) (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {p : X.Ψ → ℕ} (H : Subgroup (X.Ψ → GL (Fin r) ℂ)), (∀ g, g ∈ H ↔ Uni X G fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) → ∀ x0, Orth X G p x0 → ∀ (τ0 : X.Ψ) (a s : Matrix (Fin r) (Fin r) ℂ), (a)ᵀ * (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1) * (a).map (starRingEnd ℂ) = (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1) → (s)ᵀ * (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1) * (s).map (starRingEnd ℂ) = (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1) → s * a = a⁻¹ * s → ∃ h k : H, k * h = h⁻¹ * k ∧ ∀ g : H, (X.lmulC (fun τ => (((g * h : H) : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x0) = (@Function.update X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) (X.lmulC (fun τ => (((g : H) : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x0) τ0 (mat (X.lmulC (fun τ => (((g : H) : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x0) τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ))) := by
   intro r X G p H hH x0 hx0 τ0 a s ha hs hsa
@@ -250,6 +330,17 @@ theorem step_of_right_mul :
     · rw [Pi.mulSingle_eq_of_ne h, Units.val_one, Matrix.mul_one]
       exact Eq.symm (@Function.update_of_ne X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) _ _ h _ _)
 
+/- English proof (translation)
+Establish `h0 : (γ : Matrix (Fin r) (Fin r) E)ᵀ * G * (γ : Matrix (Fin r) (Fin r) E).map cc = G`. Use extensionality with `a b`. Establish `h` using `hγ.1 (Pi.single a 1) (Pi.single b 1)`. Simplify using `only [herm, Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, ite_mul, zero_mul, one_mul] at h`. Establish `h2 : G a b = ∑ x, ∑ x_1, if x = a then G x x_1 * cc (if x_1 = b then 1 else 0) else 0`.
+
+Simplify using `[apply_ite cc, cc_one, cc_zero]`. Rewrite using `[h2, ← h]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Repeatedly rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+
+Introduce `τ u w`. Establish `h` using `congrArg (fun M : Matrix (Fin r) (Fin r) E => M.map τ.1) h0`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at h`. Establish `e3 : ((γ : Matrix (Fin r) (Fin r) E).map cc).map τ.1 = ((γ : Matrix (Fin r) (Fin r) E).map τ.1).map (starRingEnd ℂ)`. Use extensionality with `a b`.
+
+Simplify using `[emb_cc]`. Rewrite `h` using `[e3]`. Simplify using `only [embGL_val]`. Use `set M := (γ : Matrix (Fin r) (Fin r) E).map τ.1`. Establish `e4 : starRingEnd ℂ ∘ (M *ᵥ w) = M.map (starRingEnd ℂ) *ᵥ (starRingEnd ℂ ∘ w)`.
+
+Use function extensionality and compare the values at `a`. Conclude with `RingHom.map_mulVec (starRingEnd ℂ) M w a`. Rewrite using `[hermC_eq_dotProduct, hermC_eq_dotProduct, e4, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h]`.
+-/
 theorem isUnitaryC_of_isUStab {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {γ : GL (Fin r) E} (hγ : IsUStab G X.Λ γ) :
     Uni X G fun τ => ((embGL X.Ψ γ τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) := by
   have h0 : (γ : Matrix (Fin r) (Fin r) E)ᵀ * G * (γ : Matrix (Fin r) (Fin r) E).map cc = G := by
@@ -277,6 +368,11 @@ theorem isUnitaryC_of_isUStab {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin 
   rw [hermC_eq_dotProduct, hermC_eq_dotProduct, e4, ← Matrix.vecMul_transpose,
     ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h]
 
+/- English proof (translation)
+Introduce `r X G H _`. Use `⟨((uStabSubgroup G X.Λ).map (embGL X.Ψ)).subgroupOf H, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.mem_map]`. Use `exists_congr fun γ => and_congr Iff.rfl ⟨fun h τ => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← h, embGL_val]`.
+
+Use function extensionality and compare the values at `τ`. Conclude with `Units.ext ((embGL_val _ _ _).trans (h τ).symm)`.
+-/
 theorem exists_stabiliser_image_subgroup :
     (∀ (r : ℕ) (X : Data E r) {G : Matrix (Fin r) (Fin r) E} (H : Subgroup (X.Ψ → GL (Fin r) ℂ)), (∀ g, g ∈ H ↔ Uni X G fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) → ∃ Γ : Subgroup H, ∀ g : H, g ∈ Γ ↔ (∃ γ : GL (Fin r) E, IsUStab G X.Λ γ ∧ ∀ τ : X.Ψ, ((((g : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1)) := by
   intro r X G H _
@@ -287,11 +383,25 @@ theorem exists_stabiliser_image_subgroup :
   · funext τ
     exact Units.ext ((embGL_val _ _ _).trans (h τ).symm)
 
+/- English proof (translation)
+Introduce `_ X _ _ hH γ hγ` and use `⟨⟨embGL X.Ψ γ, (hH _).mpr (isUnitaryC_of_isUStab X hγ)⟩, fun τ => embGL_val X.Ψ γ τ⟩`.
+-/
 theorem exists_unitary_elem_of_isUStab :
     (∀ (r : ℕ) (X : Data E r) {G : Matrix (Fin r) (Fin r) E} (H : Subgroup (X.Ψ → GL (Fin r) ℂ)), (∀ g, g ∈ H ↔ Uni X G fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) → ∀ γ : GL (Fin r) E, IsUStab G X.Λ γ → ∃ g : H, ∀ τ : X.Ψ, ((((g : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1) :=
   fun _ X _ _ hH γ hγ =>
     ⟨⟨embGL X.Ψ γ, (hH _).mpr (isUnitaryC_of_isUStab X hγ)⟩, fun τ => embGL_val X.Ψ γ τ⟩
 
+/- English proof (translation)
+Introduce `r X G p R`. Establish `h1 : IsClosed {x : Frame X.Ψ r | Orth X G p x}`. Simplify using `only [Orth, Set.ofPred_forall]`. Use `isClosed_iInter fun τ => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations.
+
+Simplify using `only [gram, hermC, col, mat, Matrix.of_apply]`. Use `fun_prop`. Establish `h2 : IsClosed {x : Frame X.Ψ r | ∀ τ a b, ‖x τ a b‖ ≤ R}`. Simplify using `only [Set.ofPred_forall]`. Use `isClosed_iInter fun τ => isClosed_iInter fun a => isClosed_iInter fun b => isClosed_le ?_ continuous_const` and prove the remaining obligations.
+
+Use `fun_prop`. Use `Metric.isCompact_of_isClosed_isBounded (h1.inter h2) ?_` and prove the remaining obligations. Use `(Metric.isBounded_closedBall (x := (0 : Frame X.Ψ r)) (r := |R|)).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨-, hx⟩`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg (abs_nonneg R)]`.
+
+Introduce `τ`. Rewrite using `[pi_norm_le_iff_of_nonneg (abs_nonneg R)]`. Introduce `a`. Rewrite using `[pi_norm_le_iff_of_nonneg (abs_nonneg R)]`. Introduce `b`.
+
+Conclude with `(hx τ a b).trans (le_abs_self R)`.
+-/
 theorem isCompact_orth_bounded :
     (∀ (r : ℕ) (X : Data E r) (G : Matrix (Fin r) (Fin r) E) (p : X.Ψ → ℕ) (R : ℝ),
       IsCompact {x : Frame X.Ψ r | Orth X G p x ∧ ∀ τ a b, ‖x τ a b‖ ≤ R}) := by
@@ -318,6 +428,15 @@ theorem isCompact_orth_bounded :
   intro b
   exact (hx τ a b).trans (le_abs_self R)
 
+/- English proof (translation)
+Introduce `r X G p hp`. Use `⟨1 + ∑ τ : X.Ψ, ∑ a, ‖(G.map τ.1)⁻¹ a a‖, fun x hx τ a b => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hsa⟩ : ∃ s : ℂ, s * s = 1 ∧ ∀ a : Fin r, ((sgn (p τ) (a : ℕ) : ℝ) : ℂ) = s := by`. Break down `hp τ with hp | hp` into its components or cases. Conclude with `⟨-1, by ring, fun a => by simp [sgn, hp]⟩`.
+
+Conclude with `⟨1, by ring, fun a => by simp [sgn, hp]⟩`. Establish `h : (mat x τ)ᵀ * G.map τ.1 * (mat x τ).map (starRingEnd ℂ) = s • (1 : Matrix (Fin r) (Fin r) ℂ)`. Establish `h0` using `hx τ`. Simplify using `only [hsa] at h0`. Rewrite using `[Matrix.smul_one_eq_diagonal, ← h0]`.
+
+Use extensionality with `i j`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `h1` using `norm_entry_le_of_gram_eq_smul_one _ _ s hs h a b`. Establish `h2 : ‖(G.map τ.1)⁻¹ a a‖ ≤ ∑ a, ‖(G.map τ.1)⁻¹ a a‖` using `Finset.single_le_sum (f := fun a => ‖(G.map τ.1)⁻¹ a a‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ a)`.
+
+Establish `h3 : ∑ a, ‖(G.map τ.1)⁻¹ a a‖ ≤ ∑ τ : X.Ψ, ∑ a, ‖(G.map τ.1)⁻¹ a a‖` using `Finset.single_le_sum (f := fun τ : X.Ψ => ∑ a, ‖(G.map τ.1)⁻¹ a a‖) (fun _ _ => by positivity) (Finset.mem_univ τ)`. Establish `h4 : mat x τ a b = x τ a b` using `rfl`. Rewrite `h1` using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem orthonormal_frames_bounded_of_definite :
     (∀ (r : ℕ) (X : Data E r) (G : Matrix (Fin r) (Fin r) E) {p : X.Ψ → ℕ}, (∀ τ, p τ = 0 ∨ p τ = r) →
       ∃ R : ℝ, ∀ x, Orth X G p x → ∀ τ a b, ‖x τ a b‖ ≤ R) := by
@@ -347,6 +466,11 @@ theorem orthonormal_frames_bounded_of_definite :
   rw [h4] at h1
   linarith
 
+/- English proof (translation)
+Introduce `r X G p H hH hp x0 hx0`. Take `⟨R, hR⟩` from `orthonormal_frames_bounded_of_definite r X G hp`. Take `⟨-, -, h⟩` from `unitary_group_frames r X p H hH`. Take `⟨horth, ι, hc, -, hι⟩` from `h x0 hx0`. Establish `hK` using `(isCompact_orth_bounded r X G p R).image_of_continuousOn (hc.mono fun x hx => hx.1)`.
+
+Use `⟨hK.of_isClosed_subset isClosed_univ fun g _ => ?_⟩` and prove the remaining obligations. Conclude with `⟨_, ⟨horth g, hR _ (horth g)⟩, hι g⟩`.
+-/
 theorem compactSpace_unitary_of_definite :
     (∀ (r : ℕ) (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {p : X.Ψ → ℕ} (H : Subgroup (X.Ψ → GL (Fin r) ℂ)),
       (∀ g, g ∈ H ↔ Uni X G fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) →
@@ -360,6 +484,11 @@ theorem compactSpace_unitary_of_definite :
   refine ⟨hK.of_isClosed_subset isClosed_univ fun g _ => ?_⟩
   exact ⟨_, ⟨horth g, hR _ (horth g)⟩, hι g⟩
 
+/- English proof (translation)
+Take `⟨k, hk, hi⟩` from `exists_common_den X.Λ X.Λ_fg`. Use `choose l hl hm using fun b : Fin r => exists_int_smul_mem X.Λ X.Λ_span (Pi.single b 1)`. Establish `hfin` using `Set.Finite.pi' fun _ : Fin r => Set.Finite.pi' fun b : Fin r => finite_bounded X.Ψ X.cmType (k * l b) (mul_ne_zero hk (hl b)) R`. Use `Set.Finite.of_finite_image (f := fun γ : GL (Fin r) E => fun a b => (γ : Matrix (Fin r) (Fin r) E) a b) (hfin.subset ?_) (fun x _ y _ h => Units.ext h)` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, ⟨hγ, hb⟩, rfl⟩ a b`.
+
+Use `⟨?_, fun τ => hb τ a b⟩` and prove the remaining obligations. Use `hi _ ((hγ.2 _).1 (hm b)) a` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, Matrix.mulVec_single_one]`. Simplify `this` using `[mul_assoc, Matrix.col]`.
+-/
 theorem finite_automorphisms (r : ℕ) (X : Data E r) (G : Matrix (Fin r) (Fin r) E) (R : ℝ) :
     {γ : GL (Fin r) E | IsUStab G X.Λ γ ∧ ∀ (τ : X.Ψ) (a b : Fin r),
       ‖τ.1 ((γ : Matrix (Fin r) (Fin r) E) a b)‖ ≤ R}.Finite := by
@@ -376,6 +505,17 @@ theorem finite_automorphisms (r : ℕ) (X : Data E r) (G : Matrix (Fin r) (Fin r
   rw [Matrix.mulVec_smul, Matrix.mulVec_single_one] at this
   simpa [mul_assoc, Matrix.col] using this
 
+/- English proof (translation)
+Introduce `r X G H _`. Establish `hS` using `finite_automorphisms r X G 2`. Use `set S := {γ : GL (Fin r) E | IsUStab G X.Λ γ ∧ ∀ (τ : X.Ψ) (a b : Fin r), ‖τ.1 ((γ : Matrix (Fin r) (Fin r) E) a b)‖ ≤ 2} with hSdef`. Set `F : GL (Fin r) E → Set H` to `fun γ => {g : H | ∀ τ : X.Ψ, ((((g : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1}`. Establish `hF : ∀ γ, (F γ).Finite`.
+
+Introduce `γ`. Use `Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce `g hg g' hg'`. Use `Subtype.ext (funext fun τ => Units.ext ?_)` and prove the remaining obligations. Conclude with `(hg τ).trans (hg' τ).symm`.
+
+Establish `hT : (⋃ γ ∈ S, F γ).Finite` using `hS.biUnion fun γ _ => hF γ`. Establish `hC : ((⋃ γ ∈ S, F γ) \ {1})ᶜ ∈ 𝓝 (1 : H)` using `(hT.subset Set.diff_subset).isClosed.isOpen_compl.mem_nhds (by simp)`. Establish `hV : ∀ᶠ g : H in 𝓝 1, ∀ (τ : X.Ψ) (a b : Fin r), ‖((((g : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) a b‖ < 2`. Simplify using `only [Filter.eventually_all]`. Introduce `τ a b`.
+
+Establish `hc : Continuous fun g : H => ‖((((g : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) a b‖` using `((Units.continuous_val.comp ((continuous_apply τ).comp continuous_subtype_val)).matrix_elem a b).norm`. Use `hc.continuousAt.eventually_lt continuousAt_const ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.one_apply, h]`. Use `⟨_, Filter.inter_mem hC hV, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨γ, hγ, hg⟩ ⟨h1, h2⟩`.
+
+Assume the negation of the conclusion as `hne`. Use `h1 ⟨Set.mem_biUnion (x := γ) ⟨hγ, fun τ a b => ?_⟩ hg, hne⟩` and prove the remaining obligations. Use `h2 τ a b` as an intermediate fact. Rewrite `this` using `[hg τ]`. Conclude with `this.le`.
+-/
 theorem gamDisc : (∀ (r : ℕ) (X : Data E r) {G : Matrix (Fin r) (Fin r) E} (H : Subgroup (X.Ψ → GL (Fin r) ℂ)), (∀ g, g ∈ H ↔ Uni X G fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) → ∃ U ∈ 𝓝 (1 : H), ∀ g : H, (∃ γ : GL (Fin r) E, IsUStab G X.Λ γ ∧ ∀ τ : X.Ψ, ((((g : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1) → g ∈ U → g = 1) := by
   intro r X G H _
   have hS := finite_automorphisms r X G 2

@@ -5,6 +5,9 @@ noncomputable section
 
 namespace UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun σ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs <;>`. Apply the tactic sequence `simp only [hs, one_smul, Units.neg_smul, norm_neg, norm_prod] <;>`. Conclude with `Finset.prod_le_one (fun i _ => norm_nonneg _) (fun i _ => h _ _)`.
+-/
 private lemma det_norm_le_one {k : Type} [NormedField k] [IsUltrametricDist k] {N : ℕ}
     (M : Matrix (Fin N) (Fin N) k) (h : ∀ i j, ‖M i j‖ ≤ 1) : ‖M.det‖ ≤ 1 := by
   classical
@@ -14,6 +17,15 @@ private lemma det_norm_le_one {k : Type} [NormedField k] [IsUltrametricDist k] {
     simp only [hs, one_smul, Units.neg_smul, norm_neg, norm_prod] <;>
     exact Finset.prod_le_one (fun i _ => norm_nonneg _) (fun i _ => h _ _)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hli` using `Matrix.linearIndependent_rows_of_det_ne_zero hne`. Establish `heq : (fun i : s => A i) = (fun i => M i) ∘ (fun i : s => (i : Fin N))`. Use function extensionality and compare the values at `i`. Conclude with `(hM i i.2).symm`.
+
+Establish `hli' : LinearIndependent k (fun i : s => A i)`. Rewrite using `[heq]`. Conclude with `hli.comp _ Subtype.val_injective`. Establish `hle : Module.finrank k (Submodule.span k (Set.range (fun i : s => A i))) ≤ A.rank`. Rewrite using `[Matrix.rank_eq_finrank_span_row]`.
+
+Apply `Submodule.finrank_mono` to reduce the goal to its premises. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨i, rfl⟩`. Rewrite `hle` using `[finrank_span_eq_card hli', Fintype.card_coe]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private lemma det_zero_of_card {k : Type} [Field k] {N ρ : ℕ}
     (A M : Matrix (Fin N) (Fin N) k) (s : Finset (Fin N)) (hr : A.rank ≤ ρ) (hs : ρ < s.card)
     (hM : ∀ i ∈ s, M i = A i) : M.det = 0 := by
@@ -35,6 +47,11 @@ private lemma det_zero_of_card {k : Type} [Field k] {N ρ : ℕ}
   rw [finrank_span_eq_card hli', Fintype.card_coe] at hle
   omega
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_transpose]`. Repeatedly rewrite using `[← Matrix.det_transpose (Matrix.of _)]`. Simplify using `only [Matrix.det_apply, Matrix.transpose_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[add_comm (A _ _)]`. Rewrite using `[Finset.prod_add, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ite, Finset.filter_mem_eq_inter, Finset.univ_inter, ← Finset.sdiff_eq_filter, Finset.prod_mul_distrib, Finset.prod_const, mul_assoc, mul_smul_comm]`.
+-/
 private theorem det_add_smul_eq_sum_powerset_pow_card_mul_det {k : Type} [Field k] {N : ℕ} (A B : Matrix (Fin N) (Fin N) k)
     (c : k) :
     (A + c • B).det = ∑ t ∈ (Finset.univ : Finset (Fin N)).powerset,
@@ -53,6 +70,17 @@ private theorem det_add_smul_eq_sum_powerset_pow_card_mul_det {k : Type} [Field 
   rw [Finset.prod_ite, Finset.filter_mem_eq_inter, Finset.univ_inter, ← Finset.sdiff_eq_filter,
     Finset.prod_mul_distrib, Finset.prod_const, mul_assoc, mul_smul_comm]
 
+/- English proof (translation)
+Introduce `k _ _ N A B c ρ hA hB hc hr`. Rewrite using `[det_add_smul_eq_sum_powerset_pow_card_mul_det]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun t _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Distinguish the cases in `ht : N - ρ ≤ t.card`.
+
+Establish `h1` using `det_norm_le_one (Matrix.of fun r j => if r ∈ t then B r j else A r j) (by`. Introduce `i j`. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Conclude with `hB i j`.
+
+Conclude with `hA i j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`. Conclude with `pow_le_pow_of_le_one (norm_nonneg _) hc ht`. Establish `h0 : (Matrix.of fun r j => if r ∈ t then B r j else A r j).det = 0`.
+
+Use `det_zero_of_card A _ tᶜ hr ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.card_compl, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [Matrix.of_apply, if_neg (Finset.mem_compl.mp hi)]`. Rewrite using `[h0, norm_zero, mul_zero]`. Check the signs of the components of the expression.
+-/
 theorem detLow_pf : DetLow := by
   intro k _ _ N A B c ρ hA hB hc hr
   classical

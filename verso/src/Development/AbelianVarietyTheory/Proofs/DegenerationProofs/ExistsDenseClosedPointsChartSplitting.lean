@@ -17,6 +17,11 @@ open GlobalTheory.ZJ
 noncomputable section
 namespace GlobalTheory.ZJ.DenseSplit
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `CharP.exists F`. Establish `hpp : Fact p.Prime` using `⟨CharP.char_is_prime F p⟩`. Establish `: CharP (kb p) p` using `(CharP.charP_iff_prime_eq_zero hpp.out).mpr (GlobalTheory.natCast_self_residueField_padicAlgCl_eq_zero p)`. Use `(kb_isAlgClosed_and_conj p).1` as an intermediate fact. Use `letI : Algebra (ZMod p) F := ZMod.algebra F p`.
+
+Use `letI : Algebra (ZMod p) (kb p) := ZMod.algebra _ p`. Establish `: Module.Finite (ZMod p) F` using `Module.Finite.of_finite`. Conclude with `⟨p, hpp, ⟨(IsAlgClosed.lift (R := ZMod p) (S := F) (M := kb p)).toRingHom⟩⟩`.
+-/
 theorem exists_ringHom_kb (F : Type) [Field F] [Finite F] :
     ∃ (p : ℕ) (_ : Fact p.Prime), Nonempty (F →+* kb p) := by
   obtain ⟨p, hp⟩ := CharP.exists F
@@ -29,11 +34,37 @@ theorem exists_ringHom_kb (F : Type) [Field F] [Finite F] :
   have : Module.Finite (ZMod p) F := Module.Finite.of_finite
   exact ⟨p, hpp, ⟨(IsAlgClosed.lift (R := ZMod p) (S := F) (M := kb p)).toRingHom⟩⟩
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian (Sp R)` using `LocallyOfFiniteType.isLocallyNoetherian π`. Conclude with `isLocallyNoetherian_Spec.mp this`.
+-/
 theorem isNoetherianRing_of_lft (R : Type) [CommRing R] (π : Sp R ⟶ Sp ℤ) [LocallyOfFiniteType π] :
     IsNoetherianRing R := by
   have : IsLocallyNoetherian (Sp R) := LocallyOfFiniteType.isLocallyNoetherian π
   exact isLocallyNoetherian_Spec.mp this
 
+/- English proof (translation)
+Introduce `C L hT hC z`. Use `letI := L.grp`. Use `letI := L.comm`. Take `⟨R, _, _, t, _, htz, Ch, hCh⟩` from `hC z`. Use `C.lft` as an intermediate fact.
+
+Use `C.flat` as an intermediate fact. Take `⟨-, hfin, -, -, hdense⟩` from `GlobalTheory.jacobson_closedPoints_tools_int (Sp R) (t ≫ C.π)`. Use `⟨R, inferInstance, inferInstance, isNoetherianRing_of_lft R (t ≫ C.π), t, inferInstance, htz, Ch, ?_⟩` and prove the remaining obligations. Set `κ` to `Σ d : Fin (C.g + 1), (Fin d → Ch.Cl)`. Set `Sg : κ → Set (Sp R)` to `fun k => {x | Charts.SplitOn (G := (Over.pullback t).obj C.GG) Ch k.2 {x} ∧ IsClosed ({t x} : Set C.Z)}`.
+
+Take `⟨k, hk⟩` from `hdense κ Sg inferInstance (by`. Introduce `x hx`. Use `hfin x hx` as an intermediate fact. Take `⟨p, hp, ⟨r⟩⟩` from `exists_ringHom_kb ((Sp R).residueField x)`. Set `xb : Sp (kb p) ⟶ Sp R` to `Spec.map (CommRingCat.ofHom r) ≫ (Sp R).fromSpecResidueField x`.
+
+Establish `hxb : ∀ s, xb s = x` using `fun s => by`. Establish `: xb s ∈ Set.range ((Sp R).fromSpecResidueField x)` using `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Rewrite `this` using `[Scheme.range_fromSpecResidueField]`. Then use the resulting hypothesis. Establish `hrange : Set.range xb = {x}`. Use extensionality with `w`.
+
+Conclude with `⟨fun ⟨s, hs⟩ => hs ▸ hxb s, fun hw => ⟨IsLocalRing.closedPoint (kb p), (hxb _).trans hw.symm⟩⟩`. Take `⟨hlift, hcl⟩` from `GlobalTheory.exists_integral_point_lifting_residue_point C.Z C.π C.U C.ne p`. Take `⟨y, hy, hyU⟩` from `hlift (xb ≫ t)`. Take `⟨τ⟩` from `hT p y hyU`. Establish `e : (rPt p ≫ spMap τ.j) ≫ τ.y₀ = xb ≫ t` using `by rw [Category.assoc, τ.fac, hy]`.
+
+Establish `g1 : IsGrpPullback ((Over.pullback (rPt p ≫ spMap τ.j)).obj τ.H) C.GG (xb ≫ t) (pullback.fst τ.H.hom (rPt p ≫ spMap τ.j) ≫ τ.f)` using `((isGrpPullback_pullback _ _).comp (L.test p y τ)).congr e rfl`. Establish `g2 : IsGrpPullback ((Over.pullback t).obj C.GG) C.GG t (pullback.fst C.GG.hom t)` using `isGrpPullback_pullback _ _`. Establish `g3 : IsGrpPullback ((Over.pullback xb).obj ((Over.pullback t).obj C.GG)) ((Over.pullback t).obj C.GG) xb (pullback.fst ((Over.pullback t).obj C.GG).hom xb)` using `isGrpPullback_pullback _ _`. Set `h : pullback τ.H.hom (rPt p ≫ spMap τ.j) ⟶ pullback C.GG.hom t` to `pullback.lift (pullback.fst _ _ ≫ τ.f) (pullback.snd _ _ ≫ xb) (g1.1.w.trans (Category.assoc _ _ _).symm)`. Establish `h1 : h ≫ pullback.fst _ _ = pullback.fst _ _ ≫ τ.f` using `pullback.lift_fst _ _ _`.
+
+Establish `h2 : h ≫ pullback.snd _ _ = pullback.snd _ _ ≫ xb` using `pullback.lift_snd _ _ _`. Establish `g4 : IsGrpPullback ((Over.pullback (rPt p ≫ spMap τ.j)).obj τ.H) ((Over.pullback t).obj C.GG) xb h` using `g2.cancel (g1.congr rfl h1.symm) h2`. Establish `ha : IsAffineHom h` using `MorphismProperty.of_isPullback (P := @IsAffineHom) g4.1.flip inferInstance`. Establish `ha' : IsAffineHom (pullback.fst ((Over.pullback t).obj C.GG).hom xb)` using `MorphismProperty.of_isPullback (P := @IsAffineHom) g3.1.flip inferInstance`. Take `⟨d, hd, c, hs⟩` from `hCh p y τ xb hy.symm h h1 h2`.
+
+Establish `w : pullback.fst ((Over.pullback t).obj C.GG).hom xb ≫ ((Over.pullback t).obj C.GG).hom = ((Over.pullback xb).obj ((Over.pullback t).obj C.GG)).hom ≫ xb` using `g3.1.w`. Set `φ` to `g4.1.lift _ _ w`. Establish `f1 : φ ≫ h = _` using `g4.1.lift_fst _ _ w`. Establish `f2 : φ ≫ _ = _` using `g4.1.lift_snd _ _ w`. Establish `g5 : IsGrpPullback ((Over.pullback xb).obj ((Over.pullback t).obj C.GG)) ((Over.pullback (rPt p ≫ spMap τ.j)).obj τ.H) (𝟙 _) φ` using `g4.cancel (g3.congr (Category.id_comp _).symm f1.symm) (f2.trans (Category.comp_id _).symm)`.
+
+Establish `hφ : IsAffineHom φ` using `MorphismProperty.of_isPullback (P := @IsAffineHom) g5.1.flip inferInstance`. Establish `hs'` using `@SplitPull.pull_pull_and_split_pull.2 (kb p) (kb p) _ _ ((Over.pullback (rPt p ≫ spMap τ.j)).obj τ.H) _ ((Over.pullback xb).obj ((Over.pullback t).obj C.GG)) _ (𝟙 _) φ hφ g5 (Ch.pull h) d c hs`. Use `⟨⟨⟨d, Nat.lt_succ_of_le hd⟩, c⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ rfl`. Use `⟨kb p, inferInstance, xb, ha', hrange, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ (ψ : ((Over.pullback xb).obj ((Over.pullback t).obj C.GG)).left ⟶ pullback C.GG.hom t) [IsAffineHom ψ], φ ≫ h = ψ → Charts.Split (H` using `(Over.pullback xb).obj ((Over.pullback t).obj C.GG)) (Ch.pull ψ) c := by`. Introduce `ψ _ hψ`. Substitute `hψ` using the available equality. Conclude with `hs'`. Conclude with `@key _ ha' f1`.
+
+Use `hcl (xb ≫ t) (IsLocalRing.closedPoint (kb p))` as an intermediate fact. Conclude with `((Scheme.Hom.comp_apply xb t _).trans (congrArg t (hxb _))) ▸ this)`. Conclude with `⟨k.1, k.2, Sg k, hk, fun x hx => hx.1 x rfl, fun x hx => hx.2⟩`.
+-/
 theorem exists_dense_splitOn : ∀ (C : Core) (L : C.Law), C.HasTests → C.HasCharts → letI := L.grp; letI := L.comm; ∀ z : C.Z, ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsNoetherianRing R) (t : Sp R ⟶ C.Z) (_ : IsImmersion t), t (⊥ : PrimeSpectrum R) = z ∧ ∃ (Ch : Charts ((Over.pullback t).obj C.GG).left) (d : ℕ) (c : Fin d → Ch.Cl) (Sg : Set (Sp R)), Dense Sg ∧ Ch.SplitOn c Sg ∧ ∀ x ∈ Sg, IsClosed ({t x} : Set C.Z) := by
   intro C L hT hC z
   letI := L.grp; letI := L.comm

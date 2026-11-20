@@ -4,6 +4,17 @@ open NumberField
 
 namespace GlobalTheory.ExistsSmulMemRange
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨x, rfl⟩` from `hw`. Conclude with `⟨1, x, one_ne_zero, (one_smul _ _).symm⟩`. Consider the case `zero => exact ⟨1, 0, one_ne_zero, by simp⟩`.
+
+Consider the case `add u v _ _ hu hv`. Take `⟨a, x, ha, hx⟩` from `hu`. Take `⟨b, y, hb, hy⟩` from `hv`. Use `⟨a * b, b • x + a • y, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, hx, hy, smul_add, smul_smul, smul_smul, mul_comm b a]`.
+
+Consider the case `smul t u _ hu`. Take `⟨a, x, ha, hx⟩` from `hu`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := RingOfIntegers E) t`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hq1 : algebraMap (RingOfIntegers E) E q ≠ 0` using `fun h => hq0 (IsFractionRing.injective (RingOfIntegers E) E (by simpa using h))`.
+
+Use `⟨a * q, p • x, mul_ne_zero ha hq0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hx]`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Simplify using `only [Algebra.smul_def, map_mul]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_smul_mem_range {E : Type} [Field E] [NumberField E] {Λ : Type} [AddCommGroup Λ]
     [Module (RingOfIntegers E) Λ] {r : ℕ} (φ : Λ →ₗ[RingOfIntegers E] Fin r → E)
     (w : Fin r → E) (hw : w ∈ Submodule.span E (Set.range (⇑φ : Λ → Fin r → E))) :
@@ -31,6 +42,21 @@ theorem exists_smul_mem_range {E : Type} [Field E] [NumberField E] {Λ : Type} [
     simp only [Algebra.smul_def, map_mul]
     field_simp
 
+/- English proof (translation)
+Establish `h1 : ∀ j : Fin r, ∃ (a : RingOfIntegers E) (x : Λ), a ≠ 0 ∧ φ x = a • (Pi.single j (1 : E) : Fin r → E)` using `fun j => exists_smul_mem_range φ _ (by rw [hspan]; trivial)`. Use `choose a x ha hx using h1`. Establish `hne : ∀ q : RingOfIntegers E, q ≠ 0 → algebraMap (RingOfIntegers E) E q ≠ 0` using `fun q hq0 h => hq0 (IsFractionRing.injective (RingOfIntegers E) E (by simpa using h))`. Use `⟨fun j => f (x j) / σ (algebraMap (RingOfIntegers E) E (a j)), fun v => ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (RingOfIntegers E)) (fun j : Fin r => φ v j / algebraMap (RingOfIntegers E) E (a j))`.
+
+Use `choose b hb using hd`. Establish `hd0 : algebraMap (RingOfIntegers E) E (d : RingOfIntegers E) ≠ 0` using `hne _ (nonZeroDivisors.ne_zero d.2)`. Establish `hb' : ∀ j, algebraMap (RingOfIntegers E) E (b j) = algebraMap (RingOfIntegers E) E (d : RingOfIntegers E) * (φ v j / algebraMap (RingOfIntegers E) E (a j))`. Introduce `j`. Rewrite using `[hb j, Algebra.smul_def]`.
+
+Establish `key : (d : RingOfIntegers E) • v = ∑ j, b j • x j`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_smul, map_sum]`. Use function extensionality and compare the values at `i`. Simplify using `only [map_smul, hx, Finset.sum_apply, Pi.smul_apply, Algebra.smul_def, Pi.single_apply]`.
+
+Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[hb' i]`. Use `hne _ (ha i)` as an intermediate fact. Simplify using `only [if_true]`. Clear the denominators using the available nonvanishing facts.
+
+Introduce `j _ hj`. Simplify using `[hj.symm]`. Simplify using the standard rewrite rules. Establish `h2` using `congrArg f key`. Rewrite `h2` using `[hf, map_sum]`.
+
+Establish `hσd : σ (algebraMap (RingOfIntegers E) E (d : RingOfIntegers E)) ≠ 0` using `(map_ne_zero σ).2 hd0`. Apply `mul_left_cancel₀ hσd` to reduce the goal to its premises. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hf]`. Express the relevant statement in the definitionally equal form `σ (algebraMap (RingOfIntegers E) E (b j)) * _ = _`. Rewrite using `[hb' j, map_mul, map_div₀]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_coeffs {E : Type} [Field E] [NumberField E] {Λ : Type} [AddCommGroup Λ]
     [Module (RingOfIntegers E) Λ] {r : ℕ} (φ : Λ →ₗ[RingOfIntegers E] Fin r → E)
     (hinj : Function.Injective (⇑φ : Λ → Fin r → E))

@@ -7,10 +7,20 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V.Loc 
 section SlopeTestRemainingChoices
 open MvPowerSeries
 
+/- English proof (translation)
+Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]`.
+-/
 private theorem gc_mem_max {E σ : Type} [Field E] (a : MvPowerSeries σ E) :
     a ∈ maximalIdeal _ ↔ constantCoeff a = 0 := by
   rw [mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => intro g _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `g hg`.
+
+Rewrite `hg` using `[pow_succ]`. Use `Submodule.mul_induction_on hg (fun a ha b hb => ?_) ?_` and prove the remaining obligations. Use `le_trans ?_ (le_order_mul)` and prove the remaining obligations. Use `push_cast`. Conclude with `add_le_add (ih a ha) (one_le_order_iff_constCoeff_eq_zero.2 ((gc_mem_max b).1 hb))`.
+
+Introduce `f g hf hg`. Conclude with `le_trans (le_min hf hg) (min_order_le_add)`.
+-/
 private theorem gc_order_of_mem {E σ : Type} [Field E] (N : ℕ) :
     ∀ g ∈ maximalIdeal (MvPowerSeries σ E) ^ N, (N : ℕ∞) ≤ g.order := by
   induction N with
@@ -25,6 +35,35 @@ private theorem gc_order_of_mem {E σ : Type} [Field E] (N : ℕ) :
     · intro f g hf hg
       exact le_trans (le_min hf hg) (min_order_le_add)
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite σ`. Prove the components needed by the constructor for the conclusion. Introduce `hg d hd`. Conclude with `coeff_of_lt_order (lt_of_lt_of_le (by exact_mod_cast hd) (gc_order_of_mem N g hg))`. Proceed by induction on `N generalizing g with`.
+
+Consider the case `zero`. Introduce `_`. Simplify using the standard rewrite rules. Consider the case `succ N ih`. Introduce `hg`.
+
+Break down `isEmpty_or_nonempty σ with hσ | hσ` into its components or cases. Establish `h0 : g = 0`. Use extensionality with `e`. Establish `he : e = 0` using `Subsingleton.elim _ _`. Substitute `he` using the available equality.
+
+Simplify using `using hg 0 (by simp)`. Rewrite using `[h0]`. Conclude with `Ideal.zero_mem _`. Take `⟨i0⟩` from `hσ`. Set `pick : (σ →₀ ℕ) → σ` to `fun e => if h : ∃ i, e i ≠ 0 then Classical.choose h else i0`.
+
+Establish `hpick : ∀ e : σ →₀ ℕ, e ≠ 0 → e (pick e) ≠ 0`. Introduce `e he`. Establish `h : ∃ i, e i ≠ 0`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`.
+
+Conclude with `he (Finsupp.ext hh)`. Simplify using `only [pick, dif_pos h]`. Conclude with `Classical.choose_spec h`. Set `gi : σ → MvPowerSeries σ E` to `fun i e => if pick (e + Finsupp.single i 1) = i then coeff (e + Finsupp.single i 1) g else 0`. Establish `hgi : ∀ i e, coeff e (gi i) = if pick (e + Finsupp.single i 1) = i then coeff (e + Finsupp.single i 1) g else 0` using `fun i e => rfl`.
+
+Establish `hdecomp : g = ∑ i, X i * gi i`. Use extensionality with `e`. Rewrite using `[map_sum]`. Simplify using `only [X, coeff_monomial_mul, one_mul]`. Distinguish the cases in `he : e = 0`.
+
+Substitute `he` using the available equality. Establish `hz : ∀ i : σ, ¬ Finsupp.single i 1 ≤ (0 : σ →₀ ℕ)`. Introduce `i hle`. Use `hle i` as an intermediate fact. Simplify using `at this`.
+
+Simplify using `only [hz, if_false, Finset.sum_const_zero]`. Conclude with `hg 0 (by simp)`. Establish `hle : Finsupp.single (pick e) 1 ≤ e`. Introduce `k`. Distinguish the cases in `hk : k = pick e`.
+
+Substitute `hk` using the available equality. Simplify using `only [Finsupp.single_eq_same]`. Conclude with `Nat.one_le_iff_ne_zero.mpr (hpick e he)`. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hk)]`. Conclude with `Nat.zero_le _`.
+
+Rewrite using `[Finset.sum_eq_single (pick e)]`. Rewrite using `[if_pos hle, hgi, tsub_add_cancel_of_le hle, if_pos rfl]`. Introduce `i _ hi split_ifs with hle'`. Rewrite using `[hgi, tsub_add_cancel_of_le hle', if_neg (fun h => hi h.symm)]`. Both sides reduce to the same expression.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hdecomp]`. Use `Ideal.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[pow_succ']`.
+
+Use `Ideal.mul_mem_mul ((gc_mem_max _).mpr (by simp)) (ih (gi i) ?_)` and prove the remaining obligations. Introduce `d hd`. Rewrite using `[hgi]`. Use `split_ifs`. Apply `hg` to reduce the goal to its premises.
+
+Rewrite using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+-/
 private theorem gc_mem_pow_iff {E σ : Type} [Field E] [Finite σ] (N : ℕ) (g : MvPowerSeries σ E) :
     g ∈ maximalIdeal (MvPowerSeries σ E) ^ N ↔ ∀ d : σ →₀ ℕ, d.degree < N → coeff d g = 0 := by
   classical
@@ -101,6 +140,9 @@ private theorem gc_mem_pow_iff {E σ : Type} [Field E] [Finite σ] (N : ℕ) (g 
           omega
         · rfl
 
+/- English proof (translation)
+Rewrite using `[coeff_mul, Finsupp.antidiagonal_single]`. Simplify using `[Finset.Nat.antidiagonal_succ, coeff_zero_eq_constantCoeff_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem gc_coeff_single_mul {E σ : Type} [CommRing E] (i : σ) (f g : MvPowerSeries σ E) :
     coeff (Finsupp.single i 1) (f * g) =
       constantCoeff f * coeff (Finsupp.single i 1) g + constantCoeff g * coeff (Finsupp.single i 1) f := by
@@ -109,6 +151,11 @@ private theorem gc_coeff_single_mul {E σ : Type} [CommRing E] (i : σ) (f g : M
   simp [Finset.Nat.antidiagonal_succ, coeff_zero_eq_constantCoeff_apply]
   ring
 
+/- English proof (translation)
+Simplify using `[MvPowerSeries.algebraMap_apply, coeff_C, coeff_X, map_sum]`. Distinguish the cases in `hd0 : d = 0`. Substitute `hd0` using the available equality. Establish `hne : ∀ x : σ, ¬ (0 : σ →₀ ℕ) = Finsupp.single x 1` using `fun x h => one_ne_zero (Finsupp.single_eq_zero.mp h.symm)`. Simplify using `[hne, coeff_zero_eq_constantCoeff_apply]`.
+
+Establish `h1 : Finsupp.degree d = 1`. Establish `: Finsupp.degree d ≠ 0` using `fun h => hd0 ((Finsupp.degree_eq_zero_iff d).mp h)`. Use linear arithmetic over natural numbers and integers. Take `⟨j, rfl⟩` from `(Finsupp.sum_eq_one_iff d).mp h1`. Simplify using `[Finsupp.single_left_inj one_ne_zero]`.
+-/
 private theorem gc_lin {A σ : Type} [CommRing A] [Fintype σ] (f : MvPowerSeries σ A) (d : σ →₀ ℕ)
     (hd : d.degree < 2) :
     coeff d (f - algebraMap A _ (constantCoeff f) - ∑ i, coeff (Finsupp.single i 1) f • (X i : MvPowerSeries σ A)) = 0 := by
@@ -127,6 +174,13 @@ private theorem gc_lin {A σ : Type} [CommRing A] [Fintype σ] (f : MvPowerSerie
 
 variable {O R : Type} [CommRing O] [CommRing R] [Algebra O R] {Y : Type} [AddCommGroup Y]
 
+/- English proof (translation)
+Introduce `x hx`. Use `Submodule.pow_induction_on_left' (C := fun n x _ => ∃ f, W.π f = x ∧ (n : ℕ∞) ≤ f.order) _ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce `r`. Take `⟨f, hf⟩` from `W.surj (algebraMap R R r)`. Conclude with `⟨f, hf, by simp⟩`.
+
+Introduce and unpack `a b i - - ⟨f, hf, hfo⟩ ⟨g, hg, hgo⟩`. Conclude with `⟨f + g, by rw [map_add, hf, hg], le_trans (le_min hfo hgo) min_order_le_add⟩`. Introduce and unpack `m hm i a - ⟨f, hf, hfo⟩`. Take `⟨g, rfl⟩` from `W.surj m`. Establish `hg0 : constantCoeff g = 0`.
+
+Rewrite `hm` using `[RingHom.mem_ker, W.origin_π]`. Conclude with `hm`. Use `⟨g * f, by rw [map_mul, hf], ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℕ∞) ≤ g.order` using `one_le_order_iff_constCoeff_eq_zero.mpr hg0`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma gc_exists_order (W : WPres O Y R) (h : W.HasOrigin) (n : ℕ) :
     ∀ x ∈ RingHom.ker (W.origin h) ^ n, ∃ f, W.π f = x ∧ (n : ℕ∞) ≤ f.order := by
   intro x hx
@@ -148,10 +202,20 @@ private lemma gc_exists_order (W : WPres O Y R) (h : W.HasOrigin) (n : ℕ) :
       _ ≤ g.order + f.order := add_le_add h1 hfo
       _ ≤ (g * f).order := le_order_mul
 
+/- English proof (translation)
+Rewrite using `[WPres.z, W.origin_π]`. Simplify using the standard rewrite rules.
+-/
 private lemma origin_at_generator_eq_zero (W : WPres O Y R) (h : W.HasOrigin) (i : W.σ) : W.origin h (W.z i) = 0 := by
   rw [WPres.z, W.origin_π]
   simp
 
+/- English proof (translation)
+Use `set t := algebraMap O R (x y) - y with ht_def`. Establish `htk : t ∈ RingHom.ker x`. Rewrite using `[RingHom.mem_ker, ht_def, map_sub, AlgHom.commutes]`. Simplify using the standard rewrite rules. Establish `ht : t * p = algebraMap O R (x y) * p`.
+
+Rewrite using `[ht_def, sub_mul, hp, sub_zero]`. Establish `key : ∀ M : ℕ, t ^ M * p = algebraMap O R (x y) ^ M * p`. Introduce `M`. Proceed by induction on `M with`. Consider the case `zero => simp`.
+
+Consider the case `succ M ih => rw [pow_succ, mul_assoc, ht, mul_left_comm, ih, ← mul_assoc, ← pow_succ']`. Rewrite using `[Algebra.smul_def, map_pow, ← key]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow htk N)`.
+-/
 private lemma gc_sat (x : R →ₐ[O] O) {y p : R} (hp : y * p = 0) (N : ℕ) :
     (x y) ^ N • p ∈ RingHom.ker x ^ N := by
   set t := algebraMap O R (x y) - y with ht_def
@@ -170,6 +234,11 @@ private lemma gc_sat (x : R →ₐ[O] O) {y p : R} (hp : y * p = 0) (N : ℕ) :
 
 variable {E : Type} [Field E] [Algebra O E] {τ : Type}
 
+/- English proof (translation)
+Use `haveI := W.fin`. Establish `hX : ∀ i, (φ.comp W.π) (MvPowerSeries.X i) ∈ maximalIdeal (MvPowerSeries τ E)`. Introduce `i`. Rewrite using `[gc_mem_max, AlgHom.comp_apply, hφ.const]`. Use `origin_at_generator_eq_zero W h i` as an intermediate fact.
+
+Simplify using `only [WPres.z] at this`. Rewrite using `[this, map_zero]`. Conclude with `GlobalTheory.algHom_mem_pow_of_le_order (φ.comp W.π) hX hg`.
+-/
 private lemma gc_low (W : WPres O Y R) (h : W.HasOrigin) {P : Ideal R} {φ : R →ₐ[O] MvPowerSeries τ E}
     (hφ : IsCompl P (W.origin h) φ) {N : ℕ} {g : MvPowerSeries W.σ O} (hg : (N : ℕ∞) ≤ g.order) :
     φ (W.π g) ∈ maximalIdeal (MvPowerSeries τ E) ^ N := by
@@ -182,6 +251,11 @@ private lemma gc_low (W : WPres O Y R) (h : W.HasOrigin) {P : Ideal R} {φ : R �
     rw [this, map_zero]
   exact GlobalTheory.algHom_mem_pow_of_le_order (φ.comp W.π) hX hg
 
+/- English proof (translation)
+Establish `hu : algebraMap O E c ≠ 0`. Introduce `h0`. Conclude with `hc ((FaithfulSMul.algebraMap_injective O E) (by rw [h0, map_zero]))`. Establish `key : g = algebraMap E (MvPowerSeries τ E) (algebraMap O E c)⁻¹ * (c • g)`. Rewrite using `[Algebra.smul_def, IsScalarTower.algebraMap_apply O E (MvPowerSeries τ E), ← mul_assoc, ← map_mul, inv_mul_cancel₀ hu, map_one, one_mul]`.
+
+Rewrite using `[key]`. Conclude with `Ideal.mul_mem_left _ _ hg`.
+-/
 private lemma gc_unsmul [IsDomain O] [FaithfulSMul O E] [Finite τ] {c : O} (hc : c ≠ 0) {N : ℕ}
     {g : MvPowerSeries τ E} (hg : c • g ∈ maximalIdeal (MvPowerSeries τ E) ^ N) :
     g ∈ maximalIdeal (MvPowerSeries τ E) ^ N := by
@@ -194,6 +268,17 @@ private lemma gc_unsmul [IsDomain O] [FaithfulSMul O E] [Finite τ] {c : O} (hc 
   rw [key]
   exact Ideal.mul_mem_left _ _ hg
 
+/- English proof (translation)
+Take `⟨y, hy0, hyP⟩` from `hy`. Take `⟨c, hc, hcmem⟩` from `hφ.inj N (W.π f) hf`. Take `⟨k1, hk1, p, hp, hsum⟩` from `Submodule.mem_sup.mp hcmem`. Establish `hd : (W.origin h y) ^ N * c ≠ 0` using `mul_ne_zero (pow_ne_zero _ hy0) hc`. Establish `hmem : ((W.origin h y) ^ N * c) • W.π f ∈ RingHom.ker (W.origin h) ^ N`.
+
+Rewrite using `[mul_smul, ← hsum, smul_add]`. Use `Ideal.add_mem _ ?_ (gc_sat (W.origin h) (hyP p hp) N)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ hk1`. Take `⟨g, hg, hgo⟩` from `gc_exists_order W h N _ hmem`.
+
+Establish `hker : g - ((W.origin h y) ^ N * c) • f ∈ RingHom.ker W.π`. Rewrite using `[RingHom.mem_ker, map_sub, hg, map_smul, sub_self]`. Establish `hk` using `W.homog _ hker k`. Rewrite `hk` using `[map_sub, map_smul, RingHom.mem_ker, map_sub, map_smul, sub_eq_zero]`. Establish `hgo' : (N : ℕ∞) ≤ (wcomp O W.wt k g).order`.
+
+Use `le_order (fun e he => ?_)` and prove the remaining obligations. Rewrite using `[coeff_wcomp]`. Use `split_ifs`. Conclude with `coeff_of_lt_order (lt_of_lt_of_le he hgo)`. Both sides reduce to the same expression.
+
+Establish `hlow` using `gc_low W h hφ hgo'`. Rewrite `hlow` using `[hk, map_smul]`. Conclude with `gc_unsmul hd hlow`.
+-/
 private lemma gc_homog [IsDomain O] [FaithfulSMul O E] [Finite τ] (W : WPres O Y R) (h : W.HasOrigin) {P : Ideal R}
     {φ : R →ₐ[O] MvPowerSeries τ E} (hφ : IsCompl P (W.origin h) φ)
     (hy : ∃ y, W.origin h y ≠ 0 ∧ ∀ a ∈ P, y * a = 0) {N : ℕ} {f : MvPowerSeries W.σ O}
@@ -223,6 +308,9 @@ private lemma gc_homog [IsDomain O] [FaithfulSMul O E] [Finite τ] (W : WPres O 
   rw [hk, map_smul] at hlow
   exact gc_unsmul hd hlow
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_wcomp, map_zero]`. Use `split_ifs with hn`. Conclude with `hf n (by rw [hn]; exact fun h => hjk h.symm)`. Both sides reduce to the same expression.
+-/
 private lemma gc_wcomp_ne {σ : Type} (wt : σ → Y) {j k : Y} (hjk : j ≠ k) {f : MvPowerSeries σ O}
     (hf : f ∈ wtPart O wt j) : wcomp O wt k f = 0 := by
   ext n
@@ -231,6 +319,9 @@ private lemma gc_wcomp_ne {σ : Type} (wt : σ → Y) {j k : Y} (hjk : j ≠ k) 
   · exact hf n (by rw [hn]; exact fun h => hjk h.symm)
   · rfl
 
+/- English proof (translation)
+Use `Finsupp.induction e ?_ ?_` and prove the remaining obligations. Simplify using `[Finsupp.mapDomain_zero, monomial_zero_eq_C_apply]`. Introduce `a b g _ _ ih`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`. Rewrite using `[Finsupp.prod_single_index (by simp), ih, Finsupp.mapDomain_add, Finsupp.mapDomain_single, X_pow_eq, monomial_mul_monomial, one_mul]`.
+-/
 private theorem finsupp_prod_X_pow_eq_monomial_mapDomain {A σ' τ' : Type} [CommSemiring A] (u : τ' → σ') (e : τ' →₀ ℕ) :
     (e.prod fun i k => (X (u i) : MvPowerSeries σ' A) ^ k) = monomial (e.mapDomain u) 1 := by
   classical
@@ -241,12 +332,20 @@ private theorem finsupp_prod_X_pow_eq_monomial_mapDomain {A σ' τ' : Type} [Com
     rw [Finsupp.prod_single_index (by simp), ih, Finsupp.mapDomain_add, Finsupp.mapDomain_single,
       X_pow_eq, monomial_mul_monomial, one_mul]
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum_mapDomain_index (h := fun i c => c • wt i) (by simp) (by intros; simp [add_smul])]`.
+-/
 private theorem weight_mapDomain_eq_weight_comp {σ' τ' Y' : Type} [AddCommGroup Y'] (wt : σ' → Y') (u : τ' → σ')
     (e : τ' →₀ ℕ) :
     Finsupp.weight wt (e.mapDomain u) = Finsupp.weight (fun i => wt (u i)) e := by
   rw [Finsupp.weight_apply, Finsupp.weight_apply,
     Finsupp.sum_mapDomain_index (h := fun i c => c • wt i) (by simp) (by intros; simp [add_smul])]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_wcomp, coeff_monomial]`. Distinguish the cases in `hn : n = m`. Substitute `hn` using the available equality. Rewrite using `[if_pos rfl]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Apply the tactic sequence `rw [if_neg hn] split_ifs <;> simp [coeff_monomial, hn]`.
+-/
 private theorem wcomp_monomial_eq_ite_weight {A σ' Y' : Type} [CommRing A] [AddCommGroup Y'] [DecidableEq Y']
     (wt : σ' → Y') (k : Y') (m : σ' →₀ ℕ) (c : A) :
     wcomp A wt k (monomial m c) = if Finsupp.weight wt m = k then monomial m c else 0 := by
@@ -260,6 +359,33 @@ private theorem wcomp_monomial_eq_ite_weight {A σ' Y' : Type} [CommRing A] [Add
   · rw [if_neg hn]
     split_ifs <;> simp [coeff_monomial, hn]
 
+/- English proof (translation)
+Use `haveI : FaithfulSMul O E := (faithfulSMul_iff_algebraMap_injective O E).mpr (IsFractionRing.injective O E)`. Use `haveI := Fintype.ofFinite τ`. Establish `hinj` using `IsFractionRing.injective O E`. Take `⟨f, hf, rfl⟩` from `ha`. Establish `hu' : ∀ i, φ (W.π (X (u i))) = X i` using `hu`.
+
+Establish `hcs : ∀ (c : O) e (g : MvPowerSeries τ E), coeff e (c • g) = c • coeff e g` using `fun c e g => rfl`. Introduce `e he`. Express the relevant statement in the definitionally equal form `coeff e (φ (W.π f)) = 0`. Establish `hjk : j ≠ Finsupp.weight (fun i => W.wt (u i)) e` using `fun h => he h.symm`. Use `set N := Finsupp.degree e + 1 with hN`.
+
+Use `set T : Finset (τ →₀ ℕ) := Finset.Iic (Finsupp.equivFunOnFinite.symm (fun _ : τ => N)) with hT`. Establish `hTmem : ∀ e' : τ →₀ ℕ, Finsupp.degree e' < N → e' ∈ T`. Introduce `e' he'`. Rewrite using `[hT, Finset.mem_Iic]`. Introduce `i`.
+
+Establish `hle : e' i ≤ Finsupp.degree e'`. Establish `hs : Finsupp.single i (e' i) ≤ e'`. Introduce `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hk)]`. Conclude with `Nat.zero_le _`. Use `congrArg Finsupp.degree (tsub_add_cancel_of_le hs)` as an intermediate fact. Rewrite `this` using `[map_add, Finsupp.degree_single]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Take `⟨b', hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) T (fun e' => coeff e' (φ (W.π f)))`. Use `set d : O := (b' : O) with hd_def`.
+
+Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero b'.2`. Establish `hb : ∀ e' ∈ T, ∃ b : O, algebraMap O E b = d • coeff e' (φ (W.π f))` using `fun e' he' => hd e' he'`. Use `choose! a ha using hb`. Use `set Pm : (τ →₀ ℕ) → MvPowerSeries W.σ O := fun e' => e'.prod fun i k => X (u i) ^ k with hPm`. Establish `hψ : ∀ e', φ (W.π (Pm e')) = monomial e' 1`.
+
+Introduce `e'`. Simplify using `only [hPm, Finsupp.prod, map_prod, map_pow, hu']`. Use `finsupp_prod_X_pow_eq_monomial_mapDomain (A := E) (id : τ → τ) e'` as an intermediate fact. Rewrite `this` using `[Finsupp.mapDomain_id]`. Simplify `this` using `[Finsupp.prod]`.
+
+Establish `hF : φ (W.π (d • f - ∑ e' ∈ T, a e' • Pm e')) ∈ maximalIdeal (MvPowerSeries τ E) ^ N`. Rewrite using `[gc_mem_pow_iff]`. Introduce `e'' he''`. Rewrite using `[map_sub, map_sub, map_sum, map_sum, map_smul, map_smul, map_sub, map_sum, hcs]`. Simplify using `only [map_smul, hψ, hcs, coeff_monomial, smul_ite, smul_zero]`.
+
+Rewrite using `[Finset.sum_ite_eq T e'' (fun e' => a e' • (1 : E)), if_pos (hTmem e'' he''), ← Algebra.algebraMap_eq_smul_one, ha e'' (hTmem e'' he''), sub_self]`. Establish `hwP : ∀ e', wcomp O W.wt (Finsupp.weight (fun i => W.wt (u i)) e) (Pm e') = if Finsupp.weight (fun i => W.wt (u i)) e' = Finsupp.weight (fun i => W.wt (u i)) e then Pm e' else 0`. Introduce `e'`. Simplify using `only [hPm]`. Rewrite using `[finsupp_prod_X_pow_eq_monomial_mapDomain, wcomp_monomial_eq_ite_weight, weight_mapDomain_eq_weight_comp]`.
+
+Establish `hwF : wcomp O W.wt (Finsupp.weight (fun i => W.wt (u i)) e) (d • f - ∑ e' ∈ T, a e' • Pm e') = -∑ e' ∈ T.filter (fun e' => Finsupp.weight (fun i => W.wt (u i)) e' = Finsupp.weight (fun i => W.wt (u i)) e), a e' • Pm e'`. Rewrite using `[Finset.sum_filter, map_sub, map_smul, map_sum, gc_wcomp_ne W.wt hjk hf, smul_zero, zero_sub]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun e' _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, hwP, smul_ite, smul_zero]`.
+
+Establish `hW` using `gc_homog W h hφ hy hF (Finsupp.weight (fun i => W.wt (u i)) e)`. Rewrite `hW` using `[hwF, map_neg, map_neg, Ideal.neg_mem_iff, map_sum, map_sum]`. Establish `hc` using `(gc_mem_pow_iff N _).mp hW e (by omega)`. Simplify using `only [map_smul, hψ, map_sum, hcs, coeff_monomial, smul_ite, smul_zero] at hc`. Rewrite `hc` using `[Finset.sum_ite_eq _ e (fun e' => a e' • (1 : E))]`.
+
+Establish `heT : e ∈ T.filter (fun e' => Finsupp.weight (fun i => W.wt (u i)) e' = Finsupp.weight (fun i => W.wt (u i)) e)` using `Finset.mem_filter.mpr ⟨hTmem e (by omega), rfl⟩`. Rewrite `hc` using `[if_pos heT, ← Algebra.algebraMap_eq_smul_one, ha e (hTmem e (by omega)), Algebra.smul_def]`. Conclude with `(mul_eq_zero.mp hc).resolve_left (fun h0 => hd0 (hinj (by rw [h0, map_zero])))`.
+-/
 private lemma gc_graded [IsDomain O] [IsFractionRing O E] [Finite τ] (W : WPres O Y R) (h : W.HasOrigin)
     {P : Ideal R} {φ : R →ₐ[O] MvPowerSeries τ E} (hφ : IsCompl P (W.origin h) φ)
     (hy : ∃ y, W.origin h y ≠ 0 ∧ ∀ a ∈ P, y * a = 0) (u : τ → W.σ) (hu : ∀ i, φ (W.z (u i)) = X i)
@@ -339,8 +465,44 @@ private lemma gc_graded [IsDomain O] [IsFractionRing O E] [Finite τ] (W : WPres
   rw [if_pos heT, ← Algebra.algebraMap_eq_smul_one, ha e (hTmem e (by omega)), Algebra.smul_def] at hc
   exact (mul_eq_zero.mp hc).resolve_left (fun h0 => hd0 (hinj (by rw [h0, map_zero])))
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private lemma gc_deg_single {σ : Type} (i : σ) : (Finsupp.single i 1 : σ →₀ ℕ).degree < 2 := by simp
 
+/- English proof (translation)
+Use `haveI := W.fin`. Set `lin : MvPowerSeries (Fin n) E →ₗ[E] (Fin n → E)` to `LinearMap.pi (fun j => coeff (Finsupp.single j 1))`. Establish `hlin : ∀ f j, lin f j = coeff (Finsupp.single j 1) f` using `fun f j => rfl`. Establish `hlin2 : ∀ f ∈ maximalIdeal (MvPowerSeries (Fin n) E) ^ 2, lin f = 0`. Introduce `f hf`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[hlin]`. Conclude with `(gc_mem_pow_iff 2 f).mp hf _ (gc_deg_single j)`. Establish `hlinO : ∀ (c : O) f, lin (c • f) = algebraMap O E c • lin f`. Introduce `c f`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[Pi.smul_apply, hlin, hlin, smul_eq_mul, ← Algebra.smul_def]`. Both sides reduce to the same expression. Use `set v : W.σ → (Fin n → E) := fun k j => coeff (Finsupp.single j 1) (φ (W.z k)) with hv_def`. Establish `hv : ∀ k, lin (φ (W.z k)) ∈ Submodule.span E (Set.range v)` using `fun k => Submodule.subset_span ⟨k, rfl⟩`.
+
+Establish `hC : ∀ r : O, lin (algebraMap O (MvPowerSeries (Fin n) E) r) = 0`. Introduce `r`. Use function extensionality and compare the values at `j`. Rewrite using `[hlin, MvPowerSeries.algebraMap_apply, coeff_C, if_neg (fun h => one_ne_zero (Finsupp.single_eq_zero.mp h))]`. Both sides reduce to the same expression.
+
+Establish `key : ∀ g, lin (φ (W.π g)) ∈ Submodule.span E (Set.range v)`. Introduce `g`. Establish `hg_eq : g = (g - algebraMap O _ (constantCoeff g) - ∑ k, coeff (Finsupp.single k 1) g • (X k : MvPowerSeries W.σ O)) + algebraMap O _ (constantCoeff g) + ∑ k, coeff (Finsupp.single k 1) g • X k`. Normalize the expressions using the abelian group laws. Rewrite using `[hg_eq, map_add, map_add, map_add, map_add, map_add, map_add]`.
+
+Use `add_mem (add_mem ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[hlin2 _ (gc_low W h hφ (nat_le_order (fun d hd => gc_lin g d hd)))]`. Conclude with `zero_mem _`. Rewrite using `[AlgHom.commutes, AlgHom.commutes, hC]`. Conclude with `zero_mem _`.
+
+Rewrite using `[map_sum, map_sum, map_sum]`. Use `Submodule.sum_mem _ (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, hlinO]`. Conclude with `Submodule.smul_mem _ _ (hv k)`. Establish `hS : Submodule.span E (Set.range v) = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `he : ∀ j : Fin n, (fun k => if j = k then (1 : E) else 0) ∈ Submodule.span E (Set.range v)`. Introduce `j`. Take `⟨a, c, hc, hca⟩` from `hφ.dense 2 (X j)`.
+
+Take `⟨g, rfl⟩` from `W.surj a`. Establish `h1` using `hlin2 _ hca`. Rewrite `h1` using `[map_sub, hlinO, sub_eq_zero]`. Establish `hX : lin (X j) = fun k => if j = k then (1 : E) else 0`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[hlin, coeff_X]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg, if_neg hjk]`.
+
+Introduce `h`. Conclude with `hjk ((Finsupp.single_left_inj one_ne_zero).mp h).symm`. Rewrite `h1` using `[hX]`. Establish `hc' : algebraMap O E c ≠ 0` using `fun h0 => hc ((FaithfulSMul.algebraMap_injective O E) (by rw [h0, map_zero]))`. Use `Submodule.smul_mem _ (algebraMap O E c)⁻¹ (h1 ▸ key g)` as an intermediate fact.
+
+Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc', one_smul]`. Then use the resulting hypothesis. Rewrite using `[pi_eq_sum_univ w]`. Conclude with `Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ (he j))`. Take `⟨f, hfs, hfspan, -⟩` from `Submodule.exists_fun_fin_finrank_span_eq E (Set.range v)`. Establish `hk : finrank E (Submodule.span E (Set.range v)) = n`.
+
+Rewrite using `[hS, finrank_top, Module.finrank_fin_fun]`. Establish `hu : ∀ i : Fin n, ∃ k, v k = f (Fin.cast hk.symm i)` using `fun i => hfs _`. Use `choose u hu using hu`. Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range (fun i => v (u i)) = Set.range f`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨_, (hu i).symm⟩`. Introduce and unpack `⟨i, rfl⟩`.
+
+Use `⟨Fin.cast hk i, ?_⟩` and prove the remaining obligations. Use `show v (u (Fin.cast hk i)) = f i`. Rewrite using `[hu]`. Simplify using the standard rewrite rules. Use `show Submodule.span E (Set.range fun i => v (u i)) = ⊤`.
+
+Rewrite using `[hr, hfspan, hS]`.
+-/
 private lemma gc_span [IsDomain O] [FaithfulSMul O E] {n : ℕ} (W : WPres O Y R) (h : W.HasOrigin)
     {P : Ideal R} {φ : R →ₐ[O] MvPowerSeries (Fin n) E} (hφ : IsCompl P (W.origin h) φ) :
     ∃ u : Fin n → W.σ, Submodule.span E
@@ -429,6 +591,33 @@ private lemma gc_span [IsDomain O] [FaithfulSMul O E] {n : ℕ} (W : WPres O Y R
   show Submodule.span E (Set.range fun i => v (u i)) = ⊤
   rw [hr, hfspan, hS]
 
+/- English proof (translation)
+Establish `hinj` using `IsFractionRing.injective O E`. Establish `hDm : ∀ f g, D (f * g) = algebraMap O E (x f) * D g + algebraMap O E (x g) * D f` using `fun f g => hD f g`. Establish `hD1 : D 1 = 0`. Use `hDm 1 1` as an intermediate fact. Simplify using `only [map_one, one_mul] at this`.
+
+Take the linear combination `-this`. Establish `hDc : ∀ r : O, D (algebraMap O R r) = 0`. Introduce `r`. Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, hD1, smul_zero]`. Establish `hDk2 : ∀ a ∈ RingHom.ker x ^ 2, D a = 0`.
+
+Introduce `a ha`. Rewrite `ha` using `[pow_two]`. Use `Submodule.mul_induction_on (C := fun a => D a = 0) ha ?_ ?_` and prove the remaining obligations. Introduce `u hu v hv`. Rewrite `hu`, `hv` using `[RingHom.mem_ker]`.
+
+Rewrite using `[hDm, hu, hv, map_zero, zero_mul, zero_mul, add_zero]`. Introduce `u v hu hv`. Rewrite using `[map_add, hu, hv, add_zero]`. Take `⟨y, hy0, hyP⟩` from `hy`. Establish `hDP : ∀ p ∈ P, D p = 0`.
+
+Introduce `p hp`. Establish `hxp : x p = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hφ.const, map_zero]`. Rewrite `hp` using `[← hφ.ker]`.
+
+Rewrite using `[RingHom.mem_ker.mp hp, map_zero]`. Use `hDm y p` as an intermediate fact. Rewrite `this` using `[hyP p hp, map_zero, hxp, map_zero, zero_mul, add_zero]`. Establish `hne : algebraMap O E (x y) ≠ 0` using `fun h => hy0 (hinj (by rw [h, map_zero]))`. Conclude with `(mul_eq_zero.mp this.symm).resolve_left hne`.
+
+Establish `hDs : ∀ a ∈ RingHom.ker x ^ 2 ⊔ P, D a = 0`. Introduce `a ha`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.mp ha`. Rewrite using `[map_add, hDk2 u hu, hDP v hv, add_zero]`. Use `LinearMap.ext (fun a => ?_)` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.zero_apply]`. Take `⟨b', hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) (Finset.univ : Finset τ) (fun i => coeff (Finsupp.single i 1) (φ a))`. Establish `hb : ∀ i, ∃ b : O, algebraMap O E b = (b' : O) • coeff (Finsupp.single i 1) (φ a)` using `fun i => hd i (Finset.mem_univ _)`. Use `choose b hb using hb`. Use `set d : O := (b' : O) with hd_def`.
+
+Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero b'.2`. Establish `hcs : ∀ e (f : MvPowerSeries τ E), coeff e (d • f) = d • coeff e f` using `fun e f => rfl`. Use `set F' : MvPowerSeries τ E := d • φ a with hF'`. Establish `key : φ (d • a - algebraMap O R (d * x a) - ∑ i, b i • z i) = F' - algebraMap E _ (constantCoeff F') - ∑ i, coeff (Finsupp.single i 1) F' • X i`. Rewrite using `[map_sub, map_sub, map_sum, map_smul, AlgHom.commutes]`.
+
+Use `congr 1`. Use `congr 1`. Rewrite using `[IsScalarTower.algebraMap_apply O E (MvPowerSeries τ E)]`. Use `congr 1`. Rewrite using `[hF', ← coeff_zero_eq_constantCoeff_apply, hcs, coeff_zero_eq_constantCoeff_apply, hφ.const, Algebra.smul_def, map_mul]`.
+
+Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, hz, hF', hcs, ← hb i, algebraMap_smul]`. Establish `hmem : φ (d • a - algebraMap O R (d * x a) - ∑ i, b i • z i) ∈ maximalIdeal (MvPowerSeries τ E) ^ 2` using `(gc_mem_pow_iff 2 _).mpr (fun e he => by rw [key]; exact gc_lin F' e he)`. Take `⟨c, hc, hcm⟩` from `hφ.inj 2 _ hmem`. Establish `h1` using `hDs _ hcm`.
+
+Rewrite `h1` using `[map_smul, Algebra.smul_def]`. Establish `h2` using `(mul_eq_zero.mp h1).resolve_left (fun h => hc (hinj (by rw [h, map_zero])))`. Rewrite `h2` using `[map_sub, map_sub, map_sum, hDc, map_smul]`. Simplify using `only [map_smul, h0, smul_zero, Finset.sum_const_zero, sub_zero] at h2`. Rewrite `h2` using `[Algebra.smul_def]`.
+
+Conclude with `(mul_eq_zero.mp h2).resolve_left (fun h => hd0 (hinj (by rw [h, map_zero])))`.
+-/
 private lemma gc_der [IsDomain O] [IsFractionRing O E] [Fintype τ] (x : R →ₐ[O] O)
     {P : Ideal R} {φ : R →ₐ[O] MvPowerSeries τ E} (hφ : IsCompl P x φ)
     (hy : ∃ y, x y ≠ 0 ∧ ∀ a ∈ P, y * a = 0) (z : τ → R) (hz : ∀ i, φ (z i) = X i)
@@ -503,6 +692,27 @@ private lemma gc_der [IsDomain O] [IsFractionRing O E] [Fintype τ] (x : R →�
   rw [Algebra.smul_def] at h2
   exact (mul_eq_zero.mp h2).resolve_left (fun h => hd0 (hinj (by rw [h, map_zero])))
 
+/- English proof (translation)
+Establish `hcs : ∀ (c : O) e (f : MvPowerSeries τ E), coeff e (c • f) = c • coeff e f` using `fun c e f => rfl`. Set `L : ↥(wtDer 𝒜 x E j) →ₗ[E] ({i // w i = j} → E)` to `{ toFun := fun D i => (D : R →ₗ[O] E) (z i.1) map_add' := fun D1 D2 => by`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun c D => by`.
+
+Use function extensionality and compare the values at `i`. Simplify using `}`. Establish `hinjL : Function.Injective L`. Use `(injective_iff_map_eq_zero L).mpr (fun D hD => ?_)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h0 : ∀ i, (D : R →ₗ[O] E) (z i) = 0`. Introduce `i`. Distinguish the cases in `hi : w i = j`. Conclude with `congrFun hD ⟨i, hi⟩`. Conclude with `D.2.2 (w i) hi (z i) (hw i)`.
+
+Conclude with `gc_der x hφ hy z hz D.2.1 h0`. Establish `hsurjL : Function.Surjective L`. Introduce `v`. Set `Dv : R →ₗ[O] E` to `{ toFun := fun a => ∑ i0 : {i // w i = j}, v i0 * coeff (Finsupp.single i0.1 1) (φ a) map_add' := by`. Introduce `a b`.
+
+Simplify using `only [map_add, mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`. Introduce `c a`. Simplify using `only [map_smul, RingHom.id_apply]`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl (fun i0 _ => ?_)` and prove the remaining obligations. Rewrite using `[hcs, mul_smul_comm] }`. Establish `hDv : ∀ a, Dv a = ∑ i0 : {i // w i = j}, v i0 * coeff (Finsupp.single i0.1 1) (φ a)` using `fun a => rfl`. Establish `hmem : Dv ∈ wtDer 𝒜 x E j`. Use `⟨fun f g => ?_, fun i' hi' f hf => ?_⟩` and prove the remaining obligations.
+
+Use `show Dv (f * g) = algebraMap O E (x f) * Dv g + algebraMap O E (x g) * Dv f`. Rewrite using `[hDv, hDv, hDv, map_mul]`. Simplify using `only [gc_coeff_single_mul, hφ.const, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun _ _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hDv]`. Use `Finset.sum_eq_zero (fun i0 _ => ?_)` and prove the remaining obligations. Establish `hwt : Finsupp.weight w (Finsupp.single i0.1 1) = j`. Simplify using `[Finsupp.weight_apply, Finsupp.sum_single_index, i0.2]`. Rewrite using `[hg i' f hf (Finsupp.single i0.1 1) (by rw [hwt]; exact fun h => hi' h.symm), mul_zero]`.
+
+Use `⟨⟨Dv, hmem⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show Dv (z i.1) = v i`. Rewrite using `[hDv, hz]`. Simplify using `[coeff_X, Finsupp.single_left_inj one_ne_zero]`.
+
+Rewrite using `[Finset.sum_eq_single i (fun b _ hb => if_neg (fun h => hb (Subtype.ext h))) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl]`. Set `e` to `LinearEquiv.ofBijective L ⟨hinjL, hsurjL⟩`. Rewrite using `[e.finrank_eq, Module.finrank_fintype_fun_eq_card, Nat.card_eq_fintype_card]`.
+-/
 private lemma gc_count [IsDomain O] [IsFractionRing O E] [Fintype τ] (x : R →ₐ[O] O) (𝒜 : Y → Submodule O R)
     {P : Ideal R} {φ : R →ₐ[O] MvPowerSeries τ E} (hφ : IsCompl P x φ)
     (hy : ∃ y, x y ≠ 0 ∧ ∀ a ∈ P, y * a = 0) (z : τ → R) (hz : ∀ i, φ (z i) = X i) (w : τ → Y)
@@ -566,6 +776,11 @@ private lemma gc_count [IsDomain O] [IsFractionRing O E] [Fintype τ] (x : R →
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ R _ _ _ X _ W h P n φ hφ hy`. Use `haveI : FaithfulSMul O E := (faithfulSMul_iff_algebraMap_injective O E).mpr (IsFractionRing.injective O E)`. Take `⟨u, hu⟩` from `gc_span W h hφ`. Establish `hz0 : ∀ i, W.origin h ((fun i => W.z (u i)) i) = 0` using `fun i => origin_at_generator_eq_zero W h (u i)`. Take `⟨φ', hφ', hX⟩` from `chartChange n P (W.origin h) φ (fun i => W.z (u i)) hφ hz0 hu`.
+
+Establish `hgr : ∀ j, ∀ f ∈ W.part j, φ' f ∈ wtPart E (fun i => W.wt (u i)) j` using `fun j f hf => gc_graded W h hφ' hy u hX j f hf`. Use `⟨fun i => W.wt (u i), φ', hφ', hgr, fun j => ?_⟩` and prove the remaining obligations. Conclude with `gc_count (W.origin h) W.part hφ' hy (fun i => W.z (u i)) hX (fun i => W.wt (u i)) (fun i => W.z_mem (u i)) hgr j`.
+-/
 theorem UpperTheory.V.Loc.gradedChart :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing O E] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] {X : Type} [AddCommGroup X] (W : WPres O X R) (h : W.HasOrigin) (P : Ideal R) {n : ℕ} (φ : R →ₐ[O] MvPowerSeries (Fin n) E), UpperTheory.V.Loc.IsCompl P (W.origin h) φ → (∃ y, W.origin h y ≠ 0 ∧ ∀ a ∈ P, y * a = 0) → ∃ (w : Fin n → X) (φ' : R →ₐ[O] MvPowerSeries (Fin n) E), UpperTheory.V.Loc.IsCompl P (W.origin h) φ' ∧ (∀ j, ∀ f ∈ W.part j, φ' f ∈ wtPart E w j) ∧ ∀ j, Nat.card {i // w i = j} = finrank E ↥(wtDer W.part (W.origin h) E j) := by
   intro l _ O _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ R _ _ _ X _ W h P n φ hφ hy

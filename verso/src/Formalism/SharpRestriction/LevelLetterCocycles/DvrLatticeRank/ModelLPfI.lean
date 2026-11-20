@@ -18,10 +18,22 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop)
     (π' Eπ : LetA O n) (h' : ℕ) (c : ZMod n)
 
+/- English proof (translation)
+Simplify using `[expS, serC, if_neg (show ¬ (0 ≤ i) by omega)]`.
+-/
 theorem expS_neg (ζ : LL) {m : ℕ} (a : Fin m → LetA O n) (y : Fin m → W.DD T) {i : ℤ} (hi : i < 0) :
     expS W T c ζ a y i = 0 := by
   simp [expS, serC, if_neg (show ¬ (0 ≤ i) by omega)]
 
+/- English proof (translation)
+Establish `key : ∀ N : ℕ, ∀ j, j < m₀ + N → g j ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (-j) := by`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro j hj; rw [hg j (by omega)]; exact Submodule.zero_mem _`. Consider the case `succ N ih`.
+
+Introduce `j hj`. Distinguish the cases in `hjN : j < m₀ + N`. Conclude with `ih j hjN`. Establish `hj' : j = m₀ + N` using `by push_cast at hj; omega`. Establish `hs` using `hH j`.
+
+Rewrite `hs` using `[MLG.serMul_eq_sum U hg j ((j - m₀).toNat + 1) le_rfl, Finset.sum_range_succ']`. Establish `hrest : ∑ k ∈ Finset.range (j - m₀).toNat, PowerSeries.coeff (k + 1) U • g (j - ((k + 1 : ℕ) : ℤ)) ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (-j) := by`. Use `Submodule.sum_mem _ (fun k hk => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_range]`. Conclude with `u3upPf_FilC_anti (PD := PD) T τ (by push_cast; omega) (ih _ (by push_cast; omega))`.
+
+Establish `h0` using `Submodule.sub_mem _ hs hrest`. Rewrite `h0` using `[add_sub_cancel_left, PowerSeries.coeff_zero_eq_constantCoeff_apply, Nat.cast_zero, sub_zero]`. Conclude with `(Submodule.smul_mem_iff _ hU).1 h0`. Introduce `j`. Conclude with `key ((j - m₀).toNat + 1) j (by omega)`.
+-/
 theorem ind_fil (τ : K →ₐ[Qp] LL) (U : PowerSeries LL) (hU : PowerSeries.constantCoeff U ≠ 0)
     {g : ℤ → T.V ⊗[Qp] BdR} {m₀ : ℤ} (hg : MLG.Bdd g m₀)
     (hH : ∀ j, serMul U g j ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ (-j)) :

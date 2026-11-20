@@ -11,6 +11,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.Rg.BcB.F.FX
 
+/- English proof (translation)
+The claim follows from `Bo.candFin_of hJ Bo.Tw.FinStrict_holds Bo.StrictEqv_holds Bo.StrictPre_holds Bo.StrictProd_holds Bo.StrictJoin_holds Bo.CandParts_holds Bo.LevOpen_holds Bo.IsoInv_holds Bo.AdmProd_holds`.
+-/
 theorem candFin_of_jEigFin (hJ : PositivityTheory.Rg.BcB.F.Tail.JEigFin) : CandFin :=
   Bo.candFin_of hJ Bo.Tw.FinStrict_holds Bo.StrictEqv_holds Bo.StrictPre_holds
     Bo.StrictProd_holds Bo.StrictJoin_holds Bo.CandParts_holds Bo.LevOpen_holds Bo.IsoInv_holds Bo.AdmProd_holds

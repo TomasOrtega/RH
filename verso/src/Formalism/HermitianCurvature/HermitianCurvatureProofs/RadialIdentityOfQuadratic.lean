@@ -33,6 +33,11 @@ section LinQ
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [FiniteDimensional ℂ Wp]
 
+/- English proof (translation)
+Establish `hb : ∀ F, B.beta D F F' = ∫ q, (bcWeight k r (Tz k r D.z) (Tz k r D.z') q : ℂ) * inner ℂ (B.hsVec (B.JF D F' (B.gq D q))) (B.hsVec (B.JF D F (B.gq D q)))` using `fun F => rfl`. Rewrite using `[hb, hb, hb, ← integral_sub (Formalism.FourierDecayAlt.P.JCx2.rb_int_pair D F1 F' h1 h') (Formalism.FourierDecayAlt.P.JCx2.rb_int_pair D F2 F' h2 h'), ← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.B7.ae_mem_good_set_or_weight_zero D] with q hq`. Break down `hq with hq | hw` into its components or cases.
+
+Rewrite using `[← mul_sub, ← inner_sub_right, ← hsVec_sub_rd, ← h q hq, hsVec_smul_rd, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hw]`.
+-/
 theorem beta_lin_rdQ (D : B.RealPlaceData k r Wp Wq) (s : ℂ) (F0 F1 F2 F' : B.Mat k r → (Wq →L[ℂ] Wp))
     (h1 : ∀ (A : ℝ) (m : ℕ), B.InCC A m F1) (h2 : ∀ (A : ℝ) (m : ℕ), B.InCC A m F2)
     (h' : ∀ (A : ℝ) (m : ℕ), B.InCC A m F')
@@ -51,6 +56,15 @@ theorem beta_lin_rdQ (D : B.RealPlaceData k r Wp Wq) (s : ℂ) (F0 F1 F2 F' : B.
 
 end LinQ
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr`. Take `⟨Θ, hOps, hRad⟩` from `hAB Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr`. Take `⟨c, -, -, -, -, -, hP⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi P.k P.r Wp Wq D (B.AB P.k P.r) le_rfl`. Establish `ccAll : ∀ F, NiceAll D F → ∀ (A : ℝ) (m : ℕ), B.InCC A m F` using `fun F ⟨_, _, _, h, _⟩ => h`. Establish `wvNice : ∀ s F, NiceAll D F → NiceAll D (wvG D.z D.z' s F)` using `fun s F ⟨ε, hε, h⟩ => ⟨ε, hε, (radial_wave_identity P.k P.r Wp Wq D hr ε s F).1 h⟩`.
+
+Establish `swap : ∀ j X F', NiceAll D X → NiceAll D F' → B.beta D (B.opAdj (Θ j) X) F' = B.beta D X (B.opApply (Θ j) F')`. Introduce `j X F' ⟨ε1, hε1, hX⟩ ⟨ε2, hε2, hF'⟩`. Take `⟨hS, hC, hPC, -⟩` from `hOps j`. Take `⟨d, hd, hpc⟩` from `hPC (min ε1 ε2) (lt_min hε1 hε2)`. Establish `h` using `hP (Θ j) (min ε1 ε2) d (lt_min hε1 hε2) hd hS hC hpc F' X (hF'.2.1 _ _) (hX.2.1 _ _) (fun g hg hne => (min_le_right _ _).trans (hF'.2.2 g hg hne)) (fun g hg hne => (min_le_left _ _).trans (hX.2.2 g hg hne))`.
+
+Rewrite using `[beta_conj_rd D (B.opAdj (Θ j) X) F', ← h, ← beta_conj_rd]`. Use `⟨fun j => B.opApply (Θ j), fun j F hF => ((hOps j).2.2.2 F hF).1, fun s F F' hF hF' => ?_⟩` and prove the remaining obligations. Establish `hW1` using `wvNice s _ ((hOps 1).2.2.2 F hF).1`. Establish `hW3` using `wvNice s _ ((hOps 3).2.2.2 F hF).1`. Establish `hA` using `((hOps 0).2.2.2 _ hW1).2`.
+
+Establish `hB` using `((hOps 2).2.2.2 _ hW3).2`. Rewrite using `[beta_lin_rdQ D s _ _ _ F' (ccAll _ hA) (ccAll _ hB) (ccAll _ hF') (hRad s F hF), swap 0 _ F' hW1 hF', swap 2 _ F' hW3 hF']`.
+-/
 theorem radial_identity_of_quadratic (hAB : RDIdentABQ) : RDIdent := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr
   obtain ⟨Θ, hOps, hRad⟩ := hAB Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr
@@ -75,6 +89,9 @@ theorem radial_identity_of_quadratic (hAB : RDIdentABQ) : RDIdent := by
   rw [beta_lin_rdQ D s _ _ _ F' (ccAll _ hA) (ccAll _ hB) (ccAll _ hF') (hRad s F hF), swap 0 _ F' hW1 hF',
     swap 2 _ F' hW3 hF']
 
+/- English proof (translation)
+The claim follows from `radDecay_of_cut (radial_identity_of_quadratic h)`.
+-/
 theorem radDecay_of_ABQ (h : RDIdentABQ) : RadDecay := radDecay_of_cut (radial_identity_of_quadratic h)
 
 section Alg
@@ -134,11 +151,21 @@ def RDRadIdAlg : Prop :=
     star Y = Y → Y ∈ st.inv → Y + 1 ∈ st.inv →
     star (thR L st Y 0) * f * thR L st Y 1 - star (thR L st Y 2) * f * thR L st Y 3 = algebraMap ℂ A s * f
 
+/- English proof (translation)
+Introduce `A _ _ _ _ r hr L st s Y f fi hS hSL hLS hSC hW hY hi hi1`. Rewrite using `[hR A r hr L st s Y f fi hS hSL hLS hSC hW hY hi hi1 (hG A r L st Y hSL hS hLS hY hi hi1)]`. Conclude with `hC A r hr L st s Y f fi hS hW hY`.
+-/
 theorem rDRadIdAlg_of_collapse_gauge_rearr (hC : RDCollapse) (hG : RadialGaugeAdjointRelation) (hR : RDRearr) : RDRadIdAlg := by
   intro A _ _ _ _ r hr L st s Y f fi hS hSL hLS hSC hW hY hi hi1
   rw [hR A r hr L st s Y f fi hS hSL hLS hSC hW hY hi hi1 (hG A r L st Y hSL hS hLS hY hi hi1)]
   exact hC A r hr L st s Y f fi hS hW hY
 
+/- English proof (translation)
+Take `⟨hp, hpb, hc, hci, hcb, hcbi, -⟩` from `h`. Introduce `l`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hp l, hpb l]`. Conclude with `Prod.ext rfl (neg_neg _).symm`.
+
+Rewrite using `[hp l, hpb l]`. Conclude with `Prod.ext rfl (neg_neg _).symm`. Rewrite using `[hc l, hcb l]`. Both sides reduce to the same expression. Rewrite using `[hc l, hcb l]`.
+
+Both sides reduce to the same expression. Rewrite using `[hci l, hcbi l]`. Both sides reduce to the same expression. Rewrite using `[hci l, hcbi l]`. Both sides reduce to the same expression.
+-/
 theorem rDStarCoords_of_actual {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddCommGroup Wq]
     [NormedSpace ℂ Wq] {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {π' : Mx k r → (Wq →L[ℂ] Wq)} {X : ActualOps k r z z' π π'} {L : R.LevelData (Pr (RadSp k r z z' π π')) r}
@@ -263,6 +290,9 @@ def RDGrpIdOfSpec : Prop :=
     ∀ (Y : ℂ) (Θ : Fin 4 → B.DiffOp P.k P.r Wp Wq), star Y = Y → Y ∈ st.inv → Y + 1 ∈ st.inv →
       RDOpsProp D Θ → RDSpec L st Y Θ → RDGrpIdProp D Θ
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr`. Take `⟨Y, Θ, hY, hi, hi1, hO, hS⟩` from `ha Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr`. Conclude with `⟨Θ, hO, hb Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y Θ hY hi hi1 hO hS⟩`.
+-/
 theorem rDIdentABQ_of_spec (ha : RDIdentSpec) (hb : RDRadIdOfSpec) : RDIdentABQ := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr
   obtain ⟨Y, Θ, hY, hi, hi1, hO, hS⟩ := ha Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr
@@ -285,17 +315,34 @@ def RDOpLocal : Prop :=
     ∀ g ∈ JF.Om k r D.z D.z', B.opApply Θ f₁ g = B.opApply Θ f₂ g ∧ B.opAdj Θ f₁ g = B.opAdj Θ f₂ g
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
+/- English proof (translation)
+Introduce `g₀ hg`. Take `⟨U, f', hU, hgU, hf', he⟩` from `h g₀ hg`. Conclude with `⟨U, f', hU, hgU, hf'.of_le (WithTop.coe_le_coe.mpr le_top), he⟩`.
+-/
 theorem ckOn_of_top {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {UU : Set (B.Mat k r)}
     {f : B.Mat k r → E} (m : ℕ) (h : B.CkOn ⊤ UU f) : B.CkOn (m : ℕ∞) UU f := by
   intro g₀ hg
   obtain ⟨U, f', hU, hgU, hf', he⟩ := h g₀ hg
   exact ⟨U, f', hU, hgU, hf'.of_le (WithTop.coe_le_coe.mpr le_top), he⟩
 
+/- English proof (translation)
+Use `⟨6 * (r : ℝ) * (m : ℝ) + |(r : ℝ) * (4 * (r : ℝ) + 2 * (k : ℝ) - 1) * (6 * (r : ℝ) + 1)| + 1, ?_, ?_⟩` and prove the remaining obligations. Use `abs_nonneg ((r : ℝ) * (4 * (r : ℝ) + 2 * (k : ℝ) - 1) * (6 * (r : ℝ) + 1))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_abs_self ((r : ℝ) * (4 * (r : ℝ) + 2 * (k : ℝ) - 1) * (6 * (r : ℝ) + 1))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem thrW_exists (k r m : ℕ) : ∃ A, Formalism.FourierDecayAlt.P.WeakThresholdClauses.WeakDominationThreshold k r A m := by
   refine ⟨6 * (r : ℝ) * (m : ℝ) + |(r : ℝ) * (4 * (r : ℝ) + 2 * (k : ℝ) - 1) * (6 * (r : ℝ) + 1)| + 1, ?_, ?_⟩
   · have := abs_nonneg ((r : ℝ) * (4 * (r : ℝ) + 2 * (k : ℝ) - 1) * (6 * (r : ℝ) + 1)); linarith
   · have := le_abs_self ((r : ℝ) * (4 * (r : ℝ) + 2 * (k : ℝ) - 1) * (6 * (r : ℝ) + 1)); linarith
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y Θ hY hi hi1 hO hS`. Establish `hGI` using `hG Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y Θ hY hi hi1 hO hS`. Establish `wvNice : ∀ s F, NiceAll D F → NiceAll D (wvG D.z D.z' s F)` using `fun s F ⟨ε, hε, h⟩ => ⟨ε, hε, (radial_wave_identity P.k P.r Wp Wq D hr ε s F).1 h⟩`. Establish `link_brest₂ : ∀ j F, NiceAll D F → (∀ g ∈ JF.Om P.k P.r D.z D.z', B.opApply (Θ j) (B.JF D F) g = B.JF D (B.opApply (Θ j) F) g) ∧ ∀ g ∈ JF.Om P.k P.r D.z D.z', B.opAdj (Θ j) (B.JF D F) g = B.JF D (B.opAdj (Θ j) F) g`. Introduce `j F hF`.
+
+Establish `hF'` using `hF`. Take `⟨ε, hε, hCk, hCC, -⟩` from `hF'`. Take `⟨hSm, hC, -, -⟩` from `hO j`. Take `⟨A, hA⟩` from `thrW_exists P.k P.r (B.opOrder (Θ j))`. Conclude with `hT P.k P.r Wp Wq D (Θ j) A F (JF.Om P.k P.r D.z D.z') hA hSm hC hCk (hCC _ _) subset_rfl (ckOn_of_top _ (hN P.k P.r Wp Wq D F hF).2)`.
+
+Introduce `s F hF q hq`. Establish `hg` using `Formalism.FourierDecayAlt.P.big_cell_domain P.k P.r Wp Wq D q hq`. Establish `key` using `hGI s (B.JF D F) (hN P.k P.r Wp Wq D F hF).1 q hq`. Establish `term : ∀ a b : Fin 4, B.JF D (B.opAdj (Θ a) (wvG D.z D.z' s (B.opApply (Θ b) F))) (B.gq D q) = B.opAdj (Θ a) (wvG D.z D.z' s (B.opApply (Θ b) (B.JF D F))) (B.gq D q)`. Introduce `a b`.
+
+Establish `hF1 : NiceAll D (wvG D.z D.z' s (B.opApply (Θ b) F))` using `wvNice s _ ((hO b).2.2.2 F hF).1`. Rewrite using `[← (link_brest₂ a _ hF1).2 _ hg]`. Use `(hL P.k P.r Wp Wq D (Θ a) _ _ (fun g' hg' => ?_) _ hg).2` and prove the remaining obligations. Rewrite using `[hW P.k P.r Wp Wq D s _ ((hO b).2.2.2 F hF).1 g' hg']`. Unfold `wvG`.
+
+Rewrite using `[(link_brest₂ b F hF).1 g' hg']`. Rewrite using `[hW P.k P.r Wp Wq D s F hF _ hg, term 0 1, term 2 3]`. Conclude with `key`.
+-/
 theorem rDRadIdOfSpec_of_grpId_theta (hG : RDGrpIdOfSpec) (hT : Formalism.FourierDecayAlt.P.CutMP.JA.LT.ThetaJ) (hN : RDJNice)
     (hW : RDWaveJ) (hL : RDOpLocal) : RDRadIdOfSpec := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y Θ hY hi hi1 hO hS
@@ -327,6 +374,19 @@ theorem rDRadIdOfSpec_of_grpId_theta (hG : RDGrpIdOfSpec) (hT : Formalism.Fourie
   rw [hW P.k P.r Wp Wq D s F hF _ hg, term 0 1, term 2 3]
   exact key
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y Θ hY hi hi1 hO hS s J hJ q hq`. Substitute `hz hz' hπ hπ'` using the available equality. Take `⟨x, hx, w, hw0, hres⟩` from `hGQ P.k P.r Wp Wq D q hq`. Take `⟨Wv, hWv⟩` from `hWC Wp Wq P.k P.r D.z D.z' D.π D.π' ⟨0, hr⟩ s`. Take `⟨Wv', hWv'⟩` from `hWC Wp Wq P.k P.r D.z D.z' D.π D.π' ⟨0, hr⟩ (-s)`.
+
+Take `⟨Φ, hΦ⟩` from `hRR Wp Wq P D.z D.z' D.π D.π' X μ L st l0 hD J hJ`. Establish `hwave` using `hWR Wp Wq P D.z D.z' D.π D.π' X μ L st l0 hr s hD Wv Wv' hWv hWv'`. Establish `halg` using `hA (Pr (RadSp P.k P.r D.z D.z' D.π D.π')) P.r hr L st s Y (mkP Wv Wv') (mkP Wv' Wv) (rDStarCoords_of_actual hD.2.2.1) hD.2.2.2.2.2.2.1 hD.2.2.2.2.2.2.2 (hSC Wp Wq P D.z D.z' D.π D.π' X μ L st l0 hD) hwave hY hi hi1`. Establish `hterm : ∀ a b : Fin 4, B.opAdj (Θ a) (wvG D.z D.z' s (B.opApply (Θ b) J)) ∈ Q.FFl P.k P.r D.z D.z' D.π D.π' 0 (JF.Om P.k P.r D.z D.z') ∧ resG P.k P.r (Fin.last P.r) (B.opAdj (Θ a) (wvG D.z D.z' s (B.opApply (Θ b) J))) x.1 x.2 = ((star (thR L st Y a) * mkP Wv Wv' * thR L st Y b).1 …`. Introduce `a b`.
+
+Establish `hJb` using `(hOF P.k P.r Wp Wq D (Θ b) (hO b).1 (hO b).2.1 J hJ).1`. Establish `hwb` using `hWF Wp Wq P D.z D.z' D.π D.π' X μ L st l0 hr s hD _ hJb`. Establish `hΦ' : ∀ y ∈ DomR P.k P.r D.z D.z', ((Wv ((thR L st Y b).1 Φ) : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) y.1 y.2 = resG P.k P.r (Fin.last P.r) (wvG D.z D.z' s (B.opApply (Θ b) J)) y.1 y.2`. Introduce `y hy`. Rewrite using `[hWv, hwb.2 y hy, (hS b J hJ Φ hΦ y hy).1]`.
+
+Conclude with `⟨(hOF P.k P.r Wp Wq D (Θ a) (hO a).1 (hO a).2.1 _ hwb.1).2, (hS a _ hwb.1 _ hΦ' x hx).2⟩`. Establish `hJw` using `(hWF Wp Wq P D.z D.z' D.π D.π' X μ L st l0 hr s hD J hJ)`. Establish `hlhs : resG P.k P.r (Fin.last P.r) (wvG D.z D.z' s J) x.1 x.2 = ((Wv Φ : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2`. Rewrite using `[hJw.2 x hx, hWv, hΦ x hx]`. Establish `hmain` using `congrArg (fun E : Pr (RadSp P.k P.r D.z D.z' D.π D.π') => ((E.1 Φ : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2) halg`.
+
+Establish `hsplit : ((star (thR L st Y 0) * mkP Wv Wv' * thR L st Y 1 - star (thR L st Y 2) * mkP Wv Wv' * thR L st Y 3).1 Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = ((star (thR L st Y 0) * mkP Wv Wv' * thR L st Y 1).1 Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 - ((star (thR L st Y 2) * mkP Wv Wv' …`. Both sides reduce to the same expression. Establish `hright : ((algebraMap ℂ (Pr (RadSp P.k P.r D.z D.z' D.π D.π')) s * mkP Wv Wv').1 Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = s • ((Wv Φ : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2`. Both sides reduce to the same expression. Rewrite `hmain` using `[hsplit, hright]`.
+
+Apply `smul_right_injective (Wq →L[ℂ] Wp) hw0` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[smul_sub, ← hres _ (hterm 0 1).1, ← hres _ (hterm 2 3).1, smul_comm w s, ← hres _ hJw.1, (hterm 0 1).2, (hterm 2 3).2, hlhs]`. Conclude with `hmain.symm`.
+-/
 theorem rDGrpIdOfSpec_of_radIdAlg (hA : RDRadIdAlg) (hSC : RDStartCoord) (hWR : RDWaveRad) (hWC : WaveCExists)
     (hRR : RDResRad) (hWF : RDWaveFF) (hOF : RDOpFF) (hGQ : RDGqRes) : RDGrpIdOfSpec := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y Θ hY hi hi1 hO hS s J hJ q hq

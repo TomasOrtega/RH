@@ -11,6 +11,9 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Introduce `P l _ L Ω _ _ _ _ _ _ s n hn V Q c r ι Λ`. Take `⟨m, τ₀, hτ⟩` from `UpperTheory.V.Hi.typeEx P l L Ω s n hn V Q c r ι`. Take `⟨θ, hθ, hw⟩` from `UpperTheory.V.Hi.thetaEx P.litN l L Ω s n hn V Q c m τ₀ r Λ`. Take `⟨a, ha⟩` from `UpperTheory.V.Hi.resEx P.litN l L Ω s n hn V Q c m τ₀ r`. Conclude with `⟨⟨m, τ₀, hτ, θ, hθ, hw, a, ha⟩⟩`.
+-/
 theorem UpperTheory.V.Hi.hdEx :
     Af.HypothesesH → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ (V : s.Lev) (Q : QData V) (c : Coef l), ∀ (r : Resid V.frame c.O n) (ι : Qbar l ≃+* ℂ), ∀ Λ : LamObj r, Nonempty (HD Q ι Λ) := by

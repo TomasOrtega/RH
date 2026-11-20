@@ -4,6 +4,9 @@ namespace ReciprocityTheory.GeometryOfNumbersTheory
 
 open MeasureTheory
 
+/- English proof (translation)
+Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff hR]`. Introduce `k`. Use `Fin.cases ?_ (fun j => ?_) k` and prove the remaining obligations. Simplify using `using hx`. Simplify using `using (pi_norm_lt_iff hR).1 hy j`.
+-/
 theorem polydisc_cons_mem_ball {D : ℕ} {R : ℝ} (hR : 0 < R) {x : ℂ} {y : Fin D → ℂ}
     (hx : ‖x‖ < R) (hy : ‖y‖ < R) : (Fin.cons x y : Fin (D + 1) → ℂ) ∈ Metric.ball 0 R := by
   rw [mem_ball_zero_iff, pi_norm_lt_iff hR]
@@ -12,6 +15,11 @@ theorem polydisc_cons_mem_ball {D : ℕ} {R : ℝ} (hR : 0 < R) {x : ℂ} {y : F
   · simpa using hx
   · simpa using (pi_norm_lt_iff hR).1 hy j
 
+/- English proof (translation)
+Rewrite using `[differentiable_pi]`. Introduce `k`. Use `Fin.cases ?_ (fun j => ?_) k` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h` using `(differentiable_pi.1 (differentiable_snd (𝕜 := ℂ) (E := ℂ) (F := Fin D → ℂ))) j`.
+
+Simplify using `using h`.
+-/
 theorem polydisc_differentiable_cons {D : ℕ} :
     Differentiable ℂ (fun p : ℂ × (Fin D → ℂ) => (Fin.cons p.1 p.2 : Fin (D + 1) → ℂ)) := by
   rw [differentiable_pi]
@@ -21,6 +29,39 @@ theorem polydisc_differentiable_cons {D : ℕ} :
   · have h := (differentiable_pi.1 (differentiable_snd (𝕜 := ℂ) (E := ℂ) (F := Fin D → ℂ))) j
     simpa using h
 
+/- English proof (translation)
+Proceed by induction on `D with`. Consider the case `zero`. Establish `hb : Metric.ball (0 : Fin 0 → ℂ) r = Set.univ`. Use extensionality with `z`. Simplify using `[Subsingleton.elim z 0, hr]`.
+
+Rewrite using `[hb, Measure.restrict_univ]`. Establish `hc : (fun z : Fin 0 → ℂ => ‖f z‖ ^ 2 * ∏ j, w j ‖z j‖) = fun _ => ‖f 0‖ ^ 2`. Use function extensionality and compare the values at `z`. Rewrite using `[Subsingleton.elim z 0]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hc]`. Rewrite using `[volume_pi, integral_const]`. Simplify using `[measureReal_def, Measure.pi_empty_univ]`. Consider the case `succ D ih`. Establish `hR : 0 < R` using `hr.trans hrR`.
+
+Use `set B := Metric.ball (0 : ℂ) r with hBdef`. Use `set B' := Metric.ball (0 : Fin D → ℂ) r with hB'def`. Use `set F : (Fin (D + 1) → ℂ) → ℝ := fun z => ‖f z‖ ^ 2 * ∏ j, w j ‖z j‖ with hFdef`. Establish `hFc : ContinuousOn F (Metric.closedBall 0 r)`. Establish `h1 : ContinuousOn f (Metric.closedBall 0 r)` using `hf.continuousOn.mono (Metric.closedBall_subset_ball hrR)`.
+
+Use `(h1.norm.pow 2).mul (continuous_finsetProd _ fun j _ => ?_).continuousOn` and prove the remaining obligations. Conclude with `(hwc j).comp (continuous_apply j).norm`. Establish `hint : IntegrableOn F (Metric.ball 0 r)` using `(hFc.integrableOn_compact (isCompact_closedBall 0 r)).mono_set Metric.ball_subset_closedBall`. Set `e` to `MeasurableEquiv.piFinSuccAbove (fun _ : Fin (D + 1) => ℂ) 0`. Establish `he : MeasurePreserving e.symm ((volume : Measure ℂ).prod (volume : Measure (Fin D → ℂ))) volume` using `(volume_preserving_piFinSuccAbove (fun _ : Fin (D + 1) => ℂ) 0).symm`.
+
+Establish `hes : ∀ p : ℂ × (Fin D → ℂ), e.symm p = Fin.cons p.1 p.2`. Introduce `p`. Simplify using `[e, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv, Fin.insertNth_zero']`. Establish `hpre : e.symm ⁻¹' Metric.ball 0 r = B ×ˢ B'`. Use extensionality with `⟨x, y⟩`.
+
+Simplify using `only [Set.mem_preimage, hes, Set.mem_prod, B, B', mem_ball_zero_iff, pi_norm_lt_iff hr, Fin.forall_fin_succ, Fin.cons_zero, Fin.cons_succ]`. Establish `hG : Integrable (fun p : ℂ × (Fin D → ℂ) => F (Fin.cons p.1 p.2)) ((volume.restrict B).prod (volume.restrict B'))`. Rewrite using `[Measure.prod_restrict, ← hpre]`. Use `(he.integrableOn_comp_preimage e.symm.measurableEmbedding).2 hint` as an intermediate fact. Simplify using `only [Function.comp_def, hes] at this`.
+
+Conclude with `this`. Establish `hI : ∫ z in Metric.ball 0 r, F z = ∫ x in B, ∫ y in B', F (Fin.cons x y)`. Rewrite using `[← he.setIntegral_preimage_emb e.symm.measurableEmbedding, hpre, ← Measure.prod_restrict]`. Repeatedly rewrite using `[hes]`. Rewrite using `[integral_prod _ hG]`.
+
+Use `set c := ∏ j : Fin D, ∫ z in B, w j.succ ‖z‖ with hc`. Establish `hc0 : 0 ≤ c` using `Finset.prod_nonneg fun j _ => setIntegral_nonneg measurableSet_ball fun z _ => hw _ _`. Use `set g : ℂ → ℂ := fun x => f (Fin.cons x 0) with hg`. Establish `hgd : DifferentiableOn ℂ g (Metric.ball 0 R)`. Use `hf.comp (polydisc_differentiable_cons.comp (differentiable_id.prodMk (differentiable_const _))).differentiableOn ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Conclude with `polydisc_cons_mem_ball hR (mem_ball_zero_iff.1 hx) (by simpa using hR)`. Establish `hpt : ∀ x ∈ B, ‖g x‖ ^ 2 * w 0 ‖x‖ * c ≤ ∫ y in B', F (Fin.cons x y)`. Introduce `x hx`. Establish `hx' : ‖x‖ < R` using `(mem_ball_zero_iff.1 hx).trans hrR`.
+
+Establish `hfx : DifferentiableOn ℂ (fun y : Fin D → ℂ => f (Fin.cons x y)) (Metric.ball 0 R)`. Use `hf.comp (polydisc_differentiable_cons.comp ((differentiable_const x).prodMk differentiable_id)).differentiableOn ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `polydisc_cons_mem_ball hR hx' (mem_ball_zero_iff.1 hy)`. Establish `h` using `ih (fun y => f (Fin.cons x y)) hfx (fun j => w j.succ) (fun j => hwc _) (fun j s => hw _ _)`.
+
+Establish `heq : (fun y : Fin D → ℂ => F (Fin.cons x y)) = fun y => w 0 ‖x‖ * (‖f (Fin.cons x y)‖ ^ 2 * ∏ j : Fin D, w j.succ ‖y j‖)`. Use function extensionality and compare the values at `y`. Simplify using `only [F, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq, integral_const_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [g]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := mul_le_mul_of_nonneg_left h (hw _ _)`. Establish `hstep : ∫ x in B, ‖g x‖ ^ 2 * w 0 ‖x‖ * c ≤ ∫ x in B, ∫ y in B', F (Fin.cons x y)`.
+
+Use `integral_mono_of_nonneg (Filter.Eventually.of_forall fun x => ?_) hG.integral_prod_left ((ae_restrict_iff' measurableSet_ball).2 (Filter.Eventually.of_forall hpt))` and prove the remaining obligations. Conclude with `mul_nonneg (mul_nonneg (by positivity) (hw _ _)) hc0`. Establish `hdisc` using `disc_mean_le hr hrR g hgd (w 0) (hwc 0) (hw 0)`. Establish `hg0 : g 0 = f 0`. Simplify using `only [g]`.
+
+Use `congr 1`. Use extensionality with `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) k <;> simp`. Rewrite using `[hI, Fin.prod_univ_succ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hg0]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (∫ z in B, ‖g z‖ ^ 2 * w 0 ‖z‖) * c := mul_le_mul_of_nonneg_right hdisc hc0`. Use `_ = ∫ x in B, ‖g x‖ ^ 2 * w 0 ‖x‖ * c := (integral_mul_const c _).symm`. Use `_ ≤ _ := hstep`.
+-/
 theorem polydisc_mean_le {D : ℕ} {R r : ℝ} (hr : 0 < r) (hrR : r < R) (f : (Fin D → ℂ) → ℂ)
     (hf : DifferentiableOn ℂ f (Metric.ball 0 R)) (w : Fin D → ℝ → ℝ)
     (hwc : ∀ j, Continuous (w j)) (hw : ∀ j s, 0 ≤ w j s) :
@@ -115,6 +156,11 @@ theorem polydisc_mean_le {D : ℕ} {R r : ℝ} (hr : 0 < r) (hrR : r < R) (f : (
       _ = ∫ x in B, ‖g x‖ ^ 2 * w 0 ‖x‖ * c := (integral_mul_const c _).symm
       _ ≤ _ := hstep
 
+/- English proof (translation)
+Establish `h` using `polydisc_mean_le hr hrR f hf (fun j s => Real.exp (-(a j * s ^ 2))) (fun j => by fun_prop) (fun j s => (Real.exp_pos _).le)`. Establish `e1 : ∏ j, discI (a j) r = ∏ j, ∫ z in Metric.ball (0 : ℂ) r, (fun j s => Real.exp (-(a j * s ^ 2))) j ‖z‖` using `rfl`. Establish `e2 : (fun z : Fin D → ℂ => ‖f z‖ ^ 2 * Real.exp (-∑ j, a j * ‖z j‖ ^ 2)) = fun z => ‖f z‖ ^ 2 * ∏ j, (fun j s => Real.exp (-(a j * s ^ 2))) j ‖z j‖`. Use function extensionality and compare the values at `z`. Simplify using `only [← Real.exp_sum, Finset.sum_neg_distrib]`.
+
+Rewrite using `[e1, e2]`. Conclude with `h`.
+-/
 theorem polydisc_gauss_le {D : ℕ} {R r : ℝ} (hr : 0 < r) (hrR : r < R) (f : (Fin D → ℂ) → ℂ)
     (hf : DifferentiableOn ℂ f (Metric.ball 0 R)) (a : Fin D → ℝ) :
     ‖f 0‖ ^ 2 * ∏ j, discI (a j) r ≤

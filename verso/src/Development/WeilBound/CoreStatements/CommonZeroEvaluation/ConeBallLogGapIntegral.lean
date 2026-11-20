@@ -6,6 +6,9 @@ open scoped ENNReal
 
 namespace ModelDimension.ConeBallLogGap
 
+/- English proof (translation)
+Use `⟨by simp [logGap, hy, hs], ?_⟩` and prove the remaining obligations. Establish `hy' : 0 < ‖y‖` using `norm_pos_iff.mpr hy`. Rewrite using `[ConeFsLog.fsLog_pointOf, sub_nonneg]`. Conclude with `Real.log_le_log (div_pos (norm_pos_iff.mpr hs) hy') ((div_le_iff₀ hy').mpr (ConeFsLog.norm_sum_mul_pointOf_le h u y))`.
+-/
 theorem logGap_eq_ofReal_of_ne {n : ℕ} (h : HermNorm n) (u : Fin n → ℂ)
     {y : EuclideanSpace ℂ (Fin n)} (hy : y ≠ 0) (hs : ∑ j, u j * h.pointOf y j ≠ 0) :
     logGap h u y = ENNReal.ofReal (Real.log (h.norm u) - fsLog h u (h.pointOf y)) ∧
@@ -16,6 +19,19 @@ theorem logGap_eq_ofReal_of_ne {n : ℕ} (h : HermNorm n) (u : Fin n → ℂ)
   exact Real.log_le_log (div_pos (norm_pos_iff.mpr hs) hy')
     ((div_le_iff₀ hy').mpr (ConeFsLog.norm_sum_mul_pointOf_le h u y))
 
+/- English proof (translation)
+Establish `hfin` using `ConeBallFinite.full n e h W f hW hf`. Establish `hint` using `ConeFsLogIntegrable.full n e h W f u hW hf hu`. Establish `hnull` using `ConeHyperplaneNull.full n e h W f u hW hf hu`. Use `set ν : Measure (EuclideanSpace ℂ (Fin n)) := Measure.hausdorffMeasure ((2 * (e + 1) : ℕ) : ℝ) with hν`. Establish `h0 : ν {0} = 0` using `by haveI := Measure.nullSingletonClass_hausdorff (X := EuclideanSpace ℂ (Fin n)) (d := ((2 * (e + 1) : ℕ) : ℝ)) (by positivity)`.
+
+Conclude with `measure_singleton 0`. Use `haveI : IsFiniteMeasure (ν.restrict (coneBall h W)) := ⟨by simpa using hfin⟩`. Establish `hp : Continuous (fun y : EuclideanSpace ℂ (Fin n) => h.pointOf y)`. Unfold `HermNorm.pointOf`. Use `fun_prop`.
+
+Establish `hc : Continuous (fun y : EuclideanSpace ℂ (Fin n) => ∑ j, u j * h.pointOf y j)` using `continuous_finsetSum _ fun j _ => continuous_const.mul ((continuous_apply j).comp hp)`. Establish `hZm : MeasurableSet {y : EuclideanSpace ℂ (Fin n) | ∑ j, u j * h.pointOf y j = 0}` using `(isClosed_eq hc continuous_const).measurableSet`. Establish `hZ : (ν.restrict (coneBall h W)) {y | ∑ j, u j * h.pointOf y j = 0} = 0`. Rewrite using `[Measure.restrict_apply hZm, Set.inter_comm]`. Conclude with `hnull`.
+
+Establish `h0' : ∀ᵐ y ∂(ν.restrict (coneBall h W)), y ∈ ({0} : Set (EuclideanSpace ℂ (Fin n)))ᶜ` using `ae_mono Measure.restrict_le_self (compl_mem_ae_iff.mpr h0)`. Establish `hgood : ∀ᵐ y ∂(ν.restrict (coneBall h W)), logGap h u y = ENNReal.ofReal (Real.log (h.norm u) - fsLog h u (h.pointOf y)) ∧ 0 ≤ Real.log (h.norm u) - fsLog h u (h.pointOf y)` using `by filter_upwards [compl_mem_ae_iff.mpr hZ, h0'] with y hy1 hy2`. Conclude with `logGap_eq_ofReal_of_ne h u hy2 hy1`. Establish `hFint : Integrable (fun y => Real.log (h.norm u) - fsLog h u (h.pointOf y)) (ν.restrict (coneBall h W))` using `(integrable_const _).sub hint`. Establish `hlin : ∫⁻ y in coneBall h W, logGap h u y ∂ν = ENNReal.ofReal (∫ y in coneBall h W, (Real.log (h.norm u) - fsLog h u (h.pointOf y)) ∂ν)`.
+
+Rewrite using `[ofReal_integral_eq_lintegral_ofReal hFint (hgood.mono fun y hy => hy.2)]`. Conclude with `lintegral_congr_ae (hgood.mono fun y hy => hy.1)`. Establish `hI : ∫ y in coneBall h W, (Real.log (h.norm u) - fsLog h u (h.pointOf y)) ∂ν = Real.log (h.norm u) * (ν (coneBall h W)).toReal - ∫ y in coneBall h W, fsLog h u (h.pointOf y) ∂ν`. Rewrite using `[integral_sub (integrable_const _) hint, setIntegral_const, measureReal_def, smul_eq_mul, mul_comm]`. Use `⟨by rw [hlin]; exact ENNReal.ofReal_lt_top, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hlin, ENNReal.toReal_ofReal (integral_nonneg_of_ae (hgood.mono fun y hy => hy.2)), hI]`.
+-/
 theorem coneBall_logGap_integral (n e : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
     (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ) (u : Fin n → ℂ)
     (hW : IsProjPrime W) (hf : IsChowForm W (e + 1) f) (hu : linForm u ∉ W) :
@@ -64,6 +80,9 @@ theorem coneBall_logGap_integral (n e : ℕ) (h : HermNorm n) (W : Ideal (MvPoly
 
 end ModelDimension.ConeBallLogGap
 
+/- English proof (translation)
+Introduce `n e h W f u hW hf hu` and use `ModelDimension.ConeBallLogGap.coneBall_logGap_integral n e h W f u hW hf hu`.
+-/
 theorem ModelDimension.integral_coneBall_log_gap_eq : ∀ (n e : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
   (f : MvPolynomial (Fin (e + 1) × Fin n) ℂ) (u : Fin n → ℂ),
   IsProjPrime W → IsChowForm W (e + 1) f → linForm u ∉ W →

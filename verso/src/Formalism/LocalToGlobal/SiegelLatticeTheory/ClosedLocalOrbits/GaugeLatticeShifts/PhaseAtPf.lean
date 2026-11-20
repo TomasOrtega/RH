@@ -19,6 +19,13 @@ def NCong (x : X.B.I.Gf) : Prop :=
   (∀ a : Fin D.R.rS, (X.B.I.fmat x - 1) *ᵥ X.e0 a ∈ Mo X.B.I X.B.g (X.e0 '' {b | b.1 < a.1})) ∧
     (X.B.I.fmat x - 1) *ᵥ X.z0 ∈ Mo X.B.I X.B.g (Set.range X.e0)
 
+/- English proof (translation)
+Take `⟨hx1, hx2⟩` from `hnx`. Take `⟨hy1, hy2⟩` from `hny`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_id]`. Use `Submodule.add_mem _ ?_ (hx1 a)` and prove the remaining obligations.
+
+Apply `SE (hx := hx) (hc := hx1)` to reduce the goal to its premises. Conclude with `hy1 a`. Rewrite using `[mul_id]`. Use `Submodule.add_mem _ ?_ hx2` and prove the remaining obligations. Apply `SR (hx := hx) (hc := hx1)` to reduce the goal to its premises.
+
+Conclude with `hy2`.
+-/
 theorem ncong_mul {x y : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hnx : NCong X x) (hny : NCong X y) :
     NCong X (x * y) := by
   obtain ⟨hx1, hx2⟩ := hnx
@@ -33,6 +40,9 @@ theorem ncong_mul {x y : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (hnx : NCong X x) (hn
     apply SR (hx := hx) (hc := hx1)
     exact hy2
 
+/- English proof (translation)
+Establish `hmL : mL X.B.I X.B.g ≤ Qs X.B.I X.B.g w`. Apply `mL_Qs` to reduce the goal to its premises. Conclude with `hw`. Establish `hle : Mo X.B.I X.B.g S ≤ Qs X.B.I X.B.g w` using `sup_le (Submodule.span_le.mpr (fun s hs => hS s hs)) hmL`. Conclude with `fun v hv => hle hv`.
+-/
 theorem Z_pair_Mo {w : VA X.B.I} (hw : w ∈ X.B.I.Lf) {S : Set (VA X.B.I)}
     (hS : ∀ s ∈ S, ZMod' X.B.I X.B.g (hA X.B.I w s)) :
     ∀ v ∈ Mo X.B.I X.B.g S, ZMod' X.B.I X.B.g (hA X.B.I w v) := by
@@ -51,6 +61,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (TR : TypedRed X)
 
+/- English proof (translation)
+Establish `h` using `TR.res_ew v 1`. Rewrite `h` using `[map_one]`. Rewrite using `[← h]`. Use `congr 1`. Conclude with `Subtype.ext (by simp)`.
+-/
 theorem res_ew_one (v : TR.Pl) : TR.res v ⟨X.ew, X.ew_int⟩ = 1 := by
   have h := TR.res_ew v 1
   rw [map_one] at h
@@ -58,6 +71,15 @@ theorem res_ew_one (v : TR.Pl) : TR.res v ⟨X.ew, X.ew_int⟩ = 1 := by
   congr 1
   exact Subtype.ext (by simp)
 
+/- English proof (translation)
+Use `set y : ↥(IntAf X.B.I.F X.B.I.E) := if b then ⟨X.ew, X.ew_int⟩ else 0 with hy`. Establish `hyc : ((y : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)) = if b then X.ew else 0`. Rewrite using `[hy]`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hker : ∀ w, TR.res w (⟨c, hc⟩ - y) = 0`.
+
+Rewrite using `[TR.res_ker]`. Take `⟨t, ht, hct⟩` from `hZ`. Use `⟨X.ew * t, (IntAf X.B.I.F X.B.I.E).mul_mem X.ew_int ht, ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroupClass.coe_sub, hyc]`. Use `show X.ew * (c - (if b then X.ew else 0)) = _`.
+
+Rewrite using `[hct]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `hker v`. Rewrite `h` using `[map_sub, sub_eq_zero]`. Rewrite using `[h, hy]`.
+
+Use `split_ifs`. Conclude with `res_ew_one TR v`. Conclude with `map_zero _`.
+-/
 theorem res_of_Z_delta (v : TR.Pl) {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (hc : c ∈ IntAf X.B.I.F X.B.I.E) (b : Prop)
     [Decidable b] (hZ : ZMod' X.B.I X.B.g (c - if b then X.ew else 0)) :
     TR.res v ⟨c, hc⟩ = if b then 1 else 0 := by
@@ -81,11 +103,29 @@ theorem res_of_Z_delta (v : TR.Pl) {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (hc : c
   · exact res_ew_one TR v
   · exact map_zero _
 
+/- English proof (translation)
+Use `conv_lhs => rw [X.bwd_w j]`. Rewrite using `[hA_smul_left, sigA_sigA]`.
+-/
 theorem bwc_ew (x : X.B.I.Gf) (j i : Fin D.R.k) :
     hA X.B.I (X.bwd j) (X.B.I.fmat x *ᵥ X.bw i) = X.ew * hA X.B.I (X.bwd j) (X.B.I.fmat x *ᵥ X.bw i) := by
   conv_lhs => rw [X.bwd_w j]
   rw [hA_smul_left, sigA_sigA]
 
+/- English proof (translation)
+Take `⟨_, _, _, hc3⟩` from `hk`. Take `⟨_, _, hbe, hbb⟩` from `Formalism.L2.SG.Pf.reference_frame_congruences (X := X)`. Introduce `i j hji`. Establish `hZ : ZMod' X.B.I X.B.g (hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw j) - if i = j then X.ew else 0)`. Establish `e : X.B.I.fmat x *ᵥ X.bw j = X.bw j + (X.B.I.fmat x - 1) *ᵥ X.bw j`.
+
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hA_add_right]`. Establish `h1` using `X.bw_dual i j`. Establish `hsub : Set.range X.e0 ∪ X.bw '' {l | l.1 < j.1} ⊆ Set.range X.e0 ∪ X.bw '' {l | l.1 < i.1}` using `Set.union_subset_union_right _ (Set.image_mono (fun l (hl : l.1 < j.1) => lt_of_lt_of_le hl (Fin.le_iff_val_le_val.mp hji)))`.
+
+Establish `hmono : Mo X.B.I X.B.g (Set.range X.e0 ∪ X.bw '' {l | l.1 < j.1}) ≤ Mo X.B.I X.B.g (Set.range X.e0 ∪ X.bw '' {l | l.1 < i.1})`. Apply `Mo_mono` to reduce the goal to its premises. Conclude with `hsub`. Establish `hle : Mo X.B.I X.B.g (Set.range X.e0 ∪ X.bw '' {l | l.1 < i.1}) ≤ Qs X.B.I X.B.g (X.bwd i)`. Apply the tactic sequence `apply Mb_Q <;> first | exact fun l => (X.vectorsInLattice.2.2 l).2 | exact hbe | exact hbb`.
+
+Establish `h2 : ZMod' X.B.I X.B.g (hA X.B.I (X.bwd i) ((X.B.I.fmat x - 1) *ᵥ X.bw j))` using `hle (hmono (hc3 j))`. Establish `h3` using `Z_add X.B.I X.B.g h1 h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨t, ht, hct⟩` from `hZ`.
+
+Establish `hint : hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw j) ∈ IntAf X.B.I.F X.B.I.E`. Establish `e : hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw j) = (if i = j then X.ew else 0) + (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * t`. Rewrite using `[← hct]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Use `add_mem ?_ (mul_mem (natCast_mem _ _) ht)` and prove the remaining obligations. Use `split_ifs`. Conclude with `X.ew_int`. Conclude with `zero_mem _`. Use `show resT TR v (hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw j)) = _`.
+
+Unfold `resT`. Rewrite using `[dif_pos hint]`. Conclude with `res_of_Z_delta TR v hint (i = j) ⟨t, ht, hct⟩`.
+-/
 private theorem leviM_apply_of_le_of_mem_K2 {x : X.B.I.Gf} (hk : x ∈ X.K2) (v : TR.Pl) :
     ∀ i j : Fin D.R.k, j ≤ i → leviM TR x v i j = if i = j then 1 else 0 := by
   obtain ⟨_, _, _, hc3⟩ := hk
@@ -128,6 +168,13 @@ private theorem leviM_apply_of_le_of_mem_K2 {x : X.B.I.Gf} (hk : x ∈ X.K2) (v 
   rw [dif_pos hint]
   exact res_of_Z_delta TR v hint (i = j) ⟨t, ht, hct⟩
 
+/- English proof (translation)
+Establish `hent` using `leviM_apply_of_le_of_mem_K2 TR hk v`. Establish `hup : (leviM TR x v).BlockTriangular id` using `fun i j hij => by`. Rewrite using `[hent i j hij.le, if_neg (ne_of_gt (show j < i from hij))]`. Establish `hdet : (leviM TR x v).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular hup]`.
+
+Conclude with `Finset.prod_eq_one (fun i _ => by rw [hent i i le_rfl, if_pos rfl])`. Establish `hunit : IsUnit (leviM TR x v).det`. Rewrite using `[hdet]`. Conclude with `isUnit_one`. Simplify using `only [levi, dif_pos hunit]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem coe_levi_eq_leviM_of_mem_K2 {x : X.B.I.Gf} (hk : x ∈ X.K2) (v : TR.Pl) :
     ((levi TR x v : GL (Fin D.R.k) (TR.Fq v)) : Matrix (Fin D.R.k) (Fin D.R.k) (TR.Fq v)) =
       leviM TR x v := by
@@ -143,6 +190,9 @@ private theorem coe_levi_eq_leviM_of_mem_K2 {x : X.B.I.Gf} (hk : x ∈ X.K2) (v 
   simp only [levi, dif_pos hunit]
   rfl
 
+/- English proof (translation)
+Establish `hent` using `leviM_apply_of_le_of_mem_K2 TR hk v`. Establish `hlevi` using `coe_levi_eq_leviM_of_mem_K2 TR hk v`. Use `⟨fun i => ?_, fun i j hji => ?_⟩` and prove the remaining obligations. Rewrite using `[hlevi, hent i i le_rfl, if_pos rfl]`. Rewrite using `[hlevi, hent i j hji.le, if_neg (ne_of_gt hji)]`.
+-/
 theorem unitriangular_reduction_of_mem_level {x : X.B.I.Gf} (hx : Good X x) (hk : x ∈ X.K2) (v : TR.Pl) :
     Formalism.L2.SG.GGMirabolic.IsUni D.R.k (levi TR x v) := by
   have hent := leviM_apply_of_le_of_mem_K2 TR hk v
@@ -151,6 +201,39 @@ theorem unitriangular_reduction_of_mem_level {x : X.B.I.Gf} (hx : Good X x) (hk 
   · rw [hlevi, hent i i le_rfl, if_pos rfl]
   · rw [hlevi, hent i j hji.le, if_neg (ne_of_gt hji)]
 
+/- English proof (translation)
+Take `⟨hE0, hF0, hZ0, hB, hBd⟩` from `frame_Lf X`. Use `⟨hx.1.1, hn.1, hn.2, fun i => ?_⟩` and prove the remaining obligations. Use `set w := X.B.I.fmat x *ᵥ X.bw i with hwdef`. Establish `hwL : w ∈ X.B.I.Lf` using `K_mv X.B.I hx.1.1 (hB i)`. Establish `hwM` using `hx.1.2.2 i`.
+
+Establish `hd` using `dual_coords X hwL`. Establish `hZe : ∀ a, ZMod' X.B.I X.B.g (hA X.B.I (X.e0 a) w)` using `fun a => Z_pair_Mo X (hE0 a) (by`. Introduce and unpack `s (⟨b, rfl⟩ | ⟨l, rfl⟩)`. Conclude with `(X.gramIntegral a b).1`. Conclude with `((X.weightVectorsIntegral l).2.2 a).1) _ hwM`.
+
+Establish `hZz : ZMod' X.B.I X.B.g (hA X.B.I X.z0 w)` using `Z_pair_Mo X hZ0 (by`. Introduce and unpack `s (⟨b, rfl⟩ | ⟨l, rfl⟩)`. Rewrite using `[hA_symm]`. Conclude with `Z_sig X.B.I X.B.g ((X.formsAtZero).2 b).1`. Conclude with `(X.weightVectorsIntegral l).1) _ hwM`.
+
+Establish `hbw0 : ∀ j, hA X.B.I (X.bw j) w = 0` using `fun j => by`. Rewrite using `[hwdef, X.bw_w j, X.bw_w i, Matrix.mulVec_smul, hA_smul_left, hA_smul_right]`. Use `X.ew_orth` as an intermediate fact. Take the linear combination `(hA X.B.I (X.bw j) (X.B.I.fmat x *ᵥ X.bw i)) * this`. Establish `hcoef : ∀ j : Fin D.R.k, i.1 ≤ j.1 → ZMod' X.B.I X.B.g (hA X.B.I (X.bwd j) w - if j = i then X.ew else 0)`.
+
+Introduce `j hij`. Establish `hI` using `hA_int X.B.I (hBd j) hwL`. Establish `hIt : ((if j = i then 1 else 0 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)) ∈ IntAf X.B.I.F X.B.I.E` using `by split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Establish `hres : ∀ v, TR.res v ⟨_, sub_mem hI hIt⟩ = 0`. Introduce `v`. Establish `hu'` using `hu v`. Establish `hent : leviM TR x v j i = if j = i then 1 else 0`. Rewrite using `[← levi_coe TR hx]`.
+
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `hu'.1 j`. Rewrite using `[if_neg h]`.
+
+Conclude with `hu'.2 j i (lt_of_le_of_ne (Fin.le_def.2 hij) (fun e => h e.symm))`. Establish `e : (⟨_, sub_mem hI hIt⟩ : IntAf X.B.I.F X.B.I.E) = ⟨_, hI⟩ - ⟨_, hIt⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[e, map_sub]`.
+
+Establish `h1 : TR.res v ⟨_, hI⟩ = leviM TR x v j i` using `by show _ = resT TR v (hA X.B.I (X.bwd j) (X.B.I.fmat x *ᵥ X.bw i))`. Rewrite using `[resT_of_mem TR v hI]`. Rewrite using `[h1, hent]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Establish `: (⟨_, hIt⟩ : IntAf X.B.I.F X.B.I.E) = 1` using `by apply Subtype.ext; simp`. Rewrite using `[if_pos rfl, this, map_one, sub_self]`. Establish `: (⟨_, hIt⟩ : IntAf X.B.I.F X.B.I.E) = 0` using `by apply Subtype.ext; simp [h]`. Rewrite using `[if_neg h, this, map_zero, sub_self]`. Establish `hZ` using `(TR.res_ker ⟨_, sub_mem hI hIt⟩).1 hres`.
+
+Establish `e : X.ew * (hA X.B.I (X.bwd j) w - if j = i then 1 else 0) = hA X.B.I (X.bwd j) w - if j = i then X.ew else 0`. Rewrite using `[mul_sub, ← bwc_ew x j i]`. Apply the tactic sequence `split_ifs <;> ring`. Simplify `hZ` using `[e]`. Establish `e1 : (X.B.I.fmat x - 1) *ᵥ X.bw i = (w - repr0 X w) + ((∑ a, hA X.B.I (X.f0 a) w • X.e0 a) + (∑ a, hA X.B.I (X.e0 a) w • X.f0 a) - hA X.B.I X.z0 w • X.z0 + (∑ j, (hA X.B.I (X.bwd j) w - if j = i then X.ew else 0) • X.bw j) + (∑ j, hA X.B.I (X.bw j) w • X.bwd j))`.
+
+Establish `hbi : (∑ j, (if j = i then X.ew else 0) • X.bw j) = X.bw i`. Simplify using `only [ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `(X.bw_w i).symm`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, ← hwdef]`. Unfold `repr0`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib, hbi]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Establish `spn : ∀ (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (s : VA X.B.I), c ∈ IntAf X.B.I.F X.B.I.E → s ∈ Set.range X.e0 ∪ X.bw '' {j | j.1 < i.1} → c • s ∈ Mo X.B.I X.B.g (Set.range X.e0 ∪ X.bw '' {j | j.1 < i.1})` using `fun c s hc hs => by`. Establish `: c • s = (⟨c, hc⟩ : IntAf X.B.I.F X.B.I.E) • s` using `rfl`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (sub_Mo X.B.I hs)`. Use `add_mem (mL_Mo X.B.I hd) (add_mem (add_mem (sub_mem (add_mem ?_ ?_) ?_) ?_) ?_)` and prove the remaining obligations. Conclude with `sum_mem fun a _ => spn _ _ (hA_int X.B.I (hF0 a) hwL) (Or.inl ⟨a, rfl⟩)`. Conclude with `sum_mem fun a _ => mL_Mo X.B.I (Z_smul_mL X (hZe a) (hF0 a))`.
+
+Conclude with `mL_Mo X.B.I (Z_smul_mL X hZz hZ0)`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j.1 < i.1`. Establish `hne : j ≠ i` using `fun h => by subst h; exact lt_irrefl _ hj`. Rewrite using `[if_neg hne, sub_zero]`.
+
+Conclude with `spn _ _ (hA_int X.B.I (hBd j) hwL) (Or.inr ⟨j, hj, rfl⟩)`. Conclude with `mL_Mo X.B.I (Z_smul_mL X (hcoef j (not_lt.1 hj)) (hB j))`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hbw0, zero_smul]`. Conclude with `zero_mem _`.
+-/
 theorem mem_level_of_unitriangular {x : X.B.I.Gf} (hx : Good X x) (hn : NCong X x)
     (hu : ∀ v, Formalism.L2.SG.GGMirabolic.IsUni D.R.k (levi TR x v)) : x ∈ X.K2 := by
   obtain ⟨hE0, hF0, hZ0, hB, hBd⟩ := frame_Lf X
@@ -248,6 +331,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (TR : TypedRed X)
 
+/- English proof (translation)
+Establish `hK : x ∈ X.B.I.Kset` using `hk.1`. Establish `hint : ∀ i j : Fin D.R.k, hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw j) ∈ IntAf X.B.I.F X.B.I.E` using `fun i j => hA_int X.B.I (X.vectorsInLattice.2.2 i).2 (K_mv X.B.I hK (X.vectorsInLattice.2.2 j).1)`. Use `set C : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F := ∑ i : Fin D.R.k, if h : i.1 + 1 < D.R.k then hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw ⟨i.1 + 1, h⟩) else 0 with hC`. Establish `hCint : C ∈ IntAf X.B.I.F X.B.I.E`. Use `sum_mem (fun i _ => ?_)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `hint _ _`. Conclude with `zero_mem _`. Establish `hCew : C = X.ew * C`. Rewrite using `[hC, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `bwc_ew x i ⟨i.1 + 1, h⟩`. Simplify using the standard rewrite rules. Establish `hsum : ∀ v, TR.res v ⟨C, hCint⟩ = ∑ i : Fin D.R.k, (if h : i.1 + 1 < D.R.k then TR.res v ⟨_, hint i ⟨i.1 + 1, h⟩⟩ else 0)`.
+
+Introduce `v`. Establish `e : (⟨C, hCint⟩ : ↥(IntAf X.B.I.F X.B.I.E)) = ∑ i : Fin D.R.k, (if h : i.1 + 1 < D.R.k then (⟨_, hint i ⟨i.1 + 1, h⟩⟩ : ↥(IntAf X.B.I.F X.B.I.E)) else 0)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Use `show C = _`.
+
+Rewrite using `[hC]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hinner : ∀ (v : TR.Pl) (M : Matrix (Fin D.R.k) (Fin D.R.k) (TR.Fq v)) (i : Fin D.R.k), (∑ j : Fin D.R.k, if (j : ℕ) = (i : ℕ) + 1 then M i j else 0) = if h : i.1 + 1 < D.R.k then M i ⟨i.1 + 1, h⟩ else 0`. Introduce `v M i`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨i.1 + 1, h⟩]`.
+
+Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `hj'`. Conclude with `hj (Fin.ext hj')`.
+
+Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hj'`. Use `j.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hfac : ∀ v, Formalism.L2.SG.GGMirabolic.psiNat (TR.psi0 v) (levi TR x v) = TR.psi0 v (TR.res v ⟨C, hCint⟩)`. Introduce `v`. Unfold `Formalism.L2.SG.GGMirabolic.psiNat`. Rewrite using `[if_pos (unitriangular_reduction_of_mem_level TR hx hk v)]`.
+
+Unfold `Formalism.L2.SG.GGMirabolic.psiU`. Rewrite using `[coe_levi_eq_leviM_of_mem_K2 TR hk v, hsum v]`. Use `congr 1`. Unfold `Formalism.L2.SG.GGMirabolic.superdiag`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hinner v]`. Use `split_ifs with h`. Use `show resT TR v (hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw ⟨i.1 + 1, h⟩)) = _`. Conclude with `resT_of_mem TR v (hint i ⟨i.1 + 1, h⟩)`. Both sides reduce to the same expression.
+
+Unfold `psiG`. Simplify using `only [hfac]`. Rewrite using `[TR.psi_eq ⟨C, hCint⟩ hCew]`. Both sides reduce to the same expression.
+-/
 theorem chiL_eq_psiG {x : X.B.I.Gf} (hx : Good X x) (hk : x ∈ X.K2) : chiL X x = psiG TR (levi TR x) := by
   have hK : x ∈ X.B.I.Kset := hk.1
   have hint : ∀ i j : Fin D.R.k, hA X.B.I (X.bwd i) (X.B.I.fmat x *ᵥ X.bw j) ∈ IntAf X.B.I.F X.B.I.E :=
@@ -333,6 +441,11 @@ def AdmN : Prop :=
   ∀ t : GTerm X u u' F0 F0' what₂ rows',
     NCong X (kOf X u u' (cs.h (cs.base t.lam) : X.B.I.Gf) (cs'.h (cs'.base t.lam') : X.B.I.Gf) t.pt)
 
+/- English proof (translation)
+Establish `s` using `colStab X w h h' hk`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `mL_Mo X.B.I (s.1 a)`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+
+Conclude with `mL_Mo X.B.I s.2`.
+-/
 theorem ncong_colDiff (w : D.what₂.Word) (h h' : Formalism.L2.SG.PoincareInHH.PoincareSetting.Hfin X w)
     (hk : ((h : X.B.I.Gf) * X.xu w)⁻¹ * ((h' : X.B.I.Gf) * X.xu w) ∈ X.B.I.Kset) :
     NCong X (((h : X.B.I.Gf) * X.xu w)⁻¹ * ((h' : X.B.I.Gf) * X.xu w)) := by
@@ -341,6 +454,13 @@ theorem ncong_colDiff (w : D.what₂.Word) (h h' : Formalism.L2.SG.PoincareInHH.
   · rw [Matrix.sub_mulVec, Matrix.one_mulVec]; exact mL_Mo X.B.I (s.1 a)
   · rw [Matrix.sub_mulVec, Matrix.one_mulVec]; exact mL_Mo X.B.I s.2
 
+/- English proof (translation)
+Distinguish the cases in `hk2 : k ∈ X.K2`. Rewrite using `[if_pos hk2]`. Conclude with `chiL_eq_psiG TR gk hk2`. Rewrite using `[if_neg hk2]`. Establish `hn : ¬ ∀ v, Formalism.L2.SG.GGMirabolic.IsUni D.R.k (levi TR k v)` using `fun hu => hk2 (mem_level_of_unitriangular TR gk nk hu)`.
+
+Use `push_neg at hn`. Take `⟨v, hv⟩` from `hn`. Unfold `psiG`. Use `(Finset.prod_eq_zero (Finset.mem_univ v) ?_).symm` and prove the remaining obligations. Unfold `Formalism.L2.SG.GGMirabolic.psiNat`.
+
+Rewrite using `[if_neg hv]`.
+-/
 private theorem ite_mem_K2_chiL_eq_psiG_levi {k : X.B.I.Gf} (gk : Good X k) (nk : NCong X k) :
     (if k ∈ X.K2 then chiL X k else 0) = psiG TR (levi TR k) := by
   by_cases hk2 : k ∈ X.K2
@@ -355,6 +475,17 @@ private theorem ite_mem_K2_chiL_eq_psiG_levi {k : X.B.I.Gf} (gk : Good X k) (nk 
     unfold Formalism.L2.SG.GGMirabolic.psiNat
     rw [if_neg hv]
 
+/- English proof (translation)
+Unfold `PhaseAt`. Introduce `t ρ ρ' h1 h2`. Establish `hK : Good X (kOf X u u' (cs.h (cs.base t.lam) : X.B.I.Gf) (cs'.h (cs'.base t.lam') : X.B.I.Gf) t.pt)` using `hA t`. Establish `hNt : NCong X (kOf X u u' (cs.h (cs.base t.lam) : X.B.I.Gf) (cs'.h (cs'.base t.lam') : X.B.I.Gf) t.pt)` using `hN t`. Unfold `kOf at hK hNt ⊢`.
+
+Establish `lb : cs.lamOf (cs.base t.lam) = cs.lamOf ρ`. Rewrite using `[h1]`. Conclude with `cs.base_lam _ (h1 ▸ cs.lam_mem ρ)`. Establish `lb' : cs'.lamOf (cs'.base t.lam') = cs'.lamOf ρ'`. Rewrite using `[h2]`.
+
+Conclude with `cs'.base_lam _ (h2 ▸ cs'.lam_mem ρ')`. Establish `gA` using `colGood X u _ _ (hL _ _ lb) (hL _ _ lb.symm)`. Establish `gB` using `colGood X u' _ _ (hL' _ _ lb') (hL' _ _ lb'.symm)`. Establish `gAi : Good X (((cs.h ρ : X.B.I.Gf) * X.xu u)⁻¹ * ((cs.h (cs.base t.lam) : X.B.I.Gf) * X.xu u))`. Establish `g` using `good_inv _ gA`.
+
+Rewrite `g` using `[_root_.mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Establish `nAi` using `ncong_colDiff u (cs.h ρ) (cs.h (cs.base t.lam)) (hL _ _ lb.symm)`. Establish `nB` using `ncong_colDiff u' (cs'.h (cs'.base t.lam')) (cs'.h ρ') (hL' _ _ lb')`. Establish `e : ((cs.h ρ : X.B.I.Gf) * X.xu u)⁻¹ * t.pt.2 * ((cs'.h ρ' : X.B.I.Gf) * X.xu u') = (((cs.h ρ : X.B.I.Gf) * X.xu u)⁻¹ * ((cs.h (cs.base t.lam) : X.B.I.Gf) * X.xu u)) * (((cs.h (cs.base t.lam) : X.B.I.Gf) * X.xu u)⁻¹ * t.pt.2 * ((cs'.h (cs'.base t.lam') : X.B.I.Gf) * X.xu u')) * ( …` using `by group`. Establish `gk` using `good_mul _ (good_mul _ gAi hK) gB`.
+
+Establish `nk` using `ncong_mul X (good_mul _ gAi hK).1.1 (ncong_mul X gAi.1.1 nAi hNt) nB`. Rewrite using `[e]`. Conclude with `ite_mem_K2_chiL_eq_psiG_levi TR gk nk`.
+-/
 theorem phaseAt_of (hL : ColLatK cs) (hL' : ColLatK cs') (hA : AdmPar F0 F0' cs cs') (hN : AdmN F0 F0' cs cs') :
     PhaseAt TR F0 F0' cs cs' := by
   unfold PhaseAt

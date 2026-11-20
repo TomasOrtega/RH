@@ -11,12 +11,32 @@ open GlobalTheory
 
 namespace GlobalTheory.AmpleSeparateOverRing
 
+/- English proof (translation)
+Establish `: IsProper (PSpace.str R n)` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R n`. Rewrite using `[specZIsTerminal.hom_ext (specZIsTerminal.from (PSpace R n)) (PSpace.str R n ≫ specZIsTerminal.from _)]`. Use `infer_instance`.
+-/
 theorem isSeparated_toSpecZ (R : Type) [CommRing R] (n : ℕ) :
     IsSeparated (specZIsTerminal.from (PSpace R n)) := by
   have : IsProper (PSpace.str R n) := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R n
   rw [specZIsTerminal.hom_ext (specZIsTerminal.from (PSpace R n)) (PSpace.str R n ≫ specZIsTerminal.from _)]
   infer_instance
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Use `⟨Sp R, f, 𝟙 _, LB.triv _, isAmpleLB_of_isAffine (LB.isLB_triv _), inferInstance, Category.comp_id _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_empty]`. Conclude with `map_zero (CechPic.pull f)`.
+
+Introduce `K _ _ a a' h`. Conclude with `⟨h, by simp⟩`. Consider the case `insert i T hi ih`. Take `⟨Q, Ψ, r, N, hN, hr, hΨ, hc, hinj⟩` from `ih`. Establish `hO1` using `ProjSpace.O1_isLB R (M i)`.
+
+Establish `hO : IsAmpleLB (lbPow (ProjSpace.O1 R (M i)) (w i))` using `(isAmpleLB_pow_iff hO1 (hw i)).2 (isAmple_projective_O_one R (M i))`. Establish `: IsSeparated (specZIsTerminal.from (PSpace R (M i)))` using `isSeparated_toSpecZ R (M i)`. Establish `hNp` using `LB.isLB_pull hN.isLB (pullback.fst (specZIsTerminal.from Q) (specZIsTerminal.from (PSpace R (M i))))`. Establish `hOq` using `LB.isLB_pull hO.isLB (pullback.snd (specZIsTerminal.from Q) (specZIsTerminal.from (PSpace R (M i))))`. Establish `hN'` using `CechPic.isLB_tens hNp hOq`.
+
+Establish `hA : IsAmpleLB (CechPic.tens (N.pull (pullback.fst (specZIsTerminal.from Q) (specZIsTerminal.from (PSpace R (M i))))) ((lbPow (ProjSpace.O1 R (M i)) (w i)).pull (pullback.snd (specZIsTerminal.from Q) (specZIsTerminal.from (PSpace R (M i))))))`. Use `hN.box hO hN' (IsPullback.of_hasPullback _ _) ?_` and prove the remaining obligations. Use `(CechPic.cls_eq_zero_iff (LB.isLB_div (LB.isLB_div hN' hNp) hOq)).1 ?_` and prove the remaining obligations. Rewrite using `[CechPic.cls_div (LB.isLB_div hN' hNp) hOq, CechPic.cls_div hN' hNp, CechPic.cls_tens hNp hOq]`. Normalize the expressions using the abelian group laws.
+
+Use `⟨_, pullback.lift Ψ (ProjSpace.toProj f (t i) (ht i)) (specZIsTerminal.hom_ext _ _), pullback.fst _ _ ≫ r, _, hA, inferInstance, by rw [← Category.assoc, pullback.lift_fst, hΨ], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hi, ← hc]`. Establish `e` using `(CechPic.cls_eq_iff (LB.isLB_pull hO1 (ProjSpace.toProj f (t i) (ht i))) (hL i)).2 (ProjSpace.lbIso_pullback_O1_toProj f (t i) (ht i))`. Rewrite using `[← e, CechPic.cls_pull hN' _, CechPic.cls_tens hNp hOq, map_add, CechPic.cls_pull hN.isLB, CechPic.cls_pull hO.isLB, ← CechPic.pull_comp, ← CechPic.pull_comp, pullback.lift_fst, pullback.lift_snd, CechPic.cls_lbPow hO1, map_nsmul, CechPic.cls_pull hN.isLB, CechPic.cls_pull hO1, a …`. Introduce `K _ _ a a' h`.
+
+Establish `h1 : a ≫ Ψ = a' ≫ Ψ`. Use `congrArg (· ≫ pullback.fst (specZIsTerminal.from Q) (specZIsTerminal.from (PSpace R (M i)))) h` as an intermediate fact. Simplify using `only [Category.assoc] at this`. Rewrite `this` using `[pullback.lift_fst]`. Then use the resulting hypothesis. Establish `h2 : a ≫ ProjSpace.toProj f (t i) (ht i) = a' ≫ ProjSpace.toProj f (t i) (ht i)`.
+
+Use `congrArg (· ≫ pullback.snd (specZIsTerminal.from Q) (specZIsTerminal.from (PSpace R (M i)))) h` as an intermediate fact. Simplify using `only [Category.assoc] at this`. Rewrite `this` using `[pullback.lift_snd]`. Then use the resulting hypothesis. Take `⟨e1, e2⟩` from `hinj K a a' h1`. Use `⟨e1, fun j hj => ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `h2`. Conclude with `e2 j hj`.
+-/
 theorem exists_ample_model (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R)
     (ι : Type) (L : ι → LB X) (hL : ∀ i, (L i).IsLB) (M : ι → ℕ)
     (t : ∀ i, Fin (M i + 1) → (L i).Sec)
@@ -78,6 +98,15 @@ theorem exists_ample_model (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ S
       · exact h2
       · exact e2 j hj
 
+/- English proof (translation)
+Introduce `R _ X f hf ι _ L hL M t ht hsep w hw N hN hcls`. Take `⟨Q, Ψ, r, P, hP, hr, hΨ, hc, hinj⟩` from `exists_ample_model R X f ι L hL M t ht w hw Finset.univ`. Establish `: LocallyOfFiniteType (Ψ ≫ r)` using `by rw [hΨ]; infer_instance`. Establish `: LocallyOfFiniteType Ψ` using `locallyOfFiniteType_of_comp Ψ r`. Establish `: IsProper (Ψ ≫ r)` using `by rw [hΨ]; infer_instance`.
+
+Establish `: IsProper Ψ` using `IsProper.of_comp Ψ r`. Establish `: LocallyQuasiFinite Ψ` using `GlobalTheory.locallyQuasiFinite_of_finite_geometric_points Ψ fun K _ _ y => by`. Establish `: Subsingleton {x : Spec (.of K) ⟶ X // x ≫ Ψ = y}` using `⟨fun x x' => Subtype.ext (by`. Take `⟨e1, e2⟩` from `hinj K x.1 x'.1 (x.2.trans x'.2.symm)`. Conclude with `hsep K x.1 x'.1 e1 fun i => e2 i (Finset.mem_univ i))⟩`.
+
+Use `infer_instance`. Use `IsFinite.of_isProper_of_locallyQuasiFinite Ψ` as an intermediate fact. Establish `hcls' : CechPic.cls (P.pull Ψ) (LB.isLB_pull hP.isLB Ψ) = CechPic.cls N hN`. Rewrite using `[hc, hcls]`. Conclude with `Finset.sum_congr rfl fun i _ => natCast_zsmul _ _`.
+
+Conclude with `(isAmpleLB_congr (LB.isLB_pull hP.isLB Ψ) hN ((CechPic.cls_eq_iff _ _).1 hcls')).1 (hP.pull_of_isAffineHom Ψ)`.
+-/
 theorem isAmpleLB_of_separating : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R), IsProper f →
     ∀ (ι : Type) [Fintype ι] (L : ι → LB X) (hL : ∀ i, (L i).IsLB) (M : ι → ℕ)
     (t : ∀ i, Fin (M i + 1) → (L i).Sec) (ht : ∀ i, ⨆ m, nonzeroLocus (t i m) = ⊤),

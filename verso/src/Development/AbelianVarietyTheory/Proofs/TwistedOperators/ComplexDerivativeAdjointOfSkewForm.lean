@@ -12,12 +12,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Use `deriv_comp_neg (fun t : ℝ => φ (g * oneP θ V τ X t)) 0` as an intermediate fact. Simplify `this` using `only [Rder, oneP, smul_neg, neg_smul, neg_zero, Pi.neg_apply]`.
+-/
 theorem Rder_neg_dir (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : GA D V → ℂ) :
     Rder θ V τ (-X) φ = -Rder θ V τ X φ := by
   funext g
   have := deriv_comp_neg (fun t : ℝ => φ (g * oneP θ V τ X t)) 0
   simpa only [Rder, oneP, smul_neg, neg_smul, neg_zero, Pi.neg_apply] using this
 
+/- English proof (translation)
+Establish `hu` using `GlobalTheory.SmoothAutCheck.gramAt_unit V τ`. Establish `hH` using `GlobalTheory.SmoothAutCheck.gramAt_herm V τ`. Unfold `conjAt`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hH, ← mul_assoc, nonsing_inv_mul _ hu, one_mul, mul_assoc, nonsing_inv_mul _ hu, mul_one]`.
+-/
 theorem conjAt_adjoint (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     conjAt V τ ((gramAt D V τ)⁻¹ * Zᴴ * gramAt D V τ) = -Z := by
   have hu := GlobalTheory.SmoothAutCheck.gramAt_unit V τ
@@ -26,6 +32,9 @@ theorem conjAt_adjoint (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank
   rw [conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hH,
     ← mul_assoc, nonsing_inv_mul _ hu, one_mul, mul_assoc, nonsing_inv_mul _ hu, mul_one]
 
+/- English proof (translation)
+Unfold `RderC`. Rewrite using `[conjAt_adjoint]`. Establish `hW : (gramAt D V τ)⁻¹ * Zᴴ * gramAt D V τ = -conjAt V τ Z` using `by simp [conjAt]`. Rewrite using `[hW, ← Rder_neg_dir, ← smul_neg, neg_add, add_comm (-Z), neg_sub_neg]`.
+-/
 theorem RderC_adjoint_eq (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : GA D V → ℂ) :
     RderC θ V τ ((gramAt D V τ)⁻¹ * Zᴴ * gramAt D V τ) φ =
       -Rder θ V τ ((1 / 2 : ℂ) • (Z + conjAt V τ Z)) φ +
@@ -35,6 +44,11 @@ theorem RderC_adjoint_eq (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.ra
   have hW : (gramAt D V τ)⁻¹ * Zᴴ * gramAt D V τ = -conjAt V τ Z := by simp [conjAt]
   rw [hW, ← Rder_neg_dir, ← smul_neg, neg_add, add_comm (-Z), neg_sub_neg]
 
+/- English proof (translation)
+Introduce `D θ V τ A b hb Z x hx y hy`. Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z`. Rewrite using `[RderC_adjoint_eq]`. Unfold `RderC`. Rewrite using `[map_add, map_smul, hb _ h1 x hx y hy, hb _ h2 x hx y hy, map_add, map_neg, map_smulₛₗ]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem rderC_adjoint : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D) (τ : D.what₂.Tau)
     (A : Submodule ℂ (GA D V → ℂ)) (b : (GA D V → ℂ) →ₗ⋆[ℂ] (GA D V → ℂ) →ₗ[ℂ] ℂ),
     (∀ X ∈ lieAt V τ, ∀ x ∈ A, ∀ y ∈ A, b x (Rder θ V τ X y) = -b (Rder θ V τ X x) y) →

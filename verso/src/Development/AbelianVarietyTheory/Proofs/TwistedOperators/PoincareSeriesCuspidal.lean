@@ -19,6 +19,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.PoinCusp
 
+/- English proof (translation)
+Introduce `hP D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c hT a`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Use `haveI := i1`. Use `haveI := i2`.
+
+Use `haveI := i3`. Use `haveI := i4`. Use `haveI := i5`. Use `haveI := i7`. Use `haveI : LocallyCompactSpace (NI V C) := (GlobalTheory.CuspDecay.Model.isClosed_NI V hC).locallyCompactSpace`.
+
+Use `haveI : SecondCountableTopology (NI V C) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI := hμ`. Use `set K := congLev D.sp.cm V.gram Λ 𝔪 with hK`. Establish `hm : Measurable (coef θ M K v fun τ => (a τ : M.H τ))` using `GlobalTheory.T.measurable_level_indicator_coefficient_test_function D θ hθ V S M Λ 𝔪 hΛ h𝔪 v _`. Use `set f : GA D V → ℂ := fun y => coef θ M K v (fun τ => (a τ : M.H τ)) (c * y * g) with hf`.
+
+Establish `hfm : ∀ γ : GA D V, Measurable fun h : NI V C => f (γ * (NI V C).subtype h)` using `fun γ => hm.comp ((continuous_const.mul (continuous_const.mul continuous_subtype_val)).mul continuous_const).measurable`. Take `⟨-, Kc, hKc, hcov⟩` from `GlobalTheory.Mem.UnipCocompact.radicals_cocompact D V r C ⟨hC.2.1, hC.2.2⟩`. Establish `hcov' : ∀ h : NI V C, ∃ δ ∈ (GQ V).comap (NI V C).subtype, δ * h ∈ Kc` using `fun h => by`. Take `⟨γ, hγ, k, hk, rfl⟩` from `hcov h`. Conclude with `⟨γ⁻¹, Subgroup.inv_mem _ hγ, by simpa using hk⟩`.
+
+Take `⟨B, hB⟩` from `GlobalTheory.T.poincareSeries_partialSums_bounded_compact D θ hθ V S M Λ 𝔪 hΛ v hv hT c a ((fun h : NI V C => (h : GA D V) * g) '' Kc) (hKc.image (continuous_subtype_val.mul continuous_const))`. Establish `hpt : ∀ h ∈ Kc, ∑' γ : GQ V, ‖f (γ * (NI V C).subtype h) * 1‖ₑ ≤ ENNReal.ofReal B`. Introduce `h hh`. Rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations.
+
+Establish `e : ∀ γ : GQ V, f (↑γ * (NI V C).subtype h) * 1 = coef θ M K v (fun τ => (a τ : M.H τ)) (c * (γ : GA D V) * ((h : GA D V) * g))` using `fun γ => by`. Simplify using `only [hf, mul_one, Subgroup.coe_subtype, mul_assoc]`. Simplify using `only [e, ← ofReal_norm_eq_enorm]`. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun _ _ => norm_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal (hB _ ⟨h, hh, rfl⟩ s)`.
+
+Establish `hfin : (∑' q : GQ V ⧸ (NI V C).subtype.range.subgroupOf (GQ V), ∫⁻ h, ‖f ((q.out : GQ V) * (NI V C).subtype h) * 1‖ₑ ∂μ) ≠ ⊤`. Use `ne_top_of_le_ne_top ?_ (GlobalTheory.T.lintegral_unfolding_le_of_translate_cover (GA D V) (NI V C) μ (NI V C).subtype Subtype.val_injective (GQ V) Kc hcov' (fun y => ‖f y * 1‖ₑ) (fun γ => ((hfm γ).mul_const 1).enorm))` and prove the remaining obligations. Use `ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.ofReal_ne_top (r := B)) (hKc.measure_lt_top (μ := μ)).ne) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hunf` using `GlobalTheory.T.integrableOn_and_hasSum_tsum_subgroup (GA D V) (NI V C) μ (NI V C).subtype Subtype.val_injective (GQ V) 𝓕 h𝓕 f (fun _ => 1) hfm measurable_const (fun _ _ _ => rfl) hfin`.
+
+Establish `hzero : ∀ q : GQ V ⧸ (NI V C).subtype.range.subgroupOf (GQ V), ∫ h, f ((q.out : GQ V) * (NI V C).subtype h) * 1 ∂μ = 0`. Introduce `q`. Take `⟨τ⟩` from `hT`. Take `⟨P, Q, hPc, hQc, hcomm, hgen, htriv, hvan⟩` from `GlobalTheory.T.exists_closed_parabolic_subgroups hP D θ hθ V S M K v (fun τ => (a τ : M.H τ)) (fun τ => (hv τ).1) (fun τ => (a τ).2) τ r C hC`. Use `GlobalTheory.T.integral_haar_eq_zero_of_fibre_integrals_eq_zero_alt (NI V C) μ hμ P Q hPc hQc hcomm hgen htriv (fun n => coef θ M K v (fun τ => (a τ : M.H τ)) ((c * (q.out : GQ V)) * (n : GA D V) * g)) (fun ν hν q' hq' => hvan ν hν q' hq' _ g)` as an intermediate fact.
+
+Simplify `this` using `[hf, mul_assoc]`. Establish `hsum0 : HasSum (fun q : GQ V ⧸ (NI V C).subtype.range.subgroupOf (GQ V) => ∫ h, f ((q.out : GQ V) * (NI V C).subtype h) * 1 ∂μ) 0`. Simplify `(hasSum_zero : HasSum (fun _ : GQ V ⧸ (NI V C).subtype.range.subgroupOf (GQ V) => (0:ℂ)) 0)` using `only [hzero]`. Establish `h0` using `hunf.2.unique hsum0`. Rewrite using `[← h0]`.
+
+Use `integral_congr_ae (.of_forall fun n => ?_)` and prove the remaining obligations. Simplify using `only [poin, hf, mul_one, Subgroup.coe_subtype, mul_assoc]`.
+-/
 theorem poin_isCuspFun : GlobalTheory.Published.DiscreteSeriesCoefficientsCuspidal → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC V Λ → 𝔪 ≠ ⊥ → ∀ (v : ∀ τ, M.H τ), KDecay M v → ∀ c : GA D V, Nonempty D.what₂.Tau → ∀ a : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KVec M, IsCuspFun V (poin θ M (congLev D.sp.cm V.gram Λ 𝔪) v c fun τ => a τ) := by
   intro hP D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c hT a
   obtain ⟨i1, i2, i3, i4, i5, i6, i7⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V

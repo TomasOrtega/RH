@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory.LagrangeInterpolationExistence
 
+/- English proof (translation)
+Use `⟨insert y S, fun x => if x = y then (if y ∈ S then a y + b else b) else a x, fun c => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ S`. Rewrite using `[Finset.insert_eq_of_mem hy, ← Finset.add_sum_erase S _ hy, ← Finset.add_sum_erase S _ hy]`. Simplify using `only [if_pos rfl, hy, if_true, ite_true, smul_add]`. Rewrite using `[Finset.sum_congr rfl (fun x hx => by rw [if_neg (Finset.ne_of_mem_erase hx)])]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[Finset.sum_insert hy]`. Simplify using `only [if_neg hy, eq_self_iff_true, if_true, ite_true]`. Rewrite using `[Finset.sum_congr rfl (fun x hx => by rw [if_neg (fun (h : x = y) => hy (h ▸ hx))]), add_comm]`.
+-/
 theorem exists_sum_add {X M : Type} [AddCommGroup M] [Module ℂ M] (S : Finset X) (a : X → M)
     (y : X) (b : M) :
     ∃ (T : Finset X) (u : X → M), ∀ c : X → ℂ,
@@ -17,6 +22,19 @@ theorem exists_sum_add {X M : Type} [AddCommGroup M] [Module ℂ M] (S : Finset 
     simp only [if_neg hy, eq_self_iff_true, if_true, ite_true]
     rw [Finset.sum_congr rfl (fun x hx => by rw [if_neg (fun (h : x = y) => hy (h ▸ hx))]), add_comm]
 
+/- English proof (translation)
+Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => exact ⟨∅, 0, by simp⟩`. Consider the case `insert g F _ ih`. Take `⟨S, u, hu⟩` from `ih`. Use `set h : V := g - ∑ x ∈ S, (g : X → ℂ) x • u x with hh`.
+
+Distinguish the cases in `h0 : h = 0`. Use `⟨S, u, fun f hf => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hf with rfl | hf` into its components or cases. Conclude with `sub_eq_zero.mp h0`. Conclude with `hu f hf`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, (h : X → ℂ) y ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Apply `h0` to reduce the goal to its premises. Use extensionality with `y`. Assume the negation of the conclusion as `hy`.
+
+Conclude with `hc ⟨y, by simpa using hy⟩`. Take `⟨T, w, hw⟩` from `exists_sum_add S (fun x => u x - ((u x : X → ℂ) y / (h : X → ℂ) y) • h) y (((h : X → ℂ) y)⁻¹ • h)`. Establish `key : ∀ f : V, ∑ x ∈ T, (f : X → ℂ) x • w x = ∑ x ∈ S, (f : X → ℂ) x • u x + (((f - ∑ x ∈ S, (f : X → ℂ) x • u x : V) : X → ℂ) y / (h : X → ℂ) y) • h`. Introduce `f`. Rewrite using `[hw]`.
+
+Simplify using `only [smul_sub, Finset.sum_sub_distrib, smul_smul, ← Finset.sum_smul, Submodule.coe_sub, Submodule.coe_sum, Submodule.coe_smul, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, sub_div, sub_smul, Finset.sum_div, mul_div_assoc, div_eq_mul_inv, Finset.sum_mul, mul_assoc, …`. Normalize the expressions using the abelian group laws. Use `⟨T, w, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Break down `Finset.mem_insert.mp hf with rfl | hf` into its components or cases.
+
+Rewrite using `[← hh, div_self hy, one_smul, hh]`. Normalize the expressions using the abelian group laws. Rewrite using `[← hu f hf]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_interpolation {X : Type} (V : Submodule ℂ (X → ℂ)) (F : Finset V) :
     ∃ (S : Finset X) (u : X → V), ∀ f ∈ F, f = ∑ x ∈ S, (f : X → ℂ) x • u x := by
   classical

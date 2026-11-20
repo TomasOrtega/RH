@@ -13,6 +13,31 @@ open Classical
 
 namespace GlobalTheory.CdvrFiniteAlgebra
 
+/- English proof (translation)
+Introduce `V _ _ _ hV R₁ _ _ hfin hnt`. Take `⟨hdvr, hcomp, hchar⟩` from `(GlobalTheory.LN.cDvr_iff V).1 hV`. Set `K` to `FractionRing V`. Set `F` to `AlgebraicClosure K`. Establish `hchK : CharZero K` using `IsFractionRing.charZero_of_isFractionRing V`.
+
+Establish `hchF : CharZero F` using `charZero_of_injective_algebraMap (algebraMap K F).injective`. Take `⟨m, hm⟩` from `Ideal.exists_maximal R₁`. Use `letI : Field (R₁ ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Module.Finite K (R₁ ⧸ m) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ K m).toLinearMap (Ideal.Quotient.mkₐ_surjective K m)`. Use `haveI : Algebra.IsAlgebraic K (R₁ ⧸ m) := Algebra.IsAlgebraic.of_finite K (R₁ ⧸ m)`.
+
+Set `t : R₁ →ₐ[K] F` to `(IsAlgClosed.lift : (R₁ ⧸ m) →ₐ[K] F).comp (Ideal.Quotient.mkₐ K m)`. Use `haveI : IsScalarTower V K F := inferInstance`. Use `haveI : FaithfulSMul V F := (faithfulSMul_iff_algebraMap_injective V F).2 (by`. Rewrite using `[IsScalarTower.algebraMap_eq V K F]`. Conclude with `(algebraMap K F).injective.comp (IsFractionRing.injective V K))`.
+
+Use `haveI : Algebra.IsAlgebraic V F := (IsFractionRing.comap_isAlgebraic_iff (A := V) (K := K) (C := F)).mpr inferInstance`. Take `⟨n, b, hb⟩` from `Module.Finite.exists_fin (R := K) (M := R₁)`. Set `s : Finset F` to `Finset.univ.image (fun i => t (b i))`. Take `⟨W, hWd, hWc, -, hWfin, -, hWloc, hfrac, -⟩` from `GlobalTheory.exists_complete_dvr_finite_subalgebra V F s`. Establish `hWch : CharZero W` using `⟨fun m n h => Nat.cast_injective (R := F) (by simpa using congrArg Subtype.val h)⟩`.
+
+Set `φ : FractionRing W →+* F` to `IsFractionRing.lift (g := W.val.toRingHom) Subtype.val_injective`. Establish `hφ : Function.Injective φ` using `φ.injective`. Establish `hφa : ∀ w : W, φ (algebraMap W (FractionRing W) w) = w` using `fun w => IsFractionRing.lift_algebraMap (g := W.val.toRingHom) Subtype.val_injective w`. Establish `hVa : ∀ a : V, ((algebraMap V W a : W) : F) = algebraMap V F a` using `fun a => rfl`. Establish `hK : ∀ c : K, algebraMap K F c ∈ φ.range`.
+
+Introduce `c`. Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := V) c`. Use `⟨algebraMap W _ (algebraMap V W x) / algebraMap W _ (algebraMap V W y), ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_div₀, hφa, hφa, hVa, hVa, IsScalarTower.algebraMap_apply V K F, IsScalarTower.algebraMap_apply V K F]`. Establish `hs : ∀ x ∈ s, x ∈ φ.range`.
+
+Introduce `x hx`. Take `⟨a, ha, c, hc, hc0, hxc⟩` from `hfrac x hx`. Use `⟨algebraMap W _ ⟨a, ha⟩ / algebraMap W _ ⟨c, hc⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, hφa, hφa]`. Use `show a / c = x`.
+
+Rewrite using `[← hxc, mul_div_cancel_right₀ x hc0]`. Establish `hrange : ∀ r, t r ∈ φ.range`. Introduce `r`. Establish `hr : r ∈ Submodule.span K (Set.range b)` using `hb ▸ Submodule.mem_top`. Proceed by induction on `hr using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `hs _ (Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩)`. Consider the case `zero => simpa using φ.range.zero_mem`. Consider the case `add x y _ _ hx hy => simpa using φ.range.add_mem hx hy`.
+
+Consider the case `smul c x _ hx`. Rewrite using `[map_smul, Algebra.smul_def]`. Conclude with `φ.range.mul_mem (hK c) hx`. Set `e : FractionRing W ≃+* φ.range` to `RingEquiv.ofBijective φ.rangeRestrict ⟨fun x y h => hφ (congrArg Subtype.val h), φ.rangeRestrict_surjective⟩`. Set `ψ : R₁ →+* FractionRing W` to `e.symm.toRingHom.comp (t.toRingHom.codRestrict φ.range hrange)`.
+
+Establish `hψ : ∀ r, φ (ψ r) = t r` using `fun r => congrArg Subtype.val (e.apply_symm_apply ⟨t r, hrange r⟩)`. Use `⟨W, inferInstance, inferInstance, inferInstance, algebraMap V W, ψ, (GlobalTheory.LN.cDvr_iff W).2 ⟨hWd, hWc, hWch⟩, ?_, hWloc, RingHom.finite_algebraMap.2 hWfin, ?_⟩` and prove the remaining obligations. Introduce `x y h`. Conclude with `FaithfulSMul.algebraMap_injective V F (congrArg Subtype.val h)`. Introduce `a`.
+
+Apply `hφ` to reduce the goal to its premises. Rewrite using `[hψ, hφa, AlgHom.commutes, hVa, ← IsScalarTower.algebraMap_apply V K F]`.
+-/
 theorem exists_cdvr_map_of_finite : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V →
     ∀ (R₁ : Type) [CommRing R₁] [Algebra (FractionRing V) R₁], Module.Finite (FractionRing V) R₁ → Nontrivial R₁ →
       ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W) (f : V →+* W) (ψ : R₁ →+* FractionRing W),

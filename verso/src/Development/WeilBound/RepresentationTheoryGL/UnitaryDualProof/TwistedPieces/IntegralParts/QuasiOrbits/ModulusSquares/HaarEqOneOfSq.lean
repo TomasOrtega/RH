@@ -16,12 +16,32 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def IsTau (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (τ : Matrix (Fin n) (Fin n) k →ₗ[k] k) : Prop :=
   (∀ x ∈ Bz Z, ∀ y ∈ Bz Z, τ (x * y) = τ (y * x)) ∧ (∀ x ∈ Bz Z, (∀ y ∈ Bz Z, τ (x * y) = 0) → x = 0)
 
+/- English proof (translation)
+Use `show y ∈ Subalgebra.centralizer k _ ↔ _`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_C_iff' (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (y : Matrix (Fin n) (Fin n) k) :
     y ∈ (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))).toSubmodule ↔ y ∈ Bz Z := by
   show y ∈ Subalgebra.centralizer k _ ↔ _
   rw [Subalgebra.mem_centralizer_iff]
   rfl
 
+/- English proof (translation)
+Establish `memB : ∀ x : (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))).toSubmodule, (x : Matrix (Fin n) (Fin n) k) ∈ Bz Z` using `fun x => (mem_C_iff' Z x).1 x.2`. Establish `mulB : ∀ x y : Matrix (Fin n) (Fin n) k, x ∈ Bz Z → y ∈ Bz Z → x * y ∈ Bz Z` using `fun x y hx hy => (mem_C_iff' Z _).1 (Subalgebra.mul_mem _ ((mem_C_iff' Z x).2 hx) ((mem_C_iff' Z y).2 hy))`. Establish `hgB : ((g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) ∈ Bz Z` using `fun a ha => hg a ha`. Establish `hgB' : ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) ∈ Bz Z` using `fun a ha => by`. Establish `e` using `hg a ha`.
+
+Combine the equalities or inequalities in the displayed calculation. Set `ψ : (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))).toSubmodule →ₗ[k] Module.Dual k (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))).toSubmodule` to `LinearMap.mk₂ k (fun x y => τ ((x : Matrix (Fin n) (Fin n) k) * (y : Matrix (Fin n) (Fin n) k))) (fun x x' y => by simp [add_mul]) (fun c x y => by simp [smul_mul_assoc]) (fun x y y' => by simp [mul_add]) (fun c x y => by simp [mul_smul_comm])`. Establish `hψ : Function.Injective ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`.
+
+Establish `h0 : ∀ y ∈ Bz Z, τ ((x : Matrix (Fin n) (Fin n) k) * y) = 0` using `fun y hy => by`. Use `LinearMap.congr_fun hx ⟨y, (mem_C_iff' Z y).2 hy⟩` as an intermediate fact. Simplify `this` using `[ψ]`. Conclude with `Subtype.ext (hτ.2 _ (memB x) h0)`. Establish `hψs : Function.Surjective ψ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank Subspace.dual_finrank_eq.symm).1 hψ`.
+
+Set `e` to `LinearEquiv.ofBijective ψ ⟨hψ, hψs⟩`. Establish `hpres : ((adL g).restrict (cC_inv Z g hg)).dualMap ∘ₗ ψ ∘ₗ (adL g).restrict (cC_inv Z g hg) = ψ`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `y`. Express the relevant statement in the definitionally equal form `τ (((g : Matrix (Fin n) (Fin n) k) * ((x : Matrix (Fin n) (Fin n) k) * ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) * ((g : Matrix (Fin n) (Fin n) k) * ((y : Matrix (Fin n) (Fin n) k) * ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)))) = τ ((x : Matrix (Fin n) (Fin n) k …`. Establish `hxy : ((g : Matrix (Fin n) (Fin n) k) * ((x : Matrix (Fin n) (Fin n) k) * ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) * ((g : Matrix (Fin n) (Fin n) k) * ((y : Matrix (Fin n) (Fin n) k) * ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) = (g : Matrix (Fin n) (Fin n) k) …`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Rewrite using `[hxy, hτ.1 _ hgB _ (mulB _ _ (mulB _ _ (memB x) (memB y)) hgB')]`.
+
+Simplify using `only [mul_assoc, Units.inv_mul, mul_one]`. Establish `h1 : (e.symm.toLinearMap ∘ₗ ((adL g).restrict (cC_inv Z g hg)).dualMap ∘ₗ e.toLinearMap) ∘ₗ (adL g).restrict (cC_inv Z g hg) = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Establish `hx` using `LinearMap.congr_fun hpres x`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, LinearEquiv.coe_coe] at hx ⊢`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `hx`. Establish `h2` using `congrArg LinearMap.det h1`. Establish `hc` using `LinearMap.det_conj ((adL g).restrict (cC_inv Z g hg)).dualMap e.symm`.
+
+Rewrite `hc` using `[LinearEquiv.symm_symm]`. Rewrite `h2` using `[LinearMap.det_comp, LinearMap.det_id, hc, LinearMap.det_dualMap]`. Rewrite using `[sq]`. Conclude with `h2`.
+-/
 theorem det_C_sq (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (τ : Matrix (Fin n) (Fin n) k →ₗ[k] k)
     (hτ : IsTau Z τ) (g : GL (Fin n) k) (hg : g ∈ Gz Z) :
     LinearMap.det ((adL g).restrict (cC_inv Z g hg)) ^ 2 = 1 := by
@@ -90,11 +110,17 @@ theorem det_C_sq (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (τ : Matrix (Fin
   rw [sq]
   exact h2
 
+/- English proof (translation)
+Establish `h` using `congrArg (MeasureTheory.distribHaarChar k) hu`. Rewrite `h` using `[map_pow, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 h`.
+-/
 theorem haar_eq_one_of_sq (u : kˣ) (hu : u ^ 2 = 1) : MeasureTheory.distribHaarChar k u = 1 := by
   have h := congrArg (MeasureTheory.distribHaarChar k) hu
   rw [map_pow, map_one] at h
   exact (pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 h
 
+/- English proof (translation)
+Take `⟨r, hr0, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `hs : StrictAnti (fun m : ℕ => valuation k r ^ m)` using `pow_right_strictAnti₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hr0)) hr1`. Conclude with `Infinite.of_injective (fun m : ℕ => r ^ m) (fun a b hab => hs.injective (by simp only [← map_pow, hab]))`.
+-/
 theorem infinite_local : Infinite k := by
   obtain ⟨r, hr0, hr1⟩ := Valuation.IsNontrivial.exists_lt_one (v := valuation k)
   have hs : StrictAnti (fun m : ℕ => valuation k r ^ m) :=

@@ -18,24 +18,54 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwistRat
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TwistRat.Field.curveOver_of_rayIn`.
+-/
 theorem curveOver_of_rayIn : GlobalTheory.Published.RayClassFieldSt → ∀ (D : D7) (Q : Par D), Q.PinHost → ∀ (N : ℕ), 3 ≤ N → ∀ (Fc : IntermediateField ℚ ℂ) (σ : Fc →+* ℂ), RayIn D N σ.fieldRange → GlobalTheory.CompRat.CurveOver Q.H Fc N := GlobalTheory.TwistRat.Field.curveOver_of_rayIn
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TwistValues.mem_fieldRange`.
+-/
 theorem twist_mem_fieldRange : ∀ (D : D7) (V : HSp D) (pd : ℕ) (k : Type) [Field k] (σ : k →+* ℂ) (δ : Formalism.L2.Host.HChar D.host.E) (δc : (AE D)ˣ →* Circle), IsTwist pd σ δ δc → ∀ dd : GA D V → ℂ, (MuVal V δc dd ∨ MuVal V δc⁻¹ dd) → ∀ g, dd g ∈ σ.fieldRange := GlobalTheory.TwistValues.mem_fieldRange
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TwistFinPart.twist_eq_of_finHom`.
+-/
 theorem twist_eq_of_finHom : ∀ (D : D7) (V : HSp D) (pd : ℕ) (k : Type) [Field k] (σ : k →+* ℂ) (δ : Formalism.L2.Host.HChar D.host.E) (δc : (AE D)ˣ →* Circle), IsTwist pd σ δ δc → ∀ dd : GA D V → ℂ, (MuVal V δc dd ∨ MuVal V δc⁻¹ dd) → ∀ h h' : GA D V, finHom V h = finHom V h' → dd h = dd h' := GlobalTheory.TwistFinPart.twist_eq_of_finHom
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TwistLeft.twist_left`.
+-/
 theorem twist_mul_left : ∀ (D : D7) (V : HSp D) (pd : ℕ) (k : Type) [Field k] (σ : k →+* ℂ) (δ : Formalism.L2.Host.HChar D.host.E) (δc : (AE D)ˣ →* Circle), IsTwist pd σ δ δc → ∀ dd : GA D V → ℂ, (MuVal V δc dd ∨ MuVal V δc⁻¹ dd) → ∀ γ ∈ GQ V, ∀ h : GA D V, dd (γ * h) = dd h := GlobalTheory.TwistLeft.twist_left
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TwistRat.Right.dd_mul_right`.
+-/
 theorem twist_mul_right : ∀ (D : D7) (V : HSp D) (M pd : ℕ) (k : Type) [Field k] (σ : k →+* ℂ) (δ : Formalism.L2.Host.HChar D.host.E) (δc : (AE D)ˣ →* Circle), IsAuxiliarySplitSquarefreeLevel D M pd → IsTwist pd σ δ δc → ∀ dd : GA D V → ℂ, (MuVal V δc dd ∨ MuVal V δc⁻¹ dd) → ∀ u : GA D V, Formalism.L2.Pj.gLat V u = ↑(Formalism.L2.Pj.latHat V) → GlobalTheory.Member.FinCong V (M * pd) u → ∀ h : GA D V, dd (h * u) = dd h := GlobalTheory.TwistRat.Right.dd_mul_right
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hd`.
+-/
 theorem muVal_cast {D : D7} {V W : HSp D} (h : V = W) (χ : (AE D)ˣ →* Circle) (dd : GA D W → ℂ) (hd : MuVal W χ dd) :
     MuVal V χ (castDict h.symm dd) := by
   subst h; exact hd
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castDict_mul {D : D7} {V W : HSp D} (h : V = W) (dd : GA D W → ℂ) (φ : GA D V → ℂ) :
     castDict h (fun g => castDict h.symm dd g * φ g) = fun g => dd g * castDict h φ g := by
   subst h; rfl
 
+/- English proof (translation)
+Introduce `hRF D G _ _ Pl0 T0 A T _ R F κ v₀ hL hLev hGrp hFam hMod hThP hTie i hV hFP gramR c0R c0L hFT u hu C hGC δ δc hTw dd hdd φ hφ`. Take `⟨hU, -, hAux, -, hRay⟩` from `hGC`. Take `⟨φ', hφ', rfl⟩` from `hφ`. Establish `hlev : C.d.l₂.M = T.Q.l.M * C.d.pd` using `hU.1.2.1`. Establish `hpd : 0 < C.d.pd` using `hAux.1.pos`.
+
+Establish `hN3 : 3 ≤ T.Q.l.M * C.d.pd` using `le_trans T.Q.l.three_le (Nat.le_mul_of_pos_right _ hpd)`. Establish `hcurve : GlobalTheory.CompRat.CurveOver T.Q.H C.d.c₂.F (T.Q.l.M * C.d.pd)` using `curveOver_of_rayIn hRF D T.Q hL.pins.1 _ hN3 C.d.c₂.F C.σ₂ hRay`. Use `set dd' : GA D (T.V ((i : ℕ) + 1) T.σ₀) → ℂ := castDict hV.symm dd with hdd'`. Establish `hdd2 : MuVal _ δc dd' ∨ MuVal _ δc⁻¹ dd'` using `hdd.imp (muVal_cast hV δc dd) (muVal_cast hV δc⁻¹ dd)`. Establish `hval` using `twist_mem_fieldRange D _ C.d.pd _ C.σ₂ δ δc hTw dd' hdd2`.
+
+Use `choose w hw using fun g => RingHom.mem_fieldRange.1 (hval g)`. Establish `hinj : ∀ g g', dd' g = dd' g' → w g = w g'` using `fun g g' h => C.σ₂.injective (by rw [hw, hw, h])`. Establish `key` using `(GlobalTheory.CoverComp.forms_mul_comp D T hL ((i : ℕ) + 1) ⟨Nat.succ_pos _, i.2⟩ T.σ₀ rfl C hU (T.Q.l.M * C.d.pd) (Nat.mul_pos (by have := T.Q.l.three_le; omega) hpd) (by rw [hlev]) (Or.inr hcurve) w (fun h h' hh => hinj _ _ (twist_eq_of_finHom D _ C.d.pd _ C.σ₂ δ δc hTw dd' hdd …`. Use `⟨_, key, ?_⟩` and prove the remaining obligations. Simplify using `only [hw]`.
+
+Conclude with `castDict_mul hV dd φ'`.
+-/
 theorem isRat_twist : GlobalTheory.Published.RayClassFieldSt → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)
     (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec),

@@ -8,11 +8,21 @@ noncomputable section
 
 namespace GlobalTheory.Cartier.SecPowLoc
 
+/- English proof (translation)
+The claim follows from `X.presheaf.germ_res_apply i _ h a`.
+-/
 theorem fnOf_map {X : Scheme.{0}} [IsIntegral X] {U V : X.Opens} (i : V ⟶ U)
     (h : genericPoint X ∈ V) (a : Γ(X, U)) :
     fnOf V h (X.presheaf.map i.op a) = fnOf U (i.le h) a :=
   X.presheaf.germ_res_apply i _ h a
 
+/- English proof (translation)
+Use `set t' : Γ(X, W) := X.presheaf.map (homOfLE le_top).op t`. Establish `hB : X.basicOpen t' = W ⊓ X.basicOpen t` using `X.basicOpen_res t _`. Establish `hgen : genericPoint X ∈ X.basicOpen t'` using `hB ▸ memInf (gen_mem hy) ht`. Take `⟨b, hb⟩` from `exists_fnOf_eq (f := f * (g : X.functionField)) hgen fun z hz => by`. Rewrite `hz` using `[hB]`.
+
+Conclude with `(hg z hz.1).regularAt_iff.1 (hf z hz.2)`. Take `⟨n, a, ha⟩` from `exists_eq_pow_mul_of_isAffineOpen X W hW t' b`. Establish `key : fnOf W (gen_mem hy) a = fnOf ⊤ trivial t ^ n * (f * (g : X.functionField))`. Establish `e` using `congrArg (fnOf _ hgen) ha`. Rewrite `e` using `[map_mul, map_pow, hb]`.
+
+Use `erw [fnOf_map, fnOf_map, fnOf_map] at e`. Conclude with `e`. Use `⟨n, fun z hz => (hg z hz).regularAt_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, algebraMap_top, map_pow, mul_assoc, ← key]`. Conclude with `regAt_fnOf hz _ a`.
+-/
 theorem exists_pow_regularAt_on {X : Scheme.{0}} [IsIntegral X] (D : CartierDiv X)
     (f : X.functionField) (t : Γ(X, ⊤)) (hf : ∀ z ∈ X.basicOpen t, D.RegularAt z f)
     (W : X.Opens) (hW : IsAffineOpen W) (g : X.functionFieldˣ) (hg : ∀ z ∈ W, D.IsEqn z g)
@@ -40,6 +50,17 @@ namespace GlobalTheory.Cartier
 
 open SecPowLoc in
 
+/- English proof (translation)
+Introduce `X _ _ D x g hg f hf`. Take `⟨U, hxU, hU⟩` from `hg.exists_nhds`. Take `⟨U', hxU', a, ha⟩` from `hf.exists_fnOf`. Take `⟨_, ⟨t, rfl⟩, hxt, htle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 (isBasis_basicOpen X) (show x ∈ U ⊓ U' from ⟨hxU, hxU'⟩)`. Establish `hft : ∀ z ∈ X.basicOpen t, D.RegularAt z f` using `fun z hz => by`.
+
+Establish `h1` using `regAt_fnOf (htle hz).2 (gen_mem hxU') a`. Rewrite `h1` using `[ha]`. Conclude with `(hU z (htle hz).1).regularAt_iff.2 h1`. Establish `hgt : genericPoint X ∈ X.basicOpen t` using `gen_mem hxt`. Establish `loc : ∀ y : X, ∃ W : X.Opens, y ∈ W ∧ ∃ n : ℕ, ∀ z ∈ W, D.RegularAt z (t ^ n • f)`.
+
+Introduce `y`. Take `⟨V, hyV, g', hg'⟩` from `D.exists_isEqn_nhds y`. Take `⟨W, hW, hyW, hWV⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens hyV`. Conclude with `⟨W, hyW, exists_pow_regularAt_on D f t hft W hW g' (fun z hz => hg' z (hWV hz)) hyW hgt⟩`. Use `choose W hyW n hn using loc`.
+
+Take `⟨T, hT⟩` from `isCompact_univ.elim_finite_subcover (fun y => (W y : Set X)) (fun y => (W y).isOpen) (fun y _ => Set.mem_iUnion.2 ⟨y, hyW y⟩)`. Use `⟨t ^ (T.sup n + 1), ?_, mem_sections.2 fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[X.basicOpen_pow t (Nat.succ_pos _)]`. Conclude with `hxt`. Take `⟨y, hyT, hz⟩` from `Set.mem_iUnion₂.1 (hT (Set.mem_univ z))`.
+
+Establish `hle : n y ≤ T.sup n + 1` using `(Finset.le_sup hyT).trans (Nat.le_succ _)`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_smul]`. Establish `h2` using `(hn y z hz).regAt_mul (regAt_fnOf (U := ⊤) trivial trivial (t ^ (T.sup n + 1 - n y)))`. Rewrite `h2` using `[← algebraMap_top, ← Algebra.smul_def]`. Then use the resulting hypothesis.
+-/
 theorem exists_smul_mem_sections_of_regAt : ∀ (X : Scheme.{0}) [IsIntegral X] [IsAffine X] (D : CartierDiv X)
     (x : X) (g : X.functionFieldˣ), D.IsEqn x g → ∀ f : X.functionField, RegAt x (f * g) →
     ∃ s : Γ(X, ⊤), x ∈ X.basicOpen s ∧ s • f ∈ D.sections := by

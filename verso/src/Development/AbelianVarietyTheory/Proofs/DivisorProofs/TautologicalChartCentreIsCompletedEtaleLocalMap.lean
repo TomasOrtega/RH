@@ -20,6 +20,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TChartEt
 
+/- English proof (translation)
+Use `algebraize [f]`. Establish `: IsLocalHom (algebraMap A B)` using `hl`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := A) (B := B)` as an intermediate fact. Conclude with `FaithfulSMul.algebraMap_injective A B`.
+-/
 theorem injective_of_flat_isLocalHom {A B : Type} [CommRing A] [CommRing B] [IsLocalRing A] [IsLocalRing B]
     (f : A →+* B) (hf : f.Flat) [hl : IsLocalHom f] : Function.Injective f := by
   algebraize [f]
@@ -27,6 +30,9 @@ theorem injective_of_flat_isLocalHom {A B : Type} [CommRing A] [CommRing B] [IsL
   have := Module.FaithfullyFlat.of_flat_of_isLocalHom (A := A) (B := B)
   exact FaithfulSMul.algebraMap_injective A B
 
+/- English proof (translation)
+Establish `hf : (s.stalkMap x).hom.Flat` using `Flat.stalkMap s x`. Establish `h0 : CharZero ((Sp o).presheaf.stalk (s x))`. Establish `: CharZero Γ(Sp o, ⊤)` using `(Scheme.ΓSpecIso (.of o)).hom.hom.charZero`. Conclude with `charZero_of_injective_ringHom (f := ((Sp o).presheaf.germ ⊤ (s x) trivial).hom) (germ_injective_of_isIntegral (Sp o) (U := ⊤) (s x) trivial)`. Conclude with `charZero_of_injective_ringHom (injective_of_flat_isLocalHom _ hf)`.
+-/
 theorem charZero_stalk_of_flat {o : Type} [CommRing o] [IsDomain o] [CharZero o] (X : Scheme.{0}) (s : X ⟶ Sp o)
     [Flat s] (x : X) : CharZero (X.presheaf.stalk x) := by
   have hf : (s.stalkMap x).hom.Flat := Flat.stalkMap s x
@@ -36,6 +42,11 @@ theorem charZero_stalk_of_flat {o : Type} [CommRing o] [IsDomain o] [CharZero o]
       (germ_injective_of_isIntegral (Sp o) (U := ⊤) (s x) trivial)
   exact charZero_of_injective_ringHom (injective_of_flat_isLocalHom _ hf)
 
+/- English proof (translation)
+Establish `h1 : (s.stalkMap x).hom.EssFiniteType` using `LocallyOfFiniteType.stalkMap s x`. Set `p : PrimeSpectrum (cycAway n)` to `s x`. Establish `h2 : (algebraMap (cycAway n) ((Spec.structureSheaf (cycAway n)).presheaf.stalk p)).EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 (Algebra.EssFiniteType.of_isLocalization _ p.asIdeal.primeCompl)`. Use `haveI := finiteType_cycAway n`. Establish `h3 : (algebraMap ℤ (cycAway n)).EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 inferInstance`.
+
+Establish `h4` using `(h3.comp h2).comp h1`. Rewrite using `[← RingHom.essFiniteType_algebraMap]`. Use `h4` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext_int _ _`.
+-/
 theorem essFiniteType_int_stalk (n : ℕ) (X : Scheme.{0}) (s : X ⟶ Sp (cycAway n)) [LocallyOfFiniteType s] (x : X) :
     Algebra.EssFiniteType ℤ (X.presheaf.stalk x) := by
   have h1 : (s.stalkMap x).hom.EssFiniteType := LocallyOfFiniteType.stalkMap s x
@@ -49,6 +60,13 @@ theorem essFiniteType_int_stalk (n : ℕ) (X : Scheme.{0}) (s : X ⟶ Sp (cycAwa
   convert h4
   exact RingHom.ext_int _ _
 
+/- English proof (translation)
+Use `haveI := F.smooth`. Use `haveI : Smooth F.s := SmoothOfRelativeDimension.smooth (g * (g + 1) / 2) F.s`. Use `haveI : Flat F.s := inferInstance`. Set `w : Sp (FractionRing R)` to `closedPoint (FractionRing R)`. Establish `hsp : ξ (jK R w) ⤳ ξ (closedPoint R)` using `(specializes_closedPoint _).map ξ.continuous`.
+
+Establish `hjw : j (y w) = ξ (jK R w)`. Rewrite using `[← Scheme.Hom.comp_apply, hy, Scheme.Hom.comp_apply]`. Use `haveI : CharZero (F.X.presheaf.stalk (y w)) := charZero_stalk_of_flat F.X F.s (y w)`. Use `haveI h₁ : CharZero (S.presheaf.stalk (j (y w))) := (j.stalkMap (y w)).hom.charZero`. Rewrite `h₁` using `[hjw]`.
+
+Conclude with `(S.presheaf.stalkSpecializes hsp).hom.charZero`.
+-/
 theorem charZero_stalk_centre {g n : ℕ} (F : SFam g n (zetaAway n)) {S : Scheme.{0}} (j : F.X ⟶ S)
     {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (y : Sp (FractionRing R) ⟶ F.X) (ξ : Sp R ⟶ S)
     (hy : y ≫ j = jK R ≫ ξ) : CharZero (S.presheaf.stalk (ξ (closedPoint R))) := by
@@ -68,6 +86,13 @@ end GlobalTheory.TChartEt
 
 namespace GlobalTheory.TChartEt
 
+/- English proof (translation)
+Introduce `hSep g hg φ hφ hns n hn ho F Z z i OZ d S π j _ BD hM hB C G₁ _ _ y α₁ ξ hF hy`. Take `⟨J, h₁, h₂, h₃, hNB, hP, h₄⟩` from `hB`. Use `haveI : GlobalTheory.IsNormalScheme S := hNB.1`. Use `haveI : CharZero (S.presheaf.stalk (ξ (closedPoint C.R))) := charZero_stalk_centre F j y ξ hy`. Use `haveI : LocallyOfFiniteType (π ≫ z) := by`.
+
+Take `⟨N, ιP, hιP, e⟩` from `hP`. Rewrite using `[← e]`. Use `haveI := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str (cycAway n) N`. Use `infer_instance`. Use `haveI : Algebra.EssFiniteType ℤ (S.presheaf.stalk (ξ (closedPoint C.R))) := essFiniteType_int_stalk n S (π ≫ z) _`.
+
+Use `haveI : IsNoetherianRing C.R := C.compl.1`. Take `⟨hqf, hfin⟩` from `GlobalTheory.T.quasiFinite_tautologicalChart_of_separation hSep g hg φ hφ hns n hn ho F Z z i OZ d S π j BD hM ⟨J, h₁, h₂, h₃, hNB, hP, h₄⟩ C G₁ y α₁ ξ hF hy`. Establish `hdim` using `GlobalTheory.T.ringKrullDim_stalk_le_tautologicalChartRing g hg φ hφ hns n hn ho F Z z i OZ d S π j BD hM ⟨J, h₁, h₂, h₃, hNB, hP, h₄⟩ C G₁ y α₁ ξ hF hy hfin`. Establish `hgal` using `GlobalTheory.T.tautologicalChart_galois_rigid_stalk hn F S j C G₁ y α₁ ξ hF hy`. Conclude with `GlobalTheory.T.isEtaleCompletion_of_quasiFinite_galoisRigid _ _ (Scheme.stalkClosedPointTo ξ).hom C.compl.2.1 hqf hfin hdim hgal`.
+-/
 theorem isEtaleCompletion_tautChart : GlobalTheory.Poinc.Sep.SepSt → ∀ g : ℕ, 1 ≤ g → ∀ φ : InvFun ℤ, IsPolFan id g φ → NoSelfInt id g φ → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) (OZ : LB Z) (d : ℕ) (S : Scheme.{0}) (π : S ⟶ Z) (j : F.X ⟶ S) [IsOpenImmersion j] (BD : GlobalTheory.EffCartierData S), MinAt5 F z i OZ → BlowAt F z i φ d π j BD → ∀ (C : Taut (zetaAway n) g n φ) (G₁ : Over (Sp C.R)) [GrpObj G₁] [IsCommMonObj G₁] (y : Sp (FractionRing C.R) ⟶ F.X) (α₁ : pullback G₁.hom (jK C.R) ⟶ F.univ.A.left) (ξ : Sp C.R ⟶ S), C.IsFam F G₁ y α₁ → y ≫ j = jK C.R ≫ ξ → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom ∧ ((residue C.R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified := by
   intro hSep g hg φ hφ hns n hn ho F Z z i OZ d S π j _ BD hM hB C G₁ _ _ y α₁ ξ hF hy
   obtain ⟨J, h₁, h₂, h₃, hNB, hP, h₄⟩ := hB

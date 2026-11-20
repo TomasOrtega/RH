@@ -26,14 +26,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def gram : Matrix (Fin M × Fin d) (Fin M × Fin d) F :=
   fun p q => 1 / 2 * Algebra.trace F E (σ (b p.2) * J p.1 q.1 * b q.2)
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem invol (h : IsCMExt F E σ) (e : E) : σ (σ e) = e := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+The claim follows from `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective σ (Function.Involutive.bijective (invol σ h))) e`.
+-/
 theorem trace_conj (h : IsCMExt F E σ) (e : E) : Algebra.trace F E (σ e) = Algebra.trace F E e :=
   Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective σ (Function.Involutive.bijective (invol σ h))) e
 
+/- English proof (translation)
+Use extensionality with `p q`. Simplify using `only [gram, Matrix.transpose_apply]`. Rewrite using `[← trace_conj σ h, map_mul σ, map_mul σ, invol σ h, hJ.1]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_symm (h : IsCMExt F E σ) (hJ : IsHermND σ J) : (gram σ b J).IsSymm := by
   ext p q
   simp only [gram, Matrix.transpose_apply]
@@ -41,6 +50,15 @@ theorem gram_symm (h : IsCMExt F E σ) (hJ : IsHermND σ J) : (gram σ b J).IsSy
   congr 2
   ring
 
+/- English proof (translation)
+Rewrite using `[Ne, ← Matrix.exists_mulVec_eq_zero_iff]`. Introduce and unpack `⟨x, hx0, hx⟩`. Set `y : Fin M → E` to `fun j => ∑ l, x (j, l) • b l`. Establish `h1 : ∀ i k, Algebra.trace F E (σ (b k) * (J *ᵥ y) i) = 0`. Introduce `i k`.
+
+Use `congrFun hx (i, k)` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, gram, Fintype.sum_prod_type, Pi.zero_apply, mul_assoc, ← Finset.mul_sum] at this`. Establish `h2` using `(mul_eq_zero.1 this).resolve_left (by norm_num)`. Rewrite using `[← h2]`. Simplify using `only [Matrix.mulVec, dotProduct, y, Finset.mul_sum, map_sum, mul_smul_comm, map_smul, smul_eq_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => mul_comm _ _`. Establish `h2 : J *ᵥ y = 0`. Use function extensionality and compare the values at `i`. Use `(traceForm_nondegenerate F E).1 _ fun z => ?_` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, ← invol σ h z, ← b.sum_repr (σ z), map_sum, Finset.mul_sum, map_sum]`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul σ, σ.commutes, ← Algebra.smul_def, mul_smul_comm, map_smul, mul_comm, h1, smul_zero]`. Establish `h3 : y = 0` using `Matrix.eq_zero_of_mulVec_eq_zero hJ.2 h2`. Use `hx0 (funext fun p => ?_)` and prove the remaining obligations. Conclude with `Fintype.linearIndependent_iff.1 b.linearIndependent (fun l => x (p.1, l)) (congrFun h3 p.1) p.2`.
+-/
 theorem gram_det (h : IsCMExt F E σ) (hJ : IsHermND σ J) : (gram σ b J).det ≠ 0 := by
   classical
   rw [Ne, ← Matrix.exists_mulVec_eq_zero_iff]
@@ -69,6 +87,13 @@ theorem gram_det (h : IsCMExt F E σ) (hJ : IsHermND σ J) : (gram σ b J).det �
 
 variable (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Take `⟨c, hc⟩ : ∃ c : Fin M → Fin d → R, ∀ i k, (Algebra.TensorProduct.basis R b).repr (x i) k = c i k` from `⟨_, fun _ _ => rfl⟩`. Establish `hx : ∀ i, x i = ∑ k, c i k ⊗ₜ[F] b k`. Introduce `i`. Use `conv_lhs => rw [← (Algebra.TensorProduct.basis R b).sum_repr (x i)]`. Simplify using `[hc, TensorProduct.smul_tmul']`.
+
+Simplify using `only [hc]`. Establish `hs : ∀ (r : R) (e : E), sigR R σ (r ⊗ₜ[F] e) = r ⊗ₜ[F] σ e` using `fun _ _ => rfl`. Establish `hi : ∀ e : E, inclR (F` using `F) R e = (1 : R) ⊗ₜ[F] e := fun _ => rfl`. Simplify using `only [qR, hR, Formalism.UG.hform, JR, Matrix.map_apply, hx, map_sum, hs, hi, Finset.sum_mul, Finset.mul_sum, Algebra.TensorProduct.tmul_mul_tmul, qloc_trace_tmul, dotProduct, Matrix.mulVec, Fintype.sum_prod_type, gram, map_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm (s := Finset.univ (α := Fin d)) (t := Finset.univ (α := Fin M))]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qR_eq (x : Fin M → R ⊗[F] E) :
     qR R σ J x = (fun p : Fin M × Fin d => (Algebra.TensorProduct.basis R b).repr (x p.1) p.2) ⬝ᵥ
       ((gram σ b J).map (algebraMap F R)) *ᵥ
@@ -92,6 +117,9 @@ theorem qR_eq (x : Fin M → R ⊗[F] E) :
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[qR_eq σ (Module.finBasis F E), qR_eq σ (Module.finBasis F E)]`. Simplify using `only [Pi.smul_apply, map_smul, Finsupp.smul_apply]`. Express the relevant statement in the definitionally equal form `(c • _) ⬝ᵥ _ *ᵥ (c • _) = _`. Rewrite using `[Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, sq, mul_assoc]`.
+-/
 theorem qR_smul (c : R) (x : Fin M → R ⊗[F] E) : qR R σ J (c • x) = c ^ 2 * qR R σ J x := by
   rw [qR_eq σ (Module.finBasis F E), qR_eq σ (Module.finBasis F E)]
   simp only [Pi.smul_apply, map_smul, Finsupp.smul_apply]
@@ -127,26 +155,49 @@ def coord : (Fin 1 → Fin M → Fv F v ⊗[F] E) ≃L[Fv F v] (Fin M × Fin d �
       haveI := IsModuleTopology.toContinuousSMul (Fv F v) (Fv F v ⊗[F] E)
       IsModuleTopology.continuous_of_linearMap (coordLin (M := M) b v).symm.toLinearMap }
 
+/- English proof (translation)
+Use extensionality with `X`. Conclude with `⟨fun h p => h 0 p.1 p.2, fun h a i k => by rw [Subsingleton.elim a 0]; exact h (i, k)⟩`.
+-/
 theorem latV_eq : (latV b v : Set (Fin 1 → Fin M → Fv F v ⊗[F] E)) =
     {X | ∀ p, coord b v X p ∈ v.adicCompletionIntegers F} := by
   ext X
   exact ⟨fun h p => h 0 p.1 p.2, fun h a i k => by rw [Subsingleton.elim a 0]; exact h (i, k)⟩
 
+/- English proof (translation)
+Rewrite using `[latV_eq, Set.setOf_forall]`. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Conclude with `isOpen_iInter_of_finite fun p => hO.preimage ((continuous_apply p).comp (coord b v).continuous)`.
+-/
 theorem isOpen_latV : IsOpen (latV b v : Set (Fin 1 → Fin M → Fv F v ⊗[F] E)) := by
   rw [latV_eq, Set.setOf_forall]
   have hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v)) := Valued.isOpen_valuationSubring _
   exact isOpen_iInter_of_finite fun p =>
     hO.preimage ((continuous_apply p).comp (coord b v).continuous)
 
+/- English proof (translation)
+The claim follows from `qR_eq σ b J _ _`.
+-/
 theorem q_coord (X : Fin 1 → Fin M → Fv F v ⊗[F] E) : qR (Fv F v) σ J (X 0) =
     coord b v X ⬝ᵥ ((gram σ b J).map (algebraMap F (Fv F v))) *ᵥ coord b v X :=
   qR_eq σ b J _ _
 
+/- English proof (translation)
+Simplify using `only [q_coord σ (Module.finBasis F E)]`. Conclude with `(coord _ v).continuous.dotProduct (continuous_const.matrix_mulVec (coord _ v).continuous)`.
+-/
 theorem continuous_q :
     Continuous fun X : Fin 1 → Fin M → Fv F v ⊗[F] E => qR (Fv F v) σ J (X 0) := by
   simp only [q_coord σ (Module.finBasis F E)]
   exact (coord _ v).continuous.dotProduct (continuous_const.matrix_mulVec (coord _ v).continuous)
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Establish `hu1 : Valued.v u = 1`. Use `Valuation.map_one_add_of_lt _ hu` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨y, hy, hy0⟩` from `(GlobalTheory.ResidueBoxVolume.exists_residue_eq_zero_iff v _).2 hu`.
+
+Take `⟨s, hs⟩` from `GlobalTheory.QuadFieldCriterion.exists_root_of_residual (0 : v.adicCompletionIntegers F) (-(1 + y)) (by`. Rewrite using `[HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Establish `: ((0 ^ 2 - 4 * -(1 + y) : v.adicCompletionIntegers F) : Fv F v) = 2 * 2 * u`. Use `push_cast`. Rewrite using `[← hy]`.
+
+Establish `: ((4 : v.adicCompletionIntegers F) : Fv F v) = 4` using `rfl`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_mul, map_mul, h2, hu1, mul_one, mul_one]) 1 (by simp [hy0])`. Establish `hs' : (s : Fv F v) * s = u`.
+
+Use `congrArg (fun z : v.adicCompletionIntegers F => (z : Fv F v)) hs` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite `this` using `[← hy]`. Take the linear combination `this`. Use `⟨s, ?_, hs'⟩` and prove the remaining obligations.
+
+Use `congrArg Valued.v hs'` as an intermediate fact. Rewrite `this` using `[map_mul, hu1]`. Conclude with `(pow_eq_one_iff.1 (by rw [sq, this])).resolve_right two_ne_zero`.
+-/
 theorem exists_sqrt (h2 : Valued.v (2 : Fv F v) = 1) (u : Fv F v) (hu : Valued.v (u - 1) < 1) :
     ∃ r : Fv F v, Valued.v r = 1 ∧ r * r = u := by
   haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v
@@ -174,6 +225,9 @@ theorem exists_sqrt (h2 : Valued.v (2 : Fv F v) = 1) (u : Fv F v) (hu : Valued.v
   rw [map_mul, hu1] at this
   exact (pow_eq_one_iff.1 (by rw [sq, this])).resolve_right two_ne_zero
 
+/- English proof (translation)
+Establish `h0 : r ≠ 0` using `by rintro rfl; simp at hr`. Establish `h` using `GlobalTheory.GaugeProdFormula.modu_finite F v r h0`. Establish `h1 : ‖r‖ = 1` using `le_antisymm (Valued.toNormedField.norm_le_one_iff.2 hr.le) (Valued.toNormedField.one_le_norm_iff.2 hr.ge)`. Rewrite `h` using `[h1]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem modu_unit (r : Fv F v) (hr : Valued.v r = 1) : modu (Fv F v) r = 1 := by
   have h0 : r ≠ 0 := by rintro rfl; simp at hr
   have h := GlobalTheory.GaugeProdFormula.modu_finite F v r h0
@@ -182,6 +236,21 @@ theorem modu_unit (r : Fv F v) (hr : Valued.v r = 1) : modu (Fv F v) r = 1 := by
   rw [h1] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Use `haveI := IsModuleTopology.toContinuousSMul (Fv F v) (Fv F v ⊗[F] E)`. Establish `hβ0 : β ≠ 0` using `by rintro rfl; simp at hβ`. Take `⟨r, hr, hrr⟩` from `exists_sqrt v h2 (c / β) (by`. Rewrite using `[div_sub_one hβ0, map_div₀, hβ, div_one]`. Conclude with `hc)`.
+
+Establish `hr0 : r ≠ 0` using `by rintro rfl; simp at hr`. Set `g : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)` to `Matrix.diagonal fun _ => algebraMap _ _ r`. Establish `hg : ∀ z, g *ᵥ z = r • z` using `fun z => by`. Use extensionality with `i`. Simplify using `[g, Matrix.mulVec_diagonal, Algebra.smul_def]`.
+
+Establish `hd : g.det = algebraMap _ _ (r ^ M)` using `by simp [g]`. Establish `hdu : IsUnit g.det` using `hd ▸ (pow_ne_zero M hr0).isUnit.map _`. Establish `hN` using `(nice_ainf_fv F).2 v`. Establish `ht` using `fibAt_similitude F E σ (Fv F v) hN M J J lam ν β (r * r) m g hl hν hdu (mul_ne_zero hr0 hr0).isUnit (fun z => by rw [hg, qR_smul, sq]) hm`. Establish `hmd : modu (Fv F v ⊗[F] E) g.det = 1`.
+
+Rewrite using `[(modu_eq_modu_norm F E σ hσ (Fv F v) g.det (r ^ M * r ^ M) hdu (by`. Rewrite using `[hd, map_mul]`. Use `congr 1`. Simplify using `[sigR])).2]`. Conclude with `modu_unit v _ (by simp [hr])`.
+
+Rewrite `ht` using `[hmd, modu_unit v _ (by simp [hr]), inv_one, mul_one, one_smul, hrr, div_mul_cancel₀ _ hβ0]`. Establish `hc0 : IsUnit c`. Rewrite using `[← div_mul_cancel₀ c hβ0, ← hrr]`. Conclude with `(mul_ne_zero (mul_ne_zero hr0 hr0) hβ0).isUnit`. Establish `hl : lrAct g (1 : Matrix (Fin 1) (Fin 1) _) = fun X => r • X`.
+
+Use function extensionality and compare the values at `X a`. Rewrite using `[lrAct, hg, Subsingleton.elim a 0]`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[← (FibBasic.fibAt_basic F E σ (Fv F v) hN M J _ ν c m' hν hc0 hm').2.2 _ ht, hl, Measure.map_apply (continuous_const_smul r).measurable (isOpen_latV b v).measurableSet]`.
+
+Use `congr 1`. Use extensionality with `X`. Simplify using `only [latV_eq, Set.mem_preimage, Set.mem_setOf_eq, map_smul, Pi.smul_apply, smul_eq_mul, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, hr, one_mul]`.
+-/
 theorem fib_const (hσ : IsCMExt F E σ) (h2 : Valued.v (2 : Fv F v) = 1)
     (lam : Measure (Fv F v ⊗[F] E)) (ν : Measure (Fv F v)) (hl : lam.IsAddHaarMeasure)
     (hν : ν.IsAddHaarMeasure) (β c : Fv F v) (hβ : Valued.v β = 1) (hc : Valued.v (c - β) < 1)
@@ -223,14 +292,29 @@ theorem fib_const (hσ : IsCMExt F E σ) (h2 : Valued.v (2 : Fv F v) = 1)
   simp only [latV_eq, Set.mem_preimage, Set.mem_setOf_eq, map_smul, Pi.smul_apply, smul_eq_mul,
     HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, hr, one_mul]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `Valuation.mem_maximalIdeal_iff (v := (Valued.v : Valuation (Fv F v) _))`.
+-/
 theorem residue_eq_iff (x y : v.adicCompletionIntegers F) :
     IsLocalRing.residue _ x = IsLocalRing.residue _ y ↔ Valued.v ((x : Fv F v) - y) < 1 := by
   rw [← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]
   exact Valuation.mem_maximalIdeal_iff (v := (Valued.v : Valuation (Fv F v) _))
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.ResidueBoxVolume.isOpen_val_lt_one v).preimage (continuous_id.sub continuous_const)`.
+-/
 theorem isOpen_class (β : Fv F v) : IsOpen {c : Fv F v | Valued.v (c - β) < 1} :=
   (GlobalTheory.ResidueBoxVolume.isOpen_val_lt_one v).preimage (continuous_id.sub continuous_const)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.ResidueBoxVolume.measureReal_residueBox F v (Fv F v) ν Unit (ContinuousLinearEquiv.funUnique Unit (Fv F v) (Fv F v)).symm {fun _ => IsLocalRing.residue _ β}`. Establish `e2 : {y : Fv F v | ∀ i, (ContinuousLinearEquiv.funUnique Unit (Fv F v) (Fv F v)).symm y i ∈ v.adicCompletionIntegers F} = (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite `h` using `[e2, GlobalTheory.GaugeProdFormula.card_residue, Fintype.card_unit, pow_one, Set.ncard_singleton, measureReal_def (s := (v.adicCompletionIntegers F : Set (Fv F v))), hν]`.
+
+Use `h using 3` and compare the differences between its conclusion and the goal. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Establish `hc1 : c ∈ v.adicCompletionIntegers F`.
+
+Use `add_mem (show c - β ∈ v.adicCompletionIntegers F from (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (le_of_lt hc)) β.2` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `⟨fun _ => ⟨c, hc1⟩, fun _ => rfl, funext fun _ => (residue_eq_iff v _ _).2 hc⟩`. Introduce and unpack `⟨y, h1, h2⟩`. Establish `h3 : c = y ()` using `h1 ()`.
+
+Rewrite using `[h3]`. Conclude with `(residue_eq_iff v _ _).1 (congrFun h2 ())`. Simplify using the standard rewrite rules.
+-/
 theorem vol_class (ν : Measure (Fv F v)) [ν.IsAddHaarMeasure]
     (hν : ν (v.adicCompletionIntegers F : Set (Fv F v)) = 1) (β : v.adicCompletionIntegers F) :
     ν.real {c | Valued.v (c - β) < 1} * (Ideal.absNorm v.asIdeal : ℝ) = 1 := by
@@ -258,6 +342,17 @@ theorem vol_class (ν : Measure (Fv F v)) [ν.IsAddHaarMeasure]
       exact (residue_eq_iff v _ _).1 (congrFun h2 ())
   · simp
 
+/- English proof (translation)
+Take `⟨fib, hf, -⟩` from `id hm`. Establish `hSm` using `(isOpen_class v β).measurableSet`. Establish `hpm` using `(continuous_q σ J v).measurable hSm`. Establish `hLm` using `(isOpen_latV (M := M) b v).measurableSet`. Use `set S : Set (Fv F v) := {c | Valued.v (c - β) < 1} with hS`.
+
+Establish `hfb : ∀ c, fib c (latV b v ∩ (fun X => qR (Fv F v) σ J (X 0)) ⁻¹' S) = S.indicator (fun _ => m (latV b v)) c`. Introduce `c`. Establish `hae : ∀ᵐ X ∂(fib c), qR (Fv F v) σ J (X 0) = c`. Use `hf.1 c` as an intermediate fact. Rewrite `this` using `[Set.inter_univ]`.
+
+Conclude with `this`. Distinguish the cases in `hc : c ∈ S`. Rewrite using `[Set.indicator_of_mem hc, ← fib_const σ b J v hσ h2 lam ν hl hν β c hβ hc m (fib c) hm ⟨fib, hf, rfl⟩]`. Use `measure_congr ?_` and prove the remaining obligations. Use `filter_upwards [hae] with X hX`.
+
+Conclude with `propext ⟨fun h => h.1, fun h => ⟨h, show qR (Fv F v) σ J (X 0) ∈ S from hX ▸ hc⟩⟩`. Rewrite using `[Set.indicator_of_notMem hc]`. Use `measure_mono_null ?_ hae` and prove the remaining obligations. Introduce `X hX hX'`. Establish `e : qR (Fv F v) σ J (X 0) = c` using `hX'`.
+
+Conclude with `hc (e ▸ hX.2)`. Use `hf.2.1 ((latV b v ∩ (fun X => qR (Fv F v) σ J (X 0)) ⁻¹' S).indicator 1) (measurable_one.indicator (hLm.inter hpm))` as an intermediate fact. Simplify using `only [Measure.restrict_univ, lintegral_indicator_one (hLm.inter hpm), hfb] at this`. Rewrite using `[this, lintegral_indicator hSm, setLIntegral_const]`.
+-/
 theorem vol_fibre (hσ : IsCMExt F E σ) (h2 : Valued.v (2 : Fv F v) = 1)
     (lam : Measure (Fv F v ⊗[F] E)) (ν : Measure (Fv F v)) (hl : lam.IsAddHaarMeasure)
     (hν : ν.IsAddHaarMeasure) (β : Fv F v) (hβ : Valued.v β = 1)
@@ -293,6 +388,9 @@ theorem vol_fibre (hσ : IsCMExt F E σ) (h2 : Valued.v (2 : Fv F v) = 1)
   simp only [Measure.restrict_univ, lintegral_indicator_one (hLm.inter hpm), hfb] at this
   rw [this, lintegral_indicator hSm, setLIntegral_const]
 
+/- English proof (translation)
+Establish `e : (latV b v : Set (Fin 1 → Fin M → Fv F v ⊗[F] E)) = Set.univ.pi fun _ => Set.univ.pi fun _ => intV b v`. Use extensionality with `X`. Simplify using `only [mem_latV_iff, Set.mem_pi, Set.mem_univ, true_implies]`. Rewrite using `[e, tupMeas, Measure.pi_pi]`. Simplify using `[Measure.pi_pi, h]`.
+-/
 theorem tupMeas_latV (lam : Measure (Fv F v ⊗[F] E)) [lam.IsAddHaarMeasure] (h : lam (intV b v) = 1) :
     tupMeas lam 1 M (latV b v) = 1 := by
   have e : (latV b v : Set (Fin 1 → Fin M → Fv F v ⊗[F] E)) =
@@ -302,6 +400,9 @@ theorem tupMeas_latV (lam : Measure (Fv F v ⊗[F] E)) [lam.IsAddHaarMeasure] (h
   rw [e, tupMeas, Measure.pi_pi]
   simp [Measure.pi_pi, h]
 
+/- English proof (translation)
+The claim follows from `|(m (latV b v)).toReal - 1| * (Ideal.absNorm v.asIdeal : ℝ) ^ M ≤ (Ideal.absNorm v.asIdeal : ℝ) := by classical haveI := GlobalTheory.SelfDualGenus.finite_residueField_adicCompletionIntegers v letI := Fintype.ofFinite (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) have h …`.
+-/
 theorem local_bound (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hM : 1 ≤ M)
     (h2 : Valued.v (2 : Fv F v) = 1)
     (hS : ∀ p q, algebraMap F (Fv F v) (gram σ b J p q) ∈ v.adicCompletionIntegers F)
@@ -394,6 +495,9 @@ theorem local_bound (hσ : IsCMExt F E σ) (hJ : IsHermND σ J) (hM : 1 ≤ M)
 
 end Local
 
+/- English proof (translation)
+Establish `h : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, v.valuation F x = 1` using `GlobalTheory.QNorm.finite_valuation_ne_one F (Units.mk0 x hx)`. Use `filter_upwards [h] with v hv`. Rewrite using `[← hv]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`.
+-/
 theorem eventually_valued_eq_one {F : Type} [Field F] [NumberField F] {x : F} (hx : x ≠ 0) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, Valued.v (algebraMap F (Fv F v) x) = 1 := by
   have h : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, v.valuation F x = 1 :=
@@ -402,6 +506,9 @@ theorem eventually_valued_eq_one {F : Type} [Field F] [NumberField F] {x : F} (h
   rw [← hv]
   exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Conclude with `Filter.Eventually.of_forall fun v => by rw [hx, map_zero]; exact zero_mem _`. Conclude with `(eventually_valued_eq_one hx).mono fun v hv => hv.le`.
+-/
 theorem eventually_mem {F : Type} [Field F] [NumberField F] (x : F) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite,
       algebraMap F (Fv F v) x ∈ v.adicCompletionIntegers F := by
@@ -409,6 +516,9 @@ theorem eventually_mem {F : Type} [Field F] [NumberField F] (x : F) :
   · exact Filter.Eventually.of_forall fun v => by rw [hx, map_zero]; exact zero_mem _
   · exact (eventually_valued_eq_one hx).mono fun v hv => hv.le
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d b s M J β hM hJ hβ`. Use `filter_upwards [eventually_valued_eq_one (two_ne_zero (α := F)), eventually_valued_eq_one (gram_det σ b J hσ hJ), eventually_valued_eq_one hβ, Filter.eventually_all.2 fun p => Filter.eventually_all.2 fun q => eventually_mem (gram σ b J p q)] with v h2 hdet hβ' hS m hm`. Rewrite `h2` using `[map_ofNat]`. Conclude with `local_bound σ b J v hσ hJ hM h2 hS hdet _ _ (s.haar_lamV v) (s.haar_nuV v) (s.lamV_int v) (s.nuV_int v) _ hβ' m hm`.
+-/
 theorem local_density_bound : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (s : StdMeas b) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (β : F), 1 ≤ M → IsHermND σ J → β ≠ 0 → ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ m, FibAt (Fv F v) σ J (tupMeas (s.lamV v) 1 M) (s.nuV v) (algebraMap F (Fv F v) β) m → |(m (latV b v)).toReal - 1| * (Ideal.absNorm v.asIdeal : ℝ) ^ M ≤ (Ideal.absNorm v.asIdeal : ℝ) := by
   intro F E _ _ _ _ _ σ hσ d b s M J β hM hJ hβ
   filter_upwards [eventually_valued_eq_one (two_ne_zero (α := F)),

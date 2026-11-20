@@ -14,24 +14,48 @@ variable {ι A G : Type} [AddCommGroup A] [Group G] {V : ι → Type} [∀ i, Ad
 
 def sub (g : G) : AddSubgroup A := ⨅ i, ((Λ i).map (m • (ρ i g : V i →+ V i))).comap (φ i)
 
+/- English proof (translation)
+Simplify using `only [sub, AddSubgroup.mem_iInf, AddSubgroup.mem_comap, AddSubgroup.mem_map]`. Both sides reduce to the same expression.
+-/
 theorem mem_sub {g : G} {x : A} : x ∈ sub Λ φ ρ m g ↔ ∀ i, ∃ y ∈ Λ i, m • ρ i g y = φ i x := by
   simp only [sub, AddSubgroup.mem_iInf, AddSubgroup.mem_comap, AddSubgroup.mem_map]
   rfl
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem act_mul (i : ι) (g h : G) (y : V i) : ρ i (g * h) y = ρ i g (ρ i h y) := by
   rw [map_mul]; rfl
 
+/- English proof (translation)
+Rewrite using `[← act_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+-/
 theorem act_inv (i : ι) (g : G) (y : V i) : ρ i g (ρ i g⁻¹ y) = y := by
   rw [← act_mul, mul_inv_cancel, map_one]; rfl
 
+/- English proof (translation)
+Rewrite using `[← act_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+-/
 theorem inv_act (i : ι) (g : G) (y : V i) : ρ i g⁻¹ (ρ i g y) = y := by
   rw [← act_mul, inv_mul_cancel, map_one]; rfl
 
+/- English proof (translation)
+Rewrite using `[map_nsmul, act_inv, smul_smul, sq]`.
+-/
 theorem smul_act_smul (i : ι) (g : G) (z : V i) : m • ρ i g (m • ρ i g⁻¹ z) = m ^ 2 • z := by
   rw [map_nsmul, act_inv, smul_smul, sq]
 
 variable {Λ φ ρ m}
 
+/- English proof (translation)
+Take `⟨a, ⟨z, hz, h1⟩, h2⟩` from `happ v _ (hg v y hy).1`. Establish `ha : a ∈ sub Λ φ ρ m g`. Use `(mem_sub Λ φ ρ m).2 fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+
+Conclude with `⟨y + m • ρ u g⁻¹ z, add_mem hy (hg u z hz).2, by rw [map_add, smul_add, smul_act_smul, h1]⟩`. Take `⟨w, hw, h3⟩` from `h2 u hu`. Conclude with `⟨m • ρ u g⁻¹ w, (hg u w hw).2, by rw [smul_act_smul, h3]⟩`. Take `⟨y', hy', h4⟩` from `(mem_sub Λ φ ρ m).1 (e ha) v`. Establish `h5` using `congrArg (ρ v x⁻¹) (h4.trans h1)`.
+
+Rewrite `h5` using `[map_nsmul, inv_act, map_add, map_nsmul, map_nsmul, ← act_mul]`. Establish `h6 : ρ v (x⁻¹ * g) y = y' - m • ρ v x⁻¹ z`. Use `sub_eq_zero.1 (htf v _ ?_)` and prove the remaining obligations. Rewrite using `[smul_sub, smul_sub, h5, smul_smul, sq]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[h6]`. Conclude with `sub_mem hy' (hx v z hz).2`.
+-/
 theorem keep (htf : ∀ i (x : V i), m • x = 0 → x = 0)
     (happ : ∀ v, ∀ y ∈ Λ v, ∃ x, (∃ z ∈ Λ v, φ v x = y + m ^ 2 • z) ∧ ∀ u, u ≠ v → ∃ z ∈ Λ u, φ u x = m ^ 2 • z)
     {g x : G} (hg : ∀ v, ∀ y ∈ Λ v, m • ρ v g y ∈ Λ v ∧ m • ρ v g⁻¹ y ∈ Λ v)
@@ -55,6 +79,13 @@ theorem keep (htf : ∀ i (x : V i), m • x = 0 → x = 0)
   rw [h6]
   exact sub_mem hy' (hx v z hz).2
 
+/- English proof (translation)
+Set `S : G → Prop` to `fun g => ∀ v, ∀ y ∈ Λ v, m • ρ v g y ∈ Λ v ∧ m • ρ v g⁻¹ y ∈ Λ v`. Set `f : AddSubgroup A → G` to `fun H => if h : ∃ g, S g ∧ sub Λ φ ρ m g = H then h.choose else 1`. Use `⟨T.image f, Finset.card_image_le, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h : ∃ x, S x ∧ sub Λ φ ρ m x = sub Λ φ ρ m g` using `⟨g, hg, rfl⟩`. Establish `hf : f (sub Λ φ ρ m g) = h.choose` using `dif_pos h`.
+
+Take `⟨hx, e⟩` from `h.choose_spec`. Use `⟨h.choose, hf ▸ Finset.mem_image_of_mem f (hT _ fun a => ?_), fun v y => ⟨fun hy => ?_, fun hy => ?_⟩⟩` and prove the remaining obligations. Conclude with `(mem_sub Λ φ ρ m).2 fun u => ⟨m • ρ u g⁻¹ (φ u a), (hg u _ (hφ u a)).2, by rw [smul_act_smul, map_nsmul]⟩`. Conclude with `keep htf happ hg hx e.ge v hy`. Use `keep htf happ hx hg e.le v hy` as an intermediate fact.
+
+Rewrite `this` using `[← act_mul, show g⁻¹ * h.choose * (h.choose⁻¹ * g) = 1 by group, map_one]`. Then use the resulting hypothesis.
+-/
 theorem count (hφ : ∀ i x, φ i x ∈ Λ i) (htf : ∀ i (x : V i), m • x = 0 → x = 0)
     (happ : ∀ v, ∀ y ∈ Λ v, ∃ x, (∃ z ∈ Λ v, φ v x = y + m ^ 2 • z) ∧ ∀ u, u ≠ v → ∃ z ∈ Λ u, φ u x = m ^ 2 • z)
     (T : Finset (AddSubgroup A)) (hT : ∀ H : AddSubgroup A, (∀ x, m ^ 2 • x ∈ H) → H ∈ T) :
@@ -81,6 +112,15 @@ def colAct (n : ℕ) (R : Type) [CommRing R] : GL (Fin n) R →* AddMonoid.End (
   map_one' := AddMonoidHom.ext fun y => Matrix.one_mulVec y
   map_mul' g h := AddMonoidHom.ext fun y => (Matrix.mulVec_mulVec y g.1 h.1).symm
 
+/- English proof (translation)
+Use `haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.2 (Submodule.IsLattice.fg (A := E))`. Use `haveI : Module.Finite ℤ L := Module.Finite.trans (𝓞 E) L`. Take `⟨c, hc⟩` from `GlobalTheory.T.bounded_count_finite_index_subgroups L`. Use `⟨2 * c, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨T, hT, hT'⟩` from `hc (m ^ 2) (pow_pos hm 2)`.
+
+Set `φ : ∀ v : HeightOneSpectrum (𝓞 F), L →+ (Fin n → Fv F v ⊗[F] E)` to `fun v => { toFun := fun x i => (1 : Fv F v) ⊗ₜ[F] x.1 i map_zero' := funext fun i => TensorProduct.tmul_zero _ _ map_add' := fun x y => funext fun i => TensorProduct.tmul_add _ _ _ }`. Set `ρ : ∀ v : HeightOneSpectrum (𝓞 F), GAd σ J →* AddMonoid.End (Fin n → Fv F v ⊗[F] E)` to `fun v => (colAct n _).comp ((matHom (Fv F v) σ J).comp (proj σ J v))`. Take `⟨T', h1, h2⟩` from `count (Λ := fun v => (latLoc F L v).toAddSubgroup) (φ := φ) (ρ := ρ) (m := m) (fun v x => tmul_mem_latLoc (one_mem _) x.2) (fun v x hx => by`. Rewrite `hx` using `[← Nat.cast_smul_eq_nsmul F]`. Conclude with `(smul_eq_zero.1 hx).resolve_left (Nat.cast_ne_zero.2 hm.ne'))`.
+
+Use the proof step `(fun v y hy => by`. Take `⟨x, hx, h⟩` from `GlobalTheory.T.strong_approximation_lattice F E n L (m ^ 2) (pow_pos hm 2) v y hy`. Conclude with `⟨⟨x, hx⟩, h⟩) T hT'`. Use `⟨T', h1.trans (by rwa [pow_mul]), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, h3⟩` from `h2 g fun v y hy => ⟨(hg v y hy).1, by`.
+
+Use `(hg v y hy).2` as an intermediate fact. Rewrite using `[← map_inv] at this⟩` and apply the resulting hypothesis. Use `⟨x, hx, fun v => mem_stabLoc.2 fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, ← map_mul]`. Conclude with `h3 v y`.
+-/
 theorem exists_card_le (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] :
     ∃ c : ℕ, ∀ m : ℕ, 0 < m → ∃ T : Finset (GAd σ J), T.card ≤ m ^ c ∧ ∀ g : GAd σ J,

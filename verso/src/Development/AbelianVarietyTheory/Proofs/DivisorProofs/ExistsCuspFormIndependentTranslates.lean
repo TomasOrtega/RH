@@ -17,6 +17,11 @@ namespace GlobalTheory.TranslatesDet
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `c d`. Establish `h1` using `h (Pi.single c 1) (Pi.single d 1)`. Simplify using `only [herm, Matrix.mulVec_single_one] at h1`. Establish `h2 : (∑ a, ∑ b, (Pi.single c (1 : E) : Fin r → E) a * G a b * cc ((Pi.single d (1 : E) : Fin r → E) b)) = G c d` using `by simp [Pi.single_apply, cc]`. Rewrite using `[← h2, ← h1]`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+-/
 theorem hermMat {G γ : Matrix (Fin r) (Fin r) E}
     (h : ∀ v w, herm G (Matrix.mulVec γ v) (Matrix.mulVec γ w) = herm G v w) :
     γᵀ * G * γ.map cc = G := by
@@ -30,6 +35,11 @@ theorem hermMat {G γ : Matrix (Fin r) (Fin r) E}
   rw [Finset.sum_comm]
   rfl
 
+/- English proof (translation)
+Establish `hc : ((γ : Matrix (Fin r) (Fin r) E).map τ).map (starRingEnd ℂ) = ((γ : Matrix (Fin r) (Fin r) E).map cc).map τ`. Use extensionality with `a b`. Simplify using `[cc, NumberField.IsCMField.complexEmbedding_complexConj]`. Establish `key : ((γ : Matrix (Fin r) (Fin r) E).map τ)ᵀ * G.map τ * ((γ : Matrix (Fin r) (Fin r) E).map τ).map (starRingEnd ℂ) = G.map τ`. Rewrite using `[hc, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hermMat h]`.
+
+Rewrite using `[FrameDegreeData.gram_eq, FrameDegreeData.gram_eq, Matrix.transpose_mul, Matrix.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [key]`.
+-/
 theorem gramLact {G : Matrix (Fin r) (Fin r) E} {γ : GL (Fin r) E}
     (h : ∀ v w, herm G (Matrix.mulVec (γ : Matrix (Fin r) (Fin r) E) v)
       (Matrix.mulVec (γ : Matrix (Fin r) (Fin r) E) w) = herm G v w)
@@ -49,6 +59,13 @@ theorem gramLact {G : Matrix (Fin r) (Fin r) E} {γ : GL (Fin r) E}
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [key]
 
+/- English proof (translation)
+Introduce `τ`. Establish `hm : mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `rfl`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, Matrix.det_mul]`. Use `mul_ne_zero ?_ (hx τ).1` and prove the remaining obligations.
+
+Establish `hd : ((γ : Matrix (Fin r) (Fin r) E).map τ.1).det = τ.1 (γ : Matrix (Fin r) (Fin r) E).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hd]`. Conclude with `(map_ne_zero τ.1).2 (Matrix.GeneralLinearGroup.det_ne_zero γ)`.
+
+Establish `e : dmin G (lact γ x) τ i = dmin G x τ i`. Unfold `dmin`. Rewrite using `[hm, gramLact h]`. Rewrite using `[e]`. Conclude with `(hx τ).2 i`.
+-/
 theorem lactGG {Ψ : Finset (E →+* ℂ)} {G : Matrix (Fin r) (Fin r) E} {p0 : ℕ} {γ : GL (Fin r) E}
     (h : ∀ v w, herm G (Matrix.mulVec (γ : Matrix (Fin r) (Fin r) E) v)
       (Matrix.mulVec (γ : Matrix (Fin r) (Fin r) E) w) = herm G v w)
@@ -66,6 +83,9 @@ theorem lactGG {Ψ : Finset (E →+* ℂ)} {G : Matrix (Fin r) (Fin r) E} {p0 : 
       unfold dmin; rw [hm, gramLact h]
     rw [e]; exact (hx τ).2 i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show ((a : Matrix (Fin r) (Fin r) E).map τ.1 * ((b : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) : Matrix (Fin r) (Fin r) ℂ) = ((a * b : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 theorem lactMul {Ψ : Finset (E →+* ℂ)} (a b : GL (Fin r) E) (x : Frame Ψ r) :
     lact a (lact b x) = lact (a * b) x := by
   funext τ
@@ -73,6 +93,9 @@ theorem lactMul {Ψ : Finset (E →+* ℂ)} (a b : GL (Fin r) E) (x : Frame Ψ r
     Matrix (Fin r) (Fin r) ℂ) = ((a * b : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ
   rw [Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hx`.
+-/
 theorem castGG {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') {G : Matrix (Fin r) (Fin r) E} {p0 : ℕ}
     {x : Frame Ψ r} (hx : x ∈ GG Ψ G p0) : castFrame h x ∈ GG Ψ' G p0 := by
   subst h; exact hx
@@ -81,21 +104,33 @@ section Two
 
 variable {U C : Type} [Group U] [MulAction U C] (M : TwoLevels E r U C)
 
+/- English proof (translation)
+Establish `h` using `castGG (M.comp_Ψ c) hx`. Rewrite `h` using `[M.comp_Gm c, M.comp_basePoint c]`. Conclude with `h`.
+-/
 theorem domOfComp (c : C) {x : Frame (M.comp c).Ψ r} (hx : x ∈ (M.comp c).dom) :
     castFrame (M.comp_Ψ c) x ∈ M.dom := by
   have h := castGG (M.comp_Ψ c) hx
   rw [M.comp_Gm c, M.comp_basePoint c] at h
   exact h
 
+/- English proof (translation)
+Establish `hx' : x ∈ GG M.Ψ (M.comp c).Gm (M.comp c).p0`. Rewrite using `[M.comp_Gm c, M.comp_basePoint c]`. Conclude with `hx`. Conclude with `castGG (M.comp_Ψ c).symm hx'`.
+-/
 theorem domToComp (c : C) {x : Frame M.Ψ r} (hx : x ∈ M.dom) :
     castFrame (M.comp_Ψ c).symm x ∈ (M.comp c).dom := by
   have hx' : x ∈ GG M.Ψ (M.comp c).Gm (M.comp c).p0 := by
     rw [M.comp_Gm c, M.comp_basePoint c]; exact hx
   exact castGG (M.comp_Ψ c).symm hx'
 
+/- English proof (translation)
+The claim follows from `lactGG (M.tr_herm u c) hx`.
+-/
 theorem trDom (u : U) (c : C) {x : Frame M.Ψ r} (hx : x ∈ M.dom) : lact (M.tr u c) x ∈ M.dom :=
   lactGG (M.tr_herm u c) hx
 
+/- English proof (translation)
+Establish `h1` using `(hF c).1.1.2.2 γ hγ (castFrame (M.comp_Ψ c).symm x) (domToComp M c hx)`. Rewrite `h1` using `[M.χ_one c _ γ hγ, one_mul]`. Conclude with `h1`.
+-/
 theorem ssLact {la : Wt M.Ψ r} {F : C → Frame M.Ψ r → ℂ} (hF : F ∈ M.SS la) (c : C)
     {γ : GL (Fin r) E} (hγ : γ ∈ (M.comp c).Γ) {x : Frame M.Ψ r} (hx : x ∈ M.dom) :
     F c (lact γ x) = F c x := by
@@ -103,10 +138,18 @@ theorem ssLact {la : Wt M.Ψ r} {F : C → Frame M.Ψ r → ℂ} (hF : F ∈ M.S
   rw [M.χ_one c _ γ hγ, one_mul] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `c`. Conclude with `⟨BoundedSectionAlgebra.bdd_zero _ _, fun ξ _ x _ => BoundedSectionAlgebra.fj_zero _ _ ξ x 0⟩`.
+-/
 theorem ssZero (la : Wt M.Ψ r) : (0 : C → Frame M.Ψ r → ℂ) ∈ M.SS la := by
   intro c
   exact ⟨BoundedSectionAlgebra.bdd_zero _ _, fun ξ _ x _ => BoundedSectionAlgebra.fj_zero _ _ ξ x 0⟩
 
+/- English proof (translation)
+Introduce `c`. Establish `h` using `hF c`. Establish `h'` using `hG c`. Establish `e : (fun y => (F + G) c (castFrame (M.comp_Ψ c) y)) = (fun y => F c (castFrame (M.comp_Ψ c) y)) + (fun y => G c (castFrame (M.comp_Ψ c) y))` using `rfl`. Rewrite using `[e]`.
+
+Conclude with `⟨BoundedSectionAlgebra.bdd_add _ h.1 h'.1, fun ξ hξ x hx => by`. Rewrite using `[BoundedSectionAlgebra.fj_add _ h.1 h'.1 hξ hx, h.2 ξ hξ x hx, h'.2 ξ hξ x hx, add_zero]⟩`.
+-/
 theorem ssAdd {la : Wt M.Ψ r} {F G : C → Frame M.Ψ r → ℂ} (hF : F ∈ M.SS la) (hG : G ∈ M.SS la) :
     F + G ∈ M.SS la := by
   intro c
@@ -118,6 +161,9 @@ theorem ssAdd {la : Wt M.Ψ r} {F G : C → Frame M.Ψ r → ℂ} (hF : F ∈ M.
   exact ⟨BoundedSectionAlgebra.bdd_add _ h.1 h'.1, fun ξ hξ x hx => by
     rw [BoundedSectionAlgebra.fj_add _ h.1 h'.1 hξ hx, h.2 ξ hξ x hx, h'.2 ξ hξ x hx, add_zero]⟩
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (fun F => F ∈ M.SS la) (fun _ _ ha hb => ssAdd M ha hb) (ssZero M la) h`.
+-/
 theorem ssSum {la : Wt M.Ψ r} {ι : Type} (s : Finset ι) (f : ι → C → Frame M.Ψ r → ℂ)
     (h : ∀ i ∈ s, f i ∈ M.SS la) : ∑ i ∈ s, f i ∈ M.SS la :=
   Finset.sum_induction f (fun F => F ∈ M.SS la) (fun _ _ ha hb => ssAdd M ha hb) (ssZero M la) h
@@ -131,6 +177,25 @@ namespace GlobalTheory.TranslatesDet
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 variable {U C : Type} [Group U] [MulAction U C] (M : TwoLevels E r U C)
 
+/- English proof (translation)
+Use `⟨lact (M.tr k c0) x0, trDom M k c0 hx0, ?_⟩` and prove the remaining obligations. Establish `ht1 : M.tr 1 c0 ∈ (M.comp c0).Γ`. Establish `h` using `M.tr_mul 1 1 c0`. Simplify using `only [mul_one, one_smul] at h`. Establish `e : M.tr 1 c0 * (M.tr 1 c0 * M.tr 1 c0)⁻¹ = (M.tr 1 c0)⁻¹` using `by group`.
+
+Rewrite `h` using `[e]`. Conclude with `inv_mem_iff.mp h`. Establish `ha : M.pull 1 u c0 x0 ≠ 0`. Simplify using `only [TwoLevels.pull, one_smul]`. Rewrite using `[ssLact M hu c0 ht1 hx0]`.
+
+Conclude with `hne`. Apply the tactic sequence `have entry : ∀ g : U, M.pull g u0 (k • c0) (lact (M.tr k c0) x0) = M.pull (g * k) u c0 x0 := by`. Introduce `g`. Establish `hzd : lact (M.tr g (k • c0)) (lact (M.tr k c0) x0) ∈ M.dom` using `trDom M g (k • c0) (trDom M k c0 hx0)`. Establish `e1 : lact (M.tr (g * k) c0) x0 = lact (M.tr (g * k) c0 * (M.tr g (k • c0) * M.tr k c0)⁻¹) (lact (M.tr g (k • c0)) (lact (M.tr k c0) x0))`.
+
+Rewrite using `[lactMul (M.tr g (k • c0)) (M.tr k c0) x0, lactMul, inv_mul_cancel_right]`. Simplify using `only [TwoLevels.pull]`. Rewrite using `[e1, ← mul_smul, hrep (g * k)]`. Conclude with `(ssLact M hu ((g * k) • c0) (M.tr_mul g k c0) hzd).symm`. Set `σ : Equiv.Perm U` to `(Equiv.inv U).trans (Equiv.mulRight k⁻¹)`.
+
+Establish `key : ∀ h h' : U, h * h' * k = 1 ↔ σ h = h'`. Introduce `h h'`. Use `show h * h' * k = 1 ↔ h⁻¹ * k⁻¹ = h'`. Prove the components needed by the constructor for the conclusion. Introduce `e`.
+
+Establish `e2 : h⁻¹ * (h * h' * k) * k⁻¹ = h'` using `by group`. Rewrite `e2` using `[e]`. Simplify using `using e2`. Introduce `e`. Rewrite using `[← e]`.
+
+Use `group`. Establish `hmat : (Matrix.of fun h h' : U => M.pull (h * h') u0 (k • c0) (lact (M.tr k c0) x0)) = (M.pull 1 u c0 x0 • (1 : Matrix U U ℂ)).submatrix σ id`. Use extensionality with `h h'`. Rewrite using `[Matrix.of_apply, entry, Matrix.submatrix_apply, id, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Distinguish the cases in `e : h * h' * k = 1`.
+
+Rewrite using `[if_pos ((key h h').1 e), e, mul_one]`. Rewrite using `[if_neg (fun e' => e ((key h h').2 e')), mul_zero]`. Conclude with `hz _ e`. Unfold `TwoLevels.detTr`. Rewrite using `[hmat, Matrix.det_permute, Matrix.det_smul, Matrix.det_one, mul_one]`.
+
+Use `mul_ne_zero ?_ (pow_ne_zero _ ha)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`.
+-/
 theorem detNeAt [Fintype U] [DecidableEq U] {la : Wt M.Ψ r} {u u0 : C → Frame M.Ψ r → ℂ}
     (hu : u ∈ M.SS la) {c0 : C} {x0 : Frame M.Ψ r} (hx0 : x0 ∈ M.dom) (hne : u c0 x0 ≠ 0)
     (hz : ∀ h : U, h ≠ 1 → M.pull h u c0 x0 = 0)
@@ -184,6 +249,19 @@ theorem detNeAt [Fintype U] [DecidableEq U] {la : Wt M.Ψ r} {u u0 : C → Frame
   refine mul_ne_zero ?_ (pow_ne_zero _ ha)
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]
 
+/- English proof (translation)
+Introduce `E _ _ _ r U C _ _ _ _ _ M hL s hs hsle`. Establish `hB : ∀ c : C, ∃ x ∈ (M.comp c).dom, GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.NoContraction (M.comp c) x` using `fun c => by`. Take `⟨x, hx, h1, -⟩` from `GlobalTheory.T.existsBalancedFrameCMUnitary_proof E r (M.comp c)`. Conclude with `⟨x, hx, h1⟩`. Use `choose xb hxb hnc using hB`.
+
+Establish `hI : ∀ c : C, ∃ u ∈ M.SS (deMul M.Ψ r M.p0 s), u c (castFrame (M.comp_Ψ c) (xb c)) ≠ 0 ∧ (∀ h : U, h ≠ 1 → M.pull h u c (castFrame (M.comp_Ψ c) (xb c)) = 0) ∧ ∀ c', (∀ h : U, h • c ≠ c') → ∀ y, u c' y = 0` using `fun c => GlobalTheory.T.exists_cuspForm_nonzero_at_one_lift E r U C M hL s hs hsle c _ (hnc c) (domOfComp M c (hxb c))`. Use `choose uc huS hu0 hu1 hu2 using hI`. Use `haveI : Fintype (Quotient (MulAction.orbitRel U C)) := Fintype.ofFinite _`. Establish `hsum : ∀ c' y, (∑ q : Quotient (MulAction.orbitRel U C), uc q.out) c' y = uc (Quotient.mk (MulAction.orbitRel U C) c').out c' y`. Introduce `c' y`.
+
+Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_eq_single (Quotient.mk (MulAction.orbitRel U C) c') (fun q _ hq => ?_) (fun h => absurd (Finset.mem_univ _) h)` and prove the remaining obligations. Use `hu2 q.out c' (fun h hh => hq ?_) y` and prove the remaining obligations. Establish `e : (Quotient.mk (MulAction.orbitRel U C) q.out) = Quotient.mk (MulAction.orbitRel U C) c'` using `Quotient.sound (MulAction.orbitRel_apply.2 ⟨h⁻¹, by show h⁻¹ • c' = q.out; rw [← hh, inv_smul_smul]⟩)`. Rewrite `e` using `[Quotient.out_eq]`. Then use the resulting hypothesis.
+
+Establish `hrep : ∀ (q : Quotient (MulAction.orbitRel U C)) (g : U) (y : Frame M.Ψ r), (∑ q' : Quotient (MulAction.orbitRel U C), uc q'.out) (g • q.out) y = uc q.out (g • q.out) y`. Introduce `q g y`. Rewrite using `[hsum]`. Establish `e : Quotient.mk (MulAction.orbitRel U C) (g • q.out) = q` using `(Quotient.sound (MulAction.orbitRel_apply.2 ⟨g, rfl⟩)).trans (Quotient.out_eq q)`. Rewrite using `[e]`.
+
+Use `⟨∑ q : Quotient (MulAction.orbitRel U C), uc q.out, ssSum M _ _ (fun q _ => huS q.out), fun c => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩ : (Quotient.mk (MulAction.orbitRel U C) c).out ∈ MulAction.orbit U c` from `MulAction.orbitRel_apply.1 (Quotient.exact (Quotient.out_eq (Quotient.mk (MulAction.orbitRel U C) c)))`. Establish `hk : m⁻¹ • (Quotient.mk (MulAction.orbitRel U C) c).out = c`. Rewrite using `[← hm, inv_smul_smul]`. Rewrite using `[← hk]`.
+
+Conclude with `detNeAt M (huS _) (domOfComp M _ (hxb _)) (hu0 _) (hu1 _) (hrep _) m⁻¹`.
+-/
 theorem independentTranslates : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E],
     IndependentTranslates E := by
   intro E _ _ _ r U C _ _ _ _ _ M hL s hs hsle

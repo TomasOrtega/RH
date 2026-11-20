@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Establish `hp : (Polynomial.X ^ k - 1 : Polynomial F) ≠ 0`. Simplify using `using Polynomial.X_pow_sub_C_ne_zero (Nat.pos_of_ne_zero hk) (1 : F)`. Use extensionality with `b`. Rewrite using `[Polynomial.mem_rootSet_of_ne hp]`. Simplify using `[sub_eq_zero, hk]`.
+-/
 private theorem rootSet_X_pow_sub_one_eq_setOf_exists_mem_singleton (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (k : ℕ) (hk : k ≠ 0) :
     (Polynomial.X ^ k - 1 : Polynomial F).rootSet Ω = {b : Ω | ∃ m ∈ ({k} : Set ℕ), m ≠ 0 ∧ b ^ m = 1} := by
   have hp : (Polynomial.X ^ k - 1 : Polynomial F) ≠ 0 := by
@@ -10,6 +13,17 @@ private theorem rootSet_X_pow_sub_one_eq_setOf_exists_mem_singleton (F Ω : Type
   rw [Polynomial.mem_rootSet_of_ne hp]
   simp [sub_eq_zero, hk]
 
+/- English proof (translation)
+Establish `hx' : x ∈ IntermediateField.adjoin F ((Polynomial.X ^ l ^ n - 1 : Polynomial F).rootSet Ω)` using `hx`. Use `show σ x ∈ IntermediateField.adjoin F ((Polynomial.X ^ l ^ n - 1 : Polynomial F).rootSet Ω)`. Use `IntermediateField.adjoin_induction F (p := fun x _ => σ x ∈ IntermediateField.adjoin F ((Polynomial.X ^ l ^ n - 1 : Polynomial F).rootSet Ω)) ?_ ?_ ?_ ?_ ?_ hx'` and prove the remaining obligations. Introduce `y hy`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises.
+
+Rewrite `hy`, the goal using `[Polynomial.mem_rootSet]`. Take `⟨hp, hy⟩` from `hy`. Use `⟨hp, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one] at hy ⊢`. Rewrite using `[← map_pow, ← map_one σ, ← map_sub, hy, map_zero]`.
+
+Introduce `c`. Rewrite using `[h c]`. Conclude with `IntermediateField.algebraMap_mem _ _`. Introduce `y z _ _ hy hz`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem hy hz`. Introduce `y _ hy`. Rewrite using `[map_inv₀]`. Conclude with `inv_mem hy`. Introduce `y z _ _ hy hz`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_mem hy hz`.
+-/
 private theorem apply_mem_fn_of_isLift (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] (l n : ℕ) (τ : F ≃+* F)
     (σ : Ω ≃+* Ω) (h : IsLift τ σ) (x : Ω) (hx : x ∈ Fn F Ω l n) : σ x ∈ Fn F Ω l n := by
   have hx' : x ∈ IntermediateField.adjoin F ((Polynomial.X ^ l ^ n - 1 : Polynomial F).rootSet Ω) := hx
@@ -37,6 +51,21 @@ private theorem apply_mem_fn_of_isLift (F Ω : Type) [Field F] [Field Ω] [Algeb
     rw [map_mul]
     exact mul_mem hy hz
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ n`. Establish `hl : l.Prime` using `Fact.out`. Establish `hk : l ^ n ≠ 0` using `pow_ne_zero _ hl.ne_zero`. Use `haveI : NeZero (l ^ n) := ⟨hk⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`.
+
+Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `hFn : Fn F Ω l n = IntermediateField.adjoin F {b : Ω | ∃ m ∈ ({l ^ n} : Set ℕ), m ≠ 0 ∧ b ^ m = 1}` using `by show IntermediateField.adjoin F _ = _`. Rewrite using `[rootSet_X_pow_sub_one_eq_setOf_exists_mem_singleton F Ω _ hk]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hFn]`.
+
+Use `IntermediateField.isCyclotomicExtension_adjoin_of_exists_isPrimitiveRoot (S := {l ^ n}) (K := F) (L := Ω) ?_` and prove the remaining obligations. Introduce `m hm _`. Rewrite `hm` using `[Set.mem_singleton_iff]`. Substitute `hm` using the available equality. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)`.
+
+Introduce `τ σ h`. Establish `hs : IsLift τ.symm σ.symm`. Introduce `x`. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, h, RingEquiv.apply_symm_apply]`.
+
+Use `⟨{ toFun := fun x => ⟨σ x, apply_mem_fn_of_isLift F Ω l n τ σ h x.1 x.2⟩, invFun := fun x => ⟨σ.symm x, apply_mem_fn_of_isLift F Ω l n τ.symm σ.symm hs x.1 x.2⟩, left_inv := fun x => Subtype.ext (σ.symm_apply_apply x.1), right_inv := fun x => Subtype.ext (σ.apply_symm_apply x.1), …` and prove the remaining obligations. Introduce `x`. Both sides reduce to the same expression. Introduce `hn2`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)`.
+
+Establish `hzmem : z ∈ Fn F Ω l n`. Rewrite using `[hFn]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨l ^ n, rfl, hk, hz.pow_eq_one⟩`. Establish `hζ : IsPrimitiveRoot (⟨z, hzmem⟩ : Fn F Ω l n) (l ^ n)` using `IsPrimitiveRoot.of_map_of_injective (f := (Fn F Ω l n).val) hz Subtype.val_injective`. Establish `hcyc` using `IsPrimitiveRoot.intermediateField_adjoin_isCyclotomicExtension (K := ℚ) hζ`.
+
+Establish `h2 : 2 < l ^ n`. Combine the equalities or inequalities in the displayed calculation. Establish `htc` using `@IsCyclotomicExtension.Rat.isTotallyComplex (l ^ n) _ (IntermediateField.adjoin ℚ {(⟨z, hzmem⟩ : Fn F Ω l n)}) _ _ hcyc h2`. Conclude with `isTotallyComplex_of_algebra (IntermediateField.adjoin ℚ {(⟨z, hzmem⟩ : Fn F Ω l n)}) (Fn F Ω l n)`.
+-/
 theorem UpperTheory.V.Kum.fnCyc :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n : ℕ), IsCyclotomicExtension {l ^ n} F (Fn F Ω l n) ∧ (∀ (τ : F ≃+* F) (σ : Ω ≃+* Ω), IsLift τ σ → ∃ τ' : Fn F Ω l n ≃+* Fn F Ω l n, IsLift τ' σ) ∧ (2 ≤ n → IsTotallyComplex (Fn F Ω l n)) := by
   intro F Ω _ _ _ _ _ l _ n

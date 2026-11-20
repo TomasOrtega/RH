@@ -9,6 +9,31 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `Fintype.ofFinite σ` as an intermediate fact. Take `⟨hft, hred⟩` from `(reduced_finiteType_iff_testRing K).2 p`. Set `P` to `MvPolynomial σ p.R`. Set `f : P` to `∏ i ∈ Finset.univ.filter D, MvPolynomial.X i`. Set `B` to `Localization.Away f`.
+
+Establish `hPred : _root_.IsReduced P` using `⟨fun q hq => by`. Use extensionality with `i`. Conclude with `IsReduced.eq_zero _ (MvPolynomial.isNilpotent_iff.1 hq i)⟩`. Establish `hBred : _root_.IsReduced B` using `isReduced_localizationPreserves (Submonoid.powers f) B hPred`. Establish `hPft : Algebra.FiniteType K P` using `Algebra.FiniteType.trans hft inferInstance`.
+
+Establish `hBft : Algebra.FiniteType K B` using `Algebra.FiniteType.trans hPft (IsLocalization.finiteType_of_monoid_fg (Submonoid.powers f) B)`. Take `⟨A, ⟨e⟩⟩` from `(reduced_finiteType_iff_testRing K).1 B hBft hBred`. Set `emb : P →ₐ[K] B` to `IsScalarTower.toAlgHom K P B`. Set `c : p.R →ₐ[K] P` to `IsScalarTower.toAlgHom K p.R P`. Use `⟨A, (e.symm : B →ₐ[K] A.R).comp (emb.comp c), fun i => e.symm (emb (MvPolynomial.X i)), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i hi`. Use `IsUnit.map e.symm ?_` and prove the remaining obligations. Establish `hf : IsUnit (emb f)` using `IsLocalization.Away.algebraMap_isUnit f`. Use `isUnit_of_dvd_unit (map_dvd emb ?_) hf` and prove the remaining obligations. Conclude with `Finset.dvd_prod_of_mem _ (by simp [hi])`.
+
+Introduce `T _ _ ψ t ht`. Set `φ : P →ₐ[K] T` to `MvPolynomial.aevalTower ψ t`. Establish `hφ : IsUnit (φ f)`. Simplify using `only [f, map_prod]`. Use `IsUnit.prod_iff.2 fun i hi => ?_` and prove the remaining obligations.
+
+Simplify using `only [φ, P, MvPolynomial.aevalTower_X]`. Conclude with `ht i (by simpa using hi)`. Establish `hφ' : ∀ y : Submonoid.powers f, IsUnit (φ y)`. Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `using hφ.pow n`.
+
+Set `k₀ : B →ₐ[K] T` to `IsLocalization.liftAlgHom (M := Submonoid.powers f) hφ'`. Establish `hk₀ : ∀ q, k₀ (emb q) = φ q` using `fun q => IsLocalization.lift_eq hφ' q`. Use `⟨k₀.comp (e : A.R →ₐ[K] B), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `AlgHom.ext fun r => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `k₀ (e (e.symm (emb (c r)))) = ψ r`.
+
+Rewrite using `[AlgEquiv.apply_symm_apply, hk₀]`. Conclude with `MvPolynomial.aevalTower_algebraMap ψ t r`. Introduce `i`. Express the relevant statement in the definitionally equal form `k₀ (e (e.symm (emb (MvPolynomial.X i)))) = t i`. Rewrite using `[AlgEquiv.apply_symm_apply, hk₀]`.
+
+Conclude with `MvPolynomial.aevalTower_X ψ t i`. Introduce and unpack `k ⟨h1, h2⟩`. Establish `h3 : ∀ q, k (e.symm (emb q)) = φ q`. Introduce `q`. Proceed by induction on `q using MvPolynomial.induction_on with`.
+
+Consider the case `C r`. Use `AlgHom.congr_fun h1 r` as an intermediate fact. Conclude with `this.trans (MvPolynomial.aevalTower_algebraMap ψ t r).symm`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `mul_X a i ha`.
+
+Simplify using `only [map_mul, ha, h2]`. Rewrite using `[show φ (MvPolynomial.X i) = t i from MvPolynomial.aevalTower_X ψ t i]`. Establish `h4 : (k.comp (e.symm : B →ₐ[K] A.R)).toRingHom = k₀.toRingHom` using `IsLocalization.ringHom_ext (Submonoid.powers f) (RingHom.ext fun q => (h3 q).trans (hk₀ q).symm)`. Use `AlgHom.ext fun a => ?_` and prove the remaining obligations. Use `RingHom.congr_fun h4 (e a)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem exists_testRing_universal_partially_invertible (K : Type) [Field K] (σ : Type) [Finite σ]
     (D : σ → Prop) (p : TRing K) :
     ∃ (A : TRing K) (π : p.R →ₐ[K] A.R) (x : σ → A.R), (∀ i, D i → IsUnit (x i)) ∧
@@ -74,6 +99,19 @@ theorem exists_testRing_universal_partially_invertible (K : Type) [Field K] (σ 
       have := RingHom.congr_fun h4 (e a)
       simpa using this
 
+/- English proof (translation)
+Introduce `K _ J _ m p`. Take `⟨A, π, x, hx, hu⟩` from `exists_testRing_universal_partially_invertible K (Option (Σ τ : J, {q : Fin (m τ) × Fin (m τ) // q.2 ≤ q.1})) (fun o => o.elim True fun z => z.2.1.1 = z.2.1.2) p`. Use `⟨A, π, fun τ => Matrix.of fun i j => if h : j ≤ i then x (some ⟨τ, ⟨(i, j), h⟩⟩) else 0, (hx none trivial).unit, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ i`. Simplify using `only [Matrix.of_apply, le_refl, dif_pos]`.
+
+Conclude with `hx _ rfl`. Introduce `τ i j hij`. Conclude with `dif_neg (not_le.2 hij)`. Introduce `T _ _ ψ g a hg1 hg2`. Take `⟨k, ⟨hk1, hk2⟩, hk3⟩` from `hu T ψ (fun o => o.elim (a : T) fun z => g z.1 z.2.1.1 z.2.1.2) (by`.
+
+Introduce and unpack `(_ | ⟨τ, ⟨i, j⟩, h⟩) hD`. Conclude with `a.isUnit`. Take `rfl : i = j` from `hD`. Conclude with `hg1 τ i)`. Use `⟨k, ⟨hk1, fun τ => ?_, hk2 none⟩, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Distinguish the cases in `h : j ≤ i`. Rewrite using `[dif_pos h]`. Conclude with `hk2 _`.
+
+Rewrite using `[dif_neg h, map_zero, hg2 τ i j (not_le.1 h)]`. Introduce and unpack `k' ⟨h1, h2, h3⟩`. Use `hk3 k' ⟨h1, ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | ⟨τ, ⟨i, j⟩, h⟩)`. Conclude with `h3`.
+
+Use `congrFun (congrFun (h2 τ) i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.of_apply, dif_pos h] at this`. Conclude with `this`.
+-/
 theorem exists_testRing_triRing :
     ∀ (K : Type) [Field K] (J : Type) [Fintype J] (m : J → ℕ) (p : TRing K), ∃ (A : TRing K) (π : p.R →ₐ[K] A.R) (X : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) A.R) (s : (A.R)ˣ), TriRing m π X s := by
   intro K _ J _ m p

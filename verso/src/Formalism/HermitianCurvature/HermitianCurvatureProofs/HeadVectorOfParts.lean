@@ -39,6 +39,17 @@ end Formalism.FourierDecayAlt.P.PBI
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `hU5 hExh Wp Wq _ _ _ _ _ _ P p F w X μ L st Cb ν'r m₀r hD hdd hF hcut hLev x hx γ₀ hγG hζ hγF h hh Φ hΦ e`. Take `⟨F₂, hF₂, hV, hJ⟩` from `hExh Wp Wq P p F w X μ L st Cb hD hdd hF hcut e h hh`. Use `set ζ := Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) x.2 with hζdef`. Establish `hr : P.r - P.r = 0` using `by omega`. Establish `hGx : 0 < Complex.normSq ζ - Tz P.k (P.r - P.r) (p.T.bs P.r).z * Tz P.k (P.r - P.r) (p.T.bs P.r).z'` using `hx.2.2`.
+
+Establish `hζ0 : ζ ≠ 0`. Introduce `h0`. Rewrite `hGx` using `[h0, map_zero]`. Use polynomial arithmetic with `[mul_pos (p.T.bs P.r).T_pos (p.T.bs P.r).T'_pos]`. Establish `hZ : Zhat P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' γ₀ = D.ptMatN [(1, ζ)] (P.r - P.r + 1)`.
+
+Use extensionality with `a b`. Establish `ha : a = Fin.last _` using `Fin.ext (by have := a.isLt; simp only [Fin.val_last]; omega)`. Establish `hb : b = Fin.last _` using `Fin.ext (by have := b.isLt; simp only [Fin.val_last]; omega)`. Substitute `ha hb` using the available equality. Rewrite using `[← PBI.zetaL_eq_zhat, hζ]`.
+
+Simplify using `[D.ptMatN, D.ptEntry, hr]`. Establish `hγGG : 0 < Q.GGl P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' γ₀` using `by show 0 < Complex.normSq (Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) γ₀) - Tz P.k (P.r - P.r) (p.T.bs P.r).z * Tz P.k (P.r - P.r) (p.T.bs P.r).z'`. Rewrite using `[hζ]`. Conclude with `hGx`. Use `show p.V (p.Θ.Θ w e F) (h ++ [(1, ζ)]) = _`.
+
+Rewrite using `[hV, hU5 Wp Wq P p F₂ h ζ hh ν'r m₀r hF₂ hζ0 hLev.1 hLev.2.1, PBM.vector_level_zero_eq_jacquet hr (p.T.bs P.r) ν'r m₀r hLev.2.2 _ ζ (by linarith) γ₀ hγG hZ hγF]`. Conclude with `hJ Φ hΦ x.1 γ₀ hγG hγGG`.
+-/
 theorem head_vector_of_parts : PBI.HeadVecOfParts := by
   intro hU5 hExh Wp Wq _ _ _ _ _ _ P p F w X μ L st Cb ν'r m₀r hD hdd hF hcut hLev x hx γ₀ hγG hζ hγF h hh Φ hΦ e
   obtain ⟨F₂, hF₂, hV, hJ⟩ := hExh Wp Wq P p F w X μ L st Cb hD hdd hF hcut e h hh

@@ -10,5 +10,8 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.QuasiPlurisubhar
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GradFlag.gradSt | exact GlobalTheory.GradFlag.gradSt | (intros; apply GlobalTheory.GradFlag.gradSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gradient_statement : Hypotheses2 → HypothesesH → GradSt := by
   first | exact @GlobalTheory.GradFlag.gradSt | exact GlobalTheory.GradFlag.gradSt | (intros; apply GlobalTheory.GradFlag.gradSt <;> assumption)

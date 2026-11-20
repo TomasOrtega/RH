@@ -13,6 +13,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+Establish `hb : ∀ τ i, |lam τ i| ≤ 1` using `fun τ i => by`. Establish `h1 : ‖lam τ‖ ≤ ‖lam‖` using `norm_le_pi_norm lam τ`. Establish `h2 : ‖lam τ i‖ ≤ ‖lam τ‖` using `norm_le_pi_norm (lam τ) i`. Rewrite using `[← Real.norm_eq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Unfold `l1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem l1_le_card_mul_of_norm_le_one {Ψ : Type} [Fintype Ψ] {N : ℕ} (lam : Wt Ψ N) (h : ‖lam‖ ≤ 1) :
     l1 lam ≤ (Fintype.card Ψ : ℝ) * N := by
   have hb : ∀ τ i, |lam τ i| ≤ 1 := fun τ i => by
@@ -24,6 +29,11 @@ theorem l1_le_card_mul_of_norm_le_one {Ψ : Type} [Fintype Ψ] {N : ℕ} (lam : 
         Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun i _ => hb τ i
     _ = (Fintype.card Ψ : ℝ) * N := by simp
 
+/- English proof (translation)
+Introduce `τ i`. Take `⟨q1, h1⟩` from `h τ i`. Take `⟨q2, h2⟩` from `T.nu_rat τ i`. Use `⟨q1 - s * q2, ?_⟩` and prove the remaining obligations. Simplify using `only [RootTower.lamS, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, h1, h2]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem RootTower.isRatWt_lamS {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} (T : RootTower Ψ N) {lam : Wt Ψ N}
     (s : ℚ) (h : IsRatWt lam) : IsRatWt (T.lamS lam s) := by
   intro τ i
@@ -33,6 +43,9 @@ theorem RootTower.isRatWt_lamS {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : �
   simp only [RootTower.lamS, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, h1, h2]
   push_cast; ring
 
+/- English proof (translation)
+The claim follows from `|T.mbarTop II B c lam s| ≤ C * Real.log (B / (s : ℝ)) * T.mDeg B c lam s := by intro hZ1 hZ2 II hII Ψ _ _ N T hI3 hI5 hI6 c₀ hc₀ obtain ⟨s₀, hs₀, h3⟩ := hI3 ((Fintype.card Ψ : ℝ) * N) obtain ⟨θ₅, hθ₅, C₅, h5⟩ := hI5 c₀ hc₀ obtain ⟨θ₆, hθ₆, C₆, h6⟩ := hI6 c₀ hc₀ have hD : (0 : ℝ) …`.
+-/
 theorem mbarTop_squeeze : SuccessiveMinimaLowerBound → SuccessiveMinimaUpperBound → ∀ II : IntersectionSystem, IsFullIntersectionSystem II →
     ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N), T.I3 → T.I5 II → T.I6 II →
     ∀ c₀ > (0 : ℝ), ∃ θ₀ > (0 : ℝ), ∃ C : ℝ, 0 ≤ C ∧ ∀ B : ℕ, 2 ≤ B → ∀ (c : T.Comp) (lam : Wt Ψ N) (θ : ℝ) (s : ℚ),

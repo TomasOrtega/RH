@@ -5,12 +5,22 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 
 open Finset UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5
 
+/- English proof (translation)
+Introduce `Ω _ _ N _ Γ _ π χ a ha k hN`. Rewrite using `[yEl, map_mul, map_sub, map_one, ev_single, groupRingCharEval_stickelbergerTheta_eq_neg_genBernoulli π χ k hN, ← dirOf_unit, ZMod.coe_unitOfCoprime]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.B5.groupRingCharEval_stickelbergerY_eq_euler_mul_genBernoulli :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] {N : ℕ} [NeZero N] {Γ : Type} [CommGroup Γ] (π : (ZMod N)ˣ →* Γ) (χ : Γ →* Ωˣ) (a : ℕ) (ha : a.Coprime N) (k : ℕ), 2 ≤ N → ev ℚ χ (yEl k a ha π) = (1 - (a : Ω) ^ k * dirOf π χ (a : ZMod N)) * (-genB k (dirOf π χ) / k) := by
   intro Ω _ _ N _ Γ _ π χ a ha k hN
   rw [yEl, map_mul, map_sub, map_one, ev_single, groupRingCharEval_stickelbergerTheta_eq_neg_genBernoulli π χ k hN, ← dirOf_unit, ZMod.coe_unitOfCoprime]
   simp
 
+/- English proof (translation)
+Introduce `N _ Γ _ π χ a ha k hN h2a hk hs`. Establish `hk0 : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hpar : dirOf π χ (-1) = (-1) ^ k`. Use `dirOf_unit π χ (-1)` as an intermediate fact. Rewrite `this` using `[map_inv, Units.val_inv_eq_inv_val, hs, Units.val_neg, Units.val_one]`.
+
+Rewrite using `[this, ← inv_pow, inv_neg, inv_one]`. Rewrite using `[groupRingCharEval_stickelbergerY_eq_euler_mul_genBernoulli π χ a ha k hN]`. Use `mul_ne_zero (fun h => ?_) (div_ne_zero (neg_ne_zero.2 ((b_nzC _ k (by omega) hpar).2 hk)) hk0)` and prove the remaining obligations. Establish `h1 : ‖dirOf π χ (a : ZMod N)‖ = 1`. Rewrite using `[← ZMod.coe_unitOfCoprime a ha]`.
+
+Conclude with `DirichletCharacter.unit_norm_eq_one _ _`. Establish `h2` using `congrArg norm (sub_eq_zero.1 h)`. Rewrite `h2` using `[norm_one, norm_mul, h1, norm_pow, Complex.norm_natCast, mul_one]`. Establish `h3 : 1 < a ^ k` using `Nat.one_lt_pow (by omega) (by omega)`. Conclude with `h3.ne (by exact_mod_cast h2)`.
+-/
 theorem UpperTheory.V.B5.groupRingCharEval_stickelbergerY_ne_zero_of_parity :
     ∀ {N : ℕ} [NeZero N] {Γ : Type} [CommGroup Γ] (π : (ZMod N)ˣ →* Γ) (χ : Γ →* ℂˣ) (a : ℕ) (ha : a.Coprime N) (k : ℕ), 2 ≤ N → 2 ≤ a → 2 ≤ k → ((χ (π (-1)) : ℂˣ) : ℂ) = (-1) ^ k → ev ℚ χ (yEl k a ha π) ≠ 0 := by
   intro N _ Γ _ π χ a ha k hN h2a hk hs

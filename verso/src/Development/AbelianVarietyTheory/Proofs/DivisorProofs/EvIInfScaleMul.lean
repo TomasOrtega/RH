@@ -15,12 +15,21 @@ variable (F : Type) [Field F] [NumberField F]
 def infScale (s : ℝ) : AF F :=
   ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ (mixedEmbedding.mixedSpace F) s), 1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infScale_mul_fst (s : ℝ) (x : AF F) : (infScale F s * x).1 = (infScale F s).1 * x.1 := rfl
 
+/- English proof (translation)
+Use `show (infScale F s).2 * x.2 = x.2`. Simplify using `[infScale]`.
+-/
 theorem infScale_mul_snd (s : ℝ) (x : AF F) : (infScale F s * x).2 = x.2 := by
   show (infScale F s).2 * x.2 = x.2
   simp [infScale]
 
+/- English proof (translation)
+Unfold `evI`. Rewrite using `[infScale_mul_fst, map_mul]`. Simplify using `[infScale, Algebra.smul_def]`.
+-/
 theorem evI_infScale_mul (s : ℝ) (x : AF F) : evI F (infScale F s * x) = s • evI F x := by
   unfold evI
   rw [infScale_mul_fst, map_mul]

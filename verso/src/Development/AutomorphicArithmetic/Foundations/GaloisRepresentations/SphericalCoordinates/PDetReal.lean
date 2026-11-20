@@ -4,6 +4,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `W _ _ _ f`. Rewrite using `[LinearMap.det_restrictScalars, Algebra.norm_complex_eq, Complex.mul_conj]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Gal.W2.detReal_of :
     UpperTheory.Gal.W2.DetReal := by
   intro W _ _ _ f

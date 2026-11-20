@@ -14,6 +14,17 @@ noncomputable section
 
 namespace GlobalTheory.FibreProj
 
+/- English proof (translation)
+Introduce `k _ B Y _ q p d D hB hX f w α β _ _ hd L A M r hr hint`. Use `set F : α ⊕ β → HermLB p := Sum.elim L fun a => (A a).pull f w with hF`. Use `haveI := hX.finite_emb`. Use `letI := Fintype.ofFinite (k →+* ℂ)`. Simplify using `only [HermLB.archInt, finsum_eq_sum_of_fintype]`.
+
+Rewrite using `[pol_sum]`. Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Unfold `pol`. Use `GlobalTheory.T.chern_integral_linear_relation_zero k Y p hX.isProjOver σ D (Finset (α ⊕ β)) _ _ ?_ _ _ fun S => hint _ σ` and prove the remaining obligations. Introduce `c y hy`.
+
+Take `⟨R⟩` from `hB σ`. Take `⟨i, hi⟩` from `R.cover (PtsOver.map f w (spMap σ) y)`. Take `⟨P, Q, hPQ⟩` from `GlobalTheory.T.pullback_chart_metric_block_form k B Y q p f w σ D d c (R.chart i) y hy hi`. Use `choose K hK using fun b => hPQ (A b) (pick (((A b).pull f w).φ σ).isLB y) (mem_pick _ y)`. Use `set m : ∀ l, (F l).B.ι := fun l => pick ((F l).φ σ).isLB y with hm`.
+
+Establish `hK' : ∀ b, c.hess ((F (Sum.inr b)).φ σ) (m (Sum.inr b)) y = P * K b * Q` using `hK`. Establish `key : ∀ n : α ⊕ β → ℤ, c.chernDens ((comb F n).φ σ) y = D.factorial / Real.pi ^ D * (Matrix.det (∑ a, ((n (Sum.inl a) : ℝ) : ℂ) • c.hess ((F (Sum.inl a)).φ σ) (m (Sum.inl a)) y + ∑ b, ((n (Sum.inr b) : ℝ) : ℂ) • (P * K b * Q))).re`. Introduce `n`. Rewrite using `[AlgChart.chernDens, GlobalTheory.Mean4O.ReadsProj.hess_comb F n σ c hy _ (mem_pick _ y) m (fun l => mem_pick _ y), Fintype.sum_sum_type]`. Simplify using `only [hK']`.
+
+Simplify using `only [key]`. Establish `h0` using `pol_const_mul (D.factorial / Real.pi ^ D) (fun n : α ⊕ β → ℤ => (Matrix.det (∑ a, ((n (Sum.inl a) : ℝ) : ℂ) • c.hess ((F (Sum.inl a)).φ σ) (m (Sum.inl a)) y + ∑ b, ((n (Sum.inr b) : ℝ) : ℂ) • (P * K b * Q))).re)`. Rewrite `h0` using `[GlobalTheory.T.polynomial_det_hermitian_sum_zero D d α β hd, mul_zero]`. Unfold `pol at h0`. Conclude with `h0`.
+-/
 theorem pol_archInt_pull_eq_zero : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d D : ℕ), GenSmooth q d → IsArithVar p D → ∀ (f : Y ⟶ B) (w : f ≫ q = p) (α β : Type) [Fintype α] [Fintype β], d < Fintype.card β → ∀ (L : α → HermLB p) (A : β → HermLB q) (M : HermLB p) (r : M.B.ι → Y.functionFieldˣ) (hr : IsRatSec M.B r), (∀ n, (comb (Sum.elim L fun a => (A a).pull f w) n).ArchIntegrable M D hr) → pol (fun n => (comb (Sum.elim L fun a => (A a).pull f w) n).archInt M D hr) = 0 := by
   classical
   intro k _ B Y _ q p d D hB hX f w α β _ _ hd L A M r hr hint

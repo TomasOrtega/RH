@@ -38,6 +38,11 @@ variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hI` using `GlobalTheory.DimPartsCompare.TameTie.idemTie hG (GlobalTheory.DimPartsCompare.tameTie_of_typesTrue (D := (w.st Z).toD7) t.grp).2.1`. Establish `hGS : Formalism.L2.DIV.GoodStable t.r.z.Xg`. Use `GlobalTheory.Mem.R3.GoodDual.goodStable_of_coeff (w.st Z).B.embLL t.r.z.Xg t.r.z.good.irr fun g => ?_` and prove the remaining obligations. Apply `(w.st Z).B.embLL.injective` to reduce the goal to its premises. Rewrite using `[t.r.z.good.2, t.r.z.good.2, map_inv, GlobalTheory.Mem.R3.GoodDual.goodIdempotent_coeff_inv_eq_coeff hI]`.
+
+Establish `hC` using `(GlobalTheory.CoreOfWeak.core_of_weak t.r.z.R t.r.z.F t.r.z.pins.char t.exAt).1`. Conclude with `GlobalTheory.KapIsotRead.isot_ne_bot_read hF (w.st Z).toD7 _ _ _ _ _ _ t.r.z.R t.r.z.F t.r.z.cG p0 t.r.Y t.r.z.pins t.r.intersectionNumber_baseChange hM hGS (GlobalTheory.GoodTypeGeneric.chiIdem_mul_lvlIdem_base_ne_zero t.r.z.R.toRealDat t.r.z.F.lv2 t.r.intersectionNumber_baseCha …`.
+-/
 theorem isot_ne_bot_of_rows (hF : GlobalTheory.Published.HarishChandraFinite) (hG : GlobalTheory.Published.GreenCuspidal) (t : RowsT K w Z Wt p0)
     (hM : GlobalTheory.CuspMult.MultEq t.r.z.R.toRealDat) (σ : Fin (w.D Z).what₂.Drows) (i : Fin (w.D Z).R.m) :
     (w.D Z).what₂.isot ((i : ℕ) + 1) ((w.D Z).what₂.ft σ) ≠ ⊥ := by
@@ -53,6 +58,9 @@ theorem isot_ne_bot_of_rows (hF : GlobalTheory.Published.HarishChandraFinite) (h
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hT : TypesTrue (w.st Z).toD7.ntypes t.r.z.R.C.P t.r.z.R.C.W`. Rewrite using `[t.r.z.lev.C, w.C_eq]`. Conclude with `t.grp`. Conclude with `GlobalTheory.LiftRows.Inh.goodTypes_of_typesTrue t.r.z.pins.char.base.lev hT`.
+-/
 theorem goodTypes_of_rows (t : RowsT K w Z Wt p0) : GlobalTheory.IndefiniteRowSideFullHecke.CommutingLevelOperators.GoodTypes t.r.z.R.toRealDat := by
   have hT : TypesTrue (w.st Z).toD7.ntypes t.r.z.R.C.P t.r.z.R.C.W := by
     rw [t.r.z.lev.C, w.C_eq]
@@ -63,6 +71,15 @@ end Rows
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 hL N S Γ h`. Take `⟨R, hR, h⟩` from `h`. Use `⟨R, hR, Row.imp h fun 𝒜 σ s hl => ?_⟩` and prove the remaining obligations. Establish `key : AtAll (Bd` using `Bundle) (fun _ _ _ b => Formalism.L2.Rows.RowsHoldKap3 b.P) 𝒜 σ := by`. Introduce `eps Fm hc x hx i`.
+
+Take `⟨κ, -, -, hb⟩` from `s Fm hc`. Use `Built.ind (Bd := Bundle) (R := fun D _ _ b => (∃ L : SizeData₂ D, Nonempty (ParameterChoice' D L)) → Formalism.L2.Rows.RowsHoldLam3 b.P → Formalism.L2.Rows.RowsHoldKap3 b.P) ?_ (hb x hx i).1 ⟨_, ⟨Fm.params x hx i⟩⟩ (hl Fm hc x hx i)` and prove the remaining obligations. Introduce `K β c b _ _ hk`. Take `⟨q, b', ⟨w⟩, he⟩` from `hk`. Establish `e` using `congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => (∃ L : SizeData₂ s.1, Nonempty (ParameterChoice' s.1 L)) → Formalism.L2.Rows.RowsHoldLam3 s.2.2.P → Formalism.L2.Rows.RowsHoldKap3 s.2.2.P) he`.
+
+Use `cast e.symm fun hP hLam => ?_` and prove the remaining obligations. Establish `hb' : b'.P = R3.divisionPairOfAdelicFormsFaceColumnsData w.x` using `congrArg RPk.P w.y.eq`. Express the relevant statement in the definitionally equal form `Formalism.L2.Rows.RowsHoldLam3 b'.P at hLam`. Express the relevant statement in the definitionally equal form `Formalism.L2.Rows.RowsHoldKap3 b'.P`. Rewrite `hLam`, the goal using `[hb']`.
+
+Establish `hM : GlobalTheory.CuspMult.MultEq q.x.what₂.r.z.R.toRealDat` using `GlobalTheory.T.multiplicity_equality_statement a6 a7 a2 a1 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 q.x.what₂.r.z.R q.x.what₂.r.z.F q.x.what₂.r.intersectionNumber_baseChange.ok q.x.what₂.r.z.pins.char q.x.what₂.exAt w.y.y.host hP q.B.ccK_top q.x.what₂.r.z.pins.keep.guard (goodTypes_ …`. Conclude with `GlobalTheory.T.divisorEmbedding_kappa_eq_rowsKappa_at_infinitePlace ⟨a3, a4, a5, a1, a2⟩ _ _ _ _ _ w.x.A3 _ w.x.R w.x.F w.x.cG _ w.x.Y w.x.Z _ w.x.pins w.y.intersectionNumber_baseChange hLam (isot_ne_bot_of_rows a1 a17 q.x.what₂ hM) q.x.obj.kapR`. Conclude with `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ hc => Ind.ev_of_atAll key Fm (w3_a hc)⟩⟩`.
+-/
 theorem row_kap_of_row_lam : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraAnalyticity → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspTraceClass → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.FlathFactorisation → GlobalTheory.Published.PseudoCoefficientUpq → GlobalTheory.Published.HarishChandraCharacters → GlobalTheory.Published.LanglandsClassification → GlobalTheory.Published.LabesseWaldspurger → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.GreenCuspidal → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), RL.At (prmR N S Γ) R1.LambdaPositivityAtBundlePoints → RL.At (prmR N S Γ) RL.KappaCondition := by
   intro a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 hL N S Γ h
   obtain ⟨R, hR, h⟩ := h

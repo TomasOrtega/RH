@@ -14,6 +14,15 @@ namespace SphereLawFirstCoord
 
 open SphereMean
 
+/- English proof (translation)
+Break down `le_or_gt s a with hsa | hsa` into its components or cases. Establish `: {w : ℂ | a ≤ ‖w‖ ^ 2 ∧ ‖w‖ ^ 2 < s} = ∅`. Use extensionality with `w`. Simplify using `only [mem_ofPred_eq, mem_empty_iff_false, iff_false, not_and, not_lt]`. Introduce `h`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[this, measure_empty, ENNReal.ofReal_of_nonpos (by linarith), zero_mul]`. Establish `hset : {w : ℂ | a ≤ ‖w‖ ^ 2 ∧ ‖w‖ ^ 2 < s} = Metric.ball 0 √s \ Metric.ball 0 √a`. Use extensionality with `w`. Simplify using `only [mem_ofPred_eq, mem_sdiff, Metric.mem_ball, dist_zero_right, not_lt]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(Real.lt_sqrt (norm_nonneg w)).2 h2, Real.sqrt_le_iff.2 ⟨norm_nonneg w, h1⟩⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(Real.sqrt_le_iff.1 h2).2, (Real.lt_sqrt (norm_nonneg w)).1 h1⟩`.
+
+Rewrite using `[hset, measure_sdiff (Metric.ball_subset_ball (Real.sqrt_le_sqrt hsa.le)) measurableSet_ball.nullMeasurableSet measure_ball_lt_top.ne, Complex.volume_ball, Complex.volume_ball, ← ENNReal.ofReal_pow (Real.sqrt_nonneg _), ← ENNReal.ofReal_pow (Real.sqrt_nonneg _), Real.sq_sqrt (ha. …`.
+-/
 theorem volume_annulus {a : ℝ} (ha : 0 ≤ a) (s : ℝ) :
     volume {w : ℂ | a ≤ ‖w‖ ^ 2 ∧ ‖w‖ ^ 2 < s} = ENNReal.ofReal (s - a) * NNReal.pi := by
   rcases le_or_gt s a with hsa | hsa
@@ -37,6 +46,17 @@ theorem volume_annulus {a : ℝ} (ha : 0 ≤ a) (s : ℝ) :
       ← ENNReal.ofReal_pow (Real.sqrt_nonneg _), Real.sq_sqrt (ha.trans hsa.le), Real.sq_sqrt ha,
       ← ENNReal.sub_mul (fun _ _ ↦ ENNReal.coe_ne_top), ENNReal.ofReal_sub _ ha]
 
+/- English proof (translation)
+Establish `h1c : 0 < 1 - c` using `by linarith`. Establish `he` using `volume_preserving_piFinSuccAbove (fun _ : Fin (m + 1) ↦ ℂ) 0`. Use `set A : Set (ℂ × (Fin m → ℂ)) := {p | c * (‖p.1‖ ^ 2 + sqNorm p.2) ≤ ‖p.1‖ ^ 2 ∧ ‖p.1‖ ^ 2 + sqNorm p.2 < 1} with hA_def`. Establish `hA : MeasurableSet A`. Establish `h1 : Continuous fun p : ℂ × (Fin m → ℂ) ↦ ‖p.1‖ ^ 2 + sqNorm p.2` using `((continuous_norm.comp continuous_fst).pow 2).add ((continuous_sqNorm m).comp continuous_snd)`.
+
+Conclude with `(measurableSet_le (continuous_const.mul h1).measurable ((continuous_norm.comp continuous_fst).pow 2).measurable).inter (measurableSet_lt h1.measurable measurable_const)`. Establish `hpre : {v : Fin (m + 1) → ℂ | c * sqNorm v ≤ ‖v 0‖ ^ 2 ∧ sqNorm v < 1} = MeasurableEquiv.piFinSuccAbove (fun _ : Fin (m + 1) ↦ ℂ) 0 ⁻¹' A`. Use extensionality with `v`. Simplify using `only [mem_ofPred_eq, mem_preimage, piFinSuccAbove_zero_apply, hA_def, sqNorm_succ]`. Rewrite using `[hpre, he.measure_preimage hA.nullMeasurableSet, Measure.volume_eq_prod, Measure.prod_apply_symm hA, ← lintegral_mul_const' _ _ ENNReal.coe_ne_top]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Establish `hfib : (fun x : ℂ ↦ (x, y)) ⁻¹' A = {w : ℂ | c * sqNorm y / (1 - c) ≤ ‖w‖ ^ 2 ∧ ‖w‖ ^ 2 < 1 - sqNorm y}`. Use extensionality with `w`. Simplify using `only [mem_preimage, hA_def, mem_ofPred_eq, div_le_iff₀ h1c]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Apply the tactic sequence `constructor <;> nlinarith`. Introduce and unpack `⟨h1, h2⟩`. Apply the tactic sequence `constructor <;> nlinarith`.
+
+Rewrite using `[hfib, volume_annulus (div_nonneg (mul_nonneg hc0 (sqNorm_nonneg y)) h1c.le)]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem volume_capSet {m : ℕ} {c : ℝ} (hc0 : 0 ≤ c) (hc1 : c < 1) :
     volume {v : Fin (m + 1) → ℂ | c * sqNorm v ≤ ‖v 0‖ ^ 2 ∧ sqNorm v < 1} =
       (∫⁻ y : Fin m → ℂ, ENNReal.ofReal (1 - sqNorm y / (1 - c))) * NNReal.pi := by
@@ -72,6 +92,13 @@ theorem volume_capSet {m : ℕ} {c : ℝ} (hc0 : 0 ≤ c) (hc1 : c < 1) :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `h1c : 0 < 1 - c` using `by linarith`. Establish `hr0 : √(1 - c) ≠ 0` using `(Real.sqrt_pos.2 h1c).ne'`. Use `set f : (Fin m → ℂ) → ENNReal := fun y ↦ ENNReal.ofReal (1 - sqNorm y / (1 - c)) with hf`. Establish `hfm : Measurable f` using `ENNReal.measurable_ofReal.comp (measurable_const.sub ((measurable_sqNorm m).div_const _))`. Establish `hfr : ∀ y, f (√(1 - c) • y) = ENNReal.ofReal (1 - sqNorm y)`.
+
+Introduce `y`. Simplify using `only [hf, sqNorm_smul, Real.sq_sqrt h1c.le]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Establish `key : ∫⁻ y : Fin m → ℂ, ENNReal.ofReal (1 - sqNorm y) = ENNReal.ofReal (((1 - c) ^ m)⁻¹) * ∫⁻ y, f y`.
+
+Repeatedly rewrite using `[← hfr]`. Establish `hmap' : ∫⁻ y, f (√(1 - c) • y) = ∫⁻ y, f y ∂(Measure.map (fun y : Fin m → ℂ ↦ √(1 - c) • y) volume)` using `(lintegral_map hfm (by fun_prop)).symm`. Rewrite using `[hmap', Measure.map_addHaar_smul (volume : Measure (Fin m → ℂ)) hr0, lintegral_smul_measure, finrank_fun_complex, pow_mul, Real.sq_sqrt h1c.le, abs_of_pos (inv_pos.2 (pow_pos h1c m))]`. Both sides reduce to the same expression. Rewrite using `[key, ← mul_assoc, ← ENNReal.ofReal_mul (pow_pos h1c m).le, mul_inv_cancel₀ (pow_pos h1c m).ne', ENNReal.ofReal_one, one_mul]`.
+-/
 theorem lintegral_scale {m : ℕ} {c : ℝ} (hc1 : c < 1) :
     ∫⁻ y : Fin m → ℂ, ENNReal.ofReal (1 - sqNorm y / (1 - c)) =
       ENNReal.ofReal ((1 - c) ^ m) * ∫⁻ y : Fin m → ℂ, ENNReal.ofReal (1 - sqNorm y) := by
@@ -97,6 +124,11 @@ theorem lintegral_scale {m : ℕ} {c : ℝ} (hc1 : c < 1) :
   rw [key, ← mul_assoc, ← ENNReal.ofReal_mul (pow_pos h1c m).le,
     mul_inv_cancel₀ (pow_pos h1c m).ne', ENNReal.ofReal_one, one_mul]
 
+/- English proof (translation)
+Establish `h0` using `volume_capSet (m := m) le_rfl zero_lt_one`. Establish `hb : {v : Fin (m + 1) → ℂ | 0 * sqNorm v ≤ ‖v 0‖ ^ 2 ∧ sqNorm v < 1} = ballSet (m + 1) 1`. Use extensionality with `v`. Simplify using `[ballSet]`. Rewrite `h0` using `[hb]`.
+
+Simplify using `only [sub_zero, div_one] at h0`. Rewrite using `[volume_capSet hc0 hc1, lintegral_scale hc1, mul_assoc, ← h0]`.
+-/
 theorem volume_capSet_eq {m : ℕ} {c : ℝ} (hc0 : 0 ≤ c) (hc1 : c < 1) :
     volume {v : Fin (m + 1) → ℂ | c * sqNorm v ≤ ‖v 0‖ ^ 2 ∧ sqNorm v < 1} =
       ENNReal.ofReal ((1 - c) ^ m) * volume (ballSet (m + 1) 1) := by
@@ -109,6 +141,17 @@ theorem volume_capSet_eq {m : ℕ} {c : ℝ} (hc0 : 0 ≤ c) (hc1 : c < 1) :
   simp only [sub_zero, div_one] at h0
   rw [volume_capSet hc0 hc1, lintegral_scale hc1, mul_assoc, ← h0]
 
+/- English proof (translation)
+Rewrite using `[withDensity_apply _ measurableSet_Ici]`. Establish `hind : ∀ x : ℝ, ENNReal.ofReal (Set.indicator (Set.Icc 0 1) (fun x ↦ (k + 1 : ℝ) * (1 - x) ^ k) x) = Set.indicator (Set.Icc 0 1) (fun x ↦ ENNReal.ofReal ((k + 1 : ℝ) * (1 - x) ^ k)) x`. Introduce `x`. Apply the tactic sequence `by_cases hx : x ∈ Set.Icc (0 : ℝ) 1 <;> simp [hx]`. Repeatedly rewrite using `[hind]`.
+
+Rewrite using `[setLIntegral_indicator measurableSet_Icc]`. Establish `hI : Icc (0 : ℝ) 1 ∩ Ici c = Icc (max c 0) 1`. Use extensionality with `x`. Simplify using `only [mem_inter_iff, mem_Ici, mem_Icc, max_le_iff]`. The claim follows by propositional logic.
+
+Rewrite using `[hI]`. Break down `le_or_gt (max c 0) 1 with hd | hd` into its components or cases. Rewrite using `[min_eq_left hd, ← ofReal_integral_eq_lintegral_ofReal]`. Rewrite using `[integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hd, intervalIntegral.integral_const_mul, intervalIntegral.integral_comp_sub_left (fun x ↦ x ^ k) (1 : ℝ), integral_pow]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Conclude with `(by fun_prop : Continuous fun x : ℝ ↦ (k + 1 : ℝ) * (1 - x) ^ k).integrableOn_Icc`. Use `ae_restrict_of_forall_mem measurableSet_Icc fun x hx ↦ ?_` and prove the remaining obligations. Conclude with `mul_nonneg (by positivity) (pow_nonneg (by linarith [hx.2]) k)`.
+
+Rewrite using `[Icc_eq_empty (not_le.2 hd), Measure.restrict_empty, lintegral_zero_measure, min_eq_right hd.le]`. Simplify using the standard rewrite rules.
+-/
 theorem density_Ici (k : ℕ) (c : ℝ) :
     (volume.withDensity fun x : ℝ ↦ ENNReal.ofReal
         (Set.indicator (Set.Icc 0 1) (fun x ↦ (k + 1 : ℝ) * (1 - x) ^ k) x)) (Ici c) =
@@ -141,6 +184,33 @@ theorem density_Ici (k : ℕ) (c : ℝ) :
       min_eq_right hd.le]
     simp
 
+/- English proof (translation)
+Establish `hGm : Measurable fun (u : Fin 1 × Fin (k + 1 + 1) → ℂ) (j : Fin (k + 1 + 1)) ↦ sphereNormalize (HermNorm.std (k + 1 + 1)) 1 u (0, j)`. Unfold `sphereNormalize`. Simplify using `only [HermNorm.std_norm_eq]`. Use `fun_prop`. Establish `hFm : Measurable fun z : Fin (k + 1 + 1) → ℂ ↦ ‖z 0‖ ^ 2` using `by fun_prop`.
+
+Establish `hBm : MeasurableSet (sphereBall (HermNorm.std (k + 1 + 1)) 1)` using `(isOpen_sphereBall_std _).measurableSet`. Rewrite using `[Measure.map_apply hFm measurableSet_Ici, sphereLaw, Measure.map_apply hGm (hFm measurableSet_Ici), cond_apply hBm]`. Use `set eq := Equiv.uniqueProd (Fin (k + 1 + 1)) (Fin 1)`. Use `set P := MeasurableEquiv.piCongrLeft (fun _ : Fin (k + 1 + 1) ↦ ℂ) eq`. Establish `hP : MeasurePreserving P volume volume` using `volume_measurePreserving_piCongrLeft (fun _ : Fin (k + 1 + 1) ↦ ℂ) eq`.
+
+Establish `hPapp : ∀ u j, P u j = u (0, j)`. Introduce `u j`. Use `MeasurableEquiv.piCongrLeft_apply_apply (β := fun _ : Fin (k + 1 + 1) ↦ ℂ) eq u (0, j)` as an intermediate fact. Simplify `this` using `[eq]`. Establish `hPu : ∀ u : Fin 1 × Fin (k + 1 + 1) → ℂ, (fun j ↦ u (0, j)) = P u` using `fun u ↦ funext fun j ↦ (hPapp u j).symm`.
+
+Establish `hB : sphereBall (HermNorm.std (k + 1 + 1)) 1 = P ⁻¹' ballSet (k + 1 + 1) 1`. Use extensionality with `u`. Simplify using `only [sphereBall, mem_ofPred_eq, mem_preimage, ballSet, std_norm_eq, Fin.forall_fin_one, hPu, Real.sqrt_lt' one_pos, one_pow]`. Use `set T : Set (Fin (k + 1 + 1) → ℂ) := {v | sqNorm v < 1 ∧ c ≤ ‖((√(sqNorm v) : ℝ) : ℂ)⁻¹ * v 0‖ ^ 2} with hT_def`. Establish `hT : sphereBall (HermNorm.std (k + 1 + 1)) 1 ∩ ((fun (u : Fin 1 × Fin (k + 1 + 1) → ℂ) (j : Fin (k + 1 + 1)) ↦ sphereNormalize (HermNorm.std (k + 1 + 1)) 1 u (0, j)) ⁻¹' ((fun z : Fin (k + 1 + 1) → ℂ ↦ ‖z 0‖ ^ 2) ⁻¹' Ici c)) = P ⁻¹' T`.
+
+Rewrite using `[hB]`. Use extensionality with `u`. Simplify using `only [mem_inter_iff, mem_preimage, mem_Ici, sphereNormalize, std_norm_eq, hPu, hT_def, mem_ofPred_eq, ballSet, hPapp]`. Rewrite using `[hT, hB, hP.measure_preimage_equiv, hP.measure_preimage_equiv]`. Establish `hV0` using `(volume_ballSet_one_pos (k + 1 + 1)).ne'`.
+
+Establish `hVt` using `volume_ballSet_one_ne_top (k + 1 + 1)`. Establish `hnorm : ∀ v : Fin (k + 1 + 1) → ℂ, ‖((√(sqNorm v) : ℝ) : ℂ)⁻¹ * v 0‖ ^ 2 = ‖v 0‖ ^ 2 / sqNorm v`. Introduce `v`. Rewrite using `[norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), mul_pow, inv_pow, Real.sq_sqrt (sqNorm_nonneg v)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hTpos : 0 < c → T = {v | c * sqNorm v ≤ ‖v 0‖ ^ 2 ∧ sqNorm v < 1} \ {0}`. Introduce `hc`. Use extensionality with `v`. Simplify using `only [hT_def, mem_ofPred_eq, mem_sdiff, mem_singleton_iff, hnorm]`. Distinguish the cases in `hv : v = 0`.
+
+Substitute `hv` using the available equality. Simplify using `[sqNorm]`. Conclude with `hc`. Establish `hs` using `sqNorm_pos_of_ne_zero hv`. Rewrite using `[le_div_iff₀ hs]`.
+
+The claim follows by propositional logic. Break down `le_or_gt c 0 with hc | hc` into its components or cases. Establish `hTB : T = ballSet (k + 1 + 1) 1`. Use extensionality with `v`. Simplify using `only [hT_def, mem_ofPred_eq, ballSet, and_iff_left_iff_imp]`.
+
+Introduce `_`. Conclude with `hc.trans (by positivity)`. Rewrite using `[hTB, ENNReal.inv_mul_cancel hV0 hVt, max_eq_right hc, min_eq_left zero_le_one]`. Simplify using the standard rewrite rules. Break down `lt_or_ge c 1 with hc1 | hc1` into its components or cases.
+
+Rewrite using `[hTpos hc, measure_sdiff_null (volume_singleton_zero _), volume_capSet_eq hc.le hc1, ← mul_assoc, mul_comm _ (ENNReal.ofReal _), mul_assoc, ENNReal.inv_mul_cancel hV0 hVt, mul_one, max_eq_left hc.le, min_eq_left hc1.le]`. Establish `he` using `volume_preserving_piFinSuccAbove (fun _ : Fin (k + 1 + 1) ↦ ℂ) 0`. Establish `hsub : T ⊆ MeasurableEquiv.piFinSuccAbove (fun _ : Fin (k + 1 + 1) ↦ ℂ) 0 ⁻¹' (univ ×ˢ {0})`. Rewrite using `[hTpos hc]`. Introduce and unpack `v ⟨⟨h1, _⟩, hv⟩`.
+
+Simplify using `only [mem_preimage, piFinSuccAbove_zero_apply, mem_prod, mem_univ, true_and, mem_singleton_iff]`. Assume the negation of the conclusion as `htl`. Use `sqNorm_pos_of_ne_zero htl` as an intermediate fact. Rewrite `h1` using `[sqNorm_succ]`. Use polynomial arithmetic with `[sqNorm_nonneg (Fin.tail v), norm_nonneg (v 0)]`.
+
+Establish `h0 : volume T = 0`. Use `measure_mono_null hsub ?_` and prove the remaining obligations. Rewrite using `[he.measure_preimage (MeasurableSet.univ.prod (measurableSet_singleton _)).nullMeasurableSet, Measure.volume_eq_prod, Measure.prod_prod, volume_singleton_zero, mul_zero]`. Rewrite using `[h0, mul_zero, max_eq_left hc.le, min_eq_right hc1, sub_self, zero_pow (Nat.succ_ne_zero _), ENNReal.ofReal_zero]`.
+-/
 theorem law_Ici (k : ℕ) (c : ℝ) :
     ((sphereLaw (k + 1 + 1)).map (fun z ↦ ‖z 0‖ ^ 2)) (Ici c) =
       ENNReal.ofReal ((1 - min (max c 0) 1) ^ (k + 1)) := by
@@ -233,6 +303,13 @@ theorem law_Ici (k : ℕ) (c : ℝ) :
 
 end SphereLawFirstCoord
 
+/- English proof (translation)
+Introduce `N hN`. Take `⟨k, rfl⟩ : ∃ k, N = k + 1 + 1` from `⟨N - 2, by omega⟩`. Use `show (sphereLaw (k + 1 + 1)).map (fun z ↦ ‖z 0‖ ^ 2) = _`. Establish `hd : (fun x : ℝ ↦ ENNReal.ofReal (Set.indicator (Set.Icc 0 1) (fun x ↦ ((k + 1 + 1 : ℕ) - 1 : ℝ) * (1 - x) ^ (k + 1 + 1 - 2)) x)) = fun x ↦ ENNReal.ofReal (Set.indicator (Set.Icc 0 1) (fun x ↦ (k + 1 : ℝ) * (1 - x) ^ k) x)`. Establish `h2 : k + 1 + 1 - 2 = k` using `by omega`.
+
+Simplify using `only [h2]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[hd]`. Use `(sphereLaw (k + 1 + 1)).isFiniteMeasure_map fun z : Fin (k + 1 + 1) → ℂ ↦ ‖z 0‖ ^ 2` as an intermediate fact.
+
+Use `Measure.ext_of_Ici _ _ fun c ↦ ?_` and prove the remaining obligations. Rewrite using `[SphereLawFirstCoord.law_Ici, SphereLawFirstCoord.density_Ici]`.
+-/
 theorem SphereLawFirstCoord.proof : SphereLawFirstCoord.Statement := by
   intro N hN
   obtain ⟨k, rfl⟩ : ∃ k, N = k + 1 + 1 := ⟨N - 2, by omega⟩

@@ -14,6 +14,13 @@ def δ (a b : Fin N) : Fin N → ℤ := Pi.single a 1 - Pi.single b 1
 def PSh (a b : Fin N) (u : Fin N → ℤ) (P : Polynomial (MvPolynomial (Fin N × Fin N) O)) : Prop :=
   ∀ j : ℕ, IsWeightedHomogeneous (wZ N) (P.coeff j) (u + (j : ℤ) • δ a b)
 
+/- English proof (translation)
+Introduce `j`. Rewrite using `[Polynomial.coeff_mul]`. Rewrite using `[← mem_weightedHomogeneousSubmodule]`. Use `Submodule.sum_mem _ fun x hx => ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`.
+
+Establish `h` using `(hP x.1).mul (hQ x.2)`. Establish `hx' : x.1 + x.2 = j` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hx`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hx']`. Use `push_cast`.
+
+Rewrite using `[add_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem PSh.mul {a b : Fin N} {u u' : Fin N → ℤ} {P Q : Polynomial (MvPolynomial (Fin N × Fin N) O)}
     (hP : PSh a b u P) (hQ : PSh a b u' Q) : PSh a b (u + u') (P * Q) := by
   intro j
@@ -26,6 +33,9 @@ theorem PSh.mul {a b : Fin N} {u u' : Fin N → ℤ} {P Q : Polynomial (MvPolyno
   convert h using 1
   rw [← hx']; push_cast; rw [add_smul]; abel
 
+/- English proof (translation)
+Introduce `j`. Break down `j with _ | j` into its components or cases. Simplify using `using isWeightedHomogeneous_one O (wZ N)`. Rewrite using `[Polynomial.coeff_one, if_neg (Nat.succ_ne_zero j)]`. Conclude with `isWeightedHomogeneous_zero _ _ _`.
+-/
 theorem PSh.one (a b : Fin N) : PSh (O := O) a b 0 1 := by
   intro j
   rcases j with _ | j
@@ -33,12 +43,18 @@ theorem PSh.one (a b : Fin N) : PSh (O := O) a b 0 1 := by
   · rw [Polynomial.coeff_one, if_neg (Nat.succ_ne_zero j)]
     exact isWeightedHomogeneous_zero _ _ _
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using PSh.one (O := O) a b`. Consider the case `succ n ih => rw [pow_succ, succ_nsmul]`. Conclude with `ih.mul hP`.
+-/
 theorem PSh.pow {a b : Fin N} {u : Fin N → ℤ} {P : Polynomial (MvPolynomial (Fin N × Fin N) O)}
     (hP : PSh a b u P) (n : ℕ) : PSh a b (n • u) (P ^ n) := by
   induction n with
   | zero => simpa using PSh.one (O := O) a b
   | succ n ih => rw [pow_succ, succ_nsmul]; exact ih.mul hP
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using PSh.one (O := O) a b`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi]`. Conclude with `(h i (Finset.mem_insert_self _ _)).mul (ih fun k hk => h k (Finset.mem_insert_of_mem hk))`.
+-/
 theorem PSh.prod {a b : Fin N} {ι : Type} (s : Finset ι) (u : ι → Fin N → ℤ)
     (P : ι → Polynomial (MvPolynomial (Fin N × Fin N) O)) (h : ∀ i ∈ s, PSh a b (u i) (P i)) :
     PSh a b (∑ i ∈ s, u i) (∏ i ∈ s, P i) := by
@@ -49,6 +65,15 @@ theorem PSh.prod {a b : Fin N} {ι : Type} (s : Finset ι) (u : ι → Fin N →
     rw [Finset.prod_insert hi, Finset.sum_insert hi]
     exact (h i (Finset.mem_insert_self _ _)).mul (ih fun k hk => h k (Finset.mem_insert_of_mem hk))
 
+/- English proof (translation)
+Introduce `j`. Simplify using `only [rowGen, aeval_X]`. Break down `j with _ | _ | j` into its components or cases. Distinguish the cases in `hv : v.1 = b`. Simplify using `[hv]`.
+
+Conclude with `isWeightedHomogeneous_X O (wZ N) v`. Simplify using `[hv]`. Conclude with `isWeightedHomogeneous_X O (wZ N) v`. Distinguish the cases in `hv : v.1 = b`. Simplify using `[hv]`.
+
+Use `isWeightedHomogeneous_X O (wZ N) (a, v.2) using 1` and compare the differences between its conclusion and the goal. Simplify using `[wZ, δ, hv]`. Simplify using `[hv]`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Distinguish the cases in `hv : v.1 = b`.
+
+Simplify using `[hv, Polynomial.coeff_X, Polynomial.coeff_C]`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Simplify using `[hv, Polynomial.coeff_C]`. Conclude with `isWeightedHomogeneous_zero _ _ _`.
+-/
 theorem PSh_rowGen_X (a b : Fin N) (hab : a ≠ b) (v : Fin N × Fin N) :
     PSh a b (wZ N v) (rowGen O a b (X v)) := by
   intro j
@@ -67,13 +92,24 @@ theorem PSh_rowGen_X (a b : Fin N) (hab : a ≠ b) (v : Fin N × Fin N) :
       exact isWeightedHomogeneous_zero _ _ _
     · simp [hv, Polynomial.coeff_C]; exact isWeightedHomogeneous_zero _ _ _
 
+/- English proof (translation)
+Introduce `j` and use `by rw [Polynomial.coeff_add]; exact (hP j).add (hQ j)`.
+-/
 theorem PSh.add {a b : Fin N} {u : Fin N → ℤ} {P Q : Polynomial (MvPolynomial (Fin N × Fin N) O)}
     (hP : PSh a b u P) (hQ : PSh a b u Q) : PSh a b u (P + Q) := fun j => by
   rw [Polynomial.coeff_add]; exact (hP j).add (hQ j)
 
+/- English proof (translation)
+Introduce `j` and use `by rw [Polynomial.coeff_zero]; exact isWeightedHomogeneous_zero _ _ _`.
+-/
 theorem PSh.zero (a b : Fin N) (u : Fin N → ℤ) : PSh (O := O) a b u 0 := fun j => by
   rw [Polynomial.coeff_zero]; exact isWeightedHomogeneous_zero _ _ _
 
+/- English proof (translation)
+Introduce `j`. Rewrite using `[show (C r : MvPolynomial (Fin N × Fin N) O) = algebraMap O _ r from rfl, AlgHom.commutes, Polynomial.algebraMap_apply, Polynomial.coeff_C]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `only [Nat.cast_zero, zero_smul, add_zero]`.
+
+Conclude with `isWeightedHomogeneous_C (wZ N) r`. Conclude with `isWeightedHomogeneous_zero _ _ _`.
+-/
 theorem PSh_rowGen_C (a b : Fin N) (r : O) : PSh a b 0 (rowGen O a b (C r)) := by
   intro j
   rw [show (C r : MvPolynomial (Fin N × Fin N) O) = algebraMap O _ r from rfl, AlgHom.commutes,
@@ -84,6 +120,13 @@ theorem PSh_rowGen_C (a b : Fin N) (r : O) : PSh a b 0 (rowGen O a b (C r)) := b
     exact isWeightedHomogeneous_C (wZ N) r
   · exact isWeightedHomogeneous_zero _ _ _
 
+/- English proof (translation)
+Rewrite using `[f.as_sum, map_sum]`. Establish `key : ∀ d ∈ f.support, PSh a b u (rowGen O a b (monomial d (coeff d f)))`. Introduce `d hd`. Establish `hw : Finsupp.weight (wZ N) d = u` using `hf (mem_support_iff.mp hd)`. Rewrite using `[monomial_eq, map_mul, Finsupp.prod, map_prod]`.
+
+Establish `h1` using `(PSh_rowGen_C a b (coeff d f)).mul (PSh.prod d.support (fun v => d v • wZ N v) (fun v => rowGen O a b (X v ^ d v)) fun v _ => by`. Rewrite using `[map_pow]`. Conclude with `(PSh_rowGen_X a b hab v).pow (d v))`. Rewrite `h1` using `[zero_add]`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← hw, Finsupp.weight_apply, Finsupp.sum]`. Conclude with `Finset.sum_induction _ (PSh a b u) (fun _ _ => PSh.add) (PSh.zero a b u) key`.
+-/
 theorem PSh_rowGen (a b : Fin N) (hab : a ≠ b) (u : Fin N → ℤ) (f : MvPolynomial (Fin N × Fin N) O)
     (hf : IsWeightedHomogeneous (wZ N) f u) : PSh a b u (rowGen O a b f) := by
   classical
@@ -100,6 +143,9 @@ theorem PSh_rowGen (a b : Fin N) (hab : a ≠ b) (u : Fin N → ℤ) (f : MvPoly
     rw [← hw, Finsupp.weight_apply, Finsupp.sum]
   exact Finset.sum_induction _ (PSh a b u) (fun _ _ => PSh.add) (PSh.zero a b u) key
 
+/- English proof (translation)
+Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, wZ, rowW, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`.
+-/
 theorem weight_wZ (d : Fin N × Fin N →₀ ℕ) (c : Fin N) :
     Finsupp.weight (wZ N) d c = (Finsupp.weight (rowW N N) d c : ℤ) := by
   simp only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, wZ, rowW, Nat.cast_sum]
@@ -109,6 +155,9 @@ theorem weight_wZ (d : Fin N × Fin N →₀ ℕ) (c : Fin N) :
 def shiftW (a b : Fin N) (k : ℕ) (w : Fin N → ℕ) : Fin N → ℕ :=
   fun c => w c + (if c = a then k else 0) - (if c = b then k else 0)
 
+/- English proof (translation)
+Establish `hf' : IsWeightedHomogeneous (wZ N) f (fun c => (w c : ℤ))`. Introduce `d hd`. Use function extensionality and compare the values at `c`. Rewrite using `[weight_wZ, hf hd]`. Conclude with `PSh_rowGen a b hab _ f hf' j`.
+-/
 theorem rowDiv_isWH (a b : Fin N) (hab : a ≠ b) (j : ℕ) (w : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O)
     (hf : IsWeightedHomogeneous (rowW N N) f w) :
     IsWeightedHomogeneous (wZ N) (rowDiv O a b j f) ((fun c => (w c : ℤ)) + (j : ℤ) • δ a b) := by
@@ -118,6 +167,15 @@ theorem rowDiv_isWH (a b : Fin N) (hab : a ≠ b) (j : ℕ) (w : Fin N → ℕ) 
     rw [weight_wZ, hf hd]
   exact PSh_rowGen a b hab _ f hf' j
 
+/- English proof (translation)
+Establish `hg` using `rowDiv_isWH a b hab j w f hf`. Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs with h1 h2 h2`. Substitute `h2` using the available equality.
+
+Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Use `congrFun (hg hne) a` as an intermediate fact. Rewrite `this` using `[weight_wZ, h1]`. Simplify using `[shiftW, δ, hab, Pi.single_apply] at this`.
+
+Use linear arithmetic over natural numbers and integers. Substitute `h2` using the available equality. Assume the negation of the conclusion as `hne`. Apply `h1` to reduce the goal to its premises. Use function extensionality and compare the values at `c`.
+
+Use `congrFun (hg (Ne.symm hne)) c` as an intermediate fact. Rewrite `this` using `[weight_wZ]`. Simplify using `only [shiftW, δ, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, Pi.single_apply, smul_eq_mul] at this ⊢`. Apply the tactic sequence `split_ifs at this ⊢ <;> omega`. Simplify using the standard rewrite rules.
+-/
 theorem proj_rowDiv (a b : Fin N) (hab : a ≠ b) (j k : ℕ) (w : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O)
     (hf : IsWeightedHomogeneous (rowW N N) f w) :
     weightedHomogeneousComponent (rowW N N) (shiftW a b k w) (rowDiv O a b j f) =
@@ -143,6 +201,13 @@ theorem proj_rowDiv (a b : Fin N) (hab : a ≠ b) (j k : ℕ) (w : Fin N → ℕ
     split_ifs at this ⊢ <;> omega
   · simp
 
+/- English proof (translation)
+Establish `key : (Polynomial.evalRingHom (1 : MvPolynomial (Fin N × Fin N) O)).comp (rowGen O a b (n` using `N)).toRingHom = (rowAct O (n := N) (Matrix.transvection b a (1 : O))).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[rowGen, rowAct]`. Introduce `v`.
+
+Simplify using `[rowGen, rowAct, Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, Finset.sum_add_distrib, add_mul, ite_mul]`. Distinguish the cases in `hv : v.1 = b`. Substitute `hv` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hv, Ne.symm hv]`.
+
+Conclude with `(RingHom.congr_fun key h).symm`.
+-/
 theorem rowAct_transvection (a b : Fin N) (h : MvPolynomial (Fin N × Fin N) O) :
     rowAct O (Matrix.transvection b a (1 : O)) h = Polynomial.eval 1 (rowGen O a b h) := by
   classical
@@ -159,6 +224,11 @@ theorem rowAct_transvection (a b : Fin N) (h : MvPolynomial (Fin N × Fin N) O) 
       · simp [hv, Ne.symm hv]
   exact (RingHom.congr_fun key h).symm
 
+/- English proof (translation)
+Rewrite using `[rowAct_transvection, Polynomial.eval_eq_sum_range]`. Simplify using `only [one_pow, mul_one, map_sum]`. Establish `: ∀ j, (rowGen O a b f).coeff j = rowDiv O a b j f` using `fun j => rfl`. Simplify using `only [this, proj_rowDiv a b hab _ k w f hf, Finset.sum_ite_eq', Finset.mem_range]`. Use `split_ifs with hk`.
+
+Both sides reduce to the same expression. Conclude with `(Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)).symm`.
+-/
 theorem proj_rowAct (a b : Fin N) (hab : a ≠ b) (k : ℕ) (w : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O)
     (hf : IsWeightedHomogeneous (rowW N N) f w) :
     weightedHomogeneousComponent (rowW N N) (shiftW a b k w) (rowAct O (Matrix.transvection b a (1 : O)) f) =
@@ -172,6 +242,11 @@ theorem proj_rowAct (a b : Fin N) (hab : a ≠ b) (k : ℕ) (w : Fin N → ℕ) 
   · rfl
   · exact (Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)).symm
 
+/- English proof (translation)
+Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, rowW, colW, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Simplify using `[Pi.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem rowW_le_total (d : Fin N × Fin N →₀ ℕ) (c : Fin N) :
     Finsupp.weight (rowW N N) d c ≤ ∑ s, Finsupp.weight (colW N N) d s := by
   classical
@@ -185,6 +260,13 @@ theorem rowW_le_total (d : Fin N × Fin N →₀ ℕ) (c : Fin N) :
 def box (ν : Fin N → ℕ) : Finset (Fin N → ℕ) :=
   Fintype.piFinset fun _ : Fin N => Finset.range (∑ s, ν s + 1)
 
+/- English proof (translation)
+Establish `hcol : IsWeightedHomogeneous (colW N N) f ν` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.mem_inf.mp hf).1`. Use extensionality with `d`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_weightedHomogeneousComponent, Finset.sum_ite_eq, ]`. Use `split_ifs with h`.
+
+Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Establish `hw` using `hcol hne`. Simplify using `only [box, Fintype.mem_piFinset, Finset.mem_range]`.
+
+Introduce `c`. Use `rowW_le_total d c` as an intermediate fact. Rewrite `this` using `[hw]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem decomp (ν : Fin N → ℕ) (f : MvPolynomial (Fin N × Fin N) O) (hf : f ∈ dualWeyl O N N ν) :
     f = ∑ w ∈ box ν, weightedHomogeneousComponent (rowW N N) w f := by
   classical
@@ -209,6 +291,15 @@ end GlobalTheory.RowDivMem
 namespace GlobalTheory.GenCoef
 open GlobalTheory.RowDivMem
 
+/- English proof (translation)
+Introduce `O _ N ν a b hab k`. Set `g : GL (Fin N) O` to `⟨Matrix.transvection b a (-1), Matrix.transvection b a 1, by rw [Matrix.transvection_mul_transvection_same b a (Ne.symm hab)]; simp, by rw [Matrix.transvection_mul_transvection_same b a (Ne.symm hab)]; simp⟩`. Establish `hg : ((g⁻¹ : GL (Fin N) O) : Matrix (Fin N) (Fin N) O) = Matrix.transvection b a 1` using `rfl`. Use `⟨∑ w ∈ box ν, GlobalTheory.ExpFrame.rowProj O N ν (shiftW a b k w) * Formalism.UG.dualWeylRep O N N ν g * GlobalTheory.ExpFrame.rowProj O N ν w, ?_, fun f => ?_⟩` and prove the remaining obligations. Use `Subalgebra.sum_mem _ fun w _ => Subalgebra.mul_mem _ (Subalgebra.mul_mem _ ?_ ?_) ?_` and prove the remaining obligations.
+
+Conclude with `Algebra.subset_adjoin (Or.inr ⟨_, rfl⟩)`. Conclude with `Algebra.subset_adjoin (Or.inl ⟨g, rfl⟩)`. Conclude with `Algebra.subset_adjoin (Or.inr ⟨_, rfl⟩)`. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum] conv_rhs => rw [decomp ν (f : MvPolynomial (Fin N × Fin N) O) f.2]`. Establish `hlin : ∀ (s : Finset (Fin N → ℕ)) (F : (Fin N → ℕ) → MvPolynomial (Fin N × Fin N) O), rowDiv O a b k (∑ w ∈ s, F w) = ∑ w ∈ s, rowDiv O a b k (F w)`.
+
+Introduce `s F`. Simplify using `only [rowDiv, map_sum, Polynomial.finset_sum_coeff]`. Rewrite using `[hlin]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply]`.
+
+Express the relevant statement in the definitionally equal form `weightedHomogeneousComponent (rowW N N) (shiftW a b k w) (Formalism.UG.dwAct O N N g (weightedHomogeneousComponent (rowW N N) w (f : MvPolynomial (Fin N × Fin N) O))) = _`. Rewrite using `[Formalism.UG.dwAct, hg]`. Conclude with `proj_rowAct a b hab k w _ (weightedHomogeneousComponent_isWeightedHomogeneous _ _)`.
+-/
 theorem rowDiv_mem_dwAlg : ∀ (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ) (a b : Fin N), a ≠ b → ∀ k : ℕ,
     ∃ p ∈ dwAlg O N ν, ∀ f : dualWeyl O N N ν,
       (p f : MvPolynomial (Fin N × Fin N) O) = rowDiv O a b k (f : MvPolynomial (Fin N × Fin N) O) := by

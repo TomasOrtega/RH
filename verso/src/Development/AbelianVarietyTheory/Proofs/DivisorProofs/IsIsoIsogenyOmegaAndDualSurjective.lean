@@ -21,6 +21,9 @@ section Corner
 
 variable {p : ℕ} [Fact p.Prime] {k : Type} [Field k]
 
+/- English proof (translation)
+Establish `h' : f ≫ r₁ ≫ j₁ = 0` using `by rw [← Category.assoc, h, Limits.zero_comp]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comp_proj_eq_of_comp_eq_zero {X Y Y₀ Y₁ : PDivGroup p k} (f : X ⟶ Y) (r₀ : Y ⟶ Y₀)
     (j₀ : Y₀ ⟶ Y) (r₁ : Y ⟶ Y₁) (j₁ : Y₁ ⟶ Y) (hY : r₀ ≫ j₀ + r₁ ≫ j₁ = 𝟙 Y)
     (h : f ≫ r₁ = 0) : f ≫ r₀ ≫ j₀ = f := by
@@ -29,6 +32,9 @@ theorem comp_proj_eq_of_comp_eq_zero {X Y Y₀ Y₁ : PDivGroup p k} (f : X ⟶ 
     _ = f ≫ 𝟙 Y := by rw [← hY, Preadditive.comp_add]
     _ = f := Category.comp_id f
 
+/- English proof (translation)
+Establish `h' : π₀ ≫ i₀ ≫ f = 0` using `by rw [h, Limits.comp_zero]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem proj_comp_eq_of_comp_eq_zero {X X₀ X₁ Y : PDivGroup p k} (f : X ⟶ Y) (π₀ : X ⟶ X₀)
     (i₀ : X₀ ⟶ X) (π₁ : X ⟶ X₁) (i₁ : X₁ ⟶ X) (hX : π₀ ≫ i₀ + π₁ ≫ i₁ = 𝟙 X)
     (h : i₀ ≫ f = 0) : π₁ ≫ i₁ ≫ f = f := by
@@ -37,6 +43,11 @@ theorem proj_comp_eq_of_comp_eq_zero {X X₀ X₁ Y : PDivGroup p k} (f : X ⟶ 
     _ = 𝟙 X ≫ f := by rw [← hX, Preadditive.add_comp, Category.assoc, Category.assoc]
     _ = f := Category.id_comp f
 
+/- English proof (translation)
+Take `⟨n, g, h1, h2⟩` from `hq`. Use `⟨n, j ≫ g ≫ π, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Category.assoc]`. Use `_ = i ≫ (q ≫ g) ≫ π := by rw [hq']; simp only [Category.assoc]`.
+
+Use `_ = _ := by rw [h1, Linear.smul_comp, Linear.comp_smul, Category.id_comp, hiπ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Category.assoc]`. Use `_ = j ≫ (g ≫ q) ≫ r := by rw [hg g]; simp only [Category.assoc]`. Use `_ = _ := by rw [h2, Linear.smul_comp, Linear.comp_smul, Category.id_comp, hjr]`.
+-/
 theorem isIsog_corner {G H G' H' : PDivGroup p k} (q : G ⟶ H) (hq : IsIsog q) (i : G' ⟶ G)
     (π : G ⟶ G') (j : H' ⟶ H) (r : H ⟶ H') (hiπ : i ≫ π = 𝟙 G') (hjr : j ≫ r = 𝟙 H')
     (hq' : i ≫ q ≫ r ≫ j = i ≫ q) (hg : ∀ g : H ⟶ G, j ≫ g ≫ π ≫ i = j ≫ g) :
@@ -52,6 +63,11 @@ theorem isIsog_corner {G H G' H' : PDivGroup p k} (q : G ⟶ H) (hq : IsIsog q) 
       _ = j ≫ (g ≫ q) ≫ r := by rw [hg g]; simp only [Category.assoc]
       _ = _ := by rw [h2, Linear.smul_comp, Linear.comp_smul, Category.id_comp, hjr]
 
+/- English proof (translation)
+Introduce `w`. Take `⟨v, hv⟩` from `hs (omegaMap G G' π w)`. Use `⟨omegaMap H' H j v, ?_⟩` and prove the remaining obligations. Establish `e1 : omegaMap G' H' (i ≫ q ≫ r) (omegaMap H' H j v) = omegaMap G' H (i ≫ q) v`. Rewrite using `[← LinearMap.comp_apply, ← omegaMap_comp]`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[hq']`. Rewrite using `[e1, omegaMap_comp, LinearMap.comp_apply, hv, ← LinearMap.comp_apply, ← omegaMap_comp, hiπ, omegaMap_id, LinearMap.id_apply]`.
+-/
 theorem omegaMap_corner_surjective {G H G' H' : PDivGroup p k} (q : G ⟶ H)
     (hs : Function.Surjective (omegaMap G H q)) (i : G' ⟶ G) (π : G ⟶ G') (j : H' ⟶ H)
     (r : H ⟶ H') (hiπ : i ≫ π = 𝟙 G') (hq' : i ≫ q ≫ r ≫ j = i ≫ q) :
@@ -66,6 +82,9 @@ theorem omegaMap_corner_surjective {G H G' H' : PDivGroup p k} (q : G ⟶ H)
   rw [e1, omegaMap_comp, LinearMap.comp_apply, hv, ← LinearMap.comp_apply, ← omegaMap_comp, hiπ,
     omegaMap_id, LinearMap.id_apply]
 
+/- English proof (translation)
+Take `⟨n, g, h1, h2⟩` from `hf`. Use `⟨n, dualHom H G g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← dualHom_comp, h2, map_smul, dualHom_id]`. Rewrite using `[← dualHom_comp, h1, map_smul, dualHom_id]`.
+-/
 theorem isIsog_dualHom_of_isIsog {G H : PDivGroup p k} (f : G ⟶ H) (hf : IsIsog f) :
     IsIsog (dualHom G H f) := by
   obtain ⟨n, g, h1, h2⟩ := hf
@@ -73,6 +92,11 @@ theorem isIsog_dualHom_of_isIsog {G H : PDivGroup p k} (f : G ⟶ H) (hf : IsIso
   · rw [← dualHom_comp, h2, map_smul, dualHom_id]
   · rw [← dualHom_comp, h1, map_smul, dualHom_id]
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `(dualHom_bijective (G := H) (H := G)).2 (inv (dualHom G H f))`. Use `⟨⟨d, ?_, ?_⟩⟩` and prove the remaining obligations. Apply `(dualHom_bijective (G := G) (H := G)).1` to reduce the goal to its premises. Rewrite using `[dualHom_comp, hd, IsIso.inv_hom_id, dualHom_id]`. Apply `(dualHom_bijective (G := H) (H := H)).1` to reduce the goal to its premises.
+
+Rewrite using `[dualHom_comp, hd, IsIso.hom_inv_id, dualHom_id]`.
+-/
 theorem isIso_of_isIso_dualHom {G H : PDivGroup p k} (f : G ⟶ H) (h : IsIso (dualHom G H f)) :
     IsIso f := by
   obtain ⟨d, hd⟩ := (dualHom_bijective (G := H) (H := G)).2 (inv (dualHom G H f))
@@ -82,6 +106,9 @@ theorem isIso_of_isIso_dualHom {G H : PDivGroup p k} (f : G ⟶ H) (h : IsIso (d
   · apply (dualHom_bijective (G := H) (H := H)).1
     rw [dualHom_comp, hd, IsIso.hom_inv_id, dualHom_id]
 
+/- English proof (translation)
+Establish `hsurj` using `GlobalTheory.T.app_surjective_of_omegaMap_surjective_connected p k G H f hG hs`. Establish `hdeg : HasLogDeg f 0` using `⟨0, fun n _ => by`. Rewrite using `[pow_zero]`. Conclude with `(GlobalTheory.T.bialgHom_surjective_iff_finrank_kernelQuotient_eq_one k _ _ _).1 (hsurj n)⟩`. Conclude with `((GlobalTheory.T.pDivisibleGroup_isogeny_basic_properties p k G).2.2.2 H f hf).1 hdeg`.
+-/
 theorem isIso_of_isConn_of_omegaMap_surjective [CharP k p] {G H : PDivGroup p k} (f : G ⟶ H)
     (hG : G.IsConn) (hf : IsIsog f) (hs : Function.Surjective (omegaMap G H f)) : IsIso f := by
   have hsurj := GlobalTheory.T.app_surjective_of_omegaMap_surjective_connected p k G H f hG hs
@@ -92,6 +119,25 @@ theorem isIso_of_isConn_of_omegaMap_surjective [CharP k p] {G H : PDivGroup p k}
 
 end Corner
 
+/- English proof (translation)
+Introduce `p _ k _ _ _ G H q hq hs hsd`. Take `⟨G₀, G₁, i₀, π₀, i₁, π₁, hG₀, hG₁, hi₀, hi₁, hG⟩` from `GlobalTheory.T.exists_connected_etale_splitting_pDivGroup p k G`. Take `⟨H₀, H₁, j₀, r₀, j₁, r₁, hH₀, hH₁, hj₀, hj₁, hH⟩` from `GlobalTheory.T.exists_connected_etale_splitting_pDivGroup p k H`. Establish `z : ∀ {X Y : PDivGroup p k}, X.IsConn → Y.IsEt → (∀ f : X ⟶ Y, f = 0) ∧ ∀ f : Y ⟶ X, f = 0` using `fun {X Y} hX hY => GlobalTheory.T.hom_eq_zero_of_isConn_of_isEt' p k X Y hX hY`. Establish `c₀ : i₀ ≫ q ≫ r₀ ≫ j₀ = i₀ ≫ q`.
+
+Simplify `comp_proj_eq_of_comp_eq_zero (i₀ ≫ q) r₀ j₀ r₁ j₁ hH ((z hG₀ hH₁).1 _)` using `only [Category.assoc]`. Establish `c₁ : i₁ ≫ q ≫ r₁ ≫ j₁ = i₁ ≫ q`. Establish `hH' : r₁ ≫ j₁ + r₀ ≫ j₀ = 𝟙 H` using `by rw [add_comm, hH]`. Simplify `comp_proj_eq_of_comp_eq_zero (i₁ ≫ q) r₁ j₁ r₀ j₀ hH' ((z hH₀ hG₁).2 _)` using `only [Category.assoc]`. Establish `g₀ : ∀ g : H ⟶ G, j₀ ≫ g ≫ π₀ ≫ i₀ = j₀ ≫ g` using `fun g => by`.
+
+Simplify `comp_proj_eq_of_comp_eq_zero (j₀ ≫ g) π₀ i₀ π₁ i₁ hG ((z hH₀ hG₁).1 _)` using `only [Category.assoc]`. Establish `g₁ : ∀ g : H ⟶ G, j₁ ≫ g ≫ π₁ ≫ i₁ = j₁ ≫ g` using `fun g => by`. Establish `hG' : π₁ ≫ i₁ + π₀ ≫ i₀ = 𝟙 G` using `by rw [add_comm, hG]`. Simplify `comp_proj_eq_of_comp_eq_zero (j₁ ≫ g) π₁ i₁ π₀ i₀ hG' ((z hG₀ hH₁).2 _)` using `only [Category.assoc]`. Establish `ha : IsIso (i₀ ≫ q ≫ r₀)` using `isIso_of_isConn_of_omegaMap_surjective _ hG₀ (isIsog_corner q hq i₀ π₀ j₀ r₀ hi₀ hj₀ c₀ g₀) (omegaMap_corner_surjective q hs i₀ π₀ j₀ r₀ hi₀ c₀)`.
+
+Establish `hb : IsIso (i₁ ≫ q ≫ r₁)`. Apply `isIso_of_isIso_dualHom` to reduce the goal to its premises. Establish `hdb : dualHom G₁ H₁ (i₁ ≫ q ≫ r₁) = dualHom H H₁ r₁ ≫ dualHom G H q ≫ dualHom G₁ G i₁`. Rewrite using `[dualHom_comp, dualHom_comp, Category.assoc]`. Establish `hrj : dualHom H H₁ r₁ ≫ dualHom H₁ H j₁ = 𝟙 H₁.dual`.
+
+Rewrite using `[← dualHom_comp, hj₁, dualHom_id]`. Establish `hq'd : dualHom H H₁ r₁ ≫ dualHom G H q ≫ dualHom G₁ G i₁ ≫ dualHom G G₁ π₁ = dualHom H H₁ r₁ ≫ dualHom G H q`. Establish `e : π₁ ≫ i₁ ≫ q ≫ r₁ = q ≫ r₁` using `proj_comp_eq_of_comp_eq_zero (q ≫ r₁) π₀ i₀ π₁ i₁ hG (by rw [← Category.assoc]; exact (z hG₀ hH₁).1 _)`. Establish `e'` using `congrArg (dualHom G H₁) e`. Simplify using `only [dualHom_comp, Category.assoc] at e'`.
+
+Conclude with `e'`. Establish `hs' : Function.Surjective (omegaMap H₁.dual G₁.dual (dualHom G₁ H₁ (i₁ ≫ q ≫ r₁)))`. Rewrite using `[hdb]`. Conclude with `omegaMap_corner_surjective (dualHom G H q) hsd (dualHom H H₁ r₁) (dualHom H₁ H j₁) (dualHom G G₁ π₁) (dualHom G₁ G i₁) hrj hq'd`. Conclude with `isIso_of_isConn_of_omegaMap_surjective _ (GlobalTheory.T.dual_isConn_of_isEt_pDivGroup p k H₁ hH₁) (isIsog_dualHom_of_isIsog _ (isIsog_corner q hq i₁ π₁ j₁ r₁ hi₁ hj₁ c₁ g₁)) hs'`.
+
+Establish `hqd : q = π₀ ≫ (i₀ ≫ q ≫ r₀) ≫ j₀ + π₁ ≫ (i₁ ≫ q ≫ r₁) ≫ j₁`. Simplify using `only [Category.assoc, c₀, c₁]`. Rewrite using `[← Category.assoc π₀, ← Category.assoc π₁, ← Preadditive.add_comp, hG, Category.id_comp]`. Establish `hj01 : j₀ ≫ r₁ = 0` using `(z hH₀ hH₁).1 _`. Establish `hj10 : j₁ ≫ r₀ = 0` using `(z hH₀ hH₁).2 _`.
+
+Establish `hi01 : i₀ ≫ π₁ = 0` using `(z hG₀ hG₁).1 _`. Establish `hi10 : i₁ ≫ π₀ = 0` using `(z hG₀ hG₁).2 _`. Generalize the expression as in `i₀ ≫ q ≫ r₀ = a at ha hqd`. Generalize the expression as in `i₁ ≫ q ≫ r₁ = b at hb hqd`. Substitute `hqd` using the available equality.
+
+Use `⟨⟨r₀ ≫ inv a ≫ i₀ + r₁ ≫ inv b ≫ i₁, ?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Preadditive.add_comp, Preadditive.comp_add, Category.assoc, reassoc_of% hj₀, reassoc_of% hj₁, reassoc_of% hj01, reassoc_of% hj10, Limits.zero_comp, Limits.comp_zero, add_zero, zero_add, IsIso.hom_inv_id_assoc]`. Conclude with `hG`. Simplify using `only [Preadditive.add_comp, Preadditive.comp_add, Category.assoc, reassoc_of% hi₀, reassoc_of% hi₁, reassoc_of% hi01, reassoc_of% hi10, Limits.zero_comp, Limits.comp_zero, add_zero, zero_add, IsIso.inv_hom_id_assoc]`. Conclude with `hH`.
+-/
 theorem isIso_of_isIsog_of_omegaMap_surjective : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
     [CharP k p] [PerfectRing k p] (G H : PDivGroup p k) (q : G ⟶ H), IsIsog q →
     Function.Surjective (omegaMap G H q) →

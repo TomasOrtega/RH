@@ -14,6 +14,9 @@ attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNorm
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.linfty_opNorm_def]`. Establish `: ((Finset.univ).sup fun i => ∑ j, ‖X i j‖₊) ≤ ∑ i, ∑ j, ‖X i j‖₊` using `Finset.sup_le fun i _ => Finset.single_le_sum (f := fun i => ∑ j, ‖X i j‖₊) (fun _ _ => zero_le) (Finset.mem_univ i)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_le_sum (X : Matrix (Fin n) (Fin n) ℂ) : ‖X‖ ≤ ∑ i, ∑ j, ‖X i j‖ := by
   rw [Matrix.linfty_opNorm_def]
   have : ((Finset.univ).sup fun i => ∑ j, ‖X i j‖₊) ≤ ∑ i, ∑ j, ‖X i j‖₊ :=
@@ -39,6 +42,39 @@ def lieSub (G : Matrix (Fin n) (Fin n) ℂ) : Submodule ℝ (Matrix (Fin n) (Fin
     rw [Complex.coe_smul] at h
     exact h
 
+/- English proof (translation)
+Introduce `n G s _`. Set `L` to `lieSub G`. Set `d` to `Module.finrank ℝ L`. Set `b` to `Module.finBasis ℝ L`. Set `Y : Fin d → Matrix (Fin n) (Fin n) ℂ` to `fun i => (b i : Matrix (Fin n) (Fin n) ℂ)`.
+
+Establish `hY : ∀ i, Y i ∈ lieG G` using `fun i => (b i).2`. Use `⟨d, Y, hY, ?_⟩` and prove the remaining obligations. Set `ψ : (Fin d → ℝ) →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ` to `L.subtype ∘ₗ b.equivFun.symm.toLinearMap`. Establish `hψ : ∀ t, ψ t = lin Y t`. Introduce `t`.
+
+Simplify using `[ψ, lin_apply, Y, Module.Basis.equivFun_symm_apply]`. Apply the tactic sequence `try rfl`. Establish `hinj : LinearMap.ker ψ = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Conclude with `Subtype.val_injective.comp b.equivFun.symm.injective`.
+
+Take `⟨Q0, hQ0⟩` from `ψ.exists_leftInverse_of_injective hinj`. Set `Q : Matrix (Fin n) (Fin n) ℂ →L[ℝ] (Fin d → ℝ)` to `LinearMap.toContinuousLinearMap Q0`. Establish `hQψ : ∀ t, Q (ψ t) = t` using `fun t => LinearMap.congr_fun hQ0 t`. Establish `hback : ∀ X ∈ lieG G, ψ (Q X) = X`. Introduce `X hX`.
+
+Establish `e : X = ψ (b.equivFun ⟨X, hX⟩)` using `by simp [ψ]`. Rewrite using `[e, hQψ]`. Set `f : (Fin d → ℝ) → (Fin d → ℝ)` to `fun t => Q (cay (oneProd Y t))`. Establish `hcay : HasStrictFDerivAt (cay : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) (1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ) (oneProd Y 0)`. Rewrite using `[oneProd_zero]`.
+
+Conclude with `hasStrictFDerivAt_cay`. Establish `hΦ` using `hcay.comp (0 : Fin d → ℝ) (hasStrictFDerivAt_oneProd Y)`. Establish `hf` using `Q.hasStrictFDerivAt.comp (0 : Fin d → ℝ) hΦ`. Establish `hf' : HasStrictFDerivAt f ((ContinuousLinearEquiv.refl ℝ (Fin d → ℝ) : (Fin d → ℝ) →L[ℝ] (Fin d → ℝ))) 0`. Use `hf.congr_fderiv ?_` and prove the remaining obligations.
+
+Use `ext1 t`. Express the relevant statement in the definitionally equal form `Q (lin Y t) = t`. Rewrite using `[← hψ]`. Conclude with `hQψ t`. Establish `hmap` using `hf'.map_nhds_eq_of_equiv`.
+
+Establish `hcay1 : cay (1 : Matrix (Fin n) (Fin n) ℂ) = 0` using `by simp [cay]`. Establish `hf0 : f 0 = 0` using `by show Q (cay (oneProd Y 0)) = 0`. Rewrite using `[oneProd_zero, hcay1, map_zero]`. Rewrite `hmap` using `[hf0]`. Introduce `ε hε`.
+
+Establish `hcont : ContinuousAt (oneProd Y) 0` using `(hasStrictFDerivAt_oneProd Y).continuousAt`. Establish `hUnit : {t : Fin d → ℝ | IsUnit (oneProd Y t + 1)} ∈ 𝓝 (0 : Fin d → ℝ)`. Establish `hc : ContinuousAt (fun t => oneProd Y t + 1) 0` using `hcont.add continuousAt_const`. Establish `h2 : IsUnit (oneProd Y 0 + 1)` using `by rw [oneProd_zero]; exact isUnit_two`. Conclude with `hc.preimage_mem_nhds (Units.isOpen.mem_nhds h2)`.
+
+Establish `hB : Metric.ball (0 : Fin d → ℝ) ε ∩ {t | IsUnit (oneProd Y t + 1)} ∈ 𝓝 (0 : Fin d → ℝ)` using `Filter.inter_mem (Metric.ball_mem_nhds 0 hε) hUnit`. Establish `hfB : f '' (Metric.ball (0 : Fin d → ℝ) ε ∩ {t | IsUnit (oneProd Y t + 1)}) ∈ 𝓝 (0 : Fin d → ℝ)`. Rewrite using `[← hmap]`. Conclude with `Filter.image_mem_map hB`. Establish `hk : ContinuousAt (fun g => Q (cay g)) (1 : Matrix (Fin n) (Fin n) ℂ)` using `Q.continuous.continuousAt.comp hasStrictFDerivAt_cay.continuousAt`.
+
+Establish `hN : {g : Matrix (Fin n) (Fin n) ℂ | Q (cay g) ∈ f '' (Metric.ball (0 : Fin d → ℝ) ε ∩ {t | IsUnit (oneProd Y t + 1)})} ∩ {g | IsUnit (g + 1)} ∈ 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ)`. Use `Filter.inter_mem ?_ ?_` and prove the remaining obligations. Use `hk.preimage_mem_nhds ?_ show _ ∈ 𝓝 (Q (cay 1))` and prove the remaining obligations. Rewrite using `[hcay1, map_zero]`. Conclude with `hfB`.
+
+Establish `hc : ContinuousAt (fun g : Matrix (Fin n) (Fin n) ℂ => g + 1) 1` using `continuousAt_id.add continuousAt_const`. Conclude with `hc.preimage_mem_nhds (Units.isOpen.mem_nhds isUnit_two)`. Take `⟨r, hr, hball⟩` from `Metric.mem_nhds_iff.1 hN`. Establish `hδ : 0 < r / ((n : ℝ) * n + 1)` using `by positivity`. Use `⟨r / ((n : ℝ) * n + 1), hδ, ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg hgd`. Establish `hnorm : ‖g - 1‖ < r`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply]`.
+
+Conclude with `(hgd i j).le`. Use `_ = (n : ℝ) * n * (r / ((n : ℝ) * n + 1)) := by simp [Finset.sum_const, mul_assoc]`. Use `_ < r := by`. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]; nlinarith`. Establish `hgN` using `hball (by rw [Metric.mem_ball, dist_eq_norm]; exact hnorm)`.
+
+Take `⟨⟨t, ⟨htB, htU⟩, hft⟩, hgU⟩` from `hgN`. Use `⟨t, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `norm_le_pi_norm t i`. Establish `h2` using `mem_ball_zero_iff.1 htB`. Rewrite `h1` using `[Real.norm_eq_abs]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : cay (oneProd Y t) = cay g` using `calc cay (oneProd Y t) = ψ (Q (cay (oneProd Y t))) := (hback _ (cay_mem G _ (oneProd_mem G Y hY t) htU)).symm _ = ψ (Q (cay g)) := congrArg ψ hft _ = cay g := hback _ (cay_mem G g hg hgU)`. Conclude with `(cay_inj htU hgU e1).symm`.
+-/
 theorem sobChart_holds : SobChart := by
   intro n G s _
   classical
@@ -133,6 +169,9 @@ theorem sobChart_holds : SobChart := by
 
 end Chart
 
+/- English proof (translation)
+The claim follows from `Chart.sobChart_holds`.
+-/
 theorem sobChart_holds : SobChart := Chart.sobChart_holds
 
 end Formalism.IndefR.Tow.SobPf

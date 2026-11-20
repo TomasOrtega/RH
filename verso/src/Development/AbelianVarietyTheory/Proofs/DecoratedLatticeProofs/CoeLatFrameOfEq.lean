@@ -16,6 +16,9 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.AdForm.VacStd
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use extensionality with `x`. Use `show x ∈ GlobalTheory.PlaceModel.latFrame _ ↔ ∀ k, IsIntegral ℤ (x k)`. Rewrite using `[GlobalTheory.PlaceModel.mem_latFrame]`. Conclude with `Formalism.IndefR.Seed.FrmC.stdLat_std hs N (fun _ => false) N 0 x`.
+-/
 theorem coe_latFrame_of_eq {D : D7} (S : HSp D) (hs : ∀ x : D.host.E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (N : ℕ)
     (h : S = Formalism.BasicNotions.Examples₂.posSpace hs N) :
     (GlobalTheory.PlaceModel.latFrame S : Set (Fin S.rank → D.host.E)) = GlobalTheory.AdForm.intVec D S.rank := by
@@ -25,6 +28,11 @@ theorem coe_latFrame_of_eq {D : D7} (S : HSp D) (hs : ∀ x : D.host.E, IsIntegr
   rw [GlobalTheory.PlaceModel.mem_latFrame]
   exact Formalism.IndefR.Seed.FrmC.stdLat_std hs N (fun _ => false) N 0 x
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `(Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs N (fun _ => false) N 0 a b).trans ?_` and prove the remaining obligations. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Rewrite using `[Matrix.one_apply_eq]`. Conclude with `(if_pos rfl).trans (by simp [Formalism.BasicNotions.Examples₂.sgn])`. Rewrite using `[Matrix.one_apply_ne hab]`. Conclude with `if_neg hab`.
+-/
 theorem gram_of_eq {D : D7} (S : HSp D) (hs : ∀ x : D.host.E, IsIntegral ℤ x → IsIntegral ℤ (star x)) (N : ℕ)
     (h : S = Formalism.BasicNotions.Examples₂.posSpace hs N) : S.gram = 1 := by
   subst h
@@ -37,6 +45,9 @@ theorem gram_of_eq {D : D7} (S : HSp D) (hs : ∀ x : D.host.E, IsIntegral ℤ x
   · rw [Matrix.one_apply_ne hab]
     exact if_neg hab
 
+/- English proof (translation)
+Establish `e : gramAt D S τ = 1` using `by rw [gramAt, h, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[e]`. Conclude with `⟨Matrix.mul_one _, by simp, by rw [Matrix.mul_one]; exact Matrix.PosDef.one⟩`.
+-/
 theorem cartan_of_gram {D : D7} {S : HSp D} (h : S.gram = 1) (τ : D.what₂.Tau) : IsCartanInv (gramAt D S τ) 1 := by
   have e : gramAt D S τ = 1 := by rw [gramAt, h, Matrix.map_one _ (map_zero _) (map_one _)]
   rw [e]

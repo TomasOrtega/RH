@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrb
 open MeasureTheory NumberField IsDedekindDomain ValuativeRel GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets PositivityTheory.Rg.Tf.Loc UpperTheory.ConvolutionTheory.Loc GroundTheory.Global GroundTheory.Global.SemiLocal
 open PositivityTheory.Rg.Tf.Geo (mapGL incFin galFin)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hσ v w hw n`. Take `⟨i1, i2, i3, i4, mE, mF, hE, hF, h1, h2⟩` from `(UpperTheory.ConvolutionTheory.GM.matchOne F E σ n v).1`. Take `⟨ρ, hρ, h⟩` from `UpperTheory.ConvolutionTheory.Loc.placeDown F E σ hσ v w hw n mE mF hE hF`. Use `⟨ρ, hρ, fun φ ha hs => ?_⟩` and prove the remaining obligations. Take `⟨f, hb, hm⟩` from `h φ ha hs`.
+
+Conclude with `⟨f, hb, @(UpperTheory.ConvolutionTheory.GM.matchOne F E σ n v).2 i1 i2 i3 i4 mE mF hE hF h1 h2 _ _ _ hm⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.Loc.atDown :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (σ : E ≃ₐ[F] E),
       (∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) → ∀ (v : HeightOneSpectrum (𝓞 F)) (w : PlacesOver E v), (∀ w' : PlacesOver E v, w' = w) → ∀ n : ℕ,

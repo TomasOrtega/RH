@@ -23,6 +23,9 @@ variable {D : D7}
 
 def castG {V V' : HSp D} (h : V = V') : GA D V ≃* GA D V' := h ▸ MulEquiv.refl _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem castG_rfl (V : HSp D) : castG (rfl : V = V) = MulEquiv.refl _ := rfl
 
 def Moves (V V' : HSp D) (κ : GA D V ≃* GA D V') : Prop :=
@@ -32,10 +35,16 @@ def Moves (V V' : HSp D) (κ : GA D V ≃* GA D V') : Prop :=
       ∃ om', IsWeilDatumO ψ S V' χ χ' om' ∧ ∀ f, IsThetaFunO ψ S V f →
         ∃ f', IsThetaFunO ψ S V' f' ∧ (f ≠ 0 → f' ≠ 0) ∧ ∀ g h, thetaKO om' g (κ h) f' = thetaKO om g h f
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `⟨continuous_id, continuous_id, fun g => Iff.rfl, fun θ _ F hF => hF, fun ψ S χ χ' om hom => ⟨om, hom, fun f hf => ⟨f, hf, id, fun g h => rfl⟩⟩⟩` and prove the remaining obligations.
+-/
 theorem moves_castG {V V' : HSp D} (h : V = V') : Moves V V' (castG h) := by
   subst h
   refine ⟨continuous_id, continuous_id, fun g => Iff.rfl, fun θ _ F hF => hF, fun ψ S χ χ' om hom => ⟨om, hom, fun f hf => ⟨f, hf, id, fun g h => rfl⟩⟩⟩
 
+/- English proof (translation)
+Use `⟨h.1, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h.2 m hm`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, ← mul_assoc, ← Complex.ofReal_mul, div_mul_cancel₀ _ hc]`.
+-/
 theorem isQuotInt_rescale {V : HSp D} {c : ℝ} (hc : c ≠ 0) (κ : ℝ) {φ : GA D V → ℂ} {z : ℂ}
     (h : GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt V c φ z) : GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt V κ φ (((κ / c : ℝ) : ℂ) * z) := by
   refine ⟨h.1, fun m hm => ?_⟩
@@ -43,6 +52,21 @@ theorem isQuotInt_rescale {V : HSp D} {c : ℝ} (hc : c ≠ 0) (κ : ℝ) {φ : 
   refine ⟨h1, ?_⟩
   rw [h2, ← mul_assoc, ← Complex.ofReal_mul, div_mul_cancel₀ _ hc]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨j1, j2, j3, j4, j5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V'`. Use `haveI := hq.1`. Set `H : GA D V ≃ₜ GA D V'` to `{ toEquiv := κ.toEquiv, continuous_toFun := hκ.1, continuous_invFun := hκ.2.1 }`. Set `E : GA D V ≃ᵐ GA D V'` to `H.toMeasurableEquiv`.
+
+Use `haveI : (ν.map κ).IsHaarMeasure := MulEquiv.isHaarMeasure_map ν κ hκ.1 hκ.2.1`. Take `⟨r, hr, hR⟩` from `GlobalTheory.Mem.QuotHaar.exists_pos_isQuotInt D V' hV' (ν.map κ) inferInstance`. Use `⟨r, hr, fun φ hφ hint => ?_⟩` and prove the remaining obligations. Establish `hmap : ν.map κ = ν.map E` using `rfl`. Establish `hmem : ∀ g : GA D V', g ∈ GQ V' ↔ κ.symm g ∈ GQ V` using `fun g => by`.
+
+Rewrite using `[← hκ.2.2.1, MulEquiv.apply_symm_apply]`. Set `e : GQ V' ≃ GQ V` to `{ toFun := fun g => ⟨κ.symm g, (hmem g).1 g.2⟩ invFun := fun g => ⟨κ g, (hκ.2.2.1 g).2 g.2⟩ left_inv := fun g => Subtype.ext (κ.apply_symm_apply _) right_inv := fun g => Subtype.ext (κ.symm_apply_apply _) }`. Establish `hF : IsFundamentalDomain (GQ V') (κ '' 𝓕) (ν.map κ)`. Use `hq.2.image_of_equiv (ν := ν.map κ) E.toEquiv (by rw [hmap]; exact E.quasiMeasurePreserving_symm ν) e (fun g x => by show κ (κ.symm g * x) = g * κ x` as an intermediate fact. Rewrite using `[map_mul, MulEquiv.apply_symm_apply])`.
+
+Conclude with `this`. Establish `hinv : ∀ γ ∈ GQ V', ∀ g, (fun h => φ (κ.symm h)) (γ * g) = (fun h => φ (κ.symm h)) g`. Introduce `γ hγ g`. Simplify using `only [map_mul]`. Conclude with `hφ _ ((hmem γ).1 hγ) _`.
+
+Establish `hpre : E ⁻¹' (κ '' 𝓕) = 𝓕`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_image]`. Use `⟨fun ⟨y, hy, hxy⟩ => ?_, fun hx => ⟨x, hx, rfl⟩⟩` and prove the remaining obligations. Establish `: y = x` using `κ.injective hxy`.
+
+Conclude with `this ▸ hy`. Establish `hcomp : (fun h => φ (κ.symm h)) ∘ E = φ` using `funext fun x => by show φ (κ.symm (κ x)) = φ x`. Rewrite using `[MulEquiv.symm_apply_apply]`. Establish `hint' : IntegrableOn (fun h => φ (κ.symm h)) (κ '' 𝓕) (ν.map κ)`. Rewrite using `[hmap, E.measurableEmbedding.integrableOn_map_iff, hcomp, hpre]`.
+
+Conclude with `hint`. Use `hR _ hF _ hinv hint'` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hmap, E.measurableEmbedding.setIntegral_map, hpre]`. Conclude with `(congrArg (fun f => ∫ g in 𝓕, f g ∂ν) hcomp).symm`.
+-/
 theorem quot_transport {V V' : HSp D} {κ : GA D V ≃* GA D V'} (hκ : Moves V V' κ) (hV' : V'.SigOK)
     {ν : Measure (GA D V)} {𝓕 : Set (GA D V)} (hq : IsQuot V ν 𝓕) : ∃ r : ℝ, 0 < r ∧
     ∀ φ : GA D V → ℂ, (∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) → IntegrableOn φ 𝓕 ν →
@@ -96,6 +120,11 @@ noncomputable section
 namespace GlobalTheory.Mem.OneTuple
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hm` using `(GlobalTheory.MultMem.mem_mult_iff D θ V S M J χ _).1 ((mem_multT θ M J χ X).1 hX)`. Introduce `γ hγ g`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c u`. Establish `h1` using `(hm.aut u).left γ hγ g`.
+
+Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb]`.
+-/
 theorem multT_left {θ : InfF D} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {J : Set (GA D V)}
     {χ : GA D V → ℂ} {X : SmT M →ₗ[ℂ] (GA D V → ℂ)} (hX : X ∈ MultT θ M J χ) (v : SmT M) :
     ∀ γ ∈ GQ V, ∀ g, X v (γ * g) = X v g := by
@@ -108,6 +137,11 @@ theorem multT_left {θ : InfF D} {V : HSp D} {S : D.what₂.Tau → SPar} {M : D
     congr 1
   | add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb]
 
+/- English proof (translation)
+Take `⟨r, hr, hR⟩` from `quot_transport hκ hV' hq`. Use `⟨r, hr, fun X hX Y hY v w => ?_⟩` and prove the remaining obligations. Take `⟨-, h1, h2⟩` from `GlobalTheory.Mem.SchurTensor.schur_tensor D θ V S M J χ ν 𝓕 (GlobalTheory.MultFinite.schurMult hP ν 𝓕) hθ hq X hX Y hY v w`. Rewrite using `[← h2]`. Use `hR (fun g => star (X v g) * Y (PiTensorProduct.tprod ℂ w) g) (fun γ hγ g => ?_) h1` and prove the remaining obligations.
+
+Simplify using `only [multT_left hX v γ hγ g, multT_left hY _ γ hγ g]`.
+-/
 theorem level (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfF D} (hθ : IsInfFam θ) {V V' : HSp D} {κ : GA D V ≃* GA D V'}
     (hκ : Moves V V' κ) (hV' : V'.SigOK) {S : D.what₂.Tau → SPar} (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ)
     {ν : Measure (GA D V)} {𝓕 : Set (GA D V)} (hq : IsQuot V ν 𝓕) : ∃ r : ℝ, 0 < r ∧
@@ -128,6 +162,9 @@ noncomputable section
 namespace GlobalTheory.Mem.OneTuple
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨h.1, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h.2 m hm`. Use `⟨h1.const_mul a, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isQuotInt_const_mul {V : HSp D} {c : ℝ} {φ : GA D V → ℂ} {z : ℂ} (a : ℂ)
     (h : GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt V c φ z) : GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt V c (fun g => a * φ g) (a * z) := by
   refine ⟨h.1, fun m hm => ?_⟩
@@ -136,9 +173,15 @@ theorem isQuotInt_const_mul {V : HSp D} {c : ℝ} {φ : GA D V → ℂ} {z : ℂ
   rw [h2, integral_const_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `hf ▸ hz ▸ h`.
+-/
 theorem isQuotInt_congr {V : HSp D} {c : ℝ} {φ ψ : GA D V → ℂ} {z w : ℂ} (hf : φ = ψ) (hz : z = w)
     (h : GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt V c φ z) : GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt V c ψ w := hf ▸ hz ▸ h
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Mem.SchurTensor.ellT_inclT_tprod]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K, hd τ]`. Simplify using the standard rewrite rules.
+-/
 theorem ellT_unit {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (d : M.Vec) (hd : ∀ τ, ‖(d τ : M.H τ)‖ = 1) :
     ellT M (fun τ => (d τ : M.H τ)) (inclT M (PiTensorProduct.tprod ℂ d)) = 1 := by
   rw [GlobalTheory.Mem.SchurTensor.ellT_inclT_tprod]
@@ -146,6 +189,17 @@ theorem ellT_unit {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (d 
   rw [inner_self_eq_norm_sq_to_K, hd τ]
   simp
 
+/- English proof (translation)
+Take `⟨r, hr, hR⟩` from `level hP hθ hκ hV' M J χ hq`. Establish `hcf : ∀ x, IsCuspForm θ V' fun h => (e x).1 (PiTensorProduct.tprod ℂ d) (κ.symm h)` using `fun x => hκ.2.2.2.1 θ hθ _ (GlobalTheory.Mem.SchurTensor.schur_tensor D θ V S M J χ ν 𝓕 (GlobalTheory.MultFinite.schurMult hP ν 𝓕) hθ hq _ (e x).2 _ (e x).2 (PiTensorProduct.tprod ℂ d) d).1`. Use `set s := Real.sqrt (c * r / kq) with hs`. Establish `hs0 : 0 < s` using `Real.sqrt_pos.2 (by positivity)`. Establish `hs2 : s ^ 2 * (kq / r) = c`.
+
+Rewrite using `[hs, Real.sq_sqrt (by positivity)]`. Clear the denominators using the available nonvanishing facts. Set `row : N →ₗ[ℂ] CuspS θ V'` to `{ toFun := fun x => ⟨fun h => (s : ℂ) * (e x).1 (PiTensorProduct.tprod ℂ d) (κ.symm h), Submodule.smul_mem _ (s : ℂ) (Submodule.subset_span (hcf x))⟩ map_add' := fun x y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `h`.
+
+Simplify using `[mul_add]`. Use the proof step `map_smul' := fun a x => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `h`. Simplify using `only [map_smul, Submodule.coe_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`.
+
+Use `ring }`. Use `⟨s, r, hs0, hr, hs2, row, fun x h => rfl, fun x y => ?_, fun X hX v x => hR X hX _ (e x).2 v d⟩` and prove the remaining obligations. Establish `h1` using `isQuotInt_const_mul ((s : ℂ) ^ 2) (isQuotInt_rescale hr.ne' kq (hR _ (e x).2 _ (e y).2 (PiTensorProduct.tprod ℂ d) d))`. Use `isQuotInt_congr (funext fun h => ?_) ?_ h1` and prove the remaining obligations. Simplify using `only [row, LinearMap.coe_mk, AddHom.coe_mk, star_mul', Complex.star_def, Complex.conj_ofReal]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ellT_unit M d hd, star_one, mul_one, hip, ← hs2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levelRow (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfF D} (hθ : IsInfFam θ) {V V' : HSp D} {κ : GA D V ≃* GA D V'}
     (hκ : Moves V V' κ) (hV' : V'.SigOK) {S : D.what₂.Tau → SPar} (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ)
     {ν : Measure (GA D V)} {𝓕 : Set (GA D V)} (hq : IsQuot V ν 𝓕) {N : Type} [NormedAddCommGroup N] [InnerProductSpace ℂ N]
@@ -194,6 +248,19 @@ noncomputable section
 namespace GlobalTheory.Mem.OneTuple
 variable {D : D7}
 
+/- English proof (translation)
+Use `haveI := hq.1`. Establish `hS : SchurMult θ M J χ μ 𝓕` using `GlobalTheory.MultFinite.schurMult hP μ 𝓕`. Take `⟨c, hc⟩` from `hS hθ hq.1 hq.2 _ ((mem_multT θ M J χ X).1 hX) _ ((mem_multT θ M J χ Y).1 hY)`. Establish `h1` using `ipM_spec M μ 𝓕 _ _ ⟨c, hc⟩`. Establish `hsw : IsMultIP M μ 𝓕 (PiTensorProduct.lift.symm Y) (PiTensorProduct.lift.symm X) (star c)`.
+
+Introduce `v v'`. Take `⟨i1, i2⟩` from `hc v' v`. Establish `e : (fun g => star ((PiTensorProduct.lift.symm Y) v g) * (PiTensorProduct.lift.symm X) v' g) = fun g => star (star ((PiTensorProduct.lift.symm X) v' g) * (PiTensorProduct.lift.symm Y) v g)`. Use function extensionality and compare the values at `g`. Rewrite using `[star_mul', star_star, mul_comm]`.
+
+Establish `hI : IntegrableOn (fun g => star ((PiTensorProduct.lift.symm Y) v g) * (PiTensorProduct.lift.symm X) v' g) 𝓕 μ`. Rewrite using `[e]`. Conclude with `(Complex.conjCLE.toContinuousLinearMap : ℂ →L[ℝ] ℂ).integrable_comp i1`. Establish `hE : ∫ g in 𝓕, star ((PiTensorProduct.lift.symm Y) v g) * (PiTensorProduct.lift.symm X) v' g ∂μ = star c * ∏ τ, ⟪(v τ : M.H τ), (v' τ : M.H τ)⟫_ℂ`. Rewrite using `[e]`.
+
+Use `integral_conj (μ := μ.restrict 𝓕) (f := fun g => star ((PiTensorProduct.lift.symm X) v' g) * (PiTensorProduct.lift.symm Y) v g)` as an intermediate fact. Simplify using `only [Complex.star_def] at this i2 ⊢`. Rewrite using `[this, i2, map_mul, map_prod]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => inner_conj_symm _ _`.
+
+Conclude with `⟨hI, hE⟩`. Establish `hu` using `hasPeterssonInner_unique M μ 𝓕 _ _ d (by`. Rewrite using `[Finset.prod_eq_one fun τ _ => by rw [inner_self_eq_norm_sq_to_K, hd τ]; simp]; exact one_ne_zero)`. Use the proof step `(ipM_spec M μ 𝓕 _ _ ⟨_, hsw⟩) hsw`. Unfold `ipT`.
+
+Rewrite using `[hu]`. Establish `hv` using `hasPeterssonInner_unique M μ 𝓕 _ _ d (by`. Rewrite using `[Finset.prod_eq_one fun τ _ => by rw [inner_self_eq_norm_sq_to_K, hd τ]; simp]; exact one_ne_zero) h1 hc`. Rewrite using `[hv]`.
+-/
 theorem ipT_swap (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfF D} (hθ : IsInfFam θ) {V : HSp D} {S : D.what₂.Tau → SPar}
     (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) {μ : Measure (GA D V)} {𝓕 : Set (GA D V)} (hq : IsQuot V μ 𝓕)
     (d : M.Vec) (hd : ∀ τ, ‖(d τ : M.H τ)‖ = 1) {X Y : SmT M →ₗ[ℂ] (GA D V → ℂ)} (hX : X ∈ MultT θ M J χ)
@@ -236,12 +303,18 @@ noncomputable section
 namespace GlobalTheory.Mem.OneTuple
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `WeilFun.ker`. Rewrite using `[map_smul]`. Both sides reduce to the same expression.
+-/
 theorem ker_smul {ψ : AddChar (AF D.host.F) ℂ} (Wf : WeilFun D ψ) (V W : HSp D) (χ χ' : IdC D) (a : ℂ) (Φ : ThS ψ V W)
     (g : GA D V) (h : GA D W) : Wf.ker V W χ χ' (a • Φ) g h = a * Wf.ker V W χ χ' Φ g h := by
   unfold WeilFun.ker
   rw [map_smul]
   rfl
 
+/- English proof (translation)
+Introduce `γ hγ g h`. Unfold `thetaKO`. Establish `e : ((g, γ * h) : GA D S × GA D T) = (1, γ) * (g, h)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hom.om_aut 1 (one_mem _) γ hγ _ (hom.om_pres _ f hf)`.
+-/
 theorem thetaKO_left {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : IdC D} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     ∀ γ ∈ GQ T, ∀ g h, thetaKO om g (γ * h) f = thetaKO om g h f := by
@@ -251,6 +324,23 @@ theorem thetaKO_left {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : I
   rw [e, map_mul, Module.End.mul_apply]
   exact hom.om_aut 1 (one_mem _) γ hγ _ (hom.om_pres _ f hf)
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Take `⟨rW, hrW, hRW⟩` from `quot_transport hκ hW' hqW`. Take `⟨om', hom', hmv⟩` from `hκ.2.2.2.2 ψ V χS χT om hom`. Take `⟨f', hf', hf'0, hf'eq⟩` from `hmv (pt φ) (hpt φ)`. Take `⟨Φ0, hΦ0, hker⟩` from `GlobalTheory.Mem.OrientedKer.ker_eq_thetaKO D ψ hom'.std Wf V W' χS χT hrk ⟨hrk.ne', hT, hS, hom'.resT, hom'.resS⟩ om' hom' f' hf'`.
+
+Use `set a : ℝ := cV * rV * rW / (kV * kW * sV * sW) with ha`. Establish `ha0 : 0 < a` using `by positivity`. Use `⟨(a : ℂ) • Φ0, smul_ne_zero (by exact_mod_cast ha0.ne') (hΦ0 (hf'0 hφ)), fun y => ?_⟩` and prove the remaining obligations. Establish `hFm : ((eW y : CCs) : SmT MW →ₗ[ℂ] (GA D W → ℂ)) ∈ MultT θ MW JW χW` using `hCC (eW y).2`. Use `⟨fun g => (((kW / rW) * a * sW : ℝ) : ℂ) * ((io (eW y)).1 : SmT MV →ₗ[ℂ] (GA D V → ℂ)) (It φ (PiTensorProduct.tprod ℂ d')) g, fun g => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `hinv : ∀ γ ∈ GQ W, ∀ h, (fun h => thetaKO om g h (pt φ) * ((eW y : CCs) : SmT MW →ₗ[ℂ] (GA D W → ℂ)) (PiTensorProduct.tprod ℂ d') h) (γ * h) = (fun h => thetaKO om g h (pt φ) * ((eW y : CCs) : SmT MW →ₗ[ℂ] (GA D W → ℂ)) (PiTensorProduct.tprod ℂ d') h) h`. Introduce `γ hγ h`. Simplify using `only [thetaKO_left hom (hpt φ) γ hγ g h, multT_left hFm _ γ hγ h]`. Establish `hq` using `hRW _ hinv (hio.integ (eW y) φ (PiTensorProduct.tprod ℂ d') g)`. Establish `hval` using `hio.eq (eW y) φ (PiTensorProduct.tprod ℂ d') g`.
+
+Unfold `Lift.liftInt at hval`. Rewrite `hq` using `[hval]`. Establish `h2` using `isQuotInt_const_mul ((a * sW : ℝ) : ℂ) (isQuotInt_rescale hrW.ne' kW hq)`. Use `isQuotInt_congr (funext fun h => ?_) ?_ h2` and prove the remaining obligations. Rewrite using `[ker_smul, hker, hrowW, ← hf'eq g (κ.symm h), MulEquiv.apply_symm_apply]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hX` using `(io (eW y)).2`.
+
+Establish `h3` using `isQuotInt_const_mul ((((kW / rW) * a * sW : ℝ) : ℂ) * sV) (isQuotInt_rescale hrV.ne' kV (hpairV _ hX (It φ (PiTensorProduct.tprod ℂ d')) x))`. Use `isQuotInt_congr (funext fun g => ?_) ?_ h3` and prove the remaining obligations. Rewrite using `[hrowV]`. Simplify using `only [castG_rfl, MulEquiv.refl_symm, MulEquiv.refl_apply, star_mul', Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1, star_one, mul_one, ← inner_conj_symm, hioN, ipT_swap hP hθ MV JV χV hqV d hd (eV x).2 hX]`. Establish `hnum : (kW / rW) * a * sW * sV * (kV / rV) = cV`. Rewrite using `[ha]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[map_mul, Complex.conj_ofReal, ← Complex.star_def, ← hnum]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfF D} (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ}
     (Wf : WeilFun D ψ) {V V' W W' : HSp D} (hV : V = V') {κ : GA D W ≃* GA D W'} (hκ : Moves W W' κ) (hW' : W'.SigOK)
     (hrk : V'.rank < W'.rank) {χS χT : IdC D} (hS : IsHC D χS) (hT : IsHC D χT)
@@ -326,6 +416,9 @@ noncomputable section
 namespace GlobalTheory.Mem.OneTuple
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `Fintype.card_pos_iff.1 (by rw [D.what₂.card_Tau] show 0 < 2 * D.R.n unfold Formalism.BasicNotions.Ranks.n positivity)`.
+-/
 theorem tau_nonempty (D : D7) : Nonempty D.what₂.Tau :=
   Fintype.card_pos_iff.1 (by
     rw [D.what₂.card_Tau]
@@ -333,6 +426,17 @@ theorem tau_nonempty (D : D7) : Nonempty D.what₂.Tau :=
     unfold Formalism.BasicNotions.Ranks.n
     positivity)
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨τ⟩` from `tau_nonempty D`. Establish `h1 : (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)`. Simplify using `[Formalism.QuantumDeterminants.UH]`. Establish `h` using `hI.eqK τ 1 h1 φ 0 (by rw [hpt0, h0, map_zero]) v`.
+
+Rewrite `h` using `[map_zero, LinearMap.zero_apply, map_zero]`. Establish `hrep : M.rep τ 1 = 1`. Unfold `DSModel.rep`. Rewrite using `[mul_one, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ))]`. Conclude with `(M.ds τ).2.2.1.1.1`.
+
+Establish `hid : actT M τ 1 = LinearMap.id` using `by classical`. Unfold `actT`. Rewrite using `[hrep]`. Establish `: Function.update (fun ρ => (LinearMap.id : M.H ρ →ₗ[ℂ] M.H ρ)) τ ((1 : M.H τ →L[ℂ] M.H τ) : M.H τ →ₗ[ℂ] M.H τ) = fun ρ => LinearMap.id`. Use function extensionality and compare the values at `ρ`.
+
+Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using `[Function.update_of_ne hρ]`.
+
+Rewrite using `[this, PiTensorProduct.map_id]`. Rewrite `h` using `[hid, LinearMap.id_apply]`. Conclude with `hv h.symm`.
+-/
 theorem pt_ne_zero {V W : HSp D} {S S' : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {M' : DSModel W S'}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {pt : PolF D W.rank V.rank → (WO V W → ℂ)}
     {It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M} (hI : IsItW θ M M' ω pt It) (hpt0 : pt 0 = 0)
@@ -361,11 +465,17 @@ theorem pt_ne_zero {V W : HSp D} {S S' : D.what₂.Tau → SPar} {θ : InfFam D}
   rw [hid, LinearMap.id_apply] at h
   exact hv h.symm
 
+/- English proof (translation)
+Use `⟨⟨h.1.1.inv, fun x => by rw [MonoidHom.inv_apply, h.1.2 x, inv_one]⟩, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `h.2 τ`. Conclude with `⟨-a, GlobalTheory.Mem.HeckeExp.hasInfExp_inv ha⟩`.
+-/
 theorem isHC_inv {χ : IdC D} (h : IsHC D χ) : IsHC D χ⁻¹ := by
   refine ⟨⟨h.1.1.inv, fun x => by rw [MonoidHom.inv_apply, h.1.2 x, inv_one]⟩, fun τ => ?_⟩
   obtain ⟨a, ha⟩ := h.2 τ
   exact ⟨-a, GlobalTheory.Mem.HeckeExp.hasInfExp_inv ha⟩
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Establish `h1 : IsHC D (L.mu0 ((i : ℕ) + 1))` using `⟨(hL.mu0 i).1, fun τ => ⟨_, GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (hL.mu0 i) (GlobalTheory.Chain.StepVac.hasInfQ_tau (L.C.isMu0 i).inf) τ⟩⟩`. Establish `h2 : IsHC D (L.xi t)` using `⟨(hL.xi t).1, fun τ => ⟨_, GlobalTheory.Chain.StepVac.hasInfExp_of_order hθ (hL.xi t) hn ho τ⟩⟩`. Conclude with `h1.mul h2`.
+-/
 theorem isHC_mu {T : Type} (L : LevCh D T) {μ0 : T} (hL : L.Is μ0) (t : T) (i : Fin D.R.m) :
     IsHC D (L.mu t ((i : ℕ) + 1)) := by
   obtain ⟨θ, hθ⟩ := GlobalTheory.Member.exists_isInfFam_family D
@@ -375,10 +485,18 @@ theorem isHC_mu {T : Type} (L : LevCh D T) {μ0 : T} (hL : L.Is μ0) (t : T) (i 
   have h2 : IsHC D (L.xi t) := ⟨(hL.xi t).1, fun τ => ⟨_, GlobalTheory.Chain.StepVac.hasInfExp_of_order hθ (hL.xi t) hn ho τ⟩⟩
   exact h1.mul h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hL.eta.1, fun τ => ⟨_, GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hL.eta (GlobalTheory.Chain.StepVac.hasInfQ_tau (a := fun _ => 1 / 2) ⟨_, fun _ => by norm_num, L.C.isEta.inf⟩) τ⟩⟩`.
+-/
 theorem isHC_eta {T : Type} (L : LevCh D T) {μ0 : T} (hL : L.Is μ0) : IsHC D L.eta :=
   ⟨hL.eta.1, fun τ => ⟨_, GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hL.eta
     (GlobalTheory.Chain.StepVac.hasInfQ_tau (a := fun _ => 1 / 2) ⟨_, fun _ => by norm_num, L.C.isEta.inf⟩) τ⟩⟩
 
+/- English proof (translation)
+Unfold `Lift.chrStep`. Break down `Nat.even_or_odd j with h | h` into its components or cases. Establish `h1 : Odd (j + 1)` using `h.add_one`. Establish `h2 : ¬ Even (j + 1)` using `Nat.not_even_iff_odd.2 h1`. Simplify using `[h, h1, h2]`.
+
+Establish `h1 : ¬ Odd (j + 1)` using `Nat.not_odd_iff_even.2 h.add_one`. Establish `h2 : Even (j + 1)` using `h.add_one`. Establish `h3 : ¬ Even j` using `Nat.not_even_iff_odd.2 h`. Simplify using `[h1, h2, h3]`.
+-/
 theorem chrStep_eq {C : Type} [CommGroup C] (μ : ℕ → C) (η : C) (j : ℕ) :
     Lift.chrStep μ η (j + 1) = (if Even j then μ (j + 1) * η⁻¹ else μ (j + 1),
       if Even (j + 1) then μ (j + 1) * η⁻¹ else μ (j + 1)) := by
@@ -392,6 +510,9 @@ theorem chrStep_eq {C : Type} [CommGroup C] (μ : ℕ → C) (η : C) (j : ℕ) 
     have h3 : ¬ Even j := Nat.not_even_iff_odd.2 h
     simp [h1, h2, h3]
 
+/- English proof (translation)
+Establish `h1` using `isHC_mu L hL t ⟨j, hj⟩`. Establish `h2` using `h1.mul (isHC_inv (isHC_eta L hL))`. Apply the tactic sequence `constructor <;> split_ifs <;> assumption`.
+-/
 theorem isHC_step {T : Type} (L : LevCh D T) {μ0 : T} (hL : L.Is μ0) (t : T) (j : ℕ) (hj : j < D.R.m) :
     IsHC D (if Even j then L.mu t (j + 1) * L.eta⁻¹ else L.mu t (j + 1)) ∧
       IsHC D (if Even (j + 1) then L.mu t (j + 1) * L.eta⁻¹ else L.mu t (j + 1)) := by
@@ -406,18 +527,30 @@ noncomputable section
 namespace GlobalTheory.Mem.OneTuple
 variable {D : D7}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem famCast_heq (Sp : ℕ → Type) [∀ j, NormedAddCommGroup (Sp j)] [∀ j, InnerProductSpace ℂ (Sp j)] {i j : ℕ}
     (h : i = j) (x : Sp i) : HEq x (famCast Sp h x) := by
   subst h
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem famCast_rfl (Sp : ℕ → Type) [∀ j, NormedAddCommGroup (Sp j)] [∀ j, InnerProductSpace ℂ (Sp j)] {i : ℕ}
     (x : Sp i) : famCast Sp (rfl : i = i) x = x := rfl
 
+/- English proof (translation)
+Unfold `Yc`. Rewrite using `[min_eq_left hj.le]`.
+-/
 theorem yc_eq (D : D7) {j : ℕ} (hj : j < D.R.m) : Yc D j = D.sp.Y j := by
   unfold Yc
   rw [min_eq_left hj.le]
 
+/- English proof (translation)
+Rewrite using `[D.sp.Y_rank j hj.le, D.sp.Y_rank (j + 1) hj]`. Unfold `Formalism.BasicNotions.Ranks.rankY`. Use `D.R.t_odd.pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem rank_lt (D : D7) {j : ℕ} (hj : j < D.R.m) : (D.sp.Y j).rank < (D.sp.Y (j + 1)).rank := by
   rw [D.sp.Y_rank j hj.le, D.sp.Y_rank (j + 1) hj]
   unfold Formalism.BasicNotions.Ranks.rankY
@@ -431,6 +564,13 @@ noncomputable section
 namespace GlobalTheory.Mem.OneTuple
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Substitute `hj` using the available equality. Apply the tactic sequence `have hiso0 := GlobalTheory.T.exists_transport_groups_cuspForms_weilData_isometry D D.sp.X' (D.sp.Y D.R.m) D.sp.eYm`. Establish `hiso1` using `D.sp.eYm_isom`. Establish `hiso2` using `hiso0 hiso1`. Take `⟨κT, hκT⟩` from `hiso2`.
+
+Establish `hκM : Moves D.sp.X' (D.sp.Y D.R.m) κT` using `hκT`. Set `eT : D.what₂.Mult μ D.R.m →ₗ[ℂ] MultT R.θ R.MX J χ` to `(Submodule.inclusion hJ) ∘ₗ eX`. Establish `hT : ∀ x y, ⟪x, y⟫_ℂ = (cX : ℂ) * ipT R.MX (R.νX t) (R.fdX t) (eT y).1 (eT x).1` using `H3`. Establish `hqX : IsQuot D.sp.X' (R.νX t) (R.fdX t)` using `⟨(hM.νX t).1.1, (hM.νX t).2⟩`. Establish `hθ : IsInfFam R.θ` using `hM.inf`.
+
+Establish `hsig` using `D.sp.Y_sig D.R.m`. Establish `L0` using `levelRow (N := D.what₂.Mult μ D.R.m) hP hθ hκM hsig R.MX J χ hqX eT hcX hT dX hdX hk`. Take `⟨s, r, hs, hr, -, row, hrow, hiso, -⟩` from `L0`. Conclude with `⟨κT, hκM, s, hs, row, hrow, hiso⟩`.
+-/
 theorem topRow (hP : GlobalTheory.Published.CuspRapidDecay) {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
     (hM : R.IsModels) (t : T) (μ : D.what₂.Tup)
@@ -462,6 +602,29 @@ end
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP D G _ _ Pl0 T A Ks _ _ _ R hL hM hC t μ hyp Wf κ hκ`. Take `⟨e, eX, ν, 𝓕, c, cX, H1, ⟨J, χ, hJ⟩, hcX, H3, H4, H5⟩` from `hyp`. Establish `hθ : IsInfFam R.θ` using `hM.inf`. Establish `hm2` using `D.R.two_le_m`. Establish `hsigY` using `D.sp.Y_sig`.
+
+Take `⟨d, dX, φ, φX, hd, hdX, hφ, hφX⟩` from `GlobalTheory.T.exists_polynomial_frame_maps_bounded D G Pl0 T A Ks R (fun k hk => (hC.ItY t k hk).ne) (hC.ItX t).ne`. Establish `hlow : ∀ j (hj : j < D.R.m), ∃ s r : ℝ, 0 < s ∧ 0 < r ∧ s ^ 2 * (κ j / r) = c j ∧ ∃ row : D.what₂.Mult μ j →ₗ[ℂ] CuspS R.θ (D.sp.Y j), (∀ x h, (row x).1 h = (s : ℂ) * (e j x).1 (PiTensorProduct.tprod ℂ (d j)) ((GlobalTheory.Mem.OneTuple.castG (GlobalTheory.Mem.OneTuple.yc_eq D hj …` using `fun j hj => GlobalTheory.Mem.OneTuple.levelRow hP hθ (GlobalTheory.Mem.OneTuple.moves_castG (GlobalTheory.Mem.OneTuple.yc_eq D hj)) (hsigY j) (R.MY j) _ _ (H1 j hj).1 (e j) (H1 j hj).2.1 (H1 j hj).2.2 (d j) (hd j hj) (hκ j)`. Establish `htop` using `GlobalTheory.Mem.OneTuple.topRow hP R hM t μ eX J χ hJ hcX H3 dX hdX (hκ D.R.m)`. Use `choose sL rL hsL hrL hsrL rowL hrowL hisoL hpairL using hlow`. Establish `htop' : ∀ j (hj : j = D.R.m), ∃ κT : GA D D.sp.X' ≃* GA D (D.sp.Y j), GlobalTheory.Mem.OneTuple.Moves D.sp.X' (D.sp.Y j) κT ∧ ∃ s : ℝ, 0 < s ∧ ∃ row : D.what₂.Mult μ j →ₗ[ℂ] CuspS R.θ (D.sp.Y j), (∀ x h, (row x).1 h = (s : ℂ) * (eX (famCast (D.what₂.Mult μ) hj x)).1 (PiTensorProd …`.
+
+Introduce `j hj`. Use `htop j hj` as an intermediate fact. Substitute `hj` using the available equality. Conclude with `this`. Use `choose κT hκT sT hsT rowT hrowT hisoT using htop'`.
+
+Set `row : ∀ j, D.what₂.Mult μ j →ₗ[ℂ] CuspS R.θ (D.sp.Y j)` to `fun j => if hj : j < D.R.m then rowL j hj else if hj' : j = D.R.m then rowT j hj' else 0`. Establish `row_low : ∀ j (hj : j < D.R.m), row j = rowL j hj` using `fun j hj => dif_pos hj`. Establish `row_top : ∀ j (hj : j = D.R.m), row j = rowT j hj` using `fun j hj => by`. Simplify using `only [row, dif_neg (show ¬ j < D.R.m by omega), dif_pos hj]`. Establish `hstep : ∀ j, j < D.R.m → ∃ Φ : ThS R.ψ (D.sp.Y (j + 1)) (D.sp.Y j), Φ ≠ 0 ∧ ∀ y : D.what₂.Mult μ (j + 1), ∃ L : GA D (D.sp.Y j) → ℂ, (∀ g, GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt (D.sp.Y (j + 1)) (κ (j + 1)) (fun h => Wf.ker _ _ (if Even (j + 1) …`.
+
+Introduce `j hj`. Take `⟨hS, hT⟩` from `GlobalTheory.Mem.OneTuple.isHC_step R.toLevCh hL t j hj`. Rewrite using `[row_low j hj]`. Distinguish the cases in `hA : j + 1 < D.R.m`. Rewrite using `[row_low (j + 1) hA]`.
+
+Establish `hom` using `hC.ωY t j hA`. Rewrite `hom` using `[GlobalTheory.Mem.OneTuple.chrStep_eq]`. Establish `hne : R.ptY t j (φ j) ≠ 0` using `GlobalTheory.Mem.OneTuple.pt_ne_zero (hC.ItY t j hA) (by unfold RealDat.ptY; exact map_zero _) (v := PiTensorProduct.tprod ℂ (d (j + 1))) (fun h0 => by`. Use `hφ j hA` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one this)`. Conclude with `GlobalTheory.Mem.OneTuple.step hP hθ Wf (GlobalTheory.Mem.OneTuple.yc_eq D hj) (GlobalTheory.Mem.OneTuple.moves_castG (GlobalTheory.Mem.OneTuple.yc_eq D hA)) (hsigY _) (GlobalTheory.Mem.OneTuple.rank_lt D hj) hS hT hom (R.MY j) (R.MY (j + 1)) _ _ _ _ (R.CC t (j + 1)) le_rfl (Glob …`. Take `rfl : j = D.R.m - 1` from `by omega`. Rewrite using `[row_top (D.R.m - 1 + 1) (GlobalTheory.Mem.Th.pred_m_add_one D)]`. Establish `hom` using `hC.ωX t`.
+
+Establish `e1 : Lift.chrStep (R.toLevCh.mu t) R.eta D.R.m = Lift.chrStep (R.toLevCh.mu t) R.eta (D.R.m - 1 + 1)`. Rewrite using `[GlobalTheory.Mem.Th.pred_m_add_one]`. Rewrite `hom` using `[e1, GlobalTheory.Mem.OneTuple.chrStep_eq]`. Establish `hne : R.ptX t φX ≠ 0` using `GlobalTheory.Mem.OneTuple.pt_ne_zero (hC.ItX t) (by unfold RealDat.ptX; exact map_zero _) (v := PiTensorProduct.tprod ℂ dX) (fun h0 => by`. Rewrite `hφX` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hφX)`. Set `eW : D.what₂.Mult μ (D.R.m - 1 + 1) →ₗ[ℂ] LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX t).e)` to `eX ∘ₗ (famCast (D.what₂.Mult μ) (GlobalTheory.Mem.Th.pred_m_add_one D)).toLinearEquiv.toLinearMap`. Conclude with `GlobalTheory.Mem.OneTuple.step hP hθ Wf (GlobalTheory.Mem.OneTuple.yc_eq D hj) (hκT _ (GlobalTheory.Mem.Th.pred_m_add_one D)) (hsigY _) (GlobalTheory.Mem.OneTuple.rank_lt D hj) hS hT hom (R.MY (D.R.m - 1)) R.MX _ _ J χ _ hJ ⟨(hM.νX t).1.1, (hM.νX t).2⟩ (H1 _ hj).1 (hC.ptX t) (hC. …`. Use `choose PhiC hPhiC hL2 using hstep`. Set `Phi : ∀ j, ThS R.ψ (D.sp.Y (j + 1)) (D.sp.Y j)` to `fun j => if hj : j < D.R.m then PhiC j hj else 0`.
+
+Use `⟨row, Phi, fun j hj => ?_, fun j hj x y => ?_, fun j hj y => ?_⟩` and prove the remaining obligations. Simplify using `only [Phi, dif_pos hj]`. Conclude with `hPhiC j hj`. Break down `hj.lt_or_eq with hj | hj` into its components or cases. Rewrite using `[row_low j hj]`.
+
+Conclude with `hisoL j hj x y`. Rewrite using `[row_top j hj]`. Conclude with `hisoT j hj x y`. Simplify using `only [Phi, dif_pos hj]`. Conclude with `hL2 j hj y`.
+-/
 theorem GlobalTheory.Mem.OneTuple.rows_theta : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.toLevCh.Is A.μ0 → R.IsModels → R.IsChain → ∀ (t : T) (μ : D.what₂.Tup), (∃ (e : ∀ j, D.what₂.Mult μ j →ₗ[ℂ] R.CC t j) (eX : D.what₂.Mult μ D.R.m →ₗ[ℂ] LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX t).e)) (ν : ∀ j, Measure (GA D (Yc D j))) (𝓕 : ∀ j, Set (GA D (Yc D j))) (c : ℕ → ℝ) (cX : ℝ), (∀ j, j < D.R.m → IsQuot (Yc D j) (ν j) (𝓕 j) ∧ 0 < c j ∧ ∀ x y, ⟪x, y⟫_ℂ = (c j : ℂ) * ipT (R.MY j) (ν j) (𝓕 j) (e j y).1 (e j x).1) ∧ (∃ J χ, LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX t).e) ≤ MultT R.θ R.MX J χ) ∧ 0 < cX ∧ (∀ x y, ⟪x, y⟫_ℂ = (cX : ℂ) * ipT R.MX (R.νX t) (R.fdX t) (eX y).1 (eX x).1) ∧ (∀ j, j + 1 < D.R.m → ∀ x y, ⟪x, D.what₂.io μ j y⟫_ℂ = (c j : ℂ) * ipT (R.MY j) (ν j) (𝓕 j) (R.ioY t j (e (j + 1) y)).1 (e j x).1) ∧ ∀ x (y : D.what₂.Mult μ (D.R.m - 1 + 1)) (y' : D.what₂.Mult μ D.R.m), HEq y y' → ⟪x, D.what₂.io μ (D.R.m - 1) y⟫_ℂ = (c (D.R.m - 1) : ℂ) * ipT (R.MY (D.R.m - 1)) (ν (D.R.m - 1)) (𝓕 (D.R.m - 1)) (R.ioX t (eX y')).1 (e (D.R.m - 1) x).1) → ∀ (Wf : WeilFun D R.ψ) (κ : ℕ → ℝ), (∀ j, 0 < κ j) → ∃ (row : ∀ j, D.what₂.Mult μ j →ₗ[ℂ] CuspS R.θ (D.sp.Y j)) (Phi : ∀ j, ThS R.ψ (D.sp.Y (j + 1)) (D.sp.Y j)), (∀ j, j < D.R.m → Phi j ≠ 0) ∧ (∀ j, j ≤ D.R.m → ∀ x y : D.what₂.Mult μ j, GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt (D.sp.Y j) (κ j) (fun h => star ((row j x).1 h) * (row j y).1 h) (inner ℂ x y)) ∧ ∀ j, j < D.R.m → ∀ y : D.what₂.Mult μ (j + 1), ∃ L : GA D (D.sp.Y j) → ℂ, (∀ g, GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt (D.sp.Y (j + 1)) (κ (j + 1)) (fun h => Wf.ker _ _ (if Even (j + 1) then R.toLevCh.mu t (j + 1) * R.eta⁻¹ else R.toLevCh.mu t (j + 1)) (if Even j then R.toLevCh.mu t (j + 1) * R.eta⁻¹ else R.toLevCh.mu t (j + 1)) (Phi j) h g * (row (j + 1) y).1 h) (L g)) ∧ ∀ x : D.what₂.Mult μ j, GlobalTheory.IndefiniteRowSideFullHecke.SplittingKernelQuotients.IsQuotInt (D.sp.Y j) (κ j) (fun g => star (L g) * (row j x).1 g) (inner ℂ (D.what₂.io μ j y) x) := by
   intro hP D G _ _ Pl0 T A Ks _ _ _ R hL hM hC t μ hyp Wf κ hκ
   obtain ⟨e, eX, ν, 𝓕, c, cX, H1, ⟨J, χ, hJ⟩, hcX, H3, H4, H5⟩ := hyp

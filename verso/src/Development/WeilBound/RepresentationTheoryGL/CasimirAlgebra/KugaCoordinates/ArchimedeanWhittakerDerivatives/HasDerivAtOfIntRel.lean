@@ -14,6 +14,15 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 def IntRel (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0) (f f' : GA E a → ℂ) : Prop :=
   ∀ g t, f (g * infGL E a (cu M hM t)) - f g = ∫ s in (0 : ℝ)..t, f' (g * infGL E a (cu M hM s))
 
+/- English proof (translation)
+Introduce `g t`. Establish `hd : ∀ s, HasDerivAt (fun u => φ.1 (g * infGL E a (cu M hM u))) (lieD (toL M) φ.1 (g * infGL E a (cu M hM s))) s`. Introduce `s`. Establish `h1` using `hasDerivAt_curve φ (g * infGL E a (cu M hM s)) (cu M hM) (toL M) (cu_zero M hM) (hasDerivAt_cu M hM 0)`. Establish `h1' : HasDerivAt (fun u => φ.1 (g * infGL E a (cu M hM s) * infGL E a (cu M hM u))) (lieD (toL M) φ.1 (g * infGL E a (cu M hM s))) (s - s)` using `by rwa [sub_self]`.
+
+Establish `h2` using `HasDerivAt.scomp (h := fun u : ℝ => u - s) s h1' ((hasDerivAt_id' s).sub_const s)`. Rewrite `h2` using `[one_smul]`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[mul_assoc, ← map_mul, ← cu_add, add_sub_cancel]`.
+
+Establish `hcont : Continuous fun s => lieD (toL M) φ.1 (g * infGL E a (cu M hM s))`. Establish `hm` using `lieD_mem_Sm (toL M) φ.2`. Establish `hc : Continuous fun s => toL (cu M hM s).val` using `continuous_iff_continuousAt.2 fun s => (hasDerivAt_cu M hM s).continuousAt`. Establish `h3` using `((hm g).continuousOn).comp_continuous hc (fun s => val_mem_invSet _)`. Simplify `h3` using `only [Function.comp_def, chart_val]`.
+
+Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt (fun s _ => hd s) (hcont.intervalIntegrable _ _)]`. Simplify using `only [cu_zero, map_one, mul_one]`.
+-/
 theorem intRel_sm (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0) (φ : Sm E a) :
     IntRel M hM φ.1 (lieD (toL M) φ.1) := by
   intro g t
@@ -37,6 +46,15 @@ theorem intRel_sm (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0) (φ : S
   rw [intervalIntegral.integral_eq_sub_of_hasDerivAt (fun s _ => hd s) (hcont.intervalIntegrable _ _)]
   simp only [cu_zero, map_one, mul_one]
 
+/- English proof (translation)
+Introduce `g t`. Establish `hΓ` using `isCoLat_ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))`. Establish `hl` using `hl_of_good hf le_rfl`. Establish `hl'` using `hl_of_good hf' le_rfl`. Use `set ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → E := eLast a (m + 1)`.
+
+Establish `e0 : colT ψ (m + 1) f (g * infGL E a (cu M hM t)) - colT ψ (m + 1) f g = avg (ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1))) (fun x => ψ (-dot ξ x) * f (blkU x * (g * infGL E a (cu M hM t))) - ψ (-dot ξ x) * f (blkU x * g))` using `(avg_sub _ hΓ _ _ (per_coef hψ ξ hf.cont hl _) (per_coef hψ ξ hf.cont hl _)).symm`. Establish `e1 : (fun x : UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E => ψ (-dot ξ x) * f (blkU x * (g * infGL E a (cu M hM t))) - ψ (-dot ξ x) * f (blkU x * g)) = fun x => ∫ s in (0 : ℝ)..t, ψ (-dot ξ x) * f' (blkU x * (g * infGL E a (cu M hM s)))`. Use function extensionality and compare the values at `x`. Establish `h2` using `h (blkU x * g) t`. Simplify using `only [mul_assoc] at h2`.
+
+Rewrite using `[← mul_sub, h2, intervalIntegral.integral_const_mul]`. Establish `hF : Continuous fun p : (UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E) × ℝ => ψ (-dot ξ p.1) * f' (blkU p.1 * (g * infGL E a (cu M hM p.2)))`. Establish `hb : Continuous fun p : (UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E) × ℝ => (blkU p.1 : GA E a)` using `(continuous_posU (isNil_blk a (m + 1) (m + 1))).comp continuous_fst`. Establish `hc : Continuous fun p : (UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E) × ℝ => infGL E a (cu M hM p.2)` using `(continuous_infGL' E a).comp ((continuous_cu M hM).comp continuous_snd)`. Conclude with `(hψ.cont.comp ((continuous_dot ξ).neg.comp continuous_fst)).mul (hf'.cont.comp (hb.mul (continuous_const.mul hc)))`.
+
+Establish `hp : ∀ γ ∈ ratV E (UnipotentBlockColumnIndex a (m + 1) (m + 1)), ∀ x s, (fun p : (UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E) × ℝ => ψ (-dot ξ p.1) * f' (blkU p.1 * (g * infGL E a (cu M hM p.2)))) (γ + x, s) = (fun p : (UnipotentBlockColumnIndex a (m + 1) (m + 1) → Ad E) …` using `fun γ hγ x s => (per_coef hψ ξ hf'.cont hl' (g * infGL E a (cu M hM s))).2 γ hγ x`. Rewrite using `[e0, e1]`. Conclude with `avg_integral_swap _ hΓ _ hF hp t`.
+-/
 theorem intRel_colT {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0)
     {m : ℕ} {f f' : GA E a → ℂ} (hf : Good ψ (m + 1) f) (hf' : Good ψ (m + 1) f') (h : IntRel M hM f f') :
     IntRel M hM (colT ψ (m + 1) f) (colT ψ (m + 1) f') := by
@@ -73,6 +91,11 @@ theorem intRel_colT {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (M : Matrix (Fin
   rw [e0, e1]
   exact avg_integral_swap _ hΓ _ hF hp t
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact fun _ _ _ _ _ h => h`. Consider the case `succ m ih`. Introduce `hm f f' hf hf' h`. Establish `h1 : m + 1 < a` using `by omega`.
+
+Conclude with `ih (Or.inl (by omega)) (good_colT hψ h1 hf) (good_colT hψ h1 hf') (intRel_colT hψ M hM hf hf' h)`.
+-/
 theorem intRel_whit {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0)
     (m : ℕ) : (m < a ∨ m = 0) → ∀ {f f' : GA E a → ℂ}, Good ψ m f → Good ψ m f' → IntRel M hM f f' →
       IntRel M hM (whit ψ m f) (whit ψ m f') := by
@@ -83,6 +106,11 @@ theorem intRel_whit {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (M : Matrix (Fin
     have h1 : m + 1 < a := by omega
     exact ih (Or.inl (by omega)) (good_colT hψ h1 hf) (good_colT hψ h1 hf') (intRel_colT hψ M hM hf hf' h)
 
+/- English proof (translation)
+Establish `hcont : Continuous fun s : ℝ => F' (g * infGL E a (cu M hM s))` using `hc.comp (continuous_const.mul ((continuous_infGL' E a).comp (continuous_cu M hM)))`. Establish `e : (fun t => F (g * infGL E a (cu M hM t))) = fun t => F g + ∫ s in (0 : ℝ)..t, F' (g * infGL E a (cu M hM s))`. Use function extensionality and compare the values at `t`. Rewrite using `[← h g t]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Establish `h1` using `(hcont.integral_hasStrictDerivAt 0 0).hasDerivAt`. Simplify using `only [cu_zero, map_one, mul_one] at h1`. Conclude with `h1.const_add (F g)`.
+-/
 theorem hasDerivAt_of_intRel (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0) {F F' : GA E a → ℂ}
     (hc : Continuous F') (h : IntRel M hM F F') (g : GA E a) :
     HasDerivAt (fun t => F (g * infGL E a (cu M hM t))) (F' g) 0 := by

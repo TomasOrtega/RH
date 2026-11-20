@@ -19,6 +19,11 @@ open GlobalTheory.DownLift
 
 namespace GlobalTheory.GenReal
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t y hy f hf l g`. Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne (D := D) (V := Vc D i) (W := Wc D i)`. Establish `h0 : ∀ P, downInt R i t y (R.ptP i t P) l g = 0` using `fun P => GlobalTheory.T.realFockThetaLift_vanishing_of_generating_vectors D G Pl0 T A Ks R F hG hP i t y (GlobalTheory.T.theta_lift_vanishes_single_coefficient_of_kernel_kills D G Pl0 T A Ks R F hG hP i t y hy) P l g`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖downInt R i t y f l g‖` using `norm_pos_iff.2 hne`.
+
+Take `⟨d, δ, hδ, hc⟩` from `GlobalTheory.T.downward_theta_integral_sobolev_continuous D G Pl0 T A Ks R F hG hP i t y μ 𝓕 hμ f hf.1 l g _ hpos`. Take `⟨P, hPd⟩` from `GlobalTheory.T.thetaFunction_fixedFinitePart_sobolevLimit_fockVectors D G Pl0 T A Ks R F hG hP i t μ 𝓕 hμ f hf d δ hδ`. Use `hc P hPd` as an intermediate fact. Rewrite `this` using `[h0 P, sub_zero]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem genInf : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ i t, GenInf R i t := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG hP i t y hy f hf l g
   obtain ⟨μ, 𝓕, hμ⟩ := GlobalTheory.Size.exists_isCovolOne (D := D) (V := Vc D i) (W := Wc D i)

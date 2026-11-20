@@ -42,6 +42,27 @@ def stabSub {A X : Type} [Group A] [AddCommGroup X] [Module ℂ X] (ρ : Represe
     conv_lhs => rw [← ha]
     rw [← Module.End.mul_apply, ← map_mul]; simp
 
+/- English proof (translation)
+Take `⟨C, hC, hsup⟩` from `φ.2`. Set `φ' : P → W₁` to `fun p => E.symm (φ.1.1.1 p)`. Establish `hopen : IsOpen ((stabSub (ind H τ) φ.1.1 : Subgroup P) : Set P)` using `φ.1.2`. Establish `hφ' : ∀ (q : Q) (p p' : P), (q : G) * x * (p : G) = x * (p' : G) → φ' p' = σ q (φ' p)`. Introduce `q p p' e`.
+
+Establish `e1 : x * ((p' * p⁻¹ : P) : G) * x⁻¹ = (q : G)`. Establish `: x * (p' : G) = (q : G) * x * (p : G)` using `e.symm`. Use `push_cast`. Rewrite using `[← mul_assoc, this]`. Use `group`.
+
+Establish `hh : p' * p⁻¹ ∈ H` using `(hH _).2 (e1 ▸ q.2)`. Establish `e2 : φ.1.1.1 (((⟨_, hh⟩ : H) : P) * p) = τ ⟨_, hh⟩ (φ.1.1.1 p)` using `φ.1.1.2 ⟨_, hh⟩ p`. Establish `e3 : ((⟨_, hh⟩ : H) : P) * p = p'` using `by simp`. Rewrite `e2` using `[e3]`. Establish `e4 : φ.1.1.1 p = E (φ' p)` using `by simp [φ']`.
+
+Establish `hq' : x * (((⟨_, hh⟩ : H) : P) : G) * x⁻¹ ∈ Q` using `(hH _).1 hh`. Establish `e5 : (⟨_, hq'⟩ : Q) = q` using `Subtype.ext e1`. Use `show E.symm (φ.1.1.1 p') = _`. Rewrite using `[e2, e4, hE ⟨_, hh⟩ hq', e5, LinearEquiv.symm_apply_apply]`. Establish `hinv : ∀ (p : P), ∀ κ ∈ stabSub (ind H τ) φ.1.1, φ' (p * κ) = φ' p`.
+
+Introduce `p κ hκ`. Establish `: (ind H τ κ φ.1.1).1 p = φ.1.1.1 p` using `congrArg (fun F : indSpace H τ => F.1 p) hκ`. Conclude with `congrArg E.symm this`. Establish `hsupp : ∀ p : P, φ' p ≠ 0 → ∃ c ∈ C, ∃ q : Q, x * (p : G) = (q : G) * x * (c : G)`. Introduce `p hp`.
+
+Establish `hp' : φ.1.1.1 p ≠ 0` using `fun h => hp (by simp [φ', h])`. Take `⟨h, hh, c, hc, e⟩` from `hsup p hp'`. Use `⟨c, hc, ⟨_, (hH h).1 hh⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `push_cast`.
+
+Use `group`. Take `⟨K, hK, hKY, hWD⟩` from `GlobalTheory.T.section_constructed_from_double_coset hLS σ hσ φ' hφ' _ hopen hinv C hC Y hY (fun c _ => hxY c)`. Take `⟨f, h1, h2, h3, h4⟩` from `GlobalTheory.T.induced_function_from_compact_data σ φ' C K hWD hsupp`. Use `⟨⟨⟨f, fun h g => h1 h g⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `mem_smoothPart_of_nhds ?_ filter_upwards [hK.mem_nhds (one_mem K)] with κ hκ` and prove the remaining obligations.
+
+Conclude with `Subtype.ext (funext fun y => h2 y κ hκ)`. Use `Subtype.ext (Subtype.ext (funext fun p => ?_)) show E (f (x * (p : G))) = _` and prove the remaining obligations. Rewrite using `[h3]`. Simplify using `[φ']`. Introduce `g hg`.
+
+Take `⟨q, c, hc, κ, hκ, e⟩` from `h4 g hg`. Use `⟨(q : G)⁻¹, inv_mem q.2, ?_⟩` and prove the remaining obligations. Use `hKY c hc κ hκ` as an intermediate fact. Rewrite using `[e]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use `group`.
+-/
 theorem exists_lift [NonarchimedeanGroup G] {Q P : Subgroup G} {x : G} (hLS : LocSec Q P x)
     (σ : Representation ℂ Q W₁) (hσ : IsSmooth σ) (H : Subgroup P)
     (hH : ∀ p : P, p ∈ H ↔ x * (p : G) * x⁻¹ ∈ Q) (τ : Representation ℂ H W₂) (E : W₁ ≃ₗ[ℂ] W₂)
@@ -97,6 +118,15 @@ theorem exists_lift [NonarchimedeanGroup G] {Q P : Subgroup G} {x : G} (hLS : Lo
     convert this using 1
     group
 
+/- English proof (translation)
+Take `⟨C, hC, hD⟩` from `GlobalTheory.T.compact_transversal_double_coset hLS hP B₀ hB hB1 (K₀ ∩ T) (hK₀.inter_right hT) (fun g hg => hTs hg.2)`. Use `⟨C, hC, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hp' : f.1.1 (x * (p : G)) ≠ 0` using `fun h => hp (by show E _ = 0`. Rewrite using `[h, map_zero])`. Take `⟨q, hq, c, hc, e⟩` from `hIw (x * (p : G))`.
+
+Establish `hcT : c ∈ T`. Use `hTQ _ (inv_mem hq) _ (hfT p hp')` as an intermediate fact. Rewrite `this` using `[e, inv_mul_cancel_left]`. Then use the resulting hypothesis. Take `⟨q', hq', c', hc', e'⟩` from `hD c ⟨hc, hcT⟩`. Use `⟨p * c'⁻¹, (hH _).2 ?_, c', hc', by group⟩` and prove the remaining obligations.
+
+Establish `e1 : x * ((p * c'⁻¹ : P) : G) * x⁻¹ = q * q'`. Use `push_cast`. Rewrite using `[← mul_assoc, e, e']`. Use `group`. Rewrite using `[e1]`.
+
+Conclude with `mul_mem hq hq'`.
+-/
 theorem resInd_mem_cInd {Q P : Subgroup G} {x : G} (hLS : LocSec Q P x) (hP : IsClosed (P : Set G))
     (B₀ : Set G) (hB : IsCompact B₀) (hB1 : B₀ ∈ 𝓝 (1 : G))
     (K₀ : Set G) (hK₀ : IsCompact K₀) (hIw : ∀ g : G, ∃ q ∈ Q, ∃ c ∈ K₀, g = q * c)
@@ -124,6 +154,39 @@ theorem resInd_mem_cInd {Q P : Subgroup G} {x : G} (hLS : LocSec Q P x) (hP : Is
   rw [e1]
   exact mul_mem hq hq'
 
+/- English proof (translation)
+Establish `hQinv : ∀ q ∈ Q, ∀ g ∈ dcos Q P 1, q * g ∈ dcos Q P 1`. Introduce and unpack `q hq _ ⟨q', hq', p, hp, rfl⟩`. Conclude with `⟨q * q', mul_mem hq hq', p, hp, by group⟩`. Establish `mem1 : ∀ f, resInd σ H₁ hH₁ τ₁ E₁ hE₁ f ∈ cIndSpace H₁ τ₁` using `fun f => resInd_mem_cInd h1 hP B₀ hB hB1 K₀ hK₀ hIw σ H₁ hH₁ τ₁ E₁ hE₁ f _ hcl subset_rfl hQinv (fun p _ => ⟨1, one_mem _, p, p.2, by simp⟩)`. Set `R : Representation.IntertwiningMap ((smInd Q σ).comp P.subtype : Representation ℂ P (smoothPart (ind Q σ))) (cInd H₁ τ₁)` to `⟨(resInd σ H₁ hH₁ τ₁ E₁ hE₁).codRestrict _ mem1, fun p => by`.
+
+Use extensionality with `f y`. Use `show E₁ (f.1.1 ((1 : G) * (y : G) * (p : G))) = E₁ (f.1.1 ((1 : G) * ((y * p : P) : G)))`. Simplify using `[mul_assoc]⟩`. Establish `hRs : Function.Surjective R` using `fun φ => by`. Take `⟨f, hf, -⟩` from `exists_lift h1 σ hσ H₁ hH₁ τ₁ E₁ hE₁ Set.univ isOpen_univ (fun _ => trivial) φ`.
+
+Conclude with `⟨f, Subtype.ext hf⟩`. Take `⟨S, hS, hq⟩` from `GlobalTheory.T.surjective_intertwiner_quotient_equiv _ _ R hRs`. Use `⟨S, ?_, hq⟩` and prove the remaining obligations. Establish `memS : ∀ f : smoothPart (ind Q σ), f ∈ S.toSubmodule ↔ ∀ p : P, f.1.1 (p : G) = 0`. Introduce `f`.
+
+Rewrite using `[hS, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h p`. Establish `: (R f).1.1.1 p = 0`. Establish `e : R f = 0` using `h`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Establish `e2 : E₁ (f.1.1 ((1 : G) * (p : G))) = 0` using `this`. Rewrite `e2` using `[one_mul]`. Simplify using `using e2`.
+
+Introduce `h`. Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun p => ?_)))` and prove the remaining obligations. Use `show E₁ (f.1.1 ((1 : G) * (p : G))) = 0`. Rewrite using `[one_mul, h, map_zero]`. Establish `vanish : ∀ f : S.toSubmodule, ∀ g ∈ dcos Q P 1, f.1.1.1 g = 0`.
+
+Introduce and unpack `f _ ⟨q, hq, p, hp, rfl⟩`. Use `(memS f.1).1 f.2 ⟨p, hp⟩` as an intermediate fact. Establish `e` using `f.1.1.2 ⟨q, hq⟩ p`. Rewrite using `[mul_one]`. Use `show f.1.1.1 (((⟨q, hq⟩ : Q) : G) * p) = 0`.
+
+Rewrite using `[e]`. Simplify using `only [] at this`. Rewrite using `[this, map_zero]`. Establish `mem2 : ∀ f : S.toSubmodule, resInd σ H₂ hH₂ τ₂ E₂ hE₂ f.1 ∈ cIndSpace H₂ τ₂` using `fun f => by`. Use `resInd_mem_cInd hw hP B₀ hB hB1 K₀ hK₀ hIw σ H₂ hH₂ τ₂ E₂ hE₂ f.1 {g | f.1.1.1 g ≠ 0} (GlobalTheory.T.support_induced_function_closed σ f.1) ?_ ?_ (fun p hp => hp)` and prove the remaining obligations.
+
+Introduce `g hg`. Conclude with `(hcov g).resolve_left fun h => hg (vanish f g h)`. Introduce `q hq g hg show f.1.1.1 (q * g) ≠ 0`. Establish `e` using `f.1.1.2 ⟨q, hq⟩ g`. Establish `e' : f.1.1.1 (q * g) = σ ⟨q, hq⟩ (f.1.1.1 g)` using `e`.
+
+Rewrite using `[e']`. Introduce `h0`. Apply `hg` to reduce the goal to its premises. Use `congrArg (σ (⟨q, hq⟩ : Q)⁻¹) h0` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul]`.
+
+Simplify using `using this`. Set `O : S.toSubmodule →ₗ[ℂ] cIndSpace H₂ τ₂` to `((resInd σ H₂ hH₂ τ₂ E₂ hE₂).comp S.toSubmodule.subtype).codRestrict _ mem2`. Establish `hOinj : Function.Injective O`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`.
+
+Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun g => ?_)))` and prove the remaining obligations. Break down `hcov g with h | ⟨q, hq, p, hp, rfl⟩` into its components or cases. Conclude with `vanish f g h`. Establish `e : (O f).1.1.1 ⟨p, hp⟩ = 0` using `by rw [hf]; rfl`. Establish `e2 : E₂ (f.1.1.1 (w * p)) = 0` using `e`.
+
+Establish `e3 : f.1.1.1 (w * p) = 0` using `by simpa using e2`. Establish `e4 : f.1.1.1 (((⟨q, hq⟩ : Q) : G) * (w * p)) = σ ⟨q, hq⟩ (f.1.1.1 (w * p))` using `f.1.1.2 ⟨q, hq⟩ _`. Use `show f.1.1.1 (q * w * p) = 0`. Rewrite using `[mul_assoc, show f.1.1.1 (q * (w * p)) = _ from e4, e3, map_zero]`. Establish `hOs : Function.Surjective O` using `fun φ => by`.
+
+Establish `hY : IsOpen (dcos Q P 1)ᶜ` using `hcl.isOpen_compl`. Take `⟨f, hf, hs⟩` from `exists_lift hw σ hσ H₂ hH₂ τ₂ E₂ hE₂ _ hY (fun p h => Set.disjoint_left.1 hdis h ⟨1, one_mem _, p, p.2, by simp⟩) φ`. Establish `hfS : f ∈ S.toSubmodule` using `(memS f).2 fun p => by`. Assume the negation of the conclusion as `h`. Take `⟨q, hq, hy⟩` from `hs _ h`.
+
+Conclude with `hy ⟨q, hq, p, p.2, by simp⟩`. Conclude with `⟨⟨f, hfS⟩, Subtype.ext hf⟩`. Conclude with `GlobalTheory.T.bijective_intertwiner_subrep_equiv _ _ S O ⟨hOinj, hOs⟩ (fun p f => by`. Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun y => ?_)))` and prove the remaining obligations. Use `show E₂ (f.1.1.1 (w * (y : G) * (p : G))) = E₂ (f.1.1.1 (w * ((y * p : P) : G)))`.
+
+Simplify using `[mul_assoc])`.
+-/
 theorem two_orbits [NonarchimedeanGroup G] {Q P : Subgroup G} {w : G}
     (h1 : LocSec Q P 1) (hw : LocSec Q P w) (hP : IsClosed (P : Set G))
     (B₀ : Set G) (hB : IsCompact B₀) (hB1 : B₀ ∈ 𝓝 (1 : G))
@@ -229,6 +292,9 @@ section ConcreteL
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Distinguish the cases in `hy : ∀ a : Fin (i + 1), ((g⁻¹ : GL (Fin (i + t + 1)) k) : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (Fin.last (i + t)) (stdSum h (Sum.inl a)) = 0`. Conclude with `Or.inl ((GlobalTheory.T.closed_double_coset_criterion k h ht g).2 hy)`. Use `push_neg at hy`. Conclude with `Or.inr ((GlobalTheory.T.open_double_coset_criterion k h ht g).2 hy)`.
+-/
 theorem orbit_cover {i t : ℕ} (h : (i + 1) + t = i + t + 1) (ht : 0 < t) (g : GL (Fin (i + t + 1)) k) :
     g ∈ dcos (parab k (two (stdSum h))) (Mir k (i + t)) 1 ∨
       g ∈ dcos (parab k (two (stdSum h))) (Mir k (i + t)) (wGL k h) := by
@@ -238,6 +304,11 @@ theorem orbit_cover {i t : ℕ} (h : (i + 1) + t = i + t + 1) (ht : 0 < t) (g : 
   · push_neg at hy
     exact Or.inr ((GlobalTheory.T.open_double_coset_criterion k h ht g).2 hy)
 
+/- English proof (translation)
+Establish `e : dcos (parab k (two (stdSum h))) (Mir k (i + t)) 1 = ⋂ a : Fin (i + 1), {g : GL (Fin (i + t + 1)) k | ((g⁻¹ : GL (Fin (i + t + 1)) k) : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (Fin.last (i + t)) (stdSum h (Sum.inl a)) = 0}`. Use extensionality with `g`. Rewrite using `[Set.mem_iInter]`. Conclude with `GlobalTheory.T.closed_double_coset_criterion k h ht g`. Rewrite using `[e]`.
+
+Use `isClosed_iInter fun a => isClosed_eq ?_ continuous_const` and prove the remaining obligations. Conclude with `(Units.continuous_coe_inv (M := Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k)).matrix_elem _ _`.
+-/
 theorem isClosed_orbit {i t : ℕ} (h : (i + 1) + t = i + t + 1) (ht : 0 < t) :
     IsClosed (dcos (parab k (two (stdSum h))) (Mir k (i + t)) 1) := by
   have e : dcos (parab k (two (stdSum h))) (Mir k (i + t)) 1 = ⋂ a : Fin (i + 1),
@@ -250,6 +321,9 @@ theorem isClosed_orbit {i t : ℕ} (h : (i + 1) + t = i + t + 1) (ht : 0 < t) :
   refine isClosed_iInter fun a => isClosed_eq ?_ continuous_const
   exact (Units.continuous_coe_inv (M := Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k)).matrix_elem _ _
 
+/- English proof (translation)
+Use `Set.disjoint_left.2 fun g h1 h2 => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `(GlobalTheory.T.open_double_coset_criterion k h ht g).1 h2`. Conclude with `ha ((GlobalTheory.T.closed_double_coset_criterion k h ht g).1 h1 a)`.
+-/
 theorem orbits_disjoint {i t : ℕ} (h : (i + 1) + t = i + t + 1) (ht : 0 < t) :
     Disjoint (dcos (parab k (two (stdSum h))) (Mir k (i + t)) 1)
       (dcos (parab k (two (stdSum h))) (Mir k (i + t)) (wGL k h)) := by
@@ -263,15 +337,26 @@ section Main
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_prod {r t N : ℕ} (h : r + t = N) (π₁ : GRep k r) (π₂ : GRep k t) :
     (π₁.prod π₂).cast h = (⟨_, prod2 h π₁.ρ π₂.ρ⟩ : GRep k N) := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem mcast_prodGPn {m j n : ℕ} (h : m + j = n) (ρ : GRep k m) (τ : MRep k j) :
     mcast h (prodGPn ρ τ) = (⟨_, cInd (HGPg k h)
       ((extTensor (ρ.tw (((j + 1 : ℕ) : ℝ) / 2)).ρ (mtw τ (-((m : ℕ) : ℝ) / 2)).ρ).comp (gpProjg k h))⟩ : MRep k n) := by
   subst h; rfl
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.LocRankBig.nonarchimedeanGroup_GL (k := k) (i + (j + 1) + 1)`. Establish `ho` using `(GlobalTheory.SplitFlip.isOpen_KO (k := k) (n := Fin (i + (j + 1) + 1))).mem_nhds (one_mem _)`. Establish `ht : 0 < j + 1` using `by omega`. Use `two_orbits (Q := parab k (two (stdSum h₀))) (P := Mir k (i + (j + 1))) (w := wGL k h₀) (GlobalTheory.T.local_section_closed_cell k h₀ ht) (GlobalTheory.T.local_section_open_cell k h₀) (GlobalTheory.T.mirabolic_closed k _) _ GlobalTheory.SplitFlip.isCompact_KO ho _ GlobalTheory.Sp …` and prove the remaining obligations. Take `⟨p, c, hc, e⟩` from `GlobalTheory.SmGL.Stages.iwasawa_two (stdSum h₀) g`.
+
+Conclude with `⟨p, p.2, c, hc, e⟩`. Rewrite using `[one_mul, inv_one, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem core0 (i j : ℕ) (h₀ : (i + 1) + (j + 1) = i + (j + 1) + 1) (h₁ : (i + 1) + j = i + (j + 1))
     {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (π₁ : Representation ℂ (GL (Fin (i + 1)) k) V) (π₂ : Representation ℂ (GL (Fin (j + 1)) k) W)
@@ -299,6 +384,9 @@ theorem core0 (i j : ℕ) (h₀ : (i + 1) + (j + 1) = i + (j + 1) + 1) (h₁ : (
   · rw [one_mul, inv_one, mul_one]
     rfl
 
+/- English proof (translation)
+Take `⟨V, ρ₁⟩` from `π₁`. Take `⟨W, ρ₂⟩` from `π₂`. Establish `c0` using `core0 i j h₀ h₁ ρ₁ ρ₂ s₁ s₂`. Unfold `MExt`. Conclude with `c0`.
+-/
 theorem core (i j : ℕ) (h₀ : (i + 1) + (j + 1) = i + (j + 1) + 1) (h₁ : (i + 1) + j = i + (j + 1))
     (π₁ : GRep k (i + 1)) (π₂ : GRep k (j + 1)) (s₁ : IsSmooth π₁.ρ) (s₂ : IsSmooth π₂.ρ) :
     MExt (prodPGn (gres π₁) π₂) (gres (⟨_, prod2 h₀ π₁.ρ π₂.ρ⟩ : GRep k (i + (j + 1) + 1)))
@@ -312,6 +400,11 @@ theorem core (i j : ℕ) (h₀ : (i + 1) + (j + 1) = i + (j + 1) + 1) (h₁ : (i
 
 end Main
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i j n hn π₁ π₂ s₁ s₂`. Substitute `hn` using the available equality. Establish `h₀ : (i + 1) + (j + 1) = i + (j + 1) + 1` using `by omega`. Establish `h₁ : (i + 1) + j = i + (j + 1)` using `by omega`. Establish `c` using `core i j h₀ h₁ π₁ π₂ s₁ s₂`.
+
+Rewrite using `[cast_prod, mcast_prodGPn]`. Conclude with `c`.
+-/
 theorem resSeq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ResSeq k := by
   intro k _ _ _ _ i j n hn π₁ π₂ s₁ s₂
   subst hn

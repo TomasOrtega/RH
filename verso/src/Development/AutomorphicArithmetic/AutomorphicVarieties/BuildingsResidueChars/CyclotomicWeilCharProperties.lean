@@ -7,6 +7,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Module TensorProduct
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.Pst.DpstMap GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Wd
 
+/- English proof (translation)
+Establish `h0` using `UpperTheory.V.Loc.cycFacts l l`. Establish `h1 : Continuous fun g : GQ l => (((cycL L g : (↥L.1)ˣ) : ↥L.1) : Om l)`. Establish `: (fun g : GQ l => (((cycL L g : (↥L.1)ˣ) : ↥L.1) : Om l)) = fun g => algebraMap ℚ_[l] (Om l) (((Loc.cyc l l g : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])`. Use function extensionality and compare the values at `g`. Rewrite using `[← h0.2.2 g]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Establish `h2 : Continuous fun z : ℤ_[l] => (z : ℚ_[l])` using `continuous_subtype_val`. Conclude with `(continuous_algebraMap ℚ_[l] (Om l)).comp (h2.comp (Units.continuous_val.comp h0.1))`. Establish `: (fun g : GQ l => (((cycL L g ^ n : (↥L.1)ˣ) : ↥L.1) : Om l)) = fun g => (((cycL L g : (↥L.1)ˣ) : ↥L.1) : Om l) ^ n`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[Units.val_zpow_eq_zpow_val]`. Conclude with `map_zpow₀ L.1.val _ _`. Rewrite using `[this]`. Conclude with `h1.zpow₀ n fun g => Or.inl (by simp)`.
+-/
 private theorem cw_cyc {l : ℕ} [Fact l.Prime] (L : FinExt l) (n : ℤ) :
     Continuous fun g : GQ l => (((cycL L g ^ n : (↥L.1)ˣ) : ↥L.1) : Om l) := by
   have h0 := UpperTheory.V.Loc.cycFacts l l
@@ -27,6 +34,11 @@ private theorem cw_cyc {l : ℕ} [Fact l.Prime] (L : FinExt l) (n : ℤ) :
   rw [this]
   exact h1.zpow₀ n fun g => Or.inl (by simp)
 
+/- English proof (translation)
+Use `K'.2` as an intermediate fact. Establish `ho : IsOpen ((GK K' : Subgroup (GQ l)) : Set (GQ l))` using `IntermediateField.fixingSubgroup_isOpen K'.1`. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ?_` and prove the remaining obligations. Use `⟨{y | ((x⁻¹ * y : ↥(GK K)) : GQ l) ∈ GK K'}, ?_, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `ho.preimage (continuous_subtype_val.comp (continuous_const.mul continuous_id))`.
+
+Simplify using the standard rewrite rules. Use `hχ _ hy` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `this.symm`.
+-/
 private theorem cw_lc {l : ℕ} [Fact l.Prime] (K K' : FinExt l) {C : Type} [Group C] (χ : ↥(GK K) →* C)
     (hχ : ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → χ g = 1) : IsLocallyConstant χ := by
   have := K'.2
@@ -39,6 +51,11 @@ private theorem cw_lc {l : ℕ} [Fact l.Prime] (K K' : FinExt l) {C : Type} [Gro
     rw [map_mul, map_inv, inv_mul_eq_one] at this
     exact this.symm
 
+/- English proof (translation)
+Set `ε : ↥(GK K) →* (↥L.1)ˣ` to `(cycL L).comp (GK K).subtype`. Use `⟨κ * ε ^ (-m) * χ⁻¹, fun g => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `κ g = _ * (κ g * cycL L (g : GQ l) ^ (-m) * (χ g)⁻¹)`. Rewrite using `[zpow_neg]`. Generalize the expression as in `cycL L (g : GQ l) ^ m = a`.
+
+Rewrite using `[mul_mul_mul_comm, mul_inv_cancel, mul_one, mul_comm (κ g), mul_inv_cancel_left]`. Establish `h3 : Continuous fun g => ((((χ g)⁻¹ : (↥L.1)ˣ) : ↥L.1) : Om l)` using `((cw_lc K K' χ hK').comp fun u => (((u⁻¹ : (↥L.1)ˣ) : ↥L.1) : Om l)).continuous`. Conclude with `(hκc.mul ((cw_cyc L (-m)).comp continuous_subtype_val)).mul h3`.
+-/
 private theorem cw_eta {l : ℕ} [Fact l.Prime] (K K' L : FinExt l) (κ χ : ↥(GK K) →* (↥L.1)ˣ) (m : ℤ)
     (hκc : Continuous (fun g => ((κ g : ↥L.1) : Om l)))
     (hK' : ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → χ g = 1) :
@@ -54,6 +71,9 @@ private theorem cw_eta {l : ℕ} [Fact l.Prime] (K K' L : FinExt l) (κ χ : ↥
       ((cw_lc K K' χ hK').comp fun u => (((u⁻¹ : (↥L.1)ˣ) : ↥L.1) : Om l)).continuous
     exact (hκc.mul ((cw_cyc L (-m)).comp continuous_subtype_val)).mul h3
 
+/- English proof (translation)
+The claim follows from `hV.finite; wdRho P ι Bw h hj ρ σ y = ι ((e⁻¹ ^ (-deg σ) * s : ↥L.1) : Om l) • y := by refine UpperTheory.weil_deligne_rank_one_line F Ω l P ι w A h O Bw hj L V ρ h1 hV ⟨u, hmem⟩ (fun h0 => hu0 (congrArg Subtype.val h0)) e⁻¹ (inv_ne_zero he0) (Subtype.ext ?_) σ s (Subtype.ext hs) …`.
+-/
 private theorem cw_line {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω}
     (h : IsPlaceOver A w) {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
@@ -72,6 +92,9 @@ private theorem cw_line {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
   rw [h1, Submodule.coe_smul, eq_inv_smul_iff₀ he0]
   exact hu
 
+/- English proof (translation)
+Establish `h3 : κ * c ^ (-m) = a ^ d * χ`. Rewrite using `[h1, h2, zpow_neg, mul_comm, mul_assoc (c ^ m), inv_mul_cancel_left, mul_comm]`. Rewrite using `[h3, inv_zpow', neg_neg, mul_zpow, ← zpow_natCast, ← zpow_mul, ← zpow_mul, Units.val_mul, Units.val_zpow_eq_zpow_val, show m * (f : ℕ) * d = (f : ℕ) * (m * d) by ring]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cw_calc {k : Type} [Field k] (a κ c χ η : kˣ) (l : k) (m d : ℤ) (f : ℕ) (h1 : κ = c ^ m * χ * η)
     (h2 : η = a ^ d) :
     ((a : k) * l ^ (m * (f : ℕ)))⁻¹ ^ (-d) * (χ : k) = (l ^ f) ^ (m * d) * ((κ * c ^ (-m) : kˣ) : k) := by
@@ -81,6 +104,9 @@ private theorem cw_calc {k : Type} [Field k] (a κ c χ η : kˣ) (l : k) (m d :
     Units.val_zpow_eq_zpow_val, show m * (f : ℕ) * d = (f : ℕ) * (m * d) by ring]
   ring
 
+/- English proof (translation)
+Establish `h1 : L.1.val (((l : ↥L.1) ^ f) ^ n * x) = ((l : Om l) ^ f) ^ n * L.1.val x`. Rewrite using `[map_mul, map_zpow₀, map_pow, map_natCast]`. Use `(congrArg ι h1).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zpow₀, map_pow, map_natCast, Nat.cast_pow]`. Both sides reduce to the same expression.
+-/
 private theorem cw_fin {l : ℕ} [Fact l.Prime] (ι : Om l ≃+* ℂ) (L : FinExt l) (f : ℕ) (n : ℤ) (x : ↥L.1) :
     ι (((((l : ↥L.1) ^ f) ^ n * x : ↥L.1)) : Om l) = ((l ^ f : ℕ) : ℂ) ^ n * ι (x : Om l) := by
   have h1 : L.1.val (((l : ↥L.1) ^ f) ^ n * x) = ((l : Om l) ^ f) ^ n * L.1.val x := by
@@ -89,6 +115,11 @@ private theorem cw_fin {l : ℕ} [Fact l.Prime] (ι : Om l ≃+* ℂ) (L : FinEx
   rw [map_mul, map_zpow₀, map_pow, map_natCast, Nat.cast_pow]
   rfl
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul (deg_frob (h := h)) σ`. Establish `hτI : (weilToGK Bw h (ineIncl h τ) : GQ l) ∈ Loc.Iq l`. Use `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => ?_` and prove the remaining obligations. Use `weilToGK_frobUr hj (ineIncl h τ) (a := 0) (b := 0) (actsAs_zero_iff.mpr τ.2) ⟨x, hx⟩` as an intermediate fact. Simplify using `using this`.
+
+Use `conv_lhs => rw [hτ]`. Rewrite using `[map_mul, map_mul, hηI _ hτI, mul_one, map_zpow, map_zpow]`.
+-/
 private theorem cw_unr {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} (h : IsPlaceOver A w)
     {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O)
@@ -103,6 +134,13 @@ private theorem cw_unr {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
   conv_lhs => rw [hτ]
   rw [map_mul, map_mul, hηI _ hτI, mul_one, map_zpow, map_zpow]
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ ι w A h O _ _ _ Bw hj L κ χ m hκc hχ hI hκ σ y`. Take `⟨K', hK'⟩` from `hχ`. Take `⟨η, hκη, hηc⟩` from `cw_eta Bw.Kw K' L κ χ m hκc hK'`. Establish `hηI : ∀ g : ↥(GK Bw.Kw), (g : GQ l) ∈ Loc.Iq l → η g = 1` using `fun g hg => mul_left_cancel ((hκη g).symm.trans ((hI g hg).trans (mul_one _).symm))`. Take `⟨u, hu0, hu1, hu2⟩` from `UpperTheory.weilDeligne_character_twist_period l Bw.Kw L κ χ η m hκη hηc hηI`.
+
+Establish `hF` using `(UpperTheory.crystalline_period_ring_properties F Ω l w A h O Bw hj).1`. Establish `hmem : u ∈ Dpst (Loc.PP l) (Loc.chRep κ)` using `(mem_Dpst _ _).2 ⟨K', fun g hg => by rw [hu1, hK' g hg, Units.val_one, one_smul]⟩`. Establish `hl : (l : ↥L.1) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `he0 : (η (weilToGK Bw h (frob h)) : ↥L.1) * (l : ↥L.1) ^ (m * (resDeg l w : ℕ)) ≠ 0` using `mul_ne_zero (Units.ne_zero _) (zpow_ne_zero _ hl)`. Establish `key` using `cw_line (Loc.PP l) ι h Bw hj L ↥L.1 (Loc.chRep κ) (Module.finrank_self _) hκ u hmem hu0 _ he0 (hu2 _ _ hF) σ _ (hu1 _) y`.
+
+Establish `h3` using `cw_calc _ _ _ _ _ (l : ↥L.1) m (deg σ) (resDeg l w) (hκη (weilToGK Bw h σ)) (cw_unr h Bw hj η hηI σ)`. Establish `h4` using `(congrArg (fun x : ↥L.1 => ι (x : Om l)) h3).trans (cw_fin ι L _ _ _)`. Rewrite `h4` using `[← normV_eq_pow (hj.mem_placesOver h)]`. Conclude with `key.trans (congrArg (fun z : ℂ => z • y) h4)`.
+-/
 theorem UpperTheory.cyclotomicWeilChar_properties :
     UpperTheory.V.Af.Wd.CharWD := by
   intro F Ω _ _ _ _ _ l _ ι w A h O _ _ _ Bw hj L κ χ m hκc hχ hI hκ σ y

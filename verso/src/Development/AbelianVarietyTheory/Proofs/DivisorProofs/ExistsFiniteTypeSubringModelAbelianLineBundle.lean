@@ -27,6 +27,21 @@ namespace GlobalTheory.SiegApproxModel
 
 open GlobalTheory.SiegelDataDescent
 
+/- English proof (translation)
+Introduce `R _ A _ _ F hA P hP`. Take `⟨S₀, B₀, _, φ₀, hF, hft₀, hab₀, hpb₀⟩` from `GlobalTheory.AbelianLimit.abelianScheme_descends_to_fg_subring_anyDim R A F hA`. Use `hab₀.comm` as an intermediate fact. Use `hab₀.smooth` as an intermediate fact. Use `hab₀.proper` as an intermediate fact.
+
+Use `hab₀.geomConnected` as an intermediate fact. Take `⟨φ₂₀, hsq₀⟩` from `exists_isSquare hpb₀.1.w`. Establish `hpb₂₀` using `isPullback_of_isSquare hpb₀.1 hsq₀`. Establish `: IsProper (B₀ ⊗ B₀).hom`. Express the relevant statement in the definitionally equal form `IsProper (pullback.fst B₀.hom B₀.hom ≫ B₀.hom)`.
+
+Use `infer_instance`. Take `⟨SP, hSP⟩` from `GlobalTheory.LBLimit.lb_descends_to_fg_subring R S₀ (A ⊗ A).left (B₀ ⊗ B₀).left (A ⊗ A).hom (B₀ ⊗ B₀).hom φ₂₀ P hpb₂₀ hP`. Take `⟨R₁, h, hT, hft⟩` from `GlobalTheory.KeyTf.exists_finiteType_subring_adjoin R S₀ SP hft₀`. Set `t : Sp R₁ ⟶ Sp S₀` to `spMap (Subring.inclusion h)`. Establish `e : spMap R₁.subtype ≫ t = spMap S₀.subtype`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Set `A₁ : Over (Sp R₁)` to `(Over.pullback t).obj B₀`. Establish `hab₁ : IsAbelianScheme A₁` using `{ comm := inferInstance smooth := inferInstanceAs (Smooth (pullback.snd B₀.hom t)) proper := inferInstanceAs (IsProper (pullback.snd B₀.hom t)) geomConnected := inferInstanceAs (GeometricallyConnected (pullback.snd B₀.hom t)) }`. Establish `hpb₁ : IsPullback (pullback.fst B₀.hom t) A₁.hom B₀.hom t` using `IsPullback.of_hasPullback _ _`.
+
+Establish `wφ : φ₀ ≫ B₀.hom = (A.hom ≫ spMap R₁.subtype) ≫ t`. Rewrite using `[Category.assoc, e]`. Conclude with `hpb₀.1.w`. Set `φ : A.left ⟶ A₁.left` to `pullback.lift φ₀ (A.hom ≫ spMap R₁.subtype) wφ`. Establish `hφ₁ : φ ≫ pullback.fst B₀.hom t = φ₀` using `pullback.lift_fst _ _ _`.
+
+Establish `hφ₂ : φ ≫ A₁.hom = A.hom ≫ spMap R₁.subtype` using `pullback.lift_snd _ _ _`. Establish `hφ : IsGrpPullback A A₁ (spMap R₁.subtype) φ` using `(isGrpPullback_pullback B₀ t).cancel (hpb₀.congr e.symm hφ₁.symm) hφ₂`. Take `⟨φ₂₁, hsq₁⟩` from `exists_isSquare (A' := A₁) (A := B₀) (φ := pullback.fst B₀.hom t) hpb₁.w`. Take `⟨φ₂, hsq⟩` from `exists_isSquare hφ.1.w`. Take `⟨P₁, hP₁, hiso⟩` from `hSP R₁ h hT (A₁ ⊗ A₁).left (A₁ ⊗ A₁).hom φ₂₁ φ₂ (isPullback_of_isSquare hpb₁ hsq₁) (isSquare_comp hφ₁ hsq hsq₁ hsq₀) (isSquare_w hφ.1.w hsq)`.
+
+Conclude with `⟨R₁, A₁, inferInstance, inferInstance, φ, φ₂, P₁, fun x hx => h (hF hx), hft, hab₁, hφ, hsq, hP₁, hiso⟩`.
+-/
 theorem model_exists : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (F : Finset R), IsAbelianScheme A → ∀ P : LB (G2 A).left, P.IsLB → ∃ (S : Subring R) (B : Over (Sp S)) (_ : GrpObj B) (_ : IsCommMonObj B) (φ : A.left ⟶ B.left) (φ₂ : (G2 A).left ⟶ (G2 B).left) (P₀ : LB (G2 B).left), (F : Set R) ⊆ S ∧ Algebra.FiniteType ℤ S ∧ IsAbelianScheme B ∧ IsGrpPullback A B (spMap S.subtype) φ ∧ IsSquare φ φ₂ ∧ P₀.IsLB ∧ LBIso P (P₀.pull φ₂) := by
   intro R _ A _ _ F hA P hP
   classical

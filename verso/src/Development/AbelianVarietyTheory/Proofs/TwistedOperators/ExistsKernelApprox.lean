@@ -12,10 +12,28 @@ namespace GlobalTheory.KernelApprox
 variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {χS χT : (AE D)ˣ →* Circle}
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
+/- English proof (translation)
+Simplify using `only [thetaKO, map_sub, Pi.sub_apply]`.
+-/
 theorem thetaKO_sub (g : GA D S) (h : GA D T) (f f' : WO S T → ℂ) :
     thetaKO om g h f - thetaKO om g h f' = thetaKO om g h (f - f') := by
   simp only [thetaKO, map_sub, Pi.sub_apply]
 
+/- English proof (translation)
+Take `⟨a, d, H⟩` from `GlobalTheory.KernelSeminorm.thetaGrowth D S.rank T.rank`. Take `⟨U, hU, hΦU⟩` from `GlobalTheory.Size.isTheta_iff_level.1 hΦ`. Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne S T`. Take `⟨C, hC0, hC⟩` from `(H _ _ rfl rfl).real ψ hθ hU`. Use `⟨a, fun ε hε => ?_⟩` and prove the remaining obligations.
+
+Establish `hK : 0 < (C + 1) * 4 ^ a` using `by positivity`. Take `⟨X, hPX, hXU, hsob⟩` from `hden U hU hΦU μ 𝓕 hμ d (ε / ((C + 1) * 4 ^ a)) (div_pos hε hK)`. Use `⟨X, hPX, fun g h => ?_⟩` and prove the remaining obligations. Establish `hΨ : X - Φ ∈ GlobalTheory.Size.thetaLevel ψ S T U` using `Submodule.sub_mem _ hXU hΦU`. Rewrite using `[thetaKO_sub]`.
+
+Take `⟨-, hb⟩` from `hC _ _ _ hω μ 𝓕 hμ (X - Φ) hΨ`. Establish `hsr : (GlobalTheory.Size.sobO ψ θ μ 𝓕 d (X - Φ)).toReal ≤ ε / ((C + 1) * 4 ^ a)`. Use `ENNReal.toReal_mono ENNReal.ofReal_ne_top hsob.le` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_ofReal (div_pos hε hK).le]`. Then use the resulting hypothesis. Take `⟨γ, hγ, h1⟩` from `GlobalTheory.Grow.exists_height_le_two_mul_quotHeight S g`.
+
+Take `⟨γ', hγ', h2⟩` from `GlobalTheory.Grow.exists_height_le_two_mul_quotHeight T h`. Rewrite using `[← GlobalTheory.ChainOnto.ThetaSwap.thetaKO_left_fst hω hΨ.1 γ hγ g h, ← GlobalTheory.Chain.LiftConv.thetaKO_left hω hΨ.1 (γ * g) γ' hγ' h]`. Establish `hq1` using `GlobalTheory.Grow.quotHeight_pos S g`. Establish `hq2` using `GlobalTheory.Grow.quotHeight_pos T h`. Establish `hh1` using `GlobalTheory.Grow.height_pos S (γ * g)`.
+
+Establish `hh2` using `GlobalTheory.Grow.height_pos T (γ' * h)`. Establish `hs0 : 0 ≤ (GlobalTheory.Size.sobO ψ θ μ 𝓕 d (X - Φ)).toReal` using `ENNReal.toReal_nonneg`. Establish `hpow : (GlobalTheory.Grow.height S (γ * g) * GlobalTheory.Grow.height T (γ' * h)) ^ a ≤ 4 ^ a * (GlobalTheory.Grow.quotHeight S g ^ a * GlobalTheory.Grow.quotHeight T h ^ a)`. Rewrite using `[← mul_pow, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) (by nlinarith) a`.
+
+Establish `hne : (C + 1) * 4 ^ a ≠ 0` using `hK.ne'`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = ε * GlobalTheory.Grow.quotHeight S g ^ a * GlobalTheory.Grow.quotHeight T h ^ a := by`. Rewrite using `[mul_div_cancel₀ _ hne]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_kernel_approx (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ S T χS χT om) (P : (WO S T → ℂ) → Prop)
     {Φ : WO S T → ℂ} (hΦ : IsThetaFunO ψ S T Φ)
     (hden : ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → Φ ∈ GlobalTheory.Size.thetaLevel ψ S T U →

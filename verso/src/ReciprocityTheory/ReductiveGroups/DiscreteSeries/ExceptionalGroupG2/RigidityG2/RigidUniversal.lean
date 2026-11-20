@@ -18,6 +18,21 @@ open Finset Matrix
 namespace ReciprocityTheory.ChartRestriction.DS.G2
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℂ V₁` using `hV₁.1`. Establish `hσ` using `USum.isURepOn_sσ hσ₁ hσ₂`. Establish `hD` using `USum.isDerivedOn_sσ hD₁ hD₂`. Establish `hcomm` using `fun a b (hab : ε a = ε b) (v : V₁) => USum.phi_E_comm hD₁ hD₂ hV₁.2.1 hVK₁ φ hφK hab v`. Establish `hV` using `USum.diagSub_isKIrrHW φ hV₁ hcomm`.
+
+Establish `hc` using `USum.casimir_diagSub (E₁ := E₁) (E₂ := E₂) φ hc₁ hc₂`. Establish `hVK : ∀ k ∈ Kset ε, ∀ x ∈ USum.diagSub φ, ∃ w ∈ USum.diagSub φ, (w : WithLp 2 (H₁ × H₂)) = USum.sσ σ₁ σ₂ k x`. Introduce and unpack `k hk _ ⟨v, rfl⟩`. Take `⟨w₁, hw₁, e⟩` from `hVK₁ k hk _ v.2`. Use `⟨USum.diagι φ ⟨w₁, hw₁⟩, ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[USum.coe_diagι, USum.coe_diagι]`. Use `show _ = WithLp.toLp 2 (σ₁ k ((v : D₁) : H₁), σ₂ k (((φ v : V₂) : D₂) : H₂))`. Rewrite using `[← e, ← hφK k hk v ⟨w₁, hw₁⟩ e]`. Set `R : WithLp 2 (H₁ × H₂) →L[ℂ] WithLp 2 (H₁ × H₂)` to `USum.sop 1 (-1)`. Set `j' : USum.diagSub φ →ₗ[ℂ] WithLp 2 (H₁ × H₂)` to `R.toLinearMap ∘ₗ (USum.sD D₁ D₂).subtype ∘ₗ (USum.diagSub φ).subtype`.
+
+Establish `hj : ∀ k ∈ Kset ε, ∀ v w : USum.diagSub φ, (((w : USum.sD D₁ D₂)) : WithLp 2 (H₁ × H₂)) = USum.sσ σ₁ σ₂ k ((v : USum.sD D₁ D₂) : _) → j' w = USum.sσ σ₁ σ₂ k (j' v)`. Introduce `k _ v w h`. Use `show USum.sop 1 (-1) ((w : USum.sD D₁ D₂) : WithLp 2 (H₁ × H₂)) = USum.sop (σ₁ k) (σ₂ k) (USum.sop 1 (-1) ((v : USum.sD D₁ D₂) : WithLp 2 (H₁ × H₂)))`. Rewrite using `[h]`. Conclude with `USum.sop_neg_comm _ _ _`.
+
+Establish `horth : ∀ v v' : USum.diagSub φ, inner ℂ (j' v') ((v : USum.sD D₁ D₂) : WithLp 2 (H₁ × H₂)) = 0`. Introduce and unpack `⟨_, ⟨v, rfl⟩⟩ ⟨_, ⟨v', rfl⟩⟩`. Use `show inner ℂ (WithLp.toLp 2 (((v' : D₁) : H₁), -(((φ v' : V₂) : D₂) : H₂))) (WithLp.toLp 2 (((v : D₁) : H₁), (((φ v : V₂) : D₂) : H₂))) = 0`. Rewrite using `[USum.inner_sum]`. Simplify using `only [inner_neg_left, hφI]`.
+
+Conclude with `add_neg_cancel _`. Introduce `g hg v v'`. Establish `key` using `rigid_orth hgap hσ hD hV hc hVK j' hj horth g hg ⟨USum.diagι φ v, ⟨v, rfl⟩⟩ ⟨USum.diagι φ v', ⟨v', rfl⟩⟩`. Express the relevant statement in the definitionally equal form `inner ℂ (WithLp.toLp 2 (((v' : D₁) : H₁), -(((φ v' : V₂) : D₂) : H₂))) (USum.sop (σ₁ g) (σ₂ g) (WithLp.toLp 2 (((v : D₁) : H₁), (((φ v : V₂) : D₂) : H₂)))) = 0 at key`. Rewrite `key` using `[USum.inner_sum, USum.sop_apply]`.
+
+Simplify using `only [inner_neg_left] at key`. Rewrite `key` using `[← sub_eq_add_neg, sub_eq_zero]`. Conclude with `key.symm`.
+-/
 theorem rigid_universal {H₁ : Type*} [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [CompleteSpace H₁]
     {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)} (hσ₁ : IsURepOn (UJset ε) σ₁)
     {D₁ : Submodule ℂ H₁} {E₁ : Fin n → Fin n → Module.End ℂ D₁} (hD₁ : IsDerivedOn ε σ₁ D₁ E₁)

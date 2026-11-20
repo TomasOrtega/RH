@@ -23,14 +23,26 @@ def toAddCircle : QZ ≃+ AddCircle (1 : ℚ) := AddEquiv.refl _
 
 def mk (q : ℚ) : QZ := toAddCircle.symm (q : AddCircle (1 : ℚ))
 
+/- English proof (translation)
+Introduce `x` and use `QuotientAddGroup.mk_surjective (s := AddSubgroup.zmultiples (1 : ℚ)) (toAddCircle x)`.
+-/
 theorem mk_surjective : Function.Surjective mk := fun x =>
   QuotientAddGroup.mk_surjective (s := AddSubgroup.zmultiples (1 : ℚ)) (toAddCircle x)
 
+/- English proof (translation)
+Simplify using `[mk]`.
+-/
 @[simp] theorem mk_add (p q : ℚ) : mk (p + q) = mk p + mk q := by
   simp [mk]
 
+/- English proof (translation)
+Simplify using `[mk]`.
+-/
 @[simp] theorem mk_zero : mk 0 = 0 := by simp [mk]
 
+/- English proof (translation)
+Simplify using `only [mk, AddEquivClass.map_eq_zero_iff, AddCircle.coe_eq_zero_iff, zsmul_eq_mul, mul_one]`.
+-/
 theorem mk_eq_zero_iff (q : ℚ) : mk q = 0 ↔ ∃ n : ℤ, (n : ℚ) = q := by
   simp only [mk, AddEquivClass.map_eq_zero_iff, AddCircle.coe_eq_zero_iff, zsmul_eq_mul, mul_one]
 
@@ -47,13 +59,22 @@ def map (f : A →ₜ+ B) : QZDual B →ₜ+ QZDual A :=
   ContinuousAddMonoidHom.compLeft QZ f
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem map_apply (f : A →ₜ+ B) (χ : QZDual B) (a : A) : map f χ a = χ (f a) :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_id : map (ContinuousAddMonoidHom.id A) = ContinuousAddMonoidHom.id (QZDual A) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_comp (g : B →ₜ+ C) (f : A →ₜ+ B) :
     map (g.comp f) = (map f).comp (map g) :=
   rfl
@@ -66,11 +87,17 @@ def toAddMonoidHomEquiv [DiscreteTopology A] : QZDual A ≃+ (A →+ QZ) where
   map_add' _ _ := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem toAddMonoidHomEquiv_apply [DiscreteTopology A] (χ : QZDual A) (a : A) :
     toAddMonoidHomEquiv χ a = χ a :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toAddMonoidHomEquiv_symm_apply [DiscreteTopology A] (f : A →+ QZ) (a : A) :
     toAddMonoidHomEquiv.symm f a = f a :=
   rfl
@@ -87,6 +114,9 @@ def eval : A →+ QZDual (QZDual A) where
   map_add' a b := by ext χ; exact map_add χ a b
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eval_apply (a : A) (χ : QZDual A) : eval A a χ = χ a :=
   rfl
 

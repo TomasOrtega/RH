@@ -14,6 +14,9 @@ def Lie (act : A →ₗ[ℂ] Module.End ℂ M) : Prop := ∀ X Y, act X * act Y 
 
 def St (act : A →ₗ[ℂ] Module.End ℂ M) (g : Submodule ℂ A) (N : Submodule ℂ M) : Prop := ∀ Z ∈ g, ∀ x ∈ N, act Z x ∈ N
 
+/- English proof (translation)
+Use `LinearMap.congr_fun (h X Y) x` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at this`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem Lie.comm {act : A →ₗ[ℂ] Module.End ℂ M} (h : Lie act) (X Y : A) (x : M) :
     act X (act Y x) = act Y (act X x) + act (X * Y - Y * X) x := by
   have := LinearMap.congr_fun (h X Y) x
@@ -24,6 +27,19 @@ def filt (act : A →ₗ[ℂ] Module.End ℂ M) (l : Submodule ℂ A) (V : Submo
   | 0 => V
   | n + 1 => filt act l V n ⊔ ⨆ Z ∈ l, (filt act l V n).map (act Z)
 
+/- English proof (translation)
+Establish `up : ∀ n, ∀ Z ∈ l, ∀ x ∈ filt act l V n, act Z x ∈ filt act l V (n + 1)` using `fun n Z hZ x hx => Submodule.mem_sup_right (Submodule.mem_iSup_of_mem Z (Submodule.mem_iSup_of_mem hZ (Submodule.mem_map_of_mem hx)))`. Establish `mono : ∀ n, filt act l V n ≤ filt act l V (n + 1)` using `fun n => le_sup_left`. Establish `Q : ∀ n, St act q (filt act l V n) → ∀ Z ∈ g, ∀ x ∈ filt act l V n, act Z x ∈ filt act l V (n + 1)`. Introduce `n hn Z hZ x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (hs hZ)`.
+
+Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `add_mem (mono n (hn a ha x hx)) (up n b hb x hx)`. Establish `P : ∀ n, St act q (filt act l V n)`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => exact hV`. Consider the case `succ n ih`. Introduce `Z hZ`. Establish `: filt act l V (n + 1) ≤ (filt act l V (n + 1)).comap (act Z)`. Use `sup_le (fun x hx => mono n (ih Z hZ x hx)) (iSup₂_le fun Y hY => ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[Submodule.mem_comap, h.comm]`. Conclude with `add_mem (up n Y hY _ (ih Z hZ x hx)) (Q n ih _ (hg Z (hq hZ) Y (hl hY)) x hx)`. Conclude with `fun x hx => this hx`. Establish `le : ∀ n, filt act l V n ≤ N`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact hVN`. Consider the case `succ n ih`. Use `sup_le ih (iSup₂_le fun Y hY => ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hN Y hY x (ih hx)`. Use `⟨⨆ n, filt act l V n, le_iSup (filt act l V) 0, iSup_le le, fun Z hZ x hx => ?_⟩` and prove the remaining obligations. Establish `: (⨆ n, filt act l V n) ≤ (⨆ n, filt act l V n).comap (act Z)` using `iSup_le fun n y hy => Submodule.mem_iSup_of_mem (n + 1) (Q n (P n) Z hZ y hy)`. Conclude with `this hx`.
+-/
 theorem gen_le {act : A →ₗ[ℂ] Module.End ℂ M} (h : Lie act) {g q l : Submodule ℂ A}
     (hg : ∀ X ∈ g, ∀ Y ∈ g, X * Y - Y * X ∈ g) (hq : q ≤ g) (hl : l ≤ g) (hs : g ≤ q ⊔ l) {V N : Submodule ℂ M}
     (hV : St act q V) (hVN : V ≤ N) (hN : St act l N) : ∃ W, V ≤ W ∧ W ≤ N ∧ St act g W := by
@@ -62,11 +78,21 @@ theorem gen_le {act : A →ₗ[ℂ] Module.End ℂ M} (h : Lie act) {g q l : Sub
 
 def low (T : Module.End ℂ M) (lam : ℂ) : Submodule ℂ M := ⨆ t : {t : ℝ // 0 < t}, T.eigenspace (lam - (t.1 : ℂ))
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[h.comm, hx, hk, map_smul, map_smul, LinearMap.smul_apply, add_smul]`.
+-/
 theorem shift_eig {act : A →ₗ[ℂ] Module.End ℂ M} (h : Lie act) {H Z : A} {k : ℂ} (hk : H * Z - Z * H = k • Z) {mu : ℂ} {x : M}
     (hx : x ∈ (act H).eigenspace mu) : act Z x ∈ (act H).eigenspace (mu + k) := by
   rw [Module.End.mem_eigenspace_iff] at hx ⊢
   rw [h.comm, hx, hk, map_smul, map_smul, LinearMap.smul_apply, add_smul]
 
+/- English proof (translation)
+Establish `: V ⊔ low (act H) lam ≤ (V ⊔ low (act H) lam).comap (act Z)`. Use `sup_le (fun x hx => ?_) (iSup_le fun t x hx => ?_)` and prove the remaining obligations. Use `Submodule.mem_sup_right (Submodule.mem_iSup_of_mem ⟨k, h0⟩ ?_)` and prove the remaining obligations. Use `shift_eig h hk (hV hx)` as an intermediate fact. Rewrite `this` using `[← sub_eq_add_neg]`. Then use the resulting hypothesis.
+
+Use `Submodule.mem_sup_right (Submodule.mem_iSup_of_mem ⟨t.1 + k, add_pos t.2 h0⟩ ?_)` and prove the remaining obligations. Use `shift_eig h hk hx` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `fun x hx => this hx`.
+-/
 theorem shift_low {act : A →ₗ[ℂ] Module.End ℂ M} (h : Lie act) {H Z : A} {k : ℝ} (h0 : 0 < k)
     (hk : H * Z - Z * H = (-(k : ℂ)) • Z) {lam : ℂ} {V : Submodule ℂ M} (hV : V ≤ (act H).eigenspace lam) :
     ∀ x ∈ V ⊔ low (act H) lam, act Z x ∈ V ⊔ low (act H) lam := by
@@ -81,6 +107,9 @@ theorem shift_low {act : A →ₗ[ℂ] Module.End ℂ M} (h : Lie act) {H Z : A}
       push_cast; ring
   exact fun x hx => this hx
 
+/- English proof (translation)
+Use `iSup_le fun t x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Module.End.mem_eigenspace_iff]`. Use `hD x` as an intermediate fact. Rewrite `this` using `[hx, map_smul, sub_smul, sub_eq_self, smul_eq_zero]`. Conclude with `this.resolve_left (by exact_mod_cast t.2.ne')`.
+-/
 theorem low_ker {M' : Type} [AddCommGroup M'] [Module ℂ M'] {T : Module.End ℂ M} {lam : ℂ} (D : M →ₗ[ℂ] M')
     (hD : ∀ x, D (T x) = lam • D x) : low T lam ≤ LinearMap.ker D := by
   refine iSup_le fun t x hx => ?_
@@ -89,6 +118,11 @@ theorem low_ker {M' : Type} [AddCommGroup M'] [Module ℂ M'] {T : Module.End �
   rw [hx, map_smul, sub_smul, sub_eq_self, smul_eq_zero] at this
   exact this.resolve_left (by exact_mod_cast t.2.ne')
 
+/- English proof (translation)
+Establish `hd` using `(Module.End.eigenspaces_iSupIndep T) lam`. Use `(Submodule.disjoint_def.1 hd) x h2 ?_` and prove the remaining obligations. Use `(iSup_le fun t => ?_ : low T lam ≤ _) h1` and prove the remaining obligations. Use `le_iSup₂_of_le (f := fun j (_ : j ≠ lam) => T.eigenspace j) (lam - (t.1 : ℂ)) ?_ le_rfl` and prove the remaining obligations. Introduce `e`.
+
+Rewrite `e` using `[sub_eq_self]`. Conclude with `t.2.ne' (by exact_mod_cast e)`.
+-/
 theorem low_eig {T : Module.End ℂ M} {lam : ℂ} {x : M} (h1 : x ∈ low T lam) (h2 : x ∈ T.eigenspace lam) : x = 0 := by
   have hd := (Module.End.eigenspaces_iSupIndep T) lam
   refine (Submodule.disjoint_def.1 hd) x h2 ?_
@@ -98,6 +132,9 @@ theorem low_eig {T : Module.End ℂ M} {lam : ℂ} {x : M} (h1 : x ∈ low T lam
   rw [sub_eq_self] at e
   exact t.2.ne' (by exact_mod_cast e)
 
+/- English proof (translation)
+Use `(iSup_le fun t y hy => ?_ : low T lam ≤ (low T' lam).comap φ) hx` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem t ?_` and prove the remaining obligations. Rewrite `hy`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[← hφ, hy, map_smul]`.
+-/
 theorem low_map {M' : Type} [AddCommGroup M'] [Module ℂ M'] {T : Module.End ℂ M} {T' : Module.End ℂ M'} {lam : ℂ}
     (φ : M →ₗ[ℂ] M') (hφ : ∀ x, φ (T x) = T' (φ x)) {x : M} (hx : x ∈ low T lam) : φ x ∈ low T' lam := by
   refine (iSup_le fun t y hy => ?_ : low T lam ≤ (low T' lam).comap φ) hx
@@ -119,12 +156,20 @@ def alg (ι : Type) (r : I → I → Prop) : Submodule ℂ (ι → Matrix I I �
   zero_mem' := fun _ _ _ _ => rfl
   smul_mem' := fun c x hx w a b h => by simp [hx w a b h]
 
+/- English proof (translation)
+Use extensionality with `w a b`. Simplify using `only [un, Finset.sum_apply, Pi.smul_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `rw [Finset.sum_eq_single w, Finset.sum_eq_single a, Finset.sum_eq_single b] <;>`. Simplify using `+contextual [Pi.single_apply, Matrix.single_apply, eq_comm]`.
+-/
 theorem eq_sum (Z : ι → Matrix I I ℂ) : Z = ∑ w, ∑ a, ∑ b, Z w a b • un w a b := by
   ext w a b
   simp only [un, Finset.sum_apply, Pi.smul_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]
   rw [Finset.sum_eq_single w, Finset.sum_eq_single a, Finset.sum_eq_single b] <;>
     simp +contextual [Pi.single_apply, Matrix.single_apply, eq_comm]
 
+/- English proof (translation)
+Introduce `Z hZ`. Rewrite using `[eq_sum Z]`. Use `S.sum_mem fun w _ => S.sum_mem fun a _ => S.sum_mem fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : r a b`. Conclude with `S.smul_mem _ (h w a b e)`.
+
+Rewrite using `[hZ w a b e, zero_smul]`. Conclude with `S.zero_mem`.
+-/
 theorem alg_le {r : I → I → Prop} {S : Submodule ℂ (ι → Matrix I I ℂ)} (h : ∀ w a b, r a b → un w a b ∈ S) : alg ι r ≤ S := by
   intro Z hZ
   rw [eq_sum Z]
@@ -133,6 +178,11 @@ theorem alg_le {r : I → I → Prop} {S : Submodule ℂ (ι → Matrix I I ℂ)
   · exact S.smul_mem _ (h w a b e)
   · rw [hZ w a b e, zero_smul]; exact S.zero_mem
 
+/- English proof (translation)
+Introduce `w' c d hcd`. Distinguish the cases in `e : w' = w`. Substitute `e` using the available equality. Simplify using `only [un, Pi.single_eq_same, Matrix.single_apply]`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hcd h`. Simplify using `[un, Pi.single_eq_of_ne e]`.
+-/
 theorem un_mem {r : I → I → Prop} (w : ι) {a b : I} (h : r a b) : un w a b ∈ alg ι r := by
   intro w' c d hcd
   by_cases e : w' = w
@@ -143,6 +193,11 @@ theorem un_mem {r : I → I → Prop} (w : ι) {a b : I} (h : r a b) : un w a b 
     exact hcd h
   · simp [un, Pi.single_eq_of_ne e]
 
+/- English proof (translation)
+Establish `m : ∀ X ∈ alg ι r, ∀ Y ∈ alg ι r, X * Y ∈ alg ι r` using `fun X hX Y hY w a b h => by`. Rewrite using `[Pi.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : r a c`. Rewrite using `[hY w c b fun e' => h (ht _ _ _ e e'), mul_zero]`.
+
+Rewrite using `[hX w a c e, zero_mul]`. Conclude with `fun X hX Y hY => sub_mem (m X hX Y hY) (m Y hY X hX)`.
+-/
 theorem alg_br {r : I → I → Prop} (ht : ∀ a b c, r a b → r b c → r a c) :
     ∀ X ∈ alg ι r, ∀ Y ∈ alg ι r, X * Y - Y * X ∈ alg ι r := by
   have m : ∀ X ∈ alg ι r, ∀ Y ∈ alg ι r, X * Y ∈ alg ι r := fun X hX Y hY w a b h => by
@@ -153,9 +208,15 @@ theorem alg_br {r : I → I → Prop} (ht : ∀ a b c, r a b → r b c → r a c
     · rw [hX w a c e, zero_mul]
   exact fun X hX Y hY => sub_mem (m X hX Y hY) (m Y hY X hX)
 
+/- English proof (translation)
+The claim follows from `alg_le fun w a b e => un_mem w (h a b e)`.
+-/
 theorem alg_mono {r r' : I → I → Prop} (h : ∀ a b, r a b → r' a b) : alg ι r ≤ alg ι r' :=
   alg_le fun w a b e => un_mem w (h a b e)
 
+/- English proof (translation)
+The claim follows from `alg_le fun w a b e => (h a b e).elim (fun e => Submodule.mem_sup_left (un_mem w e)) fun e => Submodule.mem_sup_right (un_mem w e)`.
+-/
 theorem alg_sup {r r₁ r₂ : I → I → Prop} (h : ∀ a b, r a b → r₁ a b ∨ r₂ a b) : alg ι r ≤ alg ι r₁ ⊔ alg ι r₂ :=
   alg_le fun w a b e => (h a b e).elim (fun e => Submodule.mem_sup_left (un_mem w e)) fun e =>
     Submodule.mem_sup_right (un_mem w e)
@@ -166,12 +227,20 @@ def stab (act : (ι → Matrix I I ℂ) →ₗ[ℂ] Module.End ℂ M) (N : Submo
   zero_mem' := fun x _ => by simp
   smul_mem' := fun c a ha x hx => by rw [map_smul, LinearMap.smul_apply]; exact N.smul_mem c (ha x hx)
 
+/- English proof (translation)
+Introduce `_ hZ` and use `(alg_le (S := stab act N) h) hZ`.
+-/
 theorem st_alg {act : (ι → Matrix I I ℂ) →ₗ[ℂ] Module.End ℂ M} {r : I → I → Prop} {N : Submodule ℂ M}
     (h : ∀ w a b, r a b → ∀ x ∈ N, act (un w a b) x ∈ N) : St act (alg ι r) N :=
   fun _ hZ => (alg_le (S := stab act N) h) hZ
 
 def dg (ι : Type) (h : I → ℝ) : ι → Matrix I I ℂ := fun _ => Matrix.diagonal fun a => (h a : ℂ)
 
+/- English proof (translation)
+Use extensionality with `w' c d`. Distinguish the cases in `e : w' = w`. Substitute `e` using the available equality. Simplify using `only [un, dg, Pi.sub_apply, Pi.mul_apply, Pi.single_eq_same, Matrix.sub_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Pi.smul_apply, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Use `split_ifs with h1`.
+
+Take `⟨rfl, rfl⟩` from `h1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using `[un, Pi.single_eq_of_ne e]`.
+-/
 theorem dg_br (h : I → ℝ) (w : ι) (a b : I) : dg ι h * un w a b - un w a b * dg ι h = ((h a - h b : ℝ) : ℂ) • un w a b := by
   ext w' c d
   by_cases e : w' = w
@@ -183,16 +252,31 @@ theorem dg_br (h : I → ℝ) (w : ι) (a b : I) : dg ι h * un w a b - un w a b
     · simp
   · simp [un, Pi.single_eq_of_ne e]
 
+/- English proof (translation)
+Use `conv_lhs => rw [eq_sum (dg ι h)]`. Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [Finset.sum_eq_single a] <;> simp +contextual [dg, Matrix.diagonal_apply, eq_comm]`.
+-/
 theorem dg_eq (h : I → ℝ) : dg ι h = ∑ w, ∑ a, (h a : ℂ) • un w a a := by
   conv_lhs => rw [eq_sum (dg ι h)]
   refine Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun a _ => ?_
   rw [Finset.sum_eq_single a] <;> simp +contextual [dg, Matrix.diagonal_apply, eq_comm]
 
+/- English proof (translation)
+Rewrite using `[Module.End.mem_eigenspace_iff, dg_eq]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, hf, Finset.sum_smul, smul_smul]`.
+-/
 theorem dg_hw {act : (ι → Matrix I I ℂ) →ₗ[ℂ] Module.End ℂ M} (h : I → ℝ) {Λ : ι → I → ℂ} {f : M}
     (hf : ∀ w a, act (un w a a) f = Λ w a • f) : f ∈ (act (dg ι h)).eigenspace (∑ w, ∑ a, h a * Λ w a) := by
   rw [Module.End.mem_eigenspace_iff, dg_eq]
   simp only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, hf, Finset.sum_smul, smul_smul]
 
+/- English proof (translation)
+Use `set lam : ℂ := ∑ w, ∑ a, h a * Λ w a`. Take `⟨V, hV1, hV2, hV3⟩` from `gen_le hL (g := alg ι fun a b => sb a b ∧ h b ≤ h a) (q := alg ι fun a b => a = b ∨ pos a b) (l := alg ι z) (alg_br fun a b c x y => ⟨sbt _ _ _ x.1 y.1, y.2.trans x.2⟩) (alg_mono fun a b e => e.elim (fun e => e ▸ ⟨sbr a, le_rfl⟩) fun e => ⟨psb _ _ e, hp _ _ e⟩) (alg_mono fun a b …`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Rewrite using `[map_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+
+Break down `e with rfl | e` into its components or cases. Rewrite using `[hf]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self f)`. Rewrite using `[hf' w a b e]`. Conclude with `zero_mem _)`.
+
+Use the proof step `((Submodule.span_singleton_le_iff_mem _ _).2 ⟨hfN, dg_hw h hf⟩)`. Use the proof step `(st_alg fun w a b e x hx => ⟨hN w a b e x hx.1, by`. Use `shift_eig hL (dg_br h w a b) hx.2` as an intermediate fact. Rewrite using `[(hz _ _ e).2, sub_self, Complex.ofReal_zero, add_zero] at this⟩)` and apply the resulting hypothesis. Take `⟨W, hW1, hW2, hW3⟩` from `gen_le hL (g := alg ι sb) (q := alg ι fun a b => sb a b ∧ h b ≤ h a) (l := alg ι fun a b => sb a b ∧ h a < h b) (alg_br sbt) (alg_mono fun a b e => e.1) (alg_mono fun a b e => e.1) (alg_sup fun a b e => (le_or_gt (h b) (h a)).imp (fun x => ⟨e, x⟩) fun x => ⟨e, x⟩) hV3 (N := V ⊔ l …`.
+
+Conclude with `⟨W, hW1 (hV1 (Submodule.mem_span_singleton_self f)), hW2.trans (sup_le_sup_right (hV2.trans inf_le_left) _), hW3⟩`.
+-/
 theorem cyc_le {act : (ι → Matrix I I ℂ) →ₗ[ℂ] Module.End ℂ M} (hL : Lie act) {sb pos z : I → I → Prop}
     (sbt : ∀ a b c, sb a b → sb b c → sb a c) (sbr : ∀ a, sb a a) (psb : ∀ a b, pos a b → sb a b) (h : I → ℝ)
     (hp : ∀ a b, pos a b → h b ≤ h a) (hz : ∀ a b, z a b → sb a b ∧ h a = h b)

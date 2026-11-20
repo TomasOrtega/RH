@@ -108,6 +108,9 @@ namespace ColDat
 
 variable (d : ColDat) (a : ColArgs d)
 
+/- English proof (translation)
+The claim follows from `d.what₂.card_Tau`.
+-/
 theorem f_eq : d.X.f = d.R.f := d.what₂.card_Tau
 
 @[reducible] def chain (u : d.what₂.Word) : ColumnChain d.R d.what₂.Tau (d.hcW u) :=

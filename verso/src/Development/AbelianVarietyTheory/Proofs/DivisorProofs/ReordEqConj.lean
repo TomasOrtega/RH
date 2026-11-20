@@ -21,6 +21,11 @@ def permUnit (κ : Type) [CommRing κ] {r : ℕ} (π : Equiv.Perm (Fin r)) : GL 
   inv_val := by
     rw [← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans, Equiv.symm_trans_self, Equiv.toPEquiv_refl, PEquiv.toMatrix_refl]
 
+/- English proof (translation)
+Use `⟨fun PP => permUnit (kP PP.1) π, fun g => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `PP`. Apply `Units.ext` to reduce the goal to its premises. Use `show Matrix.reindexAlgEquiv (kP PP.1) (kP PP.1) π.symm (g PP : Matrix (Fin r) (Fin r) (kP PP.1)) = π.toPEquiv.toMatrix * (g PP : Matrix (Fin r) (Fin r) (kP PP.1)) * π.symm.toPEquiv.toMatrix`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem reord_eq_conj {D : D7} {Pg : Finset (Pl D.host.E)} {r : ℕ} (π : Equiv.Perm (Fin r)) :
     ∃ w : G0 Pg r, ∀ g : G0 Pg r, reord π g = w * g * w⁻¹ := by
   refine ⟨fun PP => permUnit (kP PP.1) π, fun g => ?_⟩
@@ -32,6 +37,23 @@ theorem reord_eq_conj {D : D7} {Pg : Finset (Pl D.host.E)} {r : ℕ} (π : Equiv
   ext i j
   simp
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hlev hcard hq hadm hirr hprod _ χ hχ`. Take `⟨ψ, hψ, -, π, -, hmem, hchi⟩` from `hlev`. Take `⟨w, hw⟩` from `reord_eq_conj (D := D) (Pg := R.Pg) π`. Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hr : D.R.r = D.R.k + 2 * D.R.rS + 1`.
+
+Take `⟨a, ha⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r Ranks.rS`. Use linear arithmetic over natural numbers and integers. Establish `hg : 0 < min (D.host.g 0) (D.host.g 1)` using `lt_min (D.host.g_prime 0).pos (D.host.g_prime 1).pos`.
+
+Establish `hp : GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.IsProdCuspChar (RingHom.id ℂ) R.Pg D.R.r fun g => D.what₂.embLL (χ (R.eG.symm g))` using `hprod χ hχ`. Take `⟨⟨n, hn, hb⟩, -⟩` from `GlobalTheory.FinGL.MultSharpObj.multSharp D.host.E ℂ (RingHom.id ℂ) R.Pg D.R.f (min (D.host.g 0) (D.host.g 1)) D.R.r D.R.rS D.R.k ψ hcard hk hr hg hadm hq hψ _ hp`. Use `⟨n, ?_, hb⟩` and prove the remaining obligations. Establish `hm : ∀ g : G, R.eG g ∈ (R.levR F true).H ↔ g ∈ F.P1` using `fun g => by show R.eG.symm (R.eG g) ∈ F.P1 ↔ _`. Rewrite using `[MulEquiv.symm_apply_apply]`.
+
+Establish `hc : ∀ (g : G) (h : R.eG g ∈ (R.levR F true).H), (((R.levR F true).chi ⟨R.eG g, h⟩ : ℂˣ) : ℂ) = D.what₂.embLL ((F.ψ1 ⟨g, (hm g).1 h⟩ : D.what₂.LLˣ) : D.what₂.LL)` using `fun g h => by show D.what₂.embLL ((F.ψ1 ⟨R.eG.symm (R.eG g), h⟩ : D.what₂.LLˣ) : D.what₂.LL) = _`. Use `congr 4`. Conclude with `R.eG.symm_apply_apply g`. Set `e : F.P1 ≃ (PsharpSym R.Pg D.R.r D.R.rS D.R.k ψ).H` to `(R.eG.trans (MulAut.conj w)).toEquiv.subtypeEquiv fun g => by`. Rewrite using `[← hm, hmem, hw]`.
+
+Both sides reduce to the same expression. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[map_natCast, ← hn, map_mul, map_inv₀, map_natCast, map_sum]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.levelMult`. Rewrite using `[Nat.card_congr e]`.
+
+Use `congr 1`. Use `haveI := GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.finite_boundedLevelClassGroupFamily R.Pg D.R.r`. Use `letI : Fintype (PsharpSym R.Pg D.R.r D.R.rS D.R.k ψ).H := Fintype.ofFinite _`. Use `Fintype.sum_equiv e _ _ fun x => ?_` and prove the remaining obligations. Establish `h1 : R.eG x ∈ (R.levR F true).H` using `(hm x).2 x.2`.
+
+Establish `h2` using `(hmem _).1 h1`. Establish `he : e x = ⟨reord π (R.eG x), h2⟩` using `Subtype.ext (hw _).symm`. Rewrite using `[he, ← hchi _ h1 h2, map_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_inv₀, hc]`. Use `congr 2`. Use `show χ x = χ (R.eG.symm (reord π (R.eG x)))`.
+
+Rewrite using `[hw, map_mul, map_mul, map_inv, MulEquiv.symm_apply_apply, (hirr χ hχ).conj]`.
+-/
 theorem columnMult : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.grp_levels F → R.Pg.card = 2 * D.R.f → (∀ PP ∈ R.Pg, min (D.host.g 0) (D.host.g 1) ≤ Nat.card (kP PP)) → Formalism.MainNotions.PrimeDegreeVariant.LevelRatioBound D → (∀ χ ∈ A.X, IsAbsIrrChar χ) → (∀ χ ∈ A.X, GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.IsProdCuspChar D.what₂.embLL R.Pg D.R.r fun g => χ (R.eG.symm g)) → ∀ [Fintype F.P1], ∀ χ ∈ A.X, ∃ n : ℕ, (Nat.card F.P1 : D.what₂.LL)⁻¹ * ∑ h : F.P1, χ (h : G) * (((F.ψ1 h)⁻¹ : D.what₂.LLˣ) : D.what₂.LL) = (n : D.what₂.LL) ∧ |(n : ℝ) - (GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.nbar R.Pg D.R.k : ℝ)| ≤ 8 * (D.R.f : ℝ) * (D.R.r : ℝ) / ((min (D.host.g 0) (D.host.g 1) : ℕ) : ℝ) * (GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.nbar R.Pg D.R.k : ℝ) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hlev hcard hq hadm hirr hprod _ χ hχ
   classical

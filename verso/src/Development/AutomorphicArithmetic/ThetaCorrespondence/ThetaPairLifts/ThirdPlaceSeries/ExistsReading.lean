@@ -42,6 +42,15 @@ def ResTiedAlt (D : D7) (Rw : RowSide D) : Prop :=
     ∃ (ι : Qbar l ≃+* ℂ) (red : Zbar l →+* FbAt D w), _root_.GlobalTheory.EigTie.ReductionConditionAtPlace Rw ι w red
 section Bridge
 variable {X : NTw D.R D.host D.what₂ D.LL0 D.nd} {i : X.Tw} {b : Bool}
+/- English proof (translation)
+Take `⟨w, hw, H⟩` from `hi`. Take `⟨ρ⟩` from `Reading.nonempty (X := X) i true`. Establish `hl : 0 < D.what₂.places.val w ((X.l i : ℕ) : D.what₂.LL)`. Use `(H ((X.l i : ℕ) : 𝓞 ↥D.LL0)).1 ((norm_lt_iff ρ _).2 (by` as an intermediate fact. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_natCast, map_natCast, map_natCast, ← map_natCast (algebraMap ℚ_[X.l i] (Qbar (X.l i))), norm_algebraMap']`.
+
+Conclude with `Padic.norm_p_lt_one))`. Simplify using `using this`. Take `⟨ι, red, hι⟩` from `h w hw (X.l i) (resChar_eq (X.lPrime i).out hl)`. Establish `key : ∀ x : ↥D.LL0, 0 ≤ D.what₂.places.val w x ↔ ‖ρ.κ (X.emb0 i x)‖ ≤ 1` using `fun x => (hι.1 x).trans (ball_of_int (ι.symm.toRingHom.comp (embLL0 D)) (ρ.κ.comp (X.emb0 i)) (fun y => ((hι.1.lt_iff _).symm.trans (H y).symm).trans (norm_lt_iff ρ _)) x)`. Consider the cases of `b`.
+
+Take `⟨ι', red', hι'⟩` from `h (D.what₂.places.conj w) (by rwa [D.what₂.muAt_conj]) (X.l i) (resChar_eq (X.lPrime i).out (by rwa [D.conj_val, star_natCast]))`. Take `⟨ρ', rfl⟩` from `exists_reading_of_induces (b := false) ρ hι'.1 fun x => by`. Rewrite using `[D.conj_val]`. Conclude with `(key ⟨_, hs x⟩).trans (by rw [← X.restX_coefficientEmbedding_conj i x ⟨_, hs x⟩ rfl]; rfl)`. Conclude with `⟨ρ', _, red', hι'.1, hι'⟩`.
+
+Take `⟨ρ', rfl⟩` from `exists_reading_of_induces (b := true) ρ hι.1 key`. Conclude with `⟨ρ', _, red, hι.1, hι⟩`.
+-/
 theorem ResTiedAlt.exists_reading {Rw : RowSide D} (h : _root_.GlobalTheory.EigTie.ResTiedAlt D Rw) (hs : ∀ x : ↥D.LL0, star (x : D.what₂.LL) ∈ D.LL0)
     (hi : X.NonzeroIndexPlace i) (b : Bool) :
     ∃ (ρ : Reading X i b) (w : D.what₂.places.Pl) (red : Zbar (X.l i) →+* FbAt D w), ρ.Induces w ∧ _root_.GlobalTheory.EigTie.ReductionConditionAtPlace Rw ρ.ι w red := by

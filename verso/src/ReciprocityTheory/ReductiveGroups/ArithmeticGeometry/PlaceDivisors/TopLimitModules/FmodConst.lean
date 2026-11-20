@@ -14,6 +14,9 @@ variable {O : Type} [CommRing O] {d : ℕ}
 def Fmod (p : ℕ) (F : FGLaw O d) (n : ℕ) : Fin d → PS (O ⧸ Ideal.span {(p : O) ^ (n + 1)}) 2 d :=
   fun i => MvPowerSeries.map (Ideal.Quotient.mk _) (F.F i)
 
+/- English proof (translation)
+Simplify using `[Fmod, F.const i]`.
+-/
 theorem Fmod_const (p : ℕ) (F : FGLaw O d) (n : ℕ) (i : Fin d) : constantCoeff (Fmod p F n i) = 0 := by
   simp [Fmod, F.const i]
 

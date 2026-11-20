@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory.CompanionTheory.Multiset
 
+/- English proof (translation)
+Take `⟨l, rfl⟩` from `Quot.exists_rep m`. Set `r : α → α → Prop` to `fun a b => f b ≤ f a`. Use `haveI : DecidableRel r := fun _ _ => Classical.dec _`. Use `haveI : IsTotal α r := ⟨fun a b => le_total (f b) (f a)⟩`. Use `haveI : IsTrans α r := ⟨fun a b c h1 h2 => le_trans h2 h1⟩`.
+
+Set `l'` to `l.insertionSort r`. Establish `hperm : l'.Perm l` using `List.perm_insertionSort r l`. Establish `hsort : l'.Pairwise r` using `List.pairwise_insertionSort r l`. Establish `hlt : ∀ i j : Fin l'.length, i < j → f (l'.get j) ≤ f (l'.get i)`. Introduce `i j hij`.
+
+Conclude with `(List.pairwise_iff_get.mp hsort) i j hij`. Use `⟨l'.length, l'.get, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (Finset.univ : Finset (Fin l'.length)).val.map l'.get = ((List.ofFn l'.get : List α) : Multiset α)`. Rewrite using `[Fin.univ_val_map]`. Rewrite using `[h1, List.ofFn_get]`.
+
+Conclude with `Quot.sound hperm`. Introduce `i j hij`. Break down `hij.lt_or_eq with h | h` into its components or cases. Conclude with `hlt i j h`. Substitute `h` using the available equality.
+
+Conclude with `le_rfl`. Introduce `i j hij hp`. Conclude with `absurd (hP _ _ hp) (not_lt.mpr (hlt i j hij))`.
+-/
 theorem exists_antitone_listing {α : Type*} (m : Multiset α) (f : α → ℝ) (P : α → α → Prop)
     (hP : ∀ a b, P a b → f a < f b) :
     ∃ (h : ℕ) (Δ : Fin h → α), Finset.univ.val.map Δ = m ∧ Antitone (f ∘ Δ) ∧

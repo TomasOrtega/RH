@@ -16,6 +16,13 @@ namespace Conj
 
 open Formalism.BasicNotions.DV NumberField IsDedekindDomain
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[star_zero, map_zero, map_zero]`. Establish `hs : star x ≠ 0` using `by rwa [ne_eq, star_eq_zero]`. Establish `h` using `D.conj_val w x`.
+
+Rewrite `h` using `[D.val_eq _ x hx, D.val_eq w (star x) hs]`. Establish `h1 : vAdd (D.plEq (D.what₂.places.conj w)) x = vAdd (D.plEq w) (star x)` using `by exact_mod_cast h`. Unfold `vAdd at h1`. Establish `h2` using `neg_inj.mp h1`. Establish `n1 : (D.plEq (D.what₂.places.conj w)).valuation D.what₂.LL x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`.
+
+Establish `n2 : (D.plEq w).valuation D.what₂.LL (star x) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hs`. Rewrite using `[← WithZero.exp_log n1, h2, WithZero.exp_log n2]`.
+-/
 theorem valuation_conj (D : D7) (w : D.what₂.places.Pl) (x : D.what₂.LL) :
     (D.plEq (D.what₂.places.conj w)).valuation D.what₂.LL x = (D.plEq w).valuation D.what₂.LL (star x) := by
   by_cases hx : x = 0
@@ -30,6 +37,13 @@ theorem valuation_conj (D : D7) (w : D.what₂.places.Pl) (x : D.what₂.LL) :
   have n2 : (D.plEq w).valuation D.what₂.LL (star x) ≠ 0 := (Valuation.ne_zero_iff _).mpr hs
   rw [← WithZero.exp_log n1, h2, WithZero.exp_log n2]
 
+/- English proof (translation)
+Establish `hmem : ∀ x : 𝓞 D.what₂.LL, x ∈ (D.plEq (D.what₂.places.conj w)).asIdeal ↔ Formalism.DivisionValues.cO D.what₂.LL x ∈ (D.plEq w).asIdeal`. Introduce `x`. Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := D.what₂.LL), ← HeightOneSpectrum.valuation_lt_one_iff_mem (K := D.what₂.LL), valuation_conj]`. Both sides reduce to the same expression. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `x hx`. Use `Ideal.mem_map_of_mem (Formalism.DivisionValues.cO D.what₂.LL) ((hmem x).1 hx)` as an intermediate fact. Rewrite `this` using `[Formalism.DivisionValues.ValuationRepresentative.cO_cO]`. Then use the resulting hypothesis. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `y hy`.
+
+Rewrite using `[Ideal.mem_comap, hmem, Formalism.DivisionValues.ValuationRepresentative.cO_cO]`. Conclude with `hy`.
+-/
 theorem plEq_conj (D : D7) (w : D.what₂.places.Pl) :
     (D.plEq (D.what₂.places.conj w)).asIdeal = (D.plEq w).asIdeal.map (Formalism.DivisionValues.cO D.what₂.LL) := by
   have hmem : ∀ x : 𝓞 D.what₂.LL, x ∈ (D.plEq (D.what₂.places.conj w)).asIdeal ↔
@@ -47,6 +61,9 @@ theorem plEq_conj (D : D7) (w : D.what₂.places.Pl) :
     rw [Ideal.mem_comap, hmem, Formalism.DivisionValues.ValuationRepresentative.cO_cO]
     exact hy
 
+/- English proof (translation)
+Unfold `SizeData₂.lwP lw`. Rewrite using `[plEq_conj, Formalism.DivisionValues.ValuationRepresentative.absNorm_map_ringEquiv]`.
+-/
 theorem logWeight_conj (D : D7) (w : D.what₂.places.Pl) : SizeData₂.lwP (D.what₂.places.conj w) = SizeData₂.lwP w := by
   unfold SizeData₂.lwP lw
   rw [plEq_conj, Formalism.DivisionValues.ValuationRepresentative.absNorm_map_ringEquiv]
@@ -59,6 +76,13 @@ open Formalism.BasicNotions.DV
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `LiftErrorLocal.Dpm fockDeg`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e1 : ∀ a, |D.what₂.kaBig j τ a| = D.what₂.kaBig j τ a` using `fun a => by`. Rewrite using `[← X.ka_big j h1 h2 τ a]`. Conclude with `abs_of_nonneg (Int.natCast_nonneg _)`.
+
+Establish `e2 : ∀ a, |D.what₂.kaSmall j τ a| = -D.what₂.kaSmall j τ a` using `fun a => by`. Establish `h` using `X.ka_small j h1 h2 τ (Fin.rev a)`. Rewrite `h` using `[Fin.rev_rev]`. Establish `h0 : D.what₂.kaSmall j τ a ≤ 0`. Use `Int.natCast_nonneg ((X.run j).ka.aM τ (Fin.rev a))` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `abs_of_nonpos h0`. Simplify using `only [e1, e2, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Dpm_eq_fockDeg {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     LiftErrorLocal.Dpm D j = fockDeg D j := by
   unfold LiftErrorLocal.Dpm fockDeg
@@ -74,6 +98,21 @@ theorem Dpm_eq_fockDeg {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) (j : ℕ
   simp only [e1, e2, Finset.sum_neg_distrib]
   ring
 
+/- English proof (translation)
+Introduce `i u j hj S hS0`. Establish `hS : ∀ w, w ∈ S ↔ D.what₂.places.resChar w = D.host.g i` using `hS0`. Establish `h2` using `h.2.1 i`. Use `set a : D.what₂.places.Pl → ℝ := fun w => SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ) with ha`. Establish `hac : ∀ w, a (D.what₂.places.conj w) = a w` using `fun w => by`.
+
+Simplify using `only [ha]`. Rewrite using `[hl w, PDVN.ramIdx_conj]`. Establish `hmem : ∀ w, w ∈ S → D.what₂.places.conj w ∈ S` using `fun w hw => by`. Rewrite `hw`, the goal using `[hS]`. Rewrite using `[resChar_conj]`.
+
+Conclude with `hw`. Establish `hre : ∑ w ∈ S, a w * vNN EX i u j w = ∑ w ∈ S, a w * vNN EX i u j (D.what₂.places.conj w)`. Use `Finset.sum_bij (fun w _ => D.what₂.places.conj w) (fun w hw => hmem w hw) ?_ ?_ ?_` and prove the remaining obligations. Introduce `w _ w' _ hww`. Use `congrArg D.what₂.places.conj hww` as an intermediate fact.
+
+Rewrite `this` using `[D.what₂.places.conj_conj, D.what₂.places.conj_conj]`. Then use the resulting hypothesis. Introduce `w hw`. Conclude with `⟨D.what₂.places.conj w, hmem w hw, D.what₂.places.conj_conj w⟩`. Introduce `w _`. Rewrite using `[hac, D.what₂.places.conj_conj]`.
+
+Establish `hsum : ∑ w ∈ S, SizeData₂.sz w (vNN EX i u j w) = ∑ w ∈ S, a w * (vNN EX i u j w + vNN EX i u j (D.what₂.places.conj w))`. Establish `e : ∀ w, SizeData₂.sz w (vNN EX i u j w) = a w * vNN EX i u j w + a w * vNN EX i u j w` using `fun w => by`. Simplify using `only [ha, SizeData₂.sz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun w _ => e w, Finset.sum_add_distrib]`.
+
+Use `nth_rewrite 2 [hre]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun w _ => by ring`. Establish `h3 : ∑ w ∈ S, a w * (vNN EX i u j w + vNN EX i u j (D.what₂.places.conj w)) = ∑ w ∈ S, a w * LiftErrorLocal.Dpi D u j` using `Finset.sum_congr rfl fun w hw => by rw [h2 w ((hS w).1 hw) u j hj]`. Establish `hm : ∑ w ∈ S, a w = Real.log (D.host.g i : ℝ)` using `factEtaMean D (D.host.g i) (D.host.g_prime i) S hS`.
+
+Rewrite using `[hsum, h3, ← Finset.sum_mul, hm]`. Unfold `LiftErrorLocal.Dpi`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normDecompositionCond_of_jetConsequence (L : SizeData₂ D) (EX : ErrX D) (C1 C2 C3 : ℝ) (h : LiftErrorLocal.JetConsequence D L EX C1 C2 C3)
     (hl : ∀ w : D.what₂.places.Pl, SizeData₂.lwP (D.what₂.places.conj w) = SizeData₂.lwP w) : WeightDegreeSizes.NormDecompositionCond D EX := by
   intro i u j hj S hS0
@@ -117,6 +156,9 @@ open Formalism.BasicNotions.DV
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `|A - B| ≤ 2 * W + (P + 2 * Q) * (f * (S1 + kN) + T * b1) := by obtain ⟨a1, a2⟩ := abs_le.1 hA obtain ⟨c1, c2⟩ := abs_le.1 hB have h2 : Q * f * (S0 + (kN + kT)) ≤ Q * f * (S1 + 2 * kN) := mul_le_mul_of_nonneg_left (by linarith) (mul_nonneg hQ hf) have h5 : 0 ≤ Q * f * S1 := mul_no …`.
+-/
 theorem deg_core {A B W f S0 S1 kN kT T b1 P Q : ℝ} (hA : |A| ≤ W + f * (P * S1) + T * (P * b1))
     (hB : |B| ≤ Q * f * (S0 + (kN + kT))) (hW : 0 ≤ W) (hf : 0 ≤ f) (hS0 : 0 ≤ S0) (hS : S0 ≤ S1) (hkN : 0 ≤ kN)
     (hkT : kT ≤ kN) (hT : 0 ≤ T) (hb : 0 ≤ b1) (hP : 0 ≤ P) (hQ : 0 ≤ Q) :
@@ -131,6 +173,43 @@ theorem deg_core {A B W f S0 S1 kN kT T b1 P Q : ℝ} (hA : |A| ≤ W + f * (P *
   rw [abs_le]
   constructor <;> nlinarith
 
+/- English proof (translation)
+Introduce `u j hj`. Establish `hj' : 1 ≤ j ∧ j ≤ D.R.m` using `Finset.mem_Icc.1 hj`. Take `⟨ha, hb', -⟩` from `hC.2.2.2 u j hj`. Establish `hd` using `hD hk j hj`. Rewrite using `[← Dpm_eq_fockDeg X j hj'.1 hj'.2]`.
+
+Establish `split : ∀ g : D.what₂.Tau → ℝ, ∑ τ, g τ = ∑ τ ∈ Finset.univ.filter (fun τ => WeightDegreeSizes.NotTop D τ), g τ + ∑ t : D.host.TT, g (WeightDegreeSizes.tauOfTop D t)`. Introduce `g`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun τ => WeightDegreeSizes.NotTop D τ) g]`. Use `congr 1`. Use `WeightDegreeSizes.sum_top D g` and compare the differences between its conclusion and the goal.
+
+Use `set S1 : ℝ := (D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * D.R.t * L.etaSz with hS1`. Use `set b1 : ℝ := L.sc.b' / L.sc.x with hb1`. Use `set P : ℝ := max C3 0 with hP`. Establish `hP0 : 0 ≤ P` using `le_max_right _ _`. Establish `ht1 : (1 : ℝ) ≤ D.R.t`.
+
+Use `D.R.three_m_lt_t` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.t)` after adjusting the coercions. Establish `hmη : 0 ≤ (D.R.m : ℝ) * L.etaSz` using `mul_nonneg (Nat.cast_nonneg _) hη`. Establish `hS0 : 0 ≤ (D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * L.etaSz` using `add_nonneg (mul_nonneg (Nat.cast_nonneg _) hSc) hmη`. Establish `hS01 : (D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * L.etaSz ≤ S1`.
+
+Establish `: (D.R.m : ℝ) * L.etaSz ≤ (D.R.m : ℝ) * D.R.t * L.etaSz`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 ht1) hmη]`. Simplify using `only [hS1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS1n : 0 ≤ S1` using `le_trans hS0 hS01`.
+
+Establish `hW : 0 ≤ ∑ τ, wj D j τ` using `Finset.sum_nonneg fun τ _ => hw j τ`. Establish `hA : |(∑ τ, (nuAbs D u j τ - ((D.R.k : ℝ) - 1) * wj D j τ)) - WeightDegreeSizes.sumA L| ≤ (∑ τ, wj D j τ) + (D.R.f : ℝ) * (P * S1) + (D.host.TT.card : ℝ) * (P * b1)`. Establish `e : (∑ τ, (nuAbs D u j τ - ((D.R.k : ℝ) - 1) * wj D j τ)) - WeightDegreeSizes.sumA L = ∑ τ ∈ Finset.univ.filter (fun τ => WeightDegreeSizes.NotTop D τ), ((nuAbs D u j τ - (D.R.k : ℝ) * wj D j τ) + wj D j τ) + ∑ t : D.host.TT, (nuAbs D u j (WeightDegreeSizes.tauOfTop D t) - ((L.aT …`. Rewrite using `[split, WeightDegreeSizes.sumA, add_sub_assoc, ← Finset.sum_sub_distrib]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun τ _ => by ring`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`. Establish `b1' : |∑ τ ∈ Finset.univ.filter (fun τ => WeightDegreeSizes.NotTop D τ), ((nuAbs D u j τ - (D.R.k : ℝ) * wj D j τ) + wj D j τ)| ≤ ∑ τ ∈ Finset.univ.filter (fun τ => WeightDegreeSizes.NotTop D τ), (P * S1 + wj D j τ)`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun τ hτ => ?_)` and prove the remaining obligations. Establish `hn : WeightDegreeSizes.NotTop D τ` using `(Finset.mem_filter.1 hτ).2`.
+
+Establish `h1 : |nuAbs D u j τ - (D.R.k : ℝ) * wj D j τ| ≤ C3 * S1` using `ha τ fun t ht => WeightDegreeSizes.not_notTop (D := D) (τ := τ) (t := t) ht hn`. Establish `h2 : C3 * S1 ≤ P * S1` using `mul_le_mul_of_nonneg_right (le_max_left _ _) hS1n`. Take `⟨l1, l2⟩` from `abs_le.1 h1`. Establish `h0` using `hw j τ`. Rewrite using `[abs_le]`.
+
+Apply the tactic sequence `constructor <;> linarith`. Establish `b2' : |∑ t : D.host.TT, (nuAbs D u j (WeightDegreeSizes.tauOfTop D t) - ((L.aT t : ℝ) + ((D.R.k : ℝ) - 1) * wj D j (WeightDegreeSizes.tauOfTop D t)))| ≤ ∑ _t : D.host.TT, (P * S1 + P * b1)`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun t _ => ?_)` and prove the remaining obligations. Establish `h1 : |nuAbs D u j (WeightDegreeSizes.tauOfTop D t) - ((L.aT t : ℝ) + ((D.R.k : ℝ) - 1) * wj D j (WeightDegreeSizes.tauOfTop D t))| ≤ C3 * (S1 + b1)` using `hb' (WeightDegreeSizes.tauOfTop D t) t (WeightDegreeSizes.isTopAt_tauOfTop D t)`. Establish `h2 : C3 * (S1 + b1) ≤ P * (S1 + b1)` using `mul_le_mul_of_nonneg_right (le_max_left _ _) (add_nonneg hS1n hb)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `c1 : ∑ τ ∈ Finset.univ.filter (fun τ => WeightDegreeSizes.NotTop D τ), (P * S1 + wj D j τ) + ∑ _t : D.host.TT, (P * S1 + P * b1) ≤ (∑ τ, wj D j τ) + (D.R.f : ℝ) * (P * S1) + (D.host.TT.card : ℝ) * (P * b1)`. Establish `s1 : ∑ _τ : D.what₂.Tau, P * S1 = ∑ _τ ∈ Finset.univ.filter (fun τ => WeightDegreeSizes.NotTop D τ), P * S1 + ∑ _t : D.host.TT, P * S1` using `split fun _ => P * S1`. Rewrite `s1` using `[Finset.sum_const, Finset.card_univ, D.what₂.card_Tau, nsmul_eq_mul]`. Establish `s2 : ∑ τ ∈ Finset.univ.filter (fun τ => WeightDegreeSizes.NotTop D τ), wj D j τ ≤ ∑ τ, wj D j τ` using `Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) fun τ _ _ => hw j τ`.
+
+Establish `s3 : ∑ _t : D.host.TT, P * b1 = (D.host.TT.card : ℝ) * (P * b1)`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_coe, nsmul_eq_mul]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, s3]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e]`.
+
+Take `⟨l1, l2⟩` from `abs_le.1 b1'`. Take `⟨l3, l4⟩` from `abs_le.1 b2'`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Establish `hkN : 0 ≤ (D.R.k : ℝ) * Formalism.MainNotions.G.Nm D` using `mul_nonneg (Nat.cast_nonneg _) (by unfold Formalism.MainNotions.G.Nm; exact Nat.cast_nonneg _)`.
+
+Establish `hkt : 0 ≤ (D.R.k : ℝ) * D.R.t` using `mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)`. Establish `htN : (D.R.k : ℝ) * D.R.t ≤ (D.R.k : ℝ) * Formalism.MainNotions.G.Nm D`. Establish `h0 : D.R.t ≤ D.R.N D.R.m`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.N`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations. Unfold `Formalism.MainNotions.G.Nm`. Conclude with `h0` after adjusting the coercions. Establish `hB : |(LiftErrorLocal.Dpm D j : ℝ) - ∑ τ, ((D.R.k : ℝ) - 1) * wj D j τ| ≤ max CD 0 * D.R.f * (((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * L.etaSz) + ((D.R.k : ℝ) * Formalism.MainNotions.G.Nm D + (D.R.k : ℝ) * D.R.t))`.
+
+Use `hd.trans ?_` and prove the remaining obligations. Establish `: CD * (D.R.f : ℝ) ≤ max CD 0 * D.R.f` using `mul_le_mul_of_nonneg_right (le_max_left _ _) (Nat.cast_nonneg _)`. Establish `e : (D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * L.etaSz + (D.R.k : ℝ) * ((D.R.N D.R.m : ℝ) + D.R.t) = ((D.R.k : ℝ) * L.Sc + (D.R.m : ℝ) * L.etaSz) + ((D.R.k : ℝ) * Formalism.MainNotions.G.Nm D + (D.R.k : ℝ) * D.R.t)`. Unfold `Formalism.MainNotions.G.Nm`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right this (add_nonneg hS0 (add_nonneg hkN hkt))`. Establish `key` using `deg_core hA hB hW (Nat.cast_nonneg _) hS0 hS01 hkN htN (Nat.cast_nonneg _) hb hP0 (le_max_right CD 0)`. Establish `e1 : (∑ τ, nuAbs D u j τ) - (LiftErrorLocal.Dpm D j : ℝ) - WeightDegreeSizes.sumA L = ((∑ τ, (nuAbs D u j τ - ((D.R.k : ℝ) - 1) * wj D j τ)) - WeightDegreeSizes.sumA L) - ((LiftErrorLocal.Dpm D j : ℝ) - ∑ τ, ((D.R.k : ℝ) - 1) * wj D j τ)`. Rewrite using `[Finset.sum_sub_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Unfold `WeightDegreeSizes.errG`. Simplify using `only [hS1, hb1]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem degree_count_bound {nch : NChoice D} (X : LiftErrorLocal.Loc D nch) (L : SizeData₂ D) (EX : ErrX D) (C1 C2 C3 CD : ℝ)
     (hC : LiftErrorLocal.JetConsequence D L EX C1 C2 C3) (hD : LiftErrorLocal.ThetaAdjointPositiveScalar D L CD) (hk : KapDef D)
     (hw : ∀ j τ, 0 ≤ wj D j τ) (hSc : 0 ≤ L.Sc) (hη : 0 ≤ L.etaSz) (hb : 0 ≤ L.sc.b' / L.sc.x) :
@@ -252,6 +331,11 @@ variable {eps : ℝ} (Fm : FamP eps)
 
 include XF in
 
+/- English proof (translation)
+Take `⟨xa, h⟩` from `h`. Take `⟨xb, hs⟩` from `hs`. Take `⟨Cg, CT, CG, Cd, CI, xc, hCg, rest⟩` from `rest`. Use `WeightDegreeSizes.secondComplement_family_of_inputs Fm ⟨max C3 0 + 2 * max CD 0, Cg, CT, CG, Cd, CI, max xa (max xb xc), hCg, fun x hx hx1 i => ?_⟩` and prove the remaining obligations. Establish `ha : xa ≤ x` using `le_trans (le_max_left _ _) hx`.
+
+Establish `hb : xb ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hc' : xc ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Take `⟨pC, pD⟩` from `h x hx1 ha i`. Take `⟨r2, r3, r4, r5, r6⟩` from `rest x hc' i`. Conclude with `⟨fun u i' h => (Fm.D x i).T_ne_g u i' h.symm, normDecompositionCond_of_jetConsequence _ _ C1 C2 C3 pC (Conj.logWeight_conj _), degree_count_bound (XF x hx1 i) _ _ C1 C2 C3 CD pC pD (Fm.ex x hx1 i).kap_def (hs x hb i) (Fm.L x i).Sc_pos.le (Fm.L x i).etaSz_pos.le (div_nonneg (Fm.L …`.
+-/
 theorem degree_weight_family_of_constant_D (C1 C2 C3 CD : ℝ)
     (h : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x,
       LiftErrorLocal.JetConsequence (Fm.D x i) (Fm.L x i) (Fm.ex x hx i).errX C1 C2 C3 ∧ LiftErrorLocal.ThetaAdjointPositiveScalar (Fm.D x i) (Fm.L x i) CD)
@@ -278,6 +362,9 @@ noncomputable abbrev weightDegreeConstant : ℝ := CutKapD.kappa_degree_bound_ho
 
 include XF in
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Conclude with `degree_weight_family_of_constant_D Fm XF C1 C2 C3 weightDegreeConstant ⟨x0, fun x hx h0 i => ⟨h x hx h0 i, CutKapD.kappa_degree_bound_holds.choose_spec (Fm.D x i) (Fm.L x i)⟩⟩ hs rest`.
+-/
 theorem degree_weight_family_of_constant (C1 C2 C3 : ℝ)
     (h : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, LiftErrorLocal.JetConsequence (Fm.D x i) (Fm.L x i) (Fm.ex x hx i).errX C1 C2 C3)
     (hs : ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ i : Fm.Ix x, ∀ j τ, 0 ≤ wj (Fm.D x i) j τ)

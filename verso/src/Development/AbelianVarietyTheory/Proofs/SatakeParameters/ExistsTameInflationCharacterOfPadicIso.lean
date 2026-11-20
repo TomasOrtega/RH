@@ -8,16 +8,29 @@ open GlobalTheory.GLq GlobalTheory.GLp GlobalTheory.SerSys ValuativeRel Filter T
 
 namespace GlobalTheory.TameRead
 
+/- English proof (translation)
+Introduce `a`. Use `⟨(a.val : ℤ_[g]), ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast, ZMod.natCast_zmod_val]`.
+-/
 theorem toZMod_surj (g : ℕ) [Fact g.Prime] : Function.Surjective (PadicInt.toZMod (p := g)) := by
   intro a
   refine ⟨(a.val : ℤ_[g]), ?_⟩
   rw [map_natCast, ZMod.natCast_zmod_val]
 
+/- English proof (translation)
+Establish `: IsLocalHom (PadicInt.toZMod (p` using `g)) := IsLocalHom.of_surjective _ (toZMod_surj g)`. Conclude with `IsLocalRing.surjective_units_map_of_local_ringHom _ (toZMod_surj g) this`.
+-/
 theorem units_toZMod_surj (g : ℕ) [Fact g.Prime] :
     Function.Surjective (Units.map (PadicInt.toZMod (p := g)).toMonoidHom) := by
   have : IsLocalHom (PadicInt.toZMod (p := g)) := IsLocalHom.of_surjective _ (toZMod_surj g)
   exact IsLocalRing.surjective_units_map_of_local_ringHom _ (toZMod_surj g) this
 
+/- English proof (translation)
+Establish `hm : u - 1 ∈ IsLocalRing.maximalIdeal ℤ_[g]`. Rewrite using `[← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, hu, map_one, sub_self]`. Establish `hn : ‖u - 1‖ < 1` using `PadicInt.mem_nonunits.1 hm`. Establish `hn' : ‖((u : ℚ_[g]) - 1)‖ < 1`. Establish `: ((u - 1 : ℤ_[g]) : ℚ_[g]) = (u : ℚ_[g]) - 1` using `by push_cast; rfl`.
+
+Rewrite using `[← this]`. Conclude with `hn`. Establish `ht : Tendsto (fun n : ℕ => ((u : ℚ_[g]) - 1) ^ n) atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hn'`. Establish `ht' : Tendsto (fun n : ℕ => (e ((u : ℚ_[g]) - 1)) ^ n) atTop (𝓝 0)`. Use `(he.tendsto 0).comp ht` as an intermediate fact.
+
+Simplify `this` using `[Function.comp_def, map_pow]`. Establish `h1 : e ((u : ℚ_[g]) - 1) = e (u : ℚ_[g]) - 1` using `by rw [map_sub, map_one]`. Rewrite using `[← h1]`. Conclude with `(GlobalTheory.FlatFBCompare.val_lt_one_iff _).2 ht'`.
+-/
 theorem val_sub_one_lt (g : ℕ) [Fact g.Prime] {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (e : ℚ_[g] ≃+* F) (he : Continuous e) (u : ℤ_[g])
     (hu : PadicInt.toZMod u = 1) : valuation F (e (u : ℚ_[g]) - 1) < 1 := by
@@ -36,6 +49,13 @@ theorem val_sub_one_lt (g : ℕ) [Fact g.Prime] {F : Type} [Field F] [ValuativeR
   rw [← h1]
   exact (GlobalTheory.FlatFBCompare.val_lt_one_iff _).2 ht'
 
+/- English proof (translation)
+Introduce `g _ F _ _ _ _ e he ξ hξ`. Set `μ : ℤ_[g]ˣ →* ℂˣ` to `(ξ.comp (Units.map e.toMonoidHom)).comp (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom)`. Establish `hker : (Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom).ker ≤ μ.ker := by`. Introduce `u hu`. Rewrite `hu`, the goal using `[MonoidHom.mem_ker]`.
+
+Establish `hu' : PadicInt.toZMod (u : ℤ_[g]) = 1`. Use `congrArg (fun x : (ZMod g)ˣ => (x : ZMod g)) hu` as an intermediate fact. Simplify using `using this`. Apply `hξ` to reduce the goal to its premises. Use `val_sub_one_lt g e he (u : ℤ_[g]) hu'` as an intermediate fact.
+
+Simplify `this` using `[μ]`. Use `⟨(Units.map (PadicInt.toZMod (p := g)).toMonoidHom).liftOfSurjective (units_toZMod_surj g) ⟨μ, hker⟩, ?_⟩` and prove the remaining obligations. Introduce `u`. Conclude with `((Units.map (PadicInt.toZMod (p := g)).toMonoidHom).liftOfRightInverse_comp_apply _ (Function.rightInverse_surjInv (units_toZMod_surj g)) ⟨μ, hker⟩ u).symm`.
+-/
 theorem exists_tamePart : ∀ (g : ℕ) [Fact g.Prime] (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (e : ℚ_[g] ≃+* F), Continuous e → ∀ ξ : Fˣ →* ℂˣ, GlobalTheory.SplitWeil.IsTame ξ →
     ∃ χ : (ZMod g)ˣ →* ℂˣ, TamePart (ξ.comp (Units.map e.toMonoidHom)) χ := by

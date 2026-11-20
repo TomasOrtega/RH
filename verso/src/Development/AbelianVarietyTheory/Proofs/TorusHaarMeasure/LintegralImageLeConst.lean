@@ -12,6 +12,11 @@ open scoped ContDiff ENNReal Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hc : Continuous fun y => |(fderiv ℝ Θ y).det|` using `(ContinuousLinearMap.continuous_det.comp (hΘ.continuous_fderiv (by simp))).abs`. Use `haveI : ProperSpace F := FiniteDimensional.proper ℝ F`. Take `⟨C, hC⟩` from `(isCompact_closedBall (0 : F) M).bddAbove_image hc.continuousOn`. Use `⟨ENNReal.ofReal C, ENNReal.ofReal_lt_top, fun G => ?_⟩` and prove the remaining obligations. Rewrite using `[lintegral_image_eq_lintegral_abs_det_fderiv_mul μ hA (f' := fderiv ℝ Θ) (fun x _ => ((hΘ.differentiable (by simp)) x).hasFDerivAt.hasFDerivWithinAt) hinj, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+
+Use `setLIntegral_mono' hA fun y hy => ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `hC ⟨y, hM hy, rfl⟩`.
+-/
 theorem lintegral_image_le_const {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
     [FiniteDimensional ℝ F] [MeasurableSpace F] [BorelSpace F] (μ : Measure F) [μ.IsAddHaarMeasure]
     {Θ : F → F} (hΘ : ContDiff ℝ 1 Θ) {A : Set F} (hA : MeasurableSet A) {M : ℝ}
@@ -40,10 +45,16 @@ def upPart (y : Frame X.Ψ r) : Frame X.Ψ r := fun τ a c => if c < a then 0 el
 def glue (z : V (nd X)) (b : Frame X.Ψ r) : Frame X.Ψ r := fun τ a c =>
   if h : c < a then z ((Fintype.equivFin (Ent X)) ⟨τ, ⟨(a, c), h⟩⟩) else b τ a c
 
+/- English proof (translation)
+Simplify using `[lowPart]`.
+-/
 theorem lowPart_apply (y : Frame X.Ψ r) (τ : X.Ψ) (a c : Fin r) (h : c < a) :
     lowPart X y ((Fintype.equivFin (Ent X)) ⟨τ, ⟨(a, c), h⟩⟩) = y τ a c := by
   simp [lowPart]
 
+/- English proof (translation)
+Use extensionality with `j`. Take `⟨⟨τ, ⟨⟨a, c⟩, h⟩⟩, rfl⟩` from `(Fintype.equivFin (Ent X)).surjective j`. Rewrite using `[lowPart_apply X _ τ a c h]`. Simplify using `only [glue]`. Rewrite using `[dif_pos h]`.
+-/
 theorem lowPart_glue (z : V (nd X)) (b : Frame X.Ψ r) : lowPart X (glue X z b) = z := by
   ext j
   obtain ⟨⟨τ, ⟨⟨a, c⟩, h⟩⟩, rfl⟩ := (Fintype.equivFin (Ent X)).surjective j
@@ -51,6 +62,9 @@ theorem lowPart_glue (z : V (nd X)) (b : Frame X.Ψ r) : lowPart X (glue X z b) 
   simp only [glue]
   rw [dif_pos h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ a c`. Distinguish the cases in `h : c < a`. Simplify using `[upPart, h, (hb τ).2 a c h]`. Simplify using `[upPart, glue, h]`.
+-/
 theorem upPart_glue (z : V (nd X)) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) :
     upPart X (glue X z b) = b := by
   funext τ a c
@@ -58,6 +72,9 @@ theorem upPart_glue (z : V (nd X)) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) :
   · simp [upPart, h, (hb τ).2 a c h]
   · simp [upPart, glue, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ a c`. Distinguish the cases in `h : c < a`. Rewrite using `[← lowPart_apply X y τ a c h, ← lowPart_apply X y' τ a c h, h1]`. Use `congrFun (congrFun (congrFun h2 τ) a) c` as an intermediate fact. Simplify `this` using `[upPart, h]`.
+-/
 theorem eq_of_parts {y y' : Frame X.Ψ r} (h1 : lowPart X y = lowPart X y')
     (h2 : upPart X y = upPart X y') : y = y' := by
   funext τ a c
@@ -66,12 +83,18 @@ theorem eq_of_parts {y y' : Frame X.Ψ r} (h1 : lowPart X y = lowPart X y')
   · have := congrFun (congrFun (congrFun h2 τ) a) c
     simpa [upPart, h] using this
 
+/- English proof (translation)
+Unfold `lowPart`. Use `(contDiff_piLp 2).2 fun j => ?_` and prove the remaining obligations. Simplify using `only`. Use `fun_prop`.
+-/
 theorem contDiff_lowPart : ContDiff ℝ 1 (lowPart X) := by
   unfold lowPart
   refine (contDiff_piLp 2).2 fun j => ?_
   simp only
   fun_prop
 
+/- English proof (translation)
+Unfold `upPart`. Use `split_ifs`. Conclude with `contDiff_const`. Use `fun_prop`.
+-/
 theorem contDiff_upPart_entry (τ : X.Ψ) (a c : Fin r) :
     ContDiff ℝ 1 fun y => upPart X y τ a c := by
   unfold upPart
@@ -79,12 +102,18 @@ theorem contDiff_upPart_entry (τ : X.Ψ) (a c : Fin r) :
   · exact contDiff_const
   · fun_prop
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun τ => continuous_pi fun a => continuous_pi fun c => (contDiff_upPart_entry X τ a c).continuous`.
+-/
 theorem continuous_upPart : Continuous (upPart X) :=
   continuous_pi fun τ => continuous_pi fun a => continuous_pi fun c =>
     (contDiff_upPart_entry X τ a c).continuous
 
 def theta (x1 y : Frame X.Ψ r) : Frame X.Ψ r := rmul (cpt X x1 (lowPart X y)) (upPart X y)
 
+/- English proof (translation)
+Use `contDiff_pi.2 fun τ => contDiff_pi.2 fun a => contDiff_pi.2 fun c => ?_` and prove the remaining obligations. Use `show ContDiff ℝ 1 fun y => (mat (cpt X x1 (lowPart X y)) τ * mat (upPart X y) τ) a c`. Simplify using `only [Matrix.mul_apply]`. Apply the tactic sequence `refine ContDiff.sum fun k _ => ContDiff.mul ?_ (contDiff_upPart_entry X τ k c)`. Apply the tactic sequence `exact ((((OntoB.cd_cpt_entry X x1 τ a k).restrict_scalars ℝ).of_le (by simp)).comp (contDiff_lowPart X))`.
+-/
 theorem contDiff_theta (x1 : Frame X.Ψ r) : ContDiff ℝ 1 (theta X x1) := by
   refine contDiff_pi.2 fun τ => contDiff_pi.2 fun a => contDiff_pi.2 fun c => ?_
   show ContDiff ℝ 1 fun y => (mat (cpt X x1 (lowPart X y)) τ * mat (upPart X y) τ) a c
@@ -93,6 +122,11 @@ theorem contDiff_theta (x1 : Frame X.Ψ r) : ContDiff ℝ 1 (theta X x1) := by
   exact ((((OntoB.cd_cpt_entry X x1 τ a k).restrict_scalars ℝ).of_le (by simp)).comp
     (contDiff_lowPart X))
 
+/- English proof (translation)
+Establish `: Bor X.Ψ r = ⋂ τ, ({b : Frame X.Ψ r | (mat b τ).det ≠ 0} ∩ ⋂ a, ⋂ c, ⋂ (_ : c < a), {b : Frame X.Ψ r | b τ a c = 0})`. Use extensionality with `b`. Simplify using `[Bor]`. Rewrite using `[this]`. Use `MeasurableSet.iInter fun τ => MeasurableSet.inter ?_ ?_` and prove the remaining obligations.
+
+Establish `hM : Continuous fun b : Frame X.Ψ r => mat b τ` using `continuous_apply τ`. Conclude with `(isOpen_ne_fun hM.matrix_det continuous_const).measurableSet`. Use `MeasurableSet.iInter fun a => MeasurableSet.iInter fun c => MeasurableSet.iInter fun _ => ?_` and prove the remaining obligations. Conclude with `(isClosed_eq (by fun_prop) continuous_const).measurableSet`.
+-/
 theorem measurableSet_Bor : MeasurableSet (Bor X.Ψ r) := by
   have : Bor X.Ψ r = ⋂ τ, ({b : Frame X.Ψ r | (mat b τ).det ≠ 0} ∩
       ⋂ a, ⋂ c, ⋂ (_ : c < a), {b : Frame X.Ψ r | b τ a c = 0}) := by
@@ -116,6 +150,47 @@ open scoped ContDiff ENNReal Matrix
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `H r X x1 hx1 b1 hb1`. Take `⟨Δ, zOf, bOf, hΔ, -, hz, hb, hsplit, huniq⟩` from `lu_holds r X x1 hx1`. Establish `h0 : (0 : V (nd X)) ∈ OmF X x1` using `IW.zero_mem_OmF X x1 hx1`. Take `⟨ρ, hρ, hball⟩ : ∃ ρ > 0, Metric.closedBall (0 : V (nd X)) ρ ⊆ OmF X x1` from `Metric.nhds_basis_closedBall.mem_iff.1 ((OntoB.isOpen_OmF X x1).mem_nhds h0)`. Take `⟨z0, hz0, hmin⟩` from `(isCompact_closedBall (0 : V (nd X)) ρ).exists_isMinOn ⟨0, Metric.mem_closedBall_self hρ.le⟩ (OntoB.densF_continuousOn.mono hball)`.
+
+Establish `hc : 0 < densF X x1 z0` using `OntoB.densF_pos (hball hz0)`. Use `set R : ℝ := ‖b1‖ + 1 with hR`. Use `set A : Set (Frame X.Ψ r) := {y | ∀ τ a c, ¬ c < a → ‖y τ a c‖ ≤ R} ∩ (lowPart X ⁻¹' Metric.closedBall 0 ρ ∩ upPart X ⁻¹' Bor X.Ψ r) with hAdef`. Establish `hS : MeasurableSet {y : Frame X.Ψ r | ∀ τ a c, ¬ c < a → ‖y τ a c‖ ≤ R}`. Simplify using `only [Set.setOf_forall]`.
+
+Use `MeasurableSet.iInter fun τ => MeasurableSet.iInter fun a => MeasurableSet.iInter fun c => MeasurableSet.iInter fun _ => ?_` and prove the remaining obligations. Conclude with `(isClosed_le (by fun_prop) continuous_const).measurableSet`. Establish `hA : MeasurableSet A` using `hS.inter (((contDiff_lowPart X).continuous.measurable Metric.isClosed_closedBall.measurableSet).inter ((continuous_upPart X).measurable (measurableSet_Bor X)))`. Establish `hM : A ⊆ Metric.closedBall 0 (max R ρ)`. Introduce and unpack `y ⟨h1, h2, -⟩`.
+
+Establish `hm : 0 ≤ max R ρ` using `hρ.le.trans (le_max_right _ _)`. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg hm]`. Introduce `τ`. Rewrite using `[pi_norm_le_iff_of_nonneg hm]`. Introduce `a`.
+
+Rewrite using `[pi_norm_le_iff_of_nonneg hm]`. Introduce `c`. Distinguish the cases in `h : c < a`. Rewrite using `[← lowPart_apply X y τ a c h]`. Use `le_trans (PiLp.norm_apply_le _ _) (le_trans ?_ (le_max_right _ _))` and prove the remaining obligations.
+
+Conclude with `mem_closedBall_zero_iff.1 h2`. Conclude with `(h1 τ a c h).trans (le_max_left _ _)`. Establish `hinj : Set.InjOn (theta X x1) A`. Introduce and unpack `y ⟨-, h2, h3⟩ y' ⟨-, h2', h3'⟩ he`. Take `⟨-, e1, e2⟩` from `huniq _ (hball h2) _ h3`.
+
+Take `⟨-, e1', e2'⟩` from `huniq _ (hball h2') _ h3'`. Unfold `theta at he`. Conclude with `eq_of_parts X (by rw [← e1, he, e1']) (by rw [← e2, he, e2'])`. Use `haveI : (volume : Measure (Fin r → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (Fin r → Fin r → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`.
+
+Use `haveI : (volume : Measure (Frame X.Ψ r)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Take `⟨K1, hK1, hG1⟩` from `lintegral_image_le_const volume (contDiff_theta X x1) hA hM hinj`. Take `⟨K2, hK2, hG2⟩` from `H r X R`. Use `⟨theta X x1 '' A, ?_, K1 * (K2 * (ENNReal.ofReal (densF X x1 z0))⁻¹), ?_, ?_⟩` and prove the remaining obligations. Establish `hu` using `huniq 0 h0 b1 hb1`.
+
+Rewrite `hu` using `[IW.cpt_zero]`. Take `⟨u1, u2, u3⟩` from `hu`. Establish `hp : rmul x1 b1 ∈ X.dom` using `OrthogonalFrameDomain.rmul_mem_dom X (IW.orth_mem_dom X x1 hx1) hb1`. Establish `hcell : {x | x ∈ X.dom ∧ Δ x ≠ 0} ∈ 𝓝 (rmul x1 b1)` using `((FourierCoefficientDomain.isOpen_dom X).inter (isOpen_ne_fun hΔ.continuous continuous_const)).mem_nhds ⟨hp, u1⟩`. Establish `n1 : zOf ⁻¹' Metric.closedBall 0 ρ ∈ 𝓝 (rmul x1 b1)`.
+
+Use `(hz.continuousOn.continuousAt hcell).preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[u2]`. Conclude with `Metric.closedBall_mem_nhds _ hρ`. Establish `n2 : bOf ⁻¹' Metric.closedBall b1 1 ∈ 𝓝 (rmul x1 b1)`. Use `(hb.continuousOn.continuousAt hcell).preimage_mem_nhds ?_` and prove the remaining obligations.
+
+Rewrite using `[u3]`. Conclude with `Metric.closedBall_mem_nhds _ one_pos`. Use `filter_upwards [hcell, n1, n2] with x hx hx1' hx2`. Take `⟨-, s2, s3⟩` from `hsplit x hx.1 hx.2`. Use `⟨glue X (zOf x) (bOf x), ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `τ a c h`. Establish `hn : ‖bOf x‖ ≤ R`. Establish `: ‖bOf x - b1‖ ≤ 1` using `by simpa [dist_eq_norm] using hx2`. Use `norm_sub_norm_le (bOf x) b1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `only [glue]`. Rewrite using `[dif_neg h]`. Conclude with `((norm_le_pi_norm _ c).trans ((norm_le_pi_norm _ a).trans (norm_le_pi_norm _ τ))).trans hn`. Simplify `hx1'` using `[lowPart_glue]`. Simplify `s2` using `[upPart_glue X _ s2]`.
+
+Unfold `theta`. Rewrite using `[lowPart_glue, upPart_glue X _ s2, ← s3]`. Use `ENNReal.mul_lt_top hK1 (ENNReal.mul_lt_top hK2 ?_)` and prove the remaining obligations. Simplify using `using hc`. Introduce `G hG hinv set g : V (nd X) → ℝ≥0∞ := (Metric.closedBall 0 ρ).indicator fun z => G (cpt X x1 z) with hg`.
+
+Establish `hGc : Measurable fun z => G (cpt X x1 z)` using `hG.comp (OntoB.cd_cpt X x1).continuous.measurable`. Establish `hgm : Measurable g` using `hGc.indicator Metric.isClosed_closedBall.measurableSet`. Use `(hG1 G).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `gcongr`.
+
+Establish `e1 : ∫⁻ y in A, G (theta X x1 y) = ∫⁻ y in A, g (lowPart X y)`. Use `setLIntegral_congr_fun hA ?_` and prove the remaining obligations. Introduce and unpack `y ⟨-, h2, h3⟩`. Simplify using `only [hg]`. Rewrite using `[Set.indicator_of_mem (Set.mem_preimage.1 h2)]`.
+
+Conclude with `hinv _ (hball h2) _ h3`. Rewrite using `[e1]`. Use `(lintegral_mono_set Set.inter_subset_left).trans ((hG2 g hgm).trans ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `gcongr`.
+
+Establish `hOm : MeasurableSet (OmF X x1)` using `(OntoB.isOpen_OmF X x1).measurableSet`. Establish `hd : AEMeasurable (fun z => ENNReal.ofReal (densF X x1 z)) (volume.restrict (OmF X x1))` using `((OntoB.densF_continuousOn (X := X) (x0 := x1)).aemeasurable hOm).ennreal_ofReal`. Unfold `muF`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul₀ hd hGc.aemeasurable, hg, lintegral_indicator Metric.isClosed_closedBall.measurableSet, ← lintegral_const_mul' _ _ (by simpa using hc)]`. Use `le_trans ?_ (lintegral_mono_set hball)` and prove the remaining obligations.
+
+Use `setLIntegral_mono' Metric.isClosed_closedBall.measurableSet fun z hz' => ?_` and prove the remaining obligations. Establish `hle : ENNReal.ofReal (densF X x1 z0) ≤ ENNReal.ofReal (densF X x1 z)` using `ENNReal.ofReal_le_ofReal (hmin hz')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ENNReal.inv_mul_cancel (by simpa using hc) ENNReal.ofReal_ne_top, one_mul]`. Use `_ ≤ _ := by`.
+
+Simplify using `only [Pi.mul_apply]`. Use `gcongr`.
+-/
 theorem frame_measure_local :
     (∀ (r : ℕ) (X : Data E r) (R : ℝ), ∃ K : ℝ≥0∞, K < ⊤ ∧ ∀ g : V (nd X) → ℝ≥0∞, Measurable g → ∫⁻ y in {y : Frame X.Ψ r | ∀ τ a c, ¬ c < a → ‖y τ a c‖ ≤ R}, g (WithLp.toLp 2 fun j => y ((Fintype.equivFin (Ent X)).symm j).1 ((Fintype.equivFin (Ent X)).symm j).2.1.1 ((Fintype.equivFin (Ent X)).symm j).2.1.2) ≤ K * ∫⁻ z, g z) → (∀ (r : ℕ) (X : Data E r) (x1 : Frame X.Ψ r), IsOrth X x1 → ∀ b1 ∈ Bor X.Ψ r, ∃ U ∈ 𝓝 (rmul x1 b1), ∃ K : ℝ≥0∞, K < ⊤ ∧ ∀ G : Frame X.Ψ r → ℝ≥0∞, Measurable G → (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, G (rmul x b) = G x) → ∫⁻ x in U, G x ≤ K * ∫⁻ z, G (cpt X x1 z) ∂muF X x1) := by
   intro H r X x1 hx1 b1 hb1

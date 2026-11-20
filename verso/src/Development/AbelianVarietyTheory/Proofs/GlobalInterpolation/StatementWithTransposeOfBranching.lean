@@ -20,6 +20,11 @@ namespace GlobalTheory.BranchFormula
 open Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Col.Br GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance
 open Formalism.MainNotions.PrimeDegreeVariant (embGL lastGL)
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨fun a b => ?_, fun a => ⟨?_, ?_⟩, ?_⟩ <;> rw [GlobalTheory.Branching.embGL_apply]`. Simplify using `[iC]`. Use `a.2` as an intermediate fact. Simplify using `[iC, iL, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Use `a.2` as an intermediate fact. Simplify using `[iC, iL, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `[iL]`.
+-/
 theorem isBlock_embGL (R : Type) [CommRing R] {N n : ℕ} (hN : N = n + 1) (g : GL (Fin n) R) :
     IsBlock hN (embGL R n N hN.symm g : Matrix (Fin N) (Fin N) R) (g : Matrix (Fin n) (Fin n) R) 1 := by
   refine ⟨fun a b => ?_, fun a => ⟨?_, ?_⟩, ?_⟩ <;> rw [GlobalTheory.Branching.embGL_apply]
@@ -30,6 +35,13 @@ theorem isBlock_embGL (R : Type) [CommRing R] {N n : ℕ} (hN : N = n + 1) (g : 
     simp [iC, iL, Fin.ext_iff]; omega
   · simp [iL]
 
+/- English proof (translation)
+Establish `e : ∀ a b, ((g' * lastGL R N t : GL (Fin N) R) : Matrix (Fin N) (Fin N) R) a b = (g' : Matrix (Fin N) (Fin N) R) a b * ((if b.1 + 1 = N then t else 1 : Rˣ) : R)`. Introduce `a b`. Rewrite using `[Units.val_mul]`. Conclude with `Matrix.mul_diagonal _ _ _ _`. Establish `hc : ∀ a : Fin n, ¬ ((iC hN a).1 + 1 = N)` using `fun a => by have := a.2; simp only [iC]; omega`.
+
+Establish `hl : (iL hN).1 + 1 = N` using `hN.symm`. Apply the tactic sequence `refine ⟨fun a b => ?_, fun a => ⟨?_, ?_⟩, ?_⟩ <;> rw [e]`. Rewrite using `[if_neg (hc b), h.1]`. Simplify using the standard rewrite rules. Rewrite using `[(h.2.1 a).1, zero_mul]`.
+
+Rewrite using `[(h.2.1 a).2, zero_mul]`. Rewrite using `[if_pos hl, h.2.2, one_mul]`.
+-/
 theorem isBlock_mul_lastGL {R : Type} [CommRing R] {N n : ℕ} {hN : N = n + 1} {g' : GL (Fin N) R}
     {A : Matrix (Fin n) (Fin n) R} (h : IsBlock hN (g' : Matrix (Fin N) (Fin N) R) A 1) (t : Rˣ) :
     IsBlock hN ((g' * lastGL R N t : GL (Fin N) R) : Matrix (Fin N) (Fin N) R) A (t : R) := by
@@ -46,12 +58,20 @@ theorem isBlock_mul_lastGL {R : Type} [CommRing R] {N n : ℕ} {hN : N = n + 1} 
   · rw [(h.2.1 a).2, zero_mul]
   · rw [if_pos hl, h.2.2, one_mul]
 
+/- English proof (translation)
+Establish `h` using `isBlock_mul_lastGL (isBlock_embGL R hN 1) t`. Rewrite `h` using `[map_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem isBlock_lastGL (R : Type) [CommRing R] {N n : ℕ} (hN : N = n + 1) (t : Rˣ) :
     IsBlock hN ((lastGL R N t : GL (Fin N) R) : Matrix (Fin N) (Fin N) R) ((1 : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)
       (t : R) := by
   have h := isBlock_mul_lastGL (isBlock_embGL R hN 1) t
   rwa [map_one, one_mul] at h
 
+/- English proof (translation)
+Establish `h1 : lam.detShift = lam.w (iL hN)`. Unfold `DomWeight.detShift`. Rewrite using `[dif_pos (by omega)]`. Use `congr 1`. Conclude with `Fin.ext (by simp only [iL]; omega)`.
+
+Establish `h2 : ∑ s, (((bBr hN lam sg s).toNat : ℕ) : ℤ) = ∑ s, (lam.w (iC hN s) - sg.w s)` using `Finset.sum_congr rfl fun s _ => Int.toNat_of_nonneg (hI s).2`. Rewrite using `[h1, nBr, sum_split hN lam.w, Nat.cast_sum, h2, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_bExp {N n : ℕ} (hN : N = n + 1) {lam : DomWeight N} {sg : DomWeight n} (hI : Interlace hN lam sg) :
     ((∑ s, (bBr hN lam sg s).toNat : ℕ) : ℤ) + lam.detShift = nBr lam sg := by
   have h1 : lam.detShift = lam.w (iL hN) := by
@@ -64,6 +84,15 @@ theorem sum_bExp {N n : ℕ} (hN : N = n + 1) {lam : DomWeight N} {sg : DomWeigh
   rw [h1, nBr, sum_split hN lam.w, Nat.cast_sum, h2, Finset.sum_sub_distrib]
   ring
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `ht : ∀ τ, t τ ≠ 0` using `fun τ h0 => by`. Establish `h1` using `(h τ).det`. Rewrite `h1` using `[h0, mul_zero]`. Conclude with `(Matrix.GeneralLinearGroup.det (g' τ)).ne_zero h1`.
+
+Establish `hd : detTwK lam g' * ∏ τ, t τ ^ ∑ s, bExp hN lam sg τ s = (∏ τ, t τ ^ nBr (lam τ) (sg τ)) * detTwK sg g`. Rewrite using `[detTwK, detTwK, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_bExp hN (hI τ), zpow_add₀ (ht τ), zpow_natCast, detPow, detPow, hS τ, Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, (h τ).det, mul_zpow]`. Simplify using `only [bExp]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [brStd, brStdP, LinearMap.comp_apply, Submodule.subtype_apply, rhoK_coe, LinearMap.smul_apply, actP, trAct, AlgHom.toLinearMap_apply, map_smul, Submodule.coe_smul]`. Rewrite using `[coefLast_blockAct K ι hN _ _ _ t fun τ => (h τ).transpose, map_smul, Submodule.coe_smul, projVV_blockAct]`. Simplify using `only [smul_smul]`. Use `congr 1`.
+
+Take the linear combination `(brConst hN K lam sg) * hd`.
+-/
 theorem brStd_rhoK {K : Type} [Field K] [CharZero K] {ι : Type} [Fintype ι] {N n : ℕ} (hN : N = n + 1)
     {lam : ι → DomWeight N} {sg : ι → DomWeight n} (hI : ∀ τ, Interlace hN (lam τ) (sg τ))
     (hS : ∀ τ, SameShift (lam τ) (sg τ)) (g : ι → GL (Fin n) K) (g' : ι → GL (Fin N) K) (t : ι → K)
@@ -89,11 +118,17 @@ theorem brStd_rhoK {K : Type} [Field K] [CharZero K] {ι : Type} [Fintype ι] {N
   congr 1
   linear_combination (brConst hN K lam sg) * hd
 
+/- English proof (translation)
+Introduce `K _ _ ι _ N n hN lam sg hI hS g g' h G`. Rewrite using `[brStd_rhoK hN hI hS g g' (fun _ => 1) h G]`. Simplify using the standard rewrite rules.
+-/
 theorem equivariance : Equivariance := by
   intro K _ _ ι _ N n hN lam sg hI hS g g' h G
   rw [brStd_rhoK hN hI hS g g' (fun _ => 1) h G]
   simp
 
+/- English proof (translation)
+Establish `h1` using `brStd_rhoK hN hI hS g g' t h (rhoK lam g'⁻¹ G)`. Rewrite `h1` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[brAt, LinearMap.smul_apply, h1, smul_smul, ← Finset.prod_mul_distrib, Finset.prod_eq_one fun τ _ => by rw [← zpow_add₀ (ht τ), neg_add_cancel, zpow_zero], one_smul, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem brAt_eq_pullback {K : Type} [Field K] [CharZero K] {ι : Type} [Fintype ι] {N n : ℕ} (hN : N = n + 1)
     {lam : ι → DomWeight N} {sg : ι → DomWeight n} (hI : ∀ τ, Interlace hN (lam τ) (sg τ))
     (hS : ∀ τ, SameShift (lam τ) (sg τ)) (g : ι → GL (Fin n) K) (g' : ι → GL (Fin N) K) (t : ι → K) (ht : ∀ τ, t τ ≠ 0)
@@ -105,6 +140,11 @@ theorem brAt_eq_pullback {K : Type} [Field K] [CharZero K] {ι : Type} [Fintype 
     Finset.prod_eq_one fun τ _ => by rw [← zpow_add₀ (ht τ), neg_add_cancel, zpow_zero], one_smul,
     ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Introduce `K _ _ ι _ N n hN lam sg hI hS t`. Use `⟨?_, brAt_eq hN lam sg t⟩` and prove the remaining obligations. Use `ext1 G`. Establish `h` using `brAt_eq_pullback hN hI hS 1 (fun τ => lastGL K N (t τ)) (fun τ => (t τ : K)) (fun τ => (t τ).ne_zero) (fun τ => isBlock_lastGL K hN (t τ)) G`. Rewrite `h` using `[inv_one, map_one, Module.End.one_apply]`.
+
+Conclude with `h`.
+-/
 theorem homogeneity : Homogeneity := by
   intro K _ _ ι _ N n hN lam sg hI hS t
   refine ⟨?_, brAt_eq hN lam sg t⟩
@@ -118,20 +158,36 @@ section One
 
 variable {K : Type} [Field K] {N n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[rename_rename]`. Conclude with `rename_id_apply _`.
+-/
 theorem rename_snd_unit (f : MvPolynomial (Fin n × Fin n) K) :
     rename (Prod.snd : Unit × Fin n × Fin n → Fin n × Fin n)
       (rename (fun v : Fin n × Fin n => (((), v) : Unit × Fin n × Fin n)) f) = f := by
   rw [rename_rename]
   exact rename_id_apply _
 
+/- English proof (translation)
+Simplify using `[ten, Formalism.GradedWeylDivisibility.blockEmb]`.
+-/
 theorem ten_unit (f : MvPolynomial (Fin n × Fin n) K) :
     ten (fun _ : Unit => f) = rename (fun v : Fin n × Fin n => (((), v) : Unit × Fin n × Fin n)) f := by
   simp [ten, Formalism.GradedWeylDivisibility.blockEmb]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨fun _ => f, fun _ => hf, rfl⟩`.
+-/
 theorem ten_unit_mem {sg : DomWeight n} {f : MvPolynomial (Fin n × Fin n) K} (hf : f ∈ nablaSq K n sg) :
     ten (fun _ : Unit => f) ∈ VV K fun _ : Unit => sg :=
   Submodule.subset_span ⟨fun _ => f, fun _ => hf, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, rfl⟩` from `hy`. Conclude with `⟨f (), hf (), rfl⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by simp [ten_unit]⟩`.
+
+Consider the case `add y z _ _ hy hz`. Take `⟨f, hf, rfl⟩` from `hy`. Take `⟨g, hg, rfl⟩` from `hz`. Conclude with `⟨f + g, add_mem hf hg, by simp [ten_unit]⟩`. Consider the case `smul a y _ hy`.
+
+Take `⟨f, hf, rfl⟩` from `hy`. Conclude with `⟨a • f, Submodule.smul_mem _ _ hf, by simp [ten_unit]⟩`.
+-/
 theorem exists_ten_unit {sg : DomWeight n} {F : Pol K Unit n} (hF : F ∈ VV K fun _ : Unit => sg) :
     ∃ f ∈ nablaSq K n sg, F = ten fun _ : Unit => f := by
   induction hF using Submodule.span_induction with
@@ -147,6 +203,9 @@ theorem exists_ten_unit {sg : DomWeight n} {F : Pol K Unit n} (hF : F ∈ VV K f
     obtain ⟨f, hf, rfl⟩ := hy
     exact ⟨a • f, Submodule.smul_mem _ _ hf, by simp [ten_unit]⟩
 
+/- English proof (translation)
+Simplify using `only [brOne, LinearMap.comp_apply, AlgHom.toLinearMap_apply, Submodule.subtype_apply]`. Take `⟨g, hg, e⟩` from `exists_ten_unit (brStdP (K := K) hN (fun _ : Unit => lam) (fun _ : Unit => sg) (rename (fun v : Fin N × Fin N => (((), v) : Unit × Fin N × Fin N)) f)).2`. Rewrite using `[e, ten_unit, rename_snd_unit]`. Conclude with `hg`.
+-/
 theorem brOne_mem (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) (f : MvPolynomial (Fin N × Fin N) K) :
     brOne K hN lam sg f ∈ nablaSq K n sg := by
   simp only [brOne, LinearMap.comp_apply, AlgHom.toLinearMap_apply, Submodule.subtype_apply]
@@ -155,6 +214,11 @@ theorem brOne_mem (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) (f : M
   rw [e, ten_unit, rename_snd_unit]
   exact hg
 
+/- English proof (translation)
+Establish `h` using `equivariance K Unit N n hN (fun _ => lam) (fun _ => sg) (fun _ => hI) (fun _ => hS) (fun _ => g) (fun _ => embGL K n N hN.symm g) (fun _ => isBlock_embGL K hN g) ⟨_, ten_unit_mem hf⟩`. Establish `h1` using `brOne_rename K hN lam sg (rhoK (fun _ => lam) (fun _ => embGL K n N hN.symm g) ⟨_, ten_unit_mem hf⟩)`. Establish `h2` using `brOne_rename K hN lam sg ⟨_, ten_unit_mem hf⟩`. Take `⟨y, -, e⟩` from `exists_ten_unit (brStd hN (fun _ : Unit => lam) (fun _ : Unit => sg) ⟨_, ten_unit_mem hf⟩).2`. Rewrite `h1` using `[h, rhoK_coe, rhoK_coe, e, actTen, actTen, ten_unit, ten_unit, rename_snd_unit, rename_snd_unit]`.
+
+Rewrite `h2` using `[e]`. Simplify using `only [ten_unit, rename_snd_unit] at h2`. Rewrite using `[h1, h2]`.
+-/
 theorem brOne_sqAct [CharZero K] (hN : N = n + 1) {lam : DomWeight N} {sg : DomWeight n} (hI : Interlace hN lam sg)
     (hS : SameShift lam sg) (g : GL (Fin n) K) {f : MvPolynomial (Fin N × Fin N) K} (hf : f ∈ nablaSq K N lam) :
     brOne K hN lam sg (sqAct K N lam (embGL K n N hN.symm g) f) = sqAct K n sg g (brOne K hN lam sg f) := by
@@ -168,6 +232,9 @@ theorem brOne_sqAct [CharZero K] (hN : N = n + 1) {lam : DomWeight N} {sg : DomW
   simp only [ten_unit, rename_snd_unit] at h2
   rw [h1, h2]
 
+/- English proof (translation)
+Establish `h` using `projVV_coe (fun _ : Unit => sg) ⟨_, extVV_mem K fun _ : Unit => sg⟩`. Simplify using `only [extVV, ten_unit] at h`. Simplify using `only [brOne, brStdP, LinearMap.comp_apply, AlgHom.toLinearMap_apply, Submodule.subtype_apply, LinearMap.smul_apply, GlobalTheory.XiTopCoef.coefLast_xi K N n hN lam sg hI hS, h, Submodule.coe_smul, map_smul, rename_snd_unit, brConst, Finset.univ_unique, Finset.prod_singleton]`.
+-/
 theorem brOne_xi [CharZero K] (hN : N = n + 1) {lam : DomWeight N} {sg : DomWeight n} (hI : Interlace hN lam sg)
     (hS : SameShift lam sg) :
     brOne K hN lam sg (xiBr K hN lam sg) = (((cBr hN lam sg : ℤ) : K) * kapBr K hN lam sg) • extremal K n sg := by
@@ -179,11 +246,19 @@ theorem brOne_xi [CharZero K] (hN : N = n + 1) {lam : DomWeight N} {sg : DomWeig
 
 end One
 
+/- English proof (translation)
+Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun v _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cBr_eq {N n : ℕ} (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) :
     cBr hN lam sg = Formalism.MainNotions.PrimeDegreeVariant.cBr hN.symm lam sg := by
   refine Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun v _ => Finset.prod_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: zMinor K hN i = Formalism.GradedWeylDivisibility.initMinor K (Formalism.MainNotions.PrimeDegreeVariant.rowsZ hN.symm i) (by have` using `i.2; omega) := by`. Unfold `zMinor`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+
+Use `p.2` as an intermediate fact. Unfold `Formalism.MainNotions.PrimeDegreeVariant.rowsZ`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | exact Fin.ext (by simp only [iL]; omega)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem xiBr_eq (K : Type) [Field K] {N n : ℕ} (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) :
     xiBr K hN lam sg = Formalism.MainNotions.PrimeDegreeVariant.xi K hN.symm lam sg := by
   refine Finset.prod_congr rfl fun i _ => ?_
@@ -197,17 +272,26 @@ theorem xiBr_eq (K : Type) [Field K] {N n : ℕ} (hN : N = n + 1) (lam : DomWeig
   rw [this]
   rfl
 
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.PrimeDegreeVariant.xi, map_prod, map_mul, map_pow, Formalism.GradedWeylDivisibility.lpMinor, Formalism.GradedWeylDivisibility.initMinor, RingHom.map_det]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `congr 3 <;> ext1 a b <;> simp`.
+-/
 theorem map_xi {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {N n : ℕ} (h : n + 1 = N) (lam : DomWeight N)
     (sg : DomWeight n) : map φ (Formalism.MainNotions.PrimeDegreeVariant.xi R h lam sg) = Formalism.MainNotions.PrimeDegreeVariant.xi S h lam sg := by
   simp only [Formalism.MainNotions.PrimeDegreeVariant.xi, map_prod, map_mul, map_pow, Formalism.GradedWeylDivisibility.lpMinor, Formalism.GradedWeylDivisibility.initMinor, RingHom.map_det]
   refine Finset.prod_congr rfl fun i _ => ?_
   congr 3 <;> ext1 a b <;> simp
 
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_map]`. Both sides reduce to the same expression.
+-/
 theorem fockF_eq {σ : Type} (f g : MvPolynomial σ ℂ) : Formalism.REAL.fockF f g = fockB f (map (starRingEnd ℂ) g) := by
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [coeff_map]
   rfl
 
+/- English proof (translation)
+Establish `: map (starRingEnd ℂ) (b • g) = starRingEnd ℂ b • map (starRingEnd ℂ) g`. Rewrite using `[smul_eq_C_mul, smul_eq_C_mul, map_mul, map_C]`. Simplify using `only [normFock, fockF_eq _ (b • g), fockF_eq f g, this, ← fockBL_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normFock_smul {N : ℕ} (lam : DomWeight N) (a b : ℂ) (f g : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam (a • f) (b • g) = a * starRingEnd ℂ b * normFock lam f g := by
   have : map (starRingEnd ℂ) (b • g) = starRingEnd ℂ b • map (starRingEnd ℂ) g := by
@@ -215,6 +299,9 @@ theorem normFock_smul {N : ℕ} (lam : DomWeight N) (a b : ℂ) (f g : MvPolynom
   simp only [normFock, fockF_eq _ (b • g), fockF_eq f g, this, ← fockBL_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `h` using `Formalism.GradedWeylDivisibility.fockPos σ f hf`. Use `⟨fun h0 => ?_, Complex.conj_eq_iff_im.2 h.2⟩` and prove the remaining obligations. Rewrite `h` using `[h0]`. Simplify using `at h`.
+-/
 theorem fockF_self_ne {σ : Type} {f : MvPolynomial σ ℂ} (hf : f ≠ 0) :
     Formalism.REAL.fockF f f ≠ 0 ∧ starRingEnd ℂ (Formalism.REAL.fockF f f) = Formalism.REAL.fockF f f := by
   have h := Formalism.GradedWeylDivisibility.fockPos σ f hf
@@ -222,6 +309,13 @@ theorem fockF_self_ne {σ : Type} {f : MvPolynomial σ ℂ} (hf : f ≠ 0) :
   rw [h0] at h
   simp at h
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨v, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨v, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map]`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`.
+
+Consider the case `smul a y _ hy`. Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem map_mem_delSq {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n : ℕ} (lam : DomWeight n)
     {f : MvPolynomial (Fin n × Fin n) R} (hf : f ∈ delSq R n lam) : map φ f ∈ delSq S n lam := by
   induction hf using Submodule.span_induction with
@@ -236,6 +330,21 @@ theorem map_mem_delSq {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n
     rw [smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]
     exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Establish `eN` using `nablaSq_eq_delSq ℂ lam`. Establish `en` using `nablaSq_eq_delSq ℂ sg`. Take `⟨a, ha⟩` from `GlobalTheory.Branching.equivariant_map_eq_smul n N hN.symm lam sg ((interlace_iff hN lam sg).1 hI) (brOne ℂ hN lam sg) br (by`. Introduce and unpack `ψ (rfl | rfl)`. Conclude with `⟨fun f _ => brOne_mem hN lam sg f, fun g f hf => brOne_sqAct hN hI hS g hf⟩`.
+
+Rewrite using `[eN, en]`. Conclude with `⟨hbr.2.1, hbr.2.2.2.1⟩)`. Use the proof step `(by rw [eN]; exact hbr.2.2.1)`. Establish `hc' : ((Formalism.MainNotions.PrimeDegreeVariant.cBr hN.symm lam sg : ℤ) : ℂ) ≠ 0` using `Int.cast_ne_zero.2 hc`. Establish `he : extremal ℂ n sg ∈ nablaSq ℂ n sg` using `Formalism.GradedWeylDivisibility.hwMem ℂ n n le_rfl _ (natW_antitone sg)`.
+
+Establish `hxi : Formalism.MainNotions.PrimeDegreeVariant.xi ℂ hN.symm lam sg ∈ nablaSq ℂ N lam`. Establish `h1` using `hio.2.1 _ he`. Rewrite `h1` using `[hio.2.2.2.1]`. Conclude with `(Submodule.smul_mem_iff _ hc').1 h1`. Take `⟨x1, x2⟩` from `fockF_self_ne hx`.
+
+Take `⟨e1, e2⟩` from `fockF_self_ne (f := extremal ℂ N lam) (Formalism.GradedWeylDivisibility.hwNe ℂ N N le_rfl lam.natW)`. Take `⟨s1, -⟩` from `fockF_self_ne (f := extremal ℂ n sg) (Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl sg.natW)`. Establish `hk : kapBr ℂ hN lam sg = normFock lam (Formalism.MainNotions.PrimeDegreeVariant.xi ℂ hN.symm lam sg) (Formalism.MainNotions.PrimeDegreeVariant.xi ℂ hN.symm lam sg)`. Rewrite using `[kapBr, normFock, fockF_eq, fockF_eq, map_xi, Formalism.L2.DIV.map_extremal, xiBr_eq]`. Establish `hk0 : kapBr ℂ hN lam sg ≠ 0` using `by rw [hk]; exact div_ne_zero x1 e1`.
+
+Establish `hks : starRingEnd ℂ (kapBr ℂ hN lam sg) = kapBr ℂ hN lam sg` using `by rw [hk, normFock, map_div₀, x2, e2]`. Establish `h1` using `hT _ he _ (eN ▸ hxi)`. Establish `h2` using `brOne_xi (K := ℂ) hN hI hS`. Rewrite `h2` using `[xiBr_eq, ha _ hxi, cBr_eq]`. Establish `h3` using `congrArg (fun y => normFock sg ((1 : ℂ) • extremal ℂ n sg) y) h2`.
+
+Establish `h4` using `normFock_smul lam ((Formalism.MainNotions.PrimeDegreeVariant.cBr hN.symm lam sg : ℤ) : ℂ) 1 (Formalism.MainNotions.PrimeDegreeVariant.xi ℂ hN.symm lam sg) (Formalism.MainNotions.PrimeDegreeVariant.xi ℂ hN.symm lam sg)`. Rewrite `h4` using `[one_smul, ← hio.2.2.2.1, h1, ← hk, map_one, mul_one]`. Establish `h5 : normFock sg (extremal ℂ n sg) (extremal ℂ n sg) = 1` using `div_self s1`. Simplify using `only [normFock_smul, h4, h5, map_mul, hks, map_intCast, one_mul, mul_one] at h3`. Establish `ha1 : a = 1`.
+
+Use `mul_right_cancel₀ (mul_ne_zero hc' hk0) (h3.trans (one_mul _).symm)` as an intermediate fact. Simplify using `using congrArg (starRingEnd ℂ) this`. Introduce `f hf`. Rewrite using `[ha f (eN ▸ hf), ha1, one_smul]`.
+-/
 theorem brOne_eq_transpose {N n : ℕ} (hN : N = n + 1) {lam : DomWeight N} {sg : DomWeight n} (hI : Interlace hN lam sg)
     (hS : SameShift lam sg) (hc : Formalism.MainNotions.PrimeDegreeVariant.cBr hN.symm lam sg ≠ 0) (hx : Formalism.MainNotions.PrimeDegreeVariant.xi ℂ hN.symm lam sg ≠ 0)
     {io : MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ}
@@ -279,6 +388,15 @@ theorem brOne_eq_transpose {N n : ℕ} (hN : N = n + 1) {lam : DomWeight N} {sg 
   intro f hf
   rw [ha f (eN ▸ hf), ha1, one_smul]
 
+/- English proof (translation)
+Introduce `N n hN lam sg hI hS`. Take `⟨hc, -, hx, -, io, br, hio, hbr, hT⟩` from `h6 n N hN.symm lam sg ((interlace_iff hN lam sg).1 hI)`. Establish `e` using `brOne_eq_transpose hN hI hS hc hx hio hbr hT`. Establish `st : ∀ g, ∀ f ∈ delSq ℂ N lam, sqAct ℂ N lam g f ∈ delSq ℂ N lam` using `fun g => (factSqStable ℂ N lam g).2`. Take `⟨b1, b2, ⟨f0, hf0, b3⟩, b4, b5, b6⟩` from `hbr`.
+
+Use `⟨fun f hf => ?_, fun f hf => ?_, ⟨f0, hf0, ?_⟩, fun g f hf => ?_, fun a f hf => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[e _ (map_mem_delSq _ lam hf)]`. Conclude with `b1 f hf`. Rewrite using `[e f hf]`. Conclude with `b2 f hf`.
+
+Rewrite using `[e f0 hf0]`. Conclude with `b3`. Rewrite using `[e _ (st _ f hf), e f hf]`. Conclude with `b4 g f hf`. Rewrite using `[e _ (st _ f hf), e f hf]`.
+
+Conclude with `b5 a f hf`. Rewrite using `[e f hf]`. Conclude with `b6 f hf`.
+-/
 theorem onePlace (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) : OnePlace := by
   intro N n hN lam sg hI hS
   obtain ⟨hc, -, hx, -, io, br, hio, hbr, hT⟩ := h6 n N hN.symm lam sg ((interlace_iff hN lam sg).1 hI)
@@ -294,6 +412,9 @@ theorem onePlace (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) : O
   · rw [e _ (st _ f hf), e f hf]; exact b5 a f hf
   · rw [e f hf]; exact b6 f hf
 
+/- English proof (translation)
+Introduce `N n hN lam sg hI hS`. Take `⟨hc, -, hx, -, io, br, hio, hbr, hT⟩` from `h6 n N hN.symm lam sg ((interlace_iff hN lam sg).1 hI)`. Use `⟨io, hio, fun s hs f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[brOne_eq_transpose hN hI hS hc hx hio hbr hT f hf]`. Conclude with `hT s hs f hf`.
+-/
 theorem transposed (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) : Transposed := by
   intro N n hN lam sg hI hS
   obtain ⟨hc, -, hx, -, io, br, hio, hbr, hT⟩ := h6 n N hN.symm lam sg ((interlace_iff hN lam sg).1 hI)
@@ -301,6 +422,21 @@ theorem transposed (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) :
   rw [brOne_eq_transpose hN hI hS hc hx hio hbr hT f hf]
   exact hT s hs f hf
 
+/- English proof (translation)
+Establish `hinj : ∀ τ : ι, Function.Injective (fun p : Unit × Fin n => (τ, p.2))` using `fun τ p q h => Prod.ext rfl (Prod.mk.inj h).2`. Establish `h1 : ∀ τ, rename (fun p : Unit × Fin n => (τ, p.2)) (P τ) = ∑ m ∈ (P τ).support, monomial (m.mapDomain fun p : Unit × Fin n => (τ, p.2)) (coeff m (P τ))`. Introduce `τ`. Use `conv_lhs => rw [(P τ).as_sum]`. Simplify using `only [map_sum, rename_monomial]`.
+
+Establish `h2 : ∀ τ, coeff (expOf fun _ : Unit => b τ) (P τ) = ∑ m ∈ (P τ).support, if m = expOf (fun _ : Unit => b τ) then coeff m (P τ) else 0`. Introduce `τ`. Use `conv_lhs => rw [(P τ).as_sum]`. Simplify using `only [coeff_sum, coeff_monomial]`. Simplify using `only [h1]`.
+
+Rewrite using `[Finset.prod_congr rfl fun τ _ => h2 τ, Finset.prod_univ_sum, Finset.prod_univ_sum, coeff_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← monomial_sum_prod, coeff_monomial, Finset.prod_ite_zero]`. Establish `h3 : ∀ τ s, (∑ τ', (p τ').mapDomain fun q : Unit × Fin n => (τ', q.2)) (τ, s) = p τ ((), s)`. Introduce `τ s`.
+
+Rewrite using `[Finsupp.finsetSum_apply, Finset.sum_eq_single τ]`. Conclude with `Finsupp.mapDomain_apply (hinj τ) (p τ) ((), s)`. Introduce `τ' _ h`. Use `Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨q, hq⟩`.
+
+Conclude with `h (Prod.mk.inj hq).1`. Simplify using the standard rewrite rules. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h τ _`. Use extensionality with `q`. Rewrite using `[← h3 τ q.2, h]`. Both sides reduce to the same expression. Introduce `h`.
+
+Use extensionality with `q`. Rewrite using `[h3 q.1 q.2, h q.1 (Finset.mem_univ _)]`. Both sides reduce to the same expression.
+-/
 theorem coeff_prod_rename {A ι : Type} [CommRing A] [Fintype ι] {n : ℕ} (b : ι → Fin n → ℕ)
     (P : ι → MvPolynomial (Unit × Fin n) A) :
     coeff (expOf b) (∏ τ, rename (fun p : Unit × Fin n => (τ, p.2)) (P τ)) =
@@ -343,6 +479,13 @@ theorem coeff_prod_rename {A ι : Type} [CommRing A] [Fintype ι] {n : ℕ} (b :
     rw [h3 q.1 q.2, h q.1 (Finset.mem_univ _)]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp only [Formalism.GradedWeylDivisibility.blockEmb, rename_C, splitLast_C, map_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Establish `: splitLast K ι hN (Formalism.GradedWeylDivisibility.blockEmb K τ (X v)) = rename (fun p : Unit × Fin n => (τ, p.2)) (map (rename (R` using `K) (fun v : Unit × Fin n × Fin n => (τ, v.2))).toRingHom (splitLast K Unit hN (rename (fun v : Fin N × Fin N => (((), v) : Unit × Fin N × Fin N)) (X v)))) := by`.
+
+Take `⟨a, s⟩` from `v`. Rewrite using `[fk_blockEmb_X, rename_X]`. Break down `cases_idx hN s with rfl | ⟨s, rfl⟩` into its components or cases. Simplify using `only [splitLast_X_lastCol, map_zero]`. Break down `cases_idx hN a with rfl | ⟨a, rfl⟩` into its components or cases.
+
+Simplify using `only [splitLast_X_lastRow, map_X, rename_X]`. Simplify using `only [splitLast_X_up, map_C, rename_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X]`. Rewrite using `[map_mul, map_mul, hp, this, map_mul, map_mul, map_mul, map_mul]`.
+-/
 theorem splitLast_blockEmb {K ι : Type} [Field K] {N n : ℕ} (hN : N = n + 1) (τ : ι) (f : MvPolynomial (Fin N × Fin N) K) :
     splitLast K ι hN (Formalism.GradedWeylDivisibility.blockEmb K τ f) =
       rename (fun p : Unit × Fin n => (τ, p.2))
@@ -365,6 +508,11 @@ theorem splitLast_blockEmb {K ι : Type} [Field K] {N n : ℕ} (hN : N = n + 1) 
         · simp only [splitLast_X_up, map_C, rename_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X]
     rw [map_mul, map_mul, hp, this, map_mul, map_mul, map_mul, map_mul]
 
+/- English proof (translation)
+Rewrite using `[coefLast_eq_coeff, ten, ten, map_prod]`. Simplify using `only [splitLast_blockEmb]`. Rewrite using `[coeff_prod_rename]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_map, coefLast_eq_coeff, Formalism.GradedWeylDivisibility.blockEmb, rename_rename]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coefLast_ten {K ι : Type} [Field K] [Fintype ι] {N n : ℕ} (hN : N = n + 1) (b : ι → Fin n → ℕ)
     (f : ι → MvPolynomial (Fin N × Fin N) K) :
     coefLast hN b (ten f) = ten fun τ => rename (Prod.snd : Unit × Fin n × Fin n → Fin n × Fin n)
@@ -376,20 +524,38 @@ theorem coefLast_ten {K ι : Type} [Field K] [Fintype ι] {N n : ℕ} (hN : N = 
   rw [coeff_map, coefLast_eq_coeff, Formalism.GradedWeylDivisibility.blockEmb, rename_rename]
   rfl
 
+/- English proof (translation)
+The claim follows from `@fockSymTensor_holds K _ starRingOfComm ι _ n f g`.
+-/
 theorem fockB_ten {K ι : Type} [Field K] [Fintype ι] {n : ℕ} (f g : ι → MvPolynomial (Fin n × Fin n) K) :
     fockB (ten f) (ten g) = ∏ τ, fockB (f τ) (g τ) :=
   @fockSymTensor_holds K _ starRingOfComm ι _ n f g
 
+/- English proof (translation)
+Rewrite using `[ten_unit, rename_rename]`. Conclude with `rename_id_apply _`.
+-/
 theorem rename_unit_snd {K : Type} [Field K] {n : ℕ} (F : Pol K Unit n) :
     ten (fun _ : Unit => rename (Prod.snd : Unit × Fin n × Fin n → Fin n × Fin n) F) = F := by
   rw [ten_unit, rename_rename]
   exact rename_id_apply _
 
+/- English proof (translation)
+Use `conv_rhs => rw [← rename_unit_snd F, fockB_ten]`. Simplify using the standard rewrite rules.
+-/
 theorem fockB_snd {K : Type} [Field K] {n : ℕ} (F : Pol K Unit n) (y : MvPolynomial (Fin n × Fin n) K) :
     fockB (rename (Prod.snd : Unit × Fin n × Fin n → Fin n × Fin n) F) y = fockB F (ten fun _ : Unit => y) := by
   conv_rhs => rw [← rename_unit_snd F, fockB_ten]
   simp
 
+/- English proof (translation)
+Introduce `K _ _ ι _ N n hN lam sg _ _ f G _ hG`. Establish `hm : (ten fun τ => brOne K hN (lam τ) (sg τ) (f τ)) ∈ VV K sg` using `GlobalTheory.Proof.TensorMapDescent.ten_mem sg _ fun τ => brOne_mem hN _ _ _`. Use `congrArg Subtype.val (eq_of_fockB sg (x' := ⟨_, hm⟩) fun y hy => ?_)` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨y, hy, rfl⟩` from `hy`. Express the relevant statement in the definitionally equal form `fockB _ (ten y) = fockB (ten _) (ten y)`. Rewrite using `[fockB_ten]`. Simplify using `only [brOne, brStd, brStdP, LinearMap.comp_apply, AlgHom.toLinearMap_apply, Submodule.subtype_apply, LinearMap.smul_apply, Submodule.coe_smul, map_smul, ← fockBL_apply, smul_eq_mul]`. Simplify using `only [fockBL_apply]`.
+
+Rewrite using `[fockB_projVV sg _ (GlobalTheory.Proof.TensorMapDescent.ten_mem sg y hy), hG, coefLast_ten, fockB_ten, brConst, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[fockB_snd, fockB_snd, fockB_projVV _ _ (ten_unit_mem (hy τ)), brConst]`. Simplify using `only [Finset.univ_unique, Finset.prod_singleton]`. Both sides reduce to the same expression.
+
+Consider the case `zero => simp only [← fockBL_apply, map_zero]`. Consider the case `add y z _ _ hy hz => simp only [← fockBL_apply, map_add] at *`. Rewrite using `[hy, hz]`. Consider the case `smul a y _ hy => simp only [← fockBL_apply, map_smul] at *`. Rewrite using `[hy]`.
+-/
 theorem tensor : Tensor := by
   intro K _ _ ι _ N n hN lam sg _ _ f G _ hG
   have hm : (ten fun τ => brOne K hN (lam τ) (sg τ) (f τ)) ∈ VV K sg :=
@@ -413,6 +579,17 @@ theorem tensor : Tensor := by
   | add y z _ _ hy hz => simp only [← fockBL_apply, map_add] at *; rw [hy, hz]
   | smul a y _ hy => simp only [← fockBL_apply, map_smul] at *; rw [hy]
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨v, rfl⟩` from `hy`. Set `f0` to `Formalism.GradedWeylDivisibility.applyWord ℤ v (Formalism.GradedWeylDivisibility.hw ℤ le_rfl lam.natW)`. Take `⟨g, hg, e⟩` from `(h1 N n hN lam sg hI hS).1 f0 (Submodule.subset_span ⟨v, rfl⟩)`.
+
+Establish `hm : ∀ (L : Type) [Field L] [CharZero L] {σ : Type} (P : MvPolynomial σ ℤ), map (Int.castRingHom L) P = map (algebraMap ℚ L) (map (Int.castRingHom ℚ) P)` using `fun L _ _ _ P => by`. Rewrite using `[map_map, Subsingleton.elim ((algebraMap ℚ L).comp (Int.castRingHom ℚ)) (Int.castRingHom L)]`. Rewrite `e` using `[hm ℂ f0, hm ℂ g, GlobalTheory.Proof.TensorMapDescent.brOne_map]`. Establish `e'` using `MvPolynomial.map_injective _ (algebraMap ℚ ℂ).injective e`. Establish `hk : ∀ {σ : Type} (P : MvPolynomial σ ℤ), toK K σ (map (Int.castRingHom (𝓞 K)) P) = map (Int.castRingHom K) P` using `fun P => by`.
+
+Express the relevant statement in the definitionally equal form `map (algebraMap (𝓞 K) K) _ = _`. Rewrite using `[map_map, Subsingleton.elim ((algebraMap (𝓞 K) K).comp (Int.castRingHom (𝓞 K))) (Int.castRingHom K)]`. Use `⟨map (Int.castRingHom (𝓞 K)) g, map_mem_delSq _ sg hg, ?_⟩` and prove the remaining obligations. Establish `hf0 : Formalism.GradedWeylDivisibility.applyWord (𝓞 K) v (Formalism.GradedWeylDivisibility.hw (𝓞 K) le_rfl lam.natW) = map (Int.castRingHom (𝓞 K)) f0`. Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map]`.
+
+Simplify using `only`. Rewrite using `[hf0, hk, hk, hm K f0, hm K g, GlobalTheory.Proof.TensorMapDescent.brOne_map, e']`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add, map_add]`.
+
+Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy`. Rewrite using `[map_smul, LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem brOne_mem_del (h1 : OnePlace) {K : Type} [Field K] [NumberField K] {N n : ℕ} (hN : N = n + 1) {lam : DomWeight N}
     {sg : DomWeight n} (hI : Interlace hN lam sg) (hS : SameShift lam sg) {f : MvPolynomial (Fin N × Fin N) (𝓞 K)}
     (hf : f ∈ delSq (𝓞 K) N lam) : brOne K hN lam sg (toK K _ f) ∈ (delSq (𝓞 K) n sg).map (toK K _) := by
@@ -441,6 +618,15 @@ theorem brOne_mem_del (h1 : OnePlace) {K : Type} [Field K] [NumberField K] {N n 
     rw [map_smul, LinearMap.map_smul_of_tower]
     exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((brStdP hN lam sg (G : Pol K ι N) : VV K sg) : Pol K ι n) ∈ delStd K sg`. Generalize the expression as in `(G : Pol K ι N) = F at hG`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, rfl⟩` from `hy`.
+
+Use `choose f0 hf0 e using hf`. Establish `hn : ∀ τ, f τ ∈ nablaSq K N (lam τ)` using `fun τ => by`. Rewrite using `[nablaSq_eq_delSq, ← e τ]`. Conclude with `map_mem_delSq (algebraMap (𝓞 K) K) _ (hf0 τ)`. Establish `h` using `tensor K ι N n hN lam sg hI hS f ⟨_, GlobalTheory.Proof.TensorMapDescent.ten_mem lam f hn⟩ hn rfl`.
+
+Use `Submodule.subset_span ⟨_, fun τ => ?_, h⟩` and prove the remaining obligations. Rewrite using `[← e τ]`. Conclude with `brOne_mem_del h1 hN (hI τ) (hS τ) (hf0 τ)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy`. Rewrite using `[LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem brStd_mem_delStd (h1 : OnePlace) {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {N n : ℕ}
     (hN : N = n + 1) {lam : ι → DomWeight N} {sg : ι → DomWeight n} (hI : ∀ τ, Interlace hN (lam τ) (sg τ))
     (hS : ∀ τ, SameShift (lam τ) (sg τ)) (G : VV K lam) (hG : (G : Pol K ι N) ∈ delStd K lam) :
@@ -464,6 +650,13 @@ theorem brStd_mem_delStd (h1 : OnePlace) {K : Type} [Field K] [NumberField K] {�
     rw [LinearMap.map_smul_of_tower]
     exact Submodule.smul_mem _ _ hy
 
+/- English proof (translation)
+Introduce `K _ _ ι _ N n hN lam sg hI hS M t ht G hG`. Simplify using `only [delK, delP, transLat, Submodule.mem_comap, Submodule.mem_iInf, LinearMap.coe_restrictScalars, Submodule.subtype_apply] at hG ⊢`. Introduce `w B hB`. Establish `hb : ∀ τ, IsBlock hN ((embGL K n N hN.symm (B τ) * lastGL K N (Units.mk0 (t τ) (ht τ)) : GL (Fin N) K) : Matrix (Fin N) (Fin N) K) (B τ : Matrix (Fin n) (Fin n) K) (t τ)` using `fun τ => isBlock_mul_lastGL (isBlock_embGL K hN (B τ)) (Units.mk0 (t τ) (ht τ))`. Take `⟨s, hs, h1⟩` from `hG w _ fun τ => GlobalTheory.BranchBasis.isBasisAt_block K N n hN w (M τ) (t τ) (B τ) _ (hb τ) (hB τ)`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite `h1`, the goal using `[← rhoK_coe]`. Rewrite using `[← brAt_eq_pullback hN hI hS B _ t ht hb G]`. Establish `h2` using `brStd_mem_delStd (onePlace h6) hN hI hS (s • _) h1`. Rewrite `h2` using `[LinearMap.map_smul_of_tower]`.
+
+Conclude with `h2`.
+-/
 theorem integrality (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) : Integrality := by
   intro K _ _ ι _ N n hN lam sg hI hS M t ht G hG
   simp only [delK, delP, transLat, Submodule.mem_comap, Submodule.mem_iInf, LinearMap.coe_restrictScalars,
@@ -480,6 +673,9 @@ theorem integrality (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) 
   rw [LinearMap.map_smul_of_tower] at h2
   exact h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨onePlace h6, equivariance, integrality h6, homogeneity, GlobalTheory.BranchMembers.members⟩`.
+-/
 theorem statement_of_branching (h6 : Formalism.MainNotions.PrimeDegreeVariant.Conclusion6) : Statement :=
   ⟨onePlace h6, equivariance, integrality h6, homogeneity, GlobalTheory.BranchMembers.members⟩
 

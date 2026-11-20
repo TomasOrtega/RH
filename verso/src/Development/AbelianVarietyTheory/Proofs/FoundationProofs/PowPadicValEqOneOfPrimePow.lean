@@ -4,6 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZ
 open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
+/- English proof (translation)
+Use `Fact.mk hl` as an intermediate fact. Establish `d1 : orderOf y ∣ n` using `orderOf_dvd_of_pow_eq_one h1`. Establish `d2 : orderOf y ∣ l ^ a` using `orderOf_dvd_of_pow_eq_one h2`. Take `⟨i, -, hi⟩` from `(Nat.dvd_prime_pow hl).1 d2`. Rewrite `d1` using `[hi]`.
+
+Establish `hle : i ≤ padicValNat l n` using `(padicValNat_dvd_iff_le hn.ne').1 d1`. Apply `orderOf_dvd_iff_pow_eq_one.1` to reduce the goal to its premises. Rewrite using `[hi]`. Conclude with `pow_dvd_pow l hle`.
+-/
 theorem pow_padicVal_eq_one_of_primePow {k : Type} [Field k] {n l : ℕ} (hn : 0 < n) (hl : l.Prime) {y : k}
     (h1 : y ^ n = 1) {a : ℕ} (h2 : y ^ (l ^ a) = 1) : y ^ (l ^ padicValNat l n) = 1 := by
   have := Fact.mk hl
@@ -16,6 +21,11 @@ theorem pow_padicVal_eq_one_of_primePow {k : Type} [Field k] {n l : ℕ} (hn : 0
   rw [hi]
   exact pow_dvd_pow l hle
 
+/- English proof (translation)
+Establish `hm : 0 < l ^ padicValNat l n` using `pow_pos hl.pos _`. Establish `hsub : {y : k | y ^ n = 1 ∧ ∃ a : ℕ, y ^ (l ^ a) = 1} ⊆ ((nthRoots (l ^ padicValNat l n) (1 : k)).toFinset : Set k)`. Introduce and unpack `y ⟨h1, a, h2⟩`. Rewrite using `[Finset.mem_coe, Multiset.mem_toFinset, mem_nthRoots hm]`. Conclude with `pow_padicVal_eq_one_of_primePow hn hl h1 h2`.
+
+Use `⟨(Finset.finite_toSet _).subset hsub, ?_⟩` and prove the remaining obligations. Use `(Set.ncard_le_ncard hsub (Finset.finite_toSet _)).trans ?_` and prove the remaining obligations. Rewrite using `[Set.ncard_coe_finset]`. Conclude with `(Multiset.toFinset_card_le _).trans (card_nthRoots _ _)`.
+-/
 theorem primePowRoots_finite_ncard (k : Type) [Field k] (n l : ℕ) (hn : 0 < n) (hl : l.Prime) :
     {y : k | y ^ n = 1 ∧ ∃ a : ℕ, y ^ (l ^ a) = 1}.Finite ∧
       {y : k | y ^ n = 1 ∧ ∃ a : ℕ, y ^ (l ^ a) = 1}.ncard ≤ l ^ padicValNat l n := by
@@ -30,6 +40,15 @@ theorem primePowRoots_finite_ncard (k : Type) [Field k] (n l : ℕ) (hn : 0 < n)
   rw [Set.ncard_coe_finset]
   exact (Multiset.toFinset_card_le _).trans (card_nthRoots _ _)
 
+/- English proof (translation)
+Introduce `k _ n l hn hl`. Take `⟨hf, hc⟩` from `primePowRoots_finite_ncard k n l hn hl`. Use `⟨⟨hf, hc⟩, fun z => ?_⟩` and prove the remaining obligations. Break down `Set.eq_empty_or_nonempty {x : k | x ^ n = 1 ∧ SamePart l x z} with he | ⟨x₀, hx₀, hb⟩` into its components or cases. Rewrite using `[he]`.
+
+Simplify using the standard rewrite rules. Establish `hsub : {x : k | x ^ n = 1 ∧ SamePart l x z} ⊆ (fun y => y * x₀) '' {y : k | y ^ n = 1 ∧ ∃ a : ℕ, y ^ (l ^ a) = 1}`. Introduce and unpack `x ⟨hx, ha⟩`. Establish `hs : SamePart l x x₀` using `Eq.trans ha (Eq.symm hb)`. Take `⟨a, ha⟩` from `(samePart_iff hl (isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, hx⟩) (isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, hx₀⟩)).1 hs`.
+
+Establish `h0 : x₀ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx₀` using `[zero_pow hn.ne']`. Conclude with `zero_ne_one hx₀`. Use `⟨x / x₀, ⟨?_, a, ?_⟩, div_mul_cancel₀ x h0⟩` and prove the remaining obligations.
+
+Rewrite using `[div_pow, hx, hx₀, div_one]`. Rewrite using `[div_pow, ha, div_self (pow_ne_zero _ h0)]`. Use `⟨(hf.image _).subset hsub, ?_⟩` and prove the remaining obligations. Conclude with `(Set.ncard_le_ncard hsub (hf.image _)).trans ((Set.ncard_image_le hf).trans hc)`.
+-/
 theorem samePart_roots_finite_ncard :
     ∀ (k : Type) [Field k] (n l : ℕ), 0 < n → l.Prime →
       ({y : k | y ^ n = 1 ∧ ∃ a : ℕ, y ^ (l ^ a) = 1}.Finite ∧

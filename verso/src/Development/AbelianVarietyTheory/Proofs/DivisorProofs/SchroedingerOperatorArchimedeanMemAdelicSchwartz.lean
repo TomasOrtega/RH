@@ -19,6 +19,15 @@ noncomputable section
 
 namespace GlobalTheory.WeilL2Words
 
+/- English proof (translation)
+Introduce `F _ _ _ κ _ ψ hψ h φ hφ`. Take `⟨ℓ, -, hℓ⟩` from `hψ`. Take `⟨n, f, g, hg, rfl⟩` from `schA_exists_sum F hφ`. Set `M : (κ → mixedEmbedding.mixedSpace F) →ₗ[ℝ] mixedEmbedding.mixedSpace F` to `∑ k, (LinearMap.mulRight ℝ (h.2 k)).comp (LinearMap.proj k)`. Set `L : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℝ` to `LinearMap.toContinuousLinearMap (ℓ.comp M)`.
+
+Establish `hL : ∀ X, L X = ℓ (∑ k, X k * h.2 k)`. Introduce `X`. Simplify using `[L, M]`. Use `set c : ℝ := ℓ (∑ k, h.1 k * h.2 k) / 2 with hc`. Establish `hgr` using `GlobalTheory.LinPhaseSeminorm.hasTemperateGrowth_phase L (-c) (-1)`.
+
+Rewrite `hgr` using `[← GlobalTheory.LinPhaseSeminorm.phase_eq]`. Rewrite using `[schr_sum']`. Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨SchwartzMap.smulLeftCLM ℂ (fun x => Complex.exp (-(2 * Real.pi * Complex.I) * ((-1 * L x + (-1) ^ 2 * -c : ℝ) : ℂ))) (SchwartzMap.compSubConstCLM ℂ (-h.1) (f i)), g i, hg i, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Rewrite using `[← adeleJoin_archPart F a, schr_archPair_adeleJoin F ψ ℓ hℓ, GlobalTheory.WeilCont.pureA_adeleJoin, GlobalTheory.WeilCont.pureA_adeleJoin, SchwartzMap.smulLeftCLM_apply_apply hgr, SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add, smul_eq_mul, hL, ← mul_assoc]`.
+
+Use `congr 2`. Rewrite using `[hc]`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem schr_archPair_mem_schA : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)] (κ : Type) [Fintype κ]
     (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ), GlobalTheory.WeilL2Words.IsStdInf F ψ →
     ∀ (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)), ∀ φ ∈ GlobalTheory.WeilM.schA F κ,

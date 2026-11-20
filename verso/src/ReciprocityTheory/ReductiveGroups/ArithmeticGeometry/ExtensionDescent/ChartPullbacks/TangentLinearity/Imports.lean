@@ -25,6 +25,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {O : Type} [Ring O] 
     (rosatiφ D.toPre.P.A (ιD.onB.act (star a)) (ιD.onB.act a)) rosatiε))
 
 include hO in
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Establish `hgA : (lhs U ιD e a χ u).IsGen` using `LB.isGen_mulGen (L := D.toPre.P.L) _ _ _ _ _ _ ((U.gt e).t_gen _) (LB.isGen_pullGen (L := D.toPre.P.L) _ _ _ hu _)`. Establish `hgB : (rhs U ιG e a χ).IsGen` using `LB.isGen_pullGen (L := D.toPre.P.L) _ _ _ ((U.gt e).t_gen χ) _`. Establish `hB'` using `Canon.canonGen_isGen hL (φB U ιG e a χ) Oinvε (φA U ιD e a χ) εA (sameSum U ιD ιG e a χ hO) (hsub U ιD ιG e a χ hO) (rhs U ιG e a χ) hgB`. Take `⟨ρ, hρ⟩` from `ratio_glue _ (linComb_cover _ hL _ _) _ _ hgA hB'`.
+
+Use `⟨ρ, fun jA jB cA cB cAB => ?_⟩` and prove the remaining obligations. Establish `hc` using `Canon.canonGen_corr hL (φB U ιG e a χ) Oinvε (φA U ιD e a χ) εA (hsub U ιD ιG e a χ hO) (rhs U ιG e a χ) jB jA cB cA cAB`. Conclude with `(congrArg (res _) (hρ jA)).trans ((map_mul (res _) _ _).trans (congrArg₂ (· * ·) (Canon.res_res' _ _ _) hc.symm))`.
+-/
 theorem pair (hu : u.IsGen) : ∃ ρ : Γ((thickObj R I e G).left, ⊤)ˣ,
     ∀ (jA : Fin 4 ⊕ Fin 6 → D.toPre.P.L.ι) (jB : Fin 4 → D.toPre.P.L.ι),
       LB.Coh D.toPre.P.L (φA U ιD e a χ) jA → LB.Coh D.toPre.P.L (φB U ιG e a χ) jB →

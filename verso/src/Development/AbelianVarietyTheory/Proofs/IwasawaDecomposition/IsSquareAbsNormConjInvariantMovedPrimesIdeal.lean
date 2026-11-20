@@ -7,6 +7,23 @@ namespace GlobalTheory.SquareNorm
 
 open NumberField IsDedekindDomain Formalism.L2.Pj
 
+/- English proof (translation)
+Establish `hee : ∀ I : Ideal R, (I.map (e : R →+* R)).map (e : R →+* R) = I` using `fun I => by`. Rewrite using `[Ideal.map_map]`. Establish `: (e : R →+* R).comp (e : R →+* R) = RingHom.id R` using `RingHom.ext he`. Rewrite using `[this, Ideal.map_id]`. Proceed by induction on `𝔡 using WellFoundedGT.induction with`.
+
+Consider the case `ind 𝔡 ih`. Introduce `h0 hinv hmv`. Distinguish the cases in `ht : 𝔡 = ⊤`. Conclude with `⟨⊤, by rw [ht, Ideal.map_top, Ideal.top_mul]⟩`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal 𝔡 ht`.
+
+Establish `hQ : (P.map (e : R →+* R)).IsMaximal` using `Ideal.IsMaximal.map_bijective (e : R →+* R) e.bijective hP`. Establish `hne` using `hmv P hP.isPrime hle`. Establish `hle' : 𝔡 ≤ P.map (e : R →+* R)`. Use `Ideal.map_mono (f := (e : R →+* R)) hle` as an intermediate fact. Rewrite `this` using `[hinv]`. Then use the resulting hypothesis.
+
+Establish `hcop : IsCoprime P (P.map (e : R →+* R))` using `Ideal.isCoprime_iff_sup_eq.2 (hP.coprime_of_ne hQ hne.symm)`. Take `⟨𝔟, hb⟩` from `hcop.mul_dvd (Ideal.dvd_iff_le.2 hle) (Ideal.dvd_iff_le.2 hle')`. Establish `hPQ : P * P.map (e : R →+* R) ≠ 0` using `fun h => h0 (by rw [hb, h, zero_mul]; rfl)`. Establish `hb0 : 𝔟 ≠ ⊥` using `fun h => h0 (by rw [hb, h, Ideal.mul_bot])`. Establish `hdb : 𝔡 ≤ 𝔟` using `Ideal.le_of_dvd ⟨P * P.map (e : R →+* R), by rw [mul_comm]; exact hb⟩`.
+
+Establish `hlt : 𝔡 < 𝔟`. Use `lt_of_le_of_ne hdb fun h => ?_` and prove the remaining obligations. Establish `h1 : P * P.map (e : R →+* R) * 𝔟 = 1 * 𝔟` using `by rw [← hb, one_mul, h]`. Establish `h2` using `mul_right_cancel₀ hb0 h1`. Establish `h3 : (1 : Ideal R) ≤ P` using `Ideal.le_of_dvd ⟨_, h2.symm⟩`.
+
+Rewrite `h3` using `[Ideal.one_eq_top]`. Conclude with `hP.ne_top (top_le_iff.1 h3)`. Establish `hbinv : 𝔟.map (e : R →+* R) = 𝔟`. Apply `mul_left_cancel₀ hPQ` to reduce the goal to its premises. Rewrite using `[← hb]`.
+
+Use `conv_rhs => rw [← hinv, hb]`. Rewrite using `[Ideal.map_mul, Ideal.map_mul, hee, mul_comm P]`. Take `⟨𝔞, ha⟩` from `ih 𝔟 hlt hb0 hbinv fun Q hQ' h => hmv Q hQ' (hdb.trans h)`. Use `⟨P * 𝔞, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, Ideal.map_mul]`.
+
+Use `conv_lhs => rw [ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_eq_mul_map {R : Type} [CommRing R] [IsDedekindDomain R] (e : R ≃+* R) (he : ∀ x, e (e x) = x)
     (𝔡 : Ideal R) : 𝔡 ≠ ⊥ → 𝔡.map (e : R →+* R) = 𝔡 →
       (∀ P : Ideal R, P.IsPrime → 𝔡 ≤ P → P.map (e : R →+* R) ≠ P) →
@@ -50,6 +67,11 @@ theorem exists_eq_mul_map {R : Type} [CommRing R] [IsDedekindDomain R] (e : R �
   conv_lhs => rw [ha]
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H 𝔡 h0 hinv hmv`. Establish `he : ∀ x, H.bar (H.bar x) = x` using `fun x => RingOfIntegers.ext (by`. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply])`. Take `⟨𝔞, ha⟩` from `exists_eq_mul_map H.bar he 𝔡 h0 hinv hmv`. Establish `hN : Ideal.absNorm (𝔞.map (H.bar : 𝓞 E →+* 𝓞 E)) = Ideal.absNorm 𝔞`.
+
+Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv 𝔞 _ H.bar rfl).toEquiv).symm`. Conclude with `⟨Ideal.absNorm 𝔞, by rw [ha, map_mul, hN]⟩`.
+-/
 theorem isSquare_absNorm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (𝔡 : Ideal (𝓞 E)), 𝔡 ≠ ⊥ → 𝔡.map (H.bar : 𝓞 E →+* 𝓞 E) = 𝔡 → (∀ P : Ideal (𝓞 E), P.IsPrime → 𝔡 ≤ P → P.map (H.bar : 𝓞 E →+* 𝓞 E) ≠ P) → IsSquare (Ideal.absNorm 𝔡) := by
   intro E _ _ _ H 𝔡 h0 hinv hmv
   have he : ∀ x, H.bar (H.bar x) = x := fun x => RingOfIntegers.ext (by

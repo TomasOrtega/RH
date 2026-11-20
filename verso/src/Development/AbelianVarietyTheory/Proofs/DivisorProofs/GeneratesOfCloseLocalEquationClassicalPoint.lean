@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Introduce `c hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx => exact hs x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+
+Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.nnnorm_add_le_max _ _).trans (max_le hx hy)`. Consider the case `smul a x _ hx`. Rewrite using `[smul_eq_mul, map_mul, nnnorm_mul]`. Conclude with `(mul_le_mul' (hv a) hx).trans (by rw [one_mul])`.
+-/
 theorem nnnorm_le_of_mem_span {R K : Type} [CommRing R] [NormedField K] [IsUltrametricDist K] (v : R →+* K)
     (hv : ∀ r, ‖v r‖₊ ≤ 1) {s : Set R} {ρ : NNReal} (hs : ∀ c ∈ s, ‖v c‖₊ ≤ ρ) :
     ∀ c ∈ Ideal.span s, ‖v c‖₊ ≤ ρ := by
@@ -21,6 +26,13 @@ theorem nnnorm_le_of_mem_span {R K : Type} [CommRing R] [NormedField K] [IsUltra
     rw [smul_eq_mul, map_mul, nnnorm_mul]
     exact (mul_le_mul' (hv a) hx).trans (by rw [one_mul])
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro b _`. Simplify using `using hv b`. Consider the case `succ k ih`.
+
+Introduce `b hb`. Rewrite `hb` using `[pow_succ]`. Use `Submodule.mul_induction_on hb ?_ ?_` and prove the remaining obligations. Introduce `a ha c hc`. Rewrite using `[map_mul, nnnorm_mul, pow_succ]`.
+
+Conclude with `mul_le_mul' (ih a ha) (hI c hc)`. Introduce `a c ha hc`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.nnnorm_add_le_max _ _).trans (max_le ha hc)`.
+-/
 theorem nnnorm_le_pow_of_mem_pow {R K : Type} [CommRing R] [NormedField K] [IsUltrametricDist K] (v : R →+* K)
     (hv : ∀ r, ‖v r‖₊ ≤ 1) {I : Ideal R} {ρ : NNReal} (hI : ∀ c ∈ I, ‖v c‖₊ ≤ ρ) :
     ∀ k : ℕ, ∀ b ∈ I ^ k, ‖v b‖₊ ≤ ρ ^ k := by
@@ -42,6 +54,43 @@ end GlobalTheory.Poinc
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ M₁ M π hπ U D hD x p _ y₀ hy f hf`. Take `⟨i, hxi, rfl⟩` from `hf`. Use `set F : Ω := valF M.pt (D.U i) (D.f i) with hFdef`. Use `set y : Sp (PadicAlgCl p) ⟶ M.Z := gPt p ≫ y₀ with hydef`. Establish `hFO : F ∈ M.O x` using `RatModel.valF_mem_O hxi _`.
+
+Establish `hwx : y (IsLocalRing.closedPoint (PadicAlgCl p)) ⤳ x` using `RatModel.gPt_specializes hy.1 _`. Establish `hwU : y (IsLocalRing.closedPoint (PadicAlgCl p)) ∈ U` using `hy.2 ⟨_, rfl⟩`. Establish `hwi : y (IsLocalRing.closedPoint (PadicAlgCl p)) ∈ D.U i` using `hwx.mem_open (D.U i).isOpen hxi`. Establish `hwb : y (IsLocalRing.closedPoint (PadicAlgCl p)) ∈ M.Z.basicOpen (D.f i)`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hD _ ((D.mem_support_iff i hwi).2 h) hwU`. Establish `hF0 : M.val y F ≠ 0` using `(RatModel.val_ne_zero_iff (RatModel.range_eq_singleton y (IsLocalRing.closedPoint (PadicAlgCl p))) ⟨_, RatModel.valF_mem_O hwi _⟩).2 ((RatModel.isUnit_valF_iff hwi (D.f i)).2 hwb)`. Establish `hFpos : 0 < ‖M.val y F‖₊` using `nnnorm_pos.2 hF0`. Establish `hle : M₁.O (π x) ≤ M.O x` using `fun c hc => hπ.map_mem_O hc`. Set `v : M₁.O (π x) →+* PadicAlgCl p` to `(RatModel.valHomOf y x (RatModel.gPt_specializes hy.1)).comp (Subalgebra.inclusion hle).toRingHom`.
+
+Establish `hv_apply : ∀ c : M₁.O (π x), v c = M.val y c` using `fun c => rfl`. Establish `hv1 : ∀ c, ‖v c‖₊ ≤ 1` using `fun c => by`. Rewrite using `[← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one, hv_apply]`. Conclude with `RatModel.norm_val_le_one hy.1 (hle c.2)`. Establish `hvlt : ∀ c : M₁.O (π x), ¬ IsUnit c → ‖v c‖₊ < 1`.
+
+Introduce `c hc`. Establish `hc' : (c : Ω) ∈ M₁.O (π (y (IsLocalRing.closedPoint (PadicAlgCl p))))` using `RatModel.O_le_of_specializes (hwx.map π.continuous) c.2`. Establish `e` using `hπ.val_comp y (IsLocalRing.closedPoint (PadicAlgCl p)) hc'`. Establish `hc0 : (y₀ ≫ π) (cPt p) = π x` using `by rw [Scheme.Hom.comp_apply, hy.1]`. Establish `h1` using `(RatModel.norm_val_lt_one_iff hc0 c.2).2 hc`.
+
+Rewrite `h1` using `[← Category.assoc, ← hydef, e]`. Rewrite using `[← NNReal.coe_lt_coe, coe_nnnorm, NNReal.coe_one, hv_apply]`. Conclude with `h1`. Use `haveI : IsDedekindDomain o := ArithBase.ded (Ω := Ω)`. Use `haveI := M₁.lft`.
+
+Use `haveI : IsLocallyNoetherian M₁.Z := LocallyOfFiniteType.isLocallyNoetherian M₁.s`. Use `haveI : IsNoetherianRing (M₁.O (π x)) := isNoetherianRing_of_ringEquiv _ (M₁.stalkEquiv (π x))`. Take `⟨s, hs⟩` from `IsNoetherian.noetherian (maximalIdeal (M₁.O (π x)))`. Use `set ρ : NNReal := s.sup fun c => ‖v c‖₊`. Establish `hρ : ρ < 1`.
+
+Use `(Finset.sup_lt_iff (by simp)).2 fun c hc => hvlt c ?_` and prove the remaining obligations. Establish `: c ∈ maximalIdeal (M₁.O (π x))` using `hs ▸ Submodule.subset_span hc`. Conclude with `(mem_maximalIdeal c).1 this`. Establish `hm : ∀ c ∈ maximalIdeal (M₁.O (π x)), ‖v c‖₊ ≤ ρ`. Rewrite using `[← hs]`.
+
+Conclude with `nnnorm_le_of_mem_span v hv1 fun c hc => Finset.le_sup (f := fun c => ‖v c‖₊) hc`. Establish `hspan : Ideal.span {c : M₁.O (π x) | ¬ IsUnit c} = maximalIdeal (M₁.O (π x))`. Establish `: {c : M₁.O (π x) | ¬ IsUnit c} = (maximalIdeal (M₁.O (π x)) : Set (M₁.O (π x)))` using `Set.ext fun c => (mem_maximalIdeal c).symm`. Rewrite using `[this, Ideal.span_eq]`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hFpos hρ`.
+
+Use `⟨k, fun G b hGb hb hGf => ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[hspan]`. Establish `hbk : ‖M.val y b‖₊ < ‖M.val y F‖₊` using `lt_of_le_of_lt (nnnorm_le_pow_of_mem_pow v hv1 hm k b hb) hk`. Establish `hadd : M.val y ((G : Ω) + b) = M.val y G + M.val y b` using `RatModel.val_add (RatModel.gPt_specializes hy.1) (hle G.2) (hle b.2)`. Establish `hGb' : ‖M.val y G + M.val y b‖₊ = ‖M.val y F‖₊`.
+
+Rewrite using `[← hadd]`. Conclude with `NNReal.eq hGb`. Establish `hG : ‖M.val y G‖₊ = ‖M.val y F‖₊`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Establish `e : M.val y G = (M.val y G + M.val y b) + -M.val y b` using `by ring`.
+
+Rewrite using `[e]`. Use `(IsUltrametricDist.nnnorm_add_le_max _ _).trans (max_le hGb'.le ?_)` and prove the remaining obligations. Rewrite using `[nnnorm_neg]`. Conclude with `hbk.le`. Rewrite using `[← hGb']`.
+
+Use `(IsUltrametricDist.nnnorm_add_le_max _ _).trans (max_le le_rfl ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `(IsUltrametricDist.nnnorm_add_le_max (M.val y G) (M.val y b)).trans (max_le h.le le_rfl)` as an intermediate fact. Rewrite `this` using `[hGb']`.
+
+Conclude with `absurd hbk (not_lt.2 this)`. Establish `hG0 : (G : Ω) ≠ 0`. Introduce `h`. Rewrite `hG` using `[h, RatModel.val_zero, nnnorm_zero]`. Conclude with `hFpos.ne hG`.
+
+Establish `hFne : F ≠ 0`. Introduce `h`. Rewrite `hF0` using `[h, RatModel.val_zero]`. Conclude with `hF0 rfl`. Use `⟨hG0, ?_⟩` and prove the remaining obligations.
+
+Establish `hmul : M.val y ((G : Ω) / F * F) = M.val y ((G : Ω) / F) * M.val y F` using `RatModel.val_mul (RatModel.gPt_specializes hy.1) hGf hFO`. Rewrite `hmul` using `[div_mul_cancel₀ _ hFne]`. Establish `hq : ‖M.val y ((G : Ω) / F)‖₊ = 1`. Establish `h2 : ‖M.val y ((G : Ω) / F)‖₊ * ‖M.val y F‖₊ = 1 * ‖M.val y F‖₊`. Rewrite using `[one_mul, ← nnnorm_mul, ← hmul, hG]`.
+
+Conclude with `mul_right_cancel₀ hFpos.ne' h2`. Establish `hq' : ‖M.val (gPt p ≫ y₀) ((G : Ω) / F)‖ = 1`. Rewrite using `[← coe_nnnorm]`. Conclude with `congrArg NNReal.toReal hq`. Establish `hu` using `(RatModel.isUnit_O_iff _).1 ((RatModel.norm_val_eq_one_iff hy.1 hGf).1 hq')`.
+
+Simplify `hu.2` using `[inv_div]`.
+-/
 theorem generates_of_close : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (M₁ M : RatModel o Ω) (π : M.Z ⟶ M₁.Z), M₁.IsHom M (AlgHom.id o Ω) π → ∀ (U : M.Z.Opens) (D : EffCartierData M.Z), (∀ x ∈ D.idealSheaf.support, x ∉ U) → ∀ (x : M.Z) (p : ℕ) [Fact p.Prime] (y₀ : Sp (OO p) ⟶ M.Z), M.Cen U x y₀ → ∀ f, EqAt M D x f → ∃ k : ℕ, ∀ (G b : M₁.O (π x)), ‖M.val (gPt p ≫ y₀) ((G : Ω) + b)‖ = ‖M.val (gPt p ≫ y₀) f‖ → b ∈ Ideal.span {c : M₁.O (π x) | ¬ IsUnit c} ^ k → (G : Ω) / f ∈ M.O x → (G : Ω) ≠ 0 ∧ f / G ∈ M.O x := by
   intro o Ω _ _ _ _ M₁ M π hπ U D hD x p _ y₀ hy f hf
   obtain ⟨i, hxi, rfl⟩ := hf

@@ -7,6 +7,33 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kernels
 open NumberField
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Introduce `K _ _ M _ _ _ n ψ hψ G hsat`. Take `⟨S, hS, hli⟩` from `exists_set_linearIndependent_of_isDomain (𝓞 K) G`. Rewrite `hS` using `[← Module.finrank_eq_rank]`. Take `⟨e⟩` from `Cardinal.mk_eq_nat_iff.mp hS`. Set `f : Fin (Module.finrank (𝓞 K) G) → G` to `fun i ↦ (e.symm i : G)`.
+
+Establish `hf : LinearIndependent (𝓞 K) f` using `hli.comp _ e.symm.injective`. Set `φ : G →ₗ[𝓞 K] (Fin n → K)` to `ψ ∘ₗ G.subtype`. Establish `hφ : Function.Injective φ` using `hψ.comp Subtype.val_injective`. Set `b : Fin (Module.finrank (𝓞 K) G) → Fin n → K` to `φ ∘ f`. Establish `hbO : LinearIndependent (𝓞 K) b` using `hf.map' φ (LinearMap.ker_eq_bot.mpr hφ)`.
+
+Establish `hb : LinearIndependent K b` using `(LinearIndependent.iff_fractionRing (𝓞 K) K).mp hbO`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Establish `hspanO : ∀ c : Fin (Module.finrank (𝓞 K) G) → 𝓞 K, φ (∑ j, c j • f j) ∈ Submodule.span K (Set.range b)`. Introduce `c`. Rewrite using `[map_sum]`.
+
+Use `Submodule.sum_mem _ fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_smul K (c j)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Use `Submodule.mem_inf.mpr ⟨LinearMap.mem_range_self ψ x, ?_⟩` and prove the remaining obligations. Establish `hnot : ¬ LinearIndependent (𝓞 K) (Fin.cons ⟨x, hx⟩ f : Fin (Module.finrank (𝓞 K) G + 1) → G)`. Introduce `h`. Use `h.fintype_card_le_finrank` as an intermediate fact. Simplify using `at this`.
+
+Take `⟨s, hs0, i, hi⟩` from `Fintype.not_linearIndependent_iff.mp hnot`. Rewrite `hs0` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at hs0`. Establish `ht : s 0 ≠ 0`. Introduce `h0`.
+
+Rewrite `hs0` using `[h0, zero_smul, zero_add]`. Establish `hz` using `Fintype.linearIndependent_iff.mp hf (fun j ↦ s j.succ) hs0`. Use `hi ?_` and prove the remaining obligations. Consider the cases of `i using Fin.cases with`. Consider the case `zero => exact h0`.
+
+Consider the case `succ j => exact hz j`. Establish `key : s 0 • (⟨x, hx⟩ : G) = ∑ j, (-s j.succ) • f j`. Simplify using `only [neg_smul, Finset.sum_neg_distrib]`. Conclude with `eq_neg_of_add_eq_zero_left hs0`. Establish `hmem` using `hspanO (fun j ↦ -s j.succ)`.
+
+Rewrite `hmem` using `[← key, map_smul]`. Establish `hK : algebraMap (𝓞 K) K (s 0) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr ht`. Rewrite `hmem` using `[← algebraMap_smul K (s 0)]`. Establish `h2` using `Submodule.smul_mem _ (algebraMap (𝓞 K) K (s 0))⁻¹ hmem`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hK, one_smul]`.
+
+Conclude with `h2`. Introduce and unpack `y hy`. Take `⟨⟨x, rfl⟩, hy⟩` from `Submodule.mem_inf.mp hy`. Establish `hy' : ψ x ∈ Submodule.span K (Set.range b)` using `hy`. Take `⟨κ, hκ⟩` from `(Submodule.mem_span_range_iff_exists_fun K).mp hy'`.
+
+Take `⟨t, ht⟩` from `IsLocalization.exist_integer_multiples (𝓞 K)⁰ Finset.univ κ`. Use `choose a ha using fun j ↦ ht j (Finset.mem_univ j)`. Establish `htx : (t : 𝓞 K) • x ∈ G`. Establish `heq : ψ ((t : 𝓞 K) • x) = ψ (∑ j, a j • (f j : M))`. Rewrite using `[map_smul, ← hκ, map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_smul K (a j), ha j, smul_assoc]`. Both sides reduce to the same expression. Rewrite using `[hψ heq]`. Conclude with `Submodule.sum_mem _ fun j _ ↦ G.smul_mem _ (f j).2`.
+
+Conclude with `⟨x, hsat _ x (nonZeroDivisors.coe_ne_zero t) htx, rfl⟩`.
+-/
 theorem S6.SaturatedSpan.proof : S6.SaturatedSpan.Statement := by
   intro K _ _ M _ _ _ n ψ hψ G hsat
   obtain ⟨S, hS, hli⟩ := exists_set_linearIndependent_of_isDomain (𝓞 K) G

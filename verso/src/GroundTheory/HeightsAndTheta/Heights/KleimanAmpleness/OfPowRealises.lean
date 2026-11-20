@@ -9,6 +9,9 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (secOver)
 
+/- English proof (translation)
+The claim follows from `| 0 => by have h0 := hB F K ι Ω y k₀ N e _ rfl hmod 0 rw [zero_smul] at h0 rw [zero_smul] exact h0 | p + 1 => by have h := hT F K ι Ω y k₀ N e hmod (Q.tpow p) Q (p • β) β (realises_tpow hT hB hmod hQ p) hQ rw [succ_nsmul] exact h`.
+-/
 theorem realises_tpow (hT : TensorRealises.Statement) (hB : BaseRealises.Statement)
     {F : Type} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {Ω : Type} [Field Ω] [Algebra F Ω] {y : (Σ k, ι k) → Ω} {k₀ : K} {N : ℕ} {e : ι k₀ ≃ Fin (N + 1)}
@@ -25,6 +28,9 @@ theorem realises_tpow (hT : TensorRealises.Statement) (hB : BaseRealises.Stateme
     rw [succ_nsmul]
     exact h
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e hmod β Q hQ p j`. Establish `h` using `realises_tpow hT hB hmod (β := β) (Q := Q) hQ p j`. Rewrite `h` using `[Kleiman.LineBundle.tpow_toSubSystem]`. Conclude with `h`.
+-/
 theorem ModelMulSecs.proof (hT : TensorRealises.Statement) (hB : BaseRealises.Statement) :
     ModelMulSecs.Statement := by
   intro F _ K _ _ ι _ Ω _ _ y k₀ N e hmod β Q hQ p j
@@ -32,6 +38,9 @@ theorem ModelMulSecs.proof (hT : TensorRealises.Statement) (hB : BaseRealises.St
   rw [Kleiman.LineBundle.tpow_toSubSystem] at h
   exact h
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e hmod β Q hQ p j` and use `h F K ι Ω y k₀ N e _ rfl hmod Q β hQ p j`.
+-/
 theorem ModelMulSecs.of_powRealises (h : PowRealises.Statement) : ModelMulSecs.Statement :=
   fun F _ K _ _ ι _ Ω _ _ y k₀ N e hmod β Q hQ p j => h F K ι Ω y k₀ N e _ rfl hmod Q β hQ p j
 

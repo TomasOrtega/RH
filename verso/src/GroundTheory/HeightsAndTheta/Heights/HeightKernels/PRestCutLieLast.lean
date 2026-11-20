@@ -10,6 +10,11 @@ noncomputable section
 
 namespace RestCutLieLast
 
+/- English proof (translation)
+Unfold `RestTerms.smallPowerSum`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `he : restLastEquiv j k ⟨j + b.val, by have` using `b.isLt; omega⟩ = Sum.inr b := by`. Establish `: (finCongr (Nat.add_comm k j)) ⟨j + b.val, by have` using `b.isLt; omega⟩ = Fin.natAdd j b := Fin.ext rfl`.
+
+Simplify using `only [restLastEquiv, Equiv.trans_apply, this, finSumFinEquiv_symm_apply_natAdd]`. Simplify using `[restTransport, restRename, RestTerms.yRoot, RestTerms.yIndex, RestTerms.SmallBlock.sign, he]`.
+-/
 theorem transport_smallPowerSum (f j k m : ℕ) (τ : Fin f) :
     restTransport f j k (k + j) (restLastEquiv j k) (RestTerms.smallPowerSum f k j .last m τ) =
       ∑ b : Fin k, X (τ, Sum.inr b) ^ m := by
@@ -25,6 +30,13 @@ theorem transport_smallPowerSum (f j k m : ℕ) (τ : Fin f) :
 
 end RestCutLieLast
 
+/- English proof (translation)
+Introduce `f j k _ m σ`. Take `⟨τ, b⟩` from `σ`. Consider the cases of `b with`. Consider the case `true`. Use `⟨(-1) ^ m, 0, neg_one_pow_eq_or ℚ m, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[RestCutLieLast.transport_smallPowerSum]`. Simplify using `[lieClass]`. Consider the case `false`. Use `⟨-1, 1, Or.inr rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[RestCutLieLast.transport_smallPowerSum]`.
+
+Simplify using `only [lieClass, rootPsum, Fintype.sum_sum_type, map_one, one_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem RestCutLieLast.proof : RestCutLieLast.Statement := by
   intro f j k _ m σ
   obtain ⟨τ, b⟩ := σ

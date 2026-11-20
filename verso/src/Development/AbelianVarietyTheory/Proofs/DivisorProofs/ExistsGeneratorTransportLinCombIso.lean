@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.Mum.GenTransport
 
+/- English proof (translation)
+Establish `le : ∀ p : K × J → L.ι, LB.wchart L (K` using `K × J) (fun p => ψ p.1 ≫ F p.2) p ≤ LB.wchart (LB.LinComb L F ε) ψ (fun k j => p (k, j)) := fun p y hy => Set.mem_iInter.2 fun k => by`. Establish `h1 : ψ k y ∈ LB.wchart L F (fun j => p (k, j))` using `Set.mem_iInter.2 fun j => Set.mem_iInter.1 hy (k, j)`. Conclude with `h1`. Set `t : LB.Gen (LB.LinComb L (K` to `K × J) (fun p => ψ p.1 ≫ F p.2) (fun p => δ p.1 * ε p.2)) := ⟨fun p => res (le p) (T.s fun k j => p (k, j))⟩`. Use `⟨t, isGen_of_gm _ fun y p q hp hq => ?_, fun Z r z I hI => ?_⟩` and prove the remaining obligations.
+
+Use `(gm_res _ y (le p) hp _).trans (Eq.trans ?_ (congrArg _ (gm_res _ y (le q) hq _)).symm)` and prove the remaining obligations. Use `(gen_trans hT (𝟙 Y) y (le p hp) (le q hq)).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `(Finset.prod_congr rfl fun k _ => congrArg (· ^ δ k) (gm_linComb L F ε (𝟙 Y ≫ ψ k) y (fun j => p (k, j)) (fun j => q (k, j)) (Set.mem_iInter.1 (le p hp) k) (Set.mem_iInter.1 (le q hq) k))).trans ?_` and prove the remaining obligations. Simplify using `only [trF, Fintype.prod_prod_type, ← Finset.prod_zpow, ← zpow_mul, Category.assoc, mul_comm]`. Use `(gm_res r z (le _) (hI.mem (fun p : K × J => ψ p.1 ≫ F p.2) r) _).trans ?_` and prove the remaining obligations.
+
+Conclude with `(val_of T r z (fun χ j => I (χ ≫ F j)) _ fun k => funext fun j => congrArg I (Category.assoc _ _ _)).symm`.
+-/
 theorem exists_unflat {X X' Y : Scheme.{0}} {L : LB X} {J K : Type} [Fintype J] [Fintype K]
     (F : J → (X' ⟶ X)) (ε : J → ℤ) (ψ : K → (Y ⟶ X')) (δ : K → ℤ)
     (T : LB.Gen (LB.LinComb (LB.LinComb L F ε) ψ δ)) (hT : T.IsGen) :
@@ -41,6 +48,11 @@ theorem exists_unflat {X X' Y : Scheme.{0}} {L : LB X} {J K : Type} [Fintype J] 
   · refine (gm_res r z (le _) (hI.mem (fun p : K × J => ψ p.1 ≫ F p.2) r) _).trans ?_
     exact (val_of T r z (fun χ j => I (χ ≫ F j)) _ fun k => funext fun j => congrArg I (Category.assoc _ _ _)).symm
 
+/- English proof (translation)
+Introduce `X X' Y L L' J K _ _ hL hL' pr ε w hw φ' δ a ha`. Take `⟨T, hT, hv⟩` from `GlobalTheory.WtTower.exists_gen_of_iso (LB.isLB_linComb hL' φ' δ) (LB.isLB_linComb (LB.isLB_linComb hL pr ε) φ' δ) (LB.linCombIso w φ' δ) (DVR.linCombIso_isGen w hw _ _) a ha`. Take `⟨t, ht, hv'⟩` from `exists_unflat pr ε φ' δ T hT`. Use `⟨t, ht, fun Z r z I I' hI hI' => (hv' Z r z I hI).trans ?_⟩` and prove the remaining obligations. Establish `hI'' : Good (LB.LinComb L pr ε) z (fun χ j => I (χ ≫ pr j))` using `fun χ => hI.mem pr χ`.
+
+Use `(hv Z r z _ (fun k => I' (r ≫ φ' k)) (hI''.mem φ' r) (hI'.mem φ' r)).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Conclude with `GlobalTheory.WtTower.gm_linCombIso w φ' δ (fun k j => I ((r ≫ φ' k) ≫ pr j), fun k => I' (r ≫ φ' k)) r z ⟨hI''.mem φ' r, hI'.mem φ' r⟩`.
+-/
 theorem exists_transport : ∀ {X X' Y : Scheme.{0}} {L : LB X} {L' : LB X'} {J K : Type} [Fintype J] [Fintype K], L.IsLB → L'.IsLB → ∀ (pr : J → (X' ⟶ X)) (ε : J → ℤ) (w : LB.Iso L' (LB.LinComb L pr ε)), w.IsGen → ∀ (φ' : K → (Y ⟶ X')) (δ : K → ℤ) (a : LB.Gen (LB.LinComb L' φ' δ)), a.IsGen → ∃ t : LB.Gen (LB.LinComb L (fun p : K × J => φ' p.1 ≫ pr p.2) (fun p => δ p.1 * ε p.2)), t.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (I : (Z ⟶ X) → L.ι) (I' : (Z ⟶ X') → L'.ι), Good L z I → Good L' z I' → val t r z I = (∏ k, gv w (r ≫ φ' k) z (fun j => I ((r ≫ φ' k) ≫ pr j)) (I' (r ≫ φ' k)) ^ δ k) * val a r z I' := by
   intro X X' Y L L' J K _ _ hL hL' pr ε w hw φ' δ a ha
   obtain ⟨T, hT, hv⟩ := GlobalTheory.WtTower.exists_gen_of_iso (LB.isLB_linComb hL' φ' δ)

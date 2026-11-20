@@ -28,10 +28,18 @@ section Val
 
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_conjP, mem_conjP, cO_cO]`.
+-/
 theorem conjP_conjP' [StarRing E] (P : HeightOneSpectrum (𝓞 E)) : conjPrime₂ (conjPrime₂ P) = P := by
   ext x
   rw [mem_conjP, mem_conjP, cO_cO]
 
+/- English proof (translation)
+Establish `: conjPrime₂ P = Formalism.BasicNotions.Examples₂.PlacesToy.conjW P`. Use extensionality with `r`. Use `Formalism.BasicNotions.Examples₂.PlacesToy.mem_conjW_pow P r 1` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one]`. Rewrite using `[this, mem_conjP]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, Formalism.BasicNotions.Examples₂.PlacesToy.valuation_conjW]`.
+-/
 theorem valuation_conjP [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (x : E) :
     (conjPrime₂ P).valuation E x = P.valuation E (star x) := by
   have : conjPrime₂ P = Formalism.BasicNotions.Examples₂.PlacesToy.conjW P := by
@@ -42,10 +50,18 @@ theorem valuation_conjP [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (x : E) :
     rfl
   rw [this, Formalism.BasicNotions.Examples₂.PlacesToy.valuation_conjW]
 
+/- English proof (translation)
+Rewrite using `[mem_conjP, map_natCast]`.
+-/
 theorem natCast_mem_conjP [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (p : ℕ) :
     ((p : ℕ) : 𝓞 E) ∈ (conjPrime₂ P).asIdeal ↔ ((p : ℕ) : 𝓞 E) ∈ P.asIdeal := by
   rw [mem_conjP, map_natCast]
 
+/- English proof (translation)
+Establish `ha : ((p : ℕ) : 𝓞 E) ≠ 0` using `by intro h; rw [h] at h2; exact h2 (zero_mem _)`. Establish `e1` using `(Q.intValuation_le_pow_iff_mem _ 1).2 (by simpa using h1)`. Establish `e2` using `mt (Q.intValuation_le_pow_iff_mem _ 2).1 h2`. Establish `h0 : Q.intValuation ((p : ℕ) : 𝓞 E) ≠ 0` using `Q.intValuation_ne_zero _ ha`. Rewrite using `[← map_natCast (algebraMap (𝓞 E) E), HeightOneSpectrum.valuation_of_algebraMap]`.
+
+Rewrite `e1`, `e2`, the goal using `[← exp_log h0]`. Rewrite `e1`, `e2` using `[exp_le_exp]`. Use `congr 1`. Move the coercions through the operations in `at e1 e2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem val_natCast_of_notMem_sq {Q : HeightOneSpectrum (𝓞 E)} {p : ℕ} (h1 : ((p : ℕ) : 𝓞 E) ∈ Q.asIdeal)
     (h2 : ((p : ℕ) : 𝓞 E) ∉ Q.asIdeal ^ 2) : Q.valuation E (p : E) = exp (-1 : ℤ) := by
   have ha : ((p : ℕ) : 𝓞 E) ≠ 0 := by intro h; rw [h] at h2; exact h2 (zero_mem _)
@@ -59,10 +75,16 @@ theorem val_natCast_of_notMem_sq {Q : HeightOneSpectrum (𝓞 E)} {p : ℕ} (h1 
   push_cast at e1 e2
   omega
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.ComapPrimeExistence.exists_comap_prime φ w`.
+-/
 theorem exists_pull (φ : E →+* K) (w : HeightOneSpectrum (𝓞 K)) :
     ∃ Q : HeightOneSpectrum (𝓞 E), ∀ r : 𝓞 E, r ∈ Q.asIdeal ↔ RingOfIntegers.mapRingHom φ r ∈ w.asIdeal :=
   _root_.GlobalTheory.ComapPrimeExistence.exists_comap_prime φ w
 
+/- English proof (translation)
+Take `⟨r, s, hs, hrs⟩` from `(intAt_iff x).2 hx`. Use `(intAt_iff _).1 ⟨RingOfIntegers.mapRingHom φ r, RingOfIntegers.mapRingHom φ s, fun h' => hs ((h s).2 h'), ?_⟩` and prove the remaining obligations. Use `congrArg φ hrs` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `this`.
+-/
 theorem val_emb_le_one {φ : E →+* K} {w : HeightOneSpectrum (𝓞 K)} {Q : HeightOneSpectrum (𝓞 E)}
     (h : ∀ r : 𝓞 E, r ∈ Q.asIdeal ↔ RingOfIntegers.mapRingHom φ r ∈ w.asIdeal) {x : E} (hx : Q.valuation E x ≤ 1) :
     w.valuation K (φ x) ≤ 1 := by
@@ -72,6 +94,11 @@ theorem val_emb_le_one {φ : E →+* K} {w : HeightOneSpectrum (𝓞 K)} {Q : He
   rw [map_mul] at this
   exact this
 
+/- English proof (translation)
+Establish `h1` using `val_emb_le_one h hx.le`. Establish `h2` using `val_emb_le_one h (x := x⁻¹) (by rw [map_inv₀, hx, inv_one])`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hx`. Establish `h0 : w.valuation K (φ x) ≠ 0` using `by simpa using hx0`. Rewrite `h2` using `[map_inv₀, map_inv₀, inv_le_one₀ (zero_lt_iff.2 h0)]`.
+
+Conclude with `le_antisymm h1 h2`.
+-/
 theorem val_emb_eq_one {φ : E →+* K} {w : HeightOneSpectrum (𝓞 K)} {Q : HeightOneSpectrum (𝓞 E)}
     (h : ∀ r : 𝓞 E, r ∈ Q.asIdeal ↔ RingOfIntegers.mapRingHom φ r ∈ w.asIdeal) {x : E} (hx : Q.valuation E x = 1) :
     w.valuation K (φ x) = 1 := by
@@ -82,6 +109,11 @@ theorem val_emb_eq_one {φ : E →+* K} {w : HeightOneSpectrum (𝓞 K)} {Q : He
   rw [map_inv₀, map_inv₀, inv_le_one₀ (zero_lt_iff.2 h0)] at h2
   exact le_antisymm h1 h2
 
+/- English proof (translation)
+Establish `hp0 : (p : E) ≠ 0` using `by intro h0; rw [h0, map_zero] at hp; exact exp_ne_zero hp.symm`. Establish `hpK : (p : K) ≠ 0` using `by rw [← map_natCast φ]; simpa using hp0`. Establish `h1 : Q.valuation E (x / (p : E) ^ M) = 1`. Rewrite using `[map_div₀, map_zpow₀, hp, hx, ← exp_zsmul]`. Simplify using the standard rewrite rules.
+
+Establish `h2` using `val_emb_eq_one h h1`. Rewrite `h2` using `[map_div₀, map_zpow₀, map_natCast, map_div₀, map_zpow₀, div_eq_one_iff_eq (zpow_ne_zero _ (by simpa using hpK))]`. Conclude with `h2`.
+-/
 theorem val_emb_zpow {φ : E →+* K} {w : HeightOneSpectrum (𝓞 K)} {Q : HeightOneSpectrum (𝓞 E)}
     (h : ∀ r : 𝓞 E, r ∈ Q.asIdeal ↔ RingOfIntegers.mapRingHom φ r ∈ w.asIdeal) {p : ℕ}
     (hp : Q.valuation E (p : E) = exp (-1 : ℤ)) {x : E} {M : ℤ} (hx : Q.valuation E x = exp (-M)) :
@@ -95,16 +127,33 @@ theorem val_emb_zpow {φ : E →+* K} {w : HeightOneSpectrum (𝓞 K)} {Q : Heig
   rw [map_div₀, map_zpow₀, map_natCast, map_div₀, map_zpow₀, div_eq_one_iff_eq (zpow_ne_zero _ (by simpa using hpK))] at h2
   exact h2
 
+/- English proof (translation)
+Rewrite `h` using `[map_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le hM.ne').1 h`.
+-/
 theorem unit_of_pow {w : HeightOneSpectrum (𝓞 K)} {x : K} {M : ℕ} (hM : 0 < M) (h : w.valuation K (x ^ M) = 1) :
     w.valuation K x = 1 := by
   rw [map_pow] at h
   exact (pow_eq_one_iff_of_nonneg zero_le hM.ne').1 h
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `isOfFinOrder_iff_pow_eq_one.1 h`. Use `unit_of_pow hn ?_` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, h, Units.val_one, map_one]`.
+-/
 theorem unit_of_finOrder {w : HeightOneSpectrum (𝓞 K)} {ζ : Kˣ} (h : IsOfFinOrder ζ) : w.valuation K (ζ : K) = 1 := by
   obtain ⟨n, hn, h⟩ := isOfFinOrder_iff_pow_eq_one.1 h
   refine unit_of_pow hn ?_
   rw [← Units.val_pow_eq_pow_val, h, Units.val_one, map_one]
 
+/- English proof (translation)
+Establish `hp0 : w.valuation K (p : K) ≠ 0` using `by simpa using hp.ne_zero`. Establish `hp1 : w.valuation K (p : K) < 1`. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K)]`. Conclude with `(w.valuation_lt_one_iff_mem _).2 hw`. Establish `hx0 : w.valuation K x ≠ 0`.
+
+Introduce `h0`. Rewrite `h` using `[h0, zero_pow hM.ne']`. Conclude with `zpow_ne_zero _ hp0 h.symm`. Use `⟨by simpa using hx0, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg log h`.
+
+Rewrite `h1` using `[log_pow, log_zpow]`. Establish `h2 : log (w.valuation K (p : K)) ≠ 0`. Introduce `h3`. Rewrite `hp1` using `[← exp_log hp0, h3]`. Simplify using `at hp1`.
+
+Unfold `val_vp ordE`. Establish `h3 : ((log (w.valuation K (p : K)) : ℤ) : ℚ) ≠ 0` using `by exact_mod_cast h2`. Establish `h4 : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `h5 : (M : ℚ) * ((log (w.valuation K x) : ℤ) : ℚ) = n * ((log (w.valuation K (p : K)) : ℤ) : ℚ)`. Simplify using `only [nsmul_eq_mul, smul_eq_mul] at h1`.
+
+Conclude with `h1` after adjusting the coercions. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem val_vp_of_pow {w : HeightOneSpectrum (𝓞 K)} {p : ℕ} (hp : p.Prime) (hw : ((p : ℕ) : 𝓞 K) ∈ w.asIdeal) {x : K} {M : ℕ}
     (hM : 0 < M) {n : ℤ} (h : w.valuation K x ^ M = w.valuation K (p : K) ^ n) : x ≠ 0 ∧ val_vp w p x = (n : ℚ) / M := by
   have hp0 : w.valuation K (p : K) ≠ 0 := by simpa using hp.ne_zero
@@ -132,6 +181,9 @@ theorem val_vp_of_pow {w : HeightOneSpectrum (𝓞 K)} {p : ℕ} (hp : p.Prime) 
   field_simp
   linarith
 
+/- English proof (translation)
+Unfold `val_vp ordE`. Rewrite using `[map_mul, log_mul (by simpa using hx) (by simpa using hy)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_vp_mul {w : HeightOneSpectrum (𝓞 K)} {p : ℕ} {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     val_vp w p (x * y) = val_vp w p x + val_vp w p y := by
   unfold val_vp ordE
@@ -139,6 +191,9 @@ theorem val_vp_mul {w : HeightOneSpectrum (𝓞 K)} {p : ℕ} {x y : K} (hx : x 
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `val_vp ordE`. Rewrite using `[map_zpow₀, log_zpow]`. Simplify using `only [smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_vp_zpow {w : HeightOneSpectrum (𝓞 K)} {p : ℕ} (x : K) (n : ℤ) :
     val_vp w p (x ^ n) = n * val_vp w p x := by
   unfold val_vp ordE
@@ -147,15 +202,26 @@ theorem val_vp_zpow {w : HeightOneSpectrum (𝓞 K)} {p : ℕ} (x : K) (n : ℤ)
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[← zpow_neg_one, val_vp_zpow]`. Simplify using the standard rewrite rules.
+-/
 theorem val_vp_inv {w : HeightOneSpectrum (𝓞 K)} {p : ℕ} (x : K) : val_vp w p x⁻¹ = -val_vp w p x := by
   rw [← zpow_neg_one, val_vp_zpow]
   simp
 
+/- English proof (translation)
+Unfold `val_vp ordE`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem val_vp_unit {w : HeightOneSpectrum (𝓞 K)} {p : ℕ} {x : K} (h : w.valuation K x = 1) : val_vp w p x = 0 := by
   unfold val_vp ordE
   rw [h]
   simp
 
+/- English proof (translation)
+Establish `hnu : ¬ IsUnit ((p : ℕ) : 𝓞 K)`. Introduce `hu`. Establish `h2` using `hu.map (Algebra.norm ℤ)`. Establish `e : ((p : ℕ) : 𝓞 K) = algebraMap ℤ (𝓞 K) (p : ℤ)` using `by simp`. Rewrite `h2` using `[e, Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq]`.
+
+Conclude with `hp.ne_one (by simpa using h2)`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {((p : ℕ) : 𝓞 K)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField K)⟩, hle (Ideal.mem_span_singleton_self _)⟩`.
+-/
 theorem exists_over (K : Type) [Field K] [NumberField K] {p : ℕ} (hp : p.Prime) :
     ∃ v : HeightOneSpectrum (𝓞 K), ((p : ℕ) : 𝓞 K) ∈ v.asIdeal := by
   have hnu : ¬ IsUnit ((p : ℕ) : 𝓞 K) := by
@@ -168,6 +234,11 @@ theorem exists_over (K : Type) [Field K] [NumberField K] {p : ℕ} (hp : p.Prime
   exact ⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField K)⟩,
     hle (Ideal.mem_span_singleton_self _)⟩
 
+/- English proof (translation)
+Introduce `hT`. Take `⟨x, y, e⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes ha hp).2 h)`. Apply `one_notMem w` to reduce the goal to its premises. Establish `e' : (x : 𝓞 E) * (a : 𝓞 E) + (y : 𝓞 E) * (p : 𝓞 E) = 1`. Conclude with `congrArg (Int.cast : ℤ → 𝓞 E) e` after adjusting the coercions.
+
+Rewrite using `[← e']`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hT) (Ideal.mul_mem_left _ _ hw)`.
+-/
 theorem natCast_notMem_of_ne {a p : ℕ} (ha : a.Prime) (hp : p.Prime) (h : a ≠ p)
     (w : HeightOneSpectrum (𝓞 E)) (hw : ((p : ℕ) : 𝓞 E) ∈ w.asIdeal) : ((a : ℕ) : 𝓞 E) ∉ w.asIdeal := by
   intro hT
@@ -190,19 +261,40 @@ structure SplitOver (p : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) : Prop where
   unram : ((p : ℕ) : 𝓞 X.E) ∉ P.asIdeal ^ 2
   ne : P ≠ conjPrime₂ P
 
+/- English proof (translation)
+The claim follows from `h.norm ▸ Ideal.absNorm_mem _`.
+-/
 theorem SplitOver.mem {p : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (h : SplitOver p P) : ((p : ℕ) : 𝓞 X.E) ∈ P.asIdeal :=
   h.norm ▸ Ideal.absNorm_mem _
 
+/- English proof (translation)
+The claim follows from `val_natCast_of_notMem_sq h.mem h.unram`.
+-/
 theorem SplitOver.val {p : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (h : SplitOver p P) : P.valuation X.E (p : X.E) = exp (-1 : ℤ) :=
   val_natCast_of_notMem_sq h.mem h.unram
 
+/- English proof (translation)
+Rewrite using `[valuation_conjP, star_natCast, h.val]`.
+-/
 theorem SplitOver.valBar {p : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (h : SplitOver p P) :
     (conjPrime₂ P).valuation X.E (p : X.E) = exp (-1 : ℤ) := by
   rw [valuation_conjP, star_natCast, h.val]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_pullW (τ : X.Tau) (w : HeightOneSpectrum (𝓞 X.K)) (r : 𝓞 X.E) :
     r ∈ (pullW τ w).asIdeal ↔ RingOfIntegers.mapRingHom (X.emb τ) r ∈ w.asIdeal := Iff.rfl
 
+/- English proof (translation)
+Establish `a : ∀ σ, SeesP w σ P → ∀ r : 𝓞 X.E, r ∈ P.asIdeal ↔ RingOfIntegers.mapRingHom (X.emb σ) r ∈ w.asIdeal`. Introduce `σ hσ r`. Rewrite using `[← mem_pullW, hσ]`. Establish `b : ∀ σ, SeesPbar w σ P → ∀ r : 𝓞 X.E, r ∈ P.asIdeal ↔ RingOfIntegers.mapRingHom (X.embBar σ) r ∈ w.asIdeal`. Introduce `σ hσ r`.
+
+Establish `e : RingOfIntegers.mapRingHom (X.embBar σ) r = RingOfIntegers.mapRingHom (X.emb σ) (cO X.E r)` using `rfl`. Rewrite using `[e, ← mem_pullW, hσ, mem_conjP, cO_cO]`. Establish `u` using `fun φ ψ => GlobalTheory.ringHom_eq_of_comap_eq_unramified_degree_one X.E X.K φ ψ w P p h.prime h.norm h.unram`. Apply the tactic sequence `rcases h1 with h1 | h1 <;> rcases h2 with h2 | h2`. Conclude with `hX.emb_inj (u _ _ (a _ h1) (a _ h2))`.
+
+Conclude with `absurd (u _ _ (a _ h1) (b _ h2)) (hX.emb_ne _ _)`. Conclude with `absurd (u _ _ (a _ h2) (b _ h1)) (hX.emb_ne _ _)`. Establish `e` using `u _ _ (b _ h1) (b _ h2)`. Apply `hX.emb_inj` to reduce the goal to its premises. Use extensionality with `x`.
+
+Use `congrArg (fun φ : X.E →+* X.K => φ (star x)) e` as an intermediate fact. Simplify `this` using `[Fields.embBar, starRingEnd_apply]`.
+-/
 theorem see_unique (hX : X.Ok) {p : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (h : SplitOver p P) {w : HeightOneSpectrum (𝓞 X.K)}
     {τ τ' : X.Tau} (h1 : SeesP w τ P ∨ SeesPbar w τ P) (h2 : SeesP w τ' P ∨ SeesPbar w τ' P) : τ = τ' := by
   have a : ∀ σ, SeesP w σ P → ∀ r : 𝓞 X.E, r ∈ P.asIdeal ↔ RingOfIntegers.mapRingHom (X.emb σ) r ∈ w.asIdeal := by
@@ -223,6 +315,15 @@ theorem see_unique (hX : X.Ok) {p : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (h :
     have := congrArg (fun φ : X.E →+* X.K => φ (star x)) e
     simpa [Fields.embBar, starRingEnd_apply] using this
 
+/- English proof (translation)
+Establish `key : SeesP w τ P ∨ SeesPbar w τ P → w.valuation X.K (∏ σ, X.emb σ y ^ n σ) = w.valuation X.K (X.emb τ y) ^ n τ`. Introduce `hτ`. Rewrite using `[map_prod, Finset.prod_eq_single τ, map_zpow₀]`. Introduce `σ _ hσ`. Rewrite using `[map_zpow₀, val_emb_eq_one (mem_pullW σ w) (h3 _ (fun e => hσ (see_unique hX h (Or.inl e) hτ)) (fun e => hσ (see_unique hX h (Or.inr e) hτ))), one_zpow]`.
+
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `hτ`. Rewrite using `[key (Or.inl hτ), zpow_mul]`. Use `congr 1`.
+
+Apply the tactic sequence `refine val_emb_zpow (mem_pullW τ w) ?_ ?_ <;> rw [show pullW τ w = P from hτ]`. Use `exacts [h.val, h1]`. Introduce `hτ`. Rewrite using `[key (Or.inr hτ), zpow_mul]`. Use `congr 1`.
+
+Apply the tactic sequence `refine val_emb_zpow (mem_pullW τ w) ?_ ?_ <;> rw [show pullW τ w = conjPrime₂ P from hτ]`. Use `exacts [h.valBar, by rw [neg_neg, h2]]`.
+-/
 theorem val_prod (hX : X.Ok) {p : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (h : SplitOver p P) (w : HeightOneSpectrum (𝓞 X.K))
     {y : X.E} {M : ℤ} (h1 : P.valuation X.E y = exp (-M)) (h2 : (conjPrime₂ P).valuation X.E y = exp M)
     (h3 : ∀ Q, Q ≠ P → Q ≠ conjPrime₂ P → Q.valuation X.E y = 1) (n : X.Tau → ℤ) (τ : X.Tau) :
@@ -248,21 +349,33 @@ theorem val_prod (hX : X.Ok) {p : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (h : S
     refine val_emb_zpow (mem_pullW τ w) ?_ ?_ <;> rw [show pullW τ w = conjPrime₂ P from hτ]
     exacts [h.valBar, by rw [neg_neg, h2]]
 
+/- English proof (translation)
+Rewrite using `[map_prod]`. Use `Finset.prod_eq_one fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, val_emb_eq_one (mem_pullW σ w) (h σ), one_zpow]`.
+-/
 theorem val_prod_unit (w : HeightOneSpectrum (𝓞 X.K)) {y : X.E} (h : ∀ τ, (pullW τ w).valuation X.E y = 1) (n : X.Tau → ℤ) :
     w.valuation X.K (∏ σ, X.emb σ y ^ n σ) = 1 := by
   rw [map_prod]
   refine Finset.prod_eq_one fun σ _ => ?_
   rw [map_zpow₀, val_emb_eq_one (mem_pullW σ w) (h σ), one_zpow]
 
+/- English proof (translation)
+Rewrite using `[mem_pullW, map_natCast]`.
+-/
 theorem natCast_mem_pullW (τ : X.Tau) (w : HeightOneSpectrum (𝓞 X.K)) (p : ℕ) :
     ((p : ℕ) : 𝓞 X.E) ∈ (pullW τ w).asIdeal ↔ ((p : ℕ) : 𝓞 X.K) ∈ w.asIdeal := by
   rw [mem_pullW, map_natCast]
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, Fields.f, hX.card_Tau, mul_comm]`.
+-/
 theorem finrank_E (hX : X.Ok) : Module.finrank ℚ X.E = 2 * X.f := by
   rw [← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, Fields.f, hX.card_Tau, mul_comm]
 
 variable {Pr : Primes X}
 
+/- English proof (translation)
+The claim follows from `hPr.T_prime u norm := hPr.vT_norm u P hP unram := GlobalTheory.SplitUnram.natCast_notMem_sq X.E X.conjO (Pr.piT u) (Pr.T u) (cO_cO (E := X.E)) (hPr.T_prime u) (hPr.piT_norm u) (hPr.piT_cop u) (by rw [finrank_E hX, ← hPr.vT_card u]; rfl) (hPr.vT_norm u) P hP ne := fun e => conj_pi …`.
+-/
 theorem splitOver_vT (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Pr.vT u) :
     SplitOver (Pr.T u) P where
   prime := hPr.T_prime u
@@ -274,6 +387,11 @@ theorem splitOver_vT (hX : X.Ok) (hPr : Pr.Ok) (u : Pr.Word) {P : HeightOneSpect
     rw [e, mem_conjP] at this
     exact this)
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, P ∈ Pr.vG i := by`. Break down `Finset.mem_union.1 hP with h2 | h2` into its components or cases. Use `exacts [⟨0, h2⟩, ⟨1, h2⟩]`. Establish `hcc : ∀ x, X.conjO (X.conjO x) = x` using `cO_cO (E := X.E)`. Use `val_natCast_of_notMem_sq (Ideal.absNorm_mem _) ?_` and prove the remaining obligations.
+
+Rewrite using `[show Formalism.L2.Col.qOf P = Pr.g i from hPr.vG_norm i P hi]`. Conclude with `GlobalTheory.SplitUnram.natCast_notMem_sq X.E X.conjO (X.conjO (Pr.piG i)) (Pr.g i) hcc (hPr.g_prime i) (by rw [hcc, mul_comm, hPr.piG_norm i]) (by rw [hcc]; exact (hPr.piG_cop i).symm) (by rw [finrank_E hX, ← hPr.vG_card i]; rfl) (hPr.vG_norm i) P hi`.
+-/
 theorem val_q_vG (hX : X.Ok) (hPr : Pr.Ok) {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Pr.vGs) :
     P.valuation X.E (Formalism.L2.Col.qOf P : X.E) = exp (-1 : ℤ) := by
   classical
@@ -292,23 +410,42 @@ section Chi
 
 variable {D : D7} {X : Fields} {s : Seam D X} {χ : TaylorLogMetric.IdE D → ℂ}
 
+/- English proof (translation)
+Unfold `desc`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem desc_spec {K : Type} [Field K] (σ : K →+* ℂ) {z : ℂ} (h : ∃ k, σ k = z) : σ (desc σ z) = z := by
   unfold desc
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+The claim follows from `σ.injective (desc_spec σ ⟨k, rfl⟩)`.
+-/
 theorem desc_map {K : Type} [Field K] (σ : K →+* ℂ) (k : K) : desc σ (σ k) = k :=
   σ.injective (desc_spec σ ⟨k, rfl⟩)
 
+/- English proof (translation)
+Apply `s.iE.injective` to reduce the goal to its premises. Rewrite using `[hs.2, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`.
+-/
 theorem symm_conj (hs : s.Ok) (x : D.host.E) : s.iE.symm (D.host.conj x) = star (s.iE.symm x) := by
   apply s.iE.injective
   rw [hs.2, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Take `⟨t1, t2, t3, -⟩` from `GlobalTheory.IdealTransport.transport D X s`. Conclude with `⟨idTo s J, fun x => by rw [t1, t1, h1, symm_conj hs], by rw [← t2, h2, t3]⟩`.
+-/
 theorem normOne_idTo (hs : s.Ok) {I J : Submodule (𝓞 X.E) X.E} (h1 : ∀ x, x ∈ J ↔ star x ∈ I) (h2 : I * J = 1) :
     TaylorLogMetric.N1 D (idTo s I) := by
   obtain ⟨t1, t2, t3, -⟩ := GlobalTheory.IdealTransport.transport D X s
   exact ⟨idTo s J, fun x => by rw [t1, t1, h1, symm_conj hs], by rw [← t2, h2, t3]⟩
 
+/- English proof (translation)
+Take `⟨t1, t2, t3, -, t5, -⟩` from `GlobalTheory.IdealTransport.transport D X s`. Take `⟨𝔟, h1, h2⟩` from `h`. Take `⟨I, rfl⟩` from `t5 𝔞`. Take `⟨J, rfl⟩` from `t5 𝔟`. Use `⟨I, J, rfl, fun x => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `h1 (s.iE x)` as an intermediate fact. Rewrite `this` using `[t1, t1, symm_conj hs, RingEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Rewrite `h2` using `[← t2, ← t3]`. Use extensionality with `x`. Use `t1 (I * J) (s.iE x)` as an intermediate fact.
+
+Rewrite `this` using `[h2, t1, RingEquiv.symm_apply_apply]`. Conclude with `this.symm`.
+-/
 theorem of_normOne (hs : s.Ok) {𝔞 : TaylorLogMetric.IdE D} (h : TaylorLogMetric.N1 D 𝔞) :
     ∃ I J : Submodule (𝓞 X.E) X.E, idTo s I = 𝔞 ∧ (∀ x, x ∈ J ↔ star x ∈ I) ∧ I * J = 1 := by
   obtain ⟨t1, t2, t3, -, t5, -⟩ := GlobalTheory.IdealTransport.transport D X s
@@ -324,6 +461,13 @@ theorem of_normOne (hs : s.Ok) {𝔞 : TaylorLogMetric.IdE D} (h : TaylorLogMetr
     rw [h2, t1, RingEquiv.symm_apply_apply] at this
     exact this.symm
 
+/- English proof (translation)
+Take `⟨-, -, -, t4, -⟩` from `GlobalTheory.IdealTransport.transport D X s`. Use `letI := D.host.cmStar`. Establish `hst : star (s.iE y) = s.iE (star y)`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[hs.2]`.
+
+Express the relevant statement in the definitionally equal form `D.host.φ₀ (@NumberField.IsCMField.complexConj D.host.E _ _ (D.host.isCMField_hostE) _ (s.iE y)) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`. Establish `hu : s.iE y ∈ unitary D.host.E`. Rewrite using `[Unitary.mem_iff, mul_comm (s.iE y), and_self, hst, ← map_mul, hy, map_one]`. Use `hχ.2 ⟨_, hu⟩` as an intermediate fact.
+
+Rewrite using `[t4, this, map_prod, ← s.iT.prod_comp]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_neg_one, map_inv₀, hs.1]`.
+-/
 theorem chi_span (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) {y : X.E} (hy : star y * y = 1) :
     χ (idTo s (Submodule.span (𝓞 X.E) {y})) = s.σ₀ (∏ τ, X.emb τ y ^ (-1 : ℤ)) := by
   obtain ⟨-, -, -, t4, -⟩ := GlobalTheory.IdealTransport.transport D X s
@@ -341,6 +485,13 @@ theorem chi_span (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) {y : X.E} (hy : 
   refine Finset.prod_congr rfl fun τ _ => ?_
   rw [zpow_neg_one, map_inv₀, hs.1]
 
+/- English proof (translation)
+Take `⟨c1, h, y, hh, hy, hyI⟩` from `GlobalTheory.NormOneIdeal.pow_eq_span_norm_one X.E I J h1 h2`. Take `⟨-, t2, -⟩` from `GlobalTheory.IdealTransport.transport D X s`. Establish `hn : ∀ n : ℕ, TaylorLogMetric.N1 D (idTo s (I ^ n))` using `fun n => normOne_idTo hs (c1 n) (by rw [← mul_pow, h2, one_pow])`. Establish `hp : ∀ n : ℕ, χ (idTo s (I ^ n)) = χ (idTo s I) ^ n`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, Submodule.one_eq_span, chi_span hs hχ (by simp)]`. Simplify using the standard rewrite rules. Consider the case `succ n ih => rw [pow_succ, pow_succ, t2, hχ.1 _ _ (hn n) (normOne_idTo hs h1 h2), ih]`.
+
+Use `⟨h, y, hh, hy, hyI, s.σ₀.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← chi_span hs hχ hy, hyI, hp, map_pow, IndefiniteRowSideFullHecke.CharacterValuation.chiK, desc_spec _ (hK _ (normOne_idTo hs h1 h2))]`.
+-/
 theorem chi_core (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : ChiInK s χ) {I J : Submodule (𝓞 X.E) X.E}
     (h1 : ∀ x, x ∈ J ↔ star x ∈ I) (h2 : I * J = 1) :
     ∃ (h : ℕ) (y : X.E), 0 < h ∧ star y * y = 1 ∧ Submodule.span (𝓞 X.E) {y} = I ^ h ∧
@@ -358,6 +509,9 @@ theorem chi_core (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : ChiInK s �
   refine ⟨h, y, hh, hy, hyI, s.σ₀.injective ?_⟩
   rw [← chi_span hs hχ hy, hyI, hp, map_pow, IndefiniteRowSideFullHecke.CharacterValuation.chiK, desc_spec _ (hK _ (normOne_idTo hs h1 h2))]
 
+/- English proof (translation)
+Take `⟨h, y, hh, hy, -, e⟩` from `chi_core hs hχ hK h1 h2`. Establish `hy0 : y ≠ 0` using `right_ne_zero_of_mul_eq_one hy`. Introduce `h0`. Rewrite `e` using `[h0, zero_pow hh.ne']`. Conclude with `Finset.prod_ne_zero_iff.2 (fun τ _ => zpow_ne_zero _ (by simpa using hy0)) e.symm`.
+-/
 theorem chiK_ne_zero (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : ChiInK s χ) {I J : Submodule (𝓞 X.E) X.E}
     (h1 : ∀ x, x ∈ J ↔ star x ∈ I) (h2 : I * J = 1) : chiK s χ (idTo s I) ≠ 0 := by
   obtain ⟨h, y, hh, hy, -, e⟩ := chi_core hs hχ hK h1 h2
@@ -366,21 +520,35 @@ theorem chiK_ne_zero (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : ChiInK
   rw [h0, zero_pow hh.ne'] at e
   exact Finset.prod_ne_zero_iff.2 (fun τ _ => zpow_ne_zero _ (by simpa using hy0)) e.symm
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, t6⟩` from `GlobalTheory.IdealTransport.transport D X s`. Rewrite using `[chiDet, t6]`.
+-/
 theorem chiDet_eq {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) : chiDet s χ N = chiK s χ (idTo s (detLat N)) := by
   obtain ⟨-, -, -, -, -, t6⟩ := GlobalTheory.IdealTransport.transport D X s
   rw [chiDet, t6]
 
+/- English proof (translation)
+Take `⟨J, h1, h2⟩` from `GlobalTheory.DetSelfDual.detLat_mul_conj X.E n N hN`. Rewrite using `[chiDet_eq]`. Conclude with `chiK_ne_zero hs hχ hK h1 h2`.
+-/
 theorem chiDet_ne_zero (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : ChiInK s χ) {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)}
     (hN : IsSdLat N) : chiDet s χ N ≠ 0 := by
   obtain ⟨J, h1, h2⟩ := GlobalTheory.DetSelfDual.detLat_mul_conj X.E n N hN
   rw [chiDet_eq]
   exact chiK_ne_zero hs hχ hK h1 h2
 
+/- English proof (translation)
+Use `GlobalTheory.CharVal.DetFrame.maxV_detLat E n N P 1 (fun x => by rw [h]; rfl)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem maxV_detLat_std {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {N : Submodule (𝓞 E) (Sp E n)}
     {P : HeightOneSpectrum (𝓞 E)} (h : localization₂ P.asIdeal N = stdAt E n P) : MaxV P (detLat N) 1 := by
   have := GlobalTheory.CharVal.DetFrame.maxV_detLat E n N P 1 (fun x => by rw [h]; rfl)
   simpa using this
 
+/- English proof (translation)
+Take `⟨J, h1, h2⟩` from `GlobalTheory.DetSelfDual.detLat_mul_conj X.E n N hN`. Take `⟨h, y, hh, -, hyI, e⟩` from `chi_core hs hχ hK h1 h2`. Rewrite using `[chiDet_eq]`. Use `unit_of_pow hh ?_` and prove the remaining obligations. Rewrite using `[e]`.
+
+Use `val_prod_unit w (fun τ => ?_) _` and prove the remaining obligations. Use `(maxV_detLat_std (hS _ ((natCast_mem_pullW τ w p).2 hw))).pow h` as an intermediate fact. Rewrite `this` using `[← hyI, one_pow]`. Conclude with `(maxV_span_singleton y).unique this`.
+-/
 theorem chiDet_unit (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : ChiInK s χ) {p : ℕ} {w : HeightOneSpectrum (𝓞 X.K)}
     (hw : ((p : ℕ) : 𝓞 X.K) ∈ w.asIdeal) {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)}
     (hN : IsSdLat N) (hS : StdOver p N) : UnitAt w (chiDet s χ N) := by
@@ -394,6 +562,9 @@ theorem chiDet_unit (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : ChiInK 
   rw [← hyI, one_pow] at this
   exact (maxV_span_singleton y).unique this
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, t6⟩` from `GlobalTheory.IdealTransport.transport D X s`. Take `⟨J, h1, h2⟩` from `GlobalTheory.DetSelfDual.detLat_mul_conj X.E a N hN`. Take `⟨J', h1', h2'⟩` from `GlobalTheory.DetSelfDual.detLat_mul_conj X.E b N' hN'`. Rewrite using `[← desc_map s.σ₀ (_ * _), map_mul, map_zpow₀, map_zpow₀, chiDet, chiDet, IndefiniteRowSideFullHecke.CharacterValuation.chiK, IndefiniteRowSideFullHecke.CharacterValuation.chiK, desc_spec _ (hK _ (t6 a N ▸ normOne_idTo hs h1 h2)), desc_spec _ (hK _ (t6 b N' ▸ normOne_idTo hs h1' h …`. Both sides reduce to the same expression.
+-/
 theorem chiFK_eq (hs : s.Ok) (hK : ChiInK s χ) (a b : ℕ) {N : Submodule (𝓞 X.E) (Sp X.E a)}
     {N' : Submodule (𝓞 X.E) (Sp X.E b)} (hN : IsSdLat N) (hN' : IsSdLat N') :
     chiFK s χ a b N N' = chiDet s χ N ^ (((b / 2 : ℕ) : ℤ)) * chiDet s χ N' ^ (-((a / 2 : ℕ) : ℤ)) := by
@@ -410,6 +581,17 @@ section PartsChi
 
 variable {D : D7} {Z : Dat} {s : Seam D Z.X} {χ : TaylorLogMetric.IdE D → ℂ}
 
+/- English proof (translation)
+Use `⟨fun 𝔞 h𝔞 hloc => ?_, fun n N hN hS => chiDet_unit hs hχ hK hw hN hS, fun a b N N' _ _ hN hN' hS hS' => ?_⟩` and prove the remaining obligations. Take `⟨I, J, rfl, h1, h2⟩` from `of_normOne hs h𝔞`. Take `⟨h, y, hh, -, hyI, e⟩` from `chi_core hs hχ hK h1 h2`. Take `⟨-, t2, t3, t4, -⟩` from `GlobalTheory.IdealTransport.transport D Z.X s`. Establish `hp : ∀ n : ℕ, idTo s (I ^ n) = idTo s I ^ n`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using t3`. Consider the case `succ n ih => rw [pow_succ, pow_succ, t2, ih]`. Use `unit_of_pow hh ?_` and prove the remaining obligations.
+
+Rewrite using `[e]`. Use `val_prod_unit w (fun τ => ?_) _` and prove the remaining obligations. Take `⟨Q, hQ⟩` from `exists_pull (s.iE.symm : D.host.E →+* Z.X.E) (pullW τ w)`. Establish `hT : ((Z.Pr.T u : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal`. Rewrite using `[hQ, map_natCast, natCast_mem_pullW]`.
+
+Conclude with `hw`. Establish `h3` using `(maxV_of_localization_eq (hloc Q hT)).pow h`. Rewrite `h3` using `[← hp, ← hyI, t4, one_pow]`. Establish `h4` using `val_emb_eq_one hQ ((maxV_span_singleton _).unique h3)`. Simplify using `using h4`.
+
+Establish `h1 : w.valuation _ _ = 1` using `chiDet_unit hs hχ hK hw hN hS`. Establish `h2 : w.valuation _ _ = 1` using `chiDet_unit hs hχ hK hw hN' hS'`. Rewrite using `[UnitAt, chiFK_eq hs hK a b hN hN', map_mul, map_zpow₀, map_zpow₀, h1, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem partBChi (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : ChiInK s χ) (u : Z.Pr.Word) {w : HeightOneSpectrum (𝓞 Z.X.K)}
     (hw : ((Z.Pr.T u : ℕ) : 𝓞 Z.X.K) ∈ w.asIdeal) : PartBChi Z s χ u w := by
   refine ⟨fun 𝔞 h𝔞 hloc => ?_, fun n N hN hS => chiDet_unit hs hχ hK hw hN hS, fun a b N N' _ _ hN hN' hS hS' => ?_⟩
@@ -437,6 +619,25 @@ theorem partBChi (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : ChiInK s �
     rw [UnitAt, chiFK_eq hs hK a b hN hN', map_mul, map_zpow₀, map_zpow₀, h1, h2]
     simp
 
+/- English proof (translation)
+Introduce `P hP`. Establish `hS` using `splitOver_vT hZ.fields hZ.primes u hP`. Take `⟨⟨J, h1, h2⟩, m1, m2, m3, -⟩` from `GlobalTheory.CharVal.Vp.vp_main Z.X.E P hS.ne`. Take `⟨h, y, hh, hy, hyI, e⟩` from `chi_core hs hχ hK h1 h2`. Establish `v1 : P.valuation _ y = exp (-(h : ℤ))`.
+
+Rewrite using `[(maxV_span_singleton y).unique (hyI ▸ m1.pow h), ← exp_nsmul]`. Simplify using the standard rewrite rules. Establish `v2 : (conjPrime₂ P).valuation _ y = exp (h : ℤ)`. Rewrite using `[(maxV_span_singleton y).unique (hyI ▸ m2.pow h), ← exp_nsmul]`. Simplify using the standard rewrite rules.
+
+Establish `v3 : ∀ Q, Q ≠ P → Q ≠ conjPrime₂ P → Q.valuation _ y = 1` using `fun Q a b => by`. Rewrite using `[(maxV_span_singleton y).unique (hyI ▸ (m3 Q a b).pow h), one_pow]`. Establish `hh' : (h : ℚ) ≠ 0` using `by exact_mod_cast hh.ne'`. Use `⟨fun σ => ?_, fun w hw => ?_, fun w hw τ => ⟨fun hτ => ?_, fun hτ => ?_⟩⟩` and prove the remaining obligations. Establish `h3 : ‖σ (chiVp s χ P)‖ ^ h = 1`.
+
+Rewrite using `[← norm_pow, ← map_pow, chiVp, e, map_prod, norm_prod]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Establish `h4` using `congrArg (σ.comp (Z.X.emb τ)) hy`. Rewrite `h4` using `[map_mul, hZ.fields.conjE, map_one]`. Establish `h5` using `congrArg norm h4`.
+
+Rewrite `h5` using `[norm_mul, Complex.norm_conj, norm_one, ← sq]`. Establish `h6` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h5`. Rewrite using `[map_zpow₀, norm_zpow]`. Rewrite `h6` using `[RingHom.comp_apply]`. Rewrite using `[h6, one_zpow]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hh.ne').1 h3`. Use `unit_of_pow hh ?_` and prove the remaining obligations. Rewrite using `[chiVp, e]`. Use `val_prod_unit w (fun τ => v3 _ (fun e' => hw ?_) (fun e' => hw ?_)) _` and prove the remaining obligations. Rewrite using `[← natCast_mem_pullW τ, e']`.
+
+Conclude with `hS.mem`. Rewrite using `[← natCast_mem_pullW τ, e', natCast_mem_conjP]`. Conclude with `hS.mem`. Establish `h3` using `(val_prod hZ.fields hS w v1 v2 v3 (fun _ => -1) τ).1 hτ`. Rewrite `h3` using `[← e, map_pow]`.
+
+Rewrite using `[chiVp, (val_vp_of_pow hS.prime hw hh h3).2]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h3` using `(val_prod hZ.fields hS w v1 v2 v3 (fun _ => -1) τ).2 hτ`. Rewrite `h3` using `[← e, map_pow]`.
+
+Rewrite using `[chiVp, (val_vp_of_pow hS.prime hw hh h3).2]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem partA (hZ : Z.Ok) (hs : s.Ok) (hχ : TaylorLogMetric.IsChi D χ) (hK : ChiInK s χ) (u : Z.Pr.Word) : PartA Z s χ u := by
   intro P hP
   have hS := splitOver_vT hZ.fields hZ.primes u hP
@@ -484,10 +685,18 @@ section Xi
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {L : Type} [Field L]
 
+/- English proof (translation)
+Take `⟨n, hn, h⟩` from `isOfFinOrder_iff_pow_eq_one.1 h`. Conclude with `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, by rw [← MonoidHom.pow_apply, h, MonoidHom.one_apply]⟩`.
+-/
 theorem finOrder_apply {ξ : Chr F E L} (h : IsOfFinOrder ξ) (y : (AfE F E)ˣ) : IsOfFinOrder (ξ y) := by
   obtain ⟨n, hn, h⟩ := isOfFinOrder_iff_pow_eq_one.1 h
   exact isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, by rw [← MonoidHom.pow_apply, h, MonoidHom.one_apply]⟩
 
+/- English proof (translation)
+Unfold `unifVal`. Use `split_ifs with H`. Take `⟨b, hb1, hb2⟩` from `SetLike.exists_of_lt (Ideal.pow_lt_self P.asIdeal P.ne_bot P.isPrime.ne_top 2 le_rfl)`. Take `⟨y, y₀, a1, a2, a3, a4⟩` from `GlobalTheory.SuppIdele.exists_supported_idele F E P (P.under (𝓞 F)) b rfl`. Rewrite using `[← H.choose_spec (P.under (𝓞 F)) rfl y y₀ b a1 hb1 hb2 a2 a3 a4]`.
+
+Conclude with `finOrder_apply h y`. Conclude with `IsOfFinOrder.one`.
+-/
 theorem finOrder_unifVal {ξ : Chr F E L} (h : IsOfFinOrder ξ) (P : HeightOneSpectrum (𝓞 E)) : IsOfFinOrder (unifVal ξ P) := by
   unfold unifVal
   split_ifs with H
@@ -497,6 +706,11 @@ theorem finOrder_unifVal {ξ : Chr F E L} (h : IsOfFinOrder ξ) (P : HeightOneSp
     exact finOrder_apply h y
   · exact IsOfFinOrder.one
 
+/- English proof (translation)
+Unfold `qVal qValC`. Use `split_ifs with H`. Take `⟨y, y₀, a1, a2, a3, a4⟩` from `GlobalTheory.SuppIdele.exists_supported_idele F E P (P.under (𝓞 F)) ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 E) rfl`. Rewrite using `[← H.choose_spec (P.under (𝓞 F)) rfl y y₀ a1 a2 a3 a4]`. Conclude with `finOrder_apply h y`.
+
+Conclude with `IsOfFinOrder.one`.
+-/
 theorem finOrder_qVal {ξ : Chr F E L} (h : IsOfFinOrder ξ) (P : HeightOneSpectrum (𝓞 E)) : IsOfFinOrder (qVal ξ P) := by
   unfold qVal qValC
   split_ifs with H
@@ -505,15 +719,24 @@ theorem finOrder_qVal {ξ : Chr F E L} (h : IsOfFinOrder ξ) (P : HeightOneSpect
     exact finOrder_apply h y
   · exact IsOfFinOrder.one
 
+/- English proof (translation)
+The claim follows from `mu.2.1.1.1.2`.
+-/
 theorem finOrder_tup {S : Set ℕ} (mu : Tup F E L S) : IsOfFinOrder (mu : Chr F E L) :=
   mu.2.1.1.1.2
 
+/- English proof (translation)
+Rewrite using `[← Formalism.L2.Host.unif_spec P]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P _).symm`.
+-/
 theorem val_unif (P : HeightOneSpectrum (𝓞 E)) : P.valuation E ((Formalism.L2.Host.unif P : Eˣ) : E) = exp (-1 : ℤ) := by
   rw [← Formalism.L2.Host.unif_spec P]
   exact (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P _).symm
 
 end Xi
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Mem.Chr.CharModel.productRule (F := L) ⟨χ.1, χ.2⟩`.
+-/
 theorem productRule {L : Type} [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L) : χ.ProductRule :=
   GlobalTheory.Mem.Chr.CharModel.productRule (F := L) ⟨χ.1, χ.2⟩
 
@@ -521,16 +744,27 @@ section Frames
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Use `(GlobalTheory.CharVal.DetFrame.maxV_detLat E n N Q (frameAt Q N) (Classical.epsilon_spec hf)).unique h` as an intermediate fact. Rewrite using `[ordDet, ordE, this, log_exp, neg_neg]`.
+-/
 theorem ordDet_eq {n : ℕ} {N : Submodule (𝓞 E) (Sp E n)} {Q : HeightOneSpectrum (𝓞 E)} {m : ℤ}
     (hf : ∃ f : Sp E n ≃ₗ[E] Sp E n, ∀ x, f x ∈ localization₂ Q.asIdeal N ↔ x ∈ stdAt E n Q) (h : MaxV Q (detLat N) (exp (-m))) :
     ordDet Q N = m := by
   have := (GlobalTheory.CharVal.DetFrame.maxV_detLat E n N Q (frameAt Q N) (Classical.epsilon_spec hf)).unique h
   rw [ordDet, ordE, this, log_exp, neg_neg]
 
+/- English proof (translation)
+The claim follows from `ordDet_eq ⟨1, fun x => by rw [h]; rfl⟩ (by simpa using maxV_detLat_std h)`.
+-/
 theorem ordDet_std {n : ℕ} {N : Submodule (𝓞 E) (Sp E n)} {Q : HeightOneSpectrum (𝓞 E)} (h : localization₂ Q.asIdeal N = stdAt E n Q) :
     ordDet Q N = 0 :=
   ordDet_eq ⟨1, fun x => by rw [h]; rfl⟩ (by simpa using maxV_detLat_std h)
 
+/- English proof (translation)
+Take `⟨-, -, -, -, e⟩` from `GlobalTheory.CharVal.Vp.vp_main E P hP`. Use `ordDet_eq ?_ (e ▸ h)` and prove the remaining obligations. Take `⟨a, -, ha⟩` from `h.2`. Establish `ha0 : a ≠ 0` using `by rintro rfl; rw [map_zero] at ha; exact exp_ne_zero ha.symm`. Use `⟨LinearEquiv.smulOfNeZero E (Sp E 1) a ha0, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : LinearEquiv.smulOfNeZero E (Sp E 1) a ha0 x ∈ localization₂ Q.asIdeal (vpLat P) ↔ a * x 0 ∈ localization₂ Q.asIdeal (vpIdeal P)` using `Iff.rfl`. Rewrite using `[e1, h.mem_locP exp_ne_zero, stdAt, mem_localization_standardLattice, Fin.forall_fin_one, intAt_iff, map_mul, ha, mul_le_iff_le_one_right (zero_lt_iff.2 exp_ne_zero)]`.
+-/
 theorem ordDet_vpLat {P Q : HeightOneSpectrum (𝓞 E)} (hP : P ≠ conjPrime₂ P) {m : ℤ} (h : MaxV Q (vpIdeal P) (exp (-m))) :
     ordDet Q (vpLat P) = m := by
   obtain ⟨-, -, -, -, e⟩ := GlobalTheory.CharVal.Vp.vp_main E P hP
@@ -550,6 +784,15 @@ section Mu
 variable {X : Fields} {Pr : Primes X} {m : ℕ} {Ch : Chars X Pr m} {σ₀ : X.K →+* ℂ} {e : X.Tau → ℚ} {j : Fin m}
   {μ : Formalism.L2.Host.HChar X.E}
 
+/- English proof (translation)
+Establish `hg : ∀ i, ((Pr.g i : ℕ) : 𝓞 X.E) ≠ 0` using `fun i => by exact_mod_cast (hPr.g_prime i).ne_zero`. Take `⟨M, z, hM, h1, h2, h3⟩` from `GlobalTheory.TamePow.exists_pow_locK_mul_inf X.E μ (divs ((Pr.g 0 : ℕ) : 𝓞 X.E) ∪ divs ((Pr.g 1 : ℕ) : 𝓞 X.E)) (productRule μ) (fun v hv => hμ.unr v fun i hi => hv (by`. Rewrite using `[Finset.mem_union, mem_divs (hg 0), mem_divs (hg 1)]`. Use `fin_cases i`. Use `exacts [Or.inl hi, Or.inr hi])) hμ.tame P k`.
+
+Take `⟨n, hn, hinf⟩` from `hμ.inf`. Use `⟨M, z, fun τ => -n τ, hM, fun τ => by push_cast; rw [hn]; ring, h1, h2, σ₀.injective ?_⟩` and prove the remaining obligations. Establish `h4 : ((μ.locK P k : ℂˣ) : ℂ) ^ M = (((μ.inf z : ℂˣ) : ℂ))⁻¹`. Rewrite using `[← Units.val_pow_eq_pow_val, eq_inv_of_mul_eq_one_left h3, Units.val_inv_eq_inv_val]`. Rewrite using `[map_pow, hc, mul_comm 2 M, pow_mul, h4, hinf z, ← Finset.prod_inv_distrib, ← Finset.prod_pow, map_prod]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, ← zpow_neg, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = X.embC σ₀ τ (z / star (z : X.E))`. Establish `h0 : X.embC σ₀ τ (z : X.E) ≠ 0` using `by simp`.
+
+Rewrite using `[map_div₀, hX.conjE, div_pow, div_eq_div_iff (pow_ne_zero _ (by simpa using h0)) (by simpa using h0), sq, mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem mu_core (hX : X.Ok) (hPr : Pr.Ok) (hμ : IsMu0 Ch σ₀ e j μ) (P : HeightOneSpectrum (𝓞 X.E)) (k : X.Eˣ) {c : X.K}
     (hc : σ₀ c = ((μ.locK P k : ℂˣ) : ℂ)) :
     ∃ (M : ℕ) (z : X.E) (n : X.Tau → ℤ), 0 < M ∧ (∀ τ, (n τ : ℚ) = 2 * e τ) ∧ P.valuation X.E z = P.valuation X.E (k : X.E) ^ M ∧
@@ -576,6 +819,11 @@ theorem mu_core (hX : X.Ok) (hPr : Pr.Ok) (hμ : IsMu0 Ch σ₀ e j μ) (P : Hei
   push_cast
   rfl
 
+/- English proof (translation)
+Take `⟨M, z, n, hM, -, -, h2, h3⟩` from `mu_core hX hPr hμ P k hc`. Use `unit_of_pow (M := 2 * M) (by omega) ?_` and prove the remaining obligations. Rewrite using `[h3]`. Use `val_prod_unit w (fun τ => ?_) n` and prove the remaining obligations. Establish `h4` using `(natCast_mem_pullW τ w p).2 hw`.
+
+Rewrite using `[map_div₀, ← valuation_conjP, h2 _ (fun e' => hP (e' ▸ h4)), h2 _ (fun e' => hP (e' ▸ (natCast_mem_conjP _ p).2 h4)), div_one]`.
+-/
 theorem mu_unit (hX : X.Ok) (hPr : Pr.Ok) (hμ : IsMu0 Ch σ₀ e j μ) {P : HeightOneSpectrum (𝓞 X.E)} (k : X.Eˣ) {c : X.K}
     (hc : σ₀ c = ((μ.locK P k : ℂˣ) : ℂ)) {p : ℕ} (hP : ((p : ℕ) : 𝓞 X.E) ∉ P.asIdeal) {w : HeightOneSpectrum (𝓞 X.K)}
     (hw : ((p : ℕ) : 𝓞 X.K) ∈ w.asIdeal) : w.valuation X.K c = 1 := by
@@ -586,6 +834,23 @@ theorem mu_unit (hX : X.Ok) (hPr : Pr.Ok) (hμ : IsMu0 Ch σ₀ e j μ) {P : Hei
   have h4 := (natCast_mem_pullW τ w p).2 hw
   rw [map_div₀, ← valuation_conjP, h2 _ (fun e' => hP (e' ▸ h4)), h2 _ (fun e' => hP (e' ▸ (natCast_mem_conjP _ p).2 h4)), div_one]
 
+/- English proof (translation)
+Take `⟨M, z, n, hM, hn, h1, h2, h3⟩` from `mu_core hX hPr hμ P' (Formalism.L2.Host.unif P') hc`. Rewrite `h1` using `[val_unif, ← exp_nsmul]`. Establish `hne` using `h.ne`. Establish `v1 : P.valuation X.E (z / star z) = exp (-(ε * M))`. Rewrite using `[map_div₀, ← valuation_conjP]`.
+
+Break down `hε with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Rewrite using `[h1, h2 _ hne.symm]`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2 _ hne]`. Simplify using the standard rewrite rules.
+
+Establish `v2 : (conjPrime₂ P).valuation X.E (z / star z) = exp (ε * M)`. Rewrite using `[map_div₀, ← valuation_conjP, conjP_conjP']`. Break down `hε with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Rewrite using `[h1, h2 _ hne.symm]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1, h2 _ hne]`. Simplify using the standard rewrite rules. Establish `v3 : ∀ Q, Q ≠ P → Q ≠ conjPrime₂ P → Q.valuation X.E (z / star z) = 1`. Introduce `Q a b`. Establish `a' : conjPrime₂ Q ≠ conjPrime₂ P` using `fun e' => a (by rw [← conjP_conjP' Q, e', conjP_conjP'])`.
+
+Establish `b' : conjPrime₂ Q ≠ P` using `fun e' => b (by rw [← e', conjP_conjP'])`. Rewrite using `[map_div₀, ← valuation_conjP]`. Break down `hε with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Rewrite using `[h2 _ a, h2 _ b', div_one]`. Rewrite using `[h2 _ b, h2 _ a', div_one]`.
+
+Establish `hM' : (M : ℚ) ≠ 0` using `by exact_mod_cast hM.ne'`. Establish `key` using `val_prod hX h w v1 v2 v3 n τ`. Rewrite `key` using `[← h3, map_pow]`. Prove the components needed by the constructor for the conclusion. Introduce `hτ`.
+
+Rewrite using `[(val_vp_of_pow h.prime hw (by omega) (key.1 hτ)).2]`. Use `push_cast`. Rewrite using `[hn]`. Clear the denominators using the available nonvanishing facts. Introduce `hτ`.
+
+Rewrite using `[(val_vp_of_pow h.prime hw (by omega) (key.2 hτ)).2]`. Use `push_cast`. Rewrite using `[hn]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mu_val (hX : X.Ok) (hPr : Pr.Ok) (hμ : IsMu0 Ch σ₀ e j μ) {p : ℕ} {P P' : HeightOneSpectrum (𝓞 X.E)} (h : SplitOver p P)
     {ε : ℤ} (hε : (P' = P ∧ ε = 1) ∨ (P' = conjPrime₂ P ∧ ε = -1)) {c : X.K} (hc : σ₀ c = ((μ.val P' : ℂˣ) : ℂ))
     {w : HeightOneSpectrum (𝓞 X.K)} (hw : ((p : ℕ) : 𝓞 X.K) ∈ w.asIdeal) (τ : X.Tau) :
@@ -635,10 +900,16 @@ variable {D : D7} {Z : Dat} {s : Seam D Z.X} {χ : TaylorLogMetric.IdE D → ℂ
   {mu : Tup Z.X.F Z.X.E Z.X.K S} {cst : LocCst Z.X (rowSG Z.Pr sel mu)}
   {m0 : Fin Z.R.m → Formalism.L2.Host.HChar Z.X.E} {eta : Formalism.L2.Host.HChar Z.X.E}
 
+/- English proof (translation)
+Rewrite using `[← hsel v, Ideal.under_def, Ideal.mem_comap, map_natCast]`.
+-/
 theorem natCast_mem_sel (hsel : IsSel Z.X sel) (v : HeightOneSpectrum (𝓞 Z.X.F)) (p : ℕ) :
     ((p : ℕ) : 𝓞 Z.X.E) ∈ (sel v).asIdeal ↔ ((p : ℕ) : 𝓞 Z.X.F) ∈ v.asIdeal := by
   rw [← hsel v, Ideal.under_def, Ideal.mem_comap, map_natCast]
 
+/- English proof (translation)
+Use extensionality with `r`. Establish `e : cO Z.X.E (algebraMap (𝓞 Z.X.F) (𝓞 Z.X.E) r) = algebraMap (𝓞 Z.X.F) (𝓞 Z.X.E) r` using `RingOfIntegers.ext (hX.star_F (r : Z.X.F))`. Rewrite using `[Ideal.under_def, Ideal.under_def, Ideal.mem_comap, Ideal.mem_comap, mem_conjP, e]`.
+-/
 theorem under_conjP (hX : Z.X.Ok) (Q : HeightOneSpectrum (𝓞 Z.X.E)) :
     (conjPrime₂ Q).asIdeal.under (𝓞 Z.X.F) = Q.asIdeal.under (𝓞 Z.X.F) := by
   ext r
@@ -646,6 +917,23 @@ theorem under_conjP (hX : Z.X.Ok) (Q : HeightOneSpectrum (𝓞 Z.X.E)) :
     RingOfIntegers.ext (hX.star_F (r : Z.X.F))
   rw [Ideal.under_def, Ideal.under_def, Ideal.mem_comap, Ideal.mem_comap, mem_conjP, e]
 
+/- English proof (translation)
+Set `c : Z.X.E →ₐ[Z.X.F] Z.X.E` to `{ starRingEnd Z.X.E with commutes' := hX.star_F }`. Set `M : IntermediateField Z.X.F Z.X.E` to `(AlgHom.equalizer c (AlgHom.id _ _)).toIntermediateField fun x hx => by`. Establish `hx' : star x = x` using `hx`. Express the relevant statement in the definitionally equal form `star x⁻¹ = x⁻¹`. Rewrite using `[star_inv₀, hx']`.
+
+Establish `hM : M = ⊥`. Use `IntermediateField.isSimpleOrder_of_finrank_prime Z.X.F Z.X.E (by rw [hX.rankE]; exact Nat.prime_two)` as an intermediate fact. Use `(eq_bot_or_eq_top M).resolve_right fun e => hP ?_` and prove the remaining obligations. Use extensionality with `r`. Establish `h1 : (r : Z.X.E) ∈ M` using `e ▸ IntermediateField.mem_top`.
+
+Establish `h2 : cO Z.X.E r = r` using `RingOfIntegers.ext h1`. Rewrite using `[mem_conjP, h2]`. Assume the negation of the conclusion as `H`. Use `push Not at H`. Establish `h1 : ¬ ((P.asIdeal : Set (𝓞 Z.X.E)) ⊆ Q.asIdeal ∪ (conjPrime₂ Q).asIdeal)`.
+
+Rewrite using `[Ideal.subset_union]`. Introduce and unpack `(h1 | h1)`. Conclude with `H.1 (HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top h1)).symm`. Establish `: P = conjPrime₂ Q` using `HeightOneSpectrum.ext (P.isMaximal.eq_of_le (conjPrime₂ Q).isPrime.ne_top h1)`. Conclude with `H.2 (by rw [this, conjP_conjP'])`.
+
+Take `⟨a, ha, hna⟩` from `Set.not_subset.1 h1`. Establish `h2 : ((a * cO Z.X.E a : 𝓞 Z.X.E) : Z.X.E) ∈ M`. Express the relevant statement in the definitionally equal form `star ((a : Z.X.E) * star (a : Z.X.E)) = (a : Z.X.E) * star (a : Z.X.E)`. Rewrite using `[star_mul, star_star]`. Rewrite `h2` using `[hM, IntermediateField.mem_bot]`.
+
+Take `⟨x, hx⟩` from `h2`. Establish `h3 : IsIntegral ℤ x`. Rewrite using `[← isIntegral_algebraMap_iff (algebraMap Z.X.F Z.X.E).injective, hx]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Take `⟨r, h4⟩ : ∃ r : 𝓞 Z.X.F, algebraMap (𝓞 Z.X.F) (𝓞 Z.X.E) r = a * cO Z.X.E a` from `⟨⟨x, h3⟩, RingOfIntegers.ext hx⟩`.
+
+Establish `h5 : r ∈ P.asIdeal.under (𝓞 Z.X.F)`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, h4]`. Conclude with `Ideal.mul_mem_right _ _ ha`. Rewrite `h5` using `[← h, Ideal.under_def, Ideal.mem_comap, h4]`. Break down `Q.isPrime.mem_or_mem h5 with h6 | h6` into its components or cases.
+
+Conclude with `hna (Or.inl h6)`. Conclude with `hna (Or.inr h6)`.
+-/
 theorem eq_or_eq_conjP (hX : Z.X.Ok) {P Q : HeightOneSpectrum (𝓞 Z.X.E)} (hP : P ≠ conjPrime₂ P)
     (h : Q.asIdeal.under (𝓞 Z.X.F) = P.asIdeal.under (𝓞 Z.X.F)) : Q = P ∨ Q = conjPrime₂ P := by
   let c : Z.X.E →ₐ[Z.X.F] Z.X.E := { starRingEnd Z.X.E with commutes' := hX.star_F }
@@ -687,6 +975,11 @@ theorem eq_or_eq_conjP (hX : Z.X.Ok) {P Q : HeightOneSpectrum (𝓞 Z.X.E)} (hP 
   · exact hna (Or.inl h6)
   · exact hna (Or.inr h6)
 
+/- English proof (translation)
+Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Conclude with `Or.inl h`. Unfold `QE at h split_ifs at h with h2`. Take `⟨v, hv, e⟩` from `Finset.mem_image.1 h`. Conclude with `Or.inr ⟨v, by simpa using hv, e⟩`.
+
+Simplify using `at h`.
+-/
 theorem mem_rowSG_cases {P : HeightOneSpectrum (𝓞 Z.X.E)} (hP : P ∈ rowSG Z.Pr sel mu) :
     P ∈ Z.Pr.vGs ∨ ∃ v ∈ Qprime (mu : Chr Z.X.F Z.X.E Z.X.K), sel v = P := by
   classical
@@ -698,6 +991,9 @@ theorem mem_rowSG_cases {P : HeightOneSpectrum (𝓞 Z.X.E)} (hP : P ∈ rowSG Z
       exact Or.inr ⟨v, by simpa using hv, e⟩
     · simp at h
 
+/- English proof (translation)
+Break down `mem_rowSG_cases hP with h | ⟨v, hv, rfl⟩` into its components or cases. Conclude with `T_notMem_vGs hZ.primes u ⟨P, h⟩`. Rewrite using `[natCast_mem_sel hsel]`. Conclude with `fun h => hT v h hv`.
+-/
 theorem T_notMem_rowSG (hZ : Z.Ok) (hsel : IsSel Z.X sel) {u : Z.Pr.Word}
     (hT : UnramOver (mu : Chr Z.X.F Z.X.E Z.X.K) (Z.Pr.T u)) {P : HeightOneSpectrum (𝓞 Z.X.E)} (hP : P ∈ rowSG Z.Pr sel mu) :
     ((Z.Pr.T u : ℕ) : 𝓞 Z.X.E) ∉ P.asIdeal := by
@@ -706,6 +1002,15 @@ theorem T_notMem_rowSG (hZ : Z.Ok) (hsel : IsSel Z.X sel) {u : Z.Pr.Word}
   · rw [natCast_mem_sel hsel]
     exact fun h => hT v h hv
 
+/- English proof (translation)
+Introduce `h`. Establish `hsub : ∀ Q, Q ∈ Z.Pr.vG k → Q ∈ rowSG Z.Pr sel mu` using `fun Q hQ => Finset.mem_union_left _ (by`. Unfold `Primes.vGs`. Rewrite using `[Finset.mem_union]`. Use `fin_cases k`.
+
+Use `exacts [Or.inl hQ, Or.inr hQ])`. Establish `h0 : Z.X.conjO (Z.Pr.piG k) ≠ 0`. Use `right_ne_zero_of_mul (a := Z.Pr.piG k) ?_` and prove the remaining obligations. Rewrite using `[hZ.primes.piG_norm k]`. Conclude with `(hZ.primes.g_prime k).ne_zero` after adjusting the coercions.
+
+Rewrite `h` using `[← hZ.primes.piG_norm k]`. Break down `(sel v).isPrime.mem_or_mem h with h | h` into its components or cases. Use `hv ⟨conjPrime₂ (sel v), hsub _ ((mem_divs h0 _).2 ?_), by rw [under_conjP hZ.fields, hsel v]⟩` and prove the remaining obligations. Rewrite using `[mem_conjP]`. Conclude with `(cO_cO (Z.Pr.piG k)).symm ▸ h`.
+
+Conclude with `hv ⟨sel v, hsub _ ((mem_divs h0 _).2 h), hsel v⟩`.
+-/
 theorem g_notMem_sel (hZ : Z.Ok) (hsel : IsSel Z.X sel) {v : HeightOneSpectrum (𝓞 Z.X.F)}
     (hv : ¬ ∃ P ∈ rowSG Z.Pr sel mu, P.asIdeal.under (𝓞 Z.X.F) = v.asIdeal) (k : Fin 2) :
     ((Z.Pr.g k : ℕ) : 𝓞 Z.X.E) ∉ (sel v).asIdeal := by
@@ -727,17 +1032,28 @@ theorem g_notMem_sel (hZ : Z.Ok) (hsel : IsSel Z.X sel) {v : HeightOneSpectrum (
     exact (cO_cO (Z.Pr.piG k)).symm ▸ h
   · exact hv ⟨sel v, hsub _ ((mem_divs h0 _).2 h), hsel v⟩
 
+/- English proof (translation)
+The claim follows from `mu_unit hZ.fields hZ.primes (ht.mu0 i) _ (ht.muVal i P hg) hP hw`.
+-/
 theorem muVal_unit (hZ : Z.Ok) (ht : Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ).e j) m0 eta) (i : Fin Z.R.m)
     {P : HeightOneSpectrum (𝓞 Z.X.E)} (hg : ∀ k, ((Z.Pr.g k : ℕ) : 𝓞 Z.X.E) ∉ P.asIdeal) {p : ℕ}
     (hP : ((p : ℕ) : 𝓞 Z.X.E) ∉ P.asIdeal) {w : HeightOneSpectrum (𝓞 Z.X.K)} (hw : ((p : ℕ) : 𝓞 Z.X.K) ∈ w.asIdeal) :
     w.valuation Z.X.K (Z.Ch.muVal i P : Z.X.K) = 1 :=
   mu_unit hZ.fields hZ.primes (ht.mu0 i) _ (ht.muVal i P hg) hP hw
 
+/- English proof (translation)
+Simplify using `[mUof, i.2]`.
+-/
 theorem mUof_val (i : Fin Z.R.m) (P : HeightOneSpectrum (𝓞 Z.X.E)) :
     ((mUof Z.Ch mu i.1 P : Z.X.Kˣ) : Z.X.K) =
       (Z.Ch.muVal i P : Z.X.K)⁻¹ * ((unifVal (mu : Chr Z.X.F Z.X.E Z.X.K) P : Z.X.Kˣ) : Z.X.K)⁻¹ := by
   simp [mUof, i.2]
 
+/- English proof (translation)
+Unfold `muOff`. Use `finprod_induction (fun x => w.valuation Z.X.K x = 1) (map_one _) (fun x y hx hy => by rw [map_mul, hx, hy, one_mul]) fun v => ?_` and prove the remaining obligations. Use `split_ifs with hv`. Conclude with `map_one _`. Distinguish the cases in `hp : ((p : ℕ) : 𝓞 Z.X.E) ∈ (sel v).asIdeal`.
+
+Rewrite using `[ordDet_std (hS _ hp), zpow_zero, Units.val_one, map_one]`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, mUof_val, map_mul, map_inv₀, map_inv₀, muVal_unit hZ ht i (g_notMem_sel hZ hsel hv) hp hw, unit_of_finOrder (finOrder_unifVal (finOrder_tup mu) _)]`. Simplify using the standard rewrite rules.
+-/
 theorem muOff_unit (hZ : Z.Ok) (ht : Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ).e j) m0 eta) (hsel : IsSel Z.X sel) (i : Fin Z.R.m)
     {p : ℕ} {w : HeightOneSpectrum (𝓞 Z.X.K)} (hw : ((p : ℕ) : 𝓞 Z.X.K) ∈ w.asIdeal) {n : ℕ}
     {N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)} (hS : StdOver p N) :
@@ -752,6 +1068,9 @@ theorem muOff_unit (hZ : Z.Ok) (ht : Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ).
         muVal_unit hZ ht i (g_notMem_sel hZ hsel hv) hp hw, unit_of_finOrder (finOrder_unifVal (finOrder_tup mu) _)]
       simp
 
+/- English proof (translation)
+Unfold `muOff`. Use `finprod_induction (fun x => x ≠ 0) one_ne_zero (fun x y hx hy => mul_ne_zero hx hy) fun v => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `one_ne_zero`. Conclude with `Units.ne_zero _`.
+-/
 theorem muOff_ne_zero (mU : HeightOneSpectrum (𝓞 Z.X.E) → Z.X.Kˣ) {n : ℕ} (N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)) :
     muOff sel (rowSG Z.Pr sel mu) mU N ≠ 0 := by
   unfold muOff
@@ -760,6 +1079,17 @@ theorem muOff_ne_zero (mU : HeightOneSpectrum (𝓞 Z.X.E) → Z.X.Kˣ) {n : ℕ
   · exact one_ne_zero
   · exact Units.ne_zero _
 
+/- English proof (translation)
+Establish `hTP` using `T_notMem_rowSG hZ hsel hT P.2`. Establish `hq` using `unit_of_finOrder (w := w) (finOrder_qVal (finOrder_tup mu) P.1)`. Establish `key : ∀ (cq : Z.X.K) (ψ : (𝓞 Z.X.E ⧸ P.1.asIdeal)ˣ →* Z.X.Kˣ), P.1.valuation Z.X.E (Formalism.L2.Col.qOf P.1 : Z.X.E) = exp (-1 : ℤ) → w.valuation Z.X.K cq = 1 → w.valuation Z.X.K (LocE.locChar (Formalism.L2.Col.qOf P.1) cq ψ a) = 1`. Introduce `cq ψ h1 h2`. Take `⟨z, ζ, hζ, e⟩` from `GlobalTheory.LocCharVal.locChar_eq_zpow_mul Z.X.E Z.X.K P.1 _ cq ψ a h1 ha`.
+
+Rewrite using `[e, map_mul, map_zpow₀, h2, unit_of_finOrder hζ, one_zpow, one_mul]`. Unfold `muAtT`. Distinguish the cases in `hP : P.1 ∈ Z.Pr.vGs`. Use `key _ _ (val_q_vG hZ.fields hZ.primes hP) ?_` and prove the remaining obligations. Rewrite using `[if_pos hP]`.
+
+Establish `h1` using `hc i.1 i.2 P hP (Units.mk0 _ (Proof.NormalFormAtPrime.qOf_ne_zero P.1)) rfl`. Establish `h2 : Z.sig0 ((cst.muq (i.1 + 1) P * ((qVal (mu : Chr Z.X.F Z.X.E Z.X.K) P.1 : Z.X.Kˣ) : Z.X.K))⁻¹) = (((m0 i).locK P.1 (Units.mk0 _ (Proof.NormalFormAtPrime.qOf_ne_zero P.1)) : ℂˣ) : ℂ)`. Rewrite using `[map_inv₀, map_mul, h1, mul_assoc, ← map_mul, Units.inv_mul, map_one, mul_one, inv_inv]`. Establish `h3` using `mu_unit hZ.fields hZ.primes (ht.mu0 i) _ h2 hTP hw`. Rewrite `h3` using `[map_inv₀, map_mul, hq, mul_one, inv_eq_one]`. Then use the resulting hypothesis.
+
+Take `⟨v, hv, e⟩` from `(mem_rowSG_cases P.2).resolve_left hP`. Establish `hgood : GoodPl Z.X.E S v`. Assume the negation of the conclusion as `hn`. Conclude with `hv (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 mu.2).2 v) hn)`. Establish `hd` using `Proof.NormalFormAtPrime.degOne_of_split hZ.fields.rankE hgood.1 hgood.2.1 (P := P.1) (e ▸ hsel v)`.
+
+Use `key _ _ (val_natCast_of_notMem_sq (Ideal.absNorm_mem _) hd.2) ?_` and prove the remaining obligations. Establish `hg : ∀ k, ((Z.Pr.g k : ℕ) : 𝓞 Z.X.E) ∉ P.1.asIdeal` using `fun k h => hG k v ((natCast_mem_sel hsel v _).1 (e ▸ h)) hv`. Rewrite using `[if_neg hP, muqT, dif_pos i.2, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_mul, map_inv₀, map_inv₀, hq, muVal_unit hZ ht i hg hTP hw]`. Simplify using the standard rewrite rules.
+-/
 theorem muAtT_unit (hZ : Z.Ok) (ht : Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ).e j) m0 eta) (hsel : IsSel Z.X sel) {u : Z.Pr.Word}
     (hT : UnramOver (mu : Chr Z.X.F Z.X.E Z.X.K) (Z.Pr.T u)) (hG : ∀ k, UnramOver (mu : Chr Z.X.F Z.X.E Z.X.K) (Z.Pr.g k))
     (hc : MuqTieG (Pr := Z.Pr) (R := Z.R) sel mu cst Z.sig0 m0) (i : Fin Z.R.m)
@@ -794,6 +1124,9 @@ theorem muAtT_unit (hZ : Z.Ok) (ht : Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ).
       hq, muVal_unit hZ ht i hg hTP hw]
     simp
 
+/- English proof (translation)
+Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_one fun P _ => muAtT_unit hZ ht hsel hT hG hc i hw P (Units.ne_zero _)`.
+-/
 theorem locProd_unit (hZ : Z.Ok) (ht : Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ).e j) m0 eta) (hsel : IsSel Z.X sel) {u : Z.Pr.Word}
     (hT : UnramOver (mu : Chr Z.X.F Z.X.E Z.X.K) (Z.Pr.T u)) (hG : ∀ k, UnramOver (mu : Chr Z.X.F Z.X.E Z.X.K) (Z.Pr.g k))
     (hc : MuqTieG (Pr := Z.Pr) (R := Z.R) sel mu cst Z.sig0 m0) (i : Fin Z.R.m)
@@ -803,6 +1136,11 @@ theorem locProd_unit (hZ : Z.Ok) (ht : Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ
   rw [map_prod]
   exact Finset.prod_eq_one fun P _ => muAtT_unit hZ ht hsel hT hG hc i hw P (Units.ne_zero _)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.k_even`. Take `⟨c, hc⟩` from `R.t_odd`. Establish `: R.N i = 2 * (a + i * (c + 1))` using `by unfold Ranks.N; rw [ha, hc]; ring`. Rewrite using `[this, Nat.mul_div_cancel_left _ two_pos]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem half_N (R : Ranks) (i : ℕ) : (((R.N i / 2 : ℕ) : ℤ) : ℚ) = (R.N i : ℚ) / 2 := by
   obtain ⟨a, ha⟩ := R.k_even
   obtain ⟨c, hc⟩ := R.t_odd
@@ -811,11 +1149,31 @@ theorem half_N (R : Ranks) (i : ℕ) : (((R.N i / 2 : ℕ) : ℤ) : ℚ) = (R.N 
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `R.t_odd`. Establish `: R.N (i + 1) = R.N i + 2 * (c + 1)` using `by unfold Ranks.N; rw [hc]; ring`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem half_N_succ (R : Ranks) (i : ℕ) : R.N (i + 1) / 2 = R.N i / 2 + (R.t + 1) / 2 := by
   obtain ⟨c, hc⟩ := R.t_odd
   have : R.N (i + 1) = R.N i + 2 * (c + 1) := by unfold Ranks.N; rw [hc]; ring
   omega
 
+/- English proof (translation)
+Establish `hS` using `splitOver_vT hZ.fields hZ.primes u hP`. Take `⟨-, m1, m2, m3, -⟩` from `GlobalTheory.CharVal.Vp.vp_main Z.X.E P hS.ne`. Use `set v₀ : HeightOneSpectrum (𝓞 Z.X.F) := P.under (𝓞 Z.X.F) with hv₀`. Establish `hPv : P.asIdeal.under (𝓞 Z.X.F) = v₀.asIdeal` using `rfl`. Establish `hTv : ((Z.Pr.T u : ℕ) : 𝓞 Z.X.F) ∈ v₀.asIdeal`.
+
+Rewrite using `[← hPv, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `hS.mem`. Establish `hno : ¬ ∃ Q ∈ rowSG Z.Pr sel mu, Q.asIdeal.under (𝓞 Z.X.F) = v₀.asIdeal`. Introduce and unpack `⟨Q, hQ, e⟩`. Apply `T_notMem_rowSG hZ hsel hT hQ` to reduce the goal to its premises.
+
+Rewrite `hTv` using `[← e, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `hTv`. Establish `hsel0 : sel v₀ = P ∨ sel v₀ = conjPrime₂ P` using `eq_or_eq_conjP hZ.fields hS.ne (hsel v₀)`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε, hord⟩ : ∃ ε : ℤ, ((sel v₀ = P ∧ ε = 1) ∨ (sel v₀ = conjPrime₂ P ∧ ε = -1)) ∧ ordDet (sel v₀) (vpLat P) = ε := by`. Break down `hsel0 with h | h` into its components or cases.
+
+Conclude with `⟨1, Or.inl ⟨h, rfl⟩, by rw [h]; exact ordDet_vpLat hS.ne m1⟩`. Conclude with `⟨-1, Or.inr ⟨h, rfl⟩, by rw [h]; exact ordDet_vpLat hS.ne (by rw [neg_neg]; exact m2)⟩`. Apply the tactic sequence `have hε2 : (ε : ℚ) * ε = 1 := by rcases hε with ⟨-, rfl⟩ | ⟨-, rfl⟩ <;> norm_num`. Establish `hoff : muOff sel (rowSG Z.Pr sel mu) (mUof Z.Ch mu i.1) (vpLat P) = ((mUof Z.Ch mu i.1 (sel v₀) : Z.X.Kˣ) : Z.X.K) ^ ε`. Unfold `muOff`.
+
+Rewrite using `[finprod_eq_single _ v₀, if_neg hno, hord, Units.val_zpow_eq_zpow_val]`. Introduce `v hv`. Use `split_ifs`. Both sides reduce to the same expression. Establish `a : sel v ≠ P` using `fun e => hv (HeightOneSpectrum.ext (by rw [← hsel v, e, hPv]))`.
+
+Establish `b : sel v ≠ conjPrime₂ P` using `fun e => hv (HeightOneSpectrum.ext (by rw [← hsel v, e, under_conjP hZ.fields, hPv]))`. Rewrite using `[ordDet_vpLat hS.ne (m := 0) (by simpa using m3 _ a b), zpow_zero, Units.val_one]`. Establish `key` using `mu_val hZ.fields hZ.primes (ht.mu0 i) hS hε (ht.muVal i _ (g_notMem_sel hZ hsel hno)) hw τ`. Rewrite using `[hoff, val_vp_zpow, mUof_val, val_vp_mul (by simp) (by simp), val_vp_inv, val_vp_inv, val_vp_unit (unit_of_finOrder (finOrder_unifVal (finOrder_tup mu) _))]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hτ`. Rewrite using `[key.1 hτ]`. Take the linear combination `(-(Z.W.row τ).e i) * hε2`. Introduce `hτ`. Rewrite using `[key.2 hτ]`.
+
+Take the linear combination `((Z.W.row τ).e i) * hε2`.
+-/
 theorem muOff_vpLat (hZ : Z.Ok) (ht : Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ).e j) m0 eta) (hsel : IsSel Z.X sel) {u : Z.Pr.Word}
     (hT : UnramOver (mu : Chr Z.X.F Z.X.E Z.X.K) (Z.Pr.T u)) (i : Fin Z.R.m)
     {w : HeightOneSpectrum (𝓞 Z.X.K)} (hw : ((Z.Pr.T u : ℕ) : 𝓞 Z.X.K) ∈ w.asIdeal) {P : HeightOneSpectrum (𝓞 Z.X.E)}
@@ -862,6 +1220,25 @@ theorem muOff_vpLat (hZ : Z.Ok) (ht : Z.Ch.Tied Z.sig0 (fun j τ => (Z.W.row τ)
 
 end PartsMu
 
+/- English proof (translation)
+Introduce `Z D s χ u hZ hs _ hχ hK`. Use `⟨partA hZ hs hχ hK u, fun w hw => partBChi hs hχ hK u hw, ?_⟩` and prove the remaining obligations. Introduce `m0 eta ht sel hsel S mu hT hG cst hc i`. Use `⟨fun w hw => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ (n : ℕ) (N : Submodule (𝓞 Z.X.E) (Sp Z.X.E n)), StdOver (Z.Pr.T u) N → ∀ fr : Frs Z.X.E n (rowSG Z.Pr sel mu), w.valuation Z.X.K (muInv Z sel mu cst i.1 N fr) = 1`.
+
+Introduce `n N hS fr`. Rewrite using `[muInv, muInvDet, map_mul, muOff_unit hZ ht hsel i hw hS, locProd_unit hZ ht hsel hT hG hc i hw fr, one_mul]`. Use `⟨fun n N hN hS => ⟨muOff_unit hZ ht hsel i hw hS, fun fr _ => ?_⟩, fun a b N fr N' fr' _ _ hS hS' _ _ => ?_⟩` and prove the remaining obligations. Establish `h1 : w.valuation _ _ = 1` using `chiDet_unit hs hχ hK hw hN hS`. Use `⟨hinv n N hS fr, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[UnitAt, rho, map_mul, map_zpow₀, h1, hinv n N hS fr, one_zpow, one_mul]`. Rewrite using `[UnitAt, rho', map_mul, map_zpow₀, map_inv₀, h1, hinv n N hS fr, one_zpow, inv_one, one_mul]`. Rewrite using `[UnitAt, scal, map_mul, map_inv₀, hinv a N hS fr, hinv b N' hS' fr', inv_one, one_mul]`. Introduce `P hP τ hτ`. Establish `hS` using `splitOver_vT hZ.fields hZ.primes u hP`.
+
+Take `⟨⟨J, j1, j2⟩, -, -, -, e⟩` from `GlobalTheory.CharVal.Vp.vp_main Z.X.E P hS.ne`. Establish `hdet : chiDet s χ (vpLat P) = chiVp s χ P` using `by rw [chiDet_eq, e, chiVp]`. Establish `hc0 : chiVp s χ P ≠ 0` using `chiK_ne_zero hs hχ hK j1 j2`. Establish `hl` using `locProd_unit hZ ht hsel hT hG hc i hw (n := 1) (fun _ => 1)`. Establish `hl0` using `UnitAt.ne_zero hl`.
+
+Establish `hm0 : muInv Z sel mu cst i.1 (vpLat P) (fun _ => 1) ≠ 0` using `mul_ne_zero (muOff_ne_zero _ _) hl0`. Establish `hm : val_vp w (Z.Pr.T u) (muInv Z sel mu cst i.1 (vpLat P) (fun _ => 1)) = (Z.W.row τ).e i * val_vp w (Z.Pr.T u) (chiVp s χ P)`. Establish `a` using `muOff_vpLat hZ ht hsel hT i hw hP τ`. Establish `b` using `((partA hZ hs hχ hK u P hP).2.2 w hw τ)`. Rewrite using `[muInv, muInvDet, val_vp_mul (muOff_ne_zero _ _) hl0, val_vp_unit hl, add_zero]`.
+
+Break down `hτ with hτ | hτ` into its components or cases. Rewrite using `[a.1 hτ, b.1 hτ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[a.2 hτ, b.2 hτ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[rho, rho', hdet]`. Use `⟨mul_ne_zero hm0 (zpow_ne_zero _ hc0), mul_ne_zero (inv_ne_zero hm0) (zpow_ne_zero _ hc0), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[val_vp_mul hm0 (zpow_ne_zero _ hc0), val_vp_zpow, hm, Int.cast_neg, half_N, sPrime, sExp']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[val_vp_mul (inv_ne_zero hm0) (zpow_ne_zero _ hc0), val_vp_zpow, val_vp_inv, hm, half_N, sPlain, sExp, Nat.add_sub_cancel]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `n N fr hN _`. Take `⟨w, hw⟩` from `exists_over Z.X.K (hZ.primes.T_prime u)`. Establish `h0` using `chiDet_ne_zero hs hχ hK hN`. Establish `hm0 : muInv Z sel mu cst i.1 N fr ≠ 0` using `mul_ne_zero (muOff_ne_zero _ _) (UnitAt.ne_zero (locProd_unit hZ ht hsel hT hG hc i hw fr))`.
+
+Use `⟨h0, ?_⟩` and prove the remaining obligations. Rewrite using `[rho, rho', mul_mul_mul_comm, mul_inv_cancel₀ hm0, one_mul, ← zpow_add₀ h0, half_N_succ]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem charValAtT : CharValAtT := by
   intro Z D s χ u hZ hs _ hχ hK
   refine ⟨partA hZ hs hχ hK u, fun w hw => partBChi hs hχ hK u hw, ?_⟩

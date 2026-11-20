@@ -25,6 +25,9 @@ open MeasureTheory Complex Matrix in
 open scoped ContDiff Real in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {B : Type} [NormedAddCommGroup B]
   [NormedSpace ℂ B] in
+/- English proof (translation)
+The claim follows from `map_add _ _ _`.
+-/
 theorem _root_.GlobalTheory.Mem.Lift.dH_add_left (ρ : V → B →L[ℂ] B) (u v : V) (f : B) :
     _root_.GlobalTheory.Mem.Lift.dH ρ (u + v) f =
       _root_.GlobalTheory.Mem.Lift.dH ρ u f + _root_.GlobalTheory.Mem.Lift.dH ρ v f :=
@@ -34,6 +37,9 @@ open MeasureTheory Complex Matrix in
 open scoped ContDiff Real in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {B : Type} [NormedAddCommGroup B]
   [NormedSpace ℂ B] in
+/- English proof (translation)
+The claim follows from `map_smul _ _ _`.
+-/
 theorem _root_.GlobalTheory.Mem.Lift.dH_smul_left (ρ : V → B →L[ℂ] B) (r : ℝ) (v : V) (f : B) :
     _root_.GlobalTheory.Mem.Lift.dH ρ (r • v) f = r • _root_.GlobalTheory.Mem.Lift.dH ρ v f :=
   map_smul _ _ _
@@ -42,6 +48,11 @@ open MeasureTheory Complex Matrix in
 open scoped ContDiff Real in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {B : Type} [NormedAddCommGroup B]
   [NormedSpace ℂ B] in
+/- English proof (translation)
+Establish `hf' : DifferentiableAt ℝ (fun u => ρ u f) 0` using `(ContDiff.differentiable hf (by simp)).differentiableAt`. Establish `hg' : DifferentiableAt ℝ (fun u => ρ u g) 0` using `(ContDiff.differentiable hg (by simp)).differentiableAt`. Unfold `_root_.GlobalTheory.Mem.Lift.dH`. Simplify using `only [map_add]`. Rewrite using `[(hf'.hasFDerivAt.fun_add hg'.hasFDerivAt).fderiv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.Mem.Lift.dH_add {ρ : V → B →L[ℂ] B} (v : V) {f g : B}
     (hf : _root_.GlobalTheory.RealWeil.Sm ρ f) (hg : _root_.GlobalTheory.RealWeil.Sm ρ g) :
     _root_.GlobalTheory.Mem.Lift.dH ρ v (f + g) =
@@ -59,6 +70,9 @@ open MeasureTheory Complex Matrix in
 open scoped ContDiff Real in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {B : Type} [NormedAddCommGroup B]
   [NormedSpace ℂ B] in
+/- English proof (translation)
+Establish `hf' : DifferentiableAt ℝ (fun u => ρ u f) 0` using `(ContDiff.differentiable hf (by simp)).differentiableAt`. Unfold `_root_.GlobalTheory.Mem.Lift.dH`. Simplify using `only [map_smul]`. Rewrite using `[(hf'.hasFDerivAt.fun_const_smul a).fderiv]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.Mem.Lift.dH_smul {ρ : V → B →L[ℂ] B} (v : V) (a : ℂ) {f : B}
     (hf : _root_.GlobalTheory.RealWeil.Sm ρ f) :
     _root_.GlobalTheory.Mem.Lift.dH ρ v (a • f) = a • _root_.GlobalTheory.Mem.Lift.dH ρ v f := by
@@ -74,6 +88,9 @@ open scoped ContDiff Real in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {B : Type} [NormedAddCommGroup B]
   [NormedSpace ℂ B] in
 
+/- English proof (translation)
+Establish `hf' : DifferentiableAt ℝ (fun u => ρ u f) 0` using `(ContDiff.differentiable hf (by simp)).differentiableAt`. Establish `hl : HasDerivAt (fun t : ℝ => t • v) v 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const v`. Conclude with `hf'.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hl (by simp)`.
+-/
 theorem _root_.GlobalTheory.Mem.Lift.hasDerivAt_dH {ρ : V → B →L[ℂ] B} (v : V) {f : B}
     (hf : _root_.GlobalTheory.RealWeil.Sm ρ f) :
     HasDerivAt (fun t : ℝ => ρ (t • v) f) (_root_.GlobalTheory.Mem.Lift.dH ρ v f) 0 := by
@@ -88,6 +105,13 @@ open scoped ContDiff Real in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {B : Type} [NormedAddCommGroup B]
   [NormedSpace ℂ B] in
 
+/- English proof (translation)
+Establish `hf' : DifferentiableAt ℝ (fun u => ρ u f) 0` using `(ContDiff.differentiable hf (by simp)).differentiableAt`. Establish `hfun : (fun u => ρ u (A f)) = fun u => (A.restrictScalars ℝ) (ρ u f)`. Use function extensionality and compare the values at `u`. Simplify using `[hA]`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Unfold `_root_.GlobalTheory.RealWeil.Sm`. Rewrite using `[hfun]`. Conclude with `(A.restrictScalars ℝ).contDiff.comp hf`. Unfold `_root_.GlobalTheory.Mem.Lift.dH`. Establish `h : HasFDerivAt (fun u => (A.restrictScalars ℝ) (ρ u f)) ((A.restrictScalars ℝ).comp (fderiv ℝ (fun u => ρ u f) 0)) 0` using `(A.restrictScalars ℝ).hasFDerivAt.comp (0 : V) hf'.hasFDerivAt`.
+
+Rewrite using `[hfun, h.fderiv]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.Mem.Lift.dH_comm {ρ : V → B →L[ℂ] B} (A : B →L[ℂ] B)
     (hA : ∀ v f, A (ρ v f) = ρ v (A f)) {f : B} (hf : _root_.GlobalTheory.RealWeil.Sm ρ f) :
     _root_.GlobalTheory.RealWeil.Sm ρ (A f) ∧

@@ -8,6 +8,23 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
+/- English proof (translation)
+Establish `: CharZero (KK O)` using `charZero_fraction_field_of_setting S hG.prime`. Distinguish the cases in `hv : ∃ v0, IsHWV E lam v0`. Take `⟨v0, hv0⟩` from `hv`. Establish `hL` using `cyclicSubmodule_isSubrepresentation E v0`. Take `⟨d, b, hbM, hbc⟩` from `hB O V M hM.2 hMQ (cyclicSubmodule E v0)`.
+
+Establish `hEH : IsGLRep (homRepresentation (restrictRepresentation E _ hL) E)` using `hHom n (KK O) _ V _ E (hRes n (KK O) V E hE _ hL) hE`. Take `⟨P, hP⟩` from `hInv n (KK O) _ _ hEH`. Take `⟨hl1, hl2⟩` from `hLat O n V E hE M hM hMQ _ hL`. Establish `key : ∀ i, ((p : O) ^ (N0 n * deF p n (ellOf E (MQ M) + ellWt lam))) • P ((b.coord i).smulRight x) (b i) ∈ M`. Introduce `i`.
+
+Establish `hf : (b.coord i).smulRight x ∈ homLattice M (cyclicSubmodule E v0)`. Introduce `y hy`. Take `⟨o, ho⟩` from `hbc y hy i`. Rewrite using `[LinearMap.smulRight_apply, ho, algebraMap_smul]`. Conclude with `M.smul_mem _ hx`.
+
+Establish `h1` using `h p n' O S hG n _ _ hEH _ hl1 hl2 P hP _ hf`. Establish `h2` using `h1 (b i) (hbM i)`. Rewrite `h2` using `[LinearMap.smul_apply]`. Use `pow_smul_mem_of_le' M _ ?_ h2` and prove the remaining obligations. Use `Nat.mul_le_mul_left _ (log_bound_monotone p n ?_)` and prove the remaining obligations.
+
+Rewrite using `[hl2, hMQ]`. Conclude with `linf_homRep_le_ell_add E hE lam hdom v0 hv0 hL`. Rewrite using `[← hTh n (KK O) V E hE lam e he v0 hv0 hL P hP (Fin d) b x, Nat.cast_smul_eq_nsmul, smul_comm, Finset.smul_sum]`. Conclude with `M.smul_of_tower_mem _ (M.sum_mem fun i _ => key i)`. Establish `h0 : e x = 0`.
+
+Establish `hle : (⨆ mu, isoSub E mu) ≤ LinearMap.ker e`. Use `iSup_le fun mu => ?_` and prove the remaining obligations. Distinguish the cases in `hmu : mu = lam`. Substitute `hmu` using the available equality. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨u, _, v, hv', _⟩`. Conclude with `absurd ⟨v, hv'⟩ hv`. Introduce `y hy`. Conclude with `he.2 mu hmu y hy`. Establish `: x ∈ (⨆ mu, isoSub E mu)` using `by rw [hTop n (KK O) V E hE]; trivial`.
+
+Conclude with `hle this`. Rewrite using `[h0, smul_zero]`. Conclude with `M.zero_mem`.
+-/
 theorem lattice_theorem_single_rep_linf (h : InvariantDenominatorLinftyBound) (hTop : IsotypicSubmodulesSpanTop) (hRes : RestrictionIsRepresentation) (hHom : HomSpaceIsRepresentation) (hInv : InvariantProjectionExists)
     (hTh : IsotypicProjectorTraceFormula) (hB : LatticeAdaptedBasisExists) (hLat : HomLatticeDividedPowerStable)
     (p n' : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (S : UniformizedDVR p O)
@@ -58,6 +75,11 @@ theorem lattice_theorem_single_rep_linf (h : InvariantDenominatorLinftyBound) (h
       exact hle this
     rw [h0, smul_zero]; exact M.zero_mem
 
+/- English proof (translation)
+Introduce `p n' O _ _ _ S hG n _ V _ _ _ _ _ E hE M hM hMQ Sw hSw e he x hx`. Rewrite using `[Finset.smul_sum]`. Use `M.sum_mem fun lam hlam => ?_` and prove the remaining obligations. Establish `h1` using `lattice_theorem_single_rep_linf h (isotypic_submodules_span_top D h2) restriction_is_representation hom_space_is_representation (invariant_projection_exists D h2) (isotypic_projector_trace_formula D h2) lattice_adapted_basis_exists hom_lattice_dividedPower_stable p n' O S hG n V …`. Use `pow_smul_mem_of_le' M _ ?_ h1` and prove the remaining obligations.
+
+Conclude with `Finset.le_sup (f := fun lam => N0 n * deF p n (ellOf E (MQ M) + ellWt lam)) hlam`.
+-/
 theorem isotypicProjectorTheoremField_of_linfty_bound (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (h : InvariantDenominatorLinftyBound) : IsotypicProjectorTheoremField D := by
   intro p n' O _ _ _ S hG n _ V _ _ _ _ _ E hE M hM hMQ Sw hSw e he x hx
   rw [Finset.smul_sum]

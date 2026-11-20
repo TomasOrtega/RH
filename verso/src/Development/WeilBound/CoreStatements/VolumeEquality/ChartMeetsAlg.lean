@@ -6,6 +6,27 @@ namespace SheetDecomposition.ChartAlg
 
 open MvPolynomial Filter Topology
 
+/- English proof (translation)
+Set `f : σ → Module.Dual ℂ E` to `fun s => (LinearMap.proj s).comp L`. Establish `hproj : Submodule.span ℂ (Set.range fun s : σ => (LinearMap.proj s : (σ → ℂ) →ₗ[ℂ] ℂ)) = ⊤`. Use `eq_top_iff.2 fun φ _ => ?_` and prove the remaining obligations. Establish `hφ : φ = ∑ s, φ (Pi.single s 1) • (LinearMap.proj s : (σ → ℂ) →ₗ[ℂ] ℂ)`. Use `LinearMap.pi_ext fun i c => ?_` and prove the remaining obligations.
+
+Establish `hsc : (Pi.single i c : σ → ℂ) = c • Pi.single i 1`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`. Simplify using `[hsc, Pi.single_apply, mul_comm]`. Rewrite using `[hφ]`. Conclude with `Submodule.sum_mem _ fun s _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨s, rfl⟩)`.
+
+Establish `htop : Submodule.span ℂ (Set.range f) = ⊤`. Establish `hr : Set.range f = L.dualMap '' Set.range fun s : σ => (LinearMap.proj s : (σ → ℂ) →ₗ[ℂ] ℂ)`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, Submodule.span_image, hproj, Submodule.map_top, LinearMap.range_dualMap_eq_dualAnnihilator_ker, LinearMap.ker_eq_bot.2 hL, Submodule.dualAnnihilator_bot]`.
+
+Take `⟨b, hb, hspan, hli⟩` from `exists_linearIndependent ℂ (Set.range f)`. Establish `: Finite b` using `hli.finite`. Set `_ : Fintype b` to `Fintype.ofFinite b`. Establish `hbtop : Submodule.span ℂ b = ⊤` using `hspan.trans htop`. Set `a : b → σ` to `fun k => (hb k.2).choose`.
+
+Establish `ha : ∀ k : b, f (a k) = k` using `fun k => (hb k.2).choose_spec`. Use `⟨b, inferInstance, a, ?_, ?_⟩` and prove the remaining obligations. Establish `B` using `Module.Basis.mk hli (by rw [Subtype.range_coe, hbtop])`. Rewrite using `[← Module.finrank_eq_card_basis B, Subspace.dual_finrank_eq]`. Set `T : E →ₗ[ℂ] (b → ℂ)` to `LinearMap.pi fun k => (k : Module.Dual ℂ E)`.
+
+Establish `hT : ∀ x, T x = fun k => L x (a k)`. Introduce `x`. Use function extensionality and compare the values at `k`. Use `show (k : Module.Dual ℂ E) x = L x (a k)`. Rewrite using `[← ha k]`.
+
+Both sides reduce to the same expression. Establish `hinj : Function.Injective T`. Use `(injective_iff_map_eq_zero T).2 fun x hx => ?_` and prove the remaining obligations. Establish `h0 : ∀ φ : Module.Dual ℂ E, φ x = 0`. Introduce `φ`.
+
+Establish `hφ : φ ∈ Submodule.span ℂ b` using `hbtop ▸ Submodule.mem_top`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem ψ hψ => exact congrFun hx ⟨ψ, hψ⟩`. Consider the case `zero => rfl`. Consider the case `add ψ χ _ _ h1 h2 => rw [LinearMap.add_apply, h1, h2, add_zero]`.
+
+Consider the case `smul c ψ _ h => rw [LinearMap.smul_apply, h, smul_zero]`. Conclude with `(Module.forall_dual_apply_eq_zero_iff ℂ x).1 h0`. Establish `hsurjT : Function.Surjective T`. Use `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).1 hinj` and prove the remaining obligations. Establish `B` using `Module.Basis.mk hli (by rw [Subtype.range_coe, hbtop])`.
+
+Rewrite using `[Module.finrank_fintype_fun_eq_card, ← Module.finrank_eq_card_basis B, Subspace.dual_finrank_eq]`. Introduce `y`. Take `⟨x, hx⟩` from `hsurjT y`. Conclude with `⟨x, (hT x).symm.trans hx⟩`.
+-/
 theorem exists_coords {σ : Type} [Fintype σ] {E : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E]
     (L : E →ₗ[ℂ] (σ → ℂ)) (hL : Function.Injective L) :
     ∃ (κ : Type) (_ : Fintype κ) (a : κ → σ), Fintype.card κ = Module.finrank ℂ E ∧
@@ -59,6 +80,13 @@ theorem exists_coords {σ : Type} [Fintype σ] {E : Type} [AddCommGroup E] [Modu
     obtain ⟨x, hx⟩ := hsurjT y
     exact ⟨x, (hT x).symm.trans hx⟩
 
+/- English proof (translation)
+Establish `he : ∀ v, aeval v q = eval v (MvPolynomial.map (Int.castRingHom ℂ) q)`. Introduce `v`. Rewrite using `[MvPolynomial.eval_map, MvPolynomial.aeval_def, Subsingleton.elim (algebraMap ℤ ℂ) (Int.castRingHom ℂ)]`. Establish `han` using `AnalyticOnNhd.eval_continuousLinearMap (ContinuousLinearMap.id ℂ (κ → ℂ)) (MvPolynomial.map (Int.castRingHom ℂ) q)`. Establish `hz : ∀ v, eval v (MvPolynomial.map (Int.castRingHom ℂ) q) = 0`.
+
+Introduce `v`. Use `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ u) (h.mono fun w hw => by show eval w (MvPolynomial.map (Int.castRingHom ℂ) q) = 0` as an intermediate fact. Rewrite using `[← he]`. Conclude with `hw) (Set.mem_univ v)`. Simplify using `using this`.
+
+Establish `hp0 : MvPolynomial.map (Int.castRingHom ℂ) q = MvPolynomial.map (Int.castRingHom ℂ) 0` using `MvPolynomial.funext fun v => by rw [hz v, map_zero, map_zero]`. Conclude with `MvPolynomial.map_injective _ Int.cast_injective hp0`.
+-/
 theorem eq_zero_of_eventually {κ : Type} [Fintype κ] (q : MvPolynomial κ ℤ) (u : κ → ℂ)
     (h : ∀ᶠ v in 𝓝 u, aeval v q = 0) : q = 0 := by
   classical
@@ -79,6 +107,27 @@ theorem eq_zero_of_eventually {κ : Type} [Fintype κ] (q : MvPolynomial κ ℤ)
     MvPolynomial.funext fun v => by rw [hz v, map_zero, map_zero]
   exact MvPolynomial.map_injective _ Int.cast_injective hp0
 
+/- English proof (translation)
+Introduce `hg0`. Take `⟨κ, _, a, hcard, hsurj⟩` from `exists_coords L.toLinearMap hL`. Set `Pa : (σ → ℂ) →L[ℂ] (κ → ℂ)` to `ContinuousLinearMap.pi fun k => ContinuousLinearMap.proj (a k)`. Establish `hφ : HasStrictFDerivAt (fun w => fun k => Γ w (a k)) (Pa.comp L) w₀` using `Pa.hasStrictFDerivAt.comp w₀ hΓ`. Establish `hrange : (Pa.comp L).range = ⊤` using `LinearMap.range_eq_top.mpr hsurj`.
+
+Establish `hmap` using `hφ.map_nhds_eq_of_surj hrange`. Establish `htr : ∀ q : MvPolynomial κ ℤ, (∀ᶠ w in 𝓝 w₀, aeval (Γ w) (rename a q) = 0) → q = 0`. Introduce `q hq`. Use `eq_zero_of_eventually q (fun k => Γ w₀ (a k)) ?_` and prove the remaining obligations. Rewrite using `[← hmap, Filter.eventually_map]`.
+
+Conclude with `hq.mono fun w hw => by rw [aeval_rename] at hw; exact hw`. Set `x : κ → MvPolynomial σ ℤ ⧸ P` to `fun k => Ideal.Quotient.mk P (X (a k))`. Establish `hx : ∀ q : MvPolynomial κ ℤ, aeval x q = Ideal.Quotient.mk P (rename a q)`. Introduce `q`. Establish `hh : (aeval x : MvPolynomial κ ℤ →ₐ[ℤ] MvPolynomial σ ℤ ⧸ P) = (Ideal.Quotient.mkₐ ℤ P).comp (rename a)`.
+
+Use extensionality with `k`. Simplify using `[x]`. Rewrite using `[hh]`. Both sides reduce to the same expression. Establish `hind : AlgebraicIndependent ℤ x`.
+
+Rewrite using `[algebraicIndependent_iff_injective_aeval]`. Use `(injective_iff_map_eq_zero _).2 fun q hq => htr q ?_` and prove the remaining obligations. Rewrite `hq` using `[hx, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hv _ hq`. Establish `hgbar : Ideal.Quotient.mk P g ≠ 0`.
+
+Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Establish `htrans : Transcendental (Algebra.adjoin ℤ (Set.range x)) (Ideal.Quotient.mk P g)`. Introduce `halg`. Take `⟨r, hr0, t, ht⟩` from `halg.exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hgbar)`. Establish `ht' : (r : MvPolynomial σ ℤ ⧸ P) = Ideal.Quotient.mk P g * t` using `ht`.
+
+Establish `hr : (r : MvPolynomial σ ℤ ⧸ P) ∈ (aeval (R` using `ℤ) x).range := by`. Rewrite using `[← Algebra.adjoin_range_eq_range_aeval]`. Conclude with `r.2`. Take `⟨q, hq⟩` from `hr`. Establish `hq' : aeval x q = (r : MvPolynomial σ ℤ ⧸ P)` using `hq`.
+
+Take `⟨h, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Establish `hmem : rename a q - g * h ∈ P`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, ← hx, hq', ht', sub_self]`. Establish `hq0 : q = 0` using `htr q (((hv _ hmem).and hg0).mono fun w hw => by`. Establish `h1` using `hw.1`.
+
+Rewrite `h1` using `[map_sub, map_mul, hw.2, zero_mul, sub_zero]`. Conclude with `h1)`. Apply `hr0` to reduce the goal to its premises. Rewrite `hq'` using `[hq0, map_zero]`. Conclude with `Subtype.ext (by simpa using hq'.symm)`.
+
+Establish `hc` using `((hind.option_iff_transcendental _).2 htrans).cardinalMk_le_trdeg`. Rewrite `hc` using `[Cardinal.mk_option, Cardinal.mk_fintype, hcard]`. Establish `hlt` using `hc.trans hP`. Conclude with `absurd hlt (by norm_cast; omega)`.
+-/
 theorem not_eventually_zero {σ : Type} [Fintype σ] {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] (P : Ideal (MvPolynomial σ ℤ)) [P.IsPrime]
     (hP : Algebra.trdeg ℤ (MvPolynomial σ ℤ ⧸ P) ≤ (Module.finrank ℂ E : Cardinal))

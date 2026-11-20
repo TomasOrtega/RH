@@ -14,6 +14,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UnitTheta
 
+/- English proof (translation)
+Set `y' : Over.mk i ⟶ H` to `Over.homMk (hG.1.lift y.left i (Over.w y)) (hG.1.lift_snd _ _ _)`. Establish `e₁ : y'.left ≫ π = y.left` using `hG.1.lift_fst _ _ _`. Establish `e₂ : pushHom hG (Over.mk i) y' = y` using `Over.OverMorphism.ext e₁`. Establish `inj : Function.Injective (pushHom hG (Over.mk i))` using `fun a b h => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Apply `hG.1.hom_ext` to reduce the goal to its premises. Conclude with `congrArg (fun z => z.left) h`. Rewrite using `[Over.w, Over.w]`. Establish `e₃ : y' ^ n = 1` using `inj (by rw [map_pow, e₂, map_one]; exact hy)`. Take `⟨s, hs₁, hs₂⟩` from `hs (pushHom hA (Over.mk i) y') (by rw [← map_pow, e₃, map_one])`.
+
+Establish `w : (f ≫ s) ≫ A.hom = 𝟙 K ≫ f` using `by rw [Category.assoc, hs₁, Category.comp_id, Category.id_comp]`. Use `⟨hA.1.lift (f ≫ s) (𝟙 K) w ≫ π, ?_⟩` and prove the remaining obligations. Rewrite using `[← e₁, ← Category.assoc]`. Use `congr 1`. Apply `hA.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hA.1.lift_fst, ← Category.assoc, hs₂]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, hA.1.lift_snd, Category.comp_id]`. Conclude with `(Over.w y').symm`.
+-/
 theorem torsion_descends {B V K L : Scheme.{0}} {A : Over B} {G : Over V} {H : Over K} [GrpObj A] [GrpObj G] [GrpObj H]
     {f : K ⟶ B} {j : K ⟶ V} {ψ : H.left ⟶ A.left} {π : H.left ⟶ G.left}
     (hA : IsGrpPullback H A f ψ) (hG : IsGrpPullback H G j π) (i : L ⟶ K) (n : ℕ)
@@ -39,6 +48,11 @@ theorem torsion_descends {B V K L : Scheme.{0}} {A : Over B} {G : Over V} {H : O
   · rw [Category.assoc, hA.1.lift_snd, Category.comp_id]
     exact (Over.w y').symm
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ S ρ p _ y₀ u m hm y hy`. Use `u.U.gen_hom` as an intermediate fact. Establish `hA` using `((isGrpPullback_of_iso u.U.gen).comp u.cart).congr (Category.id_comp _) rfl`. Use `torsion_descends hA (isGrpPullback_pullback u.G (jK u.V)) _ (S.r * S.N) (fun z hz => ?_) y ?_` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `ρ.pt_bij (PadicAlgCl p) _ z hz`.
+
+Conclude with `⟨(ρ.pt a).left, Over.w (ρ.pt a), congrArg (fun t => t.left) ha⟩`. Take `⟨c, hc⟩` from `hm`. Rewrite using `[hc, pow_mul, hy, one_pow]`.
+-/
 theorem torsion_rational : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (m : ℕ), m ∣ S.r * S.N → ∀ y : Over.mk (spMap (algebraMap (FractionRing u.V) (PadicAlgCl p)) ≫ jK u.V) ⟶ u.G, y ^ m = 1 → ∃ x : Sp (FractionRing u.V) ⟶ u.G.left, spMap (algebraMap (FractionRing u.V) (PadicAlgCl p)) ≫ x = y.left := by
   intro o Ω _ _ _ S ρ p _ y₀ u m hm y hy
   have := u.U.gen_hom

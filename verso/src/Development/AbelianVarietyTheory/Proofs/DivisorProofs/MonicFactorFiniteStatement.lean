@@ -8,5 +8,8 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LeviHC.monicFactorFinite | exact GlobalTheory.LeviHC.monicFactorFinite | (intros; apply GlobalTheory.LeviHC.monicFactorFinite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.monicFactorFinite' : MonicFactorFinite := by
   first | exact @GlobalTheory.LeviHC.monicFactorFinite | exact GlobalTheory.LeviHC.monicFactorFinite | (intros; apply GlobalTheory.LeviHC.monicFactorFinite <;> assumption)

@@ -15,11 +15,21 @@ noncomputable section
 
 namespace GlobalTheory.HeightCounting.Up.LocEx
 
+/- English proof (translation)
+The claim follows from `EvG.imp h fun _ _ _ _ _ hK => large₂.imp hK fun B f T _ H kp w Z Wt p0 t nch n xd c a b d => hpq _ B f T w Z Wt p0 t nch n c (H kp w Z Wt p0 t nch n xd c a b d)`.
+-/
 theorem atMem_imp {hL : GlobalTheory.Published.LocalLanglandsGL} {p q : LayP hL} (h : AtMem hL p)
     (hpq : ∀ K B f T w Z Wt p0 t nch n c, p K B f T w Z Wt p0 t nch n c → q K B f T w Z Wt p0 t nch n c) : AtMem hL q :=
   EvG.imp h fun _ _ _ _ _ hK => large₂.imp hK fun B f T _ H kp w Z Wt p0 t nch n xd c a b d =>
     hpq _ B f T w Z Wt p0 t nch n c (H kp w Z Wt p0 t nch n xd c a b d)
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `hne`. Set `b` to `Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (D.what₂.muTw v) j)`. Establish `hidx : Nonempty (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL (D.what₂.muTw v) j))`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nonempty_iff]`.
+
+Establish `h3` using `(D.what₂.jMt_basis (D.what₂.muTw v) j b).2`. Rewrite `h3` using `[Set.range_eq_empty, Submodule.span_empty]`. Conclude with `hf ((Submodule.mem_bot ℂ).1 (h3 ▸ Submodule.mem_top))`. Take `⟨k⟩` from `hidx`. Use `haveI : Nontrivial (T.B.V j v) := ⟨⟨_, 0, (T.B.iV_basis j v b).1.ne_zero k⟩⟩`.
+
+Use `haveI : Nontrivial (Formalism.L2.heckeAlg T.B j v) := inferInstance`. Take `⟨I, hI⟩` from `Ideal.exists_maximal (Formalism.L2.heckeAlg T.B j v)`. Take `⟨i, hi, -⟩` from `T.mx_all j v h1 h2 hv I hI`. Take `⟨ej, ew⟩` from `(D.nd.locs_mem _ _ _).1 hi`. Conclude with `⟨i, ew, ej⟩`.
+-/
 theorem exists_loc_of_thetaT {D : D7} {M : MtFam D} (T : NormalizedLocalCompatibility D M) {v : D.what₂.places.Pl} (hv : TwistedAt D v) {j : ℕ}
     (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (hne : ∃ f, D.what₂.thetaT (D.what₂.muTw v) j f ≠ 0) :
     ∃ i : D.nd.Loc, D.nd.w i = v ∧ D.nd.j i = j := by
@@ -39,6 +49,11 @@ theorem exists_loc_of_thetaT {D : D7} {M : MtFam D} (T : NormalizedLocalCompatib
   obtain ⟨ej, ew⟩ := (D.nd.locs_mem _ _ _).1 hi
   exact ⟨i, ew, ej⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hT : D.what₂.thetaP μ j ∘ₗ D.what₂.thetaT μ j ∘ₗ ((D.what₂.isot j σ).starProjection : D.what₂.Mj j →ₗ[ℂ] D.what₂.Mj j) = 0`. Use extensionality with `y`. Simplify using `[h _ ((D.what₂.isot j σ).starProjection_apply_mem y)]`.
+
+Unfold `DV.lamTr at hpos`. Rewrite `hpos` using `[hT, map_zero, Complex.zero_re, zero_div]`. Conclude with `lt_irrefl _ hpos`.
+-/
 theorem thetaT_ne_of_lamTr {D : D7} {μ : D.what₂.Tup} {j : ℕ} {σ : D.what₂.FT} (hpos : 0 < DV.lamTr D μ j σ) :
     ∃ f ∈ D.what₂.isot j σ, D.what₂.thetaT μ j f ≠ 0 := by
   by_contra h
@@ -50,6 +65,9 @@ theorem thetaT_ne_of_lamTr {D : D7} {μ : D.what₂.Tup} {j : ℕ} {σ : D.what�
   rw [hT, map_zero, Complex.zero_re, zero_div] at hpos
   exact lt_irrefl _ hpos
 
+/- English proof (translation)
+Introduce `hP hL` and use `atMem_imp (GlobalTheory.T.twisted_place_weight_positive hP hL) fun _ _ _ _ w Z _ _ t _ _ c h v hv j h1 h2 σ hσ => by have hl := h v hv j h1 h2 σ hσ obtain ⟨f, -, hf⟩ := thetaT_ne_of_lamTr (D := w.D Z) (hl.trans_eq (t.r.Y.lam _ j h1 h2 σ hσ)) exact exists_loc_of_thetaT c.a.all.cov …`.
+-/
 theorem exists_loc : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c => ∀ v, TwistedAt (w.D Z) v → ∀ j, 1 ≤ j → j ≤ (w.D Z).R.m → ∀ σ, (w.D Z).what₂.isot j σ ≠ ⊥ → ∃ i : (w.D Z).nd.Loc, (w.D Z).nd.w i = v ∧ (w.D Z).nd.j i = j :=
   fun hP hL => atMem_imp (GlobalTheory.T.twisted_place_weight_positive hP hL) fun _ _ _ _ w Z _ _ t _ _ c h v hv j h1 h2 σ hσ => by
     have hl := h v hv j h1 h2 σ hσ

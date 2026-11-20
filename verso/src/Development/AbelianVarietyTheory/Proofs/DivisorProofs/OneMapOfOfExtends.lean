@@ -45,15 +45,26 @@ def geo {Tp : Type} {tup : Tp → T0} (O : OMDat C R i Tp tup) (cc : (C.U ((i : 
 
 variable {Tp : Type} {tup : Tp → T0}
 
+/- English proof (translation)
+Unfold `geo`. Rewrite using `[map_add, map_add, Pi.add_apply, mul_add]`.
+-/
 theorem geo_add (O : OMDat C R i Tp tup) (cc z f g q) : geo O cc z (f + g) q = geo O cc z f q + geo O cc z g q := by
   unfold geo
   rw [map_add, map_add, Pi.add_apply, mul_add]
 
+/- English proof (translation)
+Unfold `geo`. Rewrite using `[map_smul, map_smulₛₗ, Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Both sides reduce to the same expression.
+-/
 theorem geo_smul (O : OMDat C R i Tp tup) (cc z) (a : O.c'.F) (f q) : geo O cc z (a • f) q = (a : ℂ) * geo O cc z f q := by
   unfold geo
   rw [map_smul, map_smulₛₗ, Pi.smul_apply, smul_eq_mul, mul_left_comm]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ O.hle _ _ hact).2 a n z m as fs f hf hfs h`. Establish `h2` using `congrFun (congrFun (rdU_unfBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c') h1) (O.dict q.out).1) (O.dict q.out).2`. Rewrite `h2` using `[Finset.sum_apply, Finset.sum_apply]`. Use `(congrArg (fun w => cc (O.dict q.out).1 * (O.mu q.out * w)) h2).trans ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show cc _ * (O.mu _ * ((as k : ℂ) * _)) = (as k : ℂ) * (cc _ * O.mu _ * _)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem geo_of_isBC (O : OMDat C R i Tp tup) (hact : ActLev (Xo := C.Q.Xo ((i : ℕ) + 1)) C.Q.c O.lev2) (cc z)
     {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n m : ℕ} {f : Rul (C.Q.Xo ((i : ℕ) + 1)) O.c'} (hf : f ∈ sec _ O.c' a n)
     {as : Fin m → O.c'.F} {fs : Fin m → Rul (C.Q.Xo ((i : ℕ) + 1)) C.Q.c} (hfs : ∀ k, fs k ∈ sec _ C.Q.c a n)
@@ -68,6 +79,11 @@ theorem geo_of_isBC (O : OMDat C R i Tp tup) (hact : ActLev (Xo := C.Q.Xo ((i : 
   show cc _ * (O.mu _ * ((as k : ℂ) * _)) = (as k : ℂ) * (cc _ * O.mu _ * _)
   ring
 
+/- English proof (translation)
+Establish `key : ∀ (s s' : C.Q.c.F →+* ℂ) (_ : s = s') (hV : C.V ((i : ℕ) + 1) s = Wc D i) (hV' : C.V ((i : ℕ) + 1) s' = Wc D i) (f : C.R ((i : ℕ) + 1)), adel (Wc D i) (castDict hV (C.dict ((i : ℕ) + 1) s)) (muPin (Wc D i) (castDict hV (C.dict ((i : ℕ) + 1) s)) (castDict hV (C.mu ((i : ℕ) + …`. Introduce `s s' e hV hV' f`. Substitute `e` using the available equality. Both sides reduce to the same expression. Use function extensionality and compare the values at `f`.
+
+Conclude with `key _ _ ((sOv_eq C _ _).trans (sOv_eq C _ _).symm) O.hV O'.hV f`.
+-/
 theorem phi_eq {Tp' : Type} {tup' : Tp' → T0} (O : OMDat C R i Tp tup) (O' : OMDat C R i Tp' tup')
     (cE : ∀ s : C.Q.c.F →+* ℂ, (C.U ((i : ℕ) + 1) s).Comp → ℂ) : O.phi (cE O.s0) = O'.phi (cE O'.s0) := by
   have key : ∀ (s s' : C.Q.c.F →+* ℂ) (_ : s = s') (hV : C.V ((i : ℕ) + 1) s = Wc D i) (hV' : C.V ((i : ℕ) + 1) s' = Wc D i)
@@ -82,6 +98,9 @@ theorem phi_eq {Tp' : Type} {tup' : Tp' → T0} (O : OMDat C R i Tp tup) (O' : O
   funext f
   exact key _ _ ((sOv_eq C _ _).trans (sOv_eq C _ _).symm) O.hV O'.hV f
 
+/- English proof (translation)
+Establish `e : M.lev2 = O.lev2` using `by funext g; simp only [OMDat.lev2, hlev]`. Take `⟨m, as, fs, hfs, h⟩` from `(GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ O.hle).1 a n f hf`. Rewrite using `[geo_of_isBC O hact _ z hf hfs h, geo_of_isBC M (e ▸ hact) _ z (GlobalTheory.FieldBCModel.rulBC_mem_sec hle hf) hfs (isBC_rulBC_trans O.hle hle M.hle hf h), phi_eq M O cE, e]`. Both sides reduce to the same expression.
+-/
 theorem geo_rulBC {Tp' : Type} {tup' : Tp' → T0} (O : OMDat C R i Tp tup) (M : OMDat C R i Tp' tup') (hle : O.c'.F ≤ M.c'.F)
     (hlev : M.lev = O.lev) (hact : ActLev (Xo := C.Q.Xo ((i : ℕ) + 1)) C.Q.c O.lev2)
     (cE : ∀ s : C.Q.c.F →+* ℂ, (C.U ((i : ℕ) + 1) s).Comp → ℂ) (z : G) {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ}
@@ -93,6 +112,9 @@ theorem geo_rulBC {Tp' : Type} {tup' : Tp' → T0} (O : OMDat C R i Tp tup) (M :
     (isBC_rulBC_trans O.hle hle M.hle hf h), phi_eq M O cE, e]
   rfl
 
+/- English proof (translation)
+Take `⟨-, cga, -, -, hr, -⟩` from `h.io`. Use `GlobalTheory.ClassSumUnique.isThClsD_unique GlobalTheory.chartIndependence_unconditional _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (h.cov t).1 (h.cov t).2.2 (fun k => ⟨((h.reps t).1 k).1, ((h.reps t).1 k).2.2.1, ((h.reps t).1 k).2.2.2.1⟩) (wtA κ) (fun v => ?_) x a n f hf f' hf' h1 h2` and prove the remaining obligations. Establish `hv` using `hr.le (LinearMap.mem_range_self O.io v)`. Conclude with `(Submodule.span_le (p := GlobalTheory.FrameRead.CoefMap.harmSub _ _ _ _ _ _)).2 (fun _ hP => hP) hv`.
+-/
 theorem isSum_unique {O : OMDat C R i Tp tup} {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ ι x₀} (h : O.Pins κ v₀ ι x₀) (t : Tp)
     {x : O.Cl' t → VsV D i O.c'.F} {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f f' : Rul (C.Q.Xo ((i : ℕ) + 1)) O.c'}
     (hf : f ∈ sec _ O.c' a n) (hf' : f' ∈ sec _ O.c' a n) (h1 : IsSum O t x f) (h2 : IsSum O t x f') : f = f' := by
@@ -102,6 +124,23 @@ theorem isSum_unique {O : OMDat C R i Tp tup} {κ : WeightFamilies.Wt D ((i : �
   have hv := hr.le (LinearMap.mem_range_self O.io v)
   exact (Submodule.span_le (p := GlobalTheory.FrameRead.CoefMap.harmSub _ _ _ _ _ _)).2 (fun _ hP => hP) hv
 
+/- English proof (translation)
+Establish `hlin` using `(GlobalTheory.FieldBC.rulBC_sec_val_linear _ _ _ _ (C.Q.Xo ((i : ℕ) + 1)) _ _ hle).2`. Establish `h0 : rulBC hle (0 : Rul (C.Q.Xo ((i : ℕ) + 1)) O.c') = 0`. Use `hlin (-1) 0 0` as an intermediate fact. Rewrite `this` using `[smul_zero, zero_add, map_neg, map_one, neg_one_smul, neg_add_cancel]`. Then use the resulting hypothesis. Establish `h1 : ∀ g ∈ cuspOver O κ, α * geo M cc z (rulBC hle g) q = β * geo M cc' z' (rulBC hle g) q`.
+
+Introduce `g hg`. Establish `hg'` using `hspan hg`. Use `clear hg`. Proceed by induction on `hg' using Submodule.span_induction with`. Consider the case `mem g hg => exact h g hg.1 hg.2`.
+
+Consider the case `zero`. Establish `e` using `geo_smul M cc z 0 0 q`. Establish `e'` using `geo_smul M cc' z' 0 0 q`. Rewrite `e`, `e'` using `[zero_smul]`. Rewrite using `[h0, e, e']`.
+
+Simplify using the standard rewrite rules. Consider the case `add f g _ _ hf hg`. Establish `e` using `hlin 1 f g`. Rewrite `e` using `[one_smul, map_one, one_smul]`. Rewrite using `[e, geo_add, geo_add, mul_add, mul_add, hf, hg]`.
+
+Consider the case `smul a f _ hf`. Establish `e` using `hlin a f 0`. Rewrite `e` using `[add_zero, h0, add_zero]`. Rewrite using `[e, geo_smul, geo_smul, mul_left_comm, hf, mul_left_comm]`. Introduce `f hf`.
+
+Take `⟨m, as, fs, hfs, hBC⟩` from `(GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ M.hle).2 _ (C.U ((i : ℕ) + 1)) _ _ f hf`. Establish `hs : ∀ k, fs k ∈ sec _ C.Q.c (wtA κ) (Vc D i).rank` using `fun k => ((mem_cusp _ _ _ _ _ _).1 (hfs k)).1`. Establish `hf'` using `((mem_cusp _ _ _ _ _ _).1 hf).1`. Rewrite using `[geo_of_isBC M hact cc z hf' hs hBC, geo_of_isBC M hact cc' z' hf' hs hBC, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Establish `hk` using `GlobalTheory.FieldBCModel.rulBC_mem_sec O.hle (hs k)`. Establish `hb` using `isBC_rulBC_trans O.hle hle M.hle hk (GlobalTheory.FieldBCModel.isBC_rulBC O.hle (hs k).1)`. Establish `hs1 : ∀ k', ![fs k] k' ∈ sec _ C.Q.c (wtA κ) (Vc D i).rank` using `fun k' => by`. Rewrite using `[Subsingleton.elim k' 0]`. Conclude with `hs k`.
+
+Establish `e` using `h1 _ (((GlobalTheory.FieldBC.rulBC_cusp _ _ _ _ _ _ _ O.hle _ (C.U ((i : ℕ) + 1)) _ _ _ (hs k)).2).2 (hfs k))`. Rewrite `e` using `[geo_of_isBC M hact cc z (GlobalTheory.FieldBCModel.rulBC_mem_sec hle hk) hs1 hb, geo_of_isBC M hact cc' z' (GlobalTheory.FieldBCModel.rulBC_mem_sec hle hk) hs1 hb]`. Simplify using `only [Fin.sum_univ_one, Matrix.cons_val_zero, map_one, OneMemClass.coe_one, one_mul] at e`. Rewrite using `[mul_left_comm, e, mul_left_comm]`.
+-/
 theorem geo_agree {t₀ : T0} (O : OMDat C R i Unit (fun _ => t₀)) (M : OMDat C R i Tp tup) (hle : O.c'.F ≤ M.c'.F)
     (hact : ActLev (Xo := C.Q.Xo ((i : ℕ) + 1)) C.Q.c M.lev2) {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} (hspan : ClassSumsSpan O κ)
     {cc cc' : (C.U ((i : ℕ) + 1) M.s0).Comp → ℂ} {z z' : G} {α β : ℂ} (q : AutQ (Wc D i))
@@ -150,6 +189,27 @@ theorem geo_agree {t₀ : T0} (O : OMDat C R i Unit (fun _ => t₀)) (M : OMDat 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `e : M.lev2 = O.lev2` using `by funext g; simp only [OMDat.lev2, hlev]`. Establish `hact` using `hM.act.1`. Take `⟨hEq, ⟨hL, -, -, hcU, hph, z, hz, hO⟩, hRat⟩` from `hO`. Take `⟨ζ, hζL, ⟨m, hm, hζ⟩, hO⟩` from `hO ()`. Take `⟨-, hph', z', -, hrow⟩` from `hrow`.
+
+Take `⟨ζ₀, hζ₀L, ⟨m₀, hm₀, hζ₀⟩, hrow₀⟩` from `hrow t₀`. Establish `hζ₀0 : ζ₀ ≠ 0` using `fun h0 => by simp [h0, hm₀.ne'] at hζ₀`. Establish `hph0 : ph' ≠ 0` using `fun h0 => by simp [h0] at hph'`. Take `⟨s, hs⟩ : ∃ s : ℂ, s = (lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℝ)` from `⟨_, rfl⟩`. Establish `mul4 : ∀ a b d : ℂ, a * b * (lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℝ) * d = a * s * (b * d)` using `fun a b d => by rw [hs]; ring`.
+
+Establish `key : ∀ q, ∀ f ∈ cuspOver M κ, (ph' * ζ * s) * geo M (cE M.s0) z f q = (ph * ζ₀ * s) * geo M cc' z' f q`. Introduce `q`. Use `geo_agree O M hle hact hspan q ?_` and prove the remaining obligations. Introduce and unpack `g hg ⟨x, hx, hgx⟩`. Establish `hg'` using `((mem_cusp _ _ _ _ _ _).1 hg).1`.
+
+Take `⟨x', hx', hth, hsum⟩` from `hext x hx`. Establish `h1 : ph * O.thAd () x q = ζ * s * geo O (cE O.s0) z g q` using `((hO x hx).2 g hg' hgx q).trans (mul4 _ _ _)`. Establish `h2 : ph' * M.thAd t₀ x' q = ζ₀ * s * geo M cc' z' (rulBC hle g) q` using `((hrow₀ x' hx').2 _ (GlobalTheory.FieldBCModel.rulBC_mem_sec hle hg') (hsum g hg' hgx) q).trans (mul4 _ _ _)`. Rewrite using `[geo_rulBC O M hle hlev (e ▸ hact) cE z hg']`. Rewrite `h2` using `[hth]`.
+
+Take the linear combination `ph * h2 - ph' * h1`. Use `⟨?_, ⟨hL.trans hle, (GlobalTheory.FieldBC.secBC_and_cuspBC _ _ _ _ _ _ _ M.hle).2 _ _, (GlobalTheory.FieldBC.actLev_and_actBC _ _ _ _ _ _ _ M.hle _ _ hact).2, ?_, hph, z, hz, fun t => ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `OMDat.EquivAt`. Rewrite using `[phi_eq M O cE, e]`. Conclude with `hEq`.
+
+Establish `: ∀ s, s = O.s0 → ∀ k, ‖cE s k‖ = 1` using `fun s hs => hs ▸ hcU`. Conclude with `this _ ((sOv_eq C _ _).trans (sOv_eq C _ _).symm)`. Take `⟨ζt, hζtL, ⟨mt, hmt, hζt⟩, ht⟩` from `hrow t`. Use `⟨ζt * ζ * ζ₀⁻¹, mul_mem (mul_mem hζtL hζL) (inv_mem hζ₀L), ⟨mt * m * m₀, by positivity, ?_⟩, fun x hx => ⟨(ht x hx).1, fun f hf hfx q => ?_⟩⟩` and prove the remaining obligations. Establish `a1 : ζt ^ (mt * m * m₀) = 1` using `by rw [mul_assoc, pow_mul, hζt, one_pow]`.
+
+Establish `a2 : ζ ^ (mt * m * m₀) = 1` using `by rw [mul_comm mt m, mul_assoc, pow_mul, hζ, one_pow]`. Establish `a3 : ζ₀ ^ (mt * m * m₀) = 1` using `by rw [mul_comm, pow_mul, hζ₀, one_pow]`. Rewrite using `[mul_pow, mul_pow, inv_pow, a1, a2, a3]`. Simplify using the standard rewrite rules. Take `⟨f₀, hf₀, hf₀x⟩` from `(ht x hx).1`.
+
+Take `rfl : f = f₀` from `isSum_unique hM t hf ((mem_cusp _ _ _ _ _ _).1 hf₀).1 hfx hf₀x`. Establish `h1 : ph' * M.thAd t x q = ζt * s * geo M cc' z' f q` using `((ht x hx).2 f hf hfx q).trans (mul4 _ _ _)`. Establish `h2` using `key q f hf₀`. Establish `i1` using `mul_inv_cancel₀ hζ₀0`. Use `Eq.trans ?_ (mul4 _ _ _).symm` and prove the remaining obligations.
+
+Use `show ph * M.thAd t x q = ζt * ζ * ζ₀⁻¹ * s * geo M (cE M.s0) z f q`. Apply `mul_left_cancel₀ (mul_ne_zero hph0 hζ₀0)` to reduce the goal to its premises. Take the linear combination `(ph * ζ₀) * h1 - ζt * h2 - (ph' * ζt * ζ * s * geo M (cE M.s0) z f q) * i1`. Unfold `OMDat.PhRat`. Rewrite using `[phi_eq M O cE]`.
+
+Conclude with `hRat`.
+-/
 theorem oneMapOf_of_extends (O : OMDat C R i Unit (fun _ => A.μ0)) (M : OMDat C R i Tp tup) (t₀ : Tp) (hle : O.c'.F ≤ M.c'.F)
     (hlev : M.lev = O.lev) {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ ι x₀} (hM : M.Pins κ v₀ ι x₀)
     (hext : ∀ x, O.Plc () x → ∃ x', M.Plc t₀ x' ∧ M.thAd t₀ x' = O.thAd () x ∧
@@ -207,6 +267,9 @@ theorem oneMapOf_of_extends (O : OMDat C R i Unit (fun _ => A.μ0)) (M : OMDat C
     rw [phi_eq M O cE]
     exact hRat
 
+/- English proof (translation)
+Take `⟨h1, ⟨h2, h3, h4, h5, h6, z, hz, h7⟩, h8⟩` from `h`. Conclude with `⟨h1, ⟨h2, h3, h4, h5, h6, z, hz, fun t => h7 (f t)⟩, h8⟩`.
+-/
 theorem oneMapOf_comap {Tp' : Type} {O : OMDat C R i Tp tup} (f : Tp' → Tp) {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ cc ph}
     (h : O.OneMapOf κ v₀ cc ph) : (comap O f).OneMapOf κ v₀ cc ph := by
   obtain ⟨h1, ⟨h2, h3, h4, h5, h6, z, hz, h7⟩, h8⟩ := h
@@ -231,6 +294,29 @@ variable {T R κ v₀}
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨a, ha, hca⟩` from `(cXiVal_iff _ _ _ _ _ _ _ _ _).1 hO.cxi`. Take `⟨b, hb, hcb⟩` from `(cXiVal_iff _ _ _ _ _ _ _ _ _).1 hO'.cxi`. Take `⟨c₃, h', haF, hbF⟩` from `exists_coeff_roots O'.c' ha hb`. Establish `hb0 : b ≠ 0` using `fun h0 => by`. Take `⟨m, hm, e⟩` from `hb`.
+
+Simplify using `[h0, hm.ne'] at e`. Establish `h₁ : O.c'.F ≤ c₃.F` using `hle.trans h'`. Establish `h₃ : T.Q.c.F ≤ c₃.F` using `O.hle.trans h₁`. Establish `hV₃ : T.V ((i : ℕ) + 1) (sOv T.toCore c₃ h₃) = Wc D i`. Rewrite using `[sOv_eq, ← sOv_eq T.toCore O.c' O.hle]`.
+
+Conclude with `O.hV`. Take `⟨c0₃, hc0⟩` from `exists_coef_ext (incF O.c' c₃ h₁) (σ := inC O.c') (inC c₃) (fun _ => rfl) (lamV D i) O.c0'`. Take `⟨io₃, hw₃, hio, hover⟩` from `GlobalTheory.T.vector_valued_lift_field_change _ _ _ _ O.c' c₃ h₁ _ _ (tauE D) (lamV D i) (wtA (κ i)) O.io O.hw hO.io`. Establish `hlift : ThPinsR R i ((incF O.c' c₃ h₁).comp O.jL) (inC c₃) (v₀ i (sg0 D A)) c0₃ ι T.Q.l.M (Mfr T.Q.l) O.lev`. Use `⟨(RingHom.ext fun _ => rfl : _ = (inC O.c').comp O.jL).trans hO.lift.field, hO.lift.std, hO.lift.v0, ?_, hO.lift.lev⟩` and prove the remaining obligations.
+
+Take `⟨g, r, c0L, hT, hc⟩` from `hO.lift.c0`. Use `⟨g, r, c0L, hT, fun v => ?_⟩` and prove the remaining obligations. Take `⟨v', hv', e⟩` from `hc v`. Take `⟨v'', hv''⟩` from `GlobalTheory.FieldBCModel.exists_over h₁ (lamV D i) v'`. Conclude with `⟨v'', by rw [hv'', hv', MvPolynomial.map_map], (hc0 v' v'' hv'').trans e⟩`.
+
+Take `⟨h₀, J₀, hr₀, -, hth₀, hpl₀⟩` from `(hO.tuple ()).reps`. Use `choose hh Jt hrt _ using fun t => (hO'.tuple t).reps`. Set `src : ∀ o : Option T0, OMDat T.toCore R i Unit (fun _ => o.getD A.μ0)` to `fun o => match o with`. Consider the case `none => O`. Consider the case `some t => comap O' (fun _ => t)`.
+
+Establish `hs : ∀ o, (src o).c'.F ≤ c₃.F` using `fun o => match o with`. Consider the case `none => h₁`. Consider the case `some _ => h'`. Set `u : Option T0 → c₃.F` to `fun o => match o with`. Consider the case `none => 1`.
+
+Consider the case `some _ => ⟨a, haF⟩ / ⟨b, hbF⟩`. Set `h : ∀ o, (src o).Cl' () → GA D (Vc D i)` to `fun o => match o with`. Consider the case `none => h₀`. Consider the case `some t => hh t`. Establish `hP` using `pins_merge src c₃ h₃ hs _ hV₃ c0₃ O.lev io₃ hw₃ u h (v₀ i (sg0 D A)) hR (fun o => match o with`.
+
+Consider the case `none => hO`. Consider the case `some t => pins_comap (fun _ => t) hO') hlift hO.act.1 hio`. Use the proof step `(fun o => match o with`. Consider the case `none => ⟨J₀, hr₀⟩`. Consider the case `some t => ⟨Jt t, hrt t⟩) a ha (fun o => o.elim a fun _ => b)`.
+
+Use the proof step `(fun o => match o with`. Consider the case `none => one_mul a`. Consider the case `some _ => div_mul_cancel₀ a hb0)`. Use the proof step `(fun o => match o with`. Consider the case `none => hca ()`.
+
+Consider the case `some t => hcb t)`. Use `⟨_, h₁, rfl, hP, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(hpl₀ x).1 hx`. Use `choose x' hx' using fun k => GlobalTheory.FieldBCModel.exists_over h₁ (lamV D i) (x k)`. Establish `hy' : Place R i A.μ0 h₀ c0₃ (jVx R i A.μ0 y) x'` using `fun k => (hy k).trans (hc0 _ _ (hx' k)).symm`.
+
+Use `⟨x', ⟨y, hy'⟩, (thAdIs_thAdOf R i A.μ0 h₀ c0₃ hR.models.HV hr₀.2.2.1 hr₀.2.2.2.2.2.1 _ _ _ hy').trans (hth₀ _ _ hy).symm, fun f hf hfx => ?_⟩` and prove the remaining obligations. Conclude with `isThClsD_covBC_one h₁ (O.dδ ()) rfl _ _ _ _ _ _ O.io io₃ x x' (fun k => hover _ _ (hx' k)) (hO.cov ()).1.2.2.2.2.2.2.2.1 hf hfx`.
+-/
 theorem exists_extension {F : Face D A} (hR : R.Char F) {i : Fin D.R.m} {ι x₀}
     (O : OMDat T.toCore R i Unit (fun _ => A.μ0)) (O' : OMDat T.toCore R i T0 id) (hle : O.c'.F ≤ O'.c'.F)
     (hO : O.Pins (κ i) (v₀ i (sg0 D A)) ι x₀) (hO' : O'.Pins (κ i) (v₀ i (sg0 D A)) ι x₀) :

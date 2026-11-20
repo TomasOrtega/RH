@@ -13,6 +13,9 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `hC D L hT Gi Gl Kc Yd cX ex W u hW g`. Establish `h` using `hW.bot.hyp.2.2.2.1`. Conclude with `⟨_, fun t => GlobalTheory.Fam.FamInhab.rowOf_is _ hC h.lev h.models h.chain GlobalTheory.Fam.FamInhab.topMult u g t, fun t t' => GlobalTheory.Fam.FamInhab.rowOf_same _ hC h.lev h.models h.chain _ u g t t'⟩`.
+-/
 theorem GlobalTheory.Fam.LiftSide.rowCh_exists : GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ g : GlobalTheory.Fam.Geo D, ∃ r : ∀ t, RowCh (pk W) (lvP W) u g t, (∀ t, (r t).Is) ∧ ∀ t t', (r t).Same (r t') := by
   intro hC D L hT Gi Gl Kc Yd cX ex W u hW g
   have h := hW.bot.hyp.2.2.2.1

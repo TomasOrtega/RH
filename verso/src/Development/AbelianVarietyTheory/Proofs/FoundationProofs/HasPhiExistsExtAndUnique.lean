@@ -17,6 +17,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `IsDiscreteValuationRing.associated_of_irreducible V h h'`. Take `⟨u, rfl⟩` from `hx`. Use `⟨v ^ n * u, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap V (FractionRing V) ((v ^ n : Vˣ) : V) = algebraMap V (FractionRing V) v ^ n`. Use `congrArg Units.val (map_zpow (Units.map (algebraMap V (FractionRing V)).toMonoidHom) v n)` as an intermediate fact.
+
+Rewrite `this` using `[Units.val_zpow_eq_zpow_val]`. Then use the resulting hypothesis. Rewrite using `[Units.val_mul, map_mul, map_mul, mul_zpow, e, _root_.mul_assoc]`.
+-/
 theorem hasVal_of_irreducible {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ ϖ' : V}
     (h : Irreducible ϖ) (h' : Irreducible ϖ') {x : FractionRing V} {n : ℤ} (hx : HasVal ϖ' x n) : HasVal ϖ x n := by
   obtain ⟨v, rfl⟩ := IsDiscreteValuationRing.associated_of_irreducible V h h'
@@ -27,6 +32,9 @@ theorem hasVal_of_irreducible {V : Type} [CommRing V] [IsDomain V] [IsDiscreteVa
     rwa [Units.val_zpow_eq_zpow_val] at this
   rw [Units.val_mul, map_mul, map_mul, mul_zpow, e, _root_.mul_assoc]
 
+/- English proof (translation)
+Take `⟨k, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ (𝟙 _) m1 ((Category.id_comp x).symm ▸ m1')`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m2 k`. Establish `hp : IsProper t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m1'.cart.1 Xo.univ.proper`. Take `⟨ψ, -⟩` from `GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H T.V inferInstance G' G t' hp m2' (Category.id_comp (spMap (algebraMap T.V T.Fr)) ▸ n)`. Conclude with `⟨ψ⟩`.
+-/
 theorem nonempty_sabMap_of_models {T : CDVR} {x : Sp T.Fr ⟶ Xo.X} {G G' : SAB H (Sp T.V)} {t t' : SAB H (Sp T.Fr)}
     (m1 : SABMap t Xo.univ.t x) (m2 : SABMap t G (spMap (algebraMap T.V T.Fr)))
     (m1' : SABMap t' Xo.univ.t x) (m2' : SABMap t' G' (spMap (algebraMap T.V T.Fr))) :
@@ -38,6 +46,17 @@ theorem nonempty_sabMap_of_models {T : CDVR} {x : Sp T.Fr ⟶ Xo.X} {G G' : SAB 
     (Category.id_comp (spMap (algebraMap T.V T.Fr)) ▸ n)
   exact ⟨ψ⟩
 
+/- English proof (translation)
+Take `⟨G, t, m1, m2, P, ϖ, Q, β, hϖ, hQ, -, hβ, rfl⟩` from `h`. Take `⟨G', t', m1', m2', P', ϖ', Q', β', hϖ', hQ', -, hβ', rfl⟩` from `h'`. Take `⟨ψ⟩` from `nonempty_sabMap_of_models m1 m2 m1' m2'`. Take `⟨d, hd⟩` from `GlobalTheory.SameCoord.exists_equiv_psiCoord E H T.V G G' ψ P P' inferInstance inferInstance inferInstance`. Establish `hQQ : ∀ χ, Q' (d χ) = Q χ` using `fun χ => by`.
+
+Take `⟨r, hr, -⟩` from `(GlobalTheory.PsiCoordLocal.main T.V P.D inferInstance χ).1`. Take `⟨u, hu⟩` from `hd χ r hr`. Establish `h1` using `hasVal_mul_unit (GlobalTheory.ValForm.hasVal_coord (hQ χ) hr) u`. Establish `h2` using `hasVal_of_irreducible hϖ hϖ' (GlobalTheory.ValForm.hasVal_coord (hQ' (d χ)) hu)`. Rewrite `h1` using `[← map_mul, _root_.mul_comm]`.
+
+Conclude with `hasVal_unique hϖ h2 h1`. Take `⟨β₁, hβ₁, hφ⟩` from `GlobalTheory.EtaVal.phiC_smul_pull E _ _ _ d β' 1 zero_le_one`. Establish `hdiag : ∀ a, β₁.1 a a = β.1 a a` using `fun a => by`. Rewrite using `[hβ₁, hβ', hβ, hQQ, _root_.one_mul]`. Establish `e : β₁ = β`.
+
+Use `Subtype.ext (LinearMap.ext fun a => LinearMap.ext fun b => ?_)` and prove the remaining obligations. Establish `h1` using `hdiag (a + b)`. Establish `s1` using `β₁.2.1 a b`. Establish `s2` using `β.2.1 a b`. Simplify using `only [map_add, LinearMap.add_apply] at h1`.
+
+Combine the linear relations using `[hdiag a, hdiag b]`. Rewrite using `[← e, hφ, _root_.one_mul]`.
+-/
 theorem HasPhi.unique {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {φ φ' : ℝ} (h : HasPhi y φ)
     (h' : HasPhi y φ') : φ = φ' := by
   obtain ⟨G, t, m1, m2, P, ϖ, Q, β, hϖ, hQ, -, hβ, rfl⟩ := h
@@ -63,6 +82,9 @@ theorem HasPhi.unique {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {φ
     linarith [hdiag a, hdiag b]
   rw [← e, hφ, _root_.one_mul]
 
+/- English proof (translation)
+Set `_` to `H.starRing`. Take `⟨T', i, y', e', hi, ho', hy', -, hm, hv, C, -, P, -⟩` from `GlobalTheory.IntegralExt.exists_ext_chart_unif E H Dw l Xo c T io y la e ho hy`. Take `⟨φ, hφ⟩` from `exists_hasPhi y' C.I.G C.I.t' C.I.m1 C.I.m2 P`. Conclude with `⟨T', i, e', y', φ, hi, ho', hy', hφ, hm, hv⟩`.
+-/
 theorem exists_ext_hasPhi {la : HeightOneSpectrum (𝓞 c.F)} {T : CDVR} {io : c.F →+* T.Fr} {e : ℕ}
     (ho : OverLa la T.V io e) (y : IntFr Xo c T io) (hy : y.IsAlg) :
     ∃ (T' : CDVR) (i : T.Fr →+* T'.Fr) (e' : ℕ) (y' : IntFr Xo c T' (i.comp io)) (φ : ℝ),
@@ -77,6 +99,9 @@ theorem exists_ext_hasPhi {la : HeightOneSpectrum (𝓞 c.F)} {T : CDVR} {io : c
   obtain ⟨φ, hφ⟩ := exists_hasPhi y' C.I.G C.I.t' C.I.m1 C.I.m2 P
   exact ⟨T', i, e', y', φ, hi, ho', hy', hφ, hm, hv⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `⟨fun p la T io e ho y hy => ?_, fun _ _ _ _ _ => HasPhi.unique⟩` and prove the remaining obligations. Take `⟨T', i, e', y', φ, hi, ho', hy', hφ, -, hv⟩` from `exists_ext_hasPhi ho y hy`. Conclude with `⟨T', i, e', y', φ, hi, ho', hy', hφ, fun w f hf => hv f hf.1⟩`.
+-/
 theorem hasPhi_exists_ext_and_unique :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
       (l : Level H) (Xo : Moduli Dw l) (c : Coeff l),

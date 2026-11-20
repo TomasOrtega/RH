@@ -16,6 +16,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hw`. Introduce `R _ t x hx`. Choose the witnesses or unpack the hypotheses as in `⟨R', g, t', hg, sq⟩ : ∃ (R' : CommRingCat.{0}) (g : Spec R' ⟶ Spec (CommRingCat.of R)) (t' : Spec R' ⟶ S'), Epi g ∧ g ≫ t = t' ≫ f := by`. Establish `: IsAffine (pullback t f)` using `isAffine_of_isAffineHom (pullback.fst t f)`. Use `⟨Γ(pullback t f, ⊤), (pullback t f).isoSpec.inv ≫ pullback.fst t f, (pullback t f).isoSpec.inv ≫ pullback.snd t f, Flat.epi_of_flat_of_surjective _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`. Set `T : Over S` to `Over.mk t`. Set `T' : Over S'` to `Over.mk t'`. Establish `hxw : (g ≫ x.left) ≫ A.hom = t' ≫ f` using `by rw [Category.assoc, Over.w x]; exact sq`. Set `x' : T' ⟶ A'` to `Over.homMk (h.1.lift _ _ hxw) (h.1.lift_snd _ _ _)`.
+
+Establish `hx' : x'.left ≫ φ = g ≫ x.left` using `h.1.lift_fst _ _ _`. Establish `key : x' = toUnit _ ≫ η[A']` using `hK R' t' x' fun p => by`. Take `⟨V, hV, c, hc⟩` from `hx (g p)`. Use `⟨g ⁻¹ᵁ V, hV, ?_⟩` and prove the remaining obligations. Set `a : Over.mk ((T' ⊗ A').hom ≫ f) ⟶ T` to `Over.homMk ((fst T' A').left ≫ g) ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) sq).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ f) (Over.w (fst T' A'))))))`.
+
+Set `b : Over.mk ((T' ⊗ A').hom ≫ f) ⟶ A` to `pushPt h.1.w (snd T' A')`. Establish `k₁ : (lift a b).left ≫ (fst T A).left = (fst T' A').left ≫ g` using `congrArg (fun q => q.left) (lift_fst a b)`. Establish `k₂ : (lift a b).left ≫ (snd T A).left = (snd T' A').left ≫ φ` using `congrArg (fun q => q.left) (lift_snd a b)`. Establish `k₃ : (lift a b).left ≫ ((fst T A ≫ x) * snd T A).left = ((fst T' A' ≫ x') * snd T' A').left ≫ φ`. Establish `e : lift a b ≫ ((fst T A ≫ x) * snd T A) = (a ≫ x) * b`.
+
+Rewrite using `[MonObj.comp_mul, lift_fst_assoc, lift_snd]`. Use `(congrArg (fun q => q.left) e).trans (h.2 (T' ⊗ A') _ _ _ _ ?_ rfl)` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hx'.symm).trans (Category.assoc _ _ _).symm)`. Establish `le : (fst T' A').left ⁻¹ᵁ g ⁻¹ᵁ V ≤ (lift a b).left ⁻¹ᵁ (fst T A).left ⁻¹ᵁ V` using `fun y hy => (congrArg (fun q => q y ∈ V) k₁).mpr hy`. Establish `hn` using `Scheme.Hom.resLE_comp_ι (lift a b).left le`.
+
+Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn L _ _ _) c hc`. Take `⟨c₂, h₂⟩` from `gen_chartPull (chartPullSame L (fun k : Fin 2 => (((fst T' A').left ⁻¹ᵁ g ⁻¹ᵁ V).ι ≫ ![(lift (fst T' A' ≫ x') (snd T' A') ≫ μ[A']).left, (snd T' A').left] k) ≫ φ) _ _ ((lift a b).left.resLE _ _ le) fun k => by`. Rewrite using `[← Category.assoc, hn, Category.assoc, Category.assoc]`. Use `fin_cases k`. Use `exacts [congrArg (_ ≫ ·) k₃.symm, congrArg (_ ≫ ·) k₂.symm]) c₁ h₁`.
+
+Take `⟨c₃, h₃⟩` from `exists_down ((isGen_iff w).1 hw) hL hL' c₂ h₂`. Conclude with `gen_chartPull (chartPullOut L' _ _ _ _ fun _ => rfl) c₃ h₃`. Set `U : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk g sq`. Establish `e₁ : U ≫ x = pushHom h T' x'` using `Over.OverMorphism.ext hx'.symm`. Establish `e₂ : U ≫ x = U ≫ (1 : T ⟶ A)`.
+
+Rewrite using `[e₁, MonObj.comp_one]`. Conclude with `(congrArg (pushHom h T') key).trans (map_one (pushHom h T'))`. Conclude with `Over.OverMorphism.ext ((cancel_epi g).1 (congrArg (fun q => q.left) e₂))`.
+-/
 theorem kTriv_of_pull {S S' : Scheme.{0}} {f : S' ⟶ S} [IsAffineHom f] [Flat f] [Surjective f]
     {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left} {L : LB A.left} {L' : LB A'.left}
     (h : IsGrpPullback A' A f φ) (hL : L.IsLB) (hL' : L'.IsLB) (hw : LBIso L' (L.pull φ)) (hK : KTriv A' L') :
@@ -66,6 +83,13 @@ theorem kTriv_of_pull {S S' : Scheme.{0}} {f : S' ⟶ S} [IsAffineHom f] [Flat f
     exact (congrArg (pushHom h T') key).trans (map_one (pushHom h T'))
   exact Over.OverMorphism.ext ((cancel_epi g).1 (congrArg (fun q => q.left) e₂))
 
+/- English proof (translation)
+Establish `: IsFinite φ` using `MorphismProperty.of_isPullback (P := @IsFinite) h.flip inferInstance`. Establish `: Flat φ` using `MorphismProperty.of_isPullback (P := @Flat) h.flip inferInstance`. Establish `: Surjective φ` using `MorphismProperty.of_isPullback (P := @Surjective) h.flip inferInstance`. Establish `: IsLocallyNoetherian A.left` using `LocallyOfFiniteType.isLocallyNoetherian A.hom`. Use `relAmple_of_isAmpleLB A hL fun U hU => ?_` and prove the remaining obligations.
+
+Establish `h₁` using `isAmpleLB_of_relAmple A' hL' hA (f ⁻¹ᵁ U) (hU.preimage f)`. Establish `pre : A'.hom ⁻¹ᵁ (f ⁻¹ᵁ U) = φ ⁻¹ᵁ (A.hom ⁻¹ᵁ U)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← h.w, Scheme.Hom.comp_preimage]`. Rewrite `h₁` using `[pre]`. Establish `h₂ : IsAmpleLB ((L.pull φ).pull (φ ⁻¹ᵁ (A.hom ⁻¹ᵁ U)).ι)` using `h₁.of_lbIso (LB.isLB_pull (LB.isLB_pull hL _) _) (LBIso.chartPull (GlobalTheory.chartPullPull _ _) (GlobalTheory.chartPullPull _ _) hw.symm)`.
+
+Establish `h₃ : IsAmpleLB ((L.pull (A.hom ⁻¹ᵁ U).ι).pull (φ ∣_ (A.hom ⁻¹ᵁ U)))` using `(isAmpleLB_congr (LB.isLB_pull (LB.isLB_pull hL _) _) (LB.isLB_pull (LB.isLB_pull hL _) _) (FiniteAmple.lbIso_pull_pull _ hL (morphismRestrict_ι φ _).symm)).1 h₂`. Establish `: Surjective (φ ∣_ A.hom ⁻¹ᵁ U)` using `IsZariskiLocalAtTarget.restrict (P := @Surjective) ‹_› _`. Conclude with `FiniteAmple.isAmpleLB_of_pull _ (LB.isLB_pull hL _) h₃`.
+-/
 theorem relAmple_of_pull {S S' : Scheme.{0}} [IsLocallyNoetherian S] {f : S' ⟶ S} [IsFinite f] [Flat f]
     [Surjective f] {A : Over S} {A' : Over S'} [IsProper A.hom] {φ : A'.left ⟶ A.left} {L : LB A.left}
     {L' : LB A'.left} (h : IsPullback φ A'.hom A.hom f) (hL : L.IsLB) (hL' : L'.IsLB)
@@ -97,6 +121,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 
+/- English proof (translation)
+Introduce `S S' _ π G G' _ _ φ L L' _ _ _ hG hL hL' h hw`. Use `hG.proper` as an intermediate fact. Conclude with `⟨PolDescent.relAmple_of_pull h.1 hL hL' hw, PolDescent.kTriv_of_pull h hL hL' hw⟩`.
+-/
 theorem relAmple_kTriv_of_finite_etale_cover : ∀ (S S' : Scheme.{0}) [IsLocallyNoetherian S] (π : S' ⟶ S) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (φ : G'.left ⟶ G.left) (L : LB G.left) (L' : LB G'.left), IsFinite π → Etale π → Surjective π → IsAbelianScheme G → L.IsLB → L'.IsLB → IsGrpPullback G' G π φ → LBIso L' (L.pull φ) → (Out.RelAmple G' L' → Out.RelAmple G L) ∧ (Out.KTriv G' L' → Out.KTriv G L) := by
   intro S S' _ π G G' _ _ φ L L' _ _ _ hG hL hL' h hw
   have := hG.proper

@@ -10,6 +10,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SS
 
+/- English proof (translation)
+Introduce `k _ _ G _ X _ _ _ B _ i q hQ hB hX`. Take `⟨hi, hq, hf, hsu, ha, hp, -⟩` from `hQ`. Establish `hsub : Subsingleton X` using `Module.finrank_zero_iff.1 hX`. Establish `: Mono q` using `⟨fun {Y} x y hxy => by`. Establish `h1 : (x * y⁻¹) ≫ q = toUnit _ ≫ η[B]`.
+
+Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, hxy, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `h2 : hp.lift _ _ h1 = 1`. Apply `(GlobalTheory.splitTorusPointsEquiv (Sp k) X Y).injective` to reduce the goal to its premises. Use `MonoidHom.ext fun a => ?_` and prove the remaining obligations.
+
+Establish `ha1 : a = 1` using `by show a = Multiplicative.ofAdd 0`. Rewrite using `[← ofAdd_toAdd a, Subsingleton.elim (Multiplicative.toAdd a) 0]`. Rewrite using `[ha1, map_one, map_one]`. Establish `h3` using `hp.lift_fst _ _ h1`. Rewrite `h3` using `[h2, MonObj.one_comp]`.
+
+Conclude with `mul_inv_eq_one.1 h3.symm⟩`. Establish `: Mono q.left` using `inferInstanceAs (Mono ((Over.forget _).map q))`. Use `hB.proper` as an intermediate fact. Establish `: Flat q.left` using `hf`. Establish `: Surjective q.left` using `hsu`.
+
+Establish `: IsAffineHom q.left` using `ha`. Establish `: IsIso q.left` using `Flat.isIso_of_surjective_of_mono q.left`. Rewrite using `[← Over.w q]`. Use `infer_instance`.
+-/
 theorem isProper_of_isQuot_of_finrank_eq_zero : ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (B : Over (Sp k)) [GrpObj B] (i : splitTorus (Sp k) X ⟶ G) (q : G ⟶ B), GlobalTheory.SS.IsQuot i q → IsAbelianScheme B → Module.finrank ℤ X = 0 → IsProper G.hom := by
   intro k _ _ G _ X _ _ _ B _ i q hQ hB hX
   obtain ⟨hi, hq, hf, hsu, ha, hp, -⟩ := hQ

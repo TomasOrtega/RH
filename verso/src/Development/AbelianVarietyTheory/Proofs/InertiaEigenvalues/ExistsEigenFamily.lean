@@ -21,6 +21,27 @@ def stab {G V ι : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Represe
       rw [← Module.End.mul_apply, ← map_mul, ← Subgroup.coe_mul, inv_mul_cancel]
       simp
 
+/- English proof (translation)
+Introduce `G V W ι _ _ _ _ _ _ _ _ ρ hρ K hK U hU hU1 θ hθ hm T y hy`. Establish `h1 : θ 1 = 1` using `hθ 1 hU1 K.one_mem`. Set `H : Subgroup K` to `stab ρ K θ h1 hm y`. Establish `hHo : IsOpen (H : Set K)`. Apply `Subgroup.isOpen_of_mem_nhds H (g := 1)` to reduce the goal to its premises.
+
+Establish `ho : IsOpen (U ∩ ⋂ i, {g : G | ρ g (y i) = y i})` using `hU.inter (isOpen_iInter_of_finite fun i => hρ (y i))`. Establish `ho' : IsOpen ((Subtype.val : K → G) ⁻¹' (U ∩ ⋂ i, {g : G | ρ g (y i) = y i}))` using `ho.preimage continuous_subtype_val`. Use `Filter.mem_of_superset (ho'.mem_nhds ?_) ?_` and prove the remaining obligations. Use `⟨hU1, Set.mem_iInter.2 fun i => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Introduce and unpack `k ⟨hk, hk'⟩`. Conclude with `⟨hθ _ hk k.2, fun i => Set.mem_iInter.1 hk' i⟩`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Use `haveI : Finite (K ⧸ H) := Subgroup.quotient_finite_of_isOpen H hHo`. Use `letI : Fintype (K ⧸ H) := Fintype.ofFinite _`.
+
+Set `f : ι → K → V` to `fun j k => θ (k⁻¹ : K) • ρ k (y j)`. Establish `hf : ∀ j (k : K) (s : K), s ∈ H → f j (k * s) = f j k`. Introduce `j k s hs`. Establish `hs' : θ (s⁻¹ : K) = 1` using `(H.inv_mem hs).1`. Simplify using `only [f]`.
+
+Rewrite using `[mul_inv_rev, Subgroup.coe_mul, hm _ (s⁻¹).2 _ (k⁻¹).2, hs', one_mul, Subgroup.coe_mul, map_mul, Module.End.mul_apply, hs.2 j]`. Set `F : ι → K ⧸ H → V` to `fun j q => f j q.out`. Establish `hF : ∀ j (k : K), F j (k : K ⧸ H) = f j k`. Introduce `j k`. Take `⟨s, hs⟩` from `QuotientGroup.mk_out_eq_mul H k`.
+
+Simplify using `only [F]`. Rewrite using `[hs, hf j k s s.2]`. Establish `hact : ∀ j (h : K) (q : K ⧸ H), ρ h (F j q) = θ h • F j (h • q)`. Introduce `j h q`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+
+Consider the case `H k`. Rewrite using `[MulAction.Quotient.smul_coe, smul_eq_mul, hF, hF]`. Simplify using `only [f]`. Rewrite using `[map_smul, smul_smul, mul_comm (θ h), ← hm _ ((h * k)⁻¹).2 _ h.2, ← Subgroup.coe_mul, Subgroup.coe_mul K h k, map_mul, Module.End.mul_apply]`. Use `congr 3`.
+
+Use `group`. Establish `hN : (Fintype.card (K ⧸ H) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Use `⟨fun j => (Fintype.card (K ⧸ H) : ℂ)⁻¹ • ∑ q, F j q, fun j h hh => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_sum, smul_comm]`. Use `congr 1`.
+
+Rewrite using `[Finset.sum_congr rfl fun q _ => hact j ⟨h, hh⟩ q, ← Finset.smul_sum]`. Use `congr 1`. Conclude with `Equiv.sum_comp (MulAction.toPerm (⟨h, hh⟩ : K)) (F j)`. Establish `hq : ∀ q, ∑ i, T i (F i q) = ∑ i, T i (y i)`. Introduce `q`.
+
+Simplify using `only [F, f, map_smul]`. Rewrite using `[← Finset.smul_sum, hy _ q.out.2, smul_smul, ← hm _ (q.out⁻¹).2 _ q.out.2, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, h1, one_smul]`. Simplify using `only [map_smul, map_sum]`. Rewrite using `[← Finset.smul_sum, Finset.sum_comm, Finset.sum_congr rfl fun q _ => hq q, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hN, one_smul]`.
+-/
 theorem exists_eigen_family : ∀ {G V W ι : Type} [inst : Group G] [inst_1 : TopologicalSpace G] [IsTopologicalGroup G] [inst_3 : AddCommGroup V] [inst_4 : Module ℂ V] [inst_5 : AddCommGroup W] [inst_6 : Module ℂ W] [inst_7 : Fintype ι] {ρ : Representation ℂ G V}, GlobalTheory.PRep.IsSmooth ρ → ∀ {K : Subgroup G}, IsCompact (↑K : Set G) → ∀ {U : Set G}, IsOpen U → (1 : G) ∈ U → ∀ (θ : G → ℂ), (∀ g ∈ U, g ∈ K → θ g = (1 : ℂ)) → (∀ a ∈ K, ∀ b ∈ K, θ (a * b) = θ a * θ b) → ∀ (T : ι → V →ₗ[ℂ] W) (y : ι → V), (∀ k ∈ K, ∑ i : ι, (T i : V → W) (((ρ : G → V →ₗ[ℂ] V) k : V → V) (y i)) = θ k • ∑ i : ι, (T i : V → W) (y i)) → ∃ (u : ι → V), (∀ (j : ι), ∀ h ∈ K, ((ρ : G → V →ₗ[ℂ] V) h : V → V) (u j) = θ h • u j) ∧ ∑ i : ι, (T i : V → W) (u i) = ∑ i : ι, (T i : V → W) (y i) := by
   intro G V W ι _ _ _ _ _ _ _ _ ρ hρ K hK U hU hU1 θ hθ hm T y hy
   classical

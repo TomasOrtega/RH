@@ -23,6 +23,25 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 end
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
   {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}
+/- English proof (translation)
+Establish `hr0 : ∃ x, r x ≠ 0` using `⟨0, hr00⟩`. Establish `canc` using `GlobalTheory.ArchCancel.eq_of_tens_eq F r (hr f).1 hr0`. Establish `img : ∀ i (h : SInf F (Fin n × Fin d)) (t : ℝ), ∃ k : SInf F (Fin n × Fin d), om (γs i (Multiplicative.ofAdd t), 1) (tens (evI F) ⇑h r) = tens (evI F) ⇑k r`. Introduce `i h t`. Take `⟨c, -, hc, -⟩` from `_root_.GlobalTheory.T.archimedean_line_pairing_twist hP M ψ χX χW om hψ hG hW (γs i) (hγs i) h r (hr h)`.
+
+Conclude with `⟨c t, hc t⟩`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Use `⟨fun _ => f, fun t => ?_, rfl, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [List.map_nil, List.prod_nil]`. Conclude with `om_one_one om _`. Simplify using `only [sub_self, smul_zero, List.map_nil, List.sum_nil]`. Conclude with `tendsto_const_nhds`. Consider the case `cons i l' ih`.
+
+Take `⟨c', hc', hc'0, hlim'⟩` from `ih`. Take `⟨ci, hci, hci0, hlimi⟩` from `hg i`. Use `set S' := (l'.map g).sum with hS'`. Set `s : ℝ → SInf F (Fin n × Fin d)` to `fun t => if t = 0 then S' else t⁻¹ • (c' t - f)`. Use `choose k hk using fun t => img i (s t) t`.
+
+Establish `hs : Tendsto s (𝓝 0) (𝓝 S')`. Rewrite using `[← nhdsNE_sup_pure (0 : ℝ)]`. Use `Tendsto.sup ?_ ?_` and prove the remaining obligations. Use `hlim'.congr' ?_ filter_upwards [self_mem_nhdsWithin] with t ht` and prove the remaining obligations. Simplify using `only [s, if_neg (show t ≠ 0 from ht)]`.
+
+Simplify using `only [tendsto_pure_left, s, if_pos rfl]`. Conclude with `fun _ => mem_of_mem_nhds`. Establish `hk' : Tendsto k (𝓝 0) (𝓝 S')` using `_root_.GlobalTheory.T.jointly_continuous_archimedean_weil_action hP M ψ χX χW om hψ hG hW (γs i) (hγs i) r hr00 hr s k S' hk hs`. Establish `hcs : ∀ t, c' t = f + t • s t`. Introduce `t`.
+
+Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `[hc'0]`. Simplify using `only [s, if_neg ht, smul_smul, mul_inv_cancel₀ ht, one_smul, add_sub_cancel]`. Use `⟨fun t => ci t + t • k t, fun t => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[om_prod_one, hc' t, hcs t, tens_add_smul, map_add, map_smul, hci t, hk t, tens_add_smul]`. Simplify using `[hci0]`. Simplify using `only [List.map_cons, List.sum_cons]`. Use `(hlimi.add (hk'.mono_left nhdsWithin_le_nhds)).congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Establish `ht' : t ≠ 0` using `ht`. Rewrite using `[add_sub_right_comm, smul_add, smul_smul, inv_mul_cancel₀ ht', one_smul]`.
+-/
 theorem line_sum_curve_eq_prod (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd)
     (hψ : IsStd ψ) (hG : M.IsGood ψ) (hW : M.IsWeil ψ χX χW om)
@@ -82,6 +101,21 @@ theorem line_sum_curve_eq_prod (hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs)
       rw [add_sub_right_comm, smul_add, smul_smul, inv_mul_cancel₀ ht', one_smul]
 end GlobalTheory.LineAdd
 open GlobalTheory.LineAdd GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om a b a' b' hpair ι l γs hγs γ _ hprod f _ f₁ fs hD hDs`. Take `⟨r, hr00, hr⟩` from `GlobalTheory.ThK.exists_rest_inf F (Fin n × Fin d)`. Establish `hψ` using `hpair.base.std`. Establish `hG` using `hpair.good`. Establish `hW` using `hpair.weil`.
+
+Establish `canc` using `GlobalTheory.ArchCancel.eq_of_tens_eq F r (hr f).1 ⟨0, hr00⟩`. Use `choose cs gs hcs hlims using fun i => _root_.GlobalTheory.T.archimedean_line_pairing_twist hP M B.ψ χX χW om hψ hG hW (γs i) (hγs i) f r (hr f)`. Establish `hcs0 : ∀ i, cs i 0 = f`. Introduce `i`. Use `canc _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[← hcs i 0]`. Simplify using `only [ofAdd_zero, map_one]`. Conclude with `om_one_one om _`. Establish `hlims' : ∀ i, Tendsto (fun t : ℝ => t⁻¹ • (cs i t - f)) (𝓝[≠] 0) (𝓝 (gs i))`. Introduce `i`.
+
+Simplify `hlims i` using `[hcs0 i]`. Establish `hfs : ∀ i, fs i = gs i`. Introduce `i`. Use `canc _ _ (funext fun x => ?_)` and prove the remaining obligations. Conclude with `(hDs i r (hr f) x).unique (hasDerivAt_of_curve (hcs i) (hcs0 i) (hlims' i) x)`.
+
+Take `⟨c, hc, hc0, hlim⟩` from `_root_.GlobalTheory.LineAdd.line_sum_curve_eq_prod hP M B.ψ χX χW om hψ hG hW γs hγs r hr00 hr f gs (fun i => ⟨cs i, hcs i, hcs0 i, hlims' i⟩) l`. Establish `hc' : ∀ t, om (γ (Multiplicative.ofAdd t), 1) (tens (evI F) ⇑f r) = tens (evI F) ⇑(c t) r`. Introduce `t`. Rewrite using `[hprod]`. Conclude with `hc t`.
+
+Establish `e1 : f₁ = (l.map gs).sum`. Use `canc _ _ (funext fun x => ?_)` and prove the remaining obligations. Conclude with `(hD r (hr f) x).unique (hasDerivAt_of_curve hc' hc0 hlim x)`. Rewrite using `[e1]`. Use `congr 1`.
+
+Conclude with `List.map_congr_left fun i _ => (hfs i).symm`.
+-/
 theorem GlobalTheory.LineAdd.deriv_prod_lines_eq_sum : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n d : ℕ) (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)
     (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X W) (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W) (r s r' s' : ℕ),
@@ -133,6 +167,9 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.LineAdd.deriv_prod_lines_eq_sum | exact _root_.GlobalTheory.LineAdd.deriv_prod_lines_eq_sum | (intros; apply _root_.GlobalTheory.LineAdd.deriv_prod_lines_eq_sum <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.line_derivative_additive_in_lines : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n d : ℕ) (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)
     (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X W) (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W) (r s r' s' : ℕ),

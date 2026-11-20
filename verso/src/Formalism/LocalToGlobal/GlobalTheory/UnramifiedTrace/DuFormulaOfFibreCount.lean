@@ -12,6 +12,15 @@ variable {D : D7} {u : D.what₂.Word}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `v φ hφ`. Take `⟨G, hG, hGφ⟩` from `S0.forms_from_adelic_function T 0 (Nat.zero_le _) rfl φ hφ`. Establish `hGA` using `(Submodule.mem_inf.1 hG).1`. Use `choose k hk δ hδ using fun a => S0.diamond_elements_exist_all T 0 (Nat.zero_le _) rfl v a`. Use function extensionality and compare the values at `c`.
+
+Establish `: Finite ((D.fm u).lk 0 v c)` using `Module.finite_of_finite ((D.mem u).A.Fv v)`. Use `letI : Fintype ((D.fm u).lk 0 v c) := Fintype.ofFinite _`. Establish `hdia : ∀ a, dia D u 0 v a φ c = fun s => G (T.cls0.y c * δ a) (T.val0.eY s)`. Introduce `a`. Use `show (D.fm u).dilT 0 v a c (φ ((D.fm u).dil 0 v a c)) = _`.
+
+Rewrite using `[hGφ]`. Conclude with `T.val0.dilT v a (k a) (hk a) c (δ a) (hδ a) G hGA`. Take `⟨γ, η, κ, Mu, hmv, hMu, πD, πE, τ, hcE, hcD, hval⟩` from `hF v c`. Take `⟨hself, hDE, hEE, hline⟩` from `hval G hGA`. Use function extensionality and compare the values at `s`.
+
+Rewrite using `[norm_eq_sum_diamond]`. Simplify using `only [Formalism.MainNotions.product_first_zeroth_parts.trp, LinearMap.smul_apply, LinearMap.comp_apply, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_apply]`. Rewrite using `[dopU_eq T v φ hGA hGφ c γ η κ Mu hmv hMu, eopU_eq T v φ hGA hGφ c γ η κ Mu hmv hMu]`. Simplify using `only [hdia]`. Conclude with `comb_du ((D.fm u).te 0 v c) ((D.fm u).te_ne 0 v c) (D.mem u).A.T (D.R.N 0 - 1) (D.R.N 0 - 2) (D.mem u).A.T_prime.ne_zero πD πE _ _ (φ c s) (fun a => G (T.cls0.y c * δ a) (T.val0.eY s)) τ hcE hcD (fun p hp => by rw [hGφ c]; exact congrFun (hself p hp) _) (fun p q h => congrFun (hD …`.
+-/
 theorem du_formula_of_fibre_count (T : Forms0 D u) (hF : DUFib0F T) : DUFormulaLevelZero D u := by
   intro v φ hφ
   obtain ⟨G, hG, hGφ⟩ := S0.forms_from_adelic_function T 0 (Nat.zero_le _) rfl φ hφ
@@ -40,6 +49,9 @@ theorem du_formula_of_fibre_count (T : Forms0 D u) (hF : DUFib0F T) : DUFormulaL
     (fun p q h => congrFun (hEE p q h) _)
     (fun a q hq => congrFun (hline a q hq (k (τ a)) (hk (τ a)) (δ (τ a)) (hδ (τ a))) _)
 
+/- English proof (translation)
+Introduce `D u T` and use `du_formula_of_fibre_count T (h D u T)`.
+-/
 theorem dUAll_of (h : ∀ (D : D7) (u : D.what₂.Word) (T : Forms0 D u), DUFib0F T) : Formalism.L2.GlobalTheoryTheory.UnramifiedDiagonal.DUAll :=
   fun D u T => du_formula_of_fibre_count T (h D u T)
 

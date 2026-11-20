@@ -19,6 +19,9 @@ abbrev Pt.A (X : Pt R Ω) : Type := MvPolynomial (Fin X.n) R ⧸ X.I
 
 instance (X : Pt R Ω) : Algebra.Etale R X.A := X.et
 
+/- English proof (translation)
+Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 (inferInstance : Algebra.FiniteType R E)`. Set `e` to `Ideal.quotientKerAlgEquivOfSurjective hf`. Establish `het : Algebra.Etale R (MvPolynomial (Fin n) R ⧸ RingHom.ker f)` using `Algebra.Etale.of_equiv e.symm`. Use `⟨⟨n, RingHom.ker f, het, ψ.comp e.toAlgHom⟩, e.symm, fun x => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem exists_pt (E : Type) [CommRing E] [Algebra R E] [Algebra.Etale R E] (ψ : E →ₐ[R] Ω) :
     ∃ (X : Pt R Ω) (e : E ≃ₐ[R] X.A), ∀ x, X.ψ (e x) = ψ x := by
   obtain ⟨n, f, hf⟩ := Algebra.FiniteType.iff_quotient_mvPolynomial''.1
@@ -37,6 +40,11 @@ instance : SmallCategory (Pt R Ω) where
   comp_id _ := Subtype.ext (AlgHom.ext fun _ => rfl)
   assoc _ _ _ := Subtype.ext (AlgHom.ext fun _ => rfl)
 
+/- English proof (translation)
+Establish `h1 : Algebra.Etale X.A (X.A ⊗[R] Y.A)` using `Algebra.Etale.baseChange R Y.A X.A`. Establish `h2 : Algebra.Etale R (X.A ⊗[R] Y.A)` using `Algebra.Etale.comp R X.A _`. Take `⟨Z, e, he⟩` from `exists_pt (X.A ⊗[R] Y.A) (Algebra.TensorProduct.lift X.ψ Y.ψ (fun _ _ => Commute.all _ _))`. Use `⟨Z, ⟨e.toAlgHom.comp Algebra.TensorProduct.includeLeft, fun x => ?_⟩, ⟨e.toAlgHom.comp Algebra.TensorProduct.includeRight, fun x => ?_⟩, trivial⟩` and prove the remaining obligations. Simplify using `[he]`.
+
+Simplify using `[he]`.
+-/
 theorem upper (X Y : Pt R Ω) : ∃ (Z : Pt R Ω) (_ : X ⟶ Z) (_ : Y ⟶ Z), True := by
   have h1 : Algebra.Etale X.A (X.A ⊗[R] Y.A) := Algebra.Etale.baseChange R Y.A X.A
   have h2 : Algebra.Etale R (X.A ⊗[R] Y.A) := Algebra.Etale.comp R X.A _
@@ -47,6 +55,21 @@ theorem upper (X Y : Pt R Ω) : ∃ (Z : Pt R Ω) (_ : X ⟶ Z) (_ : Y ⟶ Z), T
   · simp [he]
   · simp [he]
 
+/- English proof (translation)
+Take `⟨t, ht, ht1⟩` from `(Algebra.FormallyUnramified.iff_exists_tensorProduct (R := R) (S := X.A)).1 inferInstance`. Set `L : X.A ⊗[R] X.A →ₐ[R] Y.A` to `Algebra.TensorProduct.lift f.1 g.1 (fun _ _ => Commute.all _ _)`. Establish `hcomp : Y.ψ.comp L = X.ψ.comp (Algebra.TensorProduct.lmul' R)`. Apply `Algebra.TensorProduct.ext` to reduce the goal to its premises. Use extensionality with `x`.
+
+Simplify using `[L, f.2]`. Use extensionality with `x`. Simplify using `[L, g.2]`. Establish `hs : Y.ψ (L t) = 1`. Use `congrArg (fun φ => φ t) hcomp` as an intermediate fact.
+
+Simplify `this` using `[ht1]`. Establish `hs' : ∀ x, (g.1 x - f.1 x) * L t = 0` using `fun x => by`. Use `congrArg L (ht x)` as an intermediate fact. Simplify `this` using `[L, map_mul, map_sub]`. Set `B` to `Localization.Away (L t)`.
+
+Establish `h1 : Algebra.Etale Y.A B` using `Algebra.Etale.of_isLocalizationAway (L t)`. Establish `h2 : Algebra.Etale R B` using `Algebra.Etale.comp R Y.A B`. Set `ψB : B →ₐ[R] Ω` to `IsLocalization.Away.liftAlgHom (L t) (f := Y.ψ) (by rw [hs]; exact isUnit_one)`. Establish `hψB : ∀ y, ψB (algebraMap Y.A B y) = Y.ψ y` using `fun y => by`. Simplify using `[ψB]`.
+
+Take `⟨Z, e, he⟩` from `exists_pt B ψB`. Use `⟨Z, ⟨e.toAlgHom.comp (IsScalarTower.toAlgHom R Y.A B), fun y => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[he, hψB]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgHom.ext` to reduce the goal to its premises.
+
+Introduce `x`. Establish `hu : IsUnit (algebraMap Y.A B (L t))` using `IsLocalization.Away.algebraMap_isUnit (L t)`. Establish `h0 : algebraMap Y.A B (g.1 x - f.1 x) = 0`. Apply `hu.mul_left_injective` to reduce the goal to its premises. Simplify using `only [zero_mul, ← map_mul, hs' x, map_zero]`.
+
+Establish `h3 : algebraMap Y.A B (f.1 x) = algebraMap Y.A B (g.1 x)`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Conclude with `h0.symm`. Use `show e (algebraMap Y.A B (f.1 x)) = e (algebraMap Y.A B (g.1 x))`. Rewrite using `[h3]`.
+-/
 theorem coeq {X Y : Pt R Ω} (f g : X ⟶ Y) : ∃ (Z : Pt R Ω) (h : Y ⟶ Z), f ≫ h = g ≫ h := by
   obtain ⟨t, ht, ht1⟩ := (Algebra.FormallyUnramified.iff_exists_tensorProduct (R := R) (S := X.A)).1
     inferInstance
@@ -103,6 +126,13 @@ def tc : Cocone (D (R := R) (Ω := Ω)) where
         ext x
         exact f.2 x }
 
+/- English proof (translation)
+Use `letI : Algebra R E := ((algebraMap X.A E).comp (algebraMap R X.A)).toAlgebra`. Use `haveI : IsScalarTower R X.A E := .of_algebraMap_eq' rfl`. Use `haveI : Algebra.Etale R E := Algebra.Etale.comp R X.A E`. Set `ψ' : E →ₐ[R] Ω` to `{ ψ with commutes' := fun r => by`. Use `RingHom.congr_fun h (algebraMap R X.A r)` as an intermediate fact.
+
+Simplify `this }` using `[IsScalarTower.algebraMap_apply R X.A E]`. Take `⟨Y, e, he⟩` from `exists_pt E ψ'`. Use `⟨Y, ⟨e.toAlgHom.comp (IsScalarTower.toAlgHom R X.A E), fun x => ?_⟩, e.toAlgHom.toRingHom, rfl, ?_⟩` and prove the remaining obligations. Use `RingHom.congr_fun h x` as an intermediate fact. Simplify `this` using `[he, ψ']`.
+
+Use extensionality with `x`. Conclude with `he x`.
+-/
 theorem cof_step (X : Pt R Ω) (E : Type) [CommRing E] [Algebra X.A E] [Algebra.Etale X.A E]
     (ψ : E →+* Ω) (h : ψ.comp (algebraMap X.A E) = X.ψ.toRingHom) :
     ∃ (Y : Pt R Ω) (g : X ⟶ Y) (φ : E →+* Y.A),
@@ -123,6 +153,17 @@ theorem cof_step (X : Pt R Ω) (E : Type) [CommRing E] [Algebra X.A E] [Algebra.
   · ext x
     exact he x
 
+/- English proof (translation)
+Use `⟨Pt R Ω, inferInstance, inferInstance, D, fun X => CommRingCat.ofHom (algebraMap R X.A), ?_, ?_, ?_, colimit.cocone D, ⟨colimit.isColimit D⟩, ?_⟩` and prove the remaining obligations. Introduce `j j' g`. Use extensionality with `x`. Conclude with `g.1.commutes x`. Introduce `j`.
+
+Conclude with `(RingHom.etale_algebraMap (R := R) (S := j.A)).2 j.et`. Introduce `X`. Use `⟨⟨RingHom.ker X.ψ.toRingHom, RingHom.ker_isPrime _⟩, ?_⟩` and prove the remaining obligations. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Apply `Ideal.ext` to reduce the goal to its premises.
+
+Introduce `x`. Rewrite using `[← hk]`. Use `show X.ψ (algebraMap R X.A x) = 0 ↔ algebraMap R Ω x = 0`. Rewrite using `[X.ψ.commutes]`. Set `ω : (colimit.cocone (D (R` to `R) (Ω := Ω))).pt →+* Ω := ((colimit.isColimit D).desc tc).hom`.
+
+Establish `hω : ∀ X : Pt R Ω, ω.comp ((colimit.cocone D).ι.app X).hom = X.ψ.toRingHom` using `fun X => by`. Use `(colimit.isColimit (D (R := R) (Ω := Ω))).fac tc X` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`. Use `⟨Ω, inferInstance, inferInstance, ω, ?_⟩` and prove the remaining obligations. Introduce `j E i1 i2 i3 ψ h`.
+
+Take `⟨Y, g, φ, h1, h2⟩` from `@cof_step R Ω _ _ _ j E i1 i2 i3 ψ (h.trans (hω j))`. Use `⟨Y, g, φ, h1, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `(RingHom.congr_fun (hω Y) (φ x)).trans (RingHom.congr_fun h2 x)`.
+-/
 theorem sys (R : CommRingCat.{0}) (p : PrimeSpectrum R) (Ω : Type) [Field Ω] [IsSepClosed Ω]
     [Algebra R Ω] (hk : RingHom.ker (algebraMap R Ω) = p.asIdeal) :
     ∃ (J : Type) (_ : SmallCategory J) (_ : IsFiltered J) (D : J ⥤ CommRingCat.{0})
@@ -157,11 +198,17 @@ theorem sys (R : CommRingCat.{0}) (p : PrimeSpectrum R) (Ω : Type) [Field Ω] [
     ext x
     exact (RingHom.congr_fun (hω Y) (φ x)).trans (RingHom.congr_fun h2 x)
 
+/- English proof (translation)
+The claim follows from `(algebraMap K (AlgebraicClosure K)).injective`.
+-/
 theorem closure_inj (K : Type) [Field K] : Function.Injective (algebraMap K (AlgebraicClosure K)) :=
   (algebraMap K (AlgebraicClosure K)).injective
 
 end UpperTheory.Cb.FilteredPoints
 
+/- English proof (translation)
+Introduce `R p`. Use `UpperTheory.Cb.FilteredPoints.sys R p (AlgebraicClosure p.asIdeal.ResidueField) ?_` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_eq R p.asIdeal.ResidueField (AlgebraicClosure p.asIdeal.ResidueField), RingHom.ker_comp_of_injective _ (UpperTheory.Cb.FilteredPoints.closure_inj _)]`. Conclude with `Ideal.ker_algebraMap_residueField p.asIdeal`.
+-/
 theorem UpperTheory.Cb.sepClosed_point_filtered_etale_colimit :
     LateralTheory.E.LeafSHSysPf.LeafRingSys := by
   intro R p

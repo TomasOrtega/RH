@@ -4,6 +4,15 @@ open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar Glo
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Introduce `S X₀ Xg X' e f W' jW jQ he hjQ hjW hcomm x hx`. Use `he` as an intermediate fact. Establish `hO : IsOpenImmersion (W'.ι ≫ f)`. Rewrite using `[← hcomm]`. Use `infer_instance`.
+
+Take `⟨y, rfl⟩ : ∃ y : W'.toScheme, W'.ι y = x` from `⟨⟨x, hx⟩, rfl⟩`. Establish `h1 : Function.Surjective ((W'.ι ≫ f).stalkMap y)` using `Scheme.Hom.stalkMap_surjective (W'.ι ≫ f) y`. Use `(IsOpenImmersion.iff_isIso_stalkMap.mp (inferInstance : IsOpenImmersion W'.ι)).2 y` as an intermediate fact. Establish `hι : Function.Bijective (W'.ι.stalkMap y)` using `ConcreteCategory.bijective_of_isIso _`. Establish `key : Function.Surjective (f.stalkMap (W'.ι y))`.
+
+Introduce `t`. Take `⟨s, hs⟩` from `h1 (W'.ι.stalkMap y t)`. Use `⟨s, hι.1 ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[Scheme.Hom.stalkMap_comp]`. Conclude with `hs`.
+
+Rewrite using `[Scheme.Hom.stalkMap_comp]`. Conclude with `key.comp (Scheme.Hom.stalkMap_surjective e (f (W'.ι y)))`.
+-/
 theorem stalkMap_comp_surjective_of_open_part :
     ∀ (S X₀ Xg X' : Scheme.{0}) (e : Xg ⟶ X₀) (f : X' ⟶ Xg) (W' : X'.Opens)
       (jW : W'.toScheme ⟶ S) (jQ : S ⟶ Xg), IsPreimmersion e → IsOpenImmersion jQ → IsIso jW →

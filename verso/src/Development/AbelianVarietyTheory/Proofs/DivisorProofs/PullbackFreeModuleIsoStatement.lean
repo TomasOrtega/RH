@@ -12,5 +12,8 @@ open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.pullback_freeModule_iso_free | exact GlobalTheory.pullback_freeModule_iso_free | (intros; apply GlobalTheory.pullback_freeModule_iso_free <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pullback_free_module_iso : ∀ (S T : Scheme.{0}) (f : S ⟶ T) (n : ℕ), Nonempty ((Scheme.Modules.pullback f).obj (GlobalTheory.QCoh.freeModule (X := T) (Fin n)) ≅ GlobalTheory.QCoh.freeModule (X := S) (Fin n)) := by
   first | exact @GlobalTheory.pullback_freeModule_iso_free | exact GlobalTheory.pullback_freeModule_iso_free | (intros; apply GlobalTheory.pullback_freeModule_iso_free <;> assumption)

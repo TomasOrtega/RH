@@ -6,6 +6,11 @@ open MvPolynomial
 
 variable {σ : Type} [Fintype σ]
 
+/- English proof (translation)
+Establish `h : ¬ ∀ φ : Module.Dual ℚ ℂ, φ 1 = 0`. Rewrite using `[Module.forall_dual_apply_eq_zero_iff]`. Conclude with `one_ne_zero`. Use `push Not at h`. Take `⟨φ, hφ⟩` from `h`.
+
+Conclude with `⟨(φ 1)⁻¹ • φ, by simp [hφ]⟩`.
+-/
 theorem exists_linearForm_one : ∃ ℓ : ℂ →ₗ[ℚ] ℚ, ℓ 1 = 1 := by
   have h : ¬ ∀ φ : Module.Dual ℚ ℂ, φ 1 = 0 := by
     rw [Module.forall_dual_apply_eq_zero_iff]
@@ -17,6 +22,11 @@ theorem exists_linearForm_one : ∃ ℓ : ℂ →ₗ[ℚ] ℚ, ℓ 1 = 1 := by
 noncomputable def projQ (ℓ : ℂ →ₗ[ℚ] ℚ) (q : MvPolynomial σ ℂ) : MvPolynomial σ ℚ :=
   ∑ m ∈ q.support, monomial m (ℓ (coeff m q))
 
+/- English proof (translation)
+Rewrite using `[projQ, coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression.
+
+Rewrite `h` using `[MvPolynomial.mem_support_iff, not_not]`. Rewrite using `[h, map_zero]`.
+-/
 theorem coeff_projQ (ℓ : ℂ →ₗ[ℚ] ℚ) (q : MvPolynomial σ ℂ) (m : σ →₀ ℕ) :
     coeff m (projQ ℓ q) = ℓ (coeff m q) := by
   classical
@@ -28,15 +38,24 @@ theorem coeff_projQ (ℓ : ℂ →ₗ[ℚ] ℚ) (q : MvPolynomial σ ℂ) (m : �
   · rw [MvPolynomial.mem_support_iff, not_not] at h
     rw [h, map_zero]
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `[coeff_projQ]`.
+-/
 theorem projQ_add (ℓ : ℂ →ₗ[ℚ] ℚ) (a b : MvPolynomial σ ℂ) :
     projQ ℓ (a + b) = projQ ℓ a + projQ ℓ b := by
   ext m
   simp [coeff_projQ]
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `[coeff_projQ]`.
+-/
 theorem projQ_zero (ℓ : ℂ →ₗ[ℚ] ℚ) : projQ ℓ (0 : MvPolynomial σ ℂ) = 0 := by
   ext m
   simp [coeff_projQ]
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_projQ, coeff_map]`. Establish `: algebraMap ℚ ℂ (coeff m g) = coeff m g • (1 : ℂ)`. Rewrite using `[Algebra.smul_def, mul_one]`. Rewrite using `[this, map_smul, hℓ, smul_eq_mul, mul_one]`.
+-/
 theorem projQ_map (ℓ : ℂ →ₗ[ℚ] ℚ) (hℓ : ℓ 1 = 1) (g : MvPolynomial σ ℚ) :
     projQ ℓ (MvPolynomial.map (algebraMap ℚ ℂ) g) = g := by
   ext m
@@ -45,6 +64,11 @@ theorem projQ_map (ℓ : ℂ →ₗ[ℚ] ℚ) (hℓ : ℓ 1 = 1) (g : MvPolynomi
     rw [Algebra.smul_def, mul_one]
   rw [this, map_smul, hℓ, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_projQ, coeff_mul, coeff_mul, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_map, coeff_projQ]`. Establish `: algebraMap ℚ ℂ (coeff x.1 g) * coeff x.2 h = coeff x.1 g • coeff x.2 h`.
+
+Rewrite using `[Algebra.smul_def]`. Rewrite using `[this, map_smul, smul_eq_mul]`.
+-/
 theorem projQ_map_mul (ℓ : ℂ →ₗ[ℚ] ℚ) (g : MvPolynomial σ ℚ) (h : MvPolynomial σ ℂ) :
     projQ ℓ (MvPolynomial.map (algebraMap ℚ ℂ) g * h) = g * projQ ℓ h := by
   classical
@@ -56,6 +80,15 @@ theorem projQ_map_mul (ℓ : ℂ →ₗ[ℚ] ℚ) (g : MvPolynomial σ ℚ) (h :
     rw [Algebra.smul_def]
   rw [this, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Take `⟨ℓ, hℓ⟩` from `exists_linearForm_one`. Use `le_antisymm ?_ Ideal.le_comap_map` and prove the remaining obligations. Introduce `f hf`. Establish `key : ∀ x ∈ extC I, ∀ h : MvPolynomial σ ℂ, projQ ℓ (h * x) ∈ I`. Introduce `x hx`.
+
+Use `Submodule.span_induction ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩ h`. Rewrite using `[mul_comm, projQ_map_mul]`. Conclude with `I.mul_mem_right _ hg`. Introduce `h`.
+
+Rewrite using `[mul_zero, projQ_zero]`. Conclude with `I.zero_mem`. Introduce `a b _ _ ha hb h`. Rewrite using `[mul_add, projQ_add]`. Conclude with `I.add_mem (ha h) (hb h)`.
+
+Introduce `a b _ hb h`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hb (h * a)`. Use `key _ hf 1` as an intermediate fact. Rewrite `this` using `[one_mul, projQ_map ℓ hℓ]`. Then use the resulting hypothesis.
+-/
 theorem comap_extC (I : Ideal (MvPolynomial σ ℚ)) :
     (extC I).comap (MvPolynomial.map (algebraMap ℚ ℂ)) = I := by
   obtain ⟨ℓ, hℓ⟩ := exists_linearForm_one

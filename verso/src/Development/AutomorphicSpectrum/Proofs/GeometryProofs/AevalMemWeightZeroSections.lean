@@ -46,6 +46,13 @@ open scoped IntermediateField
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
+/- English proof (translation)
+Use `choose P hP hG using X.signature`. Use `⟨fun τ => P τ, fun τ => ⟨hP τ, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `h : dmin X.Gm (fun τ => P τ) τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Establish `hm : mat (Ψ` using `X.Ψ) (fun τ => P τ) τ = P τ := rfl`. Unfold `dmin lminor`.
+
+Rewrite using `[hm, hG τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Unfold `psgn`. Rewrite using `[Complex.ofReal_prod, ← Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ))]`. Both sides reduce to the same expression. Rewrite using `[h, Complex.ofReal_re]`.
+
+Use `mul_self_pos.2 ?_` and prove the remaining obligations. Unfold `psgn`. Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem frames_nonempty' {r : ℕ} (X : Data E r) : X.dom.Nonempty := by
   classical
   choose P hP hG using X.signature
@@ -64,6 +71,13 @@ theorem frames_nonempty' {r : ℕ} (X : Data E r) : X.dom.Nonempty := by
   unfold sgn
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Take `⟨hL, -, -, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Establish `h3 : wchar (ex Dw u n) t ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (t i).ne_zero`. Use `⟨toC (wchar (ex Dw u n) t), h3, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1 : evR Xo c f y' = φ (evC h Z f)`.
+
+Take `⟨q, χ, y₀, hy₀⟩` from `hL.test (Om Z) (genFr h Z)`. Unfold `evC`. Rewrite using `[GlobalTheory.Reg.evR_eq_map_of_test_point hL hf q χ y₀ _ hy₀, GlobalTheory.Reg.evR_eq_map_of_test_point hL hf q (φ.comp χ) y₀ y' (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans χ φ hy₀ hm)]`. Both sides reduce to the same expression. Establish `h2 : evR Xo c f y' = wchar (ex Dw u n) t * evR Xo c f (U.un k x)` using `hL.wt u n f hf (CAt σ) t _ _ (hL.test _ _) (hL.test _ _) hb`.
+
+Establish `h4 : rdU U f k x = toC (evR Xo c f (U.un k x))`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[dif_pos x.2]`. Rewrite using `[h4, ← h1, h2]`. Both sides reduce to the same expression.
+-/
 theorem rdU_eq_of_reads' {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (h : GenFrEx Xo c) (k : U.Comp)
     (Z : Comp Xo c) (x : (U.X k).dom) (φ : Om Z →ₐ[c.F] CAt σ) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ)
     (hm : FrMap φ (genFr h Z) y') (hb : FrBor t (U.un k x) y') (u : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
@@ -87,8 +101,14 @@ theorem rdU_eq_of_reads' {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (h : GenFrEx X
   rw [h4, ← h1, h2]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ => le_rfl, ⟨0, rfl⟩⟩`.
+-/
 theorem dom_zero : Dom (0 : (E →+* ℂ) × ℕ → ℕ) 0 := ⟨fun _ _ _ _ => le_rfl, ⟨0, rfl⟩⟩
 
+/- English proof (translation)
+Use `⟨fun p q φ y z _ => (map_one φ).symm, fun p t y y' _ => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have hw : wchar (ex Dw 0 0) t = 1 := Finset.prod_eq_one fun i _ => by cases i <;> exact pow_zero _`. Use `show (1 : p.R) = wchar (ex Dw 0 0) t * 1`. Rewrite using `[hw, one_mul]`.
+-/
 theorem one_mem_weight_zero_sections : (1 : Rul Xo c) ∈ Formalism.L2.Pj.sec Xo c 0 0 := by
   refine ⟨fun p q φ y z _ => (map_one φ).symm, fun p t y y' _ => ?_⟩
   have hw : wchar (ex Dw 0 0) t = 1 := Finset.prod_eq_one fun i _ => by cases i <;> exact pow_zero _
@@ -107,6 +127,9 @@ def evA {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
     rw [Algebra.algebraMap_eq_smul_one]
     exact (evalAt_smul _ _ a 1 y).trans (by rw [evalAt_one _ _ y hy, mul_one])
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using one_mem_weight_zero_sections`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Simplify using `using sec_mul Xo c 0 0 0 0 ih hf`.
+-/
 theorem pow_mem_weight_zero_sections {f : Rul Xo c} (hf : f ∈ Formalism.L2.Pj.sec Xo c 0 0) (n : ℕ) :
     f ^ n ∈ Formalism.L2.Pj.sec Xo c 0 0 := by
   induction n with
@@ -115,6 +138,11 @@ theorem pow_mem_weight_zero_sections {f : Rul Xo c} (hf : f ∈ Formalism.L2.Pj.
     rw [pow_succ]
     simpa using sec_mul Xo c 0 0 0 0 ih hf
 
+/- English proof (translation)
+Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[map_add]`. Conclude with `add_mem hp hq`. Consider the case `monomial n a`.
+
+Rewrite using `[Polynomial.aeval_monomial, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (pow_mem_weight_zero_sections hf n)`.
+-/
 theorem aeval_mem_weight_zero_sections {f : Rul Xo c} (hf : f ∈ Formalism.L2.Pj.sec Xo c 0 0) (P : Polynomial c.F) :
     Polynomial.aeval f P ∈ Formalism.L2.Pj.sec Xo c 0 0 := by
   induction P using Polynomial.induction_on' with
@@ -125,11 +153,29 @@ theorem aeval_mem_weight_zero_sections {f : Rul Xo c} (hf : f ∈ Formalism.L2.P
     rw [Polynomial.aeval_monomial, ← Algebra.smul_def]
     exact Submodule.smul_mem _ _ (pow_mem_weight_zero_sections hf n)
 
+/- English proof (translation)
+Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[dif_pos x.2]`.
+-/
 theorem rdU_apply {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (f : Rul Xo c) (k : V.Comp) (x : (V.X k).dom) :
     rdU V f k x = toC (evR Xo c f (V.un k x)) := by
   simp only [rdU, LinearMap.coe_mk, AddHom.coe_mk]
   rw [dif_pos x.2]
 
+/- English proof (translation)
+Use `letI : Algebra K ℂ := σ.toAlgebra`. Establish `hi : IsIntegral K a` using `ha.isIntegral`. Establish `hirr` using `minpoly.irreducible hi`. Establish `hdeg : 2 ≤ (minpoly K a).natDegree`. Assume the negation of the conclusion as `h`.
+
+Establish `h0 : (minpoly K a).natDegree ≠ 0` using `hirr.natDegree_pos.ne'`. Establish `h1 : (minpoly K a).natDegree = 1` using `by omega`. Conclude with `hne (minpoly.mem_range_of_degree_eq_one K a ((Polynomial.degree_eq_iff_natDegree_eq_of_pos one_pos).2 h1))`. Establish `hcard` using `IntermediateField.card_algHom_adjoin_integral K (K := ℂ) (α := a) hi hirr.separable (IsAlgClosed.splits _)`. Establish `: Finite (K⟮a⟯ →ₐ[K] ℂ)`.
+
+Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Establish `hnt : Nontrivial (K⟮a⟯ →ₐ[K] ℂ)` using `Finite.one_lt_card_iff_nontrivial.1 (by omega)`. Take `⟨ψ₁, ψ₂, hψ⟩` from `exists_pair_ne (K⟮a⟯ →ₐ[K] ℂ)`. Establish `hext : ∀ ψ : K⟮a⟯ →ₐ[K] ℂ, ∃ φ : Ω →ₐ[K] ℂ, φ a = ψ (IntermediateField.AdjoinSimple.gen K a)`.
+
+Introduce `ψ`. Use `letI : Algebra K⟮a⟯ ℂ := ψ.toRingHom.toAlgebra`. Establish `: FaithfulSMul K⟮a⟯ Ω` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap K⟮a⟯ Ω).injective`. Establish `: FaithfulSMul K⟮a⟯ ℂ` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap K⟮a⟯ ℂ).injective`. Take `⟨φ'⟩` from `GlobalTheory.nonempty_algHom_complex_of_countable K⟮a⟯ Ω`.
+
+Use `⟨{ φ'.toRingHom with commutes' := fun k => ?_ }, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap K Ω k = algebraMap K⟮a⟯ Ω (algebraMap K K⟮a⟯ k)` using `rfl show φ' (algebraMap K Ω k) = _`. Rewrite using `[h1, φ'.commutes]`. Conclude with `ψ.commutes k`. Establish `h1 : a = algebraMap K⟮a⟯ Ω (IntermediateField.AdjoinSimple.gen K a)` using `rfl show φ' a = _`.
+
+Conclude with `(congrArg φ' h1).trans (φ'.commutes _)`. Take `⟨φ₁, h₁⟩` from `hext ψ₁`. Take `⟨φ₂, h₂⟩` from `hext ψ₂`. Use `⟨φ₁, φ₂, fun e => hψ ?_⟩` and prove the remaining obligations. Use `(IntermediateField.adjoin.powerBasis hi).algHom_ext ?_` and prove the remaining obligations.
+
+Rewrite using `[IntermediateField.adjoin.powerBasis_gen, ← h₁, ← h₂, e]`.
+-/
 theorem exists_two_emb {K Ω : Type} [Field K] [CharZero K] [Countable K] [Field Ω] [Countable Ω] [Algebra K Ω]
     (σ : K →+* ℂ) (a : Ω) (ha : IsAlgebraic K a) (hne : a ∉ (algebraMap K Ω).range) :
     letI := σ.toAlgebra
@@ -172,6 +218,11 @@ theorem exists_two_emb {K Ω : Type} [Field K] [CharZero K] [Countable K] [Field
   refine (IntermediateField.adjoin.powerBasis hi).algHom_ext ?_
   rw [IntermediateField.adjoin.powerBasis_gen, ← h₁, ← h₂, e]
 
+/- English proof (translation)
+Establish `e0 : Spec.map (CommRingCat.ofHom (algebraMap c.F (kap Z))) = genSp Z ≫ strK` using `by show Spec.map (CommRingCat.ofHom (Spec.preimage (genSp Z ≫ strK)).hom) = _`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[basePt, pullback.lift_fst, (isGenFr_genFr h Z).1, Category.assoc]`. Both sides reduce to the same expression.
+
+Rewrite using `[basePt, pullback.lift_snd, Category.assoc] show _ = spMap (algebraMap (kap Z) (Om Z)) ≫ (genSp Z ≫ strK)`. Rewrite using `[← e0]`. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem basePt_genFr (h : GenFrEx Xo c) (Z : Comp Xo c) :
     basePt (genFr h Z) = spMap (algebraMap (kap Z) (Om Z)) ≫ genSp Z := by
   have e0 : Spec.map (CommRingCat.ofHom (algebraMap c.F (kap Z))) = genSp Z ≫ strK := by
@@ -188,6 +239,21 @@ theorem basePt_genFr (h : GenFrEx Xo c) (Z : Comp Xo c) :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hfin : FiniteDimensional ℚ c.F` using `c.fin`. Establish `hcF : Countable c.F` using `Cardinal.mk_le_aleph0_iff.1 (by`. Simplify `Algebra.IsAlgebraic.cardinalMk_le_max ℚ c.F)` using `[Cardinal.mkRat]`. Establish `hk : Countable (kap Z)` using `GlobalTheory.GenericReading.countable_of_fg_top ((GlobalTheory.Reg.kap_fg_trdeg E H Dw l Xo c).1 Z)`. Take `⟨φ⟩ : Nonempty (kap Z →ₐ[c.F] ℂ)` from `GlobalTheory.nonempty_algHom_complex_of_countable c.F (kap Z)`.
+
+Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth Dw.dim Xo.s`. Use `CompFin.isNoetherian_XF Xo c` as an intermediate fact. Establish `: GlobalTheory.IsNormalScheme (Xo.XF c)` using `(GlobalTheory.isNormalScheme_iff _).2 (GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth (strK (Xo := Xo) (c := c)) ((GlobalTheory.isNormalScheme_iff _).1 inferInstance))`. Set `κ : c.F →+* Γ(Xo.XF c, ⊤)` to `((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv ≫ (strK (Xo := Xo) (c := c)).appTop).hom`.
+
+Set `j : c.F →+* ℂ` to `algebraMap c.F ℂ`. Establish `hκ : ∀ (x : Sp ℂ ⟶ Xo.XF c) (i : c.F →+* ℂ), x ≫ strK = spMap i → (ev x).comp κ = i`. Introduce `x i hx`. Use extensionality with `k`. Express the relevant statement in the definitionally equal form `ev x ((strK (Xo := Xo) (c := c)).appTop.hom _) = _`.
+
+Rewrite using `[← ev_comp, hx, ev_spec]`. Conclude with `congrArg i ((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv_hom_id_apply k)`. Set `x : Sp ℂ ⟶ Xo.XF c` to `Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ genSp Z`. Establish `hx : x ≫ strK = spMap j`. Rewrite using `[Category.assoc, ← Spec.map_preimage (genSp Z ≫ strK), ← Spec.map_comp]`.
+
+Use `congr 1`. Use extensionality with `k`. Conclude with `φ.commutes k`. Establish `hev : ∀ f, ev x f = φ (((Xo.XF c).evaluation ⊤ (Formalism.L2.Pj.genPt Z) trivial).hom f)` using `ev_residue _ φ.toRingHom`. Establish `hm` using `minpoly.monic hr`.
+
+Take `⟨g, hg, -⟩` from `exists_section Z (Formalism.L2.Pj.genPt Z) ((Z.2.1 : IsIrreducible (Z : Set (Xo.XF c))).isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ Z.2)) ((minpoly c.F r₀).map κ) (hm.map _) r₀ (by`. Apply `φ.toRingHom.injective` to reduce the goal to its premises. Rewrite using `[Polynomial.hom_eval₂, ← (RingHom.ext hev : ev x = φ.toRingHom.comp _), Polynomial.eval₂_map, hκ x j hx, map_zero]`. Conclude with `(Polynomial.aeval_algHom_apply φ r₀ _).trans (by rw [minpoly.aeval, map_zero]))`. Use `⟨fnRule g, fnRule_mem g, ?_⟩` and prove the remaining obligations.
+
+Use `show evR Xo c (fnRule g) (genFr h Z) = _`. Rewrite using `[evR_fnRule, basePt_genFr, fnAt_comp]`. Use `congr 1`. Establish `e` using `congrArg (fun m => m.hom g) (ΓSpecIso_fromSpecResidueField (Formalism.L2.Pj.genPt Z))`. Conclude with `e.trans hg`.
+-/
 theorem exists_fn (h : GenFrEx Xo c) (Z : Comp Xo c) (r₀ : kap Z) (hr : IsIntegral c.F r₀) :
     ∃ f ∈ Formalism.L2.Pj.sec Xo c 0 0, evC h Z f = algebraMap (kap Z) (Om Z) r₀ := by
   have hfin : FiniteDimensional ℚ c.F := c.fin
@@ -232,6 +298,31 @@ theorem exists_fn (h : GenFrEx Xo c) (Z : Comp Xo c) (r₀ : kap Z) (hr : IsInte
   have e := congrArg (fun m => m.hom g) (ΓSpecIso_fromSpecResidueField (Formalism.L2.Pj.genPt Z))
   exact e.trans hg
 
+/- English proof (translation)
+Establish `hlies : ∀ k : V.Comp, ∃ Z : Comp Xo c, ∀ x : (V.X k).dom, GlobalTheory.AllWt.LiesOn Z (V.un k x)` using `GlobalTheory.UnifComp.exists_liesOn (Formalism.L2.PjFree.Unf.ofPj V) hV`. Use `choose q hq using hlies`. Establish `hsurj : Function.Surjective q` using `fun Z => by`. Take `⟨k, hk⟩` from `GlobalTheory.CompModel.exists_model (Formalism.L2.PjFree.Unf.ofPj V) hV h Z`. Conclude with `⟨k, GlobalTheory.UnifComp.eq_of_carries hk (hq k)⟩`.
+
+Establish `hfinC` using `CompFin.finite_comp Xo c`. Establish `hfinV : Finite V.Comp` using `@Finite.of_fintype _ V.fin`. Establish `hinj : Function.Injective q` using `(hsurj.bijective_of_nat_card_le (by rw [hcard, Nat.card_eq_fintype_card])).1`. Establish `hfin : FiniteDimensional ℚ c.F` using `c.fin`. Establish `hcF : Countable c.F` using `Cardinal.mk_le_aleph0_iff.1 (by`.
+
+Simplify `Algebra.IsAlgebraic.cardinalMk_le_max ℚ c.F)` using `[Cardinal.mkRat]`. Introduce `Z a ha`. Assume the negation of the conclusion as `hne`. Establish `hk : Countable (kap Z)` using `GlobalTheory.GenericReading.countable_of_fg_top ((GlobalTheory.Reg.kap_fg_trdeg E H Dw l Xo c).1 Z)`. Establish `hO : Countable (Om Z)` using `GlobalTheory.GenericReading.countable_fractionRing_mvPolynomial _ _`.
+
+Take `⟨φ₁, φ₂, hφ⟩ : ∃ φ₁ φ₂ : Om Z →ₐ[c.F] CAt σ, φ₁ a ≠ φ₂ a` from `exists_two_emb σ a ha hne`. Take `⟨r₀, rfl⟩` from `GlobalTheory.GeomIrr.mem_range_of_isAlgebraic_ratFun a (ha.tower_top (kap Z))`. Establish `hr : IsIntegral c.F r₀` using `(isIntegral_algebraMap_iff (algebraMap (kap Z) (Om Z)).injective).1 ha.isIntegral`. Take `⟨f, hf, hev⟩` from `exists_fn h Z r₀ hr`. Establish `hread` using `(GlobalTheory.GenericReading.embedding_read_at_frame E H Dw l Xo c σ r V hσ hV h Z).2`.
+
+Establish `key : ∀ φ : Om Z →ₐ[c.F] CAt σ, ∃ (k : V.Comp) (x : (V.X k).dom), q k = Z ∧ (∃ (φ' : Om Z →ₐ[c.F] CAt σ) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), FrMap φ' (genFr h Z) y' ∧ FrBor t (V.un k x) y') ∧ rdU V f k x = toC (φ (evC h Z f))`. Introduce `φ`. Take `⟨k, x, y', t, hm, hb⟩` from `hread φ`. Use `⟨k, x, GlobalTheory.UnifComp.eq_of_carries (U := Formalism.L2.PjFree.Unf.ofPj V) ⟨φ, y', x, t, hm, hb⟩ (hq k), ⟨φ, y', t, hm, hb⟩, ?_⟩` and prove the remaining obligations. Take `⟨w, hw0, hw⟩` from `rdU_eq_of_reads' V h k Z x φ y' t hm hb 0 0`.
+
+Establish `h1` using `hw 1 one_mem_weight_zero_sections`. Establish `e1 : evC h Z (1 : Rul Xo c) = 1` using `map_one (evA (genFr h Z) (hgen Z))`. Establish `e2 : rdU V (1 : Rul Xo c) k x = 1`. Rewrite using `[rdU_apply]`. Conclude with `congrArg toC (map_one (evA (V.un k x) (hone k x)))`.
+
+Rewrite `h1` using `[e1, e2, map_one, mul_one]`. Establish `h2` using `hw f hf`. Rewrite `h2` using `[h1]`. Conclude with `(one_mul _).symm.trans h2`. Take `⟨k₁, x₁, hq₁, hc₁, hr₁⟩` from `key φ₁`.
+
+Take `⟨k₂, x₂, hq₂, hc₂, hr₂⟩` from `key φ₂`. Take `rfl : k₁ = k₂` from `hinj (hq₁.trans hq₂.symm)`. Establish `hPf` using `aeval_mem_weight_zero_sections hf (minpoly c.F r₀)`. Establish `hz : evC h Z (Polynomial.aeval f (minpoly c.F r₀)) = 0` using `by show evA (genFr h Z) (hgen Z) (Polynomial.aeval f (minpoly c.F r₀)) = 0`. Rewrite using `[← Polynomial.aeval_algHom_apply]`.
+
+Use `show Polynomial.aeval (evC h Z f) (minpoly c.F r₀) = 0`. Rewrite using `[hev, Polynomial.aeval_algebraMap_apply, minpoly.aeval, map_zero]`. Establish `hvan` using `(GlobalTheory.evC_eq_zero_iff_rdU_eq_zero E H Dw l Xo c σ r V hσ hV h k₁ Z x₁ hc₁ 0 0 dom_zero _ hPf).1 hz`. Establish `hP0 : (minpoly c.F r₀).map σ ≠ 0` using `(Polynomial.map_ne_zero_iff σ.injective).2 (minpoly.ne_zero hr)`. Establish `hroot : Set.MapsTo (rdU V f k₁) (V.X k₁).dom (((minpoly c.F r₀).map σ).roots.toFinset : Set ℂ)`.
+
+Introduce `x hx`. Establish `h0` using `hvan x hx`. Establish `e1 : rdU V f k₁ x = toC (evR Xo c f (V.un k₁ ⟨x, hx⟩))` using `rdU_apply V f k₁ ⟨x, hx⟩`. Establish `e2 : rdU V (Polynomial.aeval f (minpoly c.F r₀)) k₁ x = toC (evR Xo c (Polynomial.aeval f (minpoly c.F r₀)) (V.un k₁ ⟨x, hx⟩))` using `rdU_apply V _ k₁ ⟨x, hx⟩`. Rewrite `h0` using `[e2]`.
+
+Establish `e3 : Polynomial.aeval (evR Xo c f (V.un k₁ ⟨x, hx⟩)) (minpoly c.F r₀) = 0` using `(Polynomial.aeval_algHom_apply (evA (V.un k₁ ⟨x, hx⟩) (hone _ _)) f (minpoly c.F r₀)).trans h0`. Rewrite using `[Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_roots hP0, Polynomial.IsRoot.def, Polynomial.eval_map, e1]`. Conclude with `e3`. Establish `hcont : ContinuousOn (rdU V f k₁) (V.X k₁).dom` using `(hV.2.2.2.2.1 0 0 dom_zero f hf k₁).1.continuousOn`. Establish `hconn : IsPreconnected (V.X k₁).dom` using `(ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.flag_domain_frames_connected (E := E) r (V.X k₁)).isPreconnected`.
+
+Establish `hdisc : IsDiscrete (((minpoly c.F r₀).map σ).roots.toFinset : Set ℂ)` using `(Finset.finite_toSet _).isDiscrete`. Establish `hconst` using `hconn.constant_of_mapsTo hdisc hcont hroot x₁.2 x₂.2`. Rewrite `hconst` using `[hr₁, hr₂, hev]`. Conclude with `hφ hconst`.
+-/
 theorem fnAlgClosed_of_card {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (hσ : GoodEmb c σ) (hV : IsUnf V) (h : GenFrEx Xo c)
     (hone : ∀ k x, FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (V.un k x))
     (hgen : GenFromTest Xo c h) (hcard : Nat.card (Comp Xo c) = Fintype.card V.Comp) : FnAlgClosed Xo c := by
@@ -310,6 +401,15 @@ theorem fnAlgClosed_of_card {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (hσ : Good
   rw [hr₁, hr₂, hev] at hconst
   exact hφ hconst
 
+/- English proof (translation)
+Establish `hF : FnAlgClosed Xo c` using `fnAlgClosed_of_card (U c.F.val.toRingHom) rfl (hL.unf _ rfl) h (hL.unTest _ rfl) hL.genT hL.comps`. Establish `hU` using `hL.unf σ hσ`. Establish `key : ∀ k₁, Over (U σ) (e Z) k₁ → ∃ x : ((U σ).X k₁).dom, ∃ (φ : Om Z →ₐ[c.F] CAt σ) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), FrMap φ (genFr h Z) y' ∧ FrBor t ((U σ).un k₁ x) y'`. Introduce `k₁ hk₁`. Take `⟨Z', S, hS, hg⟩` from `GlobalTheory.GenericFrames.exists_comp_generic_off_meagre E H Dw l Xo c σ r (U σ) hσ hU h k₁`.
+
+Establish `hd : Dense (⋂ n, (S n)ᶜ)` using `dense_iInter_of_isOpen (fun n => (hS n).1.isOpen_compl) fun n => interior_eq_empty_iff_dense_compl.1 (hS n).2`. Take `⟨x, hx, hxS⟩` from `hd.inter_open_nonempty _ (FourierCoefficientDomain.isOpen_dom _) (frames_nonempty' _)`. Take `⟨φ, y₁, t, hm, hb⟩` from `hg ⟨x, hx⟩ fun n hn => Set.mem_iInter.1 hxS n hn`. Choose the witnesses or unpack the hypotheses as in `rfl : Z' = Z := by`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨w, hw0, hw⟩` from `rdU_eq_of_reads' (U σ) h k₁ Z' ⟨x, hx⟩ φ y₁ t hm hb 0 0`. Establish `h1` using `hw (e Z) (hL.e_sec Z)`. Rewrite `h1` using `[hk₁ x hx, (hL.e_val Z).2 Z' hne, map_zero, mul_one]`. Conclude with `hw0 h1`. Conclude with `⟨⟨x, hx⟩, φ, y₁, t, hm, hb⟩`.
+
+Take `⟨x, hx⟩` from `key k hk`. Take `⟨x', hx'⟩` from `key k' hk'`. Conclude with `GlobalTheory.GeomConn.comp_eq_of_fnAlgClosed E H Dw l Xo c σ r (U σ) hσ hU hF h Z k k' x x' hx hx'`.
+-/
 theorem over_unique {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {h : GenFrEx Xo c} {e : Comp Xo c → Rul Xo c}
     (hL : CompLaws U h e) {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {Z : Comp Xo c} {k k' : (U σ).Comp}
     (hk : Over (U σ) (e Z) k) (hk' : Over (U σ) (e Z) k') : k = k' := by

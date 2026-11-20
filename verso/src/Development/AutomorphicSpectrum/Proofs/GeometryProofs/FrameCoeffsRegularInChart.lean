@@ -7,6 +7,25 @@ namespace GlobalTheory.CompanionTheory.Ar.FlagBun
 
 open AlgebraicGeometry CategoryTheory
 
+/- English proof (translation)
+Introduce `X Ω _ ξ E _ _ κ x L m n r φ hT p c₁ hc β hβ`. Establish `hβmem : ∀ a, β a ∈ L p` using `fun a => by`. Rewrite using `[hβ.2]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Establish `hw : ∀ a : Fin r, ∃ w : Module.Dual Ω E, ∀ b, w (β b) = if a = b then 1 else 0`.
+
+Introduce `a`. Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Module.Basis.span hβ.1).coord a)`. Use `⟨g, fun b => ?_⟩` and prove the remaining obligations. Establish `h1 : g (β b) = ((Module.Basis.span hβ.1).coord a) ((Module.Basis.span hβ.1) b)`. Rewrite using `[← hg, LinearMap.comp_apply, Submodule.subtype_apply, Module.Basis.span_apply]`.
+
+Rewrite using `[h1, Module.Basis.coord_apply, Module.Basis.repr_self]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_apply, h, Ne.symm h]`.
+
+Use `choose w hw using hw`. Establish `hwR : ∀ a, ∀ e ∈ L p, w a e ∈ regAt ξ p`. Introduce `a e he`. Rewrite `he` using `[hβ.2]`. Proceed by induction on `he using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨b, rfl⟩` from `hy`. Rewrite using `[hw]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`. Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul s y _ hy`. Rewrite using `[Subring.smul_def, map_smul, smul_eq_mul]`. Conclude with `mul_mem s.2 hy`.
+
+Establish `hg` using `fun a => hT.2 p c₁ hc (w a) (hwR a)`. Use `choose g hgR hgw using hg`. Use `⟨Matrix.of fun a j => g a j, fun a j => hgR a j, fun j a => hT.1 j p c₁ hc (β a) (hβmem a), ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`.
+
+Simplify using `only [Matrix.of_apply]`. Rewrite using `[← hgw a (β b) (hβmem b), hw]`.
+-/
 theorem twist_left_inverse : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type)
     [AddCommGroup E] [Module Ω E] (κ : Type) (x : κ → Ω) (L : Lat ξ E) (m n r : ℕ) (φ : Fin n → Module.Dual Ω E),
     IsTwistGen ξ x L m φ → ∀ (p : Cpt ξ) (c₁ : κ), InChart ξ x c₁ p → ∀ β : Fin r → E, L.IsFrameAt β p →

@@ -21,6 +21,9 @@ namespace GlobalTheory.CocycleCont
 
 variable {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Field K] [Algebra ℚ_[l] K] [Algebra O K] [TopologicalSpace K] {G : Type} [Group G] [TopologicalSpace G]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [TWact, TensorProduct.smul_tmul', TensorProduct.map_tmul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem twact_smul {R : Type} [CommRing R] [Algebra O R] (f : R →ₐ[O] R) (T : LocLat G ℚ_[l] K O) (g : G)
     (r : R) (z : TW R T) : TWact f T g (r • z) = f r • TWact f T g z := by
   induction z using TensorProduct.induction_on with
@@ -28,6 +31,9 @@ theorem twact_smul {R : Type} [CommRing R] [Algebra O R] (f : R →ₐ[O] R) (T 
   | tmul x y => simp [TWact, TensorProduct.smul_tmul', TensorProduct.map_tmul]
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [TWincl, TensorProduct.smul_tmul', TensorProduct.map_tmul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem twincl_smul {R R' : Type} [CommRing R] [CommRing R'] [Algebra O R] [Algebra O R'] (f : R →ₐ[O] R')
     (T : LocLat G ℚ_[l] K O) (r : R) (z : TW R T) : TWincl f T (r • z) = f r • TWincl f T z := by
   induction z using TensorProduct.induction_on with
@@ -35,6 +41,9 @@ theorem twincl_smul {R R' : Type} [CommRing R] [CommRing R'] [Algebra O R] [Alge
   | tmul x y => simp [TWincl, TensorProduct.smul_tmul', TensorProduct.map_tmul]
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [TWact, TWincl, TensorProduct.map_tmul, galOB_toOB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem twact_incl (T : LocLat G ℚ_[l] K O) (h : GQ l) (g : G) (z : TW (OCr l O) T) :
     TWact (galOB O h) T g (TWincl (toOB l O) T z) = TWincl (toOB l O) T (TWact (galOCr O h) T g z) := by
   induction z using TensorProduct.induction_on with
@@ -42,10 +51,44 @@ theorem twact_incl (T : LocLat G ℚ_[l] K O) (h : GQ l) (g : G) (z : TW (OCr l 
   | tmul x y => simp [TWact, TWincl, TensorProduct.map_tmul, galOB_toOB]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul K, map_pow, map_natCast]`.
+-/
 theorem natCast_pow_smul {O K : Type} [CommRing O] [Field K] [Algebra ℚ_[l] K] [Algebra O K] [TopologicalSpace K]
     (T : LocLat G ℚ_[l] K O) (k : ℕ) (v : T.V) : ((l : O) ^ k) • v = ((l : K) ^ k) • v := by
   rw [← algebraMap_smul K, map_pow, map_natCast]
 
+/- English proof (translation)
+Take `⟨s0, hs0, β, hβ⟩` from `GlobalTheory.T.exists_smul_eq_acrisLattice_image T b`. Take `⟨C, hC⟩` from `GlobalTheory.T.acris_lpow_dvd_bound_teichmullerMonoid l (s0 * s0) (by rw [map_mul]; exact mul_ne_zero hs0 hs0)`. Use `set a : Per.Acris l := ainfToAcris l s0 with ha`. Use `set m' := m + C + 1 with hm'`. Establish `h2 : ∀ᶠ g in nhds (1 : G), (l : Per.Acris l) ^ m' ∣ galC (s g) a - a`.
+
+Establish `h` using `GlobalTheory.AcrisGal.galC_sub_dvd_mem_nhds l a m'`. Rewrite `h` using `[← map_one s]`. Conclude with `hs.continuousAt.preimage_mem_nhds h`. Use `filter_upwards [hcont β m', h2] with g ⟨γ, hγ⟩ ⟨w, hw⟩`. Take `⟨n, x, hxT, hx⟩` from `hden (c g)`.
+
+Establish `hcob` using `hc g n ⟨x, hxT⟩ (by show x = _; rw [hx, ← algebraMap_smul K, map_pow, map_natCast])`. Establish `hconv : ∀ (k : ℕ) (v : T.V), ((l : O) ^ k) • v = ((l : K) ^ k) • v` using `fun k v => by`. Rewrite using `[← algebraMap_smul K, map_pow, map_natCast]`. Use `set x' : ↥T.L.T := ⟨x, hxT⟩ with hx'`. Use `set ga : Per.Acris l := galC (s g) a with hga`.
+
+Use `set σA : OCr l O := (1 : O) ⊗ₜ[ℤ_[l]] a with hσA`. Use `set gσA : OCr l O := (1 : O) ⊗ₜ[ℤ_[l]] ga with hgσA`. Establish `hgσA' : galOCr O (s g) σA = gσA` using `rfl`. Use `set σ : OB l O := toOB l O σA with hσ`. Use `set gσ : OB l O := toOB l O gσA with hgσ`.
+
+Establish `hgσ' : galOB O (s g) σ = gσ` using `by rw [hσ, galOB_toOB, hgσA']`. Establish `hβ' : σ • b = TWincl (toOB l O) T β` using `hβ`. Use `set gβ := TWact (galOCr O (s g)) T g β with hgβ`. Establish `key1 : gσ • actB s T g b = TWincl (toOB l O) T gβ`. Rewrite using `[actB, ← hgσ', ← twact_smul, hβ', twact_incl]`.
+
+Establish `key : (σ * gσ) • ((1 : OB l O) ⊗ₜ[O] x') = TWincl (toOB l O) T (((l : O) ^ n) • (σA • gβ - gσA • β))`. Rewrite using `[hcob, smul_comm, map_smul, map_sub, twincl_smul, twincl_smul, ← hσ, ← hgσ, smul_sub, mul_smul, key1, mul_comm, mul_smul, hβ']`. Establish `hfin : ∀ φ : ↥T.L.T →+ ℤ_[l], (∀ (z : ℤ_[l]) (t : ↥T.L.T), φ (algebraMap ℤ_[l] O z • t) = z * φ t) → ∃ X : Per.Acris l, a * a * algebraMap ℤ_[l] (Per.Acris l) (φ x') = (l : Per.Acris l) ^ (n + m') * X - (l : Per.Acris l) ^ m' * (a * w * algebraMap ℤ_[l] (Per.Acris l) (φ x'))`. Introduce `φ hφ`. Take `⟨ΦA, ΦB, hA, hB, h1, hN, hI⟩` from `GlobalTheory.T.exists_coord_acris_bcris_alt T φ hφ`.
+
+Establish `hσσ : σ * gσ = (1 : O) ⊗ₜ[ℤ_[l]] (acrisToBcris l a * acrisToBcris l ga)`. Rewrite using `[hσ, hgσ, hσA, hgσA]`. Simplify using `only [toOB, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Establish `e1` using `congrArg ΦB key`. Rewrite `e1` using `[hσσ, hB, h1, hI, hN, map_sub, hA, hA]`.
+
+Establish `hΦ : ΦA gβ - ΦA β = (l : Per.Acris l) ^ m' * ΦA γ` using `by rw [← map_sub, hγ, hN]`. Establish `heq : a * ga * algebraMap ℤ_[l] (Per.Acris l) (φ x') = (l : Per.Acris l) ^ n * (a * ΦA gβ - ga * ΦA β)`. Establish `hinj : Function.Injective (acrisToBcris l)` using `GlobalTheory.MemLoc.PhiInj.algebraMap_acris_bcris_injective l`. Apply `hinj` to reduce the goal to its premises. Use `e1` as an intermediate fact.
+
+Simplify using `only [map_mul, AlgHom.commutes] at this ⊢`. Conclude with `this`. Use `⟨a * ΦA γ - w * ΦA β, ?_⟩` and prove the remaining obligations. Take the linear combination `heq - (a * algebraMap ℤ_[l] (Per.Acris l) (φ x')) * hw + ((l : Per.Acris l) ^ n * a) * hΦ - ((l : Per.Acris l) ^ n * ΦA β) * hw`. Establish `hdiv : ∀ φ : ↥T.L.T →+ ℤ_[l], (∀ (z : ℤ_[l]) (t : ↥T.L.T), φ (algebraMap ℤ_[l] O z • t) = z * φ t) → (l : ℤ_[l]) ^ (n + m) ∣ φ x'`.
+
+Introduce `φ hφ`. Distinguish the cases in `hz : φ x' = 0`. Rewrite using `[hz]`. Conclude with `dvd_zero _`. Establish `hspec` using `PadicInt.unitCoeff_spec hz`.
+
+It suffices to establish `hv : n + m ≤ (φ x').valuation by`. Rewrite using `[hspec]`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow _ hv) _`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+
+Take `⟨X, hX⟩` from `hfin φ hφ`. Use `set v := (φ x').valuation`. Establish `hzA : algebraMap ℤ_[l] (Per.Acris l) (φ x') = algebraMap ℤ_[l] (Per.Acris l) (PadicInt.unitCoeff hz : ℤ_[l]) * (l : Per.Acris l) ^ v` using `by conv_lhs => rw [hspec]`. Rewrite using `[map_mul, map_pow, map_natCast]`. Establish `hd : (l : Per.Acris l) ^ (min (n + m') (m' + v)) ∣ ainfToAcris l (s0 * s0) * algebraMap ℤ_[l] (Per.Acris l) (φ x')`.
+
+Rewrite using `[map_mul, ← ha, hX]`. Use `Dvd.dvd.sub (Dvd.dvd.mul_right (pow_dvd_pow _ (min_le_left _ _)) _) ?_` and prove the remaining obligations. Use `(pow_dvd_pow _ (min_le_right _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[hzA, pow_add]`. Conclude with `⟨a * w * algebraMap ℤ_[l] (Per.Acris l) (PadicInt.unitCoeff hz : ℤ_[l]), by ring⟩`.
+
+Use `hC (φ x') _ hz hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨y, hyT, hy⟩` from `hmem x' (n + m) hdiv`. Use `⟨y, hyT, ?_⟩` and prove the remaining obligations. Establish `h3 : ((l : K) ^ n) • c g = ((l : K) ^ n) • (((l : O) ^ m) • y)`.
+
+Rewrite using `[← hconv, ← hconv, ← mul_smul, ← pow_add]`. Conclude with `hx.symm.trans hy`. Conclude with `smul_right_injective T.V (pow_ne_zero n hK) h3`.
+-/
 theorem main_gen {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O]
     [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (s : G →* GQ l) (hs : Continuous s) (T : LocLat G ℚ_[l] K O) (hK : (l : K) ≠ 0)
     (hcont : ∀ (β : TW (OCr l O) T) (m : ℕ), ∀ᶠ g in nhds (1 : G), ∃ γ : TW (OCr l O) T,
@@ -134,6 +177,15 @@ theorem main_gen {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `l _ _ LL T b c hc m`. Establish `hK : (l : ↥LL.1) ≠ 0`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] ↥LL.1)]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Use `(main_gen (sQ l) continuous_subtype_val T hK (GlobalTheory.T.twistedAction_acrisTensor_sub_eventually_lpow (sQ l) continuous_subtype_val T ?hT) ?hD (GlobalTheory.T.mem_pow_smul_lattice_of_coord_dvd T) b c hc m).mono ?fin` and prove the remaining obligations.
+
+Use `case fin =>`. Introduce and unpack `g ⟨x, hx, e⟩`. Conclude with `⟨x, hx, e.trans (natCast_pow_smul T m x)⟩`. Use `case hT =>`. Introduce `t ht k`.
+
+Use `filter_upwards [GlobalTheory.T.galoisLattice_sub_mem_pow_smul_eventually l LL T t ht k] with g ⟨t', ht', e⟩`. Conclude with `⟨t', ht', e.trans (natCast_pow_smul T k t').symm⟩`. Use `case hD =>`. Introduce `v`. Take `⟨n, x, hx, e⟩` from `GlobalTheory.T.exists_pow_smul_mem_galoisStableLattice_Ql l LL T v`.
+
+Conclude with `⟨n, x, hx, e.trans (natCast_pow_smul T n v).symm⟩`.
+-/
 theorem cont_at_one : ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (LL : FinExt l) (T : QLat LL) (b : TW (OB l ↥(OL LL)) T) (c : Gl l → T.V), IsCobOf (sQ l) T b c → ∀ m : ℕ, ∀ᶠ g in nhds (1 : Gl l), ∃ x ∈ T.L.T, c g = ((l : ↥LL.1) ^ m) • x := by
   intro l _ _ LL T b c hc m
   have hK : (l : ↥LL.1) ≠ 0 := by

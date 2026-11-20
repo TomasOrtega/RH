@@ -31,9 +31,15 @@ def shIdxJ (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.
 def shEqJ (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) : Cf (r - i) (jl) ≃ᵐ Cf r j :=
   MeasurableEquiv.piCongrLeft (fun _ => ℂ) (shIdxJ i j jl hjl)
 
+/- English proof (translation)
+The claim follows from `volume_measurePreserving_piCongrLeft (fun _ => ℂ) (shIdxJ i j jl hjl)`.
+-/
 theorem shEqJ_mp (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) : MeasurePreserving (shEqJ i j jl hjl) volume volume :=
   volume_measurePreserving_piCongrLeft (fun _ => ℂ) (shIdxJ i j jl hjl)
 
+/- English proof (translation)
+Unfold `shEqJ`. Rewrite using `[MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_eq_cast]`. Both sides reduce to the same expression.
+-/
 theorem shEqJ_apply (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) (c' : Cf (r - i) (jl))
     (p : {p : Fin r // j.val ≤ p.val}) : shEqJ i j jl hjl c' p = c' ((shIdxJ i j jl hjl).symm p) := by
   unfold shEqJ
@@ -43,6 +49,13 @@ theorem shEqJ_apply (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i
 def shiftV (i : Fin (r + 1)) (c' : Fin r → ℂ) : Fin (r - i) → ℂ :=
   fun m => c' ⟨m.val + i.val, by have := m.isLt; have := i.isLt; omega⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Distinguish the cases in `h1 : j.val ≤ p.val`. Establish `h2 : i.val ≤ p.val` using `by omega`. Establish `h3 : (jl).val ≤ p.val - i.val` using `by omega`. Simplify using `only [glue, dif_pos h1, dif_pos h2, Formalism.FourierDecayAlt.P.PTie.shiftCf, dif_pos h3, shEqJ_apply]`.
+
+Both sides reduce to the same expression. Distinguish the cases in `h2 : i.val ≤ p.val`. Establish `h3 : ¬ (jl).val ≤ p.val - i.val` using `by omega`. Simplify using `only [glue, dif_neg h1, dif_pos h2, Formalism.FourierDecayAlt.P.PTie.shiftCf, dif_neg h3, shiftV]`. Use `congr 1`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `show p.val = p.val - i.val + i.val`. Use linear arithmetic over natural numbers and integers. Simplify using `only [glue, dif_neg h1, dif_neg h2]`. Conclude with `hc p (by omega)`.
+-/
 theorem glue_shEqJ (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) (c c' : Fin r → ℂ)
     (hc : ∀ p : Fin r, p.val < i.val → c' p = c p) (c'' : Cf (r - i) (jl)) :
     glue j c' (shEqJ i j jl hjl c'') =
@@ -63,6 +76,9 @@ theorem glue_shEqJ (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.
     · simp only [glue, dif_neg h1, dif_neg h2]
       exact hc p (by omega)
 
+/- English proof (translation)
+Unfold `wtI`. Use `congr 1`. Repeatedly rewrite using `[shEqJ_apply]`. Conclude with `Fintype.prod_equiv (shIdxJ i j jl hjl).symm _ _ fun l => rfl`.
+-/
 theorem wtI_shEqJ (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) (c'' : Cf (r - i) (jl)) :
     wtI j (shEqJ i j jl hjl c'') = wtI (jl) c'' := by
   unfold wtI
@@ -79,6 +95,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
   {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Establish `hκ0 : (κ : ℂ) ≠ 0` using `by exact_mod_cast hκ.ne'`. Rewrite using `[wtI_shEqJ, glue_shEqJ i j jl hjl c c' hc]`. Repeatedly rewrite using `[hT]`. Rewrite using `[← Finset.mul_sum]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem integrand_tr (μ : Measure (Mt k r)) (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) (c c' : Fin r → ℂ)
     (hc : ∀ p : Fin r, p.val < i.val → c' p = c p) {zi zi' : Fin (2 * (r - i) + k + 1) → ℂ}
     {πi : Mx k (r - i) → (Wp →L[ℂ] Wp)} {πi' : Mx k (r - i) → (Wq →L[ℂ] Wq)} (μi : Measure (Mt k (r - i)))
@@ -94,6 +113,9 @@ theorem integrand_tr (μ : Measure (Mt k r)) (i j : Fin (r + 1)) (jl : Fin (r - 
   rw [← Finset.mul_sum]
   field_simp
 
+/- English proof (translation)
+Unfold `form`. Rewrite using `[← (shEqJ_mp i j jl hjl).integral_comp', ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun c'' => ?_)` and prove the remaining obligations. Conclude with `integrand_tr μ i j jl hjl c c' hc μi T κ hκ hT u v c''`.
+-/
 theorem form_tr (μ : Measure (Mt k r)) (i j : Fin (r + 1)) (jl : Fin (r - i + 1)) (hjl : jl.val + i.val = j.val) (c c' : Fin r → ℂ)
     (hc : ∀ p : Fin r, p.val < i.val → c' p = c p) {zi zi' : Fin (2 * (r - i) + k + 1) → ℂ}
     {πi : Mx k (r - i) → (Wp →L[ℂ] Wp)} {πi' : Mx k (r - i) → (Wq →L[ℂ] Wq)} (μi : Measure (Mt k (r - i)))
@@ -108,6 +130,9 @@ theorem form_tr (μ : Measure (Mt k r)) (i j : Fin (r + 1)) (jl : Fin (r - i + 1
 
 end Tr
 
+/- English proof (translation)
+Introduce `a b` and use `by rw [Matrix.star_apply, Matrix.star_apply] exact Formalism.FourierDecayAlt.P.PBH.rel_star (h b a)`.
+-/
 theorem arel_star {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] {S : Type}
     [Fintype S] [DecidableEq S] {T : V →ₗ[ℂ] V'} {M : SlopeTestRemainingChoices S (Pr V)} {M' : SlopeTestRemainingChoices S (Pr V')}
     (h : Formalism.FourierDecayAlt.P.PBH.ARel T M M') : Formalism.FourierDecayAlt.P.PBH.ARel T (star M) (star M') := fun a b => by

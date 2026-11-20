@@ -17,14 +17,23 @@ namespace GlobalTheory.TransUnit.Laws
 section Alg
 variable {Γ₀ Γ F U I : Type} [CommGroup Γ₀] [CommGroup Γ] [CommGroup F] [CommGroup U]
 
+/- English proof (translation)
+The claim follows from `M.div_mem (M.mul_mem (M.mul_mem (M.mul_mem (h _) (h _)) (h _)) (h _)) (M.mul_mem (M.mul_mem (h _) (h _)) (h _))`.
+-/
 theorem lineCoeffCubic_mem (M : Subgroup U) {q : Γ → U} (h : ∀ x, q x ∈ M) (x y z : Γ) : c3 q x y z ∈ M :=
   M.div_mem (M.mul_mem (M.mul_mem (M.mul_mem (h _) (h _)) (h _)) (h _)) (M.mul_mem (M.mul_mem (h _) (h _)) (h _))
 
+/- English proof (translation)
+The claim follows from `have hT : ∀ x y, quadT p p w x y ∈ M := fun _ _ => M.mul_mem (M.mul_mem (h _ _ _) (h _ _ _)) (h _ _ _) M.mul_mem (M.mul_mem (M.div_mem (hT _ _) (M.mul_mem (hT _ _) (hT _ _))) (h _ _ _)) (h _ _ _)`.
+-/
 theorem quadQ_mem (M : Subgroup U) {p : Γ → Γ → Γ → U} (h : ∀ x y z, p x y z ∈ M) (w : Γ → Γ) (x y z : Γ) :
     quadQ p p w x y z ∈ M :=
   have hT : ∀ x y, quadT p p w x y ∈ M := fun _ _ => M.mul_mem (M.mul_mem (h _ _ _) (h _ _ _)) (h _ _ _)
   M.mul_mem (M.mul_mem (M.div_mem (hT _ _) (M.mul_mem (hT _ _) (hT _ _))) (h _ _ _)) (h _ _ _)
 
+/- English proof (translation)
+The claim follows from `M.div_mem (h _ _ _) (h _ _ _)`.
+-/
 theorem quadN_mem (M : Subgroup U) {p : Γ → Γ → Γ → U} (h : ∀ x y z, p x y z ∈ M) (w : Γ → Γ) (x : Γ) :
     quadN p p w x ∈ M := M.div_mem (h _ _ _) (h _ _ _)
 
@@ -33,21 +42,33 @@ def lam (b : Γ → F) (x y : Γ) : F := b (x * y) * (b x)⁻¹ * (b y)⁻¹ * b
 def cube (b : Γ → F) (x y z : Γ) : F :=
   b (x * y * z) * (b (x * y))⁻¹ * (b (x * z))⁻¹ * (b (y * z))⁻¹ * b x * b y * b z * (b 1)⁻¹
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [cube, lam, ofMul_mul, ofMul_div, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cube_eq₁ (b : Γ → F) (x y z : Γ) : cube b x y z = 1 * (lam b (x * y) z / (lam b x z * lam b y z)) := by
   apply Additive.ofMul.injective
   simp only [cube, lam, ofMul_mul, ofMul_div, ofMul_inv, ofMul_one]
   abel
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [cube, lam, ← _root_.mul_assoc x y z, ofMul_mul, ofMul_div, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cube_eq₂ (b : Γ → F) (x y z : Γ) : cube b x y z = 1 * (lam b x (y * z) / (lam b x y * lam b x z)) := by
   apply Additive.ofMul.injective
   simp only [cube, lam, ← _root_.mul_assoc x y z, ofMul_mul, ofMul_div, ofMul_inv, ofMul_one]
   abel
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [lam, _root_.one_mul, ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lam_one_left (b : Γ → F) (x : Γ) : lam b 1 x = 1 := by
   apply Additive.ofMul.injective
   simp only [lam, _root_.one_mul, ofMul_mul, ofMul_inv, ofMul_one]
   abel
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [lam, _root_.mul_one, ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lam_one_right (b : Γ → F) (x : Γ) : lam b x 1 = 1 := by
   apply Additive.ofMul.injective
   simp only [lam, _root_.mul_one, ofMul_mul, ofMul_inv, ofMul_one]
@@ -61,6 +82,13 @@ variable (P : I → (Γ₀ →* Γ)) (b : Γ₀ → F) (w₀ : Γ₀ →* Γ₀)
   {X Y : Γ₀} (hs : ∀ x y, ∃ i, P i X = x ∧ P i Y = y) (k : ℕ)
 include hw hM C hθ hρ hs
 
+/- English proof (translation)
+Set `θ'` to `fun x y z => ((cube b x y z, fun i => θ (P i x) (P i y) (P i z)) : F × (I → U))`. Establish `hq` using `M.mul_mem (hν X⁻¹) (M.pow_mem (M.mul_mem (M.div_mem (hρ X) (hρ X⁻¹)) (quadN_mem M hθ w₀ X)) k)`. Establish `e₁ : (quadN θ' θ' w₀ X).1 = lam b X (w₀ X) / lam b X⁻¹ (w₀ X⁻¹)` using `(quadN_of_diff w₀ (cube_eq₁ b) (cube_eq₂ b) (lam_one_left b) (lam_one_right b) X).trans (by rw [quadN_one, _root_.one_mul])`. Establish `e₂ : ∀ i, (quadN θ' θ' w₀ X).2 i = quadN θ θ w (P i X)` using `fun i => (quadN_map (P i) ((Pi.evalMonoidHom (fun _ => U) i).comp (MonoidHom.snd F _)) (p₁ := θ') (p₂ := θ') (hw i) (fun _ _ _ => rfl) (fun _ _ _ => rfl) X).symm`. Take `⟨i, hi, -⟩` from `hs x 1`.
+
+Take `⟨j, hj, -⟩` from `hs 1 1`. Establish `h` using `hM _ hq (by`. Simplify using `only [Prod.fst_mul, Prod.pow_fst, Prod.fst_div]`. Rewrite using `[e₁, inv_inv]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_div, ofMul_inv, ofMul_one, ofMul_pow]`. Use the proof step `module) i j`. Simplify using `only [Prod.snd_mul, Prod.pow_snd, Prod.snd_div, Pi.mul_apply, Pi.pow_apply, Pi.div_apply] at h`. Rewrite `h` using `[e₂, e₂, map_inv, map_inv, hi, hj]`. Rewrite using `[h, quadN, inv_one, C.face, C.face, div_self', div_self', _root_.mul_one, one_pow, _root_.mul_one]`.
+-/
 theorem sym_law {ν : Γ → U} (hν : ∀ x, (b x ^ k * (b x⁻¹ ^ k)⁻¹, fun i => ν (P i x)) ∈ M) (x : Γ) :
     ν x⁻¹ * (ρ x / ρ x⁻¹ * quadN θ θ w x) ^ k = ν 1 := by
   let θ' := fun x y z => ((cube b x y z, fun i => θ (P i x) (P i y) (P i z)) : F × (I → U))
@@ -83,6 +111,17 @@ theorem sym_law {ν : Γ → U} (hν : ∀ x, (b x ^ k * (b x⁻¹ ^ k)⁻¹, fu
   rw [e₂, e₂, map_inv, map_inv, hi, hj] at h
   rw [h, quadN, inv_one, C.face, C.face, div_self', div_self', _root_.mul_one, one_pow, _root_.mul_one]
 
+/- English proof (translation)
+Set `θ'` to `fun x y z => ((cube b x y z, fun i => θ (P i x) (P i y) (P i z)) : F × (I → U))`. Set `ρ'` to `fun x => ((b x * (lam b x (w₀ x))⁻¹, fun i => ρ (P i x)) : F × (I → U))`. Establish `hq` using `M.div_mem (M.mul_mem (M.mul_mem (hφ (X * Y)) (hφ 1)) (M.pow_mem (M.mul_mem (M.div_mem (lineCoeffCubic_mem M hρ X Y a₀) (hρ 1)) (quadQ_mem M hθ w₀ X Y a₀)) k)) (M.mul_mem (hφ X) (hφ Y))`. Establish `e₁ : (quadQ θ' θ' w₀ X Y a₀).1 = c3 (fun x => lam b x (w₀ x)) X Y a₀` using `(quadQ_of_diff w₀ (cube_eq₁ b) (cube_eq₂ b) X Y a₀).trans (by rw [quadQ_one, _root_.one_mul])`. Establish `e₂ : ∀ i, (quadQ θ' θ' w₀ X Y a₀).2 i = quadQ θ θ w (P i X) (P i Y) (P i a₀)` using `fun i => (quadQ_map (P i) ((Pi.evalMonoidHom (fun _ => U) i).comp (MonoidHom.snd F _)) (p₁ := θ') (p₂ := θ') (hw i) (fun _ _ _ => rfl) (fun _ _ _ => rfl) X Y a₀).symm`.
+
+Establish `e₃ : (c3 ρ' X Y a₀).1 = c3 (fun x => b x * (lam b x (w₀ x))⁻¹) X Y a₀` using `rfl`. Establish `e₄ : ∀ i, (c3 ρ' X Y a₀).2 i = c3 ρ (P i X) (P i Y) (P i a₀)` using `fun i => (map_lineCoeffCubic (P i) ((Pi.evalMonoidHom (fun _ => U) i).comp (MonoidHom.snd F _)) (q := ρ') (fun _ => rfl) X Y a₀).symm`. Take `⟨i, hi, hi'⟩` from `hs x y`. Take `⟨j, hj, hj'⟩` from `hs 1 1`. Establish `w₁ : w 1 = 1` using `by simpa only [map_one] using hw i 1`.
+
+Establish `h` using `hM _ hq (by`. Simplify using `only [Prod.fst_mul, Prod.pow_fst, Prod.fst_div]`. Rewrite using `[e₁, e₃, lam_one_left, _root_.mul_one a₀, mul_comm a₀, mul_comm a₀, mul_comm a₀]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [c3, ofMul_mul, ofMul_div, ofMul_inv, ofMul_one, ofMul_pow]`.
+
+Use the proof step `module) i j`. Simplify using `only [Prod.snd_mul, Prod.pow_snd, Prod.snd_div, Pi.mul_apply, Pi.pow_apply, Pi.div_apply] at h`. Rewrite `h` using `[e₂, e₂, e₄, e₄]`. Simplify using `only [map_mul, map_one, hi, hi', hj, hj', ha] at h`. Use `div_eq_one.1 (h.trans ?_)` and prove the remaining obligations.
+
+Simplify using `only [quadQ, quadT, c3, w₁, C.face, C.face₂, _root_.mul_one, _root_.one_mul, div_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_one, ofMul_pow]`. Use `module`.
+-/
 theorem mul_law {φ : Γ → U} {a₀ : Γ₀} {a : Γ} (ha : ∀ i, P i a₀ = a)
     (hφ : ∀ x, (b x ^ k * (b (a₀ * x) ^ k)⁻¹, fun i => φ (P i x)) ∈ M) (x y : Γ) :
     φ (x * y) * φ 1 * (c3 ρ x y a / ρ 1 * quadQ θ θ w x y a) ^ k = φ x * φ y := by
@@ -123,6 +162,9 @@ variable {X Y Z : Scheme.{0}} {L : LB X} {z : Z} {J : (Z ⟶ X) → L.ι} {I : T
 
 def fs (ψ : Y ⟶ X) : Multiplicative (FreeAbelianGroup (Y ⟶ X)) := Multiplicative.ofAdd (FreeAbelianGroup.of ψ)
 
+/- English proof (translation)
+Introduce `_ _` and use `(map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm`.
+-/
 theorem oneGen_isGen : (LB.oneGen L (Y := Y)).IsGen := fun _ _ =>
   (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm
 
@@ -142,6 +184,11 @@ def pairs (hJ : Good L z J) (r : I → (Z ⟶ Y)) :
       fun i => (val_inv _ _).trans (congrArg (·⁻¹) (v i))⟩
     simp only [zpow_neg, Finset.prod_inv_distrib, f, Prod.fst_inv]
 
+/- English proof (translation)
+Introduce and unpack `q ⟨K, _, φ, ε, u, hu, f, v⟩ h1 i j`. Take `⟨t, ht, hv⟩` from `exists_gen hL (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Set `g : Multiplicative (FreeAbelianGroup (Y ⟶ X)) →* U` to `(FreeAbelianGroup.lift fun ψ => Additive.ofMul (h ψ)).toMultiplicativeLeft`. Establish `hg : ∀ ψ, g (fs ψ) = h ψ` using `fun ψ => by simp [g, fs]`. Establish `e` using `congrArg g (f.trans h1)`.
+
+Simplify using `only [map_prod, map_zpow, map_one, hg] at e`. Conclude with `e.trans (Fintype.prod_empty _).symm) u hu`. Establish `e` using `CommPairing.val_div_eq hL p hp ht oneGen_isGen (r i) (r j) (hr i j) z J hJ`. Rewrite `e` using `[val_one, val_one, mul_left_inj, hv _ _ z J hJ, hv _ _ z J hJ, v, v]`. Then use the resulting hypothesis.
+-/
 theorem pairs_const (hL : L.IsLB) (hJ : Good L z J) (r : I → (Z ⟶ Y)) {S₀ : Scheme.{0}} (p : Y ⟶ S₀)
     (hp : Function.Surjective p.appTop.hom) (hr : ∀ i j, r i ≫ p = r j ≫ p) :
     ∀ q ∈ pairs hJ r, q.1 = 1 → ∀ i j, q.2 i = q.2 j := by
@@ -156,6 +203,9 @@ theorem pairs_const (hL : L.IsLB) (hJ : Good L z J) (r : I → (Z ⟶ Y)) {S₀ 
   have e := CommPairing.val_div_eq hL p hp ht oneGen_isGen (r i) (r j) (hr i j) z J hJ
   rwa [val_one, val_one, mul_left_inj, hv _ _ z J hJ, hv _ _ z J hJ, v, v] at e
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨K, inferInstance, _, _, LB.pullGen L _ _ u h, DVR.pullGen_isGen _ _ _ _ hu _, hf, fun i => (val_pull hJ _ _ _).trans (hv i)⟩`.
+-/
 theorem pull_mem (hJ : Good L z J) (r : I → (Z ⟶ Y)) {Y₀ : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y₀ ⟶ X)}
     {ε : K → ℤ} {u : LB.Gen (LB.LinComb L φ ε)} (hu : u.IsGen) (h : Y ⟶ Y₀) {f} {v : I → (Z.presheaf.stalk z)ˣ}
     (hf : ∏ k, fs (h ≫ φ k) ^ ε k = f) (hv : ∀ i, val u (r i ≫ h) z J = v i) : (f, v) ∈ pairs hJ r :=
@@ -169,6 +219,27 @@ end GlobalTheory.TransUnit.Laws
 namespace GlobalTheory.TransUnit
 open Laws
 
+/- English proof (translation)
+Introduce `E _ _ _ H S t hp wP hw k a U hU T σ z J hJ`. Use `t.act.hom H.w0` as an intermediate fact. Establish `hL` using `t.PP.isLB`. Take `⟨ν, hν, hsym⟩` from `sym_val hU`. Take `rfl` from `hU.pt_eq`.
+
+Set `T₀` to `t.G ⊗ t.G`. Set `σ₀ : T₀ ⟶ baseOver S` to `Over.homMk T₀.hom (Category.comp_id _)`. Establish `hσ : ∀ i : T ⟶ T₀, i ≫ σ₀ = σ` using `fun i => Over.OverMorphism.ext ((Over.w i).trans ((Over.w σ).symm.trans (Category.comp_id _)))`. Set `r : (T ⟶ T₀) → (T.left ⟶ T₀.left)` to `fun i => i.left`. Set `P : (T ⟶ T₀) → ((T₀ ⟶ t.G) →* (T ⟶ t.G))` to `fun i => preHom i`.
+
+Set `b` to `fun x : T₀ ⟶ t.G => fs x.left`. Set `w₀ : (T₀ ⟶ t.G) →* (T₀ ⟶ t.G)` to `MonoidHom.mk' (· ≫ t.act.act H.w0) fun x y => MonObj.mul_comp x y _`. Establish `hw₀ : ∀ i x, P i x ≫ t.act.act H.w0 = P i (w₀ x)` using `fun i x => Category.assoc _ _ _`. Establish `hM` using `pairs_const hL hJ r T₀.hom hp fun i j => (Over.w i).trans (Over.w j).symm`. Establish `C` using `isCub_cubV t.cub hJ`.
+
+Establish `hl : ∀ (i : T ⟶ T₀) (x : T₀ ⟶ t.G), r i ≫ (lift σ₀ x).left = (lift σ (P i x)).left` using `fun i x => by`. Rewrite using `[← hσ i]`. Conclude with `congrArg (fun q => q.left) (comp_lift i σ₀ x)`. Establish `hθ : ∀ x y z', (cube b x y z', fun i => cubV t.cub z J (P i x) (P i y) (P i z')) ∈ pairs hJ r` using `fun x y z' => ⟨_, inferInstance, _, _, _, DVR.pullGen_isGen _ _ _ _ t.cub.isGen (lift x (lift y z')).left, prod_cub x y z' fs, fun i => val_cub t.cub i hJ x y z'⟩`. Establish `hρ : ∀ x, (b x * (lam b x (w₀ x))⁻¹, fun i => val wP (P i x).left z J) ∈ pairs hJ r` using `fun x => by`.
+
+Use `pull_mem hJ r hw x.left ?_ fun i => rfl` and prove the remaining obligations. Use `(Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Category.comp_id, zpow_one, Finset.prod_const, Finset.card_univ, Fintype.card_fin, pow_one, b]`. Establish `e` using `prod_cube₂ (𝟙 t.G) (t.act.act H.w0) fun q => fs (x.left ≫ q)`. Simplify using `only [← Over.comp_left, MonObj.comp_mul, MonObj.comp_one, Category.comp_id] at e`.
+
+Simplify using `only [Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Conclude with `congrArg (·⁻¹) e`. Establish `hs : ∀ x y : T ⟶ t.G, ∃ i, P i (fst t.G t.G) = x ∧ P i (snd t.G t.G) = y` using `fun x y => ⟨lift x y, lift_fst x y, lift_snd x y⟩`. Use `⟨fun x => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `(ThetaPullback.val_powGen U k (lift σ x).left hJ).symm.trans ((val_corr hJ hU.pow_eq _).trans (val_one _))`.
+
+Rewrite using `[Finset.prod_range]`. Use `Eq.trans (Finset.prod_congr rfl fun j _ => ?_) e` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_transl, MonObj.comp_pow]`. Both sides reduce to the same expression. Establish `e` using `sym_law P b w₀ (w := fun p => p ≫ t.act.act H.w0) hw₀ _ hM C (ρ := fun p => val wP p.left z J) hθ hρ hs k (ν := fun p => val (L := t.PP.L) (φ := ![(snd (baseOver S) t.G).left, (snd (baseOver S) t.G ≫ (GrpObj.inv : t.G ⟶ t.G)).left]) (ε := ![(k : ℤ), -k]) ν (lift σ p).left z J) (f …`.
+
+Use `pull_mem hJ r hν (lift σ₀ x).left ((prod_two _ _ _ _ _ fs).trans ?_) fun i => by rw [hl]` and prove the remaining obligations. Rewrite using `[lift_snd, lift_snd_assoc, zpow_neg, zpow_natCast, zpow_natCast]`. Use the proof step `rfl) (σ ≫ U.pt)`. Establish `e'` using `(hsym σ hJ).2`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Use `replace e := congrArg Additive.ofMul e`. Use `replace e' := congrArg Additive.ofMul e'`. Simplify using `only [CommPairing.tval, ofMul_mul, ofMul_inv, ofMul_one] at e e' ⊢`. Take the linear combination `(norm := abel) e + e'`. Use `mul_law P b w₀ (w := fun p => p ≫ t.act.act H.w0) hw₀ _ hM C (ρ := fun p => val wP p.left z J) hθ hρ hs k (φ := fun p => CommPairing.tval U (lift σ p).left z J) (a₀ := σ₀ ≫ U.pt) (fun i => (Category.assoc i σ₀ U.pt).symm.trans (congrArg (· ≫ U.pt) (hσ i))) fun x => ?_` and prove the remaining obligations.
+
+Use `pull_mem hJ r (φ := ![(snd (baseOver S) t.G).left, (translPt t.G U.pt).left]) (ε := ![(k : ℤ), -k]) (u := U.φ) U.isGen (lift σ₀ x).left ((prod_two _ _ _ _ _ fs).trans ?_) fun i => congrArg (fun q => CommPairing.tval U q z J) (hl i x)` and prove the remaining obligations. Rewrite using `[lift_snd, translPt_eq, MonObj.comp_mul, lift_fst_assoc, lift_snd, zpow_neg, zpow_natCast, zpow_natCast]`.
+-/
 theorem liftLaws_of_symLift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S), Function.Surjective (t.G ⊗ t.G).hom.appTop.hom → ∀ (wP : PrimTyG t), wP.IsGen → ∀ (k : ℕ) (a : baseOver S ⟶ t.G) (U : ThetaGrp t.G t.PP.L (k : ℤ) (baseOver S)), SymLift t.G t.PP.L (k : ℤ) k a U → ∀ (T : Over S) (σ : T ⟶ baseOver S) (z : T.left) (J : (T.left ⟶ t.G.left) → t.PP.L.ι), Good t.PP.L z J → LiftLaws (cubV t.cub z J) (fun p : T ⟶ t.G => val wP p.left z J) (fun p : T ⟶ t.G => GlobalTheory.CommPairing.tval U (lift σ p).left z J) (fun p : T ⟶ t.G => p ≫ t.act.act H.w0) (σ ≫ a) k := by
   intro E _ _ _ H S t hp wP hw k a U hU T σ z J hJ
   have := t.act.hom H.w0

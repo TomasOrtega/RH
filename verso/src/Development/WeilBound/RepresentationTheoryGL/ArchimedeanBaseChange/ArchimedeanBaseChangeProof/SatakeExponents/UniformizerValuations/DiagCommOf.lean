@@ -4,6 +4,9 @@ noncomputable section
 
 namespace PositivityTheory.Rg.BcB.F
 
+/- English proof (translation)
+Introduce `I d blk c c'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `((h _ _ blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ blk _ _ 0).1`. Rewrite using `[(h _ _ blk c' 0 0).2.2.2]`. Conclude with `((h _ _ blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ blk _ _ 0).1`.
+-/
 theorem diagComm_of (h : Eig.DiagAlg) : GenIn.DiagComm := by
   intro I d blk c c'
   refine ⟨?_, ?_⟩
@@ -11,6 +14,9 @@ theorem diagComm_of (h : Eig.DiagAlg) : GenIn.DiagComm := by
   · rw [(h _ _ blk c' 0 0).2.2.2]
     exact ((h _ _ blk _ _ 0).1.symm.trans (by rw [mul_comm])).trans (h _ _ blk _ _ 0).1
 
+/- English proof (translation)
+Introduce `E _ _ _ n π S T K W G h0 hb hr`. Conclude with `⟨{ ι := G.ι, H := G.H, d := G.d, Γ := G.Γ, gen := G.gen comm := fun x y => Prod.ext (funext fun s => G.comm x y s) (h0 _ _ G.blk _ _).1 commStar := fun x y => Prod.ext (funext fun s => G.commStar x y s) (h0 _ _ G.blk _ _).2 β := G.βop, βcomm := G.βcomm, m := G.m, u := G.u, ucomm …`.
+-/
 theorem genToData : GenToData := by
   intro E _ _ _ n π S T K W G h0 hb hr
   exact ⟨{ ι := G.ι, H := G.H, d := G.d, Γ := G.Γ, gen := G.gen

@@ -22,6 +22,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LogKSAssembly
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on (p := fun y : N => (y : Matrix (Fin n) (Fin n) R) a b ∈ m) hy ?_ ?_` and prove the remaining obligations. Introduce `r hr x _`. Simplify using `using m.mul_mem_right _ hr`. Introduce `x y hx hy`. Simplify using `using m.add_mem hx hy`.
+-/
 theorem entry_mem_of_mem_smul_top {R : Type} [CommRing R] {n : ℕ} (N : Submodule R (Matrix (Fin n) (Fin n) R))
     (m : Ideal R) (y : N) (hy : y ∈ m • (⊤ : Submodule R N)) (a b : Fin n) : (y : Matrix (Fin n) (Fin n) R) a b ∈ m := by
   refine Submodule.smul_induction_on (p := fun y : N => (y : Matrix (Fin n) (Fin n) R) a b ∈ m) hy ?_ ?_
@@ -30,6 +33,11 @@ theorem entry_mem_of_mem_smul_top {R : Type} [CommRing R] {n : ℕ} (N : Submodu
   · intro x y hx hy
     simpa using m.add_mem hx hy
 
+/- English proof (translation)
+Use `choose Θ hΘ using hex`. Set `f : L →ₗ[R] N` to `{ toFun := fun D => ⟨Θ D, hN D _ (hΘ D)⟩ map_add' := fun D D' => Subtype.ext (huniq _ _ _ (hΘ (D + D')) (hlin D D' 1 _ _ (hΘ D) (hΘ D')).1) map_smul' := fun r D => Subtype.ext (huniq _ _ _ (hΘ (r • D)) (hlin D D r _ _ (hΘ D) (hΘ D)).2) }`. Establish `hf : Function.Bijective f` using `GlobalTheory.ProjBij.bijective_of_injective_mod_maximal R L N f hrk (fun m hm x hx => hfib x (Θ x) m hm (hΘ x) (entry_mem_of_mem_smul_top N m (f x) hx))`. Use `⟨LinearEquiv.ofBijective f hf, fun D Θ' => ⟨fun h => huniq D Θ' (Θ D) h (hΘ D), fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h]`.
+
+Conclude with `hΘ D`.
+-/
 theorem exists_equiv {R L : Type} [CommRing R] [AddCommGroup L] [Module R L] [Module.Finite R L] [Module.Projective R L]
     {n : ℕ} (N : Submodule R (Matrix (Fin n) (Fin n) R)) [Module.Finite R N] [Module.Projective R N]
     (K : L → Matrix (Fin n) (Fin n) R → Prop) (hex : ∀ D, ∃ Θ, K D Θ) (huniq : ∀ D Θ Θ', K D Θ → K D Θ' → Θ = Θ')
@@ -54,6 +62,11 @@ theorem exists_equiv {R L : Type} [CommRing R] [AddCommGroup L] [Module R L] [Mo
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y hr hsm hsnc hrig`. Unfold `HasLogKS`. Introduce `U n v A hv hb hA`. Take `⟨hLf, hLp, hLr⟩` from `GlobalTheory.LogDerProj.main E H Dw l Xo c Y hr hsm hsnc U`. Take `⟨hBf, hBp, hBr⟩` from `GlobalTheory.T.symmetric_balanced_tensors_finite_projective_rank_dim E H Dw l Xo c Y hr hsm hsnc U n v A hv hb hA`.
+
+Conclude with `exists_equiv (balanced H.bar A) (fun D Θ => IsKS Y.t (interior Y) U v D.1 Θ) (GlobalTheory.T.exists_kodairaSpencer_regular_framed_affine E H Dw l Xo c Y hr hsm hsnc hrig U n v A hv hb hA) (GlobalTheory.KSUniq.isKS_unique_model E H Dw l Xo c Y hr hsm hsnc hrig U n v A hv hb hA) (G …`.
+-/
 theorem hasLogKS : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), 1 ≤ Dw.p + Dw.q → SmoothOfRelativeDimension Dw.dim (genStr Y) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Y) → (∀ x ∈ genBd Y, IsClosed ({x} : Set (gen Y)) → HasRigidChart Y x) → HasLogKS Y.t Y.s (interior Y) := by
   intro E _ _ _ H Dw l Xo c Y hr hsm hsnc hrig
   unfold HasLogKS

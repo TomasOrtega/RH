@@ -12,11 +12,19 @@ namespace PositivityTheory.HtPt.Mb.LCentreUnique.Centre.Sep
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField
 
+/- English proof (translation)
+Use `show IsLocalRing (genMap ξ p).range`. Conclude with `IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict (genMap ξ p).rangeRestrict_surjective`.
+-/
 theorem isLocalRing_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p : Cpt ξ) :
     IsLocalRing (regAt ξ p) := by
   show IsLocalRing (genMap ξ p).range
   exact IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict (genMap ξ p).rangeRestrict_surjective
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨b, hb⟩` from `h.exists_right_inv`. Establish `e : (a : Ω) * (b : Ω) = 1` using `congrArg Subtype.val hb`. Establish `ha : (a : Ω) ≠ 0` using `fun h0 => by simp [h0] at e`.
+
+Use `⟨ha, a.2, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right e]`. Conclude with `b.2`. Introduce and unpack `⟨h0, -, h2⟩`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, h2⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩`.
+-/
 theorem isUnit_regAt_iff {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p : Cpt ξ)
     (a : regAt ξ p) : IsUnit a ↔ unitAt ξ p (a : Ω) := by
   constructor
@@ -30,6 +38,9 @@ theorem isUnit_regAt_iff {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (Com
   · rintro ⟨h0, -, h2⟩
     exact isUnit_iff_exists_inv.2 ⟨⟨_, h2⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩
 
+/- English proof (translation)
+Use `⟨fun hu => ⟨(map_ne_zero i).2 hu.1, h.1 a hu.2.1, ?_⟩, h.2 a ha⟩` and prove the remaining obligations. Rewrite using `[← map_inv₀]`. Conclude with `h.1 _ hu.2.2`.
+-/
 theorem unitAt_iff_of_dominated {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω']
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {i : Ω →+* Ω'} {p' : Cpt ξ'} {q : Cpt ξ}
     (h : (∀ a ∈ regAt ξ q, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt ξ q, unitAt ξ' p' (i a) → unitAt ξ q a)
@@ -38,6 +49,13 @@ theorem unitAt_iff_of_dominated {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [
   rw [← map_inv₀]
   exact h.1 _ hu.2.2
 
+/- English proof (translation)
+Establish `cq` using `(PositivityTheory.HtPt.Ma.regat_loc o Ω κ x M c q hq).1`. Establish `cr` using `(PositivityTheory.HtPt.Ma.regat_loc o Ω κ x M c r hr).1`. Use `haveI := isLocalRing_regAt M.ξ q`. Set `f : chRing o x c →+* regAt M.ξ q` to `((chRing o x c).val : chRing o x c →+* Ω).codRestrict (regAt M.ξ q) fun u => cq _ u.2`. Establish `hP : ∀ u : chRing o x c, u ∈ (IsLocalRing.maximalIdeal (regAt M.ξ q)).comap f ↔ ¬ unitAt M.ξ q (u : Ω)`.
+
+Introduce `u`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_regAt_iff]`. Both sides reduce to the same expression. Take `⟨p, -, huniq⟩` from `PositivityTheory.HtPt.Ma.prime_pt o Ω κ x M c hq.1 _ (inferInstance : ((IsLocalRing.maximalIdeal (regAt M.ξ q)).comap f).IsPrime)`. Establish `e1` using `huniq q ⟨hq, hP⟩`.
+
+Establish `e2` using `huniq r ⟨hr, fun u => by`. Rewrite using `[hP, unitAt_iff_of_dominated dq (cq _ u.2), unitAt_iff_of_dominated dr (cr _ u.2)]⟩`. Conclude with `e1.trans e2.symm`.
+-/
 theorem eq_of_dominated_of_inChart {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} [Finite κ]
     {x : κ → Ω} (M : PModel o x) {X' : Scheme.{0}} {Ω' : Type} [Field Ω'] {ξ' : Spec (CommRingCat.of Ω') ⟶ X'}
     {i : Ω →+* Ω'} {p' : Cpt ξ'} {c : κ} {q r : Cpt M.ξ} (hq : InChart M.ξ x c q) (hr : InChart M.ξ x c r)
@@ -60,6 +78,11 @@ theorem eq_of_dominated_of_inChart {o : Type} [CommRing o] {Ω : Type} [Field Ω
     rw [hP, unitAt_iff_of_dominated dq (cq _ u.2), unitAt_iff_of_dominated dr (cr _ u.2)]⟩
   exact e1.trans e2.symm
 
+/- English proof (translation)
+Introduce `o _ Ω _ _ κ _ x M X' Ω' _ ξ' i p' q₁ q₂ d₁ d₂`. Take `⟨c₁, hc₁⟩` from `M.tie.cover q₁`. Take `⟨c₂, hc₂⟩` from `M.tie.cover q₂`. Establish `hctr : p' ∈ ctrSet o x i ξ'` using `⟨c₁, hc₁.1, fun a ha => d₁.1 a ((PositivityTheory.HtPt.Ma.regat_loc o Ω κ x M c₁ q₁ hc₁).1 a ha)⟩`. Take `⟨p₀, d₀, -, hp₀⟩` from `PositivityTheory.HtPt.Mb.centre o Ω κ x M X' Ω' ξ' i p' hctr`.
+
+Establish `e₁ : q₁ = p₀` using `eq_of_dominated_of_inChart M hc₁ (hp₀ c₁ hc₁.1 fun j => d₁.1 _ (hc₁.2 j)) d₁ d₀`. Establish `e₂ : q₂ = p₀` using `eq_of_dominated_of_inChart M hc₂ (hp₀ c₂ hc₂.1 fun j => d₂.1 _ (hc₂.2 j)) d₂ d₀`. Conclude with `e₁.trans e₂.symm`.
+-/
 theorem eq_of_dominated : ∀ {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} [Finite κ] {x : κ → Ω} (M : PModel o x) {X' : Scheme.{0}} {Ω' : Type} [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (p' : Cpt ξ') (q₁ q₂ : Cpt M.ξ), ((∀ a ∈ regAt M.ξ q₁, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ q₁, unitAt ξ' p' (i a) → unitAt M.ξ q₁ a) → ((∀ a ∈ regAt M.ξ q₂, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ q₂, unitAt ξ' p' (i a) → unitAt M.ξ q₂ a) → q₁ = q₂ := by
   intro o _ Ω _ _ κ _ x M X' Ω' _ ξ' i p' q₁ q₂ d₁ d₂
   obtain ⟨c₁, hc₁⟩ := M.tie.cover q₁
@@ -75,5 +98,8 @@ end PositivityTheory.HtPt.Mb.LCentreUnique.Centre.Sep
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField in
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.HtPt.Mb.LCentreUnique.Centre.Sep.eq_of_dominated`.
+-/
 theorem PositivityTheory.HtPt.Mb.centre_unique : ∀ {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} [Finite κ] {x : κ → Ω} (M : PModel o x) {X' : Scheme.{0}} {Ω' : Type} [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω') (p' : Cpt ξ') (q₁ q₂ : Cpt M.ξ), ((∀ a ∈ regAt M.ξ q₁, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ q₁, unitAt ξ' p' (i a) → unitAt M.ξ q₁ a) → ((∀ a ∈ regAt M.ξ q₂, i a ∈ regAt ξ' p') ∧ ∀ a ∈ regAt M.ξ q₂, unitAt ξ' p' (i a) → unitAt M.ξ q₂ a) → q₁ = q₂ :=
   @PositivityTheory.HtPt.Mb.LCentreUnique.Centre.Sep.eq_of_dominated

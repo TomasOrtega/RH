@@ -8,6 +8,11 @@ namespace Formalism.DworkPowerSeriesWeights
 
 open Formalism.IncomingBounds
 
+/- English proof (translation)
+Establish `hfin : (Set.range fun n : σ →₀ ℕ => ‖MvPolynomial.coeff n Q‖).Finite`. Use `Set.Finite.subset ((Q.support.image fun n => ‖MvPolynomial.coeff n Q‖).finite_toSet.insert 0) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Distinguish the cases in `hn : n ∈ Q.support`. Use `right`.
+
+Conclude with `Finset.mem_coe.2 (Finset.mem_image_of_mem _ hn)`. Use `left`. Simplify using `only [MvPolynomial.notMem_support_iff.1 hn, norm_zero]`. Conclude with `hfin.bddAbove`.
+-/
 theorem bddAbove_norm_coeff {R : Type} [NormedField R] {σ : Type} (Q : MvPolynomial σ R) :
     BddAbove (Set.range fun n : σ →₀ ℕ => ‖MvPolynomial.coeff n Q‖) := by
   classical
@@ -22,6 +27,19 @@ theorem bddAbove_norm_coeff {R : Type} [NormedField R] {σ : Type} (Q : MvPolyno
       simp only [MvPolynomial.notMem_support_iff.1 hn, norm_zero]
   exact hfin.bddAbove
 
+/- English proof (translation)
+Introduce `F K _ _ φ σ Y h k hk Q n`. Set `E : (σ →₀ ℕ) → (σ →₀ ℕ)` to `fun n => Finsupp.onFinset n.support (fun y => k y * n y) (fun y hy => by`. Rewrite using `[Finsupp.mem_support_iff]`. Conclude with `fun h0 => hy (by rw [h0, Nat.mul_zero]))`. Establish `hEa : ∀ n y, E n y = k y * n y` using `fun n y => rfl`.
+
+Establish `hE : Function.Injective E`. Introduce `n n' hnn`. Use extensionality with `y`. Use `congrArg (fun f => f y) hnn` as an intermediate fact. Simplify using `only [hEa] at this`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero (hk y)) this`. Set `Q' : MvPolynomial σ F` to `∑ n ∈ Q.support, MvPolynomial.monomial (E n) (MvPolynomial.coeff n Q)`. Establish `h1 : MvPolynomial.eval₂ φ Y Q' = MvPolynomial.eval₂ φ (fun y => Y y ^ k y) Q`. Rewrite using `[MvPolynomial.eval₂_sum, MvPolynomial.eval₂_eq]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.eval₂_monomial, Finsupp.onFinset_prod _ (fun _ => pow_zero _)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[pow_mul]`. Establish `hc : ∀ n, MvPolynomial.coeff (E n) Q' = MvPolynomial.coeff n Q`.
+
+Introduce `n`. Simplify using `only [Q', MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, hE.eq_iff]`. Rewrite using `[Finset.sum_ite_eq' Q.support n]`. Use `split_ifs with hn`. Both sides reduce to the same expression.
+
+Conclude with `(MvPolynomial.notMem_support_iff.1 hn).symm`. Rewrite using `[← h1, h, ← hc]`. Conclude with `le_ciSup (bddAbove_norm_coeff Q') (E n)`.
+-/
 theorem gauss_sum_powers : GaussPow := by
   classical
   intro F K _ _ φ σ Y h k hk Q n
@@ -54,6 +72,33 @@ theorem gauss_sum_powers : GaussPow := by
   rw [← h1, h, ← hc]
   exact le_ciSup (bddAbove_norm_coeff Q') (E n)
 
+/- English proof (translation)
+Introduce `l d N0 _ hl TT nu1 size a ha hnu hsize hN`. Set `S : ZMod d → Finset ℤ` to `fun s => (Finset.Icc (-(a : ℤ)) a).filter (fun j => Odd j ∧ s - (j : ZMod d) ∈ TT ∧ (0 < j → l ^ j.toNat ≤ nu1 (s - (j : ZMod d))) ∧ (j < 0 → l ^ (-j).toNat ≤ size s))`. Establish `hpow : ∀ (s : ZMod d) (j : ℤ), Odd j → (0 < j → l ^ j.toNat ≤ nu1 (s - (j : ZMod d))) → (j < 0 → l ^ (-j).toNat ≤ size s) → l ^ j.natAbs ≤ a`. Introduce `s j hj h1 h2`. Break down `lt_trichotomy j 0 with h | h | h` into its components or cases.
+
+Establish `: (-j).toNat = j.natAbs` using `by omega`. Rewrite using `[← this]`. Conclude with `(h2 h).trans (hsize s)`. Substitute `h` using the available equality. Conclude with `absurd hj (by decide)`.
+
+Establish `: j.toNat = j.natAbs` using `by omega`. Rewrite using `[← this]`. Conclude with `(h1 h).trans (hnu _)`. Establish `hIcc : ∀ j : ℤ, l ^ j.natAbs ≤ a → j ∈ Finset.Icc (-(a : ℤ)) a`. Introduce `j hj`.
+
+Establish `h1 : j.natAbs < l ^ j.natAbs` using `Nat.lt_pow_self hl`. Rewrite using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Establish `hcard : ∀ s, ((S s).card : ℝ) ≤ 2 * Real.logb l a + 1`. Introduce `s`.
+
+Use `le_trans ?_ (oddExponentCount l a hl ha)` and prove the remaining obligations. Conclude with `Finset.card_le_card (by` after adjusting the coercions. Introduce `j hj`. Simplify using `only [S, Finset.mem_filter] at hj`. Rewrite using `[Finset.mem_filter]`.
+
+Conclude with `⟨hj.1, hj.2.1, hpow s j hj.2.1 hj.2.2.2.1 hj.2.2.2.2⟩)`. Use `⟨fun s => (S s).card, fun s i => (s - ((((S s).equivFin.symm i : S s) : ℤ) : ZMod d), (((S s).equivFin.symm i : S s) : ℤ)), a, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s i i' hii`. Establish `h2` using `congrArg Prod.snd hii`. Simplify using `only at h2`.
+
+Conclude with `(S s).equivFin.symm.injective (Subtype.ext h2)`. Introduce `s s0 j`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi⟩`. Establish `hm` using `((S s).equivFin.symm i).2`.
+
+Establish `h1` using `congrArg Prod.fst hi`. Establish `h2` using `congrArg Prod.snd hi`. Simplify using `only at h1 h2`. Rewrite `h1`, `hm` using `[h2]`. Simplify using `only [S, Finset.mem_filter] at hm`.
+
+Rewrite `hm` using `[h1]`. Conclude with `⟨hm.2.2.1, hm.2.1, by rw [← h1]; ring, hm.2.2.2.1, hm.2.2.2.2⟩`. Introduce and unpack `⟨hT, hodd, hs, hp, hn⟩`. Establish `hs0 : s - (j : ZMod d) = s0` using `by rw [hs]; ring`. Establish `hm : j ∈ S s`.
+
+Simplify using `only [S, Finset.mem_filter]`. Rewrite using `[hs0]`. Conclude with `⟨hIcc j (hpow s j hodd (by rw [hs0]; exact hp) hn), hodd, hT, hp, hn⟩`. Use `⟨(S s).equivFin ⟨j, hm⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply, hs0]`.
+
+Introduce `s`. Establish `h1` using `hcard s`. Establish `h2 : ((S s).card : ℝ) + 1 ≤ (N0 : ℝ)` using `by linarith`. Establish `h3 : (S s).card + 1 ≤ N0` using `by exact_mod_cast h2`. Use `show (S s).card + _ ≤ N0`.
+
+Apply the tactic sequence `split_ifs <;> omega`. Introduce `s i show (-(((S s).equivFin.symm i : S s) : ℤ)).toNat ≤ a`. Take `⟨j, hm⟩` from `(S s).equivFin.symm i`. Establish `hm'` using `(Finset.mem_Icc.1 (Finset.mem_filter.1 hm).1).1`. Use `show (-j).toNat ≤ a`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem labelsExist_statement : LabelsExist := by
   classical
   intro l d N0 _ hl TT nu1 size a ha hnu hsize hN

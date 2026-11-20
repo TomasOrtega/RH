@@ -13,6 +13,11 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold `blkMinor`. Establish `hx : (diagonal d * X).submatrix (fun q : {q : Fin n // ε q = ε c ∧ q ≤ c} => (q : Fin n)) (fun q : {q : Fin n // ε q = ε c ∧ q ≤ c} => (q : Fin n)) = diagonal (fun q : {q : Fin n // ε q = ε c ∧ q ≤ c} => d q) * X.submatrix (fun q : {q : Fin n // ε q = ε c ∧ q ≤ c} => (q : Fin n)) …`. Use extensionality with `r s`. Simplify using `[Matrix.diagonal_mul]`. Rewrite using `[hx, det_mul, det_diagonal]`.
+
+Use `congr 1`. Conclude with `(Finset.prod_subtype (univ.filter (fun q : Fin n => ε q = ε c ∧ q ≤ c)) (by simp) d).symm`.
+-/
 theorem blkMinor_diag_mul (ε : Fin n → Bool) (c : Fin n) (d : Fin n → ℂ) (X : Matrix (Fin n) (Fin n) ℂ) :
     blkMinor ε c (diagonal d * X) =
       (∏ q ∈ univ.filter (fun q : Fin n => ε q = ε c ∧ q ≤ c), d q) * blkMinor ε c X := by
@@ -28,6 +33,13 @@ theorem blkMinor_diag_mul (ε : Fin n → Bool) (c : Fin n) (d : Fin n → ℂ) 
   congr 1
   exact (Finset.prod_subtype (univ.filter (fun q : Fin n => ε q = ε c ∧ q ≤ c)) (by simp) d).symm
 
+/- English proof (translation)
+Unfold `f0`. Repeatedly rewrite using `[blkMinor_diag_mul, mul_pow]`. Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Repeatedly rewrite using `[← Finset.prod_pow]`.
+
+Rewrite using `[Finset.prod_comm' (s' := fun q => univ.filter (fun c : Fin n => ε q = ε c ∧ q ≤ c)) (t' := univ) (by intro c q; simp)]`. Use `Finset.prod_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Use `congr 1`. Establish `h` using `hwmf_tele ε m _ q rfl`.
+
+Establish `h2 : ((∑ c ∈ univ.filter (fun c : Fin n => ε q = ε c ∧ q ≤ c), (mexp ε m c).toNat : ℕ) : ℤ) = m q`. Rewrite using `[Nat.cast_sum, ← h]`. Conclude with `Finset.sum_congr rfl fun c _ => Int.toNat_of_nonneg (mexp_nonneg ε hm c)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem model_function_diag_mul (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : NonnegDom ε m) (d : Fin n → ℂ)
     (X : Matrix (Fin n) (Fin n) ℂ) :
     f0 ε m (diagonal d * X) = (∏ a, d a ^ (m a).toNat) * f0 ε m X := by
@@ -47,6 +59,13 @@ theorem model_function_diag_mul (ε : Fin n → Bool) {m : Fin n → ℤ} (hm : 
     exact Finset.sum_congr rfl fun c _ => Int.toNat_of_nonneg (mexp_nonneg ε hm c)
   omega
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨k, rfl⟩` from `hg`. Use `show f0K ε m (y * x * k) = _ * f0K ε m (x * k)`. Unfold `f0K`.
+
+Rewrite using `[show toMK (y * x * k) = diagonal d * toMK (x * k) by`. Rewrite using `[mul_assoc]`. Use `show toMK y * toMK (x * k) = _`. Rewrite using `[hy]]`. Conclude with `model_function_diag_mul ε hm d _`.
+
+Consider the case `zero => simp`. Consider the case `add f g _ _ hf hg => simp [Pi.add_apply, hf, hg, mul_add]`. Consider the case `smul c f _ hf => simp [Pi.smul_apply, hf, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vsp_diag {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) {f : KG ε → ℂ} (hf : f ∈ Vsp ε m)
     (y : KG ε) (d : Fin n → ℂ) (hy : toMK y = diagonal d) (x : KG ε) :
     f (y * x) = (∏ a, d a ^ (m a).toNat) * f x := by
@@ -64,8 +83,16 @@ theorem vsp_diag {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m)
 
 def ev (ε : Fin n → Bool) (m : Fin n → ℤ) : MV ε m →ₗ[ℂ] ℂ := (LinearMap.proj (1 : KG ε)).comp (mvFnL ε m)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_apply {ε : Fin n → Bool} {m : Fin n → ℤ} (f : MV ε m) : ev ε m f = f.fn 1 := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[cpart1_bdPart_apply]`. Distinguish the cases in `h : ε i = ε j`. Rewrite using `[if_pos h]`. Simplify using `only [single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> aesop`. Simplify using `[h]`.
+-/
 theorem cpart1_Eaa (ε : Fin n → Bool) (a : Fin n) : cpart1 ε (bdPart ε (single a a (1 : ℂ))) = 0 := by
   ext i j
   rw [cpart1_bdPart_apply]
@@ -75,6 +102,13 @@ theorem cpart1_Eaa (ε : Fin n → Bool) (a : Fin n) : cpart1 ε (bdPart ε (sin
     split_ifs <;> aesop
   · simp [h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[cpart2_bdPart_apply]`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Distinguish the cases in `hj : j = i`.
+
+Substitute `hj` using the available equality. Simplify using `[single_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[single_apply, hj, Ne.symm hj]`. Distinguish the cases in `hj : j = a`.
+
+Substitute `hj` using the available equality. Simplify using `[single_apply, hi, Ne.symm hi]`. Simplify using `[single_apply, hi, hj, Ne.symm hi, Ne.symm hj]`.
+-/
 theorem cpart2_Eaa (ε : Fin n → Bool) (a : Fin n) :
     cpart2 ε (bdPart ε (single a a (1 : ℂ))) = (-Complex.I) • single a a (1 : ℂ) := by
   ext i j
@@ -88,6 +122,15 @@ theorem cpart2_Eaa (ε : Fin n → Bool) (a : Fin n) :
     · subst hj; simp [single_apply, hi, Ne.symm hi]
     · simp [single_apply, hi, hj, Ne.symm hi, Ne.symm hj]
 
+/- English proof (translation)
+Establish `e : (t : ℂ) • ((-Complex.I) • single a a (1 : ℂ)) = diagonal (fun c => if c = a then -(Complex.I * t) else 0)`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hi : i = a <;> by_cases hj : j = a`. Substitute `hi` using the available equality. Substitute `hj` using the available equality.
+
+Simplify using `[diagonal_apply, single_apply]`. Expand and normalize the polynomial expressions, which then agree. Substitute `hi` using the available equality. Simplify using `[diagonal_apply, single_apply, Ne.symm hj]`. Substitute `hj` using the available equality.
+
+Simplify using `[diagonal_apply, single_apply, Ne.symm hi, hi]`. Simplify using `[diagonal_apply, single_apply, hi, hj, Ne.symm hi, Ne.symm hj]`. Rewrite using `[e, Matrix.exp_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `c`.
+
+Apply the tactic sequence `by_cases h : c = a <;> simp [h, ← Complex.exp_eq_exp_ℂ]`.
+-/
 theorem exp_Eaa (a : Fin n) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • ((-Complex.I) • single a a (1 : ℂ))) =
       diagonal (fun c => if c = a then Complex.exp (-(Complex.I * t)) else 1) := by
@@ -104,6 +147,21 @@ theorem exp_Eaa (a : Fin n) (t : ℝ) :
   funext c
   by_cases h : c = a <;> simp [h, ← Complex.exp_eq_exp_ℂ]
 
+/- English proof (translation)
+Rewrite using `[ev_apply, ev_apply, dTau_fn]`. Unfold `rdc`. Rewrite using `[cpart1_Eaa, cpart2_Eaa]`. Establish `hX : inK ε ((-Complex.I) • single a a (1 : ℂ))`. Rewrite using `[← cpart2_Eaa ε a]`.
+
+Conclude with `inK_cpart2_bdPart ε _`. Establish `hX0 : inK ε (0 : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[← cpart1_Eaa ε a]`. Conclude with `inK_cpart1_bdPart ε _`. Establish `h0 : ∀ t, kcurve ε (0 : Matrix (Fin n) (Fin n) ℂ) t = 1`.
+
+Introduce `t`. Apply `onep_KG_ext` to reduce the goal to its premises. Rewrite using `[(kcurve_spec ε hX0).2.1 t]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+
+Establish `hc : ∀ t : ℝ, f.fn (1 * kcurve ε ((-Complex.I) • single a a (1 : ℂ)) t) = Complex.exp (-(Complex.I * t)) ^ (m a).toNat * f.fn 1`. Introduce `t`. Rewrite using `[← mul_one (1 * kcurve ε _ t), one_mul]`. Rewrite using `[vsp_diag hm f.mem _ _ (by rw [(kcurve_spec ε hX).2.1 t, exp_Eaa]) 1]`. Use `congr 1`.
+
+Rewrite using `[Finset.prod_eq_single a (fun c _ hc => by simp [hc]) (by simp)]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[h0, mul_one, hc]`. Rewrite using `[deriv_const, zero_add]`. Establish `hd : HasDerivAt (fun t : ℝ => Complex.exp (-(Complex.I * t)) ^ (m a).toNat * f.fn 1) (((m a).toNat : ℂ) * (-Complex.I) * f.fn 1) 0`.
+
+Establish `h0 : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 0` using `by simpa using (hasDerivAt_id (0 : ℝ)).ofReal_comp`. Establish `h1` using `(((h0.const_mul Complex.I).neg.cexp).pow (m a).toNat).mul_const (f.fn 1)`. Use `h1.congr_deriv ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[hd.deriv]`.
+
+Establish `hma : (((m a).toNat : ℕ) : ℂ) = ((m a : ℤ) : ℂ)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (hm.2 a)]`. Rewrite using `[hma]`. Take the linear combination `(-((m a : ℤ) : ℂ) * f.fn 1) * Complex.I_sq`.
+-/
 theorem ev_dTau_Eaa {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) (a : Fin n) (f : MV ε m) :
     ev ε m (dTau ε m (single a a 1) f) = ((m a : ℤ) : ℂ) * ev ε m f := by
   rw [ev_apply, ev_apply, dTau_fn]
@@ -141,21 +199,38 @@ theorem ev_dTau_Eaa {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε
   rw [hma]
   linear_combination (-((m a : ℤ) : ℂ) * f.fn 1) * Complex.I_sq
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem model_op {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) (k : KG ε) :
     (modelKType ε hm).op k = tauC ε m k := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem model_dτ {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) :
     (modelKType ε hm).dτ = dTau ε m := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem model_w {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) : (modelKType ε hm).w = wN ε m := rfl
 
 def uEv (ε : Fin n → Bool) (m : Fin n → ℤ) : MV ε m :=
   (InnerProductSpace.toDual ℂ (MV ε m)).symm (LinearMap.toContinuousLinearMap (ev ε m))
 
+/- English proof (translation)
+Rewrite using `[uEv, InnerProductSpace.toDual_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem inner_uEv {ε : Fin n → Bool} {m : Fin n → ℤ} (f : MV ε m) : ⟪uEv ε m, f⟫_ℂ = ev ε m f := by
   rw [uEv, InnerProductSpace.toDual_symm_apply]
   rfl
 
+/- English proof (translation)
+Use `ext_inner_right ℂ fun f => ?_` and prove the remaining obligations. Establish `hU` using `KType.kUnit (modelKType ε hm) a a rfl (uEv ε m) f`. Simplify using `only [kunits, model_dτ, ContinuousLinearMap.coe_coe] at hU`. Establish `hU' : ⟪dTau ε m (single a a 1) (uEv ε m), f⟫_ℂ = ⟪uEv ε m, dTau ε m (single a a 1) f⟫_ℂ` using `hU`. Rewrite using `[hU', inner_uEv, ev_dTau_Eaa hm, inner_smul_left, inner_uEv]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem uEv_wt {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) (a : Fin n) :
     dTau ε m (single a a 1) (uEv ε m) = (((m a : ℤ) : ℝ) : ℂ) • uEv ε m := by
   refine ext_inner_right ℂ fun f => ?_
@@ -165,6 +240,15 @@ theorem uEv_wt {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) (
   rw [hU', inner_uEv, ev_dTau_Eaa hm, inner_smul_left, inner_uEv]
   simp
 
+/- English proof (translation)
+Establish `key` using `congrArg (fun v : Fin n → ℝ => ∑ i : Fin n, ((i : ℕ) : ℝ) * v i) h`. Establish `hl : ∑ i : Fin n, ((i : ℕ) : ℝ) * (Pi.single b (1 : ℝ) - Pi.single a 1 : Fin n → ℝ) i = (b : ℕ) - (a : ℕ)`. Simplify using `[mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`. Establish `hr : ∑ i : Fin n, ((i : ℕ) : ℝ) * (∑ a', ∑ b', (c a' b' : ℝ) • root a' b' : Fin n → ℝ) i = ∑ a', ∑ b', (c a' b' : ℝ) * (((a' : ℕ) : ℝ) - (b' : ℕ))`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, root, Pi.sub_apply, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply, mul_sub, Finset.sum_sub_distrib, ← Finset.mul_sum]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hl, hr]`. Establish `hneg : ∑ a', ∑ b', (c a' b' : ℝ) * (((a' : ℕ) : ℝ) - (b' : ℕ)) ≤ 0`. Use `Finset.sum_nonpos fun a' _ => Finset.sum_nonpos fun b' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : c a' b' = 0`.
+
+Simplify using `[h0]`. Establish `: ((a' : ℕ) : ℝ) < (b' : ℕ)` using `by exact_mod_cast hc a' b' h0`. Conclude with `mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg _) (by linarith)`. Establish `: ((a : ℕ) : ℝ) < (b : ℕ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem not_cone_neg_root {a b : Fin n} (hab : a < b) (c : Fin n → Fin n → ℕ) (hc : ∀ a' b', c a' b' ≠ 0 → a' < b')
     (h : Pi.single b (1 : ℝ) - Pi.single a 1 = ∑ a', ∑ b', (c a' b' : ℝ) • root a' b') : False := by
   have key := congrArg (fun v : Fin n → ℝ => ∑ i : Fin n, ((i : ℕ) : ℝ) * v i) h
@@ -189,6 +273,23 @@ theorem not_cone_neg_root {a b : Fin n} (hab : a < b) (c : Fin n → Fin n → �
   have : ((a : ℕ) : ℝ) < (b : ℕ) := by exact_mod_cast hab
   linarith
 
+/- English proof (translation)
+Use `set T := modelKType ε hm`. Set `u : T.V` to `uEv ε m`. Establish `hwt0 : ∀ c, T.dτ (single c c 1) u = (((m c : ℤ) : ℝ) : ℂ) • u` using `fun c => uEv_wt hm c`. Express the relevant statement in the definitionally equal form `T.dτ (single a b 1) u = 0`. Assume the negation of the conclusion as `hv`.
+
+Establish `hR` using `KType.kRel T`. Use `set μ : Fin n → ℝ := fun i => ((m i : ℤ) : ℝ) + ((Pi.single a (1 : ℝ) - Pi.single b (1 : ℝ) : Fin n → ℝ) i) with hμ`. Establish `hab' : a ≠ b` using `hab.ne`. Establish `hwt : ∀ c, T.dτ (single c c 1) (T.dτ (single a b 1) u) = ((μ c : ℝ) : ℂ) • T.dτ (single a b 1) u`. Introduce `c`.
+
+Establish `h` using `congrArg (fun F : Module.End ℂ T.V => F u) (hR c c a b rfl he)`. Simplify using `only [kunits, LinearMap.sub_apply, Module.End.mul_apply, ContinuousLinearMap.coe_coe] at h`. Rewrite `h` using `[hwt0 c, map_smul]`. Establish `h'` using `sub_eq_iff_eq_add.mp h`. Use `h'.trans ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hca : c = a`. Establish `hcb : c ≠ b` using `hca ▸ hab'`. Rewrite using `[if_pos hca, if_neg (Ne.symm hcb)]`. Substitute `hca` using the available equality. Simplify using `only [hμ, Pi.sub_apply, Pi.single_apply, if_true, if_neg hcb, ContinuousLinearMap.coe_coe, LinearMap.zero_apply, sub_zero]`.
+
+Use `push_cast`. Use `module`. Distinguish the cases in `hcb : c = b`. Rewrite using `[if_neg hca, if_pos hcb.symm]`. Substitute `hcb` using the available equality.
+
+Simplify using `only [hμ, Pi.sub_apply, Pi.single_apply, if_true, if_neg hca, ContinuousLinearMap.coe_coe, LinearMap.zero_apply, zero_sub]`. Use `push_cast`. Use `module`. Rewrite using `[if_neg hca, if_neg (Ne.symm hcb)]`. Simplify using `only [hμ, Pi.sub_apply, Pi.single_apply, if_neg hca, if_neg hcb, LinearMap.zero_apply, sub_zero]`.
+
+Use `push_cast`. Use `module`. Take `⟨c, hc, hΛ⟩` from `HW.KType.weight_le T hv hwt`. Apply `not_cone_neg_root hab c (fun a' b' h => (hc a' b' h).1)` to reduce the goal to its premises. Rewrite using `[← hΛ]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[hμ]`.
+-/
 theorem uEv_hw {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) {a b : Fin n} (hab : a < b) (he : ε a = ε b) :
     dTau ε m (single a b 1) (uEv ε m) = 0 := by
   set T := modelKType ε hm
@@ -231,9 +332,21 @@ theorem uEv_hw {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) {
   funext i
   simp [hμ]
 
+/- English proof (translation)
+Rewrite using `[ev_apply]`. Conclude with `highest_weight_fn_K_one ε m`.
+-/
 theorem evaluation_longest_weyl_one {ε : Fin n → Bool} {m : Fin n → ℤ} : ev ε m (w0 ε m) = 1 := by
   rw [ev_apply]; exact highest_weight_fn_K_one ε m
 
+/- English proof (translation)
+Establish `hne : uEv ε m ≠ 0`. Introduce `h`. Use `inner_uEv (w0 ε m)` as an intermediate fact. Rewrite `this` using `[h, inner_zero_left, evaluation_longest_weyl_one]`. Conclude with `zero_ne_one this`.
+
+Take `⟨-, c, hc⟩` from `HW.KType.hw_unique (modelKType ε hm) hne ⟨fun a => by rw [kunits, model_dτ]; exact uEv_wt hm a, fun a b hab he => by`. Rewrite using `[kunits, model_dτ]`. Conclude with `uEv_hw hm hab he⟩`. Rewrite `hc` using `[model_w]`. Establish `hc' : uEv ε m = c • wN ε m` using `hc`.
+
+Establish `hcv : starRingEnd ℂ c = ev ε m (wN ε m)`. Rewrite using `[← inner_uEv, hc', inner_smul_left, inner_self_eq_norm_sq_to_K, norm_wN]`. Simplify using the standard rewrite rules. Establish `hev : ev ε m (wN ε m) = ((‖w0 ε m‖⁻¹ : ℝ) : ℂ)`. Rewrite using `[wN, map_smul, evaluation_longest_weyl_one, smul_eq_mul, mul_one]`.
+
+Establish `: c = ((‖w0 ε m‖⁻¹ : ℝ) : ℂ)`. Establish `h2` using `congrArg (starRingEnd ℂ) hcv`. Rewrite `h2` using `[Complex.conj_conj, hev, Complex.conj_ofReal]`. Conclude with `h2`. Rewrite using `[hc', this]`.
+-/
 theorem uEv_eq {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) :
     uEv ε m = ((‖w0 ε m‖⁻¹ : ℝ) : ℂ) • wN ε m := by
   have hne : uEv ε m ≠ 0 := by
@@ -256,6 +369,13 @@ theorem uEv_eq {ε : Fin n → Bool} {m : Fin n → ℤ} (hm : NonnegDom ε m) :
     exact h2
   rw [hc', this]
 
+/- English proof (translation)
+Introduce `n ε m hm k`. Unfold `PositivityTheory.RgFd.cK`. Rewrite using `[model_op, model_w]`. Use `show ‖⟪wN ε m, tauC ε m k (wN ε m)⟫_ℂ‖ = _`. Establish `hw0 : ‖w0 ε m‖ ≠ 0` using `norm_ne_zero_iff.2 (highest_weight_vector_ne_zero ε m)`.
+
+Establish `h1 : ⟪wN ε m, tauC ε m k (wN ε m)⟫_ℂ = ((‖w0 ε m‖ : ℝ) : ℂ) * ⟪uEv ε m, tauC ε m k (wN ε m)⟫_ℂ`. Rewrite using `[uEv_eq hm, inner_smul_left, Complex.conj_ofReal, ← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ hw0]`. Simplify using the standard rewrite rules. Rewrite using `[h1, inner_uEv, ev_apply, tauC_fn]`. Use `show ‖((‖w0 ε m‖ : ℝ) : ℂ) * (wN ε m).fn (1 * k)‖ = _`.
+
+Rewrite using `[one_mul, wN, MV.fn_smul, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ hw0]`. Simplify using `[w0]`.
+-/
 theorem ckModel : PositivityTheory.RgFd.CkModel := by
   intro n ε m hm k
   unfold PositivityTheory.RgFd.cK

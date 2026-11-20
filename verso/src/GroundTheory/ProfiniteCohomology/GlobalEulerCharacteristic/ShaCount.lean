@@ -25,6 +25,17 @@ variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {t : compactCohomologyRes φ D 3 →+ ZMod n}
   {inv : ∀ v, cohomology (Rep.res (φ v).toMonoidHom D) 2 →+ QZ}
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, hex, hsurj⟩` from `P.nineTerm M hM`. Use `set F := (ptGlobalToLocal φ M 2).hom.toAddMonoidHom`. Use `set Gm := ptLocalDualMap φ D M inv (show 2 + 0 = 2 from rfl)`. Establish `: Finite D` using `finite_of_nonempty_addEquiv P.nonempty_addEquiv`. Establish `hMD : ∀ f : dualRep D M, n • f = 0` using `nsmul_dualRep_eq_zero (nsmul_eq_zero_of_nonempty_addEquiv P.nonempty_addEquiv)`.
+
+Establish `: Finite (dualRep D M)` using `finite_dualRep`. Establish `: Finite (cohomology (dualRep D M) 0)` using `P.finite_cohomology (dualRep D M) hMD 0`. Establish `h1 : Nat.card (cohomology M 2) = Nat.card F.range * Nat.card (ptSha φ M 2)`. Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup (ptSha φ M 2)]`. Use `congr 1`.
+
+Conclude with `Nat.card_congr (QuotientAddGroup.quotientKerEquivRange F).toEquiv`. Establish `hker : Gm.ker = F.range`. Use extensionality with `y`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mem_range]`. Conclude with `hex y`.
+
+Establish `h2 : Nat.card (∀ v, cohomology (Rep.res (φ v).toMonoidHom M) 2) = Nat.card (cohomology (dualRep D M) 0 →+ QZ) * Nat.card F.range`. Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup Gm.ker, ← hker]`. Use `congr 1`. Conclude with `Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective Gm hsurj).toEquiv`. Rewrite `h2` using `[Nat.card_pi, QZ.card_hom]`.
+
+Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem natCard_cohomology_two_mul_of_poitouTate (P : PoitouTateDualityHypotheses φ D t inv)
     (M : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep M] [Finite M] (hM : ∀ m : M, n • m = 0) :
     Nat.card (cohomology M 2) * Nat.card (cohomology (dualRep D M) 0) =
@@ -82,6 +93,11 @@ instance isDiscreteRep_res_gsFinFamily_dualRep (v : S) :
 omit [Fintype S] in
 include hS hM in
 
+/- English proof (translation)
+Establish `hD` using `nonempty_addEquiv_gsRoots_of_mem S hS`. Establish `: Finite (gsRoots S N)` using `Finite.of_equiv _ hD.some.symm.toEquiv`. Establish `: Finite (dualRep (gsRoots S N) M)` using `finite_dualRep`. Establish `: Finite (cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (dualRep (gsRoots S N) M)) 0)`. Establish `: Finite (Rep.res (gsFinFamily S ιs v).toMonoidHom (dualRep (gsRoots S N) M)).ρ.invariants` using `Subtype.finite (α := dualRep (gsRoots S N) M)`.
+
+Conclude with `Finite.of_equiv _ (H0Iso (Rep.res (gsFinFamily S ιs v).toMonoidHom (dualRep (gsRoots S N) M))).toLinearEquiv.toEquiv.symm`. Rewrite using `[Nat.card_congr (Equiv.ofBijective _ (bijective_gsLocalPairing S ιs N hD M hM v (show 2 + 0 = 2 from rfl))), QZ.card_hom]`.
+-/
 theorem natCard_gs_local_cohomology_two (v : S) :
     Nat.card (cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom M) 2) =
       Nat.card (cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (dualRep (gsRoots S N) M)) 0) := by
@@ -98,6 +114,9 @@ theorem natCard_gs_local_cohomology_two (v : S) :
 
 include H hM in
 
+/- English proof (translation)
+Rewrite using `[natCard_cohomology_two_mul_of_poitouTate (gsPoitouTateDualityHypotheses S ιs hS hK H) M hM]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v _ => natCard_gs_local_cohomology_two S ιs hS M hM v`.
+-/
 theorem natCard_gs_cohomology_two_mul :
     Nat.card (cohomology M 2) * Nat.card (cohomology (dualRep (gsRoots S N) M) 0) =
       Nat.card (ptSha (gsFinFamily S ιs) M 2) *

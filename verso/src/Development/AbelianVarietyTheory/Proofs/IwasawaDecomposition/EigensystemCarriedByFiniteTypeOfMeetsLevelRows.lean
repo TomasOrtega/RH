@@ -19,6 +19,19 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.LabCarry
 
+/- English proof (translation)
+Use `set S : H →ₗ[ℂ] H := T - b • LinearMap.id with hS`. Establish `hSy : S y = 0` using `by simp [hS, hy]`. Establish `hSadj : LinearMap.adjoint S = LinearMap.adjoint T - (starRingEnd ℂ b) • LinearMap.id`. Rewrite using `[hS, map_sub, LinearEquiv.map_smulₛₗ, LinearMap.adjoint_id]`. Establish `hSc : Commute S (LinearMap.adjoint S)`.
+
+Rewrite using `[hSadj, hS]`. Establish `h1 : Commute T (starRingEnd ℂ b • (LinearMap.id : H →ₗ[ℂ] H))` using `(Commute.one_right T).smul_right _`. Establish `h2 : Commute (b • (LinearMap.id : H →ₗ[ℂ] H)) (LinearMap.adjoint T)` using `(Commute.one_left _).smul_left _`. Establish `h3 : Commute (b • (LinearMap.id : H →ₗ[ℂ] H)) (starRingEnd ℂ b • (LinearMap.id : H →ₗ[ℂ] H))` using `((Commute.one_left _).smul_left _).smul_right _`. Conclude with `(hT.sub_right h1).sub_left (h2.sub_right h3)`.
+
+Establish `hSa : LinearMap.adjoint S y = 0`. Establish `h0 : ⟪LinearMap.adjoint S y, LinearMap.adjoint S y⟫_ℂ = 0`. Rewrite using `[LinearMap.adjoint_inner_left]`. Establish `: S (LinearMap.adjoint S y) = LinearMap.adjoint S (S y)`. Use `congrArg (fun f : H →ₗ[ℂ] H => f y) hSc.eq` as an intermediate fact.
+
+Simplify `this` using `[Module.End.mul_apply]`. Rewrite using `[this, hSy, map_zero, inner_zero_right]`. Conclude with `inner_self_eq_zero.1 h0`. Establish `hTa : LinearMap.adjoint T y = (starRingEnd ℂ b) • y`. Use `hSa` as an intermediate fact.
+
+Rewrite `this` using `[hSadj, LinearMap.sub_apply, sub_eq_zero]`. Simplify using `using this`. Establish `key : ⟪T x, y⟫_ℂ = ⟪x, LinearMap.adjoint T y⟫_ℂ` using `(LinearMap.adjoint_inner_right T x y).symm`. Rewrite `key` using `[hx, hTa, inner_smul_left, inner_smul_right]`. Establish `hne : starRingEnd ℂ a ≠ starRingEnd ℂ b` using `fun h => hab ((starRingEnd ℂ).injective h)`.
+
+Establish `: (starRingEnd ℂ a - starRingEnd ℂ b) * ⟪x, y⟫_ℂ = 0` using `by rw [sub_mul, key, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`.
+-/
 theorem inner_eq_zero_of_normal {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
     (T : H →ₗ[ℂ] H) (hT : Commute T (LinearMap.adjoint T)) {a b : ℂ} (hab : a ≠ b) {x y : H}
     (hx : T x = a • x) (hy : T y = b • y) : ⟪x, y⟫_ℂ = 0 := by
@@ -55,6 +68,9 @@ end GlobalTheory.Mem.R3.LabCarry
 
 namespace GlobalTheory.Mem.R3.LabCarry
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx => ?_) (iSup_le fun p x hx => Submodule.mem_iSup_of_mem (p := V) p hx)` and prove the remaining obligations. Conclude with `Submodule.iSup_induction V (motive := fun y => Tw.mk s y ∈ ⨆ p, Tw.sub s (V p)) hx (fun p y hy => Submodule.mem_iSup_of_mem p hy) (zero_mem _) fun y z hy hz => add_mem hy hz`.
+-/
 theorem twSub_iSup {E I : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (s : Bool) (V : I → Submodule ℂ E) :
     Tw.sub s (⨆ p, V p) = ⨆ p, Tw.sub s (V p) := by
   refine le_antisymm (fun x hx => ?_) (iSup_le fun p x hx => Submodule.mem_iSup_of_mem (p := V) p hx)
@@ -64,6 +80,9 @@ theorem twSub_iSup {E I : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `key : ∀ V W : Submodule ℂ R.HE.H, V = W → (V ≠ ⊥ ∧ V.map (LinearMap.adjoint (R.Th A3.A.μ0)) ≤ Submodule.span ℂ (R.jX A3.A.μ0 '' ((A3.rowI A3.A.μ0).inertTypeEigenspaceSum p.1 : Set (A3.A.fam.R A3.A.μ0).S.Forms))) → (W ≠ ⊥ ∧ W.map (LinearMap.adjoint (R.Th A3.A.μ0)) ≤ Submodule.span …`. Introduce and unpack `V W rfl hV`. Conclude with `hV`. Conclude with `key _ _ heq h`.
+-/
 theorem carries_of_eq (R : RealDat3 D A3 Ks) (p : A3.fam3.base3.Ix) {c c' : Pl D.host.E → List ℤ → ℂ}
     (heq : R.EEc c' = R.EEc c) (h : R.Carries p c') : R.Carries p c := by
   have key : ∀ V W : Submodule ℂ R.HE.H, V = W →
@@ -80,6 +99,27 @@ namespace GlobalTheory.Mem.R3.LabCarry
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hWe hDs hHC hCu D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hHo hHost c b x hx0 hxc hxb`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Take `⟨hcore, hSF, -, -, hEEc, -, -⟩` from `GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak R F hP.char`. Take `⟨h, -, hN, -, hev, hchar⟩` from `GlobalTheory.T.exists_sphericalOperators_rows_normal_eigenspaces R.toRealDat F.lv2 (hcore hHo.aux.ex) (GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCu R.toRealDat) R.SF hSF`.
+
+Establish `heig : ∀ c' (y : R.HE.H), y ∈ R.EEc c' → ∀ P d, GlobalTheory.Hk3.Good R.toRealDat A3.A.μ0 P → GlobalTheory.Hk3.IsLab (Yc D 0) P d → h P (Finsupp.single d 1) y = c' P (dualLab d) • y`. Introduce `c' y hy P d hG hL`. Rewrite `hy` using `[hEEc c']`. Rewrite using `[hev c' P hG (Finsupp.single d 1) y hy]`. Use `congr 1`.
+
+Simplify using `[GlobalTheory.Hk3.evC, Finsupp.sum_single_index, hL]`. Establish `horth : ∀ c', R.EEc c' ≠ R.EEc c → R.EEc c' ≤ (ℂ ∙ x)ᗮ`. Introduce `c' hne y hy`. Establish `hex : ∃ P d, GlobalTheory.Hk3.Good R.toRealDat A3.A.μ0 P ∧ GlobalTheory.Hk3.IsLab (Yc D 0) P d ∧ c' P (dualLab d) ≠ c P (dualLab d)`. Assume the negation of the conclusion as `hall`.
+
+Use `push_neg at hall`. Apply `hne` to reduce the goal to its premises. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+
+Rewrite using `[hEEc c]`. Conclude with `hchar c z fun P d hG hL => by rw [heig c' z hz P d hG hL, hall P d hG hL]`. Introduce `hz`. Rewrite using `[hEEc c']`. Conclude with `hchar c' z fun P d hG hL => by rw [heig c z hz P d hG hL, hall P d hG hL]`.
+
+Take `⟨P, d, hG, hL, hcc⟩` from `hex`. Establish `hT : Commute (h P (Finsupp.single d 1)) (LinearMap.adjoint (h P (Finsupp.single d 1)))`. Rewrite using `[hN.2 P hG]`. Conclude with `hN.1 P P hG hG _ _`. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`.
+
+Use `inner_eq_zero_of_normal _ hT hcc (heig c' y hy P d hG hL) (heig c x hxc P d hG hL)` as an intermediate fact. Rewrite using `[← inner_conj_symm, this, map_zero]`. Establish `hpart : ∀ p, R.EEp3 p ≤ (ℂ ∙ x)ᗮ`. Introduce `p`. Unfold `RealDat3.EEp3`.
+
+Use `iSup₂_le fun c' hc' => horth c' fun heq => hno p ?_` and prove the remaining obligations. Conclude with `carries_of_eq R p heq hc'`. Establish `hxT : (Tw.mk (twAt D.what₂.embLL A3.A.v0) x : Tw (twAt D.what₂.embLL A3.A.v0) R.HE.H) ∈ (R.toCx3 F).EEl b` using `hxb`. Rewrite `hxT` using `[← (hHo.prim.sumE b).2]`. Establish `hxS : x ∈ ⨆ p, R.EEp3 p`.
+
+Establish `h1 : (Tw.mk (twAt D.what₂.embLL A3.A.v0) x : Tw (twAt D.what₂.embLL A3.A.v0) R.HE.H) ∈ Tw.sub (twAt D.what₂.embLL A3.A.v0) (⨆ p, R.EEp3 p)`. Rewrite using `[twSub_iSup]`. Establish `hle : (⨆ p, (R.toCx3 F).EEp p ⊓ (R.toCx3 F).EEl b) ≤ ⨆ p, Tw.sub (twAt D.what₂.embLL A3.A.v0) (R.EEp3 p)` using `iSup_mono fun p => inf_le_left`. Conclude with `hle hxT`. Conclude with `h1`.
+
+Establish `hself : x ∈ (ℂ ∙ x)ᗮ` using `(iSup_le hpart) hxS`. Rewrite `hself` using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Conclude with `hx0 (inner_self_eq_zero.1 hself)`.
+-/
 theorem carried : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ (c : Pl D.host.E → List ℤ → ℂ) (b : Bool) (x : R.HE.H), x ≠ 0 → x ∈ R.EEc c → R.HE.e x ∈ R.toRealDat.EEat (R.toRealDat.levR F.lv2 b) → ∃ p, R.Carries p c := by
   intro hWe hDs hHC hCu D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hHo hHost c b x hx0 hxc hxb
   by_contra hno

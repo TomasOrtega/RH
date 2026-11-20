@@ -16,11 +16,17 @@ def J {Γ C : Type} [Group Γ] [Field C] {n : ℕ} (r : Γ →* GL (Fin n) C) (S
     have h1 := hq x hx
     simp only [ev, smul_eq_mul, map_mul] at *; rw [h1, mul_zero]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qn18.main hChain`.
+-/
 theorem main (hChain : Chain) : OpenCoset :=
   _root_.UpperTheory.Reformulated.B.Qn18.main hChain
 
 end LateralTheory.DivDb.OpenCosetPf
 
 namespace LateralTheory.DivDb
+/- English proof (translation)
+The claim follows from `OpenCosetPf.main hChain`.
+-/
 theorem OpenCoset_of (hChain : Chain) : OpenCoset := OpenCosetPf.main hChain
 end LateralTheory.DivDb

@@ -28,6 +28,17 @@ noncomputable section
 
 namespace GlobalTheory.CsdTwistGal
 
+/- English proof (translation)
+Introduce `E _ _ _ a P hP τ m m' hm hm'`. Establish `h1 : (GlobalTheory.ThetaPull.thetaSub P).Iso P`. Take `⟨T, hT⟩` from `hP`. Use `⟨((GlobalTheory.ThetaPull.pull E a).submoduleMap P.V).symm.trans T, fun o φ => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `((GlobalTheory.ThetaPull.pull E a).submoduleMap P.V).surjective φ`.
+
+Establish `e : (GlobalTheory.ThetaPull.thetaSub P).op o ((GlobalTheory.ThetaPull.pull E a).submoduleMap P.V φ) = (GlobalTheory.ThetaPull.pull E a).submoduleMap P.V (P.op (thetaOp o) φ)` using `Subtype.ext (GlobalTheory.ThetaPull.act_pull o φ.1)`. Rewrite using `[e]`. Conclude with `(congrArg T (((GlobalTheory.ThetaPull.pull E a).submoduleMap P.V).symm_apply_apply _)).trans ((hT o φ).trans (congrArg (P.op o) (congrArg T (((GlobalTheory.ThetaPull.pull E a).submoduleMap P.V).symm_apply_apply φ)).symm))`. Establish `h2 : (GlobalTheory.ThetaPull.thetaSub P).HasInfChar τ (m'.map Neg.neg)`. Use `⟨by rw [Multiset.card_map, hm'.1], ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `u _ ⟨φ, hφ, rfl⟩`. Express the relevant statement in the definitionally equal form `cap τ u (GlobalTheory.ThetaPull.pull E a φ) = _ • GlobalTheory.ThetaPull.pull E a φ`. Rewrite using `[GlobalTheory.ThetaPull.cap_pull, LinearMap.smul_apply, hm'.2 _ φ hφ, smul_smul, map_smul]`. Use `congr 1`. Establish `e : ((m'.map Neg.neg).map (u + ·)) = (m'.map (-u + ·)).map Neg.neg`.
+
+Rewrite using `[Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Multiset.prod_map_neg, Multiset.card_map, hm'.1]`.
+
+Establish `h4` using `(h1.hasInfChar h2).unique hm`. Rewrite using `[← h4, Multiset.map_map]`. Simplify using the standard rewrite rules.
+-/
 theorem infChar_conj_of_isCsd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (P : CuspSub E a), P.IsCsd →
     ∀ (τ : E →+* ℂ) (m m' : Multiset ℂ), P.HasInfChar τ m →
       P.HasInfChar (NumberField.ComplexEmbedding.conjugate τ) m' → m' = m.map Neg.neg := by
@@ -58,6 +69,11 @@ theorem infChar_conj_of_isCsd : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
   rw [← h4, Multiset.map_map]
   simp
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ w B h rc hrc a σ s`. Take `⟨_, _, _, -, H⟩` from `hrc`. Rewrite using `[← H.nu_eq]`. Use `congrArg _ ((GlobalTheory.LocGL.IrrGL.tw_of σ.ρ σ.smooth σ.irred _ (GlobalTheory.CuspRep.ParLaws.isSmoothChar_loc (GlobalTheory.HeckeGal.Model.absPow E s) w)).symm.trans ?_)` and prove the remaining obligations. Unfold `GlobalTheory.LocGL.IrrGL.nu`.
+
+Use `congr 1`. Conclude with `GlobalTheory.HeightCounting.Blocks.loc_of_isAbsPow (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E s) w`.
+-/
 theorem rec_twist_absPow : ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (w : HeightOneSpectrum (𝓞 E)) (B : ValuationSubring Ω) (h : IsPlaceOver B w)
     (rc : GlobalTheory.LocGL.IrrGL (w.adicCompletion E) → GlobalTheory.WeilDeligne.WD h), GlobalTheory.LocLanglands.IsRec h rc →
@@ -75,6 +91,35 @@ theorem rec_twist_absPow : ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMFiel
   congr 1
   exact GlobalTheory.HeightCounting.Blocks.loc_of_isAbsPow (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E s) w
 
+/- English proof (translation)
+Introduce `hG _ _ _ _ hLL E Ω _ _ _ _ _ _ _ l _ ι a ha P hP m hm hnd f J hJ`. Establish `hτ : ∀ σ : E →+* ℂ, ι.toRingHom.comp (ι.symm.toRingHom.comp σ) = σ` using `fun σ => by`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hint : ∀ σ : E →+* ℂ, ∀ z ∈ m σ, ∃ k : ℤ, f - z = k`.
+
+Introduce `σ z hz`. Establish `h1` using `hJ (ι.symm.toRingHom.comp σ)`. Rewrite `h1` using `[hτ]`. Establish `h2 : f - z ∈ (m σ).map (fun z => f - z)` using `Multiset.mem_map_of_mem _ hz`. Rewrite `h2` using `[← h1]`.
+
+Take `⟨k, -, hk⟩` from `Multiset.mem_map.1 h2`. Conclude with `⟨k, hk.symm⟩`. Establish `hfre : f = ((f.re : ℝ) : ℂ)`. Take `⟨τ0⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Take `⟨z, hz⟩ : ∃ z, z ∈ m τ0` from `Multiset.card_pos_iff_exists_mem.1 (by rw [(hm τ0).1]; omega)`.
+
+Establish `hc` using `infChar_conj_of_isCsd E a P hP τ0 _ _ (hm τ0) (hm _)`. Establish `hz' : -z ∈ m (NumberField.ComplexEmbedding.conjugate τ0)`. Rewrite using `[hc]`. Conclude with `Multiset.mem_map_of_mem _ hz`. Take `⟨k1, hk1⟩` from `hint _ z hz`.
+
+Take `⟨k2, hk2⟩` from `hint _ _ hz'`. Establish `e1` using `congrArg Complex.im hk1`. Establish `e2` using `congrArg Complex.im hk2`. Simplify using `only [Complex.sub_im, Complex.intCast_im, Complex.neg_im] at e1 e2`. Apply `Complex.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Simplify using `only [Complex.ofReal_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set s : ℝ := ((a : ℝ) - 1) / 2 - f.re with hs`. Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow E s`.
+
+Establish `hexpo : ∀ τ, expo (GlobalTheory.HeckeGal.Model.absPow E s) τ = s` using `(GlobalTheory.CuspRep.InfType.expo_of_infType E _).2.1 s hν`. Establish `hm' : ∀ τ, (P.twist (GlobalTheory.HeckeGal.Model.absPow E s)).HasInfChar τ ((m τ).map (· + (s : ℂ)))` using `fun τ => by`. Use `(hm τ).twist (GlobalTheory.HeckeGal.Model.absPow E s)` as an intermediate fact. Rewrite `this` using `[hexpo]`. Then use the resulting hypothesis. Establish `hinf' : ∀ τ, (CG.mk (P.twist (GlobalTheory.HeckeGal.Model.absPow E s))).infChar τ = (m τ).map (· + (s : ℂ))` using `fun τ => CG.HasInfChar.infChar_eq (hm' τ)`.
+
+Establish `hr : (CG.mk (P.twist (GlobalTheory.HeckeGal.Model.absPow E s))).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Rewrite using `[hinf' τ]`. Use `⟨(hnd τ).map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨k, hk⟩` from `hint τ y hy`.
+
+Use `⟨-k, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Use `push_cast`. Take the linear combination `(-1 : ℂ) * hk + hfre`. Take `⟨r, wt, HT, H⟩` from `hG E Ω l ι a ha _ _ hr (GlobalTheory.HeightCounting.Blocks.isPolarized_twist_absPow hP s)`.
+
+Establish `hHT : ∀ τ, HT τ = J τ` using `fun τ => by`. Apply `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective` to reduce the goal to its premises. Rewrite using `[H.weights τ, hinf', hJ τ, Multiset.map_map]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[hs]`. Use `push_cast`. Take the linear combination `(-1 : ℂ) * hfre`. Use `⟨r, H.cont, fun hsph => ⟨H.cont, fun PP AI T w A h O _ _ _ Bw hj => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hw : ((l : ℕ) : 𝓞 E) ∈ w.asIdeal` using `hj.mem_placesOver h`.
+
+Take `⟨σ, hσ, hsp⟩` from `hsph w hw`. Establish `HA` using `H.above PP AI T w A h O Bw hj`. Use `⟨HA.crys _ (hσ.twist _) (GlobalTheory.T.isSpherical_twist_absDetPow_GL E a w σ s hsp), fun τ LL' τ' hτ' => ?_⟩` and prove the remaining obligations. Rewrite using `[← hHT]`. Conclude with `HA.jumps τ LL' τ' hτ'`.
+
+Introduce `w _ hl σ hσ S hS B g hB hg`. Take `⟨rc, hrc⟩` from `(hLL.1 E Ω B w hB).exists`. Establish `e1` using `H.wdOf_eq hl hrc (hσ.twist (GlobalTheory.HeckeGal.Model.absPow E s))`. Rewrite `e1` using `[rec_twist_absPow E Ω w B hB rc hrc a σ s, GlobalTheory.WeilDeligne.WD.lpTw_add]`. Rewrite using `[GlobalTheory.T.local_langlands_galois_compat E Ω l ι a r H.cont w hl B hB rc hrc σ S hS _ e1 g hg]`.
+
+Establish `e2 : ((-(s + (1 - (a : ℝ)) / 2) : ℝ) : ℂ) = f`. Rewrite using `[hfre, hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+-/
 theorem exists_galRep_csd_twist : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal → GlobalTheory.Published.HeckeLAdicCharacter →
   GlobalTheory.Published.HeckeLAdicCharacterAbove → GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.BhattScholzeCrystallineLattices → GlobalTheory.Published.LocalLanglandsGL →
   ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω],

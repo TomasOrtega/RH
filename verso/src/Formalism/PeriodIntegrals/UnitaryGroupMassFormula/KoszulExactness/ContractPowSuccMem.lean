@@ -11,6 +11,15 @@ section General
 
 variable {R : Type u} [CommRing R] {M : Type v} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `x hx`. Rewrite `hx` using `[pow_zero, Submodule.mem_one]`.
+
+Take `⟨y, rfl⟩` from `hx`. Conclude with `CliffordAlgebra.contractLeft_algebraMap _ f y`. Consider the case `succ j ih`. Introduce `x hx`. Rewrite `hx` using `[pow_succ']`.
+
+Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Take `⟨m, hm, rfl⟩` from `ha`. Rewrite using `[CliffordAlgebra.contractLeft_ι_mul, hf m hm, ih b hb, zero_smul, mul_zero, sub_zero]`. Introduce `a b ha hb`.
+
+Rewrite using `[map_add, ha, hb, add_zero]`.
+-/
 theorem contract_pow_eq_zero (N : Submodule R M) (f : Module.Dual R M) (hf : ∀ m ∈ N, f m = 0) :
     ∀ (j : ℕ) (x : ExteriorAlgebra R M), x ∈ (N.map (ExteriorAlgebra.ι R)) ^ j →
       CliffordAlgebra.contractLeft f x = 0 := by
@@ -37,12 +46,18 @@ section Koszul
 
 variable {R : Type u} [CommRing R] {D : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression.
+-/
 theorem Li_eq_map (R : Type u) [CommRing R] (D : ℕ) (i : ℕ) :
     Li R D i = (Submodule.span R ((fun k : Fin D => (Pi.single k (1 : R) : Fin D → R)) ''
       {k : Fin D | (k : ℕ) < i})).map (ExteriorAlgebra.ι R) := by
   rw [Submodule.map_span, Set.image_image]
   rfl
 
+/- English proof (translation)
+Simplify using `[form, Pi.single_apply]`.
+-/
 theorem form_single (s : Fin D → R) (k : Fin D) : form s (Pi.single k 1) = s k := by
   simp [form, Pi.single_apply]
 

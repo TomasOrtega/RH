@@ -8,6 +8,21 @@ open Formalism.IndefR.DatumF MeasureTheory GlobalTheory.FinWeil
 
 namespace GlobalTheory.FinLatF
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ _ hξ hc Λ w lam Om h f u`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => GlobalTheory.AdelicU.cm_conj_conj hB.cm x`. Establish `H` using `isHeis_opFF hσ hS hT hξ hc h.hw`. Establish `hfix : ∀ p : GAF σ JS × GAF σ JT, (∀ a ∈ latF F E nS nT Λ, rhoFF σ JS JT p a ∈ latF F E nS nT Λ) → ∀ e, Fixes (opFF hc w) (latF F E nS nT Λ) e → Om p e = e`. Introduce `p hp e he`.
+
+Rewrite using `[h.vac p e he]`. Conclude with `GlobalTheory.FinWeilO.normOp_of_le H lam (h.sd' p) (by rintro _ ⟨a, ha, rfl⟩; exact hp a ha) he`. Establish `hev : ∀ f : GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ, ∀ᶠ p in 𝓝 (1 : GAF σ JS × GAF σ JT), Om p f = f`. Introduce `f`. Establish `hf : f ∈ Submodule.span ℂ {m | ∃ x e, Fixes (opFF hc w) (latF F E nS nT Λ) e ∧ m = opFF hc w x e}`.
+
+Rewrite using `[h.span]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem _ hm`. Take `⟨x, e, he, rfl⟩` from `hm`.
+
+Take `⟨N, hN, hNl⟩` from `h.lev (w • x)`. Use `filter_upwards [h.near, h.near' x N hN] with p hp hp'`. Take `⟨l, hl, hl'⟩` from `hp'`. Establish `e2 : gamFF σ JS JT ξ₀ B.ψ (w • x) (N • l) = 1`. Rewrite using `[gamFF, ← symplOHF_add_self, AddChar.map_add_eq_mul, XFF.coe_nsmul, hNl l hl, one_mul]`.
+
+Establish `e4` using `H.comp x (N • l) e`. Rewrite `e4` using `[he _ (nsmul_mem hl N), e2, one_smul]`. Rewrite using `[h.op, hfix p hp e he, hl', ← e4]`. Consider the case `zero => exact Filter.Eventually.of_forall fun p => map_zero _`. Consider the case `add u v _ _ hu hv => filter_upwards [hu, hv] with p h3 h4 using by rw [map_add, h3, h4]`.
+
+Consider the case `smul c u _ hu => filter_upwards [hu] with p h3 using by rw [map_smul, h3]`. Use `haveI : IsTopologicalGroup (GAF σ JS) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : IsTopologicalGroup (GAF σ JT) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `continuous_iff_continuousAt.2 fun q => ?_` and prove the remaining obligations. Establish `h1 : Filter.Tendsto (fun p => q⁻¹ * p) (𝓝 q) (𝓝 1)` using `(continuous_const.mul continuous_id).tendsto' q 1 (inv_mul_cancel q)`.
+
+Use `continuousAt_const.congr (f := fun _ => (Om q f : WOF F E nS nT → ℂ) u) ?_` and prove the remaining obligations. Use `filter_upwards [h1.eventually (hev f)] with p hp`. Use `conv_rhs => rw [← mul_inv_cancel_left q p, map_mul, Module.End.mul_apply, hp]`.
+-/
 theorem latRepF_cont : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

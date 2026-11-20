@@ -6,6 +6,27 @@ open TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p O A _ _ _ _ d x E₂ μ hx hE hμ i`. Set `φ : A ⊗[O] A →ₐ[O] O` to `Algebra.TensorProduct.lift (Bialgebra.counitAlgHom O A) (Bialgebra.counitAlgHom O A) (fun _ _ => Commute.all _ _)`. Establish `hφ : ∀ a b : A, φ (a ⊗ₜ[O] b) = Coalgebra.counit (R` using `O) a * Coalgebra.counit (R := O) b := by`. Introduce `a b`. Simplify using `[φ, Algebra.TensorProduct.lift_tmul, Bialgebra.counitAlgHom_apply]`.
+
+Establish `hφc : ∀ a : A, φ (Coalgebra.comul (R` using `O) a) = Coalgebra.counit (R := O) a := by`. Introduce `a`. Establish `hL : (φ.toLinearMap : A ⊗[O] A →ₗ[O] O) = (LinearMap.mul' O O) ∘ₗ (LinearMap.lTensor O (Coalgebra.counit (R` using `O) (A := A))) ∘ₗ (LinearMap.rTensor A (Coalgebra.counit (R := O) (A := A))) := by`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+
+Simplify using `[hφ]`. Use `LinearMap.congr_fun hL (Coalgebra.comul (R := O) a)` as an intermediate fact. Simplify using `only [AlgHom.toLinearMap_apply, LinearMap.comp_apply, Coalgebra.rTensor_counit_comul, LinearMap.lTensor_tmul, LinearMap.mul'_apply, one_mul] at this`. Conclude with `this`. Set `c : MvPowerSeries (Fin d ⊕ Fin d) O →ₐ[O] O` to `{ (constantCoeff : MvPowerSeries (Fin d ⊕ Fin d) O →+* O) with commutes' := fun r => by first`.
+
+Consider the case `exact constantCoeff_C r`. Consider the case `(rw [MvPowerSeries.algebraMap_apply]; simp)`. Consider the case `(show constantCoeff (C r) = r; simp)`. Consider the case `simp [MvPowerSeries.algebraMap_apply'] }`. Establish `hc : ∀ f, c f = constantCoeff f` using `fun _ => rfl`.
+
+Establish `hnil : ∀ j : Fin d ⊕ Fin d, ∃ N : ℕ, (p : O) ∣ (fun _ => (0 : O)) j ^ N` using `fun _ => ⟨1, by simp⟩`. Take `⟨⟨E, _, huniq⟩, _⟩` from `GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p O O (Fin d ⊕ Fin d) (fun _ => (0 : O)) hnil`. Establish `h1 : IsEval p (fun _ => (0 : O)) (φ.comp E₂)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+
+Rewrite using `[AlgHom.comp_apply, hE.1 j]`. Consider the cases of `j with`. Consider the case `inl k => simp [hφ, hx]`. Consider the case `inr k => simp [hφ, hx]`. Introduce `m`.
+
+Take `⟨N, hN⟩` from `hE.2 m`. Use `⟨N, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hN f hf`. Use `⟨φ a, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, ha, map_mul, map_pow, map_natCast]`.
+
+Establish `h2 : IsEval p (fun _ => (0 : O)) c`. Use `⟨fun j => by simp [hc], fun m => ⟨1, fun f hf => ?_⟩⟩` and prove the remaining obligations. Establish `: constantCoeff f = 0`. Use `hf 0 (by simp)` as an intermediate fact. Simplify `this` using `[coeff_zero_eq_constantCoeff_apply]`.
+
+Rewrite using `[hc, this]`. Conclude with `dvd_zero _`. Establish `e1` using `huniq _ h1`. Establish `e2` using `huniq _ h2`. Use `congrArg (fun F : MvPowerSeries (Fin d ⊕ Fin d) O →ₐ[O] O => F (μ i)) (e1.trans e2.symm)` as an intermediate fact.
+
+Simplify using `only [AlgHom.comp_apply, hμ, hφc, hx, hc] at this`. Conclude with `this.symm`.
+-/
 theorem constantCoeff_eq_zero_of_eval_eq_comul : ∀ (p : ℕ) (O A : Type) [CommRing O] [CommRing A] [Bialgebra O A] [IsAdicComplete (Ideal.span {(p : O)}) O] {d : ℕ} (x : Fin d → A) (E₂ : MvPowerSeries (Fin d ⊕ Fin d) O →ₐ[O] A ⊗[O] A) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O), (∀ i, Coalgebra.counit (R := O) (x i) = 0) → IsEval p (Sum.elim (fun i => x i ⊗ₜ[O] (1 : A)) fun i => (1 : A) ⊗ₜ[O] x i) E₂ → (∀ i, E₂ (μ i) = Coalgebra.comul (R := O) (x i)) → ∀ i, constantCoeff (μ i) = 0 := by
   intro p O A _ _ _ _ d x E₂ μ hx hE hμ i
   let φ : A ⊗[O] A →ₐ[O] O := Algebra.TensorProduct.lift (Bialgebra.counitAlgHom O A)

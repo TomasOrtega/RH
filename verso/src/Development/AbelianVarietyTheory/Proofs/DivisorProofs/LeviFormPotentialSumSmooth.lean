@@ -19,6 +19,13 @@ section Values
 
 variable {F : Type} [Field F] {Y : Var F} {σ : F →+* ℂ}
 
+/- English proof (translation)
+Establish `hpow : ∀ m : ℕ, ratVal (f ^ m) y = ratVal f y ^ m`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp [Base.ratVal_one]`. Consider the case `succ m ih => rw [pow_succ, ratVal_mul (GlobalTheory.CombUnit.unitAt_pow h m).regAt h.regAt, ih, pow_succ]`.
+
+Establish `hinv : ∀ g : Y.Fn, UnitAt (under y) g → ratVal g⁻¹ y = (ratVal g y)⁻¹`. Introduce `g hg`. Establish `e` using `ratVal_mul (y := y) hg.regAt hg.inv.regAt`. Rewrite `e` using `[mul_inv_cancel₀ hg.ne_zero, Base.ratVal_one]`. Conclude with `eq_inv_of_mul_eq_one_right e.symm`.
+
+Take `⟨m, rfl | rfl⟩` from `n.eq_nat_or_neg`. Rewrite using `[zpow_natCast, zpow_natCast, hpow]`. Rewrite using `[zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, hinv _ (GlobalTheory.CombUnit.unitAt_pow h m), hpow]`.
+-/
 theorem ratVal_zpow {y : Pts Y σ} {f : Y.Fn} (h : UnitAt (under y) f) (n : ℤ) :
     ratVal (f ^ n) y = ratVal f y ^ n := by
   have hpow : ∀ m : ℕ, ratVal (f ^ m) y = ratVal f y ^ m := by
@@ -35,6 +42,9 @@ theorem ratVal_zpow {y : Pts Y σ} {f : Y.Fn} (h : UnitAt (under y) f) (n : ℤ)
   · rw [zpow_natCast, zpow_natCast, hpow]
   · rw [zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, hinv _ (GlobalTheory.CombUnit.unitAt_pow h m), hpow]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Base.ratVal_one]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, ratVal_mul (h a (Finset.mem_insert_self a s)).regAt (GlobalTheory.CombUnit.unitAt_prod s u fun i hi => h i (Finset.mem_insert_of_mem hi)).regAt, ih fun i hi => h i (Finset.mem_insert_of_mem hi)]`.
+-/
 theorem ratVal_prod {ι : Type} (s : Finset ι) {y : Pts Y σ} (u : ι → Y.Fn)
     (h : ∀ i ∈ s, UnitAt (under y) (u i)) : ratVal (∏ i ∈ s, u i) y = ∏ i ∈ s, ratVal (u i) y := by
   classical
@@ -48,6 +58,11 @@ theorem ratVal_prod {ι : Type} (s : Finset ι) {y : Pts Y σ} (u : ι → Y.Fn)
 
 end Values
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [levi]`. Consider the case `insert a s ha ih`. Establish `hs : ContDiffAt ℝ 2 (fun v => ∑ i ∈ s, c i * ψ i v) y` using `ContDiffAt.sum fun i hi => contDiffAt_const.mul (hψ i (Finset.mem_insert_of_mem hi))`. Establish `e : (fun v => ∑ i ∈ insert a s, c i * ψ i v) = fun v => (∑ i ∈ s, c i * ψ i v) + c a * ψ a v`.
+
+Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_insert ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, levi_add_smul (c a) hs (hψ a (Finset.mem_insert_self a s)), ih fun i hi => hψ i (Finset.mem_insert_of_mem hi), Finset.sum_insert ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_sum_mul {ι κ : Type} [Fintype κ] (s : Finset ι) (c : ι → ℝ) (ψ : ι → (κ → ℂ) → ℝ)
     {y : κ → ℂ} (hψ : ∀ i ∈ s, ContDiffAt ℝ 2 (ψ i) y) (w : κ → ℂ) :
     levi (fun v => ∑ i ∈ s, c i * ψ i v) y w = ∑ i ∈ s, c i * levi (ψ i) y w := by
@@ -68,6 +83,13 @@ section Norms
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} {σ : F →+* ℂ} {C : CxSt F}
 
+/- English proof (translation)
+Establish `hu : UnitAt (under y) (f * (eqn Δ (under y) : Y.Fn))` using `(Base.isEqn_eqn Δ (under y)).generatesAt_iff.1 hf`. Establish `e : C.pn Y σ Δ m (C.cx Y σ f) y = ‖ratVal (f * (eqn Δ (under y) : Y.Fn)) y‖ ^ 2 * C.pn Y σ Δ m (C.cx Y σ (genAt Δ (under y))) y`. Rewrite using `[← C.pn_mul Y σ Δ m _ _ y hu.regAt (generatesAt_genAt Δ _).regularAt]`. Use `congr 2`. Simplify using `[genAt]`.
+
+Establish `hn : ‖ratVal (f * (eqn Δ (under y) : Y.Fn)) y‖ ≠ 0` using `norm_ne_zero_iff.2 (ratVal_ne_zero hu)`. Unfold `PosAt at hp`. Simplify using `only [lnN]`. Rewrite using `[e, Real.log_mul (pow_ne_zero 2 hn) (ne_of_gt hp), Real.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem neg_lnN_genAt {Δ : Y.Dv} (m : C.Met Y σ Δ) {f : Y.Fn} {y : Pts Y σ}
     (hf : Δ.GeneratesAt (under y) f) (hp : PosAt m y) :
     -lnN m (genAt Δ (under y)) y =
@@ -102,6 +124,25 @@ def relFun (p : M.X a) : ℝ :=
   ∑ i, (k i : ℝ) * (-lnN (m i) (genAt (Δ i) (under (I.pt a p))) (I.pt a p)) +
     Real.log ‖ratVal (∏ i, (genAt (Δ i) (under (I.pt a p)) : Y.Fn) ^ k i) (I.pt a p)‖
 
+/- English proof (translation)
+Use `choose f hf using fun i => hQ i z`. Use `⟨∏ i, f i ^ k i, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hp' : ∀ i, p ∈ (Q i).U z` using `Set.mem_iInter.1 hp`. Use `set y := I.pt a p`. Use `set x := under y`.
+
+Establish `hfi` using `fun i => hf i p (hp' i)`. Establish `hui : ∀ i, UnitAt x (f i * (eqn (Δ i) x : Y.Fn))` using `fun i => (Base.isEqn_eqn (Δ i) x).generatesAt_iff.1 (hfi i).1`. Establish `hE0` using `GlobalTheory.CombUnit.isEqn_sum Finset.univ Δ k (fun i => eqn (Δ i) x) fun i _ => Base.isEqn_eqn (Δ i) x`. Rewrite `hE0` using `[hrel]`. Establish `hEu` using `(CartierDiv.isEqn_zero x).iff_unitAt.1 hE0`.
+
+Use `set E : Y.Fn := ∏ i, (eqn (Δ i) x : Y.Fn) ^ k i with hEdef`. Establish `hE : UnitAt x E`. Simplify `hEu` using `[E, Units.coe_prod, Units.val_zpow_eq_zpow_val]`. Establish `hP : (∏ i, (genAt (Δ i) x : Y.Fn) ^ k i) = E⁻¹`. Simplify using `[E, genAt, Units.val_inv_eq_inv_val, inv_zpow, Finset.prod_inv_distrib]`.
+
+Establish `hEne : E ≠ 0` using `hE.ne_zero`. Establish `hu : (∏ i, f i ^ k i) = E⁻¹ * ∏ i, (f i * (eqn (Δ i) x : Y.Fn)) ^ k i`. Rewrite using `[Finset.prod_congr rfl fun i _ => mul_zpow (f i) _ (k i), Finset.prod_mul_distrib, ← hEdef]`. Clear the denominators using the available nonvanishing facts. Establish `hUall : ∀ i ∈ Finset.univ, UnitAt x ((f i * (eqn (Δ i) x : Y.Fn)) ^ k i)` using `fun i _ => GlobalTheory.CombUnit.unitAt_zpow (hui i) (k i)`.
+
+Establish `hUprod` using `GlobalTheory.CombUnit.unitAt_prod Finset.univ _ hUall`. Use `⟨hu ▸ hE.inv.mul hUprod, ?_⟩` and prove the remaining obligations. Establish `hne : ∀ i, ratVal (f i * (eqn (Δ i) x : Y.Fn)) y ≠ 0` using `fun i => ratVal_ne_zero (hui i)`. Establish `hv : ratVal (∏ i, f i ^ k i) y = ratVal E⁻¹ y * ∏ i, ratVal (f i * (eqn (Δ i) x : Y.Fn)) y ^ k i`. Rewrite using `[hu, ratVal_mul hE.inv.regAt hUprod.regAt, ratVal_prod _ _ hUall]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => ratVal_zpow (hui i) (k i)`. Establish `hEv : ratVal E⁻¹ y ≠ 0` using `ratVal_ne_zero hE.inv`. Establish `hlog : Real.log ‖ratVal (∏ i, f i ^ k i) y‖ = Real.log ‖ratVal E⁻¹ y‖ + ∑ i, (k i : ℝ) * Real.log ‖ratVal (f i * (eqn (Δ i) x : Y.Fn)) y‖`. Rewrite using `[hv, norm_mul, Real.log_mul (norm_ne_zero_iff.2 hEv) (norm_ne_zero_iff.2 (Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (hne i))), norm_prod, Real.log_prod (fun i _ => (norm_ne_zero_iff.2 (zpow_ne_zero _ (hne i))))]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_zpow, Real.log_zpow]`. Rewrite using `[hlog]`. Simplify using `only [relFun]`.
+
+Rewrite using `[hP]`. Establish `hterm : ∀ i, (k i : ℝ) * (-lnN (m i) (genAt (Δ i) x) y) = (k i : ℝ) * (Q i).φ z p + (k i : ℝ) * Real.log ‖ratVal (f i * (eqn (Δ i) x : Y.Fn)) y‖`. Introduce `i`. Rewrite using `[neg_lnN_genAt (m i) (hfi i).1 (hfi i).2.1, (hfi i).2.2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl fun i _ => hterm i, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem relFun_local (Q : ι → LocPot (M.X a)) (hQ : ∀ i, IsPot (I.pt a) (m i) (Q i))
     (hrel : ∑ i, k i • Δ i = 0) (z : M.X a) :
     ∃ u : Y.Fn, ∀ p ∈ ⋂ i, (Q i).U z, UnitAt (under (I.pt a p)) u ∧
@@ -162,6 +203,19 @@ end GlobalTheory.LeviRelation
 
 namespace GlobalTheory.LeviRelation
 
+/- English proof (translation)
+Introduce `F _ _ Y e M I a ι _ Δ m Q k hQ hQ' hrel`. Use `set g := relFun I a Δ m k`. Establish `hloc : ∀ z, ∃ W : Set (M.X a), IsOpen W ∧ z ∈ W ∧ ∃ G : M.X a → ℂ, (M.A a).HoloOn W G ∧ ∀ p ∈ W, g p = ∑ i, (k i : ℝ) * (Q i).φ z p + (G p).re`. Introduce `z`. Take `⟨u, hu⟩` from `relFun_local I a Δ m k Q hQ hrel z`.
+
+Establish `hz : z ∈ ⋂ i, (Q i).U z` using `Set.mem_iInter.2 fun i => (Q i).mem_U z`. Take `⟨W, hWo, hzW, G, hG, hGe⟩` from `log_norm_ratVal_eq_re_holo F Y e M I a u z (hu z hz).1`. Use `⟨W ∩ ⋂ i, (Q i).U z, hWo.inter (isOpen_iInter_of_finite fun i => (Q i).isOpen_U z), ⟨hzW, hz⟩, G, fun j => (hG j).mono fun w hw => ⟨hw.1, hw.2.1⟩, fun p hp => ?_⟩` and prove the remaining obligations. Conclude with `(hu p hp.2).2.trans (by rw [hGe p hp.1])`. Establish `key : ∀ j, ∀ y ∈ ((M.A a).chart j).target, ContDiffAt ℝ ∞ (g ∘ ((M.A a).chart j).symm) y ∧ ∀ w, ∑ i, (k i : ℝ) * leviAt (M.A a) (Q i) j y w = levi (g ∘ ((M.A a).chart j).symm) y w`.
+
+Introduce `j y hy`. Use `set c := (M.A a).chart j`. Use `set z := c.symm y`. Take `⟨W, hWo, hzW, G, hG, hGe⟩` from `hloc z`. Establish `hψ : ∀ i, ContDiffAt ℝ ∞ ((Q i).φ z ∘ c.symm) y` using `fun i => ((hQ' i).1 z j).contDiffAt ((c.isOpen_inter_preimage_symm ((Q i).isOpen_U z)).mem_nhds ⟨hy, (Q i).mem_U z⟩)`.
+
+Establish `hGa : AnalyticAt ℂ (G ∘ c.symm) y` using `hG j y ⟨hy, hzW⟩`. Establish `hR : ContDiffAt ℝ ∞ (fun v => ((G ∘ c.symm) v).re) y`. Use `(Complex.reCLM.contDiff (n := ∞)).contDiffAt.comp y (hGa.restrictScalars (𝕜 := ℝ)).contDiffAt` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `hev : (g ∘ c.symm) =ᶠ[𝓝 y] fun v => (∑ i, (k i : ℝ) * ((Q i).φ z ∘ c.symm) v) + 1 * ((G ∘ c.symm) v).re` using `by filter_upwards [(c.isOpen_inter_preimage_symm hWo).mem_nhds ⟨hy, hzW⟩] with v hv`.
+
+Simplify using `only [Function.comp_apply, one_mul]`. Conclude with `hGe _ hv.2`. Establish `hS : ContDiffAt ℝ ∞ (fun v => ∑ i, (k i : ℝ) * ((Q i).φ z ∘ c.symm) v) y` using `ContDiffAt.sum fun i _ => contDiffAt_const.mul (hψ i)`. Use `⟨(hS.add (contDiffAt_const.mul hR)).congr_of_eventuallyEq hev, fun w => ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ {f : (Fin e → ℂ) → ℝ}, ContDiffAt ℝ ∞ f y → ContDiffAt ℝ 2 f y` using `fun h => h.of_le (WithTop.coe_le_coe.2 le_top)`.
+
+Rewrite using `[levi_congr hev, levi_add_smul 1 (h2 hS) (h2 hR), levi_re_analytic hGa, levi_sum_mul Finset.univ (fun i => (k i : ℝ)) (fun i => (Q i).φ z ∘ c.symm) (fun i _ => h2 (hψ i))]`. Simplify using `only [mul_zero, add_zero]`. Both sides reduce to the same expression. Conclude with `⟨g, fun j y hy => (key j y hy.1).1.contDiffWithinAt, fun j y hy w => (key j y hy).2 w⟩`.
+-/
 theorem levi_sum_eq_levi_of_relation : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e} (I : ManIs M Y) (a : Fin (M.n + 1)) {ι : Type} [Fintype ι] (Δ : ι → Y.Dv) (m : ∀ i, (cxSt F).Met Y (I.ε a) (Δ i)) (Q : ι → LocPot (M.X a)) (k : ι → ℤ), (∀ i, IsPot (I.pt a) (m i) (Q i)) → (∀ i, IsPotential (M.A a) (Q i)) → ∑ i, k i • Δ i = 0 → ∃ g : M.X a → ℝ, (M.A a).Smooth g ∧ ∀ j, ∀ y ∈ ((M.A a).chart j).target, ∀ w, ∑ i, (k i : ℝ) * leviAt (M.A a) (Q i) j y w = levi (g ∘ ((M.A a).chart j).symm) y w := by
   intro F _ _ Y e M I a ι _ Δ m Q k hQ hQ' hrel
   classical

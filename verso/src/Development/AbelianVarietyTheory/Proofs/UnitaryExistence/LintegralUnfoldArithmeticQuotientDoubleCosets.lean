@@ -7,6 +7,51 @@ open scoped ENNReal
 
 namespace GlobalTheory.PeterssonUnfold
 
+/- English proof (translation)
+Introduce `G _ _ _ μ _ _ Γ H Kf _ 𝓕 h𝓕 h0 htop hH hKH ι _ R _ _ _ _ _ _ _ _ ν _ ψ Λ s g P Q dict pt hψ hsurj hK hΓ hcomp hdisc hQ hdict hpt hcov hsep hΛ`. Establish `hD` using `fun k => GlobalTheory.exists_strict_measurable_fundamental_set_of_discrete (R k) (Λ k) (hdisc k)`. Establish `hcount : ∀ k, Countable (Λ k)` using `fun k => (hD k).1`. Use `choose D hDm hDu using fun k => (hD k).2`. Establish `hpt' : ∀ k y, (g k)⁻¹ * y ∈ H → Q (dict y) (pt k (s k * ψ k ((g k)⁻¹ * y)))`.
+
+Introduce `k y hy`. Use `hpt k _ hy` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Establish `hΓQ : ∀ δ ∈ Γ, ∀ y, Q (dict y) (dict (δ * y))` using `fun δ hδ y => (hdict _ _).2 ⟨δ, hδ, 1, Kf.one_mem, by rw [mul_one]⟩`. Establish `inj1 : ∀ k k' y, ∀ δ ∈ Γ, (g k)⁻¹ * y ∈ H → (g k')⁻¹ * (δ * y) ∈ H → Q (pt k (s k * ψ k ((g k)⁻¹ * y))) (pt k' (s k' * ψ k' ((g k')⁻¹ * (δ * y))))` using `fun k k' y δ hδ hy hy' => hQ.trans (hQ.symm (hpt' k y hy)) (hQ.trans (hΓQ δ hδ y) (hpt' k' _ hy'))`.
+
+Establish `inj2 : ∀ k y, ∀ δ ∈ Γ, (g k)⁻¹ * y ∈ H → (g k)⁻¹ * (δ * y) ∈ H → ∃ w ∈ Λ k, s k * ψ k ((g k)⁻¹ * (δ * y)) = w * (s k * ψ k ((g k)⁻¹ * y)) ∧ (w = 1 → δ = 1)`. Introduce `k y δ hδ hy hy'`. Take `⟨w, hw, he⟩` from `(hΛ k _ _).1 (inj1 k k y δ hδ hy hy')`. Use `⟨w, hw, he, fun h1 => hΓ k δ hδ ?_⟩` and prove the remaining obligations. Rewrite `he` using `[h1, one_mul, mul_right_inj, map_mul, map_mul, map_mul, mul_right_inj]`.
+
+Conclude with `mul_eq_right.1 he`. Set `E : ι → Set G` to `fun k => {y | (g k)⁻¹ * y ∈ H ∧ s k * ψ k ((g k)⁻¹ * y) ∈ D k}`. Establish `hms : ∀ k, Measurable fun y : G => s k * ψ k ((g k)⁻¹ * y)` using `fun k => ((hψ k).comp (measurable_const_mul _)).const_mul _`. Establish `hEm : ∀ k, MeasurableSet (E k)` using `fun k => (measurable_const_mul (g k)⁻¹ hH).inter (hms k (hDm k))`. Establish `cover : ∀ x, ∃ γ ∈ Γ, ∃ k, γ * x ∈ E k`.
+
+Introduce `x`. Take `⟨k, t, hq⟩` from `hcov x`. Take `⟨w, hw, -⟩` from `hDu k t`. Take `⟨h, hh, he⟩` from `hsurj k ((s k)⁻¹ * (w * t))`. Establish `h1 : Q (pt k t) (pt k (s k * ψ k h))` using `(hΛ k _ _).2 ⟨w, w.2, by rw [he, mul_inv_cancel_left]⟩`.
+
+Take `⟨γ, hγ, z, hz, hx⟩` from `(hdict x (g k * h)).1 (hQ.trans hq (hQ.trans h1 (hQ.symm (hpt k h hh))))`. Establish `h2 : (g k)⁻¹ * (γ * x) = h * z⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, hx, mul_inv_cancel_right]`. Use `⟨γ, hγ, k, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`.
+
+Conclude with `H.mul_mem hh (H.inv_mem (hKH hz))`. Rewrite using `[h2, map_mul, map_inv, hK k z hz, inv_one, mul_one, he, mul_inv_cancel_left]`. Conclude with `hw`. Establish `uniq : ∀ k k' y, ∀ δ ∈ Γ, y ∈ E k → δ * y ∈ E k' → k = k' ∧ δ = 1`. Introduce `k k' y δ hδ hy hy'`.
+
+Take `rfl : k = k'` from `hsep _ _ _ _ (inj1 k k' y δ hδ hy.1 hy'.1)`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Take `⟨w, hw, he, h1⟩` from `inj2 k y δ hδ hy.1 hy'.1`. Use `h1 ?_` and prove the remaining obligations. Use `(hDu k (s k * ψ k ((g k)⁻¹ * y))).unique (y₁ := ⟨w, hw⟩) (y₂ := 1) (by have := hy'.2; rwa [he] at this) (by simpa using hy.2)` as an intermediate fact.
+
+Conclude with `congrArg Subtype.val this`. Establish `hE : IsFundamentalDomain Γ (⋃ k, E k) μ`. Use `IsFundamentalDomain.mk' (MeasurableSet.iUnion hEm).nullMeasurableSet fun x => ?_` and prove the remaining obligations. Take `⟨γ, hγ, k, hx⟩` from `cover x`. Use `⟨⟨γ, hγ⟩, Set.mem_iUnion.2 ⟨k, hx⟩, fun γ' hγ' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨k', hx'⟩` from `Set.mem_iUnion.1 hγ'`. Use `(uniq k k' (γ * x) (γ' * γ⁻¹) (Γ.mul_mem γ'.2 (Γ.inv_mem hγ)) hx (by rw [mul_assoc, inv_mul_cancel_left]; exact hx')).2` as an intermediate fact. Conclude with `Subtype.ext (mul_inv_eq_one.1 this)`. Establish `hH0 : μ H ≠ 0`. Introduce `hH0`.
+
+Apply `h0` to reduce the goal to its premises. Rewrite using `[h𝓕.measure_eq hE]`. Use `measure_iUnion_null fun k => measure_mono_null (t := (fun y => (g k)⁻¹ * y) ⁻¹' H) (fun y hy => hy.1) ?_` and prove the remaining obligations. Rewrite using `[measure_preimage_mul, hH0]`. Establish `hloc : ∀ k t, ∃ W ∈ 𝓝 t, μ ((H : Set G) ∩ ψ k ⁻¹' W) ≠ ⊤`.
+
+Introduce `k t`. Take `⟨U, hU, hΛU⟩` from `hdisc k`. Take `⟨V₀, hV₀, hVU⟩` from `exists_nhds_split_inv hU`. Take `⟨V, hVV, hVo, hV1⟩` from `mem_nhds_iff.1 hV₀`. Establish `ho : IsOpen {u : R k | s k * u * (s k * t)⁻¹ ∈ V}` using `hVo.preimage (by fun_prop)`.
+
+Use `⟨_, ho.mem_nhds (by simpa using hV1), fun hinf => ?_⟩` and prove the remaining obligations. Rewrite `hinf` using `[← measure_preimage_mul μ (g k)⁻¹]`. Take `⟨x, hx, y, hy, δ, hδ, hxy⟩` from `h𝓕.exists_ne_one_smul_eq (measurable_const_mul (g k)⁻¹ (hH.inter (hψ k ho.measurableSet))).nullMeasurableSet (by rw [hinf]; exact lt_top_iff_ne_top.2 htop)`. Substitute `hxy` using the available equality. Take `⟨w, hw, he, h1⟩` from `inj2 k x δ δ.2 hx.1 hy.1`.
+
+Use `hδ (Subtype.ext (h1 (hΛU w hw ?_)))` and prove the remaining obligations. Establish `h2 : s k * ψ k ((g k)⁻¹ * (δ * x)) * (s k * t)⁻¹ ∈ V` using `hy.2`. Establish `h3 : s k * ψ k ((g k)⁻¹ * x) * (s k * t)⁻¹ ∈ V` using `hx.2`. Rewrite `h2` using `[he, mul_assoc]`. Use `hVU _ (hVV h2) _ (hVV h3)` as an intermediate fact.
+
+Rewrite `this` using `[mul_div_cancel_right]`. Then use the resulting hypothesis. Take `⟨κ, hκ0, hκt, hκ⟩` from `GlobalTheory.map_restrict_subgroup_eq_common_smul_haar G μ H hH hH0 ι R ν ψ hψ hsurj hloc hcomp`. Use `⟨κ, D, hκ0, hκt, fun k => ⟨hcount k, IsFundamentalDomain.mk' (hDm k).nullMeasurableSet (hDu k)⟩, fun Φ hΦ hΦm => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ δ ∈ Γ, ∀ y, Φ (dict (δ * y)) = Φ (dict y)` using `fun δ hδ y => hΦ _ _ (hΓQ δ hδ y)`. Establish `hval : ∀ k y, (g k)⁻¹ * y ∈ H → Φ (dict y) = Φ (pt k (s k * ψ k ((g k)⁻¹ * y)))` using `fun k y hy => (hΦ _ _ (hpt' k y hy)).symm`.
+
+Use `⟨fun B hB => ?_, ?_⟩` and prove the remaining obligations. Establish `: (fun x => Φ (dict x)) ⁻¹' B = ⋃ γ : Γ, ⋃ k, (fun x => (γ : G) * x) ⁻¹' (((fun y => (g k)⁻¹ * y) ⁻¹' H) ∩ (fun y => Φ (pt k (s k * ψ k ((g k)⁻¹ * y)))) ⁻¹' B)`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_iUnion, Set.mem_inter_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Take `⟨γ, hγ, k, hk⟩` from `cover x`. Use `⟨⟨γ, hγ⟩, k, hk.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hval k _ hk.1, hinv γ hγ]`. Conclude with `hx`.
+
+Introduce and unpack `⟨γ, k, hk, hx⟩`. Rewrite `hx` using `[← hval k _ hk, hinv γ γ.2]`. Then use the resulting hypothesis. Rewrite using `[this]`. Conclude with `MeasurableSet.iUnion fun γ => MeasurableSet.iUnion fun k => measurable_const_mul _ ((measurable_const_mul _ hH).inter (((hΦm k).comp (hms k)) hB))`. Rewrite using `[h𝓕.setLIntegral_eq hE _ fun γ x => hinv γ γ.2 x, lintegral_iUnion hEm (fun k k' hk => Set.disjoint_left.2 fun y hy hy' => hk (uniq k k' y 1 Γ.one_mem hy (by rwa [one_mul])).1), tsum_fintype, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Set `F : R k → ℝ≥0∞` to `(D k).indicator fun t => Φ (pt k t)`. Establish `hF : Measurable F` using `(hΦm k).indicator (hDm k)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_indicator (hEm k)]`.
+
+Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : (g k)⁻¹ * x ∈ H`. Rewrite using `[Set.indicator_of_mem (s := (H : Set G)) hx]`. Distinguish the cases in `hx' : s k * ψ k ((g k)⁻¹ * x) ∈ D k`. Rewrite using `[Set.indicator_of_mem (show x ∈ E k from ⟨hx, hx'⟩), hval k x hx]`.
+
+Conclude with `(Set.indicator_of_mem hx' fun t => Φ (pt k t)).symm`. Rewrite using `[Set.indicator_of_notMem (fun h : x ∈ E k => hx' h.2)]`. Conclude with `(Set.indicator_of_notMem hx' fun t => Φ (pt k t)).symm`. Rewrite using `[Set.indicator_of_notMem (fun h : x ∈ E k => hx h.1), Set.indicator_of_notMem (s := (H : Set G)) hx]`. Use `_ = ∫⁻ h in (H : Set G), F (s k * ψ k h) ∂μ := by`.
+
+Rewrite using `[lintegral_mul_left_eq_self ((H : Set G).indicator (fun h => F (s k * ψ k h))) (g k)⁻¹, lintegral_indicator hH]`. Use `_ = ∫⁻ t, F (s k * t) ∂((μ.restrict H).map (ψ k)) := (lintegral_map (f := fun t => F (s k * t)) (hF.comp (measurable_const_mul _)) (hψ k)).symm`. Use `_ = κ * ∫⁻ t in D k, Φ (pt k t) ∂(ν k) := by`. Rewrite using `[hκ, lintegral_smul_measure, lintegral_mul_left_eq_self F, lintegral_indicator (hDm k), smul_eq_mul]`.
+-/
 theorem unfold_lintegral :
     ∀ (G : Type) [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] (Γ H Kf : Subgroup G) [Countable Γ] (𝓕 : Set G), IsFundamentalDomain Γ 𝓕 μ → μ 𝓕 ≠ 0 → μ 𝓕 ≠ ⊤ → MeasurableSet (H : Set G) → Kf ≤ H → ∀ (ι : Type) [Fintype ι] (R : ι → Type) [∀ k, Group (R k)] [∀ k, TopologicalSpace (R k)] [∀ k, IsTopologicalGroup (R k)] [∀ k, T2Space (R k)] [∀ k, LocallyCompactSpace (R k)] [∀ k, SecondCountableTopology (R k)] [∀ k, MeasurableSpace (R k)] [∀ k, BorelSpace (R k)] (ν : ∀ k, Measure (R k)) [∀ k, (ν k).IsHaarMeasure] (ψ : ∀ k, G →* R k) (Λ : ∀ k, Subgroup (R k)) (s : ∀ k, R k) (g : ι → G) (P : Type) (Q : P → P → Prop) (dict : G → P) (pt : ∀ k, R k → P), (∀ k, Measurable (ψ k)) → (∀ k t, ∃ h ∈ H, ψ k h = t) → (∀ k, ∀ z ∈ Kf, ψ k z = 1) → (∀ k, ∀ γ ∈ Γ, ψ k γ = 1 → γ = 1) → (∀ k k', ∃ (e : R k ≃ᵐ R k') (α : R k → R k) (u : R k), MeasurePreserving e (ν k) (ν k') ∧ Measurable α ∧ (∀ x, ψ k' x = e (α (ψ k x))) ∧ ∀ t, α (α t) = u⁻¹ * t * u) → (∀ k, ∃ W ∈ 𝓝 (1 : R k), ∀ w ∈ Λ k, w ∈ W → w = 1) → Equivalence Q → (∀ x x', Q (dict x) (dict x') ↔ ∃ γ ∈ Γ, ∃ z ∈ Kf, x' = γ * x * z) → (∀ k, ∀ h ∈ H, Q (dict (g k * h)) (pt k (s k * ψ k h))) → (∀ x, ∃ k t, Q (dict x) (pt k t)) → (∀ k k' t t', Q (pt k t) (pt k' t') → k = k') → (∀ k t t', Q (pt k t) (pt k t') ↔ ∃ w ∈ Λ k, t' = w * t) → ∃ (κ : ℝ≥0∞) (D : ∀ k, Set (R k)), κ ≠ 0 ∧ κ ≠ ⊤ ∧ (∀ k, Countable (Λ k) ∧ IsFundamentalDomain (Λ k) (D k) (ν k)) ∧ ∀ Φ : P → ℝ≥0∞, (∀ x q, Q (dict x) q → Φ q = Φ (dict x)) → (∀ k, Measurable fun t => Φ (pt k t)) → Measurable (fun x => Φ (dict x)) ∧ ∫⁻ x in 𝓕, Φ (dict x) ∂μ = κ * ∑ k, ∫⁻ t in D k, Φ (pt k t) ∂(ν k) := by
   classical

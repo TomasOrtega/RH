@@ -23,8 +23,20 @@ def gaussianPrimesSmall : Primes (gaussFields ι LL hE) where
   piT := fun _ => gz ι LL hE 84101 84100
 
 set_option maxRecDepth 1000000 in
+/- English proof (translation)
+Evaluate the numerical expressions.
+-/
 theorem prime_fourteen_billion_example : Nat.Prime 14145788201 := by norm_num
 
+/- English proof (translation)
+Establish `n0` using `gz_norm ι LL hE 5 2 29 (by norm_num)`. Establish `n1` using `gz_norm ι LL hE 2 1 5 (by norm_num)`. Establish `nT` using `gz_norm ι LL hE 84101 84100 14145788201 (by norm_num)`. Establish `p0 : Nat.Prime 29` using `by norm_num`. Establish `p1 : Nat.Prime 5` using `by norm_num`.
+
+Establish `hr` using `gauss_rank ι LL hE`. Establish `hf` using `gauss_f ι LL hE`. Conclude with `{ g_prime := Fin.forall_fin_two.2 ⟨p0, p1⟩ piG_Kq := fun _ => gauss_Kq ι LL hE _ piG_norm := Fin.forall_fin_two.2 ⟨n0, n1⟩ piG_cop := Fin.forall_fin_two.2 ⟨gz_cop ι LL hE 5 2 3 (-1) (by norm_num), gz_cop ι LL hE 2 1 (-1) 1 (by norm_num)⟩ vG_card := Fin.forall_fin_two.2 ⟨(card_div …`. Establish `e : (gaussianPrimesSmall ι LL hE).cond * ((gaussianPrimesSmall ι LL hE).g 0 * (gaussianPrimesSmall ι LL hE).g 1) ^ 2 = 84100` using `by show 4 * (29 * 5) ^ 2 = 84100`. Evaluate the numerical expressions.
+
+Rewrite using `[e]`. Use `⟨gz ι LL hE 1 1, ?_⟩` and prove the remaining obligations. Use `show gz ι LL hE 84101 84100 - 1 = _`. Unfold `gz`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `T_ne_g := fun _ => Fin.forall_fin_two.2 ⟨(by norm_num : (14145788201 : ℕ) ≠ 29), (by norm_num : (14145788201 : ℕ) ≠ 5)⟩ }`.
+-/
 theorem gaussianPrimesSmall_ok : (gaussianPrimesSmall ι LL hE).Ok := by
   have n0 := gz_norm ι LL hE 5 2 29 (by norm_num)
   have n1 := gz_norm ι LL hE 2 1 5 (by norm_num)
@@ -62,6 +74,9 @@ theorem gaussianPrimesSmall_ok : (gaussianPrimesSmall ι LL hE).Ok := by
         ring
       T_ne_g := fun _ => Fin.forall_fin_two.2 ⟨(by norm_num : (14145788201 : ℕ) ≠ 29), (by norm_num : (14145788201 : ℕ) ≠ 5)⟩ }
 
+/- English proof (translation)
+Rewrite using `[gauss_f]`. Use `show 2 * 1 * 8 < 29 - 1`. Evaluate the numerical expressions.
+-/
 theorem gaussianSmallPrime_gt_twice_rank : 2 * (gaussFields ι LL hE).f * Examples₂.R0.k < (gaussianPrimesSmall ι LL hE).g 0 - 1 := by
   rw [gauss_f]
   show 2 * 1 * 8 < 29 - 1

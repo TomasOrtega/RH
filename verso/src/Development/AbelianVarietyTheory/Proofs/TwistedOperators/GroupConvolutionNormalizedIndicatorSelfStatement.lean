@@ -15,5 +15,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped Classical
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.TrIdem
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TrIdem.conv_normInd_self | exact GlobalTheory.TrIdem.conv_normInd_self | (intros; apply GlobalTheory.TrIdem.conv_normInd_self <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.groupConvolution_normalizedIndicator_self : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G), IsOpen (H : Set G) → IsCompact (H : Set G) → conv μ (normInd μ (H : Set G)) (normInd μ (H : Set G)) = normInd μ (H : Set G) := by
   first | exact @GlobalTheory.TrIdem.conv_normInd_self | exact GlobalTheory.TrIdem.conv_normInd_self | (intros; apply GlobalTheory.TrIdem.conv_normInd_self <;> assumption)

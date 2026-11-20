@@ -10,9 +10,17 @@ variable {R : Type*} [CommRing R] (F : FormalGroup R)
 noncomputable def higher : MvPowerSeries (Fin 2) R :=
   F.toPowerSeries - X 0 - X 1
 
+/- English proof (translation)
+Simplify using `[higher]`.
+-/
 theorem toPowerSeries_eq_X_add_X_add_higher : F.toPowerSeries = X 0 + X 1 + higher F := by
   simp [higher]
 
+/- English proof (translation)
+Use `nat_le_order fun d hd => ?_` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨a, b, rfl⟩ : ∃ a b : ℕ, d = Finsupp.single 0 a + Finsupp.single 1 b := ⟨d 0, d 1, by ext i; fin_cases i <;> simp⟩`. Establish `hab : a + b < 2` using `by simpa [Finsupp.degree_eq_sum, Fin.sum_univ_two] using hd`. Establish `h01 : (Finsupp.single (0 : Fin 2) 1 : Fin 2 →₀ ℕ) ≠ Finsupp.single 1 1`. Introduce `h`.
+
+Use `congrArg (fun d => d 0) h` as an intermediate fact. Simplify using `at this`. Establish `ha : a < 2` using `by omega`. Establish `hb : b < 2` using `by omega`. Apply the tactic sequence `interval_cases a <;> interval_cases b <;> simp_all [higher, coeff_X, F.lin_coeff_X, F.lin_coeff_Y, F.zero_constantCoeff, Ne.symm h01]`.
+-/
 theorem two_le_order_higher : (2 : ℕ∞) ≤ order (higher F) := by
   refine nat_le_order fun d hd => ?_
   obtain ⟨a, b, rfl⟩ : ∃ a b : ℕ, d = Finsupp.single 0 a + Finsupp.single 1 b :=
@@ -27,9 +35,15 @@ theorem two_le_order_higher : (2 : ℕ∞) ≤ order (higher F) := by
   interval_cases a <;> interval_cases b <;> simp_all [higher, coeff_X, F.lin_coeff_X,
     F.lin_coeff_Y, F.zero_constantCoeff, Ne.symm h01]
 
+/- English proof (translation)
+The claim follows from `one_le_order_iff_constCoeff_eq_zero.1 (le_trans (by norm_num) (two_le_order_higher F))`.
+-/
 theorem constantCoeff_higher : constantCoeff (higher F) = 0 :=
   one_le_order_iff_constCoeff_eq_zero.1 (le_trans (by norm_num) (two_le_order_higher F))
 
+/- English proof (translation)
+Use `conv_lhs => rw [toPowerSeries_eq_X_add_X_add_higher F]`. Rewrite using `[subst_add hab, subst_add hab, subst_X hab, subst_X hab]`. Simplify using the standard rewrite rules.
+-/
 theorem subst_eq_add_add_subst_higher {τ : Type*} {a b : MvPowerSeries τ R}
     (hab : HasSubst ![a, b]) :
     subst ![a, b] F.toPowerSeries = a + b + subst ![a, b] (higher F) := by
@@ -37,6 +51,9 @@ theorem subst_eq_add_add_subst_higher {τ : Type*} {a b : MvPowerSeries τ R}
   rw [subst_add hab, subst_add hab, subst_X hab, subst_X hab]
   simp
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simpa`.
+-/
 lemma hasSubst_pair {τ : Type*} {a b : MvPowerSeries τ R} (ha : constantCoeff a = 0)
     (hb : constantCoeff b = 0) : HasSubst ![a, b] :=
   hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simpa
@@ -44,9 +61,21 @@ lemma hasSubst_pair {τ : Type*} {a b : MvPowerSeries τ R} (ha : constantCoeff 
 private noncomputable def invStep (g : MvPowerSeries Unit R) : MvPowerSeries Unit R :=
   -X () - subst ![X (), g - C (constantCoeff g)] (higher F)
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private lemma constantCoeff_sub_C (g : MvPowerSeries Unit R) :
     constantCoeff (g - C (constantCoeff g)) = 0 := by simp
 
+/- English proof (translation)
+Establish `hX : constantCoeff (X () : MvPowerSeries Unit R) = 0` using `by simp`. Apply the tactic sequence `have key := add_le_order_subst_sub_subst (R := R) (m := 2) (n := (n : ℕ∞)) (hasSubst_pair hX (constantCoeff_sub_C f)) (hasSubst_pair hX (constantCoeff_sub_C g)) (fun i => by fin_cases i <;> simp) (fun i => by fin_cases i <;> simp) ?_ (two_le_order_higher F)`. Establish `e : invStep F f - invStep F g = -(subst ![X (), f - C (constantCoeff f)] (higher F) -`. Substitute `![X (), g - C (constantCoeff g)] (higher F)) := by` using the available equality. Simplify using `only [invStep]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, order_neg]`. Establish `: ((n + 1 : ℕ) : ℕ∞) + 1 = (n : ℕ∞) + 2` using `by push_cast; ring`. Conclude with `(ENat.add_le_add_iff_right ENat.one_ne_top).1 (this ▸ key)`. Introduce `i fin_cases i`.
+
+Simplify using the standard rewrite rules. Simplify using `only [Fin.mk_one, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Simplify using `[hn]`. Establish `h0 : constantCoeff (f - g) = 0`.
+
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Conclude with `coeff_of_lt_order (lt_of_lt_of_le (by simpa using hn) h)`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[h0]`. Simplify using `using h`.
+-/
 private lemma invStep_contract (f g : MvPowerSeries Unit R) (n : ℕ)
     (h : (n : ℕ∞) ≤ order (f - g)) :
     ((n + 1 : ℕ) : ℕ∞) ≤ order (invStep F f - invStep F g) := by
@@ -74,15 +103,24 @@ private lemma invStep_contract (f g : MvPowerSeries Unit R) (n : ℕ)
         rw [h0]
         simpa using h
 
+/- English proof (translation)
+The claim follows from `existsUnique_fixedPoint _ (invStep_contract F)`.
+-/
 private lemma existsUnique_invStep : ∃! g, invStep F g = g :=
   existsUnique_fixedPoint _ (invStep_contract F)
 
 noncomputable def inv : PowerSeries R :=
   (existsUnique_invStep F).exists.choose
 
+/- English proof (translation)
+The claim follows from `(existsUnique_invStep F).exists.choose_spec`.
+-/
 private lemma invStep_inv : invStep F (inv F) = inv F :=
   (existsUnique_invStep F).exists.choose_spec
 
+/- English proof (translation)
+Establish `hX : constantCoeff (X () : MvPowerSeries Unit R) = 0` using `by simp`. Apply the tactic sequence `rw [invStep, map_sub, map_neg, hX, constantCoeff_subst_eq_zero (hasSubst_pair hX (constantCoeff_sub_C g)) (fun i => by fin_cases i <;> simp) (constantCoeff_higher F)]`. Simplify using the standard rewrite rules.
+-/
 private lemma constantCoeff_invStep (g : MvPowerSeries Unit R) :
     constantCoeff (invStep F g) = 0 := by
   have hX : constantCoeff (X () : MvPowerSeries Unit R) = 0 := by simp
@@ -91,17 +129,31 @@ private lemma constantCoeff_invStep (g : MvPowerSeries Unit R) :
       (fun i => by fin_cases i <;> simp) (constantCoeff_higher F)]
   simp
 
+/- English proof (translation)
+Rewrite using `[← invStep_inv F]`. Conclude with `constantCoeff_invStep F _`.
+-/
 theorem constantCoeff_inv : PowerSeries.constantCoeff (inv F) = 0 := by
   rw [← invStep_inv F]
   exact constantCoeff_invStep F _
 
+/- English proof (translation)
+The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero' (constantCoeff_inv F)`.
+-/
 theorem hasSubst_inv : PowerSeries.HasSubst (inv F) :=
   PowerSeries.HasSubst.of_constantCoeff_zero' (constantCoeff_inv F)
 
+/- English proof (translation)
+Simplify using `[invStep, hg]`.
+-/
 private lemma invStep_of_constantCoeff_eq_zero {g : MvPowerSeries Unit R}
     (hg : constantCoeff g = 0) : invStep F g = -X () - subst ![X (), g] (higher F) := by
   simp [invStep, hg]
 
+/- English proof (translation)
+Establish `hX : constantCoeff (X () : MvPowerSeries Unit R) = 0` using `by simp`. Establish `hi : constantCoeff (inv F : MvPowerSeries Unit R) = 0` using `constantCoeff_inv F`. Use `invStep_inv F` as an intermediate fact. Rewrite `this` using `[invStep_of_constantCoeff_eq_zero F hi]`. Express the relevant statement in the definitionally equal form `subst ![X (), (inv F : MvPowerSeries Unit R)] F.toPowerSeries = 0`.
+
+Rewrite using `[subst_eq_add_add_subst_higher F (hasSubst_pair hX hi)]`. Take the linear combination `(-1 : MvPowerSeries Unit R) * this`.
+-/
 theorem subst_X_inv :
     subst ![PowerSeries.X, inv F] F.toPowerSeries = (0 : PowerSeries R) := by
   have hX : constantCoeff (X () : MvPowerSeries Unit R) = 0 := by simp
@@ -112,6 +164,11 @@ theorem subst_X_inv :
   rw [subst_eq_add_add_subst_higher F (hasSubst_pair hX hi)]
   linear_combination (-1 : MvPowerSeries Unit R) * this
 
+/- English proof (translation)
+Establish `hX : constantCoeff (X () : MvPowerSeries Unit R) = 0` using `by simp`. Establish `hg' : constantCoeff (g : MvPowerSeries Unit R) = 0` using `hg`. Express the relevant statement in the definitionally equal form `subst ![X (), (g : MvPowerSeries Unit R)] F.toPowerSeries = 0 at h`. Rewrite `h` using `[subst_eq_add_add_subst_higher F (hasSubst_pair hX hg')]`. Establish `hfix : invStep F g = g`.
+
+Rewrite using `[invStep_of_constantCoeff_eq_zero F hg']`. Take the linear combination `(-1 : MvPowerSeries Unit R) * h`. Conclude with `(existsUnique_invStep F).unique hfix (invStep_inv F)`.
+-/
 theorem eq_inv_of_subst_eq_zero {g : PowerSeries R} (hg : PowerSeries.constantCoeff g = 0)
     (h : subst ![PowerSeries.X, g] F.toPowerSeries = (0 : PowerSeries R)) : g = inv F := by
   have hX : constantCoeff (X () : MvPowerSeries Unit R) = 0 := by simp
@@ -123,6 +180,9 @@ theorem eq_inv_of_subst_eq_zero {g : PowerSeries R} (hg : PowerSeries.constantCo
     linear_combination (-1 : MvPowerSeries Unit R) * h
   exact (existsUnique_invStep F).unique hfix (invStep_inv F)
 
+/- English proof (translation)
+Establish `hx' : HasSubst (fun _ : Unit => x)` using `PowerSeries.hasSubst_iff.mp hx`. Rewrite using `[PowerSeries.subst_def, subst_comp_subst_apply hgh hx']`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> rfl`.
+-/
 theorem subst_subst_pair {σ : Type*} {g h : PowerSeries R} (hgh : HasSubst ![g, h])
     {x : MvPowerSeries σ R} (hx : PowerSeries.HasSubst x) (G : MvPowerSeries (Fin 2) R) :
     PowerSeries.subst x (subst ![g, h] G : PowerSeries R) =
@@ -139,8 +199,16 @@ noncomputable instance : Neg (F.Point σ) where
   neg x := ⟨PowerSeries.subst x.val (inv F), by
     simpa [PowerSeries.coe_substAlgHom] using (hasSubst_inv F).comp x.prop⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem neg_point_val (x : F.Point σ) : (-x).val = PowerSeries.subst x.val (inv F) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `hX : constantCoeff (PowerSeries.X : PowerSeries R) = 0` using `PowerSeries.constantCoeff_X`. Establish `h` using `congrArg (PowerSeries.subst x.val) (subst_X_inv F)`. Rewrite `h` using `[subst_subst_pair (hasSubst_pair hX (constantCoeff_inv F)) x.prop, PowerSeries.subst_X x.prop]`. Rewrite using `[FormalGroup.add_apply, neg_point_val, h]`.
+
+Rewrite using `[← PowerSeries.coe_substAlgHom x.prop, map_zero]`. Both sides reduce to the same expression.
+-/
 private lemma add_neg_point (x : F.Point σ) : x + -x = 0 := by
   apply Subtype.ext
   have hX : constantCoeff (PowerSeries.X : PowerSeries R) = 0 := PowerSeries.constantCoeff_X

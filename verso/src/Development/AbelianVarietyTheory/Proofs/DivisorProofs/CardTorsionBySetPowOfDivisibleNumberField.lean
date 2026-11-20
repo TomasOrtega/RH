@@ -5,6 +5,41 @@ namespace GlobalTheory
 
 open Submodule
 
+/- English proof (translation)
+Establish `hlt : w0 ^ 2 < w0` using `by simpa using Ideal.pow_succ_lt_pow hne 1`. Take `⟨c0, hc0, hc02⟩` from `SetLike.exists_of_lt hlt`. Establish `hdvd : w0 ∣ Ideal.span {c0}` using `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hc0)`. Take `⟨b, hb⟩` from `hdvd`. Establish `hbw : ¬ b ≤ w0`.
+
+Introduce `hle`. Apply `hc02` to reduce the goal to its premises. Establish `: Ideal.span {c0} ≤ w0 ^ 2` using `by rw [hb, pow_two]; exact Ideal.mul_mono_right hle`. Conclude with `this (Ideal.subset_span rfl)`. Establish `hbtop : b ⊔ w0 = ⊤`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hbw (le_sup_left.trans (hmax.eq_of_le h le_sup_right).symm.le)`. Establish `hcop : ∀ n : ℕ, b ⊔ w0 ^ n = ⊤`. Introduce `n`. Rewrite using `[← Ideal.isCoprime_iff_sup_eq]`.
+
+Conclude with `(Ideal.isCoprime_iff_sup_eq.mpr hbtop).pow_right`. Establish `hc0ne : c0 ≠ 0` using `by rintro rfl; exact hc02 (zero_mem _)`. Set `Tj` to `torsionBySet R M ((w0 ^ j : Ideal R) : Set R)`. Set `Tj1` to `torsionBySet R M ((w0 ^ (j + 1) : Ideal R) : Set R)`. Set `T1` to `torsionBySet R M ((w0 : Ideal R) : Set R)`.
+
+Establish `hmapsto : ∀ x ∈ Tj1, c0 • x ∈ Tj`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_torsionBySet_iff]`. Introduce and unpack `⟨a, ha⟩`. Establish `: a * c0 ∈ w0 ^ (j + 1)` using `by rw [pow_succ]; exact Ideal.mul_mem_mul ha hc0`.
+
+Simplify `hx ⟨_, this⟩` using `[smul_smul]`. Set `φ : Tj1 →ₗ[R] Tj` to `{ toFun := fun x => ⟨c0 • (x : M), hmapsto x x.2⟩ map_add' := fun x y => by ext; simp map_smul' := fun r x => by ext; simp [smul_comm c0 r] }`. Establish `hsurj : Function.Surjective φ`. Introduce and unpack `⟨g, hg⟩`. Take `⟨g', hg'⟩` from `hdiv c0 hc0ne g`.
+
+Simplify using `only at hg'`. Establish `h1 : (1 : R) ∈ b ⊔ w0 ^ (j + 1)` using `by rw [hcop]; trivial`. Take `⟨v, hv, u, hu, huv⟩` from `Submodule.mem_sup.mp h1`. Establish `hmem : v • g' ∈ Tj1`. Rewrite using `[mem_torsionBySet_iff]`.
+
+Introduce and unpack `⟨a, ha⟩`. Establish `hav : a * v ∈ w0 ^ j * Ideal.span {c0}`. Rewrite using `[hb, ← mul_assoc, ← pow_succ]`. Conclude with `Ideal.mul_mem_mul ha hv`. Take `⟨z, hz, hzc⟩` from `(Submodule.mem_mul_span_singleton).mp hav`.
+
+Simplify using `only`. Rewrite using `[smul_smul, ← hzc, ← smul_smul, hg']`. Conclude with `(mem_torsionBySet_iff _ _).mp hg ⟨z, hz⟩`. Use `⟨⟨v • g', hmem⟩, ?_⟩` and prove the remaining obligations. Use `ext`.
+
+Simplify using `only [φ, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[smul_comm, hg']`. Establish `hug : u • g = 0`. Establish `: u ∈ w0 ^ j` using `Ideal.pow_le_pow_right (Nat.le_succ j) hu`. Conclude with `(mem_torsionBySet_iff _ _).mp hg ⟨u, this⟩`.
+
+Establish `: v = 1 - u` using `by rw [← huv]; ring`. Rewrite using `[this, sub_smul, one_smul, hug, sub_zero]`. Establish `hsub : T1 ≤ Tj1` using `torsionBySet_le_torsionBySet_of_subset (by`. Introduce `a ha`. Conclude with `Ideal.pow_le_self (Nat.succ_ne_zero j) ha)`.
+
+Establish `hker : ∀ x : Tj1, x ∈ LinearMap.ker φ ↔ (x : M) ∈ T1`. Introduce `x`. Rewrite using `[LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Establish `hx' : c0 • (x : M) = 0`. Use `congrArg Subtype.val hx` as an intermediate fact. Simplify `this` using `[φ]`. Rewrite using `[mem_torsionBySet_iff]`. Introduce and unpack `⟨a, ha⟩`.
+
+Establish `hw : w0 ≤ Ideal.span {c0} ⊔ w0 ^ (j + 1)`. Establish `e : w0 * (b ⊔ w0 ^ j) = Ideal.span {c0} ⊔ w0 ^ (j + 1)`. Rewrite using `[Ideal.mul_sup, ← hb, ← pow_succ']`. Rewrite `e` using `[hcop, Ideal.mul_top]`. Conclude with `e.le`.
+
+Take `⟨s, hs, t, ht, hst⟩` from `Submodule.mem_sup.mp (hw ha)`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hs`. Establish `key : (r * c0 + t) • (x : M) = 0`. Rewrite using `[add_smul, mul_smul, hx', smul_zero, zero_add]`. Conclude with `(mem_torsionBySet_iff _ _).mp x.2 ⟨t, ht⟩`.
+
+Rewrite `key` using `[hst]`. Then use the resulting hypothesis. Introduce `hx`. Use `ext`. Simplify using `only [φ, LinearMap.coe_mk, AddHom.coe_mk, ZeroMemClass.coe_zero]`. Conclude with `(mem_torsionBySet_iff _ _).mp hx ⟨c0, hc0⟩`.
+
+Establish `e1 : Nat.card (Tj1 ⧸ LinearMap.ker φ) = Nat.card Tj` using `Nat.card_congr (φ.quotKerEquivOfSurjective hsurj).toEquiv`. Establish `e2 : Nat.card (LinearMap.ker φ) = Nat.card T1` using `Nat.card_congr { toFun := fun x => ⟨(x.1 : M), (hker x.1).mp x.2⟩ invFun := fun y => ⟨⟨y.1, hsub y.2⟩, (hker _).mpr y.2⟩ left_inv := fun x => rfl right_inv := fun y => rfl }`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.ker φ), e1, e2, mul_comm]`.
+-/
 theorem torsion_pow_card_succ {R : Type} [CommRing R] [IsDedekindDomain R]
     (M : Type) [AddCommGroup M] [Module R M] (w0 : Ideal R) (hmax : w0.IsMaximal) (hne : w0 ≠ ⊥)
     (hdiv : ∀ c : R, c ≠ 0 → Function.Surjective (fun g : M => c • g)) (j : ℕ) :
@@ -105,6 +140,13 @@ theorem torsion_pow_card_succ {R : Type} [CommRing R] [IsDedekindDomain R]
         right_inv := fun y => rfl }
   rw [Submodule.card_eq_card_quotient_mul_card (LinearMap.ker φ), e1, e2, mul_comm]
 
+/- English proof (translation)
+Introduce `hmax hne hdiv h1 j`. Proceed by induction on `j with`. Consider the case `zero`. Simplify using `only [pow_zero, zero_mul]`. Establish `: torsionBySet (𝓞 F) M ((⊤ : Ideal (𝓞 F)) : Set (𝓞 F)) = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[mem_torsionBySet_iff]`. Simplify using `using hx ⟨1, trivial⟩`. Rewrite using `[Ideal.one_eq_top, this]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[torsion_pow_card_succ M w0 hmax hne hdiv n, ih, h1, ← pow_add]`. Put the polynomial expressions in normal form.
+-/
 theorem torsion_pow_card (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M]
     [Module (𝓞 F) M] (w0 : Ideal (𝓞 F)) (h : ℕ) :
     w0.IsMaximal → w0 ≠ ⊥ → (∀ c : 𝓞 F, c ≠ 0 → Function.Surjective (fun g : M => c • g)) →

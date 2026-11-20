@@ -18,6 +18,15 @@ noncomputable section
 namespace GlobalTheory.ZH.Shift
 open ReciprocityTheory.ChartRestriction.G.DVR IsLocalRing
 
+/- English proof (translation)
+Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (j : K → L.ι) (hm : r z ∈ LB.wchart L φ j), gs r z (LB.wchart L φ j) (∑ i, constFn p (LB.wchart L φ j) (a i) * (show Γ(Y, LB.wchart L φ j) from (t i).f j)) = ∑ i, cst (r ≫ p) z (a i) * gs r z (LB.wchart L φ j) ((t i).f j)` using `fun Z r z j hm => by`. Establish `e : ∀ (b : I → Γ(Y, LB.wchart L φ j)), gs r z _ (∑ i, b i) = ∑ i, gs r z _ (b i)` using `fun b => by`. Simplify using `only [gs_eq r z _ hm, map_sum]`. Rewrite using `[e]`. Conclude with `Finset.sum_congr rfl fun i _ => (gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) (gs_constFn p _ r z hm _) rfl)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h Z r z J hJ`. Conclude with `(congrArg (gs r z _) (h _)).trans (key Z r z _ (hJ.mem φ r))`. Introduce `h j`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations.
+
+Use `choose J hJ using fun ψ : Y ⟶ X => exists_chart hL (ψ y)`. Establish `hJ' : Good L y J` using `hJ`. Establish `m` using `hJ'.mem φ (𝟙 Y)`. Use `(sec_trans s (𝟙 Y) y (j := j) hy m).trans (Eq.trans ?_ (key Y (𝟙 Y) y j hy).symm)` and prove the remaining obligations. Use `(congrArg _ (h Y (𝟙 Y) y J hJ')).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sec_trans (t i) (𝟙 Y) y (j := j) hy m]`. Conclude with `mul_left_comm _ _ _`.
+-/
 theorem lin_iff {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {R : Type} [CommRing R] (p : Y ⟶ Sp R) {I : Type} [Fintype I] (a : I → R)
     (s : LB.Sec (LB.LinComb L φ ε)) (t : I → LB.Sec (LB.LinComb L φ ε)) :
@@ -52,8 +61,14 @@ variable {V : Type} [CommRing V] [IsDomain V] (D : DegPre V)
 
 abbrev tr (mu : D.X) : D.P.A.left ⟶ D.P.A.left := (𝟙 D.P.A * SectionScalarValuation.cQ D D.P.A mu).left
 
+/- English proof (translation)
+The claim follows from `Over.w _`.
+-/
 theorem tr_hom (mu : D.X) : tr D mu ≫ D.P.A.hom = D.P.A.hom := Over.w _
 
+/- English proof (translation)
+Establish `c₃ : SectionScalarValuation.cQ D D.P.A 0 = 1`. Use `SectionScalarValuation.cQ_nsmul D D.P.A 0 0` as an intermediate fact. Rewrite `this` using `[zero_nsmul, pow_zero]`. Then use the resulting hypothesis. Rewrite using `[← Over.comp_left, MonObj.comp_mul, Category.comp_id, SectionScalarValuation.comp_cQ, _root_.mul_assoc, ← SectionScalarValuation.cQ_add, h, c₃, _root_.mul_one, Over.id_left]`.
+-/
 theorem tr_tr (mu nu : D.X) (h : mu + nu = 0) : tr D mu ≫ tr D nu = 𝟙 _ := by
   have c₃ : SectionScalarValuation.cQ D D.P.A 0 = 1 := by
     have := SectionScalarValuation.cQ_nsmul D D.P.A 0 0
@@ -68,6 +83,11 @@ def Rel {k : ℕ} {α mu : D.X} (e : EB D k α mu) (β : D.SecB k α) (gm : D.Se
   ∀ (Z : Scheme.{0}) (r : Z ⟶ D.P.A.left) (z : Z) (J), Good D.P.L z J →
     sval gm r z J = sval β (r ≫ tr D mu) z J * (val e r z J).val
 
+/- English proof (translation)
+Establish `hform : FormEq (Sum.elim (fun i => tr D mu ≫ D.famφB α i) (Sum.elim (D.famφB (α + k • mu)) (fun i => tr D mu ≫ D.famφB α i))) (Sum.elim (DegPre.famε k) (DegPre.deltaε k)) (D.famφB (α + k • mu)) (DegPre.famε k)` using `fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, DegPre.deltaε, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one]`. Take `⟨gm, hgm⟩` from `exists_sec D.P.isLB hform (pullMulSec β (tr D mu) e he)`.
+
+Conclude with `⟨gm, fun Z r z J hJ => (hgm Z r z J hJ).trans (sval_pullMulSec _ _ _ he r z hJ)⟩`.
+-/
 theorem exists_fwd {k : ℕ} {α mu : D.X} (e : EB D k α mu) (he : e.IsGen) (β : D.SecB k α) : ∃ gm, Rel D e β gm := by
   have hform : FormEq (Sum.elim (fun i => tr D mu ≫ D.famφB α i)
       (Sum.elim (D.famφB (α + k • mu)) (fun i => tr D mu ≫ D.famφB α i)))
@@ -78,6 +98,11 @@ theorem exists_fwd {k : ℕ} {α mu : D.X} (e : EB D k α mu) (he : e.IsGen) (β
   obtain ⟨gm, hgm⟩ := exists_sec D.P.isLB hform (pullMulSec β (tr D mu) e he)
   exact ⟨gm, fun Z r z J hJ => (hgm Z r z J hJ).trans (sval_pullMulSec _ _ _ he r z hJ)⟩
 
+/- English proof (translation)
+Establish `h1 : tr D (-mu) ≫ tr D mu = 𝟙 _` using `tr_tr D _ _ (neg_add_cancel mu)`. Establish `h2 : tr D mu ≫ tr D (-mu) = 𝟙 _` using `tr_tr D _ _ (add_neg_cancel mu)`. Establish `hform : FormEq (Sum.elim (fun i => tr D (-mu) ≫ D.famφB (α + k • mu) i) (fun i => tr D (-mu) ≫ Sum.elim (D.famφB (α + k • mu)) (fun i => tr D mu ≫ D.famφB α i) i)) (Sum.elim (DegPre.famε k) (fun i => - DegPre.deltaε k i)) (D.famφB α) (DegPre.famε k)` using `fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, DegPre.deltaε, zpow_neg, Finset.prod_inv_distrib, inv_inv, ← Category.assoc, h1, Category.id_comp]`.
+
+Rewrite using `[← _root_.mul_assoc, mul_inv_cancel, _root_.one_mul]`. Take `⟨β, hβ⟩` from `exists_sec D.P.isLB hform (pullMulSec gm (tr D (-mu)) (LB.invGen D.P.L _ _ (LB.pullGen D.P.L _ _ e (tr D (-mu)))) (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ he _)))`. Use `⟨β, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hβ Z _ z J hJ, sval_pullMulSec _ _ _ _ _ z hJ, val_inv, val_pull hJ, Category.assoc, h2, Category.comp_id, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]`.
+-/
 theorem exists_bwd {k : ℕ} {α mu : D.X} (e : EB D k α mu) (he : e.IsGen) (gm : D.SecB k (α + k • mu)) :
     ∃ β, Rel D e β gm := by
   have h1 : tr D (-mu) ≫ tr D mu = 𝟙 _ := tr_tr D _ _ (neg_add_cancel mu)
@@ -95,6 +120,17 @@ theorem exists_bwd {k : ℕ} {α mu : D.X} (e : EB D k α mu) (he : e.IsGen) (gm
   rw [hβ Z _ z J hJ, sval_pullMulSec _ _ _ _ _ z hJ, val_inv, val_pull hJ, Category.assoc, h2, Category.comp_id,
     _root_.mul_assoc, Units.inv_mul, _root_.mul_one]
 
+/- English proof (translation)
+Introduce `s`. Take `⟨s₀, hs⟩` from `exists_bwd D e he s`. Use `choose g hg hgm using h`. Establish `h1 : tr D (-mu) ≫ tr D mu = 𝟙 _` using `tr_tr D _ _ (neg_add_cancel mu)`. Establish `hv : ∀ i (Z : Scheme.{0}) (r : Z ⟶ D.P.A.left) (z : Z) (J), Good D.P.L z J → sval (gm i) r z J = cst (r ≫ D.P.A.hom) z (u : V) * (sval (β i) (r ≫ tr D mu) z J * (val e r z J).val)` using `fun i Z r z J hJ => by`.
+
+Rewrite using `[← hg i Z r z J hJ]`. Conclude with `(congrArg (gs r z _) (hgm i _)).trans ((gs_mul r z _ (hJ.mem _ r) _ _).trans (congrArg₂ (· * ·) (gs_constFn _ _ r z (hJ.mem _ r) _) rfl))`. Establish `key : ∀ b : I → V, (∀ j, s.f j = ∑ i, constFn D.P.A.hom _ (b i) * (gm i).f j) ↔ (∀ j, s₀.f j = ∑ i, constFn D.P.A.hom _ (b i * u) * (β i).f j)` using `fun b => by`. Rewrite using `[lin_iff D.P.isLB D.P.A.hom b s gm, lin_iff D.P.isLB D.P.A.hom (fun i => b i * u) s₀ β]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H Z r z J hJ`. Establish `e1` using `H Z (r ≫ tr D (-mu)) z J hJ`. Rewrite `e1` using `[hs Z _ z J hJ]`. Simplify using `only [hv _ Z _ z J hJ, Category.assoc, h1, Category.comp_id, tr_hom] at e1`. Use `(val e (r ≫ tr D (-mu)) z J).isUnit.mul_right_cancel (e1.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [H1.cst_mul]; ring`. Introduce `H Z r z J hJ`. Rewrite using `[hs Z _ z J hJ, H Z _ z J hJ, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hv _ Z _ z J hJ, H1.cst_mul, Category.assoc, tr_hom]; ring`.
+
+Take `⟨a, ha, hu⟩` from `hβ s₀`. Use `⟨fun i => a i * (u⁻¹ : Vˣ), (key _).2 (by simpa using ha), fun b hb => funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu _ ((key b).1 hb)]`. Simplify using the standard rewrite rules.
+-/
 theorem isBasisB_move {k : ℕ} {α mu : D.X} (e : EB D k α mu) (he : e.IsGen) {I : Type} [Fintype I]
     (β : I → D.SecB k α) (hβ : IsBasisB D β) (gm : I → D.SecB k (α + k • mu)) (u : Vˣ)
     (h : ∀ i, ∃ g, Rel D e (β i) g ∧ ∀ j, (gm i).f j = constFn D.P.A.hom _ (u : V) * g.f j) : IsBasisB D gm := by
@@ -128,6 +164,19 @@ theorem isBasisB_move {k : ℕ} {α mu : D.X} (e : EB D k α mu) (he : e.IsGen) 
   simp
 end
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Take `⟨Ix, _, φV, εV, e', he', hC, c₀, ⟨u, hc₀⟩, hval⟩` from `SectionScalarValuation.famMult_data D hϖ hQ k mu α`. Take `⟨eB, heB, veB⟩` from `SectionScalarValuation.exists_eB D.toPre k α mu e' he' hC`. Use `⟨eB, u, heB, fun f s hf => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `exists_fwd D.toPre eB heB (f α)`.
+
+Use `⟨g, hg, GlobalTheory.LevelOneIdeal.secIsMul_of_sval hL D.toPre.P.A.hom (IntegralExpansion.prB_app_injective D.toPre) fun y J hJ => ?_⟩` and prove the remaining obligations. Take `⟨⟨w, hw, hc⟩, hv⟩` from `gen_fe (D := D.toPre) (F := FractionRing V) hG k mu α`. Establish `vu` using `hv w hw hc _ (𝟙 _) y J hJ`. Establish `hrel` using `(secRel_iff hL _ _ _ _ _ _ _ _ _ w).1 (s.fe mu α w hw hc) _ (𝟙 _) y J hJ`. Rewrite `hrel` using `[← SectionScalarValuation.secScal_sval (hf _) _ y hJ, ← SectionScalarValuation.secScal_sval (hf _) _ y hJ, Category.id_comp, Category.id_comp, SectionScalarValuation.trF_prB]`.
+
+Rewrite using `[hrel, hg _ _ y J hJ, mul_left_comm]`. Use `congr 1`. Establish `w₁ : (fst (TF (R` using `V) (FractionRing V)) D.toPre.P.A).left ≫ jFK (R := V) (FractionRing V) ≫ jK V = (DegPre.prB D.toPre (FractionRing V)).left ≫ D.toPre.P.A.hom := (Over.w (fst (TF (R := V) (FractionRing V)) D.toPre.P.A)).trans (Over.w (DegPre.prB D.toPre (FractionRing V))).symm`. Establish `v₁` using `veB _ (DegPre.prB D.toPre (FractionRing V)) y J hJ`. Establish `v₂` using `hval (FractionRing V) _ (fst (TF (R := V) (FractionRing V)) D.toPre.P.A).left y J hJ`.
+
+Establish `hc₁ : c₀ = algebraMap V (FractionRing V) (ϖ ^ n * u)`. Rewrite using `[hc₀, hn, zpow_natCast, map_mul, map_pow]`. Establish `v₃ : gs ((fst (TF (R` using `V) (FractionRing V)) D.toPre.P.A).left ≫ jFK (R := V) (FractionRing V)) y ⊤ (scal (𝟙 _) c₀) = cst ((DegPre.prB D.toPre (FractionRing V)).left ≫ D.toPre.P.A.hom) y (ϖ ^ n * u) := by`. Rewrite using `[← w₁, ← Category.assoc, hc₁]`. Conclude with `(cst_comp _ (algebraMap V (FractionRing V)) y _).symm`.
+
+Establish `v₄ : (fst (TF (R` using `V) (FractionRing V)) D.toPre.P.A).left ≫ DegPre.jFR (R := V) (FractionRing V) = (DegPre.prB D.toPre (FractionRing V)).left ≫ D.toPre.P.A.hom := w₁`. Rewrite `v₂` using `[v₃, v₄]`. Rewrite `vu` using `[Over.id_left, Category.id_comp, uVal, Category.id_comp, Category.id_comp, comp_cP]`. Rewrite using `[vu, v₁]`. Simplify using `only [Units.val_mul]`.
+
+Rewrite using `[v₂]`. Simplify using `only [SectionScalarValuation.cQ, cP, th]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem shift (hG : GlobalFnsSt) {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
     (hϖ : Irreducible ϖ) (D : DegData V (maximalIdeal V)) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q)
     (k : ℕ) (α mu : D.toPre.X) (n : ℕ) (hn : k * Q mu + QForm.bOf D.toPre Q mu α = n) :
@@ -169,6 +218,25 @@ theorem shift (hG : GlobalFnsSt) {V : Type} [CommRing V] [IsDomain V] [IsDiscret
   simp only [SectionScalarValuation.cQ, cP, th]
   ring
 
+/- English proof (translation)
+Introduce `hLL o Ω _ _ _ _ S ρ p _ y₀ u l k hk J _ σ cls f ⟨hsh, _, _, _, hfam, _, hB⟩ i₀ α ⟨m, hm⟩`. Substitute `hm` using the available equality. Take `⟨ϖ, Q, hϖ, hQ, hlt, hq⟩` from `GlobalTheory.ZH.PsiForm.q_eq_val_mul o Ω S ρ p y₀ u l`. Establish `hne : (u.j ϖ : PadicAlgCl p) ≠ 0` using `by show algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) ϖ) ≠ 0`. Rewrite using `[map_ne_zero, map_ne_zero_iff _ (IsFractionRing.injective u.V (FractionRing u.V))]`.
+
+Conclude with `hϖ.ne_zero`. Establish `hc : 0 < -Real.log ‖(u.j ϖ : PadicAlgCl p)‖` using `neg_pos.2 (Real.log_neg (norm_pos_iff.2 hne) hlt)`. Establish `hle : ∀ a b, l.q a ≤ l.q b ↔ Q a ≤ Q b` using `fun a b => by`. Rewrite using `[hq, hq, mul_le_mul_iff_left₀ hc, Int.cast_le]`. Establish `hs` using `q_shift hϖ hQ (cls i₀) m k`.
+
+Establish `h0` using `(hle _ _).1 (hsh i₀ m)`. Establish `hk' : (0 : ℤ) < k` using `by exact_mod_cast hk`. Establish `hnn : 0 ≤ k * Q m + QForm.bOf u.D.toPre Q m (cls i₀)` using `nonneg_of_mul_nonneg_right (a := (k : ℤ)) (by linarith) hk'`. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le hnn`. Take `⟨e, w, he, H⟩` from `shift hLL.1.globalFns hϖ u.D hQ k (cls i₀) m n hn`.
+
+Rewrite `hs` using `[hn]`. Prove the components needed by the constructor for the conclusion. Introduce `hS`. Establish `h1` using `(hle _ _).1 (hS (-m))`. Rewrite `h1` using `[smul_neg, add_neg_cancel_right, hs]`.
+
+Establish `hn0 : n = 0`. Establish `: (n : ℤ) ≤ 0` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Substitute `hn0` using the available equality. Use `isBasisB_move u.D.toPre e he _ (hB i₀) _ w fun i => ?_` and prove the remaining obligations.
+
+Take `⟨s, hs'⟩` from `hfam i.1`. Take `⟨g, hg, hg'⟩` from `H (f i.1) s hs'`. Rewrite `hg'` using `[pow_zero, _root_.one_mul]`. Conclude with `⟨g, hg, hg'⟩`. Introduce `hS`.
+
+Take `⟨s, hs'⟩` from `hfam i₀`. Take `⟨g, -, hg'⟩` from `H (f i₀) s hs'`. Use `⟨_, g, ?_, hg'⟩` and prove the remaining obligations. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`.
+
+Use `hS fun m' => ?_` and prove the remaining obligations. Rewrite using `[add_assoc, ← smul_add]`. Use `le_trans ((hle _ _).2 ?_) (hsh i₀ (m + m'))` and prove the remaining obligations. Rewrite using `[hs]`. Simplify using the standard rewrite rules.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ ((mem_maximalIdeal _).2 hϖ.not_isUnit) n (Nat.pos_of_ne_zero hn0))`.
+-/
 theorem main : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (k : ℕ), 1 ≤ k → ∀ (J : Type) [Fintype J] (σ : J → (u.H k).Sec) (cls : J → u.D.toPre.X) (f : J → ∀ α, u.D.toPre.SecB k α), u.Basis l k σ cls f → ∀ (i₀ : J) (α : u.D.toPre.X), (∃ m, α = cls i₀ + k • m) → (Short l.q k α → IsBasisB u.D.toPre (fun i : {i // cls i = cls i₀} => f i α)) ∧ (¬ Short l.q k α → ∃ (a : u.V) (β : u.D.toPre.SecB k α), a ∈ IsLocalRing.maximalIdeal u.V ∧ ∀ j, (f i₀ α).f j = constFn u.D.toPre.P.A.hom _ a * β.f j) := by
   intro hLL o Ω _ _ _ _ S ρ p _ y₀ u l k hk J _ σ cls f ⟨hsh, _, _, _, hfam, _, hB⟩ i₀ α ⟨m, hm⟩
   subst hm

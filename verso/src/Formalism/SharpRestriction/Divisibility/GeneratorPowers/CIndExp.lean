@@ -50,6 +50,15 @@ def ChartIndepTruncSt : Prop :=
     ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ harmA c a n →
       chartVal C k f P = chartVal C' k f' P
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ hstar S _ _ _ y C C' hC hC' k n F f f' hf hf' a P hP`. Establish `key : ∀ (x x' : ∀ m, jO y (dL Dw) m 1 ⟶ Xo.univ.t.G), x' = x → IsExpChart y x → ∀ (e : ∀ m, ExpFr y x m) (e' : ∀ m, ExpFr y x' m), IsExpGauge y x e → IsExpGauge y x' e' → ∀ (g g' : Fin n → MvPowerSeries (Fin 1 × Fin (dL Dw)) S), (∀ b, IsExpGerm y x e k (F b) (g b)) → (∀ b, IsExpG …`. Introduce `x x' hxx hx e e' he he' g g' hg hg'`. Substitute `hxx` using the available equality. Take `⟨q, hq0, hq2, hqc, hqf⟩` from `hGU E H Dw l Xo c S y _ hx e e' he he'`.
+
+Establish `hgg : ∀ b, g' b = g b * PowerSeries.subst (-((k : S) • q)) (PowerSeries.exp S)` using `fun b => hqf k (F b) (g b) (g' b) (hg b) (hg' b)`. Simplify using `only [hgg]`. Conclude with `(hK E H Dw l c S k n g q hq0 hq2 hqc a P hP).symm`. Take `⟨φ, hφ, hx⟩` from `hE E H Dw l Xo c S y C`. Take `⟨φ', hφ', hx'⟩` from `hE E H Dw l Xo c S y C'`.
+
+Take `⟨e, he, heo⟩` from `hG E H Dw l Xo c hstar S y C hC φ hφ hx`. Take `⟨e', he', heo'⟩` from `hG E H Dw l Xo c hstar S y C' hC' φ' hφ' hx'`. Use `choose g hg hgv using fun b => hT E H Dw l Xo c hstar S y C φ hφ e heo k (F b) (f b) (hf b)`. Use `choose g' hg' hgv' using fun b => hT E H Dw l Xo c hstar S y C' φ' hφ' e' heo' k (F b) (f' b) (hf' b)`. Establish `h1 : chartVal C k f P = ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, expVal (g b) (colOf m b)`.
+
+Simplify using `only [chartVal, hgv]`. Establish `h2 : chartVal C' k f' P = ∑ m ∈ P.support, algebraMap c.F S (P.coeff m) * ∏ b, expVal (g' b) (colOf m b)`. Simplify using `only [chartVal, hgv']`. Rewrite using `[h1, h2]`. Conclude with `key _ _ (hU E H Dw l Xo c S y _ _ hx' hx) hx e e' he he' g g' hg hg'`.
+-/
 theorem chartIndepTrunc_of (hE : ExpChartOfSt) (hG : ExpGaugeOfSt) (hT : TieSt) (hU : ExpUniqTanSt)
     (hGU : GaugeUniqSt) (hK : KillAddValSt) : ChartIndepTruncSt := by
   intro E _ _ _ H Dw l Xo c _ hstar S _ _ _ y C C' hC hC' k n F f f' hf hf' a P hP

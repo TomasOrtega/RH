@@ -12,6 +12,33 @@ open scoped Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `k P O f hP hO hc hd`. Take `⟨M, hM, hlines⟩` from `exists_frame_lines_not_in_zeroSet hP`. Use `set A : (Fin k → ℂ) →L[ℂ] (Fin k → ℂ) := LinearMap.toContinuousLinearMap (Matrix.toLin' M) with hAdef`. Establish `hAapp : ∀ x, A x = M *ᵥ x` using `fun x => rfl`. Use `set U := A ⁻¹' O with hUdef`.
+
+Establish `hU : IsOpen U` using `hO.preimage A.continuous`. Establish `hgc : ContinuousOn (f ∘ A) U` using `hc.comp A.continuous.continuousOn fun z hz => hz`. Establish `hPc : Continuous fun y : Fin k → ℂ => eval y P`. Use `continuous_iff_continuousAt.2 fun y => ?_` and prove the remaining obligations. Conclude with `(AnalyticOnNhd.eval_mvPolynomial P y (mem_univ y)).continuousAt`.
+
+Establish `hopen : IsOpen (O ∩ {y | eval y P ≠ 0})` using `hO.inter (isOpen_ne_fun hPc continuous_const)`. Establish `hA : ∀ (z : Fin k → ℂ) (i : Fin k) (t : ℂ), A (Function.update z i t) = A z + (t - z i) • fun j => M j i`. Introduce `z i t`. Establish `hupd : Function.update z i t = z + (t - z i) • Pi.single i 1`. Use extensionality with `l`.
+
+Distinguish the cases in `h : l = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[hupd, hAapp, hAapp, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_single_one]`.
+
+Both sides reduce to the same expression. Establish `hs : ∀ z ∈ U, ∀ i, DifferentiableAt ℂ (fun t => (f ∘ A) (Function.update z i t)) (z i)`. Introduce `z hz i`. Use `set v : Fin k → ℂ := fun j => M j i with hv`. Use `set q : ℂ → ℂ := fun t => eval (A z + (t - z i) • v) P with hqdef`.
+
+Establish `hqa : AnalyticOnNhd ℂ q univ` using `fun t _ => (AnalyticOnNhd.eval_mvPolynomial P _ (mem_univ _)).comp (analyticAt_const.add ((analyticAt_id.sub analyticAt_const).smul analyticAt_const))`. Establish `hq : ∀ᶠ t in 𝓝[≠] (z i), q t ≠ 0`. Assume the negation of the conclusion as `hfreq`. Rewrite `hfreq` using `[Filter.not_eventually]`. Simplify using `only [ne_eq, not_not] at hfreq`.
+
+Establish `hz0` using `hqa.eqOn_zero_of_preconnected_of_frequently_eq_zero isPreconnected_univ (mem_univ (z i)) hfreq`. Take `⟨t, ht⟩` from `hlines i (A z)`. Apply `ht` to reduce the goal to its premises. Establish `h1` using `hz0 (mem_univ (t + z i))`. Simplify `h1` using `[hqdef]`.
+
+Establish `hline : Continuous fun t : ℂ => Function.update z i t` using `continuous_const.update i continuous_id`. Establish `hUev : (fun t : ℂ => Function.update z i t) ⁻¹' U ∈ 𝓝 (z i)` using `hline.continuousAt.preimage_mem_nhds (by rw [Function.update_eq_self]; exact hU.mem_nhds hz)`. Use `(Complex.analyticAt_of_differentiable_on_punctured_nhds_of_continuousAt ?_ ?_).differentiableAt` and prove the remaining obligations. Use `filter_upwards [hq, mem_nhdsWithin_of_mem_nhds hUev] with t hqt htU`. Establish `hmem : A (Function.update z i t) ∈ O ∩ {y | eval y P ≠ 0}`.
+
+Use `⟨htU, ?_⟩` and prove the remaining obligations. Use `show eval (A (Function.update z i t)) P ≠ 0`. Rewrite using `[hA]`. Conclude with `hqt`. Establish `hfd : DifferentiableAt ℂ f (A (Function.update z i t))` using `hd.differentiableAt (hopen.mem_nhds hmem)`.
+
+Conclude with `hfd.comp t (A.differentiableAt.comp t (hasFDerivAt_update z t).differentiableAt)`. Conclude with `ContinuousAt.comp_of_eq (g := f ∘ A) (f := fun t : ℂ => Function.update z i t) (hgc.continuousAt (hU.mem_nhds hz)) hline.continuousAt (Function.update_eq_self i z)`. Establish `hgd : DifferentiableOn ℂ (f ∘ A) U` using `differentiableOn_of_continuousOn_of_separately hU hgc hs`. Use `set B : (Fin k → ℂ) →L[ℂ] (Fin k → ℂ) := LinearMap.toContinuousLinearMap (Matrix.toLin' M⁻¹) with hBdef`. Establish `hAB : ∀ y, A (B y) = y`.
+
+Introduce `y`. Use `show M *ᵥ (M⁻¹ *ᵥ y) = y`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv M (Ne.isUnit hM), Matrix.one_mulVec]`. Introduce `y hy`. Establish `hBy : B y ∈ U` using `by show A (B y) ∈ O`.
+
+Rewrite using `[hAB]`. Conclude with `hy`. Establish `h1 : DifferentiableAt ℂ ((f ∘ A) ∘ B) y` using `(hgd.differentiableAt (hU.mem_nhds hBy)).comp y B.differentiableAt`. Establish `h2 : (f ∘ A) ∘ B = f` using `funext fun y => by simp only [Function.comp, hAB]`. Rewrite `h1` using `[h2]`.
+
+Conclude with `h1.differentiableWithinAt`.
+-/
 theorem RiemannExtensionPolynomial.proof : RiemannExtensionPolynomial.Statement := by
   intro k P O f hP hO hc hd
   obtain ⟨M, hM, hlines⟩ := exists_frame_lines_not_in_zeroSet hP

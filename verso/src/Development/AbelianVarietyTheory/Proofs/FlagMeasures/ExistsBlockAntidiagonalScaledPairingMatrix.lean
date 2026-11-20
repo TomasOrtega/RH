@@ -11,6 +11,39 @@ open Matrix
 
 namespace GlobalTheory.Amp.BlockFrame
 
+/- English proof (translation)
+Introduce `K _ j r hj w`. Take `⟨τ, γ, t, ht⟩` from `GlobalTheory.HL.BlockStab.exists_monomial (E := K) w.blocks`. Rewrite `ht` using `[w.size]`. Establish `hγN : ∀ a, a < j → γ a < (Finset.range j).sup γ + 1` using `fun a ha => Nat.lt_succ_of_le (Finset.le_sup (f := γ) (Finset.mem_range.mpr ha))`. Use `⟨fun a => if (a : ℕ) < j then γ a else (Finset.range j).sup γ + 1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a b hab`. Establish `hab' : (a : ℕ) ≤ b` using `hab`. Simplify using `only`. Use `split_ifs with h1 h2 h2`. Conclude with `((ht a h1).2.2.2 b h2).2.1 hab'`.
+
+Conclude with `(hγN a h1).le`. Use linear arithmetic over natural numbers and integers. Conclude with `le_rfl`. Introduce `a b hb`. Establish `hb' : ¬ ((b : ℕ) < j)` using `by omega`.
+
+Simplify using `only`. Rewrite using `[if_neg hb']`. Distinguish the cases in `ha : (a : ℕ) < j`. Rewrite using `[if_pos ha]`. Conclude with `⟨fun h => absurd h (hγN a ha).ne, fun h => absurd h (by omega)⟩`.
+
+Rewrite using `[if_neg ha]`. Conclude with `⟨fun _ => by omega, fun _ => rfl⟩`. Introduce `σ sgn ρ hρ`. Simplify using `only [Fin.val_castLE, Fin.is_lt, if_true]`. Establish `hent : ∀ a b : Fin j, w.mat b a = if (a : ℕ) = τ b then (t (γ b) : K) else 0` using `fun a b => ((ht b b.isLt).2.2.2 a a.isLt).2.2.2`.
+
+Establish `key : ∀ a b : Fin j, (((ρ ^ (r - b.val))⁻¹ * (ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) * σ (w.mat b a * ((sgn a : ℤ) : K)) ≠ 0 → (a : ℕ) = τ b`. Introduce `a b h`. Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Rewrite using `[hent a b, if_neg hne, zero_mul, map_zero, mul_zero]`.
+
+Establish `hs : ∀ a : Fin j, ‖σ ((sgn a : ℤ) : K)‖ = 1` using `fun a => by`. Apply the tactic sequence `rcases Int.units_eq_one_or (sgn a) with h | h <;> simp [h]`. Establish `hsK : ∀ a : Fin j, ((sgn a : ℤ) : K) ≠ 0` using `fun a => by`. Apply the tactic sequence `rcases Int.units_eq_one_or (sgn a) with h | h <;> simp [h]`. Establish `hZ : (Matrix.of fun a b : Fin j => (((ρ ^ (r - b.val))⁻¹ * (ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) * σ (w.mat b a * ((sgn a : ℤ) : K))) = Matrix.diagonal (fun a : Fin j => (((ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ)) * (Matrix.diagonal (fun a : Fin j => ((sgn a : ℤ) : K)) * w.matᵀ).map σ * Matrix.diag …`.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, Matrix.transpose_apply, Complex.ofReal_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : ∀ a : Fin j, (((ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) ≠ 0` using `fun a => Complex.ofReal_ne_zero.mpr (inv_ne_zero (pow_ne_zero _ hρ.ne'))`. Unfold `GlobalTheory.Amp.BlockAnti`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Conclude with `((ht a a.isLt).2.2.2 b b.isLt).2.1 hab`. Rewrite using `[hZ, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, show ((Matrix.diagonal (fun a : Fin j => ((sgn a : ℤ) : K)) * w.matᵀ).map σ).det = σ (Matrix.diagonal (fun a : Fin j => ((sgn a : ℤ) : K)) * w.matᵀ).det from (RingHom.map_det σ _).symm, Matrix.det_mul, Matrix.det_diagonal, …`. Establish `hP : ∏ a : Fin j, (((ρ ^ (r - a.val))⁻¹ : ℝ) : ℂ) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun a _ => hd a`.
+
+Use `mul_ne_zero (mul_ne_zero hP ?_) hP` and prove the remaining obligations. Conclude with `(map_ne_zero σ).mpr (mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun a _ => hsK a) (GlobalTheory.SgLoc.PtAlg.isUnit_det w).ne_zero)`. Introduce `a b h`. Establish `e` using `key a b h`. Use `show γ a = γ b`.
+
+Rewrite using `[e]`. Conclude with `(ht b b.isLt).2.2.1`. Introduce `a b a' b' h1 h2 hγ`. Establish `hγ' : γ a = γ a'` using `hγ`. Establish `e1` using `key a b h1`.
+
+Establish `e2` using `key a' b' h2`. Establish `hb : (b : ℕ) = τ a` using `by rw [e1, (ht b b.isLt).2.1]`. Establish `hb' : (b' : ℕ) = τ a'` using `by rw [e2, (ht b' b'.isLt).2.1]`. Establish `hsum : (a : ℕ) + τ a = a' + τ a'` using `((ht a a.isLt).2.2.2 a' a'.isLt).2.2.1 hγ'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hγb : γ b = γ a` using `by rw [hb]; exact (ht a a.isLt).2.2.1`. Establish `hγb' : γ b' = γ a` using `by rw [hb', hγ']; exact (ht a' a'.isLt).2.2.1`. Establish `hw1 : w.mat b a = (t (γ a) : K)` using `by rw [hent a b, if_pos e1, hγb]`. Establish `hw2 : w.mat b' a' = (t (γ a) : K)` using `by rw [hent a' b', if_pos e2, hγb']`. Establish `ha` using `a.isLt`.
+
+Establish `hb2` using `b.isLt`. Establish `ha'` using `a'.isLt`. Establish `hb2'` using `b'.isLt`. Establish `hexp : (r - b.val) + (r - a.val) = (r - b'.val) + (r - a'.val)` using `by omega`. Establish `hc : ((ρ ^ (r - b.val))⁻¹ * (ρ ^ (r - a.val))⁻¹ : ℝ) = (ρ ^ (r - b'.val))⁻¹ * (ρ ^ (r - a'.val))⁻¹`.
+
+Rewrite using `[← mul_inv, ← mul_inv, ← pow_add, ← pow_add, hexp]`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[hw1, hw2, hc, norm_mul, norm_mul, map_mul, map_mul, norm_mul, norm_mul, hs a, hs a']`. Introduce `haa`. Substitute `haa` using the available equality.
+
+Conclude with `Fin.ext (hb.trans hb'.symm)`. Introduce `hlt`. Establish `hlt' : (a : ℕ) < a'` using `hlt`. Conclude with `Fin.lt_def.mpr (by omega)`.
+-/
 theorem blockAnti_scaled_pairing : ∀ {K : Type} [Field K] {j r : ℕ} (hj : j ≤ r) (w : Formalism.MainNotions.S.Loc.Pt K j),
     ∃ β : Fin r → ℕ, Monotone β ∧ (∀ a b : Fin r, j ≤ b.val → (β a = β b ↔ j ≤ a.val)) ∧
       ∀ (σ : K →+* ℂ) (sgn : Fin j → ℤˣ) (ρ : ℝ), 0 < ρ →

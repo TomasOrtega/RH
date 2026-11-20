@@ -12,6 +12,17 @@ namespace Formalism.L2.SG.NGCut.NormalVectorPairings
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Establish `hX' : F'.fl.X ≤ Asp F.fl F'.fl` using `by rw [← Asp_symm]; exact X_le_Asp F'.fl F.fl`. Establish `hz' : F'.fl.z ∈ Asp F.fl F'.fl` using `by rw [← Asp_symm]; exact z_mem_Asp F'.fl F.fl`. Establish `key : UU Λ F F' ≤ (Asp F.fl F'.fl).restrictScalars (𝓞 D.host.E)`. Unfold `UU`.
+
+Use `sup_le (sup_le (sup_le ?_ ?_) ?_) ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `X_le_Asp F.fl F'.fl (Submodule.mem_inf.1 hy).2`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, hL.2]`. Conclude with `z_mem_Asp F.fl F'.fl`.
+
+Introduce `y hy`. Conclude with `hX' (Submodule.mem_inf.1 hy).2`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, hL'.2]`. Conclude with `hz'`. Unfold `UUE spanE`.
+
+Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `key hx`. Rewrite using `[Asp, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `PI.PairCorankPos.W.frame_mem_UUE Λ hΛ F F' hL hL' i`.
+-/
 theorem UUE_eq_Asp {D : D7} {T T' : D.host.E} (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (hΛ : Submodule.IsLattice D.host.E Λ) (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (hL : IsLift Λ F) (hL' : IsLift Λ F') : UUE Λ F F' = Asp F.fl F'.fl := by

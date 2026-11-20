@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.ConsNumber.VertRoots
 
+/- English proof (translation)
+Establish `h1 : ∑ l, b l ^ k = ∑ l, (-a l) ^ k`. Repeatedly rewrite using `[hb]`. Conclude with `Equiv.sum_comp e (fun l => (-a l) ^ k)`. Rewrite using `[h1, ← Finset.sum_add_distrib, ← Equiv.sum_comp e' (fun x => r x ^ k + (-r x) ^ k)]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `rcases ha l with h | h <;> rw [h]`. Rewrite using `[neg_neg, add_comm]`.
+-/
 theorem sum_pow_add_sum_pow {R : Type} [CommRing R] {ι κ : Type} [Fintype ι] [Fintype κ] (k : ℕ)
     (a b : ι → R) (r : κ → R) (e : ι ≃ ι) (e' : ι ≃ κ)
     (ha : ∀ l, a l = r (e' l) ∨ a l = -r (e' l)) (hb : ∀ l, b l = -a (e l)) :
@@ -30,6 +35,13 @@ section Model
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} [Fact p.Prime] {hp : p.Prime}
   {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈ W.nonunits} (z : AdmAt S κ hp hW) (jc : KW p →+* ℂ)
 
+/- English proof (translation)
+Break down `h : letterOf S.Dw st with _ | x` into its components or cases. Establish `e : ∀ b, z.stepLB b st = FinLB.triv _` using `fun b => by`. Unfold `admitted.stepLB`. Use `split`. Use `next y hy => exact absurd (hy.symm.trans h) (by simp)`.
+
+Both sides reduce to the same expression. Rewrite using `[e, e, sub_self]`. Conclude with `zero_mem _`. Rewrite using `[z.stepLB_of_some true h, z.stepLB_of_some false h]`. Establish `e : (mdlOf z jc).Z.c1 (z.line true st x h).L = (mdlOf z jc).Z.c1 (z.line false st x h).L - (mdlOf z jc).Z.cD (vdiv hp hW (Formalism.DegreeFormula.dimFl D.what₂.Tau N) (z.line false st x h).L (z.line true st x h).L (z.genId hp hW h))` using `firstChern_eq_sub_divisor hp hW (Formalism.DegreeFormula.dimFl D.what₂.Tau N) (z.line false st x h).L (z.line true st x h).L (z.genId hp hW h)`.
+
+Rewrite using `[e, sub_sub_cancel_left]`. Conclude with `neg_mem (Ideal.subset_span ⟨_, rfl⟩)`.
+-/
 theorem c1_stepLB_sub_mem (st : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ) :
     (mdlOf z jc).Z.c1 (z.stepLB true st) - (mdlOf z jc).Z.c1 (z.stepLB false st) ∈
       Ideal.span (Set.range (mdlOf z jc).Z.cD) := by
@@ -49,6 +61,11 @@ theorem c1_stepLB_sub_mem (st : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ) :
     rw [e, sub_sub_cancel_left]
     exact neg_mem (Ideal.subset_span ⟨_, rfl⟩)
 
+/- English proof (translation)
+Unfold `rootOf admitted.rootLB`. Simplify using `only`. Use `split_ifs`. Conclude with `c1_stepLB_sub_mem z jc _`. Rewrite using `[LieGen.c1_dual_mdl, LieGen.c1_dual_mdl, neg_sub_neg]`.
+
+Establish `h` using `neg_mem (c1_stepLB_sub_mem z jc (.inl (conjEmb (tauEmb D r.1), S.Dw.p + S.Dw.q - 1 - (r.2 : ℕ))))`. Rewrite `h` using `[neg_sub]`. Then use the resulting hypothesis.
+-/
 theorem c1_rootOf_sub_mem (r : Rt D.what₂.Tau N) :
     (mdlOf z jc).Z.c1 (rootOf z jc (true, r)) - (mdlOf z jc).Z.c1 (rootOf z jc (false, r)) ∈
       Ideal.span (Set.range (mdlOf z jc).Z.cD) := by
@@ -62,6 +79,23 @@ theorem c1_rootOf_sub_mem (r : Rt D.what₂.Tau N) :
 
 end Model
 
+/- English proof (translation)
+Introduce `D A N j S κ p _ hp W hW z jc G`. Use `set I : Ideal (mdlOf z jc).Z.Ch := Ideal.span (Set.range (mdlOf z jc).Z.cD) with hIdef`. Establish `hI : ∀ v, Ideal.Quotient.mk I ((mdlOf z jc).Z.cD v) = 0` using `fun v => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨v, rfl⟩)`. Take `⟨e', V, hV⟩` from `LieGen.lieW_gen D A N j S κ p hp W hW z jc`. Take `⟨e, he⟩` from `(mdlOf z jc).omW_dual`.
+
+Establish `hA : ∀ l, Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 ((mdlOf z jc).lieW.x l)) = Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 (rootOf z jc (false, e' l))) ∨ Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 ((mdlOf z jc).lieW.x l)) = -Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 (rootOf z jc (false, e' l)))` using `fun l => by`. Rewrite using `[hV l, map_add, hI, add_zero]`. Use `split_ifs`. Use `left`. Rewrite using `[one_smul]`.
+
+Use `right`. Rewrite using `[neg_one_smul, map_neg]`. Establish `hB : ∀ l, Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 ((mdlOf z jc).omW.x l)) = -Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 ((mdlOf z jc).lieW.x (e l)))` using `fun l => by`. Rewrite using `[he l, map_neg]`. Establish `hA' : ∀ l, Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 ((mdlOf z jc).lieW.x' l)) = Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 ((mdlOf z jc).lieW.x l))` using `fun l => by`.
+
+Rewrite using `[(mdlOf z jc).lieW.hx l, map_sub, hI, sub_zero]`. Establish `hB' : ∀ l, Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 ((mdlOf z jc).omW.x' l)) = Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 ((mdlOf z jc).omW.x l))` using `fun l => by`. Rewrite using `[(mdlOf z jc).omW.hx l, map_sub, hI, sub_zero]`. Establish `hsum : ∀ k : ℕ, (∑ l, Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 ((mdlOf z jc).lieW.x l)) ^ k) + ∑ l, Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 ((mdlOf z jc).omW.x l)) ^ k = ∑ t : D.what₂.Tau, ∑ i : Fin N, (Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 (rootOf z jc (false, (t, i)))) ^ k + (-Id …` using `fun k => by`. Rewrite using `[sum_pow_add_sum_pow k _ _ (fun x => Ideal.Quotient.mk I ((mdlOf z jc).Z.c1 (rootOf z jc (false, x)))) e e' hA hB]`.
+
+Conclude with `Fintype.sum_prod_type _`. Establish `key : (Ideal.Quotient.mkₐ ℚ I).comp ((aeval (mdlOf z jc).Z.c1).comp (evV (mdlOf z jc) (rootOf z jc))) = (Ideal.Quotient.mkₐ ℚ I).comp ((aeval fun x => (mdlOf z jc).Z.c1 (rootOf z jc (false, x))).comp (GlobalTheory.ConsNumber.collapseQ D N))`. Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Break down `v with ⟨b, r⟩ | ⟨b, k⟩` into its components or cases. Simplify using `only [AlgHom.comp_apply, evV, GlobalTheory.ConsNumber.collapseQ, GlobalTheory.ConsNumber.colVar, aeval_X, Ideal.Quotient.mkₐ_eq_mk]`.
+
+Consider the cases of `b`. Both sides reduce to the same expression. Conclude with `Ideal.Quotient.eq.2 (c1_rootOf_sub_mem z jc r)`. Consider the cases of `b`. Simplify using `only [AlgHom.comp_apply, evV, GlobalTheory.ConsNumber.collapseQ, GlobalTheory.ConsNumber.colVar, aeval_X, aeval_C, Ideal.Quotient.mkₐ_eq_mk, map_mul, map_add, map_sum, map_pow, map_neg]`.
+
+Rewrite using `[hsum]`. Simplify using `only [AlgHom.comp_apply, evV, GlobalTheory.ConsNumber.collapseQ, GlobalTheory.ConsNumber.colVar, aeval_X, aeval_C, Ideal.Quotient.mkₐ_eq_mk, map_mul, map_add, map_sum, map_pow, map_neg, hA', hB']`. Rewrite using `[hsum]`. Establish `h` using `AlgHom.congr_fun key G`. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk] at h`.
+
+Conclude with `Ideal.Quotient.eq.1 h`.
+-/
 theorem evC_sub_collapseQ_mem : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) [Fact p.Prime]
     (hp : p.Prime) (W : ValuationSubring ℂ) (hW : (p : ℂ) ∈ W.nonunits) (z : AdmAt S κ hp hW) (jc : KW p →+* ℂ)
     (G : MvPolynomial (Vm D.what₂.Tau N) ℚ), evC (mdlOf z jc) (rootOf z jc) G -

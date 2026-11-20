@@ -7,6 +7,21 @@ namespace GroundTheory.Heights₂.Heights
 
 namespace SectionLengthSum
 
+/- English proof (translation)
+Take `⟨P, hP, hPQ⟩` from `Ideal.exists_minimalPrimes_le hJQ`. Establish `hPp : P.IsPrime` using `hP.1.1`. Break down `eq_or_lt_of_le hPQ with h | hlt` into its components or cases. Conclude with `Or.inl (h ▸ hP)`. Break down `eq_or_lt_of_le hQW with h | hlt2` into its components or cases.
+
+Conclude with `Or.inr h`. It suffices to derive a contradiction. Establish `hW` using `hWP P hP (hPQ.trans hQW)`. Establish `hWp : W.IsPrime` using `hW.1.1`. Establish `h1` using `Ideal.map_height_le_one_of_mem_minimalPrimes hW`.
+
+Use `set g := Ideal.Quotient.mk P`. Establish `hsurj : Function.Surjective g` using `Ideal.Quotient.mk_surjective`. Establish `hker : RingHom.ker g = P` using `Ideal.mk_ker`. Establish `hcm : ∀ I : Ideal A, P ≤ I → (I.map g).comap g = I` using `fun I hI => by`. Rewrite using `[Ideal.comap_map_of_surjective g hsurj, ← RingHom.ker_eq_comap_bot, hker, sup_eq_left.mpr hI]`.
+
+Establish `: (Q.map g).IsPrime` using `Ideal.map_isPrime_of_surjective hsurj (by rw [hker]; exact hPQ)`. Establish `: (W.map g).IsPrime` using `Ideal.map_isPrime_of_surjective hsurj (by rw [hker]; exact hPQ.trans hQW)`. Establish `: (W.map g).FiniteHeight` using `⟨Or.inr (h1.trans_lt (WithTop.coe_lt_top 1)).ne⟩`. Establish `: (Q.map g).FiniteHeight` using `⟨Or.inr ((Ideal.height_mono (Ideal.map_mono hQW)).trans_lt (h1.trans_lt (WithTop.coe_lt_top 1))).ne⟩`. Establish `hbot : (⊥ : Ideal (A ⧸ P)) < Q.map g`.
+
+Use `lt_of_le_of_ne bot_le fun h => hlt.ne ?_` and prove the remaining obligations. Rewrite using `[← hcm Q hPQ, ← h, ← RingHom.ker_eq_comap_bot, hker]`. Establish `hQW' : Q.map g < W.map g`. Use `lt_of_le_of_ne (Ideal.map_mono hQW) fun h => hlt2.ne ?_` and prove the remaining obligations. Rewrite using `[← hcm Q hPQ, h, hcm W (hPQ.trans hQW)]`.
+
+Establish `h2` using `Ideal.height_strict_mono_of_isPrime_of_isPrime hQW'`. Establish `h3` using `Ideal.height_strict_mono_of_isPrime_of_isPrime (I := ⊥) hbot`. Establish `h4 : (Q.map g).height < 1` using `h2.trans_le h1`. Rewrite `h4` using `[Order.lt_one_iff]`. Rewrite `h3` using `[h4]`.
+
+Conclude with `absurd h3 (not_lt_of_ge bot_le)`.
+-/
 theorem prime_between {A : Type*} [CommRing A] [IsNoetherianRing A] {J W Q : Ideal A} {f : A}
     (hWP : ∀ P ∈ J.minimalPrimes, P ≤ W → W ∈ (P ⊔ Ideal.span {f}).minimalPrimes)
     [hQ : Q.IsPrime] (hJQ : J ≤ Q) (hQW : Q ≤ W) : Q ∈ J.minimalPrimes ∨ Q = W := by
@@ -45,12 +60,40 @@ theorem prime_between {A : Type*} [CommRing A] [IsNoetherianRing A] {J W Q : Ide
   rw [h4] at h3
   exact absurd h3 (not_lt_of_ge bot_le)
 
+/- English proof (translation)
+Establish `: IsArtinianRing (B ⧸ I)` using `IsLocalRing.quotient_artinian_of_mem_minimalPrimes_of_isLocalRing _ hI`. Establish `: IsArtinian B (B ⧸ I)` using `isArtinian_of_surjective_algebraMap (Ideal.Quotient.mk_surjective (I := I))`. Conclude with `Module.length_ne_top`.
+-/
 theorem length_ne_top_of_mem_minimalPrimes {B : Type*} [CommRing B] [IsNoetherianRing B] [IsLocalRing B]
     (I : Ideal B) (hI : IsLocalRing.maximalIdeal B ∈ I.minimalPrimes) : Module.length B (B ⧸ I) ≠ ⊤ := by
   have : IsArtinianRing (B ⧸ I) := IsLocalRing.quotient_artinian_of_mem_minimalPrimes_of_isLocalRing _ hI
   have : IsArtinian B (B ⧸ I) := isArtinian_of_surjective_algebraMap (Ideal.Quotient.mk_surjective (I := I))
   exact Module.length_ne_top
 
+/- English proof (translation)
+Introduce `A _ _ J W f hJ hf hW hWP`. Establish `hWp : W.IsPrime` using `hW.1.1`. Set `B` to `Localization.AtPrime W`. Set `φ` to `algebraMap A B`. Establish `: IsNoetherianRing B` using `IsLocalization.isNoetherianRing W.primeCompl B inferInstance`.
+
+Establish `hmin : ∀ Q : Ideal B, Q ∈ (J.map φ).minimalPrimes ↔ Q.comap φ ∈ J.minimalPrimes` using `fun Q => by`. Rewrite using `[IsLocalization.minimalPrimes_map W.primeCompl B J]`. Both sides reduce to the same expression. Establish `hcomapW : ∀ Q : Ideal B, Q.IsPrime → Q.comap φ ≤ W` using `fun Q hQ x hx => by`. Assume the negation of the conclusion as `hxW`.
+
+Conclude with `hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ hx (IsLocalization.map_units B (⟨x, hxW⟩ : W.primeCompl)))`. Establish `hmapcomap : ∀ Q : Ideal B, (Q.comap φ).map φ = Q` using `fun Q => IsLocalization.map_under W.primeCompl B Q`. Establish `hcomapmap : ∀ P : Ideal A, P.IsPrime → P ≤ W → (P.map φ).comap φ = P` using `fun P hP hPW => IsLocalization.under_map_of_isPrime_disjoint W.primeCompl B hP (Set.disjoint_left.mpr fun x hx hxP => hx (hPW hxP))`. Establish `hJ' : (J.map φ).IsRadical` using `by show (J.map φ).radical ≤ J.map φ`. Rewrite using `[← IsLocalization.map_radical W.primeCompl B J, hJ.radical]`.
+
+Establish `hf' : ∀ Q ∈ (J.map φ).minimalPrimes, φ f ∉ Q` using `fun Q hQ hfQ => hf _ ((hmin Q).1 hQ) hfQ`. Establish `hdim : ∀ Q : Ideal B, Q.IsPrime → J.map φ ≤ Q → Q ∈ (J.map φ).minimalPrimes ∨ Q = IsLocalRing.maximalIdeal B`. Introduce `Q hQ hJQ`. Establish `: (Q.comap φ).IsPrime` using `hQ.comap φ`. Break down `prime_between hWP (Ideal.map_le_iff_le_comap.mp hJQ) (hcomapW Q hQ) with h | h` into its components or cases.
+
+Conclude with `Or.inl ((hmin Q).2 h)`. Use `right`. Rewrite using `[← hmapcomap Q, h]`. Conclude with `IsLocalization.AtPrime.map_eq_maximalIdeal W B`. Establish `key` using `hLoc B (J.map φ) (φ f) hJ' hf' hdim`.
+
+Establish `hsup : ∀ I : Ideal A, (I ⊔ Ideal.span {f}).map φ = I.map φ ⊔ Ideal.span {φ f}` using `fun I => by`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Establish `hlm : ∀ I : Ideal A, localMult (I ⊔ Ideal.span {f}) W = (Module.length B (B ⧸ (I.map φ ⊔ Ideal.span {φ f}))).toNat` using `fun I => by`. Unfold `localMult`. Rewrite using `[dif_pos hWp, hsup]`.
+
+Establish `hfW : φ f ∈ IsLocalRing.maximalIdeal B`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal W B]`. Conclude with `Ideal.mem_map_of_mem φ (hW.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self f)))`. Establish `hfin : ∀ Q ∈ (J.map φ).minimalPrimes, Module.length B (B ⧸ (Q ⊔ Ideal.span {φ f})) ≠ ⊤`. Introduce `Q hQ`.
+
+Use `length_ne_top_of_mem_minimalPrimes _ ⟨⟨(IsLocalRing.maximalIdeal.isMaximal B).isPrime, sup_le (IsLocalRing.le_maximalIdeal hQ.1.1.ne_top) ((Ideal.span_singleton_le_iff_mem _).mpr hfW)⟩, fun Q₂ hQ₂ _ => ?_⟩` and prove the remaining obligations. Break down `hdim Q₂ hQ₂.1 (hQ.1.2.trans (le_sup_left.trans hQ₂.2)) with h | h` into its components or cases. Conclude with `absurd (hQ₂.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))) (hf' Q₂ h)`. Conclude with `h.ge`. Rewrite using `[hlm J, key, ENat.toNat_sum (fun Q hQ => hfin Q ((Set.Finite.mem_toFinset _).mp hQ))]`.
+
+Use `symm`. Use `Finset.sum_nbij' (fun P => P.map φ) (fun Q => Q.comap φ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `P hP`. Rewrite `hP` using `[Finset.mem_filter, Set.Finite.mem_toFinset]`. Rewrite using `[Set.Finite.mem_toFinset, hmin, hcomapmap P hP.1.1.1 hP.2]`.
+
+Conclude with `hP.1`. Introduce `Q hQ`. Rewrite `hQ` using `[Set.Finite.mem_toFinset]`. Rewrite using `[Finset.mem_filter, Set.Finite.mem_toFinset]`. Conclude with `⟨(hmin Q).1 hQ, hcomapW Q hQ.1.1⟩`.
+
+Introduce `P hP`. Rewrite `hP` using `[Finset.mem_filter, Set.Finite.mem_toFinset]`. Conclude with `hcomapmap P hP.1.1.1 hP.2`. Introduce `Q _`. Conclude with `hmapcomap Q`.
+
+Introduce `P _`. Conclude with `hlm P`.
+-/
 theorem proof (hLoc : LocalSectionLengthSum.Statement) : SectionLengthSum.Statement := by
   intro A _ _ J W f hJ hf hW hWP
   classical

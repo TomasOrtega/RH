@@ -7,6 +7,9 @@ import Formalism.FormalDegreeBessel.StatementG
 import Formalism.SharpRestriction.CuspSpanNormBounds.FractionFieldToGenericStalkAlgebraMapEq
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.dual_vectors_in_second_flag | exact GlobalTheory.dual_vectors_in_second_flag | (intros; apply GlobalTheory.dual_vectors_in_second_flag <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dualVectors_normalForm_mem_secondFlag : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {r j : ℕ} (hj : j ≤ r) (e e' s : Fin r → V),
     (Matrix.of fun a b : Fin j => H.B (e (Fin.castLE hj a)) (e' (Fin.castLE hj b))).det ≠ 0 →

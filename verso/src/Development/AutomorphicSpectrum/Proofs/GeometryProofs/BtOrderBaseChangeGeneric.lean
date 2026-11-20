@@ -15,6 +15,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.BT.BaseChangeOrder
 
+/- English proof (translation)
+Consider the cases of `nonempty_fintype T`. Establish `h1 : ∀ t s : T, s ≠ t → ∃ b ∈ A, b s = 0 ∧ φ (b t) ≠ 0`. Introduce `t s hst`. Take `⟨a, ha, hne⟩` from `hsep s t hst`. Use `⟨a - algebraMap R _ (a s), A.sub_mem ha (A.algebraMap_mem _), by simp, ?_⟩` and prove the remaining obligations.
+
+Simplify `hne.symm` using `[sub_eq_zero, map_sub]`. Establish `h2 : ∀ t, ∃ c ∈ A, (∀ s, s ≠ t → c s = 0) ∧ φ (c t) ≠ 0`. Introduce `t`. Use `choose! b hbA hb0 hb1 using h1 t`. Use `⟨∏ s ∈ Finset.univ.erase t, b s, Subalgebra.prod_mem _ fun s hs => hbA s (Finset.ne_of_mem_erase hs), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `s hs`. Rewrite using `[Finset.prod_apply]`. Conclude with `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hs, Finset.mem_univ _⟩) (hb0 s hs)`. Rewrite using `[Finset.prod_apply, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun s hs => hb1 s (Finset.ne_of_mem_erase hs)`.
+
+Use `choose c hcA hc0 hc1 using h2`. Use `⟨∏ t, c t t, by rw [map_prod]; exact Finset.prod_ne_zero_iff.2 fun t _ => hc1 t, fun f => ?_⟩` and prove the remaining obligations. Establish `key : (∏ t, c t t) • f = ∑ t, (f t * ∏ u ∈ Finset.univ.erase t, c u u) • c t`. Use extensionality with `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.sum_apply]`.
+
+Rewrite using `[Finset.sum_eq_single x]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ x)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `t _ ht`. Rewrite using `[hc0 t x ht.symm, mul_zero]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[key]`. Conclude with `Subalgebra.sum_mem _ fun t _ => Subalgebra.smul_mem _ (hcA t) _`.
+-/
 theorem exists_smul_mem_of_separates {R R' T : Type} [CommRing R] [CommRing R'] [IsDomain R'] [Finite T]
     (φ : R →+* R') (A : Subalgebra R (T → R))
     (hsep : ∀ s t : T, s ≠ t → ∃ a ∈ A, φ (a s) ≠ φ (a t)) :
@@ -52,6 +65,11 @@ theorem exists_smul_mem_of_separates {R R' T : Type} [CommRing R] [CommRing R'] 
 
 variable {R : Type} [CommRing R] {T : Type} [CommGroup T]
 
+/- English proof (translation)
+Establish `key : ∀ g ∈ prodSpan A, (fun h => g (t, h)) ∈ A`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨a, ha, b, hb, rfl⟩` from `hg`.
+
+Conclude with `A.smul_mem hb (a t)`. Consider the case `zero => exact A.zero_mem`. Consider the case `add x y _ _ hx hy => exact A.add_mem hx hy`. Consider the case `smul r x _ hx => exact A.smul_mem hx r`. Conclude with `key _ (hA.comul f hf)`.
+-/
 theorem translate_mem {A : Subalgebra R (T → R)} (hA : IsHopfOrder A) (t : T) {f : T → R} (hf : f ∈ A) :
     (fun h => f (t * h)) ∈ A := by
   have key : ∀ g ∈ prodSpan A, (fun h => g (t, h)) ∈ A := by
@@ -72,11 +90,23 @@ def transl {A : Subalgebra R (T → R)} (hA : IsHopfOrder A) (s : T) : A →+* A
   map_zero' := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem transl_apply {A : Subalgebra R (T → R)} (hA : IsHopfOrder A) (s : T) (f : A) (h : T) :
     (transl hA s f : T → R) h = (f : T → R) (s * h) := rfl
 
 variable [IsDomain R] {R' : Type} [CommRing R'] [IsDomain R'] [Algebra R R']
 
+/- English proof (translation)
+Take `⟨B, _, i, k, k', σ, hinj, h1, h2, -, h4, h5⟩` from `hbc.pts`. Establish `hρ` using `Spec.map_preimage (σ t ≫ j)`. Use `set ρ := Spec.preimage (σ t ≫ j) with hρdef`. Establish `e1 : ρ ≫ CommRingCat.ofHom k = CommRingCat.ofHom ((algebraMap R (FractionRing R)).comp ((Pi.evalRingHom (fun _ : T => R) t).comp A.val.toRingHom))`. Apply `Spec.map_injective` to reduce the goal to its premises.
+
+Rewrite using `[Spec.map_comp, hρ, ← Category.assoc, h4, hj.pt]`. Establish `e2 : ∀ a : A, ρ.hom a = i ((a : T → R) t)`. Introduce `a`. Apply `hinj` to reduce the goal to its premises. Use `congrArg (fun g => g.hom a) e1` as an intermediate fact.
+
+Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply] at this`. Rewrite using `[this, ← RingHom.comp_apply k i, h1]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, ← h5 t, Category.assoc, ← hρ, ← Spec.map_comp]`. Use `congr 1`.
+
+Use extensionality with `a`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply]`. Rewrite using `[e2, ← RingHom.comp_apply k' i, h2]`. Both sides reduce to the same expression.
+-/
 theorem pt_comp_emb {Γ : QFGroup R T} {Γ' : QFGroup R' T} {F : Γ'.G.left ⟶ Γ.G.left}
     (hbc : Γ'.IsBaseChange Γ (algebraMap R R') F) {A : Subalgebra R (T → R)}
     {j : Γ.G.left ⟶ Spec (CommRingCat.of A)} (hj : Γ.IsEmb A j) (t : T) :
@@ -104,6 +134,15 @@ theorem pt_comp_emb {Γ : QFGroup R T} {Γ' : QFGroup R' T} {F : Γ'.G.left ⟶ 
   rw [e2, ← RingHom.comp_apply k' i, h2]
   rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hst` to reduce the goal to its premises. Establish `e : (Γ'.pt s).left ≫ F ≫ j = (Γ'.pt t).left ≫ F ≫ j`. Rewrite using `[pt_comp_emb hbc hj, pt_comp_emb hbc hj]`.
+
+Use `congr 2`. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`. Conclude with `congrArg _ (hcon a.1 a.2)`. Establish `e' : (Γ'.pt s).left ≫ F = (Γ'.pt t).left ≫ F`.
+
+Rewrite using `[← cancel_mono j]`. Simplify `e` using `only [Category.assoc]`. Establish `e'' : (Γ'.pt s).left = (Γ'.pt t).left`. Apply `hbc.cart.hom_ext e'` to reduce the goal to its premises. Rewrite using `[Over.w, Over.w]`.
+
+Take `⟨x⟩ : Nonempty (Spec (CommRingCat.of (FractionRing R')))` from `inferInstance`. Conclude with `Γ'.pt_inj s t x x (by rw [e''])`.
+-/
 theorem separates {Γ : QFGroup R T} {Γ' : QFGroup R' T} {F : Γ'.G.left ⟶ Γ.G.left}
     (hbc : Γ'.IsBaseChange Γ (algebraMap R R') F) {A : Subalgebra R (T → R)}
     {j : Γ.G.left ⟶ Spec (CommRingCat.of A)} (hj : Γ.IsEmb A j) [Mono j] (s t : T) (hst : s ≠ t) :
@@ -133,6 +172,13 @@ namespace GlobalTheory.CompanionTheory.Ar.BT.BaseChangeOrder
 variable {R : Type} [CommRing R] {T : Type} [CommGroup T]
 variable [IsDomain R] {R' : Type} [CommRing R'] [IsDomain R'] [Algebra R R']
 
+/- English proof (translation)
+Establish `P` using `CommRingCat.isPushout_tensorProduct R R' A`. Establish `P' : IsPushout (CommRingCat.ofHom (algebraMap R R')) (CommRingCat.ofHom (algebraMap R A)) (CommRingCat.ofHom (algebraMap R' A')) (CommRingCat.ofHom (e.toRingEquiv.toRingHom.comp (Algebra.TensorProduct.includeRight.toRingHom : A →+* R' ⊗[R] A)))`. Use `P.of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) e.toRingEquiv.toCommRingCatIso ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Use extensionality with `x t`. Establish `h : e (x ⊗ₜ[R] 1) = algebraMap R' A' x`. Rewrite using `[← e.commutes]`. Both sides reduce to the same expression. Simplify using `using congrFun (congrArg (fun y : A' => (y : T → R')) h) t`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Conclude with `isPullback_SpecMap_of_isPushout _ _ _ _ P'.flip`.
+-/
 theorem isPullback_spec {A : Subalgebra R (T → R)} {A' : Subalgebra R' (T → R')}
     (e : R' ⊗[R] A ≃ₐ[R'] A') :
     IsPullback (Spec.map (CommRingCat.ofHom (e.toRingEquiv.toRingHom.comp
@@ -157,6 +203,27 @@ theorem isPullback_spec {A : Subalgebra R (T → R)} {A' : Subalgebra R' (T → 
       simp
   exact isPullback_SpecMap_of_isPushout _ _ _ _ P'.flip
 
+/- English proof (translation)
+Establish `hsq` using `isPullback_spec e`. Use `set ψ : A →+* A' := e.toRingEquiv.toRingHom.comp (Algebra.TensorProduct.includeRight.toRingHom : A →+* R' ⊗[R] A) with hψ`. Establish `hψt : ∀ (a : A) (t : T), (ψ a : T → R') t = algebraMap R R' ((a : T → R) t)` using `fun a t => he a t`. Establish `hw : (F ≫ j) ≫ Spec.map (CommRingCat.ofHom (algebraMap R A)) = Γ'.G.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R R'))`. Rewrite using `[Category.assoc, hj.isOver, hbc.cart.w]`.
+
+Set `j' : Γ'.G.left ⟶ Spec (CommRingCat.of A')` to `hsq.lift (F ≫ j) Γ'.G.hom hw`. Establish `hj1 : j' ≫ Spec.map (CommRingCat.ofHom ψ) = F ≫ j` using `hsq.lift_fst _ _ _`. Establish `hj2 : j' ≫ Spec.map (CommRingCat.ofHom (algebraMap R' A')) = Γ'.G.hom` using `hsq.lift_snd _ _ _`. Establish `hl : IsPullback F j' j (Spec.map (CommRingCat.ofHom ψ))`. Use `IsPullback.of_bot ?_ hj1.symm hsq` and prove the remaining obligations.
+
+Rewrite using `[hj2, hj.isOver]`. Conclude with `hbc.cart`. Establish `hj'open : IsOpenImmersion j'` using `MorphismProperty.of_isPullback hl hopen`. Establish `hemb : Γ'.IsEmb A' j'`. Use `⟨hj2, fun t => ?_⟩` and prove the remaining obligations.
+
+Apply `hsq.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hj1, pt_comp_emb hbc hj, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Simplify using `[hψt]`.
+
+Rewrite using `[Category.assoc, hj2, ← Spec.map_comp, Over.w]`. Use `congr 1`. Use `⟨j', hemb, hj'open, fun P => ?_⟩` and prove the remaining obligations. Take `⟨t, g₀, -, hg₀⟩` from `hcov (PrimeSpectrum.comap ψ P)`. Establish `hcomm : ∀ a : A, transl hA' t⁻¹ (ψ a) = ψ (transl hA t⁻¹ a)`.
+
+Introduce `a`. Use extensionality with `h`. Simplify using `[hψt]`. Set `P' : PrimeSpectrum A'` to `PrimeSpectrum.comap (transl hA' t⁻¹) P`. Establish `hP' : j g₀ = Spec.map (CommRingCat.ofHom ψ) P'`.
+
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `a`. Establish `h1` using `hg₀ (transl hA t⁻¹ a) a (fun h => by simp)`. Express the relevant statement in the definitionally equal form `a ∈ (j g₀).asIdeal ↔ transl hA' t⁻¹ (ψ a) ∈ P.asIdeal`. Rewrite using `[← h1, hcomm]`.
+
+Both sides reduce to the same expression. Take `⟨z, -, hz⟩` from `Scheme.Pullback.exists_preimage_pullback (f := j) (g := Spec.map (CommRingCat.ofHom ψ)) g₀ P' hP'`. Establish `hg' : j' (hl.isoPullback.inv z) = P'`. Rewrite using `[← Scheme.Hom.comp_apply, hl.isoPullback_inv_snd, hz]`. Use `⟨t, hl.isoPullback.inv z, trivial, fun f f' hf => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hg']`. Express the relevant statement in the definitionally equal form `_ ↔ transl hA' t⁻¹ f' ∈ P.asIdeal`. Establish `: transl hA' t⁻¹ f' = f`. Use extensionality with `h`. Simplify using `[hf]`.
+
+Rewrite using `[this]`.
+-/
 theorem exists_emb {Γ : QFGroup R T} {Γ' : QFGroup R' T} {F : Γ'.G.left ⟶ Γ.G.left}
     (hbc : Γ'.IsBaseChange Γ (algebraMap R R') F) {A : Subalgebra R (T → R)} {A' : Subalgebra R' (T → R')}
     (hA : IsHopfOrder A) (hA' : IsHopfOrder A') (e : R' ⊗[R] A ≃ₐ[R'] A')
@@ -217,6 +284,11 @@ theorem exists_emb {Γ : QFGroup R T} {Γ' : QFGroup R' T} {F : Γ'.G.left ⟶ �
 
 end GlobalTheory.CompanionTheory.Ar.BT.BaseChangeOrder
 
+/- English proof (translation)
+Introduce `R _ _ _ _ T _ _ Γ R' _ _ _ Γ' F hbc`. Establish `hH` using `GlobalTheory.T.btOrder_isHopfOrder_noetherian R T Γ`. Take `⟨j, hj, -⟩` from `GlobalTheory.T.existsUnique_btOrder_embedding R T Γ`. Take `⟨hopen, hcov⟩` from `GlobalTheory.T.btOrder_embedding_open_immersion R T Γ j hj`. Establish `hd : ∃ d : R, algebraMap R R' d ≠ 0 ∧ ∀ f : T → R, d • f ∈ Γ.btOrder ⊤` using `BaseChangeOrder.exists_smul_mem_of_separates _ _ (BaseChangeOrder.separates hbc hj)`.
+
+Use `⟨hd, ?_⟩` and prove the remaining obligations. Take `⟨hH', e, he⟩` from `GlobalTheory.T.hopf_order_scalar_extension R T R' (Γ.btOrder ⊤) hH hd`. Take `⟨j', hj', hopen', hcov'⟩` from `BaseChangeOrder.exists_emb hbc hH hH' e he hj hopen hcov`. Conclude with `GlobalTheory.T.btOrder_eq_of_hopf_embedding R' T Γ' _ hH' j' hj' hopen' hcov'`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.BT.btOrder_baseChange : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (R' : Type) [CommRing R'] [IsDomain R'] [Algebra R R'] (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left), Γ'.IsBaseChange Γ (algebraMap R R') F → (∃ d : R, algebraMap R R' d ≠ 0 ∧ ∀ f : T → R, d • f ∈ Γ.btOrder ⊤) ∧ Γ'.btOrder ⊤ = extOrder (algebraMap R R') (Γ.btOrder ⊤) := by
   intro R _ _ _ _ T _ _ Γ R' _ _ _ Γ' F hbc
   have hH := GlobalTheory.T.btOrder_isHopfOrder_noetherian R T Γ

@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.CharacteristicPolynomials.CocField
 open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th UpperTheory.V.Th.Nm GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Establish `h1 : ‖(l : PadicAlgCl l)‖ < 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Establish `h2` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) h1).mul_const C`. Rewrite `h2` using `[zero_mul]`.
+
+Take `⟨N, hN⟩` from `(h2.eventually_le_const zero_lt_one).exists`. Conclude with `⟨N, by rwa [norm_pow]⟩`.
+-/
 private theorem ri_small {l : ℕ} [hl : Fact l.Prime] (C : ℝ) : ∃ N : ℕ, ‖((l : PadicAlgCl l)) ^ N‖ * C ≤ 1 := by
   have h1 : ‖(l : PadicAlgCl l)‖ < 1 := by
     rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), norm_algebraMap']
@@ -14,6 +19,19 @@ private theorem ri_small {l : ℕ} [hl : Fact l.Prime] (C : ℝ) : ∃ N : ℕ, 
   obtain ⟨N, hN⟩ := (h2.eventually_le_const zero_lt_one).exists
   exact ⟨N, by rwa [norm_pow]⟩
 
+/- English proof (translation)
+Establish `h1 : z 1 = 0`. Establish `h` using `hc 1 1`. Rewrite `h` using `[mul_one, inv_one, map_one, Matrix.one_mul, Matrix.mul_one]`. Conclude with `left_eq_add.1 h`. Set `b : G →* Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) (PadicAlgCl l)` to `{ toFun := fun g => Matrix.fromBlocks (s g) (z g * s g) 0 (s g) map_one' := by`.
+
+Rewrite using `[map_one, h1, Matrix.zero_mul, Matrix.fromBlocks_one]`. Use the proof step `map_mul' := fun g h => by`. Establish `e : s g⁻¹ * (s g * s h) = s h` using `by rw [← map_mul, ← map_mul, inv_mul_cancel_left]`. Rewrite using `[Matrix.fromBlocks_multiply, map_mul, hc]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.add_mul, Matrix.mul_assoc, e]`.
+
+Rewrite using `[add_comm] }`. Establish `hb : Continuous b` using `Continuous.matrix_fromBlocks hs (hz.matrix_mul hs) continuous_const hs`. Set `r : G →* Matrix (Fin (m + m)) (Fin (m + m)) (PadicAlgCl l)` to `(Matrix.reindexAlgEquiv (PadicAlgCl l) (PadicAlgCl l) finSumFinEquiv).toRingEquiv.toMonoidHom.comp b`. Establish `hr : ∀ g i j, r g i j = b g (finSumFinEquiv.symm i) (finSumFinEquiv.symm j)` using `fun _ _ _ => rfl`. Take `⟨E, fE, mE⟩` from `GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem l G (m + m) r.toHomUnits fun i j => hb.matrix_elem (finSumFinEquiv.symm i) (finSumFinEquiv.symm j)`.
+
+Establish `hA : ∀ g i j, s g i j ∈ E` using `fun g i j => by`. Establish `h : r g (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j)) ∈ E` using `mE g _ _`. Rewrite `h` using `[hr, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Conclude with `h`. Establish `hB : ∀ g i j, (z g * s g) i j ∈ E` using `fun g i j => by`.
+
+Establish `h : r g (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inr j)) ∈ E` using `mE g _ _`. Rewrite `h` using `[hr, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Conclude with `h`. Use `⟨E, fE, hA, fun g i j => ?_⟩` and prove the remaining obligations. Establish `e : z g = z g * s g * s g⁻¹`.
+
+Rewrite using `[Matrix.mul_assoc, ← map_mul, mul_inv_cancel, map_one, Matrix.mul_one]`. Rewrite using `[e, Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => mul_mem (hB g i k) (hA _ k j)`.
+-/
 private theorem ri_entries {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [CompactSpace G] [T2Space G] {m : ℕ} (s : G →* Matrix (Fin m) (Fin m) (PadicAlgCl l))
     (z : G → Matrix (Fin m) (Fin m) (PadicAlgCl l))
@@ -54,6 +72,13 @@ private theorem ri_entries {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [Topolo
   rw [e, Matrix.mul_apply]
   exact sum_mem fun k _ => mul_mem (hB g i k) (hA _ k j)
 
+/- English proof (translation)
+Introduce `l hl n F c ρ z hρ hi hz hc`. Use `haveI : CompactSpace F.G₀ := isCompact_iff_compactSpace.1 (Subgroup.isClosed_of_isOpen _ F.η_open).isCompact`. Use `haveI : T2Space F.G₀ := inferInstance`. Take `⟨E, fE, m₁, m₂⟩` from `ri_entries (l := l) ((Units.coeHom _).comp ρ) z (Units.continuous_val.comp hρ) hz hc`. Take `⟨d, hd⟩` from `UpperTheory.V.X.So.coefOf l E`.
+
+Take `⟨c', h1, h2⟩` from `(UpperTheory.V.HV.coefSup l).1 c d`. Establish `hn : Continuous fun g => ∑ i, ∑ j, ‖z g i j‖` using `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (hz.matrix_elem i j).norm`. Take `⟨C, hC⟩` from `(isCompact_range hn).bddAbove`. Take `⟨N, hN⟩` from `ri_small (l := l) C`. Use `⟨c', (l : PadicAlgCl l) ^ N, h1, pow_ne_zero _ (Nat.cast_ne_zero.2 hl.out.ne_zero), fun g i j => h2 ((hd _).2 ⟨m₁ g i j, hi g i j⟩), fun g i j => h2 ((hd _).2 ⟨?_, ?_⟩)⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (pow_mem (natCast_mem _ _) _) (m₂ g i j)`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul]`. Establish `hb : ‖z g i j‖ ≤ C` using `((Finset.single_le_sum (f := fun j => ‖z g i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖z g i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))).trans (hC ⟨g, rfl⟩)`. Conclude with `(mul_le_mul_of_nonneg_left hb (norm_nonneg _)).trans hN`.
+-/
 theorem UpperTheory.V.Th.Nm.repIn :
     ∀ {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame l) (c : Coef l) (ρ : F.G₀ →* GL (Fin n) (Qbar l)) (z : F.G₀ → Matrix (Fin n) (Fin n) (Qbar l)), Continuous ρ → (∀ g, IntM (mat ρ g)) → Continuous z → (∀ g g', z (g * g') = z g + mat ρ g * z g' * mat ρ g⁻¹) → ∃ (c' : Coef l) (a : Qbar l), c.O ≤ c'.O ∧ a ≠ 0 ∧ (∀ g, InO c' (mat ρ g)) ∧ ∀ g, InO c' (a • z g) := by
   intro l hl n F c ρ z hρ hi hz hc

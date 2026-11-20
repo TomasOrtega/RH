@@ -16,6 +16,11 @@ namespace GlobalTheory.SpanFamily
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T h j hj σ hσ a n hdom hlast hn`. Establish `hr : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.two_le_m; omega`. Take `⟨hrk, hM⟩` from `h.modelW j hj σ hσ`. Establish `key` using `GlobalTheory.Dict.holSub0_le_span_cusp GlobalTheory.chartIndependence_unconditional D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (fun s => Formalism.L2.PjFree.Unf.ofPj (T.U j s)) hr h.pins.2.1.2 (fun s hs => (Formalism.L2.PjFree.isUnf_ofPj _).2 (h.unf j hj s hs)) σ hσ ( …`. Introduce `P hP`.
+
+Conclude with `key ⟨hP.1, hP.2⟩`.
+-/
 theorem holSub0_le_span_cuspA_of_lastPos : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ →
     ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → LastPos (T.Q.Dw j) a →
     4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 ≤ n →
@@ -34,6 +39,11 @@ theorem holSub0_le_span_cuspA_of_lastPos : ∀ (D : D7) (T : CoreJ D), LawsJ T �
   intro P hP
   exact key ⟨hP.1, hP.2⟩
 
+/- English proof (translation)
+Take `⟨M, hMmax, hle⟩` from `Ideal.exists_le_maximal _ hI`. Set `_ : Field (A ⧸ M)` to `Ideal.Quotient.field M`. Establish `: Module.Finite K (A ⧸ M)` using `finite_of_finite_type_of_isJacobsonRing K (A ⧸ M)`. Set `_ : Algebra K ℂ` to `σ.toAlgebra`. Set `κ : (A ⧸ M) →ₐ[K] ℂ` to `IsAlgClosed.lift`.
+
+Use `⟨κ.comp (Ideal.Quotient.mkₐ K M), fun x hx => ?_⟩` and prove the remaining obligations. Use `show κ (Ideal.Quotient.mk M x) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (hle hx), map_zero]`.
+-/
 theorem exists_complex_point {K A : Type} [Field K] [CommRing A] [Algebra K A] [Algebra.FiniteType K A]
     (σ : K →+* ℂ) (I : Ideal A) (hI : I ≠ ⊤) : ∃ ψ : A →ₐ[K] CAt σ, ∀ x ∈ I, ψ x = 0 := by
   obtain ⟨M, hMmax, hle⟩ := Ideal.exists_le_maximal _ hI
@@ -45,6 +55,9 @@ theorem exists_complex_point {K A : Type} [Field K] [CommRing A] [Algebra K A] [
   show κ (Ideal.Quotient.mk M x) = 0
   rw [Ideal.Quotient.eq_zero_iff_mem.2 (hle hx), map_zero]
 
+/- English proof (translation)
+Establish `hT : FromTest (K` using `T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) z := ⟨p, ψ, y, hz⟩`. Unfold `evR evalAt`. Rewrite using `[dif_pos hT]`. Conclude with `h.evalWD j hj f hf S _ p _ ψ _ y z hT.choose_spec.choose_spec.choose_spec hz`.
+-/
 theorem evR_of_frMap {D : D7} (T : CoreJ D) (h : LawsJ T) {j : ℕ} (hj : Formalism.L2.Pj.InR D j) (f : T.R j)
     (hf : IsNatural (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) f)
     {S : Type} [CommRing S] [Algebra T.Q.c.F S] (p : TRing T.Q.c.F) (ψ : p.R →ₐ[T.Q.c.F] S)
@@ -58,6 +71,31 @@ theorem evR_of_frMap {D : D7} (T : CoreJ D) (h : LawsJ T) {j : ℕ} (hj : Formal
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T h j hj σ hσ a n hdom`. Take `⟨b, m, hbm, hlast, hm, hnz⟩` from `GlobalTheory.T.exists_dominantWeight_cuspSections_noCommonZero D T h j hj σ hσ`. Use `haveI : FiniteDimensional T.Q.c.F (T.cuspA j b m) := h.cuspFD j hj b m hbm`. Use `haveI : Module.Free T.Q.c.F (T.cuspA j b m) := Module.Free.of_divisionRing _ _`. Set `B` to `Module.finBasis T.Q.c.F (T.cuspA j b m)`.
+
+Establish `hsec : ∀ i, (B i : T.R j) ∈ sec (T.Q.Xo j) T.Q.c b m` using `fun i => cusp_le_sec _ _ _ _ _ (B i).2`. Use `⟨b, m, _, fun i => (B i : T.R j), hbm, hsec, ?_, ?_⟩` and prove the remaining obligations. Introduce `p y`. Assume the negation of the conclusion as `hne`. Establish `hL` using `(GlobalTheory.Reg.evLaws_genFr_atlas _ _ _ _ (T.Q.Xo j) T.Q.c).1`.
+
+Take `⟨ψ, hψ⟩` from `exists_complex_point σ _ hne`. Take `⟨z, hz⟩` from `hL.bc p.R (CAt σ) ψ y`. Establish `hz0 : ∀ i, evR (T.Q.Xo j) T.Q.c (B i : T.R j) z = 0` using `fun i => by`. Rewrite using `[evR_of_frMap T h hj _ (hsec i).1 p ψ y z hz]`. Conclude with `hψ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+
+Use `haveI : IsDomain (CAt σ) := inferInstanceAs (IsDomain ℂ)`. Take `⟨k, x, t, ht⟩` from `(h.unf j hj σ hσ).2.2.1 z`. Establish `hx0 : ∀ i, rdU (T.U j σ) (B i : T.R j) k x.1 = 0` using `fun i => by`. Establish `hw` using `GlobalTheory.ArcQ.evR_frBor_of_isDomain hL (hsec i) t _ z ht`. Rewrite `hw` using `[hz0 i]`.
+
+Establish `hu : wchar (ex (T.Q.Dw j) b m) t ≠ 0` using `Finset.prod_ne_zero_iff.2 fun c _ => pow_ne_zero _ (t c).ne_zero`. Establish `h0` using `(mul_eq_zero.1 hw.symm).resolve_left hu`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, dif_pos x.2]`. Conclude with `congrArg toC h0`. Set `ev : FDSec (T.U j σ).X →ₗ[ℂ] ℂ` to `{ toFun := fun P => P k x.1, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`.
+
+Establish `hall : ∀ f ∈ T.cuspA j b m, rdU (T.U j σ) f k x.1 = 0`. Introduce `f hf`. Establish `key : ∀ g : T.cuspA j b m, g ∈ Submodule.span T.Q.c.F (Set.range B) → rdU (T.U j σ) (g : T.R j) k x.1 = 0`. Introduce `g0 hg0`. Proceed by induction on `hg0 using Submodule.span_induction with`.
+
+Consider the case `mem g hg`. Take `⟨i, rfl⟩` from `hg`. Conclude with `hx0 i`. Consider the case `zero => rw [Submodule.coe_zero, map_zero]`. Both sides reduce to the same expression.
+
+Consider the case `add g g' _ _ hg hg'`. Rewrite using `[Submodule.coe_add, map_add, Pi.add_apply, Pi.add_apply, hg, hg', add_zero]`. Consider the case `smul c g _ hg`. Rewrite using `[Submodule.coe_smul, map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, hg, smul_zero]`. Conclude with `key ⟨f, hf⟩ (B.mem_span _)`.
+
+Establish `hle : Submodule.span ℂ (rdU (T.U j σ) '' (T.cuspA j b m : Set (T.R j))) ≤ LinearMap.ker ev`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `hall f hf`. Take `⟨P, hP, hPx⟩` from `hnz k x.1 x.2`.
+
+Conclude with `hPx (hle (holSub0_le_span_cuspA_of_lastPos D T h j hj σ hσ b m hbm hlast hm hP))`. Introduce `P hP i`. Establish `hrd : rdU (T.U j σ) (B i : T.R j) ∈ holSub (T.U j σ).X (laU (T.U j σ) b m)` using `((mem_cusp _ _ _ _ _ _).1 (B i).2).2 σ hσ`. Establish `hdab : Dom (a + b) (n + m)` using `⟨fun τ => (hdom.1 τ).add (hbm.1 τ), hdom.2.add hbm.2⟩`. Establish `hprod : P * rdU (T.U j σ) (B i : T.R j) ∈ Formalism.L2.Pj.holSub0 (T.U j σ).X (laU (T.U j σ) (a + b) (n + m))`.
+
+Use `⟨?_, fun k x hx => by simp [hP.2 k x hx]⟩` and prove the remaining obligations. Establish `hP1` using `(GlobalTheory.CuspProduct.mem_holSub_iff _ _ _).1 hP.1`. Establish `hr1` using `(GlobalTheory.CuspProduct.mem_holSub_iff _ _ _).1 hrd`. Use `(GlobalTheory.CuspProduct.mem_holSub_iff _ _ _).2 fun k => ?_` and prove the remaining obligations. Rewrite using `[show laU (T.U j σ) (a + b) (n + m) k = laU (T.U j σ) a n k + laU (T.U j σ) b m k from GlobalTheory.CuspProduct.laU_add (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) a b n m hdom.2 hbm.2 k]`.
+
+Conclude with `(siegelSpaceAlgebra_holds (E := D.host.E) D.R.r _ _ _ 0).2.1 _ (hP1 k) _ (hr1 k).1`. Establish `hlast' : LastPos (T.Q.Dw j) (a + b)` using `fun τ hτ hm0 => lt_of_lt_of_le (hlast τ hτ hm0) (by simp)`. Establish `hs` using `holSub0_le_span_cuspA_of_lastPos D T h j hj σ hσ (a + b) (n + m) hdab hlast' (by omega) hprod`. Conclude with `Submodule.span_mono (Set.image_mono (cusp_le_sec _ _ _ _ _)) hs`.
+-/
 theorem exists_family : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∃ (b : (D.host.E →+* ℂ) × ℕ → ℕ) (m N : ℕ) (t : Fin N → Rul (T.Q.Xo j) T.Q.c), Dom b m ∧ (∀ i, t i ∈ sec (T.Q.Xo j) T.Q.c b m) ∧ (∀ (p : TRing T.Q.c.F) (y : FrPt (T.Q.Xo j) T.Q.c p.R), Ideal.span (Set.range fun i => t i p y) = ⊤) ∧ ∀ P ∈ holSub0 (T.U j σ).X (laU (T.U j σ) a n), ∀ i, P * rdU (T.U j σ) (t i) ∈ Submodule.span ℂ (rdU (T.U j σ) '' (sec (T.Q.Xo j) T.Q.c (a + b) (n + m) : Set (Rul (T.Q.Xo j) T.Q.c))) := by
   intro D T h j hj σ hσ a n hdom
   obtain ⟨b, m, hbm, hlast, hm, hnz⟩ := GlobalTheory.T.exists_dominantWeight_cuspSections_noCommonZero D T h j hj σ hσ

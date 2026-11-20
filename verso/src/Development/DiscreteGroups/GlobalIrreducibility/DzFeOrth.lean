@@ -11,8 +11,18 @@ def psiC (ψ₀ : AddChar (ZMod g) Circle) : AddChar (ZMod g) ℂ where
   map_zero_eq_one' := by simp
   map_add_eq_mul' a b := by simp [AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiC_apply (ψ₀ : AddChar (ZMod g) Circle) (x : ZMod g) : psiC ψ₀ x = (ψ₀ x : ℂ) := rfl
 
+/- English proof (translation)
+Use `split_ifs with hc`. Substitute `hc` using the available equality. Simplify using `[ZMod.card]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, ψ₀ s ≠ 1 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Conclude with `hψ (by ext s; rw [h s, AddChar.one_apply])`. Establish `key : (ψ₀ s : ℂ) * ∑ t : ZMod g, (ψ₀ (t * c) : ℂ) = ∑ t : ZMod g, (ψ₀ (t * c) : ℂ)`. Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.addRight (s * c⁻¹)) _ _ (fun t => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Equiv.coe_addRight, add_mul, mul_assoc, inv_mul_cancel₀ hc, mul_one, AddChar.map_add_eq_mul, Circle.coe_mul, mul_comm]`. Establish `hs' : (ψ₀ s : ℂ) ≠ 1` using `fun h => hs (Circle.ext (by simpa using h))`. Establish `: ((ψ₀ s : ℂ) - 1) * ∑ t : ZMod g, (ψ₀ (t * c) : ℂ) = 0` using `by rw [sub_mul, key, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hs')`.
+-/
 theorem sum_psi_mul (ψ₀ : AddChar (ZMod g) Circle) (hψ : ψ₀ ≠ 1) (c : ZMod g) :
     ∑ t : ZMod g, (ψ₀ (t * c) : ℂ) = if c = 0 then (g : ℂ) else 0 := by
   split_ifs with hc
@@ -30,6 +40,15 @@ theorem sum_psi_mul (ψ₀ : AddChar (ZMod g) Circle) (hψ : ψ₀ ≠ 1) (c : Z
     have : ((ψ₀ s : ℂ) - 1) * ∑ t : ZMod g, (ψ₀ (t * c) : ℂ) = 0 := by rw [sub_mul, key, one_mul, sub_self]
     exact (mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hs')
 
+/- English proof (translation)
+Establish `h1 : ∀ f : ι → ZMod g, (ψ₀ (∑ i, f i * c i) : ℂ) = ∏ i, (ψ₀ (f i * c i) : ℂ)` using `fun f => by`. Establish `hs : ∀ s : Finset ι, psiC ψ₀ (∑ i ∈ s, f i * c i) = ∏ i ∈ s, psiC ψ₀ (f i * c i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [AddChar.map_zero_eq_one]`.
+
+Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, AddChar.map_add_eq_mul, ih, Finset.prod_insert ha]`. Conclude with `hs Finset.univ`. Repeatedly rewrite using `[h1]`. Rewrite using `[← Fintype.prod_sum (fun i t => (ψ₀ (t * c i) : ℂ))]`. Repeatedly rewrite using `[sum_psi_mul ψ₀ hψ]`.
+
+Use `split_ifs with hc`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, c i ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Conclude with `hc (funext h)`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi])`.
+-/
 theorem sum_pi_psi (ψ₀ : AddChar (ZMod g) Circle) (hψ : ψ₀ ≠ 1) {ι : Type} [Fintype ι] [DecidableEq ι]
     (c : ι → ZMod g) :
     ∑ f : ι → ZMod g, (ψ₀ (∑ i, f i * c i) : ℂ) = if c = 0 then (g : ℂ) ^ Fintype.card ι else 0 := by

@@ -3,6 +3,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Introduce `O _ _ _ _ ι X _ _ _ w Φ h2 Γ _ _ _ rbar r0 hbar hr0 F L hN hLoc hL0 B _ _ _ ρ hρ WB hB hWB R _ _ _ i r α hU W τ e hWl hWr`. Establish `hHH1 : ∀ (S : Type) [CommRing S] [Algebra O S] [IsCO O S], Φ.HH (1 : Matrix ι ι S)`. Introduce `S _ _ _`. Use `⟨by simp, fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Matrix.one_apply_ne (fun h => hab (h ▸ rfl))`.
+
+Simplify using the standard rewrite rules. Establish `hF : IsFramed Φ r0.hom F L ρ (WB.origin hB) r0 (fun _ => (1 : Matrix ι ι O))`. Use `⟨fun s => ?_, fun q => hL0 q, fun v => hHH1 O, rfl, fun v s => ?_⟩` and prove the remaining obligations. Establish `hm : (r0.hom s⁻¹).map (algebraMap O O) = r0.hom s⁻¹`. Use extensionality with `a b`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hm, ← map_mul, mul_inv_cancel, map_one]`. Conclude with `hHH1 O`. Use extensionality with `a b`. Simplify using `[Matrix.map_apply, hWB]`.
+
+Take `⟨f, ⟨hfi, hfr, hfα⟩, -⟩` from `hU.2 O (WB.origin hB) r0 (fun _ => 1) hF`. Establish `hz : ∀ s, f (W.z s) = 0`. Introduce `s`. Take `⟨s', rfl⟩` from `e.surjective s`. Break down `s' with s' | t` into its components or cases.
+
+Rewrite using `[hWl, ← AlgHom.comp_apply, hfi]`. Simplify using `[WPres.z, WPres.origin_π]`. Take `⟨a, b, ⟨s, hs⟩ | ⟨v, hv⟩⟩` from `hWr t`. Rewrite using `[hs, map_sub, AlgHom.commutes, ← Lift.map_hom, hfr]`. Simplify using the standard rewrite rules.
+
+Establish `hab` using `congrFun (congrFun (hfα v) a) b`. Rewrite `hab` using `[Matrix.map_apply]`. Rewrite using `[hv, Matrix.sub_apply, map_sub, hab, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hC : ∀ x : O, (C x : MvPowerSeries W.σ O) = algebraMap O (MvPowerSeries W.σ O) x`.
+
+Introduce `x`. Simplify using `[MvPowerSeries.algebraMap_apply]`. Set `cc : MvPowerSeries W.σ O →ₐ[O] O` to `AlgHom.mk (MvPowerSeries.constantCoeff (R := O) (σ := W.σ)) (fun x => by simp [MvPowerSeries.algebraMap_apply])`. Establish `hcc : ∀ g, f (W.π g) = constantCoeff g`. Take `⟨G, -, huniq⟩` from `co_ev O O O W.σ (AlgHom.id O O) (fun _ => 0) (fun _ => Ideal.zero_mem _)`.
+
+Establish `h1 : f.comp W.π = G` using `huniq _ ⟨fun x => by`. Rewrite using `[AlgHom.comp_apply, hC, AlgHom.commutes, AlgHom.commutes]`. Use the proof step `rfl, fun s => hz s⟩`. Establish `h2' : cc = G` using `huniq _ ⟨fun x => by simp [cc], fun s => by simp [cc]⟩`. Introduce `g`.
+
+Use `congrArg (fun φ => φ g) (h1.trans h2'.symm)` as an intermediate fact. Simplify `this` using `[cc]`. Establish `hO : W.HasOrigin`. Introduce `g hg`. Rewrite using `[← hcc, hg, map_zero]`.
+
+Establish `horig : W.origin hO = f`. Use extensionality with `x`. Take `⟨g, rfl⟩` from `W.surj x`. Rewrite using `[WPres.origin_π, hcc]`. Use `⟨hO, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[horig, hfr]`. Introduce `v`. Rewrite using `[horig, hfα]`. Rewrite using `[horig, hfi]`.
+-/
 theorem UpperTheory.V.Alg.framed_origin :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (ι X : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup X] (w : ι → X) (Φ : FormData O w), IsUnit (2 : O) → ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] (rbar : Γ →* Matrix ι ι (ResidueField O)) (r0 : Lift O rbar O) (hbar : Φ.Normalises rbar), Φ.Normalises r0.hom → ∀ (F : Frame Γ) (L : ∀ q, Cond O (rbar.comp (F.ψ q))), (∀ q, ∀ n ∈ F.N q, rbar (F.ψ q n) = 1) → (∀ q, Φ.IsLocCond (r0.hom.comp (F.ψ q)) (F.N q) (L q)) → (∀ q, L q O (r0.comap (F.ψ q) (F.hψ q))) →
       ∀ (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (ρ : ∀ v, Lift O (rbar.comp (F.φ v)) B), (∀ v, Φ.InH (r0.hom.comp (F.φ v)) B (ρ v)) → ∀ (WB : WPres O X B) (hB : WB.HasOrigin), (∀ v s a b, WB.origin hB ((ρ v).hom s a b) = r0.hom (F.φ v s) a b) →

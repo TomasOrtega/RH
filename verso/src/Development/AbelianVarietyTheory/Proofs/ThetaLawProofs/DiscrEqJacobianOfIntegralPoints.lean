@@ -6,6 +6,19 @@ open GlobalTheory.KeyKa
 
 namespace GlobalTheory.KeyKa
 
+/- English proof (translation)
+Establish `hfin : Module.Finite O B` using `Module.Finite.of_injective φ hφ`. Establish `hfree : Module.Free O B` using `Module.Free.of_equiv (LinearEquiv.ofInjective φ hφ).symm`. Establish `h1 : Module.finrank O B ≤ Module.finrank O (Ix → O)` using `LinearMap.finrank_le_finrank_of_injective hφ`. Establish `h2 : Module.finrank O (Ix → O) ≤ Module.finrank O (LinearMap.range φ)`. Set `ψ : (Ix → O) →ₗ[O] LinearMap.range φ` to `LinearMap.codRestrict _ (c • LinearMap.id) (fun t => by`.
+
+Take `⟨y, hy⟩` from `hs t`. Conclude with `⟨y, hy⟩)`. Use `LinearMap.finrank_le_finrank_of_injective (f := ψ) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`.
+
+Establish `h3 : c • t = 0` using `congrArg Subtype.val ht`. Conclude with `(smul_eq_zero.1 h3).resolve_left hc`. Rewrite `h2` using `[← (LinearEquiv.ofInjective φ hφ).finrank_eq]`. Establish `h3 : Module.finrank O B = Fintype.card Ix`. Rewrite using `[le_antisymm h1 h2, Module.finrank_fintype_fun_eq_card]`.
+
+Set `b : Module.Basis Ix O B` to `(Module.finBasisOfFinrankEq O B h3).reindex (Fintype.equivFin Ix).symm`. Use `⟨b, fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `h4 : φ (∑ a, v a • b a) = 0`. Use extensionality with `a`.
+
+Use `congrFun hMv a` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply] at this`. Rewrite using `[map_sum, Finset.sum_apply, Pi.zero_apply, ← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+
+Establish `h5 : ∑ a, v a • b a = 0` using `hφ (h4.trans (map_zero φ).symm)`. Conclude with `hv (funext (Fintype.linearIndependent_iff.1 b.linearIndependent v h5))`.
+-/
 theorem exists_basis_det_ne_zero_of_points {O B Ix : Type} [CommRing O] [IsDomain O]
     [IsPrincipalIdealRing O] [AddCommGroup B] [Module O B] [Fintype Ix] [DecidableEq Ix]
     (φ : B →ₗ[O] (Ix → O)) (hφ : Function.Injective φ) (c : O) (hc : c ≠ 0)
@@ -43,6 +56,27 @@ theorem exists_basis_det_ne_zero_of_points {O B Ix : Type} [CommRing O] [IsDomai
   have h5 : ∑ a, v a • b a = 0 := hφ (h4.trans (map_zero φ).symm)
   exact hv (funext (Fintype.linearIndependent_iff.1 b.linearIndependent v h5))
 
+/- English proof (translation)
+Introduce `O _ _ _ _ g Ix _ _ F e hF hX hker ⟨c, hc, hs⟩`. Set `S` to `MvPowerSeries (Fin g) O`. Set `I : Ideal S` to `Ideal.span (Set.range F)`. Set `eb : Ix → ((S ⧸ I) →ₐ[O] O)` to `fun a => Ideal.Quotient.liftₐ I (e a) (fun s hs => by`. Establish `: I ≤ RingHom.ker (e a)` using `Ideal.span_le.2 (by`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hF a i)`. Conclude with `this hs)`. Establish `heb : ∀ a s, eb a (Ideal.Quotient.mk I s) = e a s` using `fun a s => rfl`. Set `φ : (S ⧸ I) →ₗ[O] (Ix → O)` to `LinearMap.pi fun a => (eb a).toLinearMap`.
+
+Establish `hφ : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hker s fun a => congrFun hy a)`.
+
+Take `⟨b, hb⟩` from `exists_basis_det_ne_zero_of_points φ hφ c hc fun t => by`. Take `⟨G, hG⟩` from `hs t`. Conclude with `⟨Ideal.Quotient.mk I G, funext hG⟩`. Use `choose β hβ using fun a => Ideal.Quotient.mk_surjective (b a)`. Establish `hM : (Matrix.of fun a a' => e a (β a')) = Matrix.of fun a a' => eb a (b a')`.
+
+Use extensionality with `a a'`. Rewrite using `[Matrix.of_apply, Matrix.of_apply, ← hβ, heb]`. Establish `hb' : (Matrix.of fun a a' => eb a (b a')).det ≠ 0` using `hb`. Establish `hq : ∀ (G : S) (r : Ix → O), G - ∑ a, r a • β a ∈ I ↔ Ideal.Quotient.mk I G = ∑ a, r a • b a`. Introduce `G r`.
+
+Rewrite using `[← Ideal.Quotient.eq, ← Ideal.Quotient.mkₐ_eq_mk O, map_sum]`. Simplify using `only [map_smul, Ideal.Quotient.mkₐ_eq_mk, hβ]`. Use `⟨β, fun G => ⟨b.equivFun (Ideal.Quotient.mk I G), ?_, fun r hr => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hq G _).2 (b.sum_equivFun _).symm`. Rewrite using `[(hq G r).1 hr, ← b.equivFun_symm_apply, LinearEquiv.apply_symm_apply]`.
+
+Rewrite using `[hM]`. Conclude with `hb'`. Break down `isEmpty_or_nonempty Ix with h | ⟨⟨a⟩⟩` into its components or cases. Simplify using the standard rewrite rules. Establish `hf : ∀ i, MvPowerSeries.constantCoeff (F i) ∈ IsLocalRing.maximalIdeal O`.
+
+Introduce `i`. Take `⟨u, hu⟩` from `GlobalTheory.DiscrJacobian.exists_eq_C_add_sum (F i)`. Establish `h1` using `congrArg (e a) hu`. Establish `h2 : e a (MvPowerSeries.C (MvPowerSeries.constantCoeff (F i))) = MvPowerSeries.constantCoeff (F i)` using `(e a).commutes _`. Rewrite `h1` using `[hF, map_add, h2, map_sum]`.
+
+Rewrite using `[eq_neg_of_add_eq_zero_left h1.symm]`. Use `neg_mem (Ideal.sum_mem _ fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_right _ _ (hX a j)`. Establish `h1` using `GlobalTheory.DiscrJacobian.associated_discr_norm_jacobian O g _ F (b.reindex (Fintype.equivFin Ix)) hf`.
+
+Take `⟨h2, h3⟩` from `discr_norm_eq_of_points O (S ⧸ I) Ix b eb hb'`. Rewrite `h1` using `[Module.Basis.coe_reindex, Algebra.discr_reindex, h2, h3]`. Rewrite using `[hM]`. Conclude with `h1`.
+-/
 theorem discr_jacobian_of_points :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
       [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (g : ℕ) (Ix : Type) [Fintype Ix]

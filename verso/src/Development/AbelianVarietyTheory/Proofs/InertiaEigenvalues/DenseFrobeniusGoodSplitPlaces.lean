@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.FrobDense
 
+/- English proof (translation)
+Establish `h0` using `Formalism.L2.TwC.placesOver_finite' D.host.E (D.host.g 0) (D.host.g_prime 0).ne_zero`. Establish `h1` using `Formalism.L2.TwC.placesOver_finite' D.host.E (D.host.g 1) (D.host.g_prime 1).ne_zero`. Apply the tactic sequence `have h2 := Formalism.L2.TwC.placesOver_finite' D.host.E (if l = D.host.pde then D.host.pde' else D.host.pde) (by split_ifs <;> first | exact D.host.pde'_prime.ne_zero | exact D.host.pde_prime.ne_zero)`. Use `((h0.union h1).union h2).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hv | hv | hv, -⟩`.
+
+Conclude with `Or.inl (Or.inl hv)`. Conclude with `Or.inl (Or.inr hv)`. Conclude with `Or.inr hv`.
+-/
 theorem placesS_finite (D : D7) (l : ℕ) : (placesS D l).Finite := by
   have h0 := Formalism.L2.TwC.placesOver_finite' D.host.E (D.host.g 0) (D.host.g_prime 0).ne_zero
   have h1 := Formalism.L2.TwC.placesOver_finite' D.host.E (D.host.g 1) (D.host.g_prime 1).ne_zero
@@ -28,6 +33,11 @@ theorem placesS_finite (D : D7) (l : ℕ) : (placesS D l).Finite := by
   · exact Or.inl (Or.inr hv)
   · exact Or.inr hv
 
+/- English proof (translation)
+Introduce `D l Q hl hC`. Establish `hfin : (placesOver D.host.E l ∪ placesS D l ∪ (Q : Set (PlE D.host))).Finite` using `((Formalism.L2.TwC.placesOver_finite' D.host.E l hl.ne_zero).union (placesS_finite D l)).union Q.finite_toSet`. Use `(hC hfin.toFinset).mono ?_` and prove the remaining obligations. Introduce and unpack `σ ⟨w, hwS, hsp, B, hB, hF⟩`. Establish `hw : w ∉ placesOver D.host.E l ∪ placesS D l ∪ (Q : Set (PlE D.host))`.
+
+Simplify using `using hwS`. Simplify using `only [Set.mem_union, Finset.mem_coe, not_or] at hw`. Conclude with `⟨w, ⟨hsp, hw.1.1, hw.1.2, hw.2⟩, B, hB, hF⟩`.
+-/
 theorem frob_dense_goodSplit : ∀ (D : D7) (l : ℕ) (Q : Finset (PlE D.host)), l.Prime → GlobalTheory.RowTie.ChebSplit D.nd →
     Dense {σ : G D.host.E D.nd.Om | ∃ v : PlE D.host,
       (IsSplitPl D.host v ∧ v ∉ placesOver D.host.E l ∧ v ∉ placesS D l ∧ v ∉ Q) ∧

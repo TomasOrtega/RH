@@ -8,6 +8,9 @@ namespace GroundTheory.Heights₂.Heights.Kleiman
 
 universe u v w
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hE, PrimeFiltration.Irrelevant.proof, PrimeFiltration.Point.proof, PrimeFiltration.Restrict.proof⟩`.
+-/
 theorem PrimeFiltration.proof (hE : PrimeFiltration.Exists.Statement.{u, v, w}) :
     PrimeFiltration.Statement.{u, v, w} :=
   ⟨hE, PrimeFiltration.Irrelevant.proof, PrimeFiltration.Point.proof,

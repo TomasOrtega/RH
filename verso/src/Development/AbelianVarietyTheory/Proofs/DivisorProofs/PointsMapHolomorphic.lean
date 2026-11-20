@@ -10,6 +10,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LineForm
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX σ Y p' D' hY π w`. Conclude with `⟨CxPts.continuous_of_comp (f := π) (fun z => rfl), fun j i => AlgChart.holo_map (f := π) (fun z => rfl) j i⟩`.
+-/
 theorem isHolo_ptsOver_map : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) (hX : IsRegVar p D) (σ : k →+* ℂ),
     ∀ (Y : Scheme.{0}) (p' : Y ⟶ Sp k) (D' : ℕ) (hY : IsRegVar p' D') (π : Y ⟶ X) (w : π ≫ p = p'),
     (hX.atlas σ).IsHolo (hY.atlas σ) (GlobalTheory.Points.PtsOver.map π w _) := by

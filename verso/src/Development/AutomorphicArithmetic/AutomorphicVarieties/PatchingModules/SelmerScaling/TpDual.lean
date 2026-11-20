@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.SelmerScaling.PrAdd
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Set `Φ : Module.Dual F W →ₗ[F] T` to `{ toFun := fun φ => ⟨φ.toAddMonoidHom.comp π, h1 φ⟩ map_add' := fun _ _ => Subtype.ext (by ext; simp) map_smul' := fun _ _ => Subtype.ext (by ext; simp) }`. Establish `hΦ : Function.Surjective Φ` using `fun α => by`. Take `⟨φ, e⟩` from `h2 α.1 α.2`. Conclude with `⟨φ, Subtype.ext e⟩`. Use `⟨Module.Finite.of_surjective Φ hΦ, fun b hb => ?_, fun ξ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Module.forall_dual_apply_eq_zero_iff F (π b)).1 fun φ => hb _ (h1 φ)`. Take `⟨w, hw⟩` from `(Module.evalEquiv F W).surjective (ξ.comp Φ)`. Use `⟨w, fun b hb α => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `hΦ α`. Use `LinearMap.congr_fun hw φ` as an intermediate fact.
+
+Simplify using `only [Module.evalEquiv_apply, Module.Dual.eval_apply, LinearMap.comp_apply] at this`. Rewrite using `[← this, ← hb]`. Both sides reduce to the same expression.
+-/
 private theorem dual_of_univ {R F W : Type} [AddCommGroup R] [Field F] [AddCommGroup W] [Module F W]
     [Module.Finite F W] (π : R →+ W) (T : Submodule F (R →+ F))
     (h1 : ∀ φ : Module.Dual F W, φ.toAddMonoidHom.comp π ∈ T)
@@ -25,6 +32,47 @@ private theorem dual_of_univ {R F W : Type} [AddCommGroup R] [Field F] [AddCommG
     rw [← this, ← hb]
     rfl
 
+/- English proof (translation)
+Establish `hm : ∀ b, b ∈ maximalIdeal R ↔ r b = 0` using `fun b => by rw [← hk, RingHom.mem_ker]`. Establish `hO : ∀ o : O, algebraMap O R o ∈ maximalIdeal R → algebraMap O R o ∈ J` using `fun o ho => by`. Rewrite using `[hJ]`. Use `Ideal.mem_sup_left (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ ?_))` and prove the remaining obligations. Conclude with `fun hu => ho (hu.map _)`.
+
+Establish `hsq : ∀ x ∈ maximalIdeal R, ∀ y ∈ maximalIdeal R, x * y ∈ J` using `fun x hx y hy => by`. Rewrite using `[hJ, pow_two]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_sup_right (Ideal.mul_mem_mul hx hy))`. Establish `hdec : ∀ b : R, ∃ o : O, ∃ x ∈ maximalIdeal R, b = algebraMap O R o + x` using `fun b => by`. Take `⟨o, ho⟩` from `hs (r b)`.
+
+Use `⟨o, b - algebraMap O R o, (hm _).2 ?_, by ring⟩` and prove the remaining obligations. Rewrite using `[map_sub, ← ho]`. Simplify using the standard rewrite rules. Set `N : Submodule O R` to `J.restrictScalars O ⊔ 1`. Establish `hNJ : ∀ b ∈ J, N.mkQ b = 0` using `fun b hb => (Submodule.Quotient.mk_eq_zero N).2 (Submodule.mem_sup_left hb)`.
+
+Establish `hNO : ∀ o : O, N.mkQ (algebraMap O R o) = 0` using `fun o => (Submodule.Quotient.mk_eq_zero N).2 (Submodule.mem_sup_right (Submodule.mem_one.2 ⟨o, rfl⟩))`. Establish `hkill : ∀ o : O, r (algebraMap O R o) = 0 → ∀ w : R ⧸ N, o • w = 0` using `fun o ho w => by`. Take `⟨b, rfl⟩` from `N.mkQ_surjective w`. Rewrite using `[← map_smul, Algebra.smul_def]`. Conclude with `hNJ _ (J.mul_mem_right _ (hO o ((hm _).2 ho)))`.
+
+Use `letI : SMul F (R ⧸ N) := ⟨fun c w => Function.surjInv hs c • w⟩`. Establish `hsm : ∀ (o : O) (w : R ⧸ N), (r.comp (algebraMap O R)) o • w = o • w` using `fun o w => by show Function.surjInv hs _ • w = o • w`. Rewrite using `[← sub_eq_zero, ← sub_smul]`. Use `hkill _ ?_ w` and prove the remaining obligations. Use `Function.surjInv_eq hs ((r.comp (algebraMap O R)) o)` as an intermediate fact.
+
+Rewrite using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `this`. Use `letI : Module F (R ⧸ N) := Function.Surjective.moduleLeft (r.comp (algebraMap O R)) hs hsm`. Establish `hder : ∀ b b' : R, N.mkQ (b * b') = r b • N.mkQ b' + r b' • N.mkQ b` using `fun b b' => by`. Take `⟨o, x, hx, rfl⟩` from `hdec b`.
+
+Take `⟨o', x', hx', rfl⟩` from `hdec b'`. Establish `e : (algebraMap O R o + x) * (algebraMap O R o' + x') = algebraMap O R (o * o') + (o • x' + o' • x) + x * x'`. Simplify using `only [Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : r (algebraMap O R o + x) = (r.comp (algebraMap O R)) o`.
+
+Rewrite using `[map_add, (hm x).1 hx, add_zero]`. Both sides reduce to the same expression. Establish `e2 : r (algebraMap O R o' + x') = (r.comp (algebraMap O R)) o'`. Rewrite using `[map_add, (hm x').1 hx', add_zero]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, e1, e2, hsm, hsm]`. Simplify using `only [map_add, hNO, hNJ _ (hsq x hx x' hx'), map_smul, zero_add, add_zero]`. Establish `hsurj : ∀ w : R ⧸ N, ∃ b ∈ maximalIdeal R, N.mkQ b = w` using `fun w => by`. Take `⟨b, rfl⟩` from `N.mkQ_surjective w`. Take `⟨o, x, hx, rfl⟩` from `hdec b`.
+
+Conclude with `⟨x, hx, by rw [map_add, hNO, zero_add]⟩`. Use `haveI : Module.Finite F (R ⧸ N) := by`. Take `⟨s, hs'⟩` from `IsNoetherian.noetherian (maximalIdeal R)`. Use `⟨Submodule.fg_def.2 ⟨N.mkQ '' s, s.finite_toSet.image _, eq_top_iff.2 fun w _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨b, hb, rfl⟩` from `hsurj w`.
+
+Rewrite `hb` using `[← hs']`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ (hx trivial) (hy trivial)`. Consider the case `smul c x hx ih`. Rewrite `hx` using `[hs']`. Rewrite using `[smul_eq_mul, hder, (hm x).1 hx, zero_smul, add_zero]`.
+
+Conclude with `Submodule.smul_mem _ _ (ih trivial)`. Take `⟨f1, f2, f3⟩` from `dual_of_univ (F := F) N.mkQ.toAddMonoidHom T (fun φ => (hT _).2 ⟨fun b b' => by show φ (N.mkQ (b * b')) = r b * φ (N.mkQ b') + r b' * φ (N.mkQ b)`. Rewrite using `[hder, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul], fun o => by`. Use `show φ (N.mkQ _) = 0`. Rewrite using `[hNO, map_zero], fun b hb => by`.
+
+Use `show φ (N.mkQ _) = 0`. Rewrite using `[hNJ b (by rw [hJ]; exact Ideal.mem_sup_right hb), map_zero]⟩) (fun α hα => by`. Take `⟨a1, a2, a3⟩` from `(hT α).1 hα`. Set `K : Ideal R` to `{ carrier := {b | r b = 0 ∧ α b = 0} add_mem' := fun {x y} hx hy => ⟨by rw [map_add, hx.1, hy.1, add_zero], by rw [map_add, hx.2, hy.2, add_zero]⟩ zero_mem' := ⟨map_zero _, map_zero _⟩ smul_mem' := fun c x hx => ⟨by rw [smul_eq_mul, map_mul, hx.1, mul_zero], by rw [smul_eq_mul, a …`. Establish `hK : J ≤ K`.
+
+Rewrite using `[hJ]`. Use `sup_le (sup_le (Ideal.map_le_iff_le_comap.2 fun o ho => ⟨(hm _).1 (hJm ?_), a2 o⟩) ?_) fun b hb => ⟨(hm _).1 (hI hb), a3 b hb⟩` and prove the remaining obligations. Rewrite using `[hJ]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ ho))`. Rewrite using `[pow_two]`.
+
+Use `Ideal.mul_le.2 fun x hx y hy => ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, (hm x).1 hx, zero_mul]`. Rewrite using `[a1, (hm x).1 hx, (hm y).1 hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN : ∀ b ∈ N.toAddSubgroup, α b = 0` using `fun b hb => by`.
+
+Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (show b ∈ J.restrictScalars O ⊔ 1 from hb)`. Take `⟨o, rfl⟩` from `Submodule.mem_one.1 hz`. Rewrite using `[map_add, a2, (hK hy).2, add_zero]`. Set `ψ : (R ⧸ N) →+ F` to `QuotientAddGroup.lift N.toAddSubgroup α hN`. Establish `hψ : ∀ b, ψ (N.mkQ b) = α b` using `fun _ => rfl`.
+
+Use `⟨{ toFun := ψ, map_add' := ψ.map_add, map_smul' := fun c w => ?_ }, AddMonoidHom.ext hψ⟩` and prove the remaining obligations. Take `⟨o, rfl⟩` from `hs c`. Take `⟨b, rfl⟩` from `N.mkQ_surjective w`. Rewrite using `[hsm, ← map_smul, hψ, hψ, Algebra.smul_def, a1, a2]`. Use the proof step `simp)`.
+
+Use `⟨f1, fun b hb h => ?_, fun ξ => ?_⟩` and prove the remaining obligations. Establish `h0 : b ∈ N` using `(Submodule.Quotient.mk_eq_zero N).1 (f2 b h)`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (show b ∈ J.restrictScalars O ⊔ 1 from h0)`. Take `⟨o, rfl⟩` from `Submodule.mem_one.1 hz`. Use `J.add_mem hy (hO o ?_)` and prove the remaining obligations.
+
+Use `(maximalIdeal R).sub_mem hb (hJm hy)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_left]`. Then use the resulting hypothesis. Take `⟨w, hw⟩` from `f3 ξ`. Take `⟨b, hb, e⟩` from `hsurj w`. Conclude with `⟨b, hb, hw b e⟩`.
+-/
 private theorem tp_abs {O R F : Type} [CommRing O] [IsLocalRing O] [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [Field F] [Algebra O R] [IsLocalHom (algebraMap O R)] (r : R →+* F) (hk : RingHom.ker r = maximalIdeal R)
     (hs : Function.Surjective (r.comp (algebraMap O R))) (I J : Ideal R)
@@ -138,6 +186,9 @@ private theorem tp_abs {O R F : Type} [CommRing O] [IsLocalRing O] [CommRing R] 
     obtain ⟨b, hb, e⟩ := hsurj w
     exact ⟨b, hb, hw b e⟩
 
+/- English proof (translation)
+Introduce `l _ S`. Use `haveI : IsNoetherianRing S.Bh := { noetherian := S.d6.noetherian }`. Take `⟨-, -, -, -, -, hI, hJ⟩` from `prAdd l S`. Conclude with `tp_abs S.rF S.rF_ker S.oo_surj (ired S.U.N) S.J2 rfl hI hJ S.Tp fun _ => Iff.rfl`.
+-/
 theorem UpperTheory.V.Pa.tpDual :
     ∀ (l : ℕ) [Fact l.Prime] (S : Ctx l), Module.Finite S.F S.Tp ∧ (∀ b ∈ maximalIdeal S.Bh, (∀ α ∈ S.Tp, α b = 0) → b ∈ S.J2) ∧ ∀ ξ : Module.Dual S.F S.Tp, ∃ b ∈ maximalIdeal S.Bh, ∀ α : S.Tp, (α : S.Bh →+ S.F) b = ξ α := by
   intro l _ S

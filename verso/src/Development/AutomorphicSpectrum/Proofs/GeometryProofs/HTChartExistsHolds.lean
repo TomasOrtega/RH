@@ -21,6 +21,9 @@ def powChar {R : Type} [CommRing R] (m : ℕ) [NeZero m] (ζ : Rˣ) (hζ : ζ ^ 
     rw [toAdd_mul, ZMod.val_add, ← pow_add]
     exact (pow_eq_pow_mod _ hζ).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem powChar_apply {R : Type} [CommRing R] (m : ℕ) [NeZero m] (ζ : Rˣ) (hζ : ζ ^ m = 1) (k : ZMod m) :
     powChar m ζ hζ (Multiplicative.ofAdd k) = ζ ^ k.val := rfl
 
@@ -29,11 +32,17 @@ def liftSurj {G T H : Type} [Group G] [Group T] [Group H] (π : G →* T) (hπ :
   π.liftOfRightInverse (Function.surjInv hπ) (Function.rightInverse_surjInv hπ)
     ⟨f, fun z hz => (MonoidHom.mem_ker).2 (hf z ((MonoidHom.mem_ker).1 hz))⟩
 
+/- English proof (translation)
+The claim follows from `MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ z`.
+-/
 theorem liftSurj_apply {G T H : Type} [Group G] [Group T] [Group H] (π : G →* T)
     (hπ : Function.Surjective π) (f : G →* H) (hf : ∀ z, π z = 1 → f z = 1) (z : G) :
     liftSurj π hπ f hf (π z) = f z :=
   MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ z
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun t => by obtain ⟨z, rfl⟩ := hπ t exact h z`.
+-/
 theorem hom_ext_of_surj {G T H : Type} [Group G] [Group T] [Group H] (π : G →* T)
     (hπ : Function.Surjective π) (χ χ' : T →* H) (h : ∀ z, χ (π z) = χ' (π z)) : χ = χ' :=
   MonoidHom.ext fun t => by
@@ -52,6 +61,9 @@ def charOf (m : ℕ) [NeZero m] (ζ : Rˣ) (hζ : ζ ^ m = 1) (π : Multiplicati
     show powChar m ζ hζ (Multiplicative.ofAdd (e y (Multiplicative.toAdd z))) = 1
     rw [h0, ofAdd_zero, map_one])
 
+/- English proof (translation)
+The claim follows from `liftSurj_apply _ _ _ _ _`.
+-/
 theorem charOf_apply (m : ℕ) [NeZero m] (ζ : Rˣ) (hζ : ζ ^ m = 1) (π : Multiplicative (Fin N → 𝓞 E) →* T)
     (hπ : Function.Surjective π) (hker : ∀ y, π (Multiplicative.ofAdd y) = 1 ↔ ∃ y', y = m • y')
     (e : (Fin N → 𝓞 E) →+ (Fin N → 𝓞 E) →+ ZMod m) (y z : Fin N → 𝓞 E) :
@@ -72,22 +84,34 @@ variable (m : ℕ) [NeZero m] (ζ : Rˣ) (hζ : ζ ^ m = 1) (π : Multiplicative
     (e : (Fin N → 𝓞 E) →+ (Fin N → 𝓞 E) →+ ZMod m)
 
 omit [NeZero m] in
+/- English proof (translation)
+The claim follows from `hom_ext_of_surj π hπ χ χ' fun z => h (Multiplicative.toAdd z)`.
+-/
 theorem charOf_eq_iff (π : Multiplicative (Fin N → 𝓞 E) →* T)
     (hπ : Function.Surjective π) (χ χ' : T →* Rˣ) (h : ∀ z, χ (π (Multiplicative.ofAdd z)) = χ' (π (Multiplicative.ofAdd z))) :
     χ = χ' :=
   hom_ext_of_surj π hπ χ χ' fun z => h (Multiplicative.toAdd z)
 
+/- English proof (translation)
+The claim follows from `charOf_eq_iff π hπ _ _ fun z => by rw [MonoidHom.mul_apply, charOf_apply, charOf_apply, charOf_apply, ← powChar_apply m ζ hζ, ← powChar_apply m ζ hζ, ← powChar_apply m ζ hζ, map_add, AddMonoidHom.add_apply, ofAdd_add, map_mul]`.
+-/
 theorem charOf_add (y y' : Fin N → 𝓞 E) :
     charOf m ζ hζ π hπ hker e (y + y') = charOf m ζ hζ π hπ hker e y * charOf m ζ hζ π hπ hker e y' :=
   charOf_eq_iff π hπ _ _ fun z => by
     rw [MonoidHom.mul_apply, charOf_apply, charOf_apply, charOf_apply, ← powChar_apply m ζ hζ,
       ← powChar_apply m ζ hζ, ← powChar_apply m ζ hζ, map_add, AddMonoidHom.add_apply, ofAdd_add, map_mul]
 
+/- English proof (translation)
+The claim follows from `charOf_eq_iff π hπ _ _ fun z => by rw [MonoidHom.one_apply, charOf_apply, ← powChar_apply m ζ hζ, map_zero, AddMonoidHom.zero_apply, ofAdd_zero, map_one]`.
+-/
 theorem charOf_zero : charOf m ζ hζ π hπ hker e 0 = 1 :=
   charOf_eq_iff π hπ _ _ fun z => by
     rw [MonoidHom.one_apply, charOf_apply, ← powChar_apply m ζ hζ, map_zero, AddMonoidHom.zero_apply,
       ofAdd_zero, map_one]
 
+/- English proof (translation)
+The claim follows from `charOf_eq_iff π hπ _ _ fun z => by rw [MonoidHom.inv_apply, charOf_apply, charOf_apply, ← powChar_apply m ζ hζ, ← powChar_apply m ζ hζ, map_neg, AddMonoidHom.neg_apply, ofAdd_neg, map_inv]`.
+-/
 theorem charOf_neg (y : Fin N → 𝓞 E) :
     charOf m ζ hζ π hπ hker e (-y) = (charOf m ζ hζ π hπ hker e y)⁻¹ :=
   charOf_eq_iff π hπ _ _ fun z => by
@@ -101,6 +125,9 @@ def mulMap (b : 𝓞 E) : T →* T :=
     rw [hker, hz', smul_comm]
     exact ⟨_, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `liftSurj_apply _ _ _ _ _`.
+-/
 theorem mulMap_apply (b : 𝓞 E) (z : Fin N → 𝓞 E) :
     mulMap m π hπ hker b (π (Multiplicative.ofAdd z)) = π (Multiplicative.ofAdd (b • z)) :=
   liftSurj_apply _ _ _ _ _
@@ -118,6 +145,9 @@ def dualAct {L : Type} [AddCommGroup L] [Module R L] (ρ : 𝓞 E →+* Module.E
   map_zero' := by ext w l; simp
   map_add' a b := by ext w l; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualAct_apply {L : Type} [AddCommGroup L] [Module R L] (ρ : 𝓞 E →+* Module.End R L) (σ : 𝓞 E ≃+* 𝓞 E)
     (a : 𝓞 E) (w : Module.Dual R L) : dualAct ρ σ a w = w ∘ₗ ρ (σ a) := rfl
 
@@ -127,6 +157,37 @@ namespace GlobalTheory.CompanionTheory.Ar.BT.ChartEx
 
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct NumberField
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ _ _ E _ _ c p n N _ T _ _ Γ S G _ _ x i hTor hSm act hmon L _ _ M ρ hρ Ω _ _ _ _ j hj π hπ hker hact ζ hζ e halt hadj hsurj hinj`. Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ (Fact.out : p.Prime).ne_zero⟩`. Establish `hpn : ((p ^ n : ℕ) : R) ≠ 0` using `Nat.cast_ne_zero.2 (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)`. Use `haveI : Smooth G.hom := hSm`. Take `⟨hfin, hproj, -⟩` from `GlobalTheory.T.lie_model_finite_base_change S G R x L M`.
+
+Establish `hex : ∀ χ : T →* Rˣ, ∃ w, Γ.IsHT i M (p ^ n) χ w` using `fun χ => GlobalTheory.T.exists_hodge_tate_functional R T Γ S G x (p ^ n) i hTor hSm L M χ`. Establish `hadd : ∀ (χ χ' : T →* Rˣ) (w w' : Module.Dual R L), Γ.IsHT i M (p ^ n) χ w → Γ.IsHT i M (p ^ n) χ' w' → Γ.IsHT i M (p ^ n) (χ * χ') (w + w')` using `fun χ χ' w w' => GlobalTheory.T.hodge_tate_functional_mul R T Γ S G x (p ^ n) i hTor L M χ χ' w w'`. Establish `huniq : ∀ (χ : T →* Rˣ) (w w' : Module.Dual R L), Γ.IsHT i M (p ^ n) χ w → (Γ.IsHT i M (p ^ n) χ w' ↔ ∃ u : Module.Dual R L, w' = w + (p ^ n) • u)` using `fun χ w w' => GlobalTheory.T.hodge_tate_functional_unique_mod_smul R T Γ S G x (p ^ n) i hTor hSm hpn L M χ w w'`. Establish `hzero : Γ.IsHT i M (p ^ n) 1 0`. Take `⟨w, hw⟩` from `hex 1`.
+
+Establish `h2` using `hadd 1 1 w w hw hw`. Rewrite `h2` using `[_root_.mul_one]`. Take `⟨u, hu⟩` from `(huniq 1 w (w + w) hw).1 h2`. Use `(huniq 1 w 0 hw).2 ⟨-u, ?_⟩` and prove the remaining obligations. Establish `: w = (p ^ n) • u` using `add_left_cancel hu`.
+
+Rewrite using `[smul_neg, this, add_neg_cancel]`. Establish `hneg : ∀ (χ : T →* Rˣ) (w : Module.Dual R L), Γ.IsHT i M (p ^ n) χ w → Γ.IsHT i M (p ^ n) χ⁻¹ (-w)`. Introduce `χ w hw`. Take `⟨w', hw'⟩` from `hex χ⁻¹`. Establish `h2` using `hadd χ χ⁻¹ w w' hw hw'`.
+
+Rewrite `h2` using `[_root_.mul_inv_cancel]`. Take `⟨u, hu⟩` from `(huniq 1 0 (w + w') hzero).1 h2`. Use `(huniq χ⁻¹ w' (-w) hw').2 ⟨-u, ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[zero_add]`. Rewrite using `[smul_neg, ← hu]`.
+
+Normalize the expressions using the abelian group laws. Set `χ` to `charOf (p ^ n) ζ hζ π hπ hker e`. Take `⟨b⟩ : Nonempty (Module.Basis (Module.Free.ChooseBasisIndex ℤ (Fin N → 𝓞 E)) ℤ (Fin N → 𝓞 E))` from `⟨Module.Free.chooseBasis ℤ (Fin N → 𝓞 E)⟩`. Use `choose wb hwb using fun k => hex (χ (b k))`. Set `h : (Fin N → 𝓞 E) →+ Module.Dual R L` to `(b.constr ℤ wb).toAddMonoidHom`.
+
+Establish `hh : ∀ y, Γ.IsHT i M (p ^ n) (χ y) (h y)`. Introduce `y`. Establish `hy : y ∈ (Submodule.span ℤ (Set.range b)).toAddSubgroup`. Rewrite using `[Submodule.mem_toAddSubgroup, b.span_eq]`. Conclude with `Submodule.mem_top`.
+
+Rewrite `hy` using `[Submodule.span_int_eq_addSubgroupClosure]`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`. Establish `: h (b k) = wb k` using `by simp [h, Module.Basis.constr_basis]`.
+
+Rewrite using `[this]`. Conclude with `hwb k`. Consider the case `zero => rw [map_zero, show χ 0 = 1 from charOf_zero _ _ _ _ _ _ _]`. Conclude with `hzero`. Consider the case `add y y' _ _ h1 h2`.
+
+Rewrite using `[map_add, show χ (y + y') = χ y * χ y' from charOf_add _ _ _ _ _ _ _ y y']`. Conclude with `hadd _ _ _ _ h1 h2`. Consider the case `neg y _ h1 => rw [map_neg, show χ (-y) = (χ y)⁻¹ from charOf_neg _ _ _ _ _ _ _ y]`. Conclude with `hneg _ _ h1`. Establish `hlin : ∀ (a : 𝓞 E) y, ∃ u, h (a • y) = dualAct ρ (RingOfIntegers.mapRingEquiv c) a (h y) + (p ^ n) • u`.
+
+Introduce `a y`. Establish `hαc : χ (a • y) = (χ y).comp (mulMap (p ^ n) π hπ hker (RingOfIntegers.mapRingEquiv c a))` using `charOf_eq_iff π hπ _ _ fun z => by`. Rewrite using `[MonoidHom.comp_apply, mulMap_apply, charOf_apply, charOf_apply, hadj]`. Establish `hαpt : ∀ t, (Γ.pt (mulMap (p ^ n) π hπ hker (RingOfIntegers.mapRingEquiv c a) t)).left ≫ i = (Γ.pt t).left ≫ i ≫ (act (RingOfIntegers.mapRingEquiv c a)).left`. Introduce `t`.
+
+Take `⟨z, rfl⟩` from `hπ t`. Use `mulMap_apply (p ^ n) π hπ hker (RingOfIntegers.mapRingEquiv c a) (Multiplicative.toAdd z)` as an intermediate fact. Rewrite `this` using `[ofAdd_toAdd]`. Rewrite using `[this]`. Conclude with `hact _ _`.
+
+Use `haveI := hmon (RingOfIntegers.mapRingEquiv c a)`. Establish `h1 : Γ.IsHT i M (p ^ n) (χ (a • y)) (dualAct ρ (RingOfIntegers.mapRingEquiv c) a (h y))`. Rewrite using `[hαc, dualAct_apply]`. Conclude with `GlobalTheory.T.hodge_tate_functional_endomorphism R T Γ S G x (p ^ n) i hTor L M (act (RingOfIntegers.mapRingEquiv c a)) _ (ρ (RingOfIntegers.mapRingEquiv c a)) hαpt (hρ _) (χ y) (h y) (hh y)`. Take `⟨u, hu⟩` from `(huniq _ _ _ (hh (a • y))).1 h1`.
+
+Use `⟨-u, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, smul_neg, add_neg_cancel_right]`. Take `⟨D, hDom, hDe, hDh, hDρ⟩` from `GlobalTheory.T.hodge_tate_lattice_base_change_pairing R K E c p n N (Module.Dual R L) Ω j hj (dualAct ρ (RingOfIntegers.mapRingEquiv c)) e h halt hadj hsurj hinj hlin`. Use `⟨D, hDe, hDom, fun a w => ?_, fun y => ⟨χ y, h y, fun z => ?_, hDh y, hh y⟩⟩` and prove the remaining obligations. Rewrite using `[hDρ]`.
+
+Both sides reduce to the same expression. Rewrite using `[hDe]`. Conclude with `charOf_apply _ _ _ _ _ _ _ _ _`.
+-/
 theorem htChartExists : HTChartExists := by
   intro R K _ _ _ _ _ _ _ _ E _ _ c p n N _ T _ _ Γ S G _ _ x i hTor hSm act hmon L _ _ M ρ hρ Ω _ _ _ _ j hj
     π hπ hker hact ζ hζ e halt hadj hsurj hinj

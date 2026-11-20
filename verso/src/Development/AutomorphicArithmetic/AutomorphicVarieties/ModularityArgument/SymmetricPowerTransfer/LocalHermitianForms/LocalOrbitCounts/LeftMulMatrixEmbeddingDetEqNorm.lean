@@ -16,24 +16,41 @@ private def Ent (g : GL (Fin 2) K) : Prop := ∀ s t, (g : Matrix (Fin 2) (Fin 2
 
 private abbrev sc (s : Kˣ) : GL (Fin 2) K := GeneralLinearGroup.scalar (Fin 2) s
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [sc, GeneralLinearGroup.scalar, h]`.
+-/
 private theorem sc_val (s : Kˣ) : ((sc s : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) = (s : K) • 1 := by
   ext i j
   by_cases h : i = j <;> simp [sc, GeneralLinearGroup.scalar, h]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, sc_val, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]`.
+-/
 private theorem sc_comm (s : Kˣ) (g : GL (Fin 2) K) : sc s * g = g * sc s := by
   apply Units.ext
   rw [Units.val_mul, Units.val_mul, sc_val, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h`. Conclude with `fun s t => ⟨(a : Matrix (Fin 2) (Fin 2) O) s t, rfl⟩`.
+-/
 private theorem kg_ent {g : GL (Fin 2) K} (h : g ∈ KG O K) : Ent O g := by
   obtain ⟨a, rfl⟩ := h
   exact fun s t => ⟨(a : Matrix (Fin 2) (Fin 2) O) s t, rfl⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h`. Use `⟨GeneralLinearGroup.det a, ?_⟩` and prove the remaining obligations. Simplify using `[RingHom.map_det]`.
+-/
 private theorem kg_det {g : GL (Fin 2) K} (h : g ∈ KG O K) :
     ∃ u : Oˣ, (g : Matrix (Fin 2) (Fin 2) K).det = algebraMap O K u := by
   obtain ⟨a, rfl⟩ := h
   refine ⟨GeneralLinearGroup.det a, ?_⟩
   simp [RingHom.map_det]
 
+/- English proof (translation)
+Use `choose a ha using h`. Establish `hg : (g : Matrix (Fin 2) (Fin 2) K) = (algebraMap O K).mapMatrix (Matrix.of a)`. Use extensionality with `s t`. Simplify using `[ha]`. Establish `hd : (Matrix.of a).det = u`.
+
+Apply `IsFractionRing.injective O K` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, ← hg, hu]`. Use `⟨GeneralLinearGroup.mk'' (Matrix.of a) (hd ▸ u.isUnit), Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Both sides reduce to the same expression.
+-/
 private theorem kg_of_det [IsFractionRing O K] {g : GL (Fin 2) K} (h : Ent O g) (u : Oˣ)
     (hu : (g : Matrix (Fin 2) (Fin 2) K).det = algebraMap O K u) : g ∈ KG O K := by
   choose a ha using h
@@ -47,10 +64,18 @@ private theorem kg_of_det [IsFractionRing O K] {g : GL (Fin 2) K} (h : Ent O g) 
   rw [hg]
   rfl
 
+/- English proof (translation)
+Use `choose a ha using h`. Conclude with `⟨a 0 0 * a 1 1 - a 0 1 * a 1 0, by simp [det_fin_two, ha]⟩`.
+-/
 private theorem ent_det {g : GL (Fin 2) K} (h : Ent O g) : ∃ r : O, (g : Matrix (Fin 2) (Fin 2) K).det = algebraMap O K r := by
   choose a ha using h
   exact ⟨a 0 0 * a 1 1 - a 0 1 * a 1 0, by simp [det_fin_two, ha]⟩
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `ent_det h`. Take `⟨r', hr'⟩` from `ent_det h'`. Establish `: r * r' = 1`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises. Rewrite using `[map_mul, ← hr, ← hr', ← det_mul, ← Units.val_mul, mul_inv_cancel, map_one]`.
+
+Simplify using the standard rewrite rules. Conclude with `kg_of_det h (Units.mkOfMulEqOne r r' this) hr`.
+-/
 private theorem kg_of_inv [IsFractionRing O K] {g : GL (Fin 2) K} (h : Ent O g) (h' : Ent O g⁻¹) : g ∈ KG O K := by
   obtain ⟨r, hr⟩ := ent_det h
   obtain ⟨r', hr'⟩ := ent_det h'
@@ -60,6 +85,11 @@ private theorem kg_of_inv [IsFractionRing O K] {g : GL (Fin 2) K} (h : Ent O g) 
     simp
   exact kg_of_det h (Units.mkOfMulEqOne r r' this) hr
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h haveI : (GeneralLinearGroup.scalar (Fin 2) : Kˣ →* GL (Fin 2) K).range.Normal := ⟨by`. Introduce and unpack `_ ⟨s, rfl⟩ g`. Conclude with `⟨s, by rw [← sc_comm s g, mul_inv_cancel_right]⟩⟩`. Establish `h' : g ∈ ((ZK O K : Subgroup _) : Set (GL (Fin 2) K))` using `h`.
+
+Rewrite `h'` using `[ZK, Subgroup.normal_mul]`. Take `⟨_, ⟨s, rfl⟩, k, hk, rfl⟩` from `h'`. Conclude with `⟨s, k, hk, rfl⟩`. Introduce and unpack `⟨s, k, hk, rfl⟩`. Conclude with `Subgroup.mul_mem_sup ⟨s, rfl⟩ hk`.
+-/
 private theorem zk_iff {g : GL (Fin 2) K} : g ∈ ZK O K ↔ ∃ s : Kˣ, ∃ k ∈ KG O K, g = sc s * k := by
   constructor
   · intro h
@@ -73,6 +103,17 @@ private theorem zk_iff {g : GL (Fin 2) K} : g ∈ ZK O K ↔ ∃ s : Kˣ, ∃ k 
   · rintro ⟨s, k, hk, rfl⟩
     exact Subgroup.mul_mem_sup ⟨s, rfl⟩ hk
 
+/- English proof (translation)
+Take `⟨w, k, hk, rfl⟩` from `zk_iff.1 h`. Take `⟨v, hv⟩` from `kg_det hk`. Establish `hw : ∃ r : O, algebraMap O K r = w`. Break down `ValuationRing.isInteger_or_isInteger O (w : K) with h | ⟨r, hr⟩` into its components or cases. Conclude with `h`.
+
+Rewrite `hu` using `[Units.val_mul, sc_val, det_mul, det_smul, hv]`. Establish `: r * (r * u) = v`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, hr, ← hu]`. Simplify using the standard rewrite rules.
+
+Clear the denominators using the available nonvanishing facts. Establish `hr' : IsUnit r` using `isUnit_of_mul_isUnit_left (this ▸ v.isUnit)`. Take `⟨r', hr''⟩` from `hr'.exists_right_inv`. Use `⟨r', ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap O K) hr''` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, hr, map_one]`. Clear denominators, using `at this` for the nonvanishing conditions. Conclude with `this`. Take `⟨r, hr⟩` from `hw`. Introduce `s t`.
+
+Take `⟨a, ha⟩` from `kg_ent hk s t`. Conclude with `⟨r * a, by simp [sc_val, hr, ha]⟩`.
+-/
 private theorem ent_of_zk [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] {g : GL (Fin 2) K} (u : Oˣ)
     (hu : (g : Matrix (Fin 2) (Fin 2) K).det = algebraMap O K u) (h : g ∈ ZK O K) : Ent O g := by
   obtain ⟨w, k, hk, rfl⟩ := zk_iff.1 h
@@ -110,9 +151,15 @@ private abbrev b0 : Module.Basis (Fin 2) K (Etau K τ) := QuadraticAlgebra.basis
 variable (τ) in
 private abbrev j0 : Etau K τ →ₐ[K] Matrix (Fin 2) (Fin 2) K := Algebra.leftMulMatrix (b0 τ)
 
+/- English proof (translation)
+Simplify using `[Matrix.trace_fin_two, Algebra.leftMulMatrix_eq_repr_mul, QuadraticAlgebra.basis]`.
+-/
 private theorem leftMulMatrixEmbedding_omega_trace : (j0 τ ω).trace = τ := by
   simp [Matrix.trace_fin_two, Algebra.leftMulMatrix_eq_repr_mul, QuadraticAlgebra.basis]
 
+/- English proof (translation)
+Simplify using `[Matrix.det_fin_two, Algebra.leftMulMatrix_eq_repr_mul, QuadraticAlgebra.basis, QuadraticAlgebra.norm_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem leftMulMatrixEmbedding_det_eq_norm (x : Etau K τ) : (j0 τ x).det = QuadraticAlgebra.norm x := by
   simp [Matrix.det_fin_two, Algebra.leftMulMatrix_eq_repr_mul, QuadraticAlgebra.basis, QuadraticAlgebra.norm_def]
   ring
@@ -120,9 +167,15 @@ private theorem leftMulMatrixEmbedding_det_eq_norm (x : Etau K τ) : (j0 τ x).d
 variable (τ) in
 private def su (s : Kˣ) : (Etau K τ)ˣ := Units.map (algebraMap K (Etau K τ) : K →* Etau K τ) s
 
+/- English proof (translation)
+Simplify using `[su, Algebra.smul_def]`.
+-/
 private theorem su_mul (s : Kˣ) (x : Etau K τ) : (su τ s : Etau K τ) * x = (s : K) • x := by
   simp [su, Algebra.smul_def]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[sc_val]`. Express the relevant statement in the definitionally equal form `j0 τ (algebraMap K _ (s : K)) = _`. Rewrite using `[AlgHom.commutes, Algebra.algebraMap_eq_smul_one]`.
+-/
 private theorem jU_su (s : Kˣ) : jU (j0 τ) (su τ s) = sc s := by
   apply Units.ext
   rw [sc_val]
@@ -133,6 +186,13 @@ variable (O τ) in
 private def LL (g : GL (Fin 2) K) : Set (Etau K τ) :=
   {x | ∀ i, (((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ (b0 τ).repr x) i ∈ Set.range (algebraMap O K)}
 
+/- English proof (translation)
+Establish `h : ∀ x, x ∈ LL O τ (jU (j0 τ) t * g) ↔ ((t⁻¹ : (Etau K τ)ˣ) : Etau K τ) * x ∈ LL O τ g`. Introduce `x`. Simplify using `only [LL, Set.mem_setOf_eq]`. Rewrite using `[_root_.mul_inv_rev, ← map_inv, Units.val_mul, ← mulVec_mulVec, ← Algebra.leftMulMatrix_mulVec_repr]`. Both sides reduce to the same expression.
+
+Use extensionality with `x`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun hx => ⟨_, hx, by simp⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Simplify using `using hy`.
+-/
 private theorem lat_mul (t : (Etau K τ)ˣ) (g : GL (Fin 2) K) :
     LL O τ (jU (j0 τ) t * g) = ((t : Etau K τ) * ·) '' LL O τ g := by
   have h : ∀ x, x ∈ LL O τ (jU (j0 τ) t * g) ↔ ((t⁻¹ : (Etau K τ)ˣ) : Etau K τ) * x ∈ LL O τ g := by
@@ -147,10 +207,22 @@ private theorem lat_mul (t : (Etau K τ)ˣ) (g : GL (Fin 2) K) :
   · rintro ⟨y, hy, rfl⟩
     simpa using hy
 
+/- English proof (translation)
+Rewrite using `[← jU_su (τ := τ), lat_mul]`. Simplify using `only [su_mul]`.
+-/
 private theorem lat_sc (s : Kˣ) (g : GL (Fin 2) K) : LL O τ (sc s * g) = ((s : K) • ·) '' LL O τ g := by
   rw [← jU_su (τ := τ), lat_mul]
   simp only [su_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h s t`. Use `h (a := (b0 τ).equivFun.symm ((g : Matrix (Fin 2) (Fin 2) K) *ᵥ Pi.single t 1)) (by` as an intermediate fact. Introduce `i`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mulVec]`.
+
+Distinguish the cases in `h : i = t`. Conclude with `⟨1, by simp [h]⟩`. Conclude with `⟨0, by simp [h]⟩) s`. Rewrite `this` using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, mulVec_mulVec, ← Units.val_mul]`. Simplify using `using this`.
+
+Introduce `h x hx i`. Establish `e : ((g'⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ (b0 τ).repr x = ((g'⁻¹ * g : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ (((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ (b0 τ).repr x)`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right]`. Rewrite using `[e]`. Use `choose a ha using h`.
+
+Use `choose v hv using hx`. Use `⟨a i 0 * v 0 + a i 1 * v 1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, ha, ha, hv, hv]`. Generalize the expression as in `((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ (b0 τ).repr x = w`. Simplify using `[mulVec, dotProduct]`.
+-/
 private theorem lat_le {g g' : GL (Fin 2) K} : LL O τ g ⊆ LL O τ g' ↔ Ent O (g'⁻¹ * g) := by
   constructor
   · intro h s t
@@ -176,6 +248,9 @@ private theorem lat_le {g g' : GL (Fin 2) K} : LL O τ g ⊆ LL O τ g' ↔ Ent 
     generalize ((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ (b0 τ).repr x = w
     simp [mulVec, dotProduct]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, B.mem_span_iff_repr_mem O, ← h]`. Both sides reduce to the same expression.
+-/
 private theorem lat_basis [IsDomain O] [IsFractionRing O K] (B : Module.Basis (Fin 2) K (Etau K τ)) (g : GL (Fin 2) K)
     (h : ∀ x, ((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) *ᵥ (b0 τ).repr x = B.repr x) :
     LL O τ g = Submodule.span O (Set.range B) := by
@@ -183,6 +258,9 @@ private theorem lat_basis [IsDomain O] [IsFractionRing O K] (B : Module.Basis (F
   rw [SetLike.mem_coe, B.mem_span_iff_repr_mem O, ← h]
   rfl
 
+/- English proof (translation)
+Set `B : Module.Basis (Fin 2) K (Etau K τ)` to `Module.Basis.ofEquivFun ((b0 τ).equivFun ≪≫ₗ (GeneralLinearGroup.toLin g⁻¹).toLinearEquiv)`. Establish `h` using `lat_basis (O := O) B g fun x => rfl`. Use `⟨⟨Finset.univ.image B, by rw [h]; simp⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h, Submodule.span_span_of_tower, B.span_eq]`.
+-/
 private theorem lat_isLat [IsDomain O] [IsFractionRing O K] (g : GL (Fin 2) K) : IsLat O τ (LL O τ g) := by
   classical
   let B : Module.Basis (Fin 2) K (Etau K τ) :=
@@ -191,6 +269,15 @@ private theorem lat_isLat [IsDomain O] [IsFractionRing O K] (g : GL (Fin 2) K) :
   refine ⟨⟨Finset.univ.image B, by rw [h]; simp⟩, ?_⟩
   rw [h, Submodule.span_span_of_tower, B.span_eq]
 
+/- English proof (translation)
+Take `⟨⟨s, rfl⟩, hsp⟩` from `hS`. Use `set M : Submodule O (Etau K τ) := Submodule.span O (s : Set (Etau K τ)) with hM`. Use `haveI : Submodule.IsLattice K M := ⟨⟨s, rfl⟩, hsp⟩`. Establish `hr : Module.finrank O M = 2`. Apply `Module.finrank_eq_of_rank_eq` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.IsLattice.rank' K M, ← Module.finrank_eq_rank, QuadraticAlgebra.finrank_eq_two]`. Set `b` to `Module.finBasisOfFinrankEq O M hr`. Set `B` to `b.extendOfIsLattice K`. Use `⟨⟨(b0 τ).toMatrix B, B.toMatrix (b0 τ), by simp, by simp⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[lat_basis B _ fun x => (b0 τ).toMatrix_mulVec_repr B x]`.
+
+Establish `: Set.range B = M.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[B]`.
+
+Rewrite using `[this, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]`.
+-/
 private theorem isLat_lat [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] {S : Set (Etau K τ)}
     (hS : IsLat O τ S) : ∃ g, S = LL O τ g := by
   obtain ⟨⟨s, rfl⟩, hsp⟩ := hS
@@ -210,8 +297,16 @@ private theorem isLat_lat [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRi
     simp [B]
   rw [this, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp⟩`.
+-/
 private theorem cls_self (S : Set (Etau K τ)) : S ∈ cls τ S := ⟨1, by simp⟩
 
+/- English proof (translation)
+Use extensionality with `T`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩`. Conclude with `⟨r * s, by simp [← Set.image_comp, Function.comp_def, mul_smul]⟩`. Introduce and unpack `⟨r, rfl⟩`.
+
+Conclude with `⟨r * s⁻¹, by simp [← Set.image_comp, Function.comp_def, smul_smul]⟩`.
+-/
 private theorem cls_smul (s : Kˣ) (S : Set (Etau K τ)) : cls τ (((s : K) • ·) '' S) = cls τ S := by
   ext T
   constructor
@@ -220,6 +315,11 @@ private theorem cls_smul (s : Kˣ) (S : Set (Etau K τ)) : cls τ (((s : K) • 
   · rintro ⟨r, rfl⟩
     exact ⟨r * s⁻¹, by simp [← Set.image_comp, Function.comp_def, smul_smul]⟩
 
+/- English proof (translation)
+Use extensionality with `T`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, rfl⟩`. Conclude with `⟨_, ⟨r, rfl⟩, by simp [← Set.image_comp, Function.comp_def]⟩`. Introduce and unpack `⟨_, ⟨r, rfl⟩, rfl⟩`.
+
+Conclude with `⟨r, by simp [← Set.image_comp, Function.comp_def]⟩`.
+-/
 private theorem cls_mul (t : Etau K τ) (S : Set (Etau K τ)) :
     cls τ ((t * ·) '' S) = (fun S => (t * ·) '' S) '' cls τ S := by
   ext T
@@ -229,6 +329,15 @@ private theorem cls_mul (t : Etau K τ) (S : Set (Etau K τ)) :
   · rintro ⟨_, ⟨r, rfl⟩, rfl⟩
     exact ⟨r, by simp [← Set.image_comp, Function.comp_def]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨s, hs⟩ : LL O τ g' ∈ cls τ (LL O τ g)` from `h ▸ cls_self _`. Rewrite `hs` using `[← lat_sc]`. Use `zk_iff.2 ⟨s, (sc s * g)⁻¹ * g', kg_of_inv (lat_le.1 hs.subset) ?_, ?_⟩` and prove the remaining obligations.
+
+Use `lat_le.1 hs.superset` as an intermediate fact. Rewrite using `[_root_.mul_inv_rev, inv_inv]` and apply the resulting hypothesis. Rewrite using `[← mul_assoc, sc_comm s (sc s * g)⁻¹] group`. Introduce `h`. Take `⟨s, k, hk, e⟩` from `zk_iff.1 h`.
+
+Establish `e' : (sc s * g)⁻¹ * g' = k`. Rewrite using `[sc_comm, _root_.mul_inv_rev, mul_assoc, e, inv_mul_cancel_left]`. Establish `: LL O τ g' = LL O τ (sc s * g)`. Use `Set.Subset.antisymm (lat_le.2 (e' ▸ kg_ent hk)) (lat_le.2 ?_)` and prove the remaining obligations. Use `kg_ent ((KG O K).inv_mem hk)` as an intermediate fact.
+
+Rewrite `this` using `[← e', _root_.mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Rewrite using `[this, lat_sc, cls_smul]`.
+-/
 private theorem cls_lat [IsFractionRing O K] {g g' : GL (Fin 2) K} :
     cls τ (LL O τ g) = cls τ (LL O τ g') ↔ g⁻¹ * g' ∈ ZK O K := by
   constructor
@@ -256,6 +365,9 @@ section Main
 
 variable {O : Type} [CommRing O] {K : Type} [Field K] [Algebra O K] {τ : K}
 
+/- English proof (translation)
+Introduce and unpack `⟨S, -, hs, e⟩`. Take `⟨s, hs'⟩ : LL O τ g ∈ cls τ S` from `e ▸ cls_self _`. Rewrite using `[← lat_le (τ := τ), lat_mul, hs']`. Introduce and unpack `_ ⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨_, hs y hy, by simp⟩`.
+-/
 private theorem stab_iff (u : (Etau K τ)ˣ) (g : GL (Fin 2) K) :
     (∃ S, IsLat O τ S ∧ (∀ y ∈ S, (u : Etau K τ) * y ∈ S) ∧ cls τ (LL O τ g) = cls τ S) →
       Ent O (g⁻¹ * (jU (j0 τ) u * g)) := by
@@ -266,6 +378,15 @@ private theorem stab_iff (u : (Etau K τ)ˣ) (g : GL (Fin 2) K) :
   exact ⟨_, hs y hy, by simp⟩
 
 open Classical in
+/- English proof (translation)
+Use `haveI := hL.frac`. Take `⟨h0, h1⟩` from `fzkLaw O K Δ hL χ hχ`. Establish `e : g⁻¹ * jU (j0 τ) (su τ s * u) * g = sc s * (g⁻¹ * (jU (j0 τ) u * g))`. Rewrite using `[map_mul, jU_su, ← mul_assoc, ← sc_comm]`. Use `group`.
+
+Establish `hd : ((g⁻¹ * (jU (j0 τ) u * g) : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K).det = algebraMap O K ε`. Rewrite using `[Units.val_mul, Units.val_mul, ← mul_assoc, det_units_conj', ← hu, ← leftMulMatrixEmbedding_det_eq_norm]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `split_ifs with h`.
+
+Rewrite using `[h1 s _ (kg_of_det (stab_iff u g h) ε hd), mul_one]`. Rewrite using `[mul_zero]`. Use `h0 _ fun hz => h ⟨_, lat_isLat g, fun y hy => ?_, rfl⟩` and prove the remaining obligations. Establish `hz' : g⁻¹ * (jU (j0 τ) u * g) ∈ ZK O K` using `((ZK O K).mul_mem_cancel_left (zk_iff.2 ⟨s, 1, one_mem _, (mul_one _).symm⟩)).1 hz`. Use `(lat_le (τ := τ)).2 (ent_of_zk ε hd hz')` as an intermediate fact.
+
+Rewrite `this` using `[lat_mul]`. Conclude with `this ⟨y, hy, rfl⟩`.
+-/
 private theorem val_eq [IsDomain O] [IsDiscreteValuationRing O] {Δ : K} (hL : IsLoc O Δ) (χ : Kˣ →* ℂˣ) (hχ : Unr O χ)
     (u : (Etau K τ)ˣ) (s : Kˣ) (ε : Oˣ) (hu : QuadraticAlgebra.norm (u : Etau K τ) = algebraMap O K ε) (g : GL (Fin 2) K) :
     fZK O χ (g⁻¹ * jU (j0 τ) (su τ s * u) * g) = (((χ s)⁻¹ : ℂˣ) : ℂ) *
@@ -289,12 +410,20 @@ private theorem val_eq [IsDomain O] [IsDiscreteValuationRing O] {Δ : K} (hL : I
     rw [lat_mul] at this
     exact this ⟨y, hy, rfl⟩
 
+/- English proof (translation)
+Unfold `wcount`. Rewrite using `[mul_finsum]`. Conclude with `finsum_congr fun o => by ring`.
+-/
 private theorem wcount_mul {T Y : Type} [Group T] [MulAction T Y] (C : Subgroup T) (c : ℂ) (k : Y → ℂ) :
     c * wcount C k = wcount C fun y => c * k y := by
   unfold wcount
   rw [mul_finsum]
   exact finsum_congr fun o => by ring
 
+/- English proof (translation)
+Take `⟨S, hS, hs, rfl⟩` from `h`. Use `⟨_, ?_, ?_, (cls_mul _ S).symm⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `isLat_lat hS`. Rewrite using `[← lat_mul]`. Conclude with `lat_isLat _`.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨_, hs y hy, mul_left_comm _ _ _⟩`.
+-/
 private theorem q_mul (t : (Etau K τ)ˣ) (x : Etau K τ) [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K]
     (X : Set (Set (Etau K τ))) (h : ∃ S, IsLat O τ S ∧ (∀ y ∈ S, x * y ∈ S) ∧ X = cls τ S) :
     ∃ S, IsLat O τ S ∧ (∀ y ∈ S, x * y ∈ S) ∧ (fun S => ((t : Etau K τ) * ·) '' S) '' X = cls τ S := by
@@ -310,6 +439,27 @@ end Main
 
 end
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ Δ τ hL hτ j χ hj hχ z s ε hz`. Use `haveI := hL.frac`. Rewrite using `[(gConj O K Δ τ hL hτ j (j0 τ) hj leftMulMatrixEmbedding_omega_trace).2 χ hχ z]`. Take `⟨u, rfl⟩ : ∃ u, z = su τ s * u` from `⟨(su τ s)⁻¹ * z, by simp⟩`. Establish `hx : ((s⁻¹ : Kˣ) : K) • ((su τ s * u : (Etau K τ)ˣ) : Etau K τ) = u`.
+
+Rewrite using `[Units.val_mul, su_mul, smul_smul, Units.inv_mul, one_smul]`. Establish `hu : QuadraticAlgebra.norm (u : Etau K τ) = algebraMap O K ε`. Rewrite `hz` using `[Units.val_mul, su_mul, ← leftMulMatrixEmbedding_det_eq_norm, map_smul, det_smul, leftMulMatrixEmbedding_det_eq_norm, Fintype.card_fin, mul_comm]`. Conclude with `mul_right_cancel₀ (pow_ne_zero 2 s.ne_zero) hz`. Rewrite using `[hx]`.
+
+Unfold `gOrb orb vcount`. Use `letI := mulAct (K := K) τ`. Use `letI : MulAction (Etau K τ)ˣ (GL (Fin 2) K ⧸ ZK O K) := MulAction.compHom _ (jU (j0 τ))`. Rewrite using `[wcount_mul]`. Establish `hmk : ∀ g : GL (Fin 2) K, cls τ (LL O τ (QuotientGroup.mk g : GL (Fin 2) K ⧸ ZK O K).out) = cls τ (LL O τ g)` using `fun g => cls_lat.2 (QuotientGroup.eq.1 (QuotientGroup.out_eq' _))`.
+
+Establish `heq : ∀ (t : (Etau K τ)ˣ) (y : GL (Fin 2) K ⧸ ZK O K), cls τ (LL O τ (t • y).out) = t • cls τ (LL O τ y.out)`. Introduce `t y`. Establish `: t • y = QuotientGroup.mk (jU (j0 τ) t * y.out)` using `by conv_lhs => rw [← QuotientGroup.out_eq' y]`. Both sides reduce to the same expression. Rewrite using `[this, hmk, lat_mul, cls_mul]`.
+
+Both sides reduce to the same expression. Establish `hq : ∀ (t : (Etau K τ)ˣ) (X : Set (Set (Etau K τ))), (∃ S, IsLat O τ S ∧ (∀ y ∈ S, (u : Etau K τ) * y ∈ S) ∧ t • X = cls τ S) ↔ ∃ S, IsLat O τ S ∧ (∀ y ∈ S, (u : Etau K τ) * y ∈ S) ∧ X = cls τ S`. Introduce `t X`. Use `⟨fun h => ?_, q_mul t _ X⟩` and prove the remaining obligations. Use `q_mul t⁻¹ _ _ h` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `∃ S, _ ∧ _ ∧ t⁻¹ • t • X = _ at this`. Rewrite `this` using `[inv_smul_smul]`. Then use the resulting hypothesis. Simplify using `only [MonoidHom.id_apply]`. Use `wTrans _ _ _ _ _ _ (fun y X => X = cls τ (LL O τ y.out)) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t y`.
+
+Rewrite using `[val_eq hL χ hχ u s ε hu, val_eq hL χ hχ u s ε hu, heq, if_congr (hq _ _) rfl rfl]`. Introduce `t X`. Rewrite using `[if_congr (hq _ _) rfl rfl]`. Introduce and unpack `t y _ rfl`. Conclude with `(heq t y).symm`.
+
+Introduce and unpack `y _ rfl`. Conclude with `val_eq hL χ hχ u s ε hu _`. Conclude with `fun y _ => ⟨_, rfl, fun _ h => h⟩`. Introduce `X hX`. Establish `h : ∃ S, IsLat O τ S ∧ (∀ y ∈ S, (u : Etau K τ) * y ∈ S) ∧ X = cls τ S`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hX (by rw [if_neg h, mul_zero])`. Take `⟨S, hS, -, rfl⟩` from `h`. Take `⟨g, rfl⟩` from `isLat_lat hS`. Use `⟨QuotientGroup.mk g, (hmk g).symm, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← QuotientGroup.out_eq' y]`. Conclude with `QuotientGroup.eq.2 (cls_lat.1 hy.symm)`.
+-/
 theorem UpperTheory.V.Z.Sym.Loc.gLat :
     UpperTheory.V.Z.Sym.Loc.GLat := by
   classical

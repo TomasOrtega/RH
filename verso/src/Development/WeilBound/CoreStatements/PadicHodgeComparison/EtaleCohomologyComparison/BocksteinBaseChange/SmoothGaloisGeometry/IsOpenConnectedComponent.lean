@@ -9,6 +9,13 @@ open CategoryTheory Limits AlgebraicGeometry Topology TopologicalSpace
 
 namespace CrystallineSemistableComparison.GeoC
 
+/- English proof (translation)
+Establish `h : (connectedComponent x)ᶜ = ⋃ Z ∈ {Z ∈ irreducibleComponents X | ¬ Z ⊆ connectedComponent x}, Z`. Use extensionality with `y`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_ofPred_eq, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Conclude with `⟨irreducibleComponent y, ⟨irreducibleComponent_mem_irreducibleComponents y, fun h => hy (h mem_irreducibleComponent)⟩, mem_irreducibleComponent⟩`. Introduce and unpack `⟨Z, ⟨hZ, hZ'⟩, hy⟩ hyx`. Apply `hZ'` to reduce the goal to its premises. Rewrite using `[connectedComponent_eq hyx]`. Conclude with `hZ.1.isConnected.subset_connectedComponent hy`.
+
+Rewrite using `[← isClosed_compl_iff, h]`. Use `Set.Finite.isClosed_biUnion (NoetherianSpace.finite_irreducibleComponents.subset fun Z hZ => hZ.1) fun Z hZ => ?_` and prove the remaining obligations. Conclude with `isClosed_of_mem_irreducibleComponents Z hZ.1`.
+-/
 theorem isOpen_connectedComponent {X : Type*} [TopologicalSpace X] [NoetherianSpace X] (x : X) :
     IsOpen (connectedComponent x) := by
   have h : (connectedComponent x)ᶜ =
@@ -28,6 +35,9 @@ theorem isOpen_connectedComponent {X : Type*} [TopologicalSpace X] [NoetherianSp
     (NoetherianSpace.finite_irreducibleComponents.subset fun Z hZ => hZ.1) fun Z hZ => ?_
   exact isClosed_of_mem_irreducibleComponents Z hZ.1
 
+/- English proof (translation)
+Use `(h.continuous.image_connectedComponent_subset x).antisymm ?_` and prove the remaining obligations. Introduce `y hy`. Use `⟨h.symm y, ?_, h.apply_symm_apply y⟩` and prove the remaining obligations. Use `h.symm.continuous.image_connectedComponent_subset (h x) ⟨y, hy, rfl⟩` as an intermediate fact. Rewrite `this` using `[h.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem image_connectedComponent {X : Type*} [TopologicalSpace X] (h : X ≃ₜ X) (x : X) :
     h '' connectedComponent x = connectedComponent (h x) := by
   refine (h.continuous.image_connectedComponent_subset x).antisymm ?_
@@ -38,9 +48,15 @@ theorem image_connectedComponent {X : Type*} [TopologicalSpace X] (h : X ≃ₜ 
 
 variable {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k))
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.EtC.galMap_mul, mul_inv_cancel, GlobalTheory.EtC.galMap_one]`.
+-/
 theorem galMap_comp_inv (σ : Ω ≃ₐ[k] Ω) : GlobalTheory.Et.galMap Ω p σ ≫ GlobalTheory.Et.galMap Ω p σ⁻¹ = 𝟙 _ := by
   rw [← GlobalTheory.EtC.galMap_mul, mul_inv_cancel, GlobalTheory.EtC.galMap_one]
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.EtC.galMap_mul, inv_mul_cancel, GlobalTheory.EtC.galMap_one]`.
+-/
 theorem galMap_inv_comp (σ : Ω ≃ₐ[k] Ω) : GlobalTheory.Et.galMap Ω p σ⁻¹ ≫ GlobalTheory.Et.galMap Ω p σ = 𝟙 _ := by
   rw [← GlobalTheory.EtC.galMap_mul, inv_mul_cancel, GlobalTheory.EtC.galMap_one]
 
@@ -55,13 +71,58 @@ def galHomeo (σ : Ω ≃ₐ[k] Ω) : GlobalTheory.Et.geom Ω p ≃ₜ GlobalThe
   continuous_toFun := (GlobalTheory.Et.galMap Ω p σ).continuous
   continuous_invFun := (GlobalTheory.Et.galMap Ω p σ⁻¹).continuous
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.EtC.galMap_mul, Scheme.Hom.comp_apply]`.
+-/
 theorem galMap_mul_apply (σ τ : Ω ≃ₐ[k] Ω) (y : GlobalTheory.Et.geom Ω p) :
     GlobalTheory.Et.galMap Ω p (σ * τ) y = GlobalTheory.Et.galMap Ω p τ (GlobalTheory.Et.galMap Ω p σ y) := by
   rw [GlobalTheory.EtC.galMap_mul, Scheme.Hom.comp_apply]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.EtC.galMap_one]`. Both sides reduce to the same expression.
+-/
 theorem galMap_one_apply (y : GlobalTheory.Et.geom Ω p) : GlobalTheory.Et.galMap Ω p 1 y = y := by
   rw [GlobalTheory.EtC.galMap_one]; rfl
 
+/- English proof (translation)
+Use `set ψ := Spec.map (CommRingCat.ofHom (algebraMap k Ω)) with hψ`. Use `set Y := GlobalTheory.Et.geom Ω p`. Establish `: QuasiCompact p` using `quasiCompact_of_compactSpace p`. Establish `: CompactSpace Y` using `by dsimp only [Y, GlobalTheory.Et.geom]; infer_instance`. Establish `: IsLocallyNoetherian Y` using `LocallyOfFiniteType.isLocallyNoetherian (pullback.snd p ψ)`.
+
+Establish `: IsNoetherian Y` using `{}`. Establish `hopen : ∀ y : Y, IsOpen (connectedComponent y)` using `isOpen_connectedComponent`. Establish `: DiscreteTopology (_root_.ConnectedComponents Y)` using `ConnectedComponents.discreteTopology_iff.2 hopen`. Establish `: Finite (_root_.ConnectedComponents Y)` using `finite_of_compact_of_discrete`. Take `⟨r, ⟨e⟩⟩` from `Finite.exists_equiv_fin (_root_.ConnectedComponents Y)`.
+
+Set `C : Fin r → Set Y` to `fun s => ConnectedComponents.mk ⁻¹' {e.symm s}`. Establish `hC : ∀ y : Y, C (e (ConnectedComponents.mk y)) = connectedComponent y` using `fun y => by`. Simplify using `only [C, Equiv.symm_apply_apply, connectedComponents_preimage_singleton]`. Establish `hCrep : ∀ s, ∃ y : Y, C s = connectedComponent y` using `fun s => by`. Take `⟨y, hy⟩` from `ConnectedComponents.surjective_coe (e.symm s)`.
+
+Conclude with `⟨y, by rw [← hC y, hy, Equiv.apply_symm_apply]⟩`. Establish `hCopen : ∀ s, IsOpen (C s)` using `fun s => by`. Take `⟨y, hy⟩` from `hCrep s`. Rewrite using `[hy]`. Conclude with `hopen y`.
+
+Set `U : Fin r → Y.Opens` to `fun s => ⟨C s, hCopen s⟩`. Establish `hg : ∀ (σ : Ω ≃ₐ[k] Ω) (y : Y), GlobalTheory.Et.galMap Ω p σ '' connectedComponent y = connectedComponent (GlobalTheory.Et.galMap Ω p σ y)` using `fun σ y => image_connectedComponent (galHomeo p σ) y`. Use `⟨r, U, fun s => ?_, fun y => ⟨e (ConnectedComponents.mk y), ?_⟩, fun s s' hss' => ?_, fun σ s => ?_, fun s s' => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hCrep s`. Establish `: ConnectedSpace (U s).toScheme`.
+
+Express the relevant statement in the definitionally equal form `ConnectedSpace (C s)`. Rewrite using `[hy]`. Conclude with `isConnected_iff_connectedSpace.1 isConnected_connectedComponent`. Conclude with `GlobalTheory.isIntegral_of_smooth_field ((U s).ι ≫ pullback.snd p ψ)`. Express the relevant statement in the definitionally equal form `y ∈ C _`.
+
+Rewrite using `[hC]`. Conclude with `mem_connectedComponent`. Express the relevant statement in the definitionally equal form `Disjoint (C s) (C s')`. Use `Set.disjoint_left.2 fun y h1 h2 => hss' ?_` and prove the remaining obligations. Simplify using `only [C, Set.mem_preimage, Set.mem_singleton_iff] at h1 h2`.
+
+Conclude with `e.symm.injective (h1.symm.trans h2)`. Take `⟨y, hy⟩` from `hCrep s`. Use `⟨e (ConnectedComponents.mk (GlobalTheory.Et.galMap Ω p σ y)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ '' C s = C _`. Rewrite using `[hy, hC, hg]`.
+
+Take `⟨y₀, hy₀⟩` from `hCrep s`. Take `⟨y₁, hy₁⟩` from `hCrep s'`. Set `Z : Set Y` to `{y | ∃ σ : Ω ≃ₐ[k] Ω, y ∈ connectedComponent (GlobalTheory.Et.galMap Ω p σ y₀)}`. Establish `hZstab : ∀ (τ : Ω ≃ₐ[k] Ω) y, y ∈ Z → GlobalTheory.Et.galMap Ω p τ y ∈ Z`. Introduce and unpack `τ y ⟨σ, hσ⟩`.
+
+Use `⟨σ * τ, ?_⟩` and prove the remaining obligations. Rewrite using `[galMap_mul_apply, ← hg]`. Conclude with `⟨y, hσ, rfl⟩`. Establish `hZo : IsOpen Z`. Establish `: Z = ⋃ σ : Ω ≃ₐ[k] Ω, connectedComponent (GlobalTheory.Et.galMap Ω p σ y₀)`.
+
+Use extensionality with `y`. Simplify using `[Z]`. Rewrite using `[this]`. Conclude with `isOpen_iUnion fun σ => hopen _`. Establish `hZc : IsOpen Zᶜ`.
+
+Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `y hy`. Use `⟨connectedComponent y, fun w hw hwZ => hy ?_, hopen y, mem_connectedComponent⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `hwZ`. Use `⟨σ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[connectedComponent_eq hσ, ← connectedComponent_eq hw]`. Conclude with `mem_connectedComponent`. Establish `hy₀Z : y₀ ∈ Z` using `⟨1, by rw [galMap_one_apply]; exact mem_connectedComponent⟩`. Establish `hZ : Z = Set.univ`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨b, hb⟩` from `(Set.ne_univ_iff_exists_notMem Z).1 hne`. Establish `: Algebra.IsIntegral k Ω` using `inferInstance`. Establish `: IsIntegralHom ψ` using `IsIntegralHom.SpecMap_iff.2 (fun x => Algebra.IsIntegral.isIntegral x)`. Establish `: Surjective ψ` using `⟨fun _ => ⟨Classical.arbitrary _, Subsingleton.elim _ _⟩⟩`. Establish `hcl` using `(pullback.fst p ψ).isClosedMap`.
+
+Establish `hsurj` using `(pullback.fst p ψ).surjective`. Use `set A := pullback.fst p ψ '' Z`. Use `set B := pullback.fst p ψ '' Zᶜ`. Establish `hAB : A = Bᶜ`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩ ⟨c, hc, hca⟩`. Take `⟨σ, hσ⟩` from `GeoB.exists_galMap_apply p a c hca.symm`. Conclude with `hc (hσ ▸ hZstab σ a ha)`. Introduce `hx`.
+
+Take `⟨a, rfl⟩` from `hsurj x`. Distinguish the cases in `ha : a ∈ Z`. Conclude with `⟨a, ha, rfl⟩`. Conclude with `absurd ⟨a, ha, rfl⟩ hx`. Establish `hAcl : IsClopen A` using `⟨hcl _ (isOpen_compl_iff.1 hZc), hAB ▸ (hcl _ hZo.isClosed_compl).isOpen_compl⟩`.
+
+Break down `isClopen_iff.1 hAcl with h | h` into its components or cases. Conclude with `(Set.eq_empty_iff_forall_notMem.1 h) _ ⟨y₀, hy₀Z, rfl⟩`. Establish `: pullback.fst p ψ b ∈ A` using `h ▸ Set.mem_univ _`. Rewrite `this` using `[hAB]`. Conclude with `this ⟨b, hb, rfl⟩`.
+
+Establish `: y₁ ∈ Z` using `hZ ▸ Set.mem_univ _`. Take `⟨σ, hσ⟩` from `this`. Use `⟨σ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ '' C s = C s'`. Rewrite using `[hy₀, hy₁, hg, connectedComponent_eq hσ]`.
+-/
 theorem exists_components [IsGalois k Ω] [Smooth p] [ConnectedSpace X] [CompactSpace X] :
     ∃ (r : ℕ) (U : Fin r → (GlobalTheory.Et.geom Ω p).Opens),
       (∀ s, IsIntegral (U s).toScheme) ∧ (∀ y, ∃ s, y ∈ U s) ∧

@@ -7,6 +7,9 @@ import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.CuspidalGen
 
 namespace GlobalTheory.RgGu
 
+/- English proof (translation)
+The claim follows from `genericUnique_of PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top (PositivityTheory.rg.gu.hered2.whitHeredity_all k) (PositivityTheory.rg.gu.whit.whitRankIrr k) (GlobalTheory.BZSeg.Cusp.cuspGeneric k)`.
+-/
 theorem genericUnique (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     GenericUnique k :=
   genericUnique_of PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top (PositivityTheory.rg.gu.hered2.whitHeredity_all k)

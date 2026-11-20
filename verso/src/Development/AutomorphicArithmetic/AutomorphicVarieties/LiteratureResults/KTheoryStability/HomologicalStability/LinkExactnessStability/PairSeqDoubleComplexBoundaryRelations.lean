@@ -5,22 +5,36 @@ open GlobalTheory.SeqCx
 
 namespace GlobalTheory.SeqCx.DblBd
 
+/- English proof (translation)
+Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`.
+-/
 theorem single_eq_smul {α : Type} (a : α) (r : ℤ) :
     Finsupp.single a r = r • Finsupp.single a (1 : ℤ) := by
   rw [Finsupp.smul_single, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Simplify using `[hbd, bd, Finsupp.linearCombination_single, Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_smul, Finsupp.mapDomain_single]`.
+-/
 theorem hbd_single (V W : Type) (z : List V × List W) :
     hbd V W (Finsupp.single z 1) =
       ∑ i ∈ Finset.range z.1.length, (-1 : ℤ) ^ i • Finsupp.single (z.1.eraseIdx i, z.2) (1 : ℤ) := by
   simp [hbd, bd, Finsupp.linearCombination_single, Finsupp.mapDomain_finset_sum,
     Finsupp.mapDomain_smul, Finsupp.mapDomain_single]
 
+/- English proof (translation)
+Simplify using `[vbd, bd, Finsupp.linearCombination_single, Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_smul, Finsupp.mapDomain_single]`.
+-/
 theorem vbd_single (V W : Type) (z : List V × List W) :
     vbd V W (Finsupp.single z 1) =
       ∑ j ∈ Finset.range z.2.length, (-1 : ℤ) ^ j • Finsupp.single (z.1, z.2.eraseIdx j) (1 : ℤ) := by
   simp [vbd, bd, Finsupp.linearCombination_single, Finsupp.mapDomain_finset_sum,
     Finsupp.mapDomain_smul, Finsupp.mapDomain_single]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => rw [Finsupp.mapDomain_add, map_add, hf, hg, map_add, Finsupp.mapDomain_add]`. Consider the case `single l r`. Rewrite using `[Finsupp.mapDomain_single, single_eq_smul, map_zsmul, single_eq_smul l r, map_zsmul, Finsupp.mapDomain_smul]`.
+
+Simplify using `[hbd, Finsupp.linearCombination_single]`.
+-/
 theorem hbd_mapDomain (V W : Type) (w : List W) (c : List V →₀ ℤ) :
     hbd V W (Finsupp.mapDomain (fun x => (x, w)) c) = Finsupp.mapDomain (fun x => (x, w)) (bd V c) := by
   induction c using Finsupp.induction_linear with
@@ -31,6 +45,11 @@ theorem hbd_mapDomain (V W : Type) (w : List W) (c : List V →₀ ℤ) :
       Finsupp.mapDomain_smul]
     simp [hbd, Finsupp.linearCombination_single]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => rw [Finsupp.mapDomain_add, map_add, hf, hg, map_add, Finsupp.mapDomain_add]`. Consider the case `single l r`. Rewrite using `[Finsupp.mapDomain_single, single_eq_smul, map_zsmul, single_eq_smul l r, map_zsmul, Finsupp.mapDomain_smul]`.
+
+Simplify using `[vbd, Finsupp.linearCombination_single]`.
+-/
 theorem vbd_mapDomain (V W : Type) (x : List V) (c : List W →₀ ℤ) :
     vbd V W (Finsupp.mapDomain (fun w => (x, w)) c) = Finsupp.mapDomain (fun w => (x, w)) (bd W c) := by
   induction c using Finsupp.induction_linear with
@@ -41,6 +60,11 @@ theorem vbd_mapDomain (V W : Type) (x : List V) (c : List W →₀ ℤ) :
       Finsupp.mapDomain_smul]
     simp [vbd, Finsupp.linearCombination_single]
 
+/- English proof (translation)
+Establish `h : hbd V W ∘ₗ hbd V W = 0`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `z r`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply]`. Rewrite using `[single_eq_smul, map_zsmul, map_zsmul]`.
+
+Establish `e : hbd V W (Finsupp.single z 1) = Finsupp.mapDomain (fun x => (x, z.2)) (bd V (Finsupp.single z.1 1))`. Simplify using `[hbd, Finsupp.linearCombination_single]`. Rewrite using `[e, hbd_mapDomain, bd_bd, Finsupp.mapDomain_zero, smul_zero]`. Conclude with `congrArg (fun f => f x) h`.
+-/
 theorem hbd_hbd (V W : Type) (x : List V × List W →₀ ℤ) : hbd V W (hbd V W x) = 0 := by
   have h : hbd V W ∘ₗ hbd V W = 0 := by
     apply Finsupp.lhom_ext
@@ -53,6 +77,11 @@ theorem hbd_hbd (V W : Type) (x : List V × List W →₀ ℤ) : hbd V W (hbd V 
     rw [e, hbd_mapDomain, bd_bd, Finsupp.mapDomain_zero, smul_zero]
   exact congrArg (fun f => f x) h
 
+/- English proof (translation)
+Establish `h : vbd V W ∘ₗ vbd V W = 0`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `z r`. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply]`. Rewrite using `[single_eq_smul, map_zsmul, map_zsmul]`.
+
+Establish `e : vbd V W (Finsupp.single z 1) = Finsupp.mapDomain (fun w => (z.1, w)) (bd W (Finsupp.single z.2 1))`. Simplify using `[vbd, Finsupp.linearCombination_single]`. Rewrite using `[e, vbd_mapDomain, bd_bd, Finsupp.mapDomain_zero, smul_zero]`. Conclude with `congrArg (fun f => f x) h`.
+-/
 theorem vbd_vbd (V W : Type) (x : List V × List W →₀ ℤ) : vbd V W (vbd V W x) = 0 := by
   have h : vbd V W ∘ₗ vbd V W = 0 := by
     apply Finsupp.lhom_ext
@@ -65,6 +94,13 @@ theorem vbd_vbd (V W : Type) (x : List V × List W →₀ ℤ) : vbd V W (vbd V 
     rw [e, vbd_mapDomain, bd_bd, Finsupp.mapDomain_zero, smul_zero]
   exact congrArg (fun f => f x) h
 
+/- English proof (translation)
+Establish `h : hbd V W ∘ₗ vbd V W = vbd V W ∘ₗ hbd V W`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `z r`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[single_eq_smul, map_zsmul, map_zsmul, map_zsmul, map_zsmul]`.
+
+Use `congr 1`. Rewrite using `[vbd_single, hbd_single, map_sum, map_sum]`. Simplify using `only [map_zsmul, hbd_single, vbd_single, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Conclude with `congrArg (fun f => f x) h`.
+-/
 theorem hbd_vbd (V W : Type) (x : List V × List W →₀ ℤ) : hbd V W (vbd V W x) = vbd V W (hbd V W x) := by
   have h : hbd V W ∘ₗ vbd V W = vbd V W ∘ₗ hbd V W := by
     apply Finsupp.lhom_ext
@@ -83,6 +119,9 @@ end GlobalTheory.SeqCx.DblBd
 
 namespace GlobalTheory.SeqCx
 
+/- English proof (translation)
+Introduce `V W` and use `⟨DblBd.hbd_hbd V W, DblBd.vbd_vbd V W, DblBd.hbd_vbd V W⟩`.
+-/
 theorem dbl_bd : ∀ (V W : Type), (∀ x, hbd V W (hbd V W x) = 0) ∧ (∀ x, vbd V W (vbd V W x) = 0) ∧
     (∀ x, hbd V W (vbd V W x) = vbd V W (hbd V W x)) :=
   fun V W => ⟨DblBd.hbd_hbd V W, DblBd.vbd_vbd V W, DblBd.hbd_vbd V W⟩
@@ -91,6 +130,11 @@ end GlobalTheory.SeqCx
 
 section
 open GlobalTheory.SeqCx
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.SeqCx.dbl_bd`. Consider the case `exact @GlobalTheory.SeqCx.DblBd.hbd_vbd`. Consider the case `exact @GlobalTheory.SeqCx.DblBd.vbd_vbd`. Consider the case `exact @GlobalTheory.SeqCx.DblBd.hbd_hbd`.
+
+Consider the case `exact @GlobalTheory.SeqCx.DblBd.vbd_mapDomain`. Consider the case `exact @GlobalTheory.SeqCx.DblBd.hbd_mapDomain`. Consider the case `exact @GlobalTheory.SeqCx.DblBd.vbd_single`. Consider the case `exact @GlobalTheory.SeqCx.DblBd.hbd_single`. Consider the case `exact @GlobalTheory.SeqCx.DblBd.single_eq_smul`.
+-/
 theorem _root_.GlobalTheory.T.pairSeqDoubleComplex_boundary_relations : ∀ (V W : Type), (∀ x, hbd V W (hbd V W x) = 0) ∧ (∀ x, vbd V W (vbd V W x) = 0) ∧ (∀ x, hbd V W (vbd V W x) = vbd V W (hbd V W x)) := by
   first
   | exact @GlobalTheory.SeqCx.dbl_bd

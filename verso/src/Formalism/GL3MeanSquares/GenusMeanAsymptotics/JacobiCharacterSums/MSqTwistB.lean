@@ -9,6 +9,9 @@ namespace Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds
 
 open Formalism.HermitianLattices.ZeroFreeRegionGL2
 
+/- English proof (translation)
+Simplify using `only [clsB, Finset.mem_filter, Finset.mem_range] at hb`. Establish `hm : b.Coprime m₀`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, hb.2.1, ← Nat.gcd_rec, Nat.gcd_comm]`. Conclude with `ha`. Conclude with `Nat.Coprime.mul_right hm hb.2.2`.
+-/
 theorem coprime_of_cls {m₀ s a₀ b : ℕ} (ha : a₀.Coprime m₀) (hb : b ∈ clsB m₀ s a₀) : b.Coprime (m₀ * s) := by
   simp only [clsB, Finset.mem_filter, Finset.mem_range] at hb
   have hm : b.Coprime m₀ := by
@@ -16,6 +19,15 @@ theorem coprime_of_cls {m₀ s a₀ b : ℕ} (ha : a₀.Coprime m₀) (hb : b �
     exact ha
   exact Nat.Coprime.mul_right hm hb.2.2
 
+/- English proof (translation)
+Establish `hcm : ∀ x k : ℕ, Nat.Coprime x k ↔ Nat.Coprime (x % k) k` using `fun x k => by`. Rewrite using `[Nat.Coprime, Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec]`. Establish `hum : u.Coprime m₀`. Rewrite using `[hcm, hu1, ← hcm]`. Conclude with `Nat.coprime_one_left _`.
+
+Establish `huN : u.Coprime (m₀ * s)` using `Nat.Coprime.mul_right hum hus`. Establish `hmap : ∀ b ∈ clsB m₀ s a₀, (b * u) % (m₀ * s) ∈ clsB m₀ s a₀`. Introduce `b hb`. Simplify using `only [clsB, Finset.mem_filter, Finset.mem_range] at hb ⊢`. Use `⟨Nat.mod_lt _ hN, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.mod_mod_of_dvd _ (dvd_mul_right m₀ s), Nat.mul_mod, hb.2.1, hu1, ← Nat.mul_mod, mul_one]`. Rewrite using `[hcm, Nat.mod_mod_of_dvd _ (dvd_mul_left s m₀), ← hcm]`. Conclude with `Nat.Coprime.mul hb.2.2 hus`. Establish `hinj : Set.InjOn (fun b => (b * u) % (m₀ * s)) (clsB m₀ s a₀)`. Introduce `x hx y hy hxy`.
+
+Simplify using `only [Finset.mem_coe, clsB, Finset.mem_filter, Finset.mem_range] at hx hy`. Establish `h` using `Nat.ModEq.cancel_right_of_coprime huN.symm (show x * u ≡ y * u [MOD m₀ * s] from hxy)`. Rewrite `h` using `[Nat.ModEq, Nat.mod_eq_of_lt hx.1, Nat.mod_eq_of_lt hy.1]`. Then use the resulting hypothesis. Establish `himg : (clsB m₀ s a₀).image (fun b => (b * u) % (m₀ * s)) = clsB m₀ s a₀` using `Finset.eq_of_subset_of_card_le (Finset.image_subset_iff.mpr hmap) (by rw [Finset.card_image_of_injOn hinj])`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sum_clsB_mul_mod_eq_sum {M : Type*} [AddCommMonoid M] (m₀ s a₀ u : ℕ) (hN : 0 < m₀ * s)
     (hu1 : u % m₀ = 1 % m₀) (hus : u.Coprime s) (f : ℕ → M) :
     ∑ b ∈ clsB m₀ s a₀, f ((b * u) % (m₀ * s)) = ∑ b ∈ clsB m₀ s a₀, f b := by
@@ -44,6 +56,9 @@ private theorem sum_clsB_mul_mod_eq_sum {M : Type*} [AddCommMonoid M] (m₀ s a�
       = ∑ x ∈ (clsB m₀ s a₀).image (fun b => (b * u) % (m₀ * s)), f x := (Finset.sum_image hinj).symm
     _ = ∑ b ∈ clsB m₀ s a₀, f b := by rw [himg]
 
+/- English proof (translation)
+Rewrite using `[← jacobiSym.mul_left]`. Apply `jacobiSym.mod_left'` to reduce the goal to its premises. Use `push_cast`. Conclude with `Int.emod_emod_of_dvd _ (dvd_mul_left _ _)`.
+-/
 private theorem jacobiSym_mul_mod_eq_mul (m₀ s b u : ℕ) :
     jacobiSym (((b * u) % (m₀ * s) : ℕ) : ℤ) s = jacobiSym (b : ℤ) s * jacobiSym (u : ℤ) s := by
   rw [← jacobiSym.mul_left]
@@ -51,6 +66,27 @@ private theorem jacobiSym_mul_mod_eq_mul (m₀ s b u : ℕ) :
   push_cast
   exact Int.emod_emod_of_dvd _ (dvd_mul_left _ _)
 
+/- English proof (translation)
+Establish `hp : s.minFac.Prime` using `Nat.minFac_prime (by omega)`. Use `haveI := Fact.mk hp`. Use `haveI : NeZero s := ⟨by omega⟩`. Take `⟨t, ht⟩` from `Nat.minFac_dvd s`. Establish `ht0 : t ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `ht` using `[mul_zero]`. Use linear arithmetic over natural numbers and integers. Use `haveI : NeZero t := ⟨ht0⟩`. Use `haveI : NeZero s.minFac := ⟨hp.ne_zero⟩`.
+
+Establish `hp2 : s.minFac ≠ 2`. Introduce `h2`. Rewrite `ht` using `[h2]`. Rewrite `hodd` using `[ht]`. Conclude with `(Nat.not_even_iff_odd.mpr hodd) (even_two_mul t)`.
+
+Establish `hpt : s.minFac.Coprime t`. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hp]`. Introduce and unpack `⟨v, hv⟩`. Establish `hu` using `hsq s.minFac ⟨v, by rw [mul_assoc, ← hv]; exact ht⟩`. Conclude with `hp.one_lt.ne' (Nat.isUnit_iff.mp hu)`.
+
+Establish `hmp : (m₀ * t).Coprime s.minFac` using `Nat.Coprime.mul (Nat.Coprime.coprime_dvd_right (Nat.minFac_dvd s) hcop) hpt.symm`. Take `⟨g, hg⟩` from `FiniteField.exists_nonsquare (F := ZMod s.minFac) (by rw [ZMod.ringChar_zmod_n]; exact hp2)`. Set `c` to `Nat.chineseRemainder hmp 1 g.val`. Establish `hc1 : (c : ℕ) ≡ 1 [MOD m₀ * t]` using `c.2.1`. Establish `hc2 : (c : ℕ) ≡ g.val [MOD s.minFac]` using `c.2.2`.
+
+Establish `hJ : jacobiSym ((c : ℕ) : ℤ) s = -1`. Establish `e1 : jacobiSym ((c : ℕ) : ℤ) s.minFac = -1`. Rewrite using `[← jacobiSym.legendreSym.to_jacobiSym, legendreSym.eq_neg_one_iff]`. Establish `hcg : (((c : ℕ) : ℤ) : ZMod s.minFac) = g`. Rewrite using `[Int.cast_natCast, (ZMod.natCast_eq_natCast_iff _ _ _).mpr hc2, ZMod.natCast_zmod_val]`.
+
+Rewrite using `[hcg]` and apply the resulting hypothesis. Establish `e2 : jacobiSym ((c : ℕ) : ℤ) t = 1`. Establish `hct : (c : ℕ) ≡ 1 [MOD t]` using `Nat.ModEq.of_mul_left m₀ hc1`. Establish `h' : (((c : ℕ) % t : ℕ) : ℤ) = ((1 % t : ℕ) : ℤ)` using `congrArg _ hct`. Move the coercions through the operations in `at h'`.
+
+Rewrite using `[jacobiSym.mod_left' h', jacobiSym.one_left]`. Establish `hsplit : jacobiSym ((c : ℕ) : ℤ) s = jacobiSym ((c : ℕ) : ℤ) (s.minFac * t)` using `by rw [← ht]`. Rewrite using `[hsplit, jacobiSym.mul_right, e1, e2]`. Evaluate the numerical expressions. Use `⟨c, Nat.ModEq.of_mul_right t hc1, ?_, hJ⟩` and prove the remaining obligations.
+
+Establish `hg1 : Int.gcd ((c : ℕ) : ℤ) s = 1`. Assume the negation of the conclusion as `hne`. Establish `h0` using `jacobiSym.eq_zero_iff_not_coprime.mpr hne`. Rewrite `h0` using `[hJ]`. Evaluate the numerical expressions using `at h0`.
+
+Rewrite `hg1` using `[Int.gcd_natCast_natCast]`. Then use the resulting hypothesis.
+-/
 private theorem exists_jacobiSym_neg_one_in_residue_class (m₀ s : ℕ) (h1 : 1 < s) (hodd : Odd s) (hsq : Squarefree s)
     (hcop : m₀.Coprime s) :
     ∃ u : ℕ, u % m₀ = 1 % m₀ ∧ u.Coprime s ∧ jacobiSym (u : ℤ) s = -1 := by
@@ -103,6 +139,9 @@ private theorem exists_jacobiSym_neg_one_in_residue_class (m₀ s : ℕ) (h1 : 1
     norm_num at h0
   rwa [Int.gcd_natCast_natCast] at hg1
 
+/- English proof (translation)
+Establish `hN : 0 < m₀ * s` using `Nat.pos_of_ne_zero (NeZero.ne _)`. Take `⟨u, hu1, hus, hJu⟩` from `exists_jacobiSym_neg_one_in_residue_class m₀ s h1 hodd hsq hcop`. Establish `hre` using `sum_clsB_mul_mod_eq_sum m₀ s a₀ u hN hu1 hus (fun x => (jacobiSym (x : ℤ) s : ℝ))`. Simplify using `only [jacobiSym_mul_mod_eq_mul, hJu, Int.cast_mul, Int.cast_neg, Int.cast_one, mul_neg, mul_one, Finset.sum_neg_distrib] at hre`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_jac_cls_eq_zero (m₀ s a₀ : ℕ) [NeZero (m₀ * s)] (h1 : 1 < s) (hodd : Odd s)
     (hsq : Squarefree s) (hcop : m₀.Coprime s) (ha : a₀.Coprime m₀) :
     ∑ b ∈ clsB m₀ s a₀, (jacobiSym (b : ℤ) s : ℝ) = 0 := by
@@ -113,6 +152,9 @@ theorem sum_jac_cls_eq_zero (m₀ s a₀ : ℕ) [NeZero (m₀ * s)] (h1 : 1 < s)
     Finset.sum_neg_distrib] at hre
   linarith
 
+/- English proof (translation)
+The claim follows from `|∑ b ∈ clsB m₀ s a₀, (jacobiSym (b : ℤ) s : ℝ) * mainAP e b X| ≤ 2 * r * ∑ b ∈ clsB m₀ s a₀, |mainAP e b X| := by have hN : 0 < m₀ * s := Nat.pos_of_ne_zero (NeZero.ne _) have hφ : (0 : ℝ) < ((m₀ * s).totient : ℝ) := by exact_mod_cast Nat.totient_pos.mpr hN have hsum0 := sum_jac_ …`.
+-/
 theorem main_twist_bound (m₀ s a₀ : ℕ) [NeZero (m₀ * s)] (hm : 0 < m₀) (h1 : 1 < s) (hodd : Odd s)
     (hsq : Squarefree s) (hcop : m₀.Coprime s) (ha : a₀.Coprime m₀) (X r : ℝ)
     (e : Option (DirichletCharacter ℂ (m₀ * s) × ℝ)) (hr0 : 0 ≤ r) (hr : r ≤ 1 / 2) (hli : 0 < liX X)
@@ -218,6 +260,9 @@ theorem main_twist_bound (m₀ s a₀ : ℕ) [NeZero (m₀ * s)] (hm : 0 < m₀)
       rw [hexp, hS0, mul_zero, abs_zero]
       exact hRHS
 
+/- English proof (translation)
+The claim follows from `|∑ q ∈ PPset m₀ a₀ X, (jacobiSym (q : ℤ) s : ℝ)| ≤ (4 * r + 2 * |k|) * (((PPset m₀ a₀ X).card : ℝ) + X ^ (1 / 2 : ℝ)) + X ^ (1 / 2 : ℝ) := by have hs : 0 < s := by omega obtain ⟨hd, hsumabs⟩ := twist_decomp m₀ s a₀ X hm hs hX (fun b => mainAP e b X) k hk hb beta_reduce at hd hsum …`.
+-/
 theorem twist_one (m₀ s a₀ : ℕ) [NeZero (m₀ * s)] (hm : 0 < m₀) (h1 : 1 < s) (hodd : Odd s)
     (hsq : Squarefree s) (hcop : m₀.Coprime s) (ha : a₀.Coprime m₀) (X r k : ℝ)
     (e : Option (DirichletCharacter ℂ (m₀ * s) × ℝ)) (hX : 0 ≤ X) (hr0 : 0 ≤ r) (hr : r ≤ 1 / 2)

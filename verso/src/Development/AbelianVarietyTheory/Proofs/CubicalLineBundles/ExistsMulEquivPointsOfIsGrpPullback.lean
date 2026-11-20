@@ -11,6 +11,13 @@ namespace GlobalTheory.LamF
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain in
 open scoped CategoryTheory.Obj ComplexOrder in
 
+/- English proof (translation)
+Introduce `S S' f G G' _ _ φ hφ T`. Take `⟨hpb, hmul⟩` from `hφ`. Set `toFun : (T ⟶ G') → (Over.mk (T.hom ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (by show (x.left ≫ φ) ≫ G.hom = T.hom ≫ f`. Rewrite using `[Category.assoc, hpb.w, ← Category.assoc, Over.w])`. Set `invFun : (Over.mk (T.hom ≫ f) ⟶ G) → (T ⟶ G')` to `fun y => Over.homMk (hpb.lift y.left T.hom (by simpa using Over.w y)) (hpb.lift_snd _ _ _)`.
+
+Establish `hto : ∀ x, (toFun x).left = x.left ≫ φ` using `fun x => rfl`. Use `⟨{ toFun := toFun, invFun := invFun, left_inv := ?_, right_inv := ?_, map_mul' := ?_ }, hto⟩` and prove the remaining obligations. Introduce `x ext1`. Use `hpb.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `hpb.lift_fst _ _ _`.
+
+Conclude with `(hpb.lift_snd _ _ _).trans (Over.w x).symm`. Introduce `y ext1`. Conclude with `hpb.lift_fst _ _ _`. Introduce `x y ext1`. Conclude with `(hmul T x y (toFun x) (toFun y) (hto x) (hto y)).symm`.
+-/
 theorem _root_.GlobalTheory.LamF.exists_mulEquiv_points_of_isGrpPullback :
     ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (φ : G'.left ⟶ G.left), _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback G' G f φ → ∀ T : Over S', ∃ Φ : (T ⟶ G') ≃* (Over.mk (T.hom ≫ f) ⟶ G), ∀ x, (Φ x).left = x.left ≫ φ := by
   intro S S' f G G' _ _ φ hφ T

@@ -17,6 +17,9 @@ namespace GlobalTheory.FlatModel
 
 open RetractionModules in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l' Xo' c' W Y p _ _ yb yy P π ψ hP u hu`. Take `⟨xG, hxG⟩` from `tan_lift hP.2.1 hu`. Take `⟨x, hx⟩` from `exists_corr_left xG`. Conclude with `⟨x, xG, hx, hxG⟩`.
+-/
 theorem exists_iTie : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l' : Level H) (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype)
     (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (yb : Sp 𝓞_ℂ_[p] ⟶ Y.X) (yy : Sp ℂ_[p] ⟶ Xo'.XF c') (P : PtP E p)

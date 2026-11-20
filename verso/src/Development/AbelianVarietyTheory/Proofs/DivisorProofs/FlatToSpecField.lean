@@ -4,6 +4,9 @@ open GlobalTheory.FlagMod.LowRank (ECh Proj str)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ Z f`. Use `haveI : IsIntegral (Sp K) := by unfold Sp; infer_instance`. Use `haveI : Subsingleton (Sp K) := by unfold Sp; infer_instance`. Use `infer_instance`.
+-/
 theorem flat_to_spec_field : ∀ (K : Type) [Field K] (Z : Scheme.{0}) (f : Z ⟶ Sp K), Flat f := by
   intro K _ Z f
   haveI : IsIntegral (Sp K) := by unfold Sp; infer_instance

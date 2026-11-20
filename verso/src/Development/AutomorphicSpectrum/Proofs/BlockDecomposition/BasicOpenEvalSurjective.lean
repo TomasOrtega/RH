@@ -6,6 +6,11 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 namespace GlobalTheory.CompanionTheory.Geo
 
+/- English proof (translation)
+Introduce `K _ X N i hi g e hg he`. Establish `hU : IsAffineOpen (Proj.basicOpen (grK K N) g)` using `Proj.isAffineOpen_basicOpen (grK K N) g hg he`. Establish `hiso : IsIso (Proj.awayToSection (grK K N) g)` using `(Proj.basicOpenIsoAway (grK K N) g hg he).isIso_hom`. Establish `h1 : Function.Surjective (Proj.awayToSection (grK K N) g).hom` using `(ConcreteCategory.bijective_of_isIso (Proj.awayToSection (grK K N) g)).2`. Establish `h2 : Function.Surjective (i.appLE _ (i ⁻¹ᵁ Proj.basicOpen (grK K N) g) le_rfl).hom`.
+
+Rewrite using `[Scheme.Hom.appLE_eq_app]`. Conclude with `i.app_surjective _ hU`. Conclude with `h2.comp h1`.
+-/
 theorem evV_surjective : ∀ {K : Type} [Field K] {X : Scheme.{0}} {N : ℕ} (i : X ⟶ PSpace K N), IsClosedImmersion i → ∀ {g : MvPolynomial (Fin (N + 1)) K} {e : ℕ} (hg : g ∈ grK K N e), 0 < e → Function.Surjective (evV i g (i ⁻¹ᵁ Proj.basicOpen (grK K N) g) le_rfl) := by
   intro K _ X N i hi g e hg he
   have hU : IsAffineOpen (Proj.basicOpen (grK K N) g) := Proj.isAffineOpen_basicOpen (grK K N) g hg he

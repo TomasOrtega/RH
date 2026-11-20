@@ -175,6 +175,13 @@ def SmoCentral : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n : ℕ), 1 ≤ n → ∀ U U' : Submodule ℂ (cuspForms E n), Fb.Stab U → Fb.Stab U' →
     Irr U → Irr U' → U ≤ centralCuspForms E n → SameSat U U' → U = U'
 
+/- English proof (translation)
+Introduce `E _ _ _ n hn U U' sU sU' iU iU' l hs`. Establish `l'` using `h2 E n U U' iU.1 hs l`. Establish `si : Fb.Stab (U ⊓ U')` using `⟨fun X φ h => ⟨sU.ρ X φ h.1, sU'.ρ X φ h.2⟩, fun X φ h => ⟨sU.σ X φ h.1, sU'.σ X φ h.2⟩, fun X φ h => ⟨sU.τ X φ h.1, sU'.τ X φ h.2⟩⟩`. Break down `iU'.2 _ inf_le_right si with h0 | h0` into its components or cases. It suffices to derive a contradiction.
+
+Set `μ : Measure (Reduction.normOneGL E n)` to `Measure.haar`. Take `⟨C, sC, hsup, ho⟩` from `h4 E n μ U l sU`. Take `⟨D, hD, hD0, sD, hs'⟩` from `h4' E n U U' C sU sU' sC h0 iU'.1 (l'.trans hsup.ge) hs`. Establish `lD : D ≤ centralCuspForms E n` using `hD.trans (le_sup_right.trans hsup.le)`. Take `⟨φ, hφ, φ', hφ', β, β', e, h⟩` from `h3 E n hn U D iU.1 hD0 l lD sU sD hs'`.
+
+Conclude with `h (h6 E n μ φ φ' (l hφ) (lD hφ') (h5 E n μ U D l lD sU sD (fun a ha b hb => ho a ha b (hD hb)) φ hφ φ' hφ') β β' e)`. Conclude with `((iU.2 U' (inf_eq_right.1 h0) sU').resolve_left iU'.1).symm`.
+-/
 theorem smoCentral_of (h2 : CenSame) (h3 : Pair) (h4 : Compl) (h4' : Proj) (h5 : OrthTr) (h6 : OrthConv) : SmoCentral := by
   intro E _ _ _ n hn U U' sU sU' iU iU' l hs
   have l' := h2 E n U U' iU.1 hs l
@@ -211,6 +218,23 @@ def StrongMultOneC : Prop :=
     (∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite,
       ∃ B, GlobalTheory.LFun.HasSatGL w (π.locRep w) B ∧ GlobalTheory.LFun.HasSatGL w (π'.locRep w) B) → π.V = π'.V
 
+/- English proof (translation)
+Introduce `E _ _ _ n π π' hs`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `key : ∀ σ : GlobalTheory.CuspRep.CuspSub E 0, σ.V = ⊤` using `fun σ => by`. Take `⟨φ, hφ, hne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot σ.ne_bot`. Establish `h : φ.1 1 ≠ 0` using `fun h => hne (Subtype.ext (funext fun g => by rw [Subsingleton.elim g 1]; exact h))`.
+
+Use `eq_top_iff.2 fun ψ _ => ?_` and prove the remaining obligations. Establish `e : ψ = (ψ.1 1 / φ.1 1) • φ` using `Subtype.ext (funext fun g => by`. Rewrite using `[Subsingleton.elim g 1]`. Conclude with `(div_mul_cancel₀ _ h).symm)`. Rewrite using `[e]`.
+
+Conclude with `σ.V.smul_mem _ hφ`. Rewrite using `[key, key]`. Take `⟨χ, hc⟩` from `h3 E n hn π`. Establish `hs' : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ B, GlobalTheory.LFun.HasSatGL w ((π.twist χ).locRep w) B ∧ GlobalTheory.LFun.HasSatGL w ((π'.twist χ).locRep w) B` using `by filter_upwards [hs, Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified χ)] with w ⟨B, a, b⟩ hu`. Conclude with `⟨_, GlobalTheory.SphGal.hasSatGL_twist E n π χ w B hu a, GlobalTheory.SphGal.hasSatGL_twist E n π' χ w B hu b⟩`.
+
+It suffices to establish `h : π.twist χ = π'.twist χ by`. Establish `h'` using `congrArg (·.twist χ⁻¹) h`. Simplify using `only [← GlobalTheory.CuspRep.CuspSub.twist_mul, mul_inv_cancel, GlobalTheory.CuspRep.CuspSub.twist_one] at h'`. Rewrite using `[h']`. Generalize the expression as in `π.twist χ = π at hc hs'`.
+
+Generalize the expression as in `π'.twist χ = π' at hs'`. Take `⟨U, sU, iU, hU⟩` from `h1 E n π`. Take `⟨U', sU', iU', hU'⟩` from `h1 E n π'`. Establish `sat : ∀ (σ : GlobalTheory.CuspRep.CuspSub E n) (W : Submodule ℂ (cuspForms E n)), (∀ f : GA E n → ℂ, (∃ ψ ∈ W, ψ.1 = f) ↔ ∃ φ ∈ σ.V, φ.1 = f) → ∀ w B, GlobalTheory.LFun.HasSatGL w (σ.locRep w) B → Sat w B W` using `fun σ W hW w B hB ψ hψ hK => by`. Take `⟨φ, hφ, e⟩` from `(hW _).1 ⟨ψ, hψ, rfl⟩`.
+
+Rewrite `hK`, the goal using `[← e]`. Conclude with `h2 E n σ w B hB φ hφ hK`. Establish `e : U = U'` using `h0 E n hn U U' sU sU' iU iU' (fun ψ hψ s g => by`. Take `⟨φ, hφ, e⟩` from `(hU _).1 ⟨ψ, hψ, rfl⟩`. Rewrite using `[← e]`.
+
+Conclude with `hc φ hφ s g)`. Use the proof step `(hs'.mono fun w ⟨B, a, b⟩ => ⟨B, sat π U hU w B a, sat π' U' hU' w B b⟩)`. Substitute `e` using the available equality. Use `GlobalTheory.CuspRep.CuspSub.ext (Submodule.ext fun φ => ⟨fun h => ?_, fun h => ?_⟩)` and prove the remaining obligations. Take `⟨φ', h', e⟩` from `(hU' _).1 ((hU _).2 ⟨φ, h, rfl⟩)`.
+
+Rewrite using `[← Subtype.ext e]` and apply the resulting hypothesis. Take `⟨φ', h', e⟩` from `(hU _).1 ((hU' _).2 ⟨φ, h, rfl⟩)`. Rewrite using `[← Subtype.ext e]` and apply the resulting hypothesis.
+-/
 theorem strong_of (h0 : SmoCentral) (h1 : Carrier) (h2 : EigOfSat) (h3 : NormTwist) : StrongMultOneC := by
   intro E _ _ _ n π π' hs
   rcases Nat.eq_zero_or_pos n with rfl | hn

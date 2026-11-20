@@ -13,6 +13,11 @@ open Formalism.L2.Th1.CM (omegaK)
 
 namespace TensorIntegralTorsion
 
+/- English proof (translation)
+Take `⟨h1, -, h7, -⟩` from `hOK`. Break down `Int.even_or_odd b with ⟨k, hk⟩ | ⟨k, hk⟩` into its components or cases. It suffices to derive a contradiction. Establish `h2 : (d : ℤ) = 4 * ((a : ℤ) * c - k ^ 2)`. Rewrite `h1` using `[hk]`.
+
+Take the linear combination `-h1`. Generalize the expression as in `(a : ℤ) * c - k ^ 2 = X at h2`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨k, hk⟩`.
+-/
 theorem odd_b {a : ℕ} {b c : ℤ} {d : ℕ} (hOK : CmOK a b c d) : ∃ k : ℤ, b = 2 * k + 1 := by
   obtain ⟨h1, -, h7, -⟩ := hOK
   rcases Int.even_or_odd b with ⟨k, hk⟩ | ⟨k, hk⟩
@@ -24,6 +29,11 @@ theorem odd_b {a : ℕ} {b c : ℤ} {d : ℕ} (hOK : CmOK a b c d) : ∃ k : ℤ
     omega
   · exact ⟨k, hk⟩
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hb`. Take `⟨m, n', rfl⟩` from `hα`. Establish `hθ` using `hSt x hx`. Establish `key : ((m : ℂ) + (n' : ℂ) * omegaK d) • x = (m - n' * k) • x + n' • (Formalism.L2.Th1.F.cmTheta b d • x)`. Use extensionality with `i`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, zsmul_eq_mul, omegaK, Formalism.L2.Th1.F.cmTheta, hk, Pi.mul_apply, Pi.sub_apply, Pi.intCast_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `Λ.add_mem (Λ.zsmul_mem hx _) (Λ.zsmul_mem hθ _)`.
+-/
 theorem qint_smul_mem {n : Type} (Λ : AddSubgroup (n → ℂ)) (b : ℤ) (d : ℕ) (hb : ∃ k : ℤ, b = 2 * k + 1)
     (hSt : ∀ x ∈ Λ, Formalism.L2.Th1.F.cmTheta b d • x ∈ Λ) (α : ℂ) (hα : IsQInt d α) (x : n → ℂ) (hx : x ∈ Λ) :
     α • x ∈ Λ := by
@@ -40,6 +50,11 @@ theorem qint_smul_mem {n : Type} (Λ : AddSubgroup (n → ℂ)) (b : ℤ) (d : �
   rw [key]
   exact Λ.add_mem (Λ.zsmul_mem hx _) (Λ.zsmul_mem hθ _)
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[imgLat, AddSubgroup.mem_map]`. Take `⟨z, hz, rfl⟩` from `hy`. Establish `hz' : ∀ a, Formalism.L2.Th1.H.slice a z ∈ Λ` using `hz`. Use `⟨α • z, ?_, ?_⟩` and prove the remaining obligations. Use `show ∀ a, Formalism.L2.Th1.H.slice a (α • z) ∈ Λ`.
+
+Introduce `a`. Conclude with `hΛ _ (hz' a)`. Simplify using `[map_smul]`.
+-/
 theorem img_smul_mem {n : Type} [Fintype n] (Λ : AddSubgroup (n → ℂ))
     (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) (α : ℂ) (hΛ : ∀ x ∈ Λ, α • x ∈ Λ) (y : Fin 4 × n → ℂ)
     (hy : y ∈ imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)) :
@@ -53,6 +68,11 @@ theorem img_smul_mem {n : Type} [Fintype n] (Λ : AddSubgroup (n → ℂ))
     exact hΛ _ (hz' a)
   · simp [map_smul]
 
+/- English proof (translation)
+Establish `h` using `AddSubgroup.nsmul_index_mem ((stdLat L m).addSubgroupOf Λb) ⟨v, hv⟩`. Rewrite `h` using `[AddSubgroup.mem_addSubgroupOf]`. Establish `h2 : (relIdx (stdLat L m) Λb) • v ∈ stdLat L m`. Simplify `h` using `[relIdx, AddSubgroup.relIndex]`. Establish `h3` using `(AddSubgroup.mem_pi _).mp h2 w (Set.mem_univ _)`.
+
+Simplify `h3` using `[nsmul_eq_mul]`.
+-/
 theorem idx_coord_mem (L : PeriodPair) {m : Type} (Λb : AddSubgroup (m → ℂ)) (v : m → ℂ) (hv : v ∈ Λb) (w : m) :
     (relIdx (stdLat L m) Λb : ℂ) * v w ∈ L.lattice := by
   have h := AddSubgroup.nsmul_index_mem ((stdLat L m).addSubgroupOf Λb) ⟨v, hv⟩
@@ -67,6 +87,29 @@ end TensorIntegralTorsion
 open TensorIntegralTorsion
 
 open Formalism.L2.Th1.H Formalism.L2.Th1.H.FormalGroupLawNegation Formalism.L2.Th1.GD in
+/- English proof (translation)
+Introduce `a₀ b₀ c₀ dK ha hdK lam hlam hOK n _ _ h Λ hSD hSt θ hθ p _ ι g₁ ε hIso hp hidx2 hε hT t αq M hαq hM hαt hMt`. Establish `hidx1 : relIdx (stdLat (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n)) (imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)) ≠ 0`. Introduce `h0`. Conclude with `hp (h0 ▸ dvd_zero p)`. Establish `hStd` using `stdDataCm a₀ b₀ c₀ dK ha hdK lam hlam hOK.1 hOK.2.1 hOK.2.2.1 n h Λ g₁ hIso hSD hSt hidx1 hidx2`.
+
+Take `⟨S, hS⟩` from `(cosetRepsExist _ _ _ hidx1).1`. Establish `hΛα : ∀ x ∈ Λ, αq • x ∈ Λ` using `fun x hx => qint_smul_mem Λ b₀ dK (odd_b hOK) hSt αq hαq x hx`. Establish `huM` using `smul_img_mem Λ g₁ t _ hMt`. Establish `huα` using `smul_img_mem Λ g₁ t _ hαt`. Set `cx : (Fin 4 × n → ℂ) → ℂ` to `fun x => ε * (↑√↑(relIdx (stdLat (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n)) (imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ))))⁻¹ * alphaQ (√↑dK / 2) (stdH (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n)) x * Complex.exp (-↑Real.pi * Complex.I * ↑(Formalism.L2.Th1.H.altE …`.
+
+Set `fx : (Fin 4 × n → ℂ) → Fin 4 × n → ℂ → ℂ` to `fun x w => Formalism.L2.Th1.F.opU (cmL a₀ b₀ dK ha hdK lam hlam) ((g₁ fun w : Fin 4 × n => t w.2) w + x w) (Formalism.L2.Th1.F.th0 (cmL a₀ b₀ dK ha hdK lam hlam) (lam * ↑a₀ / 2))`. Use `⟨↥S, inferInstance, fun x => ι (cx x), fun x => (g₁ fun w : Fin 4 × n => t w.2) + (x : Fin 4 × n → ℂ), relIdx (stdLat (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n)) (imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)), ?_, Nat.pos_of_ne_zero hidx1, hp, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Conclude with `norm_coeff ι _ _ hStd.selfDual _ hStd.betaSemi _ hp ε hε _ _ M hM huM (hS.1 x x.2)`. Introduce `x w`.
+
+Establish `hx` using `img_smul_mem Λ g₁ αq hΛα x (hS.1 x x.2)`. Establish `hv` using `(imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)).add_mem huα hx`. Use `idx_coord_mem (cmL a₀ b₀ dK ha hdK lam hlam) _ _ hv w` as an intermediate fact. Simplify `this` using `[Pi.add_apply, smul_eq_mul, mul_add, mul_assoc]`. Introduce `x w`.
+
+Use `trans_mem (cmL a₀ b₀ dK ha hdK lam hlam) _ _ _ M huM (hS.1 x x.2) w` as an intermediate fact. Rewrite `this` using `[Nat.mul_comm]`. Simplify `this` using `[Pi.add_apply]`. Set `M₀ : Matrix (Fin 4 × n) (Fin 4 × n) ℂ` to `fun w w' => g₁.symm (Pi.single w' 1) w`. Establish `hmv : ∀ y : Fin 4 × n → ℂ, M₀.mulVec y = g₁.symm y`.
+
+Introduce `y`. Establish `hy : y = ∑ w' : Fin 4 × n, y w' • (Pi.single w' (1 : ℂ) : Fin 4 × n → ℂ)`. Use extensionality with `w`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use extensionality with `w`.
+
+Use `conv_rhs => rw [hy]`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_smul, Finset.sum_apply, M₀, mul_comm]`. Establish `hF : AnalyticAt ℂ (opU (matH h) t θ) 0` using `heisenbergAnalytic (n → ℂ) (matH h) t θ hθ.1 0 (Set.mem_univ _)`. Establish `hth0` using `(Formalism.L2.Th1.F.th0Basic _ _ hStd.per hStd.half).1`. Establish `hfac : ∀ x : Fin 4 × n → ℂ, ∀ w : Fin 4 × n, AnalyticAt ℂ (fx x w) 0` using `fun x w => analyticAt_opU _ _ hth0`.
+
+Establish `hfun : (fun y => Formalism.L2.Th1.H.tens4 (opU (matH h) t θ) (M₀.mulVec y)) = fun y => ∑ x ∈ S, cx x * Formalism.L2.Th1.H.prodFn (fx x) y`. Use function extensionality and compare the values at `y`. Rewrite using `[hmv, quadraticSemicharacter_identity_reformulated₂ _ _ n h Λ _ _ g₁ hStd ε θ hT S hS t y]`. Both sides reduce to the same expression. Establish `step1 : Formalism.L2.Th1.H.linSubst M₀ (Formalism.L2.Th1.E.tensor4 (taylorMv (opU (matH h) t θ))) = taylorMv (fun y => Formalism.L2.Th1.H.tens4 (opU (matH h) t θ) (M₀.mulVec y))`.
+
+Rewrite using `[taylorMvComp _ _ M₀ _ (analyticAt_tens4 hF), taylorMvTens4 _ _ hF]`. Establish `e1 : taylorMv (fun y => Formalism.L2.Th1.H.tens4 (opU (matH h) t θ) (M₀.mulVec y)) = ∑ x ∈ S, MvPowerSeries.C (cx x) * taylorMv (Formalism.L2.Th1.H.prodFn (fx x))`. Rewrite using `[hfun]`. Conclude with `(taylorMv_sum taylorMvLinear S cx (fun x => Formalism.L2.Th1.H.prodFn (fx x)) (fun x => analyticAt_prodFn (hfac x))).2`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_linSubst, map_tensor4]`. Both sides reduce to the same expression. Use `_ = MvPowerSeries.map (ι : ℂ →+* ℂ_[p]) (∑ x ∈ S, MvPowerSeries.C (cx x) * ∏ w : Fin 4 × n, Formalism.InvariantFactorPaths.G7.at1 w (Formalism.L2.Th1.F.taylor0 (fx x w))) := by`. Rewrite using `[step1, e1]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl (fun x _ => by rw [taylorMvProd _ _ (hfac x)])`. Use `_ = _ := by`. Rewrite using `[map_sumProd, Formalism.L2.Th1.Top.thetaZ, Formalism.L2.Th1.E.thetaProd]`. Conclude with `(Finset.sum_coe_sort S _).symm`.
+-/
 theorem tensor_integral_torsion : TensZEt := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hOK n _ _ h Λ hSD hSt θ hθ p _ ι g₁ ε hIso hp hidx2 hε hT t αq M hαq hM hαt hMt
   have hidx1 : relIdx (stdLat (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n))

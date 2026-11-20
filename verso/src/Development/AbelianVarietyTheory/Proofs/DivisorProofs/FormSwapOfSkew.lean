@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.ArchSch
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap_of_skew {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {d : ℕ}
     (J : Matrix (Fin d) (Fin d) E) (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = -J i j) (x y : Fin d → E) :
     form σ J y x = -σ (form σ J x y) := by
@@ -19,6 +22,19 @@ theorem form_swap_of_skew {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d d₁ W W₁ H' r' s' i₀ i₁ JX hW hH hB b c`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨-, -, -, h⟩` from `hB.cm`. Set `τ : E →+* ℂ` to `Classical.choice (inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises.
+
+Rewrite using `[h τ, h τ, star_star]`. Establish `hyx : form σ W.J H'.y H'.x = -1`. Rewrite using `[form_swap_of_skew W.J hσ hW.skew, hH.xy, map_one]`. Establish `hc : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Establish `h1 : ∑ j, ∑ l, inclR (F` using `F) (AF F) (H'.y j) * inclR (F := F) (AF F) (W.J j l) * inclR (F := F) (AF F) (σ (H'.x l)) = -1 := by`.
+
+Use `congrArg (inclR (F := F) (AF F)) hyx` as an intermediate fact. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, map_neg, map_one] at this`. Simplify `this` using `only [mul_assoc]`. Unfold `symp hTens`. Use `congr 1`.
+
+Establish `h2 : ∀ i, ∑ j, ∑ k, ∑ l, Matrix.vecMulVec b (incV F H'.y) i j * incM F JX i k * incM F W.J j l * cA σ (Matrix.vecMulVec c (incV F H'.x) k l) = -∑ k, b i * (incM F JX i k * cA σ (c k))`. Introduce `i`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_neg_one, ← h1, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMulVec_apply, map_mul, incV, hc, incM, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [h2, dotProduct, Matrix.mulVec, Finset.mul_sum, Finset.sum_neg_distrib, neg_mul, one_mul, neg_neg]`.
+-/
 theorem symp_dual_iso : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {n d d₁ : ℕ} (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (r' s' i₀ i₁ : ℕ)
     (JX : Matrix (Fin n) (Fin n) E),

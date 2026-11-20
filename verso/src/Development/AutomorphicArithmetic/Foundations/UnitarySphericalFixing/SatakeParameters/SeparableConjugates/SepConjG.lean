@@ -11,6 +11,23 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.GalS
 
+/- English proof (translation)
+Use `host_isCMField D.host` as an intermediate fact. Take `⟨π₀, hπ₀⟩` from `Quotient.exists_rep (C.e _ π).1`. Establish `hmk : CG.mk π₀ = (C.e _ π).1` using `hπ₀`. Establish `hc₀ : π₀.IsCsd`. Establish `h1` using `(C.csd _ π).1 hc`.
+
+Rewrite `h1` using `[CGu.IsCsd, ← hmk]`. Conclude with `h1`. Establish `hpar : ∀ v, T.e v (D.naut.locG π v) = ParLaws.locPar hL (CG.mk π₀) (D.nd.plOm.2 v)` using `fun v => by`. Rewrite using `[C.loc, hmk]`. Both sides reduce to the same expression.
+
+Rewrite `k`, the goal using `[sep_iff T, hpar]`. Take `⟨γ, hγ⟩` from `GlobalTheory.exists_tameGenAt_of_isPlaceOver _ _ _ _ (D.nd.plOm.2 w')`. Take `⟨γ', ⟨c, hcE, hcA, -⟩, -⟩` from `GlobalTheory.conjGen_transport_exists D w' w γ (GlobalTheory.TwistDet.isConjPl_symm hw) hγ`. Establish `hcp : ConjPl (IsCMField.complexConj D.host.E).toRingEquiv w w'` using `(conjPl_iff_mem _ _ _).2 fun x y e => hw x y (e.trans (host_complexConj D.host _))`. Take `rfl : w' = conjSrc (IsCMField.complexConj D.host.E).toRingEquiv w` from `eq_conjSrc fun x => by`.
+
+Simplify using `using (hcp (IsCMField.complexConj D.host.E x)).symm`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF _ a π₀ w`. Establish `good : ∀ (v : PlE D.host) (τ : SmIrr (GL (Fin a) (v.adicCompletion D.host.E))), π₀.IsLocComp v τ → UpperTheory.Zero.LLC.Good (cls (ParLaws.toRep τ))` using `fun v τ hτ => by`. Establish `g` using `UpperTheory.One.M.Old.cgGood sw C _ π v`. Establish `h1 : (CG.mk π₀).IsLoc v (Quotient.mk _ τ)` using `hτ`.
+
+Rewrite `g` using `[← hmk, CG.IsLoc.unique _ a _ v _ _ h1.loc h1]`. Conclude with `g`. Rewrite `k` using `[ParLaws.locPar_mk hL hσ]`. Rewrite using `[ParLaws.locPar_mk hL (ParLaws.isLocComp_flip hc₀ hσ)]`. Set `π₁ : IrrRep (GL (Fin a) (w.adicCompletion D.host.E))` to `⟨σ.V, σ.ρ.comp (GlobalTheory.TypeTame.invTranspose a), fun v => (σ.smooth v).preimage (GlobalTheory.TypeTame.continuous_invTranspose a), GlobalTheory.GelfandKazhdan.isIrreducible_comp _ (fun g => ⟨_, GlobalTheory.TypeTame.invTranspose_invTranspose a g⟩) σ.irred⟩`.
+
+Establish `hE` using `GlobalTheory.GelfandKazhdan.equiv_contra _ a σ.V σ.ρ (PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top _ a σ.V σ.ρ σ.smooth σ.irred) σ.irred`. Establish `hr` using `ParLaws.isRec_locRec hL (D.nd.plOm.2 w)`. Set `cc` to `(IsCMField.complexConj D.host.E).toRingEquiv`. Set `i` to `RingEquiv.ofBijective (conjLoc cc w) ⟨(conjLoc cc w).injective, ParLaws.conjLoc_surjective cc w⟩`. Set `L` to `longElt a (w.adicCompletion D.host.E)`.
+
+Take `⟨b', b, h1, h2, -, h4⟩` from `UpperTheory.One.M.Old.field hL (ParLaws.isRec_locRec hL (D.nd.plOm.2 (conjSrc cc w))) hr c (D.host.conj : D.host.E →+* D.host.E) i (fun z => (hcA z).symm) hcE (conjLoc_spec cc w).1 (fun x => ((conjLoc_spec cc w).2.1 x).trans (congrArg _ (host_complexConj D.host x))) a (ParLaws.to …`. Express the relevant statement in the definitionally equal form `σ.ρ L (σ.ρ (invRevT (Matrix.GeneralLinearGroup.map (conjLoc cc w) g)) v) = σ.ρ (invT a _ (Matrix.GeneralLinearGroup.map (conjLoc cc w) g)) (σ.ρ L v)`. Establish `e : ∀ (x y : GL (Fin a) (w.adicCompletion D.host.E)) (u : σ.V), σ.ρ x (σ.ρ y u) = σ.ρ (x * y) u` using `fun x y u => by rw [map_mul]; rfl`. Use `(e _ _ v).trans (Eq.trans ?_ (e _ _ v).symm)` and prove the remaining obligations. Rewrite using `[ParLaws.invRevT_eq, inv_mul_cancel_right]) (good _ _ (ParLaws.isLocComp_flip hc₀ hσ))`.
+
+Take `⟨_, _, _, -, H⟩` from `hr`. Establish `kd` using `k.dual`. Rewrite `kd` using `[← UpperTheory.One.M.Old.dual H a (ParLaws.toRep σ) π₁ (good _ _ hσ) hE, ← h2]`. Conclude with `h1 ▸ kd.transport c (D.host.conj : D.host.E ≃+* D.host.E) hcE hcA h4`.
+-/
 theorem sep_conj_g (sw : UpperTheory.One.M.Sw) (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) {D : D7}
     {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : CGTrue hL D T) {a : ℕ} (π : D.naut.CG a) (hc : D.naut.csd π) {w w' : PlE D.host}
     (hw : IsConjPl D.host w w') (k : Sep D.nd D.naut (D.naut.locG π w)) : Sep D.nd D.naut (D.naut.locG π w') := by
@@ -67,6 +84,9 @@ theorem sep_conj_g (sw : UpperTheory.One.M.Sw) (hL : GlobalTheory.Published.Loca
   rw [← UpperTheory.One.M.Old.dual H a (ParLaws.toRep σ) π₁ (good _ _ hσ) hE, ← h2] at kd
   exact h1 ▸ kd.transport c (D.host.conj : D.host.E ≃+* D.host.E) hcE hcA h4
 
+/- English proof (translation)
+The claim follows from `@sep_conj_g sw`.
+-/
 example (sw : UpperTheory.One.M.Sw) : type_of% @sep_conj := @sep_conj_g sw
 
 end UpperTheory.GalS

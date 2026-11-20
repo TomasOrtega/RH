@@ -18,6 +18,13 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
   {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Establish `hs : ∀ z, z ∈ Formalism.L2.Herm.hatL (F` using `F) (Formalism.L2.Col.stdLat E n) ↔ ∀ i, z i ∈ Formalism.L2.Herm.intAf F E := fun z => mem_latS_std z`. Establish `he : (Pi.single j 1 : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) ∈ Formalism.L2.Herm.hatL (F` using `F) (Formalism.L2.Col.stdLat E n) := (hs _).2 fun i => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h1 : (s : Matrix (Fin n) (Fin n) _) *ᵥ Pi.single j 1 ∈ Formalism.L2.Herm.hatL (F` using `F) (Formalism.L2.Col.stdLat E n) := by`. Use `(h _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]` and apply the resulting hypothesis. Simplify `(hs _).1 h1 i` using `[Matrix.mulVec_single]`.
+
+Simplify `(hs _).1 ((h _).1 he) i` using `[Matrix.mulVec_single]`.
+-/
 theorem entries_int {s : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     (h : Formalism.L2.Herm.Carries s (Formalism.L2.Col.stdLat E n) (Formalism.L2.Col.stdLat E n)) (i j : Fin n) :
     (s : Matrix (Fin n) (Fin n) _) i j ∈ Formalism.L2.Herm.intAf F E ∧
@@ -36,12 +43,18 @@ theorem entries_int {s : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     simpa [Matrix.mulVec_single] using (hs _).1 h1 i
   · simpa [Matrix.mulVec_single] using (hs _).1 ((h _).1 he) i
 
+/- English proof (translation)
+Introduce `x` and use `by rw [hg x, hs, _root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]`.
+-/
 theorem carries_mul {g s : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {N : Submodule (𝓞 E) (Sp E n)}
     (hg : Formalism.L2.Herm.Carries g (Formalism.L2.Col.stdLat E n) N)
     (hs : Formalism.L2.Herm.Carries s (Formalism.L2.Col.stdLat E n) (Formalism.L2.Col.stdLat E n)) :
     Formalism.L2.Herm.Carries (g * s) (Formalism.L2.Col.stdLat E n) N := fun x => by
   rw [hg x, hs, _root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Introduce `x` and use `by have h1 := hg ((g : Matrix (Fin n) (Fin n) _) *ᵥ x) have h2 := hgs ((g : Matrix (Fin n) (Fin n) _) *ᵥ x) rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec] at h1 rw [h1] at h2 rw [h2, _root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mu …`.
+-/
 theorem carries_cancel {g s : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {N : Submodule (𝓞 E) (Sp E n)}
     (hg : Formalism.L2.Herm.Carries g (Formalism.L2.Col.stdLat E n) N)
     (hgs : Formalism.L2.Herm.Carries (g * s) (Formalism.L2.Col.stdLat E n) N) :
@@ -68,6 +81,9 @@ section Gen2
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
   {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : (fun i => Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (x i)) ∈ Formalism.L2.Herm.hatL (F := F) N := Submodule.subset_span ⟨x, hx, rfl⟩`. Conclude with `(mem_latS_std _).1 ((hg _).1 h1) i`.
+-/
 theorem pullV_int {g : GL (Fin n) (AfE F E)} {N : Submodule (𝓞 E) (Sp E n)}
     (hg : Formalism.L2.Herm.Carries g (Formalism.L2.Col.stdLat E n) N) {x : Sp E n} (hx : x ∈ N) (i : Fin n) :
     Col2.pullV g x i ∈ RInt F E := by
@@ -75,11 +91,39 @@ theorem pullV_int {g : GL (Fin n) (AfE F E)} {N : Submodule (𝓞 E) (Sp E n)}
     Submodule.subset_span ⟨x, hx, rfl⟩
   exact (mem_latS_std _).1 ((hg _).1 h1) i
 
+/- English proof (translation)
+The claim follows from `(mem_rInt_iff F E _).1 (pullV_int hg hx i) P`.
+-/
 theorem pullV_le {g : GL (Fin n) (AfE F E)} {N : Submodule (𝓞 E) (Sp E n)}
     (hg : Formalism.L2.Herm.Carries g (Formalism.L2.Col.stdLat E n) N) {x : Sp E n} (hx : x ∈ N) (P : HeightOneSpectrum (𝓞 E))
     (i : Fin n) : Valued.v (adAt F P (Col2.pullV g x i)) ≤ 1 :=
   (mem_rInt_iff F E _).1 (pullV_int hg hx i) P
 
+/- English proof (translation)
+Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨x, hx, fun i => by simp [Col2.pullV]⟩`.
+
+Consider the case `zero`. Use `⟨0, zero_mem _, fun i => ?_⟩` and prove the remaining obligations. Establish `: (fun k : Fin n => Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) ((0 : Sp E n) k)) = 0 := by`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+
+Establish `h0 : Col2.pullV g (0 : Sp E n) = 0`. Unfold `Col2.pullV`. Rewrite using `[this]`. Conclude with `Matrix.mulVec_zero _`. Establish `h1 : (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ (0 : Fin n → AfE F E)) = 0` using `Matrix.mulVec_zero _`.
+
+Use `erw [h1, h0]`. Simplify using the standard rewrite rules. Consider the case `add y y' _ _ ih ih'`. Take `⟨x, hx, h⟩` from `ih`. Take `⟨x', hx', h'⟩` from `ih'`.
+
+Use `⟨x + x', add_mem hx hx', fun i => ?_⟩` and prove the remaining obligations. Establish `e : (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ (y + y')) i - Col2.pullV g (x + x') i = ((((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ y) i - Col2.pullV g x i) + ((((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) …`. Establish `: (fun i => Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) ((x + x') i)) = (fun i => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i)) + (fun i => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x' i)) := by`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+
+Establish `e0 : Col2.pullV g (x + x') i = Col2.pullV g x i + Col2.pullV g x' i`. Simplify using `only [Col2.pullV]`. Rewrite using `[this, Matrix.mulVec_add, Pi.add_apply]`. Rewrite using `[e0, Matrix.mulVec_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, map_add]`. Conclude with `Valuation.map_add_lt _ (h i) (h' i)`. Consider the case `smul a y _ ih`. Take `⟨x, hx, h⟩` from `ih`. Take `⟨c, r, rfl, hr⟩` from `exists_hasRes (F := F) (P := P) (z := (a : AfE F E)) ((mem_rInt_iff F E _).1 a.2 P)`.
+
+Use `⟨r • x, N.smul_mem r hx, fun i => ?_⟩` and prove the remaining obligations. Establish `e1 : Col2.pullV g (r • x) i = Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E r) * Col2.pullV g x i := by`. Establish `: (fun i => Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) ((r • x) i)) = Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E r) • (fun i => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i)) := by`. Use function extensionality and compare the values at `k`. Simplify using `[Algebra.smul_def]`.
+
+Simplify using `only [Col2.pullV]`. Rewrite using `[this, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Establish `e2 : (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ (a • y)) i = (a : AfE F E) * (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ y) i`. Establish `: a • y = (a : AfE F E) • y` using `rfl`.
+
+Rewrite using `[this, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Establish `e : (a : AfE F E) * (((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ y) i - Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E r) * Col2.pullV g x i = (a : AfE F E) * ((((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ y) i - Col2.pullV g x i) + ((a : AfE F E) - Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 E) E r) …`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, map_add]`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `(mul_le_of_le_one_left' ((mem_rInt_iff F E _).1 a.2 P)).trans_lt (h i)`. Rewrite using `[map_mul, map_mul, map_sub, adAt_inclE]`.
+
+Conclude with `(mul_le_of_le_one_right' (pullV_le hg hx P i)).trans_lt hr`.
+-/
 theorem exists_near {g : GL (Fin n) (AfE F E)} {N : Submodule (𝓞 E) (Sp E n)}
     (hg : Formalism.L2.Herm.Carries g (Formalism.L2.Col.stdLat E n) N) (P : HeightOneSpectrum (𝓞 E)) :
     ∀ z ∈ Formalism.L2.Herm.hatL (F := F) N, ∃ x ∈ N, ∀ i, Valued.v (adAt F P
@@ -150,6 +194,13 @@ theorem exists_near {g : GL (Fin n) (AfE F E)} {N : Submodule (𝓞 E) (Sp E n)}
     · rw [map_mul, map_mul, map_sub, adAt_inclE]
       exact (mul_le_of_le_one_right' (pullV_le hg hx P i)).trans_lt hr
 
+/- English proof (translation)
+Establish `hz : ((g : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single j 1) ∈ Formalism.L2.Herm.hatL (F` using `F) N := by`. Use `(hg _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Use `(mem_latS_std _).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`.
+
+Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Take `⟨x, hx, h⟩` from `exists_near hg P _ hz`. Apply the tactic sequence `refine ⟨x, hx, fun i => ⟨if i = j then 1 else 0, by split_ifs <;> simp, ?_⟩⟩`. Establish `h1` using `h i`.
+
+Rewrite `h1` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec, Pi.single_apply]`. Rewrite using `[Valuation.map_sub_swap]`. Use `h1 using 3` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem exists_single {g : GL (Fin n) (AfE F E)} {N : Submodule (𝓞 E) (Sp E n)}
     (hg : Formalism.L2.Herm.Carries g (Formalism.L2.Col.stdLat E n) N) (P : HeightOneSpectrum (𝓞 E)) (j : Fin n) :
     ∃ x ∈ N, ∀ i, HasRes P (adAt F P (Col2.pullV g x i)) (if i = j then 1 else 0) := by
@@ -168,6 +219,11 @@ theorem exists_single {g : GL (Fin n) (AfE F E)} {N : Submodule (𝓞 E) (Sp E n
   convert h1 using 3
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Finset.univ_sum_single v]`. Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show (Pi.single k (v k) : Sp E n) = v k • Pi.single k 1 by`. Use extensionality with `m`.
+
+Apply the tactic sequence `by_cases h : m = k <;> simp [h], map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+-/
 theorem apply_eq_sum (f : Sp E n ≃ₗ[E] Sp E n) (v : Sp E n) (i : Fin n) :
     f v i = ∑ k, f (Pi.single k 1) i * v k := by
   conv_lhs => rw [← Finset.univ_sum_single v]
@@ -192,20 +248,32 @@ section Gen3
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
   {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(mem_rInt_iff F E _).1 (entries_int h i j).1 P, (mem_rInt_iff F E _).1 (entries_int h i j).2 P⟩`.
+-/
 theorem entries_le {s : GL (Fin n) (AfE F E)}
     (h : Formalism.L2.Herm.Carries s (Formalism.L2.Col.stdLat E n) (Formalism.L2.Col.stdLat E n)) (P : HeightOneSpectrum (𝓞 E)) (i j : Fin n) :
     Valued.v (adAt F P ((s : Matrix (Fin n) (Fin n) (AfE F E)) i j)) ≤ 1 ∧
       Valued.v (adAt F P (((s⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j)) ≤ 1 :=
   ⟨(mem_rInt_iff F E _).1 (entries_int h i j).1 P, (mem_rInt_iff F E _).1 (entries_int h i j).2 P⟩
 
+/- English proof (translation)
+The claim follows from `exists_isRed (fun i j => (entries_le h P i j).2) fun i j => by rw [inv_inv]; exact (entries_le h P i j).1`.
+-/
 theorem exists_isRed_inv {s : GL (Fin n) (AfE F E)}
     (h : Formalism.L2.Herm.Carries s (Formalism.L2.Col.stdLat E n) (Formalism.L2.Col.stdLat E n)) (P : HeightOneSpectrum (𝓞 E)) :
     ∃ A : GL (Fin n) (𝓞 E ⧸ P.asIdeal), IsRed P s⁻¹ A :=
   exists_isRed (fun i j => (entries_le h P i j).2) fun i j => by rw [inv_inv]; exact (entries_le h P i j).1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fr_smul (p : DecoF E n ST SG Q) (h : GLG E n SG) (θ : GLQ E n Q) (P : Q) (v : Sp E n) :
     (((1, h, θ) : UF E n × GLG E n SG × GLQ E n Q) • p).fr P v = p.fr P ((((θ P)⁻¹ : ↥(GLint E n P.1)).1) v) := rfl
 
+/- English proof (translation)
+Rewrite using `[apply_eq_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hg.fr P i k]`.
+-/
 theorem adAt_mul_fr {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} (hg : IsPtOf hc g p) (θ : GLQ E n Q) (P : Q)
     (i j : Fin n) :
     algebraMap E (P.1.adicCompletion E) (p.fr P ((((θ P)⁻¹ : ↥(GLint E n P.1)).1) (Pi.single j 1)) i) =
@@ -215,6 +283,25 @@ theorem adAt_mul_fr {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} (hg : IsP
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_mul, hg.fr P i k]
 
+/- English proof (translation)
+Establish `hl` using `hq.lat`. Rewrite `hl` using `[smul_N]`. Establish `hs` using `carries_cancel hg.lat hl`. Use `⟨⟨?_, hs, fun P r j hr => ?_, fun w r j => ?_⟩, fun P r j => ?_⟩` and prove the remaining obligations. Establish `e : s = g⁻¹ * (g * s)` using `by group`.
+
+Rewrite using `[e]`. Conclude with `mul_mem (inv_mem hg.uni) hq.uni`. Take `⟨A, hA⟩` from `exists_isRed_inv hs P.1`. Take `⟨x, hx, hxr⟩` from `exists_single hg.lat P.1 j`. Establish `h1` using `hasRes_pullV (g := g) (m := s⁻¹) hA hxr r`.
+
+Rewrite `h1` using `[inv_inv]`. Establish `h2` using `hq.f P x (by rw [smul_N]; exact hx) r hr`. Establish `h3` using `hg.f P x hx r hr`. Establish `e1 : p.deco.1.f P x = if r = j then 1 else 0` using `h3.unique (hxr r)`. Establish `e2 : (((1, h, θ) : UF E n × GLG E n SG × GLQ E n Q) • p).deco.1.f P x = p.deco.1.f P x` using `rfl`.
+
+Establish `e3 : ((A : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.1.asIdeal)) *ᵥ fun i => if i = j then 1 else 0) r = (A : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.1.asIdeal)) r j`. Simplify using `[Matrix.mulVec, dotProduct]`. Establish `e4` using `h1.unique h2`. Rewrite `e4` using `[e3, e2, e1]`. Establish `h4` using `hA r j`.
+
+Rewrite `h4` using `[e4]`. Use `h4 using 2` and compare the differences between its conclusion and the goal. Conclude with `eq_comm`. Take `⟨A, hA⟩` from `exists_isRed_inv hs w.1`. Establish `e` using `eq_red hg (m := s⁻¹) (by rwa [inv_inv]) w hA`.
+
+Establish `h1` using `hA r j`. Rewrite `h1` using `[e]`. Conclude with `h1`. Use `set φ : Matrix (Fin n) (Fin n) (AfE F E) →+* Matrix (Fin n) (Fin n) (P.1.adicCompletion E) := (adAt F P.1).mapMatrix set T : Matrix (Fin n) (Fin n) (P.1.adicCompletion E) := Matrix.of fun k j => algebraMap E _ ((((θ P)⁻¹ : ↥(GLint E n P.1)).1) (Pi.single j 1) k)`. Establish `hgs : φ ((g * s : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) = φ (g : Matrix (Fin n) (Fin n) (AfE F E)) * T`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [φ, T, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[hq.fr P i j, fr_smul, adAt_mul_fr hg θ P i j]`. Establish `hinv : φ ((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) * φ (g : Matrix (Fin n) (Fin n) (AfE F E)) = 1`.
+
+Rewrite using `[← map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, map_one]`. Establish `key : φ (s : Matrix (Fin n) (Fin n) (AfE F E)) = T`. Establish `e : (s : Matrix (Fin n) (Fin n) (AfE F E)) = ((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) * ((g * s : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E))`. Rewrite using `[← Units.val_mul, inv_mul_cancel_left]`. Rewrite using `[e, map_mul, hgs, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`.
+
+Use `congrFun (congrFun key r) j` as an intermediate fact. Simplify `this` using `[φ, T]`.
+-/
 theorem conds_of_pts {g s : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} {h : GLG E n SG} {θ : GLQ E n Q}
     (hg : IsPtOf hc g p) (hq : IsPtOf hc (g * s) (((1, h, θ) : UF E n × GLG E n SG × GLQ E n Q) • p)) :
     (s ∈ Formalism.L2.Herm.UstdAf hc n ∧ Formalism.L2.Herm.Carries s (Formalism.L2.Col.stdLat E n) (Formalism.L2.Col.stdLat E n) ∧
@@ -271,6 +358,17 @@ theorem conds_of_pts {g s : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} {h : G
     have := congrFun (congrFun key r) j
     simpa [φ, T] using this
 
+/- English proof (translation)
+Use `⟨mul_mem hg.uni h1, ?_, fun P x hx r hr => ?_, fun w x hx r => ?_, fun P i j => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_N]`. Conclude with `carries_mul hg.lat h2`. Rewrite `hx` using `[smul_N]`. Take `⟨A, hA⟩` from `exists_isRed_inv h2 P.1`.
+
+Use `choose c hc using fun k => exists_hasRes (pullV_le hg.lat hx P.1 k)`. Establish `k1` using `hasRes_pullV (g := g) (m := s⁻¹) hA hc r`. Rewrite `k1` using `[inv_inv]`. Establish `eA : ∀ k, (A : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.1.asIdeal)) r k = if k = r then 1 else 0` using `fun k => (hA r k).unique (h3 P r k hr)`. Establish `e : ((A : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.1.asIdeal)) *ᵥ c) r = c r`.
+
+Simplify using `[Matrix.mulVec, dotProduct, eA]`. Establish `e2 : c r = p.deco.1.f P x` using `(hc r).unique (hg.f P x hx r hr)`. Rewrite `k1` using `[e, e2]`. Conclude with `k1`. Rewrite `hx` using `[smul_N]`.
+
+Establish `k1` using `hasRes_pullV (g := g) (m := s⁻¹) (A := (h w).1) (h4 w) (hg.be w x hx) r`. Rewrite `k1` using `[inv_inv]`. Conclude with `k1`. Rewrite using `[Units.val_mul, Matrix.mul_apply, map_sum, fr_smul, adAt_mul_fr hg θ P i j]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, h5 P k j]`.
+-/
 theorem pt_of_conds {g s : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} {h : GLG E n SG} {θ : GLQ E n Q}
     (hg : IsPtOf hc g p) (h1 : s ∈ Formalism.L2.Herm.UstdAf hc n)
     (h2 : Formalism.L2.Herm.Carries s (Formalism.L2.Col.stdLat E n) (Formalism.L2.Col.stdLat E n))
@@ -311,6 +409,15 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.TC.ChTw.Match
 
+/- English proof (translation)
+Introduce `B X I hI u a i _ c s κ`. Establish `hact : (I.stp u a i).gam c.1 κ = 1 → ((I.stp u a i).act c.1 κ ((I.stp u a i).rep c)).1.1 = ((1, κ.2.1.1, κ.2.2.1) : UF B.fields.E (B.R.N i) × GLG B.fields.E (B.R.N i) (B.primes X).vGs × GLQ B.fields.E (B.R.N i) (I.Q a)) • ((I.stp u a i).rep c).1.1` using `fun h1 => by`. Establish `e1 : κ.1 = 1` using `Subtype.ext ((toGLm B.fields.E (B.R.N i)).injective (h1.trans (map_one _).symm))`. Use `show ((κ.1, κ.2.1.1, κ.2.2.1) : UF B.fields.E (B.R.N i) × GLG B.fields.E (B.R.N i) (B.primes X).vGs × GLQ B.fields.E (B.R.N i) (I.Q a)) • ((I.stp u a i).rep c).1.1 = _`. Rewrite using `[e1]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Take `⟨g, hg⟩` from `hI.exists_isPtOf u a ((I.stp u a i).rep c).1.1`. Establish `hq` using `h3 g hg`. Rewrite `hq` using `[hact h1]`.
+
+Take `⟨⟨k1, k2, k3, k4⟩, k5⟩` from `LocForm.conds_of_pts hg hq`. Conclude with `⟨h1, h2, ⟨k1, k2, k3, k4⟩, k5⟩`. Introduce and unpack `⟨h1, h2, ⟨k1, k2, k3, k4⟩, k5⟩`. Use `⟨h1, h2, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hact h1]`.
+
+Conclude with `LocForm.pt_of_conds hg k1 k2 k3 k4 k5`.
+-/
 theorem locMv_iff : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (u : B.Word) (a : I.ι) (i : ℕ), i ≤ B.R.m →
     ∀ (c : (I.stp u a i).Cl) (s : GA B (B.R.N i)) (κ : (I.stp u a i).G c.1),
     LocMv I u a i c s κ ↔ ((I.stp u a i).gam c.1 κ = 1 ∧

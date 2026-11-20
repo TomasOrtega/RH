@@ -11,6 +11,9 @@ section Chain
 
 variable {m : ℕ} {x : Fin (m + 1) → ℝ} {L : ℝ}
 
+/- English proof (translation)
+The claim follows from `| 0 => fun i hk => by simp | k + 1 => fun i hk => by have h1 := chain_sub_ge hx k i (by omega) have hl : (i : ℕ) + k < m := by omega have h2 := hx ⟨i + k, hl⟩ have e1 : (⟨i + k, hl⟩ : Fin m).castSucc = ⟨i + k, by omega⟩ := rfl have e2 : (⟨i + k, hl⟩ : Fin m).succ = ⟨i + (k + 1), …`.
+-/
 theorem chain_sub_ge (hx : ∀ l : Fin m, L ≤ x l.castSucc - x l.succ) :
     ∀ k : ℕ, ∀ i : Fin (m + 1), ∀ hk : (i : ℕ) + k < m + 1,
       (k : ℝ) * min L 0 ≤ x i - x ⟨i + k, hk⟩
@@ -25,6 +28,11 @@ theorem chain_sub_ge (hx : ∀ l : Fin m, L ≤ x l.castSucc - x l.succ) :
       push_cast
       nlinarith [min_le_left L 0]
 
+/- English proof (translation)
+Establish `hk : (i : ℕ) + ((j : ℕ) - i) < m + 1` using `by have := j.isLt; omega`. Establish `h` using `chain_sub_ge hx ((j : ℕ) - i) i hk`. Establish `hj : (⟨i + ((j : ℕ) - i), hk⟩ : Fin (m + 1)) = j` using `by ext; simp; omega`. Rewrite `h` using `[hj]`. Use `le_trans ?_ h` and prove the remaining obligations.
+
+Establish `hle : (((j : ℕ) - i : ℕ) : ℝ) ≤ (m : ℝ) + 1`. Use `j.isLt` as an intermediate fact. Establish `: (j : ℕ) - i ≤ m + 1` using `by omega`. Conclude with `this` after adjusting the coercions. Use polynomial arithmetic with `[min_le_right L 0]`.
+-/
 theorem pair_sub_ge (hx : ∀ l : Fin m, L ≤ x l.castSucc - x l.succ) {i j : Fin (m + 1)}
     (hij : i < j) : ((m : ℝ) + 1) * min L 0 ≤ x i - x j := by
   have hk : (i : ℕ) + ((j : ℕ) - i) < m + 1 := by have := j.isLt; omega
@@ -38,6 +46,11 @@ theorem pair_sub_ge (hx : ∀ l : Fin m, L ≤ x l.castSucc - x l.succ) {i j : F
     exact_mod_cast this
   nlinarith [min_le_right L 0]
 
+/- English proof (translation)
+Use `set c : ℝ := ((m : ℝ) + 1) * min L 0 with hc`. Establish `hc0 : c ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by positivity) (min_le_right _ _)`. Use `set p₀ : StrictUpperIndex (Fin (m + 1)) := ⟨(l.castSucc, l.succ), Fin.castSucc_lt_succ⟩`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ p₀)]`. Use `add_le_add le_rfl ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonpos_right ?_ hc0` and prove the remaining obligations. Conclude with `(Finset.card_erase_le).trans (le_of_eq Finset.card_univ)` after adjusting the coercions. Use `_ = ∑ _p ∈ Finset.univ.erase p₀, c := by rw [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ ∑ p ∈ Finset.univ.erase p₀, (x p.1.1 - x p.1.2) := Finset.sum_le_sum fun p _ => pair_sub_ge hx p.2`.
+-/
 theorem sub_add_le_sum_pairs (hx : ∀ l : Fin m, L ≤ x l.castSucc - x l.succ) (l : Fin m) :
     x l.castSucc - x l.succ +
         (Fintype.card (StrictUpperIndex (Fin (m + 1))) : ℝ) * (((m : ℝ) + 1) * min L 0) ≤
@@ -75,12 +88,31 @@ def chamberCoords : (Fin (m + 1) → ℝ) →ₗ[ℝ] (Fin (m + 1) → ℝ) wher
     | last => simp [Finset.mul_sum]
     | cast l => simp; ring
 
+/- English proof (translation)
+Simplify using `[chamberCoords]`.
+-/
 @[simp] theorem chamberCoords_last (x : Fin (m + 1) → ℝ) :
     chamberCoords m x (Fin.last m) = ∑ j, x j := by simp [chamberCoords]
 
+/- English proof (translation)
+Simplify using `[chamberCoords]`.
+-/
 @[simp] theorem chamberCoords_castSucc (x : Fin (m + 1) → ℝ) (l : Fin m) :
     chamberCoords m x l.castSucc = x l.castSucc - x l.succ := by simp [chamberCoords]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hd : ∀ l : Fin m, x l.castSucc = x l.succ` using `fun l => by`. Use `congrFun hx l.castSucc` as an intermediate fact. Rewrite `this` using `[chamberCoords_castSucc]`.
+
+Simplify `this` using `[sub_eq_zero]`. Establish `hconst : ∀ k : ℕ, ∀ hk : k < m + 1, x ⟨k, hk⟩ = x 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro hk`.
+
+Both sides reduce to the same expression. Consider the case `succ k ih`. Introduce `hk`. Establish `h` using `hd ⟨k, by omega⟩`. Establish `e1 : (⟨k, by omega⟩ : Fin m).castSucc = ⟨k, by omega⟩` using `rfl`.
+
+Establish `e2 : (⟨k, by omega⟩ : Fin m).succ = ⟨k + 1, hk⟩` using `rfl`. Rewrite `h` using `[e1, e2]`. Rewrite using `[← h, ih]`. Establish `hall : ∀ j, x j = x 0` using `fun j => hconst j j.isLt`. Establish `hs` using `congrFun hx (Fin.last m)`.
+
+Rewrite `hs` using `[chamberCoords_last]`. Simplify using `only [hall, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, Pi.zero_apply] at hs`. Establish `h0 : x 0 = 0`. Break down `mul_eq_zero.1 hs with h | h` into its components or cases. Conclude with `absurd h (by positivity)`.
+
+Conclude with `h`. Use function extensionality and compare the values at `j`. Rewrite using `[hall, h0, Pi.zero_apply]`.
+-/
 theorem chamberCoords_injective : Function.Injective (chamberCoords m) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro x hx
@@ -111,12 +143,44 @@ theorem chamberCoords_injective : Function.Injective (chamberCoords m) := by
   funext j
   rw [hall, h0, Pi.zero_apply]
 
+/- English proof (translation)
+The claim follows from `(LinearMap.isUnit_det _ ((LinearMap.isUnit_iff_ker_eq_bot _).2 (LinearMap.ker_eq_bot.2 (chamberCoords_injective m)))).ne_zero`.
+-/
 theorem det_chamberCoords_ne_zero : LinearMap.det (chamberCoords m) ≠ 0 :=
   (LinearMap.isUnit_det _ ((LinearMap.isUnit_iff_ker_eq_bot _).2
     (LinearMap.ker_eq_bot.2 (chamberCoords_injective m)))).ne_zero
 
 end Coordinates
 
+/- English proof (translation)
+Use `set K : ℝ := (Fintype.card (StrictUpperIndex (Fin (m + 1))) : ℝ) * (((m : ℝ) + 1) * min L 0) with hK`. Use `set mm : ℝ := max (m : ℝ) 1 with hmm`. Establish `hmm1 : 1 ≤ mm` using `le_max_right _ _`. Use `set g : Fin (m + 1) → ℝ → ℝ := fun i => Fin.lastCases ((Icc α β).indicator (fun _ => (1 : ℝ))) (fun _ => (Ici L).indicator (fun y => exp (-(e / mm) * y))) i with hg`. Establish `hgint : ∀ i, Integrable (g i) volume`.
+
+Introduce `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Simplify using `only [hg, Fin.lastCases_last]`. Conclude with `(integrableOn_const (by simp)).integrable_indicator measurableSet_Icc`.
+
+Consider the case `cast l`. Simplify using `only [hg, Fin.lastCases_castSucc]`. Use `IntegrableOn.integrable_indicator ?_ measurableSet_Ici` and prove the remaining obligations. Establish `hpos : 0 < e / mm` using `div_pos (by linarith) (by linarith)`. Rewrite using `[integrableOn_Ici_iff_integrableOn_Ioi]`.
+
+Conclude with `exp_neg_integrableOn_Ioi L hpos`. Establish `hprod : Integrable (fun y : Fin (m + 1) → ℝ => ∏ i, g i (y i)) volume` using `Integrable.fintype_prod hgint`. Establish `hfin` using `hprod.lintegral_lt_top`. Use `set C : ℝ := exp (-(e * K)) with hC`. Establish `hbound : ∀ x : Fin (m + 1) → ℝ, {x : Fin (m + 1) → ℝ | (∀ l : Fin m, L ≤ x l.castSucc - x l.succ) ∧ α ≤ ∑ i, x i ∧ ∑ i, x i ≤ β}.indicator (fun x => ENNReal.ofReal (exp (-(e * ∑ p : StrictUpperIndex (Fin (m + 1)), (x p.1.1 - x p.1.2))))) x ≤ ENNReal.ofReal C * ENNReal.ofReal (∏ i …`.
+
+Introduce `x`. Distinguish the cases in `hx : x ∈ {x : Fin (m + 1) → ℝ | (∀ l : Fin m, L ≤ x l.castSucc - x l.succ) ∧ α ≤ ∑ i, x i ∧ ∑ i, x i ≤ β}`. Rewrite using `[indicator_of_mem hx, ← ENNReal.ofReal_mul (exp_pos _).le]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Take `⟨hd, hα, hβ⟩` from `hx`.
+
+Establish `hgx : ∏ i, g i (chamberCoords m x i) = exp (-(e / mm) * ∑ l : Fin m, (x l.castSucc - x l.succ))`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [hg, Fin.lastCases_castSucc, Fin.lastCases_last, chamberCoords_castSucc, chamberCoords_last]`. Rewrite using `[indicator_of_mem (show ∑ j, x j ∈ Icc α β from ⟨hα, hβ⟩), mul_one, Finset.mul_sum, Real.exp_sum]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[indicator_of_mem (show x l.castSucc - x l.succ ∈ Ici L from hd l)]`. Rewrite using `[hgx, ← Real.exp_add]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use `set S : ℝ := ∑ p : StrictUpperIndex (Fin (m + 1)), (x p.1.1 - x p.1.2) with hS`. Establish `hK0 : K ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by positivity) (mul_nonpos_of_nonneg_of_nonpos (by positivity) (min_le_right _ _))`.
+
+Establish `hSK : K ≤ S`. Rewrite using `[hS, hK]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ ≤ _ := Finset.sum_le_sum fun p _ => pair_sub_ge hd p.2`.
+
+Establish `havg : (∑ l : Fin m, (x l.castSucc - x l.succ)) ≤ mm * (S - K)`. Break down `Nat.eq_zero_or_pos m with hm0 | hm0` into its components or cases. Substitute `hm0` using the available equality. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `mul_nonneg (by linarith) (by linarith)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hmmpos : 0 < mm` using `by linarith`. Establish `h1 : (e / mm) * (∑ l : Fin m, (x l.castSucc - x l.succ)) ≤ e * (S - K)`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite using `[indicator_of_notMem hx]`. Conclude with `zero_le`. Establish `hT` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure (Fin (m + 1) → ℝ))) (det_chamberCoords_ne_zero m)`. Establish `hgm : ∀ i, Measurable (g i)`. Introduce `i`.
+
+Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp only [hg, Fin.lastCases_last]`. Conclude with `measurable_const.indicator measurableSet_Icc`. Consider the case `cast l`. Simplify using `only [hg, Fin.lastCases_castSucc]`.
+
+Conclude with `(measurable_exp.comp (measurable_const.mul measurable_id)).indicator measurableSet_Ici`. Establish `hmeasG : Measurable fun y : Fin (m + 1) → ℝ => ENNReal.ofReal (∏ i, g i (y i))` using `ENNReal.measurable_ofReal.comp (Finset.measurable_prod _ fun i _ => (hgm i).comp (measurable_pi_apply (X := fun _ : Fin (m + 1) => ℝ) i))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_map hmeasG (LinearMap.continuous_of_finiteDimensional _).measurable]`. Use `_ < ⊤ := by`.
+
+Rewrite using `[hT, lintegral_smul_measure]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin)`.
+-/
 theorem lintegral_chamber_lt_top (m : ℕ) {e : ℝ} (he : 1 ≤ e) (L α β : ℝ) :
     ∫⁻ x : Fin (m + 1) → ℝ,
       {x : Fin (m + 1) → ℝ | (∀ l : Fin m, L ≤ x l.castSucc - x l.succ) ∧

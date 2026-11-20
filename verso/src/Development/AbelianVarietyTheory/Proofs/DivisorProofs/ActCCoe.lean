@@ -38,6 +38,9 @@ def sigC (p : PtAt ex Csz) : p.T.Q.c.F →+* ℂ := D.what₂.embLL.comp (algebr
 abbrev CF (p : PtAt ex Csz) (i : Fin D.R.m) : Submodule p.T.Q.c.F (p.T.R ((i : ℕ) + 1)) :=
   p.T.cuspA ((i : ℕ) + 1) (wtA (p.κ i)) (p.κ i).n
 
+/- English proof (translation)
+Introduce `f hf` and use `by obtain ⟨cc, ph, hO⟩ := (hp.oneMap i).1 obtain ⟨k, hk, -⟩ := (p.pins i).2.lift.lev g exact (hO.1 g k hk f hf).1`.
+-/
 theorem keeps (p : PtAt ex Csz) (i : Fin D.R.m) (hp : p.Rows) (g : p.P.Gp) :
     ∀ f ∈ CF p i, actLev p.T.Q.c (p.O i).lev2 g f ∈ CF p i := fun f hf => by
   obtain ⟨cc, ph, hO⟩ := (hp.oneMap i).1

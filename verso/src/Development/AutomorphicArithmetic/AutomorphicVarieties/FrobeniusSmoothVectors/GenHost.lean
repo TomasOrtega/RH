@@ -13,6 +13,9 @@ section SlopeTestRemainingChoices
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
+/- English proof (translation)
+Introduce `hb` and use `by obtain ⟨x, y, h⟩ : IsCoprime (a : A) (b : A) := hab.cast have ha' : (a : A) ∈ maximalIdeal A := (A.valuation_lt_one_iff _).2 (by simpa using ha) have hb' : (b : A) ∈ maximalIdeal A := (A.valuation_lt_one_iff _).2 (by simpa using hb) exact (maximalIdeal.isMaximal A).ne_top ((Id …`.
+-/
 private theorem gh_not_both (A : ValuationSubring Ω) {a b : ℕ} (hab : a.Coprime b) (ha : A.valuation (a : Ω) < 1) :
     ¬ A.valuation (b : Ω) < 1 := fun hb => by
   obtain ⟨x, y, h⟩ : IsCoprime (a : A) (b : A) := hab.cast
@@ -21,16 +24,29 @@ private theorem gh_not_both (A : ValuationSubring Ω) {a b : ℕ} (hab : a.Copri
   exact (maximalIdeal.isMaximal A).ne_top ((Ideal.eq_top_iff_one _).2
     (h ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ ha') (Ideal.mul_mem_left _ _ hb')))
 
+/- English proof (translation)
+Rewrite using `[Chr.dirG, MonoidHom.comp_apply, h, map_one]`.
+-/
 private theorem gh_dir_one {O : Type} [CommRing O] {N : ℕ} [NeZero N] (χ : DirichletCharacter O N) {s : G ℚ Ω}
     (h : Chr.cls ℚ Ω N s = 1) : Chr.dirG ℚ Ω χ s = 1 := by
   rw [Chr.dirG, MonoidHom.comp_apply, h, map_one]
 
+/- English proof (translation)
+Use `(Chr.clsFacts ℚ Ω N).2.2.1 s 1 fun ζ hζ => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `h`. Rewrite using `[hs ζ (by rw [pow_mul, hζ, one_pow]), Units.val_one, ← Nat.cast_one, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ, pow_one]`.
+-/
 private theorem gh_cls_one {M : ℕ} (N : ℕ) [NeZero N] (h : N ∣ M) {s : G ℚ Ω} (hs : ∀ ζ : Ω, ζ ^ M = 1 → s ζ = ζ) :
     Chr.cls ℚ Ω N s = 1 := by
   refine (Chr.clsFacts ℚ Ω N).2.2.1 s 1 fun ζ hζ => ?_
   obtain ⟨k, rfl⟩ := h
   rw [hs ζ (by rw [pow_mul, hζ, one_pow]), Units.val_one, ← Nat.cast_one, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ, pow_one]
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Take `⟨δ, hδ⟩` from `IsAlgClosed.exists_pow_nat_eq (-1 : Ω) two_pos`. Establish `h4 : δ ^ 4 = 1` using `by rw [show 4 = 2 * 2 from rfl, pow_mul, hδ]; norm_num`. Use `⟨δ, by simpa using hδ, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[Chr.cls_spec 4 s δ h4]`.
+
+Use `show _ = (ZMod.χ₄ ((Chr.cls ℚ Ω 4 s : (ZMod 4)ˣ) : ZMod 4) : ℤ) • δ`. Generalize the expression as in `Chr.cls ℚ Ω 4 s = u`. Establish `hu : u = 1 ∨ u = -1` using `by revert u; decide`. Break down `hu with rfl | rfl` into its components or cases. Use `show δ ^ 1 = (1 : ℤ) • δ`.
+
+Simplify using the standard rewrite rules. Use `show δ ^ 3 = (-1 : ℤ) • δ`. Rewrite using `[pow_succ, hδ]`. Simplify using the standard rewrite rules.
+-/
 private theorem gh_quad : ∃ δ : Ω, δ ^ 2 = -((1 : ℕ) : Ω) ∧ ∀ s : G ℚ Ω, s δ = (UnitaryThreeInertia.eta4 Ω s : ℤ) • δ := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
   obtain ⟨δ, hδ⟩ := IsAlgClosed.exists_pow_nat_eq (-1 : Ω) two_pos
@@ -47,6 +63,9 @@ private theorem gh_quad : ∃ δ : Ω, δ ^ 2 = -((1 : ℕ) : Ω) ∧ ∀ s : G 
     rw [pow_succ, hδ]
     simp
 
+/- English proof (translation)
+Establish `h : barChar c.O (chiO ℚ Ω l c.O) s = omO Ω l c.O s` using `Units.ext ((X.cycKFacts Ω l _).2 c (residue c.O) s).symm`. Rewrite using `[← h, Chr.Psi, zpow_natCast]`. Simplify using `only [barChar, MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.pow_apply, map_mul, map_pow]`.
+-/
 private theorem gh_bar (l : ℕ) [Fact l.Prime] (c : Coef l) [CharP (ResidueField c.O) l] (e : ℕ) (θ : G ℚ Ω →* c.Oˣ) (s : G ℚ Ω) :
     barChar c.O (Chr.Psi l e θ) s = omO Ω l c.O s ^ e * barChar c.O θ s := by
   have h : barChar c.O (chiO ℚ Ω l c.O) s = omO Ω l c.O s :=
@@ -54,6 +73,9 @@ private theorem gh_bar (l : ℕ) [Fact l.Prime] (c : Coef l) [CharP (ResidueFiel
   rw [← h, Chr.Psi, zpow_natCast]
   simp only [barChar, MonoidHom.comp_apply, MonoidHom.mul_apply, MonoidHom.pow_apply, map_mul, map_pow]
 
+/- English proof (translation)
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr hl.out.ne_zero⟩`. Establish `h1 : Chr.cls ℚ Ω (l ^ 1) s = cycMod ℚ Ω l 1 s` using `(Chr.clsFacts ℚ Ω (l ^ 1)).2.2.1 s _ fun ζ hζ => cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (Ω ≃ₐ[ℚ] Ω) Ω s) ζ hζ`. Rewrite using `[omO, GC.cycF, MonoidHom.comp_apply, ← h1, h, map_one]`.
+-/
 private theorem gh_om_one (l : ℕ) [hl : Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O] [CharP (ResidueField O) l] {s : G ℚ Ω}
     (h : Chr.cls ℚ Ω (l ^ 1) s = 1) : omO Ω l O s = 1 := by
   have : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
@@ -62,6 +84,13 @@ private theorem gh_om_one (l : ℕ) [hl : Fact l.Prime] (O : Type) [CommRing O] 
       cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (Ω ≃ₐ[ℚ] Ω) Ω s) ζ hζ
   rw [omO, GC.cycF, MonoidHom.comp_apply, ← h1, h, map_one]
 
+/- English proof (translation)
+Take `⟨w, hw, -⟩` from `(omT Ω l c).1`. Take `⟨b, -, -, hb⟩` from `(psiBar Ω l c w hw N ψ).1`. Use `⟨e + b, fun B' hB s hs => Units.ext ?_⟩` and prove the remaining obligations. Take `⟨-, hmul, -, hinv, -, h6, -⟩` from `compAlg c.O N l hl.out`. Establish `h1 : comp l (chiP l ψ) = 1` using `by rw [chiP, hmul, hinv, (h6 _).1, mul_inv_cancel]`.
+
+Establish `h2 : Chr.dirG ℚ Ω (chiP l ψ) s = 1` using `((compIne Ω N l hl.out B' hB).2 c.O _).2.2 h1 hs`. Establish `h3` using `(residue_eq_zero_iff _).2 (hb e s)`. Establish `h4` using `(residue_eq_zero_iff _).2 (hw.2 s)`. Rewrite `h3`, `h4` using `[map_sub, sub_eq_zero]`. Rewrite `h3` using `[MonoidHom.mul_apply, h2, mul_one, MonoidHom.pow_apply, Units.val_pow_eq_pow_val, map_pow, h4, ← (X.cycKFacts Ω l _).2 c (residue c.O) s]`.
+
+Conclude with `h3`.
+-/
 private theorem gh_ine_l (l : ℕ) [hl : Fact l.Prime] (c : Coef l) [CharP (ResidueField c.O) l] {N : ℕ} [NeZero N] (e : ℕ)
     (ψ : DirichletCharacter c.O N) : ∃ j : ℕ, ∀ B' : ValuationSubring Ω, B'.valuation (l : Ω) < 1 → ∀ s ∈ Ine (F := ℚ) B',
       barChar c.O (Chr.Psi l e (Chr.dirG ℚ Ω ψ)) s = omO Ω l c.O s ^ j := by
@@ -78,10 +107,28 @@ private theorem gh_ine_l (l : ℕ) [hl : Fact l.Prime] (c : Coef l) [CharP (Resi
     ← (X.cycKFacts Ω l _).2 c (residue c.O) s] at h3
   exact h3
 
+/- English proof (translation)
+Establish `h1 : (x : O) * x = 1` using `by rw [← sq, ← Units.val_pow_eq_pow_val, h, Units.val_one]`. Conclude with `(mul_self_eq_one_iff.1 h1).imp (fun h => Units.ext h) fun h => Units.ext h`.
+-/
 private theorem gh_sq {O : Type} [CommRing O] [IsDomain O] {x : Oˣ} (h : x ^ 2 = 1) : x = 1 ∨ x = -1 := by
   have h1 : (x : O) * x = 1 := by rw [← sq, ← Units.val_pow_eq_pow_val, h, Units.val_one]
   exact (mul_self_eq_one_iff.1 h1).imp (fun h => Units.ext h) fun h => Units.ext h
 
+/- English proof (translation)
+Take `⟨-, -, -, h1, h2, -⟩` from `compCond O N ψ 2 Nat.prime_two`. Establish `h4 : 4 ∣ N` using `(pow_dvd_pow 2 (show 2 ≤ c2 ψ by omega)).trans h2`. Take `⟨k, hk⟩` from `(compOrd O N ψ 2 Nat.prime_two).2.1`. Establish `hm : ZMod.unitsMap h4 (-1) = -1` using `by ext; simp [ZMod.unitsMap_def]`. Use `⟨h4, ?_⟩` and prove the remaining obligations.
+
+Establish `hv : ∃ v : (ZMod N)ˣ, ZMod.unitsMap h4 v = 1 ∧ (psi2 ψ).toUnitHom v ≠ 1`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `h5 : (psi2 ψ).conductor ∣ 4`. Rewrite using `[← DirichletCharacter.mem_conductorSet_iff_conductor_dvd _ h4, DirichletCharacter.mem_conductorSet_iff, DirichletCharacter.factorsThrough_iff_ker_unitsMap h4]`.
+
+Conclude with `hn`. Rewrite `h5` using `[← h1]`. Use `(Nat.pow_dvd_pow_iff_le_right one_lt_two).1 (show 2 ^ c2 ψ ∣ 2 ^ 2 from h5)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨v, hv1, hv2⟩` from `hv`.
+
+Establish `hv3 : (psi2 ψ).toUnitHom v ^ 2 ^ k = 1`. Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, ← MulChar.pow_apply_coe, ← hk, psi2, pow_orderOf_eq_one, MulChar.one_apply_coe, Units.val_one]`. Take `⟨j, -, hj⟩` from `(Nat.dvd_prime_pow Nat.prime_two).1 (orderOf_dvd_of_pow_eq_one hv3)`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `Nat.exists_eq_succ_of_ne_zero (by`.
+
+Introduce and unpack `rfl`. Conclude with `hv2 (orderOf_eq_one_iff.1 hj))`. Establish `h6 : (psi2 ψ).toUnitHom (v ^ 2 ^ i) = -1`. Establish `a1 : (psi2 ψ).toUnitHom (v ^ 2 ^ i) ^ 2 = 1` using `by rw [map_pow, ← pow_mul, ← pow_succ, ← hj, pow_orderOf_eq_one]`. Establish `a2 : (psi2 ψ).toUnitHom (v ^ 2 ^ i) ≠ 1`.
+
+Rewrite using `[map_pow]`. Use `pow_ne_one_of_lt_orderOf (by positivity) ?_` and prove the remaining obligations. Rewrite using `[hj]`. Conclude with `Nat.pow_lt_pow_right one_lt_two (Nat.lt_succ_self i)`. Conclude with `(gh_sq a1).resolve_left a2`.
+
+Establish `h7 : (psi2 ψ).toUnitHom (-1) ^ 2 = 1` using `by rw [← map_pow]; simp`. Break down `gh_sq h7 with h | h` into its components or cases. Conclude with `⟨-1, hm, h⟩`. Conclude with `⟨-1 * v ^ 2 ^ i, by rw [map_mul, map_pow, hv1, one_pow, mul_one, hm], by rw [map_mul, h, h6]; simp⟩`.
+-/
 private theorem gh_two {O : Type} [CommRing O] [IsDomain O] {N : ℕ} [NeZero N] (ψ : DirichletCharacter O N) (hc : 4 ≤ c2 ψ) :
     ∃ (h : 4 ∣ N) (u : (ZMod N)ˣ), ZMod.unitsMap h u = -1 ∧ (psi2 ψ).toUnitHom u = 1 := by
   obtain ⟨-, -, -, h1, h2, -⟩ := compCond O N ψ 2 Nat.prime_two
@@ -121,6 +168,15 @@ private theorem gh_two {O : Type} [CommRing O] [IsDomain O] {N : ℕ} [NeZero N]
   · exact ⟨-1, hm, h⟩
   · exact ⟨-1 * v ^ 2 ^ i, by rw [map_mul, map_pow, hv1, one_pow, mul_one, hm], by rw [map_mul, h, h6]; simp⟩
 
+/- English proof (translation)
+Introduce `hle`. Take `⟨h4, u, hu1, hu2⟩` from `gh_two ψ hc`. Take `⟨A, hA⟩` from `(Chr.placesQ Ω).1 2 Nat.prime_two`. Take `⟨s, hs, hsu⟩ : proj 2 N u ∈ (Ine (F` from `ℚ) A).map (Chr.cls ℚ Ω N) := by`. Rewrite using `[(compIne Ω N 2 Nat.prime_two A hA).1]`.
+
+Conclude with `⟨u, rfl⟩`. Establish `h1 : omO Ω l c.O s = 1` using `gh_om_one l c.O ((Chr.clsFacts ℚ Ω (l ^ 1)).2.2.2.2 A (gh_not_both A (((Nat.coprime_primes Nat.prime_two hl.out).2 hl2.symm).pow_right 1) hA) hs)`. Establish `h2 : Chr.dirG ℚ Ω ψ s = 1`. Rewrite using `[Chr.dirG, MonoidHom.comp_apply, hsu, ← (compAlg c.O N 2 Nat.prime_two).1]`. Conclude with `hu2`.
+
+Establish `h3 : UnitaryThreeInertia.eta4 Ω s = 1` using `hle ⟨h1, by show barChar c.O _ s = 1`. Rewrite using `[gh_bar, h1, one_pow, one_mul, barChar, MonoidHom.comp_apply, h2, map_one]⟩`. Establish `hP : 4 ∣ ordProj[2] N` using `pow_dvd_pow 2 ((Nat.prime_two.pow_dvd_iff_le_factorization (NeZero.ne N)).1 (show 2 ^ 2 ∣ N from h4))`. Establish `hc' : ∀ x, ZMod.unitsMap h4 x = ZMod.unitsMap hP (ZMod.unitsMap (Nat.ordProj_dvd N 2) x)` using `fun x => (DFunLike.congr_fun (ZMod.unitsMap_comp hP (Nat.ordProj_dvd N 2)) x).symm`. Establish `h5 : Chr.cls ℚ Ω 4 s = -1`.
+
+Rewrite using `[← (Chr.clsFacts ℚ Ω N).2.1 4 h4, MonoidHom.comp_apply, hsu, hc', (projFacts N 2 Nat.prime_two).1, ← hc', hu1]`. Rewrite `h3` using `[UnitaryThreeInertia.eta4, Chr.dirG, MonoidHom.comp_apply, h5]`. Establish `h6` using `congrArg Units.val h3`. Rewrite `h6` using `[MulChar.coe_toUnitHom]`. Conclude with `absurd h6 (by decide)`.
+-/
 private theorem kernel_not_contained_eta (l : ℕ) [hl : Fact l.Prime] (hl2 : l ≠ 2) (c : Coef l) [CharP (ResidueField c.O) l] {N : ℕ} [NeZero N] (e : ℕ)
     (ψ : DirichletCharacter c.O N) (hc : 4 ≤ c2 ψ) :
     ¬ (omO Ω l c.O).ker ⊓ (barChar c.O (Chr.Psi l e (Chr.dirG ℚ Ω ψ))).ker ≤ (UnitaryThreeInertia.eta4 Ω).ker := by
@@ -148,6 +204,13 @@ private theorem kernel_not_contained_eta (l : ℕ) [hl : Fact l.Prime] (hl2 : l 
   rw [MulChar.coe_toUnitHom] at h6
   exact absurd h6 (by decide)
 
+/- English proof (translation)
+Take `⟨S, A, F, hF⟩` from `UnitaryThreeInertia.exists_hostFrame Ω c e ψ o₁ hd`. Take `⟨x, h1, h2, -⟩` from `UnitaryThreeInertia.exists_sigma Ω c e ψ o₁ hd S A F hF F.vl (Or.inl rfl)`. Establish `hA : (A F.vl).valuation (l : Ω) < 1` using `by simpa using (hF.isOver F.vl _).2 hF.vl`. Take `⟨u, hu, -⟩` from `(Chr.placesQ Ω).2.2 l _ B hl.out hA hB`. Establish `h3 : UnitaryThreeInertia.eta4 Ω x.1 = 1` using `hF.η ▸ h1`.
+
+Establish `h4 : IsUnit ((Chr.Psi l e (Chr.dirG ℚ Ω ψ) x.1 : c.O) ^ 2 - 1)` using `hF.Ψ ▸ h2`. Use `⟨u⁻¹ * x.1 * u, hu _ (hF.D F.vl ▸ x.2), ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, h3, mul_one, map_inv, inv_mul_cancel]`. Rewrite `h` using `[map_mul, map_mul, mul_right_comm, map_inv, inv_mul_cancel, one_mul]`. Rewrite `h4` using `[← residue_ne_zero_iff_isUnit, map_sub, map_pow, map_one, sub_ne_zero]`.
+
+Conclude with `h4 (congrArg Units.val h)`.
+-/
 private theorem exists_decomposition_nonquadratic (l : ℕ) [hl : Fact l.Prime] (c : Coef l) {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ)
     (hd : UnitaryThreeInertia.HostData l e ψ o₁) (B : ValuationSubring Ω) (hB : B.valuation (l : Ω) < 1) :
     ∃ s ∈ Dec (F := ℚ) B, UnitaryThreeInertia.eta4 Ω s = 1 ∧ barChar c.O (Chr.Psi l e (Chr.dirG ℚ Ω ψ)) s ^ 2 ≠ 1 := by
@@ -163,6 +226,13 @@ private theorem exists_decomposition_nonquadratic (l : ℕ) [hl : Fact l.Prime] 
     rw [← residue_ne_zero_iff_isUnit, map_sub, map_pow, map_one, sub_ne_zero] at h4
     exact h4 (congrArg Units.val h)
 
+/- English proof (translation)
+Establish `h1 : kap l ψ ^ l ^ (orderOf ψ).factorization l = 1`. Rewrite using `[← (partOrd _ l hl.out ψ ψ.orderOf_pos).1]`. Conclude with `pow_orderOf_eq_one _`. Take `⟨-, -, hone, -, hpow, -⟩` from `compAlg O N l hl.out`. Establish `h2 : kapB l ψ ^ l ^ (orderOf ψ).factorization l = 1`.
+
+Rewrite using `[kapB, kapL, mul_pow, inv_pow, ← hpow, h1, hone, inv_one, one_mul]`. Use `haveI : Finite (Chr.dirG ℚ Ω (kapB l ψ)).range := by`. Use `Set.Finite.subset (Set.finite_range (kapB l ψ).toUnitHom) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+
+Rewrite using `[Subgroup.index_ker, ← IsPGroup.iff_card]`. Introduce and unpack `⟨_, s, rfl⟩`. Use `⟨(orderOf ψ).factorization l, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Use `show kapB l ψ ((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N) ^ _ = 1`. Rewrite using `[← MulChar.pow_apply_coe, h2, MulChar.one_apply_coe]`.
+-/
 private theorem gh_idx (l : ℕ) [hl : Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] {N : ℕ} [NeZero N]
     (ψ : DirichletCharacter O N) : ∃ a : ℕ, (Chr.dirG ℚ Ω (kapB l ψ)).ker.index = l ^ a := by
   have h1 : kap l ψ ^ l ^ (orderOf ψ).factorization l = 1 := by
@@ -181,6 +251,17 @@ private theorem gh_idx (l : ℕ) [hl : Fact l.Prime] {O : Type} [CommRing O] [Is
   show kapB l ψ ((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N) ^ _ = 1
   rw [← MulChar.pow_apply_coe, h2, MulChar.one_apply_coe]
 
+/- English proof (translation)
+Establish `h1 : cycZ ℚ Ω l s = 1` using `(places ℚ Ω l A).2.2.2 hA hs`. Establish `h2 : chiO ℚ Ω l c.O s = 1` using `by rw [chiO, MonoidHom.comp_apply, h1, map_one]`. Use `haveI : NeZero (ordProj[l] N) := ⟨(Nat.ordProj_pos N l).ne'⟩`. Establish `hA' : ¬ A.valuation ((ordProj[l] N : ℕ) : Ω) < 1` using `fun h' => by`. Take `⟨p, hp, hp'⟩` from `((Chr.placesQ Ω).2.1 A _ (NeZero.ne _)).1 h'`.
+
+Use `(Nat.prime_dvd_prime_iff_eq (Nat.prime_of_mem_primeFactors hp) hl.out).1 ((Nat.prime_of_mem_primeFactors hp).dvd_of_dvd_pow (Nat.dvd_of_mem_primeFactors hp))` as an intermediate fact. Conclude with `hA (this ▸ hp')`. Establish `h3 : proj l N (Chr.cls ℚ Ω N s) = 1`. Rewrite using `[← MonoidHom.mem_ker, (projFacts N l hl.out).2.2.2.2.2.2.1, MonoidHom.mem_ker, ← MonoidHom.comp_apply, (Chr.clsFacts ℚ Ω N).2.1]`. Conclude with `(Chr.clsFacts ℚ Ω _).2.2.2.2 A hA' hs`.
+
+Establish `h4 : (kapL l ψ).toUnitHom (Chr.cls ℚ Ω N s) = 1` using `by rw [kapL, (compAlg c.O N l hl.out).1, h3, map_one]`. Establish `h5 : Chr.Psi l e (Chr.dirG ℚ Ω ψ) s = Chr.dirG ℚ Ω (th0 l ψ) s`. Rewrite using `[Chr.Psi, MonoidHom.mul_apply, zpow_natCast, MonoidHom.pow_apply, h2, one_pow, one_mul]`. Use `ext1`. Use `show ψ ((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N) = th0 l ψ ((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N)`.
+
+Establish `a1 : kapB l ψ ((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N) = 1` using `congrArg Units.val hk`. Establish `a2 : kapL l ψ ((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N) = 1` using `congrArg Units.val h4`. Establish `a3 : ψ = th0 l ψ * (kapB l ψ * kapL l ψ)` using `by rw [kapB, inv_mul_cancel_right, dirichletPrimeToLPart_mul_lPowerPart]`. Use `conv_lhs => rw [a3]`. Rewrite using `[MulChar.mul_apply, MulChar.mul_apply, a1, a2, one_mul, mul_one]`.
+
+Use `(congrFacts Ω l c).2.2.2.1 _ 1 _ (partOrd _ l hl.out ψ ψ.orderOf_pos).2.2.1 ?_ (one_pow _) ?_` and prove the remaining obligations. Rewrite using `[h5] ext1 show th0 l ψ ((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N) ^ _ = 1`. Rewrite using `[← MulChar.pow_apply_coe, th0, pow_orderOf_eq_one, MulChar.one_apply_coe]`. Rewrite using `[← residue_eq_zero_iff, map_sub, Units.val_one, map_one, sub_eq_zero]`. Conclude with `congrArg Units.val h`.
+-/
 private theorem gh_teich (l : ℕ) [hl : Fact l.Prime] (c : Coef l) {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N)
     (A : ValuationSubring Ω) (hA : ¬ A.valuation (l : Ω) < 1) {s : G ℚ Ω} (hs : s ∈ Ine (F := ℚ) A)
     (hk : Chr.dirG ℚ Ω (kapB l ψ) s = 1) (h : barChar c.O (Chr.Psi l e (Chr.dirG ℚ Ω ψ)) s = 1) :
@@ -217,6 +298,13 @@ private theorem gh_teich (l : ℕ) [hl : Fact l.Prime] (c : Coef l) {N : ℕ} [N
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l hl c _ N _ e ψ o₁ hd σ hσ B hB`. Establish `h2 : 2 ∣ l * N` using `hd.N_even.two_dvd.mul_left l`. Use `⟨(Chr.dirG ℚ Ω (kapB l ψ)).ker, { odd := hd.l_odd fin := ?_ M_ne := mul_ne_zero hl.out.ne_zero (NeZero.ne N) l_dvd := dvd_mul_right _ _ two_dvd := h2 cc := hσ over_l := hB quad := ?_ cyc := ⟨2, fun s hs => gh_dir_one _ (gh_cls_one 4 (pow_dvd_pow_of_dvd h2 2) hs), fun s hs => ?_⟩ …` and prove the remaining obligations. Use `haveI := (dvrFacts l c.O).2.2.1`. Conclude with `ResidueField.finite_of_finite (R := ℤ_[l]) (Finite.of_equiv _ PadicInt.residueField.symm.toEquiv)`.
+
+Take `⟨δ, h1, h3⟩` from `gh_quad (Ω := Ω)`. Conclude with `⟨1, δ, one_pos, fun q hq h => absurd (Nat.dvd_one.1 h) hq.one_lt.ne', h1, h3⟩`. Rewrite using `[gh_bar, gh_om_one l c.O (gh_cls_one _ (pow_dvd_pow_of_dvd_of_le (dvd_mul_right l N) one_le_two) hs), one_pow, one_mul, barChar, MonoidHom.comp_apply, gh_dir_one _ (gh_cls_one N ((dvd_mul_left N l).trans (dvd_pow_self _ two_ne_zero)) hs), map_one]`. Take `⟨w, hw, -⟩` from `(omT Ω l c).1`. Rewrite using `[barChar, MonoidHom.comp_apply, ((psiBar Ω l c w hw N ψ).2.1 e).1 hd.par σ hσ, map_one]`.
+
+Take `⟨-, hmul, -, hinv, -, h6, -⟩` from `compAlg c.O N l hl.out`. Rewrite using `[kapB, kapL, hmul, hinv, (h6 _).1, mul_inv_cancel]`.
+-/
 theorem UpperTheory.V.Fr.gen_host :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (c : Coef l) [CharP (ResidueField c.O) l] (N : ℕ) [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ), UnitaryThreeInertia.HostData l e ψ o₁ → ∀ σ : G ℚ Ω, IsCC σ → ∀ B : ValuationSubring Ω, B.valuation (l : Ω) < 1 → ∃ Hb, Gen l (UnitaryThreeInertia.eta4 Ω) (Chr.Psi l e (Chr.dirG ℚ Ω ψ)) σ B (l * N) Hb := by
   intro Ω _ _ _ l hl c _ N _ e ψ o₁ hd σ hσ B hB

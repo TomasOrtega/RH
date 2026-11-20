@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.BigDat.VacFix
 
+/- English proof (translation)
+Establish `h1 : ε • mulG S x = mulG S x` using `Matrix.ext h`. Establish `h2 : divG S (ε • mulG S x) = ε • divG S (mulG S x)` using `Matrix.smul_mul _ _ _`. Rewrite `h2` using `[h1, divG_mulG]`. Conclude with `(congrFun (congrFun h2 a) b).symm`.
+-/
 theorem isHalf_of_mulG {D : D7} (S : HSp D) {n : ℕ} (ε : AE D) (x : Matrix (Fin n) (Fin S.rank) (AE D))
     (h : ∀ a b, ε * mulG S x a b = mulG S x a b) (a : Fin n) (b : Fin S.rank) : ε * x a b = x a b := by
   have h1 : ε • mulG S x = mulG S x := Matrix.ext h
@@ -23,6 +26,13 @@ theorem isHalf_of_mulG {D : D7} (S : HSp D) {n : ℕ} (ε : AE D) (x : Matrix (F
   rw [h1, divG_mulG] at h2
   exact (congrFun (congrFun h2 a) b).symm
 
+/- English proof (translation)
+Unfold `hTens`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨b | b, rfl⟩ := e.surjective b <;> obtain ⟨l | l, rfl⟩ := e.surjective l`. Establish `u` using `congrArg c (hl k l)`. Rewrite `u` using `[map_mul]`.
+
+Rewrite using `[← u, ← hl a b]`. Take the linear combination `(x a (e (.inl b)) * JA a k * JB (e (.inl b)) (e (.inl l)) * c (x k (e (.inl l)))) * hε`. Rewrite using `[h₁, mul_zero, zero_mul]`. Rewrite using `[h₂, mul_zero, zero_mul]`. Establish `u` using `congrArg c (hr a b)`.
+
+Rewrite `u` using `[map_mul, hc]`. Rewrite using `[← u, ← hr k l]`. Take the linear combination `(x a (e (.inr b)) * JA a k * JB (e (.inr b)) (e (.inr l)) * c (x k (e (.inr l)))) * hε`.
+-/
 theorem hTens_eq_zero {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) (hc : ∀ a, c (c a) = a)
     {n p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d) (JA : Matrix (Fin n) (Fin n) A) (JB : Matrix (Fin d) (Fin d) A)
     (h₁ : ∀ a b, JB (e (.inl a)) (e (.inr b)) = 0) (h₂ : ∀ a b, JB (e (.inr a)) (e (.inl b)) = 0)
@@ -44,14 +54,25 @@ theorem hTens_eq_zero {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : 
     rw [← u, ← hr k l]
     linear_combination (x a (e (.inr b)) * JA a k * JB (e (.inr b)) (e (.inr l)) * c (x k (e (.inr l)))) * hε
 
+/- English proof (translation)
+Simplify using `[skewGram, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk]`.
+-/
 theorem skewGram_inl_inr {D : D7} (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank ≃ Fin d) (a b) :
     skewGram A B e (e (.inl a)) (e (.inr b)) = 0 := by
   simp [skewGram, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk]
 
+/- English proof (translation)
+Simplify using `[skewGram, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk]`.
+-/
 theorem skewGram_inr_inl {D : D7} (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank ≃ Fin d) (a b) :
     skewGram A B e (e (.inr a)) (e (.inl b)) = 0 := by
   simp [skewGram, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk]
 
+/- English proof (translation)
+Use `hTens_eq_zero (R := AF D.host.F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) GlobalTheory.DualPairCheck.cA_cA e _ _ (fun a b => ?_) (fun a b => ?_) ε hε γ (fun a b => ?_) (fun a b => ?_)` and prove the remaining obligations. Conclude with `(congrArg (incA D) ((congrFun (congrFun hWW _) _).trans (skewGram_inl_inr _ _ e a b))).trans (map_zero _)`. Conclude with `(congrArg (incA D) ((congrFun (congrFun hWW _) _).trans (skewGram_inr_inl _ _ e a b))).trans (map_zero _)`. Conclude with `isHalf_of_mulG (negSp (spW G i j)) ε (colV e γ)ᵀ hγ.1 b a`. Use `isHalf_of_mulG (spV₁ G i j) ε ((γ.submatrix id fun k => e (.inr k)).map (cA D)) (fun a b => ?_) a b` and prove the remaining obligations.
+
+Conclude with `neg_injective ((mul_neg _ _).symm.trans (hγ.2 a b))`.
+-/
 theorem hTens_mixHalf {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {i j : ℕ} (e : Num G i j)
     (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hWW : Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e) (ε : AE D)
     (hε : ε * cA D ε = 0) (γ : Pt G i j) (hγ : γ ∈ mixHalf e ε) :
@@ -65,6 +86,9 @@ theorem hTens_mixHalf {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : Gri
   · refine isHalf_of_mulG (spV₁ G i j) ε ((γ.submatrix id fun k => e (.inr k)).map (cA D)) (fun a b => ?_) a b
     exact neg_injective ((mul_neg _ _).symm.trans (hγ.2 a b))
 
+/- English proof (translation)
+Establish `h2 : (2 : ℕ) • γ = (2 : AF F) • γ` using `by rw [two_smul, two_smul]`. Rewrite using `[h2, GlobalTheory.LatVac.symp_smul_smul, ← mul_assoc, ← mul_assoc, invOf_mul_self, one_mul]`. Use `GlobalTheory.LatVacArith.psi_symp_latAtV σ B X Y r s r' s' hB hX hY v θ 2 ?_ γ hγ γ hγ` and prove the remaining obligations. Rewrite using `[map_ofNat]`. Conclude with `ofNat_mem _ 2`.
+-/
 theorem psi_double {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (r s r' s' : ℕ)
     (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hY : Y.IsSkew σ B r' s') (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (θ : 𝓞 E)
@@ -77,6 +101,11 @@ theorem psi_double {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   rw [map_ofNat]
   exact ofNat_mem _ 2
 
+/- English proof (translation)
+Introduce `D T L sc G W M t i j e Bs Γ X om om' h hT v hL γ hγ`. Take `⟨-, -, θ, -, hθ⟩` from `hT.geo.hM.vac v`. Establish `h1` using `hθ γ (hL γ (genPt_subset e v hγ))`. Establish `h2 : Bs.ψ (⅟(2 : AF D.host.F) * symp (R` using `AF D.host.F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (inclR (F := D.host.F) (AF D.host.F) (θ : D.host.E)) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.V.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.inc …`. Break down `hγ with ⟨γ', hγ', rfl⟩ | ⟨-, ε, hε, hγ⟩` into its components or cases.
+
+Conclude with `psi_double _ Bs Γ.V Γ.W _ _ _ _ hT.base hT.geo.hV hT.geo.hW v θ γ' (hL γ' hγ')`. Unfold `symp`. Rewrite using `[hTens_mixHalf e Γ h.JWW ε hε.2.1 γ hγ, mul_zero, map_zero, mul_zero, AddChar.map_zero_eq_one]`. Rewrite `h1` using `[h2, one_smul, h.ψ]`. Conclude with `h1`.
+-/
 theorem vac_fixed : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G) (t : T) (i j : ℕ) (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)
     (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W), IsTripleOf W M t i j e Bs Γ X → IsTriple Bs Γ X om om' →
     ∀ v : Pl D.host.F, (∀ u ∈ latPt e v, u ∈ latAtV Γ.V Γ.W v) →

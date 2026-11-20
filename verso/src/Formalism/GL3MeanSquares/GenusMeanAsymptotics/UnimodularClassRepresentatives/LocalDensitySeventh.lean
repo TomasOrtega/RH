@@ -12,6 +12,15 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 
 local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `exists_theta hK hF h𝔭`. Take `⟨e, he⟩` from `exists_inv_theta hθ N`. Use `⟨θ * e, ?_⟩` and prove the remaining obligations. Establish `hJ` using `conjO_mem_pow hF 𝔭 N`. Establish `h1 : (conjO K θ - θ) * conjO K e - 1 ∈ extP K 𝔭 ^ N`.
+
+Establish `h` using `hJ _ he`. Simplify using `only [map_sub, map_mul, map_one] at h`. Rewrite `h` using `[L3.conjO_conjO θ]`. Conclude with `h`. Establish `h2 : (θ - conjO K θ) * (e + conjO K e) ∈ extP K 𝔭 ^ N`.
+
+Establish `e2 : (θ - conjO K θ) * (e + conjO K e) = ((θ - conjO K θ) * e - 1) - ((conjO K θ - θ) * conjO K e - 1)` using `by ring`. Rewrite using `[e2]`. Conclude with `Ideal.sub_mem _ he h1`. Establish `h3 : e + conjO K e ∈ extP K 𝔭 ^ N` using `mem_of_unit_mul_mem hθ h2`. Establish `e3 : θ * e + star (θ * e) - 1 = ((θ - conjO K θ) * e - 1) + conjO K θ * (e + conjO K e)`.
+
+Rewrite using `[idealPowerSpanBounds.star_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Conclude with `Ideal.add_mem _ he (Ideal.mul_mem_left _ _ h3)`.
+-/
 theorem exists_trace_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) (N : ℕ) : ∃ a : 𝓞 K, a + star a - 1 ∈ extP K 𝔭 ^ N := by
   obtain ⟨θ, hθ⟩ := exists_theta hK hF h𝔭
@@ -36,6 +45,15 @@ theorem exists_trace_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (h
   rw [e3]
   exact Ideal.add_mem _ he (Ideal.mul_mem_left _ _ h3)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Take `⟨θ, hθ⟩` from `exists_theta hK hF h𝔭`. Establish `htr : ∀ b : 𝓞 K, b * z + conjO K (b * z) ∈ extP K 𝔭 ^ N`. Introduce `b`.
+
+Rewrite using `[← trF_spec hF]`. Conclude with `(mem_pow_iff 𝔭 N _).mpr (hall b)`. Establish `h1` using `htr 1`. Establish `h2` using `htr θ`. Rewrite `h1` using `[one_mul]`.
+
+Rewrite `h2` using `[map_mul]`. Establish `h3 : (θ - conjO K θ) * conjO K z ∈ extP K 𝔭 ^ N`. Establish `e : (θ - conjO K θ) * conjO K z = θ * (z + conjO K z) - (θ * z + conjO K θ * conjO K z)` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ h1) h2`.
+
+Establish `h4 : conjO K z ∈ extP K 𝔭 ^ N` using `mem_of_unit_mul_mem hθ h3`. Apply `hz` to reduce the goal to its premises. Establish `h5` using `conjO_mem_pow hF 𝔭 N _ h4`. Rewrite `h5` using `[L3.conjO_conjO z]`. Then use the resulting hypothesis.
+-/
 theorem exists_tr_notMem (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {N : ℕ} {z : 𝓞 K} (hz : z ∉ extP K 𝔭 ^ N) :
     ∃ b : 𝓞 K, trF hF (b * z) ∉ 𝔭 ^ N := by
@@ -60,6 +78,19 @@ theorem exists_tr_notMem (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (h
   have h5 := conjO_mem_pow hF 𝔭 N _ h4
   rwa [L3.conjO_conjO z] at h5
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_trace_one hK hF h𝔭 (k + 1)`. Establish `has : a * s ∈ extP K 𝔭 ^ k` using `Ideal.mul_mem_left _ a hs`. Establish `hσ : trF hF (a * s) ∈ 𝔭 ^ k` using `trF_mem_pow hF 𝔭 k has`. Establish `hσs : ι (trF hF (a * s)) - s ∈ extP K 𝔭 ^ (k + 1)`. Rewrite using `[trF_spec, map_mul]`.
+
+Establish `e : a * s + conjO K a * conjO K s - s = (a + star a - 1) * s + conjO K a * (star s - s)`. Rewrite using `[idealPowerSpanBounds.star_def, idealPowerSpanBounds.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ ha) (Ideal.mul_mem_left _ _ hs')`.
+
+Take `⟨b, hb⟩` from `exists_tr_notMem hK hF h𝔭 hz`. Take `⟨r', hr', hfill⟩` from `idealPowerSpanBounds.exists_fill h𝔭.isPrime (idealPowerSpanBounds.ne_bot h𝔭) hb hck hσ`. Use `⟨b * ι r', Ideal.mul_mem_left _ b ((mem_pow_iff 𝔭 (k - c) r').mpr hr'), ?_⟩` and prove the remaining obligations. Establish `hlin : trF hF (z₀ * (b * ι r')) = r' * trF hF (b * z₀)`. Establish `e : z₀ * (b * ι r') = r' • (b * z₀)`.
+
+Rewrite using `[Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_smul, smul_eq_mul]`. Establish `hsum : z₀ * (b * ι r') + star (z₀ * (b * ι r')) = ι (r' * trF hF (b * z₀))`. Rewrite using `[← hlin, trF_spec, idealPowerSpanBounds.star_def]`.
+
+Rewrite using `[hsum]`. Establish `e2 : ι (r' * trF hF (b * z₀)) - s = -ι (trF hF (a * s) - trF hF (b * z₀) * r') + (ι (trF hF (a * s)) - s)`. Simplify using `only [map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+
+Conclude with `Ideal.add_mem _ (neg_mem ((mem_pow_iff 𝔭 (k + 1) _).mpr hfill)) hσs`.
+-/
 theorem exists_solve_scalar (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {c k : ℕ} (hck : c ≤ k) {z₀ : 𝓞 K} (hz : z₀ ∉ extP K 𝔭 ^ (c + 1)) {s : 𝓞 K}
     (hs : s ∈ extP K 𝔭 ^ k) (hs' : star s - s ∈ extP K 𝔭 ^ (k + 1)) :
@@ -95,11 +126,19 @@ theorem exists_solve_scalar (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
 
 variable {m : Type} [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ (fun l _ => Ideal.mul_mem_left _ _ (hR l j))`.
+-/
 theorem mul_entries_mem {r : Type} {J : Ideal (𝓞 K)} (M : Matrix m m (𝓞 K)) {R : Matrix m r (𝓞 K)}
     (hR : ∀ i j, R i j ∈ J) (i : m) (j : r) : (M * R) i j ∈ J := by
   rw [Matrix.mul_apply]
   exact Ideal.sum_mem _ (fun l _ => Ideal.mul_mem_left _ _ (hR l j))
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq, RingHom.map_det, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[Ideal.Quotient.eq]`.
+
+Simplify `h i j` using `[Matrix.sub_apply]`.
+-/
 theorem det_sub_mem {J : Ideal (𝓞 K)} {M N : Matrix m m (𝓞 K)} (h : ∀ i j, (M - N) i j ∈ J) :
     M.det - N.det ∈ J := by
   rw [← Ideal.Quotient.eq, RingHom.map_det, RingHom.map_det]
@@ -109,6 +148,19 @@ theorem det_sub_mem {J : Ideal (𝓞 K)} {M N : Matrix m m (𝓞 K)} (h : ∀ i 
   rw [Ideal.Quotient.eq]
   simpa [Matrix.sub_apply] using h i j
 
+/- English proof (translation)
+Establish `hck' : c ≤ k` using `by omega`. Establish `hfill` using `fun i j => exists_fillO (K := K) h𝔭 hDc hck' (hW i j)`. Use `choose V hV hV' using hfill`. Take `⟨R, hR⟩ : ∃ R : Matrix m m (𝓞 K), R = H.adjugate * Matrix.of V` from `⟨_, rfl⟩`. Establish `hRmem : ∀ i j, R i j ∈ extP K 𝔭 ^ (k - c)`.
+
+Introduce `i j`. Rewrite using `[hR]`. Conclude with `mul_entries_mem _ (fun a b => hV a b) i j`. Use `⟨X * R, fun i j => mul_entries_mem X hRmem i j, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+
+Establish `e : Xᴴ * H * (X * R) - W = (Xᴴ * H * X - H) * R + (H * R - W)` using `by first`. Consider the case `noncomm_ring`. Consider the case `(simp only [Matrix.sub_mul, Matrix.mul_assoc]; abel)`. Establish `e1 : H * R = H.det • Matrix.of V`. Rewrite using `[hR, ← Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.smul_mul, Matrix.one_mul]`.
+
+Rewrite using `[e, Matrix.add_apply]`. Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Ideal.sum_mem _ (fun l _ => ?_)` and prove the remaining obligations. Establish `h1 : (Xᴴ * H * X - H) i l * R l j ∈ extP K 𝔭 ^ (k + (k - c))`.
+
+Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mem_mul (hX i l) (hRmem l j)`. Conclude with `Ideal.pow_le_pow_right (by omega) h1`. Rewrite using `[Matrix.sub_apply, e1, Matrix.smul_apply, Matrix.of_apply, hD, smul_eq_mul]`. Establish `h2` using `neg_mem (hV' i j)`.
+
+Rewrite `h2` using `[neg_sub]`. Conclude with `h2`.
+-/
 theorem exists_solve_matrix (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {c k : ℕ} (hck : c + 1 ≤ k) {H X : Matrix m m (𝓞 K)} {D : 𝓞 F}
     (hD : H.det = ι D) (hDc : D ∉ 𝔭 ^ (c + 1)) (hX : ∀ i j, (Xᴴ * H * X - H) i j ∈ extP K 𝔭 ^ k)

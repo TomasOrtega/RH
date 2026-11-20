@@ -6,6 +6,9 @@ set_option autoImplicit false
 
 namespace Formalism.L2.SG.Pf.Tau
 
+/- English proof (translation)
+The claim follows from `reductionTau_of_minkowskiSubmodule (minkowski_submodule_short_vector (lattice_finitelyGenerated_of_commensurable t0) t2 t8m)`.
+-/
 theorem reductionTau : ReductionTau :=
   reductionTau_of_minkowskiSubmodule (minkowski_submodule_short_vector (lattice_finitelyGenerated_of_commensurable t0) t2 t8m)
 

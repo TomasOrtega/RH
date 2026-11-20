@@ -17,9 +17,15 @@ section Grp
 
 variable {G : Type} [CommGroup G]
 
+/- English proof (translation)
+Rewrite using `[← Nat.gcd_eq_gcd_ab, h.gcd_eq_one, Nat.cast_one]`.
+-/
 theorem bezout {a b : ℕ} (h : a.Coprime b) : (a : ℤ) * Nat.gcdA a b + b * Nat.gcdB a b = 1 := by
   rw [← Nat.gcd_eq_gcd_ab, h.gcd_eq_one, Nat.cast_one]
 
+/- English proof (translation)
+Establish `e : ∀ t : G, t = (t ^ a) ^ Nat.gcdA a b * (t ^ b) ^ Nat.gcdB a b` using `fun t => by`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_add, bezout h, zpow_one]`. Rewrite using `[e q, ha, hb, ← e r]`.
+-/
 theorem ext_pow {a b : ℕ} (h : a.Coprime b) {q r : G} (ha : q ^ a = r ^ a) (hb : q ^ b = r ^ b) : q = r := by
   have e : ∀ t : G, t = (t ^ a) ^ Nat.gcdA a b * (t ^ b) ^ Nat.gcdB a b := fun t => by
     rw [← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_add, bezout h, zpow_one]
@@ -27,10 +33,16 @@ theorem ext_pow {a b : ℕ} (h : a.Coprime b) {q r : G} (ha : q ^ a = r ^ a) (hb
 
 def crt (a b : ℕ) (x y : G) : G := x ^ Nat.gcdB a b * y ^ Nat.gcdA a b
 
+/- English proof (translation)
+Simplify using `only [crt, mul_zpow]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+-/
 theorem crt_mul (a b : ℕ) (x y x' y' : G) : crt a b (x * x') (y * y') = crt a b x y * crt a b x' y' := by
   simp only [crt, mul_zpow]
   exact mul_mul_mul_comm _ _ _ _
 
+/- English proof (translation)
+Establish `e : Nat.gcdB a b * (b : ℤ) = 1 + a * (-Nat.gcdA a b)` using `by linear_combination bezout h`. Rewrite using `[crt, mul_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, e, mul_comm (Nat.gcdA a b), zpow_add, zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, hx, hy, one_zpow, one_zpow, zpow_one, _root_.mul_one, _root_.mul_one]`.
+-/
 theorem crt_pow_right {a b : ℕ} (h : a.Coprime b) {x y : G} (hx : x ^ a = 1) (hy : y ^ b = 1) :
     crt a b x y ^ b = x := by
   have e : Nat.gcdB a b * (b : ℤ) = 1 + a * (-Nat.gcdA a b) := by linear_combination bezout h
@@ -38,6 +50,9 @@ theorem crt_pow_right {a b : ℕ} (h : a.Coprime b) {x y : G} (hx : x ^ a = 1) (
     zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, hx, hy, one_zpow, one_zpow, zpow_one, _root_.mul_one,
     _root_.mul_one]
 
+/- English proof (translation)
+Establish `e : Nat.gcdA a b * (a : ℤ) = 1 + b * (-Nat.gcdB a b)` using `by linear_combination bezout h`. Rewrite using `[crt, mul_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, e, mul_comm (Nat.gcdB a b), zpow_add, zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, hx, hy, one_zpow, one_zpow, zpow_one, _root_.mul_one, _root_.one_mul]`.
+-/
 theorem crt_pow_left {a b : ℕ} (h : a.Coprime b) {x y : G} (hx : x ^ a = 1) (hy : y ^ b = 1) :
     crt a b x y ^ a = y := by
   have e : Nat.gcdA a b * (a : ℤ) = 1 + b * (-Nat.gcdB a b) := by linear_combination bezout h
@@ -49,16 +64,31 @@ variable (p : ℕ) [hp : Fact p.Prime]
 
 def cp (n : ℕ) : ℕ := n / p ^ n.factorization p
 
+/- English proof (translation)
+Rewrite using `[mul_comm]`. Conclude with `Nat.ordProj_mul_ordCompl_eq_self n p`.
+-/
 theorem cp_mul_pow (n : ℕ) : cp p n * p ^ n.factorization p = n := by
   rw [mul_comm]; exact Nat.ordProj_mul_ordCompl_eq_self n p
 
+/- English proof (translation)
+The claim follows from `Nat.ordCompl_pos p hn.ne'`.
+-/
 theorem cp_pos {n : ℕ} (hn : 0 < n) : 0 < cp p n := Nat.ordCompl_pos p hn.ne'
 
+/- English proof (translation)
+The claim follows from `(Nat.coprime_ordCompl hp.out hn.ne').symm`.
+-/
 theorem cp_coprime {n : ℕ} (hn : 0 < n) : (cp p n).Coprime p := (Nat.coprime_ordCompl hp.out hn.ne').symm
 
+/- English proof (translation)
+The claim follows from `(cp_coprime p hn).pow_right _`.
+-/
 theorem cp_coprime_pow {n : ℕ} (hn : 0 < n) : (cp p n).Coprime (p ^ n.factorization p) :=
   (cp_coprime p hn).pow_right _
 
+/- English proof (translation)
+The claim follows from `Nat.ordCompl_mul n m p`.
+-/
 theorem cp_mul (n m : ℕ) : cp p (n * m) = cp p n * cp p m := Nat.ordCompl_mul n m p
 
 def sys (f g : ℕ → G) (n : ℕ) : G := crt (cp p n) (p ^ n.factorization p) (f (cp p n)) (g (n.factorization p))
@@ -66,14 +96,29 @@ def sys (f g : ℕ → G) (n : ℕ) : G := crt (cp p n) (p ^ n.factorization p) 
 variable {p} {f g : ℕ → G} (hf : ∀ n, 0 < n → n.Coprime p → f n ^ n = 1) (hg : ∀ e, g e ^ p ^ e = 1)
 
 include hf hg in
+/- English proof (translation)
+The claim follows from `crt_pow_right (cp_coprime_pow p hn) (hf _ (cp_pos p hn) (cp_coprime p hn)) (hg _)`.
+-/
 theorem sys_right {n : ℕ} (hn : 0 < n) : sys p f g n ^ p ^ n.factorization p = f (cp p n) :=
   crt_pow_right (cp_coprime_pow p hn) (hf _ (cp_pos p hn) (cp_coprime p hn)) (hg _)
 
 include hf hg in
+/- English proof (translation)
+The claim follows from `crt_pow_left (cp_coprime_pow p hn) (hf _ (cp_pos p hn) (cp_coprime p hn)) (hg _)`.
+-/
 theorem sys_left {n : ℕ} (hn : 0 < n) : sys p f g n ^ cp p n = g (n.factorization p) :=
   crt_pow_left (cp_coprime_pow p hn) (hf _ (cp_pos p hn) (cp_coprime p hn)) (hg _)
 
 include hf hg in
+/- English proof (translation)
+Establish `hg'' : ∀ e d, g (e + d) ^ p ^ d = g e` using `fun e d => by`. Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih => rw [pow_succ', pow_mul, ← add_assoc, hg', ih]`. Establish `hnm : 0 < n * m` using `Nat.mul_pos hn hm`.
+
+Establish `ef : (n * m).factorization p = n.factorization p + m.factorization p`. Rewrite using `[Nat.factorization_mul hn.ne' hm.ne']`. Both sides reduce to the same expression. Establish `r` using `sys_right hf hg hnm`. Establish `l` using `sys_left hf hg hnm`.
+
+Use `ext_pow (cp_coprime_pow p hn) ?_ ?_` and prove the remaining obligations. Establish `e : m * cp p n = cp p (n * m) * p ^ m.factorization p`. Rewrite using `[cp_mul, _root_.mul_assoc, cp_mul_pow, mul_comm]`. Rewrite using `[← pow_mul, e, pow_mul, l, ef, hg'', sys_left hf hg hn]`. Establish `e : m * p ^ n.factorization p = p ^ (n * m).factorization p * cp p m`.
+
+Rewrite using `[ef, pow_add, _root_.mul_assoc, mul_comm _ (cp p m), cp_mul_pow, mul_comm]`. Rewrite using `[← pow_mul, e, pow_mul, r, cp_mul, hf' _ _ (cp_pos p hn) (cp_pos p hm) (Nat.Coprime.mul_left (cp_coprime p hn) (cp_coprime p hm)), sys_right hf hg hn]`.
+-/
 theorem sys_tower (hf' : ∀ n m, 0 < n → 0 < m → (n * m).Coprime p → f (n * m) ^ m = f n)
     (hg' : ∀ e, g (e + 1) ^ p = g e) {n m : ℕ} (hn : 0 < n) (hm : 0 < m) :
     sys p f g (n * m) ^ m = sys p f g n := by
@@ -96,6 +141,9 @@ theorem sys_tower (hf' : ∀ n m, 0 < n → 0 < m → (n * m).Coprime p → f (n
       (Nat.Coprime.mul_left (cp_coprime p hn) (cp_coprime p hm)), sys_right hf hg hn]
 
 include hf hg in
+/- English proof (translation)
+Establish `e : n.factorization p = 0` using `Nat.factorization_eq_zero_of_not_dvd ((Nat.Prime.coprime_iff_not_dvd hp.out).1 h.symm)`. Establish `r` using `sys_right hf hg hn`. Rewrite `r` using `[cp, e, pow_zero, pow_one, Nat.div_one]`. Then use the resulting hypothesis.
+-/
 theorem sys_of_coprime {n : ℕ} (hn : 0 < n) (h : n.Coprime p) : sys p f g n = f n := by
   have e : n.factorization p = 0 := Nat.factorization_eq_zero_of_not_dvd ((Nat.Prime.coprime_iff_not_dvd hp.out).1 h.symm)
   have r := sys_right hf hg hn
@@ -103,6 +151,31 @@ theorem sys_of_coprime {n : ℕ} (hn : 0 < n) (h : n.Coprime p) : sys p f g n = 
 
 end Grp
 
+/- English proof (translation)
+Establish `zf : ∀ n, 0 < n → n.Coprime p → I.ζ n ^ n = 1` using `fun n a b => (I.ζ_prim n a b).pow_eq_one`. Establish `zg : ∀ e, ζ e ^ p ^ e = 1` using `fun e => (h₁ e).pow_eq_one`. Establish `ef : ∀ y n, 0 < n → n.Coprime p → I.ev n y ^ n = 1` using `fun y n a b => (I.onto n a b _).2 ⟨y, rfl⟩`. Establish `eg : ∀ y e, ev e y ^ p ^ e = 1` using `fun y e => (h₆ e _).2 ⟨y, rfl⟩`. Set `E : ℕ → D.La → Q` to `fun n y => sys p (fun m => I.ev m y) (fun e => ev e y) n`.
+
+Establish `ER : ∀ n, 0 < n → ∀ y, E n y ^ p ^ n.factorization p = I.ev (cp p n) y` using `fun n hn y => sys_right (ef y) (eg y) hn`. Establish `EL : ∀ n, 0 < n → ∀ y, E n y ^ cp p n = ev (n.factorization p) y` using `fun n hn y => sys_left (ef y) (eg y) hn`. Establish `tors : ∀ n, 0 < n → ∀ y, E n y ^ (cp p n * p ^ n.factorization p) = 1` using `fun n hn y => by`. Rewrite using `[pow_mul, EL n hn, eg]`. Use `⟨{ ζ := sys p I.ζ ζ ζ_prim := fun n hn => ⟨?_, fun l hl => ?_⟩ ζ_pow := fun n m hn hm => sys_tower zf zg I.ζ_pow h₂ hn hm ev := E add := fun n (y z : D.La) => ?_ lin := fun n (c : D.O) (y : D.La) => ?_ ker := fun n hn (y : D.La) => ⟨fun h => ?_, ?_⟩ onto := fun n hn q => ⟨fun h = …` and prove the remaining obligations.
+
+Establish `e : sys p I.ζ ζ n ^ (cp p n * p ^ n.factorization p) = 1` using `by rw [pow_mul, sys_left zf zg hn, zg]`. Rewrite `e` using `[cp_mul_pow]`. Then use the resulting hypothesis. Establish `a` using `(I.ζ_prim _ (cp_pos p hn) (cp_coprime p hn)).dvd_of_pow_eq_one l (by`. Rewrite using `[← sys_right zf zg hn, pow_right_comm, hl, one_pow])`. Establish `b` using `(h₁ (n.factorization p)).dvd_of_pow_eq_one l (by`.
+
+Rewrite using `[← sys_left zf zg hn, pow_right_comm, hl, one_pow])`. Use `(cp_coprime_pow p hn).mul_dvd_of_dvd_of_dvd a b` as an intermediate fact. Rewrite `this` using `[cp_mul_pow]`. Then use the resulting hypothesis. Conclude with `(congrArg₂ (crt _ _) (I.add _ y z) (h₃ _ y z)).trans (crt_mul _ _ _ _ _ _)`. Use `(congrArg₂ (crt _ _) (I.lin _ c y) (h₄ _ c y)).trans ?_` and prove the remaining obligations.
+
+Set `φ : Q →* Q` to `MonoidHom.mk' (act c) (hact c)`. Use `show φ _ ^ _ * φ _ ^ _ = φ (_ ^ _ * _ ^ _)`. Rewrite using `[map_mul, map_zpow, map_zpow]`. Take `⟨z₁, e₁⟩` from `(I.ker _ (cp_pos p hn) (cp_coprime p hn) y).1 (by rw [← ER n hn, h, one_pow])`. Take `⟨z₂, e₂⟩` from `(h₅ (n.factorization p) y).1 (by rw [← EL n hn, h, one_pow])`.
+
+Establish `bz` using `bezout (cp_coprime_pow p hn)`. Establish `en` using `cp_mul_pow p n`. Generalize the expression as in `cp p n = a at *`. Generalize the expression as in `p ^ n.factorization p = b at *`. Use `⟨(Nat.gcdB a b • z₁ + Nat.gcdA a b • z₂ : D.La), ?_⟩` and prove the remaining obligations.
+
+Use `show y = n • (Nat.gcdB a b • z₁ + Nat.gcdA a b • z₂ : D.La)`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `(⟨z, hz⟩ : ∃ z : D.La, y = n • z)`. Establish `hz' : y = (cp p n * p ^ n.factorization p) • z` using `by rw [cp_mul_pow]; exact hz`. Use `ext_pow (cp_coprime_pow p hn) ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[EL n hn, one_pow]`. Conclude with `(h₅ _ _).2 ⟨cp p n • (z : D.La), by rw [hz', mul_comm, mul_smul]⟩`. Rewrite using `[ER n hn, one_pow]`. Conclude with `(I.ker _ (cp_pos p hn) (cp_coprime p hn) _).2 ⟨p ^ n.factorization p • (z : D.La), by rw [hz', mul_smul]⟩`. Take `⟨y₁, e₁⟩` from `(I.onto _ (cp_pos p hn) (cp_coprime p hn) (q ^ p ^ n.factorization p)).1 (by`.
+
+Rewrite using `[← pow_mul, mul_comm, cp_mul_pow, h])`. Take `⟨y₂, e₂⟩` from `(h₆ (n.factorization p) (q ^ cp p n)).1 (by rw [← pow_mul, cp_mul_pow, h])`. Establish `bz` using `bezout (cp_coprime_pow p hn)`. Use `⟨(y₁ + cp p n • Nat.gcdA (cp p n) (p ^ n.factorization p) • (y₂ - y₁) : D.La), ext_pow (cp_coprime_pow p hn) ?_ ?_⟩` and prove the remaining obligations. Establish `e : y₁ + cp p n • Nat.gcdA (cp p n) (p ^ n.factorization p) • (y₂ - y₁) = y₂ + p ^ n.factorization p • Nat.gcdB (cp p n) (p ^ n.factorization p) • (y₁ - y₂)`.
+
+Generalize the expression as in `cp p n = a at *`. Generalize the expression as in `p ^ n.factorization p = b at *`. Take the linear combination `(norm := module) bz • (y₂ - y₁)`. Rewrite using `[EL n hn, e, h₃, e₂, (h₅ _ _).2 ⟨_, rfl⟩, _root_.mul_one]`. Rewrite using `[ER n hn, I.add, e₁, (I.ker _ (cp_pos p hn) (cp_coprime p hn) _).2 ⟨_, rfl⟩, _root_.mul_one]`.
+
+Introduce and unpack `⟨y, rfl⟩`. Use `tors n hn y` as an intermediate fact. Rewrite `this` using `[cp_mul_pow]`. Then use the resulting hypothesis. Establish `sw : ∀ (u : kˣ) (t : ℤ) (j : ℕ), (u ^ t) ^ j = (u ^ j) ^ t` using `fun u t j => by`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`.
+
+Use `hW (cp p n) (p ^ n.factorization p) (E n y) (E n z) (sys p I.ζ ζ n ^ (2 * D.EF y z)) (cp_pos p hn) (pow_pos (Fact.out : p.Prime).pos _) (cp_coprime_pow p hn) (tors n hn y) (tors n hn z) (by rw [ER n hn, ER n hn, sw, sys_right zf zg hn]; exact I.isom _ (cp_pos p hn) (cp_coprime p …` as an intermediate fact. Rewrite `this` using `[cp_mul_pow]`. Then use the resulting hypothesis.
+-/
 theorem exists_gTateIso {p : ℕ} [Fact p.Prime] (D : Datum p) {k : Type} [Field k] {Q : Type} [CommGroup Q]
     (act : D.O → Q → Q) (hact : ∀ c q r, act c (q * r) = act c q * act c r) (W : ℕ → Q → Q → kˣ → Prop)
     (hW : ∀ (a b : ℕ) (q r : Q) (c : kˣ), 0 < a → 0 < b → a.Coprime b → q ^ (a * b) = 1 → r ^ (a * b) = 1 →
@@ -199,6 +272,13 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] (hA : IsAbeli
 
 include hA hL in
 
+/- English proof (translation)
+Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Take `⟨t, ht⟩` from `GlobalTheory.HodgeWeil.triv_theta GlobalTheory.CubeTop.cubeTheorem hA hL`. Establish `h₀` using `CommPairing.weilIs_symm hL h`. Establish `pw : ∀ j : ℕ, Out.WeilIs A L ((a * b : ℕ) : ℤ) (y ^ (j + 1)) x (c⁻¹ ^ (j + 1))` using `fun j => by`. Proceed by induction on `j with`.
+
+Consider the case `zero => rwa [zero_add, pow_one, pow_one]`. Consider the case `succ j ih => rw [pow_succ, pow_succ c⁻¹]`. Conclude with `GlobalTheory.DiagPairing.weilIs_mul_left hG hA hL ih h₀`. Take `⟨j, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hb.ne'`. Establish `h₂` using `CommPairing.weilIs_symm hL (pw j)`.
+
+Rewrite `h₂` using `[inv_pow, inv_inv, Nat.cast_mul]`. Conclude with `PairingLevels.weilIs_value_eq hG hA hL ht h₂ h'`.
+-/
 theorem weilIs_pow_eq {a b : ℕ} (hb : 0 < b) {x y : T ⟶ A} {c c' : Γ(T.left, ⊤)ˣ}
     (h : Out.WeilIs A L ((a * b : ℕ) : ℤ) x y c) (h' : Out.WeilIs A L a (x ^ b) (y ^ b) c') : c ^ b = c' := by
   have hG : Out.GlobalFnsSt := GlobalTheory.globalFns_holds
@@ -215,6 +295,9 @@ theorem weilIs_pow_eq {a b : ℕ} (hb : 0 < b) {x y : T ⟶ A} {c c' : Γ(T.left
 
 include hA hL in
 
+/- English proof (translation)
+Take `⟨w, -, hw⟩` from `GlobalTheory.HolTorsionAny.exists_weilIs_pow_eq_one hA hL hx hy`. Establish `e₁` using `weilIs_pow_eq hA hL hb hw h₁`. Establish `e₂` using `weilIs_pow_eq hA hL ha (by rw [mul_comm]; exact hw) h₂`. Rewrite `hw` using `[ext_pow hab e₂ e₁]`. Then use the resulting hypothesis.
+-/
 theorem weilIs_of_coprime {a b : ℕ} (ha : 0 < a) (hb : 0 < b) (hab : a.Coprime b) {x y : T ⟶ A}
     {c : Γ(T.left, ⊤)ˣ} (hx : x ^ (a * b) = 1) (hy : y ^ (a * b) = 1)
     (h₁ : Out.WeilIs A L a (x ^ b) (y ^ b) (c ^ b)) (h₂ : Out.WeilIs A L b (x ^ a) (y ^ a) (c ^ a)) :
@@ -226,6 +309,11 @@ theorem weilIs_of_coprime {a b : ℕ} (ha : 0 < a) (hb : 0 < b) (hab : a.Coprime
 
 end Weil
 
+/- English proof (translation)
+Introduce `p _ D R _ b N hN hNp S s o k _ _ _ x β hx ⟨ζ, ev, h₁, h₂, h₃, h₄, h₅, h₆, h₇, h₈⟩`. Take `⟨I, hI⟩` from `o.geom k x β hx`. Establish `hL : (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB` using `LB.isLB_pull o.isLB _`. Establish `up : ∀ (u : kˣ) (j : ℕ), unitOn (u ^ j) = unitOn u ^ j` using `fun u j => map_pow _ _ _`. Take `⟨J, hJ⟩` from `exists_gTateIso D (Q := Over.mk x ⟶ o.A) (fun c g => g ≫ o.act.act c) (fun c q r => by have := o.act.hom c; exact MonObj.mul_comp _ _ _) (fun n g g' z => Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) n g g' (unitOn z)) (fun a b q r c ha hb hab hq hr w₁ w₂ => weilIs_of_cop …`.
+
+Conclude with `⟨J, fun y => (hI y).trans (hJ N (by omega) hNp y).symm⟩`.
+-/
 theorem glue : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (x : Sp k ⟶ S) (β : R →+* k), x ≫ s = spMap β → (∃ (ζ : ℕ → kˣ) (ev : ℕ → D.La → (Over.mk x ⟶ o.A)), (∀ e, IsPrimitiveRoot (ζ e) (p ^ e)) ∧ (∀ e, ζ (e + 1) ^ p = ζ e) ∧ (∀ e y z, ev e (y + z) = ev e y * ev e z) ∧ (∀ e (c : D.O) y, ev e (c • y) = ev e y ≫ o.act.act c) ∧ (∀ e y, ev e y = 1 ↔ ∃ z, y = p ^ e • z) ∧ (∀ e (q : Over.mk x ⟶ o.A), q ^ (p ^ e) = 1 ↔ ∃ y, ev e y = q) ∧ (∀ e y, ev (e + 1) y ^ p = ev e y) ∧ (∀ e y z, Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) (p ^ e) (ev e y) (ev e z) (unitOn (ζ e ^ (2 * D.EF y z))))) → ∃ I : GTateIso D.toG k (Over.mk x ⟶ o.A) (fun c g => g ≫ o.act.act c) (fun n g g' z => Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) n g g' (unitOn z)), ∀ y, toUnit _ ≫ o.eta y = I.ev N y := by
   intro p _ D R _ b N hN hNp S s o k _ _ _ x β hx ⟨ζ, ev, h₁, h₂, h₃, h₄, h₅, h₆, h₇, h₈⟩
   obtain ⟨I, hI⟩ := o.geom k x β hx

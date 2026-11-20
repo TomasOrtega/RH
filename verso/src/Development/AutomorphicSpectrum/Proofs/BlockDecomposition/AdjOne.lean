@@ -24,6 +24,9 @@ def pull (a : GL (Fin n) (AE D)) (b : hermA D n) : hermA D n :=
     change adj _ = _
     rw [adj_mul, adj_mul, adj_adj, hb, Matrix.mul_assoc]⟩
 
+/- English proof (translation)
+Use `show ((1 : Mx D n n).map (cA D))ᵀ = 1`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`.
+-/
 theorem adj_one' : adj (1 : Mx D n n) = 1 := by
   show ((1 : Mx D n n).map (cA D))ᵀ = 1
   rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]

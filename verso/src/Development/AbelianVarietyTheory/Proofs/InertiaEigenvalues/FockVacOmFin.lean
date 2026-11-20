@@ -18,6 +18,11 @@ noncomputable section
 
 namespace GlobalTheory.RawLift.FactorInf
 
+/- English proof (translation)
+Establish `e : ∀ z : Matrix (Fin T.rank) (Fin S.rank) ℂ, compAt θ τ (mt T γ) * z * compAt θ τ (mt S (1 : GA D S)⁻¹) = z` using `fun z => by`. Rewrite using `[inv_one, GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ T hγ τ, GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC θ S (Subgroup.one_mem _) τ, Matrix.one_mul, Matrix.mul_one]`. Introduce `z`. Establish `h` using `congrArg (om (1, γ)) (hv z)`. Unfold `annih at h ⊢`.
+
+Rewrite `h` using `[map_add, map_smul, GlobalTheory.OrientedHeis.om_dRho hom hθ 1 γ τ z hf, GlobalTheory.OrientedHeis.om_dRho hom hθ 1 γ τ (J z) hf, e, e, map_zero]`. Conclude with `h`.
+-/
 theorem fockVac_om_fin {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om) {θ : InfFam D}
     (hθ : IsInfFam θ) {γ : GA D T} (hγ : γ ∈ GfC T) (τ : D.what₂.Tau)
@@ -34,6 +39,17 @@ theorem fockVac_om_fin {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {
     e, e, map_zero] at h
   exact h
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL hF i t μ 𝓕 hμ u hu γ hγ P P'`. Establish `hW` using `hL.thP.ωP i t`. Establish `hθ : IsInfFam R.θ` using `hL.models.inf`. Establish `hth : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`. Use `hL.thP.pt_theta i t 1` as an intermediate fact.
+
+Unfold `RealDat.ptP at this`. Rewrite `this` using `[GlobalTheory.FiniteFock.pureTensorO_one]`. Then use the resulting hypothesis. Establish `hvac : ∀ τ, IsFockVacAt (heisO R.ψ (Vc D i) (Wc D i)) R.θ τ (cplxO 1 (cart (R.MW i (sg0 D A)) τ)) (R.vP i t)` using `GlobalTheory.DatumFock.isFockVacAt_thPVec _ _ _ _ (fun _ => 1) _ _ _ _ _ _ _ _ _ _ (hL.thP.vP i t) hth`. Use `set f₁ := R.ωP i t (1, γ) (R.vP i t) with hf₁`. Establish `hth1 : IsThetaFunO R.ψ (Vc D i) (Wc D i) f₁` using `hW.om_pres _ _ hth`.
+
+Establish `hvac1 : ∀ τ, IsFockVacAt (heisO R.ψ (Vc D i) (Wc D i)) R.θ τ (cplxO 1 (cart (R.MW i (sg0 D A)) τ)) f₁` using `fun τ => fockVac_om_fin hW hθ hγ τ _ hth (hvac τ)`. Establish `hmul : R.ωP i t (1, u * γ) (R.ptP i t P) = R.ωP i t (1, u) (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) f₁ P)`. Establish `e : ((1 : GA D (Vc D i)), u * γ) = (1, u) * (1, γ)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Use `congr 1`.
+
+Unfold `RealDat.ptP`. Conclude with `GlobalTheory.OrientedHeis.om_fin_pureTensorO _ _ _ _ _ _ hW R.θ hθ 1 (Subgroup.one_mem _) γ hγ _ _ _ _ _ P hth`. Take `⟨c, hc⟩` from `GlobalTheory.T.fockVacuum_pairing_polynomial_translates_scalar D R.ψ R.θ (Vc D i) (Wc D i) _ _ (R.ωP i t) hW hθ (fun _ => 1) (R.BV i) (cart (R.MW i (sg0 D A))) (onb (R.MW i (sg0 D A))) (fun _ => (Vc D i).rank) (fun τ => ((Wc D i).sig (tauE D τ)).1) (fun τ => isCartanInv_one_of_on …`. Establish `hne` using `(vecNe D G Pl0 T A Ks R F hL hF i t μ 𝓕 hμ).1`. Rewrite using `[hmul]`.
+
+Unfold `RealDat.ptP`. Rewrite using `[hc f₁ _ hth1 hth hvac1 hvac, hc _ _ hth hth hvac hvac]`. Unfold `coef`. Rewrite using `[← hf₁]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem factInf : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ i t, FactInf R i t := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL hF i t μ 𝓕 hμ u hu γ hγ P P'
   have hW := hL.thP.ωP i t

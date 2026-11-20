@@ -10,6 +10,15 @@ open GlobalTheory.Mem.R3.LiftBrg
 
 namespace GlobalTheory.Mem.SDFrameStd
 
+/- English proof (translation)
+Introduce `D V Λ hβ y`. Take `⟨c, hf, -, -, h1, h2⟩` from `hβ`. Establish `hset : (Λ : Set (Fin V.rank → D.host.E)) = L0c D V`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Use `h2 x hx` as an intermediate fact. Simplify using `using this`. Introduce `hx`. Use `h1 x hx` as an intermediate fact.
+
+Simplify using `using this`. Establish `e1 : y ∈ Formalism.L2.NTheta.LamHat V ↔ (fun i => GlobalTheory.LevSplit.swp D.host.F D.host.E (y i)) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ := by`. Rewrite using `[← GlobalTheory.LevSplit.latHat_iff Λ y, hset]`. Rewrite using `[e1, hf]`. Simplify using `only [inv_one, Units.val_one, one_mulVec]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lamHat_iff_int : ∀ {D : D7} (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), IsSDFrame V 1 Λ 1 → ∀ y : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E, y ∈ Formalism.L2.NTheta.LamHat V ↔ ∀ j, swapAE D (y j) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   intro D V Λ hβ y
   obtain ⟨c, hf, -, -, h1, h2⟩ := hβ

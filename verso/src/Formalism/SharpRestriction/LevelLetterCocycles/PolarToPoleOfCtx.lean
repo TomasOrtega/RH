@@ -21,6 +21,13 @@ open Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.UnusedSlot80.Ph
 
 variable [IsDomain O] [NeZero n]
 
+/- English proof (translation)
+Take `⟨y, ⟨hyF, hyD⟩, hye⟩` from `h`. Use `set i : ZMod n := a - (s : ZMod n) with hidef`. Take `⟨τ, hτ, hover⟩` from `tau_over W C.hbij i`. Establish `hJ : ∀ z, IsJumpV PD T.ρ τ z → z ≤ (Hw A.G₀ A.S A.η (A.ty i) : ℤ)` using `fun z hz => (Formalism.MainNotions.UnusedSlot80.PhiPowers.win_sub A.G₀ A.S A.η (A.ty i) (hA.2.2.2.2.1 i) (hT.2 i τ hτ z hz)).2`. Establish `hy0` using `fil_high W T i τ hover C.hbij.2 _ hJ u hu hyD hyF`.
+
+Rewrite `hye` using `[hy0, map_zero]`. Establish `hfb` using `(Formalism.MainNotions.UnusedSlot80.ArcF.frame_basis W C.hs C.hV T (C.h3 T hT.1) (C.h5 T _ _ hT.1 (jumpsLet_of_win W A hA T hT)) (C.hmod T hT.1) c' e b hb).1`. Establish `hdv : dvO W T e b c₀ = ∑ m, algebraMap O LL (c₀ m) • dv W T e b (Pi.single m 1)`. Simplify using `only [Formalism.MainNotions.UnusedSlot80.ArcF.dv_single]`. Both sides reduce to the same expression.
+
+Establish `hsum : ∑ m, algebraMap O LL (c₀ m) • dv W T e b (Pi.single m 1) = 0` using `by rw [← hdv, ← hye]`. Use function extensionality and compare the values at `m`. Apply `C.hinj` to reduce the goal to its premises. Rewrite using `[Fintype.linearIndependent_iff.1 hfb _ hsum m]`. Simplify using the standard rewrite rules.
+-/
 theorem dvO_zero_hw (C : Ctx W) (A : ArcP n) (hA : A.OK) (c' : ZMod n) (T : LocLat G Qp LL O)
     (hT : Win W A T) {d : ℕ} (b : Fin d → W.DD T) (hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T c' b) (e : ℕ)
     (a : ZMod n) (s : ℕ) (u : ℤ) (hu : (Hw A.G₀ A.S A.η (A.ty (a - (s : ZMod n))) : ℤ) < u)
@@ -42,15 +49,32 @@ theorem dvO_zero_hw (C : Ctx W) (A : ArcP n) (hA : A.OK) (c' : ZMod n) (T : LocL
   rw [Fintype.linearIndependent_iff.1 hfb _ hsum m]
   simp
 
+/- English proof (translation)
+Apply `Submodule.map_mono` to reduce the goal to its premises. Introduce `x hx`. Conclude with `⟨Formalism.MainNotions.UnusedSlot80.LevR.filCris_anti T.ρ h hx.1, hx.2⟩`.
+-/
 theorem filS_anti (T : LocLat G Qp LL O) (a : ZMod n) (s : ℕ) {u w : ℤ} (h : w ≤ u) :
     FilS W T a s u ≤ FilS W T a s w := by
   apply Submodule.map_mono
   intro x hx
   exact ⟨Formalism.MainNotions.UnusedSlot80.LevR.filCris_anti T.ρ h hx.1, hx.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, W.AΔ.zero_mem, by simp⟩`.
+-/
 theorem inId_zero (a : ZMod n) (e : ℕ) : InId W a e (fun _ => 0) 0 :=
   ⟨0, W.AΔ.zero_mem, by simp⟩
 
+/- English proof (translation)
+Introduce `s hs`. Establish `key : 0 ≤ α s ∨ -(Hw A.G₀ A.S A.η (A.ty (c - (s : ZMod n))) : ℤ) ≤ α s ∧ dvO W T (A.len c) b c₀ ∈ FilS W T c s (-(α s))`. Break down `hP s hs with h | h` into its components or cases. Conclude with `Or.inl h`. Distinguish the cases in `h0 : 0 ≤ α s`.
+
+Conclude with `Or.inl h0`. Use `Or.inr ⟨?_, h⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hc₀ (dvO_zero_hw W C A hA c' T hT b hb (A.len c) c s (-(α s)) (by omega) c₀ h)`. Consider the cases of `hty : A.ty (c - (s : ZMod n)) with`.
+
+Consider the case `thin`. Rewrite `key` using `[hty]`. Simplify using `only [Hw] at key`. Apply the tactic sequence `rcases key with h | ⟨h, -⟩ <;> omega`. Consider the case `up bs`.
+
+Rewrite `key` using `[hty]`. Simplify using `only [Hw] at key`. Apply the tactic sequence `rcases key with h | ⟨h, -⟩ <;> push_cast at h ⊢ <;> omega`. Consider the case `down bs`. Break down `key with h | ⟨-, h⟩` into its components or cases.
+
+Conclude with `Or.inl h`. Distinguish the cases in `h0 : 0 ≤ α s`. Conclude with `Or.inl h0`. Conclude with `Or.inr (filS_anti W T c s (by omega) h)`.
+-/
 theorem condPole_of_polar (C : Ctx W) (A : ArcP n) (hA : A.OK) (c' : ZMod n) (T : LocLat G Qp LL O)
     (hT : Win W A T) {d : ℕ} (b : Fin d → W.DD T) (hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T c' b) (c : ZMod n)
     (α : ℕ → ℤ) (c₀ : Fin d → O) (hc₀ : c₀ ≠ 0)
@@ -84,6 +108,15 @@ theorem condPole_of_polar (C : Ctx W) (A : ArcP n) (hA : A.OK) (c' : ZMod n) (T 
 
 variable {W}
 
+/- English proof (translation)
+Introduce `_ _ A hA T₂ hT c hc d b sol hb f hS`. Take `⟨I, g, c₀, α, hg, hF⟩` from `hS`. Use `⟨I, fun i => if c₀ i = 0 then 0 else g i, c₀, fun i => if c₀ i = 0 then fun _ => 0 else α i, fun i => ?_, fun k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : c₀ i = 0`. Simplify using `only [h0, if_true]`.
+
+Use `⟨inId_zero W c (A.len c), ?_⟩` and prove the remaining obligations. Introduce `s _`. Consider the cases of `A.ty (c - (s : ZMod n)) with`. Consider the case `thin => simp`. Consider the case `up bs => simp`.
+
+Consider the case `down bs => exact Or.inl le_rfl`. Simplify using `only [h0, if_false]`. Conclude with `⟨(hg i).1, condPole_of_polar W C A hA _ T₂ hT b hb.1 c (α i) (c₀ i) h0 (hg i).2⟩`. Rewrite using `[hF k]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h0 : c₀ i = 0`. Simplify using `[h0]`. Simplify using `[h0]`.
+-/
 theorem polarToPole_of_ctx (C : Ctx W) : Formalism.MainNotions.UnusedSlot80.Split.PolarToPole W := by
   intro _ _ A hA T₂ hT c hc d b sol hb f hS
   obtain ⟨I, g, c₀, α, hg, hF⟩ := hS
@@ -111,6 +144,9 @@ namespace Formalism.MainNotions.UnusedSlot80.Split
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.WachCoordinates.Br
 
+/- English proof (translation)
+Introduce `l _ K LL hG hCA h5l`. Use `neZero_finrank_max_unramified K` as an intermediate fact. Conclude with `LevC.polarToPole_of_ctx (ctx_of D HW F Cm h l K LL hG hCA h5l)`.
+-/
 theorem polarToPoleL_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h : AdmArcA D HW F Cm) : PolarToPoleL D HW := by
   intro l _ K LL hG hCA h5l

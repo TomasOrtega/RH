@@ -18,6 +18,9 @@ noncomputable section
 namespace GlobalTheory.TailFix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Introduce `g _`. Use `⟨g (fun i => (x i).2) • ((BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.proj_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem evalAdm {κ : Type} [Fintype κ] (x : κ → AF F) :
     (LinearMap.proj x : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
   classical
@@ -32,6 +35,19 @@ end GlobalTheory.TailFix
 
 open GlobalTheory.TailFix in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP T k hk hT hvac f φ hφ hφT`. Establish `hcof : ∀ᶠ v in Filter.cofinite, φ v = M.vac v` using `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hφT v h))`. Establish `hActs : ∀ v, Acts (evFin F v) (om (1, locU v k)) (φ v) (φ v)`.
+
+Introduce `v`. Distinguish the cases in `hv : v ∈ T`. Rewrite using `[locU_eq_one v k (hT v hv)]`. Introduce `r _`. Rewrite using `[show ((1 : UA σ X.J), (1 : UA σ W.J)) = 1 from rfl, map_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[hφT v hv]`. Conclude with `hvac v hv (locU v k) (locU_mem v k) (locU_eq v k)`. Establish `hA : ∀ S : Finset (Pl F), om (1, splU (idem S) (idem_mul_self S) k) (pure f φ) = pure f φ`. Introduce `S`.
+
+Establish `e : splU (idem S) (idem_mul_self S) k = (S.toList.map fun v => locU v k).prod`. Use `(UA_ext ?_).trans (splU_toFinset k S.toList S.nodup_toList)` and prove the remaining obligations. Rewrite using `[mat_splU, mat_splU, Finset.toList_toFinset]`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.pair_local_finite_places_product F E σ B n d X W M χX χW om r s r' s' hP S.toList S.nodup_toList (fun v => locU v k) (fun v _ => locU_mem v k) f φ φ hφ hcof (fun v _ => ⟨hφ v, hActs v⟩) (fun _ _ => rfl)`.
+
+Use function extensionality and compare the values at `x`. Establish `hc : Continuous fun g : UA σ X.J × UA σ W.J => LinearMap.proj (R` using `ℂ) (φ := fun _ : (Fin n × Fin d → AF F) => ℂ) x (om g (pure f φ)) := hP.weil.2.2 _ (evalAdm x) _ (GlobalTheory.ConeMeasV.pure_mem_schA hP.good f φ hφ hcof)`. Establish `ht : Tendsto (fun S : Finset (Pl F) => ((1 : UA σ X.J), splU (idem S) (idem_mul_self S) k)) atTop (𝓝 (1, k))` using `tendsto_const_nhds.prodMk_nhds (GlobalTheory.T.split_unitary_idempotent_tendsto k hk)`. Establish `h2` using `(hc.tendsto _).comp ht`. Simplify using `only [Function.comp_def, LinearMap.proj_apply, hA] at h2`.
+
+Conclude with `tendsto_nhds_unique h2 tendsto_const_nhds`.
+-/
 theorem GlobalTheory.TailFix.fix_pure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

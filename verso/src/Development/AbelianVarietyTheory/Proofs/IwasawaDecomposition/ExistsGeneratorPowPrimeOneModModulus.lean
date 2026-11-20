@@ -9,6 +9,17 @@ open scoped nonZeroDivisors IntermediateField
 
 namespace GlobalTheory.Mem.FieldsEx
 
+/- English proof (translation)
+Establish `hfin` using `Ideal.finite_factors h𝔮`. Set `S : Finset (HeightOneSpectrum R)` to `hfin.toFinset.erase v`. Establish `hcop : IsCoprime (v.asIdeal ^ 2) (∏ w ∈ S, w.asIdeal)`. Use `IsCoprime.pow_left (IsCoprime.prod_right fun w hw => ?_)` and prove the remaining obligations. Establish `hne : v.asIdeal ≠ w.asIdeal` using `fun h => (Finset.ne_of_mem_erase hw) (HeightOneSpectrum.ext h).symm`.
+
+Conclude with `Ideal.isCoprime_iff_sup_eq.2 (v.isMaximal.coprime_of_ne w.isMaximal hne)`. Take `⟨a, ha, b, hb, hab⟩` from `Ideal.isCoprime_iff_exists.1 hcop`. Take `⟨π, hπ1, hπ2⟩` from `Ideal.exists_mem_pow_notMem_pow_succ v.asIdeal v.ne_bot v.isPrime.ne_top 1`. Rewrite `hπ1` using `[pow_one]`. Use `⟨π * b + a, ?_, ?_, fun w hw hd => ?_⟩` and prove the remaining obligations.
+
+Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_right _ hπ1) (Ideal.pow_le_self two_ne_zero ha)`. Introduce `hc`. Apply `hπ2` to reduce the goal to its premises. Establish `: π = (π * b + a) + a * (π - 1)` using `by linear_combination (-π) * hab`. Rewrite using `[this]`.
+
+Conclude with `Ideal.add_mem _ hc (Ideal.mul_mem_right _ _ ha)`. Establish `hS : w ∈ S` using `Finset.mem_erase.2 ⟨hw, hfin.mem_toFinset.2 hd⟩`. Establish `hb' : b ∈ w.asIdeal` using `Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ hS) hb`. Establish `: π * b + a - 1 = b * (π - 1)` using `by linear_combination hab`. Rewrite using `[this]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hb'`.
+-/
 theorem exists_unif_one_mod {R : Type} [CommRing R] [IsDedekindDomain R] (𝔮 : Ideal R) (h𝔮 : 𝔮 ≠ ⊥)
     (v : HeightOneSpectrum R) : ∃ c : R, c ∈ v.asIdeal ∧ c ∉ v.asIdeal ^ 2 ∧
       ∀ w : HeightOneSpectrum R, w ≠ v → w.asIdeal ∣ 𝔮 → c - 1 ∈ w.asIdeal := by
@@ -35,6 +46,27 @@ theorem exists_unif_one_mod {R : Type} [CommRing R] [IsDedekindDomain R] (𝔮 :
     rw [this]
     exact Ideal.mul_mem_right _ _ hb'
 
+/- English proof (translation)
+Take `⟨c, hc1, hc2, hc3⟩` from `exists_unif_one_mod 𝔮 h𝔮 v`. Establish `hc0 : c ≠ 0` using `by rintro rfl; exact hc2 (Ideal.zero_mem _)`. Take `⟨J, hJ⟩ : v.asIdeal ∣ Ideal.span {c}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hc1)`. Establish `hcJ : c ∈ v.asIdeal * J` using `hJ ▸ Ideal.mem_span_singleton_self c`. Establish `hJ0 : J ≠ ⊥`.
+
+Introduce and unpack `rfl`. Rewrite `hcJ` using `[Ideal.mul_bot]`. Conclude with `hc0 hcJ`. Establish `hcop : IsCoprime J 𝔮`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hm0 : m ≠ ⊥` using `fun h0 => h𝔮 (le_bot_iff.1 (h0 ▸ le_sup_right.trans hle))`. Set `w : HeightOneSpectrum (𝓞 L)` to `⟨m, hm.isPrime, hm0⟩`. Establish `hJm : J ≤ m` using `le_sup_left.trans hle`.
+
+Distinguish the cases in `hw : w = v`. Apply `hc2` to reduce the goal to its premises. Establish `: v.asIdeal = m` using `hw ▸ rfl`. Rewrite using `[sq]`. Conclude with `Ideal.mul_mono_right (this ▸ hJm) hcJ`.
+
+Establish `h1 : c - 1 ∈ m` using `hc3 w hw (Ideal.dvd_iff_le.2 (le_sup_right.trans hle))`. Establish `h2 : c ∈ m` using `hJm (Ideal.le_of_dvd (dvd_mul_left J v.asIdeal) hcJ)`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using m.sub_mem h2 h1))`. Take `⟨α, β, ⟨hα0, hβ0, hα, -, hαβ, -⟩, hE⟩` from `H J hJ0 hcop`. Establish `hαL : algebraMap (𝓞 L) L α ≠ 0` using `by simpa using hα0`.
+
+Establish `hβL : algebraMap (𝓞 L) L β ≠ 0` using `by simpa using hβ0`. Establish `hcL : algebraMap (𝓞 L) L c ≠ 0` using `by simpa using hc0`. Use `⟨Units.mk0 (algebraMap (𝓞 L) L (c ^ h * β) / algebraMap (𝓞 L) L α) (div_ne_zero (by rw [map_mul, map_pow]; exact mul_ne_zero (pow_ne_zero _ hcL) hβL) hαL), ?_, fun w hw hd => ?_⟩` and prove the remaining obligations. Establish `hI : Ideal.span {c ^ h * β} = v.asIdeal ^ h * Ideal.span {α}`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, ← Ideal.span_singleton_pow, hJ, mul_pow, mul_assoc, hE]`.
+
+Establish `hne : FractionalIdeal.spanSingleton (𝓞 L)⁰ (algebraMap (𝓞 L) L α) ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hαL`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[Units.val_mk0, FractionalIdeal.spanSingleton_mul_spanSingleton, div_mul_cancel₀ _ hαL, ← FractionalIdeal.coeIdeal_span_singleton, ← FractionalIdeal.coeIdeal_span_singleton, hI, FractionalIdeal.coeIdeal_mul, FractionalIdeal.coeIdeal_pow]`. Establish `hle : 𝔮 ≤ w.asIdeal` using `Ideal.le_of_dvd hd`. Establish `hαw : α ∉ w.asIdeal` using `fun hm => w.isPrime.ne_top (top_le_iff.1 (by`.
+
+Rewrite using `[← Ideal.isCoprime_iff_sup_eq.1 hα]`. Conclude with `sup_le ((Ideal.span_singleton_le_iff_mem _).2 hm) hle))`. Establish `hp : c ^ h - 1 ∈ w.asIdeal`. Use `sub_dvd_pow_sub_pow c 1 h` as an intermediate fact. Rewrite `this` using `[one_pow]`.
+
+Take `⟨t, ht⟩` from `this`. Rewrite using `[ht]`. Conclude with `Ideal.mul_mem_right _ _ (hc3 w hw hd)`. Establish `hm : c ^ h * β - α ∈ w.asIdeal`. Establish `: c ^ h * β - α = (c ^ h - 1) * β - (α - β)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_right _ _ hp) (hle hαβ)`. Rewrite using `[Units.val_mk0, div_sub_one hαL, ← map_sub, map_div₀, (w.valuation_eq_one_iff_notMem (K := L)).2 hαw, div_one]`. Conclude with `(w.valuation_lt_one_iff_mem (K := L) _).2 hm`.
+-/
 theorem exists_gen_pow_prime_one_mod (L : Type) [Field L] [NumberField L] (𝔮 : Ideal (𝓞 L)) (h : ℕ) (h𝔮 : 𝔮 ≠ ⊥)
     (H : ∀ I : Ideal (𝓞 L), I ≠ ⊥ → IsCoprime I 𝔮 →
       ∃ α β : 𝓞 L, RayPair 𝔮 α β ∧ I ^ h * Ideal.span {β} = Ideal.span {α})

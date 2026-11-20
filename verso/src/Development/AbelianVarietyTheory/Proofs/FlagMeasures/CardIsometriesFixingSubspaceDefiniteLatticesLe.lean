@@ -13,6 +13,11 @@ namespace GlobalTheory.IsoCount
 section
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h1` using `trace_eq_sum_embeddings ℂ (K := ℚ) (L := K) (x := H.B x x)`. Establish `h2 : (0 : ℝ) < (algebraMap ℚ ℂ (Algebra.trace ℚ K (H.B x x))).re`. Establish `: Nonempty (K →ₐ[ℚ] ℂ)` using `⟨IsAlgClosed.lift⟩`. Rewrite using `[h1, Complex.re_sum]`.
+
+Conclude with `Finset.sum_pos (fun σ _ => hp σ.toRingHom x hx) Finset.univ_nonempty`. Establish `h3 : (algebraMap ℚ ℂ (Algebra.trace ℚ K (H.B x x))).re = ((Algebra.trace ℚ K (H.B x x) : ℚ) : ℝ)`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3]`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem isTraceDef_of_pd (H : HermSpace K V) (hp : GlobalTheory.Mass.PD H.B.flip) : IsTraceDef H := by
   intro x hx
   have h1 := trace_eq_sum_embeddings ℂ (K := ℚ) (L := K) (x := H.B x x)
@@ -48,6 +53,11 @@ def fixAut (H : HermSpace K V) (U : Submodule K V) (L : Submodule (𝓞 K) V) : 
 
 omit [NumberField K] [StarRing K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `: (g : V →ₗ[K] V) x = x` using `h x hx`. Rewrite using `[this]`.
+
+Conclude with `hx`. Introduce `hy`. Conclude with `⟨y, hy, h y hy⟩`.
+-/
 theorem map_eq_of_fix {U : Submodule K V} {g : V ≃ₗ[K] V} (h : ∀ y ∈ U, g y = y) :
     U.map (g : V →ₗ[K] V) = U := by
   ext y
@@ -66,9 +76,21 @@ def toQuot (H : HermSpace K V) (U : Submodule K V) (L : Submodule (𝓞 K) V) :
     induction x using Submodule.Quotient.induction_on
     rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toQuot_mk (H : HermSpace K V) (U : Submodule K V) (L : Submodule (𝓞 K) V) (g : fixAut H U L)
     (x : V) : toQuot H U L g (Submodule.Quotient.mk x) = Submodule.Quotient.mk (g.1 x) := rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_one]`. Introduce `g hg`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Establish `h1 : Submodule.Quotient.mk (p` using `U) (g.1 x) = Submodule.Quotient.mk x := by`.
+
+Rewrite using `[← toQuot_mk, hg]`. Both sides reduce to the same expression. Establish `hu : g.1 x - x ∈ U` using `(Submodule.Quotient.eq U).1 h1`. Establish `h2` using `(mem_isomGrp H g.1).1 g.2.1 x (g.1 x - x)`. Rewrite `h2` using `[g.2.2.2 _ hu]`.
+
+Establish `h3 : H.B (g.1 x - x) (g.1 x - x) = 0`. Rewrite using `[map_sub H.B, LinearMap.sub_apply, h2, sub_self]`. Assume the negation of the conclusion as `hne`. Establish `h4` using `hH (g.1 x - x) (sub_ne_zero.2 hne)`. Rewrite `h4` using `[h3, map_zero]`.
+
+Conclude with `lt_irrefl _ h4`.
+-/
 theorem toQuot_injective {H : HermSpace K V} (hH : IsTraceDef H) (U : Submodule K V)
     (L : Submodule (𝓞 K) V) : Function.Injective (toQuot H U L) := by
   rw [injective_iff_map_eq_one]
@@ -89,10 +111,20 @@ theorem toQuot_injective {H : HermSpace K V} (hH : IsTraceDef H) (U : Submodule 
 
 variable [FiniteDimensional K V]
 
+/- English proof (translation)
+The claim follows from `(autCard_eq_natCard hH hL).1.subset fun _ hg => ⟨hg.1, hg.2.1⟩`.
+-/
 theorem fixAut_finite {H : HermSpace K V} (hH : IsTraceDef H) (U : Submodule K V)
     {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L) : (fixAut H U L : Set (V ≃ₗ[K] V)).Finite :=
   (autCard_eq_natCard hH hL).1.subset fun _ hg => ⟨hg.1, hg.2.1⟩
 
+/- English proof (translation)
+Establish `hfin : Finite (fixAut H U L)` using `(fixAut_finite hH U hL).to_subtype`. Establish `e` using `MonoidHom.ofInjective (toQuot_injective hH U L)`. Rewrite using `[Nat.card_congr e.toEquiv]`. Use `GlobalTheory.AutLattice.card_dvd_minkM hM K (V ⧸ U) (L.map (U.mkQ.restrictScalars (𝓞 K))) (hL.fg.map _) ?_ _ (Finite.of_equiv _ e.toEquiv) ?_` and prove the remaining obligations. Establish `: ((L.map (U.mkQ.restrictScalars (𝓞 K)) : Submodule (𝓞 K) (V ⧸ U)) : Set (V ⧸ U)) = U.mkQ '' (L : Set V)` using `rfl`.
+
+Rewrite using `[this, Submodule.span_image, hL.span_eq_top, Submodule.map_top, Submodule.range_mkQ]`. Introduce and unpack `_ ⟨g, rfl⟩ _ ⟨x, hx, rfl⟩`. Use `⟨g.1 x, ?_, rfl⟩` and prove the remaining obligations. Establish `h` using `g.2.2.1`. Establish `h' : g.1 x ∈ imLat g.1 L` using `⟨x, hx, rfl⟩`.
+
+Rewrite `h'` using `[h]`. Then use the resulting hypothesis.
+-/
 theorem card_fixAut_dvd (hM : MinkowskiBound) {H : HermSpace K V} (hH : IsTraceDef H) (U : Submodule K V)
     {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L) :
     Nat.card (fixAut H U L) ∣ minkowskiM (Module.finrank ℚ K * Module.finrank K (V ⧸ U)) := by
@@ -112,6 +144,23 @@ theorem card_fixAut_dvd (hM : MinkowskiBound) {H : HermSpace K V} (hH : IsTraceD
 
 end
 
+/- English proof (translation)
+Introduce `hM K V _ _ _ _ _ _ _ _ H hK hp U L L' hL _`. Establish `hH` using `isTraceDef_of_pd H hp`. Use `set S := {η : V ≃ₗ[K] V | η ∈ isomGrp H ∧ imLat η L = L' ∧ ∀ y ∈ U, η y = y} with hS`. Break down `S.eq_empty_or_nonempty with h0 | ⟨η, hη, hηL, hηU⟩` into its components or cases. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules. Establish `h1 : S.encard ≤ (fixAut H U L : Set (V ≃ₗ[K] V)).encard`. Use `Set.encard_le_encard_of_injOn (f := fun a => η⁻¹ * a) ?_ ?_` and prove the remaining obligations. Introduce and unpack `a ⟨ha, haL, haU⟩`. Use `⟨mul_mem (inv_mem hη) ha, ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Unfold `imLat at *`. Rewrite using `[Formalism.HermitianLatticesTheory.genusBasic_gmap_mul, haL, ← hηL, Formalism.HermitianLatticesTheory.genusBasic_gmap_inv]`. Use `show η.symm (a y) = y`. Rewrite using `[LinearEquiv.symm_apply_eq, haU y hy, hηU y hy]`. Introduce `a _ b _ hab`.
+
+Simplify using `using hab`. Establish `hn : Module.finrank ℚ K = 2 * Formalism.HermitianLatticesTheory.fDeg K`. Use `hK.1` as an intermediate fact. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces K`. Rewrite `h2` using `[IsTotallyComplex.nrRealPlaces_eq_zero, zero_add]`.
+
+Rewrite using `[Formalism.HermitianLatticesTheory.fDeg, h2, IsTotallyComplex.finrank]`. Establish `hq : Module.finrank K (V ⧸ U) = Module.finrank K V - Module.finrank K U`. Use `U.finrank_quotient_add_finrank` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h2` using `(card_fixAut_dvd hM hH U hL).trans (Formalism.HermitianLatticeCounting.P.minkowski_number_dvd_factorial _)`.
+
+Establish `h3` using `(Nat.le_of_dvd (Nat.factorial_pos _) h2).trans (Nat.factorial_le_pow _)`. Establish `e : 2 * (Module.finrank ℚ K * Module.finrank K (V ⧸ U)) = 4 * (Module.finrank K V - Module.finrank K U) * Formalism.HermitianLatticesTheory.fDeg K`. Rewrite using `[hn, hq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[e]`.
+
+Establish `h4 : (fixAut H U L : Set (V ≃ₗ[K] V)).encard = (Nat.card (fixAut H U L) : ℕ∞)`. Rewrite using `[← (fixAut_finite hH U hL).cast_ncard_eq, ← Nat.card_coe_set_eq]`. Both sides reduce to the same expression. Rewrite `h1` using `[h4]`. Use `(ENat.toENNReal_le.2 h1).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[ENat.toENNReal_coe]`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem isoCnt : MinkowskiBound → ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → GlobalTheory.Mass.PD H.B.flip → ∀ (U : Submodule K V) (L L' : Submodule (𝓞 K) V), Submodule.IsLattice K L → Submodule.IsLattice K L' → ((({η : V ≃ₗ[K] V | η ∈ isomGrp H ∧ imLat η L = L' ∧ ∀ y ∈ U, η y = y}).encard : ℕ∞) : ℝ≥0∞) ≤ ((4 * ((Module.finrank K V) - Module.finrank K U) * (Formalism.HermitianLatticesTheory.fDeg K) : ℕ) : ℝ≥0∞) ^ (4 * ((Module.finrank K V) - Module.finrank K U) * (Formalism.HermitianLatticesTheory.fDeg K)) := by
   intro hM K V _ _ _ _ _ _ _ _ H hK hp U L L' hL _
   have hH := isTraceDef_of_pd H hp

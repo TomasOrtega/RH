@@ -7,5 +7,8 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open MvPolynomial Formalism.BasicNotions.DV
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TrivFlag.arMix_powerSum_mul_vertical | exact GlobalTheory.TrivFlag.arMix_powerSum_mul_vertical | (intros; apply GlobalTheory.TrivFlag.arMix_powerSum_mul_vertical <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmetic_mixed_volume_kills_difference : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (Sx : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ (p : ℕ), p.Prime → ∀ (τ : D.what₂.Tau) (k : ℕ), 1 ≤ k → ∀ (y : Rt D.what₂.Tau O.Y.N) (g : MvPolynomial (Vm D.what₂.Tau O.Y.N) ℝ), O.Y.arMix Sx R p (tagHT D.what₂.Tau _ (pk D _ τ k) * ((X (Sum.inl (false, y)) - X (Sum.inl (true, y))) * g)) = 0 := by
   first | exact @GlobalTheory.TrivFlag.arMix_powerSum_mul_vertical | exact GlobalTheory.TrivFlag.arMix_powerSum_mul_vertical | (intros; apply GlobalTheory.TrivFlag.arMix_powerSum_mul_vertical <;> assumption)

@@ -13,6 +13,27 @@ open GlobalTheory.SWLit
 
 open GlobalTheory.SWQ GlobalTheory.PoissonReindex in
 
+/- English proof (translation)
+Introduce `F _ _ κ _ N e ν hν μ ⟨hμ, 𝓕, h𝓕1, h𝓕⟩`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Take `⟨hHaar, hmem, -, -, D, hDm, hD, hD1⟩` from `GlobalTheory.SWQ.rat_lattice_fundamentalDomain F N ν hν`. Use `haveI := hHaar`.
+
+Use `haveI := hμ`. Set `T : (Fin N → AF F) ≃ₜ+ (κ → AF F)` to `reidx e`. Set `Tm : (Fin N → AF F) ≃ᵐ (κ → AF F)` to `T.toHomeomorph.toMeasurableEquiv`. Use `haveI hm : (Measure.map Tm (muV N ν)).IsAddHaarMeasure := T.isAddHaarMeasure_map (muV N ν)`. Establish `hr` using `Measure.isAddLeftInvariant_eq_smul μ (Measure.map Tm (muV N ν))`.
+
+Use `set r := μ.addHaarScalarFactor (Measure.map Tm (muV N ν))`. Set `L` to `(AddMonoidHom.compLeft (algebraMap F (AF F)).toAddMonoidHom κ).range`. Set `L'` to `AddSubgroup.closure (Set.range (rat : (Fin N → F) → (Fin N → AF F)))`. Establish `hmap : ∀ g : L', T g.1 ∈ L`. Introduce `g`.
+
+Take `⟨ξ, hξ⟩` from `(hmem g.1).1 g.2`. Conclude with `⟨fun i => ξ (e i), by rw [hξ]; rfl⟩`. Set `φ : L' → L` to `fun g => ⟨T g.1, hmap g⟩`. Establish `hφ : Function.Bijective φ`. Use `⟨fun a b h => Subtype.ext (T.injective (congrArg Subtype.val h)), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨_, η, rfl⟩`. Use `⟨⟨rat fun j => η (e.symm j), (hmem _).2 ⟨_, rfl⟩⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show algebraMap F (AF F) (η (e.symm (e i))) = algebraMap F (AF F) (η i)`. Rewrite using `[e.symm_apply_apply]`.
+
+Establish `hmp : MeasurePreserving Tm.symm (Measure.map Tm (muV N ν)) (muV N ν)` using `MeasurePreserving.symm Tm ⟨Tm.measurable, rfl⟩`. Establish `hD' : IsAddFundamentalDomain L (Tm.symm ⁻¹' D) (Measure.map Tm (muV N ν))`. Use `hD.preimage_of_equiv hmp.quasiMeasurePreserving hφ fun g x => ?_` and prove the remaining obligations. Use `show T.symm (T g.1 + x) = g.1 + T.symm x`. Rewrite using `[map_add, T.symm_apply_apply]`.
+
+Establish `hD'1 : Measure.map Tm (muV N ν) (Tm.symm ⁻¹' D) = 1`. Rewrite using `[hmp.measure_preimage hDm.nullMeasurableSet, hD1]`. Establish `hac : μ ≪ Measure.map Tm (muV N ν)`. Rewrite using `[hr]`. Conclude with `Measure.smul_absolutelyContinuous`.
+
+Use `haveI : Countable F := Countable.of_equiv _ (Module.finBasis ℚ F).equivFun.toEquiv.symm`. Use `haveI : Countable L := by`. Establish `: Countable (Set.range (AddMonoidHom.compLeft (algebraMap F (AF F)).toAddMonoidHom κ))` using `(Set.countable_range _).to_subtype`. Conclude with `this`. Establish `h1 : μ (Tm.symm ⁻¹' D) = 1`.
+
+Rewrite using `[← h𝓕1]`. Conclude with `(hD'.mono hac).measure_eq h𝓕`. Establish `hr1 : r = 1`. Rewrite `h1` using `[hr, Measure.smul_apply, hD'1]`. Simplify using `using h1`.
+
+Rewrite `hr` using `[hr1, one_smul]`. Conclude with `hr`.
+-/
 theorem GlobalTheory.SWLit.tamagawa_eq_map_pi : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (N : ℕ) (e : κ ≃ Fin N) (ν : Measure (AF F)), GlobalTheory.SWQ.IsCov1 ν → ∀ μ : Measure (κ → AF F), IsTamagawa F κ μ → μ = Measure.map (GlobalTheory.PoissonReindex.reidx (F := F) e) (GlobalTheory.SWQ.muV N ν) := by
   intro F _ _ κ _ N e ν hν μ ⟨hμ, 𝓕, h𝓕1, h𝓕⟩
   haveI : BorelSpace (AF F) := ⟨rfl⟩

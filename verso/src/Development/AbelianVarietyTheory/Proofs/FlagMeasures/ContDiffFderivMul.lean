@@ -11,6 +11,19 @@ open scoped InnerProductSpace ComplexOrder ContDiff Topology Pointwise
 
 namespace GlobalTheory.GardingStep
 
+/- English proof (translation)
+Establish `hint : Integrable (fun y => a y • ρ y w) μ` using `(ha.smul hc).integrable_of_hasCompactSupport hs.smul_right`. Establish `hform : (fun s => ρ (e s) v) = fun s => ∫ y, a ((e s)⁻¹ * y) • ρ y w ∂μ`. Use function extensionality and compare the values at `s`. Rewrite using `[← integral_mul_left_eq_self (fun y => a ((e s)⁻¹ * y) • ρ y w) (e s)]`. Use `conv_lhs => rw [← hw]`.
+
+Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ hint]`. Simplify using `only [inv_mul_cancel_left, hmul, map_smul]`. Establish `hzero : ∀ s y, (e s)⁻¹ * y ∉ tsupport a → D s y = 0`. Introduce `s y hy`. Establish `h1 : ∀ᶠ t in 𝓝 s, (e t)⁻¹ * y ∈ (tsupport a)ᶜ` using `(he.inv.mul continuous_const).continuousAt.preimage_mem_nhds ((isClosed_tsupport a).isOpen_compl.mem_nhds hy)`.
+
+Establish `h2 : HasDerivAt (fun t => a ((e t)⁻¹ * y)) 0 s` using `(hasDerivAt_const s (0 : ℂ)).congr_of_eventuallyEq (h1.mono fun t ht => image_eq_zero_of_notMem_tsupport ht)`. Conclude with `(hd s y).unique h2`. Establish `hK : IsCompact ((fun p : ℝ × G => e p.1 * p.2) '' (Set.Icc (-1) 1 ×ˢ tsupport a))` using `(isCompact_Icc.prod hs.isCompact).image ((he.comp continuous_fst).mul continuous_snd)`. Use `set K := (fun p : ℝ × G => e p.1 * p.2) '' (Set.Icc (-1) 1 ×ˢ tsupport a) with hKdef`. Establish `hcD : Continuous fun p : ℝ × G => D p.1 p.2 • ρ p.2 w` using `hD.smul (hc.comp continuous_snd)`.
+
+Take `⟨M, hM⟩` from `((isCompact_Icc (a := (-1 : ℝ)) (b := 1)).prod hK).exists_bound_of_continuousOn hcD.continuousOn`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (𝕜 := ℝ) (F := fun s y => a ((e s)⁻¹ * y) • ρ y w) (F' := fun s y => D s y • ρ y w) (x₀ := 0) (bound := K.indicator fun _ => M) (s := Set.Icc (-1) 1) (Icc_mem_nhds (by norm_num) (by norm_num)) (Filter.Eventually.of_forall …`. Distinguish the cases in `hy : y ∈ K`. Rewrite using `[Set.indicator_of_mem hy]`. Conclude with `hM (s, y) ⟨hs', hy⟩`.
+
+Rewrite using `[Set.indicator_of_notMem hy, hzero s y, zero_smul, norm_zero]`. Introduce `h`. Conclude with `hy ⟨(s, (e s)⁻¹ * y), ⟨hs', h⟩, by simp⟩)`. Use the proof step `((integrable_indicator_iff hK.isClosed.measurableSet).2 (integrableOn_const hK.measure_lt_top.ne))`. Use the proof step `(Filter.Eventually.of_forall fun y s _ => (hd s y).smul_const _)`.
+
+Use `⟨HasCompactSupport.intro hs.isCompact fun y hy => hzero 0 y (by simpa [he0] using hy), ?_⟩` and prove the remaining obligations. Rewrite using `[hform]`. Conclude with `key.2`.
+-/
 theorem hasDerivAt_orbit {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
     [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ]
@@ -69,6 +82,27 @@ variable {n : ℕ} {ε : Fin n → Bool}
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Take `⟨⟨h1, hmul⟩, -, hcont⟩` from `hσ`. Take `⟨hemb, hrange⟩` from `isClosedEmbeddingMatrix n ε`. Take `⟨F, hF, hFα⟩` from `GlobalTheory.smoothOnG_exists_contDiff_extension n ε α hα`. Establish `hmem : ∀ g : UJ ε, inUJ ε (umat g)` using `fun g => g.2`. Establish `hu : Continuous fun g : UJ ε => umat g` using `hemb.continuous`.
+
+Establish `hb : Continuous fun g : UJ ε => ⟪u, σ (umat g) s⟫_ℂ` using `continuous_const.inner ((hcont s).comp_continuous hu hmem)`. Establish `hlift : ∀ x, inUJ ε x → ∃ z : UJ ε, umat z = x` using `fun x hx => by`. Establish `: x ∈ Set.range (fun g : UJ ε => umat g)`. Rewrite using `[show Set.range (fun g : UJ ε => umat g) = _ from hrange]`. Conclude with `hx`.
+
+Conclude with `this`. Establish `hinv : ∀ z : UJ ε, Jm ε * (umat z)ᴴ * Jm ε = umat z⁻¹` using `fun z => by`. Establish `h : (umat z)ᴴ * Jm ε * umat z = Jm ε` using `hmem z`. Establish `i2 : umat z * umat z⁻¹ = 1` using `Units.mul_inv _`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hform : ∀ z : UJ ε, ⟪u, σ (umat z) v⟫_ℂ = ∫ g : UJ ε, α (umat (z⁻¹ * g)) * ⟪u, σ (umat g) s⟫_ℂ ∂(muG ε)`. Introduce `z`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left, ← hfix, ← integral_mul_left_eq_self (fun g : UJ ε => α (umat (z⁻¹ * g)) * ⟪u, σ (umat g) s⟫_ℂ) z]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e : umat (z * g) = umat z * umat g` using `rfl`.
+
+Simplify using `only [inv_mul_cancel_left, e]`. Rewrite using `[hmul _ (hmem z) _ (hmem g), ContinuousLinearMap.adjoint_inner_left]`. Both sides reduce to the same expression. Introduce `g₀ hg₀`. Establish `hC : IsCompact ((fun g : UJ ε => umat g) ⁻¹' Metric.closedBall g₀ 1)` using `hemb.isCompact_preimage (isCompact_closedBall g₀ 1)`.
+
+Establish `hK` using `hC.mul hαc`. Use `set K := ((fun g : UJ ε => umat g) ⁻¹' Metric.closedBall g₀ 1) * tsupport (fun g : UJ ε => α (umat g))`. Establish `hΨ : ContDiff ℝ ∞ fun z : Matrix (Fin n) (Fin n) ℂ × (Matrix (Fin n) (Fin n) ℂ × ℂ) => F (fun i j => (Jm ε * z.1ᴴ * Jm ε * z.2.1) i j) * z.2.2`. Use `ContDiff.mul (hF.comp ?_) (contDiff_snd.comp contDiff_snd)` and prove the remaining obligations. Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations.
+
+Establish `e1 : ∀ a b, ContDiff ℝ ∞ fun z : Matrix (Fin n) (Fin n) ℂ × (Matrix (Fin n) (Fin n) ℂ × ℂ) => star (z.1 a b)` using `fun a b => Complex.conjCLE.contDiff.comp ((contDiff_apply_apply ℝ ℂ a b).comp contDiff_fst)`. Establish `e2 : ∀ a b, ContDiff ℝ ∞ fun z : Matrix (Fin n) (Fin n) ℂ × (Matrix (Fin n) (Fin n) ℂ × ℂ) => z.2.1 a b` using `fun a b => (contDiff_apply_apply ℝ ℂ a b).comp (contDiff_fst.comp contDiff_snd)`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply]`. Conclude with `ContDiff.sum fun a _ => (ContDiff.sum fun b _ => (ContDiff.sum fun c _ => contDiff_const.mul (e1 _ _)).mul contDiff_const).mul (e2 _ _)`. Use `⟨Metric.ball g₀ 1, fun x => ∫ g in K, F (fun i j => (Jm ε * xᴴ * Jm ε * umat g) i j) * ⟪u, σ (umat g) s⟫_ℂ ∂(muG ε), Metric.isOpen_ball, Metric.mem_ball_self one_pos, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(contDiff_infty.2 fun m => GlobalTheory.GardingVec.contDiff_setIntegral_nat (muG ε) hK (hu.prodMk hb) m _ hΨ).contDiffOn`. Introduce `x hx hxJ`. Take `⟨z, rfl⟩` from `hlift x hxJ`. Establish `e : ∀ g : UJ ε, F (fun i j => (Jm ε * (umat z)ᴴ * Jm ε * umat g) i j) = α (umat (z⁻¹ * g))` using `fun g => by`. Rewrite using `[hinv]`.
+
+Conclude with `hFα _ (hmem (z⁻¹ * g))`. Simplify using `only [e]`. Rewrite using `[hform z]`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun g hg => ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hg ⟨z, Metric.ball_subset_closedBall hx, z⁻¹ * g, subset_tsupport _ fun h => hne (by rw [show α (umat (z⁻¹ * g)) = 0 from h, zero_mul]), mul_inv_cancel_left z g⟩`.
+-/
 theorem smooth_coef (hσ : IsURepOn (UJset ε) σ) {α : Matrix (Fin n) (Fin n) ℂ → ℂ} {s v : H}
     (hα : SmoothOnG ε α) (hαc : HasCompactSupport (fun g : UJ ε => α (umat g)))
     (hfix : ∀ u : H, ∫ g : UJ ε, α (umat g) * ⟪u, σ (umat g) s⟫_ℂ ∂(muG ε) = ⟪u, v⟫_ℂ) (u : H) :
@@ -134,6 +168,9 @@ theorem smooth_coef (hσ : IsURepOn (UJset ε) σ) {α : Matrix (Fin n) (Fin n) 
       subset_tsupport _ fun h => hne (by rw [show α (umat (z⁻¹ * g)) = 0 from h, zero_mul]),
       mul_inv_cancel_left z g⟩
 
+/- English proof (translation)
+Establish `h1 : ContDiff ℝ ∞ (fderiv ℝ F)` using `hF.fderiv_right (by simp)`. Establish `h2 : ContDiff ℝ ∞ fun y : Fin n → Fin n → ℂ => fun i j => ∑ k, X i k * y k j` using `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ContDiff.sum fun k _ => contDiff_const.mul (contDiff_apply_apply ℝ ℂ k j)`. Conclude with `h1.clm_apply h2`.
+-/
 theorem contDiff_fderiv_mul {F : (Fin n → Fin n → ℂ) → ℂ} (hF : ContDiff ℝ ∞ F) (X : Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ fun y : Matrix (Fin n) (Fin n) ℂ => fderiv ℝ F y (X * y : Matrix _ _ ℂ) := by
   have h1 : ContDiff ℝ ∞ (fderiv ℝ F) := hF.fderiv_right (by simp)
@@ -142,6 +179,27 @@ theorem contDiff_fderiv_mul {F : (Fin n → Fin n → ℂ) → ℂ} (hF : ContDi
       ContDiff.sum fun k _ => contDiff_const.mul (contDiff_apply_apply ℝ ℂ k j)
   exact h1.clm_apply h2
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ α w v hσ hα hs hw`. Use `⟨smooth_coef hσ hα hs hw, fun X hX => ?_⟩` and prove the remaining obligations. Take `⟨F, hF, hFα⟩` from `smoothOnG_exists_contDiff_extension n ε α hα`. Establish `hu : Continuous fun g : UJ ε => umat g` using `(isClosedEmbeddingMatrix n ε).1.continuous`. Establish `hmem : ∀ g : UJ ε, umat g ∈ UJset ε` using `fun g => g.2`.
+
+Establish `hum : ∀ a b : UJ ε, umat (a * b) = umat a * umat b` using `fun _ _ => rfl`. Establish `hmul : ∀ a b : UJ ε, σ (umat (a * b)) w = σ (umat a) (σ (umat b) w)`. Introduce `a b`. Rewrite using `[hum, hσ.1.2 _ (hmem a) _ (hmem b)]`. Both sides reduce to the same expression.
+
+Establish `hc : Continuous fun y : UJ ε => σ (umat y) w` using `(hσ.2.2 w).comp_continuous hu hmem`. Establish `hFα' : ∀ g : UJ ε, α (umat g) = F (umat g)` using `fun g => (hFα _ g.2).symm`. Establish `ha : Continuous fun g : UJ ε => α (umat g)`. Simplify using `only [hFα']`. Conclude with `hF.continuous.comp hu`.
+
+Establish `hint : Integrable (fun y : UJ ε => α (umat y) • σ (umat y) w) (muG ε)` using `(ha.smul hc).integrable_of_hasCompactSupport hs.smul_right`. Establish `hw' : ∫ y : UJ ε, α (umat y) • σ (umat y) w ∂(muG ε) = v`. Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Rewrite using `[← integral_inner hint, ← hw u]`. Simplify using `only [inner_smul_right]`.
+
+Establish `hfd : Continuous (fderiv ℝ F)` using `hF.continuous_fderiv (by simp)`. Set `e : ℝ → UJ ε` to `fun t => ⟨(Matrix.isUnit_exp ((t : ℂ) • X)).unit, exp_indefinite_unitary_holds n ε X hX t⟩`. Establish `hev : ∀ t, umat (e t) = NormedSpace.exp ((t : ℂ) • X)` using `fun t => rfl`. Establish `hei : ∀ t, umat (e t)⁻¹ = NormedSpace.exp ((t : ℂ) • (-X))` using `fun t => by`. Rewrite using `[smul_neg, Matrix.exp_neg, ← hev]`.
+
+Conclude with `Matrix.coe_units_inv _`. Establish `he : Continuous e`. Rewrite using `[(isClosedEmbeddingMatrix n ε).1.isInducing.continuous_iff]`. Conclude with `GlobalTheory.GardingVec.continuous_exp_curve X`. Establish `he0 : e 0 = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show umat (e 0) = 1`. Rewrite using `[hev]`. Simplify using the standard rewrite rules.
+
+Establish `hcE` using `GlobalTheory.GardingVec.continuous_exp_curve (-X)`. Establish `key` using `hasDerivAt_orbit (muG ε) (fun g => σ (umat g)) w v hmul hc _ ha hs hw' e he he0 (fun s y => fderiv ℝ F (NormedSpace.exp ((s : ℂ) • (-X)) * umat y : Matrix _ _ ℂ) (NormedSpace.exp ((s : ℂ) • (-X)) * (-X) * umat y : Matrix _ _ ℂ)) ((hfd.comp ((hcE.comp continuous_fst).matrix_mul (h …`. Simplify using `only [hFα']`. Simplify using `only [hum, hei]`. Conclude with `((hF.differentiable (by simp)) _).hasFDerivAt.comp_hasDerivAt s (GlobalTheory.GardingVec.hasDerivAt_exp_mul (-X) (umat y) s))`.
+
+Simplify using `only [hev, Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, Matrix.one_mul] at key`. Establish `hβ` using `contDiff_fderiv_mul hF (-X)`. Use `⟨fun y => fderiv ℝ F y (-X * y : Matrix _ _ ℂ), _, fun g _ => ⟨Set.univ, _, isOpen_univ, trivial, hβ.contDiffOn, fun _ _ _ => rfl⟩, key.1, fun u => ?_, key.2⟩` and prove the remaining obligations. Establish `hβi : Integrable (fun y : UJ ε => fderiv ℝ F (umat y) (-X * umat y : Matrix _ _ ℂ) • σ (umat y) w) (muG ε)` using `((hβ.continuous.comp hu).smul hc).integrable_of_hasCompactSupport key.1.smul_right`. Rewrite using `[← integral_inner hβi]`.
+
+Simplify using `only [inner_smul_right]`.
+-/
 theorem garding_step : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (α : Matrix (Fin n) (Fin n) ℂ → ℂ) (s v : H), IsURepOn (UJset ε) σ → SmoothOnG ε α → HasCompactSupport (fun g : UJ ε => α (umat g)) → (∀ y : H, ∫ g : UJ ε, α (umat g) * ⟪y, σ (umat g) s⟫_ℂ ∂(muG ε) = ⟪y, v⟫_ℂ) → (∀ y, SmoothOnG ε (fun g => ⟪y, σ g v⟫_ℂ)) ∧ ∀ X : Matrix (Fin n) (Fin n) ℂ, inG ε X → ∃ (β : Matrix (Fin n) (Fin n) ℂ → ℂ) (v' : H), SmoothOnG ε β ∧ HasCompactSupport (fun g : UJ ε => β (umat g)) ∧ (∀ y : H, ∫ g : UJ ε, β (umat g) * ⟪y, σ (umat g) s⟫_ℂ ∂(muG ε) = ⟪y, v'⟫_ℂ) ∧ HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) v) v' 0 := by
   intro n ε H _ _ _ σ α w v hσ hα hs hw
   refine ⟨smooth_coef hσ hα hs hw, fun X hX => ?_⟩

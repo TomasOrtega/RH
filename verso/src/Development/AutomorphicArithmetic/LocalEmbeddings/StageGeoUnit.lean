@@ -12,6 +12,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StageGeo
 
+/- English proof (translation)
+Take `⟨⟨P, -, -⟩, -⟩` from `hR.size`. Establish `lev : ∀ p ∈ D.host.levelPrimes, p.Prime → Nat.Coprime p (D.host.QS * D.host.q * D.host.d)` using `fun p hp hpp => UpperTheory.Ram.Fun.coprime_condN_of_splitK D.host hpp (P.level_split p hp)`. Introduce `w hw`. Break down `Finset.mem_union.1 hw with hw | hw` into its components or cases. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hw`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨p, hpv, hcop⟩ : ∃ p : ℕ, ((p : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal ∧ Nat.Coprime p (D.host.QS * D.host.q * D.host.d) := by`. Break down `G.pl.mem_S0_of_sum_eq.1 hv with rfl | hv1` into its components or cases. Use `⟨q0 D, G.pl.basePlace_over_qZero, ?_⟩` and prove the remaining obligations. Establish `hs` using `(leastSplitAuxiliaryPrimeThetaChain_spec D).2.1`. Establish `hM : Nat.Coprime (Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D) (q0 D)`.
+
+Rewrite using `[Nat.Coprime, Nat.gcd_rec, hs, Nat.gcd_one_left]`. Establish `hdv : D.host.QS * D.host.q * D.host.d ∣ Formalism.MainNotions.rPrAv D * LevelStarExponents.condE D`. Unfold `LevelStarExponents.condE`. Conclude with `Dvd.dvd.mul_left dvd_rfl _`. Conclude with `(hM.coprime_dvd_left hdv).symm`.
+
+Break down `(S1_mem_OmF D).1 hv1 with h | h | h | h` into its components or cases. Conclude with `⟨_, h, lev _ (D.host.g_level 0) (D.host.g_prime 0)⟩`. Conclude with `⟨_, h, lev _ (D.host.g_level 1) (D.host.g_prime 1)⟩`. Conclude with `⟨_, h, lev _ D.host.pde_level.1 D.host.pde_prime⟩`. Conclude with `⟨_, h, lev _ D.host.pde_level.2 D.host.pde'_prime⟩`.
+
+Establish `hpw : ((p : ℕ) : 𝓞 D.host.E) ∈ (G.pl.w v).asIdeal`. Rewrite `hpv` using `[← G.pl.under_w hv, HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `hpv`. Conclude with `UpperTheory.Ram.natCast_notMem_of_coprime (G.pl.w v).isPrime.ne_top hpw hcop.symm`. Introduce `hmem`.
+
+Apply `(hL.Q_off t w hw).1` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hmem`.
+-/
 private theorem cond_notMem {D : D7} {large₂ : SizeData₂ D} (hR : Rec large₂) {T : Type} {Lc : LevCh D T} {μ₀ : T} (hL : Lc.Is μ₀)
     {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (t : T) :
     ∀ w ∈ locPl G t, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal := by
@@ -46,6 +59,15 @@ private theorem cond_notMem {D : D7} {large₂ : SizeData₂ D} (hR : Rec large�
     rw [Nat.cast_mul]
     exact Ideal.mul_mem_right _ _ hmem
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D large₂ _ _ hR T Lc μ₀ hL G => ?_⟩⟩` and prove the remaining obligations. Introduce `t v τ hw`. Establish `hcc : D.host.ccK = ⊤` using `hR.size.2.2.2.2.2.2.2.2.2.2.2.2.2`. Establish `h1 : ((D.host.QS * D.host.q : ℕ) : 𝓞 D.host.E) ∉ (splitPrime τ).asIdeal` using `fun h => cond_notMem hR hL G t _ hw (by rw [Nat.cast_mul]; exact Ideal.mul_mem_right _ _ h)`. Use `haveI := (splitPrime τ).isPrime`.
+
+Take `⟨z, hz, hzP⟩` from `Set.not_subset.1 (UpperTheory.Ram.half_not_le D.host _ h1)`. Establish `hB : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (UpperTheory.Ram.half_ne_bot D.host)`. Establish `hA : D.host.AA = ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)⁻¹`. Unfold `Host.AA Host.ccE Host.AA0`. Rewrite using `[hcc, Ideal.map_top, FractionalIdeal.coeIdeal_top, one_mul]`.
+
+Use `⟨⟨1, ?_, by rw [map_one, map_one]⟩, (z : D.host.E), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, FractionalIdeal.mem_inv_iff hB]`. Introduce `y hy`. Rewrite using `[one_mul]`. Conclude with `FractionalIdeal.coeIdeal_le_one hy`.
+
+Rewrite using `[hA, inv_inv]`. Conclude with `(FractionalIdeal.mem_coeIdeal _).2 ⟨z, hz, rfl⟩`. Conclude with `le_antisymm (GlobalTheory.AdelicU.apply_coe_mem τ z) (not_lt.1 fun h => hzP ((GlobalTheory.AdelicU.mem_splitPrime τ z).2 h))`.
+-/
 theorem aUnit_locPl : GBig fun {D} T _ _ G _ _ _ _ => ∀ (t : T) (v : HeightOneSpectrum (𝓞 D.host.F))
     (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v), splitPrime τ ∈ GlobalTheory.FunObj.locPl G t → AUnit τ := by
   refine ⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D large₂ _ _ hR T Lc μ₀ hL G => ?_⟩⟩
